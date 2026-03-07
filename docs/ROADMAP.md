@@ -1,86 +1,117 @@
 # Roadmap
 
+## North Star
+
+**Klatch is the place where you manage all your Claude interactions.**
+
+Today, working with Claude is fragmented across claude.ai, Claude Code, and raw API calls — each with its own UI, its own data silo, and its own limitations. Klatch replaces that fragmentation with a single local interface where you:
+
+- **Define persistent roles** — each channel is a Claude persona with its own identity, model, and behavior
+- **Own your data** — every conversation lives in a SQLite file on your machine
+- **Import from anywhere** — bring in Claude Code sessions, claude.ai projects, and other sources
+- **Orchestrate multi-voice conversations** — multiple Claude personas collaborating in one channel
+- **Organize by project** — group related channels and roles under project umbrellas
+
+The key insight: Claude is not one assistant. It's a cast of characters you direct. Klatch is the stage.
+
+---
+
 ## Completed
 
-### Step 1: Single Channel Chat ✓ (2026-03-07)
-- One channel ("general") with persistent conversation
-- Streaming Claude responses via SSE (POST + SSE pattern)
-- SQLite persistence across page reloads
-- Error handling with friendly messages
-- Dark UI with muted header, clean message area
+### Step 1: A conversation that persists ✓
+**Dimension: existence.** Can you talk to Claude and have it remember?
+- Single channel, streaming Opus responses via SSE, SQLite persistence
 
-### Step 2: Channel Sidebar + Creation ✓ (2026-03-07)
-- Sidebar listing all channels
-- Create channels with name + system prompt
-- Switch between channels (independent conversation histories)
-- Visual indicator for active channel
+### Step 2: Multiple conversations ✓
+**Dimension: multiplicity.** Can you have more than one ongoing conversation, each with its own role?
+- Channel sidebar, creation with custom system prompts, independent histories
 
-### Step 3: Markdown + Code Blocks ✓ (2026-03-07)
-- `react-markdown` with `remark-gfm` for full GFM support
-- Syntax-highlighted code blocks via `react-syntax-highlighter` (Prism + oneDark theme)
-- Language labels on fenced code blocks
-- Copy button on code blocks (hover to reveal)
-- Styled inline code, headings, lists, bold/italic, blockquotes, tables, links
+### Step 3: Readable responses ✓
+**Dimension: legibility.** Can Claude's responses render properly?
+- Markdown, syntax-highlighted code blocks, copy button, formatted text
 
-## Planned (Near-term)
+---
 
-### Step 4: Conversation Management
-- Clear channel history (start fresh)
-- Regenerate last response
-- Stop generation (abort in-flight stream)
-- Delete individual messages
+## Next Steps (concrete, actionable)
 
-### Step 5: Channel Configuration
-- Edit channel name, system prompt, and description
+### Step 4: Conversation control
+**Dimension: agency.** Can you shape and steer a conversation, not just append to it?
+
+Right now conversations are append-only — you can't course-correct. This step gives you editorial control over the conversation flow, which is essential before channels become more complex.
+
+- Clear channel history (start fresh with the same role)
+- Stop generation mid-stream (abort and keep partial)
+- Regenerate last response (retry with same context)
+- Delete individual messages (prune the conversation)
+
+### Step 5: Channel identity
+**Dimension: role definition.** Can you fully configure what each channel *is*?
+
+Channels currently have a name and system prompt set at creation time. To use Klatch seriously as a role-based tool, you need to be able to evolve a channel's identity over time and choose the right model for each role.
+
+- Edit channel name, system prompt after creation
 - Per-channel model selection (Opus, Sonnet, Haiku)
 - Temperature and max tokens controls
 - Channel settings panel (slide-out or modal)
 
-## Planned (Medium-term)
+### Step 6: Multi-entity conversations
+**Dimension: conversation structure.** Can more than one Claude persona participate in a conversation?
 
-### Step 6: Multi-Entity Chat Foundation
-- `entities` table: name, model, system prompt, avatar color
-- `channel_entities` join table
-- Multiple Claude personas respond in one channel
-- Visual distinction per entity (name, color)
+This is the first step that's impossible in claude.ai or Claude Code. It moves Klatch from "a nicer chat UI" to "something genuinely new." Multiple personas with different models and prompts, responding in the same channel.
 
-### Step 7: Entity Interaction Modes
-- **Panel mode**: entities respond independently to user
-- **Roundtable mode**: entities see and respond to each other
-- **Directed mode**: @-mention a specific entity
+- Entities table: name, model, system prompt, avatar color
+- Assign multiple entities to a channel
+- Each entity responds with its own identity and model
+- Visual distinction per entity
 
-### Step 8: Search + Export
-- Full-text search via SQLite FTS5
+---
+
+## Directional (sequence flexible, shape emerging)
+
+### Step 7: Interaction modes
+**Dimension: orchestration.** Can you control *how* entities interact with each other and with you?
+
+- **Panel mode**: entities respond independently to the user
+- **Roundtable mode**: entities see and build on each other's responses
+- **Directed mode**: @-mention routes a message to a specific entity
+- This is where Klatch becomes a collaboration tool, not just a chat tool
+
+### Step 8: Import and unify
+**Dimension: data consolidation.** Can you bring your existing Claude work into Klatch?
+
+- Parse Claude Code JSONL session files (`~/.claude/projects/`)
+- Import claude.ai project conversations (via export or API)
+- Map imported sessions to Klatch channels with appropriate roles
+- This is what makes Klatch the *single pane of glass* for Claude interactions
+
+### Step 9: Search and recall
+**Dimension: memory.** Can you find things across all your conversations?
+
+- Full-text search via SQLite FTS5 across all channels
 - Markdown export of conversations
 - Command palette (Cmd+K) for quick navigation
+- Conversation bookmarks or pinned messages
 
-## Planned (Long-term / Vision)
+---
 
-### Step 9: Polish + UX
-- Keyboard shortcuts (Ctrl+Enter, Up to edit)
-- Dark/light theme toggle
-- First-run onboarding (API key setup)
-- Loading states, skeleton UI, error boundaries
+## Vision (far horizon, appropriately vague)
 
-### Step 10: Import from Claude Code
-- Parse Claude Code JSONL session files (`~/.claude/projects/`)
-- Import conversation history into Klatch channels
-- Map Claude Code sessions to Klatch channels
+### Multi-project support
+Group channels into projects. Switch contexts. Per-project settings and entity configurations. Import sources associated with projects.
 
-### Step 11: Import from claude.ai
-- Import claude.ai project conversations (via export feature or API)
-- Map claude.ai projects to Klatch channels
-- Preserve conversation structure and context
+### Polish and craft
+Keyboard shortcuts, theming, first-run onboarding, loading states, error boundaries. The fit-and-finish that makes a tool feel like *yours*.
 
-### Step 12: Multi-Project Support
-- Project abstraction layer (groups of channels)
-- Project switching
-- Per-project settings and entity configurations
-- Import sources associated with projects
+### Sharing and collaboration
+Export conversation snapshots. Share channel configurations (role + prompt templates). Community prompt library. Maybe someday: multi-user.
+
+---
 
 ## Design Principles
 
 1. **Gall's Law**: Each step is the smallest working increment. Complex systems evolve from simple ones that work.
-2. **Local-first**: All data on your machine. No cloud dependency beyond the API.
-3. **Own your data**: SQLite is inspectable, portable, and backed up with your filesystem.
-4. **Iterative complexity**: Don't add abstractions until they're needed. Three similar lines > premature helper function.
+2. **One dimension per step**: Each step extends exactly one capability. If it touches two dimensions, split it.
+3. **Local-first**: All data on your machine. No cloud dependency beyond the API.
+4. **Own your data**: SQLite is inspectable, portable, and backed up with your filesystem.
+5. **Iterative complexity**: Don't add abstractions until they're needed. Three similar lines > premature helper function.
+6. **North star alignment**: Every step must move materially closer to the vision. If it doesn't, it's polish — and polish waits.
