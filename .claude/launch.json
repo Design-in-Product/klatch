@@ -1,0 +1,17 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "klatch-server",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["tsx", "watch", "packages/server/src/index.ts"],
+      "port": 3001
+    },
+    {
+      "name": "klatch-client",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["vite", "--config", "packages/client/vite.config.ts", "packages/client"],
+      "port": 5173
+    }
+  ]
+}
