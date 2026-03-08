@@ -47,9 +47,19 @@ Schema in `packages/server/src/db/index.ts`. Tables:
 - `packages/client/src/hooks/useStream.ts` — Client-side SSE consumption
 - `packages/client/src/App.tsx` — Main app component
 
+## Testing
+
+- **Framework:** Vitest (`npm test` at root runs server tests)
+- **Test location:** `packages/server/src/__tests__/`
+- **DB isolation:** In-memory SQLite per test via mock of `getDb()`
+- **Streaming:** `claude/client.js` is mocked in route tests
+
+## Multi-Agent Coordination
+
+Two agents work on this repo. Read `docs/COORDINATION.md` at session start and update your section before every push. Statuses: available, working, blocked, review.
+
 ## Conventions
 
 - No auth (single-user local tool)
-- No testing framework yet (add Vitest at Step 3)
 - No state management library yet (plain React state; add Zustand if needed)
 - Gall's law: each feature is the smallest working increment
