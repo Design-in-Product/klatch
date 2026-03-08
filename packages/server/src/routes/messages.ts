@@ -45,6 +45,20 @@ app.post('/channels/:channelId/messages', async (c) => {
     return c.json({ error: 'No entities assigned to this channel' }, 400);
   }
 
+  // ── Mode dispatch ────────────────────────────────────────────
+  // Panel: all entities respond in parallel, each seeing only its own history
+  // Roundtable: entities respond sequentially, each seeing prior responses (Step 7c)
+  // Directed: @-mention routes to a specific entity (Step 7d)
+
+  if (channel.mode === 'roundtable') {
+    return c.json({ error: 'Roundtable mode is not yet implemented' }, 501);
+  }
+
+  if (channel.mode === 'directed') {
+    return c.json({ error: 'Directed mode is not yet implemented' }, 501);
+  }
+
+  // ── Panel mode (default) ────────────────────────────────────
   // Create user message + N assistant placeholders in a single transaction
   const db = getDb();
   const txn = db.transaction(() => {
