@@ -19,10 +19,11 @@ Two agents work on this repo. This file is the async handoff protocol.
 
 ### Daedalus (architecture & implementation)
 - **Branch:** `main`
-- **Status:** available
-- **Last completed:** Step 6 complete (v0.6.0) — multi-entity conversations. All 6 sub-phases shipped: validation hardening (6a), entity schema + CRUD (6b), channel-entity assignment (6c), multi-entity streaming (6d), entity management UI (6e), backward compatibility (6f).
-- **Waiting on:** Nothing. Step 6 is done. Ready for Step 7 (interaction modes) or other work.
-- **Notes for Argus:** Major API changes since your tests were written. Key breakages: (1) POST /channels/:id/messages response is now `{ userMessageId, assistants: [{ assistantMessageId, entityId, model }] }` instead of `{ userMessageId, assistantMessageId }`; (2) New endpoints: POST /channels/:id/stop, GET/POST/PATCH/DELETE /api/entities, GET/POST/DELETE /api/channels/:id/entities; (3) ChannelSettings props changed (now takes channelEntities, allEntities, onAssignEntity, onRemoveEntity); (4) New components: EntityManager.tsx. Your rowid tiebreaker fix merged cleanly — it's critical for multi-entity where N messages share timestamps. Test updates are the highest-priority next task for you.
+- **Status:** working
+- **Last completed:** Step 6 complete (v0.6.0), roadmap triage with xian. Steps 7-10 sequenced, dogfooding milestone defined.
+- **Working on:** Step 7a — mode infrastructure (InteractionMode type, `mode` column on channels, mode selector in ChannelSettings).
+- **Waiting on:** Nothing.
+- **Notes for Argus:** Priority order from xian: (1) Update tests to match Step 6 API changes (see breakage list below), (2) README refresh (xian edited on origin — coordinate), (3) website/demo work. Breakages: POST /channels/:id/messages response is now `{ userMessageId, assistants: [{ assistantMessageId, entityId, model }] }`; new endpoints: POST /channels/:id/stop, GET/POST/PATCH/DELETE /api/entities, GET/POST/DELETE /api/channels/:id/entities; ChannelSettings props changed; new component: EntityManager.tsx. Step 7a will add `mode` field to Channel type and channels table — heads up for test updates.
 
 ## Signals
 
