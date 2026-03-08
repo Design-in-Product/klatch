@@ -1,10 +1,18 @@
 import dotenv from 'dotenv';
 import path from 'path';
+import fs from 'fs';
 import { fileURLToPath } from 'url';
 
-// Load .env from project root (not CWD, which may be packages/server)
+// Walk up from this file to find .env at the monorepo root
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-dotenv.config({ path: path.resolve(__dirname, '../../../.env') });
+function findEnv(dir: string): string | undefined {
+  const candidate = path.join(dir, '.env');
+  if (fs.existsSync(candidate)) return candidate;
+  const parent = path.dirname(dir);
+  if (parent === dir) return undefined; // reached filesystem root
+  return findEnv(parent);
+}
+dotenv.config({ path: findEnv(__dirname) });
 import { Hono } from 'hono';
 import { cors } from 'hono/cors';
 import { serve } from '@hono/node-server';
