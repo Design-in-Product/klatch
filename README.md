@@ -2,9 +2,7 @@
   <img src="docs/klatch-logo.svg" alt="Klatch" width="80" height="80" />
 </p>
 
-<h1 align="center">Klatch</h1>
-
-<p align="center"><strong>A Slack-inspired, local-first web app for managing Claude AI conversations.</strong></p>
+<p align="center"><strong>Klatch is a local-first web app for managing Claude AI conversations inspired by old-skool Slack.</strong></p>
 
 ---
 
@@ -76,10 +74,18 @@ Monorepo via npm workspaces: `packages/shared`, `packages/server`, `packages/cli
 
 ## How this is being built
 
-Klatch is a collaborative project between a human product designer ([mediajunkie](https://github.com/mediajunkie)) and Claude (Anthropic's AI). The human drives product direction, architecture decisions, and design values. Claude writes the code, proposes technical approaches, and flags trade-offs.
+Klatch is a collaborative project between a human product designer ([xian](https://github.com/mediajunkie)) and two Claude Code agents (Anthropic's AI), Daedalus (the crafter running on xian's laptop) and Argus (the auditor, refining the work). The human drives product direction, architecture decisions, and design values. The Claude agent write the code, propose technical approaches, test and validate the code, develop the presentation of the work, and flags trade-offs. (Each agent chose their own name.(
 
 Every feature follows Gall's Law: start with the smallest thing that works, test it, then extend. No speculative abstractions, no premature optimization. The [architecture log](docs/ARCHITECTURE.md) records every decision and why.
 
+## Why this is being built
+
+The methoology that has emerged in the process of xian's [Piper Morgan](pipermorgan.ai) project has surfaced friction (times when the human is a dumb bottleneck) that distracts from the critical role of judgment and knowing when to say no (when the human is a smart bottleneck, possibly their one job). 
+
+In addition, some frustration with the slow evolution of Claude's fragmented user experience (in contrast with Piper's admittedly still-in-progress holistically modeled UX) led me to ask Daedalus initially to help me put together a solution much better suited to my operating model but no more complex than necessary.
+
+Two days later and we're about to release a proof-of-concept mult-agent chat feature in alpha version 0.6.0 that is not yet possible in the native Claude user interface(s), has been on the Piper's roadmap for a few months, and appears to be fully possible by making our own interface to the API.  
+
 ## License
 
-MIT
+Creative Commons BY 4.0
