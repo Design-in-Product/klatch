@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback, useEffect, useRef } from 'react';
 import type { Channel } from '@klatch/shared';
 import { ChannelSidebar } from './components/ChannelSidebar';
 import { MessageList } from './components/MessageList';
@@ -96,13 +96,28 @@ export default function App() {
     // The stream will complete on its own via the SSE events
   };
 
-  const handleClearHistory = async () => {
-    try {
-      await clearChannelHistory(activeChannelId);
-      clearMessages();
-    } catch (err) {
-      console.error('Failed to clear history:', err);
+  const [confirmingClear, setConfirmingClear] = useState(false);
+  const clearTimeoutRef = useRef<ReturnType<typeof setTimeout>>();
+
+  const handleClearHistory = () => {
+    if (!confirmingClear) {
+      // First click: show confirmation
+      setConfirmingClear(true);
+      // Auto-dismiss after 3 seconds
+      clearTimeoutRef.current = setTimeout(() => setConfirmingClear(false), 3000);
+      return;
     }
+    // Second click: actually clear
+    clearTimeout(clearTimeoutRef.current);
+    setConfirmingClear(false);
+    (async () => {
+      try {
+        await clearChannelHistory(activeChannelId);
+        clearMessages();
+      } catch (err) {
+        console.error('Failed to clear history:', err);
+      }
+    })();
   };
 
   const handleDeleteMessage = async (id: string) => {
@@ -146,6 +161,7 @@ export default function App() {
   const handleSelectChannel = (id: string) => {
     if (id === activeChannelId) return;
     setStreamingMessageId(null);
+    setConfirmingClear(false);
     setActiveChannelId(id);
   };
 
@@ -186,13 +202,17 @@ export default function App() {
           {messages.length > 0 && !isStreaming && (
             <button
               onClick={handleClearHistory}
-              title="Clear channel history"
-              className="ml-4 flex-shrink-0 rounded bg-gray-700 hover:bg-red-600/80 px-3 py-1.5 text-xs font-medium text-gray-300 hover:text-white transition-colors flex items-center gap-1.5"
+              title={confirmingClear ? 'Click again to confirm' : 'Clear channel history'}
+              className={`ml-4 flex-shrink-0 rounded px-3 py-1.5 text-xs font-medium transition-colors flex items-center gap-1.5 ${
+                confirmingClear
+                  ? 'bg-red-600 text-white animate-pulse'
+                  : 'bg-transparent text-gray-500 hover:text-gray-300 hover:bg-white/5'
+              }`}
             >
               <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
               </svg>
-              Clear
+              {confirmingClear ? 'Confirm clear?' : 'Clear'}
             </button>
           )}
         </div>
