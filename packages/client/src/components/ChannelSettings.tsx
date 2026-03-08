@@ -39,14 +39,14 @@ export function ChannelSettings({ channel, onSave, onClose }: Props) {
   const modelEntries = Object.entries(AVAILABLE_MODELS) as [ModelId, { label: string; description: string }][];
 
   return (
-    <div className="border-b border-gray-700 bg-[#0d2847] px-6 py-4 animate-in">
+    <div className="border-b border-line bg-panel px-3 md:px-6 py-4 animate-in">
       <div className="flex items-center justify-between mb-4">
-        <h2 className="text-sm font-semibold text-gray-300 uppercase tracking-wide">
+        <h2 className="text-sm font-semibold text-secondary uppercase tracking-wide">
           Channel Settings
         </h2>
         <button
           onClick={onClose}
-          className="text-gray-500 hover:text-gray-300 transition-colors"
+          className="text-muted hover:text-secondary transition-colors"
         >
           <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
@@ -57,38 +57,38 @@ export function ChannelSettings({ channel, onSave, onClose }: Props) {
       <div className="space-y-4 max-w-2xl">
         {/* Channel name */}
         <div>
-          <label className="block text-xs text-gray-400 mb-1">Name</label>
+          <label className="block text-xs text-secondary mb-1">Name</label>
           <input
             type="text"
             value={name}
             onChange={(e) => { setName(e.target.value); handleChange(); }}
-            className="w-full rounded bg-gray-800 border border-gray-700 px-3 py-2 text-sm text-gray-100 placeholder-gray-500 focus:outline-none focus:border-indigo-500"
+            className="w-full rounded bg-input border border-line px-3 py-2 text-sm text-primary placeholder-muted focus:outline-none focus:border-accent"
           />
         </div>
 
         {/* System prompt */}
         <div>
-          <label className="block text-xs text-gray-400 mb-1">System prompt</label>
+          <label className="block text-xs text-secondary mb-1">System prompt</label>
           <textarea
             value={systemPrompt}
             onChange={(e) => { setSystemPrompt(e.target.value); handleChange(); }}
             rows={3}
-            className="w-full rounded bg-gray-800 border border-gray-700 px-3 py-2 text-sm text-gray-100 placeholder-gray-500 focus:outline-none focus:border-indigo-500 resize-none"
+            className="w-full rounded bg-input border border-line px-3 py-2 text-sm text-primary placeholder-muted focus:outline-none focus:border-accent resize-none"
           />
         </div>
 
         {/* Model selection */}
         <div>
-          <label className="block text-xs text-gray-400 mb-1">Model</label>
-          <div className="flex gap-2">
+          <label className="block text-xs text-secondary mb-1">Model</label>
+          <div className="flex flex-col md:flex-row gap-2">
             {modelEntries.map(([modelId, info]) => (
               <button
                 key={modelId}
                 onClick={() => { setModel(modelId); handleChange(); }}
                 className={`flex-1 rounded border px-3 py-2 text-left transition-colors ${
                   model === modelId
-                    ? 'border-indigo-500 bg-indigo-600/20 text-gray-100'
-                    : 'border-gray-700 bg-gray-800 text-gray-400 hover:text-gray-200 hover:border-gray-600'
+                    ? 'border-accent bg-accent-subtle text-primary'
+                    : 'border-line bg-card text-secondary hover:text-primary hover:border-faint'
                 }`}
               >
                 <div className="text-sm font-medium">{info.label}</div>
@@ -103,13 +103,13 @@ export function ChannelSettings({ channel, onSave, onClose }: Props) {
           <button
             onClick={handleSave}
             disabled={!dirty}
-            className="rounded bg-indigo-600 px-4 py-1.5 text-sm font-medium text-white hover:bg-indigo-500 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+            className="rounded bg-accent px-4 py-1.5 text-sm font-medium text-white hover:bg-accent-hover disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
           >
             Save
           </button>
           <button
             onClick={onClose}
-            className="rounded bg-gray-700 px-4 py-1.5 text-sm font-medium text-gray-300 hover:bg-gray-600 transition-colors"
+            className="rounded bg-card px-4 py-1.5 text-sm font-medium text-secondary hover:bg-hover transition-colors"
           >
             Cancel
           </button>

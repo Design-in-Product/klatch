@@ -3,9 +3,11 @@ import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import { oneLight } from 'react-syntax-highlighter/dist/esm/styles/prism';
 
 interface Props {
   content: string;
+  theme?: 'light' | 'dark';
 }
 
 function CopyButton({ text }: { text: string }) {
@@ -20,14 +22,16 @@ function CopyButton({ text }: { text: string }) {
   return (
     <button
       onClick={handleCopy}
-      className="absolute top-2 right-2 px-2 py-1 text-xs rounded bg-gray-700 text-gray-300 hover:bg-gray-600 hover:text-white transition-colors opacity-0 group-hover:opacity-100"
+      className="absolute top-2 right-2 px-2 py-1 text-xs rounded bg-card text-secondary hover:bg-hover hover:text-primary transition-colors opacity-0 group-hover:opacity-100"
     >
       {copied ? 'Copied!' : 'Copy'}
     </button>
   );
 }
 
-export function MarkdownContent({ content }: Props) {
+export function MarkdownContent({ content, theme }: Props) {
+  const codeTheme = theme === 'dark' ? oneDark : oneLight;
+
   return (
     <ReactMarkdown
       remarkPlugins={[remarkGfm]}
@@ -40,12 +44,12 @@ export function MarkdownContent({ content }: Props) {
           if (match) {
             return (
               <div className="group relative my-2 -mx-1">
-                <div className="flex items-center justify-between px-3 py-1 bg-gray-900 rounded-t text-xs text-gray-400 border-b border-gray-700">
+                <div className="flex items-center justify-between px-3 py-1 bg-code-bg rounded-t text-xs text-muted border-b border-line">
                   {match[1]}
                 </div>
                 <CopyButton text={codeString} />
                 <SyntaxHighlighter
-                  style={oneDark}
+                  style={codeTheme}
                   language={match[1]}
                   PreTag="div"
                   customStyle={{
@@ -66,7 +70,7 @@ export function MarkdownContent({ content }: Props) {
           if (isInline) {
             return (
               <code
-                className="px-1.5 py-0.5 rounded bg-gray-700/60 text-indigo-300 text-[0.85em] font-mono"
+                className="px-1.5 py-0.5 rounded bg-code-bg text-accent-hover text-[0.85em] font-mono"
                 {...props}
               >
                 {children}
@@ -78,7 +82,7 @@ export function MarkdownContent({ content }: Props) {
           return (
             <div className="group relative my-2 -mx-1">
               <CopyButton text={codeString} />
-              <pre className="bg-gray-900 rounded p-3 overflow-x-auto text-sm font-mono text-gray-200">
+              <pre className="bg-code-bg rounded p-3 overflow-x-auto text-sm font-mono text-primary">
                 <code {...props}>{children}</code>
               </pre>
             </div>
@@ -100,7 +104,7 @@ export function MarkdownContent({ content }: Props) {
         },
         blockquote({ children }) {
           return (
-            <blockquote className="border-l-2 border-indigo-500/50 pl-3 my-2 text-gray-400 italic">
+            <blockquote className="border-l-2 border-accent/50 pl-3 my-2 text-secondary italic">
               {children}
             </blockquote>
           );
@@ -115,10 +119,10 @@ export function MarkdownContent({ content }: Props) {
           return <h3 className="text-sm font-bold mb-1 mt-2 first:mt-0">{children}</h3>;
         },
         strong({ children }) {
-          return <strong className="font-semibold text-white">{children}</strong>;
+          return <strong className="font-semibold text-primary">{children}</strong>;
         },
         em({ children }) {
-          return <em className="italic text-gray-300">{children}</em>;
+          return <em className="italic text-secondary">{children}</em>;
         },
         a({ href, children }) {
           return (
@@ -126,14 +130,14 @@ export function MarkdownContent({ content }: Props) {
               href={href}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-indigo-400 hover:text-indigo-300 underline"
+              className="text-accent hover:text-accent-hover underline"
             >
               {children}
             </a>
           );
         },
         hr() {
-          return <hr className="border-gray-700 my-3" />;
+          return <hr className="border-line my-3" />;
         },
         table({ children }) {
           return (
@@ -143,13 +147,13 @@ export function MarkdownContent({ content }: Props) {
           );
         },
         thead({ children }) {
-          return <thead className="border-b border-gray-600">{children}</thead>;
+          return <thead className="border-b border-line-strong">{children}</thead>;
         },
         th({ children }) {
-          return <th className="text-left px-2 py-1 text-xs font-semibold text-gray-300">{children}</th>;
+          return <th className="text-left px-2 py-1 text-xs font-semibold text-secondary">{children}</th>;
         },
         td({ children }) {
-          return <td className="px-2 py-1 border-t border-gray-700/50">{children}</td>;
+          return <td className="px-2 py-1 border-t border-line">{children}</td>;
         },
       }}
     >

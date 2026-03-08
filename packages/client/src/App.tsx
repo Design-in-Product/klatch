@@ -18,6 +18,12 @@ import {
   regenerateLastResponse,
 } from './api/client';
 
+function getInitialTheme(): 'light' | 'dark' {
+  const stored = localStorage.getItem('klatch-theme');
+  if (stored === 'light' || stored === 'dark') return stored;
+  return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+}
+
 export default function App() {
   const [channels, setChannels] = useState<Channel[]>([]);
   const [activeChannelId, setActiveChannelId] = useState<string>('default');
@@ -26,6 +32,17 @@ export default function App() {
   const [streamingMessageId, setStreamingMessageId] = useState<string | null>(null);
   const [streamingModel, setStreamingModel] = useState<ModelId | undefined>();
   const [showSettings, setShowSettings] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  // Theme
+  const [theme, setTheme] = useState<'light' | 'dark'>(getInitialTheme);
+
+  useEffect(() => {
+    document.documentElement.classList.toggle('dark', theme === 'dark');
+    localStorage.setItem('klatch-theme', theme);
+  }, [theme]);
+
+  const toggleTheme = () => setTheme((t) => (t === 'light' ? 'dark' : 'light'));
 
   // Load channels on mount
   useEffect(() => {
@@ -164,11 +181,15 @@ export default function App() {
   };
 
   const handleSelectChannel = (id: string) => {
-    if (id === activeChannelId) return;
+    if (id === activeChannelId) {
+      setSidebarOpen(false);
+      return;
+    }
     setStreamingMessageId(null);
     setStreamingModel(undefined);
     setConfirmingClear(false);
     setShowSettings(false);
+    setSidebarOpen(false);
     setActiveChannelId(id);
   };
 
@@ -199,39 +220,52 @@ export default function App() {
     : undefined;
 
   return (
-    <div className="h-full flex bg-[#16213e]">
+    <div className="h-full flex bg-app">
       {/* Sidebar */}
       <ChannelSidebar
         channels={channels}
         activeChannelId={activeChannelId}
         onSelectChannel={handleSelectChannel}
         onCreateChannel={handleCreateChannel}
+        isOpen={sidebarOpen}
+        onClose={() => setSidebarOpen(false)}
+        theme={theme}
+        onToggleTheme={toggleTheme}
       />
 
       {/* Main chat area */}
       <div className="flex-1 flex flex-col min-w-0">
         {/* Header */}
-        <div className="border-b border-gray-700 px-6 py-3 bg-[#0f3460] flex items-center justify-between">
+        <div className="border-b border-line px-3 md:px-6 py-3 bg-header flex items-center justify-between">
+          {/* Hamburger — mobile only */}
+          <button
+            onClick={() => setSidebarOpen(true)}
+            className="md:hidden mr-3 text-muted hover:text-primary transition-colors"
+          >
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+          </button>
           <button
             onClick={() => setShowSettings(!showSettings)}
             className="min-w-0 text-left hover:opacity-80 transition-opacity"
             title="Edit channel settings"
           >
             <div className="flex items-center gap-2">
-              <h1 className="text-lg font-semibold text-gray-100">
+              <h1 className="text-lg font-semibold text-primary">
                 # {activeChannel?.name ?? 'general'}
               </h1>
               {activeModelLabel && (
-                <span className="text-[10px] px-1.5 py-0.5 rounded bg-white/10 text-gray-400 font-medium">
+                <span className="text-[10px] px-1.5 py-0.5 rounded bg-badge text-muted font-medium">
                   {activeModelLabel}
                 </span>
               )}
-              <svg className={`w-4 h-4 text-gray-500 transition-transform ${showSettings ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <svg className={`w-4 h-4 text-muted transition-transform ${showSettings ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
               </svg>
             </div>
             {activeChannel?.systemPrompt && (
-              <p className="text-xs text-gray-400 truncate">
+              <p className="text-xs text-secondary truncate">
                 {activeChannel.systemPrompt}
               </p>
             )}
@@ -242,8 +276,8 @@ export default function App() {
               title={confirmingClear ? 'Click again to confirm' : 'Clear channel history'}
               className={`ml-4 flex-shrink-0 rounded px-3 py-1.5 text-xs font-medium transition-colors flex items-center gap-1.5 ${
                 confirmingClear
-                  ? 'bg-red-600 text-white animate-pulse'
-                  : 'bg-transparent text-gray-500 hover:text-gray-300 hover:bg-white/5'
+                  ? 'bg-danger text-white animate-pulse'
+                  : 'bg-transparent text-muted hover:text-primary hover:bg-hover'
               }`}
             >
               <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -272,6 +306,7 @@ export default function App() {
           onDeleteMessage={handleDeleteMessage}
           onRegenerateMessage={handleRegenerate}
           isStreaming={isStreaming}
+          theme={theme}
         />
 
         {/* Input */}

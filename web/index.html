@@ -8,7 +8,7 @@
   <meta property="og:title" content="Klatch — Own your Claude conversations">
   <meta property="og:description" content="A local-first, channel-based interface for managing all your Claude AI interactions.">
   <meta property="og:type" content="website">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>%E2%98%95</text></svg>">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect x='10' y='8' width='8.5' height='48' rx='4.25' ry='4.25' fill='%23e5e7eb'/><rect x='18.5' y='28' width='24' height='8' rx='4' ry='4' fill='%23e5e7eb' transform='rotate(-40,18.5,32)'/><rect x='18.5' y='28' width='26' height='8' rx='4' ry='4' fill='%23e5e7eb' transform='rotate(40,18.5,32)'/><circle cx='50.5' cy='12' r='5' fill='%23EF4444'/></svg>">
   <style>
     :root {
       --bg-deep: #0a1628;
@@ -16,9 +16,9 @@
       --bg-card: #0f3460;
       --indigo: #6366f1;
       --indigo-light: #818cf8;
-      --text: #e5e7eb;
-      --text-dim: #9ca3af;
-      --text-bright: #f9fafb;
+      --text: #d1d5db;
+      --text-dim: #6b7280;
+      --text-bright: #f3f4f6;
       --border: #374151;
     }
 
@@ -45,15 +45,18 @@
     }
 
     .logo {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      margin-bottom: 16px;
+    }
+
+    .logo-text {
       font-size: 3rem;
       font-weight: 800;
       color: var(--text-bright);
       letter-spacing: -0.03em;
-      margin-bottom: 16px;
-    }
-
-    .logo span {
-      color: var(--indigo-light);
     }
 
     .tagline {
@@ -368,7 +371,15 @@
   <div class="container">
 
     <header>
-      <div class="logo">kla<span>t</span>ch</div>
+      <div class="logo">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="56" height="56" aria-label="Klatch logo">
+          <rect x="10" y="8" width="8.5" height="48" rx="4.25" ry="4.25" fill="#e5e7eb"/>
+          <rect x="18.5" y="28" width="24" height="8" rx="4" ry="4" fill="#e5e7eb" transform="rotate(-40, 18.5, 32)"/>
+          <rect x="18.5" y="28" width="26" height="8" rx="4" ry="4" fill="#e5e7eb" transform="rotate(40, 18.5, 32)"/>
+          <circle cx="50.5" cy="12" r="5" fill="#EF4444"/>
+        </svg>
+        <span class="logo-text">klatch</span>
+      </div>
       <p class="tagline">Own your Claude conversations.</p>
     </header>
 
