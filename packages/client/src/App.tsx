@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useEffect, useRef } from 'react';
-import type { Channel, Entity, ModelId } from '@klatch/shared';
-import { AVAILABLE_MODELS } from '@klatch/shared';
+import type { Channel, Entity, ModelId, InteractionMode } from '@klatch/shared';
+import { AVAILABLE_MODELS, INTERACTION_MODES } from '@klatch/shared';
 import { ChannelSidebar } from './components/ChannelSidebar';
 import { ChannelSettings } from './components/ChannelSettings';
 import { EntityManager } from './components/EntityManager';
@@ -222,7 +222,7 @@ export default function App() {
     }
   };
 
-  const handleUpdateChannel = async (updates: { name?: string; systemPrompt?: string; model?: ModelId }) => {
+  const handleUpdateChannel = async (updates: { name?: string; systemPrompt?: string; model?: ModelId; mode?: InteractionMode }) => {
     try {
       const updated = await updateChannelApi(activeChannelId, updates);
       setChannels((prev) =>
@@ -347,6 +347,12 @@ export default function App() {
                   {activeModelLabel}
                 </span>
               ) : null}
+              {/* Mode badge — only show for non-default modes with 2+ entities */}
+              {activeChannel?.mode && activeChannel.mode !== 'panel' && channelEntities.length >= 2 && (
+                <span className="text-[10px] px-1.5 py-0.5 rounded bg-accent/15 text-accent font-medium">
+                  {INTERACTION_MODES[activeChannel.mode]?.label || activeChannel.mode}
+                </span>
+              )}
               <svg className={`w-4 h-4 text-muted transition-transform ${showSettings ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
               </svg>

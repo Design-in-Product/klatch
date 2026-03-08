@@ -1,7 +1,7 @@
 import { Hono } from 'hono';
 import { getAllChannels, getChannel, createChannel, updateChannel, deleteChannel } from '../db/queries.js';
-import type { ModelId } from '@klatch/shared';
-import { AVAILABLE_MODELS } from '@klatch/shared';
+import type { ModelId, InteractionMode } from '@klatch/shared';
+import { AVAILABLE_MODELS, INTERACTION_MODES } from '@klatch/shared';
 
 const app = new Hono();
 
@@ -11,10 +11,11 @@ app.get('/channels', (c) => {
 });
 
 app.post('/channels', async (c) => {
-  const { name, systemPrompt, model } = await c.req.json<{
+  const { name, systemPrompt, model, mode } = await c.req.json<{
     name: string;
     systemPrompt?: string;
     model?: ModelId;
+    mode?: InteractionMode;
   }>();
 
   if (!name?.trim()) {
@@ -25,10 +26,15 @@ app.post('/channels', async (c) => {
     return c.json({ error: `Invalid model: ${model}` }, 400);
   }
 
+  if (mode && !(mode in INTERACTION_MODES)) {
+    return c.json({ error: `Invalid mode: ${mode}` }, 400);
+  }
+
   const channel = createChannel(
     name.trim(),
     systemPrompt?.trim() || 'You are a helpful assistant.',
-    model
+    model,
+    mode
   );
   return c.json(channel, 201);
 });
@@ -39,16 +45,22 @@ app.patch('/channels/:id', async (c) => {
     name?: string;
     systemPrompt?: string;
     model?: ModelId;
+    mode?: InteractionMode;
   }>();
 
   if (body.model && !(body.model in AVAILABLE_MODELS)) {
     return c.json({ error: `Invalid model: ${body.model}` }, 400);
   }
 
+  if (body.mode && !(body.mode in INTERACTION_MODES)) {
+    return c.json({ error: `Invalid mode: ${body.mode}` }, 400);
+  }
+
   const updated = updateChannel(id, {
     name: body.name?.trim(),
     systemPrompt: body.systemPrompt?.trim(),
     model: body.model,
+    mode: body.mode,
   });
 
   if (!updated) {

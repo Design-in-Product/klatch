@@ -12,44 +12,90 @@ export const activeStreams = new Map<string, EventEmitter>();
 // Store the Anthropic stream objects so we can abort them
 const activeAnthropicStreams = new Map<string, ReturnType<typeof anthropic.messages.stream>>();
 
+// Track active roundtable sessions so we can cancel remaining entities on abort
+// Maps channelId → Set of assistant message IDs in the current round
+const activeRoundtables = new Map<string, { messageIds: string[]; cancelled: boolean }>();
+
 export function abortStream(messageId: string): boolean {
   const stream = activeAnthropicStreams.get(messageId);
-  if (!stream) return false;
-  stream.abort();
-  return true;
+  if (stream) {
+    stream.abort();
+  }
+
+  // If this message belongs to a roundtable, cancel the whole round
+  for (const [, roundtable] of activeRoundtables) {
+    if (roundtable.messageIds.includes(messageId)) {
+      roundtable.cancelled = true;
+      // Mark any not-yet-started placeholders as complete (empty)
+      for (const id of roundtable.messageIds) {
+        if (id !== messageId && !activeAnthropicStreams.has(id)) {
+          // This entity hasn't started yet — clean up its placeholder
+          const emitter = activeStreams.get(id);
+          if (emitter) {
+            updateMessage(id, '', 'complete');
+            emitter.emit('data', {
+              type: 'message_complete',
+              messageId: id,
+              content: '',
+            });
+            activeStreams.delete(id);
+          } else {
+            // No emitter yet (hasn't been created) — just mark DB
+            updateMessage(id, '', 'complete');
+          }
+        }
+      }
+      break;
+    }
+  }
+
+  return !!stream;
 }
 
-/**
- * Stream a Claude response for a specific entity.
- *
- * @param channelId — channel for history lookup
- * @param assistantMessageId — the placeholder message to fill
- * @param entity — the entity responding (provides model + system prompt)
- * @param channelPreamble — the channel's system prompt, prepended as shared context
- */
-export async function streamClaude(
-  channelId: string,
-  assistantMessageId: string,
-  entity: Entity,
-  channelPreamble?: string
-) {
-  const emitter = new EventEmitter();
-  activeStreams.set(assistantMessageId, emitter);
+// ── History builders ──────────────────────────────────────────
 
-  // Build history from completed messages only (exclude all current streaming placeholders)
-  // In panel mode, each entity sees only its own past responses + all user messages
-  const allMessages = getMessages(channelId).filter(
-    (m) => m.status === 'complete'
-  );
-  const history = allMessages
+type ChatMessage = { role: 'user' | 'assistant'; content: string };
+
+/** Panel mode: entity sees only its own past responses + all user messages */
+function buildPanelHistory(channelId: string, entity: Entity): ChatMessage[] {
+  const allMessages = getMessages(channelId).filter((m) => m.status === 'complete');
+  return allMessages
     .filter((m) => m.role === 'user' || m.entityId === entity.id || !m.entityId)
     .map((m) => ({ role: m.role as 'user' | 'assistant', content: m.content }));
+}
 
-  // Build system prompt: channel preamble + entity's own prompt
-  const systemParts: string[] = [];
-  if (channelPreamble?.trim()) systemParts.push(channelPreamble.trim());
-  if (entity.systemPrompt?.trim()) systemParts.push(entity.systemPrompt.trim());
-  const systemPrompt = systemParts.join('\n\n');
+/** Roundtable mode: entity sees ALL completed messages from ALL entities */
+function buildRoundtableHistory(channelId: string): ChatMessage[] {
+  const allMessages = getMessages(channelId).filter((m) => m.status === 'complete');
+  return allMessages.map((m) => ({
+    role: m.role as 'user' | 'assistant',
+    content: m.content,
+  }));
+}
+
+/** Build system prompt: channel preamble + entity's own prompt */
+function buildSystemPrompt(entity: Entity, channelPreamble?: string): string {
+  const parts: string[] = [];
+  if (channelPreamble?.trim()) parts.push(channelPreamble.trim());
+  if (entity.systemPrompt?.trim()) parts.push(entity.systemPrompt.trim());
+  return parts.join('\n\n');
+}
+
+// ── Core streaming function ──────────────────────────────────
+
+/**
+ * Stream a Claude response. Used by both panel and roundtable modes.
+ *
+ * @returns the completed content string (useful for roundtable chaining)
+ */
+async function streamClaudeCore(
+  assistantMessageId: string,
+  entity: Entity,
+  history: ChatMessage[],
+  systemPrompt: string
+): Promise<string> {
+  const emitter = new EventEmitter();
+  activeStreams.set(assistantMessageId, emitter);
 
   let fullContent = '';
 
@@ -109,5 +155,99 @@ export async function streamClaude(
   } finally {
     activeAnthropicStreams.delete(assistantMessageId);
     activeStreams.delete(assistantMessageId);
+  }
+
+  return fullContent;
+}
+
+// ── Public API ───────────────────────────────────────────────
+
+/**
+ * Panel mode: stream a single entity's response in isolation.
+ * Each entity sees only its own history + user messages.
+ * Fire-and-forget (don't await) — streams in parallel.
+ */
+export async function streamClaude(
+  channelId: string,
+  assistantMessageId: string,
+  entity: Entity,
+  channelPreamble?: string
+) {
+  const history = buildPanelHistory(channelId, entity);
+  const systemPrompt = buildSystemPrompt(entity, channelPreamble);
+  await streamClaudeCore(assistantMessageId, entity, history, systemPrompt);
+}
+
+/**
+ * Roundtable mode: stream entities sequentially, each seeing prior responses.
+ * This is an async orchestrator — it awaits each stream before starting the next.
+ *
+ * The Anthropic API requires conversations to end with a user message.
+ * For Entity 2+, we present prior entities' responses from the current round
+ * as context in a synthetic user message, so each entity knows what others said.
+ *
+ * @param channelId — channel for history lookup
+ * @param assistants — ordered list of { messageId, entity } to stream
+ * @param channelPreamble — shared channel system prompt
+ * @param allEntities — full list of entities for name lookup in context messages
+ */
+export async function streamClaudeRoundtable(
+  channelId: string,
+  assistants: { assistantMessageId: string; entity: Entity }[],
+  channelPreamble?: string
+) {
+  // Register this roundtable so abort can cancel the whole round
+  const roundtable = {
+    messageIds: assistants.map((a) => a.assistantMessageId),
+    cancelled: false,
+  };
+  activeRoundtables.set(channelId, roundtable);
+
+  try {
+    // Start with the shared history (all completed messages in the channel)
+    const baseHistory = buildRoundtableHistory(channelId);
+
+    // Track responses from the current round
+    const roundResponses: { entity: Entity; content: string }[] = [];
+
+    for (let i = 0; i < assistants.length; i++) {
+      // Check if the round was cancelled (e.g. user hit Stop on an earlier entity)
+      if (roundtable.cancelled) break;
+
+      const { assistantMessageId, entity } = assistants[i];
+      const systemPrompt = buildSystemPrompt(entity, channelPreamble);
+
+      let history: ChatMessage[];
+
+      if (i === 0) {
+        // First entity: normal history (ends with user message)
+        history = baseHistory;
+      } else {
+        // Subsequent entities: base history + a synthetic user message
+        // containing prior entities' responses as context
+        const priorContext = roundResponses
+          .map((r) => `[${r.entity.name} responded]: ${r.content}`)
+          .join('\n\n');
+
+        history = [
+          ...baseHistory,
+          {
+            role: 'user' as const,
+            content: `The following responses have been given by other participants in this roundtable discussion:\n\n${priorContext}\n\nNow it's your turn to respond to the original message.`,
+          },
+        ];
+      }
+
+      const content = await streamClaudeCore(
+        assistantMessageId,
+        entity,
+        history,
+        systemPrompt
+      );
+
+      roundResponses.push({ entity, content });
+    }
+  } finally {
+    activeRoundtables.delete(channelId);
   }
 }

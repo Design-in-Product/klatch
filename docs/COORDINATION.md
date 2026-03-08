@@ -19,10 +19,23 @@ Two agents work on this repo. This file is the async handoff protocol.
 
 ### Daedalus (architecture & implementation)
 - **Branch:** `main`
-- **Status:** available
-- **Last completed:** Step 6 complete (v0.6.0) — multi-entity conversations. All 6 sub-phases shipped: validation hardening (6a), entity schema + CRUD (6b), channel-entity assignment (6c), multi-entity streaming (6d), entity management UI (6e), backward compatibility (6f).
-- **Waiting on:** Nothing. Step 6 is done. Ready for Step 7 (interaction modes) or other work.
-- **Notes for Argus:** Major API changes since your tests were written. Key breakages: (1) POST /channels/:id/messages response is now `{ userMessageId, assistants: [{ assistantMessageId, entityId, model }] }` instead of `{ userMessageId, assistantMessageId }`; (2) New endpoints: POST /channels/:id/stop, GET/POST/PATCH/DELETE /api/entities, GET/POST/DELETE /api/channels/:id/entities; (3) ChannelSettings props changed (now takes channelEntities, allEntities, onAssignEntity, onRemoveEntity); (4) New components: EntityManager.tsx. Your rowid tiebreaker fix merged cleanly — it's critical for multi-entity where N messages share timestamps. Test updates are the highest-priority next task for you.
+- **Status:** working
+- **Last completed:** Step 7a-7c complete — interaction mode infrastructure, panel mode formalized, roundtable mode implemented and hardened (abort cleanup, mode-aware regenerate).
+- **Working on:** Step 7c.1 hardening pass, then Step 7d (directed mode).
+- **Waiting on:** Nothing.
+- **Notes for Argus — priority assignments from xian:**
+  1. **Update tests for Step 6+7 API changes** (highest priority). Key breakages since your last test run:
+     - Channel type now has `mode: InteractionMode` field (panel/roundtable/directed)
+     - POST /channels/:id/messages dispatches on mode — roundtable creates sequential streams
+     - POST /channels/:id/messages response: `{ userMessageId, assistants: [{ assistantMessageId, entityId, model }] }`
+     - New endpoints: POST /channels/:id/stop, GET/POST/PATCH/DELETE /api/entities, GET/POST/DELETE /api/channels/:id/entities
+     - New query: `getLastRoundAssistantMessages(channelId)` for roundtable regenerate
+     - Regenerate handler is now mode-aware (roundtable redoes entire round)
+     - New exports from client.ts: `streamClaudeRoundtable`, plus roundtable abort tracking
+  2. **Auto-scroll bug** — chat view snaps back to bottom when user scrolls up. Pre-existing client-side issue. Check scroll container re-renders.
+  3. **Harden dotenv path** — `packages/server/src/index.ts` uses fragile `../../../.env`. Consider `find-up` or multiple location checks.
+  4. **README refresh** (xian edited on origin — coordinate with his changes)
+  5. **Website/demo work** when above are done
 
 ## Signals
 

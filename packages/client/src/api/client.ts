@@ -1,4 +1,4 @@
-import type { Channel, Entity, Message, ModelId } from '@klatch/shared';
+import type { Channel, Entity, Message, ModelId, InteractionMode } from '@klatch/shared';
 
 const BASE = '/api';
 
@@ -26,7 +26,7 @@ export async function createChannel(
 
 export async function updateChannelApi(
   id: string,
-  updates: { name?: string; systemPrompt?: string; model?: ModelId }
+  updates: { name?: string; systemPrompt?: string; model?: ModelId; mode?: InteractionMode }
 ): Promise<Channel> {
   const res = await fetch(`${BASE}/channels/${id}`, {
     method: 'PATCH',

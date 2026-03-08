@@ -1,7 +1,7 @@
 import { v4 as uuidv4 } from 'uuid';
 import { getDb } from './index.js';
-import type { Channel, Message, Entity, ModelId } from '@klatch/shared';
-import { DEFAULT_MODEL, DEFAULT_ENTITY_ID, ENTITY_COLORS } from '@klatch/shared';
+import type { Channel, Message, Entity, ModelId, InteractionMode } from '@klatch/shared';
+import { DEFAULT_MODEL, DEFAULT_ENTITY_ID, ENTITY_COLORS, DEFAULT_INTERACTION_MODE } from '@klatch/shared';
 
 function rowToChannel(row: any): Channel {
   return {
@@ -9,6 +9,7 @@ function rowToChannel(row: any): Channel {
     name: row.name,
     systemPrompt: row.system_prompt,
     model: row.model || DEFAULT_MODEL,
+    mode: (row.mode as InteractionMode) || DEFAULT_INTERACTION_MODE,
     createdAt: row.created_at,
   };
 }
@@ -50,27 +51,28 @@ export function getAllChannels(): Channel[] {
   return rows.map(rowToChannel);
 }
 
-export function createChannel(name: string, systemPrompt: string, model?: ModelId): Channel {
+export function createChannel(name: string, systemPrompt: string, model?: ModelId, mode?: InteractionMode): Channel {
   const db = getDb();
   const id = uuidv4();
   const now = new Date().toISOString();
   const channelModel = model || DEFAULT_MODEL;
+  const channelMode = mode || DEFAULT_INTERACTION_MODE;
 
   const txn = db.transaction(() => {
-    db.prepare('INSERT INTO channels (id, name, system_prompt, model, created_at) VALUES (?, ?, ?, ?, ?)')
-      .run(id, name, systemPrompt, channelModel, now);
+    db.prepare('INSERT INTO channels (id, name, system_prompt, model, mode, created_at) VALUES (?, ?, ?, ?, ?, ?)')
+      .run(id, name, systemPrompt, channelModel, channelMode, now);
     // Auto-assign default entity to new channels
     db.prepare('INSERT INTO channel_entities (channel_id, entity_id) VALUES (?, ?)')
       .run(id, DEFAULT_ENTITY_ID);
   });
   txn();
 
-  return { id, name, systemPrompt, model: channelModel, createdAt: now };
+  return { id, name, systemPrompt, model: channelModel, mode: channelMode, createdAt: now };
 }
 
 export function updateChannel(
   id: string,
-  updates: { name?: string; systemPrompt?: string; model?: ModelId }
+  updates: { name?: string; systemPrompt?: string; model?: ModelId; mode?: InteractionMode }
 ): Channel | undefined {
   const channel = getChannel(id);
   if (!channel) return undefined;
@@ -78,12 +80,13 @@ export function updateChannel(
   const name = updates.name ?? channel.name;
   const systemPrompt = updates.systemPrompt ?? channel.systemPrompt;
   const model = updates.model ?? channel.model;
+  const mode = updates.mode ?? channel.mode;
 
   getDb()
-    .prepare('UPDATE channels SET name = ?, system_prompt = ?, model = ? WHERE id = ?')
-    .run(name, systemPrompt, model, id);
+    .prepare('UPDATE channels SET name = ?, system_prompt = ?, model = ?, mode = ? WHERE id = ?')
+    .run(name, systemPrompt, model, mode, id);
 
-  return { ...channel, name, systemPrompt, model };
+  return { ...channel, name, systemPrompt, model, mode };
 }
 
 export function getMessage(id: string): Message | undefined {
@@ -172,6 +175,24 @@ export function getLastAssistantMessage(channelId: string): Message | undefined 
     .get(channelId, 'assistant') as any;
   if (!row) return undefined;
   return rowToMessage(row);
+}
+
+/** Get all assistant messages from the last round (after the last user message). */
+export function getLastRoundAssistantMessages(channelId: string): Message[] {
+  const db = getDb();
+  // Find the last user message's rowid
+  const lastUser = db.prepare(
+    'SELECT rowid FROM messages WHERE channel_id = ? AND role = ? ORDER BY created_at DESC, rowid DESC LIMIT 1'
+  ).get(channelId, 'user') as { rowid: number } | undefined;
+
+  if (!lastUser) return [];
+
+  // Get all assistant messages after that user message
+  const rows = db.prepare(
+    'SELECT * FROM messages WHERE channel_id = ? AND role = ? AND rowid > ? ORDER BY created_at ASC, rowid ASC'
+  ).all(channelId, 'assistant', lastUser.rowid) as any[];
+
+  return rows.map(rowToMessage);
 }
 
 // ── Entity CRUD ──────────────────────────────────────────────

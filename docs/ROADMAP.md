@@ -62,19 +62,23 @@ This is the first step that's impossible in claude.ai or Claude Code. It moves K
 
 ## Next Steps (concrete, actionable)
 
+### Step 7: Interaction modes
+**Dimension: orchestration.** Can you control *how* entities interact with each other and with you?
+
+Panel mode already works from Step 6. This step adds the other two modes that make multi-entity channels genuinely useful — especially for coordination and delegation.
+
+- Mode selector in channel settings (panel / roundtable / directed)
+- **Roundtable mode**: entities respond sequentially, each seeing all prior responses in the round
+- **Directed mode**: @-mention routes a message to a specific entity, with autocomplete
+- Mode-specific history construction (panel = isolated, roundtable = shared, directed = selective)
+
+**Near-term target: dogfooding.** After Step 7, we can run the Klatch development project inside Klatch itself — coordinating between multiple Claude agents in a shared channel.
+
 ---
 
 ## Directional (sequence flexible, shape emerging)
 
-### Step 7: Interaction modes
-**Dimension: orchestration.** Can you control *how* entities interact with each other and with you?
-
-- **Panel mode**: entities respond independently to the user
-- **Roundtable mode**: entities see and build on each other's responses
-- **Directed mode**: @-mention routes a message to a specific entity
-- This is where Klatch becomes a collaboration tool, not just a chat tool
-
-### Step 8: Import and unify
+### Step 8: Import and sync
 **Dimension: data consolidation.** Can you bring your existing Claude work into Klatch?
 
 - Parse Claude Code JSONL session files (`~/.claude/projects/`)
@@ -82,7 +86,15 @@ This is the first step that's impossible in claude.ai or Claude Code. It moves K
 - Map imported sessions to Klatch channels with appropriate roles
 - This is what makes Klatch the *single pane of glass* for Claude interactions
 
-### Step 9: Search and recall
+### Step 9: Files and artifacts
+**Dimension: rich context.** Can you share files, code, and documents with entities?
+
+- Upload/attach files to conversations
+- Render artifacts (code, documents, images) inline
+- Context injection: entities receive file contents as part of their context
+- This is where Klatch becomes a workspace, not just a chat tool
+
+### Step 10: Search and recall
 **Dimension: memory.** Can you find things across all your conversations?
 
 - Full-text search via SQLite FTS5 across all channels
@@ -99,6 +111,13 @@ Group channels into projects. Switch contexts. Per-project settings and entity c
 
 ### Polish and craft
 Keyboard shortcuts, theming, first-run onboarding, loading states, error boundaries. The fit-and-finish that makes a tool feel like *yours*.
+
+### Workflows
+Multi-phase orchestration across entities. A workflow defines a sequence of steps where each step's outputs become the next step's inputs — like a routing slip, but one that actually works.
+
+Motivating scenario: a weekly leadership check-in where 6 department heads write memos (panel or roundtable), then a Chief of Staff reviews all memos and synthesizes a report (directed). Today this requires manual multi-channel choreography; workflows would make it a single trigger.
+
+Workflows compose the primitives we already have (panel, roundtable, directed) into repeatable pipelines. They bridge interaction modes (how a single message is routed) with process automation (how a multi-step sequence is orchestrated). Closely related to files/artifacts (Step 9) since workflow outputs are often documents, not just chat messages.
 
 ### Sharing and collaboration
 Export conversation snapshots. Share channel configurations (role + prompt templates). Community prompt library. Maybe someday: multi-user.

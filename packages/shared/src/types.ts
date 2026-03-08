@@ -29,6 +29,16 @@ export const ENTITY_COLORS = [
 
 export const DEFAULT_ENTITY_ID = 'default-entity';
 
+// Interaction modes for multi-entity channels
+export const INTERACTION_MODES = {
+  panel: { label: 'Panel', description: 'All entities respond independently in parallel' },
+  roundtable: { label: 'Roundtable', description: 'Entities respond sequentially, each seeing prior responses' },
+  directed: { label: 'Directed', description: 'Use @mentions to route messages to specific entities' },
+} as const;
+
+export type InteractionMode = keyof typeof INTERACTION_MODES;
+export const DEFAULT_INTERACTION_MODE: InteractionMode = 'panel';
+
 export interface Entity {
   id: string;
   name: string;
@@ -43,6 +53,7 @@ export interface Channel {
   name: string;
   systemPrompt: string;
   model: ModelId;
+  mode: InteractionMode;
   createdAt: string;
 }
 
