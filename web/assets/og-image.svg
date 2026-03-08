@@ -2,9 +2,6 @@
   <!-- Background -->
   <rect width="1200" height="630" fill="#0a1628"/>
 
-  <!-- Subtle grid/texture line -->
-  <line x1="0" y1="315" x2="1200" y2="315" stroke="#16213e" stroke-width="1"/>
-
   <!-- K logo — centered, scaled up -->
   <g transform="translate(488, 160) scale(3.5)">
     <rect x="10" y="8" width="8.5" height="48" rx="4.25" ry="4.25" fill="#e5e7eb"/>
