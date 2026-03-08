@@ -177,6 +177,24 @@ export function getLastAssistantMessage(channelId: string): Message | undefined 
   return rowToMessage(row);
 }
 
+/** Get all assistant messages from the last round (after the last user message). */
+export function getLastRoundAssistantMessages(channelId: string): Message[] {
+  const db = getDb();
+  // Find the last user message's rowid
+  const lastUser = db.prepare(
+    'SELECT rowid FROM messages WHERE channel_id = ? AND role = ? ORDER BY created_at DESC, rowid DESC LIMIT 1'
+  ).get(channelId, 'user') as { rowid: number } | undefined;
+
+  if (!lastUser) return [];
+
+  // Get all assistant messages after that user message
+  const rows = db.prepare(
+    'SELECT * FROM messages WHERE channel_id = ? AND role = ? AND rowid > ? ORDER BY created_at ASC, rowid ASC'
+  ).all(channelId, 'assistant', lastUser.rowid) as any[];
+
+  return rows.map(rowToMessage);
+}
+
 // ── Entity CRUD ──────────────────────────────────────────────
 
 export function getEntity(id: string): Entity | undefined {

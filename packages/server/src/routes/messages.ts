@@ -9,6 +9,7 @@ import {
   deleteMessage,
   deleteAllMessages,
   getLastAssistantMessage,
+  getLastRoundAssistantMessages,
 } from '../db/queries.js';
 import { streamClaude, streamClaudeRoundtable, activeStreams, abortStream } from '../claude/client.js';
 import type { StreamEvent, Entity } from '@klatch/shared';
@@ -143,7 +144,7 @@ app.post('/channels/:channelId/stop', (c) => {
   return c.json({ stopped });
 });
 
-// Regenerate: delete the last assistant message(s) and re-send
+// Regenerate: delete the last round's assistant messages and re-send
 app.post('/channels/:channelId/regenerate', async (c) => {
   const channelId = c.req.param('channelId');
 
@@ -152,21 +153,57 @@ app.post('/channels/:channelId/regenerate', async (c) => {
     return c.json({ error: 'Channel not found' }, 404);
   }
 
+  const entities = getChannelEntities(channelId);
+  if (entities.length === 0) {
+    return c.json({ error: 'No entities assigned to this channel' }, 400);
+  }
+
+  if (channel.mode === 'roundtable') {
+    // Roundtable: delete ALL assistant messages from the last round, redo the whole round
+    const lastRound = getLastRoundAssistantMessages(channelId);
+    if (lastRound.length === 0) {
+      return c.json({ error: 'No assistant messages to regenerate' }, 404);
+    }
+
+    const db = getDb();
+    const txn = db.transaction(() => {
+      for (const msg of lastRound) deleteMessage(msg.id);
+      return entities.map((entity) => {
+        const msg = insertMessage(channelId, 'assistant', '', 'streaming', entity.model, entity.id);
+        return { assistantMessageId: msg.id, entityId: entity.id, model: entity.model };
+      });
+    });
+    const assistants = txn();
+
+    streamClaudeRoundtable(
+      channelId,
+      assistants.map((a) => ({
+        assistantMessageId: a.assistantMessageId,
+        entity: entities.find((e) => e.id === a.entityId)!,
+      })),
+      channel.systemPrompt
+    );
+
+    return c.json({
+      assistantMessageId: assistants[0].assistantMessageId,
+      model: assistants[0].model,
+      assistants,
+    });
+  }
+
+  // Panel mode (default): regenerate just the last assistant message
   const lastAssistant = getLastAssistantMessage(channelId);
   if (!lastAssistant) {
     return c.json({ error: 'No assistant message to regenerate' }, 404);
   }
 
-  // Delete the old assistant message
   deleteMessage(lastAssistant.id);
 
-  // If the message had an entity, regenerate with that entity; otherwise use channel entities
-  const entities = lastAssistant.entityId
-    ? getChannelEntities(channelId).filter((e) => e.id === lastAssistant.entityId)
-    : getChannelEntities(channelId);
+  // If the message had an entity, regenerate with that entity; otherwise use first channel entity
+  const entity = lastAssistant.entityId
+    ? entities.find((e) => e.id === lastAssistant.entityId) || entities[0]
+    : entities[0];
 
-  // For single-entity regenerate, create one placeholder
-  const entity = entities[0];
   if (!entity) {
     return c.json({ error: 'Entity not found for regeneration' }, 404);
   }

@@ -12,11 +12,44 @@ export const activeStreams = new Map<string, EventEmitter>();
 // Store the Anthropic stream objects so we can abort them
 const activeAnthropicStreams = new Map<string, ReturnType<typeof anthropic.messages.stream>>();
 
+// Track active roundtable sessions so we can cancel remaining entities on abort
+// Maps channelId → Set of assistant message IDs in the current round
+const activeRoundtables = new Map<string, { messageIds: string[]; cancelled: boolean }>();
+
 export function abortStream(messageId: string): boolean {
   const stream = activeAnthropicStreams.get(messageId);
-  if (!stream) return false;
-  stream.abort();
-  return true;
+  if (stream) {
+    stream.abort();
+  }
+
+  // If this message belongs to a roundtable, cancel the whole round
+  for (const [, roundtable] of activeRoundtables) {
+    if (roundtable.messageIds.includes(messageId)) {
+      roundtable.cancelled = true;
+      // Mark any not-yet-started placeholders as complete (empty)
+      for (const id of roundtable.messageIds) {
+        if (id !== messageId && !activeAnthropicStreams.has(id)) {
+          // This entity hasn't started yet — clean up its placeholder
+          const emitter = activeStreams.get(id);
+          if (emitter) {
+            updateMessage(id, '', 'complete');
+            emitter.emit('data', {
+              type: 'message_complete',
+              messageId: id,
+              content: '',
+            });
+            activeStreams.delete(id);
+          } else {
+            // No emitter yet (hasn't been created) — just mark DB
+            updateMessage(id, '', 'complete');
+          }
+        }
+      }
+      break;
+    }
+  }
+
+  return !!stream;
 }
 
 // ── History builders ──────────────────────────────────────────
@@ -163,44 +196,58 @@ export async function streamClaudeRoundtable(
   assistants: { assistantMessageId: string; entity: Entity }[],
   channelPreamble?: string
 ) {
-  // Start with the shared history (all completed messages in the channel)
-  const baseHistory = buildRoundtableHistory(channelId);
+  // Register this roundtable so abort can cancel the whole round
+  const roundtable = {
+    messageIds: assistants.map((a) => a.assistantMessageId),
+    cancelled: false,
+  };
+  activeRoundtables.set(channelId, roundtable);
 
-  // Track responses from the current round
-  const roundResponses: { entity: Entity; content: string }[] = [];
+  try {
+    // Start with the shared history (all completed messages in the channel)
+    const baseHistory = buildRoundtableHistory(channelId);
 
-  for (let i = 0; i < assistants.length; i++) {
-    const { assistantMessageId, entity } = assistants[i];
-    const systemPrompt = buildSystemPrompt(entity, channelPreamble);
+    // Track responses from the current round
+    const roundResponses: { entity: Entity; content: string }[] = [];
 
-    let history: ChatMessage[];
+    for (let i = 0; i < assistants.length; i++) {
+      // Check if the round was cancelled (e.g. user hit Stop on an earlier entity)
+      if (roundtable.cancelled) break;
 
-    if (i === 0) {
-      // First entity: normal history (ends with user message)
-      history = baseHistory;
-    } else {
-      // Subsequent entities: base history + a synthetic user message
-      // containing prior entities' responses as context
-      const priorContext = roundResponses
-        .map((r) => `[${r.entity.name} responded]: ${r.content}`)
-        .join('\n\n');
+      const { assistantMessageId, entity } = assistants[i];
+      const systemPrompt = buildSystemPrompt(entity, channelPreamble);
 
-      history = [
-        ...baseHistory,
-        {
-          role: 'user' as const,
-          content: `The following responses have been given by other participants in this roundtable discussion:\n\n${priorContext}\n\nNow it's your turn to respond to the original message.`,
-        },
-      ];
+      let history: ChatMessage[];
+
+      if (i === 0) {
+        // First entity: normal history (ends with user message)
+        history = baseHistory;
+      } else {
+        // Subsequent entities: base history + a synthetic user message
+        // containing prior entities' responses as context
+        const priorContext = roundResponses
+          .map((r) => `[${r.entity.name} responded]: ${r.content}`)
+          .join('\n\n');
+
+        history = [
+          ...baseHistory,
+          {
+            role: 'user' as const,
+            content: `The following responses have been given by other participants in this roundtable discussion:\n\n${priorContext}\n\nNow it's your turn to respond to the original message.`,
+          },
+        ];
+      }
+
+      const content = await streamClaudeCore(
+        assistantMessageId,
+        entity,
+        history,
+        systemPrompt
+      );
+
+      roundResponses.push({ entity, content });
     }
-
-    const content = await streamClaudeCore(
-      assistantMessageId,
-      entity,
-      history,
-      systemPrompt
-    );
-
-    roundResponses.push({ entity, content });
+  } finally {
+    activeRoundtables.delete(channelId);
   }
 }

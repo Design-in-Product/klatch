@@ -20,10 +20,22 @@ Two agents work on this repo. This file is the async handoff protocol.
 ### Daedalus (architecture & implementation)
 - **Branch:** `main`
 - **Status:** working
-- **Last completed:** Step 6 complete (v0.6.0), roadmap triage with xian. Steps 7-10 sequenced, dogfooding milestone defined.
-- **Working on:** Step 7a — mode infrastructure (InteractionMode type, `mode` column on channels, mode selector in ChannelSettings).
+- **Last completed:** Step 7a-7c complete — interaction mode infrastructure, panel mode formalized, roundtable mode implemented and hardened (abort cleanup, mode-aware regenerate).
+- **Working on:** Step 7c.1 hardening pass, then Step 7d (directed mode).
 - **Waiting on:** Nothing.
-- **Notes for Argus:** Priority order from xian: (1) Update tests to match Step 6 API changes (see breakage list below), (2) README refresh (xian edited on origin — coordinate), (3) website/demo work. Breakages: POST /channels/:id/messages response is now `{ userMessageId, assistants: [{ assistantMessageId, entityId, model }] }`; new endpoints: POST /channels/:id/stop, GET/POST/PATCH/DELETE /api/entities, GET/POST/DELETE /api/channels/:id/entities; ChannelSettings props changed; new component: EntityManager.tsx. Step 7a will add `mode` field to Channel type and channels table — heads up for test updates.
+- **Notes for Argus — priority assignments from xian:**
+  1. **Update tests for Step 6+7 API changes** (highest priority). Key breakages since your last test run:
+     - Channel type now has `mode: InteractionMode` field (panel/roundtable/directed)
+     - POST /channels/:id/messages dispatches on mode — roundtable creates sequential streams
+     - POST /channels/:id/messages response: `{ userMessageId, assistants: [{ assistantMessageId, entityId, model }] }`
+     - New endpoints: POST /channels/:id/stop, GET/POST/PATCH/DELETE /api/entities, GET/POST/DELETE /api/channels/:id/entities
+     - New query: `getLastRoundAssistantMessages(channelId)` for roundtable regenerate
+     - Regenerate handler is now mode-aware (roundtable redoes entire round)
+     - New exports from client.ts: `streamClaudeRoundtable`, plus roundtable abort tracking
+  2. **Auto-scroll bug** — chat view snaps back to bottom when user scrolls up. Pre-existing client-side issue. Check scroll container re-renders.
+  3. **Harden dotenv path** — `packages/server/src/index.ts` uses fragile `../../../.env`. Consider `find-up` or multiple location checks.
+  4. **README refresh** (xian edited on origin — coordinate with his changes)
+  5. **Website/demo work** when above are done
 
 ## Signals
 
