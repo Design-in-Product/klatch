@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Klatch — Own your Claude conversations</title>
+  <meta name="description" content="A local-first, channel-based interface for managing all your Claude AI interactions. Define persistent roles, own your data, orchestrate multi-voice conversations.">
+  <meta property="og:title" content="Klatch — Own your Claude conversations">
+  <meta property="og:description" content="A local-first, channel-based interface for managing all your Claude AI interactions.">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>%E2%98%95</text></svg>">
+  <style>
+    :root {
+      --bg-deep: #0a1628;
+      --bg-main: #16213e;
+      --bg-card: #0f3460;
+      --indigo: #6366f1;
+      --indigo-light: #818cf8;
+      --text: #e5e7eb;
+      --text-dim: #9ca3af;
+      --text-bright: #f9fafb;
+      --border: #374151;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+      background: var(--bg-deep);
+      color: var(--text);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .container {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* Header */
+    header {
+      padding: 80px 0 40px;
+      text-align: center;
+    }
+
+    .logo {
+      font-size: 3rem;
+      font-weight: 800;
+      color: var(--text-bright);
+      letter-spacing: -0.03em;
+      margin-bottom: 16px;
+    }
+
+    .logo span {
+      color: var(--indigo-light);
+    }
+
+    .tagline {
+      font-size: 1.25rem;
+      color: var(--text-dim);
+      max-width: 480px;
+      margin: 0 auto;
+    }
+
+    /* Hero section */
+    .hero {
+      padding: 40px 0;
+      text-align: center;
+    }
+
+    .hero p {
+      font-size: 1.05rem;
+      color: var(--text);
+      max-width: 560px;
+      margin: 0 auto 32px;
+    }
+
+    .cta-group {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.15s ease;
+    }
+
+    .btn-primary {
+      background: var(--indigo);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: var(--indigo-light);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--text-dim);
+      color: var(--text-bright);
+    }
+
+    /* Quickstart */
+    .quickstart {
+      margin: 48px 0;
+      background: var(--bg-main);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .quickstart-header {
+      padding: 12px 20px;
+      background: var(--bg-card);
+      border-bottom: 1px solid var(--border);
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .quickstart pre {
+      padding: 20px;
+      font-family: 'SF Mono', 'Fira Code', 'Fira Mono', Menlo, monospace;
+      font-size: 0.9rem;
+      line-height: 1.8;
+      overflow-x: auto;
+      color: var(--text);
+    }
+
+    .quickstart .comment { color: #6b7280; }
+    .quickstart .cmd { color: var(--indigo-light); }
+
+    /* Features */
+    .features {
+      padding: 48px 0;
+    }
+
+    .features h2 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--text-bright);
+      margin-bottom: 32px;
+      text-align: center;
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    @media (max-width: 560px) {
+      .feature-grid { grid-template-columns: 1fr; }
+    }
+
+    .feature {
+      padding: 20px;
+      background: var(--bg-main);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+    }
+
+    .feature h3 {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--text-bright);
+      margin-bottom: 6px;
+    }
+
+    .feature p {
+      font-size: 0.85rem;
+      color: var(--text-dim);
+      line-height: 1.5;
+    }
+
+    /* The Insight */
+    .insight {
+      padding: 48px 0;
+      text-align: center;
+    }
+
+    .insight blockquote {
+      font-size: 1.2rem;
+      color: var(--text-bright);
+      font-style: italic;
+      max-width: 480px;
+      margin: 0 auto;
+      padding: 24px;
+      border-left: 3px solid var(--indigo);
+      text-align: left;
+      background: var(--bg-main);
+      border-radius: 0 8px 8px 0;
+    }
+
+    /* Roadmap */
+    .roadmap {
+      padding: 48px 0;
+    }
+
+    .roadmap h2 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--text-bright);
+      margin-bottom: 24px;
+      text-align: center;
+    }
+
+    .step-list {
+      list-style: none;
+      position: relative;
+    }
+
+    .step-list::before {
+      content: '';
+      position: absolute;
+      left: 11px;
+      top: 8px;
+      bottom: 8px;
+      width: 2px;
+      background: var(--border);
+    }
+
+    .step {
+      display: flex;
+      gap: 16px;
+      padding: 12px 0;
+      position: relative;
+    }
+
+    .step-dot {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      margin-top: 2px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.7rem;
+      font-weight: 700;
+    }
+
+    .step-done .step-dot {
+      background: var(--indigo);
+      color: white;
+    }
+
+    .step-next .step-dot {
+      background: var(--bg-card);
+      border: 2px solid var(--indigo);
+      color: var(--indigo-light);
+    }
+
+    .step-future .step-dot {
+      background: var(--bg-card);
+      border: 2px solid var(--border);
+      color: var(--text-dim);
+    }
+
+    .step-content h3 {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text-bright);
+    }
+
+    .step-content p {
+      font-size: 0.8rem;
+      color: var(--text-dim);
+      margin-top: 2px;
+    }
+
+    .step-done .step-content h3 { color: var(--text-dim); }
+
+    /* Tech stack */
+    .stack {
+      padding: 48px 0;
+    }
+
+    .stack h2 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--text-bright);
+      margin-bottom: 24px;
+      text-align: center;
+    }
+
+    .stack-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+    }
+
+    .stack-tag {
+      padding: 6px 14px;
+      background: var(--bg-main);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      font-size: 0.8rem;
+      color: var(--text-dim);
+      font-weight: 500;
+    }
+
+    /* Built with */
+    .built-with {
+      padding: 48px 0;
+      text-align: center;
+    }
+
+    .built-with p {
+      font-size: 0.95rem;
+      color: var(--text-dim);
+      max-width: 480px;
+      margin: 0 auto;
+    }
+
+    .built-with a {
+      color: var(--indigo-light);
+      text-decoration: none;
+    }
+
+    .built-with a:hover {
+      text-decoration: underline;
+    }
+
+    /* Footer */
+    footer {
+      padding: 32px 0;
+      text-align: center;
+      border-top: 1px solid var(--border);
+      margin-top: 32px;
+    }
+
+    footer p {
+      font-size: 0.8rem;
+      color: var(--text-dim);
+    }
+
+    footer a {
+      color: var(--indigo-light);
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+
+    <header>
+      <div class="logo">kla<span>t</span>ch</div>
+      <p class="tagline">Own your Claude conversations.</p>
+    </header>
+
+    <section class="hero">
+      <p>A local-first, channel-based interface for managing all your Claude AI interactions. Your data, your prompts, your machine.</p>
+      <div class="cta-group">
+        <a href="https://github.com/Design-in-Product/klatch" class="btn btn-primary">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+          View on GitHub
+        </a>
+        <a href="#quickstart" class="btn btn-secondary">Quick Start</a>
+      </div>
+    </section>
+
+    <section class="features">
+      <h2>What Klatch does today</h2>
+      <div class="feature-grid">
+        <div class="feature">
+          <h3>Channel-based conversations</h3>
+          <p>Named channels with custom system prompts. Each channel is a different Claude persona with its own identity.</p>
+        </div>
+        <div class="feature">
+          <h3>Streaming responses</h3>
+          <p>Token-by-token streaming via SSE. Stop generation, regenerate, or delete messages mid-conversation.</p>
+        </div>
+        <div class="feature">
+          <h3>Per-channel model selection</h3>
+          <p>Opus for deep work, Sonnet for speed, Haiku for quick tasks. Choose the right model for each role.</p>
+        </div>
+        <div class="feature">
+          <h3>Local-first, own your data</h3>
+          <p>Everything lives in a SQLite file on your machine. No cloud storage, no subscriptions, no vendor lock-in.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="insight">
+      <blockquote>Claude is not one assistant. It's a cast of characters you direct. Klatch is the stage.</blockquote>
+    </section>
+
+    <section id="quickstart" class="quickstart">
+      <div class="quickstart-header">Quick Start</div>
+      <pre><span class="cmd">git clone</span> git@github.com:Design-in-Product/klatch.git
+<span class="cmd">cd</span> klatch
+<span class="cmd">echo</span> 'ANTHROPIC_API_KEY=your-key-here' > .env
+<span class="cmd">npm install</span>
+<span class="cmd">npm run dev</span>
+<span class="comment"># Server on :3001, client on :5173</span></pre>
+    </section>
+
+    <section class="roadmap">
+      <h2>Roadmap</h2>
+      <ul class="step-list">
+        <li class="step step-done">
+          <div class="step-dot">&#10003;</div>
+          <div class="step-content">
+            <h3>Persistent conversations</h3>
+            <p>SQLite-backed chat with streaming Claude responses</p>
+          </div>
+        </li>
+        <li class="step step-done">
+          <div class="step-dot">&#10003;</div>
+          <div class="step-content">
+            <h3>Multiple channels</h3>
+            <p>Named channels with independent histories and system prompts</p>
+          </div>
+        </li>
+        <li class="step step-done">
+          <div class="step-dot">&#10003;</div>
+          <div class="step-content">
+            <h3>Readable responses</h3>
+            <p>Markdown, syntax-highlighted code blocks, formatted text</p>
+          </div>
+        </li>
+        <li class="step step-done">
+          <div class="step-dot">&#10003;</div>
+          <div class="step-content">
+            <h3>Conversation control</h3>
+            <p>Clear, stop, regenerate, delete — editorial control over the flow</p>
+          </div>
+        </li>
+        <li class="step step-done">
+          <div class="step-dot">&#10003;</div>
+          <div class="step-content">
+            <h3>Channel identity</h3>
+            <p>Editable names, system prompts, and per-channel model selection</p>
+          </div>
+        </li>
+        <li class="step step-next">
+          <div class="step-dot">6</div>
+          <div class="step-content">
+            <h3>Multi-entity conversations</h3>
+            <p>Multiple Claude personas in one channel — the first thing Klatch can do that claude.ai can't</p>
+          </div>
+        </li>
+        <li class="step step-future">
+          <div class="step-dot">7</div>
+          <div class="step-content">
+            <h3>Interaction modes</h3>
+            <p>Panel, roundtable, and directed modes for orchestrating multi-voice conversations</p>
+          </div>
+        </li>
+        <li class="step step-future">
+          <div class="step-dot">8</div>
+          <div class="step-content">
+            <h3>Import and unify</h3>
+            <p>Bring in Claude Code sessions and claude.ai conversations</p>
+          </div>
+        </li>
+        <li class="step step-future">
+          <div class="step-dot">9</div>
+          <div class="step-content">
+            <h3>Search and recall</h3>
+            <p>Full-text search, export, command palette, bookmarks</p>
+          </div>
+        </li>
+      </ul>
+    </section>
+
+    <section class="stack">
+      <h2>Built with</h2>
+      <div class="stack-grid">
+        <span class="stack-tag">React 19</span>
+        <span class="stack-tag">Vite</span>
+        <span class="stack-tag">Hono</span>
+        <span class="stack-tag">SQLite</span>
+        <span class="stack-tag">Tailwind CSS v4</span>
+        <span class="stack-tag">Anthropic SDK</span>
+        <span class="stack-tag">TypeScript</span>
+        <span class="stack-tag">SSE Streaming</span>
+      </div>
+    </section>
+
+    <section class="built-with">
+      <p>Klatch is a collaborative project between a human product designer (<a href="https://github.com/mediajunkie">mediajunkie</a>) and Claude. The human drives product direction and design values. Claude writes the code.</p>
+    </section>
+
+    <footer>
+      <p>MIT License &middot; <a href="https://github.com/Design-in-Product/klatch">GitHub</a></p>
+    </footer>
+
+  </div>
+
+</body>
+</html>
