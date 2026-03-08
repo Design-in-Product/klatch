@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <!--
+    Klatch "K-Channel" Logo — Final
+
+    A lettermark K where the diagonal arms are constructed from
+    rounded bars that also read as channel list items branching
+    from a sidebar spine. A notification dot adds life.
+
+    The K is built from:
+    1. A vertical bar (sidebar spine / K stem)
+    2. An upper-right diagonal bar (K arm, reads as channel item)
+    3. A lower-right diagonal bar (K leg, reads as channel item)
+    4. A notification dot (activity / unread indicator)
+  -->
+
+  <!-- K stem — vertical sidebar spine -->
+  <rect x="10" y="8" width="8.5" height="48" rx="4.25" ry="4.25" fill="currentColor"/>
+
+  <!-- K upper arm — diagonal bar going up-right from center -->
+  <rect
+    x="18.5" y="28"
+    width="24" height="8"
+    rx="4" ry="4"
+    fill="currentColor"
+    transform="rotate(-40, 18.5, 32)"
+  />
+
+  <!-- K lower leg — diagonal bar going down-right from center -->
+  <rect
+    x="18.5" y="28"
+    width="26" height="8"
+    rx="4" ry="4"
+    fill="currentColor"
+    transform="rotate(40, 18.5, 32)"
+  />
+
+  <!-- Notification dot — coral accent, top-right quadrant -->
+  <circle cx="50.5" cy="12" r="5" fill="#EF4444"/>
+</svg>

@@ -1,4 +1,4 @@
-import type { Channel, Message } from '@klatch/shared';
+import type { Channel, Message, ModelId } from '@klatch/shared';
 
 const BASE = '/api';
 
@@ -10,14 +10,28 @@ export async function fetchChannels(): Promise<Channel[]> {
 
 export async function createChannel(
   name: string,
-  systemPrompt?: string
+  systemPrompt?: string,
+  model?: ModelId
 ): Promise<Channel> {
   const res = await fetch(`${BASE}/channels`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ name, systemPrompt }),
+    body: JSON.stringify({ name, systemPrompt, model }),
   });
   if (!res.ok) throw new Error(`Failed to create channel: ${res.statusText}`);
+  return res.json();
+}
+
+export async function updateChannelApi(
+  id: string,
+  updates: { name?: string; systemPrompt?: string; model?: ModelId }
+): Promise<Channel> {
+  const res = await fetch(`${BASE}/channels/${id}`, {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(updates),
+  });
+  if (!res.ok) throw new Error(`Failed to update channel: ${res.statusText}`);
   return res.json();
 }
 
@@ -30,7 +44,7 @@ export async function fetchMessages(channelId: string): Promise<Message[]> {
 export async function sendMessage(
   channelId: string,
   content: string
-): Promise<{ userMessageId: string; assistantMessageId: string }> {
+): Promise<{ userMessageId: string; assistantMessageId: string; model?: ModelId }> {
   const res = await fetch(`${BASE}/channels/${channelId}/messages`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -64,7 +78,7 @@ export async function stopGeneration(messageId: string): Promise<void> {
 
 export async function regenerateLastResponse(
   channelId: string
-): Promise<{ assistantMessageId: string }> {
+): Promise<{ assistantMessageId: string; model?: ModelId }> {
   const res = await fetch(`${BASE}/channels/${channelId}/regenerate`, {
     method: 'POST',
   });

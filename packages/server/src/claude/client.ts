@@ -1,6 +1,7 @@
 import Anthropic from '@anthropic-ai/sdk';
 import { EventEmitter } from 'events';
 import { getChannel, getMessages, updateMessage } from '../db/queries.js';
+import { DEFAULT_MODEL } from '@klatch/shared';
 
 const anthropic = new Anthropic();
 
@@ -36,8 +37,9 @@ export async function streamClaude(channelId: string, assistantMessageId: string
   let fullContent = '';
 
   try {
+    const model = channel.model || DEFAULT_MODEL;
     const stream = anthropic.messages.stream({
-      model: 'claude-opus-4-20250514',
+      model,
       max_tokens: 4096,
       system: channel.systemPrompt,
       messages: history,

@@ -1,0 +1,54 @@
+interface KlatchLogoProps {
+  size?: number;
+  color?: string;
+  dotColor?: string;
+  className?: string;
+}
+
+export function KlatchLogo({
+  size = 64,
+  color = "currentColor",
+  dotColor = "#EF4444",
+  className,
+}: KlatchLogoProps) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 64 64"
+      width={size}
+      height={size}
+      className={className}
+      aria-label="Klatch logo"
+    >
+      {/* K stem — vertical sidebar spine */}
+      <rect x="10" y="8" width="8.5" height="48" rx="4.25" ry="4.25" fill={color} />
+
+      {/* K upper arm — diagonal bar */}
+      <rect
+        x="18.5"
+        y="28"
+        width="24"
+        height="8"
+        rx="4"
+        ry="4"
+        fill={color}
+        transform="rotate(-40, 18.5, 32)"
+      />
+
+      {/* K lower leg — diagonal bar */}
+      <rect
+        x="18.5"
+        y="28"
+        width="26"
+        height="8"
+        rx="4"
+        ry="4"
+        fill={color}
+        transform="rotate(40, 18.5, 32)"
+      />
+
+      {/* Notification dot */}
+      <circle cx="50.5" cy="12" r="5" fill={dotColor} />
+    </svg>
+  );
+}

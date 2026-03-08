@@ -1,20 +1,28 @@
 import React, { useEffect, useRef } from 'react';
-import type { Message } from '@klatch/shared';
+import type { Message, ModelId } from '@klatch/shared';
+import { AVAILABLE_MODELS } from '@klatch/shared';
 import { MarkdownContent } from './MarkdownContent';
 
 interface Props {
   messages: Message[];
   streamingContent: string;
   streamingMessageId: string | null;
+  streamingModel?: ModelId;
   onDeleteMessage?: (id: string) => void;
   onRegenerateMessage?: (id: string) => void;
   isStreaming?: boolean;
+}
+
+function modelLabel(modelId?: ModelId): string | undefined {
+  if (!modelId) return undefined;
+  return AVAILABLE_MODELS[modelId]?.label;
 }
 
 export function MessageList({
   messages,
   streamingContent,
   streamingMessageId,
+  streamingModel,
   onDeleteMessage,
   onRegenerateMessage,
   isStreaming,
@@ -30,6 +38,9 @@ export function MessageList({
     .reverse()
     .find((m) => m.role === 'assistant')?.id;
 
+  // Detect model changes for inline markers
+  let prevModel: ModelId | undefined;
+
   return (
     <div className="flex-1 overflow-y-auto px-6 py-4 space-y-4">
       {messages.length === 0 && (
@@ -38,20 +49,42 @@ export function MessageList({
           <p className="text-sm mt-1">Send a message to begin.</p>
         </div>
       )}
-      {messages.map((msg) => (
-        <MessageBubble
-          key={msg.id}
-          message={msg}
-          streamingContent={msg.id === streamingMessageId ? streamingContent : undefined}
-          onDelete={onDeleteMessage ? () => onDeleteMessage(msg.id) : undefined}
-          onRegenerate={
-            onRegenerateMessage && msg.id === lastAssistantId && !isStreaming
-              ? () => onRegenerateMessage(msg.id)
-              : undefined
+      {messages.map((msg) => {
+        // Show model change marker when an assistant message uses a different model than the previous one
+        let showModelChange = false;
+        if (msg.role === 'assistant' && msg.model) {
+          if (prevModel && msg.model !== prevModel) {
+            showModelChange = true;
           }
-          isStreaming={msg.id === streamingMessageId}
-        />
-      ))}
+          prevModel = msg.model;
+        }
+
+        return (
+          <React.Fragment key={msg.id}>
+            {showModelChange && (
+              <div className="flex items-center gap-3 py-1">
+                <div className="flex-1 border-t border-gray-700/50" />
+                <span className="text-xs text-gray-500">
+                  Model changed to {modelLabel(msg.model) || msg.model}
+                </span>
+                <div className="flex-1 border-t border-gray-700/50" />
+              </div>
+            )}
+            <MessageBubble
+              message={msg}
+              streamingContent={msg.id === streamingMessageId ? streamingContent : undefined}
+              streamingModel={msg.id === streamingMessageId ? streamingModel : undefined}
+              onDelete={onDeleteMessage ? () => onDeleteMessage(msg.id) : undefined}
+              onRegenerate={
+                onRegenerateMessage && msg.id === lastAssistantId && !isStreaming
+                  ? () => onRegenerateMessage(msg.id)
+                  : undefined
+              }
+              isStreaming={msg.id === streamingMessageId}
+            />
+          </React.Fragment>
+        );
+      })}
       <div ref={bottomRef} />
     </div>
   );
@@ -60,12 +93,14 @@ export function MessageList({
 function MessageBubble({
   message,
   streamingContent,
+  streamingModel,
   onDelete,
   onRegenerate,
   isStreaming: isBubbleStreaming,
 }: {
   message: Message;
   streamingContent?: string;
+  streamingModel?: ModelId;
   onDelete?: () => void;
   onRegenerate?: () => void;
   isStreaming?: boolean;
@@ -74,6 +109,10 @@ function MessageBubble({
   const displayContent = streamingContent ?? message.content;
   const isStreaming = message.status === 'streaming' && !streamingContent;
   const hasActions = !isBubbleStreaming && (onDelete || onRegenerate);
+
+  // Model label for assistant messages
+  const msgModel = message.model || streamingModel;
+  const msgModelLabel = !isUser ? modelLabel(msgModel) : undefined;
 
   return (
     <div className={`group flex ${isUser ? 'justify-end' : 'justify-start'}`}>
@@ -84,8 +123,13 @@ function MessageBubble({
             : 'bg-gray-800 text-gray-100 border border-gray-700'
         }`}
       >
-        <div className="text-xs font-medium mb-1 opacity-60">
-          {isUser ? 'You' : 'Claude'}
+        <div className="flex items-center gap-2 text-xs font-medium mb-1 opacity-60">
+          <span>{isUser ? 'You' : 'Claude'}</span>
+          {msgModelLabel && (
+            <span className="text-[10px] px-1.5 py-0.5 rounded bg-white/10" title={msgModel}>
+              {msgModelLabel}
+            </span>
+          )}
         </div>
         <div className="break-words text-sm leading-relaxed">
           {isUser ? (

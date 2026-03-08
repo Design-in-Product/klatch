@@ -3,6 +3,7 @@ import { streamSSE } from 'hono/streaming';
 import {
   getMessages,
   getMessage,
+  getChannel,
   insertMessage,
   deleteMessage,
   deleteAllMessages,
@@ -25,13 +26,16 @@ app.post('/channels/:channelId/messages', async (c) => {
   const channelId = c.req.param('channelId');
   const { content } = await c.req.json<{ content: string }>();
 
+  const channel = getChannel(channelId);
+  const model = channel?.model;
+
   const userMsg = insertMessage(channelId, 'user', content, 'complete');
-  const assistantMsg = insertMessage(channelId, 'assistant', '', 'streaming');
+  const assistantMsg = insertMessage(channelId, 'assistant', '', 'streaming', model);
 
   // Fire off Claude streaming in background (don't await)
   streamClaude(channelId, assistantMsg.id);
 
-  return c.json({ userMessageId: userMsg.id, assistantMessageId: assistantMsg.id });
+  return c.json({ userMessageId: userMsg.id, assistantMessageId: assistantMsg.id, model });
 });
 
 // Clear all messages in a channel
@@ -73,11 +77,13 @@ app.post('/channels/:channelId/regenerate', async (c) => {
   // Delete the old assistant message
   deleteMessage(lastAssistant.id);
 
-  // Create a new placeholder and kick off streaming
-  const assistantMsg = insertMessage(channelId, 'assistant', '', 'streaming');
+  // Create a new placeholder with current channel model and kick off streaming
+  const channel = getChannel(channelId);
+  const model = channel?.model;
+  const assistantMsg = insertMessage(channelId, 'assistant', '', 'streaming', model);
   streamClaude(channelId, assistantMsg.id);
 
-  return c.json({ assistantMessageId: assistantMsg.id });
+  return c.json({ assistantMessageId: assistantMsg.id, model });
 });
 
 // SSE endpoint to observe a streaming message

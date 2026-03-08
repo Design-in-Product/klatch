@@ -1,6 +1,8 @@
 import React, { useState, useCallback, useEffect, useRef } from 'react';
-import type { Channel } from '@klatch/shared';
+import type { Channel, ModelId } from '@klatch/shared';
+import { AVAILABLE_MODELS } from '@klatch/shared';
 import { ChannelSidebar } from './components/ChannelSidebar';
+import { ChannelSettings } from './components/ChannelSettings';
 import { MessageList } from './components/MessageList';
 import { MessageInput } from './components/MessageInput';
 import { useMessages } from './hooks/useMessages';
@@ -9,6 +11,7 @@ import {
   sendMessage,
   fetchChannels,
   createChannel,
+  updateChannelApi,
   clearChannelHistory,
   deleteMessageApi,
   stopGeneration,
@@ -21,6 +24,8 @@ export default function App() {
   const { messages, addMessage, updateMessage, removeMessage, clearMessages, refresh } =
     useMessages(activeChannelId);
   const [streamingMessageId, setStreamingMessageId] = useState<string | null>(null);
+  const [streamingModel, setStreamingModel] = useState<ModelId | undefined>();
+  const [showSettings, setShowSettings] = useState(false);
 
   // Load channels on mount
   useEffect(() => {
@@ -34,6 +39,7 @@ export default function App() {
       if (streamingMessageId) {
         updateMessage(streamingMessageId, { content, status: 'complete' });
         setStreamingMessageId(null);
+        setStreamingModel(undefined);
       }
     },
     [streamingMessageId, updateMessage]
@@ -44,6 +50,7 @@ export default function App() {
       if (streamingMessageId) {
         updateMessage(streamingMessageId, { content, status: 'error' });
         setStreamingMessageId(null);
+        setStreamingModel(undefined);
       }
     },
     [streamingMessageId, updateMessage]
@@ -57,7 +64,7 @@ export default function App() {
 
   const handleSend = async (content: string) => {
     try {
-      const { userMessageId, assistantMessageId } = await sendMessage(
+      const { userMessageId, assistantMessageId, model } = await sendMessage(
         activeChannelId,
         content
       );
@@ -77,10 +84,12 @@ export default function App() {
         role: 'assistant',
         content: '',
         status: 'streaming',
+        model,
         createdAt: new Date().toISOString(),
       });
 
       setStreamingMessageId(assistantMessageId);
+      setStreamingModel(model);
     } catch (err) {
       console.error('Failed to send message:', err);
     }
@@ -93,7 +102,6 @@ export default function App() {
     } catch (err) {
       console.error('Failed to stop generation:', err);
     }
-    // The stream will complete on its own via the SSE events
   };
 
   const [confirmingClear, setConfirmingClear] = useState(false);
@@ -101,13 +109,10 @@ export default function App() {
 
   const handleClearHistory = () => {
     if (!confirmingClear) {
-      // First click: show confirmation
       setConfirmingClear(true);
-      // Auto-dismiss after 3 seconds
       clearTimeoutRef.current = setTimeout(() => setConfirmingClear(false), 3000);
       return;
     }
-    // Second click: actually clear
     clearTimeout(clearTimeoutRef.current);
     setConfirmingClear(false);
     (async () => {
@@ -131,9 +136,8 @@ export default function App() {
 
   const handleRegenerate = async () => {
     try {
-      const { assistantMessageId } = await regenerateLastResponse(activeChannelId);
+      const { assistantMessageId, model } = await regenerateLastResponse(activeChannelId);
 
-      // Remove the old last assistant message from local state
       const lastAssistantIdx = [...messages]
         .reverse()
         .findIndex((m) => m.role === 'assistant');
@@ -142,17 +146,18 @@ export default function App() {
         removeMessage(messages[actualIdx].id);
       }
 
-      // Add the new streaming placeholder
       addMessage({
         id: assistantMessageId,
         channelId: activeChannelId,
         role: 'assistant',
         content: '',
         status: 'streaming',
+        model,
         createdAt: new Date().toISOString(),
       });
 
       setStreamingMessageId(assistantMessageId);
+      setStreamingModel(model);
     } catch (err) {
       console.error('Failed to regenerate:', err);
     }
@@ -161,7 +166,9 @@ export default function App() {
   const handleSelectChannel = (id: string) => {
     if (id === activeChannelId) return;
     setStreamingMessageId(null);
+    setStreamingModel(undefined);
     setConfirmingClear(false);
+    setShowSettings(false);
     setActiveChannelId(id);
   };
 
@@ -174,6 +181,22 @@ export default function App() {
       console.error('Failed to create channel:', err);
     }
   };
+
+  const handleUpdateChannel = async (updates: { name?: string; systemPrompt?: string; model?: ModelId }) => {
+    try {
+      const updated = await updateChannelApi(activeChannelId, updates);
+      setChannels((prev) =>
+        prev.map((c) => (c.id === activeChannelId ? updated : c))
+      );
+    } catch (err) {
+      console.error('Failed to update channel:', err);
+    }
+  };
+
+  // Model label for the header
+  const activeModelLabel = activeChannel
+    ? AVAILABLE_MODELS[activeChannel.model]?.label || activeChannel.model
+    : undefined;
 
   return (
     <div className="h-full flex bg-[#16213e]">
@@ -189,16 +212,30 @@ export default function App() {
       <div className="flex-1 flex flex-col min-w-0">
         {/* Header */}
         <div className="border-b border-gray-700 px-6 py-3 bg-[#0f3460] flex items-center justify-between">
-          <div className="min-w-0">
-            <h1 className="text-lg font-semibold text-gray-100">
-              # {activeChannel?.name ?? 'general'}
-            </h1>
+          <button
+            onClick={() => setShowSettings(!showSettings)}
+            className="min-w-0 text-left hover:opacity-80 transition-opacity"
+            title="Edit channel settings"
+          >
+            <div className="flex items-center gap-2">
+              <h1 className="text-lg font-semibold text-gray-100">
+                # {activeChannel?.name ?? 'general'}
+              </h1>
+              {activeModelLabel && (
+                <span className="text-[10px] px-1.5 py-0.5 rounded bg-white/10 text-gray-400 font-medium">
+                  {activeModelLabel}
+                </span>
+              )}
+              <svg className={`w-4 h-4 text-gray-500 transition-transform ${showSettings ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+              </svg>
+            </div>
             {activeChannel?.systemPrompt && (
               <p className="text-xs text-gray-400 truncate">
                 {activeChannel.systemPrompt}
               </p>
             )}
-          </div>
+          </button>
           {messages.length > 0 && !isStreaming && (
             <button
               onClick={handleClearHistory}
@@ -217,11 +254,21 @@ export default function App() {
           )}
         </div>
 
+        {/* Settings panel (toggle) */}
+        {showSettings && activeChannel && (
+          <ChannelSettings
+            channel={activeChannel}
+            onSave={handleUpdateChannel}
+            onClose={() => setShowSettings(false)}
+          />
+        )}
+
         {/* Messages */}
         <MessageList
           messages={messages}
           streamingContent={streamingContent}
           streamingMessageId={streamingMessageId}
+          streamingModel={streamingModel}
           onDeleteMessage={handleDeleteMessage}
           onRegenerateMessage={handleRegenerate}
           isStreaming={isStreaming}
