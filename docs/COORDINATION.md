@@ -32,6 +32,10 @@ Use these status values:
 - **blocked** — need something before I can continue (describe in Notes)
 - **review** — work is pushed, requesting review before merge
 
+## Branch discipline
+
+All in-progress work happens on feature branches. `main` must always be demo-ready — tests pass, app runs, no half-finished features. Only merge to `main` when the feature is complete and verified. This lets anyone check out `main` at any time for a clean demo or to base new work on a stable snapshot.
+
 ## Protocol
 
 - Read this file at session start
