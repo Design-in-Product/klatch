@@ -51,6 +51,59 @@ export async function fetchChannelEntities(channelId: string): Promise<Entity[]>
   return res.json();
 }
 
+export async function createEntity(data: {
+  name: string;
+  model?: ModelId;
+  systemPrompt?: string;
+  color?: string;
+}): Promise<Entity> {
+  const res = await fetch(`${BASE}/entities`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data),
+  });
+  if (!res.ok) throw new Error(`Failed to create entity: ${res.statusText}`);
+  return res.json();
+}
+
+export async function updateEntity(
+  id: string,
+  updates: { name?: string; model?: ModelId; systemPrompt?: string; color?: string }
+): Promise<Entity> {
+  const res = await fetch(`${BASE}/entities/${id}`, {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(updates),
+  });
+  if (!res.ok) throw new Error(`Failed to update entity: ${res.statusText}`);
+  return res.json();
+}
+
+export async function deleteEntity(id: string): Promise<void> {
+  const res = await fetch(`${BASE}/entities/${id}`, {
+    method: 'DELETE',
+  });
+  if (!res.ok) throw new Error(`Failed to delete entity: ${res.statusText}`);
+}
+
+export async function assignEntityToChannel(channelId: string, entityId: string): Promise<Entity[]> {
+  const res = await fetch(`${BASE}/channels/${channelId}/entities`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ entityId }),
+  });
+  if (!res.ok) throw new Error(`Failed to assign entity: ${res.statusText}`);
+  return res.json();
+}
+
+export async function removeEntityFromChannel(channelId: string, entityId: string): Promise<Entity[]> {
+  const res = await fetch(`${BASE}/channels/${channelId}/entities/${entityId}`, {
+    method: 'DELETE',
+  });
+  if (!res.ok) throw new Error(`Failed to remove entity: ${res.statusText}`);
+  return res.json();
+}
+
 // ── Message API ──────────────────────────────────────────────
 
 export interface AssistantInfo {
