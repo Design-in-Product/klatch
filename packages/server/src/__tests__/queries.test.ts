@@ -217,19 +217,16 @@ describe('Message queries', () => {
   });
 
   it('getLastAssistantMessage returns most recent assistant msg', () => {
-    // Insert messages and verify the last assistant message by id
+    // Rapid insertion produces identical created_at values.
+    // The rowid tiebreaker in the query guarantees the last-inserted row wins.
     insertMessage('default', 'user', 'q1');
-    const a1 = insertMessage('default', 'assistant', 'a1');
+    insertMessage('default', 'assistant', 'a1');
     insertMessage('default', 'user', 'q2');
-    const a2 = insertMessage('default', 'assistant', 'a2');
+    insertMessage('default', 'assistant', 'a2');
 
     const last = getLastAssistantMessage('default');
     expect(last).toBeDefined();
-    // When timestamps collide (rapid insertion), rely on the fact that
-    // the last inserted row should be returned. If not, this is a known
-    // ordering issue with identical created_at values.
-    // For now, verify we get one of the assistant messages.
-    expect(['a1', 'a2']).toContain(last!.content);
+    expect(last!.content).toBe('a2');
     expect(last!.role).toBe('assistant');
   });
 

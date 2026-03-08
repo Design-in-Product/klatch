@@ -94,7 +94,7 @@ export function getMessage(id: string): Message | undefined {
 
 export function getMessages(channelId: string): Message[] {
   const rows = getDb()
-    .prepare('SELECT * FROM messages WHERE channel_id = ? ORDER BY created_at ASC')
+    .prepare('SELECT * FROM messages WHERE channel_id = ? ORDER BY created_at ASC, rowid ASC')
     .all(channelId) as any[];
   return rows.map(rowToMessage);
 }
@@ -167,7 +167,7 @@ export function deleteChannel(id: string): boolean {
 export function getLastAssistantMessage(channelId: string): Message | undefined {
   const row = getDb()
     .prepare(
-      'SELECT * FROM messages WHERE channel_id = ? AND role = ? ORDER BY created_at DESC LIMIT 1'
+      'SELECT * FROM messages WHERE channel_id = ? AND role = ? ORDER BY created_at DESC, rowid DESC LIMIT 1'
     )
     .get(channelId, 'assistant') as any;
   if (!row) return undefined;
