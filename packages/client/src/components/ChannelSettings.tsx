@@ -99,7 +99,7 @@ export function ChannelSettings({
             {(Object.entries(INTERACTION_MODES) as [InteractionMode, { label: string; description: string }][]).map(
               ([modeKey, { label, description }]) => {
                 const isActive = channel.mode === modeKey;
-                const isDisabled = modeKey !== 'panel'; // Only panel is implemented
+                const isDisabled = modeKey === 'directed'; // Directed not yet implemented
                 return (
                   <button
                     key={modeKey}

@@ -10,7 +10,7 @@ import {
   deleteAllMessages,
   getLastAssistantMessage,
 } from '../db/queries.js';
-import { streamClaude, activeStreams, abortStream } from '../claude/client.js';
+import { streamClaude, streamClaudeRoundtable, activeStreams, abortStream } from '../claude/client.js';
 import type { StreamEvent, Entity } from '@klatch/shared';
 import { getDb } from '../db/index.js';
 
@@ -51,7 +51,29 @@ app.post('/channels/:channelId/messages', async (c) => {
   // Directed: @-mention routes to a specific entity (Step 7d)
 
   if (channel.mode === 'roundtable') {
-    return c.json({ error: 'Roundtable mode is not yet implemented' }, 501);
+    // Roundtable: create placeholders, then stream sequentially
+    const db = getDb();
+    const txn = db.transaction(() => {
+      const userMsg = insertMessage(channelId, 'user', content.trim(), 'complete');
+      const assistants = entities.map((entity) => {
+        const msg = insertMessage(channelId, 'assistant', '', 'streaming', entity.model, entity.id);
+        return { assistantMessageId: msg.id, entityId: entity.id, model: entity.model };
+      });
+      return { userMsg, assistants };
+    });
+    const { userMsg, assistants } = txn();
+
+    // Fire sequential roundtable orchestration (don't await — runs in background)
+    streamClaudeRoundtable(
+      channelId,
+      assistants.map((a) => ({
+        assistantMessageId: a.assistantMessageId,
+        entity: entities.find((e) => e.id === a.entityId)!,
+      })),
+      channel.systemPrompt
+    );
+
+    return c.json({ userMessageId: userMsg.id, assistants });
   }
 
   if (channel.mode === 'directed') {
