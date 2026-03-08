@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useCallback } from 'react';
 import type { Message, Entity, ModelId } from '@klatch/shared';
 import { AVAILABLE_MODELS } from '@klatch/shared';
 import { MarkdownContent } from './MarkdownContent';
@@ -31,20 +31,35 @@ export function MessageList({
   theme,
 }: Props) {
   const bottomRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const userScrolledUp = useRef(false);
 
   // Build entity lookup map
   const entityMap = new Map(channelEntities.map((e) => [e.id, e]));
 
-  // Auto-scroll on new messages or streaming content
+  // Detect when user scrolls away from bottom
+  const handleScroll = useCallback(() => {
+    const el = containerRef.current;
+    if (!el) return;
+    // "Near bottom" = within 80px of the bottom edge
+    const atBottom = el.scrollHeight - el.scrollTop - el.clientHeight < 80;
+    userScrolledUp.current = !atBottom;
+  }, []);
+
+  // Auto-scroll on new messages (only if user hasn't scrolled up)
   useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
+    if (!userScrolledUp.current) {
+      bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
+    }
   }, [messages]);
 
-  // Also scroll during streaming
+  // Also scroll during streaming (only if user hasn't scrolled up)
   useEffect(() => {
     if (isStreaming) {
       const interval = setInterval(() => {
-        bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
+        if (!userScrolledUp.current) {
+          bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
+        }
       }, 300);
       return () => clearInterval(interval);
     }
@@ -56,7 +71,7 @@ export function MessageList({
     .find((m) => m.role === 'assistant')?.id;
 
   return (
-    <div className="flex-1 overflow-y-auto px-3 md:px-6 py-4 space-y-4">
+    <div ref={containerRef} onScroll={handleScroll} className="flex-1 overflow-y-auto px-3 md:px-6 py-4 space-y-4">
       {messages.length === 0 && (
         <div className="text-center mt-20 flex flex-col items-center gap-3">
           <KlatchLogo size={48} className="text-faint" />
