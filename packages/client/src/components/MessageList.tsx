@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import type { Message, ModelId } from '@klatch/shared';
 import { AVAILABLE_MODELS } from '@klatch/shared';
 import { MarkdownContent } from './MarkdownContent';
+import { KlatchLogo } from './KlatchLogo';
 
 interface Props {
   messages: Message[];
@@ -11,6 +12,7 @@ interface Props {
   onDeleteMessage?: (id: string) => void;
   onRegenerateMessage?: (id: string) => void;
   isStreaming?: boolean;
+  theme?: 'light' | 'dark';
 }
 
 function modelLabel(modelId?: ModelId): string | undefined {
@@ -26,6 +28,7 @@ export function MessageList({
   onDeleteMessage,
   onRegenerateMessage,
   isStreaming,
+  theme,
 }: Props) {
   const bottomRef = useRef<HTMLDivElement>(null);
 
@@ -42,11 +45,12 @@ export function MessageList({
   let prevModel: ModelId | undefined;
 
   return (
-    <div className="flex-1 overflow-y-auto px-6 py-4 space-y-4">
+    <div className="flex-1 overflow-y-auto px-3 md:px-6 py-4 space-y-4">
       {messages.length === 0 && (
-        <div className="text-center text-gray-500 mt-20">
-          <p className="text-lg">Start a conversation</p>
-          <p className="text-sm mt-1">Send a message to begin.</p>
+        <div className="text-center mt-20 flex flex-col items-center gap-3">
+          <KlatchLogo size={48} className="text-faint" />
+          <p className="text-lg text-muted">Start a conversation</p>
+          <p className="text-sm text-faint">Send a message to begin.</p>
         </div>
       )}
       {messages.map((msg) => {
@@ -63,11 +67,11 @@ export function MessageList({
           <React.Fragment key={msg.id}>
             {showModelChange && (
               <div className="flex items-center gap-3 py-1">
-                <div className="flex-1 border-t border-gray-700/50" />
-                <span className="text-xs text-gray-500">
+                <div className="flex-1 border-t border-line" />
+                <span className="text-xs text-muted">
                   Model changed to {modelLabel(msg.model) || msg.model}
                 </span>
-                <div className="flex-1 border-t border-gray-700/50" />
+                <div className="flex-1 border-t border-line" />
               </div>
             )}
             <MessageBubble
@@ -81,6 +85,7 @@ export function MessageList({
                   : undefined
               }
               isStreaming={msg.id === streamingMessageId}
+              theme={theme}
             />
           </React.Fragment>
         );
@@ -97,6 +102,7 @@ function MessageBubble({
   onDelete,
   onRegenerate,
   isStreaming: isBubbleStreaming,
+  theme,
 }: {
   message: Message;
   streamingContent?: string;
@@ -104,6 +110,7 @@ function MessageBubble({
   onDelete?: () => void;
   onRegenerate?: () => void;
   isStreaming?: boolean;
+  theme?: 'light' | 'dark';
 }) {
   const isUser = message.role === 'user';
   const displayContent = streamingContent ?? message.content;
@@ -117,16 +124,16 @@ function MessageBubble({
   return (
     <div className={`group flex ${isUser ? 'justify-end' : 'justify-start'}`}>
       <div
-        className={`max-w-[75%] rounded-lg px-4 py-2.5 ${
+        className={`max-w-[90%] md:max-w-[75%] rounded-lg px-3 md:px-4 py-2.5 ${
           isUser
-            ? 'bg-indigo-600 text-white'
-            : 'bg-gray-800 text-gray-100 border border-gray-700'
+            ? 'bg-accent text-white'
+            : 'bg-card text-primary border border-line'
         }`}
       >
         <div className="flex items-center gap-2 text-xs font-medium mb-1 opacity-60">
           <span>{isUser ? 'You' : 'Claude'}</span>
           {msgModelLabel && (
-            <span className="text-[10px] px-1.5 py-0.5 rounded bg-white/10" title={msgModel}>
+            <span className="text-[10px] px-1.5 py-0.5 rounded bg-badge" title={msgModel}>
               {msgModelLabel}
             </span>
           )}
@@ -135,23 +142,23 @@ function MessageBubble({
           {isUser ? (
             <div className="whitespace-pre-wrap">{displayContent}</div>
           ) : displayContent ? (
-            <MarkdownContent content={displayContent} />
+            <MarkdownContent content={displayContent} theme={theme} />
           ) : isStreaming ? (
-            <span className="text-gray-500">...</span>
+            <span className="text-muted">...</span>
           ) : null}
         </div>
         {message.status === 'error' && (
-          <div className="text-xs text-red-400 mt-1">Error generating response</div>
+          <div className="text-xs text-danger mt-1">Error generating response</div>
         )}
 
-        {/* Action buttons — inside the bubble, visible on hover */}
+        {/* Action buttons — inside the bubble, visible on hover (always visible on mobile) */}
         {hasActions && (
-          <div className="flex items-center gap-2 mt-2 pt-1.5 border-t border-white/10 opacity-0 group-hover:opacity-100 transition-opacity">
+          <div className="flex items-center gap-2 mt-2 pt-1.5 border-t border-line opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity">
             {onRegenerate && (
               <button
                 onClick={onRegenerate}
                 title="Regenerate response"
-                className="flex items-center gap-1 rounded px-1.5 py-0.5 text-xs text-gray-400 hover:text-gray-200 hover:bg-white/10 transition-colors"
+                className="flex items-center gap-1 rounded px-1.5 py-0.5 text-xs text-muted hover:text-primary hover:bg-hover transition-colors"
               >
                 <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
@@ -163,7 +170,7 @@ function MessageBubble({
               <button
                 onClick={onDelete}
                 title="Delete message"
-                className="flex items-center gap-1 rounded px-1.5 py-0.5 text-xs text-gray-400 hover:text-red-400 hover:bg-white/10 transition-colors"
+                className="flex items-center gap-1 rounded px-1.5 py-0.5 text-xs text-muted hover:text-danger hover:bg-hover transition-colors"
               >
                 <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />

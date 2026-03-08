@@ -1,12 +1,97 @@
 @import "tailwindcss";
 
+@theme {
+  /* Surface colors */
+  --color-app: var(--c-app);
+  --color-sidebar: var(--c-sidebar);
+  --color-header: var(--c-header);
+  --color-panel: var(--c-panel);
+  --color-card: var(--c-card);
+  --color-input: var(--c-input);
+
+  /* Border colors */
+  --color-line: var(--c-line);
+  --color-line-strong: var(--c-line-strong);
+
+  /* Text colors */
+  --color-primary: var(--c-primary);
+  --color-secondary: var(--c-secondary);
+  --color-muted: var(--c-muted);
+  --color-faint: var(--c-faint);
+
+  /* Semantic surfaces */
+  --color-code-bg: var(--c-code-bg);
+  --color-active-channel: var(--c-active-channel);
+  --color-hover: var(--c-hover);
+  --color-badge: var(--c-badge);
+
+  /* Accent — consistent across themes */
+  --color-accent: #6366f1;
+  --color-accent-hover: #818cf8;
+  --color-accent-subtle: var(--c-accent-subtle);
+  --color-danger: #ef4444;
+  --color-danger-hover: #dc2626;
+}
+
+/* ===== Light theme (default) ===== */
+:root {
+  --c-app: #f8fafc;
+  --c-sidebar: #ffffff;
+  --c-header: #f1f5f9;
+  --c-panel: #f8fafc;
+  --c-card: #ffffff;
+  --c-input: #ffffff;
+
+  --c-line: #e2e8f0;
+  --c-line-strong: #cbd5e1;
+
+  --c-primary: #111827;
+  --c-secondary: #4b5563;
+  --c-muted: #9ca3af;
+  --c-faint: #d1d5db;
+
+  --c-code-bg: #f1f5f9;
+  --c-active-channel: #eef2ff;
+  --c-hover: rgba(0, 0, 0, 0.03);
+  --c-badge: rgba(0, 0, 0, 0.06);
+  --c-accent-subtle: #eef2ff;
+
+  color-scheme: light;
+}
+
+/* ===== Dark theme ===== */
+.dark {
+  --c-app: #16213e;
+  --c-sidebar: #0a1628;
+  --c-header: #0f3460;
+  --c-panel: #0d2847;
+  --c-card: #1f2937;
+  --c-input: #1f2937;
+
+  --c-line: #374151;
+  --c-line-strong: #1f2937;
+
+  --c-primary: #f3f4f6;
+  --c-secondary: #d1d5db;
+  --c-muted: #6b7280;
+  --c-faint: #4b5563;
+
+  --c-code-bg: #111827;
+  --c-active-channel: rgba(99, 102, 241, 0.13);
+  --c-hover: rgba(255, 255, 255, 0.05);
+  --c-badge: rgba(255, 255, 255, 0.1);
+  --c-accent-subtle: rgba(99, 102, 241, 0.2);
+
+  color-scheme: dark;
+}
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  background-color: #1a1a2e;
-  color: #e0e0e0;
+  background-color: var(--c-app);
+  color: var(--c-primary);
 }
 
 #root {
-  height: 100vh;
+  height: 100dvh;
 }

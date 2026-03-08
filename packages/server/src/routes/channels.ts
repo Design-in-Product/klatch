@@ -1,5 +1,5 @@
 import { Hono } from 'hono';
-import { getAllChannels, createChannel, updateChannel } from '../db/queries.js';
+import { getAllChannels, getChannel, createChannel, updateChannel, deleteChannel } from '../db/queries.js';
 import type { ModelId } from '@klatch/shared';
 import { AVAILABLE_MODELS } from '@klatch/shared';
 
@@ -56,6 +56,23 @@ app.patch('/channels/:id', async (c) => {
   }
 
   return c.json(updated);
+});
+
+app.delete('/channels/:id', (c) => {
+  const id = c.req.param('id');
+
+  // Prevent deleting the default channel
+  if (id === 'default') {
+    return c.json({ error: 'Cannot delete the default channel' }, 400);
+  }
+
+  const channel = getChannel(id);
+  if (!channel) {
+    return c.json({ error: 'Channel not found' }, 404);
+  }
+
+  deleteChannel(id);
+  return c.json({ deleted: true });
 });
 
 export { app as channelRoutes };

@@ -30,29 +30,23 @@ The key insight: Claude is not one assistant. It's a cast of characters you dire
 **Dimension: legibility.** Can Claude's responses render properly?
 - Markdown, syntax-highlighted code blocks, copy button, formatted text
 
+### Step 4: Conversation control ✓
+**Dimension: agency.** Can you shape and steer a conversation, not just append to it?
+- Clear channel history, stop generation mid-stream, regenerate last response, delete individual messages
+- Two-click confirmation for destructive actions
+
+### Step 5: Channel identity ✓
+**Dimension: role definition.** Can you fully configure what each channel *is*?
+- Edit channel name, system prompt after creation
+- Per-channel model selection (Opus, Sonnet, Haiku)
+- Channel settings panel (expandable from header)
+- Model change markers in conversation flow
+- v0.5.5: Responsive layout (mobile-first, collapsible sidebar drawer)
+- v0.5.6: Light/dark theme with semantic color tokens, K-Channel logo, landing page
+
 ---
 
 ## Next Steps (concrete, actionable)
-
-### Step 4: Conversation control
-**Dimension: agency.** Can you shape and steer a conversation, not just append to it?
-
-Right now conversations are append-only — you can't course-correct. This step gives you editorial control over the conversation flow, which is essential before channels become more complex.
-
-- Clear channel history (start fresh with the same role)
-- Stop generation mid-stream (abort and keep partial)
-- Regenerate last response (retry with same context)
-- Delete individual messages (prune the conversation)
-
-### Step 5: Channel identity
-**Dimension: role definition.** Can you fully configure what each channel *is*?
-
-Channels currently have a name and system prompt set at creation time. To use Klatch seriously as a role-based tool, you need to be able to evolve a channel's identity over time and choose the right model for each role.
-
-- Edit channel name, system prompt after creation
-- Per-channel model selection (Opus, Sonnet, Haiku)
-- Temperature and max tokens controls
-- Channel settings panel (slide-out or modal)
 
 ### Step 6: Multi-entity conversations
 **Dimension: conversation structure.** Can more than one Claude persona participate in a conversation?

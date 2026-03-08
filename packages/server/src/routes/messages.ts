@@ -5,6 +5,7 @@ import {
   getMessage,
   getChannel,
   insertMessage,
+  createMessagePair,
   deleteMessage,
   deleteAllMessages,
   getLastAssistantMessage,
@@ -26,11 +27,21 @@ app.post('/channels/:channelId/messages', async (c) => {
   const channelId = c.req.param('channelId');
   const { content } = await c.req.json<{ content: string }>();
 
-  const channel = getChannel(channelId);
-  const model = channel?.model;
+  // Input validation
+  if (!content?.trim()) {
+    return c.json({ error: 'Message content is required' }, 400);
+  }
 
-  const userMsg = insertMessage(channelId, 'user', content, 'complete');
-  const assistantMsg = insertMessage(channelId, 'assistant', '', 'streaming', model);
+  // Channel existence check
+  const channel = getChannel(channelId);
+  if (!channel) {
+    return c.json({ error: 'Channel not found' }, 404);
+  }
+
+  const model = channel.model;
+
+  // Create both messages in a single transaction
+  const { userMsg, assistantMsg } = createMessagePair(channelId, content.trim(), model);
 
   // Fire off Claude streaming in background (don't await)
   streamClaude(channelId, assistantMsg.id);
@@ -69,6 +80,11 @@ app.post('/messages/:id/stop', (c) => {
 app.post('/channels/:channelId/regenerate', async (c) => {
   const channelId = c.req.param('channelId');
 
+  const channel = getChannel(channelId);
+  if (!channel) {
+    return c.json({ error: 'Channel not found' }, 404);
+  }
+
   const lastAssistant = getLastAssistantMessage(channelId);
   if (!lastAssistant) {
     return c.json({ error: 'No assistant message to regenerate' }, 404);
@@ -78,8 +94,7 @@ app.post('/channels/:channelId/regenerate', async (c) => {
   deleteMessage(lastAssistant.id);
 
   // Create a new placeholder with current channel model and kick off streaming
-  const channel = getChannel(channelId);
-  const model = channel?.model;
+  const model = channel.model;
   const assistantMsg = insertMessage(channelId, 'assistant', '', 'streaming', model);
   streamClaude(channelId, assistantMsg.id);
 

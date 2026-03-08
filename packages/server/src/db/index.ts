@@ -1,7 +1,7 @@
 import Database from 'better-sqlite3';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { DEFAULT_MODEL } from '@klatch/shared';
+import { DEFAULT_MODEL, DEFAULT_ENTITY_ID, ENTITY_COLORS, MODEL_ALIASES } from '@klatch/shared';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const DB_PATH = path.resolve(__dirname, '../../../../klatch.db');
@@ -39,8 +39,27 @@ function initSchema() {
       created_at TEXT NOT NULL DEFAULT (datetime('now'))
     );
 
+    CREATE TABLE IF NOT EXISTS entities (
+      id TEXT PRIMARY KEY,
+      name TEXT NOT NULL,
+      model TEXT NOT NULL DEFAULT '${DEFAULT_MODEL}',
+      system_prompt TEXT NOT NULL DEFAULT '',
+      color TEXT NOT NULL DEFAULT '${ENTITY_COLORS[0]}',
+      created_at TEXT NOT NULL DEFAULT (datetime('now'))
+    );
+
+    CREATE TABLE IF NOT EXISTS channel_entities (
+      channel_id TEXT NOT NULL REFERENCES channels(id),
+      entity_id TEXT NOT NULL REFERENCES entities(id),
+      added_at TEXT NOT NULL DEFAULT (datetime('now')),
+      PRIMARY KEY (channel_id, entity_id)
+    );
+
     INSERT OR IGNORE INTO channels (id, name, system_prompt)
     VALUES ('default', 'general', 'You are a helpful assistant.');
+
+    INSERT OR IGNORE INTO entities (id, name, model, system_prompt, color)
+    VALUES ('${DEFAULT_ENTITY_ID}', 'Claude', '${DEFAULT_MODEL}', 'You are a helpful assistant.', '${ENTITY_COLORS[0]}');
   `);
 }
 
@@ -55,5 +74,37 @@ function runMigrations() {
   const msgCols = db.prepare("PRAGMA table_info(messages)").all() as { name: string }[];
   if (!msgCols.some((c) => c.name === 'model')) {
     db.exec(`ALTER TABLE messages ADD COLUMN model TEXT`);
+  }
+
+  // Add entity_id column to messages if it doesn't exist
+  if (!msgCols.some((c) => c.name === 'entity_id')) {
+    db.exec(`ALTER TABLE messages ADD COLUMN entity_id TEXT`);
+  }
+
+  // Migrate legacy model IDs to current versions
+  for (const [oldId, newId] of Object.entries(MODEL_ALIASES)) {
+    db.prepare('UPDATE channels SET model = ? WHERE model = ?').run(newId, oldId);
+    db.prepare('UPDATE messages SET model = ? WHERE model = ?').run(newId, oldId);
+  }
+
+  // Ensure default entity exists (for existing databases being upgraded)
+  const defaultEntity = db.prepare('SELECT id FROM entities WHERE id = ?').get(DEFAULT_ENTITY_ID);
+  if (!defaultEntity) {
+    db.prepare(
+      'INSERT INTO entities (id, name, model, system_prompt, color) VALUES (?, ?, ?, ?, ?)'
+    ).run(DEFAULT_ENTITY_ID, 'Claude', DEFAULT_MODEL, 'You are a helpful assistant.', ENTITY_COLORS[0]);
+  }
+
+  // Auto-assign default entity to any channels that have no entities assigned
+  const unassignedChannels = db.prepare(`
+    SELECT c.id FROM channels c
+    LEFT JOIN channel_entities ce ON c.id = ce.channel_id
+    WHERE ce.channel_id IS NULL
+  `).all() as { id: string }[];
+
+  for (const ch of unassignedChannels) {
+    db.prepare(
+      'INSERT OR IGNORE INTO channel_entities (channel_id, entity_id) VALUES (?, ?)'
+    ).run(ch.id, DEFAULT_ENTITY_ID);
   }
 }

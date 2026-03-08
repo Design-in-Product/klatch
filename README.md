@@ -1,6 +1,12 @@
-# Klatch
+<p align="center">
+  <img src="docs/klatch-logo.svg" alt="Klatch" width="80" height="80" />
+</p>
 
-**A Slack-inspired, local-first web app for managing Claude AI conversations.**
+<h1 align="center">Klatch</h1>
+
+<p align="center"><strong>A Slack-inspired, local-first web app for managing Claude AI conversations.</strong></p>
+
+---
 
 Klatch gives you a persistent, channel-based interface for working with Claude — like having a private Slack workspace where every channel is a different Claude persona with its own system prompt, model, and conversation history.
 
@@ -14,15 +20,18 @@ The existing ways to interact with Claude are good but fragmented:
 
 Klatch fills the gap: a single local interface where you control the models, the prompts, the conversation structure, and the data. Everything stays on your machine in a SQLite database. The only external dependency is the Anthropic API itself.
 
-## What it does today
+## What it does today (v0.5)
 
 Klatch is being built incrementally, one working step at a time ([Gall's Law](https://en.wikipedia.org/wiki/John_Gall_(author)#Gall's_law)). Here's what works right now:
 
 - **Channel-based conversations** — create named channels with custom system prompts, switch between them freely
+- **Per-channel model selection** — choose Opus, Sonnet, or Haiku per channel, switch anytime without losing history
 - **Streaming responses** — Claude's responses appear token-by-token via Server-Sent Events
+- **Conversation control** — stop generation, regenerate responses, delete messages, clear history
+- **Channel settings** — edit name, system prompt, and model with an inline settings panel
 - **Persistent history** — conversations survive page reloads and server restarts (SQLite)
 - **Markdown rendering** — syntax-highlighted code blocks, formatted text, copy-to-clipboard
-- **Opus 4.6 by default** — uses Claude's most capable model out of the box
+- **Model tracking** — see which model produced each response, with markers when the model changes
 
 ## Where it's headed
 
@@ -31,11 +40,12 @@ The [full roadmap](docs/ROADMAP.md) is in the repo, but the key milestones are:
 1. ~~Single channel chat~~ ✓
 2. ~~Channel sidebar + creation~~ ✓
 3. ~~Markdown + code blocks~~ ✓
-4. **Conversation management** — clear history, regenerate, stop generation *(next)*
-5. **Channel configuration** — edit names/prompts, per-channel model selection
-6. **Multi-entity chat** — multiple Claude personas in one channel (roundtable, panel, directed modes)
-7. **Search + export** — full-text search, markdown export, command palette
-8. **Import from Claude Code & claude.ai** — bring your existing conversations into Klatch
+4. ~~Conversation control~~ ✓
+5. ~~Channel identity + per-channel models~~ ✓
+6. **Conversation structure** — threads, branching, pinned messages *(next)*
+7. **Multi-entity chat** — multiple Claude personas in one channel
+8. **Search + export** — full-text search, markdown export, command palette
+9. **Import from Claude Code & claude.ai** — bring your existing conversations into Klatch
 
 The long-term vision is a unified control plane for all your Claude interactions — a place where you can import context from any source, define persistent roles, and manage ongoing conversations across projects.
 
