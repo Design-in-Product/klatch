@@ -44,19 +44,23 @@ The key insight: Claude is not one assistant. It's a cast of characters you dire
 - v0.5.5: Responsive layout (mobile-first, collapsible sidebar drawer)
 - v0.5.6: Light/dark theme with semantic color tokens, K-Channel logo, landing page
 
+### Step 6: Multi-entity conversations ✓
+**Dimension: conversation structure.** Can more than one Claude persona participate in a conversation?
+
+This is the first step that's impossible in claude.ai or Claude Code. It moves Klatch from "a nicer chat UI" to "something genuinely new."
+
+- Entities with name, model, system prompt, and avatar color
+- Assign up to 5 entities per channel; N parallel streams per user message
+- Entity-aware streaming: each entity uses its own model/prompt (panel mode)
+- Channel system prompt becomes shared preamble prepended to each entity's prompt
+- Entity Management UI: create/edit/delete entities, color picker, model selector
+- Channel Settings: entity assignment (add/remove pills), no per-channel model selector
+- Header shows entity pills with colored dots and model labels
+- Backward compatible: single-entity channels look unchanged, old messages render as "Claude"
+
 ---
 
 ## Next Steps (concrete, actionable)
-
-### Step 6: Multi-entity conversations
-**Dimension: conversation structure.** Can more than one Claude persona participate in a conversation?
-
-This is the first step that's impossible in claude.ai or Claude Code. It moves Klatch from "a nicer chat UI" to "something genuinely new." Multiple personas with different models and prompts, responding in the same channel.
-
-- Entities table: name, model, system prompt, avatar color
-- Assign multiple entities to a channel
-- Each entity responds with its own identity and model
-- Visual distinction per entity
 
 ---
 

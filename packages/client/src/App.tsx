@@ -1,21 +1,29 @@
 import React, { useState, useCallback, useEffect, useRef } from 'react';
-import type { Channel, ModelId } from '@klatch/shared';
+import type { Channel, Entity, ModelId } from '@klatch/shared';
 import { AVAILABLE_MODELS } from '@klatch/shared';
 import { ChannelSidebar } from './components/ChannelSidebar';
 import { ChannelSettings } from './components/ChannelSettings';
+import { EntityManager } from './components/EntityManager';
 import { MessageList } from './components/MessageList';
 import { MessageInput } from './components/MessageInput';
 import { useMessages } from './hooks/useMessages';
-import { useStream } from './hooks/useStream';
+import { useStreams } from './hooks/useStreams';
 import {
   sendMessage,
   fetchChannels,
+  fetchEntities,
+  fetchChannelEntities,
   createChannel,
   updateChannelApi,
   clearChannelHistory,
   deleteMessageApi,
-  stopGeneration,
+  stopChannel,
   regenerateLastResponse,
+  createEntity,
+  updateEntity,
+  deleteEntity,
+  assignEntityToChannel,
+  removeEntityFromChannel,
 } from './api/client';
 
 function getInitialTheme(): 'light' | 'dark' {
@@ -29,9 +37,11 @@ export default function App() {
   const [activeChannelId, setActiveChannelId] = useState<string>('default');
   const { messages, addMessage, updateMessage, removeMessage, clearMessages, refresh } =
     useMessages(activeChannelId);
-  const [streamingMessageId, setStreamingMessageId] = useState<string | null>(null);
-  const [streamingModel, setStreamingModel] = useState<ModelId | undefined>();
+  const [streamingMessageIds, setStreamingMessageIds] = useState<string[]>([]);
+  const [channelEntities, setChannelEntities] = useState<Entity[]>([]);
+  const [allEntities, setAllEntities] = useState<Entity[]>([]);
   const [showSettings, setShowSettings] = useState(false);
+  const [showEntityManager, setShowEntityManager] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   // Theme
@@ -44,47 +54,47 @@ export default function App() {
 
   const toggleTheme = () => setTheme((t) => (t === 'light' ? 'dark' : 'light'));
 
-  // Load channels on mount
+  // Load channels and entities on mount
   useEffect(() => {
     fetchChannels().then(setChannels).catch(console.error);
+    fetchEntities().then(setAllEntities).catch(console.error);
   }, []);
+
+  // Load channel entities when active channel changes
+  useEffect(() => {
+    fetchChannelEntities(activeChannelId)
+      .then(setChannelEntities)
+      .catch(console.error);
+  }, [activeChannelId]);
 
   const activeChannel = channels.find((c) => c.id === activeChannelId);
 
+  // Multi-stream handling
   const handleStreamComplete = useCallback(
-    (content: string) => {
-      if (streamingMessageId) {
-        updateMessage(streamingMessageId, { content, status: 'complete' });
-        setStreamingMessageId(null);
-        setStreamingModel(undefined);
-      }
+    (messageId: string, content: string) => {
+      updateMessage(messageId, { content, status: 'complete' });
+      setStreamingMessageIds((prev) => prev.filter((id) => id !== messageId));
     },
-    [streamingMessageId, updateMessage]
+    [updateMessage]
   );
 
   const handleStreamError = useCallback(
-    (content: string) => {
-      if (streamingMessageId) {
-        updateMessage(streamingMessageId, { content, status: 'error' });
-        setStreamingMessageId(null);
-        setStreamingModel(undefined);
-      }
+    (messageId: string, content: string) => {
+      updateMessage(messageId, { content, status: 'error' });
+      setStreamingMessageIds((prev) => prev.filter((id) => id !== messageId));
     },
-    [streamingMessageId, updateMessage]
+    [updateMessage]
   );
 
-  const { content: streamingContent, isStreaming } = useStream(
-    streamingMessageId,
+  const { isAnyStreaming, getStreamContent, isMessageStreaming, reset: resetStreams } = useStreams(
+    streamingMessageIds,
     handleStreamComplete,
     handleStreamError
   );
 
   const handleSend = async (content: string) => {
     try {
-      const { userMessageId, assistantMessageId, model } = await sendMessage(
-        activeChannelId,
-        content
-      );
+      const { userMessageId, assistants } = await sendMessage(activeChannelId, content);
 
       addMessage({
         id: userMessageId,
@@ -95,27 +105,31 @@ export default function App() {
         createdAt: new Date().toISOString(),
       });
 
-      addMessage({
-        id: assistantMessageId,
-        channelId: activeChannelId,
-        role: 'assistant',
-        content: '',
-        status: 'streaming',
-        model,
-        createdAt: new Date().toISOString(),
-      });
+      const newStreamingIds: string[] = [];
+      for (const assistant of assistants) {
+        addMessage({
+          id: assistant.assistantMessageId,
+          channelId: activeChannelId,
+          role: 'assistant',
+          content: '',
+          status: 'streaming',
+          model: assistant.model,
+          entityId: assistant.entityId,
+          createdAt: new Date().toISOString(),
+        });
+        newStreamingIds.push(assistant.assistantMessageId);
+      }
 
-      setStreamingMessageId(assistantMessageId);
-      setStreamingModel(model);
+      setStreamingMessageIds(newStreamingIds);
     } catch (err) {
       console.error('Failed to send message:', err);
     }
   };
 
   const handleStop = async () => {
-    if (!streamingMessageId) return;
+    if (streamingMessageIds.length === 0) return;
     try {
-      await stopGeneration(streamingMessageId);
+      await stopChannel(activeChannelId);
     } catch (err) {
       console.error('Failed to stop generation:', err);
     }
@@ -153,8 +167,9 @@ export default function App() {
 
   const handleRegenerate = async () => {
     try {
-      const { assistantMessageId, model } = await regenerateLastResponse(activeChannelId);
+      const { assistants } = await regenerateLastResponse(activeChannelId);
 
+      // Remove the last assistant message(s) from the UI
       const lastAssistantIdx = [...messages]
         .reverse()
         .findIndex((m) => m.role === 'assistant');
@@ -163,18 +178,22 @@ export default function App() {
         removeMessage(messages[actualIdx].id);
       }
 
-      addMessage({
-        id: assistantMessageId,
-        channelId: activeChannelId,
-        role: 'assistant',
-        content: '',
-        status: 'streaming',
-        model,
-        createdAt: new Date().toISOString(),
-      });
+      const newStreamingIds: string[] = [];
+      for (const assistant of assistants) {
+        addMessage({
+          id: assistant.assistantMessageId,
+          channelId: activeChannelId,
+          role: 'assistant',
+          content: '',
+          status: 'streaming',
+          model: assistant.model,
+          entityId: assistant.entityId,
+          createdAt: new Date().toISOString(),
+        });
+        newStreamingIds.push(assistant.assistantMessageId);
+      }
 
-      setStreamingMessageId(assistantMessageId);
-      setStreamingModel(model);
+      setStreamingMessageIds(newStreamingIds);
     } catch (err) {
       console.error('Failed to regenerate:', err);
     }
@@ -185,8 +204,8 @@ export default function App() {
       setSidebarOpen(false);
       return;
     }
-    setStreamingMessageId(null);
-    setStreamingModel(undefined);
+    setStreamingMessageIds([]);
+    resetStreams();
     setConfirmingClear(false);
     setShowSettings(false);
     setSidebarOpen(false);
@@ -214,7 +233,57 @@ export default function App() {
     }
   };
 
-  // Model label for the header
+  // ── Entity CRUD handlers ──────────────────────────────────────
+
+  const handleCreateEntity = async (data: { name: string; model?: ModelId; systemPrompt?: string; color?: string }) => {
+    try {
+      const entity = await createEntity(data);
+      setAllEntities((prev) => [...prev, entity]);
+    } catch (err) {
+      console.error('Failed to create entity:', err);
+    }
+  };
+
+  const handleUpdateEntity = async (id: string, updates: { name?: string; model?: ModelId; systemPrompt?: string; color?: string }) => {
+    try {
+      const updated = await updateEntity(id, updates);
+      setAllEntities((prev) => prev.map((e) => (e.id === id ? updated : e)));
+      // Also update channel entities if this entity is assigned
+      setChannelEntities((prev) => prev.map((e) => (e.id === id ? updated : e)));
+    } catch (err) {
+      console.error('Failed to update entity:', err);
+    }
+  };
+
+  const handleDeleteEntity = async (id: string) => {
+    try {
+      await deleteEntity(id);
+      setAllEntities((prev) => prev.filter((e) => e.id !== id));
+      setChannelEntities((prev) => prev.filter((e) => e.id !== id));
+    } catch (err) {
+      console.error('Failed to delete entity:', err);
+    }
+  };
+
+  const handleAssignEntity = async (entityId: string) => {
+    try {
+      const entities = await assignEntityToChannel(activeChannelId, entityId);
+      setChannelEntities(entities);
+    } catch (err) {
+      console.error('Failed to assign entity:', err);
+    }
+  };
+
+  const handleRemoveEntity = async (entityId: string) => {
+    try {
+      const entities = await removeEntityFromChannel(activeChannelId, entityId);
+      setChannelEntities(entities);
+    } catch (err) {
+      console.error('Failed to remove entity:', err);
+    }
+  };
+
+  // Header: show entity avatars instead of single model label
   const activeModelLabel = activeChannel
     ? AVAILABLE_MODELS[activeChannel.model]?.label || activeChannel.model
     : undefined;
@@ -227,6 +296,7 @@ export default function App() {
         activeChannelId={activeChannelId}
         onSelectChannel={handleSelectChannel}
         onCreateChannel={handleCreateChannel}
+        onOpenEntities={() => setShowEntityManager(true)}
         isOpen={sidebarOpen}
         onClose={() => setSidebarOpen(false)}
         theme={theme}
@@ -255,11 +325,28 @@ export default function App() {
               <h1 className="text-lg font-semibold text-primary">
                 # {activeChannel?.name ?? 'general'}
               </h1>
-              {activeModelLabel && (
+              {/* Entity pills in header */}
+              {channelEntities.length > 0 ? (
+                <div className="flex items-center gap-1">
+                  {channelEntities.map((entity) => (
+                    <span
+                      key={entity.id}
+                      className="inline-flex items-center gap-1 text-[10px] px-1.5 py-0.5 rounded bg-badge text-muted font-medium"
+                      title={`${entity.name} (${AVAILABLE_MODELS[entity.model]?.label || entity.model})`}
+                    >
+                      <span
+                        className="inline-block w-2.5 h-2.5 rounded-full flex-shrink-0"
+                        style={{ backgroundColor: entity.color }}
+                      />
+                      {AVAILABLE_MODELS[entity.model]?.label || entity.model}
+                    </span>
+                  ))}
+                </div>
+              ) : activeModelLabel ? (
                 <span className="text-[10px] px-1.5 py-0.5 rounded bg-badge text-muted font-medium">
                   {activeModelLabel}
                 </span>
-              )}
+              ) : null}
               <svg className={`w-4 h-4 text-muted transition-transform ${showSettings ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
               </svg>
@@ -270,7 +357,7 @@ export default function App() {
               </p>
             )}
           </button>
-          {messages.length > 0 && !isStreaming && (
+          {messages.length > 0 && !isAnyStreaming && (
             <button
               onClick={handleClearHistory}
               title={confirmingClear ? 'Click again to confirm' : 'Clear channel history'}
@@ -292,7 +379,11 @@ export default function App() {
         {showSettings && activeChannel && (
           <ChannelSettings
             channel={activeChannel}
+            channelEntities={channelEntities}
+            allEntities={allEntities}
             onSave={handleUpdateChannel}
+            onAssignEntity={handleAssignEntity}
+            onRemoveEntity={handleRemoveEntity}
             onClose={() => setShowSettings(false)}
           />
         )}
@@ -300,12 +391,12 @@ export default function App() {
         {/* Messages */}
         <MessageList
           messages={messages}
-          streamingContent={streamingContent}
-          streamingMessageId={streamingMessageId}
-          streamingModel={streamingModel}
+          getStreamContent={getStreamContent}
+          isMessageStreaming={isMessageStreaming}
+          channelEntities={channelEntities}
           onDeleteMessage={handleDeleteMessage}
           onRegenerateMessage={handleRegenerate}
-          isStreaming={isStreaming}
+          isStreaming={isAnyStreaming}
           theme={theme}
         />
 
@@ -313,10 +404,21 @@ export default function App() {
         <MessageInput
           onSend={handleSend}
           onStop={handleStop}
-          disabled={isStreaming}
-          isStreaming={isStreaming}
+          disabled={isAnyStreaming}
+          isStreaming={isAnyStreaming}
         />
       </div>
+
+      {/* Entity Manager modal */}
+      {showEntityManager && (
+        <EntityManager
+          entities={allEntities}
+          onCreateEntity={handleCreateEntity}
+          onUpdateEntity={handleUpdateEntity}
+          onDeleteEntity={handleDeleteEntity}
+          onClose={() => setShowEntityManager(false)}
+        />
+      )}
     </div>
   );
 }

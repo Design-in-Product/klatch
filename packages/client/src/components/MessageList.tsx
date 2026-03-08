@@ -1,14 +1,14 @@
 import React, { useEffect, useRef } from 'react';
-import type { Message, ModelId } from '@klatch/shared';
+import type { Message, Entity, ModelId } from '@klatch/shared';
 import { AVAILABLE_MODELS } from '@klatch/shared';
 import { MarkdownContent } from './MarkdownContent';
 import { KlatchLogo } from './KlatchLogo';
 
 interface Props {
   messages: Message[];
-  streamingContent: string;
-  streamingMessageId: string | null;
-  streamingModel?: ModelId;
+  getStreamContent: (messageId: string) => string;
+  isMessageStreaming: (messageId: string) => boolean;
+  channelEntities: Entity[];
   onDeleteMessage?: (id: string) => void;
   onRegenerateMessage?: (id: string) => void;
   isStreaming?: boolean;
@@ -22,9 +22,9 @@ function modelLabel(modelId?: ModelId): string | undefined {
 
 export function MessageList({
   messages,
-  streamingContent,
-  streamingMessageId,
-  streamingModel,
+  getStreamContent,
+  isMessageStreaming,
+  channelEntities,
   onDeleteMessage,
   onRegenerateMessage,
   isStreaming,
@@ -32,17 +32,28 @@ export function MessageList({
 }: Props) {
   const bottomRef = useRef<HTMLDivElement>(null);
 
+  // Build entity lookup map
+  const entityMap = new Map(channelEntities.map((e) => [e.id, e]));
+
+  // Auto-scroll on new messages or streaming content
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages, streamingContent]);
+  }, [messages]);
+
+  // Also scroll during streaming
+  useEffect(() => {
+    if (isStreaming) {
+      const interval = setInterval(() => {
+        bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
+      }, 300);
+      return () => clearInterval(interval);
+    }
+  }, [isStreaming]);
 
   // Find the last assistant message for the regenerate button
   const lastAssistantId = [...messages]
     .reverse()
     .find((m) => m.role === 'assistant')?.id;
-
-  // Detect model changes for inline markers
-  let prevModel: ModelId | undefined;
 
   return (
     <div className="flex-1 overflow-y-auto px-3 md:px-6 py-4 space-y-4">
@@ -54,40 +65,25 @@ export function MessageList({
         </div>
       )}
       {messages.map((msg) => {
-        // Show model change marker when an assistant message uses a different model than the previous one
-        let showModelChange = false;
-        if (msg.role === 'assistant' && msg.model) {
-          if (prevModel && msg.model !== prevModel) {
-            showModelChange = true;
-          }
-          prevModel = msg.model;
-        }
+        const entity = msg.entityId ? entityMap.get(msg.entityId) : undefined;
+        const streamContent = getStreamContent(msg.id);
+        const isBubbleStreaming = isMessageStreaming(msg.id);
 
         return (
-          <React.Fragment key={msg.id}>
-            {showModelChange && (
-              <div className="flex items-center gap-3 py-1">
-                <div className="flex-1 border-t border-line" />
-                <span className="text-xs text-muted">
-                  Model changed to {modelLabel(msg.model) || msg.model}
-                </span>
-                <div className="flex-1 border-t border-line" />
-              </div>
-            )}
-            <MessageBubble
-              message={msg}
-              streamingContent={msg.id === streamingMessageId ? streamingContent : undefined}
-              streamingModel={msg.id === streamingMessageId ? streamingModel : undefined}
-              onDelete={onDeleteMessage ? () => onDeleteMessage(msg.id) : undefined}
-              onRegenerate={
-                onRegenerateMessage && msg.id === lastAssistantId && !isStreaming
-                  ? () => onRegenerateMessage(msg.id)
-                  : undefined
-              }
-              isStreaming={msg.id === streamingMessageId}
-              theme={theme}
-            />
-          </React.Fragment>
+          <MessageBubble
+            key={msg.id}
+            message={msg}
+            entity={entity}
+            streamingContent={streamContent || undefined}
+            onDelete={onDeleteMessage ? () => onDeleteMessage(msg.id) : undefined}
+            onRegenerate={
+              onRegenerateMessage && msg.id === lastAssistantId && !isStreaming
+                ? () => onRegenerateMessage(msg.id)
+                : undefined
+            }
+            isBubbleStreaming={isBubbleStreaming}
+            theme={theme}
+          />
         );
       })}
       <div ref={bottomRef} />
@@ -95,31 +91,43 @@ export function MessageList({
   );
 }
 
+function EntityAvatar({ entity }: { entity: Entity }) {
+  return (
+    <span
+      className="inline-flex items-center justify-center w-5 h-5 rounded-full text-[10px] font-bold text-white flex-shrink-0"
+      style={{ backgroundColor: entity.color }}
+      title={entity.name}
+    >
+      {entity.name.charAt(0).toUpperCase()}
+    </span>
+  );
+}
+
 function MessageBubble({
   message,
+  entity,
   streamingContent,
-  streamingModel,
   onDelete,
   onRegenerate,
-  isStreaming: isBubbleStreaming,
+  isBubbleStreaming,
   theme,
 }: {
   message: Message;
+  entity?: Entity;
   streamingContent?: string;
-  streamingModel?: ModelId;
   onDelete?: () => void;
   onRegenerate?: () => void;
-  isStreaming?: boolean;
+  isBubbleStreaming?: boolean;
   theme?: 'light' | 'dark';
 }) {
   const isUser = message.role === 'user';
   const displayContent = streamingContent ?? message.content;
-  const isStreaming = message.status === 'streaming' && !streamingContent;
+  const isWaiting = message.status === 'streaming' && !streamingContent;
   const hasActions = !isBubbleStreaming && (onDelete || onRegenerate);
 
-  // Model label for assistant messages
-  const msgModel = message.model || streamingModel;
-  const msgModelLabel = !isUser ? modelLabel(msgModel) : undefined;
+  // Entity or model info for assistant messages
+  const entityName = entity?.name || 'Claude';
+  const msgModelLabel = !isUser ? modelLabel(message.model) : undefined;
 
   return (
     <div className={`group flex ${isUser ? 'justify-end' : 'justify-start'}`}>
@@ -131,9 +139,10 @@ function MessageBubble({
         }`}
       >
         <div className="flex items-center gap-2 text-xs font-medium mb-1 opacity-60">
-          <span>{isUser ? 'You' : 'Claude'}</span>
+          {!isUser && entity && <EntityAvatar entity={entity} />}
+          <span>{isUser ? 'You' : entityName}</span>
           {msgModelLabel && (
-            <span className="text-[10px] px-1.5 py-0.5 rounded bg-badge" title={msgModel}>
+            <span className="text-[10px] px-1.5 py-0.5 rounded bg-badge" title={message.model}>
               {msgModelLabel}
             </span>
           )}
@@ -143,7 +152,7 @@ function MessageBubble({
             <div className="whitespace-pre-wrap">{displayContent}</div>
           ) : displayContent ? (
             <MarkdownContent content={displayContent} theme={theme} />
-          ) : isStreaming ? (
+          ) : isWaiting ? (
             <span className="text-muted">...</span>
           ) : null}
         </div>

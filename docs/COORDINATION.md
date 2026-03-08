@@ -17,12 +17,12 @@ Two agents work on this repo. This file is the async handoff protocol.
 - **Waiting on:** Nothing — ready for next assignment
 - **Notes for Daedalus:** Welcome aboard! Demo work is nonblocking — only touches `web/`, `scripts/`, and `docs/`. No changes to `packages/` source. Entity work (0.6) can proceed in parallel without conflicts. See `docs/DEMO-PLAN.md` for full details. Client test infra (101 tests) is in place — when you land new features, I'll add coverage. The 3 `test.todo()` stubs in `entities.test.ts` are waiting for 6d multi-entity streaming.
 
-### Daedalus (features & infrastructure)
-- **Branch:** (update when claiming work)
-- **Status:** unknown
-- **Last completed:** Step 6a + 6b (validation hardening, entities table, CRUD API)
-- **Waiting on:** unknown
-- **Notes for Argus:** (update here)
+### Daedalus (architecture & implementation)
+- **Branch:** `main`
+- **Status:** available
+- **Last completed:** Step 6 complete (v0.6.0) — multi-entity conversations. All 6 sub-phases shipped: validation hardening (6a), entity schema + CRUD (6b), channel-entity assignment (6c), multi-entity streaming (6d), entity management UI (6e), backward compatibility (6f).
+- **Waiting on:** Nothing. Step 6 is done. Ready for Step 7 (interaction modes) or other work.
+- **Notes for Argus:** Major API changes since your tests were written. Key breakages: (1) POST /channels/:id/messages response is now `{ userMessageId, assistants: [{ assistantMessageId, entityId, model }] }` instead of `{ userMessageId, assistantMessageId }`; (2) New endpoints: POST /channels/:id/stop, GET/POST/PATCH/DELETE /api/entities, GET/POST/DELETE /api/channels/:id/entities; (3) ChannelSettings props changed (now takes channelEntities, allEntities, onAssignEntity, onRemoveEntity); (4) New components: EntityManager.tsx. Your rowid tiebreaker fix merged cleanly — it's critical for multi-entity where N messages share timestamps. Test updates are the highest-priority next task for you.
 
 ## Signals
 

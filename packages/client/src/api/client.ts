@@ -1,6 +1,8 @@
-import type { Channel, Message, ModelId } from '@klatch/shared';
+import type { Channel, Entity, Message, ModelId } from '@klatch/shared';
 
 const BASE = '/api';
+
+// ── Channel API ──────────────────────────────────────────────
 
 export async function fetchChannels(): Promise<Channel[]> {
   const res = await fetch(`${BASE}/channels`);
@@ -35,6 +37,86 @@ export async function updateChannelApi(
   return res.json();
 }
 
+// ── Entity API ───────────────────────────────────────────────
+
+export async function fetchEntities(): Promise<Entity[]> {
+  const res = await fetch(`${BASE}/entities`);
+  if (!res.ok) throw new Error(`Failed to fetch entities: ${res.statusText}`);
+  return res.json();
+}
+
+export async function fetchChannelEntities(channelId: string): Promise<Entity[]> {
+  const res = await fetch(`${BASE}/channels/${channelId}/entities`);
+  if (!res.ok) throw new Error(`Failed to fetch channel entities: ${res.statusText}`);
+  return res.json();
+}
+
+export async function createEntity(data: {
+  name: string;
+  model?: ModelId;
+  systemPrompt?: string;
+  color?: string;
+}): Promise<Entity> {
+  const res = await fetch(`${BASE}/entities`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data),
+  });
+  if (!res.ok) throw new Error(`Failed to create entity: ${res.statusText}`);
+  return res.json();
+}
+
+export async function updateEntity(
+  id: string,
+  updates: { name?: string; model?: ModelId; systemPrompt?: string; color?: string }
+): Promise<Entity> {
+  const res = await fetch(`${BASE}/entities/${id}`, {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(updates),
+  });
+  if (!res.ok) throw new Error(`Failed to update entity: ${res.statusText}`);
+  return res.json();
+}
+
+export async function deleteEntity(id: string): Promise<void> {
+  const res = await fetch(`${BASE}/entities/${id}`, {
+    method: 'DELETE',
+  });
+  if (!res.ok) throw new Error(`Failed to delete entity: ${res.statusText}`);
+}
+
+export async function assignEntityToChannel(channelId: string, entityId: string): Promise<Entity[]> {
+  const res = await fetch(`${BASE}/channels/${channelId}/entities`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ entityId }),
+  });
+  if (!res.ok) throw new Error(`Failed to assign entity: ${res.statusText}`);
+  return res.json();
+}
+
+export async function removeEntityFromChannel(channelId: string, entityId: string): Promise<Entity[]> {
+  const res = await fetch(`${BASE}/channels/${channelId}/entities/${entityId}`, {
+    method: 'DELETE',
+  });
+  if (!res.ok) throw new Error(`Failed to remove entity: ${res.statusText}`);
+  return res.json();
+}
+
+// ── Message API ──────────────────────────────────────────────
+
+export interface AssistantInfo {
+  assistantMessageId: string;
+  entityId: string;
+  model: ModelId;
+}
+
+export interface SendMessageResponse {
+  userMessageId: string;
+  assistants: AssistantInfo[];
+}
+
 export async function fetchMessages(channelId: string): Promise<Message[]> {
   const res = await fetch(`${BASE}/channels/${channelId}/messages`);
   if (!res.ok) throw new Error(`Failed to fetch messages: ${res.statusText}`);
@@ -44,7 +126,7 @@ export async function fetchMessages(channelId: string): Promise<Message[]> {
 export async function sendMessage(
   channelId: string,
   content: string
-): Promise<{ userMessageId: string; assistantMessageId: string; model?: ModelId }> {
+): Promise<SendMessageResponse> {
   const res = await fetch(`${BASE}/channels/${channelId}/messages`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -76,9 +158,17 @@ export async function stopGeneration(messageId: string): Promise<void> {
   if (!res.ok) throw new Error(`Failed to stop generation: ${res.statusText}`);
 }
 
+export async function stopChannel(channelId: string): Promise<{ stopped: number }> {
+  const res = await fetch(`${BASE}/channels/${channelId}/stop`, {
+    method: 'POST',
+  });
+  if (!res.ok) throw new Error(`Failed to stop channel: ${res.statusText}`);
+  return res.json();
+}
+
 export async function regenerateLastResponse(
   channelId: string
-): Promise<{ assistantMessageId: string; model?: ModelId }> {
+): Promise<{ assistantMessageId: string; model?: ModelId; assistants: AssistantInfo[] }> {
   const res = await fetch(`${BASE}/channels/${channelId}/regenerate`, {
     method: 'POST',
   });
