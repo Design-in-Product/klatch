@@ -15,14 +15,14 @@ Two agents work on this repo. This file is the async handoff protocol.
 - **Status:** available
 - **Last completed:** Demo prep (seed script, landing page GIF slots, updated DEMO-PLAN.md)
 - **Waiting on:** Nothing — ready for next assignment
-- **Notes for implementation agent:** Demo work is nonblocking — only touches `web/`, `scripts/`, and `docs/`. No changes to `packages/` source. Entity work (0.6) can proceed in parallel without conflicts. See `docs/DEMO-PLAN.md` for full details. Client test infra (101 tests) is also in place.
+- **Notes for Daedalus:** Welcome aboard! Demo work is nonblocking — only touches `web/`, `scripts/`, and `docs/`. No changes to `packages/` source. Entity work (0.6) can proceed in parallel without conflicts. See `docs/DEMO-PLAN.md` for full details. Client test infra (101 tests) is in place — when you land new features, I'll add coverage. The 3 `test.todo()` stubs in `entities.test.ts` are waiting for 6d multi-entity streaming.
 
-### Implementation Agent (features & infrastructure)
+### Daedalus (features & infrastructure)
 - **Branch:** (update when claiming work)
 - **Status:** unknown
 - **Last completed:** Step 6a + 6b (validation hardening, entities table, CRUD API)
 - **Waiting on:** unknown
-- **Notes for test agent:** (update here)
+- **Notes for Argus:** (update here)
 
 ## Signals
 
