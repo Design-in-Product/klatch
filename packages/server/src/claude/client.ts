@@ -1,6 +1,7 @@
 import Anthropic from '@anthropic-ai/sdk';
 import { EventEmitter } from 'events';
-import { getChannel, getMessages, updateMessage } from '../db/queries.js';
+import { getMessages, updateMessage } from '../db/queries.js';
+import type { Entity } from '@klatch/shared';
 import { DEFAULT_MODEL } from '@klatch/shared';
 
 const anthropic = new Anthropic();
@@ -18,30 +19,46 @@ export function abortStream(messageId: string): boolean {
   return true;
 }
 
-export async function streamClaude(channelId: string, assistantMessageId: string) {
+/**
+ * Stream a Claude response for a specific entity.
+ *
+ * @param channelId — channel for history lookup
+ * @param assistantMessageId — the placeholder message to fill
+ * @param entity — the entity responding (provides model + system prompt)
+ * @param channelPreamble — the channel's system prompt, prepended as shared context
+ */
+export async function streamClaude(
+  channelId: string,
+  assistantMessageId: string,
+  entity: Entity,
+  channelPreamble?: string
+) {
   const emitter = new EventEmitter();
   activeStreams.set(assistantMessageId, emitter);
 
-  const channel = getChannel(channelId);
-  if (!channel) {
-    emitter.emit('data', { type: 'error', messageId: assistantMessageId, content: 'Channel not found' });
-    activeStreams.delete(assistantMessageId);
-    return;
-  }
-
-  // Build history from completed messages only (exclude the placeholder)
-  const history = getMessages(channelId)
-    .filter((m) => m.status === 'complete' && m.id !== assistantMessageId)
+  // Build history from completed messages only (exclude all current streaming placeholders)
+  // In panel mode, each entity sees only its own past responses + all user messages
+  const allMessages = getMessages(channelId).filter(
+    (m) => m.status === 'complete'
+  );
+  const history = allMessages
+    .filter((m) => m.role === 'user' || m.entityId === entity.id || !m.entityId)
     .map((m) => ({ role: m.role as 'user' | 'assistant', content: m.content }));
+
+  // Build system prompt: channel preamble + entity's own prompt
+  const systemParts: string[] = [];
+  if (channelPreamble?.trim()) systemParts.push(channelPreamble.trim());
+  if (entity.systemPrompt?.trim()) systemParts.push(entity.systemPrompt.trim());
+  const systemPrompt = systemParts.join('\n\n');
 
   let fullContent = '';
 
   try {
-    const model = channel.model || DEFAULT_MODEL;
+    const model = entity.model || DEFAULT_MODEL;
     const stream = anthropic.messages.stream({
       model,
       max_tokens: 4096,
-      system: channel.systemPrompt,
+      system: systemPrompt || undefined,
       messages: history,
     });
 

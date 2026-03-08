@@ -1,20 +1,21 @@
 import React, { useState, useCallback, useEffect, useRef } from 'react';
-import type { Channel, ModelId } from '@klatch/shared';
+import type { Channel, Entity, ModelId } from '@klatch/shared';
 import { AVAILABLE_MODELS } from '@klatch/shared';
 import { ChannelSidebar } from './components/ChannelSidebar';
 import { ChannelSettings } from './components/ChannelSettings';
 import { MessageList } from './components/MessageList';
 import { MessageInput } from './components/MessageInput';
 import { useMessages } from './hooks/useMessages';
-import { useStream } from './hooks/useStream';
+import { useStreams } from './hooks/useStreams';
 import {
   sendMessage,
   fetchChannels,
+  fetchChannelEntities,
   createChannel,
   updateChannelApi,
   clearChannelHistory,
   deleteMessageApi,
-  stopGeneration,
+  stopChannel,
   regenerateLastResponse,
 } from './api/client';
 
@@ -29,8 +30,8 @@ export default function App() {
   const [activeChannelId, setActiveChannelId] = useState<string>('default');
   const { messages, addMessage, updateMessage, removeMessage, clearMessages, refresh } =
     useMessages(activeChannelId);
-  const [streamingMessageId, setStreamingMessageId] = useState<string | null>(null);
-  const [streamingModel, setStreamingModel] = useState<ModelId | undefined>();
+  const [streamingMessageIds, setStreamingMessageIds] = useState<string[]>([]);
+  const [channelEntities, setChannelEntities] = useState<Entity[]>([]);
   const [showSettings, setShowSettings] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
@@ -49,42 +50,41 @@ export default function App() {
     fetchChannels().then(setChannels).catch(console.error);
   }, []);
 
+  // Load channel entities when active channel changes
+  useEffect(() => {
+    fetchChannelEntities(activeChannelId)
+      .then(setChannelEntities)
+      .catch(console.error);
+  }, [activeChannelId]);
+
   const activeChannel = channels.find((c) => c.id === activeChannelId);
 
+  // Multi-stream handling
   const handleStreamComplete = useCallback(
-    (content: string) => {
-      if (streamingMessageId) {
-        updateMessage(streamingMessageId, { content, status: 'complete' });
-        setStreamingMessageId(null);
-        setStreamingModel(undefined);
-      }
+    (messageId: string, content: string) => {
+      updateMessage(messageId, { content, status: 'complete' });
+      setStreamingMessageIds((prev) => prev.filter((id) => id !== messageId));
     },
-    [streamingMessageId, updateMessage]
+    [updateMessage]
   );
 
   const handleStreamError = useCallback(
-    (content: string) => {
-      if (streamingMessageId) {
-        updateMessage(streamingMessageId, { content, status: 'error' });
-        setStreamingMessageId(null);
-        setStreamingModel(undefined);
-      }
+    (messageId: string, content: string) => {
+      updateMessage(messageId, { content, status: 'error' });
+      setStreamingMessageIds((prev) => prev.filter((id) => id !== messageId));
     },
-    [streamingMessageId, updateMessage]
+    [updateMessage]
   );
 
-  const { content: streamingContent, isStreaming } = useStream(
-    streamingMessageId,
+  const { isAnyStreaming, getStreamContent, isMessageStreaming, reset: resetStreams } = useStreams(
+    streamingMessageIds,
     handleStreamComplete,
     handleStreamError
   );
 
   const handleSend = async (content: string) => {
     try {
-      const { userMessageId, assistantMessageId, model } = await sendMessage(
-        activeChannelId,
-        content
-      );
+      const { userMessageId, assistants } = await sendMessage(activeChannelId, content);
 
       addMessage({
         id: userMessageId,
@@ -95,27 +95,31 @@ export default function App() {
         createdAt: new Date().toISOString(),
       });
 
-      addMessage({
-        id: assistantMessageId,
-        channelId: activeChannelId,
-        role: 'assistant',
-        content: '',
-        status: 'streaming',
-        model,
-        createdAt: new Date().toISOString(),
-      });
+      const newStreamingIds: string[] = [];
+      for (const assistant of assistants) {
+        addMessage({
+          id: assistant.assistantMessageId,
+          channelId: activeChannelId,
+          role: 'assistant',
+          content: '',
+          status: 'streaming',
+          model: assistant.model,
+          entityId: assistant.entityId,
+          createdAt: new Date().toISOString(),
+        });
+        newStreamingIds.push(assistant.assistantMessageId);
+      }
 
-      setStreamingMessageId(assistantMessageId);
-      setStreamingModel(model);
+      setStreamingMessageIds(newStreamingIds);
     } catch (err) {
       console.error('Failed to send message:', err);
     }
   };
 
   const handleStop = async () => {
-    if (!streamingMessageId) return;
+    if (streamingMessageIds.length === 0) return;
     try {
-      await stopGeneration(streamingMessageId);
+      await stopChannel(activeChannelId);
     } catch (err) {
       console.error('Failed to stop generation:', err);
     }
@@ -153,8 +157,9 @@ export default function App() {
 
   const handleRegenerate = async () => {
     try {
-      const { assistantMessageId, model } = await regenerateLastResponse(activeChannelId);
+      const { assistants } = await regenerateLastResponse(activeChannelId);
 
+      // Remove the last assistant message(s) from the UI
       const lastAssistantIdx = [...messages]
         .reverse()
         .findIndex((m) => m.role === 'assistant');
@@ -163,18 +168,22 @@ export default function App() {
         removeMessage(messages[actualIdx].id);
       }
 
-      addMessage({
-        id: assistantMessageId,
-        channelId: activeChannelId,
-        role: 'assistant',
-        content: '',
-        status: 'streaming',
-        model,
-        createdAt: new Date().toISOString(),
-      });
+      const newStreamingIds: string[] = [];
+      for (const assistant of assistants) {
+        addMessage({
+          id: assistant.assistantMessageId,
+          channelId: activeChannelId,
+          role: 'assistant',
+          content: '',
+          status: 'streaming',
+          model: assistant.model,
+          entityId: assistant.entityId,
+          createdAt: new Date().toISOString(),
+        });
+        newStreamingIds.push(assistant.assistantMessageId);
+      }
 
-      setStreamingMessageId(assistantMessageId);
-      setStreamingModel(model);
+      setStreamingMessageIds(newStreamingIds);
     } catch (err) {
       console.error('Failed to regenerate:', err);
     }
@@ -185,8 +194,8 @@ export default function App() {
       setSidebarOpen(false);
       return;
     }
-    setStreamingMessageId(null);
-    setStreamingModel(undefined);
+    setStreamingMessageIds([]);
+    resetStreams();
     setConfirmingClear(false);
     setShowSettings(false);
     setSidebarOpen(false);
@@ -214,7 +223,7 @@ export default function App() {
     }
   };
 
-  // Model label for the header
+  // Model label for the header — show the first entity's model
   const activeModelLabel = activeChannel
     ? AVAILABLE_MODELS[activeChannel.model]?.label || activeChannel.model
     : undefined;
@@ -270,7 +279,7 @@ export default function App() {
               </p>
             )}
           </button>
-          {messages.length > 0 && !isStreaming && (
+          {messages.length > 0 && !isAnyStreaming && (
             <button
               onClick={handleClearHistory}
               title={confirmingClear ? 'Click again to confirm' : 'Clear channel history'}
@@ -300,12 +309,12 @@ export default function App() {
         {/* Messages */}
         <MessageList
           messages={messages}
-          streamingContent={streamingContent}
-          streamingMessageId={streamingMessageId}
-          streamingModel={streamingModel}
+          getStreamContent={getStreamContent}
+          isMessageStreaming={isMessageStreaming}
+          channelEntities={channelEntities}
           onDeleteMessage={handleDeleteMessage}
           onRegenerateMessage={handleRegenerate}
-          isStreaming={isStreaming}
+          isStreaming={isAnyStreaming}
           theme={theme}
         />
 
@@ -313,8 +322,8 @@ export default function App() {
         <MessageInput
           onSend={handleSend}
           onStop={handleStop}
-          disabled={isStreaming}
-          isStreaming={isStreaming}
+          disabled={isAnyStreaming}
+          isStreaming={isAnyStreaming}
         />
       </div>
     </div>

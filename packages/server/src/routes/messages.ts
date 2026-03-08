@@ -4,14 +4,15 @@ import {
   getMessages,
   getMessage,
   getChannel,
+  getChannelEntities,
   insertMessage,
-  createMessagePair,
   deleteMessage,
   deleteAllMessages,
   getLastAssistantMessage,
 } from '../db/queries.js';
 import { streamClaude, activeStreams, abortStream } from '../claude/client.js';
-import type { StreamEvent } from '@klatch/shared';
+import type { StreamEvent, Entity } from '@klatch/shared';
+import { getDb } from '../db/index.js';
 
 const app = new Hono();
 
@@ -22,7 +23,7 @@ app.get('/channels/:channelId/messages', (c) => {
   return c.json(messages);
 });
 
-// Send a message — creates user msg + placeholder assistant msg, kicks off streaming
+// Send a message — creates user msg + N assistant placeholders (one per entity), kicks off N streams
 app.post('/channels/:channelId/messages', async (c) => {
   const channelId = c.req.param('channelId');
   const { content } = await c.req.json<{ content: string }>();
@@ -38,15 +39,31 @@ app.post('/channels/:channelId/messages', async (c) => {
     return c.json({ error: 'Channel not found' }, 404);
   }
 
-  const model = channel.model;
+  // Get assigned entities
+  const entities = getChannelEntities(channelId);
+  if (entities.length === 0) {
+    return c.json({ error: 'No entities assigned to this channel' }, 400);
+  }
 
-  // Create both messages in a single transaction
-  const { userMsg, assistantMsg } = createMessagePair(channelId, content.trim(), model);
+  // Create user message + N assistant placeholders in a single transaction
+  const db = getDb();
+  const txn = db.transaction(() => {
+    const userMsg = insertMessage(channelId, 'user', content.trim(), 'complete');
+    const assistants = entities.map((entity) => {
+      const msg = insertMessage(channelId, 'assistant', '', 'streaming', entity.model, entity.id);
+      return { assistantMessageId: msg.id, entityId: entity.id, model: entity.model };
+    });
+    return { userMsg, assistants };
+  });
+  const { userMsg, assistants } = txn();
 
-  // Fire off Claude streaming in background (don't await)
-  streamClaude(channelId, assistantMsg.id);
+  // Fire off N parallel streams (don't await)
+  for (const assistant of assistants) {
+    const entity = entities.find((e) => e.id === assistant.entityId)!;
+    streamClaude(channelId, assistant.assistantMessageId, entity, channel.systemPrompt);
+  }
 
-  return c.json({ userMessageId: userMsg.id, assistantMessageId: assistantMsg.id, model });
+  return c.json({ userMessageId: userMsg.id, assistants });
 });
 
 // Clear all messages in a channel
@@ -66,7 +83,7 @@ app.delete('/messages/:id', (c) => {
   return c.json({ deleted: true });
 });
 
-// Stop a streaming message (abort the Claude API call, keep partial content)
+// Stop a single streaming message
 app.post('/messages/:id/stop', (c) => {
   const id = c.req.param('id');
   const aborted = abortStream(id);
@@ -76,7 +93,21 @@ app.post('/messages/:id/stop', (c) => {
   return c.json({ stopped: true });
 });
 
-// Regenerate: delete the last assistant message and re-send
+// Stop all active streams in a channel
+app.post('/channels/:channelId/stop', (c) => {
+  const channelId = c.req.param('channelId');
+
+  // Find all active streams for streaming messages in this channel
+  const messages = getMessages(channelId).filter((m) => m.status === 'streaming');
+  let stopped = 0;
+  for (const msg of messages) {
+    if (abortStream(msg.id)) stopped++;
+  }
+
+  return c.json({ stopped });
+});
+
+// Regenerate: delete the last assistant message(s) and re-send
 app.post('/channels/:channelId/regenerate', async (c) => {
   const channelId = c.req.param('channelId');
 
@@ -93,12 +124,25 @@ app.post('/channels/:channelId/regenerate', async (c) => {
   // Delete the old assistant message
   deleteMessage(lastAssistant.id);
 
-  // Create a new placeholder with current channel model and kick off streaming
-  const model = channel.model;
-  const assistantMsg = insertMessage(channelId, 'assistant', '', 'streaming', model);
-  streamClaude(channelId, assistantMsg.id);
+  // If the message had an entity, regenerate with that entity; otherwise use channel entities
+  const entities = lastAssistant.entityId
+    ? getChannelEntities(channelId).filter((e) => e.id === lastAssistant.entityId)
+    : getChannelEntities(channelId);
 
-  return c.json({ assistantMessageId: assistantMsg.id, model });
+  // For single-entity regenerate, create one placeholder
+  const entity = entities[0];
+  if (!entity) {
+    return c.json({ error: 'Entity not found for regeneration' }, 404);
+  }
+
+  const assistantMsg = insertMessage(channelId, 'assistant', '', 'streaming', entity.model, entity.id);
+  streamClaude(channelId, assistantMsg.id, entity, channel.systemPrompt);
+
+  return c.json({
+    assistantMessageId: assistantMsg.id,
+    model: entity.model,
+    assistants: [{ assistantMessageId: assistantMsg.id, entityId: entity.id, model: entity.model }],
+  });
 });
 
 // SSE endpoint to observe a streaming message
