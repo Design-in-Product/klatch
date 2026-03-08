@@ -26,5 +26,13 @@ export function useMessages(channelId: string) {
     );
   };
 
-  return { messages, loading, refresh, addMessage, updateMessage };
+  const removeMessage = (id: string) => {
+    setMessages((prev) => prev.filter((m) => m.id !== id));
+  };
+
+  const clearMessages = () => {
+    setMessages([]);
+  };
+
+  return { messages, loading, refresh, addMessage, updateMessage, removeMessage, clearMessages };
 }

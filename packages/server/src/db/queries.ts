@@ -82,3 +82,34 @@ export function updateMessage(id: string, content: string, status: 'complete' | 
     .prepare('UPDATE messages SET content = ?, status = ? WHERE id = ?')
     .run(content, status, id);
 }
+
+export function deleteMessage(id: string): boolean {
+  const result = getDb()
+    .prepare('DELETE FROM messages WHERE id = ?')
+    .run(id);
+  return result.changes > 0;
+}
+
+export function deleteAllMessages(channelId: string): number {
+  const result = getDb()
+    .prepare('DELETE FROM messages WHERE channel_id = ?')
+    .run(channelId);
+  return result.changes;
+}
+
+export function getLastAssistantMessage(channelId: string): Message | undefined {
+  const row = getDb()
+    .prepare(
+      'SELECT * FROM messages WHERE channel_id = ? AND role = ? ORDER BY created_at DESC LIMIT 1'
+    )
+    .get(channelId, 'assistant') as any;
+  if (!row) return undefined;
+  return {
+    id: row.id,
+    channelId: row.channel_id,
+    role: row.role,
+    content: row.content,
+    status: row.status,
+    createdAt: row.created_at,
+  };
+}

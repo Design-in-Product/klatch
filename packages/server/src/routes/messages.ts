@@ -1,7 +1,14 @@
 import { Hono } from 'hono';
 import { streamSSE } from 'hono/streaming';
-import { getMessages, getMessage, insertMessage } from '../db/queries.js';
-import { streamClaude, activeStreams } from '../claude/client.js';
+import {
+  getMessages,
+  getMessage,
+  insertMessage,
+  deleteMessage,
+  deleteAllMessages,
+  getLastAssistantMessage,
+} from '../db/queries.js';
+import { streamClaude, activeStreams, abortStream } from '../claude/client.js';
 import type { StreamEvent } from '@klatch/shared';
 
 const app = new Hono();
@@ -25,6 +32,52 @@ app.post('/channels/:channelId/messages', async (c) => {
   streamClaude(channelId, assistantMsg.id);
 
   return c.json({ userMessageId: userMsg.id, assistantMessageId: assistantMsg.id });
+});
+
+// Clear all messages in a channel
+app.delete('/channels/:channelId/messages', (c) => {
+  const channelId = c.req.param('channelId');
+  const deleted = deleteAllMessages(channelId);
+  return c.json({ deleted });
+});
+
+// Delete a single message
+app.delete('/messages/:id', (c) => {
+  const id = c.req.param('id');
+  const found = deleteMessage(id);
+  if (!found) {
+    return c.json({ error: 'Message not found' }, 404);
+  }
+  return c.json({ deleted: true });
+});
+
+// Stop a streaming message (abort the Claude API call, keep partial content)
+app.post('/messages/:id/stop', (c) => {
+  const id = c.req.param('id');
+  const aborted = abortStream(id);
+  if (!aborted) {
+    return c.json({ error: 'No active stream for this message' }, 404);
+  }
+  return c.json({ stopped: true });
+});
+
+// Regenerate: delete the last assistant message and re-send
+app.post('/channels/:channelId/regenerate', async (c) => {
+  const channelId = c.req.param('channelId');
+
+  const lastAssistant = getLastAssistantMessage(channelId);
+  if (!lastAssistant) {
+    return c.json({ error: 'No assistant message to regenerate' }, 404);
+  }
+
+  // Delete the old assistant message
+  deleteMessage(lastAssistant.id);
+
+  // Create a new placeholder and kick off streaming
+  const assistantMsg = insertMessage(channelId, 'assistant', '', 'streaming');
+  streamClaude(channelId, assistantMsg.id);
+
+  return c.json({ assistantMessageId: assistantMsg.id });
 });
 
 // SSE endpoint to observe a streaming message

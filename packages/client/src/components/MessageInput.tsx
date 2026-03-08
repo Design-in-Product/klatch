@@ -2,10 +2,12 @@ import React, { useState, useRef, useEffect } from 'react';
 
 interface Props {
   onSend: (content: string) => void;
+  onStop?: () => void;
   disabled: boolean;
+  isStreaming: boolean;
 }
 
-export function MessageInput({ onSend, disabled }: Props) {
+export function MessageInput({ onSend, onStop, disabled, isStreaming }: Props) {
   const [value, setValue] = useState('');
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -37,7 +39,7 @@ export function MessageInput({ onSend, disabled }: Props) {
           value={value}
           onChange={(e) => setValue(e.target.value)}
           onKeyDown={handleKeyDown}
-          placeholder={disabled ? 'Waiting for response...' : 'Type a message... (Enter to send, Shift+Enter for newline)'}
+          placeholder={isStreaming ? 'Waiting for response...' : 'Type a message... (Enter to send, Shift+Enter for newline)'}
           disabled={disabled}
           rows={1}
           className="flex-1 resize-none rounded-lg bg-gray-800 border border-gray-600 px-4 py-2.5 text-sm text-gray-100 placeholder-gray-500 focus:outline-none focus:border-indigo-500 disabled:opacity-50"
@@ -48,13 +50,25 @@ export function MessageInput({ onSend, disabled }: Props) {
             target.style.height = `${Math.min(target.scrollHeight, 160)}px`;
           }}
         />
-        <button
-          onClick={handleSubmit}
-          disabled={disabled || !value.trim()}
-          className="rounded-lg bg-indigo-600 px-4 py-2.5 text-sm font-medium text-white hover:bg-indigo-500 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
-        >
-          Send
-        </button>
+        {isStreaming ? (
+          <button
+            onClick={onStop}
+            className="rounded-lg bg-red-600 px-4 py-2.5 text-sm font-medium text-white hover:bg-red-500 transition-colors flex items-center gap-1.5"
+          >
+            <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+              <rect x="6" y="6" width="12" height="12" rx="1" />
+            </svg>
+            Stop
+          </button>
+        ) : (
+          <button
+            onClick={handleSubmit}
+            disabled={disabled || !value.trim()}
+            className="rounded-lg bg-indigo-600 px-4 py-2.5 text-sm font-medium text-white hover:bg-indigo-500 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+          >
+            Send
+          </button>
+        )}
       </div>
     </div>
   );

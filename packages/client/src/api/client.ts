@@ -39,3 +39,35 @@ export async function sendMessage(
   if (!res.ok) throw new Error(`Failed to send message: ${res.statusText}`);
   return res.json();
 }
+
+export async function clearChannelHistory(channelId: string): Promise<{ deleted: number }> {
+  const res = await fetch(`${BASE}/channels/${channelId}/messages`, {
+    method: 'DELETE',
+  });
+  if (!res.ok) throw new Error(`Failed to clear history: ${res.statusText}`);
+  return res.json();
+}
+
+export async function deleteMessageApi(id: string): Promise<void> {
+  const res = await fetch(`${BASE}/messages/${id}`, {
+    method: 'DELETE',
+  });
+  if (!res.ok) throw new Error(`Failed to delete message: ${res.statusText}`);
+}
+
+export async function stopGeneration(messageId: string): Promise<void> {
+  const res = await fetch(`${BASE}/messages/${messageId}/stop`, {
+    method: 'POST',
+  });
+  if (!res.ok) throw new Error(`Failed to stop generation: ${res.statusText}`);
+}
+
+export async function regenerateLastResponse(
+  channelId: string
+): Promise<{ assistantMessageId: string }> {
+  const res = await fetch(`${BASE}/channels/${channelId}/regenerate`, {
+    method: 'POST',
+  });
+  if (!res.ok) throw new Error(`Failed to regenerate: ${res.statusText}`);
+  return res.json();
+}
