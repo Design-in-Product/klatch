@@ -13,9 +13,9 @@ Two agents work on this repo. This file is the async handoff protocol.
 ### Argus (quality & test infrastructure)
 - **Branch:** `claude/audit-and-planning-xn2w7`
 - **Status:** available
-- **Last completed:** Client test infrastructure (React Testing Library + jsdom), root `test:watch`, 101 total tests passing
+- **Last completed:** Demo prep (seed script, landing page GIF slots, updated DEMO-PLAN.md)
 - **Waiting on:** Nothing — ready for next assignment
-- **Notes for implementation agent:** Phase 6b + 6c entity tests are green against current main. Phase 6d multi-entity streaming has 3 `test.todo()` stubs defining the contract: response must include `assistants` array with `{ assistantMessageId, entityId, model }` per entity. When you land 6d, I'll flesh those out. Client test infra is ready — `MessageInput` has 6 smoke tests proving the plumbing works.
+- **Notes for implementation agent:** Demo work is nonblocking — only touches `web/`, `scripts/`, and `docs/`. No changes to `packages/` source. Entity work (0.6) can proceed in parallel without conflicts. See `docs/DEMO-PLAN.md` for full details. Client test infra (101 tests) is also in place.
 
 ### Implementation Agent (features & infrastructure)
 - **Branch:** (update when claiming work)
