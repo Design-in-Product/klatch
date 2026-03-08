@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect, useRef } from 'react';
-import type { Channel, Entity, ModelId } from '@klatch/shared';
+import type { Channel, Entity, ModelId, InteractionMode } from '@klatch/shared';
 import { AVAILABLE_MODELS } from '@klatch/shared';
 import { ChannelSidebar } from './components/ChannelSidebar';
 import { ChannelSettings } from './components/ChannelSettings';
@@ -222,7 +222,7 @@ export default function App() {
     }
   };
 
-  const handleUpdateChannel = async (updates: { name?: string; systemPrompt?: string; model?: ModelId }) => {
+  const handleUpdateChannel = async (updates: { name?: string; systemPrompt?: string; model?: ModelId; mode?: InteractionMode }) => {
     try {
       const updated = await updateChannelApi(activeChannelId, updates);
       setChannels((prev) =>

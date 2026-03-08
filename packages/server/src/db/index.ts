@@ -1,7 +1,7 @@
 import Database from 'better-sqlite3';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { DEFAULT_MODEL, DEFAULT_ENTITY_ID, ENTITY_COLORS, MODEL_ALIASES } from '@klatch/shared';
+import { DEFAULT_MODEL, DEFAULT_ENTITY_ID, ENTITY_COLORS, MODEL_ALIASES, DEFAULT_INTERACTION_MODE } from '@klatch/shared';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const DB_PATH = path.resolve(__dirname, '../../../../klatch.db');
@@ -26,6 +26,7 @@ function initSchema() {
       name TEXT NOT NULL,
       system_prompt TEXT NOT NULL DEFAULT '',
       model TEXT NOT NULL DEFAULT '${DEFAULT_MODEL}',
+      mode TEXT NOT NULL DEFAULT '${DEFAULT_INTERACTION_MODE}',
       created_at TEXT NOT NULL DEFAULT (datetime('now'))
     );
 
@@ -79,6 +80,11 @@ function runMigrations() {
   // Add entity_id column to messages if it doesn't exist
   if (!msgCols.some((c) => c.name === 'entity_id')) {
     db.exec(`ALTER TABLE messages ADD COLUMN entity_id TEXT`);
+  }
+
+  // Add mode column to channels if it doesn't exist
+  if (!channelCols.some((c) => c.name === 'mode')) {
+    db.exec(`ALTER TABLE channels ADD COLUMN mode TEXT NOT NULL DEFAULT '${DEFAULT_INTERACTION_MODE}'`);
   }
 
   // Migrate legacy model IDs to current versions

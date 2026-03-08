@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import type { Channel, Entity, ModelId } from '@klatch/shared';
-import { AVAILABLE_MODELS } from '@klatch/shared';
+import type { Channel, Entity, ModelId, InteractionMode } from '@klatch/shared';
+import { AVAILABLE_MODELS, INTERACTION_MODES } from '@klatch/shared';
 
 interface Props {
   channel: Channel;
   channelEntities: Entity[];
   allEntities: Entity[];
-  onSave: (updates: { name?: string; systemPrompt?: string; model?: ModelId }) => void;
+  onSave: (updates: { name?: string; systemPrompt?: string; model?: ModelId; mode?: InteractionMode }) => void;
   onAssignEntity: (entityId: string) => void;
   onRemoveEntity: (entityId: string) => void;
   onClose: () => void;
@@ -88,6 +88,42 @@ export function ChannelSettings({
             rows={3}
             className="w-full rounded bg-input border border-line px-3 py-2 text-sm text-primary placeholder-muted focus:outline-none focus:border-accent resize-none"
           />
+        </div>
+
+        {/* Interaction mode */}
+        <div>
+          <label className="block text-xs text-secondary mb-2">
+            Interaction mode
+          </label>
+          <div className="inline-flex rounded-lg border border-line overflow-hidden">
+            {(Object.entries(INTERACTION_MODES) as [InteractionMode, { label: string; description: string }][]).map(
+              ([modeKey, { label, description }]) => {
+                const isActive = channel.mode === modeKey;
+                const isDisabled = modeKey !== 'panel'; // Only panel is implemented
+                return (
+                  <button
+                    key={modeKey}
+                    onClick={() => {
+                      if (!isDisabled && !isActive) {
+                        onSave({ mode: modeKey });
+                      }
+                    }}
+                    disabled={isDisabled}
+                    title={isDisabled ? `${description} (coming soon)` : description}
+                    className={`px-3 py-1.5 text-xs font-medium transition-colors ${
+                      isActive
+                        ? 'bg-accent text-white'
+                        : isDisabled
+                          ? 'bg-card text-muted/50 cursor-not-allowed'
+                          : 'bg-card text-secondary hover:text-primary hover:bg-hover'
+                    } ${modeKey !== 'panel' ? 'border-l border-line' : ''}`}
+                  >
+                    {label}
+                  </button>
+                );
+              }
+            )}
+          </div>
         </div>
 
         {/* Save button for name/prompt changes */}
