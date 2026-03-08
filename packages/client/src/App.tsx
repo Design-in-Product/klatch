@@ -347,8 +347,8 @@ export default function App() {
                   {activeModelLabel}
                 </span>
               ) : null}
-              {/* Mode badge — only show when not default (panel) */}
-              {activeChannel?.mode && activeChannel.mode !== 'panel' && (
+              {/* Mode badge — only show for non-default modes with 2+ entities */}
+              {activeChannel?.mode && activeChannel.mode !== 'panel' && channelEntities.length >= 2 && (
                 <span className="text-[10px] px-1.5 py-0.5 rounded bg-accent/15 text-accent font-medium">
                   {INTERACTION_MODES[activeChannel.mode]?.label || activeChannel.mode}
                 </span>

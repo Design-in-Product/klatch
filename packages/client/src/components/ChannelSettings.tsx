@@ -90,41 +90,43 @@ export function ChannelSettings({
           />
         </div>
 
-        {/* Interaction mode */}
-        <div>
-          <label className="block text-xs text-secondary mb-2">
-            Interaction mode
-          </label>
-          <div className="inline-flex rounded-lg border border-line overflow-hidden">
-            {(Object.entries(INTERACTION_MODES) as [InteractionMode, { label: string; description: string }][]).map(
-              ([modeKey, { label, description }]) => {
-                const isActive = channel.mode === modeKey;
-                const isDisabled = modeKey === 'directed'; // Directed not yet implemented
-                return (
-                  <button
-                    key={modeKey}
-                    onClick={() => {
-                      if (!isDisabled && !isActive) {
-                        onSave({ mode: modeKey });
-                      }
-                    }}
-                    disabled={isDisabled}
-                    title={isDisabled ? `${description} (coming soon)` : description}
-                    className={`px-3 py-1.5 text-xs font-medium transition-colors ${
-                      isActive
-                        ? 'bg-accent text-white'
-                        : isDisabled
-                          ? 'bg-card text-muted/50 cursor-not-allowed'
-                          : 'bg-card text-secondary hover:text-primary hover:bg-hover'
-                    } ${modeKey !== 'panel' ? 'border-l border-line' : ''}`}
-                  >
-                    {label}
-                  </button>
-                );
-              }
-            )}
+        {/* Interaction mode — only meaningful with 2+ entities */}
+        {channelEntities.length >= 2 && (
+          <div>
+            <label className="block text-xs text-secondary mb-2">
+              Interaction mode
+            </label>
+            <div className="inline-flex rounded-lg border border-line overflow-hidden">
+              {(Object.entries(INTERACTION_MODES) as [InteractionMode, { label: string; description: string }][]).map(
+                ([modeKey, { label, description }]) => {
+                  const isActive = channel.mode === modeKey;
+                  const isDisabled = modeKey === 'directed'; // Directed not yet implemented
+                  return (
+                    <button
+                      key={modeKey}
+                      onClick={() => {
+                        if (!isDisabled && !isActive) {
+                          onSave({ mode: modeKey });
+                        }
+                      }}
+                      disabled={isDisabled}
+                      title={isDisabled ? `${description} (coming soon)` : description}
+                      className={`px-3 py-1.5 text-xs font-medium transition-colors ${
+                        isActive
+                          ? 'bg-accent text-white'
+                          : isDisabled
+                            ? 'bg-card text-muted/50 cursor-not-allowed'
+                            : 'bg-card text-secondary hover:text-primary hover:bg-hover'
+                      } ${modeKey !== 'panel' ? 'border-l border-line' : ''}`}
+                    >
+                      {label}
+                    </button>
+                  );
+                }
+              )}
+            </div>
           </div>
-        </div>
+        )}
 
         {/* Save button for name/prompt changes */}
         {dirty && (
