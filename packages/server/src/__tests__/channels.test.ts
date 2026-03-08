@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { createTestApp } from './app.js';
-import { DEFAULT_MODEL } from '@klatch/shared';
+import { DEFAULT_MODEL, DEFAULT_INTERACTION_MODE } from '@klatch/shared';
 
 const app = createTestApp();
 
@@ -63,6 +63,27 @@ describe('POST /api/channels', () => {
     expect(data.name).toBe('trimmed');
     expect(data.systemPrompt).toBe('You are a helpful assistant.');
   });
+
+  it('defaults mode to panel', async () => {
+    const res = await req('POST', '/channels', { name: 'no-mode' });
+    expect(res.status).toBe(201);
+    const data = await res.json();
+    expect(data.mode).toBe(DEFAULT_INTERACTION_MODE);
+  });
+
+  it('accepts valid mode', async () => {
+    const res = await req('POST', '/channels', { name: 'rt-ch', mode: 'roundtable' });
+    expect(res.status).toBe(201);
+    const data = await res.json();
+    expect(data.mode).toBe('roundtable');
+  });
+
+  it('rejects invalid mode (400)', async () => {
+    const res = await req('POST', '/channels', { name: 'ch', mode: 'freeform' });
+    expect(res.status).toBe(400);
+    const data = await res.json();
+    expect(data.error).toContain('Invalid mode');
+  });
 });
 
 describe('PATCH /api/channels/:id', () => {
@@ -79,6 +100,23 @@ describe('PATCH /api/channels/:id', () => {
   it('rejects invalid model (400)', async () => {
     const res = await req('PATCH', '/channels/default', { model: 'bad-model' });
     expect(res.status).toBe(400);
+  });
+
+  it('updates mode', async () => {
+    const create = await req('POST', '/channels', { name: 'mode-test' });
+    const { id } = await create.json();
+
+    const res = await req('PATCH', `/channels/${id}`, { mode: 'roundtable' });
+    expect(res.status).toBe(200);
+    const data = await res.json();
+    expect(data.mode).toBe('roundtable');
+  });
+
+  it('rejects invalid mode (400)', async () => {
+    const res = await req('PATCH', '/channels/default', { mode: 'invalid' });
+    expect(res.status).toBe(400);
+    const data = await res.json();
+    expect(data.error).toContain('Invalid mode');
   });
 
   it('returns 404 for nonexistent channel', async () => {

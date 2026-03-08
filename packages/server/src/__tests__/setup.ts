@@ -1,6 +1,6 @@
 import Database from 'better-sqlite3';
 import { vi, beforeEach, afterAll } from 'vitest';
-import { DEFAULT_MODEL, DEFAULT_ENTITY_ID, ENTITY_COLORS, MODEL_ALIASES } from '@klatch/shared';
+import { DEFAULT_MODEL, DEFAULT_ENTITY_ID, ENTITY_COLORS, MODEL_ALIASES, DEFAULT_INTERACTION_MODE } from '@klatch/shared';
 
 let testDb: Database.Database;
 
@@ -20,6 +20,7 @@ function createFreshDb(): Database.Database {
       name TEXT NOT NULL,
       system_prompt TEXT NOT NULL DEFAULT '',
       model TEXT NOT NULL DEFAULT '${DEFAULT_MODEL}',
+      mode TEXT NOT NULL DEFAULT '${DEFAULT_INTERACTION_MODE}',
       created_at TEXT NOT NULL DEFAULT (datetime('now'))
     );
 
