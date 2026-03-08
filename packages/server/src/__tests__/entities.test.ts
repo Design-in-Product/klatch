@@ -234,11 +234,41 @@ describe('DELETE /api/channels/:id/entities/:entityId', () => {
   });
 });
 
-// ── Phase 6d: Multi-entity streaming (TDD — starts red) ────
+// ── Phase 6d: Multi-entity streaming ────────────────────────
 
 describe('Multi-entity streaming response format', () => {
-  // Step 6d — will pass after multi-entity streaming implementation lands
-  it.todo('POST /channels/:id/messages returns assistants array for single-entity channel');
-  it.todo('POST /channels/:id/messages returns assistants array with N elements for multi-entity channel');
-  it.todo('each assistant element has { assistantMessageId, entityId, model }');
+  it('returns assistants array for single-entity channel', async () => {
+    const res = await req('POST', '/channels/default/messages', { content: 'hello' });
+    expect(res.status).toBe(200);
+    const data = await res.json();
+    expect(data.userMessageId).toBeTruthy();
+    expect(Array.isArray(data.assistants)).toBe(true);
+    expect(data.assistants).toHaveLength(1);
+    expect(data.assistants[0].entityId).toBe(DEFAULT_ENTITY_ID);
+  });
+
+  it('returns assistants array with N elements for multi-entity channel', async () => {
+    // Create a channel and add a second entity
+    const chRes = await req('POST', '/channels', { name: 'multi-test' });
+    const ch = await chRes.json();
+
+    const eRes = await req('POST', '/entities', { name: 'SecondBot', model: 'claude-sonnet-4-6' });
+    const entity = await eRes.json();
+    await req('POST', `/channels/${ch.id}/entities`, { entityId: entity.id });
+
+    const res = await req('POST', `/channels/${ch.id}/messages`, { content: 'hello both' });
+    expect(res.status).toBe(200);
+    const data = await res.json();
+    expect(data.assistants).toHaveLength(2);
+  });
+
+  it('each assistant element has { assistantMessageId, entityId, model }', async () => {
+    const res = await req('POST', '/channels/default/messages', { content: 'check shape' });
+    const data = await res.json();
+    for (const a of data.assistants) {
+      expect(a.assistantMessageId).toBeTruthy();
+      expect(a.entityId).toBeTruthy();
+      expect(a.model).toBeTruthy();
+    }
+  });
 });

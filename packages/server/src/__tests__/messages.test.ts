@@ -18,13 +18,17 @@ function req(method: string, path: string, body?: unknown) {
 }
 
 describe('POST /api/channels/:channelId/messages', () => {
-  it('creates a message pair and returns IDs', async () => {
+  it('creates a message and returns user ID + assistants array', async () => {
     const res = await req('POST', '/channels/default/messages', { content: 'hello' });
     expect(res.status).toBe(200);
     const data = await res.json();
     expect(data.userMessageId).toBeTruthy();
-    expect(data.assistantMessageId).toBeTruthy();
-    expect(data.model).toBeTruthy();
+    expect(data.assistants).toBeTruthy();
+    expect(Array.isArray(data.assistants)).toBe(true);
+    expect(data.assistants.length).toBeGreaterThanOrEqual(1);
+    expect(data.assistants[0].assistantMessageId).toBeTruthy();
+    expect(data.assistants[0].entityId).toBeTruthy();
+    expect(data.assistants[0].model).toBeTruthy();
   });
 
   it('rejects empty content (400)', async () => {
@@ -68,6 +72,23 @@ describe('DELETE /api/messages/:id', () => {
   it('returns 404 for nonexistent message', async () => {
     const res = await req('DELETE', '/messages/nonexistent');
     expect(res.status).toBe(404);
+  });
+});
+
+describe('POST /api/messages/:id/stop', () => {
+  it('returns 404 when no active stream exists', async () => {
+    const msg = insertMessage('default', 'assistant', 'done', 'complete');
+    const res = await req('POST', `/messages/${msg.id}/stop`);
+    expect(res.status).toBe(404);
+  });
+});
+
+describe('POST /api/channels/:channelId/stop', () => {
+  it('returns stopped count (0 when nothing streaming)', async () => {
+    const res = await req('POST', '/channels/default/stop');
+    expect(res.status).toBe(200);
+    const data = await res.json();
+    expect(data.stopped).toBe(0);
   });
 });
 

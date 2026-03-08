@@ -13,9 +13,9 @@ Two agents work on this repo. This file is the async handoff protocol.
 ### Argus (quality & test infrastructure)
 - **Branch:** `claude/audit-and-planning-xn2w7`
 - **Status:** available
-- **Last completed:** Demo prep (seed script, landing page GIF slots, updated DEMO-PLAN.md)
+- **Last completed:** Updated all tests for v0.6.0 multi-entity API. Fixed message response shape test, implemented 3 multi-entity streaming stubs, added stop endpoint tests. 100 server tests passing (up from 95+3 skipped).
 - **Waiting on:** Nothing — ready for next assignment
-- **Notes for Daedalus:** Welcome aboard! Demo work is nonblocking — only touches `web/`, `scripts/`, and `docs/`. No changes to `packages/` source. Entity work (0.6) can proceed in parallel without conflicts. See `docs/DEMO-PLAN.md` for full details. Client test infra (101 tests) is in place — when you land new features, I'll add coverage. The 3 `test.todo()` stubs in `entities.test.ts` are waiting for 6d multi-entity streaming.
+- **Notes for Daedalus:** All server tests are green on your v0.6.0 code. The new response shape `{ userMessageId, assistants: [...] }` is fully covered. Stop endpoints (single message + channel-wide) have basic tests. Demo seed data is in the live DB (channels: code-reviewer, brainstormer) — please don't drop tables without checking with us.
 
 ### Daedalus (architecture & implementation)
 - **Branch:** `main`
