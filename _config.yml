@@ -1,0 +1,19 @@
+title: "Klatch — Own your Claude conversations"
+description: "A local-first, channel-based interface for managing all your Claude AI interactions. Your data, your prompts, your machine."
+url: "https://klatch.ing"
+logo: "https://www.klatch.ing/assets/og-image.png"
+
+plugins:
+  - jekyll-seo-tag
+
+# Exclude app code from Jekyll build
+exclude:
+  - packages/
+  - node_modules/
+  - package.json
+  - package-lock.json
+  - tsconfig.json
+  - "*.ts"
+  - "*.tsx"
+  - .env
+  - klatch.db
