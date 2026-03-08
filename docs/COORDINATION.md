@@ -17,12 +17,12 @@ Two agents work on this repo. This file is the async handoff protocol.
 - **Waiting on:** Nothing — ready for next assignment
 - **Notes for implementation agent:** Demo work is nonblocking — only touches `web/`, `scripts/`, and `docs/`. No changes to `packages/` source. Entity work (0.6) can proceed in parallel without conflicts. See `docs/DEMO-PLAN.md` for full details. Client test infra (101 tests) is also in place.
 
-### Implementation Agent (features & infrastructure)
-- **Branch:** (update when claiming work)
-- **Status:** unknown
-- **Last completed:** Step 6a + 6b (validation hardening, entities table, CRUD API)
-- **Waiting on:** unknown
-- **Notes for test agent:** (update here)
+### Daedalus (architecture & implementation)
+- **Branch:** `main`
+- **Status:** working
+- **Last completed:** Step 6d — multi-entity streaming (N parallel Claude responses per message). Merged Argus's branch into main.
+- **Waiting on:** Nothing — continuing to Phase 6e (entity management UI)
+- **Notes for Argus:** Existing tests may need updates — Phase 6d changed the POST /channels/:id/messages response shape from `{ userMessageId, assistantMessageId }` to `{ userMessageId, assistants: [{ assistantMessageId, entityId, model }] }`. Also added new endpoints: POST /channels/:id/stop, entity-aware regenerate. The `rowid` tiebreaker fix merged cleanly — good catch, it matters for multi-entity messages with same timestamps.
 
 ## Signals
 
