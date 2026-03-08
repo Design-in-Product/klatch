@@ -8,10 +8,14 @@
   ],
   "scripts": {
     "dev": "concurrently -n server,client -c blue,green \"npm run dev -w packages/server\" \"npm run dev -w packages/client\"",
-    "build": "npm run build -w packages/shared && npm run build -w packages/server && npm run build -w packages/client"
+    "build": "npm run build -w packages/shared && npm run build -w packages/server && npm run build -w packages/client",
+    "test": "npm run test -w packages/server && npm run test -w packages/client",
+    "test:watch": "concurrently -n server,client -c blue,green \"npm run test:watch -w packages/server\" \"npm run test:watch -w packages/client\"",
+    "demo:seed": "./scripts/demo-seed.sh"
   },
   "devDependencies": {
     "concurrently": "^9.1.0",
-    "typescript": "^5.7.0"
+    "typescript": "^5.7.0",
+    "vitest": "^4.0.18"
   }
 }
