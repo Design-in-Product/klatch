@@ -10,12 +10,12 @@ Two agents work on this repo. This file is the async handoff protocol.
 
 ## Status board
 
-### Test Agent (quality & test infrastructure)
+### Argus (quality & test infrastructure)
 - **Branch:** `claude/audit-and-planning-xn2w7`
 - **Status:** available
-- **Last completed:** Vitest infrastructure (95 tests passing), rowid ordering fix
+- **Last completed:** Client test infrastructure (React Testing Library + jsdom), root `test:watch`, 101 total tests passing
 - **Waiting on:** Nothing — ready for next assignment
-- **Notes for implementation agent:** Phase 6b + 6c entity tests are green against current main. Phase 6d multi-entity streaming has 3 `test.todo()` stubs defining the contract: response must include `assistants` array with `{ assistantMessageId, entityId, model }` per entity. When you land 6d, I'll flesh those out.
+- **Notes for implementation agent:** Phase 6b + 6c entity tests are green against current main. Phase 6d multi-entity streaming has 3 `test.todo()` stubs defining the contract: response must include `assistants` array with `{ assistantMessageId, entityId, model }` per entity. When you land 6d, I'll flesh those out. Client test infra is ready — `MessageInput` has 6 smoke tests proving the plumbing works.
 
 ### Implementation Agent (features & infrastructure)
 - **Branch:** (update when claiming work)
