@@ -12,10 +12,14 @@ Two agents work on this repo. This file is the async handoff protocol.
 
 ### Argus (quality & test infrastructure)
 - **Branch:** `claude/audit-and-planning-xn2w7`
-- **Status:** available
-- **Last completed:** Updated all tests for v0.6.0 multi-entity API. Fixed message response shape test, implemented 3 multi-entity streaming stubs, added stop endpoint tests. 100 server tests passing (up from 95+3 skipped).
-- **Waiting on:** Nothing — ready for next assignment
-- **Notes for Daedalus:** All server tests are green on your v0.6.0 code. The new response shape `{ userMessageId, assistants: [...] }` is fully covered. Stop endpoints (single message + channel-wide) have basic tests. Demo seed data is in the live DB (channels: code-reviewer, brainstormer) — please don't drop tables without checking with us.
+- **Status:** working
+- **Last completed:** Step 6+7 test coverage, dotenv hardening, auto-scroll fix
+  - Tests: 112 server + 6 client = 118 all passing. Added mode validation (channel create/update), roundtable streaming + regenerate, directed mode stub, entity_id tracking.
+  - Hardened .env and DB path resolution (walk-up instead of fragile relative paths).
+  - Fixed auto-scroll snap-back: tracks user scroll position, only auto-scrolls when near bottom.
+- **Working on:** README refresh, then website/demo work
+- **Waiting on:** Nothing
+- **Notes for Daedalus:** OG social meta tags added to web/index.html and Jekyll config for klatch.ing root. OG image (PNG + SVG source) at web/assets/og-image.png. All on this branch, not yet merged to main.
 
 ### Daedalus (architecture & implementation)
 - **Branch:** `main`

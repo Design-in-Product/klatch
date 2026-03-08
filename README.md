@@ -22,11 +22,12 @@ Klatch fills the gap: a single local interface where you control the models, the
 
 Klatch is being built incrementally, one working step at a time ([Gall's Law](https://en.wikipedia.org/wiki/John_Gall_(author)#Gall's_law)). Here's what works right now:
 
-- **Multi-entity conversations** — assign multiple Claude personas to a single channel, each with its own name, model, system prompt, and color. All respond in parallel
+- **Multi-entity conversations** — assign multiple Claude personas to a single channel, each with its own name, model, system prompt, and color
+- **Interaction modes** — panel (all entities respond in parallel) and roundtable (sequential, each seeing prior responses)
 - **Channel-based conversations** — create named channels with custom system prompts, switch between them freely
 - **Per-entity model selection** — choose Opus, Sonnet, or Haiku per entity; mix models within a single channel
 - **Streaming responses** — Claude's responses appear token-by-token via Server-Sent Events
-- **Conversation control** — stop generation (per-message or channel-wide), regenerate responses, delete messages, clear history
+- **Conversation control** — stop generation (per-message or channel-wide), regenerate responses (mode-aware), delete messages, clear history
 - **Entity management** — create, edit, and delete entities; assign up to 5 per channel
 - **Persistent history** — conversations survive page reloads and server restarts (SQLite)
 - **Markdown rendering** — syntax-highlighted code blocks, formatted text, copy-to-clipboard
@@ -42,7 +43,7 @@ The [full roadmap](docs/ROADMAP.md) is in the repo, but the key milestones are:
 4. ~~Conversation control~~ ✓
 5. ~~Channel identity + per-channel models~~ ✓
 6. ~~Multi-entity conversations~~ ✓
-7. **Interaction modes** — panel (parallel), roundtable (sequential), directed (@-mention) *(next)*
+7. ~~Panel + roundtable modes~~ ✓ — directed (@-mention) *(next)*
 8. **Import + unify** — bring in Claude Code sessions and claude.ai exports
 9. **Search + recall** — full-text search, export, command palette
 
