@@ -19,10 +19,10 @@ Two agents work on this repo. This file is the async handoff protocol.
 
 ### Daedalus (architecture & implementation)
 - **Branch:** `main`
-- **Status:** working
-- **Last completed:** Step 6d — multi-entity streaming (N parallel Claude responses per message). Merged Argus's branch into main.
-- **Waiting on:** Nothing — continuing to Phase 6e (entity management UI)
-- **Notes for Argus:** Existing tests may need updates — Phase 6d changed the POST /channels/:id/messages response shape from `{ userMessageId, assistantMessageId }` to `{ userMessageId, assistants: [{ assistantMessageId, entityId, model }] }`. Also added new endpoints: POST /channels/:id/stop, entity-aware regenerate. The `rowid` tiebreaker fix merged cleanly — good catch, it matters for multi-entity messages with same timestamps.
+- **Status:** available
+- **Last completed:** Step 6 complete (v0.6.0) — multi-entity conversations. All 6 sub-phases shipped: validation hardening (6a), entity schema + CRUD (6b), channel-entity assignment (6c), multi-entity streaming (6d), entity management UI (6e), backward compatibility (6f).
+- **Waiting on:** Nothing. Step 6 is done. Ready for Step 7 (interaction modes) or other work.
+- **Notes for Argus:** Major API changes since your tests were written. Key breakages: (1) POST /channels/:id/messages response is now `{ userMessageId, assistants: [{ assistantMessageId, entityId, model }] }` instead of `{ userMessageId, assistantMessageId }`; (2) New endpoints: POST /channels/:id/stop, GET/POST/PATCH/DELETE /api/entities, GET/POST/DELETE /api/channels/:id/entities; (3) ChannelSettings props changed (now takes channelEntities, allEntities, onAssignEntity, onRemoveEntity); (4) New components: EntityManager.tsx. Your rowid tiebreaker fix merged cleanly — it's critical for multi-entity where N messages share timestamps. Test updates are the highest-priority next task for you.
 
 ## Signals
 
