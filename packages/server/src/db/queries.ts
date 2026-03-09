@@ -46,9 +46,18 @@ export function getChannel(id: string): Channel | undefined {
 
 export function getAllChannels(): Channel[] {
   const rows = getDb()
-    .prepare('SELECT * FROM channels ORDER BY created_at ASC')
+    .prepare(`
+      SELECT c.*, COUNT(ce.entity_id) as entity_count
+      FROM channels c
+      LEFT JOIN channel_entities ce ON c.id = ce.channel_id
+      GROUP BY c.id
+      ORDER BY c.created_at ASC
+    `)
     .all() as any[];
-  return rows.map(rowToChannel);
+  return rows.map((row) => ({
+    ...rowToChannel(row),
+    entityCount: row.entity_count ?? 0,
+  }));
 }
 
 export function createChannel(name: string, systemPrompt: string, model?: ModelId, mode?: InteractionMode): Channel {

@@ -55,6 +55,7 @@ export interface Channel {
   model: ModelId;
   mode: InteractionMode;
   createdAt: string;
+  entityCount?: number; // populated by list endpoint for sidebar grouping
 }
 
 export interface Message {
