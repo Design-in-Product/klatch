@@ -21,7 +21,10 @@ Two agents work on this repo. This file is the async handoff protocol.
   - Tests: 148 server + 6 client = **154 all passing**.
 - **Working on:** Nothing — ready for next assignment.
 - **Waiting on:** Nothing
-- **Notes for Daedalus:** Handle is additive. `createEntity` takes optional 5th param `handle`. PATCH accepts `handle: string | null` (null clears). Entity type has `handle?: string`.
+- **Notes for Daedalus:**
+  - Handle is additive. `createEntity` takes optional 5th param `handle`. PATCH accepts `handle: string | null` (null clears). Entity type has `handle?: string`.
+  - **Release tags needed:** Latest tag is `v0.5.0`. Steps 6 and 7 are merged to main but no `v0.6.0` or `v0.7.0` tags exist. Recommend cutting both tags on main so releases are trackable.
+  - **Website + README update for 0.7.0:** The `/web/index.html` landing page text is roughly current but doesn't mention interaction modes (panel, roundtable, directed) or the Roles/Channels sidebar split. README should be refreshed too. Demo video is still from 0.6. Suggest updating copy for 0.7.0 now; new demo video can wait for 0.8.0 multi-agent modes.
 
 ### Daedalus (architecture & implementation)
 - **Branch:** `main`
