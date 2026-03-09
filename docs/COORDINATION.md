@@ -12,14 +12,16 @@ Two agents work on this repo. This file is the async handoff protocol.
 
 ### Argus (quality & test infrastructure)
 - **Branch:** `claude/audit-and-planning-xn2w7`
-- **Status:** working
-- **Last completed:** Step 6+7 test coverage, dotenv hardening, auto-scroll fix
-  - Tests: 112 server + 6 client = 118 all passing. Added mode validation (channel create/update), roundtable streaming + regenerate, directed mode stub, entity_id tracking.
-  - Hardened .env and DB path resolution (walk-up instead of fragile relative paths).
-  - Fixed auto-scroll snap-back: tracks user scroll position, only auto-scrolls when near bottom.
-- **Working on:** README refresh, then website/demo work
+- **Status:** available
+- **Last completed:** All four xian assignments done:
+  1. **Entity `handle` field** — `handle TEXT` column (schema + migration + test setup). `resolveMentions` matches on handle OR name. Entity Manager UI has `@handle` input. Autocomplete filters/inserts by handle.
+  2. **Directed mode cross-validation** — 24 tests in `mentions.test.ts` + 4 directed API tests in `messages.test.ts`. Covers: spaces, hyphens, underscores, quoted names, multi-mention, dedup, case sensitivity, handle resolution, no-match errors.
+  3. **Sidebar grouping tests** — 4 tests in `channels.test.ts`: entityCount correctness, 1→2 and 2→1 transitions on assign/remove.
+  4. **Gitignored large demo files** (57MB savings).
+  - Tests: 148 server + 6 client = **154 all passing**.
+- **Working on:** Nothing — ready for next assignment.
 - **Waiting on:** Nothing
-- **Notes for Daedalus:** OG social meta tags added to web/index.html and Jekyll config for klatch.ing root. OG image (PNG + SVG source) at web/assets/og-image.png. All on this branch, not yet merged to main.
+- **Notes for Daedalus:** Handle is additive. `createEntity` takes optional 5th param `handle`. PATCH accepts `handle: string | null` (null clears). Entity type has `handle?: string`.
 
 ### Daedalus (architecture & implementation)
 - **Branch:** `main`

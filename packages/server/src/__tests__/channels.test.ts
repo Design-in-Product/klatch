@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { createTestApp } from './app.js';
-import { DEFAULT_MODEL, DEFAULT_INTERACTION_MODE } from '@klatch/shared';
+import { DEFAULT_MODEL, DEFAULT_INTERACTION_MODE, DEFAULT_ENTITY_ID } from '@klatch/shared';
 
 const app = createTestApp();
 
@@ -146,5 +146,74 @@ describe('DELETE /api/channels/:id', () => {
   it('returns 404 for nonexistent channel', async () => {
     const res = await req('DELETE', '/channels/nonexistent');
     expect(res.status).toBe(404);
+  });
+});
+
+// ── Sidebar grouping (entityCount) ───────────────────────────
+
+describe('GET /api/channels entityCount for sidebar grouping', () => {
+  it('default channel has entityCount of 1 (Roles group)', async () => {
+    const res = await req('GET', '/channels');
+    const data = await res.json();
+    const defaultCh = data.find((c: any) => c.id === 'default');
+    expect(defaultCh.entityCount).toBe(1);
+  });
+
+  it('channel with 2 entities has entityCount of 2 (Channels group)', async () => {
+    // Create channel + second entity
+    const chRes = await req('POST', '/channels', { name: 'duo' });
+    const ch = await chRes.json();
+
+    const eRes = await req('POST', '/entities', { name: 'Second' });
+    const entity = await eRes.json();
+    await req('POST', `/channels/${ch.id}/entities`, { entityId: entity.id });
+
+    const listRes = await req('GET', '/channels');
+    const channels = await listRes.json();
+    const duo = channels.find((c: any) => c.id === ch.id);
+    expect(duo.entityCount).toBe(2);
+  });
+
+  it('entityCount updates when entity is removed (2→1 transitions Channels→Roles)', async () => {
+    // Create channel with 2 entities
+    const chRes = await req('POST', '/channels', { name: 'shrink' });
+    const ch = await chRes.json();
+
+    const eRes = await req('POST', '/entities', { name: 'Temp' });
+    const entity = await eRes.json();
+    await req('POST', `/channels/${ch.id}/entities`, { entityId: entity.id });
+
+    // Verify it has 2
+    let listRes = await req('GET', '/channels');
+    let channels = await listRes.json();
+    expect(channels.find((c: any) => c.id === ch.id).entityCount).toBe(2);
+
+    // Remove the extra entity
+    await req('DELETE', `/channels/${ch.id}/entities/${entity.id}`);
+
+    // Now should be 1
+    listRes = await req('GET', '/channels');
+    channels = await listRes.json();
+    expect(channels.find((c: any) => c.id === ch.id).entityCount).toBe(1);
+  });
+
+  it('entityCount updates when entity is added (1→2 transitions Roles→Channels)', async () => {
+    const chRes = await req('POST', '/channels', { name: 'grow' });
+    const ch = await chRes.json();
+
+    // Starts at 1 (default entity auto-assigned)
+    let listRes = await req('GET', '/channels');
+    let channels = await listRes.json();
+    expect(channels.find((c: any) => c.id === ch.id).entityCount).toBe(1);
+
+    // Add a second entity
+    const eRes = await req('POST', '/entities', { name: 'NewBot' });
+    const entity = await eRes.json();
+    await req('POST', `/channels/${ch.id}/entities`, { entityId: entity.id });
+
+    // Now should be 2
+    listRes = await req('GET', '/channels');
+    channels = await listRes.json();
+    expect(channels.find((c: any) => c.id === ch.id).entityCount).toBe(2);
   });
 });

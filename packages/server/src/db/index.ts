@@ -59,6 +59,7 @@ function initSchema() {
     CREATE TABLE IF NOT EXISTS entities (
       id TEXT PRIMARY KEY,
       name TEXT NOT NULL,
+      handle TEXT,
       model TEXT NOT NULL DEFAULT '${DEFAULT_MODEL}',
       system_prompt TEXT NOT NULL DEFAULT '',
       color TEXT NOT NULL DEFAULT '${ENTITY_COLORS[0]}',
@@ -107,6 +108,12 @@ function runMigrations() {
   for (const [oldId, newId] of Object.entries(MODEL_ALIASES)) {
     db.prepare('UPDATE channels SET model = ? WHERE model = ?').run(newId, oldId);
     db.prepare('UPDATE messages SET model = ? WHERE model = ?').run(newId, oldId);
+  }
+
+  // Add handle column to entities if it doesn't exist
+  const entityCols = db.prepare("PRAGMA table_info(entities)").all() as { name: string }[];
+  if (!entityCols.some((c) => c.name === 'handle')) {
+    db.exec(`ALTER TABLE entities ADD COLUMN handle TEXT`);
   }
 
   // Ensure default entity exists (for existing databases being upgraded)

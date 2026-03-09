@@ -42,6 +42,7 @@ export const DEFAULT_INTERACTION_MODE: InteractionMode = 'panel';
 export interface Entity {
   id: string;
   name: string;
+  handle?: string;
   model: ModelId;
   systemPrompt: string;
   color: string;
@@ -104,7 +105,8 @@ export function parseMentions(content: string): string[] {
 }
 
 /**
- * Resolve mentioned names to entities. Case-insensitive matching.
+ * Resolve mentioned names to entities. Case-insensitive matching
+ * against both entity name and optional handle (slug).
  * Returns the matched entities in the order they appear in the entities list.
  */
 export function resolveMentions(content: string, entities: Entity[]): Entity[] {
@@ -112,6 +114,7 @@ export function resolveMentions(content: string, entities: Entity[]): Entity[] {
   if (mentionedNames.length === 0) return [];
 
   return entities.filter((e) =>
-    mentionedNames.includes(e.name.toLowerCase())
+    mentionedNames.includes(e.name.toLowerCase()) ||
+    (e.handle && mentionedNames.includes(e.handle.toLowerCase()))
   );
 }

@@ -86,6 +86,57 @@ describe('POST /api/entities', () => {
   });
 });
 
+describe('POST /api/entities (handle)', () => {
+  it('creates entity with handle', async () => {
+    const res = await req('POST', '/entities', {
+      name: 'Chief of Staff',
+      handle: 'exec',
+    });
+    expect(res.status).toBe(201);
+    const data = await res.json();
+    expect(data.handle).toBe('exec');
+  });
+
+  it('handle defaults to undefined when not provided', async () => {
+    const res = await req('POST', '/entities', { name: 'NoHandle' });
+    expect(res.status).toBe(201);
+    const data = await res.json();
+    expect(data.handle).toBeUndefined();
+  });
+});
+
+describe('PATCH /api/entities/:id (handle)', () => {
+  it('updates handle', async () => {
+    const create = await req('POST', '/entities', { name: 'HandleBot' });
+    const { id } = await create.json();
+
+    const res = await req('PATCH', `/entities/${id}`, { handle: 'hbot' });
+    expect(res.status).toBe(200);
+    const data = await res.json();
+    expect(data.handle).toBe('hbot');
+  });
+
+  it('clears handle when set to null', async () => {
+    const create = await req('POST', '/entities', { name: 'ClearMe', handle: 'clear' });
+    const { id } = await create.json();
+
+    const res = await req('PATCH', `/entities/${id}`, { handle: null });
+    expect(res.status).toBe(200);
+    const data = await res.json();
+    expect(data.handle).toBeUndefined();
+  });
+
+  it('clears handle when set to empty string', async () => {
+    const create = await req('POST', '/entities', { name: 'EmptyH', handle: 'em' });
+    const { id } = await create.json();
+
+    const res = await req('PATCH', `/entities/${id}`, { handle: '' });
+    expect(res.status).toBe(200);
+    const data = await res.json();
+    expect(data.handle).toBeUndefined();
+  });
+});
+
 describe('PATCH /api/entities/:id', () => {
   it('updates entity fields', async () => {
     const create = await req('POST', '/entities', { name: 'PatchMe' });

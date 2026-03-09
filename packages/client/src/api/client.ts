@@ -53,6 +53,7 @@ export async function fetchChannelEntities(channelId: string): Promise<Entity[]>
 
 export async function createEntity(data: {
   name: string;
+  handle?: string;
   model?: ModelId;
   systemPrompt?: string;
   color?: string;
@@ -68,7 +69,7 @@ export async function createEntity(data: {
 
 export async function updateEntity(
   id: string,
-  updates: { name?: string; model?: ModelId; systemPrompt?: string; color?: string }
+  updates: { name?: string; handle?: string | null; model?: ModelId; systemPrompt?: string; color?: string }
 ): Promise<Entity> {
   const res = await fetch(`${BASE}/entities/${id}`, {
     method: 'PATCH',

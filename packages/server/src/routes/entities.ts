@@ -26,8 +26,9 @@ app.get('/entities', (c) => {
 });
 
 app.post('/entities', async (c) => {
-  const { name, model, systemPrompt, color } = await c.req.json<{
+  const { name, handle, model, systemPrompt, color } = await c.req.json<{
     name: string;
+    handle?: string;
     model?: ModelId;
     systemPrompt?: string;
     color?: string;
@@ -49,7 +50,8 @@ app.post('/entities', async (c) => {
     name.trim(),
     entityModel as ModelId,
     systemPrompt?.trim() || 'You are a helpful assistant.',
-    entityColor
+    entityColor,
+    handle?.trim() || undefined
   );
   return c.json(entity, 201);
 });
@@ -58,6 +60,7 @@ app.patch('/entities/:id', async (c) => {
   const id = c.req.param('id');
   const body = await c.req.json<{
     name?: string;
+    handle?: string | null;
     model?: ModelId;
     systemPrompt?: string;
     color?: string;
@@ -69,6 +72,7 @@ app.patch('/entities/:id', async (c) => {
 
   const updated = updateEntity(id, {
     name: body.name?.trim(),
+    handle: body.handle !== undefined ? (body.handle?.trim() || null) : undefined,
     model: body.model,
     systemPrompt: body.systemPrompt?.trim(),
     color: body.color,

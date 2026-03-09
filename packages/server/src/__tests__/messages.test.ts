@@ -7,7 +7,7 @@ import {
   assignEntityToChannel,
   getMessages,
 } from '../db/queries.js';
-import { DEFAULT_MODEL, ENTITY_COLORS } from '@klatch/shared';
+import { DEFAULT_MODEL, DEFAULT_ENTITY_ID, ENTITY_COLORS } from '@klatch/shared';
 
 // Mock the claude client so streaming doesn't actually call the API
 vi.mock('../claude/client.js', () => ({
@@ -112,15 +112,50 @@ describe('POST /api/channels/:channelId/messages (roundtable)', () => {
   });
 });
 
-// ── Directed mode (stub) ─────────────────────────────────────
+// ── Directed mode ────────────────────────────────────────────
 
 describe('POST /api/channels/:channelId/messages (directed)', () => {
-  it('returns 501 for directed mode', async () => {
+  it('returns 400 when no @-mention in directed mode', async () => {
     const channel = createChannel('directed-ch', 'sys', DEFAULT_MODEL, 'directed');
     const res = await req('POST', `/channels/${channel.id}/messages`, { content: 'hello' });
-    expect(res.status).toBe(501);
+    expect(res.status).toBe(400);
     const data = await res.json();
-    expect(data.error).toContain('not yet implemented');
+    expect(data.error).toContain('No entity mentioned');
+  });
+
+  it('routes to mentioned entity by name', async () => {
+    const channel = createChannel('dir-test', 'sys', DEFAULT_MODEL, 'directed');
+    const res = await req('POST', `/channels/${channel.id}/messages`, { content: '@Claude hello' });
+    expect(res.status).toBe(200);
+    const data = await res.json();
+    expect(data.assistants).toHaveLength(1);
+    expect(data.assistants[0].entityId).toBe(DEFAULT_ENTITY_ID);
+  });
+
+  it('routes to entity by handle', async () => {
+    const channel = createChannel('dir-handle', 'sys', DEFAULT_MODEL, 'directed');
+    // Create entity with handle
+    const entity = createEntity('Chief of Staff', DEFAULT_MODEL, 'sys', ENTITY_COLORS[1], 'exec');
+    assignEntityToChannel(channel.id, entity.id);
+
+    const res = await req('POST', `/channels/${channel.id}/messages`, { content: '@exec what do you think?' });
+    expect(res.status).toBe(200);
+    const data = await res.json();
+    expect(data.assistants).toHaveLength(1);
+    expect(data.assistants[0].entityId).toBe(entity.id);
+  });
+
+  it('supports multi-mention to reach multiple entities', async () => {
+    const channel = createChannel('dir-multi', 'sys', DEFAULT_MODEL, 'directed');
+    const entity2 = createEntity('Reviewer', DEFAULT_MODEL, 'sys', ENTITY_COLORS[1]);
+    assignEntityToChannel(channel.id, entity2.id);
+
+    const res = await req('POST', `/channels/${channel.id}/messages`, {
+      content: '@Claude @Reviewer please review',
+    });
+    expect(res.status).toBe(200);
+    const data = await res.json();
+    expect(data.assistants).toHaveLength(2);
   });
 });
 

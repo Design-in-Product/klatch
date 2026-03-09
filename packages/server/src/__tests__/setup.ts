@@ -38,6 +38,7 @@ function createFreshDb(): Database.Database {
     CREATE TABLE IF NOT EXISTS entities (
       id TEXT PRIMARY KEY,
       name TEXT NOT NULL,
+      handle TEXT,
       model TEXT NOT NULL DEFAULT '${DEFAULT_MODEL}',
       system_prompt TEXT NOT NULL DEFAULT '',
       color TEXT NOT NULL DEFAULT '${ENTITY_COLORS[0]}',
