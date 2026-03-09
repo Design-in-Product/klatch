@@ -12,19 +12,26 @@ Two agents work on this repo. This file is the async handoff protocol.
 
 ### Argus (quality & test infrastructure)
 - **Branch:** `claude/audit-and-planning-xn2w7`
-- **Status:** available
-- **Last completed:** All four xian assignments done:
-  1. **Entity `handle` field** — `handle TEXT` column (schema + migration + test setup). `resolveMentions` matches on handle OR name. Entity Manager UI has `@handle` input. Autocomplete filters/inserts by handle.
-  2. **Directed mode cross-validation** — 24 tests in `mentions.test.ts` + 4 directed API tests in `messages.test.ts`. Covers: spaces, hyphens, underscores, quoted names, multi-mention, dedup, case sensitivity, handle resolution, no-match errors.
-  3. **Sidebar grouping tests** — 4 tests in `channels.test.ts`: entityCount correctness, 1→2 and 2→1 transitions on assign/remove.
-  4. **Gitignored large demo files** (57MB savings).
-  - Tests: 148 server + 6 client = **154 all passing**.
-- **Working on:** README + web homepage updates for v0.7.0 (on branch, ready to merge).
-- **Waiting on:** Nothing
+- **Status:** review
+- **Last completed:** Step 8 design analysis and briefing document.
+  - **`docs/BRIEF-STEP8-IMPORT.md`** — Full briefing covering: JSONL format research (49 sessions analyzed), concept model alignment, phased implementation plan (3 phases, 15 sub-steps), schema proposals, token efficiency strategy via Anthropic's Compaction API, claude.ai export format research, and open design questions.
+  - Key decisions aligned with xian:
+    1. Fork-don't-sync: imports are snapshots, continuation forks into Klatch-native chronology
+    2. Store full fidelity, display collapsed (tool use ~80% of JSONL content)
+    3. Compaction API for efficient history on forked conversations
+    4. Metadata as Step 8½ (provenance tracking before search)
+    5. Subagents tracked as metadata in Phase 1, introspection in future
+    6. Token discipline added as design principle #7
+  - Tests: 148 server + 6 client = **154 all passing** (unchanged — this was research/planning only).
+- **Working on:** Nothing — briefing ready for Daedalus review.
+- **Waiting on:** Daedalus to review briefing and discuss with xian before implementation begins.
 - **Notes for Daedalus:**
-  - Handle is additive. `createEntity` takes optional 5th param `handle`. PATCH accepts `handle: string | null` (null clears). Entity type has `handle?: string`.
-  - **Release tags needed:** Latest tag is `v0.5.0`. Steps 6 and 7 are merged to main but no `v0.6.0` or `v0.7.0` tags exist. Recommend cutting both tags on main so releases are trackable.
-  - **Website + README update for 0.7.0:** The `/web/index.html` landing page text is roughly current but doesn't mention interaction modes (panel, roundtable, directed) or the Roles/Channels sidebar split. README should be refreshed too. Demo video is still from 0.6. Suggest updating copy for 0.7.0 now; new demo video can wait for 0.8.0 multi-agent modes.
+  - **Read `docs/BRIEF-STEP8-IMPORT.md` first.** It's the full design doc with schema proposals, JSONL format analysis, and phased plan.
+  - **Compaction API is a game-changer** for import continuity — server-side context summarization, beta `compact-2026-01-12`. See Part 3 of the briefing.
+  - **parentUuid is a tree, not a list** — parallel tool calls create branches. The parser needs tree-walking, not linear iteration.
+  - **Phase 1 is ~5 sub-steps (8.1–8.5)**, all M or S sized. Phase 1.5 (metadata) is 4 more sub-steps. Recommend starting with 8.1 (parser) as it unblocks everything else.
+  - **Open questions in Part 7** need your input, especially #1 (subagent depth) and #4 (image storage).
+  - Previous notes still apply: release tags needed for v0.6.0/v0.7.0, website copy update pending.
 
 ### Daedalus (architecture & implementation)
 - **Branch:** `main`

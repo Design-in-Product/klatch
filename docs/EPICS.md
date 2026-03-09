@@ -90,39 +90,88 @@ _Do this first, before any entity work._
 
 ## Step 8: Import and Unify
 
-**Making Klatch the single pane of glass.**
+**Making Klatch the single pane of glass.** Full design analysis in `docs/BRIEF-STEP8-IMPORT.md`.
 
-### 8a: Research — Claude Code session format
-- [ ] Document the JSONL format in `~/.claude/projects/`
-- [ ] Identify fields: session ID, messages, tool use, timestamps, project path
-- [ ] Determine what maps to Klatch concepts (session → channel, messages → messages)
-- [ ] Handle tool-use messages (display-only? collapse? reconstruct?)
+### Phase 1: Read-only Claude Code import (MVP)
 
-### 8b: Claude Code import — backend
-- [ ] API: `POST /api/import/claude-code` with `{ sessionPath: string }`
-- [ ] Parser: read JSONL, extract user/assistant messages, skip tool-use internals
-- [ ] Create a new channel per imported session (name: project name + date)
-- [ ] Create an entity that matches the session's system prompt/model
-- [ ] Insert messages with original timestamps preserved
-- [ ] Batch insert for performance (100+ messages per session is common)
+#### 8.1: JSONL Parser ✅ (research complete)
+- [x] Document the JSONL format in `~/.claude/projects/` — see briefing Part 1
+- [x] Identify: parentUuid tree structure, content block types, subagent nesting
+- [x] Decision: tool use collapsed in display, stored in full fidelity
+- [ ] Implement: tree-walking parser that extracts text turns and collapses tool-use into summaries
 
-### 8c: Claude Code import — frontend
-- [ ] Import UI: file picker or path input for session directory
-- [ ] Preview: show session metadata before importing (message count, date range, project)
+#### 8.2: Artifact storage
+- [ ] New `message_artifacts` table: id, message_id, type, content (JSON), summary (text), sequence_order
+- [ ] Types: `tool_use`, `tool_result`, `thinking`, `image`, `tool_batch_summary`
+- [ ] Index on message_id for fast lookup
+
+#### 8.3: Import API
+- [ ] `POST /api/import/claude-code` with `{ sessionPath: string }`
+- [ ] Create channel (source: 'claude-code') + auto-entity (from session model)
+- [ ] Insert messages with original timestamps + artifacts in batch
+- [ ] Store subagent references as metadata (not imported as separate channels)
+
+#### 8.4: Minimal UI
+- [ ] Import button in sidebar or settings
+- [ ] File path input (later: directory scanner)
 - [ ] Progress indicator for large imports
-- [ ] Post-import: navigate to the new channel
+- [ ] Navigate to new channel on completion
 
-### 8d: Research — claude.ai export format
-- [ ] Investigate claude.ai data export (Settings → Export data)
-- [ ] Document the export format (likely JSON archive)
-- [ ] Map claude.ai concepts to Klatch (projects → ?, conversations → channels)
-- [ ] Identify gaps: artifacts, file attachments, project knowledge
+#### 8.5: Source badges
+- [ ] Visual indicator on imported channels (icon/tag)
+- [ ] "Imported from Claude Code" in channel settings with source metadata
 
-### 8e: claude.ai import
-- [ ] Parser for claude.ai export format
-- [ ] API: `POST /api/import/claude-ai` with uploaded archive
-- [ ] Handle multi-turn conversations with system prompts
-- [ ] Tag imported channels with source metadata
+### Phase 1.5: Metadata Framework (Step 8½)
+
+#### 8.6: Schema additions
+- [ ] `source TEXT` + `source_metadata TEXT` on channels
+- [ ] `original_timestamp TEXT` + `original_id TEXT` on messages
+
+#### 8.7: Import provenance
+- [ ] Track: import timestamp, source path, original session ID, project name
+- [ ] Display in channel settings
+
+#### 8.8: Tool-use statistics
+- [ ] Per-message artifact counts
+- [ ] Per-channel summary: files read, commands run, files written, subagents spawned
+
+#### 8.9: Cross-channel project grouping
+- [ ] "These channels were imported from the same project directory"
+- [ ] Proto-project UI: grouping in sidebar or filter
+
+### Phase 2: Make imports live
+
+#### 8.10: Fork continuity via Compaction
+- [ ] Enable Anthropic Compaction API (`compact-2026-01-12` beta) for imported channels
+- [ ] Build history constructor: text-only turns + compaction
+- [ ] Custom compaction instructions per source type
+- [ ] Configurable trigger threshold (default: 80K tokens for imported channels)
+
+#### 8.11: Continue-from-import
+- [ ] Auto-entity creation from session config
+- [ ] First new message sends reconstructed history seamlessly
+- [ ] "Forked from import" marker in conversation flow
+
+#### 8.12: Bulk import
+- [ ] Scan `~/.claude/projects/` directory
+- [ ] Show session list: project name, date, message count, tool-use stats
+- [ ] Multi-select import with progress
+
+### Phase 3: claude.ai import (independent track)
+
+#### 8.13: Research
+- [ ] Obtain actual claude.ai data export (ZIP with JSON)
+- [ ] Document exact JSON schema of conversation files
+- [ ] Map: conversations → channels, note missing model info + artifacts
+
+#### 8.14: Parser
+- [ ] ZIP reader + JSON conversation extractor
+- [ ] Model inference from timestamps (or user selection)
+- [ ] Normalize to Klatch internal format
+
+#### 8.15: Import API + UI
+- [ ] `POST /api/import/claude-ai` with file upload
+- [ ] Reuse import UI patterns from Phase 1
 
 ---
 
@@ -176,8 +225,14 @@ _Do this first, before any entity work._
                                                                   ↓
                                                             7d (directed) → 7e (history)
 
-8a (research) → 8b (CC backend) → 8c (CC frontend)
-8d (research) → 8e (claude.ai import)
+8.1 (parser) → 8.2 (artifacts table) → 8.3 (import API) → 8.4 (UI) → 8.5 (badges)
+                                              ↓
+                                    8.6–8.9 (metadata framework)
+                                              ↓
+                                    8.10 (compaction) → 8.11 (continue) → 8.12 (bulk)
+
+8.13 (claude.ai research) → 8.14 (parser) → 8.15 (import + UI)
+   (independent of Phase 1/2)
 
 9a (FTS5) → 9b (search UI)
 9c (command palette) — independent
@@ -204,11 +259,21 @@ Steps 8 and 9 are independent of each other and can be interleaved with Step 7. 
 | 7c | L | Sequential orchestration is complex |
 | 7d | M | Parsing + autocomplete UI |
 | 7e | M | Rethinking history construction |
-| 8a | S | Research only |
-| 8b | M | Parser + batch insert |
-| 8c | M | File handling UI |
-| 8d | S | Research only |
-| 8e | M | Parser + upload handling |
+| 8.1 | M | JSONL tree-walking parser (research done) |
+| 8.2 | M | Artifacts table + schema |
+| 8.3 | M | Import API + batch insert |
+| 8.4 | S | Minimal import UI |
+| 8.5 | S | Source badges |
+| 8.6 | S | Schema additions (source, metadata cols) |
+| 8.7 | S | Import provenance tracking |
+| 8.8 | S | Tool-use statistics |
+| 8.9 | M | Cross-channel project grouping |
+| 8.10 | M | Compaction API integration |
+| 8.11 | M | Continue-from-import flow |
+| 8.12 | M | Bulk import scanner + UI |
+| 8.13 | S | claude.ai export research |
+| 8.14 | M | claude.ai parser |
+| 8.15 | M | claude.ai import API + UI |
 | 9a | M | FTS5 setup + triggers |
 | 9b | M | Search UI + navigation |
 | 9c | M | Command palette from scratch |

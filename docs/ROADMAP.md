@@ -78,13 +78,26 @@ Panel mode already works from Step 6. This step adds the other two modes that ma
 
 ## Directional (sequence flexible, shape emerging)
 
-### Step 8: Import and sync
+### Step 8: Import and unify
 **Dimension: data consolidation.** Can you bring your existing Claude work into Klatch?
 
 - Parse Claude Code JSONL session files (`~/.claude/projects/`)
-- Import claude.ai project conversations (via export or API)
-- Map imported sessions to Klatch channels with appropriate roles
+- Import claude.ai project conversations (via export)
+- Map imported sessions to Klatch channels with appropriate entities
+- Fork-don't-sync: imports are snapshots, continuation forks into Klatch-native chronology
+- Store full-fidelity data (tool use, thinking, images), display collapsed
+- Leverage Anthropic's Compaction API for efficient history on continued conversations
 - This is what makes Klatch the *single pane of glass* for Claude interactions
+- See `docs/BRIEF-STEP8-IMPORT.md` for full design analysis and phased plan
+
+### Step 8½: Metadata framework
+**Dimension: provenance.** Where did each conversation come from, and how do they relate?
+
+- Import provenance tracking (source, path, timestamp, original IDs)
+- Cross-channel project grouping (proto-projects)
+- Tool-use statistics per message and per channel
+- Foundation for metadata-aware search in Step 9
+- This is the hidden value layer — automates manual coordination overhead
 
 ### Step 9: Files and artifacts
 **Dimension: rich context.** Can you share files, code, and documents with entities?
@@ -112,6 +125,9 @@ Group channels into projects. Switch contexts. Per-project settings and entity c
 ### Polish and craft
 Keyboard shortcuts, theming, first-run onboarding, loading states, error boundaries. The fit-and-finish that makes a tool feel like *yours*.
 
+### Subagent introspection
+Imported Claude Code sessions may contain subagent work trees. Render these as expandable traces, enabling users to inspect how an agent delegated, what each subagent discovered, and how results were synthesized — a "replay debugger" for agentic workflows.
+
 ### Workflows
 Multi-phase orchestration across entities. A workflow defines a sequence of steps where each step's outputs become the next step's inputs — like a routing slip, but one that actually works.
 
@@ -132,3 +148,4 @@ Export conversation snapshots. Share channel configurations (role + prompt templ
 4. **Own your data**: SQLite is inspectable, portable, and backed up with your filesystem.
 5. **Iterative complexity**: Don't add abstractions until they're needed. Three similar lines > premature helper function.
 6. **North star alignment**: Every step must move materially closer to the vision. If it doesn't, it's polish — and polish waits.
+7. **Token discipline**: Klatch is a thin layer over the API. Imported history is sent as compressed conversation turns, not raw transcripts. Tool-use detail is stored locally but never re-transmitted. System prompts should be measured and their token cost made visible. Every token sent to the API should earn its place.
