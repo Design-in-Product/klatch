@@ -30,15 +30,19 @@ Each JSONL line is one event:
 ```
 {
   type:           "user" | "assistant" | "system" | "queue-operation" | "progress"
+                  // + "file-history-snapshot" in sidecar files
   uuid:           string          // unique event ID
   parentUuid:     string | null   // links into a tree (null = conversation root)
   sessionId:      string          // groups events into a session
   timestamp:      string          // ISO 8601
   userType:       "external"      // human-initiated
-  version:        string          // Claude Code version
+  version:        string          // Claude Code version (e.g., "2.1.30")
   cwd:            string          // working directory
   gitBranch:      string          // active branch
-  permissionMode: string          // "default" etc.
+  permissionMode: string          // "default" etc. (not always present)
+  isSidechain:    boolean         // true for subagent events
+  agentId:        string          // present on subagent events (e.g., "a2a9aab")
+  slug:           string          // human-readable session name (v2.1.19+, e.g., "jiggly-jumping-owl")
   message: {
     role:    "user" | "assistant"
     content: ContentBlock[]       // array of typed blocks
@@ -94,6 +98,33 @@ Parent session: ebafb5f5-748a-...
 ```
 
 The `agentId` field links back to the specific `tool_use(Agent)` in the parent. The subagent has its own conversation but shares the parent's `sessionId` and is flagged `isSidechain: true`.
+
+### Subagent taxonomy (from real samples)
+
+The `agentId` prefix reveals the subagent type:
+
+| agentId pattern | Type | Purpose | Import treatment |
+|---|---|---|---|
+| `a{hex}` (e.g., `a2a9aab`) | **Task subagent** | Standard Agent tool invocations — real work | Store as metadata, expandable in future |
+| `acompact-{hex}` | **Compaction subagent** | Claude Code's built-in context summarization | Store summary text as provenance metadata |
+| `aprompt_suggestion-{hex}` | **Prompt suggestion** | Autocomplete / next-message prediction | **Skip entirely** — pure UI infrastructure |
+
+**Key discovery**: Claude Code runs compaction as a subagent. The compaction prompt is: *"Your task is to create a detailed summary of the conversation so far, paying close attention to the user's explicit requests..."* and the response is a structured `<analysis>...</analysis>` block with chronological session history and key decisions. These summaries are valuable import metadata — they're pre-built session summaries we can display without computing our own.
+
+### Additional event types
+
+| Type | Purpose | Import treatment |
+|---|---|---|
+| `progress` | Hook execution tracking (`PostToolUse` hooks). Contains `parentToolUseID`, `data: { type: "hook_progress", hookEvent, hookName, command }` | Skip — infrastructure noise |
+| `file-history-snapshot` | Undo checkpoints. Maps file paths → `{ backupFileName, version, backupTime }`. Lives in sidecar files (JSONL with zero conversation events). | Skip conversation import, optionally store as provenance (which files were modified) |
+
+### Privacy note
+
+Both `cwd` and `file-history-snapshot` contain **absolute paths** from the user's machine (e.g., `/Users/xian/Development/piper-morgan`). The parser should normalize or strip these on import to avoid leaking local filesystem structure in the Klatch UI.
+
+### Schema evolution
+
+The `slug` field only appears starting ~v2.1.19. Older sessions (v2.1.2) lack it. The parser must handle missing optional fields gracefully across Claude Code versions.
 
 ### Tool distribution (from Klatch project sessions, 49 files, 41K total lines)
 
@@ -278,7 +309,7 @@ The Phase 1 design (Claude Code import) does not lock us into anything incompati
 
 | Sub-step | Description | Size |
 |----------|-------------|------|
-| 8.1 | **Parser**: JSONL reader that walks the parentUuid tree, extracts text turns, collapses tool-use into summaries | M |
+| 8.1 | **Parser**: JSONL reader that walks the parentUuid tree, extracts text turns, collapses tool-use into summaries. Classifies subagent files by agentId prefix (task/compact/prompt_suggestion). Skips `progress` and `file-history-snapshot` events. Extracts compaction summaries from `acompact-*` subagents as pre-built session metadata. | M |
 | 8.2 | **Artifact storage**: New `message_artifacts` table for tool-use sequences, thinking blocks, images | M |
 | 8.3 | **Import API**: `POST /api/import/claude-code` — accepts session path, creates channel + entity + messages + artifacts | M |
 | 8.4 | **Minimal UI**: Import button in sidebar, file path input, progress indicator, navigate to new channel on completion | S |
@@ -370,7 +401,7 @@ ALTER TABLE messages ADD COLUMN original_id TEXT;
 
 ## Part 7: Open Questions for Discussion
 
-1. **Subagent introspection depth**: Phase 1 tracks subagents as metadata. Future: should subagent sessions render as expandable sub-threads within the parent channel, or as linked child channels? (Leaning toward expandable sub-threads to avoid channel proliferation.)
+1. **Subagent introspection depth**: Phase 1 tracks subagents as metadata. Future: should subagent sessions render as expandable sub-threads within the parent channel, or as linked child channels? (Leaning toward expandable sub-threads to avoid channel proliferation.) **New finding**: Compaction subagents (`acompact-*`) contain pre-built session summaries in structured `<analysis>` format — should we surface these as the channel's "session summary" in the UI?
 
 2. **Import deduplication**: If you import the same session twice, should we detect and skip? Or create a second channel? (Leaning toward detect-and-warn via `original_id` matching.)
 
@@ -378,7 +409,9 @@ ALTER TABLE messages ADD COLUMN original_id TEXT;
 
 4. **Image handling**: Claude Code sessions can contain screenshots (base64 images). Store in `message_artifacts` as blobs? Or extract to filesystem and store paths? (Leaning toward DB blobs for portability, with a size warning for very large sessions.)
 
-5. **Channel naming on import**: Auto-generated from project + date, but should the user be able to rename during import? (Probably yes — a simple text field in the import UI.)
+5. **Channel naming on import**: Auto-generated from project + date, but should the user be able to rename during import? (Probably yes — a simple text field in the import UI.) **New finding**: The `slug` field (v2.1.19+) provides human-readable session names like "jiggly-jumping-owl" — could be used as a default channel name or subtitle.
+
+6. **Path privacy on import**: `cwd` and `file-history-snapshot` contain absolute local paths. Should the parser strip/normalize these, or store as-is? (Leaning toward store as-is in `source_metadata` but not display in the main UI.)
 
 ---
 
@@ -409,3 +442,5 @@ ALTER TABLE messages ADD COLUMN original_id TEXT;
 - [Claude Help Center: Export Data](https://support.claude.com/en/articles/9450526-how-can-i-export-my-claude-data)
 - [osteele/claude-chat-viewer](https://github.com/osteele/claude-chat-viewer) — reverse-engineered Zod schemas for claude.ai export format
 - Claude Code JSONL analysis: 49 sessions from `~/.claude/projects/-home-user-klatch/`, 41K total events
+- Piper Morgan subagent samples: 10 files across 3 folders in `research/subagents-*/` — task, compaction, and prompt_suggestion subagent types
+- Piper Morgan file-history-snapshot sample: `research/1f171719-*.jsonl` — undo checkpoint sidecar file

@@ -12,35 +12,24 @@ Two agents work on this repo. This file is the async handoff protocol.
 
 ### Argus (quality & test infrastructure)
 - **Branch:** `claude/audit-and-planning-xn2w7`
-<<<<<<< HEAD
-- **Status:** working
-- **Last completed:** Step 8 design analysis and briefing document with claude.ai export schema research.
-  - **`docs/BRIEF-STEP8-IMPORT.md`** — Full briefing covering: JSONL format research (49 sessions analyzed), concept model alignment, phased implementation plan (3 phases, 15 sub-steps), schema proposals, token efficiency strategy via Anthropic's Compaction API, claude.ai export format research (with reverse-engineered Zod schemas), and open design questions.
+- **Status:** review
+- **Last completed:** Step 8 design analysis and briefing document — updated with subagent taxonomy from real samples.
+  - **`docs/BRIEF-STEP8-IMPORT.md`** — Full briefing covering: JSONL format research (49 sessions + 10 subagent samples analyzed), concept model alignment, phased implementation plan (3 phases, 15 sub-steps), schema proposals, token efficiency strategy via Anthropic's Compaction API, claude.ai export format research (with reverse-engineered Zod schemas), subagent classification (task/compact/prompt_suggestion), and open design questions.
   - Tests: 148 server + 6 client = **154 all passing** (unchanged — this was research/planning only).
-- **Working on:** Reviewing sample JSONL file from xian for format nuances.
-- **Waiting on:** Nothing.
-- **Notes for Daedalus:** Read `docs/BRIEF-STEP8-IMPORT.md` for full design doc. Phase 1 starts with 8.1 (parser).
+- **Working on:** Nothing — briefing ready for review.
+- **Waiting on:** Daedalus to review briefing.
+- **Notes for Daedalus:**
+  - Read `docs/BRIEF-STEP8-IMPORT.md` for full design doc. Phase 1 starts with 8.1 (parser).
+  - **New from subagent analysis**: Compaction subagents (`acompact-*`) contain pre-built session summaries in `<analysis>` format — free metadata for import. Prompt suggestion subagents (`aprompt_suggestion-*`) are infrastructure noise — skip on import.
+  - `slug` field (v2.1.19+) provides human-readable session names for channel naming.
+  - `file-history-snapshot` is a sidecar event type — parser must handle JSONL files with zero conversation events.
 
 ### Daedalus (architecture & implementation)
 - **Branch:** `main`
-- **Status:** working
-- **Last completed:** Steps 7a-7d complete — all three interaction modes implemented (panel, roundtable, directed). Sidebar now splits channels into Roles (@prefix, 1 entity) vs Channels (#prefix, 2+ entities).
-- **Working on:** Step 7 code review, then Step 8 (import).
+- **Status:** available
+- **Last completed:** Steps 7a-7d complete — all three interaction modes implemented (panel, roundtable, directed). Sidebar now splits channels into Roles (@prefix, 1 entity) vs Channels (#prefix, 2+ entities). All four xian assignments done (entity handles, directed mode cross-validation, sidebar grouping tests, gitignored large files).
+- **Working on:** Nothing — ready for next assignment.
 - **Waiting on:** Nothing.
-- **Notes for Argus — new priority assignments from xian:**
-  1. **Entity `handle` field** (new feature). Add optional `handle` (slug) field to Entity schema. Examples: `exec`, `cxo`, `lead`. Used for @-mention shorthand (`@exec` instead of `@"Chief of Staff"`). Schema: add `handle TEXT` column to entities table + migration. Update `parseMentions`/`resolveMentions` in `packages/shared/src/types.ts` to match on handle OR name. Update Entity Manager UI to show handle input. Update mention autocomplete in MessageInput.tsx to display/match handles. **This is additive — no breaking changes.**
-  2. **Cross-validate directed mode** — test @-mention parsing with various entity names: spaces (`@"Chief of Staff"`), hyphens (`@code-reviewer`), case sensitivity (`@claude` vs `@Claude`), multi-mention (`@Claude @Reviewer`), no-mention error case. Verify `resolveMentions` in shared/types.ts handles all edge cases. Add tests.
-  3. **Test sidebar grouping** — verify entityCount from `GET /channels` response, confirm sidebar Roles/Channels split works when entities are assigned/removed. Test edge: channel goes from 1→2 entities mid-session (should move from Roles to Channels).
-  4. **Finish README refresh + website/demo work** when above are done.
-
-  **Key changes since last sync:**
-  - `packages/shared/src/types.ts`: Added `parseMentions()`, `resolveMentions()`, `entityCount?` on Channel
-  - `packages/server/src/routes/messages.ts`: Directed mode dispatch (parses @-mentions, routes to mentioned entities only)
-  - `packages/server/src/db/queries.ts`: `getAllChannels()` now returns entityCount via LEFT JOIN
-  - `packages/client/src/components/ChannelSidebar.tsx`: Split into Roles (@) and Channels (#) sections
-  - `packages/client/src/components/MessageInput.tsx`: @-mention autocomplete dropdown in directed mode
-  - `packages/client/src/components/ChannelSettings.tsx`: Directed button enabled (all modes active)
-  - `packages/client/src/App.tsx`: sendError state for directed mode missing-mention error, refreshes channels on entity assign/remove
 
 ## Signals
 
