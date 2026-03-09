@@ -1,69 +1,57 @@
-# Demo Plan — v0.5.6
+# Demo Plan — v0.6.0
 
-**Status:** Active — seed script ready, landing page scaffolded, awaiting screen capture
+**Status:** Active — first video captured, landing page wired up
 
 ## Format
-Short animated GIFs (15–30s each), one per concept. For the landing page and README.
+Short MP4 videos (autoplay, loop, muted) for the landing page. GIF fallbacks for README/GitHub contexts where `<video>` isn't supported.
 
-## Seed script
+## Captured clips
 
-Run `npm run demo:seed` to set up demo-ready state:
-- Creates two channels with distinct system prompts
-- Clears any existing messages so the recording starts clean
-- Does NOT send messages — you type live for the authentic streaming feel
+### 1. "Multi-entity roles" (0.6.0-01-roles)
+- **Source:** `demo/0.6.0-01-roles.mov` (~38MB, 1:41)
+- **Web version:** `web/assets/0.6.0-01-roles-web.mp4` (~2-3MB, 800px wide, h264 crf 28)
+- **GIF version:** `demo/0.6.0-01-roles.gif` (~19MB — consider trimming for README use)
+- **Shows:** Multi-entity panel mode, multiple personas responding in parallel
 
-### Channels created
+## Clips still needed
 
-| Channel | System prompt gist | Purpose |
-|---------|-------------------|---------|
-| `code-reviewer` | Senior engineer, concise, cites line numbers | Strict persona |
-| `brainstormer` | Creative partner, uses analogies, asks questions | Warm persona |
+### 2. "Roundtable discussion" (~20s)
+1. Create a roundtable-mode channel with 2-3 entities
+2. Send a discussion prompt
+3. Watch entities respond sequentially, each building on the last
+4. **Shows:** Roundtable mode — the first thing Klatch can do that claude.ai can't
 
-## Clips to capture
+### 3. "Streaming + control" (~15s)
+1. Send a meaty question, watch tokens stream
+2. Hit Stop mid-generation
+3. Hit Retry (regenerate)
+4. **Shows:** Editorial control over the conversation flow
 
-### 1. "Channel as persona" (lead clip, ~20s)
-1. Start in `#code-reviewer`, type: *"How should I handle errors in a REST API?"*
-2. Let ~5s of response stream, then click `#brainstormer` in sidebar
-3. Type the same question, let it stream
-4. Cut between the two to show contrasting tone
+### 4. "Channel as persona" (~15s)
+1. Flip between channels with different system prompts
+2. Ask the same question, show contrasting tone
+3. **Shows:** Channel identity shaping personality
 
-**What to show:** sidebar navigation, system prompt shaping personality, streaming
+## Conversion commands
 
-### 2. "Streaming + control" (~15s)
-1. Send a meaty question in any channel
-2. Watch tokens stream for ~3s
-3. Hit **Stop** mid-generation
-4. Hit **Retry** (regenerate), watch a fresh response arrive
-5. Shows the editorial feel that distinguishes Klatch
+```bash
+# MOV → web-ready MP4 (small, high quality)
+ffmpeg -i demo/INPUT.mov -vf "scale=800:-2" \
+  -c:v libx264 -crf 28 -preset slow -an \
+  web/assets/OUTPUT-web.mp4
 
-**What to show:** live token streaming, stop button, retry action
+# MOV → GIF (for README/GitHub, trim to key moments)
+ffmpeg -ss START -t DURATION -i demo/INPUT.mov \
+  -vf "fps=10,scale=720:-1:flags=lanczos,split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse" \
+  demo/OUTPUT.gif
+```
 
-### 3. "Model switching" (optional, ~15s)
-1. In channel settings, switch Opus → Haiku
-2. Ask a short question, note the speed
-3. Switch back to Opus, ask the same question
-
-**What to show:** settings panel, model selector, speed difference
+Note: use `-2` (not `-1`) for h264 scale height to ensure even dimensions.
 
 ## Placement
-- `web/index.html` — hero section (clip 1) + feature grid (clips 2–3)
-- `README.md` — below "What it does today"
-
-## Landing page
-
-`web/index.html` is a static single-page scaffold with:
-- Hero section with placeholder for lead GIF
-- Feature grid (3 cards) with placeholders for each clip
-- Quick-start instructions
-- Drop GIF files into `web/assets/` and update `src` attributes
+- `web/index.html` — hero section (clip 1 as `<video>`)
+- `README.md` — below "What it does today" (GIF or linked MP4)
 
 ## Tools
-- Screen recording: any tool (QuickTime, Kap, OBS)
-- GIF conversion: `ffmpeg -i input.mov -vf "fps=12,scale=720:-1" output.gif`
-- Or use Kap which exports GIF directly
-
-## Nonblocking notes for implementation agent
-This demo work is additive only (new files in `web/`, a seed script, docs).
-It does not touch any `packages/` source code. Entity work (0.6) can proceed
-in parallel without conflicts. Once entities land, we'll capture an updated
-"multi-persona" demo clip.
+- Screen recording: QuickTime (macOS built-in)
+- Conversion: ffmpeg (brew install ffmpeg)
