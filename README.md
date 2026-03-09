@@ -90,6 +90,6 @@ Two days later we shipped a proof-of-concept multi-agent chat feature in alpha v
 
 ## License
 
-Copyright 2025 Christian Crumlish. Licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).
+Copyright 2026 Christian Crumlish. Licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).
 
 See [LICENSE.md](LICENSE.md) for the full text.
