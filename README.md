@@ -18,12 +18,14 @@ The existing ways to interact with Claude are good but fragmented:
 
 Klatch fills the gap: a single local interface where you control the models, the prompts, the conversation structure, and the data. Everything stays on your machine in a SQLite database. The only external dependency is the Anthropic API itself.
 
-## What it does today (v0.6)
+## What it does today (v0.7)
 
 Klatch is being built incrementally, one working step at a time ([Gall's Law](https://en.wikipedia.org/wiki/John_Gall_(author)#Gall's_law)). Here's what works right now:
 
 - **Multi-entity conversations** — assign multiple Claude personas to a single channel, each with its own name, model, system prompt, and color
-- **Interaction modes** — panel (all entities respond in parallel) and roundtable (sequential, each seeing prior responses)
+- **Three interaction modes** — panel (all respond in parallel), roundtable (sequential, each seeing prior responses), and directed (@-mention routing to specific entities)
+- **Roles and Channels** — sidebar splits single-entity Roles (@prefix) from multi-entity Channels (#prefix)
+- **@-mention handles** — optional short slugs (e.g. `@exec`) for quick entity targeting in directed mode
 - **Channel-based conversations** — create named channels with custom system prompts, switch between them freely
 - **Per-entity model selection** — choose Opus, Sonnet, or Haiku per entity; mix models within a single channel
 - **Streaming responses** — Claude's responses appear token-by-token via Server-Sent Events
@@ -43,7 +45,7 @@ The [full roadmap](docs/ROADMAP.md) is in the repo, but the key milestones are:
 4. ~~Conversation control~~ ✓
 5. ~~Channel identity + per-channel models~~ ✓
 6. ~~Multi-entity conversations~~ ✓
-7. ~~Panel + roundtable modes~~ ✓ — directed (@-mention) *(next)*
+7. ~~Panel + roundtable + directed modes~~ ✓
 8. **Import + unify** — bring in Claude Code sessions and claude.ai exports
 9. **Search + recall** — full-text search, export, command palette
 

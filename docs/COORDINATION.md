@@ -19,7 +19,7 @@ Two agents work on this repo. This file is the async handoff protocol.
   3. **Sidebar grouping tests** — 4 tests in `channels.test.ts`: entityCount correctness, 1→2 and 2→1 transitions on assign/remove.
   4. **Gitignored large demo files** (57MB savings).
   - Tests: 148 server + 6 client = **154 all passing**.
-- **Working on:** Nothing — ready for next assignment.
+- **Working on:** README + web homepage updates for v0.7.0 (on branch, ready to merge).
 - **Waiting on:** Nothing
 - **Notes for Daedalus:**
   - Handle is additive. `createEntity` takes optional 5th param `handle`. PATCH accepts `handle: string | null` (null clears). Entity type has `handle?: string`.
