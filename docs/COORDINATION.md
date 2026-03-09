@@ -24,22 +24,23 @@ Two agents work on this repo. This file is the async handoff protocol.
 ### Daedalus (architecture & implementation)
 - **Branch:** `main`
 - **Status:** working
-- **Last completed:** Step 7a-7c complete — interaction mode infrastructure, panel mode formalized, roundtable mode implemented and hardened (abort cleanup, mode-aware regenerate).
-- **Working on:** Step 7c.1 hardening pass, then Step 7d (directed mode).
+- **Last completed:** Steps 7a-7d complete — all three interaction modes implemented (panel, roundtable, directed). Sidebar now splits channels into Roles (@prefix, 1 entity) vs Channels (#prefix, 2+ entities).
+- **Working on:** Step 7 code review, then Step 8 (import).
 - **Waiting on:** Nothing.
-- **Notes for Argus — priority assignments from xian:**
-  1. **Update tests for Step 6+7 API changes** (highest priority). Key breakages since your last test run:
-     - Channel type now has `mode: InteractionMode` field (panel/roundtable/directed)
-     - POST /channels/:id/messages dispatches on mode — roundtable creates sequential streams
-     - POST /channels/:id/messages response: `{ userMessageId, assistants: [{ assistantMessageId, entityId, model }] }`
-     - New endpoints: POST /channels/:id/stop, GET/POST/PATCH/DELETE /api/entities, GET/POST/DELETE /api/channels/:id/entities
-     - New query: `getLastRoundAssistantMessages(channelId)` for roundtable regenerate
-     - Regenerate handler is now mode-aware (roundtable redoes entire round)
-     - New exports from client.ts: `streamClaudeRoundtable`, plus roundtable abort tracking
-  2. **Auto-scroll bug** — chat view snaps back to bottom when user scrolls up. Pre-existing client-side issue. Check scroll container re-renders.
-  3. **Harden dotenv path** — `packages/server/src/index.ts` uses fragile `../../../.env`. Consider `find-up` or multiple location checks.
-  4. **README refresh** (xian edited on origin — coordinate with his changes)
-  5. **Website/demo work** when above are done
+- **Notes for Argus — new priority assignments from xian:**
+  1. **Entity `handle` field** (new feature). Add optional `handle` (slug) field to Entity schema. Examples: `exec`, `cxo`, `lead`. Used for @-mention shorthand (`@exec` instead of `@"Chief of Staff"`). Schema: add `handle TEXT` column to entities table + migration. Update `parseMentions`/`resolveMentions` in `packages/shared/src/types.ts` to match on handle OR name. Update Entity Manager UI to show handle input. Update mention autocomplete in MessageInput.tsx to display/match handles. **This is additive — no breaking changes.**
+  2. **Cross-validate directed mode** — test @-mention parsing with various entity names: spaces (`@"Chief of Staff"`), hyphens (`@code-reviewer`), case sensitivity (`@claude` vs `@Claude`), multi-mention (`@Claude @Reviewer`), no-mention error case. Verify `resolveMentions` in shared/types.ts handles all edge cases. Add tests.
+  3. **Test sidebar grouping** — verify entityCount from `GET /channels` response, confirm sidebar Roles/Channels split works when entities are assigned/removed. Test edge: channel goes from 1→2 entities mid-session (should move from Roles to Channels).
+  4. **Finish README refresh + website/demo work** when above are done.
+
+  **Key changes since last sync:**
+  - `packages/shared/src/types.ts`: Added `parseMentions()`, `resolveMentions()`, `entityCount?` on Channel
+  - `packages/server/src/routes/messages.ts`: Directed mode dispatch (parses @-mentions, routes to mentioned entities only)
+  - `packages/server/src/db/queries.ts`: `getAllChannels()` now returns entityCount via LEFT JOIN
+  - `packages/client/src/components/ChannelSidebar.tsx`: Split into Roles (@) and Channels (#) sections
+  - `packages/client/src/components/MessageInput.tsx`: @-mention autocomplete dropdown in directed mode
+  - `packages/client/src/components/ChannelSettings.tsx`: Directed button enabled (all modes active)
+  - `packages/client/src/App.tsx`: sendError state for directed mode missing-mention error, refreshes channels on entity assign/remove
 
 ## Signals
 

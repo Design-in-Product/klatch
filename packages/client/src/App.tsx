@@ -275,6 +275,8 @@ export default function App() {
     try {
       const entities = await assignEntityToChannel(activeChannelId, entityId);
       setChannelEntities(entities);
+      // Refresh channels list so sidebar grouping updates (entityCount changed)
+      fetchChannels().then(setChannels).catch(console.error);
     } catch (err) {
       console.error('Failed to assign entity:', err);
     }
@@ -284,6 +286,8 @@ export default function App() {
     try {
       const entities = await removeEntityFromChannel(activeChannelId, entityId);
       setChannelEntities(entities);
+      // Refresh channels list so sidebar grouping updates (entityCount changed)
+      fetchChannels().then(setChannels).catch(console.error);
     } catch (err) {
       console.error('Failed to remove entity:', err);
     }

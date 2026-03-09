@@ -44,6 +44,25 @@ export function ChannelSidebar({
     onClose?.();
   };
 
+  // Split channels into roles (1 entity = DM) and group chats (2+ entities)
+  const roles = channels.filter((ch) => (ch.entityCount ?? 1) <= 1);
+  const groups = channels.filter((ch) => (ch.entityCount ?? 1) >= 2);
+
+  const renderChannelItem = (ch: Channel, prefix: string) => (
+    <button
+      key={ch.id}
+      onClick={() => handleChannelClick(ch.id)}
+      className={`w-full text-left px-4 py-1.5 text-sm transition-colors ${
+        ch.id === activeChannelId
+          ? 'bg-active-channel text-primary font-medium'
+          : 'text-secondary hover:text-primary hover:bg-hover'
+      }`}
+    >
+      <span className="text-muted mr-1">{prefix}</span>
+      {ch.name}
+    </button>
+  );
+
   const sidebarContent = (
     <div className="w-60 flex-shrink-0 bg-sidebar border-r border-line-strong flex flex-col h-full">
       {/* Header — logo + wordmark */}
@@ -65,22 +84,36 @@ export function ChannelSidebar({
         )}
       </div>
 
-      {/* Channel list */}
+      {/* Channel list — split into Roles and Channels */}
       <div className="flex-1 overflow-y-auto py-1">
-        {channels.map((ch) => (
-          <button
-            key={ch.id}
-            onClick={() => handleChannelClick(ch.id)}
-            className={`w-full text-left px-4 py-1.5 text-sm transition-colors ${
-              ch.id === activeChannelId
-                ? 'bg-active-channel text-primary font-medium'
-                : 'text-secondary hover:text-primary hover:bg-hover'
-            }`}
-          >
-            <span className="text-muted mr-1">#</span>
-            {ch.name}
-          </button>
-        ))}
+        {/* Roles (1:1 conversations with a single entity) */}
+        {roles.length > 0 && (
+          <div>
+            <div className="px-4 pt-3 pb-1">
+              <span className="text-[10px] font-semibold text-muted uppercase tracking-wider">
+                Roles
+              </span>
+            </div>
+            {roles.map((ch) => renderChannelItem(ch, '@'))}
+          </div>
+        )}
+
+        {/* Group Chats (2+ entities) */}
+        {groups.length > 0 && (
+          <div>
+            <div className="px-4 pt-3 pb-1">
+              <span className="text-[10px] font-semibold text-muted uppercase tracking-wider">
+                Channels
+              </span>
+            </div>
+            {groups.map((ch) => renderChannelItem(ch, '#'))}
+          </div>
+        )}
+
+        {/* Fallback: if no channels at all, show something */}
+        {channels.length === 0 && (
+          <div className="px-4 py-3 text-xs text-muted">No channels yet</div>
+        )}
       </div>
 
       {/* Footer: theme toggle + create channel */}
