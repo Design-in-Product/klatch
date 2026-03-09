@@ -132,7 +132,18 @@ export async function sendMessage(
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ content }),
   });
-  if (!res.ok) throw new Error(`Failed to send message: ${res.statusText}`);
+  if (!res.ok) {
+    // Try to extract server error message (e.g. directed mode missing @-mention)
+    try {
+      const body = await res.json();
+      throw new Error(body.error || `Failed to send message: ${res.statusText}`);
+    } catch (parseErr) {
+      if (parseErr instanceof Error && parseErr.message !== `Failed to send message: ${res.statusText}`) {
+        throw parseErr;
+      }
+      throw new Error(`Failed to send message: ${res.statusText}`);
+    }
+  }
   return res.json();
 }
 

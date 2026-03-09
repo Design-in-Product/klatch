@@ -42,6 +42,7 @@ export default function App() {
   const [allEntities, setAllEntities] = useState<Entity[]>([]);
   const [showSettings, setShowSettings] = useState(false);
   const [showEntityManager, setShowEntityManager] = useState(false);
+  const [sendError, setSendError] = useState<string | null>(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   // Theme
@@ -93,6 +94,7 @@ export default function App() {
   );
 
   const handleSend = async (content: string) => {
+    setSendError(null);
     try {
       const { userMessageId, assistants } = await sendMessage(activeChannelId, content);
 
@@ -122,7 +124,11 @@ export default function App() {
 
       setStreamingMessageIds(newStreamingIds);
     } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : 'Failed to send message';
       console.error('Failed to send message:', err);
+      setSendError(errorMessage);
+      // Auto-dismiss after 5 seconds
+      setTimeout(() => setSendError(null), 5000);
     }
   };
 
@@ -406,12 +412,21 @@ export default function App() {
           theme={theme}
         />
 
+        {/* Send error banner */}
+        {sendError && (
+          <div className="px-3 md:px-6 py-2 bg-danger/10 border-t border-danger/20">
+            <p className="text-xs text-danger">{sendError}</p>
+          </div>
+        )}
+
         {/* Input */}
         <MessageInput
           onSend={handleSend}
           onStop={handleStop}
           disabled={isAnyStreaming}
           isStreaming={isAnyStreaming}
+          channelEntities={channelEntities}
+          mode={activeChannel?.mode}
         />
       </div>
 

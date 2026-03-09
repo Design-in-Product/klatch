@@ -73,3 +73,44 @@ export interface StreamEvent {
   messageId: string;
   content: string;
 }
+
+// ── @-mention parsing for directed mode ──────────────────────
+
+/**
+ * Extract @-mentioned entity names from message content.
+ * Matches `@EntityName` at word boundaries. Entity names may contain
+ * letters, numbers, hyphens, underscores, and spaces (when quoted).
+ *
+ * Supported formats:
+ *   @Claude       → "Claude"
+ *   @code-reviewer → "code-reviewer"
+ *   @"Chief of Staff" → "Chief of Staff"
+ *
+ * Returns an array of mentioned names (lowercased for matching).
+ */
+export function parseMentions(content: string): string[] {
+  const mentions: string[] = [];
+
+  // Match @"quoted name" or @word-with-hyphens_and_numbers
+  const regex = /@"([^"]+)"|@([\w][\w-]*)/g;
+  let match;
+  while ((match = regex.exec(content)) !== null) {
+    const name = match[1] || match[2]; // quoted group or unquoted group
+    if (name) mentions.push(name.toLowerCase());
+  }
+
+  return [...new Set(mentions)]; // deduplicate
+}
+
+/**
+ * Resolve mentioned names to entities. Case-insensitive matching.
+ * Returns the matched entities in the order they appear in the entities list.
+ */
+export function resolveMentions(content: string, entities: Entity[]): Entity[] {
+  const mentionedNames = parseMentions(content);
+  if (mentionedNames.length === 0) return [];
+
+  return entities.filter((e) =>
+    mentionedNames.includes(e.name.toLowerCase())
+  );
+}

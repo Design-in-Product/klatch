@@ -13,6 +13,7 @@ import {
 } from '../db/queries.js';
 import { streamClaude, streamClaudeRoundtable, activeStreams, abortStream } from '../claude/client.js';
 import type { StreamEvent, Entity } from '@klatch/shared';
+import { resolveMentions } from '@klatch/shared';
 import { getDb } from '../db/index.js';
 
 const app = new Hono();
@@ -78,7 +79,36 @@ app.post('/channels/:channelId/messages', async (c) => {
   }
 
   if (channel.mode === 'directed') {
-    return c.json({ error: 'Directed mode is not yet implemented' }, 501);
+    // Directed: @-mention routes to specific entity(ies)
+    const mentioned = resolveMentions(content, entities);
+
+    if (mentioned.length === 0) {
+      // No valid @-mention found — tell the user what's available
+      const names = entities.map((e) => `@${e.name}`).join(', ');
+      return c.json({
+        error: `No entity mentioned. Use @EntityName to direct your message. Available: ${names}`,
+      }, 400);
+    }
+
+    // Create user message + placeholders only for mentioned entities
+    const db = getDb();
+    const txn = db.transaction(() => {
+      const userMsg = insertMessage(channelId, 'user', content.trim(), 'complete');
+      const assistants = mentioned.map((entity) => {
+        const msg = insertMessage(channelId, 'assistant', '', 'streaming', entity.model, entity.id);
+        return { assistantMessageId: msg.id, entityId: entity.id, model: entity.model };
+      });
+      return { userMsg, assistants };
+    });
+    const { userMsg, assistants } = txn();
+
+    // Fire off streams for mentioned entities (parallel, panel-like isolation)
+    for (const assistant of assistants) {
+      const entity = mentioned.find((e) => e.id === assistant.entityId)!;
+      streamClaude(channelId, assistant.assistantMessageId, entity, channel.systemPrompt);
+    }
+
+    return c.json({ userMessageId: userMsg.id, assistants });
   }
 
   // ── Panel mode (default) ────────────────────────────────────
@@ -191,7 +221,9 @@ app.post('/channels/:channelId/regenerate', async (c) => {
     });
   }
 
-  // Panel mode (default): regenerate just the last assistant message
+  // Panel and directed modes: regenerate just the last assistant message(s)
+  // For directed, there may be multiple assistant messages from the last user turn
+  // but we regenerate the same set. For now, single-entity regenerate works for both.
   const lastAssistant = getLastAssistantMessage(channelId);
   if (!lastAssistant) {
     return c.json({ error: 'No assistant message to regenerate' }, 404);
