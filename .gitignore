@@ -5,3 +5,7 @@ dist/
 *.db-shm
 .env
 .DS_Store
+
+# Large demo source files (keep web-optimized versions)
+demo/*.mov
+demo/*.gif
