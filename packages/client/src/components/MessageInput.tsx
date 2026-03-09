@@ -23,10 +23,11 @@ export function MessageInput({ onSend, onStop, disabled, isStreaming, channelEnt
   const isDirected = mode === 'directed';
   const showMentions = isDirected && channelEntities.length >= 2;
 
-  // Filter entities matching the current @query
+  // Filter entities matching the current @query (by name or handle)
   const mentionCandidates = mentionQuery !== null
     ? channelEntities.filter((e) =>
-        e.name.toLowerCase().startsWith(mentionQuery.toLowerCase())
+        e.name.toLowerCase().startsWith(mentionQuery.toLowerCase()) ||
+        (e.handle && e.handle.toLowerCase().startsWith(mentionQuery.toLowerCase()))
       )
     : [];
 
@@ -45,10 +46,12 @@ export function MessageInput({ onSend, onStop, disabled, isStreaming, channelEnt
     const before = value.slice(0, mentionStartPos);
     const after = value.slice(textareaRef.current?.selectionStart ?? value.length);
 
-    // Use @"Name" for names with spaces, @Name for simple names
-    const mentionText = entity.name.includes(' ')
-      ? `@"${entity.name}" `
-      : `@${entity.name} `;
+    // Prefer @handle if available, otherwise @"Name" for names with spaces, @Name for simple names
+    const mentionText = entity.handle
+      ? `@${entity.handle} `
+      : entity.name.includes(' ')
+        ? `@"${entity.name}" `
+        : `@${entity.name} `;
 
     const newValue = before + mentionText + after;
     setValue(newValue);
@@ -163,7 +166,12 @@ export function MessageInput({ onSend, onStop, disabled, isStreaming, channelEnt
                 >
                   {entity.name.charAt(0).toUpperCase()}
                 </span>
-                <span className="flex-1 truncate text-left">{entity.name}</span>
+                <span className="flex-1 truncate text-left">
+                  {entity.name}
+                  {entity.handle && (
+                    <span className="text-muted text-[10px] ml-1 font-mono">@{entity.handle}</span>
+                  )}
+                </span>
                 <span className="text-[10px] px-1.5 py-0.5 rounded bg-badge text-muted font-medium">
                   {entity.model.includes('opus') ? 'Opus' : entity.model.includes('sonnet') ? 'Sonnet' : 'Haiku'}
                 </span>

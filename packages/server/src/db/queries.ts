@@ -31,6 +31,7 @@ function rowToEntity(row: any): Entity {
   return {
     id: row.id,
     name: row.name,
+    handle: row.handle || undefined,
     model: row.model || DEFAULT_MODEL,
     systemPrompt: row.system_prompt,
     color: row.color || ENTITY_COLORS[0],
@@ -223,33 +224,35 @@ export function createEntity(
   name: string,
   model: ModelId,
   systemPrompt: string,
-  color: string
+  color: string,
+  handle?: string
 ): Entity {
   const id = uuidv4();
   const now = new Date().toISOString();
   getDb()
-    .prepare('INSERT INTO entities (id, name, model, system_prompt, color, created_at) VALUES (?, ?, ?, ?, ?, ?)')
-    .run(id, name, model, systemPrompt, color, now);
-  return { id, name, model, systemPrompt, color, createdAt: now };
+    .prepare('INSERT INTO entities (id, name, handle, model, system_prompt, color, created_at) VALUES (?, ?, ?, ?, ?, ?, ?)')
+    .run(id, name, handle || null, model, systemPrompt, color, now);
+  return { id, name, handle: handle || undefined, model, systemPrompt, color, createdAt: now };
 }
 
 export function updateEntity(
   id: string,
-  updates: { name?: string; model?: ModelId; systemPrompt?: string; color?: string }
+  updates: { name?: string; handle?: string | null; model?: ModelId; systemPrompt?: string; color?: string }
 ): Entity | undefined {
   const entity = getEntity(id);
   if (!entity) return undefined;
 
   const name = updates.name ?? entity.name;
+  const handle = updates.handle !== undefined ? (updates.handle || undefined) : entity.handle;
   const model = updates.model ?? entity.model;
   const systemPrompt = updates.systemPrompt ?? entity.systemPrompt;
   const color = updates.color ?? entity.color;
 
   getDb()
-    .prepare('UPDATE entities SET name = ?, model = ?, system_prompt = ?, color = ? WHERE id = ?')
-    .run(name, model, systemPrompt, color, id);
+    .prepare('UPDATE entities SET name = ?, handle = ?, model = ?, system_prompt = ?, color = ? WHERE id = ?')
+    .run(name, handle || null, model, systemPrompt, color, id);
 
-  return { ...entity, name, model, systemPrompt, color };
+  return { ...entity, name, handle, model, systemPrompt, color };
 }
 
 export function deleteEntity(id: string): boolean {

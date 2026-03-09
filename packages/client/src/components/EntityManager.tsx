@@ -4,8 +4,8 @@ import { AVAILABLE_MODELS, ENTITY_COLORS, DEFAULT_ENTITY_ID } from '@klatch/shar
 
 interface Props {
   entities: Entity[];
-  onCreateEntity: (data: { name: string; model?: ModelId; systemPrompt?: string; color?: string }) => void;
-  onUpdateEntity: (id: string, updates: { name?: string; model?: ModelId; systemPrompt?: string; color?: string }) => void;
+  onCreateEntity: (data: { name: string; handle?: string; model?: ModelId; systemPrompt?: string; color?: string }) => void;
+  onUpdateEntity: (id: string, updates: { name?: string; handle?: string | null; model?: ModelId; systemPrompt?: string; color?: string }) => void;
   onDeleteEntity: (id: string) => void;
   onClose: () => void;
 }
@@ -106,6 +106,9 @@ function EntityCard({
         <div className="min-w-0 flex-1">
           <div className="flex items-center gap-2">
             <span className="font-medium text-sm text-primary truncate">{entity.name}</span>
+            {entity.handle && (
+              <span className="text-[10px] text-muted font-mono">@{entity.handle}</span>
+            )}
             <span className="text-[10px] px-1.5 py-0.5 rounded bg-badge text-muted font-medium">
               {modelLabel}
             </span>
@@ -156,10 +159,11 @@ function EntityForm({
   onCancel,
 }: {
   entity?: Entity;
-  onSave: (data: { name?: string; model?: ModelId; systemPrompt?: string; color?: string }) => void;
+  onSave: (data: { name?: string; handle?: string | null; model?: ModelId; systemPrompt?: string; color?: string }) => void;
   onCancel: () => void;
 }) {
   const [name, setName] = useState(entity?.name ?? '');
+  const [handle, setHandle] = useState(entity?.handle ?? '');
   const [model, setModel] = useState<ModelId>(entity?.model ?? 'claude-sonnet-4-6');
   const [systemPrompt, setSystemPrompt] = useState(entity?.systemPrompt ?? 'You are a helpful assistant.');
   const [color, setColor] = useState(entity?.color ?? ENTITY_COLORS[0]);
@@ -172,19 +176,22 @@ function EntityForm({
       // Update: only send changed fields
       const updates: Record<string, any> = {};
       if (name.trim() !== entity.name) updates.name = name.trim();
+      const newHandle = handle.trim() || null;
+      const oldHandle = entity.handle || null;
+      if (newHandle !== oldHandle) updates.handle = newHandle;
       if (model !== entity.model) updates.model = model;
       if (systemPrompt.trim() !== entity.systemPrompt) updates.systemPrompt = systemPrompt.trim();
       if (color !== entity.color) updates.color = color;
       if (Object.keys(updates).length > 0) onSave(updates);
       else onCancel();
     } else {
-      onSave({ name: name.trim(), model, systemPrompt: systemPrompt.trim(), color });
+      onSave({ name: name.trim(), handle: handle.trim() || undefined, model, systemPrompt: systemPrompt.trim(), color });
     }
   };
 
   return (
     <form onSubmit={handleSubmit} className="rounded-lg border border-accent/40 bg-card px-4 py-3 space-y-3">
-      {/* Name + Color */}
+      {/* Name + Handle + Color */}
       <div className="flex gap-3">
         <div className="flex-1">
           <label className="block text-xs text-secondary mb-1">Name</label>
@@ -196,6 +203,19 @@ function EntityForm({
             autoFocus
             className="w-full rounded bg-input border border-line px-3 py-1.5 text-sm text-primary placeholder-muted focus:outline-none focus:border-accent"
           />
+        </div>
+        <div className="w-24">
+          <label className="block text-xs text-secondary mb-1">Handle</label>
+          <div className="relative">
+            <span className="absolute left-2 top-1/2 -translate-y-1/2 text-muted text-sm">@</span>
+            <input
+              type="text"
+              value={handle}
+              onChange={(e) => setHandle(e.target.value.replace(/[^a-zA-Z0-9_-]/g, ''))}
+              placeholder="slug"
+              className="w-full rounded bg-input border border-line pl-6 pr-2 py-1.5 text-sm text-primary placeholder-muted focus:outline-none focus:border-accent font-mono"
+            />
+          </div>
         </div>
         <div>
           <label className="block text-xs text-secondary mb-1">Color</label>
