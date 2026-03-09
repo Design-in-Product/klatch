@@ -188,35 +188,86 @@ JetBrains research on coding agent context management confirms this strategy: ma
 
 ## Part 4: claude.ai Export Format (Phase 3 Research)
 
-### What we know
+### Export mechanism
 
-- **Export method**: Settings → Privacy → Export Data (web/desktop only, not mobile)
+- **How**: Settings → Privacy → Export Data (web/desktop only, not mobile)
 - **Delivery**: HTTPS link sent to verified email, expires in 24 hours
-- **Format**: ZIP file containing JSON conversation data
-- **Known limitation**: The official export **does not include model information** per conversation — third-party tools infer it from timestamps + Anthropic's default model timeline
-- **No artifacts in export**: File attachments and artifacts are not included in the official export
-- **All-or-nothing**: You export everything, not individual conversations
+- **Format**: ZIP file containing `conversations.json` — a JSON array of all conversations
+- **Scope**: All-or-nothing (no selective export)
 
-### What we don't know yet (needs hands-on research with an actual export)
+### Schema (reverse-engineered from real exports)
 
-- Exact JSON schema of the conversation files inside the ZIP
-- How projects/folders are represented (if at all)
-- Whether system prompts from claude.ai projects are included
-- Timestamp granularity on individual messages
+Best documentation: [osteele/claude-chat-viewer](https://github.com/osteele/claude-chat-viewer) (`src/schemas/chat.ts`) has Zod schemas.
 
-### Implications for Klatch design
+**Conversation object:**
+```json
+{
+  "uuid": "string",
+  "name": "string (title)",
+  "created_at": "ISO 8601",
+  "updated_at": "ISO 8601",
+  "account": { "uuid": "string" },
+  "chat_messages": [...],
+  "summary": "string (optional)",
+  "model": "string (optional — often absent!)",
+  "project_uuid": "string (optional)",
+  "project": { ... },
+  "is_starred": true,
+  "current_leaf_message_uuid": "string",
+  "settings": {
+    "preview_feature_uses_artifacts": true,
+    "preview_feature_uses_latex": true
+  }
+}
+```
 
-- The ZIP-based format is fundamentally different from Claude Code's per-session JSONL — we need a separate parser
-- Missing model info means we may need to infer or let the user choose when importing
-- Missing artifacts means claude.ai import will be text-only (which is fine for Phase 3)
-- The schema differences confirm that our import architecture must be **pluggable** — each source gets its own parser that normalizes into Klatch's internal format
+**Message object:**
+```json
+{
+  "uuid": "string",
+  "index": 0,
+  "sender": "human | assistant",
+  "text": "string (plain text)",
+  "content": [... content blocks ...],
+  "created_at": "ISO 8601",
+  "updated_at": "ISO 8601",
+  "truncated": false,
+  "attachments": [...],
+  "files": [...],
+  "parent_message_uuid": "string (for branching)"
+}
+```
+
+**Content block types** (discriminated union on `type` — same pattern as Claude Code):
+- `"text"` — regular text/markdown, with optional `citations`
+- `"thinking"` — extended thinking blocks, with optional `summaries`
+- `"tool_use"` — tool calls. **Artifacts are stored as tool_use blocks** with `name: "artifacts"` and `input: { id, type, title, command, content, language, version_uuid }`
+- `"tool_result"` — tool execution results
+- `"voice_note"` — voice transcription
+
+### Key findings for Klatch
+
+**Good news:**
+- Content blocks use the **same type discrimination** as Claude Code (`text`, `thinking`, `tool_use`, `tool_result`). Our artifact storage model handles both sources.
+- `project_uuid` links conversations to projects — maps directly to our cross-channel grouping (8.9).
+- `parent_message_uuid` supports conversation branching (when users edit a message). We could represent this as conversation forks.
+- Per-message timestamps with ISO 8601 — same granularity as Claude Code.
+- Artifacts are embedded as `tool_use` content with full content — they ARE in the export (contrary to earlier reports), stored as tool_use blocks.
+
+**Challenges:**
+- `model` field is **often absent/null** in official exports. Need inference from timeline or user selection.
+- Binary files (images, PDFs) are **not** included — only `extracted_content` text and URLs (which expire).
+- `sender` uses `"human"/"assistant"` instead of `"user"/"assistant"` — trivial normalization.
+- Schema evolves between export versions — many fields are optional. Parser must be tolerant.
+- No system prompts from claude.ai projects appear in exports.
 
 ### No paradigm lock-in
 
 The Phase 1 design (Claude Code import) does not lock us into anything incompatible with Phase 3:
 - The `source` field on channels accommodates any source type
 - The `source_metadata` JSON blob is schema-free per source
-- The message + artifact storage model works for both tool-heavy JSONL and text-only claude.ai conversations
+- The `message_artifacts` table handles both Claude Code tool-use chains AND claude.ai artifacts (both are `tool_use` content blocks)
+- `parent_message_uuid` branching maps to our parentUuid tree-walking — similar concept, different source
 - Compaction works the same regardless of import source
 
 ---
@@ -356,4 +407,5 @@ ALTER TABLE messages ADD COLUMN original_id TEXT;
 - [Effective Context Engineering for AI Agents](https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents)
 - [JetBrains: Cutting Through the Noise — Smarter Context Management](https://blog.jetbrains.com/research/2025/12/efficient-context-management/)
 - [Claude Help Center: Export Data](https://support.claude.com/en/articles/9450526-how-can-i-export-my-claude-data)
+- [osteele/claude-chat-viewer](https://github.com/osteele/claude-chat-viewer) — reverse-engineered Zod schemas for claude.ai export format
 - Claude Code JSONL analysis: 49 sessions from `~/.claude/projects/-home-user-klatch/`, 41K total events
