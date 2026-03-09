@@ -162,8 +162,13 @@ const response = await client.beta.messages.create({
 4. Supports custom `instructions` to guide what the summary preserves
 5. Supports `pause_after_compaction` for inserting additional context after summary
 
+**Complementary feature: Context Editing** — Anthropic also offers `clear_tool_uses_20250919`, a lighter-touch approach that specifically clears old tool results from history without full summarization. For imported Claude Code sessions where tool results dominate (~80%), this could be applied first (strip tool results from older turns) with compaction as a second pass if still over threshold.
+
+JetBrains research on coding agent context management confirms this strategy: masking old tool observation outputs while keeping the full action/reasoning chain was the most effective approach. Their best result: keep the last 10 turns at full fidelity, summarize 21 turns at a time for older context.
+
 **Why this is ideal for Klatch:**
 - We don't need to build our own summarization. The API handles it.
+- Two-tier approach: context editing strips tool bloat first, compaction summarizes if still over threshold
 - We can set a conservative trigger (e.g., 80K tokens) for imported channels with heavy history
 - Custom instructions can say: "Preserve the conversational content and decisions. Tool use was for code editing and file reading — summarize outcomes, not individual operations."
 - Klatch stores the full history locally regardless — compaction only affects what's sent to the API
@@ -347,6 +352,8 @@ ALTER TABLE messages ADD COLUMN original_id TEXT;
 ## References
 
 - [Anthropic Compaction API docs](https://platform.claude.com/docs/en/build-with-claude/compaction)
+- [Anthropic Context Editing docs](https://platform.claude.com/docs/en/build-with-claude/context-editing)
 - [Effective Context Engineering for AI Agents](https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents)
+- [JetBrains: Cutting Through the Noise — Smarter Context Management](https://blog.jetbrains.com/research/2025/12/efficient-context-management/)
 - [Claude Help Center: Export Data](https://support.claude.com/en/articles/9450526-how-can-i-export-my-claude-data)
 - Claude Code JSONL analysis: 49 sessions from `~/.claude/projects/-home-user-klatch/`, 41K total events
