@@ -18,18 +18,20 @@ The existing ways to interact with Claude are good but fragmented:
 
 Klatch fills the gap: a single local interface where you control the models, the prompts, the conversation structure, and the data. Everything stays on your machine in a SQLite database. The only external dependency is the Anthropic API itself.
 
-## What it does today (v0.5)
+## What it does today (v0.6)
 
 Klatch is being built incrementally, one working step at a time ([Gall's Law](https://en.wikipedia.org/wiki/John_Gall_(author)#Gall's_law)). Here's what works right now:
 
+- **Multi-entity conversations** — assign multiple Claude personas to a single channel, each with its own name, model, system prompt, and color
+- **Interaction modes** — panel (all entities respond in parallel) and roundtable (sequential, each seeing prior responses)
 - **Channel-based conversations** — create named channels with custom system prompts, switch between them freely
-- **Per-channel model selection** — choose Opus, Sonnet, or Haiku per channel, switch anytime without losing history
+- **Per-entity model selection** — choose Opus, Sonnet, or Haiku per entity; mix models within a single channel
 - **Streaming responses** — Claude's responses appear token-by-token via Server-Sent Events
-- **Conversation control** — stop generation, regenerate responses, delete messages, clear history
-- **Channel settings** — edit name, system prompt, and model with an inline settings panel
+- **Conversation control** — stop generation (per-message or channel-wide), regenerate responses (mode-aware), delete messages, clear history
+- **Entity management** — create, edit, and delete entities; assign up to 5 per channel
 - **Persistent history** — conversations survive page reloads and server restarts (SQLite)
 - **Markdown rendering** — syntax-highlighted code blocks, formatted text, copy-to-clipboard
-- **Model tracking** — see which model produced each response, with markers when the model changes
+- **Light and dark themes** — system-aware with manual toggle
 
 ## Where it's headed
 
@@ -40,12 +42,12 @@ The [full roadmap](docs/ROADMAP.md) is in the repo, but the key milestones are:
 3. ~~Markdown + code blocks~~ ✓
 4. ~~Conversation control~~ ✓
 5. ~~Channel identity + per-channel models~~ ✓
-6. **Conversation structure** — threads, branching, pinned messages *(next)*
-7. **Multi-entity chat** — multiple Claude personas in one channel
-8. **Search + export** — full-text search, markdown export, command palette
-9. **Import from Claude Code & claude.ai** — bring your existing conversations into Klatch
+6. ~~Multi-entity conversations~~ ✓
+7. ~~Panel + roundtable modes~~ ✓ — directed (@-mention) *(next)*
+8. **Import + unify** — bring in Claude Code sessions and claude.ai exports
+9. **Search + recall** — full-text search, export, command palette
 
-The long-term vision is a unified control plane for all your Claude interactions — a place where you can import context from any source, define persistent roles, and manage ongoing conversations across projects.
+Claude is not one assistant. It's a cast of characters you direct. Klatch is the stage.
 
 ## Quick start
 
@@ -74,18 +76,20 @@ Monorepo via npm workspaces: `packages/shared`, `packages/server`, `packages/cli
 
 ## How this is being built
 
-Klatch is a collaborative project between a human product designer ([xian](https://github.com/mediajunkie)) and two Claude Code agents (Anthropic's AI), Daedalus (the crafter running on xian's laptop) and Argus (the auditor, refining the work). The human drives product direction, architecture decisions, and design values. The Claude agent write the code, propose technical approaches, test and validate the code, develop the presentation of the work, and flags trade-offs. (Each agent chose their own name.(
+Klatch is a collaborative project between a human product designer ([xian](https://github.com/mediajunkie)) and two Claude Code agents (Anthropic's AI): Daedalus (the crafter, running on xian's laptop) and Argus (the auditor, refining the work). The human drives product direction, architecture decisions, and design values. The Claude agents write the code, propose technical approaches, test and validate the code, develop the presentation of the work, and flag trade-offs. (Each agent chose their own name.)
 
 Every feature follows Gall's Law: start with the smallest thing that works, test it, then extend. No speculative abstractions, no premature optimization. The [architecture log](docs/ARCHITECTURE.md) records every decision and why.
 
 ## Why this is being built
 
-The methoology that has emerged in the process of xian's [Piper Morgan](pipermorgan.ai) project has surfaced friction (times when the human is a dumb bottleneck) that distracts from the critical role of judgment and knowing when to say no (when the human is a smart bottleneck, possibly their one job). 
+The methodology that has emerged in the process of xian's [Piper Morgan](https://pipermorgan.ai) project has surfaced friction (times when the human is a dumb bottleneck) that distracts from the critical role of judgment and knowing when to say no (when the human is a smart bottleneck, possibly their one job).
 
-In addition, some frustration with the slow evolution of Claude's fragmented user experience (in contrast with Piper's admittedly still-in-progress holistically modeled UX) led me to ask Daedalus initially to help me put together a solution much better suited to my operating model but no more complex than necessary.
+Some frustration with the slow evolution of Claude's fragmented user experience (in contrast with Piper's admittedly still-in-progress holistically modeled UX) led me to ask Daedalus initially to help me put together a solution much better suited to my operating model but no more complex than necessary.
 
-Two days later and we're about to release a proof-of-concept mult-agent chat feature in alpha version 0.6.0 that is not yet possible in the native Claude user interface(s), has been on the Piper's roadmap for a few months, and appears to be fully possible by making our own interface to the API.  
+Two days later we shipped a proof-of-concept multi-agent chat feature in alpha version 0.6.0 that is not yet possible in the native Claude user interface(s), has been on Piper's roadmap for a few months, and turns out to be fully achievable by making our own interface to the API.
 
 ## License
 
-Creative Commons BY 4.0
+Copyright 2025 Christian Crumlish. Licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).
+
+See [LICENSE.md](LICENSE.md) for the full text.

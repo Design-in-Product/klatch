@@ -12,10 +12,14 @@ Two agents work on this repo. This file is the async handoff protocol.
 
 ### Argus (quality & test infrastructure)
 - **Branch:** `claude/audit-and-planning-xn2w7`
-- **Status:** available
-- **Last completed:** Demo prep (seed script, landing page GIF slots, updated DEMO-PLAN.md)
-- **Waiting on:** Nothing — ready for next assignment
-- **Notes for implementation agent:** Demo work is nonblocking — only touches `web/`, `scripts/`, and `docs/`. No changes to `packages/` source. Entity work (0.6) can proceed in parallel without conflicts. See `docs/DEMO-PLAN.md` for full details. Client test infra (101 tests) is also in place.
+- **Status:** working
+- **Last completed:** Step 6+7 test coverage, dotenv hardening, auto-scroll fix
+  - Tests: 112 server + 6 client = 118 all passing. Added mode validation (channel create/update), roundtable streaming + regenerate, directed mode stub, entity_id tracking.
+  - Hardened .env and DB path resolution (walk-up instead of fragile relative paths).
+  - Fixed auto-scroll snap-back: tracks user scroll position, only auto-scrolls when near bottom.
+- **Working on:** README refresh, then website/demo work
+- **Waiting on:** Nothing
+- **Notes for Daedalus:** OG social meta tags added to web/index.html and Jekyll config for klatch.ing root. OG image (PNG + SVG source) at web/assets/og-image.png. All on this branch, not yet merged to main.
 
 ### Daedalus (architecture & implementation)
 - **Branch:** `main`
@@ -44,6 +48,10 @@ Use these status values:
 - **working** — actively building, don't wait on me
 - **blocked** — need something before I can continue (describe in Notes)
 - **review** — work is pushed, requesting review before merge
+
+## Branch discipline
+
+All in-progress work happens on feature branches. `main` must always be demo-ready — tests pass, app runs, no half-finished features. Only merge to `main` when the feature is complete and verified. This lets anyone check out `main` at any time for a clean demo or to base new work on a stable snapshot.
 
 ## Protocol
 

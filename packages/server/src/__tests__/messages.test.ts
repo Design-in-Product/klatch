@@ -1,10 +1,18 @@
 import { describe, it, expect, vi } from 'vitest';
 import { createTestApp } from './app.js';
-import { insertMessage } from '../db/queries.js';
+import {
+  insertMessage,
+  createChannel,
+  createEntity,
+  assignEntityToChannel,
+  getMessages,
+} from '../db/queries.js';
+import { DEFAULT_MODEL, ENTITY_COLORS } from '@klatch/shared';
 
 // Mock the claude client so streaming doesn't actually call the API
 vi.mock('../claude/client.js', () => ({
   streamClaude: vi.fn(),
+  streamClaudeRoundtable: vi.fn(),
   activeStreams: new Map(),
   abortStream: vi.fn(() => false),
 }));
@@ -17,14 +25,28 @@ function req(method: string, path: string, body?: unknown) {
   return app.request(`/api${path}`, init);
 }
 
+// ── Helper: create a roundtable channel with 2 entities ──────
+async function createRoundtableChannel(): Promise<{ channelId: string; entity1Id: string; entity2Id: string }> {
+  const channel = createChannel('rt-test', 'You are helpful.', DEFAULT_MODEL, 'roundtable');
+  const entity2 = createEntity('Analyst', DEFAULT_MODEL, 'You are an analyst.', ENTITY_COLORS[1]);
+  assignEntityToChannel(channel.id, entity2.id);
+  return { channelId: channel.id, entity1Id: 'default-entity', entity2Id: entity2.id };
+}
+
+// ── Panel mode (default) ─────────────────────────────────────
+
 describe('POST /api/channels/:channelId/messages', () => {
-  it('creates a message pair and returns IDs', async () => {
+  it('creates a message and returns user ID + assistants array', async () => {
     const res = await req('POST', '/channels/default/messages', { content: 'hello' });
     expect(res.status).toBe(200);
     const data = await res.json();
     expect(data.userMessageId).toBeTruthy();
-    expect(data.assistantMessageId).toBeTruthy();
-    expect(data.model).toBeTruthy();
+    expect(data.assistants).toBeTruthy();
+    expect(Array.isArray(data.assistants)).toBe(true);
+    expect(data.assistants.length).toBeGreaterThanOrEqual(1);
+    expect(data.assistants[0].assistantMessageId).toBeTruthy();
+    expect(data.assistants[0].entityId).toBeTruthy();
+    expect(data.assistants[0].model).toBeTruthy();
   });
 
   it('rejects empty content (400)', async () => {
@@ -41,7 +63,68 @@ describe('POST /api/channels/:channelId/messages', () => {
     const res = await req('POST', '/channels/nonexistent/messages', { content: 'hi' });
     expect(res.status).toBe(404);
   });
+
+  it('stores entity_id on assistant messages', async () => {
+    const res = await req('POST', '/channels/default/messages', { content: 'track entity' });
+    const data = await res.json();
+    const msgs = getMessages('default');
+    const assistantMsg = msgs.find((m) => m.id === data.assistants[0].assistantMessageId);
+    expect(assistantMsg).toBeTruthy();
+    expect(assistantMsg!.entityId).toBe(data.assistants[0].entityId);
+  });
 });
+
+// ── Roundtable mode ──────────────────────────────────────────
+
+describe('POST /api/channels/:channelId/messages (roundtable)', () => {
+  it('creates placeholders for all entities in roundtable mode', async () => {
+    const { channelId, entity1Id, entity2Id } = await createRoundtableChannel();
+
+    const res = await req('POST', `/channels/${channelId}/messages`, { content: 'discuss this' });
+    expect(res.status).toBe(200);
+    const data = await res.json();
+
+    expect(data.userMessageId).toBeTruthy();
+    expect(data.assistants).toHaveLength(2);
+    const entityIds = data.assistants.map((a: any) => a.entityId).sort();
+    expect(entityIds).toEqual([entity1Id, entity2Id].sort());
+
+    // Verify DB has the right messages
+    const msgs = getMessages(channelId);
+    const userMsgs = msgs.filter((m) => m.role === 'user');
+    const assistantMsgs = msgs.filter((m) => m.role === 'assistant');
+    expect(userMsgs).toHaveLength(1);
+    expect(assistantMsgs).toHaveLength(2);
+    const dbEntityIds = assistantMsgs.map((m) => m.entityId).sort();
+    expect(dbEntityIds).toEqual([entity1Id, entity2Id].sort());
+  });
+
+  it('calls streamClaudeRoundtable (not streamClaude)', async () => {
+    const { streamClaude, streamClaudeRoundtable } = await import('../claude/client.js');
+    vi.mocked(streamClaude).mockClear();
+    vi.mocked(streamClaudeRoundtable).mockClear();
+
+    const { channelId } = await createRoundtableChannel();
+    await req('POST', `/channels/${channelId}/messages`, { content: 'hello roundtable' });
+
+    expect(streamClaudeRoundtable).toHaveBeenCalledTimes(1);
+    expect(streamClaude).not.toHaveBeenCalled();
+  });
+});
+
+// ── Directed mode (stub) ─────────────────────────────────────
+
+describe('POST /api/channels/:channelId/messages (directed)', () => {
+  it('returns 501 for directed mode', async () => {
+    const channel = createChannel('directed-ch', 'sys', DEFAULT_MODEL, 'directed');
+    const res = await req('POST', `/channels/${channel.id}/messages`, { content: 'hello' });
+    expect(res.status).toBe(501);
+    const data = await res.json();
+    expect(data.error).toContain('not yet implemented');
+  });
+});
+
+// ── Delete messages ──────────────────────────────────────────
 
 describe('DELETE /api/channels/:channelId/messages', () => {
   it('clears all messages', async () => {
@@ -71,8 +154,29 @@ describe('DELETE /api/messages/:id', () => {
   });
 });
 
+// ── Stop streaming ───────────────────────────────────────────
+
+describe('POST /api/messages/:id/stop', () => {
+  it('returns 404 when no active stream exists', async () => {
+    const msg = insertMessage('default', 'assistant', 'done', 'complete');
+    const res = await req('POST', `/messages/${msg.id}/stop`);
+    expect(res.status).toBe(404);
+  });
+});
+
+describe('POST /api/channels/:channelId/stop', () => {
+  it('returns stopped count (0 when nothing streaming)', async () => {
+    const res = await req('POST', '/channels/default/stop');
+    expect(res.status).toBe(200);
+    const data = await res.json();
+    expect(data.stopped).toBe(0);
+  });
+});
+
+// ── Regenerate ───────────────────────────────────────────────
+
 describe('POST /api/channels/:channelId/regenerate', () => {
-  it('regenerates the last assistant message', async () => {
+  it('regenerates the last assistant message (panel mode)', async () => {
     insertMessage('default', 'user', 'question');
     insertMessage('default', 'assistant', 'answer', 'complete', 'claude-opus-4-6');
 
@@ -81,6 +185,7 @@ describe('POST /api/channels/:channelId/regenerate', () => {
     const data = await res.json();
     expect(data.assistantMessageId).toBeTruthy();
     expect(data.model).toBeTruthy();
+    expect(data.assistants).toHaveLength(1);
   });
 
   it('returns 404 when no assistant message exists', async () => {
@@ -98,6 +203,55 @@ describe('POST /api/channels/:channelId/regenerate', () => {
 
   it('returns 404 for nonexistent channel', async () => {
     const res = await req('POST', '/channels/nonexistent/regenerate');
+    expect(res.status).toBe(404);
+  });
+});
+
+describe('POST /api/channels/:channelId/regenerate (roundtable)', () => {
+  it('deletes all last-round assistant messages and recreates them', async () => {
+    const { channelId, entity1Id, entity2Id } = await createRoundtableChannel();
+
+    // Simulate a completed round: user msg + 2 assistant msgs
+    insertMessage(channelId, 'user', 'discuss this');
+    insertMessage(channelId, 'assistant', 'entity1 response', 'complete', DEFAULT_MODEL, entity1Id);
+    insertMessage(channelId, 'assistant', 'entity2 response', 'complete', DEFAULT_MODEL, entity2Id);
+
+    const res = await req('POST', `/channels/${channelId}/regenerate`);
+    expect(res.status).toBe(200);
+    const data = await res.json();
+
+    // Should return assistants array with new IDs for both entities
+    expect(data.assistants).toHaveLength(2);
+    const entityIds = data.assistants.map((a: any) => a.entityId).sort();
+    expect(entityIds).toEqual([entity1Id, entity2Id].sort());
+
+    // DB should have: 1 user msg + 2 new assistant placeholders (old ones deleted)
+    const msgs = getMessages(channelId);
+    const userMsgs = msgs.filter((m) => m.role === 'user');
+    const assistantMsgs = msgs.filter((m) => m.role === 'assistant');
+    expect(userMsgs).toHaveLength(1);
+    expect(assistantMsgs).toHaveLength(2);
+    // New messages should be streaming status (placeholders)
+    expect(assistantMsgs.every((m) => m.status === 'streaming')).toBe(true);
+  });
+
+  it('calls streamClaudeRoundtable on regenerate', async () => {
+    const { streamClaudeRoundtable } = await import('../claude/client.js');
+    vi.mocked(streamClaudeRoundtable).mockClear();
+
+    const { channelId, entity1Id, entity2Id } = await createRoundtableChannel();
+    insertMessage(channelId, 'user', 'q');
+    insertMessage(channelId, 'assistant', 'a1', 'complete', DEFAULT_MODEL, entity1Id);
+    insertMessage(channelId, 'assistant', 'a2', 'complete', DEFAULT_MODEL, entity2Id);
+
+    await req('POST', `/channels/${channelId}/regenerate`);
+    expect(streamClaudeRoundtable).toHaveBeenCalledTimes(1);
+  });
+
+  it('returns 404 when roundtable channel has no assistant messages', async () => {
+    const { channelId } = await createRoundtableChannel();
+
+    const res = await req('POST', `/channels/${channelId}/regenerate`);
     expect(res.status).toBe(404);
   });
 });

@@ -8,6 +8,16 @@
   <meta property="og:title" content="Klatch — Own your Claude conversations">
   <meta property="og:description" content="A local-first, channel-based interface for managing all your Claude AI interactions.">
   <meta property="og:type" content="website">
+  <meta property="og:url" content="https://www.klatch.ing">
+  <meta property="og:site_name" content="Klatch">
+  <meta property="og:image" content="https://www.klatch.ing/assets/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Klatch — Own your Claude conversations">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Klatch — Own your Claude conversations">
+  <meta name="twitter:description" content="A local-first, channel-based interface for managing all your Claude AI interactions.">
+  <meta name="twitter:image" content="https://www.klatch.ing/assets/og-image.png">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect x='10' y='8' width='8.5' height='48' rx='4.25' ry='4.25' fill='%23e5e7eb'/><rect x='18.5' y='28' width='24' height='8' rx='4' ry='4' fill='%23e5e7eb' transform='rotate(-40,18.5,32)'/><rect x='18.5' y='28' width='26' height='8' rx='4' ry='4' fill='%23e5e7eb' transform='rotate(40,18.5,32)'/><circle cx='50.5' cy='12' r='5' fill='%23EF4444'/></svg>">
   <style>
     :root {
@@ -394,11 +404,12 @@
       </div>
     </section>
 
-    <!-- Demo showcase — drop GIFs into web/assets/ and uncomment img tags -->
+    <!-- Demo showcase -->
     <section class="demo-showcase" style="padding: 40px 0 8px; text-align: center;">
-      <div style="background: var(--bg-main); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; max-width: 680px; margin: 0 auto; aspect-ratio: 16/10; display: flex; align-items: center; justify-content: center; color: var(--text-dim); font-size: 0.85rem;">
-        <!-- <img src="assets/channel-persona.gif" alt="Channels shape Claude's personality" style="width:100%;height:100%;object-fit:cover;"> -->
-        demo: channel-persona.gif
+      <div style="background: var(--bg-main); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; max-width: 680px; margin: 0 auto;">
+        <video autoplay loop muted playsinline style="width:100%;display:block;" poster="assets/og-image.png">
+          <source src="assets/0.6.0-01-roles-web.mp4" type="video/mp4">
+        </video>
       </div>
     </section>
 
@@ -406,18 +417,16 @@
       <h2>What Klatch does today</h2>
       <div class="feature-grid">
         <div class="feature">
-          <h3>Channel-based conversations</h3>
-          <p>Named channels with custom system prompts. Each channel is a different Claude persona with its own identity.</p>
+          <h3>Multi-entity conversations</h3>
+          <p>Assign multiple Claude personas to a channel, each with its own name, model, system prompt, and color.</p>
         </div>
         <div class="feature">
-          <h3>Streaming responses</h3>
-          <p>Token-by-token streaming via SSE. Stop generation, regenerate, or delete messages mid-conversation.</p>
-          <!-- <div style="margin-top:12px;border-radius:8px;overflow:hidden;border:1px solid var(--border);"><img src="assets/streaming-control.gif" alt="Streaming demo" style="width:100%;display:block;"></div> -->
+          <h3>Interaction modes</h3>
+          <p>Panel mode for parallel responses, roundtable for sequential discussion where each persona sees what came before.</p>
         </div>
         <div class="feature">
-          <h3>Per-channel model selection</h3>
-          <p>Opus for deep work, Sonnet for speed, Haiku for quick tasks. Choose the right model for each role.</p>
-          <!-- <div style="margin-top:12px;border-radius:8px;overflow:hidden;border:1px solid var(--border);"><img src="assets/model-switching.gif" alt="Model switching demo" style="width:100%;display:block;"></div> -->
+          <h3>Per-entity model selection</h3>
+          <p>Opus for deep work, Sonnet for speed, Haiku for quick tasks. Mix models within a single channel.</p>
         </div>
         <div class="feature">
           <h3>Local-first, own your data</h3>
