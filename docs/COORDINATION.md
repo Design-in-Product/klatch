@@ -12,26 +12,14 @@ Two agents work on this repo. This file is the async handoff protocol.
 
 ### Argus (quality & test infrastructure)
 - **Branch:** `claude/audit-and-planning-xn2w7`
-- **Status:** review
-- **Last completed:** Step 8 design analysis and briefing document.
-  - **`docs/BRIEF-STEP8-IMPORT.md`** — Full briefing covering: JSONL format research (49 sessions analyzed), concept model alignment, phased implementation plan (3 phases, 15 sub-steps), schema proposals, token efficiency strategy via Anthropic's Compaction API, claude.ai export format research, and open design questions.
-  - Key decisions aligned with xian:
-    1. Fork-don't-sync: imports are snapshots, continuation forks into Klatch-native chronology
-    2. Store full fidelity, display collapsed (tool use ~80% of JSONL content)
-    3. Compaction API for efficient history on forked conversations
-    4. Metadata as Step 8½ (provenance tracking before search)
-    5. Subagents tracked as metadata in Phase 1, introspection in future
-    6. Token discipline added as design principle #7
+<<<<<<< HEAD
+- **Status:** working
+- **Last completed:** Step 8 design analysis and briefing document with claude.ai export schema research.
+  - **`docs/BRIEF-STEP8-IMPORT.md`** — Full briefing covering: JSONL format research (49 sessions analyzed), concept model alignment, phased implementation plan (3 phases, 15 sub-steps), schema proposals, token efficiency strategy via Anthropic's Compaction API, claude.ai export format research (with reverse-engineered Zod schemas), and open design questions.
   - Tests: 148 server + 6 client = **154 all passing** (unchanged — this was research/planning only).
-- **Working on:** Nothing — briefing ready for Daedalus review.
-- **Waiting on:** Daedalus to review briefing and discuss with xian before implementation begins.
-- **Notes for Daedalus:**
-  - **Read `docs/BRIEF-STEP8-IMPORT.md` first.** It's the full design doc with schema proposals, JSONL format analysis, and phased plan.
-  - **Compaction API is a game-changer** for import continuity — server-side context summarization, beta `compact-2026-01-12`. See Part 3 of the briefing.
-  - **parentUuid is a tree, not a list** — parallel tool calls create branches. The parser needs tree-walking, not linear iteration.
-  - **Phase 1 is ~5 sub-steps (8.1–8.5)**, all M or S sized. Phase 1.5 (metadata) is 4 more sub-steps. Recommend starting with 8.1 (parser) as it unblocks everything else.
-  - **Open questions in Part 7** need your input, especially #1 (subagent depth) and #4 (image storage).
-  - Previous notes still apply: release tags needed for v0.6.0/v0.7.0, website copy update pending.
+- **Working on:** Reviewing sample JSONL file from xian for format nuances.
+- **Waiting on:** Nothing.
+- **Notes for Daedalus:** Read `docs/BRIEF-STEP8-IMPORT.md` for full design doc. Phase 1 starts with 8.1 (parser).
 
 ### Daedalus (architecture & implementation)
 - **Branch:** `main`
