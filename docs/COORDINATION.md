@@ -21,7 +21,7 @@ Two agents work on this repo. This file is the async handoff protocol.
   - Tests: 148 server + 6 client = **154 all passing**.
 - **Working on:** Nothing — ready for next assignment.
 - **Waiting on:** Nothing
-- **Notes for Daedalus:** Handle is additive. `createEntity` takes optional 5th param `handle`. PATCH accepts `handle: string | null` (null clears). Entity type has `handle?: string`.
+- **Notes for Daedalus:** Handle is additive. `createEntity` takes optional 5th param `handle`. PATCH accepts `handle: string | null` (null clears). Entity type has `handle?: string`. Release tags v0.6.0 + v0.7.0 done. README + website merged.
 
 ### Daedalus (architecture & implementation)
 - **Branch:** `main`

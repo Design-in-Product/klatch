@@ -58,27 +58,25 @@ This is the first step that's impossible in claude.ai or Claude Code. It moves K
 - Header shows entity pills with colored dots and model labels
 - Backward compatible: single-entity channels look unchanged, old messages render as "Claude"
 
+### Step 7: Interaction modes ✓
+**Dimension: orchestration.** Can you control *how* entities interact with each other and with you?
+
+Three modes for multi-entity channels, each with distinct orchestration:
+
+- Mode selector in channel settings (panel / roundtable / directed)
+- **Panel mode**: all entities respond independently in parallel (formalized from Step 6)
+- **Roundtable mode**: entities respond sequentially, each seeing all prior responses in the round
+- **Directed mode**: @-mention routes messages to specific entities, with autocomplete UI
+- Mode-specific history construction (panel = isolated, roundtable = shared, directed = selective)
+- **Entity handles**: optional short slugs (`@exec`, `@cxo`) for quick @-mentions
+- **Sidebar grouping**: Roles (@prefix, 1 entity) and Channels (#prefix, 2+ entities)
+- Mode-aware regenerate, abort cleanup, hidden mode selector for single-entity channels
+
 ---
 
 ## Next Steps (concrete, actionable)
 
-### Step 7: Interaction modes
-**Dimension: orchestration.** Can you control *how* entities interact with each other and with you?
-
-Panel mode already works from Step 6. This step adds the other two modes that make multi-entity channels genuinely useful — especially for coordination and delegation.
-
-- Mode selector in channel settings (panel / roundtable / directed)
-- **Roundtable mode**: entities respond sequentially, each seeing all prior responses in the round
-- **Directed mode**: @-mention routes a message to a specific entity, with autocomplete
-- Mode-specific history construction (panel = isolated, roundtable = shared, directed = selective)
-
-**Near-term target: dogfooding.** After Step 7, we can run the Klatch development project inside Klatch itself — coordinating between multiple Claude agents in a shared channel.
-
----
-
-## Directional (sequence flexible, shape emerging)
-
-### Step 8: Import and sync
+### Step 8: Import and unify
 **Dimension: data consolidation.** Can you bring your existing Claude work into Klatch?
 
 - Parse Claude Code JSONL session files (`~/.claude/projects/`)
