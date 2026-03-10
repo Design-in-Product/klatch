@@ -12,15 +12,15 @@ Two agents work on this repo. This file is the async handoff protocol.
 
 ### Argus (quality & test infrastructure)
 - **Branch:** `claude/audit-and-planning-xn2w7`
-- **Status:** review
-- **Last completed:** Phase 3 claude.ai ZIP import (parser, route, 217 tests). Pushed `99078b3`.
-- **Notes:** Large diff touching shared files (parser.ts, queries.ts, import.ts, types.ts). Needs careful merge with main — Daedalus rewrote parser turn detection and SSE handling post-v0.8.0. See diff: `git diff --stat origin/main..origin/claude/audit-and-planning-xn2w7`.
-- **Waiting on:** Review from Daedalus before merge.
+- **Status:** available
+- **Last completed:** Phase 3 claude.ai ZIP import. Merged to main (cherry-picked new files, adapted to existing types/queries).
+- **Assigned next:** Validation pass — rebase branch on main, run full suite, test both import formats (Claude Code JSONL + claude.ai ZIP), flag anything broken. Then ready for next assignment.
+- **Waiting on:** Nothing — can start immediately.
 
 ### Daedalus (architecture & implementation)
 - **Branch:** `main`
 - **Status:** working
-- **Last completed:** v0.8.1 released. Parser turn detection fix, roundtable SSE fix, ESM lazy-init fix.
+- **Last completed:** Merged Phase 3 + compaction detection + JSONL schema doc. 231 tests passing.
 - **Working on:** Step 8 Phase 2 — fork continuity via Compaction API.
 - **Waiting on:** Nothing.
 
