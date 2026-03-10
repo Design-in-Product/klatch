@@ -2,6 +2,8 @@ import { Hono } from 'hono';
 import fs from 'fs';
 import path from 'path';
 import { parseClaudeCodeSession } from '../import/parser.js';
+import { parseClaudeAiConversation } from '../import/claude-ai-parser.js';
+import { extractConversationsFromZip } from '../import/claude-ai-zip.js';
 import { importSession, findChannelByOriginalSessionId } from '../db/queries.js';
 import { MODEL_ALIASES, AVAILABLE_MODELS } from '@klatch/shared';
 import type { ModelId } from '@klatch/shared';
@@ -118,5 +120,141 @@ function resolveModel(modelId?: string): ModelId | undefined {
   // Unrecognized — return undefined to use channel default
   return undefined;
 }
+
+/**
+ * POST /import/claude-ai
+ *
+ * Import conversations from a claude.ai email export ZIP file.
+ * Supports both multipart file upload and JSON body with file path.
+ *
+ * Multipart: Send ZIP as "file" field in multipart/form-data.
+ * JSON: { zipPath: string } — for testing/CLI use.
+ *
+ * Returns: 201 with { imported, skipped, totalImported, totalSkipped }
+ */
+app.post('/import/claude-ai', async (c) => {
+  const contentType = c.req.header('content-type') || '';
+
+  let zipBuffer: Buffer;
+
+  if (contentType.includes('multipart/form-data')) {
+    const formData = await c.req.formData();
+    const file = formData.get('file');
+    if (!file || !(file instanceof File)) {
+      return c.json({ error: 'No file uploaded. Send a ZIP file as "file" in multipart form data.' }, 400);
+    }
+    if (!file.name.endsWith('.zip')) {
+      return c.json({ error: 'File must be a .zip file' }, 400);
+    }
+    const arrayBuffer = await file.arrayBuffer();
+    zipBuffer = Buffer.from(arrayBuffer);
+  } else {
+    const body = await c.req.json<{ zipPath: string }>();
+    const { zipPath } = body;
+    if (!zipPath || !zipPath.endsWith('.zip')) {
+      return c.json({ error: 'File must be a .zip file' }, 400);
+    }
+    // Expand ~ to home directory
+    const expandedPath = zipPath.startsWith('~')
+      ? path.join(process.env.HOME || '', zipPath.slice(1))
+      : zipPath;
+    if (!fs.existsSync(expandedPath)) {
+      return c.json({ error: 'File not found' }, 404);
+    }
+    zipBuffer = fs.readFileSync(expandedPath);
+  }
+
+  // Extract conversations from ZIP
+  let conversationFiles;
+  try {
+    conversationFiles = extractConversationsFromZip(zipBuffer);
+  } catch {
+    return c.json({ error: 'Invalid ZIP file' }, 400);
+  }
+
+  if (conversationFiles.length === 0) {
+    return c.json({ error: 'ZIP contains no conversations' }, 400);
+  }
+
+  const imported: Array<{
+    channelId: string;
+    channelName: string;
+    messageCount: number;
+    artifactCount: number;
+    conversationId: string;
+  }> = [];
+  const skipped: Array<{
+    conversationId: string;
+    reason: string;
+    existingChannelId?: string;
+  }> = [];
+
+  for (const { conversation } of conversationFiles) {
+    const parsed = parseClaudeAiConversation(conversation);
+
+    if (parsed.turns.length === 0) {
+      if (parsed.sessionId) {
+        skipped.push({ conversationId: parsed.sessionId, reason: 'empty' });
+      }
+      continue;
+    }
+
+    // Dedup check using the conversation UUID
+    if (parsed.sessionId) {
+      const existing = findChannelByOriginalSessionId(parsed.sessionId);
+      if (existing) {
+        skipped.push({
+          conversationId: parsed.sessionId,
+          reason: 'duplicate',
+          existingChannelId: existing.id,
+        });
+        continue;
+      }
+    }
+
+    const conv = conversation as { uuid?: string; name?: string; created_at?: string; updated_at?: string };
+
+    const result = importSession({
+      channelName: parsed.slug || `claude.ai — ${parsed.sessionId || 'import'}`,
+      source: 'claude-ai',
+      sourceMetadata: {
+        originalSessionId: parsed.sessionId,
+        conversationName: parsed.slug,
+        createdAt: conv.created_at,
+        updatedAt: conv.updated_at,
+        eventCount: parsed.eventCount,
+        importedAt: new Date().toISOString(),
+      },
+      turns: parsed.turns,
+    });
+
+    imported.push({
+      ...result,
+      conversationId: parsed.sessionId || '',
+    });
+  }
+
+  // All duplicates → 409
+  if (imported.length === 0 && skipped.every((s) => s.reason === 'duplicate')) {
+    return c.json({
+      error: 'All conversations already imported',
+      imported: [],
+      skipped,
+      totalImported: 0,
+      totalSkipped: skipped.length,
+    }, 409);
+  }
+
+  if (imported.length === 0) {
+    return c.json({ error: 'No valid conversations found in ZIP' }, 400);
+  }
+
+  return c.json({
+    imported,
+    skipped,
+    totalImported: imported.length,
+    totalSkipped: skipped.length,
+  }, 201);
+});
 
 export const importRoutes = app;

@@ -1,0 +1,44 @@
+{
+  "uuid": "conv-simple-001",
+  "name": "Chat about React",
+  "created_at": "2026-01-15T10:00:00.000Z",
+  "updated_at": "2026-01-15T10:05:00.000Z",
+  "chat_messages": [
+    {
+      "uuid": "msg-001",
+      "text": "What is React?",
+      "sender": "human",
+      "created_at": "2026-01-15T10:00:00.000Z",
+      "content": [{ "type": "text", "text": "What is React?" }],
+      "attachments": [],
+      "files": []
+    },
+    {
+      "uuid": "msg-002",
+      "text": "React is a JavaScript library for building user interfaces.",
+      "sender": "assistant",
+      "created_at": "2026-01-15T10:00:05.000Z",
+      "content": [{ "type": "text", "text": "React is a JavaScript library for building user interfaces." }],
+      "attachments": [],
+      "files": []
+    },
+    {
+      "uuid": "msg-003",
+      "text": "How do I create a component?",
+      "sender": "human",
+      "created_at": "2026-01-15T10:02:00.000Z",
+      "content": [{ "type": "text", "text": "How do I create a component?" }],
+      "attachments": [],
+      "files": []
+    },
+    {
+      "uuid": "msg-004",
+      "text": "You can create a React component using a function that returns JSX.",
+      "sender": "assistant",
+      "created_at": "2026-01-15T10:02:10.000Z",
+      "content": [{ "type": "text", "text": "You can create a React component using a function that returns JSX." }],
+      "attachments": [],
+      "files": []
+    }
+  ]
+}

@@ -3,9 +3,9 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
-// Parser will be implemented by Daedalus at packages/server/src/import/parser.ts
-// These tests define the expected contract for parseEvents()
-import { parseEvents } from '../import/parser.js';
+// Parser contract tests — parseEvents() and isHumanTurnBoundary()
+import { parseEvents, isHumanTurnBoundary } from '../import/parser.js';
+import type { RawEvent } from '../import/parser.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const FIXTURES = path.join(__dirname, 'fixtures');
@@ -367,5 +367,95 @@ describe('parseEvents — edge cases', () => {
     const result = parseEvents(events);
     // Should produce 2 turns from the 4 valid events
     expect(result.turns.length).toBe(2);
+  });
+});
+
+// ── Injection detection (isHumanTurnBoundary) ─────────────────
+
+describe('isHumanTurnBoundary — injection detection', () => {
+  const baseEvent: RawEvent = {
+    type: 'user',
+    uuid: 'test-001',
+    parentUuid: 'test-000',
+    timestamp: '2026-03-10T10:00:00.000Z',
+    message: { role: 'user', content: 'Hello from a real human' },
+  };
+
+  it('accepts a real human message (string content)', () => {
+    expect(isHumanTurnBoundary(baseEvent)).toBe(true);
+  });
+
+  it('accepts a real human message (array content with text block)', () => {
+    const event: RawEvent = {
+      ...baseEvent,
+      message: {
+        role: 'user',
+        content: [{ type: 'text', text: 'Hello from array' }],
+      },
+    };
+    expect(isHumanTurnBoundary(event)).toBe(true);
+  });
+
+  it('rejects compaction summary (isCompactSummary=true)', () => {
+    const event: RawEvent = {
+      ...baseEvent,
+      isCompactSummary: true,
+      isVisibleInTranscriptOnly: true,
+      message: {
+        role: 'user',
+        content: 'This session is being continued from a previous conversation that ran out of context.',
+      },
+    };
+    expect(isHumanTurnBoundary(event)).toBe(false);
+  });
+
+  it('rejects hook feedback (isMeta=true)', () => {
+    const event: RawEvent = {
+      ...baseEvent,
+      isMeta: true,
+      message: {
+        role: 'user',
+        content: 'Stop hook feedback:\n[Verification Required] Code was edited while a preview server is running.',
+      },
+    };
+    expect(isHumanTurnBoundary(event)).toBe(false);
+  });
+
+  it('rejects skill injection (isMeta=true, sourceToolUseID)', () => {
+    const event: RawEvent = {
+      ...baseEvent,
+      isMeta: true,
+      sourceToolUseID: 'toolu_016v8Cz3c1cvW46MD7CuUd8j',
+      message: {
+        role: 'user',
+        content: [{ type: 'text', text: '# Release a new version of Klatch\n\nFollow the release runbook...' }],
+      },
+    };
+    expect(isHumanTurnBoundary(event)).toBe(false);
+  });
+
+  it('rejects tool result (array of tool_result blocks, no text)', () => {
+    const event: RawEvent = {
+      ...baseEvent,
+      sourceToolAssistantUUID: 'test-assistant-uuid',
+      message: {
+        role: 'user',
+        content: [{ type: 'tool_result', tool_use_id: 'toolu_001', content: 'file contents' }],
+      },
+    };
+    expect(isHumanTurnBoundary(event)).toBe(false);
+  });
+
+  it('rejects non-user events', () => {
+    const event: RawEvent = { ...baseEvent, type: 'assistant' };
+    expect(isHumanTurnBoundary(event)).toBe(false);
+  });
+
+  it('rejects empty content', () => {
+    const event: RawEvent = {
+      ...baseEvent,
+      message: { role: 'user', content: '' },
+    };
+    expect(isHumanTurnBoundary(event)).toBe(false);
   });
 });

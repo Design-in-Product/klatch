@@ -1,0 +1,49 @@
+{
+  "uuid": "conv-tools-001",
+  "name": "Data analysis session",
+  "created_at": "2026-01-15T11:00:00.000Z",
+  "updated_at": "2026-01-15T11:10:00.000Z",
+  "chat_messages": [
+    {
+      "uuid": "msg-t01",
+      "text": "Analyze the sales data and create a chart",
+      "sender": "human",
+      "created_at": "2026-01-15T11:00:00.000Z",
+      "content": [{ "type": "text", "text": "Analyze the sales data and create a chart" }],
+      "attachments": [],
+      "files": []
+    },
+    {
+      "uuid": "msg-t02",
+      "text": "I'll analyze the data and create a visualization for you.",
+      "sender": "assistant",
+      "created_at": "2026-01-15T11:00:10.000Z",
+      "content": [
+        { "type": "text", "text": "I'll analyze the data and create a visualization for you." },
+        {
+          "type": "tool_use",
+          "name": "analysis",
+          "input": { "code": "import pandas as pd\ndf = pd.read_csv('sales.csv')\ndf.describe()" }
+        },
+        {
+          "type": "tool_use",
+          "name": "artifacts",
+          "input": { "title": "Sales Chart", "type": "chart", "content": "<svg>...</svg>" }
+        }
+      ],
+      "attachments": [],
+      "files": []
+    },
+    {
+      "uuid": "msg-t03",
+      "text": "The analysis shows steady growth. Here's the chart with monthly trends.",
+      "sender": "assistant",
+      "created_at": "2026-01-15T11:01:00.000Z",
+      "content": [
+        { "type": "text", "text": "The analysis shows steady growth. Here's the chart with monthly trends." }
+      ],
+      "attachments": [],
+      "files": []
+    }
+  ]
+}
