@@ -255,20 +255,66 @@ app.get('/messages/:id/stream', (c) => {
   const messageId = c.req.param('id');
 
   return streamSSE(c, async (stream) => {
-    const emitter = activeStreams.get(messageId);
+    // Try to find an active emitter — it may not exist yet (roundtable entities
+    // that haven't started) or may have already completed.
+    let emitter = activeStreams.get(messageId);
 
     if (!emitter) {
-      // Stream already completed before client connected — check DB for final state
+      // No emitter. Check DB to distinguish "already done" from "not started yet".
       const msg = getMessage(messageId);
-      const type = msg?.status === 'error' ? 'error' : 'message_complete';
-      await stream.writeSSE({
-        data: JSON.stringify({
-          type,
-          messageId,
-          content: msg?.content ?? '',
-        } satisfies StreamEvent),
-      });
-      return;
+
+      if (!msg || msg.status === 'complete' || msg.status === 'error') {
+        // Already finished — send the final content immediately
+        const type = msg?.status === 'error' ? 'error' : 'message_complete';
+        await stream.writeSSE({
+          data: JSON.stringify({
+            type,
+            messageId,
+            content: msg?.content ?? '',
+          } satisfies StreamEvent),
+        });
+        return;
+      }
+
+      // Status is 'streaming' but no emitter — the stream hasn't started yet
+      // (e.g., roundtable entity waiting for its turn). Poll until it appears.
+      const maxWait = 120_000; // 2 minutes
+      const pollInterval = 200;
+      const deadline = Date.now() + maxWait;
+
+      while (Date.now() < deadline) {
+        emitter = activeStreams.get(messageId);
+        if (emitter) break;
+
+        // Check if it completed while we were waiting (another race)
+        const fresh = getMessage(messageId);
+        if (fresh && (fresh.status === 'complete' || fresh.status === 'error')) {
+          const type = fresh.status === 'error' ? 'error' : 'message_complete';
+          await stream.writeSSE({
+            data: JSON.stringify({
+              type,
+              messageId,
+              content: fresh.content ?? '',
+            } satisfies StreamEvent),
+          });
+          return;
+        }
+
+        await new Promise((r) => setTimeout(r, pollInterval));
+      }
+
+      if (!emitter) {
+        // Timed out waiting — send whatever the DB has
+        const final = getMessage(messageId);
+        await stream.writeSSE({
+          data: JSON.stringify({
+            type: 'message_complete',
+            messageId,
+            content: final?.content ?? '',
+          } satisfies StreamEvent),
+        });
+        return;
+      }
     }
 
     // Forward events from the in-memory emitter to SSE
@@ -278,23 +324,23 @@ app.get('/messages/:id/stream', (c) => {
           await stream.writeSSE({ data: JSON.stringify(event) });
         } catch {
           // Client disconnected
-          emitter.off('data', onData);
+          emitter!.off('data', onData);
           resolve();
           return;
         }
         if (event.type === 'message_complete' || event.type === 'error') {
-          emitter.off('data', onData);
+          emitter!.off('data', onData);
           resolve();
         }
       };
 
-      emitter.on('data', onData);
+      emitter!.on('data', onData);
 
       // Safety: resolve if emitter is removed (stream completed between our check and subscribe)
       const interval = setInterval(() => {
         if (!activeStreams.has(messageId)) {
           clearInterval(interval);
-          emitter.off('data', onData);
+          emitter!.off('data', onData);
           resolve();
         }
       }, 500);
