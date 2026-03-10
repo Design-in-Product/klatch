@@ -21,6 +21,8 @@ function createFreshDb(): Database.Database {
       system_prompt TEXT NOT NULL DEFAULT '',
       model TEXT NOT NULL DEFAULT '${DEFAULT_MODEL}',
       mode TEXT NOT NULL DEFAULT '${DEFAULT_INTERACTION_MODE}',
+      source TEXT DEFAULT 'native',
+      source_metadata TEXT,
       created_at TEXT NOT NULL DEFAULT (datetime('now'))
     );
 
@@ -32,6 +34,8 @@ function createFreshDb(): Database.Database {
       status TEXT NOT NULL DEFAULT 'complete' CHECK (status IN ('complete', 'streaming', 'error')),
       model TEXT,
       entity_id TEXT,
+      original_timestamp TEXT,
+      original_id TEXT,
       created_at TEXT NOT NULL DEFAULT (datetime('now'))
     );
 
@@ -51,6 +55,17 @@ function createFreshDb(): Database.Database {
       added_at TEXT NOT NULL DEFAULT (datetime('now')),
       PRIMARY KEY (channel_id, entity_id)
     );
+
+    CREATE TABLE IF NOT EXISTS message_artifacts (
+      id TEXT PRIMARY KEY,
+      message_id TEXT NOT NULL REFERENCES messages(id) ON DELETE CASCADE,
+      type TEXT NOT NULL,
+      tool_name TEXT,
+      input_summary TEXT,
+      content TEXT,
+      created_at TEXT NOT NULL DEFAULT (datetime('now'))
+    );
+    CREATE INDEX IF NOT EXISTS idx_message_artifacts_message_id ON message_artifacts(message_id);
 
     INSERT OR IGNORE INTO channels (id, name, system_prompt)
     VALUES ('default', 'general', 'You are a helpful assistant.');

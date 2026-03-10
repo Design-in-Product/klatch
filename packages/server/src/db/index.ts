@@ -116,6 +116,40 @@ function runMigrations() {
     db.exec(`ALTER TABLE entities ADD COLUMN handle TEXT`);
   }
 
+  // ── Step 8: Import support ─────────────────────────────────
+
+  // Add source tracking columns to channels
+  if (!channelCols.some((c) => c.name === 'source')) {
+    db.exec(`ALTER TABLE channels ADD COLUMN source TEXT DEFAULT 'native'`);
+  }
+  if (!channelCols.some((c) => c.name === 'source_metadata')) {
+    db.exec(`ALTER TABLE channels ADD COLUMN source_metadata TEXT`);
+  }
+
+  // Add original IDs to messages for imported conversations
+  // Re-read msgCols since we might have added columns above
+  const msgCols2 = db.prepare("PRAGMA table_info(messages)").all() as { name: string }[];
+  if (!msgCols2.some((c) => c.name === 'original_timestamp')) {
+    db.exec(`ALTER TABLE messages ADD COLUMN original_timestamp TEXT`);
+  }
+  if (!msgCols2.some((c) => c.name === 'original_id')) {
+    db.exec(`ALTER TABLE messages ADD COLUMN original_id TEXT`);
+  }
+
+  // Create message_artifacts table for tool use, thinking, images from imports
+  db.exec(`
+    CREATE TABLE IF NOT EXISTS message_artifacts (
+      id TEXT PRIMARY KEY,
+      message_id TEXT NOT NULL REFERENCES messages(id) ON DELETE CASCADE,
+      type TEXT NOT NULL,
+      tool_name TEXT,
+      input_summary TEXT,
+      content TEXT,
+      created_at TEXT NOT NULL DEFAULT (datetime('now'))
+    );
+    CREATE INDEX IF NOT EXISTS idx_message_artifacts_message_id ON message_artifacts(message_id);
+  `);
+
   // Ensure default entity exists (for existing databases being upgraded)
   const defaultEntity = db.prepare('SELECT id FROM entities WHERE id = ?').get(DEFAULT_ENTITY_ID);
   if (!defaultEntity) {

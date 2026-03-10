@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
 import { getDb } from './index.js';
-import type { Channel, Message, Entity, ModelId, InteractionMode } from '@klatch/shared';
+import type { Channel, Message, Entity, ModelId, InteractionMode, ChannelSource } from '@klatch/shared';
 import { DEFAULT_MODEL, DEFAULT_ENTITY_ID, ENTITY_COLORS, DEFAULT_INTERACTION_MODE } from '@klatch/shared';
 
 function rowToChannel(row: any): Channel {
@@ -11,6 +11,8 @@ function rowToChannel(row: any): Channel {
     model: row.model || DEFAULT_MODEL,
     mode: (row.mode as InteractionMode) || DEFAULT_INTERACTION_MODE,
     createdAt: row.created_at,
+    source: (row.source as ChannelSource) || undefined,
+    sourceMetadata: row.source_metadata || undefined,
   };
 }
 
@@ -24,6 +26,8 @@ function rowToMessage(row: any): Message {
     model: row.model || undefined,
     entityId: row.entity_id || undefined,
     createdAt: row.created_at,
+    originalTimestamp: row.original_timestamp || undefined,
+    originalId: row.original_id || undefined,
   };
 }
 
@@ -77,7 +81,7 @@ export function createChannel(name: string, systemPrompt: string, model?: ModelI
   });
   txn();
 
-  return { id, name, systemPrompt, model: channelModel, mode: channelMode, createdAt: now };
+  return { id, name, systemPrompt, model: channelModel, mode: channelMode, createdAt: now, source: 'native' as ChannelSource };
 }
 
 export function updateChannel(

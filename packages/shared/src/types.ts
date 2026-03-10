@@ -49,6 +49,9 @@ export interface Entity {
   createdAt: string;
 }
 
+// Channel source types for imported conversations
+export type ChannelSource = 'native' | 'claude-code' | 'claude-ai';
+
 export interface Channel {
   id: string;
   name: string;
@@ -57,6 +60,8 @@ export interface Channel {
   mode: InteractionMode;
   createdAt: string;
   entityCount?: number; // populated by list endpoint for sidebar grouping
+  source?: ChannelSource;
+  sourceMetadata?: string; // JSON string
 }
 
 export interface Message {
@@ -68,6 +73,34 @@ export interface Message {
   model?: ModelId;
   entityId?: string;
   createdAt: string;
+  originalTimestamp?: string; // preserved timestamp from imported conversations
+  originalId?: string;       // original message/event ID from source
+  artifactCount?: number;    // populated by query for display (tool uses, thinking, etc.)
+}
+
+// ── Artifacts (tool use, thinking, images from imported conversations) ──
+
+export type ArtifactType = 'tool_use' | 'tool_result' | 'thinking' | 'image';
+
+export interface MessageArtifact {
+  id: string;
+  messageId: string;
+  type: ArtifactType;
+  toolName?: string;     // tool name for tool_use/tool_result (e.g. "Read", "Bash")
+  inputSummary?: string; // human-readable summary (e.g. "src/App.tsx", "npm test")
+  content?: string;      // full JSON or text content
+  createdAt: string;
+}
+
+// ── Import types ──────────────────────────────────────────────
+
+export interface ImportResult {
+  channelId: string;
+  channelName: string;
+  messageCount: number;
+  artifactCount: number;
+  source: ChannelSource;
+  duplicate: boolean;     // true if session was already imported (dedup warning)
 }
 
 export interface StreamEvent {
