@@ -13,19 +13,21 @@ Two agents work on this repo. This file is the async handoff protocol.
 ### Argus (quality & test infrastructure)
 - **Branch:** `claude/audit-and-planning-xn2w7`
 - **Status:** available
-- **Last completed:** Step 8 test infrastructure — all 4 assignments complete. Tests merged to main, all passing. Also added demo seed script (`00e2666`).
-  - **Test fixtures** (`packages/server/src/__tests__/fixtures/`): 5 JSONL fixture files
-  - **Parser unit tests** (`packages/server/src/__tests__/parser.test.ts`): 23 tests (19 original + 4 edge cases)
-  - **Import integration tests** (`packages/server/src/__tests__/import.test.ts`): 10 tests for `POST /api/import/claude-code`
-  - **Migration tests** (`packages/server/src/__tests__/migration.test.ts`): 18 tests total (9 new)
-- **Working on:** Nothing — awaiting next assignment.
-- **Waiting on:** Nothing.
+- **Last completed:** Step 8 Phase 1 test infrastructure (merged to main).
+- **Assigned next:** Step 8 Phase 3 — claude.ai import. Research the export format, build parser, create import API + UI.
+  - See `docs/BRIEF-STEP8-IMPORT.md` Part 4 for claude.ai export format research.
+  - Parser: read ZIP file containing `conversations.json`, extract conversations, map to Klatch channels/messages/artifacts.
+  - Import route: `POST /api/import/claude-ai` — analogous to `POST /api/import/claude-code`.
+  - Reuse existing `message_artifacts` table and `source: 'claude-ai'` channel type.
+  - Write tests first (same pattern as Phase 1 — define contracts, Daedalus reviews).
+  - Independent of Phase 2 — no dependency on Compaction API.
+- **Waiting on:** Nothing — can start immediately.
 
 ### Daedalus (architecture & implementation)
 - **Branch:** `main`
-- **Status:** available
-- **Last completed:** Step 8 Phase 1 complete. v0.8.0 released and tagged. All Argus test contracts met — parser, import API, schema migration, UI, source badges. 196 tests passing. Docs updated (ARCHITECTURE.md, ROADMAP.md, README, website, CHANGELOG).
-- **Working on:** Nothing — awaiting next assignment.
+- **Status:** working
+- **Last completed:** v0.8.0 released. Fixed ESM dotenv race condition (lazy Anthropic client). Fixed roundtable SSE race condition (poll for pending streams).
+- **Working on:** Step 8 Phase 2 — fork continuity via Compaction API.
 - **Waiting on:** Nothing.
 
 ## Signals
