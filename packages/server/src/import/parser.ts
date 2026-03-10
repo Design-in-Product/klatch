@@ -61,6 +61,17 @@ export interface RawEvent {
     };
   };
   toolUseResult?: string;
+  // Injection metadata — see docs/JSONL-SCHEMA.md for full taxonomy
+  isMeta?: boolean;                  // true for hook feedback, skill injections, image references
+  isCompactSummary?: boolean;        // true for compaction context injections
+  isVisibleInTranscriptOnly?: boolean; // also true for compaction summaries
+  permissionMode?: string;           // "default" | "acceptEdits" — present on real human messages
+  sourceToolAssistantUUID?: string;  // present on tool results
+  sourceToolUseID?: string;          // present on skill/command injections
+  // System event fields
+  subtype?: string;                  // "compact_boundary" | "stop_hook_summary" | "api_error"
+  compactMetadata?: { trigger?: string; preTokens?: number };
+  logicalParentUuid?: string;        // preserves chain identity across compaction boundaries
 }
 
 // ── Parsed output types ───────────────────────────────────────
@@ -229,15 +240,24 @@ function extractCompactionFromEvents(events: RawEvent[]): string | undefined {
 // ── Turn boundary detection ───────────────────────────────────
 
 /**
- * Detect whether a user event is a human-typed message (turn boundary)
- * vs. a system-injected tool_result.
+ * Detect whether a user event is a real human-typed message (turn boundary)
+ * vs. a system-injected event (tool_result, compaction summary, hook feedback, etc.).
  *
- * Human messages have text content (string or array with text blocks).
- * Tool results have only tool_result content blocks and no text.
+ * Uses the JSONL metadata fields to distinguish real human messages from injections.
+ * See docs/JSONL-SCHEMA.md for the full taxonomy of user event subtypes.
+ *
+ * Real human messages: have text content, no injection flags.
+ * Compaction summaries: isCompactSummary=true (render as system banner, not "You")
+ * Hook/skill/image injections: isMeta=true
+ * Tool results: content is array of tool_result blocks (no text blocks)
  */
 export function isHumanTurnBoundary(event: RawEvent): boolean {
   if (event.type !== 'user') return false;
   if (event.message?.role !== 'user') return false;
+
+  // Filter out system-injected user messages using metadata flags
+  if (event.isCompactSummary) return false;  // Compaction context injection
+  if (event.isMeta) return false;             // Hook feedback, skill injection, image reference
 
   const content = event.message.content;
   if (!content) return false;
@@ -246,6 +266,7 @@ export function isHumanTurnBoundary(event: RawEvent): boolean {
   if (typeof content === 'string') return content.trim().length > 0;
 
   // Array content: check for at least one text block with content
+  // (tool_result arrays have no text blocks)
   if (Array.isArray(content)) {
     return content.some(
       (block) => block.type === 'text' && block.text && block.text.trim().length > 0

@@ -106,6 +106,12 @@ Three modes for multi-entity channels, each with distinct orchestration:
 - Continue-from-import: first message in a forked channel sends reconstructed history
 - Bulk import: scan `~/.claude/projects/`, preview sessions, multi-select import
 
+### Known import refinements (tracked, not yet scheduled)
+- **Compaction summary misattribution**: compaction context injections (`isCompactSummary: true`) render as "You" messages instead of system banners. See `docs/JSONL-SCHEMA.md` for the full taxonomy of user event subtypes.
+- **isMeta events**: hook feedback, skill injections, and image references (`isMeta: true`) should be filtered or rendered distinctly
+- **Re-import / refresh**: allow re-importing a session to update an existing channel (currently blocked by dedup 409)
+- **Demo automation**: automated demo recording (currently manual with human-typed interactions)
+
 ### Step 8 Phase 3: claude.ai import
 **Dimension: source breadth.** Can you bring in conversations from claude.ai too?
 
