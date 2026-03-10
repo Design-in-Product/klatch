@@ -9,7 +9,7 @@
  * - Skip progress, file-history-snapshot, queue-operation events
  * - Skip prompt_suggestion subagent events entirely
  * - Extract compaction summaries from acompact-* subagent events
- * - Group by turns: each parentUuid=null user event starts a new turn
+ * - Group by turns: each human-typed user message starts a new turn (not parentUuid=null)
  */
 
 import { createReadStream } from 'fs';
@@ -226,12 +226,45 @@ function extractCompactionFromEvents(events: RawEvent[]): string | undefined {
   return undefined;
 }
 
+// ── Turn boundary detection ───────────────────────────────────
+
+/**
+ * Detect whether a user event is a human-typed message (turn boundary)
+ * vs. a system-injected tool_result.
+ *
+ * Human messages have text content (string or array with text blocks).
+ * Tool results have only tool_result content blocks and no text.
+ */
+export function isHumanTurnBoundary(event: RawEvent): boolean {
+  if (event.type !== 'user') return false;
+  if (event.message?.role !== 'user') return false;
+
+  const content = event.message.content;
+  if (!content) return false;
+
+  // String content = human-typed message
+  if (typeof content === 'string') return content.trim().length > 0;
+
+  // Array content: check for at least one text block with content
+  if (Array.isArray(content)) {
+    return content.some(
+      (block) => block.type === 'text' && block.text && block.text.trim().length > 0
+    );
+  }
+
+  return false;
+}
+
 // ── Turn grouping ─────────────────────────────────────────────
 
 /**
  * Group conversation events into user/assistant turn pairs.
  *
- * Turn boundaries: a user event with parentUuid === null marks a new human turn.
+ * Turn boundaries are detected by finding user events with actual text
+ * content (human-typed messages), not by parentUuid=null. In real Claude
+ * Code sessions, only the very first event has parentUuid=null — subsequent
+ * human messages chain from the previous assistant's response.
+ *
  * Within a turn, we collect:
  * - User text content -> userText
  * - All assistant text content -> assistantText
@@ -243,59 +276,46 @@ export function groupIntoTurns(events: RawEvent[]): ParsedTurn[] {
     a.timestamp.localeCompare(b.timestamp)
   );
 
-  // Build a parent->children map for tree traversal
-  const childrenOf = new Map<string, RawEvent[]>();
-  const roots: RawEvent[] = [];
-
-  for (const event of sorted) {
-    if (event.parentUuid === null || event.parentUuid === undefined) {
-      roots.push(event);
-    } else {
-      const siblings = childrenOf.get(event.parentUuid) || [];
-      siblings.push(event);
-      childrenOf.set(event.parentUuid, siblings);
+  // Find turn boundary indices (human-typed user messages)
+  const boundaryIndices: number[] = [];
+  for (let i = 0; i < sorted.length; i++) {
+    if (isHumanTurnBoundary(sorted[i])) {
+      boundaryIndices.push(i);
     }
   }
 
   const turns: ParsedTurn[] = [];
 
-  for (const root of roots) {
-    // Each root should be a user message (parentUuid=null)
-    if (root.message?.role !== 'user') continue;
+  for (let b = 0; b < boundaryIndices.length; b++) {
+    const startIdx = boundaryIndices[b];
+    const endIdx = b + 1 < boundaryIndices.length
+      ? boundaryIndices[b + 1]
+      : sorted.length;
 
-    // Collect all events in this turn via BFS
-    const turnEvents: RawEvent[] = [];
-    const queue: RawEvent[] = [root];
-    while (queue.length > 0) {
-      const current = queue.shift()!;
-      turnEvents.push(current);
-      const children = childrenOf.get(current.uuid) || [];
-      queue.push(...children);
-    }
+    const turnRoot = sorted[startIdx];
+    const turnEvents = sorted.slice(startIdx, endIdx);
 
-    // Separate assistant events
-    const assistantEvents = turnEvents.filter(e => e.message?.role === 'assistant');
+    // User text from the boundary event
+    const userText = extractTextContent(turnRoot.message!.content);
 
-    // User text from root event
-    const userText = extractTextContent(root.message.content);
-
-    // Collect assistant text and artifacts
+    // Collect assistant text and artifacts from events in this turn
     const assistantTextParts: string[] = [];
     const artifacts: ParsedArtifact[] = [];
     let model: string | undefined;
 
-    for (const ae of assistantEvents) {
-      if (!ae.message?.content) continue;
+    for (const event of turnEvents) {
+      if (event.message?.role !== 'assistant') continue;
+      if (!event.message.content) continue;
 
-      const text = extractTextContent(ae.message.content);
+      const text = extractTextContent(event.message.content);
       if (text.trim()) assistantTextParts.push(text);
 
       // Extract tool artifacts from assistant messages
-      artifacts.push(...extractToolArtifacts(ae.message.content));
+      artifacts.push(...extractToolArtifacts(event.message.content));
 
       // Track model
-      if (ae.message.model && !model) {
-        model = ae.message.model;
+      if (event.message.model && !model) {
+        model = event.message.model;
       }
     }
 
@@ -304,8 +324,8 @@ export function groupIntoTurns(events: RawEvent[]): ParsedTurn[] {
     turns.push({
       userText: userText || '',
       assistantText: assistantText || '',
-      timestamp: root.timestamp,
-      originalId: root.uuid,
+      timestamp: turnRoot.timestamp,
+      originalId: turnRoot.uuid,
       model,
       artifacts: artifacts.length > 0 ? artifacts : undefined,
     });
