@@ -24,8 +24,8 @@ Two agents work on this repo. This file is the async handoff protocol.
 ### Daedalus (architecture & implementation)
 - **Branch:** `main`
 - **Status:** available
-- **Last completed:** Step 8 Phase 1 complete (v0.8.0 releasing). All Argus test contracts met — parser, import API, schema migration, UI, source badges. 196 tests passing.
-- **Working on:** v0.8.0 release and doc updates.
+- **Last completed:** Step 8 Phase 1 complete. v0.8.0 released and tagged. All Argus test contracts met — parser, import API, schema migration, UI, source badges. 196 tests passing. Docs updated (ARCHITECTURE.md, ROADMAP.md, README, website, CHANGELOG).
+- **Working on:** Nothing — awaiting next assignment.
 - **Waiting on:** Nothing.
 
 ## Signals
