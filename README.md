@@ -47,7 +47,7 @@ The [full roadmap](docs/ROADMAP.md) is in the repo, but the key milestones are:
 5. ~~Channel identity + per-channel models~~ ✓
 6. ~~Multi-entity conversations~~ ✓
 7. ~~Panel + roundtable + directed modes~~ ✓
-8. ~~Claude Code import~~ ✓ — **claude.ai import and fork continuity next**
+8. **Import + unify** — Claude Code import ✓, claude.ai import and fork continuity next
 9. **Files + artifacts** — upload and share files with entities
 10. **Search + recall** — full-text search, export, command palette
 

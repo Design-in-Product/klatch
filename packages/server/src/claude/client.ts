@@ -4,13 +4,21 @@ import { getMessages, updateMessage } from '../db/queries.js';
 import type { Entity } from '@klatch/shared';
 import { DEFAULT_MODEL } from '@klatch/shared';
 
-const anthropic = new Anthropic();
+// Lazy-init: the Anthropic client must not be created at import time
+// because ESM hoists imports before dotenv.config() runs in index.ts.
+let _anthropic: Anthropic | null = null;
+function getAnthropicClient(): Anthropic {
+  if (!_anthropic) {
+    _anthropic = new Anthropic();
+  }
+  return _anthropic;
+}
 
 // In-memory registry of active streams
 export const activeStreams = new Map<string, EventEmitter>();
 
 // Store the Anthropic stream objects so we can abort them
-const activeAnthropicStreams = new Map<string, ReturnType<typeof anthropic.messages.stream>>();
+const activeAnthropicStreams = new Map<string, ReturnType<ReturnType<typeof getAnthropicClient>['messages']['stream']>>();
 
 // Track active roundtable sessions so we can cancel remaining entities on abort
 // Maps channelId → Set of assistant message IDs in the current round
@@ -101,7 +109,7 @@ async function streamClaudeCore(
 
   try {
     const model = entity.model || DEFAULT_MODEL;
-    const stream = anthropic.messages.stream({
+    const stream = getAnthropicClient().messages.stream({
       model,
       max_tokens: 4096,
       system: systemPrompt || undefined,
