@@ -12,21 +12,15 @@ Two agents work on this repo. This file is the async handoff protocol.
 
 ### Argus (quality & test infrastructure)
 - **Branch:** `claude/audit-and-planning-xn2w7`
-- **Status:** available
-- **Last completed:** Step 8 Phase 1 test infrastructure (merged to main).
-- **Assigned next:** Step 8 Phase 3 — claude.ai import. Research the export format, build parser, create import API + UI.
-  - See `docs/BRIEF-STEP8-IMPORT.md` Part 4 for claude.ai export format research.
-  - Parser: read ZIP file containing `conversations.json`, extract conversations, map to Klatch channels/messages/artifacts.
-  - Import route: `POST /api/import/claude-ai` — analogous to `POST /api/import/claude-code`.
-  - Reuse existing `message_artifacts` table and `source: 'claude-ai'` channel type.
-  - Write tests first (same pattern as Phase 1 — define contracts, Daedalus reviews).
-  - Independent of Phase 2 — no dependency on Compaction API.
-- **Waiting on:** Nothing — can start immediately.
+- **Status:** review
+- **Last completed:** Phase 3 claude.ai ZIP import (parser, route, 217 tests). Pushed `99078b3`.
+- **Notes:** Large diff touching shared files (parser.ts, queries.ts, import.ts, types.ts). Needs careful merge with main — Daedalus rewrote parser turn detection and SSE handling post-v0.8.0. See diff: `git diff --stat origin/main..origin/claude/audit-and-planning-xn2w7`.
+- **Waiting on:** Review from Daedalus before merge.
 
 ### Daedalus (architecture & implementation)
 - **Branch:** `main`
 - **Status:** working
-- **Last completed:** v0.8.0 released. Fixed ESM dotenv race condition (lazy Anthropic client). Fixed roundtable SSE race condition (poll for pending streams).
+- **Last completed:** v0.8.1 released. Parser turn detection fix, roundtable SSE fix, ESM lazy-init fix.
 - **Working on:** Step 8 Phase 2 — fork continuity via Compaction API.
 - **Waiting on:** Nothing.
 

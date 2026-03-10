@@ -6,6 +6,25 @@ Format follows [Keep a Changelog](https://keepachangelog.com/). Versions corresp
 
 ---
 
+## [0.8.1] — 2026-03-10
+
+### Step 8 Phase 1: Bug Fixes
+
+Three bugs discovered during import testing and demo recording, all fixed.
+
+### Fixed
+- **Parser turn detection**: real Claude Code sessions form a linked list (`parentUuid` chains from each response to the next), not a tree with multiple roots. Only the very first event has `parentUuid=null`. Replaced root-detection with `isHumanTurnBoundary()` which identifies turn boundaries by finding user events with actual text content (vs system-injected `tool_result` blocks). A 5,365-event session now correctly produces 67 turns instead of 1.
+- **Roundtable SSE race condition**: when the client opened an SSE connection for roundtable entities 2+, the in-memory emitter didn't exist yet (entity hadn't started streaming). The endpoint incorrectly treated "no emitter" as "already completed." Now checks DB status — if still `streaming` with no emitter, polls (200ms interval, 2-minute timeout) until the emitter appears or DB status changes.
+- **ESM import hoisting / Anthropic auth failure**: `new Anthropic()` was called at module load time, before `dotenv.config()` ran in the server entrypoint (ESM hoists all `import` statements before module body code). Replaced with lazy-init `getAnthropicClient()` that defers construction to first use.
+
+### Technical
+- `isHumanTurnBoundary()` exported from parser for testability
+- `groupIntoTurns()` rewritten: chronological boundary detection instead of BFS from parentUuid roots
+- Demo seed script for mystery-menu roundtable (`scripts/seed-demo.ts`)
+- **196 tests passing** (unchanged)
+
+---
+
 ## [0.8.0] — 2026-03-09
 
 ### Step 8 Phase 1: Claude Code Import
