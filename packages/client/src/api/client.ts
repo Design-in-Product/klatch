@@ -1,4 +1,4 @@
-import type { Channel, Entity, Message, ModelId, InteractionMode } from '@klatch/shared';
+import type { Channel, Entity, Message, ModelId, InteractionMode, ImportResult } from '@klatch/shared';
 
 const BASE = '/api';
 
@@ -185,5 +185,34 @@ export async function regenerateLastResponse(
     method: 'POST',
   });
   if (!res.ok) throw new Error(`Failed to regenerate: ${res.statusText}`);
+  return res.json();
+}
+
+// ── Import API ────────────────────────────────────────────────
+
+export interface ImportResponse extends ImportResult {
+  sessionId?: string;
+}
+
+export async function importClaudeCodeSession(
+  sessionPath: string,
+  channelName?: string
+): Promise<ImportResponse> {
+  const res = await fetch(`${BASE}/import/claude-code`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ sessionPath, channelName: channelName || undefined }),
+  });
+  if (!res.ok) {
+    try {
+      const body = await res.json();
+      throw new Error(body.error || `Import failed: ${res.statusText}`);
+    } catch (parseErr) {
+      if (parseErr instanceof Error && !parseErr.message.startsWith('Import failed:')) {
+        throw parseErr;
+      }
+      throw new Error(`Import failed: ${res.statusText}`);
+    }
+  }
   return res.json();
 }

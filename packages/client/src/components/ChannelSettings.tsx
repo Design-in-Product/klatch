@@ -66,6 +66,33 @@ export function ChannelSettings({
       </div>
 
       <div className="space-y-4 max-w-2xl">
+        {/* Import provenance — only for imported channels */}
+        {channel.source && channel.source !== 'native' && (
+          <div className="rounded-lg border border-line bg-card p-3">
+            <div className="flex items-center gap-2 mb-2">
+              <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-accent/15 text-accent leading-none">
+                {channel.source === 'claude-code' ? 'CC' : channel.source}
+              </span>
+              <span className="text-xs font-medium text-secondary">
+                Imported from {channel.source === 'claude-code' ? 'Claude Code' : channel.source}
+              </span>
+            </div>
+            {channel.sourceMetadata && (() => {
+              try {
+                const meta = JSON.parse(channel.sourceMetadata);
+                return (
+                  <div className="text-xs text-muted space-y-0.5">
+                    {meta.cwd && <p><span className="font-medium">Project:</span> {meta.cwd.split('/').pop()}</p>}
+                    {meta.importedAt && <p><span className="font-medium">Imported:</span> {new Date(meta.importedAt).toLocaleString()}</p>}
+                    {meta.eventCount && <p><span className="font-medium">Events:</span> {meta.eventCount}</p>}
+                    {meta.version && <p><span className="font-medium">Claude Code:</span> v{meta.version}</p>}
+                  </div>
+                );
+              } catch { return null; }
+            })()}
+          </div>
+        )}
+
         {/* Channel name */}
         <div>
           <label className="block text-xs text-secondary mb-1">Name</label>

@@ -308,3 +308,109 @@ export function getChannelEntityCount(channelId: string): number {
     .get(channelId) as { count: number };
   return row.count;
 }
+
+// ── Import Operations ─────────────────────────────────────────
+
+import type { ImportResult } from '@klatch/shared';
+import type { ParsedTurn, ParsedArtifact } from '../import/parser.js';
+
+interface ImportSessionParams {
+  channelName: string;
+  source: 'claude-code' | 'claude-ai';
+  sourceMetadata: Record<string, unknown>;
+  model?: string;
+  turns: ParsedTurn[];
+}
+
+/**
+ * Import a parsed session into the database as a new channel with messages and artifacts.
+ * Runs in a single transaction for atomicity.
+ */
+export function importSession(params: ImportSessionParams): ImportResult {
+  const db = getDb();
+  const { channelName, source, sourceMetadata, model, turns } = params;
+
+  const channelId = uuidv4();
+  const now = new Date().toISOString();
+  const channelModel = model || DEFAULT_MODEL;
+
+  let messageCount = 0;
+  let artifactCount = 0;
+
+  const txn = db.transaction(() => {
+    // 1. Create channel with source info
+    db.prepare(
+      'INSERT INTO channels (id, name, system_prompt, model, mode, source, source_metadata, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)'
+    ).run(channelId, channelName, '', channelModel, DEFAULT_INTERACTION_MODE, source, JSON.stringify(sourceMetadata), now);
+
+    // 2. Assign default entity
+    db.prepare(
+      'INSERT INTO channel_entities (channel_id, entity_id) VALUES (?, ?)'
+    ).run(channelId, DEFAULT_ENTITY_ID);
+
+    // 3. Insert messages from turns
+    const insertMsg = db.prepare(
+      'INSERT INTO messages (id, channel_id, role, content, status, model, entity_id, original_timestamp, original_id, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
+    );
+    const insertArtifact = db.prepare(
+      'INSERT INTO message_artifacts (id, message_id, type, tool_name, input_summary, content, created_at) VALUES (?, ?, ?, ?, ?, ?, ?)'
+    );
+
+    for (const turn of turns) {
+      // User message
+      if (turn.userText) {
+        const userMsgId = uuidv4();
+        insertMsg.run(
+          userMsgId, channelId, 'user', turn.userText, 'complete',
+          null, null, turn.timestamp, turn.originalId, now
+        );
+        messageCount++;
+      }
+
+      // Assistant message
+      if (turn.assistantText || (turn.artifacts && turn.artifacts.length > 0)) {
+        const assistantMsgId = uuidv4();
+        insertMsg.run(
+          assistantMsgId, channelId, 'assistant', turn.assistantText || '', 'complete',
+          turn.model || channelModel, DEFAULT_ENTITY_ID, turn.timestamp, turn.originalId, now
+        );
+        messageCount++;
+
+        // Artifacts (tool uses)
+        if (turn.artifacts) {
+          for (const artifact of turn.artifacts) {
+            insertArtifact.run(
+              uuidv4(), assistantMsgId, artifact.type,
+              artifact.toolName, artifact.inputSummary,
+              artifact.content || null, now
+            );
+            artifactCount++;
+          }
+        }
+      }
+    }
+  });
+
+  txn();
+
+  return {
+    channelId,
+    channelName,
+    messageCount,
+    artifactCount,
+    source,
+    duplicate: false,
+  };
+}
+
+/**
+ * Find a channel that was imported from the same original session.
+ * Uses json_extract on source_metadata to match originalSessionId.
+ */
+export function findChannelByOriginalSessionId(sessionId: string): Channel | undefined {
+  const row = getDb()
+    .prepare("SELECT * FROM channels WHERE json_extract(source_metadata, '$.originalSessionId') = ?")
+    .get(sessionId) as any;
+  if (!row) return undefined;
+  return rowToChannel(row);
+}

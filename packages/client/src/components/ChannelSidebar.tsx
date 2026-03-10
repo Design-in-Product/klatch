@@ -8,6 +8,7 @@ interface Props {
   onSelectChannel: (id: string) => void;
   onCreateChannel: (name: string, systemPrompt: string) => void;
   onOpenEntities?: () => void;
+  onOpenImport?: () => void;
   isOpen?: boolean;
   onClose?: () => void;
   theme: 'light' | 'dark';
@@ -20,6 +21,7 @@ export function ChannelSidebar({
   onSelectChannel,
   onCreateChannel,
   onOpenEntities,
+  onOpenImport,
   isOpen,
   onClose,
   theme,
@@ -52,14 +54,22 @@ export function ChannelSidebar({
     <button
       key={ch.id}
       onClick={() => handleChannelClick(ch.id)}
-      className={`w-full text-left px-4 py-1.5 text-sm transition-colors ${
+      className={`w-full text-left px-4 py-1.5 text-sm transition-colors flex items-center ${
         ch.id === activeChannelId
           ? 'bg-active-channel text-primary font-medium'
           : 'text-secondary hover:text-primary hover:bg-hover'
       }`}
     >
       <span className="text-muted mr-1">{prefix}</span>
-      {ch.name}
+      <span className="truncate">{ch.name}</span>
+      {ch.source === 'claude-code' && (
+        <span
+          className="ml-auto flex-shrink-0 text-[9px] font-bold px-1 py-0.5 rounded bg-badge text-muted leading-none"
+          title="Imported from Claude Code"
+        >
+          CC
+        </span>
+      )}
     </button>
   );
 
@@ -147,6 +157,20 @@ export function ChannelSidebar({
               <path strokeLinecap="round" strokeLinejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
             </svg>
             Entities
+          </button>
+        )}
+
+        {/* Import from Claude Code */}
+        {onOpenImport && (
+          <button
+            onClick={onOpenImport}
+            className="flex items-center gap-2 px-4 py-2 text-sm text-secondary hover:text-primary transition-colors w-full"
+            title="Import Claude Code session"
+          >
+            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+            </svg>
+            Import
           </button>
         )}
 

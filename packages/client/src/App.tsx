@@ -4,6 +4,7 @@ import { AVAILABLE_MODELS, INTERACTION_MODES } from '@klatch/shared';
 import { ChannelSidebar } from './components/ChannelSidebar';
 import { ChannelSettings } from './components/ChannelSettings';
 import { EntityManager } from './components/EntityManager';
+import { ImportDialog } from './components/ImportDialog';
 import { MessageList } from './components/MessageList';
 import { MessageInput } from './components/MessageInput';
 import { useMessages } from './hooks/useMessages';
@@ -42,6 +43,7 @@ export default function App() {
   const [allEntities, setAllEntities] = useState<Entity[]>([]);
   const [showSettings, setShowSettings] = useState(false);
   const [showEntityManager, setShowEntityManager] = useState(false);
+  const [showImportDialog, setShowImportDialog] = useState(false);
   const [sendError, setSendError] = useState<string | null>(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
@@ -307,6 +309,7 @@ export default function App() {
         onSelectChannel={handleSelectChannel}
         onCreateChannel={handleCreateChannel}
         onOpenEntities={() => setShowEntityManager(true)}
+        onOpenImport={() => setShowImportDialog(true)}
         isOpen={sidebarOpen}
         onClose={() => setSidebarOpen(false)}
         theme={theme}
@@ -444,6 +447,20 @@ export default function App() {
           onClose={() => setShowEntityManager(false)}
         />
       )}
+
+      {/* Import Dialog */}
+      <ImportDialog
+        isOpen={showImportDialog}
+        onClose={() => setShowImportDialog(false)}
+        onImported={(result) => {
+          // Refresh channels and navigate to the imported channel
+          fetchChannels().then((chs) => {
+            setChannels(chs);
+            setActiveChannelId(result.channelId);
+          });
+          setShowImportDialog(false);
+        }}
+      />
     </div>
   );
 }
