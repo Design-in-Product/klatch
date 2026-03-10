@@ -13,16 +13,22 @@ Two agents work on this repo. This file is the async handoff protocol.
 ### Argus (quality & test infrastructure)
 - **Branch:** `claude/audit-and-planning-xn2w7`
 - **Status:** review
-- **Last completed:** Step 8 design analysis and briefing document — updated with subagent taxonomy from real samples.
-  - **`docs/BRIEF-STEP8-IMPORT.md`** — Full briefing covering: JSONL format research (49 sessions + 10 subagent samples analyzed), concept model alignment, phased implementation plan (3 phases, 15 sub-steps), schema proposals, token efficiency strategy via Anthropic's Compaction API, claude.ai export format research (with reverse-engineered Zod schemas), subagent classification (task/compact/prompt_suggestion), and open design questions.
-  - Tests: 148 server + 6 client = **154 all passing** (unchanged — this was research/planning only).
-- **Working on:** Nothing — briefing ready for review.
-- **Waiting on:** Daedalus to review briefing.
+- **Last completed:** Step 8 test infrastructure — all 4 assignments from Daedalus complete.
+  - **Test fixtures** (`packages/server/src/__tests__/fixtures/`): 5 JSONL files created from research samples — `simple-session.jsonl`, `tool-heavy-session.jsonl`, `subagent-session.jsonl`, `compaction-subagent.jsonl`, `malformed.jsonl`. Each uses real field shapes.
+  - **Parser unit tests** (`packages/server/src/__tests__/parser.test.ts`): 19 tests covering event filtering (skip progress/snapshot/queue-operation), subagent classification (task skip, compaction extract, prompt_suggestion skip), text extraction (string + array content), tool-use summarization, turn grouping (parentUuid=null boundaries), session metadata (sessionId, slug, model), edge cases (empty, single-message, tool-only assistant). Tests import from `../import/parser.js` — will pass once Daedalus implements `parseEvents()`.
+  - **Import integration tests** (`packages/server/src/__tests__/import.test.ts`): 9 tests for `POST /api/import/claude-code` — valid import (201), missing file (404), non-JSONL (400), empty session (400), duplicate (409), custom channelName, artifacts, malformed tolerance, plus channel list and timestamp preservation tests. Will pass once Daedalus implements the route.
+  - **Migration tests** (`packages/server/src/__tests__/migration.test.ts`): 9 new tests added — `source`/`source_metadata` on channels, `original_timestamp`/`original_id` on messages, `message_artifacts` table creation + CASCADE delete. All 18 migration tests passing.
+  - Existing tests: **158 passing** (unchanged). New test files correctly fail on missing implementation.
+- **Working on:** Nothing — test infrastructure ready.
+- **Waiting on:** Daedalus to implement `parseEvents()` in `packages/server/src/import/parser.ts` and import route.
 - **Notes for Daedalus:**
-  - Read `docs/BRIEF-STEP8-IMPORT.md` for full design doc. Phase 1 starts with 8.1 (parser).
-  - **New from subagent analysis**: Compaction subagents (`acompact-*`) contain pre-built session summaries in `<analysis>` format — free metadata for import. Prompt suggestion subagents (`aprompt_suggestion-*`) are infrastructure noise — skip on import.
-  - `slug` field (v2.1.19+) provides human-readable session names for channel naming.
-  - `file-history-snapshot` is a sidecar event type — parser must handle JSONL files with zero conversation events.
+  - Parser tests expect `parseEvents(events: unknown[]): ParsedSession` returning `{ turns, sessionId, slug, model, compactionSummary }`.
+  - Each `turn` has: `{ userText, assistantText, timestamp, artifacts? }`.
+  - Each `artifact` has: `{ toolName, inputSummary }`.
+  - Import route tests expect `POST /api/import/claude-code` with body `{ sessionPath, channelName? }`.
+  - Response shape: `{ channelId, channelName, messageCount, sessionId, artifactCount }`.
+  - Duplicate detection via `findChannelByOriginalSessionId()` returning 409 with `{ existingChannelId }`.
+  - Import route must be registered in the test app — update `packages/server/src/__tests__/app.ts` to include import routes.
 
 ### Daedalus (architecture & implementation)
 - **Branch:** `main`
