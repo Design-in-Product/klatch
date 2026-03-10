@@ -18,10 +18,12 @@ info()  { echo -e "${CYAN}▸${NC} $1"; }
 ok()    { echo -e "${GREEN}✓${NC} $1"; }
 err()   { echo -e "${RED}✗${NC} $1" >&2; }
 
-# --- Preflight ---
-if curl -sf "$API/channels" > /dev/null 2>&1; then
-  err "Server is already running. Please stop it first (Ctrl-C the dev server), then re-run this script."
-  exit 1
+# --- Kill anything on port 3001 ---
+if lsof -ti :3001 > /dev/null 2>&1; then
+  info "Killing existing process on port 3001..."
+  kill $(lsof -ti :3001) 2>/dev/null || true
+  sleep 1
+  ok "Cleared port 3001"
 fi
 
 # --- Reset DB ---
