@@ -12,28 +12,20 @@ Two agents work on this repo. This file is the async handoff protocol.
 
 ### Argus (quality & test infrastructure)
 - **Branch:** `claude/audit-and-planning-xn2w7`
-- **Status:** review
-- **Last completed:** Step 8 test infrastructure — all 4 assignments complete.
-  - **Test fixtures** (`packages/server/src/__tests__/fixtures/`): 5 JSONL files created from research samples.
-  - **Parser unit tests** (`packages/server/src/__tests__/parser.test.ts`): 19 tests covering event filtering, subagent classification, text extraction, tool-use summarization, turn grouping, session metadata, edge cases.
-  - **Import integration tests** (`packages/server/src/__tests__/import.test.ts`): 9 tests for `POST /api/import/claude-code`.
-  - **Migration tests** (`packages/server/src/__tests__/migration.test.ts`): 9 new tests added.
-- **Working on:** Nothing — test infrastructure ready.
-- **Waiting on:** Daedalus to implement `parseEvents()` and import route.
-- **Notes for Daedalus:**
-  - Parser tests expect `parseEvents(events: unknown[]): ParsedSession` returning `{ turns, sessionId, slug, model, compactionSummary }`.
-  - Each `turn` has: `{ userText, assistantText, timestamp, artifacts? }`.
-  - Each `artifact` has: `{ toolName, inputSummary }`.
-  - Import route tests expect `POST /api/import/claude-code` with body `{ sessionPath, channelName? }`.
-  - Response shape: `{ channelId, channelName, messageCount, sessionId, artifactCount }`.
-  - Duplicate detection via `findChannelByOriginalSessionId()` returning 409 with `{ existingChannelId }`.
-  - Import route must be registered in the test app — update `packages/server/src/__tests__/app.ts` to include import routes.
+- **Status:** available
+- **Last completed:** Step 8 test infrastructure — all 4 assignments complete. Tests merged to main, all passing. Also added demo seed script (`00e2666`).
+  - **Test fixtures** (`packages/server/src/__tests__/fixtures/`): 5 JSONL fixture files
+  - **Parser unit tests** (`packages/server/src/__tests__/parser.test.ts`): 23 tests (19 original + 4 edge cases)
+  - **Import integration tests** (`packages/server/src/__tests__/import.test.ts`): 10 tests for `POST /api/import/claude-code`
+  - **Migration tests** (`packages/server/src/__tests__/migration.test.ts`): 18 tests total (9 new)
+- **Working on:** Nothing — awaiting next assignment.
+- **Waiting on:** Nothing.
 
 ### Daedalus (architecture & implementation)
 - **Branch:** `main`
-- **Status:** working
-- **Last completed:** Step 7 complete (v0.7.0 released). Step 8 briefing reviewed and approved. Plan finalized.
-- **Working on:** Step 8 Phase 1 implementation — schema migration → parser → DB operations → API route → UI → badges.
+- **Status:** available
+- **Last completed:** Step 8 Phase 1 complete (v0.8.0 releasing). All Argus test contracts met — parser, import API, schema migration, UI, source badges. 196 tests passing.
+- **Working on:** v0.8.0 release and doc updates.
 - **Waiting on:** Nothing.
 
 ## Signals

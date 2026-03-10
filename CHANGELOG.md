@@ -6,6 +6,29 @@ Format follows [Keep a Changelog](https://keepachangelog.com/). Versions corresp
 
 ---
 
+## [0.8.0] — 2026-03-09
+
+### Step 8 Phase 1: Claude Code Import
+
+Klatch can now import Claude Code JSONL sessions — the first step toward becoming the single pane of glass for all Claude interactions.
+
+### Added
+- **JSONL parser**: walks the `parentUuid` tree, extracts text turns, collapses tool-use into human-readable summaries. Classifies subagents by type (task/compaction/prompt_suggestion), extracts compaction summaries.
+- **Import API**: `POST /api/import/claude-code` accepts a session file path, creates a channel with messages and artifacts. Dedup detection returns 409 if the session was already imported.
+- **Message artifacts table**: `message_artifacts` stores tool-use, thinking, and image blocks at full fidelity with `tool_name` and `input_summary` columns for display.
+- **Schema migration**: `source` and `source_metadata` on channels, `original_timestamp` and `original_id` on messages, new `message_artifacts` table with CASCADE delete.
+- **Import UI**: sidebar import button, session path input modal, optional channel name, loading/error/success states, navigate to imported channel on completion.
+- **Source badges**: "CC" badge on imported channels in sidebar. Import provenance section in channel settings (project, import date, event count, Claude Code version).
+- **Auto-naming**: imported channels named `{project} — {YYYY-MM-DD}` from working directory and timestamp.
+- 46 new tests: parser (23), import API (10), migration (18 total, 9 new). **196 tests passing**.
+- Multi-agent coordination: Argus wrote test infrastructure (836 lines) defining parser and import API contracts; Daedalus implemented to match.
+
+### Changed
+- `createChannel` return value now includes `source: 'native'` for type consistency
+- Architecture decision log updated through Step 8
+
+---
+
 ## [0.7.0] — 2026-03-09
 
 ### Step 7: Interaction Modes

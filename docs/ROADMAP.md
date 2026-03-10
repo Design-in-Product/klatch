@@ -72,21 +72,22 @@ Three modes for multi-entity channels, each with distinct orchestration:
 - **Sidebar grouping**: Roles (@prefix, 1 entity) and Channels (#prefix, 2+ entities)
 - Mode-aware regenerate, abort cleanup, hidden mode selector for single-entity channels
 
----
-
-## Next Steps (concrete, actionable)
-
-### Step 8: Import and unify
+### Step 8 Phase 1: Claude Code import ✓
 **Dimension: data consolidation.** Can you bring your existing Claude work into Klatch?
 
 - Parse Claude Code JSONL session files (`~/.claude/projects/`)
-- Import claude.ai project conversations (via export)
-- Map imported sessions to Klatch channels with appropriate entities
+- JSONL parser walks parentUuid tree, extracts text turns, collapses tool-use into summaries
+- Subagent classification (task/compaction/prompt_suggestion) with compaction summary extraction
+- Import API with dedup detection (409 on re-import), auto-generated channel names
+- `message_artifacts` table stores tool-use, thinking, images at full fidelity
+- Source badges ("CC") on imported channels, provenance display in channel settings
 - Fork-don't-sync: imports are snapshots, continuation forks into Klatch-native chronology
-- Store full-fidelity data (tool use, thinking, images), display collapsed
-- Leverage Anthropic's Compaction API for efficient history on continued conversations
-- This is what makes Klatch the *single pane of glass* for Claude interactions
+- 196 tests passing (23 parser, 10 import, 18 migration + existing suite)
 - See `docs/BRIEF-STEP8-IMPORT.md` for full design analysis and phased plan
+
+---
+
+## Next Steps (concrete, actionable)
 
 ### Step 8½: Metadata framework
 **Dimension: provenance.** Where did each conversation come from, and how do they relate?
@@ -96,6 +97,22 @@ Three modes for multi-entity channels, each with distinct orchestration:
 - Tool-use statistics per message and per channel
 - Foundation for metadata-aware search in Step 9
 - This is the hidden value layer — automates manual coordination overhead
+
+### Step 8 Phase 2: Fork continuity
+**Dimension: conversation continuation.** Can you pick up where an imported session left off?
+
+- Enable Anthropic's Compaction API for imported channels (text-only history + automatic summarization)
+- Context editing: strip old tool results before compaction pass
+- Continue-from-import: first message in a forked channel sends reconstructed history
+- Bulk import: scan `~/.claude/projects/`, preview sessions, multi-select import
+
+### Step 8 Phase 3: claude.ai import
+**Dimension: source breadth.** Can you bring in conversations from claude.ai too?
+
+- Parse claude.ai ZIP export (`conversations.json`)
+- Map conversations to channels, artifacts to message_artifacts
+- Model inference from timestamps (model field often absent in exports)
+- Independent of Phase 2 — can be done in parallel
 
 ### Step 9: Files and artifacts
 **Dimension: rich context.** Can you share files, code, and documents with entities?
