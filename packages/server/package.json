@@ -10,7 +10,7 @@
     "test:watch": "vitest"
   },
   "dependencies": {
-    "@anthropic-ai/sdk": "^0.39.0",
+    "@anthropic-ai/sdk": "^0.78.0",
     "@hono/node-server": "^1.13.0",
     "adm-zip": "^0.5.16",
     "better-sqlite3": "^11.7.0",

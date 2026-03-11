@@ -6,6 +6,7 @@ import {
   createEntity,
   assignEntityToChannel,
   getMessages,
+  importSession,
 } from '../db/queries.js';
 import { DEFAULT_MODEL, DEFAULT_ENTITY_ID, ENTITY_COLORS } from '@klatch/shared';
 
@@ -288,5 +289,62 @@ describe('POST /api/channels/:channelId/regenerate (roundtable)', () => {
 
     const res = await req('POST', `/channels/${channelId}/regenerate`);
     expect(res.status).toBe(404);
+  });
+});
+
+// ── Imported channel messaging ──────────────────────────────
+
+describe('POST /api/channels/:channelId/messages (imported channel)', () => {
+  it('accepts messages in an imported channel (fork continuity)', async () => {
+    const { streamClaude } = await import('../claude/client.js');
+    vi.mocked(streamClaude).mockClear();
+
+    // Create an imported channel with some history
+    const result = importSession({
+      channelName: 'test-import',
+      source: 'claude-code',
+      sourceMetadata: { originalSessionId: 'test-fork-001', cwd: '/tmp/test' },
+      turns: [
+        { timestamp: '2026-03-01T10:00:00Z', originalId: 'ev-1', userText: 'What is this project?', assistantText: 'This is a test project.' },
+        { timestamp: '2026-03-01T10:01:00Z', originalId: 'ev-2', userText: 'Show me the code', assistantText: 'Here is the code.' },
+      ],
+    });
+
+    // Send a new message to the imported channel
+    const res = await req('POST', `/channels/${result.channelId}/messages`, { content: 'Continue from here' });
+    expect(res.status).toBe(200);
+    const data = await res.json();
+    expect(data.userMessageId).toBeTruthy();
+    expect(data.assistants).toHaveLength(1);
+    expect(data.assistants[0].assistantMessageId).toBeTruthy();
+
+    // streamClaude should have been called
+    expect(streamClaude).toHaveBeenCalledTimes(1);
+  });
+
+  it('filters out empty-content messages from imported history', async () => {
+    // Import a session with an empty assistant message (has artifacts so it gets stored)
+    const result = importSession({
+      channelName: 'test-empty-filter',
+      source: 'claude-code',
+      sourceMetadata: { originalSessionId: 'test-empty-001' },
+      turns: [
+        { timestamp: '2026-03-01T10:00:00Z', originalId: 'ev-1', userText: 'Hello', assistantText: 'Hi there!' },
+        { timestamp: '2026-03-01T10:01:00Z', originalId: 'ev-2', userText: 'Do something', assistantText: '', artifacts: [{ type: 'tool_use' as const, toolName: 'Bash', inputSummary: 'npm test' }] },
+        { timestamp: '2026-03-01T10:02:00Z', originalId: 'ev-3', userText: 'What happened?', assistantText: 'I ran some tools.' },
+      ],
+    });
+
+    // Verify all messages are in DB (3 user + 3 assistant, including empty one with artifact)
+    const allMsgs = getMessages(result.channelId);
+    expect(allMsgs).toHaveLength(6);
+
+    // The empty assistant message should be in DB but filtered from history
+    const emptyAssistant = allMsgs.find((m) => m.role === 'assistant' && m.content === '');
+    expect(emptyAssistant).toBeTruthy();
+
+    // Send a message — should succeed without sending empty content to API
+    const res = await req('POST', `/channels/${result.channelId}/messages`, { content: 'Continue' });
+    expect(res.status).toBe(200);
   });
 });

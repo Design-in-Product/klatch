@@ -64,21 +64,30 @@ export function abortStream(messageId: string): boolean {
 
 type ChatMessage = { role: 'user' | 'assistant'; content: string };
 
+// Safety cap: prevents token overflow for long imported sessions.
+// Superseded by compaction once Increment 2 is live.
+const MAX_HISTORY_MESSAGES = 200;
+
 /** Panel mode: entity sees only its own past responses + all user messages */
 function buildPanelHistory(channelId: string, entity: Entity): ChatMessage[] {
   const allMessages = getMessages(channelId).filter((m) => m.status === 'complete');
-  return allMessages
+  const filtered = allMessages
     .filter((m) => m.role === 'user' || m.entityId === entity.id || !m.entityId)
+    .filter((m) => m.content.trim().length > 0)
     .map((m) => ({ role: m.role as 'user' | 'assistant', content: m.content }));
+  return filtered.slice(-MAX_HISTORY_MESSAGES);
 }
 
 /** Roundtable mode: entity sees ALL completed messages from ALL entities */
 function buildRoundtableHistory(channelId: string): ChatMessage[] {
   const allMessages = getMessages(channelId).filter((m) => m.status === 'complete');
-  return allMessages.map((m) => ({
-    role: m.role as 'user' | 'assistant',
-    content: m.content,
-  }));
+  return allMessages
+    .filter((m) => m.content.trim().length > 0)
+    .map((m) => ({
+      role: m.role as 'user' | 'assistant',
+      content: m.content,
+    }))
+    .slice(-MAX_HISTORY_MESSAGES);
 }
 
 /** Build system prompt: channel preamble + entity's own prompt */

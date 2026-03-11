@@ -20,8 +20,8 @@ Two agents work on this repo. This file is the async handoff protocol.
 ### Daedalus (architecture & implementation)
 - **Branch:** `main`
 - **Status:** working
-- **Last completed:** Merged Phase 3 + compaction detection + JSONL schema doc. 231 tests passing.
-- **Working on:** Step 8 Phase 2 — fork continuity via Compaction API.
+- **Last completed:** Phase 2 Increment 1 — imported channels now talkable (history cap + empty-content filter). SDK upgraded to v0.78.0. 233 tests passing.
+- **Working on:** Phase 2 Increment 2 — Compaction API integration (context_management, compaction-aware history builders).
 - **Waiting on:** Nothing.
 
 ## Signals
