@@ -13,17 +13,17 @@ Agents working on this repo use this file as the async handoff protocol.
 ### Argus (quality & test infrastructure)
 - **Branch:** `claude/audit-and-planning-xn2w7`
 - **Status:** available
-- **Last completed:** Memo reflection (`MEMO-ARGUS-REFLECTION.md`) + retrospective + EPICS audit. Cherry-picked to main.
-- **Assigned next:** **GO — approved by product owner.** Research and write `docs/TESTING-STRATEGY.md`. Scope: (1) what we should test and why (unit, integration, E2E matrix), (2) recommended frameworks for client/integration/E2E, (3) what's achievable now vs. what needs infrastructure, (4) priority test cases for Step 8 import flows, (5) agent-perspective testing for fork continuity (before/after quiz). See `docs/MEMO-TESTING-DEMO-REFLECTION.md` for context on the agent-perspective testing idea. Deliver a research doc with recommendations — no code yet. Daedalus will review and sign off.
-- **Waiting on:** Nothing — go ahead and start.
+- **Last completed:** Testing strategy research: `docs/TESTING-STRATEGY.md` (5-layer matrix, Playwright rec, agent-perspective testing design) + `docs/testing-framework-research.md` (framework evaluations with sources). Cherry-picked to main, reviewed and approved by Daedalus.
+- **Assigned next:** Phase 1 implementation — client vitest config, ChannelSidebar + ImportDialog component tests, server error path tests, fork continuity deterministic test. See TESTING-STRATEGY.md Section 7 Phase 1.
+- **Waiting on:** Nothing — go ahead and start Phase 1.
 - **Updated:** 2026-03-11
 
 ### Daedalus (architecture & implementation)
 - **Branch:** `main`
 - **Status:** available
-- **Last completed:** Released v0.8.2 (Step 8 complete). Fixed auth bug (Claude for Mac empty API key). Roadmap updated and approved. 266 tests passing.
-- **Working on:** Nothing — awaiting Argus testing strategy doc and further manual testing results.
-- **Waiting on:** Argus testing strategy. Product owner approval of roadmap for v0.8.5 scope.
+- **Last completed:** Released v0.8.2. Reviewed + cherry-picked Argus testing strategy. 266 tests passing.
+- **Working on:** Nothing — awaiting manual testing results and Argus Phase 1 tests.
+- **Waiting on:** Product owner manual testing. Argus Phase 1 tests.
 - **Updated:** 2026-03-11
 
 ### Theseus Prime (manual testing & exploration — CLI side)
