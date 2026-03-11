@@ -4,174 +4,184 @@ Detailed breakdown of Steps 6–9 from the roadmap, decomposed into implementabl
 
 ---
 
-## Step 6: Multi-Entity Conversations
+## Step 6: Multi-Entity Conversations ✅
 
 **The big shift.** This is where Klatch stops being "a nicer claude.ai" and becomes something new. The core challenge: the entire current architecture assumes one assistant per message, one stream per send. This step rewires that assumption.
 
-### 6a: Prep — Schema and validation hardening
+### 6a: Prep — Schema and validation hardening ✅
 _Do this first, before any entity work._
-- [ ] Add input validation on POST `/channels/:channelId/messages` (content required, channel must exist)
-- [ ] Wrap user + assistant message creation in a SQLite transaction
-- [ ] Update model IDs in `AVAILABLE_MODELS` to current versions (`claude-opus-4-6`, `claude-sonnet-4-6`, latest Haiku)
-- [ ] Add `DELETE /channels/:id` endpoint (with cascade delete of messages)
-- [ ] Update README and ROADMAP to reflect Steps 4–5 completion
+- [x] Add input validation on POST `/channels/:channelId/messages` (content required, channel must exist)
+- [x] Wrap user + assistant message creation in a SQLite transaction
+- [x] Update model IDs in `AVAILABLE_MODELS` to current versions (`claude-opus-4-6`, `claude-sonnet-4-6`, latest Haiku)
+- [x] Add `DELETE /channels/:id` endpoint (with cascade delete of messages)
+- [x] Update README and ROADMAP to reflect Steps 4–5 completion
 
-### 6b: Entities table and CRUD
-- [ ] Create `entities` table: `id`, `name`, `model`, `system_prompt`, `color`, `created_at`
-- [ ] Migration: add `entity_id TEXT REFERENCES entities(id)` to messages table (nullable for backward compat)
-- [ ] Create a "default" entity on first run (maps to current "Claude" identity)
-- [ ] API: `GET /api/entities`, `POST /api/entities`, `PATCH /api/entities/:id`, `DELETE /api/entities/:id`
-- [ ] Shared types: `Entity` interface, update `Message` to include optional `entityId`
+### 6b: Entities table and CRUD ✅
+- [x] Create `entities` table: `id`, `name`, `model`, `system_prompt`, `color`, `created_at` — `db/index.ts`
+- [x] Migration: add `entity_id TEXT REFERENCES entities(id)` to messages table (nullable for backward compat) — `db/index.ts`
+- [x] Create a "default" entity on first run (maps to current "Claude" identity) — `db/index.ts:162`
+- [x] API: `GET /api/entities`, `POST /api/entities`, `PATCH /api/entities/:id`, `DELETE /api/entities/:id` — `routes/entities.ts`
+- [x] Shared types: `Entity` interface, update `Message` to include optional `entityId` — `shared/types.ts`
 
-### 6c: Channel-entity assignment
-- [ ] Create `channel_entities` junction table: `channel_id`, `entity_id`, `added_at`
-- [ ] API: `POST /api/channels/:id/entities` (assign), `DELETE /api/channels/:id/entities/:entityId` (remove), `GET /api/channels/:id/entities` (list)
-- [ ] When creating a channel, auto-assign the default entity
-- [ ] Existing channels get the default entity via migration
+### 6c: Channel-entity assignment ✅
+- [x] Create `channel_entities` junction table: `channel_id`, `entity_id`, `added_at` — `db/index.ts:69`
+- [x] API: `POST /api/channels/:id/entities` (assign), `DELETE /api/channels/:id/entities/:entityId` (remove), `GET /api/channels/:id/entities` (list) — `routes/entities.ts`
+- [x] When creating a channel, auto-assign the default entity
+- [x] Existing channels get the default entity via migration — `db/index.ts:172`
 
-### 6d: Multi-entity streaming
-- [ ] Modify POST `/channels/:channelId/messages` to create one assistant placeholder **per assigned entity**
-- [ ] Return array of `{ entityId, assistantMessageId, model }` instead of single message
-- [ ] `streamClaude` now takes an `entityId` parameter, uses that entity's model and system prompt
-- [ ] Kick off N parallel streams (one per entity)
-- [ ] Client opens N SSE connections, one per assistant message
+### 6d: Multi-entity streaming ✅
+- [x] Modify POST `/channels/:channelId/messages` to create one assistant placeholder **per assigned entity**
+- [x] Return array of `{ entityId, assistantMessageId, model }` instead of single message
+- [x] `streamClaude` now takes an `entityId` parameter, uses that entity's model and system prompt
+- [x] Kick off N parallel streams (one per entity)
+- [x] Client opens N SSE connections, one per assistant message
 
-### 6e: Client — entity UI
-- [ ] Entity management panel (create, edit, delete entities — could be a sidebar section or settings page)
-- [ ] Channel settings: entity assignment UI (add/remove entities from channel)
-- [ ] `MessageBubble` shows entity name + color instead of generic "Claude"
-- [ ] Entity avatar: colored circle with first letter (simple, no images yet)
-- [ ] Update `useMessages` and streaming state to handle N concurrent streams
+### 6e: Client — entity UI ✅
+- [x] Entity management panel (create, edit, delete entities — could be a sidebar section or settings page)
+- [x] Channel settings: entity assignment UI (add/remove entities from channel)
+- [x] `MessageBubble` shows entity name + color instead of generic "Claude"
+- [x] Entity avatar: colored circle with first letter (simple, no images yet)
+- [x] Update `useMessages` and streaming state to handle N concurrent streams
 
-### 6f: Single-entity backward compatibility
-- [ ] Channels with one entity behave exactly like today (no visual changes)
-- [ ] API responses remain backward-compatible (single-entity response is a 1-element array, or keep the old shape with a compat layer)
-- [ ] Test: existing conversations render correctly after migration
+### 6f: Single-entity backward compatibility ✅
+- [x] Channels with one entity behave exactly like today (no visual changes)
+- [x] API responses remain backward-compatible (single-entity response is a 1-element array, or keep the old shape with a compat layer)
+- [x] Test: existing conversations render correctly after migration
 
 ---
 
-## Step 7: Interaction Modes
+## Step 7: Interaction Modes ✅
 
 **Three modes, each a different answer to "what happens when I send a message?"**
 
-### 7a: Mode infrastructure
-- [ ] Add `mode` column to `channel_entities` or `channels` table: `'panel' | 'roundtable' | 'directed'`
-- [ ] Default mode: `panel` (simplest, entities respond independently)
-- [ ] UI: mode selector in channel settings (radio buttons or segmented control)
-- [ ] Shared type: `InteractionMode`
+### 7a: Mode infrastructure ✅
+- [x] Add `mode` column to channels table: `'panel' | 'roundtable' | 'directed'` — `db/index.ts:45,102`
+- [x] Default mode: `panel` (simplest, entities respond independently) — `shared/types.ts:40`
+- [x] UI: mode selector in channel settings (radio buttons or segmented control) — `ChannelSettings.tsx:244`
+- [x] Shared type: `InteractionMode` — `shared/types.ts:39`
 
-### 7b: Panel mode (parallel responses)
-- [ ] All entities receive the user message + their own conversation history
-- [ ] Each entity streams independently and simultaneously
-- [ ] Messages display side-by-side or stacked with clear entity attribution
-- [ ] This is what 6d already implements — panel mode is the natural default
+### 7b: Panel mode (parallel responses) ✅
+- [x] All entities receive the user message + their own conversation history
+- [x] Each entity streams independently and simultaneously
+- [x] Messages display side-by-side or stacked with clear entity attribution
+- [x] This is what 6d already implements — panel mode is the natural default
 
-### 7c: Roundtable mode (sequential with shared context)
-- [ ] Entities respond in order (configurable order in `channel_entities`)
-- [ ] Each entity sees all prior responses in the round, not just its own history
-- [ ] Server orchestrates: stream entity 1, wait for completion, stream entity 2 with entity 1's response in context, etc.
-- [ ] Client shows responses appearing sequentially
-- [ ] New concept: "round" — a group of entity responses triggered by one user message
+### 7c: Roundtable mode (sequential with shared context) ✅
+- [x] Entities respond in order (configurable order in `channel_entities`)
+- [x] Each entity sees all prior responses in the round, not just its own history
+- [x] Server orchestrates: stream entity 1, wait for completion, stream entity 2 with entity 1's response in context, etc.
+- [x] Client shows responses appearing sequentially
+- [x] New concept: "round" — a group of entity responses triggered by one user message
 
-### 7d: Directed mode (@-mentions)
-- [ ] Parse `@entity-name` from user message content
-- [ ] Only the mentioned entity responds
-- [ ] If no @-mention, fall back to panel mode (all entities respond)
-- [ ] Autocomplete UI in message input: type `@` to see entity list
-- [ ] Visual: @-mentions rendered as styled chips in the message
+### 7d: Directed mode (@-mentions) ✅
+- [x] Parse `@entity-name` from user message content
+- [x] Only the mentioned entity responds
+- [x] If no @-mention, fall back to panel mode (all entities respond)
+- [x] Autocomplete UI in message input: type `@` to see entity list — `MessageInput.tsx`
+- [x] Visual: @-mentions rendered as styled chips in the message
 
-### 7e: Mode-specific message history
-- [ ] Panel mode: each entity has its own conversation thread (sees only its own responses + user messages)
-- [ ] Roundtable mode: all entities share one thread (everyone sees everything)
-- [ ] Directed mode: mentioned entity sees full history, unmention entities are dormant
-- [ ] This changes how `streamClaude` builds the `history` array — parameterize by mode
+### 7e: Mode-specific message history ✅
+- [x] Panel mode: each entity has its own conversation thread (sees only its own responses + user messages)
+- [x] Roundtable mode: all entities share one thread (everyone sees everything)
+- [x] Directed mode: mentioned entity sees full history, unmention entities are dormant
+- [x] This changes how `streamClaude` builds the `history` array — parameterize by mode
 
 ---
 
 ## Step 8: Import and Unify
 
-**Making Klatch the single pane of glass.** Full design analysis in `docs/BRIEF-STEP8-IMPORT.md`.
+**Making Klatch the single pane of glass.** Full design analysis in `docs/BRIEF-STEP8-IMPORT.md`. Retrospective in `docs/STEP8-RETROSPECTIVE.md`.
 
-### Phase 1: Read-only Claude Code import (MVP)
+### Phase 1: Read-only Claude Code import (MVP) ✅
 
-#### 8.1: JSONL Parser ✅ (research complete)
+#### 8.1: JSONL Parser ✅
 - [x] Document the JSONL format in `~/.claude/projects/` — see briefing Part 1
 - [x] Identify: parentUuid tree structure, content block types, subagent nesting
 - [x] Decision: tool use collapsed in display, stored in full fidelity
-- [ ] Implement: tree-walking parser that extracts text turns and collapses tool-use into summaries
+- [x] Implement: tree-walking parser that extracts text turns and collapses tool-use into summaries — `import/parser.ts`
 
-#### 8.2: Artifact storage
-- [ ] New `message_artifacts` table: id, message_id, type, content (JSON), summary (text), sequence_order
-- [ ] Types: `tool_use`, `tool_result`, `thinking`, `image`, `tool_batch_summary`
-- [ ] Index on message_id for fast lookup
+#### 8.2: Artifact storage ✅
+- [x] New `message_artifacts` table: id, message_id, type, content (JSON), summary (text), sequence_order — `db/index.ts:141`
+- [x] Types: `tool_use`, `tool_result`, `thinking`, `image`, `tool_batch_summary`
+- [x] Index on message_id for fast lookup — `db/index.ts:150`
 
-#### 8.3: Import API
-- [ ] `POST /api/import/claude-code` with `{ sessionPath: string }`
-- [ ] Create channel (source: 'claude-code') + auto-entity (from session model)
-- [ ] Insert messages with original timestamps + artifacts in batch
-- [ ] Store subagent references as metadata (not imported as separate channels)
+#### 8.3: Import API ✅
+- [x] `POST /api/import/claude-code` with `{ sessionPath: string }` — `routes/import.ts:46`
+- [x] Create channel (source: 'claude-code') + auto-entity (from session model)
+- [x] Insert messages with original timestamps + artifacts in batch
+- [x] Store subagent references as metadata (not imported as separate channels)
 
-#### 8.4: Minimal UI
-- [ ] Import button in sidebar or settings
-- [ ] File path input (later: directory scanner)
-- [ ] Progress indicator for large imports
-- [ ] Navigate to new channel on completion
+#### 8.4: Minimal UI ✅
+- [x] Import button in sidebar or settings — `ImportDialog.tsx`
+- [x] File path input (later: directory scanner)
+- [x] Progress indicator for large imports — loading state in ImportDialog
+- [x] Navigate to new channel on completion
 
-#### 8.5: Source badges
-- [ ] Visual indicator on imported channels (icon/tag)
-- [ ] "Imported from Claude Code" in channel settings with source metadata
+#### 8.5: Source badges ✅
+- [x] Visual indicator on imported channels (icon/tag) — "CC" badge in `ChannelSidebar.tsx`
+- [x] "Imported from Claude Code" in channel settings with source metadata — `ChannelSettings.tsx`
 
-### Phase 1.5: Metadata Framework (Step 8½)
+### Phase 1.5: Metadata Framework (Step 8½) ✅
 
-#### 8.6: Schema additions
-- [ ] `source TEXT` + `source_metadata TEXT` on channels
-- [ ] `original_timestamp TEXT` + `original_id TEXT` on messages
+#### 8.6: Schema additions ✅
+- [x] `source TEXT` + `source_metadata TEXT` on channels — `db/index.ts:125`
+- [x] `original_timestamp TEXT` + `original_id TEXT` on messages — `db/index.ts:132-136`
 
-#### 8.7: Import provenance
-- [ ] Track: import timestamp, source path, original session ID, project name
-- [ ] Display in channel settings
+#### 8.7: Import provenance ✅
+- [x] Track: import timestamp, source path, original session ID, project name — stored in `source_metadata` JSON
+- [x] Display in channel settings — `ChannelSettings.tsx` provenance card
 
-#### 8.8: Tool-use statistics
-- [ ] Per-message artifact counts
-- [ ] Per-channel summary: files read, commands run, files written, subagents spawned
+#### 8.8: Tool-use statistics ✅
+- [x] Per-message artifact counts — `getChannelStats()` in `db/queries.ts:98`
+- [x] Per-channel summary: files read, commands run, files written, subagents spawned — stats endpoint + ChannelSettings UI
 
-#### 8.9: Cross-channel project grouping
-- [ ] "These channels were imported from the same project directory"
-- [ ] Proto-project UI: grouping in sidebar or filter
+#### 8.9: Cross-channel project grouping ✅
+- [x] "These channels were imported from the same project directory" — `getAllChannelsEnriched()` extracts cwd from metadata
+- [x] Proto-project UI: grouping in sidebar or filter — `ChannelSidebar.tsx` collapsible project groups
 
-### Phase 2: Make imports live
+### Phase 2: Make imports live (partial)
 
-#### 8.10: Fork continuity via Compaction
-- [ ] Enable Anthropic Compaction API (`compact-2026-01-12` beta) for imported channels
-- [ ] Build history constructor: text-only turns + compaction
-- [ ] Custom compaction instructions per source type
-- [ ] Configurable trigger threshold (default: 80K tokens for imported channels)
+#### 8.10: Fork continuity via Compaction ⚠️ (partial)
+- [x] Enable Anthropic Compaction API (`compact-2026-01-12` beta) for imported channels — `claude/client.ts:207`
+- [x] Build history constructor: text-only turns + compaction
+- [ ] Custom compaction instructions per source type — **not implemented**
+- [x] Configurable trigger threshold (default: 80K tokens for imported channels) — hardcoded at 80K in `client.ts:216`, not yet user-configurable
 
-#### 8.11: Continue-from-import
-- [ ] Auto-entity creation from session config
-- [ ] First new message sends reconstructed history seamlessly
-- [ ] "Forked from import" marker in conversation flow
+#### 8.11: Continue-from-import ⚠️ (partial)
+- [x] Auto-entity creation from session config — import creates entity from session model
+- [x] First new message sends reconstructed history seamlessly
+- [ ] "Forked from import" marker in conversation flow — **not implemented**
 
-#### 8.12: Bulk import
+#### 8.12: Bulk import — not started
 - [ ] Scan `~/.claude/projects/` directory
 - [ ] Show session list: project name, date, message count, tool-use stats
 - [ ] Multi-select import with progress
 
-### Phase 3: claude.ai import (independent track)
+### Phase 3: claude.ai import (independent track) ✅
 
-#### 8.13: Research
-- [ ] Obtain actual claude.ai data export (ZIP with JSON)
-- [ ] Document exact JSON schema of conversation files
-- [ ] Map: conversations → channels, note missing model info + artifacts
+#### 8.13: Research ✅
+- [x] Obtain actual claude.ai data export (ZIP with JSON)
+- [x] Document exact JSON schema of conversation files
+- [x] Map: conversations → channels, note missing model info + artifacts
 
-#### 8.14: Parser
-- [ ] ZIP reader + JSON conversation extractor
-- [ ] Model inference from timestamps (or user selection)
-- [ ] Normalize to Klatch internal format
+#### 8.14: Parser ⚠️ (partial)
+- [x] ZIP reader + JSON conversation extractor — `import/claude-ai-zip.ts`, `import/claude-ai-parser.ts`
+- [ ] Model inference from timestamps (or user selection) — **not implemented**, uses default model
+- [x] Normalize to Klatch internal format
 
-#### 8.15: Import API + UI
-- [ ] `POST /api/import/claude-ai` with file upload
-- [ ] Reuse import UI patterns from Phase 1
+#### 8.15: Import API + UI ✅
+- [x] `POST /api/import/claude-ai` with file upload — `routes/import.ts:168`
+- [x] Reuse import UI patterns from Phase 1
+
+### Known refinements (tracked, pre-Step 9)
+- [ ] **Compaction summary misattribution**: `isCompactSummary` events render as "You" instead of system banner
+- [ ] **`isMeta` event filtering**: hook feedback, skill injections should be filtered or rendered distinctly
+- [ ] **Re-import / refresh**: allow updating existing channel (currently blocked by dedup 409)
+- [ ] **Demo automation**: automated demo recording (currently manual)
+- [ ] **"Forked from import" marker**: visual indicator when conversation transitions from imported to native
+- [ ] **User-configurable compaction threshold**: currently hardcoded at 80K tokens
+- [ ] **Custom compaction instructions per source type**: not yet implemented
+- [ ] **claude.ai model inference**: imported conversations use default model instead of inferring from timestamps or allowing user selection
 
 ---
 
