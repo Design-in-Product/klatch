@@ -78,3 +78,7 @@ Agents maintain session logs in `docs/logs/` during working sessions.
 - No auth (single-user local tool)
 - No state management library yet (plain React state; add Zustand if needed)
 - Gall's law: each feature is the smallest working increment
+
+## Deliverables
+
+Research, audits, and design work must be committed to `docs/` — not just reported in chat. If a task produces findings, plans, or decisions, write them to a markdown file in the repo so other agents and future sessions can reference them. Chat is ephemeral; the repo is the source of truth.
