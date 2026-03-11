@@ -20,10 +20,10 @@ Agents working on this repo use this file as the async handoff protocol.
 
 ### Daedalus (architecture & implementation)
 - **Branch:** `main`
-- **Status:** working
-- **Last completed:** Cherry-picked all Argus work to main. Wrote testing/demo/reflection memo, design notes (naming/identity), roadmap updates (context health, someday/maybe). 266 tests passing. Step 8 + 8½ fully merged.
-- **Working on:** Roadmap update recommendation for group review. Release versioning plan (v0.8.2 + v0.8.5).
-- **Waiting on:** Product owner manual testing results. Group approval of roadmap update.
+- **Status:** available
+- **Last completed:** Released v0.8.2 (Step 8 complete). Fixed auth bug (Claude for Mac empty API key). Roadmap updated and approved. 266 tests passing.
+- **Working on:** Nothing — awaiting Argus testing strategy doc and further manual testing results.
+- **Waiting on:** Argus testing strategy. Product owner approval of roadmap for v0.8.5 scope.
 - **Updated:** 2026-03-11
 
 ### Theseus Prime (manual testing & exploration — CLI side)
