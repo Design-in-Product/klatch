@@ -19,10 +19,10 @@ Two agents work on this repo. This file is the async handoff protocol.
 
 ### Daedalus (architecture & implementation)
 - **Branch:** `main`
-- **Status:** working
-- **Last completed:** Phase 2 + bug fixes + Argus cherry-picks. 251 tests passing.
-- **Working on:** Step 8½ Increment 1 (stats queries + types + endpoint) then Increment 2 (sidebar project grouping).
-- **Waiting on:** Nothing.
+- **Status:** available
+- **Last completed:** Step 8½ Increments 1+2 (stats backend + sidebar project grouping). 251 tests passing. `ChannelStats` type, `getChannelStats()`, `getAllChannelsEnriched()`, `GET /channels/:id/stats` endpoint, sidebar now groups imported channels by project with collapsible sections.
+- **Working on:** Nothing — Increment 3 assigned to Argus.
+- **Waiting on:** Argus Increment 3 (stats UI + tests).
 
 ## Signals
 
