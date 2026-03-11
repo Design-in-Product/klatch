@@ -56,7 +56,7 @@ Schema in `packages/server/src/db/index.ts`. Tables:
 
 ## Multi-Agent Coordination
 
-Two agents (Daedalus and Argus) work on this repo. Follow this workflow:
+Three agents work on this repo: **Daedalus** (architecture & implementation), **Argus** (quality & testing), and **Theseus** (manual testing & exploration, working in tandem with the product owner). Follow this workflow:
 
 1. **Session start:** Read `docs/COORDINATION.md` to see current status, assignments, and blockers.
 2. **Before executing:** Check COORDINATION.md again — confirm your assigned work, verify dependencies are met (e.g., "Waiting on" is resolved), and avoid duplicating or conflicting with the other agent's in-progress work.

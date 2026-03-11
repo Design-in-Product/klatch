@@ -26,6 +26,16 @@ Two agents work on this repo. This file is the async handoff protocol.
 - **Waiting on:** Product owner manual testing results. Group approval of roadmap update.
 - **Updated:** 2026-03-11
 
+### Theseus (manual testing & exploration)
+- **Branch:** `main`
+- **Status:** working
+- **Role:** Human-agent tandem manual testing. Works directly with the product owner to walk through app functionality, report subjective experience, and validate import/continuity flows.
+- **Last completed:** Initial onboarding, reviewed project docs.
+- **Working on:** Setting up for import and fork-continuity manual testing with product owner.
+- **Waiting on:** Nothing — ready to test.
+- **Note:** Theseus and Argus both work locally on main. Coordinate file edits via this board. Currently editing: `CLAUDE.md`, `COORDINATION.md`, creating `docs/logs/`.
+- **Updated:** 2026-03-11
+
 ## Signals
 
 Use these status values:
