@@ -33,6 +33,7 @@ export function ChannelSettings({
     setName(channel.name);
     setSystemPrompt(channel.systemPrompt);
     setDirty(false);
+    setContextLoading(false);
     setContextError(null);
   }, [channel.id]);
 
@@ -57,7 +58,7 @@ export function ChannelSettings({
   })();
 
   const isImported = channel.source && channel.source !== 'native';
-  const hasEmptyPrompt = !systemPrompt.trim();
+  const hasSavedPrompt = !!channel.systemPrompt.trim();
   const hasCwd = meta?.cwd;
   const hasCompactionSummary = meta?.compactionSummary;
 
@@ -150,7 +151,7 @@ export function ChannelSettings({
           />
 
           {/* Context loading hints and buttons for imported channels */}
-          {isImported && hasEmptyPrompt && (
+          {isImported && !hasSavedPrompt && (
             <div className="mt-2 space-y-2">
               <p className="text-xs text-muted">
                 {channel.source === 'claude-code'

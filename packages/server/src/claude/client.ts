@@ -85,6 +85,26 @@ function parseCompactionState(channel?: Channel): CompactionState | null {
   }
 }
 
+/**
+ * Merge consecutive same-role messages into one.
+ * The Anthropic API requires strict user/assistant alternation.
+ * This can happen after filtering (panel mode removes other entities' messages)
+ * or in roundtable mode (multiple assistant responses per round).
+ */
+function coalesceMessages(messages: ChatMessage[]): ChatMessage[] {
+  if (messages.length === 0) return messages;
+  const result: ChatMessage[] = [messages[0]];
+  for (let i = 1; i < messages.length; i++) {
+    const prev = result[result.length - 1];
+    if (messages[i].role === prev.role) {
+      prev.content += '\n\n' + messages[i].content;
+    } else {
+      result.push({ ...messages[i] });
+    }
+  }
+  return result;
+}
+
 /** Panel mode: entity sees only its own past responses + all user messages */
 function buildPanelHistory(channelId: string, entity: Entity): ChatMessage[] {
   const channel = getChannel(channelId);
@@ -108,11 +128,12 @@ function buildPanelHistory(channelId: string, entity: Entity): ChatMessage[] {
 
   if (compaction) {
     // Prepend compaction summary as conversation anchor
-    return [{ role: 'user' as const, content: compaction.summary }, ...filtered];
+    // coalesceMessages handles the case where first filtered message is also 'user'
+    return coalesceMessages([{ role: 'user' as const, content: compaction.summary }, ...filtered]);
   }
 
   // No compaction: apply safety cap
-  return filtered.slice(-MAX_HISTORY_MESSAGES);
+  return coalesceMessages(filtered.slice(-MAX_HISTORY_MESSAGES));
 }
 
 /** Roundtable mode: entity sees ALL completed messages from ALL entities */
@@ -138,10 +159,10 @@ function buildRoundtableHistory(channelId: string): ChatMessage[] {
     }));
 
   if (compaction) {
-    return [{ role: 'user' as const, content: compaction.summary }, ...filtered];
+    return coalesceMessages([{ role: 'user' as const, content: compaction.summary }, ...filtered]);
   }
 
-  return filtered.slice(-MAX_HISTORY_MESSAGES);
+  return coalesceMessages(filtered.slice(-MAX_HISTORY_MESSAGES));
 }
 
 /** Build system prompt: channel preamble + entity's own prompt */

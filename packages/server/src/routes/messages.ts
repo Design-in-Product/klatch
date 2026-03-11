@@ -10,6 +10,7 @@ import {
   deleteAllMessages,
   getLastAssistantMessage,
   getLastRoundAssistantMessages,
+  clearChannelCompaction,
 } from '../db/queries.js';
 import { streamClaude, streamClaudeRoundtable, activeStreams, abortStream } from '../claude/client.js';
 import type { StreamEvent, Entity } from '@klatch/shared';
@@ -137,6 +138,8 @@ app.post('/channels/:channelId/messages', async (c) => {
 app.delete('/channels/:channelId/messages', (c) => {
   const channelId = c.req.param('channelId');
   const deleted = deleteAllMessages(channelId);
+  // Clear compaction state — stale summary with no messages produces incoherent context
+  clearChannelCompaction(channelId);
   return c.json({ deleted });
 });
 
@@ -319,23 +322,6 @@ app.get('/messages/:id/stream', (c) => {
 
     // Forward events from the in-memory emitter to SSE
     await new Promise<void>((resolve) => {
-      const onData = async (event: StreamEvent) => {
-        try {
-          await stream.writeSSE({ data: JSON.stringify(event) });
-        } catch {
-          // Client disconnected
-          emitter!.off('data', onData);
-          resolve();
-          return;
-        }
-        if (event.type === 'message_complete' || event.type === 'error') {
-          emitter!.off('data', onData);
-          resolve();
-        }
-      };
-
-      emitter!.on('data', onData);
-
       // Safety: resolve if emitter is removed (stream completed between our check and subscribe)
       const interval = setInterval(() => {
         if (!activeStreams.has(messageId)) {
@@ -344,6 +330,25 @@ app.get('/messages/:id/stream', (c) => {
           resolve();
         }
       }, 500);
+
+      const onData = async (event: StreamEvent) => {
+        try {
+          await stream.writeSSE({ data: JSON.stringify(event) });
+        } catch {
+          // Client disconnected
+          clearInterval(interval);
+          emitter!.off('data', onData);
+          resolve();
+          return;
+        }
+        if (event.type === 'message_complete' || event.type === 'error') {
+          clearInterval(interval);
+          emitter!.off('data', onData);
+          resolve();
+        }
+      };
+
+      emitter!.on('data', onData);
     });
   });
 });

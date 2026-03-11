@@ -11,7 +11,7 @@ function rowToChannel(row: any): Channel {
     model: row.model || DEFAULT_MODEL,
     mode: (row.mode as InteractionMode) || DEFAULT_INTERACTION_MODE,
     createdAt: row.created_at,
-    source: (row.source as ChannelSource) || undefined,
+    source: (row.source as ChannelSource) || 'native',
     sourceMetadata: row.source_metadata || undefined,
     compactionState: row.compaction_state || undefined,
   };
@@ -115,6 +115,12 @@ export function updateChannelCompaction(
   getDb()
     .prepare('UPDATE channels SET compaction_state = ? WHERE id = ?')
     .run(JSON.stringify(state), id);
+}
+
+export function clearChannelCompaction(id: string): void {
+  getDb()
+    .prepare('UPDATE channels SET compaction_state = NULL WHERE id = ?')
+    .run(id);
 }
 
 export function getMessage(id: string): Message | undefined {
