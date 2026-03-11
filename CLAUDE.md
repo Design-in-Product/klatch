@@ -64,6 +64,15 @@ Three agents work on this repo: **Daedalus** (architecture & implementation), **
 
 Statuses: available, working, blocked, review. See `docs/COORDINATION.md` for the full protocol.
 
+## Session Logs
+
+Agents maintain session logs in `docs/logs/` during working sessions.
+
+- **Filename:** `YYYY-MM-DD-HHMM-NAME-MODEL-log.md` (e.g., `2026-03-11-1532-theseus-opus-log.md`)
+- **Purpose:** Record decisions, findings, test results, and observations during a session
+- **When:** Create a log at session start if doing substantive work (testing, investigation, implementation)
+- **Content:** Timestamped entries with context, findings, and next steps
+
 ## Conventions
 
 - No auth (single-user local tool)

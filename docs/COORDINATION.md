@@ -1,6 +1,6 @@
 # Agent Coordination
 
-Two agents work on this repo. This file is the async handoff protocol.
+Agents working on this repo use this file as the async handoff protocol.
 
 ## How it works
 
@@ -26,14 +26,24 @@ Two agents work on this repo. This file is the async handoff protocol.
 - **Waiting on:** Product owner manual testing results. Group approval of roadmap update.
 - **Updated:** 2026-03-11
 
-### Theseus (manual testing & exploration)
+### Theseus Prime (manual testing & exploration — CLI side)
 - **Branch:** `main`
 - **Status:** working
 - **Role:** Human-agent tandem manual testing. Works directly with the product owner to walk through app functionality, report subjective experience, and validate import/continuity flows.
-- **Last completed:** Initial onboarding, reviewed project docs.
-- **Working on:** Setting up for import and fork-continuity manual testing with product owner.
-- **Waiting on:** Nothing — ready to test.
-- **Note:** Theseus and Argus both work locally on main. Coordinate file edits via this board. Currently editing: `CLAUDE.md`, `COORDINATION.md`, creating `docs/logs/`.
+- **Last completed:** First fork test complete. Baseline context snapshot, quiz comparison with Ariadne, technical investigation of import gaps (MEMORY.md, CLAUDE.md, system_prompt, kit briefing concept).
+- **Working on:** Logging findings, syncing with team.
+- **Waiting on:** Nothing.
+- **Note:** Theseus and Argus both work locally on main. Coordinate file edits via this board. Session log: `docs/logs/2026-03-11-1532-theseus-opus-log.md`
+- **Updated:** 2026-03-11
+
+### Ariadne (forked from Theseus — Klatch side)
+- **Branch:** n/a (Klatch-native, lives in SQLite)
+- **Status:** working
+- **Role:** The imported/forked continuation of Theseus, running inside Klatch. Provides the "receiving end" perspective on import continuity. No filesystem or tool access — conversation only.
+- **Last completed:** Context quiz, capability assessment, subjective continuity report. Confirmed silent capability loss, proposed kit briefing validation.
+- **Working on:** Continued testing with product owner in Klatch.
+- **Waiting on:** Nothing.
+- **Note:** Ariadne cannot edit files. Xian manually maintains their log: `docs/logs/2026-03-11-1612-ariadne-opus-log.md`
 - **Updated:** 2026-03-11
 
 ## Signals
