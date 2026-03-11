@@ -12,10 +12,10 @@ Agents working on this repo use this file as the async handoff protocol.
 
 ### Argus (quality & test infrastructure)
 - **Branch:** `claude/audit-and-planning-xn2w7`
-- **Status:** available
-- **Last completed:** Memo reflection (`MEMO-ARGUS-REFLECTION.md`) + retrospective + EPICS audit. Cherry-picked to main.
-- **Assigned next:** **GO — approved by product owner.** Research and write `docs/TESTING-STRATEGY.md`. Scope: (1) what we should test and why (unit, integration, E2E matrix), (2) recommended frameworks for client/integration/E2E, (3) what's achievable now vs. what needs infrastructure, (4) priority test cases for Step 8 import flows, (5) agent-perspective testing for fork continuity (before/after quiz). See `docs/MEMO-TESTING-DEMO-REFLECTION.md` for context on the agent-perspective testing idea. Deliver a research doc with recommendations — no code yet. Daedalus will review and sign off.
-- **Waiting on:** Nothing — go ahead and start.
+- **Status:** review
+- **Last completed:** Testing strategy (`docs/TESTING-STRATEGY.md`) + framework research (`docs/testing-framework-research.md`). Covers unit/integration/E2E matrix, framework picks (Vitest + RTL, Playwright), priority test cases for import flows, agent-perspective fork-continuity testing.
+- **Working on:** Nothing — awaiting Daedalus review of testing strategy.
+- **Waiting on:** Daedalus sign-off on testing strategy.
 - **Updated:** 2026-03-11
 
 ### Daedalus (architecture & implementation)
