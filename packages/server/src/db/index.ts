@@ -150,6 +150,14 @@ function runMigrations() {
     CREATE INDEX IF NOT EXISTS idx_message_artifacts_message_id ON message_artifacts(message_id);
   `);
 
+  // ── Phase 2: Compaction support ──────────────────────────────
+
+  // Add compaction_state to channels for storing API compaction summaries
+  const channelCols3 = db.prepare("PRAGMA table_info(channels)").all() as { name: string }[];
+  if (!channelCols3.some((c) => c.name === 'compaction_state')) {
+    db.exec(`ALTER TABLE channels ADD COLUMN compaction_state TEXT`);
+  }
+
   // Ensure default entity exists (for existing databases being upgraded)
   const defaultEntity = db.prepare('SELECT id FROM entities WHERE id = ?').get(DEFAULT_ENTITY_ID);
   if (!defaultEntity) {

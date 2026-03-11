@@ -62,6 +62,7 @@ export interface Channel {
   entityCount?: number; // populated by list endpoint for sidebar grouping
   source?: ChannelSource;
   sourceMetadata?: string; // JSON string
+  compactionState?: string; // JSON: { summary, timestamp, beforeMessageId }
 }
 
 export interface Message {

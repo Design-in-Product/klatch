@@ -1,7 +1,7 @@
 import Anthropic from '@anthropic-ai/sdk';
 import { EventEmitter } from 'events';
-import { getMessages, updateMessage } from '../db/queries.js';
-import type { Entity } from '@klatch/shared';
+import { getMessages, getChannel, updateMessage, updateChannelCompaction } from '../db/queries.js';
+import type { Entity, Channel } from '@klatch/shared';
 import { DEFAULT_MODEL } from '@klatch/shared';
 
 // Lazy-init: the Anthropic client must not be created at import time
@@ -18,7 +18,8 @@ function getAnthropicClient(): Anthropic {
 export const activeStreams = new Map<string, EventEmitter>();
 
 // Store the Anthropic stream objects so we can abort them
-const activeAnthropicStreams = new Map<string, ReturnType<ReturnType<typeof getAnthropicClient>['messages']['stream']>>();
+// Using `any` to accommodate both regular and beta stream types
+const activeAnthropicStreams = new Map<string, { abort(): void }>();
 
 // Track active roundtable sessions so we can cancel remaining entities on abort
 // Maps channelId → Set of assistant message IDs in the current round
@@ -65,29 +66,82 @@ export function abortStream(messageId: string): boolean {
 type ChatMessage = { role: 'user' | 'assistant'; content: string };
 
 // Safety cap: prevents token overflow for long imported sessions.
-// Superseded by compaction once Increment 2 is live.
+// When compaction state exists, the cap is bypassed (compaction manages length).
 const MAX_HISTORY_MESSAGES = 200;
+
+/** Parsed compaction state from channel JSON */
+interface CompactionState {
+  summary: string;
+  timestamp: string;
+  beforeMessageId: string;
+}
+
+function parseCompactionState(channel?: Channel): CompactionState | null {
+  if (!channel?.compactionState) return null;
+  try {
+    return JSON.parse(channel.compactionState);
+  } catch {
+    return null;
+  }
+}
 
 /** Panel mode: entity sees only its own past responses + all user messages */
 function buildPanelHistory(channelId: string, entity: Entity): ChatMessage[] {
+  const channel = getChannel(channelId);
+  const compaction = parseCompactionState(channel);
   const allMessages = getMessages(channelId).filter((m) => m.status === 'complete');
-  const filtered = allMessages
+
+  let messages = allMessages;
+
+  if (compaction) {
+    // Find the boundary message and only include messages after it
+    const boundaryIdx = messages.findIndex((m) => m.id === compaction.beforeMessageId);
+    if (boundaryIdx >= 0) {
+      messages = messages.slice(boundaryIdx + 1);
+    }
+  }
+
+  const filtered = messages
     .filter((m) => m.role === 'user' || m.entityId === entity.id || !m.entityId)
     .filter((m) => m.content.trim().length > 0)
     .map((m) => ({ role: m.role as 'user' | 'assistant', content: m.content }));
+
+  if (compaction) {
+    // Prepend compaction summary as conversation anchor
+    return [{ role: 'user' as const, content: compaction.summary }, ...filtered];
+  }
+
+  // No compaction: apply safety cap
   return filtered.slice(-MAX_HISTORY_MESSAGES);
 }
 
 /** Roundtable mode: entity sees ALL completed messages from ALL entities */
 function buildRoundtableHistory(channelId: string): ChatMessage[] {
+  const channel = getChannel(channelId);
+  const compaction = parseCompactionState(channel);
   const allMessages = getMessages(channelId).filter((m) => m.status === 'complete');
-  return allMessages
+
+  let messages = allMessages;
+
+  if (compaction) {
+    const boundaryIdx = messages.findIndex((m) => m.id === compaction.beforeMessageId);
+    if (boundaryIdx >= 0) {
+      messages = messages.slice(boundaryIdx + 1);
+    }
+  }
+
+  const filtered = messages
     .filter((m) => m.content.trim().length > 0)
     .map((m) => ({
       role: m.role as 'user' | 'assistant',
       content: m.content,
-    }))
-    .slice(-MAX_HISTORY_MESSAGES);
+    }));
+
+  if (compaction) {
+    return [{ role: 'user' as const, content: compaction.summary }, ...filtered];
+  }
+
+  return filtered.slice(-MAX_HISTORY_MESSAGES);
 }
 
 /** Build system prompt: channel preamble + entity's own prompt */
@@ -100,43 +154,88 @@ function buildSystemPrompt(entity: Entity, channelPreamble?: string): string {
 
 // ── Core streaming function ──────────────────────────────────
 
+interface StreamResult {
+  content: string;
+  compactionSummary?: string;
+}
+
 /**
  * Stream a Claude response. Used by both panel and roundtable modes.
+ * Uses the beta API when compaction is enabled to support context_management.
  *
- * @returns the completed content string (useful for roundtable chaining)
+ * @returns StreamResult with content and optional compaction summary
  */
 async function streamClaudeCore(
   assistantMessageId: string,
   entity: Entity,
   history: ChatMessage[],
-  systemPrompt: string
-): Promise<string> {
+  systemPrompt: string,
+  options?: { compactionEnabled?: boolean }
+): Promise<StreamResult> {
   const emitter = new EventEmitter();
   activeStreams.set(assistantMessageId, emitter);
 
   let fullContent = '';
+  let compactionSummary: string | undefined;
 
   try {
     const model = entity.model || DEFAULT_MODEL;
-    const stream = getAnthropicClient().messages.stream({
-      model,
-      max_tokens: 4096,
-      system: systemPrompt || undefined,
-      messages: history,
-    });
 
-    activeAnthropicStreams.set(assistantMessageId, stream);
-
-    stream.on('text', (text) => {
-      fullContent += text;
-      emitter.emit('data', {
-        type: 'text_delta',
-        messageId: assistantMessageId,
-        content: text,
+    if (options?.compactionEnabled) {
+      // Use beta API with compaction support
+      const stream = getAnthropicClient().beta.messages.stream({
+        model,
+        max_tokens: 4096,
+        system: systemPrompt || undefined,
+        messages: history,
+        betas: ['compact-2026-01-12'],
+        context_management: {
+          edits: [{
+            type: 'compact_20260112',
+            trigger: { type: 'input_tokens', value: 80000 },
+          }],
+        },
       });
-    });
 
-    await stream.finalMessage();
+      activeAnthropicStreams.set(assistantMessageId, stream);
+
+      stream.on('text', (text) => {
+        fullContent += text;
+        emitter.emit('data', {
+          type: 'text_delta',
+          messageId: assistantMessageId,
+          content: text,
+        });
+      });
+
+      stream.on('compaction', (compactedContent) => {
+        compactionSummary = compactedContent;
+      });
+
+      await stream.finalMessage();
+    } else {
+      // Standard API (no compaction)
+      const stream = getAnthropicClient().messages.stream({
+        model,
+        max_tokens: 4096,
+        system: systemPrompt || undefined,
+        messages: history,
+      });
+
+      activeAnthropicStreams.set(assistantMessageId, stream);
+
+      stream.on('text', (text) => {
+        fullContent += text;
+        emitter.emit('data', {
+          type: 'text_delta',
+          messageId: assistantMessageId,
+          content: text,
+        });
+      });
+
+      await stream.finalMessage();
+    }
+
     updateMessage(assistantMessageId, fullContent, 'complete');
     emitter.emit('data', {
       type: 'message_complete',
@@ -174,7 +273,7 @@ async function streamClaudeCore(
     activeStreams.delete(assistantMessageId);
   }
 
-  return fullContent;
+  return { content: fullContent, compactionSummary };
 }
 
 // ── Public API ───────────────────────────────────────────────
@@ -190,9 +289,28 @@ export async function streamClaude(
   entity: Entity,
   channelPreamble?: string
 ) {
+  const channel = getChannel(channelId);
+  const compactionEnabled = channel?.source !== 'native';
   const history = buildPanelHistory(channelId, entity);
   const systemPrompt = buildSystemPrompt(entity, channelPreamble);
-  await streamClaudeCore(assistantMessageId, entity, history, systemPrompt);
+  const result = await streamClaudeCore(
+    assistantMessageId, entity, history, systemPrompt,
+    { compactionEnabled }
+  );
+
+  // Store compaction result if the API compacted
+  if (result.compactionSummary && channel) {
+    // Find the last user message before the one that triggered this stream
+    const messages = getMessages(channelId).filter((m) => m.status === 'complete' && m.role === 'user');
+    const lastUserMsg = messages[messages.length - 1];
+    if (lastUserMsg) {
+      updateChannelCompaction(channelId, {
+        summary: result.compactionSummary,
+        timestamp: new Date().toISOString(),
+        beforeMessageId: lastUserMsg.id,
+      });
+    }
+  }
 }
 
 /**
@@ -213,6 +331,9 @@ export async function streamClaudeRoundtable(
   assistants: { assistantMessageId: string; entity: Entity }[],
   channelPreamble?: string
 ) {
+  const channel = getChannel(channelId);
+  const compactionEnabled = channel?.source !== 'native';
+
   // Register this roundtable so abort can cancel the whole round
   const roundtable = {
     messageIds: assistants.map((a) => a.assistantMessageId),
@@ -255,14 +376,30 @@ export async function streamClaudeRoundtable(
         ];
       }
 
-      const content = await streamClaudeCore(
+      // Only enable compaction for the first entity in a round
+      // (subsequent entities get synthetic context, compaction would be confusing)
+      const result = await streamClaudeCore(
         assistantMessageId,
         entity,
         history,
-        systemPrompt
+        systemPrompt,
+        { compactionEnabled: i === 0 && compactionEnabled }
       );
 
-      roundResponses.push({ entity, content });
+      // Store compaction if it happened on the first entity
+      if (result.compactionSummary && channel) {
+        const messages = getMessages(channelId).filter((m) => m.status === 'complete' && m.role === 'user');
+        const lastUserMsg = messages[messages.length - 1];
+        if (lastUserMsg) {
+          updateChannelCompaction(channelId, {
+            summary: result.compactionSummary,
+            timestamp: new Date().toISOString(),
+            beforeMessageId: lastUserMsg.id,
+          });
+        }
+      }
+
+      roundResponses.push({ entity, content: result.content });
     }
   } finally {
     activeRoundtables.delete(channelId);

@@ -263,3 +263,35 @@ describe('Step 8 import schema — message_artifacts', () => {
     db.close();
   });
 });
+
+describe('Phase 2: Compaction state column', () => {
+  it('channels table supports compaction_state column', () => {
+    const db = new Database(':memory:');
+    db.exec(`
+      CREATE TABLE channels (
+        id TEXT PRIMARY KEY,
+        name TEXT NOT NULL,
+        system_prompt TEXT NOT NULL DEFAULT '',
+        compaction_state TEXT,
+        created_at TEXT NOT NULL DEFAULT (datetime('now'))
+      )
+    `);
+    db.prepare("INSERT INTO channels (id, name) VALUES ('ch-1', 'test')").run();
+
+    // Initially null
+    const before = db.prepare("SELECT compaction_state FROM channels WHERE id = 'ch-1'").get() as any;
+    expect(before.compaction_state).toBeNull();
+
+    // Can store JSON
+    const state = JSON.stringify({ summary: 'Compacted summary.', timestamp: '2026-03-10T12:00:00Z', beforeMessageId: 'msg-100' });
+    db.prepare("UPDATE channels SET compaction_state = ? WHERE id = 'ch-1'").run(state);
+
+    const after = db.prepare("SELECT compaction_state FROM channels WHERE id = 'ch-1'").get() as any;
+    expect(after.compaction_state).toBe(state);
+    const parsed = JSON.parse(after.compaction_state);
+    expect(parsed.summary).toBe('Compacted summary.');
+    expect(parsed.beforeMessageId).toBe('msg-100');
+
+    db.close();
+  });
+});

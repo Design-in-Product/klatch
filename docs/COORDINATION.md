@@ -14,14 +14,14 @@ Two agents work on this repo. This file is the async handoff protocol.
 - **Branch:** `claude/audit-and-planning-xn2w7`
 - **Status:** available
 - **Last completed:** Phase 3 claude.ai ZIP import. Merged to main (cherry-picked new files, adapted to existing types/queries). Also completed research on permission toggling for chats (filed for later).
-- **Assigned next:** Validation pass — rebase branch on main, run full suite, test both import formats (Claude Code JSONL + claude.ai ZIP), flag anything broken. Then ready for next assignment.
+- **Assigned next:** Either (1) Validation pass — rebase on main, run full suite, test both import formats; or (2) Phase 2 Increment 3 — context loading UI in ChannelSettings (hints for imported channels, "Load CLAUDE.md" button, "Use session summary" button, GET /api/channels/:id/context-file endpoint). Check with xian for preference.
 - **Waiting on:** Nothing — can start immediately.
 
 ### Daedalus (architecture & implementation)
 - **Branch:** `main`
 - **Status:** working
-- **Last completed:** Phase 2 Increment 1 — imported channels now talkable (history cap + empty-content filter). SDK upgraded to v0.78.0. 233 tests passing.
-- **Working on:** Phase 2 Increment 2 — Compaction API integration (context_management, compaction-aware history builders).
+- **Last completed:** Phase 2 Increments 1+2 — imported channels talkable + Compaction API integrated. Beta API with context_management, compaction-aware history builders, compaction_state column. 236 tests passing.
+- **Working on:** Phase 2 Increment 3 — context loading (CLAUDE.md import, hints in ChannelSettings).
 - **Waiting on:** Nothing.
 
 ## Signals

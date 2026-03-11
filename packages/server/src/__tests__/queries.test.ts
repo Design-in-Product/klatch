@@ -5,6 +5,7 @@ import {
   getAllChannels,
   createChannel,
   updateChannel,
+  updateChannelCompaction,
   deleteChannel,
   getMessage,
   getMessages,
@@ -23,6 +24,7 @@ import {
   assignEntityToChannel,
   removeEntityFromChannel,
   getChannelEntityCount,
+  importSession,
 } from '../db/queries.js';
 
 // ── Channel CRUD ────────────────────────────────────────────
@@ -337,5 +339,56 @@ describe('Channel-entity assignment queries', () => {
 
   it('getChannelEntities returns empty array for nonexistent channel', () => {
     expect(getChannelEntities('nonexistent')).toEqual([]);
+  });
+});
+
+// ── Compaction state ────────────────────────────────────────
+
+describe('Compaction state queries', () => {
+  it('updateChannelCompaction stores state on channel', () => {
+    const channel = createChannel('compact-test', 'sys');
+    expect(getChannel(channel.id)?.compactionState).toBeUndefined();
+
+    updateChannelCompaction(channel.id, {
+      summary: 'Previous conversation discussed testing strategies.',
+      timestamp: '2026-03-10T12:00:00Z',
+      beforeMessageId: 'msg-boundary-001',
+    });
+
+    const updated = getChannel(channel.id);
+    expect(updated?.compactionState).toBeTruthy();
+    const state = JSON.parse(updated!.compactionState!);
+    expect(state.summary).toContain('testing strategies');
+    expect(state.beforeMessageId).toBe('msg-boundary-001');
+  });
+
+  it('compactionState appears on imported channels', () => {
+    const result = importSession({
+      channelName: 'compact-import',
+      source: 'claude-code',
+      sourceMetadata: { originalSessionId: 'compact-sess-001' },
+      turns: [
+        { timestamp: '2026-03-01T10:00:00Z', originalId: 'ev-1', userText: 'Hello', assistantText: 'Hi' },
+      ],
+    });
+
+    // Initially no compaction
+    const before = getChannel(result.channelId);
+    expect(before?.compactionState).toBeUndefined();
+
+    // After updating
+    const msgs = getMessages(result.channelId);
+    const lastUser = msgs.find((m) => m.role === 'user');
+    updateChannelCompaction(result.channelId, {
+      summary: 'This is a compacted summary.',
+      timestamp: new Date().toISOString(),
+      beforeMessageId: lastUser!.id,
+    });
+
+    const after = getChannel(result.channelId);
+    expect(after?.compactionState).toBeTruthy();
+    const state = JSON.parse(after!.compactionState!);
+    expect(state.summary).toBe('This is a compacted summary.');
+    expect(state.beforeMessageId).toBe(lastUser!.id);
   });
 });

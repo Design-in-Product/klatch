@@ -23,6 +23,7 @@ function createFreshDb(): Database.Database {
       mode TEXT NOT NULL DEFAULT '${DEFAULT_INTERACTION_MODE}',
       source TEXT DEFAULT 'native',
       source_metadata TEXT,
+      compaction_state TEXT,
       created_at TEXT NOT NULL DEFAULT (datetime('now'))
     );
 

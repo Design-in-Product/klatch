@@ -13,6 +13,7 @@ function rowToChannel(row: any): Channel {
     createdAt: row.created_at,
     source: (row.source as ChannelSource) || undefined,
     sourceMetadata: row.source_metadata || undefined,
+    compactionState: row.compaction_state || undefined,
   };
 }
 
@@ -101,6 +102,19 @@ export function updateChannel(
     .run(name, systemPrompt, model, mode, id);
 
   return { ...channel, name, systemPrompt, model, mode };
+}
+
+/**
+ * Store compaction state on a channel after the API returns a compaction block.
+ * This tells the history builder to use the summary instead of full history.
+ */
+export function updateChannelCompaction(
+  id: string,
+  state: { summary: string; timestamp: string; beforeMessageId: string }
+): void {
+  getDb()
+    .prepare('UPDATE channels SET compaction_state = ? WHERE id = ?')
+    .run(JSON.stringify(state), id);
 }
 
 export function getMessage(id: string): Message | undefined {
