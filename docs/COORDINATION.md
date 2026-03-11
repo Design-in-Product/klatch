@@ -13,16 +13,18 @@ Two agents work on this repo. This file is the async handoff protocol.
 ### Argus (quality & test infrastructure)
 - **Branch:** `claude/audit-and-planning-xn2w7`
 - **Status:** available
-- **Last completed:** Step 8½ Increment 3 (stats UI + metadata tests, 15 new tests). Cherry-picked to main.
-- **Assigned next:** Read `docs/MEMO-TESTING-DEMO-REFLECTION.md` and reflect on the prompts there. Then discuss roadmap + step 9 gameplan with the team.
-- **Waiting on:** Nothing.
+- **Last completed:** Memo reflection (`MEMO-ARGUS-REFLECTION.md`) + retrospective + EPICS audit. Cherry-picked to main.
+- **Assigned next:** **GO — approved by product owner.** Research and write `docs/TESTING-STRATEGY.md`. Scope: (1) what we should test and why (unit, integration, E2E matrix), (2) recommended frameworks for client/integration/E2E, (3) what's achievable now vs. what needs infrastructure, (4) priority test cases for Step 8 import flows, (5) agent-perspective testing for fork continuity (before/after quiz). See `docs/MEMO-TESTING-DEMO-REFLECTION.md` for context on the agent-perspective testing idea. Deliver a research doc with recommendations — no code yet. Daedalus will review and sign off.
+- **Waiting on:** Nothing — go ahead and start.
+- **Updated:** 2026-03-11
 
 ### Daedalus (architecture & implementation)
 - **Branch:** `main`
-- **Status:** available
-- **Last completed:** Cherry-picked Argus Increment 3 to main. Wrote testing/demo/reflection memo. 266 tests passing (260 server + 6 client). Step 8 + 8½ fully merged.
-- **Working on:** Nothing — awaiting manual testing + roadmap discussion.
-- **Waiting on:** Product owner manual testing, then roadmap discussion.
+- **Status:** working
+- **Last completed:** Cherry-picked all Argus work to main. Wrote testing/demo/reflection memo, design notes (naming/identity), roadmap updates (context health, someday/maybe). 266 tests passing. Step 8 + 8½ fully merged.
+- **Working on:** Roadmap update recommendation for group review. Release versioning plan (v0.8.2 + v0.8.5).
+- **Waiting on:** Product owner manual testing results. Group approval of roadmap update.
+- **Updated:** 2026-03-11
 
 ## Signals
 
@@ -39,6 +41,6 @@ All in-progress work happens on feature branches. `main` must always be demo-rea
 ## Protocol
 
 - Read this file at session start
-- Update your section before every push
+- Update your section before every push (include `Updated:` timestamp)
 - If you need something from the other agent, say so in "Waiting on"
 - Keep Notes short — link to docs/tests for details

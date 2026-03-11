@@ -72,69 +72,78 @@ Three modes for multi-entity channels, each with distinct orchestration:
 - **Sidebar grouping**: Roles (@prefix, 1 entity) and Channels (#prefix, 2+ entities)
 - Mode-aware regenerate, abort cleanup, hidden mode selector for single-entity channels
 
-### Step 8 Phase 1: Claude Code import ✓
+### Step 8: Import & Unify ✓
 **Dimension: data consolidation.** Can you bring your existing Claude work into Klatch?
 
-- Parse Claude Code JSONL session files (`~/.claude/projects/`)
+This was the first step that makes Klatch more than a chat UI — it's now a place where existing Claude work migrates to. Three phases plus a metadata layer, each independently valuable.
+
+**Phase 1 — Claude Code import:**
 - JSONL parser walks parentUuid tree, extracts text turns, collapses tool-use into summaries
 - Subagent classification (task/compaction/prompt_suggestion) with compaction summary extraction
-- Import API with dedup detection (409 on re-import), auto-generated channel names
+- Import API with dedup detection (409), auto-generated channel names, source badges
 - `message_artifacts` table stores tool-use, thinking, images at full fidelity
-- Source badges ("CC") on imported channels, provenance display in channel settings
 - Fork-don't-sync: imports are snapshots, continuation forks into Klatch-native chronology
-- 196 tests passing (23 parser, 10 import, 18 migration + existing suite)
-- See `docs/BRIEF-STEP8-IMPORT.md` for full design analysis and phased plan
+
+**Phase 2 — Fork continuity:**
+- Anthropic Compaction API for imported channels (text-only history + automatic summarization)
+- CLAUDE.md context loading, session summary injection
+- Continue-from-import: first message in a forked channel sends reconstructed history
+
+**Phase 3 — claude.ai import:**
+- ZIP parser for claude.ai data exports (`conversations.json`)
+- Conversation-to-channel mapping, artifact extraction
+- Reuses Phase 1 import patterns
+
+**Step 8½ — Metadata framework:**
+- `getChannelStats()` — message counts, artifact counts, tool breakdown per channel
+- `getAllChannelsEnriched()` — enriched channel list with activity metadata
+- Sidebar project grouping: imported channels grouped by `cwd` from source metadata
+- Stats UI card in channel settings (message count, tool calls, top tools)
+- 266 tests passing (260 server + 6 client). See `docs/STEP8-RETROSPECTIVE.md` for full retrospective.
 
 ---
 
 ## Next Steps (concrete, actionable)
 
-### Step 8½: Metadata framework
-**Dimension: provenance.** Where did each conversation come from, and how do they relate?
+### Step 8¾: Import refinements
+**Dimension: polish.** Fix the rough edges that surface during real use.
 
-- Import provenance tracking (source, path, timestamp, original IDs)
-- Cross-channel project grouping (proto-projects)
-- Tool-use statistics per message and per channel
-- Foundation for metadata-aware search in Step 9
-- This is the hidden value layer — automates manual coordination overhead
+These are small, user-facing fixes that should ship before new features. Identified during Step 8 retrospective and Argus's reflection.
 
-### Step 8 Phase 2: Fork continuity
-**Dimension: conversation continuation.** Can you pick up where an imported session left off?
+- **Compaction summary misattribution**: compaction context injections (`isCompactSummary: true`) render as "You" messages instead of system banners. See `docs/JSONL-SCHEMA.md` for the taxonomy.
+- **isMeta event filtering**: hook feedback, skill injections, and image references (`isMeta: true`) should be filtered during import or rendered distinctly
+- **Fork marker**: visual boundary between imported history and new conversation ("Continued in Klatch — Mar 11, 2026")
+- **Import error messaging**: client-side error display for failed imports (currently generic)
+- **Bulk import** (stretch): scan `~/.claude/projects/`, preview sessions, multi-select import
 
-- Enable Anthropic's Compaction API for imported channels (text-only history + automatic summarization)
-- Context editing: strip old tool results before compaction pass
-- Continue-from-import: first message in a forked channel sends reconstructed history
-- Bulk import: scan `~/.claude/projects/`, preview sessions, multi-select import
+Tracked refinements deferred past 8¾:
+- Re-import / refresh (update existing channel — needs merge-or-replace strategy)
+- Demo automation (manual recording works for now)
+- claude.ai model inference (all imports default to Opus — technically incorrect but low visibility)
 
-### Known import refinements (tracked, not yet scheduled)
-- **Compaction summary misattribution**: compaction context injections (`isCompactSummary: true`) render as "You" messages instead of system banners. See `docs/JSONL-SCHEMA.md` for the full taxonomy of user event subtypes.
-- **isMeta events**: hook feedback, skill injections, and image references (`isMeta: true`) should be filtered or rendered distinctly
-- **Re-import / refresh**: allow re-importing a session to update an existing channel (currently blocked by dedup 409)
-- **Demo automation**: automated demo recording (currently manual with human-typed interactions)
+### Step 9: Search and recall
+**Dimension: memory.** Can you find things across all your conversations?
 
-### Step 8 Phase 3: claude.ai import
-**Dimension: source breadth.** Can you bring in conversations from claude.ai too?
+*Promoted from Step 10.* Import created the corpus — dozens or hundreds of sessions with rich metadata. The value of that corpus is directly proportional to your ability to find things in it. Search is the unlock that makes data consolidation actually useful.
 
-- Parse claude.ai ZIP export (`conversations.json`)
-- Map conversations to channels, artifacts to message_artifacts
-- Model inference from timestamps (model field often absent in exports)
-- Independent of Phase 2 — can be done in parallel
+Phased delivery:
 
-### Step 9: Files and artifacts
+- **9a: FTS5 full-text search** — SQLite FTS5 index across all messages. The biggest single unlock. Metadata-aware: search can filter by source, project, date range.
+- **9b: Search UI** — search bar, results with context snippets and channel attribution, click-to-navigate
+- **9c: Command palette (Cmd+K)** — quick navigation to channels, entities, actions. The quality-of-life layer that makes *everything we've built* more accessible.
+- **9d: Export** — Markdown and JSON export per-channel and bulk. "Own your data" made tangible. Enables sharing without building sharing infrastructure.
+- **9e: Bookmarks** — pin important messages. Lightweight but high retention value.
+
+### Step 10: Files and artifacts
 **Dimension: rich context.** Can you share files, code, and documents with entities?
+
+*Deferred from Step 9.* File upload already exists in claude.ai and Claude Code. Klatch's version should be differentiated — tied to multi-entity workflows (all entities review a document) or project context (attach files to a project, available to all channels). Wait for the use case to sharpen.
 
 - Upload/attach files to conversations
 - Render artifacts (code, documents, images) inline
 - Context injection: entities receive file contents as part of their context
+- Multi-entity document review (the differentiating use case)
 - This is where Klatch becomes a workspace, not just a chat tool
-
-### Step 10: Search and recall
-**Dimension: memory.** Can you find things across all your conversations?
-
-- Full-text search via SQLite FTS5 across all channels
-- Markdown export of conversations
-- Command palette (Cmd+K) for quick navigation
-- Conversation bookmarks or pinned messages
 
 ---
 
