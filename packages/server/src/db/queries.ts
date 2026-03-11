@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
 import { getDb } from './index.js';
-import type { Channel, Message, Entity, ModelId, InteractionMode, ChannelSource } from '@klatch/shared';
+import type { Channel, ChannelStats, Message, Entity, ModelId, InteractionMode, ChannelSource } from '@klatch/shared';
 import { DEFAULT_MODEL, DEFAULT_ENTITY_ID, ENTITY_COLORS, DEFAULT_INTERACTION_MODE } from '@klatch/shared';
 
 function rowToChannel(row: any): Channel {
@@ -64,6 +64,74 @@ export function getAllChannels(): Channel[] {
     ...rowToChannel(row),
     entityCount: row.entity_count ?? 0,
   }));
+}
+
+/**
+ * Get enriched channel list with message counts and last activity.
+ * Used by sidebar to sort/group without per-channel API calls.
+ */
+export function getAllChannelsEnriched(): Channel[] {
+  const rows = getDb()
+    .prepare(`
+      SELECT c.*,
+        COUNT(DISTINCT ce.entity_id) as entity_count,
+        (SELECT COUNT(*) FROM messages m WHERE m.channel_id = c.id) as message_count,
+        (SELECT MAX(m.created_at) FROM messages m WHERE m.channel_id = c.id) as last_message_at
+      FROM channels c
+      LEFT JOIN channel_entities ce ON c.id = ce.channel_id
+      GROUP BY c.id
+      ORDER BY c.created_at ASC
+    `)
+    .all() as any[];
+  return rows.map((row) => ({
+    ...rowToChannel(row),
+    entityCount: row.entity_count ?? 0,
+    messageCount: row.message_count ?? 0,
+    lastMessageAt: row.last_message_at || null,
+  }));
+}
+
+/**
+ * Get detailed stats for a single channel: message count, artifact count,
+ * tool-use breakdown, and last activity timestamp.
+ */
+export function getChannelStats(channelId: string): ChannelStats | undefined {
+  const db = getDb();
+
+  // Verify channel exists
+  const channel = db.prepare('SELECT id FROM channels WHERE id = ?').get(channelId);
+  if (!channel) return undefined;
+
+  // Message count and last activity
+  const counts = db.prepare(`
+    SELECT COUNT(*) as message_count, MAX(created_at) as last_message_at
+    FROM messages WHERE channel_id = ?
+  `).get(channelId) as { message_count: number; last_message_at: string | null };
+
+  // Artifact count
+  const artifactRow = db.prepare(`
+    SELECT COUNT(*) as artifact_count
+    FROM message_artifacts ma
+    JOIN messages m ON ma.message_id = m.id
+    WHERE m.channel_id = ?
+  `).get(channelId) as { artifact_count: number };
+
+  // Tool breakdown (tool_use artifacts only, sorted by frequency)
+  const toolRows = db.prepare(`
+    SELECT ma.tool_name as tool, COUNT(*) as count
+    FROM message_artifacts ma
+    JOIN messages m ON ma.message_id = m.id
+    WHERE m.channel_id = ? AND ma.type = 'tool_use' AND ma.tool_name IS NOT NULL
+    GROUP BY ma.tool_name
+    ORDER BY count DESC
+  `).all(channelId) as { tool: string; count: number }[];
+
+  return {
+    messageCount: counts.message_count,
+    artifactCount: artifactRow.artifact_count,
+    toolBreakdown: toolRows,
+    lastMessageAt: counts.last_message_at,
+  };
 }
 
 export function createChannel(name: string, systemPrompt: string, model?: ModelId, mode?: InteractionMode): Channel {

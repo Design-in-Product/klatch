@@ -56,7 +56,13 @@ Schema in `packages/server/src/db/index.ts`. Tables:
 
 ## Multi-Agent Coordination
 
-Two agents work on this repo. Read `docs/COORDINATION.md` at session start and update your section before every push. Statuses: available, working, blocked, review.
+Two agents (Daedalus and Argus) work on this repo. Follow this workflow:
+
+1. **Session start:** Read `docs/COORDINATION.md` to see current status, assignments, and blockers.
+2. **Before executing:** Check COORDINATION.md again — confirm your assigned work, verify dependencies are met (e.g., "Waiting on" is resolved), and avoid duplicating or conflicting with the other agent's in-progress work.
+3. **Before every push:** Update your section in COORDINATION.md with current status, what you completed, and what you're working on next.
+
+Statuses: available, working, blocked, review. See `docs/COORDINATION.md` for the full protocol.
 
 ## Conventions
 

@@ -1,15 +1,24 @@
 import { Hono } from 'hono';
 import fs from 'fs';
 import path from 'path';
-import { getAllChannels, getChannel, createChannel, updateChannel, deleteChannel } from '../db/queries.js';
+import { getAllChannelsEnriched, getChannel, getChannelStats, createChannel, updateChannel, deleteChannel } from '../db/queries.js';
 import type { ModelId, InteractionMode } from '@klatch/shared';
 import { AVAILABLE_MODELS, INTERACTION_MODES } from '@klatch/shared';
 
 const app = new Hono();
 
 app.get('/channels', (c) => {
-  const channels = getAllChannels();
+  const channels = getAllChannelsEnriched();
   return c.json(channels);
+});
+
+app.get('/channels/:id/stats', (c) => {
+  const id = c.req.param('id');
+  const stats = getChannelStats(id);
+  if (!stats) {
+    return c.json({ error: 'Channel not found' }, 404);
+  }
+  return c.json(stats);
 });
 
 app.post('/channels', async (c) => {

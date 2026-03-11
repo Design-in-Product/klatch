@@ -1,6 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import type { Channel } from '@klatch/shared';
 import { KlatchLogo } from './KlatchLogo';
+
+/** Extract project name from a cwd path (last path component) */
+function projectNameFromPath(cwd: string): string {
+  const parts = cwd.replace(/\/+$/, '').split('/');
+  return parts[parts.length - 1] || cwd;
+}
 
 interface Props {
   channels: Channel[];
@@ -46,9 +52,49 @@ export function ChannelSidebar({
     onClose?.();
   };
 
-  // Split channels into roles (1 entity = DM) and group chats (2+ entities)
-  const roles = channels.filter((ch) => (ch.entityCount ?? 1) <= 1);
-  const groups = channels.filter((ch) => (ch.entityCount ?? 1) >= 2);
+  // Track collapsed state for sidebar sections
+  const [collapsedSections, setCollapsedSections] = useState<Set<string>>(new Set());
+  const toggleSection = (key: string) => {
+    setCollapsedSections((prev) => {
+      const next = new Set(prev);
+      if (next.has(key)) next.delete(key);
+      else next.add(key);
+      return next;
+    });
+  };
+
+  // Group channels: #general → projects (imported) → roles/channels (native)
+  const { general, projectGroups, roles, groups } = useMemo(() => {
+    const general = channels.find((ch) => ch.id === 'default');
+    const rest = channels.filter((ch) => ch.id !== 'default');
+
+    // Imported channels grouped by project (cwd from sourceMetadata)
+    const imported = rest.filter((ch) => ch.source && ch.source !== 'native');
+    const projectMap = new Map<string, { name: string; channels: Channel[] }>();
+    for (const ch of imported) {
+      let cwd = 'Imported';
+      try {
+        const meta = ch.sourceMetadata ? JSON.parse(ch.sourceMetadata) : {};
+        if (meta.cwd) cwd = meta.cwd;
+      } catch { /* malformed metadata — fall back to 'Imported' */ }
+      if (!projectMap.has(cwd)) {
+        projectMap.set(cwd, { name: projectNameFromPath(cwd), channels: [] });
+      }
+      projectMap.get(cwd)!.channels.push(ch);
+    }
+    const projectGroups = Array.from(projectMap.entries()).map(([path, group]) => ({
+      path,
+      name: group.name,
+      channels: group.channels,
+    }));
+
+    // Native channels (excluding #general) — split into Roles and Channels as before
+    const native = rest.filter((ch) => !ch.source || ch.source === 'native');
+    const roles = native.filter((ch) => (ch.entityCount ?? 1) <= 1);
+    const groups = native.filter((ch) => (ch.entityCount ?? 1) >= 2);
+
+    return { general, projectGroups, roles, groups };
+  }, [channels]);
 
   const renderChannelItem = (ch: Channel, prefix: string) => (
     <button
@@ -94,29 +140,96 @@ export function ChannelSidebar({
         )}
       </div>
 
-      {/* Channel list — split into Roles and Channels */}
+      {/* Channel list — #general → projects → roles → channels */}
       <div className="flex-1 overflow-y-auto py-1">
-        {/* Roles (1:1 conversations with a single entity) */}
+        {/* #general — always pinned at top */}
+        {general && (
+          <div className="pb-1">
+            <button
+              key={general.id}
+              onClick={() => handleChannelClick(general.id)}
+              className={`w-full text-left px-4 py-1.5 text-sm transition-colors flex items-center ${
+                general.id === activeChannelId
+                  ? 'bg-active-channel text-primary font-medium'
+                  : 'text-secondary hover:text-primary hover:bg-hover'
+              }`}
+            >
+              <span className="text-muted mr-1">#</span>
+              <span className="truncate">{general.name}</span>
+            </button>
+          </div>
+        )}
+
+        {/* Project groups (imported channels grouped by cwd) */}
+        {projectGroups.map((project) => {
+          const sectionKey = `project:${project.path}`;
+          const isCollapsed = collapsedSections.has(sectionKey);
+          return (
+            <div key={sectionKey}>
+              <button
+                onClick={() => toggleSection(sectionKey)}
+                className="w-full flex items-center gap-1 px-4 pt-3 pb-1 group"
+              >
+                <svg
+                  className={`w-3 h-3 text-muted transition-transform ${isCollapsed ? '' : 'rotate-90'}`}
+                  fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                </svg>
+                <span className="text-[10px] font-semibold text-muted uppercase tracking-wider">
+                  {project.name}
+                </span>
+                <span className="text-[10px] text-muted ml-1">({project.channels.length})</span>
+              </button>
+              {!isCollapsed && project.channels.map((ch) => renderChannelItem(ch, '@'))}
+            </div>
+          );
+        })}
+
+        {/* Separator between projects and native channels */}
+        {projectGroups.length > 0 && (roles.length > 0 || groups.length > 0) && (
+          <div className="mx-4 my-2 border-t border-line" />
+        )}
+
+        {/* Roles (1:1 native conversations with a single entity) */}
         {roles.length > 0 && (
           <div>
-            <div className="px-4 pt-3 pb-1">
+            <button
+              onClick={() => toggleSection('roles')}
+              className="w-full flex items-center gap-1 px-4 pt-3 pb-1 group"
+            >
+              <svg
+                className={`w-3 h-3 text-muted transition-transform ${collapsedSections.has('roles') ? '' : 'rotate-90'}`}
+                fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+              </svg>
               <span className="text-[10px] font-semibold text-muted uppercase tracking-wider">
                 Roles
               </span>
-            </div>
-            {roles.map((ch) => renderChannelItem(ch, '@'))}
+            </button>
+            {!collapsedSections.has('roles') && roles.map((ch) => renderChannelItem(ch, '@'))}
           </div>
         )}
 
         {/* Group Chats (2+ entities) */}
         {groups.length > 0 && (
           <div>
-            <div className="px-4 pt-3 pb-1">
+            <button
+              onClick={() => toggleSection('channels')}
+              className="w-full flex items-center gap-1 px-4 pt-3 pb-1 group"
+            >
+              <svg
+                className={`w-3 h-3 text-muted transition-transform ${collapsedSections.has('channels') ? '' : 'rotate-90'}`}
+                fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+              </svg>
               <span className="text-[10px] font-semibold text-muted uppercase tracking-wider">
                 Channels
               </span>
-            </div>
-            {groups.map((ch) => renderChannelItem(ch, '#'))}
+            </button>
+            {!collapsedSections.has('channels') && groups.map((ch) => renderChannelItem(ch, '#'))}
           </div>
         )}
 

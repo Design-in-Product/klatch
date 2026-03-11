@@ -63,6 +63,23 @@ export interface Channel {
   source?: ChannelSource;
   sourceMetadata?: string; // JSON string
   compactionState?: string; // JSON: { summary, timestamp, beforeMessageId }
+  messageCount?: number;        // populated by enriched list endpoint
+  lastMessageAt?: string | null; // populated by enriched list endpoint
+}
+
+// ── Metadata types (Step 8½) ─────────────────────────────────
+
+export interface ChannelStats {
+  messageCount: number;
+  artifactCount: number;
+  toolBreakdown: { tool: string; count: number }[];
+  lastMessageAt: string | null;
+}
+
+export interface ProjectGroup {
+  projectPath: string | null;   // cwd from source_metadata, null = ungrouped native channels
+  projectName: string;          // basename of cwd, or "Conversations"
+  channels: Channel[];
 }
 
 export interface Message {
