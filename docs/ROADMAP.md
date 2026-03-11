@@ -178,8 +178,21 @@ Klatch talks to Claude via the Anthropic SDK, but a future mode could invoke Cla
 
 Context: As of March 2025, `--dangerously-skip-permissions` works reliably in the CLI terminal. The Claude for Mac desktop app and VS Code/Cursor extensions may have settings for this but they are inconsistently documented and have known bugs (multiple open GitHub issues). The terminal remains the most reliable path. Klatch could leapfrog all of them by building permission management as a first-class feature.
 
+### Context health
+A channel-level indicator showing how much the model "knows" about its current situation — how much history was compacted vs. retained, whether the system prompt has drifted from the original source, whether tool capabilities have changed since import. Makes the invisible context window visible. Related to token discipline (Design Principle 7) but oriented toward the *model's* experience, not just cost. Motivated by the observation that users feel empathy for disoriented agents and want to know when context is thin.
+
 ### Sharing and collaboration
 Export conversation snapshots. Share channel configurations (role + prompt templates). Community prompt library. Maybe someday: multi-user.
+
+---
+
+## Someday / Maybe
+
+Ideas that are interesting but have no timeline or clear dependency chain yet:
+
+- **Conversation lineage visualization** — show the relationship between an imported session and its Klatch continuation(s), like a git graph for conversations
+- **Agent-perspective testing** — ask Claude to self-report on context quality after a fork/continuation, comparing what it knows vs. what it's lost. A form of "model QA" that's unique to continuation-aware systems
+- **Semantic identity for continued conversations** — when a conversation continues from import, the new instance may evolve in a different direction. How do we name and honor that divergence? See `docs/DESIGN-NOTES.md` for early thinking.
 
 ---
 
