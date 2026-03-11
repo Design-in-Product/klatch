@@ -12,7 +12,9 @@ function findEnv(dir: string): string | undefined {
   if (parent === dir) return undefined; // reached filesystem root
   return findEnv(parent);
 }
-dotenv.config({ path: findEnv(__dirname) });
+// override: true because Claude for Mac sets ANTHROPIC_API_KEY="" in the
+// environment, and dotenv's default is to not overwrite existing vars.
+dotenv.config({ path: findEnv(__dirname), override: true });
 import { Hono } from 'hono';
 import { cors } from 'hono/cors';
 import { serve } from '@hono/node-server';
