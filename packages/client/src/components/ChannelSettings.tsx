@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import type { Channel, Entity, ModelId, InteractionMode } from '@klatch/shared';
+import type { Channel, Entity, ModelId, InteractionMode, ChannelStats } from '@klatch/shared';
 import { AVAILABLE_MODELS, INTERACTION_MODES } from '@klatch/shared';
 import { fetchContextFile } from '../api/client.js';
 
@@ -27,6 +27,7 @@ export function ChannelSettings({
   const [dirty, setDirty] = useState(false);
   const [contextLoading, setContextLoading] = useState(false);
   const [contextError, setContextError] = useState<string | null>(null);
+  const [stats, setStats] = useState<ChannelStats | null>(null);
 
   // Reset form when channel changes
   useEffect(() => {
@@ -35,6 +36,7 @@ export function ChannelSettings({
     setDirty(false);
     setContextLoading(false);
     setContextError(null);
+    setStats(null);
   }, [channel.id]);
 
   const handleChange = () => setDirty(true);
@@ -58,6 +60,16 @@ export function ChannelSettings({
   })();
 
   const isImported = channel.source && channel.source !== 'native';
+
+  // Fetch stats for imported channels
+  useEffect(() => {
+    if (!isImported) return;
+    fetch(`/api/channels/${channel.id}/stats`)
+      .then((r) => r.ok ? r.json() : null)
+      .then((data) => { if (data) setStats(data); })
+      .catch(() => {});
+  }, [channel.id, isImported]);
+
   const hasSavedPrompt = !!channel.systemPrompt.trim();
   const hasCwd = meta?.cwd;
   const hasCompactionSummary = meta?.compactionSummary;
@@ -122,6 +134,41 @@ export function ChannelSettings({
                 {meta.importedAt && <p><span className="font-medium">Imported:</span> {new Date(meta.importedAt).toLocaleString()}</p>}
                 {meta.eventCount && <p><span className="font-medium">Events:</span> {meta.eventCount}</p>}
                 {meta.version && <p><span className="font-medium">Claude Code:</span> v{meta.version}</p>}
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Channel statistics — imported channels */}
+        {isImported && stats && (
+          <div className="rounded-lg border border-line bg-card p-3">
+            <div className="text-xs font-medium text-secondary mb-2">Statistics</div>
+            <div className="grid grid-cols-3 gap-3 text-center">
+              <div>
+                <div className="text-lg font-semibold text-primary">{stats.messageCount}</div>
+                <div className="text-[10px] text-muted">Messages</div>
+              </div>
+              <div>
+                <div className="text-lg font-semibold text-primary">
+                  {stats.toolBreakdown.reduce((sum, t) => sum + t.count, 0)}
+                </div>
+                <div className="text-[10px] text-muted">Tool calls</div>
+              </div>
+              <div>
+                <div className="text-lg font-semibold text-primary">{stats.toolBreakdown.length}</div>
+                <div className="text-[10px] text-muted">Unique tools</div>
+              </div>
+            </div>
+            {stats.toolBreakdown.length > 0 && (
+              <div className="mt-3 pt-2 border-t border-line">
+                <div className="text-[10px] text-muted mb-1">Top tools</div>
+                <div className="flex flex-wrap gap-1">
+                  {stats.toolBreakdown.slice(0, 5).map((t) => (
+                    <span key={t.tool} className="text-[10px] px-1.5 py-0.5 rounded bg-badge text-muted">
+                      {t.tool} ({t.count})
+                    </span>
+                  ))}
+                </div>
               </div>
             )}
           </div>
