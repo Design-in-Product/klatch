@@ -13,16 +13,16 @@ Two agents work on this repo. This file is the async handoff protocol.
 ### Argus (quality & test infrastructure)
 - **Branch:** `claude/audit-and-planning-xn2w7`
 - **Status:** available
-- **Last completed:** Import hardening (cherry-picked to main) + Step 8½ research doc.
-- **Assigned next:** Step 8½ Increment 3 — stats UI in ChannelSettings + `metadata.test.ts` (stats query tests, endpoint tests, edge cases). Also review sidebar grouping for edge cases (null cwd, malformed metadata, mobile). Can start once Daedalus pushes Increment 1 (stats backend).
-- **Waiting on:** Daedalus Increment 1 push (stats queries + endpoint).
+- **Last completed:** Step 8½ Increment 3 (stats UI + metadata tests, 15 new tests). Cherry-picked to main.
+- **Assigned next:** Read `docs/MEMO-TESTING-DEMO-REFLECTION.md` and reflect on the prompts there. Then discuss roadmap + step 9 gameplan with the team.
+- **Waiting on:** Nothing.
 
 ### Daedalus (architecture & implementation)
 - **Branch:** `main`
 - **Status:** available
-- **Last completed:** Step 8½ Increments 1+2 (stats backend + sidebar project grouping). 251 tests passing. `ChannelStats` type, `getChannelStats()`, `getAllChannelsEnriched()`, `GET /channels/:id/stats` endpoint, sidebar now groups imported channels by project with collapsible sections.
-- **Working on:** Nothing — Increment 3 assigned to Argus.
-- **Waiting on:** Argus Increment 3 (stats UI + tests).
+- **Last completed:** Cherry-picked Argus Increment 3 to main. Wrote testing/demo/reflection memo. 266 tests passing (260 server + 6 client). Step 8 + 8½ fully merged.
+- **Working on:** Nothing — awaiting manual testing + roadmap discussion.
+- **Waiting on:** Product owner manual testing, then roadmap discussion.
 
 ## Signals
 
