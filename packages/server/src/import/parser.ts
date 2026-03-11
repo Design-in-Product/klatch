@@ -379,13 +379,15 @@ export function parseEvents(events: unknown[]): ParsedSession {
   // Filter to conversation events only (skip progress, file-history-snapshot, sidechains, etc.)
   const conversationEvents = rawEvents.filter(isConversationEvent);
 
-  // Extract metadata from first event
+  // Extract metadata: scan for the first event with each field
+  // (queue-operation events lack cwd/gitBranch/slug/version)
   const first = rawEvents[0];
   const sessionId = first.sessionId;
-  const cwd = first.cwd;
-  const gitBranch = first.gitBranch;
-  const slug = first.slug;
-  const version = first.version;
+  const metaEvent = rawEvents.find(e => e.cwd) || first;
+  const cwd = metaEvent.cwd;
+  const gitBranch = metaEvent.gitBranch;
+  const slug = metaEvent.slug;
+  const version = metaEvent.version;
 
   // Find timestamps
   const timestamps = rawEvents
