@@ -6,6 +6,38 @@ Format follows [Keep a Changelog](https://keepachangelog.com/). Versions corresp
 
 ---
 
+## [0.8.2] — 2026-03-11
+
+### Step 8 Complete: Import & Unify
+
+Step 8 is now fully shipped — Claude Code import, claude.ai import, fork continuity, and metadata framework. Klatch is now the single place where your Claude interactions live.
+
+### Added
+- **Phase 2 — Fork continuity**: Continue imported conversations with full context. Anthropic Compaction API integration for automatic summarization. CLAUDE.md context loading, session summary injection. History cap and empty message filtering for imported channels.
+- **Phase 3 — claude.ai import**: Parse claude.ai ZIP data exports. Maps conversations to channels, extracts artifacts. Reuses Phase 1 import patterns.
+- **Step 8½ — Metadata framework**: `getChannelStats()` returns message counts, artifact counts, tool breakdown per channel. `getAllChannelsEnriched()` enriched channel list with activity metadata. Sidebar project grouping — imported channels grouped by project (from `cwd` in source metadata), collapsible sections. Stats UI card in channel settings.
+- **Import hardening**: Path traversal protection, file size limits, skip reporting for malformed events. 10 new hardening tests.
+- **Multi-agent coordination**: Theseus Prime (manual testing) and Ariadne (forked Klatch-side perspective) added to the team. Session logs in `docs/logs/`.
+
+### Fixed
+- **Auth with Claude for Mac**: Claude for Mac sets `ANTHROPIC_API_KEY=""` in the child process environment. Dotenv's default is to not overwrite existing vars, so the `.env` file's valid key was silently ignored. Fixed with `override: true`.
+- **6 bugs from Phase 2 live testing**: Fixed during integration pass (see `af80e48`).
+- **Channel auto-naming**: Scan past queue-operation events to find `cwd` for imported channel names.
+
+### Changed
+- Channel list endpoint now returns enriched data (message counts, last activity).
+- Roadmap updated: Step 9 is now Search & Recall (promoted), Step 10 is Files & Artifacts (deferred). Step 8¾ import refinements added as pre-Step 9 polish checkpoint.
+- COORDINATION.md protocol now includes timestamp convention.
+
+### Technical
+- 266 tests passing (260 server + 6 client). 70 new tests since v0.8.1.
+- New routes: `/api/import/claude-ai`, `/api/channels/:id/stats`
+- New queries: `getAllChannelsEnriched()`, `getChannelStats()`
+- Compaction state stored per-channel as JSON in `compaction_state` column
+- Sidebar `useMemo` grouping with `Map<string, {name, channels[]}>` for O(n) project clustering
+
+---
+
 ## [0.8.1] — 2026-03-10
 
 ### Step 8 Phase 1: Bug Fixes
