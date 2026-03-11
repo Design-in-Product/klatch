@@ -1,4 +1,6 @@
 import { Hono } from 'hono';
+import fs from 'fs';
+import path from 'path';
 import { getAllChannels, getChannel, createChannel, updateChannel, deleteChannel } from '../db/queries.js';
 import type { ModelId, InteractionMode } from '@klatch/shared';
 import { AVAILABLE_MODELS, INTERACTION_MODES } from '@klatch/shared';
@@ -85,6 +87,64 @@ app.delete('/channels/:id', (c) => {
 
   deleteChannel(id);
   return c.json({ deleted: true });
+});
+
+/**
+ * GET /channels/:id/context-file
+ *
+ * Read a context file (CLAUDE.md, etc.) from the imported channel's original project.
+ * Only available for channels with source_metadata.cwd.
+ * Security: whitelisted filenames only, no path traversal.
+ */
+app.get('/channels/:id/context-file', (c) => {
+  const id = c.req.param('id');
+  const channel = getChannel(id);
+  if (!channel) {
+    return c.json({ error: 'Channel not found' }, 404);
+  }
+
+  if (!channel.sourceMetadata) {
+    return c.json({ error: 'Channel has no source metadata' }, 400);
+  }
+
+  let meta: { cwd?: string };
+  try {
+    meta = JSON.parse(channel.sourceMetadata);
+  } catch {
+    return c.json({ error: 'Invalid source metadata' }, 400);
+  }
+
+  if (!meta.cwd) {
+    return c.json({ error: 'No project path available for this channel' }, 400);
+  }
+
+  const requestedFile = c.req.query('path') || 'CLAUDE.md';
+
+  // Security: only allow specific files, no traversal
+  const ALLOWED_FILES = ['CLAUDE.md', '.claude/CLAUDE.md'];
+  if (!ALLOWED_FILES.includes(requestedFile)) {
+    return c.json({ error: `File not allowed. Allowed: ${ALLOWED_FILES.join(', ')}` }, 403);
+  }
+
+  const fullPath = path.join(meta.cwd, requestedFile);
+
+  // Extra safety: verify resolved path is within cwd
+  const resolved = path.resolve(fullPath);
+  const cwdResolved = path.resolve(meta.cwd);
+  if (!resolved.startsWith(cwdResolved)) {
+    return c.json({ error: 'Path traversal not allowed' }, 403);
+  }
+
+  if (!fs.existsSync(fullPath)) {
+    return c.json({
+      error: 'File not found',
+      path: fullPath,
+      hint: `No ${requestedFile} found at ${meta.cwd}. You can paste your project instructions manually.`,
+    }, 404);
+  }
+
+  const content = fs.readFileSync(fullPath, 'utf-8');
+  return c.json({ content, path: fullPath });
 });
 
 export { app as channelRoutes };

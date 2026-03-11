@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import type { Channel, Entity, ModelId, InteractionMode } from '@klatch/shared';
 import { AVAILABLE_MODELS, INTERACTION_MODES } from '@klatch/shared';
+import { fetchContextFile } from '../api/client.js';
 
 interface Props {
   channel: Channel;
@@ -24,12 +25,15 @@ export function ChannelSettings({
   const [name, setName] = useState(channel.name);
   const [systemPrompt, setSystemPrompt] = useState(channel.systemPrompt);
   const [dirty, setDirty] = useState(false);
+  const [contextLoading, setContextLoading] = useState(false);
+  const [contextError, setContextError] = useState<string | null>(null);
 
   // Reset form when channel changes
   useEffect(() => {
     setName(channel.name);
     setSystemPrompt(channel.systemPrompt);
     setDirty(false);
+    setContextError(null);
   }, [channel.id]);
 
   const handleChange = () => setDirty(true);
@@ -43,6 +47,40 @@ export function ChannelSettings({
       onSave(updates);
     }
     setDirty(false);
+  };
+
+  // Parse source metadata for context loading
+  const meta = (() => {
+    try {
+      return channel.sourceMetadata ? JSON.parse(channel.sourceMetadata) : null;
+    } catch { return null; }
+  })();
+
+  const isImported = channel.source && channel.source !== 'native';
+  const hasEmptyPrompt = !systemPrompt.trim();
+  const hasCwd = meta?.cwd;
+  const hasCompactionSummary = meta?.compactionSummary;
+
+  const handleLoadClaudeMd = async () => {
+    setContextLoading(true);
+    setContextError(null);
+    try {
+      const result = await fetchContextFile(channel.id, 'CLAUDE.md');
+      setSystemPrompt(result.content);
+      setDirty(true);
+    } catch (err) {
+      setContextError(err instanceof Error ? err.message : 'Failed to load file');
+    } finally {
+      setContextLoading(false);
+    }
+  };
+
+  const handleUseSessionSummary = () => {
+    if (hasCompactionSummary) {
+      setSystemPrompt(meta.compactionSummary);
+      setDirty(true);
+      setContextError(null);
+    }
   };
 
   // Entities not currently assigned to this channel
@@ -67,29 +105,24 @@ export function ChannelSettings({
 
       <div className="space-y-4 max-w-2xl">
         {/* Import provenance — only for imported channels */}
-        {channel.source && channel.source !== 'native' && (
+        {isImported && (
           <div className="rounded-lg border border-line bg-card p-3">
             <div className="flex items-center gap-2 mb-2">
               <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-accent/15 text-accent leading-none">
-                {channel.source === 'claude-code' ? 'CC' : channel.source}
+                {channel.source === 'claude-code' ? 'CC' : channel.source === 'claude-ai' ? 'AI' : channel.source}
               </span>
               <span className="text-xs font-medium text-secondary">
-                Imported from {channel.source === 'claude-code' ? 'Claude Code' : channel.source}
+                Imported from {channel.source === 'claude-code' ? 'Claude Code' : channel.source === 'claude-ai' ? 'claude.ai' : channel.source}
               </span>
             </div>
-            {channel.sourceMetadata && (() => {
-              try {
-                const meta = JSON.parse(channel.sourceMetadata);
-                return (
-                  <div className="text-xs text-muted space-y-0.5">
-                    {meta.cwd && <p><span className="font-medium">Project:</span> {meta.cwd.split('/').pop()}</p>}
-                    {meta.importedAt && <p><span className="font-medium">Imported:</span> {new Date(meta.importedAt).toLocaleString()}</p>}
-                    {meta.eventCount && <p><span className="font-medium">Events:</span> {meta.eventCount}</p>}
-                    {meta.version && <p><span className="font-medium">Claude Code:</span> v{meta.version}</p>}
-                  </div>
-                );
-              } catch { return null; }
-            })()}
+            {meta && (
+              <div className="text-xs text-muted space-y-0.5">
+                {meta.cwd && <p><span className="font-medium">Project:</span> {meta.cwd.split('/').pop()}</p>}
+                {meta.importedAt && <p><span className="font-medium">Imported:</span> {new Date(meta.importedAt).toLocaleString()}</p>}
+                {meta.eventCount && <p><span className="font-medium">Events:</span> {meta.eventCount}</p>}
+                {meta.version && <p><span className="font-medium">Claude Code:</span> v{meta.version}</p>}
+              </div>
+            )}
           </div>
         )}
 
@@ -115,6 +148,42 @@ export function ChannelSettings({
             rows={3}
             className="w-full rounded bg-input border border-line px-3 py-2 text-sm text-primary placeholder-muted focus:outline-none focus:border-accent resize-none"
           />
+
+          {/* Context loading hints and buttons for imported channels */}
+          {isImported && hasEmptyPrompt && (
+            <div className="mt-2 space-y-2">
+              <p className="text-xs text-muted">
+                {channel.source === 'claude-code'
+                  ? `This session was imported from ${hasCwd ? meta.cwd.split('/').pop() : 'Claude Code'}. Load a context file or paste instructions to restore the original session context.`
+                  : 'This conversation was imported from claude.ai. Paste any project instructions below to restore context.'}
+              </p>
+
+              <div className="flex flex-wrap gap-2">
+                {hasCwd && channel.source === 'claude-code' && (
+                  <button
+                    onClick={handleLoadClaudeMd}
+                    disabled={contextLoading}
+                    className="text-xs px-2.5 py-1 rounded border border-line bg-card text-secondary hover:text-primary hover:bg-hover transition-colors disabled:opacity-50"
+                  >
+                    {contextLoading ? 'Loading...' : 'Load CLAUDE.md'}
+                  </button>
+                )}
+
+                {hasCompactionSummary && (
+                  <button
+                    onClick={handleUseSessionSummary}
+                    className="text-xs px-2.5 py-1 rounded border border-line bg-card text-secondary hover:text-primary hover:bg-hover transition-colors"
+                  >
+                    Use session summary
+                  </button>
+                )}
+              </div>
+
+              {contextError && (
+                <p className="text-xs text-danger">{contextError}</p>
+              )}
+            </div>
+          )}
         </div>
 
         {/* Interaction mode — only meaningful with 2+ entities */}

@@ -194,6 +194,36 @@ export interface ImportResponse extends ImportResult {
   sessionId?: string;
 }
 
+// ── Context File API ─────────────────────────────────────────
+
+export interface ContextFileResponse {
+  content: string;
+  path: string;
+}
+
+/**
+ * Fetch a context file (CLAUDE.md, etc.) from the imported channel's original project.
+ * Returns the file content and path, or throws with a helpful error message.
+ */
+export async function fetchContextFile(
+  channelId: string,
+  filePath: string = 'CLAUDE.md'
+): Promise<ContextFileResponse> {
+  const res = await fetch(`${BASE}/channels/${channelId}/context-file?path=${encodeURIComponent(filePath)}`);
+  if (!res.ok) {
+    try {
+      const body = await res.json();
+      throw new Error(body.hint || body.error || `Failed to load context file: ${res.statusText}`);
+    } catch (parseErr) {
+      if (parseErr instanceof Error && !parseErr.message.startsWith('Failed to load')) {
+        throw parseErr;
+      }
+      throw new Error(`Failed to load context file: ${res.statusText}`);
+    }
+  }
+  return res.json();
+}
+
 export async function importClaudeCodeSession(
   sessionPath: string,
   channelName?: string

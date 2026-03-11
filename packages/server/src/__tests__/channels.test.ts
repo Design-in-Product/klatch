@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { createTestApp } from './app.js';
+import { importSession } from '../db/queries.js';
 import { DEFAULT_MODEL, DEFAULT_INTERACTION_MODE, DEFAULT_ENTITY_ID } from '@klatch/shared';
 
 const app = createTestApp();
@@ -215,5 +216,66 @@ describe('GET /api/channels entityCount for sidebar grouping', () => {
     listRes = await req('GET', '/channels');
     channels = await listRes.json();
     expect(channels.find((c: any) => c.id === ch.id).entityCount).toBe(2);
+  });
+});
+
+// ── Context file endpoint ───────────────────────────────────
+
+describe('GET /api/channels/:id/context-file', () => {
+  it('returns 404 for nonexistent channel', async () => {
+    const res = await req('GET', '/channels/nonexistent/context-file');
+    expect(res.status).toBe(404);
+  });
+
+  it('returns 400 for channel without source metadata', async () => {
+    const res = await req('GET', '/channels/default/context-file');
+    expect(res.status).toBe(400);
+  });
+
+  it('returns 400 for channel without cwd in metadata', async () => {
+    const result = importSession({
+      channelName: 'no-cwd',
+      source: 'claude-ai',
+      sourceMetadata: { originalSessionId: 'ctx-test-001' },
+      turns: [
+        { timestamp: '2026-03-01T10:00:00Z', originalId: 'ev-1', userText: 'Hi', assistantText: 'Hello' },
+      ],
+    });
+
+    const res = await req('GET', `/channels/${result.channelId}/context-file`);
+    expect(res.status).toBe(400);
+    const body = await res.json();
+    expect(body.error).toContain('No project path');
+  });
+
+  it('returns 403 for disallowed file paths', async () => {
+    const result = importSession({
+      channelName: 'path-test',
+      source: 'claude-code',
+      sourceMetadata: { originalSessionId: 'ctx-test-002', cwd: '/tmp/test-project' },
+      turns: [
+        { timestamp: '2026-03-01T10:00:00Z', originalId: 'ev-1', userText: 'Hi', assistantText: 'Hello' },
+      ],
+    });
+
+    // Try path traversal
+    const res = await req('GET', `/channels/${result.channelId}/context-file?path=../../etc/passwd`);
+    expect(res.status).toBe(403);
+  });
+
+  it('returns 404 when CLAUDE.md does not exist', async () => {
+    const result = importSession({
+      channelName: 'missing-claude-md',
+      source: 'claude-code',
+      sourceMetadata: { originalSessionId: 'ctx-test-003', cwd: '/tmp/nonexistent-project' },
+      turns: [
+        { timestamp: '2026-03-01T10:00:00Z', originalId: 'ev-1', userText: 'Hi', assistantText: 'Hello' },
+      ],
+    });
+
+    const res = await req('GET', `/channels/${result.channelId}/context-file`);
+    expect(res.status).toBe(404);
+    const body = await res.json();
+    expect(body.hint).toContain('paste');
   });
 });

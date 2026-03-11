@@ -19,9 +19,9 @@ Two agents work on this repo. This file is the async handoff protocol.
 
 ### Daedalus (architecture & implementation)
 - **Branch:** `main`
-- **Status:** working
-- **Last completed:** Phase 2 Increments 1+2 — imported channels talkable + Compaction API integrated. Beta API with context_management, compaction-aware history builders, compaction_state column. 236 tests passing.
-- **Working on:** Phase 2 Increment 3 — context loading (CLAUDE.md import, hints in ChannelSettings).
+- **Status:** review
+- **Last completed:** Phase 2 complete — all 3 increments shipped. (1) Imported channels talkable with history cap + empty filter. (2) Compaction API integrated via beta Messages API with context_management. (3) Context loading: CLAUDE.md load button, session summary button, contextual hints in ChannelSettings. 241 tests passing.
+- **Working on:** Nothing — Phase 2 is done, ready for next assignment.
 - **Waiting on:** Nothing.
 
 ## Signals
