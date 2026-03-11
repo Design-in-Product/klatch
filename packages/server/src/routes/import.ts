@@ -1,5 +1,6 @@
 import { Hono } from 'hono';
 import fs from 'fs';
+import os from 'os';
 import path from 'path';
 import { parseClaudeCodeSession } from '../import/parser.js';
 import { parseClaudeAiConversation } from '../import/claude-ai-parser.js';
@@ -7,6 +8,30 @@ import { extractConversationsFromZip } from '../import/claude-ai-zip.js';
 import { importSession, findChannelByOriginalSessionId } from '../db/queries.js';
 import { MODEL_ALIASES, AVAILABLE_MODELS } from '@klatch/shared';
 import type { ModelId } from '@klatch/shared';
+
+// Max file size for imports (50 MB)
+const MAX_IMPORT_SIZE = 50 * 1024 * 1024;
+
+/** Expand ~ to home directory safely using os.homedir() */
+function expandHome(filePath: string): string {
+  if (filePath.startsWith('~/') || filePath === '~') {
+    return path.join(os.homedir(), filePath.slice(1));
+  }
+  return filePath;
+}
+
+/**
+ * Validate that a resolved path is an absolute path and doesn't escape
+ * via directory traversal. Returns the resolved path or null if invalid.
+ */
+function validateImportPath(filePath: string): string | null {
+  const resolved = path.resolve(filePath);
+  // Must be absolute (resolve guarantees this, but belt-and-suspenders)
+  if (!path.isAbsolute(resolved)) return null;
+  // Block obvious traversal patterns in the original input
+  if (filePath.includes('..')) return null;
+  return resolved;
+}
 
 const app = new Hono();
 
@@ -33,14 +58,21 @@ app.post('/import/claude-code', async (c) => {
     return c.json({ error: 'File must be a .jsonl file' }, 400);
   }
 
-  // Expand ~ to home directory
-  const expandedPath = sessionPath.startsWith('~')
-    ? path.join(process.env.HOME || '', sessionPath.slice(1))
-    : sessionPath;
+  // Expand ~ and validate path
+  const expandedPath = validateImportPath(expandHome(sessionPath));
+  if (!expandedPath) {
+    return c.json({ error: 'Invalid file path' }, 400);
+  }
 
   // Check file exists
   if (!fs.existsSync(expandedPath)) {
     return c.json({ error: 'File not found' }, 404);
+  }
+
+  // Check file size
+  const stat = fs.statSync(expandedPath);
+  if (stat.size > MAX_IMPORT_SIZE) {
+    return c.json({ error: `File too large (${Math.round(stat.size / 1024 / 1024)}MB). Maximum is ${MAX_IMPORT_SIZE / 1024 / 1024}MB.` }, 400);
   }
 
   // Parse the session
@@ -92,6 +124,7 @@ app.post('/import/claude-code', async (c) => {
   return c.json({
     ...result,
     sessionId: session.sessionId,
+    ...(session.skippedLines ? { skippedLines: session.skippedLines } : {}),
   }, 201);
 });
 
@@ -147,6 +180,9 @@ app.post('/import/claude-ai', async (c) => {
       return c.json({ error: 'File must be a .zip file' }, 400);
     }
     const arrayBuffer = await file.arrayBuffer();
+    if (arrayBuffer.byteLength > MAX_IMPORT_SIZE) {
+      return c.json({ error: `File too large (${Math.round(arrayBuffer.byteLength / 1024 / 1024)}MB). Maximum is ${MAX_IMPORT_SIZE / 1024 / 1024}MB.` }, 400);
+    }
     zipBuffer = Buffer.from(arrayBuffer);
   } else {
     const body = await c.req.json<{ zipPath: string }>();
@@ -154,14 +190,19 @@ app.post('/import/claude-ai', async (c) => {
     if (!zipPath || !zipPath.endsWith('.zip')) {
       return c.json({ error: 'File must be a .zip file' }, 400);
     }
-    // Expand ~ to home directory
-    const expandedPath = zipPath.startsWith('~')
-      ? path.join(process.env.HOME || '', zipPath.slice(1))
-      : zipPath;
-    if (!fs.existsSync(expandedPath)) {
+    // Expand ~ and validate path
+    const expandedZipPath = validateImportPath(expandHome(zipPath));
+    if (!expandedZipPath) {
+      return c.json({ error: 'Invalid file path' }, 400);
+    }
+    if (!fs.existsSync(expandedZipPath)) {
       return c.json({ error: 'File not found' }, 404);
     }
-    zipBuffer = fs.readFileSync(expandedPath);
+    const stat = fs.statSync(expandedZipPath);
+    if (stat.size > MAX_IMPORT_SIZE) {
+      return c.json({ error: `File too large (${Math.round(stat.size / 1024 / 1024)}MB). Maximum is ${MAX_IMPORT_SIZE / 1024 / 1024}MB.` }, 400);
+    }
+    zipBuffer = fs.readFileSync(expandedZipPath);
   }
 
   // Extract conversations from ZIP

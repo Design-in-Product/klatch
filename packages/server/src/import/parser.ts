@@ -102,6 +102,7 @@ export interface ParsedSession {
   turns: ParsedTurn[];
   compactionSummary?: string; // from acompact-* subagent events
   eventCount: number;
+  skippedLines?: number;     // malformed JSONL lines that were skipped
   firstTimestamp?: string;
   lastTimestamp?: string;
 }
@@ -434,12 +435,18 @@ export function parseEvents(events: unknown[]): ParsedSession {
 
 // ── File I/O (async, for the API layer) ───────────────────────
 
+export interface ReadJsonlResult {
+  events: RawEvent[];
+  skippedLines: number;
+}
+
 /**
  * Read a JSONL file line-by-line and parse each line as JSON.
- * Silently skips malformed lines.
+ * Skips malformed lines and reports how many were skipped.
  */
-export async function readJsonlFile(filePath: string): Promise<RawEvent[]> {
+export async function readJsonlFile(filePath: string): Promise<ReadJsonlResult> {
   const events: RawEvent[] = [];
+  let skippedLines = 0;
 
   const stream = createReadStream(filePath, { encoding: 'utf-8' });
   const rl = createInterface({ input: stream, crlfDelay: Infinity });
@@ -450,11 +457,11 @@ export async function readJsonlFile(filePath: string): Promise<RawEvent[]> {
     try {
       events.push(JSON.parse(trimmed));
     } catch {
-      // Skip malformed lines — real sessions occasionally have truncated events
+      skippedLines++;
     }
   }
 
-  return events;
+  return { events, skippedLines };
 }
 
 /**
@@ -476,7 +483,7 @@ async function findCompactionSummary(sessionPath: string): Promise<string | unde
   for (let i = files.length - 1; i >= 0; i--) {
     const compactPath = path.join(subagentDir, files[i]);
     try {
-      const events = await readJsonlFile(compactPath);
+      const { events } = await readJsonlFile(compactPath);
       const summary = extractCompactionFromEvents(events);
       if (summary) return summary;
     } catch {
@@ -494,8 +501,11 @@ async function findCompactionSummary(sessionPath: string): Promise<string | unde
  * @returns ParsedSession with turns, artifacts, and metadata
  */
 export async function parseClaudeCodeSession(sessionPath: string): Promise<ParsedSession> {
-  const events = await readJsonlFile(sessionPath);
+  const { events, skippedLines } = await readJsonlFile(sessionPath);
   const session = parseEvents(events);
+  if (skippedLines > 0) {
+    session.skippedLines = skippedLines;
+  }
 
   // Also try to find compaction summary from separate subagent files
   if (!session.compactionSummary) {
