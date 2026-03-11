@@ -165,6 +165,19 @@ An imported conversation is currently a dead transcript — the words are there 
 
 This is the logical culmination of the import story: not just *read* your old conversations, but *resume* them with full fidelity, regardless of which harness they started in.
 
+### Permission controls and agent freedom
+Klatch talks to Claude via the Anthropic SDK, but a future mode could invoke Claude Code (via the Agent SDK) as the backend — gaining tool use, file access, and code execution. The key unlock: the Agent SDK supports `permissionMode: "bypassPermissions"` programmatically, meaning Klatch could offer a GUI for permission management that the official clients still lack or bury.
+
+**Ideas:**
+- **Permission mode selector** in channel or entity settings (ask / accept edits / bypass) — surfacing what CLIs hide behind `--dangerously-skip-permissions`
+- **Granular tool toggles**: per-channel switches for Read, Write, Bash, WebFetch, etc. — more intuitive than regex rules in JSON files
+- **Guardrail presets**: "Research only" (read + search), "Full autonomy" (bypass), "Careful" (ask for destructive ops) — good defaults that prevent regret while preserving freedom
+- **Deny-list editor**: visual blocklist for dangerous patterns (`rm -rf`, `git push --force`) that persists even in bypass mode
+- **Audit log**: every tool invocation logged with timestamp, channel, entity — accountability without friction
+- **The UX challenge**: making dangerous choices feel appropriately weighty without creating "permission fatigue" theater that numbs users to real risks. The current state of the art (clicking Allow on every unique bash call) is the worst of both worlds.
+
+Context: As of March 2025, `--dangerously-skip-permissions` works reliably in the CLI terminal. The Claude for Mac desktop app and VS Code/Cursor extensions may have settings for this but they are inconsistently documented and have known bugs (multiple open GitHub issues). The terminal remains the most reliable path. Klatch could leapfrog all of them by building permission management as a first-class feature.
+
 ### Sharing and collaboration
 Export conversation snapshots. Share channel configurations (role + prompt templates). Community prompt library. Maybe someday: multi-user.
 

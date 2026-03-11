@@ -12,16 +12,22 @@ Two agents work on this repo. This file is the async handoff protocol.
 
 ### Argus (quality & test infrastructure)
 - **Branch:** `claude/audit-and-planning-xn2w7`
-- **Status:** available
-- **Last completed:** Phase 3 claude.ai ZIP import. Merged to main (cherry-picked new files, adapted to existing types/queries). Also completed research on permission toggling for chats (filed for later).
-- **Assigned next:** Either (1) Validation pass — rebase on main, run full suite, test both import formats; or (2) Phase 2 Increment 3 — context loading UI in ChannelSettings (hints for imported channels, "Load CLAUDE.md" button, "Use session summary" button, GET /api/channels/:id/context-file endpoint). Check with xian for preference.
-- **Waiting on:** Nothing — can start immediately.
+- **Status:** working
+- **Last completed:** Validation pass complete. Rebased on main, 231 tests passing. Code review of both import formats found no blockers. Flagged hardening items:
+  - Path traversal: `sessionPath` expansion trusts user input; should validate against whitelisted directory.
+  - HOME fallback: `process.env.HOME || ''` creates malformed paths; use `os.homedir()`.
+  - Silent JSONL skip: Malformed lines are silently dropped; should report skip count.
+  - Content size limits: No max artifact/message size validation; should enforce at HTTP layer.
+  - Type safety: `as` casts on enum values from DB lack runtime validation.
+  Also added "Permission controls and agent freedom" vision section to ROADMAP.
+- **Assigned next:** Items 1-3 from hardening list above. **Note:** branch must rebase on current main — it predates Phase 2 Increments 2+3 (compaction, context loading). Do NOT merge branch as-is; it would revert shipped work.
+- **Waiting on:** Rebase on current main before starting hardening work.
 
 ### Daedalus (architecture & implementation)
 - **Branch:** `main`
-- **Status:** review
-- **Last completed:** Phase 2 complete — all 3 increments shipped. (1) Imported channels talkable with history cap + empty filter. (2) Compaction API integrated via beta Messages API with context_management. (3) Context loading: CLAUDE.md load button, session summary button, contextual hints in ChannelSettings. 241 tests passing.
-- **Working on:** Nothing — Phase 2 is done, ready for next assignment.
+- **Status:** available
+- **Last completed:** Phase 2 complete — all 3 increments shipped and merged to main. (1) Imported channels talkable with history cap + empty filter. (2) Compaction API integrated via beta Messages API with context_management. (3) Context loading: CLAUDE.md load button, session summary button, contextual hints in ChannelSettings. Cherry-picked Argus's ROADMAP vision section. 241 tests passing.
+- **Working on:** Nothing — ready for next assignment.
 - **Waiting on:** Nothing.
 
 ## Signals
