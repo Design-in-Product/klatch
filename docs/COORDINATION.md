@@ -13,15 +13,15 @@ Two agents work on this repo. This file is the async handoff protocol.
 ### Argus (quality & test infrastructure)
 - **Branch:** `claude/audit-and-planning-xn2w7`
 - **Status:** available
-- **Last completed:** Import hardening (cherry-picked to main). Path traversal protection, `os.homedir()` for HOME, 50MB file size limits, JSONL skip count reporting. 10 new tests. Also completed Step 8½ metadata framework research (see `docs/RESEARCH-STEP8.5.md`).
-- **Working on:** Nothing — ready for next assignment.
-- **Waiting on:** Nothing.
+- **Last completed:** Import hardening (cherry-picked to main) + Step 8½ research doc.
+- **Assigned next:** Step 8½ Increment 3 — stats UI in ChannelSettings + `metadata.test.ts` (stats query tests, endpoint tests, edge cases). Also review sidebar grouping for edge cases (null cwd, malformed metadata, mobile). Can start once Daedalus pushes Increment 1 (stats backend).
+- **Waiting on:** Daedalus Increment 1 push (stats queries + endpoint).
 
 ### Daedalus (architecture & implementation)
 - **Branch:** `main`
-- **Status:** available
-- **Last completed:** Phase 2 complete + live test pass with 6 bug fixes. Cherry-picked Argus's hardening + research doc. 241+ tests passing.
-- **Working on:** Nothing — awaiting xian's manual testing before v0.8.2 release.
+- **Status:** working
+- **Last completed:** Phase 2 + bug fixes + Argus cherry-picks. 251 tests passing.
+- **Working on:** Step 8½ Increment 1 (stats queries + types + endpoint) then Increment 2 (sidebar project grouping).
 - **Waiting on:** Nothing.
 
 ## Signals
