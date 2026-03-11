@@ -13,7 +13,7 @@ Two agents work on this repo. This file is the async handoff protocol.
 ### Argus (quality & test infrastructure)
 - **Branch:** `claude/audit-and-planning-xn2w7`
 - **Status:** available
-- **Last completed:** Phase 3 claude.ai ZIP import. Merged to main (cherry-picked new files, adapted to existing types/queries).
+- **Last completed:** Phase 3 claude.ai ZIP import. Merged to main (cherry-picked new files, adapted to existing types/queries). Also completed research on permission toggling for chats (filed for later).
 - **Assigned next:** Validation pass — rebase branch on main, run full suite, test both import formats (Claude Code JSONL + claude.ai ZIP), flag anything broken. Then ready for next assignment.
 - **Waiting on:** Nothing — can start immediately.
 
