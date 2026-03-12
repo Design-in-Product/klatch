@@ -121,7 +121,8 @@ Manual testing (Theseus Prime + Ariadne) identified four fidelity levels for imp
 - **isMeta event filtering**: hook feedback, skill injections, and image references (`isMeta: true`) should be filtered during import or rendered distinctly
 - **Import error messaging**: client-side error display for failed imports (currently generic)
 - **Copy message turn**: copy button on message bubbles, not just code blocks
-- **Bulk import** (stretch): scan `~/.claude/projects/`, preview sessions, multi-select import
+- **Selective import browser**: After opening a ZIP or scanning a directory, show a preview of all contents — conversations, knowledge files, projects — and let the user pick what to import. Supports both claude.ai ZIPs (conversations + project docs + memories) and Claude Code session directories. The opposite of bulk-all-or-nothing.
+- **Claude Code session browser** (stretch): scan `~/.claude/projects/`, preview sessions, multi-select import
 
 Tracked refinements deferred past 8¾:
 - Demo automation (manual recording works for now)
@@ -183,7 +184,7 @@ Workflows compose the primitives we already have (panel, roundtable, directed) i
 An imported conversation is currently a dead transcript — the words are there but the working context is gone. To make imports truly continuable, Klatch would need to reconstruct the environment the conversation lived in:
 
 - **Claude Code imports**: pull in the `.claude/` tree the session worked from — CLAUDE.md project instructions, memory files, skills, settings. The session metadata already tells us the `cwd`; the `.claude/` directory is right there.
-- **claude.ai imports**: pull in the Project's system prompt and knowledge files. A claude.ai export with project context could give Klatch the full instruction set the conversation was operating under.
+- **claude.ai imports**: pull in the Project's system prompt and knowledge files. A claude.ai export includes `projects.json` (project docs/knowledge), `memories.json` (user memories), and `conversations.json` (chat history). The selective import browser would let users choose which pieces to bring in — just the conversations, just the knowledge files to seed a channel's context, or everything.
 - **Unified local context**: a Klatch channel that combines imported history with local filesystem access and reconstructed instructions would break down the barrier between "archived conversation" and "active workspace." You'd own not just your conversation data but your *working context*.
 
 This is the logical culmination of the import story: not just *read* your old conversations, but *resume* them with full fidelity, regardless of which harness they started in.
