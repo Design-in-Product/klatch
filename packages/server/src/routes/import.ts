@@ -4,7 +4,7 @@ import os from 'os';
 import path from 'path';
 import { parseClaudeCodeSession } from '../import/parser.js';
 import { parseClaudeAiConversation } from '../import/claude-ai-parser.js';
-import { extractConversationsFromZip } from '../import/claude-ai-zip.js';
+import { extractFromZip } from '../import/claude-ai-zip.js';
 import { importSession, findChannelByOriginalSessionId } from '../db/queries.js';
 import { MODEL_ALIASES, AVAILABLE_MODELS } from '@klatch/shared';
 import type { ModelId } from '@klatch/shared';
@@ -234,13 +234,15 @@ app.post('/import/claude-ai', async (c) => {
     zipBuffer = fs.readFileSync(expandedZipPath);
   }
 
-  // Extract conversations from ZIP
-  let conversationFiles;
+  // Extract conversations and projects from ZIP
+  let exportData;
   try {
-    conversationFiles = extractConversationsFromZip(zipBuffer);
+    exportData = extractFromZip(zipBuffer);
   } catch {
     return c.json({ error: 'Invalid ZIP file' }, 400);
   }
+
+  const { conversations: conversationFiles, projects } = exportData;
 
   if (conversationFiles.length === 0) {
     return c.json({ error: 'ZIP contains no conversations' }, 400);
@@ -282,14 +284,23 @@ app.post('/import/claude-ai', async (c) => {
       }
     }
 
-    const conv = conversation as { uuid?: string; name?: string; created_at?: string; updated_at?: string };
+    const conv = conversation as { uuid?: string; name?: string; created_at?: string; updated_at?: string; project_uuid?: string };
+
+    // Resolve project name from projects.json if the conversation belongs to a project
+    const projectName = conv.project_uuid ? projects.get(conv.project_uuid)?.name : undefined;
+
+    // Build channel name: "ProjectName: ConvName" or just "ConvName" or fallback
+    const convName = parsed.slug || `claude.ai — ${parsed.sessionId || 'import'}`;
+    const channelName = projectName ? `${projectName}: ${convName}` : convName;
 
     const result = importSession({
-      channelName: parsed.slug || `claude.ai — ${parsed.sessionId || 'import'}`,
+      channelName,
       source: 'claude-ai',
       sourceMetadata: {
         originalSessionId: parsed.sessionId,
         conversationName: parsed.slug,
+        projectUuid: conv.project_uuid,
+        projectName,
         createdAt: conv.created_at,
         updatedAt: conv.updated_at,
         eventCount: parsed.eventCount,

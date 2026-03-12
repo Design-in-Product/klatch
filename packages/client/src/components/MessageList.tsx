@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useCallback } from 'react';
+import React, { useEffect, useRef, useCallback, useState } from 'react';
 import type { Message, Entity, ModelId } from '@klatch/shared';
 import { AVAILABLE_MODELS } from '@klatch/shared';
 import { MarkdownContent } from './MarkdownContent';
@@ -170,10 +170,12 @@ function MessageBubble({
   isBubbleStreaming?: boolean;
   theme?: 'light' | 'dark';
 }) {
+  const [copied, setCopied] = useState(false);
   const isUser = message.role === 'user';
   const displayContent = streamingContent ?? message.content;
   const isWaiting = message.status === 'streaming' && !streamingContent;
-  const hasActions = !isBubbleStreaming && (onDelete || onRegenerate);
+  const canCopy = !isUser && !isBubbleStreaming && !!displayContent;
+  const hasActions = !isBubbleStreaming && (onDelete || onRegenerate || canCopy);
 
   // Entity or model info for assistant messages
   const entityName = entity?.name || 'Claude';
@@ -213,6 +215,34 @@ function MessageBubble({
         {/* Action buttons — inside the bubble, visible on hover (always visible on mobile) */}
         {hasActions && (
           <div className="flex items-center gap-2 mt-2 pt-1.5 border-t border-line opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity">
+            {canCopy && (
+              <button
+                onClick={() => {
+                  navigator.clipboard.writeText(displayContent).then(() => {
+                    setCopied(true);
+                    setTimeout(() => setCopied(false), 1500);
+                  });
+                }}
+                title="Copy message"
+                className="flex items-center gap-1 rounded px-1.5 py-0.5 text-xs text-muted hover:text-primary hover:bg-hover transition-colors"
+              >
+                {copied ? (
+                  <>
+                    <svg className="w-3 h-3 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                    </svg>
+                    <span className="text-green-500">Copied</span>
+                  </>
+                ) : (
+                  <>
+                    <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                    </svg>
+                    Copy
+                  </>
+                )}
+              </button>
+            )}
             {onRegenerate && (
               <button
                 onClick={onRegenerate}
