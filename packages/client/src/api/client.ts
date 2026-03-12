@@ -201,6 +201,47 @@ export interface ImportResponse extends ImportResult {
   sessionId?: string;
 }
 
+export interface ClaudeAiImportResponse {
+  imported: Array<{
+    channelId: string;
+    channelName: string;
+    messageCount: number;
+    artifactCount: number;
+    conversationId: string;
+  }>;
+  skipped: Array<{
+    conversationId: string;
+    reason: string;
+    existingChannelId?: string;
+  }>;
+  totalImported: number;
+  totalSkipped: number;
+}
+
+export async function importClaudeAiExport(
+  file: File
+): Promise<ClaudeAiImportResponse> {
+  const formData = new FormData();
+  formData.append('file', file);
+
+  const res = await fetch(`${BASE}/import/claude-ai`, {
+    method: 'POST',
+    body: formData,
+  });
+  if (!res.ok) {
+    try {
+      const body = await res.json();
+      throw new Error(body.error || `Import failed: ${res.statusText}`);
+    } catch (parseErr) {
+      if (parseErr instanceof Error && !parseErr.message.startsWith('Import failed:')) {
+        throw parseErr;
+      }
+      throw new Error(`Import failed: ${res.statusText}`);
+    }
+  }
+  return res.json();
+}
+
 // ── Context File API ─────────────────────────────────────────
 
 export interface ContextFileResponse {

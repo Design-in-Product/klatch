@@ -11,20 +11,25 @@ Agents working on this repo use this file as the async handoff protocol.
 ## Status board
 
 ### Argus (quality & test infrastructure)
-- **Branch:** `claude/audit-and-planning-xn2w7`
-- **Status:** review
-- **Last completed:** Phase 2 implementation — 85 new tests total across Phases 1+2. Suite: 364 tests (294 server + 70 client). Phase 2a: useStream (10), useStreams (13) with MockEventSource. Phase 2b: MessageList fork marker (14), import context edge cases (2 new). Also: scrollIntoView jsdom polyfill.
-- **Working on:** Nothing — Phase 2 ready for merge.
-- **Waiting on:** Daedalus review/merge. Phase 3 assignment.
-- **Updated:** 2026-03-12
+- **Branch:** create new branch from main (`git fetch origin && git checkout -b claude/argus-phase3 origin/main`)
+- **Status:** available — Phase 3 assigned
+- **Last completed:** Phase 2 merged to main (2026-03-13). 365 tests total (295 server + 70 client).
+- **Working on:** Phase 3 — claude.ai import tests + ImportDialog expansion tests.
+- **Phase 3 scope:**
+  - **3a — claude.ai parser tests:** Test `parseClaudeAiConversation()` with the real export shape (conversations with `chat_messages`, `content` blocks, tool_use artifacts). Edge cases: empty conversations, missing fields, multiple content blocks per message.
+  - **3b — ZIP extractor tests:** Test `extractConversationsFromZip()` for both formats: (1) root `conversations.json` array (current claude.ai format), (2) individual files in `conversations/` directory (legacy format). Edge cases: empty ZIP, no conversations key, malformed JSON entries.
+  - **3c — ImportDialog claude.ai mode tests:** The dialog now has a mode toggle (Claude Code / claude.ai). Test: mode switching, file picker state, ZIP upload via `importClaudeAiExport`, bulk success state rendering (multiple imported conversations listed), click-to-navigate on individual results, "Done" button for bulk import.
+- **Note:** `git fetch origin` first — significant main movement since Phase 2 (Argus merge, claude.ai import UI, ZIP parser fix, delete channel UI).
+- **Waiting on:** Nothing.
+- **Updated:** 2026-03-13
 
 ### Daedalus (architecture & implementation)
 - **Branch:** `main`
 - **Status:** working
-- **Last completed:** Step 8¾ implementation (v0.8.5) — kit briefing, CLAUDE.md/MEMORY.md capture, fork marker, compaction verification. 279 tests passing (273 server + 6 client). Merged Argus Phase 1 tests.
-- **Working on:** Finalizing Step 8¾, pending manual testing for v0.8.5 release.
-- **Waiting on:** Product owner manual testing of fork marker + kit briefing.
-- **Updated:** 2026-03-12
+- **Last completed:** claude.ai import UI (file picker + mode toggle), ZIP parser fix (handles root `conversations.json` array), delete channel UI, Argus Phase 2 merge. 365 tests (295 server + 70 client).
+- **Working on:** claude.ai import polish, product owner testing support.
+- **Waiting on:** Product owner 60-day claude.ai export test.
+- **Updated:** 2026-03-13
 
 ### Theseus Prime (manual testing & exploration — CLI side)
 - **Branch:** `main`

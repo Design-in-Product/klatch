@@ -474,6 +474,11 @@ export default function App() {
           });
           setShowImportDialog(false);
         }}
+        onBulkImported={() => {
+          // Refresh channels after claude.ai bulk import
+          fetchChannels().then((chs) => setChannels(chs));
+          setShowImportDialog(false);
+        }}
       />
     </div>
   );

@@ -9,8 +9,12 @@ export interface ConversationFile {
 }
 
 /**
- * Extract all conversation JSON files from a claude.ai export ZIP buffer.
- * Looks for .json files in any `conversations/` directory within the ZIP.
+ * Extract conversations from a claude.ai data export ZIP buffer.
+ *
+ * Supports two formats:
+ * 1. Single `conversations.json` at root — array of conversation objects (current export format)
+ * 2. Individual .json files inside a `conversations/` directory (legacy/anticipated format)
+ *
  * Skips malformed JSON files gracefully.
  */
 export function extractConversationsFromZip(zipBuffer: Buffer): ConversationFile[] {
@@ -19,26 +23,37 @@ export function extractConversationsFromZip(zipBuffer: Buffer): ConversationFile
   const conversations: ConversationFile[] = [];
 
   for (const entry of entries) {
-    // Skip directories
     if (entry.isDirectory) continue;
 
-    // Only look at .json files
     const name = entry.entryName;
     if (!name.endsWith('.json')) continue;
-
-    // Must be inside a conversations/ directory (any nesting level)
-    if (!name.includes('conversations/')) continue;
 
     try {
       const content = entry.getData().toString('utf-8');
       const parsed = JSON.parse(content);
 
-      // Basic validation: must have chat_messages array
-      if (parsed && Array.isArray(parsed.chat_messages)) {
-        conversations.push({
-          filename: name,
-          conversation: parsed,
-        });
+      // Format 1: conversations.json at root — array of conversation objects
+      const basename = name.split('/').pop();
+      if (basename === 'conversations.json' && Array.isArray(parsed)) {
+        for (const conv of parsed) {
+          if (conv && Array.isArray(conv.chat_messages)) {
+            conversations.push({
+              filename: `${name}#${conv.uuid || conversations.length}`,
+              conversation: conv,
+            });
+          }
+        }
+        continue;
+      }
+
+      // Format 2: individual files inside conversations/ directory
+      if (name.includes('conversations/')) {
+        if (parsed && Array.isArray(parsed.chat_messages)) {
+          conversations.push({
+            filename: name,
+            conversation: parsed,
+          });
+        }
       }
     } catch {
       // Skip malformed JSON files

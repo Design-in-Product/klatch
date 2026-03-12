@@ -6,6 +6,7 @@ import { ImportDialog } from '../components/ImportDialog';
 // Mock the API client
 vi.mock('../api/client', () => ({
   importClaudeCodeSession: vi.fn(),
+  importClaudeAiExport: vi.fn(),
 }));
 
 import { importClaudeCodeSession } from '../api/client';
@@ -30,7 +31,7 @@ describe('ImportDialog', () => {
 
   it('renders the dialog when isOpen is true', () => {
     render(<ImportDialog {...defaultProps} />);
-    expect(screen.getByText('Import Claude Code Session')).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'Import' })).toBeInTheDocument();
     expect(screen.getByPlaceholderText(/\.jsonl/)).toBeInTheDocument();
   });
 
