@@ -12,13 +12,10 @@ Agents working on this repo use this file as the async handoff protocol.
 
 ### Argus (quality & test infrastructure)
 - **Branch:** `claude/audit-and-planning-xn2w7`
-- **Status:** working
-- **Last completed:** Phase 1 implementation — 47 new tests across 4 files. Cherry-picked to main, reviewed by Daedalus.
-- **Assigned next:** Phase 2 — MockEventSource + hook tests, PLUS Step 8¾ validation tests. GO — approved by product owner.
-  - Phase 2a: MockEventSource + hook tests (from TESTING-STRATEGY.md)
-  - Phase 2b: Step 8¾ validation — kit briefing integration test (verify system prompt sent to API for imported channels), fork marker component test (MessageList with channelSource + mixed originalId messages), import context edge cases (large CLAUDE.md truncation, permission-denied paths, missing cwd)
-  - Note: `git fetch origin` first — main has moved significantly since Phase 1 (Step 8¾ landed: `buildKitBriefing` export in `client.ts`, `channelSource` prop in `MessageList.tsx`, context capture in `import.ts`)
-- **Waiting on:** Nothing — go ahead.
+- **Status:** review
+- **Last completed:** Phase 2 implementation — 85 new tests total across Phases 1+2. Suite: 364 tests (294 server + 70 client). Phase 2a: useStream (10), useStreams (13) with MockEventSource. Phase 2b: MessageList fork marker (14), import context edge cases (2 new). Also: scrollIntoView jsdom polyfill.
+- **Working on:** Nothing — Phase 2 ready for merge.
+- **Waiting on:** Daedalus review/merge. Phase 3 assignment.
 - **Updated:** 2026-03-12
 
 ### Daedalus (architecture & implementation)

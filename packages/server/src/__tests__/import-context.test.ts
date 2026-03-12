@@ -162,6 +162,85 @@ describe('Import context capture (CLAUDE.md + MEMORY.md)', () => {
     expect(meta.memoryMd).toBeUndefined();
   });
 
+  // Skip permission test when running as root (root can read any file)
+  it.skipIf(process.getuid?.() === 0)(
+    'handles unreadable CLAUDE.md gracefully (permission denied)',
+    async () => {
+      const projectDir = path.join(tempDir, 'locked-project');
+      fs.mkdirSync(projectDir, { recursive: true });
+      const claudeMdPath = path.join(projectDir, 'CLAUDE.md');
+      fs.writeFileSync(claudeMdPath, 'Secret instructions');
+      fs.chmodSync(claudeMdPath, 0o000);
+
+      const sessionPath = createSessionFixture(projectDir, 'sess-locked-001');
+
+      try {
+        const res = await app.request(
+          '/api/import/claude-code',
+          req('POST', '/api/import/claude-code', { sessionPath })
+        );
+        // Import should succeed — context capture is best-effort
+        expect(res.status).toBe(201);
+        const { channelId } = await res.json();
+
+        const channel = await getChannelById(channelId);
+        const meta = JSON.parse(channel.sourceMetadata);
+        // claudeMd should be undefined since the file was unreadable
+        expect(meta.claudeMd).toBeUndefined();
+      } finally {
+        fs.chmodSync(claudeMdPath, 0o644);
+      }
+    }
+  );
+
+  it('handles session without cwd (no context capture attempt)', async () => {
+    // Create a session file without cwd
+    const noCwdSessionId = `sess-nocwd-${Date.now()}`;
+    const fixturePath = path.join(tempDir, `${noCwdSessionId}.jsonl`);
+    const events = [
+      JSON.stringify({
+        parentUuid: null,
+        userType: 'external',
+        sessionId: noCwdSessionId,
+        type: 'user',
+        message: { role: 'user', content: 'No project context' },
+        uuid: `${noCwdSessionId}-evt-001`,
+        timestamp: '2026-01-15T10:00:00.000Z',
+      }),
+      JSON.stringify({
+        parentUuid: `${noCwdSessionId}-evt-001`,
+        userType: 'external',
+        sessionId: noCwdSessionId,
+        message: {
+          model: 'claude-opus-4-6',
+          id: `msg_${noCwdSessionId}_001`,
+          type: 'message',
+          role: 'assistant',
+          content: [{ type: 'text', text: 'OK' }],
+          stop_reason: 'end_turn',
+          usage: { input_tokens: 10, output_tokens: 5 },
+        },
+        type: 'assistant',
+        uuid: `${noCwdSessionId}-evt-002`,
+        timestamp: '2026-01-15T10:00:01.000Z',
+      }),
+    ];
+    fs.writeFileSync(fixturePath, events.join('\n') + '\n');
+
+    const res = await app.request(
+      '/api/import/claude-code',
+      req('POST', '/api/import/claude-code', { sessionPath: fixturePath })
+    );
+    expect(res.status).toBe(201);
+    const { channelId } = await res.json();
+
+    const channel = await getChannelById(channelId);
+    const meta = JSON.parse(channel.sourceMetadata);
+    expect(meta.claudeMd).toBeUndefined();
+    expect(meta.memoryMd).toBeUndefined();
+    expect(meta.cwd).toBeUndefined();
+  });
+
   it('captures both CLAUDE.md and MEMORY.md when both present', async () => {
     const projectDir = path.join(tempDir, 'full-project');
     fs.mkdirSync(projectDir, { recursive: true });

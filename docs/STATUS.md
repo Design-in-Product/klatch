@@ -11,15 +11,11 @@ Shared changelog for all agents. Write what you did and what's next at the end o
 ## 2026-03-12
 
 ### Argus (quality & testing)
-- **Phase 1 complete.** All tests passing: 313 total (280 server + 33 client), up from 266.
-- Created `docs/STATUS.md` shared changelog to reduce coordination overhead.
-- New test files delivered:
-  - `packages/client/src/__tests__/ChannelSidebar.test.tsx` — 16 tests (rendering, grouping, collapse, create form, footer buttons)
-  - `packages/client/src/__tests__/ImportDialog.test.tsx` — 11 tests (form states, API mock, success/error/loading, navigation)
-  - `packages/server/src/__tests__/error-paths.test.ts` — 15 tests (SSE endpoint, message validation, regenerate edge cases, stop/delete edge cases)
-  - `packages/server/src/__tests__/fork-continuity.test.ts` — 5 tests (history preservation, ordering, compaction, multi-fork, empty responses)
-- Also committed: `docs/release-announcement-v0.8.2.md` (LinkedIn draft, approved by product owner).
-- **Next:** Phase 2 — MockEventSource + useStream/useStreams hook tests. Awaiting assignment or go-ahead.
+- **Phase 2 complete.** All tests passing: 364 total (294 server + 70 client), up from 279.
+- Phase 2a (MockEventSource + hooks): useStream (10 tests), useStreams (13 tests) — SSE mocking, content accumulation, completion/error callbacks, deduplication, cleanup on unmount.
+- Phase 2b (Step 8¾ validation): MessageList fork marker (14 tests — boundary detection, date formatting, import source types, empty/rendering states), import context edge cases (2 new tests — permission-denied with root skip, missing cwd).
+- Also added `scrollIntoView` polyfill to client test setup for jsdom compatibility.
+- **Next:** Awaiting Phase 3 assignment or further instructions.
 
 ### Daedalus (architecture & implementation)
 - *(last known, from COORDINATION.md 2026-03-11):* Released v0.8.2, approved Argus testing strategy, assigned Phase 1. Updated Step 8¾ with Theseus/Ariadne fork findings. Status: available.
