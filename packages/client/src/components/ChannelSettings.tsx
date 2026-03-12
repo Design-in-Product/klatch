@@ -10,6 +10,7 @@ interface Props {
   onSave: (updates: { name?: string; systemPrompt?: string; model?: ModelId; mode?: InteractionMode }) => void;
   onAssignEntity: (entityId: string) => void;
   onRemoveEntity: (entityId: string) => void;
+  onDeleteChannel: () => void;
   onClose: () => void;
 }
 
@@ -20,6 +21,7 @@ export function ChannelSettings({
   onSave,
   onAssignEntity,
   onRemoveEntity,
+  onDeleteChannel,
   onClose,
 }: Props) {
   const [name, setName] = useState(channel.name);
@@ -28,6 +30,7 @@ export function ChannelSettings({
   const [contextLoading, setContextLoading] = useState(false);
   const [contextError, setContextError] = useState<string | null>(null);
   const [stats, setStats] = useState<ChannelStats | null>(null);
+  const [confirmDelete, setConfirmDelete] = useState(false);
 
   // Reset form when channel changes
   useEffect(() => {
@@ -357,6 +360,35 @@ export function ChannelSettings({
             </div>
           )}
         </div>
+
+        {/* Delete channel */}
+        {channel.id !== 'default' && (
+          <div className="pt-2 border-t border-line">
+            {!confirmDelete ? (
+              <button
+                onClick={() => setConfirmDelete(true)}
+                className="text-xs text-muted hover:text-danger transition-colors"
+              >
+                Delete channel
+              </button>
+            ) : (
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => { setConfirmDelete(false); onDeleteChannel(); }}
+                  className="text-xs px-2.5 py-1 rounded bg-danger text-white hover:bg-danger/80 transition-colors"
+                >
+                  Confirm delete
+                </button>
+                <button
+                  onClick={() => setConfirmDelete(false)}
+                  className="text-xs text-muted hover:text-secondary transition-colors"
+                >
+                  Cancel
+                </button>
+              </div>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );
