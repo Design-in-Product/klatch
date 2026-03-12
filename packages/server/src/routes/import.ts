@@ -101,6 +101,33 @@ app.post('/import/claude-code', async (c) => {
   // Resolve model: map legacy IDs to current ones
   const resolvedModel = resolveModel(session.model);
 
+  // Read project context files (best-effort)
+  let claudeMd: string | undefined;
+  let memoryMd: string | undefined;
+
+  if (session.cwd) {
+    // CLAUDE.md from the project root
+    const claudeMdPath = path.join(session.cwd, 'CLAUDE.md');
+    try {
+      if (fs.existsSync(claudeMdPath)) {
+        claudeMd = fs.readFileSync(claudeMdPath, 'utf-8');
+      }
+    } catch { /* best-effort — file may be unreadable */ }
+
+    // MEMORY.md from Claude Code's projects directory
+    // Claude Code encodes cwd by replacing / with - (leading slash becomes leading -)
+    // e.g., /Users/xian/Development/klatch → -Users-xian-Development-klatch
+    const encodedCwd = session.cwd.replace(/\//g, '-');
+    const memoryMdPath = path.join(
+      os.homedir(), '.claude', 'projects', encodedCwd, 'memory', 'MEMORY.md'
+    );
+    try {
+      if (fs.existsSync(memoryMdPath)) {
+        memoryMd = fs.readFileSync(memoryMdPath, 'utf-8');
+      }
+    } catch { /* best-effort — file may be unreadable */ }
+  }
+
   // Import into database
   const result = importSession({
     channelName: name,
@@ -116,6 +143,8 @@ app.post('/import/claude-code', async (c) => {
       lastTimestamp: session.lastTimestamp,
       compactionSummary: session.compactionSummary,
       importedAt: new Date().toISOString(),
+      claudeMd,
+      memoryMd,
     },
     model: resolvedModel,
     turns: session.turns,

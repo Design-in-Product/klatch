@@ -256,7 +256,10 @@ export function isHumanTurnBoundary(event: RawEvent): boolean {
   if (event.type !== 'user') return false;
   if (event.message?.role !== 'user') return false;
 
-  // Filter out system-injected user messages using metadata flags
+  // Filter out system-injected user messages using metadata flags.
+  // These events have role='user' in the JSONL but are NOT human-authored.
+  // Without this filter, they'd become 'user' messages in the DB and render as "You" —
+  // the "compaction misattribution" bug. See Step 8¾ verification.
   if (event.isCompactSummary) return false;  // Compaction context injection
   if (event.isMeta) return false;             // Hook feedback, skill injection, image reference
 

@@ -165,9 +165,59 @@ function buildRoundtableHistory(channelId: string): ChatMessage[] {
   return coalesceMessages(filtered.slice(-MAX_HISTORY_MESSAGES));
 }
 
-/** Build system prompt: channel preamble + entity's own prompt */
-function buildSystemPrompt(entity: Entity, channelPreamble?: string): string {
+/** Max characters of captured context to include in kit briefing */
+const MAX_CONTEXT_CHARS = 4000;
+
+/**
+ * Build a kit briefing for imported channels.
+ * Orients the model about its environment when continuing from an imported session.
+ * Addresses the "silent capability loss" problem discovered in Theseus/Ariadne testing.
+ */
+export function buildKitBriefing(channel: Channel): string {
   const parts: string[] = [];
+
+  // Core orientation — prevents phantom-capability confusion
+  parts.push(
+    'You are continuing a conversation that was imported into Klatch from ' +
+    (channel.source === 'claude-code' ? 'Claude Code' : 'claude.ai') + '. ' +
+    'You are now in Klatch, a conversation-only environment. ' +
+    'You do NOT have access to tools (no file system, no bash, no search, no web access). ' +
+    'You can only converse. If the user asks for something requiring tools, ' +
+    'explain what you would do and suggest they use a tool-enabled environment.'
+  );
+
+  // Inject captured project context from sourceMetadata
+  let meta: Record<string, unknown> = {};
+  try {
+    if (channel.sourceMetadata) meta = JSON.parse(channel.sourceMetadata);
+  } catch { /* ignore parse errors */ }
+
+  if (meta.claudeMd) {
+    const content = String(meta.claudeMd);
+    const truncated = content.length > MAX_CONTEXT_CHARS
+      ? content.slice(0, MAX_CONTEXT_CHARS) + '\n...(truncated)'
+      : content;
+    parts.push('Project instructions (CLAUDE.md) from the original session:\n\n' + truncated);
+  }
+
+  if (meta.memoryMd) {
+    const content = String(meta.memoryMd);
+    const truncated = content.length > MAX_CONTEXT_CHARS
+      ? content.slice(0, MAX_CONTEXT_CHARS) + '\n...(truncated)'
+      : content;
+    parts.push('Project memory (MEMORY.md) from the original session:\n\n' + truncated);
+  }
+
+  return parts.join('\n\n');
+}
+
+/** Build system prompt: kit briefing (for imports) + channel preamble + entity's own prompt */
+function buildSystemPrompt(entity: Entity, channelPreamble?: string, channel?: Channel): string {
+  const parts: string[] = [];
+  // Kit briefing for imported channels — automatic orientation on transition
+  if (channel?.source && channel.source !== 'native') {
+    parts.push(buildKitBriefing(channel));
+  }
   if (channelPreamble?.trim()) parts.push(channelPreamble.trim());
   if (entity.systemPrompt?.trim()) parts.push(entity.systemPrompt.trim());
   return parts.join('\n\n');
@@ -313,7 +363,7 @@ export async function streamClaude(
   const channel = getChannel(channelId);
   const compactionEnabled = channel?.source !== 'native';
   const history = buildPanelHistory(channelId, entity);
-  const systemPrompt = buildSystemPrompt(entity, channelPreamble);
+  const systemPrompt = buildSystemPrompt(entity, channelPreamble, channel);
   const result = await streamClaudeCore(
     assistantMessageId, entity, history, systemPrompt,
     { compactionEnabled }
@@ -374,7 +424,7 @@ export async function streamClaudeRoundtable(
       if (roundtable.cancelled) break;
 
       const { assistantMessageId, entity } = assistants[i];
-      const systemPrompt = buildSystemPrompt(entity, channelPreamble);
+      const systemPrompt = buildSystemPrompt(entity, channelPreamble, channel);
 
       let history: ChatMessage[];
 

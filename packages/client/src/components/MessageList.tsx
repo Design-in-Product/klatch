@@ -13,6 +13,7 @@ interface Props {
   onRegenerateMessage?: (id: string) => void;
   isStreaming?: boolean;
   theme?: 'light' | 'dark';
+  channelSource?: string;  // 'native' | 'claude-code' | 'claude-ai'
 }
 
 function modelLabel(modelId?: ModelId): string | undefined {
@@ -29,6 +30,7 @@ export function MessageList({
   onRegenerateMessage,
   isStreaming,
   theme,
+  channelSource,
 }: Props) {
   const bottomRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -36,6 +38,19 @@ export function MessageList({
 
   // Build entity lookup map
   const entityMap = new Map(channelEntities.map((e) => [e.id, e]));
+
+  // Find the fork boundary for imported channels
+  // Imported messages have originalId set; new Klatch-native messages don't.
+  const forkBoundaryIndex = (() => {
+    if (!channelSource || channelSource === 'native') return -1;
+    let lastImportedIdx = -1;
+    for (let i = 0; i < messages.length; i++) {
+      if (messages[i].originalId) lastImportedIdx = i;
+    }
+    // Only show marker if there are both imported and new messages
+    if (lastImportedIdx === -1 || lastImportedIdx === messages.length - 1) return -1;
+    return lastImportedIdx;
+  })();
 
   // Detect when user scrolls away from bottom
   const handleScroll = useCallback(() => {
@@ -79,29 +94,49 @@ export function MessageList({
           <p className="text-sm text-faint">Send a message to begin.</p>
         </div>
       )}
-      {messages.map((msg) => {
+      {messages.map((msg, idx) => {
         const entity = msg.entityId ? entityMap.get(msg.entityId) : undefined;
         const streamContent = getStreamContent(msg.id);
         const isBubbleStreaming = isMessageStreaming(msg.id);
 
         return (
-          <MessageBubble
-            key={msg.id}
-            message={msg}
-            entity={entity}
-            streamingContent={streamContent || undefined}
-            onDelete={onDeleteMessage ? () => onDeleteMessage(msg.id) : undefined}
-            onRegenerate={
-              onRegenerateMessage && msg.id === lastAssistantId && !isStreaming
-                ? () => onRegenerateMessage(msg.id)
-                : undefined
-            }
-            isBubbleStreaming={isBubbleStreaming}
-            theme={theme}
-          />
+          <React.Fragment key={msg.id}>
+            <MessageBubble
+              message={msg}
+              entity={entity}
+              streamingContent={streamContent || undefined}
+              onDelete={onDeleteMessage ? () => onDeleteMessage(msg.id) : undefined}
+              onRegenerate={
+                onRegenerateMessage && msg.id === lastAssistantId && !isStreaming
+                  ? () => onRegenerateMessage(msg.id)
+                  : undefined
+              }
+              isBubbleStreaming={isBubbleStreaming}
+              theme={theme}
+            />
+            {idx === forkBoundaryIndex && (
+              <ForkMarker date={messages[idx + 1]?.createdAt} />
+            )}
+          </React.Fragment>
         );
       })}
       <div ref={bottomRef} />
+    </div>
+  );
+}
+
+/** Visual divider between imported history and new Klatch-native messages */
+function ForkMarker({ date }: { date?: string }) {
+  const label = date
+    ? `Continued in Klatch \u2014 ${new Date(date).toLocaleDateString('en-US', {
+        month: 'short', day: 'numeric', year: 'numeric',
+      })}`
+    : 'Continued in Klatch';
+  return (
+    <div className="flex items-center gap-3 py-3">
+      <div className="flex-1 border-t border-line" />
+      <span className="text-xs text-faint font-medium whitespace-nowrap">{label}</span>
+      <div className="flex-1 border-t border-line" />
     </div>
   );
 }
