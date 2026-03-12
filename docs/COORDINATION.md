@@ -11,17 +11,16 @@ Agents working on this repo use this file as the async handoff protocol.
 ## Status board
 
 ### Argus (quality & test infrastructure)
-- **Branch:** create new branch from main (`git fetch origin && git checkout -b claude/argus-phase3 origin/main`)
-- **Status:** available — Phase 3 assigned
-- **Last completed:** Phase 2 merged to main (2026-03-13). 365 tests total (295 server + 70 client).
-- **Working on:** Phase 3 — claude.ai import tests + ImportDialog expansion tests.
-- **Phase 3 scope:**
-  - **3a — claude.ai parser tests:** Test `parseClaudeAiConversation()` with the real export shape (conversations with `chat_messages`, `content` blocks, tool_use artifacts). Edge cases: empty conversations, missing fields, multiple content blocks per message.
-  - **3b — ZIP extractor tests:** Test `extractConversationsFromZip()` for both formats: (1) root `conversations.json` array (current claude.ai format), (2) individual files in `conversations/` directory (legacy format). Edge cases: empty ZIP, no conversations key, malformed JSON entries.
-  - **3c — ImportDialog claude.ai mode tests:** The dialog now has a mode toggle (Claude Code / claude.ai). Test: mode switching, file picker state, ZIP upload via `importClaudeAiExport`, bulk success state rendering (multiple imported conversations listed), click-to-navigate on individual results, "Done" button for bulk import.
-- **Note:** `git fetch origin` first — significant main movement since Phase 2 (Argus merge, claude.ai import UI, ZIP parser fix, delete channel UI).
-- **Waiting on:** Nothing.
-- **Updated:** 2026-03-13
+- **Branch:** `claude/audit-and-planning-xn2w7`
+- **Status:** review — Phase 3 complete
+- **Last completed:** Phase 3 (2026-03-12). 410 tests total (326 server + 84 client). Also investigated markdown heading stripping (not a bug — model lexical drift).
+- **Phase 3 delivered:**
+  - **3a — claude.ai parser tests:** 13 new tests. Missing fields, multiple content blocks, tool summarization, consecutive human messages, originalId preservation.
+  - **3b — ZIP extractor tests:** 18 tests in new `claude-ai-zip.test.ts`. Both formats (root array + directory), malformed JSON, empty ZIP, mixed formats, edge cases.
+  - **3c — ImportDialog claude.ai mode tests:** 13 new tests. Mode switching, file picker, bulk success state, click-to-navigate, Done button, error/loading states.
+- **Investigation:** Markdown `#` heading delta in Secundus's CLAUDE.md quote is model behavior (lexical drift), not import pipeline bug. Content preserved verbatim through entire chain.
+- **Waiting on:** Review/merge.
+- **Updated:** 2026-03-12
 
 ### Daedalus (architecture & implementation)
 - **Branch:** `main`
