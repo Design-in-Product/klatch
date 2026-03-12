@@ -156,6 +156,29 @@ Ariadne (the forked Theseus, renamed to disambiguate) has been maintaining obser
 
 **JSONL clarification:** The two files in `.claude/projects/` are Daedalus (26MB, via Claude for Mac) and Theseus/me (197KB, CLI). Ariadne's Klatch conversation lives in SQLite only — no JSONL. This is the known export gap (Step 9d), not yet ready for Gall's law reasons.
 
+## 16:45 — Design Consideration: Fidelity Standards
+
+Import continuity isn't one thing — it's a spectrum, and different points on it matter for different reasons.
+
+**Fidelity levels:**
+
+| Level | What it means | Status | Example |
+|-------|--------------|--------|---------|
+| **Conversational** | Fork can talk coherently about what happened | Have it | "We decided against a team directory" |
+| **Narrative** | Fork can explain the project and decisions accurately | Mostly have it | "Klatch is a local-first app for managing Claude conversations" |
+| **Environmental** | Fork knows what tools/files/capabilities it has *now* | Gap | Ariadne believed she had file read/write |
+| **Verbatim/instructional** | Fork has exact project instructions, conventions, rules | Gap | CLAUDE.md content, MEMORY.md content |
+
+**Key insight from product owner:** The standard depends on what's at stake. "Could you explain what this project is about?" tolerates reconstruction. "Do you have the exact project conventions?" requires the actual file. These are different fidelity needs and should be treated differently.
+
+**Design principle (proposed):** Where we cannot guarantee verbatim fidelity, we must flag the gap. Neither the human nor the agent should misbelieve what's available. Silent degradation — where the agent *thinks* it has something it doesn't — is the worst outcome. Options:
+
+1. **Bring it along** — import CLAUDE.md/MEMORY.md at fork time (verbatim fidelity)
+2. **Brief on arrival** — kit briefing tells the fork what it has and doesn't (environmental fidelity)
+3. **Flag the gap** — if we can't do 1 or 2, at minimum mark reconstructed/absent context as such (honesty floor)
+
+These aren't mutually exclusive. The ideal is 1+2: bring the files AND orient the agent. Option 3 is the minimum viable standard anywhere we risk misleading entities.
+
 ## Next
 
-Commit and push. Product owner will share findings with Argus and Daedalus.
+Commit and push. Product owner sharing findings with Argus and Daedalus.

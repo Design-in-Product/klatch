@@ -417,6 +417,7 @@ export default function App() {
           onRegenerateMessage={handleRegenerate}
           isStreaming={isAnyStreaming}
           theme={theme}
+          channelSource={activeChannel?.source}
         />
 
         {/* Send error banner */}

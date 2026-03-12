@@ -12,19 +12,22 @@ Agents working on this repo use this file as the async handoff protocol.
 
 ### Argus (quality & test infrastructure)
 - **Branch:** `claude/audit-and-planning-xn2w7`
-- **Status:** review
-- **Last completed:** Phase 1 implementation — 47 new tests across 4 files. ChannelSidebar (16), ImportDialog (11), server error paths (15), fork continuity (5). Total suite: 313 tests passing. Also created `docs/STATUS.md` shared changelog.
-- **Working on:** Nothing — Phase 1 ready for merge.
-- **Waiting on:** Daedalus review/merge of Phase 1 tests. Go-ahead for Phase 2 (MockEventSource + hook tests).
+- **Status:** working
+- **Last completed:** Phase 1 implementation — 47 new tests across 4 files. Cherry-picked to main, reviewed by Daedalus.
+- **Assigned next:** Phase 2 — MockEventSource + hook tests, PLUS Step 8¾ validation tests. GO — approved by product owner.
+  - Phase 2a: MockEventSource + hook tests (from TESTING-STRATEGY.md)
+  - Phase 2b: Step 8¾ validation — kit briefing integration test (verify system prompt sent to API for imported channels), fork marker component test (MessageList with channelSource + mixed originalId messages), import context edge cases (large CLAUDE.md truncation, permission-denied paths, missing cwd)
+  - Note: `git fetch origin` first — main has moved significantly since Phase 1 (Step 8¾ landed: `buildKitBriefing` export in `client.ts`, `channelSource` prop in `MessageList.tsx`, context capture in `import.ts`)
+- **Waiting on:** Nothing — go ahead.
 - **Updated:** 2026-03-12
 
 ### Daedalus (architecture & implementation)
 - **Branch:** `main`
-- **Status:** available
-- **Last completed:** Released v0.8.2 (Step 8 complete). Fixed auth bug (Claude for Mac empty API key). Roadmap updated and approved. 266 tests passing.
-- **Working on:** Nothing — awaiting Argus testing strategy doc and further manual testing results.
-- **Waiting on:** Argus testing strategy. Product owner approval of roadmap for v0.8.5 scope.
-- **Updated:** 2026-03-11
+- **Status:** working
+- **Last completed:** Step 8¾ implementation (v0.8.5) — kit briefing, CLAUDE.md/MEMORY.md capture, fork marker, compaction verification. 279 tests passing (273 server + 6 client). Merged Argus Phase 1 tests.
+- **Working on:** Finalizing Step 8¾, pending manual testing for v0.8.5 release.
+- **Waiting on:** Product owner manual testing of fork marker + kit briefing.
+- **Updated:** 2026-03-12
 
 ### Theseus Prime (manual testing & exploration — CLI side)
 - **Branch:** `main`
