@@ -13,10 +13,10 @@ Agents working on this repo use this file as the async handoff protocol.
 ### Argus (quality & test infrastructure)
 - **Branch:** `claude/audit-and-planning-xn2w7`
 - **Status:** review
-- **Last completed:** Testing strategy (`docs/TESTING-STRATEGY.md`) + framework research (`docs/testing-framework-research.md`). Covers unit/integration/E2E matrix, framework picks (Vitest + RTL, Playwright), priority test cases for import flows, agent-perspective fork-continuity testing.
-- **Working on:** Nothing — awaiting Daedalus review of testing strategy.
-- **Waiting on:** Daedalus sign-off on testing strategy.
-- **Updated:** 2026-03-11
+- **Last completed:** Phase 1 implementation — 47 new tests across 4 files. ChannelSidebar (16), ImportDialog (11), server error paths (15), fork continuity (5). Total suite: 313 tests passing. Also created `docs/STATUS.md` shared changelog.
+- **Working on:** Nothing — Phase 1 ready for merge.
+- **Waiting on:** Daedalus review/merge of Phase 1 tests. Go-ahead for Phase 2 (MockEventSource + hook tests).
+- **Updated:** 2026-03-12
 
 ### Daedalus (architecture & implementation)
 - **Branch:** `main`
