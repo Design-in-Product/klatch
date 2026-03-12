@@ -37,6 +37,13 @@ export async function updateChannelApi(
   return res.json();
 }
 
+export async function deleteChannelApi(id: string): Promise<void> {
+  const res = await fetch(`${BASE}/channels/${id}`, {
+    method: 'DELETE',
+  });
+  if (!res.ok) throw new Error(`Failed to delete channel: ${res.statusText}`);
+}
+
 // ── Entity API ───────────────────────────────────────────────
 
 export async function fetchEntities(): Promise<Entity[]> {

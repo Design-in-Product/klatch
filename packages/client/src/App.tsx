@@ -25,6 +25,7 @@ import {
   deleteEntity,
   assignEntityToChannel,
   removeEntityFromChannel,
+  deleteChannelApi,
 } from './api/client';
 
 function getInitialTheme(): 'light' | 'dark' {
@@ -241,6 +242,17 @@ export default function App() {
     }
   };
 
+  const handleDeleteChannel = async () => {
+    try {
+      await deleteChannelApi(activeChannelId);
+      setChannels((prev) => prev.filter((c) => c.id !== activeChannelId));
+      setActiveChannelId('default');
+      setShowSettings(false);
+    } catch (err) {
+      console.error('Failed to delete channel:', err);
+    }
+  };
+
   // ── Entity CRUD handlers ──────────────────────────────────────
 
   const handleCreateEntity = async (data: { name: string; model?: ModelId; systemPrompt?: string; color?: string }) => {
@@ -403,6 +415,7 @@ export default function App() {
             onSave={handleUpdateChannel}
             onAssignEntity={handleAssignEntity}
             onRemoveEntity={handleRemoveEntity}
+            onDeleteChannel={handleDeleteChannel}
             onClose={() => setShowSettings(false)}
           />
         )}
