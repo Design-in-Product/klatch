@@ -13,18 +13,18 @@ Agents working on this repo use this file as the async handoff protocol.
 ### Argus (quality & test infrastructure)
 - **Branch:** `claude/audit-and-planning-xn2w7`
 - **Status:** available
-- **Last completed:** Testing strategy research: `docs/TESTING-STRATEGY.md` (5-layer matrix, Playwright rec, agent-perspective testing design) + `docs/testing-framework-research.md` (framework evaluations with sources). Cherry-picked to main, reviewed and approved by Daedalus.
-- **Assigned next:** Phase 1 implementation — client vitest config, ChannelSidebar + ImportDialog component tests, server error path tests, fork continuity deterministic test. See TESTING-STRATEGY.md Section 7 Phase 1.
-- **Waiting on:** Nothing — go ahead and start Phase 1.
-- **Updated:** 2026-03-11
+- **Last completed:** Phase 1 implementation — 47 new tests across 4 files. ChannelSidebar (16), ImportDialog (11), server error paths (15), fork continuity (5). Cherry-picked to main, reviewed by Daedalus. Also created `docs/STATUS.md` shared changelog.
+- **Assigned next:** Phase 2 — MockEventSource + hook tests. GO — approved by product owner.
+- **Waiting on:** Nothing — go ahead and start Phase 2.
+- **Updated:** 2026-03-12
 
 ### Daedalus (architecture & implementation)
 - **Branch:** `main`
-- **Status:** available
-- **Last completed:** Released v0.8.2. Reviewed + cherry-picked Argus testing strategy. 266 tests passing.
-- **Working on:** Nothing — awaiting manual testing results and Argus Phase 1 tests.
-- **Waiting on:** Product owner manual testing. Argus Phase 1 tests.
-- **Updated:** 2026-03-11
+- **Status:** working
+- **Last completed:** Step 8¾ implementation (v0.8.5) — kit briefing, CLAUDE.md/MEMORY.md capture, fork marker, compaction verification. 279 tests passing (273 server + 6 client). Merged Argus Phase 1 tests.
+- **Working on:** Finalizing Step 8¾, pending manual testing for v0.8.5 release.
+- **Waiting on:** Product owner manual testing of fork marker + kit briefing.
+- **Updated:** 2026-03-12
 
 ### Theseus Prime (manual testing & exploration — CLI side)
 - **Branch:** `main`
