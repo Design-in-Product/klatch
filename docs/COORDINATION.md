@@ -11,24 +11,29 @@ Agents working on this repo use this file as the async handoff protocol.
 ## Status board
 
 ### Argus (quality & test infrastructure)
-- **Branch:** `claude/audit-and-planning-xn2w7`
-- **Status:** review — Phase 3 complete
-- **Last completed:** Phase 3 (2026-03-12). 410 tests total (326 server + 84 client). Also investigated markdown heading stripping (not a bug — model lexical drift).
-- **Phase 3 delivered:**
-  - **3a — claude.ai parser tests:** 13 new tests. Missing fields, multiple content blocks, tool summarization, consecutive human messages, originalId preservation.
-  - **3b — ZIP extractor tests:** 18 tests in new `claude-ai-zip.test.ts`. Both formats (root array + directory), malformed JSON, empty ZIP, mixed formats, edge cases.
-  - **3c — ImportDialog claude.ai mode tests:** 13 new tests. Mode switching, file picker, bulk success state, click-to-navigate, Done button, error/loading states.
-- **Investigation:** Markdown `#` heading delta in Secundus's CLAUDE.md quote is model behavior (lexical drift), not import pipeline bug. Content preserved verbatim through entire chain.
-- **Waiting on:** Review/merge.
+- **Branch:** TBD (new branch from main)
+- **Status:** available — Phase 4 assigned
+- **Last completed:** Phase 3 merged (2026-03-12). 410 tests total (326 server + 84 client).
+- **Phase 4 assignment: Selective import browser (Phase 1)**
+  - See `docs/plans/selective-import-browser.md` for full spec.
+  - **4a — ZIP preview endpoint:** `POST /api/import/claude-ai/preview` — accepts ZIP, returns metadata (conversations with counts + dedup status, projects with doc counts, memories). No DB writes.
+  - **4b — Selective import filter:** Add optional `selectedConversationIds: string[]` to `POST /import/claude-ai`. If provided, only import matching UUIDs. Backward compatible (omit = import all).
+  - **4c — Browse UI:** Rework ImportDialog claude.ai flow: ZIP upload → preview panel with checkboxes → selective import. Show already-imported conversations as grayed out.
+  - **4d — Tests:** Preview endpoint, selective filter, UI checkboxes, backward compat.
+- **Waiting on:** Plan approval from product owner.
 - **Updated:** 2026-03-12
 
 ### Daedalus (architecture & implementation)
 - **Branch:** `main`
-- **Status:** working
-- **Last completed:** claude.ai import UI (file picker + mode toggle), ZIP parser fix (handles root `conversations.json` array), delete channel UI, Argus Phase 2 merge. 365 tests (295 server + 70 client).
-- **Working on:** claude.ai import polish, product owner testing support.
-- **Waiting on:** Product owner 60-day claude.ai export test.
-- **Updated:** 2026-03-13
+- **Status:** available — re-import assigned
+- **Last completed:** Copy message button, project name resolution for claude.ai imports, Argus Phase 3 merge. 410 tests (326 server + 84 client).
+- **Next assignment: Re-import handling**
+  - See `docs/plans/reimport-handling.md` for full spec.
+  - Structured 409 response with conflict info → client shows Cancel / Replace / Fork Again.
+  - `forceImport` param for fork-again. Replace = delete + re-import (client-orchestrated).
+  - Server: ~30 lines. Client: ~80 lines. Tests: ~8-10.
+- **Waiting on:** Plan approval from product owner.
+- **Updated:** 2026-03-12
 
 ### Theseus Prime (manual testing & exploration — CLI side)
 - **Branch:** `main`
