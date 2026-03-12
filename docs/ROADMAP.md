@@ -106,20 +106,34 @@ This was the first step that makes Klatch more than a chat UI — it's now a pla
 ## Next Steps (concrete, actionable)
 
 ### Step 8¾: Import refinements
-**Dimension: polish.** Fix the rough edges that surface during real use.
+**Dimension: continuity fidelity.** Close the gaps that the Theseus/Ariadne fork test revealed.
 
-These are small, user-facing fixes that should ship before new features. Identified during Step 8 retrospective and Argus's reflection.
+Manual testing (Theseus Prime + Ariadne) identified four fidelity levels for imported conversations. Narrative knowledge survives well; environmental and instructional knowledge degrades silently. These fixes address the gaps, ordered by impact. See `docs/logs/` for full test findings.
 
-- **Compaction summary misattribution**: compaction context injections (`isCompactSummary: true`) render as "You" messages instead of system banners. See `docs/JSONL-SCHEMA.md` for the taxonomy.
+**Core fixes (v0.8.5):**
+- **Kit briefing**: On first message to a forked channel, inject orientation context: "You are now continuing in Klatch. You have conversation history but no tool access." Prevents phantom-capability confusion — the single highest-impact fix per Ariadne's report.
+- **CLAUDE.md + MEMORY.md capture**: At import time, read `CLAUDE.md` from `cwd` and `MEMORY.md` from `~/.claude/projects/<cwd>/memory/`. Store in `source_metadata`. Inject into channel system prompt or new `imported_context` field. Restores instructional fidelity that's currently lost on import.
+- **Fork marker**: Visual boundary between imported history and new conversation ("Continued in Klatch — Mar 11, 2026"). Makes the transition visible to the human.
+- **Compaction summary misattribution**: Compaction context injections (`isCompactSummary: true`) render as "You" messages instead of system banners. See `docs/JSONL-SCHEMA.md` for the taxonomy.
+
+**Additional fixes:**
 - **isMeta event filtering**: hook feedback, skill injections, and image references (`isMeta: true`) should be filtered during import or rendered distinctly
-- **Fork marker**: visual boundary between imported history and new conversation ("Continued in Klatch — Mar 11, 2026")
 - **Import error messaging**: client-side error display for failed imports (currently generic)
+- **Copy message turn**: copy button on message bubbles, not just code blocks
 - **Bulk import** (stretch): scan `~/.claude/projects/`, preview sessions, multi-select import
 
 Tracked refinements deferred past 8¾:
 - Re-import / refresh (update existing channel — needs merge-or-replace strategy)
 - Demo automation (manual recording works for now)
 - claude.ai model inference (all imports default to Opus — technically incorrect but low visibility)
+
+**Fidelity framework** (from Theseus/Ariadne testing):
+| Level | What it means | Status after 8¾ |
+|-------|--------------|-----------------|
+| Conversational | Fork can talk about what happened | ✅ Already works |
+| Narrative | Fork can explain project and decisions | ✅ Already works |
+| Environmental | Fork knows its current capabilities | 🎯 Kit briefing fixes this |
+| Instructional | Fork has exact project conventions/rules | 🎯 CLAUDE.md/MEMORY.md capture fixes this |
 
 ### Step 9: Search and recall
 **Dimension: memory.** Can you find things across all your conversations?
