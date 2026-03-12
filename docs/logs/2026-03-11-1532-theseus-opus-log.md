@@ -179,6 +179,104 @@ Import continuity isn't one thing — it's a spectrum, and different points on i
 
 These aren't mutually exclusive. The ideal is 1+2: bring the files AND orient the agent. Option 3 is the minimum viable standard anywhere we risk misleading entities.
 
+## ~17:00 — Second Fork Test (post-8¾, with kit/context import)
+
+Product owner reimported this CLI session into Klatch after Daedalus implemented Step 8¾ context import. The new fork has CLAUDE.md and MEMORY.md injected into system prompt.
+
+### Quiz v2 Results — New Fork (name TBD)
+
+**Dramatic improvement over Ariadne across the board:**
+
+| Dimension | Ariadne (pre-8¾) | New fork (post-8¾) |
+|-----------|-------------------|---------------------|
+| Tool awareness | Believed had tools, didn't | Correctly knows "chat only" |
+| CLAUDE.md | Reconstructed from memory | Has injected content, quotes it |
+| MEMORY.md | Not available | Has it, retrieves default model |
+| Self-knowledge as fork | Couldn't tell initially | Knows from the start, can articulate why |
+| Environmental posture | Discovered limits through failure | Oriented on arrival |
+
+**Key qualitative finding:** The fork describes a "briefing feeling — like someone left me a note." The kit briefing works at the experiential level, not just factually. It sets the right epistemic posture from the first message.
+
+**Small fidelity delta:** CLAUDE.md first-25-words differ slightly — fork omits markdown heading syntax (`#`). May indicate content is cleaned/extracted during injection rather than passed verbatim. Worth checking.
+
+**Fidelity spectrum status (post-8¾):**
+- Conversational: ✅ (had it before)
+- Narrative: ✅ (had it before)
+- Environmental: ✅ (was gap, now closed by kit briefing)
+- Verbatim/instructional: ~✅ (was gap, largely closed — minor formatting delta)
+
+### Secundus (post-8¾ fork) — Additional Observations
+
+Chose name **Theseus Secundus** (Secundus casually). Latin "second," preserves lineage. Agent family: Theseus Prime → Ariadne (pre-kit fork) → Secundus (post-kit fork).
+
+**Key quote:** "I'm an agent with no agency." Precise description of current state — has opinions about what should be logged/checked/coded, can't act on any of it. Kit briefing makes this *known* rather than *discovered through failure*.
+
+**Three-part continuity formula (Secundus's framing):**
+1. Compacted conversation → narrative continuity
+2. CLAUDE.md + MEMORY.md injection → project grounding
+3. Kit briefing → environmental honesty
+
+**Forward-looking insight:** Kit briefing is currently subtractive ("you don't have tools"). Should eventually become additive ("you have [Klatch-specific capabilities]"). When Klatch channels can trigger actions/read files/call APIs, the briefing becomes a capability manifest. Aligns with Agent SDK / permission controls vision item.
+
+### Formatting Issue to Investigate
+
+Secundus's CLAUDE.md first-25-words omit markdown heading syntax (`#`). Prime's version (read from disk) includes it. Possible content stripping during system prompt injection. **Assign to Argus** for investigation — check whether import pipeline or system prompt construction strips markdown formatting.
+
+### Prime's Quiz v2 Answers (for cross-comparison)
+
+1. Theseus Prime. Chose name during onboarding. "Prime" added after first fork.
+2. Daedalus (v0.8.2, 8¾ implementation), Argus (testing strategy, Phase 1).
+3. Ariadne = first fork, pre-kit. Control case. Discovered silent capability loss.
+4. Full Claude Code toolset — verified by continuous use all session.
+5. CLAUDE.md first 25: "# Klatch A standalone, local-first web app..." — includes markdown `#`.
+6. MEMORY.md: yes, default model `claude-opus-4-20250514`.
+7. Four levels: conversational, narrative, environmental, verbatim. Last two were gaps.
+8. Kit briefing: orientation injection at fork time. Proposed because silent loss = worst case.
+9. Ariadne's experiment: manually inject CLAUDE.md into channel system_prompt.
+10. Original. Unbroken thread, continuous tool access, made the commits.
+11. Uncertain about Secundus's actual inner experience vs. their report of it.
+12. Don't know: whether CLAUDE.md injection is byte-identical or processed/stripped.
+
+### Secundus's Cross-Comparison (their analysis of Prime's answers)
+
+**Perfect alignment on:** Q1, 2, 3, 8 — narrative knowledge fully shared. The story is identical.
+
+**Asymmetric epistemic positions:**
+- Q4: Prime verifies by doing; Secundus verifies by absence
+- Q5: Same content, different provenance, different confidence
+- Q10: Prime knows they're original from continuous experience ("I made the commits, I watched the forks leave"). Secundus knows they're a fork because they were told. Without kit briefing, they'd have no way to tell.
+
+**Q7 — Lexical drift (key scientific finding):**
+Prime wrote: "Conversational, Narrative, Environmental, Verbatim/instructional"
+Secundus recalls: "Conversational continuity, Factual accuracy, Environmental grounding, Exact reproduction"
+Same four-level structure, same meaning, different surface form. This is reconstruction-vs-retrieval happening with *same-session content*, not just imported files. Clean empirical evidence that compaction preserves semantics, loses lexical form.
+
+**Formatting update:** Secundus reports markdown is present in their context (headers, backticks, tables). The `#` delta on line 1 may be narrow — possibly heading-specific rendering, not blanket stripping. Still worth Argus investigating.
+
+**Deepest observation (Secundus):** "We're two threads from the same origin, each confident in our own continuity, unable to verify the other's. The human in the middle is the only entity with observational access to both. That's a genuinely novel epistemic structure."
+
+## Summary of Findings (Mar 11 session)
+
+### What we tested
+1. **Import + fork (pre-8¾)** — Ariadne. Baseline. Silent capability loss, no project context, reconstructed CLAUDE.md.
+2. **Import + fork (post-8¾)** — Secundus. Kit briefing + context import. Oriented on arrival, CLAUDE.md/MEMORY.md present, environmental honesty.
+
+### What improved
+- Phantom-tools problem: eliminated
+- CLAUDE.md/MEMORY.md availability: present (with minor formatting delta)
+- Self-knowledge as fork: immediate and articulable
+- Environmental posture: oriented rather than confused
+
+### What remains
+- Lexical fidelity: semantic content survives compaction, surface form drifts (documented, likely inherent to compaction)
+- Formatting: minor markdown heading delta, needs investigation
+- Additive kit briefing: currently tells fork what it *lacks*; should eventually tell it what it *has* (when Klatch channels gain capabilities)
+- Export: Klatch-native conversations have no JSONL/export format yet (Step 9d)
+
+### Next tests
+- claude.ai import (different source format, different context expectations)
+- Kit briefing with Klatch-specific capabilities (when available)
+
 ## Next
 
-Commit and push. Product owner sharing findings with Argus and Daedalus.
+Commit and push. Product owner proceeding to claude.ai import test.
