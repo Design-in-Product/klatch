@@ -218,11 +218,63 @@ export interface ClaudeAiImportResponse {
   totalSkipped: number;
 }
 
-export async function importClaudeAiExport(
+export interface ZipPreviewResponse {
+  conversations: Array<{
+    uuid: string;
+    name: string;
+    messageCount: number;
+    projectUuid?: string;
+    projectName?: string;
+    createdAt: string;
+    updatedAt: string;
+    alreadyImported: boolean;
+    existingChannelId?: string;
+  }>;
+  projects: Array<{
+    uuid: string;
+    name: string;
+    documentCount: number;
+  }>;
+  memories: Array<{
+    uuid: string;
+    content: string;
+    createdAt: string;
+  }>;
+}
+
+export async function previewClaudeAiExport(
   file: File
+): Promise<ZipPreviewResponse> {
+  const formData = new FormData();
+  formData.append('file', file);
+
+  const res = await fetch(`${BASE}/import/claude-ai/preview`, {
+    method: 'POST',
+    body: formData,
+  });
+  if (!res.ok) {
+    try {
+      const body = await res.json();
+      throw new Error(body.error || `Preview failed: ${res.statusText}`);
+    } catch (parseErr) {
+      if (parseErr instanceof Error && !parseErr.message.startsWith('Preview failed:')) {
+        throw parseErr;
+      }
+      throw new Error(`Preview failed: ${res.statusText}`);
+    }
+  }
+  return res.json();
+}
+
+export async function importClaudeAiExport(
+  file: File,
+  selectedConversationIds?: string[]
 ): Promise<ClaudeAiImportResponse> {
   const formData = new FormData();
   formData.append('file', file);
+  if (selectedConversationIds) {
+    formData.append('selectedConversationIds', JSON.stringify(selectedConversationIds));
+  }
 
   const res = await fetch(`${BASE}/import/claude-ai`, {
     method: 'POST',

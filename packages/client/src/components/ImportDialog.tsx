@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
-import { importClaudeCodeSession, importClaudeAiExport } from '../api/client';
-import type { ImportResponse, ClaudeAiImportResponse } from '../api/client';
+import { importClaudeCodeSession, importClaudeAiExport, previewClaudeAiExport } from '../api/client';
+import type { ImportResponse, ClaudeAiImportResponse, ZipPreviewResponse } from '../api/client';
 
 type ImportMode = 'claude-code' | 'claude-ai';
 
@@ -23,7 +23,44 @@ export function ImportDialog({ isOpen, onClose, onImported, onBulkImported }: Pr
   const [bulkResult, setBulkResult] = useState<ClaudeAiImportResponse | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  // Preview state for selective import
+  const [preview, setPreview] = useState<ZipPreviewResponse | null>(null);
+  const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
+
   if (!isOpen) return null;
+
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0] || null;
+    if (file && !file.name.endsWith('.zip')) {
+      setError('Please select a .zip file');
+      setZipFile(null);
+      return;
+    }
+    setError(null);
+    setZipFile(file);
+    setPreview(null);
+    setSelectedIds(new Set());
+
+    if (file) {
+      // Auto-preview on file selection
+      setLoading(true);
+      try {
+        const previewData = await previewClaudeAiExport(file);
+        setPreview(previewData);
+        // Pre-select all non-imported conversations
+        const ids = new Set(
+          previewData.conversations
+            .filter((c) => !c.alreadyImported)
+            .map((c) => c.uuid)
+        );
+        setSelectedIds(ids);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'Failed to preview ZIP');
+      } finally {
+        setLoading(false);
+      }
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -40,7 +77,8 @@ export function ImportDialog({ isOpen, onClose, onImported, onBulkImported }: Pr
         setResult(importResult);
       } else {
         if (!zipFile) return;
-        const importResult = await importClaudeAiExport(zipFile);
+        const ids = selectedIds.size > 0 ? Array.from(selectedIds) : undefined;
+        const importResult = await importClaudeAiExport(zipFile, ids);
         setBulkResult(importResult);
       }
     } catch (err) {
@@ -74,6 +112,8 @@ export function ImportDialog({ isOpen, onClose, onImported, onBulkImported }: Pr
     setError(null);
     setResult(null);
     setBulkResult(null);
+    setPreview(null);
+    setSelectedIds(new Set());
     if (fileInputRef.current) fileInputRef.current.value = '';
     onClose();
   };
@@ -83,20 +123,34 @@ export function ImportDialog({ isOpen, onClose, onImported, onBulkImported }: Pr
     setError(null);
     setResult(null);
     setBulkResult(null);
+    setPreview(null);
+    setSelectedIds(new Set());
   };
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0] || null;
-    if (file && !file.name.endsWith('.zip')) {
-      setError('Please select a .zip file');
-      setZipFile(null);
-      return;
+  const toggleConversation = (uuid: string) => {
+    setSelectedIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(uuid)) {
+        next.delete(uuid);
+      } else {
+        next.add(uuid);
+      }
+      return next;
+    });
+  };
+
+  const toggleAllConversations = () => {
+    if (!preview) return;
+    const importable = preview.conversations.filter((c) => !c.alreadyImported);
+    if (selectedIds.size === importable.length) {
+      setSelectedIds(new Set());
+    } else {
+      setSelectedIds(new Set(importable.map((c) => c.uuid)));
     }
-    setError(null);
-    setZipFile(file);
   };
 
-  const isSubmitDisabled = loading || (mode === 'claude-code' ? !sessionPath.trim() : !zipFile);
+  const importableCount = preview?.conversations.filter((c) => !c.alreadyImported).length ?? 0;
+  const isSubmitDisabled = loading || (mode === 'claude-code' ? !sessionPath.trim() : (!zipFile || (preview !== null && selectedIds.size === 0)));
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
@@ -257,31 +311,114 @@ export function ImportDialog({ isOpen, onClose, onImported, onBulkImported }: Pr
                     onChange={handleFileChange}
                     className="hidden"
                   />
-                  {/* Drop zone / browse button */}
-                  <button
-                    type="button"
-                    onClick={() => fileInputRef.current?.click()}
-                    className="w-full rounded border-2 border-dashed border-line hover:border-accent px-4 py-6 text-center transition-colors group"
-                  >
-                    {zipFile ? (
-                      <div className="space-y-1">
-                        <div className="text-sm font-medium text-primary">{zipFile.name}</div>
-                        <div className="text-xs text-muted">{(zipFile.size / 1024 / 1024).toFixed(1)} MB</div>
-                      </div>
-                    ) : (
-                      <div className="space-y-1">
-                        <svg className="w-8 h-8 mx-auto text-muted group-hover:text-accent transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" />
-                        </svg>
-                        <div className="text-sm text-muted group-hover:text-secondary transition-colors">
-                          Choose ZIP file
+
+                  {preview ? (
+                    /* Preview / browse panel */
+                    <div className="space-y-3">
+                      {/* File info bar */}
+                      <div className="flex items-center justify-between rounded bg-surface px-3 py-2 border border-line">
+                        <div className="text-sm">
+                          <span className="font-medium text-primary">{zipFile?.name}</span>
+                          <span className="text-muted ml-2">({((zipFile?.size ?? 0) / 1024 / 1024).toFixed(1)} MB)</span>
                         </div>
-                        <div className="text-xs text-faint">
-                          claude.ai &rarr; Settings &rarr; Export Data
-                        </div>
+                        <button
+                          type="button"
+                          onClick={() => fileInputRef.current?.click()}
+                          className="text-xs text-accent hover:text-accent-hover transition-colors"
+                        >
+                          Change
+                        </button>
                       </div>
-                    )}
-                  </button>
+
+                      {/* Conversations section */}
+                      {preview.conversations.length > 0 && (
+                        <div>
+                          <div className="flex items-center justify-between mb-1.5">
+                            <label className="text-xs font-medium text-muted uppercase tracking-wider">
+                              Conversations ({preview.conversations.length})
+                            </label>
+                            {importableCount > 1 && (
+                              <button
+                                type="button"
+                                onClick={toggleAllConversations}
+                                className="text-xs text-accent hover:text-accent-hover transition-colors"
+                              >
+                                {selectedIds.size === importableCount ? 'Deselect all' : 'Select all'}
+                              </button>
+                            )}
+                          </div>
+                          <div className="max-h-56 overflow-y-auto rounded border border-line divide-y divide-line">
+                            {preview.conversations.map((conv) => (
+                              <label
+                                key={conv.uuid}
+                                className={`flex items-start gap-2.5 px-3 py-2 text-sm cursor-pointer hover:bg-hover transition-colors ${
+                                  conv.alreadyImported ? 'opacity-50' : ''
+                                }`}
+                              >
+                                <input
+                                  type="checkbox"
+                                  checked={selectedIds.has(conv.uuid)}
+                                  disabled={conv.alreadyImported}
+                                  onChange={() => toggleConversation(conv.uuid)}
+                                  className="mt-0.5 rounded border-line text-accent focus:ring-accent"
+                                />
+                                <div className="flex-1 min-w-0">
+                                  <div className="text-primary truncate">
+                                    {conv.projectName ? `${conv.projectName}: ` : ''}{conv.name}
+                                  </div>
+                                  <div className="text-xs text-muted">
+                                    {conv.messageCount} messages
+                                    {conv.alreadyImported && (
+                                      <span className="ml-1.5 text-yellow-600 dark:text-yellow-400">
+                                        (already imported)
+                                      </span>
+                                    )}
+                                  </div>
+                                </div>
+                              </label>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Projects section (info only) */}
+                      {preview.projects.length > 0 && (
+                        <div className="text-xs text-muted">
+                          {preview.projects.length} project{preview.projects.length !== 1 ? 's' : ''} with knowledge docs (not yet importable)
+                        </div>
+                      )}
+
+                      {/* Memories section (info only) */}
+                      {preview.memories.length > 0 && (
+                        <div className="text-xs text-muted">
+                          {preview.memories.length} memor{preview.memories.length !== 1 ? 'ies' : 'y'} (not yet importable)
+                        </div>
+                      )}
+                    </div>
+                  ) : (
+                    /* Drop zone / browse button */
+                    <button
+                      type="button"
+                      onClick={() => fileInputRef.current?.click()}
+                      className="w-full rounded border-2 border-dashed border-line hover:border-accent px-4 py-6 text-center transition-colors group"
+                    >
+                      {loading ? (
+                        <div className="text-sm text-muted">Loading preview...</div>
+                      ) : (
+                        <div className="space-y-1">
+                          <svg className="w-8 h-8 mx-auto text-muted group-hover:text-accent transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" />
+                          </svg>
+                          <div className="text-sm text-muted group-hover:text-secondary transition-colors">
+                            Choose ZIP file
+                          </div>
+                          <div className="text-xs text-faint">
+                            claude.ai &rarr; Settings &rarr; Export Data
+                          </div>
+                        </div>
+                      )}
+                    </button>
+                  )}
                 </div>
               )}
 
@@ -297,7 +434,11 @@ export function ImportDialog({ isOpen, onClose, onImported, onBulkImported }: Pr
                   disabled={isSubmitDisabled}
                   className="flex-1 rounded bg-accent px-3 py-2 text-sm font-medium text-white hover:bg-accent-hover disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                 >
-                  {loading ? 'Importing...' : 'Import'}
+                  {loading ? 'Importing...' : (
+                    mode === 'claude-ai' && preview
+                      ? `Import selected (${selectedIds.size})`
+                      : 'Import'
+                  )}
                 </button>
                 <button
                   type="button"
