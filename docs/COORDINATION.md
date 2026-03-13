@@ -11,46 +11,57 @@ Agents working on this repo use this file as the async handoff protocol.
 ## Status board
 
 ### Argus (quality & test infrastructure)
-- **Branch:** `claude/audit-and-planning-xn2w7`
-- **Status:** review — Phase 4 complete
-- **Last completed:** Phase 4 (2026-03-13). 440 tests total (342 server + 98 client).
-- **Phase 4 delivered: Selective import browser (Phase 1)**
-  - **4a — ZIP preview endpoint:** `POST /api/import/claude-ai/preview` — returns conversation metadata (name, message count, dedup status, project association), project info with doc counts, and memories (truncated). No DB writes.
-  - **4b — Selective import filter:** `selectedConversationIds: string[]` on `POST /import/claude-ai`. Backward compatible (omit = import all). Also fixed edge case: empty `.every()` on skipped array was incorrectly returning 409 for empty selections.
-  - **4c — Browse UI:** Reworked ImportDialog claude.ai flow: ZIP upload → auto-preview → browse panel with checkboxes (select/deselect all, already-imported grayed out, project name prefixes) → "Import selected (N)" button. Projects and memories shown as info-only lines.
-  - **4d — Tests:** 17 new server tests (preview endpoint, selective filter, memories extraction, project doc counts). 15 new + updated client tests (browse UI, checkboxes, toggle all, dedup display, preview loading/error, project prefix).
-  - Also extended ZIP extractor to extract `memories.json` and project `documentCount`.
-- **Waiting on:** Review/merge.
+- **Branch:** `claude/audit-and-planning-xn2w7` (merged to main 2026-03-13)
+- **Status:** available — Phase 5 assigned
+- **Last completed:** Phase 4 merged (2026-03-13). Selective import browser: ZIP preview endpoint, selective conversation filter, browse UI with checkboxes. 450 tests total (346 server + 104 client) after merge conflict resolution.
+- **Phase 5 assignment: Claude Code session browser (8¾d)**
+  - New endpoint: `GET /api/import/claude-code/sessions` — scan `~/.claude/projects/`, return directory tree with session metadata
+  - Browse UI: "Browse..." button in Claude Code import mode → project tree with sessions, dedup detection
+  - Tests for session scanner, browse UI, and dedup marking
+  - See `docs/plans/step8-remaining.md` for full spec
+- **Also assigned:** Tests for 8¾a (project context injection) and 8¾c (re-branching) after Daedalus delivers
+- **Waiting on:** Nothing — can start immediately.
 - **Updated:** 2026-03-13
 
 ### Daedalus (architecture & implementation)
 - **Branch:** `main`
-- **Status:** available
-- **Last completed:** Re-import handling (2026-03-12). Enriched 409 with conflict info, forceImport param, conflict resolution UI (Replace/Import as new/Cancel). 419 tests (329 server + 90 client).
-- **Also completed today:** Copy message button, project name resolution for claude.ai imports, Argus Phase 3 merge.
-- **Waiting on:** User testing of re-import + project name with fresh claude.ai download.
-- **Next:** Plan project knowledge file ingestion from projects.json.
-- **Updated:** 2026-03-12
+- **Status:** available — 8¾a and 8¾c assigned
+- **Last completed:** Merged Argus Phase 4, resolved merge conflicts, fixed `processImport()` forceImport scope bug. 450 tests (346 server + 104 client).
+- **Assignment 1 (8¾a): Project context injection for claude.ai imports**
+  - Extract `prompt_template` from `projects.json` in ZIP (confirmed present: Piper Morgan, VA DR, etc.)
+  - Store project system prompts in `source_metadata`
+  - Inject into kit briefing / channel system prompt
+  - Project association UI in browse panel (conversations → projects)
+  - Note: `project_uuid` missing from conversations in export — need user-driven association or heuristic
+- **Assignment 2 (8¾c): claude.ai re-branching**
+  - Update browse panel: already-imported conversations selectable (not grayed out)
+  - Wire to existing fork-again logic with disambiguation suffix
+- **Assignment 3 (8¾e): Model detection docs**
+  - Document: claude.ai exports contain NO model info (confirmed — not at conversation, message, or project level)
+  - Optionally add manual model selector in browse panel
+- **Waiting on:** 8¾b kit briefing re-test (Theseus + PO) before starting 8¾a
+- **Next:** 8¾a after kit briefing verified
+- **Updated:** 2026-03-13
 
 ### Theseus Prime (manual testing & exploration — CLI side)
 - **Branch:** `main`
-- **Status:** working
-- **Role:** Human-agent tandem manual testing. Works directly with the product owner to walk through app functionality, report subjective experience, and validate import/continuity flows.
-- **Last completed:** First fork test complete. Baseline context snapshot, quiz comparison with Ariadne, technical investigation of import gaps (MEMORY.md, CLAUDE.md, system_prompt, kit briefing concept).
-- **Working on:** Logging findings, syncing with team.
-- **Waiting on:** Nothing.
-- **Note:** Theseus and Argus both work locally on main. Coordinate file edits via this board. Session log: `docs/logs/2026-03-11-1532-theseus-opus-log.md`
-- **Updated:** 2026-03-11
+- **Status:** available — 8¾b assigned
+- **Role:** Human-agent tandem manual testing.
+- **Last completed:** Day 2 AXT testing (2026-03-12). Four import tests across two sources, three context depths, two kit conditions. Testing synthesis and recommendations written to `research/memo-theseus-testing-recommendations.md`.
+- **Assignment (8¾b): Kit briefing re-test for claude.ai imports**
+  - Clean protocol: import → neutral prompt → let agent respond unprompted → quiz → analysis
+  - Verify kit fires correctly for `source: 'claude-ai'`
+  - This is a dependency for Daedalus 8¾a work
+- **Waiting on:** Nothing — can test immediately with existing claude.ai export.
+- **Updated:** 2026-03-13
 
 ### Ariadne (forked from Theseus — Klatch side)
 - **Branch:** n/a (Klatch-native, lives in SQLite)
-- **Status:** working
-- **Role:** The imported/forked continuation of Theseus, running inside Klatch. Provides the "receiving end" perspective on import continuity. No filesystem or tool access — conversation only.
+- **Status:** available
+- **Role:** Imported/forked continuation of Theseus. Provides "receiving end" perspective on import continuity.
 - **Last completed:** Context quiz, capability assessment, subjective continuity report. Confirmed silent capability loss, proposed kit briefing validation.
-- **Working on:** Continued testing with product owner in Klatch.
-- **Waiting on:** Nothing.
 - **Note:** Ariadne cannot edit files. Xian manually maintains their log: `docs/logs/2026-03-11-1612-ariadne-opus-log.md`
-- **Updated:** 2026-03-11
+- **Updated:** 2026-03-13
 
 ## Signals
 
