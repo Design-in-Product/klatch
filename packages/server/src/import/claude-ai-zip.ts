@@ -11,12 +11,21 @@ export interface ConversationFile {
 export interface ProjectInfo {
   uuid: string;
   name: string;
+  documentCount?: number;
+}
+
+export interface MemoryItem {
+  uuid: string;
+  content: string;
+  createdAt?: string;
 }
 
 export interface ClaudeAiExport {
   conversations: ConversationFile[];
-  /** Map from project UUID → project name (from projects.json) */
+  /** Map from project UUID → project info (from projects.json) */
   projects: Map<string, ProjectInfo>;
+  /** Memory items from memories.json */
+  memories: MemoryItem[];
 }
 
 /**
@@ -34,6 +43,7 @@ export function extractFromZip(zipBuffer: Buffer): ClaudeAiExport {
   const entries = zip.getEntries();
   const conversations: ConversationFile[] = [];
   const projects = new Map<string, ProjectInfo>();
+  const memories: MemoryItem[] = [];
 
   for (const entry of entries) {
     if (entry.isDirectory) continue;
@@ -50,7 +60,26 @@ export function extractFromZip(zipBuffer: Buffer): ClaudeAiExport {
       if (basename === 'projects.json' && Array.isArray(parsed)) {
         for (const proj of parsed) {
           if (proj && proj.uuid && proj.name) {
-            projects.set(proj.uuid, { uuid: proj.uuid, name: proj.name });
+            const docs = Array.isArray(proj.docs) ? proj.docs : [];
+            projects.set(proj.uuid, {
+              uuid: proj.uuid,
+              name: proj.name,
+              documentCount: docs.length,
+            });
+          }
+        }
+        continue;
+      }
+
+      // memories.json — array of memory objects
+      if (basename === 'memories.json' && Array.isArray(parsed)) {
+        for (const mem of parsed) {
+          if (mem && (mem.uuid || mem.id)) {
+            memories.push({
+              uuid: mem.uuid || mem.id,
+              content: typeof mem.content === 'string' ? mem.content : (typeof mem.text === 'string' ? mem.text : ''),
+              createdAt: mem.created_at || mem.createdAt,
+            });
           }
         }
         continue;
@@ -83,7 +112,7 @@ export function extractFromZip(zipBuffer: Buffer): ClaudeAiExport {
     }
   }
 
-  return { conversations, projects };
+  return { conversations, projects, memories };
 }
 
 /**
