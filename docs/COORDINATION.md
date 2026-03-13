@@ -42,19 +42,21 @@ Agents working on this repo use this file as the async handoff protocol.
   - Document: claude.ai exports contain NO model info (confirmed — not at conversation, message, or project level)
   - Optionally add manual model selector in browse panel
 - **Waiting on:** 8¾b kit briefing re-test (Theseus + PO) before starting 8¾a
+- **Note:** Theseus + PO working on project instructions inheritance design (2026-03-13 15:22). Intersects 8¾a — coordinate before implementing project context injection.
 - **Next:** 8¾a after kit briefing verified
 - **Updated:** 2026-03-13
 
 ### Theseus Prime (manual testing & exploration — CLI side)
-- **Branch:** `main`
-- **Status:** available — 8¾b assigned
-- **Role:** Human-agent tandem manual testing.
-- **Last completed:** Day 2 AXT testing (2026-03-12). Four import tests across two sources, three context depths, two kit conditions. Testing synthesis and recommendations written to `research/memo-theseus-testing-recommendations.md`.
-- **Assignment (8¾b): Kit briefing re-test for claude.ai imports**
-  - Clean protocol: import → neutral prompt → let agent respond unprompted → quiz → analysis
-  - Verify kit fires correctly for `source: 'claude-ai'`
-  - This is a dependency for Daedalus 8¾a work
-- **Waiting on:** Nothing — can test immediately with existing claude.ai export.
+- **Branch:** `claude/audit-and-planning-xn2w7`
+- **Status:** working — project instructions inheritance
+- **Role:** Human-agent tandem manual testing + architecture with PO.
+- **Last completed:** Testing synthesis memo (2026-03-13). Five import tests, AXT methodology, priority stack.
+- **Current work: Project instructions inheritance for chats**
+  - PO direction (2026-03-13 15:22): Chats should inherit CLAUDE.md from their project instructions (as called in the UI). Currently each channel has its own system_prompt — need a project-level instructions layer.
+  - This is the high-fidelity prompt source Hermes identified: `prompt_template` from `projects.json` for claude.ai imports, CLAUDE.md for Claude Code imports.
+  - Future: more granular per-role instructions (role.md or similar), but start with project-level inheritance.
+  - Intersects with 8¾a (project context injection) — Daedalus should coordinate.
+- **Waiting on:** Nothing.
 - **Updated:** 2026-03-13
 
 ### Ariadne (forked from Theseus — Klatch side)
