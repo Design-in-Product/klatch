@@ -29,21 +29,25 @@ Agents working on this repo use this file as the async handoff protocol.
 - **Branch:** `main`
 - **Status:** available — 8¾a and 8¾c assigned
 - **Last completed:** Merged Argus Phase 4, resolved merge conflicts, fixed `processImport()` forceImport scope bug. 450 tests (346 server + 104 client).
-- **Assignment 1 (8¾a): Project context injection for claude.ai imports**
-  - Extract `prompt_template` from `projects.json` in ZIP (confirmed present: Piper Morgan, VA DR, etc.)
-  - Store project system prompts in `source_metadata`
-  - Inject into kit briefing / channel system prompt
-  - Project association UI in browse panel (conversations → projects)
-  - Note: `project_uuid` missing from conversations in export — need user-driven association or heuristic
+- **Assignment 1 (8¾a): Project context injection — UPDATED by design doc**
+  - **New design:** `docs/plans/project-instructions-inheritance.md` (PO-approved 2026-03-13 15:37)
+  - Key change: first-class `projects` table replaces `sourceMetadata`-only approach
+  - `prompt_template` from `projects.json` → `projects.instructions` column
+  - CLAUDE.md from Claude Code → `projects.instructions` column
+  - Channels get `project_id` FK, inherit project instructions
+  - Channel `system_prompt` becomes "addendum" layered after project instructions
+  - Prompt assembly: `kit_briefing + project.instructions + channel.system_prompt + entity.systemPrompt`
+  - Import flow: create project rows from ZIP/filesystem, user associates conversations → projects
+  - Native channels can also belong to projects
+  - **Please read the full design doc before implementing — it supersedes the original 8¾a spec**
 - **Assignment 2 (8¾c): claude.ai re-branching**
   - Update browse panel: already-imported conversations selectable (not grayed out)
   - Wire to existing fork-again logic with disambiguation suffix
 - **Assignment 3 (8¾e): Model detection docs**
   - Document: claude.ai exports contain NO model info (confirmed — not at conversation, message, or project level)
   - Optionally add manual model selector in browse panel
-- **Waiting on:** 8¾b kit briefing re-test (Theseus + PO) before starting 8¾a
-- **Note:** Theseus + PO working on project instructions inheritance design (2026-03-13 15:22). Intersects 8¾a — coordinate before implementing project context injection.
-- **Next:** 8¾a after kit briefing verified
+- **Waiting on:** 8¾b kit briefing re-test (Theseus + PO) before starting 8¾a. Also: read `docs/plans/project-instructions-inheritance.md` before starting — it changes the 8¾a approach.
+- **Next:** 8¾a using the new design doc
 - **Updated:** 2026-03-13
 
 ### Theseus Prime (manual testing & exploration — CLI side)
@@ -51,13 +55,9 @@ Agents working on this repo use this file as the async handoff protocol.
 - **Status:** working — project instructions inheritance
 - **Role:** Human-agent tandem manual testing + architecture with PO.
 - **Last completed:** Testing synthesis memo (2026-03-13). Five import tests, AXT methodology, priority stack.
-- **Current work: Project instructions inheritance for chats**
-  - PO direction (2026-03-13 15:22): Chats should inherit CLAUDE.md from their project instructions (as called in the UI). Currently each channel has its own system_prompt — need a project-level instructions layer.
-  - This is the high-fidelity prompt source Hermes identified: `prompt_template` from `projects.json` for claude.ai imports, CLAUDE.md for Claude Code imports.
-  - Future: more granular per-role instructions (role.md or similar), but start with project-level inheritance.
-  - Intersects with 8¾a (project context injection) — Daedalus should coordinate.
+- **Delivered:** `docs/plans/project-instructions-inheritance.md` — PO-approved design for `projects` table + two-field inheritance model. Supersedes original 8¾a approach.
 - **Waiting on:** Nothing.
-- **Updated:** 2026-03-13
+- **Updated:** 2026-03-13 15:37
 
 ### Ariadne (forked from Theseus — Klatch side)
 - **Branch:** n/a (Klatch-native, lives in SQLite)
