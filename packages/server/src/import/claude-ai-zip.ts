@@ -12,6 +12,8 @@ export interface ProjectInfo {
   uuid: string;
   name: string;
   documentCount?: number;
+  /** Concatenated text content of project knowledge documents */
+  docsContent?: string;
 }
 
 export interface MemoryItem {
@@ -61,10 +63,21 @@ export function extractFromZip(zipBuffer: Buffer): ClaudeAiExport {
         for (const proj of parsed) {
           if (proj && proj.uuid && proj.name) {
             const docs = Array.isArray(proj.docs) ? proj.docs : [];
+            // Extract text content from project knowledge documents
+            const docTexts: string[] = [];
+            for (const doc of docs) {
+              const text = typeof doc === 'string' ? doc
+                : (doc?.content ?? doc?.text ?? doc?.body ?? '');
+              if (typeof text === 'string' && text.trim()) {
+                const title = doc?.filename ?? doc?.name ?? doc?.title ?? '';
+                docTexts.push(title ? `## ${title}\n${text.trim()}` : text.trim());
+              }
+            }
             projects.set(proj.uuid, {
               uuid: proj.uuid,
               name: proj.name,
               documentCount: docs.length,
+              docsContent: docTexts.length > 0 ? docTexts.join('\n\n') : undefined,
             });
           }
         }

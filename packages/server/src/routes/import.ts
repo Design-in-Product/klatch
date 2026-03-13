@@ -333,10 +333,11 @@ app.post('/import/claude-ai', async (c) => {
         selectedConversationIds = JSON.parse(selectionField);
       } catch { /* ignore malformed */ }
     }
+    const forceImport = formData.get('forceImport') === 'true';
 
-    return processImport(c, Buffer.from(arrayBuffer), selectedConversationIds);
+    return processImport(c, Buffer.from(arrayBuffer), selectedConversationIds, forceImport);
   } else {
-    const body = await c.req.json<{ zipPath?: string; selectedConversationIds?: string[] }>();
+    const body = await c.req.json<{ zipPath?: string; selectedConversationIds?: string[]; forceImport?: boolean }>();
     selectedConversationIds = body.selectedConversationIds;
     const zipPath = body.zipPath;
     if (!zipPath || !zipPath.endsWith('.zip')) {
@@ -353,7 +354,7 @@ app.post('/import/claude-ai', async (c) => {
     if (stat.size > MAX_IMPORT_SIZE) {
       return c.json({ error: `File too large (${Math.round(stat.size / 1024 / 1024)}MB). Maximum is ${MAX_IMPORT_SIZE / 1024 / 1024}MB.` }, 400);
     }
-    return processImport(c, fs.readFileSync(expandedZipPath), selectedConversationIds);
+    return processImport(c, fs.readFileSync(expandedZipPath), selectedConversationIds, body.forceImport === true);
   }
 });
 
@@ -362,6 +363,7 @@ function processImport(
   c: any,
   zipBuffer: Buffer,
   selectedConversationIds?: string[],
+  forceImport = false,
 ) {
   let exportData;
   try {
@@ -370,11 +372,18 @@ function processImport(
     return c.json({ error: 'Invalid ZIP file' }, 400);
   }
 
-  const { conversations: conversationFiles, projects } = exportData;
+  const { conversations: conversationFiles, projects, memories } = exportData;
 
   if (conversationFiles.length === 0) {
     return c.json({ error: 'ZIP contains no conversations' }, 400);
   }
+
+  // Build memories text for kit briefing (shared across all conversations in this export)
+  const memoriesText = memories
+    .filter((m) => m.content.trim())
+    .map((m) => m.content.trim())
+    .join('\n');
+  const memoryMd = memoriesText || undefined;
 
   // Build selection set for filtering (if provided)
   const selectionSet = selectedConversationIds ? new Set(selectedConversationIds) : null;
@@ -437,6 +446,10 @@ function processImport(
       }
     }
 
+    // Build project knowledge context (equivalent of CLAUDE.md for claude.ai imports)
+    const project = conv.project_uuid ? projects.get(conv.project_uuid) : undefined;
+    const claudeMd = project?.docsContent || undefined;
+
     const result = importSession({
       channelName,
       source: 'claude-ai',
@@ -449,6 +462,8 @@ function processImport(
         updatedAt: conv.updated_at,
         eventCount: parsed.eventCount,
         importedAt: new Date().toISOString(),
+        claudeMd,
+        memoryMd,
       },
       turns: parsed.turns,
     });

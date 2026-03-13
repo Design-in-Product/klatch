@@ -372,4 +372,136 @@ describe('extractFromZip — memories', () => {
     expect(result.projects.get('p1')?.documentCount).toBe(3);
     expect(result.projects.get('p2')?.documentCount).toBe(0);
   });
+
+  it('extracts project docs content from object-style docs', async () => {
+    const { extractFromZip } = await import('../import/claude-ai-zip.js');
+    const zip = new AdmZip();
+    zip.addFile('conversations.json', Buffer.from(JSON.stringify([])));
+    zip.addFile('projects.json', Buffer.from(JSON.stringify([
+      {
+        uuid: 'p1', name: 'My Project', docs: [
+          { filename: 'README.md', content: 'Project overview' },
+          { filename: 'ARCH.md', content: 'Architecture notes' },
+        ],
+      },
+    ])));
+
+    const result = extractFromZip(zip.toBuffer());
+    expect(result.projects.get('p1')?.docsContent).toContain('README.md');
+    expect(result.projects.get('p1')?.docsContent).toContain('Project overview');
+    expect(result.projects.get('p1')?.docsContent).toContain('Architecture notes');
+  });
+
+  it('extracts project docs content from string-style docs', async () => {
+    const { extractFromZip } = await import('../import/claude-ai-zip.js');
+    const zip = new AdmZip();
+    zip.addFile('conversations.json', Buffer.from(JSON.stringify([])));
+    zip.addFile('projects.json', Buffer.from(JSON.stringify([
+      { uuid: 'p1', name: 'Simple', docs: ['Doc one', 'Doc two'] },
+    ])));
+
+    const result = extractFromZip(zip.toBuffer());
+    expect(result.projects.get('p1')?.docsContent).toContain('Doc one');
+    expect(result.projects.get('p1')?.docsContent).toContain('Doc two');
+  });
+
+  it('sets docsContent undefined when docs have no text content', async () => {
+    const { extractFromZip } = await import('../import/claude-ai-zip.js');
+    const zip = new AdmZip();
+    zip.addFile('conversations.json', Buffer.from(JSON.stringify([])));
+    zip.addFile('projects.json', Buffer.from(JSON.stringify([
+      { uuid: 'p1', name: 'Empty Docs', docs: [{}, { content: '' }] },
+    ])));
+
+    const result = extractFromZip(zip.toBuffer());
+    expect(result.projects.get('p1')?.docsContent).toBeUndefined();
+  });
+});
+
+// ── claude.ai import: project context injection ─────────────
+
+describe('claude.ai import — project context injection', () => {
+  let app: ReturnType<typeof createApp>;
+
+  beforeEach(() => {
+    app = createApp();
+  });
+
+  it('injects project docs into sourceMetadata as claudeMd', async () => {
+    const zipBuf = makeTestZip({
+      conversations: [
+        { uuid: 'conv-1', name: 'Project Chat', messages: 2, project_uuid: 'proj-1' },
+      ],
+      projects: [
+        { uuid: 'proj-1', name: 'Klatch', docs: [{ filename: 'CLAUDE.md', content: 'Build instructions' }] },
+      ],
+    });
+    const zipPath = writeTestZip('context-inject.zip', zipBuf);
+    try {
+      const res = await app.request('/api/import/claude-ai', jsonReq({ zipPath }));
+      expect(res.status).toBe(201);
+      const body = await res.json() as any;
+
+      // Fetch the channel to check sourceMetadata
+      const chRes = await app.request('/api/channels');
+      const channels = await chRes.json() as any[];
+      const ch = channels.find((c: any) => c.id === body.imported[0].channelId);
+      const meta = JSON.parse(ch.sourceMetadata);
+      expect(meta.claudeMd).toContain('Build instructions');
+    } finally {
+      fs.unlinkSync(zipPath);
+    }
+  });
+
+  it('injects memories into sourceMetadata as memoryMd', async () => {
+    const zipBuf = makeTestZip({
+      conversations: [
+        { uuid: 'conv-1', name: 'Memory Chat', messages: 2 },
+      ],
+      memories: [
+        { uuid: 'm1', content: 'User prefers dark mode' },
+        { uuid: 'm2', content: 'Project uses TypeScript' },
+      ],
+    });
+    const zipPath = writeTestZip('memory-inject.zip', zipBuf);
+    try {
+      const res = await app.request('/api/import/claude-ai', jsonReq({ zipPath }));
+      expect(res.status).toBe(201);
+      const body = await res.json() as any;
+
+      const chRes = await app.request('/api/channels');
+      const channels = await chRes.json() as any[];
+      const ch = channels.find((c: any) => c.id === body.imported[0].channelId);
+      const meta = JSON.parse(ch.sourceMetadata);
+      expect(meta.memoryMd).toContain('User prefers dark mode');
+      expect(meta.memoryMd).toContain('Project uses TypeScript');
+    } finally {
+      fs.unlinkSync(zipPath);
+    }
+  });
+
+  it('does not inject claudeMd for conversations without a project', async () => {
+    const zipBuf = makeTestZip({
+      conversations: [
+        { uuid: 'conv-1', name: 'No Project Chat', messages: 2 },
+      ],
+      projects: [
+        { uuid: 'proj-1', name: 'Klatch', docs: [{ content: 'Should not appear' }] },
+      ],
+    });
+    const zipPath = writeTestZip('no-project-conv.zip', zipBuf);
+    try {
+      const res = await app.request('/api/import/claude-ai', jsonReq({ zipPath }));
+      expect(res.status).toBe(201);
+      const body = await res.json() as any;
+
+      const chRes = await app.request('/api/channels');
+      const channels = await chRes.json() as any[];
+      const ch = channels.find((c: any) => c.id === body.imported[0].channelId);
+      const meta = JSON.parse(ch.sourceMetadata);
+      expect(meta.claudeMd).toBeUndefined();
+    } finally {
+      fs.unlinkSync(zipPath);
+    }
+  });
 });
