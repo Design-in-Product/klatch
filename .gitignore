@@ -6,6 +6,12 @@ dist/
 .env
 .DS_Store
 
+# Database backups
+*.bak
+
+# Research data (export ZIPs and extracted contents)
+research/data-*
+
 # Large demo source files (keep web-optimized versions)
 demo/*.mov
 demo/*.gif
