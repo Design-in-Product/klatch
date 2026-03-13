@@ -5,7 +5,7 @@ import path from 'path';
 import { parseClaudeCodeSession } from '../import/parser.js';
 import { parseClaudeAiConversation } from '../import/claude-ai-parser.js';
 import { extractFromZip } from '../import/claude-ai-zip.js';
-import { importSession, findChannelByOriginalSessionId } from '../db/queries.js';
+import { importSession, findChannelByOriginalSessionId, getImportConflictInfo, countChannelsByOriginalSessionId } from '../db/queries.js';
 import { MODEL_ALIASES, AVAILABLE_MODELS } from '@klatch/shared';
 import type { ModelId } from '@klatch/shared';
 
@@ -44,9 +44,10 @@ const app = new Hono();
  * Returns: 201 with ImportResult, or 400/404/409 on error.
  */
 app.post('/import/claude-code', async (c) => {
-  const { sessionPath, channelName } = await c.req.json<{
+  const { sessionPath, channelName, forceImport } = await c.req.json<{
     sessionPath: string;
     channelName?: string;
+    forceImport?: boolean;
   }>();
 
   if (!sessionPath) {
@@ -83,20 +84,31 @@ app.post('/import/claude-code', async (c) => {
     return c.json({ error: 'Session is empty — no conversation events found' }, 400);
   }
 
-  // Check for duplicate import
-  if (session.sessionId) {
+  // Check for duplicate import (skip if forceImport)
+  if (session.sessionId && !forceImport) {
     const existing = findChannelByOriginalSessionId(session.sessionId);
     if (existing) {
+      const conflict = getImportConflictInfo(existing.id);
       return c.json({
-        error: 'This session has already been imported',
+        error: 'duplicate',
         existingChannelId: existing.id,
         existingChannelName: existing.name,
+        existingMessageCount: conflict.messageCount,
+        hasNewMessages: conflict.hasNewMessages,
+        nativeMessageCount: conflict.nativeMessageCount,
+        sessionId: session.sessionId,
       }, 409);
     }
   }
 
-  // Generate channel name if not provided
-  const name = channelName || generateChannelName(session.cwd, session.firstTimestamp);
+  // Generate channel name, with disambiguation suffix for fork-again imports
+  let name = channelName || generateChannelName(session.cwd, session.firstTimestamp);
+  if (forceImport && session.sessionId) {
+    const existingCount = countChannelsByOriginalSessionId(session.sessionId);
+    if (existingCount > 0) {
+      name = `${name} (${existingCount + 1})`;
+    }
+  }
 
   // Resolve model: map legacy IDs to current ones
   const resolvedModel = resolveModel(session.model);
@@ -198,6 +210,7 @@ app.post('/import/claude-ai', async (c) => {
   const contentType = c.req.header('content-type') || '';
 
   let zipBuffer: Buffer;
+  let forceImport = false;
 
   if (contentType.includes('multipart/form-data')) {
     const formData = await c.req.formData();
@@ -208,14 +221,16 @@ app.post('/import/claude-ai', async (c) => {
     if (!file.name.endsWith('.zip')) {
       return c.json({ error: 'File must be a .zip file' }, 400);
     }
+    forceImport = formData.get('forceImport') === 'true';
     const arrayBuffer = await file.arrayBuffer();
     if (arrayBuffer.byteLength > MAX_IMPORT_SIZE) {
       return c.json({ error: `File too large (${Math.round(arrayBuffer.byteLength / 1024 / 1024)}MB). Maximum is ${MAX_IMPORT_SIZE / 1024 / 1024}MB.` }, 400);
     }
     zipBuffer = Buffer.from(arrayBuffer);
   } else {
-    const body = await c.req.json<{ zipPath: string }>();
+    const body = await c.req.json<{ zipPath: string; forceImport?: boolean }>();
     const { zipPath } = body;
+    forceImport = body.forceImport === true;
     if (!zipPath || !zipPath.endsWith('.zip')) {
       return c.json({ error: 'File must be a .zip file' }, 400);
     }
@@ -271,8 +286,8 @@ app.post('/import/claude-ai', async (c) => {
       continue;
     }
 
-    // Dedup check using the conversation UUID
-    if (parsed.sessionId) {
+    // Dedup check using the conversation UUID (skip if forceImport)
+    if (parsed.sessionId && !forceImport) {
       const existing = findChannelByOriginalSessionId(parsed.sessionId);
       if (existing) {
         skipped.push({
@@ -291,7 +306,15 @@ app.post('/import/claude-ai', async (c) => {
 
     // Build channel name: "ProjectName: ConvName" or just "ConvName" or fallback
     const convName = parsed.slug || `claude.ai — ${parsed.sessionId || 'import'}`;
-    const channelName = projectName ? `${projectName}: ${convName}` : convName;
+    let channelName = projectName ? `${projectName}: ${convName}` : convName;
+
+    // Disambiguate name for fork-again imports
+    if (forceImport && parsed.sessionId) {
+      const existingCount = countChannelsByOriginalSessionId(parsed.sessionId);
+      if (existingCount > 0) {
+        channelName = `${channelName} (${existingCount + 1})`;
+      }
+    }
 
     const result = importSession({
       channelName,

@@ -133,9 +133,38 @@ Fix:
 - Stores `projectUuid` and `projectName` in sourceMetadata for future use
 - All 365 tests pass (295 server + 70 client)
 
+## 12:00 — Plans written for re-import and selective import browser
+
+Wrote `docs/plans/reimport-handling.md` and `docs/plans/selective-import-browser.md`. Assigned:
+- Daedalus → re-import handling
+- Argus → selective import browser Phase 1
+Both awaiting product owner approval.
+
+## 16:57 — Re-import handling implemented
+
+Full implementation of re-import with conflict resolution:
+
+**Server:**
+- `getImportConflictInfo()` query: message count + native message detection (messages without `original_id`)
+- `countChannelsByOriginalSessionId()` query: for disambiguation suffix generation
+- Enriched 409 response: `{ error: 'duplicate', existingChannelId, existingChannelName, existingMessageCount, hasNewMessages, nativeMessageCount, sessionId }`
+- `forceImport` param on both Claude Code and claude.ai import endpoints
+- Auto-suffix `(2)`, `(3)`, etc. for fork-again channel names
+
+**Client:**
+- `ImportConflict` and `ImportCodeResult` types in api/client.ts
+- `importClaudeCodeSession` now returns `{ status: 'success', data } | { status: 'conflict', conflict }` instead of throwing on 409
+- Conflict resolution UI in ImportDialog: amber warning icon, channel info, message count, "messages added since import" warning
+- Three actions: Replace existing (red, calls DELETE then re-imports), Import as new (accent, calls forceImport), Cancel
+- `onChannelDeleted` callback for Replace to update App state
+
+**Tests (419 total = 329 server + 90 client):**
+- 3 new server tests: conflict info fields, forceImport fork-again, suffix incrementing, hasNewMessages detection
+- 6 new client tests: conflict UI display, new messages warning, mode toggle hidden, Replace flow, Import as new flow, Cancel
+
 ## Next
 
-- Commit copy feature + project name fix, push
-- Needs user re-import to verify project name resolution (depends on `project_uuid` field existing on conversation objects)
-- Pending: re-import feature (cancel/overwrite/fork-again)
-- Pending: selective import browser
+- Commit and push re-import feature
+- User to test with fresh claude.ai download (verify project name + re-import flow)
+- Next feature to plan: project knowledge file ingestion from projects.json
+- Argus working on selective import browser (Phase 4)

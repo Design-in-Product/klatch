@@ -7,9 +7,10 @@ import { ImportDialog } from '../components/ImportDialog';
 vi.mock('../api/client', () => ({
   importClaudeCodeSession: vi.fn(),
   importClaudeAiExport: vi.fn(),
+  deleteChannelApi: vi.fn(),
 }));
 
-import { importClaudeCodeSession, importClaudeAiExport } from '../api/client';
+import { importClaudeCodeSession, importClaudeAiExport, deleteChannelApi } from '../api/client';
 
 const defaultProps = {
   isOpen: true,
@@ -20,6 +21,7 @@ const defaultProps = {
 beforeEach(() => {
   vi.mocked(importClaudeCodeSession).mockReset();
   vi.mocked(importClaudeAiExport).mockReset();
+  vi.mocked(deleteChannelApi).mockReset();
   defaultProps.onClose = vi.fn();
   defaultProps.onImported = vi.fn();
 });
@@ -52,12 +54,15 @@ describe('ImportDialog', () => {
   it('calls importClaudeCodeSession on submit', async () => {
     const user = userEvent.setup();
     vi.mocked(importClaudeCodeSession).mockResolvedValue({
-      channelId: 'ch1',
-      channelName: 'test-session',
-      messageCount: 10,
-      artifactCount: 3,
-      source: 'claude-code',
-      duplicate: false,
+      status: 'success',
+      data: {
+        channelId: 'ch1',
+        channelName: 'test-session',
+        messageCount: 10,
+        artifactCount: 3,
+        source: 'claude-code',
+        duplicate: false,
+      },
     });
 
     render(<ImportDialog {...defaultProps} />);
@@ -70,12 +75,15 @@ describe('ImportDialog', () => {
   it('shows success state after successful import', async () => {
     const user = userEvent.setup();
     vi.mocked(importClaudeCodeSession).mockResolvedValue({
-      channelId: 'ch1',
-      channelName: 'test-session',
-      messageCount: 10,
-      artifactCount: 3,
-      source: 'claude-code',
-      duplicate: false,
+      status: 'success',
+      data: {
+        channelId: 'ch1',
+        channelName: 'test-session',
+        messageCount: 10,
+        artifactCount: 3,
+        source: 'claude-code',
+        duplicate: false,
+      },
     });
 
     render(<ImportDialog {...defaultProps} />);
@@ -128,7 +136,7 @@ describe('ImportDialog', () => {
       source: 'claude-code' as const,
       duplicate: false,
     };
-    vi.mocked(importClaudeCodeSession).mockResolvedValue(result);
+    vi.mocked(importClaudeCodeSession).mockResolvedValue({ status: 'success', data: result });
 
     render(<ImportDialog isOpen={true} onClose={onClose} onImported={onImported} />);
     await user.type(screen.getByPlaceholderText(/\.jsonl/), '/path/to/session.jsonl');
@@ -146,12 +154,15 @@ describe('ImportDialog', () => {
   it('passes custom channel name to API when provided', async () => {
     const user = userEvent.setup();
     vi.mocked(importClaudeCodeSession).mockResolvedValue({
-      channelId: 'ch1',
-      channelName: 'my-custom-name',
-      messageCount: 5,
-      artifactCount: 0,
-      source: 'claude-code',
-      duplicate: false,
+      status: 'success',
+      data: {
+        channelId: 'ch1',
+        channelName: 'my-custom-name',
+        messageCount: 5,
+        artifactCount: 0,
+        source: 'claude-code',
+        duplicate: false,
+      },
     });
 
     render(<ImportDialog {...defaultProps} />);
@@ -419,5 +430,147 @@ describe('ImportDialog — claude.ai mode', () => {
 
     expect(screen.getByText('my-export.zip')).toBeInTheDocument();
     expect(screen.getByText('2.0 MB')).toBeInTheDocument();
+  });
+});
+
+// ── Conflict resolution (re-import) ────────────────────────────
+
+describe('ImportDialog — conflict resolution', () => {
+  const conflictData = {
+    error: 'duplicate' as const,
+    existingChannelId: 'ch-existing',
+    existingChannelName: 'Daedalus — 2026-03-07',
+    existingMessageCount: 47,
+    hasNewMessages: false,
+    nativeMessageCount: 0,
+    sessionId: 'sess-123',
+  };
+
+  it('shows conflict UI when import returns duplicate', async () => {
+    const user = userEvent.setup();
+    vi.mocked(importClaudeCodeSession).mockResolvedValue({
+      status: 'conflict',
+      conflict: conflictData,
+    });
+
+    render(<ImportDialog {...defaultProps} />);
+    await user.type(screen.getByPlaceholderText(/\.jsonl/), '/path/to/session.jsonl');
+    await user.click(screen.getByRole('button', { name: 'Import' }));
+
+    await waitFor(() => {
+      expect(screen.getByText('Already imported')).toBeInTheDocument();
+    });
+    expect(screen.getByText('Daedalus — 2026-03-07')).toBeInTheDocument();
+    expect(screen.getByText('47')).toBeInTheDocument();
+    expect(screen.getByText('Replace existing')).toBeInTheDocument();
+    expect(screen.getByText('Import as new')).toBeInTheDocument();
+  });
+
+  it('shows warning when channel has new messages', async () => {
+    const user = userEvent.setup();
+    vi.mocked(importClaudeCodeSession).mockResolvedValue({
+      status: 'conflict',
+      conflict: { ...conflictData, hasNewMessages: true, nativeMessageCount: 5 },
+    });
+
+    render(<ImportDialog {...defaultProps} />);
+    await user.type(screen.getByPlaceholderText(/\.jsonl/), '/path/to/session.jsonl');
+    await user.click(screen.getByRole('button', { name: 'Import' }));
+
+    await waitFor(() => {
+      expect(screen.getByText('Already imported')).toBeInTheDocument();
+    });
+    expect(screen.getByText(/5 messages added since import/)).toBeInTheDocument();
+  });
+
+  it('hides mode toggle during conflict state', async () => {
+    const user = userEvent.setup();
+    vi.mocked(importClaudeCodeSession).mockResolvedValue({
+      status: 'conflict',
+      conflict: conflictData,
+    });
+
+    render(<ImportDialog {...defaultProps} />);
+    await user.type(screen.getByPlaceholderText(/\.jsonl/), '/path/to/session.jsonl');
+    await user.click(screen.getByRole('button', { name: 'Import' }));
+
+    await waitFor(() => {
+      expect(screen.getByText('Already imported')).toBeInTheDocument();
+    });
+    expect(screen.queryByRole('button', { name: 'Claude Code' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: 'claude.ai' })).not.toBeInTheDocument();
+  });
+
+  it('Replace deletes existing and re-imports', async () => {
+    const user = userEvent.setup();
+    vi.mocked(importClaudeCodeSession)
+      .mockResolvedValueOnce({ status: 'conflict', conflict: conflictData })
+      .mockResolvedValueOnce({
+        status: 'success',
+        data: { channelId: 'ch-new', channelName: 'Daedalus — 2026-03-07', messageCount: 47, artifactCount: 0, source: 'claude-code', duplicate: false },
+      });
+    vi.mocked(deleteChannelApi).mockResolvedValue(undefined);
+    const onChannelDeleted = vi.fn();
+
+    render(<ImportDialog {...defaultProps} onChannelDeleted={onChannelDeleted} />);
+    await user.type(screen.getByPlaceholderText(/\.jsonl/), '/path/to/session.jsonl');
+    await user.click(screen.getByRole('button', { name: 'Import' }));
+
+    await waitFor(() => {
+      expect(screen.getByText('Replace existing')).toBeInTheDocument();
+    });
+    await user.click(screen.getByText('Replace existing'));
+
+    await waitFor(() => {
+      expect(screen.getByText('Import successful')).toBeInTheDocument();
+    });
+    expect(deleteChannelApi).toHaveBeenCalledWith('ch-existing');
+    expect(onChannelDeleted).toHaveBeenCalledWith('ch-existing');
+  });
+
+  it('Import as new calls forceImport and shows success', async () => {
+    const user = userEvent.setup();
+    vi.mocked(importClaudeCodeSession)
+      .mockResolvedValueOnce({ status: 'conflict', conflict: conflictData })
+      .mockResolvedValueOnce({
+        status: 'success',
+        data: { channelId: 'ch-fork', channelName: 'Daedalus — 2026-03-07 (2)', messageCount: 47, artifactCount: 0, source: 'claude-code', duplicate: false },
+      });
+
+    render(<ImportDialog {...defaultProps} />);
+    await user.type(screen.getByPlaceholderText(/\.jsonl/), '/path/to/session.jsonl');
+    await user.click(screen.getByRole('button', { name: 'Import' }));
+
+    await waitFor(() => {
+      expect(screen.getByText('Import as new')).toBeInTheDocument();
+    });
+    await user.click(screen.getByText('Import as new'));
+
+    await waitFor(() => {
+      expect(screen.getByText('Import successful')).toBeInTheDocument();
+    });
+    // Second call should have forceImport = true
+    expect(importClaudeCodeSession).toHaveBeenCalledTimes(2);
+    expect(importClaudeCodeSession).toHaveBeenLastCalledWith('/path/to/session.jsonl', undefined, true);
+  });
+
+  it('Cancel from conflict state closes dialog', async () => {
+    const user = userEvent.setup();
+    const onClose = vi.fn();
+    vi.mocked(importClaudeCodeSession).mockResolvedValue({
+      status: 'conflict',
+      conflict: conflictData,
+    });
+
+    render(<ImportDialog isOpen={true} onClose={onClose} onImported={vi.fn()} />);
+    await user.type(screen.getByPlaceholderText(/\.jsonl/), '/path/to/session.jsonl');
+    await user.click(screen.getByRole('button', { name: 'Import' }));
+
+    await waitFor(() => {
+      expect(screen.getByText('Already imported')).toBeInTheDocument();
+    });
+    await user.click(screen.getByRole('button', { name: 'Cancel' }));
+
+    expect(onClose).toHaveBeenCalled();
   });
 });

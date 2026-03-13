@@ -502,3 +502,37 @@ export function findChannelByOriginalSessionId(sessionId: string): Channel | und
   if (!row) return undefined;
   return rowToChannel(row);
 }
+
+/**
+ * Get conflict info for a channel that was previously imported.
+ * Returns message count and whether the user has added new (non-imported) messages.
+ */
+export function getImportConflictInfo(channelId: string): {
+  messageCount: number;
+  nativeMessageCount: number;
+  hasNewMessages: boolean;
+} {
+  const db = getDb();
+  const total = db.prepare(
+    'SELECT COUNT(*) as count FROM messages WHERE channel_id = ?'
+  ).get(channelId) as { count: number };
+  const native = db.prepare(
+    'SELECT COUNT(*) as count FROM messages WHERE channel_id = ? AND original_id IS NULL'
+  ).get(channelId) as { count: number };
+  return {
+    messageCount: total.count,
+    nativeMessageCount: native.count,
+    hasNewMessages: native.count > 0,
+  };
+}
+
+/**
+ * Count how many channels share the same originalSessionId.
+ * Used to generate disambiguation suffixes for fork-again imports.
+ */
+export function countChannelsByOriginalSessionId(sessionId: string): number {
+  const row = getDb()
+    .prepare("SELECT COUNT(*) as count FROM channels WHERE json_extract(source_metadata, '$.originalSessionId') = ?")
+    .get(sessionId) as { count: number };
+  return row.count;
+}

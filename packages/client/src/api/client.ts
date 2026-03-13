@@ -272,15 +272,42 @@ export async function fetchContextFile(
   return res.json();
 }
 
+/** Conflict info returned when a session has already been imported */
+export interface ImportConflict {
+  error: 'duplicate';
+  existingChannelId: string;
+  existingChannelName: string;
+  existingMessageCount: number;
+  hasNewMessages: boolean;
+  nativeMessageCount: number;
+  sessionId: string;
+}
+
+export type ImportCodeResult =
+  | { status: 'success'; data: ImportResponse }
+  | { status: 'conflict'; conflict: ImportConflict };
+
 export async function importClaudeCodeSession(
   sessionPath: string,
-  channelName?: string
-): Promise<ImportResponse> {
+  channelName?: string,
+  forceImport?: boolean
+): Promise<ImportCodeResult> {
   const res = await fetch(`${BASE}/import/claude-code`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ sessionPath, channelName: channelName || undefined }),
+    body: JSON.stringify({
+      sessionPath,
+      channelName: channelName || undefined,
+      forceImport: forceImport || undefined,
+    }),
   });
+  if (res.status === 409) {
+    const body = await res.json();
+    if (body.error === 'duplicate') {
+      return { status: 'conflict', conflict: body as ImportConflict };
+    }
+    throw new Error(body.error || 'Import conflict');
+  }
   if (!res.ok) {
     try {
       const body = await res.json();
@@ -292,5 +319,6 @@ export async function importClaudeCodeSession(
       throw new Error(`Import failed: ${res.statusText}`);
     }
   }
-  return res.json();
+  const data: ImportResponse = await res.json();
+  return { status: 'success', data };
 }

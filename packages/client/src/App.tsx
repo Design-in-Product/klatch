@@ -479,6 +479,11 @@ export default function App() {
           fetchChannels().then((chs) => setChannels(chs));
           setShowImportDialog(false);
         }}
+        onChannelDeleted={(deletedId) => {
+          // Remove replaced channel from state; navigate away if it was active
+          setChannels((prev) => prev.filter((c) => c.id !== deletedId));
+          if (activeChannelId === deletedId) setActiveChannelId('default');
+        }}
       />
     </div>
   );

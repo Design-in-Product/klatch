@@ -1,7 +1,7 @@
 # Plan: Re-import Handling
 
-**Status:** Draft
-**Assignee:** TBD
+**Status:** Implemented
+**Assignee:** Daedalus
 **Roadmap ref:** Step 8¾ core fix — "Re-import"
 
 ## Problem

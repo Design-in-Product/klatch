@@ -1,6 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import './setup.js';
 import { createTestApp } from './app.js';
+import { insertMessage } from '../db/queries.js';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
@@ -83,7 +84,7 @@ describe('POST /api/import/claude-code', () => {
     }
   });
 
-  it('returns 409 for duplicate session import', async () => {
+  it('returns 409 with conflict info for duplicate session import', async () => {
     const sessionPath = path.join(FIXTURES, 'simple-session.jsonl');
 
     // First import should succeed
@@ -93,14 +94,84 @@ describe('POST /api/import/claude-code', () => {
     );
     expect(res1.status).toBe(201);
 
-    // Second import of same session should conflict
+    // Second import of same session should return structured conflict info
     const res2 = await app.request(
       '/api/import/claude-code',
       req('POST', '/api/import/claude-code', { sessionPath })
     );
     expect(res2.status).toBe(409);
     const body = await res2.json();
+    expect(body.error).toBe('duplicate');
     expect(body.existingChannelId).toBeTruthy();
+    expect(body.existingChannelName).toBeTruthy();
+    expect(body.existingMessageCount).toBeGreaterThan(0);
+    expect(body.hasNewMessages).toBe(false);
+    expect(body.nativeMessageCount).toBe(0);
+    expect(body.sessionId).toBe('sess-simple-001');
+  });
+
+  it('allows re-import with forceImport flag (fork-again)', async () => {
+    const sessionPath = path.join(FIXTURES, 'simple-session.jsonl');
+
+    // First import
+    const res1 = await app.request(
+      '/api/import/claude-code',
+      req('POST', '/api/import/claude-code', { sessionPath })
+    );
+    expect(res1.status).toBe(201);
+    const first = await res1.json();
+
+    // Second import with forceImport — should succeed as a new channel
+    const res2 = await app.request(
+      '/api/import/claude-code',
+      req('POST', '/api/import/claude-code', { sessionPath, forceImport: true })
+    );
+    expect(res2.status).toBe(201);
+    const second = await res2.json();
+    expect(second.channelId).not.toBe(first.channelId);
+    // Channel name should have disambiguation suffix
+    expect(second.channelName).toMatch(/\(2\)$/);
+  });
+
+  it('increments suffix for multiple fork-again imports', async () => {
+    const sessionPath = path.join(FIXTURES, 'simple-session.jsonl');
+
+    // Import three times with forceImport
+    await app.request('/api/import/claude-code', req('POST', '/api/import/claude-code', { sessionPath }));
+    await app.request('/api/import/claude-code', req('POST', '/api/import/claude-code', { sessionPath, forceImport: true }));
+    const res3 = await app.request(
+      '/api/import/claude-code',
+      req('POST', '/api/import/claude-code', { sessionPath, forceImport: true })
+    );
+    expect(res3.status).toBe(201);
+    const body = await res3.json();
+    expect(body.channelName).toMatch(/\(3\)$/);
+  });
+
+  it('detects hasNewMessages when native messages exist in channel', async () => {
+    const sessionPath = path.join(FIXTURES, 'simple-session.jsonl');
+
+    // Import the session
+    const res1 = await app.request(
+      '/api/import/claude-code',
+      req('POST', '/api/import/claude-code', { sessionPath })
+    );
+    expect(res1.status).toBe(201);
+    const first = await res1.json();
+
+    // Add a native message to the imported channel
+    insertMessage(first.channelId, 'user', 'A new message');
+
+    // Try to re-import — should show hasNewMessages: true
+    const res2 = await app.request(
+      '/api/import/claude-code',
+      req('POST', '/api/import/claude-code', { sessionPath })
+    );
+    expect(res2.status).toBe(409);
+    const conflict = await res2.json();
+    expect(conflict.hasNewMessages).toBe(true);
+    expect(conflict.nativeMessageCount).toBe(1);
+    expect(conflict.existingMessageCount).toBe(5); // 4 imported + 1 native
   });
 
   it('uses channelName when provided', async () => {

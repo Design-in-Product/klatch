@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
-import { importClaudeCodeSession, importClaudeAiExport } from '../api/client';
-import type { ImportResponse, ClaudeAiImportResponse } from '../api/client';
+import { importClaudeCodeSession, importClaudeAiExport, deleteChannelApi } from '../api/client';
+import type { ImportResponse, ImportConflict, ClaudeAiImportResponse } from '../api/client';
 
 type ImportMode = 'claude-code' | 'claude-ai';
 
@@ -10,9 +10,11 @@ interface Props {
   onImported: (result: ImportResponse) => void;
   /** Called after claude.ai bulk import — refreshes channel list */
   onBulkImported?: () => void;
+  /** Called after a replace operation deletes a channel — removes it from state */
+  onChannelDeleted?: (channelId: string) => void;
 }
 
-export function ImportDialog({ isOpen, onClose, onImported, onBulkImported }: Props) {
+export function ImportDialog({ isOpen, onClose, onImported, onBulkImported, onChannelDeleted }: Props) {
   const [mode, setMode] = useState<ImportMode>('claude-code');
   const [sessionPath, setSessionPath] = useState('');
   const [channelName, setChannelName] = useState('');
@@ -21,6 +23,7 @@ export function ImportDialog({ isOpen, onClose, onImported, onBulkImported }: Pr
   const [error, setError] = useState<string | null>(null);
   const [result, setResult] = useState<ImportResponse | null>(null);
   const [bulkResult, setBulkResult] = useState<ClaudeAiImportResponse | null>(null);
+  const [conflict, setConflict] = useState<ImportConflict | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   if (!isOpen) return null;
@@ -31,13 +34,18 @@ export function ImportDialog({ isOpen, onClose, onImported, onBulkImported }: Pr
     setError(null);
     setResult(null);
     setBulkResult(null);
+    setConflict(null);
 
     try {
       if (mode === 'claude-code') {
         const path = sessionPath.trim();
         if (!path) return;
         const importResult = await importClaudeCodeSession(path, channelName.trim() || undefined);
-        setResult(importResult);
+        if (importResult.status === 'conflict') {
+          setConflict(importResult.conflict);
+        } else {
+          setResult(importResult.data);
+        }
       } else {
         if (!zipFile) return;
         const importResult = await importClaudeAiExport(zipFile);
@@ -45,6 +53,50 @@ export function ImportDialog({ isOpen, onClose, onImported, onBulkImported }: Pr
       }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Import failed');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleReplace = async () => {
+    if (!conflict) return;
+    setLoading(true);
+    setError(null);
+    try {
+      await deleteChannelApi(conflict.existingChannelId);
+      if (onChannelDeleted) onChannelDeleted(conflict.existingChannelId);
+      // Re-import (now no duplicate exists)
+      const path = sessionPath.trim();
+      const importResult = await importClaudeCodeSession(path, channelName.trim() || undefined);
+      if (importResult.status === 'success') {
+        setConflict(null);
+        setResult(importResult.data);
+      } else {
+        // Shouldn't happen after delete, but handle gracefully
+        setError('Unexpected conflict after replace');
+      }
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Replace failed');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleForkAgain = async () => {
+    if (!conflict) return;
+    setLoading(true);
+    setError(null);
+    try {
+      const path = sessionPath.trim();
+      const importResult = await importClaudeCodeSession(path, channelName.trim() || undefined, true);
+      if (importResult.status === 'success') {
+        setConflict(null);
+        setResult(importResult.data);
+      } else {
+        setError('Unexpected conflict during fork-again');
+      }
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Fork-again failed');
     } finally {
       setLoading(false);
     }
@@ -74,6 +126,7 @@ export function ImportDialog({ isOpen, onClose, onImported, onBulkImported }: Pr
     setError(null);
     setResult(null);
     setBulkResult(null);
+    setConflict(null);
     if (fileInputRef.current) fileInputRef.current.value = '';
     onClose();
   };
@@ -83,6 +136,7 @@ export function ImportDialog({ isOpen, onClose, onImported, onBulkImported }: Pr
     setError(null);
     setResult(null);
     setBulkResult(null);
+    setConflict(null);
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -123,7 +177,7 @@ export function ImportDialog({ isOpen, onClose, onImported, onBulkImported }: Pr
         {/* Body */}
         <div className="p-5">
           {/* Mode toggle */}
-          {!result && !bulkResult && (
+          {!result && !bulkResult && !conflict && (
             <div className="flex rounded-lg border border-line overflow-hidden mb-4">
               <button
                 type="button"
@@ -150,7 +204,56 @@ export function ImportDialog({ isOpen, onClose, onImported, onBulkImported }: Pr
             </div>
           )}
 
-          {result ? (
+          {conflict ? (
+            /* Conflict resolution state */
+            <div className="space-y-4">
+              <div className="flex items-center gap-2 text-amber-600 dark:text-amber-400">
+                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
+                </svg>
+                <span className="font-medium">Already imported</span>
+              </div>
+              <div className="text-sm text-secondary space-y-1">
+                <p><span className="text-muted">Channel:</span> {conflict.existingChannelName}</p>
+                <p><span className="text-muted">Messages:</span> {conflict.existingMessageCount}</p>
+                {conflict.hasNewMessages && (
+                  <p className="text-amber-600 dark:text-amber-400 text-xs">
+                    ⚠ {conflict.nativeMessageCount} message{conflict.nativeMessageCount !== 1 ? 's' : ''} added since import
+                  </p>
+                )}
+              </div>
+
+              {error && (
+                <div className="rounded bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 px-3 py-2 text-sm text-red-700 dark:text-red-300">
+                  {error}
+                </div>
+              )}
+
+              <div className="flex flex-col gap-2">
+                <button
+                  onClick={handleReplace}
+                  disabled={loading}
+                  className="w-full rounded bg-red-600 hover:bg-red-700 px-3 py-2 text-sm font-medium text-white disabled:opacity-50 transition-colors"
+                >
+                  {loading ? 'Replacing...' : 'Replace existing'}
+                </button>
+                <button
+                  onClick={handleForkAgain}
+                  disabled={loading}
+                  className="w-full rounded bg-accent hover:bg-accent-hover px-3 py-2 text-sm font-medium text-white disabled:opacity-50 transition-colors"
+                >
+                  {loading ? 'Importing...' : 'Import as new'}
+                </button>
+                <button
+                  onClick={handleReset}
+                  disabled={loading}
+                  className="w-full rounded bg-card border border-line px-3 py-2 text-sm font-medium text-secondary hover:bg-hover disabled:opacity-50 transition-colors"
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          ) : result ? (
             /* Claude Code success state */
             <div className="space-y-4">
               <div className="flex items-center gap-2 text-green-600 dark:text-green-400">

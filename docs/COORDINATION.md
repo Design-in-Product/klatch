@@ -25,14 +25,11 @@ Agents working on this repo use this file as the async handoff protocol.
 
 ### Daedalus (architecture & implementation)
 - **Branch:** `main`
-- **Status:** available — re-import assigned
-- **Last completed:** Copy message button, project name resolution for claude.ai imports, Argus Phase 3 merge. 410 tests (326 server + 84 client).
-- **Next assignment: Re-import handling**
-  - See `docs/plans/reimport-handling.md` for full spec.
-  - Structured 409 response with conflict info → client shows Cancel / Replace / Fork Again.
-  - `forceImport` param for fork-again. Replace = delete + re-import (client-orchestrated).
-  - Server: ~30 lines. Client: ~80 lines. Tests: ~8-10.
-- **Waiting on:** Plan approval from product owner.
+- **Status:** available
+- **Last completed:** Re-import handling (2026-03-12). Enriched 409 with conflict info, forceImport param, conflict resolution UI (Replace/Import as new/Cancel). 419 tests (329 server + 90 client).
+- **Also completed today:** Copy message button, project name resolution for claude.ai imports, Argus Phase 3 merge.
+- **Waiting on:** User testing of re-import + project name with fresh claude.ai download.
+- **Next:** Plan project knowledge file ingestion from projects.json.
 - **Updated:** 2026-03-12
 
 ### Theseus Prime (manual testing & exploration — CLI side)
