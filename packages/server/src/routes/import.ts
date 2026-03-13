@@ -206,7 +206,6 @@ function resolveModel(modelId?: string): ModelId | undefined {
 app.post('/import/claude-ai/preview', async (c) => {
   const contentType = c.req.header('content-type') || '';
   let zipBuffer: Buffer;
-  let forceImport = false;
 
   if (contentType.includes('multipart/form-data')) {
     const formData = await c.req.formData();
@@ -217,16 +216,14 @@ app.post('/import/claude-ai/preview', async (c) => {
     if (!file.name.endsWith('.zip')) {
       return c.json({ error: 'File must be a .zip file' }, 400);
     }
-    forceImport = formData.get('forceImport') === 'true';
     const arrayBuffer = await file.arrayBuffer();
     if (arrayBuffer.byteLength > MAX_IMPORT_SIZE) {
       return c.json({ error: `File too large (${Math.round(arrayBuffer.byteLength / 1024 / 1024)}MB). Maximum is ${MAX_IMPORT_SIZE / 1024 / 1024}MB.` }, 400);
     }
     zipBuffer = Buffer.from(arrayBuffer);
   } else {
-    const body = await c.req.json<{ zipPath: string; forceImport?: boolean }>();
+    const body = await c.req.json<{ zipPath: string }>();
     const { zipPath } = body;
-    forceImport = body.forceImport === true;
     if (!zipPath || !zipPath.endsWith('.zip')) {
       return c.json({ error: 'File must be a .zip file' }, 400);
     }

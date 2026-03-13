@@ -7,11 +7,11 @@ import { ImportDialog } from '../components/ImportDialog';
 vi.mock('../api/client', () => ({
   importClaudeCodeSession: vi.fn(),
   importClaudeAiExport: vi.fn(),
-  deleteChannelApi: vi.fn(),
   previewClaudeAiExport: vi.fn(),
+  deleteChannelApi: vi.fn(),
 }));
 
-import { importClaudeCodeSession, importClaudeAiExport, deleteChannelApi, previewClaudeAiExport } from '../api/client';
+import { importClaudeCodeSession, importClaudeAiExport, previewClaudeAiExport, deleteChannelApi } from '../api/client';
 
 const defaultProps = {
   isOpen: true,
@@ -32,6 +32,7 @@ const mockPreview = {
 beforeEach(() => {
   vi.mocked(importClaudeCodeSession).mockReset();
   vi.mocked(importClaudeAiExport).mockReset();
+  vi.mocked(previewClaudeAiExport).mockReset();
   vi.mocked(deleteChannelApi).mockReset();
   vi.mocked(previewClaudeAiExport).mockReset();
   defaultProps.onClose = vi.fn();

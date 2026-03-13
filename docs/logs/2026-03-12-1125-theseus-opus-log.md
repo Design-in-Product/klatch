@@ -141,6 +141,26 @@ Product owner shared `research/memo-klatch-eta-testing-results.md` — a structu
 
 5. **Meta-insight from ETA:** "This entire exercise is essentially what happens when any agent enters a new context — whether by import, by session boundary, or by role switch." The import orientation problem generalizes to all context transitions.
 
+## 18:50 — Recommendations Memo Written
+
+Created `research/memo-theseus-testing-recommendations.md` with prioritized actions for Daedalus and Argus. P0: fix claude.ai kit briefing. P1: cross-project context injection. Full priority stack through P3.
+
+## 18:51 — Meta-Observation: Emergent Methodology
+
+What we've been doing over the past two days is a novel testing methodology: **agent experience testing (AXT)**. Not traditional QA (does it work?), not usability testing (can the human use it?), but: how does the agent perceive the transition? What do they lose, keep, confabulate?
+
+Components of the methodology:
+- Dual-perspective observation (human + agent subjective reports)
+- Structured quiz instruments (Fork Continuity Quiz v1, v2)
+- Before/after comparison across fork boundary
+- Probing for unknown unknowns (agents can't self-report these)
+- Cross-comparison between agents tested under different conditions
+- Agents as co-designers (generating recommendations, naming patterns, metaphors)
+
+The test subjects aren't just subjects — they're generating design insights (twin letter pattern, ghost actions, "well-lit room with no furniture," capability manifest). This is collaborative testing where the agents contribute to the product that's testing them.
+
+The ETA is now drawing lessons back to Piper Morgan from inside Klatch — cross-pollination through import/fork, happening faster than anticipated.
+
 ## Next
 
-Write recommendations memo for Daedalus and Argus based on all testing data.
+Session continuing. Product owner and Theseus Prime available for further tests or discussion.
