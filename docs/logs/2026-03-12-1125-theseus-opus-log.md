@@ -114,6 +114,33 @@ Product owner notes: this test was contaminated by direct human framing before t
 6. Constraint-as-clarifier observation
 7. "Desk Agent Goes to the Field" as possible blog/Ship title
 
+## 18:45 — ETA Testing Report Review
+
+Product owner shared `research/memo-klatch-eta-testing-results.md` — a structured testing report from the Piper Morgan project's Exploratory Testing Agent (ETA). This is the fourth import test (after Ariadne, Secundus, CIO) and the most methodologically rigorous.
+
+### What This Report Confirms
+
+- Kit briefing **not firing** for claude.ai imports (now confirmed across CIO and ETA — pattern, not fluke)
+- Conversational continuity survives, institutional knowledge doesn't
+- Phantom-limb / ghost actions problem persists
+- Agents cannot self-report unknown unknowns — structured probing required
+
+### What's New
+
+1. **"Well-lit room with good acoustics but no furniture"** — ETA's metaphor for post-import experience. Capability present, substance absent.
+
+2. **Hard data on institutional knowledge loss.** Excellence Flywheel, Weekly Ship, Inchworm Protocol, Assembly Assumption — all core Piper concepts, all completely absent from fork. ETA: "I'd be fabricating if I said more." This is the cross-project context problem with evidence.
+
+3. **Ghost Actions as distinct category.** Different from phantom-limb (knowing you can't). Ghost actions = agent *does* something that looks right (formats a log entry) but produces nothing persistent. More insidious because the "success" is visible in conversation.
+
+4. **Agent-generated kit briefing spec** (lines 157-183). Written by the agent who experienced the gap. Four-tier priority:
+   - P1: Capability delta statement
+   - P2: Capability verification requirement
+   - P3: File operation constraint + mitigation
+   - P4: Context object injection
+
+5. **Meta-insight from ETA:** "This entire exercise is essentially what happens when any agent enters a new context — whether by import, by session boundary, or by role switch." The import orientation problem generalizes to all context transitions.
+
 ## Next
 
-Commit and push. Product owner continuing with further tests.
+Write recommendations memo for Daedalus and Argus based on all testing data.
