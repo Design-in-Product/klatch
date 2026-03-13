@@ -7,10 +7,11 @@ import { ImportDialog } from '../components/ImportDialog';
 vi.mock('../api/client', () => ({
   importClaudeCodeSession: vi.fn(),
   importClaudeAiExport: vi.fn(),
+  previewClaudeAiExport: vi.fn(),
   deleteChannelApi: vi.fn(),
 }));
 
-import { importClaudeCodeSession, importClaudeAiExport, deleteChannelApi } from '../api/client';
+import { importClaudeCodeSession, importClaudeAiExport, previewClaudeAiExport, deleteChannelApi } from '../api/client';
 
 const defaultProps = {
   isOpen: true,
@@ -18,13 +19,40 @@ const defaultProps = {
   onImported: vi.fn(),
 };
 
+/** Standard preview response for tests */
+const mockPreview = {
+  conversations: [
+    { uuid: 'c1', name: 'React Chat', messageCount: 10, createdAt: '', updatedAt: '', alreadyImported: false },
+    { uuid: 'c2', name: 'Python Help', messageCount: 5, createdAt: '', updatedAt: '', alreadyImported: false },
+  ],
+  projects: [],
+  memories: [],
+};
+
 beforeEach(() => {
   vi.mocked(importClaudeCodeSession).mockReset();
   vi.mocked(importClaudeAiExport).mockReset();
+  vi.mocked(previewClaudeAiExport).mockReset();
   vi.mocked(deleteChannelApi).mockReset();
   defaultProps.onClose = vi.fn();
   defaultProps.onImported = vi.fn();
 });
+
+/** Helper: switch to claude.ai mode, upload a file, and wait for preview to load */
+async function uploadZipWithPreview(user: ReturnType<typeof userEvent.setup>, preview = mockPreview) {
+  vi.mocked(previewClaudeAiExport).mockResolvedValue(preview);
+
+  await user.click(screen.getByRole('button', { name: 'claude.ai' }));
+
+  const file = new File(['zip content'], 'export.zip', { type: 'application/zip' });
+  const input = document.querySelector('input[type="file"]') as HTMLInputElement;
+  await user.upload(input, file);
+
+  // Wait for preview to load
+  await waitFor(() => {
+    expect(screen.getByText('export.zip')).toBeInTheDocument();
+  });
+}
 
 describe('ImportDialog', () => {
   it('renders nothing when isOpen is false', () => {
@@ -259,14 +287,11 @@ describe('ImportDialog — claude.ai mode', () => {
     });
 
     render(<ImportDialog {...defaultProps} />);
-    await user.click(screen.getByRole('button', { name: 'claude.ai' }));
+    await uploadZipWithPreview(user);
 
-    // Simulate file selection
-    const file = new File(['zip content'], 'export.zip', { type: 'application/zip' });
-    const input = document.querySelector('input[type="file"]') as HTMLInputElement;
-    await user.upload(input, file);
-
-    await user.click(screen.getByRole('button', { name: 'Import' }));
+    // Click the "Import selected" button
+    const importBtn = screen.getByRole('button', { name: /Import selected/ });
+    await user.click(importBtn);
 
     await waitFor(() => {
       expect(screen.getByText('Import complete')).toBeInTheDocument();
@@ -289,12 +314,8 @@ describe('ImportDialog — claude.ai mode', () => {
     });
 
     render(<ImportDialog {...defaultProps} />);
-    await user.click(screen.getByRole('button', { name: 'claude.ai' }));
-
-    const file = new File(['zip'], 'export.zip', { type: 'application/zip' });
-    const input = document.querySelector('input[type="file"]') as HTMLInputElement;
-    await user.upload(input, file);
-    await user.click(screen.getByRole('button', { name: 'Import' }));
+    await uploadZipWithPreview(user);
+    await user.click(screen.getByRole('button', { name: /Import selected/ }));
 
     await waitFor(() => {
       expect(screen.getByText('Import complete')).toBeInTheDocument();
@@ -315,12 +336,8 @@ describe('ImportDialog — claude.ai mode', () => {
     });
 
     render(<ImportDialog isOpen={true} onClose={vi.fn()} onImported={onImported} />);
-    await user.click(screen.getByRole('button', { name: 'claude.ai' }));
-
-    const file = new File(['zip'], 'export.zip', { type: 'application/zip' });
-    const input = document.querySelector('input[type="file"]') as HTMLInputElement;
-    await user.upload(input, file);
-    await user.click(screen.getByRole('button', { name: 'Import' }));
+    await uploadZipWithPreview(user);
+    await user.click(screen.getByRole('button', { name: /Import selected/ }));
 
     await waitFor(() => {
       expect(screen.getByText('Navigate Me')).toBeInTheDocument();
@@ -343,12 +360,8 @@ describe('ImportDialog — claude.ai mode', () => {
     });
 
     render(<ImportDialog isOpen={true} onClose={vi.fn()} onImported={vi.fn()} onBulkImported={onBulkImported} />);
-    await user.click(screen.getByRole('button', { name: 'claude.ai' }));
-
-    const file = new File(['zip'], 'export.zip', { type: 'application/zip' });
-    const input = document.querySelector('input[type="file"]') as HTMLInputElement;
-    await user.upload(input, file);
-    await user.click(screen.getByRole('button', { name: 'Import' }));
+    await uploadZipWithPreview(user);
+    await user.click(screen.getByRole('button', { name: /Import selected/ }));
 
     await waitFor(() => {
       expect(screen.getByText('Done')).toBeInTheDocument();
@@ -370,12 +383,8 @@ describe('ImportDialog — claude.ai mode', () => {
     });
 
     render(<ImportDialog {...defaultProps} />);
-    await user.click(screen.getByRole('button', { name: 'claude.ai' }));
-
-    const file = new File(['zip'], 'export.zip', { type: 'application/zip' });
-    const input = document.querySelector('input[type="file"]') as HTMLInputElement;
-    await user.upload(input, file);
-    await user.click(screen.getByRole('button', { name: 'Import' }));
+    await uploadZipWithPreview(user);
+    await user.click(screen.getByRole('button', { name: /Import selected/ }));
 
     await waitFor(() => {
       expect(screen.getByText('Import complete')).toBeInTheDocument();
@@ -391,12 +400,8 @@ describe('ImportDialog — claude.ai mode', () => {
     vi.mocked(importClaudeAiExport).mockRejectedValue(new Error('Invalid ZIP file'));
 
     render(<ImportDialog {...defaultProps} />);
-    await user.click(screen.getByRole('button', { name: 'claude.ai' }));
-
-    const file = new File(['zip'], 'export.zip', { type: 'application/zip' });
-    const input = document.querySelector('input[type="file"]') as HTMLInputElement;
-    await user.upload(input, file);
-    await user.click(screen.getByRole('button', { name: 'Import' }));
+    await uploadZipWithPreview(user);
+    await user.click(screen.getByRole('button', { name: /Import selected/ }));
 
     await waitFor(() => {
       expect(screen.getByText('Invalid ZIP file')).toBeInTheDocument();
@@ -408,28 +413,234 @@ describe('ImportDialog — claude.ai mode', () => {
     vi.mocked(importClaudeAiExport).mockReturnValue(new Promise(() => {}));
 
     render(<ImportDialog {...defaultProps} />);
+    await uploadZipWithPreview(user);
+    await user.click(screen.getByRole('button', { name: /Import selected/ }));
+
+    expect(screen.getByText('Importing...')).toBeInTheDocument();
+  });
+
+  it('shows file name and size after ZIP selection with preview', async () => {
+    const user = userEvent.setup();
+    render(<ImportDialog {...defaultProps} />);
+    await uploadZipWithPreview(user);
+
+    expect(screen.getByText('export.zip')).toBeInTheDocument();
+  });
+});
+
+// ── Selective import browse UI ──────────────────────────────
+
+describe('ImportDialog — selective import browse UI', () => {
+  it('shows conversation list after file selection', async () => {
+    const user = userEvent.setup();
+    render(<ImportDialog {...defaultProps} />);
+    await uploadZipWithPreview(user);
+
+    expect(screen.getByText('React Chat')).toBeInTheDocument();
+    expect(screen.getByText('Python Help')).toBeInTheDocument();
+    expect(screen.getByText(/10 messages/)).toBeInTheDocument();
+    expect(screen.getByText(/5 messages/)).toBeInTheDocument();
+  });
+
+  it('pre-selects all non-imported conversations', async () => {
+    const user = userEvent.setup();
+    render(<ImportDialog {...defaultProps} />);
+    await uploadZipWithPreview(user);
+
+    const checkboxes = screen.getAllByRole('checkbox');
+    expect(checkboxes).toHaveLength(2);
+    expect(checkboxes[0]).toBeChecked();
+    expect(checkboxes[1]).toBeChecked();
+  });
+
+  it('shows "Import selected (N)" button with count', async () => {
+    const user = userEvent.setup();
+    render(<ImportDialog {...defaultProps} />);
+    await uploadZipWithPreview(user);
+
+    expect(screen.getByRole('button', { name: 'Import selected (2)' })).toBeInTheDocument();
+  });
+
+  it('updates count when toggling checkboxes', async () => {
+    const user = userEvent.setup();
+    render(<ImportDialog {...defaultProps} />);
+    await uploadZipWithPreview(user);
+
+    // Uncheck one
+    const checkboxes = screen.getAllByRole('checkbox');
+    await user.click(checkboxes[0]);
+
+    expect(screen.getByRole('button', { name: 'Import selected (1)' })).toBeInTheDocument();
+  });
+
+  it('disables import when no conversations are selected', async () => {
+    const user = userEvent.setup();
+    render(<ImportDialog {...defaultProps} />);
+    await uploadZipWithPreview(user);
+
+    // Uncheck all
+    const checkboxes = screen.getAllByRole('checkbox');
+    await user.click(checkboxes[0]);
+    await user.click(checkboxes[1]);
+
+    const importBtn = screen.getByRole('button', { name: /Import selected \(0\)/ });
+    expect(importBtn).toBeDisabled();
+  });
+
+  it('shows already-imported conversations as grayed with label', async () => {
+    const user = userEvent.setup();
+    render(<ImportDialog {...defaultProps} />);
+
+    const previewWithDup = {
+      ...mockPreview,
+      conversations: [
+        { uuid: 'c1', name: 'Already Here', messageCount: 10, createdAt: '', updatedAt: '', alreadyImported: true, existingChannelId: 'ch-old' },
+        { uuid: 'c2', name: 'New One', messageCount: 5, createdAt: '', updatedAt: '', alreadyImported: false },
+      ],
+    };
+    await uploadZipWithPreview(user, previewWithDup);
+
+    expect(screen.getByText('(already imported)')).toBeInTheDocument();
+    // Already imported checkbox should be disabled and unchecked
+    const checkboxes = screen.getAllByRole('checkbox');
+    expect(checkboxes[0]).toBeDisabled();
+    expect(checkboxes[0]).not.toBeChecked();
+    // New one should be checked
+    expect(checkboxes[1]).toBeChecked();
+  });
+
+  it('passes selectedConversationIds to import API', async () => {
+    const user = userEvent.setup();
+    vi.mocked(importClaudeAiExport).mockResolvedValue({
+      imported: [{ channelId: 'ch1', channelName: 'React Chat', messageCount: 10, artifactCount: 0, conversationId: 'c1' }],
+      skipped: [],
+      totalImported: 1,
+      totalSkipped: 0,
+    });
+
+    render(<ImportDialog {...defaultProps} />);
+    await uploadZipWithPreview(user);
+
+    // Uncheck second conversation
+    const checkboxes = screen.getAllByRole('checkbox');
+    await user.click(checkboxes[1]);
+
+    await user.click(screen.getByRole('button', { name: 'Import selected (1)' }));
+
+    await waitFor(() => {
+      expect(importClaudeAiExport).toHaveBeenCalled();
+    });
+    // Should pass only the selected ID
+    const callArgs = vi.mocked(importClaudeAiExport).mock.calls[0];
+    expect(callArgs[1]).toEqual(['c1']);
+  });
+
+  it('shows Select all / Deselect all toggle', async () => {
+    const user = userEvent.setup();
+    render(<ImportDialog {...defaultProps} />);
+    await uploadZipWithPreview(user);
+
+    // All selected → shows "Deselect all"
+    expect(screen.getByText('Deselect all')).toBeInTheDocument();
+
+    // Click deselect all
+    await user.click(screen.getByText('Deselect all'));
+
+    // Now shows "Select all"
+    expect(screen.getByText('Select all')).toBeInTheDocument();
+    const checkboxes = screen.getAllByRole('checkbox');
+    expect(checkboxes[0]).not.toBeChecked();
+    expect(checkboxes[1]).not.toBeChecked();
+
+    // Click select all
+    await user.click(screen.getByText('Select all'));
+    expect(checkboxes[0]).toBeChecked();
+    expect(checkboxes[1]).toBeChecked();
+  });
+
+  it('shows preview loading state', async () => {
+    const user = userEvent.setup();
+    // Never-resolving preview
+    vi.mocked(previewClaudeAiExport).mockReturnValue(new Promise(() => {}));
+
+    render(<ImportDialog {...defaultProps} />);
     await user.click(screen.getByRole('button', { name: 'claude.ai' }));
 
     const file = new File(['zip'], 'export.zip', { type: 'application/zip' });
     const input = document.querySelector('input[type="file"]') as HTMLInputElement;
     await user.upload(input, file);
-    await user.click(screen.getByRole('button', { name: 'Import' }));
 
-    expect(screen.getByText('Importing...')).toBeInTheDocument();
+    expect(screen.getByText('Loading preview...')).toBeInTheDocument();
   });
 
-  it('shows file name and size after ZIP selection', async () => {
+  it('shows preview error when preview fails', async () => {
     const user = userEvent.setup();
+    vi.mocked(previewClaudeAiExport).mockRejectedValue(new Error('Corrupt ZIP'));
+
     render(<ImportDialog {...defaultProps} />);
     await user.click(screen.getByRole('button', { name: 'claude.ai' }));
 
-    const content = new Uint8Array(2 * 1024 * 1024); // 2MB
-    const file = new File([content], 'my-export.zip', { type: 'application/zip' });
+    const file = new File(['zip'], 'export.zip', { type: 'application/zip' });
     const input = document.querySelector('input[type="file"]') as HTMLInputElement;
     await user.upload(input, file);
 
-    expect(screen.getByText('my-export.zip')).toBeInTheDocument();
-    expect(screen.getByText('2.0 MB')).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.getByText('Corrupt ZIP')).toBeInTheDocument();
+    });
+  });
+
+  it('shows project info line when projects are present', async () => {
+    const user = userEvent.setup();
+    render(<ImportDialog {...defaultProps} />);
+
+    const previewWithProjects = {
+      ...mockPreview,
+      projects: [
+        { uuid: 'p1', name: 'My Project', documentCount: 3 },
+      ],
+    };
+    await uploadZipWithPreview(user, previewWithProjects);
+
+    expect(screen.getByText(/1 project with knowledge docs/)).toBeInTheDocument();
+  });
+
+  it('shows memories info line when memories are present', async () => {
+    const user = userEvent.setup();
+    render(<ImportDialog {...defaultProps} />);
+
+    const previewWithMemories = {
+      ...mockPreview,
+      memories: [
+        { uuid: 'm1', content: 'Remember this', createdAt: '' },
+        { uuid: 'm2', content: 'And this', createdAt: '' },
+      ],
+    };
+    await uploadZipWithPreview(user, previewWithMemories);
+
+    expect(screen.getByText(/2 memories/)).toBeInTheDocument();
+  });
+
+  it('shows conversation header with count', async () => {
+    const user = userEvent.setup();
+    render(<ImportDialog {...defaultProps} />);
+    await uploadZipWithPreview(user);
+
+    expect(screen.getByText('Conversations (2)')).toBeInTheDocument();
+  });
+
+  it('shows project name prefix on conversations that belong to a project', async () => {
+    const user = userEvent.setup();
+    render(<ImportDialog {...defaultProps} />);
+
+    const previewWithProject = {
+      ...mockPreview,
+      conversations: [
+        { uuid: 'c1', name: 'Architecture Chat', messageCount: 10, createdAt: '', updatedAt: '', alreadyImported: false, projectName: 'Klatch' },
+      ],
+    };
+    await uploadZipWithPreview(user, previewWithProject);
+
+    expect(screen.getByText(/Klatch: Architecture Chat/)).toBeInTheDocument();
   });
 });
 

@@ -196,21 +196,16 @@ function resolveModel(modelId?: string): ModelId | undefined {
 }
 
 /**
- * POST /import/claude-ai
+ * POST /import/claude-ai/preview
  *
- * Import conversations from a claude.ai email export ZIP file.
- * Supports both multipart file upload and JSON body with file path.
+ * Preview a claude.ai export ZIP — returns metadata about conversations,
+ * projects, and memories without importing anything.
  *
- * Multipart: Send ZIP as "file" field in multipart/form-data.
- * JSON: { zipPath: string } — for testing/CLI use.
- *
- * Returns: 201 with { imported, skipped, totalImported, totalSkipped }
+ * Returns: 200 with { conversations, projects, memories }
  */
-app.post('/import/claude-ai', async (c) => {
+app.post('/import/claude-ai/preview', async (c) => {
   const contentType = c.req.header('content-type') || '';
-
   let zipBuffer: Buffer;
-  let forceImport = false;
 
   if (contentType.includes('multipart/form-data')) {
     const formData = await c.req.formData();
@@ -221,20 +216,17 @@ app.post('/import/claude-ai', async (c) => {
     if (!file.name.endsWith('.zip')) {
       return c.json({ error: 'File must be a .zip file' }, 400);
     }
-    forceImport = formData.get('forceImport') === 'true';
     const arrayBuffer = await file.arrayBuffer();
     if (arrayBuffer.byteLength > MAX_IMPORT_SIZE) {
       return c.json({ error: `File too large (${Math.round(arrayBuffer.byteLength / 1024 / 1024)}MB). Maximum is ${MAX_IMPORT_SIZE / 1024 / 1024}MB.` }, 400);
     }
     zipBuffer = Buffer.from(arrayBuffer);
   } else {
-    const body = await c.req.json<{ zipPath: string; forceImport?: boolean }>();
+    const body = await c.req.json<{ zipPath: string }>();
     const { zipPath } = body;
-    forceImport = body.forceImport === true;
     if (!zipPath || !zipPath.endsWith('.zip')) {
       return c.json({ error: 'File must be a .zip file' }, 400);
     }
-    // Expand ~ and validate path
     const expandedZipPath = validateImportPath(expandHome(zipPath));
     if (!expandedZipPath) {
       return c.json({ error: 'Invalid file path' }, 400);
@@ -249,7 +241,126 @@ app.post('/import/claude-ai', async (c) => {
     zipBuffer = fs.readFileSync(expandedZipPath);
   }
 
-  // Extract conversations and projects from ZIP
+  let exportData;
+  try {
+    exportData = extractFromZip(zipBuffer);
+  } catch {
+    return c.json({ error: 'Invalid ZIP file' }, 400);
+  }
+
+  const { conversations: conversationFiles, projects, memories } = exportData;
+
+  // Build conversation previews with dedup detection
+  const conversations = conversationFiles.map(({ conversation }) => {
+    const conv = conversation as {
+      uuid?: string; name?: string; created_at?: string; updated_at?: string;
+      project_uuid?: string; chat_messages?: unknown[];
+    };
+
+    const uuid = conv.uuid || '';
+    const existing = uuid ? findChannelByOriginalSessionId(uuid) : undefined;
+    const projectName = conv.project_uuid ? projects.get(conv.project_uuid)?.name : undefined;
+
+    return {
+      uuid,
+      name: conv.name || 'Untitled',
+      messageCount: Array.isArray(conv.chat_messages) ? conv.chat_messages.length : 0,
+      projectUuid: conv.project_uuid,
+      projectName,
+      createdAt: conv.created_at || '',
+      updatedAt: conv.updated_at || '',
+      alreadyImported: !!existing,
+      existingChannelId: existing?.id,
+    };
+  });
+
+  // Build project list
+  const projectList = Array.from(projects.values()).map((p) => ({
+    uuid: p.uuid,
+    name: p.name,
+    documentCount: p.documentCount || 0,
+  }));
+
+  return c.json({
+    conversations,
+    projects: projectList,
+    memories: memories.map((m) => ({
+      uuid: m.uuid,
+      content: m.content.length > 200 ? m.content.slice(0, 200) + '...' : m.content,
+      createdAt: m.createdAt || '',
+    })),
+  }, 200);
+});
+
+/**
+ * POST /import/claude-ai
+ *
+ * Import conversations from a claude.ai email export ZIP file.
+ * Supports both multipart file upload and JSON body with file path.
+ *
+ * Multipart: Send ZIP as "file" field in multipart/form-data.
+ * JSON: { zipPath: string, selectedConversationIds?: string[] } — for testing/CLI use.
+ *
+ * Optional: selectedConversationIds — if provided, only import matching UUIDs.
+ * Omit to import all (backward compatible).
+ *
+ * Returns: 201 with { imported, skipped, totalImported, totalSkipped }
+ */
+app.post('/import/claude-ai', async (c) => {
+  // Extract selectedConversationIds from JSON body (if present) before reading ZIP
+  let selectedConversationIds: string[] | undefined;
+  const contentType = c.req.header('content-type') || '';
+  if (contentType.includes('multipart/form-data')) {
+    // For multipart, selectedConversationIds comes as a form field
+    const formData = await c.req.formData();
+    const file = formData.get('file');
+    if (!file || !(file instanceof File)) {
+      return c.json({ error: 'No file uploaded. Send a ZIP file as "file" in multipart form data.' }, 400);
+    }
+    if (!file.name.endsWith('.zip')) {
+      return c.json({ error: 'File must be a .zip file' }, 400);
+    }
+    const arrayBuffer = await file.arrayBuffer();
+    if (arrayBuffer.byteLength > MAX_IMPORT_SIZE) {
+      return c.json({ error: `File too large (${Math.round(arrayBuffer.byteLength / 1024 / 1024)}MB). Maximum is ${MAX_IMPORT_SIZE / 1024 / 1024}MB.` }, 400);
+    }
+    const selectionField = formData.get('selectedConversationIds');
+    if (selectionField && typeof selectionField === 'string') {
+      try {
+        selectedConversationIds = JSON.parse(selectionField);
+      } catch { /* ignore malformed */ }
+    }
+
+    return processImport(c, Buffer.from(arrayBuffer), selectedConversationIds);
+  } else {
+    const body = await c.req.json<{ zipPath?: string; selectedConversationIds?: string[] }>();
+    selectedConversationIds = body.selectedConversationIds;
+    const zipPath = body.zipPath;
+    if (!zipPath || !zipPath.endsWith('.zip')) {
+      return c.json({ error: 'File must be a .zip file' }, 400);
+    }
+    const expandedZipPath = validateImportPath(expandHome(zipPath));
+    if (!expandedZipPath) {
+      return c.json({ error: 'Invalid file path' }, 400);
+    }
+    if (!fs.existsSync(expandedZipPath)) {
+      return c.json({ error: 'File not found' }, 404);
+    }
+    const stat = fs.statSync(expandedZipPath);
+    if (stat.size > MAX_IMPORT_SIZE) {
+      return c.json({ error: `File too large (${Math.round(stat.size / 1024 / 1024)}MB). Maximum is ${MAX_IMPORT_SIZE / 1024 / 1024}MB.` }, 400);
+    }
+    return processImport(c, fs.readFileSync(expandedZipPath), selectedConversationIds);
+  }
+});
+
+/** Shared import logic for the claude-ai endpoint */
+function processImport(
+  c: any,
+  zipBuffer: Buffer,
+  selectedConversationIds?: string[],
+  forceImport = false,
+) {
   let exportData;
   try {
     exportData = extractFromZip(zipBuffer);
@@ -262,6 +373,9 @@ app.post('/import/claude-ai', async (c) => {
   if (conversationFiles.length === 0) {
     return c.json({ error: 'ZIP contains no conversations' }, 400);
   }
+
+  // Build selection set for filtering (if provided)
+  const selectionSet = selectedConversationIds ? new Set(selectedConversationIds) : null;
 
   const imported: Array<{
     channelId: string;
@@ -277,6 +391,13 @@ app.post('/import/claude-ai', async (c) => {
   }> = [];
 
   for (const { conversation } of conversationFiles) {
+    const conv = conversation as { uuid?: string; name?: string; created_at?: string; updated_at?: string; project_uuid?: string };
+
+    // Skip conversations not in the selection set (if filtering)
+    if (selectionSet && conv.uuid && !selectionSet.has(conv.uuid)) {
+      continue;
+    }
+
     const parsed = parseClaudeAiConversation(conversation);
 
     if (parsed.turns.length === 0) {
@@ -298,8 +419,6 @@ app.post('/import/claude-ai', async (c) => {
         continue;
       }
     }
-
-    const conv = conversation as { uuid?: string; name?: string; created_at?: string; updated_at?: string; project_uuid?: string };
 
     // Resolve project name from projects.json if the conversation belongs to a project
     const projectName = conv.project_uuid ? projects.get(conv.project_uuid)?.name : undefined;
@@ -338,8 +457,8 @@ app.post('/import/claude-ai', async (c) => {
     });
   }
 
-  // All duplicates → 409
-  if (imported.length === 0 && skipped.every((s) => s.reason === 'duplicate')) {
+  // All duplicates → 409 (only when there are actual skipped duplicates)
+  if (imported.length === 0 && skipped.length > 0 && skipped.every((s) => s.reason === 'duplicate')) {
     return c.json({
       error: 'All conversations already imported',
       imported: [],
@@ -359,6 +478,6 @@ app.post('/import/claude-ai', async (c) => {
     totalImported: imported.length,
     totalSkipped: skipped.length,
   }, 201);
-});
+}
 
 export const importRoutes = app;

@@ -11,17 +11,17 @@ Agents working on this repo use this file as the async handoff protocol.
 ## Status board
 
 ### Argus (quality & test infrastructure)
-- **Branch:** TBD (new branch from main)
-- **Status:** available — Phase 4 assigned
-- **Last completed:** Phase 3 merged (2026-03-12). 410 tests total (326 server + 84 client).
-- **Phase 4 assignment: Selective import browser (Phase 1)**
-  - See `docs/plans/selective-import-browser.md` for full spec.
-  - **4a — ZIP preview endpoint:** `POST /api/import/claude-ai/preview` — accepts ZIP, returns metadata (conversations with counts + dedup status, projects with doc counts, memories). No DB writes.
-  - **4b — Selective import filter:** Add optional `selectedConversationIds: string[]` to `POST /import/claude-ai`. If provided, only import matching UUIDs. Backward compatible (omit = import all).
-  - **4c — Browse UI:** Rework ImportDialog claude.ai flow: ZIP upload → preview panel with checkboxes → selective import. Show already-imported conversations as grayed out.
-  - **4d — Tests:** Preview endpoint, selective filter, UI checkboxes, backward compat.
-- **Waiting on:** Plan approval from product owner.
-- **Updated:** 2026-03-12
+- **Branch:** `claude/audit-and-planning-xn2w7`
+- **Status:** review — Phase 4 complete
+- **Last completed:** Phase 4 (2026-03-13). 440 tests total (342 server + 98 client).
+- **Phase 4 delivered: Selective import browser (Phase 1)**
+  - **4a — ZIP preview endpoint:** `POST /api/import/claude-ai/preview` — returns conversation metadata (name, message count, dedup status, project association), project info with doc counts, and memories (truncated). No DB writes.
+  - **4b — Selective import filter:** `selectedConversationIds: string[]` on `POST /import/claude-ai`. Backward compatible (omit = import all). Also fixed edge case: empty `.every()` on skipped array was incorrectly returning 409 for empty selections.
+  - **4c — Browse UI:** Reworked ImportDialog claude.ai flow: ZIP upload → auto-preview → browse panel with checkboxes (select/deselect all, already-imported grayed out, project name prefixes) → "Import selected (N)" button. Projects and memories shown as info-only lines.
+  - **4d — Tests:** 17 new server tests (preview endpoint, selective filter, memories extraction, project doc counts). 15 new + updated client tests (browse UI, checkboxes, toggle all, dedup display, preview loading/error, project prefix).
+  - Also extended ZIP extractor to extract `memories.json` and project `documentCount`.
+- **Waiting on:** Review/merge.
+- **Updated:** 2026-03-13
 
 ### Daedalus (architecture & implementation)
 - **Branch:** `main`
