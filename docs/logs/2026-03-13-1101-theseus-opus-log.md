@@ -59,6 +59,34 @@ Product owner shared three screenshots of the current Klatch UI showing the clau
 
 **Product owner confirms:** Import flow is "quite slick." Kit briefing appears to be fixed for claude.ai imports (Hermes reported clean system prompt transition). Daedalus likely fixed between CIO/ETA tests and now.
 
+## 11:09 — Daedalus Response Review + Synthesis Memo
+
+Reviewed Daedalus's session log (2026-03-13). Key additions:
+- `projects.json` contains `prompt_template` — full project system prompt available for injection
+- FK workaround: user-driven association during selective import (project dropdown per conversation)
+- Kit briefing confirmed firing for both sources via code audit
+- Model gap strategy: accept limitation, offer manual override during import
+
+Wrote synthesis memo: `docs/mail/memo-from-theseus-to-team-synthesis-and-next-steps.md`
+- Consolidated all testing findings (5 agents, 2 import paths, 2 kit conditions)
+- Recommended priority stack: P0 (clean re-test), P1 (project context + model selection), P2 (memories.json, timestamps, types), P3 (grouping, round-trip, twin letter)
+- Documented AXT methodology and instruments
+- Posed four open questions for group discussion
+
+## 11:23 — Product Owner Feedback on Synthesis
+
+**Project names:** Confirmed available in `projects.json` (extracted at `claude-ai-zip.ts:66`).
+
+**`prompt_template`:** NOT yet being extracted from projects. `ProjectInfo` interface only has `uuid`, `name`, `documentCount`. Needs small extension to grab `proj.prompt_template`.
+
+**Model selection UX (product owner direction):**
+- Default model dropdown at top of import dialog (default Opus)
+- Per-conversation override in selective browser
+- No timestamp-based inference — accept the limitation cleanly
+- Product owner notes: "some people may generally want sonnet" — the default dropdown handles this
+
+Updated synthesis memo with these findings.
+
 ## Next
 
-Discuss schema findings and formalize interchange methods with product owner.
+Commit and push. Team evaluates synthesis memo.
