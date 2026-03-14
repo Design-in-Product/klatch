@@ -6,6 +6,41 @@ Format follows [Keep a Changelog](https://keepachangelog.com/). Versions corresp
 
 ---
 
+## [0.8.5] — 2026-03-14
+
+### Step 8¾: Import Refinements
+
+Closes the fidelity gaps that the Theseus/Ariadne fork test revealed. Imported conversations now carry their full project context, and forked channels orient themselves correctly. The biggest release since Step 8 shipped — tests nearly doubled (266 → 493).
+
+### Added
+- **Project context injection (8¾a)**: First-class `projects` table. claude.ai imports auto-create projects from `projects.json` with prompt templates and knowledge docs. Claude Code imports create projects by `cwd` with CLAUDE.md and MEMORY.md content. 4-layer system prompt assembly: kit briefing → project instructions → channel prompt → entity prompt. Project API (full CRUD). `findOrCreateProject` idempotent by source identity.
+- **Kit briefing verification (8¾b)**: Theseus Prime confirmed 0% phantom tool rate across all fork continuity tests. Kit briefing correctly orients imported conversations — agents know they're in Klatch without tool access.
+- **claude.ai re-branching (8¾c)**: Already-imported conversations are now selectable for re-import. Visual states show "(re-branch)" vs "(already imported)". Submit button shows re-branch count. `forceImport` flag bypasses dedup, creates new channel with disambiguation suffix.
+- **Claude Code session browser (8¾d)**: Scan `~/.claude/projects/` to discover importable sessions. Preview panel with message counts, timestamps, and import status. Multi-select import with progress tracking.
+- **Model detection gaps documentation (8¾e)**: Documented that claude.ai exports contain no model info at any level. Decision: accept limitation, default to channel model.
+- **Agent Experience Testing (AXT) research**: Fork Continuity Quiz v3, three-factor fidelity model (project context × compaction loss × knowledge location), 4-level fidelity framework.
+- **memories.json char array fix**: Detects and joins character arrays (`["H","e","l","l","o"]` → `"Hello"`) in project memories. Bug discovered during Theseus Day 4 testing.
+- **Project knowledge doc extraction**: Extracts and concatenates text from project knowledge documents in claude.ai exports.
+- **Kit briefing deduplication**: CLAUDE.md content moves to project layer for linked channels; stays as fallback for legacy imports. No double-injection.
+
+### Changed
+- Import dialog updated: projects show "(instructions will be imported)", memories show "(included in project context)".
+- System prompt now 4-layer instead of 2-layer (kit briefing and project layers added).
+- Project instructions limit bumped to 32K characters.
+- GitHub issue #5 (Step 8¾) closed with all criteria met.
+
+### Technical
+- 493 tests passing (388 server + 105 client). 227 new tests since v0.8.2.
+- New tables: `projects` (id, name, instructions, source, source_metadata), `channels.project_id` FK.
+- New routes: `GET/POST/PATCH/DELETE /api/projects`, project CRUD and channel linking.
+- New queries: `findOrCreateProject()`, `getProjectForChannel()`, `setChannelProject()`, full project CRUD.
+- `buildSystemPrompt()` updated for 4-layer assembly with project lookup.
+- `extractFromZip()` now extracts projects, memories, and project memories from claude.ai exports.
+- `joinIfCharArray()` utility for memories.json char array bug.
+- Multi-agent team: Daedalus (architecture), Argus (quality, 4 test phases), Theseus Prime (AXT), Ariadne (Klatch-side), Hermes (research), Calliope (writing).
+
+---
+
 ## [0.8.2] — 2026-03-11
 
 ### Step 8 Complete: Import & Unify

@@ -101,40 +101,45 @@ This was the first step that makes Klatch more than a chat UI — it's now a pla
 - Stats UI card in channel settings (message count, tool calls, top tools)
 - 266 tests passing (260 server + 6 client). See `docs/STEP8-RETROSPECTIVE.md` for full retrospective.
 
----
-
-## Next Steps (concrete, actionable)
-
-### Step 8¾: Import refinements
+### Step 8¾: Import refinements ✓
 **Dimension: continuity fidelity.** Close the gaps that the Theseus/Ariadne fork test revealed.
 
-Manual testing (Theseus Prime + Ariadne) identified four fidelity levels for imported conversations. Narrative knowledge survives well; environmental and instructional knowledge degrades silently. These fixes address the gaps, ordered by impact. See `docs/logs/` for full test findings.
+Manual testing (Theseus Prime + Ariadne) identified four fidelity levels for imported conversations. Narrative knowledge survives well; environmental and instructional knowledge degrades silently. These fixes address the gaps. See `docs/logs/` for full test findings.
 
 **Core fixes (v0.8.5):**
-- **Kit briefing** ✅: On first message to a forked channel, inject orientation context: "You are now continuing in Klatch. You have conversation history but no tool access." Prevents phantom-capability confusion — the single highest-impact fix per Ariadne's report.
-- **CLAUDE.md + MEMORY.md capture** ✅: At import time, read `CLAUDE.md` from `cwd` and `MEMORY.md` from `~/.claude/projects/<cwd>/memory/`. Store in `source_metadata`. Inject into system prompt via kit briefing. Restores instructional fidelity that's currently lost on import.
-- **Fork marker** ✅: Visual boundary between imported history and new conversation ("Continued in Klatch — Mar 11, 2026"). Makes the transition visible to the human.
-- **Compaction summary misattribution** ✅: Verified not a bug — compaction summaries are already filtered by `isHumanTurnBoundary()` and never become messages. Added documentation comment.
-- **Re-import**: When importing a session that already exists, offer cancel / overwrite / fork-again instead of hard 409 block. Essential for iterative testing and for sessions that grow over time.
+- **Kit briefing** ✅: Orientation context injected into system prompt for imported channels. 0% phantom tool rate confirmed by Theseus testing.
+- **CLAUDE.md + MEMORY.md capture** ✅: Project context files captured at import time, injected via 4-layer system prompt assembly.
+- **Fork marker** ✅: Visual boundary between imported history and new conversation.
+- **Compaction summary misattribution** ✅: Verified not a bug — documented.
+- **Re-branching** ✅: Already-imported conversations selectable for re-import with visual states and forceImport flag.
 
-**Additional fixes:**
-- **isMeta event filtering**: hook feedback, skill injections, and image references (`isMeta: true`) should be filtered during import or rendered distinctly
-- **Import error messaging**: client-side error display for failed imports (currently generic)
-- **Copy message turn**: copy button on message bubbles, not just code blocks
-- **Selective import browser**: After opening a ZIP or scanning a directory, show a preview of all contents — conversations, knowledge files, projects — and let the user pick what to import. Supports both claude.ai ZIPs (conversations + project docs + memories) and Claude Code session directories. The opposite of bulk-all-or-nothing.
-- **Claude Code session browser** (stretch): scan `~/.claude/projects/`, preview sessions, multi-select import
+**Additional fixes delivered:**
+- **Project context injection (8¾a)** ✅: First-class `projects` table, auto-creation from claude.ai projects.json and Claude Code cwd, project API.
+- **Selective import browser** ✅: Preview conversations, projects, and memories before import.
+- **Claude Code session browser (8¾d)** ✅: Scan `~/.claude/projects/`, preview sessions, multi-select import.
+- **Model detection gaps (8¾e)** ✅: Documented limitation, accepted — default to channel model.
+- **memories.json char array fix** ✅: Detects and joins character arrays in project memories.
+
+**Fidelity framework** (from Theseus/Ariadne testing):
+| Level | What it means | Status |
+|-------|--------------|--------|
+| Conversational | Fork can talk about what happened | ✅ Works |
+| Narrative | Fork can explain project and decisions | ✅ Works |
+| Environmental | Fork knows its current capabilities | ✅ Kit briefing fixes this |
+| Instructional | Fork has exact project conventions/rules | ✅ Project context injection fixes this |
+
+- 493 tests passing (388 server + 105 client). GitHub issue #5 closed.
 
 Tracked refinements deferred past 8¾:
 - Demo automation (manual recording works for now)
 - claude.ai model inference (all imports default to Opus — technically incorrect but low visibility)
+- isMeta event filtering
+- Import error messaging improvements
+- Copy message turn button
 
-**Fidelity framework** (from Theseus/Ariadne testing):
-| Level | What it means | Status after 8¾ |
-|-------|--------------|-----------------|
-| Conversational | Fork can talk about what happened | ✅ Already works |
-| Narrative | Fork can explain project and decisions | ✅ Already works |
-| Environmental | Fork knows its current capabilities | 🎯 Kit briefing fixes this |
-| Instructional | Fork has exact project conventions/rules | 🎯 CLAUDE.md/MEMORY.md capture fixes this |
+---
+
+## Next Steps (concrete, actionable)
 
 ### Step 9: Search and recall
 **Dimension: memory.** Can you find things across all your conversations?
