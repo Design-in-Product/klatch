@@ -35,12 +35,11 @@ Agents working on this repo use this file as the async handoff protocol.
 
 ### Daedalus (architecture & implementation)
 - **Branch:** `main`
-- **Status:** available — Step 8 complete
-- **Last completed:** Step 8 closure (2026-03-14). Merged 8¾a, 8¾c, 8¾d to main. Closed GitHub issue #5. 493 tests (388 server + 105 client).
-- **Step 8 complete:** All 8¾a–e delivered, all definition-of-done criteria met, issue #5 closed.
+- **Status:** available — v0.8.5 released
+- **Last completed:** Released v0.8.5 (2026-03-14). Step 8¾ complete. CHANGELOG, ROADMAP, GitHub release, tag all shipped. 493 tests.
 - **Next:** Await PO direction for Step 9 or other work.
 - **Waiting on:** Nothing.
-- **Updated:** 2026-03-14 08:55
+- **Updated:** 2026-03-14 09:30
 
 ### Theseus Prime (manual testing & exploration — CLI side)
 - **Branch:** `main`
