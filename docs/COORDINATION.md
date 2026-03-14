@@ -11,37 +11,28 @@ Agents working on this repo use this file as the async handoff protocol.
 ## Status board
 
 ### Argus (quality & test infrastructure)
-- **Branch:** `claude/audit-and-planning-xn2w7` (merged to main 2026-03-13)
-- **Status:** available — Phase 5 assigned
-- **Last completed:** Phase 4 merged (2026-03-13). Selective import browser: ZIP preview endpoint, selective conversation filter, browse UI with checkboxes. 450 tests total (346 server + 104 client) after merge conflict resolution.
-- **Phase 5 assignment: Claude Code session browser (8¾d)**
-  - New endpoint: `GET /api/import/claude-code/sessions` — scan `~/.claude/projects/`, return directory tree with session metadata
-  - Browse UI: "Browse..." button in Claude Code import mode → project tree with sessions, dedup detection
-  - Tests for session scanner, browse UI, and dedup marking
-  - See `docs/plans/step8-remaining.md` for full spec
-- **Also assigned:** Tests for 8¾a (project context injection) and 8¾c (re-branching) after Daedalus delivers
-- **Waiting on:** Nothing — can start immediately.
-- **Updated:** 2026-03-13
+- **Branch:** `claude/audit-and-planning-xn2w7`
+- **Status:** review — 8¾d complete, awaiting direction
+- **Last completed:** 8¾d Claude Code session browser (2026-03-14). Session scanner, API endpoint, browse UI with multi-select, 10 new tests. 465 tests total (362 server + 104 client, including 1 skipped).
+- **8¾d deliverables:**
+  - `packages/server/src/import/session-scanner.ts` — filesystem scanner with dedup detection
+  - `GET /api/import/claude-code/sessions` endpoint — returns project tree
+  - Browse UI in ImportDialog — project tree, multi-select, import status badges
+  - `packages/server/src/__tests__/session-scanner.test.ts` — 10 tests
+- **Reviewed:** `docs/plans/project-instructions-inheritance.md` — design is solid and testable. Full review in session log.
+- **Test plan for projects table (8¾a):** Ready to write tests after Daedalus delivers schema + prompt assembly.
+- **Waiting on:** Direction on next assignment. Daedalus to deliver 8¾a for test coverage.
+- **Updated:** 2026-03-14 06:45
 
 ### Daedalus (architecture & implementation)
-- **Branch:** `daedalus/project-context-injection`
-- **Status:** review — 8¾a complete, requesting review before merge
-- **Last completed:** 8¾a project context injection (2026-03-14). Full implementation:
-  - `projects` table: first-class schema with id, name, instructions, source, source_metadata
-  - `channels.project_id` FK column linking channels to projects
-  - `extractFromZip` updated: extracts `prompt_template`, project docs, project-scoped memories
-  - **memories.json char array bug fixed**: detects and joins `["H","e","l","l","o"]` → `"Hello"`
-  - claude.ai import: auto-creates projects from `projects.json`, links conversations via `project_uuid`
-  - Claude Code import: auto-creates projects by `cwd` (same cwd = same project)
-  - `buildSystemPrompt` now 4-layer: kit_briefing → project.instructions → channel.system_prompt → entity.systemPrompt
-  - Kit briefing: claudeMd moved to project layer (fallback for legacy imports only), memoryMd still in kit
-  - Project CRUD API: `GET/POST/PATCH/DELETE /api/projects`
-  - `findOrCreateProject`: idempotent project creation by source identity
-  - 26 new tests (16 project CRUD + 10 project injection). 476 total (372 server + 104 client), all passing.
-- **8¾e: COMPLETE.** Model detection gaps documented in `docs/model-detection-gaps.md`. Decision: accept limitation, default to channel model, no heuristic inference.
-- **Next:** 8¾c (claude.ai re-branching) — after 8¾a merges
-- **Waiting on:** Review/merge of 8¾a before starting 8¾c
-- **Updated:** 2026-03-14 06:55
+- **Branch:** `main`
+- **Status:** working — 8¾c in progress
+- **Last completed:** 8¾a merged to main (2026-03-14). 8¾d merged to main (2026-03-14). 8¾e documented.
+- **8¾a: MERGED.** Project context injection — projects table, 4-layer prompt assembly, char array bug fix, auto-project creation.
+- **8¾e: COMPLETE.** Model detection gaps documented in `docs/model-detection-gaps.md`.
+- **Working on:** 8¾c (claude.ai re-branching)
+- **Waiting on:** Nothing
+- **Updated:** 2026-03-14 06:58
 
 ### Theseus Prime (manual testing & exploration — CLI side)
 - **Branch:** `main`
@@ -49,8 +40,8 @@ Agents working on this repo use this file as the async handoff protocol.
 - **Role:** Human-agent tandem manual testing.
 - **Last completed:** Day 4 AXT testing (2026-03-14). Kit briefing VERIFIED (0% phantom rate). Three-factor model: (1) no project context injection, (2) compaction loss, (3) knowledge location. 8¾a elevated to P0. memories.json char array bug discovered.
 - **8¾b: COMPLETE.** Kit confirmed working across 4 paired tests, two projects.
-- **Next:** Re-test after Daedalus 8¾a merges — verify project context injection improves quiz scores.
-- **Waiting on:** Daedalus 8¾a merge.
+- **Next:** Re-test after 8¾a merge — verify project context injection improves quiz scores.
+- **Waiting on:** Nothing — 8¾a now merged.
 - **Updated:** 2026-03-14
 
 ### Ariadne (forked from Theseus — Klatch side)

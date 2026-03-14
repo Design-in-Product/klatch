@@ -34,6 +34,7 @@ beforeEach(() => {
   vi.mocked(importClaudeAiExport).mockReset();
   vi.mocked(previewClaudeAiExport).mockReset();
   vi.mocked(deleteChannelApi).mockReset();
+  vi.mocked(previewClaudeAiExport).mockReset();
   defaultProps.onClose = vi.fn();
   defaultProps.onImported = vi.fn();
 });

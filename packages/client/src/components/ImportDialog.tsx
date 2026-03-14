@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
-import { importClaudeCodeSession, importClaudeAiExport, previewClaudeAiExport, deleteChannelApi } from '../api/client';
-import type { ImportResponse, ImportConflict, ClaudeAiImportResponse, ZipPreviewResponse } from '../api/client';
+import { importClaudeCodeSession, importClaudeAiExport, previewClaudeAiExport, deleteChannelApi, fetchClaudeCodeSessions } from '../api/client';
+import type { ImportResponse, ImportConflict, ClaudeAiImportResponse, ZipPreviewResponse, SessionBrowseResponse } from '../api/client';
 
 type ImportMode = 'claude-code' | 'claude-ai';
 
@@ -29,6 +29,13 @@ export function ImportDialog({ isOpen, onClose, onImported, onBulkImported, onCh
   // Preview state for selective import
   const [preview, setPreview] = useState<ZipPreviewResponse | null>(null);
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
+
+  // Claude Code session browser state
+  const [sessionBrowse, setSessionBrowse] = useState<SessionBrowseResponse | null>(null);
+  const [selectedSessions, setSelectedSessions] = useState<Set<string>>(new Set());
+  const [browseLoading, setBrowseLoading] = useState(false);
+  const [browseError, setBrowseError] = useState<string | null>(null);
+  const [expandedProjects, setExpandedProjects] = useState<Set<string>>(new Set());
 
   if (!isOpen) return null;
 
@@ -75,6 +82,11 @@ export function ImportDialog({ isOpen, onClose, onImported, onBulkImported, onCh
 
     try {
       if (mode === 'claude-code') {
+        if (sessionBrowse) {
+          // Multi-import from browse panel
+          await handleImportSelected();
+          return;
+        }
         const path = sessionPath.trim();
         if (!path) return;
         const importResult = await importClaudeCodeSession(path, channelName.trim() || undefined);
@@ -167,6 +179,9 @@ export function ImportDialog({ isOpen, onClose, onImported, onBulkImported, onCh
     setConflict(null);
     setPreview(null);
     setSelectedIds(new Set());
+    setSessionBrowse(null);
+    setSelectedSessions(new Set());
+    setBrowseError(null);
     if (fileInputRef.current) fileInputRef.current.value = '';
     onClose();
   };
@@ -179,6 +194,9 @@ export function ImportDialog({ isOpen, onClose, onImported, onBulkImported, onCh
     setConflict(null);
     setPreview(null);
     setSelectedIds(new Set());
+    setSessionBrowse(null);
+    setSelectedSessions(new Set());
+    setBrowseError(null);
   };
 
   const toggleConversation = (uuid: string) => {
@@ -203,8 +221,116 @@ export function ImportDialog({ isOpen, onClose, onImported, onBulkImported, onCh
     }
   };
 
+  const handleBrowseSessions = async () => {
+    setBrowseLoading(true);
+    setBrowseError(null);
+    try {
+      const data = await fetchClaudeCodeSessions();
+      setSessionBrowse(data);
+      // Auto-expand all projects, pre-select non-imported sessions
+      setExpandedProjects(new Set(data.projects.map((p) => p.projectPath)));
+      const nonImported = new Set<string>();
+      for (const proj of data.projects) {
+        for (const s of proj.sessions) {
+          if (!s.alreadyImported) nonImported.add(s.path);
+        }
+      }
+      setSelectedSessions(nonImported);
+    } catch (err) {
+      setBrowseError(err instanceof Error ? err.message : 'Failed to browse sessions');
+    } finally {
+      setBrowseLoading(false);
+    }
+  };
+
+  const handleCloseBrowse = () => {
+    setSessionBrowse(null);
+    setSelectedSessions(new Set());
+    setBrowseError(null);
+  };
+
+  const toggleSession = (sessionPath: string) => {
+    setSelectedSessions((prev) => {
+      const next = new Set(prev);
+      if (next.has(sessionPath)) {
+        next.delete(sessionPath);
+      } else {
+        next.add(sessionPath);
+      }
+      return next;
+    });
+  };
+
+  const toggleProject = (projectPath: string) => {
+    setExpandedProjects((prev) => {
+      const next = new Set(prev);
+      if (next.has(projectPath)) {
+        next.delete(projectPath);
+      } else {
+        next.add(projectPath);
+      }
+      return next;
+    });
+  };
+
+  const handleImportSelected = async () => {
+    if (selectedSessions.size === 0) return;
+    setLoading(true);
+    setError(null);
+    setBulkResult(null);
+
+    const imported: Array<{ channelId: string; channelName: string; messageCount: number; artifactCount: number; conversationId: string }> = [];
+    const errors: string[] = [];
+
+    for (const sessionPath of selectedSessions) {
+      try {
+        const result = await importClaudeCodeSession(sessionPath);
+        if (result.status === 'success') {
+          imported.push({
+            channelId: result.data.channelId,
+            channelName: result.data.channelName,
+            messageCount: result.data.messageCount,
+            artifactCount: result.data.artifactCount,
+            conversationId: result.data.sessionId || '',
+          });
+        } else {
+          // Duplicate — skip silently (already imported)
+        }
+      } catch (err) {
+        errors.push(err instanceof Error ? err.message : 'Unknown error');
+      }
+    }
+
+    setLoading(false);
+    setSessionBrowse(null);
+    setSelectedSessions(new Set());
+
+    if (imported.length > 0) {
+      setBulkResult({
+        imported,
+        skipped: [],
+        totalImported: imported.length,
+        totalSkipped: errors.length,
+      });
+    } else if (errors.length > 0) {
+      setError(`Import failed: ${errors[0]}`);
+    } else {
+      setError('All selected sessions were already imported');
+    }
+  };
+
+  const formatSize = (bytes: number): string => {
+    if (bytes < 1024) return `${bytes} B`;
+    if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(0)} KB`;
+    return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+  };
+
   const importableCount = preview?.conversations.filter((c) => !c.alreadyImported).length ?? 0;
-  const isSubmitDisabled = loading || (mode === 'claude-code' ? !sessionPath.trim() : (!zipFile || (preview !== null && selectedIds.size === 0)));
+  const isSubmitDisabled = loading || (
+    mode === 'claude-code'
+      ? (sessionBrowse ? selectedSessions.size === 0 : !sessionPath.trim())
+      : (!zipFile || (preview !== null && selectedIds.size === 0))
+  );
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
@@ -212,7 +338,9 @@ export function ImportDialog({ isOpen, onClose, onImported, onBulkImported, onCh
       <div className="fixed inset-0 bg-black/50" onClick={handleReset} />
 
       {/* Dialog */}
-      <div className="relative z-50 bg-card border border-line-strong rounded-lg shadow-xl w-full max-w-md mx-4">
+      <div className={`relative z-50 bg-card border border-line-strong rounded-lg shadow-xl w-full mx-4 ${
+        sessionBrowse || preview ? 'max-w-lg' : 'max-w-md'
+      }`}>
         {/* Header */}
         <div className="flex items-center justify-between px-5 py-4 border-b border-line">
           <h2 className="text-base font-semibold text-primary">
@@ -370,37 +498,138 @@ export function ImportDialog({ isOpen, onClose, onImported, onBulkImported, onCh
             /* Input form */
             <form onSubmit={handleSubmit} className="space-y-4">
               {mode === 'claude-code' ? (
-                <>
-                  <div>
-                    <label className="block text-sm font-medium text-secondary mb-1">
-                      Session file path
-                    </label>
-                    <input
-                      type="text"
-                      value={sessionPath}
-                      onChange={(e) => setSessionPath(e.target.value)}
-                      placeholder="~/.claude/projects/.../session-id.jsonl"
-                      autoFocus
-                      className="w-full rounded bg-input border border-line px-3 py-2 text-sm text-primary placeholder-muted focus:outline-none focus:border-accent font-mono"
-                    />
-                    <p className="mt-1 text-xs text-muted">
-                      Full path to a Claude Code JSONL session file
-                    </p>
-                  </div>
+                sessionBrowse ? (
+                  /* Session browser panel */
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between">
+                      <label className="text-xs font-medium text-muted uppercase tracking-wider">
+                        Sessions ({sessionBrowse.totalSessions} in {sessionBrowse.totalProjects} project{sessionBrowse.totalProjects !== 1 ? 's' : ''})
+                      </label>
+                      <button
+                        type="button"
+                        onClick={handleCloseBrowse}
+                        className="text-xs text-accent hover:text-accent-hover transition-colors"
+                      >
+                        Manual path
+                      </button>
+                    </div>
 
-                  <div>
-                    <label className="block text-sm font-medium text-secondary mb-1">
-                      Channel name <span className="text-muted font-normal">(optional)</span>
-                    </label>
-                    <input
-                      type="text"
-                      value={channelName}
-                      onChange={(e) => setChannelName(e.target.value)}
-                      placeholder="Auto-generated from project + date"
-                      className="w-full rounded bg-input border border-line px-3 py-2 text-sm text-primary placeholder-muted focus:outline-none focus:border-accent"
-                    />
+                    {browseError && (
+                      <div className="rounded bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 px-3 py-2 text-sm text-red-700 dark:text-red-300">
+                        {browseError}
+                      </div>
+                    )}
+
+                    {sessionBrowse.projects.length === 0 ? (
+                      <div className="rounded border border-line px-4 py-6 text-center text-sm text-muted">
+                        No Claude Code sessions found in ~/.claude/projects/
+                      </div>
+                    ) : (
+                      <div className="max-h-72 overflow-y-auto rounded border border-line divide-y divide-line">
+                        {sessionBrowse.projects.map((project) => (
+                          <div key={project.projectPath}>
+                            {/* Project header */}
+                            <button
+                              type="button"
+                              onClick={() => toggleProject(project.projectPath)}
+                              className="w-full flex items-center gap-2 px-3 py-2 text-sm font-medium text-primary hover:bg-hover transition-colors"
+                            >
+                              <svg
+                                className={`w-3.5 h-3.5 text-muted transition-transform ${expandedProjects.has(project.projectPath) ? 'rotate-90' : ''}`}
+                                fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}
+                              >
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                              </svg>
+                              <span className="truncate">{project.projectName}</span>
+                              <span className="text-xs text-muted ml-auto shrink-0">
+                                {project.sessions.length} session{project.sessions.length !== 1 ? 's' : ''}
+                              </span>
+                            </button>
+
+                            {/* Sessions list */}
+                            {expandedProjects.has(project.projectPath) && (
+                              <div className="bg-surface divide-y divide-line/50">
+                                {project.sessions.map((session) => (
+                                  <label
+                                    key={session.path}
+                                    className={`flex items-start gap-2.5 px-3 py-2 pl-8 text-sm cursor-pointer hover:bg-hover transition-colors ${
+                                      session.alreadyImported ? 'opacity-50' : ''
+                                    }`}
+                                  >
+                                    <input
+                                      type="checkbox"
+                                      checked={selectedSessions.has(session.path)}
+                                      onChange={() => toggleSession(session.path)}
+                                      className="mt-0.5 rounded border-line text-accent focus:ring-accent"
+                                    />
+                                    <div className="flex-1 min-w-0">
+                                      <div className="text-primary font-mono text-xs truncate" title={session.sessionId}>
+                                        {session.sessionId.slice(0, 8)}...
+                                      </div>
+                                      <div className="text-xs text-muted">
+                                        {formatSize(session.sizeBytes)}
+                                        {' \u00b7 '}
+                                        {new Date(session.modifiedAt).toLocaleDateString()}
+                                        {session.alreadyImported && (
+                                          <span className="ml-1.5 text-yellow-600 dark:text-yellow-400">
+                                            (imported{session.existingChannelName ? `: ${session.existingChannelName}` : ''})
+                                          </span>
+                                        )}
+                                      </div>
+                                    </div>
+                                  </label>
+                                ))}
+                              </div>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                    )}
                   </div>
-                </>
+                ) : (
+                  /* Manual path input + browse button */
+                  <>
+                    <div>
+                      <label className="block text-sm font-medium text-secondary mb-1">
+                        Session file path
+                      </label>
+                      <input
+                        type="text"
+                        value={sessionPath}
+                        onChange={(e) => setSessionPath(e.target.value)}
+                        placeholder="~/.claude/projects/.../session-id.jsonl"
+                        autoFocus
+                        className="w-full rounded bg-input border border-line px-3 py-2 text-sm text-primary placeholder-muted focus:outline-none focus:border-accent font-mono"
+                      />
+                      <div className="mt-1 flex items-center justify-between">
+                        <p className="text-xs text-muted">
+                          Full path to a Claude Code JSONL session file
+                        </p>
+                        <button
+                          type="button"
+                          onClick={handleBrowseSessions}
+                          disabled={browseLoading}
+                          className="text-xs text-accent hover:text-accent-hover transition-colors disabled:opacity-50"
+                        >
+                          {browseLoading ? 'Scanning...' : 'Browse...'}
+                        </button>
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-secondary mb-1">
+                        Channel name <span className="text-muted font-normal">(optional)</span>
+                      </label>
+                      <input
+                        type="text"
+                        value={channelName}
+                        onChange={(e) => setChannelName(e.target.value)}
+                        placeholder="Auto-generated from project + date"
+                        className="w-full rounded bg-input border border-line px-3 py-2 text-sm text-primary placeholder-muted focus:outline-none focus:border-accent"
+                      />
+                    </div>
+                  </>
+                )
               ) : (
                 <div>
                   <label className="block text-sm font-medium text-secondary mb-1">
@@ -538,9 +767,11 @@ export function ImportDialog({ isOpen, onClose, onImported, onBulkImported, onCh
                   className="flex-1 rounded bg-accent px-3 py-2 text-sm font-medium text-white hover:bg-accent-hover disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                 >
                   {loading ? 'Importing...' : (
-                    mode === 'claude-ai' && preview
-                      ? `Import selected (${selectedIds.size})`
-                      : 'Import'
+                    mode === 'claude-code' && sessionBrowse
+                      ? `Import selected (${selectedSessions.size})`
+                      : mode === 'claude-ai' && preview
+                        ? `Import selected (${selectedIds.size})`
+                        : 'Import'
                   )}
                 </button>
                 <button

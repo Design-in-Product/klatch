@@ -294,6 +294,48 @@ export async function importClaudeAiExport(
   return res.json();
 }
 
+// ── Claude Code Session Browser API ──────────────────────────
+
+export interface SessionInfo {
+  path: string;
+  sessionId: string;
+  projectPath: string;
+  projectName: string;
+  sizeBytes: number;
+  modifiedAt: string;
+  alreadyImported: boolean;
+  existingChannelId?: string;
+  existingChannelName?: string;
+}
+
+export interface ProjectSessions {
+  projectPath: string;
+  projectName: string;
+  sessions: SessionInfo[];
+}
+
+export interface SessionBrowseResponse {
+  projects: ProjectSessions[];
+  totalProjects: number;
+  totalSessions: number;
+}
+
+export async function fetchClaudeCodeSessions(): Promise<SessionBrowseResponse> {
+  const res = await fetch(`${BASE}/import/claude-code/sessions`);
+  if (!res.ok) {
+    try {
+      const body = await res.json();
+      throw new Error(body.error || `Failed to browse sessions: ${res.statusText}`);
+    } catch (parseErr) {
+      if (parseErr instanceof Error && !parseErr.message.startsWith('Failed to browse')) {
+        throw parseErr;
+      }
+      throw new Error(`Failed to browse sessions: ${res.statusText}`);
+    }
+  }
+  return res.json();
+}
+
 // ── Context File API ─────────────────────────────────────────
 
 export interface ContextFileResponse {

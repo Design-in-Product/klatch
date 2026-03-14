@@ -5,6 +5,7 @@ import path from 'path';
 import { parseClaudeCodeSession } from '../import/parser.js';
 import { parseClaudeAiConversation } from '../import/claude-ai-parser.js';
 import { extractFromZip } from '../import/claude-ai-zip.js';
+import { scanClaudeCodeSessions } from '../import/session-scanner.js';
 import { importSession, findChannelByOriginalSessionId, getImportConflictInfo, countChannelsByOriginalSessionId, findOrCreateProject } from '../db/queries.js';
 import { MODEL_ALIASES, AVAILABLE_MODELS } from '@klatch/shared';
 import type { ModelId } from '@klatch/shared';
@@ -34,6 +35,29 @@ function validateImportPath(filePath: string): string | null {
 }
 
 const app = new Hono();
+
+/**
+ * GET /import/claude-code/sessions
+ *
+ * Scan ~/.claude/projects/ for available Claude Code sessions.
+ * Returns sessions grouped by project, with dedup detection.
+ */
+app.get('/import/claude-code/sessions', async (c) => {
+  try {
+    const projects = await scanClaudeCodeSessions();
+    const totalSessions = projects.reduce((sum, p) => sum + p.sessions.length, 0);
+    return c.json({
+      projects,
+      totalProjects: projects.length,
+      totalSessions,
+    }, 200);
+  } catch (err) {
+    return c.json({
+      error: 'Failed to scan sessions',
+      detail: err instanceof Error ? err.message : 'Unknown error',
+    }, 500);
+  }
+});
 
 /**
  * POST /import/claude-code
@@ -354,10 +378,11 @@ app.post('/import/claude-ai', async (c) => {
         selectedConversationIds = JSON.parse(selectionField);
       } catch { /* ignore malformed */ }
     }
+    const forceImport = formData.get('forceImport') === 'true';
 
-    return processImport(c, Buffer.from(arrayBuffer), selectedConversationIds);
+    return processImport(c, Buffer.from(arrayBuffer), selectedConversationIds, forceImport);
   } else {
-    const body = await c.req.json<{ zipPath?: string; selectedConversationIds?: string[] }>();
+    const body = await c.req.json<{ zipPath?: string; selectedConversationIds?: string[]; forceImport?: boolean }>();
     selectedConversationIds = body.selectedConversationIds;
     const zipPath = body.zipPath;
     if (!zipPath || !zipPath.endsWith('.zip')) {
@@ -374,7 +399,7 @@ app.post('/import/claude-ai', async (c) => {
     if (stat.size > MAX_IMPORT_SIZE) {
       return c.json({ error: `File too large (${Math.round(stat.size / 1024 / 1024)}MB). Maximum is ${MAX_IMPORT_SIZE / 1024 / 1024}MB.` }, 400);
     }
-    return processImport(c, fs.readFileSync(expandedZipPath), selectedConversationIds);
+    return processImport(c, fs.readFileSync(expandedZipPath), selectedConversationIds, body.forceImport === true);
   }
 });
 
@@ -392,11 +417,18 @@ function processImport(
     return c.json({ error: 'Invalid ZIP file' }, 400);
   }
 
-  const { conversations: conversationFiles, projects, projectMemories } = exportData;
+  const { conversations: conversationFiles, projects, memories, projectMemories } = exportData;
 
   if (conversationFiles.length === 0) {
     return c.json({ error: 'ZIP contains no conversations' }, 400);
   }
+
+  // Build memories text for kit briefing (shared across all conversations in this export)
+  const memoriesText = memories
+    .filter((m) => m.content.trim())
+    .map((m) => m.content.trim())
+    .join('\n');
+  const memoryMd = memoriesText || undefined;
 
   // Build selection set for filtering (if provided)
   const selectionSet = selectedConversationIds ? new Set(selectedConversationIds) : null;
@@ -495,6 +527,10 @@ function processImport(
       }
     }
 
+    // Build project knowledge context (equivalent of CLAUDE.md for claude.ai imports)
+    const project = conv.project_uuid ? projects.get(conv.project_uuid) : undefined;
+    const claudeMd = project?.docsContent || undefined;
+
     const result = importSession({
       channelName,
       source: 'claude-ai',
@@ -507,6 +543,8 @@ function processImport(
         updatedAt: conv.updated_at,
         eventCount: parsed.eventCount,
         importedAt: new Date().toISOString(),
+        claudeMd,
+        memoryMd,
       },
       turns: parsed.turns,
       projectId,

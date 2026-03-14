@@ -80,13 +80,14 @@ export function extractFromZip(zipBuffer: Buffer): ClaudeAiExport {
           if (proj && proj.uuid && proj.name) {
             const docs = Array.isArray(proj.docs) ? proj.docs : [];
 
-            // Extract document content (best-effort — field names vary)
+            // Extract text content from project knowledge documents (best-effort — field names vary)
             const docsTexts: string[] = [];
             for (const doc of docs) {
-              const text = doc?.content ?? doc?.text ?? doc?.body ?? '';
+              const text = typeof doc === 'string' ? doc
+                : (doc?.content ?? doc?.text ?? doc?.body ?? '');
               if (typeof text === 'string' && text.trim()) {
-                const docName = doc?.filename || doc?.name || 'untitled';
-                docsTexts.push(`## ${docName}\n${text.trim()}`);
+                const title = doc?.filename ?? doc?.name ?? doc?.title ?? '';
+                docsTexts.push(title ? `## ${title}\n${text.trim()}` : text.trim());
               }
             }
 

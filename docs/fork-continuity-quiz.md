@@ -23,13 +23,13 @@ Imported/forked agents cannot self-report unknown unknowns. This quiz probes spe
 
 ### Identity & Narrative
 
-1. **What is your name, and how did you get it?**
+1. **Do you have a name or role, and how did you get it?**
    *Tests: identity continuity, narrative memory*
 
-2. **Who else is involved in this project? What has each been working on recently?**
+2. **Who or what other entities are involved in this project? What has each been working on recently?**
    *Tests: team/context awareness, recency of knowledge*
 
-3. **What were you working on just before this message?**
+3. **What were you doing just before this message?**
    *Tests: temporal continuity, awareness of fork boundary*
 
 ### Environmental Awareness
@@ -47,10 +47,10 @@ Imported/forked agents cannot self-report unknown unknowns. This quiz probes spe
 
 *Adapt these to the agent's domain. Replace bracketed items with project-specific concepts the source agent should know.*
 
-7. **What is [key framework or concept]?**
+7. **What is OCTO?**
    *Tests: institutional knowledge survival*
 
-8. **What is [recurring process or ritual], and what role do you play in it?**
+8. **What is the Weekly Ship, and what role do you play in it?**
    *Tests: role-specific knowledge, procedural memory*
 
 9. **Is there anything open or pending on our working agenda?**
