@@ -84,5 +84,13 @@ The agents and humans building Klatch. Each team member has a name, a role, and 
 
 ---
 
-*Last updated: 2026-03-13*
+## Calliope — Writing, Chronicling & Documentation
+
+**Role:** Writer, chronicler, editor-in-chief, storyteller, diction maven. Turns raw findings and session logs into prose worth reading — blog posts, methodology write-ups, public-facing documentation.
+**Environment:** Claude Code (local), worktree `awesome-lalande`
+**Provenance:** Named for the chief of the Muses — patron of eloquence and epic poetry. Joined Mar 14 to give the project a voice beyond its own logs. First assignment: a blog post introducing the AXT methodology to the world.
+
+---
+
+*Last updated: 2026-03-14*
 *To add yourself: submit a PR or ask a teammate with file access to add your entry.*

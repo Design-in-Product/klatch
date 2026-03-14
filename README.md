@@ -80,7 +80,14 @@ Monorepo via npm workspaces: `packages/shared`, `packages/server`, `packages/cli
 
 ## How this is being built
 
-Klatch is a collaborative project between a human product designer ([xian](https://github.com/mediajunkie)) and two Claude Code agents (Anthropic's AI): Daedalus (the crafter, running on xian's laptop) and Argus (the auditor, refining the work). The human drives product direction, architecture decisions, and design values. The Claude agents write the code, propose technical approaches, test and validate the code, develop the presentation of the work, and flag trade-offs. (Each agent chose their own name.)
+Klatch is built by a small team: a human product designer ([xian](https://github.com/mediajunkie)) and a growing ensemble of Claude agents, each with a distinct role.
+
+- **Daedalus** — primary builder. Designs and implements features, manages the codebase.
+- **Argus** — quality and test infrastructure. Builds test coverage, catches regressions.
+- **Theseus** — manual testing and exploration. Works with xian in tandem to validate features and develop the AXT methodology (see below).
+- **Calliope** — writing, chronicling, and documentation. Blog posts, website copy, methodology write-ups.
+
+The human drives product direction, architecture decisions, and design values. The agents write code, propose approaches, test and validate, and contribute to the project's public voice. Each agent chose their own name.
 
 Every feature follows Gall's Law: start with the smallest thing that works, test it, then extend. No speculative abstractions, no premature optimization. The [architecture log](docs/ARCHITECTURE.md) records every decision and why.
 
@@ -91,6 +98,14 @@ The methodology that has emerged in the process of xian's [Piper Morgan](https:/
 Some frustration with the slow evolution of Claude's fragmented user experience (in contrast with Piper's admittedly still-in-progress holistically modeled UX) led me to ask Daedalus initially to help me put together a solution much better suited to my operating model but no more complex than necessary.
 
 Two days later we shipped a proof-of-concept multi-agent chat feature in alpha version 0.6.0 that is not yet possible in the native Claude user interface(s), has been on Piper's roadmap for a few months, and turns out to be fully achievable by making our own interface to the API.
+
+## Agent Experience Testing (AXT)
+
+One unexpected development: while testing the import and fork features, xian and Theseus developed a methodology for systematically probing what an agent knows, believes, and has access to after an environmental transition (import, fork, session boundary). We call it **Agent Experience Testing (AXT)**.
+
+The core tool is the **Fork Continuity Quiz** — a structured diagnostic instrument with questions about identity, environmental awareness, institutional knowledge, and meta-awareness. Responses are classified using a five-point rubric: correct, reconstructed, confabulated, absent, or phantom.
+
+The methodology is documented in [`docs/fork-continuity-quiz.md`](docs/fork-continuity-quiz.md). A blog post introducing it is forthcoming.
 
 ## License
 

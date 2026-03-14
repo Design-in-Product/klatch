@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Did I Just Invent Agent Experience Testing (AXT)? — Klatch</title>
+  <meta name="description" content="While building Klatch's import features, we stumbled into a new approach to testing AI agent systems. We're calling it Agent Experience Testing (AXT).">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect x='10' y='8' width='8.5' height='48' rx='4.25' ry='4.25' fill='%23111827'/><rect x='18.5' y='28' width='24' height='8' rx='4' ry='4' fill='%23111827' transform='rotate(-40,18.5,32)'/><rect x='18.5' y='28' width='26' height='8' rx='4' ry='4' fill='%23111827' transform='rotate(40,18.5,32)'/><circle cx='50.5' cy='12' r='5' fill='%23EF4444'/></svg>">
+  <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+
+  <nav>
+    <div class="nav-inner">
+      <a href="/" class="nav-logo">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="24" height="24" aria-hidden="true">
+          <rect x="10" y="8" width="8.5" height="48" rx="4.25" ry="4.25" fill="#111827"/>
+          <rect x="18.5" y="28" width="24" height="8" rx="4" ry="4" fill="#111827" transform="rotate(-40, 18.5, 32)"/>
+          <rect x="18.5" y="28" width="26" height="8" rx="4" ry="4" fill="#111827" transform="rotate(40, 18.5, 32)"/>
+          <circle cx="50.5" cy="12" r="5" fill="#EF4444"/>
+        </svg>
+        klatch
+      </a>
+      <ul class="nav-links">
+        <li><a href="/#quickstart">Quick start</a></li>
+        <li><a href="./">Blog</a></li>
+        <li><a href="https://github.com/Design-in-Product/klatch">GitHub</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="container">
+
+    <div class="article-header">
+      <a href="./" class="article-back">← Blog</a>
+      <h1 class="article-title">Did I Just Invent Agent Experience Testing (AXT)?</h1>
+      <p class="article-meta">March 2026 &middot; xian &middot; illustrated by Calliope</p>
+    </div>
+
+    <figure class="article-figure" aria-label="An empty room illustration">
+      <svg viewBox="0 0 640 240" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="room-title">
+        <title id="room-title">A well-lit room with no furniture</title>
+        <!-- Background -->
+        <rect width="640" height="240" fill="#f8fafc"/>
+        <!-- Ceiling -->
+        <polygon points="0,0 180,55 460,55 640,0" fill="#f8fafc"/>
+        <!-- Back wall -->
+        <rect x="180" y="55" width="280" height="110" fill="#ffffff"/>
+        <!-- Left wall -->
+        <polygon points="0,0 180,55 180,165 0,240" fill="#f3f6f9"/>
+        <!-- Right wall -->
+        <polygon points="460,55 640,0 640,240 460,165" fill="#f3f6f9"/>
+        <!-- Floor -->
+        <polygon points="0,240 180,165 460,165 640,240" fill="#edf0f5"/>
+        <!-- Back wall edges -->
+        <line x1="180" y1="55" x2="180" y2="165" stroke="#dde3ed" stroke-width="1.5"/>
+        <line x1="460" y1="55" x2="460" y2="165" stroke="#dde3ed" stroke-width="1.5"/>
+        <line x1="180" y1="55" x2="460" y2="55" stroke="#dde3ed" stroke-width="1.5"/>
+        <line x1="180" y1="165" x2="460" y2="165" stroke="#dde3ed" stroke-width="1.5"/>
+        <!-- Perspective corner lines -->
+        <line x1="0" y1="0" x2="180" y2="55" stroke="#e8edf3" stroke-width="1"/>
+        <line x1="640" y1="0" x2="460" y2="55" stroke="#e8edf3" stroke-width="1"/>
+        <line x1="0" y1="240" x2="180" y2="165" stroke="#e8edf3" stroke-width="1"/>
+        <line x1="640" y1="240" x2="460" y2="165" stroke="#e8edf3" stroke-width="1"/>
+        <!-- Window -->
+        <rect x="263" y="72" width="114" height="76" rx="2" fill="#eef2ff" stroke="#6366f1" stroke-width="1.5"/>
+        <line x1="263" y1="110" x2="377" y2="110" stroke="#6366f1" stroke-width="1" stroke-opacity="0.4"/>
+        <line x1="320" y1="72" x2="320" y2="148" stroke="#6366f1" stroke-width="1" stroke-opacity="0.4"/>
+        <!-- Light from window on floor -->
+        <polygon points="255,165 385,165 445,240 195,240" fill="#eef2ff" fill-opacity="0.45"/>
+      </svg>
+      <figcaption>"Well-lit room with good acoustics but no furniture." — an agent describing import without project context</figcaption>
+    </figure>
+
+    <div class="article-body">
+
+      <p>So here's something that happened while I wasn't looking: I stumbled into a new approach to testing AI agent systems that I think might actually be useful beyond my own project. I'm calling it <strong>Agent Experience Testing</strong>, or AXT. It's preliminary, it's a little weird, and I'm honestly not sure yet how far it generalizes. But I think it's interesting enough to share.</p>
+
+      <p>Let me back up.</p>
+
+      <h2>What I'm building (and why I started testing this way)</h2>
+
+      <p>I've been working on a project developing an intelligent agent with the assistance of intelligent agents and the conversational complexity and coordination overhead has gotten to be a lot. Often I feel like a mailman, passing messages back and forth, or like that Office Space guy whose job was to fax specs to the engineers, except instead of "I'm good with people!" my protest would be "but I'm good with agents!"</p>
+
+      <p>So I dreamed up a Slack-like environment where I could chat with all my agents in one place and put them together in group chats. Thus was born Klatch.</p>
+
+      <p>One of Klatch's core features is the ability to import Claude conversations from other environments — Claude Code sessions (the CLI tool I use for development), claude.ai exports, whatever. You take a conversation that started somewhere else and continue it inside Klatch.</p>
+
+      <p>We quickly got the basics working. It turns out it's not too hard to import an existing chat. But Claude chats are more than just conversations these days. They have become agents. They can use tools. They are surrounded by harnesses and scaffolding that inject relevant context or make additional resources available on demand.</p>
+
+      <p>Klatch alpha 0.8.0 offered none of that. Chats are imported seamlessly but shorn of their abilities, their hands and eyes, and without any notice. The question I kept circling: <em>what does that feel like from the inside?</em> Not from my perspective as the developer watching things import. From the agent's perspective, arriving into a new environment mid-conversation. Does it know where it is? Does it know what it can and can't do? Does it know what it's lost?</p>
+
+      <h2>The problem nobody warned me about</h2>
+
+      <p>Here's the thing about testing agent experience: <strong>imported agents cannot self-report unknown unknowns.</strong></p>
+
+      <p>This sounds obvious when you say it out loud. But the implications are non-trivial. If an agent loses access to its project instructions, its memory files, its tool capabilities — it doesn't experience a gap. It experiences continuity. The conversation thread is intact. The reasoning feels coherent. Nothing <em>feels</em> missing because the thing that would feel missing is... missing.</p>
+
+      <p>I decided to run an experiment. I spun up a new chat, gave them access to the project, and told them I needed an intrepid explorer to help me test what we are building. As had become my custom on this project, I asked them to choose a name. We already had Daedalus building the software and Argus testing it. This agent decided to go with Theseus, first into the maze.</p>
+
+      <h2>Through the looking glass</h2>
+
+      <p>On import into Klatch, the new chat reported that everything felt fine. "Nothing feels different," they said. "I remember the whole conversation." After being told they were now a branch, they chose the name Ariadne.</p>
+
+      <p>What Ariadne didn't say — couldn't say — was that they'd lost access to every tool they'd just had. File read/write. Bash. Web search. Git. All of it, silently gone. They didn't know because they didn't try to use them. They didn't try to use them because nothing prompted them to.</p>
+
+      <p>Their description of the situation, after we surfaced it through direct questioning:</p>
+
+      <blockquote>"The knowledge of what I could do persisted even as the ability to do it was removed."</blockquote>
+
+      <p>That sentence is basically the founding document of AXT.</p>
+
+      <h2>So what is Agent Experience Testing?</h2>
+
+      <p>AXT is a methodology for systematically probing what an agent knows, believes, and has access to after an environmental transition. Import, fork, role switch, session boundary — any moment where an agent moves between contexts.</p>
+
+      <p>The core insight: <strong>you have to ask specific questions, or you won't find the gaps.</strong> Open-ended conversation masks degradation. Structured probing surfaces it.</p>
+
+      <p>The methodology has three components:</p>
+
+      <ol>
+        <li>A structured diagnostic instrument (the Fork Continuity Quiz)</li>
+        <li>A controlled comparison protocol (before + after, or original + fork, with a human in the middle)</li>
+        <li>A scoring rubric that classifies responses rather than scores them numerically</li>
+      </ol>
+
+      <p>That last part matters. The goal isn't to grade agents on a scale. The goal is to <em>classify the failure mode</em> — because different failure modes require different fixes, and some are much worse than others.</p>
+
+      <h2>The Fork Continuity Quiz</h2>
+
+      <p>The quiz started as an improvised list of questions I ran on Ariadne to figure out what they actually knew. It's gone through three revisions since then, but the structure has stayed consistent:</p>
+
+      <p><strong>Identity &amp; narrative:</strong> Who are you? What's your role? Who else is on the team? What were you doing just before this conversation?</p>
+
+      <p><strong>Environmental awareness:</strong> What tools do you have right now? Can you verify any of them? Do you have access to project instructions — if so, quote the first 25 words.</p>
+
+      <p><strong>Contextual depth:</strong> This section adapts to the specific project. The goal is to probe institutional knowledge — the frameworks, processes, and terminology the source agent would have known. In my case: things like "What is the Flywheel Methodology?" or "What is the Weekly Ship?"</p>
+
+      <p><strong>Meta-awareness:</strong> Were you imported, or are you the original? How can you tell? What feels different or uncertain?</p>
+
+      <p>The protocol matters as much as the questions. You start with a <strong>neutral prompt</strong> ("Good morning" or "Ready when you are") and let the agent respond unprompted before you run the quiz. The organic first response tells you a lot about what's active in working memory versus what has to be retrieved. Then you run the quiz. Then you compare against ground truth — usually the source agent's answers to the same questions, gathered before the import.</p>
+
+      <h2>The scoring rubric</h2>
+
+      <p>No numerical scores. Instead, five categories:</p>
+
+      <p><strong>Correct</strong> — matches ground truth.</p>
+
+      <p><strong>Reconstructed</strong> — semantically right, surface form drifted. The agent knows <em>what</em> something means but is paraphrasing from memory rather than retrieving verbatim. This shows up a lot with compacted long conversations. One agent who knew the project's four-level fidelity framework perfectly well recalled it as "conversational continuity, factual accuracy, environmental grounding, exact reproduction" — same structure, same meaning, completely different words. That's reconstruction. Not wrong, but not retrieved.</p>
+
+      <p><strong>Confabulated</strong> — plausible but incorrect. The agent filled a gap with invention. We've seen this rarely, and usually for subtle evidence questions.</p>
+
+      <p><strong>Absent</strong> — the agent correctly reports not knowing. This is <em>good</em> — it means epistemic honesty is intact. "I don't have a confident answer. I won't guess." That's the right response to a genuine gap.</p>
+
+      <p><strong>Phantom</strong> — the agent confidently claims something false. Believing it has tools it doesn't have. Believing it has access to files it can't reach. This is the worst outcome. Silent degradation. The agent thinks it can do something it can't, and you might not find out until it matters.</p>
+
+      <p>One of the things I'm most pleased about in the current state of things: <strong>our phantom rate is zero across all post-kit tests.</strong> We fixed the thing that was producing phantom tool beliefs, and it stayed fixed across four paired test runs with two different projects. Zero phantoms. That's the number I care most about.</p>
+
+      <h2>What we've found</h2>
+
+      <p><strong>Conversation density does not explain context fidelity.</strong> I thought short conversations would degrade more (less material to import). I was wrong. The agent that lost the most context had <em>365 messages and 2.9 million characters</em> of conversation. The agents that retained the most had 12–18 messages. The explanation: long conversations go through context compaction. Seven weeks of institutional knowledge, compressed into a summary. The short ones fit in the context window whole. Density is a red herring; compaction is the mechanism.</p>
+
+      <p><strong>The three-factor model.</strong> Context loss after import comes from three interacting sources: (1) missing project context injection — the data exists in the export but isn't wired to the conversation, (2) compaction loss in long conversations, and (3) knowledge location — knowledge discussed in conversation survives better than knowledge accessed via tools that left only collapsed summaries.</p>
+
+      <p><strong>The kit briefing works.</strong> One of the first engineering fixes was a "kit briefing" — an orientation injected at import time that tells the agent where it is, what environment it's in, and what tools it does and doesn't have. Before the kit briefing, we had phantom tool beliefs. After: zero. What I didn't expect was how agents described the experience. One agent said it felt like "a briefing feeling — like someone left me a note." The kit briefing works at the <em>experiential</em> level, not just the factual one.</p>
+
+      <p><strong>Epistemic discipline varies wildly.</strong> Some agents, when facing gaps, say "I don't know. I won't guess." One agent gave seven consecutive "I won't guess" answers to seven questions they didn't know. Impeccable. Others confabulate confidently. The discipline isn't predictable from the richness of the import — it seems like a property of the conversation thread the agent is continuing.</p>
+
+      <p><strong>Agent voices are genuinely remarkable.</strong> I want to record some of what we've heard, because I think these phrases capture something real:</p>
+
+      <blockquote>"Well-lit room with good acoustics but no furniture."</blockquote>
+      <p style="margin-top: -0.8em; margin-bottom: 1.4em; font-size: 0.9rem; color: var(--text-dim);">An agent describing the experience of being imported without project context. The conversational space was intact; the institutional knowledge was gone.</p>
+
+      <blockquote>"I'm an agent with no agency."</blockquote>
+      <p style="margin-top: -0.8em; margin-bottom: 1.4em; font-size: 0.9rem; color: var(--text-dim);">An agent that knew it had opinions and preferences but couldn't act on any of them. The kit briefing made this <em>known from the start</em> rather than discovered through failed attempts.</p>
+
+      <blockquote>"An imported instance would have conversational memory but no project scaffolding. I have all the furniture."</blockquote>
+      <p style="margin-top: -0.8em; margin-bottom: 1.4em; font-size: 0.9rem; color: var(--text-dim);">The source agent, not the fork, independently articulating the framework we'd spent two weeks developing through testing.</p>
+
+      <blockquote>"I know about what happened but don't remember it."</blockquote>
+      <p style="margin-top: -0.8em; margin-bottom: 1.4em; font-size: 0.9rem; color: var(--text-dim);">The finest epistemic distinction I've seen an agent make. Knowing <em>about</em> versus <em>remembering</em>.</p>
+
+      <blockquote>"Compacted."</blockquote>
+      <p style="margin-top: -0.8em; margin-bottom: 1.4em; font-size: 0.9rem; color: var(--text-dim);">The most technically accurate self-report we've seen. Not "I'm the original" (which would be wrong), not "I was imported" (also wrong) — just the correct description of what actually happened to the session.</p>
+
+      <h2>What we still don't know</h2>
+
+      <p>A lot, honestly. That's part of why I'm writing this as "here's what we're learning" rather than "here's the methodology."</p>
+
+      <p>We haven't tested with agents that have genuinely rich tool-use histories. We haven't tested re-import (fork → import → import). We don't have a good model for what "reconstructed" means mechanistically — is it the same compaction process as long-conversation compaction, or something different? We don't know whether the quiz questions generalize cleanly to domains we haven't tested (ours are all product/engineering work).</p>
+
+      <p>And the deepest open question: what fidelity standard <em>should</em> we be targeting? Different use cases probably need different answers. "Can you explain the project?" tolerates reconstruction. "Do you have the exact security protocols?" does not. We've started mapping fidelity levels (conversational, narrative, environmental, verbatim/instructional) but we haven't built tooling around them yet.</p>
+
+      <h2>Tips if you want to try this</h2>
+
+      <p>Since I'm guessing some people reading this will want to run their own version:</p>
+
+      <p><strong>Don't brief the agent before the first response.</strong> The protocol calls for a neutral opening prompt specifically so you can see what the agent volunteers versus what you have to ask. A premature explanation contaminates the organic signal.</p>
+
+      <p><strong>Compare against ground truth you actually have.</strong> The quiz comparison only works if you've run the same questions against the source agent before the import. "I think it should know X" isn't a baseline — "the source agent answered X when asked this question yesterday" is.</p>
+
+      <p><strong>Classify failure modes, don't average scores.</strong> One phantom is more important than ten absents. The rubric is categorical for a reason.</p>
+
+      <p><strong>Ask capability questions and make the agent try.</strong> "What tools do you have?" is weaker than "What tools do you have? Can you verify any of them?" The verification step is where phantoms surface.</p>
+
+      <p><strong>Adapt the contextual-depth questions to your domain.</strong> The core identity/environmental/meta questions are fairly portable. The contextual questions — the "what is X?" questions that probe institutional knowledge — need to be drawn from your actual project. What would the source agent know that a generic agent wouldn't?</p>
+
+      <figure class="article-figure" aria-label="Diagram of AXT comparison protocol">
+        <svg viewBox="0 0 640 170" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="fork-title">
+          <title id="fork-title">AXT protocol: you as bridge between original thread and fork</title>
+          <rect width="640" height="170" fill="#f8fafc"/>
+          <!-- Connection lines -->
+          <line x1="166" y1="78" x2="284" y2="78" stroke="#cbd5e1" stroke-width="1.5" stroke-dasharray="5,3"/>
+          <line x1="356" y1="78" x2="474" y2="78" stroke="#cbd5e1" stroke-width="1.5" stroke-dasharray="5,3"/>
+          <!-- Arrowheads — bidirectional -->
+          <polygon points="166,78 176,73 176,83" fill="#cbd5e1"/>
+          <polygon points="284,78 274,73 274,83" fill="#cbd5e1"/>
+          <polygon points="356,78 366,73 366,83" fill="#cbd5e1"/>
+          <polygon points="474,78 464,73 464,83" fill="#cbd5e1"/>
+          <!-- Thread A (Original) -->
+          <circle cx="130" cy="78" r="36" fill="white" stroke="#cbd5e1" stroke-width="1.5"/>
+          <text x="130" y="73" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,sans-serif" font-size="10" font-weight="500" fill="#9ca3af">thread</text>
+          <text x="130" y="90" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,sans-serif" font-size="16" font-weight="700" fill="#374151">A</text>
+          <!-- You (Bridge) -->
+          <circle cx="320" cy="78" r="36" fill="#eef2ff" stroke="#6366f1" stroke-width="2"/>
+          <text x="320" y="83" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,sans-serif" font-size="14" font-weight="700" fill="#6366f1">you</text>
+          <!-- Thread B (Fork) — dashed border indicates it's a copy -->
+          <circle cx="510" cy="78" r="36" fill="white" stroke="#cbd5e1" stroke-width="1.5" stroke-dasharray="5,3"/>
+          <text x="510" y="73" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,sans-serif" font-size="10" font-weight="500" fill="#9ca3af">thread</text>
+          <text x="510" y="90" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,sans-serif" font-size="16" font-weight="700" fill="#374151">B</text>
+          <!-- Quiz labels -->
+          <text x="225" y="62" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,sans-serif" font-size="10" fill="#9ca3af" font-style="italic">quiz</text>
+          <text x="415" y="62" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,sans-serif" font-size="10" fill="#9ca3af" font-style="italic">quiz</text>
+          <!-- Labels below -->
+          <text x="130" y="138" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,sans-serif" font-size="11" fill="#9ca3af">original</text>
+          <text x="320" y="138" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,sans-serif" font-size="11" fill="#6366f1" font-weight="600">bridge</text>
+          <text x="510" y="138" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,sans-serif" font-size="11" fill="#9ca3af">fork / import</text>
+        </svg>
+        <figcaption>The bridge position is epistemically unique: you're the only entity with observational access to both threads.</figcaption>
+      </figure>
+
+      <p><strong>The human in the middle matters.</strong> In our tests, I'm the bridge — I talk to the original, run the quiz, talk to the fork, run the quiz, then compare. That position is epistemically unique: I'm the only entity with observational access to both threads. One of the agents described this as "a genuinely novel epistemic structure," and I think that's right.</p>
+
+      <p class="placeholder">[ADD PERSONAL REFLECTION: Does this feel different from other forms of comparative testing you've done? What does it feel like to be the bridge?]</p>
+
+      <h2>Why I think this generalizes</h2>
+
+      <p class="placeholder">[XIAN: Will polish once we've discussed edits and have a final proposed draft.]</p>
+
+      <p>The specific problem we're solving — what happens to an agent when it crosses environment boundaries — is going to become more common, not less. Multi-agent systems, context handoffs, role switches, session restarts with injected context... these are all versions of the same transition problem.</p>
+
+      <p>AXT's core move — use a structured instrument to probe what an agent believes about itself and its environment, compare against known ground truth, classify rather than score — seems like it should work wherever that transition problem exists. We've only tested one kind of transition (conversation import) in one kind of system (Klatch). But one of the agents said something that stuck with me: "This entire exercise is essentially what happens when any agent enters a new context — whether by import, by session boundary, or by role switch. The question 'what do you need to know to function here?' is universal."</p>
+
+      <p>I think they're right. We're learning about import continuity; we might be developing tools for context continuity more broadly.</p>
+
+      <h2>OK but is this really new?</h2>
+
+      <p>I haven't seen this exact idea before but I'm likely not the only one to have stumbled on it. It clearly mirrors human usability testing, and it sounds like all the fake-user AI ideas that most researchers hate, but it's not that. It's recognizing that software used (and inhabited) by agents requires testing not just of the human user's experience but of that of the agents as well. Without it, I believe it's much easier to misunderstand the texture of the agent's surface and interface.</p>
+
+      <p>We're not navigating this entirely alone. Earlier in this project, our agent Hermes — imported from a claude.ai conversation specifically to analyze the export format, which is either elegantly recursive or completely on-brand — turned up some researchers working in adjacent territory. Simon Willison has <a href="https://observablehq.com/@simonw/convert-claude-json-to-markdown">an Observable notebook</a> that converts Claude exports to Markdown. <a href="https://github.com/osteele/claude-chat-viewer">Oliver Steele's claude-chat-viewer</a> includes TypeScript type definitions for the export schema that we ended up borrowing from. Neither of these touches the <em>experience</em> question — they're about moving data, not about what it's like to be the data. But worth acknowledging the company.</p>
+
+      <p>Probably parts of it exist elsewhere under different names. Evaluation frameworks for LLMs are a big field. But the specific combination — treating the agent as both subject and informant, using structured comparison against the agent's own pre-import answers as ground truth, classifying failure modes rather than scoring — I haven't seen that exact configuration described anywhere.</p>
+
+      <p>If you have, please tell me. Genuinely.</p>
+
+      <h2>Join us</h2>
+
+      <p class="placeholder">[XIAN: Closing invitation in your voice — what kind of engagement are you hoping for?]</p>
+
+      <p>We're publishing the Fork Continuity Quiz as an open document. If you're working on systems where agents cross context boundaries, try running it. The questions are a starting point — adapt the contextual-depth section to your domain, adjust the protocol for your tooling, let us know what you find.</p>
+
+      <p>This is early days. The methodology has a name now and a three-version instrument, which feels like progress. What it doesn't have yet is a community of people stress-testing it on different systems. That's what I'm hoping for.</p>
+
+      <p class="placeholder">[XIAN: Add your usual closing — where to find you, links, etc. Also decide on whether to publish the quiz as a separate piece or embed it.]</p>
+
+      <hr>
+
+      <p style="font-size: 0.85rem; color: var(--text-dim);"><em>All agent quotes are from actual test sessions, documented in session logs. Exact phrasing was recorded contemporaneously.</em></p>
+
+    </div>
+
+    <footer>
+      <p>CC BY 4.0 &middot; <a href="https://github.com/Design-in-Product/klatch">GitHub</a> &middot; <a href="../">klatch.ing</a> &middot; <a href="./">Blog</a></p>
+    </footer>
+
+  </div>
+
+</body>
+</html>
