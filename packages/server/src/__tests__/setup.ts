@@ -15,6 +15,15 @@ function createFreshDb(): Database.Database {
   db.pragma('foreign_keys = ON');
 
   db.exec(`
+    CREATE TABLE IF NOT EXISTS projects (
+      id TEXT PRIMARY KEY,
+      name TEXT NOT NULL,
+      instructions TEXT NOT NULL DEFAULT '',
+      source TEXT NOT NULL DEFAULT 'native',
+      source_metadata TEXT NOT NULL DEFAULT '{}',
+      created_at TEXT NOT NULL DEFAULT (datetime('now'))
+    );
+
     CREATE TABLE IF NOT EXISTS channels (
       id TEXT PRIMARY KEY,
       name TEXT NOT NULL,
@@ -24,6 +33,7 @@ function createFreshDb(): Database.Database {
       source TEXT DEFAULT 'native',
       source_metadata TEXT,
       compaction_state TEXT,
+      project_id TEXT,
       created_at TEXT NOT NULL DEFAULT (datetime('now'))
     );
 

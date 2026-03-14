@@ -63,8 +63,19 @@ export interface Channel {
   source?: ChannelSource;
   sourceMetadata?: string; // JSON string
   compactionState?: string; // JSON: { summary, timestamp, beforeMessageId }
+  projectId?: string;       // FK to projects table (nullable — channels can be unlinked)
   messageCount?: number;        // populated by enriched list endpoint
   lastMessageAt?: string | null; // populated by enriched list endpoint
+}
+
+// Project: shared context across multiple channels
+export interface Project {
+  id: string;
+  name: string;
+  instructions: string;
+  source: ChannelSource;
+  sourceMetadata: string; // JSON string
+  createdAt: string;
 }
 
 // ── Metadata types (Step 8½) ─────────────────────────────────

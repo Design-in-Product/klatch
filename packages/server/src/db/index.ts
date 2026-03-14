@@ -158,6 +158,26 @@ function runMigrations() {
     db.exec(`ALTER TABLE channels ADD COLUMN compaction_state TEXT`);
   }
 
+  // ── Step 8¾a: Projects table + project context injection ──────
+
+  // First-class projects table — shared context across channels
+  db.exec(`
+    CREATE TABLE IF NOT EXISTS projects (
+      id TEXT PRIMARY KEY,
+      name TEXT NOT NULL,
+      instructions TEXT NOT NULL DEFAULT '',
+      source TEXT NOT NULL DEFAULT 'native',
+      source_metadata TEXT NOT NULL DEFAULT '{}',
+      created_at TEXT NOT NULL DEFAULT (datetime('now'))
+    );
+  `);
+
+  // Add project_id FK column to channels (nullable — channels can be unlinked)
+  const channelCols4 = db.prepare("PRAGMA table_info(channels)").all() as { name: string }[];
+  if (!channelCols4.some((c) => c.name === 'project_id')) {
+    db.exec(`ALTER TABLE channels ADD COLUMN project_id TEXT`);
+  }
+
   // Ensure default entity exists (for existing databases being upgraded)
   const defaultEntity = db.prepare('SELECT id FROM entities WHERE id = ?').get(DEFAULT_ENTITY_ID);
   if (!defaultEntity) {
