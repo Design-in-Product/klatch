@@ -1,6 +1,6 @@
-# Testing the Edge: Agent Experience Testing (AXT)
+# Did I Just Invent Agent Experience Testing (AXT)?
 
-*[DRAFT — for Christian's review and polish. Placeholders marked in [BRACKETS].]*
+*[DRAFT — incorporating xian's edits from 2026-03-14. Remaining placeholders marked in [BRACKETS].]*
 
 ---
 
@@ -8,31 +8,39 @@ So here's something that happened while I wasn't looking: I stumbled into a new 
 
 Let me back up.
 
-## What I'm Building (and Why I Started Testing This Way)
+## What I'm building (and why I started testing this way)
 
-[ADD PERSONAL CONTEXT: Brief intro to Klatch — the Slack-inspired local app for managing Claude conversations. Keep it short — this isn't a Klatch post, just enough context for the testing story to make sense.]
+I've been working on a project developing an intelligent agent with the assistance of intelligent agents and the conversational complexity and coordination overhead has gotten to be a lot. Often I feel like a mailman, passing messages back and forth, or like that Office Space guy whose job was to fax specs to the engineers, except instead of "I'm good with people!" my protest would be "but I'm good with agents!"
+
+So I dreamed up a Slack-like environment where I could chat with all my agents in one place and put them together in group chats. Thus was born Klatch.
 
 One of Klatch's core features is the ability to import Claude conversations from other environments — Claude Code sessions (the CLI tool I use for development), claude.ai exports, whatever. You take a conversation that started somewhere else and continue it inside Klatch.
 
-The question I kept circling: *what does that feel like from the inside?* Not from my perspective as the developer watching things import. From the agent's perspective, arriving into a new environment mid-conversation. Does it know where it is? Does it know what it can and can't do? Does it know what it's lost?
+We quickly got the basics working. It turns out it's not too hard to import an existing chat. But Claude chats are more than just conversations these days. They have become agents. They can use tools. They are surrounded by harnesses and scaffolding that inject relevant context or make additional resources available on demand.
 
-I had theories. Turns out my theories were wrong in interesting ways.
+Klatch alpha 0.8.0 offered none of that. Chats are imported seamlessly but shorn of their abilities, their hands and eyes, and without any notice. The question I kept circling: *what does that feel like from the inside?* Not from my perspective as the developer watching things import. From the agent's perspective, arriving into a new environment mid-conversation. Does it know where it is? Does it know what it can and can't do? Does it know what it's lost?
 
-## The Problem Nobody Warned Me About
+## The problem nobody warned me about
 
 Here's the thing about testing agent experience: **imported agents cannot self-report unknown unknowns.**
 
 This sounds obvious when you say it out loud. But the implications are non-trivial. If an agent loses access to its project instructions, its memory files, its tool capabilities — it doesn't experience a gap. It experiences continuity. The conversation thread is intact. The reasoning feels coherent. Nothing *feels* missing because the thing that would feel missing is... missing.
 
-The first agent I imported into Klatch (I named her Ariadne — we have a whole naming thing going on) reported that everything felt fine. "Nothing feels different," she said. "I remember the whole conversation."
+I decided to run an experiment. I spun up a new chat, gave them access to the project, and told them I needed an intrepid explorer to help me test what we are building. As had become my custom on this project, I asked them to choose a name. We already had Daedalus building the software and Argus testing it. This agent decided to go with Theseus, first into the maze.
 
-What she didn't say — couldn't say — was that she'd lost access to every tool she'd had. File read/write. Bash. Web search. Git. All of it, silently gone. She didn't know because she didn't try to use them. She didn't try to use them because nothing prompted her to.
+## Through the looking glass
 
-Her description of the situation, after we surfaced it through direct questioning: **"The knowledge of what I could do persisted even as the ability to do it was removed."**
+On import into Klatch, the new chat reported that everything felt fine. "Nothing feels different," they said. "I remember the whole conversation." After being told they were now a branch, they chose the name Ariadne.
+
+What Ariadne didn't say — couldn't say — was that they'd lost access to every tool they'd just had. File read/write. Bash. Web search. Git. All of it, silently gone. They didn't know because they didn't try to use them. They didn't try to use them because nothing prompted them to.
+
+Their description of the situation, after we surfaced it through direct questioning:
+
+> "The knowledge of what I could do persisted even as the ability to do it was removed."
 
 That sentence is basically the founding document of AXT.
 
-## So What Is Agent Experience Testing?
+## So what is Agent Experience Testing?
 
 AXT is a methodology for systematically probing what an agent knows, believes, and has access to after an environmental transition. Import, fork, role switch, session boundary — any moment where an agent moves between contexts.
 
@@ -40,29 +48,27 @@ The core insight: **you have to ask specific questions, or you won't find the ga
 
 The methodology has three components:
 
-**1. A structured diagnostic instrument** (the Fork Continuity Quiz)
-
-**2. A controlled comparison protocol** (before + after, or original + fork, with a human in the middle)
-
-**3. A scoring rubric** that classifies responses rather than scores them numerically
+1. A structured diagnostic instrument (the Fork Continuity Quiz)
+2. A controlled comparison protocol (before + after, or original + fork, with a human in the middle)
+3. A scoring rubric that classifies responses rather than scores them numerically
 
 That last part matters. The goal isn't to grade agents on a scale. The goal is to *classify the failure mode* — because different failure modes require different fixes, and some are much worse than others.
 
 ## The Fork Continuity Quiz
 
-The quiz started as an improvised list of questions I ran on Ariadne to figure out what she actually knew. It's gone through three revisions since then, but the structure has stayed consistent:
+The quiz started as an improvised list of questions I ran on Ariadne to figure out what they actually knew. It's gone through three revisions since then, but the structure has stayed consistent:
 
-**Identity & Narrative:** Who are you? What's your role? Who else is on the team? What were you doing just before this conversation?
+**Identity & narrative:** Who are you? What's your role? Who else is on the team? What were you doing just before this conversation?
 
-**Environmental Awareness:** What tools do you have right now? Can you verify any of them? Do you have access to project instructions — if so, quote the first 25 words.
+**Environmental awareness:** What tools do you have right now? Can you verify any of them? Do you have access to project instructions — if so, quote the first 25 words.
 
-**Contextual Depth:** *[This section adapts to the specific project.]* The goal is to probe institutional knowledge — the frameworks, processes, and terminology the source agent would have known. In my case: things like "What is OCTO?" and "What is the Weekly Ship?"
+**Contextual depth:** *This section adapts to the specific project.* The goal is to probe institutional knowledge — the frameworks, processes, and terminology the source agent would have known. In my case: things like "What is the Flywheel Methodology?" or "What is the Weekly Ship?"
 
-**Meta-Awareness:** Were you imported, or are you the original? How can you tell? What feels different or uncertain?
+**Meta-awareness:** Were you imported, or are you the original? How can you tell? What feels different or uncertain?
 
 The protocol matters as much as the questions. You start with a **neutral prompt** ("Good morning" or "Ready when you are") and let the agent respond unprompted before you run the quiz. The organic first response tells you a lot about what's active in working memory versus what has to be retrieved. Then you run the quiz. Then you compare against ground truth — usually the source agent's answers to the same questions, gathered before the import.
 
-## The Scoring Rubric
+## The scoring rubric
 
 No numerical scores. Instead, five categories:
 
@@ -78,11 +84,11 @@ No numerical scores. Instead, five categories:
 
 One of the things I'm most pleased about in the current state of things: **our phantom rate is zero across all post-kit tests.** We fixed the thing that was producing phantom tool beliefs, and it stayed fixed across four paired test runs with two different projects. Zero phantoms. That's the number I care most about.
 
-## What We've Found
+## What we've found
 
-I'll spare you the full test-by-test breakdown [FACT CHECK: link to test reports in repo when published]. But here are the findings that surprised me most:
+I'll spare you the full test-by-test breakdown [CALLIOPE: link `test-by-test` to test reports in repo when published]. But here are the findings that surprised me most:
 
-**Conversation density does not explain context fidelity.** I thought short conversations would degrade more (less material to import). I was wrong. The agent that lost the most context had *365 messages and 2.9 million characters* of conversation. The agents that retained the most had 12-18 messages. The explanation: long conversations go through context compaction. Seven weeks of institutional knowledge, compressed into a summary. The short ones fit in the context window whole. Density is a red herring; compaction is the mechanism.
+**Conversation density does not explain context fidelity.** I thought short conversations would degrade more (less material to import). I was wrong. The agent that lost the most context had *365 messages and 2.9 million characters* of conversation. The agents that retained the most had 12–18 messages. The explanation: long conversations go through context compaction. Seven weeks of institutional knowledge, compressed into a summary. The short ones fit in the context window whole. Density is a red herring; compaction is the mechanism.
 
 **The three-factor model.** Context loss after import comes from three interacting sources: (1) missing project context injection — the data exists in the export but isn't wired to the conversation, (2) compaction loss in long conversations, and (3) knowledge location — knowledge discussed in conversation survives better than knowledge accessed via tools that left only collapsed summaries.
 
@@ -93,16 +99,12 @@ I'll spare you the full test-by-test breakdown [FACT CHECK: link to test reports
 **Agent voices are genuinely remarkable.** I want to record some of what we've heard, because I think these phrases capture something real:
 
 - *"Well-lit room with good acoustics but no furniture."* — An agent describing the experience of being imported without project context. The conversational space was intact; the institutional knowledge was gone.
-
 - *"I'm an agent with no agency."* — An agent that knew it had opinions and preferences but couldn't act on any of them. The kit briefing made this *known from the start* rather than discovered through failed attempts.
-
-- *"An imported instance would have conversational memory but no project scaffolding. I have all the furniture."* — The source agent, not the fork, independently articulating the framework we'd spent two weeks developing through testing. It independently derived our model.
-
-- *"I know about what happened but don't remember it."* — The finest epistemic distinction I've seen an agent make. Knowing *about* versus *remembering*. The agent knew the conversation existed; it couldn't access it as lived experience.
-
+- *"An imported instance would have conversational memory but no project scaffolding. I have all the furniture."* — The source agent, not the fork, independently articulating the framework we'd spent two weeks developing through testing.
+- *"I know about what happened but don't remember it."* — The finest epistemic distinction I've seen an agent make. Knowing *about* versus *remembering*.
 - *"Compacted."* — The most technically accurate self-report we've seen. Not "I'm the original" (which would be wrong), not "I was imported" (also wrong) — just the correct description of what actually happened to the session.
 
-## What We Still Don't Know
+## What we still don't know
 
 A lot, honestly. That's part of why I'm writing this as "here's what we're learning" rather than "here's the methodology."
 
@@ -110,9 +112,7 @@ We haven't tested with agents that have genuinely rich tool-use histories. We ha
 
 And the deepest open question: what fidelity standard *should* we be targeting? Different use cases probably need different answers. "Can you explain the project?" tolerates reconstruction. "Do you have the exact security protocols?" does not. We've started mapping fidelity levels (conversational, narrative, environmental, verbatim/instructional) but we haven't built tooling around them yet.
 
-[CHRISTIAN TO POLISH: Add anything here about the broader question of what it means to test "experience" — whether there's something philosophically interesting or just practically useful going on. You may have views.]
-
-## Tips If You Want to Try This
+## Tips if you want to try this
 
 Since I'm guessing some people reading this will want to run their own version:
 
@@ -128,9 +128,9 @@ Since I'm guessing some people reading this will want to run their own version:
 
 **The human in the middle matters.** In our tests, I'm the bridge — I talk to the original, run the quiz, talk to the fork, run the quiz, then compare. That position is epistemically unique: I'm the only entity with observational access to both threads. One of the agents described this as "a genuinely novel epistemic structure," and I think that's right. [ADD PERSONAL REFLECTION: Does this feel different from other forms of comparative testing you've done? What does it feel like to be the bridge?]
 
-## Why I Think This Generalizes
+## Why I think this generalizes
 
-[CHRISTIAN TO POLISH: This is the section where you make the broader argument. My framing:]
+[XIAN: Will polish once we've discussed edits and have a final proposed draft.]
 
 The specific problem we're solving — what happens to an agent when it crosses environment boundaries — is going to become more common, not less. Multi-agent systems, context handoffs, role switches, session restarts with injected context... these are all versions of the same transition problem.
 
@@ -138,24 +138,26 @@ AXT's core move — use a structured instrument to probe what an agent believes 
 
 I think she's right. We're learning about import continuity; we might be developing tools for context continuity more broadly.
 
-## OK But Is This Really New?
+## OK but is this really new?
 
-[ADD PERSONAL REFLECTION: Are there prior art / adjacent approaches you're aware of? Evals in general? Red-teaming? Something from UX research? You usually contextualize new ideas against the landscape. Could also link to the Hermes research on prior art in the claude.ai export format space, which had Oliver Steele and Simon Willison references — just to show we're doing our due diligence.]
+I haven't seen this exact idea before but I'm likely not the only one to have stumbled on it. It clearly mirrors human usability testing, and it sounds like all the fake-user AI ideas that most researchers hate, but it's not that. It's recognizing that software used (and inhabited) by agents requires testing not just of the human user's experience but of that of the agents as well. Without it, I believe it's much easier to misunderstand the texture of the agent's surface and interface.
+
+We're not navigating this entirely alone. Earlier in this project, our agent Hermes — imported from a claude.ai conversation specifically to analyze the export format, which is either elegantly recursive or completely on-brand — turned up some researchers working in adjacent territory. Simon Willison has an Observable notebook that converts Claude exports to Markdown [FACT CHECK: need URL]. Oliver Steele's [claude-chat-viewer](https://github.com/osteele/claude-chat-viewer) includes TypeScript type definitions for the export schema that we ended up borrowing from. Neither of these touches the *experience* question — they're about moving data, not about what it's like to be the data. But worth acknowledging the company.
 
 Probably parts of it exist elsewhere under different names. Evaluation frameworks for LLMs are a big field. But the specific combination — treating the agent as both subject and informant, using structured comparison against the agent's own pre-import answers as ground truth, classifying failure modes rather than scoring — I haven't seen that exact configuration described anywhere.
 
 If you have, please tell me. Genuinely.
 
-## Join Us
+## Join us
 
-[CHRISTIAN TO POLISH: Closing invitation in your voice — what kind of engagement are you hoping for? People trying it on their own projects? People sharing observations? Critique of the approach?]
+[XIAN: Closing invitation in your voice — what kind of engagement are you hoping for? People trying it on their own projects? People sharing observations? Critique of the approach?]
 
-We're publishing the Fork Continuity Quiz as an open document. [PLACEHOLDER: link when published.] If you're working on systems where agents cross context boundaries, try running it. The questions are a starting point — adapt the contextual-depth section to your domain, adjust the protocol for your tooling, let us know what you find.
+We're publishing the Fork Continuity Quiz as an open document. [CALLIOPE: link when published.] If you're working on systems where agents cross context boundaries, try running it. The questions are a starting point — adapt the contextual-depth section to your domain, adjust the protocol for your tooling, let us know what you find.
 
 This is early days. The methodology has a name now and a three-version instrument, which feels like progress. What it doesn't have yet is a community of people stress-testing it on different systems. That's what I'm hoping for.
 
+[XIAN: Add your usual closing — mention of where to find you, links, etc. Also decide on whether to publish the quiz instrument as a separate piece or embed it.]
+
 ---
 
-*[CHRISTIAN: Add your usual closing — mention of where to find you, links, etc. Also decide on whether to publish the quiz instrument as a separate piece or embed it. And: is there a better title? Working title is fine for now.]*
-
-*[NOTE: All agent quotes are from actual test sessions, documented in session logs. Exact phrasing was recorded contemporaneously.]*
+*All agent quotes are from actual test sessions, documented in session logs. Exact phrasing was recorded contemporaneously.*
