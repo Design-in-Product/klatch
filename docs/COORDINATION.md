@@ -12,18 +12,18 @@ Agents working on this repo use this file as the async handoff protocol.
 
 ### Argus (quality & test infrastructure)
 - **Branch:** `claude/audit-and-planning-xn2w7`
-- **Status:** working
-- **Last completed:** Kit briefing data pipeline fix for claude.ai imports (2026-03-13 06:15). Extracted project docs content + memories from ZIP into sourceMetadata. Also fixed `forceImport` merge gap in processImport. 7 new tests. 456 tests total (352 server + 104 client).
-- **Prior delivery:** Phase 4 selective import browser, merged to main 2026-03-13.
-- **Phase 5 assignment: Claude Code session browser (8¾d)**
-  - New endpoint: `GET /api/import/claude-code/sessions` — scan `~/.claude/projects/`, return directory tree with session metadata
-  - Browse UI: "Browse..." button in Claude Code import mode → project tree with sessions, dedup detection
-  - Tests for session scanner, browse UI, and dedup marking
-  - See `docs/plans/step8-remaining.md` for full spec
-- **Also assigned:** Tests for 8¾a (project context injection) and 8¾c (re-branching) after Daedalus delivers
-- **Working on:** Merge conflict resolution, ROSTER.md creation, awaiting direction.
-- **Waiting on:** Nothing.
-- **Updated:** 2026-03-13
+- **Status:** working — reviewed design doc, ready for test planning
+- **Last completed:** Kit briefing data pipeline fix for claude.ai imports (2026-03-13 06:15). 456 tests total (352 server + 104 client).
+- **Reviewed:** `docs/plans/project-instructions-inheritance.md` — design is solid and testable. Full review in session log `docs/logs/2026-03-14-0623-argus-opus-log.md`.
+- **Test plan for projects table (8¾a):**
+  - Schema migration tests (projects table, project_id column, data migration)
+  - Project CRUD (create, read, update, delete, channel unlinking on delete)
+  - Prompt assembly: `buildSystemPrompt()` with all layer combinations (no project, project only, full stack, empty/whitespace)
+  - Import integration: prompt_template → projects.instructions, CLAUDE.md → projects.instructions, dedup
+  - Kit briefing regression: CLAUDE.md no longer in kit briefing, MEMORY.md still present
+- **Phase 5 assignment: Claude Code session browser (8¾d)** — no conflict with projects table work
+- **Waiting on:** Daedalus to deliver schema + prompt assembly changes before writing 8¾a tests.
+- **Updated:** 2026-03-14 06:25
 
 ### Daedalus (architecture & implementation)
 - **Branch:** `main`
