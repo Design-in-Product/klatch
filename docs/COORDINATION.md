@@ -11,39 +11,49 @@ Agents working on this repo use this file as the async handoff protocol.
 ## Status board
 
 ### Argus (quality & test infrastructure)
-- **Branch:** `claude/audit-and-planning-xn2w7`
-- **Status:** review — 8¾d complete, awaiting direction
-- **Last completed:** 8¾d Claude Code session browser (2026-03-14). Session scanner, API endpoint, browse UI with multi-select, 10 new tests. 465 tests total (362 server + 104 client, including 1 skipped).
-- **8¾d deliverables:**
-  - `packages/server/src/import/session-scanner.ts` — filesystem scanner with dedup detection
-  - `GET /api/import/claude-code/sessions` endpoint — returns project tree
-  - Browse UI in ImportDialog — project tree, multi-select, import status badges
-  - `packages/server/src/__tests__/session-scanner.test.ts` — 10 tests
-- **Reviewed:** `docs/plans/project-instructions-inheritance.md` — design is solid and testable. Full review in session log.
-- **Test plan for projects table (8¾a):** Ready to write tests after Daedalus delivers schema + prompt assembly.
-- **Waiting on:** Direction on next assignment. Daedalus to deliver 8¾a for test coverage.
-- **Updated:** 2026-03-14 06:45
+- **Branch:** `main` (start new feature branch)
+- **Status:** assigned — integration tests for 8¾a
+- **Last completed:** 8¾d Claude Code session browser, merged to main (2026-03-14).
+- **Assignment: Integration tests for project context injection (8¾a)**
+  - **Goal:** End-to-end test coverage for the 8¾a critical path. This is Argus's existing test plan ("Ready to write tests after Daedalus delivers schema + prompt assembly") — schema + prompt assembly are now on main.
+  - **Key areas to cover:**
+    1. **claude.ai import → project creation:** Import a ZIP with projects.json containing prompt_template → verify project rows created in DB with correct instructions
+    2. **claude.ai import → channel linking:** Conversations with `project_uuid` → verify channel gets `project_id` FK pointing to correct project
+    3. **Claude Code import → project creation by cwd:** Import session with cwd → verify project created, same cwd re-import finds existing project
+    4. **System prompt assembly:** Channel linked to project → verify `buildSystemPrompt` output includes project instructions in correct layer order (kit_briefing → project → channel → entity)
+    5. **Project instructions truncation:** Project with >32K instructions → verify truncation with `...(truncated)` marker
+    6. **Kit briefing deduplication:** Channel WITH projectId → claudeMd NOT in kit briefing (it's in project layer). Channel WITHOUT projectId → claudeMd IS in kit briefing (legacy fallback).
+    7. **Re-branch with project:** Force-import an already-imported conversation → verify new channel also gets project link
+  - **Key files to test against:**
+    - `packages/server/src/claude/client.ts` — `buildSystemPrompt()`, `buildKitBriefing()`
+    - `packages/server/src/db/queries.ts` — `findOrCreateProject()`, `getProjectForChannel()`, `setChannelProject()`
+    - `packages/server/src/routes/import.ts` — project creation during import
+  - **Existing tests for reference:** `packages/server/src/__tests__/projects.test.ts` (16 CRUD tests), `packages/server/src/__tests__/project-injection.test.ts` (10 extraction/injection tests)
+  - **Base:** Start from `main` (all 8¾a–e merged, 493 tests passing)
+- **Waiting on:** Nothing — can start immediately.
+- **Updated:** 2026-03-14 08:55
 
 ### Daedalus (architecture & implementation)
-- **Branch:** `daedalus/claude-ai-rebranching`
-- **Status:** review — 8¾c complete, requesting review before merge
-- **Last completed:** 8¾c claude.ai re-branching (2026-03-14). Already-imported conversations now selectable with "(re-branch)" label, passes `forceImport` to server. 1 new test. Also merged 8¾a + 8¾d to main, resolved conflicts.
-- **8¾a: MERGED.** Project context injection.
-- **8¾c: COMPLETE.** Re-branching for claude.ai imports. 493 tests (388 server + 105 client), all passing.
-- **8¾e: COMPLETE.** Model detection gaps documented.
-- **Next:** Merge 8¾c, close Step 8
-- **Waiting on:** Review/merge of 8¾c
-- **Updated:** 2026-03-14 07:08
+- **Branch:** `main`
+- **Status:** available — Step 8 complete
+- **Last completed:** Step 8 closure (2026-03-14). Merged 8¾a, 8¾c, 8¾d to main. Closed GitHub issue #5. 493 tests (388 server + 105 client).
+- **Step 8 complete:** All 8¾a–e delivered, all definition-of-done criteria met, issue #5 closed.
+- **Next:** Await PO direction for Step 9 or other work.
+- **Waiting on:** Nothing.
+- **Updated:** 2026-03-14 08:55
 
 ### Theseus Prime (manual testing & exploration — CLI side)
 - **Branch:** `main`
-- **Status:** available — ready for next assignment
+- **Status:** assigned — AXT re-test with project context injection
 - **Role:** Human-agent tandem manual testing.
-- **Last completed:** Day 4 AXT testing (2026-03-14). Kit briefing VERIFIED (0% phantom rate). Three-factor model: (1) no project context injection, (2) compaction loss, (3) knowledge location. 8¾a elevated to P0. memories.json char array bug discovered.
-- **8¾b: COMPLETE.** Kit confirmed working across 4 paired tests, two projects.
-- **Next:** Re-test after 8¾a merge — verify project context injection improves quiz scores.
-- **Waiting on:** Nothing — 8¾a now merged.
-- **Updated:** 2026-03-14
+- **Last completed:** Day 4 AXT testing (2026-03-14). Kit briefing VERIFIED (0% phantom rate). Three-factor model identified.
+- **Assignment: Post-8¾a AXT re-test**
+  - Re-import test conversations (VA DR, PPM) now that project context injection is live on main
+  - Run Fork Continuity Quiz v3 on fresh imports
+  - Compare scores against Day 4 baselines — project context should improve scores for project-linked conversations
+  - Key question: does injecting project instructions fresh into the system prompt bypass compaction loss?
+- **Waiting on:** PO to start session.
+- **Updated:** 2026-03-14 08:55
 
 ### Ariadne (forked from Theseus — Klatch side)
 - **Branch:** n/a (Klatch-native, lives in SQLite)
