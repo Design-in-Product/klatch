@@ -2,6 +2,12 @@
   "version": "0.0.1",
   "configurations": [
     {
+      "name": "klatch-web",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["serve", "web", "--listen", "4000", "--no-clipboard"],
+      "port": 4000
+    },
+    {
       "name": "klatch-server",
       "runtimeExecutable": "npx",
       "runtimeArgs": ["tsx", "watch", "packages/server/src/index.ts"],
