@@ -1,7 +1,7 @@
 import Anthropic from '@anthropic-ai/sdk';
 import { EventEmitter } from 'events';
-import { getMessages, getChannel, updateMessage, updateChannelCompaction } from '../db/queries.js';
-import type { Entity, Channel } from '@klatch/shared';
+import { getMessages, getChannel, updateMessage, updateChannelCompaction, getProjectForChannel } from '../db/queries.js';
+import type { Entity, Channel, Project } from '@klatch/shared';
 import { DEFAULT_MODEL } from '@klatch/shared';
 
 // Lazy-init: the Anthropic client must not be created at import time
@@ -172,6 +172,12 @@ const MAX_CONTEXT_CHARS = 4000;
  * Build a kit briefing for imported channels.
  * Orients the model about its environment when continuing from an imported session.
  * Addresses the "silent capability loss" problem discovered in Theseus/Ariadne testing.
+ *
+ * Note: Project instructions (CLAUDE.md / prompt_template) are now injected via the
+ * project layer in buildSystemPrompt, NOT here. Kit briefing retains only:
+ * - Core orientation text (capability awareness)
+ * - MEMORY.md content (accumulated project memory — kept here as a fallback for
+ *   channels not yet linked to a project)
  */
 export function buildKitBriefing(channel: Channel): string {
   const parts: string[] = [];
@@ -186,13 +192,16 @@ export function buildKitBriefing(channel: Channel): string {
     'explain what you would do and suggest they use a tool-enabled environment.'
   );
 
-  // Inject captured project context from sourceMetadata
+  // Inject MEMORY.md from sourceMetadata (accumulated project memory)
+  // claudeMd is now in project.instructions — only inject here as fallback
+  // when channel has no project link (legacy imports)
   let meta: Record<string, unknown> = {};
   try {
     if (channel.sourceMetadata) meta = JSON.parse(channel.sourceMetadata);
   } catch { /* ignore parse errors */ }
 
-  if (meta.claudeMd) {
+  // Only inject claudeMd from sourceMetadata if channel has no project (legacy fallback)
+  if (!channel.projectId && meta.claudeMd) {
     const content = String(meta.claudeMd);
     const truncated = content.length > MAX_CONTEXT_CHARS
       ? content.slice(0, MAX_CONTEXT_CHARS) + '\n...(truncated)'
@@ -211,15 +220,41 @@ export function buildKitBriefing(channel: Channel): string {
   return parts.join('\n\n');
 }
 
-/** Build system prompt: kit briefing (for imports) + channel preamble + entity's own prompt */
-function buildSystemPrompt(entity: Entity, channelPreamble?: string, channel?: Channel): string {
+/** Max characters of project instructions to inject into system prompt */
+const MAX_PROJECT_INSTRUCTIONS_CHARS = 32000;
+
+/**
+ * Build system prompt with 4-layer assembly:
+ *   1. Kit briefing (imported channels only — orientation + capability awareness)
+ *   2. Project instructions (from projects table — CLAUDE.md / prompt_template)
+ *   3. Channel addendum (channel-specific system prompt)
+ *   4. Entity's own system prompt
+ *
+ * Per design doc: project-instructions-inheritance.md (approved 2026-03-13)
+ */
+function buildSystemPrompt(entity: Entity, channelPreamble?: string, channel?: Channel, project?: Project | null): string {
   const parts: string[] = [];
-  // Kit briefing for imported channels — automatic orientation on transition
+
+  // 1. Kit briefing for imported channels — automatic orientation on transition
   if (channel?.source && channel.source !== 'native') {
     parts.push(buildKitBriefing(channel));
   }
+
+  // 2. Project instructions (if channel belongs to a project)
+  if (project?.instructions?.trim()) {
+    const content = project.instructions.trim();
+    const truncated = content.length > MAX_PROJECT_INSTRUCTIONS_CHARS
+      ? content.slice(0, MAX_PROJECT_INSTRUCTIONS_CHARS) + '\n...(truncated)'
+      : content;
+    parts.push(truncated);
+  }
+
+  // 3. Channel addendum (channel-specific system prompt)
   if (channelPreamble?.trim()) parts.push(channelPreamble.trim());
+
+  // 4. Entity's own system prompt
   if (entity.systemPrompt?.trim()) parts.push(entity.systemPrompt.trim());
+
   return parts.join('\n\n');
 }
 
@@ -361,9 +396,10 @@ export async function streamClaude(
   channelPreamble?: string
 ) {
   const channel = getChannel(channelId);
+  const project = channel?.projectId ? getProjectForChannel(channelId) : null;
   const compactionEnabled = channel?.source !== 'native';
   const history = buildPanelHistory(channelId, entity);
-  const systemPrompt = buildSystemPrompt(entity, channelPreamble, channel);
+  const systemPrompt = buildSystemPrompt(entity, channelPreamble, channel, project);
   const result = await streamClaudeCore(
     assistantMessageId, entity, history, systemPrompt,
     { compactionEnabled }
@@ -403,6 +439,7 @@ export async function streamClaudeRoundtable(
   channelPreamble?: string
 ) {
   const channel = getChannel(channelId);
+  const project = channel?.projectId ? getProjectForChannel(channelId) : null;
   const compactionEnabled = channel?.source !== 'native';
 
   // Register this roundtable so abort can cancel the whole round
@@ -424,7 +461,7 @@ export async function streamClaudeRoundtable(
       if (roundtable.cancelled) break;
 
       const { assistantMessageId, entity } = assistants[i];
-      const systemPrompt = buildSystemPrompt(entity, channelPreamble, channel);
+      const systemPrompt = buildSystemPrompt(entity, channelPreamble, channel, project);
 
       let history: ChatMessage[];
 

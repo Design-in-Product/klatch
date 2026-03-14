@@ -98,7 +98,11 @@ export function ImportDialog({ isOpen, onClose, onImported, onBulkImported, onCh
       } else {
         if (!zipFile) return;
         const ids = selectedIds.size > 0 ? Array.from(selectedIds) : undefined;
-        const importResult = await importClaudeAiExport(zipFile, ids);
+        // If any selected conversation is already imported, use forceImport for re-branching
+        const hasRebranch = preview?.conversations.some(
+          (c) => c.alreadyImported && selectedIds.has(c.uuid)
+        );
+        const importResult = await importClaudeAiExport(zipFile, ids, hasRebranch || undefined);
         setBulkResult(importResult);
       }
     } catch (err) {
@@ -326,6 +330,9 @@ export function ImportDialog({ isOpen, onClose, onImported, onBulkImported, onCh
   };
 
   const importableCount = preview?.conversations.filter((c) => !c.alreadyImported).length ?? 0;
+  const rebranchCount = preview?.conversations.filter(
+    (c) => c.alreadyImported && selectedIds.has(c.uuid)
+  ).length ?? 0;
   const isSubmitDisabled = loading || (
     mode === 'claude-code'
       ? (sessionBrowse ? selectedSessions.size === 0 : !sessionPath.trim())
@@ -680,17 +687,19 @@ export function ImportDialog({ isOpen, onClose, onImported, onBulkImported, onCh
                             )}
                           </div>
                           <div className="max-h-56 overflow-y-auto rounded border border-line divide-y divide-line">
-                            {preview.conversations.map((conv) => (
+                            {preview.conversations.map((conv) => {
+                              const isSelected = selectedIds.has(conv.uuid);
+                              const willRebranch = conv.alreadyImported && isSelected;
+                              return (
                               <label
                                 key={conv.uuid}
                                 className={`flex items-start gap-2.5 px-3 py-2 text-sm cursor-pointer hover:bg-hover transition-colors ${
-                                  conv.alreadyImported ? 'opacity-50' : ''
+                                  conv.alreadyImported && !isSelected ? 'opacity-50' : ''
                                 }`}
                               >
                                 <input
                                   type="checkbox"
-                                  checked={selectedIds.has(conv.uuid)}
-                                  disabled={conv.alreadyImported}
+                                  checked={isSelected}
                                   onChange={() => toggleConversation(conv.uuid)}
                                   className="mt-0.5 rounded border-line text-accent focus:ring-accent"
                                 />
@@ -700,7 +709,12 @@ export function ImportDialog({ isOpen, onClose, onImported, onBulkImported, onCh
                                   </div>
                                   <div className="text-xs text-muted">
                                     {conv.messageCount} messages
-                                    {conv.alreadyImported && (
+                                    {willRebranch && (
+                                      <span className="ml-1.5 text-accent font-medium">
+                                        (re-branch)
+                                      </span>
+                                    )}
+                                    {conv.alreadyImported && !isSelected && (
                                       <span className="ml-1.5 text-yellow-600 dark:text-yellow-400">
                                         (already imported)
                                       </span>
@@ -708,22 +722,21 @@ export function ImportDialog({ isOpen, onClose, onImported, onBulkImported, onCh
                                   </div>
                                 </div>
                               </label>
-                            ))}
+                              );
+                            })}
                           </div>
                         </div>
                       )}
 
-                      {/* Projects section (info only) */}
-                      {preview.projects.length > 0 && (
-                        <div className="text-xs text-muted">
-                          {preview.projects.length} project{preview.projects.length !== 1 ? 's' : ''} with knowledge docs (not yet importable)
-                        </div>
-                      )}
-
-                      {/* Memories section (info only) */}
-                      {preview.memories.length > 0 && (
-                        <div className="text-xs text-muted">
-                          {preview.memories.length} memor{preview.memories.length !== 1 ? 'ies' : 'y'} (not yet importable)
+                      {/* Projects & memories info */}
+                      {(preview.projects.length > 0 || preview.memories.length > 0) && (
+                        <div className="text-xs text-muted space-y-0.5">
+                          {preview.projects.length > 0 && (
+                            <p>{preview.projects.length} project{preview.projects.length !== 1 ? 's' : ''} (instructions will be imported with conversations)</p>
+                          )}
+                          {preview.memories.length > 0 && (
+                            <p>{preview.memories.length} memor{preview.memories.length !== 1 ? 'ies' : 'y'} (included in project context)</p>
+                          )}
                         </div>
                       )}
                     </div>
@@ -770,7 +783,9 @@ export function ImportDialog({ isOpen, onClose, onImported, onBulkImported, onCh
                     mode === 'claude-code' && sessionBrowse
                       ? `Import selected (${selectedSessions.size})`
                       : mode === 'claude-ai' && preview
-                        ? `Import selected (${selectedIds.size})`
+                        ? rebranchCount > 0
+                          ? `Import ${selectedIds.size} (${rebranchCount} re-branch)`
+                          : `Import selected (${selectedIds.size})`
                         : 'Import'
                   )}
                 </button>

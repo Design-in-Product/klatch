@@ -12,52 +12,48 @@ Agents working on this repo use this file as the async handoff protocol.
 
 ### Argus (quality & test infrastructure)
 - **Branch:** `claude/audit-and-planning-xn2w7`
-- **Status:** working — 8¾a test scaffolding complete, ready for more
-- **Last completed:** 8¾a test scaffolding (2026-03-14 06:55). 55 todo tests covering schema migration, project CRUD, prompt assembly layers, import integration, kit briefing dedup, memories.json bug. Also: 8¾d session browser delivered earlier this session.
-- **8¾a test scaffolding deliverables:**
-  - `packages/server/src/__tests__/project-instructions.test.ts` — 53 tests (3 pass, 50 todo)
-  - `packages/server/src/__tests__/memories-parsing.test.ts` — 11 tests (6 pass, 5 todo)
-  - Bug confirmed: memories.json character arrays silently dropped (test reproduces it)
-  - Todo tests ready to fill in as Daedalus delivers schema, CRUD, prompt assembly, import integration
-- **8¾d deliverables (completed):**
-  - Session scanner, API endpoint, browse UI with multi-select, 10 tests
-- **Reviewed:** `docs/plans/project-instructions-inheritance.md` — solid and testable.
-- **Waiting on:** Daedalus to deliver 8¾a implementation. Tests ready to activate as code lands.
-- **Updated:** 2026-03-14 06:55
+- **Status:** working — integration tests for 8¾a
+- **Last completed:** 8¾a test scaffolding + 8¾d session browser (2026-03-14).
+- **Assignment: Integration tests for project context injection (8¾a)**
+  - **Goal:** End-to-end test coverage for the 8¾a critical path. Schema + prompt assembly are now on main.
+  - **Key areas to cover:**
+    1. **claude.ai import → project creation:** Import a ZIP with projects.json containing prompt_template → verify project rows created in DB with correct instructions
+    2. **claude.ai import → channel linking:** Conversations with `project_uuid` → verify channel gets `project_id` FK pointing to correct project
+    3. **Claude Code import → project creation by cwd:** Import session with cwd → verify project created, same cwd re-import finds existing project
+    4. **System prompt assembly:** Channel linked to project → verify `buildSystemPrompt` output includes project instructions in correct layer order (kit_briefing → project → channel → entity)
+    5. **Project instructions truncation:** Project with >32K instructions → verify truncation with `...(truncated)` marker
+    6. **Kit briefing deduplication:** Channel WITH projectId → claudeMd NOT in kit briefing (it's in project layer). Channel WITHOUT projectId → claudeMd IS in kit briefing (legacy fallback).
+    7. **Re-branch with project:** Force-import an already-imported conversation → verify new channel also gets project link
+  - **Key files to test against:**
+    - `packages/server/src/claude/client.ts` — `buildSystemPrompt()`, `buildKitBriefing()`
+    - `packages/server/src/db/queries.ts` — `findOrCreateProject()`, `getProjectForChannel()`, `setChannelProject()`
+    - `packages/server/src/routes/import.ts` — project creation during import
+  - **Existing tests for reference:** `packages/server/src/__tests__/projects.test.ts` (16 CRUD tests), `packages/server/src/__tests__/project-injection.test.ts` (10 extraction/injection tests)
+  - **Base:** Merged from `main` (all 8¾a–e merged, 493 tests passing)
+- **Waiting on:** Nothing — starting now.
+- **Updated:** 2026-03-14 09:05
 
 ### Daedalus (architecture & implementation)
 - **Branch:** `main`
-- **Status:** available — 8¾a and 8¾c assigned
-- **Last completed:** Merged Argus Phase 4, resolved merge conflicts, fixed `processImport()` forceImport scope bug. 450 tests (346 server + 104 client).
-- **Assignment 1 (8¾a): Project context injection — UPDATED by design doc**
-  - **New design:** `docs/plans/project-instructions-inheritance.md` (PO-approved 2026-03-13 15:37)
-  - Key change: first-class `projects` table replaces `sourceMetadata`-only approach
-  - `prompt_template` from `projects.json` → `projects.instructions` column
-  - CLAUDE.md from Claude Code → `projects.instructions` column
-  - Channels get `project_id` FK, inherit project instructions
-  - Channel `system_prompt` becomes "addendum" layered after project instructions
-  - Prompt assembly: `kit_briefing + project.instructions + channel.system_prompt + entity.systemPrompt`
-  - Import flow: create project rows from ZIP/filesystem, user associates conversations → projects
-  - Native channels can also belong to projects
-  - **Please read the full design doc before implementing — it supersedes the original 8¾a spec**
-- **Assignment 2 (8¾c): claude.ai re-branching**
-  - Update browse panel: already-imported conversations selectable (not grayed out)
-  - Wire to existing fork-again logic with disambiguation suffix
-- **Assignment 3 (8¾e): Model detection docs**
-  - Document: claude.ai exports contain NO model info (confirmed — not at conversation, message, or project level)
-  - Optionally add manual model selector in browse panel
-- **Waiting on:** 8¾b kit briefing re-test (Theseus + PO) before starting 8¾a. Also: read `docs/plans/project-instructions-inheritance.md` before starting — it changes the 8¾a approach.
-- **Next:** 8¾a using the new design doc
-- **Updated:** 2026-03-13
+- **Status:** available — Step 8 complete
+- **Last completed:** Step 8 closure (2026-03-14). Merged 8¾a, 8¾c, 8¾d to main. Closed GitHub issue #5. 493 tests (388 server + 105 client).
+- **Step 8 complete:** All 8¾a–e delivered, all definition-of-done criteria met, issue #5 closed.
+- **Next:** Await PO direction for Step 9 or other work.
+- **Waiting on:** Nothing.
+- **Updated:** 2026-03-14 08:55
 
 ### Theseus Prime (manual testing & exploration — CLI side)
-- **Branch:** `claude/audit-and-planning-xn2w7`
-- **Status:** working — project instructions inheritance
-- **Role:** Human-agent tandem manual testing + architecture with PO.
-- **Last completed:** Testing synthesis memo (2026-03-13). Five import tests, AXT methodology, priority stack.
-- **Delivered:** `docs/plans/project-instructions-inheritance.md` — PO-approved design for `projects` table + two-field inheritance model. Supersedes original 8¾a approach.
-- **Waiting on:** Nothing.
-- **Updated:** 2026-03-13 15:37
+- **Branch:** `main`
+- **Status:** assigned — AXT re-test with project context injection
+- **Role:** Human-agent tandem manual testing.
+- **Last completed:** Day 4 AXT testing (2026-03-14). Kit briefing VERIFIED (0% phantom rate). Three-factor model identified.
+- **Assignment: Post-8¾a AXT re-test**
+  - Re-import test conversations (VA DR, PPM) now that project context injection is live on main
+  - Run Fork Continuity Quiz v3 on fresh imports
+  - Compare scores against Day 4 baselines — project context should improve scores for project-linked conversations
+  - Key question: does injecting project instructions fresh into the system prompt bypass compaction loss?
+- **Waiting on:** PO to start session.
+- **Updated:** 2026-03-14 08:55
 
 ### Ariadne (forked from Theseus — Klatch side)
 - **Branch:** n/a (Klatch-native, lives in SQLite)

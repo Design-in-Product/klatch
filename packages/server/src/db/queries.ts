@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
 import { getDb } from './index.js';
-import type { Channel, ChannelStats, Message, Entity, ModelId, InteractionMode, ChannelSource } from '@klatch/shared';
+import type { Channel, ChannelStats, Message, Entity, Project, ModelId, InteractionMode, ChannelSource } from '@klatch/shared';
 import { DEFAULT_MODEL, DEFAULT_ENTITY_ID, ENTITY_COLORS, DEFAULT_INTERACTION_MODE } from '@klatch/shared';
 
 function rowToChannel(row: any): Channel {
@@ -14,6 +14,18 @@ function rowToChannel(row: any): Channel {
     source: (row.source as ChannelSource) || 'native',
     sourceMetadata: row.source_metadata || undefined,
     compactionState: row.compaction_state || undefined,
+    projectId: row.project_id || undefined,
+  };
+}
+
+function rowToProject(row: any): Project {
+  return {
+    id: row.id,
+    name: row.name,
+    instructions: row.instructions || '',
+    source: (row.source as ChannelSource) || 'native',
+    sourceMetadata: row.source_metadata || '{}',
+    createdAt: row.created_at,
   };
 }
 
@@ -397,6 +409,106 @@ export function getChannelEntityCount(channelId: string): number {
   return row.count;
 }
 
+// ── Project CRUD ──────────────────────────────────────────────
+
+export function getProject(id: string): Project | undefined {
+  const row = getDb().prepare('SELECT * FROM projects WHERE id = ?').get(id) as any;
+  if (!row) return undefined;
+  return rowToProject(row);
+}
+
+export function getAllProjects(): Project[] {
+  const rows = getDb()
+    .prepare('SELECT * FROM projects ORDER BY created_at ASC')
+    .all() as any[];
+  return rows.map(rowToProject);
+}
+
+export function createProject(
+  name: string,
+  instructions: string,
+  source: ChannelSource = 'native',
+  sourceMetadata: Record<string, unknown> = {}
+): Project {
+  const id = uuidv4();
+  const now = new Date().toISOString();
+  getDb()
+    .prepare('INSERT INTO projects (id, name, instructions, source, source_metadata, created_at) VALUES (?, ?, ?, ?, ?, ?)')
+    .run(id, name, instructions, source, JSON.stringify(sourceMetadata), now);
+  return { id, name, instructions, source, sourceMetadata: JSON.stringify(sourceMetadata), createdAt: now };
+}
+
+export function updateProject(
+  id: string,
+  updates: { name?: string; instructions?: string }
+): Project | undefined {
+  const project = getProject(id);
+  if (!project) return undefined;
+  const name = updates.name ?? project.name;
+  const instructions = updates.instructions ?? project.instructions;
+  getDb()
+    .prepare('UPDATE projects SET name = ?, instructions = ? WHERE id = ?')
+    .run(name, instructions, id);
+  return { ...project, name, instructions };
+}
+
+export function deleteProject(id: string): boolean {
+  const db = getDb();
+  const txn = db.transaction(() => {
+    // Unlink channels (don't delete them)
+    db.prepare('UPDATE channels SET project_id = NULL WHERE project_id = ?').run(id);
+    const result = db.prepare('DELETE FROM projects WHERE id = ?').run(id);
+    return result.changes > 0;
+  });
+  return txn();
+}
+
+/**
+ * Find or create a project by source identity.
+ * For claude.ai imports: matches by original project UUID in source_metadata.
+ * For Claude Code imports: matches by cwd in source_metadata.
+ */
+export function findOrCreateProject(
+  name: string,
+  instructions: string,
+  source: ChannelSource,
+  sourceMetadata: Record<string, unknown>,
+  matchKey: string,
+  matchValue: string
+): Project {
+  // Try to find existing project by source identity
+  const existing = getDb()
+    .prepare(`SELECT * FROM projects WHERE json_extract(source_metadata, '$.${matchKey}') = ?`)
+    .get(matchValue) as any;
+  if (existing) return rowToProject(existing);
+
+  // Create new
+  return createProject(name, instructions, source, sourceMetadata);
+}
+
+/**
+ * Get the project for a channel (if any).
+ * Used to inject project instructions into system prompt.
+ */
+export function getProjectForChannel(channelId: string): Project | undefined {
+  const row = getDb()
+    .prepare(`
+      SELECT p.* FROM projects p
+      JOIN channels c ON c.project_id = p.id
+      WHERE c.id = ?
+    `)
+    .get(channelId) as any;
+  if (!row) return undefined;
+  return rowToProject(row);
+}
+
+/** Link a channel to a project */
+export function setChannelProject(channelId: string, projectId: string | null): void {
+  getDb()
+    .prepare('UPDATE channels SET project_id = ? WHERE id = ?')
+    .run(projectId, channelId);
+}
+
 // ── Import Operations ─────────────────────────────────────────
 
 import type { ImportResult } from '@klatch/shared';
@@ -408,6 +520,7 @@ interface ImportSessionParams {
   sourceMetadata: Record<string, unknown>;
   model?: string;
   turns: ParsedTurn[];
+  projectId?: string; // FK to projects table
 }
 
 /**
@@ -416,7 +529,7 @@ interface ImportSessionParams {
  */
 export function importSession(params: ImportSessionParams): ImportResult {
   const db = getDb();
-  const { channelName, source, sourceMetadata, model, turns } = params;
+  const { channelName, source, sourceMetadata, model, turns, projectId } = params;
 
   const channelId = uuidv4();
   const now = new Date().toISOString();
@@ -426,10 +539,10 @@ export function importSession(params: ImportSessionParams): ImportResult {
   let artifactCount = 0;
 
   const txn = db.transaction(() => {
-    // 1. Create channel with source info
+    // 1. Create channel with source info and optional project link
     db.prepare(
-      'INSERT INTO channels (id, name, system_prompt, model, mode, source, source_metadata, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)'
-    ).run(channelId, channelName, '', channelModel, DEFAULT_INTERACTION_MODE, source, JSON.stringify(sourceMetadata), now);
+      'INSERT INTO channels (id, name, system_prompt, model, mode, source, source_metadata, project_id, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)'
+    ).run(channelId, channelName, '', channelModel, DEFAULT_INTERACTION_MODE, source, JSON.stringify(sourceMetadata), projectId || null, now);
 
     // 2. Assign default entity
     db.prepare(
