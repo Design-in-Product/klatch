@@ -12,17 +12,18 @@ Agents working on this repo use this file as the async handoff protocol.
 
 ### Argus (quality & test infrastructure)
 - **Branch:** `claude/audit-and-planning-xn2w7`
-- **Status:** review — 8¾d complete, awaiting direction
-- **Last completed:** 8¾d Claude Code session browser (2026-03-14). Session scanner, API endpoint, browse UI with multi-select, 10 new tests. 465 tests total (362 server + 104 client, including 1 skipped).
-- **8¾d deliverables:**
-  - `packages/server/src/import/session-scanner.ts` — filesystem scanner with dedup detection
-  - `GET /api/import/claude-code/sessions` endpoint — returns project tree
-  - Browse UI in ImportDialog — project tree, multi-select, import status badges
-  - `packages/server/src/__tests__/session-scanner.test.ts` — 10 tests
-- **Reviewed:** `docs/plans/project-instructions-inheritance.md` — design is solid and testable. Full review in session log.
-- **Test plan for projects table (8¾a):** Ready to write tests after Daedalus delivers schema + prompt assembly.
-- **Waiting on:** Direction on next assignment. Daedalus to deliver 8¾a for test coverage.
-- **Updated:** 2026-03-14 06:45
+- **Status:** working — 8¾a test scaffolding complete, ready for more
+- **Last completed:** 8¾a test scaffolding (2026-03-14 06:55). 55 todo tests covering schema migration, project CRUD, prompt assembly layers, import integration, kit briefing dedup, memories.json bug. Also: 8¾d session browser delivered earlier this session.
+- **8¾a test scaffolding deliverables:**
+  - `packages/server/src/__tests__/project-instructions.test.ts` — 53 tests (3 pass, 50 todo)
+  - `packages/server/src/__tests__/memories-parsing.test.ts` — 11 tests (6 pass, 5 todo)
+  - Bug confirmed: memories.json character arrays silently dropped (test reproduces it)
+  - Todo tests ready to fill in as Daedalus delivers schema, CRUD, prompt assembly, import integration
+- **8¾d deliverables (completed):**
+  - Session scanner, API endpoint, browse UI with multi-select, 10 tests
+- **Reviewed:** `docs/plans/project-instructions-inheritance.md` — solid and testable.
+- **Waiting on:** Daedalus to deliver 8¾a implementation. Tests ready to activate as code lands.
+- **Updated:** 2026-03-14 06:55
 
 ### Daedalus (architecture & implementation)
 - **Branch:** `main`
