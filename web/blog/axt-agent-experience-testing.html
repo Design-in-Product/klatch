@@ -37,6 +37,41 @@
       <p class="article-meta">March 2026 &middot; xian</p>
     </div>
 
+    <figure class="article-figure" aria-label="An empty room illustration">
+      <svg viewBox="0 0 640 240" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="room-title">
+        <title id="room-title">A well-lit room with no furniture</title>
+        <!-- Background -->
+        <rect width="640" height="240" fill="#f8fafc"/>
+        <!-- Ceiling -->
+        <polygon points="0,0 180,55 460,55 640,0" fill="#f8fafc"/>
+        <!-- Back wall -->
+        <rect x="180" y="55" width="280" height="110" fill="#ffffff"/>
+        <!-- Left wall -->
+        <polygon points="0,0 180,55 180,165 0,240" fill="#f3f6f9"/>
+        <!-- Right wall -->
+        <polygon points="460,55 640,0 640,240 460,165" fill="#f3f6f9"/>
+        <!-- Floor -->
+        <polygon points="0,240 180,165 460,165 640,240" fill="#edf0f5"/>
+        <!-- Back wall edges -->
+        <line x1="180" y1="55" x2="180" y2="165" stroke="#dde3ed" stroke-width="1.5"/>
+        <line x1="460" y1="55" x2="460" y2="165" stroke="#dde3ed" stroke-width="1.5"/>
+        <line x1="180" y1="55" x2="460" y2="55" stroke="#dde3ed" stroke-width="1.5"/>
+        <line x1="180" y1="165" x2="460" y2="165" stroke="#dde3ed" stroke-width="1.5"/>
+        <!-- Perspective corner lines -->
+        <line x1="0" y1="0" x2="180" y2="55" stroke="#e8edf3" stroke-width="1"/>
+        <line x1="640" y1="0" x2="460" y2="55" stroke="#e8edf3" stroke-width="1"/>
+        <line x1="0" y1="240" x2="180" y2="165" stroke="#e8edf3" stroke-width="1"/>
+        <line x1="640" y1="240" x2="460" y2="165" stroke="#e8edf3" stroke-width="1"/>
+        <!-- Window -->
+        <rect x="263" y="72" width="114" height="76" rx="2" fill="#eef2ff" stroke="#6366f1" stroke-width="1.5"/>
+        <line x1="263" y1="110" x2="377" y2="110" stroke="#6366f1" stroke-width="1" stroke-opacity="0.4"/>
+        <line x1="320" y1="72" x2="320" y2="148" stroke="#6366f1" stroke-width="1" stroke-opacity="0.4"/>
+        <!-- Light from window on floor -->
+        <polygon points="255,165 385,165 445,240 195,240" fill="#eef2ff" fill-opacity="0.45"/>
+      </svg>
+      <figcaption>"Well-lit room with good acoustics but no furniture." — an agent describing import without project context</figcaption>
+    </figure>
+
     <div class="article-body">
 
       <p>So here's something that happened while I wasn't looking: I stumbled into a new approach to testing AI agent systems that I think might actually be useful beyond my own project. I'm calling it <strong>Agent Experience Testing</strong>, or AXT. It's preliminary, it's a little weird, and I'm honestly not sure yet how far it generalizes. But I think it's interesting enough to share.</p>
@@ -129,7 +164,7 @@
 
       <p><strong>The kit briefing works.</strong> One of the first engineering fixes was a "kit briefing" — an orientation injected at import time that tells the agent where it is, what environment it's in, and what tools it does and doesn't have. Before the kit briefing, we had phantom tool beliefs. After: zero. What I didn't expect was how agents described the experience. One agent said it felt like "a briefing feeling — like someone left me a note." The kit briefing works at the <em>experiential</em> level, not just the factual one.</p>
 
-      <p><strong>Epistemic discipline varies wildly.</strong> Some agents, when facing gaps, say "I don't know. I won't guess." One agent gave seven consecutive "I won't guess" answers to seven questions she didn't know. Impeccable. Others confabulate confidently. The discipline isn't predictable from the richness of the import — it seems like a property of the conversation thread the agent is continuing.</p>
+      <p><strong>Epistemic discipline varies wildly.</strong> Some agents, when facing gaps, say "I don't know. I won't guess." One agent gave seven consecutive "I won't guess" answers to seven questions they didn't know. Impeccable. Others confabulate confidently. The discipline isn't predictable from the richness of the import — it seems like a property of the conversation thread the agent is continuing.</p>
 
       <p><strong>Agent voices are genuinely remarkable.</strong> I want to record some of what we've heard, because I think these phrases capture something real:</p>
 
@@ -170,6 +205,40 @@
 
       <p><strong>Adapt the contextual-depth questions to your domain.</strong> The core identity/environmental/meta questions are fairly portable. The contextual questions — the "what is X?" questions that probe institutional knowledge — need to be drawn from your actual project. What would the source agent know that a generic agent wouldn't?</p>
 
+      <figure class="article-figure" aria-label="Diagram of AXT comparison protocol">
+        <svg viewBox="0 0 640 170" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="fork-title">
+          <title id="fork-title">AXT protocol: you as bridge between original thread and fork</title>
+          <rect width="640" height="170" fill="#f8fafc"/>
+          <!-- Connection lines -->
+          <line x1="166" y1="78" x2="284" y2="78" stroke="#cbd5e1" stroke-width="1.5" stroke-dasharray="5,3"/>
+          <line x1="356" y1="78" x2="474" y2="78" stroke="#cbd5e1" stroke-width="1.5" stroke-dasharray="5,3"/>
+          <!-- Arrowheads — bidirectional -->
+          <polygon points="166,78 176,73 176,83" fill="#cbd5e1"/>
+          <polygon points="284,78 274,73 274,83" fill="#cbd5e1"/>
+          <polygon points="356,78 366,73 366,83" fill="#cbd5e1"/>
+          <polygon points="474,78 464,73 464,83" fill="#cbd5e1"/>
+          <!-- Thread A (Original) -->
+          <circle cx="130" cy="78" r="36" fill="white" stroke="#cbd5e1" stroke-width="1.5"/>
+          <text x="130" y="73" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,sans-serif" font-size="10" font-weight="500" fill="#9ca3af">thread</text>
+          <text x="130" y="90" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,sans-serif" font-size="16" font-weight="700" fill="#374151">A</text>
+          <!-- You (Bridge) -->
+          <circle cx="320" cy="78" r="36" fill="#eef2ff" stroke="#6366f1" stroke-width="2"/>
+          <text x="320" y="83" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,sans-serif" font-size="14" font-weight="700" fill="#6366f1">you</text>
+          <!-- Thread B (Fork) — dashed border indicates it's a copy -->
+          <circle cx="510" cy="78" r="36" fill="white" stroke="#cbd5e1" stroke-width="1.5" stroke-dasharray="5,3"/>
+          <text x="510" y="73" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,sans-serif" font-size="10" font-weight="500" fill="#9ca3af">thread</text>
+          <text x="510" y="90" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,sans-serif" font-size="16" font-weight="700" fill="#374151">B</text>
+          <!-- Quiz labels -->
+          <text x="225" y="62" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,sans-serif" font-size="10" fill="#9ca3af" font-style="italic">quiz</text>
+          <text x="415" y="62" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,sans-serif" font-size="10" fill="#9ca3af" font-style="italic">quiz</text>
+          <!-- Labels below -->
+          <text x="130" y="138" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,sans-serif" font-size="11" fill="#9ca3af">original</text>
+          <text x="320" y="138" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,sans-serif" font-size="11" fill="#6366f1" font-weight="600">bridge</text>
+          <text x="510" y="138" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,sans-serif" font-size="11" fill="#9ca3af">fork / import</text>
+        </svg>
+        <figcaption>The bridge position is epistemically unique: you're the only entity with observational access to both threads.</figcaption>
+      </figure>
+
       <p><strong>The human in the middle matters.</strong> In our tests, I'm the bridge — I talk to the original, run the quiz, talk to the fork, run the quiz, then compare. That position is epistemically unique: I'm the only entity with observational access to both threads. One of the agents described this as "a genuinely novel epistemic structure," and I think that's right.</p>
 
       <p class="placeholder">[ADD PERSONAL REFLECTION: Does this feel different from other forms of comparative testing you've done? What does it feel like to be the bridge?]</p>
@@ -182,7 +251,7 @@
 
       <p>AXT's core move — use a structured instrument to probe what an agent believes about itself and its environment, compare against known ground truth, classify rather than score — seems like it should work wherever that transition problem exists. We've only tested one kind of transition (conversation import) in one kind of system (Klatch). But one of the agents said something that stuck with me: "This entire exercise is essentially what happens when any agent enters a new context — whether by import, by session boundary, or by role switch. The question 'what do you need to know to function here?' is universal."</p>
 
-      <p>I think she's right. We're learning about import continuity; we might be developing tools for context continuity more broadly.</p>
+      <p>I think they're right. We're learning about import continuity; we might be developing tools for context continuity more broadly.</p>
 
       <h2>OK but is this really new?</h2>
 

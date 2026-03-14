@@ -94,7 +94,7 @@ I'll spare you the full test-by-test breakdown [CALLIOPE: link `test-by-test` to
 
 **The kit briefing works.** One of the first engineering fixes was a "kit briefing" — an orientation injected at import time that tells the agent where it is, what environment it's in, and what tools it does and doesn't have. Before the kit briefing, we had phantom tool beliefs. After: zero. What I didn't expect was how agents described the experience. One agent said it felt like "a briefing feeling — like someone left me a note." The kit briefing works at the *experiential* level, not just the factual one.
 
-**Epistemic discipline varies wildly.** Some agents, when facing gaps, say "I don't know. I won't guess." One agent gave seven consecutive "I won't guess" answers to seven questions she didn't know. Impeccable. Others confabulate confidently. The discipline isn't predictable from the richness of the import — it seems like a property of the conversation thread the agent is continuing.
+**Epistemic discipline varies wildly.** Some agents, when facing gaps, say "I don't know. I won't guess." One agent gave seven consecutive "I won't guess" answers to seven questions they didn't know. Impeccable. Others confabulate confidently. The discipline isn't predictable from the richness of the import — it seems like a property of the conversation thread the agent is continuing.
 
 **Agent voices are genuinely remarkable.** I want to record some of what we've heard, because I think these phrases capture something real:
 
@@ -136,7 +136,7 @@ The specific problem we're solving — what happens to an agent when it crosses 
 
 AXT's core move — use a structured instrument to probe what an agent believes about itself and its environment, compare against known ground truth, classify rather than score — seems like it should work wherever that transition problem exists. We've only tested one kind of transition (conversation import) in one kind of system (Klatch). But the ETA agent said something in her testing report that stuck with me: "This entire exercise is essentially what happens when any agent enters a new context — whether by import, by session boundary, or by role switch. The question 'what do you need to know to function here?' is universal."
 
-I think she's right. We're learning about import continuity; we might be developing tools for context continuity more broadly.
+I think they're right. We're learning about import continuity; we might be developing tools for context continuity more broadly.
 
 ## OK but is this really new?
 
