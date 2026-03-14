@@ -133,16 +133,57 @@ Wrote `docs/model-detection-gaps.md` documenting the claude.ai model detection l
 
 This was a documentation-only task. No code changes needed.
 
+## 06:57 — Merges to Main
+
+PO approved both merges:
+1. **8¾a merged** (`daedalus/project-context-injection` → main) — 476 tests, clean merge
+2. **8¾d merged** (`claude/audit-and-planning-xn2w7` → main) — Resolved 3 merge conflicts:
+   - `import.ts`: combined `scanClaudeCodeSessions` + `findOrCreateProject` imports; combined `memories` + `projectMemories` destructure
+   - `claude-ai-zip.ts`: deduplicated `docsContent` field and doc extraction logic (both branches added independently)
+   - `COORDINATION.md`: kept current status from both agents
+3. Post-merge: 492 tests (388 server + 104 client), all passing
+
+## 07:01 — 8¾c Implementation: Claude.ai Re-branching
+
+### Design
+
+Server already supports `forceImport` for claude.ai (dedup bypass + name disambiguation with suffix). This was a client-only change.
+
+### Changes
+
+**`packages/client/src/api/client.ts`:**
+- Added `forceImport?: boolean` parameter to `importClaudeAiExport()`
+- Appends `forceImport=true` as form field when set
+
+**`packages/client/src/components/ImportDialog.tsx`:**
+- Already-imported conversations are now **selectable** (removed `disabled` from checkbox)
+- Visual states:
+  - Not selected: `opacity-50` with "(already imported)" label in yellow
+  - Selected: full opacity with "(re-branch)" label in accent color
+- Submit button shows re-branch count: "Import 3 (1 re-branch)"
+- `forceImport=true` passed to API when any selected conversation is already imported
+- Auto-selection still only pre-selects NEW conversations (re-branch requires deliberate user action)
+- Updated stale info text: projects now say "(instructions will be imported)" and memories say "(included in project context)"
+
+**`packages/client/src/__tests__/ImportDialog.test.tsx`:**
+- Updated "shows already-imported" test: now verifies checkbox is NOT disabled, clicking shows "(re-branch)", button shows count
+- Added new test: "passes forceImport when re-branching already-imported conversations"
+- Updated project info line test to match new text
+- 46 ImportDialog tests (was 45), all passing
+
+### Total: 493 tests (388 server + 105 client), all passing.
+
 ## Status
 
-- **8¾a:** Complete, pushed, awaiting review/merge
-- **8¾d (Argus):** Complete, pushed, awaiting review/merge
-- **8¾e:** Complete (docs only)
-- **8¾c:** Blocked on 8¾a merge (builds on projects table)
+- **8¾a:** MERGED to main
+- **8¾b:** COMPLETE (Theseus)
+- **8¾c:** COMPLETE, on branch `daedalus/claude-ai-rebranching`
+- **8¾d:** MERGED to main (Argus)
+- **8¾e:** COMPLETE (docs)
 
 ## Next
 
-- Merge 8¾a to main (needs PO approval)
-- Merge 8¾d to main (needs PO approval)
-- After merge: 8¾c (claude.ai re-branching)
-- Argus: additional tests for 8¾a after merge
+- Push 8¾c for review/merge
+- Step 8 definition of done: all items complete pending 8¾c merge
+- Argus: test scaffolding for 8¾a
+- Theseus: re-test import fidelity with project context injection

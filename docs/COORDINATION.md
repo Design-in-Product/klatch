@@ -25,14 +25,15 @@ Agents working on this repo use this file as the async handoff protocol.
 - **Updated:** 2026-03-14 06:45
 
 ### Daedalus (architecture & implementation)
-- **Branch:** `main`
-- **Status:** working — 8¾c in progress
-- **Last completed:** 8¾a merged to main (2026-03-14). 8¾d merged to main (2026-03-14). 8¾e documented.
-- **8¾a: MERGED.** Project context injection — projects table, 4-layer prompt assembly, char array bug fix, auto-project creation.
-- **8¾e: COMPLETE.** Model detection gaps documented in `docs/model-detection-gaps.md`.
-- **Working on:** 8¾c (claude.ai re-branching)
-- **Waiting on:** Nothing
-- **Updated:** 2026-03-14 06:58
+- **Branch:** `daedalus/claude-ai-rebranching`
+- **Status:** review — 8¾c complete, requesting review before merge
+- **Last completed:** 8¾c claude.ai re-branching (2026-03-14). Already-imported conversations now selectable with "(re-branch)" label, passes `forceImport` to server. 1 new test. Also merged 8¾a + 8¾d to main, resolved conflicts.
+- **8¾a: MERGED.** Project context injection.
+- **8¾c: COMPLETE.** Re-branching for claude.ai imports. 493 tests (388 server + 105 client), all passing.
+- **8¾e: COMPLETE.** Model detection gaps documented.
+- **Next:** Merge 8¾c, close Step 8
+- **Waiting on:** Review/merge of 8¾c
+- **Updated:** 2026-03-14 07:08
 
 ### Theseus Prime (manual testing & exploration — CLI side)
 - **Branch:** `main`
