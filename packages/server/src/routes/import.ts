@@ -5,7 +5,7 @@ import path from 'path';
 import { parseClaudeCodeSession } from '../import/parser.js';
 import { parseClaudeAiConversation } from '../import/claude-ai-parser.js';
 import { extractFromZip } from '../import/claude-ai-zip.js';
-import { importSession, findChannelByOriginalSessionId, getImportConflictInfo, countChannelsByOriginalSessionId } from '../db/queries.js';
+import { importSession, findChannelByOriginalSessionId, getImportConflictInfo, countChannelsByOriginalSessionId, findOrCreateProject } from '../db/queries.js';
 import { MODEL_ALIASES, AVAILABLE_MODELS } from '@klatch/shared';
 import type { ModelId } from '@klatch/shared';
 
@@ -140,6 +140,27 @@ app.post('/import/claude-code', async (c) => {
     } catch { /* best-effort — file may be unreadable */ }
   }
 
+  // ── Create/find project by cwd (8¾a: same cwd = same project) ──
+  let projectId: string | undefined;
+  if (session.cwd) {
+    // Build project instructions from CLAUDE.md + MEMORY.md
+    const instructionParts: string[] = [];
+    if (claudeMd) instructionParts.push(claudeMd);
+    if (memoryMd) instructionParts.push('## Project Memory\n\n' + memoryMd);
+    const instructions = instructionParts.join('\n\n');
+    const projectName = path.basename(session.cwd);
+
+    const project = findOrCreateProject(
+      projectName,
+      instructions,
+      'claude-code',
+      { cwd: session.cwd },
+      'cwd',
+      session.cwd
+    );
+    projectId = project.id;
+  }
+
   // Import into database
   const result = importSession({
     channelName: name,
@@ -160,6 +181,7 @@ app.post('/import/claude-code', async (c) => {
     },
     model: resolvedModel,
     turns: session.turns,
+    projectId,
   });
 
   return c.json({
@@ -274,11 +296,13 @@ app.post('/import/claude-ai/preview', async (c) => {
     };
   });
 
-  // Build project list
+  // Build project list (include prompt template presence for UI display)
   const projectList = Array.from(projects.values()).map((p) => ({
     uuid: p.uuid,
     name: p.name,
     documentCount: p.documentCount || 0,
+    hasPromptTemplate: !!p.promptTemplate,
+    hasDocsContent: !!p.docsContent,
   }));
 
   return c.json({
@@ -368,7 +392,7 @@ function processImport(
     return c.json({ error: 'Invalid ZIP file' }, 400);
   }
 
-  const { conversations: conversationFiles, projects } = exportData;
+  const { conversations: conversationFiles, projects, projectMemories } = exportData;
 
   if (conversationFiles.length === 0) {
     return c.json({ error: 'ZIP contains no conversations' }, 400);
@@ -376,6 +400,41 @@ function processImport(
 
   // Build selection set for filtering (if provided)
   const selectionSet = selectedConversationIds ? new Set(selectedConversationIds) : null;
+
+  // ── Create projects from ZIP data (8¾a: project context injection) ──
+  // For each project in the ZIP, find or create a Klatch project row.
+  // This happens before conversation import so channels can be linked.
+  const projectIdMap = new Map<string, string>(); // ZIP project UUID → Klatch project ID
+
+  for (const [zipUuid, projInfo] of projects.entries()) {
+    // Build project instructions from prompt_template + project memories
+    const instructionParts: string[] = [];
+    if (projInfo.promptTemplate) {
+      instructionParts.push(projInfo.promptTemplate);
+    }
+    // Append project-scoped memories if available
+    const projMem = projectMemories.get(zipUuid);
+    if (projMem) {
+      instructionParts.push('## Project Memory\n\n' + projMem);
+    }
+    const instructions = instructionParts.join('\n\n');
+
+    const project = findOrCreateProject(
+      projInfo.name,
+      instructions,
+      'claude-ai',
+      {
+        originalProjectUuid: zipUuid,
+        documentCount: projInfo.documentCount || 0,
+        hasPromptTemplate: !!projInfo.promptTemplate,
+        hasDocsContent: !!projInfo.docsContent,
+        importedAt: new Date().toISOString(),
+      },
+      'originalProjectUuid',
+      zipUuid
+    );
+    projectIdMap.set(zipUuid, project.id);
+  }
 
   const imported: Array<{
     channelId: string;
@@ -420,8 +479,9 @@ function processImport(
       }
     }
 
-    // Resolve project name from projects.json if the conversation belongs to a project
+    // Resolve project from the ZIP if conversation has a project_uuid
     const projectName = conv.project_uuid ? projects.get(conv.project_uuid)?.name : undefined;
+    const projectId = conv.project_uuid ? projectIdMap.get(conv.project_uuid) : undefined;
 
     // Build channel name: "ProjectName: ConvName" or just "ConvName" or fallback
     const convName = parsed.slug || `claude.ai — ${parsed.sessionId || 'import'}`;
@@ -449,6 +509,7 @@ function processImport(
         importedAt: new Date().toISOString(),
       },
       turns: parsed.turns,
+      projectId,
     });
 
     imported.push({

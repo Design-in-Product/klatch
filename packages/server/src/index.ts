@@ -22,6 +22,7 @@ import { messageRoutes } from './routes/messages.js';
 import { channelRoutes } from './routes/channels.js';
 import { entityRoutes } from './routes/entities.js';
 import { importRoutes } from './routes/import.js';
+import { projectRoutes } from './routes/projects.js';
 import { getDb } from './db/index.js';
 
 const app = new Hono();
@@ -31,6 +32,7 @@ app.route('/api', channelRoutes);
 app.route('/api', messageRoutes);
 app.route('/api', entityRoutes);
 app.route('/api', importRoutes);
+app.route('/api/projects', projectRoutes);
 
 // Initialize database on startup
 getDb();

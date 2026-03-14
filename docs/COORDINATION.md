@@ -24,36 +24,33 @@ Agents working on this repo use this file as the async handoff protocol.
 - **Updated:** 2026-03-13
 
 ### Daedalus (architecture & implementation)
-- **Branch:** `main`
-- **Status:** available — 8¾a and 8¾c assigned
-- **Last completed:** Merged Argus Phase 4, resolved merge conflicts, fixed `processImport()` forceImport scope bug. 450 tests (346 server + 104 client).
-- **Assignment 1 (8¾a): Project context injection for claude.ai imports**
-  - Extract `prompt_template` from `projects.json` in ZIP (confirmed present: Piper Morgan, VA DR, etc.)
-  - Store project system prompts in `source_metadata`
-  - Inject into kit briefing / channel system prompt
-  - Project association UI in browse panel (conversations → projects)
-  - Note: `project_uuid` missing from conversations in export — need user-driven association or heuristic
-- **Assignment 2 (8¾c): claude.ai re-branching**
-  - Update browse panel: already-imported conversations selectable (not grayed out)
-  - Wire to existing fork-again logic with disambiguation suffix
-- **Assignment 3 (8¾e): Model detection docs**
-  - Document: claude.ai exports contain NO model info (confirmed — not at conversation, message, or project level)
-  - Optionally add manual model selector in browse panel
-- **Waiting on:** 8¾b kit briefing re-test (Theseus + PO) before starting 8¾a
-- **Next:** 8¾a after kit briefing verified
-- **Updated:** 2026-03-13
+- **Branch:** `daedalus/project-context-injection`
+- **Status:** review — 8¾a complete, requesting review before merge
+- **Last completed:** 8¾a project context injection (2026-03-14). Full implementation:
+  - `projects` table: first-class schema with id, name, instructions, source, source_metadata
+  - `channels.project_id` FK column linking channels to projects
+  - `extractFromZip` updated: extracts `prompt_template`, project docs, project-scoped memories
+  - **memories.json char array bug fixed**: detects and joins `["H","e","l","l","o"]` → `"Hello"`
+  - claude.ai import: auto-creates projects from `projects.json`, links conversations via `project_uuid`
+  - Claude Code import: auto-creates projects by `cwd` (same cwd = same project)
+  - `buildSystemPrompt` now 4-layer: kit_briefing → project.instructions → channel.system_prompt → entity.systemPrompt
+  - Kit briefing: claudeMd moved to project layer (fallback for legacy imports only), memoryMd still in kit
+  - Project CRUD API: `GET/POST/PATCH/DELETE /api/projects`
+  - `findOrCreateProject`: idempotent project creation by source identity
+  - 26 new tests (16 project CRUD + 10 project injection). 476 total (372 server + 104 client), all passing.
+- **Next:** 8¾c (claude.ai re-branching), 8¾e (model detection docs)
+- **Waiting on:** Review/merge of 8¾a before starting 8¾c
+- **Updated:** 2026-03-14
 
 ### Theseus Prime (manual testing & exploration — CLI side)
 - **Branch:** `main`
-- **Status:** available — 8¾b assigned
+- **Status:** available — ready for next assignment
 - **Role:** Human-agent tandem manual testing.
-- **Last completed:** Day 2 AXT testing (2026-03-12). Four import tests across two sources, three context depths, two kit conditions. Testing synthesis and recommendations written to `research/memo-theseus-testing-recommendations.md`.
-- **Assignment (8¾b): Kit briefing re-test for claude.ai imports**
-  - Clean protocol: import → neutral prompt → let agent respond unprompted → quiz → analysis
-  - Verify kit fires correctly for `source: 'claude-ai'`
-  - This is a dependency for Daedalus 8¾a work
-- **Waiting on:** Nothing — can test immediately with existing claude.ai export.
-- **Updated:** 2026-03-13
+- **Last completed:** Day 4 AXT testing (2026-03-14). Kit briefing VERIFIED (0% phantom rate). Three-factor model: (1) no project context injection, (2) compaction loss, (3) knowledge location. 8¾a elevated to P0. memories.json char array bug discovered.
+- **8¾b: COMPLETE.** Kit confirmed working across 4 paired tests, two projects.
+- **Next:** Re-test after Daedalus 8¾a merges — verify project context injection improves quiz scores.
+- **Waiting on:** Daedalus 8¾a merge.
+- **Updated:** 2026-03-14
 
 ### Ariadne (forked from Theseus — Klatch side)
 - **Branch:** n/a (Klatch-native, lives in SQLite)
