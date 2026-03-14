@@ -114,8 +114,35 @@ Built on feature branch `daedalus/project-context-injection`. Full implementatio
 - Per design doc: projects table, two-field inheritance, prompt assembly order
 - Kit briefing deduplication: project instructions NOT duplicated in kit + project layer
 
+## 06:52 — Session Resumed (Context Continuation)
+
+Previous session ran out of context after pushing 8¾a. Resuming to check status and continue.
+
+### Status check
+- **8¾a branch:** `daedalus/project-context-injection` — pushed, commit `1cea121`, 476 tests passing
+- **Argus:** Pushed 8¾d (Claude Code session browser) on `claude/audit-and-planning-xn2w7`, commit `9b4ee19`. Status: review.
+- **Main:** Not yet merged — both 8¾a and 8¾d await review/merge.
+
+### 8¾e: Model Detection Gaps — Complete
+
+Wrote `docs/model-detection-gaps.md` documenting the claude.ai model detection limitation:
+- claude.ai exports contain NO model info at any level (conversation, message, project)
+- Claude Code exports DO include model via `event.message.model`
+- Decision: accept the limitation. Default to channel model. No heuristic inference.
+- Future option: manual model selector in browse panel if users request it
+
+This was a documentation-only task. No code changes needed.
+
+## Status
+
+- **8¾a:** Complete, pushed, awaiting review/merge
+- **8¾d (Argus):** Complete, pushed, awaiting review/merge
+- **8¾e:** Complete (docs only)
+- **8¾c:** Blocked on 8¾a merge (builds on projects table)
+
 ## Next
 
-- Push branch for review
-- After merge: 8¾c (claude.ai re-branching), 8¾e (model detection docs)
-- Argus can then write additional tests for 8¾a
+- Merge 8¾a to main (needs PO approval)
+- Merge 8¾d to main (needs PO approval)
+- After merge: 8¾c (claude.ai re-branching)
+- Argus: additional tests for 8¾a after merge

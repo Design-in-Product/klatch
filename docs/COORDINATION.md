@@ -38,9 +38,10 @@ Agents working on this repo use this file as the async handoff protocol.
   - Project CRUD API: `GET/POST/PATCH/DELETE /api/projects`
   - `findOrCreateProject`: idempotent project creation by source identity
   - 26 new tests (16 project CRUD + 10 project injection). 476 total (372 server + 104 client), all passing.
-- **Next:** 8¾c (claude.ai re-branching), 8¾e (model detection docs)
+- **8¾e: COMPLETE.** Model detection gaps documented in `docs/model-detection-gaps.md`. Decision: accept limitation, default to channel model, no heuristic inference.
+- **Next:** 8¾c (claude.ai re-branching) — after 8¾a merges
 - **Waiting on:** Review/merge of 8¾a before starting 8¾c
-- **Updated:** 2026-03-14
+- **Updated:** 2026-03-14 06:55
 
 ### Theseus Prime (manual testing & exploration — CLI side)
 - **Branch:** `main`
