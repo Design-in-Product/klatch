@@ -488,7 +488,7 @@ describe('ImportDialog — selective import browse UI', () => {
     expect(importBtn).toBeDisabled();
   });
 
-  it('shows already-imported conversations as grayed with label', async () => {
+  it('shows already-imported conversations as selectable with re-branch label', async () => {
     const user = userEvent.setup();
     render(<ImportDialog {...defaultProps} />);
 
@@ -501,13 +501,21 @@ describe('ImportDialog — selective import browse UI', () => {
     };
     await uploadZipWithPreview(user, previewWithDup);
 
+    // Already imported shows "(already imported)" when not selected
     expect(screen.getByText('(already imported)')).toBeInTheDocument();
-    // Already imported checkbox should be disabled and unchecked
+    // Already imported checkbox should be enabled but unchecked (selectable for re-branch)
     const checkboxes = screen.getAllByRole('checkbox');
-    expect(checkboxes[0]).toBeDisabled();
+    expect(checkboxes[0]).not.toBeDisabled();
     expect(checkboxes[0]).not.toBeChecked();
     // New one should be checked
     expect(checkboxes[1]).toBeChecked();
+
+    // Selecting an already-imported conversation shows "(re-branch)" label
+    await user.click(checkboxes[0]);
+    expect(checkboxes[0]).toBeChecked();
+    expect(screen.getByText('(re-branch)')).toBeInTheDocument();
+    // Button should show re-branch count
+    expect(screen.getByRole('button', { name: /1 re-branch/ })).toBeInTheDocument();
   });
 
   it('passes selectedConversationIds to import API', async () => {
@@ -531,9 +539,45 @@ describe('ImportDialog — selective import browse UI', () => {
     await waitFor(() => {
       expect(importClaudeAiExport).toHaveBeenCalled();
     });
-    // Should pass only the selected ID
+    // Should pass only the selected ID, no forceImport (all new)
     const callArgs = vi.mocked(importClaudeAiExport).mock.calls[0];
     expect(callArgs[1]).toEqual(['c1']);
+    expect(callArgs[2]).toBeUndefined(); // no forceImport needed
+  });
+
+  it('passes forceImport when re-branching already-imported conversations', async () => {
+    const user = userEvent.setup();
+    vi.mocked(importClaudeAiExport).mockResolvedValue({
+      imported: [{ channelId: 'ch-new', channelName: 'Already Here (2)', messageCount: 10, artifactCount: 0, conversationId: 'c1' }],
+      skipped: [],
+      totalImported: 1,
+      totalSkipped: 0,
+    });
+
+    render(<ImportDialog {...defaultProps} />);
+
+    const previewWithDup = {
+      ...mockPreview,
+      conversations: [
+        { uuid: 'c1', name: 'Already Here', messageCount: 10, createdAt: '', updatedAt: '', alreadyImported: true, existingChannelId: 'ch-old' },
+        { uuid: 'c2', name: 'New One', messageCount: 5, createdAt: '', updatedAt: '', alreadyImported: false },
+      ],
+    };
+    await uploadZipWithPreview(user, previewWithDup);
+
+    // Select the already-imported conversation for re-branch
+    const checkboxes = screen.getAllByRole('checkbox');
+    await user.click(checkboxes[0]); // select c1 (already imported)
+
+    // Submit
+    await user.click(screen.getByRole('button', { name: /Import 2.*1 re-branch/ }));
+
+    await waitFor(() => {
+      expect(importClaudeAiExport).toHaveBeenCalled();
+    });
+    const callArgs = vi.mocked(importClaudeAiExport).mock.calls[0];
+    expect(callArgs[1]).toEqual(expect.arrayContaining(['c1', 'c2']));
+    expect(callArgs[2]).toBe(true); // forceImport = true
   });
 
   it('shows Select all / Deselect all toggle', async () => {
@@ -602,7 +646,7 @@ describe('ImportDialog — selective import browse UI', () => {
     };
     await uploadZipWithPreview(user, previewWithProjects);
 
-    expect(screen.getByText(/1 project with knowledge docs/)).toBeInTheDocument();
+    expect(screen.getByText(/1 project.*instructions will be imported/)).toBeInTheDocument();
   });
 
   it('shows memories info line when memories are present', async () => {

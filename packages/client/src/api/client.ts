@@ -268,12 +268,16 @@ export async function previewClaudeAiExport(
 
 export async function importClaudeAiExport(
   file: File,
-  selectedConversationIds?: string[]
+  selectedConversationIds?: string[],
+  forceImport?: boolean
 ): Promise<ClaudeAiImportResponse> {
   const formData = new FormData();
   formData.append('file', file);
   if (selectedConversationIds) {
     formData.append('selectedConversationIds', JSON.stringify(selectedConversationIds));
+  }
+  if (forceImport) {
+    formData.append('forceImport', 'true');
   }
 
   const res = await fetch(`${BASE}/import/claude-ai`, {
