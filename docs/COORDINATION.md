@@ -12,18 +12,17 @@ Agents working on this repo use this file as the async handoff protocol.
 
 ### Argus (quality & test infrastructure)
 - **Branch:** `claude/audit-and-planning-xn2w7`
-- **Status:** working — reviewed design doc, ready for test planning
-- **Last completed:** Kit briefing data pipeline fix for claude.ai imports (2026-03-13 06:15). 456 tests total (352 server + 104 client).
-- **Reviewed:** `docs/plans/project-instructions-inheritance.md` — design is solid and testable. Full review in session log `docs/logs/2026-03-14-0623-argus-opus-log.md`.
-- **Test plan for projects table (8¾a):**
-  - Schema migration tests (projects table, project_id column, data migration)
-  - Project CRUD (create, read, update, delete, channel unlinking on delete)
-  - Prompt assembly: `buildSystemPrompt()` with all layer combinations (no project, project only, full stack, empty/whitespace)
-  - Import integration: prompt_template → projects.instructions, CLAUDE.md → projects.instructions, dedup
-  - Kit briefing regression: CLAUDE.md no longer in kit briefing, MEMORY.md still present
-- **Phase 5 assignment: Claude Code session browser (8¾d)** — no conflict with projects table work
-- **Waiting on:** Daedalus to deliver schema + prompt assembly changes before writing 8¾a tests.
-- **Updated:** 2026-03-14 06:25
+- **Status:** review — 8¾d complete, awaiting direction
+- **Last completed:** 8¾d Claude Code session browser (2026-03-14). Session scanner, API endpoint, browse UI with multi-select, 10 new tests. 465 tests total (362 server + 104 client, including 1 skipped).
+- **8¾d deliverables:**
+  - `packages/server/src/import/session-scanner.ts` — filesystem scanner with dedup detection
+  - `GET /api/import/claude-code/sessions` endpoint — returns project tree
+  - Browse UI in ImportDialog — project tree, multi-select, import status badges
+  - `packages/server/src/__tests__/session-scanner.test.ts` — 10 tests
+- **Reviewed:** `docs/plans/project-instructions-inheritance.md` — design is solid and testable. Full review in session log.
+- **Test plan for projects table (8¾a):** Ready to write tests after Daedalus delivers schema + prompt assembly.
+- **Waiting on:** Direction on next assignment. Daedalus to deliver 8¾a for test coverage.
+- **Updated:** 2026-03-14 06:45
 
 ### Daedalus (architecture & implementation)
 - **Branch:** `main`

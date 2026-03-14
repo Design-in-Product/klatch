@@ -5,6 +5,7 @@ import path from 'path';
 import { parseClaudeCodeSession } from '../import/parser.js';
 import { parseClaudeAiConversation } from '../import/claude-ai-parser.js';
 import { extractFromZip } from '../import/claude-ai-zip.js';
+import { scanClaudeCodeSessions } from '../import/session-scanner.js';
 import { importSession, findChannelByOriginalSessionId, getImportConflictInfo, countChannelsByOriginalSessionId } from '../db/queries.js';
 import { MODEL_ALIASES, AVAILABLE_MODELS } from '@klatch/shared';
 import type { ModelId } from '@klatch/shared';
@@ -34,6 +35,29 @@ function validateImportPath(filePath: string): string | null {
 }
 
 const app = new Hono();
+
+/**
+ * GET /import/claude-code/sessions
+ *
+ * Scan ~/.claude/projects/ for available Claude Code sessions.
+ * Returns sessions grouped by project, with dedup detection.
+ */
+app.get('/import/claude-code/sessions', async (c) => {
+  try {
+    const projects = await scanClaudeCodeSessions();
+    const totalSessions = projects.reduce((sum, p) => sum + p.sessions.length, 0);
+    return c.json({
+      projects,
+      totalProjects: projects.length,
+      totalSessions,
+    }, 200);
+  } catch (err) {
+    return c.json({
+      error: 'Failed to scan sessions',
+      detail: err instanceof Error ? err.message : 'Unknown error',
+    }, 500);
+  }
+});
 
 /**
  * POST /import/claude-code
