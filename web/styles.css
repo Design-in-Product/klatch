@@ -456,8 +456,47 @@ header {
 }
 
 .article-meta {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 4px;
+}
+
+.article-date {
   font-size: 0.85rem;
   color: var(--text-dim);
+}
+
+.article-authors {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.author {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+/* Human authors: near-black */
+.author-human {
+  color: var(--text-bright);
+}
+
+/* AI authors: indigo — the primary human/AI distinction */
+.author-ai {
+  color: var(--indigo);
+}
+
+.author svg {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
 }
 
 .article-body {
