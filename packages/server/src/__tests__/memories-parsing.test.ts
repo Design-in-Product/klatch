@@ -1,11 +1,10 @@
 /**
- * Tests for memories.json parsing edge cases.
+ * Integration tests for memories.json parsing — covers the character array
+ * bug fix (Daedalus 8¾a) and project_memories extraction.
  *
  * Bug found in Day 4 testing: memories.json may contain project_memories
- * where memory content is stored as character arrays (individual characters)
- * rather than plain strings. The parser needs to handle this by joining arrays.
- *
- * Related: research/memo-theseus-day4-testing-report.md
+ * where memory content is stored as character arrays instead of strings.
+ * Fixed in joinIfCharArray() in claude-ai-zip.ts.
  */
 import { describe, it, expect } from 'vitest';
 import AdmZip from 'adm-zip';
@@ -19,7 +18,6 @@ function makeZipWith(files: Record<string, unknown>): Buffer {
   return zip.toBuffer();
 }
 
-// Minimal valid conversation for ZIP extraction
 const minConversation = {
   uuid: 'conv-1',
   name: 'Test',
@@ -28,30 +26,27 @@ const minConversation = {
   ],
 };
 
-describe('memories.json parsing', () => {
-  it('parses standard string-content memories', () => {
+describe('memories.json — standard parsing', () => {
+  it('parses string-content memories', () => {
     const zip = makeZipWith({
       'conversations.json': [minConversation],
       'memories.json': [
         { uuid: 'mem-1', content: 'User prefers TypeScript', created_at: '2026-01-01' },
-        { uuid: 'mem-2', content: 'Project uses Vitest for testing', created_at: '2026-01-02' },
+        { uuid: 'mem-2', content: 'Project uses Vitest', created_at: '2026-01-02' },
       ],
     });
 
     const result = extractFromZip(zip);
     expect(result.memories).toHaveLength(2);
     expect(result.memories[0].content).toBe('User prefers TypeScript');
-    expect(result.memories[1].content).toBe('Project uses Vitest for testing');
+    expect(result.memories[1].content).toBe('Project uses Vitest');
   });
 
   it('handles memory with empty content', () => {
     const zip = makeZipWith({
       'conversations.json': [minConversation],
-      'memories.json': [
-        { uuid: 'mem-1', content: '' },
-      ],
+      'memories.json': [{ uuid: 'mem-1', content: '' }],
     });
-
     const result = extractFromZip(zip);
     expect(result.memories).toHaveLength(1);
     expect(result.memories[0].content).toBe('');
@@ -60,11 +55,8 @@ describe('memories.json parsing', () => {
   it('handles memory with text field instead of content', () => {
     const zip = makeZipWith({
       'conversations.json': [minConversation],
-      'memories.json': [
-        { uuid: 'mem-1', text: 'Uses dark mode' },
-      ],
+      'memories.json': [{ uuid: 'mem-1', text: 'Uses dark mode' }],
     });
-
     const result = extractFromZip(zip);
     expect(result.memories).toHaveLength(1);
     expect(result.memories[0].content).toBe('Uses dark mode');
@@ -73,23 +65,18 @@ describe('memories.json parsing', () => {
   it('handles memory with id instead of uuid', () => {
     const zip = makeZipWith({
       'conversations.json': [minConversation],
-      'memories.json': [
-        { id: 'mem-alt', content: 'Alt id format' },
-      ],
+      'memories.json': [{ id: 'mem-alt', content: 'Alt id format' }],
     });
-
     const result = extractFromZip(zip);
     expect(result.memories).toHaveLength(1);
     expect(result.memories[0].uuid).toBe('mem-alt');
   });
+});
 
-  // ── Bug: character array content ───────────────────────────
+// ── Character array bug fix (Day 4 finding, fixed in 8¾a) ───────
 
-  it('BUG: content stored as character array returns empty string (current behavior)', () => {
-    // Day 4 testing found that some memories have content as character arrays
-    // e.g., ['U', 's', 'e', 'r', ...] instead of "User..."
-    // Current parser: typeof mem.content === 'string' ? mem.content : ''
-    // This silently drops array content.
+describe('memories.json — character array bug fix', () => {
+  it('joins character arrays into strings (legacy array format)', () => {
     const zip = makeZipWith({
       'conversations.json': [minConversation],
       'memories.json': [
@@ -99,41 +86,92 @@ describe('memories.json parsing', () => {
 
     const result = extractFromZip(zip);
     expect(result.memories).toHaveLength(1);
-    // Current behavior: drops the array content
-    expect(result.memories[0].content).toBe('');
+    expect(result.memories[0].content).toBe('User likes TS');
   });
 
-  it.todo('FIXED: content stored as character array is joined into string');
-  // After fix, this should pass:
-  // expect(result.memories[0].content).toBe('User likes TS');
-
-  it('BUG: content stored as string array returns empty string (current behavior)', () => {
-    // Some memories might have content as an array of sentences
+  it('joins character arrays in conversations_memory (object format)', () => {
     const zip = makeZipWith({
       'conversations.json': [minConversation],
-      'memories.json': [
-        { uuid: 'mem-sarr', content: ['User prefers TypeScript', 'Project uses Vitest'] },
-      ],
+      'memories.json': {
+        conversations_memory: [
+          { uuid: 'mem-1', content: ['T', 'e', 's', 't'] },
+        ],
+        project_memories: {},
+      },
     });
 
     const result = extractFromZip(zip);
     expect(result.memories).toHaveLength(1);
-    // Current behavior: drops the array content
-    expect(result.memories[0].content).toBe('');
+    expect(result.memories[0].content).toBe('Test');
   });
 
-  it.todo('FIXED: content stored as string array is joined with newlines');
-  // After fix, this should pass:
-  // expect(result.memories[0].content).toBe('User prefers TypeScript\nProject uses Vitest');
+  it('handles mixed string and char-array memories', () => {
+    const zip = makeZipWith({
+      'conversations.json': [minConversation],
+      'memories.json': [
+        { uuid: 'mem-str', content: 'Regular string memory' },
+        { uuid: 'mem-arr', content: ['C', 'h', 'a', 'r', 's'] },
+      ],
+    });
+
+    const result = extractFromZip(zip);
+    expect(result.memories).toHaveLength(2);
+    expect(result.memories[0].content).toBe('Regular string memory');
+    expect(result.memories[1].content).toBe('Chars');
+  });
 });
 
-// ── Project-scoped memories (project_memories in memories.json) ──
+// ── Project-scoped memories ─────────────────────────────────────
 
-describe('project_memories in memories.json', () => {
-  // The Day 4 report mentions memories.json has a project_memories map
-  // keyed by project UUID. Current parser doesn't handle this structure.
+describe('memories.json — project_memories', () => {
+  it('extracts project_memories keyed by project UUID', () => {
+    const zip = makeZipWith({
+      'conversations.json': [minConversation],
+      'memories.json': {
+        conversations_memory: [],
+        project_memories: {
+          'proj-1': 'User prefers functional programming.',
+          'proj-2': 'Project uses React 19.',
+        },
+      },
+    });
 
-  it.todo('extracts project_memories keyed by project UUID');
-  it.todo('associates project memories with the correct project');
-  it.todo('joins character-array project memories into strings');
+    const result = extractFromZip(zip);
+    expect(result.projectMemories.get('proj-1')).toBe('User prefers functional programming.');
+    expect(result.projectMemories.get('proj-2')).toBe('Project uses React 19.');
+  });
+
+  it('joins character-array project memories into strings', () => {
+    const zip = makeZipWith({
+      'conversations.json': [minConversation],
+      'memories.json': {
+        conversations_memory: [],
+        project_memories: {
+          'proj-mem': ['H', 'e', 'l', 'l', 'o', ' ', 'w', 'o', 'r', 'l', 'd'],
+        },
+      },
+    });
+
+    const result = extractFromZip(zip);
+    expect(result.projectMemories.get('proj-mem')).toBe('Hello world');
+  });
+
+  it('skips empty/whitespace project memories', () => {
+    const zip = makeZipWith({
+      'conversations.json': [minConversation],
+      'memories.json': {
+        conversations_memory: [],
+        project_memories: {
+          'proj-1': '',
+          'proj-2': '   ',
+          'proj-3': 'Real content.',
+        },
+      },
+    });
+
+    const result = extractFromZip(zip);
+    expect(result.projectMemories.has('proj-1')).toBe(false);
+    expect(result.projectMemories.has('proj-2')).toBe(false);
+    expect(result.projectMemories.get('proj-3')).toBe('Real content.');
+  });
 });
