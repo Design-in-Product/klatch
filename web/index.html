@@ -19,366 +19,28 @@
   <meta name="twitter:description" content="A local-first, channel-based interface for managing all your Claude AI interactions.">
   <meta name="twitter:image" content="https://www.klatch.ing/assets/og-image.png">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect x='10' y='8' width='8.5' height='48' rx='4.25' ry='4.25' fill='%23111827'/><rect x='18.5' y='28' width='24' height='8' rx='4' ry='4' fill='%23111827' transform='rotate(-40,18.5,32)'/><rect x='18.5' y='28' width='26' height='8' rx='4' ry='4' fill='%23111827' transform='rotate(40,18.5,32)'/><circle cx='50.5' cy='12' r='5' fill='%23EF4444'/></svg>">
-  <style>
-    :root {
-      --bg-deep: #f8fafc;
-      --bg-main: #ffffff;
-      --bg-card: #f1f5f9;
-      --indigo: #6366f1;
-      --indigo-light: #4f46e5;
-      --text: #4b5563;
-      --text-dim: #9ca3af;
-      --text-bright: #111827;
-      --border: #e2e8f0;
-    }
-
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
-      background: var(--bg-deep);
-      color: var(--text);
-      line-height: 1.6;
-      -webkit-font-smoothing: antialiased;
-    }
-
-    .container {
-      max-width: 720px;
-      margin: 0 auto;
-      padding: 0 24px;
-    }
-
-    /* Header */
-    header {
-      padding: 80px 0 40px;
-      text-align: center;
-    }
-
-    .logo {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 14px;
-      margin-bottom: 16px;
-    }
-
-    .logo-text {
-      font-size: 3rem;
-      font-weight: 800;
-      color: var(--text-bright);
-      letter-spacing: -0.03em;
-    }
-
-    .tagline {
-      font-size: 1.25rem;
-      color: var(--text-dim);
-      max-width: 480px;
-      margin: 0 auto;
-    }
-
-    /* Hero section */
-    .hero {
-      padding: 40px 0;
-      text-align: center;
-    }
-
-    .hero p {
-      font-size: 1.05rem;
-      color: var(--text);
-      max-width: 560px;
-      margin: 0 auto 32px;
-    }
-
-    .cta-group {
-      display: flex;
-      gap: 12px;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
-
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 12px 24px;
-      border-radius: 8px;
-      font-size: 0.95rem;
-      font-weight: 600;
-      text-decoration: none;
-      transition: all 0.15s ease;
-    }
-
-    .btn-primary {
-      background: var(--indigo);
-      color: white;
-    }
-
-    .btn-primary:hover {
-      background: #818cf8;
-    }
-
-    .btn-secondary {
-      background: transparent;
-      color: var(--text);
-      border: 1px solid var(--border);
-    }
-
-    .btn-secondary:hover {
-      border-color: var(--text-dim);
-      color: var(--text-bright);
-    }
-
-    /* Quickstart */
-    .quickstart {
-      margin: 48px 0;
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      overflow: hidden;
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
-    }
-
-    .quickstart-header {
-      padding: 12px 20px;
-      background: var(--bg-card);
-      border-bottom: 1px solid var(--border);
-      font-size: 0.8rem;
-      font-weight: 600;
-      color: var(--text-dim);
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-    }
-
-    .quickstart pre {
-      padding: 20px;
-      font-family: 'SF Mono', 'Fira Code', 'Fira Mono', Menlo, monospace;
-      font-size: 0.9rem;
-      line-height: 1.8;
-      overflow-x: auto;
-      color: var(--text-bright);
-    }
-
-    .quickstart .comment { color: #9ca3af; }
-    .quickstart .cmd { color: var(--indigo); }
-
-    /* Features */
-    .features {
-      padding: 48px 0;
-    }
-
-    .features h2 {
-      font-size: 1.5rem;
-      font-weight: 700;
-      color: var(--text-bright);
-      margin-bottom: 32px;
-      text-align: center;
-    }
-
-    .feature-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 20px;
-    }
-
-    @media (max-width: 560px) {
-      .feature-grid { grid-template-columns: 1fr; }
-    }
-
-    .feature {
-      padding: 20px;
-      background: var(--bg-main);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
-    }
-
-    .feature h3 {
-      font-size: 0.95rem;
-      font-weight: 700;
-      color: var(--text-bright);
-      margin-bottom: 6px;
-    }
-
-    .feature p {
-      font-size: 0.85rem;
-      color: var(--text-dim);
-      line-height: 1.5;
-    }
-
-    /* The Insight */
-    .insight {
-      padding: 48px 0;
-      text-align: center;
-    }
-
-    .insight blockquote {
-      font-size: 1.2rem;
-      color: var(--text-bright);
-      font-style: italic;
-      max-width: 480px;
-      margin: 0 auto;
-      padding: 24px;
-      border-left: 3px solid var(--indigo);
-      text-align: left;
-      background: #eef2ff;
-      border-radius: 0 8px 8px 0;
-    }
-
-    /* Roadmap */
-    .roadmap {
-      padding: 48px 0;
-    }
-
-    .roadmap h2 {
-      font-size: 1.5rem;
-      font-weight: 700;
-      color: var(--text-bright);
-      margin-bottom: 24px;
-      text-align: center;
-    }
-
-    .step-list {
-      list-style: none;
-      position: relative;
-    }
-
-    .step-list::before {
-      content: '';
-      position: absolute;
-      left: 11px;
-      top: 8px;
-      bottom: 8px;
-      width: 2px;
-      background: var(--border);
-    }
-
-    .step {
-      display: flex;
-      gap: 16px;
-      padding: 12px 0;
-      position: relative;
-    }
-
-    .step-dot {
-      width: 24px;
-      height: 24px;
-      border-radius: 50%;
-      flex-shrink: 0;
-      margin-top: 2px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.7rem;
-      font-weight: 700;
-    }
-
-    .step-done .step-dot {
-      background: var(--indigo);
-      color: white;
-    }
-
-    .step-next .step-dot {
-      background: white;
-      border: 2px solid var(--indigo);
-      color: var(--indigo);
-    }
-
-    .step-future .step-dot {
-      background: white;
-      border: 2px solid var(--border);
-      color: var(--text-dim);
-    }
-
-    .step-content h3 {
-      font-size: 0.9rem;
-      font-weight: 600;
-      color: var(--text-bright);
-    }
-
-    .step-content p {
-      font-size: 0.8rem;
-      color: var(--text-dim);
-      margin-top: 2px;
-    }
-
-    .step-done .step-content h3 { color: var(--text-dim); }
-
-    /* Tech stack */
-    .stack {
-      padding: 48px 0;
-    }
-
-    .stack h2 {
-      font-size: 1.5rem;
-      font-weight: 700;
-      color: var(--text-bright);
-      margin-bottom: 24px;
-      text-align: center;
-    }
-
-    .stack-grid {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      justify-content: center;
-    }
-
-    .stack-tag {
-      padding: 6px 14px;
-      background: var(--bg-main);
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      font-size: 0.8rem;
-      color: var(--text-dim);
-      font-weight: 500;
-    }
-
-    /* Built with */
-    .built-with {
-      padding: 48px 0;
-      text-align: center;
-    }
-
-    .built-with p {
-      font-size: 0.95rem;
-      color: var(--text-dim);
-      max-width: 480px;
-      margin: 0 auto;
-    }
-
-    .built-with a {
-      color: var(--indigo-light);
-      text-decoration: none;
-    }
-
-    .built-with a:hover {
-      text-decoration: underline;
-    }
-
-    /* Footer */
-    footer {
-      padding: 32px 0;
-      text-align: center;
-      border-top: 1px solid var(--border);
-      margin-top: 32px;
-    }
-
-    footer p {
-      font-size: 0.8rem;
-      color: var(--text-dim);
-    }
-
-    footer a {
-      color: var(--indigo-light);
-      text-decoration: none;
-    }
-
-    footer a:hover {
-      text-decoration: underline;
-    }
-  </style>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+
+  <nav>
+    <div class="nav-inner">
+      <a href="/" class="nav-logo">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="24" height="24" aria-hidden="true">
+          <rect x="10" y="8" width="8.5" height="48" rx="4.25" ry="4.25" fill="#111827"/>
+          <rect x="18.5" y="28" width="24" height="8" rx="4" ry="4" fill="#111827" transform="rotate(-40, 18.5, 32)"/>
+          <rect x="18.5" y="28" width="26" height="8" rx="4" ry="4" fill="#111827" transform="rotate(40, 18.5, 32)"/>
+          <circle cx="50.5" cy="12" r="5" fill="#EF4444"/>
+        </svg>
+        klatch
+      </a>
+      <ul class="nav-links">
+        <li><a href="#quickstart">Quick start</a></li>
+        <li><a href="blog/">Blog</a></li>
+        <li><a href="https://github.com/Design-in-Product/klatch">GitHub</a></li>
+      </ul>
+    </div>
+  </nav>
 
   <div class="container">
 
@@ -402,7 +64,7 @@
           <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
           View on GitHub
         </a>
-        <a href="#quickstart" class="btn btn-secondary">Quick Start</a>
+        <a href="#quickstart" class="btn btn-secondary">Quick start</a>
       </div>
     </section>
 
@@ -427,7 +89,7 @@
           <p>Panel (parallel), roundtable (sequential), or directed (@-mention specific entities). Choose per message.</p>
         </div>
         <div class="feature">
-          <h3>Roles and Channels</h3>
+          <h3>Roles and channels</h3>
           <p>Single-entity Roles for focused work, multi-entity Channels for group discussion. The sidebar organizes both.</p>
         </div>
         <div class="feature">
@@ -450,7 +112,7 @@
     </section>
 
     <section id="quickstart" class="quickstart">
-      <div class="quickstart-header">Quick Start</div>
+      <div class="quickstart-header">Quick start</div>
       <pre><span class="cmd">git clone</span> git@github.com:Design-in-Product/klatch.git
 <span class="cmd">cd</span> klatch
 <span class="cmd">echo</span> 'ANTHROPIC_API_KEY=your-key-here' > .env
@@ -514,8 +176,8 @@
         <li class="step step-done">
           <div class="step-dot">&#10003;</div>
           <div class="step-content">
-            <h3>Claude Code import</h3>
-            <p>Import Claude Code sessions as conversation snapshots with source badges</p>
+            <h3>Import and fork</h3>
+            <p>Import Claude Code sessions and claude.ai exports; continue conversations across environments</p>
           </div>
         </li>
         <li class="step step-next">
@@ -550,11 +212,11 @@
     </section>
 
     <section class="built-with">
-      <p>Klatch is a collaborative project between a human product designer (<a href="https://github.com/mediajunkie">xian</a>) and two Claude Code agents: Daedalus (the crafter) and Argus (the auditor). The human drives product direction and design values. The agents write the code.</p>
+      <p>Klatch is built by <a href="https://github.com/mediajunkie">xian</a> and a team of Claude agents: Daedalus (builder), Argus (quality), Theseus (testing), and Calliope (writing). The human drives direction and design values. The agents do the work.</p>
     </section>
 
     <footer>
-      <p>CC BY 4.0 &middot; <a href="https://github.com/Design-in-Product/klatch">GitHub</a></p>
+      <p>CC BY 4.0 &middot; <a href="https://github.com/Design-in-Product/klatch">GitHub</a> &middot; <a href="blog/">Blog</a></p>
     </footer>
 
   </div>
