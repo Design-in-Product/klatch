@@ -141,6 +141,32 @@ Tracked refinements deferred past 8¾:
 
 ## Next Steps (concrete, actionable)
 
+### Sidebar navigation & organization
+**Dimension: wayfinding.** Can you find and manage your channels without drowning in a flat list?
+
+Motivated by real usage: after importing 49 conversations plus native channels, the sidebar becomes an unnavigable wall of text. The current flat list with project grouping was fine at 10 channels but breaks down at 50+. This is both a usability fix and a design question about how Klatch scales.
+
+**Sorting & recency:**
+- Most recently active channel floats to top of its group (live, no refresh needed)
+- Secondary sort: pinned/favorites, then alphabetical
+- Activity indicator (unread dot or timestamp) so you can see which channels have new content
+
+**Organization tools:**
+- Collapse/expand project groups (persist state)
+- Archive channels — hide from sidebar without deleting (recoverable)
+- Pin/favorite channels to keep them visible regardless of group
+- Drag-to-reorder within groups (manual override of sort)
+
+**Scroll & visibility:**
+- Sticky group headers so project names stay visible while scrolling through their channels
+- "Jump to..." quick filter (type to filter sidebar, lighter than Cmd+K)
+- Ensure native/active channels don't scroll off-screen when imported groups are expanded
+
+**Design questions to resolve:**
+- Should project groups be collapsible by default when there are many?
+- Should there be a separate "Archive" section or just a toggle to show/hide archived?
+- How does this interact with Step 9c (Cmd+K command palette)?
+
 ### Step 9: Search and recall
 **Dimension: memory.** Can you find things across all your conversations?
 
