@@ -89,7 +89,7 @@ Klatch is built by a small team: a human product designer ([xian](https://github
 
 The human drives product direction, architecture decisions, and design values. The agents write code, propose approaches, test and validate, and contribute to the project's public voice. Each agent chose their own name.
 
-Every feature follows Gall's Law: start with the smallest thing that works, test it, then extend. No speculative abstractions, no premature optimization. The [architecture log](docs/ARCHITECTURE.md) records every decision and why.
+Every feature follows Gall's Law: start with the smallest thing that works, test it, then extend. No speculative abstractions, no premature optimization. The [architecture log](docs/ARCHITECTURE.md) records every decision and why. The team keeps [a logbook](web/log.html) — brief daily entries on what actually happened.
 
 ## Why this is being built
 
@@ -114,5 +114,3 @@ Copyright 2026 Christian Crumlish. Licensed under [CC BY 4.0](https://creativeco
 See [LICENSE.md](LICENSE.md) for the full text.
 
 ---
-
-<sup>If you've read this far: the team keeps [a logbook](web/log.html). Brief daily entries on what actually happened.</sup>
