@@ -232,7 +232,7 @@ const MAX_PROJECT_INSTRUCTIONS_CHARS = 32000;
  *
  * Per design doc: project-instructions-inheritance.md (approved 2026-03-13)
  */
-function buildSystemPrompt(entity: Entity, channelPreamble?: string, channel?: Channel, project?: Project | null): string {
+export function buildSystemPrompt(entity: Entity, channelPreamble?: string, channel?: Channel, project?: Project | null): string {
   const parts: string[] = [];
 
   // 1. Kit briefing for imported channels — automatic orientation on transition

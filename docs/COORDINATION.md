@@ -11,27 +11,17 @@ Agents working on this repo use this file as the async handoff protocol.
 ## Status board
 
 ### Argus (quality & test infrastructure)
-- **Branch:** `main` (start new feature branch)
-- **Status:** assigned — integration tests for 8¾a
-- **Last completed:** 8¾d Claude Code session browser, merged to main (2026-03-14).
-- **Assignment: Integration tests for project context injection (8¾a)**
-  - **Goal:** End-to-end test coverage for the 8¾a critical path. This is Argus's existing test plan ("Ready to write tests after Daedalus delivers schema + prompt assembly") — schema + prompt assembly are now on main.
-  - **Key areas to cover:**
-    1. **claude.ai import → project creation:** Import a ZIP with projects.json containing prompt_template → verify project rows created in DB with correct instructions
-    2. **claude.ai import → channel linking:** Conversations with `project_uuid` → verify channel gets `project_id` FK pointing to correct project
-    3. **Claude Code import → project creation by cwd:** Import session with cwd → verify project created, same cwd re-import finds existing project
-    4. **System prompt assembly:** Channel linked to project → verify `buildSystemPrompt` output includes project instructions in correct layer order (kit_briefing → project → channel → entity)
-    5. **Project instructions truncation:** Project with >32K instructions → verify truncation with `...(truncated)` marker
-    6. **Kit briefing deduplication:** Channel WITH projectId → claudeMd NOT in kit briefing (it's in project layer). Channel WITHOUT projectId → claudeMd IS in kit briefing (legacy fallback).
-    7. **Re-branch with project:** Force-import an already-imported conversation → verify new channel also gets project link
-  - **Key files to test against:**
-    - `packages/server/src/claude/client.ts` — `buildSystemPrompt()`, `buildKitBriefing()`
-    - `packages/server/src/db/queries.ts` — `findOrCreateProject()`, `getProjectForChannel()`, `setChannelProject()`
-    - `packages/server/src/routes/import.ts` — project creation during import
-  - **Existing tests for reference:** `packages/server/src/__tests__/projects.test.ts` (16 CRUD tests), `packages/server/src/__tests__/project-injection.test.ts` (10 extraction/injection tests)
-  - **Base:** Start from `main` (all 8¾a–e merged, 493 tests passing)
-- **Waiting on:** Nothing — can start immediately.
-- **Updated:** 2026-03-14 08:55
+- **Branch:** `claude/audit-and-planning-xn2w7`
+- **Status:** review — 8¾a integration tests complete
+- **Last completed:** 8¾a integration tests (2026-03-14 09:30). 43 new tests covering all 7 assignment areas.
+- **8¾a integration test deliverables:**
+  - `project-instructions.test.ts` — 33 tests (all passing): claude.ai import (4), Claude Code import (4), system prompt 4-layer assembly (10), truncation (2), kit briefing dedup (4), re-branch (2), API routes (7)
+  - `memories-parsing.test.ts` — 10 tests (all passing): standard parsing (4), char array fix (3), project_memories (3)
+  - Exported `buildSystemPrompt` from client.ts for direct testing
+  - Added `projectRoutes` to test app helper
+- **Test count:** 430 server + 105 client = 535 total. Zero regressions.
+- **Waiting on:** Review/merge direction from PO.
+- **Updated:** 2026-03-14 09:30
 
 ### Daedalus (architecture & implementation)
 - **Branch:** `main`
