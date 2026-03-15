@@ -478,7 +478,7 @@ export function findOrCreateProject(
 ): Project {
   // Try to find existing project by source identity
   const existing = getDb()
-    .prepare(`SELECT * FROM projects WHERE json_extract(source_metadata, '$.${matchKey}') = ?`)
+    .prepare(`SELECT * FROM projects WHERE json_valid(source_metadata) AND json_extract(source_metadata, '$.${matchKey}') = ?`)
     .get(matchValue) as any;
   if (existing) return rowToProject(existing);
 
@@ -610,7 +610,7 @@ export function importSession(params: ImportSessionParams): ImportResult {
  */
 export function findChannelByOriginalSessionId(sessionId: string): Channel | undefined {
   const row = getDb()
-    .prepare("SELECT * FROM channels WHERE json_extract(source_metadata, '$.originalSessionId') = ?")
+    .prepare("SELECT * FROM channels WHERE json_valid(source_metadata) AND json_extract(source_metadata, '$.originalSessionId') = ?")
     .get(sessionId) as any;
   if (!row) return undefined;
   return rowToChannel(row);
@@ -645,7 +645,7 @@ export function getImportConflictInfo(channelId: string): {
  */
 export function countChannelsByOriginalSessionId(sessionId: string): number {
   const row = getDb()
-    .prepare("SELECT COUNT(*) as count FROM channels WHERE json_extract(source_metadata, '$.originalSessionId') = ?")
+    .prepare("SELECT COUNT(*) as count FROM channels WHERE json_valid(source_metadata) AND json_extract(source_metadata, '$.originalSessionId') = ?")
     .get(sessionId) as { count: number };
   return row.count;
 }
