@@ -74,21 +74,37 @@ describe('ChannelSidebar', () => {
         id: 'imp1',
         name: 'session-1',
         source: 'claude-code',
-        sourceMetadata: JSON.stringify({ cwd: '/home/user/klatch' }),
+        projectId: 'proj-1',
+        projectName: 'klatch',
       }),
       makeChannel({
         id: 'imp2',
         name: 'session-2',
         source: 'claude-code',
-        sourceMetadata: JSON.stringify({ cwd: '/home/user/klatch' }),
+        projectId: 'proj-1',
+        projectName: 'klatch',
       }),
     ];
     render(<ChannelSidebar {...defaultProps} channels={channels} />);
 
-    // Project group header should show the project name (last path component)
+    // Project group header should show the project name from the projects table
     expect(screen.getByText('klatch')).toBeInTheDocument();
     // Channel count
     expect(screen.getByText('(2)')).toBeInTheDocument();
+  });
+
+  it('groups imported channels without project under "Imported"', () => {
+    const channels = [
+      makeChannel({ id: 'default', name: 'general' }),
+      makeChannel({
+        id: 'imp1',
+        name: 'orphan-session',
+        source: 'claude-ai',
+      }),
+    ];
+    render(<ChannelSidebar {...defaultProps} channels={channels} />);
+
+    expect(screen.getByText('Imported')).toBeInTheDocument();
   });
 
   it('shows CC badge for Claude Code imported channels', () => {
@@ -97,7 +113,8 @@ describe('ChannelSidebar', () => {
         id: 'imp1',
         name: 'imported-session',
         source: 'claude-code',
-        sourceMetadata: JSON.stringify({ cwd: '/tmp/project' }),
+        projectId: 'proj-1',
+        projectName: 'test-project',
       }),
     ];
     render(<ChannelSidebar {...defaultProps} channels={channels} />);

@@ -2,11 +2,6 @@ import React, { useState, useMemo } from 'react';
 import type { Channel } from '@klatch/shared';
 import { KlatchLogo } from './KlatchLogo';
 
-/** Extract project name from a cwd path (last path component) */
-function projectNameFromPath(cwd: string): string {
-  const parts = cwd.replace(/\/+$/, '').split('/');
-  return parts[parts.length - 1] || cwd;
-}
 
 interface Props {
   channels: Channel[];
@@ -63,27 +58,24 @@ export function ChannelSidebar({
     });
   };
 
-  // Group channels: #general → projects (imported) → roles/channels (native)
+  // Group channels: #general → projects → roles/channels (native)
   const { general, projectGroups, roles, groups } = useMemo(() => {
     const general = channels.find((ch) => ch.id === 'default');
     const rest = channels.filter((ch) => ch.id !== 'default');
 
-    // Imported channels grouped by project (cwd from sourceMetadata)
+    // Imported channels grouped by project (from projects table via projectId/projectName)
     const imported = rest.filter((ch) => ch.source && ch.source !== 'native');
     const projectMap = new Map<string, { name: string; channels: Channel[] }>();
     for (const ch of imported) {
-      let cwd = 'Imported';
-      try {
-        const meta = ch.sourceMetadata ? JSON.parse(ch.sourceMetadata) : {};
-        if (meta.cwd) cwd = meta.cwd;
-      } catch { /* malformed metadata — fall back to 'Imported' */ }
-      if (!projectMap.has(cwd)) {
-        projectMap.set(cwd, { name: projectNameFromPath(cwd), channels: [] });
+      const groupKey = ch.projectId || '_imported';
+      const groupName = ch.projectName || 'Imported';
+      if (!projectMap.has(groupKey)) {
+        projectMap.set(groupKey, { name: groupName, channels: [] });
       }
-      projectMap.get(cwd)!.channels.push(ch);
+      projectMap.get(groupKey)!.channels.push(ch);
     }
-    const projectGroups = Array.from(projectMap.entries()).map(([path, group]) => ({
-      path,
+    const projectGroups = Array.from(projectMap.entries()).map(([key, group]) => ({
+      key,
       name: group.name,
       channels: group.channels,
     }));
@@ -160,9 +152,9 @@ export function ChannelSidebar({
           </div>
         )}
 
-        {/* Project groups (imported channels grouped by cwd) */}
+        {/* Project groups (imported channels grouped by project) */}
         {projectGroups.map((project) => {
-          const sectionKey = `project:${project.path}`;
+          const sectionKey = `project:${project.key}`;
           const isCollapsed = collapsedSections.has(sectionKey);
           return (
             <div key={sectionKey}>

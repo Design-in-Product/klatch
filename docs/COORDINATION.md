@@ -11,25 +11,31 @@ Agents working on this repo use this file as the async handoff protocol.
 ## Status board
 
 ### Argus (quality & test infrastructure)
-- **Branch:** `claude/audit-and-planning-xn2w7`
-- **Status:** review — Round 3 test expansion complete
-- **Last completed:** Round 3 test expansion (2026-03-14 22:30). 33 new tests covering all 4 assignment areas.
-- **Round 3 deliverables:**
-  - `round3-expansion.test.ts` — 33 tests (all passing): Claude Code HTTP import (5), compaction API (5), entity CRUD edge cases (12), streaming routes (11)
-  - First SSE lifecycle tests with active EventEmitter forwarding
-- **Prior deliverables (merged to main):**
-  - Round 2: import hardening (22 tests), Round 1: 8¾a integration (43 tests), 8¾d session browser, memories-parsing
-- **Test count:** 485 server + 105 client = 590 total. Zero regressions.
-- **Waiting on:** Review/merge direction from PO.
-- **Updated:** 2026-03-14 22:30
+- **Branch:** `main` (start new feature branch)
+- **Status:** assigned — Round 4: sidebar project grouping + enriched query tests
+- **Last completed:** Round 3 merged to main (33 tests). All rounds merged.
+- **Assignment: Round 4 — Test coverage for project-based sidebar grouping**
+  - Daedalus fixed a bug where claude.ai imports showed under "Imported" instead of their project name. The sidebar now groups by `projectId`/`projectName` from the `projects` table (JOIN in `getAllChannelsEnriched`) instead of parsing `sourceMetadata.cwd`. This is a data-model-level fix, not just cosmetic.
+  - **Areas to cover:**
+    1. **`getAllChannelsEnriched` query tests:** Verify the JOIN to `projects` returns `projectName`. Test channels with project (should have `projectName`), without project (should have `projectName: undefined`), and multiple channels sharing a project (same `projectName`). Test that project name updates propagate (rename project → enriched query reflects new name).
+    2. **Cross-source project grouping:** Create a project (e.g. via Claude Code import with `cwd`), then import a claude.ai conversation linked to the same project. Verify both channels share the same `projectId` and `projectName` in the enriched response. This validates the unification that `findOrCreateProject` enables.
+    3. **Project deletion impact on sidebar:** When a project is deleted, channels should still appear (with `projectId: null`, `projectName: undefined`). They should fall into the "Imported" fallback group, not disappear.
+    4. **Channel-project linking/unlinking:** `setChannelProject()` and `clearChannelProject()` (or equivalent) should update what `getAllChannelsEnriched` returns for `projectName`.
+  - **Key files:**
+    - `packages/server/src/db/queries.ts` — `getAllChannelsEnriched()` (the changed query)
+    - `packages/shared/src/types.ts` — `Channel.projectName` (new field)
+    - `packages/client/src/components/ChannelSidebar.tsx` — grouping logic (for reference, not test target)
+  - **Base:** Start from `main` (592 tests: 486 server + 106 client)
+- **Waiting on:** Nothing — can start immediately.
+- **Updated:** 2026-03-15 14:15
 
 ### Daedalus (architecture & implementation)
 - **Branch:** `main`
 - **Status:** available
-- **Last completed:** Merged Argus Round 2 (22 tests). Fixed import error handling + json_valid guards. Updated roadmap with sidebar nav, project spaces, entity model. 558 tests (453 server + 105 client).
-- **Next:** Await PO direction.
+- **Last completed:** Fixed sidebar project grouping bug — claude.ai imports now show under project name. Sidebar groups by `projectId`/`projectName` (JOIN to projects table) instead of parsing `sourceMetadata.cwd`. 592 tests (486 server + 106 client).
+- **Next:** Await PO direction. Sidebar cleanup and cross-correlation design pending discussion.
 - **Waiting on:** Nothing.
-- **Updated:** 2026-03-14 21:34
+- **Updated:** 2026-03-15 14:15
 
 ### Theseus Prime (manual testing & exploration — CLI side)
 - **Branch:** `main`

@@ -64,6 +64,7 @@ export interface Channel {
   sourceMetadata?: string; // JSON string
   compactionState?: string; // JSON: { summary, timestamp, beforeMessageId }
   projectId?: string;       // FK to projects table (nullable — channels can be unlinked)
+  projectName?: string;     // populated by enriched list endpoint (JOIN to projects)
   messageCount?: number;        // populated by enriched list endpoint
   lastMessageAt?: string | null; // populated by enriched list endpoint
 }
@@ -88,8 +89,8 @@ export interface ChannelStats {
 }
 
 export interface ProjectGroup {
-  projectPath: string | null;   // cwd from source_metadata, null = ungrouped native channels
-  projectName: string;          // basename of cwd, or "Conversations"
+  projectId: string | null;     // FK to projects table, null = ungrouped
+  projectName: string;          // from projects table, or "Imported" for unlinked
   channels: Channel[];
 }
 
