@@ -152,7 +152,7 @@ export function ChannelSidebar({
           </div>
         )}
 
-        {/* Project groups (imported channels grouped by cwd) */}
+        {/* Project groups (imported channels grouped by project) */}
         {projectGroups.map((project) => {
           const sectionKey = `project:${project.key}`;
           const isCollapsed = collapsedSections.has(sectionKey);
