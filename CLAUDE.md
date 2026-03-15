@@ -58,7 +58,7 @@ Schema in `packages/server/src/db/index.ts`. Tables:
 
 Three agents work on this repo: **Daedalus** (architecture & implementation), **Argus** (quality & testing), and **Theseus** (manual testing & exploration, working in tandem with the product owner). Follow this workflow:
 
-1. **Session start:** Read `docs/COORDINATION.md` to see current status, assignments, and blockers.
+1. **Session start:** Pull from origin, then read `docs/COORDINATION.md` for status/assignments and check `docs/mail/` for any new memos addressed to you. This is your full briefing — do it every time you're started or re-awoken.
 2. **Before executing:** Check COORDINATION.md again — confirm your assigned work, verify dependencies are met (e.g., "Waiting on" is resolved), and avoid duplicating or conflicting with the other agent's in-progress work.
 3. **Before every push:** Update your section in COORDINATION.md with current status, what you completed, and what you're working on next.
 
