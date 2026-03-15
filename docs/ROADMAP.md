@@ -180,12 +180,14 @@ When you switch to a project space, the default view isn't a channel — it's a 
 
 This turns the project from a sidebar filter into a first-class destination — more like a GitHub repo landing page than a Slack workspace. The AI summary is the differentiator: no other tool synthesizes your recent Claude interactions into a coherent status update.
 
+**Entity model: project-native, forkable.**
+Entities are created within (or imported into) a project and retain that association — they belong to their home project. But an entity can be *forked* into another project, creating an independent copy that can diverge (different prompt, different model) while retaining lineage back to the original. This mirrors the fork-don't-sync pattern already established for imported conversations. A generalist entity like Hermes (research) might get forked across multiple projects, each fork evolving to fit its new context.
+
 **Design questions to resolve:**
 - Spaces vs. groups vs. hybrid (collapsible groups with a "focus mode" that expands to full space)?
 - Should project groups be collapsible by default when there are many?
 - Should there be a separate "Archive" section or just a toggle to show/hide archived?
 - How does this interact with Step 9c (Cmd+K command palette)?
-- Where do entities live — global or per-project?
 
 ### Step 9: Search and recall
 **Dimension: memory.** Can you find things across all your conversations?
