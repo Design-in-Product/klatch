@@ -162,10 +162,21 @@ Motivated by real usage: after importing 49 conversations plus native channels, 
 - "Jump to..." quick filter (type to filter sidebar, lighter than Cmd+K)
 - Ensure native/active channels don't scroll off-screen when imported groups are expanded
 
+**Possible approach: project spaces.**
+Instead of one sidebar with groups, treat each project as a separate *space* you switch between — like Slack workspaces or Arc's spaces. A project switcher (top of sidebar, or a separate rail) scopes the entire view to one project's channels and entities. This would:
+- Eliminate the "one long list" problem entirely — you only see channels for the current project
+- Give each project its own visual identity and context
+- Make "All" or "Ungrouped" a space too, for native channels without a project
+- Align with the existing data model: projects are already first-class (8¾a), channels have `project_id` FKs
+
+The key design tension: spaces hide channels from other projects, which is good for focus but bad for cross-project awareness. A "Recent across all projects" view or notification badges per space could bridge this. The sorting/organization features above still apply within each space.
+
 **Design questions to resolve:**
+- Spaces vs. groups vs. hybrid (collapsible groups with a "focus mode" that expands to full space)?
 - Should project groups be collapsible by default when there are many?
 - Should there be a separate "Archive" section or just a toggle to show/hide archived?
 - How does this interact with Step 9c (Cmd+K command palette)?
+- Where do entities live — global or per-project?
 
 ### Step 9: Search and recall
 **Dimension: memory.** Can you find things across all your conversations?
