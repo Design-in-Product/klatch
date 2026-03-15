@@ -171,6 +171,15 @@ Instead of one sidebar with groups, treat each project as a separate *space* you
 
 The key design tension: spaces hide channels from other projects, which is good for focus but bad for cross-project awareness. A "Recent across all projects" view or notification badges per space could bridge this. The sorting/organization features above still apply within each space.
 
+**Possible evolution: project home page.**
+When you switch to a project space, the default view isn't a channel — it's a project home that shows:
+- AI-generated status summary ("Here's what happened since you were last here" across all channels in this project)
+- Direct links to the most recently active channels
+- Project-level stats (total conversations, last activity, entity roster)
+- Quick actions (new channel, import, search within project)
+
+This turns the project from a sidebar filter into a first-class destination — more like a GitHub repo landing page than a Slack workspace. The AI summary is the differentiator: no other tool synthesizes your recent Claude interactions into a coherent status update.
+
 **Design questions to resolve:**
 - Spaces vs. groups vs. hybrid (collapsible groups with a "focus mode" that expands to full space)?
 - Should project groups be collapsible by default when there are many?
