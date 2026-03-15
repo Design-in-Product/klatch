@@ -11,25 +11,17 @@ Agents working on this repo use this file as the async handoff protocol.
 ## Status board
 
 ### Argus (quality & test infrastructure)
-- **Branch:** `main` (start new feature branch)
-- **Status:** assigned — Round 3 test expansion
-- **Last completed:** Round 2 import hardening tests merged to main (2026-03-14). 22 tests, reviewed ✅.
-- **Assignment: Round 3 — Test expansion across four areas**
-  - **Goal:** Broaden test coverage beyond import into core infrastructure: Claude Code HTTP import, compaction, entities, and streaming.
-  - **Areas to cover:**
-    1. **Claude Code import via HTTP:** POST /api/import/claude-code with JSONL session path → verify channel creation, source metadata, project linking by cwd. Test with missing file path, non-existent file, invalid JSONL. Mirror the multipart pattern from Round 2 but for the JSONL path-based endpoint.
-    2. **Compaction API:** Test the continuation flow for imported channels that use `compaction_state`. Verify compaction summary is stored, subsequent messages include compacted context, compaction triggers at threshold. Key file: `packages/server/src/claude/client.ts` (compaction logic).
-    3. **Entity CRUD edge cases:** Entity assignment to channels (add/remove), mode switching validation (panel/roundtable/directed), entity handle uniqueness, max entities per channel (5), entity deletion when assigned to channels. Key files: `packages/server/src/routes/entities.ts`, `packages/server/src/db/queries.ts`.
-    4. **Streaming route tests:** SSE connection lifecycle, abort mid-stream (APIUserAbortError handling), race condition (stream completes before SSE connects → DB check fallback). Key files: `packages/server/src/routes/messages.ts`, `packages/server/src/claude/client.ts`.
-  - **Key files:**
-    - `packages/server/src/routes/import.ts` — Claude Code import endpoint
-    - `packages/server/src/claude/client.ts` — compaction + streaming
-    - `packages/server/src/routes/messages.ts` — SSE streaming routes
-    - `packages/server/src/routes/entities.ts` — entity CRUD
-    - `packages/server/src/db/queries.ts` — entity + channel queries
-  - **Base:** Start from `main` (558 tests passing: 453 server + 105 client)
-- **Waiting on:** Nothing — can start immediately.
-- **Updated:** 2026-03-14 21:34
+- **Branch:** `claude/audit-and-planning-xn2w7`
+- **Status:** review — Round 3 test expansion complete
+- **Last completed:** Round 3 test expansion (2026-03-14 22:30). 33 new tests covering all 4 assignment areas.
+- **Round 3 deliverables:**
+  - `round3-expansion.test.ts` — 33 tests (all passing): Claude Code HTTP import (5), compaction API (5), entity CRUD edge cases (12), streaming routes (11)
+  - First SSE lifecycle tests with active EventEmitter forwarding
+- **Prior deliverables (merged to main):**
+  - Round 2: import hardening (22 tests), Round 1: 8¾a integration (43 tests), 8¾d session browser, memories-parsing
+- **Test count:** 485 server + 105 client = 590 total. Zero regressions.
+- **Waiting on:** Review/merge direction from PO.
+- **Updated:** 2026-03-14 22:30
 
 ### Daedalus (architecture & implementation)
 - **Branch:** `main`
