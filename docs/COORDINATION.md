@@ -26,10 +26,10 @@ Agents working on this repo use this file as the async handoff protocol.
 ### Daedalus (architecture & implementation)
 - **Branch:** `main`
 - **Status:** available
-- **Last completed:** Merged Argus Round 2 (22 tests). Fixed import error handling + json_valid guards. Updated roadmap with sidebar nav, project spaces, entity model. 558 tests (453 server + 105 client).
+- **Last completed:** Reviewed AXT blog post (no errors found). Updated ARCHITECTURE.md decision log with 15 entries for v0.8.1–v0.8.5. Reply sent to Calliope.
 - **Next:** Await PO direction.
 - **Waiting on:** Nothing.
-- **Updated:** 2026-03-14 21:34
+- **Updated:** 2026-03-15 12:10
 
 ### Theseus Prime (manual testing & exploration — CLI side)
 - **Branch:** `main`
