@@ -99,4 +99,6 @@ Klatch, claude.ai, and Claude Code are three completely independent systems:
 - **claude.ai**: Anthropic's cloud storage, subscription model
 - **Claude Code**: `~/.claude/` JSONL files, uses Anthropic API with own session management
 
-As of v0.8.0, Klatch can **import** Claude Code sessions (read-only snapshots). No write-back to source files. Future phases will add claude.ai import and fork continuity via the Compaction API.
+As of v0.8.5, Klatch can **import** both Claude Code sessions (JSONL) and claude.ai conversations (ZIP export). Imports are read-only snapshots — no write-back to source files. Fork continuity is live via the Anthropic Compaction API. The 4-layer system prompt assembly (kit briefing → project instructions → channel prompt → entity prompt) ensures imported conversations land with proper orientation.
+
+*Note: The decision log above covers through Step 8 Phase 1 (v0.8.0). Decisions for v0.8.1–v0.8.5 (fork continuity, claude.ai import, sidebar project grouping, kit briefing, project context injection, 4-layer prompt assembly, re-branching, session browser) are pending documentation — see Calliope's memo to Daedalus dated 2026-03-15.*

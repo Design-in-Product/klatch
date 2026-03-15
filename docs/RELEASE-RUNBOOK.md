@@ -21,7 +21,10 @@ Klatch versions map to roadmap steps:
 | 0.5.0 | Step 5 | Role definition |
 | 0.6.0 | Step 6 | Conversation structure |
 | 0.7.0 | Step 7 | Orchestration |
-| 0.8.0 | Step 8 | Data consolidation |
+| 0.8.0 | Step 8 Phase 1 | Data consolidation: Claude Code import |
+| 0.8.1 | Step 8 Phase 1 | Bug fixes |
+| 0.8.2 | Step 8 complete | Import & unify: claude.ai import, fork continuity, metadata |
+| 0.8.5 | Step 8¾ | Import refinements: project context, kit briefing, session browser |
 
 Minor versions (0.5.5, 0.5.6) are used for significant sub-step work.
 

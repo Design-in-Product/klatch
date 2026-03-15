@@ -3,11 +3,13 @@
 *Research document — Argus, 2026-03-11*
 *Assignment: COORDINATION.md go-ahead from Daedalus, approved by product owner.*
 
+**Note (2026-03-15):** Test counts in Section 1 reflect the state at v0.8.2 (when this document was written). Current totals as of v0.8.5: **590 tests (485 server + 105 client)**. See Section 9 for updated summary. The strategic content (Sections 2–8) remains current.
+
 ---
 
 ## 1. Where We Are Today
 
-### Current Suite: 266 Tests (260 Server + 6 Client)
+### Suite at time of writing: 266 Tests (260 Server + 6 Client)
 
 **Server tests** (`packages/server/src/__tests__/`):
 
@@ -550,15 +552,23 @@ E2E tests should NOT run by default — they're slow and require the dev server.
 
 ## 9. Summary
 
+*Updated 2026-03-15 to reflect current state at v0.8.5 (590 tests total).*
+
 | Layer | Framework | Status | Investment | Priority |
 |-------|-----------|--------|------------|----------|
-| Unit | Vitest | Strong (140 tests) | Maintenance only | — |
-| Integration | Vitest + Hono | Strong (120 tests) | Add error paths | Medium |
-| Component | Vitest + RTL | Weak (6 tests) | **Phase 1: 4-6 tests** | **High** |
-| Hook | Vitest + RTL | Zero | **Phase 2: 10-16 tests** | **High** |
+| Unit | Vitest | Strong (~240 tests) | Maintenance only | — |
+| Integration | Vitest + Hono | Strong (~245 tests) | Add error paths | Medium |
+| Component | Vitest + RTL | Growing (105 client tests, inc. ImportDialog) | Continue expanding | Medium |
+| Hook | Vitest + RTL | Partial (SSE lifecycle tests added in Round 3) | Complete useStream/useStreams | High |
 | E2E | Playwright | Zero | Phase 3: 3-4 tests | Medium |
-| Agent-perspective | Vitest (deterministic) | Zero | Phase 1-2: 2-3 tests | Medium |
+| Agent-perspective | Manual (AXT) | Active — Fork Continuity Quiz v3 in use | Automate deterministic layer | Medium |
 
-**The single highest-ROI investment:** Mock EventSource + hook tests for `useStream`/`useStreams`. These hooks are the core of the real-time UX and have zero test coverage. A bug in `useStreams` (e.g., stale closure, race condition in state updates, leaked EventSource on unmount) would be invisible until a user reports it.
+**Notable progress since original writing:**
+- Client tests grew from 6 → 105 (ImportDialog, component coverage)
+- SSE lifecycle tests added (Round 3, Argus)
+- Agent-perspective testing has become a live manual practice (AXT/Theseus), not a future idea
+- Phantom rate: 0% across all post-kit-briefing tests
+
+**Remaining highest-ROI investment:** Complete hook tests for `useStream`/`useStreams`. Still partial coverage; stale closures and race conditions remain invisible.
 
 **The boldest investment:** Agent-perspective testing. Nobody else is doing this. If we can demonstrate that forked conversations maintain context fidelity — and detect when they don't — that's both a testing innovation and a product feature (context health).

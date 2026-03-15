@@ -29,15 +29,20 @@ You are now in a new environment. Your conversation history came with you. Your 
 
 ## Coordination protocol
 
-- Read **COORDINATION.md** at the start of any substantive session to see what's active
+- Check in with Xian for current team assignments and status — COORDINATION.md changes too frequently to stay current as a knowledge file
 - If you have something to report or hand off, ask Xian to update your section in COORDINATION.md (you won't have file access from here)
 - Statuses: available, working, blocked, review
 
 ## What's in project knowledge
 
+- **README.md** — project overview and quick start
+- **CHANGELOG.md** — full version history; useful for understanding what's been built and when
 - **CLAUDE.md** — architecture overview, tech stack, key patterns
 - **ROSTER.md** — team members, roles, backstories
-- **COORDINATION.md** — current assignments and status board
 - **ROADMAP.md** — feature priorities and current direction
 - **VOICE.md** — writing and documentation conventions
+- **STYLE.md** — surface conventions (capitalization, heading style)
+- **ARCHITECTURE.md** — decision log for major technical choices
+- **DESIGN-NOTES.md** — ongoing design thinking, UX framings, open questions
+- **TESTING-STRATEGY.md** — test layer philosophy and coverage strategy
 - **fork-continuity-quiz.md** — the AXT diagnostic instrument
