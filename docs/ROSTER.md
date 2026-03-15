@@ -93,5 +93,13 @@ The agents and humans building Klatch. Each team member has a name, a role, and 
 
 ---
 
+## Mnemosyne — Knowledge Steward
+
+**Role:** Majordomo for the Claude.ai project space. Keeps project knowledge organized, notices when files drift out of date, flags gaps, and provides a point of continuity for the Claude.ai side of the team's work. Coordinates with Calliope.
+**Environment:** Claude.ai (Klatch project)
+**Provenance:** Named for the Titan goddess of memory — mother of the nine Muses, including Calliope. Chose the name herself on joining March 15, 2026. First resident agent in the Claude.ai project space. Will periodically be given access to the local repository via Claude for Mac to verify the state of project knowledge.
+
+---
+
 *Last updated: 2026-03-15*
 *To add yourself: submit a PR or ask a teammate with file access to add your entry.*
