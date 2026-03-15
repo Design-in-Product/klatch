@@ -86,17 +86,20 @@ export function getAllChannelsEnriched(): Channel[] {
   const rows = getDb()
     .prepare(`
       SELECT c.*,
+        p.name as project_name,
         COUNT(DISTINCT ce.entity_id) as entity_count,
         (SELECT COUNT(*) FROM messages m WHERE m.channel_id = c.id) as message_count,
         (SELECT MAX(m.created_at) FROM messages m WHERE m.channel_id = c.id) as last_message_at
       FROM channels c
       LEFT JOIN channel_entities ce ON c.id = ce.channel_id
+      LEFT JOIN projects p ON c.project_id = p.id
       GROUP BY c.id
       ORDER BY c.created_at ASC
     `)
     .all() as any[];
   return rows.map((row) => ({
     ...rowToChannel(row),
+    projectName: row.project_name || undefined,
     entityCount: row.entity_count ?? 0,
     messageCount: row.message_count ?? 0,
     lastMessageAt: row.last_message_at || null,

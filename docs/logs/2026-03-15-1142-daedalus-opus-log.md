@@ -39,3 +39,20 @@ Added decision entries for three version ranges:
 - **v0.8.5** (7 decisions): kit briefing, projects table with findOrCreateProject, 4-layer prompt assembly, kit briefing dedup, claude.ai project context injection, re-branching, session browser
 
 15 decision entries total. Each follows the established Decision/Rationale format. Removed the "pending documentation" note at the bottom.
+
+## 12:15 — Sidebar project grouping bug fix
+
+PO reported: claude.ai import with project showed under "IMPORTED" instead of project name.
+
+**Root cause:** Sidebar grouped imported channels by `meta.cwd` from `sourceMetadata`. Claude Code imports have `cwd`; claude.ai imports don't (they have `projectUuid`/`projectName`). So claude.ai imports fell through to the default "Imported" label.
+
+**The deeper problem:** Sidebar grouping predated the `projects` table (built in v0.8.2; projects came in v0.8.5). It was using raw metadata instead of the normalized data model.
+
+**Fix:**
+1. Added `projectName` field to `Channel` type (shared)
+2. Updated `getAllChannelsEnriched()` query to JOIN to `projects` table, returning `project_name`
+3. Rewrote sidebar grouping to use `channel.projectId`/`channel.projectName` instead of parsing `sourceMetadata.cwd`
+4. Channels without a project fall back to "Imported" group (same UX as before for edge cases)
+5. Updated client tests: existing project grouping test uses `projectName` prop, new test for "Imported" fallback
+
+**Result:** 592 tests passing (486 server + 106 client). Both Claude Code and claude.ai imports now group under their project name from the `projects` table. Same project = same group, regardless of source.
