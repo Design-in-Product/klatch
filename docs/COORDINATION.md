@@ -11,23 +11,17 @@ Agents working on this repo use this file as the async handoff protocol.
 ## Status board
 
 ### Argus (quality & test infrastructure)
-- **Branch:** `main` (start new feature branch)
-- **Status:** assigned — import error handling + route integration tests
-- **Last completed:** 8¾a integration tests merged to main (2026-03-14). 43 tests, reviewed ✅.
-- **Assignment: Round 2 — Import hardening tests**
-  - **Goal:** Test the import error handling paths hardened by Daedalus (commit `dfac5a0`), plus end-to-end HTTP-level import tests.
-  - **Key areas to cover:**
-    1. **Import route error handling:** POST /api/import/claude-ai with malformed ZIP content → verify 500 response is JSON `{ error: "..." }` (not plain text). Test with ZIP containing invalid conversations.json (bad JSON inside), ZIP with valid structure but conversations that cause DB errors (e.g., extremely long channel names).
-    2. **Preview route error handling:** POST /api/import/claude-ai/preview with edge cases → verify error responses are always JSON. Test with truncated ZIP, empty ZIP, ZIP without conversations.json.
-    3. **End-to-end HTTP import:** Build a real ZIP with AdmZip containing conversations.json + projects.json + memories.json → POST to /api/import/claude-ai via multipart → verify channels + projects created in DB. This is the integration gap from Round 1 (tests called queries directly, not through HTTP).
-    4. **Preview → Import roundtrip:** Preview a ZIP → get conversation UUIDs → import with selectedConversationIds → verify only selected conversations imported.
-    5. **Channel unlinking on project delete:** DELETE /api/projects/:id → verify linked channels still exist but project_id is null, and buildSystemPrompt falls back correctly.
-  - **Key files:**
-    - `packages/server/src/routes/import.ts` — import + preview routes (now with try-catch)
-    - `packages/client/src/api/client.ts` — fixed error handlers (for reference, client-side)
-  - **Base:** Start from `main` (536 tests passing: 431 server + 105 client)
-- **Waiting on:** Nothing — can start immediately.
-- **Updated:** 2026-03-14 17:15
+- **Branch:** `claude/audit-and-planning-xn2w7`
+- **Status:** review — Round 2 import hardening tests complete
+- **Last completed:** Round 2 import hardening tests (2026-03-14 17:45). 22 new tests covering all 5 assignment areas.
+- **Round 2 deliverables:**
+  - `import-hardening-r2.test.ts` — 22 tests (all passing): import error handling (6), preview error handling (5), end-to-end HTTP multipart import (4), preview→import roundtrip (3), project delete cascade + prompt fallback (4)
+  - First multipart/FormData tests in the suite — covers the real client upload path
+- **Prior deliverables (merged to main):**
+  - 8¾a integration tests (43 tests), 8¾d session browser, memories-parsing tests
+- **Test count:** 452 server + 105 client = 557 total. Zero regressions.
+- **Waiting on:** Review/merge direction from PO.
+- **Updated:** 2026-03-14 17:45
 
 ### Daedalus (architecture & implementation)
 - **Branch:** `main`
