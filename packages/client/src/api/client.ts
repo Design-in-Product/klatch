@@ -142,15 +142,14 @@ export async function sendMessage(
   });
   if (!res.ok) {
     // Try to extract server error message (e.g. directed mode missing @-mention)
+    let errorMessage = `Failed to send message: ${res.statusText}`;
     try {
       const body = await res.json();
-      throw new Error(body.error || `Failed to send message: ${res.statusText}`);
-    } catch (parseErr) {
-      if (parseErr instanceof Error && parseErr.message !== `Failed to send message: ${res.statusText}`) {
-        throw parseErr;
-      }
-      throw new Error(`Failed to send message: ${res.statusText}`);
+      if (body.error) errorMessage = body.error;
+    } catch {
+      // Server returned non-JSON — use default message
     }
+    throw new Error(errorMessage);
   }
   return res.json();
 }
@@ -253,15 +252,14 @@ export async function previewClaudeAiExport(
     body: formData,
   });
   if (!res.ok) {
+    let errorMessage = `Preview failed: ${res.statusText}`;
     try {
       const body = await res.json();
-      throw new Error(body.error || `Preview failed: ${res.statusText}`);
-    } catch (parseErr) {
-      if (parseErr instanceof Error && !parseErr.message.startsWith('Preview failed:')) {
-        throw parseErr;
-      }
-      throw new Error(`Preview failed: ${res.statusText}`);
+      if (body.error) errorMessage = body.error;
+    } catch {
+      // Server returned non-JSON (e.g. plain text 500) — use default message
     }
+    throw new Error(errorMessage);
   }
   return res.json();
 }
@@ -285,15 +283,14 @@ export async function importClaudeAiExport(
     body: formData,
   });
   if (!res.ok) {
+    let errorMessage = `Import failed: ${res.statusText}`;
     try {
       const body = await res.json();
-      throw new Error(body.error || `Import failed: ${res.statusText}`);
-    } catch (parseErr) {
-      if (parseErr instanceof Error && !parseErr.message.startsWith('Import failed:')) {
-        throw parseErr;
-      }
-      throw new Error(`Import failed: ${res.statusText}`);
+      if (body.error) errorMessage = body.error;
+    } catch {
+      // Server returned non-JSON (e.g. plain text 500) — use default message
     }
+    throw new Error(errorMessage);
   }
   return res.json();
 }
@@ -327,15 +324,14 @@ export interface SessionBrowseResponse {
 export async function fetchClaudeCodeSessions(): Promise<SessionBrowseResponse> {
   const res = await fetch(`${BASE}/import/claude-code/sessions`);
   if (!res.ok) {
+    let errorMessage = `Failed to browse sessions: ${res.statusText}`;
     try {
       const body = await res.json();
-      throw new Error(body.error || `Failed to browse sessions: ${res.statusText}`);
-    } catch (parseErr) {
-      if (parseErr instanceof Error && !parseErr.message.startsWith('Failed to browse')) {
-        throw parseErr;
-      }
-      throw new Error(`Failed to browse sessions: ${res.statusText}`);
+      if (body.error) errorMessage = body.error;
+    } catch {
+      // Server returned non-JSON — use default message
     }
+    throw new Error(errorMessage);
   }
   return res.json();
 }
@@ -357,15 +353,14 @@ export async function fetchContextFile(
 ): Promise<ContextFileResponse> {
   const res = await fetch(`${BASE}/channels/${channelId}/context-file?path=${encodeURIComponent(filePath)}`);
   if (!res.ok) {
+    let errorMessage = `Failed to load context file: ${res.statusText}`;
     try {
       const body = await res.json();
-      throw new Error(body.hint || body.error || `Failed to load context file: ${res.statusText}`);
-    } catch (parseErr) {
-      if (parseErr instanceof Error && !parseErr.message.startsWith('Failed to load')) {
-        throw parseErr;
-      }
-      throw new Error(`Failed to load context file: ${res.statusText}`);
+      if (body.hint || body.error) errorMessage = body.hint || body.error;
+    } catch {
+      // Server returned non-JSON — use default message
     }
+    throw new Error(errorMessage);
   }
   return res.json();
 }
@@ -407,15 +402,14 @@ export async function importClaudeCodeSession(
     throw new Error(body.error || 'Import conflict');
   }
   if (!res.ok) {
+    let errorMessage = `Import failed: ${res.statusText}`;
     try {
       const body = await res.json();
-      throw new Error(body.error || `Import failed: ${res.statusText}`);
-    } catch (parseErr) {
-      if (parseErr instanceof Error && !parseErr.message.startsWith('Import failed:')) {
-        throw parseErr;
-      }
-      throw new Error(`Import failed: ${res.statusText}`);
+      if (body.error) errorMessage = body.error;
+    } catch {
+      // Server returned non-JSON — use default message
     }
+    throw new Error(errorMessage);
   }
   const data: ImportResponse = await res.json();
   return { status: 'success', data };

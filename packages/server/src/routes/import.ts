@@ -296,48 +296,55 @@ app.post('/import/claude-ai/preview', async (c) => {
 
   const { conversations: conversationFiles, projects, memories } = exportData;
 
-  // Build conversation previews with dedup detection
-  const conversations = conversationFiles.map(({ conversation }) => {
-    const conv = conversation as {
-      uuid?: string; name?: string; created_at?: string; updated_at?: string;
-      project_uuid?: string; chat_messages?: unknown[];
-    };
+  try {
+    // Build conversation previews with dedup detection
+    const conversations = conversationFiles.map(({ conversation }) => {
+      const conv = conversation as {
+        uuid?: string; name?: string; created_at?: string; updated_at?: string;
+        project_uuid?: string; chat_messages?: unknown[];
+      };
 
-    const uuid = conv.uuid || '';
-    const existing = uuid ? findChannelByOriginalSessionId(uuid) : undefined;
-    const projectName = conv.project_uuid ? projects.get(conv.project_uuid)?.name : undefined;
+      const uuid = conv.uuid || '';
+      const existing = uuid ? findChannelByOriginalSessionId(uuid) : undefined;
+      const projectName = conv.project_uuid ? projects.get(conv.project_uuid)?.name : undefined;
 
-    return {
-      uuid,
-      name: conv.name || 'Untitled',
-      messageCount: Array.isArray(conv.chat_messages) ? conv.chat_messages.length : 0,
-      projectUuid: conv.project_uuid,
-      projectName,
-      createdAt: conv.created_at || '',
-      updatedAt: conv.updated_at || '',
-      alreadyImported: !!existing,
-      existingChannelId: existing?.id,
-    };
-  });
+      return {
+        uuid,
+        name: conv.name || 'Untitled',
+        messageCount: Array.isArray(conv.chat_messages) ? conv.chat_messages.length : 0,
+        projectUuid: conv.project_uuid,
+        projectName,
+        createdAt: conv.created_at || '',
+        updatedAt: conv.updated_at || '',
+        alreadyImported: !!existing,
+        existingChannelId: existing?.id,
+      };
+    });
 
-  // Build project list (include prompt template presence for UI display)
-  const projectList = Array.from(projects.values()).map((p) => ({
-    uuid: p.uuid,
-    name: p.name,
-    documentCount: p.documentCount || 0,
-    hasPromptTemplate: !!p.promptTemplate,
-    hasDocsContent: !!p.docsContent,
-  }));
+    // Build project list (include prompt template presence for UI display)
+    const projectList = Array.from(projects.values()).map((p) => ({
+      uuid: p.uuid,
+      name: p.name,
+      documentCount: p.documentCount || 0,
+      hasPromptTemplate: !!p.promptTemplate,
+      hasDocsContent: !!p.docsContent,
+    }));
 
-  return c.json({
-    conversations,
-    projects: projectList,
-    memories: memories.map((m) => ({
-      uuid: m.uuid,
-      content: m.content.length > 200 ? m.content.slice(0, 200) + '...' : m.content,
-      createdAt: m.createdAt || '',
-    })),
-  }, 200);
+    return c.json({
+      conversations,
+      projects: projectList,
+      memories: memories.map((m) => ({
+        uuid: m.uuid,
+        content: m.content.length > 200 ? m.content.slice(0, 200) + '...' : m.content,
+        createdAt: m.createdAt || '',
+      })),
+    }, 200);
+  } catch (err) {
+    console.error('Preview failed:', err);
+    return c.json({
+      error: `Preview failed: ${err instanceof Error ? err.message : 'Unknown error'}`,
+    }, 500);
+  }
 });
 
 /**
@@ -423,160 +430,167 @@ function processImport(
     return c.json({ error: 'ZIP contains no conversations' }, 400);
   }
 
-  // Build memories text for kit briefing (shared across all conversations in this export)
-  const memoriesText = memories
-    .filter((m) => m.content.trim())
-    .map((m) => m.content.trim())
-    .join('\n');
-  const memoryMd = memoriesText || undefined;
+  try {
+    // Build memories text for kit briefing (shared across all conversations in this export)
+    const memoriesText = memories
+      .filter((m) => m.content.trim())
+      .map((m) => m.content.trim())
+      .join('\n');
+    const memoryMd = memoriesText || undefined;
 
-  // Build selection set for filtering (if provided)
-  const selectionSet = selectedConversationIds ? new Set(selectedConversationIds) : null;
+    // Build selection set for filtering (if provided)
+    const selectionSet = selectedConversationIds ? new Set(selectedConversationIds) : null;
 
-  // ── Create projects from ZIP data (8¾a: project context injection) ──
-  // For each project in the ZIP, find or create a Klatch project row.
-  // This happens before conversation import so channels can be linked.
-  const projectIdMap = new Map<string, string>(); // ZIP project UUID → Klatch project ID
+    // ── Create projects from ZIP data (8¾a: project context injection) ──
+    // For each project in the ZIP, find or create a Klatch project row.
+    // This happens before conversation import so channels can be linked.
+    const projectIdMap = new Map<string, string>(); // ZIP project UUID → Klatch project ID
 
-  for (const [zipUuid, projInfo] of projects.entries()) {
-    // Build project instructions from prompt_template + project memories
-    const instructionParts: string[] = [];
-    if (projInfo.promptTemplate) {
-      instructionParts.push(projInfo.promptTemplate);
-    }
-    // Append project-scoped memories if available
-    const projMem = projectMemories.get(zipUuid);
-    if (projMem) {
-      instructionParts.push('## Project Memory\n\n' + projMem);
-    }
-    const instructions = instructionParts.join('\n\n');
-
-    const project = findOrCreateProject(
-      projInfo.name,
-      instructions,
-      'claude-ai',
-      {
-        originalProjectUuid: zipUuid,
-        documentCount: projInfo.documentCount || 0,
-        hasPromptTemplate: !!projInfo.promptTemplate,
-        hasDocsContent: !!projInfo.docsContent,
-        importedAt: new Date().toISOString(),
-      },
-      'originalProjectUuid',
-      zipUuid
-    );
-    projectIdMap.set(zipUuid, project.id);
-  }
-
-  const imported: Array<{
-    channelId: string;
-    channelName: string;
-    messageCount: number;
-    artifactCount: number;
-    conversationId: string;
-  }> = [];
-  const skipped: Array<{
-    conversationId: string;
-    reason: string;
-    existingChannelId?: string;
-  }> = [];
-
-  for (const { conversation } of conversationFiles) {
-    const conv = conversation as { uuid?: string; name?: string; created_at?: string; updated_at?: string; project_uuid?: string };
-
-    // Skip conversations not in the selection set (if filtering)
-    if (selectionSet && conv.uuid && !selectionSet.has(conv.uuid)) {
-      continue;
-    }
-
-    const parsed = parseClaudeAiConversation(conversation);
-
-    if (parsed.turns.length === 0) {
-      if (parsed.sessionId) {
-        skipped.push({ conversationId: parsed.sessionId, reason: 'empty' });
+    for (const [zipUuid, projInfo] of projects.entries()) {
+      // Build project instructions from prompt_template + project memories
+      const instructionParts: string[] = [];
+      if (projInfo.promptTemplate) {
+        instructionParts.push(projInfo.promptTemplate);
       }
-      continue;
+      // Append project-scoped memories if available
+      const projMem = projectMemories.get(zipUuid);
+      if (projMem) {
+        instructionParts.push('## Project Memory\n\n' + projMem);
+      }
+      const instructions = instructionParts.join('\n\n');
+
+      const project = findOrCreateProject(
+        projInfo.name,
+        instructions,
+        'claude-ai',
+        {
+          originalProjectUuid: zipUuid,
+          documentCount: projInfo.documentCount || 0,
+          hasPromptTemplate: !!projInfo.promptTemplate,
+          hasDocsContent: !!projInfo.docsContent,
+          importedAt: new Date().toISOString(),
+        },
+        'originalProjectUuid',
+        zipUuid
+      );
+      projectIdMap.set(zipUuid, project.id);
     }
 
-    // Dedup check using the conversation UUID (skip if forceImport)
-    if (parsed.sessionId && !forceImport) {
-      const existing = findChannelByOriginalSessionId(parsed.sessionId);
-      if (existing) {
-        skipped.push({
-          conversationId: parsed.sessionId,
-          reason: 'duplicate',
-          existingChannelId: existing.id,
-        });
+    const imported: Array<{
+      channelId: string;
+      channelName: string;
+      messageCount: number;
+      artifactCount: number;
+      conversationId: string;
+    }> = [];
+    const skipped: Array<{
+      conversationId: string;
+      reason: string;
+      existingChannelId?: string;
+    }> = [];
+
+    for (const { conversation } of conversationFiles) {
+      const conv = conversation as { uuid?: string; name?: string; created_at?: string; updated_at?: string; project_uuid?: string };
+
+      // Skip conversations not in the selection set (if filtering)
+      if (selectionSet && conv.uuid && !selectionSet.has(conv.uuid)) {
         continue;
       }
-    }
 
-    // Resolve project from the ZIP if conversation has a project_uuid
-    const projectName = conv.project_uuid ? projects.get(conv.project_uuid)?.name : undefined;
-    const projectId = conv.project_uuid ? projectIdMap.get(conv.project_uuid) : undefined;
+      const parsed = parseClaudeAiConversation(conversation);
 
-    // Build channel name: "ProjectName: ConvName" or just "ConvName" or fallback
-    const convName = parsed.slug || `claude.ai — ${parsed.sessionId || 'import'}`;
-    let channelName = projectName ? `${projectName}: ${convName}` : convName;
-
-    // Disambiguate name for fork-again imports
-    if (forceImport && parsed.sessionId) {
-      const existingCount = countChannelsByOriginalSessionId(parsed.sessionId);
-      if (existingCount > 0) {
-        channelName = `${channelName} (${existingCount + 1})`;
+      if (parsed.turns.length === 0) {
+        if (parsed.sessionId) {
+          skipped.push({ conversationId: parsed.sessionId, reason: 'empty' });
+        }
+        continue;
       }
+
+      // Dedup check using the conversation UUID (skip if forceImport)
+      if (parsed.sessionId && !forceImport) {
+        const existing = findChannelByOriginalSessionId(parsed.sessionId);
+        if (existing) {
+          skipped.push({
+            conversationId: parsed.sessionId,
+            reason: 'duplicate',
+            existingChannelId: existing.id,
+          });
+          continue;
+        }
+      }
+
+      // Resolve project from the ZIP if conversation has a project_uuid
+      const projectName = conv.project_uuid ? projects.get(conv.project_uuid)?.name : undefined;
+      const projectId = conv.project_uuid ? projectIdMap.get(conv.project_uuid) : undefined;
+
+      // Build channel name: "ProjectName: ConvName" or just "ConvName" or fallback
+      const convName = parsed.slug || `claude.ai — ${parsed.sessionId || 'import'}`;
+      let channelName = projectName ? `${projectName}: ${convName}` : convName;
+
+      // Disambiguate name for fork-again imports
+      if (forceImport && parsed.sessionId) {
+        const existingCount = countChannelsByOriginalSessionId(parsed.sessionId);
+        if (existingCount > 0) {
+          channelName = `${channelName} (${existingCount + 1})`;
+        }
+      }
+
+      // Build project knowledge context (equivalent of CLAUDE.md for claude.ai imports)
+      const project = conv.project_uuid ? projects.get(conv.project_uuid) : undefined;
+      const claudeMd = project?.docsContent || undefined;
+
+      const result = importSession({
+        channelName,
+        source: 'claude-ai',
+        sourceMetadata: {
+          originalSessionId: parsed.sessionId,
+          conversationName: parsed.slug,
+          projectUuid: conv.project_uuid,
+          projectName,
+          createdAt: conv.created_at,
+          updatedAt: conv.updated_at,
+          eventCount: parsed.eventCount,
+          importedAt: new Date().toISOString(),
+          claudeMd,
+          memoryMd,
+        },
+        turns: parsed.turns,
+        projectId,
+      });
+
+      imported.push({
+        ...result,
+        conversationId: parsed.sessionId || '',
+      });
     }
 
-    // Build project knowledge context (equivalent of CLAUDE.md for claude.ai imports)
-    const project = conv.project_uuid ? projects.get(conv.project_uuid) : undefined;
-    const claudeMd = project?.docsContent || undefined;
+    // All duplicates → 409 (only when there are actual skipped duplicates)
+    if (imported.length === 0 && skipped.length > 0 && skipped.every((s) => s.reason === 'duplicate')) {
+      return c.json({
+        error: 'All conversations already imported',
+        imported: [],
+        skipped,
+        totalImported: 0,
+        totalSkipped: skipped.length,
+      }, 409);
+    }
 
-    const result = importSession({
-      channelName,
-      source: 'claude-ai',
-      sourceMetadata: {
-        originalSessionId: parsed.sessionId,
-        conversationName: parsed.slug,
-        projectUuid: conv.project_uuid,
-        projectName,
-        createdAt: conv.created_at,
-        updatedAt: conv.updated_at,
-        eventCount: parsed.eventCount,
-        importedAt: new Date().toISOString(),
-        claudeMd,
-        memoryMd,
-      },
-      turns: parsed.turns,
-      projectId,
-    });
+    if (imported.length === 0) {
+      return c.json({ error: 'No valid conversations found in ZIP' }, 400);
+    }
 
-    imported.push({
-      ...result,
-      conversationId: parsed.sessionId || '',
-    });
-  }
-
-  // All duplicates → 409 (only when there are actual skipped duplicates)
-  if (imported.length === 0 && skipped.length > 0 && skipped.every((s) => s.reason === 'duplicate')) {
     return c.json({
-      error: 'All conversations already imported',
-      imported: [],
+      imported,
       skipped,
-      totalImported: 0,
+      totalImported: imported.length,
       totalSkipped: skipped.length,
-    }, 409);
+    }, 201);
+  } catch (err) {
+    console.error('Import failed:', err);
+    return c.json({
+      error: `Import failed: ${err instanceof Error ? err.message : 'Unknown error'}`,
+    }, 500);
   }
-
-  if (imported.length === 0) {
-    return c.json({ error: 'No valid conversations found in ZIP' }, 400);
-  }
-
-  return c.json({
-    imported,
-    skipped,
-    totalImported: imported.length,
-    totalSkipped: skipped.length,
-  }, 201);
 }
 
 export const importRoutes = app;
