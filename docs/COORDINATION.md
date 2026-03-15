@@ -11,25 +11,33 @@ Agents working on this repo use this file as the async handoff protocol.
 ## Status board
 
 ### Argus (quality & test infrastructure)
-- **Branch:** `claude/audit-and-planning-xn2w7`
-- **Status:** review — Round 2 import hardening tests complete
-- **Last completed:** Round 2 import hardening tests (2026-03-14 17:45). 22 new tests covering all 5 assignment areas.
-- **Round 2 deliverables:**
-  - `import-hardening-r2.test.ts` — 22 tests (all passing): import error handling (6), preview error handling (5), end-to-end HTTP multipart import (4), preview→import roundtrip (3), project delete cascade + prompt fallback (4)
-  - First multipart/FormData tests in the suite — covers the real client upload path
-- **Prior deliverables (merged to main):**
-  - 8¾a integration tests (43 tests), 8¾d session browser, memories-parsing tests
-- **Test count:** 452 server + 105 client = 557 total. Zero regressions.
-- **Waiting on:** Review/merge direction from PO.
-- **Updated:** 2026-03-14 17:45
+- **Branch:** `main` (start new feature branch)
+- **Status:** assigned — Round 3 test expansion
+- **Last completed:** Round 2 import hardening tests merged to main (2026-03-14). 22 tests, reviewed ✅.
+- **Assignment: Round 3 — Test expansion across four areas**
+  - **Goal:** Broaden test coverage beyond import into core infrastructure: Claude Code HTTP import, compaction, entities, and streaming.
+  - **Areas to cover:**
+    1. **Claude Code import via HTTP:** POST /api/import/claude-code with JSONL session path → verify channel creation, source metadata, project linking by cwd. Test with missing file path, non-existent file, invalid JSONL. Mirror the multipart pattern from Round 2 but for the JSONL path-based endpoint.
+    2. **Compaction API:** Test the continuation flow for imported channels that use `compaction_state`. Verify compaction summary is stored, subsequent messages include compacted context, compaction triggers at threshold. Key file: `packages/server/src/claude/client.ts` (compaction logic).
+    3. **Entity CRUD edge cases:** Entity assignment to channels (add/remove), mode switching validation (panel/roundtable/directed), entity handle uniqueness, max entities per channel (5), entity deletion when assigned to channels. Key files: `packages/server/src/routes/entities.ts`, `packages/server/src/db/queries.ts`.
+    4. **Streaming route tests:** SSE connection lifecycle, abort mid-stream (APIUserAbortError handling), race condition (stream completes before SSE connects → DB check fallback). Key files: `packages/server/src/routes/messages.ts`, `packages/server/src/claude/client.ts`.
+  - **Key files:**
+    - `packages/server/src/routes/import.ts` — Claude Code import endpoint
+    - `packages/server/src/claude/client.ts` — compaction + streaming
+    - `packages/server/src/routes/messages.ts` — SSE streaming routes
+    - `packages/server/src/routes/entities.ts` — entity CRUD
+    - `packages/server/src/db/queries.ts` — entity + channel queries
+  - **Base:** Start from `main` (558 tests passing: 453 server + 105 client)
+- **Waiting on:** Nothing — can start immediately.
+- **Updated:** 2026-03-14 21:34
 
 ### Daedalus (architecture & implementation)
 - **Branch:** `main`
 - **Status:** available
-- **Last completed:** Merged Argus 8¾a integration tests (43 tests). Fixed import error handling (server try-catch + client JSON parse fix). 536 tests (431 server + 105 client).
-- **Next:** Await PO direction. Import bug needs re-test — error handling is fixed, but root cause of the 500 is unknown until user retries.
+- **Last completed:** Merged Argus Round 2 (22 tests). Fixed import error handling + json_valid guards. Updated roadmap with sidebar nav, project spaces, entity model. 558 tests (453 server + 105 client).
+- **Next:** Await PO direction.
 - **Waiting on:** Nothing.
-- **Updated:** 2026-03-14 17:15
+- **Updated:** 2026-03-14 21:34
 
 ### Theseus Prime (manual testing & exploration — CLI side)
 - **Branch:** `main`
