@@ -378,6 +378,64 @@ header {
   text-decoration: underline;
 }
 
+/* Logbook */
+.log-header {
+  padding: 60px 0 32px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 0;
+}
+
+.log-header h1 {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: var(--text-bright);
+  letter-spacing: -0.02em;
+  margin-bottom: 6px;
+}
+
+.log-header p {
+  font-size: 0.9rem;
+  color: var(--text-dim);
+}
+
+.log-entry {
+  padding: 40px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.log-entry:last-child {
+  border-bottom: none;
+}
+
+.log-date {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--indigo);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 16px;
+}
+
+.log-body p {
+  font-size: 0.975rem;
+  line-height: 1.75;
+  color: var(--text);
+  margin-bottom: 1.2em;
+}
+
+.log-body p:last-child {
+  margin-bottom: 0;
+}
+
+.log-body strong {
+  color: var(--text-bright);
+  font-weight: 600;
+}
+
+.log-body em {
+  font-style: italic;
+}
+
 /* Blog index */
 .blog-list {
   padding: 48px 0;

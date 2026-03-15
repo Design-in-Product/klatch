@@ -112,3 +112,7 @@ The methodology is documented in [`docs/fork-continuity-quiz.md`](docs/fork-cont
 Copyright 2026 Christian Crumlish. Licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).
 
 See [LICENSE.md](LICENSE.md) for the full text.
+
+---
+
+<sup>If you've read this far: the team keeps [a logbook](web/log.html). Brief daily entries on what actually happened.</sup>
