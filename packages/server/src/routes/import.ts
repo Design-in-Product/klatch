@@ -386,10 +386,17 @@ app.post('/import/claude-ai', async (c) => {
       } catch { /* ignore malformed */ }
     }
     const forceImport = formData.get('forceImport') === 'true';
+    let projectAssignments: Record<string, string> | undefined;
+    const assignmentsField = formData.get('projectAssignments');
+    if (assignmentsField && typeof assignmentsField === 'string') {
+      try {
+        projectAssignments = JSON.parse(assignmentsField);
+      } catch { /* ignore malformed */ }
+    }
 
-    return processImport(c, Buffer.from(arrayBuffer), selectedConversationIds, forceImport);
+    return processImport(c, Buffer.from(arrayBuffer), selectedConversationIds, forceImport, projectAssignments);
   } else {
-    const body = await c.req.json<{ zipPath?: string; selectedConversationIds?: string[]; forceImport?: boolean }>();
+    const body = await c.req.json<{ zipPath?: string; selectedConversationIds?: string[]; forceImport?: boolean; projectAssignments?: Record<string, string> }>();
     selectedConversationIds = body.selectedConversationIds;
     const zipPath = body.zipPath;
     if (!zipPath || !zipPath.endsWith('.zip')) {
@@ -406,7 +413,7 @@ app.post('/import/claude-ai', async (c) => {
     if (stat.size > MAX_IMPORT_SIZE) {
       return c.json({ error: `File too large (${Math.round(stat.size / 1024 / 1024)}MB). Maximum is ${MAX_IMPORT_SIZE / 1024 / 1024}MB.` }, 400);
     }
-    return processImport(c, fs.readFileSync(expandedZipPath), selectedConversationIds, body.forceImport === true);
+    return processImport(c, fs.readFileSync(expandedZipPath), selectedConversationIds, body.forceImport === true, body.projectAssignments);
   }
 });
 
@@ -416,6 +423,7 @@ function processImport(
   zipBuffer: Buffer,
   selectedConversationIds?: string[],
   forceImport = false,
+  projectAssignments?: Record<string, string>,
 ) {
   let exportData;
   try {
@@ -519,9 +527,10 @@ function processImport(
         }
       }
 
-      // Resolve project from the ZIP if conversation has a project_uuid
-      const projectName = conv.project_uuid ? projects.get(conv.project_uuid)?.name : undefined;
-      const projectId = conv.project_uuid ? projectIdMap.get(conv.project_uuid) : undefined;
+      // Resolve project: prefer conv.project_uuid from export, fall back to user's manual assignment
+      const effectiveProjectUuid = conv.project_uuid || (conv.uuid && projectAssignments?.[conv.uuid]) || undefined;
+      const projectName = effectiveProjectUuid ? projects.get(effectiveProjectUuid)?.name : undefined;
+      const projectId = effectiveProjectUuid ? projectIdMap.get(effectiveProjectUuid) : undefined;
 
       // Build channel name: "ProjectName: ConvName" or just "ConvName" or fallback
       const convName = parsed.slug || `claude.ai — ${parsed.sessionId || 'import'}`;
@@ -536,7 +545,7 @@ function processImport(
       }
 
       // Build project knowledge context (equivalent of CLAUDE.md for claude.ai imports)
-      const project = conv.project_uuid ? projects.get(conv.project_uuid) : undefined;
+      const project = effectiveProjectUuid ? projects.get(effectiveProjectUuid) : undefined;
       const claudeMd = project?.docsContent || undefined;
 
       const result = importSession({
@@ -545,7 +554,7 @@ function processImport(
         sourceMetadata: {
           originalSessionId: parsed.sessionId,
           conversationName: parsed.slug,
-          projectUuid: conv.project_uuid,
+          projectUuid: effectiveProjectUuid,
           projectName,
           createdAt: conv.created_at,
           updatedAt: conv.updated_at,

@@ -267,7 +267,8 @@ export async function previewClaudeAiExport(
 export async function importClaudeAiExport(
   file: File,
   selectedConversationIds?: string[],
-  forceImport?: boolean
+  forceImport?: boolean,
+  projectAssignments?: Record<string, string>
 ): Promise<ClaudeAiImportResponse> {
   const formData = new FormData();
   formData.append('file', file);
@@ -276,6 +277,9 @@ export async function importClaudeAiExport(
   }
   if (forceImport) {
     formData.append('forceImport', 'true');
+  }
+  if (projectAssignments && Object.keys(projectAssignments).length > 0) {
+    formData.append('projectAssignments', JSON.stringify(projectAssignments));
   }
 
   const res = await fetch(`${BASE}/import/claude-ai`, {

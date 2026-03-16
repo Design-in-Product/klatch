@@ -29,6 +29,8 @@ export function ImportDialog({ isOpen, onClose, onImported, onBulkImported, onCh
   // Preview state for selective import
   const [preview, setPreview] = useState<ZipPreviewResponse | null>(null);
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
+  // Per-conversation project assignment (conv UUID → project UUID)
+  const [projectAssignments, setProjectAssignments] = useState<Record<string, string>>({});
 
   // Claude Code session browser state
   const [sessionBrowse, setSessionBrowse] = useState<SessionBrowseResponse | null>(null);
@@ -64,6 +66,22 @@ export function ImportDialog({ isOpen, onClose, onImported, onBulkImported, onCh
             .map((c) => c.uuid)
         );
         setSelectedIds(ids);
+        // Auto-assign conversations to the single project (if only one exists)
+        // For conversations that already have a projectUuid from the export, use that
+        if (previewData.projects.length > 0) {
+          const autoAssignments: Record<string, string> = {};
+          const singleProject = previewData.projects.length === 1 ? previewData.projects[0] : null;
+          for (const conv of previewData.conversations) {
+            if (conv.projectUuid) {
+              // Export included this link — use it
+              autoAssignments[conv.uuid] = conv.projectUuid;
+            } else if (singleProject) {
+              // Only one project in the ZIP — auto-assign
+              autoAssignments[conv.uuid] = singleProject.uuid;
+            }
+          }
+          setProjectAssignments(autoAssignments);
+        }
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Failed to preview ZIP');
       } finally {
@@ -102,7 +120,13 @@ export function ImportDialog({ isOpen, onClose, onImported, onBulkImported, onCh
         const hasRebranch = preview?.conversations.some(
           (c) => c.alreadyImported && selectedIds.has(c.uuid)
         );
-        const importResult = await importClaudeAiExport(zipFile, ids, hasRebranch || undefined);
+        // Only send assignments for selected conversations
+        const activeAssignments = Object.keys(projectAssignments).length > 0
+          ? Object.fromEntries(
+              Object.entries(projectAssignments).filter(([uuid]) => !ids || ids.includes(uuid))
+            )
+          : undefined;
+        const importResult = await importClaudeAiExport(zipFile, ids, hasRebranch || undefined, activeAssignments);
         setBulkResult(importResult);
       }
     } catch (err) {
@@ -183,6 +207,7 @@ export function ImportDialog({ isOpen, onClose, onImported, onBulkImported, onCh
     setConflict(null);
     setPreview(null);
     setSelectedIds(new Set());
+    setProjectAssignments({});
     setSessionBrowse(null);
     setSelectedSessions(new Set());
     setBrowseError(null);
@@ -198,6 +223,7 @@ export function ImportDialog({ isOpen, onClose, onImported, onBulkImported, onCh
     setConflict(null);
     setPreview(null);
     setSelectedIds(new Set());
+    setProjectAssignments({});
     setSessionBrowse(null);
     setSelectedSessions(new Set());
     setBrowseError(null);
@@ -705,19 +731,43 @@ export function ImportDialog({ isOpen, onClose, onImported, onBulkImported, onCh
                                 />
                                 <div className="flex-1 min-w-0">
                                   <div className="text-primary truncate">
-                                    {conv.projectName ? `${conv.projectName}: ` : ''}{conv.name}
+                                    {conv.name}
                                   </div>
-                                  <div className="text-xs text-muted">
-                                    {conv.messageCount} messages
+                                  <div className="text-xs text-muted flex items-center gap-1.5 flex-wrap">
+                                    <span>{conv.messageCount} messages</span>
                                     {willRebranch && (
-                                      <span className="ml-1.5 text-accent font-medium">
+                                      <span className="text-accent font-medium">
                                         (re-branch)
                                       </span>
                                     )}
                                     {conv.alreadyImported && !isSelected && (
-                                      <span className="ml-1.5 text-yellow-600 dark:text-yellow-400">
+                                      <span className="text-yellow-600 dark:text-yellow-400">
                                         (already imported)
                                       </span>
+                                    )}
+                                    {preview!.projects.length > 0 && (
+                                      <select
+                                        value={projectAssignments[conv.uuid] || ''}
+                                        onChange={(e) => {
+                                          e.stopPropagation();
+                                          setProjectAssignments((prev) => {
+                                            const next = { ...prev };
+                                            if (e.target.value) {
+                                              next[conv.uuid] = e.target.value;
+                                            } else {
+                                              delete next[conv.uuid];
+                                            }
+                                            return next;
+                                          });
+                                        }}
+                                        onClick={(e) => e.stopPropagation()}
+                                        className="ml-auto text-xs bg-input border border-line rounded px-1 py-0.5 text-secondary focus:outline-none focus:border-accent"
+                                      >
+                                        <option value="">No project</option>
+                                        {preview!.projects.map((p) => (
+                                          <option key={p.uuid} value={p.uuid}>{p.name}</option>
+                                        ))}
+                                      </select>
                                     )}
                                   </div>
                                 </div>

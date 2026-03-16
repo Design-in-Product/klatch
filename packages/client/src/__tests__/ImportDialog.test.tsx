@@ -673,19 +673,26 @@ describe('ImportDialog — selective import browse UI', () => {
     expect(screen.getByText('Conversations (2)')).toBeInTheDocument();
   });
 
-  it('shows project name prefix on conversations that belong to a project', async () => {
+  it('shows project dropdown when projects exist in ZIP', async () => {
     const user = userEvent.setup();
     render(<ImportDialog {...defaultProps} />);
 
     const previewWithProject = {
       ...mockPreview,
       conversations: [
-        { uuid: 'c1', name: 'Architecture Chat', messageCount: 10, createdAt: '', updatedAt: '', alreadyImported: false, projectName: 'Klatch' },
+        { uuid: 'c1', name: 'Architecture Chat', messageCount: 10, createdAt: '', updatedAt: '', alreadyImported: false, projectName: 'Klatch', projectUuid: 'proj-1' },
+      ],
+      projects: [
+        { uuid: 'proj-1', name: 'Klatch', documentCount: 5 },
       ],
     };
     await uploadZipWithPreview(user, previewWithProject);
 
-    expect(screen.getByText(/Klatch: Architecture Chat/)).toBeInTheDocument();
+    // Conversation name shown without project prefix
+    expect(screen.getByText('Architecture Chat')).toBeInTheDocument();
+    // Project dropdown present with project as an option
+    const select = screen.getByRole('combobox');
+    expect(select).toBeInTheDocument();
   });
 });
 
