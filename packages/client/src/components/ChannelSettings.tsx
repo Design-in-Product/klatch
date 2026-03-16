@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import type { Channel, Entity, ModelId, InteractionMode, ChannelStats } from '@klatch/shared';
 import { AVAILABLE_MODELS, INTERACTION_MODES } from '@klatch/shared';
-import { fetchContextFile } from '../api/client.js';
+import { fetchContextFile, fetchProjects, type Project } from '../api/client.js';
 
 interface Props {
   channel: Channel;
   channelEntities: Entity[];
   allEntities: Entity[];
-  onSave: (updates: { name?: string; systemPrompt?: string; model?: ModelId; mode?: InteractionMode }) => void;
+  onSave: (updates: { name?: string; systemPrompt?: string; model?: ModelId; mode?: InteractionMode; projectId?: string | null }) => void;
   onAssignEntity: (entityId: string) => void;
   onRemoveEntity: (entityId: string) => void;
   onDeleteChannel: () => void;
@@ -31,6 +31,7 @@ export function ChannelSettings({
   const [contextError, setContextError] = useState<string | null>(null);
   const [stats, setStats] = useState<ChannelStats | null>(null);
   const [confirmDelete, setConfirmDelete] = useState(false);
+  const [projects, setProjects] = useState<Project[]>([]);
 
   // Reset form when channel changes
   useEffect(() => {
@@ -41,6 +42,11 @@ export function ChannelSettings({
     setContextError(null);
     setStats(null);
   }, [channel.id]);
+
+  // Load projects for the assignment dropdown
+  useEffect(() => {
+    fetchProjects().then(setProjects).catch(() => {});
+  }, []);
 
   const handleChange = () => setDirty(true);
 
@@ -187,6 +193,25 @@ export function ChannelSettings({
             className="w-full rounded bg-input border border-line px-3 py-2 text-sm text-primary placeholder-muted focus:outline-none focus:border-accent"
           />
         </div>
+
+        {/* Project assignment */}
+        {projects.length > 0 && (
+          <div>
+            <label className="block text-xs text-secondary mb-1">Project</label>
+            <select
+              value={channel.projectId || ''}
+              onChange={(e) => {
+                onSave({ projectId: e.target.value || null });
+              }}
+              className="w-full rounded bg-input border border-line px-3 py-2 text-sm text-primary focus:outline-none focus:border-accent"
+            >
+              <option value="">No project</option>
+              {projects.map((p) => (
+                <option key={p.id} value={p.id}>{p.name}</option>
+              ))}
+            </select>
+          </div>
+        )}
 
         {/* System prompt (shared preamble) */}
         <div>

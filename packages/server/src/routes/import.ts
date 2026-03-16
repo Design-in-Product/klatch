@@ -532,9 +532,10 @@ function processImport(
       const projectName = effectiveProjectUuid ? projects.get(effectiveProjectUuid)?.name : undefined;
       const projectId = effectiveProjectUuid ? projectIdMap.get(effectiveProjectUuid) : undefined;
 
-      // Build channel name: "ProjectName: ConvName" or just "ConvName" or fallback
+      // Build channel name — just the conversation name, not prefixed with project
+      // (project context comes from sidebar grouping, not the channel name)
       const convName = parsed.slug || `claude.ai — ${parsed.sessionId || 'import'}`;
-      let channelName = projectName ? `${projectName}: ${convName}` : convName;
+      let channelName = convName;
 
       // Disambiguate name for fork-again imports
       if (forceImport && parsed.sessionId) {

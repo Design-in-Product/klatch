@@ -397,7 +397,7 @@ describe('Enriched query — post-import project visibility', () => {
     expect(assigned!.projectName).toBe('Project Beta');
   });
 
-  it('channel name includes project prefix when assigned', async () => {
+  it('channel name does not include project prefix (sidebar provides grouping)', async () => {
     const zip = makeStandardZip();
     const res = await app.request('/api/import/claude-ai', multipartReq(zip, 'export.zip', {
       selectedConversationIds: JSON.stringify(['conv-with-proj']),
@@ -405,8 +405,8 @@ describe('Enriched query — post-import project visibility', () => {
 
     expect(res.status).toBe(201);
     const body = await res.json();
-    // Channel name should be "ProjectName: ConvName"
-    expect(body.imported[0].channelName).toContain('Project Alpha');
-    expect(body.imported[0].channelName).toContain('Auto-linked Chat');
+    // Channel name should be just the conversation name, not prefixed with project
+    expect(body.imported[0].channelName).toBe('Auto-linked Chat');
+    expect(body.imported[0].channelName).not.toContain('Project Alpha');
   });
 });

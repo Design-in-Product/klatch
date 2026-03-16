@@ -289,7 +289,7 @@ describe('end-to-end HTTP import via multipart', () => {
 
     expect(body.totalImported).toBe(1);
     expect(body.imported[0].channelId).toBeTruthy();
-    expect(body.imported[0].channelName).toContain('E2E Project');
+    expect(body.imported[0].channelName).toBe('Test Conversation');
 
     // Verify project was created in DB
     const projects = getAllProjects();

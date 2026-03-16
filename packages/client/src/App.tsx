@@ -231,12 +231,18 @@ export default function App() {
     }
   };
 
-  const handleUpdateChannel = async (updates: { name?: string; systemPrompt?: string; model?: ModelId; mode?: InteractionMode }) => {
+  const handleUpdateChannel = async (updates: { name?: string; systemPrompt?: string; model?: ModelId; mode?: InteractionMode; projectId?: string | null }) => {
     try {
       const updated = await updateChannelApi(activeChannelId, updates);
-      setChannels((prev) =>
-        prev.map((c) => (c.id === activeChannelId ? updated : c))
-      );
+      // Refresh channel list to pick up projectName changes from the enriched query
+      if (updates.projectId !== undefined) {
+        const refreshed = await fetchChannels();
+        setChannels(refreshed);
+      } else {
+        setChannels((prev) =>
+          prev.map((c) => (c.id === activeChannelId ? updated : c))
+        );
+      }
     } catch (err) {
       console.error('Failed to update channel:', err);
     }

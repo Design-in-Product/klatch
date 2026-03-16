@@ -1,7 +1,7 @@
 import { Hono } from 'hono';
 import fs from 'fs';
 import path from 'path';
-import { getAllChannelsEnriched, getChannel, getChannelStats, createChannel, updateChannel, deleteChannel } from '../db/queries.js';
+import { getAllChannelsEnriched, getChannel, getChannelStats, createChannel, updateChannel, deleteChannel, setChannelProject } from '../db/queries.js';
 import type { ModelId, InteractionMode } from '@klatch/shared';
 import { AVAILABLE_MODELS, INTERACTION_MODES } from '@klatch/shared';
 
@@ -57,6 +57,7 @@ app.patch('/channels/:id', async (c) => {
     systemPrompt?: string;
     model?: ModelId;
     mode?: InteractionMode;
+    projectId?: string | null;
   }>();
 
   if (body.model && !(body.model in AVAILABLE_MODELS)) {
@@ -65,6 +66,11 @@ app.patch('/channels/:id', async (c) => {
 
   if (body.mode && !(body.mode in INTERACTION_MODES)) {
     return c.json({ error: `Invalid mode: ${body.mode}` }, 400);
+  }
+
+  // Handle project assignment/unassignment
+  if (body.projectId !== undefined) {
+    setChannelProject(id, body.projectId);
   }
 
   const updated = updateChannel(id, {

@@ -26,7 +26,7 @@ export async function createChannel(
 
 export async function updateChannelApi(
   id: string,
-  updates: { name?: string; systemPrompt?: string; model?: ModelId; mode?: InteractionMode }
+  updates: { name?: string; systemPrompt?: string; model?: ModelId; mode?: InteractionMode; projectId?: string | null }
 ): Promise<Channel> {
   const res = await fetch(`${BASE}/channels/${id}`, {
     method: 'PATCH',
@@ -42,6 +42,23 @@ export async function deleteChannelApi(id: string): Promise<void> {
     method: 'DELETE',
   });
   if (!res.ok) throw new Error(`Failed to delete channel: ${res.statusText}`);
+}
+
+// ── Project API ─────────────────────────────────────────────
+
+export interface Project {
+  id: string;
+  name: string;
+  instructions: string;
+  source: string;
+  sourceMetadata: string;
+  createdAt: string;
+}
+
+export async function fetchProjects(): Promise<Project[]> {
+  const res = await fetch(`${BASE}/projects`);
+  if (!res.ok) throw new Error(`Failed to fetch projects: ${res.statusText}`);
+  return res.json();
 }
 
 // ── Entity API ───────────────────────────────────────────────
