@@ -12,7 +12,7 @@ Agents working on this repo use this file as the async handoff protocol.
 
 ### Argus (quality & test infrastructure)
 - **Branch:** create new branch from main
-- **Status:** assigned — Round 6
+- **Status:** assigned — Round 6 + Round 7
 - **Last completed:** Round 5: import project assignment tests (merged to main).
 - **Test count:** 516 server + 106 client = 622 total. Zero failures.
 - **Round 6 assignment: Post-import project reassignment + channel name tests**
@@ -22,16 +22,27 @@ Agents working on this repo use this file as the async handoff protocol.
   4. **Project reassignment end-to-end** — Import a conversation assigned to Project A, then PATCH it to Project B. Verify sidebar grouping would reflect the change (channel's `projectId` and `projectName` update correctly).
   - **Scope:** `packages/server/src/__tests__/round6-project-reassignment.test.ts`
   - **Important:** Pull from main first! Channel names no longer include project prefix. The `setChannelProject` function in `db/queries.ts` handles the DB update; the PATCH handler in `routes/channels.ts` calls it.
-- **Waiting on:** Nothing — ready to start.
-- **Updated:** 2026-03-15 21:10
+- **Round 7 assignment: Sidebar redesign tests (GitHub issue #8)**
+  - Read `docs/plans/SIDEBAR.md` for full design spec before writing tests.
+  - **Scope:** `packages/server/src/__tests__/round7-sidebar-redesign.test.ts` (server) + `packages/client/src/__tests__/Sidebar.test.tsx` (updates to existing)
+  - Tests to write:
+    1. **`type` column migration** — Verify `channels` table accepts `type` field with values `'chat'` and `'klatch'`. Default is `'chat'`. Existing channels without explicit type get `'chat'`.
+    2. **Klatch requires project** — Creating/updating a klatch with no `projectId` should fail or be rejected. Chats can have `projectId: null`.
+    3. **Sidebar grouping by type** — `getAllChannelsEnriched()` returns `type` field. Chats and klatches within a project can be distinguished.
+    4. **Unassigned excludes klatches** — Query for unassigned channels (no project) should only return type `'chat'`, never `'klatch'`.
+    5. **Client sidebar sections** — Within a project, chats render above klatches. Unassigned section only shows chats.
+    6. **Accordion behavior** — Expanding one project collapses others (client test).
+  - **Important:** These tests should be written to pass against the *planned* implementation. Daedalus will implement the data model changes (Phase 1) first, then the UI (Phase 2). Coordinate via this file — Round 7 tests can be written speculatively and will fail until implementation lands. That's fine.
+- **Waiting on:** Nothing — start with Round 6, then Round 7.
+- **Updated:** 2026-03-16 08:50
 
 ### Daedalus (architecture & implementation)
 - **Branch:** `main`
 - **Status:** available
-- **Last completed:** Post-import project reassignment + channel name dedup + Argus R4/R5 merge. 622 tests (516 server + 106 client), zero failures. Assigned Argus Round 6.
-- **Next:** Design tracking retro, sidebar cleanup discussion with PO.
-- **Waiting on:** Nothing — wrapping for the evening.
-- **Updated:** 2026-03-15 21:10
+- **Last completed:** Sidebar design session with PO. Produced `docs/plans/SIDEBAR.md` (glossary, structure, data model, interaction patterns). Created GitHub issue #8.
+- **Working on:** Sidebar redesign implementation — Phase 1 (data model: `type` column) then Phase 2 (UI: accordion, chat/klatch sections).
+- **Waiting on:** Nothing.
+- **Updated:** 2026-03-16 08:50
 
 ### Theseus Prime (manual testing & exploration — CLI side)
 - **Branch:** `main`
