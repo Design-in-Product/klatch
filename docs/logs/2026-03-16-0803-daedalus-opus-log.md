@@ -108,3 +108,23 @@ Reviewed Theseus's Day 6 testing report (6 findings, P1-P6). Analysis:
 **P6 — Entities panel in chats** — Valid UX concern, deferred. Lower priority.
 
 All fixes verified: 622 tests, zero failures.
+
+## 15:45 — GitHub issues filed + sort-by-activity shipped
+
+Filed 6 GitHub issues from the testing findings and PO discussion:
+- **#9** — System prompt assembly: admin UI doesn't show dynamic 4-layer prompt (P1)
+- **#10** — Add klatch creation UI (P2)
+- **#11** — Entity panel confusing for 1:1 chats (P6)
+- **#12** — Sort chats by last activity, most recent first
+- **#13** — Kit briefing should be foregrounded, not invisible
+- **#14** — Channel settings: mixed save patterns confuse users
+
+Shipped #12 immediately — sidebar now sorts chats within each section by `lastMessageAt` desc, newest first. Commit `f4fab47`.
+
+## 16:00 — Architecture discussion: prompt layers + kit briefing foregrounding
+
+PO wants to discuss the 4-layer prompt architecture before Phase 3. Key insight: the P1 "bug" is actually a UX representation problem — the system works but the user can't see it working. Two threads:
+1. How should the admin UI represent the assembled prompt (showing all 4 layers)?
+2. Should the kit briefing create an observable transition moment for the agent?
+
+PO finds the wireframe-then-discuss workflow efficient. Next step: PO will sketch a domain model bridging prompt concerns, then review together as with the sidebar wireframe.
