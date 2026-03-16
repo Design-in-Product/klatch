@@ -18,3 +18,4 @@ demo/*.gif
 
 # Database backups directory
 backups/
+.claude/worktrees/
