@@ -18,11 +18,14 @@ The existing ways to interact with Claude are good but fragmented:
 
 Klatch fills the gap: a single local interface where you control the models, the prompts, the conversation structure, and the data. Everything stays on your machine in a SQLite database. The only external dependency is the Anthropic API itself.
 
-## What it does today (v0.8)
+## What it does today (v0.8.5)
 
 Klatch is being built incrementally, one working step at a time ([Gall's Law](https://en.wikipedia.org/wiki/John_Gall_(author)#Gall's_law)). Here's what works right now:
 
 - **Claude Code import** — import Claude Code JSONL sessions as read-only conversation snapshots, with tool-use artifacts, source badges, and dedup detection
+- **claude.ai import** — import claude.ai data exports (ZIP), with artifact extraction, project context, and dedup detection
+- **Fork continuity** — continue imported conversations with full history, automatic compaction, and project context injection
+- **Claude Code session browser** — scan `~/.claude/projects/` to discover, preview, and multi-select import sessions
 - **Multi-entity conversations** — assign multiple Claude personas to a single channel, each with its own name, model, system prompt, and color
 - **Three interaction modes** — panel (all respond in parallel), roundtable (sequential, each seeing prior responses), and directed (@-mention routing to specific entities)
 - **Roles and Channels** — sidebar splits single-entity Roles (@prefix) from multi-entity Channels (#prefix)
@@ -47,7 +50,7 @@ The [full roadmap](docs/ROADMAP.md) is in the repo, but the key milestones are:
 5. ~~Channel identity + per-channel models~~ ✓
 6. ~~Multi-entity conversations~~ ✓
 7. ~~Panel + roundtable + directed modes~~ ✓
-8. **Import + unify** — Claude Code import ✓, claude.ai import and fork continuity next
+8. ~~Import + unify~~ ✓ — Claude Code import, claude.ai import, fork continuity, project context
 9. **Files + artifacts** — upload and share files with entities
 10. **Search + recall** — full-text search, export, command palette
 
@@ -105,7 +108,7 @@ One unexpected development: while testing the import and fork features, xian and
 
 The core tool is the **Fork Continuity Quiz** — a structured diagnostic instrument with questions about identity, environmental awareness, institutional knowledge, and meta-awareness. Responses are classified using a five-point rubric: correct, reconstructed, confabulated, absent, or phantom.
 
-The methodology is documented in [`docs/fork-continuity-quiz.md`](docs/fork-continuity-quiz.md). A blog post introducing it is forthcoming.
+The methodology is documented in [`docs/fork-continuity-quiz.md`](docs/fork-continuity-quiz.md) and [`docs/AXT.md`](docs/AXT.md). The introductory blog post: [Did I Just Invent Agent Experience Testing (AXT)?](web/blog/axt-agent-experience-testing.html)
 
 ## License
 

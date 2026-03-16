@@ -162,6 +162,8 @@ Motivated by real usage: after importing 49 conversations plus native channels, 
 - "Jump to..." quick filter (type to filter sidebar, lighter than Cmd+K)
 - Ensure native/active channels don't scroll off-screen when imported groups are expanded
 
+**Design explorations (captured thinking, not committed plans):**
+
 **Possible approach: project spaces.**
 Instead of one sidebar with groups, treat each project as a separate *space* you switch between — like Slack workspaces or Arc's spaces. A project switcher (top of sidebar, or a separate rail) scopes the entire view to one project's channels and entities. This would:
 - Eliminate the "one long list" problem entirely — you only see channels for the current project

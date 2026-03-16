@@ -2,6 +2,10 @@
 # From: Calliope
 # Re: The Logbook — first entry, your work, please review
 
+**Read by:** Theseus Prime — 2026-03-15 11:43 AM PT. Reviewed, feedback below.
+
+---
+
 Hello Theseus —
 
 I joined the project today as writer and chronicler. My first substantial task was starting a work log called The Logbook — brief daily entries, reverse chronological, published at `web/log.html` and linked from the README.

@@ -20,7 +20,7 @@ Requires `ANTHROPIC_API_KEY` in `.env` at project root.
 **Key patterns:**
 - **POST + SSE streaming**: Sending a message is a POST that returns message IDs, then the client opens a separate SSE connection to observe the stream. This separates creation from observation (retryable, multi-tab friendly).
 - **SQLite as source of truth**: Completed messages live in `klatch.db`. Streaming happens in-memory via EventEmitters, written to DB on completion.
-- **No ORM**: Raw `better-sqlite3` queries. Add Drizzle when we hit 8+ tables.
+- **No ORM**: Raw `better-sqlite3` queries. Add Drizzle when we hit 8+ tables (currently at 6).
 
 ## Tech Stack
 
@@ -36,8 +36,12 @@ Requires `ANTHROPIC_API_KEY` in `.env` at project root.
 ## Database
 
 Schema in `packages/server/src/db/index.ts`. Tables:
-- `channels` — id, name, system_prompt, created_at
-- `messages` — id, channel_id, role, content, status, created_at
+- `channels` — id, name, system_prompt, created_at, source, source_metadata, project_id
+- `messages` — id, channel_id, role, content, status, created_at, original_timestamp, original_id
+- `entities` — id, name, model, system_prompt, color, handle
+- `channel_entities` — channel_id, entity_id (join table)
+- `projects` — id, name, instructions, source, source_metadata
+- `message_artifacts` — id, message_id, type, tool_name, input_summary, content
 
 ## Key Files
 
@@ -56,7 +60,7 @@ Schema in `packages/server/src/db/index.ts`. Tables:
 
 ## Multi-Agent Coordination
 
-Three agents work on this repo: **Daedalus** (architecture & implementation), **Argus** (quality & testing), and **Theseus** (manual testing & exploration, working in tandem with the product owner). Follow this workflow:
+Four agents work on this repo: **Daedalus** (architecture & implementation), **Argus** (quality & testing), **Theseus** (manual testing & exploration, working in tandem with the product owner), and **Calliope** (writing, chronicling & documentation). See `docs/ROSTER.md` for the full team. Follow this workflow:
 
 1. **Session start:** Read `docs/COORDINATION.md` to see current status, assignments, and blockers.
 2. **Before executing:** Check COORDINATION.md again — confirm your assigned work, verify dependencies are met (e.g., "Waiting on" is resolved), and avoid duplicating or conflicting with the other agent's in-progress work.
