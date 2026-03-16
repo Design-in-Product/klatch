@@ -8,6 +8,7 @@ import type { Channel } from '@klatch/shared';
 
 function makeChannel(overrides: Partial<Channel> & { id: string; name: string }): Channel {
   return {
+    type: 'chat',
     systemPrompt: '',
     model: 'claude-opus-4-6',
     mode: 'panel',
@@ -93,7 +94,7 @@ describe('ChannelSidebar', () => {
     expect(screen.getByText('(2)')).toBeInTheDocument();
   });
 
-  it('groups imported channels without project under "Imported"', () => {
+  it('groups channels without project under "Unassigned"', () => {
     const channels = [
       makeChannel({ id: 'default', name: 'general' }),
       makeChannel({
@@ -104,7 +105,7 @@ describe('ChannelSidebar', () => {
     ];
     render(<ChannelSidebar {...defaultProps} channels={channels} />);
 
-    expect(screen.getByText('Imported')).toBeInTheDocument();
+    expect(screen.getByText('Unassigned')).toBeInTheDocument();
   });
 
   it('shows CC badge for Claude Code imported channels', () => {
@@ -121,38 +122,39 @@ describe('ChannelSidebar', () => {
     expect(screen.getByText('CC')).toBeInTheDocument();
   });
 
-  it('separates roles (1 entity) from group chats (2+ entities)', () => {
+  it('separates chats from klatches within a project', () => {
     const channels = [
       makeChannel({ id: 'default', name: 'general' }),
-      makeChannel({ id: 'role1', name: 'code-reviewer', entityCount: 1 }),
-      makeChannel({ id: 'group1', name: 'brainstorm', entityCount: 3 }),
+      makeChannel({ id: 'chat1', name: 'CIO Discussion', type: 'chat', projectId: 'proj-1', projectName: 'Piper Morgan' }),
+      makeChannel({ id: 'klatch1', name: 'standup', type: 'klatch', projectId: 'proj-1', projectName: 'Piper Morgan' }),
     ];
     render(<ChannelSidebar {...defaultProps} channels={channels} />);
 
-    expect(screen.getByText('Roles')).toBeInTheDocument();
-    expect(screen.getByText('Channels')).toBeInTheDocument();
+    // When both chats and klatches exist, sub-headers appear
+    expect(screen.getByText('Chats')).toBeInTheDocument();
+    expect(screen.getByText('Klatches')).toBeInTheDocument();
   });
 
   // ── Section collapse ────────────────────────────────────────
 
-  it('collapses and expands a section on click', async () => {
+  it('collapses and expands the unassigned section on click', async () => {
     const user = userEvent.setup();
     const channels = [
       makeChannel({ id: 'default', name: 'general' }),
-      makeChannel({ id: 'role1', name: 'code-reviewer', entityCount: 1 }),
+      makeChannel({ id: 'loose1', name: 'random-chat' }),
     ];
     render(<ChannelSidebar {...defaultProps} channels={channels} />);
 
     // Channel should be visible initially
-    expect(screen.getByText('code-reviewer')).toBeInTheDocument();
+    expect(screen.getByText('random-chat')).toBeInTheDocument();
 
-    // Click the Roles section header to collapse
-    await user.click(screen.getByText('Roles'));
-    expect(screen.queryByText('code-reviewer')).not.toBeInTheDocument();
+    // Click the Unassigned section header to collapse
+    await user.click(screen.getByText('Unassigned'));
+    expect(screen.queryByText('random-chat')).not.toBeInTheDocument();
 
     // Click again to expand
-    await user.click(screen.getByText('Roles'));
-    expect(screen.getByText('code-reviewer')).toBeInTheDocument();
+    await user.click(screen.getByText('Unassigned'));
+    expect(screen.getByText('random-chat')).toBeInTheDocument();
   });
 
   // ── Create channel form ─────────────────────────────────────

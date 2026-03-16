@@ -47,7 +47,13 @@ export function ChannelSidebar({
     onClose?.();
   };
 
-  // Track collapsed state for sidebar sections
+  // Accordion: only one project expanded at a time (null = none)
+  const [expandedProject, setExpandedProject] = useState<string | null>(null);
+  const toggleProject = (key: string) => {
+    setExpandedProject((prev) => (prev === key ? null : key));
+  };
+
+  // Track collapsed state for non-accordion sections (unassigned, etc.)
   const [collapsedSections, setCollapsedSections] = useState<Set<string>>(new Set());
   const toggleSection = (key: string) => {
     setCollapsedSections((prev) => {
@@ -58,35 +64,59 @@ export function ChannelSidebar({
     });
   };
 
-  // Group channels: #general → projects → roles/channels (native)
-  const { general, projectGroups, roles, groups } = useMemo(() => {
+  // Group channels into project-first structure
+  const { general, projectGroups, unassigned } = useMemo(() => {
     const general = channels.find((ch) => ch.id === 'default');
     const rest = channels.filter((ch) => ch.id !== 'default');
 
-    // Imported channels grouped by project (from projects table via projectId/projectName)
-    const imported = rest.filter((ch) => ch.source && ch.source !== 'native');
-    const projectMap = new Map<string, { name: string; channels: Channel[] }>();
-    for (const ch of imported) {
-      const groupKey = ch.projectId || '_imported';
-      const groupName = ch.projectName || 'Imported';
-      if (!projectMap.has(groupKey)) {
-        projectMap.set(groupKey, { name: groupName, channels: [] });
+    // Project groups: channels with a projectId, grouped by project
+    const projectMap = new Map<string, { name: string; chats: Channel[]; klatches: Channel[] }>();
+    const unassigned: Channel[] = [];
+
+    for (const ch of rest) {
+      if (ch.projectId) {
+        if (!projectMap.has(ch.projectId)) {
+          projectMap.set(ch.projectId, {
+            name: ch.projectName || 'Unknown Project',
+            chats: [],
+            klatches: [],
+          });
+        }
+        const group = projectMap.get(ch.projectId)!;
+        if (ch.type === 'klatch') {
+          group.klatches.push(ch);
+        } else {
+          group.chats.push(ch);
+        }
+      } else {
+        // No project — goes to unassigned (only chats should be here, but handle gracefully)
+        unassigned.push(ch);
       }
-      projectMap.get(groupKey)!.channels.push(ch);
     }
-    const projectGroups = Array.from(projectMap.entries()).map(([key, group]) => ({
-      key,
+
+    const projectGroups = Array.from(projectMap.entries()).map(([id, group]) => ({
+      id,
       name: group.name,
-      channels: group.channels,
+      chats: group.chats,
+      klatches: group.klatches,
+      totalCount: group.chats.length + group.klatches.length,
     }));
 
-    // Native channels (excluding #general) — split into Roles and Channels as before
-    const native = rest.filter((ch) => !ch.source || ch.source === 'native');
-    const roles = native.filter((ch) => (ch.entityCount ?? 1) <= 1);
-    const groups = native.filter((ch) => (ch.entityCount ?? 1) >= 2);
-
-    return { general, projectGroups, roles, groups };
+    return { general, projectGroups, unassigned };
   }, [channels]);
+
+  // Auto-expand first project if none is expanded yet and projects exist
+  const effectiveExpanded = useMemo(() => {
+    if (expandedProject !== null) return expandedProject;
+    // Auto-expand project containing active channel
+    for (const pg of projectGroups) {
+      const allChannels = [...pg.chats, ...pg.klatches];
+      if (allChannels.some((ch) => ch.id === activeChannelId)) return pg.id;
+    }
+    // Default: expand first project
+    if (projectGroups.length > 0) return projectGroups[0].id;
+    return null;
+  }, [expandedProject, projectGroups, activeChannelId]);
 
   const renderChannelItem = (ch: Channel, prefix: string) => (
     <button
@@ -111,6 +141,15 @@ export function ChannelSidebar({
     </button>
   );
 
+  const chevronIcon = (isExpanded: boolean) => (
+    <svg
+      className={`w-3 h-3 text-muted transition-transform ${isExpanded ? 'rotate-90' : ''}`}
+      fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}
+    >
+      <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+    </svg>
+  );
+
   const sidebarContent = (
     <div className="w-60 flex-shrink-0 bg-sidebar border-r border-line-strong flex flex-col h-full">
       {/* Header — logo + wordmark */}
@@ -132,7 +171,7 @@ export function ChannelSidebar({
         )}
       </div>
 
-      {/* Channel list — #general → projects → roles → channels */}
+      {/* Channel list — #general → projects (accordion) → unassigned */}
       <div className="flex-1 overflow-y-auto py-1">
         {/* #general — always pinned at top */}
         {general && (
@@ -152,76 +191,73 @@ export function ChannelSidebar({
           </div>
         )}
 
-        {/* Project groups (imported channels grouped by project) */}
+        {/* Project accordion — one expanded at a time */}
         {projectGroups.map((project) => {
-          const sectionKey = `project:${project.key}`;
-          const isCollapsed = collapsedSections.has(sectionKey);
+          const isExpanded = effectiveExpanded === project.id;
           return (
-            <div key={sectionKey}>
+            <div key={`project:${project.id}`} data-testid={`project-group-${project.id}`}>
               <button
-                onClick={() => toggleSection(sectionKey)}
+                onClick={() => toggleProject(project.id)}
                 className="w-full flex items-center gap-1 px-4 pt-3 pb-1 group"
               >
-                <svg
-                  className={`w-3 h-3 text-muted transition-transform ${isCollapsed ? '' : 'rotate-90'}`}
-                  fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}
-                >
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-                </svg>
+                {chevronIcon(isExpanded)}
                 <span className="text-[10px] font-semibold text-muted uppercase tracking-wider">
                   {project.name}
                 </span>
-                <span className="text-[10px] text-muted ml-1">({project.channels.length})</span>
+                <span className="text-[10px] text-muted ml-1">({project.totalCount})</span>
               </button>
-              {!isCollapsed && project.channels.map((ch) => renderChannelItem(ch, '@'))}
+              {isExpanded && (
+                <>
+                  {/* Chats section (1:1) — shown first */}
+                  {project.chats.length > 0 && (
+                    <div>
+                      {project.klatches.length > 0 && (
+                        <div className="px-6 pt-1 pb-0.5">
+                          <span className="text-[9px] font-medium text-muted uppercase tracking-wider">Chats</span>
+                        </div>
+                      )}
+                      {project.chats.map((ch) => renderChannelItem(ch, '@'))}
+                    </div>
+                  )}
+                  {/* Klatches section (group) — shown second */}
+                  {project.klatches.length > 0 && (
+                    <div>
+                      {project.chats.length > 0 && (
+                        <div className="px-6 pt-2 pb-0.5">
+                          <span className="text-[9px] font-medium text-muted uppercase tracking-wider">Klatches</span>
+                        </div>
+                      )}
+                      {project.klatches.map((ch) => renderChannelItem(ch, '#'))}
+                    </div>
+                  )}
+                </>
+              )}
             </div>
           );
         })}
 
-        {/* Separator between projects and native channels */}
-        {projectGroups.length > 0 && (roles.length > 0 || groups.length > 0) && (
+        {/* Separator between projects and unassigned */}
+        {projectGroups.length > 0 && unassigned.length > 0 && (
           <div className="mx-4 my-2 border-t border-line" />
         )}
 
-        {/* Roles (1:1 native conversations with a single entity) */}
-        {roles.length > 0 && (
-          <div>
+        {/* Unassigned — chats not in any project */}
+        {unassigned.length > 0 && (
+          <div data-testid="unassigned-section">
             <button
-              onClick={() => toggleSection('roles')}
+              onClick={() => toggleSection('unassigned')}
               className="w-full flex items-center gap-1 px-4 pt-3 pb-1 group"
             >
-              <svg
-                className={`w-3 h-3 text-muted transition-transform ${collapsedSections.has('roles') ? '' : 'rotate-90'}`}
-                fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-              </svg>
+              {chevronIcon(!collapsedSections.has('unassigned'))}
               <span className="text-[10px] font-semibold text-muted uppercase tracking-wider">
-                Roles
+                Unassigned
               </span>
+              <span className="text-[10px] text-muted ml-1">({unassigned.length})</span>
             </button>
-            {!collapsedSections.has('roles') && roles.map((ch) => renderChannelItem(ch, '@'))}
-          </div>
-        )}
-
-        {/* Group Chats (2+ entities) */}
-        {groups.length > 0 && (
-          <div>
-            <button
-              onClick={() => toggleSection('channels')}
-              className="w-full flex items-center gap-1 px-4 pt-3 pb-1 group"
-            >
-              <svg
-                className={`w-3 h-3 text-muted transition-transform ${collapsedSections.has('channels') ? '' : 'rotate-90'}`}
-                fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-              </svg>
-              <span className="text-[10px] font-semibold text-muted uppercase tracking-wider">
-                Channels
-              </span>
-            </button>
-            {!collapsedSections.has('channels') && groups.map((ch) => renderChannelItem(ch, '#'))}
+            {!collapsedSections.has('unassigned') && unassigned.map((ch) => {
+              const prefix = ch.type === 'klatch' ? '#' : '@';
+              return renderChannelItem(ch, prefix);
+            })}
           </div>
         )}
 

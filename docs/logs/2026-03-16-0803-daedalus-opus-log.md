@@ -67,3 +67,26 @@ Assigned Argus:
 - **Round 7** (new): sidebar redesign tests — type column migration, klatch-requires-project, sidebar grouping by type, unassigned excludes klatches, client accordion behavior
 
 Updated COORDINATION.md. Starting implementation next.
+
+## 10:20 — Phase 1+2 implementation: type column + sidebar redesign
+
+Implemented both phases together since they're tightly coupled:
+
+**Phase 1 — Data model:**
+- Added `type TEXT NOT NULL DEFAULT 'chat'` column to `channels` table (migration in `db/index.ts`)
+- Added `ChannelType = 'chat' | 'klatch'` to shared types
+- Updated `rowToChannel()` to include `type`
+- Updated `createChannel()` to accept optional `type` parameter
+- Updated `importSession()` to explicitly set `type = 'chat'` on imported conversations
+- Updated POST `/channels` endpoint to accept `type` in request body with validation
+- Updated test setup (`setup.ts`) to include `type` column in in-memory schema
+
+**Phase 2 — Sidebar UI:**
+- Rewrote `ChannelSidebar.tsx` with project-first accordion layout
+- **Accordion behavior:** one project expanded at a time; auto-expands project containing active channel
+- **Within each project:** Chats section (top) → Klatches section (bottom). Sub-headers only show when both types exist.
+- **Unassigned section:** Below projects, always visible. Shows chats without a project assignment.
+- Removed old Roles/Channels grouping (was based on entityCount)
+- Updated 3 client tests: "Imported" → "Unassigned", Roles/Channels → Chats/Klatches, collapse test uses Unassigned
+
+**Test results:** 622 total (516 server + 106 client), zero failures.

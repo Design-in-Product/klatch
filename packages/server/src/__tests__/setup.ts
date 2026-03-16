@@ -27,6 +27,7 @@ function createFreshDb(): Database.Database {
     CREATE TABLE IF NOT EXISTS channels (
       id TEXT PRIMARY KEY,
       name TEXT NOT NULL,
+      type TEXT NOT NULL DEFAULT 'chat',
       system_prompt TEXT NOT NULL DEFAULT '',
       model TEXT NOT NULL DEFAULT '${DEFAULT_MODEL}',
       mode TEXT NOT NULL DEFAULT '${DEFAULT_INTERACTION_MODE}',

@@ -1,12 +1,13 @@
 import { v4 as uuidv4 } from 'uuid';
 import { getDb } from './index.js';
-import type { Channel, ChannelStats, Message, Entity, Project, ModelId, InteractionMode, ChannelSource } from '@klatch/shared';
+import type { Channel, ChannelType, ChannelStats, Message, Entity, Project, ModelId, InteractionMode, ChannelSource } from '@klatch/shared';
 import { DEFAULT_MODEL, DEFAULT_ENTITY_ID, ENTITY_COLORS, DEFAULT_INTERACTION_MODE } from '@klatch/shared';
 
 function rowToChannel(row: any): Channel {
   return {
     id: row.id,
     name: row.name,
+    type: (row.type as ChannelType) || 'chat',
     systemPrompt: row.system_prompt,
     model: row.model || DEFAULT_MODEL,
     mode: (row.mode as InteractionMode) || DEFAULT_INTERACTION_MODE,
@@ -149,23 +150,24 @@ export function getChannelStats(channelId: string): ChannelStats | undefined {
   };
 }
 
-export function createChannel(name: string, systemPrompt: string, model?: ModelId, mode?: InteractionMode): Channel {
+export function createChannel(name: string, systemPrompt: string, model?: ModelId, mode?: InteractionMode, type?: ChannelType): Channel {
   const db = getDb();
   const id = uuidv4();
   const now = new Date().toISOString();
   const channelModel = model || DEFAULT_MODEL;
   const channelMode = mode || DEFAULT_INTERACTION_MODE;
+  const channelType: ChannelType = type || 'chat';
 
   const txn = db.transaction(() => {
-    db.prepare('INSERT INTO channels (id, name, system_prompt, model, mode, created_at) VALUES (?, ?, ?, ?, ?, ?)')
-      .run(id, name, systemPrompt, channelModel, channelMode, now);
+    db.prepare('INSERT INTO channels (id, name, system_prompt, model, mode, type, created_at) VALUES (?, ?, ?, ?, ?, ?, ?)')
+      .run(id, name, systemPrompt, channelModel, channelMode, channelType, now);
     // Auto-assign default entity to new channels
     db.prepare('INSERT INTO channel_entities (channel_id, entity_id) VALUES (?, ?)')
       .run(id, DEFAULT_ENTITY_ID);
   });
   txn();
 
-  return { id, name, systemPrompt, model: channelModel, mode: channelMode, createdAt: now, source: 'native' as ChannelSource };
+  return { id, name, type: channelType, systemPrompt, model: channelModel, mode: channelMode, createdAt: now, source: 'native' as ChannelSource };
 }
 
 export function updateChannel(
@@ -542,10 +544,10 @@ export function importSession(params: ImportSessionParams): ImportResult {
   let artifactCount = 0;
 
   const txn = db.transaction(() => {
-    // 1. Create channel with source info and optional project link
+    // 1. Create channel with source info and optional project link (imported conversations are always type 'chat')
     db.prepare(
-      'INSERT INTO channels (id, name, system_prompt, model, mode, source, source_metadata, project_id, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)'
-    ).run(channelId, channelName, '', channelModel, DEFAULT_INTERACTION_MODE, source, JSON.stringify(sourceMetadata), projectId || null, now);
+      'INSERT INTO channels (id, name, system_prompt, model, mode, type, source, source_metadata, project_id, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
+    ).run(channelId, channelName, '', channelModel, DEFAULT_INTERACTION_MODE, 'chat', source, JSON.stringify(sourceMetadata), projectId || null, now);
 
     // 2. Assign default entity
     db.prepare(

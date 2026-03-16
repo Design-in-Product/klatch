@@ -52,9 +52,13 @@ export interface Entity {
 // Channel source types for imported conversations
 export type ChannelSource = 'native' | 'claude-code' | 'claude-ai';
 
+// Channel types: chat (1:1 with Claude) vs klatch (multi-entity group)
+export type ChannelType = 'chat' | 'klatch';
+
 export interface Channel {
   id: string;
   name: string;
+  type: ChannelType;         // 'chat' (1:1) or 'klatch' (multi-entity group)
   systemPrompt: string;
   model: ModelId;
   mode: InteractionMode;
@@ -63,7 +67,7 @@ export interface Channel {
   source?: ChannelSource;
   sourceMetadata?: string; // JSON string
   compactionState?: string; // JSON: { summary, timestamp, beforeMessageId }
-  projectId?: string;       // FK to projects table (nullable — channels can be unlinked)
+  projectId?: string;       // FK to projects table (nullable — chats can be unlinked)
   projectName?: string;     // populated by enriched list endpoint (JOIN to projects)
   messageCount?: number;        // populated by enriched list endpoint
   lastMessageAt?: string | null; // populated by enriched list endpoint

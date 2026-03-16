@@ -2,7 +2,7 @@ import { Hono } from 'hono';
 import fs from 'fs';
 import path from 'path';
 import { getAllChannelsEnriched, getChannel, getChannelStats, createChannel, updateChannel, deleteChannel, setChannelProject } from '../db/queries.js';
-import type { ModelId, InteractionMode } from '@klatch/shared';
+import type { ModelId, InteractionMode, ChannelType } from '@klatch/shared';
 import { AVAILABLE_MODELS, INTERACTION_MODES } from '@klatch/shared';
 
 const app = new Hono();
@@ -22,11 +22,12 @@ app.get('/channels/:id/stats', (c) => {
 });
 
 app.post('/channels', async (c) => {
-  const { name, systemPrompt, model, mode } = await c.req.json<{
+  const { name, systemPrompt, model, mode, type } = await c.req.json<{
     name: string;
     systemPrompt?: string;
     model?: ModelId;
     mode?: InteractionMode;
+    type?: ChannelType;
   }>();
 
   if (!name?.trim()) {
@@ -41,11 +42,16 @@ app.post('/channels', async (c) => {
     return c.json({ error: `Invalid mode: ${mode}` }, 400);
   }
 
+  if (type && type !== 'chat' && type !== 'klatch') {
+    return c.json({ error: `Invalid type: ${type}. Must be 'chat' or 'klatch'` }, 400);
+  }
+
   const channel = createChannel(
     name.trim(),
     systemPrompt?.trim() || 'You are a helpful assistant.',
     model,
-    mode
+    mode,
+    type
   );
   return c.json(channel, 201);
 });

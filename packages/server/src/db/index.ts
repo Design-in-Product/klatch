@@ -178,6 +178,12 @@ function runMigrations() {
     db.exec(`ALTER TABLE channels ADD COLUMN project_id TEXT`);
   }
 
+  // ── Sidebar redesign: chat/klatch type column ──────────────
+  const channelCols5 = db.prepare("PRAGMA table_info(channels)").all() as { name: string }[];
+  if (!channelCols5.some((c) => c.name === 'type')) {
+    db.exec(`ALTER TABLE channels ADD COLUMN type TEXT NOT NULL DEFAULT 'chat'`);
+  }
+
   // Ensure default entity exists (for existing databases being upgraded)
   const defaultEntity = db.prepare('SELECT id FROM entities WHERE id = ?').get(DEFAULT_ENTITY_ID);
   if (!defaultEntity) {
