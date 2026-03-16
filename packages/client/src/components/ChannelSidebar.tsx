@@ -198,10 +198,10 @@ export function ChannelSidebar({
             <div key={`project:${project.id}`} data-testid={`project-group-${project.id}`}>
               <button
                 onClick={() => toggleProject(project.id)}
-                className="w-full flex items-center gap-1 px-4 pt-3 pb-1 group"
+                className="w-full flex items-center gap-1 px-4 pt-3 pb-1 group overflow-hidden min-w-0"
               >
                 {chevronIcon(isExpanded)}
-                <span className="text-[10px] font-semibold text-muted uppercase tracking-wider">
+                <span className="text-[10px] font-semibold text-muted uppercase tracking-wider truncate">
                   {project.name}
                 </span>
                 <span className="text-[10px] text-muted ml-1">({project.totalCount})</span>

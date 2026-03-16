@@ -471,7 +471,13 @@ export default function App() {
       {/* Import Dialog */}
       <ImportDialog
         isOpen={showImportDialog}
-        onClose={() => setShowImportDialog(false)}
+        onClose={() => {
+          setShowImportDialog(false);
+          // Always re-fetch channels on close — an import may have completed
+          // before the user dismissed via backdrop/X instead of "Done" button,
+          // and we need the enriched projectName from the JOIN.
+          fetchChannels().then(setChannels).catch(console.error);
+        }}
         onImported={(result) => {
           // Refresh channels and navigate to the imported channel
           fetchChannels().then((chs) => {

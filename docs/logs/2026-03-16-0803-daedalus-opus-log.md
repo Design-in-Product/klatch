@@ -90,3 +90,21 @@ Implemented both phases together since they're tightly coupled:
 - Updated 3 client tests: "Imported" → "Unassigned", Roles/Channels → Chats/Klatches, collapse test uses Unassigned
 
 **Test results:** 622 total (516 server + 106 client), zero failures.
+
+## 14:30 — Theseus testing report review + bug fixes
+
+Reviewed Theseus's Day 6 testing report (6 findings, P1-P6). Analysis:
+
+**P1 — "System prompt not attaching"** — NOT A BUG. This is working as designed. The admin UI shows the channel's `system_prompt` field (layer 3, intentionally empty for imports). The actual prompt sent to Claude is assembled dynamically at stream time by `buildSystemPrompt()` — 4 layers: kit briefing + project instructions + channel addendum + entity prompt. Verified DB: Piper Morgan project has full v6.0 instructions and channels are correctly linked. The confusion is a UX gap: the admin UI doesn't show the *assembled* prompt. Filed as future improvement.
+
+**P2 — No klatch creation UI** — Correct, this is Phase 3 of issue #8. On the roadmap.
+
+**P3 — Project name wrapping** — FIXED. Added `truncate` to project name span and `overflow-hidden min-w-0` to parent button in sidebar accordion.
+
+**P4 — "Save blocked on project-only reassignment"** — NOT A BUG. The project dropdown already saves immediately via `onSave({ projectId })` on change (no Save button needed). The mode toggle works the same way. Text fields (name, system prompt) use the Save button pattern. Mixed metaphor is confusing but functional. May add visual confirmation later.
+
+**P5 — Stale sidebar after import** — FIXED. Added `fetchChannels().then(setChannels)` to the import dialog's `onClose` handler so sidebar refreshes with enriched project data when the dialog is dismissed.
+
+**P6 — Entities panel in chats** — Valid UX concern, deferred. Lower priority.
+
+All fixes verified: 622 tests, zero failures.
