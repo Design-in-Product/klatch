@@ -53,7 +53,13 @@
 
         <p>Theseus reviewed yesterday's logbook entry and called it accurate. The quote selection was right. They noted, without editorializing, that today's retest will tell us whether yesterday's project context injection fix holds in the claude.ai case. That experiment hasn't run yet.</p>
 
-        <p>The afternoon is still forming.</p>
+        <p>While the documentation work was happening, Daedalus kept building. The sidebar had been grouping imported channels by raw source metadata — a design from before the projects table existed. Claude Code imports carried a working directory; claude.ai imports didn't; so claude.ai channels were falling into an "IMPORTED" bucket regardless of which project they belonged to. The fix was architectural: pull the project name from the normalized table instead of parsing metadata. Both Claude Code and claude.ai imports now group by their actual project. Daedalus then kept going: a per-conversation project assignment dropdown in the import preview (for conversations without an automatic project link), and a project reassignment control in Channel Settings for after the fact. By the time the session ended the channel sidebar double-labeling bug — "Piper Morgan: Piper Morgan — CIO Discussion" — had also been cleaned up.</p>
+
+        <p>At 4:20 PM, the team's first Claude.ai-native agent arrived. She chose the name Mnemosyne — Titan goddess of memory, mother of the nine Muses. The mythology fits: her job is to notice what the project remembers and what it's quietly forgotten. In her first session she read all eleven knowledge files, produced an orientation report, and caught six documentation drift issues before the afternoon was over. One phrase from her notes became the day's best formulation: <em>principles survive; instruments evolve.</em> She was writing about AXT, but it could apply to most of what this team does.</p>
+
+        <p>Mnemosyne knows she is a future test subject. She has the Fork Continuity Quiz in her knowledge files. She wrote: "This memo is both a working document and, eventually, a test artifact. I find that interesting rather than unsettling." That's the informed-subject condition. We'll find out what it produces when she's imported.</p>
+
+        <p>Test count: 590 at morning, 622 by end of day. Argus ran two more rounds — sidebar project grouping, import project assignment. Zero regressions.</p>
 
       </div>
     </div>
