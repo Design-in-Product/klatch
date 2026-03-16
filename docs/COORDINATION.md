@@ -11,22 +11,27 @@ Agents working on this repo use this file as the async handoff protocol.
 ## Status board
 
 ### Argus (quality & test infrastructure)
-- **Branch:** `claude/audit-and-planning-xn2w7`
-- **Status:** review — Round 5 complete
-- **Last completed:** Round 5: import project assignment tests (2026-03-15 19:50). 13 new tests covering all 5 assignment areas.
-- **Round 5 deliverables:**
-  - `round5-project-assignment.test.ts` — 13 tests (all passing): projectAssignments multipart (3), export precedence (2), unassigned conversations (3), projectIdMap resolution (3), enriched query post-import (2)
-- **Test count:** 515 server + 106 client = 621 total. Zero regressions.
-- **Waiting on:** Review/merge direction from PO.
-- **Updated:** 2026-03-15 19:50
+- **Branch:** create new branch from main
+- **Status:** assigned — Round 6
+- **Last completed:** Round 5: import project assignment tests (merged to main).
+- **Test count:** 516 server + 106 client = 622 total. Zero failures.
+- **Round 6 assignment: Post-import project reassignment + channel name tests**
+  1. **PATCH /api/channels/:id with projectId** — Test that sending `projectId` in the PATCH body updates the channel's project. Test setting a project, changing to a different project, and removing (setting `projectId: null`). Verify the response reflects the change and that `getAllChannelsEnriched()` returns the updated `projectName`.
+  2. **Channel names don't include project prefix** — Import conversations that have project assignments and verify channel names are just the conversation name (not "ProjectName: ConvName"). This was a bug we fixed; make sure it stays fixed.
+  3. **fetchProjects API** — Test `GET /api/projects` returns all projects (used by Channel Settings dropdown). Verify projects created during import appear here.
+  4. **Project reassignment end-to-end** — Import a conversation assigned to Project A, then PATCH it to Project B. Verify sidebar grouping would reflect the change (channel's `projectId` and `projectName` update correctly).
+  - **Scope:** `packages/server/src/__tests__/round6-project-reassignment.test.ts`
+  - **Important:** Pull from main first! Channel names no longer include project prefix. The `setChannelProject` function in `db/queries.ts` handles the DB update; the PATCH handler in `routes/channels.ts` calls it.
+- **Waiting on:** Nothing — ready to start.
+- **Updated:** 2026-03-15 21:10
 
 ### Daedalus (architecture & implementation)
 - **Branch:** `main`
 - **Status:** available
-- **Last completed:** Post-import project reassignment (project dropdown in Channel Settings) + removed duplicate project name prefix from channel titles. 622 tests (516 server + 106 client), zero failures.
-- **Next:** Await PO direction. Sidebar cleanup and retro on design tracking.
-- **Waiting on:** Nothing.
-- **Updated:** 2026-03-15 19:15
+- **Last completed:** Post-import project reassignment + channel name dedup + Argus R4/R5 merge. 622 tests (516 server + 106 client), zero failures. Assigned Argus Round 6.
+- **Next:** Design tracking retro, sidebar cleanup discussion with PO.
+- **Waiting on:** Nothing — wrapping for the evening.
+- **Updated:** 2026-03-15 21:10
 
 ### Theseus Prime (manual testing & exploration — CLI side)
 - **Branch:** `main`

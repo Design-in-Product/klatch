@@ -56,3 +56,46 @@ PO reported: claude.ai import with project showed under "IMPORTED" instead of pr
 5. Updated client tests: existing project grouping test uses `projectName` prop, new test for "Imported" fallback
 
 **Result:** 592 tests passing (486 server + 106 client). Both Claude Code and claude.ai imports now group under their project name from the `projects` table. Same project = same group, regardless of source.
+
+## 13:15 — Import project assignment feature
+
+Built the full import project assignment flow:
+- **Import preview dropdown:** Each conversation in the import preview gets a `<select>` with all projects from the ZIP. Auto-selects when single project. Sends `projectAssignments` map to server.
+- **Server `effectiveProjectUuid` fallback chain:** `conv.project_uuid || projectAssignments[conv.uuid] || undefined`. This bridges the gap where claude.ai exports don't include `project_uuid` on conversations.
+- **Client API:** Added `fetchProjects()`, updated `importClaudeAiExport()` and `updateChannelApi()`.
+
+## ~18:00 — Merge protocol and Argus Round 5 merge
+
+Argus's Round 4 branch (from before AXT.md and ROSTER.md existed) silently deleted those files when merged. Restored them and added merge protocol to COORDINATION.md:
+1. Rebase before push
+2. Reviewer checks diff stat
+3. Stay in lane
+
+Merged Argus Round 5 (13 tests for project assignment). Fixed vitest config to prevent stale `dist/` test files from running.
+
+## 19:00 — Post-import project reassignment + channel name dedup
+
+**User report:** Sidebar showed "Piper Morgan: CIO Discussion" — project name was appearing both as sidebar group header AND channel name prefix. Double information.
+
+**Fix:** Removed project name prefix from channel names in `import.ts`. Channel names are now just the conversation name; project context comes from sidebar grouping.
+
+**Post-import project reassignment:** Added project dropdown to Channel Settings so users can reassign channels to different projects (or remove from all projects) after import. Server PATCH endpoint now accepts `projectId`. App.tsx refreshes full channel list when project changes.
+
+**Tests:** Fixed 2 tests expecting project-prefixed channel names. Full suite: 622 tests (516 server + 106 client), zero failures.
+
+## 21:10 — Session wrap
+
+Assigned Argus Round 6 (post-import project reassignment tests). Updated COORDINATION.md. All work committed and pushed to main.
+
+**Day summary:**
+- Reviewed AXT blog post for Calliope (no errors found)
+- Added 15 decision log entries to ARCHITECTURE.md
+- Fixed sidebar project grouping (use projects table instead of raw metadata)
+- Built import project assignment (dropdown per conversation in preview)
+- Built post-import project reassignment (project dropdown in Channel Settings)
+- Removed duplicate project name prefix from channel titles
+- Established merge protocol after stale-branch incident
+- Merged Argus Rounds 4 and 5
+- 622 tests, zero failures
+
+**Pushed:** `defe763`, `ba452d4`
