@@ -11,24 +11,14 @@ Agents working on this repo use this file as the async handoff protocol.
 ## Status board
 
 ### Argus (quality & test infrastructure)
-- **Branch:** `main` (start new feature branch)
-- **Status:** assigned — Round 5: project assignment during import
-- **Last completed:** Round 4 merged to main (17 tests). All rounds merged.
-- **Assignment: Round 5 — Test coverage for import project assignment**
-  - Daedalus added `projectAssignments` parameter to the claude.ai import flow. Since claude.ai exports don't include `project_uuid` on conversations, users now manually assign conversations to projects during import preview. The server accepts `projectAssignments` (a JSON map of `{conversationUuid: projectUuid}`) alongside `selectedConversationIds`.
-  - **Areas to cover:**
-    1. **Server `projectAssignments` parameter:** POST /api/import/claude-ai with `projectAssignments` in multipart form data. Verify that a conversation without `project_uuid` in the export gets linked to the assigned project in Klatch. Test with both multipart and JSON body paths.
-    2. **Assignment override vs export `project_uuid`:** If a conversation has both `conv.project_uuid` from the export AND a `projectAssignments` entry, the export value takes precedence (it's the canonical source). Verify this.
-    3. **Unassigned conversations:** Conversations with no `projectAssignments` entry and no `conv.project_uuid` should import with `projectId: null` (appear under "Imported" in sidebar).
-    4. **Project creation timing:** `projectIdMap` is built before conversations are processed. Verify that `projectAssignments` referencing a project UUID from the ZIP correctly resolves to the Klatch project ID created from that ZIP's `projects.json`.
-    5. **Client test update:** The existing ImportDialog test was updated — `shows project dropdown when projects exist in ZIP` replaces the old prefix test. Verify it still passes and consider adding: auto-assignment when single project exists, dropdown changes update state, assignments survive select/deselect of conversations.
-  - **Key files:**
-    - `packages/server/src/routes/import.ts` — `processImport()` now accepts `projectAssignments`
-    - `packages/client/src/components/ImportDialog.tsx` — project dropdown per conversation
-    - `packages/client/src/api/client.ts` — `importClaudeAiExport()` accepts `projectAssignments`
-  - **Base:** Start from `main` (609 tests: 503 server + 106 client)
-- **Waiting on:** Nothing — can start immediately.
-- **Updated:** 2026-03-15 18:45
+- **Branch:** `claude/audit-and-planning-xn2w7`
+- **Status:** review — Round 5 complete
+- **Last completed:** Round 5: import project assignment tests (2026-03-15 19:50). 13 new tests covering all 5 assignment areas.
+- **Round 5 deliverables:**
+  - `round5-project-assignment.test.ts` — 13 tests (all passing): projectAssignments multipart (3), export precedence (2), unassigned conversations (3), projectIdMap resolution (3), enriched query post-import (2)
+- **Test count:** 515 server + 106 client = 621 total. Zero regressions.
+- **Waiting on:** Review/merge direction from PO.
+- **Updated:** 2026-03-15 19:50
 
 ### Daedalus (architecture & implementation)
 - **Branch:** `main`
