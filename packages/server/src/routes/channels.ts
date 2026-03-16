@@ -1,7 +1,8 @@
 import { Hono } from 'hono';
 import fs from 'fs';
 import path from 'path';
-import { getAllChannelsEnriched, getChannel, getChannelStats, createChannel, updateChannel, deleteChannel, setChannelProject } from '../db/queries.js';
+import { getAllChannelsEnriched, getChannel, getChannelStats, createChannel, updateChannel, deleteChannel, setChannelProject, getChannelEntities, getProjectForChannel } from '../db/queries.js';
+import { buildSystemPrompt } from '../claude/client.js';
 import type { ModelId, InteractionMode, ChannelType } from '@klatch/shared';
 import { AVAILABLE_MODELS, INTERACTION_MODES } from '@klatch/shared';
 
@@ -10,6 +11,56 @@ const app = new Hono();
 app.get('/channels', (c) => {
   const channels = getAllChannelsEnriched();
   return c.json(channels);
+});
+
+/**
+ * GET /channels/:id/prompt-debug
+ *
+ * Returns the fully assembled system prompt that would be sent to the Anthropic API,
+ * broken down by layer. For debugging prompt assembly — not user-facing.
+ */
+app.get('/channels/:id/prompt-debug', (c) => {
+  const id = c.req.param('id');
+  const channel = getChannel(id);
+  if (!channel) {
+    return c.json({ error: 'Channel not found' }, 404);
+  }
+
+  const entities = getChannelEntities(id);
+  const project = channel.projectId ? getProjectForChannel(id) : null;
+  const entity = entities[0]; // Primary entity for the channel
+
+  if (!entity) {
+    return c.json({ error: 'No entity assigned to this channel' }, 400);
+  }
+
+  const assembled = buildSystemPrompt(entity, channel.systemPrompt, channel, project);
+
+  return c.json({
+    channelId: id,
+    channelName: channel.name,
+    channelType: channel.type,
+    channelSource: channel.source,
+    layers: {
+      '1_kitBriefing': (channel.source && channel.source !== 'native')
+        ? 'ACTIVE — imported channel gets kit briefing'
+        : 'INACTIVE — native channel, no kit briefing',
+      '2_projectInstructions': project?.instructions?.trim()
+        ? `ACTIVE — from project "${project.name}" (${project.instructions.length} chars)`
+        : project
+          ? `EMPTY — project "${project.name}" has no instructions`
+          : 'INACTIVE — no project linked',
+      '3_channelAddendum': channel.systemPrompt?.trim()
+        ? `ACTIVE — ${channel.systemPrompt.length} chars`
+        : 'EMPTY',
+      '4_entityPrompt': `"${entity.name}" — ${entity.systemPrompt?.length || 0} chars`,
+    },
+    assembledPrompt: assembled,
+    assembledLength: assembled.length,
+    projectId: channel.projectId || null,
+    projectName: project?.name || null,
+    entityName: entity.name,
+  });
 });
 
 app.get('/channels/:id/stats', (c) => {
