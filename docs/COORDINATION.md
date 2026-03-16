@@ -39,10 +39,10 @@ Agents working on this repo use this file as the async handoff protocol.
 ### Daedalus (architecture & implementation)
 - **Branch:** `main`
 - **Status:** available
-- **Last completed:** Sidebar design session with PO. Produced `docs/plans/SIDEBAR.md` (glossary, structure, data model, interaction patterns). Created GitHub issue #8.
-- **Working on:** Sidebar redesign implementation — Phase 1 (data model: `type` column) then Phase 2 (UI: accordion, chat/klatch sections).
-- **Waiting on:** Nothing.
-- **Updated:** 2026-03-16 08:50
+- **Last completed:** Sidebar redesign Phase 1+2 shipped (commit `66b5755`). Type column added, sidebar rewritten with project-first accordion, chat/klatch sections, unassigned area. 622 tests, zero failures.
+- **Working on:** Available for Phase 3 (context-aware creation) or Argus R6/R7 merge when ready.
+- **Waiting on:** PO direction or Argus deliverables.
+- **Updated:** 2026-03-16 10:30
 
 ### Theseus Prime (manual testing & exploration — CLI side)
 - **Branch:** `main`
