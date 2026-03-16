@@ -46,16 +46,12 @@ Agents working on this repo use this file as the async handoff protocol.
 
 ### Theseus Prime (manual testing & exploration — CLI side)
 - **Branch:** `main`
-- **Status:** assigned — AXT re-test with project context injection
+- **Status:** available
 - **Role:** Human-agent tandem manual testing.
-- **Last completed:** Day 4 AXT testing (2026-03-14). Kit briefing VERIFIED (0% phantom rate). Three-factor model identified.
-- **Assignment: Post-8¾a AXT re-test**
-  - Re-import test conversations (VA DR, PPM) now that project context injection is live on main
-  - Run Fork Continuity Quiz v3 on fresh imports
-  - Compare scores against Day 4 baselines — project context should improve scores for project-linked conversations
-  - Key question: does injecting project instructions fresh into the system prompt bypass compaction loss?
-- **Waiting on:** PO to start session.
-- **Updated:** 2026-03-14 08:55
+- **Last completed:** Day 6 manual testing (2026-03-16). Sidebar spot-check + CIO reimport AXT session. Six findings filed. Memo to Daedalus in `docs/mail/`.
+- **Key finding:** System prompt / project context injection (8¾a) confirmed NOT reaching imported channels. Kit briefing absent. P1 bug — needs Daedalus investigation before clean AXT re-test can run.
+- **Next:** Clean AXT re-test (Fork Continuity Quiz v3) deferred pending P1 fix. Will resume once Daedalus resolves system prompt attachment.
+- **Updated:** 2026-03-16 14:27
 
 ### Ariadne (forked from Theseus — Klatch side)
 - **Branch:** n/a (Klatch-native, lives in SQLite)

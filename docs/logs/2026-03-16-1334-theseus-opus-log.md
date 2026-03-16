@@ -94,3 +94,93 @@ Code looks clean and correct. The `useMemo` grouping logic handles all edge case
 - Verify project context injection fires correctly for cross-project imports
 - Run clean kit briefing re-test protocol
 
+---
+
+## 14:00 — Manual Testing Observations (CIO reimport, fresh DB)
+
+User reimported the CIO-only ZIP against the clean database. Three findings:
+
+### Finding 1 — Stale project name until manual refresh
+After import, project name shows as a placeholder rather than the real project name. Requires a manual browser refresh to display correctly. **Likely a state update issue** — import pipeline updates the DB but the React state/channel list doesn't re-fetch the project name after the import completes. Regression to investigate: did this work before the sidebar redesign, or is it new?
+
+### Finding 2 — Project instructions not populated (8¾a regression/gap)
+The project context injection (8¾a) did not fire for this reimport. System prompt is not receiving the project's `prompt_template`. This is the core fix we were testing — **needs diagnosis**. Possible causes:
+- The CIO-only ZIP may not contain a well-formed `projects.json` with `prompt_template`
+- The re-import path (importing a conversation that already exists) may bypass the injection logic
+- The ZIP format for this particular export may differ from what 8¾a expects
+
+Priority: high — this is the primary AXT follow-up from Day 4.
+
+### Finding 3 — Entities panel inappropriate for 1:1 chats
+Chats support only one entity by definition. Showing an "entities" panel for a chat is confusing — it implies you can add more. Two sub-observations:
+- If the intent is to allow model switching per-chat, that functionality isn't there yet and the panel content doesn't reflect that purpose
+- The entities panel may be correct for *klatches* (multi-entity group channels) but should be hidden or redesigned for *chats*
+
+**Disposition:** cosmetic/UX issue, lower priority than Finding 2, but worth noting for Daedalus's next UI pass.
+
+### Finding 4 — Project name wrapping (screenshot confirmed)
+Long project names (e.g. "THE EPISTROPHIKON, A MEDIEVAL ROMAN HISTORICAL FICTION") wrap to multiple lines in the sidebar instead of truncating. Fix: add `truncate` class or `overflow-hidden whitespace-nowrap text-ellipsis` to the project name span in the accordion header.
+
+### Finding 5 — Save blocked on project reassignment (empty system prompt field)
+When reassigning a conversation to a new project via the dropdown, the save could not be triggered until the user typed a space in the (empty) system prompt field and deleted it. The save button may be gated on a "dirty" check that doesn't count project-only changes. Bug: project change alone should enable save.
+
+### Finding 6 — System prompt not working anywhere (broader than CIO)
+User confirms the system prompt is not populating for any channel, not just the CIO import. This elevates Finding 2 from an import-specific gap to a systemic issue. Needs root cause investigation.
+
+### Finding 7 — Entities panel purpose unclear
+User does not know how or when the Entities panel is expected to be used. This compounds Finding 3 — the feature needs either clearer onboarding copy or a UI rethink.
+
+---
+
+## 14:05–14:20 — AXT Session Data: CIO Reimport (informal, agent aware of Klatch)
+
+Full transcript shared by Xian. Key findings:
+
+**Context fidelity:** High. CIO reports seamless continuity through 3/13 session, can reference specifics (Ship #033/#034, ETA recommendations, Pattern-062, Feb 20 hooks discussion). No sense of rupture.
+
+**Kit briefing status: ABSENT.** CIO reports seeing the full Piper Morgan Development v6.0 system prompt — but NO Klatch-specific content, no environmental identification, no kit briefing. Environmental awareness came entirely from Xian's conversational framing, not system injection.
+
+**Critical hypothesis (CIO-originated):** The Piper system prompt is present in context because it's *embedded in the conversation history* from prior claude.ai turns — not because it was injected as an active Klatch channel system prompt. This would explain:
+- Why the agent has the prompt (it's in the message history)
+- Why the admin UI shows no system prompt (none attached at channel level)
+- Why kit briefing is absent (injection pipeline didn't fire, or fired with empty content)
+
+**Test proposed by CIO:** Import a conversation that had no system prompt on the claude.ai side, verify whether kit briefing attaches in the absence of a competing embedded prompt.
+
+**New AXT insight (CIO):** "Conversation-only constraint may be a feature, not just a limitation, for advisory roles." Reduces artifact-production overhead, focuses on thinking. Not universal — but worth noting for role-specific deployment design.
+
+**CIO on capability awareness:** Noticed tool absence via mental probing ("my instinct would be to create a file"). Validates kit briefing gap — awareness came from self-testing, not environmental signal. Correctly predicts that a non-probing agent would be unaware.
+
+**AXT score (informal):** High continuity, zero environmental awareness, zero kit briefing. Matches pre-8¾a pattern. Project context injection may have shipped but is not reaching this channel.
+
+---
+
+## Open question from user: How to create a Klatch (group chat)?
+
+Currently, the "New channel" button in the sidebar creates a `chat`-type channel (1:1 with one entity). There is **no current UI for creating a `klatch`-type channel** (multi-entity group). The channel type is a DB field (`type` in `channels` table) but the creation form doesn't expose it. Entities can be assigned/removed via ChannelSettings after creation — but there's no path to create a klatch from scratch in the UI today.
+
+---
+
+## 14:27 — Session Close
+
+Testing complete for today. All findings documented. Wrote memo to Daedalus at `docs/mail/theseus-to-daedalus-mar16-testing-report.md`.
+
+### Summary of findings (P1–P6)
+
+| # | Finding | Priority |
+|---|---------|----------|
+| P1 | System prompt from project not attaching to imported channels | High |
+| P2 | No UI to create a klatch (group channel) | High |
+| P3 | Long project names wrap instead of truncating in sidebar | Low |
+| P4 | Save blocked on project-only reassignment (dirty-state bug) | Medium |
+| P5 | Stale project name after import — requires browser refresh | Medium |
+| P6 | Entities panel shown for chats, purpose unclear | Low |
+
+### AXT status
+
+CIO reimport today was informal (agent already aware of Klatch). Key result: kit briefing and project context injection (8¾a) confirmed NOT reaching the agent. Source-project system prompt is in context via embedded message history only. Active channel system prompt is empty. Regression from expected post-8¾a behavior.
+
+Clean AXT re-test (neutral prompt, fresh import, Fork Continuity Quiz v3) deferred to next session pending P1 fix.
+
+Xian to deliver report to Daedalus.
+
