@@ -94,15 +94,22 @@ export function ChannelSidebar({
       }
     }
 
+    // Sort by most recent activity (last message timestamp), newest first
+    const byLastActivity = (a: Channel, b: Channel) => {
+      const aTime = a.lastMessageAt || a.createdAt;
+      const bTime = b.lastMessageAt || b.createdAt;
+      return bTime.localeCompare(aTime);
+    };
+
     const projectGroups = Array.from(projectMap.entries()).map(([id, group]) => ({
       id,
       name: group.name,
-      chats: group.chats,
-      klatches: group.klatches,
+      chats: group.chats.sort(byLastActivity),
+      klatches: group.klatches.sort(byLastActivity),
       totalCount: group.chats.length + group.klatches.length,
     }));
 
-    return { general, projectGroups, unassigned };
+    return { general, projectGroups, unassigned: unassigned.sort(byLastActivity) };
   }, [channels]);
 
   // Auto-expand first project if none is expanded yet and projects exist
