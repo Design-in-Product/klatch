@@ -128,3 +128,28 @@ PO wants to discuss the 4-layer prompt architecture before Phase 3. Key insight:
 2. Should the kit briefing create an observable transition moment for the agent?
 
 PO finds the wireframe-then-discuss workflow efficient. Next step: PO will sketch a domain model bridging prompt concerns, then review together as with the sidebar wireframe.
+
+## 16:15 — Deep prompt architecture discussion
+
+Built debug endpoint (`GET /channels/:id/prompt-debug`) to verify what agents actually receive. Returns all 4 layers with status + the assembled prompt. Shipped as `bd1d6b2`.
+
+Explained to PO: the CIO likely does "see" the kit briefing but doesn't surface it because system prompt is subtext (shapes behavior, doesn't prompt disclosure). Need empirical verification via debug endpoint.
+
+Clarified channel addendum vs entity prompt distinction:
+- **Entity prompt** = who you are (travels with the entity everywhere)
+- **Channel addendum** = where you are / what's happening here (applies to everyone in this channel)
+- For chats: channel addendum is vestigial (no "room" concept in 1:1)
+
+## 16:30 — Data source mapping table + decisions
+
+Created comprehensive table mapping every context data element across all three source paths (claude.ai import, Code import, Klatch native). Identified 5 gaps. Committed to `docs/plans/prompt-architecture-audit.md`.
+
+**Four decisions locked with PO:**
+1. MEMORY.md → project level (add `memory` column to projects table)
+2. Don't drop claude.ai memories — normalize and store
+3. Role/persona is future opportunity; manual customization for now
+4. Channel addendum hidden in chat UI; only shown for klatches
+
+**Note for Calliope:** PO suggests today's design session (sidebar wireframe → glossary → prompt architecture audit) might make a good blog post. The PO's sketches could be visually interesting for illustration.
+
+PO is now sketching a domain model. Standing by.
