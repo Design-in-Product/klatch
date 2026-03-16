@@ -23,10 +23,10 @@ Agents working on this repo use this file as the async handoff protocol.
 ### Daedalus (architecture & implementation)
 - **Branch:** `main`
 - **Status:** available
-- **Last completed:** Import project assignment — users can assign conversations to projects during claude.ai import preview (dropdown per conversation, auto-selects when single project). Also fixed vitest picking up stale dist/ tests. 609 tests (503 server + 106 client).
+- **Last completed:** Post-import project reassignment (project dropdown in Channel Settings) + removed duplicate project name prefix from channel titles. 622 tests (516 server + 106 client), zero failures.
 - **Next:** Await PO direction. Sidebar cleanup and retro on design tracking.
 - **Waiting on:** Nothing.
-- **Updated:** 2026-03-15 18:45
+- **Updated:** 2026-03-15 19:15
 
 ### Theseus Prime (manual testing & exploration — CLI side)
 - **Branch:** `main`
