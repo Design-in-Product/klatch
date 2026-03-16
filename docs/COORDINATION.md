@@ -62,9 +62,18 @@ Use these status values:
 
 All in-progress work happens on feature branches. `main` must always be demo-ready — tests pass, app runs, no half-finished features. Only merge to `main` when the feature is complete and verified. This lets anyone check out `main` at any time for a clean demo or to base new work on a stable snapshot.
 
+## Merge protocol
+
+Merging feature branches into main is **Daedalus's responsibility** (or the PO's). To avoid silent deletions from stale branches:
+
+1. **Rebase or merge main into your branch before pushing for review.** This ensures your branch includes all recent main changes. If you skip this, git may silently "delete" files that were added to main after your branch diverged.
+2. **Daedalus reviews the diff stat before merging.** Any unexpected file deletions, additions outside the assignment scope, or changes to shared docs (CLAUDE.md, ROSTER.md, AXT.md, ROADMAP.md) will be reverted during merge.
+3. **Stay in your lane.** Only modify files within your assignment scope. If you notice something that needs fixing outside your scope, note it in your log or mail — don't fix it yourself.
+
 ## Protocol
 
-- Read this file at session start
+- Pull from origin and read this file at session start
+- Check `docs/mail/` for memos addressed to you
 - Update your section before every push (include `Updated:` timestamp)
 - If you need something from the other agent, say so in "Waiting on"
 - Keep Notes short — link to docs/tests for details

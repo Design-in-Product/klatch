@@ -15,3 +15,6 @@ research/data-*
 # Large demo source files (keep web-optimized versions)
 demo/*.mov
 demo/*.gif
+
+# Database backups directory
+backups/
