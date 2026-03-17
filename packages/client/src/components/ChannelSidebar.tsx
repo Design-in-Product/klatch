@@ -10,6 +10,7 @@ interface Props {
   onCreateChannel: (name: string, systemPrompt: string) => void;
   onOpenEntities?: () => void;
   onOpenImport?: () => void;
+  onOpenProjectSettings?: (projectId: string) => void;
   isOpen?: boolean;
   onClose?: () => void;
   theme: 'light' | 'dark';
@@ -23,6 +24,7 @@ export function ChannelSidebar({
   onCreateChannel,
   onOpenEntities,
   onOpenImport,
+  onOpenProjectSettings,
   isOpen,
   onClose,
   theme,
@@ -203,16 +205,30 @@ export function ChannelSidebar({
           const isExpanded = effectiveExpanded === project.id;
           return (
             <div key={`project:${project.id}`} data-testid={`project-group-${project.id}`}>
-              <button
-                onClick={() => toggleProject(project.id)}
-                className="w-full flex items-center gap-1 px-4 pt-3 pb-1 group overflow-hidden min-w-0"
-              >
-                {chevronIcon(isExpanded)}
-                <span className="text-[10px] font-semibold text-muted uppercase tracking-wider truncate">
-                  {project.name}
-                </span>
-                <span className="text-[10px] text-muted ml-1">({project.totalCount})</span>
-              </button>
+              <div className="flex items-center px-4 pt-3 pb-1 overflow-hidden min-w-0 group">
+                <button
+                  onClick={() => toggleProject(project.id)}
+                  className="flex items-center gap-1 min-w-0 flex-1"
+                >
+                  {chevronIcon(isExpanded)}
+                  <span className="text-[10px] font-semibold text-muted uppercase tracking-wider truncate">
+                    {project.name}
+                  </span>
+                  <span className="text-[10px] text-muted ml-1 flex-shrink-0">({project.totalCount})</span>
+                </button>
+                {onOpenProjectSettings && (
+                  <button
+                    onClick={(e) => { e.stopPropagation(); onOpenProjectSettings(project.id); }}
+                    className="ml-1 p-0.5 rounded text-muted hover:text-secondary transition-colors opacity-0 group-hover:opacity-100 focus:opacity-100 flex-shrink-0"
+                    title="Project settings"
+                  >
+                    <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.066 2.573c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.573 1.066c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.066-2.573c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                  </button>
+                )}
+              </div>
               {isExpanded && (
                 <>
                   {/* Chats section (1:1) — shown first */}

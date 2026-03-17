@@ -3,6 +3,7 @@ import type { Channel, Entity, ModelId, InteractionMode } from '@klatch/shared';
 import { AVAILABLE_MODELS, INTERACTION_MODES } from '@klatch/shared';
 import { ChannelSidebar } from './components/ChannelSidebar';
 import { ChannelSettings } from './components/ChannelSettings';
+import { ProjectSettings } from './components/ProjectSettings';
 import { EntityManager } from './components/EntityManager';
 import { ImportDialog } from './components/ImportDialog';
 import { MessageList } from './components/MessageList';
@@ -45,6 +46,7 @@ export default function App() {
   const [showSettings, setShowSettings] = useState(false);
   const [showEntityManager, setShowEntityManager] = useState(false);
   const [showImportDialog, setShowImportDialog] = useState(false);
+  const [activeProjectId, setActiveProjectId] = useState<string | null>(null);
   const [sendError, setSendError] = useState<string | null>(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
@@ -328,6 +330,10 @@ export default function App() {
         onCreateChannel={handleCreateChannel}
         onOpenEntities={() => setShowEntityManager(true)}
         onOpenImport={() => setShowImportDialog(true)}
+        onOpenProjectSettings={(projectId) => {
+          setActiveProjectId(projectId);
+          setShowSettings(false); // close channel settings if open
+        }}
         isOpen={sidebarOpen}
         onClose={() => setSidebarOpen(false)}
         theme={theme}
@@ -348,7 +354,7 @@ export default function App() {
             </svg>
           </button>
           <button
-            onClick={() => setShowSettings(!showSettings)}
+            onClick={() => { setShowSettings(!showSettings); if (!showSettings) setActiveProjectId(null); }}
             className="min-w-0 text-left hover:opacity-80 transition-opacity"
             title="Edit channel settings"
           >
@@ -412,7 +418,7 @@ export default function App() {
           )}
         </div>
 
-        {/* Settings panel (toggle) */}
+        {/* Settings panel (toggle) — channel or project */}
         {showSettings && activeChannel && (
           <ChannelSettings
             channel={activeChannel}
@@ -423,6 +429,16 @@ export default function App() {
             onRemoveEntity={handleRemoveEntity}
             onDeleteChannel={handleDeleteChannel}
             onClose={() => setShowSettings(false)}
+          />
+        )}
+        {activeProjectId && !showSettings && (
+          <ProjectSettings
+            projectId={activeProjectId}
+            onClose={() => setActiveProjectId(null)}
+            onUpdated={() => {
+              // Refresh channels to pick up project name changes in sidebar
+              fetchChannels().then(setChannels).catch(console.error);
+            }}
           />
         )}
 

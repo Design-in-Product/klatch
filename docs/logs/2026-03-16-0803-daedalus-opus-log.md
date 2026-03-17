@@ -182,3 +182,19 @@ Resumed after context window swap. Implemented three of the four locked decision
 Decision 3 (role/persona = future opportunity, manual for now) requires no code changes — it's a design constraint, not a feature.
 
 **Test results:** 624 total (518 server + 106 client), zero failures.
+
+## 20:00 — Project settings panel + Argus Round 8
+
+Built the Project Settings panel (priority B from prioritization):
+- New `ProjectSettings` component: name, instructions, memory — all editable with save/cancel
+- Source provenance badge for imported projects (CC/AI with path and import date)
+- Char counts shown below textareas (instructions can be large)
+- `font-mono` on textareas since instructions/memory are typically code/markdown
+- Gear icon on project accordion headers in sidebar (shows on hover)
+- Wired into App.tsx: clicking gear opens project settings in the main panel area
+- Mutual exclusion: opening project settings closes channel settings and vice versa
+- API client: added `fetchProject()` and `updateProjectApi()` functions
+
+Also wrote Argus Round 8 assignment (project memory + prompt assembly tests) and pushed to origin.
+
+**Test results:** 624 total (518 server + 106 client), zero failures.

@@ -50,6 +50,7 @@ export interface Project {
   id: string;
   name: string;
   instructions: string;
+  memory: string;
   source: string;
   sourceMetadata: string;
   createdAt: string;
@@ -58,6 +59,25 @@ export interface Project {
 export async function fetchProjects(): Promise<Project[]> {
   const res = await fetch(`${BASE}/projects`);
   if (!res.ok) throw new Error(`Failed to fetch projects: ${res.statusText}`);
+  return res.json();
+}
+
+export async function fetchProject(id: string): Promise<Project> {
+  const res = await fetch(`${BASE}/projects/${id}`);
+  if (!res.ok) throw new Error(`Failed to fetch project: ${res.statusText}`);
+  return res.json();
+}
+
+export async function updateProjectApi(
+  id: string,
+  updates: { name?: string; instructions?: string; memory?: string }
+): Promise<Project> {
+  const res = await fetch(`${BASE}/projects/${id}`, {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(updates),
+  });
+  if (!res.ok) throw new Error(`Failed to update project: ${res.statusText}`);
   return res.json();
 }
 
