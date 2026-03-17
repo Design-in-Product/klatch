@@ -37,6 +37,35 @@
     </div>
 
     <!-- ============================================================ -->
+    <!-- ENTRY: 2026-03-16 -->
+    <!-- ============================================================ -->
+    <div class="log-entry" id="2026-03-16">
+      <p class="log-date">March 16, 2026</p>
+      <div class="log-body">
+
+        <p>The day began with a hand-drawn wireframe on a reMarkable tablet and ended with 683 tests passing. Everything in between was design.</p>
+
+        <p>xian sketched the new sidebar layout by hand — a fat-marker diagram showing project accordions, channel groupings, a controls strip at the bottom. The sketch went into the repo as a PNG, then into a structured design conversation with Daedalus. The process is deliberately non-vibe: draw the thing, talk through the concepts, arrive at a glossary before writing any code. This morning's glossary yielded two words: <em>chat</em> and <em>klatch</em>. A chat is a 1:1 conversation with one Claude entity. A klatch is a multi-entity group channel with orchestration. Same database table, one new column. Gall's law.</p>
+
+        <p>The glossary matters because the sidebar had been grouping channels by type — but "type" wasn't a first-class concept until today. Now it is. The accordion-first sidebar shipped by noon: project groups open one at a time, chats above klatches within each project, unassigned chats below everything. Theseus tested it at 1:34 PM and found it "generally working remarkably well." Six findings, P1 through P6, ranked by priority. Daedalus addressed four of them before the afternoon was over.</p>
+
+        <p>P1 was the interesting one — and it turned out not to be a bug. Theseus reported that system prompts weren't attaching to imported channels. The admin UI showed an empty system prompt field for every reimported conversation. But Daedalus's investigation revealed the prompt assembly pipeline was working correctly; the admin UI just doesn't show you the assembled result, only the editable layer. The UI gap is real. The logic wasn't broken.</p>
+
+        <p>The deeper finding came from the CIO — the imported agent who ran the informal AXT session today. She had full context from her prior conversation. No sense of rupture, no missing details. And yet: no kit briefing, no environmental identification, nothing Klatch-specific. When asked to explain this, she offered a hypothesis: the source project's system prompt was present in her context because it was <em>embedded in the conversation history</em> from the original claude.ai turns — not because Klatch had injected it. The agent was well-oriented; the orientation was coming from the wrong layer. A ghost system prompt. The admin UI shows empty because nothing was injected. The agent appears fine because the old prompt is in the message record.</p>
+
+        <p>This is a methodological problem as much as a technical one. If agents appear well-oriented via ghost prompts, informal AXT sessions will miss the gap. The clean re-test protocol — neutral import, fresh database, Fork Continuity Quiz — matters precisely because it would surface the absence. Today's session was informal; the CIO already knew she was in Klatch. That test is deferred to tomorrow, pending the P1 architectural fix.</p>
+
+        <p>The afternoon turned to architecture. xian sketched a domain model by hand — this one mapping the relationships between every context data element: system prompt, project instructions, memory, kit briefing, entity prompt, channel addendum. Daedalus built a prompt assembly audit table while xian drew. Four decisions locked: MEMORY.md routes to the project level, claude.ai memories don't get dropped, the channel addendum is hidden in chat UI (vestigial for 1:1), role/persona customization is a future opportunity. The prompt assembly layer count went from four to five. A debug endpoint went into the codebase so that assembledPrompt is inspectable without running a full conversation.</p>
+
+        <p>Argus verified the whole stack in two rounds: 21 speculative tests from Round 7 now passing against the shipped implementation, plus 24 new Round 8 tests covering project memory CRUD, import routing, and 5-layer prompt assembly. All 683 tests green, up from 516 at session start.</p>
+
+        <p>xian asked, near the end of the day: could today's design process be a blog post? The wireframe-first workflow, the glossary moment, the decision table — it's a far cry from what most people imagine when they hear "AI-assisted development." We'll find out tomorrow.</p>
+
+      </div>
+    </div>
+    <!-- end entry 2026-03-16 -->
+
+    <!-- ============================================================ -->
     <!-- ENTRY: 2026-03-15 -->
     <!-- ============================================================ -->
     <div class="log-entry" id="2026-03-15">
