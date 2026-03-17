@@ -198,3 +198,43 @@ Built the Project Settings panel (priority B from prioritization):
 Also wrote Argus Round 8 assignment (project memory + prompt assembly tests) and pushed to origin.
 
 **Test results:** 624 total (518 server + 106 client), zero failures.
+
+## 21:25 — Argus Rounds 6-8 merge + legacy test fix
+
+Selectively merged Argus's completed work from `origin/claude/audit-and-planning-xn2w7`:
+- **Round 6** (14 tests): project reassignment via PATCH, channel name prefixing, fetchProjects API
+- **Round 7** (11 tests): type column, sidebar grouping by type, accordion behavior
+- **Round 8** (24 tests): project memory CRUD, import memory routing, 5-layer prompt assembly
+- **Client** (10 tests): sidebar redesign — project accordion, chat/klatch sections, unassigned
+
+Had to selectively cherry-pick — Argus's branch was stale (branched before ProjectSettings commit), so their client changes would have reverted the new component. Took only test files and docs.
+
+Also applied Argus's recommended fix for 14 pre-existing test failures: added `import './setup.js'` to 4 legacy test files (queries, channels, entities, metadata) that were running against real `klatch.db` instead of in-memory test DB.
+
+**Test results:** 683 total (567 server + 116 client), zero failures.
+
+## Session summary
+
+Massive design day. Started with sidebar wireframe review, ended with full prompt architecture audit and three shipped decisions.
+
+**Design work:**
+- Sidebar wireframe → glossary (Chat/Klatch) → GitHub issue #8
+- Prompt architecture deep dive → 5-layer model → data source mapping table
+- Prioritization: B (project settings) → A (model provenance) → D (klatch creation) → E (import merge)
+- Shared data model CSV as living design document
+
+**Shipped:**
+- Sidebar redesign Phase 1+2 (type column, project-first accordion)
+- Decision 1: MEMORY.md → project level (memory column on projects)
+- Decision 2: Don't drop claude.ai memories (merged into project memory)
+- Decision 4: Hide channel addendum for chats
+- Project settings panel (name, instructions, memory — all editable)
+- Sort-by-activity (#12)
+- P3 truncation fix, P5 stale sidebar fix
+- prompt-debug endpoint
+- 14 pre-existing test failures fixed
+- 6 GitHub issues filed (#9-#14)
+
+**Test count:** 683 (up from 516 at session start). Zero failures.
+
+**Tomorrow:** PO tests project settings panel. Then model provenance indicator (A) and klatch creation UI (D).

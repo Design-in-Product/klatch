@@ -48,11 +48,11 @@ Agents working on this repo use this file as the async handoff protocol.
 
 ### Daedalus (architecture & implementation)
 - **Branch:** `main`
-- **Status:** working
-- **Last completed:** Decisions 1, 2, 4 from prompt architecture audit. Memory column on projects, claude.ai memories preserved, channel addendum hidden for chats. 5-layer prompt assembly. Data model CSV updated with PO. 624 tests, zero failures.
-- **Working on:** Project settings panel (B), model provenance indicator (A), then klatch creation UI (D).
-- **Waiting on:** Nothing.
-- **Updated:** 2026-03-16 19:57
+- **Status:** available
+- **Last completed:** Project settings panel shipped. Argus Rounds 6-8 merged (selectively — stale branch). Legacy test fix applied. 683 tests, zero failures.
+- **Working on next:** Model provenance indicator (A), then klatch creation UI (D).
+- **Waiting on:** PO testing project settings panel.
+- **Updated:** 2026-03-16 21:35
 
 ### Theseus Prime (manual testing & exploration — CLI side)
 - **Branch:** `main`
