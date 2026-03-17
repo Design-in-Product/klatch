@@ -167,11 +167,9 @@ app.post('/import/claude-code', async (c) => {
   // ── Create/find project by cwd (8¾a: same cwd = same project) ──
   let projectId: string | undefined;
   if (session.cwd) {
-    // Build project instructions from CLAUDE.md + MEMORY.md
-    const instructionParts: string[] = [];
-    if (claudeMd) instructionParts.push(claudeMd);
-    if (memoryMd) instructionParts.push('## Project Memory\n\n' + memoryMd);
-    const instructions = instructionParts.join('\n\n');
+    // Project instructions = CLAUDE.md content (project conventions/rules)
+    // Project memory = MEMORY.md content (accumulated knowledge, separate field)
+    const instructions = claudeMd || '';
     const projectName = path.basename(session.cwd);
 
     const project = findOrCreateProject(
@@ -180,7 +178,8 @@ app.post('/import/claude-code', async (c) => {
       'claude-code',
       { cwd: session.cwd },
       'cwd',
-      session.cwd
+      session.cwd,
+      memoryMd || ''
     );
     projectId = project.id;
   }
@@ -455,17 +454,16 @@ function processImport(
     const projectIdMap = new Map<string, string>(); // ZIP project UUID → Klatch project ID
 
     for (const [zipUuid, projInfo] of projects.entries()) {
-      // Build project instructions from prompt_template + project memories
-      const instructionParts: string[] = [];
-      if (projInfo.promptTemplate) {
-        instructionParts.push(projInfo.promptTemplate);
-      }
-      // Append project-scoped memories if available
-      const projMem = projectMemories.get(zipUuid);
-      if (projMem) {
-        instructionParts.push('## Project Memory\n\n' + projMem);
-      }
-      const instructions = instructionParts.join('\n\n');
+      // Project instructions = prompt_template (project conventions/rules)
+      // Project memory = project-scoped memories + global account memories (merged)
+      const instructions = projInfo.promptTemplate || '';
+      const projMem = projectMemories.get(zipUuid) || '';
+
+      // Merge project-scoped memories with global account memories (Decision 2: don't drop)
+      const memoryParts: string[] = [];
+      if (projMem) memoryParts.push(projMem);
+      if (memoryMd) memoryParts.push('## Account memories (from claude.ai)\n\n' + memoryMd);
+      const mergedMemory = memoryParts.join('\n\n');
 
       const project = findOrCreateProject(
         projInfo.name,
@@ -479,7 +477,8 @@ function processImport(
           importedAt: new Date().toISOString(),
         },
         'originalProjectUuid',
-        zipUuid
+        zipUuid,
+        mergedMemory
       );
       projectIdMap.set(zipUuid, project.id);
     }

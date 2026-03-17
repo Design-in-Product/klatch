@@ -173,11 +173,10 @@ const MAX_CONTEXT_CHARS = 4000;
  * Orients the model about its environment when continuing from an imported session.
  * Addresses the "silent capability loss" problem discovered in Theseus/Ariadne testing.
  *
- * Note: Project instructions (CLAUDE.md / prompt_template) are now injected via the
- * project layer in buildSystemPrompt, NOT here. Kit briefing retains only:
- * - Core orientation text (capability awareness)
- * - MEMORY.md content (accumulated project memory — kept here as a fallback for
- *   channels not yet linked to a project)
+ * Kit briefing is now ONLY the core orientation text (capability awareness).
+ * Project instructions and memory are injected via their own layers in buildSystemPrompt.
+ * Legacy fallback: if channel has no project link, claudeMd/memoryMd from sourceMetadata
+ * are still injected here to avoid silent data loss.
  */
 export function buildKitBriefing(channel: Channel): string {
   const parts: string[] = [];
@@ -192,15 +191,13 @@ export function buildKitBriefing(channel: Channel): string {
     'explain what you would do and suggest they use a tool-enabled environment.'
   );
 
-  // Inject MEMORY.md from sourceMetadata (accumulated project memory)
-  // claudeMd is now in project.instructions — only inject here as fallback
-  // when channel has no project link (legacy imports)
+  // Legacy fallback: inject context from sourceMetadata for channels without a project link.
+  // New imports store these at project level (instructions + memory columns).
   let meta: Record<string, unknown> = {};
   try {
     if (channel.sourceMetadata) meta = JSON.parse(channel.sourceMetadata);
   } catch { /* ignore parse errors */ }
 
-  // Only inject claudeMd from sourceMetadata if channel has no project (legacy fallback)
   if (!channel.projectId && meta.claudeMd) {
     const content = String(meta.claudeMd);
     const truncated = content.length > MAX_CONTEXT_CHARS
@@ -209,7 +206,7 @@ export function buildKitBriefing(channel: Channel): string {
     parts.push('Project instructions (CLAUDE.md) from the original session:\n\n' + truncated);
   }
 
-  if (meta.memoryMd) {
+  if (!channel.projectId && meta.memoryMd) {
     const content = String(meta.memoryMd);
     const truncated = content.length > MAX_CONTEXT_CHARS
       ? content.slice(0, MAX_CONTEXT_CHARS) + '\n...(truncated)'
@@ -223,14 +220,18 @@ export function buildKitBriefing(channel: Channel): string {
 /** Max characters of project instructions to inject into system prompt */
 const MAX_PROJECT_INSTRUCTIONS_CHARS = 32000;
 
+/** Max characters of project memory to inject into system prompt */
+const MAX_PROJECT_MEMORY_CHARS = 8000;
+
 /**
- * Build system prompt with 4-layer assembly:
+ * Build system prompt with 5-layer assembly:
  *   1. Kit briefing (imported channels only — orientation + capability awareness)
- *   2. Project instructions (from projects table — CLAUDE.md / prompt_template)
- *   3. Channel addendum (channel-specific system prompt)
- *   4. Entity's own system prompt
+ *   2. Project instructions (from projects.instructions — CLAUDE.md / prompt_template)
+ *   3. Project memory (from projects.memory — MEMORY.md / claude.ai memories)
+ *   4. Channel addendum (channel-specific system prompt)
+ *   5. Entity's own system prompt
  *
- * Per design doc: project-instructions-inheritance.md (approved 2026-03-13)
+ * Per design doc: prompt-architecture-audit.md (decisions locked 2026-03-16)
  */
 export function buildSystemPrompt(entity: Entity, channelPreamble?: string, channel?: Channel, project?: Project | null): string {
   const parts: string[] = [];
@@ -249,10 +250,19 @@ export function buildSystemPrompt(entity: Entity, channelPreamble?: string, chan
     parts.push(truncated);
   }
 
-  // 3. Channel addendum (channel-specific system prompt)
+  // 3. Project memory (accumulated knowledge — MEMORY.md, claude.ai memories)
+  if (project?.memory?.trim()) {
+    const content = project.memory.trim();
+    const truncated = content.length > MAX_PROJECT_MEMORY_CHARS
+      ? content.slice(0, MAX_PROJECT_MEMORY_CHARS) + '\n...(truncated)'
+      : content;
+    parts.push('Project memory:\n\n' + truncated);
+  }
+
+  // 4. Channel addendum (channel-specific system prompt)
   if (channelPreamble?.trim()) parts.push(channelPreamble.trim());
 
-  // 4. Entity's own system prompt
+  // 5. Entity's own system prompt
   if (entity.systemPrompt?.trim()) parts.push(entity.systemPrompt.trim());
 
   return parts.join('\n\n');

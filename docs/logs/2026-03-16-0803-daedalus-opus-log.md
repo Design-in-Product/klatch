@@ -152,4 +152,33 @@ Created comprehensive table mapping every context data element across all three 
 
 **Note for Calliope:** PO suggests today's design session (sidebar wireframe → glossary → prompt architecture audit) might make a good blog post. The PO's sketches could be visually interesting for illustration.
 
-PO is now sketching a domain model. Standing by.
+PO is now sketching a domain model. Implementing approved decisions while they draw.
+
+## 18:40 — Decision implementation (context swap)
+
+Resumed after context window swap. Implemented three of the four locked decisions:
+
+**Decision 1: MEMORY.md → project level** ✅
+- Added `memory TEXT NOT NULL DEFAULT ''` column to `projects` table (migration + test schema)
+- Added `memory` field to `Project` interface in shared types
+- Updated all project CRUD: `rowToProject`, `createProject`, `updateProject`, `findOrCreateProject`
+- **Claude Code import**: MEMORY.md → `project.memory` (separate from `project.instructions` = CLAUDE.md)
+- **claude.ai import**: project-scoped memories → `project.memory` (separate from `project.instructions` = prompt_template)
+- System prompt assembly now 5 layers: kit briefing → project instructions → project memory → channel addendum → entity prompt
+- Legacy fallback preserved: channels without project link still get sourceMetadata fallback via kit briefing
+- PATCH `/projects/:id` accepts `memory` field
+- prompt-debug endpoint updated for 5 layers
+
+**Decision 2: Don't drop claude.ai global memories** ✅
+- Global `conversations_memory` from claude.ai exports now merged into each project's `memory` field
+- Labeled as "Account memories (from claude.ai)" to distinguish from project-scoped memories
+- Unassigned channels still get memories via sourceMetadata legacy fallback
+
+**Decision 4: Hide channel addendum for chats** ✅
+- ChannelSettings.tsx: system prompt textarea only renders when `channel.type === 'klatch'`
+- Removed the CLAUDE.md/session summary loading buttons (those are now handled at project level)
+- Renamed label from "System prompt" to "Channel prompt" for clarity
+
+Decision 3 (role/persona = future opportunity, manual for now) requires no code changes — it's a design constraint, not a feature.
+
+**Test results:** 624 total (518 server + 106 client), zero failures.

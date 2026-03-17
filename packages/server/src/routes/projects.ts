@@ -37,6 +37,7 @@ app.patch('/:id', async (c) => {
   const updates = await c.req.json<{
     name?: string;
     instructions?: string;
+    memory?: string;
   }>();
 
   const project = updateProject(id, updates);

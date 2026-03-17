@@ -78,6 +78,7 @@ export interface Project {
   id: string;
   name: string;
   instructions: string;
+  memory: string;          // accumulated project memory (from MEMORY.md, claude.ai memories, etc.)
   source: ChannelSource;
   sourceMetadata: string; // JSON string
   createdAt: string;

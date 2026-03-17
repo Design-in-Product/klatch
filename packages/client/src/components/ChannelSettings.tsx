@@ -213,54 +213,22 @@ export function ChannelSettings({
           </div>
         )}
 
-        {/* System prompt (shared preamble) */}
-        <div>
-          <label className="block text-xs text-secondary mb-1">
-            System prompt <span className="text-muted font-normal">(shared context for all entities)</span>
-          </label>
-          <textarea
-            value={systemPrompt}
-            onChange={(e) => { setSystemPrompt(e.target.value); handleChange(); }}
-            rows={3}
-            className="w-full rounded bg-input border border-line px-3 py-2 text-sm text-primary placeholder-muted focus:outline-none focus:border-accent resize-none"
-          />
-
-          {/* Context loading hints and buttons for imported channels */}
-          {isImported && !hasSavedPrompt && (
-            <div className="mt-2 space-y-2">
-              <p className="text-xs text-muted">
-                {channel.source === 'claude-code'
-                  ? `This session was imported from ${hasCwd ? meta.cwd.split('/').pop() : 'Claude Code'}. Load a context file or paste instructions to restore the original session context.`
-                  : 'This conversation was imported from claude.ai. Paste any project instructions below to restore context.'}
-              </p>
-
-              <div className="flex flex-wrap gap-2">
-                {hasCwd && channel.source === 'claude-code' && (
-                  <button
-                    onClick={handleLoadClaudeMd}
-                    disabled={contextLoading}
-                    className="text-xs px-2.5 py-1 rounded border border-line bg-card text-secondary hover:text-primary hover:bg-hover transition-colors disabled:opacity-50"
-                  >
-                    {contextLoading ? 'Loading...' : 'Load CLAUDE.md'}
-                  </button>
-                )}
-
-                {hasCompactionSummary && (
-                  <button
-                    onClick={handleUseSessionSummary}
-                    className="text-xs px-2.5 py-1 rounded border border-line bg-card text-secondary hover:text-primary hover:bg-hover transition-colors"
-                  >
-                    Use session summary
-                  </button>
-                )}
-              </div>
-
-              {contextError && (
-                <p className="text-xs text-danger">{contextError}</p>
-              )}
-            </div>
-          )}
-        </div>
+        {/* Channel addendum (system prompt) — only for klatches, not chats.
+            For chats (1:1 with Claude), context comes from project instructions + entity prompt.
+            The "channel addendum" only makes sense for multi-entity group conversations. */}
+        {channel.type === 'klatch' && (
+          <div>
+            <label className="block text-xs text-secondary mb-1">
+              Channel prompt <span className="text-muted font-normal">(shared context for all entities in this klatch)</span>
+            </label>
+            <textarea
+              value={systemPrompt}
+              onChange={(e) => { setSystemPrompt(e.target.value); handleChange(); }}
+              rows={3}
+              className="w-full rounded bg-input border border-line px-3 py-2 text-sm text-primary placeholder-muted focus:outline-none focus:border-accent resize-none"
+            />
+          </div>
+        )}
 
         {/* Interaction mode — only meaningful with 2+ entities */}
         {channelEntities.length >= 2 && (

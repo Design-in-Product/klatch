@@ -24,6 +24,7 @@ function rowToProject(row: any): Project {
     id: row.id,
     name: row.name,
     instructions: row.instructions || '',
+    memory: row.memory || '',
     source: (row.source as ChannelSource) || 'native',
     sourceMetadata: row.source_metadata || '{}',
     createdAt: row.created_at,
@@ -433,28 +434,30 @@ export function createProject(
   name: string,
   instructions: string,
   source: ChannelSource = 'native',
-  sourceMetadata: Record<string, unknown> = {}
+  sourceMetadata: Record<string, unknown> = {},
+  memory: string = ''
 ): Project {
   const id = uuidv4();
   const now = new Date().toISOString();
   getDb()
-    .prepare('INSERT INTO projects (id, name, instructions, source, source_metadata, created_at) VALUES (?, ?, ?, ?, ?, ?)')
-    .run(id, name, instructions, source, JSON.stringify(sourceMetadata), now);
-  return { id, name, instructions, source, sourceMetadata: JSON.stringify(sourceMetadata), createdAt: now };
+    .prepare('INSERT INTO projects (id, name, instructions, memory, source, source_metadata, created_at) VALUES (?, ?, ?, ?, ?, ?, ?)')
+    .run(id, name, instructions, memory, source, JSON.stringify(sourceMetadata), now);
+  return { id, name, instructions, memory, source, sourceMetadata: JSON.stringify(sourceMetadata), createdAt: now };
 }
 
 export function updateProject(
   id: string,
-  updates: { name?: string; instructions?: string }
+  updates: { name?: string; instructions?: string; memory?: string }
 ): Project | undefined {
   const project = getProject(id);
   if (!project) return undefined;
   const name = updates.name ?? project.name;
   const instructions = updates.instructions ?? project.instructions;
+  const memory = updates.memory ?? project.memory;
   getDb()
-    .prepare('UPDATE projects SET name = ?, instructions = ? WHERE id = ?')
-    .run(name, instructions, id);
-  return { ...project, name, instructions };
+    .prepare('UPDATE projects SET name = ?, instructions = ?, memory = ? WHERE id = ?')
+    .run(name, instructions, memory, id);
+  return { ...project, name, instructions, memory };
 }
 
 export function deleteProject(id: string): boolean {
@@ -479,7 +482,8 @@ export function findOrCreateProject(
   source: ChannelSource,
   sourceMetadata: Record<string, unknown>,
   matchKey: string,
-  matchValue: string
+  matchValue: string,
+  memory: string = ''
 ): Project {
   // Try to find existing project by source identity
   const existing = getDb()
@@ -488,7 +492,7 @@ export function findOrCreateProject(
   if (existing) return rowToProject(existing);
 
   // Create new
-  return createProject(name, instructions, source, sourceMetadata);
+  return createProject(name, instructions, source, sourceMetadata, memory);
 }
 
 /**

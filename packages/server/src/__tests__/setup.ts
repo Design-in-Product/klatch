@@ -19,6 +19,7 @@ function createFreshDb(): Database.Database {
       id TEXT PRIMARY KEY,
       name TEXT NOT NULL,
       instructions TEXT NOT NULL DEFAULT '',
+      memory TEXT NOT NULL DEFAULT '',
       source TEXT NOT NULL DEFAULT 'native',
       source_metadata TEXT NOT NULL DEFAULT '{}',
       created_at TEXT NOT NULL DEFAULT (datetime('now'))

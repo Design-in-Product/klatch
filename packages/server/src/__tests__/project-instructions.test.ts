@@ -74,6 +74,7 @@ function makeProject(overrides: Partial<Project> = {}): Project {
     id: 'proj-test',
     name: 'Test Project',
     instructions: 'Build with TypeScript. Run tests before committing.',
+    memory: '',
     source: 'native',
     sourceMetadata: '{}',
     createdAt: '2026-01-01T00:00:00Z',
@@ -413,19 +414,23 @@ describe('kit briefing deduplication', () => {
     expect(briefing).toContain('CLAUDE.md');
   });
 
-  it('always injects memoryMd regardless of project link', () => {
+  it('does NOT inject memoryMd from sourceMetadata when channel has project link', () => {
     const withProject = makeChannel({
       source: 'claude-code',
       projectId: 'proj-1',
       sourceMetadata: JSON.stringify({ memoryMd: 'User prefers dark mode.' }),
     });
 
+    // Memory now comes from project.memory column, not sourceMetadata in kit briefing
+    expect(buildKitBriefing(withProject)).not.toContain('User prefers dark mode.');
+  });
+
+  it('injects memoryMd from sourceMetadata as fallback when no project link', () => {
     const withoutProject = makeChannel({
       source: 'claude-code',
       sourceMetadata: JSON.stringify({ memoryMd: 'User prefers dark mode.' }),
     });
 
-    expect(buildKitBriefing(withProject)).toContain('User prefers dark mode.');
     expect(buildKitBriefing(withoutProject)).toContain('User prefers dark mode.');
   });
 

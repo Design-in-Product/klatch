@@ -50,10 +50,15 @@ app.get('/channels/:id/prompt-debug', (c) => {
         : project
           ? `EMPTY — project "${project.name}" has no instructions`
           : 'INACTIVE — no project linked',
-      '3_channelAddendum': channel.systemPrompt?.trim()
+      '3_projectMemory': project?.memory?.trim()
+        ? `ACTIVE — from project "${project.name}" (${project.memory.length} chars)`
+        : project
+          ? `EMPTY — project "${project.name}" has no memory`
+          : 'INACTIVE — no project linked',
+      '4_channelAddendum': channel.systemPrompt?.trim()
         ? `ACTIVE — ${channel.systemPrompt.length} chars`
         : 'EMPTY',
-      '4_entityPrompt': `"${entity.name}" — ${entity.systemPrompt?.length || 0} chars`,
+      '5_entityPrompt': `"${entity.name}" — ${entity.systemPrompt?.length || 0} chars`,
     },
     assembledPrompt: assembled,
     assembledLength: assembled.length,

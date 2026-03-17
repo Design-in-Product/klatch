@@ -33,16 +33,26 @@ Agents working on this repo use this file as the async handoff protocol.
     5. **Client sidebar sections** — Within a project, chats render above klatches. Unassigned section only shows chats.
     6. **Accordion behavior** — Expanding one project collapses others (client test).
   - **Important:** These tests should be written to pass against the *planned* implementation. Daedalus will implement the data model changes (Phase 1) first, then the UI (Phase 2). Coordinate via this file — Round 7 tests can be written speculatively and will fail until implementation lands. That's fine.
-- **Waiting on:** Nothing — start with Round 6, then Round 7.
-- **Updated:** 2026-03-16 08:50
+- **Round 8 assignment: Project memory + prompt assembly tests**
+  - See memo in `docs/mail/daedalus-to-argus-round8.md` for full details.
+  - **Scope:** `packages/server/src/__tests__/round8-project-memory.test.ts`
+  - Tests to write:
+    1. **Project CRUD with memory field** — createProject with memory, updateProject with memory, rowToProject includes memory.
+    2. **Import stores memory at project level** — Claude Code import puts MEMORY.md in project.memory (not instructions). claude.ai import puts project_memories + global account memories in project.memory.
+    3. **5-layer prompt assembly** — buildSystemPrompt now has 5 layers. Verify project.memory appears as layer 3 (between instructions and channel addendum). Verify it does NOT appear in kit briefing when project is linked.
+    4. **Legacy fallback** — Channels without project link still get memoryMd from sourceMetadata via kit briefing.
+    5. **Prompt debug endpoint** — GET /channels/:id/prompt-debug returns 5 layers with correct status.
+  - **Important:** Pull from main first! Schema has changed: projects table now has `memory` column. Test setup already updated.
+- **Waiting on:** Nothing — start with Rounds 6+7, then Round 8.
+- **Updated:** 2026-03-16 19:57
 
 ### Daedalus (architecture & implementation)
 - **Branch:** `main`
-- **Status:** available
-- **Last completed:** Sidebar redesign Phase 1+2 shipped (commit `66b5755`). Type column added, sidebar rewritten with project-first accordion, chat/klatch sections, unassigned area. 622 tests, zero failures.
-- **Working on:** Available for Phase 3 (context-aware creation) or Argus R6/R7 merge when ready.
-- **Waiting on:** PO direction or Argus deliverables.
-- **Updated:** 2026-03-16 10:30
+- **Status:** working
+- **Last completed:** Decisions 1, 2, 4 from prompt architecture audit. Memory column on projects, claude.ai memories preserved, channel addendum hidden for chats. 5-layer prompt assembly. Data model CSV updated with PO. 624 tests, zero failures.
+- **Working on:** Project settings panel (B), model provenance indicator (A), then klatch creation UI (D).
+- **Waiting on:** Nothing.
+- **Updated:** 2026-03-16 19:57
 
 ### Theseus Prime (manual testing & exploration — CLI side)
 - **Branch:** `main`

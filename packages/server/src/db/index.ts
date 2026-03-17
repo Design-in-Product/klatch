@@ -184,6 +184,12 @@ function runMigrations() {
     db.exec(`ALTER TABLE channels ADD COLUMN type TEXT NOT NULL DEFAULT 'chat'`);
   }
 
+  // ── Decision 1: MEMORY.md → project level ──────────────────
+  const projectCols = db.prepare("PRAGMA table_info(projects)").all() as { name: string }[];
+  if (!projectCols.some((c) => c.name === 'memory')) {
+    db.exec(`ALTER TABLE projects ADD COLUMN memory TEXT NOT NULL DEFAULT ''`);
+  }
+
   // Ensure default entity exists (for existing databases being upgraded)
   const defaultEntity = db.prepare('SELECT id FROM entities WHERE id = ?').get(DEFAULT_ENTITY_ID);
   if (!defaultEntity) {

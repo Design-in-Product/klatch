@@ -188,10 +188,11 @@ describe('buildKitBriefing — project link behavior', () => {
     expect(briefing).toContain('CLAUDE.md content here');
   });
 
-  it('always injects memoryMd regardless of project link', () => {
+  it('does NOT inject memoryMd from sourceMetadata when channel has project link', () => {
     const channelWithProject: Channel = {
       id: 'ch-3',
       name: 'With Project',
+      type: 'chat',
       systemPrompt: '',
       model: 'claude-opus-4-6',
       mode: 'panel',
@@ -201,7 +202,26 @@ describe('buildKitBriefing — project link behavior', () => {
       projectId: 'proj-1',
     };
 
+    // When channel has a project, memory comes from project.memory, not sourceMetadata
     const briefing = buildKitBriefing(channelWithProject);
+    expect(briefing).not.toContain('Memory content');
+  });
+
+  it('injects memoryMd from sourceMetadata as fallback when no project link', () => {
+    const channelNoProject: Channel = {
+      id: 'ch-4',
+      name: 'No Project',
+      type: 'chat',
+      systemPrompt: '',
+      model: 'claude-opus-4-6',
+      mode: 'panel',
+      createdAt: '2026-03-14T00:00:00Z',
+      source: 'claude-code',
+      sourceMetadata: JSON.stringify({ memoryMd: 'Memory content' }),
+      // no projectId
+    };
+
+    const briefing = buildKitBriefing(channelNoProject);
     expect(briefing).toContain('Memory content');
   });
 });

@@ -350,12 +350,16 @@ describe('end-to-end HTTP import via multipart', () => {
     const res = await app.request('/api/import/claude-ai', multipartReq(zip));
     expect(res.status).toBe(201);
 
-    // Project should have both prompt_template and project memory
+    // Project should have prompt_template in instructions and memories in memory column
     const projects = getAllProjects();
     const memProject = projects.find(p => p.name === 'Memory Project');
     expect(memProject).toBeDefined();
     expect(memProject!.instructions).toContain('Base instructions.');
-    expect(memProject!.instructions).toContain('Always use TypeScript strict mode.');
+    // Project-scoped memory
+    expect(memProject!.memory).toContain('Always use TypeScript strict mode.');
+    // Global account memories merged in (Decision 2: don't drop)
+    expect(memProject!.memory).toContain('User prefers dark mode.');
+    expect(memProject!.memory).toContain('Account memories (from claude.ai)');
   });
 
   it('conversations without project_uuid are not linked', async () => {
