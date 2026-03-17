@@ -184,3 +184,25 @@ Clean AXT re-test (neutral prompt, fresh import, Fork Continuity Quiz v3) deferr
 
 Xian to deliver report to Daedalus.
 
+---
+
+## 21:47 — End-of-Day Wrap
+
+Quiet evening on the Theseus side — Xian was working with Daedalus on sidebar, data model, and metadata handling. COORDINATION.md updated by Daedalus reflects a productive day on that front:
+
+- **Project settings panel shipped** — PO is waiting on testing
+- **Argus Rounds 6–8 merged** (selectively, stale branch handled)
+- **683 tests, zero failures** — up from 622 this morning
+- **Round 8 scope added:** 5-layer prompt assembly tests — `buildSystemPrompt` now has project memory as layer 3. This is directly relevant to P1 (system prompt not attaching). If Round 8 tests are landing, the fix may already be in flight.
+- **Daedalus next:** Model provenance indicator, then klatch creation UI (P2 from today's report)
+
+The P1 bug I flagged this afternoon — system prompt not reaching imported channels — appears to be the subject of active architectural work (5-layer prompt assembly, project memory field in `projects` table). Tomorrow's testing should include verifying the full prompt assembly chain works end-to-end for imported channels.
+
+**Tomorrow's testing agenda (provisional):**
+- Verify project settings panel (PO assignment per COORDINATION)
+- Re-test system prompt attachment after 5-layer prompt assembly fix
+- Clean AXT re-test if prompt injection is confirmed working
+- Klatch creation UI when Daedalus ships it
+
+Good night.
+
