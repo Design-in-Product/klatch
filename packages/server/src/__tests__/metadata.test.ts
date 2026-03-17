@@ -1,3 +1,4 @@
+import './setup.js';
 import { describe, it, expect } from 'vitest';
 import { v4 as uuidv4 } from 'uuid';
 import { getDb } from '../db/index.js';

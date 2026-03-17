@@ -1,3 +1,4 @@
+import './setup.js';
 import { describe, it, expect } from 'vitest';
 import { DEFAULT_MODEL, DEFAULT_ENTITY_ID, ENTITY_COLORS } from '@klatch/shared';
 import {

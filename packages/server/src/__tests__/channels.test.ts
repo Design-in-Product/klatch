@@ -1,3 +1,4 @@
+import './setup.js';
 import { describe, it, expect } from 'vitest';
 import { createTestApp } from './app.js';
 import { importSession } from '../db/queries.js';
