@@ -6,6 +6,44 @@ Format follows [Keep a Changelog](https://keepachangelog.com/). Versions corresp
 
 ---
 
+## [0.8.6] — 2026-03-18
+
+### Sidebar Redesign & Prompt Architecture
+
+Major design session with the PO produced a new sidebar, a reworked prompt model, and the first editable project UI. The sidebar now groups channels by project in an accordion layout with chat/klatch type distinction. System prompt assembly moves from 4 layers to 5 with memory promoted to a first-class project field. Calliope published a blog post on the design process.
+
+### Added
+- **Sidebar redesign (#8, Phases 1+2)**: Project-first accordion layout — one project expanded at a time, auto-expands project containing active channel. Channels typed as "chat" (1:1) or "klatch" (multi-entity group). Sub-headers only appear when both types exist within a project. Unassigned section for chats without a project.
+- **Project settings panel**: Gear icon on project accordion headers opens full project editor. Editable name, instructions (CLAUDE.md), and memory (MEMORY.md). Source provenance badges for imported projects. Character counts on textareas.
+- **Project memory column (Decision 1)**: New `memory` field on `projects` table. MEMORY.md and claude.ai memories stored separately from instructions. Injected as layer 3 in the 5-layer system prompt assembly.
+- **claude.ai global memories preserved (Decision 2)**: Account-level `conversations_memory` from claude.ai exports now merged into project memory, labeled "Account memories (from claude.ai)".
+- **Prompt debug endpoint (#9)**: `GET /channels/:id/prompt-debug` shows all 5 assembled prompt layers with per-layer status, lengths, and the final concatenated prompt.
+- **Sort by activity (#12)**: Sidebar sorts chats by most recent message within each section.
+- **Shared data model CSV**: `data-model-thoughts.csv` — living design artifact mapping concepts across claude.ai, Claude Code, and Klatch.
+
+### Changed
+- System prompt assembly now 5 layers (was 4): kit briefing → project instructions → project memory → channel addendum → entity prompt.
+- Channel addendum (system prompt textarea) hidden for chats in settings UI (Decision 4) — only shown for klatches. Renamed to "Channel prompt".
+- Kit briefing: memoryMd fallback from sourceMetadata now only for channels without a project link.
+- Import routes: CLAUDE.md → `project.instructions`, MEMORY.md → `project.memory` (were previously concatenated).
+- PATCH `/projects/:id` accepts `memory` field.
+
+### Fixed
+- Long project names wrapping in sidebar (P3: added `truncate` + `overflow-hidden`)
+- Stale sidebar after import (P5: refresh channels on import dialog close)
+- 14 pre-existing test failures: legacy test files running against real DB instead of in-memory mock
+
+### Technical
+- 683 tests passing (567 server + 116 client). 190 new tests since v0.8.5.
+- New column: `projects.memory TEXT NOT NULL DEFAULT ''`
+- New column: `channels.type TEXT NOT NULL DEFAULT 'chat'`
+- New component: `ProjectSettings.tsx`
+- New API functions: `fetchProject()`, `updateProjectApi()`
+- Argus Rounds 6-8 merged: project reassignment, sidebar redesign, project memory tests
+- Blog post: "You Can't Vibe Your Way to a Glossary" (Calliope)
+
+---
+
 ## [0.8.5] — 2026-03-14
 
 ### Step 8¾: Import Refinements
