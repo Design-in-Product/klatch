@@ -23,7 +23,14 @@ Klatch fills the gap: a single local interface where you control the models, the
 Klatch is being built incrementally, one working step at a time ([Gall's Law](https://en.wikipedia.org/wiki/John_Gall_(author)#Gall's_law)). Here's what works right now:
 
 - **Project-first sidebar** — channels grouped by project in an accordion layout, with chat/klatch type distinction, sort by activity, and project settings (gear icon)
-- **5-layer prompt assembly** — kit briefing, project instructions, project memory, channel addendum, and entity prompt — with prompt layer status indicator in settings
+- **5-layer prompt assembly** — context injected in a defined order on every request:
+  1. **Kit briefing** — environmental orientation, injected at import/fork to tell the agent where it is and what's changed
+  2. **Project instructions** — the project-level system prompt, shared across all channels in a project
+  3. **Project memory** — a freeform memory file at the project level, for facts and context that accumulate over time
+  4. **Channel addendum** — channel-specific additions to the system prompt (used in klatches; hidden in 1:1 chats)
+  5. **Entity prompt** — the per-entity persona prompt, the innermost and most specific layer
+
+  The assembled prompt is inspectable via the settings panel prompt-layer status indicator.
 - **Claude Code import** — import Claude Code JSONL sessions as read-only conversation snapshots, with tool-use artifacts, source badges, and dedup detection
 - **claude.ai import** — import claude.ai data exports (ZIP), with artifact extraction, project context, memories preserved, and dedup detection
 - **Fork continuity** — continue imported conversations with full history, automatic compaction, and project context injection. Kit briefing orients the agent on transition.
