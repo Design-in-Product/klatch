@@ -26,17 +26,22 @@ export function ChannelSettings({
 }: Props) {
   const [name, setName] = useState(channel.name);
   const [systemPrompt, setSystemPrompt] = useState(channel.systemPrompt);
+  const [localProjectId, setLocalProjectId] = useState<string | null>(channel.projectId || null);
+  const [localMode, setLocalMode] = useState<InteractionMode>(channel.mode);
   const [dirty, setDirty] = useState(false);
   const [contextLoading, setContextLoading] = useState(false);
   const [contextError, setContextError] = useState<string | null>(null);
   const [stats, setStats] = useState<ChannelStats | null>(null);
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [projects, setProjects] = useState<Project[]>([]);
+  const [promptLayers, setPromptLayers] = useState<Record<string, string> | null>(null);
 
   // Reset form when channel changes
   useEffect(() => {
     setName(channel.name);
     setSystemPrompt(channel.systemPrompt);
+    setLocalProjectId(channel.projectId || null);
+    setLocalMode(channel.mode);
     setDirty(false);
     setContextLoading(false);
     setContextError(null);
@@ -51,9 +56,11 @@ export function ChannelSettings({
   const handleChange = () => setDirty(true);
 
   const handleSave = () => {
-    const updates: { name?: string; systemPrompt?: string } = {};
+    const updates: { name?: string; systemPrompt?: string; projectId?: string | null; mode?: InteractionMode } = {};
     if (name.trim() !== channel.name) updates.name = name.trim();
     if (systemPrompt.trim() !== channel.systemPrompt) updates.systemPrompt = systemPrompt.trim();
+    if (localProjectId !== (channel.projectId || null)) updates.projectId = localProjectId;
+    if (localMode !== channel.mode) updates.mode = localMode;
 
     if (Object.keys(updates).length > 0) {
       onSave(updates);
@@ -78,6 +85,14 @@ export function ChannelSettings({
       .then((data) => { if (data) setStats(data); })
       .catch(() => {});
   }, [channel.id, isImported]);
+
+  // Fetch prompt layer debug info
+  useEffect(() => {
+    fetch(`/api/channels/${channel.id}/prompt-debug`)
+      .then((r) => r.ok ? r.json() : null)
+      .then((data) => { if (data?.layers) setPromptLayers(data.layers); })
+      .catch(() => {});
+  }, [channel.id]);
 
   const hasSavedPrompt = !!channel.systemPrompt.trim();
   const hasCwd = meta?.cwd;
@@ -199,9 +214,10 @@ export function ChannelSettings({
           <div>
             <label className="block text-xs text-secondary mb-1">Project</label>
             <select
-              value={channel.projectId || ''}
+              value={localProjectId || ''}
               onChange={(e) => {
-                onSave({ projectId: e.target.value || null });
+                setLocalProjectId(e.target.value || null);
+                handleChange();
               }}
               className="w-full rounded bg-input border border-line px-3 py-2 text-sm text-primary focus:outline-none focus:border-accent"
             >
@@ -239,14 +255,15 @@ export function ChannelSettings({
             <div className="inline-flex rounded-lg border border-line overflow-hidden">
               {(Object.entries(INTERACTION_MODES) as [InteractionMode, { label: string; description: string }][]).map(
                 ([modeKey, { label, description }]) => {
-                  const isActive = channel.mode === modeKey;
+                  const isActive = localMode === modeKey;
                   const isDisabled = false; // All modes now implemented
                   return (
                     <button
                       key={modeKey}
                       onClick={() => {
                         if (!isDisabled && !isActive) {
-                          onSave({ mode: modeKey });
+                          setLocalMode(modeKey);
+                          handleChange();
                         }
                       }}
                       disabled={isDisabled}
@@ -281,6 +298,8 @@ export function ChannelSettings({
               onClick={() => {
                 setName(channel.name);
                 setSystemPrompt(channel.systemPrompt);
+                setLocalProjectId(channel.projectId || null);
+                setLocalMode(channel.mode);
                 setDirty(false);
               }}
               className="rounded bg-card px-4 py-1.5 text-sm font-medium text-secondary hover:bg-hover transition-colors"
@@ -290,69 +309,110 @@ export function ChannelSettings({
           </div>
         )}
 
-        {/* Entity assignment */}
-        <div>
-          <label className="block text-xs text-secondary mb-2">
-            Entities <span className="text-muted font-normal">({channelEntities.length}/5)</span>
-          </label>
-
-          {/* Assigned entities */}
-          <div className="space-y-1.5 mb-3">
-            {channelEntities.map((entity) => {
-              const modelLabel = AVAILABLE_MODELS[entity.model]?.label || entity.model;
-              const canRemove = channelEntities.length > 1;
-              return (
-                <div
-                  key={entity.id}
-                  className="flex items-center gap-2.5 rounded-lg border border-line bg-card px-3 py-2 group"
+        {/* Entity — read-only for chats, full management for klatches */}
+        {channel.type === 'chat' ? (
+          // Chat: show single entity as read-only info
+          channelEntities.length > 0 && (
+            <div>
+              <label className="block text-xs text-secondary mb-2">Entity</label>
+              <div className="flex items-center gap-2.5 rounded-lg border border-line bg-card px-3 py-2">
+                <span
+                  className="inline-flex items-center justify-center w-6 h-6 rounded-full text-xs font-bold text-white flex-shrink-0"
+                  style={{ backgroundColor: channelEntities[0].color }}
                 >
-                  <span
-                    className="inline-flex items-center justify-center w-6 h-6 rounded-full text-xs font-bold text-white flex-shrink-0"
-                    style={{ backgroundColor: entity.color }}
+                  {channelEntities[0].name.charAt(0).toUpperCase()}
+                </span>
+                <span className="text-sm text-primary flex-1 truncate">{channelEntities[0].name}</span>
+                <span className="text-[10px] px-1.5 py-0.5 rounded bg-badge text-muted font-medium">
+                  {AVAILABLE_MODELS[channelEntities[0].model]?.label || channelEntities[0].model}
+                </span>
+              </div>
+            </div>
+          )
+        ) : (
+          // Klatch: full entity management with add/remove
+          <div>
+            <label className="block text-xs text-secondary mb-2">
+              Entities <span className="text-muted font-normal">({channelEntities.length}/5)</span>
+            </label>
+
+            {/* Assigned entities */}
+            <div className="space-y-1.5 mb-3">
+              {channelEntities.map((entity) => {
+                const modelLabel = AVAILABLE_MODELS[entity.model]?.label || entity.model;
+                const canRemove = channelEntities.length > 1;
+                return (
+                  <div
+                    key={entity.id}
+                    className="flex items-center gap-2.5 rounded-lg border border-line bg-card px-3 py-2 group"
                   >
-                    {entity.name.charAt(0).toUpperCase()}
-                  </span>
-                  <span className="text-sm text-primary flex-1 truncate">{entity.name}</span>
-                  <span className="text-[10px] px-1.5 py-0.5 rounded bg-badge text-muted font-medium">
-                    {modelLabel}
-                  </span>
-                  {canRemove && (
-                    <button
-                      onClick={() => onRemoveEntity(entity.id)}
-                      title="Remove from channel"
-                      className="p-1 rounded text-muted hover:text-danger hover:bg-hover transition-colors opacity-0 group-hover:opacity-100"
+                    <span
+                      className="inline-flex items-center justify-center w-6 h-6 rounded-full text-xs font-bold text-white flex-shrink-0"
+                      style={{ backgroundColor: entity.color }}
                     >
-                      <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-                      </svg>
-                    </button>
-                  )}
-                </div>
-              );
-            })}
-          </div>
+                      {entity.name.charAt(0).toUpperCase()}
+                    </span>
+                    <span className="text-sm text-primary flex-1 truncate">{entity.name}</span>
+                    <span className="text-[10px] px-1.5 py-0.5 rounded bg-badge text-muted font-medium">
+                      {modelLabel}
+                    </span>
+                    {canRemove && (
+                      <button
+                        onClick={() => onRemoveEntity(entity.id)}
+                        title="Remove from channel"
+                        className="p-1 rounded text-muted hover:text-danger hover:bg-hover transition-colors opacity-0 group-hover:opacity-100"
+                      >
+                        <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                      </button>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
 
-          {/* Add entity pills */}
-          {unassignedEntities.length > 0 && channelEntities.length < 5 && (
-            <div className="flex flex-wrap gap-1.5">
-              {unassignedEntities.map((entity) => (
-                <button
-                  key={entity.id}
-                  onClick={() => onAssignEntity(entity.id)}
-                  className="flex items-center gap-1.5 rounded-full border border-dashed border-line px-2.5 py-1 text-xs text-muted hover:text-primary hover:border-faint transition-colors"
-                >
-                  <span
-                    className="inline-flex items-center justify-center w-4 h-4 rounded-full text-[8px] font-bold text-white flex-shrink-0"
-                    style={{ backgroundColor: entity.color }}
+            {/* Add entity pills */}
+            {unassignedEntities.length > 0 && channelEntities.length < 5 && (
+              <div className="flex flex-wrap gap-1.5">
+                {unassignedEntities.map((entity) => (
+                  <button
+                    key={entity.id}
+                    onClick={() => onAssignEntity(entity.id)}
+                    className="flex items-center gap-1.5 rounded-full border border-dashed border-line px-2.5 py-1 text-xs text-muted hover:text-primary hover:border-faint transition-colors"
                   >
-                    {entity.name.charAt(0).toUpperCase()}
+                    <span
+                      className="inline-flex items-center justify-center w-4 h-4 rounded-full text-[8px] font-bold text-white flex-shrink-0"
+                      style={{ backgroundColor: entity.color }}
+                    >
+                      {entity.name.charAt(0).toUpperCase()}
+                    </span>
+                    + {entity.name}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Prompt layers — shows which of the 5 assembly layers are active */}
+        {promptLayers && (
+          <div>
+            <label className="block text-xs text-secondary mb-2">Prompt layers</label>
+            <div className="space-y-1">
+              {Object.entries(promptLayers).map(([key, status]) => (
+                <div key={key} className="flex items-center gap-2 text-xs">
+                  <span className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${
+                    status.startsWith('ACTIVE') ? 'bg-green-500' : 'bg-zinc-400'
+                  }`} />
+                  <span className="text-muted">
+                    {key.replace(/^\d+_/, '').replace(/([A-Z])/g, ' $1').trim()}
                   </span>
-                  + {entity.name}
-                </button>
+                </div>
               ))}
             </div>
-          )}
-        </div>
+          </div>
+        )}
 
         {/* Delete channel */}
         {channel.id !== 'default' && (

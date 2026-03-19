@@ -20,4 +20,18 @@ Calliope shipped a blog post ("You Can't Vibe Your Way to a Glossary") since las
 
 ## 22:14 — Status review for PO
 
-PO asked five tracking questions. Answering from roadmap, tags, issues, and coordination state.
+PO asked five tracking questions. Answering from roadmap, tags, issues, and coordination state. Released v0.8.6. Closed #8 and #12.
+
+## 22:45 — Issues #9, #11, #13, #14 resolved
+
+Planned and implemented all four remaining polish issues in one pass:
+
+- **#14** — Unified save patterns: all fields use dirty+Save, Cancel resets all
+- **#11** — Entity panel simplified for chats: read-only info line, no add/remove
+- **#9** — Prompt layer indicator: 5 dots showing active/inactive layers
+- **#13** — Kit briefing acknowledgment: agent prompted to acknowledge transition
+- **#8** — Closed as substantially complete
+
+Step 11 (export to Claude Code) added to roadmap per PO direction. Argus Round 9 assigned.
+
+**Test results:** 685 total (569 server + 116 client), zero failures.

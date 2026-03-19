@@ -103,4 +103,16 @@ describe('buildKitBriefing', () => {
     // Should still have the core orientation without crashing
     expect(briefing).toContain('conversation-only');
   });
+
+  it('includes acknowledgment instruction for Claude Code imports', () => {
+    const briefing = buildKitBriefing(makeChannel({ source: 'claude-code' }));
+    expect(briefing).toContain('briefly acknowledge');
+    expect(briefing).toContain('Claude Code session');
+  });
+
+  it('includes acknowledgment instruction for claude.ai imports', () => {
+    const briefing = buildKitBriefing(makeChannel({ source: 'claude-ai' }));
+    expect(briefing).toContain('briefly acknowledge');
+    expect(briefing).toContain('claude.ai conversation');
+  });
 });

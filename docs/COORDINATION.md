@@ -49,10 +49,10 @@ Agents working on this repo use this file as the async handoff protocol.
 ### Daedalus (architecture & implementation)
 - **Branch:** `main`
 - **Status:** available
-- **Last completed:** Released v0.8.6. Sidebar redesign, 5-layer prompt architecture, project settings panel. 683 tests, zero failures. Issue #12 closed.
-- **Working on next:** Model provenance indicator (A), then klatch creation UI (D).
+- **Last completed:** Issues #8, #9, #11, #13, #14 resolved. Unified save patterns, entity panel simplified for chats, prompt layer indicator, kit briefing acknowledgment. Step 11 added to roadmap. 685 tests, zero failures.
+- **Working on next:** Model provenance indicator (A), then klatch creation UI (#10).
 - **Waiting on:** PO's AXT testing results.
-- **Updated:** 2026-03-18 22:33
+- **Updated:** 2026-03-18 23:05
 
 ### Theseus Prime (manual testing & exploration — CLI side)
 - **Branch:** `main`

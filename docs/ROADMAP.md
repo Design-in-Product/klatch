@@ -215,6 +215,27 @@ Phased delivery:
 - Multi-entity document review (the differentiating use case)
 - This is where Klatch becomes a workspace, not just a chat tool
 
+### Step 11: Export to Claude Code
+**Dimension: roundtrip.** Can a Klatch conversation continue in a tool-enabled environment?
+
+Import brought conversations *into* Klatch. Export sends them *back out*. The key insight: claude.ai → Klatch → Claude Code is a cross-platform bridge that doesn't exist anywhere else.
+
+Use the Claude Agent SDK to launch a new Claude Code session seeded with:
+- Compacted conversation history from Klatch
+- Reverse kit briefing: "You've been working in Klatch (conversation-only) but you're back in Claude Code now. You have full tool access again."
+- Project context (instructions + memory) carried forward
+
+**Approaches:**
+- **New session from Klatch conversation** — launch a fresh Code session with Klatch history as initial context. Most feasible — Agent SDK supports programmatic conversation seeding.
+- **Resume original session** — inject Klatch turns back into an existing Code session's JSONL. Harder — JSONL is append-only and sessions aren't designed for external injection. May not be practical.
+- **Cross-platform bridge** — import from claude.ai, continue in Klatch, export to Code. The killer feature: conversations graduate from consumer to development environment.
+
+**Open questions:**
+- Can the Agent SDK launch a session with pre-seeded conversation history?
+- What's the right compaction strategy for export (full history vs. summary + recent)?
+- Should export create a branch (preserving Klatch original) or move the conversation?
+- claude.ai export: likely not possible via API, but could generate a shareable format
+
 ---
 
 ## Vision (far horizon, appropriately vague)

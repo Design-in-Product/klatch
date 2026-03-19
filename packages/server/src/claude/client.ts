@@ -182,6 +182,7 @@ export function buildKitBriefing(channel: Channel): string {
   const parts: string[] = [];
 
   // Core orientation — prevents phantom-capability confusion
+  const sourceLabel = channel.source === 'claude-code' ? 'a Claude Code session' : 'a claude.ai conversation';
   parts.push(
     'You are continuing a conversation that was imported into Klatch from ' +
     (channel.source === 'claude-code' ? 'Claude Code' : 'claude.ai') + '. ' +
@@ -189,6 +190,13 @@ export function buildKitBriefing(channel: Channel): string {
     'You do NOT have access to tools (no file system, no bash, no search, no web access). ' +
     'You can only converse. If the user asks for something requiring tools, ' +
     'explain what you would do and suggest they use a tool-enabled environment.'
+  );
+
+  // Prompted acknowledgment — agent should surface the transition naturally (#13)
+  parts.push(
+    'In your first response in this conversation, briefly acknowledge that you are ' +
+    'continuing from ' + sourceLabel + ' in Klatch. ' +
+    'Keep the acknowledgment to one sentence — then respond to the user normally.'
   );
 
   // Legacy fallback: inject context from sourceMetadata for channels without a project link.
