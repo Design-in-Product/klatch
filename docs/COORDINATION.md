@@ -49,10 +49,10 @@ Agents working on this repo use this file as the async handoff protocol.
 ### Daedalus (architecture & implementation)
 - **Branch:** `main`
 - **Status:** available
-- **Last completed:** Project settings panel shipped. Argus Rounds 6-8 merged (selectively — stale branch). Legacy test fix applied. 683 tests, zero failures.
+- **Last completed:** Released v0.8.6. Sidebar redesign, 5-layer prompt architecture, project settings panel. 683 tests, zero failures. Issue #12 closed.
 - **Working on next:** Model provenance indicator (A), then klatch creation UI (D).
-- **Waiting on:** PO testing project settings panel.
-- **Updated:** 2026-03-16 21:35
+- **Waiting on:** PO's AXT testing results.
+- **Updated:** 2026-03-18 22:33
 
 ### Theseus Prime (manual testing & exploration — CLI side)
 - **Branch:** `main`
