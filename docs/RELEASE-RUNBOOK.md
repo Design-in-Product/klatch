@@ -25,6 +25,7 @@ Klatch versions map to roadmap steps:
 | 0.8.1 | Step 8 Phase 1 | Bug fixes |
 | 0.8.2 | Step 8 complete | Import & unify: claude.ai import, fork continuity, metadata |
 | 0.8.5 | Step 8¾ | Import refinements: project context, kit briefing, session browser |
+| 0.8.6 | Step 8 polish | Sidebar redesign, prompt architecture, project settings |
 
 Minor versions (0.5.5, 0.5.6) are used for significant sub-step work.
 
@@ -56,14 +57,20 @@ Brief description of what this release enables.
 
 Move the completed step from "Next Steps" to "Completed" section.
 
-### 4. Commit the changelog and roadmap updates
+### 4. Update README.md
+
+- Update the version in the "What it does today (vX.Y.Z)" heading
+- Update the feature list to reflect new capabilities
+- Update the roadmap milestones list if steps were completed or added
+
+### 5. Commit the release docs
 
 ```bash
-git add CHANGELOG.md docs/ROADMAP.md
+git add CHANGELOG.md docs/ROADMAP.md README.md
 git commit -m "Release vX.Y.Z: Step N — description"
 ```
 
-### 5. Tag the release
+### 6. Tag the release
 
 ```bash
 git tag -a vX.Y.Z -m "vX.Y.Z: One-line summary"
@@ -71,7 +78,7 @@ git push origin main
 git push origin vX.Y.Z
 ```
 
-### 6. Create GitHub Release
+### 7. Create GitHub Release
 
 ```bash
 gh release create vX.Y.Z \
@@ -87,16 +94,17 @@ Release notes format (write to a temp file first to avoid shell escaping issues)
 - **Quality** — test count, infrastructure improvements
 - **Full changelog** link: `https://github.com/Design-in-Product/klatch/compare/vPREV...vX.Y.Z`
 
-### 7. Update COORDINATION.md
+### 8. Update COORDINATION.md
 
 Update your section's status and "Last completed" to reference the release.
 
-### 8. Verify
+### 9. Verify
 
 - [ ] `gh release list` shows the new release as Latest
 - [ ] `git tag -l` includes the new tag
 - [ ] CHANGELOG.md has the new entry
 - [ ] ROADMAP.md reflects the completed step
+- [ ] README.md version and feature list are current
 - [ ] Tests still passing after all commits
 
 ## Title Convention

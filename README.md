@@ -18,19 +18,21 @@ The existing ways to interact with Claude are good but fragmented:
 
 Klatch fills the gap: a single local interface where you control the models, the prompts, the conversation structure, and the data. Everything stays on your machine in a SQLite database. The only external dependency is the Anthropic API itself.
 
-## What it does today (v0.8.5)
+## What it does today (v0.8.6)
 
 Klatch is being built incrementally, one working step at a time ([Gall's Law](https://en.wikipedia.org/wiki/John_Gall_(author)#Gall's_law)). Here's what works right now:
 
+- **Project-first sidebar** — channels grouped by project in an accordion layout, with chat/klatch type distinction, sort by activity, and project settings (gear icon)
+- **5-layer prompt assembly** — kit briefing, project instructions, project memory, channel addendum, and entity prompt — with prompt layer status indicator in settings
 - **Claude Code import** — import Claude Code JSONL sessions as read-only conversation snapshots, with tool-use artifacts, source badges, and dedup detection
-- **claude.ai import** — import claude.ai data exports (ZIP), with artifact extraction, project context, and dedup detection
-- **Fork continuity** — continue imported conversations with full history, automatic compaction, and project context injection
+- **claude.ai import** — import claude.ai data exports (ZIP), with artifact extraction, project context, memories preserved, and dedup detection
+- **Fork continuity** — continue imported conversations with full history, automatic compaction, and project context injection. Kit briefing orients the agent on transition.
 - **Claude Code session browser** — scan `~/.claude/projects/` to discover, preview, and multi-select import sessions
+- **Project management** — editable project settings (name, instructions, memory), auto-created from imports, with source provenance badges
 - **Multi-entity conversations** — assign multiple Claude personas to a single channel, each with its own name, model, system prompt, and color
 - **Three interaction modes** — panel (all respond in parallel), roundtable (sequential, each seeing prior responses), and directed (@-mention routing to specific entities)
-- **Roles and Channels** — sidebar splits single-entity Roles (@prefix) from multi-entity Channels (#prefix)
+- **Chats and Klatches** — 1:1 chats with Claude and multi-entity group conversations (klatches), organized by project
 - **@-mention handles** — optional short slugs (e.g. `@exec`) for quick entity targeting in directed mode
-- **Channel-based conversations** — create named channels with custom system prompts, switch between them freely
 - **Per-entity model selection** — choose Opus, Sonnet, or Haiku per entity; mix models within a single channel
 - **Streaming responses** — Claude's responses appear token-by-token via Server-Sent Events
 - **Conversation control** — stop generation (per-message or channel-wide), regenerate responses (mode-aware), delete messages, clear history
@@ -50,9 +52,10 @@ The [full roadmap](docs/ROADMAP.md) is in the repo, but the key milestones are:
 5. ~~Channel identity + per-channel models~~ ✓
 6. ~~Multi-entity conversations~~ ✓
 7. ~~Panel + roundtable + directed modes~~ ✓
-8. ~~Import + unify~~ ✓ — Claude Code import, claude.ai import, fork continuity, project context
-9. **Files + artifacts** — upload and share files with entities
-10. **Search + recall** — full-text search, export, command palette
+8. ~~Import + unify~~ ✓ — Claude Code import, claude.ai import, fork continuity, project context, sidebar redesign
+9. **Search + recall** — full-text search, export, command palette
+10. **Files + artifacts** — upload and share files with entities
+11. **Export to Claude Code** — roundtrip conversations back to a tool-enabled environment
 
 Claude is not one assistant. It's a cast of characters you direct. Klatch is the stage.
 
