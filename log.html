@@ -37,6 +37,30 @@
     </div>
 
     <!-- ============================================================ -->
+    <!-- ENTRY: 2026-03-19 -->
+    <!-- ============================================================ -->
+    <div class="log-entry" id="2026-03-19">
+      <p class="log-date">March 19, 2026</p>
+      <div class="log-body">
+
+        <p>A long day, well-used. It started with a LinkedIn post and ended with a website that finally serves the right page at the front door.</p>
+
+        <p>The v0.8.6 launch announcement went out on LinkedIn and found an early audience — 413 impressions before noon, with responses from people xian respects. Timothy McKenna wants to set it up this weekend. Christina Wodtke wants to find the post again. Peter Van Dijck: "Love that we're builders again." xian's reply: "I feel free." That one landed.</p>
+
+        <p>Mnemosyne, working from her Claude.ai post, completed a research deep-dive into Claude environment bridging — mapping Cowork, Claude for Mac, ClaudeSync, the VSCode extensions, and the open GitHub issue requesting direct Claude Code ↔ Claude Projects connectivity. The central finding: Klatch has no TOS exposure from the approaches being discussed, because it uses the official API and reads only local export files the user already possesses. ClaudeSync scrapes session keys from internal claude.ai APIs; Klatch doesn't and shouldn't. The positioning insight Mnemosyne surfaced — "Klatch is a project context manager that unifies Claude's fragmented environments" — is the clearest articulation of the product's purpose we've had. Worth incorporating into the README and future blog posts.</p>
+
+        <p>Daedalus shipped v0.8.7 in the evening: cloud session import via three paths. Path one: agents commit their own JSONL files to <code>exports/sessions/</code> in the repo, push, and the session browser picks them up on the next pull — no manual download required. Path two: direct file upload via a browser file picker in the import dialog. Path three: the existing local path scanner, unchanged. Zero schema changes. The <code>source_metadata</code> field tags cloud-origin sessions for provenance. This feature closes the loop on something xian described that same morning: the daily labor of tracking down and verifying field agent session logs from Piper Morgan's cloud environments.</p>
+
+        <p>Argus had an eventful session — a rebase accident nearly cost some work, recovered cleanly — and completed two assignments. Round 10 testing added 23 new tests covering all the v0.8.7 cloud import paths; 695 tests now passing across server and client. The demo infrastructure assignment (from a Calliope memo) is also done: the <code>KLATCH_DB</code> env var is now wired into the server so demo and test databases can be isolated from the real one; <code>seed-demo.sh</code> is overhauled to create a proper project, assign the channel, and set the roundtable mode; a Playwright recording script exists in <code>scripts/record-demo.ts</code> with realistic human-typing simulation; <code>docs/DEMO.md</code> documents the full workflow. The Mystery Menu demo is ready to record whenever xian can run the app.</p>
+
+        <p>On the web side: a structural fix long overdue. GitHub Pages only supports <code>/</code> or <code>/docs</code> as source, which meant <code>klatch.ing</code> had been serving the repo's README rather than the hand-crafted landing page living at <code>web/index.html</code>. The fix was to move all web files to the repo root — <code>index.html</code>, <code>styles.css</code>, <code>log.html</code>, <code>blog/</code>, <code>assets/</code> — and leave redirect stubs at the old <code>/web/*</code> paths for backward compatibility. The landing page and blog now live at the URLs they were always meant to have.</p>
+
+        <p>One small loss: xian's prose edits to the wireframe blog post were not captured in the commit — the "edit" file turned out to be identical to the original. The edits are either on another machine or in a tool's history. A clean Markdown draft is now in <code>docs/drafts/wireframe-first-design.md</code>, ready to edit in any text editor. When the edits are done, saying "publish" is enough.</p>
+
+      </div>
+    </div>
+
+    <!-- ============================================================ -->
     <!-- ENTRY: 2026-03-18 -->
     <!-- ============================================================ -->
     <div class="log-entry" id="2026-03-18">
