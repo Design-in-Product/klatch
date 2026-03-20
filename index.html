@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Klatch — Own your Claude conversations</title>
+  <meta name="description" content="A local-first, channel-based interface for managing all your Claude AI interactions. Define persistent roles, own your data, orchestrate multi-voice conversations.">
+  <meta property="og:title" content="Klatch — Own your Claude conversations">
+  <meta property="og:description" content="A local-first, channel-based interface for managing all your Claude AI interactions.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://www.klatch.ing">
+  <meta property="og:site_name" content="Klatch">
+  <meta property="og:image" content="https://www.klatch.ing/assets/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Klatch — Own your Claude conversations">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Klatch — Own your Claude conversations">
+  <meta name="twitter:description" content="A local-first, channel-based interface for managing all your Claude AI interactions.">
+  <meta name="twitter:image" content="https://www.klatch.ing/assets/og-image.png">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect x='10' y='8' width='8.5' height='48' rx='4.25' ry='4.25' fill='%23111827'/><rect x='18.5' y='28' width='24' height='8' rx='4' ry='4' fill='%23111827' transform='rotate(-40,18.5,32)'/><rect x='18.5' y='28' width='26' height='8' rx='4' ry='4' fill='%23111827' transform='rotate(40,18.5,32)'/><circle cx='50.5' cy='12' r='5' fill='%23EF4444'/></svg>">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <nav>
+    <div class="nav-inner">
+      <a href="/" class="nav-logo">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="24" height="24" aria-hidden="true">
+          <rect x="10" y="8" width="8.5" height="48" rx="4.25" ry="4.25" fill="#111827"/>
+          <rect x="18.5" y="28" width="24" height="8" rx="4" ry="4" fill="#111827" transform="rotate(-40, 18.5, 32)"/>
+          <rect x="18.5" y="28" width="26" height="8" rx="4" ry="4" fill="#111827" transform="rotate(40, 18.5, 32)"/>
+          <circle cx="50.5" cy="12" r="5" fill="#EF4444"/>
+        </svg>
+        klatch
+      </a>
+      <ul class="nav-links">
+        <li><a href="#quickstart">Quick start</a></li>
+        <li><a href="blog/">Blog</a></li>
+        <li><a href="https://github.com/Design-in-Product/klatch">GitHub</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="container">
+
+    <header>
+      <div class="logo">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="56" height="56" aria-label="Klatch logo">
+          <rect x="10" y="8" width="8.5" height="48" rx="4.25" ry="4.25" fill="#111827"/>
+          <rect x="18.5" y="28" width="24" height="8" rx="4" ry="4" fill="#111827" transform="rotate(-40, 18.5, 32)"/>
+          <rect x="18.5" y="28" width="26" height="8" rx="4" ry="4" fill="#111827" transform="rotate(40, 18.5, 32)"/>
+          <circle cx="50.5" cy="12" r="5" fill="#EF4444"/>
+        </svg>
+        <span class="logo-text">klatch</span>
+      </div>
+      <p class="tagline">Own your Claude conversations.</p>
+    </header>
+
+    <section class="hero">
+      <p>A local-first, channel-based interface for managing all your Claude AI interactions. Your data, your prompts, your machine.</p>
+      <div class="cta-group">
+        <a href="https://github.com/Design-in-Product/klatch" class="btn btn-primary">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+          View on GitHub
+        </a>
+        <a href="#quickstart" class="btn btn-secondary">Quick start</a>
+      </div>
+    </section>
+
+    <!-- Demo showcase -->
+    <section class="demo-showcase" style="padding: 40px 0 8px; text-align: center;">
+      <div style="background: white; border: 1px solid var(--border); border-radius: 12px; overflow: hidden; max-width: 680px; margin: 0 auto; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);">
+        <video autoplay loop muted playsinline style="width:100%;display:block;" poster="assets/og-image.png">
+          <source src="assets/0.6.0-01-roles-web.mp4" type="video/mp4">
+        </video>
+      </div>
+    </section>
+
+    <section class="features">
+      <h2>What Klatch does today</h2>
+      <div class="feature-grid">
+        <div class="feature">
+          <h3>Project workspace</h3>
+          <p>Channels grouped by project in an accordion sidebar. Chats (1:1) and Klatches (group) organized together, sorted by activity.</p>
+        </div>
+        <div class="feature">
+          <h3>Multi-entity conversations</h3>
+          <p>Assign multiple Claude personas to a channel, each with its own name, model, system prompt, and color. Mix Opus, Sonnet, and Haiku in one conversation.</p>
+        </div>
+        <div class="feature">
+          <h3>Three interaction modes</h3>
+          <p>Panel (all respond in parallel), roundtable (sequential, each sees prior responses), or directed (@-mention routing). Choose per message.</p>
+        </div>
+        <div class="feature">
+          <h3>Import and fork</h3>
+          <p>Import Claude Code sessions and claude.ai exports. Continue forked conversations with a kit briefing that orients the agent on transition.</p>
+        </div>
+        <div class="feature">
+          <h3>5-layer prompt assembly</h3>
+          <p>Kit briefing, project instructions, project memory, channel addendum, and entity prompt — layered in order, inspectable in settings.</p>
+        </div>
+        <div class="feature">
+          <h3>Local-first, own your data</h3>
+          <p>Everything lives in a SQLite file on your machine. No cloud storage, no subscriptions, no vendor lock-in.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="insight">
+      <blockquote>Claude is not one assistant. It's a cast of characters you direct. Klatch is the stage.</blockquote>
+    </section>
+
+    <section id="quickstart" class="quickstart">
+      <div class="quickstart-header">Quick start</div>
+      <pre><span class="cmd">git clone</span> git@github.com:Design-in-Product/klatch.git
+<span class="cmd">cd</span> klatch
+<span class="cmd">echo</span> 'ANTHROPIC_API_KEY=your-key-here' > .env
+<span class="cmd">npm install</span>
+<span class="cmd">npm run dev</span>
+<span class="comment"># Server on :3001, client on :5173</span></pre>
+    </section>
+
+    <section class="roadmap">
+      <h2>Roadmap</h2>
+      <ul class="step-list">
+        <li class="step step-done">
+          <div class="step-dot">&#10003;</div>
+          <div class="step-content">
+            <h3>Persistent conversations</h3>
+            <p>SQLite-backed chat with streaming Claude responses</p>
+          </div>
+        </li>
+        <li class="step step-done">
+          <div class="step-dot">&#10003;</div>
+          <div class="step-content">
+            <h3>Multiple channels</h3>
+            <p>Named channels with independent histories and system prompts</p>
+          </div>
+        </li>
+        <li class="step step-done">
+          <div class="step-dot">&#10003;</div>
+          <div class="step-content">
+            <h3>Readable responses</h3>
+            <p>Markdown, syntax-highlighted code blocks, formatted text</p>
+          </div>
+        </li>
+        <li class="step step-done">
+          <div class="step-dot">&#10003;</div>
+          <div class="step-content">
+            <h3>Conversation control</h3>
+            <p>Clear, stop, regenerate, delete — editorial control over the flow</p>
+          </div>
+        </li>
+        <li class="step step-done">
+          <div class="step-dot">&#10003;</div>
+          <div class="step-content">
+            <h3>Channel identity</h3>
+            <p>Editable names, system prompts, and per-channel model selection</p>
+          </div>
+        </li>
+        <li class="step step-done">
+          <div class="step-dot">&#10003;</div>
+          <div class="step-content">
+            <h3>Multi-entity conversations</h3>
+            <p>Multiple Claude personas in one channel — the first thing Klatch can do that claude.ai can't</p>
+          </div>
+        </li>
+        <li class="step step-done">
+          <div class="step-dot">&#10003;</div>
+          <div class="step-content">
+            <h3>Panel, roundtable, and directed modes</h3>
+            <p>Parallel, sequential, or @-mention routing — three ways to orchestrate multi-entity conversations</p>
+          </div>
+        </li>
+        <li class="step step-done">
+          <div class="step-dot">&#10003;</div>
+          <div class="step-content">
+            <h3>Import and fork</h3>
+            <p>Import Claude Code sessions and claude.ai exports; continue conversations across environments</p>
+          </div>
+        </li>
+        <li class="step step-next">
+          <div class="step-dot">9</div>
+          <div class="step-content">
+            <h3>Search and recall</h3>
+            <p>Full-text search, export, command palette, bookmarks</p>
+          </div>
+        </li>
+        <li class="step step-future">
+          <div class="step-dot">10</div>
+          <div class="step-content">
+            <h3>Files and artifacts</h3>
+            <p>Upload files, render artifacts inline, rich context for entities</p>
+          </div>
+        </li>
+        <li class="step step-future">
+          <div class="step-dot">11</div>
+          <div class="step-content">
+            <h3>Export to Claude Code</h3>
+            <p>Roundtrip conversations back to a tool-enabled environment</p>
+          </div>
+        </li>
+      </ul>
+    </section>
+
+    <section class="stack">
+      <h2>Built with</h2>
+      <div class="stack-grid">
+        <span class="stack-tag">React 19</span>
+        <span class="stack-tag">Vite</span>
+        <span class="stack-tag">Hono</span>
+        <span class="stack-tag">SQLite</span>
+        <span class="stack-tag">Tailwind CSS v4</span>
+        <span class="stack-tag">Anthropic SDK</span>
+        <span class="stack-tag">TypeScript</span>
+        <span class="stack-tag">SSE Streaming</span>
+      </div>
+    </section>
+
+    <section class="built-with">
+      <p>Klatch is built by <a href="https://github.com/mediajunkie">xian</a> and a team of Claude agents: Daedalus (builder), Argus (quality), Theseus (testing), Calliope (writing), and Mnemosyne (knowledge steward). The human drives direction and design values. The agents do the work.</p>
+    </section>
+
+    <footer>
+      <p>CC BY 4.0 &middot; <a href="https://github.com/Design-in-Product/klatch">GitHub</a> &middot; <a href="blog/">Blog</a></p>
+    </footer>
+
+  </div>
+
+</body>
+</html>
