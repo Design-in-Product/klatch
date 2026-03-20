@@ -85,9 +85,20 @@ Resumed after context rollover. PO clarified the mechanism question: "How does A
 - Argus Round 10 assigned: test coverage for all new code paths
 - No schema changes (same `source: 'claude-code'`, cloud origin in metadata)
 
-## Next steps
+## 21:08 — Session wrap
 
+Committed and pushed (`4390c9a`). PO will test in the morning. Argus Round 10 assigned for test coverage.
+
+### What shipped today
+- v0.8.7 cloud session import — the full three-path approach (agent self-export, file upload, manual path)
+- 7 files changed, 596 insertions, 89 deletions
+- Zero schema changes, zero test regressions
+
+### Open items for next session
 - PO manual testing of file upload flow
-- Argus Round 10 for test coverage
-- Session log export convention should be added to COORDINATION.md
-- Consider adding self-export step to agent session-end workflow
+- Argus Round 10 results (cloud import test coverage)
+- Model provenance indicator (A) — next feature work
+- Klatch creation UI (#10) — core feature gap
+- Roadmap review with PO (promised after Step 8 wraps)
+
+**Ended:** 21:08
