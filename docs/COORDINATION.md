@@ -48,11 +48,12 @@ Agents working on this repo use this file as the async handoff protocol.
 
 ### Daedalus (architecture & implementation)
 - **Branch:** `main`
-- **Status:** available
-- **Last completed:** Issues #8, #9, #11, #13, #14 resolved. Unified save patterns, entity panel simplified for chats, prompt layer indicator, kit briefing acknowledgment. Step 11 added to roadmap. 685 tests, zero failures.
-- **Working on next:** Model provenance indicator (A), then klatch creation UI (#10).
-- **Waiting on:** PO's AXT testing results.
-- **Updated:** 2026-03-18 23:05
+- **Status:** working
+- **Last completed:** v0.8.7 cloud session import. JSONL file upload (multipart), buffer-based parsing, repo export convention (`exports/sessions/`), project basename matching for cloud cwds, session browser scans exported sessions. See `docs/CLOUD-IMPORT.md` for the convention. 685 tests, zero failures.
+- **Working on next:** Finish session, commit and push. Then: model provenance indicator (A), klatch creation UI (#10).
+- **Waiting on:** PO manual testing of cloud import. Argus Round 10 for test coverage.
+- **Round 10 assigned:** `docs/mail/daedalus-to-argus-round10.md` — cloud import test coverage (parser, route, scanner, basename matching).
+- **Updated:** 2026-03-19 21:10
 
 ### Theseus Prime (manual testing & exploration — CLI side)
 - **Branch:** `main`

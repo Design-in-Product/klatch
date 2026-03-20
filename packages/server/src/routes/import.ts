@@ -2,11 +2,11 @@ import { Hono } from 'hono';
 import fs from 'fs';
 import os from 'os';
 import path from 'path';
-import { parseClaudeCodeSession } from '../import/parser.js';
+import { parseClaudeCodeSession, parseClaudeCodeSessionFromContent } from '../import/parser.js';
 import { parseClaudeAiConversation } from '../import/claude-ai-parser.js';
 import { extractFromZip } from '../import/claude-ai-zip.js';
-import { scanClaudeCodeSessions } from '../import/session-scanner.js';
-import { importSession, findChannelByOriginalSessionId, getImportConflictInfo, countChannelsByOriginalSessionId, findOrCreateProject } from '../db/queries.js';
+import { scanClaudeCodeSessions, scanExportedSessions } from '../import/session-scanner.js';
+import { importSession, findChannelByOriginalSessionId, getImportConflictInfo, countChannelsByOriginalSessionId, findOrCreateProject, findUniqueProjectByName } from '../db/queries.js';
 import { MODEL_ALIASES, AVAILABLE_MODELS } from '@klatch/shared';
 import type { ModelId } from '@klatch/shared';
 
@@ -45,6 +45,13 @@ const app = new Hono();
 app.get('/import/claude-code/sessions', async (c) => {
   try {
     const projects = await scanClaudeCodeSessions();
+
+    // Also scan the repo's exports/sessions/ directory for cloud agent sessions
+    const exported = await scanExportedSessions(process.cwd());
+    if (exported) {
+      projects.push(exported);
+    }
+
     const totalSessions = projects.reduce((sum, p) => sum + p.sessions.length, 0);
     return c.json({
       projects,
@@ -64,45 +71,76 @@ app.get('/import/claude-code/sessions', async (c) => {
  *
  * Import a Claude Code JSONL session file into Klatch as a new channel.
  *
- * Body: { sessionPath: string, channelName?: string }
+ * Accepts either:
+ * - JSON body: { sessionPath: string, channelName?: string, forceImport?: boolean }
+ * - Multipart form data: file (.jsonl), channelName?, forceImport? (for cloud agent uploads)
+ *
  * Returns: 201 with ImportResult, or 400/404/409 on error.
  */
 app.post('/import/claude-code', async (c) => {
-  const { sessionPath, channelName, forceImport } = await c.req.json<{
-    sessionPath: string;
-    channelName?: string;
-    forceImport?: boolean;
-  }>();
+  const contentType = c.req.header('content-type') || '';
 
-  if (!sessionPath) {
-    return c.json({ error: 'sessionPath is required' }, 400);
+  if (contentType.includes('multipart/form-data')) {
+    // ── File upload path (cloud agent sessions) ──
+    const formData = await c.req.formData();
+    const file = formData.get('file');
+    if (!file || !(file instanceof File)) {
+      return c.json({ error: 'No file uploaded. Send a JSONL file as "file" in multipart form data.' }, 400);
+    }
+    if (!file.name.endsWith('.jsonl')) {
+      return c.json({ error: 'File must be a .jsonl file' }, 400);
+    }
+    const arrayBuffer = await file.arrayBuffer();
+    if (arrayBuffer.byteLength > MAX_IMPORT_SIZE) {
+      return c.json({ error: `File too large (${Math.round(arrayBuffer.byteLength / 1024 / 1024)}MB). Maximum is ${MAX_IMPORT_SIZE / 1024 / 1024}MB.` }, 400);
+    }
+    const channelName = formData.get('channelName') as string | null;
+    const forceImport = formData.get('forceImport') === 'true';
+    const content = Buffer.from(arrayBuffer).toString('utf-8');
+    const session = parseClaudeCodeSessionFromContent(content);
+
+    return processClaudeCodeImport(c, session, channelName || undefined, forceImport, true);
+  } else {
+    // ── Path-based import (local sessions) ──
+    const { sessionPath, channelName, forceImport } = await c.req.json<{
+      sessionPath: string;
+      channelName?: string;
+      forceImport?: boolean;
+    }>();
+
+    if (!sessionPath) {
+      return c.json({ error: 'sessionPath is required' }, 400);
+    }
+    if (!sessionPath.endsWith('.jsonl')) {
+      return c.json({ error: 'File must be a .jsonl file' }, 400);
+    }
+
+    const expandedPath = validateImportPath(expandHome(sessionPath));
+    if (!expandedPath) {
+      return c.json({ error: 'Invalid file path' }, 400);
+    }
+    if (!fs.existsSync(expandedPath)) {
+      return c.json({ error: 'File not found' }, 404);
+    }
+
+    const stat = fs.statSync(expandedPath);
+    if (stat.size > MAX_IMPORT_SIZE) {
+      return c.json({ error: `File too large (${Math.round(stat.size / 1024 / 1024)}MB). Maximum is ${MAX_IMPORT_SIZE / 1024 / 1024}MB.` }, 400);
+    }
+
+    const session = await parseClaudeCodeSession(expandedPath);
+    return processClaudeCodeImport(c, session, channelName, forceImport === true, false);
   }
+});
 
-  // Validate file extension
-  if (!sessionPath.endsWith('.jsonl')) {
-    return c.json({ error: 'File must be a .jsonl file' }, 400);
-  }
-
-  // Expand ~ and validate path
-  const expandedPath = validateImportPath(expandHome(sessionPath));
-  if (!expandedPath) {
-    return c.json({ error: 'Invalid file path' }, 400);
-  }
-
-  // Check file exists
-  if (!fs.existsSync(expandedPath)) {
-    return c.json({ error: 'File not found' }, 404);
-  }
-
-  // Check file size
-  const stat = fs.statSync(expandedPath);
-  if (stat.size > MAX_IMPORT_SIZE) {
-    return c.json({ error: `File too large (${Math.round(stat.size / 1024 / 1024)}MB). Maximum is ${MAX_IMPORT_SIZE / 1024 / 1024}MB.` }, 400);
-  }
-
-  // Parse the session
-  const session = await parseClaudeCodeSession(expandedPath);
-
+/** Shared import logic for Claude Code sessions (both path-based and uploaded) */
+function processClaudeCodeImport(
+  c: any,
+  session: import('../import/parser.js').ParsedSession,
+  channelName: string | undefined,
+  forceImport: boolean,
+  isCloudUpload: boolean,
+) {
   // Validate non-empty
   if (session.turns.length === 0) {
     return c.json({ error: 'Session is empty — no conversation events found' }, 400);
@@ -137,12 +175,12 @@ app.post('/import/claude-code', async (c) => {
   // Resolve model: map legacy IDs to current ones
   const resolvedModel = resolveModel(session.model);
 
-  // Read project context files (best-effort)
+  // Read project context files (best-effort, only if cwd exists locally)
   let claudeMd: string | undefined;
   let memoryMd: string | undefined;
+  const cwdExistsLocally = session.cwd && fs.existsSync(session.cwd);
 
-  if (session.cwd) {
-    // CLAUDE.md from the project root
+  if (session.cwd && cwdExistsLocally) {
     const claudeMdPath = path.join(session.cwd, 'CLAUDE.md');
     try {
       if (fs.existsSync(claudeMdPath)) {
@@ -150,9 +188,6 @@ app.post('/import/claude-code', async (c) => {
       }
     } catch { /* best-effort — file may be unreadable */ }
 
-    // MEMORY.md from Claude Code's projects directory
-    // Claude Code encodes cwd by replacing / with - (leading slash becomes leading -)
-    // e.g., /Users/xian/Development/klatch → -Users-xian-Development-klatch
     const encodedCwd = session.cwd.replace(/\//g, '-');
     const memoryMdPath = path.join(
       os.homedir(), '.claude', 'projects', encodedCwd, 'memory', 'MEMORY.md'
@@ -164,24 +199,39 @@ app.post('/import/claude-code', async (c) => {
     } catch { /* best-effort — file may be unreadable */ }
   }
 
-  // ── Create/find project by cwd (8¾a: same cwd = same project) ──
+  // ── Create/find project ──
+  // For local sessions: match by exact cwd (existing behavior)
+  // For cloud uploads: try exact cwd first, then fall back to basename matching
   let projectId: string | undefined;
   if (session.cwd) {
-    // Project instructions = CLAUDE.md content (project conventions/rules)
-    // Project memory = MEMORY.md content (accumulated knowledge, separate field)
     const instructions = claudeMd || '';
     const projectName = path.basename(session.cwd);
 
-    const project = findOrCreateProject(
-      projectName,
-      instructions,
-      'claude-code',
-      { cwd: session.cwd },
-      'cwd',
-      session.cwd,
-      memoryMd || ''
-    );
-    projectId = project.id;
+    if (cwdExistsLocally) {
+      // Local cwd: exact match by cwd (existing behavior)
+      const project = findOrCreateProject(
+        projectName, instructions, 'claude-code',
+        { cwd: session.cwd }, 'cwd', session.cwd, memoryMd || ''
+      );
+      projectId = project.id;
+    } else {
+      // Cloud cwd: try exact cwd match first, then fall back to basename
+      const project = findOrCreateProject(
+        projectName, instructions, 'claude-code',
+        { cwd: session.cwd }, 'cwd', session.cwd, memoryMd || ''
+      );
+      projectId = project.id;
+
+      // If a new project was just created with the cloud cwd, check if an existing
+      // project with the same basename already has real content (instructions/memory).
+      // If so, link to the existing one instead and clean up the empty new one.
+      if (!project.instructions && !project.memory) {
+        const existing = findUniqueProjectByName(projectName);
+        if (existing && existing.id !== project.id) {
+          projectId = existing.id;
+        }
+      }
+    }
   }
 
   // Import into database
@@ -201,6 +251,7 @@ app.post('/import/claude-code', async (c) => {
       importedAt: new Date().toISOString(),
       claudeMd,
       memoryMd,
+      ...(isCloudUpload ? { cloudUpload: true } : {}),
     },
     model: resolvedModel,
     turns: session.turns,
@@ -212,7 +263,7 @@ app.post('/import/claude-code', async (c) => {
     sessionId: session.sessionId,
     ...(session.skippedLines ? { skippedLines: session.skippedLines } : {}),
   }, 201);
-});
+}
 
 /**
  * Generate a channel name from the session's working directory and timestamp.

@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { importClaudeCodeSession, importClaudeAiExport, previewClaudeAiExport, deleteChannelApi, fetchClaudeCodeSessions } from '../api/client';
+import { importClaudeCodeSession, uploadClaudeCodeSession, importClaudeAiExport, previewClaudeAiExport, deleteChannelApi, fetchClaudeCodeSessions } from '../api/client';
 import type { ImportResponse, ImportConflict, ClaudeAiImportResponse, ZipPreviewResponse, SessionBrowseResponse } from '../api/client';
 
 type ImportMode = 'claude-code' | 'claude-ai';
@@ -25,6 +25,8 @@ export function ImportDialog({ isOpen, onClose, onImported, onBulkImported, onCh
   const [bulkResult, setBulkResult] = useState<ClaudeAiImportResponse | null>(null);
   const [conflict, setConflict] = useState<ImportConflict | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const jsonlInputRef = useRef<HTMLInputElement>(null);
+  const [jsonlFile, setJsonlFile] = useState<File | null>(null);
 
   // Preview state for selective import
   const [preview, setPreview] = useState<ZipPreviewResponse | null>(null);
@@ -105,9 +107,11 @@ export function ImportDialog({ isOpen, onClose, onImported, onBulkImported, onCh
           await handleImportSelected();
           return;
         }
-        const path = sessionPath.trim();
-        if (!path) return;
-        const importResult = await importClaudeCodeSession(path, channelName.trim() || undefined);
+        // Upload path (JSONL file) or manual path
+        const importResult = jsonlFile
+          ? await uploadClaudeCodeSession(jsonlFile, channelName.trim() || undefined)
+          : await importClaudeCodeSession(sessionPath.trim(), channelName.trim() || undefined);
+        if (!jsonlFile && !sessionPath.trim()) return;
         if (importResult.status === 'conflict') {
           setConflict(importResult.conflict);
         } else {
@@ -144,8 +148,9 @@ export function ImportDialog({ isOpen, onClose, onImported, onBulkImported, onCh
       await deleteChannelApi(conflict.existingChannelId);
       if (onChannelDeleted) onChannelDeleted(conflict.existingChannelId);
       // Re-import (now no duplicate exists)
-      const path = sessionPath.trim();
-      const importResult = await importClaudeCodeSession(path, channelName.trim() || undefined);
+      const importResult = jsonlFile
+        ? await uploadClaudeCodeSession(jsonlFile, channelName.trim() || undefined)
+        : await importClaudeCodeSession(sessionPath.trim(), channelName.trim() || undefined);
       if (importResult.status === 'success') {
         setConflict(null);
         setResult(importResult.data);
@@ -165,8 +170,9 @@ export function ImportDialog({ isOpen, onClose, onImported, onBulkImported, onCh
     setLoading(true);
     setError(null);
     try {
-      const path = sessionPath.trim();
-      const importResult = await importClaudeCodeSession(path, channelName.trim() || undefined, true);
+      const importResult = jsonlFile
+        ? await uploadClaudeCodeSession(jsonlFile, channelName.trim() || undefined, true)
+        : await importClaudeCodeSession(sessionPath.trim(), channelName.trim() || undefined, true);
       if (importResult.status === 'success') {
         setConflict(null);
         setResult(importResult.data);
@@ -201,6 +207,7 @@ export function ImportDialog({ isOpen, onClose, onImported, onBulkImported, onCh
     setSessionPath('');
     setChannelName('');
     setZipFile(null);
+    setJsonlFile(null);
     setError(null);
     setResult(null);
     setBulkResult(null);
@@ -212,6 +219,7 @@ export function ImportDialog({ isOpen, onClose, onImported, onBulkImported, onCh
     setSelectedSessions(new Set());
     setBrowseError(null);
     if (fileInputRef.current) fileInputRef.current.value = '';
+    if (jsonlInputRef.current) jsonlInputRef.current.value = '';
     onClose();
   };
 
@@ -227,6 +235,8 @@ export function ImportDialog({ isOpen, onClose, onImported, onBulkImported, onCh
     setSessionBrowse(null);
     setSelectedSessions(new Set());
     setBrowseError(null);
+    setJsonlFile(null);
+    if (jsonlInputRef.current) jsonlInputRef.current.value = '';
   };
 
   const toggleConversation = (uuid: string) => {
@@ -361,7 +371,7 @@ export function ImportDialog({ isOpen, onClose, onImported, onBulkImported, onCh
   ).length ?? 0;
   const isSubmitDisabled = loading || (
     mode === 'claude-code'
-      ? (sessionBrowse ? selectedSessions.size === 0 : !sessionPath.trim())
+      ? (sessionBrowse ? selectedSessions.size === 0 : (!sessionPath.trim() && !jsonlFile))
       : (!zipFile || (preview !== null && selectedIds.size === 0))
   );
 
@@ -620,34 +630,88 @@ export function ImportDialog({ isOpen, onClose, onImported, onBulkImported, onCh
                     )}
                   </div>
                 ) : (
-                  /* Manual path input + browse button */
+                  /* Manual path input + file upload + browse button */
                   <>
-                    <div>
-                      <label className="block text-sm font-medium text-secondary mb-1">
-                        Session file path
-                      </label>
-                      <input
-                        type="text"
-                        value={sessionPath}
-                        onChange={(e) => setSessionPath(e.target.value)}
-                        placeholder="~/.claude/projects/.../session-id.jsonl"
-                        autoFocus
-                        className="w-full rounded bg-input border border-line px-3 py-2 text-sm text-primary placeholder-muted focus:outline-none focus:border-accent font-mono"
-                      />
-                      <div className="mt-1 flex items-center justify-between">
-                        <p className="text-xs text-muted">
-                          Full path to a Claude Code JSONL session file
-                        </p>
+                    {jsonlFile ? (
+                      /* Selected JSONL file display */
+                      <div>
+                        <label className="block text-sm font-medium text-secondary mb-1">
+                          Session file
+                        </label>
+                        <div className="flex items-center justify-between rounded bg-surface px-3 py-2 border border-line">
+                          <div className="text-sm min-w-0">
+                            <span className="font-medium text-primary truncate">{jsonlFile.name}</span>
+                            <span className="text-muted ml-2">({(jsonlFile.size / 1024).toFixed(0)} KB)</span>
+                          </div>
+                          <button
+                            type="button"
+                            onClick={() => { setJsonlFile(null); if (jsonlInputRef.current) jsonlInputRef.current.value = ''; }}
+                            className="text-xs text-accent hover:text-accent-hover transition-colors ml-2 shrink-0"
+                          >
+                            Remove
+                          </button>
+                        </div>
+                      </div>
+                    ) : (
+                      /* Path input + upload option */
+                      <div>
+                        <label className="block text-sm font-medium text-secondary mb-1">
+                          Session file path
+                        </label>
+                        <input
+                          type="text"
+                          value={sessionPath}
+                          onChange={(e) => setSessionPath(e.target.value)}
+                          placeholder="~/.claude/projects/.../session-id.jsonl"
+                          autoFocus
+                          className="w-full rounded bg-input border border-line px-3 py-2 text-sm text-primary placeholder-muted focus:outline-none focus:border-accent font-mono"
+                        />
+                        <div className="mt-1 flex items-center justify-between">
+                          <p className="text-xs text-muted">
+                            Full path to a Claude Code JSONL session file
+                          </p>
+                          <button
+                            type="button"
+                            onClick={handleBrowseSessions}
+                            disabled={browseLoading}
+                            className="text-xs text-accent hover:text-accent-hover transition-colors disabled:opacity-50"
+                          >
+                            {browseLoading ? 'Scanning...' : 'Browse...'}
+                          </button>
+                        </div>
+
+                        {/* Upload divider + file picker */}
+                        <div className="mt-3 flex items-center gap-3">
+                          <div className="flex-1 border-t border-line" />
+                          <span className="text-xs text-muted">or upload a file</span>
+                          <div className="flex-1 border-t border-line" />
+                        </div>
+                        <input
+                          ref={jsonlInputRef}
+                          type="file"
+                          accept=".jsonl"
+                          onChange={(e) => {
+                            const file = e.target.files?.[0] || null;
+                            if (file && !file.name.endsWith('.jsonl')) {
+                              setError('Please select a .jsonl file');
+                              return;
+                            }
+                            setError(null);
+                            setJsonlFile(file);
+                            if (file) setSessionPath('');
+                          }}
+                          className="hidden"
+                        />
                         <button
                           type="button"
-                          onClick={handleBrowseSessions}
-                          disabled={browseLoading}
-                          className="text-xs text-accent hover:text-accent-hover transition-colors disabled:opacity-50"
+                          onClick={() => jsonlInputRef.current?.click()}
+                          className="mt-2 w-full rounded border-2 border-dashed border-line hover:border-accent px-4 py-3 text-sm text-muted hover:text-secondary transition-colors text-center"
                         >
-                          {browseLoading ? 'Scanning...' : 'Browse...'}
+                          Choose JSONL file
+                          <span className="block text-xs mt-0.5">For cloud agent sessions or shared files</span>
                         </button>
                       </div>
-                    </div>
+                    )}
 
                     <div>
                       <label className="block text-sm font-medium text-secondary mb-1">

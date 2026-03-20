@@ -348,6 +348,7 @@ export interface SessionInfo {
   alreadyImported: boolean;
   existingChannelId?: string;
   existingChannelName?: string;
+  isExported?: boolean;
 }
 
 export interface ProjectSessions {
@@ -420,6 +421,43 @@ export interface ImportConflict {
 export type ImportCodeResult =
   | { status: 'success'; data: ImportResponse }
   | { status: 'conflict'; conflict: ImportConflict };
+
+/**
+ * Upload a JSONL file for import (cloud agent sessions or shared files).
+ * Uses multipart/form-data instead of a filesystem path.
+ */
+export async function uploadClaudeCodeSession(
+  file: File,
+  channelName?: string,
+  forceImport?: boolean
+): Promise<ImportCodeResult> {
+  const formData = new FormData();
+  formData.append('file', file);
+  if (channelName) formData.append('channelName', channelName);
+  if (forceImport) formData.append('forceImport', 'true');
+
+  const res = await fetch(`${BASE}/import/claude-code`, {
+    method: 'POST',
+    body: formData,
+  });
+  if (res.status === 409) {
+    const body = await res.json();
+    if (body.error === 'duplicate') {
+      return { status: 'conflict', conflict: body as ImportConflict };
+    }
+    throw new Error(body.error || 'Import conflict');
+  }
+  if (!res.ok) {
+    let errorMessage = `Import failed: ${res.statusText}`;
+    try {
+      const body = await res.json();
+      if (body.error) errorMessage = body.error;
+    } catch { /* use default */ }
+    throw new Error(errorMessage);
+  }
+  const data: ImportResponse = await res.json();
+  return { status: 'success', data };
+}
 
 export async function importClaudeCodeSession(
   sessionPath: string,

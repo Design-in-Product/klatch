@@ -23,6 +23,8 @@ export interface SessionInfo {
   existingChannelId?: string;
   /** Channel name if already imported */
   existingChannelName?: string;
+  /** Whether this session came from the exports directory (cloud agent convention) */
+  isExported?: boolean;
 }
 
 export interface ProjectSessions {
@@ -167,4 +169,65 @@ export async function scanClaudeCodeSessions(): Promise<ProjectSessions[]> {
   projects.sort((a, b) => a.projectName.localeCompare(b.projectName));
 
   return projects;
+}
+
+/**
+ * Scan the repo's exports/sessions/ directory for JSONL files.
+ * Cloud agents commit their session files here for easy import.
+ * Returns a single ProjectSessions group if any files are found.
+ */
+export async function scanExportedSessions(repoRoot: string): Promise<ProjectSessions | null> {
+  const exportDir = path.join(repoRoot, 'exports', 'sessions');
+
+  if (!fs.existsSync(exportDir)) return null;
+
+  let files: fs.Dirent[];
+  try {
+    files = fs.readdirSync(exportDir, { withFileTypes: true });
+  } catch {
+    return null;
+  }
+
+  const sessions: SessionInfo[] = [];
+
+  for (const file of files) {
+    if (!file.isFile() || !file.name.endsWith('.jsonl')) continue;
+
+    const filePath = path.join(exportDir, file.name);
+    let stat: fs.Stats;
+    try {
+      stat = fs.statSync(filePath);
+    } catch {
+      continue;
+    }
+
+    if (stat.size < 100) continue;
+
+    // Extract session ID: try the filename (sans .jsonl), or read from file
+    const sessionId = file.name.replace('.jsonl', '');
+    const existing = findChannelByOriginalSessionId(sessionId);
+
+    sessions.push({
+      path: filePath,
+      sessionId,
+      projectPath: exportDir,
+      projectName: 'Exported sessions',
+      sizeBytes: stat.size,
+      modifiedAt: stat.mtime.toISOString(),
+      alreadyImported: !!existing,
+      existingChannelId: existing?.id,
+      existingChannelName: existing?.name,
+      isExported: true,
+    });
+  }
+
+  if (sessions.length === 0) return null;
+
+  sessions.sort((a, b) => b.modifiedAt.localeCompare(a.modifiedAt));
+
+  return {
+    projectPath: exportDir,
+    projectName: 'Exported sessions',
+    sessions,
+  };
 }

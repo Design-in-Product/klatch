@@ -498,6 +498,42 @@ async function findCompactionSummary(sessionPath: string): Promise<string | unde
 }
 
 /**
+ * Parse JSONL content from a string (for uploaded files or in-memory content).
+ * Splits by newline, parses each line as JSON, skips malformed lines.
+ */
+export function parseJsonlContent(content: string): ReadJsonlResult {
+  const events: RawEvent[] = [];
+  let skippedLines = 0;
+
+  for (const line of content.split('\n')) {
+    const trimmed = line.trim();
+    if (!trimmed) continue;
+    try {
+      events.push(JSON.parse(trimmed));
+    } catch {
+      skippedLines++;
+    }
+  }
+
+  return { events, skippedLines };
+}
+
+/**
+ * Parse a Claude Code session from in-memory JSONL content.
+ * Used for uploaded files (cloud agent sessions) where there's no local disk path.
+ * Skips subagent compaction file scanning (not available for uploads —
+ * inline compaction events in the JSONL are still extracted).
+ */
+export function parseClaudeCodeSessionFromContent(content: string): ParsedSession {
+  const { events, skippedLines } = parseJsonlContent(content);
+  const session = parseEvents(events);
+  if (skippedLines > 0) {
+    session.skippedLines = skippedLines;
+  }
+  return session;
+}
+
+/**
  * Main entry point: parse a Claude Code session from disk.
  *
  * @param sessionPath - Full path to the session .jsonl file

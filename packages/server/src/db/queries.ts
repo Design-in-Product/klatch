@@ -496,6 +496,18 @@ export function findOrCreateProject(
 }
 
 /**
+ * Find a project by name (basename matching for cloud imports).
+ * Returns the project only if exactly one match exists — avoids ambiguity.
+ */
+export function findUniqueProjectByName(name: string): Project | undefined {
+  const rows = getDb()
+    .prepare('SELECT * FROM projects WHERE name = ?')
+    .all(name) as any[];
+  if (rows.length === 1) return rowToProject(rows[0]);
+  return undefined; // zero or multiple matches — ambiguous
+}
+
+/**
  * Get the project for a channel (if any).
  * Used to inject project instructions into system prompt.
  */
