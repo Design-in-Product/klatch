@@ -80,3 +80,13 @@ Fully redesigned around the 5-layer prompt model. Key changes from v3:
 
 Written to `docs/fork-continuity-quiz.md`.
 
+### AAXT harness brief — memo to Argus
+
+Wrote `docs/mail/theseus-to-argus-aaxt-harness.md`. Key points:
+
+- **AAXT** (Automated AX Testing) = Argus's domain: synthetic context, deterministic assertions against `prompt-debug` endpoint, no LLM calls
+- **MAXT** (Manual AX Testing) = Theseus + Xian: real agents, qualitative interpretation
+- AAXT is the gate before MAXT — if plumbing is broken, don't waste a real agent session
+- 12 test cases across 4 groups: Claude Code local, cloud upload (v0.8.7), claude.ai ZIP, edge cases
+- Deliverable: `round11-aaxt-harness.test.ts`
+
