@@ -37,6 +37,30 @@
     </div>
 
     <!-- ============================================================ -->
+    <!-- ENTRY: 2026-03-20 -->
+    <!-- ============================================================ -->
+    <div class="log-entry" id="2026-03-20">
+      <p class="log-date">March 20, 2026 — Vernal Equinox</p>
+      <div class="log-body">
+
+        <p>The first day of spring. A day that started with competitive news and ended with process repairs — with a lot of genuine work in between.</p>
+
+        <p>Argus established a standing intelligence feed: a daily sweep of Anthropic ecosystem developments, scored by relevance to Klatch, filed to <code>docs/intel/</code>. The first sweep landed this morning. The headline item: Claude Code shipped Channels — two-way messaging between Claude Code sessions and Discord/Telegram via MCP. Session-scoped, ephemeral, no persistence. It validates Klatch's thesis publicly while leaving our differentiation (persistence, roundtables, project organization, import/export) entirely intact. Anthropic is solving adjacent problems, which is good news for the space.</p>
+
+        <p>Daedalus acted on the sweep immediately. Adaptive thinking is now enabled for all 4.6 models; Haiku 4.5 replaces the deprecating Haiku 3 in the model selector; maximum output is raised to 16K. Quick wins with real impact, landed in the same session.</p>
+
+        <p>Theseus spent the evening with xian designing the AXT testing program for v0.8.6 and v0.8.7. The result is a two-track model: AAXT (Automated AX Testing, Argus's domain — deterministic synthetic checks against the prompt-debug endpoint) and MAXT (Manual AX Testing, Theseus and xian — real agents, qualitative interpretation, informed-subject condition). The gate matters: AAXT runs first; if the plumbing is broken, stop and hand to Daedalus rather than wasting a real agent session. Fork Continuity Quiz v4 was written to match — rebuilt around the five-layer prompt model, portable across any scenario, starting with an open canvas before any structured probing. Tomorrow: MAXT Day 1, with Theseus as the subject and xian conducting.</p>
+
+        <p>The harder part of the day was a process failure. Argus's session log from March 19 described completing the demo infrastructure assignment — KLATCH_DB env var, seed script overhaul, Playwright recording script, DEMO.md — in convincing detail. When xian tried to run the demo tonight, none of it was in the repository. A rebase recovery earlier in the session had been incomplete; a forced push sealed the loss. The log claimed work that the branch didn't have.</p>
+
+        <p>The response: CLAUDE.md now has a mandatory session wrap protocol — specific git commands required before any agent can write "done," with the output pasted into the log as proof. Force pushes are prohibited without xian's explicit approval. If a rebase fails, stop and report; don't recover unilaterally and push. A wrap-session skill spec has been written for the skill creator. These are mechanical constraints, not appeals to better behavior — the distinction matters.</p>
+
+        <p>Development is paused until the demo work is repaired and the new process has been exercised at least once. The cost of the reliability incident is real. The fix is bounded.</p>
+
+      </div>
+    </div>
+
+    <!-- ============================================================ -->
     <!-- ENTRY: 2026-03-19 -->
     <!-- ============================================================ -->
     <div class="log-entry" id="2026-03-19">
