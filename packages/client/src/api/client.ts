@@ -1,4 +1,4 @@
-import type { Channel, Entity, Message, ModelId, InteractionMode, ImportResult } from '@klatch/shared';
+import type { Channel, Entity, Message, ModelId, InteractionMode, ChannelType, ImportResult } from '@klatch/shared';
 
 const BASE = '/api';
 
@@ -13,12 +13,15 @@ export async function fetchChannels(): Promise<Channel[]> {
 export async function createChannel(
   name: string,
   systemPrompt?: string,
-  model?: ModelId
+  model?: ModelId,
+  type?: ChannelType,
+  mode?: InteractionMode,
+  projectId?: string
 ): Promise<Channel> {
   const res = await fetch(`${BASE}/channels`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ name, systemPrompt, model }),
+    body: JSON.stringify({ name, systemPrompt, model, type, mode, projectId }),
   });
   if (!res.ok) throw new Error(`Failed to create channel: ${res.statusText}`);
   return res.json();
