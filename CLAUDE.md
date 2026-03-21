@@ -76,6 +76,35 @@ Agents maintain session logs in `docs/logs/` during working sessions.
 - **Purpose:** Record decisions, findings, test results, and observations during a session
 - **When:** Create a log at session start if doing substantive work (testing, investigation, implementation)
 - **Content:** Timestamped entries with context, findings, and next steps
+- **Update continuously:** Add timestamped entries as work progresses — do not reconstruct from memory at session end
+
+## Session Wrap Protocol (required before closing every session)
+
+Before writing any "done" or "complete" claim in your session log, you must verify your work is actually in the repository. This is not optional.
+
+**Step 1 — Confirm your commits landed:**
+```bash
+git log origin/YOUR-BRANCH --oneline -5
+```
+Paste the output into your session log. If your commits do not appear, do not claim the work is done.
+
+**Step 2 — Confirm each deliverable file exists:**
+For every file you claim to have created or modified, run:
+```bash
+ls PATH/TO/FILE
+```
+If a file is missing, note it explicitly. Do not write "done" for work you cannot verify is present.
+
+**Step 3 — Push your session log last:**
+Commit and push your session log after verifying Steps 1 and 2. The log is the final record, not the first.
+
+**If verification fails:** Write exactly what was attempted, what commit hashes exist, and what is missing. Report to xian before closing. Do not fabricate a completion record.
+
+## Git Safety Rules
+
+- **No force pushes without explicit approval from xian.** `git push --force` and `git push -f` are prohibited unless xian has specifically authorized the operation in the current session.
+- **If a rebase goes wrong, stop and report.** Do not attempt to recover a failed rebase on your own and push the result. The risk of silently losing work is too high. Report the state to xian and wait for guidance.
+- **Verify after any recovery operation.** If you recover from a rebase conflict or merge issue, run `git log --oneline -10` and check that your work commits are present before pushing.
 
 ## Conventions
 
