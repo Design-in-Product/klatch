@@ -175,9 +175,9 @@ describe('ChannelSidebar', () => {
 
     await user.click(screen.getByText('+ New channel'));
     await user.type(screen.getByPlaceholderText('Channel name'), 'my-channel');
-    await user.click(screen.getByText('Create'));
+    await user.click(screen.getByText('Create Chat'));
 
-    expect(onCreateChannel).toHaveBeenCalledWith('my-channel', 'You are a helpful assistant.');
+    expect(onCreateChannel).toHaveBeenCalledWith('my-channel', 'You are a helpful assistant.', undefined, undefined, undefined, undefined);
   });
 
   it('does not submit empty channel name', async () => {
@@ -186,7 +186,7 @@ describe('ChannelSidebar', () => {
     render(<ChannelSidebar {...defaultProps} channels={[]} onCreateChannel={onCreateChannel} />);
 
     await user.click(screen.getByText('+ New channel'));
-    await user.click(screen.getByText('Create'));
+    await user.click(screen.getByText('Create Chat'));
 
     expect(onCreateChannel).not.toHaveBeenCalled();
   });

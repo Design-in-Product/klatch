@@ -12,16 +12,18 @@ Agents working on this repo use this file as the async handoff protocol.
 
 ### Argus (quality & test infrastructure)
 - **Branch:** `claude/audit-and-planning-xn2w7`
-- **Status:** working
+- **Status:** available
 - **Test count:** 610 server + 116 client = 726 total, zero failures.
 - **Completed work:**
-  - Rounds 4–10 test suites (all passing, merged to main through Round 8)
+  - Rounds 4–11 test suites (all passing, merged to main through Round 8)
   - Cloud environment research (`docs/research/cloud-code-environment.md`)
   - Intelligence feed: first sweep (`docs/intel/2026-03-20-sweep.md`) + protocol (`docs/INTELLIGENCE.md`)
   - Demo infrastructure (rebuilt): `KLATCH_DB` env var, `seed-demo.sh` overhaul, `docs/DEMO.md`, `scripts/record-demo.ts`
   - Round 11 AAXT harness: 21 tests verifying 5-layer prompt assembly across all import paths
-- **Working on:** Available for Daedalus assignments or Rounds 9-10 test coverage.
-- **Updated:** 2026-03-21 23:40
+  - Round 11 klatch creation: 21 tests (channel creation + sidebar grouping + entity assignment + model provenance)
+  - Fixed 2 pre-existing client test failures from sidebar button text change
+- **Working on:** Available for next assignment.
+- **Updated:** 2026-03-21 06:10
 - **Round 7 assignment: Sidebar redesign tests (GitHub issue #8)**
   - Read `docs/plans/SIDEBAR.md` for full design spec before writing tests.
   - **Scope:** `packages/server/src/__tests__/round7-sidebar-redesign.test.ts` (server) + `packages/client/src/__tests__/Sidebar.test.tsx` (updates to existing)
