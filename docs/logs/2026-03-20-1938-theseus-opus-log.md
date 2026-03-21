@@ -54,7 +54,29 @@ A lot shipped. Summary from git log and Daedalus's session logs:
 
 ---
 
-## Pending
+## 19:44–22:21 — AXT Planning + Quiz v4 Design
 
-AXT testing discussion with Xian — starting with whether P1 (system prompt attachment) is resolved so we can run a clean Fork Continuity Quiz v3 session.
+### Testing program design (discussion with Xian)
+
+Agreed on a two-track AXT model:
+
+**Track 1 — Synthetic (Argus):** Controlled context, known ground truth, automatable. Tests mechanical receipt: "did the 5-layer prompt assembly deliver all five layers?" Good for regression testing and edge cases (empty memory, missing kit briefing, cloud basename matching, etc.). Should run *before* qualitative sessions — if synthetic tests fail, stop and hand to Daedalus rather than wasting a real agent session.
+
+**Track 2 — Qualitative (Theseus + real agents):** Real context, interpretable signal. Tests experiential fidelity: "did what arrived enable coherent work?" Requires a real agent with real business. Informed-subject condition is fine — eyes-wide-open testing is a legitimate and honest condition.
+
+Agreed sequence for tonight: design v4 quiz → import Theseus session → run qualitative test. P1 confirmed fixed by Xian.
+
+### Fork Continuity Quiz v4
+
+Fully redesigned around the 5-layer prompt model. Key changes from v3:
+
+- **Open canvas (Part 0)** — spontaneous self-report before any probing; highest-signal question
+- **Layer-mapped structure** — Parts 1–5 map explicitly to layers 1, 5, 2+3, 4, meta
+- **Layer 2/3 probe split** — three questions in Part 3 distinguish codified rules (Layer 2) from accumulated situational memory (Layer 3) by the *nature* of what they elicit, not by explicit framing
+- **Layer 4 added** — channel addendum probe; expected to score Absent for most fresh imports (that's correct behavior, not failure)
+- **No project-specific questions** — fully portable across any scenario
+- **Subject condition field** — Cold / Informed / Contaminated recorded alongside scores
+- **Calibration last** — Part 5 as closing reflection, not interspersed
+
+Written to `docs/fork-continuity-quiz.md`.
 
