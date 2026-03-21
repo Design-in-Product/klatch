@@ -20,7 +20,9 @@ function findProjectRoot(dir: string): string {
   return findProjectRoot(parent);
 }
 
-const DB_PATH = path.join(findProjectRoot(__dirname), 'klatch.db');
+const DB_PATH = process.env.KLATCH_DB
+  ? path.resolve(process.env.KLATCH_DB)
+  : path.join(findProjectRoot(__dirname), 'klatch.db');
 
 let db: Database.Database;
 
