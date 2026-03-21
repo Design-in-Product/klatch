@@ -294,6 +294,16 @@ Ideas that are interesting but have no timeline or clear dependency chain yet:
 - **Agent-perspective testing** — ask Claude to self-report on context quality after a fork/continuation, comparing what it knows vs. what it's lost. A form of "model QA" that's unique to continuation-aware systems
 - **Semantic identity for continued conversations** — when a conversation continues from import, the new instance may evolve in a different direction. How do we name and honor that divergence? See `docs/DESIGN-NOTES.md` for early thinking.
 
+- **Klatch as MCP service** — expose Klatch's coordination layer via MCP: create channel, send message to entity, get transcript, trigger a workflow. If Klatch had an MCP surface, external systems (including other Claude agents) could drive it programmatically. The GUI remains for humans; the MCP layer is for machines. The Piper Morgan orchestration layer, for instance, could trigger a Weekly Ship roundtable via MCP without human choreography.
+
+- **Alternative skins on the same API bridge** — Klatch's real value is the routing, persistence, and project organization layer underneath. The UI is one expression of that layer. A developer-focused skin (closer to a terminal/editor hybrid, oriented toward Claude Code workflows) or a domain-specific skin (for product teams, researchers, etc.) could sit on the same infrastructure. Klatch would be the reference implementation; the architecture would be the platform.
+
+- **Standing workflow templates** — named, repeatable multi-step processes built from Klatch's existing primitives. Motivating examples from the Piper Morgan project: a daily omnibus log synthesis (gather session logs from multiple agents → Docs role synthesizes → file committed) and a weekly ship (six leadership roles write parallel memos → Chief of Staff synthesizes → published document). Today these require manual choreography across multiple conversations; templates would make them single-trigger. This is a more concrete restatement of the Workflows vision item above, grounded in actual use cases.
+
+- **Clode** — a Claude.ai-like GUI designed specifically for Claude Code workflows: project file browsing, tool-use visualization, permission management, session history. Not a replacement for Klatch but a different skin for a different primary audience (developers working in Claude Code rather than conversation-centric workflows). The name is a placeholder; the idea is that once the API bridge is solid, different UX expressions become cheap to build.
+
+- **Dynamic UI** — the far horizon of the skins idea: a system that generates and evolves its own interface based on the user's working patterns and explicit preferences, with smart defaults and templates as guardrails. Closer to a research idea than a product plan, but worth naming as the logical terminus of the "skins on a shared bridge" concept.
+
 ---
 
 ## Design Principles
