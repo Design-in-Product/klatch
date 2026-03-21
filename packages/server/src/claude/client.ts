@@ -309,7 +309,8 @@ async function streamClaudeCore(
       // Use beta API with compaction support
       const stream = getAnthropicClient().beta.messages.stream({
         model,
-        max_tokens: 4096,
+        max_tokens: 16384,
+        thinking: { type: 'adaptive' },
         system: systemPrompt || undefined,
         messages: history,
         betas: ['compact-2026-01-12'],
@@ -341,7 +342,8 @@ async function streamClaudeCore(
       // Standard API (no compaction)
       const stream = getAnthropicClient().messages.stream({
         model,
-        max_tokens: 4096,
+        max_tokens: 16384,
+        thinking: { type: 'adaptive' },
         system: systemPrompt || undefined,
         messages: history,
       });

@@ -1,7 +1,7 @@
 export const AVAILABLE_MODELS = {
   'claude-opus-4-6': { label: 'Opus', description: 'Most capable, highest quality' },
   'claude-sonnet-4-6': { label: 'Sonnet', description: 'Balanced speed and quality' },
-  'claude-haiku-3-5-20241022': { label: 'Haiku', description: 'Fastest, most compact' },
+  'claude-haiku-4-5-20251001': { label: 'Haiku', description: 'Fastest, most compact' },
 } as const;
 
 export type ModelId = keyof typeof AVAILABLE_MODELS;
@@ -12,7 +12,8 @@ export const DEFAULT_MODEL: ModelId = 'claude-opus-4-6';
 export const MODEL_ALIASES: Record<string, ModelId> = {
   'claude-opus-4-20250514': 'claude-opus-4-6',
   'claude-sonnet-4-20250514': 'claude-sonnet-4-6',
-  'claude-haiku-3-20250307': 'claude-haiku-3-5-20241022',
+  'claude-haiku-3-20250307': 'claude-haiku-4-5-20251001',
+  'claude-haiku-3-5-20241022': 'claude-haiku-4-5-20251001',
 };
 
 // Entity avatar colors — visually distinct, accessible on both light and dark backgrounds
