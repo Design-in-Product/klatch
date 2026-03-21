@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect, useRef } from 'react';
-import type { Channel, Entity, ModelId, InteractionMode } from '@klatch/shared';
+import type { Channel, Entity, ModelId, InteractionMode, ChannelType } from '@klatch/shared';
 import { AVAILABLE_MODELS, INTERACTION_MODES } from '@klatch/shared';
 import { ChannelSidebar } from './components/ChannelSidebar';
 import { ChannelSettings } from './components/ChannelSettings';
@@ -27,6 +27,8 @@ import {
   assignEntityToChannel,
   removeEntityFromChannel,
   deleteChannelApi,
+  fetchProjects,
+  type Project,
 } from './api/client';
 
 function getInitialTheme(): 'light' | 'dark' {
@@ -46,6 +48,7 @@ export default function App() {
   const [showSettings, setShowSettings] = useState(false);
   const [showEntityManager, setShowEntityManager] = useState(false);
   const [showImportDialog, setShowImportDialog] = useState(false);
+  const [projects, setProjects] = useState<Project[]>([]);
   const [activeProjectId, setActiveProjectId] = useState<string | null>(null);
   const [sendError, setSendError] = useState<string | null>(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -64,6 +67,7 @@ export default function App() {
   useEffect(() => {
     fetchChannels().then(setChannels).catch(console.error);
     fetchEntities().then(setAllEntities).catch(console.error);
+    fetchProjects().then(setProjects).catch(console.error);
   }, []);
 
   // Load channel entities when active channel changes
@@ -223,10 +227,21 @@ export default function App() {
     setActiveChannelId(id);
   };
 
-  const handleCreateChannel = async (name: string, systemPrompt: string) => {
+  const handleCreateChannel = async (
+    name: string, systemPrompt: string,
+    type?: ChannelType, mode?: InteractionMode,
+    projectId?: string, entityIds?: string[]
+  ) => {
     try {
-      const channel = await createChannel(name, systemPrompt);
-      setChannels((prev) => [...prev, channel]);
+      const channel = await createChannel(name, systemPrompt, undefined, type, mode, projectId);
+      if (entityIds && entityIds.length > 0) {
+        for (const eid of entityIds) {
+          await assignEntityToChannel(channel.id, eid);
+        }
+      }
+      // Refresh full channel list (enriched query includes projectName, counts)
+      const updated = await fetchChannels();
+      setChannels(updated);
       setActiveChannelId(channel.id);
     } catch (err) {
       console.error('Failed to create channel:', err);
@@ -330,6 +345,8 @@ export default function App() {
         onCreateChannel={handleCreateChannel}
         onOpenEntities={() => setShowEntityManager(true)}
         onOpenImport={() => setShowImportDialog(true)}
+        projects={projects}
+        entities={allEntities}
         onOpenProjectSettings={(projectId) => {
           setActiveProjectId(projectId);
           setShowSettings(false); // close channel settings if open

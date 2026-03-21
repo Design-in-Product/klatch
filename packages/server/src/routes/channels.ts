@@ -78,12 +78,13 @@ app.get('/channels/:id/stats', (c) => {
 });
 
 app.post('/channels', async (c) => {
-  const { name, systemPrompt, model, mode, type } = await c.req.json<{
+  const { name, systemPrompt, model, mode, type, projectId } = await c.req.json<{
     name: string;
     systemPrompt?: string;
     model?: ModelId;
     mode?: InteractionMode;
     type?: ChannelType;
+    projectId?: string;
   }>();
 
   if (!name?.trim()) {
@@ -109,6 +110,12 @@ app.post('/channels', async (c) => {
     mode,
     type
   );
+
+  if (projectId) {
+    setChannelProject(channel.id, projectId);
+    channel.projectId = projectId;
+  }
+
   return c.json(channel, 201);
 });
 

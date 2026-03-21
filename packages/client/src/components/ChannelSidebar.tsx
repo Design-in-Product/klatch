@@ -1,16 +1,20 @@
 import React, { useState, useMemo } from 'react';
-import type { Channel } from '@klatch/shared';
+import type { Channel, Entity, ChannelType, InteractionMode } from '@klatch/shared';
+import { AVAILABLE_MODELS, INTERACTION_MODES } from '@klatch/shared';
 import { KlatchLogo } from './KlatchLogo';
+import type { Project } from '../api/client';
 
 
 interface Props {
   channels: Channel[];
   activeChannelId: string;
   onSelectChannel: (id: string) => void;
-  onCreateChannel: (name: string, systemPrompt: string) => void;
+  onCreateChannel: (name: string, systemPrompt: string, type?: ChannelType, mode?: InteractionMode, projectId?: string, entityIds?: string[]) => void;
   onOpenEntities?: () => void;
   onOpenImport?: () => void;
   onOpenProjectSettings?: (projectId: string) => void;
+  projects?: Project[];
+  entities?: Entity[];
   isOpen?: boolean;
   onClose?: () => void;
   theme: 'light' | 'dark';
@@ -25,6 +29,8 @@ export function ChannelSidebar({
   onOpenEntities,
   onOpenImport,
   onOpenProjectSettings,
+  projects = [],
+  entities = [],
   isOpen,
   onClose,
   theme,
@@ -33,15 +39,44 @@ export function ChannelSidebar({
   const [showForm, setShowForm] = useState(false);
   const [newName, setNewName] = useState('');
   const [newPrompt, setNewPrompt] = useState('');
+  const [newType, setNewType] = useState<ChannelType>('chat');
+  const [newProjectId, setNewProjectId] = useState('');
+  const [newMode, setNewMode] = useState<InteractionMode>('panel');
+  const [selectedEntityIds, setSelectedEntityIds] = useState<Set<string>>(new Set());
+
+  const resetForm = () => {
+    setNewName('');
+    setNewPrompt('');
+    setNewType('chat');
+    setNewProjectId('');
+    setNewMode('panel');
+    setSelectedEntityIds(new Set());
+    setShowForm(false);
+  };
+
+  const toggleEntity = (id: string) => {
+    setSelectedEntityIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else if (next.size < 5) next.add(id);
+      return next;
+    });
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const name = newName.trim();
     if (!name) return;
-    onCreateChannel(name, newPrompt.trim() || 'You are a helpful assistant.');
-    setNewName('');
-    setNewPrompt('');
-    setShowForm(false);
+    if (newType === 'klatch' && !newProjectId) return;
+    onCreateChannel(
+      name,
+      newPrompt.trim() || 'You are a helpful assistant.',
+      newType === 'klatch' ? 'klatch' : undefined,
+      newType === 'klatch' ? newMode : undefined,
+      newType === 'klatch' ? newProjectId : undefined,
+      newType === 'klatch' && selectedEntityIds.size > 0 ? [...selectedEntityIds] : undefined
+    );
+    resetForm();
   };
 
   const handleChannelClick = (id: string) => {
@@ -342,14 +377,102 @@ export function ChannelSidebar({
         <div className="p-3 pt-0">
           {showForm ? (
             <form onSubmit={handleSubmit} className="space-y-2">
+              {/* Chat / Klatch toggle */}
+              <div className="flex rounded overflow-hidden border border-line">
+                <button
+                  type="button"
+                  onClick={() => setNewType('chat')}
+                  className={`flex-1 text-xs py-1 font-medium transition-colors ${
+                    newType === 'chat'
+                      ? 'bg-accent text-white'
+                      : 'bg-card text-secondary hover:text-primary'
+                  }`}
+                >
+                  Chat
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setNewType('klatch')}
+                  className={`flex-1 text-xs py-1 font-medium transition-colors ${
+                    newType === 'klatch'
+                      ? 'bg-accent text-white'
+                      : 'bg-card text-secondary hover:text-primary'
+                  }`}
+                >
+                  Klatch
+                </button>
+              </div>
+
               <input
                 type="text"
                 value={newName}
                 onChange={(e) => setNewName(e.target.value)}
-                placeholder="Channel name"
+                placeholder={newType === 'klatch' ? 'Klatch name' : 'Channel name'}
                 autoFocus
                 className="w-full rounded bg-input border border-line px-2.5 py-1.5 text-sm text-primary placeholder-muted focus:outline-none focus:border-accent"
               />
+
+              {/* Klatch-specific fields */}
+              {newType === 'klatch' && (
+                <>
+                  {/* Project (required) */}
+                  <select
+                    value={newProjectId}
+                    onChange={(e) => setNewProjectId(e.target.value)}
+                    className="w-full rounded bg-input border border-line px-2.5 py-1.5 text-sm text-primary focus:outline-none focus:border-accent"
+                  >
+                    <option value="">Select project (required)</option>
+                    {projects.map((p) => (
+                      <option key={p.id} value={p.id}>{p.name}</option>
+                    ))}
+                  </select>
+
+                  {/* Entity picker */}
+                  {entities.length > 0 && (
+                    <div>
+                      <div className="text-[10px] font-medium text-muted uppercase tracking-wider mb-1">
+                        Entities {selectedEntityIds.size > 0 && `(${selectedEntityIds.size}/5)`}
+                      </div>
+                      <div className="space-y-0.5 max-h-24 overflow-y-auto">
+                        {entities.map((ent) => (
+                          <label
+                            key={ent.id}
+                            className="flex items-center gap-1.5 px-1.5 py-0.5 rounded hover:bg-hover cursor-pointer text-xs"
+                          >
+                            <input
+                              type="checkbox"
+                              checked={selectedEntityIds.has(ent.id)}
+                              onChange={() => toggleEntity(ent.id)}
+                              disabled={!selectedEntityIds.has(ent.id) && selectedEntityIds.size >= 5}
+                              className="accent-accent"
+                            />
+                            <span
+                              className="w-2 h-2 rounded-full flex-shrink-0"
+                              style={{ backgroundColor: ent.color }}
+                            />
+                            <span className="text-primary truncate">{ent.name}</span>
+                            <span className="text-[9px] px-1 py-0.5 rounded bg-badge text-muted ml-auto flex-shrink-0">
+                              {AVAILABLE_MODELS[ent.model]?.label || ent.model}
+                            </span>
+                          </label>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Mode selector */}
+                  <select
+                    value={newMode}
+                    onChange={(e) => setNewMode(e.target.value as InteractionMode)}
+                    className="w-full rounded bg-input border border-line px-2.5 py-1.5 text-sm text-primary focus:outline-none focus:border-accent"
+                  >
+                    {Object.entries(INTERACTION_MODES).map(([key, { label, description }]) => (
+                      <option key={key} value={key}>{label} — {description}</option>
+                    ))}
+                  </select>
+                </>
+              )}
+
               <textarea
                 value={newPrompt}
                 onChange={(e) => setNewPrompt(e.target.value)}
@@ -360,13 +483,14 @@ export function ChannelSidebar({
               <div className="flex gap-2">
                 <button
                   type="submit"
-                  className="flex-1 rounded bg-accent px-2 py-1 text-xs font-medium text-white hover:bg-accent-hover transition-colors"
+                  disabled={!newName.trim() || (newType === 'klatch' && !newProjectId)}
+                  className="flex-1 rounded bg-accent px-2 py-1 text-xs font-medium text-white hover:bg-accent-hover transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  Create
+                  Create {newType === 'klatch' ? 'Klatch' : 'Chat'}
                 </button>
                 <button
                   type="button"
-                  onClick={() => setShowForm(false)}
+                  onClick={resetForm}
                   className="flex-1 rounded bg-card px-2 py-1 text-xs font-medium text-secondary hover:bg-hover transition-colors"
                 >
                   Cancel
