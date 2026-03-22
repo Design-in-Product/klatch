@@ -22,8 +22,9 @@ Agents working on this repo use this file as the async handoff protocol.
   - Round 11 AAXT harness: 21 tests verifying 5-layer prompt assembly across all import paths
   - Round 11 klatch creation: 21 tests (channel creation + sidebar grouping + entity assignment + model provenance)
   - Fixed 2 pre-existing client test failures from sidebar button text change
-- **Working on:** Available for next assignment.
-- **Updated:** 2026-03-21 06:10
+- **Working on:** Branch verified merge-ready. All 726 tests pass on branch merged with latest main (71d624c). Awaiting merge to main by Daedalus or xian. Ready for next assignment after merge.
+- **Branch merge status:** Clean merge with origin/main completed. No conflicts. Demo infra + Round 11 tests + KLATCH_DB env var all confirmed present. `docs/plans/argus-role-briefing-plan.md` is superseded (argus.md already on main) — can be deleted during merge.
+- **Updated:** 2026-03-22 06:40
 - **Round 7 assignment: Sidebar redesign tests (GitHub issue #8)**
   - Read `docs/plans/SIDEBAR.md` for full design spec before writing tests.
   - **Scope:** `packages/server/src/__tests__/round7-sidebar-redesign.test.ts` (server) + `packages/client/src/__tests__/Sidebar.test.tsx` (updates to existing)
