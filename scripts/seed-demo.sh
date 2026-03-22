@@ -2,10 +2,16 @@
 set -euo pipefail
 
 # Seed script for the "Mystery Menu" roundtable demo
-# Usage: ./scripts/seed-demo.sh
+#
+# Usage:
+#   1. Start server:  KLATCH_DB=demo.db npm run dev:server
+#   2. Run this:      ./scripts/seed-demo.sh
+#
+# This creates a project, a roundtable channel, and three entities,
+# then assigns everything together. It does NOT send messages —
+# you type live for the authentic feel.
 
-API="http://localhost:3001/api"
-DB_PATH="$(dirname "$0")/../klatch.db"
+API="http://localhost:${PORT:-3001}/api"
 
 # --- Colors for output ---
 RED='\033[0;31m'
@@ -18,41 +24,27 @@ info()  { echo -e "${CYAN}▸${NC} $1"; }
 ok()    { echo -e "${GREEN}✓${NC} $1"; }
 err()   { echo -e "${RED}✗${NC} $1" >&2; }
 
-# --- Kill anything on port 3001 ---
-if lsof -ti :3001 > /dev/null 2>&1; then
-  info "Killing existing process on port 3001..."
-  kill $(lsof -ti :3001) 2>/dev/null || true
-  sleep 1
-  ok "Cleared port 3001"
+# --- Check server is running ---
+if ! curl -sf "$API/channels" > /dev/null 2>&1; then
+  err "Server not reachable at $API"
+  echo ""
+  echo "  Start the server first:"
+  echo "    KLATCH_DB=demo.db npm run dev:server"
+  echo ""
+  exit 1
 fi
+ok "Server is reachable"
 
-# --- Reset DB ---
-if [ -f "$DB_PATH" ]; then
-  rm "$DB_PATH"
-  ok "Deleted existing database"
-else
-  info "No existing database — starting fresh"
-fi
+# --- Create project ---
+info "Creating project..."
 
-# --- Start server in background ---
-info "Starting server..."
-cd "$(dirname "$0")/.."
-npm run dev:server > /dev/null 2>&1 &
-SERVER_PID=$!
-trap "kill $SERVER_PID 2>/dev/null || true" EXIT
-
-# Wait for server to be ready
-for i in {1..30}; do
-  if curl -sf "$API/channels" > /dev/null 2>&1; then
-    break
-  fi
-  if [ "$i" -eq 30 ]; then
-    err "Server failed to start after 30s"
-    exit 1
-  fi
-  sleep 1
-done
-ok "Server is ready"
+PROJECT_ID=$(curl -sf -X POST "$API/projects" \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "name": "Mystery Menu Restaurant",
+    "instructions": "This is the leadership team of a mid-sized fine dining restaurant exploring a new tasting menu concept. The owner (the human user) pitches ideas and the team responds with their professional perspectives."
+  }' | python3 -c "import sys,json; print(json.load(sys.stdin)['id'])")
+ok "Project: Mystery Menu Restaurant ($PROJECT_ID)"
 
 # --- Create entities ---
 info "Creating entities..."
@@ -97,13 +89,21 @@ CHANNEL_ID=$(curl -sf -X POST "$API/channels" \
   -H 'Content-Type: application/json' \
   -d '{
     "name": "mystery-menu",
+    "type": "klatch",
     "mode": "roundtable",
-    "model": "claude-sonnet-4-6",
     "systemPrompt": "You are the leadership team of a mid-sized fine dining restaurant. The owner has just walked in with an idea. Respond in character — be opinionated, specific, and react to what the others have said. Keep responses to 2-3 short paragraphs."
   }' | python3 -c "import sys,json; print(json.load(sys.stdin)['id'])")
 ok "Channel: mystery-menu ($CHANNEL_ID)"
 
-# --- Assign entities to channel, remove default ---
+# --- Assign channel to project ---
+info "Assigning channel to project..."
+
+curl -sf -X PATCH "$API/channels/$CHANNEL_ID" \
+  -H 'Content-Type: application/json' \
+  -d "{\"projectId\": \"$PROJECT_ID\"}" > /dev/null
+ok "Channel assigned to Mystery Menu Restaurant"
+
+# --- Assign entities to channel ---
 info "Assigning entities to channel..."
 
 curl -sf -X POST "$API/channels/$CHANNEL_ID/entities" \
@@ -116,30 +116,32 @@ curl -sf -X POST "$API/channels/$CHANNEL_ID/entities" \
   -H 'Content-Type: application/json' \
   -d "{\"entityId\": \"$JULIEN_ID\"}" > /dev/null
 
-# Now safe to remove default entity (channel has 4 entities)
+# Remove default entity (channel now has the three roundtable members + default)
 curl -sf -X DELETE "$API/channels/$CHANNEL_ID/entities/default-entity" > /dev/null
 ok "Assigned Chef Margaux, Sam, Julien — removed default Claude"
-
-# --- Stop server ---
-kill $SERVER_PID 2>/dev/null || true
-trap - EXIT
-ok "Server stopped"
 
 # --- Print instructions ---
 echo ""
 echo -e "${BOLD}══════════════════════════════════════════${NC}"
-echo -e "${BOLD}  Demo ready! Here's the play:${NC}"
+echo -e "${BOLD}  Demo ready!${NC}"
 echo -e "${BOLD}══════════════════════════════════════════${NC}"
 echo ""
-echo -e "  1. ${CYAN}npm run dev${NC}"
-echo -e "  2. Click into ${BOLD}#mystery-menu${NC}"
-echo -e "  3. Paste this prompt:"
+echo -e "  The server should already be running with:"
+echo -e "    ${CYAN}KLATCH_DB=demo.db npm run dev:server${NC}"
 echo ""
-echo -e "  ${GREEN}I want to do a monthly \"mystery tasting menu\" —${NC}"
-echo -e "  ${GREEN}guests don't see the menu, they just tell us${NC}"
-echo -e "  ${GREEN}their allergies and trust us. Seven courses,${NC}"
-echo -e "  ${GREEN}\$150 a head. Can we pull this off?${NC}"
+echo -e "  Start the client (if not running):"
+echo -e "    ${CYAN}npm run dev:client${NC}"
 echo ""
-echo -e "  4. Watch the roundtable unfold (~20s)"
-echo -e "  5. Record it!"
+echo -e "  Then:"
+echo -e "  1. Open ${BOLD}http://localhost:5173${NC}"
+echo -e "  2. Expand the ${BOLD}Mystery Menu Restaurant${NC} project"
+echo -e "  3. Click into ${BOLD}#mystery-menu${NC}"
+echo -e "  4. Type this prompt:"
+echo ""
+echo -e "  ${GREEN}I've been thinking about a new tasting menu concept.${NC}"
+echo -e "  ${GREEN}For \$300, and just knowing guests' dietary restrictions,${NC}"
+echo -e "  ${GREEN}we create a completely custom meal — nothing from the${NC}"
+echo -e "  ${GREEN}regular menu, designed specifically for them. Thoughts?${NC}"
+echo ""
+echo -e "  5. Watch the roundtable unfold (~20s)"
 echo ""

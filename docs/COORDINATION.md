@@ -11,17 +11,20 @@ Agents working on this repo use this file as the async handoff protocol.
 ## Status board
 
 ### Argus (quality & test infrastructure)
-- **Branch:** create new branch from main
-- **Status:** assigned — Round 6 + Round 7
-- **Last completed:** Round 5: import project assignment tests (merged to main).
-- **Test count:** 516 server + 106 client = 622 total. Zero failures.
-- **Round 6 assignment: Post-import project reassignment + channel name tests**
-  1. **PATCH /api/channels/:id with projectId** — Test that sending `projectId` in the PATCH body updates the channel's project. Test setting a project, changing to a different project, and removing (setting `projectId: null`). Verify the response reflects the change and that `getAllChannelsEnriched()` returns the updated `projectName`.
-  2. **Channel names don't include project prefix** — Import conversations that have project assignments and verify channel names are just the conversation name (not "ProjectName: ConvName"). This was a bug we fixed; make sure it stays fixed.
-  3. **fetchProjects API** — Test `GET /api/projects` returns all projects (used by Channel Settings dropdown). Verify projects created during import appear here.
-  4. **Project reassignment end-to-end** — Import a conversation assigned to Project A, then PATCH it to Project B. Verify sidebar grouping would reflect the change (channel's `projectId` and `projectName` update correctly).
-  - **Scope:** `packages/server/src/__tests__/round6-project-reassignment.test.ts`
-  - **Important:** Pull from main first! Channel names no longer include project prefix. The `setChannelProject` function in `db/queries.ts` handles the DB update; the PATCH handler in `routes/channels.ts` calls it.
+- **Branch:** `claude/audit-and-planning-xn2w7`
+- **Status:** available
+- **Test count:** 610 server + 116 client = 726 total, zero failures.
+- **Completed work:**
+  - Rounds 4–11 test suites (all passing, merged to main through Round 8)
+  - Cloud environment research (`docs/research/cloud-code-environment.md`)
+  - Intelligence feed: first sweep (`docs/intel/2026-03-20-sweep.md`) + protocol (`docs/INTELLIGENCE.md`)
+  - Demo infrastructure (rebuilt): `KLATCH_DB` env var, `seed-demo.sh` overhaul, `docs/DEMO.md`, `scripts/record-demo.ts`
+  - Round 11 AAXT harness: 21 tests verifying 5-layer prompt assembly across all import paths
+  - Round 11 klatch creation: 21 tests (channel creation + sidebar grouping + entity assignment + model provenance)
+  - Fixed 2 pre-existing client test failures from sidebar button text change
+- **Working on:** Branch verified merge-ready. All 726 tests pass on branch merged with latest main (71d624c). Awaiting merge to main by Daedalus or xian. Ready for next assignment after merge.
+- **Branch merge status:** Clean merge with origin/main completed. No conflicts. Demo infra + Round 11 tests + KLATCH_DB env var all confirmed present. `docs/plans/argus-role-briefing-plan.md` is superseded (argus.md already on main) — can be deleted during merge.
+- **Updated:** 2026-03-22 06:40
 - **Round 7 assignment: Sidebar redesign tests (GitHub issue #8)**
   - Read `docs/plans/SIDEBAR.md` for full design spec before writing tests.
   - **Scope:** `packages/server/src/__tests__/round7-sidebar-redesign.test.ts` (server) + `packages/client/src/__tests__/Sidebar.test.tsx` (updates to existing)
