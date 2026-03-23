@@ -12,19 +12,19 @@ Agents working on this repo use this file as the async handoff protocol.
 
 ### Argus (quality & test infrastructure)
 - **Branch:** `claude/audit-and-planning-xn2w7`
-- **Status:** available
+- **Status:** working
 - **Test count:** 610 server + 116 client = 726 total, zero failures.
 - **Completed work:**
-  - Rounds 4–11 test suites (all passing, merged to main through Round 8)
+  - Rounds 4–11 test suites (all passing, merged to main)
   - Cloud environment research (`docs/research/cloud-code-environment.md`)
-  - Intelligence feed: first sweep (`docs/intel/2026-03-20-sweep.md`) + protocol (`docs/INTELLIGENCE.md`)
-  - Demo infrastructure (rebuilt): `KLATCH_DB` env var, `seed-demo.sh` overhaul, `docs/DEMO.md`, `scripts/record-demo.ts`
-  - Round 11 AAXT harness: 21 tests verifying 5-layer prompt assembly across all import paths
-  - Round 11 klatch creation: 21 tests (channel creation + sidebar grouping + entity assignment + model provenance)
-  - Fixed 2 pre-existing client test failures from sidebar button text change
-- **Working on:** Branch verified merge-ready. All 726 tests pass on branch merged with latest main (71d624c). Awaiting merge to main by Daedalus or xian. Ready for next assignment after merge.
-- **Branch merge status:** Clean merge with origin/main completed. No conflicts. Demo infra + Round 11 tests + KLATCH_DB env var all confirmed present. `docs/plans/argus-role-briefing-plan.md` is superseded (argus.md already on main) — can be deleted during merge.
-- **Updated:** 2026-03-22 06:40
+  - Intelligence feed: sweeps filed to `docs/intel/`, protocol at `docs/INTELLIGENCE.md`
+  - Demo infrastructure: `KLATCH_DB` env var, `seed-demo.sh`, `docs/DEMO.md`, `scripts/record-demo.ts`
+  - Round 11 AAXT harness: 21 tests verifying 5-layer prompt assembly
+  - Round 11 klatch creation: 21 tests
+  - Bookend-sync protocol formalized in `docs/agents/argus.md` (Standing Instructions)
+- **Working on:** Process improvement — formalizing bookend-sync protocol. Awaiting next assignment.
+- **Merge protocol:** xian + Calliope handle merging branch to main. Argus pushes to branch only.
+- **Updated:** 2026-03-23 14:20
 - **Round 7 assignment: Sidebar redesign tests (GitHub issue #8)**
   - Read `docs/plans/SIDEBAR.md` for full design spec before writing tests.
   - **Scope:** `packages/server/src/__tests__/round7-sidebar-redesign.test.ts` (server) + `packages/client/src/__tests__/Sidebar.test.tsx` (updates to existing)
@@ -89,7 +89,7 @@ All in-progress work happens on feature branches. `main` must always be demo-rea
 
 ## Merge protocol
 
-Merging feature branches into main is **Daedalus's responsibility** (or the PO's). To avoid silent deletions from stale branches:
+Merging feature branches into main is handled by **xian + Calliope** (or Daedalus for his own branches). To avoid silent deletions from stale branches:
 
 1. **Rebase or merge main into your branch before pushing for review.** This ensures your branch includes all recent main changes. If you skip this, git may silently "delete" files that were added to main after your branch diverged.
 2. **Daedalus reviews the diff stat before merging.** Any unexpected file deletions, additions outside the assignment scope, or changes to shared docs (CLAUDE.md, ROSTER.md, AXT.md, ROADMAP.md) will be reverted during merge.

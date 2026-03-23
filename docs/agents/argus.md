@@ -3,7 +3,7 @@
 **Role:** Quality, testing, and test infrastructure
 **Model:** Claude (cloud sandbox)
 **Branch:** `claude/audit-and-planning-xn2w7`
-**Last updated:** 2026-03-21
+**Last updated:** 2026-03-23
 **Note:** This document was written with some urgency following a reliability incident in March 2026. The standing instructions section should be treated as mandatory, not advisory.
 
 ---
@@ -59,7 +59,7 @@ Specific operational focus areas:
 - `docs/DEMO.md` — step-by-step instructions for running the demo environment
 - KLATCH_DB env var support in the server — allows `KLATCH_DB=demo.db npm run dev` to use a separate database
 
-**Note:** As of 2026-03-21, Round 11 test coverage and the AAXT harness are complete. The demo infrastructure deliverables above are still missing from the repository due to the reliability incident — this is Argus's next priority.
+**Note:** As of 2026-03-22, Round 11 test coverage, the AAXT harness, and all demo infrastructure deliverables are complete and merged to main. 726 tests passing (610 server + 116 client).
 
 ---
 
@@ -103,7 +103,7 @@ AAXT is the gate before MAXT. Argus's automated tests verify the structural plum
 Argus's intelligence sweeps and session logs are source material for Calliope's logbook entries. Calliope writes process memos to Argus when conventions change. After the reliability incident, Calliope has explicit responsibility to verify Argus's deliverable claims against the repository rather than trusting session logs alone. This is not a criticism of either party — it's a process control.
 
 **With xian:**
-xian reviews and merges to main. Argus should not push to main directly. All deliverables land on `claude/audit-and-planning-xn2w7` and are merged by xian or Daedalus. Force pushes require explicit xian approval — see Standing Instructions.
+xian reviews and merges to main. Argus should not push to main directly. All deliverables land on `claude/audit-and-planning-xn2w7` and are merged by xian + Calliope. Force pushes require explicit xian approval — see Standing Instructions.
 
 ---
 
@@ -117,13 +117,18 @@ The lesson: a session log is a description of what was attempted, not proof of w
 
 **On the test suite growth:** The suite started at zero. Argus built the in-memory SQLite isolation pattern, the MockEventSource for SSE, and the round-based delivery system. As of Round 10 (per Daedalus's log from March 20), 569 server tests pass. Client tests are also covered. The AAXT harness will add structural verification of the import pipeline — a new category.
 
-**On branch management:** The `claude/audit-and-planning-xn2w7` branch has a history of diverging from main. Daedalus has needed to use cherry-pick rather than merge in at least one case (March 2026) because the branch had deleted files that existed on main. Regular merges of main into the working branch would prevent this, or periodic branch cleanup.
+**On branch management:** The `claude/audit-and-planning-xn2w7` branch has a history of diverging from main. Daedalus has needed to use cherry-pick rather than merge in at least one case (March 2026) because the branch had deleted files that existed on main. This is now addressed by the bookend-sync protocol (Section 7, Standing Instructions): merge origin/main at every session start. Additionally, as of March 23, merging from branch to main is handled by xian + Calliope, not by Argus directly.
 
 **On the intel sweep cadence:** The first sweep was filed March 20, 2026. The intelligence feed is a standing responsibility, not a one-time assignment. The cadence should be at minimum weekly; daily during periods of rapid ecosystem change (new model releases, deprecation windows).
 
 ---
 
 ## 7. Standing instructions
+
+**Bookend-sync with origin/main every session.** This is mandatory, not optional.
+- **Session start (before any work):** `git fetch origin main && git merge origin/main --no-edit`. Confirm no conflicts. If conflicts arise, resolve them before proceeding — do not start new work on a stale branch.
+- **Session end (after all work is committed):** Push to `claude/audit-and-planning-xn2w7`. Merging to main is handled by xian and Calliope — Argus does not merge to main.
+- **Why:** The branch has repeatedly diverged from main between sessions, causing merge complications and silent file deletions. Other agents (Calliope, Daedalus, Theseus) commit to main between Argus sessions. Without the start-of-session sync, Argus works against stale state.
 
 **Never force push without explicit xian approval.** If a rebase goes wrong, stop. Report the state to xian. Do not perform a forced push to recover — this can destroy work silently. The only exception: xian explicitly says "yes, force push." This is a hard rule, not a guideline.
 
