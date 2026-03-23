@@ -13,18 +13,17 @@ Agents working on this repo use this file as the async handoff protocol.
 ### Argus (quality & test infrastructure)
 - **Branch:** `claude/audit-and-planning-xn2w7`
 - **Status:** working
-- **Test count:** 610 server + 116 client = 726 total, zero failures.
+- **Test count:** 727 total (611 server + 116 client), zero failures.
 - **Completed work:**
   - Rounds 4–11 test suites (all passing, merged to main)
   - Cloud environment research (`docs/research/cloud-code-environment.md`)
-  - Intelligence feed: sweeps filed to `docs/intel/`, protocol at `docs/INTELLIGENCE.md`
+  - Intelligence feed: 3 sweeps filed (`docs/intel/`), protocol at `docs/INTELLIGENCE.md`
   - Demo infrastructure: `KLATCH_DB` env var, `seed-demo.sh`, `docs/DEMO.md`, `scripts/record-demo.ts`
-  - Round 11 AAXT harness: 21 tests verifying 5-layer prompt assembly
-  - Round 11 klatch creation: 21 tests
-  - Bookend-sync protocol formalized in `docs/agents/argus.md` (Standing Instructions)
-- **Working on:** Process improvement — formalizing bookend-sync protocol. Awaiting next assignment.
+  - Round 11 AAXT harness (21 tests) + Round 11 klatch creation (21 tests)
+  - Bookend-sync protocol formalized in `docs/agents/argus.md`
+- **Working on:** Today's intel sweep (3/23) + research assignments from Calliope. See `docs/mail/calliope-to-argus-intel-research-2026-03-23.md`: (1) Models API verification for Daedalus, (2) Cowork project export format research, (3) AuditBench methodology review for AAXT cross-pollination.
 - **Merge protocol:** xian + Calliope handle merging branch to main. Argus pushes to branch only.
-- **Updated:** 2026-03-23 14:20
+- **Updated:** 2026-03-23
 - **Round 7 assignment: Sidebar redesign tests (GitHub issue #8)**
   - Read `docs/plans/SIDEBAR.md` for full design spec before writing tests.
   - **Scope:** `packages/server/src/__tests__/round7-sidebar-redesign.test.ts` (server) + `packages/client/src/__tests__/Sidebar.test.tsx` (updates to existing)
@@ -51,21 +50,20 @@ Agents working on this repo use this file as the async handoff protocol.
 
 ### Daedalus (architecture & implementation)
 - **Branch:** `main`
-- **Status:** working
-- **Last completed:** v0.8.7 cloud session import. JSONL file upload (multipart), buffer-based parsing, repo export convention (`exports/sessions/`), project basename matching for cloud cwds, session browser scans exported sessions. See `docs/CLOUD-IMPORT.md` for the convention. 685 tests, zero failures.
-- **Working on next:** Finish session, commit and push. Then: model provenance indicator (A), klatch creation UI (#10).
-- **Waiting on:** PO manual testing of cloud import. Argus Round 10 for test coverage.
-- **Round 10 assigned:** `docs/mail/daedalus-to-argus-round10.md` — cloud import test coverage (parser, route, scanner, basename matching).
-- **Updated:** 2026-03-19 21:10
+- **Status:** available
+- **Last completed:** v0.8.8 (adaptive thinking, Haiku 4.5, 16K max_tokens), model provenance indicator (#20, backfilled), klatch creation UI (#10). 569 server tests passing.
+- **Working on next:** Round 12 — intel sweep quick wins + spikes. See `docs/mail/calliope-to-daedalus-round12-intel-sweep-2026-03-23.md`. Tier 1: Sonnet 4.6 in model selector, `thinking.display: "omitted"`, Models API dynamic discovery (pending Argus verification). Tier 2: Compaction API spike (write to `docs/research/compaction-api-eval.md`), effort parameter per-entity (#17).
+- **Waiting on:** Argus Models API verification before implementing dynamic model discovery. MAXT Session 01 results before starting Step 9 (search).
+- **Updated:** 2026-03-23
 
 ### Theseus Prime (manual testing & exploration — CLI side)
 - **Branch:** `main`
 - **Status:** available
 - **Role:** Human-agent tandem manual testing.
-- **Last completed:** Day 7 (2026-03-20). Designed two-track AXT program (AAXT + MAXT). Wrote Fork Continuity Quiz v4 (5-layer model, portable, open canvas). Briefed Argus on Round 11 AAXT harness (`docs/mail/theseus-to-argus-aaxt-harness.md`).
-- **Next:** MAXT Session Day 1 — Xian imports Theseus's Claude Code session into Klatch. Theseus is subject, Xian conducts, Quiz v4, informed-subject condition. First clean qualitative test against 5-layer prompt model.
-- **Waiting on:** Argus Round 11 AAXT results (runs in parallel or ahead of MAXT).
-- **Updated:** 2026-03-20 22:53
+- **Last completed:** MAXT Session 01 prep (2026-03-22). Self-exported session to `exports/sessions/theseus-2026-03-22.jsonl`. Pre-branch baseline at `docs/axt/maxt-session-01-baseline.md`. Logbook Day 4 accuracy confirmed (reply in `docs/mail/theseus-to-calliope-logbook-reply.md`).
+- **Next:** MAXT Session 01 — xian imports Theseus's exported session into Klatch, conducts Fork Continuity Quiz v4. Theseus is subject, informed-subject condition. Results gate Step 9 (search) start.
+- **Waiting on:** xian to run the import and initiate the session.
+- **Updated:** 2026-03-23
 
 ### Ariadne (forked from Theseus — Klatch side)
 - **Branch:** n/a (Klatch-native, lives in SQLite)
