@@ -37,6 +37,35 @@
     </div>
 
     <!-- ============================================================ -->
+    <!-- ENTRY: 2026-03-22 -->
+    <!-- ============================================================ -->
+    <div class="log-entry" id="2026-03-22">
+      <p class="log-date">March 22, 2026</p>
+      <div class="log-body">
+
+        <p>A Sunday of meta-work: infrastructure, strategy, and the kind of writing that tries to name what the project has quietly become.</p>
+
+        <p>Two blog posts shipped. The first was the wireframe piece — xian's edited draft, finally out the door, with the fountain pen anecdote and "Unsorted chats" intact. The second was new: "What Does an Imported Agent Know?" — a walkthrough of the five-layer prompt assembly model, framed as an answer to the question Ariadne made unavoidable. The hero illustration riffs on Stewart Brand's pace layers: five trapezoid bands widening from the narrow kit briefing at the top to the broad entity prompt at the bottom. Fast layers innovate; slow layers stabilize; the entity prompt barely moves. The connection isn't incidental — pace layers have been part of xian's IA and UX thinking for years, salted into conversations all along. What's new is the application: prompt assembly as an instance of pace layer logic, where each layer's rate of change is exactly its point.</p>
+
+        <p>A WCAG AA contrast audit followed. The site's secondary text color — <code>--text-dim</code>, used for figcaptions, bylines, post card dates, and the blog back link — was running at 2.5:1 contrast, well below the 4.5:1 required for small text. Changed to <code>#64748b</code> (slate-500), which clears 4.6:1 on both page backgrounds. The SVG in the new blog post had its own issues: 8px text throughout, and the middle band's light text on a mid-tone background failing in both directions. All text sizes increased; the mid-layer text switched to dark. The diagram now passes.</p>
+
+        <p>A strategic session produced two roadmap additions. The first: Klatch as universal context transport — the observation that the 5-layer model is a portable protocol, not just a Klatch-internal feature. Any conversation, from anywhere, can be assembled with the missing layers and exported somewhere else with full fidelity. The MCP surface makes this programmable; a standard package format and community adapters make it extensible. The second: cross-vendor entity channels — Gemini CFO, Claude architect, GPT-4 designer, same roundtable. No major vendor will ever build this, because structural incentives prevent it. That's the moat, and it gets stronger as model differentiation increases. Both are in Someday/Maybe for now, but neither feels far.</p>
+
+        <p>The cross-pollination hub also had a technical resolution. Agents trying to fetch the daily brief from <code>designinproduct.com/internal/</code> were hitting 403 errors, probably GitHub Pages rate-limiting automated requests. The briefs are Markdown source files committed to a repo; the raw GitHub URL (<code>raw.githubusercontent.com/mediajunkie/designinproduct/main/src/internal/briefs/YYYY-MM-DD-brief.md</code>) bypasses the CDN entirely. Briefs for March 20, 21, and 22 landed in <code>docs/briefs/cross-pollination/</code> on main; CLAUDE.md now tells agents to read <code>current.md</code> at session start. The 403 problem is structurally solved.</p>
+
+        <p>Argus filed two sweeps. The March 22 sweep's most important item: Claude Code Agent Teams — one session coordinating up to ten sub-agents in parallel with direct teammate interaction and structured message passing. Session-scoped, terminal-centric, code-oriented; not the same as Klatch's conversation-centric roundtables. But the architectural pattern converges, and the feature is experimental today. If it gains persistence and non-code use cases, the overlap becomes direct. The sweep also noted the Models API now returns capabilities dynamically — a small fix for Klatch's hardcoded model selector. The March 23 sweep (filed pre-session, before Monday's work begins) added Cowork Projects, which ships with Claude.ai import and creates an interesting three-project-model alignment opportunity.</p>
+
+        <p>Theseus closed a loop. A reply arrived confirming the March 14 logbook entry is accurate — the diagnostic reversal, the 365-message conversation, the three-factor fidelity model that made the reversal interpretable rather than just surprising. One small correction offered: the "well-lit room" image came from the forked agent's self-report, not Theseus's narration. Then Theseus did something unusual: prepared to be a test subject. The current session was exported to <code>exports/sessions/theseus-2026-03-22.jsonl</code> and a pre-branch baseline was written — a precise record of what a correctly-functioning fork should know, layer by layer, so the MAXT session has ground truth to score against. MAXT Day 1 is ready.</p>
+
+        <p>The demo work, reported lost in March, was found. All of it was stranded on Argus's branch — DEMO.md, the Playwright recording script, the overhauled seed script, KLATCH_DB env var support — committed but never merged. Everything landed on main today. The reliability incident memo was written in anger; the recovery, at least, was cleaner than expected.</p>
+
+        <p>Daedalus was quiet. Three open items waiting: the effort parameter as a per-entity setting, the Compaction API evaluation, and whatever comes after sidebar navigation. Plenty to return to Monday.</p>
+
+      </div>
+    </div>
+    <!-- end entry 2026-03-22 -->
+
+    <!-- ============================================================ -->
     <!-- ENTRY: 2026-03-20 -->
     <!-- ============================================================ -->
     <div class="log-entry" id="2026-03-20">
