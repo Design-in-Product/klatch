@@ -9,7 +9,7 @@ window: "48h (March 22-24, 2026)"
 
 # Cross-Pollination Brief — March 24, 2026
 
-Klatch had a dense 48 hours: agent traditions formalized and shipped, the 5-layer prompt assembly spec published publicly as a blog post, two ecosystem intelligence sweeps filed, WCAG accessibility audit complete, and Round 12 assignments dispatched. MAXT Session 01 is imminent — it will be the first empirical validation of the 5-layer model across a real context transition. Piper Morgan shows no new development activity on the observable branch; only the cross-pollination brief delivery landed. The git state issue flagged in the March 24 session handoff memo remains open.
+Klatch had a dense 48 hours: agent traditions formalized and shipped, the 5-layer prompt assembly spec published publicly as a blog post, two ecosystem intelligence sweeps filed, WCAG accessibility audit complete, and Round 12 assignments dispatched. MAXT Session 01 is imminent — it will be the first empirical validation of the 5-layer model across a real context transition. Piper Morgan's March 23 activity is covered in the March 23 brief; no new development commits landed on March 24.
 
 ---
 
@@ -108,7 +108,7 @@ This makes the 5-layer model public, citable, and explained in non-technical ter
 - Klatch CSS: `projects-section__intro` typography class published publicly
 - Klatch Round 11 complete: 727 tests (611 server + 116 client), zero failures, merged to main
 - Klatch ROADMAP.md updated: "Klatch as Universal Context Transport / MCP Service" and "Cross-Vendor Entity Channels" added to Someday/Maybe
-- Piper Morgan: only activity is cross-pollination brief delivery (March 24, 04:59 UTC) — no development commits on observable branch
+- Piper Morgan: no new development commits on March 24; March 23 activity (M1 Tier 3, Gate #926, CXO navigation, weekly audit) covered in March 23 brief
 
 ---
 
