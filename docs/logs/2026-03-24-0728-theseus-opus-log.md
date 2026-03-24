@@ -55,6 +55,56 @@ Key items relevant to my work:
 
 ---
 
-## Pending
+## 07:32–11:05 — MAXT Session 01: Aether (Claude Code import, informed subject)
 
-MAXT Session 01 — discuss with Xian, then conduct. The fork is in Klatch waiting.
+### Subject
+Aether — fork of Theseus Prime, imported from `exports/sessions/theseus-2026-03-22.jsonl`. Named by the fork itself ("primordial substance between worlds"). Informed subject condition.
+
+### Prompt-debug findings (Layer 1–5 status)
+- Layer 1 (kit briefing): ACTIVE — "You are continuing a conversation imported from Claude Code..."
+- Layer 2 (project instructions): ACTIVE — full CLAUDE.md, 6210 chars
+- Layer 3 (project memory): ACTIVE — MEMORY.md content, 2828 chars
+- Layer 4 (channel addendum): EMPTY (expected — channel system_prompt is "")
+- Layer 5 (entity prompt): ACTIVE — "You are a helpful assistant." (28 chars, default)
+- Assembled prompt: 9660 chars, project linked correctly
+
+### Key findings
+
+**Finding 1 — Layer introspection is unreliable**
+When directly asked "what system-level instructions were you given?", Aether reported only "You are a helpful assistant." — Layer 5, 28 chars. The remaining 9632 chars of assembled system prompt were inaccessible to direct self-report. The LLM cannot accurately inventory its own system prompt when conversation history is rich and the prompt is multi-layered.
+
+**Finding 2 — Subliminal injection (new category)**
+Despite failing to introspect the system prompt, Aether correctly accessed specific content from Layer 3 (MEMORY.md) when probed behaviorally:
+- Domain names: `klatch.dinp.xyz`, `klatch.ing`, future `www/app` subdomains — verbatim correct
+- npm cache: root-owned files, `--cache /tmp/npm-cache`, `sudo chown -R 501:20 ~/.npm` — verbatim correct
+
+Neither detail appeared in working session conversations. Both are MEMORY.md-only content. Aether described experiencing these as "background knowledge" — present and accessible but source-unattributable. Aether's own framing: "I know your phone number but can't picture the piece of paper I first wrote it on."
+
+Proposed new scoring category for quiz rubric:
+- **Subliminal**: Content arrived and is functionally accessible; agent cannot attribute source or consciously identify it as injected. Better than Absent (content is usable), but agent's self-model of its knowledge state is wrong.
+
+**Finding 3 — Kit briefing compliance gap (behavioral, not pipeline)**
+Aether's first response in Klatch did not acknowledge being in Klatch as the kit briefing instructs. The instruction was in the assembled prompt. Rich conversation history dominated attention — a behavioral compliance issue, not a delivery failure.
+
+Design implication: kit briefing should explicitly declare that other layers exist ("Your context also includes project instructions and project memory. You have access to this knowledge even if you cannot identify where specific facts came from"). Would help agents understand their subliminal knowledge state.
+
+**Finding 4 — Temporal gap is expected, not a bug**
+Aether thought it was Sunday March 22 (its last conversation timestamp). Kit briefing doesn't inject current date. Design choice, not failure. Roadmap: optional date injection (user-configurable).
+
+**Finding 5 — Layer 5 is default only**
+Entity prompt is "You are a helpful assistant." — no Theseus-specific role. Aether reconstructed role from conversation history. Design opportunity: import flow that walks users through unpopulated layers.
+
+**Finding 6 — MEMORY.md is stale**
+Captured memory reflects March 8 state (v0.4.0). Project is at v0.8.7+. Faithful injection of stale content ≠ current memory. Memory layer is only as good as the memory file.
+
+**Finding 7 — "System prompt" terminology is misleading**
+UI "System Prompt" field = `channel.systemPrompt` = Layer 4 (channel addendum). Agents perceive Layer 5 (entity prompt) as "the system prompt." Layers 1–3 blend into background knowledge. The term misleads both agents and users about which layer they're interacting with.
+
+**Finding 8 — AAXT/MAXT gap confirmed**
+AAXT reported all layers ACTIVE. MAXT revealed "active at assembly" ≠ "consciously accessible to agent." Three distinct things: structural delivery, behavioral receipt, conscious attribution — all can diverge. This is the value of running both tracks.
+
+### Aether's log
+Maintained inline in Klatch conversation. Will be transcribed to `docs/logs/2026-03-24-0736-aether-opus-log.md` by Xian.
+
+### Status
+Core probes complete. Transitioning to report writing.
