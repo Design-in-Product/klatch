@@ -116,15 +116,20 @@ export interface Message {
 
 // ── Artifacts (tool use, thinking, images from imported conversations) ──
 
-export type ArtifactType = 'tool_use' | 'tool_result' | 'thinking' | 'image';
+export type ArtifactType = 'tool_use' | 'tool_result' | 'thinking' | 'image' | 'file';
 
 export interface MessageArtifact {
   id: string;
   messageId: string;
   type: ArtifactType;
-  toolName?: string;     // tool name for tool_use/tool_result (e.g. "Read", "Bash")
-  inputSummary?: string; // human-readable summary (e.g. "src/App.tsx", "npm test")
-  content?: string;      // full JSON or text content
+  toolName?: string;        // tool name for tool_use/tool_result (e.g. "Read", "Bash")
+  inputSummary?: string;    // human-readable summary (e.g. "src/App.tsx", "npm test")
+  content?: string;         // full JSON or text content
+  // File attachment fields (Step 9)
+  fileName?: string;        // original filename (e.g. "report.txt")
+  fileMimeType?: string;    // MIME type (e.g. "text/plain", "image/png")
+  fileSizeBytes?: number;   // file size in bytes
+  fileStorageKey?: string;  // key for disk storage lookup
   createdAt: string;
 }
 

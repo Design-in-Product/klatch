@@ -670,3 +670,77 @@ export function countChannelsByOriginalSessionId(sessionId: string): number {
     .get(sessionId) as { count: number };
   return row.count;
 }
+
+// ── File artifact queries (Step 9) ──────────────────────────
+
+import type { MessageArtifact } from '@klatch/shared';
+
+function rowToArtifact(row: any): MessageArtifact {
+  return {
+    id: row.id,
+    messageId: row.message_id,
+    type: row.type,
+    toolName: row.tool_name || undefined,
+    inputSummary: row.input_summary || undefined,
+    content: row.content || undefined,
+    fileName: row.file_name || undefined,
+    fileMimeType: row.file_mime_type || undefined,
+    fileSizeBytes: row.file_size_bytes || undefined,
+    fileStorageKey: row.file_storage_key || undefined,
+    createdAt: row.created_at,
+  };
+}
+
+/** Create a file artifact linked to a message */
+export function createFileArtifact(
+  messageId: string,
+  fileName: string,
+  fileMimeType: string,
+  fileSizeBytes: number,
+  fileStorageKey: string
+): MessageArtifact {
+  const id = uuidv4();
+  const now = new Date().toISOString();
+  getDb().prepare(
+    `INSERT INTO message_artifacts (id, message_id, type, tool_name, input_summary, file_name, file_mime_type, file_size_bytes, file_storage_key, created_at)
+     VALUES (?, ?, 'file', NULL, ?, ?, ?, ?, ?, ?)`
+  ).run(id, messageId, `Attached: ${fileName}`, fileName, fileMimeType, fileSizeBytes, fileStorageKey, now);
+  return {
+    id,
+    messageId,
+    type: 'file',
+    inputSummary: `Attached: ${fileName}`,
+    fileName,
+    fileMimeType,
+    fileSizeBytes,
+    fileStorageKey,
+    createdAt: now,
+  };
+}
+
+/** Get all file artifacts for a list of message IDs (batch query for context injection) */
+export function getFileArtifactsForMessages(messageIds: string[]): Map<string, MessageArtifact[]> {
+  if (messageIds.length === 0) return new Map();
+
+  const placeholders = messageIds.map(() => '?').join(',');
+  const rows = getDb()
+    .prepare(`SELECT * FROM message_artifacts WHERE message_id IN (${placeholders}) AND type = 'file' ORDER BY created_at`)
+    .all(...messageIds) as any[];
+
+  const result = new Map<string, MessageArtifact[]>();
+  for (const row of rows) {
+    const artifact = rowToArtifact(row);
+    const existing = result.get(artifact.messageId) || [];
+    existing.push(artifact);
+    result.set(artifact.messageId, existing);
+  }
+  return result;
+}
+
+/** Get all artifacts for a single message */
+export function getMessageArtifacts(messageId: string): MessageArtifact[] {
+  const rows = getDb()
+    .prepare('SELECT * FROM message_artifacts WHERE message_id = ? ORDER BY created_at')
+    .all(messageId) as any[];
+  return rows.map(rowToArtifact);
+}

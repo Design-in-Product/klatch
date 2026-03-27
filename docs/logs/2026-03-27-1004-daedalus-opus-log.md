@@ -109,3 +109,35 @@ Per xian's direction: log all pre-existing failures so they don't mask real regr
 **Fix:** Mock `scanExportedSessions` to return null in test setup.
 
 **Resolution plan:** Category 1+2 are both fixed by adding `vitest.workspace.ts`. Category 3 needs a targeted mock. Assign to Argus Round 13 or fix in next session.
+
+## 11:40 — v0.8.9 released
+
+- CHANGELOG.md updated (backfills 0.8.7, 0.8.8, new 0.8.9 entry)
+- Tag: `v0.8.9`, pushed
+- GitHub release: https://github.com/Design-in-Product/klatch/releases/tag/v0.8.9
+- Argus Round 13 memo committed: testing for Round 12 features + Tier 2 research spikes
+
+## 11:45 — Step 9a planning
+
+Entered plan mode. Explored codebase for file integration points:
+- message_artifacts already stores tool_use/thinking/image — extend with `file` type
+- Multipart upload pattern from import routes reusable
+- Anthropic API accepts text (inline), image (base64), document (Files API beta)
+- Storage: filesystem + SQLite metadata (recommended over blobs)
+
+xian approved: **message-level files** as Gall's Law entry point. Upload a file with a message; entity sees content in context.
+
+## 12:00 — Step 9a server-side implementation
+
+Completed:
+1. **Schema migration** — 4 new columns on message_artifacts: file_name, file_mime_type, file_size_bytes, file_storage_key
+2. **Shared types** — `ArtifactType` extended with `'file'`; `MessageArtifact` gets file fields
+3. **File storage module** — `packages/server/src/files/storage.ts`: disk-based storage in `klatch-files/`, UUID-keyed, 10MB limit, MIME validation, path traversal protection
+4. **File queries** — `createFileArtifact()`, `getFileArtifactsForMessages()`, `getMessageArtifacts()` in queries.ts
+5. **File routes** — `packages/server/src/routes/files.ts`:
+   - `POST /channels/:id/files` — multipart upload, creates user msg + file artifact + streams to entities
+   - `GET /files/:storageKey` — serve stored files with correct Content-Type
+   - `GET /messages/:id/artifacts` — get all artifacts for a message
+6. **Registered** in index.ts
+
+Still needed: context injection (history builders), client UI (upload + display), tests.

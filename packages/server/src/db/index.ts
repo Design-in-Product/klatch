@@ -192,6 +192,21 @@ function runMigrations() {
     db.exec(`ALTER TABLE projects ADD COLUMN memory TEXT NOT NULL DEFAULT ''`);
   }
 
+  // ── Step 9: File attachment columns on message_artifacts ──
+  const artifactCols = db.prepare("PRAGMA table_info(message_artifacts)").all() as { name: string }[];
+  if (!artifactCols.some((c) => c.name === 'file_name')) {
+    db.exec(`ALTER TABLE message_artifacts ADD COLUMN file_name TEXT`);
+  }
+  if (!artifactCols.some((c) => c.name === 'file_mime_type')) {
+    db.exec(`ALTER TABLE message_artifacts ADD COLUMN file_mime_type TEXT`);
+  }
+  if (!artifactCols.some((c) => c.name === 'file_size_bytes')) {
+    db.exec(`ALTER TABLE message_artifacts ADD COLUMN file_size_bytes INTEGER`);
+  }
+  if (!artifactCols.some((c) => c.name === 'file_storage_key')) {
+    db.exec(`ALTER TABLE message_artifacts ADD COLUMN file_storage_key TEXT`);
+  }
+
   // Ensure default entity exists (for existing databases being upgraded)
   const defaultEntity = db.prepare('SELECT id FROM entities WHERE id = ?').get(DEFAULT_ENTITY_ID);
   if (!defaultEntity) {
