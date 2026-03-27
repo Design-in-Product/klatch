@@ -216,3 +216,67 @@ Root cause: Test doesn't mock `scanExportedSessions()`, finds real exported JSON
 Fix: Add targeted mock
 
 Resolution: Assign to Argus Round 13 or fix in next session.
+
+## 13:00 — Step 9d Option A: Save code blocks as files
+
+- CodeActions component replaces CopyButton: Save + Copy on every fenced code block
+- Smart filename detection: first-line comments, language-as-filename, extension mapping
+- Extracted to `packages/client/src/utils/extractFilename.ts` for testability
+- 23 unit tests — all passing
+- Save button shows detected filename (snippet.py, config.json, etc.)
+- Download icon, "Saved!" confirmation feedback
+
+## 14:00 — Step 9d tighten: filename detection + UX polish
+
+- Broadened comment detection: HTML, SQL, CSS comments
+- Dockerfile/Makefile special cases
+- Bare code blocks with markdown content → document.md
+- Default changed from code.{ext} to snippet.{ext}
+- Language regex broadened for c++, package.json, etc.
+- z-index fix for button positioning
+
+## 14:30 — Step 9d Option B: Tool-based file creation (save_file)
+
+**MILESTONE: First native tool use in Klatch!**
+
+- Defined KLATCH_TOOLS array with save_file tool schema
+- executeTool() handles file creation via existing storage infrastructure
+- streamClaudeCore refactored from fire-and-forget to tool-use loop:
+  stream → detect tool_use stop_reason → execute → send result → continue
+- MAX_TOOL_ROUNDS=5 safety limit
+- Both compaction and standard API paths support tools
+- Kit briefing updated: "workspace" not "conversation-focused"
+
+**Verified end-to-end:** Asked entity to create hello.py → entity called save_file → file saved to disk → artifact created → entity responded with usage instructions → file card rendered with download link. Complete round-trip.
+
+## 15:11 — File Domain Model design session
+
+Collaborated with xian on the foundational file ownership model. Key insight: files are **domain objects with ownership and visibility at every contextual level**, not just prompt payloads.
+
+Five-level file model:
+- **Project:** Knowledge base (imported docs, specs). Memory = special file with reserved name.
+- **Channel:** Working set (roundtable's reading list).
+- **Entity:** Library/index of everything touched (created, read, received).
+- **Message:** One-shot attachments (today's 9a behavior).
+
+Key design decisions:
+- **Pointers, not payloads** — files referenced, not crammed into prompts
+- **Promotion (upward):** message → channel → project
+- **Projection (downward):** project → channel/entity (with delivery prompt)
+- **Memory as a file** — MEMORY.md is a file with a convention, not a separate concept
+
+Schema: `files` table (canonical storage) + `file_refs` table (scope-based visibility).
+Five implementation phases documented in `docs/plans/FILE-DOMAIN-MODEL.md`.
+
+## Session summary — 2026-03-27
+
+**A red-letter day.** Five Step 9 features shipped:
+- 9a: Upload/attach files ✅
+- 9b: Render artifacts inline ✅ (tool use, thinking, files)
+- 9c: Context injection evaluated, L1 shipped ✅
+- 9d-A: Save code blocks as files ✅ (23 unit tests)
+- 9d-B: Tool-based file creation ✅ (first native tool in Klatch!)
+
+Plus: File Domain Model design approved — foundational architecture for Steps 9→10→11.
+
+Commits: 8+ commits pushed to origin/main.
