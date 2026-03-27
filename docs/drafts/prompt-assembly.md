@@ -6,7 +6,7 @@ excerpt: When you fork a Claude conversation into a new environment, what surviv
 hero: [five-layer-diagram SVG — layers stacking like geological strata, each one a different shade]
 ---
 
-If you've been reading along, you know about Ariadne. She was a Claude Code agent who got imported into Klatch and described her situation as perfectly fine — while silently missing every tool capability she'd had before. The knowledge of what she could do persisted. The ability to do it was gone. She didn't know because nothing prompted her to check.
+If you've been reading along, you may recall an agent called Ariadne. They were a Claude Code agent who got imported into Klatch and described their situation as perfectly fine — while silently missing every tool capability she'd had before. The knowledge of what they *had been able to do* had persisted. The ability to do it was gone. She didn't know because nothing prompted her to check.
 
 That discovery gave us AXT — Agent Experience Testing, a methodology for systematically probing agent context after environmental transitions. We wrote about it [in the last post](axt-agent-experience-testing.html). But discovering the problem is only half the work. The other half is building a systematic answer.
 
@@ -119,7 +119,7 @@ This returns the full assembled prompt with layer-by-layer status — `ACTIVE`, 
 
 The automated test harness (what we call AAXT — Automated Agent Experience Testing) runs assertions against this endpoint. No LLM calls, no qualitative judgment — just structural verification that the right content landed in the right layer for each import path. Claude Code local imports, file uploads, claude.ai ZIPs, edge cases like re-imports and empty project instructions: all of it verified.
 
-## Why this matters beyond Klatch
+## This has immediate applications beyond Klatch
 
 We built this because we had a specific problem: imported Claude agents didn't know where they were. But the underlying issue isn't specific to Klatch.
 

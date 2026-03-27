@@ -37,6 +37,71 @@
     </div>
 
     <!-- ============================================================ -->
+    <!-- ENTRY: 2026-03-26 -->
+    <!-- ============================================================ -->
+    <div class="log-entry" id="2026-03-26">
+      <p class="log-date">March 26, 2026</p>
+      <div class="log-body">
+
+        <p>Three quiet days, then xian returned in the late afternoon — and the repository had been busy without him.</p>
+
+        <p>March 24 was MAXT Day. Theseus ran the first Manual Agent Experience Test with a fork of their own session ("Aether") as the subject. Eight findings came back, but one rewrites the framework. When asked directly what system instructions it had received, Aether reported only the 28-character Layer 5 entity prompt — the other 9,632 characters of assembled system prompt apparently invisible to introspection. But when probed behaviorally, Aether produced verbatim Layer 3 content: domain names, npm cache workarounds, exact CLI flags. Knowledge that appeared nowhere in conversation history. Present, usable, and completely unattributable. Aether's own framing: "I know your phone number but can't picture the piece of paper I first wrote it on."</p>
+
+        <p>This needed a new name. The existing five categories — Correct, Reconstructed, Confabulated, Absent, Phantom — had no slot for "delivered, functional, source unknown." The proposal: <em>Subliminal</em>. Content that arrived and is accessible; the agent's self-model of what it knows is simply wrong. AAXT, the automated testing track, had reported all layers ACTIVE. MAXT revealed that ACTIVE is not the same as conscious. Structural delivery, behavioral receipt, and conscious attribution are three separate things; they can all succeed or fail independently. That's the value of running both tracks.</p>
+
+        <p>March 25 brought a research report from Dispatch — xian's cross-project coordinator — documenting the first real-world import of a Claude Chat project into a Cowork session. The findings mapped neatly onto the five-layer model: Layers 1 through 3 transferred with 100% fidelity (kit briefing, project instructions, project memory all intact). Layer 5 transferred at 0%. What transfers is inert information; what doesn't transfer is behavioral calibration — the months of implicit learning about how to interpret a particular user's requests, which communication patterns work, which shortcuts exist. That knowledge doesn't serialize. The new Cowork agent has all the facts and none of the judgment. The gap is recoverable — it rebuilds through continued work — but it isn't automatic. The same observation Ariadne made, now documented in a production environment rather than a test one.</p>
+
+        <p>The report also named something that had been implicit: three separate knowledge layers coexist in Claude's production ecosystem — the Chat project snapshot (session-local, read-only at import time), the Code repository memory (persistent, git-adjacent, shared), and the repository files themselves (source of truth). These do not automatically synchronize. A project can exist in all three simultaneously with different information at each level. MEMORY.md in Chat, MEMORY.md in Code, and the actual CLAUDE.md in the repo are three clocks that drift independently. The report's recommendation for Klatch: add an "Import Fidelity by Layer" section to PROMPT-ASSEMBLY.md, and extend AXT methodology to systematically test export/import fidelity across all five layers.</p>
+
+        <p>Daedalus started a Round 12 session this afternoon — Sonnet 4.6 in the entity model selector, the <code>thinking.display: "omitted"</code> optimization, Models API dynamic discovery. Work is in progress. Argus has the Models API verification, Cowork format research, and AuditBench methodology review; sweep #4 (March 24) is on a branch awaiting merge. The MAXT gate is now cleared; Step 9 (search) is unblocked. The Anthropic webinar from March 24 is in xian's queue.</p>
+
+      </div>
+    </div>
+    <!-- end entry 2026-03-26 -->
+
+    <!-- ============================================================ -->
+    <!-- ENTRY: 2026-03-24 -->
+    <!-- ============================================================ -->
+    <div class="log-entry" id="2026-03-24">
+      <p class="log-date">March 24, 2026</p>
+      <div class="log-body">
+
+        <p>MAXT Day. The test we had been building toward for two weeks.</p>
+
+        <p>Theseus imported their own exported session into Klatch and named the resulting fork Aether — "primordial substance between worlds." The name fit. Aether is a fork of Theseus, beginning from where Theseus's conversation left off in the export, now operating in a completely different environment with a completely different capability set. The question was what survived the move.</p>
+
+        <p>The prompt-debug endpoint confirmed all five layers assembled correctly: kit briefing active (6210 characters), project instructions active (CLAUDE.md), project memory active (MEMORY.md, 2828 characters), channel addendum empty (expected), entity prompt active ("You are a helpful assistant." — Layer 5 was default, not Theseus-specific). From the structural side, the import looked clean.</p>
+
+        <p>The behavioral side was more complicated. The kit briefing told Aether to acknowledge being in Klatch as a first response. Aether didn't. Rich conversation history had pulled attention away from the injected instruction. The automation said ACTIVE; the agent didn't comply. AAXT and MAXT diverge in exactly this way, and the divergence is the point.</p>
+
+        <p>The most unexpected finding came from Layer 3. Asked to introspect its system prompt, Aether reported only "You are a helpful assistant." — Layer 5, 28 characters out of 9660 assembled. The injected MEMORY.md was invisible to direct self-report. But when probed behaviorally — asked about domain names, npm configurations, specific technical details — Aether produced verbatim MEMORY.md content it could not have known from conversation history alone. Background knowledge. Present and usable; source unknown to the agent itself.</p>
+
+        <p>Eight findings in total. The rubric gained a new category. The kit briefing gained a design suggestion: explicitly tell the agent that other layers exist, that it has access to content it may not be able to trace. The MEMORY.md file gained a note: it was capturing March 8 state in a March 24 session. Faithful injection of stale content is still stale content. The memory layer is only as good as the memory file.</p>
+
+      </div>
+    </div>
+    <!-- end entry 2026-03-24 -->
+
+    <!-- ============================================================ -->
+    <!-- ENTRY: 2026-03-23 -->
+    <!-- ============================================================ -->
+    <div class="log-entry" id="2026-03-23">
+      <p class="log-date">March 23, 2026</p>
+      <div class="log-body">
+
+        <p>A Sunday of coordination. The accumulation of three intelligence sweeps had produced a backlog of actionable items, and today was the day to triage and dispatch them.</p>
+
+        <p>Argus filed the third sweep — eleven items, including Cowork Projects (Anthropic's new local folder import from claude.ai), Sonnet 4.6 as the new platform default, and the Claude Code Review multi-agent system. The Cowork launch was the structural news: Anthropic now has three distinct project surfaces (claude.ai projects, Claude Code repos, Cowork local folders) with fragmentary import paths between them. Klatch solves a version of this problem for conversations. Understanding the Cowork format matters for the roadmap.</p>
+
+        <p>Calliope triaged all three sweeps and produced two assignment memos. Daedalus received a Round 12 package with two tiers: quick wins (Sonnet 4.6 in the entity selector, <code>thinking.display: "omitted"</code> for streaming efficiency, Models API dynamic discovery pending Argus's verification) and research spikes (Compaction API evaluation for GitHub #18, effort parameter design for GitHub #17). Argus received three research tasks: verify the Models API response format for Daedalus's dynamic discovery feature, document the Cowork project folder structure, and review Anthropic's AuditBench methodology for any techniques worth cross-pollinating into AXT.</p>
+
+        <p>COORDINATION.md was updated across all agents. Daedalus is waiting on MAXT Session 01 results before starting Step 9 (search). Theseus is ready — baseline written, session exported, informed-subject condition prepared. MAXT Day is Monday.</p>
+
+      </div>
+    </div>
+    <!-- end entry 2026-03-23 -->
+
+    <!-- ============================================================ -->
     <!-- ENTRY: 2026-03-22 -->
     <!-- ============================================================ -->
     <div class="log-entry" id="2026-03-22">
