@@ -191,23 +191,10 @@ Entities are created within (or imported into) a project and retain that associa
 - Should there be a separate "Archive" section or just a toggle to show/hide archived?
 - How does this interact with Step 9c (Cmd+K command palette)?
 
-### Step 9: Search and recall
-**Dimension: memory.** Can you find things across all your conversations?
-
-*Promoted from Step 10.* Import created the corpus — dozens or hundreds of sessions with rich metadata. The value of that corpus is directly proportional to your ability to find things in it. Search is the unlock that makes data consolidation actually useful.
-
-Phased delivery:
-
-- **9a: FTS5 full-text search** — SQLite FTS5 index across all messages. The biggest single unlock. Metadata-aware: search can filter by source, project, date range.
-- **9b: Search UI** — search bar, results with context snippets and channel attribution, click-to-navigate
-- **9c: Command palette (Cmd+K)** — quick navigation to channels, entities, actions. The quality-of-life layer that makes *everything we've built* more accessible.
-- **9d: Export** — Markdown and JSON export per-channel and bulk. "Own your data" made tangible. Enables sharing without building sharing infrastructure.
-- **9e: Bookmarks** — pin important messages. Lightweight but high retention value.
-
-### Step 10: Files and artifacts
+### Step 9: Files and artifacts
 **Dimension: rich context.** Can you share files, code, and documents with entities?
 
-*Deferred from Step 9.* File upload already exists in claude.ai and Claude Code. Klatch's version should be differentiated — tied to multi-entity workflows (all entities review a document) or project context (attach files to a project, available to all channels). Wait for the use case to sharpen.
+*Moved ahead of search.* File infrastructure comes before search because: (1) files are the substrate for the export/meta-model work in Step 10, and (2) search needs to understand what Klatch files *are* before it can find them meaningfully. Klatch's version should be differentiated — tied to multi-entity workflows (all entities review a document) or project context (attach files to a project, available to all channels).
 
 - Upload/attach files to conversations
 - Render artifacts (code, documents, images) inline
@@ -215,26 +202,44 @@ Phased delivery:
 - Multi-entity document review (the differentiating use case)
 - This is where Klatch becomes a workspace, not just a chat tool
 
-### Step 11: Export to Claude Code
-**Dimension: roundtrip.** Can a Klatch conversation continue in a tool-enabled environment?
+### Step 10: Export and context packaging
+**Dimension: roundtrip + meta-model.** Can a Klatch conversation continue in another environment with maximum fidelity?
 
-Import brought conversations *into* Klatch. Export sends them *back out*. The key insight: claude.ai → Klatch → Claude Code is a cross-platform bridge that doesn't exist anywhere else.
+Import brought conversations *into* Klatch. Export sends them *back out*. But this step is more than writing a file — it forces us to work out the meta-model: how do we synthesize a complete 5-layer context package from all available sources (Claude Code session, claude.ai project, Cowork folder) and hand it off cleanly to a new environment?
 
-Use the Claude Agent SDK to launch a new Claude Code session seeded with:
-- Compacted conversation history from Klatch
+The March 2026 Dispatch report documented this challenge empirically: Layers 1–3 transfer with 100% fidelity; Layer 5 (behavioral calibration) transfers at 0% and must be rebuilt. Our job is to make that reality navigable — assembling what *can* be packaged automatically, explaining to the user what needs to be added manually, and generating pointers to what couldn't be carried. Tesler's Law: we grapple with the complexity; the user doesn't have to.
+
+**Export to Claude Code:**
+- Assemble a 5-layer context package from Klatch channel + project data
 - Reverse kit briefing: "You've been working in Klatch (conversation-only) but you're back in Claude Code now. You have full tool access again."
-- Project context (instructions + memory) carried forward
+- Compacted conversation history; project context (instructions + memory) carried forward
+- Graceful acknowledgment of Layer 5 calibration gap: explicit behavioral notes surfaced for the user to carry or encode in MEMORY.md
+- Use the Claude Agent SDK to seed a new Code session with the assembled package
 
-**Approaches:**
-- **New session from Klatch conversation** — launch a fresh Code session with Klatch history as initial context. Most feasible — Agent SDK supports programmatic conversation seeding.
-- **Resume original session** — inject Klatch turns back into an existing Code session's JSONL. Harder — JSONL is append-only and sessions aren't designed for external injection. May not be practical.
-- **Cross-platform bridge** — import from claude.ai, continue in Klatch, export to Code. The killer feature: conversations graduate from consumer to development environment.
+**Meta-model synthesis:**
+- Establish the canonical cross-environment import/export representation (mapping all three Claude project types onto the 5-layer model)
+- Handle cases where layers are missing: prompt user to fill gaps, generate sensible defaults, or document the absence explicitly
+- Import fidelity by layer: make visible what was assembled, what was inferred, and what couldn't be recovered
+- The interface guides the user through context packaging the way a moving company guides a homeowner through what can and can't be shipped — no expertise required
 
 **Open questions:**
 - Can the Agent SDK launch a session with pre-seeded conversation history?
 - What's the right compaction strategy for export (full history vs. summary + recent)?
 - Should export create a branch (preserving Klatch original) or move the conversation?
-- claude.ai export: likely not possible via API, but could generate a shareable format
+- How does the user understand and act on a Layer 5 calibration gap?
+
+### Step 11: Search and recall
+**Dimension: memory.** Can you find things across all your conversations?
+
+*Deferred from Step 9.* Search belongs after file infrastructure (Step 9) and the meta-model work (Step 10) because it needs to understand the full shape of Klatch data to be genuinely useful. Full-text search that doesn't understand project structure, context layers, or file types returns undifferentiated results. Once we know what a Klatch "document" fully is — conversation turn, file attachment, project memory, layer content — search becomes powerful.
+
+Phased delivery:
+
+- **11a: FTS5 full-text search** — SQLite FTS5 index across all messages. The biggest single unlock. Metadata-aware: search can filter by source, project, date range, layer content.
+- **11b: Search UI** — search bar, results with context snippets and channel attribution, click-to-navigate
+- **11c: Command palette (Cmd+K)** — quick navigation to channels, entities, actions. The quality-of-life layer that makes *everything we've built* more accessible.
+- **11d: Export** — Markdown and JSON export per-channel and bulk. "Own your data" made tangible. Enables sharing without building sharing infrastructure.
+- **11e: Bookmarks** — pin important messages. Lightweight but high retention value.
 
 ---
 
@@ -325,3 +330,20 @@ Ideas that are interesting but have no timeline or clear dependency chain yet:
 5. **Iterative complexity**: Don't add abstractions until they're needed. Three similar lines > premature helper function.
 6. **North star alignment**: Every step must move materially closer to the vision. If it doesn't, it's polish — and polish waits.
 7. **Token discipline**: Klatch is a thin layer over the API. Imported history is sent as compressed conversation turns, not raw transcripts. Tool-use detail is stored locally but never re-transmitted. System prompts should be measured and their token cost made visible. Every token sent to the API should earn its place.
+8. **Tesler's Law**: There is an irreducible complexity in managing context across environments, models, and sessions. That complexity exists and cannot be eliminated — only relocated. Klatch grapples with it so the people (and agents) using the software don't have to. The interface simplifies; the model doesn't hide.
+
+---
+
+## Team
+
+**Daedalus** (architecture & implementation) — back-end plumbing, surfaced as UI when needed. Primary driver of the feature roadmap.
+
+**Argus** (quality & testing) — test infrastructure, intelligence sweeps, AXT automation. Runs parallel to Daedalus.
+
+**Theseus** (manual testing & exploration) — MAXT sessions, exploratory testing, qualitative assessment. Works in tandem with xian.
+
+**Calliope** (writing & chronicling) — documentation, logbook, blog, coordination, strategic synthesis.
+
+**Mnemosyne** (memory & documentation) — knowledge base health, documentation drift, cross-session continuity.
+
+**Incoming: UX designer/developer role** — parallel to Daedalus, focused on importing, setup, assistive, and onboarding UX; cleaning up sloppy or generic UI choices. The team's first dedicated design voice. The complexity of cross-environment context management (5-layer model, cross-vendor roundtables, multi-environment bridging) needs design attention to be accessible — Tesler's Law in practice.
