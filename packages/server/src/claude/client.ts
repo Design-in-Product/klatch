@@ -183,13 +183,23 @@ export function buildKitBriefing(channel: Channel): string {
 
   // Core orientation — prevents phantom-capability confusion
   const sourceLabel = channel.source === 'claude-code' ? 'a Claude Code session' : 'a claude.ai conversation';
+  const today = new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
   parts.push(
     'You are continuing a conversation that was imported into Klatch from ' +
     (channel.source === 'claude-code' ? 'Claude Code' : 'claude.ai') + '. ' +
+    `Today is ${today}. ` +
     'You are now in Klatch, a conversation-only environment. ' +
     'You do NOT have access to tools (no file system, no bash, no search, no web access). ' +
     'You can only converse. If the user asks for something requiring tools, ' +
     'explain what you would do and suggest they use a tool-enabled environment.'
+  );
+
+  // Layer awareness — MAXT Finding 3 + Finding 2 (subliminal injection)
+  // Helps agent understand it has context it may not be able to self-report
+  parts.push(
+    'Your context may include project instructions and project memory from the original environment. ' +
+    'You may access knowledge from these sources without being able to identify their origin. ' +
+    'This is normal — treat it as background knowledge.'
   );
 
   // Prompted acknowledgment — agent should surface the transition naturally (#13)
@@ -310,7 +320,8 @@ async function streamClaudeCore(
       const stream = getAnthropicClient().beta.messages.stream({
         model,
         max_tokens: 16384,
-        thinking: { type: 'adaptive' },
+        thinking: { type: 'adaptive', display: 'omitted' } as any,
+        cache_control: { type: 'ephemeral' },
         system: systemPrompt || undefined,
         messages: history,
         betas: ['compact-2026-01-12'],
@@ -320,7 +331,7 @@ async function streamClaudeCore(
             trigger: { type: 'input_tokens', value: 80000 },
           }],
         },
-      });
+      } as any);
 
       activeAnthropicStreams.set(assistantMessageId, stream);
 
@@ -343,10 +354,11 @@ async function streamClaudeCore(
       const stream = getAnthropicClient().messages.stream({
         model,
         max_tokens: 16384,
-        thinking: { type: 'adaptive' },
+        thinking: { type: 'adaptive', display: 'omitted' } as any,
+        cache_control: { type: 'ephemeral' },
         system: systemPrompt || undefined,
         messages: history,
-      });
+      } as any);
 
       activeAnthropicStreams.set(assistantMessageId, stream);
 

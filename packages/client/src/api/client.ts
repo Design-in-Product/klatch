@@ -2,6 +2,32 @@ import type { Channel, Entity, Message, ModelId, InteractionMode, ChannelType, I
 
 const BASE = '/api';
 
+// ── Models API ──────────────────────────────────────────────
+
+export interface DiscoveredModel {
+  id: string;
+  displayName: string;
+  maxOutputTokens: number;
+  capabilities: {
+    thinking: boolean;
+    effort: string[];
+    compaction: boolean;
+  };
+}
+
+export interface ModelsResponse {
+  models: DiscoveredModel[];
+  aliases: Record<string, string>;
+  defaultModel: string;
+  source: 'api' | 'cache' | 'fallback';
+}
+
+export async function fetchModels(): Promise<ModelsResponse> {
+  const res = await fetch(`${BASE}/models`);
+  if (!res.ok) throw new Error(`Failed to fetch models: ${res.statusText}`);
+  return res.json();
+}
+
 // ── Channel API ──────────────────────────────────────────────
 
 export async function fetchChannels(): Promise<Channel[]> {

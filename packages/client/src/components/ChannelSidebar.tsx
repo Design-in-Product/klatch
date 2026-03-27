@@ -1,6 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import type { Channel, Entity, ChannelType, InteractionMode } from '@klatch/shared';
-import { AVAILABLE_MODELS, INTERACTION_MODES } from '@klatch/shared';
+import { INTERACTION_MODES } from '@klatch/shared';
+import { getModelLabel } from '../hooks/useModels';
 import { KlatchLogo } from './KlatchLogo';
 import type { Project } from '../api/client';
 
@@ -452,7 +453,7 @@ export function ChannelSidebar({
                             />
                             <span className="text-primary truncate">{ent.name}</span>
                             <span className="text-[9px] px-1 py-0.5 rounded bg-badge text-muted ml-auto flex-shrink-0">
-                              {AVAILABLE_MODELS[ent.model]?.label || ent.model}
+                              {getModelLabel(ent.model)}
                             </span>
                           </label>
                         ))}

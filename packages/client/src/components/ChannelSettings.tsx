@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import type { Channel, Entity, ModelId, InteractionMode, ChannelStats } from '@klatch/shared';
-import { AVAILABLE_MODELS, INTERACTION_MODES } from '@klatch/shared';
+import { INTERACTION_MODES } from '@klatch/shared';
+import { getModelLabel } from '../hooks/useModels';
 import { fetchContextFile, fetchProjects, type Project } from '../api/client.js';
 
 interface Props {
@@ -324,7 +325,7 @@ export function ChannelSettings({
                 </span>
                 <span className="text-sm text-primary flex-1 truncate">{channelEntities[0].name}</span>
                 <span className="text-[10px] px-1.5 py-0.5 rounded bg-badge text-muted font-medium">
-                  {AVAILABLE_MODELS[channelEntities[0].model]?.label || channelEntities[0].model}
+                  {getModelLabel(channelEntities[0].model)}
                 </span>
               </div>
             </div>
@@ -339,7 +340,7 @@ export function ChannelSettings({
             {/* Assigned entities */}
             <div className="space-y-1.5 mb-3">
               {channelEntities.map((entity) => {
-                const modelLabel = AVAILABLE_MODELS[entity.model]?.label || entity.model;
+                const modelLabel = getModelLabel(entity.model);
                 const canRemove = channelEntities.length > 1;
                 return (
                   <div

@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import type { Entity, ModelId } from '@klatch/shared';
 import { AVAILABLE_MODELS, ENTITY_COLORS, DEFAULT_ENTITY_ID } from '@klatch/shared';
+import { useModels } from '../hooks/useModels';
+import type { DiscoveredModel } from '../api/client';
 
 interface Props {
   entities: Entity[];
@@ -9,8 +11,6 @@ interface Props {
   onDeleteEntity: (id: string) => void;
   onClose: () => void;
 }
-
-const modelEntries = Object.entries(AVAILABLE_MODELS) as [ModelId, { label: string; description: string }][];
 
 export function EntityManager({ entities, onCreateEntity, onUpdateEntity, onDeleteEntity, onClose }: Props) {
   const [editingId, setEditingId] = useState<string | null>(null);
@@ -91,7 +91,8 @@ function EntityCard({
   onDelete: () => void;
 }) {
   const isDefault = entity.id === DEFAULT_ENTITY_ID;
-  const modelLabel = AVAILABLE_MODELS[entity.model]?.label || entity.model;
+  const { models } = useModels();
+  const modelLabel = models.find((m) => m.id === entity.model)?.displayName?.replace('Claude ', '') || AVAILABLE_MODELS[entity.model]?.label || entity.model;
   const [confirmDelete, setConfirmDelete] = useState(false);
 
   return (
@@ -162,6 +163,7 @@ function EntityForm({
   onSave: (data: { name?: string; handle?: string | null; model?: ModelId; systemPrompt?: string; color?: string }) => void;
   onCancel: () => void;
 }) {
+  const { models: dynamicModels } = useModels();
   const [name, setName] = useState(entity?.name ?? '');
   const [handle, setHandle] = useState(entity?.handle ?? '');
   const [model, setModel] = useState<ModelId>(entity?.model ?? 'claude-sonnet-4-6');
@@ -239,18 +241,18 @@ function EntityForm({
       <div>
         <label className="block text-xs text-secondary mb-1">Model</label>
         <div className="flex gap-1.5">
-          {modelEntries.map(([modelId, info]) => (
+          {dynamicModels.map((m) => (
             <button
-              key={modelId}
+              key={m.id}
               type="button"
-              onClick={() => setModel(modelId)}
+              onClick={() => setModel(m.id as ModelId)}
               className={`flex-1 rounded border px-2 py-1.5 text-xs text-left transition-colors ${
-                model === modelId
+                model === m.id
                   ? 'border-accent bg-accent-subtle text-primary'
                   : 'border-line bg-card text-secondary hover:text-primary hover:border-faint'
               }`}
             >
-              <div className="font-medium">{info.label}</div>
+              <div className="font-medium">{m.displayName.replace('Claude ', '')}</div>
             </button>
           ))}
         </div>

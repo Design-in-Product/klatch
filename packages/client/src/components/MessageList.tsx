@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useCallback, useState } from 'react';
 import type { Message, Entity, ModelId } from '@klatch/shared';
-import { AVAILABLE_MODELS } from '@klatch/shared';
 import { MarkdownContent } from './MarkdownContent';
 import { KlatchLogo } from './KlatchLogo';
+import { getModelLabel } from '../hooks/useModels';
 
 interface Props {
   messages: Message[];
@@ -18,7 +18,7 @@ interface Props {
 
 function modelLabel(modelId?: ModelId): string | undefined {
   if (!modelId) return undefined;
-  return AVAILABLE_MODELS[modelId]?.label;
+  return getModelLabel(modelId);
 }
 
 export function MessageList({

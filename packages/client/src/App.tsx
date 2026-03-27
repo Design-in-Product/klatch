@@ -1,6 +1,7 @@
 import React, { useState, useCallback, useEffect, useRef } from 'react';
 import type { Channel, Entity, ModelId, InteractionMode, ChannelType } from '@klatch/shared';
-import { AVAILABLE_MODELS, INTERACTION_MODES } from '@klatch/shared';
+import { INTERACTION_MODES } from '@klatch/shared';
+import { getModelLabel } from './hooks/useModels';
 import { ChannelSidebar } from './components/ChannelSidebar';
 import { ChannelSettings } from './components/ChannelSettings';
 import { ProjectSettings } from './components/ProjectSettings';
@@ -332,7 +333,7 @@ export default function App() {
 
   // Header: show entity avatars instead of single model label
   const activeModelLabel = activeChannel
-    ? AVAILABLE_MODELS[activeChannel.model]?.label || activeChannel.model
+    ? getModelLabel(activeChannel.model)
     : undefined;
 
   return (
@@ -386,13 +387,13 @@ export default function App() {
                     <span
                       key={entity.id}
                       className="inline-flex items-center gap-1 text-[10px] px-1.5 py-0.5 rounded bg-badge text-muted font-medium"
-                      title={`${entity.name} (${AVAILABLE_MODELS[entity.model]?.label || entity.model})`}
+                      title={`${entity.name} (${getModelLabel(entity.model)})`}
                     >
                       <span
                         className="inline-block w-2.5 h-2.5 rounded-full flex-shrink-0"
                         style={{ backgroundColor: entity.color }}
                       />
-                      {AVAILABLE_MODELS[entity.model]?.label || entity.model}
+                      {getModelLabel(entity.model)}
                     </span>
                   ))}
                 </div>

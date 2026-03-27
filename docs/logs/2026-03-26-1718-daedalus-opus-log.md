@@ -31,3 +31,29 @@ Pulled from origin — up to date. Read COORDINATION.md, mail, intel sweeps, cro
 - Finding 5 (Layer 5 default only): import flow should walk users through unpopulated layers
 - Finding 6 (stale memory): memory layer only as good as the file — no action for me, but relevant context
 - Finding 7 ("system prompt" terminology misleading): UI rename candidate for future iteration
+
+## 17:30 — Intel sweep evaluation
+
+Reviewed all three intel sweeps (#2 3/22, #3 3/23, #4 3/24) with xian. Key decisions:
+- **Auto-prompt caching:** Top priority, ship in Round 12. One-line cost win.
+- **Per-entity max_tokens:** Keep current 16K limit for now, revisit when user need arises.
+- **Model maintenance:** Agreed to explore startup check / migration pattern for model manifest updates.
+- **SDK monitoring:** Continue watching but no action needed.
+
+## 18:00 — MAXT findings review
+
+Presented analysis of all 8 MAXT findings with pros/cons/tradeoffs for each. Proposed action table:
+- F2 (Subliminal): Add scoring category to quiz rubric — 5 min
+- F3 (Kit briefing gap): Add "other layers exist" language — 15 min, Round 12
+- F4 (Temporal gap): Add current date to kit briefing — 5 min, Round 12
+- F7 (Terminology): Capture rename mapping in design note — flag for UX designer
+- F8 (Three-level model): Document delivery/receipt/attribution in AXT docs
+- F1, F5, F6: Design knowledge, no code change needed
+
+Discussed roadmap resequencing (Files → Export → Search), OpenClaw positioning, agent teams, cross-vendor vision. Xian confirmed resequencing logic and agreed with kit briefing quick wins.
+
+Awaiting xian's reactions to MAXT finding recommendations before implementing.
+
+## Session close — 2026-03-26 ~18:30
+
+Session interrupted by context limit. Work paused pending xian's MAXT reactions. No commits this session — session was sync, review, and strategic discussion only.

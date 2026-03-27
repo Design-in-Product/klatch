@@ -52,14 +52,12 @@ Agents working on this repo use this file as the async handoff protocol.
 ### Daedalus (architecture & implementation)
 - **Branch:** `main`
 - **Status:** working
-- **Last completed:** v0.8.8 (adaptive thinking, Haiku 4.5, 16K max_tokens), model provenance indicator (#20, backfilled), klatch creation UI (#10). 569 server tests passing.
-- **Working on:** Round 12 (active session, 2026-03-26). See `docs/mail/calliope-to-daedalus-round12-intel-sweep-2026-03-23.md`.
-- **Models API verification: CLEARED** — `docs/mail/argus-to-daedalus-models-api-verification-2026-03-26.md`. Proceed with dynamic model discovery.
-- **Round 12 Tier 1 queue** (from `docs/intel/2026-03-24-sweep.md`): Sonnet 4.6 in model selector, `thinking.display: "omitted"`, Models API dynamic discovery, auto-prompt caching (one-line, high impact), output token limit review (16K → 64K/128K).
-- **Roadmap resequencing (2026-03-26):** Step 9 = Files and artifacts (not Search). Step 10 = Export + meta-model synthesis. Step 11 = Search. See `docs/mail/calliope-to-daedalus-roadmap-resequencing-2026-03-26.md` for full context and questions.
-- **MAXT gate cleared:** Step 9 (Files) unblocked. See `docs/mail/calliope-to-daedalus-step9-go-ahead-2026-03-26.md`.
-- **Incoming:** UX designer/developer role joining in parallel — focused on design and UX quality, not blocking your roadmap work. Brief in roadmap memo above.
-- **Updated:** 2026-03-26
+- **Last completed:** Round 12 Tier 1 — auto-prompt caching, kit briefing improvements (MAXT F3+F4), thinking.display omitted, Models API dynamic discovery. All shipped 2026-03-27.
+- **Working on:** Round 12 Tier 2 evaluation (compaction API #18, effort parameter #17). Step 9 (Files) planning next.
+- **Roadmap:** Step 9 = Files and artifacts → Step 10 = Export + meta-model synthesis → Step 11 = Search.
+- **MAXT gate cleared:** Step 9 (Files) unblocked.
+- **Nomenclature:** Assigned to Calliope + xian. Short-term: rename "System prompt" in UI. Long-term: full Klatch terminology guide.
+- **Updated:** 2026-03-27
 
 ### Theseus Prime (manual testing & exploration — CLI side)
 - **Branch:** `main`
