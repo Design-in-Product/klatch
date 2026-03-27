@@ -191,8 +191,11 @@ export interface SendMessageResponse {
   assistants: AssistantInfo[];
 }
 
-export async function fetchMessages(channelId: string): Promise<Message[]> {
-  const res = await fetch(`${BASE}/channels/${channelId}/messages`);
+export async function fetchMessages(channelId: string, includeArtifacts = true): Promise<Message[]> {
+  const url = includeArtifacts
+    ? `${BASE}/channels/${channelId}/messages?include=artifacts`
+    : `${BASE}/channels/${channelId}/messages`;
+  const res = await fetch(url);
   if (!res.ok) throw new Error(`Failed to fetch messages: ${res.statusText}`);
   return res.json();
 }

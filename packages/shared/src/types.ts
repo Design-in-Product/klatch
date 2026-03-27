@@ -112,6 +112,7 @@ export interface Message {
   originalTimestamp?: string; // preserved timestamp from imported conversations
   originalId?: string;       // original message/event ID from source
   artifactCount?: number;    // populated by query for display (tool uses, thinking, etc.)
+  artifacts?: MessageArtifact[];  // populated when ?include=artifacts
 }
 
 // ── Artifacts (tool use, thinking, images from imported conversations) ──

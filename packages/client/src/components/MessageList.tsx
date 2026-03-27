@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useCallback, useState } from 'react';
-import type { Message, Entity, ModelId } from '@klatch/shared';
+import type { Message, Entity, ModelId, MessageArtifact } from '@klatch/shared';
 import { MarkdownContent } from './MarkdownContent';
 import { KlatchLogo } from './KlatchLogo';
 import { getModelLabel } from '../hooks/useModels';
@@ -52,6 +52,132 @@ function UserContent({ content }: { content: string }) {
           <div className="opacity-70">{fileSize}</div>
         </div>
       </div>
+    </div>
+  );
+}
+
+const API_BASE = '/api';
+
+/** Tool icon mapping for common tools */
+function toolIcon(toolName?: string): string {
+  if (!toolName) return '🔧';
+  const name = toolName.toLowerCase();
+  if (name === 'read' || name === 'view') return '📖';
+  if (name === 'bash' || name === 'bash_tool') return '⌨️';
+  if (name === 'grep') return '🔍';
+  if (name === 'write' || name === 'create_file' || name === 'str_replace') return '✏️';
+  if (name === 'web_search' || name === 'web_fetch') return '🌐';
+  if (name.includes('search')) return '🔍';
+  return '🔧';
+}
+
+/** Format file size for display */
+function formatSize(bytes?: number): string {
+  if (!bytes) return '';
+  if (bytes < 1024) return `${bytes} B`;
+  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
+  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+}
+
+/** Render a list of artifacts below message content */
+function ArtifactList({ artifacts, isUser }: { artifacts: MessageArtifact[]; isUser: boolean }) {
+  // Group: files first, then tool_use, then tool_result, then thinking/image
+  const files = artifacts.filter((a) => a.type === 'file');
+  const tools = artifacts.filter((a) => a.type === 'tool_use');
+  const thinking = artifacts.filter((a) => a.type === 'thinking');
+
+  // Collapse repeated tool uses into summary
+  const toolSummary = tools.length > 3
+    ? summarizeTools(tools)
+    : tools;
+
+  if (files.length === 0 && tools.length === 0 && thinking.length === 0) return null;
+
+  return (
+    <div className="mt-2 space-y-1.5">
+      {/* File attachments */}
+      {files.map((f) => (
+        <FileCard key={f.id} artifact={f} isUser={isUser} />
+      ))}
+
+      {/* Tool usage */}
+      {toolSummary.length > 0 && (
+        <ToolCards tools={toolSummary} totalCount={tools.length} />
+      )}
+
+      {/* Thinking indicator */}
+      {thinking.length > 0 && (
+        <div className="flex items-center gap-1.5 text-xs text-muted opacity-60">
+          <span>💭</span>
+          <span>Thought about this{thinking.length > 1 ? ` (${thinking.length}×)` : ''}</span>
+        </div>
+      )}
+    </div>
+  );
+}
+
+/** Summarize many tool calls into grouped counts */
+function summarizeTools(tools: MessageArtifact[]): MessageArtifact[] {
+  // Show first 2 individually, then summarize the rest
+  return tools.slice(0, 3);
+}
+
+/** A single file attachment card */
+function FileCard({ artifact, isUser }: { artifact: MessageArtifact; isUser: boolean }) {
+  const ext = artifact.fileName?.split('.').pop()?.toLowerCase() || '';
+  const isImage = ['png', 'jpg', 'jpeg', 'gif', 'webp', 'svg'].includes(ext);
+  const isCode = ['ts', 'tsx', 'js', 'jsx', 'py', 'rs', 'go', 'java', 'css', 'html', 'json', 'md'].includes(ext);
+
+  return (
+    <a
+      href={artifact.fileStorageKey ? `${API_BASE}/files/${artifact.fileStorageKey}` : undefined}
+      target="_blank"
+      rel="noopener noreferrer"
+      className={`flex items-center gap-2 rounded-md px-3 py-2 text-xs no-underline transition-colors ${
+        isUser
+          ? 'bg-white/15 hover:bg-white/25 text-white'
+          : 'bg-hover hover:bg-line text-primary'
+      }`}
+    >
+      <span className="text-base flex-shrink-0">
+        {isImage ? '🖼️' : isCode ? '💻' : '📄'}
+      </span>
+      <div className="min-w-0 flex-1">
+        <div className="font-medium truncate">{artifact.fileName}</div>
+        {artifact.fileSizeBytes && (
+          <div className="opacity-70">{formatSize(artifact.fileSizeBytes)}</div>
+        )}
+      </div>
+      <span className="opacity-50 text-[10px]">↗</span>
+    </a>
+  );
+}
+
+/** Collapsible tool use display */
+function ToolCards({ tools, totalCount }: { tools: MessageArtifact[]; totalCount: number }) {
+  const [expanded, setExpanded] = useState(false);
+  const displayTools = expanded ? tools : tools.slice(0, 2);
+  const remaining = totalCount - displayTools.length;
+
+  return (
+    <div className="space-y-1">
+      {displayTools.map((t) => (
+        <div key={t.id} className="flex items-center gap-1.5 text-xs text-muted">
+          <span>{toolIcon(t.toolName)}</span>
+          <span className="font-mono opacity-80">{t.toolName || 'tool'}</span>
+          {t.inputSummary && (
+            <span className="truncate opacity-60 max-w-[200px]">{t.inputSummary}</span>
+          )}
+        </div>
+      ))}
+      {remaining > 0 && !expanded && (
+        <button
+          onClick={() => setExpanded(true)}
+          className="text-xs text-accent hover:underline"
+        >
+          +{remaining} more tool use{remaining > 1 ? 's' : ''}
+        </button>
+      )}
     </div>
   );
 }
@@ -243,6 +369,10 @@ function MessageBubble({
             <span className="text-muted">...</span>
           ) : null}
         </div>
+        {/* Artifacts: tool use, thinking, files, images */}
+        {message.artifacts && message.artifacts.length > 0 && (
+          <ArtifactList artifacts={message.artifacts} isUser={isUser} />
+        )}
         {message.status === 'error' && (
           <div className="text-xs text-danger mt-1">Error generating response</div>
         )}

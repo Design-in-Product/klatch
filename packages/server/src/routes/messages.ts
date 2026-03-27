@@ -11,6 +11,7 @@ import {
   getLastAssistantMessage,
   getLastRoundAssistantMessages,
   clearChannelCompaction,
+  getArtifactsForChannel,
 } from '../db/queries.js';
 import { streamClaude, streamClaudeRoundtable, activeStreams, abortStream } from '../claude/client.js';
 import type { StreamEvent, Entity } from '@klatch/shared';
@@ -20,9 +21,21 @@ import { getDb } from '../db/index.js';
 const app = new Hono();
 
 // Get all messages for a channel
+// ?include=artifacts to include artifact data per message
 app.get('/channels/:channelId/messages', (c) => {
   const channelId = c.req.param('channelId');
   const messages = getMessages(channelId);
+  const include = c.req.query('include');
+
+  if (include === 'artifacts') {
+    const artifactMap = getArtifactsForChannel(channelId);
+    const enriched = messages.map((m) => ({
+      ...m,
+      artifacts: artifactMap.get(m.id) || [],
+    }));
+    return c.json(enriched);
+  }
+
   return c.json(messages);
 });
 

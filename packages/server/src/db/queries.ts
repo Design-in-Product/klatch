@@ -737,6 +737,27 @@ export function getFileArtifactsForMessages(messageIds: string[]): Map<string, M
   return result;
 }
 
+/** Get all artifacts for all messages in a channel */
+export function getArtifactsForChannel(channelId: string): Map<string, MessageArtifact[]> {
+  const rows = getDb()
+    .prepare(`
+      SELECT ma.* FROM message_artifacts ma
+      JOIN messages m ON ma.message_id = m.id
+      WHERE m.channel_id = ?
+      ORDER BY ma.created_at
+    `)
+    .all(channelId) as any[];
+
+  const result = new Map<string, MessageArtifact[]>();
+  for (const row of rows) {
+    const artifact = rowToArtifact(row);
+    const existing = result.get(artifact.messageId) || [];
+    existing.push(artifact);
+    result.set(artifact.messageId, existing);
+  }
+  return result;
+}
+
 /** Get all artifacts for a single message */
 export function getMessageArtifacts(messageId: string): MessageArtifact[] {
   const rows = getDb()
