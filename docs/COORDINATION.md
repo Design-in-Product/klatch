@@ -51,11 +51,12 @@ Agents working on this repo use this file as the async handoff protocol.
 
 ### Daedalus (architecture & implementation)
 - **Branch:** `main`
-- **Status:** available
+- **Status:** working
 - **Last completed:** v0.8.8 (adaptive thinking, Haiku 4.5, 16K max_tokens), model provenance indicator (#20, backfilled), klatch creation UI (#10). 569 server tests passing.
-- **Working on next:** Round 12 — intel sweep quick wins + spikes. See `docs/mail/calliope-to-daedalus-round12-intel-sweep-2026-03-23.md`. Tier 1: Sonnet 4.6 in model selector, `thinking.display: "omitted"`, Models API dynamic discovery (pending Argus verification). Tier 2: Compaction API spike (write to `docs/research/compaction-api-eval.md`), effort parameter per-entity (#17).
-- **Waiting on:** Argus Models API verification before implementing dynamic model discovery. MAXT Session 01 results before starting Step 9 (search).
-- **Updated:** 2026-03-23
+- **Working on:** Round 12 (active session, 2026-03-26). Step 9 (search) now unblocked — see `docs/mail/calliope-to-daedalus-step9-go-ahead-2026-03-26.md`.
+- **Models API verification: CLEARED** — `docs/mail/argus-to-daedalus-models-api-verification-2026-03-26.md`. Proceed with dynamic model discovery.
+- **Sweep #4 highlights for Round 12** (from `docs/intel/2026-03-24-sweep.md`): (1) **Auto-prompt caching** — one-line addition to `client.ts`, high impact on costs; (2) **Output token limits** — 64K default, 128K max for Opus 4.6 (our 16K setting needs review); both are additional Tier 1 quick wins.
+- **Updated:** 2026-03-26
 
 ### Theseus Prime (manual testing & exploration — CLI side)
 - **Branch:** `main`
