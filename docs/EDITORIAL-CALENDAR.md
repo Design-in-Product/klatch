@@ -16,7 +16,7 @@
 **Key sources:** MAXT Session 01 log, AXT.md (Subliminal category), logbook March 24
 
 ### Saturday March 29 — "Your Model or Theirs" (working title)
-**Status:** Not started
+**Status:** Drafting
 **Draft:** `docs/drafts/your-model-or-theirs.md`
 **Topic:** Tesler's Law applied to AI context management. If you work across multiple AI surfaces, you need a unified model of what your context *is*. Use Claude's three-surface sprawl as illustrative example, not the point. The point: irreducible complexity exists; someone owns it — you or the platform.
 **Combines:** Topics B (Three Clocks) + D (Tesler's Law)
