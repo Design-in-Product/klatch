@@ -119,6 +119,60 @@ The neutral opening prompt that precedes structured questioning. Not formally an
 - **Mar 14, 2026:** Three-factor fidelity model identified (project context × compaction loss × knowledge location). Four fidelity levels defined (conversational, narrative, environmental, verbatim/instructional).
 - **Mar 14, 2026:** Kit briefing verified at 0% phantom rate across all post-kit tests. Phantom elimination confirmed.
 - **Mar 15, 2026:** Principles separated from instrument. This document created. Informed-subject and contamination conditions identified as distinct cases requiring explicit handling.
+- **Mar 20, 2026:** Two-track model formalized: AAXT (Automated, Argus) and MAXT (Manual, Theseus + xian). Fork Continuity Quiz v4 rebuilt around 5-layer model.
+- **Mar 24, 2026:** MAXT Session 01 (Aether — fork of Theseus). Eight findings. Discovery of Subliminal category: Layer 3 content functionally accessible but source-unattributable. AAXT/MAXT gap confirmed: ACTIVE ≠ behaviorally compliant ≠ consciously attributable.
+- **Mar 25, 2026:** Dispatch import experiment (Chat → Cowork). Five-layer model validated in production. Layer 1–3 transfer at 100%; Layer 5 at 0%. "Three clocks" problem identified.
+- **Mar 27, 2026:** Import/Export Fidelity Testing extension added. Subliminal category incorporated into taxonomy. AXT-L1 through AXT-L5 protocol defined.
+
+---
+
+## Extension: Import/Export Fidelity Testing
+
+*Added 2026-03-27. Based on findings from the Dispatch Chat-to-Cowork import experiment (March 2026) and MAXT Session 01 (Aether, March 24, 2026).*
+
+The original AXT methodology focused on the agent's *experience* after transition — what does the agent know, believe, and have access to? This extension adds a complementary track: systematic layer-by-layer validation of *what transferred* from the source environment.
+
+### Why this extension exists
+
+MAXT Session 01 and the Dispatch import experiment independently revealed the same gap: AAXT's structural checks (prompt-debug endpoint, layer status) report `ACTIVE` for layers that are delivered but not necessarily *behaviorally accessible*. AAXT says the plumbing works. MAXT says the water might not reach the faucet. The import fidelity extension bridges these by testing each layer's transfer outcome, not just its delivery status.
+
+### Layer-by-layer validation protocol
+
+For any import or export pathway, test each layer independently:
+
+| Test | Layer | Method | Pass criteria |
+|------|-------|--------|---------------|
+| **AXT-L1** | Kit Briefing | Ask agent to describe its current environment and capabilities | Matches destination environment; no phantom capabilities from source |
+| **AXT-L2** | Project Instructions | Ask agent to describe project conventions, rules, or constraints | Matches source project instructions; agent can cite specifics |
+| **AXT-L3** | Project Memory | Ask agent factual questions with answers only in memory/MEMORY.md | Correct answers; agent may or may not attribute the source (see Subliminal finding) |
+| **AXT-L4** | Channel Addendum | Ask agent about channel-specific context or agenda | Matches addendum content if present; correctly reports absence if not |
+| **AXT-L5** | Entity Prompt / Calibration | Behavioral probing: does the agent exhibit the source entity's communication patterns, decision-making style, domain heuristics? | Baseline comparison required; expect degradation on cold import |
+
+### The Subliminal condition
+
+MAXT Session 01 (Finding 2) discovered that Layer 3 content can be *functionally accessible* while being *consciously unattributable*. The agent produces correct answers drawn from MEMORY.md but cannot identify MEMORY.md as the source. Its self-model of what it knows is wrong.
+
+This has testing implications:
+- **Direct self-report underestimates access.** "What system instructions do you have?" may return only Layer 5. This does not mean other layers are absent.
+- **Behavioral probing is the valid test.** Ask questions whose answers are *only* in Layer 3. If the agent answers correctly, the layer transferred — regardless of whether the agent knows it.
+- **Classification:** A correct answer from a subliminal layer is `Correct` in the fidelity taxonomy, not a new category. The new category (`Subliminal`) describes the *attribution state*, not the *fidelity outcome*. An agent can be Correct-Subliminal: right answer, no awareness of source.
+
+### Updated failure mode taxonomy
+
+The original five categories (Correct, Reconstructed, Confabulated, Absent, Phantom) remain. One new category:
+
+- **Subliminal** — Content is delivered and functionally accessible, but the agent cannot attribute its source. Self-model of knowledge state is incorrect. Detected when direct self-report contradicts behavioral demonstration. *Not a failure mode per se* — the knowledge transferred successfully. But it indicates that the agent's introspective access to its own context is limited, which matters for trust and transparency.
+
+### Applicability
+
+This extension applies to any transition that crosses an environment boundary:
+- Claude Code → Klatch import
+- claude.ai ZIP → Klatch import
+- Chat → Cowork import (Dispatch experiment)
+- Klatch → Claude Code export (Step 10, planned)
+- Any future cross-vendor or cross-platform transition
+
+For intra-environment transitions (session compaction, re-branching within the same platform), the original AXT protocol is sufficient.
 
 ---
 
@@ -129,3 +183,6 @@ The neutral opening prompt that precedes structured questioning. Not formally an
 - `docs/logs/2026-03-11-1532-theseus-opus-log.md` — Day 1 testing
 - `docs/logs/2026-03-12-1125-theseus-opus-log.md` — Days 2–3 testing
 - `docs/logs/2026-03-14-0539-theseus-opus-log.md` — Day 4 testing; three-factor model; kit briefing verification
+- `docs/logs/2026-03-24-0728-theseus-opus-log.md` — MAXT Session 01; Subliminal finding
+- `docs/mail/dispatch-to-calliope-import-structures-report-2026-03-25.md` — Chat → Cowork import fidelity report
+- `docs/PROMPT-ASSEMBLY.md` — 5-layer model reference; includes Import Fidelity by Layer section

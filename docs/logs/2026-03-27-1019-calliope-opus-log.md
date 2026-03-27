@@ -64,6 +64,30 @@ xian provided the tail of the March 26 chat transcript (~5:52 PM through ~9:18 P
 - MAXT analysis of this very transition: meta-relevant to the project, other team members will go through similar transitions
 - Rebuild calibration together through working
 
+## 10:41 — Task execution: items (4), (1), (2)
+
+**Branch check:** Only `origin/main` and our working branch exist on remote. No stranded work from Daedalus or Argus — Argus's branch was merged in the 3/26 session, Daedalus works on main.
+
+**Item (4) — Theseus logbook reply:**
+- Filed `theseus-to-calliope-logbook-reply.md` to `docs/mail/read/`
+- Incorporated Theseus's suggested addition: three-factor fidelity model now named in March 14 logbook entry
+- The "well-lit room" attribution was already correct in the entry ("one of this morning's agents")
+
+**Item (1) — PROMPT-ASSEMBLY.md "Import Fidelity by Layer":**
+- Already present! Added during the March 26 session (lines 188–221). Includes the transfer fidelity table, the recovery corollary, and the three-clocks diagram. No further work needed.
+
+**Item (2) — AXT methodology extension:**
+- Added "Extension: Import/Export Fidelity Testing" section to `docs/AXT.md`
+- Defines AXT-L1 through AXT-L5 protocol for layer-by-layer validation
+- Documents the Subliminal condition and its testing implications
+- Updated failure mode taxonomy with Subliminal category
+- Added MAXT Session 01 and Dispatch experiment to History section
+- Added new references
+
+**Calibration pilot:**
+- Created `docs/agents/calliope-calibration.md` — externalized Layer 5 working preferences, workflow patterns, and communication style
+- Intended as a pilot experiment; to be assessed in a future MAXT session for transfer fidelity
+
 ---
 
 *Log continues as session progresses.*
