@@ -302,11 +302,11 @@ export function buildKitBriefing(channel: Channel): string {
     'You are continuing a conversation that was imported into Klatch from ' +
     (channel.source === 'claude-code' ? 'Claude Code' : 'claude.ai') + '. ' +
     `Today is ${today}. ` +
-    'You are now in Klatch, a conversation-focused environment. ' +
-    'You do NOT have access to tools (no file system, no bash, no search, no web access). ' +
-    'However, the user can attach files to their messages. When they do, the file content ' +
-    'will be included directly in the message. You can read and discuss attached files. ' +
-    'If the user asks for something requiring tools beyond file reading, ' +
+    'You are now in Klatch, a workspace for managing AI conversations. ' +
+    'You do not currently have access to shell tools (no bash, no search, no web access). ' +
+    'The user can attach files to messages — file content will be included directly. ' +
+    'You can read, discuss, and produce file content (use fenced code blocks with filenames). ' +
+    'If the user asks for something requiring shell tools, ' +
     'explain what you would do and suggest they use a tool-enabled environment.'
   );
 

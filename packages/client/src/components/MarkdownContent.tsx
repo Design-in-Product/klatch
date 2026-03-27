@@ -10,7 +10,33 @@ interface Props {
   theme?: 'light' | 'dark';
 }
 
-function CopyButton({ text }: { text: string }) {
+/** Map language identifiers to file extensions */
+const LANG_EXTENSIONS: Record<string, string> = {
+  typescript: 'ts', javascript: 'js', python: 'py', rust: 'rs', go: 'go',
+  java: 'java', css: 'css', html: 'html', json: 'json', yaml: 'yml',
+  markdown: 'md', sql: 'sql', bash: 'sh', shell: 'sh', tsx: 'tsx', jsx: 'jsx',
+  toml: 'toml', xml: 'xml', ruby: 'rb', php: 'php', swift: 'swift',
+  kotlin: 'kt', scala: 'scala', c: 'c', cpp: 'cpp', csharp: 'cs',
+};
+
+/** Extract a filename from the first line of code if it looks like a path or filename */
+function extractFilename(code: string, language?: string): string {
+  const firstLine = code.split('\n')[0]?.trim() || '';
+
+  // Check for comment-style path: // path/to/file.ts or # file.py
+  const commentMatch = firstLine.match(/^(?:\/\/|#|\/\*|\*|--)\s*(.+\.\w+)\s*\*?\/?$/);
+  if (commentMatch) {
+    const path = commentMatch[1].trim();
+    // Use just the filename part (last segment)
+    return path.split('/').pop() || path;
+  }
+
+  // Default: generate from language
+  const ext = language ? (LANG_EXTENSIONS[language] || language) : 'txt';
+  return `code.${ext}`;
+}
+
+function CodeActions({ text, language }: { text: string; language?: string }) {
   const [copied, setCopied] = useState(false);
 
   const handleCopy = async () => {
@@ -19,13 +45,33 @@ function CopyButton({ text }: { text: string }) {
     setTimeout(() => setCopied(false), 2000);
   };
 
+  const handleSave = () => {
+    const filename = extractFilename(text, language);
+    const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
   return (
-    <button
-      onClick={handleCopy}
-      className="absolute top-2 right-2 px-2 py-1 text-xs rounded bg-card text-secondary hover:bg-hover hover:text-primary transition-colors opacity-0 group-hover:opacity-100"
-    >
-      {copied ? 'Copied!' : 'Copy'}
-    </button>
+    <div className="absolute top-2 right-2 flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+      <button
+        onClick={handleSave}
+        title={`Save as ${extractFilename(text, language)}`}
+        className="px-2 py-1 text-xs rounded bg-card text-secondary hover:bg-hover hover:text-primary transition-colors"
+      >
+        Save
+      </button>
+      <button
+        onClick={handleCopy}
+        className="px-2 py-1 text-xs rounded bg-card text-secondary hover:bg-hover hover:text-primary transition-colors"
+      >
+        {copied ? 'Copied!' : 'Copy'}
+      </button>
+    </div>
   );
 }
 
@@ -47,7 +93,7 @@ export function MarkdownContent({ content, theme }: Props) {
                 <div className="flex items-center justify-between px-3 py-1 bg-code-bg rounded-t text-xs text-muted border-b border-line">
                   {match[1]}
                 </div>
-                <CopyButton text={codeString} />
+                <CodeActions text={codeString} language={match[1]} />
                 <SyntaxHighlighter
                   style={codeTheme}
                   language={match[1]}
@@ -81,7 +127,7 @@ export function MarkdownContent({ content, theme }: Props) {
           // Fenced code block without a language
           return (
             <div className="group relative my-2 -mx-1">
-              <CopyButton text={codeString} />
+              <CodeActions text={codeString} />
               <pre className="bg-code-bg rounded p-3 overflow-x-auto text-sm font-mono text-primary">
                 <code {...props}>{children}</code>
               </pre>
