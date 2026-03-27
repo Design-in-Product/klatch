@@ -39,8 +39,12 @@ app.post('/channels/:channelId/files', async (c) => {
   // Read file buffer
   const arrayBuffer = await file.arrayBuffer();
   const buffer = Buffer.from(arrayBuffer);
-  const mimeType = file.type || 'application/octet-stream';
   const fileName = file.name || 'unnamed';
+  // Use browser-provided MIME, fall back to extension-based guess for octet-stream
+  let mimeType = file.type || 'application/octet-stream';
+  if (mimeType === 'application/octet-stream') {
+    mimeType = guessMimeType(fileName);
+  }
 
   // Validate
   const validation = validateFile(buffer, mimeType, fileName);
