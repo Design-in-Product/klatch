@@ -6,6 +6,62 @@ Format follows [Keep a Changelog](https://keepachangelog.com/). Versions corresp
 
 ---
 
+## [0.8.9] — 2026-03-27
+
+### Round 12: API Optimization & Kit Briefing
+
+Five infrastructure wins that reduce cost, improve latency, and address MAXT Session 01 findings. The Models API dynamic discovery is the biggest architectural change — Klatch now fetches available models from the Anthropic API at runtime instead of maintaining a hardcoded list.
+
+### Added
+- **Auto-prompt caching**: `cache_control: { type: 'ephemeral' }` on all API calls. Automatic cache placement for multi-turn conversations — system prompt + conversation prefix cached at 10% of input token cost. One parameter, major cost reduction.
+- **Models API dynamic discovery**: New `GET /api/models` endpoint fetches from Anthropic `GET /v1/models`, caches with 1-hour TTL, falls back to hardcoded list on failure. Returns model capabilities: thinking modes, effort levels, compaction support, max output tokens. Client `useModels()` hook with shared cache.
+- **Kit briefing: current date injection (MAXT F4)**: "Today is Thursday, March 27, 2026" — fixes temporal gap where imported agents thought it was their last conversation date.
+- **Kit briefing: layer awareness (MAXT F3 + F2)**: "Your context may include project instructions and project memory... You may access knowledge from these sources without being able to identify their origin." Addresses subliminal injection and compliance gap findings.
+- **`thinking.display: "omitted"`**: Thinking tokens no longer streamed to client (Klatch doesn't surface them). Reduces time-to-first-token. Still billed but faster streaming.
+
+### Changed
+- All 6 client components updated from static `AVAILABLE_MODELS` imports to dynamic `getModelLabel()` / `useModels()` hook.
+- Entity model selector now populated from API response (with static fallback).
+- New `packages/client/src/hooks/useModels.ts` — shared model cache across all components.
+- New `packages/server/src/routes/models.ts` — Models API route with cache and fallback.
+
+### Technical
+- 1041 tests passing (all pre-existing failures documented with root causes — see session log).
+- Pre-existing test infrastructure issues cataloged: 3 root causes, fixes assigned to Argus Round 13.
+- Subliminal scoring category (MAXT F2) already in quiz rubric since v4.1.
+
+---
+
+## [0.8.8] — 2026-03-20
+
+### Quick Wins: Adaptive Thinking & Model Updates
+
+### Added
+- **Adaptive thinking**: `thinking: { type: 'adaptive' }` on both API call sites. Claude decides when and how deeply to reason.
+- **Haiku 4.5**: Model selector updated from Haiku 3.5 to Haiku 4.5 (`claude-haiku-4-5-20251001`). Backward-compat alias for legacy DB records.
+- **16K max_tokens**: Output limit bumped from 4096 to 16384.
+- **Model provenance indicator (#20)**: Messages display which model generated them.
+- **Klatch creation UI (#10)**: Create klatches (multi-entity channels) from sidebar.
+
+### Changed
+- `MODEL_ALIASES` map extended for backward compatibility with legacy model IDs.
+
+---
+
+## [0.8.7] — 2026-03-19
+
+### Cloud Import & Session Browser
+
+### Added
+- **Cloud session import**: Three paths for importing JSONL from cloud agents: (1) agent self-export to `exports/sessions/`, (2) browser file upload (multipart), (3) manual path entry.
+- **Buffer-based JSONL parsing**: `parseJsonlContent()` and `parseClaudeCodeSessionFromContent()` — parse from string instead of disk path.
+- **Multipart upload**: `POST /import/claude-code` now accepts both JSON (path-based) and multipart (file upload).
+- **Project basename matching**: When cloud cwd doesn't exist locally, fallback to matching by `path.basename(cwd)` — only if exactly one match.
+- **Export directory convention**: `exports/sessions/` at repo root for agent self-export.
+- **Session browser**: Updated to scan exported sessions alongside local sessions.
+
+---
+
 ## [0.8.6] — 2026-03-18
 
 ### Sidebar Redesign & Prompt Architecture
