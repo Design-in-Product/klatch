@@ -302,9 +302,11 @@ export function buildKitBriefing(channel: Channel): string {
     'You are continuing a conversation that was imported into Klatch from ' +
     (channel.source === 'claude-code' ? 'Claude Code' : 'claude.ai') + '. ' +
     `Today is ${today}. ` +
-    'You are now in Klatch, a conversation-only environment. ' +
+    'You are now in Klatch, a conversation-focused environment. ' +
     'You do NOT have access to tools (no file system, no bash, no search, no web access). ' +
-    'You can only converse. If the user asks for something requiring tools, ' +
+    'However, the user can attach files to their messages. When they do, the file content ' +
+    'will be included directly in the message. You can read and discuss attached files. ' +
+    'If the user asks for something requiring tools beyond file reading, ' +
     'explain what you would do and suggest they use a tool-enabled environment.'
   );
 
