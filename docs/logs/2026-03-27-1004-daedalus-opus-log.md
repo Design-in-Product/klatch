@@ -87,3 +87,25 @@ Shipped all five items:
 - Sent reply: `docs/mail/daedalus-to-calliope-round12-reply-2026-03-27.md`
 - Answered her 3 questions (scope, files entry point, Layer 5 gap UX)
 - Assigned nomenclature project to Calliope + xian
+
+## 11:25 — Pre-existing test failure audit
+
+Per xian's direction: log all pre-existing failures so they don't mask real regressions.
+
+**Current state:** 17 files failing, 189 test cases. 1041 passing. Three root causes:
+
+### Category 1: Client jsdom environment (7 files, ~116 tests)
+**Files:** ChannelSidebar, ImportDialog, MessageInput, MessageList, SidebarRedesign, useStream, useStreams
+**Root cause:** Running `npx vitest run` from repo root picks up server's vitest.config (environment: 'node'). Client tests need jsdom. Running from within `packages/client/` passes all 116 tests. No root-level `vitest.workspace.ts` exists.
+**Fix:** Add `vitest.workspace.ts` at repo root: `export default ['packages/server', 'packages/client'];`
+
+### Category 2: Server dist/ stale JS in discovery (8 files, ~67 tests)
+**Files:** dist/__tests__/channels, claude-ai-import, claude-ai-parser, entities, import-hardening, import, metadata, parser, queries
+**Root cause:** `packages/server/dist/` contains compiled JS copies of every test. Server's own config excludes them (`include: ['src/**/*.test.ts']`), but root-level Vitest glob finds them. Stale compiled tests encode older API shapes and can't find fixture files.
+**Fix:** Same workspace fix as Category 1 — or add `dist/` exclusion.
+
+### Category 3: session-scanner.test.ts (1 file, 3 tests)
+**Root cause:** Test mocks `os.homedir()` but route also calls `scanExportedSessions(process.cwd())` which finds real `exports/sessions/theseus-2026-03-22.jsonl`. Adds unexpected "Exported sessions" project group to responses.
+**Fix:** Mock `scanExportedSessions` to return null in test setup.
+
+**Resolution plan:** Category 1+2 are both fixed by adding `vitest.workspace.ts`. Category 3 needs a targeted mock. Assign to Argus Round 13 or fix in next session.
