@@ -197,6 +197,30 @@ export async function fetchMessages(channelId: string): Promise<Message[]> {
   return res.json();
 }
 
+export async function sendMessageWithFile(
+  channelId: string,
+  content: string,
+  file: File
+): Promise<SendMessageResponse> {
+  const formData = new FormData();
+  formData.append('file', file);
+  if (content) formData.append('content', content);
+
+  const res = await fetch(`${BASE}/channels/${channelId}/files`, {
+    method: 'POST',
+    body: formData,
+  });
+  if (!res.ok) {
+    let errorMessage = `Failed to send file: ${res.statusText}`;
+    try {
+      const body = await res.json();
+      if (body.error) errorMessage = body.error;
+    } catch { /* use default */ }
+    throw new Error(errorMessage);
+  }
+  return res.json();
+}
+
 export async function sendMessage(
   channelId: string,
   content: string

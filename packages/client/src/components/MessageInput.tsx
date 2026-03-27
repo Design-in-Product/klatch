@@ -3,6 +3,7 @@ import type { Entity, InteractionMode } from '@klatch/shared';
 
 interface Props {
   onSend: (content: string) => void;
+  onSendWithFile?: (content: string, file: File) => void;
   onStop?: () => void;
   disabled: boolean;
   isStreaming: boolean;
@@ -10,9 +11,11 @@ interface Props {
   mode?: InteractionMode;
 }
 
-export function MessageInput({ onSend, onStop, disabled, isStreaming, channelEntities = [], mode }: Props) {
+export function MessageInput({ onSend, onSendWithFile, onStop, disabled, isStreaming, channelEntities = [], mode }: Props) {
   const [value, setValue] = useState('');
+  const [attachedFile, setAttachedFile] = useState<File | null>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   // @-mention autocomplete state
   const [mentionQuery, setMentionQuery] = useState<string | null>(null);
@@ -90,10 +93,37 @@ export function MessageInput({ onSend, onStop, disabled, isStreaming, channelEnt
 
   const handleSubmit = () => {
     const trimmed = value.trim();
-    if (!trimmed || disabled) return;
-    onSend(trimmed);
+    if ((!trimmed && !attachedFile) || disabled) return;
+
+    if (attachedFile && onSendWithFile) {
+      onSendWithFile(trimmed, attachedFile);
+    } else if (trimmed) {
+      onSend(trimmed);
+    }
+
     setValue('');
+    setAttachedFile(null);
     setMentionQuery(null);
+
+    // Reset file input
+    if (fileInputRef.current) fileInputRef.current.value = '';
+  };
+
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      if (file.size > 10 * 1024 * 1024) {
+        alert('File too large. Maximum size is 10 MB.');
+        return;
+      }
+      setAttachedFile(file);
+    }
+  };
+
+  const formatSize = (bytes: number): string => {
+    if (bytes < 1024) return `${bytes} B`;
+    if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
+    return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -140,6 +170,36 @@ export function MessageInput({ onSend, onStop, disabled, isStreaming, channelEnt
 
   return (
     <div className="border-t border-line px-3 md:px-6 py-3 md:py-4">
+      {/* Attached file chip */}
+      {attachedFile && (
+        <div className="flex items-center gap-2 mb-2 px-1">
+          <div className="flex items-center gap-2 rounded-lg bg-badge px-3 py-1.5 text-xs">
+            <svg className="w-3.5 h-3.5 text-muted flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13" />
+            </svg>
+            <span className="text-primary font-medium truncate max-w-[200px]">{attachedFile.name}</span>
+            <span className="text-muted">{formatSize(attachedFile.size)}</span>
+            <button
+              onClick={() => { setAttachedFile(null); if (fileInputRef.current) fileInputRef.current.value = ''; }}
+              className="text-muted hover:text-danger transition-colors ml-1"
+            >
+              <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Hidden file input */}
+      <input
+        ref={fileInputRef}
+        type="file"
+        onChange={handleFileSelect}
+        className="hidden"
+        accept="text/*,image/*,application/json,application/pdf,.md,.ts,.js,.py,.tsx,.jsx,.css,.html,.xml,.yaml,.yml,.csv"
+      />
+
       <div className="relative flex items-end gap-2 md:gap-3">
         {/* @-mention autocomplete dropdown */}
         {mentionQuery !== null && mentionCandidates.length > 0 && (
@@ -196,6 +256,20 @@ export function MessageInput({ onSend, onStop, disabled, isStreaming, channelEnt
             target.style.height = `${Math.min(target.scrollHeight, 160)}px`;
           }}
         />
+        {/* Attach file button */}
+        {!isStreaming && onSendWithFile && (
+          <button
+            onClick={() => fileInputRef.current?.click()}
+            disabled={disabled}
+            title="Attach a file"
+            className="rounded-lg border border-line px-2.5 py-2.5 text-muted hover:text-primary hover:border-faint disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+          >
+            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13" />
+            </svg>
+          </button>
+        )}
+
         {isStreaming ? (
           <button
             onClick={onStop}
@@ -209,7 +283,7 @@ export function MessageInput({ onSend, onStop, disabled, isStreaming, channelEnt
         ) : (
           <button
             onClick={handleSubmit}
-            disabled={disabled || !value.trim()}
+            disabled={disabled || (!value.trim() && !attachedFile)}
             className="rounded-lg bg-accent px-3 md:px-4 py-2.5 text-sm font-medium text-white hover:bg-accent-hover disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
           >
             Send

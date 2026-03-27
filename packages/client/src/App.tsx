@@ -13,6 +13,7 @@ import { useMessages } from './hooks/useMessages';
 import { useStreams } from './hooks/useStreams';
 import {
   sendMessage,
+  sendMessageWithFile,
   fetchChannels,
   fetchEntities,
   fetchChannelEntities,
@@ -138,6 +139,52 @@ export default function App() {
       console.error('Failed to send message:', err);
       setSendError(errorMessage);
       // Auto-dismiss after 5 seconds
+      setTimeout(() => setSendError(null), 5000);
+    }
+  };
+
+  const handleSendWithFile = async (content: string, file: File) => {
+    setSendError(null);
+    try {
+      const { userMessageId, assistants } = await sendMessageWithFile(activeChannelId, content, file);
+
+      // Build display content (same as what server creates)
+      const sizeStr = file.size < 1024 ? `${file.size} B`
+        : file.size < 1024 * 1024 ? `${(file.size / 1024).toFixed(1)} KB`
+        : `${(file.size / (1024 * 1024)).toFixed(1)} MB`;
+      const displayContent = content
+        ? `${content}\n\n📎 ${file.name} (${sizeStr})`
+        : `📎 ${file.name} (${sizeStr})`;
+
+      addMessage({
+        id: userMessageId,
+        channelId: activeChannelId,
+        role: 'user',
+        content: displayContent,
+        status: 'complete',
+        createdAt: new Date().toISOString(),
+      });
+
+      const newStreamingIds: string[] = [];
+      for (const assistant of assistants) {
+        addMessage({
+          id: assistant.assistantMessageId,
+          channelId: activeChannelId,
+          role: 'assistant',
+          content: '',
+          status: 'streaming',
+          model: assistant.model,
+          entityId: assistant.entityId,
+          createdAt: new Date().toISOString(),
+        });
+        newStreamingIds.push(assistant.assistantMessageId);
+      }
+
+      setStreamingMessageIds(newStreamingIds);
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : 'Failed to send file';
+      console.error('Failed to send file:', err);
+      setSendError(errorMessage);
       setTimeout(() => setSendError(null), 5000);
     }
   };
@@ -483,6 +530,7 @@ export default function App() {
         {/* Input */}
         <MessageInput
           onSend={handleSend}
+          onSendWithFile={handleSendWithFile}
           onStop={handleStop}
           disabled={isAnyStreaming}
           isStreaming={isAnyStreaming}

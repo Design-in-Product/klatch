@@ -1,8 +1,9 @@
 import Anthropic from '@anthropic-ai/sdk';
 import { EventEmitter } from 'events';
-import { getMessages, getChannel, updateMessage, updateChannelCompaction, getProjectForChannel } from '../db/queries.js';
-import type { Entity, Channel, Project } from '@klatch/shared';
+import { getMessages, getChannel, updateMessage, updateChannelCompaction, getProjectForChannel, getFileArtifactsForMessages } from '../db/queries.js';
+import type { Entity, Channel, Project, MessageArtifact } from '@klatch/shared';
 import { DEFAULT_MODEL } from '@klatch/shared';
+import { readFile, isTextFile, isImageFile } from '../files/storage.js';
 
 // Lazy-init: the Anthropic client must not be created at import time
 // because ESM hoists imports before dotenv.config() runs in index.ts.
@@ -63,7 +64,11 @@ export function abortStream(messageId: string): boolean {
 
 // ── History builders ──────────────────────────────────────────
 
-type ChatMessage = { role: 'user' | 'assistant'; content: string };
+type ContentBlock =
+  | { type: 'text'; text: string }
+  | { type: 'image'; source: { type: 'base64'; media_type: string; data: string } };
+
+type ChatMessage = { role: 'user' | 'assistant'; content: string | ContentBlock[] };
 
 // Safety cap: prevents token overflow for long imported sessions.
 // When compaction state exists, the cap is bypassed (compaction manages length).
@@ -93,16 +98,120 @@ function parseCompactionState(channel?: Channel): CompactionState | null {
  */
 function coalesceMessages(messages: ChatMessage[]): ChatMessage[] {
   if (messages.length === 0) return messages;
-  const result: ChatMessage[] = [messages[0]];
+  const result: ChatMessage[] = [{ ...messages[0] }];
   for (let i = 1; i < messages.length; i++) {
     const prev = result[result.length - 1];
     if (messages[i].role === prev.role) {
-      prev.content += '\n\n' + messages[i].content;
+      // Merge same-role messages. If either has content blocks, convert both to blocks.
+      const prevBlocks = toContentBlocks(prev.content);
+      const currBlocks = toContentBlocks(messages[i].content);
+      prev.content = [...prevBlocks, ...currBlocks];
     } else {
       result.push({ ...messages[i] });
     }
   }
   return result;
+}
+
+/** Convert string or content blocks to a uniform ContentBlock array */
+function toContentBlocks(content: string | ContentBlock[]): ContentBlock[] {
+  if (typeof content === 'string') {
+    return content.trim() ? [{ type: 'text', text: content }] : [];
+  }
+  return content;
+}
+
+/**
+ * Inject file content into user messages that have file attachments.
+ * Text files: inlined as text blocks.
+ * Images: injected as base64 image blocks.
+ * Other files: noted as text (name + size).
+ */
+function injectFileContent(messages: ChatMessage[], channelId: string, allMessages: { id: string; role: string }[]): ChatMessage[] {
+  // Get IDs of user messages in the history
+  const userMsgIds = allMessages
+    .filter((m) => m.role === 'user')
+    .map((m) => m.id);
+
+  if (userMsgIds.length === 0) return messages;
+
+  // Batch-fetch all file artifacts for these messages
+  const fileArtifactMap = getFileArtifactsForMessages(userMsgIds);
+  if (fileArtifactMap.size === 0) return messages;
+
+  // Build a map from message content to its ID for lookup
+  // (history builders strip IDs, so we match by index position in the user messages)
+  let userIdx = 0;
+  const userMsgOrder: string[] = [];
+  for (const m of allMessages) {
+    if (m.role === 'user') userMsgOrder.push(m.id);
+  }
+
+  let historyUserIdx = 0;
+  return messages.map((msg) => {
+    if (msg.role !== 'user') return msg;
+
+    // Find the corresponding original message ID
+    const originalMsgId = userMsgOrder[historyUserIdx++];
+    if (!originalMsgId) return msg;
+
+    const artifacts = fileArtifactMap.get(originalMsgId);
+    if (!artifacts || artifacts.length === 0) return msg;
+
+    // Build content blocks: original text + file content
+    const blocks: ContentBlock[] = [];
+
+    // Original message text
+    if (typeof msg.content === 'string' && msg.content.trim()) {
+      blocks.push({ type: 'text', text: msg.content });
+    } else if (Array.isArray(msg.content)) {
+      blocks.push(...msg.content);
+    }
+
+    // Inject each file
+    for (const artifact of artifacts) {
+      if (!artifact.fileStorageKey || !artifact.fileMimeType) continue;
+
+      if (isTextFile(artifact.fileMimeType)) {
+        // Read and inline text content
+        const buffer = readFile(artifact.fileStorageKey);
+        if (buffer) {
+          const text = buffer.toString('utf-8');
+          // Truncate very large files to avoid token explosion
+          const maxChars = 50000;
+          const truncated = text.length > maxChars
+            ? text.slice(0, maxChars) + '\n...(truncated)'
+            : text;
+          blocks.push({
+            type: 'text',
+            text: `[Attached file: ${artifact.fileName}]\n${truncated}\n[End of file]`,
+          });
+        }
+      } else if (isImageFile(artifact.fileMimeType)) {
+        // Inject as base64 image block
+        const buffer = readFile(artifact.fileStorageKey);
+        if (buffer) {
+          blocks.push({
+            type: 'image',
+            source: {
+              type: 'base64',
+              media_type: artifact.fileMimeType,
+              data: buffer.toString('base64'),
+            },
+          });
+        }
+      } else {
+        // Unsupported file type — note it as text
+        const sizeKB = artifact.fileSizeBytes ? (artifact.fileSizeBytes / 1024).toFixed(1) : '?';
+        blocks.push({
+          type: 'text',
+          text: `[Attached file: ${artifact.fileName} (${artifact.fileMimeType}, ${sizeKB} KB) — binary file, content not shown]`,
+        });
+      }
+    }
+
+    return { ...msg, content: blocks };
+  });
 }
 
 /** Panel mode: entity sees only its own past responses + all user messages */
@@ -121,19 +230,21 @@ function buildPanelHistory(channelId: string, entity: Entity): ChatMessage[] {
     }
   }
 
-  const filtered = messages
+  const filteredMessages = messages
     .filter((m) => m.role === 'user' || m.entityId === entity.id || !m.entityId)
-    .filter((m) => m.content.trim().length > 0)
-    .map((m) => ({ role: m.role as 'user' | 'assistant', content: m.content }));
+    .filter((m) => m.content.trim().length > 0);
+
+  const chatMessages = filteredMessages
+    .map((m) => ({ role: m.role as 'user' | 'assistant', content: m.content as string | ContentBlock[] }));
+
+  // Inject file content into user messages
+  const withFiles = injectFileContent(chatMessages, channelId, filteredMessages);
 
   if (compaction) {
-    // Prepend compaction summary as conversation anchor
-    // coalesceMessages handles the case where first filtered message is also 'user'
-    return coalesceMessages([{ role: 'user' as const, content: compaction.summary }, ...filtered]);
+    return coalesceMessages([{ role: 'user' as const, content: compaction.summary }, ...withFiles]);
   }
 
-  // No compaction: apply safety cap
-  return coalesceMessages(filtered.slice(-MAX_HISTORY_MESSAGES));
+  return coalesceMessages(withFiles.slice(-MAX_HISTORY_MESSAGES));
 }
 
 /** Roundtable mode: entity sees ALL completed messages from ALL entities */
@@ -151,18 +262,21 @@ function buildRoundtableHistory(channelId: string): ChatMessage[] {
     }
   }
 
-  const filtered = messages
-    .filter((m) => m.content.trim().length > 0)
-    .map((m) => ({
-      role: m.role as 'user' | 'assistant',
-      content: m.content,
-    }));
+  const filteredMessages = messages.filter((m) => m.content.trim().length > 0);
+
+  const chatMessages = filteredMessages.map((m) => ({
+    role: m.role as 'user' | 'assistant',
+    content: m.content as string | ContentBlock[],
+  }));
+
+  // Inject file content into user messages
+  const withFiles = injectFileContent(chatMessages, channelId, filteredMessages);
 
   if (compaction) {
-    return coalesceMessages([{ role: 'user' as const, content: compaction.summary }, ...filtered]);
+    return coalesceMessages([{ role: 'user' as const, content: compaction.summary }, ...withFiles]);
   }
 
-  return coalesceMessages(filtered.slice(-MAX_HISTORY_MESSAGES));
+  return coalesceMessages(withFiles.slice(-MAX_HISTORY_MESSAGES));
 }
 
 /** Max characters of captured context to include in kit briefing */
