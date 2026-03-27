@@ -102,6 +102,25 @@ Drafted `docs/drafts/tip-of-my-tongue.md` — full first draft of the Subliminal
 
 Note: xian reports Daedalus will be sending updates soon from a roadmap discussion.
 
+## 11:57 — Release review, website update, LinkedIn draft, Sunday draft
+
+**v0.8.9 release review:**
+- CHANGELOG covers five items well: auto-prompt caching, Models API, kit briefing (MAXT F3+F4), thinking.display omitted
+- Daedalus also sent Round 13 assignment memo to Argus (test infra fixes, feature tests, Tier 2 research)
+
+**Website updated (index.html):**
+- Added release banner (v0.8.9 features + blog post link)
+- Fixed roadmap order: Steps 9/10/11 now match the resequencing (Files → Export → Search)
+
+**LinkedIn post drafted:** `docs/drafts/linkedin-v089.md`
+- v0.8.9 announcement + Subliminal finding hook + blog post reference
+- TMBG "Subliminal" reference worked in: "in an unnoticeable way"
+- No links in body (xian's instruction); link comment template provided
+
+**Sunday blog draft:** `docs/drafts/what-doesnt-transfer.md`
+- Full first draft: three experiments (MAXT, Dispatch, billing interruption), why Layer 5 can't serialize (declarative vs. procedural), the recovery corollary, making the implicit explicit (calibration notes pilot), five-layer transfer profile table
+- Cross-links to prompt-assembly and tip-of-my-tongue posts
+
 ---
 
 *Log continues as session progresses.*

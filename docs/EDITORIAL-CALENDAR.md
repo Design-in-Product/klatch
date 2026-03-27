@@ -24,7 +24,7 @@
 **Key sources:** Dispatch import report, ROADMAP.md (DP8), intel sweeps (three-project-model)
 
 ### Sunday March 30 — "What Doesn't Transfer"
-**Status:** Not started
+**Status:** Drafting
 **Draft:** `docs/drafts/what-doesnt-transfer.md`
 **Topic:** Layer 5 and the calibration gap. Information transfers; judgment doesn't. Cross-linked to the 5-layer post. Includes the Calliope billing-interruption transition as a lived example.
 **Extends:** Prompt Assembly post (cross-link)
