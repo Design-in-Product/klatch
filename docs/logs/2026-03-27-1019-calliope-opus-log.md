@@ -88,6 +88,20 @@ xian provided the tail of the March 26 chat transcript (~5:52 PM through ~9:18 P
 - Created `docs/agents/calliope-calibration.md` — externalized Layer 5 working preferences, workflow patterns, and communication style
 - Intended as a pilot experiment; to be assessed in a future MAXT session for transfer fidelity
 
+## 11:12 — Blog editorial planning and drafting
+
+Created `docs/EDITORIAL-CALENDAR.md` — tracks publishing queue, midburner ideas, published posts, and editorial process.
+
+**Publishing schedule:**
+- Friday Mar 28: "It's On the Tip of My Tongue" (Subliminal finding)
+- Saturday Mar 29: "Your Model or Theirs" (Tesler's Law + three clocks, combined B+D)
+- Sunday Mar 30: "What Doesn't Transfer" (Layer 5 calibration gap)
+- Midburner: Multi-agent convergence (revisit week of Apr 1), Five Agents and a Mailbox (evergreen)
+
+Drafted `docs/drafts/tip-of-my-tongue.md` — full first draft of the Subliminal finding post. Structure: the test setup, the behavioral discovery, naming the category, the three independent axes (delivery/access/attribution), implications beyond Klatch, the tip-of-the-tongue analogy. Awaiting xian editorial review.
+
+Note: xian reports Daedalus will be sending updates soon from a roadmap discussion.
+
 ---
 
 *Log continues as session progresses.*
