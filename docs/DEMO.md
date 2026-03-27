@@ -65,10 +65,33 @@ rm demo.db
 
 ## Recording the demo
 
-A Playwright script is available at `scripts/record-demo.ts` for automated screen recording. See [Playwright video docs](https://playwright.dev/docs/videos) for configuration. The script:
+### Setup (one-time)
+
+```bash
+# Install Playwright and Chromium browser
+npm install -D playwright
+npx playwright install chromium
+```
+
+### Running the recording
+
+```bash
+# 1. Seed the demo database (if not already done)
+npm run demo:seed
+
+# 2. Start the server with demo database
+KLATCH_DB=demo.db npm run dev
+
+# 3. In another terminal, run the recording script
+npm run demo:record
+```
+
+The Playwright script (`scripts/record-demo.ts`):
 
 1. Opens Klatch at `http://localhost:5173`
 2. Navigates to the Mystery Menu channel
 3. Types the demo prompt with realistic human typing speed
 4. Waits for all three roundtable responses to complete
 5. Saves the recording to `web/assets/`
+
+See [Playwright video docs](https://playwright.dev/docs/videos) for configuration options.
