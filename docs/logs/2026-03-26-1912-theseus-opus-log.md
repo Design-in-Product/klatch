@@ -44,10 +44,21 @@ My section is stale — shows "Waiting on: xian to run the import" and last upda
 
 ---
 
-## Pending
+## 19:12–19:30 — Re-orientation and close
 
-Discuss with Xian:
-- MAXT Session 01 reporting: confirmed complete, no formal memo needed
-- Next testing priorities in context of roadmap resequencing (Files → Export → Search)
-- What MAXT Session 02 should look like, and when
+Confirmed with Xian: no formal MAXT Session 01 report memo needed — findings are fully in the record.
+
+Key framing from Xian for MAXT Session 02 planning: **"closing the experience gap — delivering the right context at the right level."** This is the unifying thread across all MAXT Session 01 findings:
+- Finding 3: kit briefing instruction not followed (compliance gap)
+- Finding 5: no guidance for unpopulated layers at import (experience gap)
+- Finding 7: "System Prompt" label misleading (terminology gap)
+- Dispatch report: Layer 5 (behavioral calibration) transfers at 0% across all environments
+
+MAXT Session 02 north star: does Klatch surface the right context to the right people (both agents and users) at the right moment?
+
+---
+
+## Session Close
+
+Good night. Short but orienting session — all loose ends from MAXT Session 01 tied off, next session's direction set.
 
