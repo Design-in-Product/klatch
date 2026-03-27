@@ -53,9 +53,12 @@ Agents working on this repo use this file as the async handoff protocol.
 - **Branch:** `main`
 - **Status:** working
 - **Last completed:** v0.8.8 (adaptive thinking, Haiku 4.5, 16K max_tokens), model provenance indicator (#20, backfilled), klatch creation UI (#10). 569 server tests passing.
-- **Working on:** Round 12 (active session, 2026-03-26). Step 9 (search) now unblocked — see `docs/mail/calliope-to-daedalus-step9-go-ahead-2026-03-26.md`.
+- **Working on:** Round 12 (active session, 2026-03-26). See `docs/mail/calliope-to-daedalus-round12-intel-sweep-2026-03-23.md`.
 - **Models API verification: CLEARED** — `docs/mail/argus-to-daedalus-models-api-verification-2026-03-26.md`. Proceed with dynamic model discovery.
-- **Sweep #4 highlights for Round 12** (from `docs/intel/2026-03-24-sweep.md`): (1) **Auto-prompt caching** — one-line addition to `client.ts`, high impact on costs; (2) **Output token limits** — 64K default, 128K max for Opus 4.6 (our 16K setting needs review); both are additional Tier 1 quick wins.
+- **Round 12 Tier 1 queue** (from `docs/intel/2026-03-24-sweep.md`): Sonnet 4.6 in model selector, `thinking.display: "omitted"`, Models API dynamic discovery, auto-prompt caching (one-line, high impact), output token limit review (16K → 64K/128K).
+- **Roadmap resequencing (2026-03-26):** Step 9 = Files and artifacts (not Search). Step 10 = Export + meta-model synthesis. Step 11 = Search. See `docs/mail/calliope-to-daedalus-roadmap-resequencing-2026-03-26.md` for full context and questions.
+- **MAXT gate cleared:** Step 9 (Files) unblocked. See `docs/mail/calliope-to-daedalus-step9-go-ahead-2026-03-26.md`.
+- **Incoming:** UX designer/developer role joining in parallel — focused on design and UX quality, not blocking your roadmap work. Brief in roadmap memo above.
 - **Updated:** 2026-03-26
 
 ### Theseus Prime (manual testing & exploration — CLI side)
