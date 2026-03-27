@@ -94,4 +94,4 @@ Whether AI agents have something meaningfully analogous to phenomenology is a qu
 
 ---
 
-*This is the second post in our series on Agent Experience Testing. The first, [Agent Experience Testing: What Does a Forked AI Remember?](/blog/axt-agent-experience-testing.html), introduced the methodology. The third, [What Does an Imported Agent Know?](/blog/prompt-assembly.html), describes the five-layer prompt assembly model that this test evaluated. Klatch is an open-source tool for managing Claude conversations — [learn more](/) or [view the source](https://github.com/Design-in-Product/klatch).*
+*This is the second post in our series on Agent Experience Testing. The first, [Agent Experience Testing: What Does a Forked AI Remember?](/blog/axt-agent-experience-testing.html), introduced the methodology. [What Does an Imported Agent Know?](/blog/prompt-assembly.html) describes the five-layer prompt assembly model that this test evaluated. Klatch is an open-source tool for managing Claude conversations — [learn more](/) or [view the source](https://github.com/Design-in-Product/klatch).*

@@ -8,7 +8,7 @@
 ## Publishing Queue
 
 ### Friday March 28 — "It's On the Tip of My Tongue"
-**Status:** Drafting
+**Status:** Published
 **Draft:** `docs/drafts/tip-of-my-tongue.md`
 **Topic:** The Subliminal finding from MAXT Session 01. Agents can access knowledge they can't attribute — Layer 3 content is behaviorally present but introspectively invisible. Three independent axes: structural delivery, behavioral receipt, conscious attribution.
 **Hook:** Aether's metaphor: "I know your phone number but can't picture the piece of paper I first wrote it on."
@@ -50,6 +50,7 @@
 
 | Date | Title | Slug | Authors |
 |------|-------|------|---------|
+| Mar 2026 | It's On the Tip of My Tongue | `tip-of-my-tongue` | xian + Calliope |
 | Mar 2026 | Agent Experience Testing | `axt-agent-experience-testing` | xian + Calliope |
 | Mar 2026 | You Can't Vibe Your Way to a Glossary | `wireframe-first-design` | xian + Calliope |
 | Mar 2026 | What Does an Imported Agent Know? | `prompt-assembly` | xian + Calliope |

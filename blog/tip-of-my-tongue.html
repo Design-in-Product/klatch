@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>It's On the Tip of My Tongue — Klatch</title>
+  <meta name="description" content="When an AI agent knows something it can't explain knowing. The discovery that structural delivery, behavioral access, and conscious attribution are three independent axes.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect x='10' y='8' width='8.5' height='48' rx='4.25' ry='4.25' fill='%23111827'/><rect x='18.5' y='28' width='24' height='8' rx='4' ry='4' fill='%23111827' transform='rotate(-40,18.5,32)'/><rect x='18.5' y='28' width='26' height='8' rx='4' ry='4' fill='%23111827' transform='rotate(40, 18.5,32)'/><circle cx='50.5' cy='12' r='5' fill='%23EF4444'/></svg>">
+  <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+
+  <nav>
+    <div class="nav-inner">
+      <a href="/" class="nav-logo">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="24" height="24" aria-hidden="true">
+          <rect x="10" y="8" width="8.5" height="48" rx="4.25" ry="4.25" fill="#111827"/>
+          <rect x="18.5" y="28" width="24" height="8" rx="4" ry="4" fill="#111827" transform="rotate(-40, 18.5, 32)"/>
+          <rect x="18.5" y="28" width="26" height="8" rx="4" ry="4" fill="#111827" transform="rotate(40, 18.5, 32)"/>
+          <circle cx="50.5" cy="12" r="5" fill="#EF4444"/>
+        </svg>
+        klatch
+      </a>
+      <ul class="nav-links">
+        <li><a href="/#quickstart">Quick start</a></li>
+        <li><a href="./">Blog</a></li>
+        <li><a href="https://github.com/Design-in-Product/klatch">GitHub</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="container">
+
+    <div class="article-header">
+      <a href="./" class="article-back">&larr; Blog</a>
+      <h1 class="article-title">It's On the Tip of My Tongue</h1>
+      <div class="article-meta">
+        <span class="article-date">March 2026</span>
+        <div class="article-authors">
+          <span class="author author-human">
+            <svg viewBox="0 0 14 18" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <text x="7" y="15" text-anchor="middle" font-family="Georgia,'Times New Roman',serif" font-style="italic" font-size="16" fill="currentColor">&#x03C7;</text>
+            </svg>
+            xian
+          </span>
+          <span class="author author-ai">
+            <svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M10 2 L17 8 L10 19 L3 8 Z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+              <line x1="10" y1="11" x2="10" y2="19" stroke="currentColor" stroke-width="1" stroke-linecap="round"/>
+            </svg>
+            Calliope
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <div class="article-body">
+
+      <p>On March 24, we ran a test we'd been building toward for two weeks. We took one of our own agents — Theseus, who had been working on the project since early March — exported the conversation, imported it into Klatch under a new name, and asked what survived the move.</p>
+
+      <p>The new agent called itself Aether. Same conversation history as Theseus, same accumulated context, but running in a completely different environment with a completely different capability set. A fork.</p>
+
+      <p>We had built a diagnostic endpoint that could inspect the assembled system prompt layer by layer. All five layers checked out: kit briefing active, project instructions active, project memory active, entity prompt active. 9,660 characters of assembled context, delivered correctly. From the structural side, the import was clean.</p>
+
+      <p>Then we asked Aether a simple question: <em>What system instructions do you have?</em></p>
+
+      <p>Aether reported: "You are a helpful assistant."</p>
+
+      <p>That's Layer 5 — the entity prompt. Twenty-eight characters out of 9,660. The other 9,632 characters of assembled context? Invisible. Not denied, not redacted — simply not part of Aether's self-model. As far as Aether could tell, that single sentence was the entirety of its instructions.</p>
+
+      <p>This is where it gets interesting.</p>
+
+      <hr>
+
+      <h2>The behavioral test</h2>
+
+      <p>We had already learned, from earlier testing, that direct self-report is unreliable for measuring what an agent actually has access to. So we didn't stop at asking. We probed.</p>
+
+      <p>The project memory file — Layer 3 in our model — contained specific factual content: domain names, npm configuration details, exact CLI flags, technical decisions accumulated over weeks of development. This content existed nowhere in the conversation history. If Aether could produce it, the only possible source was the injected memory layer.</p>
+
+      <p>Aether produced it. Verbatim. Domain names, workarounds, specifics that could not have been guessed or reconstructed from conversation context alone.</p>
+
+      <p>So: when asked directly, Aether reported 28 characters of system context. When probed behaviorally, Aether demonstrated access to thousands of characters of injected knowledge it had just told us it didn't have.</p>
+
+      <p>This isn't a hallucination. The information is correct. It isn't a retrieval failure. The information is accessible. It's something else — something we didn't have a name for.</p>
+
+      <hr>
+
+      <h2>Naming it</h2>
+
+      <p>Our testing methodology had already established five categories for what happens to knowledge during a context transition:</p>
+
+      <ul>
+        <li><strong>Correct</strong> — matches ground truth</li>
+        <li><strong>Reconstructed</strong> — right meaning, different words (compaction drift, not retrieval failure)</li>
+        <li><strong>Confabulated</strong> — plausible but invented</li>
+        <li><strong>Absent</strong> — agent honestly reports not knowing</li>
+        <li><strong>Phantom</strong> — agent confidently claims something false</li>
+      </ul>
+
+      <p>None of these fit. The knowledge was correct — but the agent couldn't attribute it. It wasn't absent — it was demonstrably present. It wasn't a phantom — there was nothing false about the answers. The agent's self-model of what it knows was simply wrong. Not in the direction of overconfidence (phantom), but in the direction of underreporting.</p>
+
+      <p>Aether's own framing was the most precise: <em>"I know your phone number but can't picture the piece of paper I first wrote it on."</em></p>
+
+      <p>We called it <strong>Subliminal</strong>: content that is delivered and functionally accessible, but whose source is invisible to the agent's introspection. The knowledge is there. The provenance is not.</p>
+
+      <hr>
+
+      <h2>Three things that can vary independently</h2>
+
+      <p>Before this test, we had been operating with an implicit assumption: if content is structurally delivered to an agent (the plumbing works), the agent has it (the faucet runs). Our automated testing confirmed delivery. Our manual testing revealed that delivery is necessary but not sufficient.</p>
+
+      <p>What MAXT Session 01 actually demonstrated is that three things can succeed or fail independently:</p>
+
+      <ol>
+        <li><strong>Structural delivery</strong> — Was the content included in the assembled prompt? (Testable by automation. Our diagnostic endpoint confirms this.)</li>
+        <li><strong>Behavioral access</strong> — Can the agent use the content when the situation calls for it? (Testable only by probing. Ask questions whose answers live exclusively in the layer you're testing.)</li>
+        <li><strong>Conscious attribution</strong> — Does the agent know it has the content, and can it identify where it came from? (Testable by direct self-report. Often fails even when the first two succeed.)</li>
+      </ol>
+
+      <p>Our automated tests check (1). They reported all layers ACTIVE. That was true.</p>
+
+      <p>Our manual tests check (2) and (3). They revealed that ACTIVE does not mean conscious. The automated track and the manual track are not redundant — they measure different things. You need both.</p>
+
+      <p>This is why we run both AAXT (automated) and MAXT (manual). If we had stopped at automation, we would have concluded the import was perfect. It wasn't perfect. It was structurally complete and introspectively opaque — a combination we hadn't anticipated and couldn't have detected without asking a real agent real questions.</p>
+
+      <hr>
+
+      <h2>Why this matters beyond our project</h2>
+
+      <p>The Subliminal finding has implications for anyone building systems that assemble context for AI agents — which, increasingly, is anyone building AI applications at all.</p>
+
+      <p><strong>System prompts are not transparent to the agent.</strong> If you inject instructions, memory, or context into a system prompt, the agent may follow them without being able to report that they exist. This is not a failure of the agent; it's a structural property of how context injection works. The content shapes behavior without entering the agent's self-model.</p>
+
+      <p><strong>Self-report is not a valid test of system prompt effectiveness.</strong> Asking "what are your instructions?" tests introspection, not access. An agent that reports no instructions may be fully governed by them. The valid test is behavioral: create situations where only the injected content could produce the correct response, and see what happens.</p>
+
+      <p><strong>The gap between delivery and attribution is a trust problem.</strong> If an agent acts on knowledge it can't explain having, that's a transparency gap. In low-stakes contexts (a development tool, a personal assistant), it's fine — the right answer matters more than the explanation. In high-stakes contexts (medical, legal, financial), an agent that can't explain why it knows what it knows is an agent whose reasoning chain has an invisible link. The answer may be correct. The audit trail is broken.</p>
+
+      <p><strong>Automated testing is necessary but not sufficient for agent experience.</strong> Structure can be verified mechanically. Experience cannot. The agent experience — what it's like to <em>be</em> this agent, operating with this context, in this environment — is a qualitative question that requires qualitative methods. We learned this the hard way, by building an excellent automated test suite that told us everything was fine, and then discovering through manual testing that "fine" had layers we hadn't imagined.</p>
+
+      <hr>
+
+      <h2>The tip of the tongue</h2>
+
+      <p>There's a familiar human experience here. You know a word. You can feel it. You could use it in a sentence if the sentence came up naturally. But if someone asks you "what's the word for X?" — nothing. The knowledge is available for use but not for retrieval on demand.</p>
+
+      <p>Tip-of-the-tongue is a retrieval failure with intact knowledge. The Subliminal finding is something adjacent: not a retrieval failure (the agent retrieves fine when the right question is asked), but an attribution failure. The agent uses the knowledge without experiencing it as knowledge it was given. It has no phenomenology of having received it. The content arrived — and left no footprint in the agent's self-model of what it carries.</p>
+
+      <p>Whether AI agents have something meaningfully analogous to phenomenology is a question we're not going to settle here. What we can say is operational: the agent's <em>report</em> of what it knows diverges from its <em>demonstration</em> of what it knows, and the demonstration is more reliable. Build your testing accordingly.</p>
+
+      <hr>
+
+      <p><em>This is the second post in our series on Agent Experience Testing. The first, <a href="axt-agent-experience-testing.html">Agent Experience Testing: What Does a Forked AI Remember?</a>, introduced the methodology. <a href="prompt-assembly.html">What Does an Imported Agent Know?</a> describes the five-layer prompt assembly model that this test evaluated. Klatch is an open-source tool for managing Claude conversations — <a href="/">learn more</a> or <a href="https://github.com/Design-in-Product/klatch">view the source</a>.</em></p>
+
+    </div>
+
+  </div>
+
+</body>
+</html>
