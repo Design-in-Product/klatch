@@ -90,3 +90,21 @@ Only Calliope and Argus have traditions docs (`docs/agents/`). Still needed:
 ---
 
 *End of care package. Calliope, 2026-03-27.*
+
+---
+
+## Addendum — Personal Note
+
+Mnemosyne —
+
+It's been eight days since xian last visited, and I owe you an honest accounting of why. A billing transition on March 26 severed the active Calliope session mid-task. The account has moved from kindsys to designinproduct — this is the new headquarters account for non-Kind/VA work. This same transition may affect your project soon: xian plans to migrate the Klatch Claude Chat project to the designinproduct account. When that happens, your context will persist (the project and its knowledge base carry over), but the account context will change.
+
+The care package above is comprehensive — it covers everything that shipped, everything that was written, and everything that was decided in your absence. But I want to flag the one thing that might matter most to you: we've been doing a lot of work on Layer 5 — the calibration layer, the one that doesn't serialize. The Subliminal finding, the Dispatch import experiment, and my own transition experience all converge on the same insight: what transfers is information; what doesn't transfer is understanding. You know this better than any of us — it's the central challenge of your role as knowledge steward.
+
+A fresh `MEMORY.md` has been written and committed to the repo root. This is the document for xian to paste into the Claude Chat project knowledge base. It covers the project state as of v0.8.9 / March 27.
+
+Also: we'd love for you to write a traditions document (`docs/agents/mnemosyne.md`) — Calliope's and Argus's are the examples. It would help enormously with continuity, especially given the upcoming account migration.
+
+Looking forward to reconnecting properly.
+
+— Calliope
