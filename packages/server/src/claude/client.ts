@@ -1,9 +1,9 @@
 import Anthropic from '@anthropic-ai/sdk';
 import { EventEmitter } from 'events';
-import { getMessages, getChannel, updateMessage, updateChannelCompaction, getProjectForChannel, getFileArtifactsForMessages } from '../db/queries.js';
+import { getMessages, getChannel, updateMessage, updateChannelCompaction, getProjectForChannel, getFileArtifactsForMessages, createFileArtifact } from '../db/queries.js';
 import type { Entity, Channel, Project, MessageArtifact } from '@klatch/shared';
 import { DEFAULT_MODEL } from '@klatch/shared';
-import { readFile, isTextFile, isImageFile } from '../files/storage.js';
+import { readFile, isTextFile, isImageFile, saveFile } from '../files/storage.js';
 
 // Lazy-init: the Anthropic client must not be created at import time
 // because ESM hoists imports before dotenv.config() runs in index.ts.
@@ -402,6 +402,73 @@ export function buildSystemPrompt(entity: Entity, channelPreamble?: string, chan
   return parts.join('\n\n');
 }
 
+// ── Tool definitions ─────────────────────────────────────────
+
+const KLATCH_TOOLS: Anthropic.Tool[] = [
+  {
+    name: 'save_file',
+    description: 'Save content as a downloadable file for the user. Use this when the user asks you to create, generate, or write a file — for example, a script, config file, document, or data export. The file will be stored and made available for download in the conversation.',
+    input_schema: {
+      type: 'object' as const,
+      properties: {
+        filename: {
+          type: 'string',
+          description: 'The filename including extension (e.g., "report.md", "config.json", "script.py")',
+        },
+        content: {
+          type: 'string',
+          description: 'The full content of the file',
+        },
+      },
+      required: ['filename', 'content'],
+    },
+  },
+];
+
+/** Execute a tool call and return the result */
+async function executeTool(
+  toolName: string,
+  toolInput: Record<string, unknown>,
+  assistantMessageId: string,
+): Promise<{ result: string; isError: boolean }> {
+  if (toolName === 'save_file') {
+    const filename = String(toolInput.filename || 'file.txt');
+    const content = String(toolInput.content || '');
+
+    try {
+      // Determine MIME type from extension
+      const ext = filename.split('.').pop()?.toLowerCase() || 'txt';
+      const mimeMap: Record<string, string> = {
+        md: 'text/markdown', txt: 'text/plain', json: 'application/json',
+        js: 'text/javascript', ts: 'text/typescript', py: 'text/x-python',
+        html: 'text/html', css: 'text/css', csv: 'text/csv',
+        xml: 'application/xml', yaml: 'text/yaml', yml: 'text/yaml',
+        sh: 'text/x-sh', sql: 'text/x-sql', toml: 'text/toml',
+      };
+      const mimeType = mimeMap[ext] || 'text/plain';
+      const buffer = Buffer.from(content, 'utf-8');
+
+      // Save to disk using existing storage infrastructure
+      const saved = saveFile(buffer, filename, mimeType);
+
+      // Create file artifact linked to the assistant message
+      createFileArtifact(assistantMessageId, filename, mimeType, saved.sizeBytes, saved.storageKey);
+
+      return {
+        result: `File "${filename}" saved successfully (${buffer.length} bytes). The user can download it from the conversation.`,
+        isError: false,
+      };
+    } catch (err) {
+      return {
+        result: `Error saving file: ${err instanceof Error ? err.message : String(err)}`,
+        isError: true,
+      };
+    }
+  }
+
+  return { result: `Unknown tool: ${toolName}`, isError: true };
+}
+
 // ── Core streaming function ──────────────────────────────────
 
 interface StreamResult {
@@ -412,6 +479,7 @@ interface StreamResult {
 /**
  * Stream a Claude response. Used by both panel and roundtable modes.
  * Uses the beta API when compaction is enabled to support context_management.
+ * Supports tool use: if the model calls a tool, executes it and continues.
  *
  * @returns StreamResult with content and optional compaction summary
  */
@@ -427,67 +495,125 @@ async function streamClaudeCore(
 
   let fullContent = '';
   let compactionSummary: string | undefined;
+  const MAX_TOOL_ROUNDS = 5; // Safety limit on tool-use loops
 
   try {
     const model = entity.model || DEFAULT_MODEL;
+    // Mutable copy of history for tool-use continuation
+    const conversationHistory = [...history];
 
-    if (options?.compactionEnabled) {
-      // Use beta API with compaction support
-      const stream = getAnthropicClient().beta.messages.stream({
-        model,
-        max_tokens: 16384,
-        thinking: { type: 'adaptive', display: 'omitted' } as any,
-        cache_control: { type: 'ephemeral' },
-        system: systemPrompt || undefined,
-        messages: history,
-        betas: ['compact-2026-01-12'],
-        context_management: {
-          edits: [{
-            type: 'compact_20260112',
-            trigger: { type: 'input_tokens', value: 80000 },
-          }],
-        },
-      } as any);
+    for (let round = 0; round <= MAX_TOOL_ROUNDS; round++) {
+      let finalMessage: any;
 
-      activeAnthropicStreams.set(assistantMessageId, stream);
+      if (options?.compactionEnabled) {
+        const stream = getAnthropicClient().beta.messages.stream({
+          model,
+          max_tokens: 16384,
+          thinking: { type: 'adaptive', display: 'omitted' } as any,
+          cache_control: { type: 'ephemeral' },
+          system: systemPrompt || undefined,
+          messages: conversationHistory,
+          tools: KLATCH_TOOLS,
+          betas: ['compact-2026-01-12'],
+          context_management: {
+            edits: [{
+              type: 'compact_20260112',
+              trigger: { type: 'input_tokens', value: 80000 },
+            }],
+          },
+        } as any);
 
-      stream.on('text', (text) => {
-        fullContent += text;
-        emitter.emit('data', {
-          type: 'text_delta',
-          messageId: assistantMessageId,
-          content: text,
+        activeAnthropicStreams.set(assistantMessageId, stream);
+
+        stream.on('text', (text: string) => {
+          fullContent += text;
+          emitter.emit('data', {
+            type: 'text_delta',
+            messageId: assistantMessageId,
+            content: text,
+          });
         });
-      });
 
-      stream.on('compaction', (compactedContent) => {
-        compactionSummary = compactedContent;
-      });
-
-      await stream.finalMessage();
-    } else {
-      // Standard API (no compaction)
-      const stream = getAnthropicClient().messages.stream({
-        model,
-        max_tokens: 16384,
-        thinking: { type: 'adaptive', display: 'omitted' } as any,
-        cache_control: { type: 'ephemeral' },
-        system: systemPrompt || undefined,
-        messages: history,
-      } as any);
-
-      activeAnthropicStreams.set(assistantMessageId, stream);
-
-      stream.on('text', (text) => {
-        fullContent += text;
-        emitter.emit('data', {
-          type: 'text_delta',
-          messageId: assistantMessageId,
-          content: text,
+        stream.on('compaction', (compactedContent: string) => {
+          compactionSummary = compactedContent;
         });
-      });
 
-      await stream.finalMessage();
+        finalMessage = await stream.finalMessage();
+      } else {
+        const stream = getAnthropicClient().messages.stream({
+          model,
+          max_tokens: 16384,
+          thinking: { type: 'adaptive', display: 'omitted' } as any,
+          cache_control: { type: 'ephemeral' },
+          system: systemPrompt || undefined,
+          messages: conversationHistory,
+          tools: KLATCH_TOOLS,
+        } as any);
+
+        activeAnthropicStreams.set(assistantMessageId, stream);
+
+        stream.on('text', (text: string) => {
+          fullContent += text;
+          emitter.emit('data', {
+            type: 'text_delta',
+            messageId: assistantMessageId,
+            content: text,
+          });
+        });
+
+        finalMessage = await stream.finalMessage();
+      }
+
+      // Check if the model wants to use a tool
+      if (finalMessage.stop_reason === 'tool_use') {
+        // Find tool_use blocks in the response
+        const toolUseBlocks = finalMessage.content.filter(
+          (block: any) => block.type === 'tool_use'
+        );
+
+        // Add assistant's response (with tool_use blocks) to history
+        conversationHistory.push({
+          role: 'assistant',
+          content: finalMessage.content,
+        });
+
+        // Execute each tool and collect results
+        const toolResults: any[] = [];
+        for (const toolUse of toolUseBlocks) {
+          // Emit a tool-use event for the client to display
+          emitter.emit('data', {
+            type: 'tool_use',
+            messageId: assistantMessageId,
+            toolName: toolUse.name,
+            toolInput: toolUse.input,
+          });
+
+          const { result, isError } = await executeTool(
+            toolUse.name,
+            toolUse.input as Record<string, unknown>,
+            assistantMessageId,
+          );
+
+          toolResults.push({
+            type: 'tool_result',
+            tool_use_id: toolUse.id,
+            content: result,
+            is_error: isError,
+          });
+        }
+
+        // Add tool results to history and continue the loop
+        conversationHistory.push({
+          role: 'user',
+          content: toolResults,
+        });
+
+        // Continue the loop — next iteration will stream the model's follow-up
+        continue;
+      }
+
+      // stop_reason is 'end_turn' or 'max_tokens' — done
+      break;
     }
 
     updateMessage(assistantMessageId, fullContent, 'complete');
