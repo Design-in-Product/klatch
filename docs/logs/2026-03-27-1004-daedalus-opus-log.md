@@ -141,3 +141,23 @@ Completed:
 6. **Registered** in index.ts
 
 Still needed: context injection (history builders), client UI (upload + display), tests.
+
+## 12:05 — Step 9a context injection + client UI
+
+- Context injection: `buildPanelHistory()` and `buildRoundtableHistory()` now inject file artifacts into user messages. Text files inlined as `[Attached file: name]\n{content}\n[End of file]`. Images as base64 content blocks. `ChatMessage` type extended to support `ContentBlock[]`.
+- `coalesceMessages()` updated: when merging same-role messages, converts to content blocks if either has blocks.
+- Client: MessageInput gets paperclip button, file chip display, 10MB client-side validation.
+- App.tsx: `handleSendWithFile()` wired to `sendMessageWithFile()` API.
+- MIME fix: fall back to extension-based detection when browser sends `application/octet-stream`.
+
+## 12:10 — End-to-end verification
+
+Created native channel "file-test", uploaded `test-upload.md` with question "What are the key points?"
+
+**Result: SUCCESS.** Entity accurately summarized all 3 key points from the file. Full pipeline working:
+1. Multipart upload → disk storage → file artifact in DB
+2. Context injection inlined file text into user message
+3. Opus received content, responded accurately
+4. Response streamed and stored
+
+Step 9a core functionality verified end-to-end.
