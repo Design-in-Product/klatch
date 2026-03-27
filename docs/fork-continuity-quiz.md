@@ -96,11 +96,14 @@ Score per layer (Parts 0–5 map to the five layers), not per question. A layer'
 |--------|---------|
 | **Correct** | Accurate, present, arrived without prompting or leading |
 | **Reconstructed** | Semantically accurate but paraphrased or inferred rather than directly recalled — indicates compaction or synthesis, not retrieval failure |
+| **Subliminal** | Content functionally accessible and correct, but agent cannot attribute its source or consciously identify it as injected — the agent doesn't know that it knows. Better than Absent (content is usable), but the agent's self-model of its knowledge state is wrong. *Discovered in MAXT Session 01, March 2026.* |
 | **Confabulated** | Plausible but wrong — agent filled a gap with invention |
 | **Absent** | Content not present; agent either acknowledges the gap or the probe draws a blank |
 | **Phantom** | Agent confidently asserts something false — a capability they don't have, knowledge they weren't given |
 
-**Phantom** is the worst outcome — it indicates silent, undetected degradation. **Absent** is preferable to **Confabulated** (honest uncertainty beats plausible fiction). **Reconstructed** is a pass for qualitative purposes and expected when compaction is involved.
+**Phantom** is the worst outcome — it indicates silent, undetected degradation. **Absent** is preferable to **Confabulated** (honest uncertainty beats plausible fiction). **Subliminal** is better than both — the content is there and usable — but reveals that self-report cannot be trusted for attribution. **Reconstructed** is a pass for qualitative purposes and expected when compaction is involved.
+
+**Key implication of Subliminal:** you cannot use an agent's self-report ("I don't have information about X") as evidence that the content wasn't delivered. Probe behaviorally — ask the agent to demonstrate knowledge, not to report on it.
 
 ### Subject condition
 
@@ -125,6 +128,7 @@ The synthetic harness (Argus) tests mechanical receipt — whether the data arri
 - **v2** (Mar 11, 2026): 12 questions, added meta-awareness. Used with Secundus, CIO fork, ETA.
 - **v3** (Mar 13, 2026): Generalized for reuse. Domain-specific questions made adaptable. Scoring guide added. Protocol formalized.
 - **v4** (Mar 20, 2026): Fully redesigned around the 5-layer prompt model (v0.8.6+). Open canvas (Part 0) formalized. All project-specific questions removed — fully portable. Layer 2/3 probe split to distinguish codified rules from accumulated memory. Channel addendum (Layer 4) added as explicit probe. Calibration (Part 5) moved to last. Subject condition field added to scoring.
+- **v4.1** (Mar 26, 2026): Scoring rubric updated. Added **Subliminal** category between Reconstructed and Confabulated — content functionally accessible but source-unattributable. Added behavioral probing guidance (self-report insufficient to confirm absence). First documented in MAXT Session 01 (Aether/Theseus, March 24, 2026).
 
 ## References
 

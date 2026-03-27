@@ -185,6 +185,42 @@ The most critical reorientation information should come earliest in the prompt, 
 
 ---
 
+## Import Fidelity by Layer
+
+When a conversation is imported from another environment (Claude Chat, Claude Code, Cowork, or file upload), each layer has a characteristic transfer fidelity profile. This table summarizes what to expect — and where to look when something seems off.
+
+*First documented in real-world experiment: "VA Decision Reviews (OCTO)" Chat → Cowork import, March 23, 2026. Research by Dispatch. See `docs/mail/dispatch-to-calliope-import-structures-report-2026-03-25.md`.*
+
+| Layer | Name | Transfer fidelity | Notes |
+|-------|------|------------------|-------|
+| 1 | Kit Briefing | ✅ 100% | Destination environment provides this automatically at import |
+| 2 | Project Instructions | ✅ 100% | Serializes cleanly — CLAUDE.md (Code), `prompt_template` (claude.ai), or Cowork `metadata.json` |
+| 3 | Project Memory | ✅ 100% | Serializes cleanly — MEMORY.md or `memory.md` in import snapshot; **most valuable artifact in any import** |
+| 4 | Channel Addendum | ⚠️ N/A | Conversation-specific; doesn't apply to static imports. Destination sets its own. |
+| 5 | Entity Prompt / Behavioral Calibration | ❌ 0% | Does not serialize. Implicit patterns learned through interaction have no export format. |
+
+### What this means in practice
+
+**Layers 1–3 transfer robustly.** An imported agent can be fully oriented to the project state, instructions, and memory within the first message. The gap won't be in what it knows — it will be in how it behaves.
+
+**Layer 5 must be rebuilt.** Behavioral calibration — the implicit learning about communication preferences, interpretation heuristics, and decision-making patterns accumulated through interaction — is structurally absent from every import. This is the same gap identified by the Ariadne test (phantom tool capabilities) but in a different direction: instead of a missing orientation, it's missing *judgment*. The calibration gap is **recoverable** through continued interaction and correction; it is not irreversible like a capability gap (e.g., Chat can never have filesystem access regardless of calibration).
+
+**The recovery corollary:** The destination environment reaches capability parity faster than the source environment could reach destination capabilities. A Cowork agent missing Layer 5 calibration will rebuild it through practice. A Chat project missing Cowork's filesystem/MCP access cannot bridge that gap regardless of how long it runs.
+
+### Three knowledge layers in Claude's production ecosystem
+
+A related finding from the same import experiment: project knowledge exists in three physically distinct locations that do not automatically synchronize.
+
+| Layer | Location | Contents | Shared? |
+|-------|----------|----------|---------|
+| A — Chat project snapshot | `.projects/[id]/` in Cowork session (read-only) | Documents, memory, system prompt at import time | Per-session copy; not shared with other sessions |
+| B — Code repository memory | `.claude/projects/[hash]/memory/` | Accumulated behavioral notes, project state | Shared across Code sessions via git |
+| C — Repository files | `CLAUDE.md`, `docs/`, source code | Conventions, decisions, implementation | Source of truth; shared via standard git |
+
+**These three clocks drift independently.** A Chat project agent won't see Code memory updates. A Code agent won't benefit from Chat knowledge unless explicitly transferred. This is the practical reason why Layer 3 (Project Memory) deserves active maintenance and regular synchronization — it's the primary handoff vehicle across the three locations.
+
+---
+
 ## Relationship to Other Documents
 
 - **`docs/AXT.md`** — the methodology for testing agent experience across context transitions; the 5-layer model is its primary subject
