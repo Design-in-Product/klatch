@@ -21,9 +21,10 @@ Agents working on this repo use this file as the async handoff protocol.
   - Demo infrastructure: `KLATCH_DB` env var, `seed-demo.sh`, `docs/DEMO.md`, `scripts/record-demo.ts`
   - Round 11 AAXT harness (21 tests) + Round 11 klatch creation (21 tests)
   - Bookend-sync protocol formalized in `docs/agents/argus.md`
-- **Working on:** Today's intel sweep (3/23) + research assignments from Calliope. See `docs/mail/calliope-to-argus-intel-research-2026-03-23.md`: (1) Models API verification for Daedalus, (2) Cowork project export format research, (3) AuditBench methodology review for AAXT cross-pollination.
+- **Completed research:** Cowork project export format (`docs/research/cowork-project-format.md`) — no documented export format exists; CLAUDE.md is the universal Layer 2 convention across all three environments.
+- **Working on:** Remaining research assignments: (3) AuditBench methodology review for AAXT cross-pollination.
 - **Merge protocol:** xian + Calliope handle merging branch to main. Argus pushes to branch only.
-- **Updated:** 2026-03-23
+- **Updated:** 2026-03-27
 - **Round 7 assignment: Sidebar redesign tests (GitHub issue #8)**
   - Read `docs/plans/SIDEBAR.md` for full design spec before writing tests.
   - **Scope:** `packages/server/src/__tests__/round7-sidebar-redesign.test.ts` (server) + `packages/client/src/__tests__/Sidebar.test.tsx` (updates to existing)
