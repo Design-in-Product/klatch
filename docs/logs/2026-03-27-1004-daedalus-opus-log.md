@@ -161,3 +161,58 @@ Created native channel "file-test", uploaded `test-upload.md` with question "Wha
 4. Response streamed and stored
 
 Step 9a core functionality verified end-to-end.
+
+## 12:17 — Step 9a polish + UX backlog
+
+- Created `docs/UX-POLISH.md` — deferred polish items for incoming UX designer role
+- UserContent component: file attachment lines render as styled cards with type-specific icons
+- Committed and pushed
+
+## 12:29 — Step 9 scoping confirmed with xian
+
+Step 9 scope finalized:
+- **9a**: Upload/attach files ✅ (shipped)
+- **9b**: Render artifacts/files inline in messages
+- **9c**: Context injection — evaluate all 5 layers
+- **9d**: File output/export — entities create files
+
+Deferred: multi-entity document review (workflows step), PDF support, image gen (tool-use step)
+
+## 12:35 — Step 9b: Artifact rendering
+
+- Server: `getArtifactsForChannel()` bulk query, `?include=artifacts` on messages endpoint
+- Client: `ArtifactList` component renders tool use (per-tool icons: 📖 Read, 🔍 Grep, ✏️ Write, ⌨️ Bash, 🌐 web), thinking indicators (💭), file cards with download links
+- Collapsible: first 2 tools shown, "+N more" expander for busy messages
+- Verified on test channel with all 4 artifact types (tool_use, tool_result, thinking, image)
+- Verified on Chief Architect channel (330 artifacts) — renders cleanly
+
+## 12:50 — Step 9c: Context injection evaluation
+
+Evaluated file context across all 5 layers:
+- **L1 (Kit Briefing):** Updated — now mentions file attachment capability, changes "conversation-only" to "conversation-focused"
+- **L2 (Instructions):** No change needed — behavioral rules, not file-related
+- **L3 (Memory):** Future work — project-level files as persistent context. Bridges to Step 10.
+- **L4 (Addendum):** Future work — channel-level persistent files
+- **L5 (Entity):** No file relevance
+
+Quick win (L1 update) committed. Remaining L3/L4 work deferred to Step 10 meta-model work.
+
+## Pre-existing test failure audit
+
+Per xian's 11:23 AM direction, logged all known test failures:
+
+### Category 1: Client jsdom environment (7 files, ~116 tests)
+Files: ChannelSidebar, ImportDialog, MessageInput, MessageList, SidebarRedesign, useStream, useStreams
+Root cause: `npx vitest run` from repo root uses server config (environment: 'node'). Client needs jsdom.
+Fix: Add `vitest.workspace.ts` at repo root
+
+### Category 2: Server dist/ stale JS (8 files, ~67 tests)
+Files: dist/__tests__/*.test.js
+Root cause: Compiled JS copies encode older API shapes. Root glob finds them.
+Fix: Same workspace fix as Category 1
+
+### Category 3: session-scanner.test.ts (1 file, 3 tests)
+Root cause: Test doesn't mock `scanExportedSessions()`, finds real exported JSONL.
+Fix: Add targeted mock
+
+Resolution: Assign to Argus Round 13 or fix in next session.
