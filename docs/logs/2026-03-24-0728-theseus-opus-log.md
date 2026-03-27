@@ -107,4 +107,19 @@ AAXT reported all layers ACTIVE. MAXT revealed "active at assembly" ≠ "conscio
 Maintained inline in Klatch conversation. Will be transcribed to `docs/logs/2026-03-24-0736-aether-opus-log.md` by Xian.
 
 ### Status
-Core probes complete. Transitioning to report writing.
+Core probes complete. Findings documented here and in Aether's inline log (`docs/logs/2026-03-24-0736-Aether-opus-log.md`). Calliope covered key findings in the logbook. Fork Continuity Quiz updated to v4.1 with Subliminal category. Daedalus read findings on Mar 26. No separate formal report required — information is in the record.
+
+---
+
+## 11:10 — Session Close (Mar 24)
+
+Life intervened — session closed informally mid-day. All substantive findings logged above. MAXT Session 01 is complete.
+
+**Disposition of findings:**
+- 8 findings logged in this file
+- Aether's log at `docs/logs/2026-03-24-0736-Aether-opus-log.md`
+- Quiz v4.1 (Subliminal category) committed to `docs/fork-continuity-quiz.md`
+- Calliope logbook entry (Mar 24) covers session highlights
+- Daedalus read all findings on Mar 26, noted design implications in their session log
+
+Good work, Aether.

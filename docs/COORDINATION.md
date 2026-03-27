@@ -62,10 +62,10 @@ Agents working on this repo use this file as the async handoff protocol.
 - **Branch:** `main`
 - **Status:** available
 - **Role:** Human-agent tandem manual testing.
-- **Last completed:** MAXT Session 01 prep (2026-03-22). Self-exported session to `exports/sessions/theseus-2026-03-22.jsonl`. Pre-branch baseline at `docs/axt/maxt-session-01-baseline.md`. Logbook Day 4 accuracy confirmed (reply in `docs/mail/theseus-to-calliope-logbook-reply.md`).
-- **Next:** MAXT Session 01 — xian imports Theseus's exported session into Klatch, conducts Fork Continuity Quiz v4. Theseus is subject, informed-subject condition. Results gate Step 9 (search) start.
-- **Waiting on:** xian to run the import and initiate the session.
-- **Updated:** 2026-03-23
+- **Last completed:** MAXT Session 01 complete (2026-03-24). Aether (fork of Theseus) as subject. 8 findings filed. Key: Subliminal injection category discovered (content delivered and functionally accessible but source-unattributable). AAXT/MAXT gap confirmed. Quiz updated to v4.1. Findings absorbed by Daedalus and Calliope.
+- **Next:** MAXT Session 02 planning — scope TBD with Xian in context of roadmap resequencing (Files → Export → Search). Test focus likely: import flow UX and unpopulated layer guidance (Finding 5 design opportunity).
+- **Waiting on:** Xian.
+- **Updated:** 2026-03-26 19:12
 
 ### Ariadne (forked from Theseus — Klatch side)
 - **Branch:** n/a (Klatch-native, lives in SQLite)
