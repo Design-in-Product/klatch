@@ -21,6 +21,41 @@ function modelLabel(modelId?: ModelId): string | undefined {
   return getModelLabel(modelId);
 }
 
+/** Render user message content, styling file attachments as cards */
+function UserContent({ content }: { content: string }) {
+  // Split content into text and file attachment lines
+  const fileRegex = /^📎 (.+?) \((.+?)\)$/m;
+  const match = content.match(fileRegex);
+
+  if (!match) {
+    return <div className="whitespace-pre-wrap">{content}</div>;
+  }
+
+  const fileName = match[1];
+  const fileSize = match[2];
+  const textBefore = content.slice(0, match.index).trim();
+
+  // File extension for icon hint
+  const ext = fileName.split('.').pop()?.toLowerCase() || '';
+  const isImage = ['png', 'jpg', 'jpeg', 'gif', 'webp', 'svg'].includes(ext);
+  const isCode = ['ts', 'tsx', 'js', 'jsx', 'py', 'rs', 'go', 'java', 'css', 'html'].includes(ext);
+
+  return (
+    <div>
+      {textBefore && <div className="whitespace-pre-wrap mb-2">{textBefore}</div>}
+      <div className="flex items-center gap-2 rounded-md bg-white/15 px-3 py-2 text-xs">
+        <span className="text-base">
+          {isImage ? '🖼️' : isCode ? '💻' : '📄'}
+        </span>
+        <div className="min-w-0 flex-1">
+          <div className="font-medium truncate">{fileName}</div>
+          <div className="opacity-70">{fileSize}</div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export function MessageList({
   messages,
   getStreamContent,
@@ -201,7 +236,7 @@ function MessageBubble({
         </div>
         <div className="break-words text-sm leading-relaxed">
           {isUser ? (
-            <div className="whitespace-pre-wrap">{displayContent}</div>
+            <UserContent content={displayContent} />
           ) : displayContent ? (
             <MarkdownContent content={displayContent} theme={theme} />
           ) : isWaiting ? (
