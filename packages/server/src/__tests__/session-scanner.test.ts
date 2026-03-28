@@ -11,6 +11,15 @@ vi.mock('../claude/client.js', () => ({
   streamClaude: vi.fn(),
 }));
 
+// Mock scanExportedSessions to avoid picking up real exports/sessions/ files
+vi.mock('../import/session-scanner.js', async (importOriginal) => {
+  const actual = await importOriginal() as any;
+  return {
+    ...actual,
+    scanExportedSessions: vi.fn().mockResolvedValue(null),
+  };
+});
+
 function createApp() {
   return createTestApp();
 }

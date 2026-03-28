@@ -21,14 +21,13 @@ describe('buildKitBriefing', () => {
   it('mentions Claude Code for claude-code imports', () => {
     const briefing = buildKitBriefing(makeChannel({ source: 'claude-code' }));
     expect(briefing).toContain('Claude Code');
-    expect(briefing).toContain('do NOT have access to tools');
-    expect(briefing).toContain('conversation-only');
+    expect(briefing).toContain('do not currently have access to shell tools');
   });
 
   it('mentions claude.ai for claude-ai imports', () => {
     const briefing = buildKitBriefing(makeChannel({ source: 'claude-ai' }));
     expect(briefing).toContain('claude.ai');
-    expect(briefing).toContain('do NOT have access to tools');
+    expect(briefing).toContain('do not currently have access to shell tools');
   });
 
   it('includes CLAUDE.md content from sourceMetadata', () => {
@@ -90,7 +89,7 @@ describe('buildKitBriefing', () => {
       sourceMetadata: undefined,
     }));
     // Should still have the core orientation
-    expect(briefing).toContain('conversation-only');
+    expect(briefing).toContain('imported into Klatch');
     // But no project context sections
     expect(briefing).not.toContain('CLAUDE.md');
     expect(briefing).not.toContain('MEMORY.md');
@@ -101,7 +100,7 @@ describe('buildKitBriefing', () => {
       sourceMetadata: 'not-valid-json',
     }));
     // Should still have the core orientation without crashing
-    expect(briefing).toContain('conversation-only');
+    expect(briefing).toContain('imported into Klatch');
   });
 
   it('includes acknowledgment instruction for Claude Code imports', () => {
