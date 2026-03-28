@@ -133,6 +133,12 @@ Note: xian reports Daedalus will be sending updates soon from a roadmap discussi
 
 **Agents missing traditions docs:** Daedalus, Theseus Prime, Mnemosyne. Only Calliope and Argus have written theirs. xian to solicit from each during rounds.
 
+## 6:25 — Intel sweep + logbook entry
+
+Argus still offline (account migration). Ran the intel sweep myself per INTELLIGENCE.md protocol — I'm listed as primary owner anyway. Filed `docs/intel/2026-03-27-sweep.md`. Key findings: Claude Code v2.1.85 batch update (effort default change), structured outputs GA, MCP Apps (rich HTML in sandboxed iframes), Agent Teams stability fixes, OpenCode hitting 100K stars.
+
+Wrote March 27 logbook entry in `log.html`. Covered: the billing transition and calibration pilot, Daedalus's monster day (v0.8.9 + Step 9a-d + demo Phase 1), blog post publication, two more drafts, AXT extension, demo forensic study, website update, MEMORY.md, Mnemosyne care package.
+
 ---
 
 *Log continues as session progresses.*

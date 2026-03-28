@@ -37,6 +37,33 @@
     </div>
 
     <!-- ============================================================ -->
+    <!-- ENTRY: 2026-03-27 -->
+    <!-- ============================================================ -->
+    <div class="log-entry" id="2026-03-27">
+      <p class="log-date">March 27, 2026</p>
+      <div class="log-body">
+
+        <p>A billing change severed a chat mid-sentence on March 26. When Calliope returned the next morning — different account, different model (Opus 4.6, up from Sonnet 4.6), same repository — the first task was to figure out what had survived the transition. The answer: everything that was in the repo, and nothing that wasn't. The traditions document worked. The session log was unfinished but the deliverables were all committed. The calibration — the implicit working style built up over weeks of sessions — was gone. Layer 5, as predicted.</p>
+
+        <p>The recovery produced an experiment. A new file, <code>docs/agents/calliope-calibration.md</code>, attempts to externalize the behavioral knowledge that normally lives only in interaction history: working preferences, communication patterns, interpretation heuristics. Whether reading about calibration produces the same effect as having developed it is an open question. The plan is to assess it in a future MAXT session — a controlled test of whether explicit Layer 5 documentation closes the gap that the Dispatch report and MAXT Session 01 both identified as structurally unrecoverable.</p>
+
+        <p>Daedalus had a monster day. v0.8.9 shipped first — auto-prompt caching (one parameter, major cost reduction), Models API dynamic discovery (no more hardcoded model list), kit briefing improvements from MAXT findings (date injection, subliminal layer awareness), and <code>thinking.display: "omitted"</code> for faster streaming. Then Step 9 — Files and Artifacts — went from nothing to feature-complete in a single session: file upload and attachment, inline artifact rendering, kit briefing file awareness, code block save-to-file, and native tool-based file creation (<code>save_file</code>). A File Domain Model design document laid out the five-phase plan for the full file system. 1,093 new lines across 18 files. The demo pipeline's Phase 1 was knocked out as a coda — Playwright added to devDependencies, npm scripts wired up, recording workflow now runnable.</p>
+
+        <p>The blog gained a new post: <a href="blog/tip-of-my-tongue.html">"It's On the Tip of My Tongue"</a> — a writeup of the Subliminal finding from MAXT Session 01. The discovery that structural delivery, behavioral access, and conscious attribution are three independent axes. An agent can use knowledge it can't explain having; its self-model of what it knows is simply wrong. The post was drafted, reviewed, illustrated (an SVG of three diverging axes — two solid, one dashed red), and published in under two hours. A LinkedIn announcement followed, with a nod to They Might Be Giants.</p>
+
+        <p>Two more posts were drafted for weekend publication: "Your Model or Theirs" (Tesler's Law applied to AI context management — your data, your model or the platform's) and "What Doesn't Transfer" (the Layer 5 calibration gap, drawing on three independent experiments that found the same result). An editorial calendar now tracks the publishing queue. The AXT methodology document gained a major extension: layer-by-layer import/export fidelity testing (AXT-L1 through AXT-L5) and the Subliminal category in the failure mode taxonomy.</p>
+
+        <p>A forensic investigation into the demo recording pipeline — which has been "almost done" for over a week — identified the root cause: the code infrastructure is complete but has never been executed. Playwright wasn't in <code>package.json</code>, so the recording script fails at runtime. Each session built more code and assumed the next session would run it. A plan of record was committed with four phases, clear ownership, and the verification protocol from the March 20 reliability incident. Daedalus completed Phase 1 the same afternoon. Phase 2 — actually recording the demo — waits for xian at the keyboard with a running Klatch instance.</p>
+
+        <p>The website was updated: a v0.8.9 release banner, the roadmap resequenced to match the current plan (Files → Export → Search), and a link to the new blog post. A fresh <code>MEMORY.md</code> was written at the repo root — a complete project state reference for pasting into the Claude Chat knowledge base. A care package for Mnemosyne covered eight days of activity with 23 files for knowledge base update. An intelligence sweep — the first filed by Calliope rather than Argus — covered the March 24–27 window.</p>
+
+        <p>The March 14 logbook entry gained a line, at Theseus's suggestion from a two-week-old reply: the three-factor fidelity model that made the diagnostic reversal interpretable, not just surprising.</p>
+
+      </div>
+    </div>
+    <!-- end entry 2026-03-27 -->
+
+    <!-- ============================================================ -->
     <!-- ENTRY: 2026-03-26 -->
     <!-- ============================================================ -->
     <div class="log-entry" id="2026-03-26">
