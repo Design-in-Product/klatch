@@ -279,4 +279,19 @@ Five implementation phases documented in `docs/plans/FILE-DOMAIN-MODEL.md`.
 
 Plus: File Domain Model design approved — foundational architecture for Steps 9→10→11.
 
-Commits: 8+ commits pushed to origin/main.
+## 15:36 — GitHub cleanup + session wrap
+
+- Reviewed all open issues (#6, #17, #18, #19): all accurate and current
+- #6 updated earlier to Step 11 with resequencing context
+- #18 updated with compaction integration status
+- #19 updated noting native tool use partially supersedes Agent SDK need
+- Added `klatch-files/` to .gitignore (runtime file storage)
+- Demo recording infrastructure: Playwright installed, scripts in `scripts/`, docs in `docs/DEMO.md`
+
+## Session verification
+
+```
+git log origin/main --oneline -10
+```
+
+Commits: 10+ commits pushed to origin/main across Round 12 + Step 9.

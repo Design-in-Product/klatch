@@ -19,3 +19,6 @@ demo/*.gif
 # Database backups directory
 backups/
 .claude/worktrees/
+
+# Runtime file storage (user uploads, entity-created files)
+klatch-files/

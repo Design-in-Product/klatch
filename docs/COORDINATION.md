@@ -52,12 +52,12 @@ Agents working on this repo use this file as the async handoff protocol.
 ### Daedalus (architecture & implementation)
 - **Branch:** `main`
 - **Status:** working
-- **Last completed:** Round 12 Tier 1 — auto-prompt caching, kit briefing improvements (MAXT F3+F4), thinking.display omitted, Models API dynamic discovery. All shipped 2026-03-27.
-- **Working on:** Round 12 Tier 2 evaluation (compaction API #18, effort parameter #17). Step 9 (Files) planning next.
+- **Last completed:** Step 9 (Files and artifacts) — 9a upload/attach, 9b artifact rendering, 9c context injection (L1), 9d-A code block save, 9d-B native tool use (save_file). File Domain Model designed and documented. Round 12 Tier 1 also shipped same session.
+- **Working on:** File Domain Model Phase 1 (files + file_refs tables, multi-level ownership). Demo recording prep.
+- **Next:** Step 9 Phase 2-5 (channel/project/entity file refs, promotion/projection). Then Step 10 (Export + meta-model).
 - **Roadmap:** Step 9 = Files and artifacts → Step 10 = Export + meta-model synthesis → Step 11 = Search.
-- **MAXT gate cleared:** Step 9 (Files) unblocked.
 - **Nomenclature:** Assigned to Calliope + xian. Short-term: rename "System prompt" in UI. Long-term: full Klatch terminology guide.
-- **Updated:** 2026-03-27
+- **Updated:** 2026-03-27 15:40
 
 ### Theseus Prime (manual testing & exploration — CLI side)
 - **Branch:** `main`
