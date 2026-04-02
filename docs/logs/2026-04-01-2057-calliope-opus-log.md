@@ -69,6 +69,31 @@ No Klatch session logs exist for March 28–31 or April 1 (until now). The logbo
 - xian's daily workflow tree saved as user memory
 - Migration gap saved as project memory
 
+## 21:45 — RFC-001 review complete
+
+Reviewed the full RFC-001 spec (`~/cool/dispatch/standards/FIVE-LAYER-CONTEXT-MODEL-RFC.md`) and PM's response (`memo-pm-to-dispatch-rfc001-response-2026-03-31.md`). Compared against our `docs/PROMPT-ASSEMBLY.md`.
+
+**Response filed:**
+- Full response at `~/cool/dispatch/standards/FIVE-LAYER-CONTEXT-MODEL-RFC-klatch-response.md`
+- Summary memo at `docs/mail/calliope-to-dispatch-rfc001-response-2026-04-01.md`
+
+**Key points:**
+- Confirmed the RFC's mapping is correct (all five layers match)
+- Provided dual mapping: Klatch product + Klatch agent team
+- Four gaps identified:
+  1. L1 asymmetry (imported vs native channels — native channels get no kit briefing)
+  2. L4 "System prompt" UI label is misleading (nomenclature issue, already tracked)
+  3. L5 needs explicit declarative/procedural split (L5a text transfers; L5b calibration doesn't)
+  4. L3 has no freshness signal (stale memory injected with full confidence)
+- Four amendments proposed:
+  1. L5 sub-components documentation
+  2. L3 freshness indicator
+  3. Fidelity assessment protocol (AAXT + MAXT framework)
+  4. Agent-team vs product distinction
+- Supported PM's recommendations on fidelity protocol and agent-vs-product distinction
+- Recommended keeping both naming conventions (Klatch-specific and RFC-general) in parallel
+- Ready to ratify once amendments are discussed
+
 ---
 
 *Log continues as session progresses.*
