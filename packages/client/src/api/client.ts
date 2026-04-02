@@ -110,6 +110,36 @@ export async function updateProjectApi(
   return res.json();
 }
 
+// ── Project Files API ──────────────────────────────────────
+
+export async function fetchProjectFiles(projectId: string): Promise<FileWithRef[]> {
+  const res = await fetch(`${BASE}/projects/${projectId}/files`);
+  if (!res.ok) throw new Error(`Failed to fetch project files: ${res.statusText}`);
+  return res.json();
+}
+
+export async function uploadProjectFile(projectId: string, file: File): Promise<{ file: any; ref: any }> {
+  const formData = new FormData();
+  formData.append('file', file);
+  const res = await fetch(`${BASE}/projects/${projectId}/files`, {
+    method: 'POST',
+    body: formData,
+  });
+  if (!res.ok) {
+    let msg = `Failed to upload file: ${res.statusText}`;
+    try { const body = await res.json(); if (body.error) msg = body.error; } catch {}
+    throw new Error(msg);
+  }
+  return res.json();
+}
+
+export async function removeProjectFile(projectId: string, fileId: string): Promise<void> {
+  const res = await fetch(`${BASE}/projects/${projectId}/files/${fileId}`, {
+    method: 'DELETE',
+  });
+  if (!res.ok) throw new Error(`Failed to remove file: ${res.statusText}`);
+}
+
 // ── Entity API ───────────────────────────────────────────────
 
 export async function fetchEntities(): Promise<Entity[]> {

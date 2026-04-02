@@ -17,6 +17,7 @@ import {
   createFileRef,
   createFileWithMessageRef,
   deleteFileRef,
+  getProject,
 } from '../db/queries.js';
 import { streamClaude, streamClaudeRoundtable } from '../claude/client.js';
 import { resolveMentions } from '@klatch/shared';
@@ -292,6 +293,65 @@ app.delete('/files/:fileId/pin/:channelId', (c) => {
   }
 
   deleteFileRef(pinned.refId);
+  return c.json({ ok: true });
+});
+
+// ── File Domain Model: project knowledge base (Phase 3) ──────
+
+/**
+ * POST /projects/:id/files — Upload a file to a project's knowledge base
+ *
+ * Multipart form-data:
+ *   - file: the uploaded file (required)
+ */
+app.post('/projects/:id/files', async (c) => {
+  const projectId = c.req.param('id');
+  const project = getProject(projectId);
+  if (!project) {
+    return c.json({ error: 'Project not found' }, 404);
+  }
+
+  const formData = await c.req.formData();
+  const file = formData.get('file');
+
+  if (!(file instanceof File)) {
+    return c.json({ error: 'No file provided' }, 400);
+  }
+
+  const arrayBuffer = await file.arrayBuffer();
+  const buffer = Buffer.from(arrayBuffer);
+  const fileName = file.name || 'unnamed';
+  let mimeType = file.type || 'application/octet-stream';
+  if (mimeType === 'application/octet-stream') {
+    mimeType = guessMimeType(fileName);
+  }
+
+  const validation = validateFile(buffer, mimeType, fileName);
+  if (!validation.valid) {
+    return c.json({ error: validation.reason }, 400);
+  }
+
+  const saved = saveFile(buffer, fileName, mimeType);
+  const fileRecord = createFile(fileName, mimeType, saved.sizeBytes, saved.storageKey, 'user');
+  const ref = createFileRef(fileRecord.id, 'project', projectId, 'pinned', 'user');
+
+  return c.json({ file: fileRecord, ref }, 201);
+});
+
+/**
+ * DELETE /projects/:id/files/:fileId — Remove a file from a project's knowledge base
+ */
+app.delete('/projects/:id/files/:fileId', (c) => {
+  const projectId = c.req.param('id');
+  const fileId = c.req.param('fileId');
+
+  const projectFiles = getProjectFiles(projectId);
+  const target = projectFiles.find((f) => f.id === fileId);
+  if (!target) {
+    return c.json({ error: 'File not found in this project' }, 404);
+  }
+
+  deleteFileRef(target.refId);
   return c.json({ ok: true });
 });
 

@@ -1,7 +1,7 @@
 import { Hono } from 'hono';
 import fs from 'fs';
 import path from 'path';
-import { getAllChannelsEnriched, getChannel, getChannelStats, createChannel, updateChannel, deleteChannel, setChannelProject, getChannelEntities, getProjectForChannel, getChannelFiles } from '../db/queries.js';
+import { getAllChannelsEnriched, getChannel, getChannelStats, createChannel, updateChannel, deleteChannel, setChannelProject, getChannelEntities, getProjectForChannel, getChannelFiles, getProjectFiles } from '../db/queries.js';
 import { buildSystemPrompt } from '../claude/client.js';
 import type { ModelId, InteractionMode, ChannelType } from '@klatch/shared';
 import { AVAILABLE_MODELS, INTERACTION_MODES } from '@klatch/shared';
@@ -36,7 +36,9 @@ app.get('/channels/:id/prompt-debug', (c) => {
 
   const channelFileList = getChannelFiles(id);
   const channelFileNames = channelFileList.map((f) => `- ${f.name} (${f.mimeType})`);
-  const assembled = buildSystemPrompt(entity, channel.systemPrompt, channel, project, channelFileNames);
+  const projectFileList = project ? getProjectFiles(project.id) : [];
+  const projectFileNames = projectFileList.map((f) => `- ${f.name} (${f.mimeType})`);
+  const assembled = buildSystemPrompt(entity, channel.systemPrompt, channel, project, channelFileNames, projectFileNames);
 
   return c.json({
     channelId: id,
@@ -52,11 +54,14 @@ app.get('/channels/:id/prompt-debug', (c) => {
         : project
           ? `EMPTY — project "${project.name}" has no instructions`
           : 'INACTIVE — no project linked',
-      '3_projectMemory': project?.memory?.trim()
-        ? `ACTIVE — from project "${project.name}" (${project.memory.length} chars)`
-        : project
-          ? `EMPTY — project "${project.name}" has no memory`
-          : 'INACTIVE — no project linked',
+      '3_projectMemory': (() => {
+        const parts: string[] = [];
+        if (project?.memory?.trim()) parts.push(`${project.memory.length} chars`);
+        if (projectFileList.length > 0) parts.push(`${projectFileList.length} knowledge base file(s): ${projectFileList.map((f) => f.name).join(', ')}`);
+        if (parts.length > 0) return `ACTIVE — from project "${project!.name}" (${parts.join('; ')})`;
+        if (project) return `EMPTY — project "${project.name}" has no memory`;
+        return 'INACTIVE — no project linked';
+      })(),
       '4_channelAddendum': (() => {
         const parts: string[] = [];
         if (channel.systemPrompt?.trim()) parts.push(`${channel.systemPrompt.length} chars`);

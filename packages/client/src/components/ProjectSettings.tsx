@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { fetchProject, updateProjectApi, type Project } from '../api/client.js';
+import React, { useState, useEffect, useRef } from 'react';
+import type { FileWithRef } from '@klatch/shared';
+import { fetchProject, updateProjectApi, fetchProjectFiles, uploadProjectFile, removeProjectFile, type Project } from '../api/client.js';
 
 interface Props {
   projectId: string;
@@ -15,6 +16,39 @@ export function ProjectSettings({ projectId, onClose, onUpdated }: Props) {
   const [dirty, setDirty] = useState(false);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [projectFiles, setProjectFiles] = useState<FileWithRef[]>([]);
+  const [uploading, setUploading] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // Load project files
+  useEffect(() => {
+    fetchProjectFiles(projectId).then(setProjectFiles).catch(() => setProjectFiles([]));
+  }, [projectId]);
+
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploading(true);
+    try {
+      await uploadProjectFile(projectId, file);
+      const updated = await fetchProjectFiles(projectId);
+      setProjectFiles(updated);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Upload failed');
+    } finally {
+      setUploading(false);
+      if (fileInputRef.current) fileInputRef.current.value = '';
+    }
+  };
+
+  const handleRemoveFile = async (fileId: string) => {
+    try {
+      await removeProjectFile(projectId, fileId);
+      setProjectFiles((prev) => prev.filter((f) => f.id !== fileId));
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to remove file');
+    }
+  };
 
   // Load project data
   useEffect(() => {
@@ -172,6 +206,62 @@ export function ProjectSettings({ projectId, onClose, onUpdated }: Props) {
           {memory && (
             <p className="mt-1 text-[10px] text-muted">{memory.length.toLocaleString()} chars</p>
           )}
+        </div>
+
+        {/* Knowledge base files */}
+        <div>
+          <label className="block text-xs text-secondary mb-2">
+            Knowledge base <span className="text-muted font-normal">({projectFiles.length} file{projectFiles.length !== 1 ? 's' : ''} — listed in L3 context for all channels in this project)</span>
+          </label>
+          {projectFiles.length > 0 && (
+            <div className="space-y-1.5 mb-3">
+              {projectFiles.map((f) => {
+                const ext = f.name.split('.').pop()?.toLowerCase() || '';
+                const isImage = ['png', 'jpg', 'jpeg', 'gif', 'webp', 'svg'].includes(ext);
+                const isCode = ['ts', 'tsx', 'js', 'jsx', 'py', 'rs', 'go', 'java', 'css', 'html', 'json', 'md'].includes(ext);
+                return (
+                  <div key={f.refId} className="flex items-center gap-2 rounded-lg border border-line bg-card px-3 py-2 group">
+                    <span className="text-base flex-shrink-0">
+                      {isImage ? '🖼️' : isCode ? '💻' : '📄'}
+                    </span>
+                    <a
+                      href={`/api/files/${f.storageKey}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-sm text-primary flex-1 truncate no-underline hover:underline"
+                    >
+                      {f.name}
+                    </a>
+                    <span className="text-[10px] text-muted">
+                      {f.sizeBytes < 1024 ? `${f.sizeBytes} B` : f.sizeBytes < 1024 * 1024 ? `${(f.sizeBytes / 1024).toFixed(1)} KB` : `${(f.sizeBytes / (1024 * 1024)).toFixed(1)} MB`}
+                    </span>
+                    <button
+                      onClick={() => handleRemoveFile(f.id)}
+                      title="Remove from project"
+                      className="p-1 rounded text-muted hover:text-danger hover:bg-hover transition-colors opacity-0 group-hover:opacity-100"
+                    >
+                      <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                      </svg>
+                    </button>
+                  </div>
+                );
+              })}
+            </div>
+          )}
+          <input
+            ref={fileInputRef}
+            type="file"
+            onChange={handleFileUpload}
+            className="hidden"
+          />
+          <button
+            onClick={() => fileInputRef.current?.click()}
+            disabled={uploading}
+            className="flex items-center gap-1.5 rounded-full border border-dashed border-line px-2.5 py-1 text-xs text-muted hover:text-primary hover:border-faint transition-colors disabled:opacity-50"
+          >
+            {uploading ? 'Uploading...' : '+ Add file'}
+          </button>
         </div>
 
         {/* Save/Cancel */}
