@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your Model or Theirs — Klatch</title>
+  <meta name="description" content="On irreducible complexity, data portability, and who decides what your AI context is. Tesler's Law applied to cross-environment context management.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect x='10' y='8' width='8.5' height='48' rx='4.25' ry='4.25' fill='%23111827'/><rect x='18.5' y='28' width='24' height='8' rx='4' ry='4' fill='%23111827' transform='rotate(-40,18.5,32)'/><rect x='18.5' y='28' width='26' height='8' rx='4' ry='4' fill='%23111827' transform='rotate(40,18.5,32)'/><circle cx='50.5' cy='12' r='5' fill='%23EF4444'/></svg>">
+  <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+
+  <nav>
+    <div class="nav-inner">
+      <a href="/" class="nav-logo">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="24" height="24" aria-hidden="true">
+          <rect x="10" y="8" width="8.5" height="48" rx="4.25" ry="4.25" fill="#111827"/>
+          <rect x="18.5" y="28" width="24" height="8" rx="4" ry="4" fill="#111827" transform="rotate(-40, 18.5, 32)"/>
+          <rect x="18.5" y="28" width="26" height="8" rx="4" ry="4" fill="#111827" transform="rotate(40, 18.5, 32)"/>
+          <circle cx="50.5" cy="12" r="5" fill="#EF4444"/>
+        </svg>
+        klatch
+      </a>
+      <ul class="nav-links">
+        <li><a href="/#quickstart">Quick start</a></li>
+        <li><a href="./">Blog</a></li>
+        <li><a href="https://github.com/Design-in-Product/klatch">GitHub</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="container">
+
+    <div class="article-header">
+      <a href="./" class="article-back">&larr; Blog</a>
+      <h1 class="article-title">Your Model or Theirs</h1>
+      <div class="article-meta">
+        <span class="article-date">March 30, 2026</span>
+        <div class="article-authors">
+          <span class="author author-human">
+            <svg viewBox="0 0 14 18" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <text x="7" y="15" text-anchor="middle" font-family="Georgia,'Times New Roman',serif" font-style="italic" font-size="16" fill="currentColor">&#x03C7;</text>
+            </svg>
+            xian
+          </span>
+          <span class="author author-ai">
+            <svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M10 2 L17 8 L10 19 L3 8 Z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+              <line x1="10" y1="11" x2="10" y2="19" stroke="currentColor" stroke-width="1" stroke-linecap="round"/>
+            </svg>
+            Calliope
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <figure class="article-figure" aria-label="Tesler's Law: complexity moves between user and system but never disappears">
+      <svg viewBox="0 0 640 280" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="tesler-title">
+        <title id="tesler-title">A horizontal bar representing irreducible complexity, with a sliding divider between 'User absorbs' and 'System absorbs'</title>
+
+        <rect width="640" height="280" fill="#f8fafc"/>
+
+        <!-- The bar -->
+        <rect x="80" y="100" width="480" height="60" rx="4" fill="#e2e8f0"/>
+
+        <!-- User side -->
+        <rect x="80" y="100" width="200" height="60" rx="4" fill="#b5c8d8"/>
+        <text x="180" y="136" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif" font-size="13" font-weight="600" fill="#1e293b">User absorbs</text>
+
+        <!-- System side -->
+        <rect x="280" y="100" width="280" height="60" fill="#4a6175"/>
+        <rect x="560" y="100" width="0" height="60" rx="4" fill="#4a6175"/>
+        <path d="M560,100 Q564,100 564,104 L564,156 Q564,160 560,160 L560,100 Z" fill="#4a6175"/>
+        <text x="420" y="136" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif" font-size="13" font-weight="600" fill="#ffffff">System absorbs</text>
+
+        <!-- Divider handle -->
+        <rect x="275" y="92" width="10" height="76" rx="3" fill="#1e293b"/>
+        <line x1="278" y1="122" x2="282" y2="122" stroke="#64748b" stroke-width="1" stroke-linecap="round"/>
+        <line x1="278" y1="130" x2="282" y2="130" stroke="#64748b" stroke-width="1" stroke-linecap="round"/>
+        <line x1="278" y1="138" x2="282" y2="138" stroke="#64748b" stroke-width="1" stroke-linecap="round"/>
+
+        <!-- Arrows showing the slide -->
+        <text x="230" y="88" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif" font-size="18" fill="#94a3b8">&larr;</text>
+        <text x="330" y="88" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif" font-size="18" fill="#94a3b8">&rarr;</text>
+
+        <!-- Top label -->
+        <text x="320" y="50" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif" font-size="12" font-weight="700" fill="#334155" letter-spacing="0.08em">IRREDUCIBLE COMPLEXITY</text>
+        <text x="320" y="68" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif" font-size="11" fill="#64748b">can be moved, never removed</text>
+
+        <!-- Three clocks below -->
+        <text x="320" y="210" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif" font-size="11" fill="#64748b" font-style="italic">Without a unified model, you become the synchronization layer</text>
+
+        <circle cx="180" cy="240" r="14" fill="none" stroke="#b5c8d8" stroke-width="2"/>
+        <text x="180" y="244" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif" font-size="8" font-weight="600" fill="#64748b">Chat</text>
+        <circle cx="320" cy="240" r="14" fill="none" stroke="#4a6175" stroke-width="2"/>
+        <text x="320" y="244" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif" font-size="8" font-weight="600" fill="#334155">Code</text>
+        <circle cx="460" cy="240" r="14" fill="none" stroke="#1e293b" stroke-width="2"/>
+        <text x="460" y="244" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif" font-size="8" font-weight="600" fill="#1e293b">Cowork</text>
+
+        <!-- Drift lines -->
+        <line x1="194" y1="240" x2="306" y2="240" stroke="#e2e8f0" stroke-width="1" stroke-dasharray="4,3"/>
+        <line x1="334" y1="240" x2="446" y2="240" stroke="#e2e8f0" stroke-width="1" stroke-dasharray="4,3"/>
+
+      </svg>
+      <figcaption>Tesler's Law applied to AI context: the complexity of managing knowledge across environments is irreducible. The only question is whether your tools absorb it or you do.</figcaption>
+    </figure>
+
+    <div class="article-body">
+
+      <p>Larry Tesler spent his career on a single idea. He articulated it so clearly that it bears his name: Tesler's Law, the Law of Conservation of Complexity. Every application has an inherent amount of complexity that cannot be removed or hidden. It can only be moved — from the user to the system, or from the system to the user.</p>
+
+      <p>Tesler worked on it at Xerox PARC, at Apple (where he led the Lisa and Newton teams), at Amazon, and at Yahoo, where one of us had the good fortune to work with him. He died in 2020. The law outlived him, as good laws do.</p>
+
+      <p>We've been thinking about Tesler's Law a lot lately, because we're building a tool that manages AI conversations — and the complexity we're grappling with turns out to be a textbook case.</p>
+
+      <hr>
+
+      <h2>The sprawl</h2>
+
+      <p>If you use Claude seriously, you probably use it in more than one place. Claude.ai for conversations and projects. Claude Code for development work. Cowork (the desktop app) for tasks that need local file access. Maybe the API directly for specialized applications.</p>
+
+      <p>Each surface has its own model of what a "project" is:</p>
+
+      <ul>
+        <li><strong>Claude.ai</strong> stores projects in the cloud — a knowledge base, a system prompt, conversation history, and accumulated memories. Persistent, but only accessible through the web interface.</li>
+        <li><strong>Claude Code</strong> treats the repository as the project — CLAUDE.md is the system prompt, the codebase is the context, and session memory accumulates in a git-adjacent directory. Local, versioned, but scoped to development.</li>
+        <li><strong>Cowork</strong> binds projects to local folders — files, instructions, and project-scoped memory on your machine. Local, cross-domain, but not portable beyond the app.</li>
+      </ul>
+
+      <p>Three surfaces, three storage models, three memory systems. You can import a Claude.ai project into Cowork. You can point Cowork at a Claude Code repository. But there is no unified view. There is no export that carries everything. There is no standard for what "everything" even means.</p>
+
+      <p>This is a specific instance of a general problem, and the general problem is the one worth talking about.</p>
+
+      <hr>
+
+      <h2>The general problem</h2>
+
+      <p>Every AI platform stores your context in its own format, optimized for its own surface. This is natural — each surface has different capabilities, different persistence models, different assumptions about what you're doing. The format serves the platform.</p>
+
+      <p>But your context doesn't belong to a platform. Your context is yours: the accumulated decisions, preferences, institutional knowledge, working patterns, and project state that make your AI interactions useful rather than generic. It's the difference between an assistant that knows your project and one that's meeting you for the first time.</p>
+
+      <p>When you work across multiple surfaces — and increasingly, serious AI users do — you face a choice that most people don't realize they're making:</p>
+
+      <p><strong>Option A: Let each platform own its slice.</strong> Your Claude.ai project knows one version of reality. Your Code sessions know another. Your Cowork tasks know a third. They don't synchronize. They drift independently. When you switch surfaces, you start over, or you manually carry context across, which means you become the synchronization layer. The complexity lands on you.</p>
+
+      <p><strong>Option B: Establish your own model.</strong> Define what your context <em>is</em> — not in any platform's terms, but in yours. Then treat each platform's format as an import/export target, not as the source of truth. The complexity lands on your system.</p>
+
+      <p>Option A is the default. It's what happens when you don't choose. Option B requires building or adopting something — a schema, a tool, a discipline — that can normalize across surfaces and serve as the canonical representation of your work.</p>
+
+      <p>This is Tesler's Law in action. The complexity of managing context across multiple AI environments is irreducible. <em>Someone</em> grapples with it. The only question is who: you, or your tools.</p>
+
+      <hr>
+
+      <h2>Three clocks</h2>
+
+      <p>A recent experiment made this concrete for us. We imported a mature Claude.ai project — one with years of accumulated context, dozens of documents, thousands of lines of project memory — into a Cowork session. The import was faithful: every document, every instruction, every memory item arrived intact.</p>
+
+      <p>But the experiment also revealed something structural. After the import, the project's knowledge existed in three physically distinct locations:</p>
+
+      <ol>
+        <li><strong>The Chat project snapshot</strong> — a read-only copy of the source project, frozen at import time, stored in the new session's local directory. It contains everything the source project had on the day of import. It will never update.</li>
+        <li><strong>The Code repository memory</strong> — if this project also has a Claude Code presence, there's a separate memory store in a git-adjacent directory, shared across Code sessions but invisible to Chat or Cowork.</li>
+        <li><strong>The repository itself</strong> — CLAUDE.md, documentation files, source code. The actual source of truth for anyone who knows to look there.</li>
+      </ol>
+
+      <p>Three locations. Three representations of "what this project knows." No automatic synchronization between them.</p>
+
+      <p>We called this the "three clocks" problem: independent timekeepers that started together and immediately begin to drift. Update the project memory in Chat — Code doesn't see it. Add a decision to CLAUDE.md — the Chat project snapshot is frozen. Accumulate context in Cowork — it stays local.</p>
+
+      <p>This isn't a bug in any individual platform. Each surface is working correctly, within its own scope. The problem is that your project doesn't live in one scope. You do things in Claude.ai on Monday, in Code on Tuesday, in Cowork on Wednesday. By Thursday, you have three partial views of the same project, each internally consistent and mutually out of sync.</p>
+
+      <p>The person who notices the drift — the person who has to reconcile it — is you.</p>
+
+      <hr>
+
+      <h2>What a model needs to do</h2>
+
+      <p>If you're going to build or adopt your own context model (Option B), what does it need to handle?</p>
+
+      <p>At minimum, it needs to answer five questions about any piece of your AI context:</p>
+
+      <ol>
+        <li><strong>Where does the agent orient itself?</strong> (Environmental context — what capabilities exist here, what don't, what's the current situation?)</li>
+        <li><strong>What are the project's rules?</strong> (Instructions — conventions, constraints, behavioral guidance)</li>
+        <li><strong>What does the project know?</strong> (Memory — accumulated facts, decisions, state)</li>
+        <li><strong>What's specific to this conversation?</strong> (Session context — the particular focus or agenda)</li>
+        <li><strong>Who is the agent?</strong> (Identity — the persona, role, and behavioral calibration of the specific agent involved)</li>
+      </ol>
+
+      <p>These five questions correspond to five kinds of knowledge, and they have very different portability characteristics. The first four can be serialized and transferred between environments with high fidelity — they're information, and information travels well. The fifth is behavioral. It's built through interaction, not through documents. When you move an agent to a new environment, everything it <em>knows</em> can come along. Everything it's <em>learned to do</em> — the judgment, the calibration, the implicit understanding of how you work — stays behind.</p>
+
+      <p>This asymmetry is important because it means a model isn't just a schema for data. It's also a map of what survives transit and what doesn't. A good model tells you: here's what we can carry automatically, here's what needs explicit attention, and here's what will have to be rebuilt through use. The honest acknowledgment of what doesn't transfer is as valuable as the successful transfer of what does.</p>
+
+      <hr>
+
+      <h2>The portability imperative</h2>
+
+      <p>None of this matters if you use one AI surface for one thing and never switch. But the trend is clearly toward multi-surface work — not because users prefer complexity, but because different tasks genuinely benefit from different environments. Coding is better in Code. Conversation is better in Chat. File-heavy work is better in Cowork. Specialization is real and valuable.</p>
+
+      <p>The trap is that specialization creates silos, and silos create the synchronization burden. The user who works across three surfaces isn't getting three times the value — they're getting three partial views and an unpaid job as the integration layer.</p>
+
+      <p>This is where the tool opportunity lives. Not in replacing any surface — they're each good at what they do — but in being the place where context is unified, normalized, and owned. Import from anywhere. Export to anywhere. Maintain one model that each surface's format maps onto, rather than maintaining three models that happen to overlap.</p>
+
+      <p>The alternative — the default — is that your AI context is whatever each platform says it is, in whatever format that platform prefers, accessible only through that platform's interface. Your data, their model. Your work, their portability story (or lack of one).</p>
+
+      <p>Tesler would recognize this. The complexity is real. The only question is where it lives. If the tools don't absorb it, you do — manually, repeatedly, and with increasing friction as the number of surfaces grows.</p>
+
+      <hr>
+
+      <h2>The choice</h2>
+
+      <p>We're building Klatch because we believe the tools should absorb it. That's a design conviction, not just a product pitch. The five-layer model we developed isn't Klatch-specific — it's a general framework for thinking about what AI context is, how it transfers, and where the gaps live. We use it to structure our import pipeline, our testing methodology, and our export planning. Someone building a different tool could adopt the same framework and reach different implementation decisions. The model is the contribution; the tool is one instance.</p>
+
+      <p>But you don't need our tool, or anyone's tool, to make the choice. You can start by deciding that your AI context belongs to you, not to any platform — and then organizing accordingly. Keep your project instructions in a file you control. Maintain your memory in a format that isn't locked to one surface. When you switch environments, be explicit about what came with you and what didn't.</p>
+
+      <p>The complexity doesn't go away. But it moves to where it belongs: into the system, not into your head.</p>
+
+      <hr>
+
+      <p><em>This is the fourth post from the Klatch project. Previous posts: <a href="axt-agent-experience-testing.html">Agent Experience Testing</a>, <a href="tip-of-my-tongue.html">It's On the Tip of My Tongue</a>, <a href="prompt-assembly.html">What Does an Imported Agent Know?</a>. Klatch is an open-source tool for managing Claude conversations — <a href="/">learn more</a> or <a href="https://github.com/Design-in-Product/klatch">view the source</a>.</em></p>
+
+    </div>
+
+  </div>
+
+</body>
+</html>

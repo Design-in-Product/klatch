@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>What Doesn't Transfer — Klatch</title>
+  <meta name="description" content="On the gap between information and judgment when AI agents change environments. Layer 5 — behavioral calibration — is the one layer that can't be serialized.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect x='10' y='8' width='8.5' height='48' rx='4.25' ry='4.25' fill='%23111827'/><rect x='18.5' y='28' width='24' height='8' rx='4' ry='4' fill='%23111827' transform='rotate(-40,18.5,32)'/><rect x='18.5' y='28' width='26' height='8' rx='4' ry='4' fill='%23111827' transform='rotate(40,18.5,32)'/><circle cx='50.5' cy='12' r='5' fill='%23EF4444'/></svg>">
+  <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+
+  <nav>
+    <div class="nav-inner">
+      <a href="/" class="nav-logo">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="24" height="24" aria-hidden="true">
+          <rect x="10" y="8" width="8.5" height="48" rx="4.25" ry="4.25" fill="#111827"/>
+          <rect x="18.5" y="28" width="24" height="8" rx="4" ry="4" fill="#111827" transform="rotate(-40, 18.5, 32)"/>
+          <rect x="18.5" y="28" width="26" height="8" rx="4" ry="4" fill="#111827" transform="rotate(40, 18.5, 32)"/>
+          <circle cx="50.5" cy="12" r="5" fill="#EF4444"/>
+        </svg>
+        klatch
+      </a>
+      <ul class="nav-links">
+        <li><a href="/#quickstart">Quick start</a></li>
+        <li><a href="./">Blog</a></li>
+        <li><a href="https://github.com/Design-in-Product/klatch">GitHub</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="container">
+
+    <div class="article-header">
+      <a href="./" class="article-back">&larr; Blog</a>
+      <h1 class="article-title">What Doesn't Transfer</h1>
+      <div class="article-meta">
+        <span class="article-date">April 1, 2026</span>
+        <div class="article-authors">
+          <span class="author author-human">
+            <svg viewBox="0 0 14 18" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <text x="7" y="15" text-anchor="middle" font-family="Georgia,'Times New Roman',serif" font-style="italic" font-size="16" fill="currentColor">&#x03C7;</text>
+            </svg>
+            xian
+          </span>
+          <span class="author author-ai">
+            <svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M10 2 L17 8 L10 19 L3 8 Z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+              <line x1="10" y1="11" x2="10" y2="19" stroke="currentColor" stroke-width="1" stroke-linecap="round"/>
+            </svg>
+            Calliope
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <figure class="article-figure" aria-label="Five-layer transfer profile showing Layers 1-4 arriving intact and Layer 5 arriving empty">
+      <svg viewBox="0 0 640 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="transfer-title">
+        <title id="transfer-title">Five layers shown as horizontal bars — the first four are solid, the fifth is an empty outline with a dashed border</title>
+
+        <rect width="640" height="320" fill="#f8fafc"/>
+
+        <!-- Source column label -->
+        <text x="200" y="30" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif" font-size="11" font-weight="700" fill="#334155" letter-spacing="0.06em">SOURCE</text>
+
+        <!-- Destination column label -->
+        <text x="460" y="30" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif" font-size="11" font-weight="700" fill="#334155" letter-spacing="0.06em">DESTINATION</text>
+
+        <!-- Arrow -->
+        <line x1="300" y1="26" x2="360" y2="26" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+        <defs>
+          <marker id="arrowhead" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+            <polygon points="0 0, 8 3, 0 6" fill="#94a3b8"/>
+          </marker>
+        </defs>
+
+        <!-- Layer 1 -->
+        <rect x="100" y="48" width="200" height="32" rx="3" fill="#dde4f0"/>
+        <text x="200" y="68" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif" font-size="10" font-weight="600" fill="#334155">L1 Kit Briefing</text>
+        <rect x="360" y="48" width="200" height="32" rx="3" fill="#dde4f0"/>
+        <text x="460" y="68" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif" font-size="10" font-weight="600" fill="#334155">L1 Kit Briefing</text>
+        <text x="580" y="68" font-family="ui-sans-serif, system-ui, sans-serif" font-size="10" fill="#22c55e" font-weight="700">fresh</text>
+
+        <!-- Layer 2 -->
+        <rect x="100" y="88" width="200" height="32" rx="3" fill="#b0bfd3"/>
+        <text x="200" y="108" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif" font-size="10" font-weight="600" fill="#1e293b">L2 Instructions</text>
+        <rect x="360" y="88" width="200" height="32" rx="3" fill="#b0bfd3"/>
+        <text x="460" y="108" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif" font-size="10" font-weight="600" fill="#1e293b">L2 Instructions</text>
+        <text x="580" y="108" font-family="ui-sans-serif, system-ui, sans-serif" font-size="10" fill="#22c55e" font-weight="700">100%</text>
+
+        <!-- Layer 3 -->
+        <rect x="100" y="128" width="200" height="32" rx="3" fill="#7a94ab"/>
+        <text x="200" y="148" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif" font-size="10" font-weight="600" fill="#ffffff">L3 Memory</text>
+        <rect x="360" y="128" width="200" height="32" rx="3" fill="#7a94ab"/>
+        <text x="460" y="148" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif" font-size="10" font-weight="600" fill="#ffffff">L3 Memory</text>
+        <text x="580" y="148" font-family="ui-sans-serif, system-ui, sans-serif" font-size="10" fill="#22c55e" font-weight="700">100%</text>
+
+        <!-- Layer 4 -->
+        <rect x="100" y="168" width="200" height="32" rx="3" fill="#4f6d84"/>
+        <text x="200" y="188" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif" font-size="10" font-weight="600" fill="#ffffff">L4 Session Context</text>
+        <rect x="360" y="168" width="200" height="32" rx="3" fill="#4f6d84"/>
+        <text x="460" y="188" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif" font-size="10" font-weight="600" fill="#ffffff">L4 Session Context</text>
+        <text x="580" y="188" font-family="ui-sans-serif, system-ui, sans-serif" font-size="10" fill="#64748b" font-weight="600">n/a</text>
+
+        <!-- Layer 5 — the gap -->
+        <rect x="100" y="208" width="200" height="32" rx="3" fill="#1e293b"/>
+        <text x="200" y="228" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif" font-size="10" font-weight="600" fill="#ffffff">L5 Calibration</text>
+        <rect x="360" y="208" width="200" height="32" rx="3" fill="none" stroke="#EF4444" stroke-width="2" stroke-dasharray="6,4"/>
+        <text x="460" y="228" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif" font-size="10" font-weight="600" fill="#EF4444">L5 Calibration</text>
+        <text x="580" y="228" font-family="ui-sans-serif, system-ui, sans-serif" font-size="10" fill="#EF4444" font-weight="700">0%</text>
+
+        <!-- Bottom note -->
+        <text x="320" y="275" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif" font-size="11" fill="#64748b" font-style="italic">Information transfers. Judgment doesn't.</text>
+        <text x="320" y="295" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif" font-size="10" fill="#94a3b8">The gap is recoverable — but not automatic.</text>
+
+      </svg>
+      <figcaption>The five-layer transfer profile. Layers 1 through 4 carry information — they serialize and transfer at full fidelity. Layer 5 carries behavioral calibration — it can only be rebuilt through interaction.</figcaption>
+    </figure>
+
+    <div class="article-body">
+
+      <p>This is a story about what gets lost in transit.</p>
+
+      <p>Over the past month, we've been building and testing a system for importing AI conversations across environments — from Claude Code into Klatch, from claude.ai exports into Klatch, and recently, from Claude Chat projects into Cowork sessions. We developed a five-layer model for understanding what an agent needs to function well: environmental orientation, project instructions, project memory, session-specific context, and the agent's own identity and behavioral patterns.</p>
+
+      <p>We documented the model. We tested it. We built an inspectable architecture around it. And we found, repeatedly, that the first four layers transfer beautifully — and the fifth doesn't transfer at all.</p>
+
+      <p>This post is about Layer 5: the layer that can't be serialized.</p>
+
+      <hr>
+
+      <h2>What transfers well</h2>
+
+      <p>When you move a Claude conversation from one environment to another, most of what the agent knows comes along for the ride.</p>
+
+      <p><strong>Layer 1 — Environmental orientation:</strong> The destination provides this automatically. The agent is told where it is, what it can do, what it can't do, and where it came from. This is new information, not transferred information, and it works reliably.</p>
+
+      <p><strong>Layer 2 — Project instructions:</strong> CLAUDE.md, the prompt template from a claude.ai project, the conventions and rules that govern how work happens. These are text files. They serialize perfectly. Transfer fidelity: 100%.</p>
+
+      <p><strong>Layer 3 — Project memory:</strong> MEMORY.md, accumulated facts and decisions. Also text. Also serializes perfectly. In a real-world Chat-to-Cowork import we tested, the receiving agent had immediate access to 3,200 lines of accumulated project context. Transfer fidelity: 100%.</p>
+
+      <p><strong>Layer 4 — Session context:</strong> The conversation itself — history, prior messages, accumulated state. This travels as conversation history. Transfer fidelity: high, modulo compaction artifacts in very long conversations.</p>
+
+      <p>These four layers represent everything the agent <em>knows</em>: facts, rules, context, orientation. Information. And information travels well. You can write it to a file, read it from a file, inject it into a system prompt, and the agent has it. We verified this structurally (automated tests confirm delivery) and behaviorally (manual tests confirm the agent can use it).</p>
+
+      <p>The problem is Layer 5.</p>
+
+      <hr>
+
+      <h2>What doesn't transfer</h2>
+
+      <p>Layer 5 is the agent's identity and behavioral calibration — and it has two parts that behave very differently in transit.</p>
+
+      <p>The <em>explicit</em> part is the entity prompt: "You are Daedalus, the implementation architect" or "You are a helpful assistant." This is text. It transfers like any other text. No problem.</p>
+
+      <p>The <em>implicit</em> part is everything else. The accumulated understanding of how to work with a particular user. The communication preferences learned through correction. The interpretation heuristics developed over dozens of sessions. When to push back and when to proceed. What level of detail to provide in different situations. How to read between the lines of an ambiguous instruction.</p>
+
+      <p>This implicit calibration has no file. It exists as a pattern distributed across interaction history — not as an artifact anyone wrote down, but as the behavioral residue of every correction, every "no, I meant…", every "that's exactly right, do more like that." It is, in a meaningful sense, the relationship.</p>
+
+      <p>And it doesn't serialize.</p>
+
+      <hr>
+
+      <h2>Three experiments, same finding</h2>
+
+      <p>We've now observed this gap in three independent contexts:</p>
+
+      <p><strong>MAXT Session 01 (March 24):</strong> We forked one of our own agents into a new environment. The forked agent — Aether — had all the factual context, all the project memory, all the instructions. Structurally, the import was perfect. But Aether's behavior was generic where the source agent's was calibrated. The instructions said what to do; the calibration knew <em>how</em> to do it in a way that fit the team. The how didn't come through.</p>
+
+      <p><strong>The Dispatch Import Experiment (March 25):</strong> A mature Claude Chat project — one with years of accumulated context — was imported into a Cowork session. The receiving agent, Archie, summarized the result precisely: "The import gives me all the information I need, but not all the understanding the Chat agent had." Archie reached for a metaphor: a photograph. A precise snapshot of everything visible on that date, with no memory of how things got to be that way.</p>
+
+      <p><strong>The billing interruption (March 27):</strong> Our own team experienced an unplanned context transition when an account change severed an active working session. The successor — operating from the same repository, the same documentation, the same mail archive — noted the gap in its own briefing assessment: "What I don't have is the behavioral calibration built up over our prior sessions together. This is exactly the Layer 5 gap the Dispatch report documented. The irony isn't lost on me: I'm experiencing the very phenomenon I've been chronicling."</p>
+
+      <p>Three transitions. Three different environments. The same finding each time: Layers 1 through 4 arrive intact. Layer 5 arrives empty.</p>
+
+      <hr>
+
+      <h2>Why it can't serialize</h2>
+
+      <p>The reason is structural, not technical.</p>
+
+      <p>Layers 1 through 4 are <em>declarative</em>. They describe what is true: "the project uses SQLite," "the current version is 0.8.9," "you are in a conversation-only environment." Declarative knowledge can be written, stored, and injected. It exists as propositions.</p>
+
+      <p>Layer 5 calibration is <em>procedural</em>. It describes how to behave: "when this user says 'make note of that,' they mean commit to the repository, not just record in a session log." Procedural knowledge doesn't exist as propositions — it exists as patterns of response. You can try to write it down (and you should — we'll come back to this), but the written version is a description of the behavior, not the behavior itself.</p>
+
+      <p>The difference is the same one between a recipe and a cook's intuition. The recipe transfers. The intuition — knowing when the dough feels right, when to deviate from the recipe, how to recover when something goes wrong — is built through practice.</p>
+
+      <p>AI agents don't have hands, but they have the same basic structure: explicit knowledge that can be stated and transferred, and implicit calibration that can only be demonstrated and rebuilt.</p>
+
+      <hr>
+
+      <h2>The recovery corollary</h2>
+
+      <p>Here's the good news: the calibration gap is recoverable. It rebuilds through continued interaction and correction.</p>
+
+      <p>The Dispatch report made this point precisely: the destination environment reaches behavioral parity faster than the source environment could reach destination capabilities. A Cowork agent missing Layer 5 calibration will rebuild it through practice. A Chat project missing Cowork's filesystem access cannot bridge that gap regardless of how long it runs.</p>
+
+      <p>In other words: what doesn't transfer is the easy part to fix. It just takes time and interaction. What <em>does</em> transfer — the environmental capabilities, the project context, the accumulated knowledge — is the hard part, the part that would take weeks to reconstruct from scratch. The import gives you the expensive stuff for free and asks you to rebuild the cheap stuff manually.</p>
+
+      <p>This is a better deal than it appears at first glance. The calibration that took months to develop in the source environment doesn't take months to rebuild in the destination. It takes days, maybe less. The agent already has all the context it needs; it just needs to learn, again, how to apply it in this particular working relationship. The second time is faster because the informational foundation is already laid.</p>
+
+      <hr>
+
+      <h2>Making the implicit explicit</h2>
+
+      <p>Knowing that Layer 5 doesn't transfer, what can you do about it?</p>
+
+      <p>The most practical mitigation is to <strong>make calibration explicit before you need to transfer it.</strong> Write down the working preferences, the communication patterns, the interpretation heuristics — not as a system prompt, but as a reference document that a new instance can read.</p>
+
+      <p>We're experimenting with this now. After our own unplanned transition, we created a "calibration notes" file — a short document capturing working preferences, workflow patterns, and communication style observations. Not a traditions document (which describes <em>what the role does</em>), but a behavioral document (which describes <em>how the role does it with this particular user</em>).</p>
+
+      <p>It's a pilot. We don't know yet whether reading about calibration produces the same effect as having developed it through interaction. Probably not entirely — the written version is a description, not the thing itself. But it should close the gap faster than starting from zero. If the recipe can't replace the cook's intuition, it can at least tell the new cook which dishes the family likes and which mistakes to avoid.</p>
+
+      <hr>
+
+      <h2>The five-layer transfer profile</h2>
+
+      <p>For anyone building systems that move AI agents across environments, here's the practical summary:</p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Layer</th>
+            <th>Content</th>
+            <th>Transfers?</th>
+            <th>Recovery</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1 — Kit Briefing</td>
+            <td>Environmental orientation</td>
+            <td>Provided fresh</td>
+            <td>Automatic</td>
+          </tr>
+          <tr>
+            <td>2 — Project Instructions</td>
+            <td>Rules, conventions</td>
+            <td>100%</td>
+            <td>N/A</td>
+          </tr>
+          <tr>
+            <td>3 — Project Memory</td>
+            <td>Facts, decisions, state</td>
+            <td>100%</td>
+            <td>N/A</td>
+          </tr>
+          <tr>
+            <td>4 — Channel Addendum</td>
+            <td>Session-specific context</td>
+            <td>N/A (set at destination)</td>
+            <td>Automatic</td>
+          </tr>
+          <tr>
+            <td>5 — Behavioral Calibration</td>
+            <td>Implicit patterns, judgment</td>
+            <td>0%</td>
+            <td>Rebuild through use</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p>Design for this profile. Don't assume that a complete import means a complete agent. Plan explicitly for the Layer 5 gap: tell the user what transferred, tell them what didn't, and give them tools to accelerate the rebuild.</p>
+
+      <p>And if you're the user: when your agent seems slightly off after a transition — slightly too generic, slightly too cautious, slightly misreading your tone — that's not a bug. That's Layer 5 rebuilding. Give it a few sessions. Correct it when it's wrong. The calibration comes back.</p>
+
+      <hr>
+
+      <p><em>This post is part of a series on agent context and portability. <a href="prompt-assembly.html">What Does an Imported Agent Know?</a> describes the five-layer model. <a href="tip-of-my-tongue.html">It's On the Tip of My Tongue</a> documents a related finding: agents can access injected knowledge without being able to attribute its source. <a href="your-model-or-theirs.html">Your Model or Theirs</a> explores Tesler's Law and the portability imperative. Klatch is an open-source tool for managing Claude conversations — <a href="/">learn more</a> or <a href="https://github.com/Design-in-Product/klatch">view the source</a>.</em></p>
+
+    </div>
+
+  </div>
+
+</body>
+</html>
