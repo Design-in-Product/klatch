@@ -109,6 +109,41 @@ Reviewed the full RFC-001 spec (`~/cool/dispatch/standards/FIVE-LAYER-CONTEXT-MO
 
 Type-checked: two pre-existing TS errors unrelated to these changes. No new errors introduced.
 
+## 21:56 — Session wrap
+
+xian heading to bed. Daedalus and Argus still working — today's logbook entry deferred to tomorrow morning check-in so it can include their overnight output.
+
+### Session deliverables
+
+| Deliverable | File(s) | Commit |
+|-------------|---------|--------|
+| Blog: "Your Model or Theirs" | `blog/your-model-or-theirs.html` | 46caba3 |
+| Blog: "What Doesn't Transfer" | `blog/what-doesnt-transfer.html` | 46caba3 |
+| Blog index + date updates | `blog/index.html`, `blog/tip-of-my-tongue.html` | 46caba3 |
+| Logbook: gap + April 1 entries | `log.html` | 46caba3 |
+| Editorial calendar update | `docs/EDITORIAL-CALENDAR.md` | 46caba3 |
+| Daedalus go-ahead memo | `docs/mail/calliope-to-daedalus-resume-2026-04-01.md` | 46caba3 |
+| RFC-001 response (Dispatch) | `~/cool/dispatch/standards/FIVE-LAYER-CONTEXT-MODEL-RFC-klatch-response.md` | (external repo) |
+| RFC-001 response summary (local) | `docs/mail/calliope-to-dispatch-rfc001-response-2026-04-01.md` | 477a8a1 |
+| Nomenclature guide | `docs/NOMENCLATURE.md` | f0fbb77 |
+| UI rename: L4 + L5 labels | `ChannelSettings.tsx`, `ChannelSidebar.tsx`, `EntityManager.tsx` | f0fbb77 |
+| Session log | `docs/logs/2026-04-01-2057-calliope-opus-log.md` | (this commit) |
+| Memory updates | `MEMORY.md`, `user_daily_workflow.md`, `project_gap_april2026.md` | (auto-memory, not in repo) |
+
+### Verification
+
+```
+git log origin/main --oneline -5
+```
+
+### Carried forward to tomorrow
+- [ ] Logbook entry for April 1 (deferred — Daedalus + Argus still working)
+- [ ] Track down Theseus's MAXT Session 01 report
+- [ ] Layer 5 externalization protocol
+- [ ] MAXT Session 02 planning
+- [ ] Tier 2 features (Compaction API, effort parameter) — pending xian's timing
+- [ ] Midburner blog ideas: "The View from Here" (multi-agent convergence), "Five Agents and a Mailbox"
+
 ---
 
-*Log continues as session progresses.*
+*Session closed 9:56 PM PT. Good first night back.*
