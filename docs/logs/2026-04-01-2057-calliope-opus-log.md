@@ -94,6 +94,21 @@ Reviewed the full RFC-001 spec (`~/cool/dispatch/standards/FIVE-LAYER-CONTEXT-MO
 - Recommended keeping both naming conventions (Klatch-specific and RFC-general) in parallel
 - Ready to ratify once amendments are discussed
 
+## 22:00 — Nomenclature guide + Phase 1 UI rename
+
+**Nomenclature guide drafted:** `docs/NOMENCLATURE.md`
+- Proposed: "System prompt" → **"Channel context"** (L4) and **"Role prompt"** (L5)
+- Full cross-platform terminology map (Klatch vs Code vs Chat vs Cowork vs RFC-001)
+- Two-phase plan: UI labels now, data model later at a natural refactor point
+- xian approved
+
+**Phase 1 UI changes applied (3 files):**
+- `ChannelSettings.tsx:239` — "Channel prompt" → "Channel context" + improved helper text
+- `ChannelSidebar.tsx:480` — "System prompt (optional)" → "Channel context (optional)"
+- `EntityManager.tsx:263` — "System prompt" → "Role prompt"
+
+Type-checked: two pre-existing TS errors unrelated to these changes. No new errors introduced.
+
 ---
 
 *Log continues as session progresses.*

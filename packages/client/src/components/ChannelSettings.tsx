@@ -236,7 +236,7 @@ export function ChannelSettings({
         {channel.type === 'klatch' && (
           <div>
             <label className="block text-xs text-secondary mb-1">
-              Channel prompt <span className="text-muted font-normal">(shared context for all entities in this klatch)</span>
+              Channel context <span className="text-muted font-normal">(shared context for all entities — agenda, constraints, background)</span>
             </label>
             <textarea
               value={systemPrompt}

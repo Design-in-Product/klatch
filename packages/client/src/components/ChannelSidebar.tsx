@@ -477,7 +477,7 @@ export function ChannelSidebar({
               <textarea
                 value={newPrompt}
                 onChange={(e) => setNewPrompt(e.target.value)}
-                placeholder="System prompt (optional)"
+                placeholder="Channel context (optional)"
                 rows={2}
                 className="w-full rounded bg-input border border-line px-2.5 py-1.5 text-sm text-primary placeholder-muted focus:outline-none focus:border-accent resize-none"
               />

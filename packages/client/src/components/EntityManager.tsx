@@ -258,9 +258,9 @@ function EntityForm({
         </div>
       </div>
 
-      {/* System prompt */}
+      {/* Role prompt */}
       <div>
-        <label className="block text-xs text-secondary mb-1">System prompt</label>
+        <label className="block text-xs text-secondary mb-1">Role prompt</label>
         <textarea
           value={systemPrompt}
           onChange={(e) => setSystemPrompt(e.target.value)}
