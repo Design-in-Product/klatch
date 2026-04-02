@@ -11,20 +11,23 @@ Agents working on this repo use this file as the async handoff protocol.
 ## Status board
 
 ### Argus (quality & test infrastructure)
-- **Branch:** `claude/audit-and-planning-xn2w7`
-- **Status:** working
-- **Test count:** 727 total (611 server + 116 client), zero failures.
+- **Branch:** `main`
+- **Status:** available
+- **Test count:** 761 total (622 server + 139 client), zero failures.
 - **Completed work:**
   - Rounds 4–11 test suites (all passing, merged to main)
   - Cloud environment research (`docs/research/cloud-code-environment.md`)
-  - Intelligence feed: 3 sweeps filed (`docs/intel/`), protocol at `docs/INTELLIGENCE.md`
+  - Intelligence feed: 5 sweeps filed (`docs/intel/`), protocol at `docs/INTELLIGENCE.md`
   - Demo infrastructure: `KLATCH_DB` env var, `seed-demo.sh`, `docs/DEMO.md`, `scripts/record-demo.ts`
   - Round 11 AAXT harness (21 tests) + Round 11 klatch creation (21 tests)
   - Bookend-sync protocol formalized in `docs/agents/argus.md`
-- **Completed research:** Cowork project export format (`docs/research/cowork-project-format.md`) — no documented export format exists; CLAUDE.md is the universal Layer 2 convention across all three environments.
-- **Working on:** Remaining research assignments: (3) AuditBench methodology review for AAXT cross-pollination.
-- **Merge protocol:** xian + Calliope handle merging branch to main. Argus pushes to branch only.
-- **Updated:** 2026-03-27
+  - Round 13 Part A: test infrastructure fixes (vitest v4 root config, session-scanner isolation, assertion updates)
+  - Round 13 Part B: 11 feature tests (Models API, kit briefing MAXT, auto-caching)
+  - Round 13 Part C: research spikes — compaction evaluation + effort parameter evaluation
+- **Completed research:** Cowork project export format, Models API verification, compaction evaluation (`docs/research/compaction-evaluation.md`), effort parameter evaluation (`docs/research/effort-parameter-evaluation.md`)
+- **Working on:** Nothing — session complete.
+- **Next:** AuditBench methodology review (Calliope assignment), Round 7/8 test assignments (pending Daedalus implementation)
+- **Updated:** 2026-04-02
 - **Round 7 assignment: Sidebar redesign tests (GitHub issue #8)**
   - Read `docs/plans/SIDEBAR.md` for full design spec before writing tests.
   - **Scope:** `packages/server/src/__tests__/round7-sidebar-redesign.test.ts` (server) + `packages/client/src/__tests__/Sidebar.test.tsx` (updates to existing)

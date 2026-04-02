@@ -165,7 +165,7 @@ describe('ChannelSidebar', () => {
 
     await user.click(screen.getByText('+ New channel'));
     expect(screen.getByPlaceholderText('Channel name')).toBeInTheDocument();
-    expect(screen.getByPlaceholderText('System prompt (optional)')).toBeInTheDocument();
+    expect(screen.getByPlaceholderText('Channel context (optional)')).toBeInTheDocument();
   });
 
   it('calls onCreateChannel with name and default prompt', async () => {

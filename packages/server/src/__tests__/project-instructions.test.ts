@@ -274,7 +274,7 @@ describe('buildSystemPrompt — 4-layer assembly', () => {
 
     const prompt = buildSystemPrompt(entity, undefined, channel, null);
     expect(prompt).toContain('imported into Klatch');
-    expect(prompt).toContain('do NOT have access to tools');
+    expect(prompt).toContain('do not currently have access to shell tools');
     expect(prompt).toContain('Be concise.');
   });
 
