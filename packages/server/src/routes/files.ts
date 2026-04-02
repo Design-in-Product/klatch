@@ -6,6 +6,17 @@ import {
   insertMessage,
   createFileArtifact,
   getMessageArtifacts,
+  getProjectFiles,
+  getChannelFiles,
+  getEntityFiles,
+  getMessageFiles,
+  getFile,
+  getFileByStorageKey,
+  getFileRefs,
+  createFile,
+  createFileRef,
+  createFileWithMessageRef,
+  deleteFileRef,
 } from '../db/queries.js';
 import { streamClaude, streamClaudeRoundtable } from '../claude/client.js';
 import { resolveMentions } from '@klatch/shared';
@@ -97,6 +108,16 @@ app.post('/channels/:channelId/files', async (c) => {
       mimeType,
       saved.sizeBytes,
       saved.storageKey
+    );
+
+    // Also create entry in files + file_refs (File Domain Model)
+    createFileWithMessageRef(
+      fileName,
+      mimeType,
+      saved.sizeBytes,
+      saved.storageKey,
+      userMsg.id,
+      'user'
     );
 
     // Create assistant placeholders
@@ -208,5 +229,117 @@ function guessMimeType(filename: string): string {
   };
   return map[ext || ''] || 'application/octet-stream';
 }
+
+// ── File Domain Model: pinning + promotion (Phase 2) ─────────
+
+/**
+ * POST /files/pin — Pin a file to a channel
+ *
+ * Body: { channelId: string, fileId?: string, storageKey?: string }
+ * Accepts either fileId or storageKey to identify the file.
+ * Creates a channel-scope file_ref for the given file.
+ * Idempotent — if already pinned, returns the existing ref.
+ */
+app.post('/files/pin', async (c) => {
+  const data = await c.req.json();
+  const { channelId, fileId: rawFileId, storageKey } = data;
+
+  if (!channelId) {
+    return c.json({ error: 'channelId is required' }, 400);
+  }
+
+  // Resolve file by ID or storage key
+  let file;
+  if (rawFileId) {
+    file = getFile(rawFileId);
+  } else if (storageKey) {
+    file = getFileByStorageKey(storageKey);
+  } else {
+    return c.json({ error: 'fileId or storageKey is required' }, 400);
+  }
+
+  if (!file) {
+    return c.json({ error: 'File not found' }, 404);
+  }
+
+  const channel = getChannel(channelId);
+  if (!channel) {
+    return c.json({ error: 'Channel not found' }, 404);
+  }
+
+  // Check if already pinned to this channel
+  const existing = getChannelFiles(channelId);
+  const alreadyPinned = existing.find((f) => f.id === file.id);
+  if (alreadyPinned) {
+    return c.json({ file, ref: { id: alreadyPinned.refId, fileId: file.id, scope: 'channel', scopeId: channelId, refType: alreadyPinned.refType, addedAt: alreadyPinned.addedAt, addedBy: alreadyPinned.addedBy }, alreadyPinned: true });
+  }
+
+  const ref = createFileRef(file.id, 'channel', channelId, 'pinned', 'user');
+  return c.json({ file, ref, alreadyPinned: false });
+});
+
+/**
+ * DELETE /files/:fileId/pin/:channelId — Unpin a file from a channel
+ */
+app.delete('/files/:fileId/pin/:channelId', (c) => {
+  const fileId = c.req.param('fileId');
+  const channelId = c.req.param('channelId');
+
+  const channelFiles = getChannelFiles(channelId);
+  const pinned = channelFiles.find((f) => f.id === fileId);
+  if (!pinned) {
+    return c.json({ error: 'File is not pinned to this channel' }, 404);
+  }
+
+  deleteFileRef(pinned.refId);
+  return c.json({ ok: true });
+});
+
+// ── File Domain Model query endpoints (Phase 1) ─────────────
+
+/**
+ * GET /projects/:id/files — all files at project scope
+ */
+app.get('/projects/:id/files', (c) => {
+  const projectId = c.req.param('id');
+  return c.json(getProjectFiles(projectId));
+});
+
+/**
+ * GET /channels/:id/files — all files at channel scope
+ */
+app.get('/channels/:id/files', (c) => {
+  const channelId = c.req.param('id');
+  return c.json(getChannelFiles(channelId));
+});
+
+/**
+ * GET /entities/:id/files — entity's file library
+ */
+app.get('/entities/:id/files', (c) => {
+  const entityId = c.req.param('id');
+  return c.json(getEntityFiles(entityId));
+});
+
+/**
+ * GET /messages/:id/files — message file attachments (via file domain model)
+ */
+app.get('/messages/:id/files', (c) => {
+  const messageId = c.req.param('id');
+  return c.json(getMessageFiles(messageId));
+});
+
+/**
+ * GET /files/:id/refs — all references for a specific file
+ */
+app.get('/files/:id/refs', (c) => {
+  const fileId = c.req.param('id');
+  const file = getFile(fileId);
+  if (!file) {
+    return c.json({ error: 'File not found' }, 404);
+  }
+  const refs = getFileRefs(fileId);
+  return c.json({ file, refs });
+});
 
 export const fileRoutes = app;

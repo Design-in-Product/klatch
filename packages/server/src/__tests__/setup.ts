@@ -76,9 +76,35 @@ function createFreshDb(): Database.Database {
       tool_name TEXT,
       input_summary TEXT,
       content TEXT,
+      file_name TEXT,
+      file_mime_type TEXT,
+      file_size_bytes INTEGER,
+      file_storage_key TEXT,
       created_at TEXT NOT NULL DEFAULT (datetime('now'))
     );
     CREATE INDEX IF NOT EXISTS idx_message_artifacts_message_id ON message_artifacts(message_id);
+
+    CREATE TABLE IF NOT EXISTS files (
+      id TEXT PRIMARY KEY,
+      name TEXT NOT NULL,
+      mime_type TEXT NOT NULL,
+      size_bytes INTEGER NOT NULL,
+      storage_key TEXT NOT NULL,
+      created_by TEXT,
+      created_at TEXT NOT NULL DEFAULT (datetime('now'))
+    );
+
+    CREATE TABLE IF NOT EXISTS file_refs (
+      id TEXT PRIMARY KEY,
+      file_id TEXT NOT NULL REFERENCES files(id),
+      scope TEXT NOT NULL,
+      scope_id TEXT NOT NULL,
+      ref_type TEXT NOT NULL DEFAULT 'pinned',
+      added_at TEXT NOT NULL DEFAULT (datetime('now')),
+      added_by TEXT
+    );
+    CREATE INDEX IF NOT EXISTS idx_file_refs_scope ON file_refs(scope, scope_id);
+    CREATE INDEX IF NOT EXISTS idx_file_refs_file ON file_refs(file_id);
 
     INSERT OR IGNORE INTO channels (id, name, system_prompt)
     VALUES ('default', 'general', 'You are a helpful assistant.');

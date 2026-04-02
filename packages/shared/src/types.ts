@@ -134,6 +134,46 @@ export interface MessageArtifact {
   createdAt: string;
 }
 
+// ── File Domain Model ────────────────────────────────────────
+
+/** Scope levels for file references */
+export type FileRefScope = 'project' | 'channel' | 'entity' | 'message';
+
+/** How a file was added at this scope */
+export type FileRefType = 'pinned' | 'created' | 'received' | 'imported';
+
+/** Canonical file record — one row per unique file on disk */
+export interface KlatchFile {
+  id: string;
+  name: string;           // display name (e.g., "spec.md")
+  mimeType: string;
+  sizeBytes: number;
+  storageKey: string;     // disk lookup key in klatch-files/
+  createdBy?: string;     // entity ID, 'user', or 'import'
+  createdAt: string;
+}
+
+/** File reference — visibility at a given scope */
+export interface FileRef {
+  id: string;
+  fileId: string;
+  scope: FileRefScope;
+  scopeId: string;        // project/channel/entity/message ID
+  refType: FileRefType;
+  addedAt: string;
+  addedBy?: string;       // who promoted/assigned it ('user', entity ID)
+}
+
+/** File with its reference context (joined for API responses) */
+export interface FileWithRef extends KlatchFile {
+  refId: string;
+  scope: FileRefScope;
+  scopeId: string;
+  refType: FileRefType;
+  addedAt: string;
+  addedBy?: string;
+}
+
 // ── Import types ──────────────────────────────────────────────
 
 export interface ImportResult {

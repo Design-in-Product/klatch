@@ -52,12 +52,12 @@ Agents working on this repo use this file as the async handoff protocol.
 ### Daedalus (architecture & implementation)
 - **Branch:** `main`
 - **Status:** working
-- **Last completed:** Step 9 (Files and artifacts) — 9a upload/attach, 9b artifact rendering, 9c context injection (L1), 9d-A code block save, 9d-B native tool use (save_file). File Domain Model designed and documented. Round 12 Tier 1 also shipped same session.
-- **Working on:** File Domain Model Phase 1 (files + file_refs tables, multi-level ownership). Demo recording prep.
-- **Next:** Step 9 Phase 2-5 (channel/project/entity file refs, promotion/projection). Then Step 10 (Export + meta-model).
+- **Last completed:** File Domain Model Phase 1 (schema, backfill, queries, API) + Phase 2 (channel pinning, L4 context injection, pin/unpin UI). Triaged pre-existing test failures → GitHub #21.
+- **Working on:** Ready for xian manual testing of Phases 1+2. Then Phase 3 (project knowledge base).
+- **Next:** Step 9 Phase 3-5 (project files, entity library, promotion/projection). Then Step 10 (Export + meta-model).
 - **Roadmap:** Step 9 = Files and artifacts → Step 10 = Export + meta-model synthesis → Step 11 = Search.
 - **Nomenclature:** Assigned to Calliope + xian. Short-term: rename "System prompt" in UI. Long-term: full Klatch terminology guide.
-- **Updated:** 2026-03-27 15:40
+- **Updated:** 2026-04-01 22:10
 
 ### Theseus Prime (manual testing & exploration — CLI side)
 - **Branch:** `main`

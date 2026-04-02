@@ -30,6 +30,7 @@ import {
   removeEntityFromChannel,
   deleteChannelApi,
   fetchProjects,
+  pinFileToChannel,
   type Project,
 } from './api/client';
 
@@ -515,6 +516,9 @@ export default function App() {
           channelEntities={channelEntities}
           onDeleteMessage={handleDeleteMessage}
           onRegenerateMessage={handleRegenerate}
+          onPinFile={activeChannel ? (storageKey) => {
+            pinFileToChannel(activeChannel.id, { storageKey }).catch(console.error);
+          } : undefined}
           isStreaming={isAnyStreaming}
           theme={theme}
           channelSource={activeChannel?.source}

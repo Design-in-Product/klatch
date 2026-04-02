@@ -1,7 +1,7 @@
 import { Hono } from 'hono';
 import fs from 'fs';
 import path from 'path';
-import { getAllChannelsEnriched, getChannel, getChannelStats, createChannel, updateChannel, deleteChannel, setChannelProject, getChannelEntities, getProjectForChannel } from '../db/queries.js';
+import { getAllChannelsEnriched, getChannel, getChannelStats, createChannel, updateChannel, deleteChannel, setChannelProject, getChannelEntities, getProjectForChannel, getChannelFiles } from '../db/queries.js';
 import { buildSystemPrompt } from '../claude/client.js';
 import type { ModelId, InteractionMode, ChannelType } from '@klatch/shared';
 import { AVAILABLE_MODELS, INTERACTION_MODES } from '@klatch/shared';
@@ -34,7 +34,9 @@ app.get('/channels/:id/prompt-debug', (c) => {
     return c.json({ error: 'No entity assigned to this channel' }, 400);
   }
 
-  const assembled = buildSystemPrompt(entity, channel.systemPrompt, channel, project);
+  const channelFileList = getChannelFiles(id);
+  const channelFileNames = channelFileList.map((f) => `- ${f.name} (${f.mimeType})`);
+  const assembled = buildSystemPrompt(entity, channel.systemPrompt, channel, project, channelFileNames);
 
   return c.json({
     channelId: id,
@@ -55,9 +57,12 @@ app.get('/channels/:id/prompt-debug', (c) => {
         : project
           ? `EMPTY — project "${project.name}" has no memory`
           : 'INACTIVE — no project linked',
-      '4_channelAddendum': channel.systemPrompt?.trim()
-        ? `ACTIVE — ${channel.systemPrompt.length} chars`
-        : 'EMPTY',
+      '4_channelAddendum': (() => {
+        const parts: string[] = [];
+        if (channel.systemPrompt?.trim()) parts.push(`${channel.systemPrompt.length} chars`);
+        if (channelFileList.length > 0) parts.push(`${channelFileList.length} file(s) pinned: ${channelFileList.map((f) => f.name).join(', ')}`);
+        return parts.length > 0 ? `ACTIVE — ${parts.join('; ')}` : 'EMPTY';
+      })(),
       '5_entityPrompt': `"${entity.name}" — ${entity.systemPrompt?.length || 0} chars`,
     },
     assembledPrompt: assembled,

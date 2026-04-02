@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import type { Channel, Entity, ModelId, InteractionMode, ChannelStats } from '@klatch/shared';
+import type { Channel, Entity, ModelId, InteractionMode, ChannelStats, FileWithRef } from '@klatch/shared';
 import { INTERACTION_MODES } from '@klatch/shared';
 import { getModelLabel } from '../hooks/useModels';
-import { fetchContextFile, fetchProjects, type Project } from '../api/client.js';
+import { fetchContextFile, fetchProjects, fetchChannelFiles, unpinFileFromChannel, type Project } from '../api/client.js';
 
 interface Props {
   channel: Channel;
@@ -36,6 +36,7 @@ export function ChannelSettings({
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [projects, setProjects] = useState<Project[]>([]);
   const [promptLayers, setPromptLayers] = useState<Record<string, string> | null>(null);
+  const [channelFiles, setChannelFiles] = useState<FileWithRef[]>([]);
 
   // Reset form when channel changes
   useEffect(() => {
@@ -86,6 +87,11 @@ export function ChannelSettings({
       .then((data) => { if (data) setStats(data); })
       .catch(() => {});
   }, [channel.id, isImported]);
+
+  // Fetch channel files (pinned files)
+  useEffect(() => {
+    fetchChannelFiles(channel.id).then(setChannelFiles).catch(() => setChannelFiles([]));
+  }, [channel.id]);
 
   // Fetch prompt layer debug info
   useEffect(() => {
@@ -196,6 +202,56 @@ export function ChannelSettings({
                 </div>
               </div>
             )}
+          </div>
+        )}
+
+        {/* Pinned files */}
+        {channelFiles.length > 0 && (
+          <div>
+            <label className="block text-xs text-secondary mb-2">
+              Pinned files <span className="text-muted font-normal">({channelFiles.length})</span>
+            </label>
+            <div className="space-y-1.5">
+              {channelFiles.map((f) => {
+                const ext = f.name.split('.').pop()?.toLowerCase() || '';
+                const isImage = ['png', 'jpg', 'jpeg', 'gif', 'webp', 'svg'].includes(ext);
+                const isCode = ['ts', 'tsx', 'js', 'jsx', 'py', 'rs', 'go', 'java', 'css', 'html', 'json', 'md'].includes(ext);
+                return (
+                  <div key={f.refId} className="flex items-center gap-2 rounded-lg border border-line bg-card px-3 py-2 group">
+                    <span className="text-base flex-shrink-0">
+                      {isImage ? '🖼️' : isCode ? '💻' : '📄'}
+                    </span>
+                    <a
+                      href={`/api/files/${f.storageKey}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-sm text-primary flex-1 truncate no-underline hover:underline"
+                    >
+                      {f.name}
+                    </a>
+                    <span className="text-[10px] text-muted">
+                      {f.sizeBytes < 1024 ? `${f.sizeBytes} B` : f.sizeBytes < 1024 * 1024 ? `${(f.sizeBytes / 1024).toFixed(1)} KB` : `${(f.sizeBytes / (1024 * 1024)).toFixed(1)} MB`}
+                    </span>
+                    <button
+                      onClick={() => {
+                        unpinFileFromChannel(f.id, channel.id).then(() => {
+                          setChannelFiles((prev) => prev.filter((pf) => pf.refId !== f.refId));
+                        }).catch(console.error);
+                      }}
+                      title="Unpin from channel"
+                      className="p-1 rounded text-muted hover:text-danger hover:bg-hover transition-colors opacity-0 group-hover:opacity-100"
+                    >
+                      <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                      </svg>
+                    </button>
+                  </div>
+                );
+              })}
+            </div>
+            <p className="text-[10px] text-muted mt-1.5">
+              Pinned files are listed in the channel context sent to entities.
+            </p>
           </div>
         )}
 

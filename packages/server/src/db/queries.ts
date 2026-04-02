@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
 import { getDb } from './index.js';
-import type { Channel, ChannelType, ChannelStats, Message, Entity, Project, ModelId, InteractionMode, ChannelSource } from '@klatch/shared';
+import type { Channel, ChannelType, ChannelStats, Message, Entity, Project, ModelId, InteractionMode, ChannelSource, KlatchFile, FileRef, FileRefScope, FileRefType, FileWithRef } from '@klatch/shared';
 import { DEFAULT_MODEL, DEFAULT_ENTITY_ID, ENTITY_COLORS, DEFAULT_INTERACTION_MODE } from '@klatch/shared';
 
 function rowToChannel(row: any): Channel {
@@ -764,4 +764,174 @@ export function getMessageArtifacts(messageId: string): MessageArtifact[] {
     .prepare('SELECT * FROM message_artifacts WHERE message_id = ? ORDER BY created_at')
     .all(messageId) as any[];
   return rows.map(rowToArtifact);
+}
+
+// ── File Domain Model (Phase 1) ─────────────────────────────
+
+function rowToFile(row: any): KlatchFile {
+  return {
+    id: row.id,
+    name: row.name,
+    mimeType: row.mime_type,
+    sizeBytes: row.size_bytes,
+    storageKey: row.storage_key,
+    createdBy: row.created_by || undefined,
+    createdAt: row.created_at,
+  };
+}
+
+function rowToFileRef(row: any): FileRef {
+  return {
+    id: row.id,
+    fileId: row.file_id,
+    scope: row.scope as FileRefScope,
+    scopeId: row.scope_id,
+    refType: row.ref_type as FileRefType,
+    addedAt: row.added_at,
+    addedBy: row.added_by || undefined,
+  };
+}
+
+function rowToFileWithRef(row: any): FileWithRef {
+  return {
+    id: row.id,
+    name: row.name,
+    mimeType: row.mime_type,
+    sizeBytes: row.size_bytes,
+    storageKey: row.storage_key,
+    createdBy: row.created_by || undefined,
+    createdAt: row.created_at,
+    refId: row.ref_id,
+    scope: row.scope as FileRefScope,
+    scopeId: row.scope_id,
+    refType: row.ref_type as FileRefType,
+    addedAt: row.added_at,
+    addedBy: row.added_by || undefined,
+  };
+}
+
+/** Get a file by ID */
+export function getFile(id: string): KlatchFile | undefined {
+  const row = getDb().prepare('SELECT * FROM files WHERE id = ?').get(id) as any;
+  if (!row) return undefined;
+  return rowToFile(row);
+}
+
+/** Get a file by storage key */
+export function getFileByStorageKey(storageKey: string): KlatchFile | undefined {
+  const row = getDb().prepare('SELECT * FROM files WHERE storage_key = ?').get(storageKey) as any;
+  if (!row) return undefined;
+  return rowToFile(row);
+}
+
+/** Create a canonical file record */
+export function createFile(
+  name: string,
+  mimeType: string,
+  sizeBytes: number,
+  storageKey: string,
+  createdBy?: string
+): KlatchFile {
+  const id = uuidv4();
+  const now = new Date().toISOString();
+  getDb().prepare(
+    'INSERT INTO files (id, name, mime_type, size_bytes, storage_key, created_by, created_at) VALUES (?, ?, ?, ?, ?, ?, ?)'
+  ).run(id, name, mimeType, sizeBytes, storageKey, createdBy || null, now);
+  return { id, name, mimeType, sizeBytes, storageKey, createdBy, createdAt: now };
+}
+
+/** Create a file reference at a given scope */
+export function createFileRef(
+  fileId: string,
+  scope: FileRefScope,
+  scopeId: string,
+  refType: FileRefType = 'pinned',
+  addedBy?: string
+): FileRef {
+  const id = uuidv4();
+  const now = new Date().toISOString();
+  getDb().prepare(
+    'INSERT INTO file_refs (id, file_id, scope, scope_id, ref_type, added_at, added_by) VALUES (?, ?, ?, ?, ?, ?, ?)'
+  ).run(id, fileId, scope, scopeId, refType, now, addedBy || null);
+  return { id, fileId, scope, scopeId, refType, addedAt: now, addedBy };
+}
+
+/** Remove a file reference */
+export function deleteFileRef(refId: string): boolean {
+  const result = getDb().prepare('DELETE FROM file_refs WHERE id = ?').run(refId);
+  return result.changes > 0;
+}
+
+/** Get all files at a given scope (with ref info) */
+export function getFilesAtScope(scope: FileRefScope, scopeId: string): FileWithRef[] {
+  const rows = getDb().prepare(`
+    SELECT f.*, fr.id as ref_id, fr.scope, fr.scope_id, fr.ref_type, fr.added_at, fr.added_by
+    FROM files f
+    JOIN file_refs fr ON f.id = fr.file_id
+    WHERE fr.scope = ? AND fr.scope_id = ?
+    ORDER BY fr.added_at ASC
+  `).all(scope, scopeId) as any[];
+  return rows.map(rowToFileWithRef);
+}
+
+/** Get all files for a project */
+export function getProjectFiles(projectId: string): FileWithRef[] {
+  return getFilesAtScope('project', projectId);
+}
+
+/** Get all files for a channel (channel-scope refs only) */
+export function getChannelFiles(channelId: string): FileWithRef[] {
+  return getFilesAtScope('channel', channelId);
+}
+
+/** Get all files for an entity (entity-scope refs = library) */
+export function getEntityFiles(entityId: string): FileWithRef[] {
+  return getFilesAtScope('entity', entityId);
+}
+
+/** Get all files for a message (message-scope refs) */
+export function getMessageFiles(messageId: string): FileWithRef[] {
+  return getFilesAtScope('message', messageId);
+}
+
+/** Get all refs for a specific file (find everywhere it's visible) */
+export function getFileRefs(fileId: string): FileRef[] {
+  const rows = getDb().prepare(
+    'SELECT * FROM file_refs WHERE file_id = ? ORDER BY added_at ASC'
+  ).all(fileId) as any[];
+  return rows.map(rowToFileRef);
+}
+
+/**
+ * Create a file + message-scope ref in one operation.
+ * Used when uploading files to messages (extends the existing createFileArtifact flow).
+ */
+export function createFileWithMessageRef(
+  name: string,
+  mimeType: string,
+  sizeBytes: number,
+  storageKey: string,
+  messageId: string,
+  createdBy?: string
+): { file: KlatchFile; ref: FileRef } {
+  const db = getDb();
+  const fileId = uuidv4();
+  const refId = uuidv4();
+  const now = new Date().toISOString();
+
+  const txn = db.transaction(() => {
+    db.prepare(
+      'INSERT INTO files (id, name, mime_type, size_bytes, storage_key, created_by, created_at) VALUES (?, ?, ?, ?, ?, ?, ?)'
+    ).run(fileId, name, mimeType, sizeBytes, storageKey, createdBy || null, now);
+
+    db.prepare(
+      'INSERT INTO file_refs (id, file_id, scope, scope_id, ref_type, added_at, added_by) VALUES (?, ?, ?, ?, ?, ?, ?)'
+    ).run(refId, fileId, 'message', messageId, 'pinned', now, createdBy || null);
+  });
+  txn();
+
+  return {
+    file: { id: fileId, name, mimeType, sizeBytes, storageKey, createdBy, createdAt: now },
+    ref: { id: refId, fileId, scope: 'message', scopeId: messageId, refType: 'pinned', addedAt: now, addedBy: createdBy },
+  };
 }

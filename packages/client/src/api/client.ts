@@ -1,4 +1,4 @@
-import type { Channel, Entity, Message, ModelId, InteractionMode, ChannelType, ImportResult } from '@klatch/shared';
+import type { Channel, Entity, Message, ModelId, InteractionMode, ChannelType, ImportResult, FileWithRef } from '@klatch/shared';
 
 const BASE = '/api';
 
@@ -432,6 +432,31 @@ export async function fetchClaudeCodeSessions(): Promise<SessionBrowseResponse> 
     throw new Error(errorMessage);
   }
   return res.json();
+}
+
+// ── File Domain Model API ────────────────────────────────────
+
+export async function fetchChannelFiles(channelId: string): Promise<FileWithRef[]> {
+  const res = await fetch(`${BASE}/channels/${channelId}/files`);
+  if (!res.ok) throw new Error(`Failed to fetch channel files: ${res.statusText}`);
+  return res.json();
+}
+
+export async function pinFileToChannel(channelId: string, opts: { fileId?: string; storageKey?: string }): Promise<{ file: any; ref: any; alreadyPinned: boolean }> {
+  const res = await fetch(`${BASE}/files/pin`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ channelId, ...opts }),
+  });
+  if (!res.ok) throw new Error(`Failed to pin file: ${res.statusText}`);
+  return res.json();
+}
+
+export async function unpinFileFromChannel(fileId: string, channelId: string): Promise<void> {
+  const res = await fetch(`${BASE}/files/${fileId}/pin/${channelId}`, {
+    method: 'DELETE',
+  });
+  if (!res.ok) throw new Error(`Failed to unpin file: ${res.statusText}`);
 }
 
 // ── Context File API ─────────────────────────────────────────

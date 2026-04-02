@@ -1,6 +1,7 @@
 import Database from 'better-sqlite3';
 import path from 'path';
 import fs from 'fs';
+import { randomUUID } from 'crypto';
 import { fileURLToPath } from 'url';
 import { DEFAULT_MODEL, DEFAULT_ENTITY_ID, ENTITY_COLORS, MODEL_ALIASES, DEFAULT_INTERACTION_MODE } from '@klatch/shared';
 
@@ -205,6 +206,67 @@ function runMigrations() {
   }
   if (!artifactCols.some((c) => c.name === 'file_storage_key')) {
     db.exec(`ALTER TABLE message_artifacts ADD COLUMN file_storage_key TEXT`);
+  }
+
+  // ── File Domain Model Phase 1: files + file_refs tables ─────
+
+  db.exec(`
+    CREATE TABLE IF NOT EXISTS files (
+      id TEXT PRIMARY KEY,
+      name TEXT NOT NULL,
+      mime_type TEXT NOT NULL,
+      size_bytes INTEGER NOT NULL,
+      storage_key TEXT NOT NULL,
+      created_by TEXT,
+      created_at TEXT NOT NULL DEFAULT (datetime('now'))
+    );
+
+    CREATE TABLE IF NOT EXISTS file_refs (
+      id TEXT PRIMARY KEY,
+      file_id TEXT NOT NULL REFERENCES files(id),
+      scope TEXT NOT NULL,
+      scope_id TEXT NOT NULL,
+      ref_type TEXT NOT NULL DEFAULT 'pinned',
+      added_at TEXT NOT NULL DEFAULT (datetime('now')),
+      added_by TEXT
+    );
+
+    CREATE INDEX IF NOT EXISTS idx_file_refs_scope ON file_refs(scope, scope_id);
+    CREATE INDEX IF NOT EXISTS idx_file_refs_file ON file_refs(file_id);
+  `);
+
+  // Backfill: migrate existing message_artifacts (type='file') into files + file_refs
+  const needsBackfill = db.prepare(
+    `SELECT COUNT(*) as count FROM message_artifacts
+     WHERE type = 'file' AND file_storage_key IS NOT NULL
+     AND file_storage_key NOT IN (SELECT storage_key FROM files)`
+  ).get() as { count: number };
+
+  if (needsBackfill.count > 0) {
+    const artifacts = db.prepare(
+      `SELECT id, message_id, file_name, file_mime_type, file_size_bytes, file_storage_key, created_at
+       FROM message_artifacts
+       WHERE type = 'file' AND file_storage_key IS NOT NULL
+       AND file_storage_key NOT IN (SELECT storage_key FROM files)`
+    ).all() as {
+      id: string; message_id: string; file_name: string;
+      file_mime_type: string; file_size_bytes: number;
+      file_storage_key: string; created_at: string;
+    }[];
+
+    const insertFile = db.prepare(
+      'INSERT OR IGNORE INTO files (id, name, mime_type, size_bytes, storage_key, created_by, created_at) VALUES (?, ?, ?, ?, ?, ?, ?)'
+    );
+    const insertRef = db.prepare(
+      'INSERT INTO file_refs (id, file_id, scope, scope_id, ref_type, added_at, added_by) VALUES (?, ?, ?, ?, ?, ?, ?)'
+    );
+
+    for (const a of artifacts) {
+      const fileId = randomUUID();
+      const refId = randomUUID();
+      insertFile.run(fileId, a.file_name, a.file_mime_type, a.file_size_bytes, a.file_storage_key, 'user', a.created_at);
+      insertRef.run(refId, fileId, 'message', a.message_id, 'pinned', a.created_at, 'user');
+    }
   }
 
   // Ensure default entity exists (for existing databases being upgraded)

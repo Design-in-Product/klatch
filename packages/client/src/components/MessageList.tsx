@@ -11,6 +11,7 @@ interface Props {
   channelEntities: Entity[];
   onDeleteMessage?: (id: string) => void;
   onRegenerateMessage?: (id: string) => void;
+  onPinFile?: (storageKey: string) => void;
   isStreaming?: boolean;
   theme?: 'light' | 'dark';
   channelSource?: string;  // 'native' | 'claude-code' | 'claude-ai'
@@ -80,7 +81,7 @@ function formatSize(bytes?: number): string {
 }
 
 /** Render a list of artifacts below message content */
-function ArtifactList({ artifacts, isUser }: { artifacts: MessageArtifact[]; isUser: boolean }) {
+function ArtifactList({ artifacts, isUser, onPinFile }: { artifacts: MessageArtifact[]; isUser: boolean; onPinFile?: (storageKey: string) => void }) {
   // Group: files first, then tool_use, then tool_result, then thinking/image
   const files = artifacts.filter((a) => a.type === 'file');
   const tools = artifacts.filter((a) => a.type === 'tool_use');
@@ -97,7 +98,7 @@ function ArtifactList({ artifacts, isUser }: { artifacts: MessageArtifact[]; isU
     <div className="mt-2 space-y-1.5">
       {/* File attachments */}
       {files.map((f) => (
-        <FileCard key={f.id} artifact={f} isUser={isUser} />
+        <FileCard key={f.id} artifact={f} isUser={isUser} onPin={onPinFile && f.fileStorageKey ? () => onPinFile(f.fileStorageKey!) : undefined} />
       ))}
 
       {/* Tool usage */}
@@ -123,33 +124,59 @@ function summarizeTools(tools: MessageArtifact[]): MessageArtifact[] {
 }
 
 /** A single file attachment card */
-function FileCard({ artifact, isUser }: { artifact: MessageArtifact; isUser: boolean }) {
+function FileCard({ artifact, isUser, onPin }: { artifact: MessageArtifact; isUser: boolean; onPin?: () => void }) {
+  const [pinned, setPinned] = useState(false);
   const ext = artifact.fileName?.split('.').pop()?.toLowerCase() || '';
   const isImage = ['png', 'jpg', 'jpeg', 'gif', 'webp', 'svg'].includes(ext);
   const isCode = ['ts', 'tsx', 'js', 'jsx', 'py', 'rs', 'go', 'java', 'css', 'html', 'json', 'md'].includes(ext);
 
   return (
-    <a
-      href={artifact.fileStorageKey ? `${API_BASE}/files/${artifact.fileStorageKey}` : undefined}
-      target="_blank"
-      rel="noopener noreferrer"
-      className={`flex items-center gap-2 rounded-md px-3 py-2 text-xs no-underline transition-colors ${
-        isUser
-          ? 'bg-white/15 hover:bg-white/25 text-white'
-          : 'bg-hover hover:bg-line text-primary'
-      }`}
-    >
-      <span className="text-base flex-shrink-0">
-        {isImage ? '🖼️' : isCode ? '💻' : '📄'}
-      </span>
-      <div className="min-w-0 flex-1">
-        <div className="font-medium truncate">{artifact.fileName}</div>
-        {artifact.fileSizeBytes && (
-          <div className="opacity-70">{formatSize(artifact.fileSizeBytes)}</div>
-        )}
-      </div>
-      <span className="opacity-50 text-[10px]">↗</span>
-    </a>
+    <div className={`flex items-center gap-2 rounded-md px-3 py-2 text-xs transition-colors ${
+      isUser
+        ? 'bg-white/15 text-white'
+        : 'bg-hover text-primary'
+    }`}>
+      <a
+        href={artifact.fileStorageKey ? `${API_BASE}/files/${artifact.fileStorageKey}` : undefined}
+        target="_blank"
+        rel="noopener noreferrer"
+        className={`flex items-center gap-2 min-w-0 flex-1 no-underline ${isUser ? 'text-white' : 'text-primary'}`}
+      >
+        <span className="text-base flex-shrink-0">
+          {isImage ? '🖼️' : isCode ? '💻' : '📄'}
+        </span>
+        <div className="min-w-0 flex-1">
+          <div className="font-medium truncate">{artifact.fileName}</div>
+          {artifact.fileSizeBytes && (
+            <div className="opacity-70">{formatSize(artifact.fileSizeBytes)}</div>
+          )}
+        </div>
+        <span className="opacity-50 text-[10px]">↗</span>
+      </a>
+      {onPin && artifact.fileStorageKey && (
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            if (!pinned) {
+              onPin();
+              setPinned(true);
+            }
+          }}
+          title={pinned ? 'Pinned to channel' : 'Pin to channel'}
+          className={`flex-shrink-0 p-1 rounded transition-colors ${
+            pinned
+              ? 'text-accent'
+              : isUser
+                ? 'text-white/50 hover:text-white'
+                : 'text-muted hover:text-accent'
+          }`}
+        >
+          <svg className="w-3.5 h-3.5" fill={pinned ? 'currentColor' : 'none'} viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
+          </svg>
+        </button>
+      )}
+    </div>
   );
 }
 
@@ -189,6 +216,7 @@ export function MessageList({
   channelEntities,
   onDeleteMessage,
   onRegenerateMessage,
+  onPinFile,
   isStreaming,
   theme,
   channelSource,
@@ -272,6 +300,7 @@ export function MessageList({
                   ? () => onRegenerateMessage(msg.id)
                   : undefined
               }
+              onPinFile={onPinFile}
               isBubbleStreaming={isBubbleStreaming}
               theme={theme}
             />
@@ -320,6 +349,7 @@ function MessageBubble({
   streamingContent,
   onDelete,
   onRegenerate,
+  onPinFile,
   isBubbleStreaming,
   theme,
 }: {
@@ -328,6 +358,7 @@ function MessageBubble({
   streamingContent?: string;
   onDelete?: () => void;
   onRegenerate?: () => void;
+  onPinFile?: (storageKey: string) => void;
   isBubbleStreaming?: boolean;
   theme?: 'light' | 'dark';
 }) {
@@ -371,7 +402,7 @@ function MessageBubble({
         </div>
         {/* Artifacts: tool use, thinking, files, images */}
         {message.artifacts && message.artifacts.length > 0 && (
-          <ArtifactList artifacts={message.artifacts} isUser={isUser} />
+          <ArtifactList artifacts={message.artifacts} isUser={isUser} onPinFile={onPinFile} />
         )}
         {message.status === 'error' && (
           <div className="text-xs text-danger mt-1">Error generating response</div>

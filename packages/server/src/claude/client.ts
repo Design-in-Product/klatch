@@ -1,6 +1,6 @@
 import Anthropic from '@anthropic-ai/sdk';
 import { EventEmitter } from 'events';
-import { getMessages, getChannel, updateMessage, updateChannelCompaction, getProjectForChannel, getFileArtifactsForMessages, createFileArtifact } from '../db/queries.js';
+import { getMessages, getChannel, updateMessage, updateChannelCompaction, getProjectForChannel, getFileArtifactsForMessages, createFileArtifact, getChannelFiles } from '../db/queries.js';
 import type { Entity, Channel, Project, MessageArtifact } from '@klatch/shared';
 import { DEFAULT_MODEL } from '@klatch/shared';
 import { readFile, isTextFile, isImageFile, saveFile } from '../files/storage.js';
@@ -13,6 +13,13 @@ function getAnthropicClient(): Anthropic {
     _anthropic = new Anthropic();
   }
   return _anthropic;
+}
+
+/** Format bytes for human display in prompt context */
+function formatBytes(bytes: number): string {
+  if (bytes < 1024) return `${bytes} B`;
+  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
+  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
 }
 
 // In-memory registry of active streams
@@ -367,7 +374,7 @@ const MAX_PROJECT_MEMORY_CHARS = 8000;
  *
  * Per design doc: prompt-architecture-audit.md (decisions locked 2026-03-16)
  */
-export function buildSystemPrompt(entity: Entity, channelPreamble?: string, channel?: Channel, project?: Project | null): string {
+export function buildSystemPrompt(entity: Entity, channelPreamble?: string, channel?: Channel, project?: Project | null, channelFileNames?: string[]): string {
   const parts: string[] = [];
 
   // 1. Kit briefing for imported channels — automatic orientation on transition
@@ -393,8 +400,14 @@ export function buildSystemPrompt(entity: Entity, channelPreamble?: string, chan
     parts.push('Project memory:\n\n' + truncated);
   }
 
-  // 4. Channel addendum (channel-specific system prompt)
+  // 4. Channel addendum (channel-specific system prompt + pinned files listing)
   if (channelPreamble?.trim()) parts.push(channelPreamble.trim());
+
+  // 4b. Channel files listing (pinned files visible in this channel)
+  if (channelFileNames && channelFileNames.length > 0) {
+    const listing = channelFileNames.join('\n');
+    parts.push(`Channel files available:\n${listing}`);
+  }
 
   // 5. Entity's own system prompt
   if (entity.systemPrompt?.trim()) parts.push(entity.systemPrompt.trim());
@@ -673,7 +686,8 @@ export async function streamClaude(
   const project = channel?.projectId ? getProjectForChannel(channelId) : null;
   const compactionEnabled = channel?.source !== 'native';
   const history = buildPanelHistory(channelId, entity);
-  const systemPrompt = buildSystemPrompt(entity, channelPreamble, channel, project);
+  const channelFileList = getChannelFiles(channelId).map((f) => `- ${f.name} (${f.mimeType}, ${formatBytes(f.sizeBytes)})`);
+  const systemPrompt = buildSystemPrompt(entity, channelPreamble, channel, project, channelFileList);
   const result = await streamClaudeCore(
     assistantMessageId, entity, history, systemPrompt,
     { compactionEnabled }
@@ -715,6 +729,7 @@ export async function streamClaudeRoundtable(
   const channel = getChannel(channelId);
   const project = channel?.projectId ? getProjectForChannel(channelId) : null;
   const compactionEnabled = channel?.source !== 'native';
+  const channelFileList = getChannelFiles(channelId).map((f) => `- ${f.name} (${f.mimeType}, ${formatBytes(f.sizeBytes)})`);
 
   // Register this roundtable so abort can cancel the whole round
   const roundtable = {
@@ -735,7 +750,7 @@ export async function streamClaudeRoundtable(
       if (roundtable.cancelled) break;
 
       const { assistantMessageId, entity } = assistants[i];
-      const systemPrompt = buildSystemPrompt(entity, channelPreamble, channel, project);
+      const systemPrompt = buildSystemPrompt(entity, channelPreamble, channel, project, channelFileList);
 
       let history: ChatMessage[];
 
