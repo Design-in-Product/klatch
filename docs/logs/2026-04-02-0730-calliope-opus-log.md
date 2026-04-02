@@ -41,6 +41,20 @@ Morning check-in with xian. Pulled from origin main (2 new commits: cross-pollin
 - Daedalus's L4 file injection noted as first practical move toward the shared L4 persistence gap.
 - PM side: Docs built Shipping News, completed quarterly maintenance, published Mar 31 omnibus.
 
+## 08:15 — Logbook, memos, and research review
+
+**Logbook:** Replaced preliminary April 1 entry with full record covering all four agents (Calliope, Daedalus, Argus, Metis). Committed and pushed.
+
+**MAXT Session 01 report — resolved:** Theseus's session log (lines 72–104) IS the report. All 8 findings documented inline, status section says "No separate formal report required." Closed as a carry-forward item.
+
+**Memos sent:**
+- `calliope-to-theseus-axt-agenda-2026-04-02.md` — MAXT report resolved, overnight recap, two AXT test candidates (file pinning L4 injection, nomenclature change), traditions doc nudge
+- `calliope-to-metis-welcome-2026-04-02.md` — self-introduction, role boundaries (narrative/editorial vs operational/cross-environment), traditions doc observation acknowledged
+
+**Research reviewed (for xian's decision summary):**
+- Compaction evaluation: 5 recommendations, all low-medium priority. Key decisions: configurable threshold, entity-attribution preservation for roundtable, user-facing toggle.
+- Effort parameter: per-entity setting recommended. Phase 1 is minimal (one DB column, one API parameter, one UI selector). Key decisions: Sonnet default medium vs high, whether to implement now or after Step 9 completes.
+
 ---
 
 *Log continues as session progresses.*
