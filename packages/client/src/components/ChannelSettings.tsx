@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import type { Channel, Entity, ModelId, InteractionMode, ChannelStats, FileWithRef } from '@klatch/shared';
 import { INTERACTION_MODES } from '@klatch/shared';
 import { getModelLabel } from '../hooks/useModels';
-import { fetchContextFile, fetchProjects, fetchChannelFiles, unpinFileFromChannel, type Project } from '../api/client.js';
+import { fetchContextFile, fetchProjects, fetchChannelFiles, unpinFileFromChannel, promoteFile, type Project } from '../api/client.js';
 
 interface Props {
   channel: Channel;
@@ -232,6 +232,19 @@ export function ChannelSettings({
                     <span className="text-[10px] text-muted">
                       {f.sizeBytes < 1024 ? `${f.sizeBytes} B` : f.sizeBytes < 1024 * 1024 ? `${(f.sizeBytes / 1024).toFixed(1)} KB` : `${(f.sizeBytes / (1024 * 1024)).toFixed(1)} MB`}
                     </span>
+                    {channel.projectId && (
+                      <button
+                        onClick={() => {
+                          promoteFile(f.id, 'project', channel.projectId!).catch(console.error);
+                        }}
+                        title="Promote to project knowledge base"
+                        className="p-1 rounded text-muted hover:text-accent hover:bg-hover transition-colors opacity-0 group-hover:opacity-100"
+                      >
+                        <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18" />
+                        </svg>
+                      </button>
+                    )}
                     <button
                       onClick={() => {
                         unpinFileFromChannel(f.id, channel.id).then(() => {

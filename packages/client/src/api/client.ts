@@ -140,6 +140,16 @@ export async function removeProjectFile(projectId: string, fileId: string): Prom
   if (!res.ok) throw new Error(`Failed to remove file: ${res.statusText}`);
 }
 
+export async function promoteFile(fileId: string, targetScope: 'channel' | 'project', targetId: string): Promise<{ file: any; ref: any; alreadyExists: boolean }> {
+  const res = await fetch(`${BASE}/files/${fileId}/promote`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ targetScope, targetId }),
+  });
+  if (!res.ok) throw new Error(`Failed to promote file: ${res.statusText}`);
+  return res.json();
+}
+
 // ── Entity API ───────────────────────────────────────────────
 
 export async function fetchEntities(): Promise<Entity[]> {

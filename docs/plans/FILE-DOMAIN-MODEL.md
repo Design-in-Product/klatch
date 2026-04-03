@@ -127,9 +127,10 @@ CREATE INDEX idx_file_refs_file ON file_refs(file_id);
 - Import pipelines don't create actual files on disk (tool-use summaries only), so no import-side changes needed
 - Phase 1 backfill migration already handles existing `message_artifacts` type='file' rows
 
-### Phase 5: Promotion (message → channel → project)
-- "Promote to project" action on channel-pinned files
-- UI flow: click promote on a channel file → select target project → creates project-scope ref
+### Phase 5: Promotion ✓ (shipped April 3)
+- `POST /api/files/:id/promote` — promote a file to a higher scope (channel or project), idempotent
+- "Promote to project" button (arrow-up icon) on channel-pinned files in Channel Settings
+- Button only shown when channel belongs to a project
 - Projection (downward): project file → channel delivery with prompt (deferred — evaluate need after promotion ships)
 
 ### Phase 6: Memory as a file (Step 10)

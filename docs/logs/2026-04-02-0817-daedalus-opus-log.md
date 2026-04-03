@@ -87,3 +87,19 @@ All file creation paths now consistently populate both `message_artifacts` (back
 3. Phase 1 backfill migration — catches any existing `message_artifacts` type='file' rows
 
 Tests: 808 passed, 0 failed.
+
+### 08:20 — Phase 5 complete (promotion)
+
+**Server** (`packages/server/src/routes/files.ts`):
+- `POST /api/files/:id/promote` — promote a file to a higher scope (`channel` or `project`)
+- Idempotent: returns existing ref if already promoted
+- Validates target scope and target entity existence
+
+**Client API** (`packages/client/src/api/client.ts`):
+- `promoteFile(fileId, targetScope, targetId)`
+
+**Client UI** (`packages/client/src/components/ChannelSettings.tsx`):
+- Arrow-up promote button on pinned files, only shown when channel has a project
+- Promotes file to the channel's project knowledge base
+
+Tests: 808 passed, 0 failed.

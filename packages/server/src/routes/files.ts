@@ -296,6 +296,54 @@ app.delete('/files/:fileId/pin/:channelId', (c) => {
   return c.json({ ok: true });
 });
 
+// ── File Domain Model: promotion (Phase 5) ───────────────────
+
+/**
+ * POST /files/:id/promote — Promote a file to a higher scope
+ *
+ * Body: { targetScope: 'channel' | 'project', targetId: string }
+ *
+ * Creates a new file_ref at the target scope. The file itself is unchanged —
+ * only a new reference is added. Idempotent (returns existing ref if already promoted).
+ */
+app.post('/files/:id/promote', async (c) => {
+  const fileId = c.req.param('id');
+  const file = getFile(fileId);
+  if (!file) {
+    return c.json({ error: 'File not found' }, 404);
+  }
+
+  const data = await c.req.json();
+  const { targetScope, targetId } = data;
+
+  if (!targetScope || !targetId) {
+    return c.json({ error: 'targetScope and targetId are required' }, 400);
+  }
+
+  if (targetScope !== 'channel' && targetScope !== 'project') {
+    return c.json({ error: 'targetScope must be "channel" or "project"' }, 400);
+  }
+
+  // Verify target exists
+  if (targetScope === 'channel') {
+    const channel = getChannel(targetId);
+    if (!channel) return c.json({ error: 'Channel not found' }, 404);
+  } else {
+    const project = getProject(targetId);
+    if (!project) return c.json({ error: 'Project not found' }, 404);
+  }
+
+  // Check if already exists at target scope
+  const existingFiles = targetScope === 'channel' ? getChannelFiles(targetId) : getProjectFiles(targetId);
+  const already = existingFiles.find((f) => f.id === fileId);
+  if (already) {
+    return c.json({ file, ref: { id: already.refId, fileId, scope: targetScope, scopeId: targetId }, alreadyExists: true });
+  }
+
+  const ref = createFileRef(fileId, targetScope, targetId, 'pinned', 'user');
+  return c.json({ file, ref, alreadyExists: false });
+});
+
 // ── File Domain Model: project knowledge base (Phase 3) ──────
 
 /**
