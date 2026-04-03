@@ -1,7 +1,7 @@
 # File Domain Model
 
 *Design document. Authored 2026-03-27 by Daedalus + xian.*
-*Status: Approved — ready for implementation.*
+*Status: In progress — Phases 1-3 shipped (April 1-2). Phases resequenced April 2.*
 
 ---
 
@@ -101,32 +101,48 @@ CREATE INDEX idx_file_refs_file ON file_refs(file_id);
 
 ## Implementation Phases
 
-### Phase 1: Schema + backfill (Step 9 foundation)
-- Create `files` and `file_refs` tables
+*Resequenced April 2, 2026. Original phases 1-3 shipped; remaining work reordered by user value.*
+
+### Phase 1: Schema + backfill ✓ (shipped April 1)
+- `files` and `file_refs` tables with indexes
 - Backfill from existing `message_artifacts` type='file'
 - API endpoints for querying files at each scope
-- No prompt assembly changes yet
+- Dual-write: new uploads populate both `message_artifacts` and `files`/`file_refs`
 
-### Phase 2: Channel pinning (Step 9/10 bridge)
-- "Pin to channel" action on message file artifacts
-- Channel files visible in channel settings UI
-- Channel files listed in L4 context (pointer only: "Files available: ...")
+### Phase 2: Channel pinning ✓ (shipped April 1)
+- "Pin to channel" action (bookmark icon) on message file artifacts
+- Channel files visible in channel settings UI with unpin
+- Pin/unpin API (`POST /api/files/pin`, `DELETE /api/files/:fileId/pin/:channelId`)
+- Channel files listed in L4 context ("Channel files available: ...")
 
-### Phase 3: Project knowledge base (Step 10)
-- Project files UI (view, upload, manage)
-- Memory as a file (migration from projects.memory column)
-- Import creates project-scope file_refs
-- Project files listed in L3 context
+### Phase 3: Project knowledge base ✓ (shipped April 2)
+- Project files upload/manage UI in Project Settings ("Knowledge base" section)
+- Upload/remove API (`POST /api/projects/:id/files`, `DELETE /api/projects/:id/files/:fileId`)
+- Project files listed in L3 context ("Project knowledge base files: ...")
+- Prompt-debug endpoint updated with file info in layers 3 and 4
 
-### Phase 4: Entity library (Step 10+)
+### Phase 4: Import file_refs (next)
+- When importing from Claude Code or claude.ai, create `files` + `file_refs` entries for file artifacts
+- Imported files appear in the file domain model (queryable by scope)
+- Backfill strategy: existing imports already have `message_artifacts` type='file' — create corresponding `files`/`file_refs` entries during import
+
+### Phase 5: Promotion (message → channel → project)
+- "Promote to project" action on channel-pinned files
+- UI flow: click promote on a channel file → select target project → creates project-scope ref
+- Projection (downward): project file → channel delivery with prompt (deferred — evaluate need after promotion ships)
+
+### Phase 6: Memory as a file (Step 10)
+- Migrate `projects.memory` column to a file with reserved name `MEMORY.md` in the project knowledge base
+- Memory editing = file editing; memory display = file display
+- Migration preserves existing memory data
+- Import pipelines updated to create `MEMORY.md` file instead of writing to memory column
+- *Deferred from original Phase 3: this is a refactor that unifies the data model but doesn't add user-facing capability. Best scheduled alongside Step 10 (export) where the unified model pays off for context packaging.*
+
+### Phase 7: Entity library (Step 11)
 - Automatic entity-file tracking (created, received, read)
 - Entity file index in entity settings/profile
 - Useful for search and continuity assessment
-
-### Phase 5: Promotion and projection (Step 10+)
-- Promote: message → channel → project
-- Project: project → channel (with delivery prompt)
-- UI for both actions
+- *Deferred from original Phase 4: this is an index/audit feature whose value multiplies when search exists. Best scheduled alongside Step 11 (search) where the index becomes queryable.*
 
 ---
 

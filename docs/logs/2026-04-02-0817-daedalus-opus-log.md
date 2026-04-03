@@ -55,3 +55,17 @@ Reviewed all briefing materials. Starting Phase 3 implementation.
 **Verification:**
 - Type-check: zero errors in modified source files
 - Tests: 761 passed, 0 failed (excluding Argus WIP round14 file with parse error)
+
+### 11:05 — Round 15 memo to Argus
+Filed `docs/mail/daedalus-to-argus-round15-2026-04-02.md` with Phase 2+3 test assignments (~20 cases).
+
+### 11:35 — Design doc resequencing
+Updated `docs/plans/FILE-DOMAIN-MODEL.md` per xian's direction:
+- Phases 1-3 marked complete with ship dates
+- Import file_refs promoted to Phase 4 (next)
+- Promotion (message → channel → project) becomes Phase 5
+- Memory-as-file deferred to Phase 6 (alongside Step 10 export, where unified model pays off)
+- Entity library deferred to Phase 7 (alongside Step 11 search, where the index becomes queryable)
+
+### 11:40–12:53 — Usage limit pause
+Resumed at 12:53. Design doc changes uncommitted during pause.
