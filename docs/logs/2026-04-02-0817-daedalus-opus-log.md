@@ -103,3 +103,19 @@ Tests: 808 passed, 0 failed.
 - Promotes file to the channel's project knowledge base
 
 Tests: 808 passed, 0 failed.
+
+### 08:25 — Session wrap
+
+**Commits on origin/main:**
+```
+dda0764 File Domain Model Phase 5: promotion endpoint + UI
+9cdea49 File Domain Model Phase 4: dual-write completion for save_file tool
+8f81df9 File Domain Model: resequence phases 4-7 by user value
+26ed97c Round 15 assignment memo to Argus: Phase 2+3 test coverage
+eb938b5 File Domain Model Phase 3: project knowledge base, upload UI, L3 context injection
+b1e69a5 File Domain Model Phase 1+2: schema, backfill, channel pinning, L4 context injection
+```
+
+**Summary:** File Domain Model Phases 1-5 shipped across two sessions (April 1-3). Step 9 core work complete. Phases 6 (memory-as-file) and 7 (entity library) deferred to Steps 10 and 11 respectively. Next: Step 10 (Export + meta-model synthesis).
+
+**Test count:** 808 total, 0 failures.
