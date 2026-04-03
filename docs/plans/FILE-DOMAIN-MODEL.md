@@ -121,10 +121,11 @@ CREATE INDEX idx_file_refs_file ON file_refs(file_id);
 - Project files listed in L3 context ("Project knowledge base files: ...")
 - Prompt-debug endpoint updated with file info in layers 3 and 4
 
-### Phase 4: Import file_refs (next)
-- When importing from Claude Code or claude.ai, create `files` + `file_refs` entries for file artifacts
-- Imported files appear in the file domain model (queryable by scope)
-- Backfill strategy: existing imports already have `message_artifacts` type='file' — create corresponding `files`/`file_refs` entries during import
+### Phase 4: Dual-write completion ✓ (shipped April 3)
+- `save_file` tool handler now creates `files` + `file_refs` entries alongside `message_artifacts`
+- All file creation paths (upload, save_file tool) consistently populate the file domain model
+- Import pipelines don't create actual files on disk (tool-use summaries only), so no import-side changes needed
+- Phase 1 backfill migration already handles existing `message_artifacts` type='file' rows
 
 ### Phase 5: Promotion (message → channel → project)
 - "Promote to project" action on channel-pinned files

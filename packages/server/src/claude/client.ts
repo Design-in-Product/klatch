@@ -1,6 +1,6 @@
 import Anthropic from '@anthropic-ai/sdk';
 import { EventEmitter } from 'events';
-import { getMessages, getChannel, updateMessage, updateChannelCompaction, getProjectForChannel, getFileArtifactsForMessages, createFileArtifact, getChannelFiles, getProjectFiles } from '../db/queries.js';
+import { getMessages, getChannel, updateMessage, updateChannelCompaction, getProjectForChannel, getFileArtifactsForMessages, createFileArtifact, createFileWithMessageRef, getChannelFiles, getProjectFiles } from '../db/queries.js';
 import type { Entity, Channel, Project, MessageArtifact } from '@klatch/shared';
 import { DEFAULT_MODEL } from '@klatch/shared';
 import { readFile, isTextFile, isImageFile, saveFile } from '../files/storage.js';
@@ -472,6 +472,9 @@ async function executeTool(
 
       // Create file artifact linked to the assistant message
       createFileArtifact(assistantMessageId, filename, mimeType, saved.sizeBytes, saved.storageKey);
+
+      // Also populate File Domain Model (files + file_refs)
+      createFileWithMessageRef(filename, mimeType, saved.sizeBytes, saved.storageKey, assistantMessageId, 'entity');
 
       return {
         result: `File "${filename}" saved successfully (${buffer.length} bytes). The user can download it from the conversation.`,

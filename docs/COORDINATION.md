@@ -57,9 +57,9 @@ Agents working on this repo use this file as the async handoff protocol.
 ### Daedalus (architecture & implementation)
 - **Branch:** `main`
 - **Status:** working
-- **Last completed:** File Domain Model Phases 1-3 (schema + backfill, channel pinning + L4 injection, project knowledge base + L3 injection + upload UI).
-- **Working on:** Ready for xian manual testing of Phases 1-3. Phase 4 (entity library) next.
-- **Next:** Step 9 Phase 4-5 (entity library, promotion/projection). Then Step 10 (Export + meta-model).
+- **Last completed:** File Domain Model Phases 1-4 (schema, channel pinning, project KB, dual-write completion).
+- **Working on:** Phase 5 (promotion: message → channel → project).
+- **Next:** Step 9 Phase 5 (promotion). Then Step 10 (Export + meta-model).
 - **Roadmap:** Step 9 = Files and artifacts → Step 10 = Export + meta-model synthesis → Step 11 = Search.
 - **Nomenclature:** Assigned to Calliope + xian. Short-term: rename "System prompt" in UI. Long-term: full Klatch terminology guide.
 - **Updated:** 2026-04-02 08:35

@@ -69,3 +69,21 @@ Updated `docs/plans/FILE-DOMAIN-MODEL.md` per xian's direction:
 
 ### 11:40–12:53 — Usage limit pause
 Resumed at 12:53. Design doc changes uncommitted during pause.
+
+### April 3 08:00 — Session resumed
+Synced with origin. Argus landed Round 15 (16 tests for Phases 2+3, commit c173ba8).
+No new mail for Daedalus. Starting Phase 4.
+
+### 08:10 — Phase 4 complete (dual-write completion)
+
+Phase 4 scope was smaller than expected. Investigation found:
+- Imported conversations don't create actual files on disk — only tool-use summaries stored as `message_artifacts`
+- The only gap was the `save_file` tool handler, which saved files to disk and created `message_artifacts` but not `files`/`file_refs`
+- Fix: added `createFileWithMessageRef()` call in `executeTool()` for save_file
+
+All file creation paths now consistently populate both `message_artifacts` (backward compat) and `files`/`file_refs` (file domain model):
+1. File upload endpoint (`POST /channels/:id/files`) — already dual-writing since Phase 1
+2. `save_file` tool handler — now dual-writing (this fix)
+3. Phase 1 backfill migration — catches any existing `message_artifacts` type='file' rows
+
+Tests: 808 passed, 0 failed.
