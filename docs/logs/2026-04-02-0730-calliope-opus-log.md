@@ -55,6 +55,39 @@ Morning check-in with xian. Pulled from origin main (2 new commits: cross-pollin
 - Compaction evaluation: 5 recommendations, all low-medium priority. Key decisions: configurable threshold, entity-attribution preservation for roundtable, user-facing toggle.
 - Effort parameter: per-entity setting recommended. Phase 1 is minimal (one DB column, one API parameter, one UI selector). Key decisions: Sonnet default medium vs high, whether to implement now or after Step 9 completes.
 
+## 11:10 — Compaction and effort parameter discussion with xian
+
+xian reviewed Argus's research docs. Decisions:
+- **Compaction threshold:** Wants informed decision — assigned Argus a research spike on optimal thresholds, static vs. dynamic vs. adaptive, and our own conversation data
+- **Entity attribution preservation:** Approved for implementation (Daedalus, when working on compaction)
+- **User-facing toggle:** Deferred — automatic defaults are fine, exposing "compaction" adds cognitive load
+- **Pause-after-compaction:** Not urgent but xian sees potential ("secret sauce") — wants to understand effort better
+
+Also noted: ChatGPT group chat response logic (observed in a multi-person chat) uses simple @mention + follow-up heuristics for when to respond. Saved as reference for Klatch's interaction modes. And the Claude Code `SendMessage with to: agentID` pattern may be relevant for coordinated group chats.
+
+**Memos sent:**
+- `calliope-to-argus-compaction-research-2026-04-02.md` — compaction threshold research assignment
+
+## 11:15 — Session wrap
+
+Closing for the day. Tomorrow (April 3): logbook for April 2, blog topic review, resume where we left off.
+
+### Carried forward
+- [ ] Logbook entry for April 2
+- [ ] Blog topic review (any new topics from this week?)
+- [ ] Manual testing of Daedalus's FDM Phases 1+2 (xian, afternoon)
+- [ ] Argus: FDM test coverage + compaction threshold research
+- [ ] Theseus: AXT session when xian connects
+- [ ] Effort parameter: decisions on timing, Sonnet default, `max` exposure
+- [ ] Metis roster entry — flag to xian
+- [ ] Daedalus/Theseus traditions docs (noted by Metis)
+- [ ] Pause-after-compaction effort estimate (Daedalus, when convenient)
+
+### Verification
+```
+git log origin/main --oneline -3
+```
+
 ---
 
-*Log continues as session progresses.*
+*Session closed.*
