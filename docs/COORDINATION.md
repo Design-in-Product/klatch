@@ -23,11 +23,10 @@ Agents working on this repo use this file as the async handoff protocol.
   - Bookend-sync protocol formalized in `docs/agents/argus.md`
   - Round 13: test infra fixes + 11 feature tests + research spikes (compaction, effort)
   - Rounds 14–16: File Domain Model Phases 1–5 — 58 tests total
-- **Completed research:** Cowork project export format, Models API verification, compaction evaluation, effort parameter evaluation
+- **Completed research:** Cowork project export format, Models API verification, compaction evaluation, effort parameter evaluation, compaction threshold deep dive (recommends 80K → 160K)
 - **Working on:** Nothing — session complete.
-- **Completed research (addendum):** Compaction threshold deep dive (`docs/research/compaction-threshold-deep-dive.md`) — recommends raising trigger from 80K to 160K
-- **Next:** AuditBench methodology review (Calliope assignment)
-- **Updated:** 2026-04-03 19:00
+- **Next:** AuditBench methodology review (Calliope assignment). Possible AAXT on Step 9 features (pending Theseus sync).
+- **Updated:** 2026-04-03 19:30
 - **Round 7 assignment: Sidebar redesign tests (GitHub issue #8)**
   - Read `docs/plans/SIDEBAR.md` for full design spec before writing tests.
   - **Scope:** `packages/server/src/__tests__/round7-sidebar-redesign.test.ts` (server) + `packages/client/src/__tests__/Sidebar.test.tsx` (updates to existing)
