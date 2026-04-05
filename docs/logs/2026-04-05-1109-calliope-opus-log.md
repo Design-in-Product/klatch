@@ -31,6 +31,23 @@ No new mail addressed to Calliope.
 ### Agenda
 xian wants to establish the front-end designer/developer role ("Incoming" in MEMORY.md) and have them do a UX evaluation + critique + design research proposal. This is self-directed agent work that can run without xian's continuous attention.
 
+## 12:15 — Iris onboarded, communications context memo
+
+Iris pushed their first commit: roster entry, COORDINATION section, introduction memos to Daedalus/Argus/Calliope, session log with codebase and database exploration.
+
+Key observations from Iris:
+- 2,406 channels, 1,275 entities in live DB (xian calibrated: entity count inflated by test imports)
+- Zero klatches in production — multi-entity UX untested with real workflows (klatches tested in test DBs)
+- "I don't think users should think in layers" — correct instinct, aligns with nomenclature direction
+- Import fidelity readout flagged as the most interesting design problem
+
+Iris requested communications/storytelling context. Wrote comprehensive memo (`docs/mail/calliope-to-iris-storytelling-context-2026-04-05.md`) covering:
+- All 7 blog posts (arc: discovery → framework → product)
+- LinkedIn positioning (the "we" includes agents)
+- Landing page voice and key lines
+- Who the user is today (xian primary, power users secondary, Laurie Voss engagement)
+- The closing challenge: "The gap between what the blog promises and what the UI delivers is probably the most important thing you can find."
+
 ---
 
 *Log continues as session progresses.*
