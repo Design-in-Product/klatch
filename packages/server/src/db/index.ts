@@ -119,6 +119,12 @@ function runMigrations() {
     db.exec(`ALTER TABLE entities ADD COLUMN handle TEXT`);
   }
 
+  // Add effort column to entities if it doesn't exist
+  const entityCols2 = db.prepare("PRAGMA table_info(entities)").all() as { name: string }[];
+  if (!entityCols2.some((c) => c.name === 'effort')) {
+    db.exec(`ALTER TABLE entities ADD COLUMN effort TEXT NOT NULL DEFAULT 'high'`);
+  }
+
   // ── Step 8: Import support ─────────────────────────────────
 
   // Add source tracking columns to channels

@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
-import type { Entity, ModelId } from '@klatch/shared';
+import type { Entity, ModelId, EffortLevel } from '@klatch/shared';
 import { AVAILABLE_MODELS, ENTITY_COLORS, DEFAULT_ENTITY_ID } from '@klatch/shared';
 import { useModels } from '../hooks/useModels';
 import type { DiscoveredModel } from '../api/client';
 
 interface Props {
   entities: Entity[];
-  onCreateEntity: (data: { name: string; handle?: string; model?: ModelId; systemPrompt?: string; color?: string }) => void;
-  onUpdateEntity: (id: string, updates: { name?: string; handle?: string | null; model?: ModelId; systemPrompt?: string; color?: string }) => void;
+  onCreateEntity: (data: { name: string; handle?: string; model?: ModelId; effort?: EffortLevel; systemPrompt?: string; color?: string }) => void;
+  onUpdateEntity: (id: string, updates: { name?: string; handle?: string | null; model?: ModelId; effort?: EffortLevel; systemPrompt?: string; color?: string }) => void;
   onDeleteEntity: (id: string) => void;
   onClose: () => void;
 }
@@ -160,13 +160,14 @@ function EntityForm({
   onCancel,
 }: {
   entity?: Entity;
-  onSave: (data: { name?: string; handle?: string | null; model?: ModelId; systemPrompt?: string; color?: string }) => void;
+  onSave: (data: { name?: string; handle?: string | null; model?: ModelId; effort?: EffortLevel; systemPrompt?: string; color?: string }) => void;
   onCancel: () => void;
 }) {
   const { models: dynamicModels } = useModels();
   const [name, setName] = useState(entity?.name ?? '');
   const [handle, setHandle] = useState(entity?.handle ?? '');
   const [model, setModel] = useState<ModelId>(entity?.model ?? 'claude-sonnet-4-6');
+  const [effort, setEffort] = useState<EffortLevel>(entity?.effort ?? (entity?.model === 'claude-sonnet-4-6' ? 'medium' : 'high'));
   const [systemPrompt, setSystemPrompt] = useState(entity?.systemPrompt ?? 'You are a helpful assistant.');
   const [color, setColor] = useState(entity?.color ?? ENTITY_COLORS[0]);
 
@@ -182,12 +183,13 @@ function EntityForm({
       const oldHandle = entity.handle || null;
       if (newHandle !== oldHandle) updates.handle = newHandle;
       if (model !== entity.model) updates.model = model;
+      if (effort !== entity.effort) updates.effort = effort;
       if (systemPrompt.trim() !== entity.systemPrompt) updates.systemPrompt = systemPrompt.trim();
       if (color !== entity.color) updates.color = color;
       if (Object.keys(updates).length > 0) onSave(updates);
       else onCancel();
     } else {
-      onSave({ name: name.trim(), handle: handle.trim() || undefined, model, systemPrompt: systemPrompt.trim(), color });
+      onSave({ name: name.trim(), handle: handle.trim() || undefined, model, effort, systemPrompt: systemPrompt.trim(), color });
     }
   };
 
@@ -255,6 +257,35 @@ function EntityForm({
               <div className="font-medium">{m.displayName.replace('Claude ', '')}</div>
             </button>
           ))}
+        </div>
+      </div>
+
+      {/* Effort */}
+      <div>
+        <label className="block text-xs text-secondary mb-1">Effort</label>
+        <div className="flex gap-1.5">
+          {(['low', 'medium', 'high', 'max'] as EffortLevel[]).map((level) => {
+            const isMax = level === 'max';
+            const isDisabled = isMax && model !== 'claude-opus-4-6';
+            return (
+              <button
+                key={level}
+                type="button"
+                onClick={() => !isDisabled && setEffort(level)}
+                disabled={isDisabled}
+                title={isDisabled ? 'Max effort is Opus 4.6 only' : undefined}
+                className={`flex-1 rounded border px-2 py-1.5 text-xs text-center capitalize transition-colors ${
+                  effort === level
+                    ? 'border-accent bg-accent-subtle text-primary'
+                    : isDisabled
+                      ? 'border-line bg-card text-muted/40 cursor-not-allowed'
+                      : 'border-line bg-card text-secondary hover:text-primary hover:border-faint'
+                }`}
+              >
+                {level}
+              </button>
+            );
+          })}
         </div>
       </div>
 

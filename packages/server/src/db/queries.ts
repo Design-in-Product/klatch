@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
 import { getDb } from './index.js';
-import type { Channel, ChannelType, ChannelStats, Message, Entity, Project, ModelId, InteractionMode, ChannelSource, KlatchFile, FileRef, FileRefScope, FileRefType, FileWithRef } from '@klatch/shared';
+import type { Channel, ChannelType, ChannelStats, Message, Entity, Project, ModelId, InteractionMode, ChannelSource, KlatchFile, FileRef, FileRefScope, FileRefType, FileWithRef, EffortLevel } from '@klatch/shared';
 import { DEFAULT_MODEL, DEFAULT_ENTITY_ID, ENTITY_COLORS, DEFAULT_INTERACTION_MODE } from '@klatch/shared';
 
 function rowToChannel(row: any): Channel {
@@ -52,6 +52,7 @@ function rowToEntity(row: any): Entity {
     name: row.name,
     handle: row.handle || undefined,
     model: row.model || DEFAULT_MODEL,
+    effort: (row.effort as EffortLevel) || 'high',
     systemPrompt: row.system_prompt,
     color: row.color || ENTITY_COLORS[0],
     createdAt: row.created_at,
@@ -330,24 +331,32 @@ export function getAllEntities(): Entity[] {
   return rows.map(rowToEntity);
 }
 
+/** Default effort level by model — Sonnet defaults to medium per Anthropic recommendation */
+function defaultEffortForModel(model: ModelId): EffortLevel {
+  if (model === 'claude-sonnet-4-6') return 'medium';
+  return 'high';
+}
+
 export function createEntity(
   name: string,
   model: ModelId,
   systemPrompt: string,
   color: string,
-  handle?: string
+  handle?: string,
+  effort?: EffortLevel
 ): Entity {
   const id = uuidv4();
   const now = new Date().toISOString();
+  const entityEffort = effort || defaultEffortForModel(model);
   getDb()
-    .prepare('INSERT INTO entities (id, name, handle, model, system_prompt, color, created_at) VALUES (?, ?, ?, ?, ?, ?, ?)')
-    .run(id, name, handle || null, model, systemPrompt, color, now);
-  return { id, name, handle: handle || undefined, model, systemPrompt, color, createdAt: now };
+    .prepare('INSERT INTO entities (id, name, handle, model, effort, system_prompt, color, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)')
+    .run(id, name, handle || null, model, entityEffort, systemPrompt, color, now);
+  return { id, name, handle: handle || undefined, model, effort: entityEffort, systemPrompt, color, createdAt: now };
 }
 
 export function updateEntity(
   id: string,
-  updates: { name?: string; handle?: string | null; model?: ModelId; systemPrompt?: string; color?: string }
+  updates: { name?: string; handle?: string | null; model?: ModelId; effort?: EffortLevel; systemPrompt?: string; color?: string }
 ): Entity | undefined {
   const entity = getEntity(id);
   if (!entity) return undefined;
@@ -355,14 +364,15 @@ export function updateEntity(
   const name = updates.name ?? entity.name;
   const handle = updates.handle !== undefined ? (updates.handle || undefined) : entity.handle;
   const model = updates.model ?? entity.model;
+  const effort = updates.effort ?? entity.effort;
   const systemPrompt = updates.systemPrompt ?? entity.systemPrompt;
   const color = updates.color ?? entity.color;
 
   getDb()
-    .prepare('UPDATE entities SET name = ?, handle = ?, model = ?, system_prompt = ?, color = ? WHERE id = ?')
-    .run(name, handle || null, model, systemPrompt, color, id);
+    .prepare('UPDATE entities SET name = ?, handle = ?, model = ?, effort = ?, system_prompt = ?, color = ? WHERE id = ?')
+    .run(name, handle || null, model, effort, systemPrompt, color, id);
 
-  return { ...entity, name, handle, model, systemPrompt, color };
+  return { ...entity, name, handle, model, effort, systemPrompt, color };
 }
 
 export function deleteEntity(id: string): boolean {

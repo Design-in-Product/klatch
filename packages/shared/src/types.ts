@@ -40,11 +40,14 @@ export const INTERACTION_MODES = {
 export type InteractionMode = keyof typeof INTERACTION_MODES;
 export const DEFAULT_INTERACTION_MODE: InteractionMode = 'panel';
 
+export type EffortLevel = 'low' | 'medium' | 'high' | 'max';
+
 export interface Entity {
   id: string;
   name: string;
   handle?: string;
   model: ModelId;
+  effort: EffortLevel;
   systemPrompt: string;
   color: string;
   createdAt: string;

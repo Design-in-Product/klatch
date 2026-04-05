@@ -510,7 +510,7 @@ async function streamClaudeCore(
   entity: Entity,
   history: ChatMessage[],
   systemPrompt: string,
-  options?: { compactionEnabled?: boolean }
+  options?: { compactionEnabled?: boolean; channelMode?: string }
 ): Promise<StreamResult> {
   const emitter = new EventEmitter();
   activeStreams.set(assistantMessageId, emitter);
@@ -536,11 +536,15 @@ async function streamClaudeCore(
           system: systemPrompt || undefined,
           messages: conversationHistory,
           tools: KLATCH_TOOLS,
+          ...(entity.effort ? { output_config: { effort: entity.effort } } : {}),
           betas: ['compact-2026-01-12'],
           context_management: {
             edits: [{
               type: 'compact_20260112',
-              trigger: { type: 'input_tokens', value: 80000 },
+              trigger: { type: 'input_tokens', value: 160000 },
+              ...(options?.channelMode && options.channelMode !== 'panel' ? {
+                instructions: 'Preserve [EntityName responded] attribution markers. When multiple entities contributed, maintain specific attribution of key contributions.',
+              } : {}),
             }],
           },
         } as any);
@@ -570,6 +574,7 @@ async function streamClaudeCore(
           system: systemPrompt || undefined,
           messages: conversationHistory,
           tools: KLATCH_TOOLS,
+          ...(entity.effort ? { output_config: { effort: entity.effort } } : {}),
         } as any);
 
         activeAnthropicStreams.set(assistantMessageId, stream);
@@ -700,7 +705,7 @@ export async function streamClaude(
   const systemPrompt = buildSystemPrompt(entity, channelPreamble, channel, project, channelFileList, projectFileList);
   const result = await streamClaudeCore(
     assistantMessageId, entity, history, systemPrompt,
-    { compactionEnabled }
+    { compactionEnabled, channelMode: channel?.mode }
   );
 
   // Store compaction result if the API compacted
@@ -791,7 +796,7 @@ export async function streamClaudeRoundtable(
         entity,
         history,
         systemPrompt,
-        { compactionEnabled: i === 0 && compactionEnabled }
+        { compactionEnabled: i === 0 && compactionEnabled, channelMode: channel?.mode }
       );
 
       // Store compaction if it happened on the first entity

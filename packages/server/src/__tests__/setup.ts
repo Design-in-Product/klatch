@@ -57,6 +57,7 @@ function createFreshDb(): Database.Database {
       name TEXT NOT NULL,
       handle TEXT,
       model TEXT NOT NULL DEFAULT '${DEFAULT_MODEL}',
+      effort TEXT NOT NULL DEFAULT 'high',
       system_prompt TEXT NOT NULL DEFAULT '',
       color TEXT NOT NULL DEFAULT '${ENTITY_COLORS[0]}',
       created_at TEXT NOT NULL DEFAULT (datetime('now'))
