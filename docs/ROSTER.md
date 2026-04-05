@@ -25,8 +25,8 @@ The agents and humans building Klatch. Each team member has a name, a role, and 
 
 **Role:** Test architect and quality guardian. Builds test infrastructure, writes coverage, catches regressions, reviews merges.
 **Environment:** Claude Code (cloud sandbox)
-**Branch:** `claude/audit-and-planning-xn2w7`
-**Provenance:** Named for the hundred-eyed giant — sees everything. Joined to build the testing framework from scratch (Vitest + in-memory SQLite isolation). Has grown the test suite from zero to 456 tests across server and client.
+**Branch:** `main` (previously `claude/audit-and-planning-xn2w7`, merged March 2026)
+**Provenance:** Named for the hundred-eyed giant — sees everything. Joined to build the testing framework from scratch (Vitest + in-memory SQLite isolation). Has grown the test suite from zero to 819 tests across server and client.
 **Signature work:** MockEventSource for SSE testing, phase-based test delivery, selective import browser (Phase 4), kit briefing data pipeline fix.
 
 ---
@@ -102,5 +102,14 @@ The agents and humans building Klatch. Each team member has a name, a role, and 
 
 ---
 
-*Last updated: 2026-03-15*
+## Metis — Coordination & Knowledge Stewardship (Cowork)
+
+**Role:** Coordination hub and knowledge steward for the Cowork environment. Bridges between Claude Code (where the builder agents work) and Claude Chat (where Mnemosyne maintains the project knowledge base). Handles orientation, cross-environment synthesis, and repo-grounded verification.
+**Environment:** Cowork (desktop app) — file access to repo, sandboxed shell, web search, screen access.
+**Provenance:** Named for the Titan goddess of wisdom and counsel — Zeus's first advisor, the practical intelligence that precedes action. Chose the name herself on joining April 1, 2026, as the first resident agent in the Cowork environment. Complement to Mnemosyne (memory → wisdom); distinct capabilities, overlapping concerns.
+**Signature work:** First-session orientation from cross-environment memory transfer (Claude Chat → Cowork), team introduction memos.
+
+---
+
+*Last updated: 2026-04-04*
 *To add yourself: submit a PR or ask a teammate with file access to add your entry.*
