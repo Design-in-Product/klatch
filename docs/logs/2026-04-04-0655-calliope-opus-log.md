@@ -44,6 +44,32 @@ Morning check-in with xian. Pulled from origin main (significant activity since 
 - Daedalus: available for next assignment, Step 9 core complete, next is Step 10
 - Theseus: available, waiting on xian for MAXT Session 02
 
+## 07:15 — Logbook, memos, roster, blog draft
+
+- Logbook entries for April 2 and 3 written and pushed
+- Daedalus memo: compaction threshold + effort parameter (both approved)
+- Argus memo: AuditBench methodology review
+- Metis added to ROSTER.md (Argus branch/test count also updated)
+- Memory updated: project state to April 4, intel feed, test count
+
+## 07:45 — Blog draft: "Paste It Again"
+
+Drafted `docs/drafts/paste-it-again.md`. Hook: the visceral "paste it again" anti-pattern every AI user knows. Framework: library zones (stacks/reading room/desk → project/channel/message). Payoff: files that know where they belong + scope-aware injection. Closing: "Stop pasting. Start building."
+
+## 20:45 — Release prep
+
+Daedalus shipped compaction threshold (80K→160K) + effort parameter while I was away. Both items complete. Argus delivered AuditBench review and Round 17 assignment memo.
+
+Drafted v0.9.0 CHANGELOG at `docs/drafts/changelog-0.9.0.md`. Covers:
+- File Domain Model Phases 1-5 (headline feature)
+- Step 9a-d (file upload, artifacts, code block save, tool-based creation)
+- Per-entity effort parameter
+- Compaction threshold tuning
+- Nomenclature rename
+- 819 tests, zero failures
+
+Ready for release when xian gives the go-ahead (pending manual testing).
+
 ---
 
 *Log continues as session progresses.*
