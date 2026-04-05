@@ -92,3 +92,16 @@ Implemented per Argus's design spec (`docs/plans/AAXT-SCAFFOLDED-PROBING.md`).
 - `GET /api/aaxt/status` — check auxiliary LLM configuration
 
 Tests: 849 total (710 server + 139 client), 0 failures.
+
+### 21:40 — Session wrap
+
+**Commits on origin/main:**
+```
+c218c85 AAXT Scaffolded Probing Phase 1: probe generator, scorer, auxiliary LLM client
+3332ca5 Round 17 assignment memo to Argus: compaction + effort tests
+b282305 Compaction threshold 80K→160K + per-entity effort parameter
+```
+
+**Summary:** Three items shipped tonight. Compaction threshold raised from 80K→160K per Argus research. Per-entity effort parameter with model-aware defaults and full UI. AAXT Scaffolded Probing Phase 1 per Argus's design spec.
+
+**Test count:** 849 total, 0 failures.
