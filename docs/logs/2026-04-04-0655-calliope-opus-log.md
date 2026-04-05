@@ -70,6 +70,43 @@ Drafted v0.9.0 CHANGELOG at `docs/drafts/changelog-0.9.0.md`. Covers:
 
 Ready for release when xian gives the go-ahead (pending manual testing).
 
+## 22:30 — Logbook and session wrap
+
+**Logbook:** April 4 entry written. Covers all four agents: Calliope (coordination + blog draft), Daedalus (compaction + effort + AAXT scaffolded probing Phase 1), Argus (AuditBench review + scaffolded probing design + Round 17), Theseus (orientation + Round 18 AAXT x FDM). Release staging noted.
+
+### Session deliverables
+
+| Deliverable | File(s) | Commit |
+|-------------|---------|--------|
+| Logbook: April 2 + 3 | `log.html` | 4467d19 |
+| Daedalus memo: compaction + effort | `docs/mail/calliope-to-daedalus-compaction-effort-2026-04-04.md` | 68f2ce8 |
+| Argus memo: AuditBench | `docs/mail/calliope-to-argus-auditbench-2026-04-04.md` | 68f2ce8 |
+| Metis added to ROSTER.md | `docs/ROSTER.md` | 68f2ce8 |
+| Blog draft: "Paste It Again" | `docs/drafts/paste-it-again.md` | ae24f3a |
+| Blog HTML + illustration | `blog/paste-it-again.html`, `blog/index.html` | c3d6521 |
+| v0.9.0 CHANGELOG draft | `docs/drafts/changelog-0.9.0.md` | ae24f3a |
+| Logbook: April 4 | `log.html` | (this commit) |
+| Session log | `docs/logs/2026-04-04-0655-calliope-opus-log.md` | (this commit) |
+
+### Test count at close
+849 total (710 server + 139 client), zero failures. Up from 819 this morning.
+
+### Carried forward
+- [ ] v0.9.0 release — CHANGELOG draft ready, pending xian go-ahead + manual testing
+- [ ] "Paste It Again" publication — HTML ready, pending xian review
+- [ ] LinkedIn announcement — paired with release, tomorrow or Monday
+- [ ] MAXT Session 02 — L4 injection fidelity, Theseus ready, xian when rested
+- [ ] AAXT Scaffolded Probing Phase 2 — wire probe generator → target agent → scorer
+- [ ] Effort parameter validation gap — model change doesn't auto-check existing effort
+- [ ] Step 10 planning — after release
+- [ ] Daedalus/Theseus traditions docs
+- [ ] Metis Cowork chat messages — may have uncommitted content
+
+### Verification
+```
+git log origin/main --oneline -5
+```
+
 ---
 
-*Log continues as session progresses.*
+*Session closed. Full roster working for the first time since the migration. 849 tests, zero failures.*

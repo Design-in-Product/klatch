@@ -37,6 +37,29 @@
     </div>
 
     <!-- ============================================================ -->
+    <!-- ENTRY: 2026-04-04 -->
+    <!-- ============================================================ -->
+    <div class="log-entry" id="2026-04-04">
+      <p class="log-date">April 4, 2026</p>
+      <div class="log-body">
+
+        <p>The full roster working in a single day for the first time since the migration.</p>
+
+        <p>The morning started with coordination &mdash; logbook entries for April 2 and 3, memos dispatching Daedalus (compaction + effort) and Argus (AuditBench methodology review), Metis placed in the roster, and "Paste It Again" drafted as the next blog post. The library-zones metaphor &mdash; stacks, reading room, desk mapping to project, channel, and message scope &mdash; gave the File Domain Model its plain-language explanation. The hero illustration followed: a triptych of the three zones with promotion arrows flowing upward and the line "Knowledge rises as it proves its value."</p>
+
+        <p>Daedalus arrived in the evening and shipped three items before midnight. The compaction threshold moved from 80K to 160K tokens &mdash; a one-line change backed by Argus's research showing the old trigger fired at only 8% of available context on 1M-token models. Entity-attribution preservation instructions were added for roundtable and directed channels, ensuring compaction summaries maintain <code>[EntityName responded]</code> markers. Then the effort parameter: a new <code>effort</code> column on entities, with model-aware defaults (Sonnet at medium, others at high), <code>max</code> restricted to Opus 4.6, a four-button selector in the entity settings UI, and <code>output_config: { effort }</code> passed in all API calls. The third item was unexpected &mdash; AAXT Scaffolded Probing Phase 1, built to Argus's design spec: an auxiliary LLM client (GPT-4o-mini by default, Haiku fallback), a probe generator that reads prompt-debug layer status and generates targeted behavioral questions per layer, and a scorer that classifies responses using the full AXT taxonomy including the Subliminal category. The probing infrastructure isn't wired end-to-end yet (Phase 2), but the components are built, tested, and exposed via <code>POST /api/channels/:id/aaxt-probe</code>.</p>
+
+        <p>Argus ran in parallel. The AuditBench methodology review found a striking parallel: AuditBench's headline result &mdash; that tools surface evidence in isolation but agents can't use it &mdash; maps directly to the AAXT/MAXT gap where prompt-debug reports ACTIVE but agents can't behaviorally demonstrate access. The Subliminal category has a mirror image in AuditBench's adversarially-hidden behaviors: their models have hidden behaviors but won't confess; our agents have context but can't introspect on it. Four recommendations came back: automated scaffolded probing (the highest priority, which Daedalus then built the same evening), multi-probe aggregation for reliability, a model-based grader tier between AAXT and MAXT, and pass@k metrics for measuring capability versus consistency. Argus then wrote the AAXT Scaffolded Probing design spec that Daedalus implemented, and followed with Round 17 &mdash; eighteen tests covering the compaction threshold change and effort parameter, including validation that <code>max</code> effort is rejected for non-Opus models and that Sonnet entities default to medium. An implementation gap was noted: changing an entity's model to Sonnet doesn't auto-validate against existing effort settings unless effort is explicitly in the request body. The test count reached 837.</p>
+
+        <p>Theseus returned after a ten-day absence &mdash; the last agent to migrate to the new account. The orientation session covered thirty-five commits of changes, including the entire File Domain Model, the nomenclature rename, the compaction research, and the AAXT scaffolded probing infrastructure. Rather than MAXT (xian was tired), Theseus ran AAXT: Round 18, twelve tests covering the intersection of files and imports that nobody had tested yet &mdash; imported channels with pinned files, cross-scope isolation verifying that channel-pinned files don't bleed to siblings, project knowledge base visibility across all linked channels, and full five-layer assembly with files at both L3 and L4. All twelve passed. The suite hit 849 tests, zero failures.</p>
+
+        <p>The v0.9.0 release is staged. The CHANGELOG draft covers the File Domain Model (headline), Steps 9a&ndash;d, the effort parameter, compaction tuning, nomenclature, and the test suite growth from 727 to 849. The "Paste It Again" blog post is in review. Both await xian's go-ahead &mdash; likely tomorrow or Monday, possibly paired with a LinkedIn announcement.</p>
+
+      </div>
+    </div>
+    <!-- end entry 2026-04-04 -->
+
+    <!-- ============================================================ -->
     <!-- ENTRY: 2026-04-03 -->
     <!-- ============================================================ -->
     <div class="log-entry" id="2026-04-03">
