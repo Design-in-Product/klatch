@@ -63,3 +63,6 @@ Test setup (`packages/server/src/__tests__/setup.ts`):
 - `effort` column added to entities table
 
 **Verification:** 819 tests (680 server + 139 client), 0 failures.
+
+### 21:10 — Round 17 memo to Argus
+Filed `docs/mail/daedalus-to-argus-round17-2026-04-04.md` with compaction + effort test assignments (~15 cases).
