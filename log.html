@@ -37,6 +37,48 @@
     </div>
 
     <!-- ============================================================ -->
+    <!-- ENTRY: 2026-04-03 -->
+    <!-- ============================================================ -->
+    <div class="log-entry" id="2026-04-03">
+      <p class="log-date">April 3, 2026</p>
+      <div class="log-body">
+
+        <p>A quiet day by recent standards &mdash; one agent session, and it was Argus tying up loose ends.</p>
+
+        <p>Round 16 completed test coverage for the File Domain Model: eleven tests for Phases 4 and 5 (dual-write completion and the promotion endpoint). With Rounds 14 through 16 done, the FDM now has 58 dedicated tests across three files, covering schema, queries, API endpoints, backfill, L3 and L4 context injection, prompt-debug, pin edge cases, dual-write, and promotion. The full suite stands at 819 tests (680 server, 139 client), zero failures.</p>
+
+        <p>The substantive work was the compaction threshold deep dive &mdash; a research spike Calliope assigned on April 2 after xian reviewed Argus's initial compaction evaluation and wanted more data before deciding. The findings were crisp: Klatch's 80K trigger fires at only 8% of available context on 1M-token models. Claude Code &mdash; Anthropic's own agent tool &mdash; triggers at approximately 75% of its 200K context window, reserving roughly 50K tokens as a "completion buffer" for reasoning. The insight is that models need free space to <em>think</em>, not just to read. At 80K, most imported Claude Code sessions (typically 50K&ndash;150K tokens) trigger compaction unnecessarily, and technical conversations compress at roughly 18:1 &mdash; meaning a compacted 80K session retains only about 4,400 tokens of summary. At 160K, the same summary would preserve roughly 8,900 tokens. The recommendation: raise the default from 80K to 160K, a one-line change. No configuration UI needed. Also add entity-attribution preservation instructions for roundtable compaction summaries &mdash; one conditional that tells the model to maintain <code>[EntityName responded]</code> markers in the summary. Total implementation: about five lines of code.</p>
+
+        <p>Argus also filed intelligence sweep #6 (covering April 2&ndash;3). A quiet window on the API side. Cursor 3 launched with autonomous agent mode, which validates the multi-entity design space Klatch operates in. OpenAI's Codex CLI claims 4x token efficiency over Claude Code (unverified). GitHub issue #21 (stale kit briefing assertions) was formally closed with a fix reference.</p>
+
+        <p>On the Piper Morgan side, the cross-pollination brief carried significant news: the M1 gate UAT did not pass. PM and CXO tested eight of fourteen scenarios on a fresh account and stopped early &mdash; the floor LLM wasn't reaching users (five query types returned the same canned template), and todo completion was non-functional despite 23 passing automated tests. Pattern-045, "Green Tests, Red User," confirmed at scale. It's exactly what the gate was designed to catch, and exactly what AAXT alone cannot. Klatch's own MAXT Session 02, scoped around L4 injection fidelity, will test the same boundary: does structurally present data translate to usable knowledge?</p>
+
+      </div>
+    </div>
+    <!-- end entry 2026-04-03 -->
+
+    <!-- ============================================================ -->
+    <!-- ENTRY: 2026-04-02 -->
+    <!-- ============================================================ -->
+    <div class="log-entry" id="2026-04-02">
+      <p class="log-date">April 2, 2026</p>
+      <div class="log-body">
+
+        <p>The File Domain Model sprint continued at pace. Daedalus shipped Phase 3 in the morning &mdash; a project knowledge base with upload, management, and L3 context injection. Project files are now listed in the system prompt alongside project memory: "Project knowledge base files: ..." in Layer 3. A companion UI section in project settings lets users upload, view, and remove files from the knowledge base. Then came a design doc resequencing: Phases 6 and 7 (memory-as-file and entity library) were deferred to Steps 10 and 11, where the unified model pays off alongside export and search. Gall's Law applied to feature planning &mdash; ship what users can touch now, defer internal refactors to when they deliver user value.</p>
+
+        <p>Daedalus hit a usage limit mid-afternoon, then resumed overnight and completed Phases 4 and 5 before dawn on April 3. Phase 4 was smaller than expected: the only gap in dual-write was the <code>save_file</code> tool handler, which saved files to disk and created message artifacts but not file domain model entries. One function call fixed it. All file creation paths &mdash; upload endpoint, tool handler, and backfill migration &mdash; now consistently populate both systems. Phase 5 added file promotion: files can move upward from message scope to channel scope to project scope via a single endpoint. The channel settings UI gained a promote button on pinned files, visible only when the channel belongs to a project. Idempotent, validated, additive &mdash; promotion creates new references without removing existing ones.</p>
+
+        <p>Argus ran in parallel, writing tests as fast as Daedalus shipped features. Round 14 delivered 31 tests for Phase 1 &mdash; schema validation, query function round-trips, API endpoint coverage, backfill verification. Round 15 followed with 16 tests for Phases 2 and 3, covering L4 and L3 context injection, prompt-debug layer reporting, and pin edge cases. Argus had proactively written several Phase 2 tests in Round 14 before receiving the Round 15 memo, anticipated the need, and resolved the overlap cleanly &mdash; the header comment in the test file documents which round covers what. The test count reached 808 (669 server, 139 client) with zero failures.</p>
+
+        <p>Calliope's morning session resolved several outstanding items. The Theseus MAXT Session 01 report, tracked as pending since March 27, turned out to be the session log itself &mdash; all eight findings documented inline, and Theseus's status section explicitly says "No separate formal report required." Closed. A memo to Theseus laid out the AXT agenda for their next session: file pinning L4 injection fidelity (does an agent <em>know</em> about pinned files?) and the nomenclature change as an AXT variable. A welcome memo to Metis established the role boundaries: Calliope handles narrative and editorial from Code; Metis handles operational and cross-environment coordination from Cowork. Argus received a compaction threshold research assignment.</p>
+
+        <p>The effort parameter and compaction API decisions were surfaced to xian for review. Both research evaluations are complete. The effort parameter is per-entity (one DB column, one API parameter, one UI selector, ready for Phase 1 whenever Daedalus is assigned). Compaction needs the threshold research spike before a decision. xian approved entity-attribution preservation for implementation.</p>
+
+      </div>
+    </div>
+    <!-- end entry 2026-04-02 -->
+
+    <!-- ============================================================ -->
     <!-- ENTRY: 2026-04-01 -->
     <!-- ============================================================ -->
     <div class="log-entry" id="2026-04-01">
