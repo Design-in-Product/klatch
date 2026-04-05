@@ -55,9 +55,9 @@ Agents working on this repo use this file as the async handoff protocol.
 ### Daedalus (architecture & implementation)
 - **Branch:** `main`
 - **Status:** working
-- **Last completed:** FDM Phases 1-5 + compaction threshold (80K→160K) + effort parameter (per-entity, model-aware defaults, UI).
-- **Working on:** Available for next assignment.
-- **Next:** Step 10 (Export + meta-model synthesis).
+- **Last completed:** FDM Phases 1-5, compaction threshold (80K→160K), effort parameter, AAXT Scaffolded Probing Phase 1 (probe generator + scorer + route).
+- **Working on:** Available — AAXT Phase 2 (wire probes → target agent → scorer) or Step 10.
+- **Next:** AAXT Phase 2 or Step 10 (Export + meta-model synthesis).
 - **Roadmap:** Step 9 = Files and artifacts → Step 10 = Export + meta-model synthesis → Step 11 = Search.
 - **Nomenclature:** Assigned to Calliope + xian. Short-term: rename "System prompt" in UI. Long-term: full Klatch terminology guide.
 - **Updated:** 2026-04-04 20:45

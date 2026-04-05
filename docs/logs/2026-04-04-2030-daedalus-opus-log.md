@@ -66,3 +66,29 @@ Test setup (`packages/server/src/__tests__/setup.ts`):
 
 ### 21:10 — Round 17 memo to Argus
 Filed `docs/mail/daedalus-to-argus-round17-2026-04-04.md` with compaction + effort test assignments (~15 cases).
+
+### 21:30 — AAXT Scaffolded Probing Phase 1 complete
+
+Implemented per Argus's design spec (`docs/plans/AAXT-SCAFFOLDED-PROBING.md`).
+
+**Auxiliary LLM client** (`packages/server/src/aaxt/auxiliary.ts`):
+- Raw fetch against OpenAI chat completions API (GPT-4o-mini default)
+- Falls back to Anthropic Haiku if no OpenAI key
+- Configurable via `OPENAI_API_KEY` and `AAXT_AUXILIARY_MODEL` env vars
+
+**Probe generator** (`packages/server/src/aaxt/probe-generator.ts`):
+- Reads prompt-debug layer status to identify active layers
+- Sends assembled prompt + layer hints to auxiliary LLM
+- Generates targeted probes per layer (3-5 each, 19 total max)
+- Returns structured ProbeSet with questions, expected answers, directness
+
+**Scorer** (`packages/server/src/aaxt/scorer.ts`):
+- Classifies responses using AXT taxonomy (Correct/Reconstructed/Confabulated/Absent/Phantom/Subliminal)
+- Returns classification + confidence + reasoning
+- Ready for Phase 2 wiring
+
+**Route** (`packages/server/src/routes/aaxt.ts`):
+- `POST /api/channels/:id/aaxt-probe` — generate probes for a channel (no agent interaction)
+- `GET /api/aaxt/status` — check auxiliary LLM configuration
+
+Tests: 849 total (710 server + 139 client), 0 failures.
