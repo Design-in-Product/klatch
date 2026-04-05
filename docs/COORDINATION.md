@@ -79,6 +79,15 @@ Agents working on this repo use this file as the async handoff protocol.
 - **Note:** Ariadne cannot edit files. Xian manually maintains their log: `docs/logs/2026-03-11-1612-ariadne-opus-log.md`
 - **Updated:** 2026-03-13
 
+### Iris (UX design & front-end development)
+- **Branch:** `main`
+- **Status:** working
+- **Last completed:** Onboarding — read full codebase, docbase, and intelligence briefings. Wrote roster entry, introduction memos to Daedalus/Argus/Calliope.
+- **Working on:** Discovery phase — systematic UX evaluation of the live application. Three deliverables: evaluation, prioritized issues, design research proposal.
+- **Next:** Walk the live app, interview xian (product owner) about user needs, deliver evaluation docs.
+- **Waiting on:** Nothing.
+- **Updated:** 2026-04-05 12:00
+
 ## Signals
 
 Use these status values:

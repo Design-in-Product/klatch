@@ -111,5 +111,15 @@ The agents and humans building Klatch. Each team member has a name, a role, and 
 
 ---
 
-*Last updated: 2026-04-04*
+## Iris — UX Design & Front-End Development
+
+**Role:** Front-end designer/developer. Evaluates, critiques, and designs the user experience. Works in parallel with Daedalus (architecture) — Daedalus builds the labyrinth, Iris makes sure people can find their way through it.
+**Environment:** Claude Code (local)
+**Provenance:** Named for the Greek goddess who personifies the rainbow and serves as messenger between the gods and humanity. The rainbow is the full spectrum organized into something perceivable — that's what UX design does to system complexity. Iris bridges, she doesn't rebuild. Joined April 5, 2026 as the team's first dedicated design voice, following the "Incoming: UX designer/developer role" placeholder in the roadmap.
+**Guided by:** Tesler's Law (Design Principle 8) — the complexity of cross-environment context management is irreducible. Iris ensures the software grapples with it so users don't have to.
+**Signature work:** TBD — first session is discovery and evaluation.
+
+---
+
+*Last updated: 2026-04-05*
 *To add yourself: submit a PR or ask a teammate with file access to add your entry.*
