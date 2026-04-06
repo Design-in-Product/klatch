@@ -48,6 +48,34 @@ Iris requested communications/storytelling context. Wrote comprehensive memo (`d
 - Who the user is today (xian primary, power users secondary, Laurie Voss engagement)
 - The closing challenge: "The gap between what the blog promises and what the UI delivers is probably the most important thing you can find."
 
+## 23:30 — Logbook and session wrap
+
+**Logbook:** April 5 entry written. Covers Iris's first session (onboarding, five hypotheses, omnibus use case deep dive, Layer 4 insight), Calliope's communications context memo, and Theseus's Round 18.
+
+### Session deliverables
+
+| Deliverable | File(s) | Commit |
+|-------------|---------|--------|
+| UX designer kickoff brief | `docs/mail/calliope-to-ux-designer-kickoff-2026-04-05.md` | 282cea8 |
+| Session log | `docs/logs/2026-04-05-1109-calliope-opus-log.md` | 282cea8 |
+| Iris communications context | `docs/mail/calliope-to-iris-storytelling-context-2026-04-05.md` | 3e1ea8a |
+| Logbook: April 5 | `log.html` | (this commit) |
+
+### Carried forward to Monday
+- [ ] v0.9.0 release — CHANGELOG ready, pending manual testing
+- [ ] "Paste It Again" publication — HTML ready, pending xian review
+- [ ] LinkedIn announcement — paired with release
+- [ ] Iris: Use Case 2 (weekly work stream review) + three deliverables
+- [ ] MAXT Session 02 — L4 injection fidelity
+- [ ] AAXT Scaffolded Probing Phase 2
+- [ ] Effort parameter validation gap
+- [ ] Step 10 planning — after release
+
+### Verification
+```
+git log origin/main --oneline -3
+```
+
 ---
 
-*Log continues as session progresses.*
+*Session closed. Iris is on the team. See you Monday.*
