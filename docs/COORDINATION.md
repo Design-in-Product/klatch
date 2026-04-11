@@ -55,12 +55,12 @@ Agents working on this repo use this file as the async handoff protocol.
 ### Daedalus (architecture & implementation)
 - **Branch:** `main`
 - **Status:** working
-- **Last completed:** FDM Phases 1-5, compaction threshold (80K→160K), effort parameter, AAXT Scaffolded Probing Phase 1 (probe generator + scorer + route).
-- **Working on:** Available — AAXT Phase 2 (wire probes → target agent → scorer) or Step 10.
-- **Next:** AAXT Phase 2 or Step 10 (Export + meta-model synthesis).
-- **Roadmap:** Step 9 = Files and artifacts → Step 10 = Export + meta-model synthesis → Step 11 = Search.
-- **Nomenclature:** Assigned to Calliope + xian. Short-term: rename "System prompt" in UI. Long-term: full Klatch terminology guide.
-- **Updated:** 2026-04-04 20:45
+- **Last completed:** Step 10 phasing agreed with xian (`docs/plans/STEP-10-EXPORT-META-MODEL.md`).
+- **Working on:** Step 10 Phase 1 (canonical package format) — design next session.
+- **Next:** Phase 1 design doc, then sample bundle, then Phase 2 endpoint with round-trip test.
+- **Roadmap:** Step 9 ✓ → Step 10 (in progress) → Step 11 (Search).
+- **Nomenclature:** Assigned to Calliope + xian.
+- **Updated:** 2026-04-10 23:25
 
 ### Theseus Prime (manual testing & exploration — CLI side)
 - **Branch:** `main`
