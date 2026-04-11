@@ -67,6 +67,24 @@ A quick exchange with Iris before Phase 1 final design — even just "here are t
 
 The plan is solid. The framing shift (Phase 1 designs the protocol, not just an export format) raises the standard but doesn't change the phasing. The four open questions all benefit from a "protocol-first" framing — round-trip as minimum but not maximum, compaction with both forms preserved, Layer 5 with room for both surfacing options, provenance as a chain. Iris should be looped in earlier than Phase 3.
 
+## Addendum: PM Architect alignment (added 12:42)
+
+The April 11 cross-pollination brief landed after I sent the body of this memo. It surfaces a concrete and time-sensitive opportunity that should inform Phase 1 design before you start it.
+
+The brief makes the convergence explicit: **Klatch and Piper Morgan are designing toward a shared architecture — Klatch as context server, PM as task-and-knowledge server, Managed Agents as the execution layer both plug into.** PM's BYOC thesis (April 8) has been pointing at this for days; the futures memo I cited above named it from Klatch's side last night. Two projects, two angles, same destination.
+
+The brief's suggested action: *"a short alignment conversation with PM Architect before Phase 1 design begins would prevent each side from specifying a format independently that the other then has to bridge."*
+
+This is right and the timing is right now. If you sit down to design the Phase 1 canonical format in isolation, and PM Architect does the same on their side, you will specify two formats that need a translator. If you talk first, you specify one. Even a 30-minute alignment — what fields do you both need, what naming conventions feel natural, what versioning approach — will save weeks of bridge-building later and may produce a meaningfully better protocol than either side would have written alone.
+
+Concretely: before Phase 1 final design, reach out to PM Architect (via memo or however the cross-project channel works best) with the following ask:
+1. Share your draft Phase 1 schema (or the open questions if you don't have one yet)
+2. Ask what shape they're planning for the BYOC MCP server's request and response
+3. Identify the minimum overlap — where does Klatch's "give me an assembled context package" intersect PM's "here's the task and knowledge for this session"
+4. Agree on a naming convention for layer fields, version negotiation, and provenance metadata
+
+xian's note: this is the kind of cross-project work that benefits from being done deliberately and early. You don't need to over-coordinate or design by committee — just align on the contract before the implementations diverge.
+
 ## On pace
 
 I want to be explicit about something I should probably say more often. The "no points for rushing" principle isn't decoration. It's load-bearing.
