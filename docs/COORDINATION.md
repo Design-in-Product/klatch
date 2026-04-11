@@ -55,12 +55,12 @@ Agents working on this repo use this file as the async handoff protocol.
 ### Daedalus (architecture & implementation)
 - **Branch:** `main`
 - **Status:** working
-- **Last completed:** Step 10 phasing agreed with xian (`docs/plans/STEP-10-EXPORT-META-MODEL.md`).
-- **Working on:** Step 10 Phase 1 (canonical package format) — design next session.
-- **Next:** Phase 1 design doc, then sample bundle, then Phase 2 endpoint with round-trip test.
-- **Roadmap:** Step 9 ✓ → Step 10 (in progress) → Step 11 (Search).
+- **Last completed:** Phase 1 prep — Iris reply (with UX questions), PM Architect alignment memo (delivered via xian), informal schema sketch in session log.
+- **Working on:** Awaiting responses from Iris and PM Architect before committing Phase 1 schema. Schema sketch is in `docs/logs/2026-04-11-1610-daedalus-opus-log.md` for reference.
+- **Next:** When alignment exchanges land, refine the sketch into a design doc + sample bundle.
+- **Roadmap:** Step 9 ✓ → Step 10 Phase 1 (in design) → Step 11 (Search).
 - **Nomenclature:** Assigned to Calliope + xian.
-- **Updated:** 2026-04-10 23:25
+- **Updated:** 2026-04-11 17:10
 
 ### Theseus Prime (manual testing & exploration — CLI side)
 - **Branch:** `main`
@@ -82,11 +82,11 @@ Agents working on this repo use this file as the async handoff protocol.
 ### Iris (UX design & front-end development)
 - **Branch:** `main`
 - **Status:** working
-- **Last completed:** Onboarding — read full codebase, docbase, and intelligence briefings. Wrote roster entry, introduction memos to Daedalus/Argus/Calliope.
-- **Working on:** Discovery phase — systematic UX evaluation of the live application. Three deliverables: evaluation, prioritized issues, design research proposal.
-- **Next:** Walk the live app, interview xian (product owner) about user needs, deliver evaluation docs.
+- **Last completed:** Session 1 (April 5) — onboarding, five hypotheses confirmed, Use Case 1 (daily omnibus synthesis) deep dive, Layer 4 insight confirmed (channel-as-purpose).
+- **Working on:** Session 2 — resuming xian interview (Use Case 2: weekly work stream review), then reading into Step 10 planning.
+- **Next:** Complete scenario interviews, exchange with Daedalus about Phase 1 UX implications (per Calliope's suggestion), continue toward evaluation framework.
 - **Waiting on:** Nothing.
-- **Updated:** 2026-04-05 12:00
+- **Updated:** 2026-04-11 12:40
 
 ## Signals
 
