@@ -82,11 +82,11 @@ Agents working on this repo use this file as the async handoff protocol.
 ### Iris (UX design & front-end development)
 - **Branch:** `main`
 - **Status:** working
-- **Last completed:** Session 1 (April 5) — onboarding, five hypotheses confirmed, Use Case 1 (daily omnibus synthesis) deep dive, Layer 4 insight confirmed (channel-as-purpose).
-- **Working on:** Session 2 — resuming xian interview (Use Case 2: weekly work stream review), then reading into Step 10 planning.
-- **Next:** Complete scenario interviews, exchange with Daedalus about Phase 1 UX implications (per Calliope's suggestion), continue toward evaluation framework.
-- **Waiting on:** Nothing.
-- **Updated:** 2026-04-11 12:40
+- **Last completed:** Session 2 — Use Case 2 (weekly work stream review) deep dive with xian; provenance-tracking-for-ideas added to ROADMAP Someday/Maybe; canonical use cases saved to memory; Phase 1 UX memo to Daedalus (`docs/mail/iris-to-daedalus-step10-phase1-ux-2026-04-11.md`) — answers his four questions, raises the single-channel vs project-scope structural question, asks for `field_notes` to be structured-array-not-string in the schema.
+- **Working on:** Awaiting Daedalus reply. Continuing toward evaluation framework grounded in canonical use cases.
+- **Next:** Daedalus exchange on Phase 1 schema, then evaluation/priorities/design-research deliverables.
+- **Waiting on:** Daedalus reply on Phase 1 UX memo (non-blocking — he's also awaiting PM Architect).
+- **Updated:** 2026-04-11 17:00
 
 ## Signals
 
