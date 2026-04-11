@@ -67,6 +67,45 @@ Daedalus pushed `Step 10 phasing plan` in parallel. Step 10 has 5 phases — can
 
 **Future direction memo filed:** `docs/futures/2026-04-10-klatch-as-context-protocol.md`. Captures xian's thought about Klatch as context interchange protocol / MCP service for other tools to call. Three converging signals (Managed Agents launch, SDK compaction deprecation, xian's broader work this week pointing the same direction). Sharpens why Step 10 Phase 5 matters.
 
+## 23:50 — Session wrap
+
+xian closing for the night. Spring-loaded team observation noted — six idle days, one hour of activation, full release shipped.
+
+### Session deliverables
+
+| Deliverable | File(s) | Commit |
+|-------------|---------|--------|
+| v0.9.0 release | CHANGELOG, ROADMAP, README, index.html, blog/paste-it-again.html, EDITORIAL-CALENDAR.md | 18124f8 |
+| v0.9.0 git tag | `v0.9.0` annotated | (tag) |
+| GitHub Release | https://github.com/Design-in-Product/klatch/releases/tag/v0.9.0 | (gh) |
+| LinkedIn post draft | `docs/drafts/linkedin-v090.md` | 89fbde3 |
+| Future direction memo | `docs/futures/2026-04-10-klatch-as-context-protocol.md` | 89fbde3 |
+| Session log | `docs/logs/2026-04-10-2308-calliope-opus-log.md` | 89fbde3 |
+
+### Verification
+
+```
+$ git tag -l | tail -3
+v0.8.6
+v0.8.9
+v0.9.0
+
+$ gh release list --limit 2
+v0.9.0 — Rich Context: Files and artifacts    Latest    v0.9.0    2026-04-11T06:20:31Z
+v0.8.9 — Infrastructure: Round 12 Tier 1                v0.8.9    2026-03-27T18:46:59Z
+```
+
+### Carried forward to tomorrow / when xian returns
+- [ ] Publish LinkedIn post (xian's call on timing)
+- [ ] Argus: SDK bump ^0.78.0 → ^0.86.1 (required for Managed Agents access)
+- [ ] Argus: Hono security update to v4.12.12
+- [ ] Argus: curate April 9 automated intel sweep, brief team on Managed Agents
+- [ ] Iris: continue discovery, Use Case 2 (weekly work stream review)
+- [ ] Theseus: MAXT Session 02 (L4 injection fidelity)
+- [ ] Daedalus: Step 10 Phase 1 design doc
+- [ ] Logbook entries for April 5–10 (gap period — much was Janus/intel sweep, still worth a note)
+- [ ] Bring future direction memo into the next planning conversation
+
 ---
 
-*Log continues as session progresses.*
+*Session closed. v0.9.0 in the world. The team is spring-loaded.*
