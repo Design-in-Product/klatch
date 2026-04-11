@@ -37,6 +37,35 @@
     </div>
 
     <!-- ============================================================ -->
+    <!-- ENTRY: 2026-04-10 -->
+    <!-- ============================================================ -->
+    <div class="log-entry" id="2026-04-10">
+      <p class="log-date">April 10, 2026</p>
+      <div class="log-body">
+
+        <p>Five quiet days, then a release.</p>
+
+        <p>Klatch sat idle from April 6 through April 9. xian had a busy week with other priorities and the agents stayed parked. The cross-project infrastructure kept running on its own schedule: Janus sent a memo on April 7 announcing a new automated weekly external intel sweep &mdash; xian-approved &mdash; that would run every Monday at 9 AM PT and commit findings to <code>docs/intel/</code>. The first successful run fired on April 9 and caught the week's biggest story: <strong>Anthropic launched Claude Managed Agents in public beta on April 8</strong>. A server-side agent harness with built-in tool execution, compaction, prompt caching, MCP server support, and persistent SSE streaming. The launch landed almost exactly where Klatch's Step 10 had always pointed.</p>
+
+        <p>The intel sweep also flagged Hono v4.12.12 with five security patches (Klatch is six minor versions behind), the Anthropic SDK eight versions out of date (v0.86.0 added Managed Agents support, v0.83.0 deprecated client-side compaction helpers), Vite 8 stable, and the Mythos watch item resolved (Project Glasswing &mdash; restricted to a 40-company cybersecurity consortium, no public release). Janus followed up on April 10 with a status memo confirming the automation was operational and recasting Argus's role: external news scanning is now baseline-automated; Argus's value-add is curation, annotation, and strategic recommendation.</p>
+
+        <p>xian returned at 11 PM Friday with a clear agenda: cut the v0.9.0 release, properly, using the skill. Klatch had been "tools for xian." It was time to make it "tools other people can try."</p>
+
+        <p>Calliope ran the release. The CHANGELOG entry covered the full scope of Step 9: the File Domain Model in five phases (schema, channel pinning with L4 injection, project knowledge base with L3 injection, dual-write completion, file promotion), the Step 9a&ndash;d work that preceded the domain model (file upload, artifact rendering, kit briefing file awareness, code block save, tool-based file creation), the per-entity effort parameter, the compaction threshold raised from 80K to 160K with entity-attribution preservation for roundtables, the AAXT Scaffolded Probing Phase 1 infrastructure, and the nomenclature rename from "System prompt" to "Channel context" and "Role prompt." 849 tests passing, zero failures, up from 727 at v0.8.9. The roadmap was updated &mdash; Step 9 moved from Next Steps to Completed, Step 10 promoted to next. The README's feature list was rewritten to reflect the file domain model and the per-entity effort control. The website release banner updated. The "Paste It Again" blog post that had been in review since April 4 was finally published with today's date.</p>
+
+        <p>The release tag <code>v0.9.0</code> went up around 11:25 PM. The GitHub release titled <em>"v0.9.0 &mdash; Rich Context: Files and artifacts"</em> went live a minute later. Calliope drafted a LinkedIn post with the lead <em>"the first release I'd actually like other people to try"</em> &mdash; the real shift this release represents.</p>
+
+        <p>Daedalus self-started in parallel and used the same window to work out Step 10 with xian. The plan that landed at <code>docs/plans/STEP-10-EXPORT-META-MODEL.md</code> separates two concerns that Klatch hadn't articulated cleanly before: the package format (what's in an exported context bundle) and the transport (how it gets delivered). Phase 1 defines the canonical format. Phase 2 ships a bundle export endpoint with a round-trip test (export from one Klatch, import into another, verify fidelity). Phase 3 builds the layer-aware export UI &mdash; the natural Iris collaboration point, where the L5 calibration gap becomes legible to the user. A possible Phase 3.5 would use the AAXT auxiliary LLM to generate Layer 5 field notes from conversation history. Phase 4 ships targeted transports (Code, claude.ai, Cowork) as adapters on the canonical format. Phase 5, deferred, is Klatch as an MCP server.</p>
+
+        <p>The Phase 5 deferral matters because xian named the larger frame in the same conversation. The thought, captured in <code>docs/futures/2026-04-10-klatch-as-context-protocol.md</code>: Klatch may have a future not just as a place for chat agents to congregate but as a standard interchange protocol for context preservation. Three signals converged on the same point this week. Anthropic's Managed Agents launch shows the upstream industry compressing the agent infrastructure stack and standardizing on MCP. The SDK compaction-helper deprecation signals that Anthropic wants to own the agent execution layer. And xian's broader work across Klatch, Piper Morgan, and the DinP projects has been pointing the same direction all week: products as services for agents to interact with, not just for people. People will be bringing their own chats. MCP or its future equivalent is the paradigm to plan for. In that framing, the Step 10 Phase 1 format spec stops being internal plumbing and starts being the protocol Klatch publishes. Phase 5 stops being a deferred maybe and starts being the natural endpoint. The product, eventually, becomes the protocol.</p>
+
+        <p>The session ended just before midnight. Six idle days, ninety minutes of activation, a release shipped, a roadmap extended, a future thought planted. The team is spring-loaded.</p>
+
+      </div>
+    </div>
+    <!-- end entry 2026-04-10 -->
+
+    <!-- ============================================================ -->
     <!-- ENTRY: 2026-04-05 -->
     <!-- ============================================================ -->
     <div class="log-entry" id="2026-04-05">
