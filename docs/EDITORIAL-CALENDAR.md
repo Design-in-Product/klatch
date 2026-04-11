@@ -1,7 +1,7 @@
 # Blog Editorial Calendar
 
 **Maintained by:** Calliope
-**Last updated:** 2026-04-01
+**Last updated:** 2026-04-10
 
 ---
 
@@ -29,6 +29,7 @@
 
 | Date | Title | Slug | Authors |
 |------|-------|------|---------|
+| Apr 10, 2026 | Paste It Again | `paste-it-again` | xian + Calliope |
 | Apr 1, 2026 | What Doesn't Transfer | `what-doesnt-transfer` | xian + Calliope |
 | Mar 30, 2026 | Your Model or Theirs | `your-model-or-theirs` | xian + Calliope |
 | Mar 28, 2026 | It's On the Tip of My Tongue | `tip-of-my-tongue` | xian + Calliope |

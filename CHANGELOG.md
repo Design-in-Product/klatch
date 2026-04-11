@@ -6,6 +6,72 @@ Format follows [Keep a Changelog](https://keepachangelog.com/). Versions corresp
 
 ---
 
+## [0.9.0] — 2026-04-10
+
+### Step 9 Complete: Files & Context Architecture
+
+The biggest release since Step 8. Files are now first-class citizens with their own domain model, scope-aware context injection at Layers 3 and 4, and upward promotion through scopes. The UI vocabulary is clarified with a full nomenclature guide. Compaction is research-backed and tuned for 1M-context models. Entities gain per-model effort control. AAXT scaffolded probing lays groundwork for automating the gap between structural and behavioral testing. The test suite grew from 727 to 849.
+
+This release also marks Klatch's transition from "tools for xian" to "tools other people can try."
+
+### Added — File Domain Model (Phases 1–5)
+
+- **File domain model**: New `files` and `file_refs` tables with scope-aware references (message, channel, project, entity). Backfill migration from existing `message_artifacts`. Indexes on scope lookups.
+- **Channel file pinning (Phase 2)**: Pin files to channels via `POST /api/files/pin`. Pinned files listed in Layer 4 system prompt as "Channel files available: ...". Pin/unpin UI on file cards. Pinned files section in channel settings.
+- **Project knowledge base (Phase 3)**: Upload files to project knowledge base. Project files listed in Layer 3 system prompt as "Project knowledge base files: ...". Upload, view, and remove from project settings.
+- **Dual-write completion (Phase 4)**: All file creation paths (`save_file` tool, upload endpoint, backfill migration) now consistently populate both `message_artifacts` and `files`/`file_refs`.
+- **File promotion (Phase 5)**: `POST /api/files/:id/promote` promotes files upward (message → channel → project). Idempotent, additive (original refs preserved). "Promote to project" button on channel-pinned files.
+- **File API endpoints**: `GET /api/projects/:id/files`, `GET /api/channels/:id/files`, `GET /api/entities/:id/files`, `GET /api/messages/:id/files`, `GET /api/files/:id/refs`.
+
+### Added — Step 9a–d (File Upload & Artifacts)
+
+- **File upload/attach (9a)**: Multipart file upload to channels. File attachment cards in messages. MIME detection with extension fallback. File storage on disk with served endpoint.
+- **Artifact rendering (9b)**: Inline artifact rendering in messages.
+- **Kit briefing file awareness (9c)**: Layer 1 includes file handling guidance for entities.
+- **Code block save (9d-A)**: Save code blocks from messages as files. Smart filename detection from language hints and content.
+- **Tool-based file creation (9d-B)**: `save_file` tool enables entities to create files natively during conversation.
+
+### Added — Infrastructure
+
+- **Per-entity effort parameter**: New `effort` column on entities (low/medium/high/max). Passed as `output_config: { effort }` in API calls. Model-aware defaults: Sonnet → medium, others → high. `max` restricted to Opus 4.6. Effort selector in entity settings, filtered by model capabilities.
+- **Compaction threshold tuned**: Raised from 80K to 160K tokens (research-backed — 80K fired at 8% of 1M context, Claude Code uses 75%). Entity-attribution preservation instructions for roundtable/directed channels.
+- **AAXT Scaffolded Probing Phase 1**: Probe generator, scorer, and auxiliary LLM client (GPT-4o-mini default, Haiku fallback). Reads prompt-debug layer status, generates targeted behavioral questions per layer, classifies responses against the AXT taxonomy. Implements the highest-priority recommendation from the AuditBench methodology review. `POST /api/channels/:id/aaxt-probe`, `GET /api/aaxt/status`.
+
+### Changed
+
+- **Nomenclature rename**: "System prompt" → "Channel context" (Layer 4) and "Role prompt" (Layer 5) across all UI surfaces. Terminology guide at `docs/NOMENCLATURE.md`.
+- **File Domain Model phases resequenced**: Phases 6–7 (memory-as-file, entity library) deferred to Steps 10–11 where they deliver more user value.
+- **Prompt-debug endpoint**: Now reports file info in both Layer 3 (project files) and Layer 4 (channel files) sections.
+
+### Documentation
+
+- RFC-001 Five-Layer Context Model response filed with Dispatch (Klatch authored the original model)
+- Nomenclature guide (`docs/NOMENCLATURE.md`)
+- File Domain Model design doc (`docs/plans/FILE-DOMAIN-MODEL.md`)
+- Compaction threshold deep dive (`docs/research/compaction-threshold-deep-dive.md`) — recommends 80K → 160K
+- Effort parameter evaluation (`docs/research/effort-parameter-evaluation.md`)
+- AuditBench methodology review (`docs/research/auditbench-methodology-review.md`) — 4 cross-pollination recommendations for AXT
+- AAXT Scaffolded Probing design spec (`docs/plans/AAXT-SCAFFOLDED-PROBING.md`)
+- Blog: "Your Model or Theirs" (Tesler's Law), "What Doesn't Transfer" (Layer 5 calibration gap), "Paste It Again" (file domain model in plain language)
+- Intelligence sweeps #5 and #6, plus first automated external scan (April 9)
+
+### Team
+
+- **Iris** joined as the team's first dedicated UX designer/developer (April 5). Named for the Greek goddess of the rainbow — messenger between gods and humanity. Working in parallel with Daedalus.
+- **Metis** joined as Cowork-environment coordination (April 1). Cross-environment knowledge stewardship.
+
+### Technical
+
+- **849 tests passing** (710 server + 139 client), zero failures. Up from 727 at v0.8.9.
+- Rounds 13–18: test infra fixes, feature tests, FDM coverage (58 FDM tests), compaction + effort coverage (Round 17, 18 tests), AAXT × FDM (Round 18, 12 tests).
+- Root-level `npx vitest run` fixed (Vitest v4 workspace config).
+- New tables: `files`, `file_refs`. New columns: `entities.effort`.
+- New shared types: `FileRefScope`, `FileRefType`, `KlatchFile`, `FileRef`, `FileWithRef`, `EffortLevel`.
+- Vitest workspace config at repo root (`vitest.config.ts`).
+- GitHub #21 closed (stale kit briefing assertions).
+
+---
+
 ## [0.8.9] — 2026-03-27
 
 ### Round 12: API Optimization & Kit Briefing

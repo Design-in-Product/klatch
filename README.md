@@ -18,7 +18,7 @@ The existing ways to interact with Claude are good but fragmented:
 
 Klatch fills the gap: a single local interface where you control the models, the prompts, the conversation structure, and the data. Everything stays on your machine in a SQLite database. The only external dependency is the Anthropic API itself.
 
-## What it does today (v0.8.6)
+## What it does today (v0.9.0)
 
 Klatch is being built incrementally, one working step at a time ([Gall's Law](https://en.wikipedia.org/wiki/John_Gall_(author)#Gall's_law)). Here's what works right now:
 
@@ -26,17 +26,21 @@ Klatch is being built incrementally, one working step at a time ([Gall's Law](ht
 - **5-layer prompt assembly** — context injected in a defined order on every request:
   1. **Kit briefing** — environmental orientation, injected at import/fork to tell the agent where it is and what's changed
   2. **Project instructions** — the project-level system prompt, shared across all channels in a project
-  3. **Project memory** — a freeform memory file at the project level, for facts and context that accumulate over time
-  4. **Channel addendum** — channel-specific additions to the system prompt (used in klatches; hidden in 1:1 chats)
-  5. **Entity prompt** — the per-entity persona prompt, the innermost and most specific layer
+  3. **Project memory** — a freeform memory file at the project level, for facts and context that accumulate over time. Project knowledge base files are listed here automatically.
+  4. **Channel context** — channel-specific additions to the system prompt (used in klatches; hidden in 1:1 chats). Channel-pinned files are listed here automatically.
+  5. **Role prompt** — the per-entity persona prompt, the innermost and most specific layer
 
   The assembled prompt is inspectable via the settings panel prompt-layer status indicator.
+- **File domain model** — files are first-class citizens with scope-aware references. Pin files to channels (Layer 4 injection), upload to project knowledge bases (Layer 3 injection), promote upward through scopes. The file follows the work, not the other way around.
+- **File upload, attach, and artifact rendering** — multipart upload, MIME detection, attachment cards, inline artifact rendering, code block save with smart filename detection, native `save_file` tool for entity-initiated file creation
+- **Per-entity effort control** — set low/medium/high/max effort per entity. Model-aware defaults: Sonnet → medium, others → high. `max` available on Opus 4.6.
+- **Tuned compaction** — research-backed 160K trigger threshold for 1M-context models. Entity-attribution preservation in roundtable summaries.
 - **Claude Code import** — import Claude Code JSONL sessions as read-only conversation snapshots, with tool-use artifacts, source badges, and dedup detection
 - **claude.ai import** — import claude.ai data exports (ZIP), with artifact extraction, project context, memories preserved, and dedup detection
 - **Fork continuity** — continue imported conversations with full history, automatic compaction, and project context injection. Kit briefing orients the agent on transition.
 - **Claude Code session browser** — scan `~/.claude/projects/` to discover, preview, and multi-select import sessions
-- **Project management** — editable project settings (name, instructions, memory), auto-created from imports, with source provenance badges
-- **Multi-entity conversations** — assign multiple Claude personas to a single channel, each with its own name, model, system prompt, and color
+- **Project management** — editable project settings (name, instructions, memory, knowledge base files), auto-created from imports, with source provenance badges
+- **Multi-entity conversations** — assign multiple Claude personas to a single channel, each with its own name, model, role prompt, color, and effort level
 - **Three interaction modes** — panel (all respond in parallel), roundtable (sequential, each seeing prior responses), and directed (@-mention routing to specific entities)
 - **Chats and Klatches** — 1:1 chats with Claude and multi-entity group conversations (klatches), organized by project
 - **@-mention handles** — optional short slugs (e.g. `@exec`) for quick entity targeting in directed mode
@@ -60,9 +64,9 @@ The [full roadmap](docs/ROADMAP.md) is in the repo, but the key milestones are:
 6. ~~Multi-entity conversations~~ ✓
 7. ~~Panel + roundtable + directed modes~~ ✓
 8. ~~Import + unify~~ ✓ — Claude Code import, claude.ai import, fork continuity, project context, sidebar redesign
-9. **Search + recall** — full-text search, export, command palette
-10. **Files + artifacts** — upload and share files with entities
-11. **Export to Claude Code** — roundtrip conversations back to a tool-enabled environment
+9. ~~Files + artifacts~~ ✓ — file domain model, scope-aware context injection, channel pinning, project knowledge base, file promotion
+10. **Export + meta-model synthesis** — 5-layer context packaging, roundtrip to Claude Code via Managed Agents, Layer 5 calibration gap UX
+11. **Search + recall** — full-text search, command palette, bookmarks
 
 Claude is not one assistant. It's a cast of characters you direct. Klatch is the stage.
 

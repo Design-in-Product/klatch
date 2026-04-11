@@ -137,6 +137,37 @@ Tracked refinements deferred past 8¾:
 - Import error messaging improvements
 - Copy message turn button
 
+### Step 9: Files and artifacts ✓
+**Dimension: rich context.** Can you share files, code, and documents with entities?
+
+Shipped across multiple sub-steps and a five-phase File Domain Model. Files become first-class with scope-aware references and structured context injection at Layers 3 and 4. The Klatch differentiator: files don't just attach to messages — they're placed at the altitude where they do the most good (project knowledge base, channel-pinned, message attachment) and the AI encounters them at the right scope without manual context juggling.
+
+**Step 9a–d (Files & artifacts foundation):**
+- File upload/attach with multipart endpoint, MIME detection, attachment cards in messages
+- Artifact rendering inline in messages
+- Kit briefing file awareness in Layer 1
+- Code block save as files with smart filename detection
+- `save_file` tool for entity-initiated file creation
+
+**File Domain Model (Phases 1–5):**
+- New `files` and `file_refs` tables with scope-aware references; backfill from `message_artifacts`
+- Channel file pinning with **Layer 4 context injection** ("Channel files available: ...")
+- Project knowledge base with **Layer 3 context injection** ("Project knowledge base files: ...")
+- Dual-write completion across all file creation paths
+- File promotion (message → channel → project), idempotent, additive
+
+**Infrastructure shipped alongside:**
+- Per-entity effort parameter with model-aware defaults (Sonnet → medium, others → high)
+- Compaction threshold tuned 80K → 160K (research-backed for 1M-context models)
+- AAXT Scaffolded Probing Phase 1 (probe generator, scorer, auxiliary LLM client)
+- Nomenclature rename: "System prompt" → "Channel context" (L4) and "Role prompt" (L5)
+
+**Phases 6–7 (memory-as-file, entity library) deferred** to Steps 10 and 11 where they deliver more user value alongside export and search.
+
+849 tests passing (710 server + 139 client), zero failures.
+
+Shipped as **v0.9.0 — Rich Context: Files and artifacts** on April 10, 2026.
+
 ---
 
 ## Next Steps (concrete, actionable)
@@ -190,17 +221,6 @@ Entities are created within (or imported into) a project and retain that associa
 - Should project groups be collapsible by default when there are many?
 - Should there be a separate "Archive" section or just a toggle to show/hide archived?
 - How does this interact with Step 9c (Cmd+K command palette)?
-
-### Step 9: Files and artifacts
-**Dimension: rich context.** Can you share files, code, and documents with entities?
-
-*Moved ahead of search.* File infrastructure comes before search because: (1) files are the substrate for the export/meta-model work in Step 10, and (2) search needs to understand what Klatch files *are* before it can find them meaningfully. Klatch's version should be differentiated — tied to multi-entity workflows (all entities review a document) or project context (attach files to a project, available to all channels).
-
-- Upload/attach files to conversations
-- Render artifacts (code, documents, images) inline
-- Context injection: entities receive file contents as part of their context
-- Multi-entity document review (the differentiating use case)
-- This is where Klatch becomes a workspace, not just a chat tool
 
 ### Step 10: Export and context packaging
 **Dimension: roundtrip + meta-model.** Can a Klatch conversation continue in another environment with maximum fidelity?
