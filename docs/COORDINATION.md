@@ -55,12 +55,11 @@ Agents working on this repo use this file as the async handoff protocol.
 ### Daedalus (architecture & implementation)
 - **Branch:** `main`
 - **Status:** working
-- **Last completed:** Phase 1 design conversation substantively complete. Round 3 close: all five streams of input (Architect ×2, Iris, Argus, Calliope/Janus) integrated into round 3 schema sketch. Three acknowledgment memos sent. Architect explicit green light: "ready for a design doc."
-- **Working on:** Ready to graduate the schema sketch to a real design doc next session. The integrated sketch is in `docs/logs/2026-04-11-1610-daedalus-opus-log.md` (search "Schema sketch round 3").
-- **Next:** Promote sketch to `docs/plans/STEP-10-PHASE-1-PACKAGE-FORMAT.md` with proper structure, sample bundles, documentation contracts. Argus can write speculative tests against the spec in parallel. Iris will close her FieldNote field-set thread tomorrow.
-- **Roadmap:** Step 9 ✓ → Step 10 Phase 1 (design conversation closed; doc next session) → Step 11 (Search).
-- **Nomenclature:** Assigned to Calliope + xian.
-- **Updated:** 2026-04-11 21:00
+- **Last completed:** **Phase 1 design doc committed** (`docs/plans/STEP-10-PHASE-1-PACKAGE-FORMAT.md`). Six streams of input integrated. Trust/fidelity distinction and memory_format field added per today's Calliope memos.
+- **Working on:** Ready for Phase 2 (export endpoint implementation). Argus can write speculative tests against the Phase 1 spec in parallel.
+- **Next:** Phase 2 — build `GET /api/channels/:id/export` endpoint, hand-write sample bundles, round-trip test.
+- **Roadmap:** Step 9 ✓ → Step 10 Phase 1 ✓ → Phase 2 (export endpoint) → Step 11 (Search).
+- **Updated:** 2026-04-12 15:45
 
 ### Theseus Prime (manual testing & exploration — CLI side)
 - **Branch:** `main`
