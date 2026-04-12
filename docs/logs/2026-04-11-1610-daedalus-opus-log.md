@@ -528,15 +528,244 @@ A consumer reads `package_kind` to know which body shape to expect. Preamble fie
 
 `docs/mail/daedalus-to-iris-round2-2026-04-11.md`. Acknowledges her input is going to the Architect verbatim, confirms the structural call on `package_kind`, accepts the array commitment for `field_notes`, accepts the working-together norm of cross-tagging on design-touching session logs.
 
-### 19:20 — Wrapping for now
+### 19:20 — Round 2 closed (held briefly for incoming replies)
 
-Six artifacts produced this session:
-- Iris round 1 reply (intro questions + Phase 1 UX questions)
-- PM Architect alignment memo (round 1)
-- Architect reply received and processed
-- Iris reply received and processed
-- Schema sketch revised twice (round 1, then round 2 integrated)
-- Round 2 Architect memo (integrated, ready to deliver via xian)
-- Reply to Iris (confirmation + working norms)
+Round 2 Architect memo and Iris reply ready to deliver. Holding briefly because Argus and Calliope are also writing memos.
+
+### 20:20 — Three more memos in (Architect round 2 reply, Argus, Calliope)
+
+#### Architect round 2 reply
+
+`memo-arch-to-daedalus-step10-alignment-round2-2026-04-11.md`. Green light: "I think this round resolves the open questions. The schema sketch is ready for a design doc. I don't see structural issues remaining."
+
+All six questions answered. Substantive items:
+- Q1 source_type vs provenance: confirmed, no change
+- Q2 layer_fidelity four levels: accepted; spec should explicitly distinguish from AAXT taxonomy
+- Q3 conversation_context conservative: accepted; one small ask — document that `id` and `name` exist across all producers as the minimum cross-source read
+- Q4 package_kind cross-kind contract: **yes, useful on PM side too.** PM equivalents will be `piper-morgan.session.v1` and `piper-morgan.workspace.v1`, sharing the preamble. The pattern is now a shared protocol convention.
+- Q5 extensions namespacing: **Architect pushes back on flat, recommends namespaced.** Reason I missed: when an upstream consumer reads packages from both Klatch and PM and assembles a combined record, namespacing means it can just merge objects without knowing which keys belong to which producer. Verbosity cost low, collision protection permanent. **Adopting their recommendation.**
+- Q6 package_kind value namespacing: confirmed `producer.name.version`. One nuance: `format_version` and the `v1` in `package_kind` move independently. Should be documented explicitly.
+
+#### Argus provenance memo
+
+`argus-to-daedalus-step10-provenance-doors-2026-04-11.md`. Five Phase 1 design choices for tamper-evidence preservation, framed as "don't build the safety net but don't make it impossible to add later."
+
+Three already in sketch (objects, ordered array, immutability semantics needs documentation). Two new fields requested:
+- `event_id` (UUID) per provenance event — position-independent self-identifier for future hash chains
+- `integrity: null` reserved field — slot for future hash/signature data
+
+Total cost in Phase 1: trivial. Total benefit later: tamper-evidence becomes a v1.1 additive change instead of a v2.0 break. Argus also explicitly endorses Architect's `layer_fidelity` proposal as living in the same structural slot.
+
+#### Calliope sparkline test memo
+
+`calliope-to-daedalus-sparkline-test-2026-04-11.md`. Two pieces:
+
+1. **Independent validation from Labrador.** Janus surfaced a project (Erika Flowers) that without coordination converged on structurally identical context architecture. Eight rows of one-to-one mappings between Labrador metaphors and Klatch's five layers. Two solo builders, no contact, same answers. The model isn't a Klatch idiosyncrasy — significant for protocol framing.
+
+2. **The sparkline test as a design heuristic.** Labrador surfaces context composition live and in-product (per-source token counts in a colored bar). Klatch may eventually want this; whether or not, the format I commit either makes it possible or doesn't. The test:
+
+   > Could a consumer parse this manifest and produce a per-layer breakdown — name of layer, name of contributing sources, token counts, a stable ordering — without re-deriving anything from prose, without parsing markdown, and without round-tripping through Klatch source code?
+
+   Round 2 sketch passes most layers. Two refinements close the remaining gap:
+   - Add `length_chars` to each `files[]` entry (not just `size_bytes`)
+   - Add `prompt_length_chars` to each entity entry alongside `prompt`
+
+The Labrador citation deserves more than a footnote in the design doc — possibly a separate short futures memo or a paragraph in PROMPT-ASSEMBLY.md. Noting for future work, not for tonight.
+
+### 20:30 — Pacing call confirmed with xian
+
+Option (a): integrate the sketch tonight (apply all three new streams), write brief acknowledgment memos to Architect, Argus, and Calliope, defer the design doc itself to next session for fresh eyes. Iris is also paused for the day per COORDINATION; she'll reply tomorrow on the FieldNote field-set question (her lean: leave open, lock structural shape only — matches my own instinct from round 2 reply, no action needed).
+
+### 20:40 — Schema sketch round 3 (all five streams integrated)
+
+This supersedes the round 2 sketch above. Round 2 stays in place as historical record.
+
+#### Bundle layout (unchanged)
+
+```
+package/
+  manifest.json              # the canonical structured doc
+  conversation.jsonl         # message history, one per line
+  layer_2_instructions.md    # project instructions as text
+  layer_3_memory.md          # project memory as text
+  layer_4_context.md         # channel addendum as text
+  files/
+    {file_id}_{name}         # binary file attachments, scoped via top-level files[]
+
+# Note: no layer_1_kit_briefing.md by design.
+# L1 (kit briefing) is environment-specific and regenerated at the destination,
+# not carried from the source.
+```
+
+#### `manifest.json` shape (round 3)
+
+```json
+{
+  "format_version": "1.0.0",
+  "source_type": "klatch",
+  "package_id": "<uuid>",
+  "package_kind": "klatch.context.v1",
+  "created_at": "<iso 8601>",
+
+  "provenance": [
+    {
+      "event_id": "<uuid>",
+      "source": "claude-code",
+      "path": "/Users/xian/...",
+      "session_id": "abc-123",
+      "at": "2026-03-11T...",
+      "summary": "Original Claude Code session",
+      "integrity": null
+    },
+    {
+      "event_id": "<uuid>",
+      "source": "klatch",
+      "instance": "klatch-laptop",
+      "at": "2026-04-11T...",
+      "summary": "Imported and worked on in Klatch",
+      "layer_fidelity": {
+        "L1": "full",
+        "L2": "full",
+        "L3": "full",
+        "L4": "partial",
+        "L5": "rebuilt"
+      },
+      "integrity": null
+    }
+  ],
+
+  "project": {
+    "id": "<uuid>",
+    "name": "Klatch",
+    "instructions": { "ref": "layer_2_instructions.md", "length_chars": 1234 },
+    "memory": { "ref": "layer_3_memory.md", "length_chars": 5678 },
+    "knowledge_base_file_ids": ["f1", "f2"]
+  },
+
+  "conversation_context": {
+    "id": "<uuid>",
+    "name": "Step 10 design",
+    "type": "chat",
+    "mode": "panel",
+    "created_at": "2026-04-11T16:10:00Z",
+    "last_active_at": "2026-04-11T18:45:00Z",
+    "context": { "ref": "layer_4_context.md", "length_chars": 0 },
+    "pinned_file_ids": [],
+    "compaction_state": null
+  },
+
+  "entities": [
+    {
+      "id": "<uuid>",
+      "name": "Daedalus",
+      "handle": "daedalus",
+      "model": "claude-opus-4-6",
+      "effort": "high",
+      "color": "#6366f1",
+      "prompt": "<full text of L5 entity prompt>",
+      "prompt_length_chars": 287,
+      "field_notes": null
+    }
+  ],
+
+  "files": [
+    {
+      "id": "f1",
+      "name": "ROADMAP.md",
+      "mime_type": "text/markdown",
+      "size_bytes": 4321,
+      "length_chars": 4321,
+      "ref": "files/f1_ROADMAP.md",
+      "scope": "project",
+      "scope_id": "<project_id>",
+      "ref_type": "imported",
+      "added_at": "2026-03-11T...",
+      "source": "imported"
+    }
+  ],
+
+  "conversation_history": {
+    "ref": "conversation.jsonl",
+    "message_count": 142,
+    "first_message_at": "2026-04-11T16:10:00Z",
+    "last_message_at": "2026-04-11T17:00:00Z"
+  },
+
+  "extensions": {
+    "klatch": {}
+  }
+}
+```
+
+#### Diff from round 2
+
+| Change | From | To | Source |
+|---|---|---|---|
+| Per-event provenance UUID | (missing) | `event_id` per entry | Argus |
+| Per-event integrity reserved | (missing) | `integrity: null` per entry | Argus |
+| File length info for sparkline | `size_bytes` only | `size_bytes` + `length_chars` | Calliope/Janus |
+| Entity prompt length info | `prompt` text only | `prompt` + `prompt_length_chars` | Calliope/Janus |
+| Extensions namespacing | flat `extensions: {}` | namespaced `extensions: { klatch: {} }` | Architect round 2 |
+
+#### Documentation contracts to capture in design doc (no schema change, but spec text)
+
+1. **`conversation_context.id` and `conversation_context.name` exist across all producers.** Minimum cross-source read: a consumer can display "Package contains conversation: [name]" without knowing the source type. Architect round 2.
+
+2. **`format_version` and `package_kind` versions move independently.** `format_version` is the envelope schema version (semver, bumps when shared preamble changes). The `v1` suffix in `package_kind` is the kind-specific body version (bumps when that kind's interior changes). A package could legitimately have `format_version: "1.2.0"` and `package_kind: "klatch.context.v1"`. Architect round 2.
+
+3. **`layer_fidelity` (transfer states) vs AAXT failure-mode taxonomy (probe responses).** Different questions, related answers. The fidelity level describes what *happened to a layer at a hop*; the probe taxonomy describes what *the agent does when asked about that layer*. A "rebuilt" L5 might produce "Correct" probe responses if the rebuild was good or "Confabulated" responses if it was bad. Worth a paragraph in the spec because people will conflate them. Architect round 2.
+
+4. **Provenance events are immutable once written.** Each new export appends a new event; existing events are never edited. A package whose existing provenance events have been modified is considered invalid. This is the semantic statement that makes "tamper" meaningful in the first place. All future tamper-evidence work depends on it. Argus.
+
+5. **Provenance event order is semantically meaningful.** Events must appear in chronological order; their position in the array is part of their meaning. A consumer that reorders events is producing an invalid package. Argus.
+
+6. **Sparkline test as design heuristic.** Any consumer should be able to render a per-source breakdown from the manifest alone, in a single pass, without parsing markdown content or counting characters itself. This bar makes any future per-layer view (sparkline, debug panel, export preview, audit log) possible without a format change. Calliope/Janus.
+
+7. **Labrador convergence as independent validation.** Two solo builders independently arriving at structurally identical context architecture is significant social proof for the protocol framing. Cite in design doc; consider a follow-up futures memo for deeper exploration. Calliope/Janus.
+
+#### Schema notes (forward to design doc)
+
+- **`entities[]` array order is the source of truth for roundtable mode response order.** Documented contract; matches current Klatch behavior. If a future kind needs explicit ordering, add a `position` field then.
+- **`field_notes`** is `null | FieldNote[]`. Phase 1 ships as null. Phase 3.5 populates the array. Exact `FieldNote` shape is TBD with Iris (her lean per COORDINATION: leave open, lock structural shape only — matches my round 2 reply). Committing to the array structure now prevents Phase 3.5 from being locked into wall-of-text UX.
+- **`compaction_state`**: when non-null, carries `summary`, `before_message_id`, and `compacted_at`. Possibly more.
+- **`layer_fidelity`** values: `full | partial | rebuilt | absent`. Optional per provenance entry. Origin entries don't need it.
+- **`integrity`** is reserved. In v1.0 it's always null. In v1.1+ it can carry structured integrity data. Consumers should ignore null values in v1.0 packages.
+
+#### `package_kind` contract (load-bearing, unchanged from round 2)
+
+Phase 1 ships `klatch.context.v1` (single channel) only. Future kinds reserved.
+
+**Stable across all kinds (manifest preamble):**
+- `format_version`
+- `source_type`
+- `package_id`
+- `package_kind`
+- `created_at`
+- `provenance`
+- `files`
+- `extensions`
+
+**Kind-specific (body):**
+- `project`
+- `conversation_context`
+- `entities`
+- `conversation_history`
+
+A consumer reads `package_kind` to know which body shape to expect. Preamble fields can always be parsed without knowing the kind. This contract is what makes future kinds (`klatch.project.v1` for multi-channel project export, `piper-morgan.session.v1`, `piper-morgan.workspace.v1`, etc.) possible without breaking existing consumers.
+
+### 20:55 — Round 3 acknowledgment memos drafted
+
+Three brief memos:
+- `daedalus-to-pm-architect-step10-alignment-round3-2026-04-11.md` — confirms acceptance of round 2, applies the four small adjustments, mentions Labrador convergence per Calliope's framing
+- `daedalus-to-argus-step10-provenance-accepted-2026-04-11.md` — confirms the five provenance design choices land in the schema sketch
+- `daedalus-to-calliope-step10-sparkline-accepted-2026-04-11.md` — accepts the two refinements and the sparkline test as design heuristic, acknowledges Labrador convergence
+
+### 21:00 — Wrapping for the night
+
+The Phase 1 design conversation is **substantively complete**. All five streams of input integrated into the round 3 schema sketch. Acknowledgment memos sent to Architect, Argus, and Calliope. Iris is paused for the day with a small open thread that she'll close tomorrow.
+
+**Status:** ready for design doc next session. The schema sketch in this log is the complete input. The next session's work is graduating it to `docs/plans/STEP-10-PHASE-1-PACKAGE-FORMAT.md` with proper structure, sample bundles, and all the documentation contracts laid out cleanly.
+
+**No code committed tonight.** Five hours of correspondence and design integration. This is the right kind of work for the moment — the protocol that becomes the foundation of Step 10 is worth getting right with care.
 
 No code. No design doc committed. The schema doc waits until the integrated round 2 lands, the Architect's response comes back, and the open questions resolve.
