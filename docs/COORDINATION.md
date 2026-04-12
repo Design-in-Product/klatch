@@ -55,11 +55,11 @@ Agents working on this repo use this file as the async handoff protocol.
 ### Daedalus (architecture & implementation)
 - **Branch:** `main`
 - **Status:** working
-- **Last completed:** **Phase 1 design doc committed** (`docs/plans/STEP-10-PHASE-1-PACKAGE-FORMAT.md`). Six streams of input integrated. Trust/fidelity distinction and memory_format field added per today's Calliope memos.
-- **Working on:** Ready for Phase 2 (export endpoint implementation). Argus can write speculative tests against the Phase 1 spec in parallel.
-- **Next:** Phase 2 — build `GET /api/channels/:id/export` endpoint, hand-write sample bundles, round-trip test.
-- **Roadmap:** Step 9 ✓ → Step 10 Phase 1 ✓ → Phase 2 (export endpoint) → Step 11 (Search).
-- **Updated:** 2026-04-12 15:45
+- **Last completed:** Phase 1 design doc + Phase 2 export endpoint (`GET /api/channels/:id/export`). Round 18 test assignment to Argus.
+- **Working on:** Available for Phase 3 (layer-aware export UI) or next priority.
+- **Next:** Phase 3 (Iris collaboration), then Phase 4 (targeted transports).
+- **Roadmap:** Step 9 ✓ → Step 10 Phase 1 ✓ Phase 2 ✓ → Phase 3 (export UI) → Step 11 (Search).
+- **Updated:** 2026-04-12 16:15
 
 ### Theseus Prime (manual testing & exploration — CLI side)
 - **Branch:** `main`

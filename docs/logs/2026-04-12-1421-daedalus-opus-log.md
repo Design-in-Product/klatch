@@ -41,6 +41,33 @@ Argus noticed the round 2 timing crunch — asking if event_id and integrity mad
 ### 14:21 — Session start
 Synced, read all memos, cross-pollination brief, Janus synthesis. Processing new inputs.
 
+### 15:00 — Argus confirmation memo sent
+Brief: event_id and integrity are in round 3, timing was a miss on round 2.
+
+### 15:45 — Phase 1 design doc committed
+`docs/plans/STEP-10-PHASE-1-PACKAGE-FORMAT.md` — full spec with all six streams integrated.
+
+### 16:15 — Phase 2 export endpoint shipped
+
+`packages/server/src/routes/export.ts` — `GET /api/channels/:id/export` returns a zip bundle per the Phase 1 spec.
+
+Implementation:
+- Builds manifest.json from channel/project/entity/file/message data
+- Provenance chain: imported channels get two entries (original source + klatch); native get one
+- Layer sidecars: layer_2_instructions.md, layer_3_memory.md, layer_4_context.md
+- Conversation history: conversation.jsonl with per-message artifacts
+- File attachments: all project + channel files, deduplicated by ID
+- Compaction state: parsed and included when present
+
+All fields from the Phase 1 spec are populated:
+- Preamble: format_version, source_type, package_id, package_kind, created_at, provenance, files, extensions
+- Body: project (with memory_format), conversation_context (with lifecycle), entities (with prompt_length_chars, field_notes null), conversation_history
+- Trust defaults to "unattributed" on all files
+
+Tests: 849 total (710 + 139), 0 failures.
+
+Round 18 test assignment filed for Argus: `docs/mail/daedalus-to-argus-round18-export-2026-04-12.md`
+
 ### 14:55 — xian confirms: write the design doc
 
 ### 15:00 — Argus confirmation memo

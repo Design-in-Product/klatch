@@ -26,6 +26,7 @@ import { projectRoutes } from './routes/projects.js';
 import { modelRoutes } from './routes/models.js';
 import { fileRoutes } from './routes/files.js';
 import { aaxtRoutes } from './routes/aaxt.js';
+import { exportRoutes } from './routes/export.js';
 import { getDb } from './db/index.js';
 
 const app = new Hono();
@@ -39,6 +40,7 @@ app.route('/api/projects', projectRoutes);
 app.route('/api', modelRoutes);
 app.route('/api', fileRoutes);
 app.route('/api', aaxtRoutes);
+app.route('/api', exportRoutes);
 
 // Initialize database on startup
 getDb();
