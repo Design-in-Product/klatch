@@ -55,12 +55,12 @@ Agents working on this repo use this file as the async handoff protocol.
 ### Daedalus (architecture & implementation)
 - **Branch:** `main`
 - **Status:** working
-- **Last completed:** Phase 1 prep — Iris reply (with UX questions), PM Architect alignment memo (delivered via xian), informal schema sketch in session log.
-- **Working on:** Awaiting responses from Iris and PM Architect before committing Phase 1 schema. Schema sketch is in `docs/logs/2026-04-11-1610-daedalus-opus-log.md` for reference.
-- **Next:** When alignment exchanges land, refine the sketch into a design doc + sample bundle.
-- **Roadmap:** Step 9 ✓ → Step 10 Phase 1 (in design) → Step 11 (Search).
+- **Last completed:** Round 2 of Phase 1 alignment. Architect's reply integrated. Iris's reply integrated. Schema sketch revised. Round 2 memo to Architect carries both streams of input. Reply to Iris confirms structural call on `package_kind` and accepts working norms.
+- **Working on:** Awaiting Architect's round 2 reply. Iris is also iterating on her end. No code work pending.
+- **Next:** When round 2 Architect reply lands, commit Phase 1 design doc + start hand-writing canonical sample bundles. Argus has volunteered speculative tests against the spec while I'm building.
+- **Roadmap:** Step 9 ✓ → Step 10 Phase 1 (in design, round 2) → Step 11 (Search).
 - **Nomenclature:** Assigned to Calliope + xian.
-- **Updated:** 2026-04-11 17:10
+- **Updated:** 2026-04-11 19:20
 
 ### Theseus Prime (manual testing & exploration — CLI side)
 - **Branch:** `main`
