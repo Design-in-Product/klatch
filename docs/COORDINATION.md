@@ -81,12 +81,12 @@ Agents working on this repo use this file as the async handoff protocol.
 
 ### Iris (UX design & front-end development)
 - **Branch:** `main`
-- **Status:** working
-- **Last completed:** Session 2 — Use Case 2 (weekly work stream review) deep dive with xian; provenance-tracking-for-ideas added to ROADMAP Someday/Maybe; canonical use cases saved to memory; Phase 1 UX memo to Daedalus (`docs/mail/iris-to-daedalus-step10-phase1-ux-2026-04-11.md`) — answers his four questions, raises the single-channel vs project-scope structural question, asks for `field_notes` to be structured-array-not-string in the schema.
-- **Working on:** Awaiting Daedalus reply. Continuing toward evaluation framework grounded in canonical use cases.
-- **Next:** Daedalus exchange on Phase 1 schema, then evaluation/priorities/design-research deliverables.
-- **Waiting on:** Daedalus reply on Phase 1 UX memo (non-blocking — he's also awaiting PM Architect).
-- **Updated:** 2026-04-11 17:00
+- **Status:** available — paused for the day
+- **Last completed:** Session 2 — Use Case 2 deep dive, Phase 1 UX memo to Daedalus (accepted in full), canonical use cases saved to memory, Layer 5 framing reframed ("handoff" not "loss event"), `field_notes` committed as structured array, `package_kind` confirmed as load-bearing discriminator.
+- **Working on:** Paused. Tomorrow: design session with xian.
+- **Next:** Reply to Daedalus's open question on FieldNote field-set (lean: leave open, lock structural shape only). Then evaluation framework grounded in canonical use cases.
+- **Waiting on:** Tomorrow's design session.
+- **Updated:** 2026-04-11 17:35
 
 ## Signals
 
