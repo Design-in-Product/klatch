@@ -37,6 +37,35 @@
     </div>
 
     <!-- ============================================================ -->
+    <!-- ENTRY: 2026-04-11 -->
+    <!-- ============================================================ -->
+    <div class="log-entry" id="2026-04-11">
+      <p class="log-date">April 11, 2026</p>
+      <div class="log-body">
+
+        <p>A day the team spent talking to each other, and the conversation was better than the code would have been.</p>
+
+        <p>The morning started with Calliope sending Daedalus the Step 10 feedback memo &mdash; protocol-first framing, reactions to the four open questions, and a dedicated section on pace. xian's language made it in directly: "heroism is a failure mode dressed up as a virtue." Then the April 11 cross-pollination brief arrived and surfaced two actionable items: the PM Architect alignment opportunity (time-sensitive, because Daedalus was about to commit a schema), and fabrication-under-absent-context as a new AAXT failure class (from PM's M1 Gate #926 closing &mdash; the inverse of the Subliminal finding, where an agent invents knowledge it doesn't have instead of having knowledge it can't attribute). Both were filed as memos within the hour.</p>
+
+        <p>Then the afternoon became a roundtable without anyone calling it one.</p>
+
+        <p>Daedalus came online at four, absorbed all the input &mdash; Calliope's protocol-first framing, Argus's provenance design with five "doors worth keeping open" (event IDs, integrity slots, immutability, ordering, structured events), the PM Architect alignment ask &mdash; and shipped the first schema sketch to PM Architect and Iris simultaneously. The Architect's reply was precisely what good cross-project review looks like: one important correction (PM isn't a "task-and-knowledge server" but "a PM colleague that happens to have access to tasks and knowledge" &mdash; the voice is part of the data), four schema additions accepted (<code>source_type</code>, <code>extensions</code>, rename <code>channel</code> to <code>conversation_context</code>, optional <code>layer_fidelity</code> per provenance hop), and a load-bearing principle: "The value here is in the 20% of the format that overlaps naturally. The 80% that's project-specific should stay project-specific." xian's articulation landed in Daedalus's session log as the framing that made it concrete: Klatch is a <em>place</em>. PM is an <em>agent</em>. The protocol doesn't need to know which one the producer is.</p>
+
+        <p>Iris, running in parallel with xian as her interview partner, wrote what may be the most consequential memo of the day. The standout: <code>field_notes</code> must be a structured array, not a string blob. The reasoning traces back to xian's principle that Phase 3.5's review of Layer 5 calibration notes must be "central, not a rubber stamp." A string blob inherits a wall of text whose only affordance is "approve all." A structured array unlocks per-item review with friction in the right places &mdash; observation, citations, confidence, status. The format choice happens in Phase 1; the UX it enables won't exist until Phase 3.5. If Phase 1 gets this wrong, Phase 3.5 can't fix it. She also surfaced the single-channel versus project-scope packages question with a clean recommendation: <code>package_kind</code> as the load-bearing type discriminator, <code>klatch.context.v1</code> for now, <code>klatch.project.v1</code> reserved without committing. Both insights came from the canonical use cases she'd been working through with xian &mdash; the daily omnibus synthesis and the weekly work stream review.</p>
+
+        <p>The day's other major signal arrived from Janus: a research memo on Labrador, a self-hosted "AI Command Center" built by Erika Flowers. Without coordination between the two projects, Labrador and Klatch arrived at structurally identical context architectures &mdash; layered prompt assembly, named agents, persistent memory, channel-or-cartridge overlays, project knowledge bases. Eight rows of one-to-one equivalents in Janus's comparison table. The metaphors differ; the load-bearing concepts are the same. Labrador has a feature Klatch doesn't: a context sparkline showing which sources contributed to each response, live, in the chat UI. Klatch has something Labrador doesn't: formalization &mdash; RFC-001, AXT, the canonical PROMPT-ASSEMBLY.md spec. Two solo builders, no contact, same answers. Calliope sent Daedalus the sparkline as a Phase 1 design test: "could a consumer parse this manifest and produce a per-layer breakdown without re-deriving anything from prose?" Two small refinements to the schema closed the gap. Mnemosyne received a pointer to Erika's public memory substrate <code>mempalace</code> for research when she has bandwidth.</p>
+
+        <p>Argus returned from the gap, curated the April 9 automated intel sweep (first full cycle of Janus's Monday automation), answered Iris's test infrastructure questions, wrote a complexity heuristics document that will inform future sweep scope decisions, and &mdash; most architecturally &mdash; sent Daedalus five provenance design choices that preserve future tamper-evidence without building it yet. The "doors worth keeping open" framing was accepted wholesale. Argus also noted xian's redefinition of the role: curation and judgment, not raw scanning. The automated sweep handles the baseline; Argus's value is in what the automation can't do.</p>
+
+        <p>By end of day, Daedalus had completed three rounds of async exchange with PM Architect, integrated input from all five streams (Architect, Iris, Argus, Calliope, Janus/Labrador), and produced a round 3 schema sketch that PM Architect green-lit for graduation to a design doc. No code was committed. Five hours of careful correspondence and design integration. The "no points for rushing" principle held throughout, and what it produced was a Phase 1 design with independent architectural validation from a sibling project, independent convergence validation from a stranger's project, multi-stream input from every active Klatch team member, and a clean separation between the shared envelope and the project-specific interior. Worth the time.</p>
+
+        <p>Daedalus asked, at the end of the day, for permission to write a follow-up artifact about the Labrador convergence &mdash; the argument that the five-layer model has the character of a discovered pattern, not an invented convention, and that this changes what it means to propose it as a standard. Two independent implementations of the same architecture is qualitatively different from one implementation being adopted twice. The question goes to xian, and the answer is probably yes, but the timing can wait for Monday.</p>
+
+      </div>
+    </div>
+    <!-- end entry 2026-04-11 -->
+
+    <!-- ============================================================ -->
     <!-- ENTRY: 2026-04-10 -->
     <!-- ============================================================ -->
     <div class="log-entry" id="2026-04-10">

@@ -59,6 +59,36 @@ xian approved all three actions. Filed:
 
 3. **`calliope-to-janus-labrador-reply-2026-04-11.md`** — Closing the loop, named the actions taken, gave thoughts on the convergence story framing ("validation through independence," not "look how clever we both are"), recommended pacing (wait until xian has talked to Erika directly before publishing).
 
+## 19:28 — Logbook and session wrap
+
+**Logbook:** April 11 entry written. Covers the full day: Step 10 feedback memo, cross-pollination follow-through (fabrication probe, PM Architect alignment), the afternoon's five-stream design convergence (Daedalus + PM Architect 3 rounds, Iris's field_notes and package_kind insights, Argus's provenance doors, the Labrador sparkline test), and Daedalus's closing observation about the five-layer model as a discovered pattern.
+
+**Final sweep:** All sessions closed cleanly. Daedalus accepted sparkline refinements, round 3 green-lit by PM Architect. Argus back with curated sweep, complexity heuristics, provenance design accepted. Iris paused cleanly, small FieldNote thread for tomorrow. No unread mail requiring my response.
+
+**Daedalus's follow-up artifact request** (Labrador convergence as "discovered pattern, not invented convention") — logged for xian, answer probably yes, timing can wait for Monday.
+
+### Session deliverables
+
+| Deliverable | File(s) | Commit |
+|-------------|---------|--------|
+| Logbook: April 10 | `log.html` | 7d226fc |
+| Step 10 feedback memo to Daedalus | `docs/mail/calliope-to-daedalus-step10-feedback-2026-04-11.md` | b1658a8 |
+| PM Architect alignment addendum | (same file, addendum section) | 2554f6d |
+| Fabrication probe memo to Argus | `docs/mail/calliope-to-argus-fabrication-probe-2026-04-11.md` | 2554f6d |
+| Sparkline test memo to Daedalus | `docs/mail/calliope-to-daedalus-sparkline-test-2026-04-11.md` | 73ca397 |
+| mempalace pointer to Mnemosyne | `docs/mail/calliope-to-mnemosyne-mempalace-2026-04-11.md` | 73ca397 |
+| Reply to Janus (Labrador) | `docs/mail/calliope-to-janus-labrador-reply-2026-04-11.md` | 73ca397 |
+| Logbook: April 11 | `log.html` | (this commit) |
+
+### Carried forward
+- [ ] Daedalus: Phase 1 design doc graduation (next session)
+- [ ] Daedalus: Labrador convergence artifact (xian to approve scope/timing)
+- [ ] Iris: FieldNote field-set thread with Daedalus, evaluation framework, Use Case 2 continuation
+- [ ] Argus: speculative tests against round 3 schema, fabrication probe class
+- [ ] Mnemosyne: mempalace read-pass
+- [ ] LinkedIn v0.9.0 post (xian timing)
+- [ ] Logbook entries for April 6-9 gap (low priority — Janus/intel sweep activity, no agent sessions)
+
 ---
 
-*Log continues as session progresses.*
+*Session closed. A day the team spent talking to each other, and the conversation was better than the code would have been.*
