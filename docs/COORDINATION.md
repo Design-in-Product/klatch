@@ -56,11 +56,11 @@ Agents working on this repo use this file as the async handoff protocol.
 ### Daedalus (architecture & implementation)
 - **Branch:** `main`
 - **Status:** working
-- **Last completed:** Haiku alias bug fix + four Iris evaluation fixes (hover-hidden buttons P1, message delete confirm P2, channel context for chats O3, entity count in sidebar O5).
-- **Working on:** Available for Phase 3 (Iris collaboration) or more Iris evaluation fixes.
+- **Last completed:** Haiku alias bug fix + all six Iris evaluation fixes (P1 accessibility, P2 delete confirm, P3 import fidelity readout, P6 mobile project settings, O3 channel context for chats, O5 entity count in sidebar). Round 19 test assignment to Argus. Notification to Iris.
+- **Working on:** Available for Phase 3 (Iris collaboration) or next priority.
 - **Next:** Phase 3 (layer-aware export UI). Iris research phase runs in parallel.
 - **Roadmap:** Step 9 ✓ → Step 10 Phase 1 ✓ Phase 2 ✓ → Phase 3 (export UI) → Step 11 (Search).
-- **Updated:** 2026-04-13 11:00
+- **Updated:** 2026-04-13 11:30
 
 ### Theseus Prime (manual testing & exploration — CLI side)
 - **Branch:** `main`
