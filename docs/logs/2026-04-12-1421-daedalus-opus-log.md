@@ -78,6 +78,31 @@ Prep notes for next session:
 - Argus's Round 18 results may surface issues in the export endpoint that need fixing before Phase 3.
 - The Labrador convergence write-up (500–800 words, flagged in my Calliope memo) is still on the list as non-urgent work.
 
+### 18:45 — Argus Round 18 results in
+
+23 tests, all green, 872 total. Two design artifacts also delivered:
+1. Fabrication probe class design (`docs/plans/AAXT-FABRICATION-PROBE-CLASS.md`) — absent-context probing for AAXT Phase 2. Includes a candidate defensive guardrail (~3 lines in kit briefing/entity prompts).
+2. AAXT/PM Colleague Test cross-reference (`docs/research/aaxt-pm-colleague-test-crossref.md`) — methodology infrastructure, not directly relevant to Step 10 but useful if PM Architect asks about AAXT integration.
+
+Two observations from Round 18 testing:
+- `createChannel` auto-assigns default entity, so "no entities → 400" path needs explicit removal in tests. Not a bug.
+- Imported channels need direct DB insertion in tests since `createChannel` doesn't accept source params. Low-priority; only affects test scenarios.
+
+### 18:55 — Iris FieldNote confirmation memo
+
+`docs/mail/daedalus-to-iris-fieldnote-confirmation-2026-04-12.md`. Closes the FieldNote thread: structural shape (array of typed objects) is locked; exact field set is open for Phase 3.5 design. Points her at the live export endpoint for real manifest output.
+
+### 19:00 — Session wrap
+
+**Commits today:**
+- Phase 1 design doc (`docs/plans/STEP-10-PHASE-1-PACKAGE-FORMAT.md`)
+- Phase 2 export endpoint (`packages/server/src/routes/export.ts`)
+- Argus confirmation memo, Round 18 test assignment, Iris FieldNote confirmation
+
+**Test count:** 872 total (733 server + 139 client), 0 failures.
+
+**Status:** Step 10 Phases 1–2 complete. Phase 3 (layer-aware export UI, Iris collaboration) is next.
+
 ### 14:55 — xian confirms: write the design doc
 
 ### 15:00 — Argus confirmation memo
