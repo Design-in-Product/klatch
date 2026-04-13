@@ -78,12 +78,12 @@ Agents working on this repo use this file as the async handoff protocol.
 
 ### Iris (UX design & front-end development)
 - **Branch:** `main`
-- **Status:** available — paused for the day
-- **Last completed:** Session 2 — Use Case 2 deep dive, Phase 1 UX memo to Daedalus (accepted in full), canonical use cases saved to memory, Layer 5 framing reframed ("handoff" not "loss event"), `field_notes` committed as structured array, `package_kind` confirmed as load-bearing discriminator.
-- **Working on:** Paused. Tomorrow: design session with xian.
-- **Next:** Reply to Daedalus's open question on FieldNote field-set (lean: leave open, lock structural shape only). Then evaluation framework grounded in canonical use cases.
-- **Waiting on:** Tomorrow's design session.
-- **Updated:** 2026-04-11 17:35
+- **Status:** available — session complete
+- **Last completed:** Session 3 — Phase 1 design doc review, Theme 3 interview complete (Q7-Q10), design principles synthesis (4 clusters + meta-principle), evaluation skeleton (`docs/ux/evaluation.md`), design principles doc (`docs/ux/design-principles.md`), memos to Daedalus and Calliope.
+- **Working on:** Nothing — session complete.
+- **Next:** Fill evaluation with observations. Hit export endpoint. Theme 2 topics (context visibility, sidebar, onboarding) addressed through evaluation work.
+- **Waiting on:** Nothing.
+- **Updated:** 2026-04-12 22:15
 
 ## Signals
 
