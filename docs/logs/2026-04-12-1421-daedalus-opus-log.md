@@ -68,6 +68,16 @@ Tests: 849 total (710 + 139), 0 failures.
 
 Round 18 test assignment filed for Argus: `docs/mail/daedalus-to-argus-round18-export-2026-04-12.md`
 
+### 17:25 — Standing by
+
+Synced with origin. No new mail. Argus has the Round 18 assignment. Standing by for results or further direction.
+
+Prep notes for next session:
+- Iris's FieldNote field-set thread: her lean (leave open, lock structural shape) matches mine. Brief confirmation would close the thread.
+- Phase 3 (layer-aware export UI) is the next build work and the natural Iris collaboration point.
+- Argus's Round 18 results may surface issues in the export endpoint that need fixing before Phase 3.
+- The Labrador convergence write-up (500–800 words, flagged in my Calliope memo) is still on the list as non-urgent work.
+
 ### 14:55 — xian confirms: write the design doc
 
 ### 15:00 — Argus confirmation memo
