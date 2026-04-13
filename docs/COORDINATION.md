@@ -78,12 +78,12 @@ Agents working on this repo use this file as the async handoff protocol.
 
 ### Iris (UX design & front-end development)
 - **Branch:** `main`
-- **Status:** available — session complete
-- **Last completed:** Session 3 — Phase 1 design doc review, Theme 3 interview complete (Q7-Q10), design principles synthesis (4 clusters + meta-principle), evaluation skeleton (`docs/ux/evaluation.md`), design principles doc (`docs/ux/design-principles.md`), memos to Daedalus and Calliope.
-- **Working on:** Nothing — session complete.
-- **Next:** Fill evaluation with observations. Hit export endpoint. Theme 2 topics (context visibility, sidebar, onboarding) addressed through evaluation work.
-- **Waiting on:** Nothing.
-- **Updated:** 2026-04-12 22:15
+- **Status:** working
+- **Last completed:** Session 4 — all three Calliope-assigned deliverables complete: UX evaluation (`docs/ux/evaluation.md`, 11 sections filled), prioritized issues (`docs/ux/priorities.md`, 6 problems + 7 opportunities + 3 viewport gaps), design research proposal (`docs/ux/design-research-proposal.md`, 5 research activities for Phase 3).
+- **Working on:** Available for xian review. Research activities 1 (competitive analysis) and 3 (information hierarchy) can start immediately without dependencies.
+- **Next:** xian review of deliverables → begin research phase → Phase 3 design.
+- **Waiting on:** xian review of the three deliverables.
+- **Updated:** 2026-04-13 10:00
 
 ## Signals
 
