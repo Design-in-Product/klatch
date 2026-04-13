@@ -238,7 +238,7 @@ export function ProjectSettings({ projectId, onClose, onUpdated }: Props) {
                     <button
                       onClick={() => handleRemoveFile(f.id)}
                       title="Remove from project"
-                      className="p-1 rounded text-muted hover:text-danger hover:bg-hover transition-colors opacity-0 group-hover:opacity-100"
+                      className="p-1 rounded text-muted hover:text-danger hover:bg-hover transition-colors opacity-100 md:opacity-0 md:group-hover:opacity-100 md:focus-within:opacity-100"
                     >
                       <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                         <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />

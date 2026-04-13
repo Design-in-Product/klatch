@@ -238,7 +238,7 @@ export function ChannelSettings({
                           promoteFile(f.id, 'project', channel.projectId!).catch(console.error);
                         }}
                         title="Promote to project knowledge base"
-                        className="p-1 rounded text-muted hover:text-accent hover:bg-hover transition-colors opacity-0 group-hover:opacity-100"
+                        className="p-1 rounded text-muted hover:text-accent hover:bg-hover transition-colors opacity-100 md:opacity-0 md:group-hover:opacity-100 md:focus-within:opacity-100"
                       >
                         <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                           <path strokeLinecap="round" strokeLinejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18" />
@@ -252,7 +252,7 @@ export function ChannelSettings({
                         }).catch(console.error);
                       }}
                       title="Unpin from channel"
-                      className="p-1 rounded text-muted hover:text-danger hover:bg-hover transition-colors opacity-0 group-hover:opacity-100"
+                      className="p-1 rounded text-muted hover:text-danger hover:bg-hover transition-colors opacity-100 md:opacity-0 md:group-hover:opacity-100 md:focus-within:opacity-100"
                     >
                       <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                         <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
@@ -299,22 +299,20 @@ export function ChannelSettings({
           </div>
         )}
 
-        {/* Channel addendum (system prompt) — only for klatches, not chats.
-            For chats (1:1 with Claude), context comes from project instructions + entity prompt.
-            The "channel addendum" only makes sense for multi-entity group conversations. */}
-        {channel.type === 'klatch' && (
-          <div>
-            <label className="block text-xs text-secondary mb-1">
-              Channel context <span className="text-muted font-normal">(shared context for all entities — agenda, constraints, background)</span>
-            </label>
-            <textarea
-              value={systemPrompt}
-              onChange={(e) => { setSystemPrompt(e.target.value); handleChange(); }}
-              rows={3}
-              className="w-full rounded bg-input border border-line px-3 py-2 text-sm text-primary placeholder-muted focus:outline-none focus:border-accent resize-none"
-            />
-          </div>
-        )}
+        {/* Channel context (L4 addendum) — available for both chats and klatches.
+            Even a 1:1 chat can have a purpose — this is Klatch's unique contribution. */}
+        <div>
+          <label className="block text-xs text-secondary mb-1">
+            Channel context <span className="text-muted font-normal">(purpose, agenda, constraints — injected into every message)</span>
+          </label>
+          <textarea
+            value={systemPrompt}
+            onChange={(e) => { setSystemPrompt(e.target.value); handleChange(); }}
+            rows={3}
+            placeholder="What is this conversation for?"
+            className="w-full rounded bg-input border border-line px-3 py-2 text-sm text-primary placeholder-muted focus:outline-none focus:border-accent resize-none"
+          />
+        </div>
 
         {/* Interaction mode — only meaningful with 2+ entities */}
         {channelEntities.length >= 2 && (
@@ -430,7 +428,7 @@ export function ChannelSettings({
                       <button
                         onClick={() => onRemoveEntity(entity.id)}
                         title="Remove from channel"
-                        className="p-1 rounded text-muted hover:text-danger hover:bg-hover transition-colors opacity-0 group-hover:opacity-100"
+                        className="p-1 rounded text-muted hover:text-danger hover:bg-hover transition-colors opacity-100 md:opacity-0 md:group-hover:opacity-100 md:focus-within:opacity-100"
                       >
                         <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                           <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />

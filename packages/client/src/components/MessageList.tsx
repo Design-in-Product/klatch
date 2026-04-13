@@ -363,6 +363,7 @@ function MessageBubble({
   theme?: 'light' | 'dark';
 }) {
   const [copied, setCopied] = useState(false);
+  const [confirmDelete, setConfirmDelete] = useState(false);
   const isUser = message.role === 'user';
   const displayContent = streamingContent ?? message.content;
   const isWaiting = message.status === 'streaming' && !streamingContent;
@@ -410,7 +411,7 @@ function MessageBubble({
 
         {/* Action buttons — inside the bubble, visible on hover (always visible on mobile) */}
         {hasActions && (
-          <div className="flex items-center gap-2 mt-2 pt-1.5 border-t border-line opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity">
+          <div className="flex items-center gap-2 mt-2 pt-1.5 border-t border-line opacity-100 md:opacity-0 md:group-hover:opacity-100 md:focus-within:opacity-100 transition-opacity">
             {canCopy && (
               <button
                 onClick={() => {
@@ -453,14 +454,25 @@ function MessageBubble({
             )}
             {onDelete && (
               <button
-                onClick={onDelete}
-                title="Delete message"
-                className="flex items-center gap-1 rounded px-1.5 py-0.5 text-xs text-muted hover:text-danger hover:bg-hover transition-colors"
+                onClick={() => {
+                  if (confirmDelete) {
+                    onDelete();
+                  } else {
+                    setConfirmDelete(true);
+                    setTimeout(() => setConfirmDelete(false), 3000);
+                  }
+                }}
+                title={confirmDelete ? 'Click again to confirm' : 'Delete message'}
+                className={`flex items-center gap-1 rounded px-1.5 py-0.5 text-xs transition-colors ${
+                  confirmDelete
+                    ? 'text-danger bg-danger/10'
+                    : 'text-muted hover:text-danger hover:bg-hover'
+                }`}
               >
                 <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                 </svg>
-                Delete
+                {confirmDelete ? 'Confirm?' : 'Delete'}
               </button>
             )}
           </div>

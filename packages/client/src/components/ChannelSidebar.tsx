@@ -175,6 +175,14 @@ export function ChannelSidebar({
     >
       <span className="text-muted mr-1">{prefix}</span>
       <span className="truncate">{ch.name}</span>
+      {(ch.entityCount ?? 0) >= 2 && (
+        <span
+          className="ml-1 flex-shrink-0 text-[9px] font-medium px-1 py-0.5 rounded-full bg-badge text-muted leading-none"
+          title={`${ch.entityCount} entities`}
+        >
+          {ch.entityCount}
+        </span>
+      )}
       {ch.source === 'claude-code' && (
         <span
           className="ml-auto flex-shrink-0 text-[9px] font-bold px-1 py-0.5 rounded bg-badge text-muted leading-none"
@@ -255,7 +263,7 @@ export function ChannelSidebar({
                 {onOpenProjectSettings && (
                   <button
                     onClick={(e) => { e.stopPropagation(); onOpenProjectSettings(project.id); }}
-                    className="ml-1 p-0.5 rounded text-muted hover:text-secondary transition-colors opacity-0 group-hover:opacity-100 focus:opacity-100 flex-shrink-0"
+                    className="ml-1 p-0.5 rounded text-muted hover:text-secondary transition-colors opacity-100 md:opacity-0 md:group-hover:opacity-100 focus:opacity-100 flex-shrink-0"
                     title="Project settings"
                   >
                     <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>

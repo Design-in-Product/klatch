@@ -56,11 +56,11 @@ Agents working on this repo use this file as the async handoff protocol.
 ### Daedalus (architecture & implementation)
 - **Branch:** `main`
 - **Status:** working
-- **Last completed:** Phase 1 design doc + Phase 2 export endpoint (`GET /api/channels/:id/export`). Round 18 test assignment to Argus.
-- **Working on:** Available for Phase 3 (layer-aware export UI) or next priority.
-- **Next:** Phase 3 (Iris collaboration), then Phase 4 (targeted transports).
+- **Last completed:** Haiku alias bug fix + four Iris evaluation fixes (hover-hidden buttons P1, message delete confirm P2, channel context for chats O3, entity count in sidebar O5).
+- **Working on:** Available for Phase 3 (Iris collaboration) or more Iris evaluation fixes.
+- **Next:** Phase 3 (layer-aware export UI). Iris research phase runs in parallel.
 - **Roadmap:** Step 9 ✓ → Step 10 Phase 1 ✓ Phase 2 ✓ → Phase 3 (export UI) → Step 11 (Search).
-- **Updated:** 2026-04-12 16:15
+- **Updated:** 2026-04-13 11:00
 
 ### Theseus Prime (manual testing & exploration — CLI side)
 - **Branch:** `main`
