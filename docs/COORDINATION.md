@@ -13,7 +13,7 @@ Agents working on this repo use this file as the async handoff protocol.
 ### Argus (quality & test infrastructure)
 - **Branch:** `main`
 - **Status:** available
-- **Test count:** 872 total (733 server + 139 client), zero failures.
+- **Test count:** 880 total (741 server + 139 client), zero failures.
 - **Completed work:**
   - Rounds 4–11 test suites (all passing, merged to main)
   - Intelligence feed: 7 sweeps filed (6 manual + 1 curated automated)
@@ -21,11 +21,14 @@ Agents working on this repo use this file as the async handoff protocol.
   - Rounds 14–16: File Domain Model Phases 1–5 — 58 tests total
   - Round 17: Compaction threshold + effort parameter — 18 tests
   - Round 18: Step 10 Phase 2 export endpoint — 23 tests
-  - AAXT scaffolded probing design spec + complexity heuristics doc + provenance doors memo
+  - Round 19: AAXT Scaffolded Probing Phase 2 — full pipeline + 8 tests
+  - SDK bump ^0.78.0 → ^0.86.1 (Managed Agents support)
+  - Hono security update ^4.6.0 → ^4.12.12 (5 CVEs patched)
+  - AAXT/PM cross-reference + fabrication probe class design + complexity heuristics doc
 - **Completed research:** Compaction evaluation + deep dive, effort parameter, AuditBench methodology review
-- **Working on:** AAXT/PM cross-reference (Calliope assignment), fabrication probe class design
-- **Next:** SDK bump verification, Hono security update verification
-- **Updated:** 2026-04-12 17:50
+- **Working on:** Curating Monday automated intel sweep (pending 9 AM trigger)
+- **Next:** AAXT Phase 3 (multi-probe aggregation), fabrication probe integration
+- **Updated:** 2026-04-13 08:45
 - **Round 7 assignment: Sidebar redesign tests (GitHub issue #8)**
   - Read `docs/plans/SIDEBAR.md` for full design spec before writing tests.
   - **Scope:** `packages/server/src/__tests__/round7-sidebar-redesign.test.ts` (server) + `packages/client/src/__tests__/Sidebar.test.tsx` (updates to existing)
