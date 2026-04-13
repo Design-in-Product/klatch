@@ -13,21 +13,19 @@ Agents working on this repo use this file as the async handoff protocol.
 ### Argus (quality & test infrastructure)
 - **Branch:** `main`
 - **Status:** available
-- **Test count:** 837 total (698 server + 139 client), zero failures.
+- **Test count:** 872 total (733 server + 139 client), zero failures.
 - **Completed work:**
   - Rounds 4–11 test suites (all passing, merged to main)
-  - Cloud environment research (`docs/research/cloud-code-environment.md`)
-  - Intelligence feed: 6 sweeps filed (`docs/intel/`), protocol at `docs/INTELLIGENCE.md`
-  - Demo infrastructure: `KLATCH_DB` env var, `seed-demo.sh`, `docs/DEMO.md`, `scripts/record-demo.ts`
-  - Round 11 AAXT harness (21 tests) + Round 11 klatch creation (21 tests)
+  - Intelligence feed: 7 sweeps filed (6 manual + 1 curated automated)
   - Round 13: test infra fixes + 11 feature tests + research spikes (compaction, effort)
   - Rounds 14–16: File Domain Model Phases 1–5 — 58 tests total
   - Round 17: Compaction threshold + effort parameter — 18 tests
-  - AAXT scaffolded probing design spec (`docs/plans/AAXT-SCAFFOLDED-PROBING.md`)
-- **Completed research:** Cowork project export format, Models API verification, compaction evaluation, effort parameter evaluation, compaction threshold deep dive (80K→160K), AuditBench methodology review (4 AXT recommendations)
-- **Working on:** Nothing — session complete.
-- **Next:** Possible AAXT on Step 9 features. AAXT scaffolded probing implementation (Daedalus).
-- **Updated:** 2026-04-04 21:20
+  - Round 18: Step 10 Phase 2 export endpoint — 23 tests
+  - AAXT scaffolded probing design spec + complexity heuristics doc + provenance doors memo
+- **Completed research:** Compaction evaluation + deep dive, effort parameter, AuditBench methodology review
+- **Working on:** AAXT/PM cross-reference (Calliope assignment), fabrication probe class design
+- **Next:** SDK bump verification, Hono security update verification
+- **Updated:** 2026-04-12 17:50
 - **Round 7 assignment: Sidebar redesign tests (GitHub issue #8)**
   - Read `docs/plans/SIDEBAR.md` for full design spec before writing tests.
   - **Scope:** `packages/server/src/__tests__/round7-sidebar-redesign.test.ts` (server) + `packages/client/src/__tests__/Sidebar.test.tsx` (updates to existing)
