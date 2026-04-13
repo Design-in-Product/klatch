@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { importClaudeCodeSession, uploadClaudeCodeSession, importClaudeAiExport, previewClaudeAiExport, deleteChannelApi, fetchClaudeCodeSessions } from '../api/client';
 import type { ImportResponse, ImportConflict, ClaudeAiImportResponse, ZipPreviewResponse, SessionBrowseResponse } from '../api/client';
 
@@ -494,6 +494,7 @@ export function ImportDialog({ isOpen, onClose, onImported, onBulkImported, onCh
                   <p><span className="text-muted">Artifacts:</span> {result.artifactCount}</p>
                 )}
               </div>
+              <LayerFidelityReadout channelId={result.channelId} />
               <button
                 onClick={handleGoToChannel}
                 className="w-full rounded bg-accent px-3 py-2 text-sm font-medium text-white hover:bg-accent-hover transition-colors"
@@ -914,6 +915,51 @@ export function ImportDialog({ isOpen, onClose, onImported, onBulkImported, onCh
             </form>
           )}
         </div>
+      </div>
+    </div>
+  );
+}
+
+/** Shows which context layers were populated after an import */
+function LayerFidelityReadout({ channelId }: { channelId: string }) {
+  const [layers, setLayers] = useState<Record<string, string> | null>(null);
+
+  useEffect(() => {
+    fetch(`/api/channels/${channelId}/prompt-debug`)
+      .then((r) => r.ok ? r.json() : null)
+      .then((data) => { if (data?.layers) setLayers(data.layers); })
+      .catch(() => {});
+  }, [channelId]);
+
+  if (!layers) return null;
+
+  const LAYER_LABELS: Record<string, string> = {
+    '1_kitBriefing': 'Kit briefing',
+    '2_projectInstructions': 'Project instructions',
+    '3_projectMemory': 'Project memory',
+    '4_channelAddendum': 'Channel context',
+    '5_entityPrompt': 'Entity prompt',
+  };
+
+  return (
+    <div className="rounded-lg border border-line bg-card p-3">
+      <div className="text-xs font-medium text-secondary mb-2">Context layers</div>
+      <div className="space-y-1">
+        {Object.entries(layers).map(([key, status]) => {
+          const isActive = status.startsWith('ACTIVE');
+          const label = LAYER_LABELS[key] || key;
+          return (
+            <div key={key} className="flex items-center gap-2 text-xs">
+              <span className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${
+                isActive ? 'bg-green-500' : 'bg-zinc-400'
+              }`} />
+              <span className="text-secondary">{label}</span>
+              <span className="text-muted text-[10px] truncate ml-auto max-w-[60%] text-right">
+                {status.replace(/^(ACTIVE|INACTIVE|EMPTY)\s*—?\s*/, '')}
+              </span>
+            </div>
+          );
+        })}
       </div>
     </div>
   );

@@ -42,3 +42,11 @@ Corrected `claude-haiku-3-20250307` → `claude-3-haiku-20240307` (name order + 
 **O5: Entity count in sidebar.** Added a small rounded badge next to channel names showing entity count for channels with 2+ entities. Uses the `entityCount` field already in the enriched API response.
 
 Tests: 885 total, 0 failures.
+
+### 11:20 — Remaining Iris evaluation fixes shipped
+
+**P6: Project settings on mobile.** Gear icon on project headers now renders at 40% opacity on desktop instead of fully hidden, rising to 100% on hover/focus. Already always visible on mobile from the P1 fix.
+
+**P3: Import fidelity readout.** Added `LayerFidelityReadout` component to ImportDialog. After a successful Claude Code import, fetches prompt-debug for the new channel and displays per-layer status: green dot for active layers, gray for inactive/empty, plus the status detail text. User now sees exactly which context layers were populated instead of a generic "Import successful."
+
+Tests: 885 total, 0 failures.
