@@ -23,6 +23,7 @@ import type { Channel, Entity, Message, Project, FileWithRef, MessageArtifact, M
 import { readFile } from '../files/storage.js';
 import { buildSystemPrompt } from '../claude/client.js';
 import { generateHandoffBriefing, type FieldNote } from '../export/briefing.js';
+import { extractBehavioralPatterns } from '../export/external-extraction.js';
 
 const app = new Hono();
 
@@ -38,6 +39,7 @@ const app = new Hono();
 app.get('/channels/:id/export', async (c) => {
   const channelId = c.req.param('id');
   const includeBriefing = c.req.query('briefing') === 'true';
+  const includeExtraction = c.req.query('extract') === 'true';
 
   const channel = getChannel(channelId);
   if (!channel) {
@@ -69,6 +71,19 @@ app.get('/channels/:id/export', async (c) => {
       } catch (err) {
         // If briefing generation fails for an entity, continue with null field_notes
         console.error(`Briefing generation failed for entity ${entity.name}:`, err);
+      }
+    }
+  }
+
+  // Generate external behavioral extraction if requested
+  if (includeExtraction && messages.length >= 5) {
+    for (const entity of entities) {
+      try {
+        const extractedNotes = await extractBehavioralPatterns(entity.name, messages);
+        const existing = entityFieldNotes.get(entity.id) || [];
+        entityFieldNotes.set(entity.id, [...existing, ...extractedNotes]);
+      } catch (err) {
+        console.error(`External extraction failed for entity ${entity.name}:`, err);
       }
     }
   }

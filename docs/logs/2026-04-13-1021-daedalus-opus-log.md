@@ -74,3 +74,22 @@ Consensus doc (`docs/plans/STEP-10-PHASE-3.5-CONSENSUS.md`) reviewed and confirm
 Usage: `GET /api/channels/:id/export?briefing=true`
 
 Tests: 892 total (753 + 139), 0 failures.
+
+### 20:10 — Phase 3.5c shipped (micro-reflections)
+
+`POST /api/channels/:id/reflect` — triggers entity self-reflection on recent conversation. Stored as accumulated reflections on the entity. Merged into field_notes at export time. Schema: `reflections` column on entities (JSON array).
+
+### 20:20 — Phase 3.5b shipped (external extraction)
+
+`packages/server/src/export/external-extraction.ts` — auxiliary LLM scans conversation history for behavioral patterns. Produces FieldNote[] entries with `source: "external-extraction"`, `trust: "synthesized"`. Triggered by `?extract=true` on export endpoint.
+
+Full export with both modes: `GET /api/channels/:id/export?briefing=true&extract=true`
+
+This produces field_notes from three sources, merged:
+- Self-authored handoff briefing (3.5a) — `source: "self-authored-briefing"`, `trust: "agent-observed"`
+- Accumulated micro-reflections (3.5c) — `source: "micro-reflection"`, `trust: "agent-observed"`
+- External behavioral extraction (3.5b) — `source: "external-extraction"`, `trust: "synthesized"`
+
+Phase 3.5d (cross-validation review UI) is next — that's the Iris collaboration point.
+
+Tests: 892 total, 0 failures.
