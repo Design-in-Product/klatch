@@ -93,3 +93,24 @@ This produces field_notes from three sources, merged:
 Phase 3.5d (cross-validation review UI) is next — that's the Iris collaboration point.
 
 Tests: 892 total, 0 failures.
+
+### 21:18 — Session wrap
+
+**Commits on origin/main today:**
+```
+edb99b7 Phase 3.5b: external behavioral extraction at export time
+3839df0 Phase 3.5c: micro-reflections at session boundaries
+119e273 Phase 3.5a: self-authored handoff briefing at export time
+53c0b08 Phase 3.5 consensus confirmed by Daedalus — no objections
+2b9959e Phase 3.5 design discussion: Daedalus positions on five questions
+5a0b9c0 Round 19 test assignment + Iris notification
+892c744 P3 import fidelity readout + P6 mobile project settings
+b0d06ad Four UX fixes: accessibility, delete confirm, L4 for chats, entity count
+76bf28f Fix MODEL_ALIASES: correct Haiku 3 and Haiku 3.5 model IDs
+```
+
+**Summary:** Massive day. Haiku alias bug fix, six Iris evaluation fixes (P1-P3, P6, O3, O5), Phase 3.5 design discussion (four-person consensus in one session), then all three backend phases of the behavioral calibration pipeline shipped (3.5a self-authored briefing, 3.5c micro-reflections, 3.5b external extraction). Full dual-mode Layer 5 transfer mechanism is now operational.
+
+**Test count:** 892 total (753 server + 139 client), 0 failures.
+
+**Next session:** Phase 3.5d (cross-validation review UI) is an Iris collaboration. xian doing manual testing and discussing UI issues with Iris tomorrow. Phase 3 (export UI) follows.
