@@ -8,16 +8,18 @@
 import { Hono } from 'hono';
 import AdmZip from 'adm-zip';
 import { v4 as uuidv4 } from 'uuid';
+import Anthropic from '@anthropic-ai/sdk';
 import {
   getChannel,
   getChannelEntities,
   getMessages,
   getProjectForChannel,
+  appendReflection,
   getChannelFiles,
   getProjectFiles,
   getMessageArtifacts,
 } from '../db/queries.js';
-import type { Channel, Entity, Message, Project, FileWithRef, MessageArtifact } from '@klatch/shared';
+import type { Channel, Entity, Message, Project, FileWithRef, MessageArtifact, MicroReflection } from '@klatch/shared';
 import { readFile } from '../files/storage.js';
 import { buildSystemPrompt } from '../claude/client.js';
 import { generateHandoffBriefing, type FieldNote } from '../export/briefing.js';
@@ -113,6 +115,79 @@ app.get('/channels/:id/export', async (c) => {
   c.header('Content-Disposition', `attachment; filename="${filename}"`);
   c.header('Content-Length', zipBuffer.length.toString());
   return c.body(zipBuffer as unknown as ArrayBuffer);
+});
+
+/**
+ * POST /channels/:id/reflect — Trigger a micro-reflection for a channel's entities
+ *
+ * Phase 3.5c: The entity reviews recent conversation and notes 1-3 things
+ * it learned about how to work effectively with the user.
+ *
+ * Reflections are stored on the entity and included in exports.
+ */
+app.post('/channels/:id/reflect', async (c) => {
+  const channelId = c.req.param('id');
+  const channel = getChannel(channelId);
+  if (!channel) {
+    return c.json({ error: 'Channel not found' }, 404);
+  }
+
+  const entities = getChannelEntities(channelId);
+  if (entities.length === 0) {
+    return c.json({ error: 'No entities assigned to this channel' }, 400);
+  }
+
+  const messages = getMessages(channelId);
+  if (messages.length === 0) {
+    return c.json({ error: 'No messages in channel — nothing to reflect on' }, 400);
+  }
+
+  // Take recent messages for context (last 50)
+  const recent = messages.slice(-50);
+  const history = recent.map((m) => {
+    const role = m.role === 'user' ? 'User' : 'Assistant';
+    return `${role}: ${m.content.slice(0, 300)}`;
+  }).join('\n\n');
+
+  const reflections: Array<{ entityId: string; entityName: string; observation: string }> = [];
+
+  // Lazy-init Anthropic client
+  let client: Anthropic | null = null;
+  const getClient = () => { if (!client) client = new Anthropic(); return client; };
+
+  for (const entity of entities) {
+    try {
+      const response = await getClient().messages.create({
+        model: entity.model,
+        max_tokens: 256,
+        system: entity.systemPrompt || 'You are a helpful assistant.',
+        messages: [{
+          role: 'user',
+          content: `Here is a recent conversation you've been part of:\n\n${history}\n\n---\n\nBefore this session closes, note 1-3 things you learned about how to work effectively with this user that a future session of yours should know. Be specific. If nothing new was learned this session, say "Nothing new to note."`,
+        }],
+      });
+
+      const text = response.content
+        .filter((block): block is Anthropic.TextBlock => block.type === 'text')
+        .map((block) => block.text)
+        .join('');
+
+      if (text.trim() && !text.toLowerCase().includes('nothing new to note')) {
+        const reflection = {
+          observation: text.trim().slice(0, 500),
+          createdAt: new Date().toISOString(),
+          channelId,
+          type: 'session-end' as const,
+        };
+        appendReflection(entity.id, reflection);
+        reflections.push({ entityId: entity.id, entityName: entity.name, observation: reflection.observation });
+      }
+    } catch (err) {
+      console.error(`Reflection failed for entity ${entity.name}:`, err);
+    }
+  }
+
+  return c.json({ reflections, count: reflections.length });
 });
 
 // ── Manifest builder ─────────────────────────────────────────
@@ -255,7 +330,7 @@ function buildManifest(
       color: e.color,
       prompt: e.systemPrompt,
       prompt_length_chars: e.systemPrompt?.length || 0,
-      field_notes: entityFieldNotes?.get(e.id) || null,
+      field_notes: mergeFieldNotes(entityFieldNotes?.get(e.id), e.reflections),
     })),
 
     files: dedupedFiles,
@@ -313,6 +388,31 @@ function buildConversationJsonl(messages: Message[], channelId: string): string 
 }
 
 // ── Helpers ──────────────────────────────────────────────────
+
+/** Merge handoff briefing notes with accumulated micro-reflections into a single field_notes array */
+function mergeFieldNotes(briefingNotes?: FieldNote[], reflections?: MicroReflection[]): any[] | null {
+  const notes: any[] = [];
+
+  if (briefingNotes) {
+    notes.push(...briefingNotes);
+  }
+
+  if (reflections && reflections.length > 0) {
+    for (const r of reflections) {
+      notes.push({
+        observation: r.observation,
+        citations: [],
+        confidence: 'medium',
+        source: 'micro-reflection',
+        trust: 'agent-observed',
+        status: 'draft',
+        category: r.type === 'correction' ? 'course-corrections' : 'patterns',
+      });
+    }
+  }
+
+  return notes.length > 0 ? notes : null;
+}
 
 function parseSourceMetadata(raw?: string): Record<string, any> | null {
   if (!raw) return null;

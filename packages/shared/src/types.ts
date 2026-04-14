@@ -42,6 +42,13 @@ export const DEFAULT_INTERACTION_MODE: InteractionMode = 'panel';
 
 export type EffortLevel = 'low' | 'medium' | 'high' | 'max';
 
+export interface MicroReflection {
+  observation: string;
+  createdAt: string;
+  channelId: string;
+  type: 'session-end' | 'correction';
+}
+
 export interface Entity {
   id: string;
   name: string;
@@ -50,6 +57,7 @@ export interface Entity {
   effort: EffortLevel;
   systemPrompt: string;
   color: string;
+  reflections?: MicroReflection[];
   createdAt: string;
 }
 

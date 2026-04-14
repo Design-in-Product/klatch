@@ -124,6 +124,9 @@ function runMigrations() {
   if (!entityCols2.some((c) => c.name === 'effort')) {
     db.exec(`ALTER TABLE entities ADD COLUMN effort TEXT NOT NULL DEFAULT 'high'`);
   }
+  if (!entityCols2.some((c) => c.name === 'reflections')) {
+    db.exec(`ALTER TABLE entities ADD COLUMN reflections TEXT NOT NULL DEFAULT '[]'`);
+  }
 
   // ── Step 8: Import support ─────────────────────────────────
 

@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
 import { getDb } from './index.js';
-import type { Channel, ChannelType, ChannelStats, Message, Entity, Project, ModelId, InteractionMode, ChannelSource, KlatchFile, FileRef, FileRefScope, FileRefType, FileWithRef, EffortLevel } from '@klatch/shared';
+import type { Channel, ChannelType, ChannelStats, Message, Entity, Project, ModelId, InteractionMode, ChannelSource, KlatchFile, FileRef, FileRefScope, FileRefType, FileWithRef, EffortLevel, MicroReflection } from '@klatch/shared';
 import { DEFAULT_MODEL, DEFAULT_ENTITY_ID, ENTITY_COLORS, DEFAULT_INTERACTION_MODE } from '@klatch/shared';
 
 function rowToChannel(row: any): Channel {
@@ -47,6 +47,11 @@ function rowToMessage(row: any): Message {
 }
 
 function rowToEntity(row: any): Entity {
+  let reflections;
+  try {
+    reflections = row.reflections ? JSON.parse(row.reflections) : [];
+  } catch { reflections = []; }
+
   return {
     id: row.id,
     name: row.name,
@@ -55,6 +60,7 @@ function rowToEntity(row: any): Entity {
     effort: (row.effort as EffortLevel) || 'high',
     systemPrompt: row.system_prompt,
     color: row.color || ENTITY_COLORS[0],
+    reflections: reflections.length > 0 ? reflections : undefined,
     createdAt: row.created_at,
   };
 }
@@ -373,6 +379,26 @@ export function updateEntity(
     .run(name, handle || null, model, effort, systemPrompt, color, id);
 
   return { ...entity, name, handle, model, effort, systemPrompt, color };
+}
+
+/** Append a micro-reflection to an entity's reflections array */
+export function appendReflection(entityId: string, reflection: MicroReflection): void {
+  const db = getDb();
+  const row = db.prepare('SELECT reflections FROM entities WHERE id = ?').get(entityId) as { reflections: string } | undefined;
+  if (!row) return;
+
+  let reflections: MicroReflection[];
+  try { reflections = JSON.parse(row.reflections); } catch { reflections = []; }
+  reflections.push(reflection);
+
+  db.prepare('UPDATE entities SET reflections = ? WHERE id = ?')
+    .run(JSON.stringify(reflections), entityId);
+}
+
+/** Get an entity's accumulated reflections */
+export function getEntityReflections(entityId: string): MicroReflection[] {
+  const entity = getEntity(entityId);
+  return entity?.reflections || [];
 }
 
 export function deleteEntity(id: string): boolean {

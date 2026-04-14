@@ -60,6 +60,7 @@ function createFreshDb(): Database.Database {
       effort TEXT NOT NULL DEFAULT 'high',
       system_prompt TEXT NOT NULL DEFAULT '',
       color TEXT NOT NULL DEFAULT '${ENTITY_COLORS[0]}',
+      reflections TEXT NOT NULL DEFAULT '[]',
       created_at TEXT NOT NULL DEFAULT (datetime('now'))
     );
 
