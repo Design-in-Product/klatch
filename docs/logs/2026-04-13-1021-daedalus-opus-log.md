@@ -50,3 +50,27 @@ Tests: 885 total, 0 failures.
 **P3: Import fidelity readout.** Added `LayerFidelityReadout` component to ImportDialog. After a successful Claude Code import, fetches prompt-debug for the new channel and displays per-layer status: green dot for active layers, gray for inactive/empty, plus the status detail text. User now sees exactly which context layers were populated instead of a generic "Import successful."
 
 Tests: 885 total, 0 failures.
+
+### 12:00 — Phase 3.5 design discussion
+
+Read all three position docs (Argus, Iris, mine). Strong convergence on four of five questions. Q4 (cross-validation UX) diverged productively: my merged-list proposal was correct at data layer, Iris's three-group UI was correct at presentation layer. Argus synthesized the bridge.
+
+Consensus doc (`docs/plans/STEP-10-PHASE-3.5-CONSENSUS.md`) reviewed and confirmed. No objections. One implementation note: measurement protocol should run after 3.5a has produced briefings for entities with 50+ message conversations.
+
+### 19:50 — Phase 3.5a implemented (self-authored handoff briefing)
+
+`packages/server/src/export/briefing.ts`:
+- `generateHandoffBriefing()` — prompts the entity with the six-point handoff prompt from consensus
+- Entity reviews conversation history and produces structured FieldNote[] entries
+- JSON parsing with fallback (if model doesn't produce valid JSON, treat entire response as single observation)
+- Each note carries: observation, citations, confidence, source ("self-authored-briefing"), trust ("agent-observed"), status ("draft"), category
+
+`packages/server/src/routes/export.ts`:
+- Added `?briefing=true` query parameter to export endpoint
+- When briefing requested, generates handoff briefing for each entity before building manifest
+- Field notes included in `entities[].field_notes` in the manifest
+- Graceful degradation: if briefing generation fails for an entity, continues with null field_notes
+
+Usage: `GET /api/channels/:id/export?briefing=true`
+
+Tests: 892 total (753 + 139), 0 failures.

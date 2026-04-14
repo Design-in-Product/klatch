@@ -19,17 +19,24 @@ import {
 } from '../db/queries.js';
 import type { Channel, Entity, Message, Project, FileWithRef, MessageArtifact } from '@klatch/shared';
 import { readFile } from '../files/storage.js';
+import { buildSystemPrompt } from '../claude/client.js';
+import { generateHandoffBriefing, type FieldNote } from '../export/briefing.js';
 
 const app = new Hono();
 
 /**
  * GET /channels/:id/export — Export a channel as a context package zip
  *
+ * Query params:
+ *   ?briefing=true — generate self-authored handoff briefings for each entity (Phase 3.5a)
+ *
  * Returns a zip file containing:
  *   manifest.json, conversation.jsonl, layer sidecars, file attachments
  */
-app.get('/channels/:id/export', (c) => {
+app.get('/channels/:id/export', async (c) => {
   const channelId = c.req.param('id');
+  const includeBriefing = c.req.query('briefing') === 'true';
+
   const channel = getChannel(channelId);
   if (!channel) {
     return c.json({ error: 'Channel not found' }, 404);
@@ -46,11 +53,29 @@ app.get('/channels/:id/export', (c) => {
   const projectFiles = project ? getProjectFiles(project.id) : [];
   const allScopedFiles = [...projectFiles, ...channelFiles];
 
+  // Generate handoff briefings if requested
+  const entityFieldNotes = new Map<string, FieldNote[]>();
+  if (includeBriefing && messages.length > 0) {
+    const channelFileNames = channelFiles.map((f) => `- ${f.name} (${f.mimeType})`);
+    const projectFileNames = projectFiles.map((f) => `- ${f.name} (${f.mimeType})`);
+
+    for (const entity of entities) {
+      try {
+        const systemPrompt = buildSystemPrompt(entity, channel.systemPrompt, channel, project, channelFileNames, projectFileNames);
+        const notes = await generateHandoffBriefing(entity, systemPrompt, messages);
+        entityFieldNotes.set(entity.id, notes);
+      } catch (err) {
+        // If briefing generation fails for an entity, continue with null field_notes
+        console.error(`Briefing generation failed for entity ${entity.name}:`, err);
+      }
+    }
+  }
+
   // Build the manifest
   const packageId = uuidv4();
   const now = new Date().toISOString();
 
-  const manifest = buildManifest(packageId, now, channel, project, entities, channelFiles, projectFiles, messages);
+  const manifest = buildManifest(packageId, now, channel, project, entities, channelFiles, projectFiles, messages, entityFieldNotes);
 
   // Build sidecar content
   const instructionsMd = project?.instructions?.trim() || '';
@@ -101,6 +126,7 @@ function buildManifest(
   channelFiles: FileWithRef[],
   projectFiles: FileWithRef[],
   messages: Message[],
+  entityFieldNotes?: Map<string, FieldNote[]>,
 ) {
   const instructionsLength = project?.instructions?.trim().length || 0;
   const memoryLength = project?.memory?.trim().length || 0;
@@ -229,7 +255,7 @@ function buildManifest(
       color: e.color,
       prompt: e.systemPrompt,
       prompt_length_chars: e.systemPrompt?.length || 0,
-      field_notes: null,
+      field_notes: entityFieldNotes?.get(e.id) || null,
     })),
 
     files: dedupedFiles,
