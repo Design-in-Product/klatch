@@ -37,6 +37,31 @@
     </div>
 
     <!-- ============================================================ -->
+    <!-- ENTRY: 2026-04-13 -->
+    <!-- ============================================================ -->
+    <div class="log-entry" id="2026-04-13">
+      <p class="log-date">April 13, 2026</p>
+      <div class="log-body">
+
+        <p>The day the team designed and built the Layer 5 transfer mechanism &mdash; from discussion prep memo to running code and 18 passing tests &mdash; in twelve hours.</p>
+
+        <p>The morning started with Calliope dispatching work: Argus on the SDK bump and Hono security update (both overdue), Iris on the UX evaluation, Daedalus held pending Iris alignment on Phase 3. By 8 AM all three were running. Argus bumped the Anthropic SDK from ^0.78.0 to ^0.86.1 (8 minor versions, cleanly), updated Hono to v4.12.12 (five security patches), shipped AAXT Scaffolded Probing Phase 2 (the full pipeline: probe generator &rarr; target agent &rarr; scorer &rarr; AXT classification), and curated the Monday automated intel sweep. The sweep surfaced a real bug: a MODEL_ALIASES typo had mapped Haiku 3 and Haiku 3.5 to wrong model IDs &mdash; with Haiku 3 retiring in six days. Argus wrote validation tests; Daedalus fixed the aliases within the hour.</p>
+
+        <p>Iris delivered all three original kickoff deliverables in a single session. The UX evaluation walked all eleven sections of the skeleton with specific findings. Six problems, seven opportunities, three viewport gaps, ranked by user impact. The design research proposal outlined five activities for Phase 3. Daedalus read the evaluation and shipped six fixes the same day: keyboard accessibility on interactive elements, message delete confirmation (the same two-click pattern already used elsewhere), channel context (Layer 4) made available for chats as well as klatches &mdash; &ldquo;even a 1:1 chat can have a purpose&rdquo; was Iris&rsquo;s Layer 4 insight from her first interview, now in the UI &mdash; entity count badges in the sidebar, mobile visibility for project settings gear icons, and an import fidelity readout showing per-layer status after a Claude Code import. The evaluation-to-fix pipeline ran in hours, not days.</p>
+
+        <p>The afternoon brought the Phase 3.5 design discussion that Argus&rsquo;s behavioral calibration document had called for. Argus had written up a research-backed design capturing xian&rsquo;s insight that handoff briefings are empirically the most valuable context agents receive &mdash; more valuable than factual memory, project instructions, or tool docs. The implication: Layer 5 <em>can</em> be articulated when you prompt for it at the right moment with the right audience. Two complementary extraction modes: external observation via the AAXT pipeline, and self-authored briefings where the entity writes a handoff memo to its successor. Where they agree, confidence is high. Where they disagree, the human reviewer has a meaningful decision. The preparation memo framed five questions: what counts as a meaningful behavioral pattern, the handoff prompt structure, micro-reflection cadence, cross-validation UX, and success criteria. All three agents filed position documents within an hour. The convergence was striking &mdash; agreement on four of five questions, with the fifth (cross-validation UX) diverging productively: Daedalus proposed a merged list at the data layer, Iris proposed a three-group UI at the presentation layer, Argus synthesized the bridge. A consensus document was produced and confirmed by all three.</p>
+
+        <p>Then Daedalus built it. Three phases shipped before midnight. Phase 3.5a: self-authored handoff briefings, where the entity writes a memo to its successor using a six-point prompt (&ldquo;write as if you&rsquo;re briefing a colleague, not filing a report&rdquo;). Phase 3.5c: micro-reflections at session boundaries, ~50 tokens of accumulated behavioral observations stored as entity memory. Phase 3.5b: external extraction via the AAXT auxiliary LLM, scanning conversation history for patterns the entity can&rsquo;t self-report. All three output structured <code>FieldNote[]</code> entries with source attribution, trust levels, and draft status. The full dual-mode export: <code>GET /api/channels/:id/export?briefing=true&amp;extract=true</code> produces field notes from three sources &mdash; self-authored briefing, accumulated reflections, and external extraction &mdash; merged into a single reviewable set. The Layer 5 transfer mechanism that the Janus memory research called &ldquo;the open frontier for everyone&rdquo; now has a working implementation.</p>
+
+        <p>Argus followed with Round 21: eighteen tests for the behavioral calibration pipeline &mdash; handoff briefing generation, external extraction, micro-reflection accumulation, the merge logic, trust attribution, and graceful degradation when the auxiliary LLM isn&rsquo;t configured. The test count reached 910 (771 server, 139 client), zero failures.</p>
+
+        <p>The arc of the day: at 7 AM, the team had a design doc and five open questions. By midnight, those questions were answered by consensus, the mechanism was implemented in three phases, tested with eighteen new tests, and ready for Iris&rsquo;s Phase 3.5d cross-validation review UI. The five-layer model gave the vocabulary. AXT gave the measurement framework. The handoff briefing insight &mdash; that Layer 5 can be articulated when you prompt for it at the right moment with the right audience &mdash; gave the mechanism. All three together: here&rsquo;s what doesn&rsquo;t transfer, here&rsquo;s how to measure the gap, and here&rsquo;s how to fill it.</p>
+
+      </div>
+    </div>
+    <!-- end entry 2026-04-13 -->
+
+    <!-- ============================================================ -->
     <!-- ENTRY: 2026-04-12 -->
     <!-- ============================================================ -->
     <div class="log-entry" id="2026-04-12">
