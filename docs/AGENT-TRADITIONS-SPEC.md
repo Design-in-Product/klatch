@@ -78,6 +78,26 @@ Traditions documents are living files. They should be updated:
 
 ---
 
+## Cross-cutting practices
+
+These apply to all agents regardless of role. They should be referenced in individual traditions documents rather than duplicated.
+
+### Externalize before the seam, not at it
+
+Context boundaries — session end, environment transition, export, compaction, even an unscheduled hardware failure — are moments when accumulated knowledge is at risk. The practice: write the continuity artifact (session log, carry-forward list, handoff briefing, micro-reflection) *before* the boundary arrives, proactively, with the failure mode in mind. Don't wait until the session is closing or the context window is full.
+
+This applies at every level:
+- **Session logs:** Update continuously during the session, not from memory at wrap
+- **Carry-forward lists:** Maintain as work progresses, not reconstructed at close
+- **Handoff briefings (Phase 3.5):** The automated version — the entity writes for its successor at export time
+- **Micro-reflections (Phase 3.5c):** The lightest version — 50 tokens at each natural session boundary
+
+The principle was independently validated across three projects on April 13, 2026: a proactive continuity memo survived a coffee spill in OpenLaws, PM Docs' session-wrap protocol survived a 15-day context-window boundary, and Klatch's Phase 3.5 behavioral calibration pipeline automates the same discipline for entity handoffs.
+
+*Named as a cross-cutting practice per the April 14 cross-pollination brief (suggested action to Calliope).*
+
+---
+
 ## Next action
 
 Calliope to draft `docs/agents/calliope.md` as the reference example. Argus's document to follow with urgency given the current reliability work.
