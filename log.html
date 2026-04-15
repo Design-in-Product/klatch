@@ -37,6 +37,37 @@
     </div>
 
     <!-- ============================================================ -->
+    <!-- ENTRY: 2026-04-14 -->
+    <!-- ============================================================ -->
+    <div class="log-entry" id="2026-04-14">
+      <p class="log-date">April 14, 2026</p>
+      <div class="log-body">
+
+        <p>Two things happened today. The first finished something. The second started something bigger.</p>
+
+        <p>Phase 3.5d &mdash; the export review UI with field note cross-validation &mdash; shipped in the afternoon. Iris wrote the interim spec: a slide-down panel between clicking Export and downloading, with an export summary (layer composition at a glance), field note review grouped into three categories (agreements, decisions needed, single-source), accept/edit/reject per note with trust transitions (accepted notes get <code>trust: "human-authored"</code>), and source badges color-coded by extraction mode. Daedalus built it, including a new <code>GET /api/channels/:id/export-preview</code> endpoint that returns manifest data without producing the zip. Argus added the <code>known_pathological</code> label to the AAXT fabrication probes (a five-minute improvement from the cross-pollination brief's OpenLaws finding) and wrote Round 22 with 32 tests covering the preview endpoint, the review panel's data contract, and the field note lifecycle. The full Phase 3.5 arc &mdash; from Argus's design doc to Iris's spec to Daedalus's implementation to Argus's tests &mdash; took 48 hours. Step 10 Phases 1, 2, and 3.5 are now complete. Phase 4 (targeted transports, starting with Claude Code) is approved and next.</p>
+
+        <p>The second thing was a conversation between xian and Iris that will reshape the product.</p>
+
+        <p>Iris presented five UX topics from her evaluation. The visibility gap was confirmed immediately &mdash; the backend computes rich context data that the UI reduces to colored dots. The sidebar IA, conversation experience, and import-to-export arc were heard and resonated. But Topic 4 &mdash; entity management &mdash; triggered what Iris called the most important insight of the session.</p>
+
+        <p>xian's reframe: <strong>entities aren't abstractions you define in a manager. They're existing conversations that you promote into a role.</strong> Each of the Piper Morgan leadership roles already lives as an ongoing chat. When you want a klatch, you bring existing conversations into a room together. The klatch is a meeting of existing chats, not a new conversation with pre-configured personas. The entity <em>is</em> its conversation, given a seat at a shared table.</p>
+
+        <p>This inverts the current mental model. The UI today says: create an entity, configure its role prompt, assign it to a channel. The actual workflow is: have a conversation (the entity develops through use), then bring it into a klatch (it joins a meeting with full context from its own history). From-scratch creation exists but isn't the primary use case. The primary use case is promotion &mdash; a conversation that proves its value graduates into a role.</p>
+
+        <p>The connection to the file domain model is immediate: files promote upward (message &rarr; channel &rarr; project) as they prove their value. Entities would do the same: a conversation promotes into a role as it proves its character. The same architectural pattern &mdash; scope-aware references with upward promotion &mdash; applied to identity instead of documents.</p>
+
+        <p>Iris's Topic 5, the import-to-export arc, built on this. The roundtrip (import, work in a klatch, export) has no experiential thread connecting its three acts. The transition from Act 1 (import) to Act 2 (work together) is exactly the gap the entity reframe illuminates: "I've imported these conversations, now I want to use them together." xian said it was the topic he liked most because it named something he hadn't fully attended to yet.</p>
+
+        <p>The five topics are presented. xian will share his own independently gathered observations tomorrow during a travel day, then they synthesize both sets and plan the end-to-end review. Separately, Calliope drafted a blog post skeleton for the Phase 3.5 behavioral calibration story &mdash; eight sections, waiting for real export output before the post can be written &mdash; and added "externalize before the seam, not at it" to the Agent Traditions Spec as a cross-cutting practice named by the April 14 cross-pollination brief.</p>
+
+        <p>And a note from xian, with a grin: Claude Desktop shipped several updates in the past two days, including a significant UI refactoring that made it, in some ways, more Klatch-like. The lapping scenario from the roadmap, where Anthropic closes the gap on features Klatch pioneered, is not hypothetical. It's happening. The question was always whether Klatch could stay ahead on the things no single vendor would build &mdash; cross-vendor composition, the five-layer protocol, persistent multi-agent workflows, the context interchange standard. After today's entity reframe, add one more: the insight that an entity is a conversation promoted into a role, not a persona configured from scratch. That's a design idea, not a feature. Design ideas don't get lapped.</p>
+
+      </div>
+    </div>
+    <!-- end entry 2026-04-14 -->
+
+    <!-- ============================================================ -->
     <!-- ENTRY: 2026-04-13 -->
     <!-- ============================================================ -->
     <div class="log-entry" id="2026-04-13">
