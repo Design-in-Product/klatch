@@ -9,11 +9,14 @@ import { queryAuxiliary } from './auxiliary.js';
 
 // ── Types ────────────────────────────────────────────────────
 
+export type ProbeClassification = 'standard' | 'known_pathological' | 'placeholder';
+
 export interface Probe {
   question: string;
   expectedAnswer: string;
   layer: string;         // "L1", "L2", etc.
   directness: 'direct' | 'applied' | 'inferential';
+  classification?: ProbeClassification; // default: 'standard'
 }
 
 export interface ProbeSet {
