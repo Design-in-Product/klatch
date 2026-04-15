@@ -133,6 +133,63 @@ app.get('/channels/:id/export', async (c) => {
 });
 
 /**
+ * GET /channels/:id/export-preview — Preview export manifest without producing a zip
+ *
+ * Returns the manifest JSON only. Supports ?briefing=true and ?extract=true
+ * for field note generation. Used by the export review UI.
+ */
+app.get('/channels/:id/export-preview', async (c) => {
+  const channelId = c.req.param('id');
+  const includeBriefing = c.req.query('briefing') === 'true';
+  const includeExtraction = c.req.query('extract') === 'true';
+
+  const channel = getChannel(channelId);
+  if (!channel) return c.json({ error: 'Channel not found' }, 404);
+
+  const entities = getChannelEntities(channelId);
+  if (entities.length === 0) return c.json({ error: 'No entities assigned' }, 400);
+
+  const project = channel.projectId ? (getProjectForChannel(channelId) ?? null) : null;
+  const messages = getMessages(channelId);
+  const channelFiles = getChannelFiles(channelId);
+  const projectFiles = project ? getProjectFiles(project.id) : [];
+
+  const entityFieldNotes = new Map<string, FieldNote[]>();
+
+  if (includeBriefing && messages.length > 0) {
+    const channelFileNames = channelFiles.map((f) => `- ${f.name} (${f.mimeType})`);
+    const projectFileNames = projectFiles.map((f) => `- ${f.name} (${f.mimeType})`);
+    for (const entity of entities) {
+      try {
+        const systemPrompt = buildSystemPrompt(entity, channel.systemPrompt, channel, project, channelFileNames, projectFileNames);
+        const notes = await generateHandoffBriefing(entity, systemPrompt, messages);
+        entityFieldNotes.set(entity.id, notes);
+      } catch (err) {
+        console.error(`Preview briefing failed for ${entity.name}:`, err);
+      }
+    }
+  }
+
+  if (includeExtraction && messages.length >= 5) {
+    for (const entity of entities) {
+      try {
+        const extractedNotes = await extractBehavioralPatterns(entity.name, messages);
+        const existing = entityFieldNotes.get(entity.id) || [];
+        entityFieldNotes.set(entity.id, [...existing, ...extractedNotes]);
+      } catch (err) {
+        console.error(`Preview extraction failed for ${entity.name}:`, err);
+      }
+    }
+  }
+
+  const packageId = uuidv4();
+  const now = new Date().toISOString();
+  const manifest = buildManifest(packageId, now, channel, project, entities, channelFiles, projectFiles, messages, entityFieldNotes);
+
+  return c.json(manifest);
+});
+
+/**
  * POST /channels/:id/reflect — Trigger a micro-reflection for a channel's entities
  *
  * Phase 3.5c: The entity reviews recent conversation and notes 1-3 things

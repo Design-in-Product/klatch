@@ -12,6 +12,7 @@ interface Props {
   onAssignEntity: (entityId: string) => void;
   onRemoveEntity: (entityId: string) => void;
   onDeleteChannel: () => void;
+  onExport?: () => void;
   onClose: () => void;
 }
 
@@ -23,6 +24,7 @@ export function ChannelSettings({
   onAssignEntity,
   onRemoveEntity,
   onDeleteChannel,
+  onExport,
   onClose,
 }: Props) {
   const [name, setName] = useState(channel.name);
@@ -481,6 +483,16 @@ export function ChannelSettings({
             </div>
           </div>
         )}
+
+        {/* Export */}
+        <div className="pt-2 border-t border-line">
+          <button
+            onClick={() => onExport?.()}
+            className="text-xs text-accent hover:text-accent-hover transition-colors"
+          >
+            Export channel
+          </button>
+        </div>
 
         {/* Delete channel */}
         {channel.id !== 'default' && (

@@ -150,6 +150,24 @@ export async function promoteFile(fileId: string, targetScope: 'channel' | 'proj
   return res.json();
 }
 
+// ── Export API ───────────────────────────────────────────────
+
+export async function fetchExportPreview(channelId: string, opts?: { briefing?: boolean; extract?: boolean }): Promise<any> {
+  const params = new URLSearchParams();
+  if (opts?.briefing) params.set('briefing', 'true');
+  if (opts?.extract) params.set('extract', 'true');
+  const res = await fetch(`${BASE}/channels/${channelId}/export-preview?${params}`);
+  if (!res.ok) throw new Error(`Failed to fetch export preview: ${res.statusText}`);
+  return res.json();
+}
+
+export function getExportUrl(channelId: string, opts?: { briefing?: boolean; extract?: boolean }): string {
+  const params = new URLSearchParams();
+  if (opts?.briefing) params.set('briefing', 'true');
+  if (opts?.extract) params.set('extract', 'true');
+  return `${BASE}/channels/${channelId}/export?${params}`;
+}
+
 // ── Entity API ───────────────────────────────────────────────
 
 export async function fetchEntities(): Promise<Entity[]> {

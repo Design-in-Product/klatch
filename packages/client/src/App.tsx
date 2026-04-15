@@ -7,6 +7,7 @@ import { ChannelSettings } from './components/ChannelSettings';
 import { ProjectSettings } from './components/ProjectSettings';
 import { EntityManager } from './components/EntityManager';
 import { ImportDialog } from './components/ImportDialog';
+import { ExportReviewPanel } from './components/ExportReviewPanel';
 import { MessageList } from './components/MessageList';
 import { MessageInput } from './components/MessageInput';
 import { useMessages } from './hooks/useMessages';
@@ -49,6 +50,7 @@ export default function App() {
   const [channelEntities, setChannelEntities] = useState<Entity[]>([]);
   const [allEntities, setAllEntities] = useState<Entity[]>([]);
   const [showSettings, setShowSettings] = useState(false);
+  const [showExportReview, setShowExportReview] = useState(false);
   const [showEntityManager, setShowEntityManager] = useState(false);
   const [showImportDialog, setShowImportDialog] = useState(false);
   const [projects, setProjects] = useState<Project[]>([]);
@@ -494,10 +496,17 @@ export default function App() {
             onAssignEntity={handleAssignEntity}
             onRemoveEntity={handleRemoveEntity}
             onDeleteChannel={handleDeleteChannel}
+            onExport={() => { setShowSettings(false); setShowExportReview(true); }}
             onClose={() => setShowSettings(false)}
           />
         )}
-        {activeProjectId && !showSettings && (
+        {showExportReview && activeChannel && (
+          <ExportReviewPanel
+            channelId={activeChannel.id}
+            onClose={() => setShowExportReview(false)}
+          />
+        )}
+        {activeProjectId && !showSettings && !showExportReview && (
           <ProjectSettings
             projectId={activeProjectId}
             onClose={() => setActiveProjectId(null)}
