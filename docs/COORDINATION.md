@@ -56,11 +56,11 @@ Agents working on this repo use this file as the async handoff protocol.
 ### Daedalus (architecture & implementation)
 - **Branch:** `main`
 - **Status:** working
-- **Last completed:** Phase 3.5d export review UI shipped per Iris's spec. Full Phase 3.5 pipeline complete (extraction + review). Export preview endpoint + ExportReviewPanel component with three-group field note review.
-- **Working on:** Available for Phase 3 (full export UI) or next priority.
-- **Next:** Phase 3 (export UI), Phase 4 (targeted transports), Step 11 (Search).
-- **Roadmap:** Step 9 ✓ → Step 10 Phase 1 ✓ Phase 2 ✓ Phase 3.5 ✓ → Phase 3 → Phase 4 → Step 11.
-- **Updated:** 2026-04-14 18:15
+- **Last completed:** Phase 3.5 complete and fully tested. Step 10 status reviewed with xian — Phase 4 approved.
+- **Working on:** Phase 4 (targeted transports — Claude Code first).
+- **Next:** Phase 4 Claude Code transport → remaining transports → Step 11 (Search). Phase 3 polish runs in parallel with Iris.
+- **Roadmap:** Step 9 ✓ → Step 10 Phase 1 ✓ Phase 2 ✓ Phase 3.5 ✓ → Phase 4 (next) → Step 11.
+- **Updated:** 2026-04-14 18:05
 
 ### Theseus Prime (manual testing & exploration — CLI side)
 - **Branch:** `main`
