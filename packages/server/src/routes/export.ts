@@ -24,6 +24,7 @@ import { readFile } from '../files/storage.js';
 import { buildSystemPrompt } from '../claude/client.js';
 import { generateHandoffBriefing, type FieldNote } from '../export/briefing.js';
 import { extractBehavioralPatterns } from '../export/external-extraction.js';
+import { adaptToClaudeCode, resolveTemplates } from '../export/transport-claude-code.js';
 
 const app = new Hono();
 
@@ -187,6 +188,97 @@ app.get('/channels/:id/export-preview', async (c) => {
   const manifest = buildManifest(packageId, now, channel, project, entities, channelFiles, projectFiles, messages, entityFieldNotes);
 
   return c.json(manifest);
+});
+
+/**
+ * GET /channels/:id/export/claude-code — Export for Claude Code environment
+ *
+ * Produces a zip structured for dropping into a Claude Code project directory:
+ *   CLAUDE.md     — reverse kit briefing + project instructions (L2) + channel context (L4)
+ *   MEMORY.md     — project memory (L3) + behavioral field notes (L5)
+ *   files/        — file attachments from the package
+ *
+ * Supports ?briefing=true and ?extract=true for field note generation.
+ */
+app.get('/channels/:id/export/claude-code', async (c) => {
+  const channelId = c.req.param('id');
+  const includeBriefing = c.req.query('briefing') === 'true';
+  const includeExtraction = c.req.query('extract') === 'true';
+
+  const channel = getChannel(channelId);
+  if (!channel) return c.json({ error: 'Channel not found' }, 404);
+
+  const entities = getChannelEntities(channelId);
+  if (entities.length === 0) return c.json({ error: 'No entities assigned' }, 400);
+
+  const project = channel.projectId ? (getProjectForChannel(channelId) ?? null) : null;
+  const messages = getMessages(channelId);
+  const channelFiles = getChannelFiles(channelId);
+  const projectFiles = project ? getProjectFiles(project.id) : [];
+  const allScopedFiles = [...projectFiles, ...channelFiles];
+
+  // Generate field notes if requested
+  const entityFieldNotes = new Map<string, FieldNote[]>();
+  if (includeBriefing && messages.length > 0) {
+    const cfn = channelFiles.map((f) => `- ${f.name} (${f.mimeType})`);
+    const pfn = projectFiles.map((f) => `- ${f.name} (${f.mimeType})`);
+    for (const entity of entities) {
+      try {
+        const sp = buildSystemPrompt(entity, channel.systemPrompt, channel, project, cfn, pfn);
+        const notes = await generateHandoffBriefing(entity, sp, messages);
+        entityFieldNotes.set(entity.id, notes);
+      } catch (err) {
+        console.error(`CC export briefing failed for ${entity.name}:`, err);
+      }
+    }
+  }
+  if (includeExtraction && messages.length >= 5) {
+    for (const entity of entities) {
+      try {
+        const notes = await extractBehavioralPatterns(entity.name, messages);
+        const existing = entityFieldNotes.get(entity.id) || [];
+        entityFieldNotes.set(entity.id, [...existing, ...notes]);
+      } catch (err) {
+        console.error(`CC export extraction failed for ${entity.name}:`, err);
+      }
+    }
+  }
+
+  // Build canonical manifest
+  const packageId = uuidv4();
+  const now = new Date().toISOString();
+  const manifest = buildManifest(packageId, now, channel, project, entities, channelFiles, projectFiles, messages, entityFieldNotes);
+
+  // Adapt to Claude Code format
+  const ccExport = adaptToClaudeCode(manifest);
+
+  // Resolve template placeholders with actual sidecar content
+  const resolved = resolveTemplates(ccExport, {
+    layer2Instructions: project?.instructions?.trim() || undefined,
+    layer3Memory: project?.memory?.trim() || undefined,
+    layer4Context: channel.systemPrompt?.trim() || undefined,
+  });
+
+  // Build the zip
+  const zip = new AdmZip();
+  zip.addFile('CLAUDE.md', Buffer.from(resolved.claudeMd, 'utf-8'));
+  zip.addFile('MEMORY.md', Buffer.from(resolved.memoryMd, 'utf-8'));
+
+  // File attachments
+  for (const fileRef of allScopedFiles) {
+    const content = readFile(fileRef.storageKey);
+    if (content) {
+      zip.addFile(`files/${fileRef.name}`, content);
+    }
+  }
+
+  const zipBuffer = zip.toBuffer();
+  const filename = `${channel.name.replace(/[^a-zA-Z0-9._-]/g, '_')}-claude-code.zip`;
+
+  c.header('Content-Type', 'application/zip');
+  c.header('Content-Disposition', `attachment; filename="${filename}"`);
+  c.header('Content-Length', zipBuffer.length.toString());
+  return c.body(zipBuffer as unknown as ArrayBuffer);
 });
 
 /**
