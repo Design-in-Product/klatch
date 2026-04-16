@@ -25,6 +25,7 @@ import { buildSystemPrompt } from '../claude/client.js';
 import { generateHandoffBriefing, type FieldNote } from '../export/briefing.js';
 import { extractBehavioralPatterns } from '../export/external-extraction.js';
 import { adaptToClaudeCode, resolveTemplates } from '../export/transport-claude-code.js';
+import { adaptToClaudeAi } from '../export/transport-claude-ai.js';
 
 const app = new Hono();
 
@@ -274,6 +275,93 @@ app.get('/channels/:id/export/claude-code', async (c) => {
 
   const zipBuffer = zip.toBuffer();
   const filename = `${channel.name.replace(/[^a-zA-Z0-9._-]/g, '_')}-claude-code.zip`;
+
+  c.header('Content-Type', 'application/zip');
+  c.header('Content-Disposition', `attachment; filename="${filename}"`);
+  c.header('Content-Length', zipBuffer.length.toString());
+  return c.body(zipBuffer as unknown as ArrayBuffer);
+});
+
+/**
+ * GET /channels/:id/export/claude-ai — Export for claude.ai environment
+ *
+ * Produces a zip structured like a claude.ai data export:
+ *   conversations.json  — the conversation in claude.ai message format
+ *   projects.json       — project metadata + knowledge base docs
+ *   memories.json       — field notes as memory items
+ *
+ * This is the reverse of the claude.ai import pipeline, enabling round-trip:
+ * claude.ai → Klatch → claude.ai.
+ */
+app.get('/channels/:id/export/claude-ai', async (c) => {
+  const channelId = c.req.param('id');
+  const includeBriefing = c.req.query('briefing') === 'true';
+  const includeExtraction = c.req.query('extract') === 'true';
+
+  const channel = getChannel(channelId);
+  if (!channel) return c.json({ error: 'Channel not found' }, 404);
+
+  const entities = getChannelEntities(channelId);
+  if (entities.length === 0) return c.json({ error: 'No entities assigned' }, 400);
+
+  const project = channel.projectId ? (getProjectForChannel(channelId) ?? null) : null;
+  const messages = getMessages(channelId);
+  const channelFiles = getChannelFiles(channelId);
+  const projectFiles = project ? getProjectFiles(project.id) : [];
+
+  // Generate field notes if requested
+  const entityFieldNotes = new Map<string, FieldNote[]>();
+  if (includeBriefing && messages.length > 0) {
+    const cfn = channelFiles.map((f) => `- ${f.name} (${f.mimeType})`);
+    const pfn = projectFiles.map((f) => `- ${f.name} (${f.mimeType})`);
+    for (const entity of entities) {
+      try {
+        const sp = buildSystemPrompt(entity, channel.systemPrompt, channel, project, cfn, pfn);
+        const notes = await generateHandoffBriefing(entity, sp, messages);
+        entityFieldNotes.set(entity.id, notes);
+      } catch (err) {
+        console.error(`claude.ai export briefing failed for ${entity.name}:`, err);
+      }
+    }
+  }
+  if (includeExtraction && messages.length >= 5) {
+    for (const entity of entities) {
+      try {
+        const notes = await extractBehavioralPatterns(entity.name, messages);
+        const existing = entityFieldNotes.get(entity.id) || [];
+        entityFieldNotes.set(entity.id, [...existing, ...notes]);
+      } catch (err) {
+        console.error(`claude.ai export extraction failed for ${entity.name}:`, err);
+      }
+    }
+  }
+
+  // Build canonical manifest
+  const packageId = uuidv4();
+  const now = new Date().toISOString();
+  const manifest = buildManifest(packageId, now, channel, project, entities, channelFiles, projectFiles, messages, entityFieldNotes);
+
+  // Load KB file contents for project docs
+  const fileContents = new Map<string, string>();
+  for (const fileRef of projectFiles) {
+    if (fileRef.mimeType.startsWith('text/')) {
+      const buf = readFile(fileRef.storageKey);
+      if (buf) fileContents.set(`files/${fileRef.id}_${fileRef.name}`, buf.toString('utf-8'));
+    }
+  }
+
+  // Adapt to claude.ai format
+  const layer2Content = project?.instructions?.trim() || undefined;
+  const claudeAiData = adaptToClaudeAi(manifest, messages, layer2Content, fileContents);
+
+  // Build the zip
+  const zip = new AdmZip();
+  zip.addFile('conversations.json', Buffer.from(claudeAiData.conversationsJson, 'utf-8'));
+  zip.addFile('projects.json', Buffer.from(claudeAiData.projectsJson, 'utf-8'));
+  zip.addFile('memories.json', Buffer.from(claudeAiData.memoriesJson, 'utf-8'));
+
+  const zipBuffer = zip.toBuffer();
+  const filename = `${channel.name.replace(/[^a-zA-Z0-9._-]/g, '_')}-claude-ai.zip`;
 
   c.header('Content-Type', 'application/zip');
   c.header('Content-Disposition', `attachment; filename="${filename}"`);

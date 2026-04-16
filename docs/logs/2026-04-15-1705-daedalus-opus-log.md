@@ -50,3 +50,19 @@ Synced, reviewed brief. Starting Phase 4 implementation.
 - Supports `?briefing=true&extract=true` for field note generation
 
 Tests: 942 total (782 + 160), 0 failures.
+
+### 18:30 — Phase 4 claude.ai transport shipped
+
+**Transport adapter** (`packages/server/src/export/transport-claude-ai.ts`):
+- `adaptToClaudeAi(manifest, messages, layer2Content, fileContents)` — produces claude.ai export format
+- Messages converted to `{ uuid, text, sender, created_at }` format
+- Project L2 instructions become `prompt_template` on the project
+- Knowledge base text files become project `docs[]` with filename + content
+- Field notes from all sources become entries in `memories.json`
+
+**Endpoint:** `GET /api/channels/:id/export/claude-ai`
+- Produces zip with conversations.json, projects.json, memories.json
+- Zip structure matches claude.ai data export format
+- Round-trip capable: output shape matches what `import/claude-ai-zip.ts` expects as input
+
+Tests: 969 total (809 + 160), 0 failures.

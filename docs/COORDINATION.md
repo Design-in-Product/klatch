@@ -56,11 +56,11 @@ Agents working on this repo use this file as the async handoff protocol.
 ### Daedalus (architecture & implementation)
 - **Branch:** `main`
 - **Status:** working
-- **Last completed:** Phase 4 Claude Code transport shipped. Reverse kit briefing, CLAUDE.md/MEMORY.md assembly, file attachments. Round 22 test assignment to Argus.
-- **Working on:** Available for next transport (claude.ai or Cowork) or Phase 5 (MCP server).
-- **Next:** Remaining Phase 4 transports → Phase 5 (MCP) → Step 11 (Search).
-- **Roadmap:** Step 9 ✓ → Step 10 Phase 1 ✓ Phase 2 ✓ Phase 3.5 ✓ Phase 4 CC ✓ → remaining transports → Phase 5 → Step 11.
-- **Updated:** 2026-04-15 17:45
+- **Last completed:** Phase 4 Claude Code + claude.ai transports shipped. Round-trip capable claude.ai format. Rounds 22+23 test assignments to Argus.
+- **Working on:** Available for Phase 5 (MCP server) next.
+- **Next:** Phase 5 (MCP) → possibly Cowork transport (speculative, no documented format) → 1.0.
+- **Roadmap:** Step 9 ✓ → Step 10 Phase 1 ✓ Phase 2 ✓ Phase 3.5 ✓ Phase 4 CC+AI ✓ → Phase 5 → 1.0.
+- **Updated:** 2026-04-15 18:30
 
 ### Theseus Prime (manual testing & exploration — CLI side)
 - **Branch:** `main`
