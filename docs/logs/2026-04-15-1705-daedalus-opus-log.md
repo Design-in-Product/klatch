@@ -66,3 +66,19 @@ Tests: 942 total (782 + 160), 0 failures.
 - Round-trip capable: output shape matches what `import/claude-ai-zip.ts` expects as input
 
 Tests: 969 total (809 + 160), 0 failures.
+
+### 23:25 — Session wrap
+
+**Commits today:**
+```
+61ee685 Phase 4: claude.ai transport — round-trip capable
+cdc3d37 Phase 4: Claude Code transport — first targeted export adapter
+```
+
+**Summary:** Two Phase 4 transports shipped. Claude Code produces CLAUDE.md + MEMORY.md + files/ for dropping into a Claude Code project. claude.ai produces conversations.json + projects.json + memories.json matching the existing import pipeline format — full round-trip capable. Phase 4 is effectively done for practical purposes; Cowork is speculative (no documented format).
+
+**Test count:** 969 total, 0 failures.
+
+**Next session:** Phase 5 (MCP server) — deferred per xian's preference for fresh energy on the capstone protocol work.
+
+**Argus:** Rounds 22 and 23 filed and waiting. Round 23 includes the round-trip verification test — the strongest demonstration of protocol correctness yet.
