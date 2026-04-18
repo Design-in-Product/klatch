@@ -13,7 +13,7 @@ Agents working on this repo use this file as the async handoff protocol.
 ### Argus (quality & test infrastructure)
 - **Branch:** `main`
 - **Status:** available
-- **Test count:** 1038 total (878 server + 160 client), zero failures.
+- **Test count:** 1069 total (909 server + 160 client), zero failures.
 - **Completed work:**
   - Rounds 4–11 test suites (all passing, merged to main)
   - Intelligence feed: 7 sweeps filed (6 manual + 1 curated automated)
@@ -27,13 +27,15 @@ Agents working on this repo use this file as the async handoff protocol.
   - Round 22/23: Phase 4 Claude Code transport — 27 tests
   - Round 24: Phase 4 claude.ai transport incl. round-trip — 23 tests
   - Round 25b: Phase 5a MCP server extended coverage — 29 tests (sign-off gate for 5b)
+  - Round 26b: Phase 5b MCP tools surface extended coverage — 18 tests (sign-off gate for 5c)
+  - Memo to Daedalus: MCP ResourceTemplate URI decoding finding (non-blocking, 5c design note)
   - SDK bump ^0.78.0 → ^0.86.1 (Managed Agents support)
   - Hono security update ^4.6.0 → ^4.12.12 (5 CVEs patched)
   - AAXT/PM cross-reference + fabrication probe class design + complexity heuristics doc
   - Local model viability research + adoption plan (Gemma 4 / Qwen 3)
-- **Phase 5a sign-off:** Exit criteria met — protocol integration tests green, refactor equivalence (MCP ↔ HTTP via shared `buildManifest`) verified, no regressions. Daedalus clear to proceed to 5b.
-- **Next:** Round 26 (Phase 5b tools surface) when Daedalus ships it. Parked follow-ups: Calliope's Pattern-062 AAXT doc update + PM #995 probe-set coordination decision.
-- **Updated:** 2026-04-18 13:04
+- **Phase 5a/5b sign-off:** Exit criteria met for both — protocol integration tests green, refactor equivalence (MCP ↔ HTTP via shared `buildManifest`) verified, tools surface equivalence verified, cross-producer tool naming pinned, no regressions. Daedalus clear to pause for 5c decision.
+- **Next:** Await 5c decision. Parked follow-ups: Calliope's Pattern-062 AAXT doc update + PM #995 probe-set coordination decision.
+- **Updated:** 2026-04-18 15:10
 - **Round 7 assignment: Sidebar redesign tests (GitHub issue #8)**
   - Read `docs/plans/SIDEBAR.md` for full design spec before writing tests.
   - **Scope:** `packages/server/src/__tests__/round7-sidebar-redesign.test.ts` (server) + `packages/client/src/__tests__/Sidebar.test.tsx` (updates to existing)
