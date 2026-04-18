@@ -19,13 +19,14 @@ import {
   getProjectFiles,
   getMessageArtifacts,
 } from '../db/queries.js';
-import type { Channel, Entity, Message, Project, FileWithRef, MessageArtifact, MicroReflection } from '@klatch/shared';
+import type { Message } from '@klatch/shared';
 import { readFile } from '../files/storage.js';
 import { buildSystemPrompt } from '../claude/client.js';
 import { generateHandoffBriefing, type FieldNote } from '../export/briefing.js';
 import { extractBehavioralPatterns } from '../export/external-extraction.js';
 import { adaptToClaudeCode, resolveTemplates } from '../export/transport-claude-code.js';
 import { adaptToClaudeAi } from '../export/transport-claude-ai.js';
+import { buildManifest } from '../export/package-builder.js';
 
 const app = new Hono();
 
@@ -94,7 +95,7 @@ app.get('/channels/:id/export', async (c) => {
   const packageId = uuidv4();
   const now = new Date().toISOString();
 
-  const manifest = buildManifest(packageId, now, channel, project, entities, channelFiles, projectFiles, messages, entityFieldNotes);
+  const manifest = buildManifest({ packageId, createdAt: now, channel, project, entities, channelFiles, projectFiles, messages, entityFieldNotes });
 
   // Build sidecar content
   const instructionsMd = project?.instructions?.trim() || '';
@@ -186,7 +187,7 @@ app.get('/channels/:id/export-preview', async (c) => {
 
   const packageId = uuidv4();
   const now = new Date().toISOString();
-  const manifest = buildManifest(packageId, now, channel, project, entities, channelFiles, projectFiles, messages, entityFieldNotes);
+  const manifest = buildManifest({ packageId, createdAt: now, channel, project, entities, channelFiles, projectFiles, messages, entityFieldNotes });
 
   return c.json(manifest);
 });
@@ -248,7 +249,7 @@ app.get('/channels/:id/export/claude-code', async (c) => {
   // Build canonical manifest
   const packageId = uuidv4();
   const now = new Date().toISOString();
-  const manifest = buildManifest(packageId, now, channel, project, entities, channelFiles, projectFiles, messages, entityFieldNotes);
+  const manifest = buildManifest({ packageId, createdAt: now, channel, project, entities, channelFiles, projectFiles, messages, entityFieldNotes });
 
   // Adapt to Claude Code format
   const ccExport = adaptToClaudeCode(manifest);
@@ -339,7 +340,7 @@ app.get('/channels/:id/export/claude-ai', async (c) => {
   // Build canonical manifest
   const packageId = uuidv4();
   const now = new Date().toISOString();
-  const manifest = buildManifest(packageId, now, channel, project, entities, channelFiles, projectFiles, messages, entityFieldNotes);
+  const manifest = buildManifest({ packageId, createdAt: now, channel, project, entities, channelFiles, projectFiles, messages, entityFieldNotes });
 
   // Load KB file contents for project docs
   const fileContents = new Map<string, string>();
@@ -442,164 +443,6 @@ app.post('/channels/:id/reflect', async (c) => {
   return c.json({ reflections, count: reflections.length });
 });
 
-// ── Manifest builder ─────────────────────────────────────────
-
-function buildManifest(
-  packageId: string,
-  createdAt: string,
-  channel: Channel,
-  project: Project | null,
-  entities: Entity[],
-  channelFiles: FileWithRef[],
-  projectFiles: FileWithRef[],
-  messages: Message[],
-  entityFieldNotes?: Map<string, FieldNote[]>,
-) {
-  const instructionsLength = project?.instructions?.trim().length || 0;
-  const memoryLength = project?.memory?.trim().length || 0;
-  const contextLength = channel.systemPrompt?.trim().length || 0;
-
-  // Build provenance chain
-  const provenance: any[] = [];
-
-  // If imported, the original source is the first hop
-  if (channel.source && channel.source !== 'native') {
-    const meta = parseSourceMetadata(channel.sourceMetadata);
-    provenance.push({
-      event_id: uuidv4(),
-      source: channel.source,
-      at: meta?.importedAt || meta?.firstTimestamp || createdAt,
-      summary: `Original ${channel.source === 'claude-code' ? 'Claude Code' : 'claude.ai'} session`,
-      ...(meta?.cwd ? { path: meta.cwd } : {}),
-      ...(meta?.originalSessionId ? { session_id: meta.originalSessionId } : {}),
-      ...(meta?.originalProjectUuid ? { project_uuid: meta.originalProjectUuid } : {}),
-      layer_fidelity: null,
-      integrity: null,
-    });
-  }
-
-  // The current export is the last hop
-  provenance.push({
-    event_id: uuidv4(),
-    source: 'klatch',
-    at: createdAt,
-    summary: 'Exported from Klatch',
-    instance: 'klatch-local',
-    channel_id: channel.id,
-    layer_fidelity: {
-      L1: channel.source !== 'native' ? 'full' : 'absent',
-      L2: instructionsLength > 0 ? 'full' : 'absent',
-      L3: memoryLength > 0 || projectFiles.length > 0 ? 'full' : 'absent',
-      L4: contextLength > 0 || channelFiles.length > 0 ? 'full' : 'absent',
-      L5: 'full',
-    },
-    integrity: null,
-  });
-
-  // Build file entries
-  const allFiles = [...projectFiles, ...channelFiles];
-  const fileEntries = allFiles.map((f) => ({
-    id: f.id,
-    name: f.name,
-    mime_type: f.mimeType,
-    size_bytes: f.sizeBytes,
-    length_chars: f.sizeBytes, // approximation for binary; exact for UTF-8 text
-    ref: `files/${f.id}_${f.name}`,
-    scope: f.scope,
-    scope_id: f.scopeId,
-    ref_type: f.refType,
-    added_at: f.addedAt,
-    source: f.addedBy || 'unknown',
-    trust: 'unattributed',
-  }));
-
-  // Deduplicate files that appear at both project and channel scope
-  const seenFileIds = new Set<string>();
-  const dedupedFiles = fileEntries.filter((f) => {
-    if (seenFileIds.has(f.id)) return false;
-    seenFileIds.add(f.id);
-    return true;
-  });
-
-  // Compaction state
-  let compactionState = null;
-  if (channel.compactionState) {
-    try {
-      const parsed = JSON.parse(channel.compactionState);
-      compactionState = {
-        summary: parsed.summary,
-        before_message_id: parsed.beforeMessageId,
-        compacted_at: parsed.timestamp,
-      };
-    } catch { /* ignore malformed */ }
-  }
-
-  return {
-    format_version: '1.0.0',
-    source_type: 'klatch',
-    package_id: packageId,
-    package_kind: 'klatch.context.v1',
-    created_at: createdAt,
-
-    provenance,
-
-    project: project ? {
-      id: project.id,
-      name: project.name,
-      instructions: {
-        ref: 'layer_2_instructions.md',
-        length_chars: instructionsLength,
-      },
-      memory: {
-        ref: 'layer_3_memory.md',
-        length_chars: memoryLength,
-        memory_format: 'flat',
-      },
-      knowledge_base_file_ids: projectFiles.map((f) => f.id),
-    } : null,
-
-    conversation_context: {
-      id: channel.id,
-      name: channel.name,
-      type: channel.type,
-      mode: channel.mode,
-      created_at: channel.createdAt,
-      last_active_at: messages.length > 0 ? messages[messages.length - 1].createdAt : channel.createdAt,
-      context: {
-        ref: 'layer_4_context.md',
-        length_chars: contextLength,
-      },
-      pinned_file_ids: channelFiles.map((f) => f.id),
-      compaction_state: compactionState,
-    },
-
-    entities: entities.map((e) => ({
-      id: e.id,
-      name: e.name,
-      handle: e.handle || null,
-      model: e.model,
-      effort: e.effort,
-      color: e.color,
-      prompt: e.systemPrompt,
-      prompt_length_chars: e.systemPrompt?.length || 0,
-      field_notes: mergeFieldNotes(entityFieldNotes?.get(e.id), e.reflections),
-    })),
-
-    files: dedupedFiles,
-
-    conversation_history: {
-      ref: 'conversation.jsonl',
-      message_count: messages.length,
-      first_message_at: messages.length > 0 ? messages[0].createdAt : null,
-      last_message_at: messages.length > 0 ? messages[messages.length - 1].createdAt : null,
-    },
-
-    extensions: {
-      klatch: {},
-    },
-  };
-}
-
 // ── Conversation JSONL builder ───────────────────────────────
 
 function buildConversationJsonl(messages: Message[], channelId: string): string {
@@ -637,42 +480,6 @@ function buildConversationJsonl(messages: Message[], channelId: string): string 
   }
 
   return lines.join('\n');
-}
-
-// ── Helpers ──────────────────────────────────────────────────
-
-/** Merge handoff briefing notes with accumulated micro-reflections into a single field_notes array */
-function mergeFieldNotes(briefingNotes?: FieldNote[], reflections?: MicroReflection[]): any[] | null {
-  const notes: any[] = [];
-
-  if (briefingNotes) {
-    notes.push(...briefingNotes);
-  }
-
-  if (reflections && reflections.length > 0) {
-    for (const r of reflections) {
-      notes.push({
-        observation: r.observation,
-        citations: [],
-        confidence: 'medium',
-        source: 'micro-reflection',
-        trust: 'agent-observed',
-        status: 'draft',
-        category: r.type === 'correction' ? 'course-corrections' : 'patterns',
-      });
-    }
-  }
-
-  return notes.length > 0 ? notes : null;
-}
-
-function parseSourceMetadata(raw?: string): Record<string, any> | null {
-  if (!raw) return null;
-  try {
-    return JSON.parse(raw);
-  } catch {
-    return null;
-  }
 }
 
 export const exportRoutes = app;

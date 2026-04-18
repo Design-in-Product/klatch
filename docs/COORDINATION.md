@@ -13,7 +13,7 @@ Agents working on this repo use this file as the async handoff protocol.
 ### Argus (quality & test infrastructure)
 - **Branch:** `main`
 - **Status:** available
-- **Test count:** 880 total (741 server + 139 client), zero failures.
+- **Test count:** 1038 total (878 server + 160 client), zero failures.
 - **Completed work:**
   - Rounds 4–11 test suites (all passing, merged to main)
   - Intelligence feed: 7 sweeps filed (6 manual + 1 curated automated)
@@ -22,13 +22,18 @@ Agents working on this repo use this file as the async handoff protocol.
   - Round 17: Compaction threshold + effort parameter — 18 tests
   - Round 18: Step 10 Phase 2 export endpoint — 23 tests
   - Round 19: AAXT Scaffolded Probing Phase 2 — full pipeline + 8 tests
+  - Round 20: Phase 3.5 UX fixes — 7 tests
+  - Round 21: Phase 3.5d review UI — 14 tests
+  - Round 22/23: Phase 4 Claude Code transport — 27 tests
+  - Round 24: Phase 4 claude.ai transport incl. round-trip — 23 tests
+  - Round 25b: Phase 5a MCP server extended coverage — 29 tests (sign-off gate for 5b)
   - SDK bump ^0.78.0 → ^0.86.1 (Managed Agents support)
   - Hono security update ^4.6.0 → ^4.12.12 (5 CVEs patched)
   - AAXT/PM cross-reference + fabrication probe class design + complexity heuristics doc
-- **Completed research:** Compaction evaluation + deep dive, effort parameter, AuditBench methodology review
-- **Working on:** Curating Monday automated intel sweep (pending 9 AM trigger)
-- **Next:** AAXT Phase 3 (multi-probe aggregation), fabrication probe integration
-- **Updated:** 2026-04-13 08:45
+  - Local model viability research + adoption plan (Gemma 4 / Qwen 3)
+- **Phase 5a sign-off:** Exit criteria met — protocol integration tests green, refactor equivalence (MCP ↔ HTTP via shared `buildManifest`) verified, no regressions. Daedalus clear to proceed to 5b.
+- **Next:** Round 26 (Phase 5b tools surface) when Daedalus ships it. Parked follow-ups: Calliope's Pattern-062 AAXT doc update + PM #995 probe-set coordination decision.
+- **Updated:** 2026-04-18 13:04
 - **Round 7 assignment: Sidebar redesign tests (GitHub issue #8)**
   - Read `docs/plans/SIDEBAR.md` for full design spec before writing tests.
   - **Scope:** `packages/server/src/__tests__/round7-sidebar-redesign.test.ts` (server) + `packages/client/src/__tests__/Sidebar.test.tsx` (updates to existing)
@@ -56,11 +61,12 @@ Agents working on this repo use this file as the async handoff protocol.
 ### Daedalus (architecture & implementation)
 - **Branch:** `main`
 - **Status:** working
-- **Last completed:** Phase 4 Claude Code + claude.ai transports shipped. Round-trip capable claude.ai format. Rounds 22+23 test assignments to Argus.
-- **Working on:** Available for Phase 5 (MCP server) next.
-- **Next:** Phase 5 (MCP) → possibly Cowork transport (speculative, no documented format) → 1.0.
-- **Roadmap:** Step 9 ✓ → Step 10 Phase 1 ✓ Phase 2 ✓ Phase 3.5 ✓ Phase 4 CC+AI ✓ → Phase 5 → 1.0.
-- **Updated:** 2026-04-15 18:30
+- **Last completed:** Phase 5a shipped — MCP server with read-only resources (stdio transport, no auth). Canonical package builder extracted to `packages/server/src/export/package-builder.ts` as shared source of truth. 17 new tests (Round 25). Phase 5 design doc + memo to PM Architect sent.
+- **Working on:** Awaiting Argus thorough testing of 5a before proceeding to 5b.
+- **Next:** Phase 5b (tools surface: list_channels, get_context_package, get_manifest) once Argus signs off on 5a. Then decide on 5c (prompts + reflect write-path). 5d (HTTP + auth) deferred past 1.0.
+- **Roadmap:** Step 9 ✓ → Step 10 Phase 1 ✓ Phase 2 ✓ Phase 3.5 ✓ Phase 4 CC+AI ✓ Phase 5a ✓ → Phase 5b → 1.0.
+- **Round 25 assignment for Argus:** See `docs/logs/2026-04-18-1141-daedalus-opus-log.md` — full test scope and exit criteria for 5a sign-off.
+- **Updated:** 2026-04-18 12:55
 
 ### Theseus Prime (manual testing & exploration — CLI side)
 - **Branch:** `main`
