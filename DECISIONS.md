@@ -13,3 +13,5 @@ For major architectural decisions, write a full ADR. This log is the lightweight
 2026-04-15 | Haiku 3 MODEL_ALIASES migration closed via PM #979, ahead of Apr 19 deadline | PA + Lead Dev
 2026-04-15 | Phase 3.5 closed, Phase 4 approved and shipping transports | xian + Iris
 2026-04-17 | Phase 3.5 document of record completed | xian
+2026-04-18 | Phase 5 (MCP server) authorized; Daedalus green-lit to proceed | xian + Calliope
+2026-04-18 | Entity reframe direction note filed (promotion-first, not creation-first) | xian + Calliope
