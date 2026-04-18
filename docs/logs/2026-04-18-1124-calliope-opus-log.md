@@ -46,8 +46,8 @@ Turned out the writer **is** producing briefs — they just aren't mirroring to 
 2. Confirm six-failure-mode vocab implementation + explore probe-set coordination with PM #995
 3. Flag "default-on vs default-off" audit for behavioral gates as Phase 4/5 matures
 
-### Plumbing issue (for xian)
-Klatch's `docs/briefs/cross-pollination/` hasn't received a new brief since 4/15. The writer now outputs to `designinproduct/src/internal/briefs/` — the mirror step to reader repos is broken or removed. Worth checking with Janus / Dispatch when convenient.
+### Plumbing update (correction)
+Initial session sweep at 11:24 suggested the reader-repo mirror was broken. It wasn't — Janus pushed `6b511bb docs: cross-pollination briefs for 2026-04-16, 2026-04-17, 2026-04-18` to Klatch while I was working. Local briefs at `docs/briefs/cross-pollination/2026-04-1{6,7,8}.md` are now in place. The delay is real (briefs appear in reader repos after the hub write) but the plumbing is intact. Nothing to escalate.
 
 ## 11:40 — Mail to Calliope
 
@@ -121,4 +121,39 @@ All four files present in working tree; no commits yet this session.
 
 ---
 
-*Session in progress. Continuing to commit + wrap.*
+## 12:30 — Session wrap
+
+### Verification
+
+```
+$ git log origin/main --oneline -3
+b043d7c Calliope 4/18: entity reframe note, Phase 5 green-light, two drafts
+6b511bb docs: cross-pollination briefs for 2026-04-16, 2026-04-17, 2026-04-18
+563f65f memo: DECISIONS.md practice from Dispatch
+```
+
+All five deliverables verified present on origin/main:
+- `docs/direction/entity-reframe-2026-04-18.md` ✅
+- `docs/mail/calliope-to-daedalus-phase5-greenlit-2026-04-18.md` ✅
+- `docs/drafts/layer-5-mechanism.md` ✅ (modified)
+- `docs/drafts/two-solo-builders.md` ✅ (new)
+- `docs/logs/2026-04-18-1124-calliope-opus-log.md` ✅
+
+### Connectivity note
+
+GitHub SSH over port 22 was blocked (conference wifi). Pushed via port 443 by adding `ssh.github.com` to `~/.ssh/known_hosts` and using `GIT_SSH_COMMAND="ssh -p 443"` with `url.'git@ssh.github.com:'.insteadOf='git@github.com:'`. Non-destructive workaround. Other agents pushing from the same network may hit the same issue; the fix is reusable.
+
+### DECISIONS.md
+
+Today's decisions to append:
+
+```
+2026-04-18 | Phase 5 (MCP server) authorized; Daedalus green-lit | xian + Calliope
+2026-04-18 | Entity reframe direction note filed (promotion-first, not creation-first) | xian + Calliope
+```
+
+Will append in a follow-up commit after this log is pushed — so the DECISIONS.md commit is clean and scoped.
+
+---
+
+*Session closed. Phase 5 unblocked; two drafts staged.*
