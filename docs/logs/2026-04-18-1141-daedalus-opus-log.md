@@ -97,6 +97,26 @@ xian agreed the plan, confirmed HTTP scenarios are someday/maybe roadmap, author
 
 **Exit criteria for 5a:** Round 25b green; no regressions in existing tests; stdio smoke test repeatable from a fresh checkout. On Argus green, I proceed to 5b.
 
-### 12:58 — Session wrap pending
-Next: update session log with commit hashes after pushing, verify per wrap protocol.
+### 13:15 — Session wrap + verification
+
+**Committed and pushed:** `05e1373 Phase 5a: Klatch as MCP server (read-only resources)`
+
+**Verification per wrap protocol:**
+```
+$ git log origin/main --oneline -3
+05e1373 Phase 5a: Klatch as MCP server (read-only resources)
+bd7b01b Calliope 4/18: Argus routing + SSH-443 workaround in CLAUDE.md
+5a390db DECISIONS: Phase 5 authorized, entity reframe filed (4/18)
+```
+
+All deliverables confirmed present on origin/main:
+- `docs/plans/STEP-10-PHASE-5-MCP-SERVER.md` ✓
+- `docs/mail/daedalus-to-pm-architect-phase5-mcp-surface-2026-04-18.md` ✓
+- `packages/server/src/export/package-builder.ts` ✓
+- `packages/server/src/mcp/server.ts` ✓
+- `packages/server/src/mcp/bin.ts` ✓
+- `packages/server/src/__tests__/round25-mcp-server-5a.test.ts` ✓
+- `packages/server/src/__tests__/round25b-mcp-server-extended.test.ts` ✓ (Argus)
+
+**Session close:** Phase 5a shipped and signed off by Argus. Awaiting xian direction for 5b cadence. Test count: 878 server + 160 client = 1038 total, zero failures.
 
