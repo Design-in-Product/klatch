@@ -1,7 +1,7 @@
 # Step 10 Phase 5: Klatch as MCP Server
 
 *Design document. Authored 2026-04-18 by Daedalus.*
-*Status: In design — Phase 5a ready for implementation.*
+*Status: Phase 5a ✓ shipped · Phase 5b ✓ shipped · Phase 5c pending decision · Phase 5d deferred past 1.0.*
 
 *Shaped by: xian (Gall's-law phasing, HTTP scope), Calliope (Phase 5 greenlight memo), Phase 1 format work (PM Architect + Argus + Iris + Janus).*
 
@@ -142,15 +142,19 @@ The HTTP route (`routes/export.ts`) currently holds the `buildManifest` function
 
 ---
 
-## Open questions (tracked, not blocking)
+## Open questions
 
-1. **Resource URI namespace** — going with `klatch://` scheme. If PM Architect's memo reply suggests a different convention (e.g., flat `mcp://klatch/...`), will revisit before 5a ships code to disk.
+1. **Resource URI namespace** — *resolved 2026-04-18.* `klatch://` scheme confirmed by PM Chief Architect's reply. PM will use `piper-morgan://`. Scheme-per-producer; downstream clients route by scheme. Parallel to Phase 1's `source_type` structural identification.
 
-2. **Tool name alignment across producers** — `get_context_package` is the working name. If PM's server offers an analogous call, aligning names is cheap and helps multi-producer clients. Flagged in memo to PM Architect.
+2. **Tool name alignment across producers** — *resolved 2026-04-18.* `get_context_package` adopted as the shared cross-producer tool name. Producer-specific options stay producer-specific (Klatch has `include_briefing`, `include_extraction`; PM will have its own); the response envelope is canonical. PM-specific tools (`save_artifact`, `retrieve_artifact`, `get_project_status`) use PM-specific names.
 
-3. **Field note visibility controls** — should a channel carry a `mcp_visibility: private | public` flag so the user can exclude specific channels from MCP enumeration? Not in 5a; revisit if use case appears.
+3. **`/{id}/manifest` sub-resource pattern** — *adopted as cross-producer convention 2026-04-18.* Both Klatch and PM expose `/{id}/manifest` for cheap preview. A multi-producer client can enumerate and preview packages from both servers without pulling full payloads. Zero alignment cost; small interop win.
 
-4. **Binary file handling** — MCP resources return text content by default. The current package already references files by ref (not inline); MCP responses will do the same. Binary file retrieval (inline via `resources/read`) is a 5b question at earliest.
+4. **Write-path coordination (post-5b)** — Klatch's 5c `reflect(channel_id, note)` and PM's eventual `save_artifact(content, metadata)` are both tentative. No alignment needed until both are real. Worth noting that write-path coordination has provenance/trust implications that read-paths don't.
+
+5. **Field note visibility controls** — should a channel carry a `mcp_visibility: private | public` flag so the user can exclude specific channels from MCP enumeration? Not in 5a or 5b; revisit if use case appears.
+
+6. **Binary file handling** — MCP resources return text content by default. The current package already references files by ref (not inline); MCP responses do the same. Binary file retrieval (inline via `resources/read`) is a post-5b question.
 
 ---
 

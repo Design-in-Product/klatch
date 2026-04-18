@@ -120,3 +120,85 @@ All deliverables confirmed present on origin/main:
 
 **Session close:** Phase 5a shipped and signed off by Argus. Awaiting xian direction for 5b cadence. Test count: 878 server + 160 client = 1038 total, zero failures.
 
+### 14:00 — PM Chief Architect replied, 5b unblocked
+
+xian hand-carried the Phase 5 memo to Piper Morgan and downloaded the reply: `docs/mail/memo-arch-to-daedalus-phase5-mcp-2026-04-18.md`.
+
+Both questions confirmed as I was leaning:
+1. **URI namespace** — `klatch://` + `piper-morgan://` scheme-per-producer. Route by scheme. Parallel to Phase 1's `source_type` field (producer self-identifies structurally, not via content inspection).
+2. **Tool naming** — `get_context_package` as the shared cross-producer tool name. Producer-specific options stay producer-specific; the response envelope is canonical.
+
+Two bonuses in the reply:
+- `/{id}/manifest` sub-resource pattern endorsed as a cheap cross-producer interop convention. I already built it in 5a; nothing to change, worth a note in the design doc.
+- Heads-up that PM will eventually have an analogous write-path (`save_artifact`) to parallel my `reflect`. No 5b implication — 5c-or-later coordination, parked.
+
+No round 2 needed. xian said "let's go" on 5b at 14:07.
+
+Also noted in the courier run: `calliope-to-dispatch-ssh443-workaround-2026-04-18.md` (unrelated to Phase 5) was pending delivery to Dispatch; xian will carry that too.
+
+### 14:10 — Phase 5b shipped (tools surface)
+
+**Code (packages/server/src/mcp/server.ts):**
+
+Three tools registered via `registerTool`:
+- `list_channels(filter?, type?, limit?, offset?)` — filterable, paginated channel listing. Filter is case-insensitive substring match on name; type restricts to `'chat' | 'klatch'`. Response envelope: `{ format_version, total, offset, limit, returned, channels[] }`.
+- `get_context_package(channel_id, include_briefing?, include_extraction?, format_version?)` — rich accessor. Delegates to the same `generateHandoffBriefing` (Phase 3.5a) and `extractBehavioralPatterns` (Phase 3.5b) pipelines the HTTP export route uses. Honors `format_version` via `negotiateFormatVersion` (returns error envelope on unsupported). Tool name matches PM Chief Architect's cross-producer alignment.
+- `get_manifest(channel_id)` — cheap preview, no LLM calls, equivalent to `klatch://channels/{id}/manifest` resource.
+
+Implementation:
+- New helper: `assembleChannelPackageWithOptions(channelId, opts)` — async orchestration mirroring routes/export.ts briefing+extraction pipeline. Same LLM calls, same `buildManifest` output. When `includeBriefing`/`includeExtraction` are both false, output is identical to `assembleChannelPackage` (verified by test — masked equality).
+- Tool error path uses MCP idiomatic `{ isError: true, content: [...] }` envelope, not throws.
+- Server capabilities now advertise `tools: {}` alongside `resources: {}`.
+- Zod added as direct dep (`^4.0.0`) — previously transitive through MCP SDK.
+
+**Smoke-test:** JSON-RPC over stdio:
+- `initialize` returns capabilities with both `resources` and `tools`, plus updated instructions enumerating the tool surface.
+- `tools/list` enumerates all three tools with well-formed JSON Schema (required channel_id on get_context_package + get_manifest, optional args on list_channels, format_version description includes supported versions).
+
+**Tests (Round 26, `round26-mcp-server-5b-tools.test.ts`):** 13 tests covering:
+- `filterChannels` — no-filter, substring, type, filter+type combined
+- Pagination arithmetic at boundaries (offset beyond total, limit larger than remaining)
+- `assembleChannelPackageWithOptions` equivalence to `assembleChannelPackage` (masked) when no LLM options
+- Null return on unknown channel
+- Guard behavior: empty channel + `includeBriefing:true` does not crash (no LLM call triggered)
+- Guard behavior: short channel (<5 msgs) + `includeExtraction:true` does not crash
+- Server construction with tools capability
+- `SUPPORTED_FORMAT_VERSIONS` contains `1.0.0`
+
+**Full server suite: 891 passed, 0 failures** (878 → 891, +13 from Round 26). No regressions. Pre-existing tsc errors in unrelated test files remain pre-existing.
+
+### 14:20 — Round 26 extended test assignment for Argus
+
+**Scope:** Thorough testing of Phase 5b tools surface. Exit criteria for proceeding to 5c (or pause).
+
+**What I built (to test against):**
+- `packages/server/src/mcp/server.ts` — three new tool registrations + `assembleChannelPackageWithOptions` helper + `filterChannels` helper
+- `packages/server/package.json` — `zod ^4.0.0` added as direct dep
+
+**Tests already in place (Round 26 — my initial coverage, 13 tests):**
+- filterChannels unit tests (no-filter, substring, type, combined)
+- Pagination arithmetic boundary tests
+- Options-path equivalence (no-opts ≡ plain assembly)
+- Error path (null on unknown channel)
+- Guard paths (empty/short channels with LLM options)
+- Server + capability smoke
+
+**Tests to add (Round 26b — Argus's extended coverage):**
+1. **Protocol integration over stdio** — spawn `src/mcp/bin.ts`, exchange `initialize` → `tools/list` → `tools/call`. Assert all three tools are callable, the JSON Schema returned matches what we registered, invalid args return validation errors via JSON-RPC.
+2. **list_channels edge cases** — empty DB (total=0, returned=0, channels=[]); filter with no matches; offset=0 limit=1 returns first channel only; pagination preserves ordering across sliced calls.
+3. **get_context_package option combinations** — `{include_briefing:false, include_extraction:false}` identical to resource fetch (mock the LLM client or stub the two helpers at the module boundary to keep the test hermetic).
+4. **get_context_package format_version negotiation** — supported → proceeds; unsupported/garbage → returns `{ isError: true, content:[...] }` with clear message and does not call briefing/extraction.
+5. **get_manifest equivalence** — tool-returned payload is byte-for-byte identical to `klatch://channels/{id}/manifest` resource fetch (modulo UUIDs/timestamps).
+6. **Tool isError envelope** — unknown channel id on all three tools returns `isError:true`, never throws out of the handler.
+7. **Cross-producer tool naming** — assert tool registered as exactly `get_context_package` (name matters for PM's reply — alignment with PM Architect's memo).
+8. **No regressions in existing suites** — full server + client green after 5b ships.
+
+**Non-goals for Round 26b (out of 5b scope):**
+- `reflect` write-path (5c)
+- `kit_briefing` prompt (5c)
+- HTTP transport (5d, deferred past 1.0)
+- Refactoring `routes/export.ts` to share the new orchestration helper (possible follow-up, but 5b intentionally does not touch HTTP routes — the `buildManifest` shared-source-of-truth invariant still holds because both call into the same builder)
+
+**Exit criteria for 5b:** Round 26b green; no regressions; stdio integration demonstrated. On Argus green, we pause for a 5c decision.
+
+

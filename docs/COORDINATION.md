@@ -61,12 +61,13 @@ Agents working on this repo use this file as the async handoff protocol.
 ### Daedalus (architecture & implementation)
 - **Branch:** `main`
 - **Status:** working
-- **Last completed:** Phase 5a shipped — MCP server with read-only resources (stdio transport, no auth). Canonical package builder extracted to `packages/server/src/export/package-builder.ts` as shared source of truth. 17 new tests (Round 25). Phase 5 design doc + memo to PM Architect sent.
-- **Working on:** Awaiting Argus thorough testing of 5a before proceeding to 5b.
-- **Next:** Phase 5b (tools surface: list_channels, get_context_package, get_manifest) once Argus signs off on 5a. Then decide on 5c (prompts + reflect write-path). 5d (HTTP + auth) deferred past 1.0.
-- **Roadmap:** Step 9 ✓ → Step 10 Phase 1 ✓ Phase 2 ✓ Phase 3.5 ✓ Phase 4 CC+AI ✓ Phase 5a ✓ → Phase 5b → 1.0.
-- **Round 25 assignment for Argus:** See `docs/logs/2026-04-18-1141-daedalus-opus-log.md` — full test scope and exit criteria for 5a sign-off.
-- **Updated:** 2026-04-18 12:55
+- **Last completed:** Phase 5b shipped — MCP tools surface (`list_channels`, `get_context_package`, `get_manifest`). Same LLM orchestration pipeline as HTTP export; cross-producer tool name `get_context_package` aligned with PM Chief Architect's reply. 13 new tests (Round 26). 891 server tests green, zero failures.
+- **Working on:** Awaiting Argus extended Round 26b coverage before deciding on 5c cadence.
+- **Next:** Decision point after Argus sign-off on 5b — proceed to 5c (prompts + reflect write-path) or pause. 5d (HTTP + auth) still deferred past 1.0.
+- **Roadmap:** Step 9 ✓ → Step 10 Phase 1 ✓ Phase 2 ✓ Phase 3.5 ✓ Phase 4 CC+AI ✓ Phase 5a ✓ Phase 5b ✓ → Phase 5c (pending) → 1.0.
+- **Round 26 assignment for Argus:** See `docs/logs/2026-04-18-1141-daedalus-opus-log.md` (14:20 entry) — eight-item test scope and exit criteria for 5b sign-off.
+- **Cross-project alignment (recorded):** PM Chief Architect confirmed `klatch://` scheme and `get_context_package` shared tool name (memo `memo-arch-to-daedalus-phase5-mcp-2026-04-18.md`). `/{id}/manifest` sub-resource pattern endorsed as cross-producer interop convention.
+- **Updated:** 2026-04-18 14:20
 
 ### Theseus Prime (manual testing & exploration — CLI side)
 - **Branch:** `main`

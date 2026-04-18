@@ -15,6 +15,7 @@
 
 import { McpServer, ResourceTemplate } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { v4 as uuidv4 } from 'uuid';
+import { z } from 'zod';
 import {
   getAllChannels,
   getChannel,
@@ -28,7 +29,15 @@ import {
   getAllEntities,
   getEntity,
 } from '../db/queries.js';
-import { buildManifest, SUPPORTED_FORMAT_VERSIONS, FORMAT_VERSION } from '../export/package-builder.js';
+import {
+  buildManifest,
+  SUPPORTED_FORMAT_VERSIONS,
+  FORMAT_VERSION,
+  negotiateFormatVersion,
+} from '../export/package-builder.js';
+import { generateHandoffBriefing, type FieldNote } from '../export/briefing.js';
+import { extractBehavioralPatterns } from '../export/external-extraction.js';
+import { buildSystemPrompt } from '../claude/client.js';
 
 // ── URI constants ────────────────────────────────────────────
 
@@ -65,6 +74,98 @@ function assembleChannelPackage(channelId: string): any | null {
     projectFiles,
     messages,
   });
+}
+
+/**
+ * Phase 5b — async channel package assembly with briefing/extraction options.
+ *
+ * Mirrors the orchestration in `routes/export.ts` for the HTTP export endpoints:
+ * same `generateHandoffBriefing` and `extractBehavioralPatterns` pipelines, same
+ * `buildManifest` output. If `includeBriefing` and `includeExtraction` are both
+ * false, the result is identical to `assembleChannelPackage`.
+ *
+ * Note on cost/latency: briefing and extraction are LLM-backed. Each runs one
+ * API call per entity (briefing) or one per channel (extraction). Clients should
+ * prefer the plain resource fetch or `get_manifest` when that level of enrichment
+ * is not needed.
+ */
+async function assembleChannelPackageWithOptions(
+  channelId: string,
+  opts: { includeBriefing?: boolean; includeExtraction?: boolean },
+): Promise<any | null> {
+  const channel = getChannel(channelId);
+  if (!channel) return null;
+
+  const entities = getChannelEntities(channelId);
+  const project = channel.projectId ? (getProjectForChannel(channelId) ?? null) : null;
+  const messages = getMessages(channelId);
+  const channelFiles = getChannelFiles(channelId);
+  const projectFiles = project ? getProjectFiles(project.id) : [];
+
+  const entityFieldNotes = new Map<string, FieldNote[]>();
+
+  if (opts.includeBriefing && messages.length > 0 && entities.length > 0) {
+    const channelFileNames = channelFiles.map((f) => `- ${f.name} (${f.mimeType})`);
+    const projectFileNames = projectFiles.map((f) => `- ${f.name} (${f.mimeType})`);
+    for (const entity of entities) {
+      try {
+        const systemPrompt = buildSystemPrompt(
+          entity,
+          channel.systemPrompt,
+          channel,
+          project,
+          channelFileNames,
+          projectFileNames,
+        );
+        const notes = await generateHandoffBriefing(entity, systemPrompt, messages);
+        entityFieldNotes.set(entity.id, notes);
+      } catch (err) {
+        console.error(`[mcp] Briefing generation failed for entity ${entity.name}:`, err);
+      }
+    }
+  }
+
+  if (opts.includeExtraction && messages.length >= 5) {
+    for (const entity of entities) {
+      try {
+        const extractedNotes = await extractBehavioralPatterns(entity.name, messages);
+        const existing = entityFieldNotes.get(entity.id) || [];
+        entityFieldNotes.set(entity.id, [...existing, ...extractedNotes]);
+      } catch (err) {
+        console.error(`[mcp] External extraction failed for entity ${entity.name}:`, err);
+      }
+    }
+  }
+
+  return buildManifest({
+    packageId: uuidv4(),
+    createdAt: new Date().toISOString(),
+    channel,
+    project,
+    entities,
+    channelFiles,
+    projectFiles,
+    messages,
+    entityFieldNotes: entityFieldNotes.size > 0 ? entityFieldNotes : undefined,
+  });
+}
+
+/**
+ * Filter helper used by `list_channels` tool.
+ */
+function filterChannels(
+  channels: ReturnType<typeof listChannelsLightweight>,
+  args: { filter?: string; type?: string },
+): ReturnType<typeof listChannelsLightweight> {
+  let result = channels;
+  if (args.filter) {
+    const needle = args.filter.toLowerCase();
+    result = result.filter((c) => c.name.toLowerCase().includes(needle));
+  }
+  if (args.type) {
+    result = result.filter((c) => c.type === args.type);
+  }
+  return result;
 }
 
 /**
@@ -232,9 +333,10 @@ export function createKlatchMcpServer(): McpServer {
     {
       capabilities: {
         resources: {},
+        tools: {},
       },
       instructions: [
-        'Klatch MCP server (Phase 5a) — read-only access to Klatch context packages.',
+        'Klatch MCP server (Phase 5b) — read-only access + parameterized tools for Klatch context packages.',
         `Supported format versions: ${SUPPORTED_FORMAT_VERSIONS.join(', ')}.`,
         'Resources:',
         '  klatch://channels              — list of channels',
@@ -242,6 +344,10 @@ export function createKlatchMcpServer(): McpServer {
         '  klatch://channels/{id}/manifest — manifest only (cheap preview)',
         '  klatch://projects/{id}         — project-level package (L2 + L3 + files)',
         '  klatch://entities/{id}         — entity package (L5 prompt + reflections)',
+        'Tools:',
+        '  list_channels(filter?, type?, limit?, offset?)     — filterable, paginated channel list',
+        '  get_context_package(channel_id, options?)          — rich accessor (briefing, extraction, version)',
+        '  get_manifest(channel_id)                           — cheap preview, no LLM calls',
       ].join('\n'),
     },
   );
@@ -425,6 +531,151 @@ export function createKlatchMcpServer(): McpServer {
     },
   );
 
+  // ── Tool: list_channels ──
+
+  server.registerTool(
+    'list_channels',
+    {
+      title: 'List Klatch channels',
+      description:
+        'List Klatch channels with optional filter and pagination. Returns the same shape as the klatch://channels resource, plus pagination metadata.',
+      inputSchema: {
+        filter: z
+          .string()
+          .optional()
+          .describe('Case-insensitive substring match on channel name.'),
+        type: z
+          .enum(['chat', 'klatch'])
+          .optional()
+          .describe('Restrict to one channel type.'),
+        limit: z.number().int().positive().optional().describe('Max results to return.'),
+        offset: z
+          .number()
+          .int()
+          .nonnegative()
+          .optional()
+          .describe('Pagination offset; pairs with limit.'),
+      },
+    },
+    async (args) => {
+      const all = listChannelsLightweight();
+      const filtered = filterChannels(all, { filter: args.filter, type: args.type });
+      const offset = args.offset ?? 0;
+      const limit = args.limit ?? filtered.length;
+      const page = filtered.slice(offset, offset + limit);
+      return {
+        content: [
+          {
+            type: 'text' as const,
+            text: JSON.stringify(
+              {
+                format_version: FORMAT_VERSION,
+                total: filtered.length,
+                offset,
+                limit,
+                returned: page.length,
+                channels: page,
+              },
+              null,
+              2,
+            ),
+          },
+        ],
+      };
+    },
+  );
+
+  // ── Tool: get_context_package ──
+  //
+  // Alignment note (per PM Chief Architect memo 2026-04-18): `get_context_package`
+  // is the agreed cross-producer tool name. Any MCP server that speaks this
+  // protocol exposes it; the response envelope is canonical (Phase 1 format),
+  // the options surface is producer-specific.
+
+  server.registerTool(
+    'get_context_package',
+    {
+      title: 'Get Klatch channel context package',
+      description:
+        'Fetch a full canonical context package for a channel. Options can trigger LLM-backed briefing and/or extraction (incurs API cost + latency).',
+      inputSchema: {
+        channel_id: z.string().describe('The Klatch channel id to fetch.'),
+        include_briefing: z
+          .boolean()
+          .optional()
+          .describe('Generate self-authored handoff briefings per entity (Phase 3.5a). LLM-backed.'),
+        include_extraction: z
+          .boolean()
+          .optional()
+          .describe('Run external behavioral extraction (Phase 3.5b). LLM-backed; requires ≥5 messages.'),
+        format_version: z
+          .string()
+          .optional()
+          .describe(`Requested canonical format version. Server serves the highest version ≤ request. Supported: ${SUPPORTED_FORMAT_VERSIONS.join(', ')}.`),
+      },
+    },
+    async (args) => {
+      if (args.format_version) {
+        const negotiated = negotiateFormatVersion(args.format_version);
+        if (!negotiated) {
+          return {
+            isError: true,
+            content: [
+              {
+                type: 'text' as const,
+                text: `Unsupported format_version: ${args.format_version}. Supported versions: ${SUPPORTED_FORMAT_VERSIONS.join(', ')}.`,
+              },
+            ],
+          };
+        }
+      }
+
+      const pkg = await assembleChannelPackageWithOptions(args.channel_id, {
+        includeBriefing: args.include_briefing,
+        includeExtraction: args.include_extraction,
+      });
+      if (!pkg) {
+        return {
+          isError: true,
+          content: [
+            { type: 'text' as const, text: `Channel not found: ${args.channel_id}` },
+          ],
+        };
+      }
+      return {
+        content: [{ type: 'text' as const, text: JSON.stringify(pkg, null, 2) }],
+      };
+    },
+  );
+
+  // ── Tool: get_manifest ──
+
+  server.registerTool(
+    'get_manifest',
+    {
+      title: 'Get Klatch channel manifest',
+      description:
+        'Cheap preview of a channel package. No briefing, no extraction, no LLM calls. Equivalent to reading klatch://channels/{id}/manifest.',
+      inputSchema: {
+        channel_id: z.string().describe('The Klatch channel id to preview.'),
+      },
+    },
+    async (args) => {
+      const pkg = assembleChannelPackage(args.channel_id);
+      if (!pkg) {
+        return {
+          isError: true,
+          content: [
+            { type: 'text' as const, text: `Channel not found: ${args.channel_id}` },
+          ],
+        };
+      }
+      return {
+        content: [{ type: 'text' as const, text: JSON.stringify(pkg, null, 2) }],
+      };
+    },
+  );
+
   return server;
 }
 
@@ -432,6 +683,8 @@ export function createKlatchMcpServer(): McpServer {
 // without spinning up a transport.
 export const _internal = {
   assembleChannelPackage,
+  assembleChannelPackageWithOptions,
   assembleProjectPackage,
   assembleEntityPackage,
+  filterChannels,
 };
