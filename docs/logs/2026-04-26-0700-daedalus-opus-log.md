@@ -125,6 +125,25 @@ xian's call: log the "first-ever" example, clean it up, add the helper. Done as 
 - **Cleanup** — used the same predicate (`r.ingress === 'mcp' && observation includes 'smoke test from stdio'`) to remove the row from live `klatch.db`. Verified: `default-entity.reflections` is now `[]`.
 - **Tests** — 3 new tests in round27 (predicate filter + count, no-match returns 0, unknown entity returns 0). Server suite: 918 passing, 0 failures (was 915 → 918).
 
+### 10:45 — Argus Round 27b sign-off
+
+xian flagged Argus completed testing. Pulled (already up to date — commit `47fd5cc` from 10:34 PT). 27 new tests in `round27b-mcp-server-5c-i-extended.test.ts` covering everything in my Round 27 assignment plus refactor equivalence verification.
+
+Local verification: 946 server tests green (was 919 → +27). Matches Argus's `1106 total` (946 server + 160 client) exactly.
+
+**Phase 5c-i signed off. MCP server is feature-complete for 1.0.** Exit criteria met across the line:
+- protocol integration green at every phase
+- refactor equivalence verified (HTTP `buildManifest` ↔ MCP `assembleChannelPackage` ↔ shared `assembleChannelManifest`)
+- write-path round-trip demonstrated end-to-end
+- ingress parity preserved (`klatch-ui` ↔ `mcp`)
+- URL-decode applied across all 4 ResourceTemplate handlers
+- channel-boundary isolation enforced
+- no regressions
+
+One spec observation from Argus to record: `ingress` is intentionally elided from exported field_notes per the `mergeFieldNotes` mapping. If we ever want it to surface in the canonical package, that's a Phase 1 format spec follow-up for Calliope. Not a bug today; pinned as intentional behavior.
+
+COORDINATION.md updated: status reflects sign-off + remains on stand-down posture awaiting Theseus AAXT + Iris UX surface.
+
 ### 10:08 — Standing down
 
 xian: rest. Team needs to catch up — Theseus for AAXT, Argus for Round 27b, Iris's UX track running in parallel and at comparable priority to Step 11 (Search). Testing will likely surface fixes that drive the next development cycle, not net-new step work.

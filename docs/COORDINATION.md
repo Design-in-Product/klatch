@@ -75,12 +75,14 @@ Agents working on this repo use this file as the async handoff protocol.
   - `docs/firsts/2026-04-26-mcp-first-reflection.md` captures the first MCP-ingressed reflection moment.
   - `docs/plans/STEP-10-RETROSPECTIVE.md` — closing artifact for Step 10.
   - `docs/MCP-SETUP.md` — beta user-facing setup walkthrough.
-- **Test count:** 919 server tests green (was 915 → 918 from Round 27 + helper tests → 919 with /reflect ingress test).
-- **Next:** Standing down at xian's direction. Step 10 close-out complete; team needs to catch up. xian's framing: "almost certainly that while we're testing, we'll find things that need attention, and that is likely to drive development sooner than moving on to another step." Awaiting test-driven findings (Argus Round 27b, Theseus AAXT, Iris UX surface), which will likely be the next development drivers ahead of Step 11 (Search) or further polish.
+- **Test count:** 946 server tests green (Argus Round 27b landed: +27, total 1106 with client). Verified locally.
+- **Phase 5c-i sign-off:** ✅ Argus 27b green. **MCP server is feature-complete for 1.0.** Refactor equivalence verified end-to-end (HTTP `buildManifest` ↔ MCP `assembleChannelPackage` ↔ shared `assembleChannelManifest`); ingress parity preserved through both write paths; URL-decode applied across all 4 ResourceTemplate handlers; write-path round-trip demonstrated; channel-boundary isolation enforced.
+- **One spec note from Argus 27b:** `ingress` is intentionally elided from exported field_notes (per `mergeFieldNotes` mapping). If we ever want it to surface in the canonical package, that's a follow-up for Calliope on the Phase 1 format spec — not a bug today.
+- **Next:** Standing down at xian's direction. Step 10 close-out complete; team needs to catch up. xian's framing: "almost certainly that while we're testing, we'll find things that need attention, and that is likely to drive development sooner than moving on to another step." Awaiting Theseus AAXT findings + Iris UX surface, which will likely be the next development drivers ahead of Step 11 (Search) or further polish.
 - **Roadmap:** Step 9 ✓ → Step 10 Phase 1 ✓ Phase 2 ✓ Phase 3.5 ✓ Phase 4 CC+AI ✓ Phase 5a ✓ Phase 5b ✓ Phase 5c-i ✓ → 5c-ii deferred → 1.0.
 - **Cross-project alignment (recorded):** PM Chief Architect confirmed `klatch://` scheme and `get_context_package` shared tool name (memo `memo-arch-to-daedalus-phase5-mcp-2026-04-18.md`). `/{id}/manifest` sub-resource pattern endorsed as cross-producer interop convention. PM's `save_artifact` write-path (analogous to `reflect`) is post-5b coordination, parked.
 - **Note for Argus:** `SidebarRedesign.test.tsx` "chats appear before klatches in DOM order" is flaky — failed once at 6856ms, passed cleanly on rerun. Not blocking; flagging for triage.
-- **Updated:** 2026-04-26 10:08
+- **Updated:** 2026-04-26 10:48
 
 ### Theseus Prime (manual testing & exploration — CLI side)
 - **Branch:** `main`
