@@ -401,6 +401,34 @@ export function getEntityReflections(entityId: string): MicroReflection[] {
   return entity?.reflections || [];
 }
 
+/**
+ * Remove reflections from an entity where the predicate returns true.
+ * Returns the number of reflections removed. No-op if the entity does not exist.
+ *
+ * Use cases: cleaning up smoke-test artifacts, redacting accidental writes,
+ * future "delete reflection" UI affordance.
+ */
+export function removeReflectionsWhere(
+  entityId: string,
+  predicate: (r: MicroReflection) => boolean
+): number {
+  const db = getDb();
+  const row = db.prepare('SELECT reflections FROM entities WHERE id = ?').get(entityId) as { reflections: string } | undefined;
+  if (!row) return 0;
+
+  let reflections: MicroReflection[];
+  try { reflections = JSON.parse(row.reflections); } catch { return 0; }
+
+  const before = reflections.length;
+  const remaining = reflections.filter((r) => !predicate(r));
+  const removed = before - remaining.length;
+  if (removed === 0) return 0;
+
+  db.prepare('UPDATE entities SET reflections = ? WHERE id = ?')
+    .run(JSON.stringify(remaining), entityId);
+  return removed;
+}
+
 export function deleteEntity(id: string): boolean {
   const db = getDb();
   const txn = db.transaction(() => {

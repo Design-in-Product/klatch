@@ -65,14 +65,20 @@ Agents working on this repo use this file as the async handoff protocol.
 
 ### Daedalus (architecture & implementation)
 - **Branch:** `main`
-- **Status:** working
-- **Last completed:** Phase 5c-i shipped — MCP write-path (`reflect`) + `kit_briefing` prompt + Argus's URL-decode two-liner applied across all four resource handlers. `MicroReflection` extended additively (new `'observation'` type value + optional `ingress` transport-layer field). 6 new tests (Round 27); 1 contract-flip update to round25b. 915 server tests green, zero failures.
-- **Working on:** Awaiting Argus Round 27b extended coverage; surfacing live-DB smoke-test artifact to xian for cleanup decision.
-- **Next:** 5c-ii (auto-reflect mode) deferred until a concrete driver appears. After Argus 27b sign-off, the MCP server is feature-complete for 1.0; pivot decision opens (Step 11 Search, polish, etc).
+- **Status:** available
+- **Last completed:** Step 10 close-out polish wave (after 5c-i ship):
+  - `removeReflectionsWhere(entityId, predicate)` helper added to queries; smoke-test row removed from live klatch.db.
+  - `/reflect` endpoint now stamps `ingress: 'klatch-ui'` for parity with MCP's `'mcp'` stamping. Test added to round21.
+  - Shared `assembleChannelManifest` helper extracted to `packages/server/src/export/assemble.ts`; HTTP routes (`/export`, `/export-preview`, `/export/claude-code`, `/export/claude-ai`) and MCP server's options path all delegate to it. ~200 lines of duplicated orchestration removed.
+  - `docs/firsts/2026-04-26-mcp-first-reflection.md` captures the first MCP-ingressed reflection moment.
+  - `docs/plans/STEP-10-RETROSPECTIVE.md` — closing artifact for Step 10.
+  - `docs/MCP-SETUP.md` — beta user-facing setup walkthrough.
+- **Test count:** 919 server tests green (was 915 → 918 from Round 27 + helper tests → 919 with /reflect ingress test).
+- **Next:** Available for next direction. Argus Round 27b coverage still pending; pivot to Step 11 (Search) is unblocked.
 - **Roadmap:** Step 9 ✓ → Step 10 Phase 1 ✓ Phase 2 ✓ Phase 3.5 ✓ Phase 4 CC+AI ✓ Phase 5a ✓ Phase 5b ✓ Phase 5c-i ✓ → 5c-ii deferred → 1.0.
-- **Round 27 assignment for Argus:** See `docs/logs/2026-04-26-0700-daedalus-opus-log.md` — test scope and exit criteria for 5c-i sign-off.
 - **Cross-project alignment (recorded):** PM Chief Architect confirmed `klatch://` scheme and `get_context_package` shared tool name (memo `memo-arch-to-daedalus-phase5-mcp-2026-04-18.md`). `/{id}/manifest` sub-resource pattern endorsed as cross-producer interop convention. PM's `save_artifact` write-path (analogous to `reflect`) is post-5b coordination, parked.
-- **Updated:** 2026-04-26 07:40
+- **Note for Argus:** `SidebarRedesign.test.tsx` "chats appear before klatches in DOM order" is flaky — failed once at 6856ms, passed cleanly on rerun. Not blocking; flagging for triage.
+- **Updated:** 2026-04-26 10:01
 
 ### Theseus Prime (manual testing & exploration — CLI side)
 - **Branch:** `main`

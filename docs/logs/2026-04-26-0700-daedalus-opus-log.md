@@ -116,6 +116,42 @@ xian also confirmed Argus's URL-decode two-liner should be applied pre-emptively
 
 **Exit criteria for 5c-i:** Round 27b green; no regressions; round-trip demonstrated end-to-end (write via reflect → read via resource → reflection visible). On Argus green, MCP server is feature-complete for 1.0 and we hit the next pivot decision point.
 
+### 09:47 — First-reflection artifact + removeReflectionsWhere helper + cleanup
+
+xian's call: log the "first-ever" example, clean it up, add the helper. Done as one unit:
+
+- **Artifact** — `docs/firsts/2026-04-26-mcp-first-reflection.md` captures the verbatim row, what the moment meant (Klatch's first non-UI ingress write), and four lessons from doing it (ingress field design held; membership check is real; first writes leak provenance, hence the helper; the 5c design gate paid for itself).
+- **Helper** — `removeReflectionsWhere(entityId, predicate): number` added next to `appendReflection` in `packages/server/src/db/queries.ts`. General affordance, not smoke-only: future "delete reflection" UI work and any redaction story will use it. Returns count, no-op on unknown entity.
+- **Cleanup** — used the same predicate (`r.ingress === 'mcp' && observation includes 'smoke test from stdio'`) to remove the row from live `klatch.db`. Verified: `default-entity.reflections` is now `[]`.
+- **Tests** — 3 new tests in round27 (predicate filter + count, no-match returns 0, unknown entity returns 0). Server suite: 918 passing, 0 failures (was 915 → 918).
+
+### 10:00 — Nice-to-haves wave shipped
+
+xian: "let's next work on the nice-to-haves. We can ramp up testing in parallel." All four polish items done.
+
+1. **Ingress consistency.** `/reflect` endpoint (`routes/export.ts`) now stamps `ingress: 'klatch-ui'`, matching MCP's `'mcp'` pattern. Test added to `round21-phase35-calibration.test.ts` (19 tests, was 18). The field is now meaningful regardless of which writer originated it.
+
+2. **Refactor `routes/export.ts` to share assembly orchestration.** New `packages/server/src/export/assemble.ts` exports `assembleChannelManifest(channelId, opts)` returning `{ manifest, channel, project, entities, channelFiles, projectFiles, messages, entityFieldNotes }`. The four export routes (`/export`, `/export-preview`, `/export/claude-code`, `/export/claude-ai`) and the MCP server's `assembleChannelPackageWithOptions` all delegate to it. ~200 lines of duplicated load+briefing+extraction orchestration collapsed. `routes/export.ts`: 521 → 319 lines. Server suite: 919 green.
+
+3. **Step 10 retrospective.** `docs/plans/STEP-10-RETROSPECTIVE.md` — single doc covering Phases 1 → 5c-i, what shipped, what deferred, cross-producer outcomes, six lessons, what this opens up. Closing artifact for Step 10.
+
+4. **Beta MCP setup doc.** `docs/MCP-SETUP.md` — user-facing walkthrough: prerequisites, Claude Desktop + Claude Code configuration, example calls for resources/tools/prompts, cross-producer interop notes, known limitations, troubleshooting.
+
+Side observation: client `SidebarRedesign.test.tsx` flaked once during the parallel suite run (6856ms — looks like timeout under load), passed clean on rerun. Logged in COORDINATION.md for Argus's awareness; not investigating since it's not from this change.
+
+### 09:48 — Strategic checkpoint with xian
+
+xian: "is there any dev work left to execute in step 10, or do we move entirely to testing in anticipation of a beta release."
+
+Recommendation: pivot to testing + beta prep. Step 10 is functionally complete (Phases 1–4 ✓, 5a ✓, 5b ✓, 5c-i ✓; 5c-ii deferred until driver; 5d deferred past 1.0). Polish nice-to-haves listed:
+
+1. Stamp `ingress` on UI / auto-end-of-session reflection writers for consistency
+2. Refactor `routes/export.ts` to share `assembleChannelPackageWithOptions` helper (eliminates 4 duplicated briefing/extraction blocks)
+3. Step 10 retrospective doc (Phases 1→5c-i in one place)
+4. Beta-doc for MCP setup (how a Claude Code / Desktop user wires Klatch in)
+
+xian: "let's next work on the nice-to-haves. We can ramp up testing in parallel." Proceeding.
+
 ### 07:45 — Open question for xian
 
 The `reflect` smoke test wrote a real row into the live `klatch.db`:

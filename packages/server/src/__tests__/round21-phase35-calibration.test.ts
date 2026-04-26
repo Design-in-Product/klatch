@@ -310,6 +310,27 @@ describe('Phase 3.5c — micro-reflections', () => {
     const reflections = getEntityReflections(entity.id);
     expect(reflections.length).toBeGreaterThanOrEqual(1);
   });
+
+  it('POST /channels/:id/reflect stamps ingress="klatch-ui" on the persisted reflection', async () => {
+    // Phase 5c-i consistency: every reflection writer should stamp ingress
+    // so the field-notes pipeline can attribute provenance regardless of
+    // which transport/wrapper layer originated the write. UI/HTTP path
+    // stamps 'klatch-ui'; MCP path stamps 'mcp'.
+    const { ch, entity } = setupTestChannel();
+
+    mockMessagesCreate.mockResolvedValue({
+      content: [{ type: 'text', text: 'User prefers terse over verbose framing.' }],
+    });
+
+    const app = createTestApp();
+    await app.request(`/api/channels/${ch.id}/reflect`, { method: 'POST' });
+
+    const reflections = getEntityReflections(entity.id);
+    expect(reflections.length).toBeGreaterThanOrEqual(1);
+    const last = reflections[reflections.length - 1];
+    expect(last.ingress).toBe('klatch-ui');
+    expect(last.type).toBe('session-end');
+  });
 });
 
 // ── Phase 3.5b: External extraction ──────────────────────────

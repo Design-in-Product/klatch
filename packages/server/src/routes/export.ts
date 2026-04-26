@@ -7,26 +7,19 @@
 
 import { Hono } from 'hono';
 import AdmZip from 'adm-zip';
-import { v4 as uuidv4 } from 'uuid';
 import Anthropic from '@anthropic-ai/sdk';
 import {
   getChannel,
   getChannelEntities,
   getMessages,
-  getProjectForChannel,
   appendReflection,
-  getChannelFiles,
-  getProjectFiles,
   getMessageArtifacts,
 } from '../db/queries.js';
 import type { Message } from '@klatch/shared';
 import { readFile } from '../files/storage.js';
-import { buildSystemPrompt } from '../claude/client.js';
-import { generateHandoffBriefing, type FieldNote } from '../export/briefing.js';
-import { extractBehavioralPatterns } from '../export/external-extraction.js';
 import { adaptToClaudeCode, resolveTemplates } from '../export/transport-claude-code.js';
 import { adaptToClaudeAi } from '../export/transport-claude-ai.js';
-import { buildManifest } from '../export/package-builder.js';
+import { assembleChannelManifest } from '../export/assemble.js';
 
 const app = new Hono();
 
@@ -44,58 +37,13 @@ app.get('/channels/:id/export', async (c) => {
   const includeBriefing = c.req.query('briefing') === 'true';
   const includeExtraction = c.req.query('extract') === 'true';
 
-  const channel = getChannel(channelId);
-  if (!channel) {
-    return c.json({ error: 'Channel not found' }, 404);
-  }
-
-  const entities = getChannelEntities(channelId);
-  if (entities.length === 0) {
+  const assembled = await assembleChannelManifest(channelId, { includeBriefing, includeExtraction });
+  if (!assembled) return c.json({ error: 'Channel not found' }, 404);
+  if (assembled.entities.length === 0) {
     return c.json({ error: 'No entities assigned to this channel' }, 400);
   }
-
-  const project = channel.projectId ? (getProjectForChannel(channelId) ?? null) : null;
-  const messages = getMessages(channelId);
-  const channelFiles = getChannelFiles(channelId);
-  const projectFiles = project ? getProjectFiles(project.id) : [];
+  const { manifest, channel, project, channelFiles, projectFiles, messages } = assembled;
   const allScopedFiles = [...projectFiles, ...channelFiles];
-
-  // Generate handoff briefings if requested
-  const entityFieldNotes = new Map<string, FieldNote[]>();
-  if (includeBriefing && messages.length > 0) {
-    const channelFileNames = channelFiles.map((f) => `- ${f.name} (${f.mimeType})`);
-    const projectFileNames = projectFiles.map((f) => `- ${f.name} (${f.mimeType})`);
-
-    for (const entity of entities) {
-      try {
-        const systemPrompt = buildSystemPrompt(entity, channel.systemPrompt, channel, project, channelFileNames, projectFileNames);
-        const notes = await generateHandoffBriefing(entity, systemPrompt, messages);
-        entityFieldNotes.set(entity.id, notes);
-      } catch (err) {
-        // If briefing generation fails for an entity, continue with null field_notes
-        console.error(`Briefing generation failed for entity ${entity.name}:`, err);
-      }
-    }
-  }
-
-  // Generate external behavioral extraction if requested
-  if (includeExtraction && messages.length >= 5) {
-    for (const entity of entities) {
-      try {
-        const extractedNotes = await extractBehavioralPatterns(entity.name, messages);
-        const existing = entityFieldNotes.get(entity.id) || [];
-        entityFieldNotes.set(entity.id, [...existing, ...extractedNotes]);
-      } catch (err) {
-        console.error(`External extraction failed for entity ${entity.name}:`, err);
-      }
-    }
-  }
-
-  // Build the manifest
-  const packageId = uuidv4();
-  const now = new Date().toISOString();
-
-  const manifest = buildManifest({ packageId, createdAt: now, channel, project, entities, channelFiles, projectFiles, messages, entityFieldNotes });
 
   // Build sidecar content
   const instructionsMd = project?.instructions?.trim() || '';
@@ -146,50 +94,11 @@ app.get('/channels/:id/export-preview', async (c) => {
   const includeBriefing = c.req.query('briefing') === 'true';
   const includeExtraction = c.req.query('extract') === 'true';
 
-  const channel = getChannel(channelId);
-  if (!channel) return c.json({ error: 'Channel not found' }, 404);
+  const assembled = await assembleChannelManifest(channelId, { includeBriefing, includeExtraction });
+  if (!assembled) return c.json({ error: 'Channel not found' }, 404);
+  if (assembled.entities.length === 0) return c.json({ error: 'No entities assigned' }, 400);
 
-  const entities = getChannelEntities(channelId);
-  if (entities.length === 0) return c.json({ error: 'No entities assigned' }, 400);
-
-  const project = channel.projectId ? (getProjectForChannel(channelId) ?? null) : null;
-  const messages = getMessages(channelId);
-  const channelFiles = getChannelFiles(channelId);
-  const projectFiles = project ? getProjectFiles(project.id) : [];
-
-  const entityFieldNotes = new Map<string, FieldNote[]>();
-
-  if (includeBriefing && messages.length > 0) {
-    const channelFileNames = channelFiles.map((f) => `- ${f.name} (${f.mimeType})`);
-    const projectFileNames = projectFiles.map((f) => `- ${f.name} (${f.mimeType})`);
-    for (const entity of entities) {
-      try {
-        const systemPrompt = buildSystemPrompt(entity, channel.systemPrompt, channel, project, channelFileNames, projectFileNames);
-        const notes = await generateHandoffBriefing(entity, systemPrompt, messages);
-        entityFieldNotes.set(entity.id, notes);
-      } catch (err) {
-        console.error(`Preview briefing failed for ${entity.name}:`, err);
-      }
-    }
-  }
-
-  if (includeExtraction && messages.length >= 5) {
-    for (const entity of entities) {
-      try {
-        const extractedNotes = await extractBehavioralPatterns(entity.name, messages);
-        const existing = entityFieldNotes.get(entity.id) || [];
-        entityFieldNotes.set(entity.id, [...existing, ...extractedNotes]);
-      } catch (err) {
-        console.error(`Preview extraction failed for ${entity.name}:`, err);
-      }
-    }
-  }
-
-  const packageId = uuidv4();
-  const now = new Date().toISOString();
-  const manifest = buildManifest({ packageId, createdAt: now, channel, project, entities, channelFiles, projectFiles, messages, entityFieldNotes });
-
-  return c.json(manifest);
+  return c.json(assembled.manifest);
 });
 
 /**
@@ -207,49 +116,11 @@ app.get('/channels/:id/export/claude-code', async (c) => {
   const includeBriefing = c.req.query('briefing') === 'true';
   const includeExtraction = c.req.query('extract') === 'true';
 
-  const channel = getChannel(channelId);
-  if (!channel) return c.json({ error: 'Channel not found' }, 404);
-
-  const entities = getChannelEntities(channelId);
-  if (entities.length === 0) return c.json({ error: 'No entities assigned' }, 400);
-
-  const project = channel.projectId ? (getProjectForChannel(channelId) ?? null) : null;
-  const messages = getMessages(channelId);
-  const channelFiles = getChannelFiles(channelId);
-  const projectFiles = project ? getProjectFiles(project.id) : [];
+  const assembled = await assembleChannelManifest(channelId, { includeBriefing, includeExtraction });
+  if (!assembled) return c.json({ error: 'Channel not found' }, 404);
+  if (assembled.entities.length === 0) return c.json({ error: 'No entities assigned' }, 400);
+  const { manifest, channel, project, channelFiles, projectFiles } = assembled;
   const allScopedFiles = [...projectFiles, ...channelFiles];
-
-  // Generate field notes if requested
-  const entityFieldNotes = new Map<string, FieldNote[]>();
-  if (includeBriefing && messages.length > 0) {
-    const cfn = channelFiles.map((f) => `- ${f.name} (${f.mimeType})`);
-    const pfn = projectFiles.map((f) => `- ${f.name} (${f.mimeType})`);
-    for (const entity of entities) {
-      try {
-        const sp = buildSystemPrompt(entity, channel.systemPrompt, channel, project, cfn, pfn);
-        const notes = await generateHandoffBriefing(entity, sp, messages);
-        entityFieldNotes.set(entity.id, notes);
-      } catch (err) {
-        console.error(`CC export briefing failed for ${entity.name}:`, err);
-      }
-    }
-  }
-  if (includeExtraction && messages.length >= 5) {
-    for (const entity of entities) {
-      try {
-        const notes = await extractBehavioralPatterns(entity.name, messages);
-        const existing = entityFieldNotes.get(entity.id) || [];
-        entityFieldNotes.set(entity.id, [...existing, ...notes]);
-      } catch (err) {
-        console.error(`CC export extraction failed for ${entity.name}:`, err);
-      }
-    }
-  }
-
-  // Build canonical manifest
-  const packageId = uuidv4();
-  const now = new Date().toISOString();
-  const manifest = buildManifest({ packageId, createdAt: now, channel, project, entities, channelFiles, projectFiles, messages, entityFieldNotes });
 
   // Adapt to Claude Code format
   const ccExport = adaptToClaudeCode(manifest);
@@ -299,48 +170,10 @@ app.get('/channels/:id/export/claude-ai', async (c) => {
   const includeBriefing = c.req.query('briefing') === 'true';
   const includeExtraction = c.req.query('extract') === 'true';
 
-  const channel = getChannel(channelId);
-  if (!channel) return c.json({ error: 'Channel not found' }, 404);
-
-  const entities = getChannelEntities(channelId);
-  if (entities.length === 0) return c.json({ error: 'No entities assigned' }, 400);
-
-  const project = channel.projectId ? (getProjectForChannel(channelId) ?? null) : null;
-  const messages = getMessages(channelId);
-  const channelFiles = getChannelFiles(channelId);
-  const projectFiles = project ? getProjectFiles(project.id) : [];
-
-  // Generate field notes if requested
-  const entityFieldNotes = new Map<string, FieldNote[]>();
-  if (includeBriefing && messages.length > 0) {
-    const cfn = channelFiles.map((f) => `- ${f.name} (${f.mimeType})`);
-    const pfn = projectFiles.map((f) => `- ${f.name} (${f.mimeType})`);
-    for (const entity of entities) {
-      try {
-        const sp = buildSystemPrompt(entity, channel.systemPrompt, channel, project, cfn, pfn);
-        const notes = await generateHandoffBriefing(entity, sp, messages);
-        entityFieldNotes.set(entity.id, notes);
-      } catch (err) {
-        console.error(`claude.ai export briefing failed for ${entity.name}:`, err);
-      }
-    }
-  }
-  if (includeExtraction && messages.length >= 5) {
-    for (const entity of entities) {
-      try {
-        const notes = await extractBehavioralPatterns(entity.name, messages);
-        const existing = entityFieldNotes.get(entity.id) || [];
-        entityFieldNotes.set(entity.id, [...existing, ...notes]);
-      } catch (err) {
-        console.error(`claude.ai export extraction failed for ${entity.name}:`, err);
-      }
-    }
-  }
-
-  // Build canonical manifest
-  const packageId = uuidv4();
-  const now = new Date().toISOString();
-  const manifest = buildManifest({ packageId, createdAt: now, channel, project, entities, channelFiles, projectFiles, messages, entityFieldNotes });
+  const assembled = await assembleChannelManifest(channelId, { includeBriefing, includeExtraction });
+  if (!assembled) return c.json({ error: 'Channel not found' }, 404);
+  if (assembled.entities.length === 0) return c.json({ error: 'No entities assigned' }, 400);
+  const { manifest, channel, project, projectFiles, messages } = assembled;
 
   // Load KB file contents for project docs
   const fileContents = new Map<string, string>();
@@ -431,6 +264,7 @@ app.post('/channels/:id/reflect', async (c) => {
           createdAt: new Date().toISOString(),
           channelId,
           type: 'session-end' as const,
+          ingress: 'klatch-ui',
         };
         appendReflection(entity.id, reflection);
         reflections.push({ entityId: entity.id, entityName: entity.name, observation: reflection.observation });

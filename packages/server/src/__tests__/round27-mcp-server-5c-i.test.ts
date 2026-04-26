@@ -18,6 +18,7 @@ import {
   assignEntityToChannel,
   getEntityReflections,
   insertMessage,
+  removeReflectionsWhere,
 } from '../db/queries.js';
 import { _internal as _mcpInternal } from '../mcp/server.js';
 
@@ -101,6 +102,64 @@ describe('Round 27: MCP write-path + prompt (Phase 5c-i)', () => {
       expect(server).toBeTruthy();
       // Deeper protocol-level enumeration is Argus's Round 27b; here we just
       // assert the factory does not throw with the new registrations applied.
+    });
+  });
+
+  describe('removeReflectionsWhere helper', () => {
+    it('removes reflections matching the predicate and returns the count', () => {
+      const entity = createEntity('Cleaner', 'claude-opus-4-6', 'prompt', '#3B82F6');
+      const channel = createChannel('rmx', 'x');
+      assignEntityToChannel(channel.id, entity.id);
+
+      appendReflection(entity.id, {
+        observation: 'keep me',
+        createdAt: new Date().toISOString(),
+        channelId: channel.id,
+        type: 'observation',
+        ingress: 'klatch-ui',
+      });
+      appendReflection(entity.id, {
+        observation: 'smoke test from stdio',
+        createdAt: new Date().toISOString(),
+        channelId: channel.id,
+        type: 'observation',
+        ingress: 'mcp',
+      });
+      appendReflection(entity.id, {
+        observation: 'also a smoke test',
+        createdAt: new Date().toISOString(),
+        channelId: channel.id,
+        type: 'observation',
+        ingress: 'mcp',
+      });
+
+      const removed = removeReflectionsWhere(entity.id, (r) =>
+        r.ingress === 'mcp' && r.observation.includes('smoke test')
+      );
+      expect(removed).toBe(2);
+
+      const remaining = getEntityReflections(entity.id);
+      expect(remaining).toHaveLength(1);
+      expect(remaining[0].observation).toBe('keep me');
+    });
+
+    it('returns 0 when no reflections match', () => {
+      const entity = createEntity('NoMatch', 'claude-opus-4-6', 'prompt', '#3B82F6');
+      const channel = createChannel('nm', 'x');
+      assignEntityToChannel(channel.id, entity.id);
+      appendReflection(entity.id, {
+        observation: 'keep',
+        createdAt: new Date().toISOString(),
+        channelId: channel.id,
+        type: 'observation',
+      });
+      const removed = removeReflectionsWhere(entity.id, () => false);
+      expect(removed).toBe(0);
+      expect(getEntityReflections(entity.id)).toHaveLength(1);
+    });
+
+    it('returns 0 for unknown entity (no throw)', () => {
+      expect(removeReflectionsWhere('does-not-exist', () => true)).toBe(0);
     });
   });
 

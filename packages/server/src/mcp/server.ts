@@ -38,9 +38,7 @@ import {
   FORMAT_VERSION,
   negotiateFormatVersion,
 } from '../export/package-builder.js';
-import { generateHandoffBriefing, type FieldNote } from '../export/briefing.js';
-import { extractBehavioralPatterns } from '../export/external-extraction.js';
-import { buildSystemPrompt } from '../claude/client.js';
+import { assembleChannelManifest } from '../export/assemble.js';
 
 // ── URI constants ────────────────────────────────────────────
 
@@ -82,75 +80,22 @@ function assembleChannelPackage(channelId: string): any | null {
 /**
  * Phase 5b — async channel package assembly with briefing/extraction options.
  *
- * Mirrors the orchestration in `routes/export.ts` for the HTTP export endpoints:
- * same `generateHandoffBriefing` and `extractBehavioralPatterns` pipelines, same
- * `buildManifest` output. If `includeBriefing` and `includeExtraction` are both
- * false, the result is identical to `assembleChannelPackage`.
+ * Thin wrapper over the shared `assembleChannelManifest` helper used by the
+ * HTTP export endpoints. Returns just the manifest (the MCP server doesn't
+ * need the loaded entities the HTTP routes use for zip building). If both
+ * options are false, the result is structurally identical to
+ * `assembleChannelPackage`.
  *
- * Note on cost/latency: briefing and extraction are LLM-backed. Each runs one
- * API call per entity (briefing) or one per channel (extraction). Clients should
- * prefer the plain resource fetch or `get_manifest` when that level of enrichment
- * is not needed.
+ * Cost/latency: briefing and extraction are LLM-backed. One API call per
+ * entity for briefing, one per channel for extraction. Clients should prefer
+ * the plain resource fetch or `get_manifest` when enrichment is not needed.
  */
 async function assembleChannelPackageWithOptions(
   channelId: string,
   opts: { includeBriefing?: boolean; includeExtraction?: boolean },
 ): Promise<any | null> {
-  const channel = getChannel(channelId);
-  if (!channel) return null;
-
-  const entities = getChannelEntities(channelId);
-  const project = channel.projectId ? (getProjectForChannel(channelId) ?? null) : null;
-  const messages = getMessages(channelId);
-  const channelFiles = getChannelFiles(channelId);
-  const projectFiles = project ? getProjectFiles(project.id) : [];
-
-  const entityFieldNotes = new Map<string, FieldNote[]>();
-
-  if (opts.includeBriefing && messages.length > 0 && entities.length > 0) {
-    const channelFileNames = channelFiles.map((f) => `- ${f.name} (${f.mimeType})`);
-    const projectFileNames = projectFiles.map((f) => `- ${f.name} (${f.mimeType})`);
-    for (const entity of entities) {
-      try {
-        const systemPrompt = buildSystemPrompt(
-          entity,
-          channel.systemPrompt,
-          channel,
-          project,
-          channelFileNames,
-          projectFileNames,
-        );
-        const notes = await generateHandoffBriefing(entity, systemPrompt, messages);
-        entityFieldNotes.set(entity.id, notes);
-      } catch (err) {
-        console.error(`[mcp] Briefing generation failed for entity ${entity.name}:`, err);
-      }
-    }
-  }
-
-  if (opts.includeExtraction && messages.length >= 5) {
-    for (const entity of entities) {
-      try {
-        const extractedNotes = await extractBehavioralPatterns(entity.name, messages);
-        const existing = entityFieldNotes.get(entity.id) || [];
-        entityFieldNotes.set(entity.id, [...existing, ...extractedNotes]);
-      } catch (err) {
-        console.error(`[mcp] External extraction failed for entity ${entity.name}:`, err);
-      }
-    }
-  }
-
-  return buildManifest({
-    packageId: uuidv4(),
-    createdAt: new Date().toISOString(),
-    channel,
-    project,
-    entities,
-    channelFiles,
-    projectFiles,
-    messages,
-    entityFieldNotes: entityFieldNotes.size > 0 ? entityFieldNotes : undefined,
-  });
+  const assembled = await assembleChannelManifest(channelId, opts);
+  return assembled?.manifest ?? null;
 }
 
 /**
