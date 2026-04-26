@@ -1,7 +1,7 @@
 # Step 10 Phase 5: Klatch as MCP Server
 
 *Design document. Authored 2026-04-18 by Daedalus.*
-*Status: Phase 5a ✓ shipped · Phase 5b ✓ shipped · Phase 5c pending decision · Phase 5d deferred past 1.0.*
+*Status: Phase 5a ✓ shipped · Phase 5b ✓ shipped · Phase 5c-i ✓ shipped (kit_briefing prompt + reflect explicit-note write-path) · Phase 5c-ii (auto-reflect) deferred · Phase 5d deferred past 1.0.*
 
 *Shaped by: xian (Gall's-law phasing, HTTP scope), Calliope (Phase 5 greenlight memo), Phase 1 format work (PM Architect + Argus + Iris + Janus).*
 
@@ -105,16 +105,27 @@ Prompts let a client insert a Klatch-authored preamble into a new conversation w
 
 **Exit:** Argus green on 5b. Decision point: proceed to 5c, or pause.
 
-### Phase 5c — Prompts + reflect write-path (tentative)
+### Phase 5c — Prompts + reflect write-path
 
-**Goal:** Close the loop. Clients can insert Klatch-authored prompt fragments and write reflections back.
+Split into two slices after the 5b decision-point review (xian alignment 2026-04-26):
+
+#### Phase 5c-i ✓ shipped (2026-04-26)
+
+**Goal:** Close the loop with the smallest viable write-path.
 
 **Ships:**
-- `kit_briefing` MCP prompt
-- `reflect` tool, wired to existing Phase 3.5c reflection endpoint
-- Round-trip story: client consumes package → does work → writes a micro-reflection back → next client sees updated package
+- `kit_briefing(channel_id)` MCP prompt — environment-orientation preamble. Reuses `buildKitBriefing` for imported channels; emits a brief native preamble for Klatch-originating channels.
+- `reflect(channel_id, entity_id, note, type?)` tool — explicit-note write-path. Required `entity_id` (xian alignment: client knows what it observed; we don't guess). Default `type: 'observation'` (newly added to `MicroReflection.type`). Stamps `ingress: 'mcp'` (treat ingress as a thin transport/wrapper layer identifier; future ingresses get their own values without breaking the schema).
+- Membership check: rejects if the requested entity is not assigned to the channel.
+- Argus's URL-decode two-liner applied to all four resource template handlers (Argus 2026-04-18 memo). Test contract inverted accordingly.
 
-**Decision after 5b:** proceed or defer to post-1.0. This is the first write-path; the data-integrity and concurrency questions deserve their own evaluation once 5a+5b are stable.
+**Round-trip demonstrated:** stdio client calls `reflect` → row appended → next `klatch://entities/{id}` or `klatch://channels/{id}` read includes the reflection in `field_notes`.
+
+#### Phase 5c-ii (auto-reflect, deferred)
+
+**Scope:** `reflect(channel_id, entity_id)` with no `note` triggers an LLM-backed reflection generation (parallel to Phase 3.5c auto-reflection). Same cost/latency caveat as `include_briefing`/`include_extraction`.
+
+**Status:** Not blocked by anything; awaiting a real driver. Decision deferred until a concrete client wants to call it.
 
 ### Phase 5d — HTTP transport + auth (deferred past 1.0)
 

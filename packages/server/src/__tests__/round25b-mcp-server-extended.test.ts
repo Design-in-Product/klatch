@@ -268,11 +268,12 @@ describe('Round 25b: URI-template expansion', () => {
     }
   });
 
-  it('path segment is taken as-is (no URL-decoding); IDs with reserved chars are effectively unsupported', async () => {
-    // Documentation test: the MCP SDK's ResourceTemplate passes the raw path segment
-    // as the template variable. Because channel IDs in Klatch are UUIDs, this is fine
-    // in practice. If that assumption ever changes, the server would need to
-    // decodeURIComponent(variables.id) before DB lookup.
+  it('path segment is URL-decoded before DB lookup (Phase 5c — Argus 2026-04-18 memo applied)', async () => {
+    // Contract (as of Phase 5c): the resource template handlers call
+    // decodeURIComponent on the captured `id` variable before DB lookup, per
+    // RFC 3986 path-segment guidance. Klatch IDs are UUIDs in practice (which
+    // are invariant under percent-decoding), but this guards against future
+    // ID-shape changes and matches the cross-producer expectation.
     const { client, close } = await connectClient();
     try {
       const rawId = 'id with space';
@@ -286,11 +287,14 @@ describe('Round 25b: URI-template expansion', () => {
         .prepare('INSERT INTO channel_entities (channel_id, entity_id) VALUES (?, ?)')
         .run(rawId, 'default-entity');
 
-      // Sending the percent-encoded form does not match because the server receives
-      // the still-encoded string and looks up that literal ID.
-      await expect(
-        client.readResource({ uri: `klatch://channels/${encodeURIComponent(rawId)}` }),
-      ).rejects.toBeTruthy();
+      // Sending the percent-encoded form now matches because the server
+      // decodes the URI variable before lookup.
+      const result = await client.readResource({
+        uri: `klatch://channels/${encodeURIComponent(rawId)}`,
+      });
+      expect(result.contents.length).toBeGreaterThan(0);
+      const parsed = JSON.parse(result.contents[0].text as string);
+      expect(parsed.conversation_context.id).toBe(rawId);
     } finally {
       await close();
     }

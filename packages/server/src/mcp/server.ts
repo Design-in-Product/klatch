@@ -28,7 +28,10 @@ import {
   getProjectFiles,
   getAllEntities,
   getEntity,
+  appendReflection,
 } from '../db/queries.js';
+import { buildKitBriefing } from '../claude/client.js';
+import type { MicroReflection } from '@klatch/shared';
 import {
   buildManifest,
   SUPPORTED_FORMAT_VERSIONS,
@@ -334,9 +337,10 @@ export function createKlatchMcpServer(): McpServer {
       capabilities: {
         resources: {},
         tools: {},
+        prompts: {},
       },
       instructions: [
-        'Klatch MCP server (Phase 5b) — read-only access + parameterized tools for Klatch context packages.',
+        'Klatch MCP server (Phase 5c) — resources + tools + prompts for Klatch context packages.',
         `Supported format versions: ${SUPPORTED_FORMAT_VERSIONS.join(', ')}.`,
         'Resources:',
         '  klatch://channels              — list of channels',
@@ -348,6 +352,9 @@ export function createKlatchMcpServer(): McpServer {
         '  list_channels(filter?, type?, limit?, offset?)     — filterable, paginated channel list',
         '  get_context_package(channel_id, options?)          — rich accessor (briefing, extraction, version)',
         '  get_manifest(channel_id)                           — cheap preview, no LLM calls',
+        '  reflect(channel_id, entity_id, note, type?)        — write a micro-reflection back (5c-i, explicit-note only)',
+        'Prompts:',
+        '  kit_briefing(channel_id)                           — environment-orientation preamble for a Klatch channel',
       ].join('\n'),
     },
   );
@@ -406,7 +413,7 @@ export function createKlatchMcpServer(): McpServer {
       mimeType: 'application/json',
     },
     async (uri, variables) => {
-      const id = String(variables.id);
+      const id = decodeURIComponent(String(variables.id));
       const pkg = assembleChannelPackage(id);
       if (!pkg) {
         throw new Error(`Channel not found: ${id}`);
@@ -434,7 +441,7 @@ export function createKlatchMcpServer(): McpServer {
       mimeType: 'application/json',
     },
     async (uri, variables) => {
-      const id = String(variables.id);
+      const id = decodeURIComponent(String(variables.id));
       const pkg = assembleChannelPackage(id);
       if (!pkg) {
         throw new Error(`Channel not found: ${id}`);
@@ -474,7 +481,7 @@ export function createKlatchMcpServer(): McpServer {
       mimeType: 'application/json',
     },
     async (uri, variables) => {
-      const id = String(variables.id);
+      const id = decodeURIComponent(String(variables.id));
       const pkg = assembleProjectPackage(id);
       if (!pkg) {
         throw new Error(`Project not found: ${id}`);
@@ -514,7 +521,7 @@ export function createKlatchMcpServer(): McpServer {
       mimeType: 'application/json',
     },
     async (uri, variables) => {
-      const id = String(variables.id);
+      const id = decodeURIComponent(String(variables.id));
       const pkg = assembleEntityPackage(id);
       if (!pkg) {
         throw new Error(`Entity not found: ${id}`);
@@ -672,6 +679,158 @@ export function createKlatchMcpServer(): McpServer {
       }
       return {
         content: [{ type: 'text' as const, text: JSON.stringify(pkg, null, 2) }],
+      };
+    },
+  );
+
+  // ── Tool: reflect ──
+  //
+  // Phase 5c-i — first MCP write-path. Explicit-note only; auto-reflect (LLM
+  // generation when note omitted) is deferred to 5c-ii pending a real driver.
+  //
+  // Design choices (xian alignment, 2026-04-26):
+  //   - entity_id is required: the client knows what it observed; we don't guess.
+  //   - type defaults to 'observation' (the new value added for MCP-driven notes).
+  //   - ingress is stamped 'mcp' so downstream readers can weight by transport.
+  //     Treat ingress as a thin wrapper/layer identifier; future transports get
+  //     their own values without breaking the schema.
+
+  server.registerTool(
+    'reflect',
+    {
+      title: 'Append a micro-reflection to a Klatch entity',
+      description:
+        'Write a micro-reflection back to a specific entity on a channel. The first MCP write-path; explicit-note only in Phase 5c-i. The note is appended to the entity\'s reflections array and will appear in the entity\'s field_notes on subsequent context-package fetches.',
+      inputSchema: {
+        channel_id: z.string().describe('The Klatch channel id this reflection belongs to.'),
+        entity_id: z
+          .string()
+          .describe('The entity id to attach the reflection to. Must be assigned to the channel.'),
+        note: z
+          .string()
+          .min(1)
+          .describe('The observation text. Required in 5c-i (auto-reflect mode is 5c-ii).'),
+        type: z
+          .enum(['observation', 'correction', 'session-end'])
+          .optional()
+          .describe('Reflection category. Defaults to "observation" for MCP-driven notes.'),
+      },
+    },
+    async (args) => {
+      const channel = getChannel(args.channel_id);
+      if (!channel) {
+        return {
+          isError: true,
+          content: [
+            { type: 'text' as const, text: `Channel not found: ${args.channel_id}` },
+          ],
+        };
+      }
+
+      const entity = getEntity(args.entity_id);
+      if (!entity) {
+        return {
+          isError: true,
+          content: [
+            { type: 'text' as const, text: `Entity not found: ${args.entity_id}` },
+          ],
+        };
+      }
+
+      // Membership check — entity must be assigned to the channel. This keeps
+      // the write-path scoped and prevents a confused client from polluting an
+      // unrelated entity by guessing IDs.
+      const channelEntities = getChannelEntities(args.channel_id);
+      if (!channelEntities.some((e) => e.id === args.entity_id)) {
+        return {
+          isError: true,
+          content: [
+            {
+              type: 'text' as const,
+              text: `Entity ${args.entity_id} is not assigned to channel ${args.channel_id}.`,
+            },
+          ],
+        };
+      }
+
+      const reflection: MicroReflection = {
+        observation: args.note,
+        createdAt: new Date().toISOString(),
+        channelId: args.channel_id,
+        type: args.type ?? 'observation',
+        ingress: 'mcp',
+      };
+
+      appendReflection(args.entity_id, reflection);
+
+      return {
+        content: [
+          {
+            type: 'text' as const,
+            text: JSON.stringify(
+              {
+                ok: true,
+                appended: reflection,
+              },
+              null,
+              2,
+            ),
+          },
+        ],
+      };
+    },
+  );
+
+  // ── Prompt: kit_briefing ──
+  //
+  // Returns an environment-orientation preamble suitable for prepending into a
+  // new conversation that is about to consume context originating from a Klatch
+  // channel. For imported channels, reuses the existing buildKitBriefing text
+  // (the "you are continuing from..." orientation written for receiving
+  // imported sessions). For native Klatch-originating channels, returns a brief
+  // generic preamble naming the source.
+
+  server.registerPrompt(
+    'kit_briefing',
+    {
+      title: 'Klatch kit briefing',
+      description:
+        'Environment-orientation preamble for a Klatch channel. Suitable for prepending into a new conversation that is bootstrapping from a Klatch context package.',
+      argsSchema: {
+        channel_id: z.string().describe('The Klatch channel id whose briefing to return.'),
+      },
+    },
+    async (args) => {
+      const channel = getChannel(args.channel_id);
+      if (!channel) {
+        // Prompts have no isError envelope — surface as an empty/error message.
+        return {
+          messages: [
+            {
+              role: 'user' as const,
+              content: {
+                type: 'text' as const,
+                text: `Channel not found: ${args.channel_id}`,
+              },
+            },
+          ],
+        };
+      }
+
+      const text =
+        channel.source && channel.source !== 'native'
+          ? buildKitBriefing(channel)
+          : `You are about to consume context from a Klatch channel ("${channel.name}"). ` +
+            `This channel originated in Klatch (it was not imported from another environment). ` +
+            `Use the included context package to continue the conversation in your current environment.`;
+
+      return {
+        messages: [
+          {
+            role: 'user' as const,
+            content: { type: 'text' as const, text },
+          },
+        ],
       };
     },
   );

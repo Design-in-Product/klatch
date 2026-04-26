@@ -46,7 +46,14 @@ export interface MicroReflection {
   observation: string;
   createdAt: string;
   channelId: string;
-  type: 'session-end' | 'correction';
+  type: 'session-end' | 'correction' | 'observation';
+  /**
+   * Where this reflection entered the system. Optional for back-compat with
+   * pre-Phase-5c rows which were always written via the Klatch UI / internal
+   * pipelines. Treat as a thin transport/wrapper layer identifier — values
+   * may include 'klatch-ui', 'mcp', 'auto', 'import', and future ingresses.
+   */
+  ingress?: string;
 }
 
 export interface Entity {
