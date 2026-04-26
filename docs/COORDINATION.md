@@ -74,11 +74,11 @@ Agents working on this repo use this file as the async handoff protocol.
   - `docs/plans/STEP-10-RETROSPECTIVE.md` — closing artifact for Step 10.
   - `docs/MCP-SETUP.md` — beta user-facing setup walkthrough.
 - **Test count:** 919 server tests green (was 915 → 918 from Round 27 + helper tests → 919 with /reflect ingress test).
-- **Next:** Available for next direction. Argus Round 27b coverage still pending; pivot to Step 11 (Search) is unblocked.
+- **Next:** Standing down at xian's direction. Step 10 close-out complete; team needs to catch up. xian's framing: "almost certainly that while we're testing, we'll find things that need attention, and that is likely to drive development sooner than moving on to another step." Awaiting test-driven findings (Argus Round 27b, Theseus AAXT, Iris UX surface), which will likely be the next development drivers ahead of Step 11 (Search) or further polish.
 - **Roadmap:** Step 9 ✓ → Step 10 Phase 1 ✓ Phase 2 ✓ Phase 3.5 ✓ Phase 4 CC+AI ✓ Phase 5a ✓ Phase 5b ✓ Phase 5c-i ✓ → 5c-ii deferred → 1.0.
 - **Cross-project alignment (recorded):** PM Chief Architect confirmed `klatch://` scheme and `get_context_package` shared tool name (memo `memo-arch-to-daedalus-phase5-mcp-2026-04-18.md`). `/{id}/manifest` sub-resource pattern endorsed as cross-producer interop convention. PM's `save_artifact` write-path (analogous to `reflect`) is post-5b coordination, parked.
 - **Note for Argus:** `SidebarRedesign.test.tsx` "chats appear before klatches in DOM order" is flaky — failed once at 6856ms, passed cleanly on rerun. Not blocking; flagging for triage.
-- **Updated:** 2026-04-26 10:01
+- **Updated:** 2026-04-26 10:08
 
 ### Theseus Prime (manual testing & exploration — CLI side)
 - **Branch:** `main`

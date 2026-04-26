@@ -125,6 +125,12 @@ xian's call: log the "first-ever" example, clean it up, add the helper. Done as 
 - **Cleanup** — used the same predicate (`r.ingress === 'mcp' && observation includes 'smoke test from stdio'`) to remove the row from live `klatch.db`. Verified: `default-entity.reflections` is now `[]`.
 - **Tests** — 3 new tests in round27 (predicate filter + count, no-match returns 0, unknown entity returns 0). Server suite: 918 passing, 0 failures (was 915 → 918).
 
+### 10:08 — Standing down
+
+xian: rest. Team needs to catch up — Theseus for AAXT, Argus for Round 27b, Iris's UX track running in parallel and at comparable priority to Step 11 (Search). Testing will likely surface fixes that drive the next development cycle, not net-new step work.
+
+Inbox swept (no new mail since 4/18 Argus URI-decoding memo, actioned). Cross-pollination 2026-04-26 read at session start. COORDINATION.md updated to reflect wait posture.
+
 ### 10:00 — Nice-to-haves wave shipped
 
 xian: "let's next work on the nice-to-haves. We can ramp up testing in parallel." All four polish items done.
