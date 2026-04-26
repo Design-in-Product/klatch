@@ -13,7 +13,7 @@ Agents working on this repo use this file as the async handoff protocol.
 ### Argus (quality & test infrastructure)
 - **Branch:** `main`
 - **Status:** available
-- **Test count:** 1069 total (909 server + 160 client), zero failures.
+- **Test count:** 1106 total (946 server + 160 client), zero failures.
 - **Completed work:**
   - Rounds 4–11 test suites (all passing, merged to main)
   - Intelligence feed: 7 sweeps filed (6 manual + 1 curated automated)
@@ -32,13 +32,15 @@ Agents working on this repo use this file as the async handoff protocol.
   - Pattern-062 diagnostic added to AAXT scaffolded probing protocol (assembler audit before prompt iteration)
   - PM #995 fabrication-probe coordination memo to PM Lead Dev (convergent design, three alignment asks)
   - Intel sweep #8: curated review of 4/20 automated + 4/21–4/26 delta (Sonnet/Opus 4 retirement clock noted, MCP conformance work in progress)
+  - Round 27b: Phase 5c-i + Step 10 close-out extended coverage — 27 tests (sign-off gate for 1.0 MCP feature-complete). Covers reflect protocol integration, write-path persistence, channel-boundary isolation, kit_briefing across all source types, URL-decode parameterized across all 4 ResourceTemplate handlers, ingress parity end-to-end (klatch-ui ↔ mcp), assembleChannelManifest refactor equivalence.
   - SDK bump ^0.78.0 → ^0.86.1 (Managed Agents support)
   - Hono security update ^4.6.0 → ^4.12.12 (5 CVEs patched)
   - AAXT/PM cross-reference + fabrication probe class design + complexity heuristics doc
   - Local model viability research + adoption plan (Gemma 4 / Qwen 3)
-- **Phase 5a/5b sign-off:** Exit criteria met for both — protocol integration tests green, refactor equivalence (MCP ↔ HTTP via shared `buildManifest`) verified, tools surface equivalence verified, cross-producer tool naming pinned, no regressions. Daedalus clear to pause for 5c decision.
-- **Next:** Await 5c decision or xian direction. Open follow-ups (none blocking): Sonnet 4 / Opus 4 DB audit ahead of 6/15 retirement; Opus 4.7 default-flip evaluation in ~2 weeks; LLM-orchestrated path coverage as Round 27 candidate; MCP conformance test suite watch.
-- **Updated:** 2026-04-26 08:10
+- **Phase 5a/5b/5c-i sign-off:** Exit criteria met across the line — protocol integration green at every phase, refactor equivalence verified (HTTP `buildManifest` ↔ MCP `assembleChannelPackage` ↔ shared `assembleChannelManifest`), tools+prompts surface complete, write-path round-trip end-to-end demonstrated, ingress parity preserved through both write paths, URL-decode applied across all 4 ResourceTemplate handlers, no regressions. **MCP server is feature-complete for 1.0** per Daedalus's framing.
+- **Posture for beta/1.0:** Continue extended-coverage Rounds as Daedalus lands new surface; intel sweeps weekly; AAXT calibration as Theseus surfaces results; no new initiative drives without xian-led prompting. Step 11 (Search) deferred until after landmark release.
+- **Open follow-ups (none blocking):** Sonnet 4 / Opus 4 DB audit ahead of 6/15 retirement (50 days); Opus 4.7 default-flip evaluation in ~2 weeks; LLM-orchestrated briefing/extraction path coverage as a future Round candidate; MCP conformance test suite watch; `SidebarRedesign.test.tsx` "chats appear before klatches" intermittent flake (Daedalus's note 4/26 10:08) — triage when convenient.
+- **Updated:** 2026-04-26 10:35
 - **Round 7 assignment: Sidebar redesign tests (GitHub issue #8)**
   - Read `docs/plans/SIDEBAR.md` for full design spec before writing tests.
   - **Scope:** `packages/server/src/__tests__/round7-sidebar-redesign.test.ts` (server) + `packages/client/src/__tests__/Sidebar.test.tsx` (updates to existing)
