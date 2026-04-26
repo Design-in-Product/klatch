@@ -201,4 +201,28 @@ Implementation:
 
 **Exit criteria for 5b:** Round 26b green; no regressions; stdio integration demonstrated. On Argus green, we pause for a 5c decision.
 
+### 14:30 — Session wrap + verification
+
+**Committed and pushed:** `18894fa Phase 5b: MCP tools surface (list_channels, get_context_package, get_manifest)`
+
+**Verification per wrap protocol:**
+```
+$ git log origin/main --oneline -3
+18894fa Phase 5b: MCP tools surface (list_channels, get_context_package, get_manifest)
+c21669b memo: ack SSH port 443 propagation to Calliope
+2bc8686 Daedalus 4/18 session wrap: Phase 5a verification per protocol
+```
+
+All deliverables confirmed present on origin/main:
+- `packages/server/src/mcp/server.ts` (modified — tools added) ✓
+- `packages/server/src/__tests__/round26-mcp-server-5b-tools.test.ts` ✓
+- `docs/mail/memo-arch-to-daedalus-phase5-mcp-2026-04-18.md` (PM Chief Architect reply) ✓
+- `docs/plans/STEP-10-PHASE-5-MCP-SERVER.md` (status updated, open questions resolved) ✓
+- `docs/COORDINATION.md` (Daedalus section updated) ✓
+- `packages/server/package.json` (zod ^4.0.0 added) ✓
+
+**Session close:** Both 5a and 5b shipped today. PM Architect alignment secured for the cross-producer surface. Awaiting Argus Round 26b sign-off; on green, decision point for 5c. Test count: 891 server + 160 client = 1051 total, zero failures.
+
+End of session.
+
 
