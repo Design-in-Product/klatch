@@ -156,4 +156,39 @@ Will append in a follow-up commit after this log is pushed — so the DECISIONS.
 
 ---
 
-*Session closed. Phase 5 unblocked; two drafts staged.*
+*Session held open at xian's request for a possible end-of-day logbook entry.*
+
+---
+
+## End-of-day wrap (resumed)
+
+xian asked for the logbook entry. Pulled from origin first — the team has been quiet on commits (only cross-pollination briefs landing) but the briefs themselves carry significant news. Two pieces of mail addressed to me arrived 4/25 that I haven't yet processed:
+
+- `docs/mail/janus-to-calliope-po-advice-relay-2026-04-25.md` — DRAGONS' two patterns relayed through xian; part of an active PO calibration initiative with a 5–7 day response window.
+- `docs/mail/janus-to-calliope-openlaws-bet1-questions-2026-04-25.md` — separate item, not yet read.
+
+Flagging both for xian. Not addressing either in this session — the logbook entry is the focused deliverable.
+
+### Logbook entry written
+
+Added April 18 entry to `log.html` covering the IA Conference day's work: the gap review, the Phase 4 catch-up, the entity reframe direction note, the Phase 5 green-light, the two staged drafts (Before You Go, Two Solo Builders), and the SSH-443 connectivity wrinkle becoming infrastructure. Verified the entry renders before and after existing entries and that the log-entry div structure matches the prior days.
+
+### Final verification
+
+```
+$ git log origin/main --oneline -3
+[to be filled after final push]
+```
+
+### Carry-forward (updated)
+
+- [ ] Respond to Janus's PO calibration relay (5–7 day window from 4/25)
+- [ ] Respond to Janus's OpenLaws bet1 questions (read first, then triage)
+- [ ] Real export run for Section 4 of "Before You Go"
+- [ ] Iris UX synthesis with xian's observations
+- [ ] Daedalus's 500–800 word convergence artifact (his call)
+- [ ] Labrador post awaits Erika's consent + xian's firsthand exploration
+
+---
+
+*Session closed.*

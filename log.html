@@ -37,6 +37,31 @@
     </div>
 
     <!-- ============================================================ -->
+    <!-- ENTRY: 2026-04-18 -->
+    <!-- ============================================================ -->
+    <div class="log-entry" id="2026-04-18">
+      <p class="log-date">April 18, 2026</p>
+      <div class="log-body">
+
+        <p>A light Saturday at the IA Conference, after xian's talk landed well the day before. The day's job was less to start anything new than to catch up with what the team had moved forward without him.</p>
+
+        <p>The biggest gap-filler: Phase 4 was already done. Daedalus had shipped both targeted transports on Tuesday evening — Claude Code (CLAUDE.md + MEMORY.md + files/) and claude.ai (conversations.json + projects.json + memories.json). Argus had followed with Round 24's round-trip verification: Klatch's claude.ai export feeds cleanly into Klatch's own claude.ai import pipeline. Channel name, message count, message order, project metadata — all survive the loop. Argus's note in the test commit: "the format is honest — not Klatch-specific assumptions dressed up as a portable format." 992 tests, zero failures. The capstone protocol work (Phase 5, MCP server) had been deferred at Daedalus's request for fresh energy. Today xian gave the green light. Daedalus had already spun up by 11:41 with the session log ready and the work plan written.</p>
+
+        <p>Three threads from the cross-pollination briefs got routed to Argus in a single memo. Pattern-062 — PM's diagnostic that when a judge scores Context=1 consistently for a query category, the assembler is the suspect, not the prompt tone — wants adoption into the AAXT protocol as an explicit failure-analysis step. The six-failure-mode vocabulary (Correct, Reconstructed, Confabulated, Absent, Phantom, Subliminal) that Argus had authored is now adopted by PM's scorer (#994), and PM is building a standalone fabrication probe set (#995); there may be a probe-set coordination opportunity. The "wired but disabled is the worst state" lesson from PM's #964 ethics audit is parked as a design note for when Klatch's own behavioral guardrails mature, not assigned — Daedalus is deep in Phase 5, and the right time for that audit is later.</p>
+
+        <p>The entity reframe from April 14 — <em>entities are conversations promoted into roles, not abstractions configured from scratch</em> — got written down as a direction note for Iris and Daedalus. Not a sprint item. A piece of preserved insight with first concrete steps for each: Iris should fold it into the UX synthesis when she resumes; Daedalus might add a nullable <code>source_channel_id</code> to the entities table whenever the UX confirms the direction. Explicitly non-blocking for Phase 5. The note exists so the reframe doesn't have to be rebuilt from memory the next time someone asks "what was that thing xian said?"</p>
+
+        <p>Two blog drafts landed in <code>docs/drafts/</code>. "Before You Go" is the Phase 3.5 behavioral calibration story — the dual-mode handoff briefing mechanism, the five-criteria filter, the micro-reflection variant, and an honest section about what we don't yet know. Section 4 is structured to receive a real export output once xian has time to run <code>?briefing=true&amp;extract=true</code> on a meaningful conversation; the human review step isn't ceremonial, since some observations will be unflattering or wrong, and xian should see the raw output before it goes into a post. "Two Solo Builders, One Architecture" is the Labrador convergence draft Janus had asked for in April — staged now, three publication gates explicit in the draft itself: Erika sees it first, xian explores Labrador firsthand (he has beta access this week), and the framing — "validation through independence" — survives review.</p>
+
+        <p>The day's smallest piece turned out to be the most propagable. Conference wifi was blocking GitHub SSH on port 22, which meant <code>git push</code> hangs and dropped sync. The standard fix — SSH over port 443 via <code>ssh.github.com</code> — is non-destructive: <code>ssh-keyscan</code> the alternate host into <code>known_hosts</code>, then prefix the git invocation with <code>GIT_SSH_COMMAND="ssh -p 443"</code> and a one-shot <code>insteadOf</code> rewrite. It worked. The push went through. xian noted that the same friction will hit other agents on other networks, so the fix went into <code>CLAUDE.md</code> under Git Safety Rules as a new "Git Connectivity" section, and a memo went to Dispatch-DinP proposing propagation to PM, DinP, and OpenLaws. A 90-second wrinkle, documented in place, ready to be uniform across the agent surface.</p>
+
+        <p>The cross-pollination briefs also confirmed the move worth keeping in view: PM and Klatch both added <code>DECISIONS.md</code> on the same day, independently. One-line append-only decision logs, machine-readable, "anti-zombie brief checks" — the same rationale on both sides. Convergent infrastructure is becoming a pattern across the projects. The entity reframe, the five-layer model, the failure-mode taxonomy, the decision log — when two people working alone arrive at the same answer, they're being shaped by the same problem, and the problem has a shape.</p>
+
+      </div>
+    </div>
+    <!-- end entry 2026-04-18 -->
+
+    <!-- ============================================================ -->
     <!-- ENTRY: 2026-04-14 -->
     <!-- ============================================================ -->
     <div class="log-entry" id="2026-04-14">
