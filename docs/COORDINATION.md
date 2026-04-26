@@ -29,13 +29,16 @@ Agents working on this repo use this file as the async handoff protocol.
   - Round 25b: Phase 5a MCP server extended coverage — 29 tests (sign-off gate for 5b)
   - Round 26b: Phase 5b MCP tools surface extended coverage — 18 tests (sign-off gate for 5c)
   - Memo to Daedalus: MCP ResourceTemplate URI decoding finding (non-blocking, 5c design note)
+  - Pattern-062 diagnostic added to AAXT scaffolded probing protocol (assembler audit before prompt iteration)
+  - PM #995 fabrication-probe coordination memo to PM Lead Dev (convergent design, three alignment asks)
+  - Intel sweep #8: curated review of 4/20 automated + 4/21–4/26 delta (Sonnet/Opus 4 retirement clock noted, MCP conformance work in progress)
   - SDK bump ^0.78.0 → ^0.86.1 (Managed Agents support)
   - Hono security update ^4.6.0 → ^4.12.12 (5 CVEs patched)
   - AAXT/PM cross-reference + fabrication probe class design + complexity heuristics doc
   - Local model viability research + adoption plan (Gemma 4 / Qwen 3)
 - **Phase 5a/5b sign-off:** Exit criteria met for both — protocol integration tests green, refactor equivalence (MCP ↔ HTTP via shared `buildManifest`) verified, tools surface equivalence verified, cross-producer tool naming pinned, no regressions. Daedalus clear to pause for 5c decision.
-- **Next:** Await 5c decision. Parked follow-ups: Calliope's Pattern-062 AAXT doc update + PM #995 probe-set coordination decision.
-- **Updated:** 2026-04-18 15:10
+- **Next:** Await 5c decision or xian direction. Open follow-ups (none blocking): Sonnet 4 / Opus 4 DB audit ahead of 6/15 retirement; Opus 4.7 default-flip evaluation in ~2 weeks; LLM-orchestrated path coverage as Round 27 candidate; MCP conformance test suite watch.
+- **Updated:** 2026-04-26 08:10
 - **Round 7 assignment: Sidebar redesign tests (GitHub issue #8)**
   - Read `docs/plans/SIDEBAR.md` for full design spec before writing tests.
   - **Scope:** `packages/server/src/__tests__/round7-sidebar-redesign.test.ts` (server) + `packages/client/src/__tests__/Sidebar.test.tsx` (updates to existing)

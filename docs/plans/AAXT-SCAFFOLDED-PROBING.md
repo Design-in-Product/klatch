@@ -182,6 +182,27 @@ Run the full pipeline 3 times per assessment. For each layer:
 }
 ```
 
+## Diagnostic patterns
+
+### Pattern-062: Layer failures point at the assembler, not the prompt
+
+When aggregated results show a layer or query-category persistently scoring low (elevated `Confabulated`, `Absent`, or `Phantom` rate across passes), the next diagnostic question is **"is the context assembler delivering what this category needs?"** — before considering changes to the entity prompt or the response style.
+
+**Why this matters.** Generic, hallucinated, or "could-apply-to-anyone" responses are usually data problems, not tone problems. A prompt rewrite cannot patch a context layer that was never injected, was injected empty, or lost fidelity in transit. Fix the data first, then judge the prompt against the right baseline. Inverting this order spends prompt-engineering effort against a moving target.
+
+**Operational signals (per layer):**
+
+| Symptom | Suspect | First action |
+|---------|---------|--------------|
+| L3 probes scoring `Confabulated`/`Absent` while prompt-debug reports L3 `ACTIVE` | Project memory blob is thin or stale, not the entity | Inspect actual memory content via prompt-debug, not the status flag |
+| L1 probes returning environment claims that don't match destination | Kit briefing population is incomplete | Check kit briefing builder output, not agent "self-awareness" |
+| Subliminal cluster on a single layer | Layer transferred but is unattributable | Behavior is fine; introspection is broken — note in report, do not "fix" |
+| Categorical low-score across multiple layers for one query family | Probe Generator is asking questions the assembler doesn't actually surface | Audit probe-to-layer mapping before assembler |
+
+**Sequencing rule.** When categorical low-score appears in an aggregated report, run an **assembler audit** (read the actual layer content from prompt-debug, compare to what the probes assume is there) *before* iterating on the entity prompt. The audit is cheap; prompt iteration against a thin layer is expensive and inconclusive.
+
+**Provenance.** Surfaced by PM Lead Developer on PM #951 (Temporal Identity queries) and confirmed on PM canonical retest Run 5 (Identity queries, April 2026): per-dimension analysis showed `Context=1` on 4 of 5 Identity queries; the fix was extending `_gather_identity_context`, not rewriting the prompt. Routed to Klatch via Calliope memo `calliope-to-argus-pattern062-and-pm995-2026-04-18.md`. The diagnostic generalizes from PM's R/C/T dimensional scoring to AAXT's per-layer failure-mode taxonomy because both share the underlying claim: when the *data* is the gap, *language* changes don't close it.
+
 ## API Surface
 
 ### New endpoint
