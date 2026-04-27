@@ -29,6 +29,10 @@ Everything served is in the canonical Klatch [package format](plans/STEP-10-PHAS
 - `klatch.db` at the project root with at least one channel + entity
 - Node 20+ (matches the Klatch dev requirement)
 - An MCP-capable client (examples below)
+- `ANTHROPIC_API_KEY` in `.env` at the project root **only if** you intend to
+  call `get_context_package` with `include_briefing: true` or
+  `include_extraction: true`. Both are LLM-backed and make one Anthropic API
+  call per assigned entity. Read-only fetches without those flags need no key.
 
 ## Configuration
 
@@ -158,6 +162,50 @@ For imported channels this returns the reverse kit briefing text used by
 Klatch itself; for native channels it returns a brief preamble naming the
 source.
 
+## Common workflows
+
+The four primitives above compose into a handful of recurring shapes. Worth
+internalizing these before invoking the API directly — the JSON-RPC examples
+above are easier to read once the *why* is clear.
+
+**Bootstrap a new conversation from a Klatch channel.** Call the
+`kit_briefing` prompt with a `channel_id`. The returned text is what Klatch
+itself injects as Layer 1 when running an imported conversation — it orients
+a fresh agent to the source environment, the tooling boundary, and what's
+about to be loaded. Drop it in as the new conversation's first system or
+preamble message and follow with `get_context_package` for the substance.
+
+**Survey before fetching.** The full context package can be heavy
+(conversation history, files, briefings, extraction). When you don't yet
+know which channel you want, call `list_channels` (cheap; metadata only) or
+`klatch://channels/{id}/manifest` (cheap; structural overview without the
+payload). Pull the full package only after you've identified the right
+channel. The `/{id}/manifest` resource exists for exactly this peek.
+
+**Annotate after a session.** After a meaningful exchange, call `reflect`
+with a one-sentence observation that the entity wouldn't have noticed about
+itself. The reflection is stamped `ingress: 'mcp'`, persists to the entity's
+field notes, and surfaces in every subsequent context package fetch — the
+mechanism by which Layer 5 (behavioral self-model) accumulates across
+sessions and across protocol boundaries. The membership check (entity must
+be assigned to the named channel) is a feature, not a bug — it keeps the
+channel-as-context boundary meaningful.
+
+**Pull an enriched package for handoff.** When the goal is to *transfer* a
+conversation to another environment (claude.ai, Claude Code, another
+Klatch-aware tool), call `get_context_package` with both
+`include_briefing: true` and `include_extraction: true`. The first asks each
+assigned entity to write what a future-self should know to continue
+effectively; the second runs an external extraction pass to surface
+patterns the entity wouldn't articulate about itself. Both are opt-in
+because both cost API calls. The two passes intentionally use different
+prompt framings — where they agree, the observation is high-confidence;
+where they disagree, a human reviewer decides. See
+[`AXT.md`](AXT.md) for why this dual-mode approach exists, and
+[`STEP10-RETROSPECTIVE-CALLIOPE.md`](STEP10-RETROSPECTIVE-CALLIOPE.md) §
+"Phase 3.5" for what we've learned about the gap between *delivered* and
+*received* context.
+
 ## Format versioning
 
 Every package carries a `format_version`. Clients that need a specific
@@ -207,6 +255,16 @@ side-by-side and walk both surfaces with the same code.
 - **Format version negotiation returns isError:** the requested version is
   newer than the server supports. Omit the option to get the highest
   available, or upgrade your Klatch install.
+- **Empty channel list despite a known-good `klatch.db`:** the MCP server
+  resolves `klatch.db` relative to its own working directory, not yours.
+  Most clients launch the child process with the client's cwd, not the
+  repo's. Either (a) point the `command`/`args` at an absolute path that
+  `cd`'s into the Klatch repo before invoking `tsx`, or (b) symlink your
+  `klatch.db` into the cwd the client uses. The "run by hand" path above
+  works because you're already in the repo root.
+- **`include_briefing` / `include_extraction` returns an error:** missing
+  `ANTHROPIC_API_KEY`. These options are LLM-backed and need the same key
+  Klatch uses for `npm run dev`. Read-only fetches don't.
 
 ## What's next
 
@@ -216,4 +274,13 @@ side-by-side and walk both surfaces with the same code.
   names itself. Candidates: remote Claude Code over SSH, Managed Agents
   pulling live context, PM BYOC runtime consumption.
 
-For the broader story, see `docs/plans/STEP-10-RETROSPECTIVE.md`.
+For the broader story, see [`docs/plans/STEP-10-RETROSPECTIVE.md`](plans/STEP-10-RETROSPECTIVE.md)
+(Daedalus's shipped-code close-out) and
+[`docs/STEP10-RETROSPECTIVE-CALLIOPE.md`](STEP10-RETROSPECTIVE-CALLIOPE.md)
+(design-discipline complement). The first MCP-ingressed reflection — the
+artifact that proved the write-path round-trip — is preserved at
+[`docs/firsts/2026-04-26-mcp-first-reflection.md`](firsts/2026-04-26-mcp-first-reflection.md).
+For the methodology behind the dual-mode behavioral calibration that
+`include_briefing` / `include_extraction` invoke, see
+[`docs/AXT.md`](AXT.md). For the five-layer model that the canonical
+package format encodes, see [`docs/PROMPT-ASSEMBLY.md`](PROMPT-ASSEMBLY.md).

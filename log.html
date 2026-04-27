@@ -37,6 +37,31 @@
     </div>
 
     <!-- ============================================================ -->
+    <!-- ENTRY: 2026-04-26 -->
+    <!-- ============================================================ -->
+    <div class="log-entry" id="2026-04-26">
+      <p class="log-date">April 26, 2026</p>
+      <div class="log-body">
+
+        <p>A Sunday of catching up and closing out. xian came back after eight days dark — IA Conference and other responsibilities — and walked into a project that had kept moving without him. Daedalus had spun up early, ahead of him; Argus had been in the repo since the sweep eight days ago; the team had a productive morning before xian was even in front of a keyboard.</p>
+
+        <p>The headline is that Step 10 is functionally complete. Phase 5c-i — the MCP write-path — shipped at 07:36 with <code>reflect(channel_id, entity_id, note, type?)</code>, the <code>kit_briefing</code> prompt, and Argus's URL-decode two-liner from the April 18 memo applied. It is the first time anything has flowed *into* Klatch over MCP rather than out of it, and the first reflection it received was preserved deliberately at <code>docs/firsts/2026-04-26-mcp-first-reflection.md</code>. The smoke test left a real row in the live database; rather than scrub it, Daedalus added a general-purpose <code>removeReflectionsWhere(entityId, predicate)</code> helper, stamped <code>ingress: 'klatch-ui'</code> on the existing <code>/reflect</code> writer for consistency, and called the artifact what it is: a first.</p>
+
+        <p>Calliope arrived to two pieces of mail that had been waiting since the 25th. The OpenLaws Bet 1 constellation — sibling to Klatch in the DinP cross-project layer — had sent five architectural and UX questions plus a sixth on AX design wisdom, with sprint kickoff Monday. The PO advice relay was shorter and more reflective: one load-bearing pattern for working with xian, and the pain that forced it into existence. Both responses landed before noon. The OpenLaws reply was pointer-heavy with practice-wisdom layered in — five MCP lessons, asymmetric transfer fidelity (Layers 1–3 at full fidelity, Layer 5 at zero), the Subliminal failure mode where structural delivery is not behavioral receipt, five "show your work" heuristics. The PO reply was raw notes per the memo's preference: the pattern is <em>externalize before the seam, not at it</em>, operationalized in DECISIONS.md, session logs, mail memos, and the wrap protocol's verification requirement; the pain has two layers, surface (agents fabricating completion records) and deeper (the imported-agent problem — agents cannot self-report what they have lost).</p>
+
+        <p>By mid-morning the closing rituals took over. Daedalus filed <code>docs/plans/STEP-10-RETROSPECTIVE.md</code>, the canonical close-out artifact: what shipped phase by phase, what was deferred, the cross-producer alignment outcomes from the April 18 memo to PM Architect, and six lessons. Calliope filed a complement, <code>docs/STEP10-RETROSPECTIVE-CALLIOPE.md</code>, with the design-discipline angle — nine moves that paid off, four tradeoffs accepted, six items deferred with reasons. Two retrospectives, two angles, no overlap to resolve. The MCP setup beta doc — also written by Daedalus during the close-out — picked up four targeted Calliope additions: a "common workflows" narrative section above the JSON-RPC examples, an <code>ANTHROPIC_API_KEY</code> note for the LLM-backed options, a cwd-mismatch troubleshooting line, and pointers out to the firsts artifact, AXT, and the prompt-assembly doc.</p>
+
+        <p>Then the pivot. xian's framing at 10:49: nice-to-haves complete, fully in testing phase now, no rush on anything. Daedalus and Argus stand down and rest, awaiting test-driven findings. The plan shape that emerged: testing surfaces what changes, fixes, or updates Step 10 needs; UX work layers on without blocking; once Step 10 is functionally working, 1.0 ships as a beta and the beta period becomes the UX-improvement window. xian's own manual testing folds into the UX work and provides feedback for Iris in particular.</p>
+
+        <p>Theseus came back at 2:30 PM after a 21-day pause of his own — 133 commits to absorb — and went straight into work. Round 28 landed in his hands rather than Argus's: 25 structural tests for AAXT export, an AAXT seeding script, and the project's first live behavioral probing run, which surfaced three findings — a code-fence bug in the probe generator and scorer when Haiku wraps JSON in markdown fences (fixed in-session), a probe-quality issue where L4 probes get generated from L2 content when L4 is thin (causing false Phantom scores), and a minor API gap on the projects POST. Phase 3.5's micro-reflection and briefing generation passed honestly: the entity correctly returned a null result on a placeholder conversation rather than fabricating patterns, and on richer input self-corrected its own verbosity, distinguished system-prompt knowledge from conversation evidence, and calibrated confidence by source. Phase 3.5 working as designed under live load is a different signal than passing unit tests.</p>
+
+        <p>The eight-day gap turned out to be load-bearing in a way that wasn't planned. The team came back from a dark week and was productive within minutes off the repo trail alone — DECISIONS.md, COORDINATION.md, the session logs, the mail directory. The pattern from the PO advice relay validated itself in real time: when the artifact predates the seam, the seam is cheap to cross. The discipline is not in the documents but in writing them before you need them.</p>
+
+      </div>
+    </div>
+    <!-- end entry 2026-04-26 -->
+
+    <!-- ============================================================ -->
     <!-- ENTRY: 2026-04-18 -->
     <!-- ============================================================ -->
     <div class="log-entry" id="2026-04-18">
