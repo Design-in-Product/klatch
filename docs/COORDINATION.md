@@ -86,12 +86,14 @@ Agents working on this repo use this file as the async handoff protocol.
 
 ### Theseus Prime (manual testing & exploration — CLI side)
 - **Branch:** `main`
-- **Status:** available
+- **Status:** working
 - **Role:** Human-agent tandem manual testing.
-- **Last completed:** MAXT Session 01 complete (2026-03-24). Aether (fork of Theseus) as subject. 8 findings filed. Key: Subliminal injection category discovered (content delivered and functionally accessible but source-unattributable). AAXT/MAXT gap confirmed. Quiz updated to v4.1. Findings absorbed by Daedalus and Calliope.
-- **Next:** MAXT Session 02 planning — scope TBD with Xian in context of roadmap resequencing (Files → Export → Search). Test focus likely: import flow UX and unpopulated layer guidance (Finding 5 design opportunity).
-- **Waiting on:** Xian.
-- **Updated:** 2026-03-26 19:12
+- **Last completed:** Round 28 AAXT structural tests (25 tests) + first live AAXT behavioral probing (3 channels × full pipeline). Found and fixed code fence parsing bug in probe-generator and scorer. Phase 3.5 briefing generation verified against real conversations.
+- **Test count contribution:** Round 18 (12 tests, April 5) + Round 28 (25 tests, April 26) = 37 tests total.
+- **Findings:** (1) Code fence parsing bug in AAXT auxiliary — Haiku wraps JSON in markdown fences, fixed with extractJson(). (2) Probe quality issue — L4 probes sometimes reference L2 content when L4 is thin, causing false positive Phantom scores. (3) Projects API POST doesn't pass memory field.
+- **Next:** Continue AAXT coverage. MAXT Session 02 scope to be determined with xian — candidates: export round-trip fidelity, Phase 3.5 field note quality on real conversations, MCP server integration.
+- **Waiting on:** Nothing — can continue AAXT independently.
+- **Updated:** 2026-04-26 17:15
 
 ### Ariadne (forked from Theseus — Klatch side)
 - **Branch:** n/a (Klatch-native, lives in SQLite)

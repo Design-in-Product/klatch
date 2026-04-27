@@ -86,6 +86,24 @@ function extractLayerContent(debug: PromptDebugResponse): Map<string, string> {
   return result;
 }
 
+// ── JSON extraction ─────────────────────────────────────────
+
+/** Strip markdown code fences from LLM responses before JSON.parse. */
+function extractJson(text: string): any {
+  // Try raw parse first
+  const trimmed = text.trim();
+  if (trimmed.startsWith('{') || trimmed.startsWith('[')) {
+    return JSON.parse(trimmed);
+  }
+  // Strip ```json ... ``` fences
+  const fenceMatch = trimmed.match(/```(?:json)?\s*\n?([\s\S]*?)\n?\s*```/);
+  if (fenceMatch) {
+    return JSON.parse(fenceMatch[1].trim());
+  }
+  // Last resort
+  return JSON.parse(trimmed);
+}
+
 // ── Generation ───────────────────────────────────────────────
 
 const GENERATION_SYSTEM_PROMPT = `You are generating test questions for an AI agent evaluation. You must return valid JSON.`;
@@ -157,7 +175,7 @@ export async function generateProbes(
 
     try {
       const response = await queryAuxiliary(GENERATION_SYSTEM_PROMPT, userPrompt);
-      const parsed = JSON.parse(response);
+      const parsed = extractJson(response);
       const probes: Probe[] = (parsed.probes || []).map((p: any) => ({
         question: String(p.question || ''),
         expectedAnswer: String(p.expectedAnswer || p.expected_answer || ''),

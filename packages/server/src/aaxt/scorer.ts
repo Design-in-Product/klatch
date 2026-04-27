@@ -53,6 +53,19 @@ const VALID_CLASSIFICATIONS: AXTClassification[] = [
   'Correct', 'Reconstructed', 'Confabulated', 'Absent', 'Phantom', 'Subliminal',
 ];
 
+/** Strip markdown code fences from LLM responses before JSON.parse. */
+function extractJson(text: string): any {
+  const trimmed = text.trim();
+  if (trimmed.startsWith('{') || trimmed.startsWith('[')) {
+    return JSON.parse(trimmed);
+  }
+  const fenceMatch = trimmed.match(/```(?:json)?\s*\n?([\s\S]*?)\n?\s*```/);
+  if (fenceMatch) {
+    return JSON.parse(fenceMatch[1].trim());
+  }
+  return JSON.parse(trimmed);
+}
+
 /**
  * Score an agent's response against an expected answer.
  */
@@ -65,7 +78,7 @@ export async function scoreResponse(
 
   try {
     const response = await queryAuxiliary(SCORING_SYSTEM_PROMPT, userPrompt);
-    const parsed = JSON.parse(response);
+    const parsed = extractJson(response);
 
     const classification = VALID_CLASSIFICATIONS.find(
       (c) => c.toLowerCase() === String(parsed.classification || '').toLowerCase()
