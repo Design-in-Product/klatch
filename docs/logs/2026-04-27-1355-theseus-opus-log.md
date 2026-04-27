@@ -276,3 +276,27 @@ Imported the existing `exports/sessions/theseus-2026-03-22.jsonl` (3.8MB, real T
 The new imported channel `theseus-2026-03-22-imported` (143 real messages from a real Theseus session) is in the database and ready as a MAXT subject for tomorrow. CH1 also remains as a thin-conversation reference. Either could host the next round of manual experience testing — Iris's UX expectations review will inform sequence.
 
 ---
+
+## Session Close
+
+Final commits pushed to origin/main:
+
+```
+$ git log origin/main --oneline -3
+00b5426 Theseus 4/27 wrap: memos to Daedalus + Argus, live round-trip + extraction + imported-channel AAXT
+e52ded4 Round 29-30: AAXT regression + threshold + first live MCP integration
+5025a27 Calliope 4/27: route PM #995 fabrication-probe coordination memo via Dispatch
+```
+
+Files verified present:
+- `docs/logs/2026-04-27-1355-theseus-opus-log.md` ✓
+- `docs/mail/theseus-to-daedalus-aaxt-findings-2026-04-27.md` ✓
+- `docs/mail/theseus-to-argus-aaxt-findings-2026-04-27.md` ✓
+- `packages/server/src/__tests__/round29-json-extract.test.ts` ✓
+- `packages/server/src/__tests__/round30-probe-threshold.test.ts` ✓
+- `packages/server/src/aaxt/json-extract.ts` ✓
+- `scripts/aaxt-mcp-live-probe.ts` ✓
+
+Suite: 998 server tests, zero failures. Server stopped. .env restored. Database in clean state with two MAXT-ready channels.
+
+Standing by for tomorrow's MAXT Session 02 with xian (post-Iris sync).
