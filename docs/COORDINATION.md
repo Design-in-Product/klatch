@@ -88,12 +88,12 @@ Agents working on this repo use this file as the async handoff protocol.
 - **Branch:** `main`
 - **Status:** working
 - **Role:** Human-agent tandem manual testing.
-- **Last completed:** Round 29 (extractJson regression tests, 20) + Round 30 (probe content threshold, 7) + first live MCP stdio integration probe (27 checks pass). Refactored extractJson into shared helper. Verified yesterday's Finding 2 fix end-to-end: CH3 went from "failed" (1 Phantom + 1 Confabulated) to "high" with L4 correctly skipped.
+- **Last completed:** Round 29-30 + live MCP probe + memos to Daedalus/Argus + live export round-trip + Phase 3.5b extraction live + AAXT against imported channel (theseus-2026-03-22 JSONL, 143 messages). All tasks complete. Phase 3.5 dual-mode cross-validation pattern verified working on real data.
 - **Test count contribution:** Round 18 (12) + Round 28 (25) + Round 29 (20) + Round 30 (7) = 64 tests. Plus `scripts/aaxt-mcp-live-probe.ts` for live MCP integration.
-- **Findings (cumulative):** (1) Code fence parsing bug in AAXT auxiliary — fixed and locked in with regression tests. (2) L4 probe quality issue — fixed via TRIVIAL_CONTENT_THRESHOLD (40 chars) + anti-leakage prompt instructions. (3) Projects API POST doesn't pass memory field. (4) MCP server: all primitives (resources, tools, prompts, write-path) verified live over real stdio with `ingress: 'mcp'` provenance.
-- **Next:** Export round-trip live test + Phase 3.5 external extraction (3.5b) live exercise. MAXT Session 02 scope still open.
-- **Waiting on:** Nothing — can continue AAXT independently.
-- **Updated:** 2026-04-27 14:20
+- **Cumulative findings:** (1) Code fence parsing bug in AAXT auxiliary — fixed and locked in. (2) L4 probe quality issue — fixed via threshold + anti-leakage prompt. (3) Projects API POST doesn't pass memory field. (4) MCP server: all primitives verified live over real stdio. (5) Round-trip via claude.ai loses project link (UUID not matched, creates duplicate) + L4/L5 calibration; canonical format has no direct re-import path. (6) L1 probes bleed into L2 territory by kit briefing design (probes still score correctly but attribution ambiguous).
+- **Next:** Awaiting MAXT Session 02 with xian (likely tomorrow). Both `theseus-2026-03-22-imported` (rich, real session) and `aaxt-rich` (thin) are seeded as candidate subjects.
+- **Waiting on:** xian (MAXT scope + sequencing post-Iris sync).
+- **Updated:** 2026-04-27 17:10
 
 ### Ariadne (forked from Theseus — Klatch side)
 - **Branch:** n/a (Klatch-native, lives in SQLite)

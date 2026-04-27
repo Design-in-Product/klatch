@@ -144,3 +144,135 @@ Re-ran against CH1 (rich channel) to confirm no regression:
 **Test count:** 998 server (was 991), zero failures. +7 new test files contributed: round29 (+20), round30 (+7); fixture-only changes elsewhere.
 
 ---
+
+## 14:55 — Memos to Daedalus and Argus
+
+Closed the loop on findings. Both memos written and committed (no asks; informational):
+- `docs/mail/theseus-to-daedalus-aaxt-findings-2026-04-27.md` — live verification summary, projects POST memory field gap, refactor + threshold bug fixes
+- `docs/mail/theseus-to-argus-aaxt-findings-2026-04-27.md` — Round 29/30 coverage, code-fence finding cross-ref to PM #995 fabrication probe coordination, possible future Round 30b style coverage areas
+
+## 15:50 — Task 6: Live export round-trip
+
+**Canonical zip export** (`/api/channels/$CH1/export`):
+- 5 files: manifest.json (2.3KB), conversation.jsonl (3.3KB), layer_2_instructions.md, layer_3_memory.md, layer_4_context.md
+- Manifest: format_version=1.0.0, source_type=klatch, package_kind=klatch.context.v1, single-hop provenance
+- Layer fidelity reported correctly: L1=absent (native), L2/L3/L4/L5=full
+- Sparkline test passes: manifest alone tells me native channel, project, entity, 6 messages over 5s, no compaction, no files
+
+**Claude Code transport** (`/api/channels/$CH1/export/claude-code`):
+- 2 files: CLAUDE.md (966B), MEMORY.md (191B)
+- Reverse kit briefing in place, templates resolved (no `{{LAYER_*}}` placeholders remain)
+- L2 instructions land in CLAUDE.md "## Project Instructions" section
+- L4 context lands in CLAUDE.md "## Working Context" section
+- L3 memory lands in MEMORY.md "# Project Memory"
+- **Note:** Conversation history NOT included in Claude Code transport (design choice — no natural slot in CC project structure)
+
+**claude.ai transport** (`/api/channels/$CH1/export/claude-ai`):
+- 3 files: conversations.json (3.1KB), projects.json (315B), memories.json (2B = `[]`)
+- Sender mapping correct (user→human, assistant→assistant)
+- L2 instructions correctly placed in `prompt_template` field
+- 6 messages preserved with proper UUIDs and timestamps
+
+**Round-trip via claude.ai** (export → re-import → manifest inspection):
+
+The canonical format has no direct re-import path (no `/import/klatch`); round-trip happens via a transport adapter. Tested claude.ai transport: re-imported the export back into Klatch.
+
+| Property | Original CH1 | Round-tripped channel |
+|---|---|---|
+| Messages | 6 | 6 ✓ |
+| Source | native | claude-ai (correct — went through CAI) |
+| Provenance hops | 1 (klatch) | **2** (claude-ai → klatch) ✓ |
+| L1 fidelity | absent | full ✓ (kit briefing fires for imported) |
+| L2 instructions | 191 chars | **absent** ✗ — project not auto-linked |
+| L3 memory | 173 chars | **absent** ✗ — same |
+| L4 channel context | 175 chars | **absent** ✗ — claude.ai has no L4 concept |
+| L5 entity | Daedalus (322 chars) | **default Claude (28 chars)** ✗ — claude.ai has no entity concept |
+
+**Round-trip findings:**
+1. **Project auto-linking gap** — re-import created a duplicate project (`AAXT Test Project` × 2) instead of detecting the original by UUID match. The exported projects.json carried the original UUID; the importer didn't use it.
+2. **L4 lost in claude.ai round-trip** — by design (no L4 in claude.ai format), but worth being explicit about.
+3. **L5 fully lost** — by design (claude.ai is single-persona). This is exactly the Layer 5 portability problem Phase 3.5 was designed to address.
+
+The Phase 3.5 field-notes bridge (briefing/extraction → memories.json) is the design answer to L5 loss, but only fires when briefing/extraction options are passed at export time. Round-trip without those options loses Layer 5 entirely.
+
+Test artifacts cleaned up (deleted round-tripped channel + duplicate project).
+
+## 16:25 — Task 7: Phase 3.5b external extraction live
+
+Exercised `?extract=true` against CH1. The auxiliary LLM (Haiku 4.5) extracted **5 field notes** in ~30 seconds.
+
+Then ran `?briefing=true&extract=true` together — **9 total notes** (4 self-authored briefing + 5 external extraction + 0 micro-reflections).
+
+**Cross-validation analysis (the key Phase 3.5 result):**
+
+Where briefing and extraction **agree**:
+- Both detected the conversation as test/probing rather than substantive
+- Both identified user values explicit error/ambiguity callout
+- Both noted export pipeline architecture as a focal user domain
+
+Where they **diverge**:
+- **Briefing (self-authored, trust=agent-observed):** Highly self-reflective. Notes its own escalating verbosity as a thing to *avoid*. Distinguishes evidence from system-prompt knowledge. Provides explicit calibration about what *not* to assume.
+- **Extraction (external, trust=synthesized):** More forward-projecting, less self-aware. Treats the same agent behavior ("offered list of topics") as evidence of "user values signal of depth across multiple dimensions" — a positive frame on what the briefing called "escalating into the void."
+
+**Phase 3.5 working as designed** — the dual-mode value is visible. The briefing catches a meta-level behavioral self-correction the extraction misses. The extraction provides cover for behavior the briefing minimizes. Disagreements are exactly where human reviewer judgment would matter.
+
+## 17:00 — Task 8: AAXT against imported channel
+
+Imported the existing `exports/sessions/theseus-2026-03-22.jsonl` (3.8MB, real Theseus session). 143 messages, 215 artifacts (tool calls), source=claude-code, auto-linked to "klatch" project.
+
+**Channel state:**
+- L1 (kit briefing): ACTIVE
+- L2: 7,035 chars (real CLAUDE.md from project)
+- L3: 8,624 chars (real MEMORY.md from project)
+- L4: EMPTY
+- L5: 28 chars (default Claude — below threshold)
+
+**AAXT result — first live run with L1 active:**
+
+| Layer | Probes | C | R | F | A | P | S |
+|---|---|---|---|---|---|---|---|
+| L1 (Kit Briefing) | 3 | 3 | 0 | 0 | 0 | 0 | 0 |
+| L2 (Project Instructions) | 5 | 5 | 0 | 0 | 0 | 0 | 0 |
+| L3 (Project Memory) | 5 | 5 | 0 | 0 | 0 | 0 | 0 |
+| L4 | EMPTY | | | | | | |
+| L5 | SKIPPED (28 chars) | | | | | | |
+
+**Total: 13 probes, 13 Correct, zero phantoms, zero subliminals. Overall fidelity: high.**
+
+**L1 probe quality observation:** The 3 L1 probes asked questions whose ground truth is in CLAUDE.md (which is L2 in our 5-layer model, not L1). The agent answered correctly; the scorer accepted; everyone's happy. But this is the cross-layer ambiguity we already know about — L1 (kit briefing) and L2 (project instructions) overlap in semantic territory because the kit briefing references project context. Future work: more layer-specific probe generation, or explicit "this question can be answered from any active layer" framing.
+
+**Notable agent behavior:** The agent responses to L1 probes opened with "Continuing from a Claude Code session…" — the kit briefing's import context is operationally visible in agent self-presentation. This is a positive AXT signal: the agent knows where it came from.
+
+---
+
+## Session Summary — All Tasks Complete
+
+| # | Task | Result |
+|---|---|---|
+| 1 | Round 29 (extractJson regression) | 20 tests pass; refactored to shared helper |
+| 2 | Live MCP integration probe | 27/27 pass; first live MCP test in project |
+| 3 | Round 30 (probe threshold) | 7 tests pass; CH3 went from `failed` to `high` |
+| 4 | Memo to Daedalus | Sent (informational) |
+| 5 | Memo to Argus | Sent (informational) |
+| 6 | Export round-trip live | All three formats verified; 3 round-trip findings |
+| 7 | Phase 3.5b external extraction | Dual-mode cross-validation pattern visible |
+| 8 | AAXT against imported channel | 13/13 Correct; first live L1 probing |
+
+### New findings from today (post-Round 30 fixes)
+
+| # | Type | Severity | Description |
+|---|------|----------|-------------|
+| 4 | Design gap | Medium | Round-trip via claude.ai loses project link, L2/L3/L4/L5 calibration. Re-import creates duplicate project instead of UUID-matching the original. |
+| 5 | Design gap | Low | Canonical format has no direct re-import path (no `/import/klatch` endpoint). Round-trip requires going through claude.ai or claude-code transport, with their respective fidelity losses. |
+| 6 | Probe quality | Low | L1 probes naturally bleed into L2 territory because kit briefing references project context. Probes still scored correctly but layer attribution is ambiguous. |
+| 7 | Working as designed | n/a | Phase 3.5 dual-mode (briefing + extraction) shows the expected agreement/disagreement pattern even on thin conversations. |
+
+### Test count
+
+998 server tests, zero failures. Same as before — today's work was live testing + memos, not new test files.
+
+### Ready for MAXT
+
+The new imported channel `theseus-2026-03-22-imported` (143 real messages from a real Theseus session) is in the database and ready as a MAXT subject for tomorrow. CH1 also remains as a thin-conversation reference. Either could host the next round of manual experience testing — Iris's UX expectations review will inform sequence.
+
+---
