@@ -171,8 +171,30 @@ This is Phase 3.5 working as designed. The entity was honest about the thin evid
 - `packages/server/src/aaxt/scorer.ts` — code fence fix
 - Session log with full Track B/C results
 
-### COORDINATION.md status
+## Design observations for future work
 
-My section is stale — still shows March 26. Will update before push.
+1. **Probe quality for thin layers:** The probe generator creates L4 questions from L2 content when L4 is thin, causing false positive Phantom scores. Fixable with better prompting or a content-size threshold for probe generation.
+2. **Fidelity label for sparse channels:** `overallFidelity: "low"` on bare channels is technically correct but misleading — implies a problem when the channel genuinely has sparse content. Consider a "sparse" or "insufficient-data" label.
+3. **OpenAI credits:** Key is out of credits. Xian plans to set up a second Anthropic key for future testing. True vendor independence for probe generation remains a goal.
 
 ---
+
+## Session Close
+
+Committed and pushed as `ccc4da9`. COORDINATION.md updated.
+
+### Verification
+
+```
+$ git log origin/main --oneline -3
+ccc4da9 Round 28: AAXT export structural tests + first live behavioral probing + code fence fix
+1724642 Daedalus: record Argus Round 27b sign-off; MCP feature-complete for 1.0
+47fd5cc Argus 4/26 wrap: Round 27b extended coverage for Phase 5c-i + Step 10 close-out
+```
+
+Files verified:
+- `packages/server/src/__tests__/round28-aaxt-export.test.ts` — present
+- `scripts/aaxt-seed.sh` — present
+- `docs/logs/2026-04-26-1430-theseus-opus-log.md` — present
+
+Good night, xian. See you tomorrow.
