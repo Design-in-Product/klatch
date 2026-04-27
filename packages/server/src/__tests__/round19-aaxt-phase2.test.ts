@@ -75,11 +75,28 @@ function mockScoringResponse(classification: string, confidence: number, reasoni
 }
 
 function setupTestChannel() {
-  const proj = createProject('AAXT Test Project', 'Use TypeScript. Run tests with Vitest.', 'native', {}, 'User prefers dark mode.');
-  const ch = createChannel('aaxt-test-channel', 'Focus on quality.');
+  // Content lengths must exceed TRIVIAL_CONTENT_THRESHOLD (40 chars) in
+  // probe-generator.ts so probes are generated for each layer. Round 28
+  // added the threshold to prevent false-positive Phantom scores when a
+  // layer has too little content to support distinguishing probes.
+  const proj = createProject(
+    'AAXT Test Project',
+    'Use TypeScript with strict mode. Run all tests with Vitest. Default model is Opus 4.6.',
+    'native',
+    {},
+    'User prefers dark mode and concise code reviews. Database is SQLite at the project root.',
+  );
+  const ch = createChannel('aaxt-test-channel', 'Focus on quality, test coverage, and architectural review across the export pipeline.');
   setChannelProject(ch.id, proj.id);
 
-  const entity = createEntity('TestEntity', 'claude-opus-4-6', 'You are a helpful test assistant.', '#3B82F6', undefined, 'high');
+  const entity = createEntity(
+    'TestEntity',
+    'claude-opus-4-6',
+    'You are a helpful test assistant focused on careful analysis and concise responses.',
+    '#3B82F6',
+    undefined,
+    'high',
+  );
   assignEntityToChannel(ch.id, entity.id);
 
   return { proj, ch, entity };

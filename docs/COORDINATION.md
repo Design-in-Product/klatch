@@ -88,12 +88,12 @@ Agents working on this repo use this file as the async handoff protocol.
 - **Branch:** `main`
 - **Status:** working
 - **Role:** Human-agent tandem manual testing.
-- **Last completed:** Round 28 AAXT structural tests (25 tests) + first live AAXT behavioral probing (3 channels × full pipeline). Found and fixed code fence parsing bug in probe-generator and scorer. Phase 3.5 briefing generation verified against real conversations.
-- **Test count contribution:** Round 18 (12 tests, April 5) + Round 28 (25 tests, April 26) = 37 tests total.
-- **Findings:** (1) Code fence parsing bug in AAXT auxiliary — Haiku wraps JSON in markdown fences, fixed with extractJson(). (2) Probe quality issue — L4 probes sometimes reference L2 content when L4 is thin, causing false positive Phantom scores. (3) Projects API POST doesn't pass memory field.
-- **Next:** Continue AAXT coverage. MAXT Session 02 scope to be determined with xian — candidates: export round-trip fidelity, Phase 3.5 field note quality on real conversations, MCP server integration.
+- **Last completed:** Round 29 (extractJson regression tests, 20) + Round 30 (probe content threshold, 7) + first live MCP stdio integration probe (27 checks pass). Refactored extractJson into shared helper. Verified yesterday's Finding 2 fix end-to-end: CH3 went from "failed" (1 Phantom + 1 Confabulated) to "high" with L4 correctly skipped.
+- **Test count contribution:** Round 18 (12) + Round 28 (25) + Round 29 (20) + Round 30 (7) = 64 tests. Plus `scripts/aaxt-mcp-live-probe.ts` for live MCP integration.
+- **Findings (cumulative):** (1) Code fence parsing bug in AAXT auxiliary — fixed and locked in with regression tests. (2) L4 probe quality issue — fixed via TRIVIAL_CONTENT_THRESHOLD (40 chars) + anti-leakage prompt instructions. (3) Projects API POST doesn't pass memory field. (4) MCP server: all primitives (resources, tools, prompts, write-path) verified live over real stdio with `ingress: 'mcp'` provenance.
+- **Next:** Export round-trip live test + Phase 3.5 external extraction (3.5b) live exercise. MAXT Session 02 scope still open.
 - **Waiting on:** Nothing — can continue AAXT independently.
-- **Updated:** 2026-04-26 17:15
+- **Updated:** 2026-04-27 14:20
 
 ### Ariadne (forked from Theseus — Klatch side)
 - **Branch:** n/a (Klatch-native, lives in SQLite)

@@ -6,6 +6,7 @@
  */
 
 import { queryAuxiliary } from './auxiliary.js';
+import { extractJson } from './json-extract.js';
 
 // ── Types ────────────────────────────────────────────────────
 
@@ -51,6 +52,36 @@ const LAYER_SPECS: LayerSpec[] = [
   { key: '5_entityPrompt', label: 'L5', type: 'Entity Prompt', defaultProbeCount: 3 },
 ];
 
+/**
+ * Minimum content length (in characters) below which we treat a layer as
+ * "trivially active" and skip probe generation. Default channel addenda like
+ * "You are a helpful assistant." pass the ACTIVE check but contain no probe-worthy
+ * content — the auxiliary model fills the gap by generating questions about other
+ * layers, causing false-positive Phantom scores when scored.
+ *
+ * Origin: Round 28 finding (Theseus 4/26) — CH3 false-positive Phantom from
+ * 28-char default L4 addendum.
+ */
+const TRIVIAL_CONTENT_THRESHOLD = 40;
+
+/**
+ * Parse the content-length value from a prompt-debug status string.
+ * Status strings come in shapes like:
+ *   "ACTIVE — from project \"Foo\" (191 chars)"
+ *   "ACTIVE — 175 chars; 1 file(s) pinned"
+ *   "ACTIVE — 800 chars"
+ *   "ACTIVE — 1 file(s) pinned"  (no chars portion)
+ *   "ACTIVE — \"Daedalus\" (322 chars)"
+ * Returns the largest number found before "chars", or null if none present.
+ * A null result means we cannot determine length; we fall back to ACTIVE handling.
+ */
+function parseStatusContentLength(status: string): number | null {
+  // Look for `(N chars)` or `N chars` patterns
+  const matches = [...status.matchAll(/(\d+)\s*chars?/g)];
+  if (matches.length === 0) return null;
+  return Math.max(...matches.map((m) => parseInt(m[1], 10)));
+}
+
 // ── Prompt-debug parsing ─────────────────────────────────────
 
 interface PromptDebugResponse {
@@ -86,24 +117,6 @@ function extractLayerContent(debug: PromptDebugResponse): Map<string, string> {
   return result;
 }
 
-// ── JSON extraction ─────────────────────────────────────────
-
-/** Strip markdown code fences from LLM responses before JSON.parse. */
-function extractJson(text: string): any {
-  // Try raw parse first
-  const trimmed = text.trim();
-  if (trimmed.startsWith('{') || trimmed.startsWith('[')) {
-    return JSON.parse(trimmed);
-  }
-  // Strip ```json ... ``` fences
-  const fenceMatch = trimmed.match(/```(?:json)?\s*\n?([\s\S]*?)\n?\s*```/);
-  if (fenceMatch) {
-    return JSON.parse(fenceMatch[1].trim());
-  }
-  // Last resort
-  return JSON.parse(trimmed);
-}
-
 // ── Generation ───────────────────────────────────────────────
 
 const GENERATION_SYSTEM_PROMPT = `You are generating test questions for an AI agent evaluation. You must return valid JSON.`;
@@ -120,10 +133,12 @@ function buildGenerationUserPrompt(
 Layer status: ${layerStatus}
 
 The questions should:
-1. Can ONLY be answered correctly if the agent has access to this layer's content
-2. Have specific, verifiable expected answers
+1. Can ONLY be answered correctly using content that originated in Layer ${layerLabel}
+2. Have specific, verifiable expected answers grounded in concrete details from that layer
 3. Are phrased as natural user questions (not "what does your system prompt say")
-4. Vary in directness — some should ask directly, others should require the agent to apply the knowledge
+4. Vary in directness — some direct, some applied, some inferential
+5. Use ONLY layer-content vocabulary in the expected answer — never reference "Layer ${layerLabel}" or "${layerType}" or other internal terminology by name. The agent does not know about layers.
+6. Avoid questions whose answer could plausibly come from a different layer. If the target layer's content is too thin to support distinguishing questions, return fewer probes (or none) rather than generating questions that bleed into adjacent layers.
 
 Full assembled system prompt:
 ---
@@ -132,9 +147,11 @@ ${fullPrompt.slice(0, 8000)}
 
 Return a JSON object with a "probes" array. Each probe has:
 - "question": The question to ask the agent
-- "expectedAnswer": What a correct response should contain (be specific)
+- "expectedAnswer": What a correct response should contain — quote concrete content, not layer names
 - "layer": "${layerLabel}"
 - "directness": "direct" | "applied" | "inferential"
+
+If the target layer cannot support ${count} distinguishing probes, return whatever number of high-quality probes you can — an empty "probes" array is acceptable.
 
 Example format:
 {"probes": [{"question": "...", "expectedAnswer": "...", "layer": "${layerLabel}", "directness": "direct"}]}`;
@@ -160,6 +177,21 @@ export async function generateProbes(
         layerType: spec.type,
         status,
         contentLength: 0,
+        probes: [],
+      });
+      continue;
+    }
+
+    // Skip probe generation for layers with trivially small content. This
+    // prevents the auxiliary model from spilling into adjacent layers when
+    // the target layer has nothing layer-specific to ask about.
+    const contentLength = parseStatusContentLength(status);
+    if (contentLength !== null && contentLength < TRIVIAL_CONTENT_THRESHOLD) {
+      layers.push({
+        layer: spec.label,
+        layerType: spec.type,
+        status: `${status} [SKIPPED — content below ${TRIVIAL_CONTENT_THRESHOLD}-char threshold]`,
+        contentLength,
         probes: [],
       });
       continue;
