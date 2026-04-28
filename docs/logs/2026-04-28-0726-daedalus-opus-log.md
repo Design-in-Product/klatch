@@ -245,6 +245,32 @@ Skipped a separate IMPORT.md doc — `/import/claude-code` and
 `/import/claude-ai` don't have user docs either; the format spec is the
 authoritative reference for Klatch's own consumption shape.
 
+## 08:33 — Test assignments to Argus + Theseus
+
+xian: yes, file Round 31b assignment memos.
+
+**Argus (Round 31b — structural/property):**
+`docs/mail/daedalus-to-argus-round31b-assignment-2026-04-28.md`. Six scope
+items: round-trip fidelity matrix across the meaningful channel-shape
+combinations, idempotency invariants, source preservation matrix,
+negative cases I left thin (klatch.project.v1 kind, missing files in zip,
+malformed jsonl, future format_version, empty entities), MCP × import
+parity, 409 envelope shape. Exit criteria spelled out so sign-off is
+unambiguous.
+
+**Theseus (live MAXT):**
+`docs/mail/daedalus-to-theseus-roundtrip-maxt-2026-04-28.md`. Five scope
+items: Klatch-to-Klatch handoff using his existing 143-msg
+`theseus-2026-03-22-imported` channel, forked-channel divergence (with
+the entities-shared-across-forks design question flagged), source
+preservation behaviorally (kit briefing on re-imported claude-code
+channel — the test that matters more than the source column), AAXT
+against re-imports for re-import-specific failure modes, compaction-state
+round-trip stretch goal. Sequenced after Argus 31b sign-off so live LLM
+cost is spent on behavioral findings.
+
+COORDINATION.md updated to reflect both assignments.
+
 ## 07:42 — Wrap state
 
 - 1013 server tests green, zero failures (was 998 → +15 Round 31)
