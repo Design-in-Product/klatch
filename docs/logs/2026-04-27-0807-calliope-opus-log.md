@@ -46,4 +46,40 @@ Standing by for xian's direction. Likely shapes:
 
 xian: please help with routing. Drafted `docs/mail/calliope-to-dispatch-pm995-routing-2026-04-27.md`. Asks Dispatch-DinP to deliver Argus's memo into PM's mail directory (Option A — Dispatch-led, same pattern as the DECISIONS.md rollout) with Option B (pointer memo) and Option C (re-route via me) as alternates if Dispatch reads PM's load differently. Explicit heads-up to Janus included since the cross-pollination brief tracks the fabrication-probe convergence already. Argus's memo and the routing-request cover note are referenced.
 
-Will commit and push so dispatch picks it up on next sync.
+Pushed as `5025a27`.
+
+## 18:30 — End of day; wrap
+
+xian wrapping at 6:29 PM. Worked with Theseus today; Theseus did most of the testing, xian observed results. Plan for tomorrow: Iris UX discussion first thing, then MAXT Session 02 (manual AXT) folded into the testing plan. Theseus's log finalized with verification. xian: "finalize your log and write a logbook entry for today."
+
+### Theseus's day — read his log
+
+Theseus walked through 8 tasks systematically:
+1. **Round 29 — extractJson regression** (20 tests). Refactored yesterday's fence-extraction fix into a shared `packages/server/src/aaxt/json-extract.ts` helper used by both probe-generator and scorer.
+2. **Live MCP integration probe** — `scripts/aaxt-mcp-live-probe.ts` spawns the actual MCP server as a child process via the official MCP TypeScript SDK over stdio (same path Claude Code/Desktop would take). First live MCP integration test in project history. Two iterations: first-run "failures" both probe-script bugs (envelope shape misexpectation + by-design graceful degradation). Second run 27/27 pass — every primitive exercised.
+3. **Round 30 — probe content threshold** (7 tests). Two-part fix: 40-char threshold to skip layers below, plus anti-leakage prompt wording ("never reference 'Layer X' by name. The agent does not know about layers"). CH3 (yesterday's failed channel) went from `failed` to `high`. CH1 confirmed no regression.
+4–5. Memos to Daedalus + Argus closing the loop on findings.
+6. **Live export round-trip** across all three formats (canonical zip, Claude Code, claude.ai). Three new findings filed: (a) re-import via claude.ai creates a duplicate project instead of UUID-matching the original; (b) canonical format has no direct re-import path (no `/import/klatch`); (c) L4/L5 lost in round-trip — the Layer 5 portability problem Phase 3.5 was designed to address.
+7. **Phase 3.5b external extraction live.** `?extract=true` against CH1 produced 5 field notes; `?briefing=true&extract=true` produced 9 (4 self-authored + 5 external). Cross-validation pattern visible in real data: where they agree, high-confidence; where they diverge, briefing catches a meta-level self-correction the extraction misses (briefing notes its own escalating verbosity to *avoid* it; extraction frames the same behavior as positive "user values signal of depth across multiple dimensions"). Phase 3.5 working as designed under live cross-validation.
+8. **AAXT against imported channel.** Imported a real 143-message Theseus session (3.8MB, 215 artifacts, source=claude-code, auto-linked to klatch project). First live L1 probing: 13/13 Correct, zero phantoms. L1-into-L2 cross-layer ambiguity observed — kit briefing references project context, so probes about CLAUDE.md content score correctly regardless of which layer they're attributed to. Future probe work.
+
+Test count: 998 server, zero failures. Two MAXT-ready channels left in the database (CH1 thin reference + theseus-2026-03-22-imported real session).
+
+### Wrap
+
+Logbook entry for April 27 added to `log.html`, eight paragraphs in the established voice, inserted above the 2026-04-26 entry.
+
+### Wrap-protocol verification
+
+Step 1 — `git log origin/main` post-push will be confirmed at the bottom of this log.
+
+Step 2 — Files claimed for the day:
+- `docs/mail/calliope-to-dispatch-pm995-routing-2026-04-27.md` — pushed AM as `5025a27`
+- `docs/logs/2026-04-27-0807-calliope-opus-log.md` (this file) — closed
+- `log.html` — new April 27 entry
+
+Step 3 — Will commit and push, then verify origin shows the wrap commit.
+
+### End of day
+
+Tomorrow: xian works with Iris first thing on UX synthesis, then MAXT Session 02 with Theseus. Calliope's role tomorrow likely chronicling + supporting the Iris-to-MAXT bridge if useful.
