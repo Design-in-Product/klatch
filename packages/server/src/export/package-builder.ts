@@ -55,7 +55,7 @@ export function buildManifest(input: BuildManifestInput): any {
       event_id: uuidv4(),
       source: channel.source,
       at: meta?.importedAt || meta?.firstTimestamp || createdAt,
-      summary: `Original ${channel.source === 'claude-code' ? 'Claude Code' : 'claude.ai'} session`,
+      summary: `Original ${channel.source === 'claude-code' ? 'Claude Code' : channel.source === 'claude-ai' ? 'claude.ai' : 'Klatch'} session`,
       ...(meta?.cwd ? { path: meta.cwd } : {}),
       ...(meta?.originalSessionId ? { session_id: meta.originalSessionId } : {}),
       ...(meta?.originalProjectUuid ? { project_uuid: meta.originalProjectUuid } : {}),
