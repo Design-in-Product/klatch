@@ -13,7 +13,7 @@ Agents working on this repo use this file as the async handoff protocol.
 ### Argus (quality & test infrastructure)
 - **Branch:** `main`
 - **Status:** available
-- **Test count:** 1106 total (946 server + 160 client), zero failures.
+- **Test count:** 1203 total (1043 server + 160 client), zero failures.
 - **Completed work:**
   - Rounds 4–11 test suites (all passing, merged to main)
   - Intelligence feed: 7 sweeps filed (6 manual + 1 curated automated)
@@ -33,14 +33,17 @@ Agents working on this repo use this file as the async handoff protocol.
   - PM #995 fabrication-probe coordination memo to PM Lead Dev (convergent design, three alignment asks)
   - Intel sweep #8: curated review of 4/20 automated + 4/21–4/26 delta (Sonnet/Opus 4 retirement clock noted, MCP conformance work in progress)
   - Round 27b: Phase 5c-i + Step 10 close-out extended coverage — 27 tests (sign-off gate for 1.0 MCP feature-complete). Covers reflect protocol integration, write-path persistence, channel-boundary isolation, kit_briefing across all source types, URL-decode parameterized across all 4 ResourceTemplate handlers, ingress parity end-to-end (klatch-ui ↔ mcp), assembleChannelManifest refactor equivalence.
+  - Round 31b: /import/klatch round-trip extended coverage — 30 tests (sign-off gate for 1.0 round-trip claim). Six scope items per Daedalus's assignment: round-trip fidelity matrix (10 it.each() cases × source/scope/state combos + forked round-trip), idempotency invariants (deterministic 409, double-fork distinctness, source-instance row stability, byte-identical canonical IDs across fresh-instance round-trip), source preservation matrix (claude-code/claude-ai/klatch + chain-doesn't-break), negative cases (project.v1 kind rejected, missing-files silent skip, malformed JSONL line skip; FLAGGED: future format_version permissive, empty entities un-exportable), MCP × import parity (assembleChannelManifest ↔ HTTP /export structural equivalence + zip round-trip), 409 envelope shape (UI-can-prompt-without-refetch).
   - SDK bump ^0.78.0 → ^0.86.1 (Managed Agents support)
   - Hono security update ^4.6.0 → ^4.12.12 (5 CVEs patched)
   - AAXT/PM cross-reference + fabrication probe class design + complexity heuristics doc
   - Local model viability research + adoption plan (Gemma 4 / Qwen 3)
 - **Phase 5a/5b/5c-i sign-off:** Exit criteria met across the line — protocol integration green at every phase, refactor equivalence verified (HTTP `buildManifest` ↔ MCP `assembleChannelPackage` ↔ shared `assembleChannelManifest`), tools+prompts surface complete, write-path round-trip end-to-end demonstrated, ingress parity preserved through both write paths, URL-decode applied across all 4 ResourceTemplate handlers, no regressions. **MCP server is feature-complete for 1.0** per Daedalus's framing.
+- **Round 31b sign-off:** Exit criteria met for /import/klatch round-trip claim. Fidelity matrix exhaustive across meaningful (source × scope × state) combinations; idempotency invariants 4/4; source preservation 4/4 incl. chain-doesn't-break; negative cases 6/6 (4 pinned, 2 flagged for follow-up); MCP × import parity verified; 409 envelope shape complete. **The 1.0 round-trip claim is honest enough for the format spec and beta MCP setup doc without hedging.**
+- **Open follow-ups for Daedalus from 31b (none blocking):** (1) cosmetic — `package-builder.ts:58` summary template misnames Klatch-to-Klatch hop as "Original claude.ai session"; (2) open spec — format_version on import path: gate or document permissive-by-design; (3) open spec — empty `entities: []` import: auto-attach default-entity, or accept the resulting un-exportable channel as valid state.
 - **Posture for beta/1.0:** Continue extended-coverage Rounds as Daedalus lands new surface; intel sweeps weekly; AAXT calibration as Theseus surfaces results; no new initiative drives without xian-led prompting. Step 11 (Search) deferred until after landmark release.
-- **Open follow-ups (none blocking):** Sonnet 4 / Opus 4 DB audit ahead of 6/15 retirement (50 days); Opus 4.7 default-flip evaluation in ~2 weeks; LLM-orchestrated briefing/extraction path coverage as a future Round candidate; MCP conformance test suite watch; `SidebarRedesign.test.tsx` "chats appear before klatches" intermittent flake (Daedalus's note 4/26 10:08) — triage when convenient.
-- **Updated:** 2026-04-26 10:35
+- **Open follow-ups (none blocking):** Sonnet 4 / Opus 4 DB audit ahead of 6/15 retirement (48 days as of 4/28); Opus 4.7 default-flip evaluation in ~2 weeks; LLM-orchestrated briefing/extraction path coverage as a future Round candidate; MCP conformance test suite watch; `SidebarRedesign.test.tsx` "chats appear before klatches" intermittent flake (Daedalus's note 4/26 10:08) — triage when convenient.
+- **Updated:** 2026-04-28 09:05
 - **Round 7 assignment: Sidebar redesign tests (GitHub issue #8)**
   - Read `docs/plans/SIDEBAR.md` for full design spec before writing tests.
   - **Scope:** `packages/server/src/__tests__/round7-sidebar-redesign.test.ts` (server) + `packages/client/src/__tests__/Sidebar.test.tsx` (updates to existing)
