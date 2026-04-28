@@ -6,6 +6,7 @@ import { parseClaudeCodeSession, parseClaudeCodeSessionFromContent } from '../im
 import { parseClaudeAiConversation } from '../import/claude-ai-parser.js';
 import { extractFromZip } from '../import/claude-ai-zip.js';
 import { scanClaudeCodeSessions, scanExportedSessions } from '../import/session-scanner.js';
+import { importKlatchPackage } from '../import/klatch-import.js';
 import { importSession, findChannelByOriginalSessionId, getImportConflictInfo, countChannelsByOriginalSessionId, findOrCreateProject, findUniqueProjectByName } from '../db/queries.js';
 import { MODEL_ALIASES, AVAILABLE_MODELS } from '@klatch/shared';
 import type { ModelId } from '@klatch/shared';
@@ -652,5 +653,66 @@ function processImport(
     }, 500);
   }
 }
+
+/**
+ * POST /import/klatch
+ *
+ * Import a canonical Klatch context package (Step 10 Phase 1 zip) into
+ * Klatch. Idempotent by canonical UUIDs: re-importing into the source
+ * instance attaches to existing rows; importing into a different instance
+ * creates fresh rows preserving the canonical ids.
+ *
+ * Multipart: send the zip as `file` in multipart/form-data.
+ * JSON: { zipPath: string, forceImport?: boolean } — for testing/CLI.
+ *
+ * Returns 201 with KlatchImportResult on success, 409 with conflict info
+ * on duplicate (use `forceImport: true` to fork), 400 on invalid zip.
+ */
+app.post('/import/klatch', async (c) => {
+  const contentType = c.req.header('content-type') || '';
+  let zipBuffer: Buffer;
+  let forceImport = false;
+
+  if (contentType.includes('multipart/form-data')) {
+    const formData = await c.req.formData();
+    const file = formData.get('file');
+    if (!file || !(file instanceof File)) {
+      return c.json({ error: 'No file uploaded. Send a zip as "file" in multipart form data.' }, 400);
+    }
+    if (!file.name.endsWith('.zip')) {
+      return c.json({ error: 'File must be a .zip file' }, 400);
+    }
+    const arrayBuffer = await file.arrayBuffer();
+    if (arrayBuffer.byteLength > MAX_IMPORT_SIZE) {
+      return c.json({ error: `File too large (${Math.round(arrayBuffer.byteLength / 1024 / 1024)}MB). Maximum is ${MAX_IMPORT_SIZE / 1024 / 1024}MB.` }, 400);
+    }
+    zipBuffer = Buffer.from(arrayBuffer);
+    forceImport = formData.get('forceImport') === 'true';
+  } else {
+    const body = await c.req.json<{ zipPath?: string; forceImport?: boolean }>();
+    if (!body.zipPath || !body.zipPath.endsWith('.zip')) {
+      return c.json({ error: 'File must be a .zip file' }, 400);
+    }
+    const expandedZipPath = validateImportPath(expandHome(body.zipPath));
+    if (!expandedZipPath) return c.json({ error: 'Invalid file path' }, 400);
+    if (!fs.existsSync(expandedZipPath)) return c.json({ error: 'File not found' }, 404);
+    const stat = fs.statSync(expandedZipPath);
+    if (stat.size > MAX_IMPORT_SIZE) {
+      return c.json({ error: `File too large (${Math.round(stat.size / 1024 / 1024)}MB). Maximum is ${MAX_IMPORT_SIZE / 1024 / 1024}MB.` }, 400);
+    }
+    zipBuffer = fs.readFileSync(expandedZipPath);
+    forceImport = body.forceImport === true;
+  }
+
+  const outcome = importKlatchPackage({ zipBuffer, forceImport });
+  if (!outcome.ok) {
+    if (outcome.status === 409) {
+      return c.json({ error: outcome.error, ...outcome.conflict }, 409);
+    }
+    return c.json({ error: outcome.error }, outcome.status);
+  }
+
+  return c.json(outcome.result, 201);
+});
 
 export const importRoutes = app;

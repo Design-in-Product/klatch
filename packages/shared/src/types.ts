@@ -69,7 +69,8 @@ export interface Entity {
 }
 
 // Channel source types for imported conversations
-export type ChannelSource = 'native' | 'claude-code' | 'claude-ai';
+// 'klatch' = imported from a canonical Klatch context package (Klatch-to-Klatch handoff)
+export type ChannelSource = 'native' | 'claude-code' | 'claude-ai' | 'klatch';
 
 // Channel types: chat (1:1 with Claude) vs klatch (multi-entity group)
 export type ChannelType = 'chat' | 'klatch';

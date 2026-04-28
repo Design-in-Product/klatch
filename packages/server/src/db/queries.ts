@@ -601,7 +601,7 @@ import type { ParsedTurn, ParsedArtifact } from '../import/parser.js';
 
 interface ImportSessionParams {
   channelName: string;
-  source: 'claude-code' | 'claude-ai';
+  source: 'claude-code' | 'claude-ai' | 'klatch';
   sourceMetadata: Record<string, unknown>;
   model?: string;
   turns: ParsedTurn[];

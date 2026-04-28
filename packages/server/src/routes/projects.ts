@@ -18,16 +18,23 @@ app.get('/:id', (c) => {
 
 /** POST /projects — create a new project */
 app.post('/', async (c) => {
-  const { name, instructions } = await c.req.json<{
+  const { name, instructions, memory } = await c.req.json<{
     name: string;
     instructions?: string;
+    memory?: string;
   }>();
 
   if (!name?.trim()) {
     return c.json({ error: 'Project name is required' }, 400);
   }
 
-  const project = createProject(name.trim(), instructions?.trim() || '');
+  const project = createProject(
+    name.trim(),
+    instructions?.trim() || '',
+    'native',
+    {},
+    memory?.trim() || '',
+  );
   return c.json(project, 201);
 });
 

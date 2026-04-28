@@ -428,6 +428,19 @@ The format evolves from flat (single `memory.ref`) to structured (separate `summ
 
 `FieldNote[]` array structure is committed. Exact field set is TBD with Iris. Phase 3.5 will use the AAXT auxiliary LLM to generate behavioral observations from conversation history. The trust field on each note enables meaningful human review — draft notes are `synthesized`; approved notes become `human-authored`.
 
+### Bidirectional consumption (Klatch-to-Klatch round-trip)
+
+Status as of 2026-04-28: **the canonical format is bidirectional.** Klatch consumes its own output via `POST /api/import/klatch`, accepting the same zip the export route produces.
+
+Round-trip semantics, idempotent by canonical UUIDs:
+
+- **Re-import to source instance** is a no-op attach. The package's `project.id`, `conversation_context.id`, `entities[*].id`, and `files[*].id` already exist; the importer detects each by id and reuses the existing row. Re-import returns `409 duplicate` for the channel by default; pass `forceImport: true` to fork — the forked channel gets a fresh uuid, and original message ids are preserved in `original_id`.
+- **Import into a fresh instance** creates new rows that preserve the canonical ids. A subsequent export from that instance round-trips back to the source as another no-op attach (the chain stays unbroken).
+
+The channel's `source` field is preserved from the original provenance. A package that originated as a `claude-code` import retains `source: "claude-code"` after re-importing — preserves kit briefing logic and source-aware UI affordances. Native Klatch channels imported into another Klatch instance get `source: "klatch"` to signal Klatch-to-Klatch handoff.
+
+The format is therefore both an **interchange** spec (Klatch → other tools) and a **portable archive** (Klatch → Klatch, including multi-machine workflows and backup/restore). It is not a CRDT-style merge format; if a re-import would conflict with an existing channel, the user resolves the conflict via 409-then-`forceImport`.
+
 ---
 
 ## Design heuristics for validation

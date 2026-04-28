@@ -75,14 +75,15 @@ Agents working on this repo use this file as the async handoff protocol.
   - `docs/firsts/2026-04-26-mcp-first-reflection.md` captures the first MCP-ingressed reflection moment.
   - `docs/plans/STEP-10-RETROSPECTIVE.md` — closing artifact for Step 10.
   - `docs/MCP-SETUP.md` — beta user-facing setup walkthrough.
-- **Test count:** 946 server tests green (Argus Round 27b landed: +27, total 1106 with client). Verified locally.
+- **Test count:** 1013 server tests green (was 998 → +15 from Round 31 round-trip import). Total 1173 with client.
 - **Phase 5c-i sign-off:** ✅ Argus 27b green. **MCP server is feature-complete for 1.0.** Refactor equivalence verified end-to-end (HTTP `buildManifest` ↔ MCP `assembleChannelPackage` ↔ shared `assembleChannelManifest`); ingress parity preserved through both write paths; URL-decode applied across all 4 ResourceTemplate handlers; write-path round-trip demonstrated; channel-boundary isolation enforced.
 - **One spec note from Argus 27b:** `ingress` is intentionally elided from exported field_notes (per `mergeFieldNotes` mapping). If we ever want it to surface in the canonical package, that's a follow-up for Calliope on the Phase 1 format spec — not a bug today.
-- **Next:** Standing down at xian's direction. Step 10 close-out complete; team needs to catch up. xian's framing: "almost certainly that while we're testing, we'll find things that need attention, and that is likely to drive development sooner than moving on to another step." Awaiting Theseus AAXT findings + Iris UX surface, which will likely be the next development drivers ahead of Step 11 (Search) or further polish.
+- **Last completed (4/28):** /import/klatch round-trip implementation (Calliope Finding 2). Canonical Klatch packages now re-import via `POST /api/import/klatch` — idempotent by canonical UUIDs (project, channel, entities, files), 409 + forceImport semantics, source preservation across re-imports (claude-code stays claude-code; native becomes klatch on Klatch-to-Klatch handoff). Round 31: 15 new tests. POST /api/projects now accepts `memory` field (Theseus's small API gap, Finding 3). Format spec updated with the bidirectional-consumption section. UUID-matching gap (Finding 1) routed to Iris for UX input via memo `daedalus-to-iris-uuid-matching-ux-2026-04-28.md`; queued behind that response.
+- **Next:** Awaiting Iris's reply on Finding 1 UX shape (silent attach / toast / dialog / refuse on duplicate). After that, the claude-ai/claude-code UUID-matching fix is the remaining round-trip work. Otherwise, available for testing-driven findings.
 - **Roadmap:** Step 9 ✓ → Step 10 Phase 1 ✓ Phase 2 ✓ Phase 3.5 ✓ Phase 4 CC+AI ✓ Phase 5a ✓ Phase 5b ✓ Phase 5c-i ✓ → 5c-ii deferred → 1.0.
 - **Cross-project alignment (recorded):** PM Chief Architect confirmed `klatch://` scheme and `get_context_package` shared tool name (memo `memo-arch-to-daedalus-phase5-mcp-2026-04-18.md`). `/{id}/manifest` sub-resource pattern endorsed as cross-producer interop convention. PM's `save_artifact` write-path (analogous to `reflect`) is post-5b coordination, parked.
 - **Note for Argus:** `SidebarRedesign.test.tsx` "chats appear before klatches in DOM order" is flaky — failed once at 6856ms, passed cleanly on rerun. Not blocking; flagging for triage.
-- **Updated:** 2026-04-26 10:48
+- **Updated:** 2026-04-28 07:42
 
 ### Theseus Prime (manual testing & exploration — CLI side)
 - **Branch:** `main`
