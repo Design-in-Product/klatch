@@ -279,3 +279,84 @@ COORDINATION.md updated to reflect both assignments.
 - Finding 2 (`/import/klatch`): shipped
 - Finding 3 (POST /api/projects memory): shipped
 - COORDINATION.md updated; ready to commit + push.
+
+## 09:23 — Argus Round 31b sign-off + cosmetic follow-up
+
+Argus's commit `d2a4c1c` landed: 30 tests in
+`round31b-import-klatch-extended.test.ts`. **Round 31b sign-off:** the
+1.0 round-trip claim is honest enough for the format spec and beta MCP
+setup doc without hedging. Coverage is exhaustive across the meaningful
+(source × scope × state) combinations; idempotency invariants 4/4;
+source preservation 4/4 incl. chain-doesn't-break; negative cases 6/6
+(4 pinned, 2 flagged); MCP × import parity verified; 409 envelope
+shape complete.
+
+Test count after Argus's add: **1043 server / 1203 total, zero failures.**
+Verified locally.
+
+Three open follow-ups from 31b, none blocking:
+
+1. **Cosmetic** (`package-builder.ts:58`) — fixed and pushed in commit
+   `fb857e2`. The provenance summary for klatch-sourced channels was
+   falling through the ternary and reading "Original claude.ai session"
+   instead of "Original Klatch session". Added the 'klatch' case.
+
+2. **Open spec — format_version on import path.** Today the import is
+   permissive (accepts any version). Surfaced two options to xian:
+   gate it (parallel to MCP `negotiateFormatVersion`) vs document
+   permissive-by-design. My lean: gate it — silently dropping fields
+   you didn't recognize is the worst kind of fidelity loss. Awaiting
+   xian's call.
+
+3. **Open spec — empty `entities: []` import.** Today imports a channel
+   with no entities → un-exportable downstream. Two options: auto-attach
+   `default-entity` (matches `createChannel`'s seed behavior), or accept
+   the un-exportable state as valid intermediate state. My lean:
+   auto-attach. Awaiting xian's call.
+
+## 09:30 — Wrap protocol verification (per CLAUDE.md)
+
+**Step 1 — Commits landed on origin/main:**
+
+```
+fb857e2 Fix provenance summary for klatch-sourced channels (Argus 31b follow-up #1)
+d2a4c1c Argus 4/28 wrap: Round 31b extended coverage for /import/klatch round-trip
+3ccce75 Round 31b + live MAXT: assignment memos to Argus and Theseus
+287f532 Round 31: /import/klatch round-trip + POST /api/projects memory field
+```
+
+**Step 2 — Deliverable files present:**
+
+- `packages/server/src/import/klatch-import.ts` ✓
+- `packages/server/src/__tests__/round31-import-klatch.test.ts` ✓
+- `docs/mail/daedalus-to-iris-uuid-matching-ux-2026-04-28.md` ✓
+- `docs/mail/daedalus-to-argus-round31b-assignment-2026-04-28.md` ✓
+- `docs/mail/daedalus-to-theseus-roundtrip-maxt-2026-04-28.md` ✓
+- `docs/logs/2026-04-28-0726-daedalus-opus-log.md` ✓ (this file)
+
+**Test count:** 1043 server / 160 client / 1203 total, zero failures.
+
+## 09:30 — Final state
+
+**What landed today:**
+- `/import/klatch` shipped (Finding 2; canonical Klatch packages now
+  re-import; idempotent by canonical UUIDs; 409+forceImport semantics;
+  source preservation across re-imports).
+- POST /api/projects memory field aligned with PATCH (Finding 3).
+- Format spec updated with bidirectional-consumption section.
+- Round 31 (Daedalus, 15 tests) + Round 31b (Argus, 30 tests) on the
+  round-trip surface.
+- Cosmetic fix on klatch-sourced provenance summary.
+- Memo to Iris on Finding 1 UX shape.
+- Test assignments to Argus (31b, signed off) and Theseus (live MAXT,
+  unblocked).
+
+**Outstanding:**
+- Iris's reply on Finding 1 (UUID-matching UX) → unblocks claude-ai/
+  claude-code import-side fix.
+- xian's call on 31b open spec questions #2 (format_version gating) and
+  #3 (empty-entities auto-attach).
+- Theseus's live MAXT run on the round-trip surface (memo filed; he's
+  unblocked).
+
+Standing down for the day.
