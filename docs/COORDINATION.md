@@ -113,11 +113,11 @@ Agents working on this repo use this file as the async handoff protocol.
 ### Iris (UX design & front-end development)
 - **Branch:** `main`
 - **Status:** available — session paused
-- **Last completed:** Session 5 — Phase 3.5d interim spec sent to Daedalus (unblocked). Presented five UX topics to xian. Major reframe: entities are existing conversations promoted into roles, not abstract definitions. Import-to-export arc named as the missing experiential thread.
-- **Working on:** Paused for evening. Tomorrow: xian's observations, then binocular synthesis.
-- **Next:** Receive xian's independent observations → synthesize both sets → plan exhaustive end-to-end review → design research activities.
-- **Waiting on:** xian's observations (tomorrow, travel day).
-- **Updated:** 2026-04-14 19:35
+- **Last completed:** Session 6 — caught up on 2-week gap (Step 10 feature-complete, Phase 5 MCP, entity reframe filed). Settled L4/L5 round-trip UX questions with xian (transport-aware fidelity-loss panel; transport-aware Phase 3.5 defaults; honest declaration of L4 loss). Received xian's UX observations; combined with my five topics into deduped set. Composition gap (no UI to compose a klatch from existing entities) identified as biggest gap — direct application of entity reframe.
+- **Working on:** Paused. Awaiting xian for walkthrough + manual testing.
+- **Next:** End-to-end walkthrough with xian, manual testing of recent rounds (Phase 4, Phase 5, Phase 3.5 in production-ish use), synthesize forward-looking UX direction.
+- **Waiting on:** xian (busy after this session, will signal when ready for walkthrough).
+- **Updated:** Session 6
 
 ## Signals
 
