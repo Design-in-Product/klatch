@@ -113,8 +113,8 @@ Agents working on this repo use this file as the async handoff protocol.
 ### Iris (UX design & front-end development)
 - **Branch:** `main`
 - **Status:** available — session paused
-- **Last completed:** Session 6 — caught up on 2-week gap (Step 10 feature-complete, Phase 5 MCP, entity reframe filed). Settled L4/L5 round-trip UX questions with xian (transport-aware fidelity-loss panel; transport-aware Phase 3.5 defaults; honest declaration of L4 loss). Received xian's UX observations; combined with my five topics into deduped set. Composition gap (no UI to compose a klatch from existing entities) identified as biggest gap — direct application of entity reframe.
-- **Working on:** Paused. Awaiting xian for walkthrough + manual testing.
+- **Last completed:** Session 7 (partial) — walkthrough started with xian. Surface skim Surfaces 1+2 captured (12 findings, 2 cross-cutting patterns). `docs/ux/walkthrough-findings.md` is the working document. Daedalus UUID-matching UX question still pending my reply.
+- **Working on:** Paused — xian on OpenLaws today. Resume Friday May 1 afternoon for Surfaces 3-8 + realistic scenario + MAXT round-trip testing.
 - **Next:** End-to-end walkthrough with xian, manual testing of recent rounds (Phase 4, Phase 5, Phase 3.5 in production-ish use), synthesize forward-looking UX direction.
 - **Waiting on:** xian (busy after this session, will signal when ready for walkthrough).
 - **Updated:** Session 6
