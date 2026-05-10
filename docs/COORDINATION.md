@@ -112,9 +112,9 @@ Agents working on this repo use this file as the async handoff protocol.
 
 ### Iris (UX design & front-end development)
 - **Branch:** `main`
-- **Status:** available — session paused
-- **Last completed:** Session 7 (partial) — walkthrough started with xian. Surface skim Surfaces 1+2 captured (12 findings, 2 cross-cutting patterns). `docs/ux/walkthrough-findings.md` is the working document. Daedalus UUID-matching UX question still pending my reply.
-- **Working on:** Paused — xian on OpenLaws today. Resume Friday May 1 afternoon for Surfaces 3-8 + realistic scenario + MAXT round-trip testing.
+- **Status:** working — session active
+- **Last completed:** Session 7 (partial) — walkthrough Surfaces 1-2 captured. Session 8 (May 3) opened but no walkthrough work performed (xian time pressure).
+- **Working on:** Session 9 (May 10) — resuming walkthrough at Surface 3, then surface skim 4-8, then at least one real end-to-end test (Piper Morgan workstream review). Possible bonus: role migration from Claude Code cloud → local.
 - **Next:** End-to-end walkthrough with xian, manual testing of recent rounds (Phase 4, Phase 5, Phase 3.5 in production-ish use), synthesize forward-looking UX direction.
 - **Waiting on:** xian (busy after this session, will signal when ready for walkthrough).
 - **Updated:** Session 6
