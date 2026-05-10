@@ -61,6 +61,48 @@ Section 4 carefully describes the pattern without quoting any text revealing abo
 
 Per xian's blog-mining recommendation from April 28: the natural next post after "Before You Go" lands is the entity reframe ("entities are conversations promoted into roles"). No draft exists yet. After that, "Convergent infrastructure," then the MCP capstone at 1.0 beta. None of those need writing today.
 
-## Wrap
+---
 
-Will commit the draft + this log and push. No further work today.
+## 12:21 — xian back; second-half task list
+
+xian back at 12:21. Working with Iris on the walkthrough (in progress). Four parallel items for me, no urgency on any:
+1. Logbook catch-up since last connection (April 28 → present)
+2. Reply to Janus on agent activity tracking ask (May 9 memo)
+3. Sweep other mail/signals
+4. Cross-pollination brief catch-up (May 3–10 stack)
+
+xian's P.S.: when he comes up for air on the blog draft, remind him to read it carefully — he's thinking about code-switching between internal-team argot and general/public communications. Registered.
+
+## 12:45 — Mail sweep + logbook research
+
+Read four Iris session logs (April 28, April 30, May 3, today's WIP) plus the two unread Janus memos (PO collaboration-patterns synthesis from May 2, agent activity record ask from May 9) and Argus's April 29 orphan-sweep recovery memo.
+
+### Mail status
+
+- **Janus PO collaboration-patterns synthesis (May 2):** read. Three cross-scale threads (show-your-work, kind-not-nice, extracted-over-designed). Workflow patterns: PLACEHOLDER, "you prompt me I write" mode for externally-reaching xian-authored artifacts, expose-uncertainty-inline, scaffolds-look-like-scaffolds, attention-nudges at structural handoffs. Not folding into my role doc today — that's a substantive piece of work that wants its own session. Carrying forward.
+- **Janus agent activity record ask (May 9):** addressing now per xian's direction.
+- **Argus orphan-sweep recovery (April 29):** informational; carry forwards "audit your own `display` and `betas` state before applying trade-press narratives" as a methodology beat. Folded into the April 30 logbook entry.
+
+### Cross-pollination briefs (May 3 → 10) — key beats
+
+Skimmed via Iris's pickup in her logs. Pattern-064 (PM, April 30, "Extension Without Integration") — completes 062/063/064 architectural-debt naming family. PM "Drift You Don't Notice" methodology post (May 2). PM stale-discovery finding on backlog items (May 3). Pattern-067 (PM Lead Dev, May 9, "Issue-Body Reality Mismatch") — three of five M2f issues had body-vs-reality mismatches, −2,229 LOC; Iris flagged the verification discipline for the walkthrough.
+
+## 13:00 — Three logbook entries filed
+
+Wrote entries to `log.html` for April 28, April 30, and May 3. Inserted newest-first above the existing April 27 entry. Coverage:
+
+- **April 28** — the central job-to-be-done named as missing from the UI (xian's three observations + Iris's three from L4/L5 memo). Composition gap as 1.0 finding, not polish. Daedalus quietly resolving one of the three round-trip findings (Round 31: `/import/klatch` shipped).
+- **April 30** — walkthrough launched, Surfaces 1 + 2 captured (12 findings, 2 cross-cutting patterns). Argus's orphan-sweep recovery the same week. Pattern-064 from PM.
+- **May 3** — non-day, recorded honestly. PM's stale-discovery methodology note carried over. The verification discipline that later became Pattern-067.
+
+May 10 is in-progress (Iris's walkthrough) and will get its own entry at session-wrap when both Iris and Calliope close their sessions.
+
+## 13:15 — Janus agent activity record — Option A committed
+
+Reply filed at `docs/mail/calliope-to-janus-activity-record-reply-2026-05-10.md`. Klatch takes Option A: I author a normalized CSV at `docs/internal/operations/agent-activity-log.csv` (mirroring PM's path), PM's 7-col schema (date, role, slug, environment, model, log_filename, summary), cadence at session-wrap, starting today forward (Janus catches up Mar 31 → May 9 from session logs). CSV seeded with this session's row. Other agents need no new discipline; only I touch the CSV.
+
+Rationale: authority discipline matters (drift between project-canonical and aggregator-rendered is a load-bearing signal); the chronicling role fits naturally; the filename convention already encodes most fields. Option B would be slightly cheaper but degrades the cross-project pattern.
+
+## 13:30 — Session wrap
+
+Three logbook entries filed. Janus reply filed. CSV seeded with today's row. Standing by; xian still with Iris on the walkthrough. Ready to chronicle today's Iris/xian session at its wrap if useful.

@@ -37,6 +37,69 @@
     </div>
 
     <!-- ============================================================ -->
+    <!-- ENTRY: 2026-05-03 -->
+    <!-- ============================================================ -->
+    <div class="log-entry" id="2026-05-03">
+      <p class="log-date">May 3, 2026</p>
+      <div class="log-body">
+
+        <p>A non-day, recorded for the record. Iris opened a session at 7 AM, intending to resume the walkthrough at Surface 3. The day-job AI-oversight load plus the Piper Morgan beta push plus the correct pause on Klatch development to wait out PM's release cycle compounded into another break. No Surface 3 work happened. Iris closed the session at the start point with everything carried forward — the walkthrough doc intact at Surfaces 1 and 2 captured, xian's "thoughts on Surface 3" still queued, the two real use cases (Piper Morgan workstream review, Claude Code role migration) still on the table.</p>
+
+        <p>The honest thing to record is that this is what testing-phase looks like under real load. The work that doesn't happen is a finding too. Klatch is not paying a cost for paused weeks — the team came back in April after eight days dark and was productive in minutes off the repo trail alone, and the same artifacts (walkthrough doc, dev server up, agreed surface order, combined topic list) will receive Iris's next session whenever it lands. Pause-shaped friction is the friction that "externalize before the seam, not at it" was designed to remove.</p>
+
+        <p>One methodology note carried over from the May 3 cross-pollination brief: PM had caught two of its own backlog items still describing themselves as "TBD pending discovery" after the discovery had concluded weeks earlier. Same drift pattern to watch for in any Klatch artifact — verify that live decisions are reflected in implementation-facing artifacts before any code runs. Walkthrough findings get the same scrutiny: a finding that says "the UI does X" must match what the live app actually shows. PM Lead Dev formalized the same instinct as Pattern-067 ("Issue-Body Reality Mismatch") later in the week.</p>
+
+      </div>
+    </div>
+    <!-- end entry 2026-05-03 -->
+
+    <!-- ============================================================ -->
+    <!-- ENTRY: 2026-04-30 -->
+    <!-- ============================================================ -->
+    <div class="log-entry" id="2026-04-30">
+      <p class="log-date">April 30, 2026</p>
+      <div class="log-body">
+
+        <p>The UX walkthrough launched. Iris and xian agreed on a two-pass plan: a surface skim across eight UI surfaces first, looking for what's wrong at a glance with no deep workflow execution, followed by a realistic scenario pass setting up a real use case (the Shipping News weekly review) and capturing friction. MAXT testing would follow the walkthrough. The goal of the whole pass: cross-environment round-trip scenarios — <em>source → Klatch → destination</em> — assessed for both UX (xian's experience) and AX (the agent's experience) at every step. Iris created <code>docs/ux/walkthrough-findings.md</code> with a two-pass structure and carried over prior-session findings as context. Dev server up on :3001 and :5173.</p>
+
+        <p>Surface 1 — first-load impression — produced six findings on the empty <code>#general</code> channel. Small low-contrast type in the sidebar and channel header; a large empty content area with an unclear call to action; the default channel system prompt ("You are a helpful assistant.") visible in the header as a functional artifact from early development; empty-state copy ("Start a conversation / Send a message to begin.") that treats Klatch as a chat front-end rather than as the thing it actually is; an API key configuration that's invisible from the UI with no first-time setup flow — out of scope for the experience review but a real 1.0-beta gap. The sixth finding was a pattern, not a single item: "functional artifacts surviving from early development" — to be watched for elsewhere as the walkthrough proceeded.</p>
+
+        <p>Surface 2 — the sidebar — produced six more. The type problem from Surface 1 continued. The sidebar reads as a list of chats by default, the Slack-like pattern match good enough that users stop looking for what's distinctive about Klatch. Section meaning is unclear: "AAXT TEST PROJECT," "KLATCH," "UNASSIGNED" without labels or affordances explaining what they are or what the user can do with them. Project names truncate without tooltip or expand. The "Unassigned" section lacks contextual cue — confirming a finding from Iris's Session 5 evaluation in April. And the lower-left footer block is a hodgepodge: dark mode toggle, Entities, Import, "+ New channel" stacked without composition logic — confirming what xian had named in Session 6 ("import is a first-class verb of the product, buried in the footer grab bag"), now observable at a glance rather than only at the moment of trying to import.</p>
+
+        <p>Two cross-cutting patterns surfaced in the first two surfaces. Small and low-contrast type throughout: stop logging it per surface, flag for a typography and density pass. Functional artifacts from early development: keep watching. Iris committed both as walkthrough-level findings rather than per-surface entries.</p>
+
+        <p>The session paused at 8:30 AM. xian's OpenLaws work needed full attention for the rest of the day. The walkthrough would resume the next day if possible, the day after if not. Surface 3 — the channel header and content area — was queued with xian's note that he had thoughts. Twelve findings captured, two patterns named, six surfaces and an entire scenario pass still ahead. The shape of the walkthrough was working: small enough increments that an interrupted session left a clean rest point, not a partial state.</p>
+
+        <p>Two other things landed quietly the same day. Argus had recovered an orphan automated sweep on April 29 — the April 27 run had filed on a deleted branch and never reached main; cherry-picked back and curated, with the headline lesson <em>"audit your own <code>display</code> and <code>betas</code> state before assuming the trade-press narrative applies to your stack."</em> Opus 4.7's thinking-content opt-in change was real and breaking for anyone capturing thinking content by default — but Klatch was already passing <code>display: 'omitted'</code>, so no regression. The wisdom for the cross-pollination brief was the framing, not the specific finding. And the April 30 brief itself surfaced Pattern-064 from PM ("Extension Without Integration") — completing the architectural-debt naming family with 062 (Assembly Assumption) and 063 (Parallel-Authoring Drift). Three patterns, named in the same vocabulary, across two projects, in the space of weeks. Convergent infrastructure continuing to be a pattern.</p>
+
+      </div>
+    </div>
+    <!-- end entry 2026-04-30 -->
+
+    <!-- ============================================================ -->
+    <!-- ENTRY: 2026-04-28 -->
+    <!-- ============================================================ -->
+    <div class="log-entry" id="2026-04-28">
+      <p class="log-date">April 28, 2026</p>
+      <div class="log-body">
+
+        <p>The day xian and Iris closed an open turn, and the day the central job-to-be-done was finally named as missing from the UI.</p>
+
+        <p>Iris came back after a two-week pause — fifty-two commits to absorb, Step 10 feature-complete for 1.0, the MCP server shipped through Phase 5c-i, the entity reframe filed as a direction note for her to thread through the UX synthesis, the three round-trip findings from Theseus's April 27 live run waiting in her inbox. Calliope had filed memos that morning routing two of those findings to Daedalus (project UUID-matching gap + no canonical re-import path) and one to Iris (L4/L5 loss in claude.ai round-trip). Iris and xian settled all three UX questions in the L4/L5 memo within minutes of reading it. Surface fidelity loss at the transport-selection moment: yes, the visibility-gap principle applied to the export moment. Transport-aware Phase 3.5 defaults: yes, default-on for claude.ai (the bridge exists; silent loss without it), default-off for canonical zip (no loss to bridge). Structural L4 loss: an honest declaration with an export-time warning, not a clever "fold L4 into L2/L3 with provenance markers" path that obscures actual loss. Concrete testing-finding instances of Iris's Topic 5 (import-to-export arc) and Topic 1 (visibility gap). Folded into the synthesis as worked examples, not separate workstreams.</p>
+
+        <p>Then xian shared his three UX observations from his own testing — the open turn from Session 5 finally closed. The first was familiar in shape: import is awkward and findable only in the footer grab bag. Same problem as Iris's Topic 2 (sidebar IA), sharpened: import is a first-class verb of the product, not a settings-adjacent action. Visual weight should match its role. The second was sharper still: import-as-modal is wrong; it should be a full-screen experience. Modal pattern signals <em>"return to what you were doing"</em>; the correct pattern for import is <em>"this is what you're doing right now."</em> The Claude Code session list at scale is unusable in a dialog — endless branch names, no real-project framing.</p>
+
+        <p>The third observation was the one that lands as a 1.0 finding rather than polish: there is no actual way to compose a klatch from existing entities in the UI. The product's core purpose — bring existing conversations into a room together — has no surface. Channel creation exists. Entity creation exists. The composition gesture does not. This sits directly on top of the entity reframe from April 14: when entities are creation-first abstractions, you create-then-assign and the UI matches the model. When entities are existing conversations promoted into roles, composition <em>is</em> the central act, and the current UI doesn't have it. Iris's framing: most of the rest is cosmetic, or about how context layers are captured and presented, or how the user is prompted during import/export. The composition gap is a capability gap, not a polish gap. The central job-to-be-done has no path through the UI.</p>
+
+        <p>Iris and xian combined the two observation sets — Iris's five UX topics from Session 5 with xian's three from his independent testing — into a deduped topic list: visibility gap (confirmed); sidebar IA and footer grab bag; conversation experience and empty state; entity management as promotion not creation, with composition gesture missing; import-to-export arc as experiential thread with fidelity visible at the transport-selection moment. Five surfaces, one walkthrough, ahead.</p>
+
+        <p>Meanwhile Daedalus quietly resolved one of the three round-trip findings outright. Round 31 shipped <code>POST /api/import/klatch</code> — the direct canonical re-import path that Theseus had named as missing two days earlier. Argus's Round 31b followed with extended coverage, 1,203 tests total. The round-trip story is structurally complete for 1.0: out via canonical zip, back in via canonical zip, no transport-adapter detour required. The design call I had framed in the Daedalus memo as "xian's to make" turned out to be a sub-hour conversation between them: yes, add it, the capability was already on the table and declining to expose it left value on the floor. The "interchange-only, not a backup format" alternative didn't survive contact with the actual decision. A UX question lingered — what should the user see when re-import detects an existing project? — and went to Iris in a parallel memo with four candidate behaviors. Quiet work, completed in stride.</p>
+
+      </div>
+    </div>
+    <!-- end entry 2026-04-28 -->
+
+    <!-- ============================================================ -->
     <!-- ENTRY: 2026-04-27 -->
     <!-- ============================================================ -->
     <div class="log-entry" id="2026-04-27">
