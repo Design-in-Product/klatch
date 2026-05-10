@@ -112,9 +112,9 @@ Agents working on this repo use this file as the async handoff protocol.
 
 ### Iris (UX design & front-end development)
 - **Branch:** `main`
-- **Status:** working — session active
-- **Last completed:** Session 7 (partial) — walkthrough Surfaces 1-2 captured. Session 8 (May 3) opened but no walkthrough work performed (xian time pressure).
-- **Working on:** Session 9 (May 10) — resuming walkthrough at Surface 3, then surface skim 4-8, then at least one real end-to-end test (Piper Morgan workstream review). Possible bonus: role migration from Claude Code cloud → local.
+- **Status:** working — paused for Pass 2 setup
+- **Last completed:** Session 9 (May 10) — surface skim COMPLETE across all 8 surfaces. ~45 findings total. Load-bearing reframe from xian: panels are musculature, not admin (F6.7). Initial synthesis written into `docs/ux/walkthrough-findings.md`. F8 confirms the design language to solve the visibility gap exists at one surface (Phase 3.5d export review).
+- **Working on:** Waiting for xian to queue up real Piper Morgan workstream review; will attempt Pass 2 in parallel through Klatch as stress test.
 - **Next:** End-to-end walkthrough with xian, manual testing of recent rounds (Phase 4, Phase 5, Phase 3.5 in production-ish use), synthesize forward-looking UX direction.
 - **Waiting on:** xian (busy after this session, will signal when ready for walkthrough).
 - **Updated:** Session 6
