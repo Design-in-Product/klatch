@@ -1,4 +1,5 @@
 export const AVAILABLE_MODELS = {
+  'claude-opus-4-7': { label: 'Opus 4.7', description: 'Newest Opus — adds xhigh effort + thinking summaries' },
   'claude-opus-4-6': { label: 'Opus', description: 'Most capable, highest quality' },
   'claude-sonnet-4-6': { label: 'Sonnet', description: 'Balanced speed and quality' },
   'claude-haiku-4-5-20251001': { label: 'Haiku', description: 'Fastest, most compact' },
@@ -6,6 +7,10 @@ export const AVAILABLE_MODELS = {
 
 export type ModelId = keyof typeof AVAILABLE_MODELS;
 
+// Current default. Opus 4.7 plumbing is in place; default-flip decision pending xian.
+// Note: Opus 4.7 uses a new tokenizer producing 1×–1.35× tokens for equivalent input,
+// which will hit the compaction threshold (Round 17 set this to 160K) meaningfully
+// sooner. Worth a re-evaluation pass after a few real 4.7 channels run.
 export const DEFAULT_MODEL: ModelId = 'claude-opus-4-6';
 
 // Legacy model ID mapping for backward compatibility
@@ -40,7 +45,9 @@ export const INTERACTION_MODES = {
 export type InteractionMode = keyof typeof INTERACTION_MODES;
 export const DEFAULT_INTERACTION_MODE: InteractionMode = 'panel';
 
-export type EffortLevel = 'low' | 'medium' | 'high' | 'max';
+// Effort levels supported across Claude models. 'xhigh' added 2026-05-11 for Opus 4.7,
+// which introduced a new tier between 'high' and 'max'; Claude Code defaults to xhigh after 4.7.
+export type EffortLevel = 'low' | 'medium' | 'high' | 'xhigh' | 'max';
 
 export interface MicroReflection {
   observation: string;

@@ -272,16 +272,25 @@ function EntityForm({
       <div>
         <label className="block text-xs text-secondary mb-1">Effort</label>
         <div className="flex gap-1.5">
-          {(['low', 'medium', 'high', 'max'] as EffortLevel[]).map((level) => {
+          {(['low', 'medium', 'high', 'xhigh', 'max'] as EffortLevel[]).map((level) => {
+            // 'xhigh' is Opus 4.7-only; 'max' is Opus 4.6/4.7-only.
+            const isXhigh = level === 'xhigh';
             const isMax = level === 'max';
-            const isDisabled = isMax && model !== 'claude-opus-4-6';
+            const isDisabled =
+              (isXhigh && model !== 'claude-opus-4-7') ||
+              (isMax && model !== 'claude-opus-4-6' && model !== 'claude-opus-4-7');
+            const disabledTitle = isXhigh
+              ? 'xhigh effort is Opus 4.7 only'
+              : isMax
+                ? 'Max effort is Opus only'
+                : undefined;
             return (
               <button
                 key={level}
                 type="button"
                 onClick={() => !isDisabled && setEffort(level)}
                 disabled={isDisabled}
-                title={isDisabled ? 'Max effort is Opus 4.6 only' : undefined}
+                title={isDisabled ? disabledTitle : undefined}
                 className={`flex-1 rounded border px-2 py-1.5 text-xs text-center capitalize transition-colors ${
                   effort === level
                     ? 'border-accent bg-accent-subtle text-primary'

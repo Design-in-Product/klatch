@@ -91,7 +91,8 @@ async function getModels(): Promise<{ models: DiscoveredModel[]; source: 'api' |
   } catch (err) {
     console.warn('Models API fetch failed, using fallback:', err instanceof Error ? err.message : err);
 
-    // Fallback to hardcoded AVAILABLE_MODELS
+    // Fallback to hardcoded AVAILABLE_MODELS. 4.7 surfaces 'xhigh' between high+max;
+    // older models stop at 'high'.
     const fallback: DiscoveredModel[] = Object.entries(AVAILABLE_MODELS).map(
       ([id, info]) => ({
         id,
@@ -99,7 +100,9 @@ async function getModels(): Promise<{ models: DiscoveredModel[]; source: 'api' |
         maxOutputTokens: 16384,
         capabilities: {
           thinking: true,
-          effort: ['low', 'medium', 'high'],
+          effort: id === 'claude-opus-4-7'
+            ? ['low', 'medium', 'high', 'xhigh', 'max']
+            : ['low', 'medium', 'high'],
           compaction: false,
         },
       })

@@ -14,7 +14,14 @@ import {
 import type { ModelId, EffortLevel } from '@klatch/shared';
 import { AVAILABLE_MODELS, ENTITY_COLORS, DEFAULT_ENTITY_ID } from '@klatch/shared';
 
-const VALID_EFFORT_LEVELS: EffortLevel[] = ['low', 'medium', 'high', 'max'];
+const VALID_EFFORT_LEVELS: EffortLevel[] = ['low', 'medium', 'high', 'xhigh', 'max'];
+
+/** Per-model effort gating. xhigh is 4.7-only; max is Opus-only. */
+function effortAllowedForModel(effort: EffortLevel, model: ModelId): boolean {
+  if (effort === 'xhigh') return model === 'claude-opus-4-7';
+  if (effort === 'max') return model === 'claude-opus-4-6' || model === 'claude-opus-4-7';
+  return true;
+}
 
 const MAX_ENTITIES_PER_CHANNEL = 5;
 
@@ -50,9 +57,8 @@ app.post('/entities', async (c) => {
     return c.json({ error: `Invalid effort level: ${effort}` }, 400);
   }
 
-  // max effort is Opus 4.6 exclusive
-  if (effort === 'max' && entityModel !== 'claude-opus-4-6') {
-    return c.json({ error: 'Effort level "max" is only available for Opus 4.6' }, 400);
+  if (effort && !effortAllowedForModel(effort, entityModel as ModelId)) {
+    return c.json({ error: `Effort level "${effort}" is not available for model ${entityModel}` }, 400);
   }
 
   // Pick the next unused color, or use the provided one
@@ -88,10 +94,10 @@ app.patch('/entities/:id', async (c) => {
     return c.json({ error: `Invalid effort level: ${body.effort}` }, 400);
   }
 
-  // Validate max effort against target model (which may be changing in same request)
+  // Validate xhigh/max effort against target model (which may be changing in same request)
   const targetModel = body.model || getEntity(id)?.model;
-  if (body.effort === 'max' && targetModel && targetModel !== 'claude-opus-4-6') {
-    return c.json({ error: 'Effort level "max" is only available for Opus 4.6' }, 400);
+  if (body.effort && targetModel && !effortAllowedForModel(body.effort, targetModel as ModelId)) {
+    return c.json({ error: `Effort level "${body.effort}" is not available for model ${targetModel}` }, 400);
   }
 
   const updated = updateEntity(id, {
