@@ -10,6 +10,7 @@
 
 import { v4 as uuidv4 } from 'uuid';
 import type { Channel, Entity, Message, Project, FileWithRef, MicroReflection } from '@klatch/shared';
+import { isReflectionActive } from '@klatch/shared';
 import type { FieldNote } from './briefing.js';
 
 /**
@@ -195,7 +196,11 @@ export function mergeFieldNotes(briefingNotes?: FieldNote[], reflections?: Micro
   }
 
   if (reflections && reflections.length > 0) {
+    // Filter out invalidated reflections (validUntil in the past). They stay
+    // in the auditable record but should not enter context-assembly reads.
+    // See MicroReflection.validUntil in @klatch/shared.
     for (const r of reflections) {
+      if (!isReflectionActive(r)) continue;
       notes.push({
         observation: r.observation,
         citations: [],

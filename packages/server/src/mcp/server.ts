@@ -32,6 +32,7 @@ import {
 } from '../db/queries.js';
 import { buildKitBriefing } from '../claude/client.js';
 import type { MicroReflection } from '@klatch/shared';
+import { isReflectionActive } from '@klatch/shared';
 import {
   buildManifest,
   SUPPORTED_FORMAT_VERSIONS,
@@ -221,18 +222,22 @@ function assembleEntityPackage(entityId: string): any | null {
       color: entity.color,
       prompt: entity.systemPrompt,
       prompt_length_chars: entity.systemPrompt?.length || 0,
-      field_notes:
-        entity.reflections && entity.reflections.length > 0
-          ? entity.reflections.map((r) => ({
-              observation: r.observation,
-              citations: [],
-              confidence: 'medium',
-              source: 'micro-reflection',
-              trust: 'agent-observed',
-              status: 'draft',
-              category: r.type === 'correction' ? 'course-corrections' : 'patterns',
-            }))
-          : null,
+      field_notes: (() => {
+        // Filter out invalidated reflections (validUntil in the past).
+        // Keeps the auditable record intact while keeping context-assembly
+        // reads accurate.
+        const active = (entity.reflections || []).filter(isReflectionActive);
+        if (active.length === 0) return null;
+        return active.map((r) => ({
+          observation: r.observation,
+          citations: [],
+          confidence: 'medium',
+          source: 'micro-reflection',
+          trust: 'agent-observed',
+          status: 'draft',
+          category: r.type === 'correction' ? 'course-corrections' : 'patterns',
+        }));
+      })(),
     },
 
     extensions: { klatch: {} },

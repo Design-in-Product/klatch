@@ -61,6 +61,31 @@ export interface MicroReflection {
    * may include 'klatch-ui', 'mcp', 'auto', 'import', and future ingresses.
    */
   ingress?: string;
+  /**
+   * Optional expiration timestamp (ISO 8601). When set and in the past, the
+   * reflection is "invalidated" — it stays in the auditable record but is
+   * filtered out of context-assembly reads (field notes, MCP entity
+   * package). Mirrors the Zep/Graphiti and MemPalace temporal-validity
+   * pattern: year-old reflections aren't "wrong" when superseded, just no
+   * longer applicable. Added 2026-05-11 (Argus MemPalace-readiness memo).
+   * Setters: UI "Invalidate this reflection" affordance (future), explicit
+   * user edit, or future automatic supersession logic.
+   */
+  validUntil?: string;
+}
+
+/**
+ * Is a reflection still active (i.e., should be included in context-assembly
+ * reads)? A missing `validUntil` means "indefinitely active"; a future
+ * timestamp means "still active"; a past timestamp means "invalidated".
+ * Tolerant of malformed timestamps — treats them as active (no accidental
+ * suppression on bad data).
+ */
+export function isReflectionActive(r: MicroReflection, now: Date = new Date()): boolean {
+  if (!r.validUntil) return true;
+  const t = Date.parse(r.validUntil);
+  if (Number.isNaN(t)) return true;
+  return t > now.getTime();
 }
 
 export interface Entity {
