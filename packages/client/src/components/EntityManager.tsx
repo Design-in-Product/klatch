@@ -105,7 +105,7 @@ function EntityCard({
           {entity.name.charAt(0).toUpperCase()}
         </span>
         <div className="min-w-0 flex-1">
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 flex-wrap">
             <span className="font-medium text-sm text-primary truncate">{entity.name}</span>
             {entity.handle && (
               <span className="text-xs text-muted font-mono">@{entity.handle}</span>
@@ -113,6 +113,14 @@ function EntityCard({
             <span className="text-xs px-1.5 py-0.5 rounded bg-badge text-muted font-medium">
               {modelLabel}
             </span>
+            {typeof entity.channelCount === 'number' && entity.channelCount > 0 && (
+              <span
+                className="text-xs text-muted"
+                title={`Assigned to ${entity.channelCount} channel${entity.channelCount === 1 ? '' : 's'}`}
+              >
+                in {entity.channelCount} channel{entity.channelCount === 1 ? '' : 's'}
+              </span>
+            )}
           </div>
           <p className="text-xs text-secondary truncate">{entity.systemPrompt}</p>
         </div>

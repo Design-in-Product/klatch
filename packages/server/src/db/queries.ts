@@ -332,9 +332,15 @@ export function getEntity(id: string): Entity | undefined {
 
 export function getAllEntities(): Entity[] {
   const rows = getDb()
-    .prepare('SELECT * FROM entities ORDER BY created_at ASC')
+    .prepare(`
+      SELECT e.*, COUNT(ce.channel_id) AS channel_count
+      FROM entities e
+      LEFT JOIN channel_entities ce ON ce.entity_id = e.id
+      GROUP BY e.id
+      ORDER BY e.created_at ASC
+    `)
     .all() as any[];
-  return rows.map(rowToEntity);
+  return rows.map((r) => ({ ...rowToEntity(r), channelCount: r.channel_count as number }));
 }
 
 /** Default effort level by model — Sonnet defaults to medium per Anthropic recommendation */

@@ -66,6 +66,8 @@ export interface Entity {
   color: string;
   reflections?: MicroReflection[];
   createdAt: string;
+  /** Optional: number of channels this entity is assigned to. Populated by the entity-list endpoint via a JOIN; undefined elsewhere. */
+  channelCount?: number;
 }
 
 // Channel source types for imported conversations

@@ -314,13 +314,20 @@ export function ChannelSidebar({
           <div data-testid="unassigned-section">
             <button
               onClick={() => toggleSection('unassigned')}
-              className="w-full flex items-center gap-1 px-4 pt-3 pb-1 group"
+              className="w-full flex flex-col gap-0.5 px-4 pt-3 pb-1 group text-left"
             >
-              {chevronIcon(!collapsedSections.has('unassigned'))}
-              <span className="text-xs font-semibold text-muted uppercase tracking-wider">
-                Unassigned
-              </span>
-              <span className="text-xs text-muted ml-1">({unassigned.length})</span>
+              <div className="flex items-center gap-1">
+                {chevronIcon(!collapsedSections.has('unassigned'))}
+                <span className="text-xs font-semibold text-muted uppercase tracking-wider">
+                  Unassigned
+                </span>
+                <span className="text-xs text-muted ml-1">({unassigned.length})</span>
+              </div>
+              {!collapsedSections.has('unassigned') && (
+                <span className="text-xs text-muted ml-5 normal-case">
+                  Chats not yet assigned to a project.
+                </span>
+              )}
             </button>
             {!collapsedSections.has('unassigned') && unassigned.map((ch) => {
               const prefix = ch.type === 'klatch' ? '#' : '@';

@@ -51,9 +51,21 @@ export function ExportReviewPanel({ channelId, onClose }: Props) {
     window.open(url, '_blank');
   };
 
+  // T2.2 (2026-05-11): Export Preview is a task panel — disclose as a true
+  // modal with explicit semi-transparent backdrop, not an inline section.
+  // Establishes focus and removes the modal-vs-not ambiguity (F8.7).
+  const shell = (children: React.ReactNode) => (
+    <div className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto py-8 px-3 md:px-6">
+      <div className="absolute inset-0 bg-black/50" onClick={onClose} aria-hidden />
+      <div className="relative z-10 w-full max-w-2xl bg-panel border border-line-strong rounded-lg shadow-xl animate-in">
+        {children}
+      </div>
+    </div>
+  );
+
   if (loading) {
-    return (
-      <div className="border-b border-line bg-panel px-3 md:px-6 py-4 animate-in">
+    return shell(
+      <div className="px-5 py-4">
         <div className="flex items-center gap-3 text-sm text-secondary">
           <svg
             className="w-4 h-4 animate-spin text-accent flex-shrink-0"
@@ -76,8 +88,8 @@ export function ExportReviewPanel({ channelId, onClose }: Props) {
   }
 
   if (error) {
-    return (
-      <div className="border-b border-line bg-panel px-3 md:px-6 py-4 animate-in">
+    return shell(
+      <div className="px-5 py-4">
         <div className="text-sm text-danger">{error}</div>
         <button onClick={onClose} className="mt-2 text-xs text-muted hover:text-secondary">Close</button>
       </div>
@@ -87,8 +99,8 @@ export function ExportReviewPanel({ channelId, onClose }: Props) {
   const entities: ExportEntity[] = manifest?.entities || [];
   const hasFieldNotes = entities.some((e) => e.field_notes && e.field_notes.length > 0);
 
-  return (
-    <div className="border-b border-line bg-panel px-3 md:px-6 py-4 animate-in">
+  return shell(
+    <div className="px-5 py-4">
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-sm font-semibold text-secondary uppercase tracking-wide">
           Export Preview
@@ -100,7 +112,7 @@ export function ExportReviewPanel({ channelId, onClose }: Props) {
         </button>
       </div>
 
-      <div className="space-y-4 max-w-2xl">
+      <div className="space-y-4">
         {/* Export summary */}
         <ExportSummary manifest={manifest} />
 
@@ -169,7 +181,8 @@ function ExportSummary({ manifest }: { manifest: any }) {
 
   return (
     <div className="rounded-lg border border-line bg-card p-3">
-      <div className="text-xs font-medium text-secondary mb-2">Package contents</div>
+      <div className="text-xs font-medium text-secondary">Package contents</div>
+      <div className="text-xs text-muted mb-2">What goes into this export, by layer.</div>
       <div className="space-y-1 text-xs">
         {project?.instructions?.length_chars > 0 && (
           <div className="flex justify-between">
@@ -277,7 +290,8 @@ function FieldNoteReview({
 
   return (
     <div className="rounded-lg border border-line bg-card p-3">
-      <div className="text-xs font-medium text-secondary mb-3">Field notes for {entityName}</div>
+      <div className="text-xs font-medium text-secondary">Field notes for {entityName}</div>
+      <div className="text-xs text-muted mb-3">Behavioral observations from this conversation. Review and approve to include.</div>
 
       {/* Agreements */}
       {agreements.length > 0 && (
