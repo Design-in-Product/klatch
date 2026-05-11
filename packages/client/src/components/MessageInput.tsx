@@ -207,7 +207,7 @@ export function MessageInput({ onSend, onSendWithFile, onStop, disabled, isStrea
             ref={dropdownRef}
             className="absolute bottom-full left-0 mb-1 w-64 rounded-lg border border-line bg-panel shadow-lg overflow-hidden z-50"
           >
-            <div className="px-2 py-1.5 text-[10px] text-muted font-medium uppercase tracking-wide border-b border-line">
+            <div className="px-2 py-1.5 text-xs text-muted font-medium uppercase tracking-wide border-b border-line">
               Mention an entity
             </div>
             {mentionCandidates.map((entity, idx) => (
@@ -229,10 +229,10 @@ export function MessageInput({ onSend, onSendWithFile, onStop, disabled, isStrea
                 <span className="flex-1 truncate text-left">
                   {entity.name}
                   {entity.handle && (
-                    <span className="text-muted text-[10px] ml-1 font-mono">@{entity.handle}</span>
+                    <span className="text-muted text-xs ml-1 font-mono">@{entity.handle}</span>
                   )}
                 </span>
-                <span className="text-[10px] px-1.5 py-0.5 rounded bg-badge text-muted font-medium">
+                <span className="text-xs px-1.5 py-0.5 rounded bg-badge text-muted font-medium">
                   {entity.model.includes('opus') ? 'Opus' : entity.model.includes('sonnet') ? 'Sonnet' : 'Haiku'}
                 </span>
               </button>

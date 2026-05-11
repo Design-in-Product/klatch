@@ -151,7 +151,7 @@ function FileCard({ artifact, isUser, onPin }: { artifact: MessageArtifact; isUs
             <div className="opacity-70">{formatSize(artifact.fileSizeBytes)}</div>
           )}
         </div>
-        <span className="opacity-50 text-[10px]">↗</span>
+        <span className="opacity-50 text-xs">↗</span>
       </a>
       {onPin && artifact.fileStorageKey && (
         <button
@@ -334,7 +334,7 @@ function ForkMarker({ date }: { date?: string }) {
 function EntityAvatar({ entity }: { entity: Entity }) {
   return (
     <span
-      className="inline-flex items-center justify-center w-5 h-5 rounded-full text-[10px] font-bold text-white flex-shrink-0"
+      className="inline-flex items-center justify-center w-5 h-5 rounded-full text-xs font-bold text-white flex-shrink-0"
       style={{ backgroundColor: entity.color }}
       title={entity.name}
     >
@@ -387,7 +387,7 @@ function MessageBubble({
           {!isUser && entity && <EntityAvatar entity={entity} />}
           <span>{isUser ? 'You' : entityName}</span>
           {msgModelLabel && (
-            <span className="text-[10px] px-1.5 py-0.5 rounded bg-badge" title={message.model}>
+            <span className="text-xs px-1.5 py-0.5 rounded bg-badge" title={message.model}>
               {msgModelLabel}
             </span>
           )}

@@ -154,7 +154,7 @@ export function ChannelSettings({
         {isImported && (
           <div className="rounded-lg border border-line bg-card p-3">
             <div className="flex items-center gap-2 mb-2">
-              <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-accent/15 text-accent leading-none">
+              <span className="text-xs font-bold px-1.5 py-0.5 rounded bg-accent/15 text-accent leading-none">
                 {channel.source === 'claude-code' ? 'CC' : channel.source === 'claude-ai' ? 'AI' : channel.source}
               </span>
               <span className="text-xs font-medium text-secondary">
@@ -179,25 +179,25 @@ export function ChannelSettings({
             <div className="grid grid-cols-3 gap-3 text-center">
               <div>
                 <div className="text-lg font-semibold text-primary">{stats.messageCount}</div>
-                <div className="text-[10px] text-muted">Messages</div>
+                <div className="text-xs text-muted">Messages</div>
               </div>
               <div>
                 <div className="text-lg font-semibold text-primary">
                   {stats.toolBreakdown.reduce((sum, t) => sum + t.count, 0)}
                 </div>
-                <div className="text-[10px] text-muted">Tool calls</div>
+                <div className="text-xs text-muted">Tool calls</div>
               </div>
               <div>
                 <div className="text-lg font-semibold text-primary">{stats.toolBreakdown.length}</div>
-                <div className="text-[10px] text-muted">Unique tools</div>
+                <div className="text-xs text-muted">Unique tools</div>
               </div>
             </div>
             {stats.toolBreakdown.length > 0 && (
               <div className="mt-3 pt-2 border-t border-line">
-                <div className="text-[10px] text-muted mb-1">Top tools</div>
+                <div className="text-xs text-muted mb-1">Top tools</div>
                 <div className="flex flex-wrap gap-1">
                   {stats.toolBreakdown.slice(0, 5).map((t) => (
-                    <span key={t.tool} className="text-[10px] px-1.5 py-0.5 rounded bg-badge text-muted">
+                    <span key={t.tool} className="text-xs px-1.5 py-0.5 rounded bg-badge text-muted">
                       {t.tool} ({t.count})
                     </span>
                   ))}
@@ -231,7 +231,7 @@ export function ChannelSettings({
                     >
                       {f.name}
                     </a>
-                    <span className="text-[10px] text-muted">
+                    <span className="text-xs text-muted">
                       {f.sizeBytes < 1024 ? `${f.sizeBytes} B` : f.sizeBytes < 1024 * 1024 ? `${(f.sizeBytes / 1024).toFixed(1)} KB` : `${(f.sizeBytes / (1024 * 1024)).toFixed(1)} MB`}
                     </span>
                     {channel.projectId && (
@@ -264,7 +264,7 @@ export function ChannelSettings({
                 );
               })}
             </div>
-            <p className="text-[10px] text-muted mt-1.5">
+            <p className="text-xs text-muted mt-1.5">
               Pinned files are listed in the channel context sent to entities.
             </p>
           </div>
@@ -393,7 +393,7 @@ export function ChannelSettings({
                   {channelEntities[0].name.charAt(0).toUpperCase()}
                 </span>
                 <span className="text-sm text-primary flex-1 truncate">{channelEntities[0].name}</span>
-                <span className="text-[10px] px-1.5 py-0.5 rounded bg-badge text-muted font-medium">
+                <span className="text-xs px-1.5 py-0.5 rounded bg-badge text-muted font-medium">
                   {getModelLabel(channelEntities[0].model)}
                 </span>
               </div>
@@ -423,7 +423,7 @@ export function ChannelSettings({
                       {entity.name.charAt(0).toUpperCase()}
                     </span>
                     <span className="text-sm text-primary flex-1 truncate">{entity.name}</span>
-                    <span className="text-[10px] px-1.5 py-0.5 rounded bg-badge text-muted font-medium">
+                    <span className="text-xs px-1.5 py-0.5 rounded bg-badge text-muted font-medium">
                       {modelLabel}
                     </span>
                     {canRemove && (

@@ -86,10 +86,10 @@ app.post('/import/claude-code', async (c) => {
     const formData = await c.req.formData();
     const file = formData.get('file');
     if (!file || !(file instanceof File)) {
-      return c.json({ error: 'No file uploaded. Send a JSONL file as "file" in multipart form data.' }, 400);
+      return c.json({ error: 'No file uploaded. Please choose a session file (.jsonl).' }, 400);
     }
     if (!file.name.endsWith('.jsonl')) {
-      return c.json({ error: 'File must be a .jsonl file' }, 400);
+      return c.json({ error: 'File must be a Claude Code session file (.jsonl).' }, 400);
     }
     const arrayBuffer = await file.arrayBuffer();
     if (arrayBuffer.byteLength > MAX_IMPORT_SIZE) {
@@ -113,7 +113,7 @@ app.post('/import/claude-code', async (c) => {
       return c.json({ error: 'sessionPath is required' }, 400);
     }
     if (!sessionPath.endsWith('.jsonl')) {
-      return c.json({ error: 'File must be a .jsonl file' }, 400);
+      return c.json({ error: 'File must be a Claude Code session file (.jsonl).' }, 400);
     }
 
     const expandedPath = validateImportPath(expandHome(sessionPath));

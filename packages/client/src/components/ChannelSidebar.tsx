@@ -174,7 +174,7 @@ export function ChannelSidebar({
       }`}
     >
       <span className="text-muted mr-1">{prefix}</span>
-      <span className="truncate">{ch.name}</span>
+      <span className="truncate" title={ch.name}>{ch.name}</span>
       {(ch.entityCount ?? 0) >= 2 && (
         <span
           className="ml-1 flex-shrink-0 text-[9px] font-medium px-1 py-0.5 rounded-full bg-badge text-muted leading-none"
@@ -253,12 +253,13 @@ export function ChannelSidebar({
                 <button
                   onClick={() => toggleProject(project.id)}
                   className="flex items-center gap-1 min-w-0 flex-1"
+                  title={project.name}
                 >
                   {chevronIcon(isExpanded)}
-                  <span className="text-[10px] font-semibold text-muted uppercase tracking-wider truncate">
+                  <span className="text-xs font-semibold text-muted uppercase tracking-wider truncate">
                     {project.name}
                   </span>
-                  <span className="text-[10px] text-muted ml-1 flex-shrink-0">({project.totalCount})</span>
+                  <span className="text-xs text-muted ml-1 flex-shrink-0">({project.totalCount})</span>
                 </button>
                 {onOpenProjectSettings && (
                   <button
@@ -316,10 +317,10 @@ export function ChannelSidebar({
               className="w-full flex items-center gap-1 px-4 pt-3 pb-1 group"
             >
               {chevronIcon(!collapsedSections.has('unassigned'))}
-              <span className="text-[10px] font-semibold text-muted uppercase tracking-wider">
+              <span className="text-xs font-semibold text-muted uppercase tracking-wider">
                 Unassigned
               </span>
-              <span className="text-[10px] text-muted ml-1">({unassigned.length})</span>
+              <span className="text-xs text-muted ml-1">({unassigned.length})</span>
             </button>
             {!collapsedSections.has('unassigned') && unassigned.map((ch) => {
               const prefix = ch.type === 'klatch' ? '#' : '@';
@@ -439,7 +440,7 @@ export function ChannelSidebar({
                   {/* Entity picker */}
                   {entities.length > 0 && (
                     <div>
-                      <div className="text-[10px] font-medium text-muted uppercase tracking-wider mb-1">
+                      <div className="text-xs font-medium text-muted uppercase tracking-wider mb-1">
                         Entities {selectedEntityIds.size > 0 && `(${selectedEntityIds.size}/5)`}
                       </div>
                       <div className="space-y-0.5 max-h-24 overflow-y-auto">

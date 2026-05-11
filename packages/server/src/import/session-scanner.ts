@@ -25,6 +25,12 @@ export interface SessionInfo {
   existingChannelName?: string;
   /** Whether this session came from the exports directory (cloud agent convention) */
   isExported?: boolean;
+  /** Content fingerprint — first real human-typed user message, truncated ~80 chars. Empty if not found. */
+  firstUserMessage?: string;
+  /** Approximate message count (user + assistant turns). May be capped — see fingerprintCapped. */
+  messageCount?: number;
+  /** True if the fingerprint scan hit its line-read cap before reaching EOF (messageCount is a lower bound). */
+  fingerprintCapped?: boolean;
 }
 
 export interface ProjectSessions {
@@ -94,6 +100,93 @@ export async function extractSessionId(filePath: string): Promise<string | undef
   });
 }
 
+/** Default cap on lines read for fingerprint scan — keeps Browse responsive on long sessions. */
+const FINGERPRINT_LINE_CAP = 1500;
+/** Truncate the surfaced first-user-message to this many chars (per Iris T1.6). */
+const FINGERPRINT_MAX_CHARS = 80;
+
+/**
+ * Pull a content fingerprint from a JSONL session — first real human-typed
+ * user message + approximate turn count. Streams up to FINGERPRINT_LINE_CAP
+ * lines and reports whether the cap was reached (messageCount becomes a
+ * lower bound in that case).
+ *
+ * "Real human" filter mirrors parser.ts isConversationEvent + the injection-
+ * metadata flags: skip events that are isMeta / isCompactSummary / tool
+ * results / sidechain. We don't need byte-perfect fidelity for a fingerprint;
+ * a reasonably faithful preview is the goal.
+ */
+export async function extractSessionFingerprint(filePath: string): Promise<{
+  firstUserMessage: string;
+  messageCount: number;
+  capped: boolean;
+}> {
+  return new Promise((resolve) => {
+    const stream = fs.createReadStream(filePath, { encoding: 'utf-8' });
+    const rl = readline.createInterface({ input: stream, crlfDelay: Infinity });
+
+    let firstUserMessage = '';
+    let messageCount = 0;
+    let linesRead = 0;
+    let capped = false;
+
+    const finish = () => {
+      rl.close();
+      stream.destroy();
+      resolve({ firstUserMessage, messageCount, capped });
+    };
+
+    rl.on('line', (line) => {
+      linesRead++;
+      if (linesRead > FINGERPRINT_LINE_CAP) {
+        capped = true;
+        finish();
+        return;
+      }
+
+      let event: any;
+      try { event = JSON.parse(line); } catch { return; }
+      if (!event || (event.type !== 'user' && event.type !== 'assistant')) return;
+      if (event.isSidechain) return;
+      if (event.isMeta || event.isCompactSummary || event.isVisibleInTranscriptOnly) return;
+      if (!event.message) return;
+
+      // Tool-result user events: content is an array of tool_result blocks. Skip.
+      if (event.type === 'user') {
+        const content = event.message.content;
+        const isToolResult = Array.isArray(content) && content.every((b: any) => b?.type === 'tool_result');
+        if (isToolResult) return;
+        // First real human-typed user message wins
+        if (!firstUserMessage) {
+          const text = extractFingerprintText(content);
+          if (text) {
+            firstUserMessage = text.length > FINGERPRINT_MAX_CHARS
+              ? text.slice(0, FINGERPRINT_MAX_CHARS - 1).trimEnd() + '…'
+              : text;
+          }
+        }
+      }
+
+      messageCount++;
+    });
+
+    rl.on('close', () => resolve({ firstUserMessage, messageCount, capped }));
+    rl.on('error', () => resolve({ firstUserMessage, messageCount, capped }));
+    stream.on('error', () => resolve({ firstUserMessage, messageCount, capped }));
+  });
+}
+
+function extractFingerprintText(content: any): string {
+  if (typeof content === 'string') return content.trim();
+  if (!Array.isArray(content)) return '';
+  for (const block of content) {
+    if (block?.type === 'text' && typeof block.text === 'string' && block.text.trim()) {
+      return block.text.trim();
+    }
+  }
+  return '';
+}
+
 /**
  * Scan ~/.claude/projects/ for Claude Code session files.
  * Returns sessions grouped by project, with dedup detection.
@@ -144,6 +237,9 @@ export async function scanClaudeCodeSessions(): Promise<ProjectSessions[]> {
       // Check dedup against database
       const existing = findChannelByOriginalSessionId(sessionId);
 
+      // Content fingerprint — first user message + approximate turn count
+      const fp = await extractSessionFingerprint(filePath);
+
       sessions.push({
         path: filePath,
         sessionId,
@@ -154,6 +250,9 @@ export async function scanClaudeCodeSessions(): Promise<ProjectSessions[]> {
         alreadyImported: !!existing,
         existingChannelId: existing?.id,
         existingChannelName: existing?.name,
+        firstUserMessage: fp.firstUserMessage || undefined,
+        messageCount: fp.messageCount,
+        fingerprintCapped: fp.capped || undefined,
       });
     }
 
@@ -206,6 +305,7 @@ export async function scanExportedSessions(repoRoot: string): Promise<ProjectSes
     // Extract session ID: try the filename (sans .jsonl), or read from file
     const sessionId = file.name.replace('.jsonl', '');
     const existing = findChannelByOriginalSessionId(sessionId);
+    const fp = await extractSessionFingerprint(filePath);
 
     sessions.push({
       path: filePath,
@@ -218,6 +318,9 @@ export async function scanExportedSessions(repoRoot: string): Promise<ProjectSes
       existingChannelId: existing?.id,
       existingChannelName: existing?.name,
       isExported: true,
+      firstUserMessage: fp.firstUserMessage || undefined,
+      messageCount: fp.messageCount,
+      fingerprintCapped: fp.capped || undefined,
     });
   }
 

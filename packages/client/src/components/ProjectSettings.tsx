@@ -147,7 +147,7 @@ export function ProjectSettings({ projectId, onClose, onUpdated }: Props) {
         {isImported && (
           <div className="rounded-lg border border-line bg-card p-3">
             <div className="flex items-center gap-2 mb-1">
-              <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-accent/15 text-accent leading-none">
+              <span className="text-xs font-bold px-1.5 py-0.5 rounded bg-accent/15 text-accent leading-none">
                 {project?.source === 'claude-code' ? 'CC' : project?.source === 'claude-ai' ? 'AI' : '?'}
               </span>
               <span className="text-xs font-medium text-secondary">
@@ -187,7 +187,7 @@ export function ProjectSettings({ projectId, onClose, onUpdated }: Props) {
             className="w-full rounded bg-input border border-line px-3 py-2 text-sm text-primary placeholder-muted focus:outline-none focus:border-accent resize-y font-mono"
           />
           {instructions && (
-            <p className="mt-1 text-[10px] text-muted">{instructions.length.toLocaleString()} chars</p>
+            <p className="mt-1 text-xs text-muted">{instructions.length.toLocaleString()} chars</p>
           )}
         </div>
 
@@ -204,7 +204,7 @@ export function ProjectSettings({ projectId, onClose, onUpdated }: Props) {
             className="w-full rounded bg-input border border-line px-3 py-2 text-sm text-primary placeholder-muted focus:outline-none focus:border-accent resize-y font-mono"
           />
           {memory && (
-            <p className="mt-1 text-[10px] text-muted">{memory.length.toLocaleString()} chars</p>
+            <p className="mt-1 text-xs text-muted">{memory.length.toLocaleString()} chars</p>
           )}
         </div>
 
@@ -232,7 +232,7 @@ export function ProjectSettings({ projectId, onClose, onUpdated }: Props) {
                     >
                       {f.name}
                     </a>
-                    <span className="text-[10px] text-muted">
+                    <span className="text-xs text-muted">
                       {f.sizeBytes < 1024 ? `${f.sizeBytes} B` : f.sizeBytes < 1024 * 1024 ? `${(f.sizeBytes / 1024).toFixed(1)} KB` : `${(f.sizeBytes / (1024 * 1024)).toFixed(1)} MB`}
                     </span>
                     <button

@@ -21,8 +21,8 @@ export function EntityManager({ entities, onCreateEntity, onUpdateEntity, onDele
       {/* Backdrop */}
       <div className="absolute inset-0 bg-black/40" onClick={onClose} />
 
-      {/* Panel */}
-      <div className="relative ml-auto w-full max-w-md bg-panel border-l border-line h-full overflow-y-auto animate-in">
+      {/* Panel — slides in from the left adjacent to the Entities button in the sidebar (T1.7, 2026-05-11) */}
+      <div className="relative mr-auto w-full max-w-md bg-panel border-r border-line h-full overflow-y-auto animate-in">
         <div className="px-5 py-4 border-b border-line flex items-center justify-between sticky top-0 bg-panel z-10">
           <h2 className="text-sm font-semibold text-secondary uppercase tracking-wide">
             Entities
@@ -108,9 +108,9 @@ function EntityCard({
           <div className="flex items-center gap-2">
             <span className="font-medium text-sm text-primary truncate">{entity.name}</span>
             {entity.handle && (
-              <span className="text-[10px] text-muted font-mono">@{entity.handle}</span>
+              <span className="text-xs text-muted font-mono">@{entity.handle}</span>
             )}
-            <span className="text-[10px] px-1.5 py-0.5 rounded bg-badge text-muted font-medium">
+            <span className="text-xs px-1.5 py-0.5 rounded bg-badge text-muted font-medium">
               {modelLabel}
             </span>
           </div>

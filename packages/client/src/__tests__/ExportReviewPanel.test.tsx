@@ -83,7 +83,10 @@ describe('ExportReviewPanel', () => {
   it('renders loading state while fetching', () => {
     mockFetchPreview.mockReturnValue(new Promise(() => {})); // never resolves
     render(<ExportReviewPanel channelId="ch-1" onClose={vi.fn()} />);
-    expect(screen.getByText('Preparing export preview...')).toBeInTheDocument();
+    // T1.5 (2026-05-11): loading state now uses an ellipsis + secondary
+    // explanatory line. Match the leading copy with a regex tolerant to
+    // future whitespace tweaks.
+    expect(screen.getByText(/Preparing export preview/i)).toBeInTheDocument();
   });
 
   it('renders error state on fetch failure', async () => {

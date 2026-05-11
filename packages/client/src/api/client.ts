@@ -464,6 +464,12 @@ export interface SessionInfo {
   existingChannelId?: string;
   existingChannelName?: string;
   isExported?: boolean;
+  /** Content fingerprint — first real human-typed user message, truncated ~80 chars. */
+  firstUserMessage?: string;
+  /** Approximate message count (turns). May be a lower bound if fingerprintCapped. */
+  messageCount?: number;
+  /** True if the fingerprint scan hit its line cap before EOF — messageCount is a lower bound. */
+  fingerprintCapped?: boolean;
 }
 
 export interface ProjectSessions {

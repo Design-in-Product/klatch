@@ -54,7 +54,23 @@ export function ExportReviewPanel({ channelId, onClose }: Props) {
   if (loading) {
     return (
       <div className="border-b border-line bg-panel px-3 md:px-6 py-4 animate-in">
-        <div className="text-sm text-muted">Preparing export preview...</div>
+        <div className="flex items-center gap-3 text-sm text-secondary">
+          <svg
+            className="w-4 h-4 animate-spin text-accent flex-shrink-0"
+            aria-hidden
+            viewBox="0 0 24 24"
+            fill="none"
+          >
+            <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3" opacity="0.25" />
+            <path d="M4 12a8 8 0 018-8" stroke="currentColor" strokeWidth="3" strokeLinecap="round" />
+          </svg>
+          <div>
+            <div>Preparing export preview…</div>
+            <div className="text-xs text-muted mt-0.5">
+              Generating behavioral notes — this can take up to a minute on longer conversations.
+            </div>
+          </div>
+        </div>
       </div>
     );
   }
@@ -333,7 +349,7 @@ function NoteCard({
     return (
       <div className="rounded border border-line bg-card px-3 py-2 opacity-40">
         <div className="text-xs text-muted line-through">{note.observation}</div>
-        <div className="text-[10px] text-muted mt-1">Rejected</div>
+        <div className="text-xs text-muted mt-1">Rejected</div>
       </div>
     );
   }
@@ -341,7 +357,7 @@ function NoteCard({
   return (
     <div className={`rounded border px-3 py-2 ${isAccepted ? 'border-green-500/30 bg-green-500/5' : 'border-line bg-card'}`}>
       <div className="text-xs text-primary mb-1">{note.observation}</div>
-      <div className="flex items-center gap-2 text-[10px] mb-1">
+      <div className="flex items-center gap-2 text-xs mb-1">
         <span className={sourceColor(note.source)}>{sourceLabel(note.source)}</span>
         {secondSource && (
           <>
@@ -352,7 +368,7 @@ function NoteCard({
         <span className="text-muted">{note.confidence} confidence</span>
       </div>
       {note.citations.length > 0 && (
-        <div className="text-[10px] text-muted mb-2">
+        <div className="text-xs text-muted mb-2">
           Citations: {note.citations.join(', ')}
         </div>
       )}
@@ -360,20 +376,20 @@ function NoteCard({
         <div className="flex gap-2">
           <button
             onClick={onAccept}
-            className="text-[10px] px-2 py-0.5 rounded bg-accent/10 text-accent hover:bg-accent/20 transition-colors"
+            className="text-xs px-2 py-0.5 rounded bg-accent/10 text-accent hover:bg-accent/20 transition-colors"
           >
             Accept
           </button>
           <button
             onClick={onReject}
-            className="text-[10px] px-2 py-0.5 rounded text-muted hover:text-danger hover:bg-danger/10 transition-colors"
+            className="text-xs px-2 py-0.5 rounded text-muted hover:text-danger hover:bg-danger/10 transition-colors"
           >
             Reject
           </button>
         </div>
       )}
       {isAccepted && (
-        <div className="text-[10px] text-green-600 flex items-center gap-1">
+        <div className="text-xs text-green-600 flex items-center gap-1">
           <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
           </svg>

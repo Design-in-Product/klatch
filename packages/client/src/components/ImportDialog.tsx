@@ -545,17 +545,49 @@ export function ImportDialog({ isOpen, onClose, onImported, onBulkImported, onCh
                 sessionBrowse ? (
                   /* Session browser panel */
                   <div className="space-y-3">
-                    <div className="flex items-center justify-between">
+                    <div className="flex items-center justify-between gap-2 flex-wrap">
                       <label className="text-xs font-medium text-muted uppercase tracking-wider">
                         Sessions ({sessionBrowse.totalSessions} in {sessionBrowse.totalProjects} project{sessionBrowse.totalProjects !== 1 ? 's' : ''})
                       </label>
-                      <button
-                        type="button"
-                        onClick={handleCloseBrowse}
-                        className="text-xs text-accent hover:text-accent-hover transition-colors"
-                      >
-                        Manual path
-                      </button>
+                      <div className="flex items-center gap-3">
+                        {(() => {
+                          const importable: string[] = [];
+                          for (const p of sessionBrowse.projects) {
+                            for (const s of p.sessions) {
+                              if (!s.alreadyImported) importable.push(s.path);
+                            }
+                          }
+                          const allSelected = importable.length > 0 && importable.every((p) => selectedSessions.has(p));
+                          const noneSelected = importable.every((p) => !selectedSessions.has(p));
+                          return importable.length > 1 ? (
+                            <>
+                              <button
+                                type="button"
+                                onClick={() => setSelectedSessions(new Set(importable))}
+                                disabled={allSelected}
+                                className="text-xs text-accent hover:text-accent-hover transition-colors disabled:opacity-40 disabled:cursor-default"
+                              >
+                                Select all
+                              </button>
+                              <button
+                                type="button"
+                                onClick={() => setSelectedSessions(new Set())}
+                                disabled={noneSelected}
+                                className="text-xs text-accent hover:text-accent-hover transition-colors disabled:opacity-40 disabled:cursor-default"
+                              >
+                                Unselect all
+                              </button>
+                            </>
+                          ) : null;
+                        })()}
+                        <button
+                          type="button"
+                          onClick={handleCloseBrowse}
+                          className="text-xs text-accent hover:text-accent-hover transition-colors"
+                        >
+                          Manual path
+                        </button>
+                      </div>
                     </div>
 
                     {browseError && (
@@ -593,11 +625,17 @@ export function ImportDialog({ isOpen, onClose, onImported, onBulkImported, onCh
                             {/* Sessions list */}
                             {expandedProjects.has(project.projectPath) && (
                               <div className="bg-surface divide-y divide-line/50">
-                                {project.sessions.map((session) => (
+                                {project.sessions.map((session) => {
+                                  const tooltip = `Session ID: ${session.sessionId}\n${formatSize(session.sizeBytes)}\nLast active: ${new Date(session.modifiedAt).toLocaleString()}`;
+                                  const messageCountLabel = session.messageCount !== undefined
+                                    ? `${session.fingerprintCapped ? `${session.messageCount}+` : session.messageCount} msg${session.messageCount === 1 ? '' : 's'}`
+                                    : null;
+                                  return (
                                   <label
                                     key={session.path}
+                                    title={tooltip}
                                     className={`flex items-start gap-2.5 px-3 py-2 pl-8 text-sm cursor-pointer hover:bg-hover transition-colors ${
-                                      session.alreadyImported ? 'opacity-50' : ''
+                                      session.alreadyImported ? 'opacity-60' : ''
                                     }`}
                                   >
                                     <input
@@ -607,22 +645,30 @@ export function ImportDialog({ isOpen, onClose, onImported, onBulkImported, onCh
                                       className="mt-0.5 rounded border-line text-accent focus:ring-accent"
                                     />
                                     <div className="flex-1 min-w-0">
-                                      <div className="text-primary font-mono text-xs truncate" title={session.sessionId}>
-                                        {session.sessionId.slice(0, 8)}...
+                                      {/* Primary line: content fingerprint, or a neutral fallback */}
+                                      <div className="text-primary truncate">
+                                        {session.firstUserMessage || (
+                                          <span className="text-muted italic">No user messages found</span>
+                                        )}
                                       </div>
-                                      <div className="text-xs text-muted">
-                                        {formatSize(session.sizeBytes)}
-                                        {' \u00b7 '}
-                                        {new Date(session.modifiedAt).toLocaleDateString()}
+                                      {/* Secondary line: structural metadata */}
+                                      <div className="text-xs text-muted flex items-center gap-1.5 flex-wrap">
+                                        {messageCountLabel && <span>{messageCountLabel}</span>}
+                                        {messageCountLabel && <span aria-hidden>\u00b7</span>}
+                                        <span>{new Date(session.modifiedAt).toLocaleDateString()}</span>
                                         {session.alreadyImported && (
-                                          <span className="ml-1.5 text-yellow-600 dark:text-yellow-400">
-                                            (imported{session.existingChannelName ? `: ${session.existingChannelName}` : ''})
-                                          </span>
+                                          <>
+                                            <span aria-hidden>\u00b7</span>
+                                            <span className="text-yellow-700 dark:text-yellow-400">
+                                              imported{session.existingChannelName ? ` as ${session.existingChannelName}` : ''}
+                                            </span>
+                                          </>
                                         )}
                                       </div>
                                     </div>
                                   </label>
-                                ))}
+                                  );
+                                })}
                               </div>
                             )}
                           </div>
@@ -669,7 +715,7 @@ export function ImportDialog({ isOpen, onClose, onImported, onBulkImported, onCh
                         />
                         <div className="mt-1 flex items-center justify-between">
                           <p className="text-xs text-muted">
-                            Full path to a Claude Code JSONL session file
+                            Full path to a Claude Code session file
                           </p>
                           <button
                             type="button"
@@ -694,7 +740,7 @@ export function ImportDialog({ isOpen, onClose, onImported, onBulkImported, onCh
                           onChange={(e) => {
                             const file = e.target.files?.[0] || null;
                             if (file && !file.name.endsWith('.jsonl')) {
-                              setError('Please select a .jsonl file');
+                              setError('Please select a session file (.jsonl).');
                               return;
                             }
                             setError(null);
@@ -708,7 +754,7 @@ export function ImportDialog({ isOpen, onClose, onImported, onBulkImported, onCh
                           onClick={() => jsonlInputRef.current?.click()}
                           className="mt-2 w-full rounded border-2 border-dashed border-line hover:border-accent px-4 py-3 text-sm text-muted hover:text-secondary transition-colors text-center"
                         >
-                          Choose JSONL file
+                          Choose session file
                           <span className="block text-xs mt-0.5">For cloud agent sessions or shared files</span>
                         </button>
                       </div>
@@ -768,13 +814,28 @@ export function ImportDialog({ isOpen, onClose, onImported, onBulkImported, onCh
                               Conversations ({preview.conversations.length})
                             </label>
                             {importableCount > 1 && (
-                              <button
-                                type="button"
-                                onClick={toggleAllConversations}
-                                className="text-xs text-accent hover:text-accent-hover transition-colors"
-                              >
-                                {selectedIds.size === importableCount ? 'Deselect all' : 'Select all'}
-                              </button>
+                              <div className="flex items-center gap-3">
+                                <button
+                                  type="button"
+                                  onClick={() => {
+                                    if (!preview) return;
+                                    const importable = preview.conversations.filter((c) => !c.alreadyImported);
+                                    setSelectedIds(new Set(importable.map((c) => c.uuid)));
+                                  }}
+                                  disabled={selectedIds.size === importableCount}
+                                  className="text-xs text-accent hover:text-accent-hover transition-colors disabled:opacity-40 disabled:cursor-default"
+                                >
+                                  Select all
+                                </button>
+                                <button
+                                  type="button"
+                                  onClick={() => setSelectedIds(new Set())}
+                                  disabled={selectedIds.size === 0}
+                                  className="text-xs text-accent hover:text-accent-hover transition-colors disabled:opacity-40 disabled:cursor-default"
+                                >
+                                  Unselect all
+                                </button>
+                              </div>
                             )}
                           </div>
                           <div className="max-h-56 overflow-y-auto rounded border border-line divide-y divide-line">
@@ -954,7 +1015,7 @@ function LayerFidelityReadout({ channelId }: { channelId: string }) {
                 isActive ? 'bg-green-500' : 'bg-zinc-400'
               }`} />
               <span className="text-secondary">{label}</span>
-              <span className="text-muted text-[10px] truncate ml-auto max-w-[60%] text-right">
+              <span className="text-muted text-xs truncate ml-auto max-w-[60%] text-right">
                 {status.replace(/^(ACTIVE|INACTIVE|EMPTY)\s*—?\s*/, '')}
               </span>
             </div>

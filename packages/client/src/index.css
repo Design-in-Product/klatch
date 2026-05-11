@@ -31,6 +31,15 @@
   --color-accent-subtle: var(--c-accent-subtle);
   --color-danger: #ef4444;
   --color-danger-hover: #dc2626;
+
+  /* Typography scale — Iris triage 2026-05-11:
+     bump small sizes for legibility, generous line-heights for body comfort.
+     This is a "raise the floor" pass — the holistic redesign will tune. */
+  --text-xs: 0.8125rem;            /* 13px (was 12px) */
+  --text-xs--line-height: 1.4;
+  --text-sm: 0.9375rem;            /* 15px (was 14px) */
+  --text-sm--line-height: 1.5;
+  --text-base--line-height: 1.55;  /* keep size, raise line-height */
 }
 
 /* ===== Light theme (default) ===== */
@@ -46,9 +55,9 @@
   --c-line-strong: #cbd5e1;
 
   --c-primary: #111827;
-  --c-secondary: #4b5563;
-  --c-muted: #9ca3af;
-  --c-faint: #d1d5db;
+  --c-secondary: #374151;       /* was #4b5563 — slightly stronger for body-tier */
+  --c-muted: #6b7280;           /* was #9ca3af — AA on white (~4.8:1); was failing AA (~2.5:1) */
+  --c-faint: #9ca3af;           /* was #d1d5db — used for decoration/placeholders; bumped to a usable gray */
 
   --c-code-bg: #f1f5f9;
   --c-active-channel: #eef2ff;
@@ -72,9 +81,9 @@
   --c-line-strong: #1f2937;
 
   --c-primary: #f3f4f6;
-  --c-secondary: #d1d5db;
-  --c-muted: #6b7280;
-  --c-faint: #4b5563;
+  --c-secondary: #e5e7eb;       /* was #d1d5db — slightly stronger */
+  --c-muted: #9ca3af;           /* was #6b7280 — AA on dark app bg (~6:1); was borderline (~3:1) */
+  --c-faint: #6b7280;           /* was #4b5563 — usable for placeholders/decoration */
 
   --c-code-bg: #111827;
   --c-active-channel: rgba(99, 102, 241, 0.13);
@@ -90,6 +99,9 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   background-color: var(--c-app);
   color: var(--c-primary);
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 #root {

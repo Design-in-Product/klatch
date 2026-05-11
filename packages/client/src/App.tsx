@@ -436,7 +436,7 @@ export default function App() {
                   {channelEntities.map((entity) => (
                     <span
                       key={entity.id}
-                      className="inline-flex items-center gap-1 text-[10px] px-1.5 py-0.5 rounded bg-badge text-muted font-medium"
+                      className="inline-flex items-center gap-1 text-xs px-1.5 py-0.5 rounded bg-badge text-muted font-medium"
                       title={`${entity.name} (${getModelLabel(entity.model)})`}
                     >
                       <span
@@ -448,13 +448,13 @@ export default function App() {
                   ))}
                 </div>
               ) : activeModelLabel ? (
-                <span className="text-[10px] px-1.5 py-0.5 rounded bg-badge text-muted font-medium">
+                <span className="text-xs px-1.5 py-0.5 rounded bg-badge text-muted font-medium">
                   {activeModelLabel}
                 </span>
               ) : null}
               {/* Mode badge — only show for non-default modes with 2+ entities */}
               {activeChannel?.mode && activeChannel.mode !== 'panel' && channelEntities.length >= 2 && (
-                <span className="text-[10px] px-1.5 py-0.5 rounded bg-accent/15 text-accent font-medium">
+                <span className="text-xs px-1.5 py-0.5 rounded bg-accent/15 text-accent font-medium">
                   {INTERACTION_MODES[activeChannel.mode]?.label || activeChannel.mode}
                 </span>
               )}
@@ -462,7 +462,8 @@ export default function App() {
                 <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
               </svg>
             </div>
-            {activeChannel?.systemPrompt && (
+            {activeChannel?.systemPrompt &&
+             activeChannel.systemPrompt.trim() !== 'You are a helpful assistant.' && (
               <p className="text-xs text-secondary truncate">
                 {activeChannel.systemPrompt}
               </p>

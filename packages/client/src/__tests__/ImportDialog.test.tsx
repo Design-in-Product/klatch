@@ -580,25 +580,28 @@ describe('ImportDialog — selective import browse UI', () => {
     expect(callArgs[2]).toBe(true); // forceImport = true
   });
 
-  it('shows Select all / Deselect all toggle', async () => {
+  it('shows Select all + Unselect all controls (T1.3, 2026-05-11)', async () => {
     const user = userEvent.setup();
     render(<ImportDialog {...defaultProps} />);
     await uploadZipWithPreview(user);
 
-    // All selected → shows "Deselect all"
-    expect(screen.getByText('Deselect all')).toBeInTheDocument();
+    // Both controls always visible; "Select all" disabled when all selected,
+    // "Unselect all" disabled when nothing selected. Pair of explicit
+    // actions instead of a toggle — easier to discover and to use.
+    const selectAll = screen.getByRole('button', { name: 'Select all' });
+    const unselectAll = screen.getByRole('button', { name: 'Unselect all' });
+    expect(selectAll).toBeDisabled();
+    expect(unselectAll).toBeEnabled();
 
-    // Click deselect all
-    await user.click(screen.getByText('Deselect all'));
+    await user.click(unselectAll);
 
-    // Now shows "Select all"
-    expect(screen.getByText('Select all')).toBeInTheDocument();
     const checkboxes = screen.getAllByRole('checkbox');
     expect(checkboxes[0]).not.toBeChecked();
     expect(checkboxes[1]).not.toBeChecked();
+    expect(selectAll).toBeEnabled();
+    expect(unselectAll).toBeDisabled();
 
-    // Click select all
-    await user.click(screen.getByText('Select all'));
+    await user.click(selectAll);
     expect(checkboxes[0]).toBeChecked();
     expect(checkboxes[1]).toBeChecked();
   });
