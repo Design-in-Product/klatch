@@ -23,6 +23,8 @@ import { v4 as uuidv4 } from 'uuid';
 import { getDb } from '../db/index.js';
 import { getProject, getChannel, getEntity, getFile } from '../db/queries.js';
 import { saveFile } from '../files/storage.js';
+import { SUPPORTED_FORMAT_VERSIONS } from '../export/package-builder.js';
+import { DEFAULT_ENTITY_ID } from '@klatch/shared';
 import type { ChannelSource } from '@klatch/shared';
 
 export interface KlatchImportParams {
@@ -52,9 +54,14 @@ export interface KlatchImportConflict {
   packageChannelId: string;
 }
 
+export interface KlatchImportVersionMismatch {
+  formatVersion: string;
+  supportedVersions: readonly string[];
+}
+
 export type KlatchImportOutcome =
   | { ok: true; result: KlatchImportResult }
-  | { ok: false; status: 400 | 409; error: string; conflict?: KlatchImportConflict };
+  | { ok: false; status: 400 | 409; error: string; conflict?: KlatchImportConflict; versionMismatch?: KlatchImportVersionMismatch };
 
 /**
  * Pure parser — pulls manifest + sidecars + jsonl + files out of the zip.
@@ -172,6 +179,25 @@ export function importKlatchPackage(params: KlatchImportParams): KlatchImportOut
   }
 
   const { manifest, layer2, layer3, layer4, conversationJsonl, files } = parsed;
+
+  // Format version gate. The import path materializes data into the DB;
+  // accepting a version we don't recognize would silently drop fields we
+  // can't model — the worst kind of fidelity loss. Reject anything outside
+  // the explicit supported-versions set with a structured error so clients
+  // can surface "your Klatch is too old / too new for this package."
+  const fv = typeof manifest.format_version === 'string' ? manifest.format_version : '';
+  if (!SUPPORTED_FORMAT_VERSIONS.includes(fv)) {
+    return {
+      ok: false,
+      status: 400,
+      error: `Unsupported format_version "${fv || '(missing)'}". This Klatch supports: ${SUPPORTED_FORMAT_VERSIONS.join(', ')}.`,
+      versionMismatch: {
+        formatVersion: fv,
+        supportedVersions: SUPPORTED_FORMAT_VERSIONS,
+      },
+    };
+  }
+
   const cc = manifest.conversation_context;
   const packageChannelId = cc.id as string;
 
@@ -252,8 +278,17 @@ export function importKlatchPackage(params: KlatchImportParams): KlatchImportOut
     );
 
     // ── Entities upsert + channel link ──
-    if (Array.isArray(manifest.entities)) {
-      for (const e of manifest.entities) {
+    // If the package has no entities (empty or missing), auto-attach the
+    // seed default-entity so the imported channel is exportable. Matches
+    // createChannel's seed behavior; otherwise the channel would exist but
+    // immediately fail any subsequent export with "no entities assigned."
+    const manifestEntities: any[] = Array.isArray(manifest.entities) ? manifest.entities : [];
+    if (manifestEntities.length === 0) {
+      db.prepare('INSERT OR IGNORE INTO channel_entities (channel_id, entity_id) VALUES (?, ?)')
+        .run(targetChannelId, DEFAULT_ENTITY_ID);
+    }
+    if (manifestEntities.length > 0) {
+      for (const e of manifestEntities) {
         if (!e.id) continue;
         const existingEntity = getEntity(e.id);
         if (existingEntity) {

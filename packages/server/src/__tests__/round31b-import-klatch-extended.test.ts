@@ -662,10 +662,11 @@ describe('Round 31b: /import/klatch extended coverage', () => {
       expect(msgs[1].content).toBe('second');
     });
 
-    it('FLAGGED — future format_version is currently accepted with no version check (Daedalus negative case #4)', () => {
-      // Pin: today's behavior is permissive on format_version. If/when
-      // negotiateFormatVersion-equivalent gating is added, change this test
-      // to expect a 400. For now this documents the gap.
+    it('format_version outside SUPPORTED_FORMAT_VERSIONS is rejected with 400 + versionMismatch (Round 32: gating)', () => {
+      // Round 32 (Daedalus, 5/11): the import path now gates format_version
+      // against SUPPORTED_FORMAT_VERSIONS to prevent silent fidelity loss
+      // on materialized DB rows. Was: permissive (the FLAGGED test that
+      // previously lived here pinned that gap).
       const channelId = 'fv-future-' + Math.random().toString(36).slice(2, 10);
       const manifest = {
         format_version: '99.0.0',
@@ -686,13 +687,23 @@ describe('Round 31b: /import/klatch extended coverage', () => {
       zip.addFile('conversation.jsonl', Buffer.from(''));
 
       const outcome = importKlatchPackage({ zipBuffer: zip.toBuffer() });
-      expect(outcome.ok).toBe(true);
-      // ☝ Today: import path has no version check. If this test ever fails
-      // because future Daedalus added version negotiation, that's a good thing
-      // — flip the assertion to `outcome.ok === false` + status 400.
+      expect(outcome.ok).toBe(false);
+      if (outcome.ok) return;
+      expect(outcome.status).toBe(400);
+      expect(outcome.versionMismatch).toBeDefined();
+      expect(outcome.versionMismatch!.formatVersion).toBe('99.0.0');
+      expect(outcome.versionMismatch!.supportedVersions).toContain('1.0.0');
+      // No partial-import — channel was not created.
+      expect(getChannel(channelId)).toBeUndefined();
     });
 
-    it('empty entities array imports cleanly; only the auto-attached default-entity remains on the channel', () => {
+    it('empty entities array imports cleanly; default-entity is auto-attached so channel is exportable (Round 32: auto-attach)', () => {
+      // Round 32 (Daedalus, 5/11): when a manifest has no entities, the
+      // import path now auto-attaches default-entity to match
+      // createChannel's seed behavior. Prevents the user-trap of an
+      // imported channel that exists but can't be re-exported. Was:
+      // zero-entity channel (the FLAGGED test that previously lived here
+      // pinned that user-trap).
       const channelId = 'empty-ents-' + Math.random().toString(36).slice(2, 10);
       const manifest = {
         format_version: '1.0.0',
@@ -716,13 +727,9 @@ describe('Round 31b: /import/klatch extended coverage', () => {
       expect(outcome.ok).toBe(true);
       if (!outcome.ok) return;
 
-      // Pin observed behavior: import inserts the channel directly via raw SQL
-      // (not via createChannel), so the default-entity auto-attach does NOT
-      // fire on the import path. Channel ends up with zero entities.
-      // FLAGGED: if a future iteration auto-attaches default-entity on import,
-      // this assertion should flip.
       const ents = getChannelEntities(channelId);
-      expect(ents).toHaveLength(0);
+      expect(ents).toHaveLength(1);
+      expect(ents[0].id).toBe('default-entity');
     });
 
     it('zip without conversation.jsonl: import succeeds with messageCount=0', () => {

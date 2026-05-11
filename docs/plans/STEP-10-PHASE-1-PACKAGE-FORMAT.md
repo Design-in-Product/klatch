@@ -441,6 +441,11 @@ The channel's `source` field is preserved from the original provenance. A packag
 
 The format is therefore both an **interchange** spec (Klatch → other tools) and a **portable archive** (Klatch → Klatch, including multi-machine workflows and backup/restore). It is not a CRDT-style merge format; if a re-import would conflict with an existing channel, the user resolves the conflict via 409-then-`forceImport`.
 
+**Import-side validation (Round 32, 2026-05-11):**
+
+- `format_version` is gated against the import-side `SUPPORTED_FORMAT_VERSIONS` set. A package whose `format_version` is missing, malformed, or outside the set is rejected with `400` and a structured `versionMismatch: { formatVersion, supportedVersions }` body. No partial-import occurs; no DB rows are created. The MCP export side has always had `negotiateFormatVersion`; the import side now mirrors that contract.
+- A manifest with `entities: []` (or missing) auto-attaches the seed `default-entity` to the imported channel, matching `createChannel`'s seed behavior. Otherwise the imported channel would be exportable only after the user manually added an entity — a user-trap the import path now avoids.
+
 ---
 
 ## Design heuristics for validation

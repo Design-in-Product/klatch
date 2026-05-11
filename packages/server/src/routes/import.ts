@@ -709,6 +709,9 @@ app.post('/import/klatch', async (c) => {
     if (outcome.status === 409) {
       return c.json({ error: outcome.error, ...outcome.conflict }, 409);
     }
+    if (outcome.versionMismatch) {
+      return c.json({ error: outcome.error, ...outcome.versionMismatch }, 400);
+    }
     return c.json({ error: outcome.error }, outcome.status);
   }
 
