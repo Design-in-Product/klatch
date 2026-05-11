@@ -126,29 +126,72 @@ xian drives, sharing observations and screenshots; Iris captures findings.
 
 ---
 
-## Pass 2: Realistic scenario — Shipping News weekly review
+## Pass 2: Realistic scenario — Piper Morgan workstream review (real attempt)
 
-*Set up the workflow xian actually wants to run.*
+*xian attempted the actual Piper Morgan workstream review for the week ending Thursday, in parallel with the real process. Result: incomplete. The workflow died at composition.*
 
-### Phase A: Bring leadership roles into Klatch as entities
+### Phase A: Bring leadership roles into Klatch as conversations
 
-**Friction observed:**
+**What xian did:**
+- Used the Import feature, chose the default "browse" path (Claude Code session browser)
+- Faced a very long list of sessions presented by code names (serial-number-style labels)
+- A few sessions showed a project association — saw "Piper Morgan" on at least one
+- Selected the Piper-Morgan-associated session + all unfamiliar ones, guessing
+- Imported the batch
 
-### Phase B: Compose them into a klatch with the right interaction mode
+**Findings:**
+- **F-P2.A.1 ✅ Import technically worked.** All correct sessions were captured, but only by lucky-guess selection — xian didn't know they were the right ones until after.
+- **F-P2.A.2 ⚠️ Serial-number labels forced guessing.** Confirms F7.6 in live use. With no surface of the content (first prompt, derived name, project association beyond a single shown field), xian had no basis to select correctly. He selected widely and inspected after the fact — a workaround, not a workflow.
+- **F-P2.A.3 ⚠️ Project association is the only useful selection signal.** The one session showing a "Piper Morgan" project tag was selectable with confidence; every other selection was a gamble. The data exists to surface more (first prompt, message count, last-active date); the UI doesn't.
 
-**Friction observed:**
+### Phase B: Identify and organize what was imported
 
-### Phase C: Pin the relevant context files (omnibus logs, etc.)
+**What xian did:**
+- Inspected each imported session one by one
+- Renamed each to remind himself which role it was (CXO, PPM, etc. — they arrived with serial-number names)
+- Moved them all into the Piper Morgan project to cluster them. One was already there; the others had to be moved individually.
 
-**Friction observed:**
+**Findings:**
+- **F-P2.B.1 ⚠️ Renaming was a manual remediation for F7.6.** Because labels didn't surface the content, xian had to open each, identify the role, and rename it before he could work with the set as a coherent group. This is the kind of work the UI should do for the user — but doesn't.
+- **F-P2.B.2 Project clustering "technically worked but was cumbersome and awkward."** Moving N channels into a project one-at-a-time is a known interaction friction. No bulk-assign affordance. The project-as-organizer concept (F5) survives this scenario, but barely.
+- **F-P2.B.3 The "inspect to identify, rename to remember" loop took real time.** Each session opened, scanned, renamed, project-assigned. For five-to-seven leadership roles this is workable; for a larger import it would dominate the workflow.
 
-### Phase D: Run the synthesis (CoS + xian editing pattern)
+### Phase C: Compose them into a klatch — **THE WORKFLOW BROKE HERE**
 
-**Friction observed:**
+**What xian tried to do:**
+- Put the imported leadership conversations together into a single klatch to run the workstream review
 
-### Phase E: Export the result
+**What happened:**
+- Could not. Klatches are set up to create entities on the fly to be added. There is no way to say "this existing chat should be added to this klatch."
+- xian gave up.
 
-**Friction observed:**
+**Findings:**
+- **F-P2.C.1 🛑 LIVED CONFIRMATION OF THE COMPOSITION GAP.** The Session 6 finding, confirmed three times in the surface skim (F2: not in sidebar, F3.3: not at content area, F6.5: not in entity manager), is now the empirical reason a real use case failed. Klatches require entity creation; there is no path from "I have these existing conversations" to "they are now in a klatch together." The product's central gesture has no surface, and that absence is now load-bearing.
+- **F-P2.C.2 🛑 The entity reframe (filed 4/18) is the unmet need.** xian filed it as direction in April: "entities are existing conversations promoted into roles." Today's attempt is exactly the workflow that direction describes, and it cannot be completed. The reframe is no longer abstract — it's the missing capability.
+- **F-P2.C.3 The workaround does not exist.** xian did not find a way through (e.g., manually re-creating each role from prompts copied out of each conversation, then assembling them into a klatch). Even if such a workaround were technically possible, it would defeat the purpose: the value of bringing existing conversations together is that they carry their accumulated context. Recreating them from scratch loses that.
+
+### Phase D: Run the synthesis — UNREACHED
+
+Phase blocked by Phase C. No multi-entity rendering, mode behavior, or roundtable orchestration was exercised.
+
+### Phase E: Export — UNREACHED
+
+Phase blocked by Phase C. The Phase 3.5d review surface (the one strong panel we identified in F8) was not exercised in a realistic workflow.
+
+---
+
+## What Pass 2 told us
+
+**The composition gap is the 1.0 blocker.** Everything before it works, slowly. Nothing after it can be reached. The user can:
+- Import existing conversations ✅ (with significant friction at selection)
+- Identify and organize them ✅ (with significant friction at renaming and clustering)
+- Compose them into a klatch ❌ — and this is the entire point
+
+The end-to-end test reaches the central gesture and stops. Every other finding in this walkthrough is downstream of fixing this. Without composition-from-existing-conversations, the workstream review use case — Klatch's canonical job-to-be-done since Session 1 — is not possible in the product as shipped.
+
+**The other findings are not invalidated; they're sequenced.** Visibility-gap work, panel-as-musculature design, transport-aware export, sidebar IA — all still matter. But none of them matter as much as a path through the composition gesture, and most of them get sharpened by knowing the canonical workflow can actually run end-to-end.
+
+**The good news:** xian got surprisingly far before the wall. Import worked. Inspection worked. Renaming worked. Project clustering worked, cumbersomely. The plumbing for the canonical workflow is mostly in place. The hole is specific and addressable.
 
 ---
 
