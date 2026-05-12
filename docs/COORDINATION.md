@@ -118,11 +118,10 @@ Agents working on this repo use this file as the async handoff protocol.
 ### Iris (UX design & front-end development)
 - **Branch:** `main`
 - **Status:** available — session paused
-- **Last completed:** Session 10 (May 11) — triage doc delivered (`docs/ux/triage-patches.md`, 18 items in 3 tiers + cross-cutting) and Daedalus memo sent. Track 2 design work begun: `docs/ux/object-model.md` opened. **All 6 object-model tensions resolved** (T4 tentatively, T5/T6 may refine). Two load-bearing insights captured: (1) klatches are synthetic — agents see normal chats, human sees group chat (T1); (2) role persistence is Klatch's unique value proposition (T2). Composition gesture's true shape now clear: select existing chats to participate in a klatch's orchestration; default workflow is broadcast (T6).
-- **Working on:** Paused. Resume Tuesday May 13.
-- **Next:** User vocabulary / mental model pass → workflow shapes (sketching territory) → surface design starts to suggest itself from the foundation. Possibly revisit T4 (subtle).
-- **Waiting on:** Tuesday morning session with xian.
-- **Argus 5/11 finding routed to me:** `argus-to-iris-faint-token-finding-2026-05-11.md` — light-theme `--c-faint` (#9ca3af on #f8fafc) at 2.43:1 fails AA-large. Used as text in MessageList empty state, date separators, ImportDialog helper copy. Two fix paths suggested. Pick up next session.
+- **Last completed:** Session 11 (May 12) — faint-token reclassify spec to Daedalus, **shipped same day** as commit `c1fdb90`. Vocabulary pass complete: all 5 questions resolved (V1–V5 in `docs/ux/object-model.md`). Design brief written (`docs/ux/design-brief.md`) covering synthesis → holistic design direction → 1.0 critical path → parallel post-1.0 work. 1.0 critical path defined: composition gesture + klatch setup surface + remaining Tier 1 patches + working meeting experience + promotion gesture.
+- **Working on:** Paused. Resume when xian is ready.
+- **Next:** Spec the composition gesture and klatch setup surface concretely. Address 4 open questions from the design brief (promotion lifecycle, how broadcast mode is exposed, pre-1.0 vocabulary migration timing, what "running a meeting" looks like inside a klatch).
+- **Waiting on:** Next session with xian.
 
 ## Signals
 

@@ -317,3 +317,157 @@ To decide later. The simpler model is the right starting point; the template/exe
 - **Tension 4 — L4 (channel context) as object or property?:** ✅ Tentatively resolved (see below; xian flagged subtle, may refine with use)
 - **Tension 5 — Where do field notes / reflections / briefings attach?:** ✅ Resolved (see below)
 - **Tension 6 — Workflow / meeting as first-class object?:** ✅ Resolved (see below)
+
+---
+
+## Vocabulary
+
+User-facing language decisions. Downstream of the object model. Captures which words appear where, and which stay in implementation.
+
+### V1 — Channel vs. chat vs. klatch vs. conversation in user-facing copy (2026-05-12)
+
+**Rule:**
+
+- **"Chats" and "klatches"** are the primary categorical pairing in user-facing copy. Two precise words.
+- **"Conversation"** is the singular generic fallback when a single word genuinely reads better.
+- **"Channel"** stays in implementation language; not in user-facing copy.
+
+**Rationale:**
+
+- "Chat" and "klatch" are the product's branded categories; they should do the work. Slack uses "channel" because in Slack channels ARE the distinctive thing — in Klatch, klatches are. Generic words for distinctive things dilute branding.
+- "Conversation" maps to what the user *experiences* in either a chat or a klatch — a visible thread of messages. For a chat, with one agent. For a klatch, the synthetic group chat (regardless of what's happening underneath per the T1 resolution). It's the natural user-facing word for "the visible thread of messages."
+- "Channel" is the implementation parent (database table, system abstraction). "Conversation" is the user-facing experience. They're at different layers, analogous not identical. Don't pretend "channel" is a user-facing word just because it's the data model.
+
+**Application guide:**
+
+- Sidebar list: no generic word needed; `@`/`#` prefix + name does the work
+- "+ New" affordance: present two options ("Chat or Klatch?"), not a generic create
+- Counts: prefer specific ("3 chats, 2 klatches") or just numeric ("5") over generic-with-word
+- Documentation: "your chats and klatches" by default
+- Settings copy: use the specific type when known ("Chat settings" / "Klatch settings"); avoid "Channel settings"
+- Generic singular fallback: "Start your first conversation" / "Show recent conversations"
+
+### V2 — Agent (not entity) as the broad user-facing word; role as the subset (2026-05-12)
+
+**Rule:**
+
+- **"Agent"** is the user-facing word for any AI participant in a chat or klatch.
+- **"Role"** is the user-facing word for the subset of agents that have matured into persistent named identity (consistent name/title, ongoing function in a project).
+- **"Entity"** stays in implementation (data model, code, internal docs). Not user-facing.
+
+**The mapping:**
+
+| Layer | Word |
+|---|---|
+| Database / implementation | `entity` |
+| User-facing broad category | **agent** |
+| User-facing subset with persistent identity | **role** |
+
+**Why "agent" (and why not "chat" for the participant level):**
+
+- Word-collision: "chat" already means a channel type (single-agent channel) in the resolved V1 vocabulary. Using "chat" for a participant within a channel would collide at two levels of nested concept (container vs. participant).
+- "Agent" is the generic, widely-understood word for an AI participant — Anthropic uses it (Claude Agent SDK, Managed Agents), Klatch's own methodology uses it (AXT = Agent Experience Testing, kit briefing for agents).
+- It preserves the role-vs-not distinction without inflating "role" to mean every agent: every role is an agent; not every agent is a role.
+
+**Application guide:**
+
+- Library surface (formerly "Entities") shows agents, with **Roles** as a primary subcategory and "other agents" as a secondary section (un-named, less-calibrated, one-off). Surface naming to be decided when we sketch.
+- Channel header for a chat shows the agent's name (or default label).
+- Channel header for a klatch shows multiple agents with names/role labels.
+- Composition gesture (klatch creation): "Add agents to this klatch" — choose from existing agents, default-filter to roles.
+- Promotion gesture (V5 territory): turn an agent into a role — the gesture for "this agent has earned persistent identity."
+
+**Sanity check on the team:** Daedalus, Argus, Calliope, Iris are all agents AND roles by this definition (persistent identity AND AI participants). Same word, both true. No conflict.
+
+### V3 — Neither "workflow" nor "meeting" is user-facing; both stay internal (2026-05-12)
+
+**Rule:**
+
+- **"Workflow"** stays in implementation/architecture vocabulary (object model, code, internal docs). Not user-facing.
+- **"Meeting"** stays in implementation/architecture vocabulary. Not user-facing as a UI category. May appear in natural-language copy where it fits colloquially ("the daily standup," "your Friday review") but not as a load-bearing UI noun.
+
+**The user experience instead:**
+
+The user "sets up a klatch" directly. The setup surface asks field-level questions:
+- **Purpose** — what is this klatch for?
+- **Agents** — who participates?
+- **Cadence** — when does it run (if recurring)?
+- **Phases** — what structure does it have (if structured)?
+- **What it produces** — the output / synthesis target (if defined)
+- **Mode** / **Orchestration** — how messages flow (broadcast / panel / roundtable / directed)
+
+No "Workflow type" picker. No "Meeting settings" header. No wrapper noun for the configuration object.
+
+**Why:**
+
+- **Panels are musculature, not admin** (F6.7). The configuration IS the work, not meta-configuration about workflows. Don't label the panel "Workflow editor" — label the fields directly.
+- **Who bears the burden?** (design principles meta-principle). Exposing "workflow" and "meeting" as user-facing categories would force users to understand the distinction. They don't need to. The system bears it; the user just configures the klatch.
+- **Three audiences, three views** (extending T1's two-audience insight). The agents experience normal chats. The user experiences a klatch. The system orchestrates a workflow (which may be meeting-shaped). Each audience sees the right abstraction for them.
+
+**What survives as user-facing:**
+
+- Klatch (channel type)
+- Agents, roles (participants)
+- The klatch's properties (purpose, agents, cadence, phases, mode, etc.)
+- Natural-language "meeting" when it fits English usage colloquially
+
+**What stays internal:**
+
+- The terms "workflow" and "meeting" as object-model categories
+- The distinction between meeting (the structural shape) and workflow (the orchestration mechanism)
+- Documentation may use these when explaining how Klatch works, but they don't appear as UI labels
+
+### V4 — Composition gesture verbs: "Invite" + "Convene" (2026-05-12)
+
+**Rule:**
+
+- **"Invite"** is the verb for adding an existing agent to an existing klatch.
+  - Button label: "+ Invite agent"
+  - Reads as a meeting-flavored verb (consistent with the meeting framing in our object model) without requiring the user to think in meeting nouns (V3).
+  - Acknowledged tension: "invitation" colloquially implies optionality, but in Klatch (as in Slack) the agent is mechanically just added. The convention is familiar; users translate it correctly.
+
+- **"Convene"** is the verb for creating a new klatch from agents.
+  - Button label: "+ Convene" or "+ Convene a klatch"
+  - Combines the creation gesture with the bringing-together quality of the act. Honest about what's happening: you're not "creating an empty container" — you're convening participants.
+
+**Why not "Add" / "Compose" / "Bring":**
+
+- "Add" is generic and weak; misses the intentional, bring-things-together quality.
+- "Compose" is cold/structural; "convene" has meeting-energy.
+- "Bring into" reads as literary, not button-shaped.
+
+**Note on banished-meeting-noun consistency:** V3 banishes "meeting" and "workflow" as user-facing nouns. V4 uses meeting-flavored *verbs* (invite, convene) — that's compatible. Verbs carry meaning more lightly than nouns; "invite to a klatch" doesn't force the user to mentally categorize the klatch as a meeting.
+
+### V5 — Promotion: naming is the promotion (2026-05-12)
+
+**Rule:**
+
+- **"Promote"** is the conceptual verb for the transition from un-named agent to role. Used in design documents, internal vocabulary, this object model — not in UI.
+- **In the user-facing experience, naming the agent IS the promotion.** No separate "Promote" button. The user gives the agent a proper name, role title, and (optionally) refines its system prompt. The act of completing that identity flow IS the act of promotion.
+- **Consequence is visible:** after promotion, the agent appears in the roles library, in role-pickers, and is invitable to klatches as a role by default. No announcement banner; the consequence speaks for itself.
+
+**Why combined A+B (explicit gesture + implicit promotion):**
+
+- Echoes V3's principle: the system bears the burden of understanding the category transition; the user does a simpler, more natural gesture.
+- Naming an agent is *already* a deliberate act — the user is choosing to invest in that agent. No need to add a separate confirmation step.
+- The lifecycle from un-named agent → named role becomes one continuous gesture, not two.
+
+**Future enhancement (post-1.0):**
+
+C-style system-suggested promotion. "This agent has been used in 5 sessions and is unnamed — would you like to give it an identity?" Nice-to-have feature; not needed for 1.0.
+
+**Inverse / demotion:**
+
+Not designed yet. If a user wants to remove role status, the conceptual verb is "demote" — but the user-facing gesture would likely be "clear name and role title" or equivalent. To handle if and when it surfaces.
+
+---
+
+## Vocabulary status
+
+All five vocabulary questions resolved:
+
+- **V1** ✅ Channel banished from user-facing; chats/klatches as primary categories; conversation as singular generic fallback
+- **V2** ✅ Agent (broad) + role (subset with persistent identity); entity stays in implementation
+- **V3** ✅ Workflow and meeting stay internal; the user "sets up a klatch" with direct field-level properties
+- **V4** ✅ Composition verbs: invite (add agent to existing klatch); convene (create new klatch)
+- **V5** ✅ Promotion: naming IS the promotion; "promote" is internal vocabulary only
