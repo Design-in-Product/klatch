@@ -244,6 +244,30 @@ side-by-side and walk both surfaces with the same code.
   carry an ID; inline binary fetch via `resources/read` is a post-1.0
   question.
 
+## Security posture
+
+Klatch's MCP server is **STDIO-based and runs as a child process spawned
+by an MCP client** (Claude Desktop, Claude Code, etc.) under the same
+local user. Two implications worth naming explicitly:
+
+- **The MCP STDIO command-injection class (OX Security advisory,
+  April–May 2026; multiple CVEs in the MCP SDK ecosystem) does not
+  apply to Klatch.** Those CVEs affect MCP *clients* that take untrusted
+  server-command strings and pass them to `subprocess.exec`. Klatch is
+  the *server side* of the relationship — it is launched by clients,
+  it never spawns MCP subprocesses. Transport choice is orthogonal
+  to this exposure class.
+- **No auth is intentional, not an oversight.** STDIO under the same
+  local user means the MCP client has already passed the OS-level trust
+  boundary by spawning the process. There is no remote attack surface
+  to authenticate. If/when HTTP transport ships (Phase 5d, deferred),
+  a real auth model arrives with it.
+
+If you connect to Klatch via Claude Code or Claude Desktop and *also*
+run other STDIO-based MCP servers on the same machine, those other
+servers may have their own exposure to the OX class. That's a
+client-configuration concern, not a Klatch concern.
+
 ## Troubleshooting
 
 - **"Cannot find module" / `tsx` not found:** run `npm install` at the
