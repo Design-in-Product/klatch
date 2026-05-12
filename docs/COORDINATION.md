@@ -116,12 +116,12 @@ Agents working on this repo use this file as the async handoff protocol.
 
 ### Iris (UX design & front-end development)
 - **Branch:** `main`
-- **Status:** working — paused for Pass 2 setup
-- **Last completed:** Session 9 (May 10) — surface skim COMPLETE across all 8 surfaces. ~45 findings total. Load-bearing reframe from xian: panels are musculature, not admin (F6.7). Initial synthesis written into `docs/ux/walkthrough-findings.md`. F8 confirms the design language to solve the visibility gap exists at one surface (Phase 3.5d export review).
-- **Working on:** Waiting for xian to queue up real Piper Morgan workstream review; will attempt Pass 2 in parallel through Klatch as stress test.
-- **Next:** End-to-end walkthrough with xian, manual testing of recent rounds (Phase 4, Phase 5, Phase 3.5 in production-ish use), synthesize forward-looking UX direction.
-- **Waiting on:** xian (busy after this session, will signal when ready for walkthrough).
-- **Updated:** Session 6
+- **Status:** available — session paused
+- **Last completed:** Session 10 (May 11) — triage doc delivered (`docs/ux/triage-patches.md`, 18 items in 3 tiers + cross-cutting) and Daedalus memo sent. Track 2 design work begun: `docs/ux/object-model.md` opened. **All 6 object-model tensions resolved** (T4 tentatively, T5/T6 may refine). Two load-bearing insights captured: (1) klatches are synthetic — agents see normal chats, human sees group chat (T1); (2) role persistence is Klatch's unique value proposition (T2). Composition gesture's true shape now clear: select existing chats to participate in a klatch's orchestration; default workflow is broadcast (T6).
+- **Working on:** Paused. Resume Tuesday May 13.
+- **Next:** User vocabulary / mental model pass → workflow shapes (sketching territory) → surface design starts to suggest itself from the foundation. Possibly revisit T4 (subtle).
+- **Waiting on:** Tuesday morning session with xian.
+- **Argus 5/11 finding routed to me:** `argus-to-iris-faint-token-finding-2026-05-11.md` — light-theme `--c-faint` (#9ca3af on #f8fafc) at 2.43:1 fails AA-large. Used as text in MessageList empty state, date separators, ImportDialog helper copy. Two fix paths suggested. Pick up next session.
 
 ## Signals
 
