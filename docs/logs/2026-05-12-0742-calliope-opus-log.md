@@ -128,3 +128,44 @@ Per the new "don't sit passively" rule, working in parallel through what's unblo
 - **Process-improvement memo on automated model-evaluation** to Argus + Daedalus — flagged in the Daedalus default-flip memo as a candidate; explicit recommendation is to wait one more cycle (extracted-over-designed). Not drafting today.
 - **May 12 logbook entry** — defer until day-end when the day's work is more fully visible.
 - **Entity reframe blog post drafting** — on the April 28 blog-mining list as the natural next post after Before You Go lands. Not strictly blocked, but downstream of editorial sequencing. Worth evaluating whether to start drafting in parallel.
+
+## 10:30 — Entity reframe blog draft filed
+
+Decided to draft per the new don't-sit-passively rule. The blog post was unblocked (the dependency on Before You Go is editorial sequencing, not authorial), and the vocabulary was fresh from Iris's 5/11 object-model resolution — better to draft now than later. Filed at `docs/drafts/bringing-conversations-into-a-room.md`, ~1,900 words.
+
+Structure: opening hook (what most multi-agent products get wrong) → entities-are-conversations (the reframe) → the composition gesture → "klatches are synthetic" (the architectural truth as a load-bearing paragraph) → role persistence as differentiator → what this changes (UI implications without committing to specific designs) → what we don't yet know → closing. Comparable in shape and length to Before You Go and Paste It Again.
+
+Editorial notes flag: a code-switching pass needed for "Layer 5 / Layer 3 / Phase 3.5" references; a contestable-specific in the competitive-positioning paragraph (the claim that most agent products don't preserve role identity) that wants either trusted-practice reframing per PO Pattern 5 or qualification; title is "Bringing Conversations Into a Room" working — three alternates listed. xian sees the raw draft before publication; the post survives editing well in either order with Before You Go.
+
+## 10:35 — Pausing for assessment
+
+Standing list status after this batch:
+
+**Done today:**
+- Two-day catch-up + two logbook entries (May 10, May 11)
+- May 10 session log closed end-of-day
+- Activity CSV brought to 110 rows
+- Argus research-spike memo (Anthropic memory/dreaming impact)
+- Daedalus default-flip routing + meta-question on automated evaluation
+- Step 11 scoping doc (assembly-layer positioning post-Dreaming)
+- PO collaboration-patterns synthesis folded into `docs/agents/calliope.md`
+- "Don't sit passively" rule saved to persistent feedback memory
+- Entity reframe blog draft
+
+**Standing for end-of-day:**
+- Surface Before You Go reading reminder when xian returns
+- Surface Theseus check-in reminder if xian hasn't mentioned doing it
+- Write May 12 logbook entry once the day's work is more fully visible
+
+**Truly parked (not appropriate to do today):**
+- Process-improvement memo on automated model-evaluation (extracted-over-designed; wait one cycle)
+- "Convergent infrastructure" blog post (would be premature; let entity-reframe and Before You Go land first to confirm sequencing)
+- MCP capstone blog post (anchored to 1.0 beta which is downstream of testing-phase completion)
+
+**Genuinely blocked:**
+- Step 11 final scoping (waiting on Argus spike output)
+- Before You Go publication (waiting on xian's code-switching review)
+- Entity reframe blog publication (waiting on xian's review)
+- Theseus MAXT assignment work (waiting on xian's check-in with him)
+
+At this point I'm out of unblocked standing tasks. The remaining items are either xian-decision-gated or end-of-day-surfacing or appropriate-to-park. Wrapping the work session here; standing by for xian's check-back-in.
