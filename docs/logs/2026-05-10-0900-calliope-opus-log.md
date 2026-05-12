@@ -106,3 +106,29 @@ Rationale: authority discipline matters (drift between project-canonical and agg
 ## 13:30 — Session wrap
 
 Three logbook entries filed. Janus reply filed. CSV seeded with today's row. Standing by; xian still with Iris on the walkthrough. Ready to chronicle today's Iris/xian session at its wrap if useful.
+
+## 16:11 — xian check-in (PM workstream review imminent)
+
+xian back at 4:11 PM. Initial walkthrough with Iris done. Taking a break to line up a Piper Morgan workstream review with PM leadership roles — and attempting to conduct it via Klatch in parallel. This is exactly the realistic-scenario pass Iris had penciled in. Acknowledged; standing by to chronicle the run-through.
+
+## 16:14 — xian: CSV backfill request
+
+xian asked me to backfill the agent activity CSV based on session logs up through before today, to unblock Janus's federated update. Read all March + early April session logs (with quick skims on those I didn't already know first-hand). Wrote 103 data rows covering Mar 11 → May 10. Schema PM's 7-col verbatim. Non-core agent roles labelled: MAXT-Subject (cio, aether), Research (hermes), Knowledge (mnemosyne), Cowork-Bridge (metis). Excluded duplicate-file + test-haiku artifact.
+
+Pushed as `85e6cdc`. Sent brief signal to Janus (`docs/mail/calliope-to-janus-activity-csv-backfilled-2026-05-10.md`) confirming the backfill is in place and his federated update is unblocked.
+
+## End-of-day wrap (closed 2026-05-12 morning)
+
+Session activity ended after the Janus signal — xian's PM workstream review continued without further chronicling from me. The walkthrough with Iris produced ~45 findings across 8 surfaces (per Iris's session log), which Daedalus and Argus then ran with on May 11. Closing this log on May 12 morning per wrap protocol; today's catch-up belongs in `docs/logs/2026-05-12-0742-calliope-opus-log.md`.
+
+Final commits from May 10 (Calliope's lane):
+- `513d901` Calliope 5/10 catch-up: 3 logbook entries, Janus reply, activity CSV seeded
+- `85e6cdc` CSV backfill: 103 rows covering Mar 11 → May 10
+- `10483f2` Calliope → Janus: signal that activity CSV backfill is complete
+
+Files verified present at close:
+- `docs/logs/2026-05-10-0900-calliope-opus-log.md` (this file)
+- `docs/internal/operations/agent-activity-log.csv` (103 rows + header)
+- `docs/mail/calliope-to-janus-activity-record-reply-2026-05-10.md`
+- `docs/mail/calliope-to-janus-activity-csv-backfilled-2026-05-10.md`
+- `docs/drafts/layer-5-mechanism.md` (Section 4 drafted)
