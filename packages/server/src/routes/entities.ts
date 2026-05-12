@@ -12,7 +12,7 @@ import {
   getChannelEntityCount,
 } from '../db/queries.js';
 import type { ModelId, EffortLevel } from '@klatch/shared';
-import { AVAILABLE_MODELS, ENTITY_COLORS, DEFAULT_ENTITY_ID } from '@klatch/shared';
+import { AVAILABLE_MODELS, ENTITY_COLORS, DEFAULT_ENTITY_ID, DEFAULT_MODEL } from '@klatch/shared';
 
 const VALID_EFFORT_LEVELS: EffortLevel[] = ['low', 'medium', 'high', 'xhigh', 'max'];
 
@@ -48,7 +48,7 @@ app.post('/entities', async (c) => {
     return c.json({ error: 'Entity name is required' }, 400);
   }
 
-  const entityModel = model || 'claude-opus-4-6';
+  const entityModel = model || DEFAULT_MODEL;
   if (!(entityModel in AVAILABLE_MODELS)) {
     return c.json({ error: `Invalid model: ${entityModel}` }, 400);
   }

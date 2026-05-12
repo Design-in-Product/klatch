@@ -1,6 +1,6 @@
 import { Hono } from 'hono';
 import Anthropic from '@anthropic-ai/sdk';
-import { AVAILABLE_MODELS, MODEL_ALIASES } from '@klatch/shared';
+import { AVAILABLE_MODELS, MODEL_ALIASES, DEFAULT_MODEL } from '@klatch/shared';
 import type { ModelId } from '@klatch/shared';
 
 const app = new Hono();
@@ -128,7 +128,7 @@ app.get('/models', async (c) => {
   return c.json({
     models,
     aliases: MODEL_ALIASES,
-    defaultModel: 'claude-opus-4-6',
+    defaultModel: DEFAULT_MODEL,
     source, // helpful for debugging: 'api', 'cache', or 'fallback'
   });
 });

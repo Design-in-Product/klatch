@@ -24,7 +24,7 @@ import { getDb } from '../db/index.js';
 import { getProject, getChannel, getEntity, getFile } from '../db/queries.js';
 import { saveFile } from '../files/storage.js';
 import { SUPPORTED_FORMAT_VERSIONS } from '../export/package-builder.js';
-import { DEFAULT_ENTITY_ID } from '@klatch/shared';
+import { DEFAULT_ENTITY_ID, DEFAULT_MODEL } from '@klatch/shared';
 import type { ChannelSource } from '@klatch/shared';
 
 export interface KlatchImportParams {
@@ -267,7 +267,7 @@ export function importKlatchPackage(params: KlatchImportParams): KlatchImportOut
       cc.name,
       layer4 || '',
       // Inherit model from first entity if present; default applied by schema if not
-      (Array.isArray(manifest.entities) && manifest.entities[0]?.model) || 'claude-opus-4-6',
+      (Array.isArray(manifest.entities) && manifest.entities[0]?.model) || DEFAULT_MODEL,
       cc.mode || 'roundtable',
       cc.type || 'chat',
       source,
@@ -301,7 +301,7 @@ export function importKlatchPackage(params: KlatchImportParams): KlatchImportOut
             e.id,
             e.name,
             e.handle || null,
-            e.model || 'claude-opus-4-6',
+            e.model || DEFAULT_MODEL,
             e.effort || 'high',
             e.prompt || '',
             e.color || '#3B82F6',

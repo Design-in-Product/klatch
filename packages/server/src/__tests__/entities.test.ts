@@ -75,7 +75,7 @@ describe('POST /api/entities', () => {
     const res = await req('POST', '/entities', { name: 'MinBot' });
     expect(res.status).toBe(201);
     const data = await res.json();
-    expect(data.model).toBe('claude-opus-4-6');
+    expect(data.model).toBe(DEFAULT_MODEL);
     expect(data.systemPrompt).toBe('You are a helpful assistant.');
   });
 

@@ -7,11 +7,18 @@ export const AVAILABLE_MODELS = {
 
 export type ModelId = keyof typeof AVAILABLE_MODELS;
 
-// Current default. Opus 4.7 plumbing is in place; default-flip decision pending xian.
-// Note: Opus 4.7 uses a new tokenizer producing 1×–1.35× tokens for equivalent input,
-// which will hit the compaction threshold (Round 17 set this to 160K) meaningfully
-// sooner. Worth a re-evaluation pass after a few real 4.7 channels run.
-export const DEFAULT_MODEL: ModelId = 'claude-opus-4-6';
+// Default model for new channels + new entities. Flipped 2026-05-12 (xian)
+// from 4-6 → 4-7. Note: 4.7 uses a new tokenizer producing 1×–1.35× tokens
+// for equivalent input, which will hit the compaction threshold (Round 17
+// set this to 160K) meaningfully sooner. Worth a re-evaluation pass after
+// a few real 4.7 channels run.
+//
+// On automation: this stays a manual constant by design. Anthropic doesn't
+// surface a "recommended default" signal in the Models API; the choice has
+// product implications (tokenizer, cost, behavior) that warrant a deliberate
+// decision per release. Future env-var override is the natural next step
+// when a hosted deployment needs to flip without redeploying.
+export const DEFAULT_MODEL: ModelId = 'claude-opus-4-7';
 
 // Legacy model ID mapping for backward compatibility
 export const MODEL_ALIASES: Record<string, ModelId> = {
