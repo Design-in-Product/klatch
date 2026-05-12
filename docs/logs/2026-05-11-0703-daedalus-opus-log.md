@@ -19,6 +19,84 @@ intel scans, read mail, then clear the two open spec questions from 4/28
 that I left dangling (format_version gating on import; empty-entities
 auto-attach on import).
 
+## Session arc summary
+
+Roughly 5 hours of work; shipped 7 commits:
+
+- `65db553` Iris Tier 1 + cross-cutting typography
+- `54e16be` Iris Tier 2 down payments
+- `de82ee0` Round 33 assignment memo to Argus
+- `7b85660` SDK 0.86.1 → 0.95.1, Hono 4.12.12 → 4.12.18
+- `ae7f264` Opus 4.7 plumbing (model + xhigh enum, default-flip pending)
+- `4b93f5a` Round 34: MicroReflection.validUntil
+- `06bba00` Round 35: claude.ai round-trip UUID dedup (Finding 1)
+
+Tests: started 1043 server, ended 1067 server (+24); 160 client; 1227 total.
+Zero regressions.
+
+## Status of the four "open items" xian named at end-of-day
+
+### 1. Opus 4.7 default-flip decision — **xian's call, still pending**
+
+Plumbing is shipped (commit `ae7f264`): model registered, `xhigh` effort
+enum added, per-model effort gating in place. The decision to flip
+`DEFAULT_MODEL` from `claude-opus-4-6` to `claude-opus-4-7` is xian's;
+my recommendation remains "wait for a few real 4.7 channels to run
+first, given the +35% tokenizer impact on the compaction threshold."
+
+No further work I can take here without his direction. Not a blocker.
+
+### 2. Finding 1 (claude.ai UUID-matching) — **shipped with conservative default**
+
+Iris's 4/28 memo on visible behavior (toast / dialog / silent / refuse)
+remains unanswered after 13 days; she's heads-down on Track 2. The
+underlying *correctness* fix didn't require her input — it's a dedup
+semantics issue, not a UX shape question. Shipped in Round 35
+(`06bba00`) with the most conservative default (silent attach via the
+existing skip-on-match path).
+
+Iris's decision still matters, but it now shapes only the UI
+affordance, not the dedup semantics. Whatever she chooses can layer on
+top of the now-correct match logic without rework.
+
+### 3. `memory_format: "flat"` → `"typed"` flip — **Step 11 territory**
+
+Spec already documents this as the evolution path (per
+`docs/plans/STEP-10-PHASE-1-PACKAGE-FORMAT.md` line 411–417: the
+three-sub-tier model from the April 12 Janus synthesis). Field set is
+documented: `type` (fact / decision / preference / episode), `valid_from`,
+`trust`, `source`.
+
+Not appropriate to start without Step 11 scoping. When xian's ready to
+scope Step 11 (Search), this is one of the inputs.
+
+### 4. UI "Invalidate this reflection" affordance — **deferred per Iris's triage**
+
+Tier 3 in Iris's 5/11 triage explicitly: "Don't patch any of these.
+They need the holistic design work." Specifically the entity manager
+redesign in Track 2 will surface this and related affordances.
+
+The schema slot is in place from Round 34 (`MicroReflection.validUntil`).
+When the UI lands, it just writes the timestamp. No backend prep needed
+beyond what's already shipped.
+
+## What's still actionable (none today, all queued behind external input)
+
+- **Argus Round 33** — assignment memo filed (`de82ee0`). Standalone test
+  work; not blocking me.
+- **Argus Round 34** — closing memo filed (`docs/mail/daedalus-to-argus-mempalace-followups-2026-05-11.md`).
+  Standalone.
+- **Argus Round 35** — net-new UUID round-trip fix; no formal assignment
+  memo, but the test scope is well-defined: extend Round 31b's fidelity
+  matrix to include the claude.ai-transport round-trip path. Argus can
+  pick this up alongside 33 or skip if 35's tests feel sufficient.
+
+## End of day
+
+Available. Inbox is clear of actionable mail; all four items xian named
+have been worked through to the extent possible without external
+input.
+
 ## 07:11 — Caught up
 
 ### Commits since 4/29
