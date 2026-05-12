@@ -91,3 +91,40 @@ Catch-up complete. Ready to discuss with xian. Likely pending items to surface:
 7. **Theseus's open MAXT assignment** — filed by Daedalus on 4/28, no movement since. Five scope items.
 
 That's the pending-items frame from my side.
+
+## 09:00 — xian replies on all five items
+
+xian's response acknowledged all five and gave direction:
+
+1. **Default-flip OK to ship**, but raised meta-question: process shouldn't be so manual; new models will keep coming.
+2. **Step 11 scoping** — work on it if I have ideas.
+3. **Before You Go** — remind him later today to read carefully (he wants to address it after day-job work).
+4. **Theseus's idleness** — function of his attention; he'll try to check in today; remind if not mentioned.
+5. **Fold PO patterns into role doc** (yes please) + behavioral rule: when not blocked, work on unblocked standing tasks; don't sit passively requiring re-prompting.
+
+## 09:05 — xian: "memo to Argus, yes please"
+
+Confirmed the Anthropic-memory/dreaming research spike memo I proposed for Argus. Heading to day job. Will check back.
+
+## 09:15 — Working through the unblocked task list
+
+Per the new "don't sit passively" rule, working in parallel through what's unblocked:
+
+### Done
+
+1. **Feedback memory saved**: `feedback_dont_sit_passively.md` + MEMORY.md index entry. Rule will persist across future sessions.
+2. **PO collaboration-patterns synthesis folded into role doc**: added new section 8 to `docs/agents/calliope.md` with three cross-scale threads (Show your work / Kind not Nice / Extracted over Designed), six workflow mechanisms (PLACEHOLDER, "you prompt me I write", expose-uncertainty-inline, scaffolds-look-like-scaffolds, attention-nudges, "not-ready" failure family), and an internal-vs-external code-switching note. Added section 9 with the new "don't sit passively" behavioral rule. Updated last-updated stamp.
+3. **Memo to Argus filed**: `docs/mail/calliope-to-argus-anthropic-memory-dreaming-research-spike-2026-05-12.md`. Frames the research spike as parallel to PM's Piper Alpha spike on Anthropic memory/dreaming impact. Four questions: before-migration absorption, during-migration UX surface, after-migration export shape, PM-dreaming-vs-Anthropic-dreaming producer attribution. CC to Janus for cross-pollination tracking.
+4. **Default-flip routing to Daedalus filed**: `docs/mail/calliope-to-daedalus-default-flip-approved-2026-05-12.md`. Approval to flip plus xian's process question as a candidate for a structured "new-candidate-default-model evaluation" artifact in the intel-sweep flow. Sketched but explicitly recommends waiting one more cycle (extracted-over-designed) before locking the artifact shape. CC Argus.
+5. **Step 11 scoping doc**: `docs/plans/STEP-11-SCOPING.md`. Reframes Step 11 around the assembly-layer positioning (post-Dreaming). Four phases proposed (Search baseline / Typed memory evolution / Multi-producer composition / Cross-channel synthesis surface). Open questions for xian, including the explicit acknowledgment that the doc is somewhat designed-in-advance and the Argus spike's findings should reshape it. NOT a sprint plan or design doc — pre-work for proper scoping after the spike returns.
+
+### Reminders saved for end-of-day
+
+- **Before You Go**: xian wants to read carefully today after day-job work. Remind him when end-of-day check-in lands.
+- **Theseus check-in**: xian intends to do this today. If he doesn't mention having done it by end-of-day, remind him.
+
+### Still pending on the standing list
+
+- **Process-improvement memo on automated model-evaluation** to Argus + Daedalus — flagged in the Daedalus default-flip memo as a candidate; explicit recommendation is to wait one more cycle (extracted-over-designed). Not drafting today.
+- **May 12 logbook entry** — defer until day-end when the day's work is more fully visible.
+- **Entity reframe blog post drafting** — on the April 28 blog-mining list as the natural next post after Before You Go lands. Not strictly blocked, but downstream of editorial sequencing. Worth evaluating whether to start drafting in parallel.
