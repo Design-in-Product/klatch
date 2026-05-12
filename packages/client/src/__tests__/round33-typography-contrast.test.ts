@@ -149,29 +149,34 @@ describe('Round 33 typography: light theme contrast', () => {
     expect(ratio).toBeGreaterThanOrEqual(4.5);
   });
 
-  // ⚠️ FINDING (Round 33, 5/11): light-theme --c-faint (#9ca3af on #f8fafc)
-  // contrast is 2.43:1 — fails AA-large (≥3.0). The token is used as
-  // actual TEXT in `MessageList.tsx:283` ("Send a message to begin." empty
-  // state) and `ImportDialog.tsx:936` (text-xs body), not just decoration.
-  // The Iris triage commit message described faint as "decoration/
-  // placeholders"; usage tells a different story. Routed to Iris in
-  // `argus-to-iris-faint-token-finding-2026-05-11.md`.
-  // The skipped AA assertion below is the contract we want; the passing
-  // pin-current-value below it is the regression guard until the fix lands.
-  it.skip('--c-faint on light --c-app meets AA-large (≥ 3.0:1) — currently 2.43:1, routed to Iris', () => {
+  // Round 33 finding (Argus, 5/11) → Iris resolution (5/12,
+  // `iris-to-daedalus-faint-token-reclassify-2026-05-12.md`):
+  //
+  // Light-theme `--c-faint` (#9ca3af on #f8fafc) contrast is 2.43:1 —
+  // below WCAG AA-large (≥3.0). Resolution = option 2 (reclassify
+  // usage sites), not option 1 (bump the token). The three content-
+  // bearing surfaces (MessageList empty-state body, date separator
+  // labels, ImportDialog helper copy) moved from `text-faint` →
+  // `text-muted`. The token stays as a true decoration tier.
+  //
+  // Both tests below pin the new contract — the token is intentionally
+  // sub-AA-large because it's decoration only, and a "tweak the gray"
+  // refactor that pushes it into AA territory (or makes contrast
+  // worse) should force a conscious decision.
+  it('--c-faint on light --c-app is sub-AA-large by design (decoration tier)', () => {
+    // If this test fails because the ratio is now ≥ 3.0, the token has
+    // drifted out of the decoration tier; either revert the change OR
+    // promote `--c-faint` to a content-bearing tier (and audit usage).
     const fg = readToken(LIGHT, '--c-faint');
-    expect(contrastRatio(fg, lightApp)).toBeGreaterThanOrEqual(3.0);
+    expect(contrastRatio(fg, lightApp)).toBeLessThan(3.0);
   });
 
-  it('--c-faint on light --c-app current ratio is pinned (regression guard)', () => {
-    // Pin the post-Iris-triage value so a future "tweak the gray" doesn't
-    // silently make the contrast worse than today's already-failing value.
-    // When Iris/Daedalus fix the AA gap, update this pin to the new value
-    // and re-enable the skipped test above.
+  it('--c-faint on light --c-app maintains a contrast floor (regression guard)', () => {
+    // Floor: don't let the decoration tier drop below today's value
+    // either. Together with the test above, the token's contrast is
+    // pinned in the decoration band [2.4, 3.0).
     const fg = readToken(LIGHT, '--c-faint');
-    const ratio = contrastRatio(fg, lightApp);
-    expect(ratio).toBeGreaterThanOrEqual(2.4);
-    expect(ratio).toBeLessThan(3.0); // sentinel: this asserts the gap exists; flip when fixed
+    expect(contrastRatio(fg, lightApp)).toBeGreaterThanOrEqual(2.4);
   });
 });
 

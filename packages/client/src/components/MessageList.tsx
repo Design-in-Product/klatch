@@ -280,7 +280,7 @@ export function MessageList({
         <div className="text-center mt-20 flex flex-col items-center gap-3">
           <KlatchLogo size={48} className="text-faint" />
           <p className="text-lg text-muted">Start a conversation</p>
-          <p className="text-sm text-faint">Send a message to begin.</p>
+          <p className="text-sm text-muted">Send a message to begin.</p>
         </div>
       )}
       {messages.map((msg, idx) => {
@@ -325,7 +325,7 @@ function ForkMarker({ date }: { date?: string }) {
   return (
     <div className="flex items-center gap-3 py-3">
       <div className="flex-1 border-t border-line" />
-      <span className="text-xs text-faint font-medium whitespace-nowrap">{label}</span>
+      <span className="text-xs text-muted font-medium whitespace-nowrap">{label}</span>
       <div className="flex-1 border-t border-line" />
     </div>
   );

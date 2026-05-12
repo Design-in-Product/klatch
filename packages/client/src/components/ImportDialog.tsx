@@ -933,7 +933,7 @@ export function ImportDialog({ isOpen, onClose, onImported, onBulkImported, onCh
                           <div className="text-sm text-muted group-hover:text-secondary transition-colors">
                             Choose ZIP file
                           </div>
-                          <div className="text-xs text-faint">
+                          <div className="text-xs text-muted">
                             claude.ai &rarr; Settings &rarr; Export Data
                           </div>
                         </div>

@@ -125,8 +125,10 @@ describe('MessageList — fork marker', () => {
       <MessageList {...defaultProps} messages={messages} channelSource="claude-code" />
     );
 
-    // The marker should appear once
-    const markers = container.querySelectorAll('.text-faint.font-medium');
+    // The marker should appear once. Class is text-muted after the 5/12
+    // faint-token reclassify (date separator labels moved out of the
+    // decoration tier per Iris).
+    const markers = container.querySelectorAll('.text-muted.font-medium');
     const forkMarkers = Array.from(markers).filter((el) =>
       el.textContent?.includes('Continued in Klatch')
     );
