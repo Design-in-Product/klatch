@@ -47,7 +47,7 @@ interface ClaudeAiMemory {
 
 // ── Conversation conversion ──────────────────────────────────
 
-function messagesToClaudeAi(messages: Message[], channelName: string): ClaudeAiConversation {
+function messagesToClaudeAi(messages: Message[], channelName: string, channelId?: string): ClaudeAiConversation {
   const chatMessages: ClaudeAiMessage[] = messages.map((msg) => ({
     uuid: msg.originalId || msg.id,
     text: msg.content,
@@ -59,7 +59,12 @@ function messagesToClaudeAi(messages: Message[], channelName: string): ClaudeAiC
   const lastAt = messages.length > 0 ? (messages[messages.length - 1].originalTimestamp || messages[messages.length - 1].createdAt) : firstAt;
 
   return {
-    uuid: uuidv4(),
+    // Preserve the canonical Klatch channel id when present, so a
+    // Klatch → claude.ai → Klatch round-trip is idempotent. claude.ai's
+    // own conversation UUIDs are opaque to us; reusing the Klatch UUID
+    // matches their UUID shape and gives the re-import path an
+    // unambiguous match key.
+    uuid: channelId || uuidv4(),
     name: channelName,
     created_at: firstAt,
     updated_at: lastAt,
@@ -145,9 +150,10 @@ export function adaptToClaudeAi(
   layer2Content?: string,
   fileContents?: Map<string, string>,
 ): ClaudeAiExportData {
-  // Build conversation
+  // Build conversation — preserve channel id for idempotent round-trip
   const channelName = manifest.conversation_context?.name || 'Exported from Klatch';
-  const conversation = messagesToClaudeAi(messages, channelName);
+  const channelId = manifest.conversation_context?.id;
+  const conversation = messagesToClaudeAi(messages, channelName, channelId);
 
   // Build project
   const project = projectToClaudeAi(manifest, fileContents || new Map());

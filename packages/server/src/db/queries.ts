@@ -545,6 +545,12 @@ export function deleteProject(id: string): boolean {
  * Find or create a project by source identity.
  * For claude.ai imports: matches by original project UUID in source_metadata.
  * For Claude Code imports: matches by cwd in source_metadata.
+ *
+ * Klatch-to-claude.ai-to-Klatch round-trip: if `matchValue` happens to be
+ * the canonical Klatch project id (i.e., the user re-imported a Klatch
+ * export rendered as claude.ai), match the existing row by `projects.id`
+ * directly. This closes Theseus's 4/27 Finding 1 (duplicate project on
+ * re-import) without forcing the user through `/import/klatch`.
  */
 export function findOrCreateProject(
   name: string,
@@ -555,7 +561,11 @@ export function findOrCreateProject(
   matchValue: string,
   memory: string = ''
 ): Project {
-  // Try to find existing project by source identity
+  // First-pass: canonical Klatch project id match (round-trip from Klatch export)
+  const byId = getProject(matchValue);
+  if (byId) return byId;
+
+  // Source-identity match (true claude-ai / claude-code origin)
   const existing = getDb()
     .prepare(`SELECT * FROM projects WHERE json_valid(source_metadata) AND json_extract(source_metadata, '$.${matchKey}') = ?`)
     .get(matchValue) as any;
@@ -697,9 +707,18 @@ export function importSession(params: ImportSessionParams): ImportResult {
 
 /**
  * Find a channel that was imported from the same original session.
- * Uses json_extract on source_metadata to match originalSessionId.
+ *
+ * Two-pass match:
+ *  1) Canonical Klatch channel id — closes the Klatch-to-claude.ai-to-
+ *     Klatch round-trip case where the exported conversation UUID is the
+ *     Klatch channel id itself.
+ *  2) Source-identity match (`source_metadata.originalSessionId`) — true
+ *     claude-ai / claude-code origin imports.
  */
 export function findChannelByOriginalSessionId(sessionId: string): Channel | undefined {
+  const byId = getChannel(sessionId);
+  if (byId) return byId;
+
   const row = getDb()
     .prepare("SELECT * FROM channels WHERE json_valid(source_metadata) AND json_extract(source_metadata, '$.originalSessionId') = ?")
     .get(sessionId) as any;
