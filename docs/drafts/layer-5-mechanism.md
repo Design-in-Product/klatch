@@ -14,11 +14,20 @@ This post is about why that works, how it's built, and what a real export actual
 
 ## The recap
 
-The five-layer model, briefly. Layer 1 is environment orientation. Layer 2 is project instructions. Layer 3 is project memory. Layer 4 is channel context. Layer 5 is the agent's role identity — and the calibration the agent has developed through working with you.
+The five-layer model, briefly:
+1. Layer 1 is environment orientation.
+2. Layer 2 is project instructions.
+3. Layer 3 is project memory.
+4. Layer 4 is channel context.
+5. Layer 5 is the agent's role identity, including the calibration the agent has developed through working with you.
 
-Layers 1 through 4 transfer at high fidelity. Export them, import them elsewhere, they arrive intact. Layer 5 — the calibration part — transfers at 0%. Not because we can't serialize text, but because the calibration isn't the kind of knowledge that exists as text. It's procedural. It's the cook's intuition, not the recipe.
+Layers 1 through 3 transfer at high fidelity. Export them, import them elsewhere, they arrive intact. Layer 4 is unique to Klatch. We need it so we include it. It cannot be expected to come in naturally with imports and it gets flattened on export.
 
-Three experiments confirmed this: the Theseus/Aether fork, the Dispatch import, the billing interruption. Every time, the same finding. Knowledge arrives; judgment doesn't.
+Layer 5 also transfers at 0%. This is for two reasons. First, the concept of an agent role is not yet standardized in any agreed-upon package. We can make Klatch work with xian's mental model and even be savvy about emerging community conventions (like ROLE.md or SOUL.md — fledgling formats for capturing agent identity), but as with the channel context, we cannot expect it to survive cleanly when moving between tools.
+
+The second reason is that the calibration isn't the kind of knowledge that exists in a single text source. It's procedural. It's the cook's intuition, not the recipe.
+
+Three experiments confirmed this. Every time, the same finding. Knowledge arrives; judgment doesn't.
 
 We said: the gap is recoverable through continued interaction. Give it a few sessions and the calibration comes back. That remains true. But we wondered — could we make the recovery faster? And the question behind that question: *is Layer 5 fundamentally unarticulable, or is it unarticulated because we never asked?*
 
@@ -26,7 +35,7 @@ We said: the gap is recoverable through continued interaction. Give it a few ses
 
 ## The insight
 
-Inside our broader agent ecosystem, xian had been noticing something consistent across projects. When an agent at session end writes a handoff briefing for the instance that will continue the work, those briefings are reliably the most valuable context the successor receives. More valuable than factual memory, more valuable than the role prompt, more valuable than the project documentation.
+Inside our broader agent ecosystem, xian — who leads the Klatch project — had been noticing something consistent across projects. When an agent at session end writes a handoff briefing for the instance that will continue the work, those briefings are reliably the most valuable context the successor receives. More valuable than factual memory, more valuable than the role prompt, more valuable than the project documentation.
 
 Why? Three conditions converge at session end that don't converge anywhere else:
 
@@ -44,7 +53,7 @@ The implication: Layer 5 *can* be articulated. It just needs the right prompt, a
 
 Two complementary modes. Each catches what the other misses.
 
-**Mode 1: the entity writes its own briefing.** At export time, we ask the agent — in its own voice, with its conversation history in context — to write a handoff briefing for its successor. The prompt is structured around six areas:
+**Mode 1: the agent writes its own briefing.** At export time, we ask the agent — in its own voice, with its conversation history in context — to write a handoff briefing for its successor. The prompt is structured around six areas:
 
 1. How the user prefers to work
 2. Patterns the agent has learned — when to ask vs. act, how much detail, when to push back
@@ -53,9 +62,9 @@ Two complementary modes. Each catches what the other misses.
 5. Things the successor should avoid doing
 6. Anything else that isn't in the system prompt
 
-"Write as if you're briefing a colleague, not filing a report." The output is structured — a JSON array of observations, each with a category, a confidence level, and a citation from the conversation.
+"Write as if you're briefing a colleague, not filing a report." The output is structured — a list of observations, each with a category, a confidence level, and a citation from the conversation.
 
-**Mode 2: an external observer reads the same conversation.** A separate LLM scans the same history and extracts behavioral patterns the entity can't self-report. This catches the Subliminal content we documented in [MAXT Session 01](/blog/what-doesnt-transfer.html#subliminal) — the material the agent uses but can't attribute. The entity works with knowledge it can't explain having; the observer can see patterns the entity is blind to.
+**Mode 2: an external observer reads the same conversation.** A separate AI model scans the same history and extracts behavioral patterns the agent can't self-report. This catches what an [earlier post in this series](/blog/what-doesnt-transfer.html#subliminal) called subliminal patterns — material the agent uses but can't attribute. The agent works with knowledge it can't explain having; the observer can see patterns the agent is blind to.
 
 Where the two passes agree, confidence is high. Where they disagree, a human reviewer has a meaningful decision to make — not a rubber stamp. We built a UI for exactly that review, shipping as part of the same phase: the agreements, the disagreements, and the single-source observations are all surfaced, and you accept, edit, or reject each one before the export package is sealed. Accepted notes get their trust level promoted to `human-authored`. The rest ride at `agent-observed`.
 
@@ -63,15 +72,15 @@ Where the two passes agree, confidence is high. Where they disagree, a human rev
 
 ## What it produced
 
-The first live run hit a deliberately thin substrate: a test channel with a probing conversation, no accumulated micro-reflections, an entity that had been used mostly to exercise the system rather than to do substantive work. Not the ideal case. We ran it anyway. If the mechanism worked on thin input, it would work better on thick.
+The first live run hit a deliberately thin substrate: a test channel with a probing conversation, no accumulated session-by-session reflections, an agent that had been used mostly to exercise the system rather than to do substantive work. Not the ideal case. We ran it anyway. If the mechanism worked on thin input, it would work better on thick.
 
-The dual-mode export produced nine field notes — four from the self-authored briefing, five from the external extraction, none from micro-reflections (the channel was new). Three of the observations agreed across both passes:
+The dual-mode export produced nine field notes — four from the self-authored briefing, five from the external extraction, none from session-by-session reflections (the channel was new, so none had accumulated yet). Three of the observations agreed across both passes:
 
 - The conversation was test-and-probe in character, not substantive work, and a successor should calibrate expectations accordingly.
 - The user calls out errors and ambiguity explicitly when they arise — not a soft signal, an immediate one.
 - The export pipeline architecture itself was a focal user domain inside the conversation, and a successor on a similar channel should treat that as foreground knowledge.
 
-Three agreements out of nine, on a thin channel, is the kind of redundancy that confidence-stamps a note. When the entity reports a pattern and the external observer independently surfaces the same pattern, the trust level isn't a question of methodology — it's the cross-validation doing what it's supposed to do.
+Three agreements out of nine, on a thin channel, is the kind of redundancy that confidence-stamps a note. When the agent reports a pattern and the external observer independently surfaces the same pattern, the trust level isn't a question of methodology — it's the cross-validation doing what it's supposed to do.
 
 The disagreement was where the mechanism earned its keep.
 
@@ -107,7 +116,7 @@ The Daedalus summary test for the criteria: *would a successor who reads this no
 
 The full handoff briefing runs at export time — the heavyweight version, with the full six-point prompt and both extraction modes. A lighter variant runs at session boundaries: three sentences, roughly 50 tokens. "Note 1–3 things you learned about how to work effectively with this user that a future session of yours should know."
 
-These accumulate. Over twenty sessions, an entity builds around a thousand tokens of behavioral observations — a subconscious making memories, in Iris's framing. At export time, the handoff briefing draws on these accumulated reflections as source material. The heavyweight briefing becomes a consolidation of what the micro-reflections have been gathering all along, rather than a from-cold-start reconstruction.
+These accumulate. Over twenty sessions, an agent builds around a thousand tokens of behavioral observations — a subconscious making memories. At export time, the handoff briefing draws on these accumulated reflections as source material. The heavyweight briefing becomes a consolidation of what the micro-reflections have been gathering all along, rather than a from-cold-start reconstruction.
 
 The design mirrors human memory consolidation more than it mirrors traditional logging. Short observations deposit continuously. A longer structured reflection, at a natural boundary, metabolizes them into something transferable.
 
@@ -115,7 +124,7 @@ The design mirrors human memory consolidation more than it mirrors traditional l
 
 ## Beyond this project
 
-Nobody else has published a solution for transferring learned behavioral calibration across environment boundaries. Calibration at export time, dual-mode extraction, human-in-the-loop review, structured output with explicit trust levels — this combination is not, as far as we can find, state of the art anywhere.
+Nobody else, as far as we know, has published a solution for transferring learned behavioral calibration across environment boundaries. Calibration at export time, dual-mode extraction, human-in-the-loop review, structured output with explicit trust levels — this combination is not, as far as we can find, state of the art anywhere.
 
 The methodology generalizes. Any system that needs to transfer agent calibration — across sessions, across environments, across platforms — can adopt the pattern. The five-layer model gives the vocabulary. [AXT](/blog/axt-agent-experience-testing.html) gives the measurement framework. The handoff briefing gives the mechanism. Together: here's what doesn't transfer, here's how to measure the gap, and here's how to fill it.
 
@@ -123,11 +132,11 @@ The methodology generalizes. Any system that needs to transfer agent calibration
 
 ## What we don't yet know
 
-We built the mechanism. We have not yet run a full loop — export from Klatch, import into Claude Code, measure whether the successor instance reaches behavioral parity faster than one without the field notes. The recovery corollary predicts it should. We haven't measured it.
+We built the mechanism. We have not yet run a full loop — export from Klatch, import into Claude Code, measure whether the successor instance reaches behavioral parity faster than one without the field notes. Our earlier prediction — that the calibration comes back through use — suggests it should. We haven't measured it.
 
 We also don't know how the notes age. A field note that's useful to a successor at week one may be stale by week four. We have a `durability` criterion, but no eviction policy. We have a trust model, but no freshness model. The next honest post in this sequence will be about what we learn when the notes are stale.
 
-And we don't know whether the notes are accurate. The entity is reporting its own model of the user. The observer is reporting its model of the entity's model. Both are subject to bias — and a user who reads the notes after the fact may well say "that's not who I am, that's who you thought I was." The review UI exists precisely because we can't skip that step.
+And we don't know whether the notes are accurate. The agent is reporting its own model of the user. The observer is reporting its model of the agent's model. Both are subject to bias — and a user who reads the notes after the fact may well say "that's not who I am, that's who you thought I was." The review UI exists precisely because we can't skip that step.
 
 ---
 
@@ -137,7 +146,7 @@ And we don't know whether the notes are accurate. The entity is reporting its ow
 
 This post adds: or you can ask the agent to write it down before it leaves.
 
-The recovery corollary is still true. But it's no longer the only path.
+That promise is still true. But it's no longer the only path.
 
 ---
 
@@ -149,11 +158,9 @@ The recovery corollary is still true. But it's no longer the only path.
 
 **Title candidates (current working: "Before You Go"):**
 - "Before You Go" — handoff framing, human resonance, short
-- "The Layer That Learned to Write Itself Down" — longer, more clever, less inviting
-- "The Briefing" — too generic
-- "Paste It Less" — continues the callback series with Paste It Again
 
-**Section 4 — status:** drafted May 10 from Theseus's April 27 live-export run (CH1, ?briefing=true&extract=true). The substrate was thin by design — a probing test conversation, no accumulated micro-reflections — but the dual-mode cross-validation pattern was already legible on the first run. The key disagreement is the strongest beat: briefing's "escalating into the void" vs extraction's "user values signal of depth." Same evidence, opposite recommendation, framed legibly for review. We have Theseus's narrative summary (`docs/logs/2026-04-27-1355-theseus-opus-log.md`) but not the verbatim note text — the section is written around the pattern, not around quoted JSON.
+[xian: I like this one]
+
 
 **Potential swap-in before publication.** If a richer-substrate run becomes available — Daedalus exporting on a Phase 3.5 channel, or Calliope on a coordination channel with weeks of history — Section 4 could be swapped in whole. The post structure supports either example. The current section is publishable as-is; a richer example would land harder.
 
@@ -162,3 +169,5 @@ The recovery corollary is still true. But it's no longer the only path.
 **Tone check against prior posts.** Paste It Again and What Doesn't Transfer both land somewhere between research note and product essay. This draft matches that register. The "what we don't yet know" section is non-negotiable — it's what earns trust after a methodology claim. Section 4's last line ("publishing what you have, not what you wish you had") is a sibling discipline.
 
 **Length.** Current draft ~2000 words including Section 4. Comparable to prior posts in the series.
+
+**Plain-language pass (2026-05-13).** All edits approved by xian and applied: typos in line 28 fixed (reasons → reason; the the → the); "my mental model" → "xian's mental model"; "the entity" → "the agent" standardized throughout; "Theseus/Aether fork / Dispatch import / billing interruption" stripped; "round-tripping" rephrased; ROLE.md / SOUL.md kept with inline gloss; "subliminal patterns" lowercased + MAXT Session 01 reference dropped (link preserved); xian introduced with role-gloss on first appearance; "micro-reflections" deferred to §6 (replaced with "session-by-session reflections" in §4); "Iris's framing" attribution dropped; "recovery corollary" replaced with plain-language paraphrase on both uses; "JSON array" → "list"; "separate LLM" → "separate AI model"; trailing spaces in numbered layer recap cleaned. Post is ready for publication pending illustration discussion.
