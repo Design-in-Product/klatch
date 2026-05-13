@@ -1,0 +1,59 @@
+      <svg viewBox="0 0 640 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="transfer-title">
+        <title id="transfer-title">Five layers shown as horizontal bars — the first four are solid, the fifth is an empty outline with a dashed border</title>
+
+        <rect width="640" height="320" fill="#f8fafc"/>
+
+        <!-- Source column label -->
+        <text x="200" y="30" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif" font-size="11" font-weight="700" fill="#334155" letter-spacing="0.06em">SOURCE</text>
+
+        <!-- Destination column label -->
+        <text x="460" y="30" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif" font-size="11" font-weight="700" fill="#334155" letter-spacing="0.06em">DESTINATION</text>
+
+        <!-- Arrow -->
+        <line x1="300" y1="26" x2="360" y2="26" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+        <defs>
+          <marker id="arrowhead" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+            <polygon points="0 0, 8 3, 0 6" fill="#94a3b8"/>
+          </marker>
+        </defs>
+
+        <!-- Layer 1 -->
+        <rect x="100" y="48" width="200" height="32" rx="3" fill="#dde4f0"/>
+        <text x="200" y="68" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif" font-size="10" font-weight="600" fill="#334155">L1 Kit Briefing</text>
+        <rect x="360" y="48" width="200" height="32" rx="3" fill="#dde4f0"/>
+        <text x="460" y="68" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif" font-size="10" font-weight="600" fill="#334155">L1 Kit Briefing</text>
+        <text x="580" y="68" font-family="ui-sans-serif, system-ui, sans-serif" font-size="10" fill="#22c55e" font-weight="700">fresh</text>
+
+        <!-- Layer 2 -->
+        <rect x="100" y="88" width="200" height="32" rx="3" fill="#b0bfd3"/>
+        <text x="200" y="108" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif" font-size="10" font-weight="600" fill="#1e293b">L2 Instructions</text>
+        <rect x="360" y="88" width="200" height="32" rx="3" fill="#b0bfd3"/>
+        <text x="460" y="108" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif" font-size="10" font-weight="600" fill="#1e293b">L2 Instructions</text>
+        <text x="580" y="108" font-family="ui-sans-serif, system-ui, sans-serif" font-size="10" fill="#22c55e" font-weight="700">100%</text>
+
+        <!-- Layer 3 -->
+        <rect x="100" y="128" width="200" height="32" rx="3" fill="#7a94ab"/>
+        <text x="200" y="148" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif" font-size="10" font-weight="600" fill="#ffffff">L3 Memory</text>
+        <rect x="360" y="128" width="200" height="32" rx="3" fill="#7a94ab"/>
+        <text x="460" y="148" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif" font-size="10" font-weight="600" fill="#ffffff">L3 Memory</text>
+        <text x="580" y="148" font-family="ui-sans-serif, system-ui, sans-serif" font-size="10" fill="#22c55e" font-weight="700">100%</text>
+
+        <!-- Layer 4 -->
+        <rect x="100" y="168" width="200" height="32" rx="3" fill="#4f6d84"/>
+        <text x="200" y="188" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif" font-size="10" font-weight="600" fill="#ffffff">L4 Session Context</text>
+        <rect x="360" y="168" width="200" height="32" rx="3" fill="#4f6d84"/>
+        <text x="460" y="188" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif" font-size="10" font-weight="600" fill="#ffffff">L4 Session Context</text>
+        <text x="580" y="188" font-family="ui-sans-serif, system-ui, sans-serif" font-size="10" fill="#64748b" font-weight="600">n/a</text>
+
+        <!-- Layer 5 — the gap -->
+        <rect x="100" y="208" width="200" height="32" rx="3" fill="#1e293b"/>
+        <text x="200" y="228" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif" font-size="10" font-weight="600" fill="#ffffff">L5 Calibration</text>
+        <rect x="360" y="208" width="200" height="32" rx="3" fill="none" stroke="#EF4444" stroke-width="2" stroke-dasharray="6,4"/>
+        <text x="460" y="228" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif" font-size="10" font-weight="600" fill="#EF4444">L5 Calibration</text>
+        <text x="580" y="228" font-family="ui-sans-serif, system-ui, sans-serif" font-size="10" fill="#EF4444" font-weight="700">0%</text>
+
+        <!-- Bottom note -->
+        <text x="320" y="275" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif" font-size="11" fill="#64748b" font-style="italic">Information transfers. Judgment doesn't.</text>
+        <text x="320" y="295" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif" font-size="10" fill="#94a3b8">The gap is recoverable — but not automatic.</text>
+
+      </svg>

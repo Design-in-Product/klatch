@@ -1,0 +1,31 @@
+      <svg viewBox="0 0 640 240" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="room-title">
+        <title id="room-title">A well-lit room with no furniture</title>
+        <!-- Background -->
+        <rect width="640" height="240" fill="#f8fafc"/>
+        <!-- Ceiling -->
+        <polygon points="0,0 180,55 460,55 640,0" fill="#f8fafc"/>
+        <!-- Back wall -->
+        <rect x="180" y="55" width="280" height="110" fill="#ffffff"/>
+        <!-- Left wall -->
+        <polygon points="0,0 180,55 180,165 0,240" fill="#f3f6f9"/>
+        <!-- Right wall -->
+        <polygon points="460,55 640,0 640,240 460,165" fill="#f3f6f9"/>
+        <!-- Floor -->
+        <polygon points="0,240 180,165 460,165 640,240" fill="#edf0f5"/>
+        <!-- Back wall edges -->
+        <line x1="180" y1="55" x2="180" y2="165" stroke="#dde3ed" stroke-width="1.5"/>
+        <line x1="460" y1="55" x2="460" y2="165" stroke="#dde3ed" stroke-width="1.5"/>
+        <line x1="180" y1="55" x2="460" y2="55" stroke="#dde3ed" stroke-width="1.5"/>
+        <line x1="180" y1="165" x2="460" y2="165" stroke="#dde3ed" stroke-width="1.5"/>
+        <!-- Perspective corner lines -->
+        <line x1="0" y1="0" x2="180" y2="55" stroke="#e8edf3" stroke-width="1"/>
+        <line x1="640" y1="0" x2="460" y2="55" stroke="#e8edf3" stroke-width="1"/>
+        <line x1="0" y1="240" x2="180" y2="165" stroke="#e8edf3" stroke-width="1"/>
+        <line x1="640" y1="240" x2="460" y2="165" stroke="#e8edf3" stroke-width="1"/>
+        <!-- Window -->
+        <rect x="263" y="72" width="114" height="76" rx="2" fill="#eef2ff" stroke="#6366f1" stroke-width="1.5"/>
+        <line x1="263" y1="110" x2="377" y2="110" stroke="#6366f1" stroke-width="1" stroke-opacity="0.4"/>
+        <line x1="320" y1="72" x2="320" y2="148" stroke="#6366f1" stroke-width="1" stroke-opacity="0.4"/>
+        <!-- Light from window on floor -->
+        <polygon points="255,165 385,165 445,240 195,240" fill="#eef2ff" fill-opacity="0.45"/>
+      </svg>

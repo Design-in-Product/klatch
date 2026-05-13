@@ -1,0 +1,40 @@
+      <svg viewBox="0 0 640 330" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="pace-title">
+        <title id="pace-title">Five prompt assembly layers as pace layers — kit briefing at top (fastest, narrowest), entity prompt at bottom (slowest, widest)</title>
+
+        <rect width="640" height="330" fill="#f8fafc"/>
+
+        <!-- Layer 1: Kit Briefing — narrowest, lightest, dark text -->
+        <polygon points="230,20 490,20 511,65 209,65" fill="#dde8f2"/>
+        <line x1="209" y1="65" x2="511" y2="65" stroke="#b5c8d8" stroke-width="0.75"/>
+        <text x="360" y="38" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif" font-size="10" font-weight="500" fill="#334155" letter-spacing="0.08em">LAYER 1</text>
+        <text x="360" y="54" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif" font-size="14" font-weight="700" fill="#1e293b">Kit Briefing</text>
+
+        <!-- Layer 2: Project Instructions -->
+        <polygon points="209,65 511,65 536,118 184,118" fill="#b5c8d8"/>
+        <line x1="184" y1="118" x2="536" y2="118" stroke="#8aa4b8" stroke-width="0.75"/>
+        <text x="360" y="84" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif" font-size="10" font-weight="500" fill="#1e293b" letter-spacing="0.08em">LAYER 2</text>
+        <text x="360" y="99" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif" font-size="14" font-weight="700" fill="#1e293b">Project Instructions</text>
+        <text x="360" y="113" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif" font-size="11" fill="#1e293b" font-style="italic">CLAUDE.md · conventions · rules</text>
+
+        <!-- Layer 3: Project Memory — mid-tone, dark text for contrast -->
+        <polygon points="184,118 536,118 562,175 158,175" fill="#8aa4b8"/>
+        <line x1="158" y1="175" x2="562" y2="175" stroke="#4a6175" stroke-width="0.75"/>
+        <text x="360" y="137" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif" font-size="10" font-weight="500" fill="#1e293b" letter-spacing="0.08em">LAYER 3</text>
+        <text x="360" y="152" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif" font-size="14" font-weight="700" fill="#1e293b">Project Memory</text>
+        <text x="360" y="167" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif" font-size="11" fill="#1e293b" font-style="italic">facts · state · team · decisions</text>
+
+        <!-- Layer 4: Channel Addendum — dashed bottom edge, often empty -->
+        <polygon points="158,175 562,175 589,232 131,232" fill="#4a6175"/>
+        <line x1="131" y1="232" x2="589" y2="232" stroke="#334155" stroke-width="0.75" stroke-dasharray="6,4"/>
+        <text x="360" y="194" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif" font-size="10" font-weight="500" fill="#e2e8f0" letter-spacing="0.08em">LAYER 4</text>
+        <text x="360" y="210" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif" font-size="14" font-weight="700" fill="#ffffff">Channel Addendum</text>
+        <text x="360" y="225" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif" font-size="11" fill="#e2e8f0" font-style="italic">session focus · often empty</text>
+
+        <!-- Layer 5: Entity Prompt — widest, darkest, bedrock -->
+        <polygon points="131,232 589,232 628,310 92,310" fill="#1e293b"/>
+        <line x1="92" y1="310" x2="628" y2="310" stroke="#1e293b" stroke-width="1"/>
+        <text x="360" y="254" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif" font-size="10" font-weight="500" fill="#94a3b8" letter-spacing="0.08em">LAYER 5</text>
+        <text x="360" y="272" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif" font-size="14" font-weight="700" fill="#f1f5f9">Entity Prompt</text>
+        <text x="360" y="289" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif" font-size="11" fill="#94a3b8" font-style="italic">identity · persona · who you are</text>
+
+      </svg>

@@ -1,0 +1,55 @@
+<svg viewBox="0 0 640 340" xmlns="http://www.w3.org/2000/svg" role="img" width="1200" height="630" aria-labelledby="handoff-title" aria-describedby="handoff-desc">
+  <title id="handoff-title">A folder of field notes left on a desk, with one card pinned, beside a fresh notebook for the next shift</title>
+  <desc id="handoff-desc">A still-life illustration in muted slate tones. A desk surface holds a labeled folder marked FIELD NOTES with three index cards stacked on top. One card has a small red pin in its corner — the note that has been reviewed and approved. To the right sits a fresh, closed notebook waiting for whoever comes next. A desk lamp's soft glow falls across the scene.</desc>
+
+  <rect width="640" height="340" fill="#f8fafc"/>
+  <rect x="0" y="0" width="640" height="180" fill="#f1f5f9"/>
+
+  <polygon points="120,92 70,182 170,182" fill="#fef3c7" opacity="0.55"/>
+  <polygon points="104,92 136,92 128,68 112,68" fill="#4a6175"/>
+  <line x1="104" y1="92" x2="136" y2="92" stroke="#7a94ab" stroke-width="1"/>
+  <rect x="118" y="92" width="4" height="88" fill="#4a6175"/>
+  <ellipse cx="120" cy="182" rx="22" ry="4" fill="#4a6175"/>
+
+  <polygon points="80,180 560,180 620,280 20,280" fill="#dde4f0"/>
+  <polygon points="20,280 620,280 624,284 16,284" fill="#b0bfd3"/>
+  <line x1="80" y1="180" x2="560" y2="180" stroke="#cbd5e1" stroke-width="0.75"/>
+
+  <polygon points="220,202 398,202 386,258 208,258" fill="#7a94ab"/>
+  <polygon points="208,258 386,258 386,261 208,261" fill="#5d7689"/>
+  <polygon points="245,193 313,193 311,202 243,202" fill="#7a94ab"/>
+  <text x="278" y="200" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif" font-size="6" font-weight="700" fill="#f8fafc">FIELD NOTES</text>
+
+  <polygon points="228,199 388,199 386,202 226,202" fill="#ffffff"/>
+  <polygon points="232,200 384,200 382,202 230,202" fill="#f1f5f9"/>
+
+  <polygon points="240,212 320,210 318,256 238,258" fill="#ffffff" stroke="#94a3b8" stroke-width="1"/>
+  <line x1="250" y1="223" x2="308" y2="221" stroke="#cbd5e1" stroke-width="0.75"/>
+  <line x1="250" y1="231" x2="302" y2="229" stroke="#cbd5e1" stroke-width="0.75"/>
+  <line x1="250" y1="239" x2="308" y2="237" stroke="#cbd5e1" stroke-width="0.75"/>
+  <line x1="250" y1="247" x2="298" y2="245" stroke="#cbd5e1" stroke-width="0.75"/>
+
+  <polygon points="260,210 340,209 338,254 258,255" fill="#ffffff" stroke="#4a6175" stroke-width="1"/>
+  <line x1="270" y1="221" x2="328" y2="220" stroke="#64748b" stroke-width="0.75"/>
+  <line x1="270" y1="229" x2="324" y2="228" stroke="#64748b" stroke-width="0.75"/>
+  <line x1="270" y1="237" x2="328" y2="236" stroke="#64748b" stroke-width="0.75"/>
+  <line x1="270" y1="245" x2="320" y2="244" stroke="#64748b" stroke-width="0.75"/>
+  <circle cx="335" cy="213" r="5" fill="#EF4444"/>
+  <line x1="335" y1="218" x2="335" y2="222" stroke="#EF4444" stroke-width="1.5"/>
+
+  <polygon points="288,220 368,222 366,266 286,264" fill="#ffffff" stroke="#94a3b8" stroke-width="1"/>
+  <line x1="298" y1="231" x2="356" y2="233" stroke="#cbd5e1" stroke-width="0.75"/>
+  <line x1="298" y1="239" x2="350" y2="241" stroke="#cbd5e1" stroke-width="0.75"/>
+  <line x1="298" y1="247" x2="356" y2="249" stroke="#cbd5e1" stroke-width="0.75"/>
+
+  <g transform="translate(388, 260) rotate(18)">
+    <rect width="6" height="4" fill="#7a94ab"/>
+    <rect x="6" width="64" height="4" fill="#4a6175"/>
+    <polygon points="70,0 78,2 70,4" fill="#1e293b"/>
+  </g>
+
+  <polygon points="468,266 568,266 572,270 464,270" fill="#b0bfd3" opacity="0.5"/>
+  <polygon points="478,206 568,204 572,264 482,266" fill="#1e293b"/>
+  <polygon points="478,206 482,206 486,266 482,266" fill="#334155"/>
+  <polygon points="548,205 552,205 556,265 552,265" fill="#7a94ab"/>
+</svg>

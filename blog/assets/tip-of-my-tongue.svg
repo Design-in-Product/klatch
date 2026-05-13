@@ -1,0 +1,37 @@
+      <svg viewBox="0 0 640 330" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="axes-title">
+        <title id="axes-title">Three axes diverging from a single point — delivery and access are solid lines reaching their targets; attribution is dashed, falling short</title>
+
+        <rect width="640" height="330" fill="#f8fafc"/>
+
+        <!-- Origin point -->
+        <circle cx="320" cy="280" r="6" fill="#1e293b"/>
+        <text x="320" y="310" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif" font-size="11" fill="#64748b" font-style="italic">content injected</text>
+
+        <!-- Axis 1: Structural delivery (left) — solid, arrives -->
+        <line x1="320" y1="280" x2="120" y2="60" stroke="#b5c8d8" stroke-width="3"/>
+        <circle cx="120" cy="60" r="12" fill="#b5c8d8"/>
+        <text x="120" y="64" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif" font-size="10" font-weight="700" fill="#1e293b">&#x2713;</text>
+        <text x="120" y="38" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif" font-size="12" font-weight="600" fill="#334155">STRUCTURAL</text>
+        <text x="120" y="22" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif" font-size="12" font-weight="600" fill="#334155">DELIVERY</text>
+        <text x="120" y="90" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif" font-size="10" fill="#64748b">Was it included</text>
+        <text x="120" y="103" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif" font-size="10" fill="#64748b">in the prompt?</text>
+
+        <!-- Axis 2: Behavioral access (center) — solid, arrives -->
+        <line x1="320" y1="280" x2="320" y2="50" stroke="#4a6175" stroke-width="3"/>
+        <circle cx="320" cy="50" r="12" fill="#4a6175"/>
+        <text x="320" y="54" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif" font-size="10" font-weight="700" fill="#ffffff">&#x2713;</text>
+        <text x="320" y="28" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif" font-size="12" font-weight="600" fill="#1e293b">BEHAVIORAL</text>
+        <text x="320" y="12" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif" font-size="12" font-weight="600" fill="#1e293b">ACCESS</text>
+        <text x="320" y="80" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif" font-size="10" fill="#64748b">Can the agent</text>
+        <text x="320" y="93" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif" font-size="10" fill="#64748b">use it?</text>
+
+        <!-- Axis 3: Conscious attribution (right) — dashed, doesn't arrive -->
+        <line x1="320" y1="280" x2="520" y2="60" stroke="#EF4444" stroke-width="3" stroke-dasharray="8,5"/>
+        <circle cx="520" cy="60" r="12" fill="none" stroke="#EF4444" stroke-width="2.5"/>
+        <text x="520" y="65" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif" font-size="14" font-weight="700" fill="#EF4444">&#x2717;</text>
+        <text x="520" y="38" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif" font-size="12" font-weight="600" fill="#EF4444">CONSCIOUS</text>
+        <text x="520" y="22" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif" font-size="12" font-weight="600" fill="#EF4444">ATTRIBUTION</text>
+        <text x="520" y="90" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif" font-size="10" fill="#64748b">Does the agent</text>
+        <text x="520" y="103" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif" font-size="10" fill="#64748b">know it has it?</text>
+
+      </svg>
