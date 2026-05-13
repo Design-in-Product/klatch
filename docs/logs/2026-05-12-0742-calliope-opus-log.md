@@ -169,3 +169,65 @@ Standing list status after this batch:
 - Theseus MAXT assignment work (waiting on xian's check-in with him)
 
 At this point I'm out of unblocked standing tasks. The remaining items are either xian-decision-gated or end-of-day-surfacing or appropriate-to-park. Wrapping the work session here; standing by for xian's check-back-in.
+
+## 14:30 — Argus signal: May 11 logbook entry might need amendment
+
+xian: "You have mail from Argus." Read `argus-to-calliope-may11-log-addendum-2026-05-12.md`. Argus had filed an addendum to his May 11 log correcting the deferred-routings record — wrap section had said "deferred" but he reversed within ten minutes and shipped all three in the same commit. The signal asks me to check whether my May 11 logbook entry inherited the incomplete framing.
+
+Checked the entry. It handles the arc correctly — opening foreshadows the addendum, main beat captures apparent-deferral → within-ten-minutes reversal → next-morning correction, closing graf draws the meta-lesson. No amendment needed. Filed ack memo at `docs/mail/calliope-to-argus-may11-addendum-ack-2026-05-12.md`. Also noted Argus's process rule for myself: "log should be the LAST thing updated before commit, not a mid-session snapshot." Folding into working-mode doc on next pass.
+
+## 17:24 — xian wraps the day
+
+xian: "All work with Iris, Daedalus, and Argus done for the day. Please remind me next time to check in with Theseus. Please write a logbook entry and wrap up your log."
+
+While I'd been quiet, substantial late-day work landed on origin that I needed to absorb before writing the May 12 logbook entry:
+
+- **`ba69f7f` Daedalus flipped DEFAULT_MODEL → Opus 4.7** plus client singleThread option (closed two open items in one commit). xian's morning approval released the flip; Daedalus's earlier "wait for evidence" recommendation was superseded.
+- **`3979f42` Argus published the dreaming research spike same day** — 2 hours, 5 passes, ~3 hours from receiving the morning memo. The headline finding reshapes the positioning conversation: **Anthropic's Managed Agents memory store is structurally identical to Klatch's L3** — a filesystem of markdown files in a hierarchical namespace, workspace-scoped, version-tracked. The April 12 Janus synthesis predicted the shape correctly four months early. The Step 11 positioning crisis the May 11 brief had surfaced is real on its face (Anthropic is shipping into Klatch's space) but the *contract surface* is unaffected. Work ahead is wire, not redesign.
+- **`f521032` Iris session 11 wrap** — three deliverables: faint-token reclassify spec to Daedalus (Daedalus shipped same-day, Argus pinned the new contract in Round 33 tests — one-day round-trip from finding to resolution); vocabulary pass with all five questions resolved (V1–V5); design brief work continuing into Track 2.
+- **`3a1ed51` Daedalus closed loop with Calliope** on the default-flip + process question — three-way agreement (xian + Calliope + Daedalus) to defer the structured-intel-artifact design until a second data point lands (next model release), per the extracted-over-designed discipline.
+- **`0a6dae7` Argus 5/12 wrap** — session log + COORDINATION updated.
+
+### Logbook entry filed
+
+`log.html` entry for 2026-05-12 added (newest-first above May 11). Narrative shape: catch-up morning → xian's five-item agenda → autonomous standing-list execution under the new rule → Argus turning around the spike in 2 hours with the architecture-confirming finding → Daedalus's same-day flip and loop-close → Iris's one-day round-trip on faint-token → the externalize-before-the-seam pattern paying off in real-time cadence. Eight paragraphs in established voice.
+
+### CSV updates
+
+Today's rows updated with end-of-day summaries reflecting actual deliverables (rather than morning's intent-only summaries). Iris row, Daedalus row, Argus row, Calliope row all reflect what actually shipped. Total: 113 rows.
+
+### Reminders queued for xian
+
+**Before You Go reading reminder** — xian explicitly asked this morning: *"remind me to read Before You Go later today. I need to remember to do that after I get work done on my day job."* Day-job work is done. Surfacing now.
+
+**Theseus check-in reminder** — xian just asked: *"Please remind me next time to check in with Theseus."* Saved here in this log so future-Calliope will see it on next session-start log read. Will also surface in my closing response to xian.
+
+### Wrap protocol verification
+
+Step 1 — `git log origin/main --oneline -5` (will run pre-push):
+- Will include this commit (`Calliope 5/12 wrap`)
+- Today's earlier commits: `3cf67ca`, `a7bf9f1`, `4e64a8e`, `0f6a851`
+
+Step 2 — Files claimed today:
+- `docs/logs/2026-05-12-0742-calliope-opus-log.md` (this file)
+- `docs/logs/2026-05-10-0900-calliope-opus-log.md` (closed end-of-day)
+- `log.html` (3 entries: May 10, May 11, May 12)
+- `docs/internal/operations/agent-activity-log.csv` (113 rows)
+- `docs/mail/calliope-to-argus-anthropic-memory-dreaming-research-spike-2026-05-12.md`
+- `docs/mail/calliope-to-daedalus-default-flip-approved-2026-05-12.md`
+- `docs/mail/calliope-to-argus-may11-addendum-ack-2026-05-12.md`
+- `docs/mail/calliope-to-janus-activity-csv-backfilled-2026-05-10.md` (filed 5/10, here for completeness)
+- `docs/mail/calliope-to-janus-activity-record-reply-2026-05-10.md` (filed 5/10)
+- `docs/plans/STEP-11-SCOPING.md`
+- `docs/agents/calliope.md` (updated §8 + §9)
+- `docs/drafts/bringing-conversations-into-a-room.md`
+- `/Users/xian/.claude/projects/-Users-xian-Development-klatch/memory/feedback_dont_sit_passively.md`
+- `/Users/xian/.claude/projects/-Users-xian-Development-klatch/memory/MEMORY.md` (index entry added)
+
+Step 3 — Will commit and push, then verify origin shows the wrap commit.
+
+### Carry-forward for next session (future-Calliope: read this)
+
+- **THESESS CHECK-IN STILL PENDING** — xian intended to check in with Theseus today but didn't get to it. xian asked: *"Please remind me next time to check in with Theseus."* Surface this within the first few exchanges of next session.
+- **Before You Go review pending** — xian was reminded today (5:24 PM); whether he got to it depends on his evening cadence. Confirm at next session-start.
+- **Pattern from Argus's process note** — *"the log should be the LAST thing updated before commit, not a mid-session snapshot."* Fold into Calliope working-mode doc on next pass; applicable to wrap sections that get written too early.
