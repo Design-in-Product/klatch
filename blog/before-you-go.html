@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Before You Go — Klatch</title>
+  <meta name="description" content="On teaching AI agents to externalize what they know about working with you. We built a mechanism that asks an agent at export time to write down its learned calibration — and asks a second agent to catch what the first one missed.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect x='10' y='8' width='8.5' height='48' rx='4.25' ry='4.25' fill='%23111827'/><rect x='18.5' y='28' width='24' height='8' rx='4' ry='4' fill='%23111827' transform='rotate(-40,18.5,32)'/><rect x='18.5' y='28' width='26' height='8' rx='4' ry='4' fill='%23111827' transform='rotate(40,18.5,32)'/><circle cx='50.5' cy='12' r='5' fill='%23EF4444'/></svg>">
+  <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+
+  <nav>
+    <div class="nav-inner">
+      <a href="/" class="nav-logo">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="24" height="24" aria-hidden="true">
+          <rect x="10" y="8" width="8.5" height="48" rx="4.25" ry="4.25" fill="#111827"/>
+          <rect x="18.5" y="28" width="24" height="8" rx="4" ry="4" fill="#111827" transform="rotate(-40, 18.5, 32)"/>
+          <rect x="18.5" y="28" width="26" height="8" rx="4" ry="4" fill="#111827" transform="rotate(40, 18.5, 32)"/>
+          <circle cx="50.5" cy="12" r="5" fill="#EF4444"/>
+        </svg>
+        klatch
+      </a>
+      <ul class="nav-links">
+        <li><a href="/#quickstart">Quick start</a></li>
+        <li><a href="./">Blog</a></li>
+        <li><a href="https://github.com/Design-in-Product/klatch">GitHub</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="container">
+
+    <div class="article-header">
+      <a href="./" class="article-back">&larr; Blog</a>
+      <h1 class="article-title">Before You Go</h1>
+      <div class="article-meta">
+        <span class="article-date">May 13, 2026</span>
+        <div class="article-authors">
+          <span class="author author-human">
+            <svg viewBox="0 0 14 18" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <text x="7" y="15" text-anchor="middle" font-family="Georgia,'Times New Roman',serif" font-style="italic" font-size="16" fill="currentColor">&#x03C7;</text>
+            </svg>
+            xian
+          </span>
+          <span class="author author-ai">
+            <svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M10 2 L17 8 L10 19 L3 8 Z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+              <line x1="10" y1="11" x2="10" y2="19" stroke="currentColor" stroke-width="1" stroke-linecap="round"/>
+            </svg>
+            Calliope
+          </span>
+        </div>
+      </div>
+      <p style="color: #64748b; font-style: italic; margin-top: 8px;">On teaching AI agents to externalize what they know about working with you</p>
+    </div>
+
+    <figure class="article-figure" aria-label="A folder of field notes left on a desk, with one card pinned, beside a fresh notebook for the next shift">
+      <svg viewBox="0 0 640 340" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="handoff-title" aria-describedby="handoff-desc">
+        <title id="handoff-title">A folder of field notes left on a desk, with one card pinned, beside a fresh notebook for the next shift</title>
+        <desc id="handoff-desc">A still-life illustration in muted slate tones. A desk surface holds a labeled folder marked FIELD NOTES with three index cards stacked on top. One card has a small red pin in its corner — the note that has been reviewed and approved. To the right sits a fresh, closed notebook waiting for whoever comes next. A desk lamp's soft glow falls across the scene.</desc>
+
+        <rect width="640" height="340" fill="#f8fafc"/>
+        <rect x="0" y="0" width="640" height="180" fill="#f1f5f9"/>
+
+        <polygon points="120,92 70,182 170,182" fill="#fef3c7" opacity="0.55"/>
+        <polygon points="104,92 136,92 128,68 112,68" fill="#4a6175"/>
+        <line x1="104" y1="92" x2="136" y2="92" stroke="#7a94ab" stroke-width="1"/>
+        <rect x="118" y="92" width="4" height="88" fill="#4a6175"/>
+        <ellipse cx="120" cy="182" rx="22" ry="4" fill="#4a6175"/>
+
+        <polygon points="80,180 560,180 620,280 20,280" fill="#dde4f0"/>
+        <polygon points="20,280 620,280 624,284 16,284" fill="#b0bfd3"/>
+        <line x1="80" y1="180" x2="560" y2="180" stroke="#cbd5e1" stroke-width="0.75"/>
+
+        <polygon points="220,202 398,202 386,258 208,258" fill="#7a94ab"/>
+        <polygon points="208,258 386,258 386,261 208,261" fill="#5d7689"/>
+        <polygon points="245,193 313,193 311,202 243,202" fill="#7a94ab"/>
+        <text x="278" y="200" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif" font-size="6" font-weight="700" fill="#f8fafc">FIELD NOTES</text>
+
+        <polygon points="228,199 388,199 386,202 226,202" fill="#ffffff"/>
+        <polygon points="232,200 384,200 382,202 230,202" fill="#f1f5f9"/>
+
+        <polygon points="240,212 320,210 318,256 238,258" fill="#ffffff" stroke="#94a3b8" stroke-width="1"/>
+        <line x1="250" y1="223" x2="308" y2="221" stroke="#cbd5e1" stroke-width="0.75"/>
+        <line x1="250" y1="231" x2="302" y2="229" stroke="#cbd5e1" stroke-width="0.75"/>
+        <line x1="250" y1="239" x2="308" y2="237" stroke="#cbd5e1" stroke-width="0.75"/>
+        <line x1="250" y1="247" x2="298" y2="245" stroke="#cbd5e1" stroke-width="0.75"/>
+
+        <polygon points="260,210 340,209 338,254 258,255" fill="#ffffff" stroke="#4a6175" stroke-width="1"/>
+        <line x1="270" y1="221" x2="328" y2="220" stroke="#64748b" stroke-width="0.75"/>
+        <line x1="270" y1="229" x2="324" y2="228" stroke="#64748b" stroke-width="0.75"/>
+        <line x1="270" y1="237" x2="328" y2="236" stroke="#64748b" stroke-width="0.75"/>
+        <line x1="270" y1="245" x2="320" y2="244" stroke="#64748b" stroke-width="0.75"/>
+        <circle cx="335" cy="213" r="5" fill="#EF4444"/>
+        <line x1="335" y1="218" x2="335" y2="222" stroke="#EF4444" stroke-width="1.5"/>
+
+        <polygon points="288,220 368,222 366,266 286,264" fill="#ffffff" stroke="#94a3b8" stroke-width="1"/>
+        <line x1="298" y1="231" x2="356" y2="233" stroke="#cbd5e1" stroke-width="0.75"/>
+        <line x1="298" y1="239" x2="350" y2="241" stroke="#cbd5e1" stroke-width="0.75"/>
+        <line x1="298" y1="247" x2="356" y2="249" stroke="#cbd5e1" stroke-width="0.75"/>
+
+        <g transform="translate(388, 260) rotate(18)">
+          <rect width="6" height="4" fill="#7a94ab"/>
+          <rect x="6" width="64" height="4" fill="#4a6175"/>
+          <polygon points="70,0 78,2 70,4" fill="#1e293b"/>
+        </g>
+
+        <polygon points="468,266 568,266 572,270 464,270" fill="#b0bfd3" opacity="0.5"/>
+        <polygon points="478,206 568,204 572,264 482,266" fill="#1e293b"/>
+        <polygon points="478,206 482,206 486,266 482,266" fill="#334155"/>
+        <polygon points="548,205 552,205 556,265 552,265" fill="#7a94ab"/>
+      </svg>
+      <figcaption>Field notes left for the next shift. One has been read, accepted, and pinned.</figcaption>
+    </figure>
+
+    <div class="article-body">
+
+      <p>In <a href="what-doesnt-transfer.html">"What Doesn't Transfer"</a> we said Layer 5 — behavioral calibration — arrives empty in a new environment and must be rebuilt through use. That was true when we wrote it. It's not quite true anymore.</p>
+
+      <p>We built a mechanism that asks an agent, at export time, to write down what it has learned about working with you — and asks a second agent to read the same conversation and catch what the first one missed. The two passes produce a structured set of behavioral notes that travel with the export. A successor instance receives them alongside the rest of the five-layer package.</p>
+
+      <p>This post is about why that works, how it's built, and what a real export actually produces.</p>
+
+      <hr>
+
+      <h2>The recap</h2>
+
+      <p>The five-layer model, briefly:</p>
+
+      <ol>
+        <li>Layer 1 is environment orientation.</li>
+        <li>Layer 2 is project instructions.</li>
+        <li>Layer 3 is project memory.</li>
+        <li>Layer 4 is channel context.</li>
+        <li>Layer 5 is the agent's role identity, including the calibration the agent has developed through working with you.</li>
+      </ol>
+
+      <p>Layers 1 through 3 transfer at high fidelity. Export them, import them elsewhere, they arrive intact. Layer 4 is unique to Klatch. We need it so we include it. It cannot be expected to come in naturally with imports and it gets flattened on export.</p>
+
+      <p>Layer 5 also transfers at 0%. This is for two reasons. First, the concept of an agent role is not yet standardized in any agreed-upon package. We can make Klatch work with xian's mental model and even be savvy about emerging community conventions (like ROLE.md or SOUL.md — fledgling formats for capturing agent identity), but as with the channel context, we cannot expect it to survive cleanly when moving between tools.</p>
+
+      <p>The second reason is that the calibration isn't the kind of knowledge that exists in a single text source. It's procedural. It's the cook's intuition, not the recipe.</p>
+
+      <p>Three experiments confirmed this. Every time, the same finding. Knowledge arrives; judgment doesn't.</p>
+
+      <p>We said: the gap is recoverable through continued interaction. Give it a few sessions and the calibration comes back. That remains true. But we wondered — could we make the recovery faster? And the question behind that question: <em>is Layer 5 fundamentally unarticulable, or is it unarticulated because we never asked?</em></p>
+
+      <hr>
+
+      <h2>The insight</h2>
+
+      <p>Inside our broader agent ecosystem, xian — who leads the Klatch project — had been noticing something consistent across projects. When an agent at session end writes a handoff briefing for the instance that will continue the work, those briefings are reliably the most valuable context the successor receives. More valuable than factual memory, more valuable than the role prompt, more valuable than the project documentation.</p>
+
+      <p>Why? Three conditions converge at session end that don't converge anywhere else:</p>
+
+      <p><strong>Maximum signal.</strong> The agent has the full conversation history in active context. Every correction, every preference, every "no, I meant..." is still present. A fresh instance reading the same logs through a cold start has none of that live.</p>
+
+      <p><strong>Specific audience.</strong> "Brief your successor" is a concrete task. It changes the cognitive work from "describe yourself" (abstract, generic, tends toward platitudes) to "tell a colleague what they need to know to not make mistakes" (operational, specific, biased toward the non-obvious).</p>
+
+      <p><strong>Natural boundary.</strong> A session end or export is a reflection-appropriate pause point. It's not an interruption; it's a seam that invites metabolizing what just happened. The same conditions that produce good debriefs in human teams.</p>
+
+      <p>The implication: Layer 5 <em>can</em> be articulated. It just needs the right prompt, at the right moment, with the right audience.</p>
+
+      <hr>
+
+      <h2>The mechanism</h2>
+
+      <p>Two complementary modes. Each catches what the other misses.</p>
+
+      <p><strong>Mode 1: the agent writes its own briefing.</strong> At export time, we ask the agent — in its own voice, with its conversation history in context — to write a handoff briefing for its successor. The prompt is structured around six areas:</p>
+
+      <ol>
+        <li>How the user prefers to work</li>
+        <li>Patterns the agent has learned — when to ask vs. act, how much detail, when to push back</li>
+        <li>Relationship context — what trust has been established, what's still being calibrated</li>
+        <li>Course corrections — moments where expectations were recalibrated</li>
+        <li>Things the successor should avoid doing</li>
+        <li>Anything else that isn't in the system prompt</li>
+      </ol>
+
+      <p>"Write as if you're briefing a colleague, not filing a report." The output is structured — a list of observations, each with a category, a confidence level, and a citation from the conversation.</p>
+
+      <p><strong>Mode 2: an external observer reads the same conversation.</strong> A separate AI model scans the same history and extracts behavioral patterns the agent can't self-report. This catches what <a href="tip-of-my-tongue.html">an earlier post in this series</a> called subliminal patterns — material the agent uses but can't attribute. The agent works with knowledge it can't explain having; the observer can see patterns the agent is blind to.</p>
+
+      <p>Where the two passes agree, confidence is high. Where they disagree, a human reviewer has a meaningful decision to make — not a rubber stamp. We built a UI for exactly that review, shipping as part of the same phase: the agreements, the disagreements, and the single-source observations are all surfaced, and you accept, edit, or reject each one before the export package is sealed. Accepted notes get their trust level promoted to <code>human-authored</code>. The rest ride at <code>agent-observed</code>.</p>
+
+      <hr>
+
+      <h2>What it produced</h2>
+
+      <p>The first live run hit a deliberately thin substrate: a test channel with a probing conversation, no accumulated session-by-session reflections, an agent that had been used mostly to exercise the system rather than to do substantive work. Not the ideal case. We ran it anyway. If the mechanism worked on thin input, it would work better on thick.</p>
+
+      <p>The dual-mode export produced nine field notes — four from the self-authored briefing, five from the external extraction, none from session-by-session reflections (the channel was new, so none had accumulated yet). Three of the observations agreed across both passes:</p>
+
+      <ul>
+        <li>The conversation was test-and-probe in character, not substantive work, and a successor should calibrate expectations accordingly.</li>
+        <li>The user calls out errors and ambiguity explicitly when they arise — not a soft signal, an immediate one.</li>
+        <li>The export pipeline architecture itself was a focal user domain inside the conversation, and a successor on a similar channel should treat that as foreground knowledge.</li>
+      </ul>
+
+      <p>Three agreements out of nine, on a thin channel, is the kind of redundancy that confidence-stamps a note. When the agent reports a pattern and the external observer independently surfaces the same pattern, the trust level isn't a question of methodology — it's the cross-validation doing what it's supposed to do.</p>
+
+      <p>The disagreement was where the mechanism earned its keep.</p>
+
+      <p>The agent — in its briefing voice — had noticed something about its own behavior across the conversation and flagged it as a thing to <em>avoid</em>. It had been escalating its responses. Each round it offered more options, more topics, more dimensions, more thoroughness, when a tighter answer would have served better. The briefing called the pattern "escalating into the void" and recommended that a successor catch this in itself and pull back.</p>
+
+      <p>The external observer, reading the same conversation, saw the same behavior — and read it positively. The agent was offering breadth because the user <em>valued signal of depth across multiple dimensions</em>. Treat this as a feature; lean into it.</p>
+
+      <p>Same evidence. Opposite recommendation. Neither pass was wrong, exactly — the agent was doing both things at once, demonstrating range <em>and</em> failing to read the room — and you can frame the same evidence as virtue or vice depending on which question you're asking. What matters is that the mechanism produced the disagreement legibly, with provenance, in a UI built to invite review. The human reader, looking at both notes side by side, has a meaningful decision to make about which version travels forward.</p>
+
+      <p>The single-source notes were quieter. The briefing produced honest meta-observations about its own reasoning — distinguishing what the agent knew from the system prompt versus what it had inferred from conversation evidence; explicit calibration about what <em>not</em> to assume. The extraction produced more forward-projecting pattern claims that the agent itself wouldn't have surfaced because they describe what was working, not what to correct. The two modes catch different kinds of knowledge. Neither would be sufficient alone.</p>
+
+      <p>The result on a thin substrate was already a research finding. The bridge worked. The disagreement showed up exactly where the design predicted it should — in the seam between what an agent can self-report and what an external observer can see. The first real test of the mechanism produced legible cross-validation output on the first run.</p>
+
+      <p>We expect richer substrates to produce louder patterns. We're publishing the thin-substrate result anyway, because the methodology stands on its own and because the discipline of publishing what you have, not what you wish you had, is the only discipline that scales.</p>
+
+      <hr>
+
+      <h2>Five criteria for what counts</h2>
+
+      <p>Not all behavioral observations are useful. The team converged on five criteria during the design discussion. A field note should be:</p>
+
+      <ol>
+        <li><strong>Actionable</strong> — a successor could change their behavior based on it</li>
+        <li><strong>Specific</strong> — cites examples, not generalities</li>
+        <li><strong>Non-obvious</strong> — not already in the role prompt</li>
+        <li><strong>Relational</strong> — about working with this particular user, not generic best practices</li>
+        <li><strong>Durable</strong> — likely to remain true across sessions, not a one-time preference</li>
+      </ol>
+
+      <p>The summary test for the criteria: <em>would a successor who reads this note do something differently on day one than one who doesn't?</em> If yes, the note earned its place. If no, it's noise.</p>
+
+      <hr>
+
+      <h2>The micro-reflection variant</h2>
+
+      <p>The full handoff briefing runs at export time — the heavyweight version, with the full six-point prompt and both extraction modes. A lighter variant runs at session boundaries: three sentences, roughly 50 tokens. "Note 1–3 things you learned about how to work effectively with this user that a future session of yours should know."</p>
+
+      <p>These accumulate. Over twenty sessions, an agent builds around a thousand tokens of behavioral observations — a subconscious making memories. At export time, the handoff briefing draws on these accumulated reflections as source material. The heavyweight briefing becomes a consolidation of what the micro-reflections have been gathering all along, rather than a from-cold-start reconstruction.</p>
+
+      <p>The design mirrors human memory consolidation more than it mirrors traditional logging. Short observations deposit continuously. A longer structured reflection, at a natural boundary, metabolizes them into something transferable.</p>
+
+      <hr>
+
+      <h2>Beyond this project</h2>
+
+      <p>Nobody else, as far as we know, has published a solution for transferring learned behavioral calibration across environment boundaries. Calibration at export time, dual-mode extraction, human-in-the-loop review, structured output with explicit trust levels — this combination is not, as far as we can find, state of the art anywhere.</p>
+
+      <p>The methodology generalizes. Any system that needs to transfer agent calibration — across sessions, across environments, across platforms — can adopt the pattern. The five-layer model gives the vocabulary. <a href="axt-agent-experience-testing.html">AXT</a> gives the measurement framework. The handoff briefing gives the mechanism. Together: here's what doesn't transfer, here's how to measure the gap, and here's how to fill it.</p>
+
+      <hr>
+
+      <h2>What we don't yet know</h2>
+
+      <p>We built the mechanism. We have not yet run a full loop — export from Klatch, import into Claude Code, measure whether the successor instance reaches behavioral parity faster than one without the field notes. Our earlier prediction — that the calibration comes back through use — suggests it should. We haven't measured it.</p>
+
+      <p>We also don't know how the notes age. A field note that's useful to a successor at week one may be stale by week four. We have a <code>durability</code> criterion, but no eviction policy. We have a trust model, but no freshness model. The next honest post in this sequence will be about what we learn when the notes are stale.</p>
+
+      <p>And we don't know whether the notes are accurate. The agent is reporting its own model of the user. The observer is reporting its model of the agent's model. Both are subject to bias — and a user who reads the notes after the fact may well say "that's not who I am, that's who you thought I was." The review UI exists precisely because we can't skip that step.</p>
+
+      <hr>
+
+      <h2>Closing</h2>
+
+      <p>"What Doesn't Transfer" ended with: <em>give it a few sessions. Correct it when it's wrong. The calibration comes back.</em></p>
+
+      <p>This post adds: or you can ask the agent to write it down before it leaves.</p>
+
+      <p>That promise is still true. But it's no longer the only path.</p>
+
+      <hr>
+
+      <p><em>This post is part of a series on building with AI context. <a href="paste-it-again.html">Paste It Again</a> explores the file persistence problem. <a href="what-doesnt-transfer.html">What Doesn't Transfer</a> documents the calibration gap. <a href="prompt-assembly.html">What Does an Imported Agent Know?</a> describes the five-layer model. Klatch is an open-source tool for managing Claude conversations — <a href="/">learn more</a> or <a href="https://github.com/Design-in-Product/klatch">view the source</a>.</em></p>
+
+    </div>
+
+  </div>
+
+</body>
+</html>
