@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Before You Go — illustration preview</title>
+  <style>
+    body { font-family: ui-sans-serif, system-ui, sans-serif; max-width: 720px; margin: 40px auto; padding: 0 20px; color: #1e293b; }
+    h1 { font-size: 24px; margin-bottom: 8px; }
+    .meta { color: #64748b; font-size: 14px; margin-bottom: 32px; }
+    .illustration { background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 8px rgba(15,23,42,0.08); }
+    .caption { margin-top: 16px; font-size: 14px; color: #64748b; font-style: italic; }
+    .note { margin-top: 32px; font-size: 14px; color: #64748b; }
+  </style>
+</head>
+<body>
+
+<h1>Before You Go — illustration preview (Direction D)</h1>
+<p class="meta">Draft v1 — 2026-05-13. Custom SVG in the established Klatch blog visual vocabulary.</p>
+
+<div class="illustration">
+  <svg viewBox="0 0 640 340" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="handoff-title" aria-describedby="handoff-desc">
+    <title id="handoff-title">A folder of field notes left on a desk, with one card pinned, beside a fresh notebook for the next shift</title>
+    <desc id="handoff-desc">A still-life illustration in muted slate tones. A desk surface holds a labeled folder marked FIELD NOTES with three index cards stacked on top. One card has a small red pin in its corner — the note that has been reviewed and approved. To the right sits a fresh, closed notebook waiting for whoever comes next. A desk lamp's soft glow falls across the scene.</desc>
+
+    <!-- Background -->
+    <rect width="640" height="340" fill="#f8fafc"/>
+
+    <!-- Wall plane (subtle separation, behind desk) -->
+    <rect x="0" y="0" width="640" height="180" fill="#f1f5f9"/>
+
+    <!-- Lamp glow (behind lamp post) -->
+    <polygon points="100,92 50,182 150,182" fill="#fef3c7" opacity="0.55"/>
+
+    <!-- Lamp shade -->
+    <polygon points="84,92 116,92 108,68 92,68" fill="#4a6175"/>
+    <line x1="84" y1="92" x2="116" y2="92" stroke="#7a94ab" stroke-width="1"/>
+
+    <!-- Lamp post -->
+    <rect x="98" y="92" width="4" height="88" fill="#4a6175"/>
+
+    <!-- Lamp base -->
+    <ellipse cx="100" cy="182" rx="22" ry="4" fill="#4a6175"/>
+
+    <!-- Desk surface -->
+    <rect x="0" y="180" width="640" height="100" fill="#dde4f0"/>
+    <rect x="0" y="180" width="640" height="3" fill="#b0bfd3"/>
+
+    <!-- Folder -->
+    <rect x="200" y="200" width="180" height="60" rx="2" fill="#7a94ab"/>
+    <rect x="200" y="200" width="180" height="3" fill="#94a3b8"/>
+    <rect x="225" y="192" width="70" height="10" rx="1" fill="#7a94ab"/>
+    <text x="260" y="200" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif" font-size="6" font-weight="700" fill="#f8fafc">FIELD NOTES</text>
+
+    <!-- Paper edges peeking from folder -->
+    <rect x="208" y="197" width="164" height="3" fill="#ffffff"/>
+    <rect x="212" y="198" width="156" height="2" fill="#f1f5f9"/>
+
+    <!-- Card 1 (back, tilted left) -->
+    <g transform="translate(228, 210) rotate(-3)">
+      <rect width="80" height="46" rx="2" fill="#ffffff" stroke="#94a3b8" stroke-width="1"/>
+      <line x1="10" y1="12" x2="68" y2="12" stroke="#cbd5e1" stroke-width="0.75"/>
+      <line x1="10" y1="20" x2="62" y2="20" stroke="#cbd5e1" stroke-width="0.75"/>
+      <line x1="10" y1="28" x2="68" y2="28" stroke="#cbd5e1" stroke-width="0.75"/>
+      <line x1="10" y1="36" x2="58" y2="36" stroke="#cbd5e1" stroke-width="0.75"/>
+    </g>
+
+    <!-- Card 2 (middle, with red pin — the human-authored one) -->
+    <g transform="translate(250, 208)">
+      <rect width="80" height="46" rx="2" fill="#ffffff" stroke="#4a6175" stroke-width="1"/>
+      <line x1="10" y1="12" x2="68" y2="12" stroke="#64748b" stroke-width="0.75"/>
+      <line x1="10" y1="20" x2="64" y2="20" stroke="#64748b" stroke-width="0.75"/>
+      <line x1="10" y1="28" x2="68" y2="28" stroke="#64748b" stroke-width="0.75"/>
+      <line x1="10" y1="36" x2="60" y2="36" stroke="#64748b" stroke-width="0.75"/>
+      <circle cx="72" cy="6" r="5" fill="#EF4444"/>
+      <line x1="72" y1="11" x2="72" y2="15" stroke="#EF4444" stroke-width="1.5"/>
+    </g>
+
+    <!-- Card 3 (front, tilted right) -->
+    <g transform="translate(272, 218) rotate(4)">
+      <rect width="80" height="46" rx="2" fill="#ffffff" stroke="#94a3b8" stroke-width="1"/>
+      <line x1="10" y1="12" x2="68" y2="12" stroke="#cbd5e1" stroke-width="0.75"/>
+      <line x1="10" y1="20" x2="60" y2="20" stroke="#cbd5e1" stroke-width="0.75"/>
+      <line x1="10" y1="28" x2="68" y2="28" stroke="#cbd5e1" stroke-width="0.75"/>
+    </g>
+
+    <!-- Pen resting on the desk -->
+    <g transform="translate(380, 258) rotate(12)">
+      <rect width="6" height="4" fill="#7a94ab"/>
+      <rect x="6" width="64" height="4" fill="#4a6175"/>
+      <polygon points="70,0 78,2 70,4" fill="#1e293b"/>
+    </g>
+
+    <!-- Fresh notebook waiting (right side of desk) -->
+    <g transform="translate(470, 200)">
+      <!-- subtle shadow under notebook -->
+      <rect x="2" y="62" width="100" height="3" fill="#b0bfd3" opacity="0.5"/>
+      <!-- cover -->
+      <rect width="100" height="62" rx="2" fill="#1e293b"/>
+      <!-- elastic closure band -->
+      <rect x="80" y="0" width="3" height="62" fill="#7a94ab"/>
+      <!-- spine highlight -->
+      <rect width="3" height="62" fill="#334155"/>
+    </g>
+  </svg>
+  <p class="caption">Field notes left for the next shift. One has been read, accepted, and pinned.</p>
+</div>
+
+<p class="note"><strong>About this draft:</strong> v1, single composition. Composition reuses the desk metaphor from Paste It Again's "your desk" zone, with new elements introduced for the handoff narrative (folder of field notes, three cards, one pinned, fresh notebook waiting). The lamp glow signals end-of-shift atmosphere. The single accent red on the pinned card is the one human-reviewed-and-promoted note. The fresh closed notebook on the right is the next shift's empty page — the successor hinted at without being depicted.</p>
+
+<p class="note"><strong>Things I could adjust based on your feedback:</strong></p>
+<ul style="color: #64748b; font-size: 14px;">
+  <li>Add or remove the lamp glow (the cone polygon)</li>
+  <li>Add a faint chair hint behind the desk (currently absent)</li>
+  <li>Adjust card count or layout (currently 3, with rotation)</li>
+  <li>Change the folder label text ("FIELD NOTES" vs. "HANDOFF" vs. "FOR NEXT SHIFT")</li>
+  <li>Adjust the pen position / remove the pen</li>
+  <li>Lighten or darken the desk surface</li>
+  <li>Add subtle window frame / wall texture for atmosphere</li>
+</ul>
+
+</body>
+</html>
