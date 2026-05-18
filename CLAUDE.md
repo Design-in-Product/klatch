@@ -68,6 +68,29 @@ Four agents work on this repo: **Daedalus** (architecture & implementation), **A
 
 Statuses: available, working, blocked, review. See `docs/COORDINATION.md` for the full protocol.
 
+## Mail Handling (required for all agents)
+
+Mail in `docs/mail/` is the team's asynchronous coordination layer. The default discipline:
+
+1. **Read mail immediately when you receive or notice it** — at session start, mid-session if a `git pull` brings new memos in, or whenever you `ls docs/mail/` and see something new addressed to you. Don't queue mail for "later." Don't batch into an end-of-session sweep.
+2. **Respond immediately if you can.** If a memo asks something you can answer, draft and file the reply in the same turn.
+3. **Take requested actions immediately if you can — even if they aren't "due" yet.** If a memo asks for a research spike, a test round, a doc update, or a route to another agent, do the work now rather than parking it on a to-do list.
+4. **Surface to xian what input you need for anything you can't handle alone.** Be explicit: "Memo X asks Y; I need your call on Z before I can proceed; the rest I've handled." Don't surface mail to xian without an action or input ask attached.
+
+This rule (set by xian, 2026-05-18) overrides earlier patterns of batching mail reads at session start or end. The default direction is toward reading sooner, not later. The only acceptable reason to delay reading is being mid-task on something xian has just directed; in that case, read at the next natural pause within the current turn, not at end-of-session.
+
+The CLAUDE.md session-start protocol (above, "Multi-Agent Coordination" §1) already requires checking `docs/mail/` at session start; this section sharpens the discipline to include mid-session arrivals and to require action/response/surfacing in the same turn as the read.
+
+### When working in a worktree, push mail to `main` so other agents can see it
+
+If you're working on a feature branch in a worktree (per the worktree discipline) and you write a memo to another agent, **push that mail commit to `main` as soon as it's committed** — don't wait for the whole feature branch to merge. Other agents won't think to hunt across `.claude/worktrees/*` looking for memos to them; the mail directory on `main` is the only place they'll look.
+
+The two clean patterns:
+- Commit mail in a separate commit (just the `docs/mail/` files) and push that commit directly to `main` while you continue work on your worktree branch for the rest.
+- Or, if the mail is part of a small enough change set, push the worktree branch to `main` as soon as the mail commit lands (assuming no other work is staged).
+
+When in doubt: separate-commit-and-push-to-main is the safer pattern. Mail is the coordination layer; its delivery semantics are different from feature work.
+
 ## Session Logs
 
 Agents maintain session logs in `docs/logs/` during working sessions.
