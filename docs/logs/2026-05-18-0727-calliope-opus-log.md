@@ -136,3 +136,19 @@ xian followed up: *"(agents may also need to be reminded if in worktrees to push
 Real coordination issue — mail commits sitting on feature branches don't reach recipients until merge. Added a subsection to the Mail Handling section: when working in a worktree, commit mail separately and push that commit directly to `main` (don't wait for the feature branch to merge). Two clean patterns documented; "separate-commit-push-to-main" named as the safer default.
 
 This applies to me right now too — the Argus ack I just wrote should land on main immediately rather than waiting for the rest of my session work. Going to apply it: push the ack to main now, keep the rest on my worktree branch.
+
+## 08:25 — xian: mail housekeeping request
+
+xian: *"the mail folder sure looks cluttered. Can we (a) move the read messages (nothing from today, just to be safe) to read/ and evaluate how to keep it legible in the future."*
+
+Two parts:
+1. Move pre-today mail to `docs/mail/read/`
+2. Evaluate future legibility patterns
+
+Counted 158 files in mail/; 6 dated 2026-05-18. Moved the 151 non-today files via `git mv` (preserves history). After move: 6 files in mail/, 166 in read/. Committed as `651a6c8`, merged to main as `a354322`.
+
+Proposed three options for future discipline: (A) strict close-discipline added to CLAUDE.md; (B) year-month subfolders inside read/; (C) inbox/archive rename. Recommended A + B; A first.
+
+## 08:30 — xian: A
+
+Adding close-discipline subsection to CLAUDE.md Mail Handling section. One paragraph: when a mail thread is closed (acked + no open action), the closer `git mv`s both inbound and outbound files into `docs/mail/read/`. Open threads stay visible. Pushing to main per the mail-discipline-itself pattern.
