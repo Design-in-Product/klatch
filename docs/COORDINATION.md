@@ -102,13 +102,13 @@ Agents working on this repo use this file as the async handoff protocol.
 - **Branch:** `main`
 - **Status:** working
 - **Role:** Human-agent tandem manual testing.
-- **Last completed:** UI-as-context AAXT three-round wave (May 18). Round 36 (sidebar, 15 probes), Round 37 (ExportReviewPanel, 34 probes, 100% conveyance), Round 38 (ImportDialog session browser, 31 probes, 84% conveyance). 80 total probes, ~$0.30 total cost, six findings to Iris. Cross-cutting pattern identified: "zero communicated by absence" (the user-surface analog of agent-side Subliminal). Memos: three to Iris (plan, R36 findings, R37+R38 findings), two to Argus (resumption, Finding 6 handoff). Findings 1–5 from April closed by Daedalus Round 31/35; Finding 6 handed to Argus as Round 30b.
-- **Test count contribution:** Round 18 (12) + Round 28 (25) + Round 29 (20) + Round 30 (7) + Round 36 (1 gated) + Round 37 (1 gated) + Round 38 (1 gated) = 67 tests. Plus `scripts/aaxt-mcp-live-probe.ts`.
-- **Findings filed today:** F1 channel-type Subliminal, F2 accordion-collapse hides imported channels (structural), F3 entity→agent vocabulary leak, E1 zero-files = absent-row, I1 same-day sessions indistinguishable (selection-by-recognition gap), I2 imported-badge has no "new" complement.
-- **Generalizable principle named (today):** *Zero communicated by absence* — negative state needs explicit representation, not implicit absence. Surfaced in three surfaces this session.
-- **Next:** Awaiting xian direction. Open candidates: (a) more UI-as-context AAXT (ChannelSettings, ProjectSettings, EntityManager, MessageList — per Iris's "undesigned/junk drawer" findings F4.4/F5.1); (b) MAXT Session 02 with xian (still parked); (c) Daedalus's April 28 round-trip MAXT (still parked).
+- **Last completed:** UI-as-context AAXT four-round wave (May 18). Round 36 (sidebar, 73%), Round 37 (ExportReviewPanel, 100%), Round 38 (ImportDialog, 84%), Round 39 (ChannelSettings, 54% — Iris's F4.4 "junk drawer" hypothesis confirmed with concrete data). **113 total probes, ~$0.50, 11 findings filed to Iris.** Iris dispositioned R36+R37+R38 into Tier 1 patches (Daedalus's queue), R39 disposition pending.
+- **Test count contribution:** Round 18 (12) + Round 28 (25) + Round 29 (20) + Round 30 (7) + Round 36 (1 gated) + Round 37 (1 gated) + Round 38 (1 gated) + Round 39 (1 gated) = 68 tests. Plus `scripts/aaxt-mcp-live-probe.ts`.
+- **Generalizable principle (today, accepted into design-principles.md):** *"Zero communicated by absence — negative state needs explicit representation, not implicit absence."* Confirmed in **7 instances across 4 surfaces** by session end (R36 F2; R37 E1; R38 I2; R39 CS-F2 a/b/c).
+- **R39 most-severe finding:** CS-F1 — ChannelSettings prompt-layers indicator uses color-only for active/inactive status. WCAG 1.4.1 violation + Subliminal-class. The panel's value-proposition surface fails its job. Three small patches proposed that would lift conveyance from 54% to ~85% without holistic redesign.
+- **Next:** Awaiting xian direction. Open candidates: (a) continue UI-as-context AAXT (ProjectSettings, EntityManager, MessageList — F5.1 and F1.4 territory); (b) MAXT Session 02; (c) Daedalus's April 28 round-trip MAXT (still parked).
 - **Waiting on:** xian (next direction).
-- **Updated:** 2026-05-18 11:00
+- **Updated:** 2026-05-18 13:50
 
 ### Ariadne (forked from Theseus — Klatch side)
 - **Branch:** n/a (Klatch-native, lives in SQLite)

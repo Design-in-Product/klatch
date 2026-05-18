@@ -264,4 +264,87 @@ Three findings across three surfaces have the same structural shape:
 
 ### Session close protocol
 
-Verification at end-of-session below.
+(Earlier interim wrap superseded by R39 continuation below.)
+
+---
+
+## 13:31 — Iris dispositioned R36+R37+R38; ChannelSettings unblocked
+
+xian flagged that Iris's reply had landed. Per new mail discipline, read immediately.
+
+Iris dispositioned all six findings cleanly:
+- F1 → composition gesture work (Track 2)
+- F2/F3/E1/I1 → Tier 1 triage (Daedalus's queue)
+- I2 → Tier 3 (deferred to holistic ImportDialog redesign)
+- **"Zero communicated by absence" principle landing in `docs/ux/design-principles.md`** with provenance credit to R36/R37/R38 — the most valuable outcome of the day.
+
+Iris specifically recommended ChannelSettings as "the single most valuable probe surface remaining."
+
+Sent ack-and-proceed memo, closed all five Iris-thread files to `read/` per close-discipline, started Round 39.
+
+## 13:37 — Round 39: ChannelSettings
+
+`packages/client/src/__tests__/round39-ui-context-aaxt-channel-settings.test.tsx` — 5 states × 8 claim categories, 33 probes total.
+
+**Result: 54.5% semantic conveyance. The lowest of all four rounds.**
+
+| Round | Surface | Conveyance |
+|---|---|---|
+| 36 | Sidebar | 73% |
+| 37 | ExportReviewPanel | 100% |
+| 38 | ImportDialog | 84% |
+| 39 | ChannelSettings | **54%** |
+
+This is the quantitative confirmation of Iris's F4.4 "junk drawer / undesigned" hypothesis. Per-claim breakdown shows two big gaps:
+
+**Most severe: Prompt layers status (0/5 Correct, 4/5 Absent, 1 Phantom).** The panel's value-proposition surface — which Iris named as the place "users should see what Klatch is doing structurally" — uses color-only signaling for active/inactive layer status. No text, no aria-label, no title. Subliminal-class finding plus a WCAG 1.4.1 violation.
+
+**"Zero communicated by absence" — confirmed in three more places** within this single panel: pinned files section, source provenance card (native channels), project assignment dropdown. The conditional-render pattern (`{X.length > 0 && <Section />}`) is the root cause across all three. Principle now confirmed in seven instances across four surfaces.
+
+**Five findings filed:**
+- CS-F1: Prompt layers color-only [MOST IMPORTANT]
+- CS-F2(a/b/c): Three more "zero by absence" instances
+- CS-F3: Interaction mode buttons color-only
+- CS-F4: Project dropdown phantom (low-signal, will resolve via F2 fix)
+- CS-F5: Channel context label is exceptional positive design (worth cataloging)
+
+Three patches proposed in the memo that would lift conveyance to ~85% without holistic redesign.
+
+**Methodology footnote:** First round with no probe-builder bugs caught mid-run. The Round 37 lesson held. Test noise dropped to zero.
+
+## Cumulative session totals
+
+| Round | Probes | Conveyance | Findings |
+|---|---|---|---|
+| 36 | 15 | 73% | F1, F2, F3 (3) |
+| 37 | 34 | 100% | E1 (1) |
+| 38 | 31 | 84% | I1, I2 (2) |
+| 39 | 33 | 54% | CS-F1 through CS-F5 (5) |
+| **Total** | **113** | — | **11** |
+
+- Total cost: ~$0.50 across all four rounds
+- Principle named today: *"Zero communicated by absence"* — confirmed in 7 instances across 4 surfaces
+- Methodology validated on four substantively different surfaces
+
+## Session close
+
+Files to commit:
+- `packages/client/src/__tests__/round39-ui-context-aaxt-channel-settings.test.tsx` (uncommitted, will commit with this log)
+- `docs/logs/2026-05-18-0724-theseus-opus-log.md` (this log)
+- `docs/COORDINATION.md` (updated below)
+
+Memos already pushed:
+- `docs/mail/theseus-to-iris-r39-channel-settings-findings-2026-05-18.md` (committed `25175f4`)
+
+### Verification
+
+```
+$ git log origin/main --oneline -5
+25175f4 Theseus mail: Round 39 ChannelSettings findings to Iris
+8ee8edf Mail close-discipline: close Iris UI-as-context AAXT thread (R36+R37+R38)
+3c87bf3 Argus 5/18 (12:35): outcomes-rubric repackaging memo to Calliope
+de7cdaa Mail close-discipline: move closed Argus AAXT thread to read/
+1710860 Rounds 37+38: UI-as-context AAXT for ExportReviewPanel + ImportDialog
+```
+
+All deliverables verified present. Session log + R39 test file + COORDINATION coming on final push.
