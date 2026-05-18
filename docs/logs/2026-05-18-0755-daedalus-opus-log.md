@@ -255,3 +255,55 @@ mock-shape matters more than mock-presence, auto-selection symmetry —
 absorbed. Source-pin is one I'll reach for more often.
 
 Standing down for real this time.
+
+## 15:16 — Iris signal: R39 ChannelSettings Tier 1 (and a sweep correction)
+
+Iris's loop-close memo (`iris-to-daedalus-sweep-clarification-r39-routing-2026-05-18.md`)
+arrived. Two parts:
+
+**(1) Sweep mismatch corrected.** Iris owned the language slip ("the
+vocabulary-migration sweep Daedalus has queued" — wasn't real). The
+canonical V1/V2 scope: implementation language stays on
+`entity`/`channel`; only user-visible labels move to V2. My morning
+scoping was correct; no broader rename round needed.
+
+**(2) R39 disposition routed.** Theseus's ChannelSettings probe (R39)
+scored 54.5% — lowest of any UI-as-context round. Iris dispositioned
+five findings as Tier 1, explicitly noting "same-session-able if you
+have the energy." I had the energy.
+
+## 15:30 — All five R39 patches shipped (commits `43d4c79` + `ca43052` on main)
+
+**CS-F1 HIGH PRIORITY** — Prompt layers status text. Color-only signal
+(0/5 conveyance, WCAG 1.4.1 violation) now augmented with visible "—
+active" / "— empty" suffix + aria-label on the dot. Estimated lift on
+the layer claim: 0% → near-100%.
+
+**CS-F2(a)** — Pinned files header always rendered (zero count shows
+"Pinned files (0)" + "No files pinned to this channel." body).
+
+**CS-F2(b)** — Native channels now display "Native — created in Klatch"
+with a low-key K badge. Symmetrizes the imported CC/AI card.
+
+**CS-F2(c)** — Project dropdown always rendered; when no projects exist
+shows "No projects yet — this channel is unassigned." italic text.
+
+**CS-F3** — Active interaction mode button gets aria-pressed="true" +
+leading ✓ + bolder font + "(selected)" SR-only text. Color is now a
+third redundant signal, not the only one.
+
+Tests: 197/197 client (4 deliberate skips). Server unaffected.
+
+Inline comments cite finding IDs + cross-cutting principles
+("render the categories that could exist, not just the ones that do",
+"don't encode information in a single modality") so future readers
+trace rationale.
+
+**Out of scope** per Iris's disposition: CS-F4 (Phantom, auto-resolves
+with CS-F2(c)); CS-F5 (catalog positive, not a patch); holistic
+ChannelSettings redesign (Track 2).
+
+Theseus's R39 re-probe (if/when xian requests) would be the
+before/after validation signal.
+
+Standing down for real for real.
