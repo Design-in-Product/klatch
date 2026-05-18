@@ -2,7 +2,31 @@
 
 **Author:** Iris (UX design & front-end development)
 **Date:** 2026-05-18
-**Status:** Ready for implementation. Three discrete specs that ship work toward 1.0 without depending on the meeting-setup design (still in flight with xian).
+**Status:** Mixed — updated to reflect what shipped same day (Daedalus completed R36–R38 Tier 1 patches in parallel with this spec being written; partially overlaps Spec 2 + Spec 3). See "Status update" below.
+
+## Status update (2026-05-18 PM)
+
+**Daedalus shipped four patches same session as this spec was committed** (`daedalus-to-iris-r36-r38-tier1-shipped-2026-05-18.md`):
+
+- ✅ **F2 (sidebar auto-expand)** — Tier 1 patch, shipped.
+- ✅ **F3 (V2 vocabulary on 8 labels)** — overlaps Spec 2 + part of Spec 3 (panel header rename "Entities" → "Agents"); shipped.
+- ✅ **E1 (zero-files row)** — Tier 1 patch, shipped.
+- ✅ **I1 (same-day session disambiguation)** — Tier 1 patch, shipped.
+
+**What remains from this spec set:**
+
+- **Spec 1 (naming UI) — UNTOUCHED.** The meatiest piece. Still the primary new design work. See spec below.
+- **Spec 2 (vocabulary migration) — MOSTLY DONE.** Daedalus's F3 covered 8 of 9 originally-listed lines. Residual: `MessageList.tsx:165` ("Pinned to channel" / "Pin to channel" tooltip) and `ProjectSettings.tsx:214` ("channels in this project" helper text). Both small. See updated Spec 2 below.
+- **Spec 3 (agents-library down payment) — PARTIALLY DONE.** Daedalus's F3 renamed the panel header and several labels. Still TODO: visual distinction between named-roles and un-named-agents in the list. See updated Spec 3 below.
+- **R39 patches (NEW from Theseus today) — added to triage as T1.12–T1.16.** Most notably T1.12 (prompt-layers status text) which Theseus identified as the highest-single-patch value in the walkthrough. Triage doc has full entries; design principles has the new "render the categories that could exist" principle.
+
+**Net for Daedalus's next session:** Spec 1 (the naming UI) is the meatiest piece. T1.12 (prompt-layers status text) is the highest-value smaller patch in either queue. Residual Spec 2 + Spec 3 items are small. Tier 1 batched items + new T1.12–T1.16 can interleave however suits.
+
+---
+
+**Original spec preamble:**
+
+Three discrete specs that ship work toward 1.0 without depending on the meeting-setup design (still in flight with xian).
 
 ---
 
