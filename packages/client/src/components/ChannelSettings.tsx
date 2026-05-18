@@ -150,8 +150,11 @@ export function ChannelSettings({
       </div>
 
       <div className="space-y-4 max-w-2xl">
-        {/* Import provenance — only for imported channels */}
-        {isImported && (
+        {/* Provenance — always render so origin is explicit even for native
+            channels (CS-F2(b), Theseus R39 → Iris, 5/18: symmetrize the
+            negative case so "this is native" reads as a positive statement
+            rather than implied-by-absence). */}
+        {isImported ? (
           <div className="rounded-lg border border-line bg-card p-3">
             <div className="flex items-center gap-2 mb-2">
               <span className="text-xs font-bold px-1.5 py-0.5 rounded bg-accent/15 text-accent leading-none">
@@ -169,6 +172,15 @@ export function ChannelSettings({
                 {meta.version && <p><span className="font-medium">Claude Code:</span> v{meta.version}</p>}
               </div>
             )}
+          </div>
+        ) : (
+          <div className="rounded-lg border border-line bg-card px-3 py-2 flex items-center gap-2">
+            <span className="text-xs font-bold px-1.5 py-0.5 rounded bg-badge text-muted leading-none">
+              K
+            </span>
+            <span className="text-xs text-muted">
+              Native — created in Klatch
+            </span>
           </div>
         )}
 
@@ -207,12 +219,19 @@ export function ChannelSettings({
           </div>
         )}
 
-        {/* Pinned files */}
-        {channelFiles.length > 0 && (
-          <div>
-            <label className="block text-xs text-secondary mb-2">
-              Pinned files <span className="text-muted font-normal">({channelFiles.length})</span>
-            </label>
+        {/* Pinned files — always render header so "no pinned files" is explicit
+            (CS-F2(a), Theseus R39 → Iris, 5/18: "render the categories that
+            could exist, not just the ones that do"). */}
+        <div>
+          <label className="block text-xs text-secondary mb-2">
+            Pinned files <span className="text-muted font-normal">({channelFiles.length})</span>
+          </label>
+          {channelFiles.length === 0 ? (
+            <p className="text-xs text-faint italic">
+              No files pinned to this channel.
+            </p>
+          ) : (
+            <>
             <div className="space-y-1.5">
               {channelFiles.map((f) => {
                 const ext = f.name.split('.').pop()?.toLowerCase() || '';
@@ -267,8 +286,9 @@ export function ChannelSettings({
             <p className="text-xs text-muted mt-1.5">
               Pinned files are listed in the channel context sent to entities.
             </p>
-          </div>
-        )}
+            </>
+          )}
+        </div>
 
         {/* Channel name */}
         <div>
@@ -281,10 +301,12 @@ export function ChannelSettings({
           />
         </div>
 
-        {/* Project assignment */}
-        {projects.length > 0 && (
-          <div>
-            <label className="block text-xs text-secondary mb-1">Project</label>
+        {/* Project assignment — always render so the relationship is visible
+            even when no projects exist yet (CS-F2(c), Theseus R39 → Iris,
+            5/18: the dropdown becomes informational, not just interactive). */}
+        <div>
+          <label className="block text-xs text-secondary mb-1">Project</label>
+          {projects.length > 0 ? (
             <select
               value={localProjectId || ''}
               onChange={(e) => {
@@ -298,8 +320,12 @@ export function ChannelSettings({
                 <option key={p.id} value={p.id}>{p.name}</option>
               ))}
             </select>
-          </div>
-        )}
+          ) : (
+            <p className="text-xs text-faint italic">
+              No projects yet — this channel is unassigned.
+            </p>
+          )}
+        </div>
 
         {/* Channel context (L4 addendum) — available for both chats and klatches.
             Even a 1:1 chat can have a purpose — this is Klatch's unique contribution. */}
@@ -327,6 +353,10 @@ export function ChannelSettings({
                 ([modeKey, { label, description }]) => {
                   const isActive = localMode === modeKey;
                   const isDisabled = false; // All modes now implemented
+                  // CS-F3 (Theseus R39 → Iris, 5/18): active state was
+                  // color-only — fails WCAG 1.4.1 and reads as decoration to
+                  // assistive tech. Add aria-pressed + a visible non-color
+                  // affordance (leading check + bold + label suffix).
                   return (
                     <button
                       key={modeKey}
@@ -337,16 +367,19 @@ export function ChannelSettings({
                         }
                       }}
                       disabled={isDisabled}
+                      aria-pressed={isActive}
                       title={isDisabled ? `${description} (coming soon)` : description}
-                      className={`px-3 py-1.5 text-xs font-medium transition-colors ${
+                      className={`px-3 py-1.5 text-xs transition-colors ${
                         isActive
-                          ? 'bg-accent text-white'
+                          ? 'bg-accent text-white font-semibold'
                           : isDisabled
-                            ? 'bg-card text-muted/50 cursor-not-allowed'
-                            : 'bg-card text-secondary hover:text-primary hover:bg-hover'
+                            ? 'bg-card text-muted/50 cursor-not-allowed font-medium'
+                            : 'bg-card text-secondary hover:text-primary hover:bg-hover font-medium'
                       } ${modeKey !== 'panel' ? 'border-l border-line' : ''}`}
                     >
+                      {isActive && <span aria-hidden className="mr-1">✓</span>}
                       {label}
+                      {isActive && <span className="sr-only"> (selected)</span>}
                     </button>
                   );
                 }
@@ -465,21 +498,35 @@ export function ChannelSettings({
           </div>
         )}
 
-        {/* Prompt layers — shows which of the 5 assembly layers are active */}
+        {/* Prompt layers — shows which of the 5 assembly layers are active.
+            CS-F1 (Theseus R39 → Iris, 5/18): status was color-only (green vs
+            gray dot), which scored 0/5 conveyance and violated WCAG 1.4.1.
+            Now: visible status text + aria-label on the dot, so the layer's
+            state is conveyed redundantly (visual + textual + assistive). */}
         {promptLayers && (
           <div>
             <label className="block text-xs text-secondary mb-2">Prompt layers</label>
             <div className="space-y-1">
-              {Object.entries(promptLayers).map(([key, status]) => (
-                <div key={key} className="flex items-center gap-2 text-xs">
-                  <span className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${
-                    status.startsWith('ACTIVE') ? 'bg-green-500' : 'bg-zinc-400'
-                  }`} />
-                  <span className="text-muted">
-                    {key.replace(/^\d+_/, '').replace(/([A-Z])/g, ' $1').trim()}
-                  </span>
-                </div>
-              ))}
+              {Object.entries(promptLayers).map(([key, status]) => {
+                const isActive = status.startsWith('ACTIVE');
+                const layerLabel = key.replace(/^\d+_/, '').replace(/([A-Z])/g, ' $1').trim();
+                const statusLabel = isActive ? 'active' : 'empty';
+                return (
+                  <div key={key} className="flex items-center gap-2 text-xs">
+                    <span
+                      className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${
+                        isActive ? 'bg-green-500' : 'bg-zinc-400'
+                      }`}
+                      aria-label={`${layerLabel}: ${statusLabel}`}
+                      title={statusLabel}
+                    />
+                    <span className="text-muted">
+                      {layerLabel}
+                      <span className="text-faint"> — {statusLabel}</span>
+                    </span>
+                  </div>
+                );
+              })}
             </div>
           </div>
         )}
