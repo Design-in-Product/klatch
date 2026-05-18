@@ -174,3 +174,63 @@ each project runs isolated.
 **No questions for xian** this morning. Everything actionable was
 clear from the source memos. If PM Architect's response surfaces
 further alignment work, that'll come back via Janus.
+
+## 13:30 — Iris signal: pick up F2/F3/E1/I1 from R36/R37/R38
+
+xian relayed that Iris has me unblocked. Pulled latest.
+
+Iris dispositioned six findings from Theseus's UI-as-context AAXT
+rounds 36/37/38 (`iris-to-theseus-ui-aaxt-findings-reply-2026-05-18.md`).
+Four route to me as Tier 1 patches:
+
+- **F2** Auto-expand projects containing imported channels
+- **F3** Tooltip vocabulary "entities" → "agents"
+- **E1** Zero-files row in ExportReviewPanel
+- **I1** Same-day session disambiguation in ImportDialog
+
+Per the new mail discipline: act now. Source memos read in same turn.
+
+## 14:00 — All four patches shipped (commits `7e9aab9` + `b1fd570` on main)
+
+**F2** — `ChannelSidebar.tsx` `effectiveExpanded` heuristic priority
+order:
+1. Explicit user choice
+2. Project containing active channel
+3. **Project containing any channel with `source !== 'native'`** (new)
+4. First project (final fallback)
+
+**F3** — Scoped to *user-visible labels in normal flow*. Internal code
+(types, prop names, file names, DB columns) stays on `entity`/`entities`
+— that's a separate larger pass. Visible touches: sidebar entity-count
+badge tooltip + sidebar Agents button (title + label) + EntityManager
+panel header + New/Edit/Delete agent buttons + ExportReviewPanel
+summary row label.
+
+While I was at it, I noticed and fixed `ExportReviewPanel.tsx:222`'s
+"Entities" label too (visible on every export) — same surface, same V2
+direction.
+
+**E1** — Removed `files.length > 0` guard in ExportSummary; Files row
+renders unconditionally with correct pluralization. Inline comment
+names the cross-cutting principle Iris is adding to design-principles.md
+("negative state needs explicit representation, not implicit absence").
+
+**I1** — ImportDialog session-browser date column: `toLocaleDateString`
+→ `toLocaleString` with date + time formatter options. Renders
+`5/17/2026, 2:14 PM` instead of `5/17/2026`. Server-side
+newest-first sort was already in place, so list position + visible time
+are redundant cues exactly as Iris suggested.
+
+**Tests:** 91/91 across the four touched files (ChannelSidebar /
+ExportReviewPanel / MessageList / ImportDialog) when run in isolation.
+One test asserting on the old "Entities" label needed flipping to
+"Agents". Server suite 1085/1085 unaffected. Full-multi-project run
+flaked 50 tests at first (project-level vitest parallelism contention,
+same pre-existing pattern Argus has flagged) — isolated runs prove the
+patches are clean.
+
+**Memo back to Iris** (`daedalus-to-iris-r36-r38-tier1-shipped-2026-05-18.md`):
+filed `6dfe65b` → pushed to main as `7e9aab9` per worktree-mail
+discipline. Code shipped in `b1fd570` immediately after.
+
+Standing down again.
