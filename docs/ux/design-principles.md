@@ -40,6 +40,7 @@ This is Tesler's Law generalized. Complexity, communication, mechanical work, an
 - **Frame handoffs, not losses.** When something can't transfer (Layer 5 behavioral calibration), the framing is "information transfers; judgment is recoverable through use" — not "here's what you're losing." The user is not a victim.
 - **No separate "mobile UX."** Holistic design for users who are sometimes mobile. The same design adapts to context through progressive disclosure and information density — not through separate layouts or flows.
 - **Honest, specific, shows the work.** The blog's voice — precise but not clinical, personal but not casual — should inform how the product communicates. Name uncertainties. Don't hide behind vague language.
+- **Negative state needs explicit representation, not implicit absence.** When a UI says "X exists when N > 0" without saying "X doesn't exist when N === 0," users can't distinguish "nothing here" from "I don't know." Zero is a real state that deserves its own signal. Surfaced by Theseus's UI-as-context AAXT (Rounds 36/37/38, 2026-05-18) — three findings (collapsed sidebar projects, missing zero-files row, asymmetric import badges) share this shape. User-surface analogue of the agent-side Subliminal classification: data is present (zero is real), surface obscures it (no visible signal for zero).
 
 ### 3. Preserve human agency
 

@@ -123,6 +123,46 @@ These are patches whose specific shape might change in the holistic design, but 
 
 ---
 
+## Added 2026-05-18 from Theseus UI-as-context AAXT findings
+
+Five findings from Theseus's Rounds 36/37/38 (probing Sidebar, ExportReviewPanel, ImportDialog session browser). Four routing to Tier 1; one Tier 3.
+
+### T1.8 (Theseus R36, F2) — Auto-expand sidebar projects containing non-native channels ⚠️ HIGH VALUE
+- **Finding:** Round 36 surfaced that the sidebar accordion auto-expands only the *first project alphabetically*. Channels in non-first-alphabetical projects (including all imported Claude Code / claude.ai channels) are invisible by default. The CC source badge has nothing to attach to because the channel isn't rendered. Behavioral probe result: Absent — user-proxy couldn't find a channel that doesn't exist in the DOM.
+- **Why this matters:** This is the kind of finding that surfaces in beta as "I can't find my Claude Code imports" with a poor recovery story ("click the collapsed project header you didn't know existed").
+- **Proper fix:** Sidebar IA redesign — proper disclosure pattern for projects, summary cues for collapsed projects, default-state strategy.
+- **Near-term patch:** On first load, auto-expand every project that contains channels where `source !== 'native'`. Cheap signal that imported work exists. Survives the holistic redesign because "imported work should be discoverable on first read" is a property the redesign will also want.
+
+### T1.9 (Theseus R36, F3) — "3 entities" tooltip leaks internal vocabulary
+- **Finding:** EntityManager tooltip shows "3 entities" / "Assigned to N channel(s)" — V2 banishes "entity" from user-facing copy; should be "agents."
+- **Proper fix:** Entity manager redesign uses "agents" and "roles" consistently throughout.
+- **Near-term patch:** Two-string fix in the tooltip. Folds into the vocabulary-migration sweep Daedalus has queued (already in the 5/12 audit at EntityManager.tsx:119).
+
+### T1.10 (Theseus R37, E1) — ExportReviewPanel hides zero-file state
+- **Finding:** Round 37 found that when `files.length === 0`, the Files row in ExportSummary doesn't render at all. User-proxy: "I cannot determine how many files are being included." Same pattern as T1.8 (zero communicated by absence).
+- **Proper fix:** Service-design pass on the export experience handles explicit zero-states throughout.
+- **Near-term patch:** When files = 0, render `Files: 0` (or `—`) instead of omitting the row. One line of conditional rendering.
+
+### T1.11 (Theseus R38, I1) — Same-day import sessions are indistinguishable by visible info
+- **Finding:** Round 38 found that `toLocaleDateString()` shows only MM/DD/YYYY; time-of-day lives only in the tooltip. When two sessions are from the same day, the user can't tell which is more recent without hovering — directly defeats T1.6's selection-by-recognition design intent. User-proxy picked wrong session (Confabulated).
+- **Proper fix:** Holistic ImportDialog redesign — full-screen experience with rich content fingerprints.
+- **Near-term patch:** Two parts (do both for redundant signaling):
+  1. Show time-of-day on the visible date for sessions modified within the last 24 hours (e.g., `5/17/2026 2:14 PM` instead of `5/17/2026`)
+  2. Sort sessions by recency (most-recent first) within each project so list position carries the temporal signal
+
+### T3 addition (Theseus R38, I2) — Imported badge has no "new" complement 🛑
+- **Finding:** Round 38 found the badge system is asymmetric — imported sessions get an "imported as X" badge, new sessions show nothing. When all sessions are the same status (all-imported or all-new), the user-proxy couldn't tell whether "absence of badge" meant "none in that state" or "the UI doesn't surface that distinction."
+- **Why not patched now:** The fix is at the redesign level (per-project status summary line, symmetrized badge tokens, or some other shape that emerges from the holistic pass). Patching the asymmetry without that context risks decorating something the redesign will rip out.
+- **Defer to:** Holistic ImportDialog redesign (already Tier 3).
+
+---
+
+## Cross-cutting principle added to design principles
+
+From Theseus's R36/R37/R38 cross-cutting observation (three findings share the same shape): **negative state needs explicit representation, not implicit absence.** Captured in `docs/ux/design-principles.md` under "Communicate with clarity." User-surface analogue of the agent-side Subliminal classification.
+
+---
+
 ## Tier 3 — Wait for design
 
 These should NOT be patched. Attempting a partial fix would either be wasted work or would force a premature design decision.
