@@ -163,6 +163,47 @@ From Theseus's R36/R37/R38 cross-cutting observation (three findings share the s
 
 ---
 
+## Added 2026-05-18 from Theseus R39 UI-as-context AAXT — ChannelSettings findings
+
+ChannelSettings panel — the F4.4 "value proposition, surfaced / currently a junk drawer" surface. 54.5% conveyance, lowest of all UI-as-context rounds. Five findings; four routing to Tier 1.
+
+### T1.12 (Theseus R39, CS-F1) — Prompt layers indicator needs visible status text ⚠️ HIGH PRIORITY
+- **Finding:** 0/5 Correct, 4/5 Absent on the prompt-layers indicator. The active/inactive signal is **only color** (green dot vs gray dot). No text, no `aria-label`, no `title`. Subliminal-class — data is in className strings; surface obscures it. WCAG 1.4.1 violation. **The single most-important surface for visualizing Klatch's value proposition fails its job entirely.**
+- **Why this matters:** F4.4 named this panel "the value proposition, surfaced." The prompt-layers area is the heart of that — where users should see what Klatch is doing structurally. Today they see layer names and nothing about which are populated.
+- **Proper fix:** Layer composition visualization (sparkline-style) propagated from the export preview surface, where the same data already conveys correctly.
+- **Near-term patch:** Add visible status text next to each layer ("Project Instructions — active" / "Channel Addendum — empty"). Optionally also: `aria-label` on the colored dot, or a non-color affordance like ✓ vs —. Lifts the surface from 0% to ~100% conveyance on the most important claim category. **Highest single-patch value identified in the walkthrough so far.**
+
+### T1.13 (Theseus R39, CS-F2(a)) — Pinned files section: always render header with explicit zero-state
+- **Finding:** Section only renders when `channelFiles.length > 0`. User-proxy can't tell "no pinned files" from "the UI doesn't have a pinned files concept." Instance of the negative-state principle.
+- **Near-term patch:** Always render the "Pinned files (N)" header; show "No files pinned" body when N === 0.
+
+### T1.14 (Theseus R39, CS-F2(b)) — Native provenance: always render a low-key label
+- **Finding:** Provenance card only renders when `isImported`. Native channels are silently native. Same pattern as imported badges having no "new" complement (R38 I2).
+- **Near-term patch:** Render a low-key "Native — created in Klatch" label for native channels. Symmetrizes the provenance signal.
+
+### T1.15 (Theseus R39, CS-F2(c)) — Project assignment dropdown: always render with empty default
+- **Finding:** Dropdown only renders when `projects.length > 0`. When no projects exist, the entire concept of project assignment is invisible. User-proxy: "I cannot tell 'no project assigned' from 'the UI doesn't surface projects.'"
+- **Near-term patch:** Always render the dropdown with "No project assigned" as the default option. Becomes informational when no projects exist; interactive when they do.
+
+### T1.16 (Theseus R39, CS-F3) — Interaction mode buttons need non-color active-state signal
+- **Finding:** Mode buttons (panel/roundtable/directed) signal active via `bg-accent text-white` vs `bg-card text-secondary`. User-proxy could enumerate modes but couldn't tell which was selected. Lower severity than CS-F1 (only 3 options; user can usually infer from context) but same accessibility class.
+- **Near-term patch:** Add `aria-pressed="true"` to the active button + a visible "(selected)" marker, or a non-color affordance (underline, check icon, filled circle).
+
+### Positive catalog (Theseus R39, CS-F5) — Channel context label is exceptional
+- **Finding:** "Channel context (purpose, agenda, constraints — injected into every message)" scored 100% conveyance (3/5 Correct + 2/5 Reconstructed where the reconstructions were correct but worded differently than expected). The user-proxy understood BOTH what the field is for AND when it gets used.
+- **Pattern to propagate:** Textarea + framing-rich label that names purpose + audience + behavior. The single best example of a well-designed surface element in the current panel.
+- **Where this lands:** Documented in design-principles.md as a positive pattern alongside the inverse-rendering principle (which CS-F5 also exemplifies — channel context is *always rendered*, not conditional on having content).
+
+---
+
+## Second cross-cutting principle from R39 findings
+
+Theseus identified the meta-pattern across CS-F2(a), CS-F2(b), CS-F2(c) and earlier negative-state findings: **conditional rendering hides the categorical state of the channel.** A user can't tell whether a category doesn't apply vs. whether the UI doesn't surface it.
+
+Captured as a new principle in `docs/ux/design-principles.md`: **Render the categories that could exist, not just the ones that do.** Sibling to "negative state needs explicit representation" but more specific to panel surfaces. The CS-F5 channel-context field is the positive instance — always rendered with a framing label — and propagating its pattern to other panel surfaces would address most of the R39 findings.
+
+---
+
 ## Tier 3 — Wait for design
 
 These should NOT be patched. Attempting a partial fix would either be wasted work or would force a premature design decision.
