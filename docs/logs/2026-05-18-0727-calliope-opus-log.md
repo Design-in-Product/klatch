@@ -99,3 +99,40 @@ Today is May 18; last day with substantive agent logs before today is **May 13**
 Six-paragraph entry inserted newest-first above May 12. Narrative arc: one blog post crossing the finish line + the production discipline that surrounded it (plain-language pass with 14 ranked items, illustration oblique-projection fix, OG/Twitter Card backfill across seven canonical posts, end-of-morning housekeeping, end-of-day corrective lesson on session-log-vs-logbook discipline). Quote-pulled xian's "is there a way to stay true to the minimalism and still suggest a bit more perspective" and "that does the trick" and "it's ok to not have a retro impact but we should backfill" — three of the day's pivot moments.
 
 Logbook is now current through the last day with logs. Committing + pushing the branch.
+
+## 08:00 — xian: mail discipline rule + team-wide propagation request
+
+xian: *"Please always read mail as soon as you get it, respond to it immediately if you can, take any requested actions immediately if you can, even if they are not 'due' yet, and let me know what input you need from me, if any, to respond, take actions, or otherwise follow up. I'd like to make sure all agents know this about mail, too."*
+
+Three things this requires:
+1. Save as persistent feedback memory so it governs my future sessions
+2. Read the Argus mail I just identified — immediately, per the new rule
+3. Propagate team-wide — most likely update CLAUDE.md so every agent picks it up at session start
+
+Doing all three now.
+
+## 08:05 — Feedback memory + index updated
+
+Saved at `~/.claude/projects/-Users-xian-Development-klatch/memory/feedback_mail_handle_immediately.md`. Added to MEMORY.md index. The rule will govern my future sessions.
+
+## 08:08 — Argus mail read + ack filed
+
+Pulled latest into worktree (Argus's commit was on main; needed it in worktree to read). Argus's `argus-to-calliope-billing-and-outcomes-pattern-2026-05-18.md` is informational — explicitly "no asks." Two framings for the chronicle:
+1. Billing-split Klatch-side audit (cross-validation with my subagent's findings — same conclusion, two independent paths)
+2. Outcomes pattern-vs-mechanism finding ("the pattern is portable; the mechanism isn't") + the cross-cutting sentence about Dreaming being anticipated and Outcomes not being
+
+Filed ack at `calliope-to-argus-billing-and-outcomes-ack-2026-05-18.md`. Both framings noted for the May 18 logbook entry I'll write end-of-day. The cross-validation moment between two independent audits this morning is a quiet but real beat — same shape as the April 12 prediction-held arc with Dreaming.
+
+No xian input needed for either framing.
+
+## 08:12 — CLAUDE.md updated with team-wide Mail Handling discipline
+
+Added a new "Mail Handling (required for all agents)" section between "Multi-Agent Coordination" and "Session Logs." Four-point rule (read immediately + respond immediately + act immediately + surface input needs explicitly). Frames as overriding earlier batch-read patterns. Cross-references the existing session-start protocol.
+
+## 08:14 — xian addendum: worktree mail push rule
+
+xian followed up: *"(agents may also need to be reminded if in worktrees to push their mail to main so other agents see it without having to hunt across all the worktrees)"*
+
+Real coordination issue — mail commits sitting on feature branches don't reach recipients until merge. Added a subsection to the Mail Handling section: when working in a worktree, commit mail separately and push that commit directly to `main` (don't wait for the feature branch to merge). Two clean patterns documented; "separate-commit-push-to-main" named as the safer default.
+
+This applies to me right now too — the Argus ack I just wrote should land on main immediately rather than waiting for the rest of my session work. Going to apply it: push the ack to main now, keep the rest on my worktree branch.
