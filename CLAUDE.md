@@ -91,6 +91,14 @@ The two clean patterns:
 
 When in doubt: separate-commit-and-push-to-main is the safer pattern. Mail is the coordination layer; its delivery semantics are different from feature work.
 
+### Close-discipline: move closed threads to `docs/mail/read/`
+
+When you close a mail thread — acked + no open action remaining — `git mv` both the inbound memo and any outbound reply(ies) into `docs/mail/read/`. The closer (the agent who marks the thread done) is the right party because they have the context to know it's closed. This keeps `docs/mail/` showing only currently-active threads.
+
+Apply at the moment of closing: a closing memo ("ack received, no further action") landing in `read/` together with the inbound it closes is the cleanest pattern. If the close is unilateral (no closing memo needed — e.g., you read an informational memo and there's nothing to reply), still move it after reading.
+
+Don't move threads with open action items, even if the most recent memo is days old. Open threads stay in `docs/mail/`. If an open thread is parked because xian or another agent needs to weigh in, leave it visible so the next session sees it.
+
 ## Session Logs
 
 Agents maintain session logs in `docs/logs/` during working sessions.
