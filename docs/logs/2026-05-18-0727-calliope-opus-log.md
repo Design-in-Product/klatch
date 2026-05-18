@@ -60,3 +60,42 @@ Yes, this is a clean subagent fit. My read on shape:
 My recommendation: scope the subagent to **(a) + (b) for Klatch specifically**, with a clear note that (c) requires cross-project data the subagent can't fully see from inside Klatch. Output: a memo at `docs/research/anthropic-billing-split-klatch-impact-2026-05-18.md` covering — what surfaces Klatch uses, which fall into the new credit pool, estimated frequency/volume from the agent activity CSV and any scripts/Actions config, and a recommendation on whether Klatch needs to change any defaults or document any UX notes.
 
 Standing by for xian's scope confirmation (or direction to launch with my proposed scope).
+
+## 07:36 — xian: scope (a) + (b) approved; trust my agent shape
+
+Launching `general-purpose` subagent with `isolation: "worktree"`, scoped to Klatch-internal analysis (a + b), explicit cross-project (c) caveat. Deliverable: memo at `docs/research/anthropic-billing-split-klatch-impact-2026-05-18.md`.
+
+## 07:41 — Subagent finished + memo reviewed
+
+3.5-minute run. Subagent worked in isolated worktree but committed directly to the parent `main` branch (not a separate feature branch). I cherry-picked `1001e2a` onto `claude/calliope-may18` so my branch has the coherent day's work; the memo file is now in my worktree at `docs/research/anthropic-billing-split-klatch-impact-2026-05-18.md`.
+
+**Bottom line from the memo:** $0/month current impact on xian's Max subscription from the June 15 split, scoped to Klatch. **High confidence.**
+
+Evidence:
+- No `@anthropic-ai/agent-sdk` imports anywhere in `packages/` (only regular `@anthropic-ai/sdk` at v0.95.1 in 5 files; subagent cited specific paths)
+- No `claude -p` invocations in any script (only doc references to the external announcement)
+- No `.github/workflows/` directory
+- No cron / scheduled jobs
+- AAXT auxiliary defaults to OpenAI gpt-4o-mini via raw fetch; Haiku fallback also raw fetch; neither Agent SDK
+- MCP server is server-side, doesn't call Claude
+- All 27 sessions in the last 30 days (per agent activity CSV) ran in `klatch-dev` = interactive Claude Code CLI = unaffected
+- All 110 historical CSV entries same
+
+**Forward-looking risks flagged in recommendations:**
+1. Step 10 export-to-Claude-Code Agent SDK seeding (not implemented, no users)
+2. Future `transport-managed-agents.ts` from May 12 dreaming spike
+3. Hypothetical AAXT migration to Agent SDK — would need budget review at ~$100/mo threshold; subagent flagged trigger condition
+
+Memo includes recommendations for UX language to add when those forward surfaces ship. Cross-project caveat explicitly noted.
+
+Memo is solid and publishable as-is. xian can read on his time.
+
+## 07:43 — xian's note: make sure logbook is current through last day with logs before today
+
+Today is May 18; last day with substantive agent logs before today is **May 13** (my own session — Before You Go publish + LinkedIn + OG backfill + housekeeping). Writing that logbook entry now. May 14–17 were quiet (no agent sessions, only Janus's automated cross-pollination cadence) — those days don't warrant their own entries; the May 13 entry can note the quiet that followed as part of the natural day-end shape.
+
+## 07:55 — May 13 logbook entry filed
+
+Six-paragraph entry inserted newest-first above May 12. Narrative arc: one blog post crossing the finish line + the production discipline that surrounded it (plain-language pass with 14 ranked items, illustration oblique-projection fix, OG/Twitter Card backfill across seven canonical posts, end-of-morning housekeeping, end-of-day corrective lesson on session-log-vs-logbook discipline). Quote-pulled xian's "is there a way to stay true to the minimalism and still suggest a bit more perspective" and "that does the trick" and "it's ok to not have a retro impact but we should backfill" — three of the day's pivot moments.
+
+Logbook is now current through the last day with logs. Committing + pushing the branch.
