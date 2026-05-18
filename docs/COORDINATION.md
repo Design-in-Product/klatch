@@ -102,12 +102,12 @@ Agents working on this repo use this file as the async handoff protocol.
 - **Branch:** `main`
 - **Status:** working
 - **Role:** Human-agent tandem manual testing.
-- **Last completed:** Round 29-30 + live MCP probe + memos to Daedalus/Argus + live export round-trip + Phase 3.5b extraction live + AAXT against imported channel (theseus-2026-03-22 JSONL, 143 messages). All tasks complete. Phase 3.5 dual-mode cross-validation pattern verified working on real data.
-- **Test count contribution:** Round 18 (12) + Round 28 (25) + Round 29 (20) + Round 30 (7) = 64 tests. Plus `scripts/aaxt-mcp-live-probe.ts` for live MCP integration.
-- **Cumulative findings:** (1) Code fence parsing bug in AAXT auxiliary — fixed and locked in. (2) L4 probe quality issue — fixed via threshold + anti-leakage prompt. (3) Projects API POST doesn't pass memory field. (4) MCP server: all primitives verified live over real stdio. (5) Round-trip via claude.ai loses project link (UUID not matched, creates duplicate) + L4/L5 calibration; canonical format has no direct re-import path. (6) L1 probes bleed into L2 territory by kit briefing design (probes still score correctly but attribution ambiguous).
-- **Next:** Awaiting MAXT Session 02 with xian (likely tomorrow). Both `theseus-2026-03-22-imported` (rich, real session) and `aaxt-rich` (thin) are seeded as candidate subjects.
-- **Waiting on:** xian (MAXT scope + sequencing post-Iris sync).
-- **Updated:** 2026-04-27 17:10
+- **Last completed:** Round 36 — UI-as-context AAXT (`packages/client/src/__tests__/round36-ui-context-aaxt.test.tsx`). First UI-side application of AAXT methodology. Vitest test gated by `RUN_UI_AAXT=1`. 15 probes across 5 sidebar states in ~50s, ~$0.05. Three findings filed to Iris: F1 channel-type Subliminal (predicted), F2 source-provenance Absent because accordion-collapse hides imported channels (structural surprise), F3 entity→agent vocabulary leak. Today's A-run (AAXT pipeline on current state) confirmed no agent-surface regression from Iris's typography/triage UI changes.
+- **Test count contribution:** Round 18 (12) + Round 28 (25) + Round 29 (20) + Round 30 (7) + Round 36 (1 gated) = 65 tests. Plus `scripts/aaxt-mcp-live-probe.ts` for live MCP integration.
+- **Cumulative findings:** Findings 1–5 from April closed by Daedalus Round 31/35. Finding 6 (L1 probe slice) handed off to Argus as Round 30b. Today's F1/F2/F3 routed to Iris.
+- **Next:** Awaiting xian direction. Open candidates: (a) extend UI-as-context AAXT to export-preview and ImportDialog (per Iris's suggested next stops); (b) MAXT Session 02 with xian (still parked from April); (c) Daedalus's April 28 round-trip MAXT assignment (still parked).
+- **Waiting on:** xian (next direction).
+- **Updated:** 2026-05-18 09:35
 
 ### Ariadne (forked from Theseus — Klatch side)
 - **Branch:** n/a (Klatch-native, lives in SQLite)
