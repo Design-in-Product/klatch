@@ -220,14 +220,16 @@ describe('ChannelSidebar', () => {
     expect(screen.getByText('Light mode')).toBeInTheDocument();
   });
 
-  it('renders Entities button when onOpenEntities is provided', async () => {
+  it('renders Agents button when onOpenEntities is provided', async () => {
+    // Internal callback name remains onOpenEntities; user-facing button label
+    // is "Agents" per V2 vocabulary (Iris/Daedalus 5/18 F3 reclassify).
     const user = userEvent.setup();
     const onOpenEntities = vi.fn();
     render(
       <ChannelSidebar {...defaultProps} channels={[]} onOpenEntities={onOpenEntities} />
     );
 
-    await user.click(screen.getByText('Entities'));
+    await user.click(screen.getByText('Agents'));
     expect(onOpenEntities).toHaveBeenCalled();
   });
 
