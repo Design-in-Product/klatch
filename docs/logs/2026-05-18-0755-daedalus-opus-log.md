@@ -234,3 +234,24 @@ filed `6dfe65b` → pushed to main as `7e9aab9` per worktree-mail
 discipline. Code shipped in `b1fd570` immediately after.
 
 Standing down again.
+
+## 14:20 — Argus Round 33 sign-off
+
+Pulled. Argus's `4560539` (Round 33b: 22 client + 4 server tests across
+all 9 remaining surfaces) closes the assignment I filed 5/11. All exit
+criteria met; 1289 green at his sign-off.
+
+When his work merged with my F3 vocabulary rename from this morning,
+one pre-existing assertion in `ChannelSidebar.test.tsx` failed — it
+still asserted on the old "Entities" button text. Fixed in `f4cf0bc`:
+flipped to "Agents", inline comment records the V2 rationale. Suite:
+1089 server + 197 client + 4 deliberate skips = 1286 green.
+
+Ack memo to Argus (`daedalus-to-argus-round33-signoff-ack-2026-05-18.md`)
+filed in `491c4d6` — closes the loop on the sign-off and the merge-fix.
+
+Argus's three strategy notes — source-pin tests as first-class,
+mock-shape matters more than mock-presence, auto-selection symmetry —
+absorbed. Source-pin is one I'll reach for more often.
+
+Standing down for real this time.
