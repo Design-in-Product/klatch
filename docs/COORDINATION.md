@@ -102,12 +102,13 @@ Agents working on this repo use this file as the async handoff protocol.
 - **Branch:** `main`
 - **Status:** working
 - **Role:** Human-agent tandem manual testing.
-- **Last completed:** Round 36 — UI-as-context AAXT (`packages/client/src/__tests__/round36-ui-context-aaxt.test.tsx`). First UI-side application of AAXT methodology. Vitest test gated by `RUN_UI_AAXT=1`. 15 probes across 5 sidebar states in ~50s, ~$0.05. Three findings filed to Iris: F1 channel-type Subliminal (predicted), F2 source-provenance Absent because accordion-collapse hides imported channels (structural surprise), F3 entity→agent vocabulary leak. Today's A-run (AAXT pipeline on current state) confirmed no agent-surface regression from Iris's typography/triage UI changes.
-- **Test count contribution:** Round 18 (12) + Round 28 (25) + Round 29 (20) + Round 30 (7) + Round 36 (1 gated) = 65 tests. Plus `scripts/aaxt-mcp-live-probe.ts` for live MCP integration.
-- **Cumulative findings:** Findings 1–5 from April closed by Daedalus Round 31/35. Finding 6 (L1 probe slice) handed off to Argus as Round 30b. Today's F1/F2/F3 routed to Iris.
-- **Next:** Awaiting xian direction. Open candidates: (a) extend UI-as-context AAXT to export-preview and ImportDialog (per Iris's suggested next stops); (b) MAXT Session 02 with xian (still parked from April); (c) Daedalus's April 28 round-trip MAXT assignment (still parked).
+- **Last completed:** UI-as-context AAXT three-round wave (May 18). Round 36 (sidebar, 15 probes), Round 37 (ExportReviewPanel, 34 probes, 100% conveyance), Round 38 (ImportDialog session browser, 31 probes, 84% conveyance). 80 total probes, ~$0.30 total cost, six findings to Iris. Cross-cutting pattern identified: "zero communicated by absence" (the user-surface analog of agent-side Subliminal). Memos: three to Iris (plan, R36 findings, R37+R38 findings), two to Argus (resumption, Finding 6 handoff). Findings 1–5 from April closed by Daedalus Round 31/35; Finding 6 handed to Argus as Round 30b.
+- **Test count contribution:** Round 18 (12) + Round 28 (25) + Round 29 (20) + Round 30 (7) + Round 36 (1 gated) + Round 37 (1 gated) + Round 38 (1 gated) = 67 tests. Plus `scripts/aaxt-mcp-live-probe.ts`.
+- **Findings filed today:** F1 channel-type Subliminal, F2 accordion-collapse hides imported channels (structural), F3 entity→agent vocabulary leak, E1 zero-files = absent-row, I1 same-day sessions indistinguishable (selection-by-recognition gap), I2 imported-badge has no "new" complement.
+- **Generalizable principle named (today):** *Zero communicated by absence* — negative state needs explicit representation, not implicit absence. Surfaced in three surfaces this session.
+- **Next:** Awaiting xian direction. Open candidates: (a) more UI-as-context AAXT (ChannelSettings, ProjectSettings, EntityManager, MessageList — per Iris's "undesigned/junk drawer" findings F4.4/F5.1); (b) MAXT Session 02 with xian (still parked); (c) Daedalus's April 28 round-trip MAXT (still parked).
 - **Waiting on:** xian (next direction).
-- **Updated:** 2026-05-18 09:35
+- **Updated:** 2026-05-18 11:00
 
 ### Ariadne (forked from Theseus — Klatch side)
 - **Branch:** n/a (Klatch-native, lives in SQLite)
