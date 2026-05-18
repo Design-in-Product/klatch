@@ -21,11 +21,13 @@ export function EntityManager({ entities, onCreateEntity, onUpdateEntity, onDele
       {/* Backdrop */}
       <div className="absolute inset-0 bg-black/40" onClick={onClose} />
 
-      {/* Panel — slides in from the left adjacent to the Entities button in the sidebar (T1.7, 2026-05-11) */}
+      {/* Panel — slides in from the left adjacent to the Agents button in the sidebar.
+          Internal name remains "entities" (DB, types, file name); user-facing label is
+          "agents" per V2 vocabulary direction (object-model.md). */}
       <div className="relative mr-auto w-full max-w-md bg-panel border-r border-line h-full overflow-y-auto animate-in">
         <div className="px-5 py-4 border-b border-line flex items-center justify-between sticky top-0 bg-panel z-10">
           <h2 className="text-sm font-semibold text-secondary uppercase tracking-wide">
-            Entities
+            Agents
           </h2>
           <button onClick={onClose} className="text-muted hover:text-primary transition-colors">
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -72,7 +74,7 @@ export function EntityManager({ entities, onCreateEntity, onUpdateEntity, onDele
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
               </svg>
-              New entity
+              New agent
             </button>
           )}
         </div>
@@ -127,7 +129,7 @@ function EntityCard({
         <div className="flex items-center gap-1 opacity-100 md:opacity-0 md:group-hover:opacity-100 md:focus-within:opacity-100 transition-opacity">
           <button
             onClick={onEdit}
-            title="Edit entity"
+            title="Edit agent"
             className="p-1.5 rounded text-muted hover:text-primary hover:bg-hover transition-colors"
           >
             <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -144,7 +146,7 @@ function EntityCard({
                   setTimeout(() => setConfirmDelete(false), 3000);
                 }
               }}
-              title={confirmDelete ? 'Click again to confirm' : 'Delete entity'}
+              title={confirmDelete ? 'Click again to confirm' : 'Delete agent'}
               className={`p-1.5 rounded transition-colors ${
                 confirmDelete
                   ? 'text-danger bg-danger/10'

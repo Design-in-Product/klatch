@@ -212,14 +212,15 @@ function ExportSummary({ manifest }: { manifest: any }) {
           <span className="text-secondary">Conversation</span>
           <span className="text-muted">{history?.message_count || 0} messages</span>
         </div>
-        {files.length > 0 && (
-          <div className="flex justify-between">
-            <span className="text-secondary">Files</span>
-            <span className="text-muted">{files.length} file{files.length !== 1 ? 's' : ''}</span>
-          </div>
-        )}
+        {/* E1 (Theseus R37 → Iris, 5/18): render the Files row even when zero,
+            so "0 files" is explicit rather than communicated by absence.
+            Negative state needs explicit representation. */}
         <div className="flex justify-between">
-          <span className="text-secondary">Entities</span>
+          <span className="text-secondary">Files</span>
+          <span className="text-muted">{files.length} file{files.length !== 1 ? 's' : ''}</span>
+        </div>
+        <div className="flex justify-between">
+          <span className="text-secondary">Agents</span>
           <span className="text-muted">{entities.length}</span>
         </div>
       </div>

@@ -196,11 +196,13 @@ describe('ExportSummary', () => {
     });
   });
 
-  it('shows entity count', async () => {
+  it('shows agent count', async () => {
+    // Internal name "entities" → user-facing "Agents" per V2 vocabulary
+    // (Iris/Daedalus 5/18 F3 reclassify).
     mockFetchPreview.mockResolvedValue(baseManifest);
     render(<ExportReviewPanel channelId="ch-1" onClose={vi.fn()} />);
     await waitFor(() => {
-      expect(screen.getByText('Entities')).toBeInTheDocument();
+      expect(screen.getByText('Agents')).toBeInTheDocument();
     });
   });
 });

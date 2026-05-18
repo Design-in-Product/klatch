@@ -150,13 +150,26 @@ export function ChannelSidebar({
     return { general, projectGroups, unassigned: unassigned.sort(byLastActivity) };
   }, [channels]);
 
-  // Auto-expand first project if none is expanded yet and projects exist
+  // Auto-expand first project if none is expanded yet and projects exist.
+  // Priority order:
+  //   1. Explicit user choice
+  //   2. Project containing the active channel
+  //   3. Project containing at least one imported channel (source !== 'native').
+  //      F2 fix (Theseus R36 → Iris, 5/18): imported channels in non-first
+  //      projects were invisible by default. Bias the auto-expand toward the
+  //      project most likely to surface them.
+  //   4. First project as a final fallback
   const effectiveExpanded = useMemo(() => {
     if (expandedProject !== null) return expandedProject;
     // Auto-expand project containing active channel
     for (const pg of projectGroups) {
       const allChannels = [...pg.chats, ...pg.klatches];
       if (allChannels.some((ch) => ch.id === activeChannelId)) return pg.id;
+    }
+    // Prefer project containing any imported channel
+    for (const pg of projectGroups) {
+      const allChannels = [...pg.chats, ...pg.klatches];
+      if (allChannels.some((ch) => ch.source && ch.source !== 'native')) return pg.id;
     }
     // Default: expand first project
     if (projectGroups.length > 0) return projectGroups[0].id;
@@ -178,7 +191,7 @@ export function ChannelSidebar({
       {(ch.entityCount ?? 0) >= 2 && (
         <span
           className="ml-1 flex-shrink-0 text-[9px] font-medium px-1 py-0.5 rounded-full bg-badge text-muted leading-none"
-          title={`${ch.entityCount} entities`}
+          title={`${ch.entityCount} agents`}
         >
           {ch.entityCount}
         </span>
@@ -362,17 +375,17 @@ export function ChannelSidebar({
           {theme === 'light' ? 'Dark mode' : 'Light mode'}
         </button>
 
-        {/* Entities manager */}
+        {/* Agents manager (internal name: entities; user-facing label is "agents" per V2 vocabulary) */}
         {onOpenEntities && (
           <button
             onClick={onOpenEntities}
             className="flex items-center gap-2 px-4 py-2 text-sm text-secondary hover:text-primary transition-colors w-full"
-            title="Manage entities"
+            title="Manage agents"
           >
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
             </svg>
-            Entities
+            Agents
           </button>
         )}
 

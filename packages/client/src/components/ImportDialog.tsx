@@ -627,6 +627,18 @@ export function ImportDialog({ isOpen, onClose, onImported, onBulkImported, onCh
                               <div className="bg-surface divide-y divide-line/50">
                                 {project.sessions.map((session) => {
                                   const tooltip = `Session ID: ${session.sessionId}\n${formatSize(session.sizeBytes)}\nLast active: ${new Date(session.modifiedAt).toLocaleString()}`;
+                                  // I1 (Theseus R38 → Iris, 5/18): include time-of-day in the
+                                  // visible date so two sessions modified on the same calendar
+                                  // day are visually distinguishable. Server-side already sorts
+                                  // newest-first, so list position is also a recency signal.
+                                  const modified = new Date(session.modifiedAt);
+                                  const dateLabel = modified.toLocaleString(undefined, {
+                                    month: 'numeric',
+                                    day: 'numeric',
+                                    year: 'numeric',
+                                    hour: 'numeric',
+                                    minute: '2-digit',
+                                  });
                                   const messageCountLabel = session.messageCount !== undefined
                                     ? `${session.fingerprintCapped ? `${session.messageCount}+` : session.messageCount} msg${session.messageCount === 1 ? '' : 's'}`
                                     : null;
@@ -655,7 +667,7 @@ export function ImportDialog({ isOpen, onClose, onImported, onBulkImported, onCh
                                       <div className="text-xs text-muted flex items-center gap-1.5 flex-wrap">
                                         {messageCountLabel && <span>{messageCountLabel}</span>}
                                         {messageCountLabel && <span aria-hidden>\u00b7</span>}
-                                        <span>{new Date(session.modifiedAt).toLocaleDateString()}</span>
+                                        <span>{dateLabel}</span>
                                         {session.alreadyImported && (
                                           <>
                                             <span aria-hidden>\u00b7</span>
