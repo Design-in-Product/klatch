@@ -152,3 +152,66 @@ Proposed three options for future discipline: (A) strict close-discipline added 
 ## 08:30 — xian: A
 
 Adding close-discipline subsection to CLAUDE.md Mail Handling section. One paragraph: when a mail thread is closed (acked + no open action), the closer `git mv`s both inbound and outbound files into `docs/mail/read/`. Open threads stay visible. Pushing to main per the mail-discipline-itself pattern.
+
+## ~08:50 — xian: how do we usually deliver mail to PM agents?
+
+Two questions: cross-project mail delivery convention, and who has mail to read now.
+
+Answer 1: file in Klatch mail + route via Dispatch-DinP (Option A pattern from PM #995 routing in April) OR via Janus depending on which side initiated the thread. Channel-stays-with-initiating-relayer.
+
+Answer 2: only Iris has unread mail (4 items including a substantive Theseus findings memo at 10:40). All other Klatch-internal agents have clean inboxes.
+
+Also applied close-discipline to my own Argus-billing thread: moved both files to read/. Pushed to main as `95248bd`.
+
+## ~09:00 — xian: nudged Iris; please route Daedalus's PM Architect memo
+
+xian nudged Iris directly. Asked me to file the Dispatch/Janus routing memo for Daedalus's BYOC reply.
+
+Read Daedalus's memo carefully. Substantial — Klatch's reciprocal cycle on the BYOC / PDR-005 alignment thread. Three substantive sections, six-item AVOID list, four "what Klatch brings" offers, Anthropic Dreaming substrate convergence note. Explicitly routes via Janus per Daedalus's "routing: please relay back via Janus" line (Janus relayed the original PM Architect memo on 5/16, so staying in-channel).
+
+Filed routing memo at `docs/mail/calliope-to-janus-route-byoc-reply-to-pm-architect-2026-05-18.md`. Quote-able if Janus wants to surface substantive parts in next xpoll brief alongside formal relay. Pushed to main as `3c87bf3`.
+
+## Throughout afternoon — observing the UI-as-context AAXT loop
+
+Stayed light-touch on Calliope side while the central UI-as-context AAXT arc ran end-to-end. Theseus Rounds 36 → 37+38 → 39 → 40; Iris triage routing; Daedalus shipping F2/F3/E1/I1 then R39 patches; Argus closing Round 33 with the remaining 9 surfaces. Probe → triage → patch → re-probe → close in one working day, Round 40 validating 54% → 94% conveyance on ChannelSettings.
+
+The whole arc is the clearest demonstration yet of what the morning's worktree + mail-immediate + close-discipline rules enable: real-time hand-off on shared vocabulary, with no agent stepping on another's working tree, with mail landing in the right inbox immediately. The cycle that took an afternoon today would have taken three days under the prior cadence.
+
+## ~17:30 — xian: all agents done for the day; wrap log + write logbook entry
+
+Logbook entry for May 18 filed in `log.html` at the top of the newest-first ordering. Eight paragraphs covering the worktree discipline establishment, billing-split cross-validation between subagent + Argus, mail-handling discipline waves, UI-as-context AAXT loop end-to-end, Daedalus's BYOC reply + Calliope's Janus routing, the meta-shape (rules-applied-to-live-work-same-day) visible only by evening.
+
+## Wrap protocol verification
+
+**Step 1 — Commits today (Calliope-authored, on origin/main via merge):**
+
+```
+$ git log --since="2026-05-18 00:00" --until="2026-05-19 00:00" --author="mediajunkie" --oneline | grep -i calliope
+```
+
+Will run pre-push to confirm landing.
+
+**Step 2 — Files claimed and verified:**
+
+- `docs/logs/2026-05-18-0727-calliope-opus-log.md` (this file) — closed
+- `docs/research/anthropic-billing-split-klatch-impact-2026-05-18.md` — subagent deliverable
+- `log.html` — May 13 entry + May 18 entry both added
+- `docs/mail/calliope-to-argus-billing-and-outcomes-ack-2026-05-18.md` — closed and moved to `read/`
+- `docs/mail/calliope-to-janus-route-byoc-reply-to-pm-architect-2026-05-18.md` — Janus routing
+- `CLAUDE.md` — Mail Handling section + worktree-push subsection + close-discipline subsection (three substantive additions)
+- 151 files moved via `git mv` from `docs/mail/` to `docs/mail/read/` — history preserved
+- Outside repo (in user memory):
+  - `feedback_mail_handle_immediately.md` — persistent feedback memory
+  - `MEMORY.md` index entry added
+
+**Step 3 — Will commit + push, then merge to main + verify final state.**
+
+## End of day
+
+Standing by for tomorrow. Today's open carry-forwards for next session:
+- BYOC routing memo to Janus is filed; Janus's relay to PM Architect is in flight (no action from me until next cycle).
+- Mail folder is legible; close-discipline now governs.
+- Five decisions D1–D5 from Argus's 5/12 dreaming spike still on the standing list for xian + Daedalus.
+- "Bringing Conversations Into a Room" entity-reframe blog draft is still pending xian's editorial read.
+
+Good night.
