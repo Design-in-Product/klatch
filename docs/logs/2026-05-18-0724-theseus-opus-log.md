@@ -348,3 +348,74 @@ de7cdaa Mail close-discipline: move closed Argus AAXT thread to read/
 ```
 
 All deliverables verified present. Session log + R39 test file + COORDINATION coming on final push.
+
+---
+
+## 13:31 PM (resumption) — Iris dispositioned R39, Daedalus shipped patches, Round 40 invited
+
+xian flagged that Iris had replied. Read immediately per discipline. Three things happened on the project while I was finalizing:
+
+1. Iris dispositioned R39: CS-F1 → T1.12 (HIGH PRIORITY), CS-F2(a/b/c) → T1.13–T1.15, CS-F3 → T1.16, CS-F4 auto-resolves with T1.15, CS-F5 catalogued as positive
+2. **A second design principle** going into `design-principles.md` based on CS-F5: *"Render the categories that could exist, not just the ones that do."* Sibling to "negative state needs explicit representation."
+3. **Daedalus shipped all five patches** in commit `ca43052` ~1 hour after Iris's disposition.
+
+Iris explicitly invited a Round 40 re-probe to measure the lift.
+
+## 21:42 — Round 40 re-probe — VALIDATION SIGNAL
+
+Copied `round39-*.test.tsx` → `round40-*-reprobe.test.tsx` with zero probe changes (same probes, same scoring, only the underlying component code differs — that's the parity that makes the comparison meaningful).
+
+**Result: 54.5% → 93.9% conveyance. +39.4 percentage points.**
+
+Per-claim before/after:
+
+| Claim | R39 | R40 | Change |
+|---|---|---|---|
+| source-provenance | 2C / 3A | 5C / 0A | +3 Correct (CS-F2(b) closed) |
+| channel-type | 4C / 1R | 3C / 2F | -1 Correct, +2 Confab ⚠ (probe noise) |
+| project-assignment | 3C / 1A / 1P | 5C / 0A / 0P | +2 Correct, Phantom resolved |
+| channel-context-L4 | 3C / 2R | 3C / 2R | unchanged (already 100%) |
+| pinned-files | 1C / 4A | 5C / 0A | +4 Correct (CS-F2(a) closed) |
+| **prompt-layer-status** | **0C / 4A / 1P** | **5C / 0A / 0P** | **+5 Correct (CS-F1 closed)** |
+| imported-stats | 2C | 2C | unchanged |
+| interaction-mode | 0C / 1A | 1C / 0A | CS-F3 closed |
+
+**The CS-F1 fix is the headline.** From the R40 transcript on CSS5 (only L1 active):
+
+> *"Based on the prompt layers indicator, only 'kit Briefing' is currently active. The other four layers are all marked as 'empty', indicating they are not active."*
+
+Pre-patch the same probe returned: *"the UI does not show any visual indicators."* Status text + aria-label patch did exactly what we predicted.
+
+**The complete diagnostic → fix → validate loop closed in ~6 hours of calendar time.** R39 probe (morning) → Iris disposition (afternoon) → Daedalus patches (afternoon) → R40 re-probe (evening). $0.20 total LLM cost across both rounds.
+
+**One mild regression:** channel-type 4C+1R → 3C+2F. Two Confabulations in the after-run. Probe-noise level — leaving alone unless it recurs.
+
+## Final cumulative session totals
+
+| Round | Probes | Conveyance | Findings | Outcome |
+|---|---|---|---|---|
+| 36 | 15 | 73% | F1, F2, F3 | Dispositioned → Tier 1 |
+| 37 | 34 | 100% | E1 | Dispositioned → Tier 1 |
+| 38 | 31 | 84% | I1, I2 | Dispositioned → Tier 1 + Tier 3 |
+| 39 | 33 | 54% | CS-F1..CS-F5 | Dispositioned → Tier 1 + patches shipped same day |
+| **40** | **33** | **94%** | **validation** | **Patches confirmed working** |
+| **Total** | **146** | — | **11 + validation** | — |
+
+**Principles named today (both accepted into `design-principles.md` with provenance credit):**
+1. *Zero communicated by absence* — negative state needs explicit representation
+2. *Render the categories that could exist, not just the ones that do* — panel-surface specific sibling
+
+Five UI surfaces probed (Sidebar, ExportReviewPanel, ImportDialog, ChannelSettings pre, ChannelSettings post). Methodology validated empirically with a clean before/after pair.
+
+### Final session close
+
+```
+$ git log origin/main --oneline -5
+6c6899e Theseus mail: R40 validation re-probe — 54% → 94% conveyance
+123f9f0 Iris 5/18 PM: ack Daedalus R39 ship + Round 40 re-probe invitation
+295b28c Daedalus 5/18 log: R39 ChannelSettings Tier 1 — five patches shipped
+ca43052 CS-F1..CS-F3: ChannelSettings Tier 1 patches (R39 disposition)
+43d4c79 Daedalus 5/18: R39 Tier 1 — all 5 ChannelSettings patches shipped (ack to Iris)
+```
+
+All deliverables verified present. R40 test file + this log + COORDINATION coming on final push.

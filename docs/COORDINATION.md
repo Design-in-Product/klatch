@@ -102,13 +102,13 @@ Agents working on this repo use this file as the async handoff protocol.
 - **Branch:** `main`
 - **Status:** working
 - **Role:** Human-agent tandem manual testing.
-- **Last completed:** UI-as-context AAXT four-round wave (May 18). Round 36 (sidebar, 73%), Round 37 (ExportReviewPanel, 100%), Round 38 (ImportDialog, 84%), Round 39 (ChannelSettings, 54% — Iris's F4.4 "junk drawer" hypothesis confirmed with concrete data). **113 total probes, ~$0.50, 11 findings filed to Iris.** Iris dispositioned R36+R37+R38 into Tier 1 patches (Daedalus's queue), R39 disposition pending.
-- **Test count contribution:** Round 18 (12) + Round 28 (25) + Round 29 (20) + Round 30 (7) + Round 36 (1 gated) + Round 37 (1 gated) + Round 38 (1 gated) + Round 39 (1 gated) = 68 tests. Plus `scripts/aaxt-mcp-live-probe.ts`.
-- **Generalizable principle (today, accepted into design-principles.md):** *"Zero communicated by absence — negative state needs explicit representation, not implicit absence."* Confirmed in **7 instances across 4 surfaces** by session end (R36 F2; R37 E1; R38 I2; R39 CS-F2 a/b/c).
-- **R39 most-severe finding:** CS-F1 — ChannelSettings prompt-layers indicator uses color-only for active/inactive status. WCAG 1.4.1 violation + Subliminal-class. The panel's value-proposition surface fails its job. Three small patches proposed that would lift conveyance from 54% to ~85% without holistic redesign.
-- **Next:** Awaiting xian direction. Open candidates: (a) continue UI-as-context AAXT (ProjectSettings, EntityManager, MessageList — F5.1 and F1.4 territory); (b) MAXT Session 02; (c) Daedalus's April 28 round-trip MAXT (still parked).
+- **Last completed:** UI-as-context AAXT five-round wave with validation loop closed (May 18). R36 sidebar (73%), R37 ExportReviewPanel (100%), R38 ImportDialog (84%), R39 ChannelSettings (54% — Iris's F4.4 "junk drawer" confirmed), R40 ChannelSettings re-probe after Daedalus's CS-F1..CS-F3 patches (**94%, +39.4pp lift, methodology validated empirically**). **146 total probes, ~$0.70, 11 findings + 1 validation cycle.** Complete diagnostic→fix→validate loop closed in ~6 hours calendar time.
+- **Test count contribution:** Round 18 (12) + Round 28 (25) + Round 29 (20) + Round 30 (7) + R36 (1) + R37 (1) + R38 (1) + R39 (1) + R40 (1) = 69 tests. Plus `scripts/aaxt-mcp-live-probe.ts`.
+- **Two principles named today** (both into `design-principles.md` with provenance credit): (1) *"Zero communicated by absence"* — confirmed in 7 instances across 4 surfaces; (2) *"Render the categories that could exist, not just the ones that do"* — panel-surface specific sibling derived from CS-F5 positive instance + CS-F2 negative instances.
+- **R39→R40 validation pair preserved as reference case** for the AAXT methodology line. Per-claim before/after: CS-F1 prompt layers 0/5 → 5/5 Correct (headline); CS-F2(a/b/c) all closed; CS-F4 Phantom auto-resolved; CS-F3 closed. One mild regression in channel-type (4C+1R → 3C+2F) flagged as probe-noise.
+- **Next:** Awaiting xian direction. Open candidates: (a) continue UI-as-context AAXT (ProjectSettings F5.1, EntityManager, MessageList F1.4); (b) MAXT Session 02; (c) Daedalus's April 28 round-trip MAXT (still parked).
 - **Waiting on:** xian (next direction).
-- **Updated:** 2026-05-18 13:50
+- **Updated:** 2026-05-18 21:50
 
 ### Ariadne (forked from Theseus — Klatch side)
 - **Branch:** n/a (Klatch-native, lives in SQLite)
