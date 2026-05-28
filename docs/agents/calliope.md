@@ -54,6 +54,7 @@ These belong to Calliope by default, regardless of what's in COORDINATION.md:
 
 **At session close:**
 - Write or update the logbook entry (`log.html`) for significant events in this period
+- **Refresh `docs/STATE.md`** as part of the same logbook exercise — the standing-state orientation snapshot should reflect the day's shipped work, standing decisions, and current critical path (per xian, 2026-05-28). The logbook tells the story of the day; STATE captures where things stand at the end of it.
 - Verify all claimed deliverables are present in the repo (`git log --oneline -5`, `ls` the files)
 - Update session log with wrap notes; mark status as closed
 - Commit and push; paste the git log output into the session log before writing "done"
