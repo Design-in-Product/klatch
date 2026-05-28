@@ -46,3 +46,27 @@ Worktree set up: `.claude/worktrees/calliope-may28` on `claude/calliope-may28`.
 **Mechanism note:** PM uses Claude Code `CronCreate` (session-only). Klatch needs an equivalent. I have `CronCreate`/`CronList`/`CronDelete`, `/loop` (session-bound recurring), and `/schedule` (cloud routines that survive session end) available — so the mechanism exists, with a real design choice between session-bound (`/loop` or CronCreate, matching PM's model) and cloud-routine (`/schedule`, survives session end).
 
 Preparing synthesis + Klatch-specific considerations for discussion with xian.
+
+## 06:25 — xian's direction on the four decisions
+
+1. **Mechanism:** start session-bound/local (proven), cloud is the future option to evaluate over time. Confirmed.
+2. **Pilot order:** Calliope first, Argus second, eventually all incl. bursty roles. Confirmed.
+3. **Key refinement on the autonomy boundary:** the duty cycle does NOT change permissions or introduce new autonomy rules. It's a scheduling + reminder tool; agents apply the same judgment + same existing rules about what's OK without approval vs. what needs clarification. The cycle batches attention items + pursues anything unblocked until nothing remains without xian. BUT — reiterate guardrails defensively so the word "autonomy" doesn't jailbreak the other rules. This reframes my #3: not "the cycle may do X but not Y" — rather "the cycle changes no permissions; it schedules existing-judgment work, and we reiterate guardrails so 'autonomy' isn't a jailbreak vector."
+4. **Cost/rate-limits:** xian will monitor. Max higher tier now; if reduced, could hit ceilings. Asked me to memo Dispatch re: closer usage-stat monitoring in coming days.
+
+Plus: design doc next (yes); anything else in mail worth touching on; he'll want orientation-against-the-work once operational matters are in hand.
+
+## 06:30 — Dispatch memo filed
+
+`docs/mail/calliope-to-dispatch-usage-monitoring-duty-cycle-ramp-2026-05-28.md`. Flags the duty-cycle ramp, notes it stays in subscription (not Agent SDK pool), asks for closer usage-stat monitoring with early-flag if approaching ceilings. Pushed to main per mail-discipline (`c43d67c`).
+
+## 06:40 — Duty-cycle design doc drafted
+
+`docs/operations/duty-cycle-klatch-v0.1.md`. Adapts CIO's six principles to Klatch's substrate. Structure:
+- Prominent "CRITICAL FRAMING: scheduling, not permission" section up top — directly encodes xian's #3 refinement. States the cycle changes no permissions, "autonomy" = scheduling autonomy not expanded permission, reiterates the existing guardrails (editorial gate, code review, no force-push, no irreversible actions) defensively. Operational test: "needs xian" is a form of "blocked" → batches to attention doc.
+- Six principles adapted (drain-until-IDLE, cron-bind-to-IDLE, xian-presence-pause, mail-check-at-interruption, 0th-step launch, CHECK dispatcher)
+- Substrate mapping table (PM → Klatch): /loop session-bound; docs/mail/ + read/ as drain target; git visibility; the four new per-agent docs
+- Calliope pilot plan (5 steps); v0.2+ open questions (interval tuning, no-op commit cadence, cost watch, cloud routines, worktree-recovery, day-end threshold)
+- Explicit IS / IS NOT (not a permissions framework, not active until xian green-lights, not a cloud design)
+
+Not active — registering the timer is a separate xian green-light. Design doc is for his review first.
