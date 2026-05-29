@@ -14,3 +14,5 @@ Inline launch drain before returning to IDLE (principle 5). xian present (starte
 - Cycle registered via `/loop` (session-bound, 60-min interval) after this entry.
 
 Next: autonomous fires run while xian is with Iris; xian-presence-pause applies when he returns.
+
+**Cron registered — ~19:05 PT** — job `d9b01f8e`, `7,37 * * * *` (every 30 min, off the :00/:30 mark), session-only, 7-day auto-expire. Execute-now resolved to xian-presence-pause (xian present): quick mail check confirmed inbox-zero of actionable items (3 active = my own sent memos to Dispatch + Theseus, both awaiting recipients, + CIO bootstrap kept active during pilot). No full drain while xian present. Cron fires autonomously once xian steps to Iris; pauses on his return. IDLE.
