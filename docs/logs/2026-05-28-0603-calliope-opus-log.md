@@ -70,3 +70,22 @@ Plus: design doc next (yes); anything else in mail worth touching on; he'll want
 - Explicit IS / IS NOT (not a permissions framework, not active until xian green-lights, not a cloud design)
 
 Not active — registering the timer is a separate xian green-light. Design doc is for his review first.
+
+## 06:43–06:47 — Orientation delivered; xian's allocation + dreaming decisions
+
+Delivered orientation summary; xian approved STATE doc idea (refresh tied to logbook wrap — now wired into calliope.md § 3). Created `docs/STATE.md`. Filed Theseus AAXT-parallel green-light memo. Confirmed four-driver allocation (Iris critical-path = priority; Theseus AAXT parallel; MAXT needs xian; blog parallel).
+
+**xian's dreaming-spike decisions (D1–D5), captured in STATE.md + memory:**
+- D1: wait but be ready; thin proprietary layer; round-trip with fidelity wherever possible
+- D2: cluster with Phase 5d (confirmed) — but a growing-importance issue tied to interchange-protocol vision
+- D3: fold into Step 11
+- D4: assembly-layer positioning (confirmed); ongoing strategic conversation
+- D5: yes; note latent PM "type 2" (anxiety-dream) design nobody's touched
+
+**Strategic thread opened (load-bearing, captured in `project_duty_cycle_reframes_klatch_purpose.md`):** the duty cycle solves some founding Klatch problems (mail delivery, agent collaboration) but NOT group conversation NOR the interchange-protocol vision — narrowing Klatch's unique value to those two. Treat as live strategic thread, not settled.
+
+**Feedback sharpening (saved to memory):** when higher-priority items are blocked on xian, drop to the next unblocked lower-priority item — don't idle. Same logic as the duty-cycle drain.
+
+## 06:47 PM — bookending; two answers for xian
+
+Blog advice + duty-cycle-pilot status (in chat). xian heading to Iris next. Holding the full logbook entry + STATE end-of-day refresh until the day actually closes (Iris session pending). Committing the decision/strategy capture now so nothing is lost.

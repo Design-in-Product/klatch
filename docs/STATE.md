@@ -35,12 +35,20 @@ This is UX work, owned by Iris in tandem with xian. It is the linchpin to beta l
 ## Standing decisions / items waiting on xian
 
 - **Entity-reframe blog draft** ("Bringing Conversations Into a Room") — `docs/drafts/bringing-conversations-into-a-room.md` — pending xian editorial read. Note: describes the composition gesture as forthcoming.
-- **D1–D5 from Argus's dreaming spike** (May 12, `docs/research/anthropic-dreaming-import-export-impact-2026-05-12.md`):
-  - D1 — memory-store import posture (rec: wait for a real driver)
-  - D2 — memory-store export transport (rec: cluster with Phase 5d)
-  - D3 — activate `memory_format: "typed"` (rec: fold into Step 11)
-  - D4 — Step 11 differentiation positioning (rec: assembly layer, not memory primitive — no change from 5/11)
-  - D5 — cross-read with Piper Alpha after their publication
+- **D1–D5 from Argus's dreaming spike** — **DECIDED by xian 2026-05-28** (`docs/research/anthropic-dreaming-import-export-impact-2026-05-12.md`):
+  - D1 — memory-store import posture → **wait, but be ready.** Klatch may always be a superset, but whenever we can round-trip into another system with fidelity we should; the proprietary layer should be as thin as possible.
+  - D2 — memory-store export transport → **cluster with Phase 5d** (confirmed), but flagged as a growing-importance issue tied to the interchange-protocol vision (see Strategic threads).
+  - D3 — activate `memory_format: "typed"` → **fold into Step 11** (confirmed).
+  - D4 — Step 11 differentiation positioning → **assembly layer, not memory primitive** (confirmed); ongoing strategic conversation between xian + Calliope.
+  - D5 — cross-read with Piper Alpha → **yes**; note a latent "type 2" (anxiety-dream) design in PM's roadmap that nobody else has touched yet.
+
+## Strategic threads (ongoing xian + Calliope conversation, opened 2026-05-28)
+
+These are live, not settled. See memory `project_duty_cycle_reframes_klatch_purpose.md`.
+
+- **The duty cycle reframes what Klatch is uniquely for.** The cross-project duty cycle now solves some of Klatch's founding problems (mail delivery, agent collaboration) — but NOT group conversation (synthetic klatches/roundtable) NOR the emerging interchange-protocol vision. Klatch's unique, defensible value is narrowing to those two things. Invest where Klatch is uniquely needed, not where the duty cycle already delivers.
+- **Thin proprietary layer.** Maximize fidelity round-trips into other systems; minimize lock-in surface. Superset-but-interoperable.
+- **Klatch as interchange protocol** is where the strategic weight is shifting (D2/D4 territory).
 - **Finding 1 UX shape** — UUID-matching on re-import (silent attach / toast / dialog / refuse) — Daedalus parked on Iris's call.
 - **Step 11 scoping** (`docs/plans/STEP-11-SCOPING.md`) — assembly-layer reframe, waiting on the D1–D5 decisions.
 
