@@ -89,3 +89,22 @@ Delivered orientation summary; xian approved STATE doc idea (refresh tied to log
 ## 06:47 PM — bookending; two answers for xian
 
 Blog advice + duty-cycle-pilot status (in chat). xian heading to Iris next. Holding the full logbook entry + STATE end-of-day refresh until the day actually closes (Iris session pending). Committing the decision/strategy capture now so nothing is lost.
+
+## 19:00 — xian: publish the blog (illustration first) + start the cycle now
+
+Two go-aheads:
+1. **Publish entity-reframe blog** — agreed, but needs illustration first (correct — no SVG yet).
+2. **Start the duty cycle now** — register the timer, observe.
+
+### Illustration drafted
+
+`docs/drafts/bringing-conversations-illustration.html` (preview). Concept: conversation-cards gathered at an oblique klatch-table — one tilted mid-placement (the composition gesture), one with the accent-red marker (a role). Same calm slate vocabulary + oblique perspective as Before You Go for series consistency. Rendered to PNG and visually verified — reads cleanly. Surfaced to xian for reaction before publishing (publish is blocked-on-xian: his illustration approval + final go).
+
+### Cycle substrate created
+
+- `docs/operations/duty-cycle/calliope-tasks.md` — task list of record
+- `docs/operations/duty-cycle/cycle-logs/cycle-log-calliope-2026-05-28.md` — today's cycle log (Fire 0 logged)
+
+### Cycle launch
+
+0th-step drain done inline (mail already at zero; top task = illustration, drafted). Registering `/loop` (session-bound) at a 30-min pilot interval — shorter than the design-doc 60-min default, chosen for night-1 observation (more fires = more to learn); tunable. xian-presence-pause applies (cycle effectively runs while xian is with Iris, pauses on his return). Committing substrate + illustration to main first so the cycle starts from a clean committed state.
