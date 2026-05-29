@@ -108,3 +108,30 @@ Two go-aheads:
 ### Cycle launch
 
 0th-step drain done inline (mail already at zero; top task = illustration, drafted). Registering `/loop` (session-bound) at a 30-min pilot interval — shorter than the design-doc 60-min default, chosen for night-1 observation (more fires = more to learn); tunable. xian-presence-pause applies (cycle effectively runs while xian is with Iris, pauses on his return). Committing substrate + illustration to main first so the cycle starts from a clean committed state.
+
+## 19:05–22:07 — Pilot fires (autonomous)
+
+Cron `d9b01f8e` (`7,37 * * * *`, session-only) registered. Fires:
+- Fire 0 (launch, xian-present): 0th-step, presence-pause, inbox-zero confirmed.
+- Fire 1 (~19:37): WORK → no-op, committed.
+- Fire 2 (~20:07): WORK → no-op + **first pilot refinement** (batch no-op commits to avoid the noise PM flagged); committed (carries the finding).
+- Fires 3–6 (~20:37–22:07): WORK → no-op, batched locally (no per-fire commit).
+All fires clean: pull + mail check + nothing-unblocked + idle. The cycle drained nothing because nothing was unblocked, idled cleanly, never touched gated work (illustration publish stayed blocked-on-xian throughout). Thin single-agent evening = the expected low-traffic condition; the value was confirming clean idle behavior + self-surfacing the no-op-commit refinement.
+
+## 22:15 — xian: pause cron for the night; end-of-day wrap
+
+xian done working for the day; no other agents active → no point firing all evening. Cancelled cron `d9b01f8e` (CronDelete). Ran clean STOP: folded batched Fires 3–6 no-ops into the cycle log with a STOP entry; pilot day-1 summary recorded.
+
+End-of-day wrap (per the discipline now in calliope.md § 3):
+- **May 28 logbook entry** filed in `log.html` ("The day Klatch joined the duty cycle") — 7 paragraphs: hiatus return, duty-cycle adoption + the scheduling-not-permission reframe, mail housekeeping + D1–D5 decisions + the strategic thread (duty cycle reframes Klatch's unique value), the pilot's 6 clean-no-op fires + self-surfaced refinement, the entity-reframe blog illustration, the night-end pause.
+- **STATE.md refreshed** — duty cycle LIVE-but-paused; resumes on xian's go; illustration drafted/awaiting reaction; D1–D5 decided; strategic threads current.
+- Single-source day (only Calliope's log committed today; Iris conversation didn't commit a log).
+
+### Wrap verification
+Will paste `git log origin/main` post-push below.
+
+Carry-forwards for next session:
+- **Re-register the cron** on xian's go (next active session).
+- **Entity-reframe blog publish** — awaiting xian's illustration reaction → then publish.
+- Iris UX critical-path is the priority driver; Theseus AAXT green-lit in parallel; MAXT awaits a dedicated xian session.
+- D1–D5 decided; implementation clusters with Step 11 / Phase 5d (post-beta).
