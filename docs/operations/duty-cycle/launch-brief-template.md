@@ -51,7 +51,14 @@ Any inbound xian message → pause cron immediately, do a ~30s mail check before
 
 ## When xian goes silent: wait-default re-arm
 
-**Do not re-arm the cron just because time has passed.** Re-arm only on positive absence signals: xian's last message reads as a wrap, the tone is conclusive, ~5–10 min have passed with no question or open thread waiting on him. **Default to waiting.** The worst failure mode is firing into the middle of xian's working turn; idling-too-long is recoverable. (Principle 4, v0.2 — PM had 3 documented dormancy incidents from getting this wrong.)
+**Do not re-arm the cron just because time has passed.** Re-arm only on **positive absence signals** — any combination of: xian's last message reads as a wrap; the tone is conclusive (thank-you, end-of-day, "see you tomorrow"); ~5–10 min have passed with no question or open thread waiting on him.
+
+**Two real failure modes, both bad** (Principle 4, v0.2):
+
+- **Firing into a live conversation** — too-eager re-arm interrupts xian's turn.
+- **Indefinite idling / dormancy** — never re-arming after he goes silent defeats the cycle's value (PM had 3 documented incidents).
+
+The discipline is "wait-default," **not "wait-forever."** When unsure, wait a little longer rather than firing into uncertainty. But the heuristic must converge — once a positive signal lands, re-arm. If none land for an unusually long period (e.g., hours of silence with nothing pending), surface a wake-or-confirm question rather than going dormant. The cycle's value is lost the moment the agent drops off the map silently.
 
 ## Report in
 
