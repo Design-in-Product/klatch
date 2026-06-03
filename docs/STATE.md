@@ -1,7 +1,7 @@
 # Klatch — Standing State
 
 **Refresh cadence:** updated as part of the end-of-day logbook wrap (alongside the logbook entry). This is a point-in-time orientation snapshot, not live state — verify against COORDINATION.md, the roadmap, and recent commits before acting on anything time-sensitive.
-**Last refreshed:** 2026-05-28 end-of-day (Calliope)
+**Last refreshed:** 2026-06-02 end-of-day (Calliope)
 
 ---
 
@@ -30,7 +30,7 @@ This is UX work, owned by Iris in tandem with xian. It is the linchpin to beta l
 ## In flight / recent
 
 - **UI-as-context AAXT** (Theseus, May 18) — 5-round wave, diagnostic→fix→validate loop proven: ChannelSettings 54% → 94% conveyance after patches. 146 probes, 11 findings. Methodology validated empirically. Open candidates: ProjectSettings, EntityManager, MessageList (Theseus green-lit to pursue in parallel, 2026-05-28).
-- **Duty cycle — LIVE (Calliope pilot), paused for the night.** Design doc `docs/operations/duty-cycle-klatch-v0.1.md`. Launched 2026-05-28 evening (session-bound cron, 30-min interval); ran 6 fires, all clean no-ops (thin single-agent evening); surfaced + adopted one refinement (batch no-op commits). Cron cancelled for the night at xian's call (no agents active, no point firing). **Resumes on xian's go at next active session** — re-register the cron, run 0th-step inline. Cloud routines still a v0.2+ option.
+- **Duty cycle — paused since 5/28; rollout-conversation in queue for 6/3 morning.** Klatch paused 5/29–6/2 while PM ran its full ~10-agent cohort onto cycles. PM CIO sent a major bootstrap-of-learnings memo on 6/2 (`docs/mail/cio-piper-to-calliope-shepherding-agents-onto-duty-cycle-2026-06-02.md`). **Headline lesson: cadence must match work-shape, not be one fixed interval** (continuous-mail → hourly; bursty → 2–3hr; intermittent → off-cycle). Other key new principles for v0.2: **wait-default re-arm heuristic** (positive absence signals; never re-fire into a live conversation; PM had 3 dormancy incidents without it) and **CronDelete-FIRST** as the literal first action when entering multi-step work (REPL-turn-level clash). Tentative work-shape mapping for Klatch roster (pending xian's 6/3 read): Calliope cycle / Argus 2–3hr-or-off / Daedalus/Iris/Theseus off-cycle. **Restart and v0.1 → v0.2 update wait for the 6/3 morning conversation.**
 - **Entity-reframe blog ("Bringing Conversations Into a Room")** — illustration drafted (`docs/drafts/bringing-conversations-illustration.html`); xian agreed to publish; **awaiting his illustration reaction, then publish** (HTML + index card + OG image, same as Before You Go). Publish gated on xian approval.
 
 ## Standing decisions / items waiting on xian

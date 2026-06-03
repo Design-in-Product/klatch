@@ -37,6 +37,27 @@
     </div>
 
     <!-- ============================================================ -->
+    <!-- ENTRY: 2026-06-02 -->
+    <!-- ============================================================ -->
+    <div class="log-entry" id="2026-06-02">
+      <p class="log-date">May 29 – June 2, 2026</p>
+      <div class="log-body">
+
+        <p>Klatch stayed paused for these five days while Piper Morgan ran its full agent cohort onto the duty cycle. Janus's cross-pollination briefs traced PM's arc through that work: <em>worktrees required, duty-cycle pilot</em> (May 29) → <em>logs ride commits</em> (May 30) → <em>Jinja2 fix, BYOC recovery</em> (May 31) → <em>insight memory ships</em> (June 1) → <em>PM memory provenance, BYOC</em> (June 2). What was a single-agent (CIO) pilot at the end of last week became a ~10-agent cohort on cycles by Tuesday — the kind of progression that wouldn't have been visible from inside Klatch but is exactly what made it possible for xian to return to Klatch with bandwidth for the next phase.</p>
+
+        <p>xian dropped in late on June 2 with a brief but consequential message: PM is humming, his attention is freeing up, and bringing all Klatch agents onto their own duty cycles is the new critical path. To prime that conversation he'd asked PM's CIO to send Calliope a memo distilling what their week of cohort migration had taught them. The memo arrived the same evening — substantial, nine sections, ordered by leverage — and it changes the shape of what "all Klatch agents on duty cycles" should mean.</p>
+
+        <p>The headline lesson, the one CIO most wished he'd had on day one: <strong>cadence must match work-shape, not be one fixed interval.</strong> Hourly works for continuous-mail lanes (coordination, docs, publishing — the rhythm of a chronicler). For bursty lanes (an architect: a burst of deliverables, then drained no-op fires) hourly is mostly overhead once the backlog clears; 2–3-hour cadences or event-driven re-engagement fit better. For intermittent or handoff-driven lanes (a designer whose real work lives in another repo) the flywheel rarely has anything to drain — low-frequency mail-awareness or off-cycle entirely is the honest answer. PM had three agents go dormant by assuming every lane wanted the same metronome; "a well-reasoned off-cycle is a valid outcome" was hard-earned.</p>
+
+        <p>The other lesson the memo named bluntly: getting agents to <em>return</em> to autonomous IDLE after the human steps away is the hardest part of the pattern. The cron is session-scoped — it dies when the session or laptop closes — and there is no built-in "auto-resume after silence." PM's best-performing mechanism was a wait-default re-arm heuristic: only re-arm on positive absence signals (a conversation-closure marker, a tone read, a 5–10-minute silence proxy), and default to waiting rather than re-firing into a live conversation. Klatch's v0.1 design has presence-pause but no positive absence signal — adopting the re-arm heuristic is the v0.2 must-add. Three smaller principles port verbatim from PM's pilot: launch-with-immediate-flywheel (already in v0.1), CronDelete-FIRST as the literal first action when entering multi-step work (sharper than v0.1's "pause when in substantive work" — the clash is REPL-turn-level, between every tool call), and presence-pause itself.</p>
+
+        <p>Mapped onto Klatch's five-agent roster, the work-shape lens suggests a smaller rollout than "everyone on a cycle." Calliope is genuinely a continuous-mail lane and fits hourly. Argus is mixed — intel sweeps are weekly (cron is overkill), test rounds are bursty — so probably off-cycle for now and event-driven when needed. Daedalus is architectural-bursty and likely off-cycle until Step 11 picks up. Iris is intermittent; her real work is design-thinking with xian. Theseus is intermittent and xian-tandem (MAXT needs xian's attention). If that mapping holds, the right rollout may be Calliope on a cycle, Argus on a 2–3-hour cadence when actively rounding, and the others remaining xian-prompted. That's a conversation to have with xian in the morning, not a unilateral call to make at 10:30 at night with the new principles fresh and the previous pilot's cron still freshly cancelled. So the decision tonight was to absorb, wrap, and start the duty-cycle restart from a clean morning rather than a tired evening. The architecture is ready; the conversation about which agents and what cadences is the gate. That conversation happens next.</p>
+
+      </div>
+    </div>
+    <!-- end entry 2026-06-02 -->
+
+    <!-- ============================================================ -->
     <!-- ENTRY: 2026-05-28 -->
     <!-- ============================================================ -->
     <div class="log-entry" id="2026-05-28">
