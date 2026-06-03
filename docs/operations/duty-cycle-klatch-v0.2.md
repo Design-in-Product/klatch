@@ -97,16 +97,20 @@ Any inbound xian message → pause the cron immediately (xian is now the driver;
 
 The hardest problem PM identified: returning agents to autonomous IDLE after the human goes silent. **There is no built-in "auto-resume after silence."** Without a positive re-arm mechanism, agents go dormant when xian leaves quietly (PM had three documented dormancy incidents from relying on manual "go autonomous" signals — the human doesn't always remember to send them).
 
-PM's best-performing mechanism, ported to Klatch:
+**Two real failure modes, both bad:**
 
-- **Default to waiting.** Never re-fire the cron *into* a live conversation. If unsure whether xian is still present, wait longer rather than firing.
-- **Re-arm on positive absence signals** — not on time-passing-since-last-message alone. The positive signals (any combination):
-  - **Conversation-closure marker** — xian's last message reads as a wrap ("good night," "see you tomorrow," "step away to Iris now," "go AFK").
-  - **Tone read** — the last exchange has the shape of a conclusion (a thank-you, a wrap signal, an end-of-day reflection), not a mid-conversation pause.
-  - **Silence proxy** — ~5–10 minutes have passed with no new message after the agent's response, AND there's no question or open thread waiting on xian.
-- **When in doubt: wait.** A delayed re-arm is recoverable; an interruption mid-conversation breaks the user experience.
+- **Failure A — firing into a live conversation.** The cron re-arms too eagerly, fires while xian is still working, interrupts his turn, breaks the user experience.
+- **Failure B — indefinite idling.** The cron never re-arms after xian goes silent, the agent goes dormant, the cycle's value is lost (this is the "defeats the purpose" failure xian flagged 2026-06-03; PM had 3 documented instances). The cycle MUST re-arm at some point — the question is *on what signals*, not *whether*.
 
-The cycle's worst failure mode is not idling-too-long; it's firing into the middle of xian's working turn.
+PM's best-performing mechanism — and Klatch's adoption — re-arms on **positive absence signals**, not on bare time-passing. Any combination of:
+
+- **Conversation-closure marker** — xian's last message reads as a wrap ("good night," "see you tomorrow," "step away to Iris now," "go AFK").
+- **Tone read** — the last exchange has the shape of a conclusion (a thank-you, a wrap signal, an end-of-day reflection), not a mid-conversation pause.
+- **Silence proxy** — ~5–10 minutes have passed with no new message after the agent's response, **AND** there's no question or open thread waiting on xian. (The silence proxy *is* a positive signal — when nothing's pending and the conversation has paused, that's evidence of absence, and the cycle re-arms.)
+
+**The discipline is "wait-default," not "wait-forever."** "Wait-default" means: when unsure, wait a little longer rather than firing into uncertainty. But the heuristic must converge — once one or more positive signals land, the cycle re-arms. If none land for an unusually long period, the agent should surface a wake-or-confirm question rather than going silently dormant — better to ask "should I resume?" than to drop off the map.
+
+The substantive judgment: weigh the cost of Failure A (one interrupted turn — usually obvious and recoverable in the next exchange) against Failure B (dormancy that defeats the cycle's value, potentially undetected for hours or days). Both are bad; both are real. The heuristic should err *slightly* toward waiting (because firing-into-conversation is a fresh and visible mistake while dormancy compounds) but it must not become wait-forever.
 
 ### 5. 0th-step launch *(unchanged from v0.1)*
 
