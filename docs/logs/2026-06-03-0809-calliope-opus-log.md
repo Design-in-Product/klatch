@@ -78,3 +78,19 @@ Five deliverables filed:
 5. **`docs/mail/calliope-to-cio-via-janus-canonical-artifacts-request-2026-06-03.md`** — request memo for all five CIO-offered artifacts (cron-lifecycle.md, PM's cron-shape-experiments.md, v0.7.0 adoption package, launch-brief template, cohort status tracker). Routed via Janus per the standing cross-project channel. Includes Janus cross-pollination heads-up on the local-cron-against-continuing-session work.
 
 Committing + pushing Phase 0 now, then surfacing to xian for Phase 1 sign-off before the Calliope cutover.
+
+## ~11:30 — Phase 0 committed + pushed; xian's dormancy framing fix incorporated
+
+Phase 0 commit `8bc7eee` → main as `ddd421e`. xian read v0.2 and pushed back on the "idling-too-long is recoverable" framing in Principle 4 — correctly: indefinite idling defeats the cycle's purpose; dormancy is its own failure mode. Updated v0.2 + launch-brief template: "wait-default is not wait-forever; the heuristic must converge; surface a wake-or-confirm question rather than drift into dormancy." Fix committed `5d32717` → main as `99f9edc`.
+
+## ~12:00 — Phase 1 queued; xian called away
+
+Walked through Phase 1's step 1 (create the persistent `.claude/worktrees/calliope` worktree on `claude/calliope`) in chat; xian asked "what is the first step?" and was called away before signaling go.
+
+## Wrap (2026-06-06 morning, retroactive close)
+
+Session paused mid-Phase-1 on 6/3; xian returned 6/6 to pick up. Phase 0 is on main; Phase 1 begins in the 6/6 session. Three quiet gap days (6/4, 6/5, 6/6 mornings — only Janus brief deliveries; no Klatch agent work). 6/4 brief reflected the v0.2 work as a headline insight, with xian's wait-default-vs-wait-forever sharpening credited explicitly.
+
+**Carry-forwards to 6/6:** Phase 1 cutover (persistent worktree + hourly cron + 0th-step drain + tracker updates + legacy worktree cleanup); Phase 2+3 if xian's bandwidth permits (D+A together; T+I together-or-staggered); blog publish (entity-reframe — awaiting xian's illustration reaction from 5/28, the only drafted-not-published post).
+
+Closing 6/3 log here.
