@@ -19,12 +19,13 @@
 - **Observations:** 1 launch (Fire 0) + 6 autonomous fires, all clean no-ops. Thin single-agent evening; everything else gated on xian during planning-mode pause. Cycle idled cleanly, respected xian-presence-pause, never crossed guardrails.
 - **Refinement triggered:** by Fire 2, two consecutive no-op commits confirmed PM's flagged no-op-commit-noise pattern. Adopted in-flight: pure no-op fires batch locally (append cycle-log line) and commit at the next substantive event or STOP. Now standard in v0.2.
 
-### 2026-06-03 — v0.2 cutover — hourly (cadence-of-record)
+### 2026-06-03 → 2026-06-06 — v0.2 cutover — hourly (cadence-of-record)
 
-- **Cadence:** every hour at off-mark minute (planned `13 * * * *` or similar; finalized at Phase 1 cutover).
+- **Cadence:** `13 * * * *` (every hour at :13, off-mark per CronCreate fleet-health guidance). Cron job id `adca439c`. Session-only.
 - **Reason:** CIO's continuous-mail-lane default (§4, 2026-06-02). Calliope's work-shape (coordination, chronicling, mail) matches the lane. xian approved straw-model mapping 2026-06-03.
-- **Observations:** *pending Phase 1 cutover.*
-- **Refinements triggered:** *pending.*
+- **Cutover (2026-06-06 ~08:30 PT):** Phase 0/1 walked through 6/3 morning; Phase 1 completed 6/6 after a 3-day xian-called-away pause. Persistent worktree `.claude/worktrees/calliope` on `claude/calliope` created from `origin/main`. v0.2 cron prompt registered — encodes CHECK dispatcher (START/STOP/WORK), drain-until-IDLE, CronDelete-FIRST when entering substantive work, wait-default re-arm with positive absence signals (NOT wait-forever), scheduling-not-permission guardrail. 0th-step inline drain: no actionable inbound mail; continuous tasks in steady state; IDLE.
+- **Observations:** *pending — first autonomous fires will land at :13. xian present at cutover; first autonomous fire likely hits xian-presence-pause unless he steps away.*
+- **Refinements triggered:** *pending — to accumulate as the cycle runs.*
 
 ---
 
