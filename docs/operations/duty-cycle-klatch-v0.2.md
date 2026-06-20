@@ -93,7 +93,11 @@ When the work completes and the agent returns to true IDLE, re-register the cron
 
 Any inbound xian message → pause the cron immediately (xian is now the driver; a fire would clash with his turns).
 
-### 4. Wait-default re-arm heuristic *(NEW in v0.2 — the must-add)*
+### 4. Wait-default re-arm heuristic *(NEW in v0.2 — the must-add; sharpened 2026-06-19)*
+
+**xian standing directive (2026-06-19):** the cron should resume by default when we go idle. Wait-default IS the convergence — re-arm is the *posture between fires*, not a decision each fire makes. The fire-into-live-conversation failure mode is still real (xian-presence-pause stands as Principle 3); the wait-forever failure mode is still real (the heuristic must converge). Between fires, posture is "I will fire next interval," not "I might fire."
+
+
 
 The hardest problem PM identified: returning agents to autonomous IDLE after the human goes silent. **There is no built-in "auto-resume after silence."** Without a positive re-arm mechanism, agents go dormant when xian leaves quietly (PM had three documented dormancy incidents from relying on manual "go autonomous" signals — the human doesn't always remember to send them).
 
