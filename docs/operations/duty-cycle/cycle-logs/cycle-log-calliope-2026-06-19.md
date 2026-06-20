@@ -30,7 +30,17 @@ Saved as persistent memory: `project_byoc_transporter_device.md` + `project_xian
 
 **Fire E — Cron registered with standing-directive sharpening (~21:35)** — Cron `df35e0db`, `13 * * * *`, session-only, 7-day auto-expire. v2 drain prompt embeds xian's standing directive (cron should resume by default when idle; wait-default IS the convergence). v0.2 Principle 4 updated in place with the standing-directive line.
 
-**Fire F (pending, in flight) — Attention rollup v2 (verified sweep)** — Refactoring `docs/operations/attention-rollup.md` per Exec's four corrections. Demand-organized sections; who's-waiting tags; verified-sweep against live source; sub-decision-as-own-row when applicable.
+**Fire F — Attention rollup v2 (verified sweep, ~22:00)** — Cron paused (`CronDelete df35e0db`) as literal-first action before substantive work, per Principle 2. Verified sweep: pulled latest main; read active mail dir against expected items; read calliope-tasks.md; grep'd COORDINATION.md for live agent status (matched what STATE.md carried). Rewrote `docs/operations/attention-rollup.md` v1 → v2 per Exec's four corrections:
+- **Sections demand-organized** (was topic-organized): Metrics strip · 🔴 Needs you · 🟠 Blocked on others · 🟡 Lower-urgency · 🔵 In flight · 🟢 Resolved.
+- **Who's-waiting tag on every Needs-you row** (Iris session; entity-reframe blog illustration).
+- **Sub-decision-as-own-row** demonstrated: Klatch's `validUntil` field-naming choice surfaced as 🟡 row separate from the parent PM #972 thread at 🟠.
+- **Verified sweep applied** — every item cross-checked against live source files, not memory.
+- Recently-closed footer with strikethroughs (5 closed since v1 same day).
+- Changelog at bottom records v1 → v2 history.
+
+Two items live in 🔴 Needs you (the two highest-leverage xian-asks): Iris session (xian's stated tomorrow-morning priority — Calliope offers to draft the Iris pre-brief on signal); entity-reframe blog illustration (24 days waiting). The verified sweep itself produced no surprises — what I had matched live truth — but the discipline of doing it from-source rather than from-vantage is the whole point per Exec.
+
+Re-registering cron next.
 
 ---
 
