@@ -87,7 +87,38 @@ These are Klatch's defensible unique value. Both still wanted. Both unsolved by 
 
 ---
 
+## ~11:30 — Composition gesture + klatch setup spec drafted
+
+Worked through the composition gesture with xian over several exchanges. Key decisions made:
+
+**Trigger:** "New Klatch" button in sidebar (not "Convene" — too formal for a label). Sibling to New Chat.
+
+**Setup surface:** lightweight panel. Fields: Name (required), Agents (required), Purpose (optional, seeds L4), Orchestration mode (optional, defaults Blast), Project (optional, context-dependent), Documents (optional). Clone-existing-klatch affordance before fields.
+
+**Agent picker — three paths:**
+- Path A: Existing agents (roles first, other agents below)
+- Path B: JIT import (composition is the import front door — BYOC)
+- Path C: Start new agent → continue existing role OR new agent/role
+
+**Orchestration modes (1.0):**
+- Blast (parallel, no cross-agent visibility) — default
+- Sequential (round-robin, each sees prior) — valid, ships
+- Directed (@mention routing) — ships
+- Organic (self-selecting) — post-1.0
+
+**@mentions:** user-facing surface for directed mode. Compose with all three modes. Autocomplete in klatch input. Not a mode to switch into — just natural syntax.
+
+**Role fluidity:** "promote to role" stays internal. User framing: "Is this a new face in the meeting or someone with an ongoing function?" Path C sub-options implement this.
+
+**In-klatch experience:** synthetic group chat, no extra chrome, no session-close gesture, no synthesis button. Emergent. Artifacts accumulate in the channel.
+
+**Cross-reference:** agent's 1-1 chat shows which klatches it's in (bidirectional, no new data needed).
+
+**Data model notes for Daedalus:** name-as-proxy for role tier (no is_role flag yet); clone klatch = copy channel + channel_entities; JIT import integration point; @mention routing by handle; orchestration_mode column on channels.
+
+**Spec filed:** `docs/ux/spec-composition-gesture.md`
+
 ## Next
 
-Moving to the composition gesture and klatch setup surface spec.
+Spec review with xian. Then: commit to main, notify Daedalus.
 
