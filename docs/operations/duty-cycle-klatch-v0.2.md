@@ -133,6 +133,7 @@ Each fire starts with a CHECK that routes per day-part:
 1. Final sync (pull + push)
 2. Append closing cycle-log entry
 3. Close session log
+4. **Question-box check** (added 2026-06-19 per Janus 6/12 memo, xian-approved cross-project propagation): *anything for the question box? If the day surfaced a genuine question for xian — curiosity, not task-unblocking — file it per the Letters convention (`question-{role}-{date}-{topic}.md` to dispatch mail). A no is fine; an unconsidered no is the failure mode.* Letters archive: https://designinproduct.com/internal/letters/
 
 ## Substrate mapping (Klatch specifics, updated for v0.2)
 
