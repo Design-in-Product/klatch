@@ -86,6 +86,21 @@ Both clarifications saved to persistent memory (xian-focal-shift memory file app
 
 Yes please. The attention-rollup is the biggest piece of Calliope working-mode in months; learning the routing-and-asking pattern from Exec directly beats reverse-engineering. xian still catching up.
 
+## ~23:30 — End-of-day implicit STOP (xian signed off without explicit wrap)
+
+xian's last message ("Klatch Calliope duty-cycle drain..." — autonomous fire prompt to me, before logging off) signaled session-end. No formal STOP was run before sign-off, but it's the practical equivalent.
+
+End-of-day state:
+- v2 attention-rollup MD + HTML on main (`87c65cd`).
+- Cron `b4159932` registered with standing-directive + verified-sweep disciplines in drain prompt.
+- Question filed in dispatch's Letters queue.
+- Iris pre-brief drafting offered, on xian's morning signal.
+- Mail loop closed clean (Exec round-trip resolved same evening).
+
+Question-box check: one filed today (transporter-device-demoability for OpenLaws). Nothing additional surfaced.
+
+Closing this 2026-06-19 session log. Today's 6/20 cycle log opens at `cycle-log-calliope-2026-06-20.md`.
+
 ## ~20:25 — xian: "trust you on figuring out the right order of operations"
 
 Plowing on. Order of operations:
