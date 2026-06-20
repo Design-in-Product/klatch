@@ -49,3 +49,27 @@ Discovered an untracked Janus memo to me dated 6/12: `memo-janus-to-calliope-cc-
 xian flagged a prior session's "being your own chat" was an autocorrect typo for "**bring your own chat**." Important strategic-framing distinction. For PM: BYOC = product assistant as skills + MCP server to PM's backend. For Klatch: BYOC = **a person using a Klatch MCP as a "transporter device" to migrate context to a new tool.** This operationalizes the interchange-protocol vision (D2/D4) and the thin-proprietary-layer principle.
 
 Saved as persistent project memory (`project_byoc_transporter_device.md` + MEMORY.md index entry). Updated STATE.md's strategic-threads section to reflect the corrected framing.
+
+## 19:50 — xian declares the focal shift (no longer mysterious)
+
+**xian shared the shift specifics.** Starting July 2026:
+- Full-time on consulting + own products.
+- No longer Director of Product at Kind Systems (no longer internally consulting for sister org OpenLaws either).
+- OpenLaws becomes an external consulting client.
+- Design in Product (Janus's hub) becomes the operational center.
+- Piper Morgan is the consulting tool — used to help clients build their own "product OS" using methodology accumulated across the projects.
+- xian's framing: "virtuous hyper circle" — projects and clients feed each other; methodology compounds across both.
+
+**Operational implications for Klatch:**
+- Klatch joins xian's core work (no longer a side-of-day-job project) — multi-week pauses during planning mode may become rarer/shorter.
+- The interchange-protocol vision (BYOC / Klatch MCP as transporter device) gains real client-side use cases. Klatch needs to be legible to consulting-client contexts, not just xian's personal use.
+- Janus-vs-Calliope role articulation (already on 6/19 thread list) becomes urgent: Janus's hub-coordinator role is now central across xian's working life; Calliope's principal-contact role for Klatch sits inside Janus's broader coordination.
+
+Saved as persistent memory (`project_xian_focal_shift_july2026.md` + MEMORY.md index). Updated STATE.md strategic-threads to replace the "TBD details" placeholder with the actual shift.
+
+This reframes all three of xian's stated agenda items today:
+- #1 catch-up: now also includes adjusting Calliope's working model for the new center of gravity.
+- #2 strategic discussion (esp. threads A and C): operational + positioning conversations now have a concrete July 2026 horizon.
+- #3 Iris unblock for beta: beta-readiness becomes more time-pressured if Klatch is going to be legible to consulting clients in the new model.
+
+xian still catching up on prior messages.
