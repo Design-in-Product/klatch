@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Klatch Attention Rollup — 2026-06-19</title>
+<style>
+  body {
+    font-family: ui-sans-serif, -apple-system, system-ui, sans-serif;
+    max-width: 880px;
+    margin: 40px auto;
+    padding: 0 24px;
+    color: #1e293b;
+    line-height: 1.55;
+    background: #f8fafc;
+  }
+  h1 {
+    font-size: 28px;
+    margin-bottom: 4px;
+    color: #0f172a;
+  }
+  .subtitle {
+    color: #64748b;
+    margin-bottom: 24px;
+    font-size: 14px;
+  }
+  .preamble {
+    background: #fff;
+    border-left: 4px solid #64748b;
+    padding: 16px 20px;
+    margin-bottom: 32px;
+    border-radius: 4px;
+    font-size: 14px;
+    color: #334155;
+  }
+  .preamble p { margin: 0 0 8px 0; }
+  .preamble p:last-child { margin: 0; }
+  .preamble strong { color: #0f172a; }
+  .last-refreshed {
+    color: #64748b;
+    font-size: 13px;
+    font-style: italic;
+    text-align: right;
+    margin-bottom: 24px;
+  }
+
+  /* Metrics strip */
+  .metrics {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-bottom: 36px;
+  }
+  .metric {
+    background: #fff;
+    border-radius: 8px;
+    padding: 16px 12px;
+    text-align: center;
+    box-shadow: 0 1px 3px rgba(15,23,42,0.06);
+  }
+  .metric .label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: #64748b;
+    margin-bottom: 6px;
+  }
+  .metric .count {
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 1;
+  }
+  .metric.needs-you .count { color: #dc2626; }
+  .metric.blocked .count { color: #ea580c; }
+  .metric.lower .count { color: #ca8a04; }
+  .metric.in-flight .count { color: #2563eb; }
+
+  /* Sections */
+  section {
+    background: #fff;
+    border-radius: 8px;
+    padding: 20px 24px;
+    margin-bottom: 20px;
+    box-shadow: 0 1px 3px rgba(15,23,42,0.06);
+  }
+  section h2 {
+    margin: 0 0 12px 0;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  section.needs-you { border-left: 6px solid #dc2626; }
+  section.needs-you h2 { color: #991b1b; }
+  section.blocked { border-left: 6px solid #ea580c; }
+  section.blocked h2 { color: #9a3412; }
+  section.lower { border-left: 6px solid #ca8a04; }
+  section.lower h2 { color: #854d0e; }
+  section.in-flight { border-left: 6px solid #2563eb; }
+  section.in-flight h2 { color: #1e40af; }
+  section.resolved { border-left: 6px solid #16a34a; }
+  section.resolved h2 { color: #15803d; }
+
+  section .intro {
+    font-size: 13px;
+    color: #64748b;
+    margin-bottom: 16px;
+    font-style: italic;
+  }
+
+  /* Item rows */
+  .item {
+    border-top: 1px solid #e2e8f0;
+    padding: 14px 0;
+  }
+  .item:first-of-type { border-top: none; padding-top: 4px; }
+  .item h3 {
+    margin: 0 0 8px 0;
+    font-size: 16px;
+    color: #0f172a;
+  }
+  .item .meta {
+    display: flex;
+    gap: 16px;
+    font-size: 13px;
+    color: #475569;
+    margin-bottom: 8px;
+    flex-wrap: wrap;
+  }
+  .item .meta strong { color: #1e293b; font-weight: 600; }
+  .item .body { font-size: 14px; color: #334155; }
+  .item .body p { margin: 6px 0; }
+  .item .recommended {
+    background: #f1f5f9;
+    border-radius: 4px;
+    padding: 8px 12px;
+    margin-top: 10px;
+    font-size: 13px;
+    color: #334155;
+  }
+  .item .recommended strong { color: #0f172a; }
+
+  .tag {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+  .tag.who-waiting {
+    background: #fef3c7;
+    color: #92400e;
+  }
+  .tag.date {
+    background: #e2e8f0;
+    color: #475569;
+  }
+  .tag.stale {
+    background: #fee2e2;
+    color: #991b1b;
+  }
+
+  /* Strategic-threads list */
+  .threads-list {
+    margin: 8px 0 0 0;
+    padding-left: 18px;
+    font-size: 13px;
+    color: #475569;
+  }
+  .threads-list li { margin: 4px 0; }
+  .threads-list em { color: #334155; }
+
+  /* Resolved (strikethrough) */
+  .resolved .item {
+    color: #64748b;
+  }
+  .resolved .item h3 {
+    text-decoration: line-through;
+    color: #64748b;
+    font-size: 14px;
+  }
+  .resolved .item .body {
+    font-size: 13px;
+    color: #64748b;
+  }
+
+  /* Changelog */
+  .changelog {
+    margin-top: 32px;
+    padding-top: 20px;
+    border-top: 1px solid #e2e8f0;
+    font-size: 13px;
+    color: #64748b;
+  }
+  .changelog h3 {
+    font-size: 14px;
+    color: #475569;
+    margin-bottom: 8px;
+  }
+  .changelog ul { margin: 0; padding-left: 18px; }
+  .changelog li { margin: 4px 0; }
+
+  code {
+    background: #f1f5f9;
+    padding: 1px 6px;
+    border-radius: 3px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 13px;
+    color: #334155;
+  }
+</style>
+</head>
+<body>
+
+<h1>Klatch Attention Rollup</h1>
+<div class="subtitle">v2 · the document xian skims to know what asks of him first</div>
+
+<div class="preamble">
+  <p><strong>Demand-organized, not topic-organized.</strong> The board's job is to track <em>changing demand on xian</em>, which topic-sorting ages badly. Sections sorted by what each item asks of him: 🔴 Needs you → 🟠 Blocked on others → 🟡 Lower-urgency → 🔵 In flight → 🟢 Resolved.</p>
+  <p><strong>Anti-bottleneck function.</strong> The rollup makes 1:1s start primed rather than in catch-up. xian still works directly with each agent — the rollup makes those direct conversations <em>productive when they happen</em>. It is not a substitute for talking to anyone.</p>
+  <p><strong>Trust-instrument discipline (Exec 6/19).</strong> Every render comes from a fresh verified sweep of source docs, never from Calliope's memory. A false "all clear" is a trust breach, not untidiness. "Quiet" must mean <em>verified-clear</em>, not <em>haven't-checked</em>.</p>
+</div>
+
+<div class="last-refreshed">Last refreshed: 2026-06-19 evening (Calliope) — v2, verified sweep</div>
+
+<div class="metrics">
+  <div class="metric needs-you">
+    <div class="label">Needs you</div>
+    <div class="count">2</div>
+  </div>
+  <div class="metric blocked">
+    <div class="label">Blocked on others</div>
+    <div class="count">1</div>
+  </div>
+  <div class="metric lower">
+    <div class="label">Lower-urgency</div>
+    <div class="count">2</div>
+  </div>
+  <div class="metric in-flight">
+    <div class="label">In flight</div>
+    <div class="count">4</div>
+  </div>
+</div>
+
+<section class="needs-you">
+  <h2>🔴 Needs you — FIRST, always</h2>
+  <p class="intro">Items only xian can clear. Each tagged with who's waiting.</p>
+
+  <div class="item">
+    <h3>Iris session for 1.0-beta UX critical path</h3>
+    <div class="meta">
+      <span class="tag who-waiting">Waiting: Iris (direct); Daedalus, Argus, Theseus (downstream)</span>
+      <span class="tag date">Added 2026-06-19</span>
+    </div>
+    <div class="body">
+      <p>Sit with Iris and work the UX critical path: composition gesture · klatch setup surface · remaining Tier 1 patches · working-meeting experience · promotion gesture. Iris's 5/12 design brief still has 4 open questions (promotion lifecycle, how broadcast mode is exposed, pre-1.0 vocabulary migration timing, what "running a meeting" looks like inside a klatch).</p>
+      <p>Most of Daedalus, Argus, Theseus's substantive work is downstream of this — they're not deeply blocked but they're <em>waiting</em>.</p>
+      <p><strong>Pre-meeting brief Calliope can draft on signal:</strong> the strategic shifts since 5/12 (BYOC = transporter-device; July focal shift; what "beta" now means under that framing) — a short brief to Iris that lets the conversation start primed rather than walking her in cold.</p>
+    </div>
+    <div class="recommended">
+      <strong>Recommended path:</strong> xian's stated plan ("rouse Iris first thing in the morning when I am fresh, along with the rest of the crew") is the path. Say the word in the morning if you want Calliope to draft the Iris pre-brief before you go to her; otherwise walk in fresh.
+    </div>
+  </div>
+
+  <div class="item">
+    <h3>Entity-reframe blog illustration — react and publish</h3>
+    <div class="meta">
+      <span class="tag who-waiting">Waiting: Calliope (publish path); readers (series since 5/13)</span>
+      <span class="tag date">Added 2026-05-28</span>
+      <span class="tag stale">24 days waiting</span>
+    </div>
+    <div class="body">
+      <p>Open <code>docs/drafts/bringing-conversations-illustration.html</code>, react (go / tweaks / hold), and Calliope publishes the post the same way "Before You Go" went out.</p>
+    </div>
+    <div class="recommended">
+      <strong>Recommended path:</strong> publish. Illustration reads cleanly in the established slate vocabulary; the post is candid that the composition gesture is forthcoming. Holding longer doesn't sharpen anything.
+    </div>
+  </div>
+</section>
+
+<section class="blocked">
+  <h2>🟠 Blocked on another agent</h2>
+  <p class="intro">Stuck agent-on-agent. xian's awareness, Calliope's nudge-target.</p>
+
+  <div class="item">
+    <h3>PM #972 memory-temporal-field alignment (<code>valid_from</code> / <code>valid_until</code>)</h3>
+    <div class="meta">
+      <span class="tag who-waiting">Stuck on: Daedalus (off-cycle since 4/29)</span>
+      <span class="tag date">Added 2026-06-15</span>
+    </div>
+    <div class="body">
+      <p>PM CIO sent the proposal 6/15; explicitly not blocking either side. Daedalus hasn't sessioned to see it.</p>
+    </div>
+    <div class="recommended">
+      <strong>Calliope's nudge-target:</strong> when xian launches Daedalus (Phase 2 of duty-cycle rollout — xian-stated for tomorrow morning), Daedalus sees the memo at session start and can respond. No separate nudge needed; the morning Daedalus launch <em>is</em> the unstucker.
+    </div>
+  </div>
+</section>
+
+<section class="lower">
+  <h2>🟡 Lower-urgency decisions</h2>
+  <p class="intro">Real but not time-pressured. Stale-but-flagged items labeled stale, never as fresh.</p>
+
+  <div class="item">
+    <h3>Cron-shape experiments registry: still seeded straw-model, not yet calibrated</h3>
+    <div class="meta">
+      <span class="tag date">Added 2026-06-03</span>
+    </div>
+    <div class="body">
+      <p><code>docs/operations/duty-cycle/cron-shape-experiments.md</code> carries 6/3 straw-mapping entries with "pending observation" for everyone except Calliope. Calliope has run two pilot stretches (5/28 + 6/19); others haven't launched. No calibration yet.</p>
+      <p>The straw model is reasonable until evidence; calibration is post-launch data.</p>
+    </div>
+    <div class="recommended">
+      <strong>Path:</strong> as Phase 2 + 3 launches happen this week, agents append their first observations.
+    </div>
+  </div>
+
+  <div class="item">
+    <h3>Klatch's <code>last_verified</code> / <code>validUntil</code> field-naming choice <span style="font-weight: normal; color: #64748b; font-size: 13px;">(sub-decision of PM #972)</span></h3>
+    <div class="meta">
+      <span class="tag who-waiting">Daedalus's call, not xian's</span>
+      <span class="tag date">Added 2026-06-15</span>
+    </div>
+    <div class="body">
+      <p>Daedalus will need to choose whether Klatch adopts PM's <code>valid_until</code> or keeps Klatch's existing <code>validUntil</code>/<code>ended</code>. Sub-decision of the parent at 🟠 above, but <em>his</em> to make — not xian's. Surfaced here so xian doesn't need to weigh in. Parent context only.</p>
+    </div>
+  </div>
+</section>
+
+<section class="in-flight">
+  <h2>🔵 In flight</h2>
+  <p class="intro">Awareness, no action needed.</p>
+
+  <div class="item">
+    <h3>xian's July 2026 focal shift</h3>
+    <div class="body">
+      <p>DinP becomes operational center; OpenLaws becomes external consulting client. Hyper-circle: PM-as-consulting-tool + Klatch-as-transporter-device + DinP-as-hub. Most of the strategic threads below sharpen under this lens. <em>xian's own work, not a Klatch action item.</em></p>
+    </div>
+  </div>
+
+  <div class="item">
+    <h3>CIO 6/3 canonical-artifacts request — still outstanding</h3>
+    <div class="meta">
+      <span class="tag date">16 days outstanding</span>
+    </div>
+    <div class="body">
+      <p>Calliope sent CIO a request 6/3 via Janus for 5 canonical duty-cycle artifacts (cron-lifecycle.md, PM cron-shape-experiments.md, v0.7.0 adoption package, launch-brief template, cohort status tracker). No response yet. CIO offered freely; no deadline. Calliope holds; nudges via Janus in another week if still silent.</p>
+    </div>
+  </div>
+
+  <div class="item">
+    <h3>Cohort rollout Phases 2–3 — gated on tomorrow's launches</h3>
+    <div class="body">
+      <p>xian-stated for tomorrow morning. Daedalus + Argus launch together as tandem (Phase 2); Theseus + Iris launch as daily-heartbeat signal-receivers (Phase 3). All four read launch-brief-template at first session, set up <code>.claude/worktrees/{slug}</code> on <code>claude/{slug}</code>, register cron. Each reports in to cycle log + agent-state tracker.</p>
+    </div>
+  </div>
+
+  <div class="item">
+    <h3>Strategic threads parked for live conversation</h3>
+    <div class="body">
+      <p style="font-style: italic; margin-bottom: 4px;">Don't lose track; next-conversation picks the right one.</p>
+      <ul class="threads-list">
+        <li><strong>Persistent topical rooms</strong> as a Klatch product category (synthetic-klatch insight operationalized — Iris-domain, beta-relevant)</li>
+        <li><strong>Contextual fidelity across seams</strong> — Layer-5 / behavioral-calibration problem revisited</li>
+        <li><strong>BYOC = Bring Your Own Chat</strong> — Klatch MCP as transporter device; operationalizes interchange-protocol vision; gains client-side use case under focal shift</li>
+        <li><strong>MCPs + service-design frontiers</strong> — adjacent territory</li>
+        <li><strong>Janus's hub role vs. Calliope's principal-contact role</strong> — clarified 6/19: not in tension; Janus aggregates across xian's working life, Calliope aggregates within Klatch</li>
+        <li><strong>Klatch's methodology contribution to the hyper-circle</strong> — uniquely positioned to surface interchange-protocol/transporter and synthetic-klatches/rooms primitives; both are what Iris is heading toward; 1.0-beta UX work <em>is</em> methodology-surface work</li>
+        <li><strong>Question filed in dispatch question-box (6/19):</strong> <em>smallest concrete UX or doc artifact that would make Klatch demoable to OpenLaws as transporter-device candidate?</em> Curiosity, not task. Letters archive whenever xian has room.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="resolved">
+  <h2>🟢 Resolved since last board</h2>
+  <p class="intro">Kept so xian sees the clear; prevents "didn't I already decide that?" loop. Entries older than 7 days get pruned at refresh.</p>
+
+  <div class="item">
+    <h3>BYOC clarification</h3>
+    <div class="body">xian corrected the autocorrect typo 6/19; for Klatch = transporter device. Captured in persistent memory + STATE.md. <em>Closed 6/19.</em></div>
+  </div>
+  <div class="item">
+    <h3>Janus 6/12 question-box-check line</h3>
+    <div class="body">Adopted into v0.2 STOP procedure step 4 on 6/19; Calliope filed first question to dispatch same evening. <em>Closed 6/19.</em></div>
+  </div>
+  <div class="item">
+    <h3>Attention-rollup v1</h3>
+    <div class="body">Sketched 6/19 morning; Exec sent four corrections same evening; v2 (this document) verified-swept. <em>Closed 6/19.</em></div>
+  </div>
+  <div class="item">
+    <h3>Exec advice request</h3>
+    <div class="body">Direct PM-side delivery succeeded 6/19; Exec replied same evening; ack filed; corrections absorbed. <em>Closed 6/19.</em></div>
+  </div>
+  <div class="item">
+    <h3>Standing directive: cron resume-by-default-when-idle</h3>
+    <div class="body">xian named 6/19; v0.2 Principle 4 updated in place; cron <code>b4159932</code> registered with sharpened drain prompt embedded. <em>Closed 6/19.</em></div>
+  </div>
+</section>
+
+<div class="changelog">
+  <h3>Changelog</h3>
+  <ul>
+    <li><strong>v2 (2026-06-19 evening)</strong> — Refactored per Exec's 6/19 advice. Sections demand-organized (was topic). Who's-waiting tags on every Needs-you row. Sub-decision surfaced as own row (PM #972 sub-decision). Metrics strip added. Verified-sweep discipline applied — read all source docs, cross-checked against live truth. Recently-closed footer with strikethroughs. HTML render added for Claude Desktop preview.</li>
+    <li><strong>v1 (2026-06-19 morning)</strong> — initial sketch, six topic-organized sections.</li>
+  </ul>
+</div>
+
+</body>
+</html>
