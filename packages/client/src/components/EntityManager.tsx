@@ -118,9 +118,9 @@ function EntityCard({
             {typeof entity.channelCount === 'number' && entity.channelCount > 0 && (
               <span
                 className="text-xs text-muted"
-                title={`Assigned to ${entity.channelCount} channel${entity.channelCount === 1 ? '' : 's'}`}
+                title={`In ${entity.channelCount} conversation${entity.channelCount === 1 ? '' : 's'}`}
               >
-                in {entity.channelCount} channel{entity.channelCount === 1 ? '' : 's'}
+                in {entity.channelCount} conversation{entity.channelCount === 1 ? '' : 's'}
               </span>
             )}
           </div>
@@ -213,7 +213,7 @@ function EntityForm({
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            placeholder="Entity name"
+            placeholder="Agent name"
             autoFocus
             className="w-full rounded bg-input border border-line px-3 py-1.5 text-sm text-primary placeholder-muted focus:outline-none focus:border-accent"
           />

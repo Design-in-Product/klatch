@@ -119,8 +119,15 @@ The user explicitly routes who responds, via @mention in the message input (see 
 ### Default
 Blast. No picker required at klatch setup unless the user wants to change it. The mode picker is available at setup as an optional field and always accessible in klatch settings.
 
-### User-facing names for modes
-TBD in a copy pass. Behavioral descriptions above are the source of truth; the exact labels (Blast vs. Panel vs. Simultaneous; Sequential vs. Roundtable vs. Round-robin; Directed vs. Addressed) are not yet committed.
+### User-facing names for modes (decided 2026-06-20)
+
+| Key (code) | User-facing label | Rationale |
+|---|---|---|
+| `panel` | **Broadcast** | Aligns with design-brief language; meaningful (broadcasting to all); avoids "panel" which implies display not action |
+| `roundtable` | **Roundtable** | Already a good word; meeting-flavored without being a noun; kept as-is |
+| `directed` | **Directed** | Clear, already in code, kept as-is |
+
+Applied in `packages/shared/src/types.ts` (INTERACTION_MODES labels).
 
 ---
 

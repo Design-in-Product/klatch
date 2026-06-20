@@ -437,7 +437,7 @@ export function ChannelSidebar({
                 type="text"
                 value={newName}
                 onChange={(e) => setNewName(e.target.value)}
-                placeholder={newType === 'klatch' ? 'Klatch name' : 'Channel name'}
+                placeholder={newType === 'klatch' ? 'Klatch name' : 'Chat name'}
                 autoFocus
                 className="w-full rounded bg-input border border-line px-2.5 py-1.5 text-sm text-primary placeholder-muted focus:outline-none focus:border-accent"
               />

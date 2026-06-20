@@ -137,7 +137,7 @@ export function ChannelSettings({
     <div className="border-b border-line bg-panel px-3 md:px-6 py-4 animate-in">
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-sm font-semibold text-secondary uppercase tracking-wide">
-          Channel Settings
+          {channel.type === 'chat' ? 'Chat Settings' : 'Klatch Settings'}
         </h2>
         <button
           onClick={onClose}
@@ -284,7 +284,7 @@ export function ChannelSettings({
               })}
             </div>
             <p className="text-xs text-muted mt-1.5">
-              Pinned files are listed in the channel context sent to entities.
+              Pinned files are available to all agents in this conversation.
             </p>
             </>
           )}
@@ -322,7 +322,7 @@ export function ChannelSettings({
             </select>
           ) : (
             <p className="text-xs text-faint italic">
-              No projects yet — this channel is unassigned.
+              No projects yet — this conversation is unassigned.
             </p>
           )}
         </div>
@@ -331,7 +331,7 @@ export function ChannelSettings({
             Even a 1:1 chat can have a purpose — this is Klatch's unique contribution. */}
         <div>
           <label className="block text-xs text-secondary mb-1">
-            Channel context <span className="text-muted font-normal">(purpose, agenda, constraints — injected into every message)</span>
+            Purpose <span className="text-muted font-normal">(agenda, constraints — injected into every message)</span>
           </label>
           <textarea
             value={systemPrompt}
@@ -417,7 +417,7 @@ export function ChannelSettings({
           // Chat: show single entity as read-only info
           channelEntities.length > 0 && (
             <div>
-              <label className="block text-xs text-secondary mb-2">Entity</label>
+              <label className="block text-xs text-secondary mb-2">Agent</label>
               <div className="flex items-center gap-2.5 rounded-lg border border-line bg-card px-3 py-2">
                 <span
                   className="inline-flex items-center justify-center w-6 h-6 rounded-full text-xs font-bold text-white flex-shrink-0"
@@ -436,7 +436,7 @@ export function ChannelSettings({
           // Klatch: full entity management with add/remove
           <div>
             <label className="block text-xs text-secondary mb-2">
-              Entities <span className="text-muted font-normal">({channelEntities.length}/5)</span>
+              Agents <span className="text-muted font-normal">({channelEntities.length}/5)</span>
             </label>
 
             {/* Assigned entities */}
@@ -462,7 +462,7 @@ export function ChannelSettings({
                     {canRemove && (
                       <button
                         onClick={() => onRemoveEntity(entity.id)}
-                        title="Remove from channel"
+                        title="Remove from klatch"
                         className="p-1 rounded text-muted hover:text-danger hover:bg-hover transition-colors opacity-100 md:opacity-0 md:group-hover:opacity-100 md:focus-within:opacity-100"
                       >
                         <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -537,7 +537,7 @@ export function ChannelSettings({
             onClick={() => onExport?.()}
             className="text-xs text-accent hover:text-accent-hover transition-colors"
           >
-            Export channel
+            Export {channel.type === 'chat' ? 'chat' : 'klatch'}
           </button>
         </div>
 
@@ -549,7 +549,7 @@ export function ChannelSettings({
                 onClick={() => setConfirmDelete(true)}
                 className="text-xs text-muted hover:text-danger transition-colors"
               >
-                Delete channel
+                Delete {channel.type === 'chat' ? 'chat' : 'klatch'}
               </button>
             ) : (
               <div className="flex items-center gap-2">
