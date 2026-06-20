@@ -26,3 +26,7 @@ v0.2 cutover. Persistent worktree `.claude/worktrees/calliope` on `claude/callio
 **Status post-Fire-0:** Phase 1 LIVE. First autonomous fire at :13 PT (this hour or next, depending on when it tips). If xian still present, will respect xian-presence-pause; if he has stepped away, will run the WORK branch.
 
 Pending: legacy-worktree cleanup (Calliope's dated worktrees: calliope-may18, calliope-may28, calliope-june02, calliope-june03), all in this Phase 1 commit.
+
+---
+
+**Continuation 2026-06-19 evening** — this cycle log was active for the 6/6 session and across the 13-day xian-attention gap (during which the session ended and cron died, as designed). 6/19 session opened a new cycle log at `cycle-log-calliope-2026-06-19.md` (separate file per day) — see there for tonight's fires.
