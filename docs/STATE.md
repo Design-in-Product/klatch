@@ -57,7 +57,7 @@ These are live, not settled. See memory `project_duty_cycle_reframes_klatch_purp
   - **Contextual fidelity across seams** — Layer 5 / behavioral-calibration problem revisited as a recurring concern
   - **BYOC — Bring Your Own Chat.** (xian corrected 6/19: prior session's "being your own chat" was an autocorrect typo.) For PM: BYOC means the product assistant exposed as a set of skills + an MCP server connected to PM's backend. **For Klatch: a person using a Klatch MCP as a "transporter device" to migrate relevant context to a new tool.** The interchange-protocol thread (D2/D4) sharpened — Klatch as the substrate that lets a user carry their context across tools.
   - **MCPs and service-design frontiers** — adjacent strategic territory
-  - **A shift in xian's focal center of gravity** that may open more space for Klatch (xian-flagged, details TBD in the 6/19+ discussion)
+  - **xian's focal shift, July 2026** (xian, 6/19, no longer mysterious): full-time on consulting + own products; no longer Director of Product at Kind Systems. **DinP becomes the operational center.** OpenLaws becomes an external consulting client. Piper Morgan is the consulting tool used to help clients build their own "product OS." Virtuous hyper-circle: methodology flows across projects + clients. **For Klatch:** the interchange-protocol vision (BYOC / transporter device) gains real client-side use cases — Klatch needs to be legible to consulting-client contexts, not just xian's personal use. Multi-week pauses during planning mode may become rarer.
   - **Janus's role vs. Calliope's role** — Janus coordinates across all xian's projects; Calliope is principal contact for Klatch. Worth articulating cleanly as cohort scales.
 
 ## Convergent pattern worth surfacing back
