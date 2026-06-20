@@ -118,7 +118,57 @@ Worked through the composition gesture with xian over several exchanges. Key dec
 
 **Spec filed:** `docs/ux/spec-composition-gesture.md`
 
-## Next
+## [Context resumed] — Mode names copy pass + vocabulary sweep
 
-Spec review with xian. Then: commit to main, notify Daedalus.
+Session continued after context compaction. Two tasks: (1) mode name copy pass in `packages/shared/src/types.ts`, (2) vocabulary sweep across client components.
+
+**Mode names decided (in types.ts INTERACTION_MODES):**
+- `panel` → label "Broadcast" (was "Panel")
+- `roundtable` → label "Roundtable" (kept)
+- `directed` → label "Directed" (kept)
+- Descriptions rewritten to say "agents" not "entities"
+
+**Vocabulary sweep — files changed:**
+- `packages/shared/src/types.ts` — mode labels + descriptions
+- `packages/client/src/components/ChannelSettings.tsx` — panel title (Chat/Klatch Settings), L4 label (Purpose), entity→agent, "channel is unassigned"→"conversation is unassigned", pinned files helper text, remove tooltip, export/delete labels
+- `packages/client/src/components/EntityManager.tsx` — placeholder "Agent name", channel count "In N conversation(s)"
+- `packages/client/src/components/ChannelSidebar.tsx` — new chat placeholder "Chat name"
+- `docs/ux/spec-composition-gesture.md` — mode names table updated with decided labels
+
+**Verification:** Preview server confirmed in browser:
+- "CHAT SETTINGS" header ✅
+- "Purpose (agenda, constraints...)" ✅
+- "this conversation is unassigned" ✅
+- "Agent" label ✅
+- "Agents" in sidebar ✅
+
+**Commit:** `22d1631` — pushed to main.
+
+**Note:** Edits were initially made to main repo files (`/Users/xian/Development/klatch/packages/...`) while the Vite dev server watches the worktree. Had to re-apply all changes to worktree path (`/Users/xian/Development/klatch/.claude/worktrees/great-lamarr-94aefe/packages/...`) before HMR picked them up. Going forward: when verifying in the preview server from a worktree session, edit the worktree path directly.
+
+## Session wrap verification
+
+**Step 1 — commits on main:**
+
+```
+22d1631 vocab sweep + mode names: entity→agent, channel→conversation/chat/klatch, Panel→Broadcast
+99890fc coordination: Iris session 12 wrap — design gate cleared, Daedalus notified
+a843909 ux: composition gesture + klatch setup spec (Iris, 6/20)
+7ed22d9 mail(iris): close Calliope pre-brief + create session log 6/20
+e3af9f6 mail(iris→daedalus): UUID matching UX call — toast + choice on channel match
+```
+
+All session deliverables present. ✅
+
+**Step 2 — deliverables verified:**
+- `docs/ux/spec-composition-gesture.md` ✅
+- `docs/mail/iris-to-daedalus-uuid-matching-ux-reply-2026-06-20.md` ✅ (pushed to main)
+- `docs/mail/iris-to-daedalus-composition-spec-ready-2026-06-20.md` ✅ (pushed to main)
+- `docs/mail/read/calliope-to-iris-prebrief-pre-1.0-session-2026-06-20.md` ✅ (closed)
+- `packages/shared/src/types.ts` — mode names ✅
+- `packages/client/src/components/ChannelSettings.tsx` — vocab sweep ✅
+- `packages/client/src/components/EntityManager.tsx` — vocab sweep ✅
+- `packages/client/src/components/ChannelSidebar.tsx` — vocab sweep ✅
+
+**Session status: complete.** Design gate cleared. Daedalus has the spec. Vocabulary sweep shipped.
 
