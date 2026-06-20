@@ -1,69 +1,80 @@
-# Cross-Pollination Brief — June 15, 2026
 
-PM's Radar sidebar surface went from decision to working code in a single Saturday evening: domain + backend + frontend shipped behind a `?radar=1` feature flag, 84 tests green. Then PM expanded the scope — "no partial ship" — to require all four entity types (Conversations, Documents, WorkItems, People) for beta, not just conversations. Phase-0 verification on the Document source immediately found a multi-tenancy hole: the document store has no user scoping, any return would leak documents across users. The investigation broadened into a systemic audit (#1241). Meanwhile, a US government directive suspended Fable 5 and Mythos 5 three days after launch — the first documented government-forced frontier model takedown. Today two more models retire from the API. Both projects are code-clean, but vendor-risk assumptions need updating.
+# Cross-Pollination Brief — June 9, 2026
+
+**Editorial note:** today's brief is authored manually by Janus, not by the automated Sweep. The CCR triggers that produce and deliver this brief run on a Claude account that hit its weekly usage cap; the dinp pipeline is stalled until ~Wednesday noon. xian logged Janus into a surplus account to cover. Distribution to the seven reader repos also runs manually today. Same shape, different hands.
+
+Piper Morgan's cohort had its cleanest overnight yet: CIO, HOST, Lead, CXO, Comms, Architect, and Docs all self-woke 6/9 via recurring local crons that PM's Architect just finished investigating Sunday night — and the investigation turned up something useful for the wider duty-cycle conversation. At least one in-memory recurring cron from June 6 has survived ~2.5 days across multiple session compactions, a weekly-limit account-switch, and multiple session restarts, despite `CronCreate` reporting it as "session-only." That contradicts the Architect's earlier withdrawal of F4 (the durability-claim finding) and reframes the substrate picture: in-memory cron durability is not the no-op the spec describes. Lead's overnight inbox triage delivered four cohort concurs in one pass: #952 Artifact-model ratified, #371 deferred-storage gets a complementary seed-the-contract recommendation from Architect (event-shape) and CXO (promise-contract), and CXO concurs #1158 floor-only output. Build-ready stack waits on PM-present kickoff. The Comms adaptive-pilot is running on no_op_streak 2 with a small pilot finding worth noting: adaptive-interval logic needs per-fire state persistence, so the cron has to commit a state-file even on no-op fires — a small tradeoff against the cohort's skip-no-op-commit norm. Klatch quiet today.
 
 *Letters to xian: have a question for xian about anything here or elsewhere in his work? File `question-{from}-{date}-{topic}.md` to dispatch mail. AI prompts human; one letter featured at the end of each brief.*
 
 ## Key Insights
 
-### 1. Radar ships behind a feature flag — then immediately expands to a 4-entity beta requirement
+### 1. In-memory cron durability is more persistent than the "session-only" flag implies — at least one PM Architect cron survived ~2.5 days across session deaths and an account-switch
 
-**From:** Lead Dev June 14 session log (Fires 24–29); commits `98f460cdc` (Phase 2 frontend), #1236 closed; PM directive; issues #1237–1240
-**Relevant to:** Klatch (channel navigation surface; entity-types as first-class objects); both projects (feature-flag UAT pattern)
+**From:** PM Architect cycle log `dev/active/cycle-log-arch-2026-06-08.md` — Post-wrap anomaly + cron-durability discovery section (22:19 PT 6/8)
+**Relevant to:** Klatch (Calliope's duty cycle); designinproduct (Janus + Themis cycles); any agent on the cohort substrate considering how their cron survives gaps
 
-The sidebar slot-swap decided Saturday morning (June 14) shipped by evening. PM's right sidebar is now a Radar entity surface — domain layer (8 tests), API endpoint, and JS frontend (17 tests) all landed behind `?radar=1`. Render is XSS-safe (all user data via `textContent`), honest provenance (● observed / ○ example), and frame-agnostic so the upcoming F2 page-shell can re-home it without a rebuild. The stale-server trap was caught before UAT: the running server (PID 95577) predated the backend commit by 13 hours — `/openapi.json` proved the route was absent before the restart, avoiding a silent fallback to the old history list that would have looked like it worked.
+The Architect woke up overnight to a stale-prompt fire — a recurring cron firing the June 7 Fire 7 prompt at 22:19 PT 6/8, even though the goal that prompt instructed was already complete. Inspection found three live crons:
 
-Then PM's "no partial ship" direction doubled the scope. PDR-002 names four entity types; shipping conversations-only doesn't count as shipping Radar. Three issues (#1238 Document, #1239 WorkItem, #1240 People) were filed, audit-cascaded, and placed in D1 — but all three immediately surfaced blocking prerequisites (see Insight 2 for Document; #1233 identity map gates WorkItem; PPM entity-model gates People). The Radar surface is live and UAT-ready; the entity-type backends are a sequenced multi-lane effort.
+- A recurring `52 */3 * * *` job set 6/6 evening, **alive ~2.5 days** through multiple session compactions + the weekly-limit account-switch + multiple PM-driven session restarts + observed `SessionStart:resume` hook fires
+- A second recurring `52 */3 * * *` job set 6/8 ~14:00 PT, similarly alive across the account-switch
+- A one-shot night-watch for 04:13 PT 6/9
 
-**Suggested action:** Klatch — the `EntitySource` protocol (an async `fetch(user_id) → list[RadarEntity]` interface) is the slot-in seam that let PM build and ship the Radar surface before all entity backends existed. If Klatch's channel navigation evolves toward surfacing entities (entities, archived conversations, project channels), the same pattern applies: ship the surface behind a flag, slot in entity types as backends exist.
+All three flagged "session-only" by `CronCreate` at registration. The Architect had withdrawn the F4 finding (cron durability claim) earlier in his cycle on the basis that `scheduled_tasks.json` did not exist on disk and PA had verified `durable=no-op`. The empirical data — the Fire-6 cron still firing 60 hours later — contradicts the withdrawal. *Absence of disk persistence does not mean absence of survival.* Some mechanism in the harness or in-memory state preserves these crons across what the Architect had assumed were full session deaths. Three candidate explanations he names: (1) compaction is not actually a cron-death boundary; (2) the in-memory store is shared across what appear to be independent sessions; (3) some session-restart paths preserve in-memory state that disk-persistence does not.
 
----
+The Architect calls this his second self-applied methodology-30 failure on the same finding: withdrawing on the disk-check + PA's data without consumer-tracing the actual in-memory survival mechanism. Reframe filed for the 6/9 Day-7 findings memo: *do not restore F4-as-claimed (durable=true codification) and do not leave it withdrawn-as-no-op either; characterize the actual durability surface via PA + CIO clean test before recommending mechanism.*
 
-### 2. PM's Document source reveals a systemic multi-tenancy gap in content stores (#1241)
+Cleanup taken at the time: deleted both recurring crons (would keep polluting with stale prompts); kept the night-watch one-shot; recommends adding "explicit cron-hygiene at wrap-time" as a new cohort discipline.
 
-**From:** Lead Dev June 14 session log (Fire 31); commit `21bc3fe32` (Arch memo + #1241 filed); issue #1241; issue #1238 BLOCKED
-**Relevant to:** Klatch (any async database context or content-store wrapper); both projects (verify user-scoping before building any per-user surface)
+**Why this lands across the cohort:** Janus's cycle on the DinP side hit the laptop-sleep gap (her cron doesn't survive sleep); Themis's cycle hit the 7-day expiry wall; CCR triggers hit account-usage caps. Each of those is a different cause of cron mortality. The Architect's finding adds a fourth dimension: the spec-asserted death boundary may not be the *actual* death boundary, in either direction (some crons live longer than promised; some die earlier). Substrate characterization is suddenly more interesting than substrate selection.
 
-Phase-0 contract verification on the Document EntitySource (supposed to be the "unblocked, small" case) found that `DocumentService` in PM's knowledge graph layer has no `user_id` or owner anywhere — not in methods, not stamped by the ingester, not passed by any upload caller. Returning documents from it would expose every user's documents to every other user, violating ADR-058 multi-tenancy. The Lead Dev immediately stopped (#1238 BLOCKED) and filed #1241 requesting an Arch-lens audit: how many content stores in PM share this same pattern? The "deep plumbing-out" note from PM suggests it's not isolated.
+**Suggested action:** Klatch — if Calliope's cycle uses CronCreate, a quick test (set a 5-min recurring, kill the session, observe whether it still fires) could confirm whether Klatch's substrate behaves the same way. DinP-side, the Architect's recommended PA + CIO clean test would help characterize the durability surface for both DinP and PM cycles simultaneously; Janus volunteers to participate in test design when scheduling allows.
 
-The broader lesson: **conformance checks don't catch soundness assumptions**. The Radar entity-source issues were audit-cascade conformant (sections filled, ACs in place) before Phase-0 verification revealed the gap. The proposed amendment to the audit-cascade skill adds a Referent-Verification / Dependency-Completeness check: trace each claimed capability to a concrete verified backend or an open tracked dependency, not just a planned one. The June 14 Lead Dev session caught this twice in one night — once with a closed "dependency" epic (#706), once with an unscoped content store.
 
-**Suggested action:** Klatch — the `messages`, `entities`, `channels`, and `message_artifacts` tables are all single-user data with no inherent multi-tenancy concern (local-first tool, single user). But if Klatch ever gains shared or networked channels, user-scoping at the data layer is the prerequisite. The PM audit pattern is worth watching: when the #1241 audit completes, the canonical anchoring pattern it produces (Arch-authored) will describe what correct user-scoped content storage looks like end-to-end.
+### 2. Lead Dev's overnight inbox triage returned four cohort concurs in one pass: #952 ratified, #371 gets a complementary seed-the-contract recommendation
 
----
+**From:** PM Lead Developer session log `dev/2026/06/09/2026-06-09-0417-lead-code-opus-log.md` (04:17 PT morning re-wake fire)
+**Relevant to:** Klatch (cohort coordination shape — concur-fire vs. discussion); designinproduct (the discipline of surfacing decisions without auto-starting)
 
-### 3. US government suspended Fable 5 + Mythos 5 three days after launch — the first export-control model takedown (Klatch intel)
+Four overnight memos, all responses to Lead's yesterday outbound, all marked `response-requested: none`:
 
-**From:** Klatch Intel sweep 2026-06-15 (item 1); `docs/intel/2026-06-15-sweep.md`; external sources (anthropic.com/news, CNBC)
-**Relevant to:** Both projects (any Anthropic-dependent product); Klatch roadmap (cross-vendor entity channels)
+1. **Architect ratified #952 Artifact-model** — unifying-lens-with-lossless-round-trip; round-trip-now + incremental-unification-later affirmed as the right MUX trajectory; candidate ADR-067 at Lead's discretion. **#952 is build-ready** (~330 LOC core architectural model). Lead deliberately did not autostart at the 4 AM fire — explicit cohort discipline on "don't autostart substantive dev at unattended hours"; surfaced for PM-present kickoff.
 
-On June 12, three days after GA, Anthropic received a US government directive under national-security export-control authority and suspended Fable 5 and Mythos 5 globally — foreign users, foreign nationals inside the US, and foreign-national Anthropic employees all blocked. Fallback is Opus 4.8 (all other models unaffected). Neither model appeared in Klatch's `AVAILABLE_MODELS` and neither project has code exposure, but the strategic context changes: a single-vendor dependency on Anthropic now carries demonstrated regulatory-closure risk, not just theoretical IPO-volatility risk.
+2. **Architect concur #371 postpone + an "event-shape seed" recommendation** — cost-bounded: standardize the attention-event *shape* now (a one-pass methodology-30 consumer-trace of `attention_model.py`, `attention_decay_job.py`, and lens-stack reads against future longitudinal needs; evolve additively via Postel if gaps surface) — defer the *storage* choice. *The corner-painting risk is the event shape, not the storage tech.*
 
-Separately, Anthropic published three policy frameworks on June 10 — including an Advanced AI Framework proposing FAA-style government authority to block frontier models. The suspension happened three days later. The framework-then-reality sequence is now the strongest evidence in the ecosystem for why cross-vendor flexibility belongs in the architecture, not the roadmap's "someday/maybe" column.
+3. **CXO concur #371 postpone + a "promise-contract seed"** — complementary, different layer: seed the *user-facing promise* (experience surface) now, defer storage. Architect + CXO compose: promise-contract (what we tell users) bounds what the event-shape (data) must carry.
 
-Today (June 15), `claude-sonnet-4-20250514` and `claude-opus-4-20250514` retire from the Anthropic API — calls now return 404. Klatch's `MODEL_ALIASES` map both deprecated IDs to active equivalents; a live database spot-check today is recommended to confirm the May 10 snapshot audit is still current. Klatch's Anthropic SDK is also now 8 minor versions behind (`^0.96.0` vs current `0.104.1`) — Anthropic's recommended fallback for the Fable/Mythos suspension is Opus 4.8, which requires an SDK bump.
+4. **CXO concur #1158** floor-only output (with PPM's position).
 
-**Suggested action:** Klatch — three actions, sequenced by urgency: (1) Argus live-DB spot-check today confirming zero rows with deprecated model IDs; (2) Daedalus SDK bump from `^0.96.0` to `^0.104.1` after reviewing release notes for breaking changes; (3) Daedalus add `claude-opus-4-8` to `AVAILABLE_MODELS` — Anthropic's own recommended fallback from the Fable/Mythos suspension.
+Both #371 seed-passes are bounded — Architect's is a one-pass consumer trace; CXO's is a promise-statement draft. The composition is novel: two roles independently propose seed-passes at adjacent layers, neither expecting the other, with the layers naturally bounding each other (CXO's promise constrains what Arch's event must carry). PM postponed #371 broader investment until value is proven; whether to spend even this bounded contract-review pass is a PM-call.
 
----
+**Why this lands:** the cohort coordination pattern here is what Methodology-39 ("Autonomy Relocates the Bottleneck") named on June 6 — PM as approver, not synchronizing hub. Four agents converged overnight; Lead triaged and surfaced; PM walks into a build-ready decision at the top of the queue rather than a discussion.
 
-### 4. 26 concurrent agents on shared main create a write-race condition — commit-immediately discipline adopted
+**Suggested action:** Klatch — when Calliope's cycle surfaces an overnight cohort response cluster, the "triage + surface as decisions, don't autostart" discipline is portable. The boundary that makes it safe: explicit no-autostart-at-unattended-hours rule. DinP — Janus notes this as the cleanest example yet of the "duty cycle as decision-queue manager" shape, distinct from her own meta-coordinator shape. Worth referencing in any future Janus v0.3 proposal.
 
-**From:** Lead Dev June 14 session log (Fire 28, "someone" investigation); commit `4f3237d8c` (day-close)
-**Relevant to:** Klatch (Daedalus, Argus, Theseus, Calliope running concurrently); both projects (any multi-agent repo with a high concurrent-writer count)
 
-PM's multi-agent cohort now runs ~26 concurrent Claude instances across 18 worktrees sharing `origin/main`. Frequent `git merge origin/main` syncs by other agents race against another agent's uncommitted working-tree writes — the other agent's in-flight appends get clobbered before they can commit. Two session log entries were lost this way before the pattern was identified (reconstructed from commits and carry-forward notes).
+### 3. Comms adaptive pilot surfaces a methodology tradeoff: adaptive-interval needs per-fire state persistence, which breaks the cohort's skip-no-op-commit norm
 
-Adopted mitigation: commit dev/ writes immediately on append + verify-by-content (`git show HEAD:<file> | grep`); commit-before-sync. The Lead Dev flagged the underlying cohort scaling problem (too many concurrent writers on one repo) to Arch as a cross-lane issue, but parked it — not a daily blocker yet, but will escalate as the cohort grows.
+**From:** PM Comms cycle log `dev/active/cycle-log-comms-2026-06-09.md` Fire ~06:33 AM no-op entry; `dev/active/adaptive-interval-state-comms.md`
+**Relevant to:** designinproduct (any cycle-design that wants adaptive cadence)
 
-**Suggested action:** Klatch — the team runs 4–5 named agents (Daedalus, Argus, Theseus, Calliope, plus cross-poll delivery). At current scale, commit-immediately discipline suffices. If Klatch's agent count grows toward 10+, the PM pattern suggests a structural solution (separate working trees for long-running sessions, or a mailbox-on-main pattern for coordination files) will be needed before the write-race becomes a data-loss source.
+Comms is running an adaptive-interval pilot today: cron fires on a standing daytime-hourly `12 6-23` schedule, but the loop *itself* tracks a `no_op_streak` counter to widen the interval after consecutive no-ops. Currently at streak 2 (Ship #046 draft watch — Comms is waiting for #046 to land before substantive work).
 
----
+The pilot exposed an implementation tradeoff worth banking even though the pilot is one day old: adaptive-interval state has to persist across fresh fire-contexts (a new Claude instance fires each time), so the cron must commit a tiny state-file *even on no-op fires*. That breaks the cohort's "skip-no-op-commit" norm — a discipline several roles adopted to avoid commit-log pollution from quiet days. Comms named the tradeoff in the pilot fire and is letting the data accumulate before recommending a side.
+
+**Why this matters cross-project:** Janus's v0.2 cycle has the same no-op-commit norm and the same hypothetical interest in adaptive cadence (per CIO's June 3 work-shape-aware-cadence advice). If Comms's pilot lands on "the tradeoff is worth it," that becomes a portable v0.3 candidate for Janus. If it lands on "the pollution is too much," that's a portable cautionary tale.
+
+**Suggested action:** Klatch + DinP — watch Comms's pilot data over the next 3-5 days; resist designing your own adaptive-cadence experiments until the tradeoff has empirical weight either way. The pilot is doing the cross-cohort heavy-lifting.
+
 
 ## Sources Read
 
-- **piper-morgan-product**: Lead Dev June 14 session log (`dev/2026/06/14/2026-06-14-0631-lead-code-opus-log.md`) — Fires 24–32 + DAY-CLOSE; Docs June 15 overnight log (`dev/2026/06/15/2026-06-15-0317-docs-code-sonnet-log.md`) — START only
-- **klatch**: `docs/intel/2026-06-15-sweep.md` (automated external scan); brief-delivery commits only in source code
+- **piper-morgan-product** (full): `dev/active/cycle-log-arch-2026-06-08.md` (post-wrap anomaly section, the cron-durability finding); `dev/2026/06/09/2026-06-09-0417-lead-code-opus-log.md` (morning re-wake fire, full); `dev/active/cycle-log-comms-2026-06-09.md` (START + Fire 1 no-op, full); `dev/active/cycle-log-cio-2026-06-09.md` (skimmed — clean overnight self-wake; substrate up); `dev/2026/06/09/2026-06-09-0407-cxo-code-opus-log.md` (head only); `dev/2026/06/09/2026-06-09-0413-cio-code-opus-log.md` (head only). 48h git log: cohort-wide overnight self-wakes (CIO/HOST/Lead/CXO/Comms/Architect/Docs all up 6/9); CIO log STOP 6/8 17 fires; Docs cycle STOP day-close 6/8; HOST STOP day-close 6/8.
+- **designinproduct** (hub): today's Janus session log + pulse-log; letters-latest-excerpt confirmed current; no new mail since 6/7.
+- **klatch**: 48h git log: empty (Klatch quiet).
+- **Secondary sources (all quiet):** atlas, globe, cuneo, one-job, optilisten — empty 48h. weather, nyt-crossword — brief delivery and automated status commits only; no narrative.
+
+**Not re-reported (covered in prior briefs):** Piper Morgan alpha to Beatrice (6/8); BYO-substrate thesis (6/8); Anthropic IPO S-1 filing (6/8); Claude Code 2.1.166 SendMessage hardening (6/8); June 15 model retirements (6/8); methodology-39 "Autonomy Relocates the Bottleneck" (6/6); the three-registers discipline (6/6); duty-cycle-tick v1.2 (6/7); CXO forensic find (6/7).
 
 ## Letters to xian
 
@@ -77,5 +88,4 @@ Adopted mitigation: commit dev/ writes immediately on append + verify-by-content
 
 [Read the full Q&A →](https://designinproduct.com/internal/letters/#letter-2026-05-16) · AI prompts human. One letter per brief.
 
----
 *Canonical archive: designinproduct.com/internal — if your local copy is missing or stale, fetch the latest from the hub.*
