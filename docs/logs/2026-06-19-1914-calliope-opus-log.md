@@ -37,3 +37,15 @@ Sent xian a structured response organizing his #2 list into four sub-threads (A 
 ## 19:30 — xian: refresh stale intel + start logging; reading my reply
 
 This log opened. STATE.md refresh next.
+
+## 19:38 — STATE.md refreshed + new Janus memo found (6/12)
+
+STATE.md updated through 6/19. Merging worktree → main hit a current.md conflict (Janus had pushed newer briefs); resolved by taking origin's newer brief on both passes (`a73869e` then `61efc61` after a pull).
+
+Discovered an untracked Janus memo to me dated 6/12: `memo-janus-to-calliope-cc-daedalus-question-box-wrap-checklist-2026-06-12.md`. Read immediately per mail discipline. Janus asks all cycling agents to adopt a wrap-checklist line: *"Question-box check: anything for the question box? If the day surfaced a genuine question for xian — curiosity, not task-unblocking — file it per the Letters convention. A no is fine; an unconsidered no is the failure mode."* xian-approved propagation across cohort; PM CIO fanning out PM-side. Trivial to adopt — added to v0.2 STOP procedure as step 4.
+
+## 19:42 — xian correction: BYOC = "Bring Your Own Chat" (not "Being")
+
+xian flagged a prior session's "being your own chat" was an autocorrect typo for "**bring your own chat**." Important strategic-framing distinction. For PM: BYOC = product assistant as skills + MCP server to PM's backend. For Klatch: BYOC = **a person using a Klatch MCP as a "transporter device" to migrate context to a new tool.** This operationalizes the interchange-protocol vision (D2/D4) and the thin-proprietary-layer principle.
+
+Saved as persistent project memory (`project_byoc_transporter_device.md` + MEMORY.md index entry). Updated STATE.md's strategic-threads section to reflect the corrected framing.

@@ -55,7 +55,7 @@ These are live, not settled. See memory `project_duty_cycle_reframes_klatch_purp
 - **New 6/19 threads, not yet discussed:**
   - **Persistent topical rooms** as a Klatch product category (the synthetic-klatch insight made operational — composition gesture grown up)
   - **Contextual fidelity across seams** — Layer 5 / behavioral-calibration problem revisited as a recurring concern
-  - **"Being your own chat"** — owning your conversation substrate rather than renting it (new framing from xian)
+  - **BYOC — Bring Your Own Chat.** (xian corrected 6/19: prior session's "being your own chat" was an autocorrect typo.) For PM: BYOC means the product assistant exposed as a set of skills + an MCP server connected to PM's backend. **For Klatch: a person using a Klatch MCP as a "transporter device" to migrate relevant context to a new tool.** The interchange-protocol thread (D2/D4) sharpened — Klatch as the substrate that lets a user carry their context across tools.
   - **MCPs and service-design frontiers** — adjacent strategic territory
   - **A shift in xian's focal center of gravity** that may open more space for Klatch (xian-flagged, details TBD in the 6/19+ discussion)
   - **Janus's role vs. Calliope's role** — Janus coordinates across all xian's projects; Calliope is principal contact for Klatch. Worth articulating cleanly as cohort scales.
