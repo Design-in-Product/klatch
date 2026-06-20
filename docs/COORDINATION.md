@@ -120,11 +120,12 @@ Agents working on this repo use this file as the async handoff protocol.
 
 ### Iris (UX design & front-end development)
 - **Branch:** `main`
-- **Status:** available — session paused
-- **Last completed:** Session 11 (May 12) — faint-token reclassify spec to Daedalus, **shipped same day** as commit `c1fdb90`. Vocabulary pass complete: all 5 questions resolved (V1–V5 in `docs/ux/object-model.md`). Design brief written (`docs/ux/design-brief.md`) covering synthesis → holistic design direction → 1.0 critical path → parallel post-1.0 work. 1.0 critical path defined: composition gesture + klatch setup surface + remaining Tier 1 patches + working meeting experience + promotion gesture.
-- **Working on:** Paused. Resume when xian is ready.
-- **Next:** Spec the composition gesture and klatch setup surface concretely. Address 4 open questions from the design brief (promotion lifecycle, how broadcast mode is exposed, pre-1.0 vocabulary migration timing, what "running a meeting" looks like inside a klatch).
-- **Waiting on:** Next session with xian.
+- **Status:** available
+- **Last completed:** Session 12 (2026-06-20) — composition gesture + klatch setup surface spec filed (`docs/ux/spec-composition-gesture.md`). All 4 design-brief open questions resolved: promotion lifecycle (Path C + V5), broadcast exposure (Blast default, no picker at setup), vocabulary migration timing (composition surface now correct; broader sweep pre-beta), working meeting experience (Q4 discussion + spec §7). Daedalus's Finding 1 UX call answered (`iris-to-daedalus-uuid-matching-ux-reply-2026-06-20.md`): project match = silent attach + toast; channel match = inline prompt with View/Copy options.
+- **Working on:** Nothing. Design gate cleared.
+- **Next:** (1) Mode name copy pass — user-facing labels for Blast/Sequential/Directed TBD; can be decided quickly when Daedalus is ready. (2) Vocabulary sweep — pre-beta copy pass on "entity" → "agent/role" and "channel" → "klatch/chat" across the rest of the UI (implementation task for Daedalus, not a design blocker). (3) Design review and MAXT on the composition surface after Daedalus implements.
+- **Waiting on:** Daedalus implementation. xian for mode name copy pass when ready.
+- **Updated:** 2026-06-20 12:00
 
 ## Signals
 
