@@ -73,3 +73,40 @@ This reframes all three of xian's stated agenda items today:
 - #3 Iris unblock for beta: beta-readiness becomes more time-pressured if Klatch is going to be legible to consulting clients in the new model.
 
 xian still catching up on prior messages.
+
+## ~19:55 — xian's three additional clarifications (focal shift + hub model + hyper-circle)
+
+xian (still catching up but clarifying as he goes):
+- **Janus's role isn't "the funnel."** xian will still do direct 1:1s with Calliope (like Exec on PM), with Iris (like Lead Dev on PM), with the other agents. Janus aggregates so xian arrives at 1:1s primed. *The dumb-bottleneck pattern is what's being removed; the 1:1 channels persist.*
+- **Klatch is not "behind" PM.** xian: *"These methods are evolving and piggybacking on each other's advances... we're all contributing. That's what makes this hyper-circle work."* Klatch contributed wait-default-is-not-wait-forever, building-vs-planning, no-op-batching, don't-sit-passively, the chronicler discipline; PM contributed the cohort migration + work-shape lens + derive-don't-maintain + attention-rollup; OpenLaws contributes its own pieces. *Each project develops the methodology pieces its own work-shape can surface; Janus's hub view exchanges them.* Calliope's "catching up" framing is wrong — should be "taking up our half of a co-developed pattern."
+
+Both clarifications saved to persistent memory (xian-focal-shift memory file appended; new section "Klatch is not behind — the hyper-circle is real"). MEMORY.md index already covers via the focal-shift entry.
+
+## ~20:10 — xian: "I can show you how to send a memo to Exec and get some very precise advice"
+
+Yes please. The attention-rollup is the biggest piece of Calliope working-mode in months; learning the routing-and-asking pattern from Exec directly beats reverse-engineering. xian still catching up.
+
+## ~20:25 — xian: "trust you on figuring out the right order of operations"
+
+Plowing on. Order of operations:
+1. Draft attention-rollup v1 with current knowledge → produces an artifact xian can react to.
+2. Per-agent unblock-condition list folded in as §4 of the rollup (saves writing two documents; the v2 design where unblock-conditions live with the agent-launch gates).
+3. Exec memo drafted in parallel; CC xian so he can intervene if it should go from his side instead.
+
+## ~20:30 — Attention-rollup v1 drafted
+
+`docs/operations/attention-rollup.md` — 6 sections + recently-closed footer:
+1. Decisions Needed from xian (3 items; entity-reframe blog illustration leading at 24 days waiting)
+2. Reviews Waiting on xian (currently empty beyond §1)
+3. Cross-Project Items Needing xian's Read (PM 6/18 nav debacle + CIO 6/3 artifacts request outstanding)
+4. Agent-Launch Gates — per-agent (Calliope live; Daedalus probably-not-blocked; Argus less clear, possibly downstream of Daedalus; Theseus 100% gated on launch; Iris highest-leverage unblock)
+5. Strategic Threads Parked for Live Conversation (7 threads listed)
+6. Pending External Responses
+
+Anti-bottleneck framing explicit in the header. v1 expected to evolve after Exec's advice.
+
+## ~20:35 — Exec memo drafted
+
+`docs/mail/calliope-to-exec-via-janus-attention-rollup-advice-2026-06-19.md` — routed via Janus per cross-project convention. Four specific asks: canonical format, refresh cadence, sub-decision-of-blocked-thing problem, "what you wish you'd known." Context includes the focal-shift, the building-vs-planning mode, the hyper-circle framing. Adopt-then-contribute posture explicit.
+
+Committing all together.
