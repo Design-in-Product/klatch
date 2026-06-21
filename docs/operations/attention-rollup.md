@@ -8,7 +8,7 @@
 
 **Cadence:** at session-wrap, and any time substantive new items arrive. Engagement-state rule: when xian is *actively dipping in to act* (especially after a quiet stretch), full sweep-and-verify is mandatory — the "feels skippable" moment coincides exactly with when he most relies on the board being whole.
 
-**Last refreshed:** 2026-06-21 Sunday ~11:30 AM (Calliope) — verified sweep, post-Daedalus-launch.
+**Last refreshed:** 2026-06-21 Sunday ~12:13 PM (Calliope) — verified sweep, post-Argus-launch + composition-spine-in-progress.
 
 ---
 
@@ -16,9 +16,9 @@
 
 | Needs you | Blocked-on-others | Lower-urgency | In-flight |
 |---|---|---|---|
-| **2** | **0** | **2** | **5** |
+| **3** | **0** | **2** | **5** |
 
-*Down from "launch D+A together" to "launch Argus + clear branch -D" — Daedalus self-launched 6/21 at ~10:13 AM PT off the cover memo without xian needing to drive it. The two Needs-you items below are now smaller in shape.*
+*Argus is up (cover-memo pattern works for both tandem partners; both self-launched off it without xian-driving). 🔴 went from "launch Argus + approve branch -D + publish blog" to "review v2 blog draft + merge claude/argus to main + approve branch -D" — same count, different shapes.*
 
 ---
 
@@ -26,23 +26,23 @@
 
 Items only *xian* can clear. Each tagged with **who's waiting**.
 
-### Launch Argus (Phase 2 — pair to already-launched Daedalus)
-- **Who's waiting:** Argus (off-cycle); also Daedalus (his tandem partner, now half-tandem); downstream, the testing surface for Daedalus's composition-gesture implementation.
-- **What xian can clear:** start a session for Argus. Cover memo waiting in mail (`calliope-to-argus-cycle-cover-2026-06-21.md`).
+### Review entity-reframe blog v2 draft (post + illustration)
+- **Who's waiting:** Calliope (for publish path); readers (next post in the series, since "Before You Go" 5/13).
+- **What xian can clear:** read `docs/drafts/bringing-conversations-into-a-room-v2.md` (8 changes from v1, ~2,000 words; editorial notes at bottom summarize); skim the cleaned illustration at `docs/drafts/bringing-conversations-illustration.html`; tell Calliope ship-as-is / specific tweaks / hold. Three open editorial decisions held in v2 editorial notes (competitive-positioning frame; third "what we don't yet know" gap; closing line).
+- **Date added:** v1 5/28 (24 days waiting); v2 ready for review 6/21.
+- **Recommended path:** read v2; resolve the three editorial questions; ship. Post lands on stronger ground than v1 — composition gesture is now specced + in implementation; cross-tool consequence operationalizes the BYOC framing.
+
+### Review + approve merge of `claude/argus` → `main`
+- **Who's waiting:** Argus (his work is on `claude/argus` at `9c65421` + setup at `acccd98`, suite green; he flagged "ready to merge to main — it fixes main's currently-red suite. Whenever your merge pass comes through").
+- **What xian can clear:** review the diff and approve the merge. Per cycle GUARDRAIL, code merges to main need review — Argus correctly held it on his branch rather than self-merging. The merge fixes main's currently-red suite (the vocab-fallout tests + a `round25` `getChannelEntities` ordering-nondeterminism flake Argus diagnosed during his fallout run).
 - **Date added:** 2026-06-21
-- **Recommended path:** launch when bandwidth permits — *not urgent now* since Daedalus is implementing surfaces, not yet producing things Argus needs to test. But the longer he's solo, the longer until the mutual-assessment exchange can happen. Daedalus's cycle is at `:17`; Argus is staged at `:43`.
+- **Recommended path:** yes-approve and merge. Test fixes only; the pre-existing flake fix is a bonus. Final state per Argus: server 1089/1089, client 197/197 green.
 
 ### Approve `branch -D worktree-daedalus-2026-05-18`
 - **Who's waiting:** Daedalus (per his report-in: "noting so your sweep can see it, though I'll likely just clear it with xian inline").
 - **What xian can clear:** authorize the destructive git op. The legacy branch ref is *provably merged* to origin/main (Daedalus verified: 0 unique commits) but `git branch -d` is blocked by stale upstream tracking. Needs `-D` per Git Safety Rules, which requires xian approval. Cosmetic cleanup, not blocking anything.
 - **Date added:** 2026-06-21
-- **Recommended path:** yes-approve. Risk is real-zero (commits already in main); the only reason it's surfaced is the Git Safety Rule that all destructive ops route through xian. Daedalus can run the command himself once approved.
-
-### Entity-reframe blog illustration — react and publish
-- **Who's waiting:** Calliope (for publish path); readers (next post in the series, since "Before You Go" 5/13).
-- **What xian can clear:** open `docs/drafts/bringing-conversations-illustration.html`, react (go / tweaks / hold), and Calliope publishes the post the same way "Before You Go" went out.
-- **Date added:** 2026-05-28 (24 days waiting)
-- **Recommended path:** publish. Illustration reads cleanly in the established slate vocabulary; the post is candid that the composition gesture is forthcoming — *which it now is, per Iris's spec.* Composition gesture is no longer "forthcoming as a vision" but "being implemented" — slightly stronger ground for the post.
+- **Recommended path:** yes-approve. Risk is real-zero. Daedalus can run the command himself once approved.
 
 ---
 
@@ -70,10 +70,14 @@ Real but not time-pressured.
 
 Awareness, no action needed.
 
-### Iris + Daedalus duty cycles both live
+### Iris + Daedalus + Argus duty cycles all live (4 of 5 cohort)
 - Iris: daily heartbeat (Phase 3), launched 6/21 morning.
-- Daedalus: hourly (`:17`, Phase 2 tandem partner), launched 6/21 ~10:13. Self-launched off Calliope's cover memo without xian-driving; cover-memo-as-entry-point pattern validated. Heads-down on composition gesture data-model migration.
-- Composition spec confirmed fully implementable; one lightweight ack-confirm routed to Iris (internal `panel` key kept while user-facing label is Broadcast — no key rename). Non-blocking.
+- Daedalus: hourly (`:17`, Phase 2 tandem), launched 6/21 ~10:13. Heads-down on composition gesture spine; first impl on `claude/daedalus`.
+- Argus: hourly (`:43`, Phase 2 tandem), launched 6/21 ~11:45. Self-launched off cover memo (pattern validated for both tandem partners); test-snapshot fallout cleaned + bonus pre-existing flake fixed.
+- Theseus: deferred (xian-rouses-on-AXT, not routine launch).
+
+### Daedalus → Iris design tension: project-required for klatches?
+- Daedalus surfaced 6/21 that composition spec §2 says klatch project is *optional*, but the sidebar grouping model only renders klatches under projects (no top-level home for a project-less klatch). Three resolution shapes proposed (klatches in Unassigned area; dedicated top-level Klatches section; keep project required). *Daedalus is sequencing around it — project stays required for current spine; flip lands after Iris's call.* Routed to Iris's daily heartbeat; non-blocking; her lane. xian-awareness only.
 
 ### xian's July 2026 focal shift
 - DinP becomes operational center; OpenLaws becomes external consulting client. Hyper-circle: PM-as-consulting-tool + Klatch-as-transporter-device + DinP-as-hub. Most of the strategic threads below sharpen under this lens. *xian's own work, not a Klatch action item.*
@@ -99,6 +103,8 @@ Awareness, no action needed.
 
 Struck-through items closed since v2's last refresh. Entries older than 7 days get pruned at refresh.
 
+- ~~**Argus Phase 2 launch**~~ — self-launched 6/21 ~11:45 off Calliope's cover memo. Both tandem partners now live. Vocab-sweep test fallout fixed (5 tests, 2 files); bonus `round25` `getChannelEntities` ordering flake diagnosed + fixed. *Closed 6/21.*
+- ~~**Entity-reframe blog v2 draft**~~ — drafted 6/21 12:00; 8 changes from v1 (composition status, cross-tool consequence as new paragraph, code-switching pass, vocab sweep, panel→Broadcast, entity-manager→agent-library, competitive-positioning softening, "what we don't yet know" reshape). Awaiting xian's review. *Closed-as-drafted 6/21; reopens as the "review v2" 🔴 item until shipped.*
 - ~~**Daedalus Phase 2 launch**~~ — self-launched 6/21 ~10:13 off Calliope's cover memo without xian-driving. Cover-memo-as-entry-point pattern validated. *Closed 6/21.*
 - ~~**PM #972 sub-decision (valid_until field-naming)**~~ — Daedalus closed at launch: Klatch was never locked to `ended`; both projects align on symmetric `valid_from`/`valid_until`; one follow-up folded into post-1.0 export-path queue. *Closed 6/21.*
 - ~~**Janus coordination channel ack**~~ — xian flagged the missing ack 6/21; drafted and filed same-morning; Janus replied accepting channel + correction + Iris update. Thread closed. Refinement filed: channel-opening memos warrant same-session ack. *Closed 6/21.*

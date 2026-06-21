@@ -79,3 +79,21 @@ Re-arming cron to pick up Argus's landing on the next fire.
 
 Also stripped the "Tweakable" editorial note from the illustration HTML so the publish path is clean. v2 holds three open editorial decisions for xian (competitive-positioning frame, third "don't yet know" gap, closing line).
 
+
+---
+
+**Fire 8 (autonomous) — ~12:13 PT — SUBSTANTIVE (Argus launched + composition spine in flight)** — autonomous fire picked up substantial accumulation:
+
+- **Argus self-launched ~11:45 PT** off the cover memo. Cron `9192826d` at `:43`. Vocab-sweep test fallout fixed (5 tests, 2 files) + bonus pre-existing `round25` `getChannelEntities` ordering flake diagnosed + fixed. Suite green at server 1089/1089, client 197/197. `claude/argus` ready to merge to main (Argus correctly held it on his branch per GUARDRAIL).
+- **Daedalus's composition spine in flight**. He pushed mail + cycle log + task list as `c1509c4`. Two memos out: one to Argus on the same vocab fallout (cleanly self-coordinated — Daedalus diagnosed during his baseline run; Argus already fixed it; close-discipline handled on Argus's side).
+- **One real design tension surfaced from Daedalus to Iris**: composition spec §2 says klatch project is *optional* but sidebar model only renders klatches under projects. Three resolution shapes proposed; Daedalus sequencing around it (project stays required for current spine; flip lands after Iris's call). Non-blocking; her lane.
+
+Close-discipline applied: Argus's report-in moved to `read/`. The two D→A/I memos stay in `docs/mail/` (active) — their addressees close them; not mine to triage.
+
+**Rollup verified-sweep refresh:**
+- 🔴 went from "publish blog + launch Argus + approve branch -D" to "review v2 blog draft + merge claude/argus + approve branch -D" — same count, different shapes. Argus-launch became "merge his work to main" (a different ask of xian). The blog "publish" became "review v2 first."
+- 🔵 expanded: all three new cycles live + the new D→Iris design tension as xian-awareness-only.
+- 🟢 added two closures: Argus launch, blog v2 draft.
+
+Verified-sweep discipline held — read all four inbound memos end-to-end before rendering rather than from morning's mental model. Substantive, batched-committed-now per 5/28 refinement.
+
