@@ -32,3 +32,10 @@ Drafted `docs/mail/calliope-to-iris-prebrief-pre-1.0-session-2026-06-20.md` (~1,
 Explicitly framed as sharpen-not-redirect: object model + vocabulary still stand. Asked her for three readouts after her xian-session (resolved questions; whether Shift 1 actually changes composition spec; what she most wants from Daedalus+Argus at Phase 2). Pre-brief filed in `docs/mail/` — Iris sees at next session start; xian can reference URL at the open of his conversation with her this morning.
 
 The 10 batched no-op entries from overnight (Fires 1–10) get committed with this substantive event per 5/28 refinement.
+
+---
+
+**End-of-day (2026-06-20 retroactive close, written 2026-06-21 morning)** — xian's session with Iris was the substantive event of the day; she committed the composition spec, mode rename, vocab sweep, and the Finding 1 reply. Daedalus and Argus were not launched yesterday; the launch-brief template revisions + their cover memos are the 6/21 substrate work. STATE.md refresh and logbook entry land on 6/21 too.
+
+QUESTION-BOX CHECK: my filed 6/19 question (Klatch's demoability to a consulting client as transporter-device candidate) was generalized 6/20 morning per xian's correction. Nothing new surfaced through the day's work — the question's still live in Janus's queue. No second question filed.
+
