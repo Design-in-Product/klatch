@@ -108,10 +108,15 @@ describe('Round 25: MCP server (Phase 5a)', () => {
       });
 
       const pkg = assembleChannelPackage(channel.id);
-      expect(pkg.entities[0].field_notes).not.toBeNull();
-      expect(pkg.entities[0].field_notes).toHaveLength(1);
-      expect(pkg.entities[0].field_notes[0].source).toBe('micro-reflection');
-      expect(pkg.entities[0].field_notes[0].trust).toBe('agent-observed');
+      // The channel also carries the auto-assigned default entity; both are added
+      // within the same datetime('now') second, so getChannelEntities' added_at
+      // ordering can place either first. Match by id rather than position.
+      const reflective = pkg.entities.find((e: any) => e.id === entity.id);
+      expect(reflective).toBeDefined();
+      expect(reflective.field_notes).not.toBeNull();
+      expect(reflective.field_notes).toHaveLength(1);
+      expect(reflective.field_notes[0].source).toBe('micro-reflection');
+      expect(reflective.field_notes[0].trust).toBe('agent-observed');
     });
   });
 

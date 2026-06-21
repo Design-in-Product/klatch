@@ -164,7 +164,7 @@ describe('ChannelSidebar', () => {
     render(<ChannelSidebar {...defaultProps} channels={[]} />);
 
     await user.click(screen.getByText('+ New channel'));
-    expect(screen.getByPlaceholderText('Channel name')).toBeInTheDocument();
+    expect(screen.getByPlaceholderText('Chat name')).toBeInTheDocument();
     expect(screen.getByPlaceholderText('Channel context (optional)')).toBeInTheDocument();
   });
 
@@ -174,7 +174,7 @@ describe('ChannelSidebar', () => {
     render(<ChannelSidebar {...defaultProps} channels={[]} onCreateChannel={onCreateChannel} />);
 
     await user.click(screen.getByText('+ New channel'));
-    await user.type(screen.getByPlaceholderText('Channel name'), 'my-channel');
+    await user.type(screen.getByPlaceholderText('Chat name'), 'my-channel');
     await user.click(screen.getByText('Create Chat'));
 
     expect(onCreateChannel).toHaveBeenCalledWith('my-channel', 'You are a helpful assistant.', undefined, undefined, undefined, undefined);
@@ -196,10 +196,10 @@ describe('ChannelSidebar', () => {
     render(<ChannelSidebar {...defaultProps} channels={[]} />);
 
     await user.click(screen.getByText('+ New channel'));
-    expect(screen.getByPlaceholderText('Channel name')).toBeInTheDocument();
+    expect(screen.getByPlaceholderText('Chat name')).toBeInTheDocument();
 
     await user.click(screen.getByText('Cancel'));
-    expect(screen.queryByPlaceholderText('Channel name')).not.toBeInTheDocument();
+    expect(screen.queryByPlaceholderText('Chat name')).not.toBeInTheDocument();
   });
 
   // ── Footer buttons ──────────────────────────────────────────
