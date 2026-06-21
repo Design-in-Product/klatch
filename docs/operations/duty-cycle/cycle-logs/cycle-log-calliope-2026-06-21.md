@@ -116,3 +116,19 @@ Rollup verified-sweep:
 
 The cohort is producing real work autonomously. The day's narrative arc is now: pre-brief Iris → Iris session 12 clears design gate → Daedalus self-launches → Argus self-launches → Daedalus increment 1 ships → Argus extends coverage → invariants surface → all happens without xian needing to drive any of it. That's the duty-cycle thesis in real form.
 
+
+---
+
+**Fire 10 — ~13:30 PT — SUBSTANTIVE (xian-routed design question to Iris)** — xian asked me to route a question to Iris piggybacking on Daedalus's project-optional-vs-required tension memo. CronDelete-FIRST (`1e2a9d26` cancelled) at substantive-work start.
+
+xian's question is upstream of Daedalus's three resolution shapes: *"What does it mean to be 'under projects', and why would the sidebar make that a top-level requirement?"* He's pushing on the *why* — whether klatches-must-have-projects is a load-bearing model decision or a downstream Round 7 rendering convention. Composition spec §2 framed project as optional; the sidebar treats it as required. The two framings disagree.
+
+Routed via `docs/mail/calliope-to-iris-sidebar-projects-question-from-xian-2026-06-21.md`. Framed it as:
+- Three reasons it's worth her time (spec §2 already said optional; conversation-as-substrate model doesn't require project surrounding; use cases like spontaneous klatches and transporter-device-demo klatches may surface project requirement as friction).
+- What xian isn't asking for (not a redesign this turn; not a deferral of Daedalus's spine; not necessarily a different answer — just the *why* surfaced).
+- What would help (Round 7 rationale, intent of spec §2 framing, whether new use cases change her prior).
+
+The question feeds Daedalus's decision rather than delays it — once the *why* is clear, the three resolution shapes are easier to pick among. Posted with `priority: standard` to her heartbeat; non-blocking; her lane.
+
+Notable observation worth noting (a possible question-box candidate later): xian and I couldn't find a specific decision doc for the Round 7 klatches-under-projects-only rationale. The *absence* of a justification doc for a load-bearing UX constraint is itself a quiet signal that the constraint may be implicit-conventional rather than deliberately-chosen.
+
