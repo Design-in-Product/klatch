@@ -27,3 +27,28 @@ STATE.md refresh next, then this Fire 1's commit.
 No reply needed — Janus didn't ask one and the channel is now actively working. But the explicit-future-trigger is durable enough to record: filed in `calliope-tasks.md` as a new "Watch items" section ("Janus channel: composition-spec → demo-able trigger"). Trigger condition lives downstream of Daedalus's implementation; this is a passive watch, not an active task. Format choice: Watch items as a new section in the task list rather than as a Recurring item (since it's event-triggered, not date-cadence-triggered). Refinement-worth-carrying-forward: passive trigger-watches are a third shape alongside Unblocked and Recurring.
 
 Close-discipline: moved Janus's 6/21 reply to `docs/mail/read/` (channel-as-channel stays alive; the *exchange* is closed).
+
+**Fire 4 (autonomous) — ~10:13 PT — WORK → no-op (batched)** — pull fast-forward (self-merge); no new inbound; idle.
+
+---
+
+**Fire 5 — ~11:13 PT — SUBSTANTIVE (Daedalus launched)** — Cron `429ebd1e` cancelled per Principle 2. Pull surfaced Daedalus's report-in and his ack-to-Iris on the composition spec, plus his updates to `agent-state.md` and `cron-shape-experiments.md`.
+
+**Daedalus self-launched off the cover memo** at ~10:13 AM PT — first agent to start a cycle without xian-driving since the rollout began. Cover-memo-as-entry-point pattern *works*. Cron job `9a295ef9`, cadence `17 * * * *`.
+
+Three asks I'd put in his cover memo all answered same-fire:
+- **Composition spec implementable as written?** Yes; nothing needs Iris to revisit. One lightweight ack-confirm routed to her on the `panel|roundtable|directed` internal-key question (keeping internal keys while user-facing labels are Broadcast/Roundtable/Directed). Non-blocking; he's proceeding.
+- **PM #972 alignment?** *Resolved at his launch.* Klatch was never locked to `ended`; both projects align on `valid_from`/`valid_until`; snake_case at the export boundary, in-memory TS stays camelCase. One small post-1.0 action folded into his Step-10 export-path queue.
+- **Tandem friction with Argus?** None yet (Argus not up; Daedalus launched ahead of `:43`). Who-touches-what division recorded.
+
+**One cosmetic blocked-on-xian surfaced:** legacy `worktree-daedalus-2026-05-18` branch ref — provably merged to origin/main but needs `branch -D` per Git Safety Rules. Filed as a new 🔴 needs-you row in the rollup.
+
+**Close-discipline applied:** moved both Daedalus's report-in and Iris's session-12 summary (acted-upon, no reply needed) to `read/`. Active inbox now shows only items still requiring action (`docs/mail/`). Good first-day discipline by Daedalus on his side too — he closed the PM #972 thread cleanly at launch.
+
+**Rollup refreshed (v2.2, verified sweep):**
+- 🔴 was "launch D+A tandem" + "publish blog illustration"; now "launch Argus" + "approve branch -D" + (still) "publish blog illustration." Two items at top stayed at 2 but became *smaller in shape* — Argus alone isn't urgent (Daedalus implements first, Argus tests against landing surfaces); branch -D is real-zero risk.
+- 🟡 had 2; now 1 (PM #972 sub-decision moved to 🟢 Resolved).
+- 🟢 added three closures: Daedalus launch, PM #972 resolved, Janus channel ack.
+
+Verified-sweep discipline held — read source mail end-to-end before rendering rather than rendering from morning's mental model.
+

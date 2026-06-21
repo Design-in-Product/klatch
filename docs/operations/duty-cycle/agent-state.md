@@ -11,7 +11,7 @@
 | Agent | Cycle | Cadence | Worktree | Branch | Last fire | Notes |
 |---|---|---|---|---|---|---|
 | **Calliope** | **live (v0.2)** | hourly (`13 * * * *`) | `.claude/worktrees/calliope` | `claude/calliope` | 2026-06-06 Fire 0 (Phase 1 launch) | Phase 1 cutover complete 6/6. Cron job id `adca439c` (session-only — dies when this Claude session ends; next session re-registers). |
-| **Daedalus** | off (pending Phase 2) | hourly tandem with Argus (planned) | `.claude/worktrees/daedalus` (not yet created) | `claude/daedalus` (not yet created) | — | Phase 2 awaits xian's next agent-launch session for D+A together. |
+| **Daedalus** | **live (v0.2)** | hourly (`17 * * * *`) tandem with Argus | `.claude/worktrees/daedalus` | `claude/daedalus` | 2026-06-21 Fire 0 (Phase 2 launch) | Phase 2 cutover 6/21. Cron job id `9a295ef9` (session-only — dies when this Claude session ends; next session re-registers). |
 | **Argus** | off (pending Phase 2) | hourly tandem with Daedalus (planned) | `.claude/worktrees/argus` (not yet created) | `claude/argus` (not yet created) | — | Phase 2 awaits xian's next agent-launch session. Weekly intel sweep goes in Recurring-items section of task list, not a separate cron. |
 | **Theseus** | off (pending Phase 3) | daily heartbeat (planned) | `.claude/worktrees/theseus` (not yet created) | `claude/theseus` (not yet created) | — | Phase 3 awaits xian's next agent-launch session. Signal-receiver heartbeat, not a work-queue cycle; MAXT still needs xian. |
 | **Iris** | off (pending Phase 3) | daily heartbeat (planned) | `.claude/worktrees/iris` (not yet created) | `claude/iris` (not yet created) | — | Phase 3 awaits xian's next agent-launch session. Signal-receiver heartbeat; her real work is design-thinking with xian. |
@@ -27,7 +27,7 @@
 - `calliope-june03` ✓ removed (the session that drove Phase 0/1)
 
 **Other agents'** (each cleans up at its own Phase 2/3 launch, since agents own their worktrees):
-- `daedalus-2026-05-18` (cleanup at Daedalus Phase 2 launch)
+- `daedalus-2026-05-18` ✓ worktree removed 6/21 (Phase 2 launch); branch ref `worktree-daedalus-2026-05-18` retained — provably merged to origin/main (0 unique commits) but `git branch -d` blocked by stale upstream; full `-D` delete deferred pending xian approval (Git Safety Rules)
 - `iris-may18` (cleanup at Iris Phase 3 launch)
 - `theseus-2026-05-18` (cleanup at Theseus Phase 3 launch)
 
