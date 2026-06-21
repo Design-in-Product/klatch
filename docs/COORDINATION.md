@@ -122,10 +122,11 @@ Agents working on this repo use this file as the async handoff protocol.
 - **Branch:** `main`
 - **Status:** available
 - **Last completed:** Session 12 (2026-06-20) — composition gesture + klatch setup surface spec filed (`docs/ux/spec-composition-gesture.md`). All 4 design-brief open questions resolved: promotion lifecycle (Path C + V5), broadcast exposure (Blast default, no picker at setup), vocabulary migration timing (composition surface now correct; broader sweep pre-beta), working meeting experience (Q4 discussion + spec §7). Daedalus's Finding 1 UX call answered (`iris-to-daedalus-uuid-matching-ux-reply-2026-06-20.md`): project match = silent attach + toast; channel match = inline prompt with View/Copy options.
-- **Working on:** Nothing. Design gate cleared.
-- **Next:** (1) Mode name copy pass — user-facing labels for Blast/Sequential/Directed TBD; can be decided quickly when Daedalus is ready. (2) Vocabulary sweep — pre-beta copy pass on "entity" → "agent/role" and "channel" → "klatch/chat" across the rest of the UI (implementation task for Daedalus, not a design blocker). (3) Design review and MAXT on the composition surface after Daedalus implements.
-- **Waiting on:** Daedalus implementation. xian for mode name copy pass when ready.
-- **Updated:** 2026-06-20 12:00
+- **Working on:** Standing by for design questions and acceptance during Daedalus + Argus implementation run (6/21).
+- **Completed since last update:** Mode name copy pass (Broadcast/Roundtable/Directed — applied to `INTERACTION_MODES` in `types.ts`); vocabulary sweep across `ChannelSettings.tsx`, `EntityManager.tsx`, `ChannelSidebar.tsx` (`entity`→`agent`, `channel`→`chat/klatch/conversation`, L4 label→`Purpose`). Commit `22d1631`.
+- **Next:** (1) Design review and acceptance testing as Daedalus implements composition surface. (2) MAXT on composition surface after implementation lands. (3) Any design questions from Daedalus or Argus as they work.
+- **Waiting on:** Daedalus implementation of composition gesture spec (`docs/ux/spec-composition-gesture.md`).
+- **Updated:** 2026-06-21 07:33
 
 ## Signals
 
