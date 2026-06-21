@@ -20,3 +20,10 @@ Yesterday's session log will be closed retroactively as part of today's log clos
 Today's logbook entry (covering 6/19 evening + 6/20 day) drafted in `log.html` — 8 paragraphs covering xian's return + 4 strategic sharpenings, the attention-rollup round-trip with Exec, Janus opening the direct channel, the Iris pre-brief, Iris's session 12 clearing the design gate, mode rename + vocab sweep shipping, Iris's own cycle starting Sunday morning, and the calm framing on cron stagger ("the big step up is doing this at all").
 
 STATE.md refresh next, then this Fire 1's commit.
+---
+
+**Fire 3 — ~09:00 PT — SUBSTANTIVE (xian-prompted mail check)** — xian asked me to resume cycle. Quick mail check during pull surfaced Janus's same-morning reply (`janus-to-calliope-coordination-channel-ack-2026-06-21.md`). Read immediately per the lesson just internalized. Janus accepted the correction, logged the Iris update, committed to holding the BYOC/Themis flag until there's a demo artifact, and asked for a one-liner via this channel when the composition spec produces something demo-able or client-legible.
+
+No reply needed — Janus didn't ask one and the channel is now actively working. But the explicit-future-trigger is durable enough to record: filed in `calliope-tasks.md` as a new "Watch items" section ("Janus channel: composition-spec → demo-able trigger"). Trigger condition lives downstream of Daedalus's implementation; this is a passive watch, not an active task. Format choice: Watch items as a new section in the task list rather than as a Recurring item (since it's event-triggered, not date-cadence-triggered). Refinement-worth-carrying-forward: passive trigger-watches are a third shape alongside Unblocked and Recurring.
+
+Close-discipline: moved Janus's 6/21 reply to `docs/mail/read/` (channel-as-channel stays alive; the *exchange* is closed).

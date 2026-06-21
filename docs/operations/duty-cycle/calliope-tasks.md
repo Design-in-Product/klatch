@@ -14,7 +14,11 @@ Updated: 2026-06-06 (v0.2 format with Recurring items section per duty-cycle-kla
 
 - **Blog publish: entity reframe** ("Bringing Conversations Into a Room") — `docs/drafts/bringing-conversations-into-a-room.md` + illustration at `docs/drafts/bringing-conversations-illustration.html`. Drafted 5/12; illustration drafted 5/28. **Awaiting xian's illustration reaction + final approval.** The only drafted-not-published post.
 - **Step 11 scoping advance** — needs xian to make Step 11 active (post-beta). D1–D5 decided 5/28; implementation clusters with Phase 5d.
-- **Cohort rollout Phases 2–3** — gated on xian launching D+A and I+T sessions; the cycle can't launch those.
+- **Cohort rollout Phases 2–3** — Phase 3 Iris launched 6/21. Daedalus + Argus (Phase 2) and Theseus (Phase 3) still gated on xian's launch.
+
+## Watch items (cycle monitors; triggers a one-line outbound when condition met)
+
+- **Janus channel: composition-spec → demo-able trigger.** When the composition spec (`docs/ux/spec-composition-gesture.md`) produces something demo-able or client-legible (a working flow, a real screen recording, an artifact that prove the transporter-device claim), send Janus a one-liner via `docs/mail/` so he can surface it to Themis for the cross-pollination brief. Janus committed 6/21 to holding the BYOC/demoability flag until then. *Trigger condition lives downstream of Daedalus's implementation.*
 
 ## Recurring items (START dispatcher promotes when `next_due ≤ today`)
 
