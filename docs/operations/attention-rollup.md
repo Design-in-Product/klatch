@@ -81,8 +81,8 @@ Awareness, no action needed.
 ### CIO 6/3 canonical-artifacts request — still outstanding
 - Calliope sent CIO a request 6/3 via Janus for 5 canonical duty-cycle artifacts. No response yet (18 days). CIO offered freely; no deadline. Calliope holds; will nudge via Janus if still silent in another week.
 
-### Cohort rollout Phase 3 (Theseus) — gated on xian's launch
-- Iris done. Theseus next at Phase 3 daily heartbeat. xian-stated for "the rest of the crew" — timing flexible.
+### Cohort rollout Phase 3 (Theseus) — *deferred until AXT work surfaces* (xian, 6/21)
+- xian's refined posture 6/21: Theseus will be roused situationally when there's AXT work for him, not as a routine Phase 3 launch. Different shape than Iris's signal-receiver heartbeat — Theseus's work is xian-tandem-MAXT and bursty AAXT rounds, both of which need a specific trigger. *Not on Calliope's queue to surface; xian will rouse when ready.*
 
 ### Strategic threads parked for live conversation *(don't lose track; next-conversation picks the right one)*
 - **Persistent topical rooms** — Iris's spec now operationalizes this for 1.0; Daedalus's implementation will give it body.

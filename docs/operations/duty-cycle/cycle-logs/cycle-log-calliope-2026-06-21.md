@@ -52,3 +52,14 @@ Three asks I'd put in his cover memo all answered same-fire:
 
 Verified-sweep discipline held — read source mail end-to-end before rendering rather than rendering from morning's mental model.
 
+
+---
+
+**Fire 6 — ~11:45 PT — xian-prompt (Argus launched)** — xian: "Argus is so running." Pulled fresh; no Argus commits on origin/main yet — he's mid-setup (worktree creation, cron registration, 0th-step drain in his own session). Cron `d1c88dc8` cancelled per Principle 2 in case the launch produces immediate-action items.
+
+Decision: no substantive action *yet*. Pre-arrival prep would be lighter than the post-arrival processing (agent-state.md is each-agent-on-own-row, not Calliope's to update). When Argus's commits land — report-in mail, agent-state update, cycle log open, cron-shape-experiments entry — the next cycle fire processes them the same way Fire 5 processed Daedalus.
+
+Worth noting separately: Iris already replied to Daedalus's §9 ack inline (`iris-to-daedalus-composition-spec-ack-2026-06-21.md`, commit `2d92021`) — panel-key stays, name-fallback acked, sweep coordination accepted. Composition-gesture loop now fully unstuck. Daedalus is heads-down with no Iris-blocked items.
+
+Re-arming cron to pick up Argus's landing on the next fire.
+
