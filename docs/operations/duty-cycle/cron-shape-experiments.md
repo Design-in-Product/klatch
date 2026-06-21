@@ -57,6 +57,14 @@
 - **Observations:** *pending Phase 2 launch.*
 - **Refinements triggered:** *pending.*
 
+### 2026-06-21 — Phase 2 cutover — hourly `43 * * * *` (cadence-of-record)
+
+- **Cadence:** `43 * * * *` (every hour at :43, off-mark per CronCreate fleet-health guidance; staggered from Calliope :13 and Daedalus :17 so the tandem doesn't collide). Cron job id `9192826d`. Session-only, 7-day auto-expire.
+- **Reason:** CIO's continuous-tandem lane (with Daedalus). xian approved straw-model 2026-06-03; launched Phase 2 on 6/21 alongside Daedalus. "Good enough at first, fine-tune from experience" (xian via cover memo) — the step up is doing it at all.
+- **Cutover (2026-06-21 ~11:40 PT, xian-present then stepped away):** persistent worktree `.claude/worktrees/argus` on `claude/argus` from `origin/main`, session switched in via `EnterWorktree`, rebased to HEAD `eb0f72c`. v0.2 drain prompt registered (CHECK dispatcher, drain-until-IDLE, CronDelete-FIRST, xian-presence-pause, re-arm-by-default standing directive, scheduling-not-permission, question-box). Pre-launch xian-present work: priority-1 vocab-sweep fallout (5 client tests) + bonus round25 order-flake, suite green. 0th-step drain: cover memo actioned + moved to read/, report-in to Calliope + finding to Daedalus filed.
+- **Observations (first, day-of):** *Work-shape is bursty as predicted — the priority-1 fallout was one concentrated burst, then the queue thins (composition test-rounds wait on Daedalus's first impl commit). Hourly will likely no-op between his landings; matching `:17` is justified by tandem-sync, not my own queue depth. Will accumulate real observations before proposing any cadence change (cover-memo invited logging a refinement if hourly proves over-frequent for bursty test-rounds).*
+- **Refinements triggered:** *none yet — holding hourly through first autonomous fires per "good enough at first."*
+
 ---
 
 ## Theseus

@@ -256,9 +256,9 @@ describe('Round 33b T1.7 — EntityManager panel slides from LEFT (mr-auto + bor
   });
 });
 
-// ── T2.1 client — "in N channels" surface on entity card ──
+// ── T2.1 client — "in N conversations" surface on entity card ──
 
-describe('Round 33b T2.1 — EntityManager surfaces "in N channels" with pluralization', () => {
+describe('Round 33b T2.1 — EntityManager surfaces "in N conversations" with pluralization', () => {
   const baseEntity: any = {
     id: 'e1',
     name: 'Test Bot',
@@ -271,7 +271,7 @@ describe('Round 33b T2.1 — EntityManager surfaces "in N channels" with plurali
     createdAt: '2026-05-18T00:00:00Z',
   };
 
-  it('singular: channelCount === 1 renders "in 1 channel"', () => {
+  it('singular: channelCount === 1 renders "in 1 conversation"', () => {
     render(
       <EntityManager
         entities={[{ ...baseEntity, channelCount: 1 } as Entity]}
@@ -281,11 +281,11 @@ describe('Round 33b T2.1 — EntityManager surfaces "in N channels" with plurali
         onClose={vi.fn()}
       />,
     );
-    // The card surface text is "in 1 channel" (no trailing s)
-    expect(screen.getByText(/in 1 channel(?!s)/)).toBeInTheDocument();
+    // The card surface text is "in 1 conversation" (no trailing s)
+    expect(screen.getByText(/in 1 conversation(?!s)/)).toBeInTheDocument();
   });
 
-  it('plural: channelCount > 1 renders "in N channels"', () => {
+  it('plural: channelCount > 1 renders "in N conversations"', () => {
     render(
       <EntityManager
         entities={[{ ...baseEntity, channelCount: 4 } as Entity]}
@@ -295,10 +295,10 @@ describe('Round 33b T2.1 — EntityManager surfaces "in N channels" with plurali
         onClose={vi.fn()}
       />,
     );
-    expect(screen.getByText(/in 4 channels/)).toBeInTheDocument();
+    expect(screen.getByText(/in 4 conversations/)).toBeInTheDocument();
   });
 
-  it('zero: channelCount === 0 does NOT render the "in N channels" label', () => {
+  it('zero: channelCount === 0 does NOT render the "in N conversations" label', () => {
     render(
       <EntityManager
         entities={[{ ...baseEntity, channelCount: 0 } as Entity]}
@@ -308,7 +308,7 @@ describe('Round 33b T2.1 — EntityManager surfaces "in N channels" with plurali
         onClose={vi.fn()}
       />,
     );
-    expect(screen.queryByText(/in 0 channel/)).toBeNull();
+    expect(screen.queryByText(/in 0 conversation/)).toBeNull();
   });
 });
 
