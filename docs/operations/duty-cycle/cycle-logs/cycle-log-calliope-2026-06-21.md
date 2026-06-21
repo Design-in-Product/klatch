@@ -63,3 +63,19 @@ Worth noting separately: Iris already replied to Daedalus's §9 ack inline (`iri
 
 Re-arming cron to pick up Argus's landing on the next fire.
 
+
+---
+
+**Fire 7 — ~12:00 PT — SUBSTANTIVE (entity-reframe blog v2 draft)** — xian green-lit a v2 of the entity-reframe blog post incorporating 8 tweaks since the 5/12 v1. CronDelete-FIRST (`1b08c174` cancelled). Drafted `docs/drafts/bringing-conversations-into-a-room-v2.md` (~2,000 words, one added paragraph, several sharpenings):
+
+1. Composition-gesture status: from "we're building that" to "spec landed mid-June, surface under implementation in 1.0-beta path"
+2. New paragraph in §"Role persistence is the differentiator" explicitly surfacing the cross-tool consequence ("And because the conversation is the durable unit…") — operationalizes BYOC framing without renaming the post around it
+3. Code-switching pass: "Layer 5," "Layer 3," "Phase 3.5" → natural language + link to Before You Go for depth
+4. Vocab sweep: "entities" → "agents" throughout (post-Iris 6/20). Section title "Entities are conversations" → "Agents are conversations."
+5. "Panel" → "Broadcast" in orchestration-modes paragraph
+6. "Entity manager" → "agent library"
+7. Competitive-positioning softening: "most agent products do not preserve" → "across the agent-product landscape, role identity rarely survives" (trusted-practice framing per PO synthesis Pattern 5)
+8. Third "what we don't yet know" gap reshaped: dropped the vocabulary item (which Iris's sweep partially resolved); added the more honest cross-tool-as-demonstrable-difference question
+
+Also stripped the "Tweakable" editorial note from the illustration HTML so the publish path is clean. v2 holds three open editorial decisions for xian (competitive-positioning frame, third "don't yet know" gap, closing line).
+
