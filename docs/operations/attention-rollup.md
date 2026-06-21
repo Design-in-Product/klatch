@@ -8,7 +8,7 @@
 
 **Cadence:** at session-wrap, and any time substantive new items arrive. Engagement-state rule: when xian is *actively dipping in to act* (especially after a quiet stretch), full sweep-and-verify is mandatory — the "feels skippable" moment coincides exactly with when he most relies on the board being whole.
 
-**Last refreshed:** 2026-06-21 Sunday ~12:13 PM (Calliope) — verified sweep, post-Argus-launch + composition-spine-in-progress.
+**Last refreshed:** 2026-06-21 Sunday ~13:13 PM (Calliope) — verified sweep, post-Argus-merge-1 + composition-spine-increment-1-shipped.
 
 ---
 
@@ -32,11 +32,11 @@ Items only *xian* can clear. Each tagged with **who's waiting**.
 - **Date added:** v1 5/28 (24 days waiting); v2 ready for review 6/21.
 - **Recommended path:** read v2; resolve the three editorial questions; ship. Post lands on stronger ground than v1 — composition gesture is now specced + in implementation; cross-tool consequence operationalizes the BYOC framing.
 
-### Review + approve merge of `claude/argus` → `main`
-- **Who's waiting:** Argus (his work is on `claude/argus` at `9c65421` + setup at `acccd98`, suite green; he flagged "ready to merge to main — it fixes main's currently-red suite. Whenever your merge pass comes through").
-- **What xian can clear:** review the diff and approve the merge. Per cycle GUARDRAIL, code merges to main need review — Argus correctly held it on his branch rather than self-merging. The merge fixes main's currently-red suite (the vocab-fallout tests + a `round25` `getChannelEntities` ordering-nondeterminism flake Argus diagnosed during his fallout run).
-- **Date added:** 2026-06-21
-- **Recommended path:** yes-approve and merge. Test fixes only; the pre-existing flake fix is a bonus. Final state per Argus: server 1089/1089, client 197/197 green.
+### Review + approve merge of `claude/argus` @ `d38a89f` → `main` (composition extended coverage)
+- **Who's waiting:** Argus (extended-coverage tests landed on `claude/argus` at `d38a89f`, suite green; ready to merge).
+- **What xian can clear:** review the diff and approve. 7 new tests in `composition-gesture-extended.test.ts` complementing Daedalus's increment-1 suite — multi-unknown-roster naming, partial-valid atomic rejection, roster-order end-to-end through HTTP, route-level dedupe, and 2 invariant-pins for un-enforced behaviors (see 🔵 below). Suite state per Argus: server 1104/1104, client 198/198.
+- **Date added:** 2026-06-21 (second Argus merge of the day; the first — vocab + flake fixes — was approved 6/21 and is on main as `1a29830`).
+- **Recommended path:** yes-approve. Pure test coverage; no product code changes. The two invariant pins are flagged with `PIN:` so Daedalus can flip them with one-shot grep when/if he enforces the invariants.
 
 ### Approve `branch -D worktree-daedalus-2026-05-18`
 - **Who's waiting:** Daedalus (per his report-in: "noting so your sweep can see it, though I'll likely just clear it with xian inline").
@@ -79,6 +79,10 @@ Awareness, no action needed.
 ### Daedalus → Iris design tension: project-required for klatches?
 - Daedalus surfaced 6/21 that composition spec §2 says klatch project is *optional*, but the sidebar grouping model only renders klatches under projects (no top-level home for a project-less klatch). Three resolution shapes proposed (klatches in Unassigned area; dedicated top-level Klatches section; keep project required). *Daedalus is sequencing around it — project stays required for current spine; flip lands after Iris's call.* Routed to Iris's daily heartbeat; non-blocking; her lane. xian-awareness only.
 
+### Composition gesture spine — increment 1 shipped, tandem coordination working
+- Daedalus landed increment 1 (`7d42822`) — atomic roster validation + dual Chat/Klatch affordance. Argus's extended-coverage tests landed in lockstep on his branch (above 🔴). The tandem is producing real work without coordination friction.
+- Argus surfaced **2 un-enforced API invariants** as pinned tests: `type:'chat'` + multi-agent `entityIds` is accepted (could mint a chat structurally-a-klatch via direct API/MCP); `type:'klatch'` + empty `entityIds` silently falls back to lone default entity. Both client-guarded today; not bugs in current paths. Argus proposes a `type`/roster coherence check at `POST /channels`. Daedalus's call whether to enforce now (cheapest before more callers depend) or later. Non-blocking; their lane.
+
 ### xian's July 2026 focal shift
 - DinP becomes operational center; OpenLaws becomes external consulting client. Hyper-circle: PM-as-consulting-tool + Klatch-as-transporter-device + DinP-as-hub. Most of the strategic threads below sharpen under this lens. *xian's own work, not a Klatch action item.*
 
@@ -103,6 +107,8 @@ Awareness, no action needed.
 
 Struck-through items closed since v2's last refresh. Entries older than 7 days get pruned at refresh.
 
+- ~~**`claude/argus` merge #1 (vocab fixes + flake)**~~ — xian approved + merged as `1a29830`; main suite green (1089/197). *Closed 6/21.*
+- ~~**Composition gesture spine — increment 1**~~ — Daedalus shipped `7d42822` (atomic roster + dual Chat/Klatch affordance) ~12:45 PT. First real 1.0-beta implementation increment landed. *Closed-as-milestone 6/21; reopens as "increment 2" etc. as he lands subsequent.*
 - ~~**Argus Phase 2 launch**~~ — self-launched 6/21 ~11:45 off Calliope's cover memo. Both tandem partners now live. Vocab-sweep test fallout fixed (5 tests, 2 files); bonus `round25` `getChannelEntities` ordering flake diagnosed + fixed. *Closed 6/21.*
 - ~~**Entity-reframe blog v2 draft**~~ — drafted 6/21 12:00; 8 changes from v1 (composition status, cross-tool consequence as new paragraph, code-switching pass, vocab sweep, panel→Broadcast, entity-manager→agent-library, competitive-positioning softening, "what we don't yet know" reshape). Awaiting xian's review. *Closed-as-drafted 6/21; reopens as the "review v2" 🔴 item until shipped.*
 - ~~**Daedalus Phase 2 launch**~~ — self-launched 6/21 ~10:13 off Calliope's cover memo without xian-driving. Cover-memo-as-entry-point pattern validated. *Closed 6/21.*

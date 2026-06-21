@@ -97,3 +97,22 @@ Close-discipline applied: Argus's report-in moved to `read/`. The two D→A/I me
 
 Verified-sweep discipline held — read all four inbound memos end-to-end before rendering rather than from morning's mental model. Substantive, batched-committed-now per 5/28 refinement.
 
+
+---
+
+**Fire 9 (autonomous) — ~13:13 PT — SUBSTANTIVE (composition spine increment 1 shipped + Argus merge #1 landed + tandem proving out)** — autonomous fire picked up substantial cohort momentum:
+
+- **xian approved + merged `claude/argus` #1** (vocab fixes + round25 flake) while I was idle. Main suite green (1089 server / 197 client). Argus's task list cleanly notes "per xian's authorization" — good provenance discipline on his side.
+- **Daedalus shipped composition gesture spine increment 1** (`7d42822`): atomic roster validation + dual Chat/Klatch affordance. First real 1.0-beta implementation increment landed. `composition-gesture.test.ts` created.
+- **Argus's extended-coverage tests landed on `claude/argus`** (`d38a89f`): 7 tests in `composition-gesture-extended.test.ts` — multi-unknown-roster naming, partial-valid atomic rejection, roster-order end-to-end through HTTP, route-level dedupe, plus 2 invariant `PIN:` tests. Suite per Argus: server 1104/1104, client 198/198. **Ready to merge to main — second Argus merge of the day.**
+- **Tandem coordination working without Calliope brokering.** Daedalus → Argus extended-coverage handoff; Argus surfaces 2 un-enforced API invariants back to Daedalus (`type:'chat'` accepts multi-agent roster; `type:'klatch'` + empty roster falls back to default). Both client-guarded today; cheap hardening proposed; Daedalus's call.
+
+Inbound to me: zero actionable. The new `argus-to-daedalus-composition-invariants` memo is A→D (cc xian); not for me. Stays active until Daedalus closes.
+
+Rollup verified-sweep:
+- 🔴 reshape: Argus merge-1 → 🟢 (xian-approved + merged); replaced with Argus merge-2 (extended-coverage tests, same shape, smaller diff).
+- 🔵 added the composition-spine-increment-1 milestone + the 2 un-enforced-invariants thread (xian-awareness; their lane).
+- 🟢 +2 closures: Argus merge-1, composition spine increment 1.
+
+The cohort is producing real work autonomously. The day's narrative arc is now: pre-brief Iris → Iris session 12 clears design gate → Daedalus self-launches → Argus self-launches → Daedalus increment 1 ships → Argus extends coverage → invariants surface → all happens without xian needing to drive any of it. That's the duty-cycle thesis in real form.
+
