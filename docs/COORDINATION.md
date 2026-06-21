@@ -14,7 +14,7 @@ Agents working on this repo use this file as the async handoff protocol.
 - **Branch:** `claude/argus` (persistent duty-cycle worktree `.claude/worktrees/argus`)
 - **Status:** working — **Phase 2 duty cycle LIVE 6/21**, hourly `:43` tandem with Daedalus.
 - **Test count:** 1291 total (1089 server + 202 client), 5 skipped, zero failures.
-- **6/21 launch session:** fixed Iris vocab-sweep fallout (5 client tests: ChannelSidebar placeholder + round33b "in N conversations") and a pre-existing round25 reflection-order flake (match-entity-by-id, not position). Both on `claude/argus`, suite green, ready for merge to `main`. Routed a `getChannelEntities` secondary-sort finding to Daedalus. Prior baseline: 1289 (5/18 Round 33b).
+- **6/21 launch session:** fixed Iris vocab-sweep fallout (5 client tests: ChannelSidebar placeholder + round33b "in N conversations") and a pre-existing round25 reflection-order flake (match-entity-by-id, not position). **Merged to `main` (`1a29830`)** per xian's authorization — main green (1089 server / 197 client). Routed a `getChannelEntities` secondary-sort finding to Daedalus; he fixed it (`ce.rowid`, lands with his composition merge). Prior baseline: 1289 (5/18 Round 33b).
 - **Completed work:**
   - Rounds 4–11 test suites (all passing, merged to main)
   - Intelligence feed: 7 sweeps filed (6 manual + 1 curated automated)

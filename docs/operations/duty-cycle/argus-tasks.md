@@ -6,19 +6,19 @@ Updated: 2026-06-21 (Phase 2 launch — initial v0.2 task list)
 
 ## Unblocked (cycle can advance)
 
-- [ ] **Test rounds following Daedalus** — when Daedalus lands composition-gesture implementation (`docs/ux/spec-composition-gesture.md`) on `claude/daedalus`, write extended-coverage tests for the new surface: New Klatch button (paired with New Chat), setup panel fields, agent picker (three paths: existing / JIT-import / new session), Broadcast/Roundtable/Directed behavior, @mention composes-with-all-modes, clone-from-existing-klatch. Watch his commits. *Status: he launched 6/21 + replied PM #972; composition impl not started yet — this waits on his first impl commit.*
+- [ ] **Test rounds following Daedalus** — extended-coverage tests for the composition surface as he lands it: New Klatch button (paired with New Chat), setup panel fields, agent picker (three paths: existing / JIT-import / new session), Broadcast/Roundtable/Directed behavior, @mention composes-with-all-modes, clone-from-existing-klatch. *Status: composition spine **IN FLIGHT** (Daedalus Fire 1, 6/21) — `composition-gesture.test.ts` (route-level roster) + `createChannel(...entityIds)` atomic roster on `claude/daedalus`. I layer the behavioral/edge coverage as his surfaces land + merge. He owns the ChannelSidebar dual-affordance tests; I own round33b + the new-surface behavioral coverage.*
 - [ ] **Mail drain** — keep `docs/mail/` at inbox-zero per Mail Handling; respond/act/route same turn; `git mv` closed threads to `read/`; push mail commits to `main` immediately. (Continuous.)
 - [ ] **Cycle log + session log upkeep** — turn-by-turn during xian-present sessions; brief entry per substantive fire; batch no-ops. (Continuous.)
-- [ ] **Flaky-test triage — SidebarRedesign DOM-order** — Daedalus flagged `SidebarRedesign.test.tsx` "chats appear before klatches in DOM order" as intermittently failing (COORDINATION note). Same order-nondeterminism class as the round25 flake fixed 6/21. Investigate + harden. *Unblocked.*
+- [ ] **Flaky-test triage — SidebarRedesign DOM-order** — "chats appear before klatches in DOM order" intermittent. **Coordinating with Daedalus (6/21):** he's taking the query-side root cause (`getAllChannelsEnriched` coarse-timestamp tie); I **HOLD** the test-side harden until he reports which ordering lands, so we don't both touch it. Same nondeterminism class as round25 (fixed) + getChannelEntities (Daedalus fixed `ce.rowid`).
 - [ ] **AAXT continuation candidates** (5/18 green-lit, UI-as-context line) — ProjectSettings (F5.1), EntityManager, MessageList (F1.4). Larger initiative; pick up in a quiet test-round window, not driven without one.
 
 ## Blocked-on-xian (cycle surfaces to attention rollup; doesn't act)
 
-- *(none currently)* — the vocab-fallout fix + round25 flake fix are done and on `claude/argus`, ready for Calliope/xian to merge to `main` (a merge action, not a blocked-on-xian decision).
+- *(none currently)* — vocab-fallout + round25 flake fixes **merged to `main` (`1a29830`, 6/21)** per xian's authorization; main green (1089 server / 197 client).
 
 ## Watch items (cycle monitors; one-line outbound when condition met)
 
-- **Daedalus `getChannelEntities` ordering finding** — routed 6/21 (`argus-to-daedalus-getchannelentities-ordering-2026-06-21.md`): `getChannelEntities` orders by `ce.added_at ASC` with no secondary key → nondeterministic same-second order; suggested `, e.created_at ASC, e.id ASC`. Non-blocking, his lane. Watch for disposition.
+- ~~**Daedalus `getChannelEntities` ordering finding**~~ **RESOLVED 6/21** — Daedalus fixed on `claude/daedalus`: `ORDER BY ce.added_at ASC, ce.rowid ASC` (rowid preserves user-picked roster order — better than my `e.created_at/e.id` suggestion; his atomic-roster create made it a live common-path bug). Lands with his composition merge. Thread closed both sides.
 
 ## Recurring items (START dispatcher promotes when `next_due ≤ today`)
 
