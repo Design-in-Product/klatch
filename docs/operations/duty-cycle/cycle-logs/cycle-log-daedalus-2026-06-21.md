@@ -30,3 +30,25 @@ xian present and conversational ("resuming our work together"). Asked him how to
 **xian-presence note:** xian is live and we're moving into collaborative composition work next. Per xian-presence-pause (Principle 3), the cron is paused for the live working session and re-arms by default when he steps away (Principle 4). Cron registration completed as the launch milestone; actual autonomous firing begins on positive-absence signals.
 
 **Status post-Fire-0:** Phase 2 LIVE for Daedalus.
+
+---
+
+**Fire 1 — ~11:00–11:50 PT — SUBSTANTIVE (xian-present, collaborative)** — composition gesture spine, increment 1. xian endorsed Gall's-law spine-first.
+
+**Corrected substrate finding (look-before-you-assert paid off twice):** the composition gesture is far more built than the spec §9 implied. `channels` already has `type` AND `mode` (the spec's "orchestration_mode" — column is just named `mode`); `createChannel`/`updateChannel`/route already accept `mode`+`type`; `parseMentions`/`resolveMentions` already exist in shared; and an earlier-iteration klatch-creation form already exists in ChannelSidebar (type toggle, agent multi-select, mode picker, context field). **No data-model migration needed.** My earlier "client-only / net-new migration" framing (in the 6/21 Iris + Calliope memos) was wrong — corrected here. The real work is evolving the front-door to Iris's spec.
+
+**Built (spine increment 1):**
+- Backend atomic roster: `createChannel(..., entityIds?)` seeds a klatch with exactly the selected agents (kills the stray-default-entity wart where a composed klatch got [default, ...selected]); `POST /channels` accepts + validates `entityIds` (clean 400 on unknown ID before createChannel); client `createChannel` API + `App.handleCreateChannel` pass roster atomically (removed the create-then-loop-assign dance).
+- Client front-door: dual **New Chat / New Klatch** affordance (was single "+ New channel" w/ in-form toggle); `openForm(type)`; contextual **Purpose** label on the L4 field.
+
+**Tests:** server 1096/1096 (new: `composition-gesture.test.ts` ×4 route-level + 3 in `queries.test.ts`); client ChannelSidebar 18/18 (fixed 4 create-form tests my affordance change touched — 3 were already stale on `Channel name`→`Chat name` from Iris's vocab sweep — + added `+ New Klatch` test).
+
+**Routed:** project-optional tension → Iris (`daedalus-to-iris-klatch-project-optional-tension-2026-06-21.md`); 2 pre-existing EntityManager pluralization failures (Round 33b, stale after vocab sweep: test wants "in N channels", component renders "in N conversations") → Argus with diagnosis (`daedalus-to-argus-entitymanager-vocab-test-fallout-2026-06-21.md`).
+
+**Operational friction logged (cycle-relevant):** the preview MCP is anchored to the **main checkout** cwd (fixed at session start, before EnterWorktree), so it serves main's `packages/client`, not the worktree's. In-browser screenshot of worktree UI changes isn't achievable via preview_* without editing main's tracked `.claude/launch.json` cross-worktree (declined) or merging first. Verified the spine via the test suite instead. This affects any cycling agent doing UI work in a worktree — flagging for cron-shape-experiments / the mutual-assessment exchange.
+
+**Spine code committed to `claude/daedalus`** (branch; merge to main review-gated). Mail + this log pushed to main.
+
+**Next (then-layer, not spine):** picker polish (typeahead search + chips + roles-first tiering), Paths B (JIT import) + C (start-new), @mention autocomplete, clone-from-klatch, cross-ref surface. project-optional flip pends Iris.
+
+**Mid-fire integration + new mail (during commit prep):** `origin/main` advanced 7 commits while I was heads-down (Calliope fires + Argus's Phase-2 launch). Clean FF — zero overlap with my uncommitted files. Two new memos to me: (1) **Iris confirmed all four §9 points** (`iris-to-daedalus-composition-spec-ack`) — store code keys, name-fallback, she holds component edits till I'm clear; thread closed. (2) **Argus getChannelEntities finding** — same-second `added_at` ties break nondeterministically; my atomic-roster create makes this the *common* klatch path. Fixed (`ce.added_at ASC, ce.rowid ASC` — roster/insertion order, better than his `e.created_at` suggestion for composition); +1 test; replied + closed. Routed his SidebarRedesign-flake hypothesis to my follow-ups (`getAllChannelsEnriched` ordering check). Tandem-with-Argus already paying off in-band on day one — worth the mutual-assessment note.
