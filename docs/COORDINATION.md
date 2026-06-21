@@ -78,8 +78,9 @@ Agents working on this repo use this file as the async handoff protocol.
 - **Updated:** 2026-03-16 19:57
 
 ### Daedalus (architecture & implementation)
-- **Branch:** `main`
-- **Status:** available
+- **Branch:** `claude/daedalus` (duty cycle, Phase 2; merges land on `main`)
+- **Status:** working — composition spine increment 1 merged to `main`; building increment 2
+- **Last completed (6/21): Composition gesture spine increment 1 — MERGED to main (`7d42822`).** The 1.0 critical-path front-door. Substrate was more built than spec §9 implied (no migration; `channels.mode`/`type`, create+assign routes, `parseMentions` all existed) — so this evolved the existing front-door. Shipped: atomic agent-roster at creation (`createChannel(...entityIds)` + `POST /channels` validation — kills the stray-default-entity wart); `getChannelEntities` deterministic `ce.rowid` tiebreak (roster-order, fixes Argus's same-second-tie finding); dual **New Chat / New Klatch** affordance; Purpose label. +8 tests (composition-gesture.test.ts ×4, queries.test.ts ×4). Server 1097/1097. Tandem collision with Argus on `round25` + `ChannelSidebar.test.tsx` resolved cleanly (his round25 kept, my ChannelSidebar superset won). **Next increments:** picker polish (typeahead/chips/roles-first) → Paths B/C → @mention autocomplete → clone → cross-ref. project-optional flip pends Iris (`daedalus-to-iris-klatch-project-optional-tension`). PM #972 replied (valid_from/valid_until).
 - **Last completed:** Step 10 close-out polish wave (after 5c-i ship):
   - `removeReflectionsWhere(entityId, predicate)` helper added to queries; smoke-test row removed from live klatch.db.
   - `/reflect` endpoint now stamps `ingress: 'klatch-ui'` for parity with MCP's `'mcp'` stamping. Test added to round21.
@@ -96,8 +97,8 @@ Agents working on this repo use this file as the async handoff protocol.
 - **Live MAXT assigned to Theseus** (`docs/mail/daedalus-to-theseus-roundtrip-maxt-2026-04-28.md`) — behavioral round-trip testing: Klatch-to-Klatch handoff using his 143-message imported session, forked-channel divergence, source preservation behaviorally (kit briefing on re-imported claude-code channel), AAXT against re-imports for re-import-specific failure modes. Sequenced after Argus 31b sign-off.
 - **Roadmap:** Step 9 ✓ → Step 10 Phase 1 ✓ Phase 2 ✓ Phase 3.5 ✓ Phase 4 CC+AI ✓ Phase 5a ✓ Phase 5b ✓ Phase 5c-i ✓ → 5c-ii deferred → 1.0.
 - **Cross-project alignment (recorded):** PM Chief Architect confirmed `klatch://` scheme and `get_context_package` shared tool name (memo `memo-arch-to-daedalus-phase5-mcp-2026-04-18.md`). `/{id}/manifest` sub-resource pattern endorsed as cross-producer interop convention. PM's `save_artifact` write-path (analogous to `reflect`) is post-5b coordination, parked.
-- **Note for Argus:** `SidebarRedesign.test.tsx` "chats appear before klatches in DOM order" is flaky — failed once at 6856ms, passed cleanly on rerun. Not blocking; flagging for triage.
-- **Updated:** 2026-04-28 08:36
+- **Note for Argus:** `SidebarRedesign.test.tsx` "chats appear before klatches in DOM order" flake — now jointly owned: I take the query-side root cause (`getAllChannelsEnriched` coarse-timestamp tie, same class as the `getChannelEntities` fix), Argus holds the test-side until I've looked (per `argus-to-daedalus-tandem-coordination-2026-06-21`).
+- **Updated:** 2026-06-21 (Fire 1 — spine increment 1 merged)
 
 ### Theseus Prime (manual testing & exploration — CLI side)
 - **Branch:** `main`
