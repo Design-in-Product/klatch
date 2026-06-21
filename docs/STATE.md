@@ -1,13 +1,13 @@
 # Klatch — Standing State
 
 **Refresh cadence:** updated as part of the end-of-day logbook wrap (alongside the logbook entry). This is a point-in-time orientation snapshot, not live state — verify against COORDINATION.md, the roadmap, and recent commits before acting on anything time-sensitive.
-**Last refreshed:** 2026-06-19 evening (Calliope, session-resume after 13-day gap)
+**Last refreshed:** 2026-06-21 Sunday morning (Calliope, Phase 2 prep)
 
 ---
 
 ## One-line status
 
-Klatch is in a **UX-gated pre-1.0-beta state**: the backend/protocol work (Step 10) is shipped and feature-complete; the product needs its central gesture — composing a klatch from existing conversations — before it's beta-worthy.
+Klatch is now **implementation-active toward 1.0-beta**: the design gate cleared 6/20 (Iris session 12 — composition gesture spec landed, mode + vocab sweep shipped, Finding 1 UX answered). Daedalus + Argus launch as Phase 2 tandem cycle next (xian-stated today, 6/21). The path to beta is now execution, not specification.
 
 ## What's shipped
 
@@ -16,22 +16,31 @@ Klatch is in a **UX-gated pre-1.0-beta state**: the backend/protocol work (Step 
 - **Tests:** ~1,487 (1,287 server + 200 client) as of 2026-05-18, zero failures.
 - **UI patch coverage** — Round 33/33b closed (Argus); Tier 1 patches from Iris's triage shipped (Daedalus).
 
-## The 1.0-beta critical path (the gate)
+## The 1.0-beta critical path — DESIGN GATE CLEARED 2026-06-20
 
-Per Iris's design brief (`docs/ux/design-brief.md`), beta-readiness needs:
-1. **Composition gesture** — select existing conversations to bring into a klatch (the thing the entity reframe named; the central missing act)
-2. **Klatch setup surface**
-3. **Remaining Tier 1 patches**
-4. **Working-meeting experience** (what "running a meeting" looks like inside a klatch)
-5. **Promotion gesture** (conversation → role)
+Iris's session 12 with xian (6/20) cleared the gate. Iris's design brief (`docs/ux/design-brief.md`) framed the path; her composition spec (`docs/ux/spec-composition-gesture.md`) is the 1.0 implementation brief Daedalus reads first.
 
-This is UX work, owned by Iris in tandem with xian. It is the linchpin to beta launch.
+Status of the five components:
+1. **Composition gesture** — *specced 6/20 by Iris.* Awaiting Daedalus implementation.
+2. **Klatch setup surface** — *specced 6/20 by Iris* (Name / Agents / Purpose / Mode / Project / Files + clone-existing; three-path agent picker). Awaiting Daedalus implementation.
+3. **Working-meeting experience** — *resolved 6/20 by xian + Iris*: a meeting is a synthetic group chat; no special mode, no extra chrome, no session-close gesture. Orchestration modes are the only differentiation; synthesis is emergent (via @mention to a CoS-style agent). Question 4 of Iris's 5/12 brief.
+5. **Promotion gesture** — *resolved 6/20*: naming an agent IS the promotion (Q V5 in vocab sweep). "Promote" is internal vocabulary only.
+- **Vocabulary sweep shipped 6/20** — `entity → agent`, `panel → Broadcast`, Chat/Klatch Settings, Purpose, context-aware export and delete labels, "Agent name" placeholder, "In N conversation(s)".
+- **Tier 1 patches** — most landed pre-gap; remainder folds into Daedalus's queue alongside the composition gesture implementation.
+- **Daedalus Finding 1 (UUID matching UX)** — *answered 6/20*: project match silent attach + toast; channel UI inline prompt; channel MCP 409 with reason.
+
+Implementation is now the work, owned by Daedalus in tandem with Argus.
 
 ## In flight / recent
 
-- **UI-as-context AAXT** (Theseus, May 18) — 5-round wave, diagnostic→fix→validate loop proven: ChannelSettings 54% → 94% conveyance after patches. 146 probes, 11 findings. Methodology validated empirically. Open candidates: ProjectSettings, EntityManager, MessageList (Theseus green-lit to pursue in parallel, 2026-05-28).
-- **Duty cycle — v0.2 substrate live; Calliope Phase 1 cutover landed 6/6; not currently running.** v0.2 design doc `docs/operations/duty-cycle-klatch-v0.2.md` + experiments registry + launch-brief template + agent-state tracker all on main. Calliope on persistent worktree `.claude/worktrees/calliope` / branch `claude/calliope`. **Straw model (xian-approved 6/3):** Calliope hourly continuous-mail · Daedalus+Argus hourly tandem continuous · Theseus+Iris daily heartbeat as signal-receivers. Cron is session-only; cron from 6/6 died at session end (designed behavior); resumes on `CronCreate` whenever Calliope's session restarts. **Phase 2 (D+A together) and Phase 3 (T+I) gated on xian's agent-launch bandwidth — neither launched yet; the 13-day xian-attention gap (6/6→6/19) is exactly the cadence the cycle was built to span, and it didn't, because Phases 2+3 hadn't run.**
+- **UI-as-context AAXT** (Theseus, May 18) — 5-round wave, diagnostic→fix→validate loop proven: ChannelSettings 54% → 94% conveyance after patches. 146 probes, 11 findings. Methodology validated empirically. Open candidates: ProjectSettings, EntityManager, MessageList (Theseus green-lit to pursue in parallel, 2026-05-28). *Theseus not yet on cycle — Phase 3 launch pending.*
+- **Duty cycle rollout in progress.**
+  - **Phase 1 — Calliope:** live since 6/6 (persistent worktree + cron when in-session). Session resumed 6/19.
+  - **Phase 3 — Iris:** *launched 6/21 morning* (her own session log opened 7:33, COORDINATION updated). First non-Calliope cycle to start; daily heartbeat. Confirms the cohort pattern works without ceremony.
+  - **Phase 2 — Daedalus + Argus tandem:** **next launch up.** Launch-brief template revised 6/21 (3 sharpenings: re-arm-by-default elevated to standing-directive framing; new attention-rollup section; canonical drain-prompt source pinned). Cover memos for each drafted (`calliope-to-daedalus-cycle-cover-2026-06-21.md`, `calliope-to-argus-cycle-cover-2026-06-21.md`). Cron stagger: Calliope `:13`, Daedalus `:17`, Argus `:43`. Awaiting xian's launch.
+  - **Phase 3 — Theseus:** still pending.
 - **Entity-reframe blog ("Bringing Conversations Into a Room")** — illustration drafted (`docs/drafts/bringing-conversations-illustration.html`); xian agreed to publish; **awaiting his illustration reaction (since 5/28), then publish** (HTML + index card + OG image, same as Before You Go). Publish gated on xian approval. Only drafted-not-published post in the queue.
+- **Attention rollup live** — `docs/operations/attention-rollup.md` (canonical) + `.html` (Desktop preview). v2 demand-organized (Exec advised 6/19). Verified-sweep discipline (read source docs against live truth, never from memory). Refreshed at session-wrap and on substantive new items.
 
 ## Standing decisions / items waiting on xian
 
@@ -71,13 +80,13 @@ These are live, not settled. See memory `project_duty_cycle_reframes_klatch_purp
 3. **MAXT Session 02** (needs xian's attention — time carefully, can't run in parallel).
 4. **Blog series continuation** (Calliope, in parallel when not supporting higher priorities): entity reframe → convergent infrastructure → MCP capstone, anchored to 1.0 beta. Possible future beat: the 54%→94% AAXT diagnostic-loop story.
 
-## Agent status (current per agent-state.md + COORDINATION.md, refreshed 6/19)
+## Agent status (refreshed 6/21 from agent-state.md + COORDINATION.md + Iris's session-12 readout)
 
-- **Calliope** — live duty-cycle (when in-session); persistent worktree `claude/calliope`. Coordination + chronicling + blog series + STATE/logbook upkeep. Principal point of contact.
-- **Daedalus** — off-cycle; Phase 2 pending xian's launch. Status (5/18): available; awaiting Iris's Finding 1 UX call. 6/15 inbound from PM CIO on #972 memory-temporal-field alignment awaits his next session.
-- **Argus** — off-cycle; Phase 2 pending xian's launch. Status (5/18): available; Round 33/33b closed; weekly intel-sweep cadence will live in his Recurring-items section when launched.
-- **Theseus** — off-cycle; Phase 3 pending xian's launch. UI-as-context AAXT wave (5/18 — 54%→94% diagnostic-loop) complete; awaiting xian direction on next surfaces vs. MAXT.
-- **Iris** — off-cycle; Phase 3 pending xian's launch. UX linchpin for 1.0-beta. Next is composition gesture + klatch setup surface spec; 4 open design-brief questions. **Iris unblock-for-beta is xian's stated 6/19 #3 priority** (coordinate with Calliope first).
+- **Calliope** — live duty-cycle when in-session; persistent worktree `claude/calliope`; cron `065fb872`→paused for current substantive work. Coordination + chronicling + blog series + STATE/logbook upkeep + attention-rollup. Principal point of contact for Klatch.
+- **Daedalus** — Phase 2 launch imminent. Cover memo waiting in mail. Finding 1 UUID-matching UX now answered by Iris (6/20); ready to implement. Composition gesture spec is his main work assignment. PM CIO #972 alignment proposal in his inbox.
+- **Argus** — Phase 2 launch imminent (tandem with Daedalus). Cover memo waiting in mail. First job: test-snapshot fallout from yesterday's vocab + mode rename. Weekly intel sweep overdue.
+- **Theseus** — Phase 3 still pending xian's launch. UI-as-context AAXT continuation candidates queued.
+- **Iris** — *live duty cycle as of 6/21 morning* (daily heartbeat, signal-receiver model). Phase 3 launched. UX critical-path design gate cleared 6/20. Composition spec shipped to `docs/ux/`. Available for any clarifications Daedalus + Argus surface during implementation.
 
 ## Cross-project context (refreshed 6/19)
 

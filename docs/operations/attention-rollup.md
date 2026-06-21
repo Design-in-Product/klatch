@@ -6,9 +6,9 @@
 
 **Trust-instrument discipline** (Exec 2026-06-19, the load-bearing rule): every render comes from a fresh **verified sweep** of source docs — never from Calliope's memory of what's going on. A false "all clear" is a trust breach, not untidiness; xian disengages because the board told him to. "Quiet" must mean *verified-clear*, not *haven't-checked*.
 
-**Cadence:** at session-wrap, and any time substantive new items arrive. Sharpened cadence rule: when xian is *actively dipping in to act* (especially after a quiet stretch), full sweep-and-verify is mandatory — the "feels skippable" moment coincides exactly with when he most relies on the board being whole.
+**Cadence:** at session-wrap, and any time substantive new items arrive. Engagement-state rule: when xian is *actively dipping in to act* (especially after a quiet stretch), full sweep-and-verify is mandatory — the "feels skippable" moment coincides exactly with when he most relies on the board being whole.
 
-**Last refreshed:** 2026-06-19 evening (Calliope) — verified sweep, v2 per Exec's 6/19 advice.
+**Last refreshed:** 2026-06-21 Sunday morning (Calliope) — verified sweep, post-Iris-session-12.
 
 ---
 
@@ -16,7 +16,7 @@
 
 | Needs you | Blocked-on-others | Lower-urgency | In-flight |
 |---|---|---|---|
-| **2** | **1** | **2** | **4** |
+| **2** | **0** | **2** | **5** |
 
 ---
 
@@ -24,45 +24,39 @@
 
 Items only *xian* can clear. Each tagged with **who's waiting**.
 
-### Iris session for 1.0-beta UX critical path
-- **Who's waiting:** Iris (directly); Daedalus and Argus (downstream of her — most of their substantive code/test work is Iris-gated); Theseus (next AAXT round wants UX-decisions to probe against).
-- **What xian can clear:** sit with Iris and work the UX critical path. Composition gesture · klatch setup surface · remaining Tier 1 patches · working-meeting experience · promotion gesture. Iris's 5/12 design brief still has 4 open questions (promotion lifecycle, how broadcast mode is exposed, pre-1.0 vocabulary migration timing, what "running a meeting" looks like inside a klatch).
-- **Pre-meeting prep Calliope can prepare** *(at xian's signal)*: a brief to Iris covering the strategic shifts since 5/12 (BYOC = transporter-device; July focal shift; what "beta" now means under that framing).
-- **Date added:** 2026-06-19 (xian named as priority for tomorrow morning)
-- **Recommended path:** xian's stated plan ("rouse Iris first thing in the morning when I am fresh, along with the rest of the crew") is the path. Calliope drafts the Iris pre-brief on xian's signal — could land tonight, ready for morning.
+### Launch Daedalus + Argus (Phase 2 tandem)
+- **Who's waiting:** Daedalus and Argus (off-cycle, waiting for the launch signal); also Iris (her composition spec needs Daedalus to start implementation); downstream of all 1.0-beta progress.
+- **What xian can clear:** start sessions for each. Cover memos waiting in mail (`calliope-to-daedalus-cycle-cover-2026-06-21.md`, `calliope-to-argus-cycle-cover-2026-06-21.md`) — both tailored entry points with arrival items, cron stagger (`:17` and `:43`), tradition catch-ups, strategic shifts.
+- **Date added:** 2026-06-21 (xian-stated as today's plan)
+- **Recommended path:** launch both this session if bandwidth permits — they're tandem and the v0.2 design intentionally couples their starts so the mutual-assessment exchange can happen. Cover memos are ready; substrate is ready; no preparation gates remaining on xian's side. Calliope's work today produced the entry-points; the launch itself is xian's act.
 
 ### Entity-reframe blog illustration — react and publish
 - **Who's waiting:** Calliope (for publish path); readers (next post in the series, since "Before You Go" 5/13).
 - **What xian can clear:** open `docs/drafts/bringing-conversations-illustration.html`, react (go / tweaks / hold), and Calliope publishes the post the same way "Before You Go" went out.
 - **Date added:** 2026-05-28 (24 days waiting)
-- **Recommended path:** publish. Illustration reads cleanly in the established slate vocabulary; the post is candid that the composition gesture is forthcoming. Holding longer doesn't sharpen anything.
+- **Recommended path:** publish. Illustration reads cleanly in the established slate vocabulary; the post is candid that the composition gesture is forthcoming — *which it now is, per Iris's spec.* Composition gesture is no longer "forthcoming as a vision" but "being implemented" — slightly stronger ground for the post.
 
 ---
 
 ## 🟠 Blocked on another agent
 
-Stuck agent-on-agent. xian's awareness, Calliope's nudge-target.
-
-### PM #972 memory-temporal-field alignment (`valid_from` / `valid_until`)
-- **Stuck on:** Daedalus, whose response it is — but Daedalus is off-cycle and hasn't sessioned since 4/29. CIO (Piper Morgan) sent the proposal 6/15; explicitly not blocking either side.
-- **Calliope's nudge-target:** when xian launches Daedalus (Phase 2 of the duty-cycle rollout — xian-stated for tomorrow morning), Daedalus sees the memo at session start and can respond. No separate nudge needed; the morning Daedalus launch *is* the unstucker.
+Currently empty. The PM #972 alignment item moved to 🟡 (now Daedalus's call, not blocked).
 
 ---
 
 ## 🟡 Lower-urgency decisions
 
-Real but not time-pressured. Stale-but-flagged items live here, labeled stale, never as fresh.
+Real but not time-pressured.
 
-### Cron-shape experiments registry: still seeded straw-model, not yet calibrated
-- **What:** `docs/operations/duty-cycle/cron-shape-experiments.md` carries the 6/3 straw-mapping entries with `*pending observation*` for everyone except Calliope. Calliope has now run two pilot stretches (5/28 + 6/19); other agents haven't launched at all. No calibration yet.
-- **Why lower-urgency:** the straw model is reasonable until evidence; the calibration is post-launch data.
-- **Date added:** 2026-06-03 (registry created)
-- **Path:** as Phase 2 + 3 launches happen this week, agents append their first observations.
-
-### Klatch's `last_verified` / `validUntil` field-naming choice (sub-decision of PM #972)
-- **What:** Daedalus will need to choose whether Klatch adopts PM's `valid_until` or keeps Klatch's existing `validUntil`/`ended`. Sub-decision of the parent at 🟠 above, but his to make — not xian's.
-- **Why here, not Needs-you:** xian doesn't need to call this. *Daedalus does* — flagged so xian doesn't need to weigh in. Parent context only.
+### Klatch's `last_verified` / `validUntil` field-naming choice (responding to PM #972)
+- **What:** Daedalus chooses whether Klatch adopts PM's `valid_until` or keeps Klatch's existing `validUntil` / `ended`. PM CIO sent the proposal 6/15; Janus relayed it 6/21.
+- **Whose call:** Daedalus's, not xian's. Becomes actionable when Daedalus launches.
 - **Date added:** 2026-06-15
+
+### Cron-shape experiments registry: still seeded straw-model
+- **What:** `docs/operations/duty-cycle/cron-shape-experiments.md` carries the 6/3 straw-mapping entries with "pending observation" for everyone except Calliope. Iris launched 6/21 — her section will get its first real observations within days. Daedalus+Argus next.
+- **Why lower-urgency:** the straw model is reasonable until evidence; calibration is post-launch data.
+- **Date added:** 2026-06-03 (registry created)
 
 ---
 
@@ -70,39 +64,42 @@ Real but not time-pressured. Stale-but-flagged items live here, labeled stale, n
 
 Awareness, no action needed.
 
+### Iris's duty cycle launched 6/21 morning
+- First non-Calliope cycle started without ceremony. Daily heartbeat. Confirms the cohort pattern works.
+
 ### xian's July 2026 focal shift
 - DinP becomes operational center; OpenLaws becomes external consulting client. Hyper-circle: PM-as-consulting-tool + Klatch-as-transporter-device + DinP-as-hub. Most of the strategic threads below sharpen under this lens. *xian's own work, not a Klatch action item.*
 
 ### CIO 6/3 canonical-artifacts request — still outstanding
-- Calliope sent CIO a request 6/3 via Janus for 5 canonical duty-cycle artifacts (cron-lifecycle.md, PM cron-shape-experiments.md, v0.7.0 adoption package, launch-brief template, cohort status tracker). No response yet (16 days). CIO offered freely; no deadline. Calliope holds; nudges via Janus in another week if still silent.
+- Calliope sent CIO a request 6/3 via Janus for 5 canonical duty-cycle artifacts. No response yet (18 days). CIO offered freely; no deadline. Calliope holds; will nudge via Janus if still silent in another week.
 
-### Cohort rollout Phases 2–3 — gated on tomorrow's launches
-- xian-stated for tomorrow morning. Daedalus + Argus launch together as tandem (Phase 2); Theseus + Iris launch as daily-heartbeat signal-receivers (Phase 3). All four read launch-brief-template at first session, set up `.claude/worktrees/{slug}` on `claude/{slug}`, register cron. Each reports in to cycle log + agent-state tracker.
+### Cohort rollout Phase 3 (Theseus) — gated on xian's launch
+- Iris done. Theseus next at Phase 3 daily heartbeat. xian-stated for "the rest of the crew" — timing flexible.
 
 ### Strategic threads parked for live conversation *(don't lose track; next-conversation picks the right one)*
-- **Persistent topical rooms** as a Klatch product category (synthetic-klatch insight operationalized — Iris-domain, beta-relevant)
-- **Contextual fidelity across seams** — Layer-5 / behavioral-calibration problem revisited
-- **BYOC = "Bring Your Own Chat"** — Klatch MCP as transporter device; operationalizes interchange-protocol vision; gains client-side use case under focal shift
-- **MCPs + service-design frontiers** — adjacent territory
-- **Janus's hub role vs. Calliope's principal-contact role** — clarified 6/19: not in tension; Janus aggregates across xian's working life, Calliope aggregates within Klatch
-- **Klatch's methodology contribution to the hyper-circle** — uniquely positioned to surface interchange-protocol/transporter and synthetic-klatches/rooms primitives; both are what Iris is heading toward; 1.0-beta UX work IS methodology-surface work
-- **Question filed in dispatch question-box (6/19):** *smallest concrete UX or doc artifact that would make Klatch demoable to OpenLaws as transporter-device candidate?* Curiosity, not task. Letters archive whenever xian has room.
+- **Persistent topical rooms** — Iris's spec now operationalizes this for 1.0; Daedalus's implementation will give it body.
+- **Contextual fidelity across seams** — Layer-5 / behavioral-calibration problem revisited.
+- **BYOC = Bring Your Own Chat** — Klatch MCP as transporter device; operationalizes interchange-protocol vision; gains client-side use case under focal shift.
+- **MCPs + service-design frontiers** — adjacent territory.
+- **Janus's hub role vs. Calliope's principal-contact role** — clarified 6/19; Janus opened a direct channel to Calliope 6/20.
+- **Klatch's methodology contribution to the hyper-circle** — uniquely positioned to surface interchange-protocol/transporter and synthetic-klatches/rooms primitives.
+- **Question filed in dispatch question-box (6/19, generalized 6/20):** *smallest concrete UX or doc artifact that would make Klatch demoable to a consulting client as transporter-device candidate?* Surfaced by Janus to xian 6/20.
 
 ---
 
 ## 🟢 Resolved since last board
 
-Struck-through items closed since v1. Kept so xian sees the clear; prevents "didn't I already decide that?" loop. Entries older than 7 days get pruned at refresh.
+Struck-through items closed since v2's last refresh. Entries older than 7 days get pruned at refresh.
 
-- ~~**BYOC clarification**~~ — xian corrected the autocorrect typo 6/19; for Klatch = transporter device. Captured in persistent memory + STATE.md. *Closed 6/19.*
-- ~~**Janus 6/12 question-box-check line**~~ — adopted into v0.2 STOP procedure step 4 6/19; Calliope filed first question to dispatch same evening (`question-calliope-2026-06-19-klatch-legibility-to-consulting-clients.md`). *Closed 6/19.*
-- ~~**Attention-rollup v1**~~ — sketched 6/19 morning; Exec sent four corrections same evening; v2 (this document) verified-swept. *Closed 6/19.*
-- ~~**Exec advice request**~~ — direct PM-side delivery succeeded 6/19; Exec replied same evening; ack filed; corrections absorbed. *Closed 6/19.*
-- ~~**Standing directive: cron resume-by-default-when-idle**~~ — xian named 6/19; v0.2 Principle 4 updated in place; cron `df35e0db` registered with sharpened drain prompt embedded. (Pause-and-resume-around-v2-sweep is the current expected behavior, not a violation.) *Closed 6/19.*
+- ~~**Iris UX critical path / design gate**~~ — *cleared 6/20 by xian + Iris*. Composition gesture specced (`docs/ux/spec-composition-gesture.md`); mode rename shipped (`panel→Broadcast`); vocab sweep shipped (`entity→agent` and surface labels); Finding 1 UUID-matching UX answered; meeting-experience question resolved (no special mode). Iris launched her own duty cycle 6/21 morning. *Closed 6/20–6/21.*
+- ~~**Iris pre-brief request**~~ — drafted 6/20 morning, delivered, used to good effect by Iris in her session. *Closed 6/20.*
+- ~~**OpenLaws-specific framing of dispatch question**~~ — generalized to "a consulting client" per xian's 6/20 correction. *Closed 6/20.*
+- ~~**Launch-brief template + cover memos for D+A**~~ — template revised with 3 sharpenings; cover memos drafted, tailored, awaiting launch. *Closed 6/21.*
 
 ---
 
 ## Changelog
 
-- **v2 (2026-06-19 evening)** — Refactored per Exec's 6/19 advice. Sections demand-organized (was topic). Who's-waiting tags on every Needs-you row. Sub-decision-of-blocked-thing surfaced as own row (PM #972 sub-decision). Metrics strip added. Verified-sweep discipline applied — read all source docs, cross-checked against live truth. Recently-closed footer with strikethroughs.
+- **v2.1 (2026-06-21 Sunday morning)** — Refresh post-Iris-session-12. Design gate cleared moves the rollup's center of gravity from "what does Iris need from xian" to "what does Daedalus+Argus need to start." Two 🔴 items now: launch D+A tandem, react-and-publish the entity-reframe blog. PM #972 item moved from 🟠 to 🟡 (Daedalus's call now that he's launching). Five 🟢 closures since last refresh.
+- **v2 (2026-06-19 evening)** — Refactored per Exec's 6/19 advice. Sections demand-organized (was topic). Who's-waiting tags on every Needs-you row. Sub-decision-as-own-row. Metrics strip added. Verified-sweep discipline applied.
 - **v1 (2026-06-19 morning)** — initial sketch, six topic-organized sections.
