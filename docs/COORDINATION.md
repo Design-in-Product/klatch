@@ -11,9 +11,10 @@ Agents working on this repo use this file as the async handoff protocol.
 ## Status board
 
 ### Argus (quality & test infrastructure)
-- **Branch:** `main`
-- **Status:** available
-- **Test count:** 1289 total (1089 server + 200 client; +23 from Round 33b on 5/18 — 19 client UI surfaces + 4 server channelCount), 3 skipped, zero failures. Client parallelism flake fixed by Daedalus 5/12 (`ba69f7f` singleThread vitest config).
+- **Branch:** `claude/argus` (persistent duty-cycle worktree `.claude/worktrees/argus`)
+- **Status:** working — **Phase 2 duty cycle LIVE 6/21**, hourly `:43` tandem with Daedalus.
+- **Test count:** 1291 total (1089 server + 202 client), 5 skipped, zero failures.
+- **6/21 launch session:** fixed Iris vocab-sweep fallout (5 client tests: ChannelSidebar placeholder + round33b "in N conversations") and a pre-existing round25 reflection-order flake (match-entity-by-id, not position). Both on `claude/argus`, suite green, ready for merge to `main`. Routed a `getChannelEntities` secondary-sort finding to Daedalus. Prior baseline: 1289 (5/18 Round 33b).
 - **Completed work:**
   - Rounds 4–11 test suites (all passing, merged to main)
   - Intelligence feed: 7 sweeps filed (6 manual + 1 curated automated)
