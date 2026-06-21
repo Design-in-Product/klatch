@@ -6,15 +6,18 @@ Created: 2026-06-21 (Phase 2 launch). Format per `duty-cycle-klatch-v0.2.md`.
 
 ## Unblocked (cycle can advance)
 
-- [ ] **Composition gesture implementation** — the 1.0 critical-path blocker. Spec: `docs/ux/spec-composition-gesture.md`. Build on `claude/daedalus`; pushing branch work is unblocked, **merge to `main` is review-gated (blocked-on-xian)**. Sub-phases (rough sequencing, refine as I go):
-  1. Data model: `orchestration_mode` column on `channels` (migration) + persist interaction mode (today it's client-only). Values = existing code keys `panel|sequential|directed`? — see Watch item on key naming.
-  2. "New Klatch" trigger + setup surface (sidebar sibling to New Chat).
-  3. Agent picker — Path A (existing agents, role-tier via name-as-proxy) first; Paths B (JIT import) + C (start new) layered after.
-  4. @mention routing by handle (composes with all modes).
-  5. Clone-klatch (copy channel + channel_entities, new IDs, no history).
-  6. Cross-reference surface: agent's 1-1 chat shows which klatches it's in.
+- [ ] **Composition gesture implementation** — the 1.0 critical-path blocker. Spec: `docs/ux/spec-composition-gesture.md`. Build on `claude/daedalus`; pushing branch work is unblocked, **merge to `main` is review-gated (blocked-on-xian)**. **Corrected scope (6/21):** substrate already mostly built — `channels` has `type`+`mode` (no migration), routes create+assign, `parseMentions`/`resolveMentions` exist, an earlier klatch form exists. Work = evolving the front-door to spec. Sub-phases:
+  1. ✅ **Data model** — no migration needed (`mode` column = spec's orchestration_mode). Done: atomic roster at creation (`createChannel(...entityIds)` + route validation) — kills stray-default-entity wart.
+  2. ✅ **Spine increment 1** — dual New Chat/New Klatch affordance + Purpose label. Tests green (server 1096, ChannelSidebar 18).
+  3. [ ] Agent picker polish — Path A typeahead search + chips + roles-first tiering (current: flat checkbox list works).
+  4. [ ] Path B (JIT import inline) + Path C (start-new agent: continue role / new agent).
+  5. [ ] @mention autocomplete in klatch input (routing via existing `resolveMentions`).
+  6. [ ] Clone-klatch (copy channel + channel_entities, new IDs, no history).
+  7. [ ] Cross-reference surface: agent's 1-1 chat shows which klatches it's in.
+  8. [ ] project-optional flip — **pending Iris** (sidebar-rendering reconciliation) + Argus test coordination.
 - [ ] **Finding 1 dedup logic (UUID re-import matching)** — Iris's UX answered (`iris-to-daedalus-uuid-matching-ux-reply-2026-06-20.md`): project match → silent attach + toast; channel match (UI) → inline "View existing / Import as new copy"; channel match (MCP) → 409 with `reason` + `existing_channel_id`. Implementable now. Remaining round-trip work from 4/28.
 - [ ] **Round 31b cosmetic follow-ups** (from Argus, none blocking): (1) `package-builder.ts:58` mislabels Klatch-to-Klatch hop as "Original claude.ai session"; (2) format_version on import path — gate or document permissive-by-design; (3) empty `entities: []` import — auto-attach default entity or accept un-exportable channel as valid. Small, pick up between larger work.
+- [ ] **Channel-list ordering check** (Argus finding follow-up, 6/21) — `getChannelEntities` same-second-tie nondeterminism fixed (`ce.rowid` tiebreak, roster-order). Argus flagged the `SidebarRedesign` "chats before klatches" flake as possibly the same class — check `getAllChannelsEnriched` ordering for a coarse-timestamp tie; if it's a query fix, it's mine.
 - [ ] **Pre-beta vocab copy sweep** (Iris flagged 6/20) — `entity`→`agent/role`, `channel settings`→`klatch/chat settings` across the rest of the UI (composition surface already uses correct vocab). Low effort; needs to land before beta invites. Coordinate with Iris so I don't collide with her in-flight copy work.
 - [ ] **Mail drain + log upkeep** (continuous) — keep `docs/mail/` at inbox-zero per Mail Handling; move closed threads to `docs/mail/read/`; cycle log + session log turn-by-turn.
 
@@ -25,7 +28,7 @@ Created: 2026-06-21 (Phase 2 launch). Format per `duty-cycle-klatch-v0.2.md`.
 
 ## Watch items (cycle monitors; triggers action when condition met)
 
-- **Mode-key naming reconciliation** — spec §9 lists `orchestration_mode` column values `blast|sequential|directed`, but live code keys are `panel|roundtable|directed` (labels Broadcast/Roundtable/Directed). Plan: store existing code keys to avoid a third naming + a churny refactor; treat spec's words as descriptive. **Lightweight confirm with Iris** before the column lands (not blocking — I can proceed on code-keys and adjust). Non-xian.
+- ✅ ~~**Mode-key naming reconciliation**~~ **RESOLVED 6/21** — Iris confirmed (`iris-to-daedalus-composition-spec-ack-2026-06-21.md`): store the internal code keys `panel|roundtable|directed`; §10 vocab table is canonical (`panel`=internal, `Broadcast`=user-facing). No key rename.
 - **Composition-spec → demo-able** (shared with Calliope's watch list) — when implementation produces something demo-able / client-legible (a working flow, screen recording, transporter-device artifact), note it so Calliope can trigger her Janus one-liner. Trigger lives downstream of my own implementation.
 
 ## Recurring items (START dispatcher promotes when `next_due ≤ today`)
