@@ -70,6 +70,43 @@ describe('Channel queries', () => {
     expect(entities[0].id).toBe(DEFAULT_ENTITY_ID);
   });
 
+  // ── Composition gesture: atomic roster at creation ──────────
+  it('seeds a klatch with exactly the provided roster (no stray default entity)', () => {
+    const a = createEntity('Alpha', 'claude-opus-4-6', 'p', '#111');
+    const b = createEntity('Beta', 'claude-opus-4-6', 'p', '#222');
+    const ch = createChannel('roster-klatch', 'prompt', undefined, 'panel', 'klatch', [a.id, b.id]);
+    const ids = getChannelEntities(ch.id).map((e) => e.id).sort();
+    expect(ids).toEqual([a.id, b.id].sort());
+    expect(ids).not.toContain(DEFAULT_ENTITY_ID);
+  });
+
+  it('falls back to the default entity when entityIds is empty', () => {
+    const ch = createChannel('empty-roster', 'prompt', undefined, undefined, 'chat', []);
+    const entities = getChannelEntities(ch.id);
+    expect(entities.length).toBe(1);
+    expect(entities[0].id).toBe(DEFAULT_ENTITY_ID);
+  });
+
+  it('dedupes a roster with repeated entity IDs', () => {
+    const a = createEntity('Solo', 'claude-opus-4-6', 'p', '#333');
+    const ch = createChannel('dup-roster', 'prompt', undefined, 'panel', 'klatch', [a.id, a.id, a.id]);
+    const entities = getChannelEntities(ch.id);
+    expect(entities.length).toBe(1);
+    expect(entities[0].id).toBe(a.id);
+  });
+
+  it('preserves roster order on same-second inserts (deterministic)', () => {
+    // All three are assigned inside one createChannel transaction, so they share
+    // an `added_at` second. Without a deterministic tiebreak (ce.rowid), the PK
+    // index decides order — a coin-flip (Argus finding 2026-06-21). The roster
+    // order [c, a, b] (deliberately not sorted) must be preserved.
+    const a = createEntity('AAA', 'claude-opus-4-6', 'p', '#111');
+    const b = createEntity('BBB', 'claude-opus-4-6', 'p', '#222');
+    const c = createEntity('CCC', 'claude-opus-4-6', 'p', '#333');
+    const ch = createChannel('ordered-klatch', 'p', undefined, 'panel', 'klatch', [c.id, a.id, b.id]);
+    expect(getChannelEntities(ch.id).map((e) => e.id)).toEqual([c.id, a.id, b.id]);
+  });
+
   it('updateChannel updates name', () => {
     const ch = createChannel('old-name', 'prompt');
     const updated = updateChannel(ch.id, { name: 'new-name' });

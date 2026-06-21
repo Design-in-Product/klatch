@@ -42,12 +42,13 @@ export async function createChannel(
   model?: ModelId,
   type?: ChannelType,
   mode?: InteractionMode,
-  projectId?: string
+  projectId?: string,
+  entityIds?: string[]
 ): Promise<Channel> {
   const res = await fetch(`${BASE}/channels`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ name, systemPrompt, model, type, mode, projectId }),
+    body: JSON.stringify({ name, systemPrompt, model, type, mode, projectId, entityIds }),
   });
   if (!res.ok) throw new Error(`Failed to create channel: ${res.statusText}`);
   return res.json();

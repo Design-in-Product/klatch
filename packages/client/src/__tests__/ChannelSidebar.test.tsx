@@ -159,13 +159,23 @@ describe('ChannelSidebar', () => {
 
   // ── Create channel form ─────────────────────────────────────
 
-  it('shows create form when "+ New channel" is clicked', async () => {
+  it('shows create form when "+ New Chat" is clicked', async () => {
     const user = userEvent.setup();
     render(<ChannelSidebar {...defaultProps} channels={[]} />);
 
-    await user.click(screen.getByText('+ New channel'));
+    await user.click(screen.getByText('+ New Chat'));
     expect(screen.getByPlaceholderText('Chat name')).toBeInTheDocument();
-    expect(screen.getByPlaceholderText('Channel context (optional)')).toBeInTheDocument();
+    expect(screen.getByPlaceholderText('Custom instructions (optional)')).toBeInTheDocument();
+  });
+
+  it('"+ New Klatch" opens the setup surface in klatch mode', async () => {
+    const user = userEvent.setup();
+    render(<ChannelSidebar {...defaultProps} channels={[]} />);
+
+    await user.click(screen.getByText('+ New Klatch'));
+    expect(screen.getByPlaceholderText('Klatch name')).toBeInTheDocument();
+    // Klatch-specific Purpose framing on the L4 context field
+    expect(screen.getByPlaceholderText('Purpose — what is this klatch for? (optional)')).toBeInTheDocument();
   });
 
   it('calls onCreateChannel with name and default prompt', async () => {
@@ -173,7 +183,7 @@ describe('ChannelSidebar', () => {
     const onCreateChannel = vi.fn();
     render(<ChannelSidebar {...defaultProps} channels={[]} onCreateChannel={onCreateChannel} />);
 
-    await user.click(screen.getByText('+ New channel'));
+    await user.click(screen.getByText('+ New Chat'));
     await user.type(screen.getByPlaceholderText('Chat name'), 'my-channel');
     await user.click(screen.getByText('Create Chat'));
 
@@ -185,7 +195,7 @@ describe('ChannelSidebar', () => {
     const onCreateChannel = vi.fn();
     render(<ChannelSidebar {...defaultProps} channels={[]} onCreateChannel={onCreateChannel} />);
 
-    await user.click(screen.getByText('+ New channel'));
+    await user.click(screen.getByText('+ New Chat'));
     await user.click(screen.getByText('Create Chat'));
 
     expect(onCreateChannel).not.toHaveBeenCalled();
@@ -195,7 +205,7 @@ describe('ChannelSidebar', () => {
     const user = userEvent.setup();
     render(<ChannelSidebar {...defaultProps} channels={[]} />);
 
-    await user.click(screen.getByText('+ New channel'));
+    await user.click(screen.getByText('+ New Chat'));
     expect(screen.getByPlaceholderText('Chat name')).toBeInTheDocument();
 
     await user.click(screen.getByText('Cancel'));

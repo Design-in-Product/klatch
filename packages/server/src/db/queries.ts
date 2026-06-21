@@ -158,7 +158,7 @@ export function getChannelStats(channelId: string): ChannelStats | undefined {
   };
 }
 
-export function createChannel(name: string, systemPrompt: string, model?: ModelId, mode?: InteractionMode, type?: ChannelType): Channel {
+export function createChannel(name: string, systemPrompt: string, model?: ModelId, mode?: InteractionMode, type?: ChannelType, entityIds?: string[]): Channel {
   const db = getDb();
   const id = uuidv4();
   const now = new Date().toISOString();
@@ -166,12 +166,22 @@ export function createChannel(name: string, systemPrompt: string, model?: ModelI
   const channelMode = mode || DEFAULT_INTERACTION_MODE;
   const channelType: ChannelType = type || 'chat';
 
+  // Roster to seed the channel with. When the caller supplies a non-empty
+  // list (the composition gesture: a klatch built from selected agents),
+  // assign exactly those — atomically, with no stray default entity. When no
+  // roster is given (a 1:1 chat, or a klatch created without an explicit
+  // roster), fall back to the default entity. Callers are responsible for
+  // validating that the entity IDs exist; the FK constraint is the backstop
+  // (a bad ID rolls back the whole transaction).
+  const idsToAssign = entityIds && entityIds.length > 0
+    ? [...new Set(entityIds)]
+    : [DEFAULT_ENTITY_ID];
+
   const txn = db.transaction(() => {
     db.prepare('INSERT INTO channels (id, name, system_prompt, model, mode, type, created_at) VALUES (?, ?, ?, ?, ?, ?, ?)')
       .run(id, name, systemPrompt, channelModel, channelMode, channelType, now);
-    // Auto-assign default entity to new channels
-    db.prepare('INSERT INTO channel_entities (channel_id, entity_id) VALUES (?, ?)')
-      .run(id, DEFAULT_ENTITY_ID);
+    const assign = db.prepare('INSERT OR IGNORE INTO channel_entities (channel_id, entity_id) VALUES (?, ?)');
+    for (const eid of idsToAssign) assign.run(id, eid);
   });
   txn();
 
@@ -454,7 +464,7 @@ export function getChannelEntities(channelId: string): Entity[] {
       SELECT e.* FROM entities e
       JOIN channel_entities ce ON e.id = ce.entity_id
       WHERE ce.channel_id = ?
-      ORDER BY ce.added_at ASC
+      ORDER BY ce.added_at ASC, ce.rowid ASC
     `)
     .all(channelId) as any[];
   return rows.map(rowToEntity);

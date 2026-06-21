@@ -1,7 +1,7 @@
 import { Hono } from 'hono';
 import fs from 'fs';
 import path from 'path';
-import { getAllChannelsEnriched, getChannel, getChannelStats, createChannel, updateChannel, deleteChannel, setChannelProject, getChannelEntities, getProjectForChannel, getChannelFiles, getProjectFiles } from '../db/queries.js';
+import { getAllChannelsEnriched, getChannel, getChannelStats, createChannel, updateChannel, deleteChannel, setChannelProject, getChannelEntities, getProjectForChannel, getChannelFiles, getProjectFiles, getEntity } from '../db/queries.js';
 import { buildSystemPrompt } from '../claude/client.js';
 import type { ModelId, InteractionMode, ChannelType } from '@klatch/shared';
 import { AVAILABLE_MODELS, INTERACTION_MODES } from '@klatch/shared';
@@ -88,13 +88,14 @@ app.get('/channels/:id/stats', (c) => {
 });
 
 app.post('/channels', async (c) => {
-  const { name, systemPrompt, model, mode, type, projectId } = await c.req.json<{
+  const { name, systemPrompt, model, mode, type, projectId, entityIds } = await c.req.json<{
     name: string;
     systemPrompt?: string;
     model?: ModelId;
     mode?: InteractionMode;
     type?: ChannelType;
     projectId?: string;
+    entityIds?: string[];
   }>();
 
   if (!name?.trim()) {
@@ -113,12 +114,25 @@ app.post('/channels', async (c) => {
     return c.json({ error: `Invalid type: ${type}. Must be 'chat' or 'klatch'` }, 400);
   }
 
+  // Validate the composition roster up front so a bad ID returns a clean 400
+  // rather than tripping the FK constraint inside createChannel (a 500).
+  if (entityIds !== undefined) {
+    if (!Array.isArray(entityIds)) {
+      return c.json({ error: 'entityIds must be an array of entity IDs' }, 400);
+    }
+    const missing = entityIds.filter((eid) => !getEntity(eid));
+    if (missing.length > 0) {
+      return c.json({ error: `Unknown entity ID(s): ${missing.join(', ')}` }, 400);
+    }
+  }
+
   const channel = createChannel(
     name.trim(),
     systemPrompt?.trim() || 'You are a helpful assistant.',
     model,
     mode,
-    type
+    type,
+    entityIds
   );
 
   if (projectId) {

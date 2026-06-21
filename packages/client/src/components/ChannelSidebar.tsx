@@ -55,6 +55,13 @@ export function ChannelSidebar({
     setShowForm(false);
   };
 
+  // Open the setup surface pre-set to a type — the two entry points
+  // ("New Chat" / "New Klatch") are the user's two ways to start a conversation.
+  const openForm = (type: ChannelType) => {
+    setNewType(type);
+    setShowForm(true);
+  };
+
   const toggleEntity = (id: string) => {
     setSelectedEntityIds((prev) => {
       const next = new Set(prev);
@@ -506,7 +513,7 @@ export function ChannelSidebar({
               <textarea
                 value={newPrompt}
                 onChange={(e) => setNewPrompt(e.target.value)}
-                placeholder="Channel context (optional)"
+                placeholder={newType === 'klatch' ? 'Purpose — what is this klatch for? (optional)' : 'Custom instructions (optional)'}
                 rows={2}
                 className="w-full rounded bg-input border border-line px-2.5 py-1.5 text-sm text-primary placeholder-muted focus:outline-none focus:border-accent resize-none"
               />
@@ -528,12 +535,20 @@ export function ChannelSidebar({
               </div>
             </form>
           ) : (
-            <button
-              onClick={() => setShowForm(true)}
-              className="w-full rounded bg-card px-3 py-1.5 text-sm text-secondary hover:text-primary hover:bg-hover transition-colors text-left"
-            >
-              + New channel
-            </button>
+            <div className="flex gap-2">
+              <button
+                onClick={() => openForm('chat')}
+                className="flex-1 rounded bg-card px-3 py-1.5 text-sm text-secondary hover:text-primary hover:bg-hover transition-colors"
+              >
+                + New Chat
+              </button>
+              <button
+                onClick={() => openForm('klatch')}
+                className="flex-1 rounded bg-card px-3 py-1.5 text-sm text-secondary hover:text-primary hover:bg-hover transition-colors"
+              >
+                + New Klatch
+              </button>
+            </div>
           )}
         </div>
       </div>

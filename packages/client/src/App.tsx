@@ -284,12 +284,10 @@ export default function App() {
     projectId?: string, entityIds?: string[]
   ) => {
     try {
-      const channel = await createChannel(name, systemPrompt, undefined, type, mode, projectId);
-      if (entityIds && entityIds.length > 0) {
-        for (const eid of entityIds) {
-          await assignEntityToChannel(channel.id, eid);
-        }
-      }
+      // Atomic creation: pass the selected roster so the klatch is seeded with
+      // exactly those agents (no stray default entity). createChannel falls back
+      // to the default entity when entityIds is empty/undefined.
+      const channel = await createChannel(name, systemPrompt, undefined, type, mode, projectId, entityIds);
       // Refresh full channel list (enriched query includes projectName, counts)
       const updated = await fetchChannels();
       setChannels(updated);
