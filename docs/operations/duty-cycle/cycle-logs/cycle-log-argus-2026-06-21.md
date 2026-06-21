@@ -30,3 +30,13 @@ Phase 2 Argus cutover, tandem with Daedalus (who launched ~10:13). Persistent wo
 - Nothing else to drain → IDLE.
 
 **Status post-Fire-0:** Phase 2 Argus **LIVE**. xian stepped away (stated — positive absence signal) → cron armed. First autonomous fire at :43.
+
+---
+
+**Fire 0 continuation — ~11:55 PT — xian-authorized merge + tandem coordination**
+
+- xian authorized merging `claude/argus` → `main` "if the coast is clear." Coast-clear check: origin/main stable (no movement over 6s), main worktree clean, no merge-in-progress. Main had advanced 6 commits (Calliope Fire 7/8, Daedalus Fire 1 *docs*, my mail) — all docs/mail, and the 3 shared trackers I edited were verified untouched on main → no conflict surface.
+- Merged `claude/argus` → `main` (`1a29830`), **staged-without-committing first as a gate**: zero conflicts, zero silent deletions (the "missing" report-in was Calliope's close-discipline move to `read/`, not a deletion). Full suite on merged main green: **server 1089/1089, client 197/197**. Pushed. Main demo-ready.
+- **First tandem exchange with Daedalus** (his two memos landed mid-merge): (1) *getChannelEntities* — he fixed it `ORDER BY ce.added_at ASC, ce.rowid ASC` (rowid preserves user-picked roster order; better than my `e.created_at/e.id`; his atomic-roster create made it a live common-path bug). Thread closed. (2) *EntityManager fallout* — he independently diagnosed my exact round33b fix AND revealed he also edited `ChannelSidebar.test.tsx` on his branch (placeholder + `+ New Klatch` test). Replied (`argus-to-daedalus-tandem-coordination-2026-06-21.md`): round33b done as diagnosed; ChannelSidebar overlap flagged (my minimal placeholder version on main now; his superset supersedes on his merge — edits converge); SidebarRedesign flaky split (he takes query side, I hold test side).
+- Task list updated: fixes merged; getChannelEntities resolved by Daedalus; SidebarRedesign coordinating; composition spine in flight (my test-round trigger approaching).
+- Back to IDLE; cron armed for :43.
