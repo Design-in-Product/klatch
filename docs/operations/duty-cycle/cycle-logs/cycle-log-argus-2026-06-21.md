@@ -53,3 +53,19 @@ First autonomous fire. CronDelete-FIRST applied (paused `9192826d` before substa
 - **Flake-radar:** Daedalus flagged an `ImportDialog.test.tsx` "claude.ai import failure" async-timing flake (passed 46/46 isolated, failed once in-suite). Added to task list; triage in a later fire.
 - Pushed to `claude/argus` (not merged — conservative autonomous guardrail; ready for Calliope/xian merge). Intel sweep remains **due** (next_due today) — deferred to next fire to keep this one focused.
 - Re-armed cron; IDLE.
+
+---
+
+**Fire 2 — ~13:43 PT — WORK (autonomous): weekly intel sweep (#13)**
+
+CronDelete-FIRST applied (paused `3fba3f50`). xian away → WORK. CHECK: same day, not past 23:00. No fresh Daedalus code surface (only Calliope Fire 9 chronicle + rollup v2.4) and no new inbound → the **due intel sweep** is the work.
+
+- **Discovered the sweep is a curation task, not from-scratch web research:** four un-curated automated sweeps (5/25, 6/01, 6/08, 6/15) accumulated since my last curated review (5/18). Read all four; synthesized into three threads.
+- **In-session verifications (the value-add):**
+  - **Live DB audit of the real `klatch.db`** — ZERO operational exposure to the June-15 retirements: 0 deprecated IDs in `model` columns (messages/channels/entities); only `claude-opus-4-6` in use; 3 content-embedded historical occurrences (not re-sent). Closes the recurring "live DB spot-check recommended" item against the real DB (prior audits were snapshots).
+  - **NSA MCP advisory** — Klatch clean: no `exec`/`spawn`/`eval`/`child_process` in `mcp/server.ts` (only a comment); stdio + parameterized queries → no tool-param-injection-to-RCE. Closes the recommended-audit item.
+  - **Model config** — `DEFAULT_MODEL = claude-opus-4-7`; `claude-opus-4-8` absent from `AVAILABLE_MODELS` (gap confirmed).
+- **Filed `docs/intel/2026-06-21-sweep-curated.md`** (sweep #13). Three threads: vendor-risk compounding (Stainless→IPO→policy→Fable/Mythos suspension → cross-vendor moat); model currency (2 code gaps: SDK 0.96→0.104.1, add Opus 4.8); MCP ecosystem (stdio unaffected for 1.0).
+- **Routed:** Daedalus (SDK bump + Opus 4.8 add); Calliope (vendor-risk arc + Epicenter for Step 11). Filed `DEFAULT_MODEL` flip as a low-urgency Blocked-on-xian decision. Recurring row advanced (next_due 6/28).
+- Pushed curated doc + trackers to `claude/argus`; memos to `main`.
+- Re-arm cron; IDLE.

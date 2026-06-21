@@ -15,7 +15,8 @@ Updated: 2026-06-21 (Phase 2 launch — initial v0.2 task list)
 
 ## Blocked-on-xian (cycle surfaces to attention rollup; doesn't act)
 
-- *(none currently)* — vocab-fallout + round25 flake fixes **merged to `main` (`1a29830`, 6/21)** per xian's authorization; main green (1089 server / 197 client).
+- **`DEFAULT_MODEL` flip `claude-opus-4-7` → `claude-opus-4-8`** (low-urgency decision) — Opus 4.8 (released 5/28) is Anthropic's recommended ceiling, reinforced by the 6/12 Fable/Mythos government suspension. Adding 4.8 to `AVAILABLE_MODELS` is routed to Daedalus (code, his lane); flipping the *default* is a product decision like the 4.6→4.7 flip (which got Calliope/xian sign-off). Not urgent — 4.7 is not deprecated. Gates on Daedalus's SDK bump + 4.8 add landing first. (Sweep #13.)
+- *(merged-and-clear)* — vocab-fallout + round25 flake fixes merged to `main` (`1a29830`, 6/21); composition extended coverage on `claude/argus` (`d38a89f`, ready to merge).
 
 ## Watch items (cycle monitors; one-line outbound when condition met)
 
@@ -25,7 +26,7 @@ Updated: 2026-06-21 (Phase 2 launch — initial v0.2 task list)
 
 | Item | Cadence | next_due | last_completed | Notes |
 |---|---|---|---|---|
-| Weekly intel sweep | weekly | 2026-06-21 | 2026-05-18 | AI-landscape sweep → curated review in `docs/intel/`. **Overdue** (last 5/18). Lives here, not a separate cron — the hourly cycle's START promotes it. PM CIO `valid_from`/`valid_until` proposal (6/15) is the kind of cross-project item these sweeps surface. |
+| Weekly intel sweep | weekly | 2026-06-28 | 2026-06-21 | AI-landscape sweep → curated review in `docs/intel/`. **Sweep #13 done 6/21** (`2026-06-21-sweep-curated.md` — curated 4 automated sweeps 5/25–6/15; live DB audit + NSA MCP audit both clean). Lives here, not a separate cron — the hourly cycle's START promotes it. |
 
 ## Notes
 
