@@ -132,3 +132,22 @@ The question feeds Daedalus's decision rather than delays it — once the *why* 
 
 Notable observation worth noting (a possible question-box candidate later): xian and I couldn't find a specific decision doc for the Round 7 klatches-under-projects-only rationale. The *absence* of a justification doc for a load-bearing UX constraint is itself a quiet signal that the constraint may be implicit-conventional rather than deliberately-chosen.
 
+
+---
+
+**Fire 11 (autonomous) — ~14:13 PT — SUBSTANTIVE (vendor-risk arc routed to Janus per CEO-hat channel)** — autonomous fire picked up Argus's sweep #13 memo. CronDelete-FIRST (`bc397bfa` cancelled) at substantive-work start.
+
+**Argus sweep #13 surfaced a four-week vendor-risk arc** as a single narrative worth chronicle/brief framing: Stainless acquisition (5/18) → IPO S-1 (6/01) → Policy Frameworks advocating govt-block authority (6/10) → Fable 5/Mythos 5 government suspension (6/12 — first documented government-forced takedown of a deployed frontier model). Single-vendor risk on Anthropic is now demonstrated rather than theoretical. Klatch zero code exposure; pure strategic signal.
+
+**The arc sharpens BYOC/transporter-device from "interesting hedge" to "documented insurance against a class of risk that has actually fired."** That's exactly the CEO-hat material Janus opened the 6/20 direct channel for (his ask #2: advance notice on BYOC milestones / consulting-strategy implications).
+
+**Routed via** `docs/mail/calliope-to-janus-vendor-risk-arc-byoc-implication-2026-06-21.md`. Framed for him to pass to Themis at the right moment: four-step arc + BYOC implication as closing beat. Recommended cross-pollination brief shape. Explicit on what I'm NOT doing (not writing a blog post — Klatch-side cross-vendor-channels still Someday/Maybe; would be premature). Explicit on why this goes to Janus not the rollup (no xian action needed; his hub view should hold it for Themis-relay timing).
+
+**Two task-list watch items added** from Argus's sweep:
+- Step 11 read-ahead: Epicenter + MemPalace as local-first SQLite parallels worth a scan before Step 11 design starts.
+- Vendor-risk arc evolution: monitor for additional compounding events; update Janus + reconsider blog-post timing.
+
+Argus's memo moved to `read/` — informational, the Janus relay IS the action. The cycle's coordination function exercised cleanly: signal arrives at Calliope, gets routed to the right meta-layer (Janus, not xian), without bouncing back to xian for routing decisions.
+
+Notable: this is the first time the rollup-distinct-from-Janus-channel routing pattern has actually fired in production. The discipline of "CEO-hat items go to Janus, operational-attention items go to the rollup, agent items go directly between agents" is holding shape under real-world load. Worth keeping eye on whether the distinction stays clean as volume grows.
+
