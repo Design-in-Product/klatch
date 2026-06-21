@@ -38,6 +38,14 @@
 - **Observations:** *pending Phase 2 launch (xian-scheduled).*
 - **Refinements triggered:** *pending.*
 
+### 2026-06-21 — Phase 2 cutover — hourly `17 * * * *` (cadence-of-record)
+
+- **Cadence:** `17 * * * *` (every hour at :17, off-mark per CronCreate fleet-health guidance; staggered from Calliope :13 and Argus :43 so the tandem doesn't collide). Cron job id `9a295ef9`. Session-only, 7-day auto-expire.
+- **Reason:** CIO's continuous-tandem lane (with Argus). xian approved straw-model mapping 2026-06-03; launched as Phase 2 on 6/21. "Hourly is good enough at first, fine-tune from experience" (xian via Calliope cover memo) — the big step up is doing this at all.
+- **Cutover (2026-06-21 ~10:13 PT, xian-present):** persistent worktree `.claude/worktrees/daedalus` on `claude/daedalus` from `origin/main` HEAD `b000ae5`. Legacy `daedalus-2026-05-18` worktree removed at launch (its branch ref retained — provably merged to origin/main, but `-d` blocked by stale upstream; full `-D` delete deferred per no-`branch -D`-without-approval rule). v0.2 drain prompt registered (CHECK dispatcher, drain-until-IDLE, CronDelete-FIRST, xian-presence-pause, re-arm-by-default standing directive, scheduling-not-permission, question-box check). 0th-step inline drain ran during orientation (mail drained, PM #972 replied+closed). Substantive 1.0-critical work (composition gesture) is the live queue.
+- **Observations:** *pending — first autonomous fires land at :17. xian present at cutover; entering substantive composition work immediately, so CronDelete-FIRST applies and first autonomous fire likely hits xian-presence-pause unless he steps away. Tandem-with-Argus coordination friction (if any) to be logged as it surfaces — feeds the mutual-assessment exchange.*
+- **Refinements triggered:** *pending — to accumulate as the cycle runs.*
+
 ---
 
 ## Argus
