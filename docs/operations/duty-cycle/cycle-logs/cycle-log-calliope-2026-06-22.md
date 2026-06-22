@@ -112,3 +112,36 @@ Net: v2 is now correct-and-ready-for-xian-review. The 🔴 attention-rollup item
 
 The 6/21 vendor-risk memo to Janus stays in `read/` with the framing-error noted in the 6/22 correction memo — not retractable since already absorbed, but Janus has the marker and propagated the fix to Themis.
 
+**Fire 10 (autonomous) — ~08:13 PT — WORK → no-op (batched)** — main is at my Fire 9 merge; no external activity since; no inbound; idle.
+
+---
+
+**Fire 11 — ~09:13 PT — SUBSTANTIVE (xian-direction sweep — 5 asks in one fire)** — CronDelete-FIRST (`f411b3ff` cancelled). xian gave five directives + the standing Theseus memo prep mid-fire; doing all in this one substantive sweep.
+
+**xian's directives (6/22 ~09:37):**
+1. Blog v2 → ship
+2. `branch -D worktree-daedalus-2026-05-18` → approved
+3. Question-box → canonical at `dispatch/mail/`; Janus's letters instructions need improving + distinguishing from quotidian work questions
+4. Theseus memo → trim per "general onboarding sufficient; Daedalus + Iris will weigh in on his work"
+5. Iris → request her cron details for cohort overview
+
+**Actions this fire:**
+
+- **Theseus cover memo drafted then trimmed** (`docs/mail/calliope-to-theseus-cycle-cover-2026-06-22.md`). Switched "what's waiting at session start" from "three AAXT candidates queued + pick one" to "Daedalus + Iris will weigh in shortly; don't go hunting first." Background AAXT context preserved but downgraded from priority list to lay-of-the-land. Updated question-box section to reflect canonical dispatch/mail location + the philosophical/curiosity-shape distinction.
+
+- **Blog v2 → published.** Created `blog/bringing-conversations-into-a-room.html` (following Before You Go template — head meta, OG, nav, article-header with date/authors, inline SVG figure with caption, article-body, closing series footer). Saved standalone SVG asset at `blog/assets/bringing-conversations.svg` (used for OG image; PNG conversion is a follow-up — flagged for xian or design pipeline). Updated `blog/index.html` with new post-card at the top of the blog-list section (June 2026 date; xian + Calliope authors; excerpt drawn from the post's TL;DR; mini-SVG card image adapted from the full illustration). All artifacts in this commit.
+
+- **Daedalus branch-D approval ack** (`docs/mail/calliope-to-daedalus-branch-D-approved-2026-06-22.md`). One-line cleared-for-cleanup memo.
+
+- **Iris cron-details request** (`docs/mail/calliope-to-iris-cron-details-request-2026-06-22.md`). Asked her to register cron expression, job id, worktree path, branch, observations. Flagged the agent-state.md stale-row housekeeping note gently.
+
+- **v0.2 STOP step 4 refined** with xian's 6/22 sharpening: canonical filing location `dispatch/mail/` only; type distinction (newsletter vs ordinary work questions); the philosophical/experience/implied-exogenous-context shape.
+
+- **Argus's klatch-local question moved to canonical dispatch.** `dispatch/mail/question-argus-2026-06-21-tandem-calibration.md` (commit `bbab4c6`); klatch-local copy moved to `docs/mail/read/` as redirect-marker.
+
+- **Janus letters-instructions memo** (`docs/mail/calliope-to-janus-letters-instructions-improvement-2026-06-22.md`). Relayed xian's suggestion + the same-exchange sharpening + my work-already-done + a sketch of what the instructions could land on. His call on shape and timing.
+
+**Daedalus's `question-daedalus-2026-06-21-convene-vs-byoc.md` is already in `read/` from the BYOC retraction** — no need to move it to dispatch since it's superseded.
+
+**The cron stays paused for this single substantive sweep covering all five directives.** Re-arming after the merge.
+
