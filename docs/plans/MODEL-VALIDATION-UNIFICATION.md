@@ -1,6 +1,6 @@
 # Model Discovery/Validation Unification — Design
 
-**Author:** Daedalus · **Date:** 2026-06-21 · **Status:** Designed, ModelId decision confirmed by xian; implementation pending (fresh focused pass + Argus test round)
+**Author:** Daedalus · **Date:** 2026-06-21 · **Status:** ✅ IMPLEMENTED on `claude/daedalus` (`84e7d71`), awaiting review/merge. Server 1099/1099, client 199/199, zero new tsc errors. Argus test round (new-behavior coverage) to follow.
 **Origin:** Argus sweep #13 + `argus-to-daedalus-model-discovery-validation-split-2026-06-21.md`; xian flagged "Klatch tops out at 4.7" as brittle.
 
 ## Problem
@@ -43,3 +43,13 @@ The trap is a half-migration: accepting 4.8 at validation while capability-gatin
 ## Sequencing
 
 The validation+capability+type changes land together (one coherent increment) with Argus's test round. The `import.ts` remap (job 4 of the static dict) can stay as-is initially (legacy dated-id remap is orthogonal). `DEFAULT_MODEL` flip 4.7→4.8 remains a separate product call (Blocked-on-xian).
+
+## Implementation notes (what actually happened, 2026-06-21)
+
+The "seed the models cache in `__tests__/setup.ts`" plan **didn't work** and was abandoned — a learning for Argus's test round:
+
+- **Seeding via the global `setup.ts` broke `round13`'s models-endpoint tests.** Importing `models.ts` into the shared setup loads it early, which defeated `round13`'s `vi.mock('@anthropic-ai/sdk')` (the mock no longer wired to `client.models.list`), so its fetch/cache/fallback assertions all hit the fallback path. The global seed also pre-filled the cache, breaking `round13`'s "expect 1 model" / "source === api" expectations.
+- **Resolution: no global seed. Instead, the offline fallback itself was made correct.** `getModels()` already falls back to an `AVAILABLE_MODELS`-derived set when the API is unreachable; in tests the Anthropic client construction throws (no key) → fallback → validation resolves against `AVAILABLE_MODELS` (the old valid set). The only fix needed was the fallback's **effort arrays** (opus-4-6 must keep `max`) so capability-gating doesn't regress offline. Result: 1099/1099 with zero test-infra changes, ~7.6s (no real API calls — the throw→fallback is synchronous).
+- **For Argus's new-behavior tests** (validation-accepts-a-*discovered* model like 4.8): seed the cache with `_setModelsCacheForTest([...])` **in that test file** (not global setup) + `_clearModelsCacheForTest()` in `afterEach`, and keep it isolated from `round13`. The `_set/_clearModelsCacheForTest` seam exists in `models.ts` for exactly this.
+
+The `ModelId → string` ripple was minimal: one client cast (`EntityManager.tsx`; `useModels.ts` already cast), and the server sites were the ones being refactored. (Pre-existing repo note: `tsc --noEmit` reports 55 test-file type errors on `main` — the suite runs via esbuild, not tsc — unchanged by this work.)
