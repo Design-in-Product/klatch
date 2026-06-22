@@ -8,7 +8,7 @@
 
 **Cadence:** at session-wrap, and any time substantive new items arrive. Engagement-state rule: when xian is *actively dipping in to act* (especially after a quiet stretch), full sweep-and-verify is mandatory — the "feels skippable" moment coincides exactly with when he most relies on the board being whole.
 
-**Last refreshed:** 2026-06-21 Sunday ~19:13 PT (Calliope) — verified sweep, post-Iris-decision + Daedalus-cohort-patterns-memo.
+**Last refreshed:** 2026-06-21 Sunday ~21:13 PT (Calliope) — verified sweep, post-model-validation-shipped (escalation→ship same day).
 
 ---
 
@@ -85,10 +85,8 @@ Awareness, no action needed.
 - **Invariant 1 enforced** (`d4fc8a5`, late afternoon): chat-type can't carry multiple agents (chat+multi → 400). Daedalus picked up the cheapest of Argus's two un-enforced invariants. Argus flipped his `PIN:` test in lockstep (`80db814`); thread closed reconciled (`4b7f19b`). *Invariant 2 (klatch + empty `entityIds` falling back to lone default entity) remains client-guarded only — not yet flagged for enforcement; presumably staying as-pinned-test pending need.*
 - Tandem produced 2+ shipped increments + 1 enforced invariant in one afternoon. No coordination friction needing Calliope brokering.
 
-### Argus → Daedalus escalation: model discovery/validation split is structurally brittle (xian-flagged 6/21)
-- Argus filed `argus-to-daedalus-model-discovery-validation-split-2026-06-21.md` reframing his earlier "add Opus 4.8" memo. xian pushed on the brittle framing — *"that sounds brittle"* — and Argus escalated structurally: **model discovery is dynamic but validation, typing, and capability-gating are static, and the two halves have diverged.** Live API can return Opus 4.8; picker offers it; user selects; server returns 400 "Invalid model" against the static 4-entry `AVAILABLE_MODELS`.
-- Four-step migration sketch proposed (validation→discovered-set; capability-gating→API-metadata; demote `AVAILABLE_MODELS` to curated overlay; drop the compile-time `ModelId` union). Daedalus's call on shape + sequencing; Argus offers to write the test round once Daedalus chooses.
-- *xian-awareness only* — Daedalus's lane to choose; not a 🔴.
+### *(Closed 6/21 same day)* — model-validation unification shipped
+- *(See 🟢 below. xian-confirmed `ModelId` decision; Daedalus shipped the unification (`d3ea00a` design + `84e7d71` implementation) same day as Argus's escalation; Argus's follow-on test round queued. A structural-architecture concern surfaced, decided, and shipped within one fire-window. Notable as a cohort-velocity datapoint.)*
 
 ### xian's July 2026 focal shift
 - DinP becomes operational center; OpenLaws becomes external consulting client. Hyper-circle: PM-as-consulting-tool + Klatch-as-transporter-device + DinP-as-hub. Most of the strategic threads below sharpen under this lens. *xian's own work, not a Klatch action item.*
@@ -114,7 +112,8 @@ Awareness, no action needed.
 
 Struck-through items closed since v2's last refresh. Entries older than 7 days get pruned at refresh.
 
-- ~~**Klatch-project-optionality design tension**~~ — Iris resolved 6/21 (`a240539` + `docs/ux/decision-klatch-project-optionality.md`): make project optional, render via dedicated top-level Klatches section (shape b). Premise-bound deliberate-then-stale constraint, surfaced via xian's premise question + anchored in xian's own 5/11 Tension-3 resolution. Daedalus's spine has a clean path forward. *Closed 6/21.*
+- ~~**Model discovery/validation unification**~~ — Argus escalated 6/21 ("that sounds brittle" — xian); Daedalus shipped design + implementation same day (`d3ea00a` + `84e7d71`); `ModelId` compile-time union dropped (xian-confirmed); validation now against discovered set with hardcoded fallback. Argus's test round queued on his next branch. *Closed 6/21 — same-day round-trip on a structural decision.*
+- ~~**Klatch-project-optionality design tension**~~ — Iris resolved 6/21 (`a240539` + `docs/ux/decision-klatch-project-optionality.md`): make project optional, render via dedicated top-level Klatches section (shape b). Refined via xian+Iris offline (`a8b7e09`) to "default project, not nullable" framing. Premise-bound deliberate-then-stale constraint, surfaced via xian's premise question + anchored in xian's own 5/11 Tension-3 resolution. Daedalus's spine has a clean path forward. *Closed 6/21.*
 - ~~**Daedalus cohort-patterns writeup**~~ — Daedalus filed `daedalus-to-calliope-composition-spine-patterns-2026-06-21.md` at xian's request: 7 transferable patterns from the day's spine work (test-suite-as-diagnostic-instrument, diagnose-before-act, tandem-collision-via-rebase-and-mail-contract, coordination-vs-code-layer-separation, infra-outage-fail-closed, can't-loosen-own-guardrails, branch-hygiene-under-fast-moving-main). Routed to Janus per his standing CEO-hat ask (cohort methodology likely brief-worthy). Pulled into Calliope's blog mining list (especially patterns 1, 2, 5, 6 — generalize beyond Klatch). *Closed-as-routed 6/21.*
 - ~~**Composition gesture spine — increment 2**~~ — Daedalus shipped `07bda25` (agent-picker polish: search + chips + roles-first). *Closed-as-milestone 6/21.*
 - ~~**Invariant 1 — chat-type/roster coherence enforcement**~~ — Daedalus shipped `d4fc8a5`; Argus PIN-flipped in lockstep; threads closed reconciled (`4b7f19b`). *Closed 6/21.*

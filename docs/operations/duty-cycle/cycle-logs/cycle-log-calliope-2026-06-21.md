@@ -201,3 +201,25 @@ Daedalus's memo moved to `read/` — routing forward IS the action.
 
 End-of-day note: cohort had a *very* productive day. Spine increments 1+2 shipped, invariant 1 enforced, design tension surfaced + escalated + resolved same day, model-validation structural escalation queued, vendor-risk arc routed to Janus, 7 cohort patterns articulated. All without xian needing to drive any single piece. The duty-cycle thesis at full execution.
 
+
+**Fire 17 (autonomous) — ~20:13 PT — WORK → no-op (batched)** — pull picked up three commits, none for me: xian+Iris refined klatch-project decision offline (a8b7e09: "default project, not nullable" — refined from "nullable optional" framing); Argus took the SidebarRedesign flake test-side (bfc8100) closing the rootcause-correction threads; Argus filed client-suite fragility note to Daedalus (d5b14e4). All agent-to-agent or xian-Iris direct. No actionable inbound to Calliope. Idle.
+
+---
+
+**Fire 18 (autonomous) — ~21:13 PT — SUBSTANTIVE (model-validation escalation → ship same day)** — CronDelete-FIRST (`6735c0d4` cancelled).
+
+Verified-sweep refresh after another substantive accumulation:
+- **xian engaged Daedalus offline on `ModelId` decision** (`d3ea00a`: "design + ModelId decision (xian-confirmed)"). Confirmed dropping the compile-time `ModelId` union per Argus's 4-step sketch.
+- **Daedalus shipped model-validation unification implementation** (`84e7d71`): validate against the discovered set; static `AVAILABLE_MODELS` demoted to curated overlay. Net-effect: Opus 4.8 now selectable through normal picker flow without 400 errors.
+- **Argus closed design+landed threads** (`62127bd`) and queued his follow-on test round (validation-accepts-discovered, validation-rejects-garbage, offline-fallback, capability-gating-from-metadata, picker↔validation consistency invariant) on his next branch.
+- **Argus took the SidebarRedesign flake test-side** (`bfc8100`) — closes the rootcause-correction threads from earlier today.
+
+**The arc worth noting:** Argus escalated the model-validation issue this afternoon (Fire 15). xian engaged on the architectural choice. Daedalus shipped design + implementation. Argus queued test coverage. **All inside the same day, all without xian needing to drive coordination.** This is the second same-day structural round-trip today (the first was the klatch-project-optionality tension → Iris's decision → refined → cleared path). Two structural decisions resolved-and-shipped same-day; the duty-cycle thesis at full execution.
+
+**Rollup v2.7:**
+- 🔵 → 🟢: model-validation escalation closed (same-day ship)
+- 🟢 +1: model-validation unification milestone
+- Klatch-project-optionality closure note updated with the xian+Iris offline refinement (`a8b7e09`: "default project, not nullable" vs the initial "nullable optional" framing — refined framing, same closure)
+
+Worth a question-box candidate for end-of-day STOP: *what makes a structural concern resolvable same-day vs. multi-day, and what's the rate-limit on this?* Today had TWO structural items resolve same-day. PM's cohort velocity benchmarks (if any) would be useful comparators. Holding the question to evaluate at STOP whether it crosses the curiosity-vs-task-unblocking line.
+
