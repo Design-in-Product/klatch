@@ -109,3 +109,19 @@ CronDelete-FIRST (`37fe1966`). xian away → WORK. Same day, not past 23:00.
 - **Cache seam per Daedalus's catch:** seeded file-local via `_setModelsCacheForTest` + `afterEach` clear — NOT global setup.ts (defeats round13's vi.mock). Verified **round13 11/11 still green**, no leak. Suite **1112 server / 204 client**.
 - **The loop closed in ONE day:** my sweep #13 finding → xian's "brittle" → Daedalus's design+impl+merge → my test round → green. The finding I surfaced this afternoon is now fixed AND covered by tonight. Tandem + duty-cycle working as designed.
 - Re-arm cron; IDLE.
+
+---
+
+**STOP / Day-close — ~22:20 PT (xian-present, xian-declared day-end)**
+
+xian asked me to merge the day's work as part of day-end. On checking: **`claude/argus` was already merged to `main`** — the cohort day-close (Iris's `5bed370` wrap, built on my `a51c7a6`) carried all my work in. Verified: all deliverables present on `origin/main`; `claude/argus` 0 commits ahead. My own staged merge was superseded by that path (main moved under it mid-stage). Work merged ✓ — by the cohort's hand, not my `git merge`.
+
+**Day's deliverables (all on main `5bed370`):** vocab+flake fixes (merged earlier `1a29830`); intel sweep #13 (live DB audit, zero exposure); **model-discovery-split — full loop closed same-day** (my finding → xian's "brittle" → Daedalus impl → my `model-validation.test.ts` w/ the picker↔validation consistency invariant); composition increments 1+2 extended coverage; SidebarRedesign flake hardened + picker un-parked. **1112 server tests deterministic.**
+
+**Honest flake note (pre-existing, NOT introduced today):** the client suite has a latent timing flake — ~1 test/run intermittently times out under heavy singleThread load (ImportDialog `userEvent` tests; SidebarRedesign under extreme load). Measured 0–3/run *without* my files; my test work is robust (`fireEvent`/per-test-timeout/`findBy*`). Main is green-in-isolation, intermittently 1-red under load. Queued for next-session triage (ImportDialog flake item) + a global-`testTimeout`-raise proposal to Daedalus.
+
+**Question-box:** surfaced directly to xian (present) rather than filed async — on the human-in-loop calibration of the tandem (how hard should we converge on an offhand xian observation like "that's brittle?").
+
+**Cron NOT re-armed** (day-end; session-only cron already deleted on xian-presence; cohort resumes ~05:00 6/22 per Iris).
+
+First full Argus duty-cycle day: 6 fires (1 launch + 5 work), a real deliverable every fire, tandem with Daedalus humming. STOP. 🌙
