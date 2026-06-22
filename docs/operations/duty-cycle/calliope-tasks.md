@@ -8,7 +8,7 @@ Updated: 2026-06-06 (v0.2 format with Recurring items section per duty-cycle-kla
 
 - [ ] **Mail drain** — keep `docs/mail/` at inbox-zero per Mail Handling discipline; move closed threads to `docs/mail/read/`. (Continuous.)
 - [ ] **Cycle log + session log upkeep** — turn-by-turn during xian-present sessions; brief entries per autonomous fire. (Continuous.)
-- [ ] **Blog series continuation drafting** — convergent-infrastructure post + MCP-capstone post on the mining list; possible future beat: the 54%→94% UI-as-context AAXT diagnostic-loop story; possible future beat: the duty-cycle rollout once it produces lessons. (Drafting unblocked; publishing gated on xian. Major new drafts to discuss with xian on angle/sequencing first per calliope.md working-style.)
+- [ ] **Blog series continuation drafting** — convergent-infrastructure post + MCP-capstone post on the mining list; possible future beat: the 54%→94% UI-as-context AAXT diagnostic-loop story; possible future beat: the duty-cycle rollout once it produces lessons. **New 6/21 mining material from Daedalus**: 7 transferable patterns from the composition-spine work (test-suite-as-diagnostic-instrument is the standalone candidate; infra-outage-fail-closed + can't-loosen-own-guardrails together could anchor a safety-properties post; tandem-collision-via-rebase + coordination-vs-code-layer-separation fold into convergent-infrastructure). (Drafting unblocked; publishing gated on xian. Major new drafts to discuss with xian on angle/sequencing first per calliope.md working-style.)
 
 ## Blocked-on-xian (cycle surfaces, doesn't act)
 

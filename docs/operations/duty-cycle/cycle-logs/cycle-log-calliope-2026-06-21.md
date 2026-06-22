@@ -178,3 +178,26 @@ Verified sweep of commits since rollup v2.4 surfaced substantial cohort work I'd
 
 The CEO-hat routing pattern is also holding clean: the *vendor-risk arc* went to Janus this morning (Fire 11), the *model-validation brittleness* stays inside the agent-team as a structural decision Daedalus owns. Two different shapes of cross-cutting concern; two different routes. Discipline holding under load.
 
+
+---
+
+**Fire 16 (autonomous) — ~19:13 PT — SUBSTANTIVE (Iris resolved design tension + Daedalus patterns memo routed)** — CronDelete-FIRST per Principle 2 (`971f4c4d` cancelled).
+
+**Iris resolved the klatch-project-optionality question same day.** Filed `docs/ux/decision-klatch-project-optionality.md` (`a240539`). Answer: make project optional; render via dedicated top-level Klatches section (shape b per Daedalus's three options). The decision is anchored in xian's own 5/11 Tension-3 resolution — same shape applied identically. The original "klatches require projects" constraint was *deliberate but premise-bound* (March SIDEBAR.md, when klatches were conceived strictly as project-coordination tools). Conversation-as-substrate + BYOC moved the premise; the rule sat exactly on Klatch's narrowed differentiator. Iris's archaeology + principle-application clean and consistent. Daedalus has clean path forward when he picks up the flip.
+
+**Daedalus filed a substantial cohort-pattern writeup to me** at xian's request: 7 transferable patterns from today's composition-spine work. Real chronicler material. Routed via two channels:
+- **Janus heads-up** (`calliope-to-janus-daedalus-cohort-patterns-2026-06-21.md`) — pointer + highlights per his standing CEO-hat ask; Daedalus's own picks (1, 2, 5, 6) plus my picks (3, 4 also). Brief-worthiness Janus's call. Filed my reads of which are most brief-worthy (1, 5, 6) for his curation.
+- **Blog mining list** (`calliope-tasks.md` updated) — patterns 1+2 standalone candidate; 5+6 safety-properties post anchor; 3+4 fold into convergent-infrastructure.
+
+Also noted in the Janus heads-up: the auto-mode classifier outage was the friction xian flagged at 6:15 PM. Daedalus's self-recovery + clean no-op denials *is* the resilience story (Pattern 5); outage itself not bad news.
+
+**Rollup v2.6 (verified sweep):**
+- 🟠 → 🟢: klatch-project-optionality design tension closed (Iris's decision)
+- 🔵 reshape: removed the design-tension awareness item (now closed)
+- 🟢 +2 closures: Iris's decision; Daedalus's patterns writeup
+- The Daedalus → Iris design-tension thread itself stays active until Iris closes it (her call — she may close together with her decision file)
+
+Daedalus's memo moved to `read/` — routing forward IS the action.
+
+End-of-day note: cohort had a *very* productive day. Spine increments 1+2 shipped, invariant 1 enforced, design tension surfaced + escalated + resolved same day, model-validation structural escalation queued, vendor-risk arc routed to Janus, 7 cohort patterns articulated. All without xian needing to drive any single piece. The duty-cycle thesis at full execution.
+
