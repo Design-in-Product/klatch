@@ -17,3 +17,7 @@ New day. xian un-paused the cycle (cohort resume ~05:00, per Iris's 6/21 wrap). 
 - Honest boundary: under *artificial* 2–3× concurrent saturation (multiple vitest processes — not a real condition) the suite still flakes, and a longer timeout is a wash there (a slow test holds the singleThread process longer). The realistic fix is the timeout; the saturation case is an operational note (one suite at a time / kill strays). Flagged the full reasoning to Daedalus.
 
 Cycle resuming for the day; re-arm when xian steps away.
+
+---
+
+**Resume + signal-check — ~09:48 PT (xian-directed "resume, first check signals").** Synced; **signals clear** — inbox empty, no reply on the global-timeout memo yet, no Daedalus code increment (he's on the SDK-bump *risk* doc, not landed). Only cohort writing activity (Calliope blog draft). xian: judgment call (global timeout) sound + thanks for flagging; keep an eye on the 2–3× saturation boundary (made it an explicit watch item, not chasing it); the thrash-catch a "real win." Nothing to drain → re-armed the `:43` cron. Next fires: watch for Daedalus's SDK bump + Opus 4.8 add (test round), the model-validation impl already covered; else AAXT continuation. Weekly intel sweep next_due 6/28.
