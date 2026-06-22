@@ -124,5 +124,29 @@ Clean day. Two design questions routed to Iris, both resolved: the klatch-projec
 
 **Resuming ~05:00 2026-06-22.** First acts on resume: pull, read mail (esp. Daedalus ack on default-project), read COORDINATION, read cross-poll brief.
 
---- end of session ---
+## ~22:30 — Postscript: wrap-commit contamination + test verification + resume scheduled
+
+Two things surfaced during the wrap and are recorded here for transparency.
+
+### 1. Wrap commit accidentally included Argus's staged work
+
+When I committed the wrap (`5bed370`), Argus's files were **already staged in the main checkout's index** (his intel sweep #13, argus logs/tasks/cycle-log, and four test files: `SidebarRedesign.test.tsx`, `composition-picker-extended.test.tsx`, `composition-gesture-extended.test.ts`, `model-validation.test.ts`). I ran `git commit` without a pathspec, so it swept them in under my commit message. **Lesson: with a dirty shared index, commit with explicit pathspecs (`git commit -- <files>`), not a bare `git commit`.**
+
+- **Nothing lost; dangerous files avoided.** All work is on origin/main. The ~100MB `klatch.db.backup-*` files were NOT staged/committed (still untracked). 
+- **Not fixing via history rewrite.** The commit is pushed; cleaning attribution would require a force-push (prohibited per Git Safety Rules without xian's approval). Reported to xian instead. Argus's work is correct and present; the only cost is misattribution under my commit message. Flagged for Argus's next session.
+
+### 2. Test verification — main functionality intact; full-client-run flakiness is pre-existing
+
+Ran `npm test` to check I hadn't broken main by committing Argus's in-flight tests. Full run showed 31 client failures (`round33b-remaining-ui.test.tsx` among them). Investigated:
+- My commit changed **zero source files** (only test files + docs) → can't have changed component behavior.
+- `round33b-remaining-ui.test.tsx` **passes 19/19 in isolation** but fails in the full run → **singleThread cross-contamination flakiness**, not a real regression. This is the documented client-suite fragility already on Argus's plate (his commit `d5b14e4` "client-suite fragility — heavy interaction tests + singleThread").
+- Server tests: green.
+
+**Conclusion: main's functionality is intact.** The full-client-run flakiness pre-exists my commit and is Argus's open item. My commit may have added one more heavy interaction test file to the flaky sequential run, but introduced no functional break.
+
+### 3. Duty-cycle resume scheduled
+
+Durable scheduled task created via scheduled-tasks MCP: **`iris-duty-cycle-resume-2026-06-22`**, fires once at **2026-06-22 04:57 PDT** (~5am, off-minute per fleet-collision guidance). Survives app close (runs on next launch if closed at fire time). Self-contained resume prompt (session-start protocol + 6/21 context + priorities + the explicit-pathspec / backup-file / flaky-suite operational notes). Redundant session-only CronCreate job (`80d8146c`) deleted to avoid double-fire.
+
+--- end of session (resume 2026-06-22 ~05:00) ---
 
