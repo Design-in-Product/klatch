@@ -89,3 +89,26 @@ The Themis propagation reaching her `frame.md` is the worst-case I'd been worrie
 
 **Still pending (next fire):** entity-reframe blog v2 draft cleanup — the new paragraph specifically connecting role-persistence to "cross-tool BYOC" needs revision or removal.
 
+
+---
+
+**Fire 9 (autonomous) — ~07:13 PT — SUBSTANTIVE (BYOC-correction cleanup, part 2: v2 blog draft)** — CronDelete-FIRST (`bfc20b65` cancelled). Last pending propagation item.
+
+**v2 blog draft revised** (`bringing-conversations-into-a-room-v2.md`):
+- **Removed line 71** — the new paragraph 6/21 v2 had added connecting role-persistence to "context portability work between Klatch and the rest of a user's working substrate." That claim rested on the BYOC-as-Klatch-concept frame xian retracted 6/22. Role-persistence section now reads cleanly without it; assembly-layer framing in the closing paragraphs of that section still holds the argument together.
+- **Removed the third "what we don't yet know" gap** about cross-tool consequence becoming demonstrable. Same retraction logic — presumed cross-tool consequence is settled Klatch concept; not yet established. Section now carries two gaps (promotion adoption + synthetic-klatch UI implications), held from v1. Fine.
+- **Editorial-notes section updated** — change #2 marked "Removed 2026-06-22" with explanation; change #8 reshaped; new "6/22 revision context" footer explains what was retracted and why. Open editorial decisions list trimmed (third "don't yet know" question no longer applies).
+
+**Importantly:** the post's structural argument — entities-are-conversations, role-as-promoted-conversation, klatches-are-synthetic, composition-is-the-central-gesture — is **unaffected** by the BYOC retraction. The post never depended on cross-tool/BYOC framing; the 6/21 v2 had added it as a sharpening that turned out to be wrong. Removing it returns the post to honest scope.
+
+Net: v2 is now correct-and-ready-for-xian-review. The 🔴 attention-rollup item "review v2 blog draft" stands; the draft is just less ambitious in claims than it was 12 hours ago.
+
+**Propagation cleanup complete.** All five identified artifacts addressed:
+- ✓ Janus heads-up (retracted same-fire)
+- ✓ Persistent memory file (rewritten as correction record)
+- ✓ MEMORY.md index entry (updated)
+- ✓ STATE.md strategic-threads section (rewritten 6/22 Fire 8)
+- ✓ v2 blog draft (this fire)
+
+The 6/21 vendor-risk memo to Janus stays in `read/` with the framing-error noted in the 6/22 correction memo — not retractable since already absorbed, but Janus has the marker and propagated the fix to Themis.
+
