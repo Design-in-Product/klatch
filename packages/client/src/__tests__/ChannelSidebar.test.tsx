@@ -178,6 +178,33 @@ describe('ChannelSidebar', () => {
     expect(screen.getByPlaceholderText('Purpose — what is this klatch for? (optional)')).toBeInTheDocument();
   });
 
+  it('agent picker: typeahead filters, roles tier, selection chip (increment 2)', async () => {
+    const user = userEvent.setup();
+    const entities = [
+      { id: 'e1', name: 'Daedalus', handle: 'daedalus', model: 'claude-opus-4-6', effort: 'high', systemPrompt: '', color: '#111', createdAt: '2026-03-01T00:00:00Z' },
+      { id: 'e2', name: 'Argus', handle: 'argus', model: 'claude-opus-4-6', effort: 'high', systemPrompt: '', color: '#222', createdAt: '2026-03-01T00:00:00Z' },
+    ] as any;
+    const projects = [{ id: 'p1', name: 'Klatch', instructions: '', memory: '', source: 'native', sourceMetadata: '{}', createdAt: '2026-03-01T00:00:00Z' }] as any;
+    render(<ChannelSidebar {...defaultProps} channels={[]} entities={entities} projects={projects} />);
+
+    await user.click(screen.getByText('+ New Klatch'));
+    const search = screen.getByPlaceholderText(/Search agents/i);
+    expect(search).toBeInTheDocument();
+    expect(screen.getByText('Roles')).toBeInTheDocument();           // roles-first tier (name-as-proxy)
+    expect(screen.getByText('Daedalus')).toBeInTheDocument();
+    expect(screen.getByText('Argus')).toBeInTheDocument();
+
+    // Typeahead filters the list
+    await user.type(search, 'arg');
+    expect(screen.queryByText('Daedalus')).not.toBeInTheDocument();
+    expect(screen.getByText('Argus')).toBeInTheDocument();
+
+    // Selecting an agent surfaces a removable chip
+    await user.clear(search);
+    await user.click(screen.getByText('Daedalus'));
+    expect(screen.getByLabelText('Remove Daedalus')).toBeInTheDocument();
+  });
+
   it('calls onCreateChannel with name and default prompt', async () => {
     const user = userEvent.setup();
     const onCreateChannel = vi.fn();
