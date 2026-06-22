@@ -233,7 +233,13 @@ export function parseSourceMetadata(raw?: string | null): Record<string, any> | 
  */
 export function negotiateFormatVersion(requested?: string): string | null {
   if (!requested) return FORMAT_VERSION;
-  // Simple major.minor.patch comparison for now
+  // Permissive-by-design (decision 2026-06-22, closing Argus's round31b "future
+  // format_version" flag): a requested version NEWER than anything we support
+  // negotiates DOWN to the best supported version (e.g. a future "2.0.0" → "1.0.0")
+  // rather than hard-failing — forward-compat, so a newer producer's package is
+  // still consumable. Only a requested version OLDER than every supported version
+  // returns null (no compatible version), which the caller rejects. Simple
+  // major.minor.patch comparison.
   const requestedParts = parseVersion(requested);
   if (!requestedParts) return null;
 
