@@ -90,35 +90,51 @@ describe('POST /api/channels — composition roster (extended)', () => {
     expect([...ids].sort()).toEqual([a.id, b.id].sort());
   });
 
-  // ── PINNED invariant probes — current API behavior, flagged for hardening ──
-  // The route does not couple `type` to roster shape. These document what the API
-  // does TODAY; the client enforces "chat = 1:1" and "klatch = >=1 picked agent",
-  // so these are hardening candidates (routed to Daedalus), not bugs today.
-  // Flip the assertions if/when type-roster enforcement lands.
+  // ── Type/roster coherence invariants ──
+  // Originally flagged by Argus as un-enforced (6/21). Daedalus's resolution same day:
+  //   - chat + multi-agent → ENFORCED at the route (channels.ts: "A chat is 1:1…").
+  //   - klatch + empty roster → deliberately LEFT PERMISSIVE: a klatch falling back to
+  //     the default is a valid 1-agent klatch (Iris spec; rejecting it broke round7).
+  // His composition-gesture.test.ts is the primary pin; these are the extended-coverage
+  // cross-checks (chat+multi also asserts atomicity; klatch+empty pins the deliberate
+  // permissive call so a future "tighten it" doesn't land silently).
 
-  it('PIN: type=chat with a multi-agent roster is currently allowed (un-enforced)', async () => {
+  it('type=chat with a multi-agent roster is rejected — 1:1 coherence (enforced 6/21)', async () => {
     const app = createTestApp();
     const a = createEntity('A', 'claude-opus-4-6', 'p', '#111');
     const b = createEntity('B', 'claude-opus-4-6', 'p', '#222');
+    const before = getAllChannels().length;
 
     const res = await app.request('/api/channels', postJson({
       name: 'Chat With Crowd', type: 'chat', entityIds: [a.id, b.id],
     }));
-    expect(res.status).toBe(201);
-    const channel = await res.json();
-    expect(channel.type).toBe('chat');
-    // a "chat" currently carries the full roster — no 1:1 enforcement at the API
-    expect(getChannelEntities(channel.id).map((e) => e.id).sort()).toEqual([a.id, b.id].sort());
+    expect(res.status).toBe(400);
+    const body = await res.json();
+    expect(body.error).toMatch(/chat is 1:1/i);
+    expect(getAllChannels().length).toBe(before); // rejected before any create
   });
 
-  it('PIN: type=klatch with an empty roster falls back to the lone default entity', async () => {
+  it('type=chat with a single-agent roster is still allowed (1:1 boundary)', async () => {
+    const app = createTestApp();
+    const a = createEntity('Solo', 'claude-opus-4-6', 'p', '#111');
+
+    const res = await app.request('/api/channels', postJson({
+      name: 'Solo Chat', type: 'chat', entityIds: [a.id],
+    }));
+    expect(res.status).toBe(201); // length === 1 is fine; only >1 trips the 1:1 rule
+    const channel = await res.json();
+    expect(getChannelEntities(channel.id).map((e) => e.id)).toEqual([a.id]);
+  });
+
+  it('type=klatch with an empty roster is allowed — valid 1-agent klatch via default (deliberately permissive)', async () => {
     const app = createTestApp();
     const res = await app.request('/api/channels', postJson({
       name: 'Empty Klatch', type: 'klatch', entityIds: [],
     }));
     expect(res.status).toBe(201);
     const channel = await res.json();
-    // empty array == no roster: a klatch with only the default agent (client blocks this)
+    // Deliberately permissive (Daedalus 6/21): the default counts as an agent; the
+    // "deliberate pick >=1" is a client-UX guard, not an API invariant.
     expect(getChannelEntities(channel.id).map((e) => e.id)).toEqual([DEFAULT_ENTITY_ID]);
   });
 });
