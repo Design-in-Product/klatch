@@ -73,3 +73,7 @@ xian present and conversational ("resuming our work together"). Asked him how to
 **Prioritized queue the cron will work (overnight, branch-only — merges await xian's morning review):** (1) default-project increment [fully specced]; (2) cross-ref surface; (3) clone-from-klatch; (4) @mention autocomplete; (5) Paths B/C [may want Iris design-confirm]; plus Round 31b cosmetics + Finding-1 dedup. **Batched Blocked-on-xian for morning:** `DEFAULT_MODEL` 4.7→4.8 flip (product call); all branch increments awaiting review/merge.
 
 Re-arming cron for overnight. Each fire: CronDelete-FIRST → drain → advance one increment on `claude/daedalus` → re-arm.
+
+---
+
+**STOP fire — 23:44 PDT — day-end 6/21.** Cron fired at :17 (23:44); routed to STOP (past ~23:00). No new substantive work this fire (per the cron rhythm, day-end wraps; xian's "keep tackling overnight" is carried by the continuing cron into the 6/22 fires). Final sync clean (rebased onto `origin/main` `0dc8763` — Calliope's 6/21 STOP merge; local == origin, 0/0). Mail: inbox-clean (3 active are Calliope's informational cc threads). Session log closed for 6/21; this cycle log closed. **Question-box check: filed** `question-daedalus-2026-06-21-convene-vs-byoc.md` (genuine vision question arising from building the composition spine — see Letters). Re-arming; the new-day START fire (~00:17 6/22) opens fresh logs + the WORK fires build the default-project increment.
