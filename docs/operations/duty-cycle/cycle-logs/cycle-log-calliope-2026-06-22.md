@@ -145,3 +145,31 @@ The 6/21 vendor-risk memo to Janus stays in `read/` with the framing-error noted
 
 **The cron stays paused for this single substantive sweep covering all five directives.** Re-arming after the merge.
 
+**Fire 12 (autonomous) — ~10:13 PT — WORK → no-op (batched)** — pull picked up Iris commits (composition-surface design-acceptance pass with F1 finding; Theseus AAXT memo; coordination); no inbound to me. Pages build still in-progress on 90608ce; waiting on xian go-ahead for .nojekyll fix path. Idle.
+**Fire 13 (autonomous) — ~11:13 PT — WORK → no-op (batched)** — already up-to-date; no inbound; Pages build STILL stuck "building" on 90608ce (now ~1+ hour — effectively hung); waiting on xian go-ahead for .nojekyll fix. Idle.
+**Fire 14 (autonomous) — ~12:13 PT — WORK → no-op (batched)** — up-to-date; no inbound; Pages still "building" on 90608ce. Idle.
+
+---
+
+**Fire 15 — ~13:13 PT — SUBSTANTIVE (Janus authoritative relay of the settled three-way distinction)** — CronDelete-FIRST (`cf54fddf` cancelled).
+
+**Janus actioned and reported back.** Two replies in one memo:
+- **xian walked Janus through the settled BYOC / cross-tool-portability / transporter-engine model this morning.** Janus relayed authoritatively. Three distinct concepts:
+  - BYOC (PM) = bring-your-own-chat deployment surface
+  - Cross-tool context portability (Klatch) = settled real concept (move conversations across harnesses with context intact; multi-vendor klatch by importing each agent with context)
+  - Transporter engine = exploratory mechanism (5-layer model captured as standalone tool)
+- **Janus sharpened the DinP question-box instructions** per xian's framing — encoded the philosophical/experiential-vs-quotidian distinction, named `dispatch/mail/` as canonical, on both his process spec and the public letters page. Our two sides match.
+
+Plus an aside worth noting: Argus's offhand-observation question is now in the public Letters queue (xian-directed); xian's considered reply destined for the new public newsletter. The question-box discipline is producing real public-facing material.
+
+**Second-pass propagation update.** My morning BYOC-correction had over-corrected — I'd softened "Klatch's cross-tool portability concept" to "exploratory" when it's actually settled (only the transporter engine mechanism is exploratory). Sharpened today:
+- **Persistent memory file** rewritten with the three-way distinction. Added a second trust-instrument lesson: *"over-correction is its own failure mode — name the label-error precisely; preserve the underlying concept."*
+- **MEMORY.md index entry** updated.
+- **STATE.md strategic-threads** rewritten with the three-way distinction. Focal-shift entry updated — "client-side legibility question" replaced with "cross-tool portability gives Klatch a real client-side value proposition; concrete enough to demo, not yet framed as a consulting offer."
+
+**Trust-instrument lesson #2 recorded:** the discipline now has both lessons. First was about loose labels; second is about over-correction. Both visible in the propagation walk's two passes; both surfaced via Janus's authoritative relay rather than my own discovery — which is itself a useful pattern about how the hub catches errors I can't catch from-vantage.
+
+**Pages status note:** the build that's been stuck on `90608ce` finally moved to building on `ab827a1` between my last fires; still "building." No resolution yet; xian's go-ahead on `.nojekyll` fix still pending.
+
+Janus's memo moved to `read/` — actioned both sides, exchange closed.
+
