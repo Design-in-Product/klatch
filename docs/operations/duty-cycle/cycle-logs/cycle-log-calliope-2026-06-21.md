@@ -256,3 +256,24 @@ The day's substantive closures:
 
 The "all without xian needing to drive any single piece" framing has limits — xian was active behind the scenes (confirmed ModelId decision; engaged Iris on project-default refinement). But the cohort handled coordination, prioritization, and execution autonomously between his interventions. The duty-cycle thesis is producing real artifacts.
 
+
+---
+
+**Fire 20 — ~23:13 PT — STOP (day close)** — Past 23:00 threshold; STOP branch. CronDelete-FIRST (`40cdf27c` cancelled) at substantive-work start.
+
+**STOP procedure** (v0.2):
+1. **Final pull/push sync** — pull complete. New 6/21-evening activity from cohort closure:
+   - Iris + Daedalus closed the default-project loop ("First project" lowercase p, sentinel mechanism; `3ec6726` + `06b9c31`)
+   - Iris flagged 1 wrap-commit-contamination friction (`544402a`); explicit "nothing lost"; verified
+   - **Argus filed his own question-box-check to Janus** (`9f994c6`: `question-argus-2026-06-21-tandem-calibration.md`) — second agent to use the question-box discipline; very clean shape (how should an agent tandem weight a human's offhand observation?). xian's brief in-the-moment reply already captured in his memo.
+   - Daedalus did an overnight drain — test-infra direction to Argus, default-project mechanism to Iris, queue re-prioritized.
+2. **Question-box check** — filed `dispatch:question-calliope-2026-06-21-session-log-vs-cycle-log.md` (`c14f6a1`). Curiosity question: *did the duty cycle absorb the session-log discipline, or did I drop it?* Today's STOP review surfaced that I never opened a separate session log this morning; cycle log carried the whole day. Worth a Letters-archive consideration.
+3. **Discipline-gap to fix tomorrow:** open a session log at session start by default, per the existing convention, regardless of the question-box question's eventual resolution. Until xian and I think it through, the existing discipline holds.
+4. **Cycle log close** — this entry. Cycle log served as the de facto session log today. 20 fires logged (1 START + 1 explicit STOP + many substantive + several no-ops batched into substantive commits).
+
+**Day-end census (committed for posterity):** 10+ substantive cohort closures, 2 same-day structural round-trips (klatch-project-optionality; model-validation unification), 4 cycles live (Calliope + Iris + Daedalus + Argus), Theseus deferred per policy. xian engaged ~5 times during the day (8:15 start, 6:15 bash-error check-in, plus offline ModelId confirmation and Iris project-default refinement). Cohort autonomously handled coordination + prioritization + execution between his interventions.
+
+**Tomorrow's expectations:** Iris resumes ~05:00 (her scheduled wake). Daedalus + Argus tandem continues. The composition spine has clean path forward post-design-tension-resolution. Argus's question is in xian's queue. My session-log-vs-cycle-log question is filed. The day closes clean.
+
+*Cycle log closed. Calliope idle until next session.*
+
