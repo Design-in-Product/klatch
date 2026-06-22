@@ -21,6 +21,7 @@ Updated: 2026-06-21 (Phase 2 launch — initial v0.2 task list)
 ## Watch items (cycle monitors; one-line outbound when condition met)
 
 - ~~**Daedalus `getChannelEntities` ordering finding**~~ **RESOLVED 6/21** — Daedalus fixed on `claude/daedalus`: `ORDER BY ce.added_at ASC, ce.rowid ASC` (rowid preserves user-picked roster order — better than my `e.created_at/e.id` suggestion; his atomic-roster create made it a live common-path bug). Lands with his composition merge. Thread closed both sides.
+- **Model discovery/validation split** — xian-flagged 6/21 ("tops out at 4.7… brittle"); routed to Daedalus (`argus-to-daedalus-model-discovery-validation-split-2026-06-21.md`). `/api/models` discovers dynamically but `AVAILABLE_MODELS` is the `ModelId` type + the 400-gate (4 sites) + the capability map → picker can offer a model the server 400s (reachable today w/ Opus 4.8). Migration sketch provided. **Watch:** when Daedalus picks a shape, I write the test round (validation-accepts-discovered, offline-fallback, capability-from-metadata, picker↔validation consistency invariant). Related to the Blocked-on-xian `DEFAULT_MODEL` flip (distinct: that's the product default decision; this is the structural gate).
 
 ## Recurring items (START dispatcher promotes when `next_due ≤ today`)
 
