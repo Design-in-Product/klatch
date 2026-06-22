@@ -13,7 +13,7 @@
  *   T2.1 — Channel-count per entity (client surface: "in N channels")
  *   T2.2 — ExportReviewPanel modal backdrop + click-to-close
  *   T2.3 — Helper text subtitles on Package contents + Field notes
- *   T2.4 — Unassigned section subtitle reveals on expand
+ *   T2.4 — REMOVED 2026-06-22: "Unassigned" subtitle superseded by the default-project model
  *
  * Source: Daedalus's `daedalus-to-argus-round33-assignment-2026-05-11.md`
  * Iris's 5/18 confirmation `iris-to-theseus-ui-as-context-aaxt-reply-2026-05-18.md`
@@ -367,50 +367,10 @@ describe('Round 33b T2.3 — ExportReviewPanel helper text subtitles', () => {
   });
 });
 
-// ── T2.4 — Unassigned section subtitle expand/collapse ────
-
-describe('Round 33b T2.4 — Unassigned section subtitle on expand', () => {
-  const unassignedChat = {
-    id: 'ch-unassigned',
-    name: 'orphan-chat',
-    systemPrompt: '',
-    model: 'claude-opus-4-7',
-    mode: 'panel',
-    type: 'chat',
-    source: 'native',
-    sourceMetadata: null,
-    projectId: null,
-    createdAt: '2026-05-18T00:00:00Z',
-    lastMessageAt: '2026-05-18T00:00:00Z',
-  } as unknown as Channel;
-
-  it('subtitle visible when Unassigned section is expanded (default state)', () => {
-    render(
-      <ChannelSidebar
-        channels={[unassignedChat]}
-        activeChannelId=""
-        onSelectChannel={vi.fn()}
-        onCreateChannel={vi.fn()}
-        theme="light"
-        onToggleTheme={vi.fn()}
-      />,
-    );
-    expect(screen.getByText(/Chats not yet assigned to a project/)).toBeInTheDocument();
-  });
-
-  it('subtitle hides when Unassigned section is collapsed', async () => {
-    const user = userEvent.setup();
-    render(
-      <ChannelSidebar
-        channels={[unassignedChat]}
-        activeChannelId=""
-        onSelectChannel={vi.fn()}
-        onCreateChannel={vi.fn()}
-        theme="light"
-        onToggleTheme={vi.fn()}
-      />,
-    );
-    await user.click(screen.getByText('Unassigned'));
-    expect(screen.queryByText(/Chats not yet assigned to a project/)).toBeNull();
-  });
-});
+// ── T2.4 — REMOVED 2026-06-22 (default-project model) ────
+// The "Unassigned" section and its "Chats not yet assigned to a project" subtitle were
+// superseded by the default-project model (docs/ux/decision-klatch-project-optionality.md):
+// null-project channels now render in the "First project" group — a real workspace, not a
+// triage bucket, so it carries no "not yet assigned" subtitle. A singleton user sees it flat
+// with no header at all. New-behavior coverage lives in SidebarRedesign.test.tsx
+// ("default project (First project)") and ChannelSidebar.test.tsx (singleton-flat + collapse).
