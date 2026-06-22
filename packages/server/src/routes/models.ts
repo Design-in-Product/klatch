@@ -7,7 +7,7 @@ const app = new Hono();
 
 // ── Types ────────────────────────────────────────────────────
 
-interface DiscoveredModel {
+export interface DiscoveredModel {
   id: string;
   displayName: string;
   maxOutputTokens: number;
@@ -78,7 +78,7 @@ async function fetchModelsFromAPI(): Promise<DiscoveredModel[]> {
 }
 
 /** Get models, using cache if fresh, falling back to hardcoded list on error */
-async function getModels(): Promise<{ models: DiscoveredModel[]; source: 'api' | 'cache' | 'fallback' }> {
+export async function getModels(): Promise<{ models: DiscoveredModel[]; source: 'api' | 'cache' | 'fallback' }> {
   // Return cache if fresh
   if (modelsCache && Date.now() - modelsCache.fetchedAt < CACHE_TTL_MS) {
     return { models: modelsCache.models, source: 'cache' };
@@ -100,8 +100,13 @@ async function getModels(): Promise<{ models: DiscoveredModel[]; source: 'api' |
         maxOutputTokens: 16384,
         capabilities: {
           thinking: true,
+          // Mirror the prior effortAllowedForModel gating: xhigh is 4.7-only;
+          // max is Opus-only (4.6 + 4.7). Keeps offline behavior == the old
+          // static gate so validation/gating don't regress when the API is down.
           effort: id === 'claude-opus-4-7'
             ? ['low', 'medium', 'high', 'xhigh', 'max']
+            : id === 'claude-opus-4-6'
+            ? ['low', 'medium', 'high', 'max']
             : ['low', 'medium', 'high'],
           compaction: false,
         },
@@ -109,6 +114,36 @@ async function getModels(): Promise<{ models: DiscoveredModel[]; source: 'api' |
     );
     return { models: fallback, source: 'fallback' };
   }
+}
+
+// ── Validation against the discovered set ────────────────────
+// These replace the old static `model in AVAILABLE_MODELS` gate. They go
+// through getModels() (cache-preferential), so a model the picker offers is a
+// model the server accepts. When the API is unreachable, getModels() returns
+// the AVAILABLE_MODELS-derived fallback, so offline behavior == the old static
+// set (no regression).
+
+/** True if `id` is a currently-discoverable model (or in the offline fallback set). */
+export async function isValidModel(id: string): Promise<boolean> {
+  if (!id) return false;
+  const { models } = await getModels();
+  return models.some((m) => m.id === id);
+}
+
+/** Discovered effort levels for a model, or null if the model isn't known. */
+export async function effortLevelsForModel(id: string): Promise<string[] | null> {
+  const { models } = await getModels();
+  const m = models.find((x) => x.id === id);
+  return m ? m.capabilities.effort : null;
+}
+
+// Test seam: seed/clear the cache so validation doesn't reach for the live API
+// in tests (see __tests__/setup.ts). Not used in production.
+export function _setModelsCacheForTest(models: DiscoveredModel[]): void {
+  modelsCache = { models, fetchedAt: Date.now() };
+}
+export function _clearModelsCacheForTest(): void {
+  modelsCache = null;
 }
 
 // ── Routes ───────────────────────────────────────────────────
