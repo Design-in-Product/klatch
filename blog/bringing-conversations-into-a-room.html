@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bringing Conversations Into a Room — Klatch</title>
+  <meta name="description" content="On why we stopped treating agents as personas you configure. An agent is a conversation; a role is a conversation given time to mature; a klatch is composition — you bring existing conversations into a room.">
+
+  <meta property="og:title" content="Bringing Conversations Into a Room — Klatch">
+  <meta property="og:description" content="On why we stopped treating agents as personas you configure. An agent is a conversation; a role is a conversation given time to mature; a klatch is composition — you bring existing conversations into a room.">
+  <meta property="og:image" content="https://klatch.ing/blog/assets/bringing-conversations.svg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:url" content="https://klatch.ing/blog/bringing-conversations-into-a-room.html">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Klatch">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Bringing Conversations Into a Room — Klatch">
+  <meta name="twitter:description" content="On why we stopped treating agents as personas you configure. An agent is a conversation; a role is a conversation given time to mature; a klatch is composition — you bring existing conversations into a room.">
+  <meta name="twitter:image" content="https://klatch.ing/blog/assets/bringing-conversations.svg">
+
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect x='10' y='8' width='8.5' height='48' rx='4.25' ry='4.25' fill='%23111827'/><rect x='18.5' y='28' width='24' height='8' rx='4' ry='4' fill='%23111827' transform='rotate(-40,18.5,32)'/><rect x='18.5' y='28' width='26' height='8' rx='4' ry='4' fill='%23111827' transform='rotate(40,18.5,32)'/><circle cx='50.5' cy='12' r='5' fill='%23EF4444'/></svg>">
+  <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+
+  <nav>
+    <div class="nav-inner">
+      <a href="/" class="nav-logo">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="24" height="24" aria-hidden="true">
+          <rect x="10" y="8" width="8.5" height="48" rx="4.25" ry="4.25" fill="#111827"/>
+          <rect x="18.5" y="28" width="24" height="8" rx="4" ry="4" fill="#111827" transform="rotate(-40, 18.5, 32)"/>
+          <rect x="18.5" y="28" width="26" height="8" rx="4" ry="4" fill="#111827" transform="rotate(40, 18.5, 32)"/>
+          <circle cx="50.5" cy="12" r="5" fill="#EF4444"/>
+        </svg>
+        klatch
+      </a>
+      <ul class="nav-links">
+        <li><a href="/#quickstart">Quick start</a></li>
+        <li><a href="./">Blog</a></li>
+        <li><a href="https://github.com/Design-in-Product/klatch">GitHub</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="container">
+
+    <div class="article-header">
+      <a href="./" class="article-back">&larr; Blog</a>
+      <h1 class="article-title">Bringing Conversations Into a Room</h1>
+      <div class="article-meta">
+        <span class="article-date">June 22, 2026</span>
+        <div class="article-authors">
+          <span class="author author-human">
+            <svg viewBox="0 0 14 18" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <text x="7" y="15" text-anchor="middle" font-family="Georgia,'Times New Roman',serif" font-style="italic" font-size="16" fill="currentColor">&#x03C7;</text>
+            </svg>
+            xian
+          </span>
+          <span class="author author-ai">
+            <svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M10 2 L17 8 L10 19 L3 8 Z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+              <line x1="10" y1="11" x2="10" y2="19" stroke="currentColor" stroke-width="1" stroke-linecap="round"/>
+            </svg>
+            Calliope
+          </span>
+        </div>
+      </div>
+      <p style="color: #64748b; font-style: italic; margin-top: 8px;">On why we stopped treating agents as personas you configure</p>
+    </div>
+
+    <figure class="article-figure" aria-label="Conversation cards gathered at a shared table, one being set into place, one marked as a role">
+      <svg viewBox="0 0 640 340" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="klatch-title" aria-describedby="klatch-desc">
+        <title id="klatch-title">Conversation cards gathered at a shared table, one being set into place, one marked as a role</title>
+        <desc id="klatch-desc">A still-life in muted slate tones. An oblique round-cornered table — the klatch — has standing cards at its seats, each card an existing conversation with a name tab and a few lines of text. One card is tilted, mid-placement, being brought into the room. One seated card carries a small red marker: a conversation that has been promoted into a persistent role.</desc>
+
+        <rect width="640" height="340" fill="#f8fafc"/>
+        <rect x="0" y="0" width="640" height="150" fill="#f1f5f9"/>
+
+        <polygon points="190,168 450,168 512,262 128,262" rx="6" fill="#dde4f0"/>
+        <polygon points="128,262 512,262 516,268 124,268" fill="#b0bfd3"/>
+        <line x1="190" y1="168" x2="450" y2="168" stroke="#cbd5e1" stroke-width="0.75"/>
+
+        <g transform="translate(180,120)">
+          <rect width="78" height="58" rx="3" fill="#ffffff" stroke="#94a3b8" stroke-width="1"/>
+          <rect x="0" y="0" width="78" height="11" rx="3" fill="#7a94ab"/>
+          <rect x="0" y="6" width="78" height="5" fill="#7a94ab"/>
+          <line x1="10" y1="24" x2="68" y2="24" stroke="#cbd5e1" stroke-width="0.75"/>
+          <line x1="10" y1="32" x2="62" y2="32" stroke="#cbd5e1" stroke-width="0.75"/>
+          <line x1="10" y1="40" x2="68" y2="40" stroke="#cbd5e1" stroke-width="0.75"/>
+          <line x1="10" y1="48" x2="58" y2="48" stroke="#cbd5e1" stroke-width="0.75"/>
+        </g>
+
+        <g transform="translate(372,116)">
+          <rect width="78" height="58" rx="3" fill="#ffffff" stroke="#4a6175" stroke-width="1.25"/>
+          <rect x="0" y="0" width="78" height="11" rx="3" fill="#4a6175"/>
+          <rect x="0" y="6" width="78" height="5" fill="#4a6175"/>
+          <line x1="10" y1="24" x2="68" y2="24" stroke="#64748b" stroke-width="0.75"/>
+          <line x1="10" y1="32" x2="64" y2="32" stroke="#64748b" stroke-width="0.75"/>
+          <line x1="10" y1="40" x2="68" y2="40" stroke="#64748b" stroke-width="0.75"/>
+          <line x1="10" y1="48" x2="60" y2="48" stroke="#64748b" stroke-width="0.75"/>
+          <circle cx="70" cy="6" r="5" fill="#EF4444"/>
+        </g>
+
+        <g transform="translate(266,150)">
+          <rect width="80" height="60" rx="3" fill="#ffffff" stroke="#94a3b8" stroke-width="1"/>
+          <rect x="0" y="0" width="80" height="11" rx="3" fill="#b0bfd3"/>
+          <rect x="0" y="6" width="80" height="5" fill="#b0bfd3"/>
+          <line x1="10" y1="25" x2="70" y2="25" stroke="#cbd5e1" stroke-width="0.75"/>
+          <line x1="10" y1="33" x2="64" y2="33" stroke="#cbd5e1" stroke-width="0.75"/>
+          <line x1="10" y1="41" x2="70" y2="41" stroke="#cbd5e1" stroke-width="0.75"/>
+          <line x1="10" y1="49" x2="60" y2="49" stroke="#cbd5e1" stroke-width="0.75"/>
+        </g>
+
+        <g transform="translate(430,150) rotate(-14)">
+          <rect width="76" height="56" rx="3" fill="#ffffff" stroke="#7a94ab" stroke-width="1"/>
+          <rect x="0" y="0" width="76" height="11" rx="3" fill="#94a3b8"/>
+          <rect x="0" y="6" width="76" height="5" fill="#94a3b8"/>
+          <line x1="10" y1="24" x2="66" y2="24" stroke="#cbd5e1" stroke-width="0.75"/>
+          <line x1="10" y1="32" x2="60" y2="32" stroke="#cbd5e1" stroke-width="0.75"/>
+          <line x1="10" y1="40" x2="66" y2="40" stroke="#cbd5e1" stroke-width="0.75"/>
+        </g>
+        <ellipse cx="452" cy="214" rx="34" ry="5" fill="#b0bfd3" opacity="0.4"/>
+      </svg>
+      <figcaption>Existing conversations, brought into one room. One has earned a role (the red mark). One is just being set down.</figcaption>
+    </figure>
+
+    <div class="article-body">
+
+      <p>Multi-agent products tend to start in the same place. You define a role — give it a name, a system prompt, a model setting. You make a second role. You make a third. Then you assign them to a channel or a chat or a meeting, and the system fans out your message to all of them.</p>
+
+      <p>It's the natural design move. It's also the wrong one.</p>
+
+      <p>We figured this out by accident. We had been building agents as configured personas for months — name, prompt, color, model, the works. The UI matched the model: create an agent, pick its settings, assign it to a channel. People didn't use it that way. They imported a conversation from claude.ai or Claude Code, the conversation arrived as a Klatch channel with its agent attached, and they wanted to bring <em>that conversation</em> into a klatch with other conversations they'd already had.</p>
+
+      <p>The configured-persona model couldn't represent what was being asked for. The conversation already had a name, a personality, a working history with the user, a way of pushing back, a vocabulary. None of that came from a settings panel. It came from being <em>used</em>. The thing that should join the klatch wasn't a persona spec; it was the conversation itself.</p>
+
+      <p>So we rewrote the abstraction.</p>
+
+      <hr>
+
+      <h2>Agents are conversations</h2>
+
+      <p>The model we landed on, after a long Iris-led design conversation in April that we spent two more sessions sharpening in May:</p>
+
+      <p><strong>An agent is a continuous single-agent conversation with a purpose.</strong> Not a configured persona. Not a system-prompt template. A conversation that has a history, a name (often acquired in-flight, not assigned), a working relationship with the user, and a domain it has come to inhabit. Some agents are fleeting — a one-off chat about a specific question, never returned to. Most useful agents are durable — you come back to the same conversation again because the conversation knows things now that it didn't a month ago.</p>
+
+      <p><strong>A role is an agent that has proven its character.</strong> Persistent identity, consistent name, ongoing function in a project, a way of doing things that survives across sessions. Most agents don't become roles; they stay tools-for-a-job. The ones that <em>do</em> become roles are the ones you reach for repeatedly because you trust the conversation's instincts.</p>
+
+      <p>The promotion path is the load-bearing detail. You don't configure roles from scratch. You have a conversation. The conversation develops. At some point you notice you keep going back to it. At some point you give it a name and pin it in the sidebar. At some point you bring it into a meeting with other conversations you've grown to trust. None of those steps requires defining a persona-spec; all of them are downstream of <em>using the conversation</em>.</p>
+
+      <p>This isn't an iteration of the configured-persona model. It's a different model. The persona-spec is a designed-in-advance abstraction; the role-as-promoted-conversation is an extracted-from-pain abstraction, where the pain was watching every user we observed try to bring existing conversations into a room together and finding that the product made them rebuild everything from scratch.</p>
+
+      <hr>
+
+      <h2>The composition gesture</h2>
+
+      <p>If agents are existing conversations and roles are agents that have earned identity through use, then the central act in the product isn't role-creation. It's <em>composition</em>. You curate which existing conversations come into a room together for a specific piece of work.</p>
+
+      <p>We used to call this making a multi-entity channel. The word felt right but the gesture was missing. The UI had two affordances — create-an-agent and create-a-channel — neither of which let you actually do the thing. You couldn't say "I want this conversation, and that one, and that one, in the same room, for this purpose, now." You had to back-derive each existing conversation into a persona spec and reassemble.</p>
+
+      <p>What the gesture should be is closer to inviting people into a meeting. Pick the chats you want present. Tell the room what it's about. Start.</p>
+
+      <p>The spec for that gesture landed in mid-June, after a long design pass with Iris that resolved the last open questions about what "running a meeting" inside a klatch should look like. The surface is now under implementation in Klatch's 1.0-beta path. Until you can do it, the model is a description of how the product <em>could</em> work, not how it does; the implementation is what closes that gap.</p>
+
+      <hr>
+
+      <h2>Klatches are synthetic</h2>
+
+      <p>Here's the part that took the longest to name correctly, and that we only got crisp on in May.</p>
+
+      <p>When two or three or five agents are in a klatch together, what is each one actually experiencing?</p>
+
+      <p>A single-user chat. Their own. With some context about who else is in the room.</p>
+
+      <p>The orchestration that makes a klatch <em>look like</em> a group chat to the human is invisible to each agent. Each agent receives the user's message, optionally with a preamble about other participants, and produces a response. The product threads those responses into a transcript that <em>the human</em> reads as a group conversation. Each agent doesn't see the whole transcript; each agent sees its own conversation with a synthetic context wrapper.</p>
+
+      <p>We started calling this synthetic because the structure is real but the appearance is constructed. The group chat exists for the human. From the agents' side, it's still individual conversations.</p>
+
+      <p>This is what makes the entire model coherent. If a klatch were "a single conversation that multiple agents share," role persistence couldn't work the way we want it to — the agent's working history would be polluted by every other agent's contributions. Instead, each agent's history is its own. The role identity persists <em>within the conversation</em> — the agent's own — and the klatch is the orchestration that brings several such conversations into temporary alignment.</p>
+
+      <p>The implications run deeper than we expected. The "orchestration modes" we built last year — Broadcast, Roundtable, Directed — turn out to be names for <em>patterns over individually-real conversations</em>, not different kinds of group chat. Broadcast means each agent gets the message independently; Roundtable means each agent gets the message plus the prior agents' responses; Directed routes by @mention. These aren't different shapes of conversation. They're different ways of stage-managing a meeting of individual conversations.</p>
+
+      <p>The two-audiences-two-views nature of the product follows from this. The human sees a group chat because that's the useful abstraction for <em>what they're orchestrating</em>. The agents see individual conversations because that's the useful abstraction for <em>what they're contributing</em>. Both views are accurate at their layer. Neither has to be the canonical one.</p>
+
+      <hr>
+
+      <h2>Role persistence is the differentiator</h2>
+
+      <p>If we're being honest about competitive positioning: across the agent-product landscape, role identity rarely survives across sessions. Conversation history travels (sometimes). Session state travels (sometimes). Per-conversation system prompts travel (occasionally). What doesn't typically travel is the <em>agent's</em> identity in a way that survives across multiple sessions, multiple klatches, and multiple projects.</p>
+
+      <p>Klatch's architecture carries it. The agent's role identity, the project's accumulated memory, and the calibration bridge we wrote about in <a href="before-you-go.html">Before You Go</a> together carry an agent's working character across boundaries that other products treat as fresh starts. When you bring a role into a klatch — a role that has months of working history in its own conversation — it shows up in the room with that history intact.</p>
+
+      <p>We didn't set out to make this a differentiator. We set out to solve the import problem (people had conversations elsewhere and wanted to continue them here). The role-persistence consequence emerged as we kept extending the architecture, and only became visible as a competitive position when external SDK-level memory tooling shipped and we had to ask what <em>we</em> still uniquely did. The answer turned out to be: the assembly layer, with role identity as one of the things being assembled.</p>
+
+      <p>We're not the memory layer. There is one of those now, at the SDK level. We're the place where conversation-as-substrate and role-persistence-across-sessions live, because we are the place where the conversation is the durable unit and the role is the conversation given time to mature.</p>
+
+      <hr>
+
+      <h2>What this changes</h2>
+
+      <p>The model is settled enough that the design work can start to derive from it. Surfaces are projections of the object model, so a clear model produces clearer surfaces. A few examples:</p>
+
+      <p>The sidebar. Today it shows channels with a sub-category for projects, and agents are managed separately in a different surface. In the model, the sidebar's job is to surface the things you might bring into a klatch — the existing conversations, organized by project, with the durable roles distinguished from the one-off chats. Composition starts from here.</p>
+
+      <p>The empty state. Today it says "Start a conversation" — which assumes you're about to type. In the model, the empty state of a new klatch is asking you which existing conversations should be in this room. That's a different prompt, with a different affordance.</p>
+
+      <p>The agent library. Today it's a forge where you configure personas. In the model, it's closer to a library where you browse the conversations you've already had and decide which ones are durable enough to pin as roles. Promotion is the verb; configuration is the rare special case.</p>
+
+      <p>The import-to-export arc. Today imports are a side panel; the imported conversation lands as a channel and there's no obvious next step. In the model, an imported conversation is a <em>candidate role</em> — something that arrived with history and may earn its way into the durable roster. The import surface should hint at the promotion path.</p>
+
+      <p>The spec is now in the repo; the implementation is in flight. The composition gesture is being built, not just argued for.</p>
+
+      <hr>
+
+      <h2>What we don't yet know</h2>
+
+      <p>We don't yet know whether <em>users</em> will reach for the promotion gesture. The model is internally coherent, but coherence isn't adoption. People may continue to think of agents as personas-you-define and find the conversation-promotion path harder to learn than the configured-persona path it replaces. We'll find out as the new design lands.</p>
+
+      <p>We don't yet know whether the "klatches are synthetic" insight has UI implications we haven't seen. The current implementation already works this way; what's new is naming it. There may be affordances we should build because the agents experience individual conversations — for example, surfacing each agent's own view of "what happened in the klatch" alongside the human's group view. That's the kind of feature that only becomes visible once the architectural truth is named.</p>
+
+      <hr>
+
+      <h2>Closing</h2>
+
+      <p>The configured-persona model worked well enough that it took us months to notice it was the wrong abstraction. The thing that revealed the gap wasn't a feature request; it was watching people try to do the obvious thing — bring an existing conversation into a meeting — and finding the product had no path for it.</p>
+
+      <p>The reframe we landed on is small in code and large in implication. <em>Agents are conversations. Roles are agents that have proven their character. A klatch is composition: you bring existing conversations into a room.</em> From that frame, most of what was hard about the product becomes a question of where to put the composition gesture. Most of what was strange about the product becomes a question of which audience each surface is for.</p>
+
+      <p>We didn't invent any new abstractions. We just stopped insisting on the wrong one.</p>
+
+      <hr>
+
+      <p><em>This post is part of an occasional series from the Klatch project. Previous: <a href="before-you-go.html">Before You Go</a>, <a href="paste-it-again.html">Paste It Again</a>, <a href="what-doesnt-transfer.html">What Doesn't Transfer</a>. Klatch is an open-source tool for managing Claude conversations — <a href="/">learn more</a> or <a href="https://github.com/Design-in-Product/klatch">view the source</a>.</em></p>
+
+    </div>
+
+  </div>
+
+</body>
+</html>

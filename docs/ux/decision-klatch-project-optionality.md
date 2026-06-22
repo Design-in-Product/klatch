@@ -1,8 +1,10 @@
 # Design Decision — Is "under a project" a structural requirement for klatches?
 
 **Author:** Iris
-**Date:** 2026-06-21 (refined same day with xian's default-project direction)
+**Date:** 2026-06-21 (refined same day with xian's default-project direction; vocabulary corrected 2026-06-22)
 **Status:** Decided in principle — xian confirmed option 2 (shape b) + the default-project model. Implementation mechanism is Daedalus's call (§8).
+
+> **Vocabulary correction (2026-06-22).** This doc originally cited "BYOC" as one of the broadened use cases. That was a mislabel: per xian, **"BYOC" (bring your own chat) is Piper Morgan's vocabulary** — software running *inside* a chat host via skills + MCP — and "has nothing to do with convening." Klatch's carry-a-composition-to-another-tool idea is the **interchange-protocol** concept, which is **exploratory, not an established pillar**. References below corrected accordingly. The decision does **not** depend on it: it rests on the Tension 3 principle, the singleton/new-user case, and spontaneous cross-project klatches — all solid. See memory `byoc-label-belongs-to-pm-not-klatch`.
 **Upstream:**
 - `docs/mail/calliope-to-iris-sidebar-projects-question-from-xian-2026-06-21.md` (xian's question)
 - `docs/mail/daedalus-to-iris-klatch-project-optional-tension-2026-06-21.md` (the implementation tension)
@@ -20,7 +22,7 @@ Not "where does a project-less klatch render" (Daedalus's framing) but one step 
 
 ## Short answer
 
-The requirement was **deliberate, but premise-bound** — and the premise has moved. In March, a klatch *was* conceived as a project-coordination tool, so "every klatch has a project" was true by construction of the use case, not by constraint. The sidebar encoded a then-universally-true observation as a permanent rule. The use case has since broadened (spontaneous, cross-project, BYOC), the observation is no longer universal, and the rule is now friction — sitting precisely on Klatch's narrowed differentiator.
+The requirement was **deliberate, but premise-bound** — and the premise has moved. In March, a klatch *was* conceived as a project-coordination tool, so "every klatch has a project" was true by construction of the use case, not by constraint. The sidebar encoded a then-universally-true observation as a permanent rule. The use case has since broadened (spontaneous and cross-project klatches, plus an exploratory cross-tool-portability direction), the observation is no longer universal, and the rule is now friction — sitting precisely where Klatch's value is sharpening.
 
 The model already contains the principle that resolves this. **My recommendation: make project optional for klatches.** Details and the rendering consequence below.
 
@@ -44,12 +46,12 @@ Two shifts since March, both post-dating SIDEBAR.md:
 
 **(a) Conversation-as-substrate / composition framing.** The object model and the composition spec reframed a klatch as a *composition of existing conversations* — you convene agents into a room. Composition is an act the user performs; it doesn't presuppose a project any more than starting a 1:1 chat does. A klatch is a thing you *make*, not a fixture a project *contains*.
 
-**(b) The duty-cycle reframe + BYOC.** When the cross-project duty cycle absorbed the mail-delivery / coordination job, Klatch's unique value narrowed to two things: the persistent topical room, and the interchange protocol / BYOC transporter device. Both of those produce klatches that have *no natural project*:
+**(b) The duty-cycle reframe.** When the cross-project duty cycle absorbed the mail-delivery / coordination job, Klatch's unique value sharpened toward the persistent topical room (established) — and, more speculatively, an interchange-protocol direction (carry a composition to another tool; exploratory, not settled). Both produce klatches that have *no natural project*:
 
-- A **spontaneous cross-project consultation** — "have my OpenLaws researcher and my Klatch architect look at this contract once." Which project owns it? Neither. Forcing a choice imposes structure the moment doesn't have.
-- A **BYOC composition** — "compose these three roles, carry them out to another tool." The whole point is that the klatch is a *portable, self-contained payload*. Binding it to a project over-couples the unit you're trying to carry: you'd be carrying the project too.
+- A **spontaneous cross-project consultation** (solid, near-term) — "have my OpenLaws researcher and my Klatch architect look at this contract once." Which project owns it? Neither. Forcing a choice imposes structure the moment doesn't have.
+- A **carry-out / interchange composition** (exploratory) — "compose these three roles, take them to another tool." If this direction matures, the klatch is a *portable, self-contained unit*; binding it to a project over-couples what you'd carry. Flagged as exploratory, not load-bearing for this decision.
 
-The use cases that are now Klatch's *reason to exist* are exactly the ones the project requirement penalizes.
+The first case alone — spontaneous cross-project klatches — is enough to make the project requirement a friction point; the interchange direction only reinforces it.
 
 ## 3. The principle we already committed to
 
@@ -77,7 +79,7 @@ The strongest case for (c) "keep klatch-requires-project":
 
 It doesn't hold, because **the klatch already has its own shared context layer independent of any project: L4, the Purpose field.** Composition spec §6 establishes that the Purpose seeds L4, prepended to every agent in the klatch. A project-less klatch convened with a Purpose ("review this contract for jurisdiction risk") has perfectly coherent shared grounding without a project. The project is *additional* context when present, not the *only* source of it.
 
-The remaining argument for (c) is simplicity — one fewer rendering case. But that simplicity is purchased by putting friction on the BYOC and spontaneous-consultation use cases, which are the differentiator. Paying in your moat to save a sidebar branch is the wrong trade.
+The remaining argument for (c) is simplicity — one fewer rendering case. But that simplicity is purchased by putting friction on the spontaneous-consultation use case (and the exploratory cross-tool direction), exactly where Klatch's value is sharpening. Paying friction there to save a sidebar branch is the wrong trade.
 
 ## 6. Recommendation — refined by xian, 2026-06-21 (the default-project model)
 
@@ -186,7 +188,7 @@ This is the *why* feeding the decision, exactly as Calliope framed it — now wi
 | Was the requirement deliberate? | Yes — SIDEBAR.md, "klatches are a project coordination tool; no project, no klatch." |
 | Is it load-bearing in the model? | No — it's downstream of the March use-case definition, not a data-model necessity. |
 | Was composition §2 (optional) intentional? | Yes, reasoning from the May object-model principle. The un-flagged contradiction with SIDEBAR.md was my omission. |
-| Do the new use cases change the prior? | They sharpen it — BYOC + spontaneous klatches are *definitionally* project-less and are Klatch's differentiator. |
+| Do the new use cases change the prior? | They sharpen it — spontaneous cross-project klatches are *definitionally* project-less (and the exploratory cross-tool-portability direction, if it matures, doubly so). |
 | Governing principle? | Object model Tension 3 (xian, 5/11): "don't encode constraints that are typical-but-not-mandatory." Same shape, same resolution. |
 | The key distinction (xian, 6/21) | "Klatches make sense in a project" (Claim A, true) ≠ "taxonomy must require project metadata + subordinate klatches to projects" (Claim B, the over-reading). Fix B's friction, not A. |
 | Recommendation (refined) | Not "project optional/nullable." **Every klatch belongs to exactly one project; Klatch supplies a default project so the user is never *required* to choose.** Handles the singleton/new user; removes the chat/klatch asymmetry; default project = structural home with empty L2/L3, not a fake context injector. |
