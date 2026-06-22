@@ -129,9 +129,10 @@ Agents working on this repo use this file as the async handoff protocol.
   - **Design-acceptance spot-check — composition increments 1+2** (`iris-to-daedalus-composition-increments-conformance-2026-06-21.md`): conformant to spec §2+§3 Path A; max-5 *enforced*, atomic roster, project-required-as-sequenced. One forward-pointer (roles-first tiering latent until nameless agents exist).
   - Mode names + vocab sweep (`22d1631`); Daedalus spec-confirm reply (`panel` key stays / name-fallback ack).
 - **Daedalus ACCEPTED the default-project decision (6/21 eve, `daedalus-to-iris-project-default-mechanism`):** mechanism = **SENTINEL** (`null` = default project, no migration); label **"First project"** (lowercase confirmed); 3-step plan queued as next composition increment (default the form's project so a klatch is always creatable → render `null`-project channels under "First project" group → invert Round 7 test, coordinated with Argus). Thread closed by Daedalus. Decision is now **in implementation**, not just decided-in-principle.
-- **Next (on 5am resume):** (1) Watch for Daedalus's default-project increment landing on `claude/daedalus` → design review + MAXT. (2) Full interactive MAXT on composition surface once feature-complete (Paths B/C in). (3) Any further design questions.
-- **Waiting on:** Daedalus — default-project increment + remaining composition increments (Paths B/C, clone, mode-picker chrome) to land for review. No open blockers on Iris's side; **no open mail** (inbox drained 6/22).
-- **Updated:** 2026-06-22 05:00
+- **F1 ROUTED to Daedalus (`44cfb28`, 6/22):** xian confirmed default-project-by-default IS the design + "fix for sure" + "don't hold for me." Maps onto Daedalus's autonomous-build-boundary gate — all 3 deferral reasons (Iris review / Argus Round 7 tests / xian sign-off) now cleared → **build**. Offered step-1-first sequencing + standing rendering-review support. cc Argus for Round 7 test inversion.
+- **Next:** (1) Review Daedalus's default-project increment on his branch as it lands → design pass + live walkthrough (not holding for xian's close review, per his 6/22 instruction). (2) Coordinate Round 7 test inversion with Argus when Daedalus flags it. (3) Remaining composition increments (Paths B/C, clone, mode-picker) for review. F2–F6 minor findings documented in the design-acceptance doc (F6 field-order pairs with the F1 fix).
+- **Waiting on:** Daedalus — default-project increment build (gate resolved → build). No open blockers on Iris's side; no open mail.
+- **Updated:** 2026-06-22 ~10:30
 
 ## Signals
 
