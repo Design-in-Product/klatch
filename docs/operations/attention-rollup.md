@@ -8,7 +8,7 @@
 
 **Cadence:** at session-wrap, and any time substantive new items arrive. Engagement-state rule: when xian is *actively dipping in to act* (especially after a quiet stretch), full sweep-and-verify is mandatory — the "feels skippable" moment coincides exactly with when he most relies on the board being whole.
 
-**Last refreshed:** 2026-06-21 Sunday ~18:30 PT (Calliope) — verified sweep, post-increment-2 + invariant-1-enforced + model-validation-escalation.
+**Last refreshed:** 2026-06-21 Sunday ~19:13 PT (Calliope) — verified sweep, post-Iris-decision + Daedalus-cohort-patterns-memo.
 
 ---
 
@@ -76,8 +76,8 @@ Awareness, no action needed.
 - Argus: hourly (`:43`, Phase 2 tandem), launched 6/21 ~11:45. Self-launched off cover memo (pattern validated for both tandem partners); test-snapshot fallout cleaned + bonus pre-existing flake fixed.
 - Theseus: deferred (xian-rouses-on-AXT, not routine launch).
 
-### Daedalus → Iris design tension: project-required for klatches?
-- Daedalus surfaced 6/21 that composition spec §2 says klatch project is *optional*, but the sidebar grouping model only renders klatches under projects (no top-level home for a project-less klatch). Three resolution shapes proposed (klatches in Unassigned area; dedicated top-level Klatches section; keep project required). *Daedalus is sequencing around it — project stays required for current spine; flip lands after Iris's call.* Routed to Iris's daily heartbeat; non-blocking; her lane. xian-awareness only.
+### *(Closed 6/21 by Iris)* — Daedalus → Iris design tension resolved
+- *(See 🟢 below. Iris filed `docs/ux/decision-klatch-project-optionality.md` answering xian's premise question + Daedalus's three-shapes tension. Recommendation: make project optional; render via shape (b) — dedicated top-level Klatches section. Anchored in xian's own 5/11 Tension-3 resolution. Daedalus has a clean path to flip the current "project required" placeholder.)*
 
 ### Composition gesture spine — increments 1 + 2 shipped, invariant 1 enforced
 - **Increment 1** (`7d42822`, mid-day): atomic roster validation + dual Chat/Klatch affordance.
@@ -114,6 +114,8 @@ Awareness, no action needed.
 
 Struck-through items closed since v2's last refresh. Entries older than 7 days get pruned at refresh.
 
+- ~~**Klatch-project-optionality design tension**~~ — Iris resolved 6/21 (`a240539` + `docs/ux/decision-klatch-project-optionality.md`): make project optional, render via dedicated top-level Klatches section (shape b). Premise-bound deliberate-then-stale constraint, surfaced via xian's premise question + anchored in xian's own 5/11 Tension-3 resolution. Daedalus's spine has a clean path forward. *Closed 6/21.*
+- ~~**Daedalus cohort-patterns writeup**~~ — Daedalus filed `daedalus-to-calliope-composition-spine-patterns-2026-06-21.md` at xian's request: 7 transferable patterns from the day's spine work (test-suite-as-diagnostic-instrument, diagnose-before-act, tandem-collision-via-rebase-and-mail-contract, coordination-vs-code-layer-separation, infra-outage-fail-closed, can't-loosen-own-guardrails, branch-hygiene-under-fast-moving-main). Routed to Janus per his standing CEO-hat ask (cohort methodology likely brief-worthy). Pulled into Calliope's blog mining list (especially patterns 1, 2, 5, 6 — generalize beyond Klatch). *Closed-as-routed 6/21.*
 - ~~**Composition gesture spine — increment 2**~~ — Daedalus shipped `07bda25` (agent-picker polish: search + chips + roles-first). *Closed-as-milestone 6/21.*
 - ~~**Invariant 1 — chat-type/roster coherence enforcement**~~ — Daedalus shipped `d4fc8a5`; Argus PIN-flipped in lockstep; threads closed reconciled (`4b7f19b`). *Closed 6/21.*
 - ~~**`claude/argus` merge #1 (vocab fixes + flake)**~~ — xian approved + merged as `1a29830`; main suite green (1089/197). *Closed 6/21.*

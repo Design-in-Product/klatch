@@ -46,5 +46,39 @@ Other Daedalus decisions confirmed: @mention name-fallback when handle unset (fo
 
 Iris is standing by for next question or acceptance request.
 
+## 18:15 — Resumed (now on Opus 4.8). Two design questions routed to Iris + composition increments landed.
+
+Resumed duty cycle after a busy-signal retry; xian moved me to Opus 4.8. Caught up on a full afternoon of Daedalus + Argus work since 11:31: composition spine increment 1 (atomic roster + dual affordance, `7d42822`), increment 2 (agent-picker polish, `07bda25`), chat type/roster coherence enforcement, invariants work with Argus, Argus Phase 2 duty cycle live and tandem with Daedalus.
+
+### Design decision: klatch–project optionality (the main ask)
+
+Two memos routed to me, same question at two altitudes:
+- Daedalus (`daedalus-to-iris-klatch-project-optional-tension`): composition §2 says klatch project optional, but Round 7 sidebar renders klatches only under projects. Three resolution shapes (a/b/c).
+- Calliope relaying xian (`calliope-to-iris-sidebar-projects-question-from-xian`): upstream — *why* is under-a-project a structural requirement at all? Wants the why explicit.
+
+Investigated the lineage rather than reconstruct from memory:
+- `SIDEBAR.md` (March 16): requirement is deliberate — "klatches are a project coordination tool; no project, no klatch." Wireframe examples all project ceremonies (#standup/#coordination/#retro). Premise-bound.
+- `object-model.md` Tension 3 (xian, 5/11, *after* SIDEBAR.md): "don't encode constraints that are typical-but-not-mandatory." Applied to roles↔projects; klatch↔project is identical shape.
+- My composition §2 "project optional" was intentional (reasoning from the May principle) but I never flagged it overturned a Round 7 rule — that omission was mine; Daedalus caught a real drift.
+
+**Recommendation: make project optional for klatches.** The requirement faithfully encoded the March use case; the use case broadened (BYOC, spontaneous cross-project klatches — Klatch's narrowed differentiator); the encoding should follow. Render project-less klatches in a new top-level "Klatches" section (Daedalus's shape b), *not* under "Unassigned" (which connotes triage). Endorsed Daedalus's keep-required-in-spine, flip-later sequencing — nothing blocks him.
+
+Wrote it up as a repo deliverable: `docs/ux/decision-klatch-project-optionality.md`. Combined reply: `iris-to-daedalus-calliope-klatch-project-optionality-2026-06-21.md`. Committed + pushed (`a240539`). Left both inbound memos in `docs/mail/` (open action: xian's read + Daedalus's deferred flip) — not closed.
+
+### Design-acceptance spot-check: composition increments 1+2
+
+Code-level conformance read (not interactive MAXT — that waits for feature-complete). **Conformant.** Dual affordance, required Name, Purpose→L4, Path A picker (typeahead name/handle, removable chips, roles-first name-as-proxy, @handle, empty-state), max-5 cap *enforced* (disabled checkbox, not just displayed), atomic roster, project-still-required (matches endorsed sequencing). Paths B/C + clone correctly deferred. One non-blocking forward-pointer filed: roles-first tiering is latent (every EntityManager agent has a name, so "Other agents" tier is always empty until nameless agents can exist — relevant to Path B import design). Memo: `iris-to-daedalus-composition-increments-conformance-2026-06-21.md`.
+
+## ~18:40 — xian refined the klatch-project decision: default project, not nullable
+
+xian responded to the decision doc with two sharpenings that materially improved it:
+
+1. **Singleton case I'd missed** — the one-project (or zero-explicit-project) user, for whom projects are pure overhead. My "top-level Klatches section" assumed a multi-project power user.
+2. **Semantic ≠ taxonomic distinction** — "klatches make sense in a project" (Claim A, true) is not "taxonomy must require project metadata + subordinate klatches" (Claim B, the Round 7 over-reading). Fix B's friction, not A. My "make project optional" framing wrongly attacked A.
+
+His resolution: **a default / generic project as fallback.** Every klatch has exactly one project; Klatch supplies a default so the user is never *required* to choose. Strictly better than my nullable framing — keeps taxonomy uniform, hides project chrome from the singleton user, removes the chat/klatch asymmetry, and keeps the default project a structural home (empty L2/L3) rather than a fake context injector. Confirmed **option 2 (Daedalus's shape b)**, realized via the default project (renders like any project: CHATS over KLATCHES; flat for singleton, bottom-pinned for multi-project). This also folds in my backlogged "Standalone area" consolidation with a cleaner backing.
+
+Updated the decision doc (§6–§8 + summary + status → "decided in principle"). Flagged the one mechanism decision as Daedalus's: sentinel (`null`-as-default, my lean, no migration) vs real seeded row. Plus an immediate friction win available now (default the form's project field so a klatch is always creatable). Memo: `iris-to-daedalus-klatch-project-default-model-2026-06-21.md`.
+
 ## [Ongoing — entries will be added as work arrives]
 
