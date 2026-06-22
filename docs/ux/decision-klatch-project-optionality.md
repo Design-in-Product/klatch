@@ -134,14 +134,33 @@ v Klatch (project)
 > Piper Morgan
 > OpenLaws
 ─────────────────
-  CHATS            <- default project's chats (today's "Unassigned")
-  KLATCHES         <- default project's klatches  ← project-less klatches land here
+v First project        <- the default project, now visible + named (lowercase p)
+    CHATS              <- default project's chats (today's "Unassigned")
+    KLATCHES           <- default project's klatches  ← project-less klatches land here
 [ New Chat ] [ New Klatch ] [ Import ]
 ```
 
 This is what xian confirmed as **option 2 (Daedalus's shape b)** — a real KLATCHES home for unfiled klatches — but realized through the default project rather than a one-off section. It reconciles the earlier a/b tension: it has (b)'s dignity (a proper KLATCHES section, not buried under a triage label) and (a)'s placement (in the bottom area alongside loose chats), because the bottom area is simply *the default project rendered like every other project*.
 
-**This also brings my backlogged "Standalone area" consolidation forward** — and gives it a cleaner backing. I'd flagged (first-pass §7) that "Unassigned" mislabels intentionally-loose chats, and that a future "Standalone" area should hold both loose chats and klatches. The default project *is* that area, named honestly: it's not "unassigned/unsorted," it's "the default workspace." One open copy question, minor: what the default project is *labeled* once a second project exists and it needs a header — "Personal," "Workspace," "General," or similar. Invisible to the singleton user; decide at implementation. Not a blocker.
+**This also brings my backlogged "Standalone area" consolidation forward** — and gives it a cleaner backing. I'd flagged (first-pass §7) that "Unassigned" mislabels intentionally-loose chats, and that a future "Standalone" area should hold both loose chats and klatches. The default project *is* that area, named honestly: it's not "unassigned/unsorted," it's the default workspace.
+
+### Default project name — DECIDED (xian + Iris, 2026-06-21): **"First project"** (lowercase p)
+
+The seed string is settled. When the default project becomes visible (a second project exists, so it needs a header), it is labeled **`First project`** — lowercase p.
+
+The design goal was a name that **makes sense when it appears but subtly prompts a rename** — a *warm* itch, not a cold one. The spectrum we evaluated against:
+
+- **Cold itch** ("Untitled," "Untitled project") — strong rename pull, but reads as an error/forgot-to state. Faint guilt. Wrong tone for a thing Klatch seeded *for* the user.
+- **No itch** ("Workspace," "Home," "Personal," "General") — reads as deliberate and final; comfortable to leave forever, so it never prompts the rename.
+- **Warm itch** ("First project") — a perfectly fine name that just begs for specificity. Gentle, no guilt, ages okay if left.
+
+Why "First project" lands the warm itch:
+1. **Provisional by *description*, not *deficiency*.** It names its position (ordinality), not its content — creating a small "...but what's it *about*?" pull without the coldness of "Untitled."
+2. **It carries the literal word "project"; real projects don't.** Named projects are "Klatch," "OpenLaws" — never "Klatch project." So the one header containing the word "project" is self-evidently the unnamed default. The genericness is the tell.
+3. **Lowercase p** reads as a descriptive placeholder; title-case "First Project" reads as a Proper Name and loses the nudge. The styling carries the provisionality.
+4. **Truest meaning is temporal** — it's where the user's *earliest* conversations live, "where you started." That defuses the "the user didn't create it, so 'their first project' is a small lie" objection: "first" maps to *when*, which is accurate.
+
+Rejected: **"My first project"** (xian: "a bit dated and cutesy" — the "my" protests too much). Accepted minor edge: as a permanent bottom bucket for a user who never renames, "first" (implying primacy) sitting in last position is a tiny ordinal-vs-position mismatch — accepted, because the people who'd notice are exactly the people who'll rename it, and the singleton user never sees the header at all.
 
 ## 8. Sequencing + the one implementation sub-decision for Daedalus
 

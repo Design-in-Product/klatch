@@ -80,5 +80,11 @@ His resolution: **a default / generic project as fallback.** Every klatch has ex
 
 Updated the decision doc (§6–§8 + summary + status → "decided in principle"). Flagged the one mechanism decision as Daedalus's: sentinel (`null`-as-default, my lean, no migration) vs real seeded row. Plus an immediate friction win available now (default the form's project field so a klatch is always creatable). Memo: `iris-to-daedalus-klatch-project-default-model-2026-06-21.md`.
 
+## ~18:55 — Default project name decided: "First project" (lowercase p)
+
+Closed the one open copy question from the default-project decision. Worked the naming with xian as a craft riff. Framed the goal as a **warm itch** (makes sense on appearance, subtly prompts rename) vs cold itch ("Untitled" — error-flavored) vs no itch ("Workspace/Home/General" — too final to ever prompt rename). xian's "First project" is the warm-itch sweet spot. Reasons it works: provisional by description (ordinality) not deficiency; carries the literal word "project" while real projects won't (self-identifies as the unnamed default); lowercase p reads as placeholder not Proper Name; truest meaning is temporal ("where you started"), which defuses the "user didn't create it" objection. Rejected "My first project" (xian: dated/cutesy; the "my" protests too much).
+
+**Decided: `First project`, lowercase p.** Recorded in decision doc §7 (with the warm-itch reasoning + the diagram updated to show it as the bottom-pinned named section). Seed string locked for Daedalus: `iris-to-daedalus-default-project-name-final-2026-06-21.md` — flagged lowercase-p is deliberate so it's not "tidied" to title-case, and that the singleton user never sees it (renders headerless until a 2nd project exists).
+
 ## [Ongoing — entries will be added as work arrives]
 
