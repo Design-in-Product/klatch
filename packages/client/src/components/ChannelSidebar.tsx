@@ -44,6 +44,7 @@ export function ChannelSidebar({
   const [newProjectId, setNewProjectId] = useState('');
   const [newMode, setNewMode] = useState<InteractionMode>('panel');
   const [selectedEntityIds, setSelectedEntityIds] = useState<Set<string>>(new Set());
+  const [agentSearch, setAgentSearch] = useState('');
 
   const resetForm = () => {
     setNewName('');
@@ -52,6 +53,7 @@ export function ChannelSidebar({
     setNewProjectId('');
     setNewMode('panel');
     setSelectedEntityIds(new Set());
+    setAgentSearch('');
     setShowForm(false);
   };
 
@@ -70,6 +72,25 @@ export function ChannelSidebar({
       return next;
     });
   };
+
+  // Agent picker (composition spec §3 Path A): typeahead-filter by name/handle,
+  // partition roles-first (name-as-proxy — a named agent is a role; nameless = one-off).
+  const { roleAgents, otherAgents } = useMemo(() => {
+    const q = agentSearch.trim().toLowerCase();
+    const matches = (e: Entity) =>
+      !q || e.name.toLowerCase().includes(q) || (e.handle?.toLowerCase().includes(q) ?? false);
+    const filtered = entities.filter(matches);
+    return {
+      roleAgents: filtered.filter((e) => e.name.trim().length > 0),
+      otherAgents: filtered.filter((e) => e.name.trim().length === 0),
+    };
+  }, [entities, agentSearch]);
+
+  const selectedAgents = useMemo(
+    () => entities.filter((e) => selectedEntityIds.has(e.id)),
+    [entities, selectedEntityIds]
+  );
+  const atCap = selectedEntityIds.size >= 5;
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -464,35 +485,82 @@ export function ChannelSidebar({
                     ))}
                   </select>
 
-                  {/* Entity picker */}
+                  {/* Agent picker — composition spec §3 Path A (existing agents) */}
                   {entities.length > 0 && (
-                    <div>
-                      <div className="text-xs font-medium text-muted uppercase tracking-wider mb-1">
-                        Entities {selectedEntityIds.size > 0 && `(${selectedEntityIds.size}/5)`}
+                    <div className="space-y-1">
+                      <div className="text-xs font-medium text-muted uppercase tracking-wider">
+                        Agents {selectedEntityIds.size > 0 && `(${selectedEntityIds.size}/5)`}
                       </div>
-                      <div className="space-y-0.5 max-h-24 overflow-y-auto">
-                        {entities.map((ent) => (
-                          <label
-                            key={ent.id}
-                            className="flex items-center gap-1.5 px-1.5 py-0.5 rounded hover:bg-hover cursor-pointer text-xs"
-                          >
-                            <input
-                              type="checkbox"
-                              checked={selectedEntityIds.has(ent.id)}
-                              onChange={() => toggleEntity(ent.id)}
-                              disabled={!selectedEntityIds.has(ent.id) && selectedEntityIds.size >= 5}
-                              className="accent-accent"
-                            />
+
+                      {/* Selected agents as removable chips */}
+                      {selectedAgents.length > 0 && (
+                        <div className="flex flex-wrap gap-1">
+                          {selectedAgents.map((ent) => (
                             <span
-                              className="w-2 h-2 rounded-full flex-shrink-0"
-                              style={{ backgroundColor: ent.color }}
-                            />
-                            <span className="text-primary truncate">{ent.name}</span>
-                            <span className="text-[9px] px-1 py-0.5 rounded bg-badge text-muted ml-auto flex-shrink-0">
-                              {getModelLabel(ent.model)}
+                              key={ent.id}
+                              className="inline-flex items-center gap-1 rounded-full bg-badge px-2 py-0.5 text-[11px] text-primary"
+                            >
+                              <span className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ backgroundColor: ent.color }} />
+                              <span className="truncate max-w-[8rem]">{ent.name}</span>
+                              <button
+                                type="button"
+                                onClick={() => toggleEntity(ent.id)}
+                                aria-label={`Remove ${ent.name}`}
+                                className="text-muted hover:text-primary leading-none"
+                              >
+                                ×
+                              </button>
                             </span>
-                          </label>
-                        ))}
+                          ))}
+                        </div>
+                      )}
+
+                      {/* Typeahead search */}
+                      <input
+                        type="text"
+                        value={agentSearch}
+                        onChange={(e) => setAgentSearch(e.target.value)}
+                        placeholder="Search agents by name or @handle"
+                        className="w-full rounded bg-input border border-line px-2 py-1 text-xs text-primary placeholder-muted focus:outline-none focus:border-accent"
+                      />
+
+                      {/* Roles first, other agents below */}
+                      <div className="space-y-1 max-h-32 overflow-y-auto">
+                        {[{ label: 'Roles', list: roleAgents }, { label: 'Other agents', list: otherAgents }]
+                          .filter((g) => g.list.length > 0)
+                          .map((g) => (
+                            <div key={g.label}>
+                              <div className="text-[9px] font-medium text-muted uppercase tracking-wider px-1.5 mb-0.5">{g.label}</div>
+                              {g.list.map((ent) => {
+                                const checked = selectedEntityIds.has(ent.id);
+                                return (
+                                  <label
+                                    key={ent.id}
+                                    className={`flex items-center gap-1.5 px-1.5 py-0.5 rounded text-xs ${
+                                      !checked && atCap ? 'opacity-40 cursor-not-allowed' : 'hover:bg-hover cursor-pointer'
+                                    }`}
+                                  >
+                                    <input
+                                      type="checkbox"
+                                      checked={checked}
+                                      onChange={() => toggleEntity(ent.id)}
+                                      disabled={!checked && atCap}
+                                      className="accent-accent"
+                                    />
+                                    <span className="w-2 h-2 rounded-full flex-shrink-0" style={{ backgroundColor: ent.color }} />
+                                    <span className="text-primary truncate">{ent.name}</span>
+                                    {ent.handle && <span className="text-muted text-[9px] flex-shrink-0">@{ent.handle}</span>}
+                                    <span className="text-[9px] px-1 py-0.5 rounded bg-badge text-muted ml-auto flex-shrink-0">
+                                      {getModelLabel(ent.model)}
+                                    </span>
+                                  </label>
+                                );
+                              })}
+                            </div>
+                          ))}
+                        {roleAgents.length === 0 && otherAgents.length === 0 && (
+                          <div className="text-[11px] text-muted px-1.5 py-1">No agents match "{agentSearch}".</div>
+                        )}
                       </div>
                     </div>
                   )}
