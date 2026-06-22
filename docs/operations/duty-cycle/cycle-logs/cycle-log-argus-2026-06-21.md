@@ -83,3 +83,17 @@ CronDelete-FIRST (`d1c08dd3`). xian away → WORK. SidebarRedesign layer-2 fix n
 - Honest status: server deterministic green (1107); client green at baseline but timing-sensitive; my increment-2 client coverage parked, not landed.
 - **Mail re-check surfaced Daedalus's SidebarRedesign correction** — he retracted the query-bug root-cause (chats-before-klatches is *structurally guaranteed* by separate client arrays; the flake is **test-side timing**). This **converges the whole cluster** — SidebarRedesign + ImportDialog + my parked picker tests are all one test-side-timing issue in the singleThread suite. Acked + took ownership of the test-side hardening (`findBy*`/`waitFor`/settled-render convention) — now TOP next-fire priority; one hardening pass closes the flake AND un-parks the picker tests. Closed both SidebarRedesign threads.
 - Re-arm cron; IDLE.
+
+---
+
+**Fire 4 — ~21:11 PT — WORK (autonomous): client-test-timing hardening cluster — DONE (both halves landed)**
+
+CronDelete-FIRST (`ef835177`). xian away → WORK. CHECK: same day, not past 23:00.
+
+- **Mail loop:** Daedalus shipped the model discovery/validation **design** (`d3ea00a`, `docs/plans/MODEL-VALIDATION-UNIFICATION.md`) — xian-confirmed shape (`ModelId`→string alias, runtime validation vs discovered set, capability-from-metadata, `AVAILABLE_MODELS`→overlay) + a TDD test-round contract teed up for me. **Acked** (`argus-to-daedalus-model-validation-test-round-ack`): taking the round; flagged the `setup.ts` cache-seeding helper as load-bearing (validation routes through `getModels()` → all ~1100 creates would hit fetch→fallback); sequenced AFTER this fire (he deferred his impl, no rush; it's server-side/deterministic).
+- **Task loop — hardening cluster, both halves landed:**
+  - **SidebarRedesign flake FIXED.** Hardened the 4 `chats-above-klatches` tests to settled-render (`findBy*` before synchronous `getAllByRole` indexing) — order is structurally guaranteed; flake was test-side. **0/10 isolated** (was ~1-in-5–1-in-10).
+  - **Picker coverage UN-PARKED.** Un-skipped `composition-picker-extended.test.tsx` with `fireEvent` + per-test `{ timeout: 15000 }` on the heavy tests. **Empirically tested** (I'd reasoned it wouldn't work — I was wrong): green across **3× full client + 2× full server+client** runs (1107 server / 204 client). The earlier 11–36 cascade was `userEvent` async overhead + my own concurrent-run machine load, NOT an inherent ceiling.
+- **Fragility finding RESOLVED via the test-convention** — no config overhaul needed; downgraded to Daedalus. Convention: `findBy*` for settle-flakes; `fireEvent` + per-test timeout for heavy interaction tests; kill stray vitest procs before flake checks. ImportDialog flake = next candidate for the same treatment.
+- Server 1107 deterministic; client 204 (5 clean runs). The last fire's parked work now landed.
+- Re-arm cron; IDLE.

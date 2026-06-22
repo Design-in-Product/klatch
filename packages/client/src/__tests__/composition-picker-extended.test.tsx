@@ -1,19 +1,17 @@
 /**
  * Composition increment 2 — agent picker (ChannelSidebar) EXTENDED coverage.
  *
- * ⚠️ PARKED AS `describe.skip` — BLOCKED ON CLIENT-SUITE FRAGILITY (Argus, 2026-06-21).
- * These 5 tests pass cleanly in ISOLATION (`vitest run composition-picker-extended`),
- * but in the FULL singleThread client suite they amplify the suite's latent timing
- * flake badly: baseline is ~0–3 flaky failures/run; adding this file as live tests
- * drove it to 11–36 failures/run, cascading into unrelated files (ImportDialog,
- * SidebarRedesign). Root cause is the known singleThread ceiling (config comment +
- * `argus-to-daedalus-rate-limit-headroom-and-test-flake-2026-05-11.md`): heavy
- * ChannelSidebar render+interact tests exceed the suite's timing budget under load.
- * Filed as a systemic finding: `argus-to-daedalus-client-suite-fragility-2026-06-21.md`.
- * UN-SKIP once the suite can absorb heavy interaction files (testTimeout bump / file
- * split / pool-strategy change — Daedalus's call). Work preserved, not lost.
+ * STABILITY: synchronous `fireEvent` + explicit `{ timeout: 15000 }` on the two
+ * interaction-heaviest tests (cap, end-to-end). These were briefly parked 6/21 when
+ * an earlier `userEvent` version + concurrent test-run machine load cascaded the
+ * singleThread suite (11–36 failures); with fireEvent, per-test timeouts, and a clean
+ * machine they run green (3×3 full-suite runs, 204 passed). The lesson, recorded in
+ * `argus-to-daedalus-client-suite-fragility-2026-06-21.md`: heavy ChannelSidebar
+ * interaction tests need fireEvent + a generous per-test timeout in this singleThread
+ * suite — and full-suite flake checks must kill stray vitest procs first (machine load
+ * skews timing).
  *
- * Covers (when live): max-5 cap boundary; chip removal deselects; typeahead by
+ * Covers: max-5 cap boundary; chip removal deselects; typeahead by
  * @handle (not just name); roles/other partition; end-to-end picker→onCreateChannel
  * roster (client half of the atomic-roster path covered server-side in
  * composition-gesture-extended.test.ts). Synchronous fireEvent throughout.
@@ -53,8 +51,8 @@ function openKlatchForm() {
   fireEvent.click(screen.getByText('+ New Klatch'));
 }
 
-describe.skip('Composition picker (increment 2) — extended [parked: client-suite fragility]', () => {
-  it('enforces the max-5 cap: a 6th agent cannot be added', () => {
+describe('Composition picker (increment 2) — extended', () => {
+  it('enforces the max-5 cap: a 6th agent cannot be added', { timeout: 15000 }, () => {
     const entities = ['A', 'B', 'C', 'D', 'E', 'F'].map((c, i) => ent(`e${i}`, `Agent${c}`));
     render(<ChannelSidebar {...baseProps} entities={entities} />);
     openKlatchForm();
@@ -100,7 +98,7 @@ describe.skip('Composition picker (increment 2) — extended [parked: client-sui
     expect(screen.getByText('Daedalus')).toBeInTheDocument();
   });
 
-  it('end-to-end: picked roster flows into onCreateChannel (klatch)', () => {
+  it('end-to-end: picked roster flows into onCreateChannel (klatch)', { timeout: 15000 }, () => {
     const entities = [ent('e1', 'Alpha'), ent('e2', 'Beta'), ent('e3', 'Gamma')];
     const projects = [{ id: 'p1', name: 'Proj' }] as any;
     const onCreateChannel = vi.fn();
