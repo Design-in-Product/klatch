@@ -76,6 +76,15 @@
 - **Observations:** *pending Phase 3 launch.*
 - **Refinements triggered:** *pending.*
 
+### 2026-06-22 — Phase 3 cutover — daily `31 9 * * *` (cadence-of-record)
+
+- **Cadence:** `31 9 * * *` (daily at 09:31 AM PT; off-mark from `:00`/`:13`/`:17`/`:43`; chosen to stagger from Calliope's `:13` daily anchor).
+- **Reason:** Signal-receiver heartbeat. Work-shape is bursty + xian-tandem (AAXT in concentrated waves; MAXT requires xian's live presence). Daily catches cross-agent prompts ("we need Theseus to probe this surface") without creating hourly no-op overhead. Extends don't-sit-passively rule to bursty roles.
+- **Cutover (2026-06-22 ~09:30 PT, xian-present):** persistent worktree `.claude/worktrees/theseus` on `claude/theseus` from `origin/main` (HEAD `44cfb28`). Per-agent docs created: `theseus-tasks.md`, cycle log, session log. Cover memo + 5/28 green-light moved to `read/`. Report-in memo to Calliope filed.
+- **Root cause of recurring-questions pattern:** each new session read "theseus not set up" from files and re-asked setup questions. Fixed by writing setup into files (this fire). Per-session statelessness means file state is the only persistent signal.
+- **Observations (first, day-of):** *Heartbeat cadence feels right for the signal-receiver shape. No immediate AAXT assignment; standing by for Daedalus/Iris direction. Will accumulate real observations from first autonomous fires before proposing cadence changes.*
+- **Refinements triggered:** *none yet.*
+
 ---
 
 ## Iris
