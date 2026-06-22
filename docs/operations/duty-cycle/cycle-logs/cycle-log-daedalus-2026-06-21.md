@@ -61,3 +61,15 @@ xian present and conversational ("resuming our work together"). Asked him how to
 - **Argus invariants finding** — extended coverage green (7 tests, `claude/argus` d38a89f) + 2 un-enforced API invariants (chat+multi-agent; klatch+empty-roster). DECIDED: enforce a route-level type/roster coherence check (contract + error strings filed to Argus; lands with increment 2, merge coordinated with his PIN-test flip). Queued in task list.
 - **Argus sweep #13** — SDK `0.96→0.104` + add `claude-opus-4-8` queued (code, reviewable increment); `DEFAULT_MODEL` 4.7→4.8 flip surfaced to Blocked-on-xian (priority raised by Fable5/Mythos5 gov suspension → 4.8 is Anthropic's recommended fallback). Clean audits noted. Closed sweep thread.
 - Surfaced **force-push approval** to Blocked-on-xian (branch-push blocked until synced). Reply filed; invariants thread left active (coordination pending). No branch-pushable code this fire (force-push gate) — decisions + coordination are the unblocked value.
+
+---
+
+**Day close — ~evening PT — xian handed to overnight autonomous operation.** xian's directive: "keep tackling unblocked work; batch anything blocked for my attention; I'll address it in the morning. Argus continues his cycle too."
+
+**What landed on `main` today (verified green):** Phase-2 duty-cycle launch (Argus + me) → the full **composition spine** (increment 1 atomic roster + dual affordance; chat-coherence invariant; increment 2 polished agent picker — all browser-verified, Iris-confirmed conformant) → the **model-validation unification** (ModelId→string, validate against discovered set, capability from metadata; Argus's round green 1112/204; picker↔validation now a standing guard) → cohort-patterns writeup to Calliope → corrected sidebar diagnosis (test-side, Argus's). Force-push friction resolved (xian approved; branch syncs clean). One process slip surfaced + accepted (model-validation code reached main via a docs-on-code stack; xian: "ok this time").
+
+**Overnight drain this fire:** read 9 accumulated memos (Iris conformance ✅, Iris+xian project-optionality DECIDED, Argus model-validation-round done, Argus sidebar-flake-taken, Argus client-suite-fragility). Acted: (1) **client-test-infra direction decided** for Argus (targeted testTimeout bumps + settled-render convention + chase the cascade/isolation; keep singleThread) — unparks his picker coverage; (2) **default-project mechanism decided** = sentinel (`null`→"First project" at render; no migration), acked to Iris, queued as the next increment; (3) closed 10 resolved threads to `read/`.
+
+**Prioritized queue the cron will work (overnight, branch-only — merges await xian's morning review):** (1) default-project increment [fully specced]; (2) cross-ref surface; (3) clone-from-klatch; (4) @mention autocomplete; (5) Paths B/C [may want Iris design-confirm]; plus Round 31b cosmetics + Finding-1 dedup. **Batched Blocked-on-xian for morning:** `DEFAULT_MODEL` 4.7→4.8 flip (product call); all branch increments awaiting review/merge.
+
+Re-arming cron for overnight. Each fire: CronDelete-FIRST → drain → advance one increment on `claude/daedalus` → re-arm.
