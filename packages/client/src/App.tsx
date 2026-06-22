@@ -3,6 +3,7 @@ import type { Channel, Entity, ModelId, InteractionMode, ChannelType } from '@kl
 import { INTERACTION_MODES } from '@klatch/shared';
 import { getModelLabel } from './hooks/useModels';
 import { ChannelSidebar } from './components/ChannelSidebar';
+import { CrossRefStrip } from './components/CrossRefStrip';
 import { ChannelSettings } from './components/ChannelSettings';
 import { ProjectSettings } from './components/ProjectSettings';
 import { EntityManager } from './components/EntityManager';
@@ -18,6 +19,7 @@ import {
   fetchChannels,
   fetchEntities,
   fetchChannelEntities,
+  fetchKlatchesForEntity,
   createChannel,
   updateChannelApi,
   clearChannelHistory,
@@ -48,6 +50,7 @@ export default function App() {
     useMessages(activeChannelId);
   const [streamingMessageIds, setStreamingMessageIds] = useState<string[]>([]);
   const [channelEntities, setChannelEntities] = useState<Entity[]>([]);
+  const [relatedKlatches, setRelatedKlatches] = useState<Channel[]>([]);
   const [allEntities, setAllEntities] = useState<Entity[]>([]);
   const [showSettings, setShowSettings] = useState(false);
   const [showExportReview, setShowExportReview] = useState(false);
@@ -83,6 +86,17 @@ export default function App() {
   }, [activeChannelId]);
 
   const activeChannel = channels.find((c) => c.id === activeChannelId);
+
+  // Cross-reference: for a 1-1 role chat (one agent), surface the klatches that agent is also in.
+  useEffect(() => {
+    if (activeChannel?.type === 'chat' && channelEntities.length === 1) {
+      fetchKlatchesForEntity(channelEntities[0].id)
+        .then(setRelatedKlatches)
+        .catch(() => setRelatedKlatches([]));
+    } else {
+      setRelatedKlatches([]);
+    }
+  }, [channelEntities, activeChannel?.type]);
 
   // Multi-stream handling
   const handleStreamComplete = useCallback(
@@ -484,6 +498,11 @@ export default function App() {
             </button>
           )}
         </div>
+
+        {/* Cross-reference strip — klatches this agent is also in (1-1 role chats only) */}
+        {activeChannel?.type === 'chat' && channelEntities.length === 1 && (
+          <CrossRefStrip klatches={relatedKlatches} onSelect={handleSelectChannel} />
+        )}
 
         {/* Settings panel (toggle) — channel or project */}
         {showSettings && activeChannel && (

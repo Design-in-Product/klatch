@@ -495,6 +495,23 @@ export function getChannelEntityCount(channelId: string): number {
   return row.count;
 }
 
+/**
+ * Klatches (type='klatch' channels) that a given entity participates in.
+ * Powers the 1-1 chat cross-reference surface ("Also in: #klatch-a …").
+ * Returns only klatches — an entity's own 1-1 chat (type='chat') is never included.
+ */
+export function getKlatchesForEntity(entityId: string): Channel[] {
+  const rows = getDb()
+    .prepare(`
+      SELECT c.* FROM channels c
+      JOIN channel_entities ce ON c.id = ce.channel_id
+      WHERE ce.entity_id = ? AND c.type = 'klatch'
+      ORDER BY c.created_at ASC
+    `)
+    .all(entityId) as any[];
+  return rows.map(rowToChannel);
+}
+
 // ── Project CRUD ──────────────────────────────────────────────
 
 export function getProject(id: string): Project | undefined {

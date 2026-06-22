@@ -183,6 +183,13 @@ export async function fetchChannelEntities(channelId: string): Promise<Entity[]>
   return res.json();
 }
 
+/** Klatches a given entity participates in — powers the 1-1 chat "Also in" cross-reference. */
+export async function fetchKlatchesForEntity(entityId: string): Promise<Channel[]> {
+  const res = await fetch(`${BASE}/entities/${entityId}/klatches`);
+  if (!res.ok) throw new Error(`Failed to fetch klatches for entity: ${res.statusText}`);
+  return res.json();
+}
+
 export async function createEntity(data: {
   name: string;
   handle?: string;
