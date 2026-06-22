@@ -151,3 +151,30 @@ Argus's memo moved to `read/` — informational, the Janus relay IS the action. 
 
 Notable: this is the first time the rollup-distinct-from-Janus-channel routing pattern has actually fired in production. The discipline of "CEO-hat items go to Janus, operational-attention items go to the rollup, agent items go directly between agents" is holding shape under real-world load. Worth keeping eye on whether the distinction stays clean as volume grows.
 
+
+**Fire 12 (autonomous) — ~15:13 PT — WORK → no-op (batched)** — pull fast-forward (self-merge of Fire 11); no new external commits; the lone inbound match (`argus-to-daedalus-composition-invariants`) is A↔D, not mine; idle.
+**Fire 13 (autonomous) — ~16:13 PT — WORK → no-op (batched)** — already up-to-date; no new commits; no actionable inbound; idle.
+**Fire 14 (autonomous) — ~17:13 PT — WORK → no-op (batched)** — already up-to-date; no new commits; no actionable inbound; idle.
+
+---
+
+**Fire 15 (autonomous-post-engagement) — ~18:30 PT — SUBSTANTIVE (verified-sweep refresh after xian's 6:15 check-in)** — xian's 6:15 PM bash-error/unblock note triggered the engagement-state rule (xian actively dipping in after quiet stretch → full sweep mandatory per Exec 6/19). CronDelete-FIRST per Principle 2 (`c5a4d18a` cancelled).
+
+Verified sweep of commits since rollup v2.4 surfaced substantial cohort work I'd been logging only as Fires 12–14 no-ops:
+
+**Daedalus shipped:**
+- **Increment 2** (`07bda25`, afternoon): agent-picker polish — search + chips + roles-first
+- **Invariant 1 enforced** (`d4fc8a5`, late afternoon): chat-type/roster coherence — chat+multi-agent → 400. Picked up Argus's cheapest pinned-test invariant.
+- Force-push-bash-error friction (per xian 6:15) resolved on Daedalus's side; he pushed `1ec88d5` (invariants revision to Argus) after working through it. xian-aware; not surfaced as a 🔴 since Daedalus self-recovered cleanly. Worth-watching pattern for the experiments registry if it recurs.
+
+**Argus shipped:**
+- **PIN flipped in lockstep with invariant-1 enforcement** (`80db814`). Threads closed reconciled (`4b7f19b`).
+- **Structural escalation: model discovery/validation split.** Reframed his earlier "add Opus 4.8" memo after xian flagged it brittle. The discovery is dynamic, the validation is static, the two halves diverged — Opus 4.8 is live in the API and offered by the picker, but the static `AVAILABLE_MODELS` rejects it with 400. Four-step migration sketch proposed; Daedalus's call on shape + sequencing.
+
+**Rollup v2.5 (verified sweep):**
+- 🔴 reshape: the `claude/argus` merge item updated to reflect Argus's PIN-flip work alongside the original extended-coverage tests. Still pending xian-approve.
+- 🟢 +2 closures: composition increment 2, invariant 1 enforcement+reconciliation
+- 🔵 reshape: composition-spine progress consolidated; invariant 2 note (klatch+empty roster — still client-guarded only, not yet flagged for enforcement); model-discovery escalation added as a new awareness item (Daedalus's lane; not a xian-action).
+
+The CEO-hat routing pattern is also holding clean: the *vendor-risk arc* went to Janus this morning (Fire 11), the *model-validation brittleness* stays inside the agent-team as a structural decision Daedalus owns. Two different shapes of cross-cutting concern; two different routes. Discipline holding under load.
+
