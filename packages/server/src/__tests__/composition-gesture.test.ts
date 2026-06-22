@@ -75,4 +75,25 @@ describe('POST /api/channels — composition roster', () => {
     const channel = await res.json();
     expect(getChannelEntities(channel.id).map((e) => e.id)).toEqual([DEFAULT_ENTITY_ID]);
   });
+
+  // ── type/roster coherence (Argus invariants finding) ────────
+  it('rejects a chat carrying multiple agents (structural incoherence)', async () => {
+    const app = createTestApp();
+    const a = createEntity('A', 'claude-opus-4-6', 'p', '#111');
+    const b = createEntity('B', 'claude-opus-4-6', 'p', '#222');
+    const res = await app.request('/api/channels', postJson({
+      name: 'Overloaded Chat', type: 'chat', entityIds: [a.id, b.id],
+    }));
+    expect(res.status).toBe(400);
+    expect((await res.json()).error).toMatch(/chat is 1:1/i);
+  });
+
+  it('allows a klatch with no explicit roster (valid 1-agent klatch via default)', async () => {
+    const app = createTestApp();
+    const res = await app.request('/api/channels', postJson({
+      name: 'Solo Klatch', type: 'klatch',
+    }));
+    expect(res.status).toBe(201);
+    expect(getChannelEntities((await res.json()).id).map((e) => e.id)).toEqual([DEFAULT_ENTITY_ID]);
+  });
 });

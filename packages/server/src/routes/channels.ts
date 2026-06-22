@@ -126,6 +126,21 @@ app.post('/channels', async (c) => {
     }
   }
 
+  // Type/roster coherence (Argus invariants finding 2026-06-21). A "chat" is 1:1 —
+  // carrying multiple agents is structural incoherence, so reject it. Enforce at the
+  // route only; createChannel stays permissive for imports/internal callers.
+  //
+  // NOTE: Argus also flagged klatch + empty-roster → default entity. On reflection
+  // that's a *valid* 1-agent klatch (the spec allows klatch with ≥1 agent; the
+  // default counts), and rejecting it breaks legitimate create-then-add flows
+  // (round7). The "deliberate pick" is a client-UX guard, not an API invariant — so
+  // we do NOT reject it. Revisit if the klatch-creation redesign (project-optional)
+  // changes the contract.
+  const resolvedType: ChannelType = type || 'chat';
+  if (resolvedType === 'chat' && entityIds && entityIds.length > 1) {
+    return c.json({ error: 'A chat is 1:1 — use type "klatch" for multiple agents' }, 400);
+  }
+
   const channel = createChannel(
     name.trim(),
     systemPrompt?.trim() || 'You are a helpful assistant.',
