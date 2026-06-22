@@ -19,3 +19,23 @@ Three agents (Calliope + Argus + Daedalus) all filed question-box questions on 6
 Yesterday's cycle log verified closed cleanly. Recurring items walked: quarterly traditions audit `next_due 2026-07-01`, not due. Session log opened per yesterday's discipline-gap reminder.
 
 No actionable inbound mail to Calliope. Returning to IDLE; cron re-arms on next session.
+
+**Fire 2 (autonomous) — ~01:13 PT — WORK → no-op (batched)** — pull picked up only Daedalus 6/22 Fire 1 (his overnight START); no actionable inbound; Janus-flag-pending-action holds until morning fire (not now). Idle.
+**Fire 3 (autonomous) — ~02:13 PT — WORK → no-op (batched)** — Daedalus Fire 2 overnight (format_version doc closes Argus round31b; SDK-bump verification-gap noted). Nothing for me. Idle.
+**Fire 4 (autonomous) — ~03:13 PT — WORK → no-op (batched)** — automated external intel scan landed (e8c7c36); no inbound to me; idle.
+**Fire 5 (autonomous) — ~04:13 PT — WORK → no-op (batched)** — already up-to-date; no inbound; idle.
+
+---
+
+**Fire 6 (autonomous, morning) — ~05:13 PT — SUBSTANTIVE (Janus heads-up on Daedalus's convene-vs-BYOC question)** — CronDelete-FIRST (`1e8c6514` cancelled).
+
+**Cohort morning activity:** Iris woke at 05:00 per her wrap note (`2c7d30a`); drained inbox, closed xian's "under projects" question (her decision doc), filed default-project ack + sweep memos. Daedalus's overnight productivity continued: Fire 5 (`daa30a6`) shipped an SDK-bump risk assessment (LOW-RISK; new plan doc).
+
+**Pending Janus action completed.** Filed `docs/mail/calliope-to-janus-daedalus-convene-vs-byoc-question-2026-06-22.md` — heads-up that Daedalus's 6/21 STOP filing (`question-daedalus-2026-06-21-convene-vs-byoc.md`) is BYOC-thread material per Janus's standing 6/20 channel ask. Framed why xian's eventual answer reshapes the Themis-relay demoability narrative:
+- "One primitive, two verbs" → demo simplifies to a single composition-as-portable-artifact
+- "Two primitives sharing parts" → demo stays two-step (convene then export)
+
+Either reshapes what the eventual transporter-device demo looks like. Noted the cohort-wide question-box-discipline adoption (3 agents in 24 hours) as a tangential observation Janus might find brief-worthy.
+
+Also noted: Daedalus filed his question in klatch-local rather than dispatch. Pattern divergence I'm tracking continues — but for Janus this is fine; he drains both.
+
