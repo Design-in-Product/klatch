@@ -8,6 +8,7 @@ dist/
 
 # Database backups
 *.bak
+*.db.backup*
 
 # Research data (export ZIPs and extracted contents)
 research/data-*

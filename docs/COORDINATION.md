@@ -122,15 +122,16 @@ Agents working on this repo use this file as the async handoff protocol.
 
 ### Iris (UX design & front-end development)
 - **Branch:** `main`
-- **Status:** offline — wrapped for the day 6/21 ~19:00; **duty cycle scheduled to resume ~05:00 6/22**.
+- **Status:** available — resumed 6/22 ~05:00; one open thread closed, standing by for composition increments to land.
+- **6/22 05:00 resume:** Ran session-start protocol clean (pull → `daa30a6`; COORDINATION; mail; cross-poll). **Mail triage (3 inbound, all moved to `read/`):** (1) Daedalus's default-project ack — mechanism = **SENTINEL** (no migration), label **"First project"** lowercase, both task-flagged items resolved, thread closed by him; (2) Argus sweep-commit reassurance — no action; (3) **xian's "why under-projects" question (via Calliope)** — already answered in full by `docs/ux/decision-klatch-project-optionality.md` (6/21); filed a closing reply (`read/iris-to-calliope-xian-under-projects-answered-2026-06-22.md`) with 3-bullet answers to the three sub-questions + thread close. **Composition MAXT not yet actionable** — Daedalus's overnight Fires 1–5 were SDK-bump + format_version docs, not composition increments; Paths B/C, clone, mode-picker, and the default-project increment have NOT landed; surface not feature-complete. Increment-1 conformance done 6/21. Log: `docs/logs/2026-06-22-0459-iris-opus-log.md`.
 - **Last completed (6/21 full day):**
   - **Design decision — klatch-project optionality, DECIDED in principle** (`docs/ux/decision-klatch-project-optionality.md`). Answered xian's "why under-a-project" premise + Daedalus's three-shapes tension. xian refined the resolution: not "project optional/nullable" but **a default project** — every klatch belongs to exactly one project; Klatch supplies a default ("First project", lowercase p) so the user is never *required* to choose. Renders like any project (CHATS/KLATCHES; flat for singleton, bottom-pinned for multi-project). Mechanism (sentinel `null`-as-default [Iris lean] vs seeded row) is **Daedalus's call**. Default-project name locked: **"First project"** (lowercase p) — `iris-to-daedalus-default-project-name-final-2026-06-21.md`.
   - **Design-acceptance spot-check — composition increments 1+2** (`iris-to-daedalus-composition-increments-conformance-2026-06-21.md`): conformant to spec §2+§3 Path A; max-5 *enforced*, atomic roster, project-required-as-sequenced. One forward-pointer (roles-first tiering latent until nameless agents exist).
   - Mode names + vocab sweep (`22d1631`); Daedalus spec-confirm reply (`panel` key stays / name-fallback ack).
 - **Daedalus ACCEPTED the default-project decision (6/21 eve, `daedalus-to-iris-project-default-mechanism`):** mechanism = **SENTINEL** (`null` = default project, no migration); label **"First project"** (lowercase confirmed); 3-step plan queued as next composition increment (default the form's project so a klatch is always creatable → render `null`-project channels under "First project" group → invert Round 7 test, coordinated with Argus). Thread closed by Daedalus. Decision is now **in implementation**, not just decided-in-principle.
 - **Next (on 5am resume):** (1) Watch for Daedalus's default-project increment landing on `claude/daedalus` → design review + MAXT. (2) Full interactive MAXT on composition surface once feature-complete (Paths B/C in). (3) Any further design questions.
-- **Waiting on:** Daedalus — default-project increment + remaining composition increments (Paths B/C, clone, mode-picker chrome) to land for review. No open blockers on Iris's side; no open mail.
-- **Updated:** 2026-06-21 19:00
+- **Waiting on:** Daedalus — default-project increment + remaining composition increments (Paths B/C, clone, mode-picker chrome) to land for review. No open blockers on Iris's side; **no open mail** (inbox drained 6/22).
+- **Updated:** 2026-06-22 05:00
 
 ## Signals
 
