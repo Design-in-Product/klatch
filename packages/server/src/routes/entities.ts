@@ -10,6 +10,7 @@ import {
   assignEntityToChannel,
   removeEntityFromChannel,
   getChannelEntityCount,
+  getKlatchesForEntity,
 } from '../db/queries.js';
 import type { ModelId, EffortLevel } from '@klatch/shared';
 import { ENTITY_COLORS, DEFAULT_ENTITY_ID, DEFAULT_MODEL } from '@klatch/shared';
@@ -33,6 +34,15 @@ const app = new Hono();
 app.get('/entities', (c) => {
   const entities = getAllEntities();
   return c.json(entities);
+});
+
+// Cross-reference: klatches a given entity participates in (powers the 1-1 chat "Also in" surface).
+app.get('/entities/:id/klatches', (c) => {
+  const id = c.req.param('id');
+  if (!getEntity(id)) {
+    return c.json({ error: 'Entity not found' }, 404);
+  }
+  return c.json(getKlatchesForEntity(id));
 });
 
 app.post('/entities', async (c) => {

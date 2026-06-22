@@ -25,6 +25,7 @@ import {
   assignEntityToChannel,
   removeEntityFromChannel,
   getChannelEntityCount,
+  getKlatchesForEntity,
   importSession,
 } from '../db/queries.js';
 
@@ -105,6 +106,33 @@ describe('Channel queries', () => {
     const c = createEntity('CCC', 'claude-opus-4-6', 'p', '#333');
     const ch = createChannel('ordered-klatch', 'p', undefined, 'panel', 'klatch', [c.id, a.id, b.id]);
     expect(getChannelEntities(ch.id).map((e) => e.id)).toEqual([c.id, a.id, b.id]);
+  });
+
+  // ── Cross-reference: klatches an entity participates in ──────
+  describe('getKlatchesForEntity', () => {
+    it('returns only klatches the entity is in (excludes 1-1 chats + unrelated klatches)', () => {
+      const actor = createEntity('Actor', DEFAULT_MODEL, 'p', '#111');
+      const other = createEntity('Other', DEFAULT_MODEL, 'p', '#222');
+      // Actor's own 1-1 chat (type='chat') — must NOT appear in the klatch results
+      const chat = createChannel('actor-1-1', 'p', undefined, undefined, 'chat', [actor.id]);
+      // Klatches Actor is in
+      const k1 = createChannel('standup', 'p', undefined, 'panel', 'klatch', [actor.id, other.id]);
+      const k2 = createChannel('retro', 'p', undefined, 'roundtable', 'klatch', [actor.id, other.id]);
+      // A klatch Actor is NOT in
+      const k3 = createChannel('other-only', 'p', undefined, 'panel', 'klatch', [other.id]);
+
+      const ids = getKlatchesForEntity(actor.id).map((c) => c.id);
+      expect(ids).toEqual(expect.arrayContaining([k1.id, k2.id]));
+      expect(ids).not.toContain(chat.id);
+      expect(ids).not.toContain(k3.id);
+      expect(ids).toHaveLength(2);
+    });
+
+    it('returns an empty array for an entity in no klatches', () => {
+      const lonely = createEntity('Lonely', DEFAULT_MODEL, 'p', '#444');
+      createChannel('lonely-1-1', 'p', undefined, undefined, 'chat', [lonely.id]);
+      expect(getKlatchesForEntity(lonely.id)).toEqual([]);
+    });
   });
 
   it('updateChannel updates name', () => {
