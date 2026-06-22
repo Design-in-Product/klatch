@@ -32,4 +32,6 @@
 **Blocked-on-xian surface:**
 - No Daedalus/Iris assignment memo yet. Standing by; will pick it up on next heartbeat when it lands.
 
-**Next fire:** tomorrow, 09:31 AM PT (cron re-arms at session end after confirming idle)
+**Cron registered:** job id `3be7bfbc`, `31 9 * * *`, session-only, 7-day auto-expire.
+
+**Next fire:** tomorrow, 09:31 AM PT
