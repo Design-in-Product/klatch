@@ -4,7 +4,8 @@ import path from 'path';
 import { getAllChannelsEnriched, getChannel, getChannelStats, createChannel, updateChannel, deleteChannel, setChannelProject, getChannelEntities, getProjectForChannel, getChannelFiles, getProjectFiles, getEntity } from '../db/queries.js';
 import { buildSystemPrompt } from '../claude/client.js';
 import type { ModelId, InteractionMode, ChannelType } from '@klatch/shared';
-import { AVAILABLE_MODELS, INTERACTION_MODES } from '@klatch/shared';
+import { INTERACTION_MODES } from '@klatch/shared';
+import { isValidModel } from './models.js';
 
 const app = new Hono();
 
@@ -102,7 +103,7 @@ app.post('/channels', async (c) => {
     return c.json({ error: 'Channel name is required' }, 400);
   }
 
-  if (model && !(model in AVAILABLE_MODELS)) {
+  if (model && !(await isValidModel(model))) {
     return c.json({ error: `Invalid model: ${model}` }, 400);
   }
 
@@ -168,7 +169,7 @@ app.patch('/channels/:id', async (c) => {
     projectId?: string | null;
   }>();
 
-  if (body.model && !(body.model in AVAILABLE_MODELS)) {
+  if (body.model && !(await isValidModel(body.model))) {
     return c.json({ error: `Invalid model: ${body.model}` }, 400);
   }
 

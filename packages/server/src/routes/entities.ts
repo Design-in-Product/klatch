@@ -12,15 +12,16 @@ import {
   getChannelEntityCount,
 } from '../db/queries.js';
 import type { ModelId, EffortLevel } from '@klatch/shared';
-import { AVAILABLE_MODELS, ENTITY_COLORS, DEFAULT_ENTITY_ID, DEFAULT_MODEL } from '@klatch/shared';
+import { ENTITY_COLORS, DEFAULT_ENTITY_ID, DEFAULT_MODEL } from '@klatch/shared';
+import { isValidModel, effortLevelsForModel } from './models.js';
 
 const VALID_EFFORT_LEVELS: EffortLevel[] = ['low', 'medium', 'high', 'xhigh', 'max'];
 
-/** Per-model effort gating. xhigh is 4.7-only; max is Opus-only. */
-function effortAllowedForModel(effort: EffortLevel, model: ModelId): boolean {
-  if (effort === 'xhigh') return model === 'claude-opus-4-7';
-  if (effort === 'max') return model === 'claude-opus-4-6' || model === 'claude-opus-4-7';
-  return true;
+/** Per-model effort gating, derived from the model's discovered capabilities. */
+async function effortAllowedForModel(effort: EffortLevel, model: string): Promise<boolean> {
+  const levels = await effortLevelsForModel(model);
+  // Permissive when capability data is absent for an otherwise-valid model.
+  return levels === null ? true : levels.includes(effort);
 }
 
 const MAX_ENTITIES_PER_CHANNEL = 5;
@@ -49,7 +50,7 @@ app.post('/entities', async (c) => {
   }
 
   const entityModel = model || DEFAULT_MODEL;
-  if (!(entityModel in AVAILABLE_MODELS)) {
+  if (!(await isValidModel(entityModel))) {
     return c.json({ error: `Invalid model: ${entityModel}` }, 400);
   }
 
@@ -57,7 +58,7 @@ app.post('/entities', async (c) => {
     return c.json({ error: `Invalid effort level: ${effort}` }, 400);
   }
 
-  if (effort && !effortAllowedForModel(effort, entityModel as ModelId)) {
+  if (effort && !(await effortAllowedForModel(effort, entityModel))) {
     return c.json({ error: `Effort level "${effort}" is not available for model ${entityModel}` }, 400);
   }
 
@@ -86,7 +87,7 @@ app.patch('/entities/:id', async (c) => {
     color?: string;
   }>();
 
-  if (body.model && !(body.model in AVAILABLE_MODELS)) {
+  if (body.model && !(await isValidModel(body.model))) {
     return c.json({ error: `Invalid model: ${body.model}` }, 400);
   }
 
@@ -96,7 +97,7 @@ app.patch('/entities/:id', async (c) => {
 
   // Validate xhigh/max effort against target model (which may be changing in same request)
   const targetModel = body.model || getEntity(id)?.model;
-  if (body.effort && targetModel && !effortAllowedForModel(body.effort, targetModel as ModelId)) {
+  if (body.effort && targetModel && !(await effortAllowedForModel(body.effort, targetModel))) {
     return c.json({ error: `Effort level "${body.effort}" is not available for model ${targetModel}` }, 400);
   }
 

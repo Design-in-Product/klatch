@@ -94,7 +94,7 @@ function EntityCard({
 }) {
   const isDefault = entity.id === DEFAULT_ENTITY_ID;
   const { models } = useModels();
-  const modelLabel = models.find((m) => m.id === entity.model)?.displayName?.replace('Claude ', '') || AVAILABLE_MODELS[entity.model]?.label || entity.model;
+  const modelLabel = models.find((m) => m.id === entity.model)?.displayName?.replace('Claude ', '') || AVAILABLE_MODELS[entity.model as keyof typeof AVAILABLE_MODELS]?.label || entity.model;
   const [confirmDelete, setConfirmDelete] = useState(false);
 
   return (

@@ -5,7 +5,13 @@ export const AVAILABLE_MODELS = {
   'claude-haiku-4-5-20251001': { label: 'Haiku', description: 'Fastest, most compact' },
 } as const;
 
-export type ModelId = keyof typeof AVAILABLE_MODELS;
+// `ModelId` is a readable alias for a Claude model id, validated at RUNTIME
+// against the discovered `/api/models` set (server `isValidModel`) — not a
+// compile-time union. The static union was a per-release treadmill against a
+// moving lineup (the bug behind "Klatch tops out at 4.7"). `AVAILABLE_MODELS`
+// below is now a curated overlay (labels, aliases, offline fallback, default),
+// not the validation gate. (xian-confirmed 2026-06-21.)
+export type ModelId = string;
 
 // Default model for new channels + new entities. Flipped 2026-05-12 (xian)
 // from 4-6 → 4-7. Note: 4.7 uses a new tokenizer producing 1×–1.35× tokens
