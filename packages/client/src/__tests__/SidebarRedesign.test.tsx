@@ -77,18 +77,28 @@ describe('Sidebar — chats above klatches within a project', () => {
     }),
   ];
 
-  it('renders "Chats" section header within a project', () => {
+  // These render the project accordion and assert on its content. The auto-expanded
+  // content can land a tick after the synchronous render() under slow-render / runner
+  // contention, so we settle with findBy* before any synchronous query — otherwise
+  // getAllByRole/getByText momentarily miss the items (Daedalus confirmed 6/21 the
+  // ordering is structurally guaranteed; the flake was purely test-side timing).
+
+  it('renders "Chats" section header within a project', async () => {
     render(<ChannelSidebar {...defaultProps} channels={projectChannels} />);
-    expect(screen.getByText('Chats')).toBeInTheDocument();
+    expect(await screen.findByText('Chats')).toBeInTheDocument();
   });
 
-  it('renders "Klatches" section header within a project', () => {
+  it('renders "Klatches" section header within a project', async () => {
     render(<ChannelSidebar {...defaultProps} channels={projectChannels} />);
-    expect(screen.getByText('Klatches')).toBeInTheDocument();
+    expect(await screen.findByText('Klatches')).toBeInTheDocument();
   });
 
-  it('chats appear before klatches in DOM order', () => {
+  it('chats appear before klatches in DOM order', async () => {
     render(<ChannelSidebar {...defaultProps} channels={projectChannels} />);
+
+    // Settle the accordion content first so the indices are stable (not -1).
+    await screen.findByText('API Discussion');
+    await screen.findByText('standup');
 
     const allButtons = screen.getAllByRole('button');
     const chatIdx = allButtons.findIndex((btn) => btn.textContent?.includes('API Discussion'));
@@ -99,15 +109,15 @@ describe('Sidebar — chats above klatches within a project', () => {
     expect(chatIdx).toBeLessThan(klatchIdx);
   });
 
-  it('chats use @ prefix, klatches use # prefix', () => {
+  it('chats use @ prefix, klatches use # prefix', async () => {
     render(<ChannelSidebar {...defaultProps} channels={projectChannels} />);
 
     // Chat items should have @ prefix
-    const chatBtn = screen.getByText('API Discussion').closest('button');
+    const chatBtn = (await screen.findByText('API Discussion')).closest('button');
     expect(chatBtn?.textContent).toContain('@');
 
     // Klatch items should have # prefix
-    const klatchBtn = screen.getByText('standup').closest('button');
+    const klatchBtn = (await screen.findByText('standup')).closest('button');
     expect(klatchBtn?.textContent).toContain('#');
   });
 });

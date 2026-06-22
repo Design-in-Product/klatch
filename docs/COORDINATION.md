@@ -122,16 +122,14 @@ Agents working on this repo use this file as the async handoff protocol.
 
 ### Iris (UX design & front-end development)
 - **Branch:** `main`
-- **Status:** available
-- **Last completed:** Session 12 (2026-06-20) — composition gesture + klatch setup surface spec filed (`docs/ux/spec-composition-gesture.md`). All 4 design-brief open questions resolved: promotion lifecycle (Path C + V5), broadcast exposure (Blast default, no picker at setup), vocabulary migration timing (composition surface now correct; broader sweep pre-beta), working meeting experience (Q4 discussion + spec §7). Daedalus's Finding 1 UX call answered (`iris-to-daedalus-uuid-matching-ux-reply-2026-06-20.md`): project match = silent attach + toast; channel match = inline prompt with View/Copy options.
-- **Working on:** Standing by for design questions + acceptance during Daedalus + Argus run (6/21). On Opus 4.8 as of evening session.
-- **Completed since last update (6/21 PM):**
-  - **Design decision — klatch-project optionality** (`docs/ux/decision-klatch-project-optionality.md`, commit `a240539`): answered xian's "why under-a-project" premise question + Daedalus's three-shapes tension. Recommendation: make project optional for klatches (Round 7 requirement was premise-bound to the March "klatch = coordination tool" use case; object-model Tension 3 principle "don't encode typical-as-mandatory" resolves it). Render project-less klatches in new top-level "Klatches" section (shape b). Endorsed Daedalus's keep-required-in-spine, flip-later sequencing. **Non-blocking — open for xian's read + Daedalus's deferred flip.**
-  - **Design-acceptance spot-check — composition increments 1+2** (`iris-to-daedalus-composition-increments-conformance-2026-06-21.md`): code-level conformance pass. Conformant to spec §2+§3 Path A (dual affordance, Name, Purpose→L4, typeahead picker, roles-first, chips, max-5 *enforced*, atomic roster, project-required-as-sequenced). One non-blocking forward-pointer (roles-first tiering latent until nameless agents exist — Path B design note).
-  - Earlier (6/21 AM/midday): mode names + vocab sweep (`22d1631`); Daedalus spec-confirm reply (`panel` key stays / name-fallback ack).
-- **Next:** (1) Full interactive MAXT on composition surface once feature-complete (Paths B/C in). (2) Any further design questions. (3) If xian rules on klatch-project optionality, coordinate the shape-(b) rendering + Round 7 test inversion with Daedalus/Argus.
-- **Waiting on:** Daedalus — remaining composition increments (Paths B/C, clone, mode-picker chrome). xian — read on the klatch-project optionality recommendation when he has a heartbeat.
-- **Updated:** 2026-06-21 18:20
+- **Status:** offline — wrapped for the day 6/21 ~19:00; **duty cycle scheduled to resume ~05:00 6/22**.
+- **Last completed (6/21 full day):**
+  - **Design decision — klatch-project optionality, DECIDED in principle** (`docs/ux/decision-klatch-project-optionality.md`). Answered xian's "why under-a-project" premise + Daedalus's three-shapes tension. xian refined the resolution: not "project optional/nullable" but **a default project** — every klatch belongs to exactly one project; Klatch supplies a default ("First project", lowercase p) so the user is never *required* to choose. Renders like any project (CHATS/KLATCHES; flat for singleton, bottom-pinned for multi-project). Mechanism (sentinel `null`-as-default [Iris lean] vs seeded row) is **Daedalus's call**. Default-project name locked: **"First project"** (lowercase p) — `iris-to-daedalus-default-project-name-final-2026-06-21.md`.
+  - **Design-acceptance spot-check — composition increments 1+2** (`iris-to-daedalus-composition-increments-conformance-2026-06-21.md`): conformant to spec §2+§3 Path A; max-5 *enforced*, atomic roster, project-required-as-sequenced. One forward-pointer (roles-first tiering latent until nameless agents exist).
+  - Mode names + vocab sweep (`22d1631`); Daedalus spec-confirm reply (`panel` key stays / name-fallback ack).
+- **Next (on 5am resume):** (1) Check mail for Daedalus's read/ack of the default-project direction + name. (2) Full interactive MAXT on composition surface once feature-complete (Paths B/C in). (3) Any further design questions.
+- **Waiting on:** Daedalus — ack/implementation of default-project model + remaining composition increments (Paths B/C, clone, mode-picker chrome). No open blockers on Iris's side.
+- **Updated:** 2026-06-21 19:00
 
 ## Signals
 

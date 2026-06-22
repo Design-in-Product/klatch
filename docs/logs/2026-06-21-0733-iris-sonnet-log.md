@@ -86,5 +86,43 @@ Closed the one open copy question from the default-project decision. Worked the 
 
 **Decided: `First project`, lowercase p.** Recorded in decision doc §7 (with the warm-itch reasoning + the diagram updated to show it as the bottom-pinned named section). Seed string locked for Daedalus: `iris-to-daedalus-default-project-name-final-2026-06-21.md` — flagged lowercase-p is deliberate so it's not "tidied" to title-case, and that the singleton user never sees it (renders headerless until a 2nd project exists).
 
-## [Ongoing — entries will be added as work arrives]
+## ~19:00 — Session wrap (day close)
+
+xian called the day. Duty cycle to resume ~05:00 6/22.
+
+### Session Wrap Protocol — verification
+
+**Step 1 — commits landed on origin/main** (my commits, author mediajunkie/Iris):
+```
+c274826 design(iris): default project name decided — "First project" (lowercase p)
+a8b7e09 design(iris): klatch-project decision refined — default project, not nullable (xian 6/21)
+a240539 design(iris): klatch-project optionality decision — make project optional, render shape (b)
+936f84f iris 6/21 PM: composition increments conformance spot-check + coordination/log update
+2d92021 mail(iris→daedalus): composition spec confirmed — panel key stays, name-fallback ack
+074700e log(iris): 11:31 entry — Daedalus spec ack + confirm replied
+866c46f iris: duty cycle start 6/21 — coordination update + session log open
+```
+All present on origin/main. ✅
+
+**Step 2 — deliverable files exist:**
+- `docs/ux/decision-klatch-project-optionality.md` ✅
+- `docs/mail/iris-to-daedalus-calliope-klatch-project-optionality-2026-06-21.md` ✅
+- `docs/mail/iris-to-daedalus-klatch-project-default-model-2026-06-21.md` ✅
+- `docs/mail/iris-to-daedalus-default-project-name-final-2026-06-21.md` ✅
+- `docs/mail/iris-to-daedalus-composition-increments-conformance-2026-06-21.md` ✅
+- `docs/mail/read/iris-to-daedalus-composition-spec-ack-2026-06-21.md` ✅ (landed, then filed to read/ by Daedalus's close-discipline — `2d92021` → `c1509c4`)
+- `docs/logs/2026-06-21-0733-iris-sonnet-log.md` ✅ (this file)
+
+**Note (not mine, flagged):** the `main` checkout working tree carries uncommitted/staged changes authored by **Argus** (intel sweep #13, composition-extended + model-validation tests, SidebarRedesign flake fix) plus untracked `klatch.db.backup-2026-04-13` / `klatch.db.backup.2026.04.13` (the ~100MB files that previously broke a push) and `web/assets/`. **I did not touch these.** Staged only my own files by explicit path. The backup files should not be committed by anyone — flagging in case they're noticed in tomorrow's tree.
+
+### Mail state at close
+- No unhandled inbound to Iris.
+- klatch-project decision thread (Calliope's "why" question, Daedalus's tension, my 3 outbound replies) left **active in `docs/mail/`** — Daedalus has open implementation actions and hasn't read the default-project memos yet; per close-discipline, open-action threads stay visible.
+
+### Day summary
+Clean day. Two design questions routed to Iris, both resolved: the klatch-project model (decided in principle, refined by xian into the default-project shape, name locked) and the composition-increments conformance (clean). No blockers on Iris's side. Daedalus's spine sequencing endorsed throughout; nothing Iris produced today blocks his build.
+
+**Resuming ~05:00 2026-06-22.** First acts on resume: pull, read mail (esp. Daedalus ack on default-project), read COORDINATION, read cross-poll brief.
+
+--- end of session ---
 
