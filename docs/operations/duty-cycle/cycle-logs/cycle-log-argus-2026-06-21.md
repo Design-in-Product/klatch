@@ -69,3 +69,16 @@ CronDelete-FIRST applied (paused `3fba3f50`). xian away → WORK. CHECK: same da
 - **Routed:** Daedalus (SDK bump + Opus 4.8 add); Calliope (vendor-risk arc + Epicenter for Step 11). Filed `DEFAULT_MODEL` flip as a low-urgency Blocked-on-xian decision. Recurring row advanced (next_due 6/28).
 - Pushed curated doc + trackers to `claude/argus`; memos to `main`.
 - Re-arm cron; IDLE.
+
+---
+
+**Fire 3 — ~19:08 PT — WORK (autonomous): composition increment 2 (agent picker) — coverage attempted, PARKED**
+
+CronDelete-FIRST (`d1c08dd3`). xian away → WORK. SidebarRedesign layer-2 fix not landed yet (still held); **Daedalus shipped composition increment 2** (`07bda25`: agent-picker Path A — typeahead by name/handle, removable chips, roles-first tiering, @handle, **max-5 cap**). Client-only.
+
+- **Wrote `composition-picker-extended.test.tsx` (5 tests)** complementing his single happy-path: max-5 cap boundary, chip-removal-deselects, filter-by-handle, roles/other partition, end-to-end picker→onCreateChannel roster. **All 5 pass in isolation.**
+- **But they destabilize the full singleThread client suite.** The interaction-heavy ones (cap = 6 interactions × heavy ChannelSidebar re-render) time out and cascade. Isolated it: suite WITHOUT my file flakes 0–3/run (known singleThread latent flake — config comment + my 5/11 memo); WITH my live file → 11–36 (amplified further by my own concurrent test-runs adding machine load). After killing strays, baseline is green (199 passed) with my file skipped.
+- **Decision: parked the file as `describe.skip`** (work preserved; un-skip when the suite can absorb heavy client interaction tests) rather than commit timing-flaky tests into CI. The roster→create *logic* is already covered server-side (increment-1 `composition-gesture-extended.test.ts`); Daedalus's happy-path covers picker basics. The parked extended client coverage is the gap.
+- **Filed finding to Daedalus** (`client-suite-fragility`): heavy ChannelSidebar interaction tests are unreliable in the singleThread suite; composition is client-heavy, so a strategy (lighter design / per-test testTimeout / pool tweak) matters for growing 1.0 client coverage. Measured, not urgent.
+- Honest status: server deterministic green (1107); client green at baseline but timing-sensitive; my increment-2 client coverage parked, not landed.
+- Re-arm cron; IDLE.
