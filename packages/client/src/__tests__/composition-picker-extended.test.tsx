@@ -106,7 +106,7 @@ describe('Composition picker (increment 2) — extended', () => {
     openKlatchForm();
 
     fireEvent.change(screen.getByPlaceholderText('Klatch name'), { target: { value: 'Weekly Review' } });
-    const projectSelect = screen.getByRole('option', { name: /Select project/i }).closest('select') as HTMLSelectElement;
+    const projectSelect = screen.getByRole('option', { name: /First project/i }).closest('select') as HTMLSelectElement;
     fireEvent.change(projectSelect, { target: { value: 'p1' } });
     fireEvent.click(listCheckbox('Alpha'));
     fireEvent.click(listCheckbox('Gamma'));
