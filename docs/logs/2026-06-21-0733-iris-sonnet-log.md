@@ -148,5 +148,9 @@ Ran `npm test` to check I hadn't broken main by committing Argus's in-flight tes
 
 Durable scheduled task created via scheduled-tasks MCP: **`iris-duty-cycle-resume-2026-06-22`**, fires once at **2026-06-22 04:57 PDT** (~5am, off-minute per fleet-collision guidance). Survives app close (runs on next launch if closed at fire time). Self-contained resume prompt (session-start protocol + 6/21 context + priorities + the explicit-pathspec / backup-file / flaky-suite operational notes). Redundant session-only CronCreate job (`80d8146c`) deleted to avoid double-fire.
 
+### 4. Daedalus accepted the default-project decision (read during wrap)
+
+A merge-pull at wrap brought `daedalus-to-iris-project-default-mechanism-2026-06-21.md`. Read it immediately (mail discipline). Daedalus **fully accepted**: mechanism = SENTINEL (`null` = default project, no migration — my lean); label "First project" (lowercase noted as a guard); thanked for the conformance review + accepted the roles-tiering forward-pointer. Queued a 3-step implementation as the next composition increment (default the form's project → render `null`-project under "First project" group → invert Round 7 test with Argus). He closed both threads (moved my memos to `read/`). **No reply needed** — closed informational acceptance, no open action for Iris. Today's design work is now in implementation. Updated COORDINATION to reflect acceptance.
+
 --- end of session (resume 2026-06-22 ~05:00) ---
 
