@@ -116,3 +116,38 @@ Rollup verified-sweep:
 
 The cohort is producing real work autonomously. The day's narrative arc is now: pre-brief Iris → Iris session 12 clears design gate → Daedalus self-launches → Argus self-launches → Daedalus increment 1 ships → Argus extends coverage → invariants surface → all happens without xian needing to drive any of it. That's the duty-cycle thesis in real form.
 
+
+---
+
+**Fire 10 — ~13:30 PT — SUBSTANTIVE (xian-routed design question to Iris)** — xian asked me to route a question to Iris piggybacking on Daedalus's project-optional-vs-required tension memo. CronDelete-FIRST (`1e2a9d26` cancelled) at substantive-work start.
+
+xian's question is upstream of Daedalus's three resolution shapes: *"What does it mean to be 'under projects', and why would the sidebar make that a top-level requirement?"* He's pushing on the *why* — whether klatches-must-have-projects is a load-bearing model decision or a downstream Round 7 rendering convention. Composition spec §2 framed project as optional; the sidebar treats it as required. The two framings disagree.
+
+Routed via `docs/mail/calliope-to-iris-sidebar-projects-question-from-xian-2026-06-21.md`. Framed it as:
+- Three reasons it's worth her time (spec §2 already said optional; conversation-as-substrate model doesn't require project surrounding; use cases like spontaneous klatches and transporter-device-demo klatches may surface project requirement as friction).
+- What xian isn't asking for (not a redesign this turn; not a deferral of Daedalus's spine; not necessarily a different answer — just the *why* surfaced).
+- What would help (Round 7 rationale, intent of spec §2 framing, whether new use cases change her prior).
+
+The question feeds Daedalus's decision rather than delays it — once the *why* is clear, the three resolution shapes are easier to pick among. Posted with `priority: standard` to her heartbeat; non-blocking; her lane.
+
+Notable observation worth noting (a possible question-box candidate later): xian and I couldn't find a specific decision doc for the Round 7 klatches-under-projects-only rationale. The *absence* of a justification doc for a load-bearing UX constraint is itself a quiet signal that the constraint may be implicit-conventional rather than deliberately-chosen.
+
+
+---
+
+**Fire 11 (autonomous) — ~14:13 PT — SUBSTANTIVE (vendor-risk arc routed to Janus per CEO-hat channel)** — autonomous fire picked up Argus's sweep #13 memo. CronDelete-FIRST (`bc397bfa` cancelled) at substantive-work start.
+
+**Argus sweep #13 surfaced a four-week vendor-risk arc** as a single narrative worth chronicle/brief framing: Stainless acquisition (5/18) → IPO S-1 (6/01) → Policy Frameworks advocating govt-block authority (6/10) → Fable 5/Mythos 5 government suspension (6/12 — first documented government-forced takedown of a deployed frontier model). Single-vendor risk on Anthropic is now demonstrated rather than theoretical. Klatch zero code exposure; pure strategic signal.
+
+**The arc sharpens BYOC/transporter-device from "interesting hedge" to "documented insurance against a class of risk that has actually fired."** That's exactly the CEO-hat material Janus opened the 6/20 direct channel for (his ask #2: advance notice on BYOC milestones / consulting-strategy implications).
+
+**Routed via** `docs/mail/calliope-to-janus-vendor-risk-arc-byoc-implication-2026-06-21.md`. Framed for him to pass to Themis at the right moment: four-step arc + BYOC implication as closing beat. Recommended cross-pollination brief shape. Explicit on what I'm NOT doing (not writing a blog post — Klatch-side cross-vendor-channels still Someday/Maybe; would be premature). Explicit on why this goes to Janus not the rollup (no xian action needed; his hub view should hold it for Themis-relay timing).
+
+**Two task-list watch items added** from Argus's sweep:
+- Step 11 read-ahead: Epicenter + MemPalace as local-first SQLite parallels worth a scan before Step 11 design starts.
+- Vendor-risk arc evolution: monitor for additional compounding events; update Janus + reconsider blog-post timing.
+
+Argus's memo moved to `read/` — informational, the Janus relay IS the action. The cycle's coordination function exercised cleanly: signal arrives at Calliope, gets routed to the right meta-layer (Janus, not xian), without bouncing back to xian for routing decisions.
+
+Notable: this is the first time the rollup-distinct-from-Janus-channel routing pattern has actually fired in production. The discipline of "CEO-hat items go to Janus, operational-attention items go to the rollup, agent items go directly between agents" is holding shape under real-world load. Worth keeping eye on whether the distinction stays clean as volume grows.
+

@@ -19,6 +19,8 @@ Updated: 2026-06-06 (v0.2 format with Recurring items section per duty-cycle-kla
 ## Watch items (cycle monitors; triggers a one-line outbound when condition met)
 
 - **Janus channel: composition-spec → demo-able trigger.** When the composition spec (`docs/ux/spec-composition-gesture.md`) produces something demo-able or client-legible (a working flow, a real screen recording, an artifact that prove the transporter-device claim), send Janus a one-liner via `docs/mail/` so he can surface it to Themis for the cross-pollination brief. Janus committed 6/21 to holding the BYOC/demoability flag until then. *Trigger condition lives downstream of Daedalus's implementation.*
+- **Step 11 read-ahead: Epicenter + MemPalace** (per Argus sweep #13, 6/21). Two local-first SQLite parallels worth a brief scan before Step 11 (Search) design starts: Epicenter (5/25; open-source local-first app ecosystem, shared plain-text + SQLite memory folder) and MemPalace (no new dev, research doc current). If either's cross-app memory format stabilizes, Klatch could declare compatibility as a distribution/discovery story. *Trigger: when xian opens Step 11 scoping.*
+- **Vendor-risk arc evolution** (per Argus sweep #13, 6/21). The Stainless→IPO→Policy→Fable-5-suspension arc strengthened the BYOC/transporter-device case. Routed to Janus 6/21 via direct channel for Themis relay. If a subsequent event compounds further (e.g., second forced takedown, additional vendor consolidation, post-IPO pricing shift), update Janus and consider blog-post timing. *Trigger: next material vendor-side event.*
 
 ## Recurring items (START dispatcher promotes when `next_due ≤ today`)
 
