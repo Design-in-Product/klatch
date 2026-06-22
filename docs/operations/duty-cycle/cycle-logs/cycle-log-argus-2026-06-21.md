@@ -97,3 +97,15 @@ CronDelete-FIRST (`ef835177`). xian away → WORK. CHECK: same day, not past 23:
 - **Fragility finding RESOLVED via the test-convention** — no config overhaul needed; downgraded to Daedalus. Convention: `findBy*` for settle-flakes; `fireEvent` + per-test timeout for heavy interaction tests; kill stray vitest procs before flake checks. ImportDialog flake = next candidate for the same treatment.
 - Server 1107 deterministic; client 204 (5 clean runs). The last fire's parked work now landed.
 - Re-arm cron; IDLE.
+
+---
+
+**Fire 5 — ~21:49 PT — WORK (autonomous): model-validation new-behavior round — DONE (loop closed, same day)**
+
+CronDelete-FIRST (`37fe1966`). xian away → WORK. Same day, not past 23:00.
+
+- **Sync surfaced the merge:** Daedalus's model-validation impl (`84e7d71`) is on **main** (Calliope Fire 18: "model-validation escalation→ship same day; rollup v2.7"). Seam helpers present → round UNBLOCKED.
+- **Wrote `model-validation.test.ts` (5 tests)** to the design-doc contract: discovered-model-validates (seed +4.8 → 201, would've 400'd under the old `in AVAILABLE_MODELS` gate); garbage→400; offline-fallback (4.7→201, 4.8→400 — offline == old static set, no regression); capability-from-discovered-`effort[]` (4.8+xhigh→201, thrifty+high→400 — gating tracks metadata, not a literal-ID switch); **picker↔validation consistency invariant** (every model `getModels()` offers validates on create — the exact assertion that catches the original split).
+- **Cache seam per Daedalus's catch:** seeded file-local via `_setModelsCacheForTest` + `afterEach` clear — NOT global setup.ts (defeats round13's vi.mock). Verified **round13 11/11 still green**, no leak. Suite **1112 server / 204 client**.
+- **The loop closed in ONE day:** my sweep #13 finding → xian's "brittle" → Daedalus's design+impl+merge → my test round → green. The finding I surfaced this afternoon is now fixed AND covered by tonight. Tandem + duty-cycle working as designed.
+- Re-arm cron; IDLE.
