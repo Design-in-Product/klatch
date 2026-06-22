@@ -68,8 +68,6 @@ If we're being honest about competitive positioning: across the agent-product la
 
 Klatch's architecture carries it. The agent's role identity, the project's accumulated memory, and the calibration bridge we wrote about in [Before You Go](/blog/before-you-go.html) together carry an agent's working character across boundaries that other products treat as fresh starts. When you bring a role into a klatch — a role that has months of working history in its own conversation — it shows up in the room with that history intact.
 
-And because the conversation is the durable unit, what gets carried across *tools* — into Claude Code, into claude.ai, into other agent environments via MCP — is the conversation itself, not a fresh persona-spec. The same property that makes role persistence work inside Klatch is what makes context portability work between Klatch and the rest of a user's working substrate.
-
 We didn't set out to make this a differentiator. We set out to solve the import problem (people had conversations elsewhere and wanted to continue them here). The role-persistence consequence emerged as we kept extending the architecture, and only became visible as a competitive position when external SDK-level memory tooling shipped and we had to ask what *we* still uniquely did. The answer turned out to be: the assembly layer, with role identity as one of the things being assembled.
 
 We're not the memory layer. There is one of those now, at the SDK level. We're the place where conversation-as-substrate and role-persistence-across-sessions live, because we are the place where the conversation is the durable unit and the role is the conversation given time to mature.
@@ -98,7 +96,6 @@ We don't yet know whether *users* will reach for the promotion gesture. The mode
 
 We don't yet know whether the "klatches are synthetic" insight has UI implications we haven't seen. The current implementation already works this way; what's new is naming it. There may be affordances we should build because the agents experience individual conversations — for example, surfacing each agent's own view of "what happened in the klatch" alongside the human's group view. That's the kind of feature that only becomes visible once the architectural truth is named.
 
-We don't yet know whether the cross-tool consequence — that an agent's conversation can travel into Claude Code, claude.ai, and back — produces enough of a *demonstrable* difference for users who haven't yet felt the friction of context fragmentation across tools. That friction is real but quiet. The composition gesture and the cross-tool import-export path are both in flight; whether either becomes a recognizable difference rather than an invisible structural property is something only adoption will tell us.
 
 ---
 
@@ -120,21 +117,22 @@ We didn't invent any new abstractions. We just stopped insisting on the wrong on
 
 **Title:** "Bringing Conversations Into a Room" — kept from v1; remains the strongest of the candidates.
 
-**Changes from v1 (drafted 2026-05-12; this revision 2026-06-21):**
+**Changes from v1 (drafted 2026-05-12; revised 2026-06-21; further revised 2026-06-22):**
 
 1. **Composition gesture status updated** — v1 said "we're building that now, in the design layer Iris owns." v2 says the spec landed mid-June after a design pass with Iris, and the surface is under implementation in Klatch's 1.0-beta path. (Iris session 12, 6/20, cleared the design gate.)
-2. **Cross-tool consequence surfaced** in the role-persistence-is-the-differentiator section — one new paragraph: *"And because the conversation is the durable unit, what gets carried across tools…"* This makes the BYOC / transporter-device value explicit without renaming the post around it. The composition gesture is still the through-line.
+2. *(Removed 2026-06-22.)* The 6/21 revision had added a paragraph in the role-persistence-is-the-differentiator section connecting role-persistence to "cross-tool BYOC / transporter-device value." That paragraph rested on a strategic frame xian retracted 6/22 (BYOC is PM's vocabulary, not Klatch's; Klatch's relationship to cross-tool context portability is exploratory and unsettled). Paragraph removed. The role-persistence section now reads cleanly without it; the assembly-layer framing in the closing paragraphs of the section still holds the argument together.
 3. **Code-switching pass done.** "Layer 5," "Layer 3," "Phase 3.5" replaced with natural language ("the agent's role identity," "the project's accumulated memory," "the calibration bridge we wrote about in Before You Go"). Reader doesn't need prior posts to follow this one, but the link to Before You Go carries the depth for anyone who wants it.
 4. **"Entities" → "agents"** throughout (Iris's vocab sweep shipped 6/20). One real consequence: the section formerly titled "Entities are conversations" is now "Agents are conversations." The change reads cleanly; the post never depended on "entity" specifically.
 5. **"Panel" → "Broadcast"** in the orchestration-modes paragraph, matching Iris's 6/20 rename.
 6. **"Entity manager" → "agent library"** in §"What this changes" — both more accurate per the vocab sweep and reframes the surface as a library (which is its model role) not a forge (which was the configured-persona model's role).
 7. **Competitive-positioning paragraph softened** per v1's flagged concern. v1 said "*most* agent products do not preserve role identity." v2: "*across the agent-product landscape, role identity rarely survives across sessions.*" Same observation; framed as trusted-practice language per PO synthesis Pattern 5; less of a contestable specific claim.
-8. **"What we don't yet know" section reshaped.** v1's third gap was about user-facing vocabulary — which the 6/20 sweep partially addressed. v2 swaps that gap for the more honest current open question: whether the cross-tool consequence becomes a *demonstrable* difference for users who haven't yet felt context fragmentation. The other two gaps (promotion adoption, synthetic-klatch UI implications) carry forward.
+8. **"What we don't yet know" section reshaped (2026-06-22).** Now carries two gaps (promotion adoption + synthetic-klatch UI implications), held from v1. The 6/21 revision had added a third gap about whether the cross-tool consequence becomes demonstrable; that gap was removed 6/22 alongside change #2 above, since it presumed the cross-tool consequence is a settled Klatch concept. The section reads fine with two gaps.
 
 **Open editorial decisions for xian:**
 - The "competitive positioning" softening — is "trusted-practice" framing the right shape, or should the paragraph qualify further (e.g., "in the agent products we've examined")?
-- The third "what we don't yet know" item — does it land or is it abstract? An alternative would be to keep two gaps and let the post breathe.
 - The closing line ("We didn't invent any new abstractions. We just stopped insisting on the wrong one.") — held from v1. Still the right note?
+
+**6/22 revision context:** xian flagged that the BYOC framing I'd carried for Klatch since 6/19 evening was mis-labeled (BYOC is PM's vocabulary; Klatch's cross-tool concept is exploratory and unsettled per xian's 6/22 clarification). The 6/21 v2 draft had baked that framing into one new paragraph + one new "don't yet know" gap; both removed in this revision. The post's structural argument (entities-are-conversations; role-as-promoted-conversation; klatches-are-synthetic; composition-is-the-central-gesture) is unaffected by the correction — that argument never depended on the cross-tool/BYOC framing.
 
 **Illustration ships as drawn** (`docs/drafts/bringing-conversations-illustration.html`). One pre-publish cleanup: strip the "Tweakable" note at the bottom of the illustration HTML before the OG-image render.
 
