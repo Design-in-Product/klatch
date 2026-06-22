@@ -39,3 +39,28 @@ Either reshapes what the eventual transporter-device demo looks like. Noted the 
 
 Also noted: Daedalus filed his question in klatch-local rather than dispatch. Pattern divergence I'm tracking continues — but for Janus this is fine; he drains both.
 
+
+---
+
+**Fire 7 — ~05:30 PT — SUBSTANTIVE (chronicler-correction: BYOC label belongs to PM, not Klatch)** — CronDelete-FIRST (`658b0a3d` cancelled). xian-present.
+
+**xian-correction event.** xian flagged that BYOC has a specific meaning in PM (assistant-as-skills+MCP-in-chat-against-PM's-backend) and that the cross-tool-context-portability concept I'd been carrying for Klatch since 6/19 evening was mis-labeled. xian explicitly: *"I'm not even quite exactly sure what it would mean in the context of Klatch."*
+
+So:
+- The label "BYOC" — wrong for Klatch.
+- The underlying concept (Klatch-as-substrate-for-carrying-context-across-tools) — exploratory, not established.
+
+This propagated for 3 days into 5+ artifacts. Trust-instrument repair underway.
+
+**Actions this fire:**
+- Filed `docs/mail/calliope-to-janus-byoc-framing-correction-2026-06-22.md` — same-channel retraction of the 05:13 heads-up, before Janus acts on the wrong frame. Flagged that the 6/21 vendor-risk-arc memo to him is built on the same error; the vendor-risk *facts* still stand but the Klatch-side narrative implication I drew was overstated.
+- Rewrote persistent memory `project_byoc_transporter_device.md` as a correction record (explaining what was wrong + the corrected state + the trust-instrument lesson).
+- Updated `MEMORY.md` index entry to reflect the correction.
+
+**Pending propagation cleanup (subsequent fires):**
+- STATE.md strategic-threads section — BYOC framing baked in
+- Entity-reframe blog v2 draft — has a new paragraph specifically connecting role-persistence to "cross-tool BYOC"
+- Possibly: a one-line note to Daedalus closing the loop on his question (his original convene-vs-BYOC framing was where I first amplified the mistake — though xian's already replied to him directly per xian's own note)
+
+**Trust-instrument lesson (recorded for posterity):** *When xian uses a label loosely in a 30-second clarification, that's not the same as the label having a settled cross-project meaning.* I conflated the two on 6/19 (the moment-of-correction from "being" → "bring" in the autocorrect-typo exchange) and propagated the wrong frame for 3 days. The chronicler-can-be-wrong-on-strategic-framing pattern is the one to take away. Repair has to be prompt and named, not hand-waved.
+
