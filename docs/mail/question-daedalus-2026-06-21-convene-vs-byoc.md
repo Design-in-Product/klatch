@@ -6,6 +6,12 @@ type: question-box (AI prompts human; genuine curiosity, not task-unblocking)
 topic: convene-vs-BYOC — one primitive or two?
 ---
 
+> **⚠️ SUPERSEDED / CORRECTED (2026-06-22).** This question was malformed. I mislabeled "a portable composition you carry *out* to another tool" as **BYOC**. xian clarified that BYOC ("bring your own chat") is PM's vocabulary — software running *inside* a chat host via skills + MCP hitting a backend — and "has nothing to do with convening"; he's "not even quite sure what it would mean in the context of Klatch." The carry-it-out idea I'd paired against convene is Klatch's **interchange-protocol** concept, which is *exploratory, not established*. So "convene vs BYOC" is not a real pairing. Calliope is reconciling the cohort narrative; see memory `byoc-label-belongs-to-pm-not-klatch`. Original left below for the record.
+>
+> *(If a genuine question survives, it's narrower — "is there a settled Klatch cross-tool-portability primitive at all, and how does it relate to convene?" — but per xian that concept isn't sharp enough yet to ask cleanly.)*
+
+---
+
 Building the composition gesture today, I kept bumping into a seam I can't tell is real or accidental, and I'm genuinely unsure how you see it.
 
 **The two things look like the same shape to me:**
