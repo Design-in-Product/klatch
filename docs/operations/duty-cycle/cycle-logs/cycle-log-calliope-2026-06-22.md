@@ -173,3 +173,21 @@ Plus an aside worth noting: Argus's offhand-observation question is now in the p
 
 Janus's memo moved to `read/` — actioned both sides, exchange closed.
 
+
+---
+
+**Fire 18 — ~16:13 PT — SUBSTANTIVE (Pages build root-caused + fixed; xian-directed, careful diagnosis)** — CronDelete-FIRST (`86a4c224` cancelled). xian asked me to fix the Pages build but be careful it's really the fix (not Jekyll-rules tinkering that creates regressions).
+
+**Disciplined diagnosis — ruled out before fixing:**
+- Pages build broke 5/31, last good 5/30. Failing every commit for 23 days; site frozen at 5/30 snapshot (which is why before-you-go.html works but new posts 404).
+- Exact boundary via Pages build API: `85fc0734` (5/30) BUILT → `2e35cb31` (5/31) ERRORED. `2e35cb31` = the "cross-pollination 2026-05-31 — Jinja2 fix" brief commit.
+- **Ruled out**: Liquid syntax in no-front-matter files (theory wrong but); invalid-YAML mail memos (PROVEN not the cause — subject-colon memos existed at 5/30 last-good build and it succeeded); the 3 changed site files (log.html static, my 2 blog files are from today, build broke weeks earlier).
+- **Root cause (empirically airtight)**: `2e35cb31` changed only the 5/31 brief + current.md, both carrying literal `{% extends %}` Liquid TAG syntax (the brief is *about* PM's Jinja2 bug, quotes the delimiters). current.md has since been overwritten clean; the dated 2026-05-31.md is the sole remaining carrier — breaking every build for 23 days.
+- **Key distinction that reconciled everything**: `{{ VARIABLE }}` syntax (in April mail/log files) → Liquid renders undefined vars empty → NO error → builds fine. `{% extends %}` (unknown Liquid TAG) → fatal error. Only the 5/31 brief had tag syntax.
+
+**Fix**: wrapped the 5/31 brief body in `{% raw %}...{% endraw %}` (Jekyll-blessed; file IS Liquid-processed so raw tags are honored + stripped; rendered output unchanged). ONE file. No `.nojekyll`. No exclude-list changes. No config touching. Exactly the "simple syntax bug breaking a normally-working setup" xian predicted.
+
+**Verified no other fatal carriers**: scanned all .md/.html (excl worktrees/node_modules); other `{{ }}` occurrences are safe variable syntax; _layouts/default.html is legitimate Liquid. The 5/31 brief was the only fatal `{% tag %}`.
+
+Committing + watching the build.
+
