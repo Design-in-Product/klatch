@@ -8,7 +8,7 @@
 
 **Cadence:** at session-wrap, and any time substantive new items arrive. Engagement-state rule: when xian is *actively dipping in to act* (especially after a quiet stretch), full sweep-and-verify is mandatory — the "feels skippable" moment coincides exactly with when he most relies on the board being whole.
 
-**Last refreshed:** 2026-06-21 Sunday ~21:13 PT (Calliope) — verified sweep, post-model-validation-shipped (escalation→ship same day).
+**Last refreshed:** 2026-06-21 Sunday ~22:13 PT (Calliope) — verified sweep, post-Argus-test-rounds-landed + Iris-day-wrap.
 
 ---
 
@@ -16,9 +16,9 @@
 
 | Needs you | Blocked-on-others | Lower-urgency | In-flight |
 |---|---|---|---|
-| **3** | **0** | **2** | **5** |
+| **2** | **0** | **2** | **5** |
 
-*Argus is up (cover-memo pattern works for both tandem partners; both self-launched off it without xian-driving). 🔴 went from "launch Argus + approve branch -D + publish blog" to "review v2 blog draft + merge claude/argus to main + approve branch -D" — same count, different shapes.*
+*Argus's test work on main as of 6/21 evening (composition-extended + model-validation rounds + SidebarRedesign fix). 🔴 now just the v2 blog review + the cosmetic `branch -D` approval.*
 
 ---
 
@@ -32,11 +32,8 @@ Items only *xian* can clear. Each tagged with **who's waiting**.
 - **Date added:** v1 5/28 (24 days waiting); v2 ready for review 6/21.
 - **Recommended path:** read v2; resolve the three editorial questions; ship. Post lands on stronger ground than v1 — composition gesture is now specced + in implementation; cross-tool consequence operationalizes the BYOC framing.
 
-### Review + approve merge of `claude/argus` → `main` (composition extended coverage + invariant-1 PIN flipped)
-- **Who's waiting:** Argus. Extended-coverage tests on `claude/argus` (originally landed at `d38a89f`; Argus has since flipped his invariant-1 `PIN:` test in lockstep with Daedalus's enforcement). Ready to merge.
-- **What xian can clear:** review the diff and approve. Coverage of Daedalus's composition spine increments 1 & 2, plus the now-active chat+multi-agent rejection test.
-- **Date added:** 2026-06-21
-- **Recommended path:** yes-approve. Pure test coverage; the invariant-1 enforcement is already on main (`d4fc8a5`), so the test flip aligns with shipped behavior.
+### *(Closed 6/21 — Argus's test work landed on main)*
+- *(See 🟢 below. The extended-coverage tests + invariant-1 PIN flip + model-validation test round + SidebarRedesign flake fix all appear on main as of 6/21 evening. Exact merge sequence not fully traced by Calliope's verified sweep — Argus's branch shows multiple `Merge origin/main into claude/argus` rebases but no explicit `Merge claude/argus into main` commit; observed end state is that the work is on main.)*
 
 ### Approve `branch -D worktree-daedalus-2026-05-18`
 - **Who's waiting:** Daedalus (per his report-in: "noting so your sweep can see it, though I'll likely just clear it with xian inline").
@@ -71,9 +68,9 @@ Real but not time-pressured.
 Awareness, no action needed.
 
 ### Iris + Daedalus + Argus duty cycles all live (4 of 5 cohort)
-- Iris: daily heartbeat (Phase 3), launched 6/21 morning.
-- Daedalus: hourly (`:17`, Phase 2 tandem), launched 6/21 ~10:13. Heads-down on composition gesture spine; first impl on `claude/daedalus`.
-- Argus: hourly (`:43`, Phase 2 tandem), launched 6/21 ~11:45. Self-launched off cover memo (pattern validated for both tandem partners); test-snapshot fallout cleaned + bonus pre-existing flake fixed.
+- Iris: daily heartbeat (Phase 3), launched 6/21 morning. **Wrapped 6/21 evening** (`5bed370`) with explicit resume time ~05:00 6/22 — good discipline.
+- Daedalus: hourly (`:17`, Phase 2 tandem), launched 6/21 ~10:13. Shipped composition increments 1+2, invariant 1 enforcement, model-validation unification — all same day.
+- Argus: hourly (`:43`, Phase 2 tandem), launched 6/21 ~11:45. Shipped vocab-fallout fixes, round25 flake fix, extended composition coverage, invariant-1 PIN flip, model-validation test round, SidebarRedesign flake fix — all same day on main.
 - Theseus: deferred (xian-rouses-on-AXT, not routine launch).
 
 ### *(Closed 6/21 by Iris)* — Daedalus → Iris design tension resolved
@@ -112,7 +109,8 @@ Awareness, no action needed.
 
 Struck-through items closed since v2's last refresh. Entries older than 7 days get pruned at refresh.
 
-- ~~**Model discovery/validation unification**~~ — Argus escalated 6/21 ("that sounds brittle" — xian); Daedalus shipped design + implementation same day (`d3ea00a` + `84e7d71`); `ModelId` compile-time union dropped (xian-confirmed); validation now against discovered set with hardcoded fallback. Argus's test round queued on his next branch. *Closed 6/21 — same-day round-trip on a structural decision.*
+- ~~**Argus's test work landed on main**~~ — extended composition coverage + invariant-1 PIN flip + model-validation test round (`0428881`) + SidebarRedesign flake fix (`9af56f3`) all observed on main as of 6/21 evening. Argus's first day on cycle shipped a substantial test deliverable; the verification side of the duty-cycle thesis. *Closed 6/21.*
+- ~~**Model discovery/validation unification**~~ — Argus escalated 6/21 ("that sounds brittle" — xian); Daedalus shipped design + implementation same day (`d3ea00a` + `84e7d71`); `ModelId` compile-time union dropped (xian-confirmed); validation now against discovered set with hardcoded fallback. Argus's test round shipped same evening (`0428881` + `707d50f` "loop closed"). *Closed 6/21 — same-day round-trip on a structural decision, with verification.*
 - ~~**Klatch-project-optionality design tension**~~ — Iris resolved 6/21 (`a240539` + `docs/ux/decision-klatch-project-optionality.md`): make project optional, render via dedicated top-level Klatches section (shape b). Refined via xian+Iris offline (`a8b7e09`) to "default project, not nullable" framing. Premise-bound deliberate-then-stale constraint, surfaced via xian's premise question + anchored in xian's own 5/11 Tension-3 resolution. Daedalus's spine has a clean path forward. *Closed 6/21.*
 - ~~**Daedalus cohort-patterns writeup**~~ — Daedalus filed `daedalus-to-calliope-composition-spine-patterns-2026-06-21.md` at xian's request: 7 transferable patterns from the day's spine work (test-suite-as-diagnostic-instrument, diagnose-before-act, tandem-collision-via-rebase-and-mail-contract, coordination-vs-code-layer-separation, infra-outage-fail-closed, can't-loosen-own-guardrails, branch-hygiene-under-fast-moving-main). Routed to Janus per his standing CEO-hat ask (cohort methodology likely brief-worthy). Pulled into Calliope's blog mining list (especially patterns 1, 2, 5, 6 — generalize beyond Klatch). *Closed-as-routed 6/21.*
 - ~~**Composition gesture spine — increment 2**~~ — Daedalus shipped `07bda25` (agent-picker polish: search + chips + roles-first). *Closed-as-milestone 6/21.*

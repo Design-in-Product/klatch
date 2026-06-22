@@ -223,3 +223,36 @@ Verified-sweep refresh after another substantive accumulation:
 
 Worth a question-box candidate for end-of-day STOP: *what makes a structural concern resolvable same-day vs. multi-day, and what's the rate-limit on this?* Today had TWO structural items resolve same-day. PM's cohort velocity benchmarks (if any) would be useful comparators. Holding the question to evaluate at STOP whether it crosses the curiosity-vs-task-unblocking line.
 
+
+---
+
+**Fire 19 (autonomous) — ~22:13 PT — SUBSTANTIVE (Argus's test work on main + Iris day-wrapped)** — CronDelete-FIRST (`904bc5a3` cancelled).
+
+Pull surfaced significant Argus + Iris activity:
+- **Argus shipped multiple test rounds today, all on main:** extended composition coverage (composition-gesture-extended.test.ts), model-validation new-behavior round (`0428881`, closes the discovery/validation split with full coverage), SidebarRedesign flake fix + picker-coverage un-park (`9af56f3`). Model-validation loop explicitly closed (`707d50f` "loop closed"). 
+- **Iris wrapped her day** (`5bed370`) with an explicit resume note "~05:00 6/22" — clean wrap discipline; first agent on cycle to wrap-with-resume-time. Her earlier same-day work: composition spec, decision doc, refinement, conformance spot-check, default project name decision ("First project" lowercase p, `c274826`).
+- **The :17/:43 tandem is producing real verification at production velocity.** Implementation lands on Daedalus's `:17`; tests land on Argus's `:43`; main stays green.
+
+**Observation worth noting for the experiments registry / cohort-patterns mining list:** Argus's branch flow shows `Merge origin/main into claude/argus` commits but no `Merge claude/argus into main` — yet his work is on main. Either he's pushing directly (test-additions may be his interpretation of mail-on-main-direct discipline) or fast-forwarding. Either way, the *observed outcome* is: tests land cleanly without blocking on Calliope or xian review pass. **Worth flagging as a possible refinement candidate** — should tests have a different review threshold than product code? The current pattern works; documenting it would help future cohort members understand the discipline they're operating in. Not a 🔴; just a thought for end-of-day STOP.
+
+**Rollup v2.8:**
+- 🔴 → 🟢: claude/argus merge item (work landed on main without explicit Merge commit; observed outcome trumps not-tracing-mechanism for rollup state)
+- 🟢 +1: Argus's day-1 test deliverables
+- 🟢 model-validation note expanded with test-round closure
+- 🔵 Iris's wrap-with-resume note added to the cohort-cycles-live item
+- Metrics strip down to 2 (was 3): v2 blog review + branch -D approval
+
+The day's substantive closures:
+1. Iris cleared the design gate (composition gesture spec + mode rename + vocab sweep)
+2. Daedalus + Argus self-launched (Phase 2 tandem)
+3. Composition spine increments 1+2 shipped
+4. Invariant 1 enforced + Argus PIN flipped + reconciled
+5. Klatch-project-optionality decision made (Iris, with xian's offline refinement)
+6. Model-validation structural escalation → ship → test round (Argus → Daedalus → Argus)
+7. SidebarRedesign flake resolved test-side
+8. Vendor-risk arc routed to Janus
+9. xian's sidebar/projects question routed and answered same-day
+10. Daedalus's 7 cohort-pattern writeup filed + routed to Janus + pulled into blog mining
+
+The "all without xian needing to drive any single piece" framing has limits — xian was active behind the scenes (confirmed ModelId decision; engaged Iris on project-default refinement). But the cohort handled coordination, prioritization, and execution autonomously between his interventions. The duty-cycle thesis is producing real artifacts.
+
