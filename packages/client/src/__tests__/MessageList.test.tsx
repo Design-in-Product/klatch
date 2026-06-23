@@ -20,6 +20,7 @@ const defaultEntity: Entity = {
   id: 'ent-1',
   name: 'Claude',
   model: 'claude-opus-4-6',
+  effort: 'high',
   systemPrompt: 'You are helpful.',
   color: '#6366f1',
   createdAt: '2026-01-01T00:00:00Z',

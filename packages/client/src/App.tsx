@@ -202,7 +202,7 @@ export default function App() {
   };
 
   const [confirmingClear, setConfirmingClear] = useState(false);
-  const clearTimeoutRef = useRef<ReturnType<typeof setTimeout>>();
+  const clearTimeoutRef = useRef<ReturnType<typeof setTimeout>>(undefined);
 
   const handleClearHistory = () => {
     if (!confirmingClear) {

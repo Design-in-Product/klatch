@@ -16,12 +16,7 @@ import userEvent from '@testing-library/user-event';
 import { ChannelSidebar } from '../components/ChannelSidebar';
 import type { Channel } from '@klatch/shared';
 
-// Extended Channel type for the redesign (type field)
-interface ChannelWithType extends Channel {
-  type?: 'chat' | 'klatch';
-}
-
-function makeChannel(overrides: Partial<ChannelWithType> & { id: string; name: string }): ChannelWithType {
+function makeChannel(overrides: Partial<Channel> & { id: string; name: string }): Channel {
   return {
     systemPrompt: '',
     model: 'claude-opus-4-6',
@@ -43,7 +38,7 @@ const defaultProps = {
 // ── 1. Chats above klatches within a project ─────────────────────
 
 describe('Sidebar — chats above klatches within a project', () => {
-  const projectChannels: ChannelWithType[] = [
+  const projectChannels: Channel[] = [
     makeChannel({ id: 'default', name: 'general' }),
     makeChannel({
       id: 'chat-1',
@@ -126,7 +121,7 @@ describe('Sidebar — chats above klatches within a project', () => {
 
 describe('Sidebar — Unassigned section', () => {
   it('shows unassigned chats in Unassigned section', () => {
-    const channels: ChannelWithType[] = [
+    const channels: Channel[] = [
       makeChannel({ id: 'default', name: 'general' }),
       makeChannel({ id: 'loose-1', name: 'Random Question', type: 'chat' }),
       makeChannel({ id: 'loose-2', name: 'One-off Help', type: 'chat' }),
@@ -141,7 +136,7 @@ describe('Sidebar — Unassigned section', () => {
   it('does not show klatches in Unassigned section', () => {
     // This scenario shouldn't happen (klatches require projects),
     // but if data is inconsistent, the UI should still filter correctly
-    const channels: ChannelWithType[] = [
+    const channels: Channel[] = [
       makeChannel({ id: 'default', name: 'general' }),
       makeChannel({ id: 'loose-chat', name: 'Loose Chat', type: 'chat' }),
       // A klatch with a project should appear under its project, not unassigned
@@ -168,7 +163,7 @@ describe('Sidebar — Unassigned section', () => {
 // ── 3. Accordion behavior ────────────────────────────────────────
 
 describe('Sidebar — accordion (one project expanded at a time)', () => {
-  const multiProjectChannels: ChannelWithType[] = [
+  const multiProjectChannels: Channel[] = [
     makeChannel({ id: 'default', name: 'general' }),
     makeChannel({
       id: 'a-chat',
@@ -242,7 +237,7 @@ describe('Sidebar — accordion (one project expanded at a time)', () => {
 describe('Sidebar — Unassigned always visible', () => {
   it('Unassigned section stays visible regardless of which project is expanded', async () => {
     const user = userEvent.setup();
-    const channels: ChannelWithType[] = [
+    const channels: Channel[] = [
       makeChannel({ id: 'default', name: 'general' }),
       makeChannel({
         id: 'proj-chat',

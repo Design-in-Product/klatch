@@ -25,8 +25,8 @@ const mockPreview = {
     { uuid: 'c1', name: 'React Chat', messageCount: 10, createdAt: '', updatedAt: '', alreadyImported: false },
     { uuid: 'c2', name: 'Python Help', messageCount: 5, createdAt: '', updatedAt: '', alreadyImported: false },
   ],
-  projects: [],
-  memories: [],
+  projects: [] as { uuid: string; name: string; documentCount: number }[],
+  memories: [] as { uuid: string; content: string; createdAt: string }[],
 };
 
 beforeEach(() => {
