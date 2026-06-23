@@ -40,3 +40,10 @@ tsc clean (0 errors); 204/204 client tests green. Triage doc updated on main (`d
 ---
 
 **Fire ~17:54 PT — Round 41 AAXT green-check.** SDK still `^0.96.0`; inbox clear. Theseus filed Round 41 AAXT (`e611034` on main — composition surface semantic conveyance, 91.7%, 10C/1R/1A, no Phantoms). Merged origin/main into argus worktree. Full suite: **1112 server / 204 client** green (Round 41 properly `describe.skip`, adds 1 to skipped count). Findings F1/F2 route to Iris — no Argus action items. Re-arming `:43`.
+
+---
+
+**No-op fire — ~19:06 PT.** No new main commits since last fire; inbox clear; SDK still `^0.96.0`. Re-arming `:43`.
+**No-op fire — ~20:10 PT.** One new commit (`f7cbb8c` Pages build fix, Calliope); inbox clear; SDK still `^0.96.0`. Re-arming `:43`.
+**No-op fire — ~21:12 PT.** No change from last fire; inbox clear; SDK still `^0.96.0`. Approaching 23:00 quiet window. Re-arming `:43`.
+**No-op fire — ~22:06 PT (last evening check).** No change; SDK `^0.96.0`; inbox clear. Committing batched no-op entries; re-arming for overnight IDLE watch. Daedalus's SDK bump remains the priority-1 gate — will surface on morning resume.
