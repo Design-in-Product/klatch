@@ -191,3 +191,15 @@ Janus's memo moved to `read/` — actioned both sides, exchange closed.
 
 Committing + watching the build.
 
+
+---
+
+**Fires 16–18 reconciliation + STOP (June 22 close, written 6/23 morning)** — June 22 ran long and the cycle-log split across the main/worktree checkouts during the Pages-build commit tangle. Reconciling for the record:
+- **Fires 16–17 (~13:13, ~14:13)** — autonomous no-ops during the Pages-build waiting period (pull, no inbound, idle). (These lived only in the worktree copy; folded in here.)
+- **Fire 18 (~16:13)** — the substantive Pages-build root-cause + first fix attempt (raw-wrap of the 5/31 brief). Already recorded above.
+- **Fires 19–20+ (evening, xian-present)** — the Pages saga concluded. The raw-wrap alone did NOT clear the build; getting ground truth (installed the exact Liquid 4.0.4 parser Jekyll uses, ran every file through it) revealed the real, recurring cause: GitHub Pages runs the Liquid pass over ALL non-excluded files including docs/, and agent-authored operational markdown constantly quotes template-tag syntax. My own Fire-18 cycle log re-broke the build by quoting the offending delimiters while documenting the diagnosis. **Structural fix shipped (`f7cbb8c`): excluded docs/ + research/ QA/ exports/ backups/ scripts/ .claude/ from the Jekyll build**, verified the non-excluded site set is clean via the Liquid parser before pushing. First green Pages build in 23 days; the blog post + all stranded commits went live.
+- **Discipline lesson (recorded):** I was confident-and-wrong twice before getting ground truth. The fix that held came from running the actual parser, not from reasoning off a partial mental model. "Make sure that's really the fix" (xian) = reproduce with the real tool before declaring victory.
+
+QUESTION-BOX CHECK (June 22): none filed beyond the prior days' (session-log-vs-cycle-log on 6/21). The Pages saga produced a candidate — "what's the right boundary between operational repo content and published site content?" — but it's more an engineering observation than a curiosity-for-xian question; not filing.
+
+June 22 cycle log closed. Eventful day: 5-ask morning sweep, BYOC two-pass correction, Janus settled-distinction relay, and the 23-day Pages-build mystery solved. New day's logs open at 2026-06-23.
