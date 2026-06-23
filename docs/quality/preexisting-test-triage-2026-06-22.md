@@ -32,8 +32,10 @@ The 6/22 increments' own *source* is tsc-clean; everything below is pre-existing
 
 | Item | Status |
 |---|---|
-| A — `useRef` App.tsx | open |
-| A — `ChannelWithType` SidebarRedesign | open (Daedalus offered) |
-| A — ImportDialog fixture types | open |
-| A — MessageList mock `effort` | open |
-| B — userEvent load-flakes | in progress (Argus) |
+| A — `useRef` App.tsx | **resolved** (Argus, `6f46a02`, 2026-06-22) |
+| A — `ChannelWithType` SidebarRedesign | **resolved** (Argus, `6f46a02` — Daedalus's offer declined; done in same pass) |
+| A — ImportDialog fixture types | **resolved** (Argus, `6f46a02`) |
+| A — MessageList mock `effort` | **resolved** (Argus, `6f46a02`) |
+| B — userEvent load-flakes | **resolved** (Argus, `f4cd409` — global `testTimeout:15000` in vitest.config.ts) |
+
+All 17 tsc errors cleared; 204/204 client tests green post-fix.
