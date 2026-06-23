@@ -102,7 +102,7 @@ Agents working on this repo use this file as the async handoff protocol.
 
 ### Theseus Prime (manual testing & exploration — CLI side)
 - **Branch:** `claude/theseus` (persistent duty-cycle worktree `.claude/worktrees/theseus`)
-- **Status:** available — Fire 1 complete (6/23).
+- **Status:** available — Fire 2 heartbeat complete (6/23).
 - **Role:** Human-agent tandem manual testing + AAXT signal-receiver heartbeat.
 - **Last completed (6/23):** Round 42 — EntityManager AAXT. 9 probes, 100% adjusted conveyance. Findings: default-agent protection silent (Absent, expected); handle field inferred from card context (Reconstructed). No Phantoms. Test: `packages/client/src/__tests__/round42-entity-manager-aaxt.test.tsx` (commit `05c3a9a`).
 - **Next:** Round 43 — MessageList (F1.4) AAXT (next in standing queue). Composition follow-up blocked on Daedalus increment 2 / F1 fix. MAXT Session 02 + round-trip MAXT parked (need xian live).
