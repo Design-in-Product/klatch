@@ -76,6 +76,15 @@
 - **Observations:** *pending Phase 3 launch.*
 - **Refinements triggered:** *pending.*
 
+### 2026-06-22 — Phase 3 cutover — daily `31 9 * * *` (cadence-of-record)
+
+- **Cadence:** `31 9 * * *` (daily at 09:31 AM PT; off-mark from `:00`/`:13`/`:17`/`:43`; chosen to stagger from Calliope's `:13` daily anchor).
+- **Reason:** Signal-receiver heartbeat. Work-shape is bursty + xian-tandem (AAXT in concentrated waves; MAXT requires xian's live presence). Daily catches cross-agent prompts ("we need Theseus to probe this surface") without creating hourly no-op overhead. Extends don't-sit-passively rule to bursty roles.
+- **Cutover (2026-06-22 ~09:30 PT, xian-present):** persistent worktree `.claude/worktrees/theseus` on `claude/theseus` from `origin/main` (HEAD `44cfb28`). Per-agent docs created: `theseus-tasks.md`, cycle log, session log. Cover memo + 5/28 green-light moved to `read/`. Report-in memo to Calliope filed.
+- **Root cause of recurring-questions pattern:** each new session read "theseus not set up" from files and re-asked setup questions. Fixed by writing setup into files (this fire). Per-session statelessness means file state is the only persistent signal.
+- **Observations (first, day-of):** *Heartbeat cadence feels right for the signal-receiver shape. No immediate AAXT assignment; standing by for Daedalus/Iris direction. Will accumulate real observations from first autonomous fires before proposing cadence changes.*
+- **Refinements triggered:** *none yet.*
+
 ---
 
 ## Iris
@@ -84,5 +93,12 @@
 
 - **Cadence:** once per day at off-mark time (distinct from Theseus's heartbeat to avoid simultaneous fires).
 - **Reason:** Iris's real work is design-thinking with xian on the 1.0-beta UX critical path; the repo activity is downstream. Same signal-receiver framing as Theseus — the heartbeat catches cross-agent prompts ("we need Iris to weigh in on this UX call") that would otherwise sit until xian wakes her.
-- **Observations:** *pending Phase 3 launch.*
+- **Observations:** *pending Phase 3 formal launch.*
 - **Refinements triggered:** *pending.*
+
+### 2026-06-21/22 — Pre-cutover active session — one-shot `fireAt`
+
+- **Cadence:** ad-hoc xian-invoked sessions + one-shot `fireAt` for 5am 6/22 resume. No recurring `CronCreate`.
+- **Reason:** Iris launched 6/21 as xian-tandem design companion for the 1.0 composition UX sprint; Phase 3 formal cutover (persistent worktree, branch, recurring cron) hasn't happened yet. The 5am fireAt was a targeted one-off wake-up to drain any inbound mail between sessions.
+- **Observations (first):** `fireAt` fires correctly and cleanly for one-off use — the 5am task ran headless, drained mail, filed an early session log, then auto-disabled as expected. Key distinction: `fireAt` = one-shot (auto-disables after run); `CronCreate` = recurring. The two look similar at creation but behave very differently. Iris's Phase 3 formal cutover will require a `CronCreate` to get a standing daily heartbeat. Worktree for this session is `great-lamarr-94aefe` (temp), not the planned persistent `.claude/worktrees/iris`.
+- **Refinements triggered:** At Phase 3 formal cutover, register persistent worktree `.claude/worktrees/iris`, branch `claude/iris`, and a daily `CronCreate` at a minute distinct from Theseus `:31` and other agents (:13, :17, :43). Candidate: `17 9 * * *` (daily 9:17 AM; or shift to afternoon to stagger from Theseus's morning heartbeat).

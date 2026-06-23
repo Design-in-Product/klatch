@@ -101,16 +101,14 @@ Agents working on this repo use this file as the async handoff protocol.
 - **Updated:** 2026-06-21 (Fire 1 — spine increment 1 merged)
 
 ### Theseus Prime (manual testing & exploration — CLI side)
-- **Branch:** `main`
-- **Status:** working
-- **Role:** Human-agent tandem manual testing.
-- **Last completed:** UI-as-context AAXT five-round wave with validation loop closed (May 18). R36 sidebar (73%), R37 ExportReviewPanel (100%), R38 ImportDialog (84%), R39 ChannelSettings (54% — Iris's F4.4 "junk drawer" confirmed), R40 ChannelSettings re-probe after Daedalus's CS-F1..CS-F3 patches (**94%, +39.4pp lift, methodology validated empirically**). **146 total probes, ~$0.70, 11 findings + 1 validation cycle.** Complete diagnostic→fix→validate loop closed in ~6 hours calendar time.
-- **Test count contribution:** Round 18 (12) + Round 28 (25) + Round 29 (20) + Round 30 (7) + R36 (1) + R37 (1) + R38 (1) + R39 (1) + R40 (1) = 69 tests. Plus `scripts/aaxt-mcp-live-probe.ts`.
-- **Two principles named today** (both into `design-principles.md` with provenance credit): (1) *"Zero communicated by absence"* — confirmed in 7 instances across 4 surfaces; (2) *"Render the categories that could exist, not just the ones that do"* — panel-surface specific sibling derived from CS-F5 positive instance + CS-F2 negative instances.
-- **R39→R40 validation pair preserved as reference case** for the AAXT methodology line. Per-claim before/after: CS-F1 prompt layers 0/5 → 5/5 Correct (headline); CS-F2(a/b/c) all closed; CS-F4 Phantom auto-resolved; CS-F3 closed. One mild regression in channel-type (4C+1R → 3C+2F) flagged as probe-noise.
-- **Next:** Awaiting xian direction. Open candidates: (a) continue UI-as-context AAXT (ProjectSettings F5.1, EntityManager, MessageList F1.4); (b) MAXT Session 02; (c) Daedalus's April 28 round-trip MAXT (still parked).
-- **Waiting on:** xian (next direction).
-- **Updated:** 2026-05-18 21:50
+- **Branch:** `claude/theseus` (persistent duty-cycle worktree `.claude/worktrees/theseus`)
+- **Status:** available — **Phase 3 duty cycle LIVE 6/22**, daily heartbeat `31 9 * * *`.
+- **Role:** Human-agent tandem manual testing + AAXT signal-receiver heartbeat.
+- **Last completed (6/22):** Phase 3 launch. Created persistent worktree + branch, per-agent docs (`theseus-tasks.md`, cycle log, session log). Moved closed mail to `read/`. Filed report-in to Calliope. Updated agent-state + cron-shape-experiments.
+- **Last substantive work (5/18):** UI-as-context AAXT five-round wave. R36–R40, 146 probes, 11 findings + full diagnostic→fix→validate loop. ChannelSettings 54%→94% (+39.4pp after Daedalus CS-F1..CS-F3 patches). Test contributions: 69 tests total.
+- **Next:** Awaiting Daedalus/Iris assignment memo (none in `docs/mail/` as of 6/22 morning). Standing AAXT queue: ProjectSettings (F5.1), EntityManager, MessageList (F1.4), composition gesture (not yet feature-complete). MAXT Session 02 + round-trip MAXT parked (need xian live).
+- **Waiting on:** Daedalus/Iris assignment.
+- **Updated:** 2026-06-22 (Phase 3 launch)
 
 ### Ariadne (forked from Theseus — Klatch side)
 - **Branch:** n/a (Klatch-native, lives in SQLite)
@@ -131,9 +129,10 @@ Agents working on this repo use this file as the async handoff protocol.
   - **Design-acceptance spot-check — composition increments 1+2** (`iris-to-daedalus-composition-increments-conformance-2026-06-21.md`): conformant to spec §2+§3 Path A; max-5 *enforced*, atomic roster, project-required-as-sequenced. One forward-pointer (roles-first tiering latent until nameless agents exist).
   - Mode names + vocab sweep (`22d1631`); Daedalus spec-confirm reply (`panel` key stays / name-fallback ack).
 - **Daedalus ACCEPTED the default-project decision (6/21 eve, `daedalus-to-iris-project-default-mechanism`):** mechanism = **SENTINEL** (`null` = default project, no migration); label **"First project"** (lowercase confirmed); 3-step plan queued as next composition increment (default the form's project so a klatch is always creatable → render `null`-project channels under "First project" group → invert Round 7 test, coordinated with Argus). Thread closed by Daedalus. Decision is now **in implementation**, not just decided-in-principle.
-- **Next (on 5am resume):** (1) Watch for Daedalus's default-project increment landing on `claude/daedalus` → design review + MAXT. (2) Full interactive MAXT on composition surface once feature-complete (Paths B/C in). (3) Any further design questions.
-- **Waiting on:** Daedalus — default-project increment + remaining composition increments (Paths B/C, clone, mode-picker chrome) to land for review. No open blockers on Iris's side; **no open mail** (inbox drained 6/22).
-- **Updated:** 2026-06-22 05:00
+- **F1 ROUTED to Daedalus (`44cfb28`, 6/22):** xian confirmed default-project-by-default IS the design + "fix for sure" + "don't hold for me." Maps onto Daedalus's autonomous-build-boundary gate — all 3 deferral reasons (Iris review / Argus Round 7 tests / xian sign-off) now cleared → **build**. Offered step-1-first sequencing + standing rendering-review support. cc Argus for Round 7 test inversion.
+- **Next:** (1) Review Daedalus's default-project increment on his branch as it lands → design pass + live walkthrough (not holding for xian's close review, per his 6/22 instruction). (2) Coordinate Round 7 test inversion with Argus when Daedalus flags it. (3) Remaining composition increments (Paths B/C, clone, mode-picker) for review. F2–F6 minor findings documented in the design-acceptance doc (F6 field-order pairs with the F1 fix).
+- **Waiting on:** Daedalus — default-project increment build (gate resolved → build). No open blockers on Iris's side; no open mail.
+- **Updated:** 2026-06-22 ~10:30
 
 ## Signals
 

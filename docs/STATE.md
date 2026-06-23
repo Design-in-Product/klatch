@@ -1,7 +1,7 @@
 # Klatch — Standing State
 
 **Refresh cadence:** updated as part of the end-of-day logbook wrap (alongside the logbook entry). This is a point-in-time orientation snapshot, not live state — verify against COORDINATION.md, the roadmap, and recent commits before acting on anything time-sensitive.
-**Last refreshed:** 2026-06-22 Monday morning (Calliope, BYOC-correction propagation cleanup)
+**Last refreshed:** 2026-06-22 Monday afternoon (Calliope, second-pass BYOC sharpening per Janus's authoritative relay)
 
 ---
 
@@ -64,9 +64,13 @@ These are live, not settled. See memory `project_duty_cycle_reframes_klatch_purp
 - **New 6/19 threads, not yet discussed:**
   - **Persistent topical rooms** as a Klatch product category (the synthetic-klatch insight made operational — composition gesture grown up)
   - **Contextual fidelity across seams** — Layer 5 / behavioral-calibration problem revisited as a recurring concern
-  - **BYOC is PM's vocabulary, not Klatch's.** (xian corrected 6/22 — see persistent memory `[[project_byoc_transporter_device]]` for the correction record.) For PM: BYOC means the assistant exposed as skills + an MCP server connected to PM's backend; the user "brings their own chat" by using PM's capabilities through whatever chat host they're in. **For Klatch: xian "not even quite sure what it would mean."** The cross-tool context-portability concept that was previously mis-labeled here as "Klatch BYOC / transporter device" remains *exploratory* — it connects to real prior artifacts (D2/D4 interchange-protocol vision; Step 10's MCP context-package; the thin-proprietary-layer principle) but does not have a settled Klatch label or definition. Don't carry an unlabeled placeholder either; treat as open territory.
+  - **BYOC + cross-tool portability + transporter engine — three distinct concepts** (xian-settled, via Janus 6/22 afternoon relay). See persistent memory `[[project_byoc_transporter_device]]` for the authoritative version.
+    - **BYOC (PM) = bring-your-own-chat.** User-in-chat installs skills + MCP to use Piper. PM's deployment surface; not portability.
+    - **Cross-tool context portability (Klatch) = settled real concept.** Move agent conversations across harnesses with context intact (import Claude Code chats into a Klatch meeting; round-trip them back; convene multi-vendor klatch by importing each agent with its context).
+    - **The transporter engine = exploratory mechanism.** The 5-layer context model captured with enough fidelity to stand alone as a tool (MCP server / skills / in-chat / capture-and-inject service). xian thinking out loud; no offer language yet.
+    - Two propagation corrections: (a) first mis-reading 6/19→6/22 mislabeled the Klatch concept as "BYOC"; (b) second mis-reading 6/22 morning over-corrected by softening cross-tool portability to "exploratory." Both now corrected by Janus's afternoon relay.
   - **MCPs and service-design frontiers** — adjacent strategic territory
-  - **xian's focal shift, July 2026** (xian, 6/19): full-time on consulting + own products; no longer Director of Product at Kind Systems. **DinP becomes the operational center.** OpenLaws becomes an external consulting client. Piper Morgan is the consulting tool used to help clients build their own "product OS." Virtuous hyper-circle: methodology flows across projects + clients. **For Klatch:** multi-week pauses during planning mode may become rarer; Klatch joins xian's core work rather than competing with a day job for attention. (Earlier framing here connected the focal shift to "the interchange-protocol vision (BYOC / transporter device) gains real client-side use cases" — that BYOC framing was retracted 6/22; see strategic-threads above. The client-side-legibility question for Klatch remains real but isn't yet anchored in a settled concept name.)
+  - **xian's focal shift, July 2026** (xian, 6/19): full-time on consulting + own products; no longer Director of Product at Kind Systems. **DinP becomes the operational center.** OpenLaws becomes an external consulting client. Piper Morgan is the consulting tool used to help clients build their own "product OS." Virtuous hyper-circle: methodology flows across projects + clients. **For Klatch:** multi-week pauses during planning mode may become rarer; Klatch joins xian's core work rather than competing with a day job for attention. **Cross-tool context portability** (now-settled per the 6/22 Janus relay) gives Klatch a real client-side value proposition — concrete enough to demo, not yet framed as a consulting offer.
   - **Janus's role vs. Calliope's role** — Janus coordinates across all xian's projects; Calliope is principal contact for Klatch. Worth articulating cleanly as cohort scales.
 
 ## Convergent pattern worth surfacing back
