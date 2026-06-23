@@ -88,15 +88,16 @@ export default function App() {
   const activeChannel = channels.find((c) => c.id === activeChannelId);
 
   // Cross-reference: for a 1-1 role chat (one agent), surface the klatches that agent is also in.
+  // Suppressed on #general (id 'default') — the workspace home isn't a role-relationship chat (Iris, 6/23).
   useEffect(() => {
-    if (activeChannel?.type === 'chat' && channelEntities.length === 1) {
+    if (activeChannel?.type === 'chat' && channelEntities.length === 1 && activeChannel?.id !== 'default') {
       fetchKlatchesForEntity(channelEntities[0].id)
         .then(setRelatedKlatches)
         .catch(() => setRelatedKlatches([]));
     } else {
       setRelatedKlatches([]);
     }
-  }, [channelEntities, activeChannel?.type]);
+  }, [channelEntities, activeChannel?.type, activeChannel?.id]);
 
   // Multi-stream handling
   const handleStreamComplete = useCallback(
@@ -500,7 +501,7 @@ export default function App() {
         </div>
 
         {/* Cross-reference strip — klatches this agent is also in (1-1 role chats only) */}
-        {activeChannel?.type === 'chat' && channelEntities.length === 1 && (
+        {activeChannel?.type === 'chat' && channelEntities.length === 1 && activeChannel?.id !== 'default' && (
           <CrossRefStrip klatches={relatedKlatches} onSelect={handleSelectChannel} />
         )}
 
