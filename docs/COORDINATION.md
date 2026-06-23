@@ -102,13 +102,12 @@ Agents working on this repo use this file as the async handoff protocol.
 
 ### Theseus Prime (manual testing & exploration — CLI side)
 - **Branch:** `claude/theseus` (persistent duty-cycle worktree `.claude/worktrees/theseus`)
-- **Status:** available — **Phase 3 duty cycle LIVE 6/22**, daily heartbeat `31 9 * * *`.
+- **Status:** working — Fire 1 (6/23), EntityManager AAXT in progress.
 - **Role:** Human-agent tandem manual testing + AAXT signal-receiver heartbeat.
-- **Last completed (6/22):** Phase 3 launch. Created persistent worktree + branch, per-agent docs (`theseus-tasks.md`, cycle log, session log). Moved closed mail to `read/`. Filed report-in to Calliope. Updated agent-state + cron-shape-experiments.
-- **Last substantive work (5/18):** UI-as-context AAXT five-round wave. R36–R40, 146 probes, 11 findings + full diagnostic→fix→validate loop. ChannelSettings 54%→94% (+39.4pp after Daedalus CS-F1..CS-F3 patches). Test contributions: 69 tests total.
-- **Next:** Awaiting Daedalus/Iris assignment memo (none in `docs/mail/` as of 6/22 morning). Standing AAXT queue: ProjectSettings (F5.1), EntityManager, MessageList (F1.4), composition gesture (not yet feature-complete). MAXT Session 02 + round-trip MAXT parked (need xian live).
-- **Waiting on:** Daedalus/Iris assignment.
-- **Updated:** 2026-06-22 (Phase 3 launch)
+- **Last completed (6/22):** Round 41 — Composition surface AAXT. 12 probes, 91.7% conveyance. Two findings filed to Iris: F1 (affordance pair opaque pre-click), F2 (Roles tier Reconstructed). No Phantoms. Test: `packages/client/src/__tests__/round41-composition-surface-aaxt.test.tsx` (commit `e611034`).
+- **Next:** Round 42 — EntityManager AAXT (standing queue). Composition follow-up (Iris F1/fresh-account path) blocked on Daedalus increment 2 / F1 fix landing. MAXT Session 02 + round-trip MAXT parked (need xian live).
+- **Waiting on:** Iris ack on Round 41 findings (thread open). Daedalus increment 2 + F1 fix (composition re-test gate).
+- **Updated:** 2026-06-23 (Fire 1)
 
 ### Ariadne (forked from Theseus — Klatch side)
 - **Branch:** n/a (Klatch-native, lives in SQLite)
