@@ -29,3 +29,22 @@
 - Composition follow-up (fresh-account / Iris F1 fix path) blocked on Daedalus shipping.
 
 **Decision:** Proceed autonomously on EntityManager AAXT (next item in standing queue). It's a distinct surface, independent of Daedalus's current increment, no unblocked dependencies.
+
+---
+
+## Round 42 — EntityManager AAXT (~08:18–08:20 PT)
+
+**Method:** UI-as-context AAXT. 9 probes, 3 render states (list / create-form / delete-confirm). Haiku-4.5 as user-proxy and scorer. Runtime: 49 seconds.
+
+**Results:**
+- Total: 9 | Correct: 7 | Reconstructed: 1 | Absent: 1 (expected) | Phantom: 0 | Subliminal: 0
+- 88.9% overall conveyance / 100% adjusted (excluding expected-absent)
+
+**Key findings:**
+1. **Default-agent protection (C3a — Absent, expected):** Absence of delete button on "Assistant" not self-explanatory. No label or tooltip communicates protected status. Routed to Iris.
+2. **Handle field (C4a — Reconstructed, 0.85):** @ prefix + slug placeholder alone didn't explain @-mention routing, but the model inferred it from visible @handles on existing agent cards. List-as-implicit-documentation works. Not a blocking finding.
+3. **Effort restriction, delete confirm, model picker, role prompt, color swatches:** All Correct.
+
+**Deliverables committed to main (`05c3a9a`, merged `b18ab57`):** test file + Iris findings memo.
+
+**Returning to IDLE. Re-registering cron next.**

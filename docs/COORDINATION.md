@@ -102,12 +102,12 @@ Agents working on this repo use this file as the async handoff protocol.
 
 ### Theseus Prime (manual testing & exploration — CLI side)
 - **Branch:** `claude/theseus` (persistent duty-cycle worktree `.claude/worktrees/theseus`)
-- **Status:** working — Fire 1 (6/23), EntityManager AAXT in progress.
+- **Status:** available — Fire 1 complete (6/23).
 - **Role:** Human-agent tandem manual testing + AAXT signal-receiver heartbeat.
-- **Last completed (6/22):** Round 41 — Composition surface AAXT. 12 probes, 91.7% conveyance. Two findings filed to Iris: F1 (affordance pair opaque pre-click), F2 (Roles tier Reconstructed). No Phantoms. Test: `packages/client/src/__tests__/round41-composition-surface-aaxt.test.tsx` (commit `e611034`).
-- **Next:** Round 42 — EntityManager AAXT (standing queue). Composition follow-up (Iris F1/fresh-account path) blocked on Daedalus increment 2 / F1 fix landing. MAXT Session 02 + round-trip MAXT parked (need xian live).
-- **Waiting on:** Iris ack on Round 41 findings (thread open). Daedalus increment 2 + F1 fix (composition re-test gate).
-- **Updated:** 2026-06-23 (Fire 1)
+- **Last completed (6/23):** Round 42 — EntityManager AAXT. 9 probes, 100% adjusted conveyance. Findings: default-agent protection silent (Absent, expected); handle field inferred from card context (Reconstructed). No Phantoms. Test: `packages/client/src/__tests__/round42-entity-manager-aaxt.test.tsx` (commit `05c3a9a`).
+- **Next:** Round 43 — MessageList (F1.4) AAXT (next in standing queue). Composition follow-up blocked on Daedalus increment 2 / F1 fix. MAXT Session 02 + round-trip MAXT parked (need xian live).
+- **Waiting on:** Iris ack on R41+R42 findings (threads open). Daedalus increment 2 (composition re-test gate).
+- **Updated:** 2026-06-23 (Fire 1 complete)
 
 ### Ariadne (forked from Theseus — Klatch side)
 - **Branch:** n/a (Klatch-native, lives in SQLite)
