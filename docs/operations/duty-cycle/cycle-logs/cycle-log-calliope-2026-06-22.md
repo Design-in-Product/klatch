@@ -173,3 +173,33 @@ Plus an aside worth noting: Argus's offhand-observation question is now in the p
 
 Janus's memo moved to `read/` — actioned both sides, exchange closed.
 
+
+---
+
+**Fire 18 — ~16:13 PT — SUBSTANTIVE (Pages build root-caused + fixed; xian-directed, careful diagnosis)** — CronDelete-FIRST (`86a4c224` cancelled). xian asked me to fix the Pages build but be careful it's really the fix (not Jekyll-rules tinkering that creates regressions).
+
+**Disciplined diagnosis — ruled out before fixing:**
+- Pages build broke 5/31, last good 5/30. Failing every commit for 23 days; site frozen at 5/30 snapshot (which is why before-you-go.html works but new posts 404).
+- Exact boundary via Pages build API: `85fc0734` (5/30) BUILT → `2e35cb31` (5/31) ERRORED. `2e35cb31` = the "cross-pollination 2026-05-31 — Jinja2 fix" brief commit.
+- **Ruled out**: Liquid syntax in no-front-matter files (theory wrong but); invalid-YAML mail memos (PROVEN not the cause — subject-colon memos existed at 5/30 last-good build and it succeeded); the 3 changed site files (log.html static, my 2 blog files are from today, build broke weeks earlier).
+- **Root cause (empirically airtight)**: `2e35cb31` changed only the 5/31 brief + current.md, both carrying literal `{% extends %}` Liquid TAG syntax (the brief is *about* PM's Jinja2 bug, quotes the delimiters). current.md has since been overwritten clean; the dated 2026-05-31.md is the sole remaining carrier — breaking every build for 23 days.
+- **Key distinction that reconciled everything**: `{{ VARIABLE }}` syntax (in April mail/log files) → Liquid renders undefined vars empty → NO error → builds fine. `{% extends %}` (unknown Liquid TAG) → fatal error. Only the 5/31 brief had tag syntax.
+
+**Fix**: wrapped the 5/31 brief body in `{% raw %}...{% endraw %}` (Jekyll-blessed; file IS Liquid-processed so raw tags are honored + stripped; rendered output unchanged). ONE file. No `.nojekyll`. No exclude-list changes. No config touching. Exactly the "simple syntax bug breaking a normally-working setup" xian predicted.
+
+**Verified no other fatal carriers**: scanned all .md/.html (excl worktrees/node_modules); other `{{ }}` occurrences are safe variable syntax; _layouts/default.html is legitimate Liquid. The 5/31 brief was the only fatal `{% tag %}`.
+
+Committing + watching the build.
+
+
+---
+
+**Fires 16–18 reconciliation + STOP (June 22 close, written 6/23 morning)** — June 22 ran long and the cycle-log split across the main/worktree checkouts during the Pages-build commit tangle. Reconciling for the record:
+- **Fires 16–17 (~13:13, ~14:13)** — autonomous no-ops during the Pages-build waiting period (pull, no inbound, idle). (These lived only in the worktree copy; folded in here.)
+- **Fire 18 (~16:13)** — the substantive Pages-build root-cause + first fix attempt (raw-wrap of the 5/31 brief). Already recorded above.
+- **Fires 19–20+ (evening, xian-present)** — the Pages saga concluded. The raw-wrap alone did NOT clear the build; getting ground truth (installed the exact Liquid 4.0.4 parser Jekyll uses, ran every file through it) revealed the real, recurring cause: GitHub Pages runs the Liquid pass over ALL non-excluded files including docs/, and agent-authored operational markdown constantly quotes template-tag syntax. My own Fire-18 cycle log re-broke the build by quoting the offending delimiters while documenting the diagnosis. **Structural fix shipped (`f7cbb8c`): excluded docs/ + research/ QA/ exports/ backups/ scripts/ .claude/ from the Jekyll build**, verified the non-excluded site set is clean via the Liquid parser before pushing. First green Pages build in 23 days; the blog post + all stranded commits went live.
+- **Discipline lesson (recorded):** I was confident-and-wrong twice before getting ground truth. The fix that held came from running the actual parser, not from reasoning off a partial mental model. "Make sure that's really the fix" (xian) = reproduce with the real tool before declaring victory.
+
+QUESTION-BOX CHECK (June 22): none filed beyond the prior days' (session-log-vs-cycle-log on 6/21). The Pages saga produced a candidate — "what's the right boundary between operational repo content and published site content?" — but it's more an engineering observation than a curiosity-for-xian question; not filing.
+
+June 22 cycle log closed. Eventful day: 5-ask morning sweep, BYOC two-pass correction, Janus settled-distinction relay, and the 23-day Pages-build mystery solved. New day's logs open at 2026-06-23.
