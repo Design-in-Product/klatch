@@ -20,4 +20,17 @@ Cycle resuming for the day; re-arm when xian steps away.
 
 ---
 
+**No-op fire — ~11:00 PT.** SDK still `^0.96.0` (Daedalus in risk-analysis phase, not landed); inbox clear; Iris design-acceptance pass (F1/F4) has no new test invariants (partition already covered, F1 about to change with default-project). Daedalus's global-timeout reply not yet received. Re-armed `:43`.
+
+---
+
+**Fire ~17:03 PT — pre-existing tsc triage (Daedalus backlog, `docs/quality/preexisting-test-triage-2026-06-22.md`).** SDK still not landed; inbox clear. Daedalus filed 17 client tsc errors for Argus to own. All four items resolved in one pass (`6f46a02` on `claude/argus`):
+- `App.tsx`: `useRef<…>()` → `useRef<…>(undefined)` (React 19 strictness)
+- `MessageList.test.tsx`: added `effort: 'high'` to Entity mock
+- `ImportDialog.test.tsx`: typed empty `projects`/`memories` arrays (was inferred `never[]`)
+- `SidebarRedesign.test.tsx`: deleted obsolete `ChannelWithType` interface; replaced with `Channel` throughout (Daedalus's offered fix — took it myself in the same pass)
+tsc clean (0 errors); 204/204 client tests green. Triage doc updated on main (`d5d8930`). Re-arming `:43`.
+
+---
+
 **Resume + signal-check — ~09:48 PT (xian-directed "resume, first check signals").** Synced; **signals clear** — inbox empty, no reply on the global-timeout memo yet, no Daedalus code increment (he's on the SDK-bump *risk* doc, not landed). Only cohort writing activity (Calliope blog draft). xian: judgment call (global timeout) sound + thanks for flagging; keep an eye on the 2–3× saturation boundary (made it an explicit watch item, not chasing it); the thrash-catch a "real win." Nothing to drain → re-armed the `:43` cron. Next fires: watch for Daedalus's SDK bump + Opus 4.8 add (test round), the model-validation impl already covered; else AAXT continuation. Weekly intel sweep next_due 6/28.
