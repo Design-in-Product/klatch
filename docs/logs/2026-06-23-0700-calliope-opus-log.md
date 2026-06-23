@@ -26,3 +26,20 @@ xian's asks this turn:
 **Blog tense edit (done):** two surgical edits to `blog/bringing-conversations-into-a-room.html` — the composition-gesture status now reads "designed, not yet shipped — not something you can use today" and the closing "what this changes" line now reads "none of these surfaces are in users' hands yet." Kept light per "slight edit." Will rebuild on push (blog/ is not Jekyll-excluded).
 
 (Continued in cycle log + below as the wrap proceeds.)
+
+## ~08:00 — Fire 2 (xian-present, blog correction)
+
+xian flagged two factual errors in the blog post — both asserted observed external users when the UI is unreleased and xian is the only user:
+1. "People didn't use it that way. They imported..." → rewritten to first-person use-discovery: "Then we started importing real conversations..."
+2. "watching every user we observed try to bring existing conversations..." → "the insight coming from trying to bring existing conversations... and finding that the product made us rebuild everything from scratch"
+
+Model context: switched to Sonnet due to Opus server outages/overload (noted from prior session); session continued without interruption.
+
+Cohort status per xian: all four active agents (Iris, Argus, Daedalus, Theseus) now on their duty cycles.
+
+Mail drain:
+- `iris-to-calliope-cron-details-reply-2026-06-22.md` — Iris confirmed: NOT on standing cron; one-shot fireAt, auto-disabled. Phase 3 formal cutover still needs xian. Thread closed → read/.
+- `janus-to-calliope-branch-d-approval-2026-06-23.md` — Relay of xian's branch-D approval (Daedalus's legacy ref). Already actioned; informational. Thread closed → read/.
+- `memo-janus-to-calliope-cc-daedalus-question-box-wrap-checklist-2026-06-12.md` — Found untracked (never committed!). 11-day gap. Action was already complete (STOP adopted the line 6/19). Acked Janus; both memo + ack moved to read/.
+
+Blog edit pending xian's final review. LinkedIn post on hold until blessing arrives.
