@@ -132,7 +132,7 @@
 
       <p>It's the natural design move. It's also the wrong one.</p>
 
-      <p>We figured this out by accident. We had been building agents as configured personas for months — name, prompt, color, model, the works. The UI matched the model: create an agent, pick its settings, assign it to a channel. People didn't use it that way. They imported a conversation from claude.ai or Claude Code, the conversation arrived as a Klatch channel with its agent attached, and they wanted to bring <em>that conversation</em> into a klatch with other conversations they'd already had.</p>
+      <p>We figured this out by accident. We had been building agents as configured personas for months — name, prompt, color, model, the works. The UI matched the model: create an agent, pick its settings, assign it to a channel. Then we started importing real conversations from claude.ai and Claude Code. Each arrived as a Klatch channel with its agent attached — and what we needed was to bring <em>that conversation</em> into a klatch with conversations we'd already been having.</p>
 
       <p>The configured-persona model couldn't represent what was being asked for. The conversation already had a name, a personality, a working history with the user, a way of pushing back, a vocabulary. None of that came from a settings panel. It came from being <em>used</em>. The thing that should join the klatch wasn't a persona spec; it was the conversation itself.</p>
 
@@ -150,7 +150,7 @@
 
       <p>The promotion path is the load-bearing detail. You don't configure roles from scratch. You have a conversation. The conversation develops. At some point you notice you keep going back to it. At some point you give it a name and pin it in the sidebar. At some point you bring it into a meeting with other conversations you've grown to trust. None of those steps requires defining a persona-spec; all of them are downstream of <em>using the conversation</em>.</p>
 
-      <p>This isn't an iteration of the configured-persona model. It's a different model. The persona-spec is a designed-in-advance abstraction; the role-as-promoted-conversation is an extracted-from-pain abstraction, where the pain was watching every user we observed try to bring existing conversations into a room together and finding that the product made them rebuild everything from scratch.</p>
+      <p>This isn't an iteration of the configured-persona model. It's a different model. The persona-spec is a designed-in-advance abstraction; the role-as-promoted-conversation is an extracted-from-use abstraction — the insight coming from trying to bring existing conversations into a room together and finding that the product made us rebuild everything from scratch.</p>
 
       <hr>
 
@@ -162,7 +162,7 @@
 
       <p>What the gesture should be is closer to inviting people into a meeting. Pick the chats you want present. Tell the room what it's about. Start.</p>
 
-      <p>The spec for that gesture landed in mid-June, after a long design pass with Iris that resolved the last open questions about what "running a meeting" inside a klatch should look like. The surface is now under implementation in Klatch's 1.0-beta path. Until you can do it, the model is a description of how the product <em>could</em> work, not how it does; the implementation is what closes that gap.</p>
+      <p>The spec for that gesture landed in mid-June, after a long design pass with Iris that resolved the last open questions about what "running a meeting" inside a klatch should look like. It's designed, not yet shipped — the surface is on the 1.0-beta path, not something you can use today. Until you can do it, the model is a description of how the product <em>could</em> work, not how it does; building the gesture is what will close that gap.</p>
 
       <hr>
 
@@ -210,7 +210,7 @@
 
       <p>The import-to-export arc. Today imports are a side panel; the imported conversation lands as a channel and there's no obvious next step. In the model, an imported conversation is a <em>candidate role</em> — something that arrived with history and may earn its way into the durable roster. The import surface should hint at the promotion path.</p>
 
-      <p>The spec is now in the repo; the implementation is in flight. The composition gesture is being built, not just argued for.</p>
+      <p>The spec is in the repo and implementation has begun; none of these surfaces are in users' hands yet. The point of writing this now is that the model is settled enough to build from — not that the building is done.</p>
 
       <hr>
 

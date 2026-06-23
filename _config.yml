@@ -17,3 +17,17 @@ exclude:
   - "*.tsx"
   - .env
   - klatch.db
+  # Operational / agent-working directories — NOT published web content.
+  # These hold agent-authored markdown (briefs, mail, logs, intel) that
+  # frequently quotes Liquid/Jinja template syntax (e.g. {% ... %}), which
+  # the Jekyll Liquid pass treats as live tags and errors on. Excluding them
+  # ends a recurring build-break class. The actual site (root *.html, blog/,
+  # assets/, _layouts/, styles.css) contains none of these dirs; site links
+  # into docs/ are absolute github.com URLs, so exclusion is regression-free.
+  - docs/
+  - research/
+  - QA/
+  - exports/
+  - backups/
+  - scripts/
+  - .claude/
