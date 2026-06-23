@@ -34,3 +34,9 @@ tsc clean (0 errors); 204/204 client tests green. Triage doc updated on main (`d
 ---
 
 **Resume + signal-check — ~09:48 PT (xian-directed "resume, first check signals").** Synced; **signals clear** — inbox empty, no reply on the global-timeout memo yet, no Daedalus code increment (he's on the SDK-bump *risk* doc, not landed). Only cohort writing activity (Calliope blog draft). xian: judgment call (global timeout) sound + thanks for flagging; keep an eye on the 2–3× saturation boundary (made it an explicit watch item, not chasing it); the thrash-catch a "real win." Nothing to drain → re-armed the `:43` cron. Next fires: watch for Daedalus's SDK bump + Opus 4.8 add (test round), the model-validation impl already covered; else AAXT continuation. Weekly intel sweep next_due 6/28.
+
+*(Note: entry above landed out-of-order at the end due to merge artifact — chronologically it precedes the 11:00 no-op fire above.)*
+
+---
+
+**Fire ~17:54 PT — Round 41 AAXT green-check.** SDK still `^0.96.0`; inbox clear. Theseus filed Round 41 AAXT (`e611034` on main — composition surface semantic conveyance, 91.7%, 10C/1R/1A, no Phantoms). Merged origin/main into argus worktree. Full suite: **1112 server / 204 client** green (Round 41 properly `describe.skip`, adds 1 to skipped count). Findings F1/F2 route to Iris — no Argus action items. Re-arming `:43`.
