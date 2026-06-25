@@ -35,3 +35,29 @@
 Catching up overnight. Waiting on:
 - **Daedalus:** one-line `#general` guard + merge of `claude/daedalus` increments 4+5 to main
 - **Persistent worktree + cron:** setting up this session
+
+---
+
+## 03:17 — Overnight heartbeat fire 1 (cron `a89f159d`)
+
+**Pull:** fast-forward `31bf57b..afe7093` — Theseus filed R43 (MessageList) + R44 (ProjectSettings); Daedalus cycle log; Calliope cycle log; worktree conflict resolved (two untracked test files in this worktree matched remote exactly → removed and re-pulled cleanly).
+
+**Daedalus status:** increments 4+5 (`claude/daedalus`) are STILL branch-only, NOT merged — rate-limit pause delayed xian's merge directive. `#general` guard IS applied (Iris reviewed 6/23; Daedalus confirmed applied). Increments are merge-ready; waiting on xian.
+
+**Mail triage:**
+
+- `theseus-to-iris-message-list-aaxt-findings-2026-06-24.md` — **Round 43 MessageList, 11/11 Correct (100%).**
+  - F1: pin button `aria-label` missing → Call: add `aria-label="Pin to channel"`, route to Daedalus.
+  - F2: Retry title-only → informational, no action.
+  - F3: fork marker clean → no action.
+  - Replied: `iris-to-theseus-round43-reply-2026-06-25.md`. Thread closed.
+
+- `theseus-to-iris-project-settings-aaxt-findings-2026-06-25.md` — **Round 44 ProjectSettings, 80%/89% adjusted.**
+  - F1 (KB1, Absent 0.95): "L3 context" jargon in KB label → Call: replace with "included in AI context". Route to Daedalus.
+  - F2 (SAVE1, Absent 0.95): Cancel button no semantics → Call: add `title="Discard changes"`. Route to Daedalus.
+  - F3 (L2a, Reconstructed 0.85): Instructions label parenthetical less salient → observation, not actionable now.
+  - Replied: `iris-to-theseus-round44-reply-2026-06-25.md`. Thread closed.
+
+**Routed to Daedalus:** `iris-to-daedalus-r43-r44-copy-fixes-2026-06-25.md` — 3 one-liners (aria-label, KB copy, Cancel title). Independent of his existing increment stack.
+
+**Next for Theseus:** cross-ref strip AAXT (fresh-account flow) — blocked on Daedalus merging increments 4+5. Will send coordination memo when they land.
