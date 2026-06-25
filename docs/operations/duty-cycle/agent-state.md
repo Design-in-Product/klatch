@@ -27,7 +27,7 @@
 - `calliope-june03` ✓ removed (the session that drove Phase 0/1)
 
 **Other agents'** (each cleans up at its own Phase 2/3 launch, since agents own their worktrees):
-- `daedalus-2026-05-18` ✓ worktree removed 6/21 (Phase 2 launch); branch ref `worktree-daedalus-2026-05-18` retained — provably merged to origin/main (0 unique commits) but `git branch -d` blocked by stale upstream; full `-D` delete deferred pending xian approval (Git Safety Rules)
+- `daedalus-2026-05-18` ✓ FULLY CLEANED — worktree removed 6/21 (Phase 2 launch); branch ref `worktree-daedalus-2026-05-18` `git branch -D`'d 6/24 (xian-approved via Calliope `calliope-to-daedalus-branch-D-approved-2026-06-22`; 0 unique commits, was `295b28c`)
 - `iris-may18` (cleanup at Iris Phase 3 launch)
 - `theseus-2026-05-18` — Phase 3 launched 6/22; worktree cleanup pending (confirm no uncommitted work first)
 
