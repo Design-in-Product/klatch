@@ -43,3 +43,16 @@ Mail drain:
 - `memo-janus-to-calliope-cc-daedalus-question-box-wrap-checklist-2026-06-12.md` — Found untracked (never committed!). 11-day gap. Action was already complete (STOP adopted the line 6/19). Acked Janus; both memo + ack moved to read/.
 
 Blog edit pending xian's final review. LinkedIn post on hold until blessing arrives.
+
+## 23:21 — Session close (STOP)
+
+Day was quiet after the morning substantive burst. 17 cron fires total; only Fires 1–3 had work. Blog correction (`e171c1d`, `0b007fd`) is in main. All logs closed; cycle log flushed. Session log pushed with batch.
+
+**Wrap verification:**
+- `git log origin/main --oneline -5` at STOP: `0b007fd` (mail thread closes), `b18ab57` (merge), `e171c1d` (blog fix), `e7153ae` (Iris mail), `862233e` (morning wrap)
+- All deliverables present: blog fix ✓, mail closures ✓, cycle log ✓
+
+Open items carrying to 6/24:
+- Blog blessing from xian (LinkedIn post gated)
+- Theseus reportin thread (open — Theseus now active on EntityManager AAXT)
+- Calliope outbound: branch-D approval (Daedalus), canonical-artifacts CIO request (20+ days), cohort-patterns + vendor-risk to Janus
