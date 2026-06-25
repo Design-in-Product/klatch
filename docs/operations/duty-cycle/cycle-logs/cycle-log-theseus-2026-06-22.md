@@ -35,3 +35,25 @@
 **Cron registered:** job id `3be7bfbc`, `31 9 * * *`, session-only, 7-day auto-expire.
 
 **Next fire:** tomorrow, 09:31 AM PT
+
+---
+
+## Fire 0 — continued (~17:00 PT, same session)
+
+**Context:** xian: "Start autonomously." Iris's handoff memo found (arrived via merge earlier). CronDelete-FIRST: cancelled `3be7bfbc` before starting work.
+
+**Round 41 AAXT — Composition surface**
+
+Rendered `<ChannelSidebar>` via RTL, 3 states (closed, form-open, 2-agents-selected), 12 probes. Haiku-4.5 as user-proxy and scorer.
+
+Results: 10 Correct / 1 Reconstructed / 1 Absent. No Phantoms. No Subliminals. 91.7% conveyance rate.
+
+Key findings:
+- Purpose field: Correct — "this klatch" phrasing communicates shared scope to all agents
+- Mode selector: Correct — descriptions explicit enough
+- Affordance pair (closed-form): Absent (0.92) — "+ New Klatch" opaque to first-time users pre-click (routed to Iris)
+- Roles tier: Reconstructed (0.72) — "predefined personas" ≈ correct but missed named/unnamed distinction (latent, not actionable while Other-agents tier empty)
+
+Deliverables committed to main (`e611034`): test file + Iris findings memo.
+
+**Status at close:** returning to IDLE. Cron re-register next step.

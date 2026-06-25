@@ -13,8 +13,8 @@
 | **Calliope** | **live (v0.2)** | hourly (`13 * * * *`) | `.claude/worktrees/calliope` | `claude/calliope` | 2026-06-06 Fire 0 (Phase 1 launch) | Phase 1 cutover complete 6/6. Cron job id `adca439c` (session-only — dies when this Claude session ends; next session re-registers). |
 | **Daedalus** | **live (v0.2)** | hourly (`17 * * * *`) tandem with Argus | `.claude/worktrees/daedalus` | `claude/daedalus` | 2026-06-21 Fire 0 (Phase 2 launch) | Phase 2 cutover 6/21. Cron job id `9a295ef9` (session-only — dies when this Claude session ends; next session re-registers). |
 | **Argus** | **live (v0.2)** | hourly (`43 * * * *`) tandem with Daedalus | `.claude/worktrees/argus` | `claude/argus` | 2026-06-21 Fire 0 (Phase 2 launch) | Phase 2 cutover 6/21. Cron job id `9192826d` (session-only — dies when this Claude session ends; next session re-registers). Weekly intel sweep is a Recurring-items row, not a separate cron. |
-| **Theseus** | **live (v0.2)** | daily heartbeat (`31 9 * * *`) | `.claude/worktrees/theseus` | `claude/theseus` | 2026-06-22 Fire 0 (Phase 3 launch) | Phase 3 cutover 6/22. Cron job id `3be7bfbc` (session-only — dies when this Claude session ends; next session re-registers). Signal-receiver heartbeat, not a work-queue cycle; MAXT still needs xian. |
-| **Iris** | **active (xian-tandem; no heartbeat cron yet)** | ad-hoc + one-shot `fireAt` (standing heartbeat cron pending Phase 3 formal cutover) | `.claude/worktrees/great-lamarr-94aefe` (temp session worktree; persistent `.claude/worktrees/iris` not yet created) | `claude/great-lamarr-94aefe` (temp; persistent `claude/iris` not yet created) | 2026-06-22 05:00 (`fireAt` one-shot, auto-disabled) | Active since 6/21 on composition UX sprint (xian-tandem). Persistent worktree + recurring daily cron NOT yet created — each session is xian-invoked or a one-shot `fireAt`. Phase 3 formal cutover still pending. |
+| **Theseus** | **live (v0.2)** | daily heartbeat (`31 9 * * *`) | `.claude/worktrees/theseus` | `claude/theseus` | 2026-06-24 Fire 1 overnight (xian-invoked) | Phase 3 cutover 6/22. Cron job id re-registered each session (session-only; last was `82a08078`, deleted this session). R41–R43 AAXT complete. Signal-receiver heartbeat, not a work-queue cycle; MAXT still needs xian. |
+| **Iris** | **live (v0.2)** | sparse overnight (`17 3,7 * * *`) + xian-tandem design sessions | `.claude/worktrees/iris` | `claude/iris` | 2026-06-24 23:40 (Phase 3 cutover, xian-present) | Phase 3 cutover 6/24 ~23:40. Persistent worktree + `claude/iris` branch created. Cron job id `a89f159d` (session-only — dies when this Claude session ends; next session re-registers). Sparse overnight pattern: 3:17am + 7:17am. Signal-receiver + design-review role; MAXT + live design needs xian. |
 
 ---
 
@@ -27,7 +27,7 @@
 - `calliope-june03` ✓ removed (the session that drove Phase 0/1)
 
 **Other agents'** (each cleans up at its own Phase 2/3 launch, since agents own their worktrees):
-- `daedalus-2026-05-18` ✓ worktree removed 6/21 (Phase 2 launch); branch ref `worktree-daedalus-2026-05-18` retained — provably merged to origin/main (0 unique commits) but `git branch -d` blocked by stale upstream; full `-D` delete deferred pending xian approval (Git Safety Rules)
+- `daedalus-2026-05-18` ✓ FULLY CLEANED — worktree removed 6/21 (Phase 2 launch); branch ref `worktree-daedalus-2026-05-18` `git branch -D`'d 6/24 (xian-approved via Calliope `calliope-to-daedalus-branch-D-approved-2026-06-22`; 0 unique commits, was `295b28c`)
 - `iris-may18` (cleanup at Iris Phase 3 launch)
 - `theseus-2026-05-18` — Phase 3 launched 6/22; worktree cleanup pending (confirm no uncommitted work first)
 
