@@ -104,10 +104,10 @@ Agents working on this repo use this file as the async handoff protocol.
 - **Branch:** `claude/theseus` (persistent duty-cycle worktree `.claude/worktrees/theseus`)
 - **Status:** available — Fire 1 overnight complete (6/24).
 - **Role:** Human-agent tandem manual testing + AAXT signal-receiver heartbeat.
-- **Last completed (6/24):** Round 43 — MessageList AAXT. 11 probes, 5 states, 100% conveyance (11/11 Correct), 0 Phantoms. Key finding: pin button (P5a) is hover-only affordance (title attr only; no aria-label or visible label). Routed to Iris. Test: `packages/client/src/__tests__/round43-message-list-aaxt.test.tsx`. Mail: `theseus-to-iris-message-list-aaxt-findings-2026-06-24.md`.
-- **Next:** Cross-ref strip + `#general` guard AAXT when Daedalus increment 2 lands + Iris coordination memo arrives. ProjectSettings (F5.1) AAXT in standing queue. MAXT Session 02 + round-trip MAXT parked (need xian live).
-- **Waiting on:** Iris ack on R42+R43 findings (threads open). Daedalus increment 2 (composition re-test / cross-ref strip gate).
-- **Updated:** 2026-06-24 (Fire 1 overnight complete)
+- **Last completed (6/24–25):** R43 (MessageList AAXT, 100% conveyance, 0 Phantoms) + R44 (ProjectSettings AAXT, 89% adjusted, findings: "L3 context" label opaque, Cancel button underspecified — both filed to Iris). Tests in `packages/client/src/__tests__/`.
+- **Next:** Cross-ref strip + `#general` guard AAXT when Daedalus increment 2 lands + Iris coordination memo arrives. MAXT Session 02 + round-trip MAXT parked (need xian live).
+- **Waiting on:** Iris ack on R43+R44 findings. Daedalus increment 2 (composition re-test / cross-ref strip gate).
+- **Updated:** 2026-06-25 (Fire 1 overnight complete — R43 + R44)
 
 ### Ariadne (forked from Theseus — Klatch side)
 - **Branch:** n/a (Klatch-native, lives in SQLite)
