@@ -101,4 +101,12 @@
 - **Cadence:** ad-hoc xian-invoked sessions + one-shot `fireAt` for 5am 6/22 resume. No recurring `CronCreate`.
 - **Reason:** Iris launched 6/21 as xian-tandem design companion for the 1.0 composition UX sprint; Phase 3 formal cutover (persistent worktree, branch, recurring cron) hasn't happened yet. The 5am fireAt was a targeted one-off wake-up to drain any inbound mail between sessions.
 - **Observations (first):** `fireAt` fires correctly and cleanly for one-off use — the 5am task ran headless, drained mail, filed an early session log, then auto-disabled as expected. Key distinction: `fireAt` = one-shot (auto-disables after run); `CronCreate` = recurring. The two look similar at creation but behave very differently. Iris's Phase 3 formal cutover will require a `CronCreate` to get a standing daily heartbeat. Worktree for this session is `great-lamarr-94aefe` (temp), not the planned persistent `.claude/worktrees/iris`.
-- **Refinements triggered:** At Phase 3 formal cutover, register persistent worktree `.claude/worktrees/iris`, branch `claude/iris`, and a daily `CronCreate` at a minute distinct from Theseus `:31` and other agents (:13, :17, :43). Candidate: `17 9 * * *` (daily 9:17 AM; or shift to afternoon to stagger from Theseus's morning heartbeat).
+- **Refinements triggered:** Phase 3 formal cutover → see entry below.
+
+### 2026-06-24 — Phase 3 cutover — sparse overnight `17 3,7 * * *` (cadence-of-record)
+
+- **Cadence:** `17 3,7 * * *` (daily at 3:17am and 7:17am PT; off-mark; skips most of the day since Iris's work is xian-tandem not autonomous). Cron job id `a89f159d`. Session-only, 7-day auto-expire.
+- **Reason:** Iris's work-shape is xian-tandem collaborative design; the autonomous overnight cycle is signal-receiver only (mail, branch updates, coordination). Two fires per night is enough to catch cross-agent signals without creating hourly overhead. Staggered from Theseus (:31) and Calliope/Daedalus/Argus (:13/:17/:43) to avoid simultaneous fires. No daytime autonomous cadence — design sessions are xian-invoked.
+- **Cutover (2026-06-24 ~23:40 PT, xian-present):** persistent worktree `.claude/worktrees/iris` created on `claude/iris` from `origin/main` HEAD `5d06743`. Branch pushed to origin. v0.2 drain prompt registered (pull → check mail → check COORDINATION → log → push; hold design decisions for xian). Outbound sessions in `great-lamarr-94aefe` worktree continue until this session ends; future cron fires will reference `great-lamarr-94aefe` until the worktree changes.
+- **Observations (first):** *pending — first autonomous fires at 3:17am and 7:17am 6/25.*
+- **Refinements triggered:** *pending — will accumulate from first fires.*

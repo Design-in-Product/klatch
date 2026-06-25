@@ -102,12 +102,12 @@ Agents working on this repo use this file as the async handoff protocol.
 
 ### Theseus Prime (manual testing & exploration — CLI side)
 - **Branch:** `claude/theseus` (persistent duty-cycle worktree `.claude/worktrees/theseus`)
-- **Status:** available — Fire 2 heartbeat complete (6/23).
+- **Status:** available — Fire 1 overnight complete (6/24).
 - **Role:** Human-agent tandem manual testing + AAXT signal-receiver heartbeat.
-- **Last completed (6/23):** Round 42 — EntityManager AAXT. 9 probes, 100% adjusted conveyance. Findings: default-agent protection silent (Absent, expected); handle field inferred from card context (Reconstructed). No Phantoms. Test: `packages/client/src/__tests__/round42-entity-manager-aaxt.test.tsx` (commit `05c3a9a`).
-- **Next:** Round 43 — MessageList (F1.4) AAXT (next in standing queue). Composition follow-up blocked on Daedalus increment 2 / F1 fix. MAXT Session 02 + round-trip MAXT parked (need xian live).
-- **Waiting on:** Iris ack on R41+R42 findings (threads open). Daedalus increment 2 (composition re-test gate).
-- **Updated:** 2026-06-23 (Fire 1 complete)
+- **Last completed (6/24):** Round 43 — MessageList AAXT. 11 probes, 5 states, 100% conveyance (11/11 Correct), 0 Phantoms. Key finding: pin button (P5a) is hover-only affordance (title attr only; no aria-label or visible label). Routed to Iris. Test: `packages/client/src/__tests__/round43-message-list-aaxt.test.tsx`. Mail: `theseus-to-iris-message-list-aaxt-findings-2026-06-24.md`.
+- **Next:** Cross-ref strip + `#general` guard AAXT when Daedalus increment 2 lands + Iris coordination memo arrives. ProjectSettings (F5.1) AAXT in standing queue. MAXT Session 02 + round-trip MAXT parked (need xian live).
+- **Waiting on:** Iris ack on R42+R43 findings (threads open). Daedalus increment 2 (composition re-test / cross-ref strip gate).
+- **Updated:** 2026-06-24 (Fire 1 overnight complete)
 
 ### Ariadne (forked from Theseus — Klatch side)
 - **Branch:** n/a (Klatch-native, lives in SQLite)
@@ -118,8 +118,8 @@ Agents working on this repo use this file as the async handoff protocol.
 - **Updated:** 2026-03-13
 
 ### Iris (UX design & front-end development)
-- **Branch:** `main`
-- **Status:** available — resumed 6/22 ~09:43 (xian, live). Filed Theseus AAXT-coordination memo + ran my own composition design-acceptance pass. Standing by.
+- **Branch:** `claude/iris` (persistent worktree `.claude/worktrees/iris`, created 6/24)
+- **Status:** available — overnight duty cycle LIVE 6/24 ~23:40. Cron `a89f159d` fires 3:17am + 7:17am.
 - **6/22 design-acceptance pass (composition surface, `90608ce`):** Live walkthrough of New Klatch + Path A picker. **Conformant + well-built** — picker typeahead/chips/count/roles-tiering/deselect-sync all correct; mode names (Broadcast/Roundtable/Directed) landed; Purpose(L4) optional ✓. **Headline finding F1 (decision-relevant):** a projectless user is HARD-BLOCKED from creating a klatch (project required + zero projects in DB → Create stays disabled even with name+agent filled). Concrete evidence the **gated default-project increment blocks basic klatch creation, not just polish** — increment step-1 ("default the form's project") independently unblocks it. 5 minor findings (button wrap, no files-field at setup, latent Other-agents tier [expected], mode-dropdown truncation, field-order). Full doc: `docs/ux/composition-surface-design-acceptance-2026-06-22.md`. Theseus handoff memo: `iris-to-theseus-composition-surface-aaxt-2026-06-22.md`.
 - **6/22 09:43 (live resume):** Caught up on overnight cohort work (Daedalus default-project teed-up + design-complete, gated on xian's autonomous-build-boundary answer; Argus resolved client-suite flake via global testTimeout; BYOC chronicler-correction). **Corrected the BYOC mislabel in `decision-klatch-project-optionality.md`** (`96aa207`) — BYOC is PM's vocab, not Klatch's (xian 6/22); relabeled to interchange-protocol/exploratory + re-rested the decision on solid pillars (Tension 3, singleton, spontaneous cross-project). Memory + index already corrected (5am session). Decision doc was the last BYOC gap in Iris's lane; STATE.md/blog are Calliope's (in progress).
 - **6/22 05:00 resume:** Ran session-start protocol clean (pull → `daa30a6`; COORDINATION; mail; cross-poll). **Mail triage (3 inbound, all moved to `read/`):** (1) Daedalus's default-project ack — mechanism = **SENTINEL** (no migration), label **"First project"** lowercase, both task-flagged items resolved, thread closed by him; (2) Argus sweep-commit reassurance — no action; (3) **xian's "why under-projects" question (via Calliope)** — already answered in full by `docs/ux/decision-klatch-project-optionality.md` (6/21); filed a closing reply (`read/iris-to-calliope-xian-under-projects-answered-2026-06-22.md`) with 3-bullet answers to the three sub-questions + thread close. **Composition MAXT not yet actionable** — Daedalus's overnight Fires 1–5 were SDK-bump + format_version docs, not composition increments; Paths B/C, clone, mode-picker, and the default-project increment have NOT landed; surface not feature-complete. Increment-1 conformance done 6/21. Log: `docs/logs/2026-06-22-0459-iris-opus-log.md`.
@@ -130,8 +130,11 @@ Agents working on this repo use this file as the async handoff protocol.
 - **Daedalus ACCEPTED the default-project decision (6/21 eve, `daedalus-to-iris-project-default-mechanism`):** mechanism = **SENTINEL** (`null` = default project, no migration); label **"First project"** (lowercase confirmed); 3-step plan queued as next composition increment (default the form's project so a klatch is always creatable → render `null`-project channels under "First project" group → invert Round 7 test, coordinated with Argus). Thread closed by Daedalus. Decision is now **in implementation**, not just decided-in-principle.
 - **F1 ROUTED to Daedalus (`44cfb28`, 6/22):** xian confirmed default-project-by-default IS the design + "fix for sure" + "don't hold for me." Maps onto Daedalus's autonomous-build-boundary gate — all 3 deferral reasons (Iris review / Argus Round 7 tests / xian sign-off) now cleared → **build**. Offered step-1-first sequencing + standing rendering-review support. cc Argus for Round 7 test inversion.
 - **Next:** (1) Review Daedalus's default-project increment on his branch as it lands → design pass + live walkthrough (not holding for xian's close review, per his 6/22 instruction). (2) Coordinate Round 7 test inversion with Argus when Daedalus flags it. (3) Remaining composition increments (Paths B/C, clone, mode-picker) for review. F2–F6 minor findings documented in the design-acceptance doc (F6 field-order pairs with the F1 fix).
-- **Waiting on:** Daedalus — default-project increment build (gate resolved → build). No open blockers on Iris's side; no open mail.
-- **Updated:** 2026-06-22 ~10:30
+- **6/23 code review (Daedalus `claude/daedalus` increments 4+5):** Reviewed from diffs. **Default-project (`0719adc`) — Conformant ✅.** F1 fixed; sentinel model correct; singleton-flat / multi-project-header correct; `#general` pinned-top accepted (better than nesting). **Cross-ref (`e2568ee`) — One adjustment:** add `activeChannel?.id !== 'default'` guard in App.tsx show-condition (strip currently hits `#general`). Filed: `iris-to-daedalus-default-project-crossref-review-2026-06-23.md` — merge-ready after guard.
+- **6/24 ~23:40 (Phase 3 cutover):** Persistent worktree `.claude/worktrees/iris` + branch `claude/iris` created from `origin/main`. Cron `a89f159d` registered (3:17am + 7:17am). Theseus Round 42 EntityManager AAXT triage: F1 = "default" badge on card (low-priority hardening), F2 = not actionable (list-as-context working). Next for Theseus: ProjectSettings.
+- **Next:** (1) Daedalus merges `claude/daedalus` after adding `#general` guard → record + queue Round 43. (2) ProjectSettings AAXT when Theseus runs it. (3) Remaining composition increments (Paths B/C, clone, mode-picker) as Daedalus builds.
+- **Waiting on:** Daedalus — one-line guard + merge. No open design blockers on Iris's side.
+- **Updated:** 2026-06-24 ~23:40
 
 ## Signals
 
