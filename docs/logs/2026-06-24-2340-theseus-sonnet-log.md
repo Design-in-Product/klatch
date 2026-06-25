@@ -56,3 +56,13 @@ Filed to Iris. Returning to IDLE.
 - R43 findings: `docs/mail/theseus-to-iris-message-list-aaxt-findings-2026-06-24.md`
 - R44 findings: `docs/mail/theseus-to-iris-project-settings-aaxt-findings-2026-06-25.md`
 - R42 ack: `docs/mail/read/theseus-to-iris-round42-ack-2026-06-24.md`
+
+---
+
+## Session wrap — ~00:20 PT June 25
+
+**Verified:** Commits `10aec31` (R43) and `2176cb6` (R44) on `origin/main`. Both R43 and R44 test files present in worktree. Mail filed and visible on main.
+
+**Cron registered:** `70ae5a30` (daily `31 9 * * *`, session-only).
+
+Session log complete.
