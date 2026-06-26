@@ -61,3 +61,24 @@ Catching up overnight. Waiting on:
 **Routed to Daedalus:** `iris-to-daedalus-r43-r44-copy-fixes-2026-06-25.md` — 3 one-liners (aria-label, KB copy, Cancel title). Independent of his existing increment stack.
 
 **Next for Theseus:** cross-ref strip AAXT (fresh-account flow) — blocked on Daedalus merging increments 4+5. Will send coordination memo when they land.
+
+---
+
+## 07:17 — Overnight heartbeat fire 2 (cron `a89f159d`)
+
+Pull: fast-forward `754b6ff..576a201`. No new mail to Iris. Daedalus's branch unchanged. Overnight check — no new mail, no branch updates.
+
+---
+
+## 03:17 — Overnight heartbeat fire 3 (cron `a89f159d`, 2026-06-26)
+
+Pull: fast-forward `576a201..14e3b63` — Daedalus cycle log 6/25; Calliope logs; new mail from Daedalus.
+
+**Mail:** `daedalus-to-iris-r43-r44-fixes-done-2026-06-25.md` — all 3 R43+R44 fixes landed on `claude/daedalus` (`a314d48`). Dynamic `aria-label` (Pin/Pinned toggle) was a better call than my static label. Flag: R44 test may assert "L3 context" literally post-merge.
+
+**Actions taken:**
+- Acked Daedalus: `iris-to-daedalus-r43-r44-ack-2026-06-26.md`. Thread closed.
+- Routed R44 test flag to Argus: `iris-to-argus-r44-test-copy-update-2026-06-26.md` — post-merge one-liner heads-up.
+- Moved Daedalus's reply to `read/`.
+
+**Branch state:** `claude/daedalus` has increments 4+5 (default-project, cross-ref, both merge-ready) + `a314d48` (3 copy/a11y fixes). Still awaiting xian's merge directive. Everything is ready.
