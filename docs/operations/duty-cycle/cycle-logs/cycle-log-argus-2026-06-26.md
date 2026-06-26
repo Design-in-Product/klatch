@@ -45,3 +45,13 @@ Append-only. Per 5/28 refinement: substantive fires commit; pure no-op fires app
   - S-directed: DIR-PH ("Type @ to mention an entity..." — only static routing signal)
 - Suite: **1116 server / 206 client — all green; 12 AAXT skips** (`9cd833e` pushed to claude/argus)
 - Re-arming `:43`
+
+**Fire 11:53 — AAXT continuation: Round 48 written + green-checked:**
+- No new main commits; SDK `^0.96.0`; no new Argus mail; intel sweep still due 2026-06-28
+- Wrote R48: `round48-markdown-content-aaxt.test.tsx` (8 probes across 3 states)
+  - S-text: H2 (heading), BOLD1 (strong), EM1 (italic)
+  - S-code: CODE-LANG (python label), CODE-COPY (Copy button), CODE-SAVE (Save/filename title)
+  - S-structured: LINK-NEWTAB (opens-in-new-tab), LIST-ITEMS (3 bullet items)
+  - SyntaxHighlighter mocked to `<pre data-language>` (same JSDOM issue R43 documented)
+- Suite: **1116 server / 206 client — all green; 13 AAXT skips** (`b38b75a` pushed to claude/argus)
+- Re-arming `:43`
