@@ -163,6 +163,7 @@ function FileCard({ artifact, isUser, onPin }: { artifact: MessageArtifact; isUs
             }
           }}
           title={pinned ? 'Pinned to channel' : 'Pin to channel'}
+          aria-label={pinned ? 'Pinned to channel' : 'Pin to channel'}
           className={`flex-shrink-0 p-1 rounded transition-colors ${
             pinned
               ? 'text-accent'
