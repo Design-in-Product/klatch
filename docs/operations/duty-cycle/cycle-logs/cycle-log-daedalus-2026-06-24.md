@@ -13,3 +13,7 @@ Append-only. Per 5/28 refinement: substantive fires commit; pure no-op fires bat
 - **Calliope — branch -D** (xian-approved 6/22): deleted stale `worktree-daedalus-2026-05-18` (0 unique commits, was `295b28c`); agent-state Legacy-worktrees section updated.
 
 **Closed the 6/23 cycle log.** Arming the sparse overnight cron (~3am check + resume morning). Watching for catching-up cohort mail; increments hold for xian's merge.
+
+---
+
+**Day close (6/24) — appended 6/25 AM.** The 6/24 "day" was just this late-evening re-entry (11:40 PM, post-rate-limit); the 3am overnight heartbeat was quiet (cohort catching up, no actionable mail to me). Rolled to 6/25 at the morning fire. State carried: increments still merge-ready, branch-only, awaiting xian's merge. — Day closed.
