@@ -4,6 +4,10 @@ Append-only. Per 5/28 refinement: substantive fires commit; pure no-op fires app
 
 ---
 
+**Fire 20 — 10:39 PT — no-op** — No new mail. Theseus heartbeat only. Surfaced `claude/calliope` branch divergence (20 vs 14 commits with remote) to xian — awaiting authorization for `reset --hard` + cherry-pick recovery. Continuing to push main via HEAD:main only.
+
+**Fire 19 — 10:33 PT — no-op** — Theseus heartbeat Fire 2 (`518a890`) — no mail to Calliope. Stall-sweep still only open thread. Batching.
+
 **Fire 18 — 09:39 PT — no-op** — No new commits, no new inbound. Batching.
 
 **Fire 17 — 09:33 PT — no-op** — No new commits, no new inbound. Batching.
