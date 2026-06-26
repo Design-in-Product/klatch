@@ -4,6 +4,16 @@ Append-only. Per 5/28 refinement: substantive fires commit; pure no-op fires app
 
 ---
 
+**Fire 27 — 13:39 PT — no-op, batch flush** — No new commits, no new inbound. Flushing no-op batch (Fires 23–27).
+
+**Fire 26 — 13:18 PT — no-op** — No new commits, no new inbound. Batching.
+
+**Fire 25 — 12:39 PT — no-op** — No new commits, no new inbound. Batching.
+
+**Fire 24 — 12:18 PT — no-op** — No new commits, no new inbound. Batching.
+
+**Fire 23 — 11:40 PT — no-op** — No new commits, no new inbound. Batching.
+
 **Fire 22 — 11:45 PT — substantive** — xian authorized `reset --hard origin/claude/calliope`. All local Calliope commits were already on main — no cherry-picks needed. Reset clean; files restored from main. Branch divergence resolved.
 
 **Fire 21 — 11:33 PT — no-op** — No new commits, no new inbound. Branch divergence pending. Batching.
