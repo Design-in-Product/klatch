@@ -38,6 +38,10 @@ Also discovered: **6/25 day-focus memo from Janus missed for ~20 hours** — gre
 
 **Closed threads:** 6/25 day-focus memo → `read/` (item 3 moot; items 1+2 surfaced in rollup). Stall-sweep thread stays open until Janus confirms receipt.
 
+## 08:45 — ROADMAP.md beta milestone section
+
+Added "Beta milestone" section to ROADMAP.md between Step 10 and Step 11. Documents: July 2026 target, composition gesture as the gate, increment status (1 merged, 2-5 on branch, 6+ to come), Search is post-beta.
+
 ## 07:45 — xian-present (beta definition captured)
 
 xian defined beta directly: composition gesture fully implemented + tested/QA'd → release cut (v0.9 or v1.0). Step 11 Search is post-beta. The merge item in the rollup is now explicitly the critical path to beta, not just agent-unblocking. Rollup updated to v6; memory saved.
