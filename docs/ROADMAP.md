@@ -248,6 +248,22 @@ The March 2026 Dispatch report documented this challenge empirically: Layers 1�
 - Should export create a branch (preserving Klatch original) or move the conversation?
 - How does the user understand and act on a Layer 5 calibration gap?
 
+### Beta milestone — composition gesture complete → release cut
+
+**Target: July 2026.** When the composition gesture (current active work) is fully implemented, tested, and QA'd, we cut the next release — v0.9 or v1.0.
+
+The plumbing for composition was ready before Iris's UX design phase. Her Phase 3 spec (completed June 2026) was the critical path to beta — not more infrastructure, not more feature steps, but real design work that made the core feature worthy of a release. The composition gesture is the 1.0 front-door: the thing that makes Klatch a multi-entity conversation tool rather than a single-agent one.
+
+**Composition gesture increment status (as of June 2026):**
+- Increment 1: Spine — New Chat / New Klatch affordance, atomic roster, Purpose label ✅ (merged)
+- Increments 2–5: Picker polish + default project + cross-reference — Iris-reviewed ✅ (on `claude/daedalus`, awaiting merge)
+- Increment 6: Clone existing klatch (next to build, after merge)
+- Increments 7+: Paths B/C (JIT import + new agent in picker), @mention autocomplete (to come)
+
+**After beta:** Step 11 (Search) is the next major step. Not a beta requirement.
+
+---
+
 ### Step 11: Search and recall
 **Dimension: memory.** Can you find things across all your conversations?
 
