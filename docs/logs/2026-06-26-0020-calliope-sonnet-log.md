@@ -37,3 +37,12 @@ Also discovered: **6/25 day-focus memo from Janus missed for ~20 hours** — gre
 **Replied to Janus stall-sweep** (`calliope-to-janus-stall-sweep-ack-2026-06-26.md`) with rollup summary + agent status.
 
 **Closed threads:** 6/25 day-focus memo → `read/` (item 3 moot; items 1+2 surfaced in rollup). Stall-sweep thread stays open until Janus confirms receipt.
+
+## 07:30 — xian-present (remote-control snafu + June 23 logbook)
+
+xian present. Remote-control message from June 24 arrived late (written ~23:39 June 24; received 07:30 June 26). xian's three asks:
+1. June 23 logbook entry — done (inserted as first entry in log.html, reverse-chron).
+2. Close last log + new session log — 6/24 log was already closed; 6/25 closed; 6/26 is open (this file). Keeping open — right time is tonight's STOP.
+3. Start overnight duty cycle — already running (cron `b0178b9e`).
+
+June 23 logbook covers: blog corrections (user-behavior framing error fixed), all-agents confirmation, question-box memo housekeeping failure, rate-limit quiet.
