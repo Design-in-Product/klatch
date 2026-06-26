@@ -2,6 +2,7 @@ import './setup.js';
 import { describe, it, expect, vi } from 'vitest';
 import { createTestApp } from './app.js';
 import { DEFAULT_ENTITY_ID, ENTITY_COLORS, DEFAULT_MODEL } from '@klatch/shared';
+import { createEntity, createChannel } from '../db/queries.js';
 
 // Mock the claude client
 vi.mock('../claude/client.js', () => ({
@@ -38,6 +39,26 @@ describe('GET /api/entities', () => {
     expect(def.color).toBe(ENTITY_COLORS[0]);
     expect(def.systemPrompt).toBeTruthy();
     expect(def.createdAt).toBeTruthy();
+  });
+});
+
+describe('GET /api/entities/:id/klatches (cross-reference)', () => {
+  it('returns only the klatches the entity is in (not its 1-1 chat)', async () => {
+    const actor = createEntity('XActor', DEFAULT_MODEL, 'p', '#abc123');
+    const other = createEntity('XOther', DEFAULT_MODEL, 'p', '#def456');
+    createChannel('x-1-1', 'p', undefined, undefined, 'chat', [actor.id]);
+    const k1 = createChannel('x-standup', 'p', undefined, 'panel', 'klatch', [actor.id, other.id]);
+
+    const res = await req('GET', `/entities/${actor.id}/klatches`);
+    expect(res.status).toBe(200);
+    const data = await res.json();
+    expect(data.map((c: any) => c.id)).toContain(k1.id);
+    expect(data.every((c: any) => c.type === 'klatch')).toBe(true);
+  });
+
+  it('404s for an unknown entity', async () => {
+    const res = await req('GET', '/entities/does-not-exist/klatches');
+    expect(res.status).toBe(404);
   });
 });
 

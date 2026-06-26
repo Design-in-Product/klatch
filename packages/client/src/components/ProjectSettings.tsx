@@ -211,7 +211,7 @@ export function ProjectSettings({ projectId, onClose, onUpdated }: Props) {
         {/* Knowledge base files */}
         <div>
           <label className="block text-xs text-secondary mb-2">
-            Knowledge base <span className="text-muted font-normal">({projectFiles.length} file{projectFiles.length !== 1 ? 's' : ''} — listed in L3 context for all channels in this project)</span>
+            Knowledge base <span className="text-muted font-normal">({projectFiles.length} file{projectFiles.length !== 1 ? 's' : ''} — included in AI context for all channels in this project)</span>
           </label>
           {projectFiles.length > 0 && (
             <div className="space-y-1.5 mb-3">
@@ -276,6 +276,7 @@ export function ProjectSettings({ projectId, onClose, onUpdated }: Props) {
             </button>
             <button
               onClick={handleCancel}
+              title="Discard changes"
               className="rounded bg-card px-4 py-1.5 text-sm font-medium text-secondary hover:bg-hover transition-colors"
             >
               Cancel

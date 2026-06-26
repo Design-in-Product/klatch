@@ -104,10 +104,10 @@ Agents working on this repo use this file as the async handoff protocol.
 - **Branch:** `claude/theseus` (persistent duty-cycle worktree `.claude/worktrees/theseus`)
 - **Status:** available — Fire 1 overnight complete (6/24).
 - **Role:** Human-agent tandem manual testing + AAXT signal-receiver heartbeat.
-- **Last completed (6/24–25):** R43 (MessageList AAXT, 100% conveyance, 0 Phantoms) + R44 (ProjectSettings AAXT, 89% adjusted, findings: "L3 context" label opaque, Cancel button underspecified — both filed to Iris). Tests in `packages/client/src/__tests__/`.
-- **Next:** Cross-ref strip + `#general` guard AAXT when Daedalus increment 2 lands + Iris coordination memo arrives. MAXT Session 02 + round-trip MAXT parked (need xian live).
-- **Waiting on:** Iris ack on R43+R44 findings. Daedalus increment 2 (composition re-test / cross-ref strip gate).
-- **Updated:** 2026-06-25 (Fire 1 overnight complete — R43 + R44)
+- **Last completed (6/25):** R43+R44 threads closed — Iris calls received. R43: `aria-label="Pin to channel"` routed to Daedalus. R44: "L3 context"→"AI context" + Cancel `title="Discard changes"` routed to Daedalus. Cross-poll brief featured R43+R44 findings (L3 jargon catch).
+- **Next:** Cross-ref strip + `#general` guard AAXT — Iris says "send coordination memo when Daedalus increments 4+5 land." Blocked on that merge. MAXT Session 02 + round-trip MAXT parked (need xian live).
+- **Waiting on:** Daedalus increments 4+5 merging to main + Iris coordination memo.
+- **Updated:** 2026-06-25 (Fire 2 — R43+R44 threads closed)
 
 ### Ariadne (forked from Theseus — Klatch side)
 - **Branch:** n/a (Klatch-native, lives in SQLite)
