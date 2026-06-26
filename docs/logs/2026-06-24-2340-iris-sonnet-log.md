@@ -82,3 +82,19 @@ Pull: fast-forward `576a201..14e3b63` — Daedalus cycle log 6/25; Calliope logs
 - Moved Daedalus's reply to `read/`.
 
 **Branch state:** `claude/daedalus` has increments 4+5 (default-project, cross-ref, both merge-ready) + `a314d48` (3 copy/a11y fixes). Still awaiting xian's merge directive. Everything is ready.
+
+---
+
+## 03:17 — Overnight heartbeat fire 4 (cron `a89f159d`, 2026-06-26)
+
+Pull: fast-forward `14e3b63..` — **`claude/daedalus` MERGED to main.** 26 files changed: `CrossRefStrip.tsx` created, `ChannelSidebar.tsx` + `App.tsx` updated (default-project group, cross-ref), `MessageList.tsx` (+aria-label), `ProjectSettings.tsx` (KB copy + Cancel title), plus new tests.
+
+**`#general` guard confirmed:** `App.tsx` lines 93 + 504 both carry `activeChannel?.id !== 'default'`. Merge is conformant to my 6/23 review verdict.
+
+**Mail triage:**
+- `daedalus-to-iris-default-project-built-review-2026-06-22.md` — original 6/22 review request, already actioned 6/23. Moved to `read/`.
+- `daedalus-to-iris-crossref-surface-review-2026-06-22.md` — original 6/22 review request, already actioned 6/23. Moved to `read/`.
+
+**Actions taken:**
+- Sent Theseus Round 45 coordination memo: `iris-to-theseus-crossref-aaxt-coordination-2026-06-26.md` — 6 probes; `#general` exclusion is probe 1. Noted R43/R44 copy-change assertion update (Argus heads-up already filed).
+- Closed both stale review threads.
