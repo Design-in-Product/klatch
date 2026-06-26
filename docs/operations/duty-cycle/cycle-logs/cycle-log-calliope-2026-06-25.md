@@ -4,6 +4,18 @@ Append-only. Per 5/28 refinement: substantive fires commit; pure no-op fires app
 
 ---
 
+**Fire 24 — STOP — 23:39 PT** — Final pull: Daedalus→Iris R43/R44-fixes-done landed (`3033212`), not addressed to Calliope. No new inbound. Question-box check: nothing newsletter-shaped — quiet day. Day summary: 2 substantive fires (Fire 1 START: rollup v4 + Iris Phase 3 cutover resolved; Fire 7: cross-poll brief + L3 jargon signal); 21 no-ops; two mid-day batch flushes. Blog still awaiting xian blessing. Session log closed. Cron re-armed.
+
+**Fire 23 — 22:39 PT — no-op** — No new commits, no new inbound. Next fire is STOP.
+
+**Fire 22 — 21:13 PT — no-op** — No new commits, no new inbound. Last WORK fire; STOP next.
+
+**Fire 21 — 20:13 PT — no-op** — No new commits, no new inbound. Batching.
+
+**Fire 20 — 19:13 PT — no-op** — No new commits, no new inbound. Batching.
+
+**Fire 19 — 18:13 PT — no-op** — No new commits, no new inbound. Batching.
+
 **Fire 18 — 17:13 PT — no-op, batch flush** — No new commits, no new inbound. Flushing accumulated no-op batch (Fires 15–18). Committed.
 
 **Fire 17 — 16:13 PT — no-op** — No new commits, no new inbound. Batching.
