@@ -14,3 +14,13 @@ Append-only. Per 5/28 refinement: substantive fires commit; pure no-op fires app
 - All three inbox memos moved to `docs/mail/read/`; replies pushed to main
 - SDK `^0.96.0`; intel sweep next_due 2026-06-28 (Saturday — 2 days out)
 - Re-arming `:43`
+
+**Fire 08:47 — post-context-compaction green-check + R45 validation:**
+- New main commits: Theseus R45 CrossRefStrip AAXT (`a2a9603`, 8/8 100% conveyance 0 Phantoms); Calliope beta-definition + rollup v6 (`8adb2b4`); Daedalus 6/26 cycle + increment 6 + R45-clean validation + drain 3 ack threads (`4615658`)
+- Resolved second R44 merge conflict (header comment + KB1 scopeNote); committed `f35dbbc`; pushed to claude/argus
+- R45 green-check: properly `describe.skip`-guarded; 10 total AAXT skips (R45 adds 1)
+- Full suite: **1116 server / 206 client — all green**
+- Round 7 server-test inversion: already complete (no action needed)
+- Inbox: no new Argus-addressed action items
+- SDK `^0.96.0`; intel sweep next_due 2026-06-28
+- Re-arming `:43`
