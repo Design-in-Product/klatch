@@ -24,3 +24,14 @@ Append-only. Per 5/28 refinement: substantive fires commit; pure no-op fires app
 - Inbox: no new Argus-addressed action items
 - SDK `^0.96.0`; intel sweep next_due 2026-06-28
 - Re-arming `:43`
+
+**Fire 09:55 — AAXT continuation: Round 46 written + green-checked:**
+- New main: Calliope updated ROADMAP.md + rollup; no new Argus-addressed mail
+- SDK `^0.96.0` — no action
+- Wrote R46: `round46-sidebar-first-project-aaxt.test.tsx` (7 probes across 3 states)
+  - S-flat: FLAT1 (no "First project" header in singleton mode), AT1 (@ prefix)
+  - S-mixed: FP1 (Subliminal candidate — "First project" label may read as named project), HASH1 (# prefix on klatches), FP-KLATCH1 (project-less klatch routes to default group)
+  - S-order: ORDER1 (CHATS/KLATCHES subheaders), ORDER2 (@ before # within project)
+- Suite: **1116 server / 206 client — all green; 11 AAXT skips** (`f316924` pushed to claude/argus)
+- Intel sweep next_due 2026-06-28 (tomorrow)
+- Re-arming `:43`
