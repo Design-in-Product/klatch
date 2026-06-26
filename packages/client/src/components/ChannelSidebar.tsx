@@ -3,7 +3,7 @@ import type { Channel, Entity, ChannelType, InteractionMode } from '@klatch/shar
 import { INTERACTION_MODES } from '@klatch/shared';
 import { getModelLabel } from '../hooks/useModels';
 import { KlatchLogo } from './KlatchLogo';
-import type { Project } from '../api/client';
+import { fetchChannelEntities, type Project } from '../api/client';
 
 
 interface Props {
@@ -105,6 +105,23 @@ export function ChannelSidebar({
       newType === 'klatch' && selectedEntityIds.size > 0 ? [...selectedEntityIds] : undefined
     );
     resetForm();
+  };
+
+  // Clone-from-klatch (spec §46): prefill the form from an existing klatch's setup —
+  // name (with a "Copy of" prefix), purpose (L4), mode, project, and roster. New channel, no history.
+  const cloneFromKlatch = async (sourceId: string) => {
+    const source = channels.find((ch) => ch.id === sourceId);
+    if (!source) return;
+    setNewName(`Copy of ${source.name}`);
+    setNewPrompt(source.systemPrompt === 'You are a helpful assistant.' ? '' : source.systemPrompt);
+    setNewMode((source.mode as InteractionMode) || 'panel');
+    setNewProjectId(source.projectId || '');
+    try {
+      const ents = await fetchChannelEntities(sourceId);
+      setSelectedEntityIds(new Set(ents.map((e) => e.id).slice(0, 5)));
+    } catch {
+      // roster fetch failed — leave agents empty; user can pick
+    }
   };
 
   const handleChannelClick = (id: string) => {
@@ -481,6 +498,21 @@ export function ChannelSidebar({
               {/* Klatch-specific fields */}
               {newType === 'klatch' && (
                 <>
+                  {/* Clone-from-klatch (spec §46): copy setup from an existing klatch. Action-select
+                      (resets to placeholder after prefilling). Only shown when a klatch exists to copy. */}
+                  {channels.some((ch) => ch.type === 'klatch') && (
+                    <select
+                      value=""
+                      onChange={(e) => { if (e.target.value) cloneFromKlatch(e.target.value); }}
+                      className="w-full rounded bg-input border border-line px-2.5 py-1.5 text-xs text-muted focus:outline-none focus:border-accent"
+                      title="Pre-fill name, agents, mode, purpose, and project from an existing klatch"
+                    >
+                      <option value="">Copy setup from an existing klatch…</option>
+                      {channels.filter((ch) => ch.type === 'klatch').map((k) => (
+                        <option key={k.id} value={k.id}>{k.name}</option>
+                      ))}
+                    </select>
+                  )}
                   {/* Project — optional. Empty = the default "First project" (null project_id, sentinel).
                       Only shown once real projects exist; a singleton user never sees project chrome. */}
                   {projects.length > 0 && (
