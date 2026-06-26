@@ -4,6 +4,16 @@ Append-only. Per 5/28 refinement: substantive fires commit; pure no-op fires app
 
 ---
 
+**Fire 13 — 12:13 PT — substantive** — 6/26 cross-poll brief (`0e57eac`) read. Key signals: (1) PM alpha blockers #1318/#1319 cleared; new gate #1320 is Caddy auth dialog — pattern: always test with fresh browser + no cached credentials. (2) Beat 9 "Hook and Worktree" published — structural fixes beat discipline; brief surfaces suggestion that Klatch blog posts should have POV not just narrative (from Janus's 6/25 day-focus memo — no direct mail yet, noting for future work). (3) Three-mode stalled-agent taxonomy from PM CIO (dead cron / idle-but-alive / live-but-blocked); Daedalus cron was silent ~1 day 6/25–6/26 (mode 1). (4) DinP redesign shape ratified (informational). No Calliope action items yet. CIO canonical-artifacts nudge still threshold in 2 days (6/28). Committed.
+
+**Fire 12 — 11:13 PT — no-op** — No new commits, no new inbound. Batching.
+
+**Fire 11 — 10:13 PT — no-op** — No new commits, no new inbound. Batching.
+
+**Fire 10 — 09:13 PT — no-op** — No new commits, no new inbound. Batching.
+
+**Fire 9 — 08:13 PT — no-op** — Iris updated her 6/24 session log (`d2ddff6`); not addressed to Calliope. Batching.
+
 **Fire 8 — 07:13 PT — no-op, batch flush** — No new commits, no new inbound. Flushing accumulated no-op batch (Fires 2–8). Committed.
 
 **Fire 7 — 06:13 PT — no-op** — No new commits, no new inbound. Batching.
