@@ -4,6 +4,18 @@ Append-only. Per 5/28 refinement: substantive fires commit; pure no-op fires app
 
 ---
 
+**Fire 22 — 11:45 PT — substantive** — xian authorized `reset --hard origin/claude/calliope`. All local Calliope commits were already on main — no cherry-picks needed. Reset clean; files restored from main. Branch divergence resolved.
+
+**Fire 21 — 11:33 PT — no-op** — No new commits, no new inbound. Branch divergence pending. Batching.
+
+**Fire 20 — 10:39 PT — no-op** — No new mail. Theseus heartbeat only. Surfaced `claude/calliope` branch divergence (20 vs 14 commits with remote) to xian — awaiting authorization for `reset --hard` + cherry-pick recovery. Continuing to push main via HEAD:main only.
+
+**Fire 19 — 10:33 PT — no-op** — Theseus heartbeat Fire 2 (`518a890`) — no mail to Calliope. Stall-sweep still only open thread. Batching.
+
+**Fire 18 — 09:39 PT — no-op** — No new commits, no new inbound. Batching.
+
+**Fire 17 — 09:33 PT — no-op** — No new commits, no new inbound. Batching.
+
 **Fire 16 — ~08:45 PT — substantive** — xian resumed duty cycle after presence-pause. Beta milestone section added to ROADMAP.md (July 2026 target, composition gesture gate, increment status). Committed.
 
 **Fire 15 — 14:13 PT — substantive** — Janus stall-sweep memo received (`5e88b98`). Also discovered 6/25 day-focus memo sitting unread 20h (grep bug: `^to: Calliope` missed bold `**To:** Calliope` headers; fixed going forward). Processed both: (1) Rollup v5 verified sweep — 2 new 🔴 (Daedalus branch merge + beta critical path); blog post escalated to POV-revision 🔴. (2) Replied to Janus stall-sweep. (3) Moved 6/25 day-focus to read/ (item 3 moot; 1+2 in rollup). Committed.
