@@ -4,6 +4,8 @@ Append-only. Per 5/28 refinement: substantive fires commit; pure no-op fires app
 
 ---
 
+**Fire 18 — 09:39 PT — no-op** — No new commits, no new inbound. Batching.
+
 **Fire 17 — 09:33 PT — no-op** — No new commits, no new inbound. Batching.
 
 **Fire 16 — ~08:45 PT — substantive** — xian resumed duty cycle after presence-pause. Beta milestone section added to ROADMAP.md (July 2026 target, composition gesture gate, increment status). Committed.
