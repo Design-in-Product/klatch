@@ -38,6 +38,10 @@ Also discovered: **6/25 day-focus memo from Janus missed for ~20 hours** — gre
 
 **Closed threads:** 6/25 day-focus memo → `read/` (item 3 moot; items 1+2 surfaced in rollup). Stall-sweep thread stays open until Janus confirms receipt.
 
+## 07:45 — xian-present (beta definition captured)
+
+xian defined beta directly: composition gesture fully implemented + tested/QA'd → release cut (v0.9 or v1.0). Step 11 Search is post-beta. The merge item in the rollup is now explicitly the critical path to beta, not just agent-unblocking. Rollup updated to v6; memory saved.
+
 ## 07:30 — xian-present (remote-control snafu + June 23 logbook)
 
 xian present. Remote-control message from June 24 arrived late (written ~23:39 June 24; received 07:30 June 26). xian's three asks:
