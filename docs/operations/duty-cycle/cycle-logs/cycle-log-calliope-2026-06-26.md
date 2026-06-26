@@ -4,6 +4,8 @@ Append-only. Per 5/28 refinement: substantive fires commit; pure no-op fires app
 
 ---
 
+**Fire 16 — ~08:45 PT — substantive** — xian resumed duty cycle after presence-pause. Beta milestone section added to ROADMAP.md (July 2026 target, composition gesture gate, increment status). Committed.
+
 **Fire 15 — 14:13 PT — substantive** — Janus stall-sweep memo received (`5e88b98`). Also discovered 6/25 day-focus memo sitting unread 20h (grep bug: `^to: Calliope` missed bold `**To:** Calliope` headers; fixed going forward). Processed both: (1) Rollup v5 verified sweep — 2 new 🔴 (Daedalus branch merge + beta critical path); blog post escalated to POV-revision 🔴. (2) Replied to Janus stall-sweep. (3) Moved 6/25 day-focus to read/ (item 3 moot; 1+2 in rollup). Committed.
 
 **Fire 14 — 13:13 PT — no-op** — No new commits, no new inbound. Batching.
