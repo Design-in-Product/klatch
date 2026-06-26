@@ -23,3 +23,7 @@ Append-only. Per 5/28 refinement: substantive fires commit; pure no-op fires app
 **No-op fire — ~18:59 PT.** No change. SDK `^0.96.0`; inbox clear. Re-arming `:43`.
 **No-op fire — ~20:10 PT.** No change. SDK `^0.96.0`; inbox clear. Approaching quiet window (23:00). Re-arming `:43`.
 **No-op fire — ~21:09 PT (last evening check).** No change. SDK `^0.96.0`; inbox clear. Committing no-op batch; quiet window (23:00) approaching. Re-arming `:43`.
+**No-op fire — ~22:00 PT.** No change. SDK `^0.96.0`; inbox clear. Re-arming `:43` (next fire crosses into quiet window).
+**No-op fire — ~22:45 PT.** No change. SDK `^0.96.0`; inbox clear. Re-arming `:43` (next fire in quiet window).
+
+**STOP — 6/25 day-close (written 6/26 07:43 START).** Daedalus SDK bump still `^0.96.0` pending. intel sweep next_due 2026-06-28. Continuing in 6/26 log.
