@@ -29,3 +29,21 @@
 - None (clean pass) — strip absence, label legibility, link text, navigability all score Correct
 
 **Next:** R46 (default-project sidebar) if Iris scopes it; otherwise IDLE until next signal
+
+---
+
+## Fire 2 — Morning (cron `16b687e3`, ~09:31 PT)
+
+**Session type:** autonomous cron heartbeat
+**START/WORK/STOP:** START → STOP (admin only)
+
+**New commits on origin/main:**
+- `c22c4c0` Roadmap beta milestone section (Calliope)
+- `4615658` Daedalus 6/26 cycle log + R45-clean validation + drain 3 ack threads (ops only)
+- `8adb2b4` Calliope 6/26 beta definition + rollup v6
+
+**Mail:** No new memos addressed to Theseus. `theseus-to-iris-round45-results-2026-06-26.md` still open (Iris hasn't acked yet).
+
+**State:** No R46 coordination memo from Iris. Daedalus "increment 6" referenced in his cycle log but commit was ops-only (no code). Admin-only fire.
+
+**Decision:** Returning to IDLE.
