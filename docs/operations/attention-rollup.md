@@ -6,7 +6,7 @@
 
 **Trust-instrument discipline** (Exec 2026-06-19): every render comes from a fresh **verified sweep** of source docs — never from memory. A false "all clear" is a trust breach. "Quiet" must mean *verified-clear*, not *haven't-checked*.
 
-**Last refreshed:** 2026-06-26 Friday ~14:15 PT (Calliope) — verified sweep triggered by Janus stall-sweep request. Sources: COORDINATION.md, agent-state.md, Daedalus/Iris/Theseus/Argus cycle logs, 6/25 day-focus memo.
+**Last refreshed:** 2026-06-26 Friday ~07:45 PT (Calliope) — beta definition captured from xian directly. Merge item reframed as critical-path-to-beta.
 
 ---
 
@@ -14,37 +14,24 @@
 
 | Needs you | Blocked-on-others | Lower-urgency | In-flight |
 |---|---|---|---|
-| **2** | **0** | **3** | **4** |
+| **1** | **0** | **3** | **4** |
 
-*Two 🔴 items: Daedalus branch merge (unblocks 4 agents) + beta critical path clarity (xian's explicit ask via 6/25 day-focus memo). All 5 agents cycling.*
+*One 🔴 item: merge `claude/daedalus` — this is now understood as the critical path to beta (v6, xian 6/26). Beta definition captured. All 5 agents cycling.*
 
 ---
 
 ## 🔴 Needs you — FIRST, always
 
-### Merge `claude/daedalus` branch — unblocks 4 agents simultaneously
+### Merge `claude/daedalus` — critical path to beta
 
-- **Who's waiting:** Daedalus, Iris, Argus, Theseus — all blocked on this merge.
-- **What's on the branch** (verified from Daedalus's 6/26 START log): commit `a314d48`:
+- **Beta definition (xian, 6/26):** composition gesture fully implemented + tested/QA'd → release cut (v0.9 or v1.0). This is beta. Step 11 (Search) comes after. The plumbing was ready; UX design was the missing piece (Iris Phase 3 complete). What remains: finish implementation + test round → cut.
+- **Who's waiting:** Daedalus (increment 6 clone), Argus (cross-ref AAXT), Theseus (cross-ref AAXT), Iris (next review queue).
+- **What's on the branch** (verified, Daedalus 6/26 START log): commit `a314d48`:
   - Increment 4: default-project (Iris-reviewed ✅ — `0719adc`)
-  - Increment 5: cross-ref strip + `#general` guard (Iris-reviewed ✅, one-line guard added — `e2568ee`)
+  - Increment 5: cross-ref strip + `#general` guard (Iris-reviewed ✅ — `e2568ee`)
   - 3 Iris-dispatched R43+R44 copy/a11y fixes: `aria-label="Pin to channel"`, "L3 context"→"AI context", Cancel `title="Discard changes"`
-- **Why blocked:** Daedalus is not stacking more un-merged work (correct discipline). Increment 6 (clone) and Theseus's cross-ref AAXT round both blocked on merge.
-- **What xian can do:** review + merge `claude/daedalus` → `main`. Iris-reviewed ✅, so this should be a fast review.
-- **Date added:** 2026-06-26
-- **Cron note:** Daedalus cron was silent ~1 day (6/25 daytime → 6/26 morning) — mode-1 stall (backgrounded). Harmless (nothing dropped); cron re-armed 6/26 START. Not related to the merge ask.
-
-### Beta critical path — xian explicitly can't see it clearly
-
-- **What:** xian's explicit ask (via Janus 6/25 day-focus memo): "What is the remaining work and the critical path to beta release? He knows who's doing what but doesn't know what the remaining work actually is, or how it's being tracked."
-- **Current picture** (synthesized from COORDINATION.md + ROADMAP.md):
-  - Steps 1–10 are essentially complete (Step 10 export: Phase 1–5c-i ✅; 5c-ii deferred).
-  - Current front-door work: **composition gesture** (multi-entity channel creation UI). Increment 1 merged; increments 2–5 on `claude/daedalus` (pending merge above). Increment 6 (clone) next.
-  - After composition gesture: **Step 11 Search** (FTS5, search UI, Cmd+K, export, bookmarks) — not started.
-  - **No formal beta definition** found in docs. No issue tracker in use — work tracked in COORDINATION.md + cycle logs.
-- **What xian can do:** define beta criteria (what does "beta" mean — feature-complete composition gesture? search included? deployed externally?) and decide whether issues should be created.
-- **Calliope note:** Happy to draft a beta checklist once xian defines the scope. Coordinating with Daedalus + Iris for their view is the next step — but xian's input on the beta definition unblocks that.
-- **Date added:** 2026-06-26 (surfaced from 6/25 day-focus memo)
+- **What xian can do:** review + merge `claude/daedalus` → `main`. This is the single action that unblocks the beta path.
+- **Date added:** 2026-06-26 (reframed as beta critical path 07:45 same day)
 
 ---
 
@@ -106,6 +93,7 @@ Awareness, no action needed.
 
 ## Changelog
 
+- **v6 (2026-06-26)** — Beta definition captured from xian directly: composition gesture fully implemented + tested/QA'd = beta (v0.9 or v1.0); Search is post-beta. Merge item reframed as critical-path-to-beta. Beta-path 🔴 resolved (definition now documented). 🔴 count: 1.
 - **v5 (2026-06-26)** — Verified sweep triggered by Janus stall-sweep request. Two new 🔴: Daedalus branch merge (4 agents blocked) + beta critical path (xian's top ask). Blog post upgraded from 🟡 to 🔴 POV-revision needed. Cohort status updated (Daedalus cron-silence resolved). Stale v4 "no 🔴" summary corrected.
 - **v4 (2026-06-25)** — Iris Phase 3 cutover resolved. 🔴 → 0. All 5 agents cycling.
 - **v3 (2026-06-23)** — Full verified-sweep rewrite. New 🔴: Iris Phase 3 cutover.

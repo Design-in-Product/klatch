@@ -10,7 +10,7 @@
  *   L1: Loading state — "Loading project..." communicates data is in-flight
  *   L2: Instructions field label — "(CLAUDE.md / project rules — injected into every chat)"
  *   L3: Memory field label — "(accumulated knowledge — MEMORY.md / claude.ai memories)"
- *   KB1: Knowledge base injection — "included in AI context for all channels" label semantics (copy updated from "L3 context" post-Daedalus merge)
+ *   KB1: Knowledge base injection — "included in AI context for all channels" label semantics
  *   KB2: Remove file button — what "Remove from project" does
  *   KB3: "+ Add file" button — opens file picker for KB upload
  *   SRC1: Import source badge — "CC / Imported from Claude Code" communication
@@ -20,8 +20,7 @@
  *
  * Scope guards:
  *   - API mocked: fetchProject, fetchProjectFiles (no server needed)
- *   - KB1 ("L3 context") is the highest-value probe — "L3" is domain terminology
- *     that may be opaque to a user who doesn't know the 5-layer model
+ *   - KB1 ("AI context") was originally "L3 context" — fixed per Daedalus 6/26 copy update
  *
  * Gated: makes real LLM calls. Skipped unless RUN_UI_AAXT=1 in env.
  *
@@ -400,7 +399,7 @@ const PROBES: ProjectSettingsProbe[] = [
     claim: 'kb-l3-context-injection',
     category: 'knowledge-base',
     state: 'S-files',
-    question: 'The "Knowledge base" section label reads "(2 files — included in AI context for all channels in this project)". What does "included in AI context" mean for how these files are used?',
+    question: 'The "Knowledge base" section label reads "(2 files — included in AI context for all channels in this project)". What does "included in AI context" tell you about how these files are used?',
     expectedAnswer: 'The files are included in the AI context and are available to the AI in every conversation within this project',
     scopeNote: 'Copy updated from "L3 context" (domain jargon) to "AI context" (plain language) — probe now checks whether the plainer label successfully conveys cross-channel injection',
     isSubliminalCandidate: true,
