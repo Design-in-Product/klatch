@@ -35,3 +35,13 @@ Append-only. Per 5/28 refinement: substantive fires commit; pure no-op fires app
 - Suite: **1116 server / 206 client — all green; 11 AAXT skips** (`f316924` pushed to claude/argus)
 - Intel sweep next_due 2026-06-28 (tomorrow)
 - Re-arming `:43`
+
+**Fire 11:01 — AAXT continuation: Round 47 written + green-checked:**
+- New main: Calliope + Theseus updated cycle logs; no new Argus-addressed mail
+- SDK `^0.96.0` — no action; intel sweep still due 2026-06-28
+- Wrote R47: `round47-message-input-aaxt.test.tsx` (7 probes across 3 states)
+  - S-idle: PLACEHOLDER1 ("Type a message..."), SEND1 (Send button present), ATTACH1 ("Attach a file" tooltip)
+  - S-streaming: STREAM-STOP (Stop replaces Send), STREAM-PH ("Waiting for response..."), STREAM-NOATT (Attach absent)
+  - S-directed: DIR-PH ("Type @ to mention an entity..." — only static routing signal)
+- Suite: **1116 server / 206 client — all green; 12 AAXT skips** (`9cd833e` pushed to claude/argus)
+- Re-arming `:43`
