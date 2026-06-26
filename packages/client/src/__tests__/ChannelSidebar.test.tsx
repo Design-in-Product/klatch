@@ -94,7 +94,7 @@ describe('ChannelSidebar', () => {
     expect(screen.getByText('(2)')).toBeInTheDocument();
   });
 
-  it('groups channels without project under "Unassigned"', () => {
+  it('renders null-project channels flat for a singleton user (no project chrome)', () => {
     const channels = [
       makeChannel({ id: 'default', name: 'general' }),
       makeChannel({
@@ -105,7 +105,10 @@ describe('ChannelSidebar', () => {
     ];
     render(<ChannelSidebar {...defaultProps} channels={channels} />);
 
-    expect(screen.getByText('Unassigned')).toBeInTheDocument();
+    // Singleton (no real projects): the default project ("First project") renders flat —
+    // the channel is visible, but no project header is shown.
+    expect(screen.getByText('orphan-session')).toBeInTheDocument();
+    expect(screen.queryByText('First project')).not.toBeInTheDocument();
   });
 
   it('shows CC badge for Claude Code imported channels', () => {
@@ -137,23 +140,25 @@ describe('ChannelSidebar', () => {
 
   // ── Section collapse ────────────────────────────────────────
 
-  it('collapses and expands the unassigned section on click', async () => {
+  it('collapses and expands the First project section on click', { timeout: 15000 }, async () => {
     const user = userEvent.setup();
     const channels = [
       makeChannel({ id: 'default', name: 'general' }),
+      // A real project makes the default group render with its collapsible "First project" header.
+      makeChannel({ id: 'p1', name: 'proj-chat', type: 'chat', projectId: 'proj-1', projectName: 'Real Project' }),
       makeChannel({ id: 'loose1', name: 'random-chat' }),
     ];
     render(<ChannelSidebar {...defaultProps} channels={channels} />);
 
-    // Channel should be visible initially
+    // Loose chat visible initially (First project expanded by default)
     expect(screen.getByText('random-chat')).toBeInTheDocument();
 
-    // Click the Unassigned section header to collapse
-    await user.click(screen.getByText('Unassigned'));
+    // Click the "First project" header to collapse
+    await user.click(screen.getByText('First project'));
     expect(screen.queryByText('random-chat')).not.toBeInTheDocument();
 
     // Click again to expand
-    await user.click(screen.getByText('Unassigned'));
+    await user.click(screen.getByText('First project'));
     expect(screen.getByText('random-chat')).toBeInTheDocument();
   });
 

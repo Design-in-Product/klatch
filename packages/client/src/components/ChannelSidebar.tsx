@@ -96,13 +96,12 @@ export function ChannelSidebar({
     e.preventDefault();
     const name = newName.trim();
     if (!name) return;
-    if (newType === 'klatch' && !newProjectId) return;
     onCreateChannel(
       name,
       newPrompt.trim() || 'You are a helpful assistant.',
       newType === 'klatch' ? 'klatch' : undefined,
       newType === 'klatch' ? newMode : undefined,
-      newType === 'klatch' ? newProjectId : undefined,
+      newType === 'klatch' ? (newProjectId || undefined) : undefined,
       newType === 'klatch' && selectedEntityIds.size > 0 ? [...selectedEntityIds] : undefined
     );
     resetForm();
@@ -119,7 +118,7 @@ export function ChannelSidebar({
     setExpandedProject((prev) => (prev === key ? null : key));
   };
 
-  // Track collapsed state for non-accordion sections (unassigned, etc.)
+  // Track collapsed state for non-accordion sections (the "First project" default group, etc.)
   const [collapsedSections, setCollapsedSections] = useState<Set<string>>(new Set());
   const toggleSection = (key: string) => {
     setCollapsedSections((prev) => {
@@ -131,13 +130,16 @@ export function ChannelSidebar({
   };
 
   // Group channels into project-first structure
-  const { general, projectGroups, unassigned } = useMemo(() => {
+  const { general, projectGroups, defaultProject } = useMemo(() => {
     const general = channels.find((ch) => ch.id === 'default');
     const rest = channels.filter((ch) => ch.id !== 'default');
 
     // Project groups: channels with a projectId, grouped by project
     const projectMap = new Map<string, { name: string; chats: Channel[]; klatches: Channel[] }>();
-    const unassigned: Channel[] = [];
+    // Default project ("First project"): channels with no projectId. Both chats AND klatches
+    // land here — project_id = null is the sentinel for "in the default project" (no migration).
+    const dpChats: Channel[] = [];
+    const dpKlatches: Channel[] = [];
 
     for (const ch of rest) {
       if (ch.projectId) {
@@ -154,9 +156,10 @@ export function ChannelSidebar({
         } else {
           group.chats.push(ch);
         }
+      } else if (ch.type === 'klatch') {
+        dpKlatches.push(ch);
       } else {
-        // No project — goes to unassigned (only chats should be here, but handle gracefully)
-        unassigned.push(ch);
+        dpChats.push(ch);
       }
     }
 
@@ -175,7 +178,13 @@ export function ChannelSidebar({
       totalCount: group.chats.length + group.klatches.length,
     }));
 
-    return { general, projectGroups, unassigned: unassigned.sort(byLastActivity) };
+    const defaultProject = {
+      chats: dpChats.sort(byLastActivity),
+      klatches: dpKlatches.sort(byLastActivity),
+      totalCount: dpChats.length + dpKlatches.length,
+    };
+
+    return { general, projectGroups, defaultProject };
   }, [channels]);
 
   // Auto-expand first project if none is expanded yet and projects exist.
@@ -235,6 +244,33 @@ export function ChannelSidebar({
     </button>
   );
 
+  // Chats subsection over klatches subsection (shared by project groups + the default project).
+  // Section labels appear only when both types are present (matches SIDEBAR.md within-project ordering).
+  const renderChatsThenKlatches = (chats: Channel[], klatches: Channel[]) => (
+    <>
+      {chats.length > 0 && (
+        <div>
+          {klatches.length > 0 && (
+            <div className="px-6 pt-1 pb-0.5">
+              <span className="text-[9px] font-medium text-muted uppercase tracking-wider">Chats</span>
+            </div>
+          )}
+          {chats.map((ch) => renderChannelItem(ch, '@'))}
+        </div>
+      )}
+      {klatches.length > 0 && (
+        <div>
+          {chats.length > 0 && (
+            <div className="px-6 pt-2 pb-0.5">
+              <span className="text-[9px] font-medium text-muted uppercase tracking-wider">Klatches</span>
+            </div>
+          )}
+          {klatches.map((ch) => renderChannelItem(ch, '#'))}
+        </div>
+      )}
+    </>
+  );
+
   const chevronIcon = (isExpanded: boolean) => (
     <svg
       className={`w-3 h-3 text-muted transition-transform ${isExpanded ? 'rotate-90' : ''}`}
@@ -265,7 +301,7 @@ export function ChannelSidebar({
         )}
       </div>
 
-      {/* Channel list — #general → projects (accordion) → unassigned */}
+      {/* Channel list — #general → projects (accordion) → "First project" default group */}
       <div className="flex-1 overflow-y-auto py-1">
         {/* #general — always pinned at top */}
         {general && (
@@ -315,66 +351,38 @@ export function ChannelSidebar({
                   </button>
                 )}
               </div>
-              {isExpanded && (
-                <>
-                  {/* Chats section (1:1) — shown first */}
-                  {project.chats.length > 0 && (
-                    <div>
-                      {project.klatches.length > 0 && (
-                        <div className="px-6 pt-1 pb-0.5">
-                          <span className="text-[9px] font-medium text-muted uppercase tracking-wider">Chats</span>
-                        </div>
-                      )}
-                      {project.chats.map((ch) => renderChannelItem(ch, '@'))}
-                    </div>
-                  )}
-                  {/* Klatches section (group) — shown second */}
-                  {project.klatches.length > 0 && (
-                    <div>
-                      {project.chats.length > 0 && (
-                        <div className="px-6 pt-2 pb-0.5">
-                          <span className="text-[9px] font-medium text-muted uppercase tracking-wider">Klatches</span>
-                        </div>
-                      )}
-                      {project.klatches.map((ch) => renderChannelItem(ch, '#'))}
-                    </div>
-                  )}
-                </>
-              )}
+              {isExpanded && renderChatsThenKlatches(project.chats, project.klatches)}
             </div>
           );
         })}
 
-        {/* Separator between projects and unassigned */}
-        {projectGroups.length > 0 && unassigned.length > 0 && (
-          <div className="mx-4 my-2 border-t border-line" />
-        )}
-
-        {/* Unassigned — chats not in any project */}
-        {unassigned.length > 0 && (
-          <div data-testid="unassigned-section">
-            <button
-              onClick={() => toggleSection('unassigned')}
-              className="w-full flex flex-col gap-0.5 px-4 pt-3 pb-1 group text-left"
-            >
-              <div className="flex items-center gap-1">
-                {chevronIcon(!collapsedSections.has('unassigned'))}
+        {/* Default project ("First project") — null-project channels (chats + klatches).
+            Singleton (no real projects): rendered flat, no project chrome — the user doesn't yet
+            know projects exist. Multi-project: pinned at the bottom (where "Unassigned" used to
+            sit), now a real KLATCHES home, with a collapsible "First project" header (lowercase p). */}
+        {defaultProject.totalCount > 0 && (
+          projectGroups.length === 0 ? (
+            <div data-testid="default-project-flat">
+              {renderChatsThenKlatches(defaultProject.chats, defaultProject.klatches)}
+            </div>
+          ) : (
+            <div data-testid="default-project-section">
+              <div className="mx-4 my-2 border-t border-line" />
+              <button
+                onClick={() => toggleSection('default-project')}
+                className="w-full flex items-center gap-1 px-4 pt-2 pb-1 group text-left"
+                title="First project"
+              >
+                {chevronIcon(!collapsedSections.has('default-project'))}
                 <span className="text-xs font-semibold text-muted uppercase tracking-wider">
-                  Unassigned
+                  First project
                 </span>
-                <span className="text-xs text-muted ml-1">({unassigned.length})</span>
-              </div>
-              {!collapsedSections.has('unassigned') && (
-                <span className="text-xs text-muted ml-5 normal-case">
-                  Chats not yet assigned to a project.
-                </span>
-              )}
-            </button>
-            {!collapsedSections.has('unassigned') && unassigned.map((ch) => {
-              const prefix = ch.type === 'klatch' ? '#' : '@';
-              return renderChannelItem(ch, prefix);
-            })}
-          </div>
+                <span className="text-xs text-muted ml-1">({defaultProject.totalCount})</span>
+              </button>
+              {!collapsedSections.has('default-project') &&
+                renderChatsThenKlatches(defaultProject.chats, defaultProject.klatches)}
+            </div>
+          )
         )}
 
         {/* Fallback: if no channels at all, show something */}
@@ -473,17 +481,20 @@ export function ChannelSidebar({
               {/* Klatch-specific fields */}
               {newType === 'klatch' && (
                 <>
-                  {/* Project (required) */}
-                  <select
-                    value={newProjectId}
-                    onChange={(e) => setNewProjectId(e.target.value)}
-                    className="w-full rounded bg-input border border-line px-2.5 py-1.5 text-sm text-primary focus:outline-none focus:border-accent"
-                  >
-                    <option value="">Select project (required)</option>
-                    {projects.map((p) => (
-                      <option key={p.id} value={p.id}>{p.name}</option>
-                    ))}
-                  </select>
+                  {/* Project — optional. Empty = the default "First project" (null project_id, sentinel).
+                      Only shown once real projects exist; a singleton user never sees project chrome. */}
+                  {projects.length > 0 && (
+                    <select
+                      value={newProjectId}
+                      onChange={(e) => setNewProjectId(e.target.value)}
+                      className="w-full rounded bg-input border border-line px-2.5 py-1.5 text-sm text-primary focus:outline-none focus:border-accent"
+                    >
+                      <option value="">First project</option>
+                      {projects.map((p) => (
+                        <option key={p.id} value={p.id}>{p.name}</option>
+                      ))}
+                    </select>
+                  )}
 
                   {/* Agent picker — composition spec §3 Path A (existing agents) */}
                   {entities.length > 0 && (
@@ -588,7 +599,7 @@ export function ChannelSidebar({
               <div className="flex gap-2">
                 <button
                   type="submit"
-                  disabled={!newName.trim() || (newType === 'klatch' && !newProjectId)}
+                  disabled={!newName.trim()}
                   className="flex-1 rounded bg-accent px-2 py-1 text-xs font-medium text-white hover:bg-accent-hover transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   Create {newType === 'klatch' ? 'Klatch' : 'Chat'}

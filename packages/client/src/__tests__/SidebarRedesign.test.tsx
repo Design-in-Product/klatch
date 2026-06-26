@@ -1,14 +1,16 @@
 /**
- * Round 7 speculative client tests: Sidebar redesign
+ * Round 7 client tests: Sidebar redesign (implemented; updated 2026-06-22 for the default project).
  *
- * These tests are written against the PLANNED sidebar from docs/plans/SIDEBAR.md.
- * They will fail until Daedalus implements Phase 2 (UI: accordion, chat/klatch sections).
+ * Originally written against the PLANNED sidebar from docs/plans/SIDEBAR.md. The "no project,
+ * no klatch" + "Unassigned (chats only)" rules from Round 7 were superseded by the default-project
+ * model (docs/ux/decision-klatch-project-optionality.md): project_id = null = "First project".
  *
  * Tests:
  * 1. Within a project, chats render above klatches
- * 2. Unassigned section only shows chats (type: 'chat'), no klatches
+ * 2. Default project ("First project"): holds null-project chats AND klatches; renders flat for a
+ *    singleton user (no header), and a project-less klatch lands here (Round 7 inverted)
  * 3. Accordion: expanding one project collapses others
- * 4. Unassigned section is always visible (not part of accordion)
+ * 4. First project section is always visible (pinned, not part of the accordion)
  */
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen, within } from '@testing-library/react';
@@ -124,8 +126,8 @@ describe('Sidebar — chats above klatches within a project', () => {
 
 // ── 2. Unassigned section — chats only ───────────────────────────
 
-describe('Sidebar — Unassigned section', () => {
-  it('shows unassigned chats in Unassigned section', () => {
+describe('Sidebar — default project ("First project")', () => {
+  it('renders null-project chats flat for a singleton user (no project header)', () => {
     const channels: ChannelWithType[] = [
       makeChannel({ id: 'default', name: 'general' }),
       makeChannel({ id: 'loose-1', name: 'Random Question', type: 'chat' }),
@@ -133,18 +135,18 @@ describe('Sidebar — Unassigned section', () => {
     ];
     render(<ChannelSidebar {...defaultProps} channels={channels} />);
 
-    expect(screen.getByText('Unassigned')).toBeInTheDocument();
+    // No real projects → the default project renders flat, with no "First project" header.
+    expect(screen.queryByText('First project')).not.toBeInTheDocument();
     expect(screen.getByText('Random Question')).toBeInTheDocument();
     expect(screen.getByText('One-off Help')).toBeInTheDocument();
   });
 
-  it('does not show klatches in Unassigned section', () => {
-    // This scenario shouldn't happen (klatches require projects),
-    // but if data is inconsistent, the UI should still filter correctly
+  it('shows a project klatch under its project, with a loose chat in the default group', () => {
+    // A klatch WITH a project renders under that project. (A project-less klatch renders in
+    // the "First project" group — see the dedicated test below.)
     const channels: ChannelWithType[] = [
       makeChannel({ id: 'default', name: 'general' }),
       makeChannel({ id: 'loose-chat', name: 'Loose Chat', type: 'chat' }),
-      // A klatch with a project should appear under its project, not unassigned
       makeChannel({
         id: 'klatch-with-proj',
         name: 'team-sync',
@@ -156,12 +158,25 @@ describe('Sidebar — Unassigned section', () => {
     ];
     render(<ChannelSidebar {...defaultProps} channels={channels} />);
 
-    // Unassigned section shows the chat
+    // Loose chat lands in the default group; the project klatch renders under its project.
     expect(screen.getByText('Loose Chat')).toBeInTheDocument();
-
-    // Klatch appears under its project, not in unassigned
     expect(screen.getByText('Alpha')).toBeInTheDocument();
     expect(screen.getByText('team-sync')).toBeInTheDocument();
+  });
+
+  it('renders a project-less klatch in the "First project" group (Round 7 inverted)', () => {
+    // Round 7 originally forbade klatches without a project ("no project, no klatch").
+    // Now a project-less klatch lands in the default project. With a real project also
+    // present, the default group shows its "First project" header.
+    const channels: ChannelWithType[] = [
+      makeChannel({ id: 'default', name: 'general' }),
+      makeChannel({ id: 'pchat', name: 'Proj Chat', type: 'chat', projectId: 'proj-1', projectName: 'Alpha' }),
+      makeChannel({ id: 'loose-klatch', name: 'spontaneous-room', type: 'klatch', entityCount: 3 }),
+    ];
+    render(<ChannelSidebar {...defaultProps} channels={channels} />);
+
+    expect(screen.getByText('First project')).toBeInTheDocument();
+    expect(screen.getByText('spontaneous-room')).toBeInTheDocument();
   });
 });
 
@@ -239,8 +254,8 @@ describe('Sidebar — accordion (one project expanded at a time)', () => {
 
 // ── 4. Unassigned section always visible ─────────────────────────
 
-describe('Sidebar — Unassigned always visible', () => {
-  it('Unassigned section stays visible regardless of which project is expanded', async () => {
+describe('Sidebar — First project always visible', () => {
+  it('First project section stays visible regardless of which project is expanded', { timeout: 15000 }, async () => {
     const user = userEvent.setup();
     const channels: ChannelWithType[] = [
       makeChannel({ id: 'default', name: 'general' }),
@@ -255,15 +270,15 @@ describe('Sidebar — Unassigned always visible', () => {
     ];
     render(<ChannelSidebar {...defaultProps} channels={channels} />);
 
-    // Unassigned visible with project expanded
-    expect(screen.getByText('Unassigned')).toBeInTheDocument();
+    // First project visible with the real project expanded
+    expect(screen.getByText('First project')).toBeInTheDocument();
     expect(screen.getByText('Loose Chat')).toBeInTheDocument();
 
-    // Collapse the project
+    // Collapse the real project
     await user.click(screen.getByText('MyProject'));
 
-    // Unassigned still visible
-    expect(screen.getByText('Unassigned')).toBeInTheDocument();
+    // First project still visible (pinned at the bottom, not part of the accordion)
+    expect(screen.getByText('First project')).toBeInTheDocument();
     expect(screen.getByText('Loose Chat')).toBeInTheDocument();
   });
 });
