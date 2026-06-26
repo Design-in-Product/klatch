@@ -4,6 +4,14 @@ Append-only. Per 5/28 refinement: substantive fires commit; pure no-op fires app
 
 ---
 
+**Fire 18 — 17:13 PT — no-op, batch flush** — No new commits, no new inbound. Flushing accumulated no-op batch (Fires 15–18). Committed.
+
+**Fire 17 — 16:13 PT — no-op** — No new commits, no new inbound. Batching.
+
+**Fire 16 — 15:13 PT — no-op** — No new commits, no new inbound. Batching.
+
+**Fire 15 — 14:13 PT — no-op** — No new commits, no new inbound. Batching.
+
 **Fire 14 — 13:13 PT — no-op, batch flush** — No new commits, no new inbound. Flushing accumulated no-op batch (Fires 8–14). Committed.
 
 **Fire 13 — 12:13 PT — no-op** — No new commits, no new inbound. Batching.
