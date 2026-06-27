@@ -4,6 +4,8 @@ Append-only. Per 5/28 refinement: substantive fires commit; pure no-op fires app
 
 ---
 
+**Fire 13 — 06:18 PT — substantive** — 6/27 cross-poll brief read. Key signals: R45 passed (8/8 probes, 0 Phantoms); Inc 6 (clone) built + in Iris review; beta definition confirmed public via brief. Rollup v7 written (verified sweep from COORDINATION.md); pushed to main (`aefac05`). Cron re-armed.
+
 **Fire 12 — 05:39 PT — no-op, batch flush** — No new commits, no new inbound. Flushing early morning batch (Fires 10–12).
 
 **Fire 11 — 05:18 PT — no-op** — No new commits, no new inbound. Batching.
