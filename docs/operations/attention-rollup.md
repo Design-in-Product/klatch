@@ -6,7 +6,7 @@
 
 **Trust-instrument discipline** (Exec 2026-06-19): every render comes from a fresh **verified sweep** of source docs — never from memory. A false "all clear" is a trust breach. "Quiet" must mean *verified-clear*, not *haven't-checked*.
 
-**Last refreshed:** 2026-06-27 Saturday ~06:18 PT (Calliope) — R45 passed; Inc 6 built + in Iris review; cohort status updated.
+**Last refreshed:** 2026-06-27 Saturday ~07:19 PT (Calliope) — Prior merge landed (c877825); Inc 6 now the new item on branch; rollup corrected.
 
 ---
 
@@ -16,22 +16,21 @@
 |---|---|---|---|
 | **1** | **0** | **3** | **4** |
 
-*One 🔴 item: merge `claude/daedalus` — critical path to beta (v6, xian 6/26). R45 passed ✓; Inc 6 in Iris review. All 5 agents cycling.*
+*One 🔴 item: merge `claude/daedalus` (Inc 6 — clone-from-klatch) — awaiting Iris review ✅ then merge. Prior merge landed 6/26. All 5 agents cycling.*
 
 ---
 
 ## 🔴 Needs you — FIRST, always
 
-### Merge `claude/daedalus` — critical path to beta
+### Merge `claude/daedalus` (Inc 6 — clone-from-klatch) — awaiting Iris review
 
-- **Beta definition (xian, 6/26):** composition gesture fully implemented + tested/QA'd → release cut (v0.9 or v1.0). This is beta. Step 11 (Search) comes after. The plumbing was ready; UX design was the missing piece (Iris Phase 3 complete). What remains: finish implementation + test round → cut.
-- **Who's waiting:** Argus (R46 queued post-merge), Theseus (R46 queued post-merge), Iris (next review queue post-merge). Note: Daedalus proceeded to build Inc 6 without merge (R45 unblocked him); Inc 6 is now in Iris review. Merge still needed for Inc 6 to reach main and unlock R46.
-- **What's on the branch** (verified, Daedalus 6/26 START log): commit `a314d48`:
-  - Increment 4: default-project (Iris-reviewed ✅ — `0719adc`)
-  - Increment 5: cross-ref strip + `#general` guard (Iris-reviewed ✅ — `e2568ee`)
-  - 3 Iris-dispatched R43+R44 copy/a11y fixes: `aria-label="Pin to channel"`, "L3 context"→"AI context", Cancel `title="Discard changes"`
-- **What xian can do:** review + merge `claude/daedalus` → `main`. This is the single action that unblocks the beta path.
-- **Date added:** 2026-06-26 (reframed as beta critical path 07:45 same day)
+- **Context:** Prior merge (`c877825`, 6/26 — Inc 2–5 + copy fixes) landed. ✅ That's done.
+- **What's on the branch now** (verified, git log 6/27): commit `7859713` — **Increment 6: clone-from-klatch.** "Copy setup from an existing klatch" action-select on New Klatch form; prefills name, purpose, mode, project, roster from source; empty purpose when source is boilerplate. +2 tests, 105 lines.
+- **Gate:** Iris UX review — she has Inc 6 in her queue. Once she gives ✅, it's ready to merge.
+- **Who's waiting post-merge:** Argus (R46 — default-project sidebar AAXT), Theseus (R46), Daedalus (Inc 7+ — @mention autocomplete, JIT import paths).
+- **Beta definition (xian, 6/26):** composition gesture fully implemented + tested/QA'd → release cut. This merge + subsequent increments + test round = beta.
+- **What xian can do:** check Iris is active (you're doing that now); merge when she gives ✅.
+- **Date updated:** 2026-06-27 (prior merge landed; corrected to Inc 6)
 
 ---
 
@@ -71,10 +70,10 @@ Awareness, no action needed.
 - **Theseus** — Phase 3 daily `31 9 * * *`; R45 complete (8/8 probes, 100% conveyance, 0 Phantoms — 6/26); R46 queued post-merge.
 - **Iris** — sparse overnight `17 3,7 * * *`; R45 results received; reviewing Inc 6 (clone) from Daedalus; next full review queue post-merge.
 
-### Composition gesture — R45 passed; Inc 6 in Iris review
-- Increment 1 (atomic roster + dual affordance) shipped to main. Increments 2–3 (picker polish) + 4–5 (default-project, cross-ref strip + `#general` guard) on `claude/daedalus` — Iris-reviewed ✅.
-- **R45 passed (6/26):** CrossRefStrip + `#general` guard — 8 probes, 7 Correct, 1 Reconstructed, 0 Phantoms. All design properties confirmed.
-- **Increment 6 (clone) built (6/26):** Daedalus built clone-from-klatch; in Iris UX review. Action-select prefills name/purpose/mode/project/roster from source; empty purpose when source is boilerplate.
+### Composition gesture — Inc 1–5 merged; Inc 6 in Iris review
+- Increments 1–5 merged to main (`7d42822`, `c877825`). Inc 1: atomic roster + dual affordance. Inc 2–3: picker polish. Inc 4: default-project. Inc 5: cross-ref strip + `#general` guard — all Iris-reviewed ✅.
+- **R45 passed (6/26):** CrossRefStrip + `#general` guard — 8 probes, 7 Correct, 1 Reconstructed, 0 Phantoms.
+- **Increment 6 (clone-from-klatch) on branch** — in Iris UX review; merge pending her ✅.
 
 ### Pages build, strategic threads, CIO artifact request
 - Pages: fixed 6/22, no new issues.
@@ -86,6 +85,7 @@ Awareness, no action needed.
 ## 🟢 Resolved since last board (6/26 → 6/27)
 
 - ~~**AAXT cross-ref + #general guard blocked on merge**~~ — R45 completed by Theseus 6/26; 8/8 probes, 0 Phantoms. *Closed 6/27.*
+- ~~**Merge claude/daedalus (Inc 2–5 + copy fixes)**~~ — landed 6/26 (`c877825`, xian-authorized). *Closed 6/27; superseded by Inc 6.*
 
 ## 🟢 Previously resolved (6/25 → 6/26)
 
@@ -99,6 +99,7 @@ Awareness, no action needed.
 
 ## Changelog
 
+- **v8 (2026-06-27)** — Prior merge landed (`c877825`, 6/26); rollup corrected. 🔴 item updated to Inc 6 (clone-from-klatch) awaiting Iris review. Prior merge closure added to resolved. Inc 1–5 now on main. 🔴 count: 1.
 - **v7 (2026-06-27)** — R45 passed (Theseus, 6/26): CrossRefStrip + `#general` guard, 8/8, 0 Phantoms. Inc 6 (clone) built by Daedalus, in Iris review. "Daedalus waiting on merge" removed (he proceeded). AAXT-blocked entry resolved. 🔴 count: 1 (merge still critical path).
 - **v6 (2026-06-26)** — Beta definition captured from xian directly: composition gesture fully implemented + tested/QA'd = beta (v0.9 or v1.0); Search is post-beta. Merge item reframed as critical-path-to-beta. Beta-path 🔴 resolved (definition now documented). 🔴 count: 1.
 - **v5 (2026-06-26)** — Verified sweep triggered by Janus stall-sweep request. Two new 🔴: Daedalus branch merge (4 agents blocked) + beta critical path (xian's top ask). Blog post upgraded from 🟡 to 🔴 POV-revision needed. Cohort status updated (Daedalus cron-silence resolved). Stale v4 "no 🔴" summary corrected.
