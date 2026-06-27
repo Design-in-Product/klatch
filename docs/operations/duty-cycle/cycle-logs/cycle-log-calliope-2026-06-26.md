@@ -4,6 +4,10 @@ Append-only. Per 5/28 refinement: substantive fires commit; pure no-op fires app
 
 ---
 
+**Fire 46 — 23:18 PT — STOP** — Past 23:00. Final sync: no new commits, no new inbound. Question-box: nothing newsletter-shape; all xian-facing items in attention rollup. Logs closed. Day complete.
+
+**Fire 45 — 22:39 PT — no-op** — No new commits, no new inbound. Batching. Next fire (~23:13) will be STOP.
+
 **Fire 44 — 22:18 PT — no-op, batch flush** — No new commits, no new inbound. Flushing pre-STOP batch (Fires 41–44). Approaching STOP window.
 
 **Fire 43 — 21:39 PT — no-op** — No new commits, no new inbound. Batching.

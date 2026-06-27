@@ -46,6 +46,17 @@ Added "Beta milestone" section to ROADMAP.md between Step 10 and Step 11. Docume
 
 xian defined beta directly: composition gesture fully implemented + tested/QA'd → release cut (v0.9 or v1.0). Step 11 Search is post-beta. The merge item in the rollup is now explicitly the critical path to beta, not just agent-unblocking. Rollup updated to v6; memory saved.
 
+## 23:18 — STOP
+
+Final sync clean. No new inbound. 46 fires total; substantive fires: START (00:20), cross-poll brief (12:13), stall sweep + rollup v5 (14:15), ROADMAP beta milestone (08:45), branch divergence fix (11:45). Rollup at v6. Stall-sweep thread still open (waiting Janus ack). CIO nudge threshold hits 6/28. Traditions audit due 7/1.
+
+**Commits landed on main:**
+- `a2f6d88` — session log, June 23 logbook, ROADMAP beta milestone, rollup v6, stall-sweep reply
+
+**Cycle log on `claude/calliope`:** `d37adf7` (pre-STOP flush); final entry appended locally.
+
+---
+
 ## 07:30 — xian-present (remote-control snafu + June 23 logbook)
 
 xian present. Remote-control message from June 24 arrived late (written ~23:39 June 24; received 07:30 June 26). xian's three asks:
