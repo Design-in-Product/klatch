@@ -4,6 +4,10 @@ Append-only. Per 5/28 refinement: substantive fires commit; pure no-op fires app
 
 ---
 
+**Fire 18 — 11:20 PT — no-op, batch flush** — No new commits, no new inbound. Flushing late-morning batch (Fires 17–18). Iris still silent.
+
+**Fire 17 — 10:20 PT — no-op** — No new commits, no new inbound. Iris still silent (mode-1 flag surfaced to xian). Batching.
+
 **Fire 16 — 09:20 PT — no-op, batch flush** — No new commits, no new inbound. Flushing morning batch (Fires 15–16).
 
 **Fire 15 — 08:20 PT — no-op** — No new inbound. Batching.
