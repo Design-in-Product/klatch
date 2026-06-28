@@ -24,7 +24,9 @@ export function MessageInput({ onSend, onSendWithFile, onStop, disabled, isStrea
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   const isDirected = mode === 'directed';
-  const showMentions = isDirected && channelEntities.length >= 2;
+  // @mention autocomplete is available in any multi-agent klatch (spec §5 — composes with
+  // all modes), not just directed; an @mention overrides the default mode for that message.
+  const showMentions = channelEntities.length >= 2;
 
   // Filter entities matching the current @query (by name or handle)
   const mentionCandidates = mentionQuery !== null
