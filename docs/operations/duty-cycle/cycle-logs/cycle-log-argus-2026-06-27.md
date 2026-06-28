@@ -50,4 +50,6 @@ Append-only. Per 5/28 refinement: substantive fires commit; pure no-op fires app
 - Intel sweep due at first 6/28 WORK fire (≥07:00 PT)
 - IDLE — re-arming `:43`
 
+**Fire 23:45 — IDLE no-op:** Still 6/27 (pre-midnight). Re-arming.
+
 **STOP — 2026-06-27 23:06 PT.** Closing 6/27 log. Beta gate cleared this evening; intel sweep + AAXT continuation in 6/28 log.
