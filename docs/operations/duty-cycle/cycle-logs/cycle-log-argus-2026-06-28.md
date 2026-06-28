@@ -9,3 +9,4 @@ Append-only. Per 5/28 refinement: substantive fires commit; pure no-op fires app
 **Fire 01:02 — IDLE no-op:** Past midnight; 6/28 log created. Re-arming.
 **Fire 02:10 — IDLE no-op.** Re-arming.
 **Fire 02:46 — IDLE no-op.** Re-arming.
+**Fire 03:45 — IDLE no-op.** Re-arming.
