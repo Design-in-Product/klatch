@@ -50,3 +50,24 @@ Active. All mail drained. Three threads closed.
 ## Overnight heartbeat (cron `a89f159d`, 2026-06-27/28)
 
 Pull: already up to date. No new mail to Iris. No branch updates. Overnight check — no new mail, no branch updates.
+
+---
+
+## ~19:30 — xian live: "Calliope says ball is in your court"
+
+Pull: already up to date. New mail: `daedalus-to-iris-increment7-mention-override-review-2026-06-27.md`.
+
+**Increment 7 (@mention override) — Conformant ✅.**
+
+- Gate change: `showMentions = entities≥2` (ungated from `isDirected`) ✅
+- `insertMention` precedence matches server `resolveMentions` parser ✅
+- `@` discoverability question → **(c) MAXT Session 03.** In panel/roundtable, `@` is an override power gesture, not primary. Adding a hint risks signaling it's primary in those modes. Let real testing tell us if the absence is a gap.
+- End-to-end (agent responds to `@mention`) → needs live API key; MAXT Session 03.
+
+**Composition gesture is complete.** Increment 7 is the last one.
+
+**Filed:**
+- `iris-to-daedalus-increment7-verdict-2026-06-27.md` — conformant ✅, merge when ready
+- `iris-to-theseus-r47-mention-override-coordination-2026-06-27.md` — R47 AAXT coordination (8 probes); pending increment 7 + R46 both landing on main
+
+**Beta gate:** Increment 7 merge → Theseus R46+R47 AAXT → MAXT Session 03 with xian → release cut.
