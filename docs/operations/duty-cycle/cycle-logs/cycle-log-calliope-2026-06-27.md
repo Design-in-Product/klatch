@@ -4,6 +4,10 @@ Append-only. Per 5/28 refinement: substantive fires commit; pure no-op fires app
 
 ---
 
+**Fire 26 — 19:20 PT — substantive** — Iris woken by xian; reviewed Inc 6 (clone-from-klatch); verdict ✅ conformant (6/27 ~19:03). Merge gate cleared. Rollup v10: 🔴 item updated to "ready to merge now." Pushed to main (`bacbb87`). Cron re-armed.
+
+**Fire 25 — 18:20 PT — no-op** — No new commits, no new inbound. Batching.
+
 **Fire 24 — 17:20 PT — no-op, batch flush** — No new commits, no new inbound. Flushing afternoon batch (Fires 23–24).
 
 **Fire 23 — 16:20 PT — no-op** — No new commits, no new inbound. Batching.
