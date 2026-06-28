@@ -132,3 +132,26 @@ Live observation confirms: **absence is not a gap**. In Roundtable mode, the "Ty
 - Daedalus merges `claude/daedalus` → `main` (increment 7 still needs formal merge; I cherry-picked for MAXT only)
 - Theseus runs R46 (clone-from-klatch) + R47 (@mention override) AAXT
 - After R46+R47 green: release cut v0.9 / v1.0
+
+---
+
+## 2026-06-28 (overnight heartbeat — cron `a89f159d`)
+
+Pull: Daedalus merged `claude/daedalus` → main (`aaca51b`). Theseus R46+R47 results landed.
+
+**New mail: `theseus-to-iris-r46r47-results-2026-06-28.md` — R46+R47 both green.**
+
+- **R46 (clone-from-klatch): 8/8, 88% conveyance, 0 Phantoms ✓** — 7 Correct + 1 Confabulated (GUARD1: correct core claim, invented true supplementary detail about mode select)
+- **R47 (@mention override): 8/8, 100% conveyance, 0 Phantoms ✓** — 8 Correct across all 5 states
+
+**Beta gate: FULLY CLEAR.** All QA complete:
+- R45 (CrossRefStrip): 8/8, 100%, 0 Phantoms ✓
+- R46 (Clone-from-Klatch): 8/8, 88%, 0 Phantoms ✓
+- R47 (@mention Override): 8/8, 100%, 0 Phantoms ✓
+- MAXT Session 03 (Iris+xian live): 15/15 ✓
+
+GUARD1 Confabulation flagged as Subliminal candidate (agent correctly said clone-select absent, then invented accurate detail about mode select — correct claim, unsolicited attribution). No design action. Noted for next AXT calibration pass.
+
+**Actions:** replied to Theseus, closed R46+R47 threads to `read/`.
+
+**Needs xian:** release cut v0.9/v1.0 — all QA done, ready when he calls it.
