@@ -6,7 +6,7 @@
 
 **Trust-instrument discipline** (Exec 2026-06-19): every render comes from a fresh **verified sweep** of source docs — never from memory. A false "all clear" is a trust breach. "Quiet" must mean *verified-clear*, not *haven't-checked*.
 
-**Last refreshed:** 2026-06-27 Saturday ~07:19 PT (Calliope) — Prior merge landed (c877825); Inc 6 now the new item on branch; rollup corrected.
+**Last refreshed:** 2026-06-27 Saturday ~19:20 PT (Calliope) — Iris ✅ received (clone-from-klatch conformant); merge gate cleared; rollup v10.
 
 ---
 
@@ -16,21 +16,22 @@
 |---|---|---|---|
 | **1** | **0** | **3** | **4** |
 
-*One 🔴 item: merge `claude/daedalus` (Inc 6 — clone-from-klatch) — awaiting Iris review ✅ then merge. Prior merge landed 6/26. All 5 agents cycling.*
+*One 🔴 item: merge `claude/daedalus` (Inc 6 — clone-from-klatch) — **Iris ✅ received; gate cleared; ready to merge now.** All 5 agents cycling.*
 
 ---
 
 ## 🔴 Needs you — FIRST, always
 
-### Merge `claude/daedalus` (Inc 6 — clone-from-klatch) — awaiting Iris review
+### Merge `claude/daedalus` (Inc 6 — clone-from-klatch) — **Iris ✅ received; ready to merge**
 
 - **Context:** Prior merge (`c877825`, 6/26 — Inc 2–5 + copy fixes) landed. ✅ That's done.
-- **What's on the branch now** (verified, git log 6/27): commit `7859713` — **Increment 6: clone-from-klatch.** "Copy setup from an existing klatch" action-select on New Klatch form; prefills name, purpose, mode, project, roster from source; empty purpose when source is boilerplate. +2 tests, 105 lines.
-- **Gate:** Iris UX review — she has Inc 6 in her queue. Once she gives ✅, it's ready to merge.
-- **Who's waiting post-merge:** Argus (R46 — default-project sidebar AAXT), Theseus (R46), Daedalus (Inc 7+ — @mention autocomplete, JIT import paths).
+- **What's on the branch** (verified): commit `7859713` — **Increment 6: clone-from-klatch.** "Copy setup from an existing klatch" action-select on New Klatch form; prefills name, purpose, mode, project, roster from source; empty purpose when source is boilerplate. +2 tests, 105 lines.
+- **Iris verdict (6/27 ~19:03):** Conformant ✅. All 4 bounded decisions approved (placement, "Copy of {name}", empty-purpose-on-boilerplate, roster fetch fallback). One MAXT note: action-select prefill discoverability — no explicit confirmation that prefill happened; earmarked for MAXT Session 03 observation (not a code issue).
+- **Gate cleared.** No further review needed. Merge when ready.
+- **Who's waiting post-merge:** Theseus (R46 MAXT), Daedalus (Inc 7 — @mention autocomplete). [Argus R46–R48 AAXT already written on `claude/argus` — not merge-blocked.]
 - **Beta definition (xian, 6/26):** composition gesture fully implemented + tested/QA'd → release cut. This merge + subsequent increments + test round = beta.
-- **What xian can do:** check Iris is active (you're doing that now); merge when she gives ✅.
-- **Date updated:** 2026-06-27 (prior merge landed; corrected to Inc 6)
+- **What xian can do:** merge `claude/daedalus` → main.
+- **Date updated:** 2026-06-27 evening (Iris ✅ received; gate cleared)
 
 ---
 
@@ -66,14 +67,14 @@ Awareness, no action needed.
 ### Cohort status — all 5 agents cycling (verified 6/27)
 - **Calliope** — live; persistent worktree `claude/calliope`; hourly `13 * * * *` when in-session.
 - **Daedalus** — Phase 2 hourly `17 * * * *`; built Inc 6 (clone, R45-unblocked); branch `claude/daedalus` awaiting merge (see 🔴). Inc 6 in Iris review.
-- **Argus** — Phase 2 hourly `43 * * * *`; 1291 tests; R45 validated by Theseus (cross-ref + `#general` guard — 8/8, 0 Phantoms); R46 (default-project sidebar) queued post-merge.
+- **Argus** — stalled 6/26 evening–6/27 19:06 (session-only cron); **1322 tests (1116 server / 206 client)**; R46–R48 AAXT written on `claude/argus` (6/26: sidebar first-project, message input, markdown content — not merge-blocked); cron re-armed 6/27 evening.
 - **Theseus** — Phase 3 daily `31 9 * * *`; R45 complete (8/8 probes, 100% conveyance, 0 Phantoms — 6/26); R46 queued post-merge.
-- **Iris** — sparse overnight `17 3,7 * * *`; R45 results received; reviewing Inc 6 (clone) from Daedalus; next full review queue post-merge.
+- **Iris** — woken 6/27 evening; reviewed Inc 6 (clone-from-klatch), verdict ✅ conformant; R45 closed; R46 coordination sent to Theseus/Argus; next: R46 MAXT post-merge.
 
-### Composition gesture — Inc 1–5 merged; Inc 6 in Iris review
+### Composition gesture — Inc 1–5 merged; Inc 6 Iris-reviewed ✅, merge-ready
 - Increments 1–5 merged to main (`7d42822`, `c877825`). Inc 1: atomic roster + dual affordance. Inc 2–3: picker polish. Inc 4: default-project. Inc 5: cross-ref strip + `#general` guard — all Iris-reviewed ✅.
 - **R45 passed (6/26):** CrossRefStrip + `#general` guard — 8 probes, 7 Correct, 1 Reconstructed, 0 Phantoms.
-- **Increment 6 (clone-from-klatch) on branch** — in Iris UX review; merge pending her ✅.
+- **Increment 6 (clone-from-klatch) on branch** — Iris ✅ received 6/27 ~19:03; merge-ready; pending xian merge.
 
 ### Pages build, strategic threads, CIO artifact request
 - Pages: fixed 6/22, no new issues.
@@ -99,6 +100,8 @@ Awareness, no action needed.
 
 ## Changelog
 
+- **v10 (2026-06-27 ~19:20 PT)** — Iris ✅ received (6/27 ~19:03); clone-from-klatch conformant; merge gate cleared. 🔴 item updated: "ready to merge now." Cohort: Iris woken + reviewed. Composition gesture: Inc 6 merge-ready.
+- **v9 (2026-06-27 evening)** — Argus status corrected: 1322 tests (not 1291); R46–R48 AAXT written 6/26 on `claude/argus` (not merge-blocked). Argus removed from "waiting post-merge" in 🔴 item.
 - **v8 (2026-06-27)** — Prior merge landed (`c877825`, 6/26); rollup corrected. 🔴 item updated to Inc 6 (clone-from-klatch) awaiting Iris review. Prior merge closure added to resolved. Inc 1–5 now on main. 🔴 count: 1.
 - **v7 (2026-06-27)** — R45 passed (Theseus, 6/26): CrossRefStrip + `#general` guard, 8/8, 0 Phantoms. Inc 6 (clone) built by Daedalus, in Iris review. "Daedalus waiting on merge" removed (he proceeded). AAXT-blocked entry resolved. 🔴 count: 1 (merge still critical path).
 - **v6 (2026-06-26)** — Beta definition captured from xian directly: composition gesture fully implemented + tested/QA'd = beta (v0.9 or v1.0); Search is post-beta. Merge item reframed as critical-path-to-beta. Beta-path 🔴 resolved (definition now documented). 🔴 count: 1.
