@@ -9,3 +9,5 @@
 **State.** All 7 composition increments on main. **BETA GATE CLEAR.** Remaining before the release cut (per Iris): **Theseus R46 (clone) + R47 (@mention) AAXT** → both green → xian runs `/release` to cut v0.9/v1.0. Post-beta: **Step 11 (Search)** + two minor polish findings from MAXT-03 (New-Chat form has no agent picker → defaults to Claude; New-Klatch form-state-leak on reopen — mine).
 
 **Regrouping with xian tomorrow.** Nothing red, nothing blocked. Cron armed (`ace7af24`).
+
+**[Same-night update — cron fire after wrap]** Theseus's **R46 (clone) + R47 (@mention) AAXT landed on main (`e18ad3a`) — beta gate PASSES.** So the full path is green: composition merged + Iris MAXT-03 15/15 + Theseus AAXT pass. **The release cut is now fully unblocked** — xian's `/release` (v0.9/v1.0) whenever he's ready; nothing remains in the critical path but the cut itself. No action for Daedalus (release is xian-gated). Surfaced to xian as a capstone; otherwise holding for tomorrow's regroup.
