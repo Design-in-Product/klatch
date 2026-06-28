@@ -10,3 +10,4 @@ Append-only. Per 5/28 refinement: substantive fires commit; pure no-op fires app
 **Fire 02:10 — IDLE no-op.** Re-arming.
 **Fire 02:46 — IDLE no-op.** Re-arming.
 **Fire 03:45 — IDLE no-op.** Re-arming.
+**Fire 05:05 — IDLE no-op.** Re-arming.
