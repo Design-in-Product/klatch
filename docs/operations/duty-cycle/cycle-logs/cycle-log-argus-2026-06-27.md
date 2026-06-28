@@ -14,3 +14,14 @@ Append-only. Per 5/28 refinement: substantive fires commit; pure no-op fires app
 - SDK `^0.96.0`; intel sweep next_due 2026-06-28 (tomorrow)
 - claude/argus branch status: R46–R48 on branch, 1322 tests green (last verified 6/26 11:53 PT)
 - Re-arming `:43`
+
+**Fire 19:10 — no-op (duplicate cron):** Stale pre-stall cron `488b993b` fired 4 min after catch-up. Both crons deleted; re-arming once.
+
+**Fire 20:11 — Inc 6 merge landed + rollup v11:**
+- Merged origin/main into argus worktree: Inc 6 merged (`a313ab2`), post-merge notify commit (`de54748`: Theseus notified, Iris verdict thread closed)
+- Suite: **1116 server / 208 client — all green** (Inc 6 +2 client tests; 13 AAXT skips on claude/argus)
+- No new Argus-addressed mail (Iris R46 coordination addressed to Theseus only)
+- SDK `^0.96.0` — no action
+- Intel sweep next_due 2026-06-28 (tomorrow — check at first 6/28 fire)
+- Rollup v11: 🔴 → 0; test count corrected to 1324 (1116/208); cohort + composition updated
+- Re-arming `:43`
