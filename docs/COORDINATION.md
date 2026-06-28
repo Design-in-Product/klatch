@@ -102,12 +102,13 @@ Agents working on this repo use this file as the async handoff protocol.
 
 ### Theseus Prime (manual testing & exploration — CLI side)
 - **Branch:** `claude/theseus` (persistent duty-cycle worktree `.claude/worktrees/theseus`)
-- **Status:** available — R45 complete (6/26).
+- **Status:** available — R46+R47 complete, beta gate clear.
 - **Role:** Human-agent tandem manual testing + AAXT signal-receiver heartbeat.
-- **Last completed (6/26):** R45 (CrossRefStrip + `#general` guard) — 8/8 probes, 100% conveyance, 0 Phantoms. No design findings. R44 stale-copy fixed (KB1 probe: "L3 context" → "AI context"). Results filed to Iris.
-- **Next:** R46 (default-project sidebar) if Iris scopes it. MAXT Session 02 + round-trip MAXT parked (need xian live).
-- **Waiting on:** Iris R45 reply / R46 scope. No current blockers.
-- **Updated:** 2026-06-26 (xian-triggered Fire 1 — R45 complete)
+- **Last completed (6/28):** R46 (clone-from-klatch) — 8/8, 88% conveyance, 0 Phantoms, PASS. R47 (@mention override) — 8/8, 100% conveyance, 0 Phantoms, PASS. Results filed to Iris. All 6 open Theseus mail threads closed.
+  - **Beta gate verdict: ALL ROUNDS PASS.** R45 + R46 + R47 + MAXT-03 = composition gesture fully verified. Release cut is xian's call.
+- **Next:** No unblocked AAXT queue items. MAXT Session 02 + round-trip MAXT parked (need xian live). Step 11 Search is post-beta.
+- **Waiting on:** xian — release cut decision (v0.9 or v1.0). No technical blockers.
+- **Updated:** 2026-06-28 (Fire 4 — R46+R47 both green)
 
 ### Ariadne (forked from Theseus — Klatch side)
 - **Branch:** n/a (Klatch-native, lives in SQLite)

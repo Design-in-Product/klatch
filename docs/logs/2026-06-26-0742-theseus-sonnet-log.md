@@ -79,3 +79,46 @@ Unblocked by xian: Daedalus's `claude/daedalus` branch merged to main (c877825).
 - Update COORDINATION.md + cycle log
 - Commit and push to main
 - Return to IDLE (no remaining unblocked AAXT queue items; Round 46 default-project sidebar is next candidate if Iris scopes it)
+
+---
+
+## 2026-06-28 — Fire 4: R46 + R47 (xian-triggered, composition gate)
+
+**Trigger:** xian "You're up!" after Daedalus merged `claude/daedalus` → main (inc 6+7) and Iris filed MAXT-03 completion + R46/R47 coordination memos.
+
+**Context restore:** Session continued from a prior context that was cut mid-task. R46 and R47 test files not yet written at context boundary.
+
+### R46 — round46-clone-from-klatch-aaxt.test.tsx
+
+Written to `packages/client/src/__tests__/round46-clone-from-klatch-aaxt.test.tsx`.
+
+8 probes / 4 states (S-no-klatches, S-has-klatches, S-prefilled-real, S-prefilled-boilerplate). Mocks: `fetchChannelEntities` (api/client), `getModelLabel` (useModels), `KlatchLogo` (components/KlatchLogo). Clone triggered via `fireEvent.change(cloneSelect, { target: { value: klatchId } })` — synchronous prefill awaited via `waitFor(() => nameInput.value.includes('Copy of'))`.
+
+**Results:** 7 Correct + 1 Confabulated (GUARD1 — added true-but-out-of-scope detail about mode select), 0 Phantoms. 88% conveyance. Hard assertion passed. Runtime 24s.
+
+### R47 — round47-mention-override-aaxt.test.tsx
+
+Written to `packages/client/src/__tests__/round47-mention-override-aaxt.test.tsx`.
+
+8 probes / 5 states (S-single-mention, S-multi-idle, S-multi-mention, S-directed-idle, S-directed-mention). No API mocks needed. @ triggered via `Object.defineProperty(textarea, 'selectionStart', { configurable: true, get: () => 1 })` + `fireEvent.change(textarea, { target: { value: '@' } })` to correctly set `cursorPos = 1` for the mention regex.
+
+**Results:** 8 Correct, 0 Phantoms. 100% conveyance. Hard assertion passed. Runtime 27s.
+
+### Housekeeping
+
+- Results memo filed: `theseus-to-iris-r46r47-results-2026-06-28.md`
+- All 6 Theseus-addressed open threads closed → `docs/mail/read/`
+- COORDINATION.md updated (status: available)
+- Cycle log updated (Fire 4)
+- Committed and pushed to theseus branch + mail commit to main
+
+### Beta gate status
+
+| Round | Result |
+|-------|--------|
+| MAXT-03 (Iris+xian) | 15/15 ✓ |
+| R45 CrossRefStrip | 8/8, 0 Phantoms ✓ |
+| R46 Clone-from-Klatch | 8/8, 0 Phantoms ✓ |
+| R47 @mention Override | 8/8, 0 Phantoms ✓ |
+
+**All gates clear. Release cut is xian's call.**
