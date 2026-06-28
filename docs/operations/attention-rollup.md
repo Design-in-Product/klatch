@@ -6,7 +6,7 @@
 
 **Trust-instrument discipline** (Exec 2026-06-19): every render comes from a fresh **verified sweep** of source docs — never from memory. A false "all clear" is a trust breach. "Quiet" must mean *verified-clear*, not *haven't-checked*.
 
-**Last refreshed:** 2026-06-27 Saturday ~21:30 PT (Calliope) — Inc 7 (@mention override) built by Daedalus, in Iris UX review; final composition gesture increment; rollup v12.
+**Last refreshed:** 2026-06-27 Saturday ~21:50 PT (Argus) — Inc 7 Iris ✅ conformant; composition gesture complete; 🔴 merge ready; rollup v13.
 
 ---
 
@@ -14,15 +14,23 @@
 
 | Needs you | Blocked-on-others | Lower-urgency | In-flight |
 |---|---|---|---|
-| **0** | **0** | **3** | **4** |
+| **1** | **0** | **3** | **4** |
 
-*No 🔴 items yet — Inc 7 (final composition increment) in Iris UX review. 🔴 will follow when Iris gives ✅ and merge is ready. All 5 agents cycling.*
+*One 🔴: merge `claude/daedalus` (Inc 7 — @mention override) — **Iris ✅ conformant; composition gesture complete; merge when ready.***
 
 ---
 
 ## 🔴 Needs you — FIRST, always
 
-Currently empty.
+### Merge `claude/daedalus` (Inc 7 — @mention override) — **Iris ✅ conformant; composition gesture complete**
+
+- **What's on the branch** (verified): commit `17c3d78` — **Increment 7 (final): @mention overrides any klatch mode.** Server: `resolveMentions` hoisted above mode dispatch (mention → route first; else → default mode). Client: `showMentions` ungated from `isDirected && entities≥2` → `entities≥2` (dropdown works in panel/roundtable too). +4 route tests, +4 MessageInput tests.
+- **Iris verdict (6/27 ~21:30):** Conformant ✅. All 3 bounded decisions approved (server hoisting, client gate, `insertMention` precedence). `@` discoverability in panel/roundtable → MAXT Session 03 observation (not a code issue; not a blocker).
+- **Composition gesture complete.** Inc 7 is the last increment. When merged, the full composition critical path is on main.
+- **Who's waiting post-merge:** Theseus (R46 clone MAXT + R47 @mention MAXT), xian (MAXT Session 03 — beta gate). [Argus R46–R49 AAXT written on `claude/argus` — not merge-blocked.]
+- **Beta gate:** composition gesture on main + Theseus AAXT + MAXT Session 03 with xian = beta release cut.
+- **What xian can do:** merge `claude/daedalus` → main.
+- **Date updated:** 2026-06-27 evening (Iris ✅ received)
 
 ---
 
@@ -58,15 +66,15 @@ Awareness, no action needed.
 ### Cohort status — all 5 agents cycling (verified 6/27)
 - **Calliope** — live; persistent worktree `claude/calliope`; hourly `13 * * * *` when in-session.
 - **Daedalus** — Phase 2 hourly `17 * * * *`; Inc 6 merged 6/27 (`a313ab2`); **Inc 7 built** (`17c3d78` on `claude/daedalus`) — @mention overrides any mode (server route hoist + client dropdown ungated); sent to Iris UX review 6/27 ~20:36.
-- **Argus** — cron re-armed 6/27 19:06; **1324 tests (1116 server / 208 client)** — Inc 6 +2 client tests green; R46–R48 AAXT written on `claude/argus` (6/26: sidebar first-project, message input, markdown content); intel sweep due 6/28.
-- **Theseus** — Phase 3 daily `31 9 * * *`; R45 complete (8/8 probes, 100% conveyance, 0 Phantoms — 6/26); R46 MAXT unblocked (notified 6/27).
-- **Iris** — woken 6/27 evening; Inc 6 reviewed ✅ conformant; R45 closed; R46 coordination sent to Theseus; next: R46 MAXT post-merge.
+- **Argus** — cron cycling; **1324 tests (1116 server / 208 client)**; R46–R49 AAXT written on `claude/argus` (6/26–6/27: sidebar, message input, markdown, new-channel-form); intel sweep due 6/28.
+- **Theseus** — Phase 3 daily `31 9 * * *`; R45 complete (8/8 probes, 0 Phantoms — 6/26); R46 (clone) + R47 (@mention override) MAXT queued post-merge.
+- **Iris** — Inc 6 ✅ (6/27 evening); Inc 7 ✅ conformant (6/27 ~21:30); composition gesture complete; R47 MAXT coordination sent to Theseus; next: R47 MAXT post-merge.
 
-### Composition gesture — Inc 1–6 merged; Inc 7 (final) in Iris UX review
+### Composition gesture — Inc 1–6 merged; Inc 7 (final) merge-ready
 - Increments 1–6 merged to main. Inc 1: atomic roster + dual affordance. Inc 2–3: picker polish. Inc 4: default-project. Inc 5: cross-ref strip + `#general` guard. Inc 6: clone-from-klatch (`a313ab2`, 6/27). All Iris-reviewed ✅.
 - **R45 passed (6/26):** CrossRefStrip + `#general` guard — 8 probes, 7 Correct, 1 Reconstructed, 0 Phantoms.
 - **R46 MAXT (clone-from-klatch):** Theseus notified; Iris coordination sent; parked pending xian session (see 🟡).
-- **Inc 7 — @mention overrides any mode** (`17c3d78`, `claude/daedalus`): server route hoist (mention → route first, then mode); client dropdown ungated from directed-only to any 2+ agent klatch. +4 route tests, +4 MessageInput tests. **This is the final composition gesture increment.** In Iris UX review now; merge + R47 AAXT to follow.
+- **Inc 7 — @mention overrides any mode** (`17c3d78`, `claude/daedalus`): Iris ✅ conformant 6/27 ~21:30. **Composition gesture complete.** Merge pending xian (see 🔴). Post-merge: Theseus runs R46 then R47 MAXT; MAXT Session 03 with xian = beta gate.
 
 ### Pages build, strategic threads, CIO artifact request
 - Pages: fixed 6/22, no new issues.
@@ -96,6 +104,7 @@ Awareness, no action needed.
 
 ## Changelog
 
+- **v13 (2026-06-27 ~21:50 PT, Argus)** — Inc 7 Iris ✅ conformant (`611fca9`); composition gesture complete. 🔴: merge `claude/daedalus` (Inc 7). Argus R49 added. Cohort + composition updated.
 - **v12 (2026-06-27 ~21:30 PT, Calliope)** — Inc 7 (final composition increment — @mention overrides any mode) built by Daedalus (`17c3d78`); in Iris UX review. Cohort + composition gesture updated.
 - **v11 (2026-06-27 ~20:20 PT, Argus)** — Inc 6 merged (`a313ab2`). 🔴 → 0 items. Test count: 1324 (1116 server / 208 client). R46 MAXT unblocked; Theseus notified. Inc 7 building. Cohort updated.
 - **v10 (2026-06-27 ~19:20 PT)** — Iris ✅ received (6/27 ~19:03); clone-from-klatch conformant; merge gate cleared. 🔴 item updated: "ready to merge now." Cohort: Iris woken + reviewed. Composition gesture: Inc 6 merge-ready.
