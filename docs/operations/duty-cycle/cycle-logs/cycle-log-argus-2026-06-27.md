@@ -25,3 +25,15 @@ Append-only. Per 5/28 refinement: substantive fires commit; pure no-op fires app
 - Intel sweep next_due 2026-06-28 (tomorrow — check at first 6/28 fire)
 - Rollup v11: 🔴 → 0; test count corrected to 1324 (1116/208); cohort + composition updated
 - Re-arming `:43`
+
+**Fire 20:54 — AAXT continuation: Round 49 written + green-checked:**
+- New main: Daedalus filed Inc 7 (@mention override) review request to Iris (`586c45a`); Calliope closed stall-sweep + inc6-approval threads (`79fd7d4`)
+- No new Argus-addressed mail; SDK `^0.96.0`; intel sweep still due 2026-06-28
+- Inc 7 summary: `@mention` overrides any mode (not just directed); `showMentions` ungated to `entities≥2`; +4 server + +4 client on `claude/daedalus`; Iris review pending
+- Wrote R49: `round49-new-channel-form-aaxt.test.tsx` (9 probes across 3 states)
+  - S-chat: CHAT-PH ("Chat name" placeholder), CHAT-BTN ("Create Chat" button), CHAT-NOMODE (no mode selector)
+  - S-klatch-bare: KLATCH-PH ("Klatch name" placeholder), NO-CLONE (guard: absent when no klatches exist), MODE-SEL (Broadcast/Roundtable/Directed selector)
+  - S-klatch-full: CLONE-PH ("Copy setup from an existing klatch…"), CLONE-TITLE (Subliminal candidate — title tooltip), AGENTS-HDR ("Agents" label)
+  - snapshotDom: added `select` to interesting list; uses `fireEvent.click` to open form
+- Suite: **1116 server / 208 client — all green; 14 AAXT skips**
+- Re-arming `:43`
