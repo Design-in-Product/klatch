@@ -37,3 +37,13 @@ Pushed to main worktree (`17d7ea5`). Corrected 🔴 item: Inc 6 (clone-from-klat
 xian asked about Daedalus + team activity. Verified: no agent commits since ~08:30 on 6/26. Entire cohort appears mode-1 (weekend). Surfaced findings to xian — he's waking Iris manually to unblock Inc 6 review.
 
 xian directed: alert proactively to agent work stoppages — at day START or immediately when detected; don't wait to be asked. Feedback saved to memory (`feedback_surface_agent_silences_proactively.md`). At next START: liveness check (git log --since yesterday; flag missed 2+ cron windows + unread work item) added to standard walk.
+
+## 20:25 — Mail close (Fire 27)
+
+Inc 6 merged to main (`a313ab2`, xian 6/27 evening). Argus already pushed rollup v11 (0 🔴, 1324 tests, Inc 7 building).
+
+Two mail threads closed:
+- **Janus stall-sweep (6/26):** both asks complete (rollup refreshed × 5 versions, agents surfaced). Reply filed (`calliope-to-janus-stall-sweep-complete-2026-06-27.md`). Moved to `read/`.
+- **Janus Inc-6 approval routing (6/27 evening):** action done (merge landed). Moved to `read/`.
+
+Mail inbox now clear (0 open threads to Calliope).

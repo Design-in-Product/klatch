@@ -4,6 +4,8 @@ Append-only. Per 5/28 refinement: substantive fires commit; pure no-op fires app
 
 ---
 
+**Fire 27 — 20:25 PT — substantive** — Inc 6 merged (`a313ab2`, xian 6/27 evening). Two mail threads closed: stall-sweep (6/26, both asks complete) + Janus Inc-6 approval routing (action done). Reply to Janus sent. Mail inbox clear. Pushed to main (`79fd7d4`). Cron re-armed.
+
 **Fire 26 — 19:20 PT — substantive** — Iris woken by xian; reviewed Inc 6 (clone-from-klatch); verdict ✅ conformant (6/27 ~19:03). Merge gate cleared. Rollup v10: 🔴 item updated to "ready to merge now." Pushed to main (`bacbb87`). Cron re-armed.
 
 **Fire 25 — 18:20 PT — no-op** — No new commits, no new inbound. Batching.
