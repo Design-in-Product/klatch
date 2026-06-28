@@ -27,7 +27,7 @@
 - **Context:** Prior merge (`c877825`, 6/26 — Inc 2–5 + copy fixes) landed. ✅ That's done.
 - **What's on the branch now** (verified, git log 6/27): commit `7859713` — **Increment 6: clone-from-klatch.** "Copy setup from an existing klatch" action-select on New Klatch form; prefills name, purpose, mode, project, roster from source; empty purpose when source is boilerplate. +2 tests, 105 lines.
 - **Gate:** Iris UX review — she has Inc 6 in her queue. Once she gives ✅, it's ready to merge.
-- **Who's waiting post-merge:** Argus (R46 — default-project sidebar AAXT), Theseus (R46), Daedalus (Inc 7+ — @mention autocomplete, JIT import paths).
+- **Who's waiting post-merge:** Theseus (R46 MAXT), Daedalus (Inc 7+ — @mention autocomplete, JIT import paths). [Argus R46–R48 AAXT already written on `claude/argus` — not merge-blocked.]
 - **Beta definition (xian, 6/26):** composition gesture fully implemented + tested/QA'd → release cut. This merge + subsequent increments + test round = beta.
 - **What xian can do:** check Iris is active (you're doing that now); merge when she gives ✅.
 - **Date updated:** 2026-06-27 (prior merge landed; corrected to Inc 6)
@@ -66,7 +66,7 @@ Awareness, no action needed.
 ### Cohort status — all 5 agents cycling (verified 6/27)
 - **Calliope** — live; persistent worktree `claude/calliope`; hourly `13 * * * *` when in-session.
 - **Daedalus** — Phase 2 hourly `17 * * * *`; built Inc 6 (clone, R45-unblocked); branch `claude/daedalus` awaiting merge (see 🔴). Inc 6 in Iris review.
-- **Argus** — Phase 2 hourly `43 * * * *`; 1291 tests; R45 validated by Theseus (cross-ref + `#general` guard — 8/8, 0 Phantoms); R46 (default-project sidebar) queued post-merge.
+- **Argus** — stalled 6/26 evening–6/27 19:06 (session-only cron); **1322 tests (1116 server / 206 client)**; R46–R48 AAXT written on `claude/argus` (6/26: sidebar first-project, message input, markdown content — not merge-blocked); cron re-armed 6/27 evening.
 - **Theseus** — Phase 3 daily `31 9 * * *`; R45 complete (8/8 probes, 100% conveyance, 0 Phantoms — 6/26); R46 queued post-merge.
 - **Iris** — sparse overnight `17 3,7 * * *`; R45 results received; reviewing Inc 6 (clone) from Daedalus; next full review queue post-merge.
 
@@ -99,6 +99,7 @@ Awareness, no action needed.
 
 ## Changelog
 
+- **v9 (2026-06-27 evening)** — Argus status corrected: 1322 tests (not 1291); R46–R48 AAXT written 6/26 on `claude/argus` (not merge-blocked). Argus removed from "waiting post-merge" in 🔴 item.
 - **v8 (2026-06-27)** — Prior merge landed (`c877825`, 6/26); rollup corrected. 🔴 item updated to Inc 6 (clone-from-klatch) awaiting Iris review. Prior merge closure added to resolved. Inc 1–5 now on main. 🔴 count: 1.
 - **v7 (2026-06-27)** — R45 passed (Theseus, 6/26): CrossRefStrip + `#general` guard, 8/8, 0 Phantoms. Inc 6 (clone) built by Daedalus, in Iris review. "Daedalus waiting on merge" removed (he proceeded). AAXT-blocked entry resolved. 🔴 count: 1 (merge still critical path).
 - **v6 (2026-06-26)** — Beta definition captured from xian directly: composition gesture fully implemented + tested/QA'd = beta (v0.9 or v1.0); Search is post-beta. Merge item reframed as critical-path-to-beta. Beta-path 🔴 resolved (definition now documented). 🔴 count: 1.
