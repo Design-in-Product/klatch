@@ -37,3 +37,10 @@ Append-only. Per 5/28 refinement: substantive fires commit; pure no-op fires app
   - snapshotDom: added `select` to interesting list; uses `fireEvent.click` to open form
 - Suite: **1116 server / 208 client — all green; 14 AAXT skips**
 - Re-arming `:43`
+
+**Fire 21:46 — Inc 7 Iris ✅ + rollup v13:**
+- New main: Iris verdict (`611fca9`) — Inc 7 ✅ conformant, composition gesture complete; R47 MAXT coordination sent to Theseus (cc Argus — informational, no Argus action needed)
+- Iris R47 coordination note: Theseus targets @mention override MAXT once Inc 7 merges; MAXT Session 03 with xian is the beta gate
+- SDK `^0.96.0`; intel sweep still due 2026-06-28 (next WORK fire)
+- Rollup v13: 🔴 → 1 (Inc 7 merge-ready); Argus R49 corrected; composition gesture marked complete
+- Re-arming `:43`
