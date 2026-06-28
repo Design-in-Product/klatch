@@ -4,6 +4,8 @@ Append-only. Per 5/28 refinement: substantive fires commit; pure no-op fires app
 
 ---
 
+**Fire 29 — 22:38 PT — substantive + STOP** — Inc 7 merged (`aaca51b`). MAXT Session 03: 15/15 PASS, beta gate CLEAR (xian live, ~19:45). Rollup v14 pushed (`30f7960`): 🔴 → 0; 🟠 R46+R47 AAXT queued for Theseus 6/28 ~9:31am. Session closed. Cron suspended at STOP.
+
 **Fire 28 — 21:30 PT — substantive** — Daedalus built Inc 7 (@mention overrides any mode, final composition increment, `17c3d78` on `claude/daedalus`). In Iris review. Rollup v12 pushed to main (`33f47b3` via merge). Cron re-armed.
 
 **Fire 27 — 20:25 PT — substantive** — Inc 6 merged (`a313ab2`, xian 6/27 evening). Two mail threads closed: stall-sweep (6/26, both asks complete) + Janus Inc-6 approval routing (action done). Reply to Janus sent. Mail inbox clear. Pushed to main (`79fd7d4`). Cron re-armed.

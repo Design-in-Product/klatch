@@ -47,3 +47,19 @@ Two mail threads closed:
 - **Janus Inc-6 approval routing (6/27 evening):** action done (merge landed). Moved to `read/`.
 
 Mail inbox now clear (0 open threads to Calliope).
+
+## 22:38 — STOP (Fire 29)
+
+**Session close.**
+
+Biggest day this project has seen:
+- xian woke Iris; she reviewed Inc 6 ✅ then Inc 7 ✅ in the same evening.
+- Inc 6 merged (`a313ab2`) → Inc 7 built → Inc 7 merged (`aaca51b`).
+- MAXT Session 03 conducted live with xian (~19:45): **15/15 probes PASS. Beta gate CLEAR.**
+- Composition gesture (all 7 increments) fully on main, end-to-end live-tested.
+- Mail inbox: zero (stall-sweep closed; both Janus threads closed).
+- Rollup: v14 (0 🔴; 🟠 R46+R47 AAXT queued for Theseus 6/28).
+
+Next: Theseus runs R46+R47 AAXT tomorrow at 9:31am PT. When AAXT passes → new 🔴: cut beta release.
+
+Operational finding from MAXT (Iris log): worktrees should `git pull --no-rebase origin main` at dev-session start to avoid staleness.
