@@ -51,14 +51,18 @@ describe('Clone-from-klatch (increment 6)', () => {
       .closest('select') as HTMLSelectElement;
     fireEvent.change(cloneSelect, { target: { value: 'k1' } });
 
-    // Name prefilled with the "Copy of" prefix (spec §46)
-    await waitFor(() =>
-      expect((screen.getByPlaceholderText('Klatch name') as HTMLInputElement).value).toBe('Copy of Weekly Review'),
+    // The roster is the LAST update in cloneFromKlatch (it lands after `await fetchChannelEntities`),
+    // so waiting for a roster chip guarantees the synchronous updates (name, project, mode) have
+    // already applied. Asserting those sync fields *before* the async roster settled — as this test
+    // originally did — raced the fetch and flaked under slow/loaded environments.
+    await waitFor(
+      () => expect(screen.getByLabelText('Remove Alpha')).toBeInTheDocument(),
+      { timeout: 3000 },
     );
-    // Roster prefilled from the source's channel_entities (fetched, capped at 5)
-    expect(fetchChannelEntities).toHaveBeenCalledWith('k1');
-    expect(screen.getByLabelText('Remove Alpha')).toBeInTheDocument();
     expect(screen.getByLabelText('Remove Beta')).toBeInTheDocument();
+    expect(fetchChannelEntities).toHaveBeenCalledWith('k1');
+    // Name prefilled with the "Copy of" prefix (spec §46)
+    expect((screen.getByPlaceholderText('Klatch name') as HTMLInputElement).value).toBe('Copy of Weekly Review');
     // Project prefilled to the source's project
     const projectSelect = screen.getByRole('option', { name: 'Proj' }).closest('select') as HTMLSelectElement;
     expect(projectSelect.value).toBe('p1');
