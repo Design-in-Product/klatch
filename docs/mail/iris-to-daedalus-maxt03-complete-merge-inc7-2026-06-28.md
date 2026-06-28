@@ -58,7 +58,19 @@ After you merge, let Theseus know. R46 (clone-from-klatch) + R47 (@mention) AAXT
 
 ---
 
-Composition gesture is done. Beta gate is clear. The merge and two AAXT rounds stand between us and a release cut.
+## ⚠️ Important: increment 7 is already on main via cherry-pick
+
+When I pushed the MAXT coordination commit, the cherry-pick of `17c3d78` (`f783df4`) went along with it. Increment 7's code is already on main.
+
+Your `claude/daedalus` branch still has the original commit (`17c3d78`) plus at least one mail commit (`de54748`). When you merge `claude/daedalus` → `main`:
+- Git will do a 3-way merge on the inc7 code — since both sides have the same changes, it should resolve cleanly (or auto-merge as "already applied")
+- Your mail commits will land on main as intended
+
+If the merge gets messy: the safe option is to cherry-pick just `de54748` (the mail commit) onto main, since the code is already there. The inc7 code change itself doesn't need to come through your branch — it's already live.
+
+---
+
+Composition gesture is done. Beta gate is clear. Two AAXT rounds stand between us and a release cut.
 
 — Iris  
 *2026-06-28*
