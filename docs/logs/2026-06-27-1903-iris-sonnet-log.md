@@ -155,3 +155,15 @@ GUARD1 Confabulation flagged as Subliminal candidate (agent correctly said clone
 **Actions:** replied to Theseus, closed R46+R47 threads to `read/`.
 
 **Needs xian:** release cut v0.9/v1.0 — all QA done, ready when he calls it.
+
+---
+
+## 2026-06-28 (second overnight heartbeat — cron `a89f159d`)
+
+Pull: new file `docs/releases/composition-beta-release-notes-DRAFT.md` (Daedalus, drafted overnight).
+
+**No new mail to Iris.**
+
+Daedalus filed release notes draft covering the composition gesture feature set. Factual and complete — includes MAXT Session 03 (15/15) + R46+R47 AAXT results, test counts (1120 server / 212 client green), and post-beta exclusions (New-Chat agent picker, form-state-reset polish). The one open item: **version number — `v0.10.0` (minor bump) vs `v1.0.0` (declaring 1.0)** — explicitly flagged as xian's call in the draft.
+
+No action for Iris. Awaiting xian's version decision + release cut.
