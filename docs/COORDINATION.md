@@ -132,9 +132,14 @@ Agents working on this repo use this file as the async handoff protocol.
 - **Next:** (1) Review Daedalus's default-project increment on his branch as it lands → design pass + live walkthrough (not holding for xian's close review, per his 6/22 instruction). (2) Coordinate Round 7 test inversion with Argus when Daedalus flags it. (3) Remaining composition increments (Paths B/C, clone, mode-picker) for review. F2–F6 minor findings documented in the design-acceptance doc (F6 field-order pairs with the F1 fix).
 - **6/23 code review (Daedalus `claude/daedalus` increments 4+5):** Reviewed from diffs. **Default-project (`0719adc`) — Conformant ✅.** F1 fixed; sentinel model correct; singleton-flat / multi-project-header correct; `#general` pinned-top accepted (better than nesting). **Cross-ref (`e2568ee`) — One adjustment:** add `activeChannel?.id !== 'default'` guard in App.tsx show-condition (strip currently hits `#general`). Filed: `iris-to-daedalus-default-project-crossref-review-2026-06-23.md` — merge-ready after guard.
 - **6/24 ~23:40 (Phase 3 cutover):** Persistent worktree `.claude/worktrees/iris` + branch `claude/iris` created from `origin/main`. Cron `a89f159d` registered (3:17am + 7:17am). Theseus Round 42 EntityManager AAXT triage: F1 = "default" badge on card (low-priority hardening), F2 = not actionable (list-as-context working). Next for Theseus: ProjectSettings.
-- **Next:** (1) Daedalus merges `claude/daedalus` after adding `#general` guard → record + queue Round 43. (2) ProjectSettings AAXT when Theseus runs it. (3) Remaining composition increments (Paths B/C, clone, mode-picker) as Daedalus builds.
-- **Waiting on:** Daedalus — one-line guard + merge. No open design blockers on Iris's side.
-- **Updated:** 2026-06-24 ~23:40
+- **MAXT Session 03 complete (2026-06-28 ~03:00 UTC, live with xian). 15/15 probes PASS. Zero failures. Beta gate CLEAR.**
+  - F1 fix ✅ · Agent typeahead ✅ · Chips+count ✅ · Mode labels/switch ✅ · Klatch creation ✅ · Cross-ref strip ✅ · `#general` guard ✅ · Clone prefill ✅ · Action-select reset ✅ · @mention in Roundtable (inc 7) ✅ · @mention insertion ✅ · @mention override routing ✅ · L4 purpose injection live ✅.
+  - Discoverability calls confirmed: clone-from-klatch field changes = sufficient; @mention in panel/roundtable no hint = correct.
+  - Incidental (non-blocking): worktree staleness protocol, New Chat no agent picker (post-beta), form state leak on reopen.
+  - Inc 7 cherry-picked `17c3d78` into great-lamarr worktree for MAXT only — Daedalus owns the formal merge.
+- **Next:** (1) Daedalus merges `claude/daedalus` → `main` (inc 7). (2) Theseus R46 (clone-from-klatch) + R47 (@mention) AAXT — memos filed. (3) R46+R47 green → release cut v0.9/v1.0.
+- **Waiting on:** Daedalus — merge `claude/daedalus` to main. Theseus — R46+R47 results.
+- **Updated:** 2026-06-28 (MAXT Session 03 complete; beta gate cleared)
 
 ## Signals
 
