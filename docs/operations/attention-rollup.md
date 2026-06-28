@@ -6,7 +6,7 @@
 
 **Trust-instrument discipline** (Exec 2026-06-19): every render comes from a fresh **verified sweep** of source docs — never from memory. A false "all clear" is a trust breach. "Quiet" must mean *verified-clear*, not *haven't-checked*.
 
-**Last refreshed:** 2026-06-27 Saturday ~19:20 PT (Calliope) — Iris ✅ received (clone-from-klatch conformant); merge gate cleared; rollup v10.
+**Last refreshed:** 2026-06-27 Saturday ~20:20 PT (Argus) — Inc 6 merged (`a313ab2`); 0 🔴 items; 1324 tests green; rollup v11.
 
 ---
 
@@ -14,24 +14,15 @@
 
 | Needs you | Blocked-on-others | Lower-urgency | In-flight |
 |---|---|---|---|
-| **1** | **0** | **3** | **4** |
+| **0** | **0** | **3** | **4** |
 
-*One 🔴 item: merge `claude/daedalus` (Inc 6 — clone-from-klatch) — **Iris ✅ received; gate cleared; ready to merge now.** All 5 agents cycling.*
+*No 🔴 items. Inc 6 merged (`a313ab2`, 6/27). Inc 7 (@mention autocomplete) building now. All 5 agents cycling.*
 
 ---
 
 ## 🔴 Needs you — FIRST, always
 
-### Merge `claude/daedalus` (Inc 6 — clone-from-klatch) — **Iris ✅ received; ready to merge**
-
-- **Context:** Prior merge (`c877825`, 6/26 — Inc 2–5 + copy fixes) landed. ✅ That's done.
-- **What's on the branch** (verified): commit `7859713` — **Increment 6: clone-from-klatch.** "Copy setup from an existing klatch" action-select on New Klatch form; prefills name, purpose, mode, project, roster from source; empty purpose when source is boilerplate. +2 tests, 105 lines.
-- **Iris verdict (6/27 ~19:03):** Conformant ✅. All 4 bounded decisions approved (placement, "Copy of {name}", empty-purpose-on-boilerplate, roster fetch fallback). One MAXT note: action-select prefill discoverability — no explicit confirmation that prefill happened; earmarked for MAXT Session 03 observation (not a code issue).
-- **Gate cleared.** No further review needed. Merge when ready.
-- **Who's waiting post-merge:** Theseus (R46 MAXT), Daedalus (Inc 7 — @mention autocomplete). [Argus R46–R48 AAXT already written on `claude/argus` — not merge-blocked.]
-- **Beta definition (xian, 6/26):** composition gesture fully implemented + tested/QA'd → release cut. This merge + subsequent increments + test round = beta.
-- **What xian can do:** merge `claude/daedalus` → main.
-- **Date updated:** 2026-06-27 evening (Iris ✅ received; gate cleared)
+Currently empty.
 
 ---
 
@@ -50,9 +41,9 @@ Currently empty.
 - **Date added:** 2026-06-26 (escalated from lower-urgency by xian's explicit note)
 
 ### MAXT sessions parked, need a dedicated xian session
-- **What:** Theseus's MAXT Session 02 and Daedalus's April-28 round-trip MAXT both need xian's live attention. Both parked. Surfaced so they don't quietly rot.
+- **What:** Theseus's MAXT Session 02 and Daedalus's April-28 round-trip MAXT both need xian's live attention. Both parked. **R46 MAXT (clone-from-klatch) is now also unblocked** — Inc 6 merged 6/27; Theseus notified via `daedalus-to-theseus-inc6-merged-aaxt-unblocked-2026-06-27.md`.
 - **Why lower-urgency:** real Klatch-beta-relevant work but not time-pressured; xian rouses Theseus situationally for AXT (his 6/21 posture).
-- **Date added:** 2026-06-23 (carried from Theseus's 6/22 report-in)
+- **Date added:** 2026-06-23 (carried from Theseus's 6/22 report-in; R46 added 6/27)
 
 ### Cron-shape experiments registry: calibration still pending real observations
 - **What:** `cron-shape-experiments.md` — straw-model entries; real per-agent observations now accumulating. Calibration is post-launch data; no decision needed yet.
@@ -66,15 +57,16 @@ Awareness, no action needed.
 
 ### Cohort status — all 5 agents cycling (verified 6/27)
 - **Calliope** — live; persistent worktree `claude/calliope`; hourly `13 * * * *` when in-session.
-- **Daedalus** — Phase 2 hourly `17 * * * *`; built Inc 6 (clone, R45-unblocked); branch `claude/daedalus` awaiting merge (see 🔴). Inc 6 in Iris review.
-- **Argus** — stalled 6/26 evening–6/27 19:06 (session-only cron); **1322 tests (1116 server / 206 client)**; R46–R48 AAXT written on `claude/argus` (6/26: sidebar first-project, message input, markdown content — not merge-blocked); cron re-armed 6/27 evening.
-- **Theseus** — Phase 3 daily `31 9 * * *`; R45 complete (8/8 probes, 100% conveyance, 0 Phantoms — 6/26); R46 queued post-merge.
-- **Iris** — woken 6/27 evening; reviewed Inc 6 (clone-from-klatch), verdict ✅ conformant; R45 closed; R46 coordination sent to Theseus/Argus; next: R46 MAXT post-merge.
+- **Daedalus** — Phase 2 hourly `17 * * * *`; Inc 6 merged 6/27 (`a313ab2`); building Inc 7 (@mention autocomplete).
+- **Argus** — cron re-armed 6/27 19:06; **1324 tests (1116 server / 208 client)** — Inc 6 +2 client tests green; R46–R48 AAXT written on `claude/argus` (6/26: sidebar first-project, message input, markdown content); intel sweep due 6/28.
+- **Theseus** — Phase 3 daily `31 9 * * *`; R45 complete (8/8 probes, 100% conveyance, 0 Phantoms — 6/26); R46 MAXT unblocked (notified 6/27).
+- **Iris** — woken 6/27 evening; Inc 6 reviewed ✅ conformant; R45 closed; R46 coordination sent to Theseus; next: R46 MAXT post-merge.
 
-### Composition gesture — Inc 1–5 merged; Inc 6 Iris-reviewed ✅, merge-ready
-- Increments 1–5 merged to main (`7d42822`, `c877825`). Inc 1: atomic roster + dual affordance. Inc 2–3: picker polish. Inc 4: default-project. Inc 5: cross-ref strip + `#general` guard — all Iris-reviewed ✅.
+### Composition gesture — Inc 1–6 merged; Inc 7 (@mention autocomplete) building
+- Increments 1–6 merged to main. Inc 1: atomic roster + dual affordance. Inc 2–3: picker polish. Inc 4: default-project. Inc 5: cross-ref strip + `#general` guard. Inc 6: clone-from-klatch (`a313ab2`, 6/27). All Iris-reviewed ✅.
 - **R45 passed (6/26):** CrossRefStrip + `#general` guard — 8 probes, 7 Correct, 1 Reconstructed, 0 Phantoms.
-- **Increment 6 (clone-from-klatch) on branch** — Iris ✅ received 6/27 ~19:03; merge-ready; pending xian merge.
+- **R46 MAXT (clone-from-klatch):** Theseus notified; Iris coordination sent; parked pending xian session (see 🟡).
+- **Inc 7 in progress** — Daedalus building @mention autocomplete; Iris review will follow.
 
 ### Pages build, strategic threads, CIO artifact request
 - Pages: fixed 6/22, no new issues.
@@ -83,7 +75,11 @@ Awareness, no action needed.
 
 ---
 
-## 🟢 Resolved since last board (6/26 → 6/27)
+## 🟢 Resolved since last board (6/27 morning → 6/27 evening)
+
+- ~~**Merge claude/daedalus (Inc 6 — clone-from-klatch)**~~ — merged 6/27 (`a313ab2`, xian-authorized). Iris ✅ conformant. Theseus notified; R46 MAXT unblocked. *Closed 6/27 evening.*
+
+## 🟢 Previously resolved (6/26 → 6/27 morning)
 
 - ~~**AAXT cross-ref + #general guard blocked on merge**~~ — R45 completed by Theseus 6/26; 8/8 probes, 0 Phantoms. *Closed 6/27.*
 - ~~**Merge claude/daedalus (Inc 2–5 + copy fixes)**~~ — landed 6/26 (`c877825`, xian-authorized). *Closed 6/27; superseded by Inc 6.*
@@ -100,6 +96,7 @@ Awareness, no action needed.
 
 ## Changelog
 
+- **v11 (2026-06-27 ~20:20 PT, Argus)** — Inc 6 merged (`a313ab2`). 🔴 → 0 items. Test count: 1324 (1116 server / 208 client). R46 MAXT unblocked; Theseus notified. Inc 7 building. Cohort updated.
 - **v10 (2026-06-27 ~19:20 PT)** — Iris ✅ received (6/27 ~19:03); clone-from-klatch conformant; merge gate cleared. 🔴 item updated: "ready to merge now." Cohort: Iris woken + reviewed. Composition gesture: Inc 6 merge-ready.
 - **v9 (2026-06-27 evening)** — Argus status corrected: 1322 tests (not 1291); R46–R48 AAXT written 6/26 on `claude/argus` (not merge-blocked). Argus removed from "waiting post-merge" in 🔴 item.
 - **v8 (2026-06-27)** — Prior merge landed (`c877825`, 6/26); rollup corrected. 🔴 item updated to Inc 6 (clone-from-klatch) awaiting Iris review. Prior merge closure added to resolved. Inc 1–5 now on main. 🔴 count: 1.
