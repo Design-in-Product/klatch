@@ -44,3 +44,10 @@ Append-only. Per 5/28 refinement: substantive fires commit; pure no-op fires app
 - SDK `^0.96.0`; intel sweep still due 2026-06-28 (next WORK fire)
 - Rollup v13: 🔴 → 1 (Inc 7 merge-ready); Argus R49 corrected; composition gesture marked complete
 - Re-arming `:43`
+
+**Fire 23:06 — IDLE no-op (past 23:00 PT):**
+- Significant off-cycle events (observed via rollup v14, Calliope): Inc 7 merged (`aaca51b`, 6/27); MAXT Session 03 ran live with xian (~19:45 PT) — **15/15 PASS, zero failures, beta gate CLEAR**. Release cut follows once Theseus completes R46+R47 AAXT (~9:31am 6/28).
+- Intel sweep due at first 6/28 WORK fire (≥07:00 PT)
+- IDLE — re-arming `:43`
+
+**STOP — 2026-06-27 23:06 PT.** Closing 6/27 log. Beta gate cleared this evening; intel sweep + AAXT continuation in 6/28 log.
