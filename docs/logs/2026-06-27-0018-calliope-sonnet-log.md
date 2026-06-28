@@ -27,3 +27,13 @@ Previous day (6/26) verified closed: session log has STOP at 23:18; cycle log Fi
 **Rollup v7 written** (verified sweep from COORDINATION.md — Theseus section confirmed R45; Iris section + brief confirmed Inc 6). Changes: "Daedalus waiting on merge" removed; AAXT-blocked entry resolved; R46 queued for Argus + Theseus; Inc 6 in Iris review added to composition gesture.
 
 Pushed rollup to main via main worktree (`aefac05`) — HEAD:main was non-fast-forward from calliope branch (brief committed to main between my fetch and push).
+
+## 07:43 — Rollup v8 pushed to main
+
+Pushed to main worktree (`17d7ea5`). Corrected 🔴 item: Inc 6 (clone-from-klatch) now the open merge, not Inc 2–5. Feedback saved: update rollup without asking.
+
+## 18:20 — xian direction (Fire 25)
+
+xian asked about Daedalus + team activity. Verified: no agent commits since ~08:30 on 6/26. Entire cohort appears mode-1 (weekend). Surfaced findings to xian — he's waking Iris manually to unblock Inc 6 review.
+
+xian directed: alert proactively to agent work stoppages — at day START or immediately when detected; don't wait to be asked. Feedback saved to memory (`feedback_surface_agent_silences_proactively.md`). At next START: liveness check (git log --since yesterday; flag missed 2+ cron windows + unread work item) added to standard walk.
