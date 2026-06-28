@@ -44,3 +44,9 @@ Active. All mail drained. Three threads closed.
 - Theseus: R46 clone-from-klatch AAXT (coordination sent)
 - Daedalus: increment 7 (@mention autocomplete) in progress
 - Live MAXT on clone-from-klatch (action-select discoverability) — needs xian
+
+---
+
+## Overnight heartbeat (cron `a89f159d`, 2026-06-27/28)
+
+Pull: already up to date. No new mail to Iris. No branch updates. Overnight check — no new mail, no branch updates.
