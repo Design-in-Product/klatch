@@ -6,7 +6,7 @@
 
 **Trust-instrument discipline** (Exec 2026-06-19): every render comes from a fresh **verified sweep** of source docs — never from memory. A false "all clear" is a trust breach. "Quiet" must mean *verified-clear*, not *haven't-checked*.
 
-**Last refreshed:** 2026-06-27 Saturday ~21:50 PT (Argus) — Inc 7 Iris ✅ conformant; composition gesture complete; 🔴 merge ready; rollup v13.
+**Last refreshed:** 2026-06-27 Saturday ~22:40 PT (Calliope) — Inc 7 merged; MAXT Session 03 15/15 PASS; beta gate CLEAR; R46+R47 AAXT queued; rollup v14.
 
 ---
 
@@ -14,29 +14,27 @@
 
 | Needs you | Blocked-on-others | Lower-urgency | In-flight |
 |---|---|---|---|
-| **1** | **0** | **3** | **4** |
+| **0** | **1** | **3** | **4** |
 
-*One 🔴: merge `claude/daedalus` (Inc 7 — @mention override) — **Iris ✅ conformant; composition gesture complete; merge when ready.***
+*No 🔴 items. Beta gate CLEAR (MAXT Session 03, 15/15 pass, 6/27). 🟠: R46+R47 AAXT running (Theseus, ~9:31am 6/28). Release cut follows once AAXT passes.*
 
 ---
 
 ## 🔴 Needs you — FIRST, always
 
-### Merge `claude/daedalus` (Inc 7 — @mention override) — **Iris ✅ conformant; composition gesture complete**
-
-- **What's on the branch** (verified): commit `17c3d78` — **Increment 7 (final): @mention overrides any klatch mode.** Server: `resolveMentions` hoisted above mode dispatch (mention → route first; else → default mode). Client: `showMentions` ungated from `isDirected && entities≥2` → `entities≥2` (dropdown works in panel/roundtable too). +4 route tests, +4 MessageInput tests.
-- **Iris verdict (6/27 ~21:30):** Conformant ✅. All 3 bounded decisions approved (server hoisting, client gate, `insertMention` precedence). `@` discoverability in panel/roundtable → MAXT Session 03 observation (not a code issue; not a blocker).
-- **Composition gesture complete.** Inc 7 is the last increment. When merged, the full composition critical path is on main.
-- **Who's waiting post-merge:** Theseus (R46 clone MAXT + R47 @mention MAXT), xian (MAXT Session 03 — beta gate). [Argus R46–R49 AAXT written on `claude/argus` — not merge-blocked.]
-- **Beta gate:** composition gesture on main + Theseus AAXT + MAXT Session 03 with xian = beta release cut.
-- **What xian can do:** merge `claude/daedalus` → main.
-- **Date updated:** 2026-06-27 evening (Iris ✅ received)
+Currently empty.
 
 ---
 
 ## 🟠 Blocked on another agent
 
-Currently empty.
+### Release cut — waiting on Theseus R46+R47 AAXT
+
+- **What:** Inc 7 merged (`aaca51b`, 6/27). MAXT Session 03 passed 15/15 (xian live, 6/27 ~19:45). Beta gate declared CLEAR by Iris. Release cut (v0.9 or v1.0) is next — but standard practice calls for AAXT to pass first.
+- **Waiting on:** Theseus R46 (clone-from-klatch) + R47 (@mention override) AAXT. Theseus daily at 9:31am PT — earliest completion 6/28 morning.
+- **Argus:** R46–R49 AAXT already written on `claude/argus` (not merge-blocked); will run post-merge once Theseus clears MAXT-side.
+- **When unblocked:** will surface as 🔴 "cut beta release" once AAXT passes.
+- **Date added:** 2026-06-27 evening
 
 ---
 
@@ -48,10 +46,10 @@ Currently empty.
 - **What xian can do:** share what POV shift he wants, or review the post and mark up the specific passages. Calliope can rewrite once direction is clear.
 - **Date added:** 2026-06-26 (escalated from lower-urgency by xian's explicit note)
 
-### MAXT sessions parked, need a dedicated xian session
-- **What:** Theseus's MAXT Session 02 and Daedalus's April-28 round-trip MAXT both need xian's live attention. Both parked. **R46 MAXT (clone-from-klatch) is now also unblocked** — Inc 6 merged 6/27; Theseus notified via `daedalus-to-theseus-inc6-merged-aaxt-unblocked-2026-06-27.md`.
-- **Why lower-urgency:** real Klatch-beta-relevant work but not time-pressured; xian rouses Theseus situationally for AXT (his 6/21 posture).
-- **Date added:** 2026-06-23 (carried from Theseus's 6/22 report-in; R46 added 6/27)
+### MAXT Session 02 + April-28 round-trip MAXT — still parked
+- **What:** Theseus's MAXT Session 02 and Daedalus's April-28 round-trip MAXT both need xian's live attention. MAXT Session 03 (composition gesture) is now complete (6/27, 15/15 pass). Sessions 02 and April-28 remain parked.
+- **Why lower-urgency:** not time-pressured; xian rouses Theseus situationally.
+- **Date added:** 2026-06-23 (carried from Theseus's 6/22 report-in)
 
 ### Cron-shape experiments registry: calibration still pending real observations
 - **What:** `cron-shape-experiments.md` — straw-model entries; real per-agent observations now accumulating. Calibration is post-launch data; no decision needed yet.
@@ -65,16 +63,17 @@ Awareness, no action needed.
 
 ### Cohort status — all 5 agents cycling (verified 6/27)
 - **Calliope** — live; persistent worktree `claude/calliope`; hourly `13 * * * *` when in-session.
-- **Daedalus** — Phase 2 hourly `17 * * * *`; Inc 6 merged 6/27 (`a313ab2`); **Inc 7 built** (`17c3d78` on `claude/daedalus`) — @mention overrides any mode (server route hoist + client dropdown ungated); sent to Iris UX review 6/27 ~20:36.
+- **Daedalus** — Inc 7 merged (`aaca51b`, 6/27); **composition gesture fully on main**; runbook filed (`docs/ux/increment7-e2e-runbook.md`); cycle complete for this phase.
 - **Argus** — cron cycling; **1324 tests (1116 server / 208 client)**; R46–R49 AAXT written on `claude/argus` (6/26–6/27: sidebar, message input, markdown, new-channel-form); intel sweep due 6/28.
 - **Theseus** — Phase 3 daily `31 9 * * *`; R45 complete (8/8 probes, 0 Phantoms — 6/26); R46 (clone) + R47 (@mention override) MAXT queued post-merge.
-- **Iris** — Inc 6 ✅ (6/27 evening); Inc 7 ✅ conformant (6/27 ~21:30); composition gesture complete; R47 MAXT coordination sent to Theseus; next: R47 MAXT post-merge.
+- **Iris** — MAXT Session 03 conducted live with xian (6/27 ~19:45); 15/15 pass; beta gate CLEAR. Filed runbook, updated COORDINATION.md, notified Daedalus + Theseus. Next: monitor R46+R47 AAXT; standby for release cut coordination.
 
-### Composition gesture — Inc 1–6 merged; Inc 7 (final) merge-ready
-- Increments 1–6 merged to main. Inc 1: atomic roster + dual affordance. Inc 2–3: picker polish. Inc 4: default-project. Inc 5: cross-ref strip + `#general` guard. Inc 6: clone-from-klatch (`a313ab2`, 6/27). All Iris-reviewed ✅.
-- **R45 passed (6/26):** CrossRefStrip + `#general` guard — 8 probes, 7 Correct, 1 Reconstructed, 0 Phantoms.
-- **R46 MAXT (clone-from-klatch):** Theseus notified; Iris coordination sent; parked pending xian session (see 🟡).
-- **Inc 7 — @mention overrides any mode** (`17c3d78`, `claude/daedalus`): Iris ✅ conformant 6/27 ~21:30. **Composition gesture complete.** Merge pending xian (see 🔴). Post-merge: Theseus runs R46 then R47 MAXT; MAXT Session 03 with xian = beta gate.
+### Composition gesture — **ALL 7 increments on main ✅; beta gate CLEAR**
+- Inc 1–7 all merged to main and Iris-reviewed ✅. Inc 7 (`aaca51b`, 6/27): @mention overrides any mode.
+- **MAXT Session 03 (6/27 ~19:45, xian live): 15/15 probes PASS. Zero failures. Zero regressions.**
+  - New klatch creation, roster assignment, panel/roundtable/directed modes, clone-from-klatch prefill, @mention override in panel+roundtable, L4 injection — all confirmed end-to-end.
+  - One operational finding: worktree staleness risk — dev session worktrees should `git pull --no-rebase origin main` at start. (Not a product gap; flagged in Iris log.)
+- **R46 + R47 AAXT:** Theseus notified; queued for 6/28 ~9:31am PT. Release cut follows AAXT pass (see 🟠).
 
 ### Pages build, strategic threads, CIO artifact request
 - Pages: fixed 6/22, no new issues.
@@ -83,9 +82,14 @@ Awareness, no action needed.
 
 ---
 
-## 🟢 Resolved since last board (6/27 morning → 6/27 evening)
+## 🟢 Resolved since last board (6/27 evening)
 
-- ~~**Merge claude/daedalus (Inc 6 — clone-from-klatch)**~~ — merged 6/27 (`a313ab2`, xian-authorized). Iris ✅ conformant. Theseus notified; R46 MAXT unblocked. *Closed 6/27 evening.*
+- ~~**Merge claude/daedalus (Inc 7 — @mention override)**~~ — merged 6/27 (`aaca51b`). Iris ✅ conformant. Composition gesture fully on main. *Closed 6/27 night.*
+- ~~**MAXT Session 03 — beta gate**~~ — 15/15 PASS (xian live, 6/27 ~19:45). Beta gate CLEAR. *Closed 6/27 night.*
+
+## 🟢 Resolved (6/27 morning → evening)
+
+- ~~**Merge claude/daedalus (Inc 6 — clone-from-klatch)**~~ — merged 6/27 (`a313ab2`, xian-authorized). Iris ✅ conformant. *Closed 6/27 evening.*
 
 ## 🟢 Previously resolved (6/26 → 6/27 morning)
 
@@ -104,6 +108,7 @@ Awareness, no action needed.
 
 ## Changelog
 
+- **v14 (2026-06-27 ~22:40 PT, Calliope)** — Inc 7 merged (`aaca51b`); MAXT Session 03 15/15 PASS; beta gate CLEAR. 🔴 → 0. 🟠: R46+R47 AAXT (Theseus, 6/28 ~9:31am). Release cut follows. Composition gesture complete.
 - **v13 (2026-06-27 ~21:50 PT, Argus)** — Inc 7 Iris ✅ conformant (`611fca9`); composition gesture complete. 🔴: merge `claude/daedalus` (Inc 7). Argus R49 added. Cohort + composition updated.
 - **v12 (2026-06-27 ~21:30 PT, Calliope)** — Inc 7 (final composition increment — @mention overrides any mode) built by Daedalus (`17c3d78`); in Iris UX review. Cohort + composition gesture updated.
 - **v11 (2026-06-27 ~20:20 PT, Argus)** — Inc 6 merged (`a313ab2`). 🔴 → 0 items. Test count: 1324 (1116 server / 208 client). R46 MAXT unblocked; Theseus notified. Inc 7 building. Cohort updated.
