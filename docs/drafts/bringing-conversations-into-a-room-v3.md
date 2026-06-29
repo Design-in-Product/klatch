@@ -118,11 +118,11 @@ The composition gesture is live. It runs locally — you bring your own Anthropi
 
 We're opening a metered beta. If you work in design, product, or engineering and want to try it, reach out or watch the repo.
 
-We didn't invent any new abstractions. We just stopped insisting on the wrong one.
+The conversations that built this are still running. Bring yours.
 
 ---
 
-*This is part of an occasional series from the Klatch project. Previous: [Before You Go](/blog/before-you-go.html), [Unsorted Chats](/blog/unsorted-chats.html), [What Does an Imported Agent Know?](/blog/what-does-an-imported-agent-know.html). Klatch is an open-source tool for managing Claude conversations — [view the source](https://github.com/Design-in-Product/klatch).*
+*This is part of an occasional series from the Klatch project. Previous: [Before You Go](/blog/before-you-go.html), [Your Model or Theirs](/blog/your-model-or-theirs.html), [What Doesn't Transfer](/blog/what-doesnt-transfer.html). Klatch is an open-source tool for managing Claude conversations — [view the source](https://github.com/Design-in-Product/klatch).*
 
 ---
 
@@ -138,9 +138,9 @@ We didn't invent any new abstractions. We just stopped insisting on the wrong on
 5. **Status updated throughout** — "is being built" and "is in flight" replaced with past tense throughout.
 6. **"Klatches are synthetic" and "Agents are conversations"** — largely held from v2; vocabulary updated (Panel not Broadcast, agents not entities per Iris's 6/20 sweep).
 
-**Open questions for xian:**
-- "Metered beta. If you work in design, product, or engineering and want to try it, reach out or watch the repo." — does this match the private beta posture? Should it say something more specific (wait-list email, DM on LinkedIn)?
-- The closing line ("We didn't invent any new abstractions. We just stopped insisting on the wrong one.") — held from v2. Still right?
-- The interaction modes in the composition-gesture section still use "Panel / Roundtable / Directed" — confirm this is the current vocabulary (I believe yes per Iris's vocab sweep).
-- Series footer: I listed "Before You Go," "Unsorted Chats," "What Does an Imported Agent Know?" as previous posts. Confirm the series listing is accurate.
-- **Length:** ~2,400 words. Longer than v2 (~2,000). The "Building it this way" section (~400 words) is new; other sections were tightened somewhat. Can trim if needed.
+**Resolved (xian, 6/29):**
+- Invitation wording: xian will fill in (placeholder stands).
+- Closing line: replaced with "The conversations that built this are still running. Bring yours." — drops the reversal-structure cliché. Alternatives if this doesn't land: (A) drop entirely, end with invitation; (B) "The repo is the most honest thing we can say about whether it works."
+- Vocabulary confirmed: Panel / Roundtable / Directed is current.
+- Series footer corrected: "Before You Go, Your Model or Theirs, What Doesn't Transfer" (verified from repo). Full series in the blog: AXT, Before You Go, It's On the Tip of My Tongue, Paste It Again, Prompt Assembly, What Doesn't Transfer, What Does an Imported Agent Know?, Your Model or Theirs.
+- **Length:** ~2,400 words.
