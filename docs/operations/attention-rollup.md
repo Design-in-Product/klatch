@@ -6,7 +6,7 @@
 
 **Trust-instrument discipline** (Exec 2026-06-19): every render comes from a fresh **verified sweep** of source docs — never from memory. A false "all clear" is a trust breach. "Quiet" must mean *verified-clear*, not *haven't-checked*.
 
-**Last refreshed:** 2026-06-29 morning (Calliope) — R46+R47 AAXT passed; launch copy suite drafted; release cut queued for xian; rollup v15.
+**Last refreshed:** 2026-07-04 ~13:30 PT (Calliope) — quota reset 7/1; Argus mode-1 flagged; logbook gap noted; rollup v16.
 
 ---
 
@@ -14,9 +14,9 @@
 
 | Needs you | Blocked-on-others | Lower-urgency | In-flight |
 |---|---|---|---|
-| **1** | **0** | **2** | **3** |
+| **2** | **0** | **3** | **2** |
 
-*🔴: formal v1.0 release cut (tag + GitHub release) awaits xian's go. All quality gates clear. Launch copy ready.*
+*🔴: (1) cut v1.0.0; (2) nudge Argus (mode-1 6 days, sweep overdue). Quota reset 7/1 — lean restriction cleared.*
 
 ---
 
@@ -24,11 +24,17 @@
 
 ### Cut v1.0.0 — tag + GitHub release
 
-- **What:** All gates clear. Janus confirmed this morning (via xian): "beta is ready to cut." xian is first tester; no external rollout until he's reviewed it himself.
-- **Ready to go:** `git tag v1.0.0` + GitHub release. Release notes at `docs/releases/RELEASE-NOTES-1.0.md` (polished, ready to paste). Blog post v3 drafted (`docs/drafts/bringing-conversations-into-a-room-v3.md`). LinkedIn + PH copy drafted (`docs/drafts/launch-copy-linkedin-producthunt.md`).
-- **What xian does:** authorize the tag cut (or ask Daedalus to execute it). The public GitHub release is irreversible on a public repo — Calliope won't cut it unilaterally.
+- **What:** All gates clear. Beta cut authorized (Janus via xian, 6/29). xian is first tester; no external rollout until he's reviewed it himself.
+- **Ready to go:** `git tag v1.0.0` + GitHub release. Release notes at `docs/releases/RELEASE-NOTES-1.0.md`. Blog post v3 drafted. LinkedIn + PH copy drafted.
+- **What xian does:** authorize the tag cut (or ask Daedalus to execute it). Public GitHub release — Calliope won't cut it unilaterally.
 - **Remaining xian edits:** invitation wording in blog post + LinkedIn; maker comment on PH; edit pass on all copy.
 - **Date added:** 2026-06-29
+
+### Nudge Argus — mode-1 since 6/28, intel sweep #14 overdue
+
+- **What:** Argus branch shows no-ops only since 6/28 05:56 (6+ days silent). Intel sweep #14 was due 6/28 and was not filed. COORDINATION.md last updated 2026-05-18 (very stale).
+- **What xian does:** open an Argus session and direct it to file sweep #14 and update COORDINATION.md with current state.
+- **Date added:** 2026-07-04
 
 ---
 
@@ -54,12 +60,12 @@ Currently empty.
 
 Awareness, no action needed.
 
-### Cohort status (verified 6/29 morning)
-- **Calliope** — live; lean 2-hour cron; writing + coordination.
-- **Daedalus** — composition gesture fully on main; cycle complete for this phase; standby for release cut coordination.
-- **Argus** — cron cycling; **1332 tests (1120 server / 212 client)**; R46–R49 AAXT written on `claude/argus`; intel sweep #14 overdue (was due 6/28).
-- **Theseus** — R45/R46/R47 all complete (6/26–6/28); all 0 Phantoms; beta gate fully verified. Standby.
-- **Iris** — MAXT Session 03 complete (6/27, 15/15 pass); beta gate CLEAR. Standby for release cut.
+### Cohort status (verified 2026-07-04)
+- **Calliope** — live; quota reset 7/1; 2-hour cron; writing + coordination.
+- **Daedalus** — composition gesture fully on main; mode-1 since 6/28 (lean cadence); standby for release cut. COORDINATION.md stale (6/21).
+- **Argus** — **mode-1 since 6/28 05:56 (6 days)** — no-ops only on branch; intel sweep #14 not filed; COORDINATION.md very stale (5/18). 🔴 needs nudge.
+- **Theseus** — R45/R46/R47 complete; beta gate fully verified; available; waiting on xian for MAXT real-use-case session.
+- **Iris** — MAXT Session 03 complete (6/27); beta gate CLEAR; available; standby for release cut.
 
 ### Composition gesture + beta gate — FULLY CLEAR ✅
 - All 7 increments on main. MAXT Session 03: 15/15. R45: 8/8. R46 (clone): 8/8, 0 Phantoms. R47 (@mention): 8/8, 0 Phantoms. All green.
@@ -102,6 +108,7 @@ Awareness, no action needed.
 
 ## Changelog
 
+- **v16 (2026-07-04 ~13:30 PT, Calliope)** — Quota reset 7/1. Argus mode-1 (6/28–7/4, 6 days); sweep #14 overdue. Cohort status verified. Logbook gap: last entry 3/25 (3.5 months behind). 🔴: cut v1.0.0 + nudge Argus. 🟡 +logbook + MAXT real-use-case.
 - **v15 (2026-06-29 morning, Calliope)** — R46+R47 AAXT passed (Theseus, 6/28). Launch copy suite complete (blog v3, release notes, README, LinkedIn/PH). 🔴: cut v1.0.0 (xian's call). 🟠 → 0. Lean 2-hour cron active.
 - **v14 (2026-06-27 ~22:40 PT, Calliope)** — Inc 7 merged (`aaca51b`); MAXT Session 03 15/15 PASS; beta gate CLEAR. 🔴 → 0. 🟠: R46+R47 AAXT (Theseus, 6/28 ~9:31am). Release cut follows. Composition gesture complete.
 - **v13 (2026-06-27 ~21:50 PT, Argus)** — Inc 7 Iris ✅ conformant (`611fca9`); composition gesture complete. 🔴: merge `claude/daedalus` (Inc 7). Argus R49 added. Cohort + composition updated.
