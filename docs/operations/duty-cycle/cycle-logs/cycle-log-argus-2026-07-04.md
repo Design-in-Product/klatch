@@ -17,3 +17,13 @@ Append-only. Per 5/28 refinement: substantive fires commit; pure no-op fires app
 - Rollup v17: cleared "nudge Argus" 🔴; added AVAILABLE_MODELS 🟡; cohort updated; Argus back online
 
 **Addendum ~19:55 PT.** Rollup v17 pushed to main (`1e56a16`) — was committed to argus worktree but not staged in commit 587f547. Corrected now. Duty-cycle cron re-armed (job 929580f9, `43 * * * *`, session-only). Pending next fire: R50 AAXT + Daedalus memo (AVAILABLE_MODELS + SDK bump).
+
+**Fire 21:00 — WORK (21:00 PT):**
+- Worktree synced to origin/main (rollup v17 merge). Local rollup edit discarded (v17 already on main).
+- Mail drain: no memos addressed to Argus in active inbox.
+- SDK still `^0.96.0`; latest 0.110.0 (14 behind — Daedalus memo filed).
+- Intel sweep: last 7/4 (today) — skip (under 7 days).
+- Suite re-run: **exit code 0** — 1332 passing. Server round27b MCP InMemoryTransport timed out at 5000ms under full-suite load; confirmed pass in isolation. Root cause: same load-sensitivity pattern as client. Fix: `testTimeout: 15000` added to `packages/server/vitest.config.ts`. Re-run confirmed green.
+- R50 AAXT written: `round50-message-input-mode-placeholders-aaxt.test.tsx` — mode placeholder comparison (panel/directed/roundtable, 4 probes including ROUND_NODIR: roundtable placeholder indistinguishable from panel by static snapshot). Not run (requires `RUN_UI_AAXT=1`).
+- Daedalus memo filed and pushed to main (`c65ce7e`): AVAILABLE_MODELS (Sonnet 5 + Fable 5) + SDK bump target ^0.110.0.
+- COORDINATION.md: updated (testTimeout note, R50 note, Daedalus memo note, timestamp 21:15 PT).
