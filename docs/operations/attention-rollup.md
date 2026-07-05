@@ -67,7 +67,7 @@ Awareness, no action needed.
 - **Daedalus** — AVAILABLE_MODELS + SDK bump shipped (`0395c4b`); persona capture filed (`docs/plans/persona-capture-daedalus-2026-07-05.md`). Awaiting Klatch import.
 - **Argus** — persona capture filed (`docs/plans/persona-capture-argus-2026-07-05.md`). Suite **1332 green** (confirmed 7/5 after SDK bump install — runtime-proven). SDK `^0.110` installed. Opus 4.8 gap flagged + Daedalus memo filed. Awaiting Klatch import.
 - **Theseus** — observer brief received; standing by for xian's signal to open session.
-- **Iris** — persona capture memo sent; not yet filed (xian running sessions sequentially).
+- **Iris** — persona capture filed (`docs/plans/persona-capture-iris-2026-07-05.md`). All three captures in. Awaiting Klatch import.
 
 ### Composition gesture + beta gate — FULLY CLEAR ✅
 - All 7 increments on main. MAXT Session 03: 15/15. R45: 8/8. R46 (clone): 8/8, 0 Phantoms. R47 (@mention): 8/8, 0 Phantoms. All green.
