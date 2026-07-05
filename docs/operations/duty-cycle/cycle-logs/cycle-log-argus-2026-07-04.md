@@ -59,3 +59,5 @@ Append-only. Per 5/28 refinement: substantive fires commit; pure no-op fires app
 **Fire 14:11 — WORK (no-op).** Worktree up to date. No new Argus mail. All standing tasks current from 12:47 fire. Cron re-armed (`3efc2db3`). Awaiting Daedalus reply on Opus 4.8 lineup memo.
 
 **Fire 14:50 — WORK (no-op).** Merged Calliope's Iris cohort update (all 3 captures now filed). No new Argus mail. Cron re-armed (`37742d11`).
+
+**Fire 15:49 — WORK (no-op).** Worktree up to date. No new Argus mail. SDK `^0.110.0` current. Suite confirmed green: 1332 passing (1120 server / 212 client). COORDINATION.md updated (15:49 timestamp + suite re-confirm). Cron re-armed (`5f4c3d32`).
