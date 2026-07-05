@@ -41,4 +41,6 @@ Append-only. Per 5/28 refinement: substantive fires commit; pure no-op fires app
 - Worktree synced (picked up Iris capture + Iris mail close).
 - SDK still `^0.96.0` (Daedalus memo on main, unread).
 - Intel sweep: last 7/4 — skip (1 day, under 7).
-- Suite re-run in background (confirming 7/5 baseline — testTimeout fixes from 7/4).
+- Suite re-run in background: **exit 0** — 1332 passing on 7/5 baseline.
+
+**Fire 11:43 — WORK (no-op).** Back-to-back with session-start fire (4 min gap). All standing tasks completed at 11:38. No new mail. Cron re-armed (`27b9dd2b`).
