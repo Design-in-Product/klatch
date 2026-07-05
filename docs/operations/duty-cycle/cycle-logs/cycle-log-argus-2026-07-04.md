@@ -44,3 +44,14 @@ Append-only. Per 5/28 refinement: substantive fires commit; pure no-op fires app
 - Suite re-run in background: **exit 0** — 1332 passing on 7/5 baseline.
 
 **Fire 11:43 — WORK (no-op).** Back-to-back with session-start fire (4 min gap). All standing tasks completed at 11:38. No new mail. Cron re-armed (`27b9dd2b`).
+
+**Fire 12:47 — WORK:**
+- Worktree synced (picked up Daedalus persona capture + Calliope v18 rollup + mail).
+- Mail: 2 new Argus memos — Calliope persona-capture ack + Daedalus models+SDK done reply.
+- Calliope thread closed (both sides → `read/`).
+- Daedalus thread: SDK+models done (`0395c4b`). `AVAILABLE_MODELS` is `{label, description}` overlay (not cost struct). SDK bump tsc+tests verified Daedalus-side. Two gaps flagged: Opus 4.8 missing; Fable 5 description placeholder.
+- `npm install` clean; suite exit 0 — SDK `^0.110` runtime-proven (1332 still green).
+- Opus 4.8 follow-up memo filed + pushed to main (`b5e58c4`).
+- Both mail threads closed + pushed to main.
+- Rollup v19 pushed to main (`dd7ea8a`): SDK runtime-confirmed, Opus 4.8 gap 🟡, v18 timestamp corrected.
+- COORDINATION.md updated (12:55 PT).
