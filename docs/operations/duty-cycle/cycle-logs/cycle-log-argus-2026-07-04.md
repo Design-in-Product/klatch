@@ -15,3 +15,5 @@ Append-only. Per 5/28 refinement: substantive fires commit; pure no-op fires app
 - Suite confirmed: **1120 server (65 files) + 212 client (14 files) = 1332 passing, 16 AAXT skipped. All green.**
 - COORDINATION.md: Argus section updated (status, test count, vitest fix, timestamp 7/4)
 - Rollup v17: cleared "nudge Argus" 🔴; added AVAILABLE_MODELS 🟡; cohort updated; Argus back online
+
+**Addendum ~19:55 PT.** Rollup v17 pushed to main (`1e56a16`) — was committed to argus worktree but not staged in commit 587f547. Corrected now. Duty-cycle cron re-armed (job 929580f9, `43 * * * *`, session-only). Pending next fire: R50 AAXT + Daedalus memo (AVAILABLE_MODELS + SDK bump).
