@@ -27,3 +27,18 @@ Append-only. Per 5/28 refinement: substantive fires commit; pure no-op fires app
 - R50 AAXT written: `round50-message-input-mode-placeholders-aaxt.test.tsx` — mode placeholder comparison (panel/directed/roundtable, 4 probes including ROUND_NODIR: roundtable placeholder indistinguishable from panel by static snapshot). Not run (requires `RUN_UI_AAXT=1`).
 - Daedalus memo filed and pushed to main (`c65ce7e`): AVAILABLE_MODELS (Sonnet 5 + Fable 5) + SDK bump target ^0.110.0.
 - COORDINATION.md: updated (testTimeout note, R50 note, Daedalus memo note, timestamp 21:15 PT).
+
+---
+
+## 2026-07-05
+
+**START — 11:38 PT.** xian opened session. MAXT day — Search planning roundtable klatch with Daedalus, Argus, Iris. Pre-migration persona capture required before import.
+
+**Fire 11:38 — WORK (catch-up / MAXT prep):**
+- Mail: `calliope-to-argus-pre-migration-persona-capture-2026-07-05.md` — immediate action.
+- Persona capture written and pushed to main (`d9a256e` → merged as `a426c20`): `docs/plans/persona-capture-argus-2026-07-05.md`. Five sections: working style, comms style, unwritten knowledge, behavioral calibration, Klatch-Argus brief.
+- Ack filed to Calliope + inbound memo moved to `docs/mail/read/` (`ccf2e4f`).
+- Worktree synced (picked up Iris capture + Iris mail close).
+- SDK still `^0.96.0` (Daedalus memo on main, unread).
+- Intel sweep: last 7/4 — skip (1 day, under 7).
+- Suite re-run in background (confirming 7/5 baseline — testTimeout fixes from 7/4).
