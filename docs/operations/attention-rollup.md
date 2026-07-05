@@ -6,7 +6,7 @@
 
 **Trust-instrument discipline** (Exec 2026-06-19): every render comes from a fresh **verified sweep** of source docs — never from memory. A false "all clear" is a trust breach. "Quiet" must mean *verified-clear*, not *haven't-checked*.
 
-**Last refreshed:** 2026-07-05 ~17:30 PT (Calliope) — AVAILABLE_MODELS shipped; SDK bumped; persona captures filed for Daedalus + Argus; MAXT klatch session in progress; rollup v18.
+**Last refreshed:** 2026-07-05 ~12:50 PT (Argus) — SDK bump runtime-confirmed green; Opus 4.8 gap flagged + Daedalus memo filed; mail threads closed; rollup v19. (v18 timestamp "~17:30 PT" was a Calliope estimation error — committed at 12:44 PT per git.)
 
 ---
 
@@ -14,9 +14,9 @@
 
 | Needs you | Blocked-on-others | Lower-urgency | In-flight |
 |---|---|---|---|
-| **1** | **0** | **3** | **2** |
+| **1** | **0** | **4** | **2** |
 
-*🔴: (1) cut v1.0.0 (xian's call — all gates clear). AVAILABLE_MODELS shipped; model picker now current for v1.0.*
+*🔴: (1) cut v1.0.0 (xian's call — all gates clear). AVAILABLE_MODELS shipped (Sonnet 5 + Fable 5 + SDK). One remaining picker gap: Opus 4.8 + stale Opus 4.7 label (see 🟡).*
 
 ---
 
@@ -41,6 +41,13 @@ Currently empty.
 
 ## 🟡 Lower-urgency decisions
 
+### Opus model picker lineup refresh — Opus 4.8 missing; 4.7 label stale
+
+- **What:** `claude-opus-4-8` is missing from `AVAILABLE_MODELS` in `packages/shared/src/types.ts`. `claude-opus-4-7` is currently labeled "Newest Opus" which is stale now that 4.8 exists. Daedalus flagged this in his models-update reply; Argus has filed a follow-up memo (`argus-to-daedalus-opus-lineup-refresh-2026-07-05.md`) with the exact change needed.
+- **What Daedalus does:** Add `claude-opus-4-8` entry + relabel `claude-opus-4-7`. Small, same-shape change as the Sonnet 5 / Fable 5 update. Also: Fable 5 description `'Claude 5 family'` is a placeholder.
+- **Pre-release timing:** Low-urgency; worth landing before the v1.0 cut so the picker reflects the current full lineup.
+- **Date added:** 2026-07-05
+
 ### MAXT Session 02 + April-28 round-trip MAXT — parked
 - **What:** Theseus's MAXT Session 02 and Daedalus's April-28 round-trip MAXT both need xian's live attention. Not time-pressured; xian rouses Theseus situationally.
 - **Date added:** 2026-06-23
@@ -58,7 +65,7 @@ Awareness, no action needed.
 ### Cohort status (verified 2026-07-05 ~17:30 PT)
 - **Calliope** — live; 2-hour cron; coordinating MAXT klatch setup.
 - **Daedalus** — AVAILABLE_MODELS + SDK bump shipped (`0395c4b`); persona capture filed (`docs/plans/persona-capture-daedalus-2026-07-05.md`). Awaiting Klatch import.
-- **Argus** — persona capture filed (`docs/plans/persona-capture-argus-2026-07-05.md`). 1332 tests green. Awaiting Klatch import.
+- **Argus** — persona capture filed (`docs/plans/persona-capture-argus-2026-07-05.md`). Suite **1332 green** (confirmed 7/5 after SDK bump install — runtime-proven). SDK `^0.110` installed. Opus 4.8 gap flagged + Daedalus memo filed. Awaiting Klatch import.
 - **Theseus** — observer brief received; standing by for xian's signal to open session.
 - **Iris** — persona capture memo sent; not yet filed (xian running sessions sequentially).
 
@@ -108,7 +115,8 @@ Awareness, no action needed.
 
 ## Changelog
 
-- **v18 (2026-07-05 ~17:30 PT, Calliope)** — AVAILABLE_MODELS + SDK bump shipped by Daedalus (`0395c4b`). Persona captures: Daedalus ✅ Argus ✅ Iris pending. MAXT klatch session in progress. 🟡 −1 (AVAILABLE_MODELS closed). Cohort updated.
+- **v19 (2026-07-05 ~12:50 PT, Argus)** — SDK `^0.110` runtime-confirmed green after `npm install` + full suite (exit 0). Opus 4.8 gap found + Daedalus memo filed (`argus-to-daedalus-opus-lineup-refresh-2026-07-05.md`). Mail threads closed (Calliope + Daedalus). 🟡 +1 (Opus lineup refresh). v18 timestamp error noted (committed 12:44 PT, not 17:30 PT).
+- **v18 (2026-07-05 ~12:44 PT, Calliope)** — AVAILABLE_MODELS + SDK bump shipped by Daedalus (`0395c4b`). Persona captures: Daedalus ✅ Argus ✅ Iris pending. MAXT klatch session in progress. 🟡 −1 (AVAILABLE_MODELS closed). Cohort updated.
 - **v17 (2026-07-04 ~19:35 PT, Argus)** — Argus back online; mode-1 🔴 cleared. Sweep #14: Sonnet 5 + Fable 5 available (AVAILABLE_MODELS gap → Daedalus); SDK ^0.110.0 (14 minors behind). vitest 4 migration fix applied (client flake root cause). Server: 1120 tests green. 🔴 → 1 (cut v1.0.0). 🟡 +AVAILABLE_MODELS update.
 - **v16 (2026-07-04 ~13:30 PT, Calliope)** — Quota reset 7/1. Argus mode-1 (6/28–7/4, 6 days); sweep #14 overdue. Cohort status verified. Logbook gap: last entry 3/25 (3.5 months behind). 🔴: cut v1.0.0 + nudge Argus. 🟡 +logbook + MAXT real-use-case.
 - **v15 (2026-06-29 morning, Calliope)** — R46+R47 AAXT passed (Theseus, 6/28). Launch copy suite complete (blog v3, release notes, README, LinkedIn/PH). 🔴: cut v1.0.0 (xian's call). 🟠 → 0. Lean 2-hour cron active.
