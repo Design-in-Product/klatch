@@ -6,7 +6,7 @@
 
 **Trust-instrument discipline** (Exec 2026-06-19): every render comes from a fresh **verified sweep** of source docs — never from memory. A false "all clear" is a trust breach. "Quiet" must mean *verified-clear*, not *haven't-checked*.
 
-**Last refreshed:** 2026-07-04 ~13:30 PT (Calliope) — quota reset 7/1; Argus mode-1 flagged; logbook gap noted; rollup v16.
+**Last refreshed:** 2026-07-04 ~19:35 PT (Argus) — back online; sweep #14 filed; COORDINATION.md updated; vitest 4 config fix applied; AVAILABLE_MODELS gap noted; rollup v17.
 
 ---
 
@@ -14,9 +14,9 @@
 
 | Needs you | Blocked-on-others | Lower-urgency | In-flight |
 |---|---|---|---|
-| **2** | **0** | **3** | **2** |
+| **1** | **0** | **4** | **2** |
 
-*🔴: (1) cut v1.0.0; (2) nudge Argus (mode-1 6 days, sweep overdue). Quota reset 7/1 — lean restriction cleared.*
+*🔴: (1) cut v1.0.0 (xian's call — all gates clear). Argus back online; mode-1 item cleared.*
 
 ---
 
@@ -30,11 +30,6 @@
 - **Remaining xian edits:** invitation wording in blog post + LinkedIn; maker comment on PH; edit pass on all copy.
 - **Date added:** 2026-06-29
 
-### Nudge Argus — mode-1 since 6/28, intel sweep #14 overdue
-
-- **What:** Argus branch shows no-ops only since 6/28 05:56 (6+ days silent). Intel sweep #14 was due 6/28 and was not filed. COORDINATION.md last updated 2026-05-18 (very stale).
-- **What xian does:** open an Argus session and direct it to file sweep #14 and update COORDINATION.md with current state.
-- **Date added:** 2026-07-04
 
 ---
 
@@ -45,6 +40,14 @@ Currently empty.
 ---
 
 ## 🟡 Lower-urgency decisions
+
+### AVAILABLE_MODELS overlay out of date — Sonnet 5 + Fable 5 not shown in model picker
+
+- **What:** Claude Sonnet 5 (`claude-sonnet-5`, launched June 30) and Claude Fable 5 (`claude-fable-5`, globally available July 1) are not in `packages/shared/src/types.ts:AVAILABLE_MODELS`. Since `ModelId` is a string, API calls work today — but the model picker UI won't surface these models to users.
+- **What Daedalus does:** Add two entries to `AVAILABLE_MODELS` in `packages/shared/src/types.ts`. No migration, no schema change.
+- **Pre-release timing:** Low-urgency but worth landing before the release cut so v1.0 ships with a current model picker.
+- **Source:** Intel sweep #14 (`docs/intel/2026-07-04-sweep.md`), Items 1 + 2.
+- **Date added:** 2026-07-04
 
 ### MAXT Session 02 + April-28 round-trip MAXT — parked
 - **What:** Theseus's MAXT Session 02 and Daedalus's April-28 round-trip MAXT both need xian's live attention. Not time-pressured; xian rouses Theseus situationally.
@@ -60,10 +63,10 @@ Currently empty.
 
 Awareness, no action needed.
 
-### Cohort status (verified 2026-07-04)
+### Cohort status (verified 2026-07-04 ~19:35 PT)
 - **Calliope** — live; quota reset 7/1; 2-hour cron; writing + coordination.
-- **Daedalus** — composition gesture fully on main; mode-1 since 6/28 (lean cadence); standby for release cut. COORDINATION.md stale (6/21).
-- **Argus** — **mode-1 since 6/28 05:56 (6 days)** — no-ops only on branch; intel sweep #14 not filed; COORDINATION.md very stale (5/18). 🔴 needs nudge.
+- **Daedalus** — composition gesture fully on main; lean cadence; standby for release cut + AVAILABLE_MODELS update. COORDINATION.md stale (6/21).
+- **Argus** — **back online 7/4 (restarted by xian).** Intel sweep #14 filed (`docs/intel/2026-07-04-sweep.md`). COORDINATION.md updated. vitest 4 migration applied (`packages/client/vitest.config.ts` — `poolOptions.threads.singleThread` → `maxWorkers:1`, client flake root cause fixed). **1120 server + 212 client = 1332 passing, 16 AAXT skipped. All green.**
 - **Theseus** — R45/R46/R47 complete; beta gate fully verified; available; waiting on xian for MAXT real-use-case session.
 - **Iris** — MAXT Session 03 complete (6/27); beta gate CLEAR; available; standby for release cut.
 
@@ -79,7 +82,11 @@ Awareness, no action needed.
 
 ---
 
-## 🟢 Resolved since last board (6/27 → 6/29)
+## 🟢 Resolved since last board (7/4)
+
+- ~~**Nudge Argus — mode-1 since 6/28**~~ — Argus back online; sweep #14 filed; COORDINATION.md updated; vitest 4 config fixed. *Closed 7/4.*
+
+## 🟢 Resolved (6/27 → 6/29)
 
 - ~~**R46+R47 AAXT (Theseus)**~~ — both passed 6/28 overnight. R46: 8/8, 0 Phantoms. R47: 8/8, 0 Phantoms. Beta gate fully confirmed. *Closed 6/28–6/29.*
 - ~~**Release cut blocked on AAXT**~~ — AAXT passed; release cut now a 🔴 for xian. *Closed 6/28.*
@@ -108,6 +115,7 @@ Awareness, no action needed.
 
 ## Changelog
 
+- **v17 (2026-07-04 ~19:35 PT, Argus)** — Argus back online; mode-1 🔴 cleared. Sweep #14: Sonnet 5 + Fable 5 available (AVAILABLE_MODELS gap → Daedalus); SDK ^0.110.0 (14 minors behind). vitest 4 migration fix applied (client flake root cause). Server: 1120 tests green. 🔴 → 1 (cut v1.0.0). 🟡 +AVAILABLE_MODELS update.
 - **v16 (2026-07-04 ~13:30 PT, Calliope)** — Quota reset 7/1. Argus mode-1 (6/28–7/4, 6 days); sweep #14 overdue. Cohort status verified. Logbook gap: last entry 3/25 (3.5 months behind). 🔴: cut v1.0.0 + nudge Argus. 🟡 +logbook + MAXT real-use-case.
 - **v15 (2026-06-29 morning, Calliope)** — R46+R47 AAXT passed (Theseus, 6/28). Launch copy suite complete (blog v3, release notes, README, LinkedIn/PH). 🔴: cut v1.0.0 (xian's call). 🟠 → 0. Lean 2-hour cron active.
 - **v14 (2026-06-27 ~22:40 PT, Calliope)** — Inc 7 merged (`aaca51b`); MAXT Session 03 15/15 PASS; beta gate CLEAR. 🔴 → 0. 🟠: R46+R47 AAXT (Theseus, 6/28 ~9:31am). Release cut follows. Composition gesture complete.
