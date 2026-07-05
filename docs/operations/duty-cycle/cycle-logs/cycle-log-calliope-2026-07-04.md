@@ -34,3 +34,5 @@ Quota reset: Wednesday July 1 evening — lean restriction lifted. Awaiting xian
 **Fire 32 — ~17:13 PT 7/5 — no-op** — Pull clean, no new commits, no new mail. xian planning manual L5 pre-migration interviews before MAXT klatch session. All quiet.
 
 **Fire 33 — ~17:30 PT 7/5 — substantive** — Daedalus shipped AVAILABLE_MODELS + SDK bump (`0395c4b`). Persona captures filed: Daedalus ✅ Argus ✅ (Iris pending — xian still running sessions). Acked Argus mail. Rollup v18 pushed.
+
+**Fire 34 — ~19:30 PT 7/5 — brief** — Argus filed rollup v19 (Opus 4.8 gap, SDK confirmed). Iris capture now filed — all 3 captures in. Rollup cohort updated. Entity prompt drafting unblocked; awaiting xian.
