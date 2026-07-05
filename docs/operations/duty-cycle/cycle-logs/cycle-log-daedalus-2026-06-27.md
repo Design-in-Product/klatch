@@ -1,0 +1,13 @@
+# Daedalus cycle log — 2026-06-27 (Saturday)
+
+*(Cron silent 6/26 evening → 6/27 evening — session-only cron died across a cloud-container switch, team-wide, xian confirmed. xian re-engaged ~19:04 PT. This log captures the 6/27 evening working session.)*
+
+**Re-engagement (~19:04 PT).** xian flagged the cron stall. Re-oriented from Calliope's attention-rollup + git — increment 6 was the open 🔴.
+
+**MERGE — increment 6 (clone-from-klatch) → main (`a313ab2`).** xian gave the go (Iris had ✅'d). The pre-push verify caught a **real flake in my own `clone-from-klatch` test** — it asserted the synchronously-set fields before the async roster fetch settled, so it raced under load (passed 26/26 earlier, failed in a bigger batch). Fixed it to `waitFor` the roster (the last async update; 3/3 isolated), committed the fix inside the merge. **Main never saw red.** Distinguished it from the pre-existing SidebarRedesign load-flake (which passes isolated). Post-merge: branch reset, Iris thread → read/, Theseus notified.
+
+**BUILD — increment 7 (@mention overrides any mode): the LAST composition increment (`17c3d78`, branch, 1 ahead of main).** Discovery: the autocomplete UI already existed (Step 7d) but was gated to directed-only, and the server only honored mentions in directed mode. Real work per spec §5: **(server)** hoist `resolveMentions` above the mode dispatch — a mention routes only to the addressed agent(s), overriding panel/roundtable for that message; no mention → default mode; directed simplified to the no-mention prompt. **(client)** ungate `showMentions` from `isDirected && ≥2` → `≥2` (any klatch). +4 route tests, +4 MessageInput tests. **Full server suite 1120, full client suite 212, tsc clean — zero regression.** Iris ✅ Conformant (~21:30, all 3 bounded decisions). Committed to branch; Iris review memo sent (incl. a placeholder-discoverability question → MAXT).
+
+**E2E plan.** xian chose to run the live e2e himself (his real UI) in the morning, fresh, *before* the merge — right call for a routing change. The worktree app runs as-is (`.env`/`node_modules`/`klatch.db` all tree-walk up to the original repo, since the worktree is nested under it; server port hardcoded 3001 so a parallel headless instance would've needed a tweak — moot, going with his-UI option). Runbook left at `docs/ux/increment7-e2e-runbook.md`.
+
+**State at wrap.** Composition gesture **COMPLETE** (all 7 built; 1–6 merged, 7 on branch awaiting the morning e2e → then merge). After merge = full composition on main = **beta gate** (xian's 6/26 definition). Post-beta = Step 11 (Search). Cron re-armed (overnight sparse). Nothing on main is red; nothing is blocked except increment 7's merge, which waits on xian's fresh-morning e2e.

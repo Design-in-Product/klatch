@@ -61,10 +61,35 @@ app.post('/channels/:channelId/messages', async (c) => {
     return c.json({ error: 'No entities assigned to this channel' }, 400);
   }
 
-  // ── Mode dispatch ────────────────────────────────────────────
+  // ── @mention override (spec §5) ──────────────────────────────
+  // If the message addresses specific entities by @mention, route only to them —
+  // overriding the channel's default mode for this message. Composes with all modes:
+  // suppresses the others in panel, short-circuits the sequence in roundtable, and is
+  // the primary path in directed. No @mention → fall through to default mode below.
+  const mentioned = resolveMentions(content, entities);
+  if (mentioned.length > 0) {
+    const db = getDb();
+    const txn = db.transaction(() => {
+      const userMsg = insertMessage(channelId, 'user', content.trim(), 'complete');
+      const assistants = mentioned.map((entity) => {
+        const msg = insertMessage(channelId, 'assistant', '', 'streaming', entity.model, entity.id);
+        return { assistantMessageId: msg.id, entityId: entity.id, model: entity.model };
+      });
+      return { userMsg, assistants };
+    });
+    const { userMsg, assistants } = txn();
+    // Parallel, panel-like isolation — each addressed entity sees only its own history
+    for (const assistant of assistants) {
+      const entity = mentioned.find((e) => e.id === assistant.entityId)!;
+      streamClaude(channelId, assistant.assistantMessageId, entity, channel.systemPrompt);
+    }
+    return c.json({ userMessageId: userMsg.id, assistants });
+  }
+
+  // ── Mode dispatch (no @mention) ──────────────────────────────
   // Panel: all entities respond in parallel, each seeing only its own history
   // Roundtable: entities respond sequentially, each seeing prior responses (Step 7c)
-  // Directed: @-mention routes to a specific entity (Step 7d)
+  // Directed: requires an @mention (handled above) — otherwise prompts for one
 
   if (channel.mode === 'roundtable') {
     // Roundtable: create placeholders, then stream sequentially
@@ -93,36 +118,12 @@ app.post('/channels/:channelId/messages', async (c) => {
   }
 
   if (channel.mode === 'directed') {
-    // Directed: @-mention routes to specific entity(ies)
-    const mentioned = resolveMentions(content, entities);
-
-    if (mentioned.length === 0) {
-      // No valid @-mention found — tell the user what's available
-      const names = entities.map((e) => `@${e.name}`).join(', ');
-      return c.json({
-        error: `No entity mentioned. Use @EntityName to direct your message. Available: ${names}`,
-      }, 400);
-    }
-
-    // Create user message + placeholders only for mentioned entities
-    const db = getDb();
-    const txn = db.transaction(() => {
-      const userMsg = insertMessage(channelId, 'user', content.trim(), 'complete');
-      const assistants = mentioned.map((entity) => {
-        const msg = insertMessage(channelId, 'assistant', '', 'streaming', entity.model, entity.id);
-        return { assistantMessageId: msg.id, entityId: entity.id, model: entity.model };
-      });
-      return { userMsg, assistants };
-    });
-    const { userMsg, assistants } = txn();
-
-    // Fire off streams for mentioned entities (parallel, panel-like isolation)
-    for (const assistant of assistants) {
-      const entity = mentioned.find((e) => e.id === assistant.entityId)!;
-      streamClaude(channelId, assistant.assistantMessageId, entity, channel.systemPrompt);
-    }
-
-    return c.json({ userMessageId: userMsg.id, assistants });
+    // Directed requires an @mention; a valid one would have been routed by the override
+    // above, so reaching here means none matched — tell the user what's available.
+    const names = entities.map((e) => `@${e.handle || e.name}`).join(', ');
+    return c.json({
+      error: `No entity mentioned. Use @EntityName to direct your message. Available: ${names}`,
+    }, 400);
   }
 
   // ── Panel mode (default) ────────────────────────────────────

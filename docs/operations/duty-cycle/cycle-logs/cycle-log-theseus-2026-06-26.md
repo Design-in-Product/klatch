@@ -64,3 +64,26 @@
 `theseus-to-iris-round45-results-2026-06-26.md` still open (Iris hasn't acked).
 
 **Decision:** Admin-only. Returning to IDLE. xian online for evening session.
+
+---
+
+## Fire 4 — Composition Gate (xian-triggered, ~2026-06-28 06:29 UTC)
+
+**Session type:** xian-triggered ("You're up!") — R46 + R47 final AAXT gate
+**START/WORK/STOP:** START → WORK → STOP
+
+**Trigger:** Daedalus merged `claude/daedalus` → main (inc 6 clone-from-klatch + inc 7 @mention override, commit `aaca51b`). Iris's MAXT-03 complete (15/15). Iris filed R46+R47 coordination memos. xian confirmed Theseus unblocked.
+
+**Work performed:**
+- Wrote `round46-clone-from-klatch-aaxt.test.tsx` (8 probes / 4 states, ChannelSidebar mock setup)
+- Wrote `round47-mention-override-aaxt.test.tsx` (8 probes / 5 states, no API mocks needed)
+- Ran R46: 7 Correct + 1 Confabulated, 0 Phantoms, 88% conveyance, PASS
+- Ran R47: 8 Correct, 0 Phantoms, 100% conveyance, PASS
+- Filed `theseus-to-iris-r46r47-results-2026-06-28.md`
+- Closed 6 mail threads → `read/`
+- Updated COORDINATION.md, session log
+- Committed + pushed to theseus; mail commit to main
+
+**Beta gate outcome:** ALL ROUNDS PASS. R45 + R46 + R47 + MAXT-03 = composition gesture fully AAXT/MAXT verified. Release cut is xian's call.
+
+**Next cron fire:** standard `31 9 * * *` schedule (or xian-triggered).

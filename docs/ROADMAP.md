@@ -264,6 +264,33 @@ The plumbing for composition was ready before Iris's UX design phase. Her Phase 
 
 ---
 
+### Step 10.5: Layer 5 portability — agent persona capture and transfer
+**Dimension: behavioral fidelity.** Does the agent that arrives feel like the agent that left?
+
+*Added July 2026. May take priority over Step 11.* The 5-layer model documents that Layer 5 (behavioral calibration) transfers at 0% today. Layers 1–3 give an agent facts and context. Layer 5 is the working relationship — communication style, domain depth, collaboration texture, the accumulated sense of how to work well with this user on this project. Without it, a migrated agent is a well-briefed stranger.
+
+This step closes that gap using LM-based elicitation, not passive export — because behavioral calibration can't be scraped from history the same way context can. Full gap audit and process designs: `docs/plans/layer5-portability-gap-audit-2026-07-04.md`.
+
+**Phase 1 — Pre-migration interview:**
+- "Prepare for migration" flow: sends a structured interview to the source agent before import
+- Agent produces a **persona capture**: working style, behavioral calibration, tacit knowledge, relationship notes
+- Saved as a pinned document in the new entity's project (Layer 3 supplement) and/or seeded directly into the entity prompt (Layer 5)
+- Kit briefing updated to reference the persona capture and tell the new agent it exists
+
+**Phase 2 — Passive extraction:**
+- Automated **behavioral fingerprint** from conversation history: communication style, domain depth, confidence register, structure preferences
+- **Correction extraction**: mine xian's feedback turns for explicit behavioral constraints ("prefer Y", "don't X") — highest-signal Layer 5 inputs
+- **Memory distillation**: surface implicit factual knowledge not in MEMORY.md
+
+**Phase 3 — Fidelity scoring:**
+- Use the behavioral fingerprint as an AAXT probe target: does the Klatch agent match the source agent's known patterns?
+- Measurable behavioral fidelity score, surfaces regressions as the conversation develops
+- Feeds back into future persona capture quality
+
+**Why before Search:** Search is a utility feature. Layer 5 portability is core to Klatch's identity — if a migrated agent doesn't behave like the agent the user has been working with, the portability story is incomplete regardless of how good the search is. And until Anthropic and other providers build native behavioral calibration export, Klatch can do it via active elicitation — a genuine differentiator, not a workaround.
+
+---
+
 ### Step 11: Search and recall
 **Dimension: memory.** Can you find things across all your conversations?
 

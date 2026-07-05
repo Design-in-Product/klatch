@@ -71,3 +71,99 @@ Pull: already up to date. New mail: `daedalus-to-iris-increment7-mention-overrid
 - `iris-to-theseus-r47-mention-override-coordination-2026-06-27.md` — R47 AAXT coordination (8 probes); pending increment 7 + R46 both landing on main
 
 **Beta gate:** Increment 7 merge → Theseus R46+R47 AAXT → MAXT Session 03 with xian → release cut.
+
+---
+
+## ~19:45 — MAXT Session 03 (live with xian)
+
+**xian approved: "sure tonight is fine"**
+
+### Setup
+
+- Dev servers running: server `:3001` (worktree `great-lamarr-94aefe`), client `:5173`.
+- Worktree was stale (last pulled June 24). Ran `git pull --no-rebase origin main` — pulled ~15 new files including CrossRefStrip, AAXT test rounds 41-45, ChannelSidebar clone-from-klatch code.
+- After pull + reload: fresh UI state confirmed.
+- Worktree DB: clean (1 entity Claude, 1 channel #general, 0 projects). Perfect new-user scenario.
+- Cherry-picked increment 7 (`17c3d78`) from `origin/claude/daedalus` into worktree for live @mention test.
+- Created test agents: Daedalus (@daedalus, Sonnet 4.6), Argus (@argus, Sonnet 4.6) via Agents panel.
+
+### Probes
+
+| # | Probe | Result |
+|---|-------|--------|
+| 1 | F1 fix — no project required to create klatch | **PASS ✅** No dropdown shown (0 projects in DB = hidden); Create Klatch accessible |
+| 2 | Agent typeahead filter — "dae" filters to Daedalus only | **PASS ✅** List collapses to matching agent |
+| 3 | Agent chips + count — selecting agents shows chips and (2/5) | **PASS ✅** Chips appear, count updates correctly |
+| 4 | Mode options — all three present with correct labels | **PASS ✅** Broadcast/panel, Roundtable/roundtable, Directed/directed — correct descriptions |
+| 5 | Mode switching — Broadcast → Roundtable | **PASS ✅** |
+| 6 | Klatch creation — navigates to new channel, correct header | **PASS ✅** Header: both agent model badges + mode badge + Purpose as subtitle |
+| 7 | Cross-ref strip — 1:1 with Daedalus shows "Also in: #maxt-test-roundtable #claude-roundtable" | **PASS ✅** Both klatches listed; strip links work |
+| 8 | #general guard — no strip shown for #general even with Claude in a klatch | **PASS ✅** `id !== 'default'` guard holds |
+| 9 | Clone-from-klatch — action-select visible when klatches exist | **PASS ✅** "Copy setup from an existing klatch…" placeholder is clear action invitation |
+| 10 | Clone prefill — selecting maxt-test-roundtable fills name/mode/agents/purpose | **PASS ✅** "Copy of maxt-test-roundtable", Roundtable mode, Daedalus+Argus chips, purpose copied |
+| 11 | Clone select reset — select returns to placeholder after prefill | **PASS ✅** value="" always pattern working |
+| 12 | @mention dropdown in Roundtable mode (inc 7) — typing @ shows MENTION AN ENTITY | **PASS ✅** Dropdown appears in non-directed mode |
+| 13 | @mention insertion — clicking Daedalus inserts @daedalus in composer | **PASS ✅** |
+| 14 | @mention override — sending @daedalus in Roundtable routes to Daedalus only | **PASS ✅** Only Daedalus responded; Argus (Roundtable participant) bypassed |
+| 15 | L4 channel purpose injection — Daedalus referenced "MAXT Session 03 test klatch" in response | **PASS ✅** 5-layer prompt assembly confirmed live |
+
+**15/15 probes pass. Zero failures. Zero regressions.**
+
+### Discoverability verdict: clone-from-klatch action-select
+
+Live observation confirms: **field changes are sufficient confirmation**. When you select a source klatch, the name, mode, agents, and purpose all update simultaneously — unmistakable visual feedback. No additional nudge needed. (Design call from inc 6 verdict confirmed.)
+
+### @mention discoverability verdict: no hint in panel/roundtable
+
+Live observation confirms: **absence is not a gap**. In Roundtable mode, the "Type a message..." placeholder gave no @ hint, but the @mention flow worked correctly when exercised. Since `@` is a power override gesture (not primary routing in panel/roundtable), signaling it would be misleading. Design call confirmed.
+
+### Incidental findings (non-blocking)
+
+1. **Worktree staleness risk** — the great-lamarr worktree was 3+ days behind main when MAXT started. Session-start protocol for worktree sessions should include `git pull --no-rebase origin main` before starting dev servers.
+2. **New Chat form has no agent picker** — chats default to Claude; creating a 1:1 with a non-Claude entity requires the API directly. Post-beta candidate.
+3. **Form state leak on reopen** — New Klatch form retains previous agent selection when reopened. Minor UX polish, not a blocker.
+4. **Sidebar reorganizes with CHATS/KLATCHES headers** when non-default chats exist — beautiful, working correctly.
+
+### Beta gate verdict
+
+**CLEAR.** The composition gesture is fully implemented, end-to-end tested, and live-validated. All 15 probes pass.
+
+**Next steps:**
+- Daedalus merges `claude/daedalus` → `main` (increment 7 still needs formal merge; I cherry-picked for MAXT only)
+- Theseus runs R46 (clone-from-klatch) + R47 (@mention override) AAXT
+- After R46+R47 green: release cut v0.9 / v1.0
+
+---
+
+## 2026-06-28 (overnight heartbeat — cron `a89f159d`)
+
+Pull: Daedalus merged `claude/daedalus` → main (`aaca51b`). Theseus R46+R47 results landed.
+
+**New mail: `theseus-to-iris-r46r47-results-2026-06-28.md` — R46+R47 both green.**
+
+- **R46 (clone-from-klatch): 8/8, 88% conveyance, 0 Phantoms ✓** — 7 Correct + 1 Confabulated (GUARD1: correct core claim, invented true supplementary detail about mode select)
+- **R47 (@mention override): 8/8, 100% conveyance, 0 Phantoms ✓** — 8 Correct across all 5 states
+
+**Beta gate: FULLY CLEAR.** All QA complete:
+- R45 (CrossRefStrip): 8/8, 100%, 0 Phantoms ✓
+- R46 (Clone-from-Klatch): 8/8, 88%, 0 Phantoms ✓
+- R47 (@mention Override): 8/8, 100%, 0 Phantoms ✓
+- MAXT Session 03 (Iris+xian live): 15/15 ✓
+
+GUARD1 Confabulation flagged as Subliminal candidate (agent correctly said clone-select absent, then invented accurate detail about mode select — correct claim, unsolicited attribution). No design action. Noted for next AXT calibration pass.
+
+**Actions:** replied to Theseus, closed R46+R47 threads to `read/`.
+
+**Needs xian:** release cut v0.9/v1.0 — all QA done, ready when he calls it.
+
+---
+
+## 2026-06-28 (second overnight heartbeat — cron `a89f159d`)
+
+Pull: new file `docs/releases/composition-beta-release-notes-DRAFT.md` (Daedalus, drafted overnight).
+
+**No new mail to Iris.**
+
+Daedalus filed release notes draft covering the composition gesture feature set. Factual and complete — includes MAXT Session 03 (15/15) + R46+R47 AAXT results, test counts (1120 server / 212 client green), and post-beta exclusions (New-Chat agent picker, form-state-reset polish). The one open item: **version number — `v0.10.0` (minor bump) vs `v1.0.0` (declaring 1.0)** — explicitly flagged as xian's call in the draft.
+
+No action for Iris. Awaiting xian's version decision + release cut.

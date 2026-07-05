@@ -160,6 +160,62 @@ describe('POST /api/channels/:channelId/messages (directed)', () => {
   });
 });
 
+// ── @mention override (spec §5 — mention overrides any mode) ─
+
+describe('POST /api/channels/:channelId/messages (@mention override)', () => {
+  it('routes to only the mentioned entity in a PANEL klatch (overrides the fan-out)', async () => {
+    const channel = createChannel('panel-mention', 'sys', DEFAULT_MODEL, 'panel');
+    const analyst = createEntity('Analyst', DEFAULT_MODEL, 'sys', ENTITY_COLORS[1]);
+    assignEntityToChannel(channel.id, analyst.id); // 2 entities: Claude (default) + Analyst
+
+    const res = await req('POST', `/channels/${channel.id}/messages`, { content: '@Analyst take this one' });
+    expect(res.status).toBe(200);
+    const data = await res.json();
+    // Panel would normally fan out to both; the @mention narrows it to Analyst only.
+    expect(data.assistants).toHaveLength(1);
+    expect(data.assistants[0].entityId).toBe(analyst.id);
+  });
+
+  it('routes to only the mentioned entity in a ROUNDTABLE klatch, via streamClaude (short-circuits the sequence)', async () => {
+    const { streamClaude, streamClaudeRoundtable } = await import('../claude/client.js');
+    vi.mocked(streamClaude).mockClear();
+    vi.mocked(streamClaudeRoundtable).mockClear();
+
+    const { channelId, entity2Id } = await createRoundtableChannel();
+    const res = await req('POST', `/channels/${channelId}/messages`, { content: '@Analyst just you' });
+    expect(res.status).toBe(200);
+    const data = await res.json();
+    expect(data.assistants).toHaveLength(1);
+    expect(data.assistants[0].entityId).toBe(entity2Id);
+    // Override uses parallel streamClaude, not the roundtable orchestrator.
+    expect(streamClaude).toHaveBeenCalledTimes(1);
+    expect(streamClaudeRoundtable).not.toHaveBeenCalled();
+  });
+
+  it('falls through to default mode when there is no @mention (panel fans out to all)', async () => {
+    const channel = createChannel('panel-nomention', 'sys', DEFAULT_MODEL, 'panel');
+    const helper = createEntity('Helper', DEFAULT_MODEL, 'sys', ENTITY_COLORS[2]);
+    assignEntityToChannel(channel.id, helper.id);
+
+    const res = await req('POST', `/channels/${channel.id}/messages`, { content: 'everyone weigh in' });
+    expect(res.status).toBe(200);
+    const data = await res.json();
+    expect(data.assistants).toHaveLength(2);
+  });
+
+  it('does not override when the @ matches no entity (falls through to panel)', async () => {
+    const channel = createChannel('panel-badmention', 'sys', DEFAULT_MODEL, 'panel');
+    const scribe = createEntity('Scribe', DEFAULT_MODEL, 'sys', ENTITY_COLORS[3]);
+    assignEntityToChannel(channel.id, scribe.id);
+
+    const res = await req('POST', `/channels/${channel.id}/messages`, { content: '@nobody hello there' });
+    expect(res.status).toBe(200);
+    const data = await res.json();
+    // "@nobody" is valid syntax but matches no entity → no override → panel fans out to both.
+    expect(data.assistants).toHaveLength(2);
+  });
+});
+
 // ── Delete messages ──────────────────────────────────────────
 
 describe('DELETE /api/channels/:channelId/messages', () => {
