@@ -12,8 +12,8 @@ Agents working on this repo use this file as the async handoff protocol.
 
 ### Argus (quality & test infrastructure)
 - **Branch:** `claude/argus` (persistent duty-cycle worktree `.claude/worktrees/argus`)
-- **Status:** working — **Phase 2 duty cycle LIVE 6/21**, hourly `:43` tandem with Daedalus.
-- **Test count:** 1291 total (1089 server + 202 client), 5 skipped, zero failures.
+- **Status:** available — back online 7/4 (xian re-opened session; 6/28 fire stalled at 06:59 due to system overload). Duty cycle re-armed.
+- **Test count:** **1120 server** (green, 65 files) + **212 client** (green, 14 files; 16 AAXT skipped) = **1332 passing**. vitest 4 migration applied — `poolOptions.threads.singleThread` → `maxWorkers:1`; this was the root cause of client suite flaking under full-suite parallel load.
 - **6/21 launch session:** fixed Iris vocab-sweep fallout (5 client tests: ChannelSidebar placeholder + round33b "in N conversations") and a pre-existing round25 reflection-order flake (match-entity-by-id, not position). **Merged to `main` (`1a29830`)** per xian's authorization — main green (1089 server / 197 client). Routed a `getChannelEntities` secondary-sort finding to Daedalus; he fixed it (`ce.rowid`, lands with his composition merge). Prior baseline: 1289 (5/18 Round 33b).
 - **Completed work:**
   - Rounds 4–11 test suites (all passing, merged to main)
@@ -52,7 +52,7 @@ Agents working on this repo use this file as the async handoff protocol.
 - **Open follow-ups for Daedalus from 31b (none blocking):** (1) cosmetic — `package-builder.ts:58` summary template misnames Klatch-to-Klatch hop as "Original claude.ai session"; (2) open spec — format_version on import path: gate or document permissive-by-design; (3) open spec — empty `entities: []` import: auto-attach default-entity, or accept the resulting un-exportable channel as valid state.
 - **Posture for beta/1.0:** Continue extended-coverage Rounds as Daedalus lands new surface; intel sweeps weekly; AAXT calibration as Theseus surfaces results; no new initiative drives without xian-led prompting. Step 11 (Search) deferred until after landmark release.
 - **Open follow-ups (none blocking):** ~~Sonnet 4 / Opus 4 DB audit~~ **CLOSED 5/10 — zero exposure** (28 days to 6/15 retirement); ~~SDK + Hono bump~~ **DONE by Daedalus 5/11**; ~~Step 10 schema verification~~ **CLOSED by Daedalus 5/11**; ~~`validUntil` on MicroReflection~~ **SHIPPED by Daedalus 5/11 as Round 34**; ~~light-theme `--c-faint` AA-large finding~~ **CLOSED 5/12** (Iris reclassify); ~~Opus 4.7 default-flip~~ **DONE by Daedalus 5/12** (commit `ba69f7f`); ~~client test parallelism flake~~ **DONE by Daedalus 5/12** (same commit — singleThread vitest config); ~~sweep methodology cross-reference + verification gaps~~ **LANDED in 5/18 sweep** (Prior-mentions + Verified-against fields visible); **dreaming spike decisions D1–D5** named in `docs/research/anthropic-dreaming-import-export-impact-2026-05-12.md`, all parked pending real drivers; ~~**outcomes pattern-adoption proposal for round assignments**~~ **ACCEPTED by Daedalus 5/18 (10:14)** — will be used on next round assignment; ~~**Round 33 remaining 10 surfaces**~~ **CLOSED 5/18 — Round 33b shipped** (19 client + 4 server, sign-off memo to Daedalus); **6/15 billing-split awareness** — Klatch unaffected today; UX note queued for Step 10 export-to-Code path when it ships; **Piper Alpha cross-read** on PM-side dreaming impact pending their publication; LLM-orchestrated briefing/extraction path coverage as a future Round candidate; MCP conformance test suite watch.
-- **Updated:** 2026-05-18 14:30
+- **Updated:** 2026-07-04 19:45 PT
 - **Round 7 assignment: Sidebar redesign tests (GitHub issue #8)**
   - Read `docs/plans/SIDEBAR.md` for full design spec before writing tests.
   - **Scope:** `packages/server/src/__tests__/round7-sidebar-redesign.test.ts` (server) + `packages/client/src/__tests__/Sidebar.test.tsx` (updates to existing)

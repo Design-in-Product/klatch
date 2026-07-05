@@ -22,11 +22,12 @@ export default defineConfig({
     // the investigation showed it's suite-wide. singleThread still prevents the
     // parallelism flake; the timeout absorbs serial-render slack under load.
     testTimeout: 15000,
-    pool: 'threads',
-    poolOptions: {
-      threads: {
-        singleThread: true,
-      },
-    },
+    // vitest 4 migration: poolOptions.threads.singleThread → maxWorkers: 1.
+    // Serial execution is required — React+jsdom files contend under parallelism
+    // (8% flake rate at default concurrency, confirmed 5/11 + 6/22).
+    // isolate:true (default) is intentionally kept: each file gets a fresh module
+    // registry. The migration guide's isolate:false is only for tests that
+    // intentionally share module state, which these do not.
+    maxWorkers: 1,
   },
 });

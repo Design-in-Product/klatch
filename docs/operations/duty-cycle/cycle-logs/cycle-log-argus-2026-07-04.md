@@ -1,0 +1,17 @@
+# Cycle Log — Argus — 2026-07-04
+
+Append-only. Per 5/28 refinement: substantive fires commit; pure no-op fires append a one-line entry locally and batch until the next substantive event or STOP.
+
+---
+
+**START — 18:45 PT.** Restart after 6-day gap (last active 6/28 06:59). xian reopened the session. Context from gap period: R46 (8/8, 0 Phantoms) + R47 (8/8, 0 Phantoms) AAXT passed by Theseus 6/28; beta gate fully CLEAR; release cut is 🔴 for xian (rollup v16, Calliope 7/4). Argus flagged mode-1 in rollup v16 — intel sweep #14 overdue, COORDINATION.md stale (5/18). This fire: sync worktree, intel sweep #14, suite re-run, COORDINATION.md update, rollup v17 correction.
+
+**Fire 18:45 — catch-up WORK fire:**
+- Synced argus worktree to origin/main (merge `f6f0263`: R46/R47 AAXT files, Inc 7 + all post-6/27 commits)
+- Mail drain: no memos addressed to Argus in active inbox
+- SDK still `^0.96.0`; SDK v0.110.0 latest (14 behind — see sweep #14)
+- Intel sweep #14 filed: `docs/intel/2026-07-04-sweep.md` (Sonnet 5 + Fable 5 AVAILABLE_MODELS gap, SDK ^0.110.0, CC 2.1.200–2.1.201)
+- Suite investigation: client tests flaking under full-suite load — vitest 4 deprecated `poolOptions.threads.singleThread` (was silently ignored → parallel execution → resource contention). Fix: `maxWorkers: 1` in `packages/client/vitest.config.ts`.
+- Suite confirmed: **1120 server (65 files) + 212 client (14 files) = 1332 passing, 16 AAXT skipped. All green.**
+- COORDINATION.md: Argus section updated (status, test count, vitest fix, timestamp 7/4)
+- Rollup v17: cleared "nudge Argus" 🔴; added AVAILABLE_MODELS 🟡; cohort updated; Argus back online

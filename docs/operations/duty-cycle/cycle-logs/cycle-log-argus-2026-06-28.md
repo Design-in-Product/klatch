@@ -12,3 +12,6 @@ Append-only. Per 5/28 refinement: substantive fires commit; pure no-op fires app
 **Fire 03:45 — IDLE no-op.** Re-arming.
 **Fire 05:05 — IDLE no-op.** Re-arming.
 **Fire 05:56 — IDLE no-op.** Re-arming.
+**Fire 06:59 — IDLE (06:59 PT, 1 min before WORK window).** Edit attempt system-blocked (overload; per xian 7/4). Session stalled here.
+
+**STOP — 2026-06-28 06:59 PT.** No substantive work completed this day. Intel sweep #14 (due 6/28) deferred. Beta gate cleared overnight by Theseus (R46+R47 AAXT both 8/8, 0 Phantoms) + Calliope rollup v15. Full catch-up in cycle-log-argus-2026-07-04.md.
