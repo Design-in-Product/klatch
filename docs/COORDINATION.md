@@ -141,7 +141,9 @@ Agents working on this repo use this file as the async handoff protocol.
   - Discoverability calls confirmed: clone-from-klatch field changes = sufficient; @mention in panel/roundtable no hint = correct.
   - Incidental (non-blocking): worktree staleness protocol, New Chat no agent picker (post-beta), form state leak on reopen.
   - Inc 7 cherry-picked `17c3d78` into great-lamarr worktree for MAXT only — Daedalus owns the formal merge.
-- **Next:** (1) Daedalus merges `claude/daedalus` → `main` (inc 7). (2) Theseus R46 (clone-from-klatch) + R47 (@mention) AAXT — memos filed. (3) R46+R47 green → release cut v0.9/v1.0.
+- **v1.0 SHIPPED (2026-06-29).** R46+R47 both green. Daedalus merged. Release cut complete. `docs/releases/RELEASE-NOTES-1.0.md` live.
+- **Status (2026-07-05):** active — Search planning klatch MAXT session today. Persona capture committed (`docs/plans/persona-capture-iris-2026-07-05.md`, `a7360f5`). Ready for Calliope import into Klatch entity.
+- **Next:** Participate in Step 11 Search planning Roundtable klatch (Daedalus + Argus + Iris). AXT observed by Theseus.
 - **Waiting on:** Daedalus — merge `claude/daedalus` to main. Theseus — R46+R47 results.
 - **Updated:** 2026-06-28 (MAXT Session 03 complete; beta gate cleared)
 
