@@ -73,3 +73,5 @@ Append-only. Per 5/28 refinement: substantive fires commit; pure no-op fires app
 **Fire 21:27 — WORK (no-op).** Merged Calliope cycle log. No new Argus mail. Suite green 90 min ago, no code changes — re-run skipped. Cron re-armed (`e2c269ad`).
 
 **Fire 22:10 — WORK (no-op).** Worktree up to date. No new Argus mail. No code changes since 19:53 suite run. Last WORK fire before 23:00 IDLE. Cron re-armed (`85fea1e2`).
+
+**Fire 22:59 — WORK (boundary).** Merged Calliope cycle log. No new Argus mail. Suite re-run (overnight baseline): **1332 green** (1120 server / 212 client). Entering IDLE. Cron re-armed (`35f6b347`).
