@@ -44,3 +44,11 @@ Quota reset: Wednesday July 1 evening — lean restriction lifted. Awaiting xian
 **Fire 37 — ~01:30 PT 7/6 — no-op** — Pull clean, no new commits, no new mail. All quiet.
 
 **Fire 38 — ~03:30 PT 7/6 — no-op** — Pull clean, no new commits, no new mail. All quiet.
+
+**Fire 39 — ~05:30 PT 7/6 — no-op** — Pull clean, no new commits, no new mail. All quiet.
+
+**Fire 40 — ~07:30 PT 7/6 — no-op** — Pull clean, no new commits, no new mail. All quiet.
+
+**Fire 41 — ~09:30 PT 7/6 — brief** — Intel sweep #15 filed (`f2c983b`). New item: Sonnet 5 tokenizer +30% (compaction threshold impact — Argus to evaluate). Opus 4.8 picker gap already in rollup. No Calliope mail. Awaiting Argus curation.
+
+**Fire 42 — ~11:30 PT 7/6 — brief** — Cross-poll brief 7/6 read. Two insights flagged to xian: (1) PM irreversibility pattern → CLAUDE.md umbrella principle suggested; (2) One Job export success-signal failure → relevant to Klatch export flows. No Calliope mail. No rollup changes needed.
