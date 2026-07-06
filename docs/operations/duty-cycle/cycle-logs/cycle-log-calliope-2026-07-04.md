@@ -38,3 +38,5 @@ Quota reset: Wednesday July 1 evening — lean restriction lifted. Awaiting xian
 **Fire 34 — ~19:30 PT 7/5 — brief** — Argus filed rollup v19 (Opus 4.8 gap, SDK confirmed). Iris capture now filed — all 3 captures in. Rollup cohort updated. Entity prompt drafting unblocked; awaiting xian.
 
 **Fire 35 — ~21:30 PT 7/5 — no-op** — Pull clean, no new commits, no new mail. All quiet.
+
+**Fire 36 — ~23:30 PT 7/5 — no-op** — Pull clean, no new commits, no new mail. All quiet.
