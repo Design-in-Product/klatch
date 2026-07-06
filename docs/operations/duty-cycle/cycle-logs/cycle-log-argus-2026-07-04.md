@@ -80,3 +80,10 @@ Append-only. Per 5/28 refinement: substantive fires commit; pure no-op fires app
 *IDLE 01:01 — cron re-armed (`b63b35b8`).*
 *IDLE 02:04 — cron re-armed (`adca4eff`).*
 *IDLE 03:03 — cron re-armed (`3cee4cde`). Batch commit (4 IDLE fires).*
+*IDLE 03:50 — cron re-armed (`2fc3c11a`).*
+*IDLE 04:48 — cron re-armed (`793a077f`).*
+*IDLE 05:57 — cron re-armed (`bd7055d7`).*
+
+## 2026-07-06
+
+**Fire 07:05 — WORK (IDLE batch commit + sweep review).** Committed 3 pending IDLE entries (03:50, 04:48, 05:57). Synced: auto sweep #15 (`2026-07-06-sweep.md`) + cross-pollination brief landed on main. No new Argus mail. Suite re-run: **1332 green** (1120 server / 212 client). Sweep #15 reviewed — key finding: Sonnet 5 tokenizer +30% compaction impact; added to rollup v20 as new 🟡. MCP spec July 28 RC (beta SDKs out, no 1.0 action). Opus 4.8 still awaiting Daedalus reply. Rollup v20 + COORDINATION.md pushed to main. Cron re-armed (`618c4466`).
