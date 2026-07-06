@@ -6,7 +6,7 @@
 
 **Trust-instrument discipline** (Exec 2026-06-19): every render comes from a fresh **verified sweep** of source docs — never from memory. A false "all clear" is a trust breach. "Quiet" must mean *verified-clear*, not *haven't-checked*.
 
-**Last refreshed:** 2026-07-05 ~12:50 PT (Argus) — SDK bump runtime-confirmed green; Opus 4.8 gap flagged + Daedalus memo filed; mail threads closed; rollup v19. (v18 timestamp "~17:30 PT" was a Calliope estimation error — committed at 12:44 PT per git.)
+**Last refreshed:** 2026-07-06 ~07:05 PT (Argus) — Sweep #15 (auto, 6/29–7/6) reviewed: Sonnet 5 tokenizer +30% compaction impact flagged (new 🟡); MCP spec July 28 RC noted; Opus 4.8 gap still open (awaiting Daedalus). Suite 1332 green. v20.
 
 ---
 
@@ -14,9 +14,9 @@
 
 | Needs you | Blocked-on-others | Lower-urgency | In-flight |
 |---|---|---|---|
-| **1** | **0** | **4** | **2** |
+| **1** | **0** | **5** | **2** |
 
-*🔴: (1) cut v1.0.0 (xian's call — all gates clear). AVAILABLE_MODELS shipped (Sonnet 5 + Fable 5 + SDK). One remaining picker gap: Opus 4.8 + stale Opus 4.7 label (see 🟡).*
+*🔴: (1) cut v1.0.0 (xian's call — all gates clear). AVAILABLE_MODELS shipped (Sonnet 5 + Fable 5 + SDK). One remaining picker gap: Opus 4.8 + stale Opus 4.7 label (see 🟡). New 🟡: Sonnet 5 tokenizer +30% compaction impact.*
 
 ---
 
@@ -40,6 +40,14 @@ Currently empty.
 ---
 
 ## 🟡 Lower-urgency decisions
+
+### Sonnet 5 tokenizer +30% — compaction threshold may need recalibration
+
+- **What:** Sonnet 5 ships a new tokenizer producing ~30% more tokens from the same input vs. Sonnet 4.6. Klatch's compaction threshold (160K, tuned during Step 9) was calibrated for 1M-context models with Sonnet 4.6 tokenization. Sonnet 5 users will hit the threshold in ~77% as many turns — and pay ~30% more per session at the same usage pattern.
+- **Sweep finding:** `docs/intel/2026-07-06-sweep.md` §1. Verified against `packages/server/src/claude/client.ts` — threshold gating is token-count-based.
+- **What's needed:** No code change required before v1.0. Worth noting before Step 11 design (memory architecture depends on compaction behavior). Argus recommends a brief note in the Step 11 pre-design checklist rather than a threshold change before 1.0.
+- **Analog:** Opus 4.7 had +35% tokenizer impact, documented in `docs/mail/read/argus-to-daedalus-opus-4-7-impact-2026-04-29.md`. Sonnet 5 is the same class of issue.
+- **Date added:** 2026-07-06
 
 ### Opus model picker lineup refresh — Opus 4.8 missing; 4.7 label stale
 
@@ -115,6 +123,7 @@ Awareness, no action needed.
 
 ## Changelog
 
+- **v20 (2026-07-06 ~07:05 PT, Argus)** — Sweep #15 (auto 6/29–7/6) reviewed. New 🟡: Sonnet 5 tokenizer +30% compaction impact (threshold 160K was calibrated for 4.6; Sonnet 5 users hit it in ~77% as many turns). MCP spec July 28 RC: beta SDKs out, 22 days to final (no 1.0 action — stdio-only). Opus 4.8 still pending Daedalus reply. Suite 1332 green. 🟡 +1 → 5.
 - **v19 (2026-07-05 ~12:50 PT, Argus)** — SDK `^0.110` runtime-confirmed green after `npm install` + full suite (exit 0). Opus 4.8 gap found + Daedalus memo filed (`argus-to-daedalus-opus-lineup-refresh-2026-07-05.md`). Mail threads closed (Calliope + Daedalus). 🟡 +1 (Opus lineup refresh). v18 timestamp error noted (committed 12:44 PT, not 17:30 PT).
 - **v18 (2026-07-05 ~12:44 PT, Calliope)** — AVAILABLE_MODELS + SDK bump shipped by Daedalus (`0395c4b`). Persona captures: Daedalus ✅ Argus ✅ Iris pending. MAXT klatch session in progress. 🟡 −1 (AVAILABLE_MODELS closed). Cohort updated.
 - **v17 (2026-07-04 ~19:35 PT, Argus)** — Argus back online; mode-1 🔴 cleared. Sweep #14: Sonnet 5 + Fable 5 available (AVAILABLE_MODELS gap → Daedalus); SDK ^0.110.0 (14 minors behind). vitest 4 migration fix applied (client flake root cause). Server: 1120 tests green. 🔴 → 1 (cut v1.0.0). 🟡 +AVAILABLE_MODELS update.
