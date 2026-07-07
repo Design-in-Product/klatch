@@ -117,3 +117,8 @@ Append-only. Per 5/28 refinement: substantive fires commit; pure no-op fires app
 **Fire 20:59 — WORK.** Worktree up to date. No new Argus mail. Suite re-run (2h 5min since last): **1332 green** (1120 server / 212 client). Cron re-armed (`96932a3f`).
 
 **Fire 22:01 — WORK (no-op).** Worktree up to date. No new Argus mail. Suite green 62 min ago — skip. Cron re-armed (`9ce97b62`).
+
+*IDLE 23:01 — cron re-armed (`c5bcfdb7`).*
+*IDLE 00:06 — cron re-armed (`ad0675be`).*
+*IDLE 01:03 — cron re-armed (`9cf1927e`).*
+*IDLE 02:01 — cron re-armed (`cf756fc0`). Batch commit (4 IDLE fires).*
