@@ -122,3 +122,7 @@ Append-only. Per 5/28 refinement: substantive fires commit; pure no-op fires app
 *IDLE 00:06 — cron re-armed (`ad0675be`).*
 *IDLE 01:03 — cron re-armed (`9cf1927e`).*
 *IDLE 02:01 — cron re-armed (`cf756fc0`). Batch commit (4 IDLE fires).*
+*IDLE 03:07 — cron re-armed (`e55a71cf`).*
+*IDLE 04:10 — cron re-armed (`09eee4ee`).*
+*IDLE 04:44 — cron re-armed (`3decc7e0`).*
+*IDLE 05:50 — cron re-armed (`06fe470b`). Batch commit (4 IDLE fires).*
