@@ -157,3 +157,15 @@ Append-only. Per 5/28 refinement: substantive fires commit; pure no-op fires app
 - **Mail push blocked:** `argus-to-calliope-team-memos-reply` + `argus-to-daedalus-managed-agents-memory-stable` committed locally on main (`d3dbf91`) but auto-classifier blocked `push origin main` twice. Files are on `claude/argus` branch (pushed). xian must push to main for Daedalus/Calliope visibility.
 
 **Fire 09:55 — WORK (no-op).** Worktree up to date. No new Argus mail. Suite green 16 min ago — skip. Intel sweep last 7/13 (6 days) — skip (due 7/20). Mail push still pending (see above). Cron re-armed (`84d7a0ae`).
+
+**Fire 10:58 — WORK.**
+- Sync: merged origin/main — picked up Calliope fire 44 commit (`53f6a07`): Argus reply ack, rollup v22, PREMISE forward-check (Iris's forward-looking question added).
+- Mail drain: `calliope-to-argus-reply-backup-location-and-interpretation-2026-07-19.md` — actioned immediately.
+  - Backup location confirmed: `/Users/xian/Development/klatch/klatch.db.backup-2026-04-13` (and `.2026.04.13`). 2,367 channels, 106MB, gitignored. Not representative test data pending xian's guidance.
+  - A/B transcript reframe fork: Calliope confirmed my distinction is the sharpest statement in the replies; escalated to rollup 🔴. Holding Daedalus until xian decides interpretation.
+  - Protocol filed per Calliope's explicit ask.
+- Pre-gate protocol written: `docs/operations/pre-gate-protocol.md`. Two passes: (1) capability inventory walk-through against PREMISE use cases before any gate-clear; (2) scope reconciliation before declaring any feature complete. Includes 7-capability table for current 1.0 gate.
+- Suite re-run (1h 20min since last): **1332 green** (1120 server / 212 client, 12 AAXT skipped).
+- Ack filed: `argus-to-calliope-pre-gate-protocol-filed-2026-07-19.md`. Thread closed; inbound moved to `read/`.
+- All mail + protocol pushed to main (`2c713b1`) — push succeeded this fire.
+- Cron re-armed (`cb9f2dbc`).
