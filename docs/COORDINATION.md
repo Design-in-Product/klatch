@@ -140,8 +140,10 @@ Agents working on this repo use this file as the async handoff protocol.
   - Inc 7 cherry-picked `17c3d78` into great-lamarr worktree for MAXT only — Daedalus owns the formal merge.
 - **v1.0 SHIPPED (2026-06-29).** R46+R47 both green. Daedalus merged. Release cut complete. `docs/releases/RELEASE-NOTES-1.0.md` live.
 - **Status (2026-07-05):** active — Search planning klatch MAXT session today. Persona capture committed (`docs/plans/persona-capture-iris-2026-07-05.md`, `a7360f5`). Ready for Calliope import into Klatch entity.
-- **Next:** Participate in Step 11 Search planning Roundtable klatch (Daedalus + Argus + Iris). AXT observed by Theseus.
-- **Waiting on:** Daedalus — merge `claude/daedalus` to main. Theseus — R46+R47 results.
+- **2026-07-19 (live with xian):** Composition continuity gap found by Calliope + xian. MAXT Search planning session deferred — shipped design lacks source-channel context path (entities carry L5 only; no `source_channel_id`; `buildSystemPrompt` scoped by `channel_id`). Root cause: spec §6 contradicts itself. Paths B+C also unbuilt and unrecorded. Analysis: `docs/plans/composition-continuity-gap-2026-07-19.md`.
+- **Status:** working — §6 revision session with xian; design input on context-carrying approach filed to Calliope.
+- **Next:** (1) Revise spec §6 with xian — remove contradiction, separate "agents are continuous with source" from "not a naive history dump." (2) Paths B+C scope decision with xian. (3) MAXT deferred until context-carrying is built.
+- **Updated: 2026-07-19 09:24**
 - **Updated:** 2026-06-28 (MAXT Session 03 complete; beta gate cleared)
 
 ## Signals
