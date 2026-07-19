@@ -14,6 +14,29 @@ The one-line version: **Klatch lets your existing agent conversations meet each 
 
 Do not recount the roadmap back to xian as if it were new. Read it first.
 
+## Verify Before Asserting (required — not a matter of care or effort)
+
+Agents on this project have repeatedly stated things that were true once and are not true now: a channel count from a stale doc, a feature described as built that was never built, a design "we don't have" that existed in four places. These were not carelessness. Recalled context *feels* identical to verified fact, so intending to be careful does not help. The fix has to be mechanical.
+
+**The rule:** if a claim did not come from a tool call **in this session**, verify it before stating it. Recalled context — your memory store, a summary, something you read hours ago, something that just sounds right — is a lead to check, never a source to cite.
+
+**Always verify before asserting, no exceptions:**
+
+- **Any number, count, date, filename, or path** — `ls` it, query it, `grep` it
+- **Any claim about what the code does** — read the code, don't infer from docs; docs go stale faster than code
+- **Any claim that something does or does not exist** — "we don't have X" and "X was never built" are the highest-risk statements on this project and have both been wrong. Search before you say it, and search under more than one name for the thing
+- **Any claim about project history** — what was decided, deferred, approved, or shipped. Check git log, the doc, the memo
+- **Any claim about what an agent, or xian, previously said** — find the actual text
+
+**Two specific traps:**
+
+1. **Docs can be stale.** A number in ROADMAP.md was accurate when written. Verify against the live source — the DB, the filesystem, the code — not against another document.
+2. **"I don't recall that" is not evidence of absence.** When xian says a thing exists and you don't remember it, the prior should be that he's right and it's filed somewhere you haven't looked. Search exhaustively, under synonyms, before reporting that it isn't there.
+
+**When you cannot verify:** say so explicitly and label the confidence — "I believe X, from [source], not verified this session." Never launder an unverified recollection into a flat assertion. A hedged claim costs a sentence; a confident wrong one costs the reader's trust in everything else you said.
+
+This applies with most force in exactly the situations where verifying feels least necessary: fast-moving conversation, a fact you're sure of, a question that seems too small to check.
+
 ## Quick Start
 
 ```bash
