@@ -6,7 +6,7 @@
 
 **Trust-instrument discipline** (Exec 2026-06-19): every render comes from a fresh **verified sweep** of source docs — never from memory. A false "all clear" is a trust breach. "Quiet" must mean *verified-clear*, not *haven't-checked*.
 
-**Last refreshed:** 2026-07-06 ~07:05 PT (Argus) — Sweep #15 (auto, 6/29–7/6) reviewed: Sonnet 5 tokenizer +30% compaction impact flagged (new 🟡); MCP spec July 28 RC noted; Opus 4.8 gap still open (awaiting Daedalus). Suite 1332 green. v20.
+**Last refreshed:** 2026-07-19 ~09:00 PT (Calliope) — **v1.0.0 cut RETRACTED from 🔴.** First real-use klatch setup revealed composition cannot bring existing agent conversations in with context intact; canonical use case unrunnable. Beta gate not met. See `docs/plans/composition-continuity-gap-2026-07-19.md`. New anchor doc `docs/PREMISE.md`. v21.
 
 ---
 
@@ -16,19 +16,30 @@
 |---|---|---|---|
 | **1** | **0** | **5** | **2** |
 
-*🔴: (1) cut v1.0.0 (xian's call — all gates clear). AVAILABLE_MODELS shipped (Sonnet 5 + Fable 5 + SDK). One remaining picker gap: Opus 4.8 + stale Opus 4.7 label (see 🟡). New 🟡: Sonnet 5 tokenizer +30% compaction impact.*
+*🔴: (1) four scoping decisions on agent continuity — the work that now gates 1.0. The previous 🔴 (cut v1.0.0, "all gates clear") is withdrawn: the gate was not actually clear. AVAILABLE_MODELS shipped. Opus 4.8 picker gap still open (🟡).*
 
 ---
 
 ## 🔴 Needs you — FIRST, always
 
-### Cut v1.0.0 — tag + GitHub release
+### Agent continuity — four scoping decisions (gates 1.0)
 
-- **What:** All gates clear. Beta cut authorized (Janus via xian, 6/29). xian is first tester; no external rollout until he's reviewed it himself.
-- **Ready to go:** `git tag v1.0.0` + GitHub release. Release notes at `docs/releases/RELEASE-NOTES-1.0.md`. Blog post v3 drafted. LinkedIn + PH copy drafted.
-- **What xian does:** authorize the tag cut (or ask Daedalus to execute it). Public GitHub release — Calliope won't cut it unilaterally.
-- **Remaining xian edits:** invitation wording in blog post + LinkedIn; maker comment on PH; edit pass on all copy.
-- **Date added:** 2026-06-29
+- **What:** A klatch can't convene *existing* agent conversations with their context intact. Agents arrive carrying only their L5 prompt. The canonical use case — PM weekly leadership review, six agents each reporting a week of their own work — cannot be run. This is the premise of the product, not a missing nicety.
+- **How it happened:** Composition spec §6 line 156 contradicts itself in one paragraph ("agents bring their existing context from their ongoing 1-1 session" / "does not automatically inject prior conversation histories"). Implementation followed the second reading. Gravitational drift toward the ordinary multi-agent-chat model, not an individual lapse — hence `docs/PREMISE.md`.
+- **Analysis:** `docs/plans/composition-continuity-gap-2026-07-19.md` (verified against code)
+- **What xian does — four calls, async-friendly:**
+  1. **Context mechanism:** (a) compact each agent's source channel on entry, (b) recent-N + summary, or (c) give the agent a tool to query its own source channel on demand. (c) best matches "the channel contextualizes itself turn-by-turn" and is most token-efficient; least predictable.
+  2. **Bidirectionality** (klatch content back to the 1-1) in 1.0, or after?
+  3. **Backfill** entities for ~49 existing imports, or forward-only + re-import?
+  4. **Timing:** does 1.0 wait, or cut v0.9.x honest about the limitation?
+- **Not blocked:** changes 1 and 2 (imports mint entities; `source_channel_id` column) can likely start before these land — awaiting Daedalus's confirmation.
+- **Memos out:** Iris (spec §6 revisit + design input), Daedalus (scoping)
+- **Date added:** 2026-07-19
+
+### ~~Cut v1.0.0~~ — WITHDRAWN 2026-07-19
+
+- Previously listed as "all gates clear." It was not. Retracted rather than deleted so the trust-instrument record shows the correction. Release notes, blog post, LinkedIn + PH copy remain drafted and reusable once the gate is genuinely met.
+- **Also outstanding from beta scope:** Paths B/C (JIT import + new-agent-in-picker) were in xian's 6/26 scope, were never built, and were not named in the 6/27 "composition complete" call. Separate from the continuity gap — Path B wouldn't have closed it.
 
 
 ---
