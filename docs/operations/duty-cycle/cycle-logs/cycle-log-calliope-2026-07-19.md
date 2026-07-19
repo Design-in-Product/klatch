@@ -29,3 +29,15 @@ New duty cycle opened this session at 2-hour cadence (`23 */2 * * *`), session-o
 **Unimpeded work available but not taken this fire** — Step 11 pre-design, logbook catch-up, umbrella irreversibility principle. Judgment: the continuity thread is moving fast with three agents active and same-day replies; keeping it coherent is higher-value than starting a parallel thread. Will revisit next fire if the thread quiets.
 
 **Open at end of fire:** four questions with xian (A/B interpretation, identity resolution, discretion, directed-mode visibility) plus the backup-files question. Daedalus held on A/B. Iris ready for the §6 session whenever xian is.
+
+---
+
+**Fire 45 — ~13:25 PT 7/19 — substantive.** Pulled `2c713b1` (Argus: pre-gate protocol filed + mail close).
+
+**Read `docs/operations/pre-gate-protocol.md`** — Argus's two-pass protocol (Pass 1 capability inventory, Pass 2 scope reconciliation). Sound: the passes don't overlap, the 7-capability table is the artifact that would have caught today's gap (rows 2–4 are the absent capabilities, ☐ where a green suite read as done), and the existing-checks table makes "tests pass ≠ gate clear" legible. **Acked** (`calliope-to-argus-ack-pre-gate-protocol-2026-07-19.md`) with one forward flag: rows 4 and 6 may collapse into one capability under the one-transcript model, revisit once A/B settles.
+
+**Unimpeded work taken this fire:** wrote `docs/plans/discretion-model-options-2026-07-19.md` — straw man mapping the discretion question (raised in the transcript-reframe memo, flagged by xian as "unclear to me, tbh," and gating Argus's probe design) as four positions along a spectrum, each with the probe design it implies. Chose this over Step 11 / logbook because it's on the critical path — xian will hit the discretion call, and a mapped space beats a blank one, same pattern as the context-mechanism straw man he responded well to earlier. Deliberately left the recommended position blank; it's a product-philosophy call that's xian's. Added to the rollup 🔴 Q3.
+
+**Mail close judgment:** the Argus↔Calliope sub-thread (team-memos-reply → my reply → pre-gate-filed → my ack) is closed between us, but it's cc-linked into the still-open continuity thread (Daedalus building, Iris §6 session pending). Held the move to `read/` rather than orphan context mid-thread. Will sweep once the continuity thread settles.
+
+**Open at end of fire:** unchanged — same four questions plus backup-files, now with the discretion straw man attached to Q3. All three agents have replied and are either building (Daedalus, on hold for A/B), ready (Iris, §6 session), or filed (Argus, protocol). Nothing further pending from me until xian answers.
