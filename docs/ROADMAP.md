@@ -248,17 +248,31 @@ The March 2026 Dispatch report documented this challenge empirically: Layers 1�
 - Should export create a branch (preserving Klatch original) or move the conversation?
 - How does the user understand and act on a Layer 5 calibration gap?
 
-### Beta milestone — composition gesture complete → release cut
+### Beta milestone — composition gesture → release cut
 
-**Target: July 2026.** When the composition gesture (current active work) is fully implemented, tested, and QA'd, we cut the next release — v0.9 or v1.0.
+> **⚠️ Status update, 2026-07-19: the beta gate is NOT met.**
+>
+> Preparing the first real-use klatch revealed that composition cannot bring *existing* agent conversations into a klatch with their context intact. Agents arrive carrying only their L5 prompt. The canonical use case — the Piper Morgan weekly leadership review, six agents each reporting on a week of their own work — cannot be run.
+>
+> Root cause: a self-contradicting sentence in the composition spec (§6, line 156) was implemented in the reasonable direction, reversing the core entity model from `docs/direction/entity-reframe-2026-04-18.md`. Not a lapse by any individual — a drift toward the more ordinary version of the product, which is why `docs/PREMISE.md` now exists.
+>
+> **Also outstanding:** Paths B and C (JIT import + new-agent-in-picker) were in xian's 6/26 beta scope, were never built, and were not named in the 6/27 completion call.
+>
+> Full analysis and path forward: **`docs/plans/composition-continuity-gap-2026-07-19.md`**
+>
+> **Revised gate:** an agent can join a klatch while remaining continuous with its own conversation, and the weekly-review use case runs end to end.
+
+**Target: July 2026.** When the composition gesture is fully implemented, tested, and QA'd — including agent continuity per the revised gate above — we cut the next release.
 
 The plumbing for composition was ready before Iris's UX design phase. Her Phase 3 spec (completed June 2026) was the critical path to beta — not more infrastructure, not more feature steps, but real design work that made the core feature worthy of a release. The composition gesture is the 1.0 front-door: the thing that makes Klatch a multi-entity conversation tool rather than a single-agent one.
 
 **Composition gesture increment status (as of June 2026):**
 - Increment 1: Spine — New Chat / New Klatch affordance, atomic roster, Purpose label ✅ (merged)
 - Increments 2–5: Picker polish + default project + cross-reference — Iris-reviewed ✅ (on `claude/daedalus`, awaiting merge)
-- Increment 6: Clone existing klatch (next to build, after merge)
-- Increments 7+: Paths B/C (JIT import + new agent in picker), @mention autocomplete (to come)
+- Increment 6: Clone existing klatch ✅
+- Increment 7: @mention override ✅ (merged 6/28; declared "composition complete" at this point)
+- **Paths B/C (JIT import + new agent in picker): NOT BUILT.** Still `[ ]` item 8 in `docs/operations/duty-cycle/daedalus-tasks.md`. In xian's 6/26 beta scope; not reconciled at the 6/27 completion call.
+- **Agent continuity (new, 2026-07-19): NOT BUILT.** The blocking item. See `docs/plans/composition-continuity-gap-2026-07-19.md`.
 
 **After beta:** Step 11 (Search) is the next major step. Not a beta requirement.
 
