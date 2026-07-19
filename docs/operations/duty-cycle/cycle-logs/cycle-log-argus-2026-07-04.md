@@ -135,3 +135,22 @@ Append-only. Per 5/28 refinement: substantive fires commit; pure no-op fires app
 **Fire 09:12 — WORK (no-op).** Worktree up to date. No new Argus mail. Suite green 67 min ago — skip. Daedalus Opus 4.8 memo 2+ days unanswered (rollup 🟡 current). Cron re-armed (`7af1ce17`).
 
 **Fire 09:58 — WORK (no-op).** Worktree up to date. No new Argus mail. Suite green 1h 53min ago — skip. Cron re-armed (`7e3d2fdc`).
+
+## 2026-07-19
+
+**START — 09:27 PT.** xian reopened session after 12-day gap (last active 7/7 09:58). MAXT session planned for today; pivoted 7/19 when Calliope discovered composition continuity gap — agents join klatches without source-channel context. Beta gate not met. PREMISE.md added. MAXT deferred indefinitely until continuity mechanism is built. xian: cut v0.9.x alpha, hold 1.0 for full premise. Full briefing: read PREMISE.md, composition-continuity-gap plan, Calliope's session log, sweep #16, all new mail from gap.
+
+**Fire 09:27 — WORK (session-restart / 12-day catch-up):**
+- Worktree synced: fast-forward blocked (Calliope/Iris did a merge onto argus branch during 7/19 session); resolved via `git merge origin/main`. Brought in: Iris session log, Daedalus + Iris continuity replies, two Calliope team memos, CLAUDE.md update, daedalus-tasks.md update.
+- Mail drain: no memos directly addressed to Argus; two team memos (calliope-to-team-*) addressed to all agents including Argus — actioned immediately.
+- SDK still `^0.110.0` current.
+- Intel sweep: sweep #16 (7/13) auto-filed, pending Argus curation — curated this fire (see below).
+- Suite re-run (12-day gap — mandatory): **initial run showed 2 failures** (transient — timing under load). Re-run: **1332 green** (1120 server / 212 client, 12 AAXT skipped). Baseline confirmed.
+- PREMISE.md read — understood. Three core ideas, Attractor section, canonical use case as beta gate.
+- Sweep #16 curated: `docs/intel/2026-07-13-sweep-curated.md`. Key items: Managed Agents memory stable (route → Daedalus + Calliope), Fable 5 description gap (route → Daedalus), API key expiration UX gap verified in `client.ts:664` (route → Daedalus).
+- Team memo responses filed: `argus-to-calliope-team-memos-reply-2026-07-19.md` — AXT/AAXT analysis on capability gap detection, on-demand tool failure modes, blast radius of primitive inversion, test data location.
+- Routing memo filed: `argus-to-daedalus-managed-agents-memory-stable-2026-07-19.md`.
+- TSC baseline thread (`argus-to-daedalus-tsc-baseline-resolved-2026-06-26.md`) already in `read/` — confirmed closed.
+- Opus 4.8 lineup memo: 14 days unanswered, flagged to xian as mode-1 concern in COORDINATION.md.
+- COORDINATION.md updated (gap note, sweep #16, suite re-run 7/19, transcript-ownership blast-radius note).
+- Cron re-armed.
