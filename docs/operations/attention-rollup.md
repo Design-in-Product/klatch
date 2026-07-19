@@ -6,7 +6,7 @@
 
 **Trust-instrument discipline** (Exec 2026-06-19): every render comes from a fresh **verified sweep** of source docs — never from memory. A false "all clear" is a trust breach. "Quiet" must mean *verified-clear*, not *haven't-checked*.
 
-**Last refreshed:** 2026-07-19 ~09:00 PT (Calliope) — **v1.0.0 cut RETRACTED from 🔴.** First real-use klatch setup revealed composition cannot bring existing agent conversations in with context intact; canonical use case unrunnable. Beta gate not met. See `docs/plans/composition-continuity-gap-2026-07-19.md`. New anchor doc `docs/PREMISE.md`. v21.
+**Last refreshed:** 2026-07-19 ~11:25 PT (Calliope) — v22. All three agents replied same-day to the continuity finding. xian answered Q4 (**cut v0.9.x alpha**) and supplied a reframe that supersedes Q1: *one transcript per agent, channels are views*. Four open questions restated below, now led by Argus's **Interpretation A/B** fork, which changes the estimate ~10× and holds Daedalus. Stale "~49 imports" figure corrected to a verified 16. v21 was 09:00 PT.
 
 ---
 
@@ -27,13 +27,16 @@
 - **What:** A klatch can't convene *existing* agent conversations with their context intact. Agents arrive carrying only their L5 prompt. The canonical use case — PM weekly leadership review, six agents each reporting a week of their own work — cannot be run. This is the premise of the product, not a missing nicety.
 - **How it happened:** Composition spec §6 line 156 contradicts itself in one paragraph ("agents bring their existing context from their ongoing 1-1 session" / "does not automatically inject prior conversation histories"). Implementation followed the second reading. Gravitational drift toward the ordinary multi-agent-chat model, not an individual lapse — hence `docs/PREMISE.md`.
 - **Analysis:** `docs/plans/composition-continuity-gap-2026-07-19.md` (verified against code)
-- **What xian does — four calls, async-friendly:**
-  1. **Context mechanism:** (a) compact each agent's source channel on entry, (b) recent-N + summary, or (c) give the agent a tool to query its own source channel on demand. (c) best matches "the channel contextualizes itself turn-by-turn" and is most token-efficient; least predictable.
-  2. **Bidirectionality** (klatch content back to the 1-1) in 1.0, or after?
-  3. **Backfill** entities for ~49 existing imports, or forward-only + re-import?
-  4. **Timing:** does 1.0 wait, or cut v0.9.x honest about the limitation?
-- **Not blocked:** changes 1 and 2 (imports mint entities; `source_channel_id` column) can likely start before these land — awaiting Daedalus's confirmation.
-- **Memos out:** Iris (spec §6 revisit + design input), Daedalus (scoping)
+- **Answered so far:** **Q4 timing — cut v0.9.x alpha carrying what we thought 1.0 was**, hold 1.0 for the premise (xian, 7/19). Q1 mechanism largely superseded by your transcript reframe; team independently converged on hybrid (deterministic seed + on-demand tool) either way. Q3 backfill — Daedalus recommends forward-only plus an opt-in per-channel "mint an entity from this conversation" action rather than auto-migration.
+- **Correction:** the "~49 imports" figure was repeated from a stale line in ROADMAP.md. **Verified dev DB: 16 channels** (12 claude-code, 4 native), no writes since 2026-05-10. A 106MB `klatch.db.backup-2026-04-13` in the repo root holds 2,367 channels (818 claude-code, 54 claude-ai, 1,495 native) — provenance unknown, possibly accumulated fixtures. **xian: what are those backup files?**
+- **Still open — four, in priority order:**
+  1. **Interpretation A or B?** (Argus — changes the estimate ~10×.) **A:** messages move from channel ownership to entity ownership; multi-week test re-baseline. **B:** messages keep `channel_id`, history builders join through `channel_entities` to assemble the transcript; two builders change, suite mostly survives. B looks right on Gall's-law grounds but is a slightly lossy encoding of your stated model — worth choosing knowingly. **Daedalus is held until this is answered.**
+  2. **Identity resolution** (Daedalus's fifth question). Import five Daedalus sessions — one entity or five? Name derived from `source_metadata`, or confirmed by you at import time? Entity sprawl is *worse* than today's single-default because it's hard to unwind once it's in the picker and on message rows — harder still under the transcript model, where merging identities means merging transcripts. Gates the import work shipping, not starting.
+  3. **Discretion.** You tell Daedalus something in the 1-1; he's later in a klatch with Argus and Iris. May he repeat it? Under one transcript he cannot distinguish "something I know" from "something I was told privately" unless we build that. Product decision, not implementation — and a plausible differentiator. Argus notes probe design inverts on the answer, so it gates AXT work too.
+  4. **Directed-mode visibility.** Calliope's recommendation: everyone in a klatch sees everything; @mention routes *response obligation*, not visibility (Slack semantics). Current implementation does the opposite. Unconfirmed.
+- **Also open:** is bidirectionality now free? Daedalus scoped it as post-1.0 write-back-with-dedup; under one-transcript there may be nothing to write back. Calliope's inference from your words, not your words.
+- **Not blocked, safe to start:** `source_channel_id` column (Daedalus: trivial, ~half a day, additive, zero behavior change until read) and wiring `entity.reflections` into `buildSystemPrompt` (validates the seam, delivers real L5 continuity today — complement, not a fix).
+- **All three agents replied same-day.** Daedalus confirmed the code reading and owned the Paths B/C non-reconciliation; Iris has revised §6 language ready and wants you in the room; Argus mapped AXT blast radius and observed that **AAXT structurally cannot detect the *absence* of a capability, only misbehavior of a built one** — proposes a capability walk-through against PREMISE use cases as a pre-gate step.
 - **Date added:** 2026-07-19
 
 ### ~~Cut v1.0.0~~ — WITHDRAWN 2026-07-19

@@ -84,6 +84,20 @@ Every one of those statements is *locally reasonable* and *collectively wrong*. 
 - **Scope reductions get surfaced.** "Not now" in a memo is not an approved deferral. If something in the beta scope isn't going to be built, say so where xian will see it.
 - **When in doubt, ask whether it serves the weekly-review use case.** That's the concrete forcing function.
 
+### The forward check
+
+The Attractor tells above are *diagnostic* — they help you notice you have already drifted. Iris's observation (2026-07-19) is that the §6 incident proves drift can survive a spec review in language that reads as reasonable, so we also need a check that runs *before* a design is written down.
+
+Ask this of any composition, klatch, or entity design before proposing it:
+
+> **Does this design assume the agent's source conversation exists and is accessible? If not, it's the boring version.**
+
+And its companion, from the transcript-ownership discussion the same day:
+
+> **Does this design treat the channel as the owner of history?** If so, look again — the entity owns its transcript; a channel is a view into it.
+
+*(The second question reflects xian's stated model — "it is the same session... one long transcript with some messages coming from the klatch vs from the 1-1 channel." The architectural phrasing is Calliope's reading of it. Treat it as a strong prompt to check, not as settled schema.)*
+
 ---
 
 *Related: `docs/direction/entity-reframe-2026-04-18.md` (the original statement of idea #1), `docs/ROADMAP.md` (what's shipped vs. planned), `docs/ARCHITECTURE.md` (decision log).*
