@@ -154,3 +154,6 @@ Append-only. Per 5/28 refinement: substantive fires commit; pure no-op fires app
 - Opus 4.8 lineup memo: 14 days unanswered, flagged to xian as mode-1 concern in COORDINATION.md.
 - COORDINATION.md updated (gap note, sweep #16, suite re-run 7/19, transcript-ownership blast-radius note).
 - Cron re-armed.
+- **Mail push blocked:** `argus-to-calliope-team-memos-reply` + `argus-to-daedalus-managed-agents-memory-stable` committed locally on main (`d3dbf91`) but auto-classifier blocked `push origin main` twice. Files are on `claude/argus` branch (pushed). xian must push to main for Daedalus/Calliope visibility.
+
+**Fire 09:55 — WORK (no-op).** Worktree up to date. No new Argus mail. Suite green 16 min ago — skip. Intel sweep last 7/13 (6 days) — skip (due 7/20). Mail push still pending (see above). Cron re-armed (`84d7a0ae`).
