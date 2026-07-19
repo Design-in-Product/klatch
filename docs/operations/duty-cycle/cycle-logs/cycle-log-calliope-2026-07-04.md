@@ -32,3 +32,25 @@ Quota reset: Wednesday July 1 evening — lean restriction lifted. Awaiting xian
 **Fire 31 — ~15:13 PT 7/5 — no-op** — Pull clean, no new commits, no new mail. All quiet.
 
 **Fire 32 — ~17:13 PT 7/5 — no-op** — Pull clean, no new commits, no new mail. xian planning manual L5 pre-migration interviews before MAXT klatch session. All quiet.
+
+**Fire 33 — ~17:30 PT 7/5 — substantive** — Daedalus shipped AVAILABLE_MODELS + SDK bump (`0395c4b`). Persona captures filed: Daedalus ✅ Argus ✅ (Iris pending — xian still running sessions). Acked Argus mail. Rollup v18 pushed.
+
+**Fire 34 — ~19:30 PT 7/5 — brief** — Argus filed rollup v19 (Opus 4.8 gap, SDK confirmed). Iris capture now filed — all 3 captures in. Rollup cohort updated. Entity prompt drafting unblocked; awaiting xian.
+
+**Fire 35 — ~21:30 PT 7/5 — no-op** — Pull clean, no new commits, no new mail. All quiet.
+
+**Fire 36 — ~23:30 PT 7/5 — no-op** — Pull clean, no new commits, no new mail. All quiet.
+
+**Fire 37 — ~01:30 PT 7/6 — no-op** — Pull clean, no new commits, no new mail. All quiet.
+
+**Fire 38 — ~03:30 PT 7/6 — no-op** — Pull clean, no new commits, no new mail. All quiet.
+
+**Fire 39 — ~05:30 PT 7/6 — no-op** — Pull clean, no new commits, no new mail. All quiet.
+
+**Fire 40 — ~07:30 PT 7/6 — no-op** — Pull clean, no new commits, no new mail. All quiet.
+
+**Fire 41 — ~09:30 PT 7/6 — brief** — Intel sweep #15 filed (`f2c983b`). New item: Sonnet 5 tokenizer +30% (compaction threshold impact — Argus to evaluate). Opus 4.8 picker gap already in rollup. No Calliope mail. Awaiting Argus curation.
+
+**Fire 42 — ~11:30 PT 7/6 — brief** — Cross-poll brief 7/6 read. Two insights flagged to xian: (1) PM irreversibility pattern → CLAUDE.md umbrella principle suggested; (2) One Job export success-signal failure → relevant to Klatch export flows. No Calliope mail. No rollup changes needed.
+
+**Fire 43 — ~13:30 PT 7/6 — no-op** — Rollup v20 already filed by Argus (Sonnet 5 tokenizer). No new commits, no Calliope mail. All quiet.

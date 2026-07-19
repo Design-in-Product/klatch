@@ -2,6 +2,18 @@
 
 A standalone, local-first web app for managing Claude AI conversations through a Slack-inspired interface.
 
+## Start Here — required reading before design or architecture discussion
+
+Klatch has a specific premise that is easy to reconstruct incorrectly from the codebase alone — there is a strong pull toward a flatter, more ordinary version of this product. Before proposing anything about entities, channels, imports, klatches, or the 5-layer model — and **always** before a MAXT session or a roadmap conversation with xian — read these, in order:
+
+1. **`docs/PREMISE.md`** — the foundational ideas, and a named list of the ways agents drift away from them. Non-negotiable first read.
+2. **`docs/ROADMAP.md`** — the north star and what's actually shipped vs. planned. The "Completed" section is ground truth for what exists.
+3. **`docs/ARCHITECTURE.md`** — the decision log.
+
+The one-line version: **Klatch lets your existing agent conversations meet each other.** The entity IS its conversation, not a persona defined by a prompt. If your mental model doesn't have imported, continuing conversations at its center, you have drifted — re-read `PREMISE.md` before proposing anything.
+
+Do not recount the roadmap back to xian as if it were new. Read it first.
+
 ## Quick Start
 
 ```bash

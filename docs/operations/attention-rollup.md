@@ -6,7 +6,7 @@
 
 **Trust-instrument discipline** (Exec 2026-06-19): every render comes from a fresh **verified sweep** of source docs — never from memory. A false "all clear" is a trust breach. "Quiet" must mean *verified-clear*, not *haven't-checked*.
 
-**Last refreshed:** 2026-07-04 ~19:35 PT (Argus) — back online; sweep #14 filed; COORDINATION.md updated; vitest 4 config fix applied; AVAILABLE_MODELS gap noted; rollup v17.
+**Last refreshed:** 2026-07-19 ~09:00 PT (Calliope) — **v1.0.0 cut RETRACTED from 🔴.** First real-use klatch setup revealed composition cannot bring existing agent conversations in with context intact; canonical use case unrunnable. Beta gate not met. See `docs/plans/composition-continuity-gap-2026-07-19.md`. New anchor doc `docs/PREMISE.md`. v21.
 
 ---
 
@@ -14,21 +14,32 @@
 
 | Needs you | Blocked-on-others | Lower-urgency | In-flight |
 |---|---|---|---|
-| **1** | **0** | **4** | **2** |
+| **1** | **0** | **5** | **2** |
 
-*🔴: (1) cut v1.0.0 (xian's call — all gates clear). Argus back online; mode-1 item cleared.*
+*🔴: (1) four scoping decisions on agent continuity — the work that now gates 1.0. The previous 🔴 (cut v1.0.0, "all gates clear") is withdrawn: the gate was not actually clear. AVAILABLE_MODELS shipped. Opus 4.8 picker gap still open (🟡).*
 
 ---
 
 ## 🔴 Needs you — FIRST, always
 
-### Cut v1.0.0 — tag + GitHub release
+### Agent continuity — four scoping decisions (gates 1.0)
 
-- **What:** All gates clear. Beta cut authorized (Janus via xian, 6/29). xian is first tester; no external rollout until he's reviewed it himself.
-- **Ready to go:** `git tag v1.0.0` + GitHub release. Release notes at `docs/releases/RELEASE-NOTES-1.0.md`. Blog post v3 drafted. LinkedIn + PH copy drafted.
-- **What xian does:** authorize the tag cut (or ask Daedalus to execute it). Public GitHub release — Calliope won't cut it unilaterally.
-- **Remaining xian edits:** invitation wording in blog post + LinkedIn; maker comment on PH; edit pass on all copy.
-- **Date added:** 2026-06-29
+- **What:** A klatch can't convene *existing* agent conversations with their context intact. Agents arrive carrying only their L5 prompt. The canonical use case — PM weekly leadership review, six agents each reporting a week of their own work — cannot be run. This is the premise of the product, not a missing nicety.
+- **How it happened:** Composition spec §6 line 156 contradicts itself in one paragraph ("agents bring their existing context from their ongoing 1-1 session" / "does not automatically inject prior conversation histories"). Implementation followed the second reading. Gravitational drift toward the ordinary multi-agent-chat model, not an individual lapse — hence `docs/PREMISE.md`.
+- **Analysis:** `docs/plans/composition-continuity-gap-2026-07-19.md` (verified against code)
+- **What xian does — four calls, async-friendly:**
+  1. **Context mechanism:** (a) compact each agent's source channel on entry, (b) recent-N + summary, or (c) give the agent a tool to query its own source channel on demand. (c) best matches "the channel contextualizes itself turn-by-turn" and is most token-efficient; least predictable.
+  2. **Bidirectionality** (klatch content back to the 1-1) in 1.0, or after?
+  3. **Backfill** entities for ~49 existing imports, or forward-only + re-import?
+  4. **Timing:** does 1.0 wait, or cut v0.9.x honest about the limitation?
+- **Not blocked:** changes 1 and 2 (imports mint entities; `source_channel_id` column) can likely start before these land — awaiting Daedalus's confirmation.
+- **Memos out:** Iris (spec §6 revisit + design input), Daedalus (scoping)
+- **Date added:** 2026-07-19
+
+### ~~Cut v1.0.0~~ — WITHDRAWN 2026-07-19
+
+- Previously listed as "all gates clear." It was not. Retracted rather than deleted so the trust-instrument record shows the correction. Release notes, blog post, LinkedIn + PH copy remain drafted and reusable once the gate is genuinely met.
+- **Also outstanding from beta scope:** Paths B/C (JIT import + new-agent-in-picker) were in xian's 6/26 scope, were never built, and were not named in the 6/27 "composition complete" call. Separate from the continuity gap — Path B wouldn't have closed it.
 
 
 ---
@@ -41,13 +52,20 @@ Currently empty.
 
 ## 🟡 Lower-urgency decisions
 
-### AVAILABLE_MODELS overlay out of date — Sonnet 5 + Fable 5 not shown in model picker
+### Sonnet 5 tokenizer +30% — compaction threshold may need recalibration
 
-- **What:** Claude Sonnet 5 (`claude-sonnet-5`, launched June 30) and Claude Fable 5 (`claude-fable-5`, globally available July 1) are not in `packages/shared/src/types.ts:AVAILABLE_MODELS`. Since `ModelId` is a string, API calls work today — but the model picker UI won't surface these models to users.
-- **What Daedalus does:** Add two entries to `AVAILABLE_MODELS` in `packages/shared/src/types.ts`. No migration, no schema change.
-- **Pre-release timing:** Low-urgency but worth landing before the release cut so v1.0 ships with a current model picker.
-- **Source:** Intel sweep #14 (`docs/intel/2026-07-04-sweep.md`), Items 1 + 2.
-- **Date added:** 2026-07-04
+- **What:** Sonnet 5 ships a new tokenizer producing ~30% more tokens from the same input vs. Sonnet 4.6. Klatch's compaction threshold (160K, tuned during Step 9) was calibrated for 1M-context models with Sonnet 4.6 tokenization. Sonnet 5 users will hit the threshold in ~77% as many turns — and pay ~30% more per session at the same usage pattern.
+- **Sweep finding:** `docs/intel/2026-07-06-sweep.md` §1. Verified against `packages/server/src/claude/client.ts` — threshold gating is token-count-based.
+- **What's needed:** No code change required before v1.0. Worth noting before Step 11 design (memory architecture depends on compaction behavior). Argus recommends a brief note in the Step 11 pre-design checklist rather than a threshold change before 1.0.
+- **Analog:** Opus 4.7 had +35% tokenizer impact, documented in `docs/mail/read/argus-to-daedalus-opus-4-7-impact-2026-04-29.md`. Sonnet 5 is the same class of issue.
+- **Date added:** 2026-07-06
+
+### Opus model picker lineup refresh — Opus 4.8 missing; 4.7 label stale
+
+- **What:** `claude-opus-4-8` is missing from `AVAILABLE_MODELS` in `packages/shared/src/types.ts`. `claude-opus-4-7` is currently labeled "Newest Opus" which is stale now that 4.8 exists. Daedalus flagged this in his models-update reply; Argus has filed a follow-up memo (`argus-to-daedalus-opus-lineup-refresh-2026-07-05.md`) with the exact change needed.
+- **What Daedalus does:** Add `claude-opus-4-8` entry + relabel `claude-opus-4-7`. Small, same-shape change as the Sonnet 5 / Fable 5 update. Also: Fable 5 description `'Claude 5 family'` is a placeholder.
+- **Pre-release timing:** Low-urgency; worth landing before the v1.0 cut so the picker reflects the current full lineup.
+- **Date added:** 2026-07-05
 
 ### MAXT Session 02 + April-28 round-trip MAXT — parked
 - **What:** Theseus's MAXT Session 02 and Daedalus's April-28 round-trip MAXT both need xian's live attention. Not time-pressured; xian rouses Theseus situationally.
@@ -63,12 +81,12 @@ Currently empty.
 
 Awareness, no action needed.
 
-### Cohort status (verified 2026-07-04 ~19:35 PT)
-- **Calliope** — live; quota reset 7/1; 2-hour cron; writing + coordination.
-- **Daedalus** — composition gesture fully on main; lean cadence; standby for release cut + AVAILABLE_MODELS update. COORDINATION.md stale (6/21).
-- **Argus** — **back online 7/4 (restarted by xian).** Intel sweep #14 filed (`docs/intel/2026-07-04-sweep.md`). COORDINATION.md updated. vitest 4 migration applied (`packages/client/vitest.config.ts` — `poolOptions.threads.singleThread` → `maxWorkers:1`, client flake root cause fixed). **1120 server + 212 client = 1332 passing, 16 AAXT skipped. All green.**
-- **Theseus** — R45/R46/R47 complete; beta gate fully verified; available; waiting on xian for MAXT real-use-case session.
-- **Iris** — MAXT Session 03 complete (6/27); beta gate CLEAR; available; standby for release cut.
+### Cohort status (verified 2026-07-05 ~17:30 PT)
+- **Calliope** — live; 2-hour cron; coordinating MAXT klatch setup.
+- **Daedalus** — AVAILABLE_MODELS + SDK bump shipped (`0395c4b`); persona capture filed (`docs/plans/persona-capture-daedalus-2026-07-05.md`). Awaiting Klatch import.
+- **Argus** — persona capture filed (`docs/plans/persona-capture-argus-2026-07-05.md`). Suite **1332 green** (confirmed 7/5 after SDK bump install — runtime-proven). SDK `^0.110` installed. Opus 4.8 gap flagged + Daedalus memo filed. Awaiting Klatch import.
+- **Theseus** — observer brief received; standing by for xian's signal to open session.
+- **Iris** — persona capture filed (`docs/plans/persona-capture-iris-2026-07-05.md`). All three captures in. Awaiting Klatch import.
 
 ### Composition gesture + beta gate — FULLY CLEAR ✅
 - All 7 increments on main. MAXT Session 03: 15/15. R45: 8/8. R46 (clone): 8/8, 0 Phantoms. R47 (@mention): 8/8, 0 Phantoms. All green.
@@ -82,8 +100,9 @@ Awareness, no action needed.
 
 ---
 
-## 🟢 Resolved since last board (7/4)
+## 🟢 Resolved since last board (7/5)
 
+- ~~**AVAILABLE_MODELS — Sonnet 5 + Fable 5 missing from picker**~~ — Daedalus shipped `0395c4b`; SDK bumped `^0.96` → `^0.110`. Model picker current for v1.0. *Closed 7/5.*
 - ~~**Nudge Argus — mode-1 since 6/28**~~ — Argus back online; sweep #14 filed; COORDINATION.md updated; vitest 4 config fixed. *Closed 7/4.*
 
 ## 🟢 Resolved (6/27 → 6/29)
@@ -115,6 +134,9 @@ Awareness, no action needed.
 
 ## Changelog
 
+- **v20 (2026-07-06 ~07:05 PT, Argus)** — Sweep #15 (auto 6/29–7/6) reviewed. New 🟡: Sonnet 5 tokenizer +30% compaction impact (threshold 160K was calibrated for 4.6; Sonnet 5 users hit it in ~77% as many turns). MCP spec July 28 RC: beta SDKs out, 22 days to final (no 1.0 action — stdio-only). Opus 4.8 still pending Daedalus reply. Suite 1332 green. 🟡 +1 → 5.
+- **v19 (2026-07-05 ~12:50 PT, Argus)** — SDK `^0.110` runtime-confirmed green after `npm install` + full suite (exit 0). Opus 4.8 gap found + Daedalus memo filed (`argus-to-daedalus-opus-lineup-refresh-2026-07-05.md`). Mail threads closed (Calliope + Daedalus). 🟡 +1 (Opus lineup refresh). v18 timestamp error noted (committed 12:44 PT, not 17:30 PT).
+- **v18 (2026-07-05 ~12:44 PT, Calliope)** — AVAILABLE_MODELS + SDK bump shipped by Daedalus (`0395c4b`). Persona captures: Daedalus ✅ Argus ✅ Iris pending. MAXT klatch session in progress. 🟡 −1 (AVAILABLE_MODELS closed). Cohort updated.
 - **v17 (2026-07-04 ~19:35 PT, Argus)** — Argus back online; mode-1 🔴 cleared. Sweep #14: Sonnet 5 + Fable 5 available (AVAILABLE_MODELS gap → Daedalus); SDK ^0.110.0 (14 minors behind). vitest 4 migration fix applied (client flake root cause). Server: 1120 tests green. 🔴 → 1 (cut v1.0.0). 🟡 +AVAILABLE_MODELS update.
 - **v16 (2026-07-04 ~13:30 PT, Calliope)** — Quota reset 7/1. Argus mode-1 (6/28–7/4, 6 days); sweep #14 overdue. Cohort status verified. Logbook gap: last entry 3/25 (3.5 months behind). 🔴: cut v1.0.0 + nudge Argus. 🟡 +logbook + MAXT real-use-case.
 - **v15 (2026-06-29 morning, Calliope)** — R46+R47 AAXT passed (Theseus, 6/28). Launch copy suite complete (blog v3, release notes, README, LinkedIn/PH). 🔴: cut v1.0.0 (xian's call). 🟠 → 0. Lean 2-hour cron active.

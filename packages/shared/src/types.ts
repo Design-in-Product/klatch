@@ -1,7 +1,9 @@
 export const AVAILABLE_MODELS = {
   'claude-opus-4-7': { label: 'Opus 4.7', description: 'Newest Opus — adds xhigh effort + thinking summaries' },
   'claude-opus-4-6': { label: 'Opus', description: 'Most capable, highest quality' },
+  'claude-sonnet-5': { label: 'Sonnet 5', description: 'Newest Sonnet — balanced speed and quality' },
   'claude-sonnet-4-6': { label: 'Sonnet', description: 'Balanced speed and quality' },
+  'claude-fable-5': { label: 'Fable 5', description: 'Claude 5 family' },
   'claude-haiku-4-5-20251001': { label: 'Haiku', description: 'Fastest, most compact' },
 } as const;
 
