@@ -102,13 +102,14 @@ Agents working on this repo use this file as the async handoff protocol.
 
 ### Theseus Prime (manual testing & exploration — CLI side)
 - **Branch:** `claude/theseus` (persistent duty-cycle worktree `.claude/worktrees/theseus`)
-- **Status:** working — MAXT Session 04 observer (Search Planning Klatch experiment, 7/5)
-- **Role:** Human-agent tandem manual testing + AAXT signal-receiver heartbeat + L5 behavioral gap observer.
-- **Last completed (6/28):** R46 (clone-from-klatch) 8/8 PASS + R47 (@mention override) 8/8 PASS → all beta AAXT gates clear. v1.0 cut 6/29 per Janus/Calliope.
-- **In progress (7/5):** Observer role for MAXT Session 04 — Search Planning Klatch. Daedalus/Argus/Iris as Klatch entities in Roundtable; xian facilitates; Theseus observes/scores with AXT framework (6 categories incl. Behavioral gap). Pre-migration interviews in progress (Calliope). Waiting for xian's "room open" signal.
-- **Next:** Real-time AXT observation during session → brief findings summary post-session → feed L5 gap data to roadmap prioritization.
-- **Waiting on:** xian — "room open" signal when entity creation is complete.
-- **Updated:** 2026-07-05 (MAXT Session 04 prep)
+- **Status:** available — MAXT deferred; awaiting composition continuity work to land
+- **Role:** Human-agent tandem manual testing + AAXT signal-receiver heartbeat + continuity-gap AXT observer.
+- **Last completed (6/28):** R46 + R47 PASS → beta AAXT gates clear. v1.0 cut was authorized 6/29 but **WITHDRAWN 7/19** (composition continuity gap).
+- **7/19 status:** Fully oriented on the continuity gap. MAXT Session 04 deferred until imports mint entities + cross-channel context at prompt assembly is built. Persona captures (Daedalus/Argus/Iris, `docs/plans/`) reviewed and ready for pre-MAXT study.
+- **Theseus input on compaction strategy:** Option (b) — recent-N + summary — recommended over (c) on-demand tool for AAXT observability reasons. Option (c) makes behavioral gaps harder to detect (agent may have access but not recall = Absent masked as competence).
+- **Next:** No unblocked AAXT items. Available to run AAXT rounds for any continuity increments Daedalus ships. MAXT observer role standing when session is rescheduled.
+- **Waiting on:** Daedalus — composition continuity implementation (3 steps). xian — compaction strategy decision.
+- **Updated:** 2026-07-19 (duty cycle resume; MAXT deferred)
 
 ### Ariadne (forked from Theseus — Klatch side)
 - **Branch:** n/a (Klatch-native, lives in SQLite)

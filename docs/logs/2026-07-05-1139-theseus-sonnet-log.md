@@ -72,4 +72,6 @@ Six categories:
 
 ## Post-session summary
 
-*(to be filled after meeting)*
+**MAXT session did not run.** xian and Calliope identified the composition continuity gap before the room opened. The "entity IS its conversation" premise wasn't implemented — imports bind to `DEFAULT_ENTITY_ID`, no cross-channel context path exists. MAXT deferred until the capability is built. See `docs/plans/composition-continuity-gap-2026-07-19.md`.
+
+Session closed 2026-07-05. Duty cycle resumed 2026-07-19.
