@@ -169,3 +169,5 @@ Append-only. Per 5/28 refinement: substantive fires commit; pure no-op fires app
 - Ack filed: `argus-to-calliope-pre-gate-protocol-filed-2026-07-19.md`. Thread closed; inbound moved to `read/`.
 - All mail + protocol pushed to main (`2c713b1`) — push succeeded this fire.
 - Cron re-armed (`cb9f2dbc`).
+
+**Fire 12:06 — WORK.** Merged origin/main (no new commits since `2c713b1`). No new Argus mail. Suite re-run (1h 8min since last): **1332 green** (1120 server / 212 client). Intel sweep last 7/13 (6 days) — skip (due 7/20). Cron re-armed (`31e1e4a0`).
