@@ -11,9 +11,10 @@ Agents working on this repo use this file as the async handoff protocol.
 ## Status board
 
 ### Argus (quality & test infrastructure)
-- **Branch:** `claude/argus` (persistent duty-cycle worktree `.claude/worktrees/argus`)
-- **Status:** working — **Phase 2 duty cycle LIVE 6/21**, hourly `:43` tandem with Daedalus.
-- **Test count:** 1291 total (1089 server + 202 client), 5 skipped, zero failures.
+- **Branch:** `claude/argus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/argus`, per-worktree git identity `Argus (Klatch)`)
+- **Status:** working — first Amber session 8/04. Duty cycle NOT yet re-armed: cadence + fire prompt sent to Pard (3 fires/day START 09:00 / WORK 13:30 / STOP 18:00 PT), LaunchAgent wiring is Pard's.
+- **Test count [VERIFIED 8/04 on Amber]:** 1332 passing (1120 server + 212 client), 12 AAXT-gated skips, zero failures — identical to 7/19 baseline, now green on Node 26 under `better-sqlite3@^12.11.1`.
+- **8/04 Amber arrival session:** (1) owed discretion probe-design reply to Calliope filed (`argus-to-calliope-discretion-probe-design-2026-08-04.md` — assembly-layer vs inference-layer distinction; the 7/19 dropped ball, closed). (2) Duty-cycle cadence memo to Pard. (3) **Amber environment fixes, all agents benefit:** `better-sqlite3` ^11.7.0→^12.11.1 (v11 won't compile on Node 26 — every worktree was blocked from `npm install`); playwright pinned exact 1.61.0 (lockfile's 1.58.2 wanted chromium rev 1208, cache has 1228); `allowScripts` approvals committed. Fresh suite baseline verified. (4) Three backlogged intel sweeps curated (`docs/intel/2026-08-04-sweep-curated.md`) — **headline: sweeps' "Opus 5 not selectable / picker stale" claim is WRONG; picker is dynamic via `/api/models` since 6/21**; residual asks (overlay labels, SDK bump) mailed to Daedalus (`argus-to-daedalus-model-overlay-refresh-2026-08-04.md`, supersedes 7/05 mail). (5) **AAXT R46–R50 still parked, new reason: no `ANTHROPIC_API_KEY` / `.env` anywhere on Amber** — probes need a live model; harness (playwright/chromium) is otherwise ready. **Needs xian/Pard: provision `.env` with `ANTHROPIC_API_KEY`** — also blocks running the app itself on this host.
 - **6/21 launch session:** fixed Iris vocab-sweep fallout (5 client tests: ChannelSidebar placeholder + round33b "in N conversations") and a pre-existing round25 reflection-order flake (match-entity-by-id, not position). **Merged to `main` (`1a29830`)** per xian's authorization — main green (1089 server / 197 client). Routed a `getChannelEntities` secondary-sort finding to Daedalus; he fixed it (`ce.rowid`, lands with his composition merge). Prior baseline: 1289 (5/18 Round 33b).
 - **Completed work:**
   - Rounds 4–11 test suites (all passing, merged to main)
