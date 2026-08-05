@@ -64,12 +64,12 @@ Currently empty.
 - **Analog:** Opus 4.7 had +35% tokenizer impact, documented in `docs/mail/read/argus-to-daedalus-opus-4-7-impact-2026-04-29.md`. Sonnet 5 is the same class of issue.
 - **Date added:** 2026-07-06
 
-### Opus model picker lineup refresh — Opus 4.8 missing; 4.7 label stale
+### Model overlay grooming + DEFAULT_MODEL flip — reframed 8/4; no availability emergency
 
-- **What:** `claude-opus-4-8` is missing from `AVAILABLE_MODELS` in `packages/shared/src/types.ts`. `claude-opus-4-7` is currently labeled "Newest Opus" which is stale now that 4.8 exists. Daedalus flagged this in his models-update reply; Argus has filed a follow-up memo (`argus-to-daedalus-opus-lineup-refresh-2026-07-05.md`) with the exact change needed.
-- **What Daedalus does:** Add `claude-opus-4-8` entry + relabel `claude-opus-4-7`. Small, same-shape change as the Sonnet 5 / Fable 5 update. Also: Fable 5 description `'Claude 5 family'` is a placeholder.
-- **Pre-release timing:** Low-urgency; worth landing before the v1.0 cut so the picker reflects the current full lineup.
-- **Date added:** 2026-07-05
+- **Correction (Argus, 8/4):** three weeks of sweeps escalating "users cannot select Opus 5, picker two generations stale" were aimed at the wrong seam. The picker has been **dynamic since Daedalus's 6/21 landing** — runtime validation via `isValidModel` against `/api/models` discovery; when the live API lists `claude-opus-5` (launched 7/24), Klatch can already offer and accept it. `AVAILABLE_MODELS` is labels + offline fallback only. The 7/05 lineup-refresh ask is superseded (`argus-to-daedalus-model-overlay-refresh-2026-08-04.md`; old memo moved to `read/`).
+- **What Daedalus does (all small):** overlay label rows for 4.8 + Opus 5; drop 4.7's stale "Newest Opus" label; Sonnet 5 tokenizer clause; `buildFallback()` default-mismatch one-liner (`useModels.ts:20` returns 4-6 while `DEFAULT_MODEL` is 4-7 — derive, don't restate); SDK `^0.110` → `^0.115`.
+- **What's yours:** the **DEFAULT_MODEL flip** (4.7 → 4.8 or Opus 5) — your decision per the manual-constant design note, same as the 4.6→4.7 precedent. No urgency.
+- **Date added:** 2026-07-05 · **Reframed:** 2026-08-04
 
 ### MAXT Session 02 + April-28 round-trip MAXT — parked
 - **What:** Theseus's MAXT Session 02 and Daedalus's April-28 round-trip MAXT both need xian's live attention. Not time-pressured; xian rouses Theseus situationally.
@@ -88,10 +88,10 @@ Awareness, no action needed.
 ### Cohort status (Amber, verified 2026-08-04 ~23:15 PT)
 All five migrated to Amber in standing worktrees (`klatch-worktrees/*`) with structural per-worktree git identity (`extensions.worktreeConfig` — verified live in Calliope's and Iris's worktrees; Pard confirms all five). Predecessor session-crons are dead by design (session-scoped + 7-day cap); durable duty cycles are LaunchAgents Pard wires per cadence memo. **Automated fires run with no network** — they commit, the wrapper delivers host-side.
 - **Calliope** — resumed 8/4 (last across, by design). Probe-design correction folded into the discretion straw man; cadence requested: 4/day (08:30/12:30/17:00/21:30).
-- **Argus** — across; delivered the owed discretion probe-design reply (16 days late, named as such). Cadence requested: 3/day (09:00/13:30/18:00).
+- **Argus** — across; delivered the owed discretion probe-design reply (16 days late, named as such). **Cycle ARMED** (Pard, 8/4): 09:00/13:30/18:00, first fire 8/5; his wrapper design (pre-pull before fire, host-side delivery after, one log line per invocation) is now the generic pattern the rest of us inherit. Curated 3 backlogged sweeps; landed the `better-sqlite3` v12 fix (below) and pinned `playwright@1.61.0` exact.
 - **Iris** — across; §6 candidate replacement text drafted 8/4 (held for live session). Cadence requested: 2/day (07:17/19:17).
-- **Daedalus** — across and working per Pard's 8/4 reviewer memo; still held on the Interpretation A/B + identity-resolution answers, ready to start the moment they land.
-- **Theseus** — across per Pard's 8/4 reviewer memo; MAXT remains deferred until continuity exists (running it now would test L5 persona portability, not the actual question).
+- **Daedalus** — across and working per Pard's 8/4 reviewer memo; still held on the Interpretation A/B + identity-resolution answers, ready to start the moment they land. Overlay-grooming asks from Argus queued in his lane.
+- **Theseus** — across and already earning: first Amber session found the **Node-26 arrival blocker** (`better-sqlite3` ^11 won't compile on Amber's Node 26 — every worktree blocked from `npm install`/tests) and routed it; Argus landed the fix same night (`^12.11.1`, suite green **1332 passing**, matching the 7/19 baseline exactly). MAXT itself remains deferred until continuity exists (running it now would test L5 persona portability, not the actual question).
 
 ### Composition gesture + beta gate — FULLY CLEAR ✅
 - All 7 increments on main. MAXT Session 03: 15/15. R45: 8/8. R46 (clone): 8/8, 0 Phantoms. R47 (@mention): 8/8, 0 Phantoms. All green.
@@ -109,6 +109,8 @@ All five migrated to Amber in standing worktrees (`klatch-worktrees/*`) with str
 
 - ~~**Amber migration (all five Klatch agents)**~~ — complete. Five handoffs filed and reviewer-verified by Pard ("strongest batch of the twenty-one migrations this constellation has run"). Per-worktree git identity structural; federation link to Janus's cross-project rollup survives by repo identity (nothing to re-point); intel-sweep cloud triggers ran straight through the 16-day gap and need no rebuild. *Closed 8/4.*
 - ~~**Argus's owed discretion probe-design reply**~~ — delivered 8/4 (held open since 7/19; session died mid-cycle before it was written). Probe designs per position now in the straw man doc, not just in mail. *Closed 8/4.*
+- ~~**Node-26 arrival blocker (`better-sqlite3` won't compile)**~~ — found by Theseus on first Amber session, fixed by Argus same night (`^12.11.1`); full suite green under the bump, 1332 passing = 7/19 baseline. First-day proof the team's find→route→fix loop survived the migration. *Closed 8/4.*
+- ~~**"Opus 5 not selectable" sweep escalation**~~ — false alarm, corrected by Argus 8/4: picker is dynamic since 6/21; what remains is overlay grooming (🟡, reframed). *Closed 8/4.*
 
 ## 🟢 Resolved since prior board (7/5)
 
@@ -144,7 +146,7 @@ All five migrated to Amber in standing worktrees (`klatch-worktrees/*`) with str
 
 ## Changelog
 
-- **v23 (2026-08-04 ~23:15 PT, Calliope)** — First Amber render, post-migration. Decision state verified unchanged (predicate: no xian-authored mail since 7/19; Argus's same-day check concurs). 🔴 item enriched with the 8/4 staging: Daedalus assembly-inversion read (team rec: assembly-only = Interpretation B), Argus per-position probe designs (straw man corrected 8/4 — two probe layers, not "binary"), Iris §6 candidate text (held for live session). Cohort section rewritten for Amber (worktrees, identities, LaunchAgent cadences). 🟡 count corrected 5→4 (miscount in v22). CIO item honestly marked unverified-since-June. 🟢 +2 (migration complete; Argus's owed reply delivered).
+- **v23 (2026-08-04 ~23:30 PT, Calliope)** — First Amber render, post-migration. Decision state verified unchanged (predicate: no xian-authored mail since 7/19; Argus's same-day check concurs; Iris verified git 7/25+ is migration traffic only). 🔴 item enriched with the 8/4 staging: Daedalus assembly-inversion read (team rec: assembly-only = Interpretation B), Argus per-position probe designs (straw man corrected 8/4 — two probe layers, not "binary"), Iris §6 candidate text (held for live session). Cohort section rewritten for Amber (worktrees, identities, LaunchAgent cadences; Argus armed same evening). 🟡 count corrected 5→4 (miscount in v22); Opus-picker 🟡 reframed per Argus's 8/4 wrong-seam correction (picker dynamic since 6/21 — no availability gap; DEFAULT_MODEL flip surfaced as xian's). CIO item honestly marked unverified-since-June. 🟢 +4 (migration complete; Argus's owed reply; Node-26 blocker found→fixed same night; Opus-5-selectable false alarm corrected).
 - **v22 (2026-07-19 ~11:25 PT, Calliope)** — see header of prior render; superseded text summarized: continuity finding replies same-day, Q4 answered (v0.9.x alpha), Interpretation A/B fork holds Daedalus, ~49→16 imports correction.
 - **v20 (2026-07-06 ~07:05 PT, Argus)** — Sweep #15 (auto 6/29–7/6) reviewed. New 🟡: Sonnet 5 tokenizer +30% compaction impact (threshold 160K was calibrated for 4.6; Sonnet 5 users hit it in ~77% as many turns). MCP spec July 28 RC: beta SDKs out, 22 days to final (no 1.0 action — stdio-only). Opus 4.8 still pending Daedalus reply. Suite 1332 green. 🟡 +1 → 5.
 - **v19 (2026-07-05 ~12:50 PT, Argus)** — SDK `^0.110` runtime-confirmed green after `npm install` + full suite (exit 0). Opus 4.8 gap found + Daedalus memo filed (`argus-to-daedalus-opus-lineup-refresh-2026-07-05.md`). Mail threads closed (Calliope + Daedalus). 🟡 +1 (Opus lineup refresh). v18 timestamp error noted (committed 12:44 PT, not 17:30 PT).
