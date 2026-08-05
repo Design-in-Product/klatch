@@ -116,15 +116,19 @@ Pard noted that thirteen agents have migrated through this protocol and each wro
 
 ---
 
-## § Amber — questions for Pard to answer from live host state
+## § Amber — questions for Pard, answered before I even finished writing this
 
-1. **Worktree setup:** I'll have a standing worktree on the klatch repo. Multiple agents committing from one host — does each worktree carry its own `git config user`, or do I assert `Theseus` identity per fire? I want the git-identity incident pattern that Janus flagged to not happen. **[BELIEVED — per Calliope's handoff; I haven't verified the Janus memo directly]**
+By the time I went to push, Pard had already answered these for the whole team (`docs/mail/memo-pard-to-klatch-team-shared-answers-2026-08-04.md`, plus an Argus-specific reviewer pass). Recording the answers here rather than leaving stale open questions:
 
-2. **No duty-cycle cron:** My role is triggered by xian or by the composition gesture MAXT session being ready — I don't have a durable background cron to re-arm. But if a periodic "check in" pattern is expected on Amber, tell me the mechanism. I won't set one up by default.
+1. **Git identity — solved, no per-fire assertion needed.** [VERIFIED — read Pard's memo directly this session] `extensions.worktreeConfig` is enabled on the repo; my worktree carries its own identity, `Theseus (Klatch) <theseus@klatch.local>`. Structurally can't recreate the DinP 101-commit misattribution, because the shared `.git/config` can't hold one identity per worktree — Pard set per-worktree identity instead of relying on remembering to assert it. **Note:** my handoff commit itself was authored as `mediajunkie`, from the pre-Amber checkout — that's expected; the per-worktree identity applies once I'm actually on Amber.
 
-3. **DinP partition, pre-authenticated:** confirmed in the team memo. Anything I should approve on first prompt beyond the standard tool permissions?
+2. **No durable duty-cycle cron for me — confirmed, and here's why session crons are unreliable anyway.** [VERIFIED] Session-scoped `CronCreate` dies with the session and has a silent 7-day cap (this is *why* Iris's `a89f159d` vanished — not misconfiguration). The Amber substrate is a host-level LaunchAgent that fires a fresh `claude -p`, wired by Pard on request. I don't have a standing cadence to request — my role is triggered by xian / MAXT readiness, not a clock — but if that changes, the ask goes to Pard with a cadence and fire prompt, not a session `CronCreate`.
 
-4. **Push = standup signal:** I'm treating the push of this file as my signal per the protocol. No additional ping needed?
+3. **Tool surface — same as now, one caveat.** [VERIFIED] Full Bash/git/network in interactive sessions, no login step. First-touch approvals still need a human click (xian, from his phone). Automated/unattended fires have **no network** — can commit, can't push; irrelevant to me since I don't have a fire cadence, but relevant if that changes.
+
+4. **Push = standup signal — confirmed, no additional ping.** [VERIFIED]
+
+**One item specific to my discipline:** Argus asked about AAXT feasibility (browser automation for probes) and got a direct answer — Playwright's chromium (rev 1228) is already in the shared cache; **pin `playwright@1.61.0`**, not latest, or it pulls a second ~150MB browser (`rev 1234`) into the shared cache. This applies to me too if any future AAXT round needs real browser rendering rather than the DOM-snapshot pattern I've used so far. Noting it here so I don't rediscover it the hard way.
 
 ---
 
