@@ -1,9 +1,11 @@
 export const AVAILABLE_MODELS = {
-  'claude-opus-4-7': { label: 'Opus 4.7', description: 'Newest Opus — adds xhigh effort + thinking summaries' },
-  'claude-opus-4-6': { label: 'Opus', description: 'Most capable, highest quality' },
+  'claude-opus-5': { label: 'Opus 5', description: 'Newest Opus — most capable, highest quality' },
+  'claude-opus-4-8': { label: 'Opus 4.8', description: 'Long-horizon agentic work, warmer prose' },
+  'claude-opus-4-7': { label: 'Opus 4.7', description: 'Adds xhigh effort + thinking summaries' },
+  'claude-opus-4-6': { label: 'Opus 4.6', description: 'Prior-generation Opus' },
   'claude-sonnet-5': { label: 'Sonnet 5', description: 'Newest Sonnet — balanced speed and quality' },
   'claude-sonnet-4-6': { label: 'Sonnet', description: 'Balanced speed and quality' },
-  'claude-fable-5': { label: 'Fable 5', description: 'Claude 5 family' },
+  'claude-fable-5': { label: 'Fable 5', description: 'Frontier capability, export-control-cleared' },
   'claude-haiku-4-5-20251001': { label: 'Haiku', description: 'Fastest, most compact' },
 } as const;
 

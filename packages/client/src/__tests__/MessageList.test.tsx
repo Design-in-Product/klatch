@@ -186,7 +186,7 @@ describe('MessageList — message rendering', () => {
       }),
     ];
     render(<MessageList {...defaultProps} messages={messages} />);
-    expect(screen.getByText('Opus')).toBeInTheDocument();
+    expect(screen.getByText('Opus 4.6')).toBeInTheDocument();
   });
 
   it('shows "..." for streaming messages with no content', () => {

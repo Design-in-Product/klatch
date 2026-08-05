@@ -73,11 +73,13 @@ describe('Model validation — discovered-set unification (new behavior)', () =>
     _clearModelsCacheForTest(); // force getModels() → fetch throws (no key) → AVAILABLE_MODELS fallback
     const app = createTestApp();
 
-    // a static key (4.7) still validates offline — no regression
-    const ok = await app.request('/api/channels', postJson({ name: 'Fallback OK', model: 'claude-opus-4-7' }));
+    // a static key (4.8, in the curated overlay since the Aug 2026 lineup refresh)
+    // still validates offline — no regression
+    const ok = await app.request('/api/channels', postJson({ name: 'Fallback OK', model: 'claude-opus-4-8' }));
     expect(ok.status).toBe(201);
-    // 4.8 is discovery-only — offline it is NOT accepted (the API has to be reachable)
-    const no = await app.request('/api/channels', postJson({ name: 'Fallback No', model: 'claude-opus-4-8' }));
+    // a model outside the overlay is discovery-only — offline it is NOT accepted
+    // (the API has to be reachable)
+    const no = await app.request('/api/channels', postJson({ name: 'Fallback No', model: 'claude-opus-4-9' }));
     expect(no.status).toBe(400);
   });
 

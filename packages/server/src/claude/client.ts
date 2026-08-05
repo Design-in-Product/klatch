@@ -662,7 +662,7 @@ async function streamClaudeCore(
     } else {
       let errorMsg: string;
       if (err instanceof Anthropic.AuthenticationError) {
-        errorMsg = 'Invalid API key. Set ANTHROPIC_API_KEY in .env and restart the server.';
+        errorMsg = 'Invalid or expired API key. Check ANTHROPIC_API_KEY in .env — if you created the key with an expiration date, it may have lapsed.';
       } else if (err instanceof Anthropic.APIError) {
         errorMsg = `API error (${err.status}): ${err.message}`;
       } else {

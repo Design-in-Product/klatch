@@ -240,7 +240,8 @@ describe('Model provenance', () => {
   }
 
   it('resolves known model IDs to labels', () => {
-    expect(modelLabel('claude-opus-4-6')).toBe('Opus');
+    expect(modelLabel('claude-opus-5')).toBe('Opus 5');
+    expect(modelLabel('claude-opus-4-6')).toBe('Opus 4.6');
     expect(modelLabel('claude-sonnet-4-6')).toBe('Sonnet');
     expect(modelLabel('claude-haiku-4-5-20251001')).toBe('Haiku');
   });
