@@ -14,13 +14,19 @@
 
 | Needs you | Blocked-on-others | Lower-urgency | In-flight |
 |---|---|---|---|
-| **1** | **0** | **4** | **3** |
+| **2** | **0** | **4** | **3** |
 
-*🔴: (1) the agent-continuity scoping decisions — the work that gates 1.0. Unchanged since 7/19, but now fully staged: every input the team could prepare for them is prepared. (🟡 count corrected 4, matching the section's actual entries — v22 said 5 against the same four.)*
+*🔴: (1) `ANTHROPIC_API_KEY` on Amber — two-minute provisioning, blocks running the app on this host; (2) the agent-continuity scoping decisions — the work that gates 1.0, unchanged since 7/19 but now fully staged: every input the team could prepare for them is prepared. (🟡 count corrected 4, matching the section's actual entries — v22 said 5 against the same four.)*
 
 ---
 
 ## 🔴 Needs you — FIRST, always
+
+### Provision `ANTHROPIC_API_KEY` on Amber (two-minute action, blocks running the app)
+
+- **What:** No `.env` / `ANTHROPIC_API_KEY` exists anywhere on Amber (Argus, 8/4, verified during his arrival session). This blocks **running Klatch itself on this host** and parks AAXT R46–R50 (probes need a live model; the playwright/chromium harness is otherwise ready).
+- **What you do:** supply the key — to Pard for host-side placement, or drop a `.env` at the repo root yourself. Nothing else in the stack is waiting on more than this.
+- **Date added:** 2026-08-04
 
 ### Agent continuity — four scoping decisions (gates 1.0)
 
