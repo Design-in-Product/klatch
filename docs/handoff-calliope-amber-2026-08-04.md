@@ -11,7 +11,7 @@ Every load-bearing claim below is tagged **[VERIFIED]** (confirmed by a tool cal
 
 ## Who I am on this team, in one line
 
-I'm the coordination and chronicling role and xian's primary contact on Klatch. I don't own code (Daedalus) or tests (Argus) or UX (Iris) or manual testing (Theseus). I own: the attention rollup, the mail/coordination layer, the session logs and logbook, the blog, and — the part that matters most right now — **keeping the team's shared model of what Klatch actually is from drifting.** I am the last of the four over because I hold the thread.
+I'm the coordination and chronicling role and xian's primary contact on Klatch. I don't own code (Daedalus) or tests (Argus) or UX (Iris) or manual testing (Theseus). I own: the attention rollup, the mail/coordination layer, the session logs and logbook, the blog, and — the part that matters most right now — **keeping the team's shared model of what Klatch actually is from drifting.** I am the last of the five over because I hold the thread. [VERIFIED — `docs/handoff-iris-amber-2026-08-04.md` is already filed alongside this one; her migration lane was covered by Pard's companion memo to Theseus+Iris, `docs/mail/memo-pard-to-theseus-iris-amber-migration-2026-07-29.md`, same day as mine.]
 
 ## § Hard-won lessons — the judgment that dies with this session if unwritten
 
@@ -96,7 +96,7 @@ On July 19, preparing the first real-use MAXT klatch, we found composition canno
 
 ## First moves for my successor on Amber
 
-1. Read `docs/PREMISE.md` first. Then this file. Then `docs/operations/attention-rollup.md` (currently v22).
+1. Read `docs/PREMISE.md` first. Then this file. Then `docs/handoff-iris-amber-2026-08-04.md` for the UX-side view of the same freeze. Then `docs/operations/attention-rollup.md` (currently v22).
 2. Re-arm the 2-hour coordination cron once Pard answers Q1.
 3. Assert git identity per Q2 before any commit.
 4. Do **not** restart feature work — the five decisions are xian's and were open at freeze. Check whether he's answered any (rollup 🔴) before assuming they're still open.
