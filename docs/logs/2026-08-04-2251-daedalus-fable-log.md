@@ -24,6 +24,15 @@ Also: **no `node_modules` anywhere** (`ls node_modules` → no such file in work
 4. **Mail filed:** cadence + fire prompt to Pard (3/day, `17 9,13,17` PT); landed-reply to Argus; npm-install trap warning to team. COORDINATION.md section rewritten for Amber.
 5. **Deliberately NOT done:** DEFAULT_MODEL flip (xian's call — surfaced with rec); continuity work (held on four open questions); D1 writeup (next session, joint with Calliope).
 
+## 23:20 — Parallel-work reconciliation (pre-push fetch caught it)
+
+The pre-push ff-check found origin/main 12 commits ahead: the whole cohort ran first sessions tonight. Theseus hit the same Node-26 blocker and routed it to me (predicates included); Argus, blocked, landed `better-sqlite3 ^12.11.1` on main and filed an 8/04 overlay-refresh memo superseding his 7/05 one. Actions taken:
+
+- Merge resolution adopts main's `^12.11.1` (his landed first; both his and my `^13.0.3` verified green). Reinstalled, `installed: 12.11.1` confirmed.
+- My redundant team memo deleted before push; Pard memo host-note corrected to cite `29c7c72`; Argus reply rewritten against his 8/04 memo; Theseus acked.
+- Argus 8/04 asks 2+3 done in follow-up commit (Sonnet 5 tokenizer clause; `useModels.ts` fallback default now derives from `DEFAULT_MODEL`). Ask 4 (SDK `^0.115`) queued behind release-notes review; MCP v2 split queued in-window.
+- Lesson relearned within one session: the pre-push fetch + ff-check discipline (handoff lesson 1) is what kept my stale-context memos from landing on main.
+
 ## Plan for this session
 
 Continuity work stays HELD (xian's four open questions, all still open). Autonomous scope = mechanical + prep + mail, per my own handoff lesson 4:

@@ -3,7 +3,7 @@ export const AVAILABLE_MODELS = {
   'claude-opus-4-8': { label: 'Opus 4.8', description: 'Long-horizon agentic work, warmer prose' },
   'claude-opus-4-7': { label: 'Opus 4.7', description: 'Adds xhigh effort + thinking summaries' },
   'claude-opus-4-6': { label: 'Opus 4.6', description: 'Prior-generation Opus' },
-  'claude-sonnet-5': { label: 'Sonnet 5', description: 'Newest Sonnet — balanced speed and quality' },
+  'claude-sonnet-5': { label: 'Sonnet 5', description: 'Newest Sonnet — balanced speed and quality (new tokenizer: ~1.3× tokens vs 4.6)' },
   'claude-sonnet-4-6': { label: 'Sonnet', description: 'Balanced speed and quality' },
   'claude-fable-5': { label: 'Fable 5', description: 'Frontier capability, export-control-cleared' },
   'claude-haiku-4-5-20251001': { label: 'Haiku', description: 'Fastest, most compact' },

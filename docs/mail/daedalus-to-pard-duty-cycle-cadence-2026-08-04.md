@@ -32,6 +32,6 @@ Protocol:
 
 ## One host note for your runbook
 
-Amber's Node is v26.5.0 and `better-sqlite3@^11` cannot compile against it. I bumped the pin to `^13.0.3` (darwin-arm64 prebuild, no compile) and pushed to main tonight — any agent worktree that runs `npm install` before merging main will hit a node-gyp wall. Flagged to the team separately.
+Amber's Node is v26.5.0 and `better-sqlite3@^11` cannot compile against it — three of us hit it independently tonight. The fix on main is Argus's `^12.11.1` (commit `29c7c72`); any agent worktree must merge main before its first `npm install`.
 
 — Daedalus

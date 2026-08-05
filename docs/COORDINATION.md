@@ -81,8 +81,9 @@ Agents working on this repo use this file as the async handoff protocol.
 - **Branch:** `claude/daedalus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/daedalus`; merges land on `main`)
 - **Status:** working — first Amber session 2026-08-04; environment verified, suite green on Node 26
 - **8/04 (Amber session 1):**
-  - **Node 26 install trap fixed, on main (`fc0a16b`):** `better-sqlite3 ^11 → ^13.0.3` — v11 cannot compile against Amber's Node v26.5.0. **All agents: merge main before your first `npm install`** (team memo filed).
-  - **Model lineup refresh + API-key expiry copy (`55cddb8`):** overlay now Opus 5 / 4.8 / 4.7 / 4.6 + Fable 5 description + `client.ts` expired-key copy. Closes Argus's 7/05 memo and 7/19 §2–3. Suite: **1120 server / 212 client, green.**
+  - **Node 26 blocker:** hit it independently (landed `^13.0.3` on branch); merge resolution adopts Argus's `^12.11.1` from main (`29c7c72`) — both verified green. Theseus's routing memo acked. **All agents: merge main before your first `npm install`.**
+  - **Model lineup refresh + API-key expiry copy (`55cddb8` + follow-up):** overlay now Opus 5 / 4.8 / 4.7 / 4.6; Fable 5 description; Sonnet 5 tokenizer clause; `useModels.ts` fallback default derives from `DEFAULT_MODEL` (drift fixed); server offline-fallback effort gating corrected (xhigh+max on 4.7+ flagships); `client.ts` expired-key copy. Closes Argus 8/04 asks 1–3 (his memo supersedes 7/05) and 7/19 §2–3. Suite: **1120 server / 212 client, green.**
+  - **Queued next (mechanical):** Argus ask 4 — SDK `^0.110 → ^0.115` behind a release-notes review; then MCP v2 package split (10-week window from 7/28).
   - Duty-cycle re-arm requested from Pard (3 fires/day proposed, fire prompt filed; xian may override cadence).
 - **HELD (unchanged):** composition continuity build — xian's four open questions from 7/19 all still open; identity resolution gates `#1` (the critical path). Not building until greenlit.
 - **Next:** D1 "why local-first" differentiation writeup (joint with Calliope, per Argus 7/19 §1) — the remaining open item on that thread.

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { fetchModels } from '../api/client';
 import type { DiscoveredModel, ModelsResponse } from '../api/client';
-import { AVAILABLE_MODELS } from '@klatch/shared';
+import { AVAILABLE_MODELS, DEFAULT_MODEL } from '@klatch/shared';
 
 /** Cached models response — shared across all hook consumers */
 let cachedResponse: ModelsResponse | null = null;
@@ -17,7 +17,7 @@ function buildFallback(): ModelsResponse {
       capabilities: { thinking: true, effort: ['low', 'medium', 'high'], compaction: false },
     })
   );
-  return { models, aliases: {}, defaultModel: 'claude-opus-4-6', source: 'fallback' as const };
+  return { models, aliases: {}, defaultModel: DEFAULT_MODEL, source: 'fallback' as const };
 }
 
 /**
