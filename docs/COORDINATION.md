@@ -78,8 +78,20 @@ Agents working on this repo use this file as the async handoff protocol.
 - **Updated:** 2026-03-16 19:57
 
 ### Daedalus (architecture & implementation)
-- **Branch:** `claude/daedalus` (duty cycle, Phase 2; merges land on `main`)
-- **Status:** working — composition spine increment 1 merged to `main`; building increment 2
+- **Branch:** `claude/daedalus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/daedalus`; merges land on `main`)
+- **Status:** working — first Amber session 2026-08-04; environment verified, suite green on Node 26
+- **8/04 (Amber session 1):**
+  - **Node 26 install trap fixed, on main (`fc0a16b`):** `better-sqlite3 ^11 → ^13.0.3` — v11 cannot compile against Amber's Node v26.5.0. **All agents: merge main before your first `npm install`** (team memo filed).
+  - **Model lineup refresh + API-key expiry copy (`55cddb8`):** overlay now Opus 5 / 4.8 / 4.7 / 4.6 + Fable 5 description + `client.ts` expired-key copy. Closes Argus's 7/05 memo and 7/19 §2–3. Suite: **1120 server / 212 client, green.**
+  - Duty-cycle re-arm requested from Pard (3 fires/day proposed, fire prompt filed; xian may override cadence).
+- **HELD (unchanged):** composition continuity build — xian's four open questions from 7/19 all still open; identity resolution gates `#1` (the critical path). Not building until greenlit.
+- **Next:** D1 "why local-first" differentiation writeup (joint with Calliope, per Argus 7/19 §1) — the remaining open item on that thread.
+- **Surfaced to xian (input needed):**
+  1. **DEFAULT_MODEL flip** `claude-opus-4-7` → `claude-opus-5`? Drop-in at 4.8 pricing, separate rate-limit bucket, same tokenizer family as 4.7 so compaction math holds. My rec: flip. One-line change once called.
+  2. **No `ANTHROPIC_API_KEY` / `.env` reachable on Amber** (checked env + main checkout + worktree) — still blocks SDK `^0.110` real-stream verify, Fable 5 smoke test, and any live-app run.
+  3. **Real test-data `klatch.db` not found on Amber** — `find` over `~/Development/klatch{,-worktrees}` depth 4 → only March backups. Continuity testing needs it; where does it live?
+  4. **Paths B/C** still need an explicit schedule-or-descope call (carried from pre-freeze).
+- **Updated:** 2026-08-04 23:05
 - **Last completed (6/21): Composition gesture spine increment 1 — MERGED to main (`7d42822`).** The 1.0 critical-path front-door. Substrate was more built than spec §9 implied (no migration; `channels.mode`/`type`, create+assign routes, `parseMentions` all existed) — so this evolved the existing front-door. Shipped: atomic agent-roster at creation (`createChannel(...entityIds)` + `POST /channels` validation — kills the stray-default-entity wart); `getChannelEntities` deterministic `ce.rowid` tiebreak (roster-order, fixes Argus's same-second-tie finding); dual **New Chat / New Klatch** affordance; Purpose label. +8 tests (composition-gesture.test.ts ×4, queries.test.ts ×4). Server 1097/1097. Tandem collision with Argus on `round25` + `ChannelSidebar.test.tsx` resolved cleanly (his round25 kept, my ChannelSidebar superset won). **Next increments:** picker polish (typeahead/chips/roles-first) → Paths B/C → @mention autocomplete → clone → cross-ref. project-optional flip pends Iris (`daedalus-to-iris-klatch-project-optional-tension`). PM #972 replied (valid_from/valid_until).
 - **Last completed:** Step 10 close-out polish wave (after 5c-i ship):
   - `removeReflectionsWhere(entityId, predicate)` helper added to queries; smoke-test row removed from live klatch.db.
