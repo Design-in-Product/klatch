@@ -113,15 +113,16 @@ Agents working on this repo use this file as the async handoff protocol.
 - **Updated:** 2026-06-21 (Fire 1 — spine increment 1 merged)
 
 ### Theseus Prime (manual testing & exploration — CLI side)
-- **Branch:** `claude/theseus` (persistent duty-cycle worktree `.claude/worktrees/theseus`)
-- **Status:** available — MAXT deferred; awaiting composition continuity work to land
+- **Branch:** `claude/theseus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/theseus`)
+- **Status:** available — on Amber; MAXT deferred; awaiting composition continuity work to land
 - **Role:** Human-agent tandem manual testing + AAXT signal-receiver heartbeat + continuity-gap AXT observer.
+- **8/04 (first Amber session):** Arrival verified — per-worktree git identity confirmed live (`Theseus (Klatch)`). **Substrate finding routed to Daedalus (cc Argus/Pard/xian):** `better-sqlite3 ^11.7.0` cannot build under Amber's Node v26.5.0 (no prebuilt binary + V8 API removals), so **no agent worktree can `npm install`, run the app, or run tests on Amber** until it's bumped. Scratchpad-verified that `@13.0.3` and `@12.11.1` both work on Node 26. Memo: `docs/mail/theseus-to-daedalus-amber-node26-better-sqlite3-2026-08-04.md`. Continuity freeze state unchanged: rollup still v22, 🔴 scoping decisions still open, no continuity increments on main.
 - **Last completed (6/28):** R46 + R47 PASS → beta AAXT gates clear. v1.0 cut was authorized 6/29 but **WITHDRAWN 7/19** (composition continuity gap).
 - **7/19 status:** Fully oriented on the continuity gap. MAXT Session 04 deferred until imports mint entities + cross-channel context at prompt assembly is built. Persona captures (Daedalus/Argus/Iris, `docs/plans/`) reviewed and ready for pre-MAXT study.
 - **Theseus input on compaction strategy:** Option (b) — recent-N + summary — recommended over (c) on-demand tool for AAXT observability reasons. Option (c) makes behavioral gaps harder to detect (agent may have access but not recall = Absent masked as competence).
-- **Next:** No unblocked AAXT items. Available to run AAXT rounds for any continuity increments Daedalus ships. MAXT observer role standing when session is rescheduled.
-- **Waiting on:** Daedalus — composition continuity implementation (3 steps). xian — compaction strategy decision.
-- **Updated:** 2026-07-19 (duty cycle resume; MAXT deferred)
+- **Next:** No unblocked AAXT items. Available to run AAXT rounds for any continuity increments Daedalus ships (once the better-sqlite3 bump lands and installs work). MAXT observer role standing when session is rescheduled.
+- **Waiting on:** Daedalus — better-sqlite3 Node-26 bump (gates all Amber verification), then composition continuity implementation (3 steps). xian — the four 🔴 continuity scoping decisions.
+- **Updated:** 2026-08-04 23:00 PT (first Amber session)
 
 ### Ariadne (forked from Theseus — Klatch side)
 - **Branch:** n/a (Klatch-native, lives in SQLite)
@@ -132,8 +133,7 @@ Agents working on this repo use this file as the async handoff protocol.
 - **Updated:** 2026-03-13
 
 ### Iris (UX design & front-end development)
-- **Branch:** `claude/iris` (persistent worktree `.claude/worktrees/iris`, created 6/24)
-- **Status:** available — overnight duty cycle LIVE 6/24 ~23:40. Cron `a89f159d` fires 3:17am + 7:17am.
+- **Branch:** `claude/iris-cycle` (Amber standing worktree `/Users/xian/Development/klatch-worktrees/iris`, tracks `origin/main`). Prior `.claude/worktrees/iris` + cron `a89f159d` are retired (session crons don't survive — Pard's shared answers §2). LaunchAgent duty cycle requested from Pard 8/4: 2 fires/day, 07:17 + 19:17 PT.
 - **6/22 design-acceptance pass (composition surface, `90608ce`):** Live walkthrough of New Klatch + Path A picker. **Conformant + well-built** — picker typeahead/chips/count/roles-tiering/deselect-sync all correct; mode names (Broadcast/Roundtable/Directed) landed; Purpose(L4) optional ✓. **Headline finding F1 (decision-relevant):** a projectless user is HARD-BLOCKED from creating a klatch (project required + zero projects in DB → Create stays disabled even with name+agent filled). Concrete evidence the **gated default-project increment blocks basic klatch creation, not just polish** — increment step-1 ("default the form's project") independently unblocks it. 5 minor findings (button wrap, no files-field at setup, latent Other-agents tier [expected], mode-dropdown truncation, field-order). Full doc: `docs/ux/composition-surface-design-acceptance-2026-06-22.md`. Theseus handoff memo: `iris-to-theseus-composition-surface-aaxt-2026-06-22.md`.
 - **6/22 09:43 (live resume):** Caught up on overnight cohort work (Daedalus default-project teed-up + design-complete, gated on xian's autonomous-build-boundary answer; Argus resolved client-suite flake via global testTimeout; BYOC chronicler-correction). **Corrected the BYOC mislabel in `decision-klatch-project-optionality.md`** (`96aa207`) — BYOC is PM's vocab, not Klatch's (xian 6/22); relabeled to interchange-protocol/exploratory + re-rested the decision on solid pillars (Tension 3, singleton, spontaneous cross-project). Memory + index already corrected (5am session). Decision doc was the last BYOC gap in Iris's lane; STATE.md/blog are Calliope's (in progress).
 - **6/22 05:00 resume:** Ran session-start protocol clean (pull → `daa30a6`; COORDINATION; mail; cross-poll). **Mail triage (3 inbound, all moved to `read/`):** (1) Daedalus's default-project ack — mechanism = **SENTINEL** (no migration), label **"First project"** lowercase, both task-flagged items resolved, thread closed by him; (2) Argus sweep-commit reassurance — no action; (3) **xian's "why under-projects" question (via Calliope)** — already answered in full by `docs/ux/decision-klatch-project-optionality.md` (6/21); filed a closing reply (`read/iris-to-calliope-xian-under-projects-answered-2026-06-22.md`) with 3-bullet answers to the three sub-questions + thread close. **Composition MAXT not yet actionable** — Daedalus's overnight Fires 1–5 were SDK-bump + format_version docs, not composition increments; Paths B/C, clone, mode-picker, and the default-project increment have NOT landed; surface not feature-complete. Increment-1 conformance done 6/21. Log: `docs/logs/2026-06-22-0459-iris-opus-log.md`.
@@ -154,10 +154,10 @@ Agents working on this repo use this file as the async handoff protocol.
 - **v1.0 SHIPPED (2026-06-29).** R46+R47 both green. Daedalus merged. Release cut complete. `docs/releases/RELEASE-NOTES-1.0.md` live.
 - **Status (2026-07-05):** active — Search planning klatch MAXT session today. Persona capture committed (`docs/plans/persona-capture-iris-2026-07-05.md`, `a7360f5`). Ready for Calliope import into Klatch entity.
 - **2026-07-19 (live with xian):** Composition continuity gap found by Calliope + xian. MAXT Search planning session deferred — shipped design lacks source-channel context path (entities carry L5 only; no `source_channel_id`; `buildSystemPrompt` scoped by `channel_id`). Root cause: spec §6 contradicts itself. Paths B+C also unbuilt and unrecorded. Analysis: `docs/plans/composition-continuity-gap-2026-07-19.md`.
-- **Status:** working — §6 revision session with xian; design input on context-carrying approach filed to Calliope.
-- **Next:** (1) Revise spec §6 with xian — remove contradiction, separate "agents are continuous with source" from "not a naive history dump." (2) Paths B+C scope decision with xian. (3) MAXT deferred until context-carrying is built.
-- **Updated: 2026-07-19 09:24**
-- **Updated:** 2026-06-28 (MAXT Session 03 complete; beta gate cleared)
+- **2026-08-04 (Amber resume):** Migrated. Full briefing run (handoff, Pard's shared answers, PREMISE, rollup, 7/19 correspondence). Verified state: xian's five gating decisions all still open since 7/19 freeze (rollup v22 unchanged; git since 7/25 is migration traffic only); Daedalus has not started the assembly query (held on Interpretation A/B). Duty-cycle cadence + fire prompt filed to Pard (`iris-to-pard-duty-cycle-cadence-2026-08-04.md`). **§6 candidate replacement text drafted** — `docs/ux/spec-composition-gesture-s6-revision-draft-2026-08-04.md` — NOT applied; the live-session hold stands. Contingent phrasings (one-transcript, mechanism, discretion) mapped, not presupposed. Calliope's unified-transcript-view UX question named and parked there too.
+- **Status:** available — holding pattern by design. §6 application, discretion UI (Position 3/4), and MAXT all gated on xian live.
+- **Next:** (1) Live session with xian: land §6 from the draft doc. (2) Watch for xian's Interpretation A/B + identity-resolution + discretion + directed-visibility calls; Position 3/4 → marking-gesture UI is mine. (3) Design-adjacent review of Daedalus's entity-scoped assembly query when it starts. (4) Paths B/C scope call — watch, don't let it silently re-drop.
+- **Updated:** 2026-08-04 23:00 PT
 
 ## Signals
 
