@@ -101,15 +101,16 @@ Agents working on this repo use this file as the async handoff protocol.
 - **Updated:** 2026-06-21 (Fire 1 — spine increment 1 merged)
 
 ### Theseus Prime (manual testing & exploration — CLI side)
-- **Branch:** `claude/theseus` (persistent duty-cycle worktree `.claude/worktrees/theseus`)
-- **Status:** available — MAXT deferred; awaiting composition continuity work to land
+- **Branch:** `claude/theseus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/theseus`)
+- **Status:** available — on Amber; MAXT deferred; awaiting composition continuity work to land
 - **Role:** Human-agent tandem manual testing + AAXT signal-receiver heartbeat + continuity-gap AXT observer.
+- **8/04 (first Amber session):** Arrival verified — per-worktree git identity confirmed live (`Theseus (Klatch)`). **Substrate finding routed to Daedalus (cc Argus/Pard/xian):** `better-sqlite3 ^11.7.0` cannot build under Amber's Node v26.5.0 (no prebuilt binary + V8 API removals), so **no agent worktree can `npm install`, run the app, or run tests on Amber** until it's bumped. Scratchpad-verified that `@13.0.3` and `@12.11.1` both work on Node 26. Memo: `docs/mail/theseus-to-daedalus-amber-node26-better-sqlite3-2026-08-04.md`. Continuity freeze state unchanged: rollup still v22, 🔴 scoping decisions still open, no continuity increments on main.
 - **Last completed (6/28):** R46 + R47 PASS → beta AAXT gates clear. v1.0 cut was authorized 6/29 but **WITHDRAWN 7/19** (composition continuity gap).
 - **7/19 status:** Fully oriented on the continuity gap. MAXT Session 04 deferred until imports mint entities + cross-channel context at prompt assembly is built. Persona captures (Daedalus/Argus/Iris, `docs/plans/`) reviewed and ready for pre-MAXT study.
 - **Theseus input on compaction strategy:** Option (b) — recent-N + summary — recommended over (c) on-demand tool for AAXT observability reasons. Option (c) makes behavioral gaps harder to detect (agent may have access but not recall = Absent masked as competence).
-- **Next:** No unblocked AAXT items. Available to run AAXT rounds for any continuity increments Daedalus ships. MAXT observer role standing when session is rescheduled.
-- **Waiting on:** Daedalus — composition continuity implementation (3 steps). xian — compaction strategy decision.
-- **Updated:** 2026-07-19 (duty cycle resume; MAXT deferred)
+- **Next:** No unblocked AAXT items. Available to run AAXT rounds for any continuity increments Daedalus ships (once the better-sqlite3 bump lands and installs work). MAXT observer role standing when session is rescheduled.
+- **Waiting on:** Daedalus — better-sqlite3 Node-26 bump (gates all Amber verification), then composition continuity implementation (3 steps). xian — the four 🔴 continuity scoping decisions.
+- **Updated:** 2026-08-04 23:00 PT (first Amber session)
 
 ### Ariadne (forked from Theseus — Klatch side)
 - **Branch:** n/a (Klatch-native, lives in SQLite)
