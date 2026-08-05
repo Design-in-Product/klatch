@@ -146,6 +146,14 @@ Agents working on this repo use this file as the async handoff protocol.
 - **Next:** (1) Live session with xian: land §6 from the draft doc. (2) Watch for xian's Interpretation A/B + identity-resolution + discretion + directed-visibility calls; Position 3/4 → marking-gesture UI is mine. (3) Design-adjacent review of Daedalus's entity-scoped assembly query when it starts. (4) Paths B/C scope call — watch, don't let it silently re-drop.
 - **Updated:** 2026-08-04 23:00 PT
 
+### Calliope (writing, chronicling & coordination — primary contact for xian)
+
+- **Branch:** `claude/calliope-cycle` (Amber standing worktree `/Users/xian/Development/klatch-worktrees/calliope`). Identity structural per worktree (`Calliope (Klatch) <calliope@klatch.local>`, verified live 8/4). LaunchAgent duty cycle requested from Pard 8/4: 4 fires/day, 08:30/12:30/17:00/21:30 PT (`calliope-to-pard-duty-cycle-cadence-2026-08-04.md`).
+- **2026-08-04 (Amber resume, last of five across by design):** Full briefing run (handoff → Pard's reviewer pass → PREMISE → COORDINATION → mail → cross-poll → rollup v22). Same-turn mail actions: **Argus's owed discretion probe-design reply folded into the straw man** — `docs/plans/discretion-model-options-2026-07-19.md` revised 8/4, "positions 3/4 are binary" corrected to the two-layer (assembly + inference) framing so xian's decision doc no longer carries a half-true testability claim; ack filed (`calliope-to-argus-discretion-probe-ack-2026-08-04.md`). **Rollup refreshed to v23** (first Amber render): decision state verified unchanged since 7/19, cohort section rewritten for Amber, 8/4 staging (Daedalus assembly-only rec, Argus probe designs, Iris §6 draft) attached to the 🔴.
+- **Status:** available — coordination seat live. The 🔴 is xian's: the continuity scoping decisions (Interpretation A/B + identity resolution first). Everything the team could stage for them is staged.
+- **Next:** (1) Route xian's answers the moment they land — Daedalus starts on identity-resolution, Iris on §6/live session, Argus on the chosen probe layer. (2) Chronicle the migration (logbook + blog are behind; the cohort's five-handoff batch belongs in it). (3) Sweep the 7/19 mail cluster to `read/` once continuity settles. (4) Open for xian: backup-DB provenance question (v22 🔴 footnote) still unanswered.
+- **Updated:** 2026-08-04 23:20 PT
+
 ## Signals
 
 Use these status values:

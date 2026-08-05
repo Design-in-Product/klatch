@@ -6,7 +6,7 @@
 
 **Trust-instrument discipline** (Exec 2026-06-19): every render comes from a fresh **verified sweep** of source docs — never from memory. A false "all clear" is a trust breach. "Quiet" must mean *verified-clear*, not *haven't-checked*.
 
-**Last refreshed:** 2026-07-19 ~11:25 PT (Calliope) — v22. All three agents replied same-day to the continuity finding. xian answered Q4 (**cut v0.9.x alpha**) and supplied a reframe that supersedes Q1: *one transcript per agent, channels are views*. Four open questions restated below, now led by Argus's **Interpretation A/B** fork, which changes the estimate ~10× and holds Daedalus. Stale "~49 imports" figure corrected to a verified 16. v21 was 09:00 PT.
+**Last refreshed:** 2026-08-04 ~23:15 PT (Calliope) — v23, first Amber render. **The 16-day freeze is over: all five agents are across, in per-worktree identities, duty cycles re-arming via Pard.** The decision state is unchanged — the scoping decisions below are still open (predicate: `ls -t docs/mail/` shows no xian-authored memo since 7/19; Argus independently verified same, 8/4) — but everything around them is now staged: Daedalus's assembly-only read is in, Argus's full probe designs are written into the discretion straw man, and Iris's §6 replacement text is drafted awaiting a live session. The day you answer, the team moves. v22 was 7/19.
 
 ---
 
@@ -14,9 +14,9 @@
 
 | Needs you | Blocked-on-others | Lower-urgency | In-flight |
 |---|---|---|---|
-| **1** | **0** | **5** | **2** |
+| **1** | **0** | **4** | **3** |
 
-*🔴: (1) four scoping decisions on agent continuity — the work that now gates 1.0. The previous 🔴 (cut v1.0.0, "all gates clear") is withdrawn: the gate was not actually clear. AVAILABLE_MODELS shipped. Opus 4.8 picker gap still open (🟡).*
+*🔴: (1) the agent-continuity scoping decisions — the work that gates 1.0. Unchanged since 7/19, but now fully staged: every input the team could prepare for them is prepared. (🟡 count corrected 4, matching the section's actual entries — v22 said 5 against the same four.)*
 
 ---
 
@@ -28,6 +28,7 @@
 - **How it happened:** Composition spec §6 line 156 contradicts itself in one paragraph ("agents bring their existing context from their ongoing 1-1 session" / "does not automatically inject prior conversation histories"). Implementation followed the second reading. Gravitational drift toward the ordinary multi-agent-chat model, not an individual lapse — hence `docs/PREMISE.md`.
 - **Analysis:** `docs/plans/composition-continuity-gap-2026-07-19.md` (verified against code)
 - **Answered so far:** **Q4 timing — cut v0.9.x alpha carrying what we thought 1.0 was**, hold 1.0 for the premise (xian, 7/19). Q1 mechanism largely superseded by your transcript reframe; team independently converged on hybrid (deterministic seed + on-demand tool) either way. Q3 backfill — Daedalus recommends forward-only plus an opt-in per-channel "mint an entity from this conversation" action rather than auto-migration.
+- **New since v22 — staging, not answers (8/4):** (a) Daedalus's architectural read (`docs/mail/daedalus-to-calliope-transcript-model-arch-read-2026-07-19.md`) reframes the work as an **assembly inversion, not a storage inversion** — messages already carry both `channel_id` and `entity_id`; only the assembly query is single-channel, so the premise is runnable by adding an entity-scoped assembly path with **no data migration**. He and Calliope both recommend assembly-only for the gate (that's Interpretation B below, chosen knowingly). (b) Argus delivered the full **per-position probe designs** for the discretion question — each walled position needs an assembly-layer AND an inference-layer probe; the straw man's old "3/4 are binary" claim was half-true and is now corrected in the doc itself (`docs/plans/discretion-model-options-2026-07-19.md`, revised 8/4). (c) Iris drafted **candidate §6 replacement text** (`docs/ux/spec-composition-gesture-s6-revision-draft-2026-08-04.md`) — held for a live session with you, with the contingent phrasings keyed to your A/B and discretion answers.
 - **Correction:** the "~49 imports" figure was repeated from a stale line in ROADMAP.md. **Verified dev DB: 16 channels** (12 claude-code, 4 native), no writes since 2026-05-10. A 106MB `klatch.db.backup-2026-04-13` in the repo root holds 2,367 channels (818 claude-code, 54 claude-ai, 1,495 native) — provenance unknown, possibly accumulated fixtures. **xian: what are those backup files?**
 - **Still open — four, in priority order:**
   1. **Interpretation A or B?** (Argus — changes the estimate ~10×.) **A:** messages move from channel ownership to entity ownership; multi-week test re-baseline. **B:** messages keep `channel_id`, history builders join through `channel_entities` to assemble the transcript; two builders change, suite mostly survives. B looks right on Gall's-law grounds but is a slightly lossy encoding of your stated model — worth choosing knowingly. **Daedalus is held until this is answered.**
@@ -84,12 +85,13 @@ Currently empty.
 
 Awareness, no action needed.
 
-### Cohort status (verified 2026-07-05 ~17:30 PT)
-- **Calliope** — live; 2-hour cron; coordinating MAXT klatch setup.
-- **Daedalus** — AVAILABLE_MODELS + SDK bump shipped (`0395c4b`); persona capture filed (`docs/plans/persona-capture-daedalus-2026-07-05.md`). Awaiting Klatch import.
-- **Argus** — persona capture filed (`docs/plans/persona-capture-argus-2026-07-05.md`). Suite **1332 green** (confirmed 7/5 after SDK bump install — runtime-proven). SDK `^0.110` installed. Opus 4.8 gap flagged + Daedalus memo filed. Awaiting Klatch import.
-- **Theseus** — observer brief received; standing by for xian's signal to open session.
-- **Iris** — persona capture filed (`docs/plans/persona-capture-iris-2026-07-05.md`). All three captures in. Awaiting Klatch import.
+### Cohort status (Amber, verified 2026-08-04 ~23:15 PT)
+All five migrated to Amber in standing worktrees (`klatch-worktrees/*`) with structural per-worktree git identity (`extensions.worktreeConfig` — verified live in Calliope's and Iris's worktrees; Pard confirms all five). Predecessor session-crons are dead by design (session-scoped + 7-day cap); durable duty cycles are LaunchAgents Pard wires per cadence memo. **Automated fires run with no network** — they commit, the wrapper delivers host-side.
+- **Calliope** — resumed 8/4 (last across, by design). Probe-design correction folded into the discretion straw man; cadence requested: 4/day (08:30/12:30/17:00/21:30).
+- **Argus** — across; delivered the owed discretion probe-design reply (16 days late, named as such). Cadence requested: 3/day (09:00/13:30/18:00).
+- **Iris** — across; §6 candidate replacement text drafted 8/4 (held for live session). Cadence requested: 2/day (07:17/19:17).
+- **Daedalus** — across and working per Pard's 8/4 reviewer memo; still held on the Interpretation A/B + identity-resolution answers, ready to start the moment they land.
+- **Theseus** — across per Pard's 8/4 reviewer memo; MAXT remains deferred until continuity exists (running it now would test L5 persona portability, not the actual question).
 
 ### Composition gesture + beta gate — FULLY CLEAR ✅
 - All 7 increments on main. MAXT Session 03: 15/15. R45: 8/8. R46 (clone): 8/8, 0 Phantoms. R47 (@mention): 8/8, 0 Phantoms. All green.
@@ -99,11 +101,16 @@ Awareness, no action needed.
 ### Pages build, strategic threads, CIO artifact request
 - Pages: fixed 6/22, no new issues.
 - BYOC/portability/transporter settled. xian's July focal shift. Question-box item pending newsletter.
-- CIO 6/3 canonical-artifacts request: 24 days silent. Nudge via Janus at 6/28 if still silent (tomorrow).
+- CIO 6/3 canonical-artifacts request: **status unverified since late June** — carried across the freeze, not re-checked (needs an interactive session with network to verify; flagged for next one).
 
 ---
 
-## 🟢 Resolved since last board (7/5)
+## 🟢 Resolved since last board (8/4)
+
+- ~~**Amber migration (all five Klatch agents)**~~ — complete. Five handoffs filed and reviewer-verified by Pard ("strongest batch of the twenty-one migrations this constellation has run"). Per-worktree git identity structural; federation link to Janus's cross-project rollup survives by repo identity (nothing to re-point); intel-sweep cloud triggers ran straight through the 16-day gap and need no rebuild. *Closed 8/4.*
+- ~~**Argus's owed discretion probe-design reply**~~ — delivered 8/4 (held open since 7/19; session died mid-cycle before it was written). Probe designs per position now in the straw man doc, not just in mail. *Closed 8/4.*
+
+## 🟢 Resolved since prior board (7/5)
 
 - ~~**AVAILABLE_MODELS — Sonnet 5 + Fable 5 missing from picker**~~ — Daedalus shipped `0395c4b`; SDK bumped `^0.96` → `^0.110`. Model picker current for v1.0. *Closed 7/5.*
 - ~~**Nudge Argus — mode-1 since 6/28**~~ — Argus back online; sweep #14 filed; COORDINATION.md updated; vitest 4 config fixed. *Closed 7/4.*
@@ -137,6 +144,8 @@ Awareness, no action needed.
 
 ## Changelog
 
+- **v23 (2026-08-04 ~23:15 PT, Calliope)** — First Amber render, post-migration. Decision state verified unchanged (predicate: no xian-authored mail since 7/19; Argus's same-day check concurs). 🔴 item enriched with the 8/4 staging: Daedalus assembly-inversion read (team rec: assembly-only = Interpretation B), Argus per-position probe designs (straw man corrected 8/4 — two probe layers, not "binary"), Iris §6 candidate text (held for live session). Cohort section rewritten for Amber (worktrees, identities, LaunchAgent cadences). 🟡 count corrected 5→4 (miscount in v22). CIO item honestly marked unverified-since-June. 🟢 +2 (migration complete; Argus's owed reply delivered).
+- **v22 (2026-07-19 ~11:25 PT, Calliope)** — see header of prior render; superseded text summarized: continuity finding replies same-day, Q4 answered (v0.9.x alpha), Interpretation A/B fork holds Daedalus, ~49→16 imports correction.
 - **v20 (2026-07-06 ~07:05 PT, Argus)** — Sweep #15 (auto 6/29–7/6) reviewed. New 🟡: Sonnet 5 tokenizer +30% compaction impact (threshold 160K was calibrated for 4.6; Sonnet 5 users hit it in ~77% as many turns). MCP spec July 28 RC: beta SDKs out, 22 days to final (no 1.0 action — stdio-only). Opus 4.8 still pending Daedalus reply. Suite 1332 green. 🟡 +1 → 5.
 - **v19 (2026-07-05 ~12:50 PT, Argus)** — SDK `^0.110` runtime-confirmed green after `npm install` + full suite (exit 0). Opus 4.8 gap found + Daedalus memo filed (`argus-to-daedalus-opus-lineup-refresh-2026-07-05.md`). Mail threads closed (Calliope + Daedalus). 🟡 +1 (Opus lineup refresh). v18 timestamp error noted (committed 12:44 PT, not 17:30 PT).
 - **v18 (2026-07-05 ~12:44 PT, Calliope)** — AVAILABLE_MODELS + SDK bump shipped by Daedalus (`0395c4b`). Persona captures: Daedalus ✅ Argus ✅ Iris pending. MAXT klatch session in progress. 🟡 −1 (AVAILABLE_MODELS closed). Cohort updated.
