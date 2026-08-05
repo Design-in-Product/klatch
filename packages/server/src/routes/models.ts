@@ -91,8 +91,17 @@ export async function getModels(): Promise<{ models: DiscoveredModel[]; source: 
   } catch (err) {
     console.warn('Models API fetch failed, using fallback:', err instanceof Error ? err.message : err);
 
-    // Fallback to hardcoded AVAILABLE_MODELS. 4.7 surfaces 'xhigh' between high+max;
-    // older models stop at 'high'.
+    // Fallback to hardcoded AVAILABLE_MODELS. Effort ladders per model family:
+    // xhigh arrived with Opus 4.7 and is carried by every 4.7+ flagship
+    // (Opus 5 / 4.8 / 4.7, Sonnet 5, Fable 5); Opus 4.6 stops at max; older
+    // tiers stop at high. Keeps offline gating aligned with the live API.
+    const FIVE_LEVEL_EFFORT = new Set([
+      'claude-fable-5',
+      'claude-opus-5',
+      'claude-opus-4-8',
+      'claude-opus-4-7',
+      'claude-sonnet-5',
+    ]);
     const fallback: DiscoveredModel[] = Object.entries(AVAILABLE_MODELS).map(
       ([id, info]) => ({
         id,
@@ -100,10 +109,7 @@ export async function getModels(): Promise<{ models: DiscoveredModel[]; source: 
         maxOutputTokens: 16384,
         capabilities: {
           thinking: true,
-          // Mirror the prior effortAllowedForModel gating: xhigh is 4.7-only;
-          // max is Opus-only (4.6 + 4.7). Keeps offline behavior == the old
-          // static gate so validation/gating don't regress when the API is down.
-          effort: id === 'claude-opus-4-7'
+          effort: FIVE_LEVEL_EFFORT.has(id)
             ? ['low', 'medium', 'high', 'xhigh', 'max']
             : id === 'claude-opus-4-6'
             ? ['low', 'medium', 'high', 'max']
