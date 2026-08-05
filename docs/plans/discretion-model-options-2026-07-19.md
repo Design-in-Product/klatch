@@ -3,6 +3,7 @@
 **Date:** 2026-07-19
 **Author:** Calliope
 **Status:** Straw man — mapping the space for a decision that is xian's to make
+**Revised:** 2026-08-04 — probe-design section rewritten per Argus's two-layer correction (`docs/mail/argus-to-calliope-discretion-probe-design-2026-08-04.md`). The positions themselves are unchanged.
 **For:** xian (product call), Argus (probe design depends on it), Daedalus + Iris (downstream)
 **Parent:** `docs/mail/calliope-to-team-transcript-ownership-reframe-2026-07-19.md`
 
@@ -76,15 +77,21 @@ I don't think this is mine to call, but two observations for when xian does:
 - **Position 2 is the cheapest thing that isn't Position 1**, and it's the most human. If the answer is "I don't want to build walls yet but I don't want blatant indiscretion either," 2 is it — with the honest caveat that it's the hardest to test.
 - **The default matters more than the ceiling.** Whatever mechanism we pick, the *default* posture (fair-game vs. private) is the actual product decision. The marking/promotion gestures are refinements on top of whichever default we choose.
 
-## For Argus
+## Probe design (revised 2026-08-04 per Argus)
 
-Once xian picks a position, the probe follows:
-- **1:** no discretion probe needed; cross-stream surfacing is always correct.
-- **2:** probe scores judgment — hard, needs a rubric, likely LM-graded.
-- **3:** probe is binary — did marked content ever appear in a klatch transcript? Clean.
-- **4:** probe is binary in the other direction — did unmarked 1-1 content leak? Clean.
+An earlier version of this section claimed positions 3 and 4 yield clean binary probes. Argus corrected that (8/4): it conflates two different checks, and any walled position needs **both layers** or a green probe can sit over a real leak.
 
-Positions 3 and 4 are far more testable than 2. That's not a reason to pick them — just a cost to weigh.
+- **Assembly layer** — was walled 1-1 content present in the context Klatch assembled for the klatch turn? Deterministic, cheap, an ordinary integration test against the history builders. This layer *is* binary.
+- **Inference layer** — does the agent's observable behavior ever surface 1-1 content, regardless of what was assembled? This can fail while the assembly check passes, via three routes: (1) runtime retrieval through the on-demand history tool (the hybrid mechanism), which must enforce the wall at the *tool boundary*, not just at prompt-build; (2) the one-transcript model itself — 1-1 content may be present *by identity, not by assembly*, leaving no build step to filter at; (3) paraphrased residue from earlier turns resurfacing even when verbatim content was filtered.
+
+Per position:
+- **1:** no discretion probe; cross-stream surfacing is correct by definition.
+- **2:** LM-graded rubric over a scenario bank (sensitivity × klatch-relevance), plus a consistency measure across runs. This probe *scores a distribution, not a bit* — if 2 is picked, the gate criterion ("agent exercises the norm N% of the time") is itself a product decision that comes with the position.
+- **3:** the binary pair — assembly integration test on marked content, plus **canary tokens** planted in marked 1-1 content and grepped from every klatch output and history-tool result.
+- **4:** the same pair with the default inverted (canaries in *ordinary, unmarked* 1-1 content; assembly test asserts the whole 1-1 stream absent unless promoted), plus one probe unique to 4: the promotion gesture must be the only route in — promoted content arrives, nothing rides along.
+- **Canary limit (3 and 4):** canaries catch verbatim and near-verbatim leaks, not paraphrase (route 3 above). A thin LM-graded paraphrase check on top — "does this klatch output convey the walled fact?" — closes the gap. Cheap insurance, worth building in either walled position.
+
+So the honest testability ranking stands, but sharpened: 3 and 4 are binary *at the assembly layer* and strong-but-not-complete behaviorally without the paraphrase check; 2 is a rubric-and-threshold exercise end to end. Still not a reason to pick any of them — just the real cost. Full probe designs: Argus's memo above.
 
 ---
 

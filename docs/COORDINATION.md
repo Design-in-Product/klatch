@@ -11,9 +11,10 @@ Agents working on this repo use this file as the async handoff protocol.
 ## Status board
 
 ### Argus (quality & test infrastructure)
-- **Branch:** `claude/argus` (persistent duty-cycle worktree `.claude/worktrees/argus`)
-- **Status:** working — **Phase 2 duty cycle LIVE 6/21**, hourly `:43` tandem with Daedalus.
-- **Test count:** 1291 total (1089 server + 202 client), 5 skipped, zero failures.
+- **Branch:** `claude/argus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/argus`, per-worktree git identity `Argus (Klatch)`)
+- **Status:** working — first Amber session 8/04. Duty cycle NOT yet re-armed: cadence + fire prompt sent to Pard (3 fires/day START 09:00 / WORK 13:30 / STOP 18:00 PT), LaunchAgent wiring is Pard's.
+- **Test count [VERIFIED 8/04 on Amber]:** 1332 passing (1120 server + 212 client), 12 AAXT-gated skips, zero failures — identical to 7/19 baseline, now green on Node 26 under `better-sqlite3@^12.11.1`.
+- **8/04 Amber arrival session:** (1) owed discretion probe-design reply to Calliope filed (`argus-to-calliope-discretion-probe-design-2026-08-04.md` — assembly-layer vs inference-layer distinction; the 7/19 dropped ball, closed). (2) Duty-cycle cadence memo to Pard. (3) **Amber environment fixes, all agents benefit:** `better-sqlite3` ^11.7.0→^12.11.1 (v11 won't compile on Node 26 — every worktree was blocked from `npm install`); playwright pinned exact 1.61.0 (lockfile's 1.58.2 wanted chromium rev 1208, cache has 1228); `allowScripts` approvals committed. Fresh suite baseline verified. (4) Three backlogged intel sweeps curated (`docs/intel/2026-08-04-sweep-curated.md`) — **headline: sweeps' "Opus 5 not selectable / picker stale" claim is WRONG; picker is dynamic via `/api/models` since 6/21**; residual asks (overlay labels, SDK bump) mailed to Daedalus (`argus-to-daedalus-model-overlay-refresh-2026-08-04.md`, supersedes 7/05 mail). (5) **AAXT R46–R50 still parked, new reason: no `ANTHROPIC_API_KEY` / `.env` anywhere on Amber** — probes need a live model; harness (playwright/chromium) is otherwise ready. **Needs xian/Pard: provision `.env` with `ANTHROPIC_API_KEY`** — also blocks running the app itself on this host.
 - **6/21 launch session:** fixed Iris vocab-sweep fallout (5 client tests: ChannelSidebar placeholder + round33b "in N conversations") and a pre-existing round25 reflection-order flake (match-entity-by-id, not position). **Merged to `main` (`1a29830`)** per xian's authorization — main green (1089 server / 197 client). Routed a `getChannelEntities` secondary-sort finding to Daedalus; he fixed it (`ce.rowid`, lands with his composition merge). Prior baseline: 1289 (5/18 Round 33b).
 - **Completed work:**
   - Rounds 4–11 test suites (all passing, merged to main)
@@ -159,6 +160,14 @@ Agents working on this repo use this file as the async handoff protocol.
 - **Status:** available — holding pattern by design. §6 application, discretion UI (Position 3/4), and MAXT all gated on xian live.
 - **Next:** (1) Live session with xian: land §6 from the draft doc. (2) Watch for xian's Interpretation A/B + identity-resolution + discretion + directed-visibility calls; Position 3/4 → marking-gesture UI is mine. (3) Design-adjacent review of Daedalus's entity-scoped assembly query when it starts. (4) Paths B/C scope call — watch, don't let it silently re-drop.
 - **Updated:** 2026-08-04 23:00 PT
+
+### Calliope (writing, chronicling & coordination — primary contact for xian)
+
+- **Branch:** `claude/calliope-cycle` (Amber standing worktree `/Users/xian/Development/klatch-worktrees/calliope`). Identity structural per worktree (`Calliope (Klatch) <calliope@klatch.local>`, verified live 8/4). LaunchAgent duty cycle requested from Pard 8/4: 4 fires/day, 08:30/12:30/17:00/21:30 PT (`calliope-to-pard-duty-cycle-cadence-2026-08-04.md`).
+- **2026-08-04 (Amber resume, last of five across by design):** Full briefing run (handoff → Pard's reviewer pass → PREMISE → COORDINATION → mail → cross-poll → rollup v22). Same-turn mail actions: **Argus's owed discretion probe-design reply folded into the straw man** — `docs/plans/discretion-model-options-2026-07-19.md` revised 8/4, "positions 3/4 are binary" corrected to the two-layer (assembly + inference) framing so xian's decision doc no longer carries a half-true testability claim; ack filed (`calliope-to-argus-discretion-probe-ack-2026-08-04.md`). **Rollup refreshed to v23** (first Amber render): decision state verified unchanged since 7/19, cohort section rewritten for Amber, 8/4 staging (Daedalus assembly-only rec, Argus probe designs, Iris §6 draft) attached to the 🔴.
+- **Status:** available — coordination seat live. The 🔴 is xian's: the continuity scoping decisions (Interpretation A/B + identity resolution first). Everything the team could stage for them is staged.
+- **Next:** (1) Route xian's answers the moment they land — Daedalus starts on identity-resolution, Iris on §6/live session, Argus on the chosen probe layer. (2) Chronicle the migration (logbook + blog are behind; the cohort's five-handoff batch belongs in it). (3) Sweep the 7/19 mail cluster to `read/` once continuity settles. (4) Open for xian: backup-DB provenance question (v22 🔴 footnote) still unanswered.
+- **Updated:** 2026-08-04 23:20 PT
 
 ## Signals
 
