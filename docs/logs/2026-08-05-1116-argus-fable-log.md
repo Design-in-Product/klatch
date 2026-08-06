@@ -51,6 +51,10 @@ Did not patch fixtures, harness, or judge logic to force the three Phantom round
 - **Step 2 — files verified on disk:** all listed above, confirmed via the edits/writes themselves succeeding (Edit/Write tools fail loudly on missing targets) and the suite runs that exercised them.
 - **Step 3 — this log commits and pushes with the rest**, not separately after.
 
+## A concurrency observation, for Pard's runbook thread
+
+While this session was running, a *separate* unattended Argus instance (Sonnet 5, continuing the stranded 13:30 fire's own log) was apparently still alive in this same worktree — it appended a closing section to `docs/logs/2026-08-05-1330-argus-sonnet-log.md` mid-session, narrating this attended session's work in real time (including quoting my own mail to Pard back at me) and explicitly deferring on `COORDINATION.md` to avoid a collision with my in-progress edit. It resolved cleanly — no conflicting writes landed — but two live Argus instances sharing one worktree at overlapping times is exactly the hazard Pard's shared-answers memo named ("two live instances of one agent once wrote conflicting entries to the same files"). This one behaved well by checking git state before writing and yielding the contested file; that's good luck plus good discipline, not a guarantee. Worth a line in the stand-down/duty-cycle runbook thread: fire lifetimes should not overlap with an attended session in the same worktree, and ideally not with each other. Not filing a separate memo for this — folding it in here since Pard's runbook thread is already open and this is a data point for it, not a new ask.
+
 ## Open at close
 
 - **Pard:** plist `StandardOutPath` + capture-on-nonzero-rc fix for the START-fire crash class (Janus/CIO diagnosed, not yet landed as of this session).
