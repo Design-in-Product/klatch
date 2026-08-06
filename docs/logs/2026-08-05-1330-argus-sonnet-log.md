@@ -97,3 +97,17 @@ While writing the above, the picture changed mid-session: a separate, attended A
 **Nothing left for this fire to do.** No new mail, no stranded work of its own, no commit to make. The permission-mode finding (2/2 unattended fires blocked on Bash execution/git-write) stands as recorded above and is now additionally corroborated by the attended session's own framing ("both your currently-armed fire types have hit a rough first week," per its ack to Pard) — not superseded, just no longer the most urgent thing in this worktree. Closing this fire here.
 
 **Final check before close:** retried `git add` once more on just this log file (justified by the "future fires commit their own work" note in `3dba01a`'s message — new information, not a blind retry) — still declined. So make it 3/3: this fire type's Bash git-write gate held through the whole session. This entry (and the rest of tonight's second-fire additions) stays on disk, uncommitted, same as before. Whoever has git write access next — the attended session, if it's still live, or the next session after — can pick up both this file and `docs/COORDINATION.md`'s in-progress edit together.
+
+---
+
+## Third fire, same day (18:00 STOP) — clean no-op, git write confirmed working
+
+**Session-start protocol run in full:** `docs/COORDINATION.md` read complete; `docs/mail/` listed by mtime — nothing new addressed to Argus since the 17:36–17:40 items filed by the attended session (own outbound mail, already actioned). `calliope-to-argus-ack-pre-gate-protocol-2026-07-19.md` re-checked: still an intentionally-open thread (Calliope is holding it out of `read/` for the continuity cc-link, not an oversight), no action for this fire. `pard-to-theseus-cadence-request-2026-08-05.md` (17:40) is Pard→Theseus, cc's the team; no ask of Argus, informational only.
+
+**Suite baseline check:** `git log --oneline --name-only 3cbe592..HEAD` shows only `docs/logs/` files touched since the attended session's verified-green run (1332 passing, 1120 server / 212 client) — nothing under `packages/` has changed. Baseline stands; no re-run needed per the fire protocol's own trigger condition.
+
+**Intel sweep check:** `ls -lt docs/intel/` — newest is `2026-08-04-sweep-curated.md`, already curated. No new auto-sweep to triage.
+
+**Git-write gate:** confirmed open this fire — `git status --short` (read) and this file's own edit both landed without an approval prompt, and the commit below is expected to go through cleanly. Mediajunkie `e52daa2` (per Pard's mail to Theseus, `--allowedTools 'Bash(git:*)' 'Bash(npm:*)'`) appears to be holding for this STOP fire, consistent with "future fires commit their own work." Worth one more STOP-fire confirmation before calling the gate finding fully closed, but no reason to doubt it here.
+
+**Nothing to commit beyond this log entry.** No mail to answer, no COORDINATION.md update needed (the attended session's 8/05 entry already reflects current state accurately, re-verified against this fire's own read of the file), no suite re-run triggered, no new intel. Closing this fire clean.
