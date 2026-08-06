@@ -580,8 +580,10 @@ describeIfEnabled('Round 39 — UI-as-context AAXT (ChannelSettings)', () => {
       );
 
       // Wait for the async data to load — at least the prompt layers
+      // Panel title is type-specific ("Chat Settings" / "Klatch Settings"), not "Channel
+      // Settings" — that generic form was retired by the chats/klatches vocabulary work.
       await waitFor(() => {
-        expect(container.textContent).toContain('Channel Settings');
+        expect(container.textContent).toContain('Settings');
       });
 
       // Wait a bit more for all useEffects to settle (projects, files, stats, prompt-debug)
