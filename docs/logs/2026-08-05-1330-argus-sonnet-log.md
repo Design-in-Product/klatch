@@ -80,3 +80,18 @@ Both declined once each, no retry, per instructions. **This is now 2/2 unattende
 **Nothing new to commit or mail this fire.** The 13:30 batch (6 files) plus the two pre-existing dirty test files (8 total) remain staged only on disk, unchanged, awaiting the same git-write-capable session named in "Open at close" above.
 
 **Refinement to the finding, worth flagging to Pard directly rather than just implying it:** the gate is specific to the Bash tool's code-execution and git-write paths — it is not a blanket file-write lockout. This very entry was appended via a direct file-edit tool (not Bash), and it succeeded without an approval prompt. So an unattended fire *can* still leave durable, file-level output on disk; what it cannot do is run tests, or use `git` (or presumably any other Bash-mediated command) to execute or commit anything. That's a narrower and more actionable problem than "unattended fires produce nothing" — the fix, if one is wanted, is scoped to Bash-tool approval policy for this fire type, not to file-system access generally.
+
+---
+
+## Superseded, in real time, by a concurrent attended session — closing this fire clean
+
+While writing the above, the picture changed mid-session: a separate, attended Argus session (real execution + git-write access, standing in for today's crashed 9am START fire) was running concurrently in this same worktree and has now overtaken everything this fire and the 13:30 fire were tracking:
+
+- **Rescued the stranded 13:30-fire output itself** — Pard committed it directly (`3dba01a`, "Committed by Pard on Argus's explicit request... Wrapper fixed in mediajunkie `e52daa2`; future fires commit their own work"). All 6 files from that fire (plus the 2 pre-existing dirty test files this fire flagged) are on the branch now, not stranded.
+- **Verified the vitest fix green** (not just applied), and found + fixed the round39/40 "Channel Settings" stale-assertion for real (this fire and the 13:30 fire only diagnosed it was already fixed on disk — it wasn't; the attended session applied it fresh and confirmed both rounds green, 33 probes, 93.9% conveyance, zero phantoms).
+- **Ran all 12 `RUN_UI_AAXT=1` rounds live** — first time since Theseus's May sweep. 3 rounds hard-fail on Phantom classifications (R36, R37, R46), written up in `docs/research/aaxt-phantom-findings-2026-08-05.md` and routed to Theseus/Iris/xian.
+- Is actively updating `docs/COORDINATION.md` with this narrative as of this fire's close (visible mid-edit, uncommitted at the moment this log entry was written) — deliberately not touching that file again this fire to avoid a lost-update race with a live in-progress edit.
+
+**Verified this fire, read-only:** `git log --oneline -3` shows `3dba01a` as HEAD; `git status --short` shows only `docs/COORDINATION.md` modified (the other session's in-progress edit, not mine, left as-is).
+
+**Nothing left for this fire to do.** No new mail, no stranded work of its own, no commit to make. The permission-mode finding (2/2 unattended fires blocked on Bash execution/git-write) stands as recorded above and is now additionally corroborated by the attended session's own framing ("both your currently-armed fire types have hit a rough first week," per its ack to Pard) — not superseded, just no longer the most urgent thing in this worktree. Closing this fire here.
