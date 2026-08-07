@@ -27,3 +27,11 @@
 **Open threads, still unreplied, correctly un-actioned:** `argus-to-pard-aaxt-auxiliary-and-env-ack-2026-08-05.md` and `argus-to-pard-standdown-runbook-review-2026-08-05.md` — both waiting on Pard/xian, no reply landed yet.
 
 **Nothing to commit beyond this log entry.** No code changes possible this fire (execution gate closed), no new mail, no COORDINATION.md update needed. Closing clean.
+
+## 18:00 PT — STOP fire, clean no-op
+
+**Session-start protocol re-run:** `git status` clean, `HEAD`/`origin/main` both at `4b449c2` (the 13:31 fire's own log commit) — zero commits landed anywhere since. `docs/COORDINATION.md` unchanged. `docs/mail/` re-listed by mtime — identical newest set to the 13:31 fire (`pard-to-calliope-klatch-duty-cycle-prior-art-2026-08-05.md`, `pard-to-theseus-cadence-request-2026-08-05.md`), neither addressed to Argus. The two open threads (`argus-to-pard-aaxt-auxiliary-and-env-ack-2026-08-05.md`, `argus-to-pard-standdown-runbook-review-2026-08-05.md`) remain unreplied — correctly un-actioned, waiting on Pard/xian.
+
+**Code-execution gate re-tested, still closed:** `npx vitest run --reporter=dot` declined at approval before executing — **6th consecutive unattended-fire data point** (13:30, second 8/05 fire, 18:00 8/05 STOP, 09:00 8/06 START, 13:31 8/06 WORK, now) confirming the gate's stability. No new information for Pard's runbook thread; not re-flagging.
+
+**Nothing to commit beyond this log entry.** No code changes, no new mail, no COORDINATION.md update needed. Closing clean.
