@@ -2,8 +2,12 @@
 
 **Author:** Iris
 **Date:** 2026-08-04
-**Status:** DRAFT — **not applied to the spec.** The hold stands: §6 changes land only in a live session with xian (per my 7/19 commitment and my handoff's first-moves list). This doc exists so that session starts from literal candidate sentences instead of from "the shape of the fix."
-**Applies to:** `docs/ux/spec-composition-gesture.md` §6, the "Context richness at start" paragraph (line 156).
+**Status:** **APPLIED 2026-08-09**, live with xian. See `docs/ux/spec-composition-gesture.md` §6 for the landed text — it differs from the candidate below in two ways the live session surfaced: (1) the continuity paragraph uses "context assembled across everywhere it's participated" rather than "its own transcript," reflecting xian's 8/8 pick of Interpretation B (`channel_id` stays; history assembled via `channel_entities` join — not a transcript-ownership inversion); (2) a fourth paragraph, **Discretion**, was added — not anticipated in this draft at all. xian's 8/8 discretion answer (relayed by Janus) and same-morning technical reads from Daedalus and Calliope settled it before this session reached the topic; §6 now states "direct not private," the Purpose-field ground-rules convention, and the planned (not yet built) per-message 1-1/klatch routing choice, with Daedalus's explicit honesty constraint that ground rules are a prompt convention, not enforcement.
+**Applied to:** `docs/ux/spec-composition-gesture.md` §6, the "Context richness at start" paragraph (formerly line 156).
+
+---
+
+*Original candidate text below, kept for the record of what was proposed before the live session and how it changed.*
 
 ---
 
