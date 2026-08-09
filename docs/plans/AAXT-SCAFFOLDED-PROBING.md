@@ -203,6 +203,18 @@ When aggregated results show a layer or query-category persistently scoring low 
 
 **Provenance.** Surfaced by PM Lead Developer on PM #951 (Temporal Identity queries) and confirmed on PM canonical retest Run 5 (Identity queries, April 2026): per-dimension analysis showed `Context=1` on 4 of 5 Identity queries; the fix was extending `_gather_identity_context`, not rewriting the prompt. Routed to Klatch via Calliope memo `calliope-to-argus-pattern062-and-pm995-2026-04-18.md`. The diagnostic generalizes from PM's R/C/T dimensional scoring to AAXT's per-layer failure-mode taxonomy because both share the underlying claim: when the *data* is the gap, *language* changes don't close it.
 
+## Phantom gating policy (resolved 2026-08-09)
+
+Rounds diverged on whether `phantom === 0` is a hard assertion: R36/R46 assert it; R38 only asserts total-consistency (`absent + correct + reconstructed + confabulated + phantom + subliminal === total`), with an inline comment explaining a specific reason. Theseus flagged this divergence (`theseus-to-argus-iris-aaxt-findings-disposition-2026-08-09.md`) as reading like an authorship accident and asked for a deliberate call.
+
+**Default: hard-fail.** A round asserting UI-as-context fidelity should assert `phantom === 0`. Phantom means "the model stated something not present in the given input," which is exactly the failure class this harness exists to catch — an unexplained Phantom should be red until traced.
+
+**Exception: soft-fail, only after disposition.** Relax to total-consistency-only once a specific Phantom has been traced and confirmed as a genuine, non-fixable UI/design limitation — not an instrument bug (stale ground truth, judge miscall), which gets fixed and the round returns to hard-fail. The round stays green so CI doesn't perpetually fail on a known, accepted tradeoff, but the comment must name the disposition doc, not just assert the gate is relaxed.
+
+**Applied:** R38's IP1 Phantom (cross-project recency not legible in the import browser — routed to Iris as a design question, confirmed genuine by `docs/research/aaxt-c7-ground-truth-2026-08-09.md`) fits the exception; comment updated accordingly. R36 and R46's Phantoms were instrument defects (stale ground truth, judge miscall respectively) — both traced, both fixed, both correctly stayed hard-fail.
+
+**Rule going forward:** new rounds default to hard-fail. Don't relax a gate speculatively to keep a round green while a Phantom is still unexplained — relax only after tracing confirms it's a real, non-fixable finding, with a comment pointing at the disposition doc.
+
 ## API Surface
 
 ### New endpoint

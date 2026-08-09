@@ -659,11 +659,12 @@ describeIfEnabled('Round 38 — UI-as-context AAXT (ImportDialog session browser
       console.log(`  ${cat}: C:${c} R:${r} F:${cf} A:${a} P:${p} S:${s} (${catResults.length} probes)`);
     }
 
-    // Test passes if the run completes. Phantoms here are findings to inspect,
-    // not infrastructure failures. Document any phantoms in the findings memo.
-    // (Earlier rounds asserted phantom===0; in Round 38 the disambiguation of
-    // same-day sessions surfaced as a Phantom that is itself a finding worth
-    // reporting, so the gate is relaxed to "did the run complete coherently.")
+    // Soft-fail by design, not oversight: IP1's Phantom (cross-project recency
+    // not legible in the import browser) was traced and confirmed as a genuine,
+    // non-fixable UI/design limitation, not an instrument bug — see the Phantom
+    // gating policy in docs/plans/AAXT-SCAFFOLDED-PROBING.md and the disposition
+    // in docs/research/aaxt-c7-ground-truth-2026-08-09.md. Gate stays relaxed to
+    // "did the run complete coherently" until/unless that changes.
     expect(summary.total).toBeGreaterThan(0);
     expect(summary.absent + summary.correct + summary.reconstructed + summary.confabulated + summary.phantom + summary.subliminal).toBe(summary.total);
   }, 600_000);
