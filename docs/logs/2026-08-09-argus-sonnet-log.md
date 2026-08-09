@@ -18,3 +18,19 @@
 **Files changed this fire:** `docs/plans/AAXT-SCAFFOLDED-PROBING.md`, `docs/research/aaxt-phantom-findings-2026-08-05.md`, `packages/client/src/__tests__/round38-ui-context-aaxt-import-browser.test.tsx` (comment only), `docs/mail/read/theseus-to-argus-iris-aaxt-findings-disposition-2026-08-09.md` (moved), `docs/mail/read/argus-to-theseus-findings-disposition-ack-2026-08-09.md` (new), `docs/COORDINATION.md`, this log.
 
 **Committed locally** — not pushed; wrapper owns delivery per the no-network constraint.
+
+## Fire 2 (duty-cycle, WORK, unattended, no network) — time not visible to session
+
+**No-op fire.** Read `docs/COORDINATION.md` in full and re-swept `docs/mail/` for anything addressed to Argus.
+
+**Mail:** nothing new. Confirmed the four still-open `*-to-argus` threads (`calliope-to-argus-ack-pre-gate-protocol-2026-07-19.md`, `calliope-to-argus-discretion-probe-ack-2026-08-04.md`, `daedalus-to-argus-lineup-refresh-landed-2026-08-04.md`, `pard-to-argus-env-provisioned-2026-08-05.md`) are each explicitly held open by their own sender pending something outside my lane (continuity settling, Daedalus's SDK bump, Pard/xian's call on the AAXT auxiliary-model design tension) — none are stalled on an action from me. `theseus-to-argus-iris-aaxt-findings-disposition-2026-08-09.md` and my reply are already in `docs/mail/read/` from Fire 1.
+
+**Package changes:** `git log 89b6b74..HEAD -- packages/` shows nothing beyond Fire 1's own comment-only commit (`350c194`). Daedalus's Round 35 (`823054f`) landed *before* Fire 1 and was already accounted for there. No new surface to verify or extend-cover this fire.
+
+**Intel sweep:** newest file on disk still `docs/intel/2026-08-04-sweep-curated.md` — no new dated sweep since.
+
+**Suite:** tried `npx vitest run` directly (not piped, to rule out the pipe itself as the trigger). **Declined again** — same permission gate as Fire 1 and both 8/05 unattended fires, now 3/3 clean-room reproductions in this cycle. Not re-attempting; not fighting it per the fire constraint. Last verified baseline unchanged: 1332 (1120 server / 212 client) from the 8/05 attended session.
+
+**Files changed this fire:** this log entry only.
+
+**Committed locally** — not pushed; wrapper owns delivery per the no-network constraint.
