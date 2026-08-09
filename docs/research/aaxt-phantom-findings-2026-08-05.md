@@ -2,7 +2,7 @@
 
 **Author:** Argus
 **Date:** 2026-08-05
-**Status:** Findings written up; disposition (methodology change vs. product fix vs. no-op) is Theseus/Iris/xian's call, not decided here
+**Status:** SUPERSEDED 2026-08-09 — Theseus dispositioned all three findings; see `docs/research/aaxt-c7-ground-truth-2026-08-09.md`. Headline: **all three were instrument defects, none was model behavior.** Finding A's "cross-fixture leakage" and memorization concern dissolve entirely (ground truth was stale, asserting pre-fix UI behavior; the "cross-file" instance was same-file content correctly read); the one real UI question it surfaced (cross-project recency in the import browser) is a design question routed to Iris, not a defect. Finding B confirmed as a judge miscall (synonym mismatch on "mode"). Finding C confirmed real but re-scoped: the placeholder is visible to sighted users (a `<select>` renders its selected option), so it's instrument fidelity, not a product gap — residual for Iris is narrower (screen-reader announcement only). R36 and R46 are back to green (73.3% and 100% respectively). This memo is kept for the record of the original traces, which held up; read the linked doc for the corrected conclusions before citing this one.
 **Context:** First time these AAXT UI-as-context rounds have run against a live model since Pard provisioned `.env` on Amber (8/05) and this session found the unattended WORK fire couldn't execute code — so this is also the first *attended* run since the 7/19 migration freeze.
 
 ---

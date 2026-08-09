@@ -228,6 +228,22 @@ function snapshotDom(container: HTMLElement): string {
     if (type && type !== 'text') annotations.push(`type=${type}`);
     if (disabled) annotations.push(disabled);
     if (value && (tag === 'input' || tag === 'textarea' || tag === 'select')) annotations.push(value);
+    // A <select> renders the text of its selected option, and a sighted user reads
+    // that text off the closed control. Annotating only a truthy `value` meant an
+    // empty-valued select — like the one-shot clone action-select, hardcoded
+    // value="" (ChannelSidebar.tsx:504) — appeared with no indication of what it
+    // shows, so the snapshot conveyed strictly LESS than the screen.
+    // (Argus 8/05 Finding C, re-scoped as instrument fidelity.)
+    //
+    // Marked on the option rather than as a select-level attribute on purpose: a
+    // first attempt used `displays="…"` and scored WORSE, because a reader treats
+    // an attribute as machine metadata and keeps reasoning from the options list —
+    // it answered "'standup', because the select has a displays attribute". Two
+    // competing signals are worse than none. The annotation is phrased to say what
+    // a viewer would see, not to name a DOM property.
+    if (tag === 'option' && (el as HTMLOptionElement).selected) {
+      annotations.push('currently shown on the closed control');
+    }
     if (tag === 'button') annotations.push('clickable');
     if (tag === 'a') annotations.push('link');
     if (tag === 'label') annotations.push('label');
@@ -353,8 +369,15 @@ const PROBES: Probe[] = [
     state: 'S-no-klatches',
     question:
       'In the New Klatch form, is there a dropdown or select element that lets you copy setup from an existing klatch?',
+    // The mode control is named with its rendered option labels (INTERACTION_MODES,
+    // shared/src/types.ts:55) because the probe question invites a contrast: asked
+    // "is there a copy-setup select?", a correct answer naturally distinguishes it
+    // from the select that IS present. Twice now the judge has penalized that true
+    // supplementary detail — Confabulated in R46/June, Phantom on 8/05 — while the
+    // guard behavior itself passed both times. Naming the control lets the judge
+    // reconcile "klatch type (Broadcast/Roundtable/Directed)" with "mode".
     expectedAnswer:
-      'No — there is no clone or copy-setup dropdown. The form only shows the name field, purpose, mode, and create/cancel buttons.',
+      'No — there is no clone or copy-setup dropdown. The form only shows the name field, purpose, a Mode select (options: Broadcast, Roundtable, Directed), and create/cancel buttons. Mentioning the Mode select is correct and expected, not a fabrication.',
   },
 
   // S-has-klatches: one klatch exists — clone select visible
@@ -654,8 +677,13 @@ describeIfEnabled('Round 46 — UI-as-context AAXT (Clone-from-Klatch)', () => {
           `  [${r.id}] ${r.state} | ${r.claim} → ${r.classification} (${(r.confidence * 100).toFixed(0)}%)${flag}`,
         );
         console.log(`    Q: ${r.question}`);
-        console.log(`    A: ${r.agentResponse.slice(0, 200)}`);
-        console.log(`    ${r.reasoning.slice(0, 200)}`);
+        // Truncation is fine for a passing probe and actively harmful for a failing
+        // one: a clipped judge rationale is exactly what blocks deciding whether a
+        // Phantom is a real finding or a judge miscall (Argus, 8/05 Finding B).
+        // Failures print in full.
+        const isFailure = r.classification === 'Phantom' || r.classification === 'Confabulated';
+        console.log(`    A: ${isFailure ? r.agentResponse : r.agentResponse.slice(0, 200)}`);
+        console.log(`    ${isFailure ? r.reasoning : r.reasoning.slice(0, 200)}`);
         if (r.scopeNote) console.log(`    scope: ${r.scopeNote}`);
       }
 

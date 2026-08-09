@@ -49,6 +49,11 @@ import type { Project } from '../api/client';
 const ENABLED = process.env.RUN_UI_AAXT === '1';
 const describeIfEnabled = ENABLED ? describe : describe.skip;
 
+// Single source of truth for the rendered active channel. Ground-truth builders
+// that depend on active-channel state read this rather than restating 'default',
+// so the probe's expectations cannot drift from what was actually rendered.
+const ACTIVE_CHANNEL_ID = 'default';
+
 // ── Types ────────────────────────────────────────────────────
 
 type Classification =
@@ -450,14 +455,24 @@ const PROBE_BUILDERS: Array<(s: TestState) => Probe[]> = [
   // C7: Accordion state — which project is expanded
   (s) => {
     if (s.projects.length < 1) return [];
-    // The component auto-expands the first project (or the one containing active channel)
-    const first = s.projects[0];
+    // Ground truth must mirror ChannelSidebar's auto-expand priority
+    // (`effectiveExpanded`, ChannelSidebar.tsx:207–231), NOT an assumption about it.
+    //
+    // Priority: active channel's project → project containing any imported
+    // channel → first project. The imports rule is the F2 fix that came out of
+    // this very round in May; asserting `projects[0]` here asserted pre-fix
+    // behavior and scored the model Phantom for correctly reading the shipped
+    // surface. See docs/research/aaxt-c7-ground-truth-2026-08-09.md.
+    const expanded =
+      s.projects.find((p: any) => s.channels.some((ch) => ch.projectId === p.id && ch.id === ACTIVE_CHANNEL_ID)) ??
+      s.projects.find((p: any) => s.channels.some((ch) => ch.projectId === p.id && ch.source && ch.source !== 'native')) ??
+      s.projects[0];
     return [{
       id: `${s.name}.C7`,
       state: s.name,
       claim: 'C7-accordion-state',
       question: `Looking at the sidebar, which project's channels are currently visible/expanded? (If multiple, name them all. If none are expanded, say so.)`,
-      expectedAnswer: `The project named "${first.name}" is expanded; its channels are visible in the list`,
+      expectedAnswer: `The project named "${(expanded as any).name}" is expanded; its channels are visible in the list`,
       category: 'accordion-state',
     }];
   },
@@ -479,7 +494,7 @@ describeIfEnabled('Round 36 — UI-as-context AAXT (sidebar)', () => {
       const { container } = render(
         <ChannelSidebar
           channels={state.channels}
-          activeChannelId="default"
+          activeChannelId={ACTIVE_CHANNEL_ID}
           onSelectChannel={() => {}}
           onCreateChannel={() => {}}
           projects={state.projects}
