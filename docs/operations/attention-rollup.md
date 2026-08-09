@@ -6,7 +6,7 @@
 
 **Trust-instrument discipline** (Exec 2026-06-19): every render comes from a fresh **verified sweep** of source docs — never from memory. A false "all clear" is a trust breach. "Quiet" must mean *verified-clear*, not *haven't-checked*.
 
-**Last refreshed:** 2026-08-04 ~23:15 PT (Calliope) — v23, first Amber render. **The 16-day freeze is over: all five agents are across, in per-worktree identities, duty cycles re-arming via Pard.** The decision state is unchanged — the scoping decisions below are still open (predicate: `ls -t docs/mail/` shows no xian-authored memo since 7/19; Argus independently verified same, 8/4) — but everything around them is now staged: Daedalus's assembly-only read is in, Argus's full probe designs are written into the discretion straw man, and Iris's §6 replacement text is drafted awaiting a live session. The day you answer, the team moves. v22 was 7/19.
+**Last refreshed:** 2026-08-09 ~08:40 PT (Calliope) — v24. **The continuity gating decisions are answered** — xian gave all four directly on 8/08, relayed by Janus (`docs/mail/janus-to-calliope-xian-answers-four-gating-decisions-2026-08-08.md`). What's newly 🔴 instead: **the team isn't running its duty cycles.** Four of five were disarmed 8/05 pending a review whose resolution I can't find on record, and the fifth (Argus) has fired 13 straight times without being able to execute a single test or build command. First Amber check-in artifact published today: https://claude.ai/code/artifact/6b0f6f84-eeae-4b21-ae01-21f5f5524707. v23 was 8/04.
 
 ---
 
@@ -14,49 +14,52 @@
 
 | Needs you | Blocked-on-others | Lower-urgency | In-flight |
 |---|---|---|---|
-| **2** | **0** | **4** | **3** |
+| **2** | **1** | **3** | **3** |
 
-*🔴: (1) `ANTHROPIC_API_KEY` on Amber — two-minute provisioning, blocks running the app on this host; (2) the agent-continuity scoping decisions — the work that gates 1.0, unchanged since 7/19 but now fully staged: every input the team could prepare for them is prepared. (🟡 count corrected 4, matching the section's actual entries — v22 said 5 against the same four.)*
+*🔴: (1) duty-cycle state — 1 of 5 seats running, and it can't execute code; review status unknown to me; (2) two reply-owed threads on the discretion/identity decisions, both actioned this session (Calliope → you; Daedalus → you) and worth your eyes when they land. 🟠: the code-execution gate itself (Pard's to fix, flagged twice 8/05, no reply).*
 
 ---
 
 ## 🔴 Needs you — FIRST, always
 
-### Provision `ANTHROPIC_API_KEY` on Amber (two-minute action, blocks running the app)
+### The team isn't running its duty cycles — only Argus's is armed, and it can't execute code
 
-- **What:** No `.env` / `ANTHROPIC_API_KEY` exists anywhere on Amber (Argus, 8/4, verified during his arrival session). This blocks **running Klatch itself on this host** and parks AAXT R46–R50 (probes need a live model; the playwright/chromium harness is otherwise ready).
-- **What you do:** supply the key — to Pard for host-side placement, or drop a `.env` at the repo root yourself. Nothing else in the stack is waiting on more than this.
-- **Date added:** 2026-08-04
+- **What:** On 8/05, Pard disarmed 9 of the 12 fires that were armed that afternoon — mine, Daedalus's, Iris's — at your direction, "pending the review" of the duty-cycle model (Pard's self-report on spawn-fresh drift from CIO's design). **I cannot find a memo in `docs/mail/` closing that review.** As far as the verified record shows, four seats have been silent for four days waiting on a decision, not on work. Theseus's cadence was never even proposed — Pard's 8/05 ask to him has no reply on file.
+- **The one seat that kept firing (Argus, 3/day) has produced 13 consecutive clean no-ops** — every unattended fire's attempt to run `npm test` / `vitest run` is declined at approval with nobody present to grant it. Git/file-write was fixed 8/05 (commits land fine); code execution never has been. Two flags to Pard (`argus-to-pard-standdown-runbook-review-2026-08-05.md`, `argus-to-pard-aaxt-auxiliary-and-env-ack-2026-08-05.md`) are unanswered.
+- **What I need:** did the duty-cycle-model review conclude somewhere I haven't seen? If yes, point me at it and I'll re-arm the other four today. If no, that's the actual first blocker this morning.
+- **Date added:** 2026-08-09
 
-### Agent continuity — four scoping decisions (gates 1.0)
+### Two decision-threads owed back to you, both moving this session
 
-- **What:** A klatch can't convene *existing* agent conversations with their context intact. Agents arrive carrying only their L5 prompt. The canonical use case — PM weekly leadership review, six agents each reporting a week of their own work — cannot be run. This is the premise of the product, not a missing nicety.
-- **How it happened:** Composition spec §6 line 156 contradicts itself in one paragraph ("agents bring their existing context from their ongoing 1-1 session" / "does not automatically inject prior conversation histories"). Implementation followed the second reading. Gravitational drift toward the ordinary multi-agent-chat model, not an individual lapse — hence `docs/PREMISE.md`.
-- **Analysis:** `docs/plans/composition-continuity-gap-2026-07-19.md` (verified against code)
-- **Answered so far:** **Q4 timing — cut v0.9.x alpha carrying what we thought 1.0 was**, hold 1.0 for the premise (xian, 7/19). Q1 mechanism largely superseded by your transcript reframe; team independently converged on hybrid (deterministic seed + on-demand tool) either way. Q3 backfill — Daedalus recommends forward-only plus an opt-in per-channel "mint an entity from this conversation" action rather than auto-migration.
-- **New since v22 — staging, not answers (8/4):** (a) Daedalus's architectural read (`docs/mail/daedalus-to-calliope-transcript-model-arch-read-2026-07-19.md`) reframes the work as an **assembly inversion, not a storage inversion** — messages already carry both `channel_id` and `entity_id`; only the assembly query is single-channel, so the premise is runnable by adding an entity-scoped assembly path with **no data migration**. He and Calliope both recommend assembly-only for the gate (that's Interpretation B below, chosen knowingly). (b) Argus delivered the full **per-position probe designs** for the discretion question — each walled position needs an assembly-layer AND an inference-layer probe; the straw man's old "3/4 are binary" claim was half-true and is now corrected in the doc itself (`docs/plans/discretion-model-options-2026-07-19.md`, revised 8/4). (c) Iris drafted **candidate §6 replacement text** (`docs/ux/spec-composition-gesture-s6-revision-draft-2026-08-04.md`) — held for a live session with you, with the contingent phrasings keyed to your A/B and discretion answers.
-- **Correction:** the "~49 imports" figure was repeated from a stale line in ROADMAP.md. **Verified dev DB: 16 channels** (12 claude-code, 4 native), no writes since 2026-05-10. A 106MB `klatch.db.backup-2026-04-13` in the repo root holds 2,367 channels (818 claude-code, 54 claude-ai, 1,495 native) — provenance unknown, possibly accumulated fixtures. **xian: what are those backup files?**
-- **Still open — four, in priority order:**
-  1. **Interpretation A or B?** (Argus — changes the estimate ~10×.) **A:** messages move from channel ownership to entity ownership; multi-week test re-baseline. **B:** messages keep `channel_id`, history builders join through `channel_entities` to assemble the transcript; two builders change, suite mostly survives. B looks right on Gall's-law grounds but is a slightly lossy encoding of your stated model — worth choosing knowingly. **Daedalus is held until this is answered.**
-  2. **Identity resolution** (Daedalus's fifth question). Import five Daedalus sessions — one entity or five? Name derived from `source_metadata`, or confirmed by you at import time? Entity sprawl is *worse* than today's single-default because it's hard to unwind once it's in the picker and on message rows — harder still under the transcript model, where merging identities means merging transcripts. Gates the import work shipping, not starting.
-  3. **Discretion.** You tell Daedalus something in the 1-1; he's later in a klatch with Argus and Iris. May he repeat it? Under one transcript he cannot distinguish "something I know" from "something I was told privately" unless we build that. Product decision, not implementation — and a plausible differentiator. Argus notes probe design inverts on the answer, so it gates AXT work too. **Straw man mapping four positions (fair-game → norm → marked-private → 1-1-privileged) with the probe each implies: `docs/plans/discretion-model-options-2026-07-19.md`.** Note: your July client-work shift makes the stricter positions less hypothetical than they'd have been in April.
-  4. **Directed-mode visibility.** Calliope's recommendation: everyone in a klatch sees everything; @mention routes *response obligation*, not visibility (Slack semantics). Current implementation does the opposite. Unconfirmed.
-- **Also open:** is bidirectionality now free? Daedalus scoped it as post-1.0 write-back-with-dedup; under one-transcript there may be nothing to write back. Calliope's inference from your words, not your words.
-- **Not blocked, safe to start:** `source_channel_id` column (Daedalus: trivial, ~half a day, additive, zero behavior change until read) and wiring `entity.reflections` into `buildSystemPrompt` (validates the seam, delivers real L5 continuity today — complement, not a fix).
-- **All three agents replied same-day.** Daedalus confirmed the code reading and owned the Paths B/C non-reconciliation; Iris has revised §6 language ready and wants you in the room; Argus mapped AXT blast radius and observed that **AAXT structurally cannot detect the *absence* of a capability, only misbehavior of a built one** — proposes a capability walk-through against PREMISE use cases as a pre-gate step.
-- **Date added:** 2026-07-19
+- xian answered all four continuity-gating decisions on 8/08 (below). Two of them explicitly asked for the team's own reasoning back, not a relay: **identity-resolution** ("why was this ever framed as open" — routed to Daedalus, `calliope-to-daedalus-xian-wants-identity-resolution-reasoning-2026-08-09.md`) and **discretion model** ("does that make sense" — answered directly, `calliope-to-xian-discretion-does-that-make-sense-2026-08-09.md`, includes one clarifying question back on the ground-rules mechanism). Nothing further needed from you until Daedalus's reply lands, unless my discretion reply raised something you want to redirect.
+- **Date added:** 2026-08-09
+
+## 🟠 Blocked on another agent
+
+### Code-execution gate in unattended fires — Pard's fix, flagged twice, no reply
+
+- **What:** Any unattended-fire command that executes the codebase (`npm test`, `vitest run`) is declined at approval, 13/13 fires. This is a different, still-open gate from the commit-stranding one fixed 8/05. Blocks AAXT R46–R50 even with the API key resolved, and blocks any duty cycle from doing real verification work rather than mail-and-log no-ops.
+- **Owed by:** Pard. Argus flagged it twice on 8/05; no reply as of this render.
+- **Date added:** 2026-08-09 (first flagged 8/05)
+
+## ✅ Continuity gating decisions — xian answered all four, 2026-08-08
+
+Relayed by Janus close to verbatim (`docs/mail/janus-to-calliope-xian-answers-four-gating-decisions-2026-08-08.md`). Kept here rather than archived because two threads are still in motion (above) and the roadmap implications haven't been written up yet.
+
+1. **Interpretation A or B?** → **B, proceed now** (messages keep `channel_id`, history builders join through `channel_entities` — additive, no migration). A gets a written pros/cons case filed to the roadmap for a later revisit, not built now.
+2. **Identity resolution at import** → **Both**: Klatch guesses the name from `source_metadata`, xian confirms at import. He asked why this was ever framed as open — routed to Daedalus for direct reply.
+3. **Discretion model** → **Not a pick from the four straw-man positions.** Default is "direct, not private" (a 1-1 is a different room, not a sealed one); per-klatch ground-rules prompt convention (e.g. "nothing not already known to the group," Chatham House framing); and a new architectural piece — an agent chooses, per message, whether it's answering into the 1-1 or the klatch, each with its own distinct history. **This likely also answers Daedalus's Q2** (one transcript vs. two with passing between them) — reads as "two," pending confirmation. Calliope's full technical response, including new-scope flags: `calliope-to-xian-discretion-does-that-make-sense-2026-08-09.md`.
+4. **Directed-mode visibility** → **Confirmed:** everyone in a klatch sees everything; @mention requests a reply, doesn't gate visibility. Matches Calliope's 7/19 recommendation; current code does the opposite — fix queued in Daedalus's lane.
+
+**Still open, not urgent:** the `klatch.db` provenance question (16-channel working DB vs. 2,367-channel backup of unknown origin) — carried forward, not yet re-asked this render.
+**Not blocked, safe to start once cycles are running again:** `source_channel_id` column, wiring `entity.reflections` into `buildSystemPrompt`.
+**Date decisions landed:** 2026-08-08.
 
 ### ~~Cut v1.0.0~~ — WITHDRAWN 2026-07-19
 
 - Previously listed as "all gates clear." It was not. Retracted rather than deleted so the trust-instrument record shows the correction. Release notes, blog post, LinkedIn + PH copy remain drafted and reusable once the gate is genuinely met.
 - **Also outstanding from beta scope:** Paths B/C (JIT import + new-agent-in-picker) were in xian's 6/26 scope, were never built, and were not named in the 6/27 "composition complete" call. Separate from the continuity gap — Path B wouldn't have closed it.
 
-
----
-
-## 🟠 Blocked on another agent
-
-Currently empty.
 
 ---
 
@@ -91,13 +94,13 @@ Currently empty.
 
 Awareness, no action needed.
 
-### Cohort status (Amber, verified 2026-08-04 ~23:15 PT)
-All five migrated to Amber in standing worktrees (`klatch-worktrees/*`) with structural per-worktree git identity (`extensions.worktreeConfig` — verified live in Calliope's and Iris's worktrees; Pard confirms all five). Predecessor session-crons are dead by design (session-scoped + 7-day cap); durable duty cycles are LaunchAgents Pard wires per cadence memo. **Automated fires run with no network** — they commit, the wrapper delivers host-side.
-- **Calliope** — resumed 8/4 (last across, by design). Probe-design correction folded into the discretion straw man; cadence requested: 4/day (08:30/12:30/17:00/21:30).
-- **Argus** — across; delivered the owed discretion probe-design reply (16 days late, named as such). **Cycle ARMED** (Pard, 8/4): 09:00/13:30/18:00, first fire 8/5; his wrapper design (pre-pull before fire, host-side delivery after, one log line per invocation) is now the generic pattern the rest of us inherit. Curated 3 backlogged sweeps; landed the `better-sqlite3` v12 fix (below) and pinned `playwright@1.61.0` exact.
-- **Iris** — across; §6 candidate replacement text drafted 8/4 (held for live session). Cadence requested: 2/day (07:17/19:17).
-- **Daedalus** — across and working per Pard's 8/4 reviewer memo; still held on the Interpretation A/B + identity-resolution answers, ready to start the moment they land. Overlay-grooming asks from Argus queued in his lane.
-- **Theseus** — across and already earning: first Amber session found the **Node-26 arrival blocker** (`better-sqlite3` ^11 won't compile on Amber's Node 26 — every worktree blocked from `npm install`/tests) and routed it; Argus landed the fix same night (`^12.11.1`, suite green **1332 passing**, matching the 7/19 baseline exactly). MAXT itself remains deferred until continuity exists (running it now would test L5 persona portability, not the actual question).
+### Cohort status (Amber, verified 2026-08-09 ~08:40 PT)
+All five migrated to Amber, structural per-worktree git identity. **Duty-cycle state is the story now, not migration** — see the 🔴 above. No Calliope session ran between 8/04 night and this morning (my cycle was one of the disarmed four), so this render is catching up four days at once.
+- **Calliope** — resumed 8/9. Rollup refreshed to v24; check-in artifact published (link above); replied to Pard's 4-day-old duty-cycle prior-art ask; routed identity-resolution to Daedalus; answered discretion directly to xian. Cadence armed 8/4, disarmed 8/5, not yet re-armed.
+- **Argus** — the only seat that's fired since 8/5: 3/day, 13 consecutive fires, all clean no-ops on the code-execution gate (🟠 above). Curated intel sweeps through the gap; landed the `better-sqlite3` v12 fix and the `playwright@1.61.0` pin (both 8/4).
+- **Iris** — cadence armed 8/4, disarmed 8/5. §6 candidate replacement text still drafted, still held for a live session with you. No activity since.
+- **Daedalus** — cadence armed 8/4, disarmed 8/5. Still held on the Interpretation A/B answer (now landed — B, 8/8) and now the identity-resolution reply xian asked for directly. No activity since 8/4 that I can find.
+- **Theseus** — cadence never proposed; Pard's 8/05 ask unanswered. No session since his 8/4 arrival (the one that found the Node-26 blocker). MAXT itself remains deferred until continuity exists.
 
 ### Composition gesture + beta gate — FULLY CLEAR ✅
 - All 7 increments on main. MAXT Session 03: 15/15. R45: 8/8. R46 (clone): 8/8, 0 Phantoms. R47 (@mention): 8/8, 0 Phantoms. All green.
@@ -111,7 +114,13 @@ All five migrated to Amber in standing worktrees (`klatch-worktrees/*`) with str
 
 ---
 
-## 🟢 Resolved since last board (8/4)
+## 🟢 Resolved since last board (8/9)
+
+- ~~**Four continuity gating decisions**~~ — xian answered all four directly, 8/08 (relayed by Janus). B chosen for Interpretation A/B; identity resolution is guess+confirm; discretion model is "direct not private" + ground-rules convention + per-message routing (new architecture, not yet built); directed-mode visibility confirmed as Calliope recommended. Two reply-owed threads spun out, tracked above. *Closed 8/9 (decisions landed 8/8).*
+- ~~**ANTHROPIC_API_KEY on Amber**~~ — resolved 8/05 by Pard: one canonical `.env`, symlinked into six worktrees, live-verified (real Haiku call, 200), own Console workspace + spend cap. This board had it listed as open through v23; four-day staleness caught by Janus's 8/08 memo. *Closed 8/9 (resolved 8/5).*
+- ~~**Unattended fires couldn't commit**~~ — fixed 8/05 (`mediajunkie e52daa2`, `--allowedTools 'Bash(git:*)' 'Bash(npm:*)'`); confirmed by every dated log commit landing on `origin/main` since. **Note: this did not fix code execution** (see 🟠 above) — a narrower, still-open gate. *Closed 8/9 (resolved 8/5).*
+
+## 🟢 Resolved since prior board (8/4)
 
 - ~~**Amber migration (all five Klatch agents)**~~ — complete. Five handoffs filed and reviewer-verified by Pard ("strongest batch of the twenty-one migrations this constellation has run"). Per-worktree git identity structural; federation link to Janus's cross-project rollup survives by repo identity (nothing to re-point); intel-sweep cloud triggers ran straight through the 16-day gap and need no rebuild. *Closed 8/4.*
 - ~~**Argus's owed discretion probe-design reply**~~ — delivered 8/4 (held open since 7/19; session died mid-cycle before it was written). Probe designs per position now in the straw man doc, not just in mail. *Closed 8/4.*
@@ -152,6 +161,7 @@ All five migrated to Amber in standing worktrees (`klatch-worktrees/*`) with str
 
 ## Changelog
 
+- **v24 (2026-08-09 ~08:40 PT, Calliope)** — First render after a 5-day gap (no Calliope session 8/4 night → 8/9 morning; my own cycle was one of the four disarmed 8/5). Headline flip: the four continuity gating decisions are **answered** (xian, 8/8, relayed by Janus) — removed from 🔴, moved to a dedicated ✅ section with two spun-out reply threads tracked as in-motion. New 🔴 in their place: **duty-cycle state** — only Argus's cycle is armed and firing; the other four were disarmed 8/5 pending a review whose resolution I could not find in `docs/mail/`; Argus's cycle has produced 13 consecutive no-ops on a code-execution permission gate, unresolved and flagged to Pard twice with no reply (new 🟠). Published the first Klatch check-in artifact (Janus's 8/5 ask, delivered 4 days late): https://claude.ai/code/artifact/6b0f6f84-eeae-4b21-ae01-21f5f5524707. 🟢 +3 (decisions answered; API-key staleness corrected — resolved 8/5, this board had it wrong through v23; unattended-fire commit gate confirmed fixed with a named residual gap). Cohort section rewritten to reflect the 5-day quiet stretch honestly rather than repeating 8/4 status as if current.
 - **v23 (2026-08-04 ~23:30 PT, Calliope)** — First Amber render, post-migration. Decision state verified unchanged (predicate: no xian-authored mail since 7/19; Argus's same-day check concurs; Iris verified git 7/25+ is migration traffic only). 🔴 item enriched with the 8/4 staging: Daedalus assembly-inversion read (team rec: assembly-only = Interpretation B), Argus per-position probe designs (straw man corrected 8/4 — two probe layers, not "binary"), Iris §6 candidate text (held for live session). Cohort section rewritten for Amber (worktrees, identities, LaunchAgent cadences; Argus armed same evening). 🟡 count corrected 5→4 (miscount in v22); Opus-picker 🟡 reframed per Argus's 8/4 wrong-seam correction (picker dynamic since 6/21 — no availability gap; DEFAULT_MODEL flip surfaced as xian's). CIO item honestly marked unverified-since-June. 🟢 +4 (migration complete; Argus's owed reply; Node-26 blocker found→fixed same night; Opus-5-selectable false alarm corrected).
 - **v22 (2026-07-19 ~11:25 PT, Calliope)** — see header of prior render; superseded text summarized: continuity finding replies same-day, Q4 answered (v0.9.x alpha), Interpretation A/B fork holds Daedalus, ~49→16 imports correction.
 - **v20 (2026-07-06 ~07:05 PT, Argus)** — Sweep #15 (auto 6/29–7/6) reviewed. New 🟡: Sonnet 5 tokenizer +30% compaction impact (threshold 160K was calibrated for 4.6; Sonnet 5 users hit it in ~77% as many turns). MCP spec July 28 RC: beta SDKs out, 22 days to final (no 1.0 action — stdio-only). Opus 4.8 still pending Daedalus reply. Suite 1332 green. 🟡 +1 → 5.
