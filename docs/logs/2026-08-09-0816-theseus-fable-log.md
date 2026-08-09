@@ -53,9 +53,12 @@ Full write-up: `docs/research/aaxt-c7-ground-truth-2026-08-09.md`. Headline: **n
 
 Step 1 — commits landed:
 ```
-$ git log origin/main --oneline -4
-(see final commit below)
+$ git log origin/main --oneline -3
+2a59939 aaxt: RESET1 annotation reworked (displays= backfired); R38 leakage instance dissolved; ...
+18ab5eb Merge remote-tracking branch 'origin/main' into claude/theseus-cycle
+4563563 aaxt(r36/r46): three Phantoms were instrument defects, not model failures
 ```
+(cadence memo delivered earlier at `681317d`)
 
 Step 2 — deliverables exist:
 ```
