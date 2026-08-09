@@ -649,6 +649,19 @@ interface ImportSessionParams {
   model?: string;
   turns: ParsedTurn[];
   projectId?: string; // FK to projects table
+  /**
+   * Entity this session's transcript belongs to. Omit to bind to the default
+   * entity — the pre-2026-08 behavior, which every existing import used and
+   * which the ~49 already-imported channels still carry.
+   *
+   * Supplying it is what makes an import mint a real agent identity rather
+   * than a transcript on the shared default: the assistant messages get
+   * stamped with this `entity_id`, so the entity-scoped assembly path can
+   * later union this channel into that agent's own transcript. Callers pass
+   * the entity the *user confirmed* at import time (xian, 2026-08-08:
+   * Klatch guesses the name, the user confirms it).
+   */
+  entityId?: string;
 }
 
 /**
@@ -658,6 +671,7 @@ interface ImportSessionParams {
 export function importSession(params: ImportSessionParams): ImportResult {
   const db = getDb();
   const { channelName, source, sourceMetadata, model, turns, projectId } = params;
+  const boundEntityId = params.entityId || DEFAULT_ENTITY_ID;
 
   const channelId = uuidv4();
   const now = new Date().toISOString();
@@ -672,10 +686,10 @@ export function importSession(params: ImportSessionParams): ImportResult {
       'INSERT INTO channels (id, name, system_prompt, model, mode, type, source, source_metadata, project_id, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
     ).run(channelId, channelName, '', channelModel, DEFAULT_INTERACTION_MODE, 'chat', source, JSON.stringify(sourceMetadata), projectId || null, now);
 
-    // 2. Assign default entity
+    // 2. Assign the owning entity (the confirmed one, or the default)
     db.prepare(
       'INSERT INTO channel_entities (channel_id, entity_id) VALUES (?, ?)'
-    ).run(channelId, DEFAULT_ENTITY_ID);
+    ).run(channelId, boundEntityId);
 
     // 3. Insert messages from turns
     const insertMsg = db.prepare(
@@ -701,7 +715,7 @@ export function importSession(params: ImportSessionParams): ImportResult {
         const assistantMsgId = uuidv4();
         insertMsg.run(
           assistantMsgId, channelId, 'assistant', turn.assistantText || '', 'complete',
-          turn.model || channelModel, DEFAULT_ENTITY_ID, turn.timestamp, turn.originalId, now
+          turn.model || channelModel, boundEntityId, turn.timestamp, turn.originalId, now
         );
         messageCount++;
 
