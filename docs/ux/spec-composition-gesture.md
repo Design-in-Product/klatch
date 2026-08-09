@@ -153,7 +153,13 @@ Applied in `packages/shared/src/types.ts` (INTERACTION_MODES labels).
 
 **Per-agent context** (L5 / entity prompt) is separate from the klatch-level purpose. It lives in the agent's own configuration and is not a setup-time field in the composition surface.
 
-**Context richness at start:** agents participating in a klatch bring their existing context — from their ongoing 1-1 session or from the import process (Path B). The composition gesture selects who participates; it does not automatically inject agents' prior conversation histories into the klatch. Context beyond the agent's own L5 can be explicitly pinned as files.
+**Continuity (the premise).** An agent arrives in a klatch with its context assembled across everywhere it's participated — its 1-1, and any other klatches it's been part of. What it knows in one room, it knows here too. The composition gesture selects *who participates*; it never selects *how much of themselves they bring*. A klatch whose participants arrive without their context is not a klatch (`PREMISE.md`, idea #2); this section's remaining rules are implementations of that premise, and any reading of them that contradicts it is wrong.
+
+**Mechanism (the design constraint, subordinate to the premise).** Continuity is not implemented as a raw injection of full prior history into the klatch window. Each agent arrives with a bounded, deterministic seed of its accumulated context, and retrieves specifics on demand via its source-context tool ("let me check my notes"). The constraint governs *how* context is carried — never *whether*.
+
+**Discretion.** A 1-1 is direct, not private — a different room, not a sealed one. An agent carries everything it knows into a klatch turn; there is no read-time filtering, no per-message ACL, no confidentiality system deciding what an entity is "allowed" to know. What actually gets *said* into the klatch's own record is governed by two things: a per-klatch ground-rules convention (stated in the Purpose field — e.g. "nothing not already known to the group," or an explicit Chatham House framing), and — planned, not yet built — a per-message choice of destination, so an agent can address a reply to the 1-1 rather than the klatch when that's the right room for it, the way a Slack DM works alongside a channel. **Ground rules are a prompt-level convention, not an enforcement mechanism** — an agent asked to observe Chatham House will honor it the way a well-briefed colleague does, not the way a permission system does. State this plainly wherever the feature surfaces; it is not a security guarantee.
+
+**Room-level context.** The Purpose field also seeds L4 more generally, and klatch-pinned files remain the mechanism for context that belongs to the room rather than to any one participant. Both supplement each agent's own continuity; neither substitutes for it.
 
 ---
 

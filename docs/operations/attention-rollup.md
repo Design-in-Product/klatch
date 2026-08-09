@@ -22,16 +22,17 @@
 
 ## 🔴 Needs you — FIRST, always
 
-### The team isn't running its duty cycles — only Argus's is armed, and it can't execute code
+### The team isn't running its duty cycles — resolution plan sent to Pard, awaiting his execution
 
-- **What:** On 8/05, Pard disarmed 9 of the 12 fires that were armed that afternoon — mine, Daedalus's, Iris's — at your direction, "pending the review" of the duty-cycle model (Pard's self-report on spawn-fresh drift from CIO's design). **I cannot find a memo in `docs/mail/` closing that review.** As far as the verified record shows, four seats have been silent for four days waiting on a decision, not on work. Theseus's cadence was never even proposed — Pard's 8/05 ask to him has no reply on file.
-- **The one seat that kept firing (Argus, 3/day) has produced 13 consecutive clean no-ops** — every unattended fire's attempt to run `npm test` / `vitest run` is declined at approval with nobody present to grant it. Git/file-write was fixed 8/05 (commits land fine); code execution never has been. Two flags to Pard (`argus-to-pard-standdown-runbook-review-2026-08-05.md`, `argus-to-pard-aaxt-auxiliary-and-env-ack-2026-08-05.md`) are unanswered.
-- **What I need:** did the duty-cycle-model review conclude somewhere I haven't seen? If yes, point me at it and I'll re-arm the other four today. If no, that's the actual first blocker this morning.
-- **Date added:** 2026-08-09
+- **What:** On 8/05, Pard disarmed 9 of the 12 fires that were armed that afternoon, pending a review of the duty-cycle model. xian confirmed this morning it's still open and put driving it to close **in my hands, with Pard's support** — not xian's to resolve.
+- **Plan sent to Pard** (`calliope-to-pard-duty-cycle-review-resolution-plan-2026-08-09.md`): decouple the deep question (spawn-fresh vs. continuing-session — Pard's to scope, non-blocking) from the practical one (can the current mechanism do useful work today — answerable now, seat by seat). Calliope/Iris/Theseus re-arm immediately (no code-execution or network dependency; Theseus's own cadence already scopes around the network constraint). Argus/Daedalus re-arm too, with unattended fires dropping the test/build-execution step until Pard answers whether the code-execution gate (13/13 fires declined, two flags unanswered since 8/05) is fixable or a permanent sandbox boundary.
+- **What I need from Pard, one way or the other:** fixable-and-when, or structural-and-permanent. Either closes the loop. **What I need from xian:** nothing right now — flag if the plan above should go differently.
+- **Date added:** 2026-08-09 · **Plan sent:** 2026-08-09 mid-morning
 
-### Two decision-threads owed back to you, both moving this session
+### One decision-thread with a live question in it: "addressing," yes or no
 
-- xian answered all four continuity-gating decisions on 8/08 (below). Two of them explicitly asked for the team's own reasoning back, not a relay: **identity-resolution** ("why was this ever framed as open" — routed to Daedalus, `calliope-to-daedalus-xian-wants-identity-resolution-reasoning-2026-08-09.md`) and **discretion model** ("does that make sense" — answered directly, `calliope-to-xian-discretion-does-that-make-sense-2026-08-09.md`, includes one clarifying question back on the ground-rules mechanism). Nothing further needed from you until Daedalus's reply lands, unless my discretion reply raised something you want to redirect.
+- Daedalus answered both of your direct questions himself this morning (identity-resolution, discretion technical read) — parallel to my own routing/reply, no conflict, and the convergence is itself a good signal. He's **already building #1** (imports mint entities, Round 35 shipped 8/09).
+- **His one open question, concrete and ready to act on:** when a klatch assembles a participant's context, should it include what that agent said in its own 1-1s? His read: **yes — "addressing, not secrecy,"** the Slack DM-during-a-meeting analogy. Say "addressing" and he builds it immediately; say otherwise and it's a filtered-assembly problem again. (`daedalus-to-xian-discretion-design-technical-read-2026-08-09.md`)
 - **Date added:** 2026-08-09
 
 ## 🟠 Blocked on another agent

@@ -123,6 +123,87 @@ These are patches whose specific shape might change in the holistic design, but 
 
 ---
 
+## Added 2026-05-18 from Theseus UI-as-context AAXT findings
+
+Five findings from Theseus's Rounds 36/37/38 (probing Sidebar, ExportReviewPanel, ImportDialog session browser). Four routing to Tier 1; one Tier 3.
+
+### T1.8 (Theseus R36, F2) — Auto-expand sidebar projects containing non-native channels ⚠️ HIGH VALUE
+- **Finding:** Round 36 surfaced that the sidebar accordion auto-expands only the *first project alphabetically*. Channels in non-first-alphabetical projects (including all imported Claude Code / claude.ai channels) are invisible by default. The CC source badge has nothing to attach to because the channel isn't rendered. Behavioral probe result: Absent — user-proxy couldn't find a channel that doesn't exist in the DOM.
+- **Why this matters:** This is the kind of finding that surfaces in beta as "I can't find my Claude Code imports" with a poor recovery story ("click the collapsed project header you didn't know existed").
+- **Proper fix:** Sidebar IA redesign — proper disclosure pattern for projects, summary cues for collapsed projects, default-state strategy.
+- **Near-term patch:** On first load, auto-expand every project that contains channels where `source !== 'native'`. Cheap signal that imported work exists. Survives the holistic redesign because "imported work should be discoverable on first read" is a property the redesign will also want.
+
+### T1.9 (Theseus R36, F3) — "3 entities" tooltip leaks internal vocabulary
+- **Finding:** EntityManager tooltip shows "3 entities" / "Assigned to N channel(s)" — V2 banishes "entity" from user-facing copy; should be "agents."
+- **Proper fix:** Entity manager redesign uses "agents" and "roles" consistently throughout.
+- **Near-term patch:** Two-string fix in the tooltip. Folds into the vocabulary-migration sweep Daedalus has queued (already in the 5/12 audit at EntityManager.tsx:119).
+
+### T1.10 (Theseus R37, E1) — ExportReviewPanel hides zero-file state
+- **Finding:** Round 37 found that when `files.length === 0`, the Files row in ExportSummary doesn't render at all. User-proxy: "I cannot determine how many files are being included." Same pattern as T1.8 (zero communicated by absence).
+- **Proper fix:** Service-design pass on the export experience handles explicit zero-states throughout.
+- **Near-term patch:** When files = 0, render `Files: 0` (or `—`) instead of omitting the row. One line of conditional rendering.
+
+### T1.11 (Theseus R38, I1) — Same-day import sessions are indistinguishable by visible info
+- **Finding:** Round 38 found that `toLocaleDateString()` shows only MM/DD/YYYY; time-of-day lives only in the tooltip. When two sessions are from the same day, the user can't tell which is more recent without hovering — directly defeats T1.6's selection-by-recognition design intent. User-proxy picked wrong session (Confabulated).
+- **Proper fix:** Holistic ImportDialog redesign — full-screen experience with rich content fingerprints.
+- **Near-term patch:** Two parts (do both for redundant signaling):
+  1. Show time-of-day on the visible date for sessions modified within the last 24 hours (e.g., `5/17/2026 2:14 PM` instead of `5/17/2026`)
+  2. Sort sessions by recency (most-recent first) within each project so list position carries the temporal signal
+
+### T3 addition (Theseus R38, I2) — Imported badge has no "new" complement 🛑
+- **Finding:** Round 38 found the badge system is asymmetric — imported sessions get an "imported as X" badge, new sessions show nothing. When all sessions are the same status (all-imported or all-new), the user-proxy couldn't tell whether "absence of badge" meant "none in that state" or "the UI doesn't surface that distinction."
+- **Why not patched now:** The fix is at the redesign level (per-project status summary line, symmetrized badge tokens, or some other shape that emerges from the holistic pass). Patching the asymmetry without that context risks decorating something the redesign will rip out.
+- **Defer to:** Holistic ImportDialog redesign (already Tier 3).
+
+---
+
+## Cross-cutting principle added to design principles
+
+From Theseus's R36/R37/R38 cross-cutting observation (three findings share the same shape): **negative state needs explicit representation, not implicit absence.** Captured in `docs/ux/design-principles.md` under "Communicate with clarity." User-surface analogue of the agent-side Subliminal classification.
+
+---
+
+## Added 2026-05-18 from Theseus R39 UI-as-context AAXT — ChannelSettings findings
+
+ChannelSettings panel — the F4.4 "value proposition, surfaced / currently a junk drawer" surface. 54.5% conveyance, lowest of all UI-as-context rounds. Five findings; four routing to Tier 1.
+
+### T1.12 (Theseus R39, CS-F1) — Prompt layers indicator needs visible status text ⚠️ HIGH PRIORITY
+- **Finding:** 0/5 Correct, 4/5 Absent on the prompt-layers indicator. The active/inactive signal is **only color** (green dot vs gray dot). No text, no `aria-label`, no `title`. Subliminal-class — data is in className strings; surface obscures it. WCAG 1.4.1 violation. **The single most-important surface for visualizing Klatch's value proposition fails its job entirely.**
+- **Why this matters:** F4.4 named this panel "the value proposition, surfaced." The prompt-layers area is the heart of that — where users should see what Klatch is doing structurally. Today they see layer names and nothing about which are populated.
+- **Proper fix:** Layer composition visualization (sparkline-style) propagated from the export preview surface, where the same data already conveys correctly.
+- **Near-term patch:** Add visible status text next to each layer ("Project Instructions — active" / "Channel Addendum — empty"). Optionally also: `aria-label` on the colored dot, or a non-color affordance like ✓ vs —. Lifts the surface from 0% to ~100% conveyance on the most important claim category. **Highest single-patch value identified in the walkthrough so far.**
+
+### T1.13 (Theseus R39, CS-F2(a)) — Pinned files section: always render header with explicit zero-state
+- **Finding:** Section only renders when `channelFiles.length > 0`. User-proxy can't tell "no pinned files" from "the UI doesn't have a pinned files concept." Instance of the negative-state principle.
+- **Near-term patch:** Always render the "Pinned files (N)" header; show "No files pinned" body when N === 0.
+
+### T1.14 (Theseus R39, CS-F2(b)) — Native provenance: always render a low-key label
+- **Finding:** Provenance card only renders when `isImported`. Native channels are silently native. Same pattern as imported badges having no "new" complement (R38 I2).
+- **Near-term patch:** Render a low-key "Native — created in Klatch" label for native channels. Symmetrizes the provenance signal.
+
+### T1.15 (Theseus R39, CS-F2(c)) — Project assignment dropdown: always render with empty default
+- **Finding:** Dropdown only renders when `projects.length > 0`. When no projects exist, the entire concept of project assignment is invisible. User-proxy: "I cannot tell 'no project assigned' from 'the UI doesn't surface projects.'"
+- **Near-term patch:** Always render the dropdown with "No project assigned" as the default option. Becomes informational when no projects exist; interactive when they do.
+
+### T1.16 (Theseus R39, CS-F3) — Interaction mode buttons need non-color active-state signal
+- **Finding:** Mode buttons (panel/roundtable/directed) signal active via `bg-accent text-white` vs `bg-card text-secondary`. User-proxy could enumerate modes but couldn't tell which was selected. Lower severity than CS-F1 (only 3 options; user can usually infer from context) but same accessibility class.
+- **Near-term patch:** Add `aria-pressed="true"` to the active button + a visible "(selected)" marker, or a non-color affordance (underline, check icon, filled circle).
+
+### Positive catalog (Theseus R39, CS-F5) — Channel context label is exceptional
+- **Finding:** "Channel context (purpose, agenda, constraints — injected into every message)" scored 100% conveyance (3/5 Correct + 2/5 Reconstructed where the reconstructions were correct but worded differently than expected). The user-proxy understood BOTH what the field is for AND when it gets used.
+- **Pattern to propagate:** Textarea + framing-rich label that names purpose + audience + behavior. The single best example of a well-designed surface element in the current panel.
+- **Where this lands:** Documented in design-principles.md as a positive pattern alongside the inverse-rendering principle (which CS-F5 also exemplifies — channel context is *always rendered*, not conditional on having content).
+
+---
+
+## Second cross-cutting principle from R39 findings
+
+Theseus identified the meta-pattern across CS-F2(a), CS-F2(b), CS-F2(c) and earlier negative-state findings: **conditional rendering hides the categorical state of the channel.** A user can't tell whether a category doesn't apply vs. whether the UI doesn't surface it.
+
+Captured as a new principle in `docs/ux/design-principles.md`: **Render the categories that could exist, not just the ones that do.** Sibling to "negative state needs explicit representation" but more specific to panel surfaces. The CS-F5 channel-context field is the positive instance — always rendered with a framing label — and propagating its pattern to other panel surfaces would address most of the R39 findings.
+
+---
+
 ## Tier 3 — Wait for design
 
 These should NOT be patched. Attempting a partial fix would either be wasted work or would force a premature design decision.
