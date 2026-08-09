@@ -227,19 +227,22 @@ function snapshotDom(container: HTMLElement): string {
     if (target === '_blank') annotations.push('opens-in-new-tab');
     if (type && type !== 'text') annotations.push(`type=${type}`);
     if (disabled) annotations.push(disabled);
-    if (value && (tag === 'input' || tag === 'textarea')) annotations.push(value);
+    if (value && (tag === 'input' || tag === 'textarea' || tag === 'select')) annotations.push(value);
     // A <select> renders the text of its selected option, and a sighted user reads
     // that text off the closed control. Annotating only a truthy `value` meant an
     // empty-valued select — like the one-shot clone action-select, hardcoded
-    // value="" (ChannelSidebar.tsx:504) — appeared in the snapshot with no
-    // indication of what it displays, so the snapshot showed strictly LESS than the
-    // screen and probes about it could not be answered from it. Always state what
-    // the control displays. (Argus 8/05 Finding C, re-scoped as instrument fidelity.)
-    if (tag === 'select') {
-      const sel = el as HTMLSelectElement;
-      const shown = sel.selectedOptions?.[0]?.textContent?.trim() ?? '';
-      annotations.push(`displays="${shown}"`);
-      if (value) annotations.push(value);
+    // value="" (ChannelSidebar.tsx:504) — appeared with no indication of what it
+    // shows, so the snapshot conveyed strictly LESS than the screen.
+    // (Argus 8/05 Finding C, re-scoped as instrument fidelity.)
+    //
+    // Marked on the option rather than as a select-level attribute on purpose: a
+    // first attempt used `displays="…"` and scored WORSE, because a reader treats
+    // an attribute as machine metadata and keeps reasoning from the options list —
+    // it answered "'standup', because the select has a displays attribute". Two
+    // competing signals are worse than none. The annotation is phrased to say what
+    // a viewer would see, not to name a DOM property.
+    if (tag === 'option' && (el as HTMLOptionElement).selected) {
+      annotations.push('currently shown on the closed control');
     }
     if (tag === 'button') annotations.push('clickable');
     if (tag === 'a') annotations.push('link');

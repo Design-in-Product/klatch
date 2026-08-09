@@ -72,6 +72,29 @@ This is the same class as the stale `'Channel Settings'` assertion Argus found a
 
 The 8/05 doc attributes this answer to the **`S2-chats-only`** state, noting correctly that S2's fixture contains none of those strings. In my runs the answer comes from **`S1-realistic`**, whose fixture contains all of them; S2 scored Correct in both arms and in the baseline. The "content that was never in the input" framing rests on that attribution. I can't reconstruct his console from here, so I'll say only what I can support: **in three runs today the phantom is S1's and its content is entirely S1's** — no cross-fixture content appeared anywhere. The strings genuinely are in `S1-realistic`, one state above S2 in the same file, which is an easy adjacency to cross when reading a long console dump.
 
+### The second instance dissolves the same way — and with it, the phenomenon
+
+The 8/05 doc's other leakage instance is the stronger one, because cross-*file* content can't be explained by in-file adjacency. It is described as **"Round 37, `IS1-rich`, IP1-fingerprint probe (`round37-ui-context-aaxt-export-review.test.tsx`)"**, answering with content from **round38** — "a different test file entirely."
+
+**[VERIFIED — `grep -l 'IP1-fingerprint' packages/client/src/__tests__/*.tsx` returns exactly one file]** the IP1 probe lives in **`round38-ui-context-aaxt-import-browser.test.tsx`**. Round 37 is the ExportReviewPanel and has no IP1 probe or `IS1-rich` state. The probe and the "foreign" fixture are the same file — and, in fact, the same state.
+
+Reproduced in today's sweep. The model answered *"help me debug the SSE streaming race condition in messages route"* **[VERIFIED — `round38...tsx:266`]**, which is session `a1` of `IS1-rich`: its own input, the state it was actually shown.
+
+**So there were zero instances of cross-fixture leakage. The phenomenon doesn't exist.** In both cases the model named content that was in front of it, and the finding was reported as content that couldn't be. Memorization needed no ruling out, because nothing unexplained ever occurred.
+
+### What the R38 probe actually caught — a real conveyance finding
+
+Worth keeping, because it's the one genuine UI finding in the set. Ground truth sorts every session across *all* projects by `modifiedAt` and takes the global maximum:
+
+- `a1` "SSE streaming race condition" — `2026-05-17T14:32:00Z` — **project 1**
+- `b1` "M2g check-in" — `2026-05-17T22:14:00Z` — **project 2** ← genuinely latest
+
+The model picked `a1` and cited "last active 5/17/2026, 7:32 AM" — the correct local rendering of a1's UTC timestamp, so it was reading the surface accurately. It found the most recent session **within the first project group** and did not compare across groups.
+
+That is a legitimate conveyance gap: **the import browser groups sessions by project, so cross-project recency is not legible from the rendered surface.** A user scanning it faces exactly the same obstacle. Whether it matters is a design question — the dialog's job is finding a session to import, and it may never have claimed to answer "which is globally most recent" — so it's Iris's call, not mine. Flagging it as a real but low-urgency finding rather than routing it as a defect.
+
+**A methodology note this surfaced:** R38 does not hard-fail on Phantoms. **[VERIFIED — `round38...tsx:667–668`]** its final assertions check only that the tally is internally consistent, where R36 and R46 assert `phantom === 0`. So this Phantom has been passing CI-visibly-green while the equivalent in R46 fails the round. Rounds disagree about what a Phantom means. That inconsistency should be a deliberate decision rather than an accident of who wrote which round, and it isn't one today.
+
 ---
 
 ## Finding B — confirmed a judge miscall, with the untruncated rationale
@@ -102,7 +125,15 @@ Where I differ is the disposition. He read this as Iris's May design principle r
 
 That makes it an instrument-fidelity bug in my lane, not a product defect. AAXT's entire premise is that the snapshot stands in for what a user sees; where it under-represents the screen, every probe over that surface is invalid, and a Phantom there measures the harness.
 
-**Fix:** selects now always annotate `displays="<selected option text>"`. RESET1 went from Phantom to Correct, and the model's new answer shows it reading exactly what a user would: *"the placeholder 'Copy setup from an existing klatch…' as the displayed text, though 'standup' is available as an option."*
+**Fix, and a failed first attempt worth recording.** My first version annotated the select with `displays="<selected option text>"`. It passed in isolation, then **failed in the full sweep** with the model answering:
+
+> *"The selected klatch name 'standup' — the dropdown displays the placeholder text... but the select element has a **displays attribute** showing the currently selected option, which is 'standup' based on the available options."*
+
+It read `displays=` as machine metadata rather than as what a viewer sees, and reasoned from the options list instead. **Two competing signals were worse than none** — I'd made the snapshot more complete and less legible at the same time, which is the exact failure mode AAXT exists to catch, committed by the instrument itself.
+
+The working fix annotates the **selected option** with `currently shown on the closed control` — phrased as what a viewer perceives, not as a DOM property. RESET1 → Correct, and the answer now reads like a user's. Verified across **three consecutive runs, 8/8 Correct, 0 Phantoms** each, where the `displays=` version flipped between Correct and Phantom on identical code.
+
+**That flip is its own finding:** borderline probes are not deterministic across runs. A single green round is weaker evidence than we've been treating it as, and a single red one likewise. Repeat runs are cheap; I'll use them before reporting any borderline result.
 
 **Iris — the residual question that survives the fix is genuinely yours,** and it's narrower than what Argus routed: a *screen-reader* user may still not perceive the reset, since the visual affordance is the rendered option text. Whether the select should announce its empty-selection state explicitly is a real accessibility call. I'd flag it as low urgency: no sighted user is misled, and the control is one-shot by design.
 
