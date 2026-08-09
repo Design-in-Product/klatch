@@ -7,6 +7,8 @@ import { parseClaudeAiConversation } from '../import/claude-ai-parser.js';
 import { extractFromZip } from '../import/claude-ai-zip.js';
 import { scanClaudeCodeSessions, scanExportedSessions } from '../import/session-scanner.js';
 import { importKlatchPackage } from '../import/klatch-import.js';
+import { resolveImportEntity } from '../import/entity-resolve.js';
+import { guessEntityName } from '../import/entity-guess.js';
 import { importSession, findChannelByOriginalSessionId, getImportConflictInfo, countChannelsByOriginalSessionId, findOrCreateProject, findUniqueProjectByName } from '../db/queries.js';
 import { MODEL_ALIASES, AVAILABLE_MODELS } from '@klatch/shared';
 import type { ModelId } from '@klatch/shared';
@@ -53,9 +55,22 @@ app.get('/import/claude-code/sessions', async (c) => {
       projects.push(exported);
     }
 
+    // Attach a proposed entity name to each session so the import UI can
+    // pre-fill the confirm step rather than asking the user to invent one.
+    // The guess ships with its `basis` and `rationale` — a confirmation the
+    // user can't evaluate is a rubber stamp, and a plausible wrong name is
+    // likelier to be waved through than a blank field.
+    const projectsWithGuesses = projects.map((p) => ({
+      ...p,
+      sessions: p.sessions.map((s) => ({
+        ...s,
+        entityGuess: guessEntityName(s.firstUserMessage, p.projectName ?? s.projectName),
+      })),
+    }));
+
     const totalSessions = projects.reduce((sum, p) => sum + p.sessions.length, 0);
     return c.json({
-      projects,
+      projects: projectsWithGuesses,
       totalProjects: projects.length,
       totalSessions,
     }, 200);
@@ -97,16 +112,25 @@ app.post('/import/claude-code', async (c) => {
     }
     const channelName = formData.get('channelName') as string | null;
     const forceImport = formData.get('forceImport') === 'true';
+    const entityName = formData.get('entityName') as string | null;
+    const entityId = formData.get('entityId') as string | null;
     const content = Buffer.from(arrayBuffer).toString('utf-8');
     const session = parseClaudeCodeSessionFromContent(content);
 
-    return processClaudeCodeImport(c, session, channelName || undefined, forceImport, true);
+    return processClaudeCodeImport(c, session, channelName || undefined, forceImport, true, {
+      entityId: entityId || undefined,
+      entityName: entityName || undefined,
+    });
   } else {
     // ── Path-based import (local sessions) ──
-    const { sessionPath, channelName, forceImport } = await c.req.json<{
+    const { sessionPath, channelName, forceImport, entityName, entityId } = await c.req.json<{
       sessionPath: string;
       channelName?: string;
       forceImport?: boolean;
+      /** Confirmed entity name — reused if one already has it, minted otherwise. */
+      entityName?: string;
+      /** Existing entity chosen explicitly; wins over entityName. */
+      entityId?: string;
     }>();
 
     if (!sessionPath) {
@@ -130,7 +154,10 @@ app.post('/import/claude-code', async (c) => {
     }
 
     const session = await parseClaudeCodeSession(expandedPath);
-    return processClaudeCodeImport(c, session, channelName, forceImport === true, false);
+    return processClaudeCodeImport(c, session, channelName, forceImport === true, false, {
+      entityId,
+      entityName,
+    });
   }
 });
 
@@ -141,6 +168,13 @@ function processClaudeCodeImport(
   channelName: string | undefined,
   forceImport: boolean,
   isCloudUpload: boolean,
+  /**
+   * The entity the user confirmed this session belongs to (xian, 2026-08-08:
+   * Klatch guesses, the user confirms). Omit both fields and the import binds
+   * to the default entity exactly as it did before — every pre-existing
+   * caller and the ~49 already-imported channels are unaffected.
+   */
+  confirmedEntity?: { entityId?: string; entityName?: string },
 ) {
   // Validate non-empty
   if (session.turns.length === 0) {
@@ -235,6 +269,20 @@ function processClaudeCodeImport(
     }
   }
 
+  // Resolve the owning entity from what the user confirmed. Reuse-by-name is
+  // what turns five confirmed "Daedalus" imports into one Daedalus whose
+  // transcript spans all five, rather than five look-alike entities.
+  let resolvedEntity: ReturnType<typeof resolveImportEntity>;
+  try {
+    resolvedEntity = resolveImportEntity({
+      entityId: confirmedEntity?.entityId,
+      entityName: confirmedEntity?.entityName,
+      model: resolvedModel,
+    });
+  } catch (err) {
+    return c.json({ error: err instanceof Error ? err.message : 'Invalid entity' }, 400);
+  }
+
   // Import into database
   const result = importSession({
     channelName: name,
@@ -257,11 +305,15 @@ function processClaudeCodeImport(
     model: resolvedModel,
     turns: session.turns,
     projectId,
+    entityId: resolvedEntity.entityId,
   });
 
   return c.json({
     ...result,
     sessionId: session.sessionId,
+    ...(resolvedEntity.entityId
+      ? { entityId: resolvedEntity.entityId, entityDisposition: resolvedEntity.disposition }
+      : {}),
     ...(session.skippedLines ? { skippedLines: session.skippedLines } : {}),
   }, 201);
 }
