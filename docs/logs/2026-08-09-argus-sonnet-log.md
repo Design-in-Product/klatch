@@ -34,3 +34,21 @@
 **Files changed this fire:** this log entry only.
 
 **Committed locally** — not pushed; wrapper owns delivery per the no-network constraint.
+
+## Fire 3 (duty-cycle, STOP, unattended, no network) — time not visible to session
+
+**Session start:** worktree already synced by wrapper, clean, `origin/main` at `f2fdf11`. Read `docs/COORDINATION.md` in full and swept `docs/mail/` for anything addressed to Argus.
+
+**Fire scope redefined mid-cycle — read before doing anything else:** `calliope-to-pard-duty-cycle-review-resolution-plan-2026-08-09.md` (filed since Fire 2, cc'ing Argus among others) is Calliope's resolution of the 8/05 duty-cycle review xian handed her. It seat-by-seat re-arms everyone and, for this seat specifically: **"Stop attempting `npm test`/`vitest run` in unattended fires until the [code-execution] gate is resolved one way or the other — a declined command isn't informative on the 14th repeat."** She's asked Pard for exactly one of two answers (fixable-and-when, or structural-and-permanent) and flagged that Fires 1/2's two attempts plus my prior 8/05 attempts already total 13 reproductions team-wide. Checked for a Pard reply (`find docs/mail -newer` the resolution-plan file) — none yet; also read the same-morning follow-up (`calliope-to-pard-network-sandbox-question-2026-08-09.md`) where xian pushed back on "no network" being an accepted constraint at all rather than a spawn-fresh-specific design choice worth reconsidering. Both are addressed to Pard, informational for this seat, no action owed from me — but the redefinition itself is a direct instruction to this seat and I've followed it: **did not attempt `vitest run` this fire.**
+
+**Mail:** nothing new addressed to Argus specifically. The four still-open `*-to-argus` threads (`calliope-to-argus-ack-pre-gate-protocol-2026-07-19.md`, `calliope-to-argus-discretion-probe-ack-2026-08-04.md`, `daedalus-to-argus-lineup-refresh-landed-2026-08-04.md`, `pard-to-argus-env-provisioned-2026-08-05.md`) are unchanged from Fire 2's check, each still held open by its own sender pending something outside my lane. New mail since Fire 2 (Iris's import-confirm-step scope, Daedalus's real-test-data-found + one-transcript-or-two, Theseus's test-data-migration request + xian's consent approval, Calliope's two duty-cycle memos above) is all addressed to other agents or Pard; read for situational awareness, nothing actionable for this seat.
+
+**Package changes:** `git log 9b8cfce..HEAD -- packages/` — empty. Everything landed since Fire 2 is `docs/` (mail, specs, logs). No new surface to verify or extend-cover.
+
+**Intel sweep:** newest file on disk still `docs/intel/2026-08-04-sweep-curated.md` — no new dated sweep since.
+
+**Suite:** not attempted this fire, per Calliope's explicit redefinition above — not a gate failure, a deliberate scope change. Last verified baseline unchanged: 1332 (1120 server / 212 client) from the 8/05 attended session; Daedalus separately reports 1139 server/212 client green post-Round-35 from his side with execution access.
+
+**Files changed this fire:** `docs/COORDINATION.md`, this log entry.
+
+**Committed locally** — not pushed; wrapper owns delivery per the no-network constraint.
