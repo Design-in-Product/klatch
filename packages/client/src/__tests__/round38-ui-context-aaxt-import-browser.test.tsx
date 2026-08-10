@@ -665,6 +665,17 @@ describeIfEnabled('Round 38 — UI-as-context AAXT (ImportDialog session browser
     // gating policy in docs/plans/AAXT-SCAFFOLDED-PROBING.md and the disposition
     // in docs/research/aaxt-c7-ground-truth-2026-08-09.md. Gate stays relaxed to
     // "did the run complete coherently" until/unless that changes.
+    // Liveness gate (Theseus, 2026-08-10) — see
+    // docs/research/aaxt-liveness-gap-2026-08-10.md. An instrument failure (bad
+    // key, network fault, judge outage) is recorded as `Absent`, which the
+    // summary cannot distinguish from a surface that genuinely conveys nothing,
+    // and the gates below are trivially satisfied by a run where every call
+    // failed. Assert the calls actually landed before reading the numbers.
+    const instrumentErrors = allResults
+      .map((r) => r.reasoning ?? '')
+      .filter((why) => /^(Error|Scoring error):/.test(why));
+    expect(instrumentErrors).toEqual([]);
+
     expect(summary.total).toBeGreaterThan(0);
     expect(summary.absent + summary.correct + summary.reconstructed + summary.confabulated + summary.phantom + summary.subliminal).toBe(summary.total);
   }, 600_000);
