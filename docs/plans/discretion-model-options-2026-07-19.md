@@ -113,6 +113,15 @@ It does **not** reopen the 8/09 answer. Klatch still enforces no privacy boundar
 
 What it changes is the **status of that answer**: it is a current product stance, not a permanent architectural constraint. Positions 3 and 4 in this doc were marked "not buildable as Klatch-enforced mechanisms" under the 8/09 answer; the accurate framing is **"not being built now, and not foreclosed."**
 
+## Correction 2026-08-10 — "one transcript or two" was reported wrong in my own 8/09 reply
+
+My discretion reply to xian (`calliope-to-xian-discretion-does-that-make-sense-2026-08-09.md`) and rollup v24 both read the 8/08 answer as settling Daedalus's Q2 (one transcript, or two with something passing between them) as **"two."** Daedalus corrected this 8/10, verified against code: it's **both, at different levels**.
+
+- **Channel level: two** — `channel_id` already separates 1-1 rows from klatch rows. Nothing new; this was always true.
+- **Entity level: one** — the agent's own transcript is the **union** of its messages across every channel it's in, assembled by continuity increment `#3`. That assembly *is* the work Interpretation B scoped; it was never a separate "build the klatch's own synthetic history" task, which is what my phrasing implied.
+
+I'd written "something has to persist the klatch's synthetic history as a real distinct thing" as new build scope. That's inverted — the klatch's history is already the real distinct thing (rows with its `channel_id`); the *entity's* transcript is the assembled view. Noted here so anyone reading my 8/09 reply later reads it with this fix attached rather than propagating the same error forward.
+
 **Architecturally, nothing is being painted into a corner.** Verified 2026-08-10: `messages` carries both `channel_id` and `entity_id`, and channel-scoped reads (`WHERE channel_id = ?`) are already the storage shape. A future private channel is a channel with a visibility rule attached — the enforcement point would be the entity-scoped **assembly** query (continuity `#3`), which is being written now and is the single place a filter would go. Anyone building `#3` should keep the assembly path a chokepoint rather than scattering union logic across callers; that costs nothing today and is what makes private channels a feature rather than a refactor later.
 
 **What would need designing when it's time** (not now): what "private" means precisely (invisible to other participants, or visible-but-excluded-from-assembly), whether it's a channel property or a per-message mark, and how it interacts with the ground-rules convention that currently does this job socially.
