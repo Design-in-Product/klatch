@@ -519,6 +519,117 @@ export function getKlatchesForEntity(entityId: string): Channel[] {
   return rows.map(rowToChannel);
 }
 
+/**
+ * Every channel an entity participates in, newest activity irrelevant — ordered
+ * by creation so provenance reads chronologically.
+ *
+ * Complements `getKlatchesForEntity` (klatches only). This is the membership
+ * set that defines the entity's transcript: under the confirmed transcript
+ * model (xian, 2026-08-10) the entity owns **one** continuous transcript and
+ * each channel is a *view* into it, so "which channels" is the same question
+ * as "what is this agent's history made of".
+ */
+export function getEntityChannels(entityId: string): Channel[] {
+  const rows = getDb()
+    .prepare(`
+      SELECT c.* FROM channels c
+      JOIN channel_entities ce ON c.id = ce.channel_id
+      WHERE ce.entity_id = ?
+      ORDER BY c.created_at ASC
+    `)
+    .all(entityId) as any[];
+  return rows.map(rowToChannel);
+}
+
+/** A message plus the channel it was said in — provenance travels with it. */
+export interface TranscriptMessage extends Message {
+  channelName: string;
+  channelType: ChannelType;
+  channelSource: ChannelSource;
+}
+
+export interface EntityTranscriptOptions {
+  /**
+   * Channel to leave out — normally the room the agent is *currently* in, so
+   * assembly carries what it knows from elsewhere without duplicating the
+   * conversation already in front of it.
+   */
+  excludeChannelId?: string;
+  /** Most-recent-N cap. Omit for the whole transcript. */
+  limit?: number;
+  /** Restrict to these channel types (e.g. only the agent's own 1-1s). */
+  types?: ChannelType[];
+}
+
+/**
+ * The entity-scoped assembly path — an agent's own transcript, unioned across
+ * every channel it's in and interleaved chronologically.
+ *
+ * **This is the query the continuity work was missing.** History has always
+ * been assembled per channel (`getMessages` → `WHERE channel_id = ?`), which is
+ * why an agent walking into a klatch arrived knowing nothing: there was no way
+ * to ask "what does *this agent* know". Note what this is not: no schema
+ * change, no data migration, no second store. The rows already carry both
+ * `channel_id` and `entity_id`; only the assembly was single-channel. That is
+ * the whole of "assembly inversion, not storage inversion".
+ *
+ * Every row is provenance-marked with its channel, because a carried message
+ * is only intelligible if you know which room it was said in — and because a
+ * future visibility rule (private channels, deferred 2026-08-10) would filter
+ * here. Keeping this the single assembly path is what makes that a filter
+ * rather than a refactor.
+ *
+ * Ordering matches `getMessages` (`created_at`, `rowid` tiebreak) so a
+ * single-channel slice of this is byte-identical to that channel's own history.
+ *
+ * NOT yet wired into `buildSystemPrompt` — that is increment #3 proper and is
+ * gated on the compaction-strategy decision (summary / recent-N+summary /
+ * on-demand tool), which is still open with xian. All three options need this
+ * union underneath them, so it is built first and independently.
+ */
+export function getEntityTranscript(
+  entityId: string,
+  options: EntityTranscriptOptions = {}
+): TranscriptMessage[] {
+  const { excludeChannelId, limit, types } = options;
+
+  const clauses = ['m.entity_id = ?'];
+  const params: unknown[] = [entityId];
+
+  if (excludeChannelId) {
+    clauses.push('m.channel_id != ?');
+    params.push(excludeChannelId);
+  }
+  if (types && types.length > 0) {
+    clauses.push(`c.type IN (${types.map(() => '?').join(', ')})`);
+    params.push(...types);
+  }
+
+  // Newest-first with LIMIT, then reversed — so a limit takes the most RECENT
+  // N messages. Ordering ASC + LIMIT would take the oldest N, which is the
+  // opposite of what carrying context wants.
+  const sql = `
+    SELECT m.*, c.name AS channel_name, c.type AS channel_type, c.source AS channel_source
+    FROM messages m
+    JOIN channels c ON c.id = m.channel_id
+    WHERE ${clauses.join(' AND ')}
+    ORDER BY m.created_at DESC, m.rowid DESC
+    ${limit ? 'LIMIT ?' : ''}
+  `;
+  if (limit) params.push(limit);
+
+  const rows = getDb().prepare(sql).all(...params) as any[];
+
+  return rows
+    .reverse()
+    .map((row) => ({
+      ...rowToMessage(row),
+      channelName: row.channel_name,
+      channelType: (row.channel_type as ChannelType) || 'chat',
+      channelSource: (row.channel_source as ChannelSource) || 'native',
+    }));
+}
+
 // ── Project CRUD ──────────────────────────────────────────────
 
 export function getProject(id: string): Project | undefined {
