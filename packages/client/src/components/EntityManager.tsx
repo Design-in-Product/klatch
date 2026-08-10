@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import type { Entity, ModelId, EffortLevel } from '@klatch/shared';
-import { AVAILABLE_MODELS, ENTITY_COLORS, DEFAULT_ENTITY_ID, DEFAULT_MODEL } from '@klatch/shared';
+import { AVAILABLE_MODELS, ENTITY_COLORS, DEFAULT_ENTITY_ID, DEFAULT_MODEL, DEFAULT_EFFORT } from '@klatch/shared';
 import { useModels } from '../hooks/useModels';
 import type { DiscoveredModel } from '../api/client';
 
@@ -180,14 +180,9 @@ function EntityForm({
   // DEFAULT_MODEL constant, so a default flip is one edit in one place. The
   // previous literal ('claude-sonnet-4-6') had already gone stale.
   const [model, setModel] = useState<ModelId>(entity?.model ?? DEFAULT_MODEL);
-  // Effort default derives from the model's discovered ladder rather than a
-  // per-model literal. NOTE: the server has its own per-model policy
-  // (defaultEffortForModel: sonnet-4-6 → medium, else high) that isn't exposed
-  // over /api/models yet — worth surfacing as a `recommendedEffort` field so
-  // client and server can't drift. Until then 'high' is the shared default.
-  const [effort, setEffort] = useState<EffortLevel>(
-    entity?.effort ?? 'high'
-  );
+  // Same shared constant the server uses, so the two can't drift. Uniform
+  // across models by design — see DEFAULT_EFFORT in @klatch/shared.
+  const [effort, setEffort] = useState<EffortLevel>(entity?.effort ?? DEFAULT_EFFORT);
   const [systemPrompt, setSystemPrompt] = useState(entity?.systemPrompt ?? 'You are a helpful assistant.');
   const [color, setColor] = useState(entity?.color ?? ENTITY_COLORS[0]);
 

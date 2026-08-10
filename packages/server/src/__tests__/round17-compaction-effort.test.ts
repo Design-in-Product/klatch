@@ -17,6 +17,7 @@ import {
 } from '../db/queries.js';
 import { getDb } from '../db/index.js';
 import type { EffortLevel } from '@klatch/shared';
+import { DEFAULT_EFFORT } from '@klatch/shared';
 
 // Mock streaming to avoid real API calls
 vi.mock('../claude/client.js', () => ({
@@ -86,9 +87,17 @@ describe('Effort parameter — schema & queries', () => {
     expect(fetched!.effort).toBe('low');
   });
 
-  it('createEntity without effort + Sonnet model defaults to medium', () => {
-    const entity = createEntity('Sonnet Bot', 'claude-sonnet-4-6', 'Hello.', '#00FF00');
-    expect(entity.effort).toBe('medium');
+  it('createEntity without effort defaults uniformly, regardless of model', () => {
+    // Was 'Sonnet defaults to medium'. The per-model rule was retired 2026-08-10
+    // (xian): a model-keyed literal is right when written and quietly wrong after
+    // the next release — the same drift that had the effort picker gating on
+    // hardcoded model IDs. One shared constant now covers every model.
+    const sonnet = createEntity('Sonnet Bot', 'claude-sonnet-4-6', 'Hello.', '#00FF00');
+    expect(sonnet.effort).toBe(DEFAULT_EFFORT);
+
+    const opus = createEntity('Opus Bot 2', 'claude-opus-5', 'Hello.', '#00FF01');
+    expect(opus.effort).toBe(DEFAULT_EFFORT);
+    expect(opus.effort).toBe(sonnet.effort);
   });
 
   it('createEntity without effort + Opus model defaults to high', () => {
@@ -185,16 +194,20 @@ describe('Effort parameter — API validation', () => {
     expect(res.status).toBe(400);
   });
 
-  it('POST /entities without effort + Sonnet defaults to medium', async () => {
+  it('POST /entities without effort defaults uniformly, regardless of model', async () => {
+    // Per-model effort default retired 2026-08-10 (xian) — see the queries.ts
+    // note and DEFAULT_EFFORT in @klatch/shared.
     const app = createTestApp();
-    const res = await app.request('/api/entities', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name: 'Default Sonnet', model: 'claude-sonnet-4-6' }),
-    });
-    expect(res.status).toBe(201);
-    const body = await res.json();
-    expect(body.effort).toBe('medium');
+    for (const model of ['claude-sonnet-4-6', 'claude-opus-5']) {
+      const res = await app.request('/api/entities', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: `Default ${model}`, model }),
+      });
+      expect(res.status).toBe(201);
+      const body = await res.json();
+      expect(body.effort).toBe(DEFAULT_EFFORT);
+    }
   });
 });
 

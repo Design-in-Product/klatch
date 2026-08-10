@@ -1,7 +1,7 @@
 import { v4 as uuidv4 } from 'uuid';
 import { getDb } from './index.js';
 import type { Channel, ChannelType, ChannelStats, Message, Entity, Project, ModelId, InteractionMode, ChannelSource, KlatchFile, FileRef, FileRefScope, FileRefType, FileWithRef, EffortLevel, MicroReflection } from '@klatch/shared';
-import { DEFAULT_MODEL, DEFAULT_ENTITY_ID, ENTITY_COLORS, DEFAULT_INTERACTION_MODE } from '@klatch/shared';
+import { DEFAULT_MODEL, DEFAULT_ENTITY_ID, DEFAULT_EFFORT, ENTITY_COLORS, DEFAULT_INTERACTION_MODE } from '@klatch/shared';
 
 function rowToChannel(row: any): Channel {
   return {
@@ -353,10 +353,17 @@ export function getAllEntities(): Entity[] {
   return rows.map((r) => ({ ...rowToEntity(r), channelCount: r.channel_count as number }));
 }
 
-/** Default effort level by model — Sonnet defaults to medium per Anthropic recommendation */
-function defaultEffortForModel(model: ModelId): EffortLevel {
-  if (model === 'claude-sonnet-4-6') return 'medium';
-  return 'high';
+/**
+ * Default effort for a new entity. Uniform across models (xian, 2026-08-10) —
+ * see `DEFAULT_EFFORT` in `@klatch/shared` for why, and for the conditions
+ * under which it should become `medium`.
+ *
+ * This previously special-cased `claude-sonnet-4-6` → `medium`. That literal
+ * was the same drift hazard as the model-ID list that used to gate the effort
+ * picker: right when written, quietly wrong after the next release.
+ */
+function defaultEffortForModel(_model: ModelId): EffortLevel {
+  return DEFAULT_EFFORT;
 }
 
 export function createEntity(

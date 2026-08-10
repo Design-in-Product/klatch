@@ -30,6 +30,31 @@ export type ModelId = string;
 // when a hosted deployment needs to flip without redeploying.
 export const DEFAULT_MODEL: ModelId = 'claude-opus-5';
 
+/**
+ * Effort level assigned to a new entity when the user doesn't pick one.
+ *
+ * **Uniform by design (xian, 2026-08-10).** This replaced a per-model rule
+ * (`sonnet-4-6 → medium`, everything else → high) which was correct when
+ * written and would have gone stale with every model release — the same class
+ * of literal that left the effort-ladder UI gating models by hardcoded ID. One
+ * rule survives releases; a per-model table needs maintaining forever, and
+ * nobody notices when it rots.
+ *
+ * **Why `high` rather than `medium`.** The failure modes are asymmetric: too
+ * high costs money and latency (visible, attributable), too low produces
+ * subtly thinner reasoning (invisible, and a user may never realize it's a
+ * setting rather than the model's ceiling).
+ *
+ * **Revisit — deferred, not rejected.** `medium` is the better default once
+ * the effort control is visibly discoverable in the UI, at which point the
+ * user can see the dial and the hidden-quality-loss risk goes away. There's a
+ * real Klatch-specific argument for it: a klatch multiplies effort by roster
+ * size (one message to six agents = six responses), and on Opus-5-class models
+ * `medium` performs close to prior generations' `high`. Gated on Iris's
+ * treatment of the control, not on further architectural work.
+ */
+export const DEFAULT_EFFORT: EffortLevel = 'high';
+
 // Legacy model ID mapping for backward compatibility
 export const MODEL_ALIASES: Record<string, ModelId> = {
   'claude-opus-4-20250514': 'claude-opus-4-6',
