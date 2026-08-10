@@ -96,3 +96,23 @@ So the honest testability ranking stands, but sharpened: 3 and 4 are binary *at 
 ---
 
 *Straw man. The spectrum is the useful part; the position I'd pick is deliberately left blank because it's xian's to fill.*
+
+---
+
+## Addendum 2026-08-10 — "private channels" is deferred, not rejected (xian)
+
+Recording this because a "not yet" that goes unrecorded becomes a "never" — the exact failure that left Paths B and C in limbo from June to August.
+
+xian, 2026-08-10:
+
+> "a future Klatch might offer 'private channels' as an option, but not yet."
+
+**What this does and does not change.**
+
+It does **not** reopen the 8/09 answer. Klatch still enforces no privacy boundary today: a 1-1 is direct, not private, and discretion is a convention users and their agents set (ground-rules prompt text), not a wall the platform builds or verifies. Everything built on that stands — including the read that klatch assembly carries everything an entity knows.
+
+What it changes is the **status of that answer**: it is a current product stance, not a permanent architectural constraint. Positions 3 and 4 in this doc were marked "not buildable as Klatch-enforced mechanisms" under the 8/09 answer; the accurate framing is **"not being built now, and not foreclosed."**
+
+**Architecturally, nothing is being painted into a corner.** Verified 2026-08-10: `messages` carries both `channel_id` and `entity_id`, and channel-scoped reads (`WHERE channel_id = ?`) are already the storage shape. A future private channel is a channel with a visibility rule attached — the enforcement point would be the entity-scoped **assembly** query (continuity `#3`), which is being written now and is the single place a filter would go. Anyone building `#3` should keep the assembly path a chokepoint rather than scattering union logic across callers; that costs nothing today and is what makes private channels a feature rather than a refactor later.
+
+**What would need designing when it's time** (not now): what "private" means precisely (invisible to other participants, or visible-but-excluded-from-assembly), whether it's a channel property or a per-message mark, and how it interacts with the ground-rules convention that currently does this job socially.
