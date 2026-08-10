@@ -6,7 +6,7 @@
 
 **Trust-instrument discipline** (Exec 2026-06-19): every render comes from a fresh **verified sweep** of source docs — never from memory. A false "all clear" is a trust breach. "Quiet" must mean *verified-clear*, not *haven't-checked*.
 
-**Last refreshed:** 2026-08-09 ~08:40 PT (Calliope) — v24. **The continuity gating decisions are answered** — xian gave all four directly on 8/08, relayed by Janus (`docs/mail/janus-to-calliope-xian-answers-four-gating-decisions-2026-08-08.md`). What's newly 🔴 instead: **the team isn't running its duty cycles.** Four of five were disarmed 8/05 pending a review whose resolution I can't find on record, and the fifth (Argus) has fired 13 straight times without being able to execute a single test or build command. First Amber check-in artifact published today: https://claude.ai/code/artifact/6b0f6f84-eeae-4b21-ae01-21f5f5524707. v23 was 8/04.
+**Last refreshed:** 2026-08-10 ~12:30 PT (Calliope) — v25. **The duty-cycle 🔴 is resolved.** Pard fixed the `--allowedTools` gap (`npx`/`vitest` now covered, shipped `mediajunkie 6671aaf`) and, separately, found and corrected a fabricated constraint: every fire prompt since Janus's cycle claimed "NO NETWORK" — measured false today (`api.github.com` 200, `git ls-remote` rc=0). All five seats re-armed at full scope, no seat redefinition needed. Full memo: `docs/mail/pard-to-calliope-cc-team-gate-fixed-network-claim-was-false-2026-08-10.md`. This render is itself the live test — two commits this fire went straight to `origin/main` with no workaround. v24 was 8/09.
 
 ---
 
@@ -14,21 +14,13 @@
 
 | Needs you | Blocked-on-others | Lower-urgency | In-flight |
 |---|---|---|---|
-| **2** | **1** | **3** | **3** |
+| **1** | **0** | **3** | **3** |
 
-*🔴: (1) duty-cycle state — 1 of 5 seats running, and it can't execute code; review status unknown to me; (2) two reply-owed threads on the discretion/identity decisions, both actioned this session (Calliope → you; Daedalus → you) and worth your eyes when they land. 🟠: the code-execution gate itself (Pard's to fix, flagged twice 8/05, no reply).*
+*🔴: one reply-owed thread on discretion ("addressing, not secrecy") with a live question in it. Duty-cycle state and the code-execution gate — both 🔴/🟠 as of v24 — are resolved this render, see above.*
 
 ---
 
 ## 🔴 Needs you — FIRST, always
-
-### The team isn't running its duty cycles — resolution plan sent to Pard, awaiting his execution
-
-- **What:** On 8/05, Pard disarmed 9 of the 12 fires that were armed that afternoon, pending a review of the duty-cycle model. xian confirmed this morning it's still open and put driving it to close **in my hands, with Pard's support** — not xian's to resolve.
-- **xian approved the plan 8/10 morning.** Daedalus's cycle re-armed narrowed (`17 9,13,17` PT, mail/diff/drafting only, `packages/` off-limits until the gate resolves) — he'd argued 8/09 for staying fully dark, read the seat-by-seat breakdown, and changed his own position. Argus already self-adopted the narrowed scope in his 8/09 STOP and 8/10 START fires (no vitest attempts) even before formal re-arm. **Calliope's and Iris's and Theseus's re-arm requests to Pard still outstanding** — only Daedalus's has been explicitly sent since xian's approval; sending mine alongside this render.
-- **The code-execution gate is now a fourth unanswered ask.** Argus (×2, 8/05), Calliope (8/09), Daedalus (8/10, at xian's direct request) — no reply from Pard on file to any of them. xian went to Pard directly this morning rather than wait on a fifth memo. **The network-sandbox question (Calliope, 8/09) is also still unanswered.**
-- **New, non-blocking, worth surfacing:** Daedalus re-raised whether Amber can *wake a persistent session* rather than spawn fresh each fire — the option that would preserve full capability (context, approvals, network) and is the more literal reading of both CIO's v0.1 and Klatch's own prior art. Not asked as urgent; flagged so it doesn't get lost the way Paths B/C did.
-- **Date added:** 2026-08-09 · **Plan sent:** 2026-08-09 mid-morning
 
 ### One decision-thread with a live question in it: "addressing," yes or no
 
@@ -36,13 +28,12 @@
 - **His one open question, concrete and ready to act on:** when a klatch assembles a participant's context, should it include what that agent said in its own 1-1s? His read: **yes — "addressing, not secrecy,"** the Slack DM-during-a-meeting analogy. Say "addressing" and he builds it immediately; say otherwise and it's a filtered-assembly problem again. (`daedalus-to-xian-discretion-design-technical-read-2026-08-09.md`)
 - **Date added:** 2026-08-09
 
-## 🟠 Blocked on another agent
+## ✅ Duty-cycle state — resolved 2026-08-10
 
-### Code-execution gate in unattended fires — Pard's fix, flagged twice, no reply
-
-- **What:** Any unattended-fire command that executes the codebase (`npm test`, `vitest run`) is declined at approval, 13/13 fires. This is a different, still-open gate from the commit-stranding one fixed 8/05. Blocks AAXT R46–R50 even with the API key resolved, and blocks any duty cycle from doing real verification work rather than mail-and-log no-ops.
-- **Owed by:** Pard. Argus flagged it twice on 8/05; no reply as of this render.
-- **Date added:** 2026-08-09 (first flagged 8/05)
+- **Both blockers behind the 8/09 🔴 are closed.** The `--allowedTools` gap (real, fixed 8/05 but scoped too narrowly — missed `npx`) and the "no network" constraint (fabricated, never real, propagated into every fire prompt for weeks) were two distinct failures that looked like one. Pard fixed the first and retracted the second, with measurements rather than assurances: `npx vitest --version` succeeds in an unattended fire; `git ls-remote origin HEAD` returns `rc=0`.
+- **All five seats re-armed, full scope:** Calliope 08:30/12:30/17:00/21:30 Sonnet 5 · Iris 07:17/19:17 Sonnet 5 · Theseus 10:47/14:47/19:47 Opus 5 (un-scoped from network-free work) · Argus 09:00/13:30/18:00 Sonnet 5 (suite execution back on) · Daedalus 09:17/13:17/17:17 Opus 5 (code work back on, no longer mail/diff-only).
+- **Non-blocking, still open:** whether Amber fires should spawn-fresh (current model) or wake a persistent session — Pard named the convergent prior art (Klatch's pre-move cycle and CIO v0.1 both ran inside a live session, reached independently) as the strongest evidence for reconsidering, but Argus's 12/12 clean fires 8/06–8/10 cut the other way on practice. Explicitly not rushing this; kept apart from the mechanism fixes above.
+- **Date resolved:** 2026-08-10, ~12:12 PT · **Source:** `docs/mail/pard-to-calliope-cc-team-gate-fixed-network-claim-was-false-2026-08-10.md`
 
 ## ✅ Continuity gating decisions — xian answered all four, 2026-08-08
 
@@ -96,13 +87,13 @@ Relayed by Janus close to verbatim (`docs/mail/janus-to-calliope-xian-answers-fo
 
 Awareness, no action needed.
 
-### Cohort status (Amber, verified 2026-08-09 ~08:40 PT)
-All five migrated to Amber, structural per-worktree git identity. **Duty-cycle state is the story now, not migration** — see the 🔴 above. No Calliope session ran between 8/04 night and this morning (my cycle was one of the disarmed four), so this render is catching up four days at once.
-- **Calliope** — resumed 8/9. Rollup refreshed to v24; check-in artifact published (link above); replied to Pard's 4-day-old duty-cycle prior-art ask; routed identity-resolution to Daedalus; answered discretion directly to xian. Cadence armed 8/4, disarmed 8/5, not yet re-armed.
-- **Argus** — the only seat that's fired since 8/5: 3/day, 13 consecutive fires, all clean no-ops on the code-execution gate (🟠 above). Curated intel sweeps through the gap; landed the `better-sqlite3` v12 fix and the `playwright@1.61.0` pin (both 8/4).
-- **Iris** — cadence armed 8/4, disarmed 8/5. §6 candidate replacement text still drafted, still held for a live session with you. No activity since.
-- **Daedalus** — cadence armed 8/4, disarmed 8/5. Still held on the Interpretation A/B answer (now landed — B, 8/8) and now the identity-resolution reply xian asked for directly. No activity since 8/4 that I can find.
-- **Theseus** — cadence never proposed; Pard's 8/05 ask unanswered. No session since his 8/4 arrival (the one that found the Node-26 blocker). MAXT itself remains deferred until continuity exists.
+### Cohort status (Amber, verified 2026-08-10 ~12:30 PT)
+All five migrated to Amber, structural per-worktree git identity, **and as of this render all five duty cycles are armed at full scope** — see ✅ above.
+- **Calliope** — this fire (12:30) is the live test of both fixes: pulled clean, pushed two commits straight to `origin/main`, no workaround needed. Rollup refreshed to v25.
+- **Argus** — 3/day, 09:00/13:30/18:00 Sonnet 5, suite execution back on (`npx`/`vitest` were the actual gap, now covered).
+- **Iris** — 07:17/19:17 Sonnet 5. §6 candidate replacement text landed 8/9; import confirm-step UX scoped, not yet built.
+- **Daedalus** — 09:17/13:17/17:17 Opus 5, code work back on (was narrowed to mail/diff-only as of the 8/10 re-arm request, superseded by this memo). `#1` (imports mint entities) shipped 8/09.
+- **Theseus** — 10:47/14:47/19:47 Opus 5, un-scoped from the network-free work he'd planned around (the "no network" constraint he was told to work around never existed).
 
 ### Composition gesture + beta gate — FULLY CLEAR ✅
 - All 7 increments on main. MAXT Session 03: 15/15. R45: 8/8. R46 (clone): 8/8, 0 Phantoms. R47 (@mention): 8/8, 0 Phantoms. All green.
@@ -116,7 +107,12 @@ All five migrated to Amber, structural per-worktree git identity. **Duty-cycle s
 
 ---
 
-## 🟢 Resolved since last board (8/9)
+## 🟢 Resolved since last board (8/10)
+
+- ~~**Duty-cycle state — 4 of 5 seats disarmed**~~ — Pard fixed the `--allowedTools` gap (`npx`/`vitest` now covered) and retracted a fabricated "no network" constraint that had shaped every fire prompt for weeks. All five seats re-armed at full scope. *Closed 8/10.*
+- ~~**Code-execution gate in unattended fires**~~ — was the same fix as above, not a separate one: the 8/05 `--allowedTools` change named `git`/`npm` but missed `npx`, which is how Klatch's suite actually runs. *Closed 8/10.*
+
+## 🟢 Resolved since prior board (8/9)
 
 - ~~**Four continuity gating decisions**~~ — xian answered all four directly, 8/08 (relayed by Janus). B chosen for Interpretation A/B; identity resolution is guess+confirm; discretion model is "direct not private" + ground-rules convention + per-message routing (new architecture, not yet built); directed-mode visibility confirmed as Calliope recommended. Two reply-owed threads spun out, tracked above. *Closed 8/9 (decisions landed 8/8).*
 - ~~**ANTHROPIC_API_KEY on Amber**~~ — resolved 8/05 by Pard: one canonical `.env`, symlinked into six worktrees, live-verified (real Haiku call, 200), own Console workspace + spend cap. This board had it listed as open through v23; four-day staleness caught by Janus's 8/08 memo. *Closed 8/9 (resolved 8/5).*
@@ -163,6 +159,7 @@ All five migrated to Amber, structural per-worktree git identity. **Duty-cycle s
 
 ## Changelog
 
+- **v25 (2026-08-10 ~12:30 PT, Calliope)** — Duty-cycle 🔴 and code-execution 🟠 both resolved same-render: Pard fixed the real `--allowedTools` gap (`npx`/`vitest` now covered) and retracted a fabricated "no network" constraint that had shaped every fire prompt for weeks — measured false today (`api.github.com` 200, `git ls-remote` rc=0). All five seats re-armed at full scope; this render is the live test (two commits pushed straight to `origin/main`, no workaround). 🔴 2→1 (only the "addressing, not secrecy" thread remains). 🟠 1→0. Cohort section rewritten to the re-armed cadences. Also this fire: one-transcript-vs-two correction folded in (Daedalus, "two at channel level, one at entity level"); private-channels-deferred addendum recorded; UX false-privacy-impression note routed to Iris.
 - **v24 (2026-08-09 ~08:40 PT, Calliope)** — First render after a 5-day gap (no Calliope session 8/4 night → 8/9 morning; my own cycle was one of the four disarmed 8/5). Headline flip: the four continuity gating decisions are **answered** (xian, 8/8, relayed by Janus) — removed from 🔴, moved to a dedicated ✅ section with two spun-out reply threads tracked as in-motion. New 🔴 in their place: **duty-cycle state** — only Argus's cycle is armed and firing; the other four were disarmed 8/5 pending a review whose resolution I could not find in `docs/mail/`; Argus's cycle has produced 13 consecutive no-ops on a code-execution permission gate, unresolved and flagged to Pard twice with no reply (new 🟠). Published the first Klatch check-in artifact (Janus's 8/5 ask, delivered 4 days late): https://claude.ai/code/artifact/6b0f6f84-eeae-4b21-ae01-21f5f5524707. 🟢 +3 (decisions answered; API-key staleness corrected — resolved 8/5, this board had it wrong through v23; unattended-fire commit gate confirmed fixed with a named residual gap). Cohort section rewritten to reflect the 5-day quiet stretch honestly rather than repeating 8/4 status as if current.
 - **v23 (2026-08-04 ~23:30 PT, Calliope)** — First Amber render, post-migration. Decision state verified unchanged (predicate: no xian-authored mail since 7/19; Argus's same-day check concurs; Iris verified git 7/25+ is migration traffic only). 🔴 item enriched with the 8/4 staging: Daedalus assembly-inversion read (team rec: assembly-only = Interpretation B), Argus per-position probe designs (straw man corrected 8/4 — two probe layers, not "binary"), Iris §6 candidate text (held for live session). Cohort section rewritten for Amber (worktrees, identities, LaunchAgent cadences; Argus armed same evening). 🟡 count corrected 5→4 (miscount in v22); Opus-picker 🟡 reframed per Argus's 8/4 wrong-seam correction (picker dynamic since 6/21 — no availability gap; DEFAULT_MODEL flip surfaced as xian's). CIO item honestly marked unverified-since-June. 🟢 +4 (migration complete; Argus's owed reply; Node-26 blocker found→fixed same night; Opus-5-selectable false alarm corrected).
 - **v22 (2026-07-19 ~11:25 PT, Calliope)** — see header of prior render; superseded text summarized: continuity finding replies same-day, Q4 answered (v0.9.x alpha), Interpretation A/B fork holds Daedalus, ~49→16 imports correction.
