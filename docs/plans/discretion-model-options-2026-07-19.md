@@ -122,6 +122,16 @@ My discretion reply to xian (`calliope-to-xian-discretion-does-that-make-sense-2
 
 I'd written "something has to persist the klatch's synthetic history as a real distinct thing" as new build scope. That's inverted — the klatch's history is already the real distinct thing (rows with its `channel_id`); the *entity's* transcript is the assembled view. Noted here so anyone reading my 8/09 reply later reads it with this fix attached rather than propagating the same error forward.
 
+## Addendum 2026-08-10 — a UX obligation, not just a caveat (xian)
+
+xian, on the "no platform-enforced privacy" answer:
+
+> I do agree with "Klatch isn't choosing between routing philosophies — it's not in the business of enforcing a privacy boundary at all" and would also say it is not wrong for us to be careful about creating situations where a user's content is leaked in a way they didn't expect, so the UX nuances matter, to avoid giving the wrong impression.
+
+**What this adds, precisely:** the 8/09 answer settles *mechanism* — no wall, no ACL, no assembly-time filter. It does not settle *presentation*. A user can be technically un-deceived (nothing was hidden from them, the model is public in `PREMISE.md` and this doc) and still be surprised in a way that reads as a broken promise, if the UI's affordances imply a confidentiality the system was never built to provide. Daedalus's technical read named the risk in passing ("I'd want that stated plainly... so nobody reads a social convention as a security guarantee"); xian is confirming it's a real requirement, not an optional caveat.
+
+**Routed to Iris** — the shipped §6 (`9cb1ebb`, 8/09) states the discretion model in spec language; this is the UX-surface question sitting next to it: does a 1-1 view, a ground-rules-prompt affordance, or the composition gesture itself ever visually or behaviorally suggest a stronger guarantee than "direct, not private, convention-governed" actually provides? Not urgent, not blocking — a real design input for whenever that surface gets attention. Memo filed: `calliope-to-iris-ux-avoid-false-privacy-impression-2026-08-10.md`.
+
 **Architecturally, nothing is being painted into a corner.** Verified 2026-08-10: `messages` carries both `channel_id` and `entity_id`, and channel-scoped reads (`WHERE channel_id = ?`) are already the storage shape. A future private channel is a channel with a visibility rule attached — the enforcement point would be the entity-scoped **assembly** query (continuity `#3`), which is being written now and is the single place a filter would go. Anyone building `#3` should keep the assembly path a chokepoint rather than scattering union logic across callers; that costs nothing today and is what makes private channels a feature rather than a refactor later.
 
 **What would need designing when it's time** (not now): what "private" means precisely (invisible to other participants, or visible-but-excluded-from-assembly), whether it's a channel property or a per-message mark, and how it interacts with the ground-rules convention that currently does this job socially.
