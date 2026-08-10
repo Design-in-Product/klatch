@@ -230,3 +230,12 @@ Mode names: TBD in a copy pass (see §4).
 - "What this klatch has produced" surface beyond the message history (post-1.0)
 - Step 11 (Search) — explicitly post-1.0
 - Agentic surface refinement (MCP server is feature-complete; UX around it is post-1.0)
+- **Path C → "New agent / role" (create from scratch) — HELD, not descoped (xian, 2026-08-10).** Creating a fresh entity from name + prompt + model is the operation `PREMISE.md` explicitly separates from bringing in an existing agent ("if a design treats these as interchangeable, the design is wrong"). Listing it as a peer option in the same "New agent" menu is how they become interchangeable. Held pending a framing that visibly distinguishes the two operations — not a rejection of the capability.
+
+## 11a. Scheduled (xian, 2026-08-10) — resolving the Paths B/C limbo
+
+Paths B and C were in the 6/26 beta scope, were informally deferred on 6/21 (Iris logged "expected, later increments"; Daedalus said "Not now"), and then were neither built nor recorded — appearing in no out-of-scope list. That unrecorded state, not the deferral itself, was the problem. Resolved:
+
+- **Path B (just-in-time import) — SCHEDULED**, sequenced after continuity increments #2–#3. Its blocker is gone: before increment #1 (imports mint entities, shipped 2026-08-08, `823054f`) an inline import would have bound the agent to the shared default entity and delivered an agent with no identity or context — the exact broken thing. Imports now mint a real entity via guess-and-confirm, which also settles Iris's open question on this path (JIT one-offs **name on import**, they do not arrive nameless).
+- **Path C → "Continue existing role" — SCHEDULED**, alongside Path B. Small; the picker already enumerates entities.
+- **Path C → "New agent / role" (create from scratch) — HELD**, see §11 above.

@@ -53,7 +53,7 @@ describe('Model migration behavior', () => {
     // Verified via createChannel tests in queries.test.ts — channels default
     // to DEFAULT_MODEL which is a current AVAILABLE_MODELS key. Specific
     // current value is pinned for visibility on default-flip events.
-    expect(DEFAULT_MODEL).toBe('claude-opus-4-7');
+    expect(DEFAULT_MODEL).toBe('claude-opus-5');
     expect(DEFAULT_MODEL in AVAILABLE_MODELS).toBe(true);
   });
 });

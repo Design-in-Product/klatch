@@ -92,7 +92,7 @@ describe('GET /api/models', () => {
     const body = await res.json();
     expect(body).toHaveProperty('models');
     expect(body).toHaveProperty('aliases');
-    expect(body).toHaveProperty('defaultModel', 'claude-opus-4-7');
+    expect(body).toHaveProperty('defaultModel', 'claude-opus-5');
     expect(body).toHaveProperty('source');
   });
 

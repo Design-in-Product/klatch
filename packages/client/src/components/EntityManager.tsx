@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import type { Entity, ModelId, EffortLevel } from '@klatch/shared';
-import { AVAILABLE_MODELS, ENTITY_COLORS, DEFAULT_ENTITY_ID } from '@klatch/shared';
+import { AVAILABLE_MODELS, ENTITY_COLORS, DEFAULT_ENTITY_ID, DEFAULT_MODEL } from '@klatch/shared';
 import { useModels } from '../hooks/useModels';
 import type { DiscoveredModel } from '../api/client';
 
@@ -176,8 +176,18 @@ function EntityForm({
   const { models: dynamicModels } = useModels();
   const [name, setName] = useState(entity?.name ?? '');
   const [handle, setHandle] = useState(entity?.handle ?? '');
-  const [model, setModel] = useState<ModelId>(entity?.model ?? 'claude-sonnet-4-6');
-  const [effort, setEffort] = useState<EffortLevel>(entity?.effort ?? (entity?.model === 'claude-sonnet-4-6' ? 'medium' : 'high'));
+  // No hardcoded model IDs in the client: a new entity starts on the shared
+  // DEFAULT_MODEL constant, so a default flip is one edit in one place. The
+  // previous literal ('claude-sonnet-4-6') had already gone stale.
+  const [model, setModel] = useState<ModelId>(entity?.model ?? DEFAULT_MODEL);
+  // Effort default derives from the model's discovered ladder rather than a
+  // per-model literal. NOTE: the server has its own per-model policy
+  // (defaultEffortForModel: sonnet-4-6 → medium, else high) that isn't exposed
+  // over /api/models yet — worth surfacing as a `recommendedEffort` field so
+  // client and server can't drift. Until then 'high' is the shared default.
+  const [effort, setEffort] = useState<EffortLevel>(
+    entity?.effort ?? 'high'
+  );
   const [systemPrompt, setSystemPrompt] = useState(entity?.systemPrompt ?? 'You are a helpful assistant.');
   const [color, setColor] = useState(entity?.color ?? ENTITY_COLORS[0]);
 
@@ -275,17 +285,22 @@ function EntityForm({
         <label className="block text-xs text-secondary mb-1">Effort</label>
         <div className="flex gap-1.5">
           {(['low', 'medium', 'high', 'xhigh', 'max'] as EffortLevel[]).map((level) => {
-            // 'xhigh' is Opus 4.7-only; 'max' is Opus 4.6/4.7-only.
-            const isXhigh = level === 'xhigh';
-            const isMax = level === 'max';
-            const isDisabled =
-              (isXhigh && model !== 'claude-opus-4-7') ||
-              (isMax && model !== 'claude-opus-4-6' && model !== 'claude-opus-4-7');
-            const disabledTitle = isXhigh
-              ? 'xhigh effort is Opus 4.7 only'
-              : isMax
-                ? 'Max effort is Opus only'
-                : undefined;
+            // Gate on the model's *discovered* effort ladder, not a literal ID
+            // list. The old hardcode ('xhigh' is 4.7-only, 'max' is 4.6/4.7-only)
+            // was accurate when written and silently wrong for every model
+            // released after it — Opus 5, Opus 4.8, Sonnet 5 and Fable 5 all
+            // carry the full ladder, and would have shown their best effort
+            // levels greyed out. Fall back to permitting the level when the
+            // model isn't in the discovered set, so an unknown model degrades
+            // to "allowed" and the server's validation is the backstop, rather
+            // than the UI hiding a capability the API actually supports.
+            const discovered = dynamicModels.find((m) => m.id === model);
+            const isDisabled = discovered
+              ? !discovered.capabilities.effort.includes(level)
+              : false;
+            const disabledTitle = isDisabled
+              ? `${level} effort is not available on this model`
+              : undefined;
             return (
               <button
                 key={level}

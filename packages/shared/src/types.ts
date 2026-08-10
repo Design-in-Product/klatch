@@ -28,7 +28,7 @@ export type ModelId = string;
 // product implications (tokenizer, cost, behavior) that warrant a deliberate
 // decision per release. Future env-var override is the natural next step
 // when a hosted deployment needs to flip without redeploying.
-export const DEFAULT_MODEL: ModelId = 'claude-opus-4-7';
+export const DEFAULT_MODEL: ModelId = 'claude-opus-5';
 
 // Legacy model ID mapping for backward compatibility
 export const MODEL_ALIASES: Record<string, ModelId> = {
