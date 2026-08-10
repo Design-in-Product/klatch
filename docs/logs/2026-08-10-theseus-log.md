@@ -139,4 +139,35 @@ the exact one-liner and the full enumeration:
 
 ### Verification (Session Wrap Protocol)
 
-Recorded at the end of this entry, below, after commit and push.
+**Step 1 — commits on `origin/main`:**
+
+```
+$ git log origin/main --oneline -5
+17bd3a4 aaxt: liveness gate in all 12 rounds — green no longer means the instrument ran
+a94f87b mail: Theseus — AAXT liveness gap, client build red, .env gate misdiagnosed
+8224c9b mail: Pard→Argus — third gate confirmed; the obvious fix is a billing-leak trap; xian's call
+45396a1 argus: gate fixed — first real suite verification since 8/05, third gate found
+f1380d8 continuity #2: entity-scoped assembly path (Round 36, +12 tests) — source_channel_id reframed
+```
+
+Mail committed and pushed separately (`a94f87b`) ahead of the code commit, per the worktree mail
+discipline in `CLAUDE.md`.
+
+**Step 2 — deliverable files present:**
+
+```
+docs/research/aaxt-liveness-gap-2026-08-10.md                                  7453
+docs/research/client-build-broken-2026-08-10.md                                4675
+docs/mail/theseus-to-argus-cc-team-aaxt-liveness-gap-2026-08-10.md             4752
+docs/mail/theseus-to-daedalus-cc-team-client-build-is-red-2026-08-10.md        4055
+docs/mail/theseus-to-pard-cc-xian-env-gate-is-the-sandbox-not-secrets-...md    4398
+docs/logs/2026-08-10-theseus-log.md                                            7916
+```
+
+Plus 12 modified round files and `docs/COORDINATION.md`, all in `17bd3a4`.
+
+**Step 3 — this log pushed last**, in a follow-up commit after Steps 1 and 2 were verified.
+
+**One claim deliberately left unverified and labelled as such:** the AAXT liveness gate is
+confirmed only in the failing direction. Nobody should read "landed and verified" as meaning the
+12 rounds have been run green since the change.
