@@ -20,8 +20,13 @@ export default defineConfig({
     //
     // Vitest 4 removed `test.poolOptions` (pool rework); the nested
     // `threads.singleThread` is now the top-level `fileParallelism: false`.
-    // Flagged by Theseus, 8/10 — it was still honoured but warning on every
-    // run, and "harmless now" deprecations stop being harmless on a bump.
+    // Flagged by Theseus, 8/10 as a harmless deprecation warning. It was not
+    // harmless: verified in vitest@4.0.18's own source
+    // (`dist/chunks/coverage.*.js`) that the only handling left is
+    // `logger.deprecate(...)` — the option is read for the warning and
+    // otherwise dropped. So from the Vitest 4 bump until this fix, the
+    // serialization below was not in effect and the suite ran parallel,
+    // i.e. back at the flake exposure the comment above says we fixed.
     pool: 'threads',
     fileParallelism: false,
   },
