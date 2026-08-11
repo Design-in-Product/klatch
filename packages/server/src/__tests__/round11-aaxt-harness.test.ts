@@ -49,6 +49,7 @@ function makeEntity(overrides: Partial<Entity> = {}): Entity {
     model: 'claude-opus-4-6',
     systemPrompt: 'You are a test agent.',
     color: '#6366f1',
+    effort: 'high',
     createdAt: '2026-03-01T00:00:00Z',
     ...overrides,
   };
@@ -640,7 +641,7 @@ describe('buildSystemPrompt — 5-layer assembly verification', () => {
       type: 'chat',
       systemPrompt: 'CHANNEL_ADDENDUM_MARKER',
       model: 'claude-opus-4-6',
-      mode: 'one-on-one',
+      mode: 'panel',
       source: 'claude-code',
       sourceMetadata: '{}',
       createdAt: '2026-03-01T00:00:00Z',
@@ -685,9 +686,9 @@ describe('buildSystemPrompt — 5-layer assembly verification', () => {
       type: 'chat',
       systemPrompt: 'NATIVE_ADDENDUM',
       model: 'claude-opus-4-6',
-      mode: 'one-on-one',
+      mode: 'panel',
       source: 'native',
-      sourceMetadata: null,
+      sourceMetadata: undefined,
       createdAt: '2026-03-01T00:00:00Z',
     };
 
@@ -706,7 +707,7 @@ describe('buildSystemPrompt — 5-layer assembly verification', () => {
       type: 'chat',
       systemPrompt: '',
       model: 'claude-opus-4-6',
-      mode: 'one-on-one',
+      mode: 'panel',
       source: 'claude-code',
       sourceMetadata: JSON.stringify({
         claudeMd: 'LEGACY_CLAUDE_MD_CONTENT',
@@ -730,7 +731,7 @@ describe('buildSystemPrompt — 5-layer assembly verification', () => {
       type: 'chat',
       systemPrompt: '',
       model: 'claude-opus-4-6',
-      mode: 'one-on-one',
+      mode: 'panel',
       source: 'claude-code',
       sourceMetadata: JSON.stringify({
         claudeMd: 'SHOULD_NOT_APPEAR',

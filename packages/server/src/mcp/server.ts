@@ -226,7 +226,10 @@ function assembleEntityPackage(entityId: string): any | null {
         // Filter out invalidated reflections (validUntil in the past).
         // Keeps the auditable record intact while keeping context-assembly
         // reads accurate.
-        const active = (entity.reflections || []).filter(isReflectionActive);
+        // NB: wrap in an arrow — passing `isReflectionActive` directly hands
+        // Array#filter's index argument to its `now` parameter, and a number
+        // has no `.getTime()`. Threw for any reflection carrying `validUntil`.
+        const active = (entity.reflections || []).filter((r) => isReflectionActive(r));
         if (active.length === 0) return null;
         return active.map((r) => ({
           observation: r.observation,

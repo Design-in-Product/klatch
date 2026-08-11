@@ -87,7 +87,7 @@ async function connectClient(): Promise<{ client: Client; close: () => Promise<v
 }
 
 function parseToolText(result: any): any {
-  return JSON.parse((result.content[0] as any).text as string);
+  return JSON.parse(((result.content as any[])[0] as any).text as string);
 }
 
 /** Insert an imported channel directly (createChannel doesn't accept source). */
@@ -204,7 +204,7 @@ describe('Round 27b: reflect tool over InMemoryTransport', () => {
         },
       });
       expect((result as any).isError).toBe(true);
-      const text = (result.content[0] as any).text as string;
+      const text = ((result.content as any[])[0] as any).text as string;
       expect(text).toMatch(/channel not found/i);
       expect(text).toContain('no-such-channel');
     } finally {
@@ -225,7 +225,7 @@ describe('Round 27b: reflect tool over InMemoryTransport', () => {
         },
       });
       expect((result as any).isError).toBe(true);
-      const text = (result.content[0] as any).text as string;
+      const text = ((result.content as any[])[0] as any).text as string;
       expect(text).toMatch(/entity not found/i);
     } finally {
       await close();
@@ -248,7 +248,7 @@ describe('Round 27b: reflect tool over InMemoryTransport', () => {
         },
       });
       expect((result as any).isError).toBe(true);
-      const text = (result.content[0] as any).text as string;
+      const text = ((result.content as any[])[0] as any).text as string;
       expect(text).toMatch(/not assigned to channel/i);
       expect(text).toContain(entity.id);
       expect(text).toContain(ch.id);

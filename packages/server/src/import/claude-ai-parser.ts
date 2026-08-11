@@ -80,7 +80,7 @@ export function parseClaudeAiConversation(conversation: unknown): ParsedSession 
   const conv = conversation as ClaudeAiConversation;
 
   if (!conv || !conv.chat_messages || !Array.isArray(conv.chat_messages)) {
-    return { turns: [] };
+    return { turns: [], eventCount: 0 };
   }
 
   const turns: ParsedTurn[] = [];

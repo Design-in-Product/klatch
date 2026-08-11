@@ -9,6 +9,7 @@ describe('buildKitBriefing', () => {
     return {
       id: 'ch-test',
       name: 'Test Channel',
+      type: 'chat',
       systemPrompt: '',
       model: 'claude-opus-4-20250514',
       mode: 'panel',

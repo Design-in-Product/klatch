@@ -284,6 +284,8 @@ const SAMPLE_ENTITIES: Entity[] = [
     systemPrompt: 'You are Daedalus, an architect.',
     color: '#4f8ef7',
     handle: 'daedalus',
+    effort: 'high',
+    createdAt: '2026-01-01T00:00:00Z',
   },
   {
     id: 'ent-argus',
@@ -292,6 +294,8 @@ const SAMPLE_ENTITIES: Entity[] = [
     systemPrompt: 'You are Argus, a quality agent.',
     color: '#e05c5c',
     handle: 'argus',
+    effort: 'high',
+    createdAt: '2026-01-01T00:00:00Z',
   },
   {
     id: 'ent-iris',
@@ -300,6 +304,8 @@ const SAMPLE_ENTITIES: Entity[] = [
     systemPrompt: 'You are Iris, a UX designer.',
     color: '#9b59b6',
     handle: 'iris',
+    effort: 'high',
+    createdAt: '2026-01-01T00:00:00Z',
   },
 ];
 

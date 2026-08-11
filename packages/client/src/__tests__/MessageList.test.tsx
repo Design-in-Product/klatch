@@ -22,6 +22,7 @@ const defaultEntity: Entity = {
   model: 'claude-opus-4-6',
   systemPrompt: 'You are helpful.',
   color: '#6366f1',
+  effort: 'high',
   createdAt: '2026-01-01T00:00:00Z',
 };
 

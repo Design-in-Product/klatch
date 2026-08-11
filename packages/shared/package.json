@@ -7,5 +7,9 @@
   "types": "./src/types.ts",
   "exports": {
     ".": "./src/types.ts"
+  },
+  "scripts": {
+    "build": "tsc",
+    "typecheck": "tsc"
   }
 }

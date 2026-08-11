@@ -51,6 +51,7 @@ function makeEntity(overrides: Partial<Entity> = {}): Entity {
     model: 'claude-opus-4-6',
     systemPrompt: 'You are a helpful assistant.',
     color: '#6366f1',
+    effort: 'high',
     createdAt: '2026-03-01T00:00:00Z',
     ...overrides,
   };

@@ -57,6 +57,7 @@ function makeEntity(overrides: Partial<Entity> = {}): Entity {
     model: DEFAULT_MODEL,
     systemPrompt: 'You are a test entity.',
     color: '#3B82F6',
+    effort: 'high',
     createdAt: '2026-01-01T00:00:00.000Z',
     ...overrides,
   };
@@ -66,6 +67,7 @@ function makeChannel(overrides: Partial<Channel> = {}): Channel {
   return {
     id: 'ch-test',
     name: 'Test',
+    type: 'chat',
     systemPrompt: '',
     model: DEFAULT_MODEL,
     mode: DEFAULT_INTERACTION_MODE,
@@ -82,7 +84,7 @@ function makeProject(overrides: Partial<Project> = {}): Project {
     instructions: '',
     memory: '',
     source: 'native',
-    sourceMetadata: {},
+    sourceMetadata: '{}',
     createdAt: '2026-01-01T00:00:00.000Z',
     ...overrides,
   };

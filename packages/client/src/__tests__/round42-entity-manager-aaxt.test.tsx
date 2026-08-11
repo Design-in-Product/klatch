@@ -297,6 +297,8 @@ const SAMPLE_ENTITIES: Entity[] = [
     systemPrompt: 'You are a helpful assistant.',
     color: '#4f8ef7',
     handle: undefined,
+    effort: 'high',
+    createdAt: '2026-01-01T00:00:00Z',
   },
   {
     id: 'ent-daedalus',

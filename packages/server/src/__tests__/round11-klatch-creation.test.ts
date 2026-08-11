@@ -236,7 +236,9 @@ describe('Model provenance', () => {
   // Test modelLabel logic directly (same logic as MessageList.tsx:19-22)
   function modelLabel(modelId?: ModelId): string | undefined {
     if (!modelId) return undefined;
-    return AVAILABLE_MODELS[modelId]?.label;
+    // ModelId is deliberately `string` (see types.ts) so the picker can carry
+    // models newer than this static table — index accordingly.
+    return (AVAILABLE_MODELS as Record<string, { label: string } | undefined>)[modelId]?.label;
   }
 
   it('resolves known model IDs to labels', () => {

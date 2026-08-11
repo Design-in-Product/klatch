@@ -163,8 +163,8 @@ Return JSON: {"classification": "...", "confidence": 0.0-1.0, "reasoning": "..."
 
 function chan(overrides: Partial<Channel> & { id: string; name: string }): Channel {
   return {
-    id: overrides.id,
-    name: overrides.name,
+    // id/name come from `overrides` via the spread below — the param type
+    // guarantees both are present.
     systemPrompt: '',
     source: 'native',
     sourceMetadata: null,

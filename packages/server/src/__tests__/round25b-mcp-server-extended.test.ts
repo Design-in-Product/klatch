@@ -293,7 +293,7 @@ describe('Round 25b: URI-template expansion', () => {
         uri: `klatch://channels/${encodeURIComponent(rawId)}`,
       });
       expect(result.contents.length).toBeGreaterThan(0);
-      const parsed = JSON.parse(result.contents[0].text as string);
+      const parsed = JSON.parse((result.contents[0] as any).text as string);
       expect(parsed.conversation_context.id).toBe(rawId);
     } finally {
       await close();

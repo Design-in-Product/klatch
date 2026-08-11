@@ -209,7 +209,7 @@ describe('Channel-Project linking', () => {
       channelName: 'Imported Channel',
       source: 'claude-ai',
       sourceMetadata: { originalSessionId: 'test-123' },
-      turns: [{ userText: 'Hello', assistantText: 'Hi there', timestamp: '2026-03-14T00:00:00Z' }],
+      turns: [{ userText: 'Hello', assistantText: 'Hi there', timestamp: '2026-03-14T00:00:00Z', originalId: 'proj-1' }],
       projectId: project.id,
     });
     expect(result.channelId).toBeTruthy();

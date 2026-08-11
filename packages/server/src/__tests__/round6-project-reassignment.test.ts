@@ -52,7 +52,7 @@ function makeZip(files: Record<string, unknown>): Buffer {
 
 function multipartReq(zipBuffer: Buffer, filename = 'export.zip', extraFields?: Record<string, string>) {
   const formData = new FormData();
-  formData.append('file', new File([zipBuffer], filename, { type: 'application/zip' }));
+  formData.append('file', new File([new Uint8Array(zipBuffer)], filename, { type: 'application/zip' }));
   if (extraFields) {
     for (const [key, value] of Object.entries(extraFields)) {
       formData.append(key, value);

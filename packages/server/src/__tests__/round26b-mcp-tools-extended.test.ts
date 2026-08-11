@@ -58,7 +58,7 @@ async function connectClient(): Promise<{ client: Client; close: () => Promise<v
 }
 
 function parseToolText(result: any): any {
-  const text = (result.content[0] as any).text as string;
+  const text = ((result.content as any[])[0] as any).text as string;
   return JSON.parse(text);
 }
 
@@ -258,11 +258,8 @@ describe('Round 26b: get_context_package tool', () => {
       const fromTool = parseToolText(
         await client.callTool({ name: 'get_context_package', arguments: { channel_id: ch.id } }),
       );
-      const fromResource = JSON.parse(
-        (
-          await client.readResource({ uri: `klatch://channels/${ch.id}` })
-        ).contents[0].text as string,
-      );
+      const resource = await client.readResource({ uri: `klatch://channels/${ch.id}` });
+      const fromResource = JSON.parse((resource.contents[0] as any).text as string);
       expect(maskVolatile(fromTool)).toEqual(maskVolatile(fromResource));
     } finally {
       await close();
@@ -277,7 +274,7 @@ describe('Round 26b: get_context_package tool', () => {
         arguments: { channel_id: 'does-not-exist' },
       });
       expect((result as any).isError).toBe(true);
-      const text = (result.content[0] as any).text as string;
+      const text = ((result.content as any[])[0] as any).text as string;
       expect(text).toMatch(/not found/i);
     } finally {
       await close();
@@ -293,7 +290,7 @@ describe('Round 26b: get_context_package tool', () => {
         arguments: { channel_id: ch.id, format_version: '0.0.1' },
       });
       expect((result as any).isError).toBe(true);
-      const text = (result.content[0] as any).text as string;
+      const text = ((result.content as any[])[0] as any).text as string;
       expect(text).toMatch(/unsupported format_version/i);
       expect(text).toContain('0.0.1');
     } finally {
@@ -344,11 +341,8 @@ describe('Round 26b: get_manifest tool', () => {
       const fromTool = parseToolText(
         await client.callTool({ name: 'get_manifest', arguments: { channel_id: ch.id } }),
       );
-      const fromResource = JSON.parse(
-        (
-          await client.readResource({ uri: `klatch://channels/${ch.id}/manifest` })
-        ).contents[0].text as string,
-      );
+      const resource = await client.readResource({ uri: `klatch://channels/${ch.id}/manifest` });
+      const fromResource = JSON.parse((resource.contents[0] as any).text as string);
       expect(maskVolatile(fromTool)).toEqual(maskVolatile(fromResource));
     } finally {
       await close();
@@ -363,7 +357,7 @@ describe('Round 26b: get_manifest tool', () => {
         arguments: { channel_id: 'nope' },
       });
       expect((result as any).isError).toBe(true);
-      const text = (result.content[0] as any).text as string;
+      const text = ((result.content as any[])[0] as any).text as string;
       expect(text).toMatch(/not found/i);
     } finally {
       await close();
@@ -397,7 +391,7 @@ describe('Round 26b: tool input validation', () => {
         arguments: {} as any,
       });
       expect((result as any).isError).toBe(true);
-      const text = (result.content[0] as any).text as string;
+      const text = ((result.content as any[])[0] as any).text as string;
       expect(text).toMatch(/channel_id/i);
     } finally {
       await close();

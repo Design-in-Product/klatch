@@ -59,7 +59,7 @@ function makeZip(files: Record<string, unknown>): Buffer {
 /** Build a multipart FormData request with a ZIP buffer */
 function multipartReq(zipBuffer: Buffer, filename = 'export.zip', extraFields?: Record<string, string>) {
   const formData = new FormData();
-  formData.append('file', new File([zipBuffer], filename, { type: 'application/zip' }));
+  formData.append('file', new File([new Uint8Array(zipBuffer)], filename, { type: 'application/zip' }));
   if (extraFields) {
     for (const [key, value] of Object.entries(extraFields)) {
       formData.append(key, value);
@@ -448,6 +448,7 @@ describe('project delete → channel unlink + prompt fallback', () => {
       model: 'claude-opus-4-6',
       systemPrompt: 'You are helpful.',
       color: '#6366F1',
+      effort: 'high',
       createdAt: '2026-01-01T00:00:00Z',
       ...overrides,
     };
@@ -481,6 +482,7 @@ describe('project delete → channel unlink + prompt fallback', () => {
     const channel: Channel = {
       id: 'ch-orphan',
       name: 'Orphaned Channel',
+      type: 'chat',
       systemPrompt: 'Channel addendum.',
       model: 'claude-opus-4-6',
       mode: 'panel',
@@ -502,6 +504,7 @@ describe('project delete → channel unlink + prompt fallback', () => {
     const channel: Channel = {
       id: 'ch-unlinked',
       name: 'Unlinked',
+      type: 'chat',
       systemPrompt: '',
       model: 'claude-opus-4-6',
       mode: 'panel',

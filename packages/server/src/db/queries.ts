@@ -243,7 +243,7 @@ export function insertMessage(
   channelId: string,
   role: 'user' | 'assistant',
   content: string,
-  status: 'complete' | 'streaming' = 'complete',
+  status: Message['status'] = 'complete',
   model?: ModelId,
   entityId?: string
 ): Message {

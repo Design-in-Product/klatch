@@ -19,6 +19,7 @@ import {
   createFileRef,
   getMessages,
 } from '../db/queries.js';
+import type { Message } from '@klatch/shared';
 import { adaptToClaudeAi } from '../export/transport-claude-ai.js';
 import { extractFromZip } from '../import/claude-ai-zip.js';
 
@@ -97,7 +98,7 @@ function makeManifest(overrides: any = {}) {
   };
 }
 
-function makeMessages() {
+function makeMessages(): Message[] {
   return [
     { id: 'msg-1', channelId: 'ch-ca-test', role: 'user' as const, content: 'Hello', status: 'complete' as const, createdAt: '2026-04-15T00:00:00Z' },
     { id: 'msg-2', channelId: 'ch-ca-test', role: 'assistant' as const, content: 'Hi there!', status: 'complete' as const, createdAt: '2026-04-15T00:00:10Z' },

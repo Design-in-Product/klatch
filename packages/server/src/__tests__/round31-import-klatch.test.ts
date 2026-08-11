@@ -149,7 +149,7 @@ describe('Round 31: /import/klatch — canonical package re-import', () => {
       const zipBuffer = await exportZip(app, ch.id);
 
       const formData = new FormData();
-      formData.append('file', new File([zipBuffer], 'export.zip', { type: 'application/zip' }));
+      formData.append('file', new File([new Uint8Array(zipBuffer)], 'export.zip', { type: 'application/zip' }));
 
       const res = await app.request('/api/import/klatch', { method: 'POST', body: formData });
       expect(res.status).toBe(409);

@@ -51,6 +51,7 @@ function makeEntity(overrides: Partial<Entity> = {}): Entity {
     model: 'claude-opus-4-6',
     systemPrompt: 'You are a helpful assistant.',
     color: '#6366F1',
+    effort: 'high',
     createdAt: '2026-01-01T00:00:00Z',
     ...overrides,
   };
@@ -60,6 +61,7 @@ function makeChannel(overrides: Partial<Channel> = {}): Channel {
   return {
     id: 'ch-test',
     name: 'Test Channel',
+    type: 'chat',
     systemPrompt: '',
     model: 'claude-opus-4-6',
     mode: 'panel',
@@ -121,7 +123,7 @@ describe('claude.ai import → project creation', () => {
         projectUuid: 'ai-proj-2',
         projectName: 'My AI Project',
       },
-      turns: [{ userText: 'Hello', assistantText: 'Hi there', timestamp: '2026-03-14T00:00:00Z' }],
+      turns: [{ userText: 'Hello', assistantText: 'Hi there', timestamp: '2026-03-14T00:00:00Z', originalId: 'pi-1' }],
       projectId: project.id,
     });
 
@@ -240,7 +242,7 @@ describe('Claude Code import → project creation by cwd', () => {
         cwd: '/home/user/klatch',
         claudeMd: '# CLAUDE.md\nBuild with npm.',
       },
-      turns: [{ userText: 'Fix the bug', assistantText: 'Done!', timestamp: '2026-03-14T10:00:00Z' }],
+      turns: [{ userText: 'Fix the bug', assistantText: 'Done!', timestamp: '2026-03-14T10:00:00Z', originalId: 'pi-2' }],
       projectId: project.id,
     });
 
@@ -469,7 +471,7 @@ describe('re-branch with project link', () => {
       channelName: 'Original Conversation',
       source: 'claude-ai',
       sourceMetadata: { originalSessionId: 'conv-rebranch', projectUuid: 'rebranch-proj' },
-      turns: [{ userText: 'Hello', assistantText: 'Hi', timestamp: '2026-03-01T00:00:00Z' }],
+      turns: [{ userText: 'Hello', assistantText: 'Hi', timestamp: '2026-03-01T00:00:00Z', originalId: 'conv-rebranch-turn-1' }],
       projectId: project.id,
     });
 
@@ -478,7 +480,7 @@ describe('re-branch with project link', () => {
       channelName: 'Original Conversation (2)',
       source: 'claude-ai',
       sourceMetadata: { originalSessionId: 'conv-rebranch', projectUuid: 'rebranch-proj' },
-      turns: [{ userText: 'Hello', assistantText: 'Hi', timestamp: '2026-03-01T00:00:00Z' }],
+      turns: [{ userText: 'Hello', assistantText: 'Hi', timestamp: '2026-03-01T00:00:00Z', originalId: 'conv-rebranch-turn-1' }],
       projectId: project.id,
     });
 

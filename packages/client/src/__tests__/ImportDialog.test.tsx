@@ -12,6 +12,7 @@ vi.mock('../api/client', () => ({
 }));
 
 import { importClaudeCodeSession, importClaudeAiExport, previewClaudeAiExport, deleteChannelApi } from '../api/client';
+import type { ZipPreviewResponse } from '../api/client';
 
 const defaultProps = {
   isOpen: true,
@@ -20,7 +21,9 @@ const defaultProps = {
 };
 
 /** Standard preview response for tests */
-const mockPreview = {
+// Annotated so the empty arrays widen to their real element types rather than
+// `never[]` — tests below override `projects`/`memories` with real rows.
+const mockPreview: ZipPreviewResponse = {
   conversations: [
     { uuid: 'c1', name: 'React Chat', messageCount: 10, createdAt: '', updatedAt: '', alreadyImported: false },
     { uuid: 'c2', name: 'Python Help', messageCount: 5, createdAt: '', updatedAt: '', alreadyImported: false },

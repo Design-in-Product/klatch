@@ -176,6 +176,7 @@ describe('buildKitBriefing — MAXT updates', () => {
     return {
       id: 'ch-test',
       name: 'Test Channel',
+      type: 'chat',
       systemPrompt: '',
       model: 'claude-opus-4-6',
       mode: 'panel',

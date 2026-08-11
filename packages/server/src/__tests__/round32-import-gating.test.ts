@@ -45,7 +45,9 @@ function buildZip(manifest: any, jsonl = ''): Buffer {
   return zip.toBuffer();
 }
 
-function makeManifest(overrides: Partial<any> = {}, channelId = 'r32-' + Math.random().toString(36).slice(2, 10)) {
+// Returns a loose record: the gating tests deliberately `delete` required
+// manifest keys to exercise the 400 paths, which a precise literal type forbids.
+function makeManifest(overrides: Partial<any> = {}, channelId = 'r32-' + Math.random().toString(36).slice(2, 10)): Record<string, any> {
   return {
     format_version: '1.0.0',
     source_type: 'klatch',
@@ -93,7 +95,7 @@ describe('Round 32: import gating + auto-attach', () => {
       const app = createTestApp();
       const zipBuffer = buildZip(makeManifest({ format_version: '99.0.0' }));
       const formData = new FormData();
-      formData.append('file', new File([zipBuffer], 'r32.zip', { type: 'application/zip' }));
+      formData.append('file', new File([new Uint8Array(zipBuffer)], 'r32.zip', { type: 'application/zip' }));
       const res = await app.request('/api/import/klatch', { method: 'POST', body: formData });
       expect(res.status).toBe(400);
       const body = await res.json();

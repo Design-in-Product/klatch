@@ -294,6 +294,8 @@ const ENTITIES: Entity[] = [
     systemPrompt: 'You are Daedalus.',
     color: '#e05c5c',
     handle: 'daedalus',
+    effort: 'high',
+    createdAt: '2026-01-01T00:00:00Z',
   },
 ];
 
@@ -322,11 +324,13 @@ const CONVO_MESSAGES: Message[] = [
         type: 'tool_use',
         toolName: 'Read',
         inputSummary: 'src/claude/client.ts',
+        createdAt: '2026-06-23T10:00:05Z',
       },
       {
         id: 'art-think-1',
         messageId: 'msg-asst-1',
         type: 'thinking',
+        createdAt: '2026-06-23T10:00:05Z',
       },
     ],
   },
@@ -382,6 +386,7 @@ const FILE_MESSAGES: Message[] = [
         fileName: 'architecture.md',
         fileSizeBytes: 12480,
         fileStorageKey: 'uploads/architecture-2026.md',
+        createdAt: '2026-06-23T10:00:00Z',
       },
     ],
   },

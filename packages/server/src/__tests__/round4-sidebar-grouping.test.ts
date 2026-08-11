@@ -107,7 +107,7 @@ describe('Cross-source project grouping', () => {
       channelName: 'CC Session 1',
       source: 'claude-code',
       sourceMetadata: { originalSessionId: 'cc-session-1', cwd: '/Users/dev/klatch' },
-      turns: [{ userText: 'Hello', assistantText: 'Hi', timestamp: '2026-03-15T00:00:00Z' }],
+      turns: [{ userText: 'Hello', assistantText: 'Hi', timestamp: '2026-03-15T00:00:00Z', originalId: 'r4-cc-1' }],
       projectId: ccProject.id,
     });
 
@@ -158,7 +158,7 @@ describe('Cross-source project grouping', () => {
       source: 'claude-ai',
       sourceMetadata: { originalSessionId: 'ai-sess-1', originalProjectUuid: 'proj-uuid' },
       turns: [
-        { userText: 'Question', assistantText: 'Answer', timestamp: '2026-03-15T01:00:00Z' },
+        { userText: 'Question', assistantText: 'Answer', timestamp: '2026-03-15T01:00:00Z', originalId: 'r4-ai-1' },
       ],
       projectId: project.id,
     });
@@ -208,7 +208,7 @@ describe('Project deletion impact on enriched query', () => {
       channelName: 'Will Be Orphaned',
       source: 'claude-ai',
       sourceMetadata: { originalSessionId: 'orphan-sess' },
-      turns: [{ userText: 'Hello', assistantText: 'Hi', timestamp: '2026-03-15T02:00:00Z' }],
+      turns: [{ userText: 'Hello', assistantText: 'Hi', timestamp: '2026-03-15T02:00:00Z', originalId: 'r4-cc-2' }],
       projectId: project.id,
     });
 

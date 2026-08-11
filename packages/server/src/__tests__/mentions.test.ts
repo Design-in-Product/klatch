@@ -11,6 +11,7 @@ function mockEntity(name: string, handle?: string): Entity {
     model: 'claude-opus-4-6' as ModelId,
     systemPrompt: '',
     color: '#6366f1',
+    effort: 'high',
     createdAt: new Date().toISOString(),
   };
 }

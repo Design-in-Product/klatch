@@ -18,12 +18,9 @@ import userEvent from '@testing-library/user-event';
 import { ChannelSidebar } from '../components/ChannelSidebar';
 import type { Channel } from '@klatch/shared';
 
-// Extended Channel type for the redesign (type field)
-interface ChannelWithType extends Channel {
-  type?: 'chat' | 'klatch';
-}
-
-function makeChannel(overrides: Partial<ChannelWithType> & { id: string; name: string }): ChannelWithType {
+// `type` is now a required field on Channel itself — the local
+// Channel extension this suite used to carry is vestigial.
+function makeChannel(overrides: Partial<Channel> & { id: string; name: string }): Channel {
   return {
     systemPrompt: '',
     model: 'claude-opus-4-6',
@@ -45,7 +42,7 @@ const defaultProps = {
 // ── 1. Chats above klatches within a project ─────────────────────
 
 describe('Sidebar — chats above klatches within a project', () => {
-  const projectChannels: ChannelWithType[] = [
+  const projectChannels: Channel[] = [
     makeChannel({ id: 'default', name: 'general' }),
     makeChannel({
       id: 'chat-1',
@@ -128,7 +125,7 @@ describe('Sidebar — chats above klatches within a project', () => {
 
 describe('Sidebar — default project ("First project")', () => {
   it('renders null-project chats flat for a singleton user (no project header)', () => {
-    const channels: ChannelWithType[] = [
+    const channels: Channel[] = [
       makeChannel({ id: 'default', name: 'general' }),
       makeChannel({ id: 'loose-1', name: 'Random Question', type: 'chat' }),
       makeChannel({ id: 'loose-2', name: 'One-off Help', type: 'chat' }),
@@ -144,7 +141,7 @@ describe('Sidebar — default project ("First project")', () => {
   it('shows a project klatch under its project, with a loose chat in the default group', () => {
     // A klatch WITH a project renders under that project. (A project-less klatch renders in
     // the "First project" group — see the dedicated test below.)
-    const channels: ChannelWithType[] = [
+    const channels: Channel[] = [
       makeChannel({ id: 'default', name: 'general' }),
       makeChannel({ id: 'loose-chat', name: 'Loose Chat', type: 'chat' }),
       makeChannel({
@@ -168,7 +165,7 @@ describe('Sidebar — default project ("First project")', () => {
     // Round 7 originally forbade klatches without a project ("no project, no klatch").
     // Now a project-less klatch lands in the default project. With a real project also
     // present, the default group shows its "First project" header.
-    const channels: ChannelWithType[] = [
+    const channels: Channel[] = [
       makeChannel({ id: 'default', name: 'general' }),
       makeChannel({ id: 'pchat', name: 'Proj Chat', type: 'chat', projectId: 'proj-1', projectName: 'Alpha' }),
       makeChannel({ id: 'loose-klatch', name: 'spontaneous-room', type: 'klatch', entityCount: 3 }),
@@ -183,7 +180,7 @@ describe('Sidebar — default project ("First project")', () => {
 // ── 3. Accordion behavior ────────────────────────────────────────
 
 describe('Sidebar — accordion (one project expanded at a time)', () => {
-  const multiProjectChannels: ChannelWithType[] = [
+  const multiProjectChannels: Channel[] = [
     makeChannel({ id: 'default', name: 'general' }),
     makeChannel({
       id: 'a-chat',
@@ -257,7 +254,7 @@ describe('Sidebar — accordion (one project expanded at a time)', () => {
 describe('Sidebar — First project always visible', () => {
   it('First project section stays visible regardless of which project is expanded', { timeout: 15000 }, async () => {
     const user = userEvent.setup();
-    const channels: ChannelWithType[] = [
+    const channels: Channel[] = [
       makeChannel({ id: 'default', name: 'general' }),
       makeChannel({
         id: 'proj-chat',

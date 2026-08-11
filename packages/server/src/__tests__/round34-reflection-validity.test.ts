@@ -21,6 +21,8 @@
 
 import { describe, it, expect } from 'vitest';
 import './setup.js';
+import { Client } from '@modelcontextprotocol/sdk/client/index.js';
+import { InMemoryTransport } from '@modelcontextprotocol/sdk/inMemory.js';
 import {
   createChannel,
   createEntity,
@@ -29,8 +31,26 @@ import {
   getEntityReflections,
 } from '../db/queries.js';
 import { mergeFieldNotes } from '../export/package-builder.js';
+import { createKlatchMcpServer } from '../mcp/server.js';
 import { isReflectionActive } from '@klatch/shared';
 import type { MicroReflection } from '@klatch/shared';
+
+async function connectClient(): Promise<{ client: Client; close: () => Promise<void> }> {
+  const server = createKlatchMcpServer();
+  const client = new Client({ name: 'test-client', version: '0.0.0' });
+  const [clientTransport, serverTransport] = InMemoryTransport.createLinkedPair();
+  await Promise.all([
+    server.connect(serverTransport),
+    client.connect(clientTransport),
+  ]);
+  return {
+    client,
+    close: async () => {
+      await client.close();
+      await server.close();
+    },
+  };
+}
 
 describe('Round 34: MicroReflection.validUntil temporal validity', () => {
   describe('isReflectionActive helper', () => {
@@ -145,6 +165,71 @@ describe('Round 34: MicroReflection.validUntil temporal validity', () => {
       const stored = getEntityReflections(entity.id);
       expect(stored).toHaveLength(1);
       expect(stored[0].validUntil).toBe(past);
+    });
+  });
+
+  /**
+   * The MCP entity-package leg of the contract above. This suite's header has
+   * claimed it since Round 34, but nothing exercised it — and the code was
+   * broken the whole time: `reflections.filter(isReflectionActive)` handed
+   * Array#filter's index argument to the helper's `now` parameter, so
+   * `now.getTime()` threw a TypeError for any reflection carrying a
+   * `validUntil`. Found 2026-08-10 by the typecheck wiring, not by a test.
+   */
+  describe('MCP entity package (klatch://entities/{id}) applies validUntil', () => {
+    it('does not throw, and filters invalidated reflections, when validUntil is set', async () => {
+      const { client, close } = await connectClient();
+      try {
+        const entity = createEntity('R34-MCP', 'claude-opus-4-6', 'p', '#3B82F6');
+        const ch = createChannel('r34-mcp', '');
+        assignEntityToChannel(ch.id, entity.id);
+
+        const past = new Date(Date.now() - 60_000).toISOString();
+        const future = new Date(Date.now() + 60_000).toISOString();
+        appendReflection(entity.id, {
+          observation: 'superseded note', createdAt: '2025-01-01T00:00:00Z',
+          channelId: ch.id, type: 'observation', validUntil: past,
+        });
+        appendReflection(entity.id, {
+          observation: 'still applicable', createdAt: '2026-01-01T00:00:00Z',
+          channelId: ch.id, type: 'observation', validUntil: future,
+        });
+        appendReflection(entity.id, {
+          observation: 'indefinite note', createdAt: '2026-01-01T00:00:00Z',
+          channelId: ch.id, type: 'observation',
+        });
+
+        const result = await client.readResource({ uri: `klatch://entities/${entity.id}` });
+        const pkg = JSON.parse((result.contents[0] as any).text as string);
+
+        const observations = (pkg.entity.field_notes ?? []).map((n: any) => n.observation);
+        expect(observations).toContain('still applicable');
+        expect(observations).toContain('indefinite note');
+        expect(observations).not.toContain('superseded note');
+      } finally {
+        await close();
+      }
+    });
+
+    it('returns null field_notes when every reflection is invalidated', async () => {
+      const { client, close } = await connectClient();
+      try {
+        const entity = createEntity('R34-MCP-empty', 'claude-opus-4-6', 'p', '#3B82F6');
+        const ch = createChannel('r34-mcp-empty', '');
+        assignEntityToChannel(ch.id, entity.id);
+
+        const past = new Date(Date.now() - 60_000).toISOString();
+        appendReflection(entity.id, {
+          observation: 'gone', createdAt: '2025-01-01T00:00:00Z',
+          channelId: ch.id, type: 'observation', validUntil: past,
+        });
+
+        const result = await client.readResource({ uri: `klatch://entities/${entity.id}` });
+        const pkg = JSON.parse((result.contents[0] as any).text as string);
+        expect(pkg.entity.field_notes).toBeNull();
+      } finally {
+        await close();
+      }
     });
   });
 });

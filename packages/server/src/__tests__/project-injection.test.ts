@@ -156,6 +156,7 @@ describe('buildKitBriefing — project link behavior', () => {
     const channel: Channel = {
       id: 'ch-1',
       name: 'Test',
+      type: 'chat',
       systemPrompt: '',
       model: 'claude-opus-4-6',
       mode: 'panel',
@@ -174,6 +175,7 @@ describe('buildKitBriefing — project link behavior', () => {
     const channel: Channel = {
       id: 'ch-2',
       name: 'Legacy',
+      type: 'chat',
       systemPrompt: '',
       model: 'claude-opus-4-6',
       mode: 'panel',

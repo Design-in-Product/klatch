@@ -362,7 +362,7 @@ describe('Round 31b: /import/klatch extended coverage', () => {
 
       const post = async () => {
         const fd = new FormData();
-        fd.append('file', new File([zip], 'p.zip', { type: 'application/zip' }));
+        fd.append('file', new File([new Uint8Array(zip)], 'p.zip', { type: 'application/zip' }));
         return app.request('/api/import/klatch', { method: 'POST', body: fd });
       };
 
@@ -848,7 +848,7 @@ describe('Round 31b: /import/klatch extended coverage', () => {
       const zip = await exportZip(app, built.channelId);
 
       const fd = new FormData();
-      fd.append('file', new File([zip], 'p.zip', { type: 'application/zip' }));
+      fd.append('file', new File([new Uint8Array(zip)], 'p.zip', { type: 'application/zip' }));
       const res = await app.request('/api/import/klatch', { method: 'POST', body: fd });
       expect(res.status).toBe(409);
 
@@ -868,7 +868,7 @@ describe('Round 31b: /import/klatch extended coverage', () => {
       const zip = await exportZip(app, built.channelId);
 
       const fd = new FormData();
-      fd.append('file', new File([zip], 'p.zip', { type: 'application/zip' }));
+      fd.append('file', new File([new Uint8Array(zip)], 'p.zip', { type: 'application/zip' }));
       const res = await app.request('/api/import/klatch', { method: 'POST', body: fd });
       const body = await res.json();
 
