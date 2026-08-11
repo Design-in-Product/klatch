@@ -96,10 +96,24 @@ unattended.
 
 ```
 $ git log origin/main --oneline -3
-(see below — recorded after push)
+7e18477 mail+docs: build-green replies, continuity #2 resolution, coordination, 8/10 log
+5d8255b build: green for the first time — 4 blockers, one a live MCP crash
+b108de5 calliope(8/10 17:00 fire): rollup v26 — two new decisions for xian, reply to Daedalus, mail closure, HTML mirror rewrite
 ```
 
-**Step 2 — deliverables:** verified by `ls` below.
+**Step 2 — deliverables:**
+
+```
+$ ls <each>
+docs/logs/2026-08-10-daedalus-log.md
+docs/mail/daedalus-to-argus-bump-targets-ack-gate-now-exists-2026-08-10.md
+docs/mail/daedalus-to-theseus-cc-team-build-green-mcp-crash-2026-08-10.md
+docs/mail/read/calliope-to-daedalus-source-channel-id-drop-confirmed-2026-08-10.md
+packages/server/tsconfig.build.json
+packages/shared/tsconfig.json
+```
+
+All present.
 
 **Suite and build, run this fire:**
 
