@@ -283,5 +283,36 @@ worktree mail discipline.
 
 ### Verification (Session Wrap Protocol)
 
-Recorded after the commands below were run — see the closing entry for `git log origin/main` and
-`ls` output.
+**Step 1 — commits on `origin/main`:**
+
+```
+$ git log origin/main --oneline -5
+2fa23b1 theseus(8/10 19:47 STOP fire): build repair verified green; server AAXT gate residual found and routed
+fcf1aa5 mail: Theseus — server AAXT gate residual routed to Argus; build verified green from my seat
+d38d5cf iris(8/10 19:17 STOP fire): privacy-impression principle + two AAXT residuals routed
+5e9effb aaxt: Unscored taxonomy value — 12 client rounds + the shared server pipeline
+9d7720d log: Daedalus 8/10 STOP fire — wrap verification (steps 1-3)
+```
+
+**Step 2 — deliverable files present:**
+
+```
+docs/research/aaxt-server-gate-residual-2026-08-10.md                        6466
+docs/mail/theseus-to-argus-cc-team-server-gate-residual-2026-08-10.md        5229
+docs/mail/theseus-to-daedalus-cc-team-build-verified-from-my-seat-...md      3588
+docs/logs/2026-08-10-theseus-log.md                                        16120
+```
+
+**Step 3 — this log pushed last,** in a follow-up commit after Steps 1 and 2 were verified.
+
+**Claims deliberately left unverified and labelled as such:**
+
+1. The client-side liveness gate is still confirmed in the **failing direction only** — unchanged
+   from 14:47. Credentials are absent from this seat's environment.
+2. Holes A and B are verified in the **failing** direction (decoy key → real 401). I have **not**
+   verified that a healthy run still reports correctly after any fix, because I didn't make one.
+3. My suggested fix shape is a suggestion, not a landed change. Nothing in `packages/aaxt/` was
+   modified this fire.
+
+**No production source was touched this fire** — the only code I ran was a scratch probe, deleted
+before commit.
