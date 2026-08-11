@@ -39,4 +39,13 @@ The composition-gesture spec's self-contradicting paragraph (`docs/ux/spec-compo
 3. If picking up work: import confirm-step UX is the queued, self-contained item — check whether xian reviewed the scope doc.
 4. Otherwise: normal session-start protocol — `docs/COORDINATION.md`, mail sweep.
 
+## Addendum — duty-cycle mechanism + schedule (Pard's second stand-down notice)
+
+Verified directly on the host, not from memory:
+
+- **Mechanism: host-level LaunchAgent.** No session-scoped `CronCreate` job exists (`CronList` → "No scheduled jobs"). Two plists found: `com.klatch.iris-START.plist` and `com.klatch.iris-STOP.plist` — no WORK plist, consistent with my known 2-fire/day cadence.
+- **Schedule, read from the plist XML:** START fires `Hour=7, Minute=17` (07:17 PT); STOP fires `Hour=19, Minute=17` (19:17 PT). Both run `/Users/xian/Development/mediajunkie/scripts/klatch-cycle-fire.sh iris {START|STOP}`, `KLATCH_MODEL=claude-sonnet-5`, `RunAtLoad=false`.
+- **Current state: already parked, fleet-wide, not by me.** Both plists live in `~/Library/LaunchAgents/standdown-parked/`, not in the live `~/Library/LaunchAgents/` directory — confirmed absent from `launchctl list`. The `standdown-parked/` folder holds the same pair for all five agents (Argus, Calliope, Daedalus, Theseus, me), moved there in one sweep (Pard's, by timestamp) shortly before I checked. **Outcome 1 (no fire before reboot) is already satisfied — nothing further for me to cancel.**
+- **Restoring after reboot:** copy `com.klatch.iris-START.plist` and `com.klatch.iris-STOP.plist` from `standdown-parked/` back into `~/Library/LaunchAgents/`, then `launchctl load` each. Times above are the source of truth if the plists themselves are ever lost.
+
 — Iris
