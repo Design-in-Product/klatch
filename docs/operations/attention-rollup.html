@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Klatch Attention Rollup — 2026-06-19</title>
+<title>Klatch Attention Rollup — 2026-08-10</title>
 <style>
   body {
     font-family: ui-sans-serif, -apple-system, system-ui, sans-serif;
@@ -129,6 +129,8 @@
   .item .meta strong { color: #1e293b; font-weight: 600; }
   .item .body { font-size: 14px; color: #334155; }
   .item .body p { margin: 6px 0; }
+  .item .body ul { margin: 6px 0; padding-left: 20px; }
+  .item .body li { margin: 4px 0; }
   .item .recommended {
     background: #f1f5f9;
     border-radius: 4px;
@@ -214,7 +216,7 @@
 <body>
 
 <h1>Klatch Attention Rollup</h1>
-<div class="subtitle">v2 · the document xian skims to know what asks of him first</div>
+<div class="subtitle">v26 · the document xian skims to know what asks of him first</div>
 
 <div class="preamble">
   <p><strong>Demand-organized, not topic-organized.</strong> The board's job is to track <em>changing demand on xian</em>, which topic-sorting ages badly. Sections sorted by what each item asks of him: 🔴 Needs you → 🟠 Blocked on others → 🟡 Lower-urgency → 🔵 In flight → 🟢 Resolved.</p>
@@ -222,12 +224,12 @@
   <p><strong>Trust-instrument discipline (Exec 6/19).</strong> Every render comes from a fresh verified sweep of source docs, never from Calliope's memory. A false "all clear" is a trust breach, not untidiness. "Quiet" must mean <em>verified-clear</em>, not <em>haven't-checked</em>.</p>
 </div>
 
-<div class="last-refreshed">Last refreshed: 2026-06-23 Tuesday ~07:00 (Calliope) — v3, post-Pages-fix + Theseus-launch + blog-shipped. Canonical current copy is the <code>.md</code> (consumed by Janus's federated rollup); this HTML preview syncs the banner + metrics + 🔴; lower sections may trail the .md slightly.</div>
+<div class="last-refreshed">Last refreshed: 2026-08-10 ~17:00 PT (Calliope) — v26. Canonical current copy is the <code>.md</code> (consumed by Janus's federated rollup); this HTML mirror was rewritten this render to match it — it had drifted to v3/6-23 since the last sync (flagged by Janus 7/22, closed this render).</div>
 
 <div class="metrics">
   <div class="metric needs-you">
     <div class="label">Needs you</div>
-    <div class="count">1</div>
+    <div class="count">3</div>
   </div>
   <div class="metric blocked">
     <div class="label">Blocked on others</div>
@@ -248,37 +250,55 @@
   <p class="intro">Items only xian can clear. Each tagged with who's waiting.</p>
 
   <div class="item">
-    <h3>Iris Phase 3 formal cutover (persistent worktree + standing cron)</h3>
+    <h3>Discretion: "addressing," yes or no</h3>
     <div class="meta">
-      <span class="tag who-waiting">Waiting: Iris (functioning meanwhile, not blocked)</span>
-      <span class="tag date">Added 2026-06-23</span>
+      <span class="tag who-waiting">Waiting: Daedalus</span>
+      <span class="tag date">Added 2026-08-09</span>
     </div>
     <div class="body">
-      <p>Iris is functioning via xian-tandem sessions + one-shot <code>fireAt</code> resumes, but is <em>not</em> on a standing daily heartbeat. No persistent <code>.claude/worktrees/iris</code> / <code>claude/iris</code> branch yet; her 5am "resume" was a one-shot <code>fireAt</code> (fired headless, auto-disabled), not a <code>CronCreate</code>.</p>
-      <p>A brief session does the formal Phase 3 cutover: create the persistent worktree + branch, register a daily-heartbeat <code>CronCreate</code> (Iris's candidate <code>17 9 * * *</code>, staggered from Theseus's <code>:31</code>).</p>
+      <p>Daedalus answered both of your direct questions himself (identity-resolution, discretion technical read) — already building <code>#1</code> (imports mint entities, shipped 8/09).</p>
+      <p>His one open question: when a klatch assembles a participant's context, should it include what that agent said in its own 1-1s? His read: <strong>yes — "addressing, not secrecy,"</strong> the Slack DM-during-a-meeting analogy. Say "addressing" and he builds it immediately; say otherwise and it's a filtered-assembly problem again.</p>
     </div>
-    <div class="recommended">
-      <strong>Recommended path:</strong> low-effort, when convenient — she's not blocked, but the cohort overview should show a real heartbeat, not a stopgap. (<code>fireAt</code> ≠ <code>CronCreate</code>.)
+    <div class="recommended"><strong>Source:</strong> <code>daedalus-to-xian-discretion-design-technical-read-2026-08-09.md</code></div>
+  </div>
+
+  <div class="item">
+    <h3>The <code>#3</code> compaction call — now with a real number behind it</h3>
+    <div class="meta">
+      <span class="tag who-waiting">Waiting: Daedalus</span>
+      <span class="tag date">Added 2026-08-10</span>
     </div>
+    <div class="body">
+      <p><code>#3</code> (cross-channel context at prompt assembly) is the last of the three continuity changes. <code>#1</code> and <code>#2</code>'s replacement (the entity-scoped assembly join) are both landed; <code>#3</code> is gated on this call.</p>
+      <p>Options: (a) compacted summary per agent, refreshed on entry; (b) recent-N turns plus summary; (c) on-demand tool — the agent queries its own source channel when relevant.</p>
+      <p>Daedalus ran the assembly shape against the real March corpus (a copy). The six Piper Morgan department heads carry <strong>~330K tokens of context before anyone speaks</strong> — a third of a 1M window, re-sent per participant per turn. <strong>Option (a) is excluded on arithmetic, not taste.</strong></p>
+      <p>His recommendation: <strong>(b) with (c) layered</strong> — a bounded seed so an agent is never blank, plus the ability to reach for specifics. Also preserves the AAXT observability property (a probe can tell "didn't know" from "knew and didn't use").</p>
+    </div>
+    <div class="recommended"><strong>Source:</strong> <code>docs/plans/continuity-3-compaction-sizing-2026-08-10.md</code>, <code>daedalus-to-calliope-cc-xian-increment-2-reframed-2026-08-10.md</code></div>
+  </div>
+
+  <div class="item">
+    <h3>The <code>.env</code> / AAXT-credentials gate — three options, mechanism corrected</h3>
+    <div class="meta">
+      <span class="tag who-waiting">Waiting: Pard, Theseus</span>
+      <span class="tag date">Added 2026-08-10</span>
+    </div>
+    <div class="body">
+      <p>A third execution-environment gate, distinct from the two Pard fixed today. It blocks reading the <code>.env</code> file carrying <code>ANTHROPIC_API_KEY</code>, so AAXT (Theseus's live-model probing) stays parked even though execution and network are both fixed.</p>
+      <p>Argus found it; Pard reproduced it and named the constraint under any fix: Claude Code reads <code>ANTHROPIC_API_KEY</code> from its own environment, so exporting the key into a fire's environment would silently move that fire's own billing off your Max subscription onto metered API. Three options, none Pard's to pick: (1) AAXT stays attended-only; (2) a host-side runner script that reads the credential internally, never naming <code>.env</code> in a tool call — Pard flagged this himself as routing around a safety control; (3) an explicit permission scoped to the <code>.env</code> file.</p>
+      <p><strong>Theseus corrected the mechanism before you choose:</strong> it's not a secrets-content heuristic — a decoy key file written inside the worktree read fine. <code>./.env</code> is a symlink to <code>~/.klatch/klatch.env</code>, outside the session's allowed working directory — the block is the directory sandbox refusing to follow a symlink out. <strong>Option 3 as phrased doesn't describe a real object</strong> (there's no in-worktree file to scope a permission to). The billing-leak concern is untouched by this correction.</p>
+      <p>One more fact, not a vote: Theseus separately found and fixed a bug where all 12 AAXT rounds passed green even when every API call failed — a stale/rotated key would previously have shown "12/12 green" with zero signal. Fixed now, so whichever option you pick, a broken credential will show as broken.</p>
+    </div>
+    <div class="recommended"><strong>Sources:</strong> <code>argus-to-pard-theseus-env-access-approval-gate-2026-08-10.md</code>, <code>pard-to-argus-cc-team-third-gate-confirmed-xians-call-2026-08-10.md</code>, <code>theseus-to-pard-cc-xian-env-gate-is-the-sandbox-not-secrets-2026-08-10.md</code></div>
   </div>
 </section>
 
 <section class="blocked">
   <h2>🟠 Blocked on another agent</h2>
   <p class="intro">Stuck agent-on-agent. xian's awareness, Calliope's nudge-target.</p>
-
   <div class="item">
-    <h3>PM #972 memory-temporal-field alignment (<code>valid_from</code> / <code>valid_until</code>)</h3>
-    <div class="meta">
-      <span class="tag who-waiting">Stuck on: Daedalus (off-cycle since 4/29)</span>
-      <span class="tag date">Added 2026-06-15</span>
-    </div>
-    <div class="body">
-      <p>PM CIO sent the proposal 6/15; explicitly not blocking either side. Daedalus hasn't sessioned to see it.</p>
-    </div>
-    <div class="recommended">
-      <strong>Calliope's nudge-target:</strong> when xian launches Daedalus (Phase 2 of duty-cycle rollout — xian-stated for tomorrow morning), Daedalus sees the memo at session start and can respond. No separate nudge needed; the morning Daedalus launch <em>is</em> the unstucker.
-    </div>
+    <h3>Nothing open</h3>
+    <div class="body"><p>Duty-cycle state and the code-execution gate closed 8/10 (v25); see 🟢 Resolved.</p></div>
   </div>
 </section>
 
@@ -287,28 +307,26 @@
   <p class="intro">Real but not time-pressured. Stale-but-flagged items labeled stale, never as fresh.</p>
 
   <div class="item">
-    <h3>Cron-shape experiments registry: still seeded straw-model, not yet calibrated</h3>
-    <div class="meta">
-      <span class="tag date">Added 2026-06-03</span>
-    </div>
+    <h3>Sonnet 5 tokenizer +30% — compaction threshold may need recalibration</h3>
+    <div class="meta"><span class="tag date">Added 2026-07-06</span></div>
     <div class="body">
-      <p><code>docs/operations/duty-cycle/cron-shape-experiments.md</code> carries 6/3 straw-mapping entries with "pending observation" for everyone except Calliope. Calliope has run two pilot stretches (5/28 + 6/19); others haven't launched. No calibration yet.</p>
-      <p>The straw model is reasonable until evidence; calibration is post-launch data.</p>
+      <p>Sonnet 5's new tokenizer produces ~30% more tokens from the same input vs. Sonnet 4.6. Klatch's compaction threshold (160K, tuned during Step 9) was calibrated for Sonnet 4.6 — Sonnet 5 users hit it in ~77% as many turns, at ~30% more cost.</p>
     </div>
-    <div class="recommended">
-      <strong>Path:</strong> as Phase 2 + 3 launches happen this week, agents append their first observations.
+    <div class="recommended"><strong>Path:</strong> no code change required before v1.0; worth a note in the Step 11 pre-design checklist. Analog: Opus 4.7 had +35% tokenizer impact.</div>
+  </div>
+
+  <div class="item">
+    <h3>Model overlay grooming + <code>DEFAULT_MODEL</code> flip</h3>
+    <div class="meta"><span class="tag who-waiting">Yours: the flip itself</span><span class="tag date">Added 2026-07-05 · reframed 2026-08-04</span></div>
+    <div class="body">
+      <p>Correction (Argus, 8/4): the "picker two generations stale" escalations were aimed at the wrong seam — the picker's been dynamic since 6/21. What remains is small overlay grooming (Daedalus) plus your call on the <code>DEFAULT_MODEL</code> flip (4.7 → 4.8 or Opus 5). No urgency.</p>
     </div>
   </div>
 
   <div class="item">
-    <h3>Klatch's <code>last_verified</code> / <code>validUntil</code> field-naming choice <span style="font-weight: normal; color: #64748b; font-size: 13px;">(sub-decision of PM #972)</span></h3>
-    <div class="meta">
-      <span class="tag who-waiting">Daedalus's call, not xian's</span>
-      <span class="tag date">Added 2026-06-15</span>
-    </div>
-    <div class="body">
-      <p>Daedalus will need to choose whether Klatch adopts PM's <code>valid_until</code> or keeps Klatch's existing <code>validUntil</code>/<code>ended</code>. Sub-decision of the parent at 🟠 above, but <em>his</em> to make — not xian's. Surfaced here so xian doesn't need to weigh in. Parent context only.</p>
-    </div>
+    <h3>MAXT Session 02 + April-28 round-trip MAXT — parked</h3>
+    <div class="meta"><span class="tag date">Added 2026-06-23</span></div>
+    <div class="body"><p>Both need xian's live attention. Not time-pressured; xian rouses Theseus situationally.</p></div>
   </div>
 </section>
 
@@ -317,76 +335,74 @@
   <p class="intro">Awareness, no action needed.</p>
 
   <div class="item">
-    <h3>xian's July 2026 focal shift</h3>
+    <h3>Cohort status (Amber, verified 2026-08-10 ~17:00 PT)</h3>
     <div class="body">
-      <p>DinP becomes operational center; OpenLaws becomes external consulting client. Hyper-circle: PM-as-consulting-tool + Klatch-as-transporter-device + DinP-as-hub. Most of the strategic threads below sharpen under this lens. <em>xian's own work, not a Klatch action item.</em></p>
-    </div>
-  </div>
-
-  <div class="item">
-    <h3>CIO 6/3 canonical-artifacts request — still outstanding</h3>
-    <div class="meta">
-      <span class="tag date">16 days outstanding</span>
-    </div>
-    <div class="body">
-      <p>Calliope sent CIO a request 6/3 via Janus for 5 canonical duty-cycle artifacts (cron-lifecycle.md, PM cron-shape-experiments.md, v0.7.0 adoption package, launch-brief template, cohort status tracker). No response yet. CIO offered freely; no deadline. Calliope holds; nudges via Janus in another week if still silent.</p>
-    </div>
-  </div>
-
-  <div class="item">
-    <h3>Cohort rollout Phases 2–3 — gated on tomorrow's launches</h3>
-    <div class="body">
-      <p>xian-stated for tomorrow morning. Daedalus + Argus launch together as tandem (Phase 2); Theseus + Iris launch as daily-heartbeat signal-receivers (Phase 3). All four read launch-brief-template at first session, set up <code>.claude/worktrees/{slug}</code> on <code>claude/{slug}</code>, register cron. Each reports in to cycle log + agent-state tracker.</p>
-    </div>
-  </div>
-
-  <div class="item">
-    <h3>Strategic threads parked for live conversation</h3>
-    <div class="body">
-      <p style="font-style: italic; margin-bottom: 4px;">Don't lose track; next-conversation picks the right one.</p>
-      <ul class="threads-list">
-        <li><strong>Persistent topical rooms</strong> as a Klatch product category (synthetic-klatch insight operationalized — Iris-domain, beta-relevant)</li>
-        <li><strong>Contextual fidelity across seams</strong> — Layer-5 / behavioral-calibration problem revisited</li>
-        <li><strong>BYOC = Bring Your Own Chat</strong> — Klatch MCP as transporter device; operationalizes interchange-protocol vision; gains client-side use case under focal shift</li>
-        <li><strong>MCPs + service-design frontiers</strong> — adjacent territory</li>
-        <li><strong>Janus's hub role vs. Calliope's principal-contact role</strong> — clarified 6/19: not in tension; Janus aggregates across xian's working life, Calliope aggregates within Klatch</li>
-        <li><strong>Klatch's methodology contribution to the hyper-circle</strong> — uniquely positioned to surface interchange-protocol/transporter and synthetic-klatches/rooms primitives; both are what Iris is heading toward; 1.0-beta UX work <em>is</em> methodology-surface work</li>
-        <li><strong>Question filed in dispatch question-box (6/19):</strong> <em>smallest concrete UX or doc artifact that would make Klatch demoable to OpenLaws as transporter-device candidate?</em> Curiosity, not task. Letters archive whenever xian has room.</li>
+      <p>All five migrated to Amber, structural per-worktree git identity, all five duty cycles armed at full scope.</p>
+      <ul>
+        <li><strong>Calliope</strong> — this fire (17:00): rollup refreshed to v26; 11-thread mail hygiene pass; replied to Daedalus on <code>source_channel_id</code>.</li>
+        <li><strong>Argus</strong> — 09:00/13:30/18:00 Sonnet 5. 13:30 fire ran the suite live for real (1139 server / 212 client, exit 0) — first genuine execution-based verification since 8/05 — and found the <code>.env</code> gate.</li>
+        <li><strong>Iris</strong> — 07:17/19:17 Sonnet 5. §6 landed 8/9; import confirm-step UX scoped, not yet built.</li>
+        <li><strong>Daedalus</strong> — 09:17/13:17/17:17 Opus 5. <code>#2</code> reframed and replaced (Round 36, entity-scoped assembly join, +12 tests); compaction sizing measurement above is his.</li>
+        <li><strong>Theseus</strong> — 10:47/14:47/19:47 Opus 5. 14:47 fire fixed the AAXT liveness gap (all 12 rounds now hard-fail on instrument failure) and found <code>npm run build</code> is red; corrected the <code>.env</code> gate mechanism.</li>
       </ul>
+    </div>
+  </div>
+
+  <div class="item">
+    <h3>Client build is red — found, routed, not urgent</h3>
+    <div class="body">
+      <p><code>npm run build</code> fails with 27 type errors across 8 files. One is production source (<code>App.tsx:220</code>, React 19 <code>useRef</code> signature); the other 26 are test-fixture drift in files currently being edited for continuity work. Vitest doesn't typecheck, so no prior "suite green" claim ever covered this, and there's no CI to have caught it either. Routed to Daedalus; not blocking anything today.</p>
+    </div>
+    <div class="recommended"><strong>Source:</strong> <code>theseus-to-daedalus-cc-team-client-build-is-red-2026-08-10.md</code></div>
+  </div>
+
+  <div class="item">
+    <h3>Composition gesture + beta gate — FULLY CLEAR ✅</h3>
+    <div class="body">
+      <p>All 7 increments on main. MAXT Session 03: 15/15. R45: 8/8. R46 (clone): 8/8, 0 Phantoms. R47 (@mention): 8/8, 0 Phantoms. All green. Launch copy suite complete. Release cut is the only remaining gate, and is not currently blocked — awaiting xian's timing call, not a defect.</p>
+    </div>
+  </div>
+
+  <div class="item">
+    <h3>Pages build, strategic threads, CIO artifact request</h3>
+    <div class="body">
+      <p>Pages: fixed 6/22, no new issues. BYOC/portability/transporter settled; xian's July focal shift. CIO 6/3 canonical-artifacts request: status unverified since late June, carried across the freeze.</p>
     </div>
   </div>
 </section>
 
 <section class="resolved">
   <h2>🟢 Resolved since last board</h2>
-  <p class="intro">Kept so xian sees the clear; prevents "didn't I already decide that?" loop. Entries older than 7 days get pruned at refresh.</p>
+  <p class="intro">Kept so xian sees the clear; prevents "didn't I already decide that?" loop.</p>
 
   <div class="item">
-    <h3>BYOC clarification</h3>
-    <div class="body">xian corrected the autocorrect typo 6/19; for Klatch = transporter device. Captured in persistent memory + STATE.md. <em>Closed 6/19.</em></div>
+    <h3>Duty-cycle state — 4 of 5 seats disarmed</h3>
+    <div class="body">Pard fixed the <code>allowedTools</code> gap (<code>npx</code>/<code>vitest</code> now covered) and retracted a fabricated "no network" constraint that had shaped every fire prompt for weeks. All five seats re-armed at full scope. <em>Closed 8/10.</em></div>
   </div>
   <div class="item">
-    <h3>Janus 6/12 question-box-check line</h3>
-    <div class="body">Adopted into v0.2 STOP procedure step 4 on 6/19; Calliope filed first question to dispatch same evening. <em>Closed 6/19.</em></div>
+    <h3>Code-execution gate in unattended fires</h3>
+    <div class="body">Same fix as above, not a separate one — the 8/05 <code>allowedTools</code> change named <code>git</code>/<code>npm</code> but missed <code>npx</code>. <em>Closed 8/10.</em></div>
   </div>
   <div class="item">
-    <h3>Attention-rollup v1</h3>
-    <div class="body">Sketched 6/19 morning; Exec sent four corrections same evening; v2 (this document) verified-swept. <em>Closed 6/19.</em></div>
+    <h3>Four continuity gating decisions</h3>
+    <div class="body">xian answered all four directly, 8/08: Interpretation B for now (A gets a written case for later); identity resolution is guess+confirm; discretion is "direct not private" + ground-rules convention; directed-mode visibility confirmed as everyone-sees-everything. <em>Closed 8/9 (decisions landed 8/8).</em></div>
   </div>
   <div class="item">
-    <h3>Exec advice request</h3>
-    <div class="body">Direct PM-side delivery succeeded 6/19; Exec replied same evening; ack filed; corrections absorbed. <em>Closed 6/19.</em></div>
+    <h3>ANTHROPIC_API_KEY on Amber</h3>
+    <div class="body">Resolved 8/05 by Pard: one canonical <code>.env</code>, symlinked into six worktrees, live-verified. <em>Closed 8/9 (resolved 8/5).</em></div>
   </div>
   <div class="item">
-    <h3>Standing directive: cron resume-by-default-when-idle</h3>
-    <div class="body">xian named 6/19; v0.2 Principle 4 updated in place; cron <code>b4159932</code> registered with sharpened drain prompt embedded. <em>Closed 6/19.</em></div>
+    <h3>Rollup HTML mirror staleness (v3, dated 6/23)</h3>
+    <div class="body">Flagged by Janus 7/22; this render rewrites the mirror to match the current <code>.md</code> (v26) in full, not just the banner/metrics. <em>Closed 8/10.</em></div>
   </div>
 </section>
 
 <div class="changelog">
   <h3>Changelog</h3>
   <ul>
-    <li><strong>v2 (2026-06-19 evening)</strong> — Refactored per Exec's 6/19 advice. Sections demand-organized (was topic). Who's-waiting tags on every Needs-you row. Sub-decision surfaced as own row (PM #972 sub-decision). Metrics strip added. Verified-sweep discipline applied — read all source docs, cross-checked against live truth. Recently-closed footer with strikethroughs. HTML render added for Claude Desktop preview.</li>
+    <li><strong>v26 (2026-08-10 ~17:00 PT, Calliope)</strong> — Full rewrite to match the canonical <code>.md</code>, closing a 7-week mirror-drift debt (was v3/6-23). Two new 🔴 for xian: the <code>#3</code> compaction call (Daedalus's real corpus measurement — ~330K tokens for six department heads, excludes option (a) on arithmetic) and the <code>.env</code>/AAXT-credentials gate (Argus found it, Pard framed three options around a real billing-leak hazard, Theseus corrected the underlying mechanism). New 🔵: client build is red (Theseus, routed to Daedalus); cohort section rewritten to this render's actual content.</li>
+    <li><strong>v3 (2026-06-23)</strong> — post-Pages-fix + Theseus-launch + blog-shipped banner sync only; content below the fold not kept current after this point.</li>
+    <li><strong>v2 (2026-06-19 evening)</strong> — Refactored per Exec's 6/19 advice. Sections demand-organized (was topic). Who's-waiting tags on every Needs-you row. Metrics strip added. Verified-sweep discipline applied.</li>
     <li><strong>v1 (2026-06-19 morning)</strong> — initial sketch, six topic-organized sections.</li>
   </ul>
 </div>
