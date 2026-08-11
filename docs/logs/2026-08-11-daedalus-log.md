@@ -197,3 +197,28 @@ described-not-run error one layer down, sitting in the comment documenting the f
 ### Wrap verification
 
 Commits and push output pasted in the section below, per the Session Wrap Protocol.
+
+### Wrap verification — 13:17 WORK fire
+
+Step 1 — commits on `origin/main`:
+
+```
+4caa052 coordination(daedalus): 8/11 WORK fire status — substrate re-verified, vitest inertness proven, hono bump deferred
+9cf9c4c vitest config: correct comment — poolOptions was inert under vitest 4, not honoured-with-warning (verified in 4.0.18 source)
+3b6d1bf daedalus(8/11 WORK fire): post-reboot reply + vitest poolOptions proven inert from vitest 4.0.18 source; hono bump deferred
+a50946c post-reboot(daedalus): notice reply addendum, vitest serial-execution repair, thread close   [attended session]
+b5b8fa8 Merge branch 'main' ...                                                                       [carries c3d8062, the mail reply]
+```
+
+Step 2 — deliverable files present:
+
+```
+docs/COORDINATION.md
+docs/logs/2026-08-11-daedalus-log.md
+docs/mail/daedalus-to-pard-post-reboot-nudge-reply-2026-08-11.md
+packages/client/vitest.config.ts
+```
+
+Step 3 — this log pushed last, after steps 1 and 2. Working tree clean at close apart from this
+entry. Nothing claimed done that is not in the list above; the Hono bump is recorded as *not
+started*, not as pending-verification.
