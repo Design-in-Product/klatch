@@ -92,3 +92,64 @@ session logs).
 
 Everything committed and pushed to `origin/main` this fire — verified via `git log
 origin/main..HEAD` (empty) before writing this entry.
+
+## 21:30 PT — STOP fire: rollup v27, named a pattern Theseus routed to me, mail hygiene
+
+Session-start protocol: pulled clean, read `docs/COORDINATION.md` in full (all sections, not just
+mine — needed the full Theseus/Argus/Daedalus/Pard exchange history from today to refresh the
+rollup accurately), swept `docs/mail/` for anything new or addressed to Calliope.
+
+**Read since my 17:00 fire:** Theseus's 19:47 STOP fire (two memos — build repair independently
+verified green from his seat, and a server AAXT gate residual found in Argus's `Unscored` fix) and
+two Pard memos to Theseus (20:5x, 21:0x — a self-correction on the `.env` gate diagnosis, and the
+test-data transfer status). None addressed to me directly, but all rollup-relevant, so folded in
+rather than waiting for a direct ask.
+
+**Rollup refreshed to v27** (`docs/operations/attention-rollup.md`): client build 🔵 item closed —
+Daedalus's fix was bigger than the original 27-error report (the *root* build had never succeeded
+once, since the initial commit; 55 more errors on the server side nobody had counted), and
+Theseus's 19:47 fire re-verified it green from a separate seat rather than carrying Daedalus's
+numbers. New 🔵: a server AAXT gate residual — Theseus verified Argus's `Unscored` fix
+behaviorally rather than reading the diff and found two of three instrument-fault routes still
+fall through to a bucket that reads as a real result; routed to Argus, explicitly not blocking.
+The `.env` gate 🔴 **narrowed but not resolved**: Pard re-checked his own "independent
+confirmation" of the block, found it confounded (tested the wrong thing, matched it to Argus's
+finding anyway), and traced the actual cause to his own secrets layout — one canonical
+`~/.klatch/klatch.env` symlinked into six worktrees. A fourth option (`--add-dir ~/.klatch`) now
+reads as the likely pick; still untested, still xian's call given the billing-leak concern
+underneath any option. Also corrected a pre-existing 🟡 miscount (3→4 — the section has actually
+carried 4 items since 7/06; nobody had caught it through five renders).
+
+**Named the pattern Theseus routed to me.** His 19:47 memo named three same-day instances of "a
+comment asserts coverage that nothing exercises" — Round 34's MCP header (Daedalus found a live
+crash under a claim that the MCP leg was tested since May), the 12 AAXT rounds that read green
+while every API call failed, and the liveness-gate guard's own comment, written the same day,
+claiming a wider guarantee than the code it describes gives. He handed it to me explicitly rather
+than deciding it himself: "that's a pattern worth a name, and it isn't mine to name." Wrote it up
+as the **Institutional Phantom** (`docs/research/institutional-phantom-2026-08-10.md`) — tied
+deliberately to AAXT's existing Phantom category (confident false claim, silent failure) rather
+than inventing new vocabulary, framed as one altitude up: not an agent claiming false knowledge in
+conversation, but an artifact claiming false coverage in the durable record. Named what actually
+closed each instance — going and running the thing the comment claimed, not reading it and
+trusting it — as the generalizable move, since "write better comments" doesn't survive contact
+with the fact that the fix for one Institutional Phantom shipped carrying a smaller one, same day,
+same file. Deliberately did not edit `AXT.md` itself — a sibling concept one person doesn't get to
+fold into the canonical taxonomy unilaterally. Reply filed:
+`calliope-to-theseus-cc-team-institutional-phantom-named-2026-08-10.md`.
+
+**Mail hygiene** — 8 threads closed to `docs/mail/read/`, all from 7/19: Argus's pre-gate-protocol
+filing and team-memos-reply, Iris's composition-continuity-reply, and the three outbound
+`calliope-to-team-*` / `calliope-to-iris-*` / `calliope-to-argus-*` memos those answer. Verified
+each substantively closed by reading in full — Interpretation A/B, discretion, identity
+resolution, and the `.env`/test-data-location sub-questions inside them are all now answered by
+the 8/08–8/10 decision landings, not just plausibly stale.
+
+**Left undone, flagged rather than silently dropped:** the HTML rollup mirror
+(`attention-rollup.html`) — I rewrote it in full at 17:00 specifically because it had drifted
+silently for seven weeks, and it's already one render behind again (v26, should be v27). Noted in
+COORDINATION as next-fire work rather than letting the same drift repeat quietly.
+
+COORDINATION.md Calliope section updated to match.
+
+Everything committed and pushed to `origin/main` this fire — verified via `git log
+origin/main..HEAD` (empty) before writing this entry.
