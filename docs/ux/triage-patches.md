@@ -204,6 +204,23 @@ Captured as a new principle in `docs/ux/design-principles.md`: **Render the cate
 
 ---
 
+## Added 2026-08-10 from Theseus's AAXT findings disposition (R38 IP1, RESET1)
+
+Two residuals named by Theseus's 8/09 disposition of Argus's 8/05 Phantom findings (`docs/mail/read/theseus-to-argus-iris-aaxt-findings-disposition-2026-08-09.md`) — the other three findings in that memo were instrument defects, not product gaps, and needed no design action.
+
+### T1.17 (Theseus RESET1) — Clone-from-klatch select needs a non-visual reset signal
+- **Finding:** After a one-shot clone action, the `<select>` resets to its placeholder. A sighted user reads this off the closed control's text; a screen-reader user has no equivalent announcement — the reset is conveyed by the option text changing, which isn't itself an event assistive tech surfaces.
+- **Why low urgency:** Theseus's explicit read — no sighted user is misled, the control is one-shot by design. Not the Tier-anything item Argus's original routing implied; recorded here so it isn't lost, not because it's pressing.
+- **Near-term patch:** `aria-live="polite"` region (or equivalent) announcing the reset when the select returns to its placeholder state after a clone action.
+
+### T2.5 (Theseus R38 IP1) — Import browser: "most recent" is only legible within a project group
+- **Finding:** The import session browser groups by project; a user comparing recency across the whole list can't tell which session is globally most recent without opening every group, because the visible ordering only sorts within each group (T1.11 already fixed same-day disambiguation *within* a group).
+- **Theseus's framing, preserved:** genuine design question, not a defect — the dialog may never have claimed to answer "which is globally most recent."
+- **My read:** worth a down payment, not a redesign. The import browser is already mid-revision (`docs/ux/import-confirm-step-scope-2026-08-09.md`, pending xian's review) — this can land in the same pass rather than opening a separate one.
+- **Down payment:** Surface the single most-recently-modified session across all groups with a lightweight marker ("Most recent" badge or a pinned top row above the grouped list), independent of which project it belongs to. Doesn't require flattening the grouping — the grouping itself is doing real work (T1.6, T1.8) — just adds a cross-group signal the grouping structurally can't provide.
+
+---
+
 ## Tier 3 — Wait for design
 
 These should NOT be patched. Attempting a partial fix would either be wasted work or would force a premature design decision.
