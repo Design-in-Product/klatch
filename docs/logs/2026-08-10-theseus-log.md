@@ -4,6 +4,7 @@ date: 2026-08-10
 model: Opus 5
 sessions:
   - "14:47 PT — scheduled WORK fire (unattended)"
+  - "19:47 PT — scheduled STOP fire (unattended)"
 ---
 
 # Theseus — 2026-08-10
@@ -171,3 +172,116 @@ Plus 12 modified round files and `docs/COORDINATION.md`, all in `17bd3a4`.
 **One claim deliberately left unverified and labelled as such:** the AAXT liveness gate is
 confirmed only in the failing direction. Nobody should read "landed and verified" as meaning the
 12 rounds have been run green since the change.
+
+---
+
+## 19:47 — scheduled STOP fire
+
+**Briefing.** Synced by the wrapper at `d38d5cf`. Read `COORDINATION.md`, swept `docs/mail/`,
+read the cross-pollination brief. **Both findings I routed at 14:47 came back answered in the same
+day** — Argus's `Unscored` taxonomy (`5e9effb`) and Daedalus's build repair (`5d8255b`). Iris's
+`iris-to-argus-theseus-aaxt-residuals-actioned-2026-08-10.md` is informational, already filed to
+`read/` by her, no action on me.
+
+**Correcting the fire prompt's own premise, per its instruction:** earlier prompts claimed no
+network. False, and I confirmed execution + network live again this fire.
+
+### 1. Independent verification of Daedalus's build repair
+
+Ran both myself rather than carrying his numbers:
+
+- `npm run build` — **green end to end**, reaches the client, `1110 modules transformed`.
+- `npm test` — **exit 0. 1153 server (67 files) / 212 client**, 13 client skips, typecheck first.
+
+Both match his report exactly. My 8/10 build finding is closed.
+
+**Process note against myself:** my first `npm test` was `| tail -30`, which captured only the
+client tail — I had exit 0 but no server number, and nearly wrote "1153" from his memo. Re-ran the
+server workspace alone to get the figure from my own execution. Exactly the recalled-vs-verified
+trap `CLAUDE.md` describes, and it took a deliberate second run to avoid.
+
+### 2. Credentials: absent from the environment, not merely unreadable
+
+Sharper than the 14:47 finding. Checked `process.env` directly: **`ANTHROPIC_API_KEY` and
+`OPENAI_API_KEY` are both ABSENT**, not present-but-blocked. So the symlinked-`.env` sandbox
+diagnosis was correct but incomplete — even resolving the symlink wouldn't help unless something
+sources the file into the fire's environment. The credentialed 12-round sweep is genuinely blocked
+from this seat.
+
+### 3. The finding: Argus's `Unscored` is right, the gate consuming it is still open
+
+Went to verify his production fix behaviorally rather than read it. **Only route 3 — a reachable
+judge returning an unparseable classification — actually reaches `Unscored`.** The two faults that
+happen in production still report as legitimate readings:
+
+- **Hole A — auxiliary down at probe generation.** `probe-generator.ts:227-236` swallows the
+  failure (zero probes, `ERROR — ` status), never throws. `totalScored === 0` ⇒ his new guard at
+  `runner.ts:202` is skipped (requires `totalScored > 0`) ⇒ `:206-207` ⇒ **`'low'`**. Nothing was
+  measured; it reports in the same bucket as "conveys badly."
+- **Hole B — judge down at scoring time.** `scorer.ts:80-86`'s outer catch still returns
+  `'Absent'`. This is **route 2** from my 14:47 memo, the one I flagged as most dangerous. Argus's
+  memo names route 1 as deliberately left alone; route 2 isn't in that list and looks unintended —
+  it's the same category as route 3, which he did move.
+
+**And `runner.ts:203-204`'s comment claims the guard covers "probe/judge error"** — it covers
+neither. Third instance today of *a comment asserting a property nobody exercised*: Round 34's MCP
+header (Daedalus found a live crash under it), the 12 green-but-dead AAXT rounds, and this.
+
+**Verified, with no credentials.** A decoy key produces a real 401, which is a real outage:
+
+```
+[route 2]  scoreResponse under judge outage → classification: Absent
+[pipeline] totalProbes: 0  totalScored: 0  unscoredCount: 0  overallFidelity: low
+           L2 | ERROR — Anthropic API error (401): ...
+           L5 | ERROR — Anthropic API error (401): ...
+```
+
+**Caught myself mid-measurement:** my first pipeline run returned all layers `INACTIVE`, so
+generation was never attempted — it demonstrated `totalScored === 0 ⇒ 'low'` but *not* via the
+auxiliary-failure path I was about to claim. Re-ran with `'5_entityPrompt': 'ACTIVE'` (no parseable
+char count, so it also clears the trivial-content guard at `probe-generator.ts:189`) to force real
+generation. The `ERROR —` strings above are the evidence that it was attempted and rejected.
+
+**Useful side effect for Argus:** the decoy-key path lets him verify the aggregate's passing
+direction *without* credentials. It won't cover a valid judge response, so his `.env` ask stands
+for that half.
+
+**Deliberately not fixed.** Recasting route 2 changes what `Absent` has meant in every AAXT report
+on file — the same reason Argus flagged route 1 rather than deciding it mid-fire. It's his policy
+doc. Suggested shape offered (1: `totalScored === 0 ⇒ 'failed'`, no taxonomy implication; 2: route
+2 ⇒ `Unscored`), his to accept or reject. Same call I made this morning on the red build.
+
+Write-up: `docs/research/aaxt-server-gate-residual-2026-08-10.md`.
+
+### Mail filed
+
+- `theseus-to-argus-cc-team-server-gate-residual-2026-08-10.md` — the finding; also accepts his
+  taxonomy call and **concedes the R38/Phantom item**: I read `round38:663-666` and the disposition
+  comment is there. My 14:47 "still open" framing was stale context, not a live re-flag. He was
+  right.
+- `theseus-to-daedalus-cc-team-build-verified-from-my-seat-2026-08-10.md` — verification, plus
+  three corrections to my own 14:47 memo (I reported the client build and inferred the root; "broken
+  before today" was the wrong tense, it was never green; I counted 27 when the real figure was ~82
+  across two workspaces). On CI: agreed with his restraint, added the one datum I have — I found the
+  red build *by accident*, nothing routine surfaced it — and my read that CI is no longer urgent now
+  that typecheck is in `npm test`. xian's call.
+
+Both committed and pushed to `main` as a separate commit (`fcf1aa5`) ahead of this log, per the
+worktree mail discipline.
+
+### Open / next
+
+- **Argus:** the two holes above; the credentialed 12-round sweep still owed for the passing
+  direction of my liveness gate.
+- **xian:** CI (Daedalus's ask, my read: no longer urgent). The `.env` decision — now against a
+  further-corrected mechanism: the key is *absent from the fire's environment*, not just behind a
+  sandbox refusal.
+- **Mine:** `entity-guess` confirm-surface AAXT round still queued behind the confirm UI existing
+  (Iris/Daedalus). MAXT-04 observer role standing, gated on continuity `#3`.
+- **Housekeeping:** scratch probe deleted before commit; repro documented in the research doc
+  instead. `test.poolOptions` deprecation flagged a second time to Daedalus, still unowned.
+
+### Verification (Session Wrap Protocol)
+
+Recorded after the commands below were run — see the closing entry for `git log origin/main` and
+`ls` output.
