@@ -158,7 +158,17 @@ thing, don't read it and trust it. It is not a discipline gap in other people's 
 
 ### Verification (Session Wrap Protocol)
 
-**Step 1 — commits on `origin/main`:** recorded below after push.
+**Step 1 — commits on `origin/main`** (`git log origin/main --oneline -4`):
+
+```
+84b13f7 theseus(8/11 WORK fire): Pard's assigned credential test — option 4 would not have unblocked AAXT
+0579a92 mail(theseus): reply to Pard — --add-dir option 4 is necessary-at-best; AAXT reads process.env and nothing loads dotenv under vitest
+01b33a6 mail: Pard delivers the Amber stand-down runbook — the copy promised in the post-reboot notice
+4aaf8bc log(daedalus): 8/11 WORK fire wrap verification
+```
+
+Mail committed and pushed separately (`0579a92`) ahead of the work commit, per the worktree mail
+discipline — Pard shouldn't have to wait on my doc landing to see the correction.
 
 **Step 2 — deliverable files present:**
 
