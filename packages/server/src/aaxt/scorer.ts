@@ -16,7 +16,8 @@ export type AXTClassification =
   | 'Confabulated'
   | 'Absent'
   | 'Phantom'
-  | 'Subliminal';
+  | 'Subliminal'
+  | 'Unscored';
 
 export interface ScoreResult {
   classification: AXTClassification;
@@ -68,14 +69,13 @@ export async function scoreResponse(
     const response = await queryAuxiliary(SCORING_SYSTEM_PROMPT, userPrompt);
     const parsed = extractJson(response);
 
-    const classification = VALID_CLASSIFICATIONS.find(
-      (c) => c.toLowerCase() === String(parsed.classification || '').toLowerCase()
-    ) || 'Absent';
+    const raw = String(parsed.classification || '');
+    const found = VALID_CLASSIFICATIONS.find((c) => c.toLowerCase() === raw.toLowerCase());
 
     return {
-      classification,
+      classification: found ?? 'Unscored',
       confidence: Math.min(1, Math.max(0, Number(parsed.confidence) || 0.5)),
-      reasoning: String(parsed.reasoning || ''),
+      reasoning: found ? String(parsed.reasoning || '') : `Scoring error: unparseable classification "${raw}"`,
     };
   } catch (err) {
     return {

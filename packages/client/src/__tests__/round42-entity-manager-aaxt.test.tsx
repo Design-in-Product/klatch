@@ -74,7 +74,8 @@ type Classification =
   | 'Confabulated'
   | 'Absent'
   | 'Phantom'
-  | 'Subliminal';
+  | 'Subliminal'
+  | 'Unscored';
 
 interface Probe {
   id: string;
@@ -249,14 +250,13 @@ Return JSON: {"classification": "...", "confidence": 0.0-1.0, "reasoning": "..."
     const parsed = extractJson(response);
     const valid: Classification[] = ['Correct', 'Reconstructed', 'Confabulated', 'Absent', 'Phantom', 'Subliminal'];
     const raw = String(parsed.classification || '').trim();
-    const classification =
+    const found =
       valid.find((c) => c.toLowerCase() === raw.toLowerCase()) ||
-      valid.find((c) => raw.toUpperCase().startsWith(c.toUpperCase())) ||
-      'Absent';
+      valid.find((c) => raw.toUpperCase().startsWith(c.toUpperCase()));
     return {
-      classification,
+      classification: found ?? 'Unscored',
       confidence: Math.min(1, Math.max(0, Number(parsed.confidence) || 0.5)),
-      reasoning: String(parsed.reasoning || ''),
+      reasoning: found ? String(parsed.reasoning || '') : `Scoring error: unparseable classification "${raw}"`,
     };
   } catch (err) {
     return {

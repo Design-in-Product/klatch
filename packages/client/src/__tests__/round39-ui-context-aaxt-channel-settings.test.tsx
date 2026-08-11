@@ -56,7 +56,7 @@ const describeIfEnabled = ENABLED ? describe : describe.skip;
 
 // ── Types ────────────────────────────────────────────────────
 
-type Classification = 'Correct' | 'Reconstructed' | 'Confabulated' | 'Absent' | 'Phantom' | 'Subliminal';
+type Classification = 'Correct' | 'Reconstructed' | 'Confabulated' | 'Absent' | 'Phantom' | 'Subliminal' | 'Unscored';
 
 interface Probe {
   id: string;
@@ -225,11 +225,12 @@ Return JSON: {"classification": "...", "confidence": 0.0-1.0, "reasoning": "..."
     const response = await queryAuxiliary(systemPrompt, userPrompt);
     const parsed = extractJson(response);
     const valid: Classification[] = ['Correct', 'Reconstructed', 'Confabulated', 'Absent', 'Phantom', 'Subliminal'];
-    const classification = valid.find((c) => c.toLowerCase() === String(parsed.classification || '').toLowerCase()) || 'Absent';
+    const raw = String(parsed.classification || '');
+    const found = valid.find((c) => c.toLowerCase() === raw.toLowerCase());
     return {
-      classification,
+      classification: found ?? 'Unscored',
       confidence: Math.min(1, Math.max(0, Number(parsed.confidence) || 0.5)),
-      reasoning: String(parsed.reasoning || ''),
+      reasoning: found ? String(parsed.reasoning || '') : `Scoring error: unparseable classification "${raw}"`,
     };
   } catch (err) {
     return {

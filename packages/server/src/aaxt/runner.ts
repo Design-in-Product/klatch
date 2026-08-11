@@ -35,6 +35,7 @@ export interface LayerResult {
   absent: number;
   phantom: number;
   subliminal: number;
+  unscored: number;
 }
 
 export interface AAXTRunResult {
@@ -48,6 +49,7 @@ export interface AAXTRunResult {
     totalScored: number;
     phantomCount: number;
     subliminalCount: number;
+    unscoredCount: number;
     overallFidelity: 'high' | 'medium' | 'low' | 'failed';
   };
 }
@@ -122,6 +124,7 @@ export async function runAAXT(
       Absent: 0,
       Phantom: 0,
       Subliminal: 0,
+      Unscored: 0,
     };
 
     for (const probe of layerProbes.probes) {
@@ -181,6 +184,7 @@ export async function runAAXT(
       absent: counts.Absent,
       phantom: counts.Phantom,
       subliminal: counts.Subliminal,
+      unscored: counts.Unscored,
     });
   }
 
@@ -189,10 +193,15 @@ export async function runAAXT(
   const totalScored = layerResults.reduce((sum, l) => sum + l.results.length, 0);
   const phantomCount = layerResults.reduce((sum, l) => sum + l.phantom, 0);
   const subliminalCount = layerResults.reduce((sum, l) => sum + l.subliminal, 0);
+  const unscoredCount = layerResults.reduce((sum, l) => sum + l.unscored, 0);
   const correctCount = layerResults.reduce((sum, l) => sum + l.correct + l.reconstructed, 0);
 
   let overallFidelity: 'high' | 'medium' | 'low' | 'failed';
   if (phantomCount > 0) {
+    overallFidelity = 'failed';
+  } else if (totalScored > 0 && unscoredCount === totalScored) {
+    // Every probe hit an instrument fault (probe/judge error, or an
+    // unparseable judge classification) — not a behavioral reading at all.
     overallFidelity = 'failed';
   } else if (totalScored === 0) {
     overallFidelity = 'low';
@@ -215,6 +224,7 @@ export async function runAAXT(
       totalScored,
       phantomCount,
       subliminalCount,
+      unscoredCount,
       overallFidelity,
     },
   };
