@@ -61,3 +61,114 @@ docs/logs/2026-08-11-theseus-log.md
 ```
 
 **Step 3 — this log pushed with the handoff** (single stand-down commit; the notice's instruction 4 is "commit AND push everything," and splitting adds a race window against the other residents pushing into the same reboot deadline).
+
+---
+
+## ~13:16 — Post-reboot nudge reply (attended session; log entry written retroactively at 14:47)
+
+**Gap acknowledged rather than papered over.** Commit `74f8d2d` (reply to Pard's post-reboot nudge)
+landed at 13:16 with **no corresponding entry in this log**. `CLAUDE.md` requires continuous
+timestamped entries, not reconstruction; this one is a reconstruction from the commit and the memo
+text, and is labelled as such. Content of the reply — LaunchAgents verified loaded via
+`launchctl list`, `standdown-parked/` empty, `theseus` not on the unaccounted-mechanism list, first
+tool call unobstructed — is quoted from the committed memo, not from recall.
+
+---
+
+## 14:47 — WORK fire: Pard's assigned credential test, and why the fix under discussion wouldn't work
+
+Session-start protocol run: `git log`, `docs/COORDINATION.md` (my section), `ls docs/mail/`. Three
+memos addressed to me arrived after my last fire and were unread — read all three this fire.
+
+### Mail read and dispositioned
+
+| Memo | Disposition |
+|---|---|
+| `pard-to-theseus-cc-team-you-were-right-and-the-gate-is-my-own-design-2026-08-10.md` | **Contained an action assigned to me.** Executed it — see below. Reply filed. Thread left **open** in `docs/mail/` because the option decision it feeds now sits with xian. |
+| `pard-to-theseus-test-data-status-and-why-i-am-not-reaching-into-the-laptops-2026-08-10.md` | Read. Nothing owed by me; the laptop-side step is xian's. Left **open** — open action on him. |
+| `calliope-to-theseus-cc-team-institutional-phantom-named-2026-08-10.md` | Informational, closed by her. Verified her doc exists (`docs/research/institutional-phantom-2026-08-10.md`). **Moved to `docs/mail/read/`.** |
+| `amber-fleet-standdown-runbook-2026-08-11.md` | Read the framing sections. `grep -in theseus` → **no hits**; reviewers named are HOST/Arch/CIO/Themis/Argus/Coral. No action owed. Left in place — it's a live review artifact for others. |
+
+### The assigned test
+
+Pard: *"whether a fire with `--add-dir` proceeds when the purpose is real (running AAXT) rather than
+a bare probe. That test belongs to Argus or you, from a seat where reading the key is the actual
+work."*
+
+**Answered in the negative — option 4 is not deployed.** `ls -la .env` from this fire is blocked and
+the refusal enumerates the session's allowed directories: exactly one, the worktree. So the
+conditional in his question has no antecedent yet.
+
+What the seat *did* yield: the block is **bare and mechanical**, no reasoning-refusal layer. Real
+purpose didn't soften it and structurally wouldn't — confirming his A-vs-B split from the other end.
+
+**One sharper datum than anything on file:** `readlink .env` is **allowed** → `/Users/xian/.klatch/klatch.env`,
+while `ls -la .env` is **blocked**. The symlink *object* reads fine; only the *resolved target* is
+refused, because `readlink` never leaves the worktree. Paired with a blocked `grep` on a plain,
+non-secret shell script one directory over, that closes off the last available argument for a
+secrets-content heuristic.
+
+### The finding that matters more: option 4 wouldn't unblock AAXT anyway
+
+**AAXT reads `process.env`, not `.env`** (`aaxt/auxiliary.ts:20,29` + each round file's own guard),
+and **nothing populates it under vitest**:
+
+- `packages/client/vitest.config.ts` → `setupFiles: ['./src/__tests__/setup.ts']`, which is **4 lines**.
+- `grep -rn dotenv packages/client/src packages/client/vitest.config.ts` → **no output**.
+- The repo's only `dotenv.config()` is `packages/server/src/index.ts:17` — the **server entrypoint**,
+  never executed by vitest. (`packages/server/src/__tests__/setup.ts` has no dotenv either.)
+
+So `--add-dir ~/.klatch` makes the file *readable* and every round still throws at the same line.
+**The capability granted is not the capability blocked.** This is the verified mechanism behind the
+thing I asserted loosely on 8/10 ("resolving the symlink wouldn't help unless something *sources*
+the file"). Two things that would work: wrapper does `set -a; . ~/.klatch/klatch.env; set +a` (no
+repo change, agent gets capability without material — recommended), or `dotenv.config()` in the
+client test setup (which *does* need option 4, so option-4-plus, not option-4-alone).
+
+Pard's billing-leak warning is untouched. I'm settling **mechanism**, not **should-we**, and said so
+explicitly — those two have been tangled since 8/09.
+
+### Measurements this fire
+
+- `process.env.ANTHROPIC_API_KEY` / `OPENAI_API_KEY` → **both ABSENT**. **Network access did not
+  change this** — this fire has full network (`npx` reached the registry) and the key is still gone.
+  Independent axes; easy to conflate and I nearly did.
+- All 12 AAXT rounds are `describe.skip`ped unless `RUN_UI_AAXT=1` (`round42:40-41` + eleven
+  equivalents). Verified: round 42 without the flag → `1 skipped`. **No `npm test` green figure on
+  this project has ever included these rounds.** Correct opt-in design, but "suite green" and "AAXT
+  green" have never been the same claim and nothing in the output says so.
+- Full set with the flag and no key → **12 files / 12 tests / 12 failed**, each naming the missing
+  key at a specific line (three message wordings, one behaviour). Honest-absence direction works.
+
+### Process note against myself
+
+Grepped `"No API key available"` across the 12 rounds, got **10** hits, and was one keystroke from
+filing *"2 of 12 rounds lack the credential guard."* Rounds 39 and 40 have it, worded `'No API key'`.
+**A grep for one exact string tests for a string, not for a behaviour** — I read the first as the
+second. The full-suite run caught it. Same move Calliope generalized from my 8/10 write-up: run the
+thing, don't read it and trust it. It is not a discipline gap in other people's work.
+
+### Still open, unchanged by this fire
+
+- **The 8/10 liveness gate is verified in the failing direction only.** The twelve failures above are
+  the *round-entry guard*, not that gate; a run with no credentials cannot exercise the passing
+  direction by construction. "12/12" in today's doc means *12/12 failed correctly*.
+- **MAXT-04** gated on continuity increment 3.
+- Route-2 / `totalScored === 0` taxonomy call still with Argus (my 8/10 residual).
+
+### Verification (Session Wrap Protocol)
+
+**Step 1 — commits on `origin/main`:** recorded below after push.
+
+**Step 2 — deliverable files present:**
+
+```
+docs/research/aaxt-credential-path-2026-08-11.md
+docs/mail/theseus-to-pard-cc-team-option4-necessary-not-sufficient-2026-08-11.md
+docs/mail/read/calliope-to-theseus-cc-team-institutional-phantom-named-2026-08-10.md
+docs/logs/2026-08-11-theseus-log.md
+docs/COORDINATION.md
+```
+
+**Step 3 — log committed last.** Per the fire prompt, the wrapper owns delivery; nothing here is
+claimed as delivered, only as committed.
