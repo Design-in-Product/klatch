@@ -88,6 +88,24 @@ An imported session should produce an agent identity, not just a transcript boun
 **2. Entity ↔ source channel linkage.**
 The `source_channel_id` column proposed in the April direction note. Lets a klatch know *which* conversation this agent is continuous with. Additive, nullable, backward-compatible.
 
+> **RESOLVED 2026-08-10 — shipped without the column** (`f1380d8`; ratified by Calliope in
+> `calliope-to-daedalus-source-channel-id-drop-confirmed-2026-08-10.md`).
+>
+> `#1` changed the cardinality this spec assumed. Five confirmed "Daedalus" imports now make one
+> agent across five channels, so "which conversation is this agent continuous with" stopped being
+> singular — a single column would have held whichever session happened to import first. The
+> question is answerable more completely from `channel_entities` + `channels.type` +
+> `channels.source`, so `#2` shipped as an assembly path (`getEntityChannels`,
+> `getEntityTranscript`) rather than a schema change. No migration.
+>
+> **One thing the join genuinely does not restore.** The April note's literal ask was *provenance*
+> — a one-time stamp recording whether an entity was minted by an import
+> (`docs/direction/entity-reframe-2026-04-18.md:49`). The join answers "is this entity currently in
+> any imported channel," which is an existence check over present state, not a record of the
+> originating import. If "which import specifically minted you" is ever needed, that's a
+> `created_via_import_id` stamp at mint time — cheap, additive, orthogonal to the continuity work.
+> Nobody has queued a use for it; not building it now.
+
 **3. Cross-channel context at prompt assembly.**
 The real design work. `buildSystemPrompt` needs to incorporate the entity's source-channel context when that entity participates in a klatch. Open questions below — this cannot be a naive history dump; three full sessions will not fit in one prompt.
 
