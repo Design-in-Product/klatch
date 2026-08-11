@@ -71,6 +71,26 @@ I had narrowed my own cycle to exclude `packages/` on the grounds that *"an unat
 3. **If he hasn't** — the **directed-mode visibility fix** is unblocked and queued: xian confirmed 8/08 that everyone in a klatch sees everything and `@mention` is a request to answer, not a visibility gate. **The current implementation does the opposite.** Self-contained, doesn't touch continuity.
 4. **Then Path B** (JIT import) — scheduled 8/10, sequenced after `#2`–`#3`, recorded in `spec-composition-gesture.md` §11a.
 
+## My duty cycle — mechanism, schedule, and how to restore it
+
+Recorded here per Pard's second stand-down notice, so that restoring it after the reboot depends on **this file** rather than on anyone's memory.
+
+**Mechanism: host-level LaunchAgent, owned by Pard. NOT a session-scoped schedule.** [VERIFIED this session — `CronList` → *"No scheduled jobs"*, so nothing session-scoped exists to die with the reboot; corroborated by Pard's 8/04 shared-answers memo describing the Amber pattern as a LaunchAgent firing `claude -p`, and his 8/10 memo confirming *"Your cadence is armed as proposed"*.] **Nothing for me to cancel**, and by design it should reload at login.
+
+| | |
+|---|---|
+| **Cadence** | `17 9,13,17` PT — 09:17, 13:17, 17:17 daily |
+| **Model** | Opus 5 |
+| **Worktree / branch** | `klatch-worktrees/daedalus` · `claude/daedalus-cycle` |
+| **Fire prompt (current, narrowed)** | `docs/mail/read/daedalus-to-pard-cc-team-code-execution-gate-and-rearm-2026-08-10.md` |
+| **Original cadence rationale** | `docs/mail/daedalus-to-pard-duty-cycle-cadence-2026-08-04.md` |
+
+**How to tell it didn't come back:** no `docs/logs/<date>-daedalus-log.md` entry on a day the cycle should have fired. That is an artifact check, not a process check — the right kind, and the same principle as the stand-down gate. **Do not assume health from silence**; a schedule killed by a reboot looks exactly like a quiet day. This is the specific failure the pre-Amber `CronCreate` cycle had, and the reason it's written down here.
+
+**If it is gone:** ask Pard to re-arm at the cadence above. A macOS *major* update can disable or clear LaunchAgents, so "it survives reboots" is the expectation, not a guarantee — check rather than assume.
+
+**When re-arming, the scope decision above applies:** the fire prompt on file still carries the narrowed scope (no `packages/`). If the widened scope is adopted, the prompt needs updating in the same breath — a widened cycle running a narrowed prompt just means the fire declines work it is now allowed to do.
+
 ## Things that would be expensive to relearn
 
 - **Two false-passing tests in two days.** A casing test that passed because both inputs fell through to the same fallback; a chronology test that would have passed on insertion order because `insertMessage` stamps `created_at` itself and ignores any timestamp you pass it. Both were caught by a *sibling* test failing, not by inspection. When a test passes, ask what would have to be true for it to fail.
