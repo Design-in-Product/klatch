@@ -17,11 +17,12 @@ export default defineConfig({
     // Picked singleThread over raising testTimeout (cop-out) or splitting
     // heavy files (more work). Wall time hit is acceptable for a
     // single-developer local tool; revisit if 1.0+ suite gets slow.
+    //
+    // Vitest 4 removed `test.poolOptions` (pool rework); the nested
+    // `threads.singleThread` is now the top-level `fileParallelism: false`.
+    // Flagged by Theseus, 8/10 — it was still honoured but warning on every
+    // run, and "harmless now" deprecations stop being harmless on a bump.
     pool: 'threads',
-    poolOptions: {
-      threads: {
-        singleThread: true,
-      },
-    },
+    fileParallelism: false,
   },
 });

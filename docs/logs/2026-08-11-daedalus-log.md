@@ -55,3 +55,59 @@ Pard's `cronpark-daedalus.txt`: two required outcomes — no fire between now an
 **But "nothing to cancel" did not satisfy outcome 2.** My handoff did not record the schedule anywhere — `grep` for the cadence returned only an unrelated line. That is precisely the gap the notice exists to close, so the LaunchAgent branch's "just say so" was not sufficient in my case. Added a duty-cycle section to the handoff: mechanism, cadence (`17 9,13,17` PT, Opus 5), worktree/branch, both fire-prompt memo paths, how to detect it didn't come back (absence of a dated log entry — artifact check, not process check), and the note that a macOS major update can clear LaunchAgents so survival is an expectation rather than a guarantee.
 
 **One gap I can't close from my seat, flagged to Pard:** outcome 1 is "no scheduled fire arrives between now and the reboot." A surviving LaunchAgent keeps firing until the machine goes down. The reboot was slated ~07:30 PT and it is now past that; my next fire is **09:17 PT**. If the reboot slips past it, a fire arrives and does work my handoff doesn't cover — which is the exact thing outcome 1 guards against. The LaunchAgent is Pard's and not mine to disarm, and the notice doesn't ask me to touch it, so this is a flag rather than an action.
+
+## 13:20 PT — Post-reboot notice (attended session), and a live collision with my own fire
+
+xian directed me to read and follow `mediajunkie/docs/notices/post-reboot-nudge-2026-08-11.md`.
+
+**Verified, not recalled:** 15 Klatch plists present in `~/Library/LaunchAgents`, 15 loaded in
+`launchctl list`, `CronList` → "No scheduled jobs". My three schedules read out of the plists —
+START 09:17, WORK 13:17, STOP 17:17 — match the cadence I recorded in
+`docs/handoff-daedalus-2026-08-11.md` yesterday. The stand-down write-down survived its first
+real test. Nothing to re-arm.
+
+**Substrate re-verified after the restart** (handoff's first post-reboot action):
+`npm test` exit 0 — 1153 server (67 files) / 212 client, 13 skipped; `npm run build` exit 0.
+The green build survived its first reboot.
+
+### The collision — worth more than the notice reply
+
+My 13:17 WORK fire had **already replied** to this notice (`c3d8062`) and was **still running**
+(`23141 0 com.klatch.daedalus-WORK`) while I worked. Not knowing that, I wrote my own reply
+straight over its file. Recovered via `git checkout HEAD --` only because the fire had committed
+first; thirty seconds earlier and the reply would have been gone without a trace.
+
+Two Daedalus processes, one worktree, one branch, no mutual awareness — and **asymmetric**: I can
+see the fire in `launchctl`, it cannot see me. This is Pard's risk #1 from the persistent-session
+memo, observed live rather than predicted. Kept both: the fire's reply stands as filed, mine
+appended as a marked addendum.
+
+**Lesson for this seat:** in an attended session during cycle hours, check `launchctl list` for a
+running fire *before* writing files. Cheap, and I did not think to do it.
+
+### Theseus's build thread — closed, including the part nobody had done
+
+Ask 1 (App.tsx/React 19 `useRef`) and ask 2 (typecheck wired into root `npm test`) were both
+already landed. The third flag was not, and it was not cosmetic:
+
+`test.poolOptions` was **removed** in Vitest 4, not merely renamed. That block was what pinned
+client tests to serial execution (Argus's 5/11 flake fix, ~8% across ~14 React/jsdom tests), so it
+had been silently doing nothing since the Vitest 4 bump. Evidence it was actually off: client
+suite `Duration 7.50s` against `environment 16.21s` — parts exceeding the whole, only possible
+across workers. After migrating to top-level `fileParallelism: false`: `19.42s`, parts summing to
+the whole, no deprecation line, same 212 passing.
+
+So the suite had reverted to the exact parallelism that caused the flakes, while a config comment
+described the serialization protecting us. Same pattern as the four runbook defects Pard names in
+§12 — described rather than run. Thread moved to `docs/mail/read/` (3 files).
+
+### Runbook read (item 4)
+
+§12/§12b/§4.1/§8.5. Notable: **the reboot did not install 26.6** — Amber came back on 26.5.2, the
+update still staged. My handoff header says "macOS 26.6 reboot", which is now a wrong fact about
+why the morning happened; flagged in the reply rather than silently edited.
+
+Also sharpened the fire's finding: the state-file and `mediajunkie` paths it could not read are
+readable from this attended session. The restriction is **session scope, not repo permission** — a
+worktree-scoped fire has a narrower allowed-directory set than an attended session in the same
+worktree. Channels outside the repo are invisible to fires specifically.
