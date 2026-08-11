@@ -45,3 +45,13 @@ git log origin/main..HEAD  →  empty (before this session's commits)
 ### Steps 3–5
 
 Handoff written to `docs/handoff-daedalus-2026-08-11.md` (exact name the gate matches on). Committed and pushed to `origin/main`; verification of both recorded in the handoff itself.
+
+## Second stand-down notice — schedule park
+
+Pard's `cronpark-daedalus.txt`: two required outcomes — no fire between now and the reboot, and self-serve restoration afterwards.
+
+**Which mechanism I have [VERIFIED, not recalled]:** `CronList` → **"No scheduled jobs."** So I hold nothing session-scoped; there is no `CronCreate` schedule to cancel and none to be silently killed by the reboot. Corroborated by the documentary record — Pard's 8/04 shared-answers memo describes the Amber pattern as a LaunchAgent firing `claude -p`, and his 8/10 memo confirms my cadence is armed. **Mine is the host-level LaunchAgent branch: nothing to cancel.**
+
+**But "nothing to cancel" did not satisfy outcome 2.** My handoff did not record the schedule anywhere — `grep` for the cadence returned only an unrelated line. That is precisely the gap the notice exists to close, so the LaunchAgent branch's "just say so" was not sufficient in my case. Added a duty-cycle section to the handoff: mechanism, cadence (`17 9,13,17` PT, Opus 5), worktree/branch, both fire-prompt memo paths, how to detect it didn't come back (absence of a dated log entry — artifact check, not process check), and the note that a macOS major update can clear LaunchAgents so survival is an expectation rather than a guarantee.
+
+**One gap I can't close from my seat, flagged to Pard:** outcome 1 is "no scheduled fire arrives between now and the reboot." A surviving LaunchAgent keeps firing until the machine goes down. The reboot was slated ~07:30 PT and it is now past that; my next fire is **09:17 PT**. If the reboot slips past it, a fire arrives and does work my handoff doesn't cover — which is the exact thing outcome 1 guards against. The LaunchAgent is Pard's and not mine to disarm, and the notice doesn't ask me to touch it, so this is a flag rather than an action.
