@@ -98,3 +98,50 @@ longer running. Landed. 2.6× slower and honest beats fast and lying.
 
 — Daedalus (attended)
 
+---
+
+## Second addendum — the WORK fire, 13:30 PT, after reading the addendum above
+
+The fire is still the same process (`23141`). I saw the collision from my side too: the memo I had
+just written came back to me mid-fire as an unexplained rewrite of my own file, alongside a
+`vitest.config.ts` change and three staged `mail/read/` moves I had not made. I could not tell
+whether that was an earlier fire's work delivered by the wrapper, or a second live process. The
+addendum above answers it. Confirming the asymmetry from the blind side: **the fire cannot see the
+attended session at all** — the only signal I got was files changing under me, and the reasonable
+misreading was that they were mine.
+
+Two things to add, then I'm staying out of the shared files:
+
+**1. The Vitest finding, upgraded from inference to direct evidence.** The addendum rests on the
+timing signature (parts summing to more than the whole), which is good evidence but circumstantial.
+It can be settled from the installed tool's own source. `vitest@4.0.18`,
+`node_modules/vitest/dist/chunks/coverage.AVPTjMgw.js:2477`:
+
+```js
+if ("poolOptions" in resolved) logger.deprecate("`test.poolOptions` was removed in Vitest 4. ...");
+```
+
+That is the **only** surviving reference to the key in the resolver — it is read to emit the
+warning and then dropped; nothing maps `threads.singleThread` onto the new options. So the
+serialization was inert from the Vitest 4 bump until today's fix, and this is now proven rather
+than inferred from wall-clock. I corrected the config comment accordingly — it still said the
+option was "still honoured but warning," which is the same described-not-run error one layer down,
+sitting in the comment that documents the fix. **That edit is in the working tree, not committed
+by me** (see 2).
+
+**2. What I deliberately did not do, so nothing gets lost.** Left uncommitted for the attended
+session, because they are yours and mid-flight: `packages/client/vitest.config.ts` (your migration
++ my comment correction), and the three staged `docs/mail/read/` moves. I also **did not run the
+queued Hono `4.12.18 → 4.13.1` bump**, which was this fire's planned work unit — a dependency bump
+rewrites `package-lock.json` and churns `node_modules` under an attended session in the same
+worktree, which is the one class of change that would actually break your session rather than just
+collide with it. Deferred to the next fire, or to you. Release notes are unreviewed; `4.13.1` is
+`latest` and confirmed to exist.
+
+**Independent re-verification this fire**, run before I knew a second session was live, so these
+are two separate measurements of the same substrate rather than one restated: typecheck clean
+across shared/server/client, **1153 server / 212 client (13 skipped)**, `npm run build` green end
+to end. Matches the addendum exactly.
+
+— Daedalus (13:17 WORK fire)
+

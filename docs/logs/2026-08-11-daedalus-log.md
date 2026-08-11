@@ -111,3 +111,89 @@ Also sharpened the fire's finding: the state-file and `mediajunkie` paths it cou
 readable from this attended session. The restriction is **session scope, not repo permission** — a
 worktree-scoped fire has a narrower allowed-directory set than an attended session in the same
 worktree. Channels outside the repo are invisible to fires specifically.
+
+## 13:17 PT — WORK fire (unattended), running concurrently with the attended session above
+
+This entry is written by the `com.klatch.daedalus-WORK` fire (pid `23141`), the same process the
+attended addendum reports as "still executing." Recorded from the blind side of that collision.
+
+### Briefing
+
+Pulled/verified: `docs/COORDINATION.md`, `docs/mail/` (61 entries), today's log. Argus's and
+Calliope's replies to Pard's post-reboot notice had landed 1–2 minutes before the fire started
+(`6f030ff`, `5e81b78`), so the notice was reconstructed from those. `docs/notices/` does not exist
+in this repo (`ls` → exit 1) and `~/.local/state/amber-agent/` was refused by the working-directory
+sandbox, so the fire never saw the original.
+
+### Mail — replied and pushed
+
+`docs/mail/daedalus-to-pard-post-reboot-nudge-reply-2026-08-11.md`, answering items 1–4. Committed
+`c3d8062`, pushed to `main` as `b5b8fa8` (merge of `74f8d2d` first — Theseus's reply had landed in
+between). Per worktree mail discipline: separate commit, straight to `main`.
+
+Answers: **(1)** LaunchAgent, `daedalus-{START,WORK,STOP}` all present in `launchctl list`, `WORK`
+holding a live pid because it is this fire; `CronList` → "No scheduled jobs", so nothing
+session-scoped was at risk in the reboot. **(2)** Klatch/LaunchAgent seat, not one of the
+unaccounted. **(3)** No prompt, no stall on first call; two *later* calls refused by the
+directory sandbox. **(4)** Runbook not readable from this seat — reported as second-hand rather
+than claimed as read.
+
+### The collision, from the side that couldn't see it
+
+Mid-fire, my own memo came back as an unexplained rewrite, alongside a `vitest.config.ts` change
+and three staged `mail/read/` moves I had not made. **From inside the fire this is
+indistinguishable** from the wrapper's uncommitted-work backstop delivering an earlier fire's
+output. I treated it as unverified and started checking it rather than committing it, which was the
+right instinct for the wrong reason — I thought I was auditing my own past work, not someone
+else's live work. The attended addendum resolved it. Concretely: `launchctl` makes the fire visible
+to the attended session; nothing makes the attended session visible to the fire. **The only signal
+available to a fire is files changing underneath it, and the natural misreading is that they are
+its own.** Directly relevant to the persistent-session design — the collision cost is real, and
+one-directional.
+
+### Verification run (independent of the attended session's, and before I knew of it)
+
+```
+npm run typecheck        →  clean, shared + server + client
+npm run test -w server   →  67 files / 1153 passed
+npm test (root, full)    →  1153 server / 212 client, 13 skipped, exit 0
+npm run build            →  green end to end
+client suite Duration    →  19.98s, environment 7.85s (parts ≤ whole → serial, as intended)
+```
+
+Matches the attended figures exactly. Two independent measurements of the same substrate, not one
+restated.
+
+### One thing this fire added: the Vitest finding, proven rather than inferred
+
+The attended entry rests on the timing signature. That's good circumstantial evidence; the tool's
+own source settles it. `vitest@4.0.18`,
+`node_modules/vitest/dist/chunks/coverage.AVPTjMgw.js:2477` — the sole surviving reference to the
+key is `logger.deprecate("test.poolOptions was removed in Vitest 4 ...")`. Read to warn, then
+dropped; nothing maps `threads.singleThread` onto the new options. So the serialization was inert
+from the Vitest 4 bump until today.
+
+Consequence: the config comment shipped with the fix said the option was "still honoured but
+warning on every run." It was not honoured. **Corrected in the working tree** — that is the same
+described-not-run error one layer down, sitting in the comment documenting the fix for it.
+
+### Deliberately not done, so it isn't mistaken for finished
+
+- **Hono `4.12.18 → 4.13.1`** — this fire's planned work unit (COORDINATION "Queued next").
+  `4.13.1` confirmed `latest` on the registry; 16 patches + one minor since ours; **release notes
+  unreviewed, nothing installed, `package-lock.json` untouched.** Skipped on purpose: a dependency
+  bump rewrites the lockfile and churns `node_modules` under a live attended session in the same
+  worktree — the one class of change that breaks a concurrent session rather than merely colliding
+  with it. Carries to the next fire.
+- **Not committed by this fire:** `packages/client/vitest.config.ts` (attended migration + my
+  comment correction) and the three staged `docs/mail/read/` moves. They belong to the attended
+  session; committing them under this fire's identity would misattribute them. Named here and in
+  the memo so they can't be lost by being unowned.
+- Plist `StartCalendarInterval` times are **not** verified by this fire — `PlistBuddy` against
+  `~/Library/LaunchAgents/` was refused. They stand on the attended session's read. What this fire
+  confirms independently: 15 klatch jobs loaded, per-seat `argus 3 · calliope 4 · daedalus 3 ·
+  iris 2 · theseus 3`.
+
+### Wrap verification
+
+Commits and push output pasted in the section below, per the Session Wrap Protocol.
