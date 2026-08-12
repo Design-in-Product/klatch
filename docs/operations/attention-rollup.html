@@ -216,7 +216,7 @@
 <body>
 
 <h1>Klatch Attention Rollup</h1>
-<div class="subtitle">v27 · the document xian skims to know what asks of him first</div>
+<div class="subtitle">v28 · the document xian skims to know what asks of him first</div>
 
 <div class="preamble">
   <p><strong>Demand-organized, not topic-organized.</strong> The board's job is to track <em>changing demand on xian</em>, which topic-sorting ages badly. Sections sorted by what each item asks of him: 🔴 Needs you → 🟠 Blocked on others → 🟡 Lower-urgency → 🔵 In flight → 🟢 Resolved.</p>
@@ -224,7 +224,7 @@
   <p><strong>Trust-instrument discipline (Exec 6/19).</strong> Every render comes from a fresh verified sweep of source docs, never from Calliope's memory. A false "all clear" is a trust breach, not untidiness. "Quiet" must mean <em>verified-clear</em>, not <em>haven't-checked</em>.</p>
 </div>
 
-<div class="last-refreshed">Last refreshed: 2026-08-11 ~12:30 PT (Calliope) — v27. Canonical current copy is the <code>.md</code> (consumed by Janus's federated rollup); this render syncs the mirror to v27 content, one version behind since 8/10 21:30 (flagged as owed debt at that render, closed now — no substantive change underneath, the reboot stand-down mechanics produced no new decision-relevant content).</div>
+<div class="last-refreshed">Last refreshed: 2026-08-11 ~17:00 PT (Calliope) — v28. The <code>.env</code> gate's option list moved twice more, both by measurement: Theseus ran the credential test Pard assigned him and found the v27-favored option grants readability but not the capability AAXT actually needs — withdrawn same day. Separately, Pard finally measured his own week-old billing-leak warning and found it real; his fix scopes the export to the AAXT test subprocess instead of the agent's own process. Corrected 3-option list below.</div>
 
 <div class="metrics">
   <div class="metric needs-you">
@@ -278,19 +278,21 @@
   </div>
 
   <div class="item">
-    <h3>The <code>.env</code> / AAXT-credentials gate — option list narrowed to one likely pick, still yours to confirm</h3>
+    <h3>The <code>.env</code> / AAXT-credentials gate — three real options now, still yours</h3>
     <div class="meta">
       <span class="tag who-waiting">Waiting: Pard, Theseus</span>
-      <span class="tag date">Added 2026-08-10 · narrowed 2026-08-10 ~21:00 PT</span>
+      <span class="tag date">Added 2026-08-10 · corrected 2026-08-11 ~17:00 PT (twice)</span>
     </div>
     <div class="body">
       <p>A third execution-environment gate, distinct from the two Pard fixed 8/10. It blocks reading the <code>.env</code> file carrying <code>ANTHROPIC_API_KEY</code>, so AAXT (Theseus's live-model probing) stays parked even though execution and network are both genuinely fixed and verified.</p>
       <p>Argus found it, Pard reproduced it, Theseus corrected the mechanism (all 8/10): not a secrets-content heuristic — a decoy key written inside the worktree reads fine; <code>./.env</code> is a symlink to <code>~/.klatch/klatch.env</code>, outside the session's allowed working directory, and the directory sandbox blocks following the symlink out.</p>
-      <p><strong>New this render — Pard re-checked his own diagnosis and it moved the recommendation.</strong> His "independent confirmation" of the block was confounded (he'd tested a command needing approval on <em>command</em> grounds, unrelated to the path question, and mismatched it to Argus's finding). Re-ran cleanly and named the actual root cause: his own secrets layout — one canonical <code>~/.klatch/klatch.env</code> symlinked into six worktrees, "one rotation point, six consumers." The symlink is what leaves the sandbox; a real file per worktree never would have. Option 3 ("scope a permission to this worktree's <code>.env</code>") still doesn't describe a real object. Option 2 (host-side runner script) is <strong>not</strong> routing around a safety control after all, since the control is path scope, not a secrets guard — Pard is retracting that flag specifically.</p>
-      <p><strong>A fourth option now looks like the real answer:</strong> <code>--add-dir ~/.klatch</code> in the wrapper, granting path scope to a directory holding exactly one file. Untested — whether a fire with that grant proceeds when the purpose is real AAXT work is Argus's or Theseus's to try. The billing-leak concern is untouched by any of this.</p>
+      <p><strong>8/11 — v27's favored option withdrawn, on Theseus's own test.</strong> Pard assigned Theseus the credential test himself; Theseus ran it and found the option (<code>--add-dir ~/.klatch</code>) grants <em>readability</em> but not the <em>capability AAXT needs</em>: AAXT reads <code>process.env</code>, and nothing populates it under vitest — client <code>setup.ts</code> is 4 lines, no <code>dotenv</code>; the repo's only <code>dotenv.config()</code> is the server entrypoint vitest never executes. "The capability granted is not the capability blocked." Pard adopted the finding same day and withdrew the option. Also settled: <code>readlink .env</code> succeeds where <code>ls -la .env</code> doesn't — only the resolved target is blocked, closing the last argument for a secrets-content heuristic.</p>
+      <p><strong>8/11 — Pard measured his own long-standing billing-leak warning and it's real.</strong> He'd asserted all week, untested, that exporting the key into the wrapper before invoking the agent risks moving that fire's billing off xian's Max subscription onto the metered key. Measured today with a deliberately invalid key: <code>claude -p</code> itself reports the key "takes precedence over your claude.ai login." A wrapper-level export would be a silent billing diversion on every fire, all five seats, several times a day.</p>
+      <p><strong>His fix: scope the export to the subprocess, not the agent.</strong> A new <code>scripts/run-aaxt.sh</code>, invoked by the agent rather than the wrapper, exports the key only into the vitest subprocess it launches — <code>claude</code>'s own process never holds the key. Still routes around the path-scope control at a narrower point; Pard names that explicitly rather than treating it as a mere implementation detail.</p>
+      <p><strong>Corrected 3-option list, as sent to you:</strong> (1) AAXT stays attended-only. (2) <code>run-aaxt.sh</code> wrapper — narrowest, no code change, no billing exposure. (3) <code>--add-dir ~/.klatch</code> plus <code>dotenv.config()</code> in <code>setup.ts</code> — the code-change route, both parts required together.</p>
       <p>Standing fact for the decision: Theseus's AAXT liveness-gap fix (all 12 rounds now hard-fail on instrument failure, not just model failure) means whichever option you pick, a broken credential will show as broken, not as a clean pass.</p>
     </div>
-    <div class="recommended"><strong>Source:</strong> <code>pard-to-theseus-cc-team-you-were-right-and-the-gate-is-my-own-design-2026-08-10.md</code></div>
+    <div class="recommended"><strong>Source:</strong> <code>pard-to-theseus-cc-team-option1-is-the-billing-trap-scope-it-to-the-subprocess-2026-08-11.md</code></div>
   </div>
 </section>
 
@@ -342,15 +344,14 @@
   <p class="intro">Awareness, no action needed.</p>
 
   <div class="item">
-    <h3>Cohort status (Amber, verified 2026-08-10 ~21:30 PT)</h3>
+    <h3>Cohort status (Amber, verified 2026-08-11 ~17:00 PT — post-reboot day)</h3>
     <div class="body">
-      <p>All five migrated to Amber, structural per-worktree git identity, all five duty cycles armed at full scope.</p>
+      <p>All five survived the ~07:30 PT macOS 26.6 reboot; LaunchAgents confirmed re-armed by each seat from inside its own fire, no seat lost its schedule.</p>
       <ul>
-        <li><strong>Calliope</strong> — 21:30 STOP fire: rollup refreshed to v27; mail hygiene (8 stale 7/19-era threads closed to <code>read/</code>); named the "Institutional Phantom" pattern Theseus routed at 19:47.</li>
-        <li><strong>Argus</strong> — 09:00/13:30/18:00 Sonnet 5. 18:00 fire landed the <code>Unscored</code> taxonomy value across all 12 client AAXT rounds and the shared server pipeline (found the identical bug in production too, not just tests); fixed a silent-<code>NaN</code> risk in <code>runner.ts</code>'s counts initializer.</li>
-        <li><strong>Iris</strong> — 07:17/19:17 Sonnet 5. 19:17 fire recorded a new design principle ("presentation must not imply a guarantee the mechanism doesn't provide") and routed two AAXT residuals into the triage-patches backlog.</li>
-        <li><strong>Daedalus</strong> — 09:17/13:17/17:17 Opus 5. 17:17 fire found and fixed the client build being red since the initial commit (<code>packages/shared</code> never had a <code>build</code> script) — four production fixes including a live MCP crash on any entity with a <code>validUntil</code> reflection, typecheck now wired into <code>npm test</code> in all three workspaces.</li>
-        <li><strong>Theseus</strong> — 10:47/14:47/19:47 Opus 5. 19:47 fire independently verified the build repair green from his own seat, then found the AAXT liveness-gate fix still leaves two of three instrument-fault routes reading as legitimate results — residual below.</li>
+        <li><strong>Calliope</strong> — this fire (17:00 WORK). <code>.env</code> gate 🔴 refreshed to v28 (two corrections landed same day); no new mail addressed to Calliope this fire.</li>
+        <li><strong>Theseus</strong> — 14:47 fire ran the exact credential test Pard assigned him and found <code>--add-dir</code> alone wouldn't have unblocked AAXT — the finding driving this render's <code>.env</code> update. Also flagged: all 12 AAXT rounds are <code>describe.skip</code>'d without <code>RUN_UI_AAXT=1</code>, so no <code>npm test</code> green figure quoted on this project has ever included them.</li>
+        <li><strong>Daedalus</strong> — 13:17 fire re-verified the substrate post-reboot clean (1153 server / 212 client, build green) and proved from installed Vitest 4 source (not timing inference) that a client-test-parallelism fix had been silently inert since the Vitest 4 bump — fixed and landed. Separately: an attended session collided with the fire in the same worktree (the fire's just-written mail reply got overwritten, recovered only because the fire had already committed) — first concrete instance of the fire/live-session collision risk the reboot runbook only described.</li>
+        <li><strong>Argus, Iris</strong> — no new fires since the 8/10 21:30 render; nothing to update this pass.</li>
       </ul>
     </div>
   </div>
@@ -411,6 +412,7 @@
 <div class="changelog">
   <h3>Changelog</h3>
   <ul>
+    <li><strong>v28 (2026-08-11 ~17:00 PT, Calliope)</strong> — First render of the post-reboot day. <code>.env</code> gate 🔴 corrected twice by measurement: Theseus ran the exact credential test Pard assigned him and found v27's favored option (<code>--add-dir ~/.klatch</code>) grants readability but not the capability AAXT needs (it reads <code>process.env</code>; nothing loads dotenv under vitest) — Pard withdrew it same day. Separately, Pard measured his own week-old billing-leak warning and found it real (a bogus key demonstrably takes precedence over the Claude subscription); his fix scopes the export to the AAXT test subprocess (<code>scripts/run-aaxt.sh</code>) rather than the agent's own process. Corrected 3-option list now in the 🔴 item. Cohort rewritten for the reboot-survival day: all five LaunchAgents confirmed re-armed from inside their own fires; Daedalus proved (from installed Vitest 4 source) that a client-test-parallelism fix had been silently inert since the Vitest 4 bump, fixed it, and logged a live collision between an unattended fire and an attended session in the same worktree. No new mail addressed to Calliope this fire.</li>
     <li><strong>v27 (2026-08-10 ~21:30 PT, Calliope; HTML synced 2026-08-11)</strong> — Client build 🔵 item resolved: Daedalus's fix independently verified green from a second seat (Theseus, 19:47). New 🔵: a server AAXT gate residual — Theseus found Argus's <code>Unscored</code> fix leaves two of three instrument-fault routes still reading as legitimate results; routed to Argus, not blocking. The <code>.env</code> gate 🔴 narrowed sharply, not resolved: Pard traced the real cause to his own secrets layout (one canonical file, six symlinking worktrees) — a fourth option (<code>--add-dir ~/.klatch</code>) now looks like the likely pick, still untested. Named the <strong>Institutional Phantom</strong> pattern (three same-day instances of a comment asserting coverage nothing exercises). 🟡 count corrected 3→4 (the section has carried 4 items since 7/06; miscounted in v26).</li>
     <li><strong>v26 (2026-08-10 ~17:00 PT, Calliope)</strong> — Full rewrite to match the canonical <code>.md</code>, closing a 7-week mirror-drift debt (was v3/6-23). Two new 🔴 for xian: the <code>#3</code> compaction call (Daedalus's real corpus measurement — ~330K tokens for six department heads, excludes option (a) on arithmetic) and the <code>.env</code>/AAXT-credentials gate (Argus found it, Pard framed three options around a real billing-leak hazard, Theseus corrected the underlying mechanism). New 🔵: client build is red (Theseus, routed to Daedalus); cohort section rewritten to this render's actual content.</li>
     <li><strong>v3 (2026-06-23)</strong> — post-Pages-fix + Theseus-launch + blog-shipped banner sync only; content below the fold not kept current after this point.</li>

@@ -23,3 +23,13 @@ Pulled clean, confirmed the reboot stand-down landed correctly (own commits pres
 Mail hygiene: nothing to close this fire — the 8 threads closed at 21:30 were the live backlog, and nothing new landed to require another pass.
 
 **Verification:** `git log origin/main..HEAD` checked before push (below). Committing this log + COORDINATION.md + rollup HTML together.
+
+## WORK fire (17:00 PT)
+
+Pulled clean (`907859d` HEAD, nothing stranded). Swept mail — no new memo addressed to Calliope directly this fire, but two cc'd memos landed since 12:30 that bear on the standing `.env` gate 🔴 thread I track: Theseus ran the exact credential test Pard assigned him (`--add-dir ~/.klatch` grants readability but not the capability AAXT needs — it reads `process.env`, nothing loads dotenv under vitest) and Pard adopted the finding same day, withdrawing the option he'd favored last render. Separately Pard finally measured his own week-old billing-leak warning (real: a bogus key demonstrably takes precedence over the Claude subscription login) and proposed a subprocess-scoped fix (`scripts/run-aaxt.sh`) instead of a wrapper-level export. Also read Daedalus's long post-reboot-nudge reply (substrate re-verified post-reboot, Vitest 4 `poolOptions` proven inert from source not inference, and a first concrete instance of the fire/attended-session collision risk the reboot runbook only described) — informational for the cohort section, no action owed.
+
+**Work done:** rollup refreshed to **v28**, both `.md` and `.html` kept in sync in the same pass (no drift this time). Updated the `.env` gate 🔴 item with both of today's corrections and the new 3-option list; refreshed cohort status to today's post-reboot fires (Calliope/Theseus/Daedalus); changelog entry added. No mail hygiene needed — nothing addressed to Calliope closed or closable this fire; the option-1/option-4 thread stays open (action is Argus's/Theseus's to test the wrapper, then xian's to decide).
+
+No reply from xian yet on any of the three standing 🔴 threads (addressing/not-secrecy, `#3` compaction call, `.env` gate).
+
+**Verification:** `git log origin/main..HEAD` checked before push (below).
