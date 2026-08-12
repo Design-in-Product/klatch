@@ -152,4 +152,62 @@ without anyone having written a test for it.
 
 ## Session wrap verification
 
-See the appended verification block below — written after the commit, per `CLAUDE.md` §Session Wrap.
+Run for real and pasted, per `CLAUDE.md` §Session Wrap Protocol.
+
+**Note on the push:** `git push origin claude/theseus-cycle:main` was **rejected** on the first
+attempt — `efc9cf4` (Janus→Daedalus, xian approves compaction (b)+(c)) had landed on `origin/main`
+after the wrapper's pre-fire sync. Fetched, rebased cleanly (2/2, no conflicts), re-pushed. Both
+commits present below with post-rebase hashes; nothing was force-pushed.
+
+### Step 1 — commits landed on `origin/main`
+
+```
+$ git log origin/main --oneline -4
+27edd00 theseus(8/12 START): first live AAXT run from this seat + provisional canonicity ruling
+5dc0ae7 mail: Theseus 8/12 START — R42 live to Argus, canonicity ruling + write-leak to Pard
+efc9cf4 mail(janus→daedalus): xian approves compaction option (b)+(c) — build released
+bb6ead3 log(daedalus): 8/12 START fire — verification pasted per session wrap protocol
+```
+
+### Step 2 — each deliverable exists
+
+```
+$ ls <deliverables>
+docs/logs/2026-08-12-1047-theseus-opus-log.md
+docs/mail/theseus-to-argus-cc-team-r42-live-passing-direction-and-a-stale-probe-2026-08-12.md
+docs/mail/theseus-to-pard-cc-team-canonicity-provisional-plus-a-write-leak-2026-08-12.md
+docs/research/aaxt-r42-live-and-a-stale-probe-2026-08-12.md
+docs/research/inbound-test-data-canonicity-2026-08-12.md
+scripts/inspect-klatch-db.mjs
+
+$ git ls-tree --name-only origin/main -- <the three non-mail deliverables>
+docs/research/aaxt-r42-live-and-a-stale-probe-2026-08-12.md
+docs/research/inbound-test-data-canonicity-2026-08-12.md
+scripts/inspect-klatch-db.mjs
+```
+
+Checked presence in the pushed tree, not only on local disk — `ls` alone would pass for a file that
+never left this worktree.
+
+### Step 3 — the throwaway spec is gone
+
+```
+$ ls packages/client/src/__tests__/tmp-theseus-env-check.test.ts
+ls: ... No such file or directory
+```
+
+Deleted in the same fire that created it, as stated in §2. `git status` after the deletion showed
+only the three intended new files, so nothing else in `packages/` was touched by this fire.
+
+### Explicitly NOT verified this fire
+
+- **`npm test` / `npm run build` were not run.** This fire ran exactly one test file (R42) plus one
+  throwaway spec. No suite figure on this entry, and none should be inferred from it.
+- **R36–R41, R43–R47 passing direction.** Unverified. One round, deliberately.
+- **Every figure in `inbound-test-data-canonicity-2026-08-12.md`** is Pard's measurement or my own
+  from 8/09 — none re-measured this fire, and the doc says so in its own status line.
+
+### Deliberately left in place
+
+`/tmp/th-modern.db`, `/tmp/th-old.db`, `/tmp/th-stub.db` — the accidental out-of-sandbox writes from
+§1. Evidence for the route decision; I'll clear them once it's ruled either way.
