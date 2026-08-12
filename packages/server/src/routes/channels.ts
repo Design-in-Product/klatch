@@ -3,6 +3,7 @@ import fs from 'fs';
 import path from 'path';
 import { getAllChannelsEnriched, getChannel, getChannelStats, createChannel, updateChannel, deleteChannel, setChannelProject, getChannelEntities, getProjectForChannel, getChannelFiles, getProjectFiles, getEntity } from '../db/queries.js';
 import { buildSystemPrompt } from '../claude/client.js';
+import { buildCarriedContext } from '../claude/carried-context.js';
 import type { ModelId, InteractionMode, ChannelType } from '@klatch/shared';
 import { INTERACTION_MODES } from '@klatch/shared';
 import { isValidModel } from './models.js';
@@ -39,7 +40,8 @@ app.get('/channels/:id/prompt-debug', (c) => {
   const channelFileNames = channelFileList.map((f) => `- ${f.name} (${f.mimeType})`);
   const projectFileList = project ? getProjectFiles(project.id) : [];
   const projectFileNames = projectFileList.map((f) => `- ${f.name} (${f.mimeType})`);
-  const assembled = buildSystemPrompt(entity, channel.systemPrompt, channel, project, channelFileNames, projectFileNames);
+  const carriedContext = buildCarriedContext(entity, channel);
+  const assembled = buildSystemPrompt(entity, channel.systemPrompt, channel, project, channelFileNames, projectFileNames, { carriedContext });
 
   return c.json({
     channelId: id,
@@ -70,6 +72,11 @@ app.get('/channels/:id/prompt-debug', (c) => {
         return parts.length > 0 ? `ACTIVE — ${parts.join('; ')}` : 'EMPTY';
       })(),
       '5_entityPrompt': `"${entity.name}" — ${entity.systemPrompt?.length || 0} chars`,
+      '6_carriedContext': carriedContext
+        ? `ACTIVE — ${carriedContext.length} chars carried from "${entity.name}"'s other channels`
+        : channel.type === 'klatch'
+          ? `EMPTY — "${entity.name}" has no history in any other channel`
+          : 'INACTIVE — carried context applies to klatches only',
     },
     assembledPrompt: assembled,
     assembledLength: assembled.length,

@@ -71,6 +71,12 @@ export async function assembleChannelManifest(
     const projectFileNames = projectFiles.map((f) => `- ${f.name} (${f.mimeType})`);
     for (const entity of entities) {
       try {
+        // Layer 6 (carried context) is deliberately omitted here. It is
+        // runtime assembly for a live turn, and it contains verbatim content
+        // from channels *other* than the one being exported — including it
+        // would bake a second conversation's messages into this channel's
+        // exported package, which no export contract promises. The briefing is
+        // meant to summarize this channel; carried context is not part of it.
         const systemPrompt = buildSystemPrompt(
           entity,
           channel.systemPrompt,

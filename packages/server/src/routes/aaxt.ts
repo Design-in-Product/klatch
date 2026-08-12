@@ -8,6 +8,7 @@
 import { Hono } from 'hono';
 import { getChannel, getChannelEntities, getProjectForChannel, getChannelFiles, getProjectFiles } from '../db/queries.js';
 import { buildSystemPrompt } from '../claude/client.js';
+import { buildCarriedContext } from '../claude/carried-context.js';
 import { generateProbes } from '../aaxt/probe-generator.js';
 import { getAuxiliaryInfo } from '../aaxt/auxiliary.js';
 import { runAAXT } from '../aaxt/runner.js';
@@ -40,7 +41,12 @@ app.post('/channels/:id/aaxt-probe', async (c) => {
   const projectFileList = project ? getProjectFiles(project.id) : [];
   const projectFileNames = projectFileList.map((f) => `- ${f.name} (${f.mimeType})`);
 
-  const assembled = buildSystemPrompt(entity, channel.systemPrompt, channel, project, channelFileNames, projectFileNames);
+  // Layer 6 included deliberately: an AAXT probe measures what the *real*
+  // assembled prompt conveys, and carried context is part of that prompt. This
+  // is the observability property option (b) was chosen for — a probe can now
+  // distinguish "the agent wasn't given this" from "was given it and didn't use it".
+  const carriedContext = buildCarriedContext(entity, channel);
+  const assembled = buildSystemPrompt(entity, channel.systemPrompt, channel, project, channelFileNames, projectFileNames, { carriedContext });
 
   // Build prompt-debug equivalent inline
   const layers: Record<string, string> = {
@@ -67,6 +73,11 @@ app.post('/channels/:id/aaxt-probe', async (c) => {
       return parts.length > 0 ? `ACTIVE — ${parts.join('; ')}` : 'EMPTY';
     })(),
     '5_entityPrompt': `ACTIVE — "${entity.name}" (${entity.systemPrompt?.length || 0} chars)`,
+    '6_carriedContext': carriedContext
+      ? `ACTIVE — ${carriedContext.length} chars carried from "${entity.name}"'s other channels`
+      : channel.type === 'klatch'
+        ? `EMPTY — "${entity.name}" has no history in any other channel`
+        : 'INACTIVE — carried context applies to klatches only',
   };
 
   try {
@@ -113,7 +124,12 @@ app.post('/channels/:id/aaxt-run', async (c) => {
   const projectFileList = project ? getProjectFiles(project.id) : [];
   const projectFileNames = projectFileList.map((f) => `- ${f.name} (${f.mimeType})`);
 
-  const assembled = buildSystemPrompt(entity, channel.systemPrompt, channel, project, channelFileNames, projectFileNames);
+  // Layer 6 included deliberately: an AAXT probe measures what the *real*
+  // assembled prompt conveys, and carried context is part of that prompt. This
+  // is the observability property option (b) was chosen for — a probe can now
+  // distinguish "the agent wasn't given this" from "was given it and didn't use it".
+  const carriedContext = buildCarriedContext(entity, channel);
+  const assembled = buildSystemPrompt(entity, channel.systemPrompt, channel, project, channelFileNames, projectFileNames, { carriedContext });
 
   // Build prompt-debug layers (same as aaxt-probe)
   const layers: Record<string, string> = {
@@ -140,6 +156,11 @@ app.post('/channels/:id/aaxt-run', async (c) => {
       return parts.length > 0 ? `ACTIVE — ${parts.join('; ')}` : 'EMPTY';
     })(),
     '5_entityPrompt': `ACTIVE — "${entity.name}" (${entity.systemPrompt?.length || 0} chars)`,
+    '6_carriedContext': carriedContext
+      ? `ACTIVE — ${carriedContext.length} chars carried from "${entity.name}"'s other channels`
+      : channel.type === 'klatch'
+        ? `EMPTY — "${entity.name}" has no history in any other channel`
+        : 'INACTIVE — carried context applies to klatches only',
   };
 
   try {

@@ -4,6 +4,7 @@ import { getMessages, getChannel, updateMessage, updateChannelCompaction, getPro
 import type { Entity, Channel, Project, Message, MessageArtifact, MessageStopReason } from '@klatch/shared';
 import { DEFAULT_MODEL } from '@klatch/shared';
 import { readFile, isTextFile, isImageFile, saveFile } from '../files/storage.js';
+import { buildCarriedContext } from './carried-context.js';
 
 // Lazy-init: the Anthropic client must not be created at import time
 // because ESM hoists imports before dotenv.config() runs in index.ts.
@@ -406,17 +407,38 @@ const MAX_PROJECT_INSTRUCTIONS_CHARS = 32000;
 /** Max characters of project memory to inject into system prompt */
 const MAX_PROJECT_MEMORY_CHARS = 8000;
 
+export interface PromptAssemblyOptions {
+  /**
+   * Layer 6 — what this entity knows from its *other* channels, bounded.
+   * Built by `buildCarriedContext` and passed in rather than computed here, so
+   * `buildSystemPrompt` stays a pure function of its arguments (the AAXT
+   * harness, the export assembler and the prompt-debug route all depend on
+   * that). An options bag rather than a seventh positional so the summary half
+   * of continuity #3 can land without an eighth.
+   */
+  carriedContext?: string;
+}
+
 /**
- * Build system prompt with 5-layer assembly:
+ * Build system prompt with 6-layer assembly:
  *   1. Kit briefing (imported channels only — orientation + capability awareness)
  *   2. Project instructions (from projects.instructions — CLAUDE.md / prompt_template)
  *   3. Project memory (from projects.memory — MEMORY.md / claude.ai memories)
  *   4. Channel addendum (channel-specific system prompt)
  *   5. Entity's own system prompt
+ *   6. Carried context (klatches only — the entity's recent activity elsewhere)
  *
- * Per design doc: prompt-architecture-audit.md (decisions locked 2026-03-16)
+ * Per design doc: prompt-architecture-audit.md (decisions locked 2026-03-16);
+ * layer 6 added 2026-08-12 for continuity #3 (`carried-context.ts`).
+ *
+ * Layer 6 sits *after* the entity's own prompt deliberately. Layers 1–5 are
+ * standing configuration — who this agent is and what room it is in. Layer 6 is
+ * transcript, and it is the most recent thing that happened; putting it last
+ * keeps it adjacent to the live conversation it is supposed to be continuous
+ * with, and keeps identity from being read through the lens of one week's
+ * activity.
  */
-export function buildSystemPrompt(entity: Entity, channelPreamble?: string, channel?: Channel, project?: Project | null, channelFileNames?: string[], projectFileNames?: string[]): string {
+export function buildSystemPrompt(entity: Entity, channelPreamble?: string, channel?: Channel, project?: Project | null, channelFileNames?: string[], projectFileNames?: string[], options: PromptAssemblyOptions = {}): string {
   const parts: string[] = [];
 
   // 1. Kit briefing for imported channels — automatic orientation on transition
@@ -459,6 +481,9 @@ export function buildSystemPrompt(entity: Entity, channelPreamble?: string, chan
 
   // 5. Entity's own system prompt
   if (entity.systemPrompt?.trim()) parts.push(entity.systemPrompt.trim());
+
+  // 6. Carried context — the entity's recent activity in its other channels
+  if (options.carriedContext?.trim()) parts.push(options.carriedContext.trim());
 
   return parts.join('\n\n');
 }
@@ -756,7 +781,9 @@ export async function streamClaude(
   const history = buildPanelHistory(channelId, entity);
   const channelFileList = getChannelFiles(channelId).map((f) => `- ${f.name} (${f.mimeType}, ${formatBytes(f.sizeBytes)})`);
   const projectFileList = project ? getProjectFiles(project.id).map((f) => `- ${f.name} (${f.mimeType}, ${formatBytes(f.sizeBytes)})`) : [];
-  const systemPrompt = buildSystemPrompt(entity, channelPreamble, channel, project, channelFileList, projectFileList);
+  const systemPrompt = buildSystemPrompt(entity, channelPreamble, channel, project, channelFileList, projectFileList, {
+    carriedContext: buildCarriedContext(entity, channel),
+  });
   const result = await streamClaudeCore(
     assistantMessageId, entity, history, systemPrompt,
     { compactionEnabled, channelMode: channel?.mode }
@@ -820,7 +847,12 @@ export async function streamClaudeRoundtable(
       if (roundtable.cancelled) break;
 
       const { assistantMessageId, entity } = assistants[i];
-      const systemPrompt = buildSystemPrompt(entity, channelPreamble, channel, project, channelFileList, projectFileList);
+      // Per-entity, inside the loop — each participant carries its own history
+      // and nobody else's. This is what keeps the cost of layer 6 proportional
+      // to one agent rather than to the size of the cast.
+      const systemPrompt = buildSystemPrompt(entity, channelPreamble, channel, project, channelFileList, projectFileList, {
+        carriedContext: buildCarriedContext(entity, channel),
+      });
 
       let history: ChatMessage[];
 

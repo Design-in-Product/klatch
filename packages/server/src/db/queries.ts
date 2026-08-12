@@ -601,8 +601,29 @@ export function getEntityTranscript(
 ): TranscriptMessage[] {
   const { excludeChannelId, limit, types } = options;
 
-  const clauses = ['m.entity_id = ?'];
-  const params: unknown[] = [entityId];
+  // An entity's transcript is its own utterances PLUS what was said to it.
+  //
+  // Every user message is written with `entity_id` NULL (`insertMessage` is
+  // only ever passed an entity for the assistant row), so scoping on
+  // `m.entity_id = ?` alone returns the agent's answers and none of the
+  // questions — half a conversation, and the less legible half. Verified
+  // against the real March corpus: 1,332 user rows NULL, 1,240 assistant rows
+  // stamped. Round 36 shipped with the narrow scope because its fixtures only
+  // ever inserted assistant rows, so nothing exercised it; wiring the union
+  // into the prompt (continuity #3) is what made it load-bearing.
+  //
+  // The rule here is the one `buildPanelHistory` has always used per channel
+  // (`client.ts`: `role === 'user' || entityId === entity.id || !entityId`) —
+  // a user message belongs to whoever was in the room to hear it. Membership,
+  // not authorship, is what qualifies it, which is why the EXISTS is on
+  // `channel_entities`: in a klatch the human addressed everyone present.
+  const clauses = [
+    `(m.entity_id = ?
+      OR (m.role = 'user' AND m.entity_id IS NULL AND EXISTS (
+            SELECT 1 FROM channel_entities ce
+            WHERE ce.channel_id = m.channel_id AND ce.entity_id = ?)))`,
+  ];
+  const params: unknown[] = [entityId, entityId];
 
   if (excludeChannelId) {
     clauses.push('m.channel_id != ?');

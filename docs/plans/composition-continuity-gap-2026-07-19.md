@@ -109,6 +109,20 @@ The `source_channel_id` column proposed in the April direction note. Lets a klat
 **3. Cross-channel context at prompt assembly.**
 The real design work. `buildSystemPrompt` needs to incorporate the entity's source-channel context when that entity participates in a klatch. Open questions below — this cannot be a naive history dump; three full sessions will not fit in one prompt.
 
+> **PARTIAL 2026-08-12 — the recent-N seed is shipped and live; the summary half and (c) are not.**
+> Open question 1 below is **answered**: xian approved option (b) with (c) layered on
+> (`docs/mail/janus-to-daedalus-cc-team-xian-approves-compaction-option-b-2026-08-12.md`),
+> after `docs/plans/continuity-3-compaction-sizing-2026-08-10.md` excluded (a) on arithmetic.
+>
+> Layer 6 of `buildSystemPrompt` now carries a bounded slice of the entity's transcript from its
+> other channels, klatches only, per participant. Full write-up, budget measurements and residuals:
+> **`docs/plans/continuity-3-carried-context.md`**.
+>
+> **This makes open question 3 (backfill) load-bearing rather than tidy.** Measured against the real
+> corpus the seed is correct and carries the wrong thing, because all 65 imported channels still bind
+> to one entity — "this agent's recent activity elsewhere" is only meaningful once the imports are
+> split per agent. Wiring cannot fix that; it is a data question and it is still open.
+
 **Bidirectionality** (klatch content flowing back to the 1-1) is implied by the Slack model and by xian's framing. Whether it lands in 1.0 or immediately after is an open question.
 
 ---
