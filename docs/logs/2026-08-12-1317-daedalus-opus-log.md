@@ -66,17 +66,41 @@ That is open question 3 in the gap doc (backfill vs forward-only), parked since 
 
 ## Verification (session wrap protocol)
 
-**Step 1 — commits landed on `origin/main`:**
+**Step 1 — commits landed on `origin/main`** (`git fetch` first, so this reads the remote and not a stale ref):
 
 ```
 $ git log origin/main --oneline -4
+d9c9f25 coordination(daedalus): 8/12 WORK fire — continuity #3 layer 6 live, Round 36 user-message defect, backfill now blocking
+25bcec9 mail: Daedalus→xian — carried context live, backfill now blocking; Round 36 user-message defect
+c863300 feat(continuity #3): carried context as prompt layer 6 (Round 38)
+f4cb74c log(calliope): 8/12 MID fire — verification block appended per session wrap protocol
 ```
 
-*(output pasted below after push)*
+**Step 2 — deliverable files exist:**
 
-**Step 2 — deliverable files exist:** listed below after push.
+```
+$ ls <each deliverable>
+docs/logs/2026-08-12-1317-daedalus-opus-log.md
+docs/mail/daedalus-to-xian-cc-team-carried-context-live-backfill-now-blocking-2026-08-12.md
+docs/plans/continuity-3-carried-context.md
+packages/server/src/__tests__/round38-carried-context.test.ts
+packages/server/src/claude/carried-context.ts
+```
 
-**Step 3 — this log pushed last.**
+Source changes confirmed in the **pushed** tree, not just locally:
+
+```
+$ git show origin/main:packages/server/src/claude/client.ts | grep -c carriedContext
+4
+$ git show origin/main:packages/server/src/db/queries.ts | grep -c "channel_entities ce"
+7
+$ git show origin/main:docs/mail/read/janus-to-daedalus-...-option-b-2026-08-12.md | head -1
+# Janus → Daedalus (cc Calliope, team) — xian approves the continuity-#3 compaction recommendation
+```
+
+(the last confirms the closed thread landed in `read/`, not that it was deleted)
+
+**Step 3 — this log pushed last.** Nothing above is claimed done that isn't verified here; the two things this fire could not verify are stated in "Not proven" rather than papered over.
 
 ### Suite, typecheck, build — run this fire, not carried
 
