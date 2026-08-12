@@ -235,13 +235,26 @@ describe('scoreResponse — tolerates fenced auxiliary responses', () => {
     expect(result.confidence).toBe(0.85);
   });
 
-  it('falls back to Absent classification when auxiliary returns garbage', async () => {
+  it('falls back to Unscored classification when auxiliary returns unparseable garbage', async () => {
     mockQuery.mockResolvedValue('this is just prose');
 
     const result = await scoreResponse('Q', 'A', 'response');
-    // Scorer catches parse errors and returns Absent with low confidence
-    expect(result.classification).toBe('Absent');
+    // Scorer's outer catch (extractJson throws on non-JSON) is an instrument
+    // fault, not a behavioral reading — Unscored, not Absent. Was 'Absent'
+    // until the 2026-08-11 server-gate-residual fix (Hole B); see
+    // docs/plans/AAXT-SCAFFOLDED-PROBING.md.
+    expect(result.classification).toBe('Unscored');
     expect(result.confidence).toBe(0);
     expect(result.reasoning).toContain('Scoring error');
+  });
+
+  it('falls back to Unscored classification when the auxiliary call itself throws', async () => {
+    mockQuery.mockRejectedValue(new Error('API quota exceeded'));
+
+    const result = await scoreResponse('Q', 'A', 'response');
+    expect(result.classification).toBe('Unscored');
+    expect(result.confidence).toBe(0);
+    expect(result.reasoning).toContain('Scoring error');
+    expect(result.reasoning).toContain('API quota exceeded');
   });
 });

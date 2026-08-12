@@ -78,8 +78,11 @@ export async function scoreResponse(
       reasoning: found ? String(parsed.reasoning || '') : `Scoring error: unparseable classification "${raw}"`,
     };
   } catch (err) {
+    // Judge outage (network/API failure), same non-outcome as an unparseable
+    // classification above — not a behavioral reading, so it must not land
+    // in `Absent`, which is itself a real reading.
     return {
-      classification: 'Absent',
+      classification: 'Unscored',
       confidence: 0,
       reasoning: `Scoring error: ${err instanceof Error ? err.message : String(err)}`,
     };

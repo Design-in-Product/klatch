@@ -200,11 +200,17 @@ export async function runAAXT(
   if (phantomCount > 0) {
     overallFidelity = 'failed';
   } else if (totalScored > 0 && unscoredCount === totalScored) {
-    // Every probe hit an instrument fault (probe/judge error, or an
-    // unparseable judge classification) — not a behavioral reading at all.
+    // Every scored probe hit a judge-side instrument fault (judge outage or
+    // an unparseable judge classification) — not a behavioral reading at
+    // all. A probe-call failure (the agent itself unreachable) is scored
+    // separately as `Absent`, a deliberate policy choice, not a gap here —
+    // see docs/plans/AAXT-SCAFFOLDED-PROBING.md.
     overallFidelity = 'failed';
   } else if (totalScored === 0) {
-    overallFidelity = 'low';
+    // No probe was ever scored (e.g. generation failed on every layer) —
+    // no reading exists, which is a failure to produce a result, not a
+    // low-fidelity result.
+    overallFidelity = 'failed';
   } else if (correctCount / totalScored >= 0.8) {
     overallFidelity = 'high';
   } else if (correctCount / totalScored >= 0.5) {

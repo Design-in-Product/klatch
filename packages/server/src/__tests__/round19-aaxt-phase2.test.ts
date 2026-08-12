@@ -224,6 +224,45 @@ describe('AAXT Phase 2 — runAAXT pipeline', () => {
     expect(result.layers).toHaveLength(5);
     const errorLayers = result.layers.filter((l) => l.status.includes('ERROR'));
     expect(errorLayers.length).toBeGreaterThan(0);
+
+    // Hole A (2026-08-11 server-gate-residual fix): every layer failed at
+    // probe generation, so totalScored === 0 — no reading was ever taken.
+    // That must report 'failed', not a silently-computed 'low' indistinguishable
+    // from a surface that genuinely conveys badly.
+    expect(result.summary.totalScored).toBe(0);
+    expect(result.summary.overallFidelity).toBe('failed');
+  });
+
+  it('reports failed, not low, when the judge is down for every scored probe (Hole B)', async () => {
+    // Probe generation succeeds; every scoring call then throws (judge outage).
+    mockQueryAuxiliary.mockImplementation(async (_system: string, user: string) => {
+      if (user.includes('Generate') || user.includes('generate') || user.includes('test questions')) {
+        return mockProbeGeneration('L2', [
+          { question: 'Test?', expectedAnswer: 'Yes', directness: 'direct' },
+        ]);
+      }
+      throw new Error('Anthropic API error (401): judge outage');
+    });
+
+    const result = await runAAXT(
+      'test-ch',
+      'system prompt',
+      'claude-opus-4-6',
+      'high',
+      {
+        '1_kitBriefing': 'INACTIVE',
+        '2_projectInstructions': 'ACTIVE — test',
+        '3_projectMemory': 'INACTIVE',
+        '4_channelAddendum': 'EMPTY',
+        '5_entityPrompt': 'ACTIVE — test',
+      },
+    );
+
+    // scoreResponse catches the judge-call throw internally and never rejects,
+    // so every scored probe lands as Unscored, not Absent.
+    expect(result.summary.totalScored).toBeGreaterThan(0);
+    expect(result.summary.unscoredCount).toBe(result.summary.totalScored);
+    expect(result.summary.overallFidelity).toBe('failed');
   });
 });
 
