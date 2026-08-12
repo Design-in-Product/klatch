@@ -290,6 +290,7 @@ function buildConversationJsonl(messages: Message[], channelId: string): string 
       entity_id: msg.entityId || null,
       content: msg.content,
       status: msg.status,
+      stop_reason: msg.stopReason || null,
       model: msg.model || null,
       created_at: msg.createdAt,
       original_timestamp: msg.originalTimestamp || null,

@@ -195,12 +195,26 @@ export interface ProjectGroup {
   channels: Channel[];
 }
 
+/**
+ * Why a turn stopped without finishing cleanly. `end_turn` and `stop_sequence`
+ * are clean finishes and carry no stopReason — they stay `status: 'complete'`.
+ * `context_window_exceeded` is the SDK's `model_context_window_exceeded`,
+ * shortened here; the other three pass through from the API as-is.
+ * Shape per docs/ux/message-incomplete-status-2026-08-11.md (Iris, 8/11).
+ */
+export type MessageStopReason =
+  | 'max_tokens'
+  | 'context_window_exceeded'
+  | 'refusal'
+  | 'pause_turn';
+
 export interface Message {
   id: string;
   channelId: string;
   role: 'user' | 'assistant';
   content: string;
-  status: 'complete' | 'streaming' | 'error';
+  status: 'complete' | 'streaming' | 'error' | 'incomplete';
+  stopReason?: MessageStopReason; // set only when status is 'incomplete'
   model?: ModelId;
   entityId?: string;
   createdAt: string;
@@ -284,6 +298,13 @@ export interface StreamEvent {
   type: 'text_delta' | 'message_complete' | 'error';
   messageId: string;
   content: string;
+  /**
+   * Present on `message_complete` when the turn ended without finishing cleanly.
+   * The client updates its local message optimistically on stream completion
+   * rather than refetching the row, so the reason has to ride the event or the
+   * bubble renders as a clean completion until the channel is reloaded.
+   */
+  stopReason?: MessageStopReason;
 }
 
 // ── @-mention parsing for directed mode ──────────────────────

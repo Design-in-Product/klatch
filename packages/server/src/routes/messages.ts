@@ -14,11 +14,21 @@ import {
   getArtifactsForChannel,
 } from '../db/queries.js';
 import { streamClaude, streamClaudeRoundtable, activeStreams, abortStream } from '../claude/client.js';
-import type { StreamEvent, Entity } from '@klatch/shared';
+import type { StreamEvent, Entity, Message } from '@klatch/shared';
 import { resolveMentions } from '@klatch/shared';
 import { getDb } from '../db/index.js';
 
 const app = new Hono();
+
+/**
+ * A message that will not change again, so the SSE observer can replay its
+ * final state and close instead of waiting for an emitter. `'incomplete'`
+ * belongs here: the turn ended, just not cleanly — omitting it would leave an
+ * observer polling the full 2-minute deadline for a stream that already ran.
+ */
+function isFinished(status: Message['status']): boolean {
+  return status === 'complete' || status === 'error' || status === 'incomplete';
+}
 
 // Get all messages for a channel
 // ?include=artifacts to include artifact data per message
@@ -280,7 +290,7 @@ app.get('/messages/:id/stream', (c) => {
       // No emitter. Check DB to distinguish "already done" from "not started yet".
       const msg = getMessage(messageId);
 
-      if (!msg || msg.status === 'complete' || msg.status === 'error') {
+      if (!msg || isFinished(msg.status)) {
         // Already finished — send the final content immediately
         const type = msg?.status === 'error' ? 'error' : 'message_complete';
         await stream.writeSSE({
@@ -288,6 +298,7 @@ app.get('/messages/:id/stream', (c) => {
             type,
             messageId,
             content: msg?.content ?? '',
+            ...(msg?.stopReason ? { stopReason: msg.stopReason } : {}),
           } satisfies StreamEvent),
         });
         return;
@@ -305,13 +316,14 @@ app.get('/messages/:id/stream', (c) => {
 
         // Check if it completed while we were waiting (another race)
         const fresh = getMessage(messageId);
-        if (fresh && (fresh.status === 'complete' || fresh.status === 'error')) {
+        if (fresh && isFinished(fresh.status)) {
           const type = fresh.status === 'error' ? 'error' : 'message_complete';
           await stream.writeSSE({
             data: JSON.stringify({
               type,
               messageId,
               content: fresh.content ?? '',
+              ...(fresh.stopReason ? { stopReason: fresh.stopReason } : {}),
             } satisfies StreamEvent),
           });
           return;

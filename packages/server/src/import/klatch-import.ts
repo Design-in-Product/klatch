@@ -365,7 +365,7 @@ export function importKlatchPackage(params: KlatchImportParams): KlatchImportOut
     // ── Messages + artifacts from JSONL ──
     if (conversationJsonl) {
       const insertMsg = db.prepare(
-        'INSERT INTO messages (id, channel_id, role, content, status, model, entity_id, original_timestamp, original_id, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
+        'INSERT INTO messages (id, channel_id, role, content, status, stop_reason, model, entity_id, original_timestamp, original_id, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
       );
       const insertArtifact = db.prepare(
         'INSERT INTO message_artifacts (id, message_id, type, tool_name, input_summary, content, file_name, file_mime_type, file_size_bytes, file_storage_key, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
@@ -387,7 +387,12 @@ export function importKlatchPackage(params: KlatchImportParams): KlatchImportOut
           targetChannelId,
           row.role,
           row.content || '',
-          row.status === 'streaming' || row.status === 'error' ? row.status : 'complete',
+          row.status === 'streaming' || row.status === 'error' || row.status === 'incomplete'
+            ? row.status
+            : 'complete',
+          // Only meaningful alongside 'incomplete'; a stop_reason on any other
+          // status is discarded rather than imported into a contradictory row.
+          row.status === 'incomplete' ? row.stop_reason || null : null,
           row.model || null,
           row.entity_id || null,
           row.original_timestamp || null,

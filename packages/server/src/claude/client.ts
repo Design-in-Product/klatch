@@ -1,7 +1,7 @@
 import Anthropic from '@anthropic-ai/sdk';
 import { EventEmitter } from 'events';
 import { getMessages, getChannel, updateMessage, updateChannelCompaction, getProjectForChannel, getFileArtifactsForMessages, createFileArtifact, createFileWithMessageRef, getChannelFiles, getProjectFiles } from '../db/queries.js';
-import type { Entity, Channel, Project, MessageArtifact } from '@klatch/shared';
+import type { Entity, Channel, Project, Message, MessageArtifact, MessageStopReason } from '@klatch/shared';
 import { DEFAULT_MODEL } from '@klatch/shared';
 import { readFile, isTextFile, isImageFile, saveFile } from '../files/storage.js';
 
@@ -13,6 +13,48 @@ function getAnthropicClient(): Anthropic {
     _anthropic = new Anthropic();
   }
   return _anthropic;
+}
+
+/**
+ * Map the API's `stop_reason` to Klatch's `MessageStopReason`, or `undefined`
+ * when the turn finished cleanly and needs no annotation.
+ *
+ * `end_turn` and `stop_sequence` are clean finishes. `tool_use` never reaches
+ * here as a final reason unless the tool-round budget was exhausted, which is a
+ * separate concern from a truncated or refused turn. Anything unrecognised —
+ * including a stop reason a future SDK adds — falls through to `undefined`
+ * rather than being coerced, so an unknown reason degrades to today's
+ * behaviour instead of rendering copy that was never written for it.
+ *
+ * Shape per docs/ux/message-incomplete-status-2026-08-11.md (Iris, 8/11).
+ */
+export function mapStopReason(stopReason: string | null | undefined): MessageStopReason | undefined {
+  switch (stopReason) {
+    case 'max_tokens':
+      return 'max_tokens';
+    case 'model_context_window_exceeded':
+      return 'context_window_exceeded';
+    case 'refusal':
+      return 'refusal';
+    case 'pause_turn':
+      return 'pause_turn';
+    default:
+      return undefined;
+  }
+}
+
+/**
+ * Messages that belong in conversation history.
+ *
+ * `'incomplete'` counts: a turn cut off at max_tokens still holds real content
+ * the user read and may refer back to, so dropping it from the prompt would
+ * make the next turn incoherent about what was just said. `'streaming'` is
+ * excluded because it isn't finished, `'error'` because its content is an
+ * error message rather than a turn. Empty content is filtered separately
+ * downstream, which is what elides a refusal that produced no text.
+ */
+function isInHistory(status: Message['status']): boolean {
+  return status === 'complete' || status === 'incomplete';
 }
 
 /** Format bytes for human display in prompt context */
@@ -225,7 +267,7 @@ function injectFileContent(messages: ChatMessage[], channelId: string, allMessag
 function buildPanelHistory(channelId: string, entity: Entity): ChatMessage[] {
   const channel = getChannel(channelId);
   const compaction = parseCompactionState(channel);
-  const allMessages = getMessages(channelId).filter((m) => m.status === 'complete');
+  const allMessages = getMessages(channelId).filter((m) => isInHistory(m.status));
 
   let messages = allMessages;
 
@@ -258,7 +300,7 @@ function buildPanelHistory(channelId: string, entity: Entity): ChatMessage[] {
 function buildRoundtableHistory(channelId: string): ChatMessage[] {
   const channel = getChannel(channelId);
   const compaction = parseCompactionState(channel);
-  const allMessages = getMessages(channelId).filter((m) => m.status === 'complete');
+  const allMessages = getMessages(channelId).filter((m) => isInHistory(m.status));
 
   let messages = allMessages;
 
@@ -524,9 +566,11 @@ async function streamClaudeCore(
     // Mutable copy of history for tool-use continuation
     const conversationHistory = [...history];
 
-    for (let round = 0; round <= MAX_TOOL_ROUNDS; round++) {
-      let finalMessage: any;
+    // Declared outside the loop: the stop reason of the *last* turn is what
+    // decides whether the stored message is complete or incomplete.
+    let finalMessage: any;
 
+    for (let round = 0; round <= MAX_TOOL_ROUNDS; round++) {
       if (options?.compactionEnabled) {
         const stream = getAnthropicClient().beta.messages.stream({
           model,
@@ -639,21 +683,25 @@ async function streamClaudeCore(
         continue;
       }
 
-      // Anything other than 'tool_use' ends the loop and the message is stored
-      // 'complete'. That is right for 'end_turn' and 'stop_sequence'; it silently
-      // launders every truncating or aborting reason the API can return —
-      // 'max_tokens', 'refusal', 'pause_turn', 'model_context_window_exceeded'
-      // (added in SDK 0.114) — into a message that looks normally finished.
-      // Known gap, not a fix: surfacing it needs a message status the client can
-      // render. Tracked in docs/COORDINATION.md (Daedalus, 8/11).
+      // Anything other than 'tool_use' ends the loop. 'end_turn' and
+      // 'stop_sequence' are clean finishes; the rest are recorded as
+      // 'incomplete' rather than laundered into a message that looks
+      // normally finished. See mapStopReason.
       break;
     }
 
-    updateMessage(assistantMessageId, fullContent, 'complete');
+    const stopReason = mapStopReason(finalMessage?.stop_reason);
+    updateMessage(
+      assistantMessageId,
+      fullContent,
+      stopReason ? 'incomplete' : 'complete',
+      stopReason,
+    );
     emitter.emit('data', {
       type: 'message_complete',
       messageId: assistantMessageId,
       content: fullContent,
+      ...(stopReason ? { stopReason } : {}),
     });
   } catch (err) {
     // Check if this was an intentional abort

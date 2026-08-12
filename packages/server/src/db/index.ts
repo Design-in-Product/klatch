@@ -54,7 +54,8 @@ function initSchema() {
       channel_id TEXT NOT NULL REFERENCES channels(id),
       role TEXT NOT NULL CHECK (role IN ('user', 'assistant')),
       content TEXT NOT NULL DEFAULT '',
-      status TEXT NOT NULL DEFAULT 'complete' CHECK (status IN ('complete', 'streaming', 'error')),
+      status TEXT NOT NULL DEFAULT 'complete' CHECK (status IN ('complete', 'streaming', 'error', 'incomplete')),
+      stop_reason TEXT,
       model TEXT,
       created_at TEXT NOT NULL DEFAULT (datetime('now'))
     );
@@ -146,6 +147,70 @@ function runMigrations() {
   }
   if (!msgCols2.some((c) => c.name === 'original_id')) {
     db.exec(`ALTER TABLE messages ADD COLUMN original_id TEXT`);
+  }
+
+  // Why a turn stopped, when it didn't stop cleanly. Nullable: every existing
+  // row predates the distinction and its status stays whatever it already was.
+  if (!msgCols2.some((c) => c.name === 'stop_reason')) {
+    db.exec(`ALTER TABLE messages ADD COLUMN stop_reason TEXT`);
+  }
+
+  // The 'incomplete' status needs the status CHECK constraint widened. SQLite
+  // cannot alter a CHECK in place, and every database created before this
+  // change carries the three-value version — so the first truncated response
+  // would throw a constraint error instead of being recorded. The only
+  // supported fix is the table rebuild below (SQLite ALTER TABLE docs, §"Making
+  // Other Kinds Of Table Schema Changes"). Guarded on the live schema text, so
+  // it runs once per database and is a no-op for anything already rebuilt or
+  // freshly created.
+  const messagesSql = (db.prepare(
+    `SELECT sql FROM sqlite_master WHERE type = 'table' AND name = 'messages'`
+  ).get() as { sql: string } | undefined)?.sql;
+
+  if (messagesSql && !messagesSql.includes("'incomplete'")) {
+    // foreign_keys must be toggled outside a transaction to take effect, and
+    // must be OFF so dropping the old table doesn't cascade message_artifacts
+    // away. message_artifacts' own FK text names `messages`, so it re-resolves
+    // to the rebuilt table after the rename.
+    const fkWasOn = (db.pragma('foreign_keys', { simple: true }) as number) === 1;
+    db.pragma('foreign_keys = OFF');
+    try {
+      db.transaction(() => {
+        db.exec(`
+          CREATE TABLE messages_rebuild (
+            id TEXT PRIMARY KEY,
+            channel_id TEXT NOT NULL REFERENCES channels(id),
+            role TEXT NOT NULL CHECK (role IN ('user', 'assistant')),
+            content TEXT NOT NULL DEFAULT '',
+            status TEXT NOT NULL DEFAULT 'complete' CHECK (status IN ('complete', 'streaming', 'error', 'incomplete')),
+            stop_reason TEXT,
+            model TEXT,
+            entity_id TEXT,
+            original_timestamp TEXT,
+            original_id TEXT,
+            created_at TEXT NOT NULL DEFAULT (datetime('now'))
+          );
+
+          INSERT INTO messages_rebuild
+            (id, channel_id, role, content, status, stop_reason, model, entity_id, original_timestamp, original_id, created_at)
+          SELECT
+            id, channel_id, role, content, status, stop_reason, model, entity_id, original_timestamp, original_id, created_at
+          FROM messages;
+
+          DROP TABLE messages;
+          ALTER TABLE messages_rebuild RENAME TO messages;
+        `);
+      })();
+
+      const violations = db.pragma('foreign_key_check') as unknown[];
+      if (violations.length > 0) {
+        throw new Error(
+          `messages table rebuild left ${violations.length} foreign key violation(s); database not modified further`
+        );
+      }
+    } finally {
+      if (fkWasOn) db.pragma('foreign_keys = ON');
+    }
   }
 
   // Create message_artifacts table for tool use, thinking, images from imports

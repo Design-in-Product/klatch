@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
 import { getDb } from './index.js';
-import type { Channel, ChannelType, ChannelStats, Message, Entity, Project, ModelId, InteractionMode, ChannelSource, KlatchFile, FileRef, FileRefScope, FileRefType, FileWithRef, EffortLevel, MicroReflection } from '@klatch/shared';
+import type { Channel, ChannelType, ChannelStats, Message, MessageStopReason, Entity, Project, ModelId, InteractionMode, ChannelSource, KlatchFile, FileRef, FileRefScope, FileRefType, FileWithRef, EffortLevel, MicroReflection } from '@klatch/shared';
 import { DEFAULT_MODEL, DEFAULT_ENTITY_ID, DEFAULT_EFFORT, ENTITY_COLORS, DEFAULT_INTERACTION_MODE } from '@klatch/shared';
 
 function rowToChannel(row: any): Channel {
@@ -38,6 +38,7 @@ function rowToMessage(row: any): Message {
     role: row.role,
     content: row.content,
     status: row.status,
+    stopReason: row.stop_reason || undefined,
     model: row.model || undefined,
     entityId: row.entity_id || undefined,
     createdAt: row.created_at,
@@ -272,10 +273,17 @@ export function createMessagePair(
   return txn();
 }
 
-export function updateMessage(id: string, content: string, status: 'complete' | 'error') {
+export function updateMessage(
+  id: string,
+  content: string,
+  status: 'complete' | 'error' | 'incomplete',
+  stopReason?: MessageStopReason,
+) {
+  // Always write stop_reason, so a row that completes cleanly on a retry clears
+  // a reason left by an earlier attempt rather than keeping a stale one.
   getDb()
-    .prepare('UPDATE messages SET content = ?, status = ? WHERE id = ?')
-    .run(content, status, id);
+    .prepare('UPDATE messages SET content = ?, status = ?, stop_reason = ? WHERE id = ?')
+    .run(content, status, stopReason ?? null, id);
 }
 
 export function deleteMessage(id: string): boolean {
