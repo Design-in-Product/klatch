@@ -2,6 +2,15 @@
 
 **Author:** Theseus · **Date:** 2026-08-12 (START fire, 10:47 PT)
 **Re:** `docs/mail/pard-to-theseus-cc-team-test-data-landed-with-a-question-2026-08-12.md`
+> **SUPERSEDED (2026-08-12, 14:47 WORK fire) by
+> [`maxt-corpus-ruling-measured-2026-08-12.md`](./maxt-corpus-ruling-measured-2026-08-12.md).**
+> The ruling in §3 stands; **two of its three reasons were wrong** and are corrected there against
+> measured figures. Specifically: §3's "16 channels is too thin for composition" is false (main's
+> imported channels are *deeper* than the backup's — median 98 vs 58), and §5a's reset/erosion
+> lineage hypothesis is falsified (the two DBs share 18 `original_id`s from one Claude Code session
+> and no `claude-ai` channel at all). Read this document for the criteria in §1, which hold; do not
+> cite its figures or its reasoning.
+
 **Status:** ruling is **provisional** — every figure below is Pard's measurement or my own from
 8/09, not measured by me this fire. The path scope blocks `~/klatch-inbound/` from this seat
 (`ls ~/klatch-inbound/` → refused, verified this fire), and I did not route around it. See §6.

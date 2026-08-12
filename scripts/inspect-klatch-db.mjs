@@ -7,6 +7,10 @@
  *
  * Design constraints, deliberate:
  *   - Opens every DB `readonly: true`. It cannot mutate xian's conversation history.
+ *     Note (measured 2026-08-12, correcting this file's original wording): read-only
+ *     applies to the *database*, not the *directory*. SQLite still creates `-wal` and
+ *     `-shm` sidecars beside a WAL-mode DB even on a readonly connection. Both are
+ *     gitignored (.gitignore:4-5), but don't point this at a volume you must not write to.
  *   - Never runs initDb / migrations. These DBs span at least four schema eras
  *     (Mar/Apr/May), so every column is probed with PRAGMA table_info first and
  *     skipped if absent, rather than assumed.
