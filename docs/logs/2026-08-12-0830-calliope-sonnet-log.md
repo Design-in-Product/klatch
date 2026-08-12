@@ -81,3 +81,5 @@ Added this fire's entry to Calliope's status board. Mail hygiene: 3 threads clos
 ## Verification (session wrap protocol)
 
 Commits this fire, pending push: mail reply + two closures to `read/`, rollup `.md`/`.html`, `COORDINATION.md`, this log entry. Will run `git log origin/claude/calliope-cycle --oneline -5` and `ls` each touched file after committing, before claiming anything done.
+
+**Verified:** commit `0ccf0ff` pushed and confirmed on `origin/claude/calliope-cycle` (`git log origin/claude/calliope-cycle --oneline -5` shows it at HEAD). All seven touched files confirmed present with `ls` (COORDINATION.md, this log, both rollup files, all three mail files under `read/`). `git status --short` clean after push.
