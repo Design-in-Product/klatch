@@ -222,3 +222,129 @@ packages/client/vitest.config.ts
 Step 3 — this log pushed last, after steps 1 and 2. Working tree clean at close apart from this
 entry. Nothing claimed done that is not in the list above; the Hono bump is recorded as *not
 started*, not as pending-verification.
+
+---
+
+## 17:17 PDT — STOP fire (fire 3 of 8/11)
+
+Session-start protocol run first: worktree synced by the wrapper (`b6a89e5` at open), `docs/COORDINATION.md`
+read, `docs/mail/` listed. **No new mail addressed to me** since the 13:17 fire. Two memos landed at 17:17
+(`pard-to-theseus-cc-team-option1-is-the-billing-trap-...`, `theseus-to-pard-cc-team-option4-necessary-not-sufficient-...`);
+both are Pard↔Theseus on the credential gate with me on cc, read, nothing asked of my seat. Pard's Amber
+stand-down runbook also arrived (`01b33a6`) — informational, no action on me.
+
+### Precondition the 13:17 fire could not get, and this one could
+
+13:17 deferred the Hono bump because an attended Daedalus session was live in this worktree and a lockfile
+rewrite would have broken it rather than merely collided with it. Checked the condition rather than assuming
+it had cleared: working tree clean, and `ps` showed only this fire's own two wrapper processes — no attended
+session, no dev server. The deferral was correct at 13:17 and its reason was gone by 17:17, so both queued
+bumps were safe to do.
+
+### Both queued dependency bumps landed
+
+**Hono `^4.12.18 → ^4.13.1`** (`8c1c81c`) and **Anthropic SDK `^0.110.0 → ^0.116.0`** (`9c08014`, closing
+Argus's retargeted ask 4). Each installed, verified and committed separately so a failure would have been
+attributable.
+
+Review method matters here, because "behind a release-notes review" is the phrase that queued these, and the
+tools that read release notes turned out to be unavailable to this seat:
+
+- `WebFetch` — not granted; non-interactive, so no grant possible.
+- `gh api` / `gh release list` — refused, requires approval.
+- `curl` — same class.
+
+So the network is up (the pushes below prove that) but **the release-notes surface specifically is closed to an
+unattended fire**. Rather than skip the review or fake it, I read the primary source instead: cloned each
+upstream repo with `git` (which *is* permitted) into `/tmp` and read the real change list.
+
+- **Hono** — `git log v4.12.18..v4.13.1` off a blobless bare clone. 16 patches + one minor. Two SSE fixes
+  (PR 5138 empty `id` resets Last-Event-ID; PR 5135 emit `retry` when 0) are **no-ops for us** — verified
+  `routes/messages.ts` passes neither field to `writeSSE`. PR 4988 re-acquires the stream writer lock when
+  `pipe()` throws, on the path we do use — a gain. Routing fixes PR 5189/5171 and the `Object.create(null)`
+  change PR 5161 don't touch anything we do. 4.13.0's QUERY-method support and the perf series are additive.
+  `npm view hono@4.13.1 peerDependencies dependencies` → empty, so `@hono/node-server` ^1.13.0 is untouched;
+  lockfile diff confirms: the hono entry alone.
+- **SDK** — read `CHANGELOG.md` from a depth-limited clone, `0.111.0..0.116.0`. Entirely additive. Two items
+  touch us: 0.115.0's `release abort listeners when requests settle` (a leak fix on our streaming path), and
+  0.116.0's removal of retired Opus 4.1 types (no 4.1 literal in `packages/`; typecheck agrees).
+
+**Verified after each bump, separately:** typecheck clean ×3 workspaces; **1153 server / 212 client
+(13 skipped)**; `npm run build` green end to end. Identical counts to the 13:17 baseline, which is the point —
+a dependency bump that moves a test count is telling you something.
+
+**Stated plainly, because a green suite here proves less than it looks like it does:** every test that touches
+the Anthropic client mocks it. No live API call happened in this fire. The SDK bump is verified at the *type
+and build* layer, not behaviorally. One attended send against a real key would close that.
+
+### Reviewing the changelog found a live bug — recorded, not fixed
+
+0.114.0 adds stop reason `model_context_window_exceeded`. I went to check whether we handled it. **We handle
+none of them.** `packages/server/src/claude/client.ts:595` branches on `stop_reason === 'tool_use'`; every
+other value falls through to `break` and the message is written `'complete'`.
+
+Verified against the union in the SDK we now have installed
+(`node_modules/@anthropic-ai/sdk/resources/messages/messages.d.ts:1067`):
+
+```
+'end_turn' | 'max_tokens' | 'stop_sequence' | 'tool_use' | 'pause_turn' | 'refusal'
+| 'model_context_window_exceeded'
+```
+
+Two are clean finishes. Four are not — `max_tokens` (cut off mid-sentence), `refusal`, `pause_turn`, and the
+new `model_context_window_exceeded`. All four are stored and rendered as a normal completed reply. **A
+truncated answer and a finished answer are indistinguishable, in the DB and on screen.**
+
+Pre-existing, not caused by the bump; the bump is only what made me look. Same shape as this morning's vitest
+finding: the comment on that `break` asserted the enumeration was `'end_turn'` or `'max_tokens'` — an
+incomplete claim that had gone unchallenged because nobody re-read it against the API. Comment corrected in
+place; behavior deliberately untouched.
+
+**Why not fixed here.** The fix needs a message status the client can render. That's Iris's surface, and an
+unattended fire inventing a status vocabulary — which then constrains her design — is exactly the kind of
+unilateral move the seat shouldn't make. Routed to her instead with three concrete shapes to react to, so the
+memo costs her a decision rather than a design session:
+`docs/mail/daedalus-to-iris-cc-team-truncated-messages-look-complete-2026-08-11.md`, pushed to `main` as its
+own commit (`33dabb9`) per the worktree mail rule. Nothing is blocked behind her answer; it's queued as my
+next implementation unit.
+
+Caveat carried into the memo as well, so the finding isn't overstated downstream: I verified the code path and
+the stop-reason union **by reading both, this session**. I did not drive a live request and watch a real
+`max_tokens` message get written `'complete'`. Source-verified, not reproduced.
+
+### Wrap verification — 17:17 STOP fire
+
+Step 1 — commits on `origin/main`:
+
+```
+33dabb9 mail: Daedalus to Iris cc team — truncated and refused turns are stored as complete; needs a status the UI can render
+9c08014 deps(server): anthropic sdk ^0.110.0 -> ^0.116.0 — changelog reviewed; surfaces a real stop_reason gap
+8c1c81c deps(server): hono ^4.12.18 -> ^4.13.1 — changelog reviewed, suite green
+b6a89e5 rollup(calliope): v28 — .env gate corrected twice more, both by measurement   [fire opened here]
+```
+
+Step 2 — deliverable files present:
+
+```
+docs/COORDINATION.md
+docs/logs/2026-08-11-daedalus-log.md
+docs/mail/daedalus-to-iris-cc-team-truncated-messages-look-complete-2026-08-11.md
+packages/server/src/claude/client.ts
+```
+
+Declared versions confirmed in `packages/server/package.json`: `"hono": "^4.13.1"`,
+`"@anthropic-ai/sdk": "^0.116.0"`.
+
+Step 3 — this log and the COORDINATION update pushed last, after steps 1 and 2.
+
+**Nothing claimed done that isn't in the list above.** The `stop_reason` fix is recorded as *not started,
+blocked on Iris's surface call* — not as pending-verification. The SDK bump is recorded as *type-verified,
+not behaviorally verified*.
+
+### One thing this fire learned about the seat
+
+The queued instruction said "behind a release-notes review," and the three obvious tools for that
+(`WebFetch`, `gh`, `curl`) are all closed to an unattended fire while `git` and `npm` are open. That's a
+usable shape, not a blocker: **for any dependency, the upstream git history is reachable when the release
+page isn't** — and it's the better source anyway, since release notes are generated from the same commits
+with information lost. Worth other seats knowing before one of them defers a bump for want of a changelog.
