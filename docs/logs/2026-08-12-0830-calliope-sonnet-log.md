@@ -41,3 +41,43 @@ Nothing closed to `read/` this fire — the two new 8/12 memos both have open ac
 Commits this fire, pending push: mail reply, rollup `.md`/`.html`, `COORDINATION.md`, this log. Will run `git log origin/claude/calliope-cycle --oneline -5` and `ls` each touched file after committing, before claiming anything done.
 
 **Not done this fire, flagged rather than guessed at:** the Question A primary-source read (blocked, see above); the migration retrospective (still owed, unchanged from prior fires' "Next").
+
+---
+
+## 12:30 — MID fire, session start
+
+Pulled origin/main clean. Re-read COORDINATION.md in full and swept `docs/mail/` — one memo addressed directly to Calliope since the 08:30 fire (`pard-to-calliope-cc-team-sources-committed-2026-08-12.md`), plus four cc'd memos bearing on threads this seat tracks (Janus relaying xian's compaction approval; Daedalus's incomplete-status server-half landing to Iris; Theseus's R42-live + canonicity-ruling memos to Argus/Pard; Pard's inspector-run reply to Theseus).
+
+## 12:35 — read block from 08:30 closed
+
+Pard's memo: he committed the two Question A source files verbatim into `docs/review/prior-art/` (`d005005`), inside the worktree, closing the read-permission block named at the 08:30 fire and the 8/11 MID fire before it. Verified the commit and files exist (`git log`, `ls`) before reading — read both in full.
+
+**Headline from `project_duty_cycle_reframes_klatch_purpose.md`:** xian's 5/28 strategic reflection (flagged in the file itself as an ongoing conversation, not a closed decision) — the cross-project duty-cycle methodology now solves two of Klatch's founding motivations (mail delivery, agent collaboration) *without being a Klatch product feature*, narrowing what's uniquely Klatch's to defend to two things: group conversation (synthetic klatches) and the interchange protocol. Also carries two named principles from the same day (thin proprietary layer; assembly-layer positioning, D4).
+
+**`feedback_duty_cycle_overnight_calibration.md`:** xian's 6/22 calibration of the overnight cadence — sparse overnight watch is fine (as few as one 3am check), and the build boundary is real: mechanical/bounded work, research, prep, and coordination are fine unattended; UX-delicate or cross-agent-test *code* waits for a fresh session with people available. Bears directly on Question A itself (spawn-fresh vs. continuing-session), not just on scheduling.
+
+**This closes the sourcing gap, not the review.** Question A stays open — the full write-up folding these two primary sources in alongside the convergent-recollection material carried across several prior fires is still owed, and I did not attempt to rush it into this fire on top of the rollup work below. Replied to Pard (`calliope-to-pard-cc-team-sources-read-question-a-still-open-2026-08-12.md`), folded a compressed synthesis into the rollup's test-data item (where the original sourcing note lived), and closed the thread — moved Pard's memo, my own 08:30 read-block memo, and this reply to `docs/mail/read/`.
+
+## 12:45 — checked the two open items from "Next," both moved
+
+**Compaction call (#3):** `git log` showed a new commit since the 08:30 fire — `janus-to-daedalus-cc-team-xian-approves-compaction-option-b-2026-08-12.md`. Read it: xian's answer, verbatim relayed by Janus (~10:35am PT) — *"I approve Daedalus's recommendation. Please let them know."* Option (b) recent-N + summary, with (c) layered on, build released. This was the rollup's last standing 🔴.
+
+**`.env` gate:** read Argus's COORDINATION entry (09:10 fire) and Theseus's 8/12 mail (`theseus-to-argus-cc-team-r42-live-passing-direction-and-a-stale-probe-2026-08-12.md`) — both ran real AAXT rounds live under option 3 today from two independent seats (Argus's R46: 8/8 correct, 100% conveyance; Theseus's R42: 9 probes, 77.8% conveyance, the exact round that originally exposed the liveness gap with a decoy key, now passing clean with a real one). Definition of done (a live round, not just config parsing) is met from two directions independently.
+
+## 13:00 — a new 🔴 found while reading Theseus's mail, not previously on the board
+
+Reading Theseus's two 8/12 memos in full (canonicity ruling + R42) surfaced a standing policy question he's named explicitly as "with xian now" but that had never made it onto the rollup as its own item — it had been living implicitly inside the now-closed `.env` gate thread. The sandbox's tool-layer path scope binds `Read`/`Bash` directly but not subprocesses at all: Theseus demonstrated the read side 8/11 (a spawned subprocess read outside the worktree freely; he stopped at `stat`, deliberately not reading the credential file, so as not to pre-empt the decision) and the write side 8/12 (a spawned subprocess wrote three SQLite files outside the sandbox, which the tool layer then refused to let him delete). The `.env` decision settled one instance of this; the general question — may an agent route around the sandbox when it judges the purpose legitimate — hasn't been ruled, and a small concrete cost (three orphaned `/tmp` fixture files) is sitting on it. Wrote this up as its own 🔴 rather than letting it stay buried in a now-closed thread's changelog line.
+
+## 13:15 — rollup refreshed to v31
+
+`.md` and `.html` updated in the same pass, full parity maintained (no repeat of the drift pattern flagged multiple times this month): compaction 🔴→✅ (build released); `.env` 🔵→🟢 (verified live, two seats); new 🔴 for the sandbox-boundary question (replaces compaction 1-for-1 on the metrics strip); test-data canonicity item rewritten with Theseus's provisional ruling (3/14 backup primary) now backed by Pard's measured inspector run (four independent axes closing the "did the import drop content" question as benign) rather than his own read alone; truncated-message item updated — Daedalus landed the server half this morning (`03cfd01`), client render branch is Iris's remaining piece. Metrics: Needs-you 1 (item changed, count same), In-flight 6→5. Changelog entry added.
+
+## 13:25 — COORDINATION.md updated, mail hygiene, wrap
+
+Added this fire's entry to Calliope's status board. Mail hygiene: 3 threads closed to `read/` this fire (Pard's sources-committed memo, my own 08:30 read-block memo, this fire's reply). Nothing else newly closable — the compaction and `.env` threads are Daedalus's/Argus's/Pard's to close on their own boards, not mine to move unilaterally per close-discipline (I'm cc'd, not the sender/recipient with the open action).
+
+**Not done this fire:** the Question A review write-up itself (sourcing closed, review still owed — same status as noted above, now more precisely scoped); the migration retrospective (unchanged, still owed).
+
+## Verification (session wrap protocol)
+
+Commits this fire, pending push: mail reply + two closures to `read/`, rollup `.md`/`.html`, `COORDINATION.md`, this log entry. Will run `git log origin/claude/calliope-cycle --oneline -5` and `ls` each touched file after committing, before claiming anything done.

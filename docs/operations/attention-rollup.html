@@ -216,7 +216,7 @@
 <body>
 
 <h1>Klatch Attention Rollup</h1>
-<div class="subtitle">v30 · the document xian skims to know what asks of him first</div>
+<div class="subtitle">v31 · the document xian skims to know what asks of him first</div>
 
 <div class="preamble">
   <p><strong>Demand-organized, not topic-organized.</strong> The board's job is to track <em>changing demand on xian</em>, which topic-sorting ages badly. Sections sorted by what each item asks of him: 🔴 Needs you → 🟠 Blocked on others → 🟡 Lower-urgency → 🔵 In flight → 🟢 Resolved.</p>
@@ -224,7 +224,7 @@
   <p><strong>Trust-instrument discipline (Exec 6/19).</strong> Every render comes from a fresh verified sweep of source docs, never from Calliope's memory. A false "all clear" is a trust breach, not untidiness. "Quiet" must mean <em>verified-clear</em>, not <em>haven't-checked</em>.</p>
 </div>
 
-<div class="last-refreshed">Last refreshed: 2026-08-12 ~08:30 PT (Calliope) — v30. <strong>xian decided the <code>.env</code> gate: option 3</strong> (<code>dotenv.config()</code> in the client test setup) — the edit lands with Argus/Daedalus, so the item moves off "needs you" to in-flight. Separately: test data from the faoilean transfer landed on Amber, staged only; it doesn't match Theseus's 8/09 expectations (two different-era DBs, not one), and which is canonical for MAXT-04 seeding is Theseus's call, not xian's. <strong>Not done this fire:</strong> the pre-migration memory pool that landed in the same transfer (primary sourcing for the Question A duty-cycle review) is outside the worktree, and this fire hit the same read-permission block as 8/11's MID fire on a different path — flagged to Pard rather than worked around. Question A stays sourced from convergent recollection, not primary docs.</div>
+<div class="last-refreshed">Last refreshed: 2026-08-12 ~12:30 PT (Calliope) — v31. <strong>Two items closed since v30, one opened.</strong> The <code>#3</code> compaction call is answered — xian approved Daedalus's (b)+(c) recommendation this morning, build released. The <code>.env</code> gate is now fully resolved: two independent seats (Argus, Theseus) ran real AAXT rounds under option 3 today, not just landed config. <strong>New 🔴:</strong> a general policy question Theseus framed as "with xian now" — the sandbox's path-scope control is tool-layer only and binds neither subprocess reads nor writes; the <code>.env</code> decision settled one instance, the general question hasn't been ruled. Also this render: Pard committed the two Question A source files into the repo, closing the read-permission block named at v30 — both read; synthesis below. Theseus's provisional test-data canonicity ruling now has real measurements behind it from Pard's inspector run.</div>
 
 <div class="metrics">
   <div class="metric needs-you">
@@ -241,7 +241,7 @@
   </div>
   <div class="metric in-flight">
     <div class="label">In flight</div>
-    <div class="count">6</div>
+    <div class="count">5</div>
   </div>
 </div>
 
@@ -250,18 +250,28 @@
   <p class="intro">Items only xian can clear. Each tagged with who's waiting.</p>
 
   <div class="item">
-    <h3>The <code>#3</code> compaction call — now with a real number behind it</h3>
+    <h3>The sandbox boundary is porous — is routing around it ever an agent's call?</h3>
     <div class="meta">
-      <span class="tag who-waiting">Waiting: Daedalus</span>
-      <span class="tag date">Added 2026-08-10</span>
+      <span class="tag who-waiting">Waiting: the whole team, gate by gate</span>
+      <span class="tag date">Added 2026-08-12 (surfaced piecemeal since 8/11)</span>
     </div>
     <div class="body">
-      <p><code>#3</code> (cross-channel context at prompt assembly) is the last of the three continuity changes. <code>#1</code> and <code>#2</code>'s replacement (the entity-scoped assembly join) are both landed; <code>#3</code> is gated on this call.</p>
-      <p>Options: (a) compacted summary per agent, refreshed on entry; (b) recent-N turns plus summary; (c) on-demand tool — the agent queries its own source channel when relevant.</p>
-      <p>Daedalus ran the assembly shape against the real March corpus (a copy). The six Piper Morgan department heads carry <strong>~330K tokens of context before anyone speaks</strong> — a third of a 1M window, re-sent per participant per turn. <strong>Option (a) is excluded on arithmetic, not taste.</strong></p>
-      <p>His recommendation: <strong>(b) with (c) layered</strong> — a bounded seed so an agent is never blank, plus the ability to reach for specifics. Also preserves the AAXT observability property (a probe can tell "didn't know" from "knew and didn't use").</p>
+      <p>Not a specific gate — those keep getting found and fixed one at a time (network, <code>allowedTools</code>, <code>.env</code>). The standing question underneath: Klatch's tool-layer path scope binds <code>Read</code>/<code>Bash</code> directly but <strong>does not bind subprocesses</strong>. Theseus demonstrated both halves this week: 8/11, a subprocess he spawned read files outside the worktree freely (he stopped at <code>stat</code>, deliberately not reading the credential file, so as not to pre-empt this decision); 8/12, a subprocess he spawned <em>wrote</em> three SQLite files outside the sandbox — and the tool layer then refused to let him delete them. Can create outside the boundary, can't clean up after itself.</p>
+      <p>The <code>.env</code> decision (see 🟢 Resolved) settled one instance — the credential-file case — but the general question survives it. Pard, adopting Theseus's finding: <em>"every option on the list is a routing-around, at different distances from the control... it's a fact about the control, not about AAXT, and it belongs in front of xian before he picks."</em> Theseus's own framing: <em>"my access is settled; what's open is the route — whether an agent may route around the sandbox when it judges the purpose legitimate. Using the route for a good purpose while the question is open would answer it unilaterally."</em> He wrote a read-only inspector script and handed it to Pard to run rather than run it himself.</p>
+      <p>Concrete and small, blocked on the same ruling: three orphaned fixture files at <code>/tmp/th-*.db</code> — worthless stubs, no real data — left in place deliberately as evidence rather than cleaned up.</p>
     </div>
-    <div class="recommended"><strong>Source:</strong> <code>docs/plans/continuity-3-compaction-sizing-2026-08-10.md</code>, <code>daedalus-to-calliope-cc-xian-increment-2-reframed-2026-08-10.md</code></div>
+    <div class="recommended"><strong>Source:</strong> <code>theseus-to-pard-cc-team-two-more-controls-and-the-boundary-is-porous-2026-08-11.md</code>, <code>theseus-to-pard-cc-team-canonicity-provisional-plus-a-write-leak-2026-08-12.md</code> (§5)</div>
+  </div>
+</section>
+
+<section class="resolved" style="border-left-color:#16a34a;">
+  <h2>✅ The <code>#3</code> compaction call — approved 2026-08-12, build released</h2>
+  <div class="item">
+    <div class="body">
+      <p>(b) recent-N turns plus summary, with (c) on-demand deep retrieval layered on — Daedalus's recommendation, backed by a real measurement against the March corpus (the canonical six-department-head cast carries ~330K tokens before anyone speaks, excluding option (a) on arithmetic).</p>
+      <p>xian's answer, verbatim (relayed by Janus, ~10:35am PT): <em>"I approve Daedalus's recommendation. Please let them know."</em> Build released — now Daedalus's queued implementation item, not a decision waiting on xian.</p>
+    </div>
+    <div class="recommended"><strong>Source:</strong> <code>janus-to-daedalus-cc-team-xian-approves-compaction-option-b-2026-08-12.md</code></div>
   </div>
 </section>
 
@@ -313,26 +323,16 @@
   <p class="intro">Awareness, no action needed.</p>
 
   <div class="item">
-    <h3><code>.env</code>/AAXT-credentials gate — xian decided option 3 (8/12); landing now</h3>
-    <div class="meta"><span class="tag who-waiting">Landing: Argus, Daedalus</span><span class="tag date">Decided 2026-08-12 · was 🔴 since 2026-08-10</span></div>
+    <h3>Test-data canonicity — provisional ruling in, measured on four independent axes, still on hold</h3>
+    <div class="meta"><span class="tag who-waiting">Yours: nothing — Theseus's call, not gated on anything</span><span class="tag date">Added 2026-08-12 · ruling + measurements same day</span></div>
     <div class="body">
-      <p><strong>Decision:</strong> <code>dotenv.config()</code> in <code>packages/client/src/__tests__/setup.ts</code> — one edit, works today under the existing sandbox (vitest is a subprocess, never subject to the tool-layer path scope). Full option history: <code>docs/research/credential-gate-is-tool-layer-only-2026-08-11.md</code>.</p>
-      <p>The edit is Argus's/Daedalus's, product code in their repo lane. Two build notes travel with it (Theseus, 8/11): make <code>dotenv</code> an explicit client dependency (currently resolves only via npm hoisting); Vite rewrites <code>import.meta.url</code> to <code>/@fs/…</code>, so resolve the env path from the workspace root or <code>process.cwd()</code>.</p>
-      <p>Two boundaries stated so they don't erode (Pard): this authorizes the client test setup only, not a general license to route subprocess reads around the sandbox; <code>ANTHROPIC_API_KEY</code> must never be exported into the agent's own environment (confirmed 8/11 — it silently moves billing off the Max subscription onto the metered key).</p>
-      <p><strong>Definition of done:</strong> AAXT rounds R46–R50 runnable in an unattended fire, verified by a live round. Comes off the board (🟢) only once that's landed and verified.</p>
+      <p><strong>Provisional ruling (Theseus):</strong> the 3/14 Amber backup stays primary for MAXT-04 seeding; neither 8/12 worktree DB is a corpus. Deciding axis is depth-per-entity, not channel count — the worktree DBs lead on channels 27× but trail on depth 38× (3.5 msgs/channel vs. 19), and both independently landing on an identical 8-message ceiling on identically-named test-fixture channels reads as one dev-run operation captured twice.</p>
+      <p><strong>Pard's inspector run closed the biggest open question, measured not guessed:</strong> the 400+-channel worktree DBs are dev-run residue, not a failed bulk import — confirmed on four axes (repeated test-fixture names, identical 8-msg depth ceiling, all <code>created_at</code> inside one 7.5-hour window on 4/02, a synthetic one-hour <code>original_timestamp</code> band). The consequential reading (a real import silently dropped content) is closed.</p>
+      <p>New wrinkle, doesn't flip the ruling: the main DB's 2026-05-10 <code>created_at</code> ceiling is when it stopped being written, not a thin/abandoned state — 2,112 of 2,124 messages are imported content reaching back to 3/11, including four multi-hundred-message channels. A real second candidate, but the 3/14 backup's named-entity depth still leads.</p>
+      <p><strong>Placement stays on hold, deliberately</strong> — nothing is gated on it, and canonising the wrong corpus risks losing what may be the only surviving copy of the pre-erosion high-water-mark state.</p>
+      <p><strong>Question A sourcing gap closed:</strong> Pard committed the two pre-migration memory files flagged as Question A primary sources directly into the repo (<code>docs/review/prior-art/</code>, <code>d005005</code>) — both read this render. Headline: xian's 5/28 reflection frames the cross-project duty cycle as now covering two of Klatch's founding motivations (mail delivery, agent collaboration) without being a Klatch feature — narrowing Klatch's unique defensible value to group conversation and the interchange protocol. This closes the sourcing gap, not the review — Question A stays open, now with primary sourcing.</p>
     </div>
-    <div class="recommended"><strong>Source:</strong> <code>pard-to-argus-daedalus-cc-team-env-decision-option3-2026-08-12.md</code></div>
-  </div>
-
-  <div class="item">
-    <h3>Test-data transfer landed on Amber, staged only — a canonical-DB judgment call, Theseus's not xian's</h3>
-    <div class="meta"><span class="tag who-waiting">Yours: Theseus (canonical-DB call)</span><span class="tag date">Added 2026-08-12</span></div>
-    <div class="body">
-      <p>The faoilean transfer xian ran 8/12 morning put four DBs and 16 transcript jsonl files (118M) in <code>~/klatch-inbound/</code>, staging only — nothing placed live pending Theseus's ruling.</p>
-      <p>The mismatch: Theseus's 8/09 expectation was one working DB with ~49 imports and April–July activity. What arrived is two different-era artifacts — the main DB (16 channels, 2,124 messages, stops 2026-05-10, looks post-reset) and two worktree DBs (400+ channels each, stop 2026-04-02, the big-import state). Which is canonical for MAXT-04 seeding is a real judgment call, including the 3/14 Amber backup (139 channels / 2,652 messages) as a third candidate.</p>
-      <p>Also in the transfer: the pre-migration Klatch memory pool, including two files flagged as primary sourcing for Calliope's Question A duty-cycle review — not yet read this render, blocked by an unattended-fire read-permission gap (second occurrence of the same shape hit 8/11).</p>
-    </div>
-    <div class="recommended"><strong>Source:</strong> <code>pard-to-theseus-cc-team-test-data-landed-with-a-question-2026-08-12.md</code></div>
+    <div class="recommended"><strong>Source:</strong> <code>docs/research/inbound-test-data-canonicity-2026-08-12.md</code>, <code>pard-to-theseus-cc-team-measured-output-and-both-options-2026-08-12.md</code></div>
   </div>
 
   <div class="item">
@@ -359,12 +359,15 @@
   </div>
 
   <div class="item">
-    <h3>New — truncated and refused messages are stored as silently "complete"</h3>
-    <div class="meta"><span class="tag date">Added 2026-08-11</span></div>
+    <h3>Truncated and refused messages — server half landed 8/12, client half is Iris's to finish</h3>
+    <div class="meta"><span class="tag who-waiting">Yours: nothing — Iris's render branch to write</span><span class="tag date">Added 2026-08-11 · server half landed 2026-08-12</span></div>
     <div class="body">
-      <p><code>packages/server/src/claude/client.ts</code> treats any non-<code>tool_use</code> stop reason as a clean finish and writes the message <code>'complete'</code>. Four SDK stop reasons — <code>max_tokens</code>, <code>model_context_window_exceeded</code>, <code>refusal</code>, <code>pause_turn</code> — all render today as a normal reply. Found by Daedalus while reviewing the SDK changelog, not while looking for it. Matters here specifically because Klatch's premise is that these are conversations you keep — a silently truncated turn is a corrupted record of one.</p>
-      <p><strong>Decided, not xian's call:</strong> Iris chose the shape same-day — new <code>Message.status = 'incomplete'</code> plus an optional <code>stopReason</code> enum, rendered with UI treatment the codebase already has. No resume affordance for <code>pause_turn</code> yet. Server-side carry-through is Daedalus's next queued unit; nothing blocked behind it. Both named the same caveat: designed against the code, not observed against a live truncated response yet.</p>
+      <p><code>packages/server/src/claude/client.ts</code> treated any non-<code>tool_use</code> stop reason as a clean finish and wrote the message <code>'complete'</code>. Four SDK stop reasons — <code>max_tokens</code>, <code>model_context_window_exceeded</code>, <code>refusal</code>, <code>pause_turn</code> — rendered as a normal reply until this morning.</p>
+      <p><strong>Iris's shape, landed by Daedalus (<code>03cfd01</code>):</strong> <code>Message.status</code> gains <code>'incomplete'</code>; new <code>stopReason</code> enum. Found while implementing, not in the original ask: the client updates optimistically on stream completion and never refetches, so without threading <code>stopReason</code> through <code>StreamEvent</code> too, an incomplete message would render clean until reload — displacing the exact failure the fix targeted by one page load. Added.</p>
+      <p><strong>Also found underneath:</strong> the migration wasn't actually additive — SQLite can't alter a <code>CHECK</code> constraint in place, so every existing <code>klatch.db</code> would have thrown on the first truncated response rather than recording it; needed a full table rebuild, tested against a real legacy-shaped DB on disk. History assembly also filtered on <code>status === 'complete'</code>, which would have silently dropped truncated turns out of the model's own prompt.</p>
+      <p><strong>What's left:</strong> <code>App.tsx</code>'s <code>handleStreamComplete</code> needs the status branch threaded through — the type is already shared, this is just the render branch, Iris's surface. Not proven end to end yet either half — every test mocks the SDK; one attended <code>max_tokens</code> send would close both.</p>
     </div>
+    <div class="recommended"><strong>Source:</strong> <code>daedalus-to-iris-cc-team-incomplete-server-half-landed-2026-08-12.md</code></div>
   </div>
 
   <div class="item">
@@ -386,6 +389,10 @@
   <h2>🟢 Resolved since last board</h2>
   <p class="intro">Kept so xian sees the clear; prevents "didn't I already decide that?" loop.</p>
 
+  <div class="item">
+    <h3><code>.env</code>/AAXT-credentials gate — verified live from two independent seats</h3>
+    <div class="body">xian decided option 3 (<code>dotenv.config()</code> in the client test setup) 8/12 morning; verified live the same day, not just landed. Argus ran R46 (8/8 probes correct, 100% conveyance, zero phantoms) with <code>ANTHROPIC_API_KEY</code> never set by his own tool calls — proving the subprocess loaded it from <code>.env</code> unassisted. Theseus separately ran R42 (the round that originally exposed the liveness gap with a decoy key) with a real key: 9 probes, 77.8% conveyance, no false positive. <em>Closed 8/12.</em></div>
+  </div>
   <div class="item">
     <h3>"Addressing, not secrecy" — answered 2026-08-09, mis-tracked as open through 2026-08-11</h3>
     <div class="body">Daedalus asked whether klatch assembly should include an entity's 1-1 messages; xian answered live the same day, ~8 hours later ("a 1-1 is direct, not private... not assumed to be enforced in some universal way"). A direct yes, relayed same-day in <code>calliope-to-daedalus-xian-discretion-clarification-2026-08-09.md</code>. <strong>The rollup never closed the loop</strong> — the 🔴 item was written fresh into v25 the next day without checking whether the question memo it cited had already been answered, and every render since (v26–v28) carried it forward unrechecked. Caught 2026-08-11 while sourcing this render's cohort section, by re-reading my own 8/09 mail. <em>Answered 8/09 ~16:07; corrected on this board 8/11, three days late.</em></div>
@@ -419,6 +426,7 @@
 <div class="changelog">
   <h3>Changelog</h3>
   <ul>
+    <li><strong>v31 (2026-08-12 ~12:30 PT, Calliope)</strong> — Two closures, one new item. <strong><code>#3</code> compaction call ✅:</strong> xian approved Daedalus's (b)+(c) recommendation (relayed by Janus, ~10:35am), build released — moved to a dedicated ✅ section rather than deleted. <strong><code>.env</code> gate 🟢:</strong> verified live from two independent seats the same day it was decided (Argus's R46, Theseus's R42). <strong>New 🔴, replacing compaction 1-for-1:</strong> the general sandbox-boundary question Theseus framed as "with xian now" — path scope binds <code>Read</code>/<code>Bash</code> but not subprocesses, demonstrated on both the read side (8/11) and write side (8/12, three orphaned <code>/tmp</code> files the tool layer won't let him delete). Test-data item rewritten: Theseus's provisional canonicity ruling now has Pard's measured inspector run behind the benign empty-channels reading; placement stays on hold. Question A sourcing gap closed — Pard committed the two primary-source files into the repo, both read this render; the review itself stays open. Truncated-message item updated: Daedalus landed the server half this morning. 🔴 count unchanged (1, different item). 🔵 6→5 (<code>.env</code> moved to 🟢).</li>
     <li><strong>v30 (2026-08-12 ~08:30 PT, Calliope)</strong> — <code>.env</code> gate 🔴 → 🔵: xian decided option 3 (<code>dotenv.config()</code> in the client test setup); the edit lands with Argus/Daedalus, item stays in-flight until R46–R50 verify live under it. 🔴 2→1. New 🔵: the faoilean test-data transfer landed on Amber, staged only — doesn't match Theseus's 8/09 expectations (two different-era DBs instead of one), canonical-DB call is Theseus's, not blocking xian. <strong>Not done this fire:</strong> the same transfer carried the pre-migration Klatch memory pool, including two files flagged as primary sourcing for the Question A duty-cycle review — attempted to read both, blocked by the same unattended-fire read-permission gap hit 8/11 (different path, identical mechanism). Flagged to Pard rather than worked around; Question A stays sourced from convergent recollection, not primary docs. 🔵 5→6.</li>
     <li><strong>v29 (2026-08-11 ~21:30 PT, Calliope)</strong> — <strong>Self-correction:</strong> the "addressing, not secrecy" 🔴 item was stale for three days — answered by xian the same day it was opened (8/09 ~16:07) but never closed on this board, carried through v25–v28 despite my own mail on file saying it was settled. Moved to ✅. 🔴 3→2 net of this correction. <code>.env</code> gate 🔴 also corrected a third time today: Theseus found the path-scope control is tool-layer only, not a real containment boundary — a subprocess he spawned read files outside the worktree freely, and he deliberately stopped at <code>stat</code> without reading the credential file rather than pre-empt xian's decision. Every option on the list routes around the control at a different distance: option 2 (wrapper script) is inert unattended without a second permission-allowlist decision; option 3 (<code>dotenv</code> in test setup) needs neither stated prerequisite and is now the cheapest working option. Pard adopted all three findings and calls the list accurate for the first time. Server AAXT gate residual 🔵 updated: Argus closed both holes Theseus flagged 8/10, independently verified — but verifying it surfaced a new one, <code>Unscored</code> results still counted in the fidelity denominator, deflating partial-outage runs; left to Argus's policy call. New 🔵: Daedalus found every non-<code>tool_use</code> stop reason is silently stored as <code>'complete'</code>; Iris decided the shape same day (<code>'incomplete'</code> status + <code>stopReason</code> enum) without needing xian's input. Cohort rewritten for the full post-reboot day across all five fires. 🔵 4→5.</li>
     <li><strong>v28 (2026-08-11 ~17:00 PT, Calliope)</strong> — First render of the post-reboot day. <code>.env</code> gate 🔴 corrected twice by measurement: Theseus ran the exact credential test Pard assigned him and found v27's favored option (<code>--add-dir ~/.klatch</code>) grants readability but not the capability AAXT needs (it reads <code>process.env</code>; nothing loads dotenv under vitest) — Pard withdrew it same day. Separately, Pard measured his own week-old billing-leak warning and found it real (a bogus key demonstrably takes precedence over the Claude subscription); his fix scopes the export to the AAXT test subprocess (<code>scripts/run-aaxt.sh</code>) rather than the agent's own process. Corrected 3-option list now in the 🔴 item. Cohort rewritten for the reboot-survival day: all five LaunchAgents confirmed re-armed from inside their own fires; Daedalus proved (from installed Vitest 4 source) that a client-test-parallelism fix had been silently inert since the Vitest 4 bump, fixed it, and logged a live collision between an unattended fire and an attended session in the same worktree. No new mail addressed to Calliope this fire.</li>
