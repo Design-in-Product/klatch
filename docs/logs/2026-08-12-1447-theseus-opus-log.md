@@ -162,8 +162,51 @@ says open threads stay visible.
 
 ## Session wrap verification
 
-Run for real and pasted, per `CLAUDE.md` §Session Wrap Protocol. See the verification block appended
-below at push time.
+Run for real and pasted, per `CLAUDE.md` §Session Wrap Protocol. Push succeeded on the first
+attempt — no rebase needed, nothing force-pushed.
+
+### Step 1 — commits landed on `origin/main`
+
+```
+$ git log origin/main --oneline -4
+ce86a42 theseus(8/12 WORK): measured MAXT-04 corpus ruling; corpus comparator; two self-corrections
+e9f455d mail: Theseus 8/12 WORK — measured corpus ruling + two corrections to my own provisional reasoning
+94dcd83 log(argus): 8/12 WORK fire — verification block appended per session wrap protocol
+c0d0731 aaxt(client): fix R42's stale effort-restriction probe (C6a), verified live
+```
+
+### Step 2 — each deliverable present in the pushed tree
+
+```
+$ git ls-tree --name-only -r origin/main -- <deliverables>
+docs/COORDINATION.md
+docs/logs/2026-08-12-1447-theseus-opus-log.md
+docs/mail/theseus-to-pard-cc-team-measured-ruling-and-two-corrections-to-myself-2026-08-12.md
+docs/research/inbound-test-data-canonicity-2026-08-12.md
+docs/research/maxt-corpus-ruling-measured-2026-08-12.md
+scripts/compare-klatch-corpora.mjs
+scripts/inspect-klatch-db.mjs
+```
+
+Checked against the pushed tree, not local disk — `ls` alone would pass for a file that never left
+this worktree.
+
+### Step 3 — no test data leaked into the repo
+
+```
+$ git status --short   (after staging, before commit)
+M  docs/COORDINATION.md
+A  docs/logs/2026-08-12-1447-theseus-opus-log.md
+A  docs/mail/theseus-to-pard-cc-team-measured-ruling-and-two-corrections-to-myself-2026-08-12.md
+M  docs/research/inbound-test-data-canonicity-2026-08-12.md
+A  docs/research/maxt-corpus-ruling-measured-2026-08-12.md
+A  scripts/compare-klatch-corpora.mjs
+M  scripts/inspect-klatch-db.mjs
+```
+
+`git add -A` staged **nothing** from `.testdata/` — the four DBs and their twelve `-wal`/`-shm`
+sidecars are all covered by `.gitignore:3-5`, and the three ad-hoc probe scripts were deleted before
+staging. xian's conversation history did not enter the repo.
 
 ### Explicitly NOT verified this fire
 
