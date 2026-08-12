@@ -195,6 +195,16 @@ export async function runAAXT(
   const subliminalCount = layerResults.reduce((sum, l) => sum + l.subliminal, 0);
   const unscoredCount = layerResults.reduce((sum, l) => sum + l.unscored, 0);
   const correctCount = layerResults.reduce((sum, l) => sum + l.correct + l.reconstructed, 0);
+  // Probes that actually received a behavioral reading. `totalScored` counts
+  // every result including `Unscored` ones, so it isn't safe to divide by —
+  // see docs/research/aaxt-partial-judge-outage-2026-08-11.md.
+  const scoredCount = totalScored - unscoredCount;
+  // Below this fraction, too few of this run's results are real readings to
+  // trust a ratio computed over them — a partial judge outage (some probes
+  // Unscored, not all) must not let a lucky few reads report 'high'. The
+  // direction stays conservative: cap down to 'low', never invent a false
+  // 'high'/'medium'. Floor is a policy call, not a measured constant.
+  const MIN_SCORED_FRACTION = 0.5;
 
   let overallFidelity: 'high' | 'medium' | 'low' | 'failed';
   if (phantomCount > 0) {
@@ -211,9 +221,11 @@ export async function runAAXT(
     // no reading exists, which is a failure to produce a result, not a
     // low-fidelity result.
     overallFidelity = 'failed';
-  } else if (correctCount / totalScored >= 0.8) {
+  } else if (scoredCount / totalScored < MIN_SCORED_FRACTION) {
+    overallFidelity = 'low';
+  } else if (correctCount / scoredCount >= 0.8) {
     overallFidelity = 'high';
-  } else if (correctCount / totalScored >= 0.5) {
+  } else if (correctCount / scoredCount >= 0.5) {
     overallFidelity = 'medium';
   } else {
     overallFidelity = 'low';

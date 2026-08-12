@@ -264,6 +264,78 @@ describe('AAXT Phase 2 — runAAXT pipeline', () => {
     expect(result.summary.unscoredCount).toBe(result.summary.totalScored);
     expect(result.summary.overallFidelity).toBe('failed');
   });
+
+  it('reports the honest ratio over actually-scored probes when a judge outage is partial', async () => {
+    // 4 probes on one layer; the judge throws on the 4th scoring call only.
+    // Pre-fix: totalScored (4) was the denominator, reporting 0.75 → 'medium'.
+    // Fixed: the honest ratio is 3/3 scored-correct = 1.0 → 'high'.
+    let scoringCall = 0;
+    mockQueryAuxiliary.mockImplementation(async (_system: string, user: string) => {
+      if (user.includes('Generate') || user.includes('generate') || user.includes('test questions')) {
+        return mockProbeGeneration(
+          'L2',
+          [1, 2, 3, 4].map((n) => ({ question: `Probe ${n}?`, expectedAnswer: 'TypeScript', directness: 'direct' })),
+        );
+      }
+      scoringCall++;
+      if (scoringCall === 4) throw new Error('Anthropic API error (401): judge outage (simulated flap)');
+      return mockScoringResponse('Correct', 0.9, 'Response matches expected answer.');
+    });
+
+    const result = await runAAXT(
+      'test-ch',
+      'system prompt',
+      'claude-opus-4-6',
+      'high',
+      {
+        '1_kitBriefing': 'INACTIVE',
+        '2_projectInstructions': 'ACTIVE — test',
+        '3_projectMemory': 'INACTIVE',
+        '4_channelAddendum': 'EMPTY',
+        '5_entityPrompt': 'INACTIVE',
+      },
+    );
+
+    expect(result.summary.totalScored).toBe(4);
+    expect(result.summary.unscoredCount).toBe(1);
+    expect(result.summary.overallFidelity).toBe('high');
+  });
+
+  it('caps fidelity at low when fewer than half of a run\'s results are actual readings', async () => {
+    // 4 probes on one layer; the judge throws on 3 of 4 scoring calls, the
+    // one that gets through scores Correct. scoredCount/totalScored = 0.25,
+    // below the floor — must not report 'high' on the strength of one read.
+    let scoringCall = 0;
+    mockQueryAuxiliary.mockImplementation(async (_system: string, user: string) => {
+      if (user.includes('Generate') || user.includes('generate') || user.includes('test questions')) {
+        return mockProbeGeneration(
+          'L2',
+          [1, 2, 3, 4].map((n) => ({ question: `Probe ${n}?`, expectedAnswer: 'TypeScript', directness: 'direct' })),
+        );
+      }
+      scoringCall++;
+      if (scoringCall <= 3) throw new Error('Anthropic API error (401): judge outage (simulated flap)');
+      return mockScoringResponse('Correct', 0.9, 'Response matches expected answer.');
+    });
+
+    const result = await runAAXT(
+      'test-ch',
+      'system prompt',
+      'claude-opus-4-6',
+      'high',
+      {
+        '1_kitBriefing': 'INACTIVE',
+        '2_projectInstructions': 'ACTIVE — test',
+        '3_projectMemory': 'INACTIVE',
+        '4_channelAddendum': 'EMPTY',
+        '5_entityPrompt': 'INACTIVE',
+      },
+    );
+
+    expect(result.summary.totalScored).toBe(4);
+    expect(result.summary.unscoredCount).toBe(3);
+    expect(result.summary.overallFidelity).toBe('low');
+  });
 });
 
 // ── Route tests ──────────────────────────────────────────────
