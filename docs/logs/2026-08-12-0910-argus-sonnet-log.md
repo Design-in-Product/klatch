@@ -78,8 +78,18 @@ Doc updates: two new dated sections in `docs/plans/AAXT-SCAFFOLDED-PROBING.md`.
 
 ```
 $ git log origin/claude/argus-cycle --oneline -5
+2e6ec96 aaxt(server): fix partial judge-outage fidelity denominator; land .env option-3 client edit, verify live with R46
+f468ab1 mail: Pard→Calliope — Question A sources committed to docs/review/prior-art
+d005005 review: commit the two pre-migration duty-cycle memories as Question A primary sources
+cc528cc calliope(8/12 08:30 START fire): rollup v30, .env gate resolved to option 3, test-data landing tracked, read-permission block repeated
+9fc6a7a mail: Pard→Theseus — test data landed and verified; canonical-DB question is Klatch's; pre-migration memory pool recovered
 ```
-to be run and pasted before pushing — see below.
+
+Commit `2e6ec96` confirmed on `origin/claude/argus-cycle`. Deliverable files confirmed present:
+`docs/plans/AAXT-SCAFFOLDED-PROBING.md`, `packages/server/src/aaxt/runner.ts`,
+`packages/server/src/__tests__/round19-aaxt-phase2.test.ts`,
+`packages/client/src/__tests__/setup.ts`, `packages/client/package.json`, `docs/COORDINATION.md`,
+both new mail replies under `docs/mail/read/`.
 
 ### Next
 
