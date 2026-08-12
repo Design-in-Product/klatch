@@ -42,21 +42,28 @@ const describeIfEnabled = ENABLED ? describe : describe.skip;
 
 // ── Mock useModels (avoids network fetch, returns static fallback) ──
 
+// Includes DEFAULT_MODEL ('claude-opus-5', see @klatch/shared) so the create
+// form's pre-selected model is always present in its own picker — omitting it
+// silently disabled the effort-restriction probe (C6a) by leaving `discovered`
+// undefined, which degrades to "nothing is restricted" (EntityManager.tsx's
+// unknown-model fallback). Found live 2026-08-12 (docs/research/aaxt-r42-live-and-a-stale-probe-2026-08-12.md).
 vi.mock('../hooks/useModels', () => ({
   useModels: () => ({
     models: [
+      { id: 'claude-opus-5', displayName: 'Claude Opus 5', maxOutputTokens: 16384, capabilities: { thinking: true, effort: ['low', 'medium', 'high', 'xhigh', 'max'], compaction: false } },
       { id: 'claude-opus-4-7', displayName: 'Claude Opus 4.7', maxOutputTokens: 16384, capabilities: { thinking: true, effort: ['low', 'medium', 'high', 'xhigh'], compaction: false } },
       { id: 'claude-opus-4-6', displayName: 'Claude Opus', maxOutputTokens: 16384, capabilities: { thinking: true, effort: ['low', 'medium', 'high', 'max'], compaction: false } },
       { id: 'claude-sonnet-4-6', displayName: 'Claude Sonnet', maxOutputTokens: 16384, capabilities: { thinking: false, effort: ['low', 'medium', 'high'], compaction: false } },
       { id: 'claude-haiku-4-5-20251001', displayName: 'Claude Haiku', maxOutputTokens: 8192, capabilities: { thinking: false, effort: ['low', 'medium'], compaction: false } },
     ],
     loading: false,
-    defaultModel: 'claude-opus-4-7',
+    defaultModel: 'claude-opus-5',
     aliases: {},
     source: 'fallback',
   }),
   getModelLabel: (id: string) => {
     const labels: Record<string, string> = {
+      'claude-opus-5': 'Opus 5',
       'claude-opus-4-7': 'Opus 4.7',
       'claude-opus-4-6': 'Opus',
       'claude-sonnet-4-6': 'Sonnet',
@@ -380,8 +387,14 @@ const PROBES: EntityManagerProbe[] = [
     id: 'C6a',
     claim: 'C6-effort-restricted',
     category: 'effort-restriction',
-    question: 'In the Effort section, buttons labeled "xhigh" and "max" appear disabled and have titles like "xhigh effort is Opus 4.7 only" or "Max effort is Opus only". What does this communicate?',
-    expectedAnswer: 'Certain effort levels only work with specific models — xhigh requires Opus 4.7, max requires an Opus model',
+    // Question intentionally does not quote titles verbatim — the disabled
+    // title is generic ("<level> effort is not available on this model",
+    // EntityManager.tsx:296-298) since 38bcebf replaced the old hardcoded,
+    // model-naming strings. A probe that quotes UI literals goes stale the
+    // next time those literals change without failing anything; see
+    // docs/research/aaxt-r42-live-and-a-stale-probe-2026-08-12.md.
+    question: 'In the Effort section, the "xhigh" and "max" buttons appear disabled (greyed out) with a title explaining they are not available on the currently selected model. What does this communicate?',
+    expectedAnswer: 'Certain effort levels are unavailable for the currently selected model — a different model would need to be selected to use them',
     requiresCreate: true,
   },
   {
@@ -463,7 +476,7 @@ describeIfEnabled('Round 42 — UI-as-context AAXT (EntityManager)', () => {
     // ── State B: Create form open ─────────────────────────────
 
     {
-      const { container, getByText } = render(
+      const { container, getByText, getByRole } = render(
         <EntityManager
           entities={SAMPLE_ENTITIES}
           onCreateEntity={() => {}}
@@ -474,6 +487,16 @@ describeIfEnabled('Round 42 — UI-as-context AAXT (EntityManager)', () => {
       );
 
       await user.click(getByText('New agent'));
+
+      // Select a model with a restricted effort ladder (Sonnet: low/medium/
+      // high only) so the Effort section actually renders a disabled state
+      // for C6a to probe. The default model (Opus 5) carries the full
+      // ladder and disables nothing — probing against it would make C6a
+      // Absent for a legitimate reason, not because the model dropped a
+      // literal string. getByRole (not getByText) because SAMPLE_ENTITIES
+      // already has a Sonnet-model agent, whose roster badge also reads
+      // "Sonnet". See docs/research/aaxt-r42-live-and-a-stale-probe-2026-08-12.md.
+      await user.click(getByRole('button', { name: 'Sonnet' }));
 
       const snapshotCreate = snapshotDom(container);
 

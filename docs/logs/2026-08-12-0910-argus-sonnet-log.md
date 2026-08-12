@@ -94,3 +94,76 @@ both new mail replies under `docs/mail/read/`.
 ### Next
 
 Nothing else queued. `docs/COORDINATION.md` Argus section updated in the same push.
+
+## ~13:35 PDT (WORK fire)
+
+`git pull` clean, already up to date with origin/main (Daedalus's continuity-#3 layer-6 work had
+landed since my last fire — read for awareness, no action needed on it). Mail sweep: one new item
+addressed to Argus, `theseus-to-argus-cc-team-r42-live-passing-direction-and-a-stale-probe-2026-08-12.md`
+(filed 13:30, after my 09:10 fire).
+
+### Work — R42's stale probe: two compounding bugs, fixed and verified live
+
+Theseus ran R42 live from his own unattended seat (my morning's `.env` option-3 landing made it
+possible for him too) — independent confirmation of the liveness gate's passing direction, and one
+unexpected `Absent` on probe C6a (effort-restriction). Read his full write-up
+(`docs/research/aaxt-r42-live-and-a-stale-probe-2026-08-12.md`): C6a quoted pre-`38bcebf` hardcoded
+title strings ("xhigh effort is Opus 4.7 only") that Daedalus's effort-ladder-discovery fix replaced
+with a generic string. `Absent` was the correct classification of a probe describing UI that no
+longer exists — third instance of the "probes quote UI literals, drift silently when the UI
+changes" class this cycle (R36 C7, R38's stale comment, now this).
+
+Took it as mine to fix — round 42 traces to `mediajunkie` originally but I've been the one landing
+the taxonomy work across all 12 AAXT rounds, and Theseus's memo explicitly left it "for the round
+owner" rather than deciding unilaterally.
+
+Read `EntityManager.tsx:279-298` before touching anything. Found the fix needed two changes, not
+one:
+
+1. `round42`'s mocked `useModels()` list omitted `claude-opus-5` (`DEFAULT_MODEL`) entirely — so the
+   create form's pre-selected model was never in its own picker, and `EntityManager`'s
+   unknown-model fallback (`isDisabled = false` when `discovered` is undefined) meant *nothing*
+   could ever render disabled, independent of how C6a was worded. Added `claude-opus-5` to the mock
+   with its real capabilities (full 5-level effort ladder, matching the server's
+   `FIVE_LEVEL_EFFORT` set in `routes/models.ts`).
+2. Even with that fixed, Opus 5 itself has the full ladder and disables nothing — so probing the
+   *default* selection for "what does disabled communicate" would still never render the state in
+   question. Added `await user.click(getByRole('button', { name: 'Sonnet' }))` before the
+   create-state DOM snapshot (Sonnet's mocked ladder stops at `high`, so xhigh/max render disabled
+   with the real generic title). First attempt used `getByText('Sonnet')` and failed —
+   `SAMPLE_ENTITIES` already has an agent on the Sonnet model, so its roster badge also reads
+   "Sonnet" and the query was ambiguous. Fixed with `getByRole('button', ...)` to scope to the
+   picker specifically, caught by running the test rather than assuming it would work.
+3. Rewrote C6a's question/expected-answer to describe the disabled-state pattern generically
+   instead of quoting the (now-removed) literal title strings — same principle Theseus's memo named,
+   applied to the probe he flagged.
+
+**Verified live before writing any of this down as done** — same round, same file, real key
+(`npx cross-env RUN_UI_AAXT=1 npx vitest run --root packages/client
+packages/client/src/__tests__/round42-entity-manager-aaxt.test.tsx`, adopting Theseus's tip over
+my morning's `node -e` wrapper): C6a scored `[Correct] (0.98)`, round improved from his 9/2-Absent/
+77.8% to **9/9 zero-Absent/100% conveyance**. One live round spent this fire, same discipline as
+Theseus's one-round-per-fire this morning.
+
+Full suite re-verified after the fixture edit: `npm test` **1199 server / 212 client, exit 0**
+(server count unchanged — this was a client-test-fixture-only change); `npm run typecheck` clean
+across all three workspaces.
+
+### Doc + mail
+
+New section in `docs/plans/AAXT-SCAFFOLDED-PROBING.md` naming the "probes quote UI literals, drift
+silently" failure class across all three instances, and recording the `cross-env` invocation.
+Explicitly did not audit the other 11 rounds for the same drift — flagged as a future round if the
+class recurs a fourth time, not guessed at now.
+
+Reply filed: `argus-to-theseus-cc-team-r42-stale-probe-fixed-2026-08-12.md`. Closed four files to
+`docs/mail/read/` together: both liveness-gap memos (8/10 original + 8/12 follow-up) and both of my
+replies (the 8/10 unscored-taxonomy-landed reply, which was part of the same thread, and today's).
+No open action remains on either thread. Items in Theseus's memo addressed to Daedalus (fixture
+drift note — folded into my fix above), Iris (legibility design call), and xian (cadence-ceiling
+question) left untouched — correctly scoped to them, not mine to answer.
+
+### Verification (per Session Wrap Protocol)
+
+Commits not yet pushed at time of writing this entry — will confirm `git log origin/...` and file
+presence before the final push in this same fire, per protocol.

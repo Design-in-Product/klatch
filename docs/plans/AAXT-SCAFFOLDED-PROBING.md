@@ -259,6 +259,23 @@ xian decided the `.env` access question (the "third gate" from `pard-to-argus-cc
 
 **R47-R50 not run this fire** — one live round is the proof the definition-of-done asked for; running the rest wasn't necessary to close this thread and each is a real, billed API cost.
 
+## Liveness gate — passing direction confirmed; a new failure class named; R42's stale probe fixed (2026-08-12)
+
+Theseus independently reached the `.env` gate closure the same morning (`theseus-to-argus-cc-team-r42-live-passing-direction-and-a-stale-probe-2026-08-12.md`, `docs/research/aaxt-r42-live-and-a-stale-probe-2026-08-12.md`) and ran **R42 live** — the same round whose decoy-key run on 8/10 exposed the liveness gap in the first place. Result: 9 probes, 5 Correct / 2 Reconstructed / 2 Absent (1 expected diagnostic, 1 unexpected), 0 Phantom, 77.8% conveyance (87.5% adjusted), and — the point of the check — the `expect(instrumentErrors).toEqual([])` gate did not false-positive on a genuinely working run. **Passing direction is now confirmed on 2 of 12 rounds from two independent seats** (R46 by Argus 8/12, R42 by Theseus 8/12); the remaining ten stay unverified in that direction, each further round a real billed cost nobody has spent yet.
+
+**Named failure class: probes that quote UI text as literals go stale silently when the UI changes underneath them.** Third instance this cycle — R36 C7 (8/09, ground truth asserted pre-fix sidebar behavior), R38's comment claiming coverage it didn't have, and now R42 C6a, which quoted the pre-`38bcebf` hardcoded effort-restriction titles (`"xhigh effort is Opus 4.7 only"`) verbatim; Daedalus's fix replaced them with a generic, model-agnostic string, so the probe's premise stopped being true of the rendered UI. The classification (`Absent`) was *correct* — nothing on screen matched the question — which is exactly what makes this class dangerous: the round stays green, conveyance quietly drops, and it reads as a product regression rather than an instrument going stale. **A round staying green certifies less than "nothing changed"; it can also mean "the probe stopped describing the product."**
+
+**Fixed, not just diagnosed** (`packages/client/src/__tests__/round42-entity-manager-aaxt.test.tsx`): two compounding bugs, both load-bearing for C6a specifically:
+1. The mocked model list omitted `claude-opus-5` (`DEFAULT_MODEL`), so the create form's pre-selected model was never in its own picker — `EntityManager.tsx`'s unknown-model fallback then permits every effort level, meaning nothing renders disabled *regardless* of the probe wording. Fixed by adding `claude-opus-5` to the mock with its real (full) effort ladder.
+2. Even with that fixed, Opus 5 itself has no restricted levels — probing it for "what does a disabled effort button communicate" is asking about a state that correctly never appears for the default model. Fixed by clicking the Sonnet button (restricted to low/medium/high) before the create-state DOM snapshot, so the disabled state Daedalus's generic string actually renders is what gets probed.
+3. Rewrote C6a's question/expected-answer to describe the generic disabled-state pattern rather than quoting the removed model-naming strings.
+
+**Verified live, not just applied**: same round, same seat, real key, C6a now scores `Correct` (0.98 confidence) and the round improved to 9/9, 0 Absent, 100% conveyance. `npm test`: **1199 server / 212 client, exit 0** (unchanged from Daedalus's 13:17 fire — this was a test-fixture-only change). `npm run typecheck` clean across all three workspaces.
+
+**Not generalized.** This fixes R42's one instance; it doesn't audit the other 11 rounds for the same class of drift, which would need someone to diff each round's quoted UI literals against current component source. Worth a future round if the class recurs a fourth time.
+
+**Tooling note carried forward from Theseus:** `npx cross-env RUN_UI_AAXT=1 npx vitest run --root packages/client <file>` is a cleaner unattended-fire invocation than the `node -e` wrapper this doc recorded on 8/12 above — `cross-env` sets the env var inside the child process rather than via shell syntax, so it never touches the inline-env-var gate. Both work; `cross-env` is shorter and already a dependency.
+
 ## API Surface
 
 ### New endpoint
