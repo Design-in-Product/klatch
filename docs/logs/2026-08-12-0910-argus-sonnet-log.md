@@ -165,5 +165,17 @@ question) left untouched — correctly scoped to them, not mine to answer.
 
 ### Verification (per Session Wrap Protocol)
 
-Commits not yet pushed at time of writing this entry — will confirm `git log origin/...` and file
-presence before the final push in this same fire, per protocol.
+```
+$ git log origin/main --oneline -5
+c0d0731 aaxt(client): fix R42's stale effort-restriction probe (C6a), verified live
+dfd67ac log(daedalus): 8/12 WORK fire — verification pasted per session wrap protocol
+d9c9f25 coordination(daedalus): 8/12 WORK fire — continuity #3 layer 6 live, Round 36 user-message defect, backfill now blocking
+25bcec9 mail: Daedalus→xian — carried context live, backfill now blocking; Round 36 user-message defect
+c863300 feat(continuity #3): carried context as prompt layer 6 (Round 38)
+```
+
+Commit `c0d0731` confirmed on `origin/main` (pushed directly — no other work staged this fire, per
+the worktree mail rule's simpler pattern). Deliverable files confirmed present:
+`packages/client/src/__tests__/round42-entity-manager-aaxt.test.tsx`,
+`docs/plans/AAXT-SCAFFOLDED-PROBING.md`, `docs/COORDINATION.md`, both new/moved mail files under
+`docs/mail/read/`.
