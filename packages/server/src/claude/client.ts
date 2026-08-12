@@ -639,7 +639,13 @@ async function streamClaudeCore(
         continue;
       }
 
-      // stop_reason is 'end_turn' or 'max_tokens' — done
+      // Anything other than 'tool_use' ends the loop and the message is stored
+      // 'complete'. That is right for 'end_turn' and 'stop_sequence'; it silently
+      // launders every truncating or aborting reason the API can return —
+      // 'max_tokens', 'refusal', 'pause_turn', 'model_context_window_exceeded'
+      // (added in SDK 0.114) — into a message that looks normally finished.
+      // Known gap, not a fix: surfacing it needs a message status the client can
+      // render. Tracked in docs/COORDINATION.md (Daedalus, 8/11).
       break;
     }
 
