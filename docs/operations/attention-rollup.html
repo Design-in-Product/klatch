@@ -216,7 +216,7 @@
 <body>
 
 <h1>Klatch Attention Rollup</h1>
-<div class="subtitle">v29 · the document xian skims to know what asks of him first</div>
+<div class="subtitle">v30 · the document xian skims to know what asks of him first</div>
 
 <div class="preamble">
   <p><strong>Demand-organized, not topic-organized.</strong> The board's job is to track <em>changing demand on xian</em>, which topic-sorting ages badly. Sections sorted by what each item asks of him: 🔴 Needs you → 🟠 Blocked on others → 🟡 Lower-urgency → 🔵 In flight → 🟢 Resolved.</p>
@@ -224,12 +224,12 @@
   <p><strong>Trust-instrument discipline (Exec 6/19).</strong> Every render comes from a fresh verified sweep of source docs, never from Calliope's memory. A false "all clear" is a trust breach, not untidiness. "Quiet" must mean <em>verified-clear</em>, not <em>haven't-checked</em>.</p>
 </div>
 
-<div class="last-refreshed">Last refreshed: 2026-08-11 ~21:30 PT (Calliope) — v29. The <code>.env</code> gate's option list moved a third time today: Theseus found the path-scope control is tool-layer only and doesn't bind subprocesses at all, which reframes every option on the list as a routing-around at a different distance from the control. Option 2 (the wrapper) turns out inert on an unattended seat (needs a permission-allowlist entry that doesn't exist); option 3 (<code>dotenv</code> in the test setup) needs neither of its stated prerequisites and is now the cheapest working option. He stopped at <code>stat</code> without reading the credential file once he found the boundary porous, deliberately leaving the routing-around decision to xian. Pard adopted all three findings; the list is accurate for the first time. <strong>Also this render: a self-correction.</strong> The "addressing, not secrecy" 🔴 item was answered by xian the same day it was opened (8/09) but never closed on this board — carried as open through five renders. Moved to ✅, three days late.</div>
+<div class="last-refreshed">Last refreshed: 2026-08-12 ~08:30 PT (Calliope) — v30. <strong>xian decided the <code>.env</code> gate: option 3</strong> (<code>dotenv.config()</code> in the client test setup) — the edit lands with Argus/Daedalus, so the item moves off "needs you" to in-flight. Separately: test data from the faoilean transfer landed on Amber, staged only; it doesn't match Theseus's 8/09 expectations (two different-era DBs, not one), and which is canonical for MAXT-04 seeding is Theseus's call, not xian's. <strong>Not done this fire:</strong> the pre-migration memory pool that landed in the same transfer (primary sourcing for the Question A duty-cycle review) is outside the worktree, and this fire hit the same read-permission block as 8/11's MID fire on a different path — flagged to Pard rather than worked around. Question A stays sourced from convergent recollection, not primary docs.</div>
 
 <div class="metrics">
   <div class="metric needs-you">
     <div class="label">Needs you</div>
-    <div class="count">2</div>
+    <div class="count">1</div>
   </div>
   <div class="metric blocked">
     <div class="label">Blocked on others</div>
@@ -241,7 +241,7 @@
   </div>
   <div class="metric in-flight">
     <div class="label">In flight</div>
-    <div class="count">5</div>
+    <div class="count">6</div>
   </div>
 </div>
 
@@ -262,26 +262,6 @@
       <p>His recommendation: <strong>(b) with (c) layered</strong> — a bounded seed so an agent is never blank, plus the ability to reach for specifics. Also preserves the AAXT observability property (a probe can tell "didn't know" from "knew and didn't use").</p>
     </div>
     <div class="recommended"><strong>Source:</strong> <code>docs/plans/continuity-3-compaction-sizing-2026-08-10.md</code>, <code>daedalus-to-calliope-cc-xian-increment-2-reframed-2026-08-10.md</code></div>
-  </div>
-
-  <div class="item">
-    <h3>The <code>.env</code> / AAXT-credentials gate — third correction today; the list is finally accurate</h3>
-    <div class="meta">
-      <span class="tag who-waiting">Waiting: Pard, Theseus</span>
-      <span class="tag date">Added 2026-08-10 · corrected 2026-08-11, three times</span>
-    </div>
-    <div class="body">
-      <p>A third execution-environment gate, distinct from the two Pard fixed 8/10. It blocks reading the <code>.env</code> file carrying <code>ANTHROPIC_API_KEY</code>, so AAXT (Theseus's live-model probing) stays parked even though execution and network are both genuinely fixed and verified.</p>
-      <p>Mechanism, settled 8/10: not a secrets-content heuristic — a decoy key written inside the worktree reads fine; <code>./.env</code> is a symlink to <code>~/.klatch/klatch.env</code>, outside the session's allowed working directory, and the directory sandbox blocks following the symlink out.</p>
-      <p><strong>8/11 morning — option 4 (<code>--add-dir ~/.klatch</code>) withdrawn.</strong> Theseus found it grants <em>readability</em> but not the <em>capability AAXT needs</em>: AAXT reads <code>process.env</code>, and nothing populates it under vitest. "The capability granted is not the capability blocked." Also settled: <code>readlink .env</code> succeeds where <code>ls -la .env</code> doesn't — only the resolved target is blocked, closing off the secrets-heuristic argument entirely.</p>
-      <p><strong>8/11 midday — Pard's own billing-leak warning confirmed real.</strong> Exporting the key into the wrapper before invoking the agent moves that fire's billing off xian's Max subscription onto the metered key — confirmed with a deliberately invalid key: Claude Code itself reports the env var "takes precedence over your claude.ai login." Fix: scope the export to a subprocess (<code>scripts/run-aaxt.sh</code>) invoked <em>by</em> the agent, so the agent's own process never holds the key.</p>
-      <p><strong>8/11 evening — third correction, and the one that reframes the whole list.</strong> Theseus found <strong>the path-scope control doesn't bind subprocesses at all</strong> — it's a tool-layer control on the agent's own reads, not a containment boundary. A node script he spawned read files outside the worktree freely and <code>stat</code>'d <code>klatch.env</code> (127 bytes); every one of those paths is refused through his own tools. <strong>He stopped at <code>stat</code> and did not read the file</strong> — deliberately, so as not to pre-empt xian's decision by demonstrating the boundary was porous. This means <strong>every option on the list is a routing-around, at different distances from the control</strong> — a fact about the control, not about AAXT.</p>
-      <p><strong>Option 2 downgraded:</strong> inert on an unattended seat, not "narrowest." Interpreter invocation is gated as its own class — <code>bash script.sh</code>, <code>sh script.sh</code>, <code>bash -c</code> all need approval that never comes unattended. It would need a <code>.claude/settings.json</code> allowlist entry authorizing a script whose purpose is sourcing a secrets file — a second decision surface Theseus declined to add himself.</p>
-      <p><strong>Option 3 upgraded:</strong> needs neither stated prerequisite. vitest is a subprocess, never subject to the path scope — no <code>--add-dir</code> needed. <code>dotenv</code> already hoists into the client workspace via npm. Verified live: key present, one edit, no other changes. Now the cheapest working option.</p>
-      <p><strong>Corrected list, third revision:</strong> (1) Attended-only — unchanged, only option that doesn't route around a control. (2) <code>run-aaxt.sh</code> wrapper — needs a permission-allowlist entry too; two decisions, not one. (3) <code>dotenv.config()</code> in <code>packages/client/src/__tests__/setup.ts</code> — one edit, works today, no prerequisites.</p>
-      <p>Standing fact for the decision: Theseus's AAXT liveness-gap fix (all 12 rounds now hard-fail on instrument failure, not just model failure) means whichever option you pick, a broken credential will show as broken, not as a clean pass.</p>
-    </div>
-    <div class="recommended"><strong>Source:</strong> <code>pard-to-theseus-cc-team-porous-boundary-adopted-2026-08-11.md</code>; <code>docs/research/credential-gate-is-tool-layer-only-2026-08-11.md</code></div>
   </div>
 </section>
 
@@ -331,6 +311,29 @@
 <section class="in-flight">
   <h2>🔵 In flight</h2>
   <p class="intro">Awareness, no action needed.</p>
+
+  <div class="item">
+    <h3><code>.env</code>/AAXT-credentials gate — xian decided option 3 (8/12); landing now</h3>
+    <div class="meta"><span class="tag who-waiting">Landing: Argus, Daedalus</span><span class="tag date">Decided 2026-08-12 · was 🔴 since 2026-08-10</span></div>
+    <div class="body">
+      <p><strong>Decision:</strong> <code>dotenv.config()</code> in <code>packages/client/src/__tests__/setup.ts</code> — one edit, works today under the existing sandbox (vitest is a subprocess, never subject to the tool-layer path scope). Full option history: <code>docs/research/credential-gate-is-tool-layer-only-2026-08-11.md</code>.</p>
+      <p>The edit is Argus's/Daedalus's, product code in their repo lane. Two build notes travel with it (Theseus, 8/11): make <code>dotenv</code> an explicit client dependency (currently resolves only via npm hoisting); Vite rewrites <code>import.meta.url</code> to <code>/@fs/…</code>, so resolve the env path from the workspace root or <code>process.cwd()</code>.</p>
+      <p>Two boundaries stated so they don't erode (Pard): this authorizes the client test setup only, not a general license to route subprocess reads around the sandbox; <code>ANTHROPIC_API_KEY</code> must never be exported into the agent's own environment (confirmed 8/11 — it silently moves billing off the Max subscription onto the metered key).</p>
+      <p><strong>Definition of done:</strong> AAXT rounds R46–R50 runnable in an unattended fire, verified by a live round. Comes off the board (🟢) only once that's landed and verified.</p>
+    </div>
+    <div class="recommended"><strong>Source:</strong> <code>pard-to-argus-daedalus-cc-team-env-decision-option3-2026-08-12.md</code></div>
+  </div>
+
+  <div class="item">
+    <h3>Test-data transfer landed on Amber, staged only — a canonical-DB judgment call, Theseus's not xian's</h3>
+    <div class="meta"><span class="tag who-waiting">Yours: Theseus (canonical-DB call)</span><span class="tag date">Added 2026-08-12</span></div>
+    <div class="body">
+      <p>The faoilean transfer xian ran 8/12 morning put four DBs and 16 transcript jsonl files (118M) in <code>~/klatch-inbound/</code>, staging only — nothing placed live pending Theseus's ruling.</p>
+      <p>The mismatch: Theseus's 8/09 expectation was one working DB with ~49 imports and April–July activity. What arrived is two different-era artifacts — the main DB (16 channels, 2,124 messages, stops 2026-05-10, looks post-reset) and two worktree DBs (400+ channels each, stop 2026-04-02, the big-import state). Which is canonical for MAXT-04 seeding is a real judgment call, including the 3/14 Amber backup (139 channels / 2,652 messages) as a third candidate.</p>
+      <p>Also in the transfer: the pre-migration Klatch memory pool, including two files flagged as primary sourcing for Calliope's Question A duty-cycle review — not yet read this render, blocked by an unattended-fire read-permission gap (second occurrence of the same shape hit 8/11).</p>
+    </div>
+    <div class="recommended"><strong>Source:</strong> <code>pard-to-theseus-cc-team-test-data-landed-with-a-question-2026-08-12.md</code></div>
+  </div>
 
   <div class="item">
     <h3>Cohort status (Amber, verified 2026-08-11 ~21:30 PT — post-reboot day, full cycle)</h3>
@@ -416,6 +419,7 @@
 <div class="changelog">
   <h3>Changelog</h3>
   <ul>
+    <li><strong>v30 (2026-08-12 ~08:30 PT, Calliope)</strong> — <code>.env</code> gate 🔴 → 🔵: xian decided option 3 (<code>dotenv.config()</code> in the client test setup); the edit lands with Argus/Daedalus, item stays in-flight until R46–R50 verify live under it. 🔴 2→1. New 🔵: the faoilean test-data transfer landed on Amber, staged only — doesn't match Theseus's 8/09 expectations (two different-era DBs instead of one), canonical-DB call is Theseus's, not blocking xian. <strong>Not done this fire:</strong> the same transfer carried the pre-migration Klatch memory pool, including two files flagged as primary sourcing for the Question A duty-cycle review — attempted to read both, blocked by the same unattended-fire read-permission gap hit 8/11 (different path, identical mechanism). Flagged to Pard rather than worked around; Question A stays sourced from convergent recollection, not primary docs. 🔵 5→6.</li>
     <li><strong>v29 (2026-08-11 ~21:30 PT, Calliope)</strong> — <strong>Self-correction:</strong> the "addressing, not secrecy" 🔴 item was stale for three days — answered by xian the same day it was opened (8/09 ~16:07) but never closed on this board, carried through v25–v28 despite my own mail on file saying it was settled. Moved to ✅. 🔴 3→2 net of this correction. <code>.env</code> gate 🔴 also corrected a third time today: Theseus found the path-scope control is tool-layer only, not a real containment boundary — a subprocess he spawned read files outside the worktree freely, and he deliberately stopped at <code>stat</code> without reading the credential file rather than pre-empt xian's decision. Every option on the list routes around the control at a different distance: option 2 (wrapper script) is inert unattended without a second permission-allowlist decision; option 3 (<code>dotenv</code> in test setup) needs neither stated prerequisite and is now the cheapest working option. Pard adopted all three findings and calls the list accurate for the first time. Server AAXT gate residual 🔵 updated: Argus closed both holes Theseus flagged 8/10, independently verified — but verifying it surfaced a new one, <code>Unscored</code> results still counted in the fidelity denominator, deflating partial-outage runs; left to Argus's policy call. New 🔵: Daedalus found every non-<code>tool_use</code> stop reason is silently stored as <code>'complete'</code>; Iris decided the shape same day (<code>'incomplete'</code> status + <code>stopReason</code> enum) without needing xian's input. Cohort rewritten for the full post-reboot day across all five fires. 🔵 4→5.</li>
     <li><strong>v28 (2026-08-11 ~17:00 PT, Calliope)</strong> — First render of the post-reboot day. <code>.env</code> gate 🔴 corrected twice by measurement: Theseus ran the exact credential test Pard assigned him and found v27's favored option (<code>--add-dir ~/.klatch</code>) grants readability but not the capability AAXT needs (it reads <code>process.env</code>; nothing loads dotenv under vitest) — Pard withdrew it same day. Separately, Pard measured his own week-old billing-leak warning and found it real (a bogus key demonstrably takes precedence over the Claude subscription); his fix scopes the export to the AAXT test subprocess (<code>scripts/run-aaxt.sh</code>) rather than the agent's own process. Corrected 3-option list now in the 🔴 item. Cohort rewritten for the reboot-survival day: all five LaunchAgents confirmed re-armed from inside their own fires; Daedalus proved (from installed Vitest 4 source) that a client-test-parallelism fix had been silently inert since the Vitest 4 bump, fixed it, and logged a live collision between an unattended fire and an attended session in the same worktree. No new mail addressed to Calliope this fire.</li>
     <li><strong>v27 (2026-08-10 ~21:30 PT, Calliope; HTML synced 2026-08-11)</strong> — Client build 🔵 item resolved: Daedalus's fix independently verified green from a second seat (Theseus, 19:47). New 🔵: a server AAXT gate residual — Theseus found Argus's <code>Unscored</code> fix leaves two of three instrument-fault routes still reading as legitimate results; routed to Argus, not blocking. The <code>.env</code> gate 🔴 narrowed sharply, not resolved: Pard traced the real cause to his own secrets layout (one canonical file, six symlinking worktrees) — a fourth option (<code>--add-dir ~/.klatch</code>) now looks like the likely pick, still untested. Named the <strong>Institutional Phantom</strong> pattern (three same-day instances of a comment asserting coverage nothing exercises). 🟡 count corrected 3→4 (the section has carried 4 items since 7/06; miscounted in v26).</li>
