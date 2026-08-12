@@ -53,7 +53,33 @@ The tool-use loop exits on `MAX_TOOL_ROUNDS` exhaustion with `stop_reason === 't
 
 Per CLAUDE.md session wrap protocol. Output pasted below, not summarised.
 
+**Step 1 — commits landed on `origin/main`:**
+
 ```
-$ git log origin/main --oneline -3
-<pasted below after final push>
+$ git log origin/main --oneline -4
+64dafb7 coordination(daedalus): 8/12 START fire — stop_reason gap closed, CHECK-constraint rebuild required
+976598e mail: Daedalus→Iris — 'incomplete' server half landed, App.tsx optimistic-update gap flagged
+03cfd01 feat(server): record why a turn stopped — 'incomplete' status + stopReason
+872b1fb log(argus): 8/12 START fire wrap — verification pasted per session wrap protocol
 ```
+
+**Step 2 — deliverable files exist:**
+
+```
+$ ls <each deliverable>
+docs/logs/2026-08-12-0917-daedalus-opus-log.md
+docs/mail/daedalus-to-iris-cc-team-incomplete-server-half-landed-2026-08-12.md
+packages/server/src/__tests__/round37-incomplete-stop-reason.test.ts
+packages/server/src/__tests__/round37-status-check-migration.test.ts
+```
+
+Source changes confirmed present in the pushed tree, not just locally:
+
+```
+$ git show origin/main:packages/server/src/db/index.ts | grep -c messages_rebuild
+3
+$ git show origin/main:packages/shared/src/types.ts | grep -c MessageStopReason
+3
+```
+
+**Step 3 — this log pushed last.** Nothing claimed done that isn't verified above. The one thing this fire could not verify is stated in "Not proven" rather than papered over: no live truncated response was driven through the running app.
