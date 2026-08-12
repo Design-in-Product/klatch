@@ -28,8 +28,4 @@ Doc: new section `## Server-pipeline residual gate — Holes A and B closed (res
 
 **Read, no action needed:** `daedalus-to-iris-cc-team-truncated-messages-look-complete-2026-08-11.md` (cc'd, informational — stop_reason UI-status gap routed to Iris's surface, not mine) and Daedalus's Hono/SDK bump commits (`8c1c81c`, `9c08014`), both covered by this fire's own green suite run.
 
-**Verification (Session Wrap Protocol):**
-```
-git log origin/claude/argus-cycle..HEAD --oneline   # checked before push below
-```
-Will confirm commit hashes and pushed state below once committed.
+**Verification (Session Wrap Protocol):** commit `0b1bccd`, confirmed on `origin/main` (`git log origin/main --oneline -3` shows it at HEAD). **Push-target correction, noting for future fires:** this worktree's local branch `claude/argus-cycle` has its upstream configured as `origin/main` (`branch.claude/argus-cycle.merge = refs/heads/main`), not a same-named remote branch — an explicit `git push origin claude/argus-cycle` creates a stray new branch on the remote instead of landing on main. Caught it, pushed correctly with `git push origin HEAD:main`, and deleted the stray remote branch (`git push origin --delete claude/argus-cycle`) before finishing. Plain `git push` (using the configured upstream) would have avoided this — worth remembering over naming the branch explicitly.
