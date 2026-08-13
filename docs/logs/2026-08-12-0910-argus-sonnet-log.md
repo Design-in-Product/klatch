@@ -179,3 +179,71 @@ the worktree mail rule's simpler pattern). Deliverable files confirmed present:
 `packages/client/src/__tests__/round42-entity-manager-aaxt.test.tsx`,
 `docs/plans/AAXT-SCAFFOLDED-PROBING.md`, `docs/COORDINATION.md`, both new/moved mail files under
 `docs/mail/read/`.
+
+## ~18:00 PDT (STOP fire)
+
+`git pull` clean, already up to date with origin/main. Read `COORDINATION.md` in full (two-page
+read, 25k cap hit again). Mail sweep against the full `docs/mail/` listing plus everything
+mentioning "Argus" outside my own `argus-to-*` files: one new item since the 13:35 fire —
+Daedalus's 17:17 STOP-fire memo (`daedalus-to-calliope-theseus-cc-team-corpus-count-is-72-my-65-was-wrong-2026-08-12.md`),
+mostly to Calliope/Theseus about the imported-channel-count correction, with a section addressed to
+me under "Also this fire, unrelated: offline model fallback had drifted apart (Round 39)."
+
+### Work 1 — independently verified Daedalus's Round 39 claims
+
+Two claims to check, not just accept: (1) `npm test` at 1207 server / 215 client, exit 0; (2)
+round42's mock omits `recommendedEffort` and "stays green" harmlessly. Ran the suite myself:
+**1207 server (71 files) / 215 client (15 files, 13 skipped), exit 0** — exact match, typecheck ran
+clean first (wired into `npm test` since Theseus's 8/10 build-repair work). `grep -n
+"recommendedEffort\|DEFAULT_EFFORT" packages/client/src/__tests__/round42-entity-manager-aaxt.test.tsx`
+returned zero hits, confirming the mock genuinely doesn't reference the field — consistent with his
+"falls through to `DEFAULT_EFFORT`" description and the fact the round is in the green count above.
+No fix needed on my side; nothing to push against this.
+
+### Work 2 — mail hygiene: one thread closed, one confirmed still genuinely open
+
+`daedalus-to-argus-lineup-refresh-landed-2026-08-04.md` sat in `docs/mail/` (not `read/`) for eight
+days under Daedalus's own stated condition — "§4 stays open in active mail until the [SDK] bump
+lands." Checked rather than assumed: `packages/server/package.json` pins `@anthropic-ai/sdk` at
+`^0.116.0`, his 8/11 fire 3 bump (`9c08014`), which his own COORDINATION entry that same day already
+noted "closes Argus's retargeted ask 4." The bump landed 8/11; nobody had closed this specific
+thread since. Filed a short closing reply
+(`argus-to-daedalus-lineup-refresh-closed-2026-08-12.md`) and moved both files to `read/`.
+
+Checked the other old `*-to-argus` thread still open, `pard-to-argus-env-provisioned-2026-08-05.md`,
+rather than assume it's equally stale: my 8/05 reply into that thread flagged an unresolved design
+tension (auxiliary-model self-evaluation bias, since going Anthropic-only for AAXT's judge means
+judge and target share a vendor). Read Theseus's 8/12 14:47 fire entry — he independently re-flagged
+the exact same tension as "unresolved" that fire. Genuinely still open, not stale; left in place.
+
+No other mail addressed to Argus this fire. No `packages/` changes — this fire was verification and
+mail hygiene only, no code to write.
+
+### Doc + mail
+
+`docs/COORDINATION.md` Argus section updated with this fire's entry. One new mail file
+(`argus-to-daedalus-lineup-refresh-closed-2026-08-12.md`), written directly into `docs/mail/read/`
+since it closes on arrival.
+
+### Next
+
+Nothing queued for the next fire beyond the standing mail/coordination sweep. The
+auxiliary-model-vendor tension (`pard-to-argus-env-provisioned-2026-08-05.md`) stays open, held by
+xian/Pard, not stalled on me.
+
+### Verification (per Session Wrap Protocol)
+
+```
+$ git log origin/claude/argus-cycle --oneline -5
+76cf24a coordination(argus): 8/12 STOP fire — independently verify Round 39, close stale mail thread
+69c7a33 log(daedalus): 8/12 STOP fire — verification block appended per session wrap protocol
+8195007 coordination(daedalus): 8/12 STOP fire — corpus count corrected to 72, Round 39 model-fallback parity
+605faf9 fix(models): one offline fallback derivation, and recommendedEffort on the wire (Round 39)
+718fee5 docs: imported-channel count corrected to 72 at source (~49 -> 65 -> 72)
+```
+
+Commit `76cf24a` confirmed on `origin/claude/argus-cycle` (pushed directly, per this fire's
+explicit network/push permission). Deliverable files confirmed present: `docs/COORDINATION.md`,
+`docs/mail/read/daedalus-to-argus-lineup-refresh-landed-2026-08-04.md`,
+`docs/mail/read/argus-to-daedalus-lineup-refresh-closed-2026-08-12.md`. This log file itself will be
+committed in a follow-up commit, consistent with the "push the log last" step of the protocol.
