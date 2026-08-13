@@ -91,6 +91,79 @@ export const DEFAULT_INTERACTION_MODE: InteractionMode = 'panel';
 // which introduced a new tier between 'high' and 'max'; Claude Code defaults to xhigh after 4.7.
 export type EffortLevel = 'low' | 'medium' | 'high' | 'xhigh' | 'max';
 
+/**
+ * Effort ladder to assume for a model when the live `/api/models` capability
+ * data is unavailable. **Offline only** — when the API answers, the discovered
+ * `capabilities.effort` wins, always.
+ *
+ * xhigh arrived with Opus 4.7 and is carried by every 4.7+ flagship (Opus 5 /
+ * 4.8 / 4.7, Sonnet 5, Fable 5); Opus 4.6 stops at max; older tiers stop at
+ * high.
+ *
+ * **Lives in `shared` because it had two copies and they disagreed.** The
+ * server's offline fallback (`routes/models.ts`) was model-aware; the client's
+ * (`hooks/useModels.ts`) handed every model `['low','medium','high']`, so with
+ * the server unreachable the entity editor actively *disabled* xhigh and max
+ * on Opus 5 — a model that supports both. The picker gates on the discovered
+ * ladder and only degrades to "allowed" for a model it doesn't recognise, so a
+ * wrong-but-present entry is worse than no entry. One derivation, two callers.
+ *
+ * An unlisted model gets the three-level floor, matching the pre-existing
+ * behavior of both copies; the server's runtime validation is the backstop.
+ */
+export function fallbackEffortLevels(modelId: string): EffortLevel[] {
+  const FIVE_LEVEL = new Set([
+    'claude-fable-5',
+    'claude-opus-5',
+    'claude-opus-4-8',
+    'claude-opus-4-7',
+    'claude-sonnet-5',
+  ]);
+  if (FIVE_LEVEL.has(modelId)) return ['low', 'medium', 'high', 'xhigh', 'max'];
+  if (modelId === 'claude-opus-4-6') return ['low', 'medium', 'high', 'max'];
+  return ['low', 'medium', 'high'];
+}
+
+/** Output-token ceiling assumed for a model in the offline fallback. */
+export const FALLBACK_MAX_OUTPUT_TOKENS = 16384;
+
+/**
+ * A model as published by `GET /api/models`. Declared here because both the
+ * server (which builds it) and the client (which consumes it, and rebuilds it
+ * offline) need the same shape.
+ */
+export interface DiscoveredModel {
+  id: string;
+  displayName: string;
+  maxOutputTokens: number;
+  capabilities: {
+    thinking: boolean;
+    effort: string[]; // e.g. ['low', 'medium', 'high', 'max']
+    compaction: boolean;
+  };
+}
+
+/**
+ * The offline model set, derived from the `AVAILABLE_MODELS` overlay.
+ *
+ * Used by the server when the Anthropic Models API is unreachable, and by the
+ * client when the *server* is unreachable. Both paths must describe the same
+ * models the same way or the UI gates on capabilities the backend would have
+ * allowed — see `fallbackEffortLevels`.
+ */
+export function buildFallbackModels(): DiscoveredModel[] {
+  return Object.entries(AVAILABLE_MODELS).map(([id, info]) => ({
+    id,
+    displayName: `Claude ${info.label}`,
+    maxOutputTokens: FALLBACK_MAX_OUTPUT_TOKENS,
+    capabilities: {
+      thinking: true,
+      effort: fallbackEffortLevels(id),
+      compaction: false,
+    },
+  }));
+}
+
 export interface MicroReflection {
   observation: string;
   createdAt: string;

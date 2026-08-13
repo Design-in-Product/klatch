@@ -1,22 +1,20 @@
 import { Hono } from 'hono';
 import Anthropic from '@anthropic-ai/sdk';
-import { AVAILABLE_MODELS, MODEL_ALIASES, DEFAULT_MODEL } from '@klatch/shared';
-import type { ModelId } from '@klatch/shared';
+import {
+  MODEL_ALIASES,
+  DEFAULT_MODEL,
+  buildFallbackModels,
+} from '@klatch/shared';
+import type { ModelId, DiscoveredModel } from '@klatch/shared';
+import { defaultEffortForModel } from '../db/queries.js';
 
 const app = new Hono();
 
 // ── Types ────────────────────────────────────────────────────
 
-export interface DiscoveredModel {
-  id: string;
-  displayName: string;
-  maxOutputTokens: number;
-  capabilities: {
-    thinking: boolean;
-    effort: string[];      // e.g. ['low', 'medium', 'high', 'max']
-    compaction: boolean;
-  };
-}
+// `DiscoveredModel` now lives in `@klatch/shared` (the client rebuilds the same
+// shape offline). Re-exported so existing importers of this module are unchanged.
+export type { DiscoveredModel };
 
 interface ModelsCache {
   models: DiscoveredModel[];
@@ -91,34 +89,10 @@ export async function getModels(): Promise<{ models: DiscoveredModel[]; source: 
   } catch (err) {
     console.warn('Models API fetch failed, using fallback:', err instanceof Error ? err.message : err);
 
-    // Fallback to hardcoded AVAILABLE_MODELS. Effort ladders per model family:
-    // xhigh arrived with Opus 4.7 and is carried by every 4.7+ flagship
-    // (Opus 5 / 4.8 / 4.7, Sonnet 5, Fable 5); Opus 4.6 stops at max; older
-    // tiers stop at high. Keeps offline gating aligned with the live API.
-    const FIVE_LEVEL_EFFORT = new Set([
-      'claude-fable-5',
-      'claude-opus-5',
-      'claude-opus-4-8',
-      'claude-opus-4-7',
-      'claude-sonnet-5',
-    ]);
-    const fallback: DiscoveredModel[] = Object.entries(AVAILABLE_MODELS).map(
-      ([id, info]) => ({
-        id,
-        displayName: `Claude ${info.label}`,
-        maxOutputTokens: 16384,
-        capabilities: {
-          thinking: true,
-          effort: FIVE_LEVEL_EFFORT.has(id)
-            ? ['low', 'medium', 'high', 'xhigh', 'max']
-            : id === 'claude-opus-4-6'
-            ? ['low', 'medium', 'high', 'max']
-            : ['low', 'medium', 'high'],
-          compaction: false,
-        },
-      })
-    );
-    return { models: fallback, source: 'fallback' };
+    // Fallback to hardcoded AVAILABLE_MODELS. The per-model effort ladder now
+    // lives in `@klatch/shared` — the client builds the same fallback when the
+    // server itself is unreachable, and the two copies had drifted apart.
+    return { models: buildFallbackModels(), source: 'fallback' };
   }
 }
 
@@ -160,8 +134,17 @@ export function _clearModelsCacheForTest(): void {
  * Returns all available Claude models with capabilities.
  * Cached for 1 hour, falls back to hardcoded list on API failure.
  *
- * Also returns `aliases` for legacy model ID mapping and
- * `defaultModel` for the recommended default.
+ * Also returns `aliases` for legacy model ID mapping, `defaultModel` for the
+ * recommended default model, and `recommendedEffort` for the effort level a
+ * new entity gets when the user doesn't pick one.
+ *
+ * `recommendedEffort` exists so the client asks rather than assumes. The
+ * editor previously read `DEFAULT_EFFORT` out of `@klatch/shared` directly,
+ * which is only correct while the server's own default is that same uniform
+ * constant — and `DEFAULT_EFFORT`'s doc comment names the conditions under
+ * which it becomes per-model again. When that happens the server changes in
+ * one place and the client follows, instead of quietly seeding new entities
+ * with a value the server would not have chosen.
  */
 app.get('/models', async (c) => {
   const { models, source } = await getModels();
@@ -170,6 +153,7 @@ app.get('/models', async (c) => {
     models,
     aliases: MODEL_ALIASES,
     defaultModel: DEFAULT_MODEL,
+    recommendedEffort: defaultEffortForModel(DEFAULT_MODEL),
     source, // helpful for debugging: 'api', 'cache', or 'fallback'
   });
 });

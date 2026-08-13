@@ -1,24 +1,19 @@
-import type { Channel, Entity, Message, ModelId, InteractionMode, ChannelType, ImportResult, FileWithRef } from '@klatch/shared';
+import type { Channel, Entity, Message, ModelId, InteractionMode, ChannelType, ImportResult, FileWithRef, DiscoveredModel, EffortLevel } from '@klatch/shared';
 
 const BASE = '/api';
 
 // ── Models API ──────────────────────────────────────────────
 
-export interface DiscoveredModel {
-  id: string;
-  displayName: string;
-  maxOutputTokens: number;
-  capabilities: {
-    thinking: boolean;
-    effort: string[];
-    compaction: boolean;
-  };
-}
+// Shape defined once in `@klatch/shared` — the server builds it and the client
+// rebuilds it offline. Re-exported so existing importers are unchanged.
+export type { DiscoveredModel } from '@klatch/shared';
 
 export interface ModelsResponse {
   models: DiscoveredModel[];
   aliases: Record<string, string>;
   defaultModel: string;
+  /** Effort the server would assign a new entity if the user picks none. */
+  recommendedEffort: EffortLevel;
   source: 'api' | 'cache' | 'fallback';
 }
 

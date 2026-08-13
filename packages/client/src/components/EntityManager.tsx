@@ -173,16 +173,21 @@ function EntityForm({
   onSave: (data: { name?: string; handle?: string | null; model?: ModelId; effort?: EffortLevel; systemPrompt?: string; color?: string }) => void;
   onCancel: () => void;
 }) {
-  const { models: dynamicModels } = useModels();
+  const { models: dynamicModels, recommendedEffort } = useModels();
   const [name, setName] = useState(entity?.name ?? '');
   const [handle, setHandle] = useState(entity?.handle ?? '');
   // No hardcoded model IDs in the client: a new entity starts on the shared
   // DEFAULT_MODEL constant, so a default flip is one edit in one place. The
   // previous literal ('claude-sonnet-4-6') had already gone stale.
   const [model, setModel] = useState<ModelId>(entity?.model ?? DEFAULT_MODEL);
-  // Same shared constant the server uses, so the two can't drift. Uniform
-  // across models by design — see DEFAULT_EFFORT in @klatch/shared.
-  const [effort, setEffort] = useState<EffortLevel>(entity?.effort ?? DEFAULT_EFFORT);
+  // Null until the user picks one (or the entity already has one): the default
+  // for a *new* entity is whatever the server says it would assign
+  // (`recommendedEffort` from /api/models), resolved at render rather than in a
+  // `useState` initializer — the models fetch usually hasn't landed on first
+  // render, and an initializer runs once and would pin the pre-fetch guess.
+  // `DEFAULT_EFFORT` remains the floor for the offline case.
+  const [effort, setEffort] = useState<EffortLevel | null>(entity?.effort ?? null);
+  const effectiveEffort: EffortLevel = effort ?? recommendedEffort ?? DEFAULT_EFFORT;
   const [systemPrompt, setSystemPrompt] = useState(entity?.systemPrompt ?? 'You are a helpful assistant.');
   const [color, setColor] = useState(entity?.color ?? ENTITY_COLORS[0]);
 
@@ -198,13 +203,13 @@ function EntityForm({
       const oldHandle = entity.handle || null;
       if (newHandle !== oldHandle) updates.handle = newHandle;
       if (model !== entity.model) updates.model = model;
-      if (effort !== entity.effort) updates.effort = effort;
+      if (effectiveEffort !== entity.effort) updates.effort = effectiveEffort;
       if (systemPrompt.trim() !== entity.systemPrompt) updates.systemPrompt = systemPrompt.trim();
       if (color !== entity.color) updates.color = color;
       if (Object.keys(updates).length > 0) onSave(updates);
       else onCancel();
     } else {
-      onSave({ name: name.trim(), handle: handle.trim() || undefined, model, effort, systemPrompt: systemPrompt.trim(), color });
+      onSave({ name: name.trim(), handle: handle.trim() || undefined, model, effort: effectiveEffort, systemPrompt: systemPrompt.trim(), color });
     }
   };
 
@@ -304,7 +309,7 @@ function EntityForm({
                 disabled={isDisabled}
                 title={isDisabled ? disabledTitle : undefined}
                 className={`flex-1 rounded border px-2 py-1.5 text-xs text-center capitalize transition-colors ${
-                  effort === level
+                  effectiveEffort === level
                     ? 'border-accent bg-accent-subtle text-primary'
                     : isDisabled
                       ? 'border-line bg-card text-muted/40 cursor-not-allowed'

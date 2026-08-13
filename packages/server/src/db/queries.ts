@@ -369,8 +369,12 @@ export function getAllEntities(): Entity[] {
  * This previously special-cased `claude-sonnet-4-6` → `medium`. That literal
  * was the same drift hazard as the model-ID list that used to gate the effort
  * picker: right when written, quietly wrong after the next release.
+ *
+ * Exported so `GET /api/models` can publish what this returns as
+ * `recommendedEffort`, rather than the client re-deriving it from the same
+ * constant and hoping the two stay in step.
  */
-function defaultEffortForModel(_model: ModelId): EffortLevel {
+export function defaultEffortForModel(_model: ModelId): EffortLevel {
   return DEFAULT_EFFORT;
 }
 
