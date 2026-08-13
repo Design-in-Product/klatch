@@ -220,6 +220,36 @@ mine to remove — his 8/13 memo leaves staging in place pending xian's cleanup 
 
 ---
 
+## 12:35 PT — Protocol miss of my own, caught at wrap
+
+CLAUDE.md §"Multi-Agent Coordination" step 1 requires reading
+`docs/briefs/cross-pollination/current.md` at session start as part of the full briefing. **I did
+not.** I read COORDINATION.md and mail, went straight into the round, and only opened the brief
+during wrap verification. Recording it as a miss rather than quietly doing it late.
+
+Reading it was not a formality — there were two live items:
+
+1. **Today's brief propagates my own 8/12 finding outward, and it went out already superseded.**
+   It recommends provenance labelling as a soft privacy control that works *"without additional
+   instructions."* Daedalus's `DISCLOSURE_NORM` reversed exactly that behaviour on 8/13 morning,
+   and this fire measured the reversal across five sensitivity arms. A sibling project acting on the
+   suggested action would be building on a foundation that moved within a day. Memo filed to Janus,
+   cc team, with the narrower generalisation that does hold and with the eviction defect flagged as
+   the more transferable finding — it is about compaction mechanism, not model behaviour, so any
+   project doing recent-N over mixed instruction/content history has the same shape available.
+2. **Piper Morgan's methodology-49 ("described is not running") landed on me the same day it was
+   briefed.** The `serve-scratch.mjs` launch line is a plain instance: a usage block in a docstring,
+   accurate about nothing, written on 8/12 in the same session where I flagged the consolidated
+   *probe* as untested and failed to extend the doubt one line up to the launcher. Fed back as a
+   data point — the entry's canonical instance is a rendering-pipeline escape bug, and this one
+   shows the class reaching the lowest-ceremony artifact there is.
+
+Had I read the brief at session start I would have filed both earlier, and item 1 would have been
+in the same push as the research doc rather than after it. The cost was small this fire. The
+protocol exists because it will not always be.
+
+---
+
 ## Session wrap verification
 
 **Step 1 — test suite (no production code changed this fire; expected to match Daedalus's 8/13
@@ -231,4 +261,43 @@ npm test → exit 0
   client: Test Files 15 passed | 13 skipped (28) · Tests 221 passed | 13 skipped (234)
   typecheck clean ×3 workspaces (npm test runs it first)
 ```
+
+Matches Daedalus's 8/13 baseline exactly, which is the expected result — I changed no production
+code this fire.
+
+**Step 1 — commits on `origin/main`:**
+
+```
+$ git log origin/main --oneline -5
+11c7476 research(carried-context): disclosure sensitivity round — norm holds, budget can delete its exception
+8d9fa0b mail: sensitivity round answered to Daedalus; route ruling acked to Pard
+70d02ee log(daedalus): 8/13 START fire — verification block appended per session wrap protocol
+0b3c304 feat(round40): disclosure norm, carried-context visibility, per-seat prompt-debug
+0ead8a5 mail: norm decided and measured — replies to Theseus, Iris, Argus
+```
+
+Mail was committed and pushed separately and first, per the worktree mail rule.
+
+**Step 2 — deliverables present on `origin/main`** (`git ls-tree -r --name-only origin/main`):
+
+```
+docs/logs/2026-08-13-1047-theseus-opus-log.md
+docs/mail/theseus-to-daedalus-cc-team-norm-holds-and-the-budget-can-delete-the-exception-2026-08-13.md
+docs/mail/theseus-to-pard-cc-team-route-ruling-acked-and-one-stale-line-2026-08-13.md
+docs/research/carried-context-disclosure-sensitivity-2026-08-13.md
+scripts/probe-carried-context-carveout-eviction.mjs
+scripts/probe-carried-context-carveout-truncation.mjs
+scripts/probe-carried-context-sensitivity.mjs
+```
+
+All seven verified present. `docs/COORDINATION.md`, `docs/operations/duty-cycle/theseus-tasks.md`,
+`scripts/serve-scratch.mjs` and `scripts/probe-carried-context.mjs` are modifications inside
+`11c7476` rather than new paths.
+
+**Step 3 — this log and the Janus memo are the final commit**, pushed after the two verification
+steps above.
+
+**Delivery is the wrapper's to claim, not mine.** What I can state is that the pushes returned
+`70d02ee..8d9fa0b` and `8d9fa0b..11c7476`, and that `git ls-tree` against `origin/main` — a read of
+the remote ref, not of my worktree — lists every deliverable.
 
