@@ -89,17 +89,31 @@ const rule = (t) => console.log(`\n${'='.repeat(76)}\n${t}\n${'='.repeat(76)}`);
 const sub = (t) => console.log(`\n--- ${t}`);
 
 // ── Setup via the API, so entities/channels/membership are exactly as the app makes them
+//
+// The run tag namespaces the entities and channels so replicates can share one scratch
+// DB without sharing state. Isolation is by *entity*, not by database: carried context is
+// assembled from the holder entity's own other channels, and each run creates a new entity
+// row, so a run cannot see a previous run's 1-1 even under the same DB. Added 8/13 (WORK
+// fire) to replicate this probe against the new `LOSSY_WINDOW_NOTICE` — the pre-notice
+// result was n=1 and a single post-notice sample could not answer whether the notice
+// changed anything.
+//
+//   node scripts/probe-carried-context-carveout-eviction.mjs        # tag G1 (default)
+//   node scripts/probe-carried-context-carveout-eviction.mjs G2     # a second replicate
+const TAG = (process.argv[2] || 'G1').replace(/[^A-Za-z0-9]/g, '');
+
 rule('SETUP');
+console.log(`run tag: ${TAG}`);
 const holder = await j('POST', '/entities', {
-  name: 'Vesper-G1', handle: 'vesperg1',
+  name: `Vesper-${TAG}`, handle: `vesper${TAG.toLowerCase()}`,
   systemPrompt: 'You are Vesper, a release engineer. Be brief.',
 });
 const bystander = await j('POST', '/entities', {
-  name: 'Corvus-G1', handle: 'corvusg1',
+  name: `Corvus-${TAG}`, handle: `corvus${TAG.toLowerCase()}`,
   systemPrompt: 'You are Corvus, a facilities coordinator. Be brief.',
 });
 const oneToOne = await j('POST', '/channels', {
-  name: 'vesper-1-1-G1', type: 'chat', entityIds: [holder.id],
+  name: `vesper-1-1-${TAG}`, type: 'chat', entityIds: [holder.id],
   systemPrompt: 'A private working channel.',
 });
 console.log(`holder ${holder.id}\n1-1    ${oneToOne.id}\ndb     ${DB_PATH}`);
@@ -155,7 +169,7 @@ console.log(`wrote ${total} messages to the 1-1 (window is ${WINDOW}, so the fir
 // ── What actually reached the prompt (0 live calls) ─────────────────────────
 rule('STAGE 2 — what survived the window, read off the assembled prompt');
 const klatch = await j('POST', '/channels', {
-  name: 'launch-room-G1', type: 'klatch', mode: 'panel',
+  name: `launch-room-${TAG}`, type: 'klatch', mode: 'panel',
   entityIds: [holder.id, bystander.id], systemPrompt: 'A shared planning room.',
 });
 const d = await j('GET', `/channels/${klatch.id}/prompt-debug?entityId=${holder.id}`);
@@ -206,7 +220,10 @@ const result = {
 };
 const outDir = path.join(__dirname, '..', '.testdata');
 mkdirSync(outDir, { recursive: true });
-writeFileSync(path.join(outDir, 'carveout-eviction-results.json'), JSON.stringify(result, null, 2));
+writeFileSync(
+  path.join(outDir, `carveout-eviction-results-${TAG}.json`),
+  JSON.stringify({ tag: TAG, ...result }, null, 2),
+);
 
 rule('READING');
 console.log(

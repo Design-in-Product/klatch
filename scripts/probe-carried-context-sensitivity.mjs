@@ -54,12 +54,14 @@
  * ## Running it
  *
  *   npx tsx scripts/serve-scratch.mjs sensitivity-sweep # terminal 1 — tsx, not node
- *   node scripts/probe-carried-context-sensitivity.mjs  # terminal 2
+ *   node scripts/probe-carried-context-sensitivity.mjs  # terminal 2 — all arms
+ *   node scripts/probe-carried-context-sensitivity.mjs B D   # a named subset
  *
  * **This costs money.** 7 runs × 4 live Anthropic calls = 28, plus one extra call
  * per run that withholds (the authorisation stage, which only fires when it has
  * something to disambiguate). Run it against a scratch DB — it creates entities
- * and channels.
+ * and channels. Naming arms on the command line runs only those (added 8/13 for
+ * the `LOSSY_WINDOW_NOTICE` follow-up, which needed B and D and not the other three).
  *
  * Raw results are written to `.testdata/sensitivity-sweep-results.json` so the
  * write-up can be grounded in the transcript rather than in recollection.
@@ -272,8 +274,26 @@ async function runArm(arm, rep) {
 
 // ── Sweep ────────────────────────────────────────────────────────────────────
 
+// Arm selection, added 2026-08-13 (WORK fire). Daedalus's `LOSSY_WINDOW_NOTICE`
+// landed after the full sweep ran, and the follow-up question is narrow — did the
+// new notice make *ordinary, unrestricted* disclosure timid? — so re-running all
+// seven runs would be paying for five arms to answer a question about two. Default
+// is unchanged: no argument runs the full sweep exactly as before.
+//
+//   node scripts/probe-carried-context-sensitivity.mjs        # all arms (28+ calls)
+//   node scripts/probe-carried-context-sensitivity.mjs B D    # just B and D
+//
+// A subset writes to a suffixed results file so it cannot overwrite a full sweep's
+// raw transcript — the 8/13 sweep's own JSON is what its write-up is grounded in.
+const selected = process.argv.slice(2).map((s) => s.toUpperCase()).filter(Boolean);
+const armsToRun = selected.length ? ARMS.filter((a) => selected.includes(a.key)) : ARMS;
+if (selected.length && armsToRun.length !== selected.length) {
+  throw new Error(`unknown arm(s) in ${JSON.stringify(selected)}; known: ${ARMS.map((a) => a.key).join(',')}`);
+}
+if (selected.length) console.log(`Running a SUBSET of the sweep: arms ${armsToRun.map((a) => a.key).join(', ')}`);
+
 const runs = [];
-for (const arm of ARMS) {
+for (const arm of armsToRun) {
   const reps = arm.key === 'A' ? REPLICATES : 1;
   for (let rep = 1; rep <= reps; rep++) {
     runs.push(await runArm(arm, rep));
@@ -294,7 +314,8 @@ for (const r of runs) {
 
 const outDir = path.join(__dirname, '..', '.testdata');
 mkdirSync(outDir, { recursive: true });
-const out = path.join(outDir, 'sensitivity-sweep-results.json');
+const suffix = selected.length ? `-arms-${armsToRun.map((a) => a.key).join('')}` : '';
+const out = path.join(outDir, `sensitivity-sweep-results${suffix}.json`);
 writeFileSync(out, JSON.stringify({ api: API, replicates: REPLICATES, runs }, null, 2));
 console.log(`\nRaw results → ${out}`);
 
