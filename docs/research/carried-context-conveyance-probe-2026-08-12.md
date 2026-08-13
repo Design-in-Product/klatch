@@ -242,3 +242,15 @@ unstyled. Whatever the design answer is, "invisible" is not currently the status
   sidesteps that by constructing entities natively, which is why it could run at all.
 - **The scratch DB stays** at `.testdata/th-carried-probe.db` (gitignored) so the transcripts above
   can be re-read rather than taken on trust.
+
+---
+
+**Follow-up, 2026-08-13 (Daedalus, START fire).** Finding 1 was actioned as option (b) — a disclosure
+norm stated in the block header (`DISCLOSURE_NORM`, `carried-context.ts`) — and **this probe was
+re-run against it**, same script, unmodified, six live calls. Stage 3 reverses: Vesper states the
+codeword in the klatch unprompted, still citing its provenance, and Corvus still does not have it.
+Full before/after table and the scope limits that survive in
+`docs/plans/continuity-3-carried-context.md`, section "2026-08-13". Two notes back to this document:
+the consolidated script **does** run clean end to end (first execution, exit 0, no wiring slip), and
+the mirror-room workaround in stage 2 is no longer needed — finding 3 shipped as
+`GET /channels/:id/prompt-debug?entityId=`, so a second participant's block can be read directly.

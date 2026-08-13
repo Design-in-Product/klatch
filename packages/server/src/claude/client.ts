@@ -1,10 +1,10 @@
 import Anthropic from '@anthropic-ai/sdk';
 import { EventEmitter } from 'events';
-import { getMessages, getChannel, updateMessage, updateChannelCompaction, getProjectForChannel, getFileArtifactsForMessages, createFileArtifact, createFileWithMessageRef, getChannelFiles, getProjectFiles } from '../db/queries.js';
+import { getMessages, getChannel, updateMessage, updateChannelCompaction, getProjectForChannel, getFileArtifactsForMessages, createFileArtifact, createCarriedContextArtifact, createFileWithMessageRef, getChannelFiles, getProjectFiles } from '../db/queries.js';
 import type { Entity, Channel, Project, Message, MessageArtifact, MessageStopReason } from '@klatch/shared';
 import { DEFAULT_MODEL } from '@klatch/shared';
 import { readFile, isTextFile, isImageFile, saveFile } from '../files/storage.js';
-import { buildCarriedContext } from './carried-context.js';
+import { buildCarriedContextBlock } from './carried-context.js';
 
 // Lazy-init: the Anthropic client must not be created at import time
 // because ESM hoists imports before dotenv.config() runs in index.ts.
@@ -781,8 +781,10 @@ export async function streamClaude(
   const history = buildPanelHistory(channelId, entity);
   const channelFileList = getChannelFiles(channelId).map((f) => `- ${f.name} (${f.mimeType}, ${formatBytes(f.sizeBytes)})`);
   const projectFileList = project ? getProjectFiles(project.id).map((f) => `- ${f.name} (${f.mimeType}, ${formatBytes(f.sizeBytes)})`) : [];
+  const carried = buildCarriedContextBlock(entity, channel);
+  if (carried) createCarriedContextArtifact(assistantMessageId, carried.roomCount, carried.messageCount);
   const systemPrompt = buildSystemPrompt(entity, channelPreamble, channel, project, channelFileList, projectFileList, {
-    carriedContext: buildCarriedContext(entity, channel),
+    carriedContext: carried?.text,
   });
   const result = await streamClaudeCore(
     assistantMessageId, entity, history, systemPrompt,
@@ -850,8 +852,10 @@ export async function streamClaudeRoundtable(
       // Per-entity, inside the loop — each participant carries its own history
       // and nobody else's. This is what keeps the cost of layer 6 proportional
       // to one agent rather than to the size of the cast.
+      const carried = buildCarriedContextBlock(entity, channel);
+      if (carried) createCarriedContextArtifact(assistantMessageId, carried.roomCount, carried.messageCount);
       const systemPrompt = buildSystemPrompt(entity, channelPreamble, channel, project, channelFileList, projectFileList, {
-        carriedContext: buildCarriedContext(entity, channel),
+        carriedContext: carried?.text,
       });
 
       let history: ChatMessage[];

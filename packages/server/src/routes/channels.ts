@@ -3,7 +3,7 @@ import fs from 'fs';
 import path from 'path';
 import { getAllChannelsEnriched, getChannel, getChannelStats, createChannel, updateChannel, deleteChannel, setChannelProject, getChannelEntities, getProjectForChannel, getChannelFiles, getProjectFiles, getEntity } from '../db/queries.js';
 import { buildSystemPrompt } from '../claude/client.js';
-import { buildCarriedContext } from '../claude/carried-context.js';
+import { buildCarriedContextBlock } from '../claude/carried-context.js';
 import type { ModelId, InteractionMode, ChannelType } from '@klatch/shared';
 import { INTERACTION_MODES } from '@klatch/shared';
 import { isValidModel } from './models.js';
@@ -16,10 +16,20 @@ app.get('/channels', (c) => {
 });
 
 /**
- * GET /channels/:id/prompt-debug
+ * GET /channels/:id/prompt-debug[?entityId=…]
  *
  * Returns the fully assembled system prompt that would be sent to the Anthropic API,
  * broken down by layer. For debugging prompt assembly — not user-facing.
+ *
+ * **`?entityId=` — why it exists.** The route assembled participant 1's prompt and
+ * only participant 1's, which was harmless while every layer was a property of the
+ * channel. Layer 6 broke that: carried context is assembled per entity inside the
+ * roundtable loop, so in a klatch each participant has a *different* prompt and
+ * this route could only ever show one of them. Theseus hit it driving the first
+ * live probe (`docs/research/carried-context-conveyance-probe-2026-08-12.md`) —
+ * the only way he could read the second agent's block was to build a throwaway
+ * klatch listing it first, which doesn't generalise past two. Omitting the
+ * parameter keeps the old behaviour exactly.
  */
 app.get('/channels/:id/prompt-debug', (c) => {
   const id = c.req.param('id');
@@ -30,9 +40,21 @@ app.get('/channels/:id/prompt-debug', (c) => {
 
   const entities = getChannelEntities(id);
   const project = channel.projectId ? getProjectForChannel(id) : null;
-  const entity = entities[0]; // Primary entity for the channel
+  const requestedEntityId = c.req.query('entityId');
+  const entity = requestedEntityId
+    ? entities.find((e) => e.id === requestedEntityId)
+    : entities[0]; // Default: primary entity, the pre-8/13 behaviour
 
   if (!entity) {
+    // A requested id that isn't in the room is a caller error distinct from an
+    // empty room — say which, and list the members so the caller can correct it
+    // without a second round trip.
+    if (requestedEntityId) {
+      return c.json({
+        error: `Entity "${requestedEntityId}" is not a participant in this channel`,
+        participants: entities.map((e) => ({ id: e.id, name: e.name })),
+      }, 400);
+    }
     return c.json({ error: 'No entity assigned to this channel' }, 400);
   }
 
@@ -40,8 +62,8 @@ app.get('/channels/:id/prompt-debug', (c) => {
   const channelFileNames = channelFileList.map((f) => `- ${f.name} (${f.mimeType})`);
   const projectFileList = project ? getProjectFiles(project.id) : [];
   const projectFileNames = projectFileList.map((f) => `- ${f.name} (${f.mimeType})`);
-  const carriedContext = buildCarriedContext(entity, channel);
-  const assembled = buildSystemPrompt(entity, channel.systemPrompt, channel, project, channelFileNames, projectFileNames, { carriedContext });
+  const carried = buildCarriedContextBlock(entity, channel);
+  const assembled = buildSystemPrompt(entity, channel.systemPrompt, channel, project, channelFileNames, projectFileNames, { carriedContext: carried?.text });
 
   return c.json({
     channelId: id,
@@ -72,8 +94,10 @@ app.get('/channels/:id/prompt-debug', (c) => {
         return parts.length > 0 ? `ACTIVE — ${parts.join('; ')}` : 'EMPTY';
       })(),
       '5_entityPrompt': `"${entity.name}" — ${entity.systemPrompt?.length || 0} chars`,
-      '6_carriedContext': carriedContext
-        ? `ACTIVE — ${carriedContext.length} chars carried from "${entity.name}"'s other channels`
+      '6_carriedContext': carried
+        ? `ACTIVE — ${carried.text.length} chars carried from "${entity.name}"'s other channels ` +
+          `(${carried.messageCount} message(s) from ${carried.roomCount} conversation(s)` +
+          (carried.omittedCount > 0 ? `, ${carried.omittedCount} dropped for budget` : '') + ')'
         : channel.type === 'klatch'
           ? `EMPTY — "${entity.name}" has no history in any other channel`
           : 'INACTIVE — carried context applies to klatches only',
@@ -82,7 +106,13 @@ app.get('/channels/:id/prompt-debug', (c) => {
     assembledLength: assembled.length,
     projectId: channel.projectId || null,
     projectName: project?.name || null,
+    entityId: entity.id,
     entityName: entity.name,
+    // Every participant, so a caller reading one seat's prompt can find the others
+    // without knowing the ids in advance. This is the discoverability half of
+    // ?entityId= — without it the parameter is only usable by someone who
+    // already has the id.
+    participants: entities.map((e) => ({ id: e.id, name: e.name })),
   });
 });
 

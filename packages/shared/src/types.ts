@@ -299,7 +299,7 @@ export interface Message {
 
 // ── Artifacts (tool use, thinking, images from imported conversations) ──
 
-export type ArtifactType = 'tool_use' | 'tool_result' | 'thinking' | 'image' | 'file';
+export type ArtifactType = 'tool_use' | 'tool_result' | 'thinking' | 'image' | 'file' | 'carried_context';
 
 export interface MessageArtifact {
   id: string;

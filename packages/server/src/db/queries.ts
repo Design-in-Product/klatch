@@ -999,6 +999,38 @@ export function createFileArtifact(
   };
 }
 
+/**
+ * Record that layer 6 was active for the turn that produced `messageId`.
+ *
+ * Iris's 8/13 ruling (`docs/ux/carried-context-visibility-2026-08-13.md`): a
+ * klatch message must passively show the human that the agent arrived carrying
+ * context, and from how many conversations — existence and count, never content
+ * and never the channel names. So this stores exactly the two numbers and
+ * nothing that could later be rendered as a leak.
+ *
+ * Written at prompt-assembly time, not at stream completion: the claim is about
+ * what the turn was *given*, which is true whether or not the response finishes.
+ *
+ * `message_artifacts.type` is a bare `TEXT NOT NULL` with no CHECK constraint
+ * (`db/index.ts:218-226`), verified before adding a sixth value — unlike
+ * `messages.status`, this one really is additive and needs no migration.
+ */
+export function createCarriedContextArtifact(
+  messageId: string,
+  roomCount: number,
+  messageCount: number
+): MessageArtifact {
+  const id = uuidv4();
+  const now = new Date().toISOString();
+  const inputSummary = `${roomCount} other conversation${roomCount === 1 ? '' : 's'}`;
+  const content = JSON.stringify({ roomCount, messageCount });
+  getDb().prepare(
+    `INSERT INTO message_artifacts (id, message_id, type, tool_name, input_summary, content, created_at)
+     VALUES (?, ?, 'carried_context', NULL, ?, ?, ?)`
+  ).run(id, messageId, inputSummary, content, now);
+  return { id, messageId, type: 'carried_context', inputSummary, content, createdAt: now };
+}
+
 /** Get all file artifacts for a list of message IDs (batch query for context injection) */
 export function getFileArtifactsForMessages(messageIds: string[]): Map<string, MessageArtifact[]> {
   if (messageIds.length === 0) return new Map();

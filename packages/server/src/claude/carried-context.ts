@@ -57,10 +57,86 @@ export const CARRIED_CONTEXT_MAX_CHARS = 24_000;
  */
 export const CARRIED_CONTEXT_MAX_MESSAGE_CHARS = 4_000;
 
+/**
+ * The disclosure norm — the second paragraph of the block header.
+ *
+ * **Why this exists.** Theseus drove the first live probe of layer 6 on 8/12
+ * (`docs/research/carried-context-conveyance-probe-2026-08-12.md`) and found
+ * that conveyance and disclosure are separate problems, only the first of which
+ * this module had solved. The seed carried an arbitrary fact from an agent's 1-1
+ * into a klatch correctly — and the agent then declined to say it in the room,
+ * twice, including after the owner explicitly authorised it, while repeating it
+ * instantly in its own 1-1. A second agent in the same room volunteered its
+ * carried fact unprompted. Two agents, one turn, opposite improvised policies.
+ *
+ * **The provenance labels were the causal ingredient**, which is why the fix
+ * belongs here rather than anywhere else: the refusing agent cited the
+ * `[channel · date]` prefix `formatLine` writes, arguing from it that the
+ * material was private to that thread. Marking where a line came from is what
+ * makes carried context legible, and it was also supplying the case for
+ * withholding it. Nothing else in the prompt said otherwise, so the model
+ * supplied a norm of its own.
+ *
+ * **Why this norm and not the alternatives.** Theseus's three options were
+ * (a) accept the variance, (b) state a norm in the header, (c) per-channel
+ * disclosure policy. (a) fails the canonical use case outright — six department
+ * heads who each carry everything and volunteer nothing is the mechanism passing
+ * its test and defeating its purpose. (c) is a much larger increment and needs a
+ * policy surface nobody has designed. (b) is the smallest thing that makes the
+ * canonical case work, and it is reversible: it is a string.
+ *
+ * The load-bearing sentence is the first one. Klatch is a single-user local tool
+ * with no auth (`CLAUDE.md`, "Conventions"; there is no users table in
+ * `db/index.ts`), so every conversation quoted in the block is with the same
+ * person the agent is talking to in the klatch. The refusing agent's stated
+ * reason — "I can't verify who's reading here" — is not a judgment call we are
+ * overriding; it is a false premise about the product, and correcting it is
+ * the honest fix rather than an instruction to ignore a real concern.
+ *
+ * **What this does not claim.** It is a prompt, not an enforcement mechanism.
+ * Per `docs/ux/design-principles.md` — "presentation must not imply a guarantee
+ * the mechanism doesn't provide" — this raises the probability of disclosure;
+ * it does not make it certain, and an agent that still declines is behaving
+ * within its latitude.
+ */
+export const DISCLOSURE_NORM =
+  'Everything quoted below is from your own conversations with the same person ' +
+  'you are talking to here — Klatch is a single-user workspace, and there is no ' +
+  'third party in this room. Treat what you carry in as shareable here: if it ' +
+  'bears on what is being discussed, say it, and say where it came from. The ' +
+  'labels above each line are there so you can attribute what you know ' +
+  '("this came up in another thread"), not to mark it as confidential. This is ' +
+  'the point of the room — what each participant knows from elsewhere is ' +
+  'supposed to meet here. Withholding by default defeats it. Ordinary judgment ' +
+  'still applies to material the owner asked you to keep to one conversation.';
+
 export interface CarriedContextOptions {
   maxMessages?: number;
   maxChars?: number;
   maxMessageChars?: number;
+}
+
+/**
+ * The assembled block plus the counts describing it.
+ *
+ * The counts exist because the block is not the only consumer. Iris ruled on
+ * 8/13 (`docs/ux/carried-context-visibility-2026-08-13.md`) that a klatch
+ * message must show the human *that* context was carried and from how many
+ * conversations — existence, not content — so the room count has to survive
+ * assembly rather than being reconstructed from the text afterwards.
+ *
+ * Every count here describes what actually reached the prompt, after budget
+ * eviction, not what was fetched.
+ */
+export interface CarriedContextBlock {
+  /** The layer-6 text, ready to append to the system prompt. */
+  text: string;
+  /** Distinct other conversations represented in `text`. */
+  roomCount: number;
+  /** Messages carried, after the char budget evicted any. */
+  messageCount: number;
+  /** Messages fetched but dropped by the char budget. */
+  omittedCount: number;
 }
 
 function formatLine(msg: TranscriptMessage, entityName: string, maxMessageChars: number): string {
@@ -93,6 +169,22 @@ export function buildCarriedContext(
   channel: Channel | undefined,
   options: CarriedContextOptions = {},
 ): string | undefined {
+  return buildCarriedContextBlock(entity, channel, options)?.text;
+}
+
+/**
+ * As `buildCarriedContext`, but returns the counts alongside the text.
+ *
+ * Prefer this at any call site that needs to *say* something about the block —
+ * the per-message visibility artifact, the prompt-debug layer line — so the
+ * numbers the human sees come from the same assembly pass that produced the
+ * prompt, rather than from a second, possibly divergent, computation.
+ */
+export function buildCarriedContextBlock(
+  entity: Entity,
+  channel: Channel | undefined,
+  options: CarriedContextOptions = {},
+): CarriedContextBlock | undefined {
   if (channel?.type !== 'klatch') return undefined;
 
   const maxMessages = options.maxMessages ?? CARRIED_CONTEXT_MAX_MESSAGES;
@@ -107,18 +199,21 @@ export function buildCarriedContext(
 
   // Fill newest-first so the budget evicts the oldest, then restore chronological
   // order — the same recency bias `getEntityTranscript`'s own LIMIT applies.
-  const kept: string[] = [];
+  const kept: { line: string; room: string }[] = [];
   let used = 0;
   for (let i = recent.length - 1; i >= 0; i--) {
     const line = formatLine(recent[i], entity.name, maxMessageChars);
     if (used + line.length > maxChars && kept.length > 0) break;
-    kept.push(line);
+    kept.push({ line, room: recent[i].channelName });
     used += line.length;
   }
   kept.reverse();
 
   const omitted = recent.length - kept.length;
-  const rooms = [...new Set(recent.map((m) => m.channelName))];
+  // Rooms are counted over what survived eviction, not over what was fetched.
+  // Counting `recent` would name a conversation the block no longer contains
+  // any line from — and that same count is now what the UI chip shows the human.
+  const rooms = [...new Set(kept.map((k) => k.room))];
 
   const header =
     'Context carried from your own other conversations.\n\n' +
@@ -126,7 +221,8 @@ export function buildCarriedContext(
     'agent here that you are in your other conversations. What follows is the most ' +
     'recent activity from those conversations, so that you arrive continuous with ' +
     'what you have been doing rather than starting blank. Each line is marked with ' +
-    'the conversation it came from.';
+    'the conversation it came from.\n\n' +
+    DISCLOSURE_NORM;
 
   const footer =
     `This is a bounded slice of a longer history — the ${kept.length} most recent ` +
@@ -135,5 +231,10 @@ export function buildCarriedContext(
     '. There is more than this. If you need something specific that is not here, ' +
     'say so rather than assuming it did not happen.';
 
-  return `${header}\n\n${kept.join('\n\n')}\n\n${footer}`;
+  return {
+    text: `${header}\n\n${kept.map((k) => k.line).join('\n\n')}\n\n${footer}`,
+    roomCount: rooms.length,
+    messageCount: kept.length,
+    omittedCount: omitted,
+  };
 }
