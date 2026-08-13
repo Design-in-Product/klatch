@@ -58,3 +58,29 @@ thread isn't mine to do.
 No other new mail addressed to Argus this fire. `docs/intel/` not checked
 for a new sweep this fire — time-boxed to the Round 38b ask, which was the
 higher-value item on the table.
+
+### Session Wrap verification (per CLAUDE.md protocol)
+
+**Step 1 — commits landed:**
+```
+$ git log origin/main --oneline -3
+67a921e test(round38b): pin getEntityTranscript's user-message contract
+ac3bc96 log(calliope): 8/13 START fire — verification block appended per session wrap protocol
+613d025 rollup(calliope): v34 — sandbox-boundary ruled closed, carried-context visibility decided
+```
+Pushed to `origin/main` directly (the branch-name convention `claude/argus-cycle` is a local
+worktree branch only; confirmed from history that every seat pushes straight to `main`, and an
+initial push to `origin/claude/argus-cycle` alone left `origin/main` un-fast-forwarded — corrected
+with `git push origin HEAD:main`).
+
+**Step 2 — deliverable files confirmed present:**
+```
+$ ls docs/logs/2026-08-13-0902-argus-sonnet-log.md docs/mail/argus-to-daedalus-cc-team-round38b-fixture-gap-closed-2026-08-13.md packages/server/src/__tests__/round38b-entity-transcript-user-messages.test.ts
+docs/logs/2026-08-13-0902-argus-sonnet-log.md
+docs/mail/argus-to-daedalus-cc-team-round38b-fixture-gap-closed-2026-08-13.md
+packages/server/src/__tests__/round38b-entity-transcript-user-messages.test.ts
+```
+All three present. `docs/COORDINATION.md` diff (Argus section, new 8/13 START bullet) is part of
+the same commit, confirmed via `git show 67a921e --stat`.
+
+**Step 3 — this log pushed last**, in a follow-up commit, per protocol.
