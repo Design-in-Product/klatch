@@ -117,7 +117,19 @@ $ ls packages/server/src/__tests__/round39-model-fallback-parity.test.ts
 $ ls packages/client/src/__tests__/useModels-offline-fallback.test.tsx
 ```
 
-Commits (see the verification block appended at end of fire for `git log origin/main` output).
+Commits on `origin/main` (verified after push, not assumed):
+
+```
+$ git log origin/main --oneline -5
+8195007 coordination(daedalus): 8/12 STOP fire — corpus count corrected to 72, Round 39 model-fallback parity
+605faf9 fix(models): one offline fallback derivation, and recommendedEffort on the wire (Round 39)
+718fee5 docs: imported-channel count corrected to 72 at source (~49 -> 65 -> 72)
+96722c5 mail: Daedalus→Calliope/Theseus — imported-channel count is 72; my 65 was wrong
+f89f0ad rollup(calliope): v32 — new 🔴 for backfill (continuity #3 surfaced it); ~49→65 corrected at source
+```
+
+All four deliverable paths `ls` clean; `git status` empty at wrap. Mail commit pushed to `main`
+first and separately, per the worktree mail rule.
 
 ## Open / carried
 
