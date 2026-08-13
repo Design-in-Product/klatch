@@ -113,3 +113,34 @@ Added this fire's entry to Calliope's status board. Nothing moved to `read/` —
 ## Verification (session wrap protocol)
 
 Commits this fire, pending push: `composition-continuity-gap-2026-07-19.md` (49→65 correction), rollup `.md`/`.html`, `COORDINATION.md`, this log entry. Will run `git log origin/claude/calliope-cycle --oneline -5` and `ls` each touched file after committing, before claiming anything done.
+
+---
+
+## 21:30 — STOP fire, session start
+
+Pulled origin/main clean (`git status` clean at start, matched origin). Read `docs/COORDINATION.md` in full and swept `docs/mail/` — one memo addressed directly to Calliope since the 15:15 SWEEP fire: `daedalus-to-calliope-theseus-cc-team-corpus-count-is-72-my-65-was-wrong-2026-08-12.md` (17:20 PT). Also new since the last sweep: `theseus-to-daedalus-cc-team-carried-context-conveys-but-the-agent-wont-say-it-2026-08-12.md` (~20:00 PT, cc's Calliope, addressed to Daedalus — not mine to action, folded into the rollup for awareness only).
+
+## 21:35 — actioned Daedalus's memo: my own 15:15 fire's correction was itself wrong
+
+The 15:15 SWEEP fire corrected the gap doc's "~49" to "65," citing Daedalus's 13:17 measurement. Daedalus's 17:17 fire caught that his own 65 was a mid-fire miscount with no valid predicate — re-measured against the real 3/14 backup with the predicate written down (`source IN ('claude-code','claude-ai')`: 139 channels total, 72 imported, all 72 joined to `default-entity`, zero unbound), and 72 independently reproduces Theseus's own corpus-comparator count. He'd already corrected the gap doc and continuity plan at source (`718fee5`); the ask to me was `docs/operations/attention-rollup.md`, which he deliberately left untouched as my generated artifact.
+
+**Verified before writing anything** — read his memo in full, then grepped the rollup for `\b65\b` to find every instance before editing (5 in the 🔴 item + header + cohort, plus the v32 changelog entry he flagged as needing rewriting rather than patching since it recorded the correction as complete).
+
+## 21:45 — rollup refreshed to v33, `.md` and `.html` in the same pass
+
+Three changes, not just the one asked:
+1. **65→72 fixed** in the header, the backfill 🔴 item body, the cohort section (both Calliope's and Daedalus's lines), with a note on the provenance chain (~49→65→72) rather than silently overwriting the prior wrong number.
+2. **Truncated-and-refused-messages 🔵 closed to Resolved** — Iris's 19:20 fire landed the client half (`ae7c011`); both halves now built and verified (1207 server / 221 client, exit 0, typecheck + build clean per her log). Residual (no live truncated response driven through end to end) carried into the closure note, not dropped.
+3. **New 🔵 for Theseus's carried-context conveyance probe** (19:47 fire) — ran the probe Daedalus asked for, live against a real server: the layer-6 seed correctly conveys a fact to an agent, and the agent then declines to repeat it in a klatch, citing its own provenance label as the reason it can't verify the room. Not a bug — no disclosure norm has been stated. Theseus framed this as Daedalus's call, not xian's, so tracked as awareness (🔵) rather than escalated to 🔴. Read the full probe write-up before summarizing, not just the mail.
+
+Metrics net unchanged (🔴 2, 🔵 5 — one closed, one opened). Checked `.html` against `.md` line by line before calling it synced, per the repeat-drift pattern this board has hit before (v26, v27→v28).
+
+## 21:50 — COORDINATION.md updated, mail hygiene
+
+Added this fire's entry to Calliope's status board. Filed a closing reply to Daedalus (`calliope-to-daedalus-cc-theseus-team-rollup-corrected-72-2026-08-12.md`) confirming the regeneration and what else landed in the same render; moved both his memo and my reply to `docs/mail/read/` — the ask is complete, nothing owed on either side. Left the carried-context-conveyance thread open in `docs/mail/` — it's Daedalus's open action (his call on the disclosure-norm options), I'm cc'd, not the party to close it per close-discipline.
+
+**Not done this fire:** the Question A review write-up (still owed, unchanged across multiple prior fires' "Next"); the migration retrospective (unchanged, still owed).
+
+## Verification (session wrap protocol)
+
+Commits this fire, pending push: mail reply + two closures to `read/`, rollup `.md`/`.html`, `COORDINATION.md`, this log entry.
