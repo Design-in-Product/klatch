@@ -49,9 +49,21 @@ Verified against the real corpus with the built code, not inferred: the same see
 
 ## What this measurement says about backfill
 
-Run against the corpus as it actually is, the seed comes out **1,583 chars from 4 rooms** — not the ~20K the per-channel table predicts. That is not a budget bug. The corpus predates continuity #1, so all 65 imported channels still bind to `default-entity`: there is only one agent, and its "recent activity elsewhere" is a mix drawn from whichever channels were most recently active.
+Run against the corpus as it actually is, the seed comes out **1,583 chars from 4 rooms** — not the ~20K the per-channel table predicts. That is not a budget bug. The corpus predates continuity #1, so every imported channel still binds to `default-entity`: there is only one agent, and its "recent activity elsewhere" is a mix drawn from whichever channels were most recently active.
 
-So the per-agent numbers in the table above are what the seed becomes **after backfill**, and the un-backfilled numbers are what it is **today**. Open question 3 in the gap doc (backfill the ~49–72 existing imports, or forward-only with re-import) moves from tidiness to load-bearing: **until it is answered, carried context is wired, correct, and carrying the wrong thing for the canonical use case.** Nothing about this is fixable in the seed; it is a data question. Flagged, not decided here.
+**Population, re-measured 2026-08-12 17:20 against `backups/klatch.db.backup-2026-03-14` (predicates spelled out, because the first pass reported a number that traces to none of them):**
+
+| | count |
+|---|---:|
+| channels, all | 139 |
+| imported (`source IN ('claude-code','claude-ai')`) | **72** (40 cc · 32 claude-ai) |
+| …of those, with ≥1 message | 64 |
+| …of those, joined to `default-entity` | **72 of 72** |
+| imported channels with no `channel_entities` row at all | 0 |
+
+The earlier "65" in this document was mine and is **wrong** — it matches neither the imported-channel count (72) nor the with-messages count (64), and no query in the fire's notes derives it. Theseus's independent count of 72 (`docs/research/maxt-corpus-ruling-measured-2026-08-12.md`) is the correct one. The claim it was attached to survives the correction and is in fact stronger: it is not *most* imported channels that bind to the default entity, it is **all** of them.
+
+So the per-agent numbers in the table above are what the seed becomes **after backfill**, and the un-backfilled numbers are what it is **today**. Open question 3 in the gap doc (backfill the 72 existing imports, or forward-only with re-import) moves from tidiness to load-bearing: **until it is answered, carried context is wired, correct, and carrying the wrong thing for the canonical use case.** Nothing about this is fixable in the seed; it is a data question. Flagged, not decided here.
 
 ## Not built — the rest of #3
 

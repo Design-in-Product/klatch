@@ -119,7 +119,7 @@ The real design work. `buildSystemPrompt` needs to incorporate the entity's sour
 > **`docs/plans/continuity-3-carried-context.md`**.
 >
 > **This makes open question 3 (backfill) load-bearing rather than tidy.** Measured against the real
-> corpus the seed is correct and carries the wrong thing, because all 65 imported channels still bind
+> corpus the seed is correct and carries the wrong thing, because all 72 imported channels still bind
 > to one entity — "this agent's recent activity elsewhere" is only meaningful once the imports are
 > split per agent. Wiring cannot fix that; it is a data question and it is still open.
 
@@ -135,7 +135,9 @@ The real design work. `buildSystemPrompt` needs to incorporate the entity's sour
 
 2. **Bidirectionality in 1.0?** Does klatch content flow back into the agent's 1-1 conversation for the beta, or is one-way (1-1 → klatch) sufficient to meet the gate?
 
-3. **Existing imports.** There are **65** already-imported channels bound to the default entity (corrected 2026-08-12 — Daedalus measured this against the real March corpus the same day this question became load-bearing, see the PARTIAL note above; the original "~49" was never traced to a specific DB, and Theseus's corpus comparator confirmed it matches none of the four DBs currently reachable on this host). Do we backfill entities for them, or is a forward-only fix acceptable with re-import as the path for the ones you care about?
+3. **Existing imports.** There are **72** already-imported channels, and **all 72** are bound to the default entity (40 `claude-code` + 32 `claude-ai`; 64 of them have at least one message; none lack a `channel_entities` row). Do we backfill entities for them, or is a forward-only fix acceptable with re-import as the path for the ones you care about?
+
+   *Provenance of that number, twice corrected.* The original "~49" was never traced to a specific DB and matches none of the four reachable on this host (Theseus's comparator, 2026-08-12). It was replaced the same day by **65**, which was mine and was also wrong — no predicate produces it. Re-measured 2026-08-12 17:20 against `backups/klatch.db.backup-2026-03-14` with the query written down (`source IN ('claude-code','claude-ai')`, joined to `channel_entities`): **72**, matching Theseus's independent count in `docs/research/maxt-corpus-ruling-measured-2026-08-12.md`. Cite 72, and cite the predicate with it.
 
 4. **Beta timing.** This is real work — likely more than a few days. Does the beta cut wait for it, or do we cut a v0.9.x that's honest about the limitation and hold 1.0 for the full premise?
 
