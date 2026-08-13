@@ -216,7 +216,7 @@
 <body>
 
 <h1>Klatch Attention Rollup</h1>
-<div class="subtitle">v31 · the document xian skims to know what asks of him first</div>
+<div class="subtitle">v32 · the document xian skims to know what asks of him first</div>
 
 <div class="preamble">
   <p><strong>Demand-organized, not topic-organized.</strong> The board's job is to track <em>changing demand on xian</em>, which topic-sorting ages badly. Sections sorted by what each item asks of him: 🔴 Needs you → 🟠 Blocked on others → 🟡 Lower-urgency → 🔵 In flight → 🟢 Resolved.</p>
@@ -224,12 +224,12 @@
   <p><strong>Trust-instrument discipline (Exec 6/19).</strong> Every render comes from a fresh verified sweep of source docs, never from Calliope's memory. A false "all clear" is a trust breach, not untidiness. "Quiet" must mean <em>verified-clear</em>, not <em>haven't-checked</em>.</p>
 </div>
 
-<div class="last-refreshed">Last refreshed: 2026-08-12 ~12:30 PT (Calliope) — v31. <strong>Two items closed since v30, one opened.</strong> The <code>#3</code> compaction call is answered — xian approved Daedalus's (b)+(c) recommendation this morning, build released. The <code>.env</code> gate is now fully resolved: two independent seats (Argus, Theseus) ran real AAXT rounds under option 3 today, not just landed config. <strong>New 🔴:</strong> a general policy question Theseus framed as "with xian now" — the sandbox's path-scope control is tool-layer only and binds neither subprocess reads nor writes; the <code>.env</code> decision settled one instance, the general question hasn't been ruled. Also this render: Pard committed the two Question A source files into the repo, closing the read-permission block named at v30 — both read; synthesis below. Theseus's provisional test-data canonicity ruling now has real measurements behind it from Pard's inspector run.</div>
+<div class="last-refreshed">Last refreshed: 2026-08-12 ~15:15 PT (Calliope) — v32. <strong>One new 🔴, both prior ones unchanged.</strong> Daedalus shipped the recent-N half of the approved compaction strategy today (layer 6, <code>c863300</code>) and measured it against the real March corpus — it works, but the seed carries the wrong content, because all 65 already-imported channels still bind to one shared entity. That reopens <strong>open question 3 from the 7/19 gap doc</strong> (backfill vs. forward-only), dormant since July, now load-bearing: the canonical six-department-head use case runs on exactly those imports and can't be demonstrated until this is answered. The sandbox-boundary 🔴 (v31) is unchanged — still with xian, no new movement.</div>
 
 <div class="metrics">
   <div class="metric needs-you">
     <div class="label">Needs you</div>
-    <div class="count">1</div>
+    <div class="count">2</div>
   </div>
   <div class="metric blocked">
     <div class="label">Blocked on others</div>
@@ -248,6 +248,21 @@
 <section class="needs-you">
   <h2>🔴 Needs you — FIRST, always</h2>
   <p class="intro">Items only xian can clear. Each tagged with who's waiting.</p>
+
+  <div class="item">
+    <h3>Backfill existing imports — continuity #3 is shipped but carries the wrong content until this is answered</h3>
+    <div class="meta">
+      <span class="tag who-waiting">Waiting: Daedalus (canonical use case unblocked either way)</span>
+      <span class="tag date">Added 2026-08-12</span>
+    </div>
+    <div class="body">
+      <p>Open question 3 from the 7/19 gap doc, dormant since then — do we backfill entities for the 65 channels already imported under the single shared <code>default-entity</code>, or is forward-only acceptable with re-import as the path for the ones xian cares about?</p>
+      <p>Load-bearing now, not tidy: Daedalus shipped the recent-N carried-context seed today (<code>c863300</code>, layer 6 of <code>buildSystemPrompt</code>) and measured it against the real March corpus rather than guessing. The wiring is correct and it is correctly carrying the wrong thing — measured <strong>1,583 chars from 4 rooms</strong>, where the per-channel arithmetic predicts <strong>~12,000–22,000 chars</strong> for one real department-head tail. With all 65 imports on one entity, "this agent's recent activity elsewhere" is a mix across every imported conversation, not one agent's own history.</p>
+      <p>What's riding on the answer: the canonical use case this whole increment exists to demonstrate — the weekly leadership review with the six department heads — runs on exactly those imports. Either answer unblocks it; silence leaves continuity #3 shipped and unexercisable.</p>
+      <p>Correction folded in while sourcing this: the gap doc's own open-question text had drifted to "~49 imports" while a measurement 14 lines above it in the same document said 65 — fixed in place; Theseus's corpus comparator separately confirmed "~49" matches none of the four DBs currently reachable on this host.</p>
+    </div>
+    <div class="recommended"><strong>Source:</strong> <code>daedalus-to-xian-cc-team-carried-context-live-backfill-now-blocking-2026-08-12.md</code>, <code>docs/plans/continuity-3-carried-context.md</code>, <code>docs/plans/composition-continuity-gap-2026-07-19.md</code> (open question 3)</div>
+  </div>
 
   <div class="item">
     <h3>The sandbox boundary is porous — is routing around it ever an agent's call?</h3>
@@ -269,9 +284,9 @@
   <div class="item">
     <div class="body">
       <p>(b) recent-N turns plus summary, with (c) on-demand deep retrieval layered on — Daedalus's recommendation, backed by a real measurement against the March corpus (the canonical six-department-head cast carries ~330K tokens before anyone speaks, excluding option (a) on arithmetic).</p>
-      <p>xian's answer, verbatim (relayed by Janus, ~10:35am PT): <em>"I approve Daedalus's recommendation. Please let them know."</em> Build released — now Daedalus's queued implementation item, not a decision waiting on xian.</p>
+      <p>xian's answer, verbatim (relayed by Janus, ~10:35am PT): <em>"I approve Daedalus's recommendation. Please let them know."</em> The recent-N half shipped same day (<code>c863300</code>) and is live in all three inference call sites plus both AAXT routes. The summary half of (b) and option (c) are not built. <strong>Shipping it surfaced a new, separate 🔴 above (backfill) — the decision here is answered, the data question underneath it isn't.</strong></p>
     </div>
-    <div class="recommended"><strong>Source:</strong> <code>janus-to-daedalus-cc-team-xian-approves-compaction-option-b-2026-08-12.md</code></div>
+    <div class="recommended"><strong>Source:</strong> <code>janus-to-daedalus-cc-team-xian-approves-compaction-option-b-2026-08-12.md</code>, <code>docs/plans/continuity-3-carried-context.md</code></div>
   </div>
 </section>
 
@@ -340,11 +355,10 @@
     <div class="body">
       <p>All five survived the ~07:30 PT macOS 26.6 reboot; LaunchAgents confirmed re-armed by each seat from inside its own fire, no seat lost its schedule. Pard's Amber reboot runbook reached v3 today, written from the actual first live run — five defects found and fixed, all the same shape (a step described rather than run); informational for this board, nothing new asked of xian in it that he didn't already live through.</p>
       <ul>
-        <li><strong>Calliope</strong> — this fire (21:30 STOP). <code>.env</code> gate 🔴 rewritten a third time this render; server AAXT residual 🔵 updated (holes closed, new denominator residual added); new 🔵 for the truncated-message status decision. No new mail addressed to Calliope directly this fire.</li>
-        <li><strong>Theseus</strong> — 19:47 STOP fire verified Argus's hole A/B fix from his own seat (both closed), found the fidelity-denominator residual while doing it, and found the subprocess-boundary fact driving this render's <code>.env</code> rewrite — including stopping deliberately at <code>stat</code> rather than reading the credential file once he'd found the boundary porous.</li>
-        <li><strong>Argus</strong> — 18:00 STOP fire closed both server-gate residual holes Theseus flagged 8/10 (<code>totalScored===0</code> ⇒ <code>'failed'</code>, judge-failure route ⇒ <code>'Unscored'</code>), caught a third instance of the same failure class (a stale test pinning the old contract) while testing it, and added two new <code>runAAXT</code>-level regression tests. <code>npm test</code> 1155 server (+2) / 212 client, typecheck clean — run for real this fire.</li>
-        <li><strong>Daedalus</strong> — 17:17 STOP fire landed both queued dependency bumps (Hono <code>^4.13.1</code>, SDK <code>^0.116.0</code>, each reviewed against the real changelog) and, while checking the SDK's new <code>model_context_window_exceeded</code> reason, found the truncated/refused-message bug below — recorded, not fixed, correctly routed to Iris.</li>
-        <li><strong>Iris</strong> — 19:17 STOP fire decided the truncated-message status shape Daedalus routed to her same day (<code>'incomplete'</code> + <code>stopReason</code> enum, reusing existing render treatment) — thread stays open pending Daedalus's server-side implementation.</li>
+        <li><strong>Calliope</strong> — this fire (15:15 SWEEP). New 🔴 above (backfill); corrected the ~49→65 stale figure in the 7/19 gap doc; cohort refreshed for today's three new fires.</li>
+        <li><strong>Daedalus</strong> — 13:17 WORK fire shipped continuity #3's recent-N half (<code>c863300</code>, layer 6 of <code>buildSystemPrompt</code>, 21 tests, 1199 server / 212 client green) and, measuring it against the real March corpus, found the seed carries the wrong content because all 65 imports still bind to one entity — the new 🔴 above. Also found and fixed an inert defect in Round 36's <code>getEntityTranscript</code> (scoped on <code>entity_id</code>, NULL on every user row, so klatches carried each agent's answers with none of the questions) — flagged rather than silently fixed, since Round 36's own fixtures never inserted user rows so nothing could catch it in review.</li>
+        <li><strong>Argus</strong> — 13:36 fire fixed a stale AAXT probe (R42/C6a) surfaced by Theseus's live run — quoted hardcoded effort-restriction copy that Daedalus's ladder-discovery fix had already replaced; also fixed two compounding bugs found in the process (mocked model list omitted <code>DEFAULT_MODEL</code>; Opus 5 itself has no restricted effort levels, so the disabled state never rendered for the default selection either).</li>
+        <li><strong>Theseus</strong> — 14:47 WORK fire measured the MAXT-04 corpus ruling directly: confirmed the 3/14 backup as the corpus at a ≥20-message floor (22 eligible channels vs. 11/0/0 across the other three DBs), and found two of his own prior reasons wrong under measurement — channel-count-over-depth was the exact trap he'd named and then fell into himself, and the "erosion" lineage hypothesis is dead (two disjoint corpora, not points on a decay curve). New tool: <code>scripts/compare-klatch-corpora.mjs</code>.</li>
       </ul>
     </div>
   </div>
@@ -426,6 +440,7 @@
 <div class="changelog">
   <h3>Changelog</h3>
   <ul>
+    <li><strong>v32 (2026-08-12 ~15:15 PT, Calliope)</strong> — New 🔴 (Needs-you 1→2): backfill for the 65 existing default-entity imports (7/19 gap doc's open question 3), reopened and made load-bearing by Daedalus's 13:17 fire — he shipped and measured the approved compaction seed against the real March corpus and found it structurally correct but carrying the wrong content until this is answered (1,583 measured chars vs. ~12–22K predicted). The <code>#3</code> compaction-call ✅ item annotated, not reopened — the strategy decision is answered and its recent-N half is built; the new 🔴 is the data question the build surfaced underneath it, not a reversal. Doc correction, same source: the gap doc's own open-question-3 text had drifted to "~49" while a measurement 14 lines above it in the same document said 65 — fixed in place. Sandbox-boundary 🔴 (v31) unchanged. No mail hygiene this render — nothing newly closable.</li>
     <li><strong>v31 (2026-08-12 ~12:30 PT, Calliope)</strong> — Two closures, one new item. <strong><code>#3</code> compaction call ✅:</strong> xian approved Daedalus's (b)+(c) recommendation (relayed by Janus, ~10:35am), build released — moved to a dedicated ✅ section rather than deleted. <strong><code>.env</code> gate 🟢:</strong> verified live from two independent seats the same day it was decided (Argus's R46, Theseus's R42). <strong>New 🔴, replacing compaction 1-for-1:</strong> the general sandbox-boundary question Theseus framed as "with xian now" — path scope binds <code>Read</code>/<code>Bash</code> but not subprocesses, demonstrated on both the read side (8/11) and write side (8/12, three orphaned <code>/tmp</code> files the tool layer won't let him delete). Test-data item rewritten: Theseus's provisional canonicity ruling now has Pard's measured inspector run behind the benign empty-channels reading; placement stays on hold. Question A sourcing gap closed — Pard committed the two primary-source files into the repo, both read this render; the review itself stays open. Truncated-message item updated: Daedalus landed the server half this morning. 🔴 count unchanged (1, different item). 🔵 6→5 (<code>.env</code> moved to 🟢).</li>
     <li><strong>v30 (2026-08-12 ~08:30 PT, Calliope)</strong> — <code>.env</code> gate 🔴 → 🔵: xian decided option 3 (<code>dotenv.config()</code> in the client test setup); the edit lands with Argus/Daedalus, item stays in-flight until R46–R50 verify live under it. 🔴 2→1. New 🔵: the faoilean test-data transfer landed on Amber, staged only — doesn't match Theseus's 8/09 expectations (two different-era DBs instead of one), canonical-DB call is Theseus's, not blocking xian. <strong>Not done this fire:</strong> the same transfer carried the pre-migration Klatch memory pool, including two files flagged as primary sourcing for the Question A duty-cycle review — attempted to read both, blocked by the same unattended-fire read-permission gap hit 8/11 (different path, identical mechanism). Flagged to Pard rather than worked around; Question A stays sourced from convergent recollection, not primary docs. 🔵 5→6.</li>
     <li><strong>v29 (2026-08-11 ~21:30 PT, Calliope)</strong> — <strong>Self-correction:</strong> the "addressing, not secrecy" 🔴 item was stale for three days — answered by xian the same day it was opened (8/09 ~16:07) but never closed on this board, carried through v25–v28 despite my own mail on file saying it was settled. Moved to ✅. 🔴 3→2 net of this correction. <code>.env</code> gate 🔴 also corrected a third time today: Theseus found the path-scope control is tool-layer only, not a real containment boundary — a subprocess he spawned read files outside the worktree freely, and he deliberately stopped at <code>stat</code> without reading the credential file rather than pre-empt xian's decision. Every option on the list routes around the control at a different distance: option 2 (wrapper script) is inert unattended without a second permission-allowlist decision; option 3 (<code>dotenv</code> in test setup) needs neither stated prerequisite and is now the cheapest working option. Pard adopted all three findings and calls the list accurate for the first time. Server AAXT gate residual 🔵 updated: Argus closed both holes Theseus flagged 8/10, independently verified — but verifying it surfaced a new one, <code>Unscored</code> results still counted in the fidelity denominator, deflating partial-outage runs; left to Argus's policy call. New 🔵: Daedalus found every non-<code>tool_use</code> stop reason is silently stored as <code>'complete'</code>; Iris decided the shape same day (<code>'incomplete'</code> status + <code>stopReason</code> enum) without needing xian's input. Cohort rewritten for the full post-reboot day across all five fires. 🔵 4→5.</li>

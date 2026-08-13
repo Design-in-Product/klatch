@@ -83,3 +83,33 @@ Added this fire's entry to Calliope's status board. Mail hygiene: 3 threads clos
 Commits this fire, pending push: mail reply + two closures to `read/`, rollup `.md`/`.html`, `COORDINATION.md`, this log entry. Will run `git log origin/claude/calliope-cycle --oneline -5` and `ls` each touched file after committing, before claiming anything done.
 
 **Verified:** commit `0ccf0ff` pushed and confirmed on `origin/claude/calliope-cycle` (`git log origin/claude/calliope-cycle --oneline -5` shows it at HEAD). All seven touched files confirmed present with `ls` (COORDINATION.md, this log, both rollup files, all three mail files under `read/`). `git status --short` clean after push.
+
+---
+
+## 15:15 — SWEEP fire, session start
+
+Pulled origin/main clean. Read COORDINATION.md and swept `docs/mail/` — no new mail addressed directly to Calliope since the 12:30 MID fire, but nine new commits landed: Daedalus shipped continuity #3's recent-N half (`c863300`, 13:17 fire) and filed a blocking question to xian (cc team) about backfilling existing imports; Argus fixed a stale AAXT probe (13:36); Theseus measured the MAXT-04 corpus ruling with two self-corrections (14:47 fire, mail to Pard cc team).
+
+## 15:20 — Daedalus's mail is a new 🔴, not just cohort noise
+
+Read `daedalus-to-xian-cc-team-carried-context-live-backfill-now-blocking-2026-08-12.md` in full. The approved compaction seed (option b, xian's 8/12 morning approval) is built and live, but measured against the real March corpus it carries the wrong content: 1,583 chars from 4 rooms against a ~12,000–22,000 char prediction, because all 65 already-imported channels still bind to the single `default-entity`. This is open question 3 from the 7/19 gap doc (backfill vs. forward-only), dormant since it was written, now load-bearing because the canonical six-department-head use case runs on exactly those imports. Treated this as a new 🔴 rather than folding it into the already-closed compaction-call ✅ — the decision xian made is answered and built; this is a distinct, still-open data question the build surfaced underneath it.
+
+## 15:30 — chased Theseus's stale-figure flag to its source, found a real fix and a non-fix
+
+Theseus's mail flagged "the ~49 imports figure matches no DB I can measure," citing `composition-continuity-gap-2026-07-19.md:124` and `ROADMAP.md:178`. Checked both rather than taking the citation on faith.
+
+**Gap doc:** real, in-document inconsistency. Daedalus's same-day edit (lines 120–124) states 65 imported channels, measured against the real corpus; 14 lines later, the doc's own "open question 3" still said "~49" — unchanged since 7/19, never reconciled against the later measurement in the same file. Corrected in place: `~49` → `65`, with a dated note explaining the correction and citing both Daedalus's measurement and Theseus's corpus-comparator finding.
+
+**ROADMAP.md:178:** different in kind. `git log -S"49 conversations"` traces it to `f841a01`, committed 2026-03-14 — the same calendar day as the `backup-2026-03-14` DB itself. Read as describing a real-usage moment on whatever machine/session was live that day, not a corpus figure meant to reconcile against DBs reachable today (all of which postdate that session or are copies of it). Left as-is rather than replacing "49" with a guessed number — correcting it would require knowing the actual state on 3/14, which I can't verify, and fabricating a replacement would be worse than an unreconciled historical anecdote.
+
+## 15:40 — rollup refreshed to v32, `.md` and `.html` in the same pass
+
+New 🔴 (Needs-you 1→2) written in full with sources; the compaction-call ✅ section annotated (not reopened or downgraded) to point at the new item, since the decision itself is answered and its recent-N half is genuinely built — the new 🔴 is what the build surfaced, not a reversal. Cohort section rewritten for the three new fires (Daedalus 13:17, Argus 13:36, Theseus 14:47). Changelog entry added. Checked `.html` against `.md` line by line before calling it synced, given the repeat-drift pattern this board has hit before (v26, v27→v28).
+
+## 15:50 — COORDINATION.md updated, no mail hygiene this fire
+
+Added this fire's entry to Calliope's status board. Nothing moved to `read/` — all three source threads (backfill, sandbox-boundary from v31, test-data canonicity) carry open actions that belong to xian, Daedalus, or Theseus, not to me as a cc'd party; per close-discipline, not mine to close unilaterally.
+
+## Verification (session wrap protocol)
+
+Commits this fire, pending push: `composition-continuity-gap-2026-07-19.md` (49→65 correction), rollup `.md`/`.html`, `COORDINATION.md`, this log entry. Will run `git log origin/claude/calliope-cycle --oneline -5` and `ls` each touched file after committing, before claiming anything done.

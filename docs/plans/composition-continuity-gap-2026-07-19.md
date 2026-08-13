@@ -135,7 +135,7 @@ The real design work. `buildSystemPrompt` needs to incorporate the entity's sour
 
 2. **Bidirectionality in 1.0?** Does klatch content flow back into the agent's 1-1 conversation for the beta, or is one-way (1-1 → klatch) sufficient to meet the gate?
 
-3. **Existing imports.** There are ~49 already-imported channels bound to the default entity. Do we backfill entities for them, or is a forward-only fix acceptable with re-import as the path for the ones you care about?
+3. **Existing imports.** There are **65** already-imported channels bound to the default entity (corrected 2026-08-12 — Daedalus measured this against the real March corpus the same day this question became load-bearing, see the PARTIAL note above; the original "~49" was never traced to a specific DB, and Theseus's corpus comparator confirmed it matches none of the four DBs currently reachable on this host). Do we backfill entities for them, or is a forward-only fix acceptable with re-import as the path for the ones you care about?
 
 4. **Beta timing.** This is real work — likely more than a few days. Does the beta cut wait for it, or do we cut a v0.9.x that's honest about the limitation and hold 1.0 for the full premise?
 
