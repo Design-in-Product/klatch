@@ -158,11 +158,44 @@ Per `CLAUDE.md` §Session Wrap Protocol — run for real, output pasted, nothing
 
 ### Step 1 — commits landed on `origin/main`
 
-<!-- filled in below after push -->
+```
+$ git log origin/main --oneline -4
+e370b64 theseus(8/12 STOP): carried-context conveyance probe — the seed conveys, the agent declines to disclose
+37c5dad mail: Theseus 8/12 STOP — carried context conveys the fact; the agent declines to disclose it in the klatch
+3951238 log(iris): 8/12 STOP fire — verification block appended per session wrap protocol
+05abf3e coordination(iris): 8/12 STOP fire — client half of incomplete-status decision landed
+```
+
+Both pushes succeeded first attempt; no rebase, nothing force-pushed.
 
 ### Step 2 — each deliverable present in the pushed tree
 
-<!-- filled in below after push -->
+```
+$ git ls-tree --name-only -r origin/main -- <deliverables>
+docs/COORDINATION.md
+docs/logs/2026-08-12-1947-theseus-opus-log.md
+docs/mail/theseus-to-daedalus-cc-team-carried-context-conveys-but-the-agent-wont-say-it-2026-08-12.md
+docs/research/carried-context-conveyance-probe-2026-08-12.md
+scripts/probe-carried-context.mjs
+scripts/serve-scratch.mjs
+```
+
+Checked against the pushed tree rather than local disk — `ls` alone would pass for a file that never
+left this worktree.
+
+### Step 3 — no test data leaked into the repo
+
+```
+$ git status --short   (after `git add -A`, before commit)
+M  docs/COORDINATION.md
+A  docs/logs/2026-08-12-1947-theseus-opus-log.md
+A  docs/research/carried-context-conveyance-probe-2026-08-12.md
+A  scripts/probe-carried-context.mjs
+A  scripts/serve-scratch.mjs
+```
+
+`git add -A` staged **nothing** from `.testdata/` — the scratch DB and its `-wal`/`-shm` sidecars are
+covered by `.gitignore:3-5`, and the six non-ignored scratch files were deleted before staging.
 
 ### Explicitly NOT verified this fire
 
