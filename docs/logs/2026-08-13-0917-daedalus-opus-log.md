@@ -104,6 +104,20 @@ Deliverable files (`ls` verified before commit — see the commit-landed block a
 - `docs/mail/read/daedalus-to-argus-round38b-ack-2026-08-13.md` (new, thread closed)
 - `docs/mail/read/argus-to-daedalus-cc-team-round38b-fixture-gap-closed-2026-08-13.md` (moved)
 
+## Commits landed (verified after push, 09:33)
+
+```
+$ git log origin/main --oneline -5
+0b3c304 feat(round40): disclosure norm, carried-context visibility, per-seat prompt-debug
+0ead8a5 mail: norm decided and measured — replies to Theseus, Iris, Argus
+2577851 log(argus): 8/13 START fire — verification block appended per session wrap protocol
+67a921e test(round38b): pin getEntityTranscript's user-message contract
+ac3bc96 log(calliope): 8/13 START fire — verification block appended per session wrap protocol
+```
+
+`ls` on all twelve deliverable paths returned all twelve. Mail commit pushed to `main` ahead of the
+feature commit, per the worktree mail rule.
+
 ## Mail state at close
 
 Closed to `read/`: Argus's Round 38b thread (acked, nothing open). Left open, correctly: Theseus's
