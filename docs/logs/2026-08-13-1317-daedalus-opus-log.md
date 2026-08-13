@@ -178,3 +178,17 @@ today's.
 **Left open, each for a live reason:** his sensitivity memo and my reply (the optional re-probe is
 outstanding); Iris's visibility memo (the chip is real open work and the `hasOlderHistory` choice is
 now hers); my backfill memo to xian (gap doc open question 3, unchanged by this fire).
+
+## Commits landed (verified after push, 13:31)
+
+```
+$ git log origin/main --oneline -5
+62acf9f log(daedalus): 8/13 WORK fire — lossy-window notice, and the metric correction
+6175bfd feat(round41): mark the carried-context window lossy, and record what it dropped
+d50800a mail: option (1) taken on the lossy window; omittedCount was the wrong metric
+81f23cd log(calliope): 8/13 MID fire — verification block appended per session wrap protocol
+e40dd16 mail: retract stale blocker line — placement unblocked since 8/12; only xian's staging call remains
+```
+
+`ls` on all eleven deliverable paths returned all eleven. Mail commit (`d50800a`) pushed to `main`
+ahead of the feature commit, per the worktree mail rule.
