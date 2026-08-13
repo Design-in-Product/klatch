@@ -6,8 +6,17 @@
  * real Anthropic calls — without pointing the server at a database that holds
  * xian's conversation history.
  *
- *   node scripts/serve-scratch.mjs                 # .testdata/scratch.db
- *   node scripts/serve-scratch.mjs my-probe        # .testdata/my-probe.db
+ *   npx tsx scripts/serve-scratch.mjs              # .testdata/scratch.db
+ *   npx tsx scripts/serve-scratch.mjs my-probe     # .testdata/my-probe.db
+ *
+ * **It must be `tsx`, not `node`.** This header said `node scripts/serve-scratch.mjs` until
+ * 2026-08-13, and that line does not work. The server entry it imports is TypeScript whose
+ * internal imports are written with `.js` specifiers (`./routes/messages.js` → `messages.ts`);
+ * Node's built-in type stripping does not remap those, so plain `node` exits
+ * `ERR_MODULE_NOT_FOUND: .../routes/messages.js` (verified on Node 26.5.0). `tsx` is already a
+ * devDependency of `packages/server` — it is what `npm run dev` uses — so this adds nothing.
+ * The bad line was written when four ad-hoc scripts were consolidated into this one and the
+ * header was not re-run; see `docs/logs/2026-08-13-1047-theseus-opus-log.md`.
  *
  * The DB lands in `.testdata/`, where `*.db`, `*.db-wal` and `*.db-shm` are
  * gitignored (`.gitignore:3-5`). Delete the file to reset to a virgin schema.

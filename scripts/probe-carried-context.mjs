@@ -47,7 +47,7 @@
  *
  * ## Running it
  *
- *   node scripts/serve-scratch.mjs carried-probe     # terminal 1
+ *   npx tsx scripts/serve-scratch.mjs carried-probe  # terminal 1 — tsx, not node; see that file
  *   node scripts/probe-carried-context.mjs           # terminal 2
  *
  * **This costs money.** Six live Anthropic calls: two to seed, two for the klatch
