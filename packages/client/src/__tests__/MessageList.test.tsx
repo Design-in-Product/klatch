@@ -217,4 +217,38 @@ describe('MessageList — message rendering', () => {
     render(<MessageList {...defaultProps} messages={messages} />);
     expect(screen.getByText('Error generating response')).toBeInTheDocument();
   });
+
+  it.each([
+    ['max_tokens', 'Cut off — reached the length limit'],
+    ['context_window_exceeded', 'Cut off — conversation is too long to continue'],
+    ['refusal', 'Declined to respond'],
+    ['pause_turn', 'Paused mid-turn'],
+  ] as const)('shows "%s" copy for incomplete messages', (stopReason, copy) => {
+    const messages = [
+      makeMessage({
+        id: 'msg-1',
+        role: 'assistant',
+        content: 'here is as much as I got',
+        status: 'incomplete',
+        stopReason,
+        entityId: 'ent-1',
+      }),
+    ];
+    render(<MessageList {...defaultProps} messages={messages} />);
+    expect(screen.getByText(copy)).toBeInTheDocument();
+  });
+
+  it('falls back to a generic message for incomplete status with no stopReason', () => {
+    const messages = [
+      makeMessage({
+        id: 'msg-1',
+        role: 'assistant',
+        content: 'partial',
+        status: 'incomplete',
+        entityId: 'ent-1',
+      }),
+    ];
+    render(<MessageList {...defaultProps} messages={messages} />);
+    expect(screen.getByText("Didn't finish")).toBeInTheDocument();
+  });
 });

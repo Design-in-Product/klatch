@@ -102,8 +102,20 @@ describe('useStreams', () => {
       es._emit({ type: 'message_complete', messageId: 'msg-1', content: 'full response' });
     });
 
-    expect(onComplete).toHaveBeenCalledWith('msg-1', 'full response');
+    expect(onComplete).toHaveBeenCalledWith('msg-1', 'full response', undefined);
     expect(es.closed).toBe(true);
+  });
+
+  it('passes stopReason through to onComplete when a turn ends without finishing cleanly', () => {
+    const onComplete = vi.fn();
+    renderHook(() => useStreams(['msg-1'], onComplete));
+    const es = MockEventSource.byUrl('/api/messages/msg-1/stream')!;
+
+    act(() => {
+      es._emit({ type: 'message_complete', messageId: 'msg-1', content: 'cut off mid', stopReason: 'max_tokens' });
+    });
+
+    expect(onComplete).toHaveBeenCalledWith('msg-1', 'cut off mid', 'max_tokens');
   });
 
   it('calls onError when a stream errors', () => {

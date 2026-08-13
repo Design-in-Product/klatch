@@ -1,8 +1,20 @@
 import React, { useEffect, useRef, useCallback, useState } from 'react';
-import type { Message, Entity, ModelId, MessageArtifact } from '@klatch/shared';
+import type { Message, Entity, ModelId, MessageArtifact, MessageStopReason } from '@klatch/shared';
 import { MarkdownContent } from './MarkdownContent';
 import { KlatchLogo } from './KlatchLogo';
 import { getModelLabel } from '../hooks/useModels';
+
+/** Copy per docs/ux/message-incomplete-status-2026-08-11.md — four short strings, not a switch on the raw enum growing forever. */
+const STOP_REASON_COPY: Record<MessageStopReason, string> = {
+  max_tokens: 'Cut off — reached the length limit',
+  context_window_exceeded: 'Cut off — conversation is too long to continue',
+  refusal: 'Declined to respond',
+  pause_turn: 'Paused mid-turn',
+};
+
+function stopReasonCopy(stopReason?: MessageStopReason): string {
+  return (stopReason && STOP_REASON_COPY[stopReason]) || "Didn't finish";
+}
 
 interface Props {
   messages: Message[];
@@ -408,6 +420,11 @@ function MessageBubble({
         )}
         {message.status === 'error' && (
           <div className="text-xs text-danger mt-1">Error generating response</div>
+        )}
+        {message.status === 'incomplete' && (
+          <div className="text-xs text-amber-600 dark:text-amber-400 mt-1">
+            {stopReasonCopy(message.stopReason)}
+          </div>
         )}
 
         {/* Action buttons — inside the bubble, visible on hover (always visible on mobile) */}

@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect, useRef } from 'react';
-import type { Channel, Entity, ModelId, InteractionMode, ChannelType } from '@klatch/shared';
+import type { Channel, Entity, ModelId, InteractionMode, ChannelType, Message } from '@klatch/shared';
 import { INTERACTION_MODES } from '@klatch/shared';
 import { getModelLabel } from './hooks/useModels';
 import { ChannelSidebar } from './components/ChannelSidebar';
@@ -101,8 +101,12 @@ export default function App() {
 
   // Multi-stream handling
   const handleStreamComplete = useCallback(
-    (messageId: string, content: string) => {
-      updateMessage(messageId, { content, status: 'complete' });
+    (messageId: string, content: string, stopReason?: Message['stopReason']) => {
+      updateMessage(messageId, {
+        content,
+        status: stopReason ? 'incomplete' : 'complete',
+        stopReason,
+      });
       setStreamingMessageIds((prev) => prev.filter((id) => id !== messageId));
     },
     [updateMessage]
