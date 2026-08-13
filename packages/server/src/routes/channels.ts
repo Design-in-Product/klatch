@@ -97,7 +97,12 @@ app.get('/channels/:id/prompt-debug', (c) => {
       '6_carriedContext': carried
         ? `ACTIVE — ${carried.text.length} chars carried from "${entity.name}"'s other channels ` +
           `(${carried.messageCount} message(s) from ${carried.roomCount} conversation(s)` +
-          (carried.omittedCount > 0 ? `, ${carried.omittedCount} dropped for budget` : '') + ')'
+          (carried.omittedCount > 0 ? `, ${carried.omittedCount} dropped for budget` : '') +
+          // Distinct from the budget drop: this is history below the message
+          // window, which the omitted count cannot see. Surfaced because it is
+          // the state in which a marking can be missing while the fact it
+          // marked is present (Theseus, 2026-08-13, probe 3).
+          (carried.hasOlderHistory ? ', older history exists below the window' : ', no older history') + ')'
         : channel.type === 'klatch'
           ? `EMPTY — "${entity.name}" has no history in any other channel`
           : 'INACTIVE — carried context applies to klatches only',

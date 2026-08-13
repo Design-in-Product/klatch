@@ -204,7 +204,12 @@ describe('Round 40 — carried_context artifact (Iris, 8/13)', () => {
     const artifacts = getMessageArtifacts(turn).filter((a) => a.type === 'carried_context');
     expect(artifacts).toHaveLength(1);
     expect(artifacts[0].inputSummary).toBe('2 other conversations');
-    expect(JSON.parse(artifacts[0].content!)).toEqual({ roomCount: 2, messageCount: 2 });
+    // Widened in Round 41 (Theseus's 8/13 probe 3): what the turn did *not* see
+    // is recorded alongside what it did. Asserted exhaustively on purpose — this
+    // payload is what a UI reads, so a field appearing should fail here first.
+    expect(JSON.parse(artifacts[0].content!)).toEqual({
+      roomCount: 2, messageCount: 2, omittedCount: 0, hasOlderHistory: false,
+    });
   });
 
   it('is not written for a 1-1 turn — the chip must not appear where the layer is inactive', async () => {
@@ -283,7 +288,9 @@ describe('Round 40 — carried_context artifact (Iris, 8/13)', () => {
 
   it('says "conversation" not "conversations" when there is one', () => {
     const turn = pendingTurn(klatch.id, agent.id);
-    const artifact = createCarriedContextArtifact(turn, 1, 4);
+    const artifact = createCarriedContextArtifact(turn, {
+      roomCount: 1, messageCount: 4, omittedCount: 0, hasOlderHistory: false,
+    });
     expect(artifact.inputSummary).toBe('1 other conversation');
   });
 });

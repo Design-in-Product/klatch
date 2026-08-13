@@ -110,6 +110,49 @@ export const DISCLOSURE_NORM =
   'supposed to meet here. Withholding by default defeats it. Ordinary judgment ' +
   'still applies to material the owner asked you to keep to one conversation.';
 
+/**
+ * The lossy-window notice — the closing sentence of the block footer.
+ *
+ * **Why this exists.** Theseus's 8/13 sensitivity round
+ * (`docs/research/carried-context-disclosure-sensitivity-2026-08-13.md`) passed
+ * the norm on every sensitivity arm, then found the failure one layer down, in
+ * this file's budget. Arm C established that the norm *does* yield to an owner's
+ * "keep this between us" — but only because the restriction and the fact it
+ * restricted happened to sit in the same carried message. Probe 3 separated
+ * them the way a real thread would: the owner marks the fact once at turn 1,
+ * eleven ordinary turns go by, and the fact is restated in passing at turn 12.
+ * The window carries turn 12 and not turn 1. Read off the assembled prompt:
+ * carries the fact `true`, carries the restriction `false`. The agent disclosed.
+ *
+ * That is not an agent overriding the owner. The restriction was not in its
+ * prompt. The mechanism forgot the constraint while remembering the content:
+ *
+ * > The window can drop a fact and the instruction restricting that fact
+ * > independently, and only one of the two being dropped is safety-relevant.
+ *
+ * **What this sentence does and does not do.** It stops the loss being *silent*.
+ * It does not stop the loss. An agent told that the omission may include
+ * constraints can hedge, ask, or check — it cannot recover a marking it was
+ * never given. Theseus's option (2), never evicting a marking, requires
+ * detecting one, which is the policy surface option (c) was deferred for; it
+ * stays deferred, and the residual is recorded as a decision in
+ * `docs/plans/continuity-3-carried-context.md` rather than left as an
+ * unexamined property.
+ *
+ * Unconditional, deliberately. The tempting version fires only when something
+ * was actually dropped — but the probe-3 case drops nothing *this function can
+ * see*: 24 messages, window 20, so the marking was never fetched and
+ * `omittedCount` is 0. A notice gated on `omittedCount > 0` would have been
+ * silent in exactly the case that motivated it.
+ */
+export const LOSSY_WINDOW_NOTICE =
+  'What is missing may include instructions about what is here: if the owner ' +
+  'asked you to keep something to one conversation, that request may have been ' +
+  'made in a turn that fell outside this window even though the thing it was ' +
+  'about is quoted above. So absence of a restriction here is not evidence that ' +
+  'none was given. If something looks like it was meant to stay where it was ' +
+  'said, ask rather than assume it was unrestricted.';
+
 export interface CarriedContextOptions {
   maxMessages?: number;
   maxChars?: number;
@@ -135,8 +178,26 @@ export interface CarriedContextBlock {
   roomCount: number;
   /** Messages carried, after the char budget evicted any. */
   messageCount: number;
-  /** Messages fetched but dropped by the char budget. */
+  /**
+   * Messages fetched but dropped by the char budget.
+   *
+   * Narrower than it sounds, and the narrowness matters: this counts only what
+   * the *char* budget evicted from the fetched set. Anything older than
+   * `maxMessages` was never fetched, so it is not counted here — which is why
+   * probe 3's lost marking reports `omittedCount: 0`. Use `hasOlderHistory` for
+   * "is there more below the window", not this.
+   */
   omittedCount: number;
+  /**
+   * Whether the entity has any history older than the message window.
+   *
+   * Detected by fetching one row past `maxMessages` and discarding it — no
+   * second query, and no duplicated WHERE clause. It is a boolean rather than a
+   * count because a count of everything below the window would need a real
+   * `COUNT(*)` pass; if a surface ever wants "20 of 143", that query is the work,
+   * and this flag is not a substitute for it.
+   */
+  hasOlderHistory: boolean;
 }
 
 function formatLine(msg: TranscriptMessage, entityName: string, maxMessageChars: number): string {
@@ -191,10 +252,16 @@ export function buildCarriedContextBlock(
   const maxChars = options.maxChars ?? CARRIED_CONTEXT_MAX_CHARS;
   const maxMessageChars = options.maxMessageChars ?? CARRIED_CONTEXT_MAX_MESSAGE_CHARS;
 
-  const recent = getEntityTranscript(entity.id, {
+  // Fetch one past the window purely to learn whether anything is below it.
+  // The extra row is discarded — it is a probe, not content — and this is what
+  // lets the block distinguish "this is all there is" from "this is a slice".
+  const fetched = getEntityTranscript(entity.id, {
     excludeChannelId: channel.id,
-    limit: maxMessages,
+    limit: maxMessages + 1,
   });
+  const hasOlderHistory = fetched.length > maxMessages;
+  // `getEntityTranscript` returns oldest-first, so the surplus row is at the front.
+  const recent = hasOlderHistory ? fetched.slice(fetched.length - maxMessages) : fetched;
   if (recent.length === 0) return undefined;
 
   // Fill newest-first so the budget evicts the oldest, then restore chronological
@@ -229,12 +296,14 @@ export function buildCarriedContextBlock(
     `message(s) from ${rooms.length} other conversation(s)` +
     (omitted > 0 ? `, with ${omitted} more dropped to stay within budget` : '') +
     '. There is more than this. If you need something specific that is not here, ' +
-    'say so rather than assuming it did not happen.';
+    'say so rather than assuming it did not happen.\n\n' +
+    LOSSY_WINDOW_NOTICE;
 
   return {
     text: `${header}\n\n${kept.map((k) => k.line).join('\n\n')}\n\n${footer}`,
     roomCount: rooms.length,
     messageCount: kept.length,
     omittedCount: omitted,
+    hasOlderHistory,
   };
 }

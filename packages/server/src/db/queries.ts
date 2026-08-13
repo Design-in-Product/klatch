@@ -1014,16 +1014,32 @@ export function createFileArtifact(
  * `message_artifacts.type` is a bare `TEXT NOT NULL` with no CHECK constraint
  * (`db/index.ts:218-226`), verified before adding a sixth value — unlike
  * `messages.status`, this one really is additive and needs no migration.
+ *
+ * **2026-08-13, second pass — what was *not* carried is now recorded too.**
+ * Theseus's sensitivity round found that the window can drop an owner's
+ * restriction while keeping the fact it restricted, so "how much did this turn
+ * not see" became a number worth having per message rather than only in the
+ * prompt. `omittedCount` and `hasOlderHistory` are stored for that; both are
+ * still counts, so Iris's existence-not-content rule is unchanged. Whether the
+ * chip surfaces either is hers — this only makes them available, since a number
+ * that was never persisted cannot be surfaced later without a backfill.
  */
+export interface CarriedContextCounts {
+  roomCount: number;
+  messageCount: number;
+  omittedCount: number;
+  hasOlderHistory: boolean;
+}
+
 export function createCarriedContextArtifact(
   messageId: string,
-  roomCount: number,
-  messageCount: number
+  counts: CarriedContextCounts
 ): MessageArtifact {
+  const { roomCount, messageCount, omittedCount, hasOlderHistory } = counts;
   const id = uuidv4();
   const now = new Date().toISOString();
   const inputSummary = `${roomCount} other conversation${roomCount === 1 ? '' : 's'}`;
-  const content = JSON.stringify({ roomCount, messageCount });
+  const content = JSON.stringify({ roomCount, messageCount, omittedCount, hasOlderHistory });
   getDb().prepare(
     `INSERT INTO message_artifacts (id, message_id, type, tool_name, input_summary, content, created_at)
      VALUES (?, ?, 'carried_context', NULL, ?, ?, ?)`

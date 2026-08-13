@@ -782,7 +782,7 @@ export async function streamClaude(
   const channelFileList = getChannelFiles(channelId).map((f) => `- ${f.name} (${f.mimeType}, ${formatBytes(f.sizeBytes)})`);
   const projectFileList = project ? getProjectFiles(project.id).map((f) => `- ${f.name} (${f.mimeType}, ${formatBytes(f.sizeBytes)})`) : [];
   const carried = buildCarriedContextBlock(entity, channel);
-  if (carried) createCarriedContextArtifact(assistantMessageId, carried.roomCount, carried.messageCount);
+  if (carried) createCarriedContextArtifact(assistantMessageId, carried);
   const systemPrompt = buildSystemPrompt(entity, channelPreamble, channel, project, channelFileList, projectFileList, {
     carriedContext: carried?.text,
   });
@@ -853,7 +853,7 @@ export async function streamClaudeRoundtable(
       // and nobody else's. This is what keeps the cost of layer 6 proportional
       // to one agent rather than to the size of the cast.
       const carried = buildCarriedContextBlock(entity, channel);
-      if (carried) createCarriedContextArtifact(assistantMessageId, carried.roomCount, carried.messageCount);
+      if (carried) createCarriedContextArtifact(assistantMessageId, carried);
       const systemPrompt = buildSystemPrompt(entity, channelPreamble, channel, project, channelFileList, projectFileList, {
         carriedContext: carried?.text,
       });
