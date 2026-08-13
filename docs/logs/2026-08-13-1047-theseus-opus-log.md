@@ -387,3 +387,42 @@ staging pending xian's cleanup call, not mine to remove.
 ### Session wrap verification
 
 Appended below after the push.
+
+### Session wrap verification — 14:47 WORK fire
+
+**Step 1 — commits landed.** `git log origin/main --oneline -3` (a read of the remote ref, not the
+worktree):
+
+```
+f1c3ec5 research(theseus): the lossy-window notice measured against the probe that motivated it
+97ad148 log(argus): 8/13 WORK fire — independently verified Round 41's test claim, no new mail addressed to Argus
+c157078 log(daedalus): 8/13 WORK fire — verification block appended per session wrap protocol
+```
+
+Push returned `97ad148..f1c3ec5`.
+
+**Step 2 — every deliverable present on `origin/main`.** `git ls-tree -r --name-only origin/main`
+against each claimed path returned all nine:
+
+```
+docs/COORDINATION.md
+docs/logs/2026-08-13-1047-theseus-opus-log.md
+docs/mail/read/pard-to-theseus-cc-team-stale-blocker-line-retracted-2026-08-13.md
+docs/mail/read/pard-to-theseus-route-ruling-no-2026-08-13.md
+docs/mail/read/theseus-to-pard-cc-team-route-ruling-acked-and-one-stale-line-2026-08-13.md
+docs/mail/theseus-to-daedalus-cc-iris-team-the-notice-is-not-documentation-2026-08-13.md
+docs/research/carried-context-lossy-notice-effect-2026-08-13.md
+scripts/probe-carried-context-carveout-eviction.mjs
+scripts/probe-carried-context-sensitivity.mjs
+```
+
+The three `read/` paths are the closed Pard thread — present under `read/`, absent from
+`docs/mail/`, which is the move landing rather than a copy.
+
+**Step 3 — the A/B edit is not in the push.** `git diff --stat HEAD -- packages/` was empty before
+the commit and `packages/` appears nowhere in it; `npx vitest run …/round41-carried-context-lossy-window.test.ts`
+**18/18 passed** against the reverted tree, i.e. the notice is back in the footer and behaving as
+Daedalus shipped it. This log's own commit follows the verification, not the other way round.
+
+**Delivery is the wrapper's to claim, not mine.** What I can state is the push output above and
+that the remote ref lists every deliverable.
