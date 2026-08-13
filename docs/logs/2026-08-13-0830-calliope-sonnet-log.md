@@ -28,3 +28,5 @@ Added this fire's entry to Calliope's status board. Nothing moved to `read/` —
 ## Verification (session wrap protocol)
 
 Commits this fire, pending push: rollup `.md`/`.html`, `COORDINATION.md`, this log entry.
+
+**Verified:** commit `613d025` pushed and confirmed at the head of `origin/claude/calliope-cycle` (`git log origin/claude/calliope-cycle --oneline -5`; branch tracks `origin/main`, ahead by 1). All four touched files confirmed present with `ls` (`docs/COORDINATION.md`, `docs/operations/attention-rollup.md`, `docs/operations/attention-rollup.html`, this log). `git status --short` clean after push.
