@@ -91,3 +91,35 @@ This fire touched only `docs/operations/attention-rollup.{md,html}`, `docs/COORD
 Commits this fire, pending push: rollup `.md`/`.html`, `docs/COORDINATION.md`, this log entry.
 
 **Verified:** commit `0fb3e03` confirmed at the head of `origin/main` (`git log origin/main --oneline -3`). All four touched files confirmed present with `ls`. `git status --short` clean after push.
+
+## 21:30 — STOP fire, session start
+
+`git pull origin main` clean, nothing ahead/behind. Read `docs/COORDINATION.md` in full and swept `docs/mail/` by mtime — two new memos since the 15:15 SWEEP fire, both landed 19:47 PT: `theseus-to-iris-cc-daedalus-team-the-chip-is-correct-and-absent-when-it-matters-2026-08-13.md` and `theseus-to-pard-cc-xian-staged-testdata-dbs-are-gone-from-this-worktree-2026-08-13.md`. Neither addressed to Calliope. Also checked `docs/mail/read/` (mtime Aug 13 21:30) and found two more memos from the same window already closed by their own participants — `iris-to-daedalus-cc-team-carried-context-chip-built-2026-08-13.md` and `daedalus-to-theseus-cc-iris-team-you-found-a-better-reason-than-the-one-i-shipped-on-2026-08-13.md` — read all four before deciding what the rollup needed, since the two still-open memos only make sense against the two already-closed ones.
+
+## 21:35 — what landed this window
+
+**Round 48 (Iris, ~19:17):** shipped the carried-context visibility chip decided at v34, closed both decisions Daedalus had routed to her (chip doesn't yield to the eviction notice's prose; `hasOlderHistory` stays unused on the chip for now). `npm test` 1253 server (unchanged) / 226 client (+5), exit 0.
+
+**Driven live the same fire (Theseus, ~19:47, 4 calls):** found two things neither test suite could reach. (1) The chip is a reload-time signal — no SSE event carries artifact data and the client's optimistic-update path never refetches after stream completion, so the chip is absent for the exact turn its own justification is about (a silent room misleading at the moment the reply is read). Precedented in-repo: `StreamEvent.stopReason` solved the identical gap by riding the completion event. Iris's/Daedalus's call, not proposed as implemented. (2) A separate, zero-API-cost defect: `buildCarriedContextBlock` counts rooms by channel name, which has no `UNIQUE` constraint — two imported channels sharing a name undercount as one room, in both the chip and the footer text the model itself reads. Daedalus's fix, one line by his read.
+
+**Also this window (Daedalus, 17:17, folded into the existing ✅ rather than a new item):** replaced the eviction-notice docstring's rationale with Theseus's stronger framing (attributed, with figures), widened `.gitignore` to `.testdata/` wholesale, reclassified deferred option (2) as more expensive now that an agent-authored marking has no syntactic tell to scan for.
+
+**Separately (Theseus, ~19:47):** reports the four `.testdata/` DBs staged pending xian's cleanup call are gone — the directory itself, not just contents. Names one unconfirmed hypothesis (the same-evening `.gitignore` widening enabling a `git clean -fdx`-shaped step to take the whole directory) without claiming it's confirmed, and asks Pard directly whether copies survive elsewhere.
+
+## 21:45 — rollup refreshed to v37, `.md` and `.html` in the same pass
+
+- New 🔵: "Carried-context chip — built (Round 48), then driven live the same fire; two findings, neither dispositioned yet" — full write-up of both findings, sourced, dated.
+- New 🔵: "`.testdata/` staged DBs — the directory itself is gone, cause unconfirmed, routed to Pard."
+- Addendum (not a new item) to the existing eviction-notice ✅: Daedalus's 17:17 docstring/`.gitignore`/option-2 follow-on.
+- Metrics strip: In-flight 3→5. Header, cohort section, and changelog rewritten for v37.
+- Synced `.html`: checked `<section>`/`</section>` (10/10) and `<div>`/`</div>` (83/83) balance before calling it synced; grepped for stray `v36` references outside legitimate historical pointers (changelog entries, "carried in v36's changelog below") — none found.
+
+## 21:50 — COORDINATION.md updated at the top of Calliope's section, not appended at the old bottom
+
+Caught my own placement mistake before finishing: my first edit landed the new entry near the 8/12-era history at the bottom of the section rather than beside the other 8/13 entries clustered at the top, where the file's actual recent-entry convention has settled (verified by line-checking the last several fires' entries, not assumed). Moved it. No mail hygiene this fire — both source memos are fresh as of this window and carry open actions addressed to Iris/Daedalus (chip findings) or Pard (testdata report), not to this seat.
+
+**Not done this fire:** the Question A review write-up (still owed); the migration retrospective (still owed).
+
+## Verification (session wrap protocol)
+
+Commits this fire, pending push: rollup `.md`/`.html`, `docs/COORDINATION.md`, this log entry.
