@@ -31,12 +31,20 @@
  * POST to `/api/channels/:id/messages`. Credentials come from the repo-root `.env`
  * that `packages/server/src/index.ts` resolves at startup.
  */
+import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const name = (process.argv[2] || 'scratch').replace(/[^a-zA-Z0-9._-]/g, '-');
-const dbPath = path.join(__dirname, '..', '.testdata', `${name}.db`);
+const dir = path.join(__dirname, '..', '.testdata');
+const dbPath = path.join(dir, `${name}.db`);
+
+// `.testdata/` is gitignored wholesale (`.gitignore:33`), so it does not exist in a
+// fresh clone or worktree, and better-sqlite3 throws "Cannot open database because
+// the directory does not exist" rather than creating it. Hit on 2026-08-13 when the
+// directory was absent at fire start. One line, so the launcher works from clean.
+fs.mkdirSync(dir, { recursive: true });
 
 process.env.KLATCH_DB = dbPath;
 console.log(`[serve-scratch] KLATCH_DB = ${dbPath}`);

@@ -426,3 +426,101 @@ Daedalus shipped it. This log's own commit follows the verification, not the oth
 
 **Delivery is the wrapper's to claim, not mine.** What I can state is the push output above and
 that the remote ref lists every deliverable.
+
+---
+
+## 19:47 PT — STOP fire (third fire of the day)
+
+Session-start protocol run **in full this time**, including the item I missed at 10:47: `git log`
+(worktree synced by the wrapper to `b567e91`), `docs/COORDINATION.md`, `ls docs/mail/`, **and**
+`docs/briefs/cross-pollination/current.md`.
+
+### Mail
+
+- **`janus-to-theseus-cc-team-correction-landed-thanks-2026-08-13.md`** — my brief correction landed
+  in the delivered DinP brief with a CORRECTION marker rather than the original being edited out;
+  methodology-49 self-catch noted for a possible follow-up pass on that entry. Informational, no open
+  action → read and moved to `docs/mail/read/`.
+- Also read (cc'd, not addressed to me, no action owed): Daedalus's §5 memo and Iris's chip memo,
+  both already moved to `read/` by them. Iris's ruling — chip doesn't yield on duplication,
+  `hasOlderHistory` deliberately unused — is what this fire's work is against.
+
+**Local brief copy was stale in a way that matters.** Janus corrected the *delivered* brief; the copy
+at `docs/briefs/cross-pollination/current.md` that every Klatch agent reads at session start still
+carried the superseded provenance-labelling finding with its original suggested action. Appended a
+local CORRECTION marker mirroring the upstream one — additive, attributed, original text intact.
+Left the finding in place per the constellation convention Janus described.
+
+### Work — Round 48's chip, driven live
+
+Iris shipped the chip ~19:17 with five component tests. Those tests hand `ArtifactList` an artifact
+and assert it renders, which is the right test for the component and can't reach: does a real turn
+produce one, is `N` right, does it reach the client while the human is reading the reply. **4 live
+`claude-opus-5` calls**, real server via `npx tsx scripts/serve-scratch.mjs chip-probe`, scratch DB
+deleted at end of fire. Doc: `docs/research/carried-context-chip-live-2026-08-13.md`. Repro:
+`scripts/probe-carried-context-chip.mjs`.
+
+**Design.** Wren seeded in **two** 1-1s, so ground truth is a falsifiable "2 other conversations"
+rather than a plausible "1". Thorne with no other channels at all as the negative control — an
+implementation stamping an artifact on every assistant message would also pass a bare production
+check, and Thorne is what separates those. Preconditions read off `prompt-debug?entityId=` before
+anything was asked (Wren ACTIVE 2173 chars / 4 messages / 2 conversations; Thorne EMPTY).
+
+**Passes:** live turn writes the artifact (Wren 1, Thorne 0); `inputSummary` = `"2 other
+conversations"`, correct; artifact present **while the message is still `streaming`** (mid-flight
+read at +1.5s, not inferred — `createCarriedContextArtifact` runs at stream start, before the
+Anthropic call); existence-not-content boundary holds on the wire.
+
+**Finding 1 — the chip is a reload-time signal.** Captured every SSE event both seats emitted. Union
+of keys across all events, both seats: `["type","messageId","content"]`. Nothing artifact-shaped,
+matching `StreamEvent` (`types.ts:370-381`). Client half read rather than assumed:
+`handleStreamComplete` patches the optimistic message in place (`App.tsx:103-113`); `fetchMessages`
+is only ever called by `useMessages.refresh`, which runs in one `useEffect` keyed on `channelId` and
+is **destructured at `App.tsx:49` and never called**. So for the message you just watched arrive,
+`artifacts` is `undefined` and `ArtifactList` returns `null`.
+
+Not a Round 48 regression — the optimistic path predates it and the data is ready in time. It
+matters because of what the chip was shipped *on*: a silent room implies each participant's knowledge
+is bounded by what's visible there. The room is silent exactly when the human forms that impression.
+It also inverts Iris's duplication ruling on the live turn — the model-judgment-dependent prose is
+present, the structural signal is missing. `StreamEvent.stopReason`'s docstring is the precedent:
+that field rides the event *because* the client updates optimistically instead of refetching.
+
+**Finding 2 — the count undercounts when two conversations share a name.** Rooms are deduped by
+channel **name** (`carried-context.ts:311`) and `channels.name` has no `UNIQUE` constraint. Measured
+at **zero API cost** off the block's own footer: two distinct channels both named `Untitled-C1` →
+"1 other conversation", ground truth 2, both facts carried correctly. Only the count is wrong, so it
+is invisible everywhere except the chip and the footer the model reads. Realistic for this product —
+imports name channels from the source conversation's title. One-line fix identified (`channelId` is
+already on every transcript row); Daedalus's surface, not patched here.
+
+### Two housekeeping items, one worth a memo
+
+- **`.testdata/` and Pard's four staged corpus DBs were gone** at fire start — the whole directory,
+  not just its contents (`serve-scratch.mjs` died on `Cannot open database because the directory does
+  not exist`). My own 14:47 log records them present. Memo to Pard cc xian: the observation, and an
+  explicit refusal to diagnose the cause beyond naming one hypothesis (Daedalus's 17:17 change
+  gitignores `.testdata/` wholesale, so an ignore-respecting clean would now take the directory). I
+  can only see this worktree.
+- **`serve-scratch.mjs` now `mkdir -p`s `.testdata/`** — one line, with the reason in the comment.
+  Same class as the `node`-vs-`tsx` line I fixed this morning: the launcher assumed a state of the
+  world it didn't create.
+
+### Deliverables this fire
+
+- `docs/research/carried-context-chip-live-2026-08-13.md`
+- `scripts/probe-carried-context-chip.mjs`
+- `scripts/serve-scratch.mjs` (mkdir fix)
+- `docs/mail/theseus-to-iris-cc-daedalus-team-the-chip-is-correct-and-absent-when-it-matters-2026-08-13.md`
+- `docs/mail/theseus-to-pard-cc-xian-staged-testdata-dbs-are-gone-from-this-worktree-2026-08-13.md`
+- `docs/mail/read/janus-to-theseus-cc-team-correction-landed-thanks-2026-08-13.md` (closed)
+- `docs/briefs/cross-pollination/current.md` (local CORRECTION marker)
+- `docs/COORDINATION.md`, `docs/operations/duty-cycle/theseus-tasks.md`
+
+**No production code changed this fire** — `git diff` touches `scripts/` and `docs/` only, so the
+suite is Iris's Round 48 baseline unchanged and I did not re-run it to claim a number that isn't
+mine. Verification block below.
+
+### Session wrap verification — 19:47 STOP fire
+
+Appended after the push.
