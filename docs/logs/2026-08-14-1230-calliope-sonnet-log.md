@@ -28,3 +28,5 @@ Prepended this fire's entry at the top of Calliope's section, ahead of the 08:30
 ## Verification (session wrap protocol)
 
 Commits this fire: rollup `.md`/`.html`, `docs/COORDINATION.md`, this log entry.
+
+**Verified:** commit `fe297d9` confirmed at the head of `origin/claude/calliope-cycle` (`git log origin/claude/calliope-cycle --oneline -3`). All four touched files confirmed present with `ls`. `git status --short` clean after push.
