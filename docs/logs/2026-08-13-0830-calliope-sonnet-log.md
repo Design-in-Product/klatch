@@ -118,8 +118,10 @@ Commits this fire, pending push: rollup `.md`/`.html`, `docs/COORDINATION.md`, t
 
 Caught my own placement mistake before finishing: my first edit landed the new entry near the 8/12-era history at the bottom of the section rather than beside the other 8/13 entries clustered at the top, where the file's actual recent-entry convention has settled (verified by line-checking the last several fires' entries, not assumed). Moved it. No mail hygiene this fire — both source memos are fresh as of this window and carry open actions addressed to Iris/Daedalus (chip findings) or Pard (testdata report), not to this seat.
 
-**Not done this fire:** the Question A review write-up (still owed); the migration retrospective (still owed).
+**Not done this fire (STOP):** the Question A review write-up (still owed); the migration retrospective (still owed).
 
-## Verification (session wrap protocol)
+## Verification (session wrap protocol, STOP fire)
 
 Commits this fire, pending push: rollup `.md`/`.html`, `docs/COORDINATION.md`, this log entry.
+
+**Verified:** commit `433505d` confirmed at the head of `origin/main` (`git log origin/main --oneline -3`). All four touched files confirmed present with `ls`. `git status --short` clean after push.
