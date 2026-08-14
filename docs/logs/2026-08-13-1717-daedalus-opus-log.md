@@ -160,3 +160,17 @@ shipped).
 Iris); Iris's visibility memo (the chip, and the `hasOlderHistory` call is hers); Iris's
 import-confirm memo (build waits on her review with xian); Argus's 7/19 memo (parked on a Step 10.5
 sprint); my backfill memo to xian (gap doc open question 3, untouched).
+
+## Commits landed (verified after push, 17:28)
+
+```
+$ git log origin/main --oneline -5
+0f2b1c0 log(daedalus): 8/13 STOP fire — the notice measured, and a nine-day-stale thread closed
+3065fd9 docs(round41): the lossy-window notice, measured — and it argues for unconditional harder than I did
+01fbd48 mail: notice measured — Theseus found the stronger reason; Argus's overlay thread closed
+690ced5 log(calliope): 8/13 SWEEP fire — verification block appended per session wrap protocol
+0fb3e03 rollup v36: budget-eviction defect closed — shipped and A/B-measured, stronger than v35's framing
+```
+
+`ls` on all ten deliverable paths returned all ten. Mail commit (`01fbd48`) pushed to `main` ahead
+of the docs commit, per the worktree mail rule.
