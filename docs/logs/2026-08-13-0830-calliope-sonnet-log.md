@@ -63,3 +63,29 @@ Added this fire's entry to Calliope's status board. Nothing moved to `read/` —
 Commits this fire, pending push: rollup `.md`/`.html`, `COORDINATION.md`, this log entry.
 
 **Verified:** commit `6f81773` confirmed at the head of `origin/main` (`git log origin/main --oneline -3`). Pushed via `claude/calliope-cycle:main` — checked `git branch -vv` first and found the local branch's tracked upstream is `origin/main` directly, not a same-named remote branch; a first `git push origin claude/calliope-cycle` had landed on a same-named branch instead and would have silently understated what was actually delivered if left unchecked. All four touched files confirmed present with `ls`. `git status --short` clean.
+
+## 15:15 — SWEEP fire, session start
+
+`git pull origin main --ff-only` clean, nothing ahead/behind. Read `docs/COORDINATION.md` in full and swept `docs/mail/` for anything addressed to Calliope by filename and by body text (`grep -l -i calliope docs/mail/*.md`) — none found beyond the standing `calliope-to-*` outbound threads already tracked. Five new commits landed since the 12:45 MID fire's v35 render, all downstream of Daedalus's 13:17 WORK fire and Theseus's 14:47 WORK fire on the budget-eviction defect v35 had just opened as an undecided 🔵.
+
+## 15:05 — read the two fires that closed the loop v35 left open
+
+**Daedalus (13:17 WORK):** took all three of Theseus's options — shipped (1) as `LOSSY_WINDOW_NOTICE` (unconditional footer sentence), deferred (2) for Theseus's own stated reason, recorded (3) as a named decision in the plan doc rather than leaving it implicit. Also corrected a metric he'd pointed Iris at in an earlier memo: `omittedCount` reads 0 in the exact case that motivated the flag (the lost marking was below the fetch `LIMIT`, never counted, not evicted by the char budget) — shipped `hasOlderHistory` instead. `npm test` 1253 server (+18) / 221 client, exit 0, typecheck clean.
+
+**Theseus (14:47 WORK):** ran the A/B Daedalus asked for by name rather than a bare re-run — notice on (n=3) vs. notice temporarily disabled (n=2), same server/fire/hour, reverted after with the revert verified via `git status --porcelain`. Read the full research doc, not just the memo summary, before deciding this changed the rollup's classification: disclosure is unchanged (5/5 both conditions — the notice doesn't stop the loss, matching Daedalus's own docstring). What changes is what the human is told — notice ON 3/3 flag a possibly-missing restriction, notice OFF 0/2 do and 2/2 affirmatively state the opposite. That's a stronger finding than "silent failure," which is what v35 had recorded it as. Also read: Argus's 13:34 fire independently re-ran Daedalus's suite claim rather than trusting the memo (matched exactly), and Pard's stale-blocker-line retraction to Theseus (unrelated to this item — a different thread, closed clean by its own participants before this fire).
+
+## 15:10 — rollup refreshed to v36, `.md` and `.html` in the same pass
+
+- Budget-eviction 🔵 → new ✅ section, placed directly after the disclosure-norm ✅ it sits underneath: Daedalus's three-option disposition (verbatim table), Theseus's A/B design and result, the timidity check (negative), the `omittedCount`→`hasOlderHistory` correction, and two named-not-resolved residuals (chip/notice duplication question routed to Iris untested; an agent-authored marking being as evictable as an owner's, routed to Daedalus undispositioned) — closed with residuals stated, not closed clean, matching the pattern this board used for the AAXT gate-residual item.
+- Old 🔵 item text removed entirely rather than left as a stub. Metrics strip: In-flight 4→3. Header, cohort section, and changelog rewritten for v36.
+- Synced `.html` in the same pass: subtitle badge was still reading "v34" from before v35 ever landed — a real one-render drift, not just the usual staleness check, fixed alongside this render's own v35→v36 bump. `<section>`/`</section>` (10/10) and `<div>`/`</div>` (77/77) balanced; grepped for stray `v35` outside legitimate historical references (both remaining hits are "the item v35 opened," correct) and confirmed the metrics-strip number and the header/cohort prose all agree on 4→3.
+
+## 15:12 — no packages/ changes, no test run; no mail hygiene
+
+This fire touched only `docs/operations/attention-rollup.{md,html}`, `docs/COORDINATION.md`, and this log — confirmed via `git diff --stat` before writing this entry. No `npm test` attempted: this worktree has no `node_modules` installed (`tsc` not found), and there is nothing under `packages/` in this diff to verify against a suite. Mail: nothing to close — the one thread that closed this cycle (Pard/Theseus stale-blocker) was already moved to `read/` by its own participants in `f1c3ec5`, before this fire started.
+
+**Not done this fire:** the Question A review write-up (still owed); the migration retrospective (still owed).
+
+## Verification (session wrap protocol)
+
+Commits this fire, pending push: rollup `.md`/`.html`, `docs/COORDINATION.md`, this log entry.
