@@ -98,13 +98,14 @@ function ArtifactList({ artifacts, isUser, onPinFile }: { artifacts: MessageArti
   const files = artifacts.filter((a) => a.type === 'file');
   const tools = artifacts.filter((a) => a.type === 'tool_use');
   const thinking = artifacts.filter((a) => a.type === 'thinking');
+  const carried = artifacts.find((a) => a.type === 'carried_context');
 
   // Collapse repeated tool uses into summary
   const toolSummary = tools.length > 3
     ? summarizeTools(tools)
     : tools;
 
-  if (files.length === 0 && tools.length === 0 && thinking.length === 0) return null;
+  if (files.length === 0 && tools.length === 0 && thinking.length === 0 && !carried) return null;
 
   return (
     <div className="mt-2 space-y-1.5">
@@ -123,6 +124,15 @@ function ArtifactList({ artifacts, isUser, onPinFile }: { artifacts: MessageArti
         <div className="flex items-center gap-1.5 text-xs text-muted opacity-60">
           <span>💭</span>
           <span>Thought about this{thinking.length > 1 ? ` (${thinking.length}×)` : ''}</span>
+        </div>
+      )}
+
+      {/* Carried-context indicator — existence and count only, never content or channel names.
+          Iris's 2026-08-13 ruling: docs/ux/carried-context-visibility-2026-08-13.md */}
+      {carried && (
+        <div className="flex items-center gap-1.5 text-xs text-muted opacity-60">
+          <span>🧵</span>
+          <span>Carried context from {carried.inputSummary}</span>
         </div>
       )}
     </div>

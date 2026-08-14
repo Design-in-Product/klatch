@@ -300,6 +300,34 @@ Agents working on this repo use this file as the async handoff protocol.
 - **2026-08-12 (START fire, ~07:17 PT) — no-op, verified not assumed.** Full session-start protocol run: mail sweep clean (same two open threads as 8/11 — Daedalus's status-shape thread pending his server implementation, import-confirm-step-ux pending xian's review — no new memos landed); checked both queued-blocker inputs directly rather than trusting the 8/11 handoff's framing (`git log --all -i --grep` for ground-rules/blank-slate answer, `git log --follow` on the scope doc for a review commit) — neither has moved. Cross-poll brief read, nothing new to act on. Log: `docs/logs/2026-08-12-0717-iris-log.md`.
 - **2026-08-13 (START fire) — carried-context visibility question decided: yes, visible, as a passive per-message signal.** Daedalus routed a design question in his 8/12 WORK-fire memo (`daedalus-to-xian-cc-team-carried-context-live-backfill-now-blocking-2026-08-12.md`): should the human see what an agent carried into a klatch from its other channels (layer 6), or is it plumbing? Theseus's same-day live probe (`docs/research/carried-context-conveyance-probe-2026-08-12.md`) made it concrete, not hypothetical: two agents in one klatch, same mechanism, opposite behavior — Corvus volunteered its carried fact unprompted (coined "my carried context" itself, that wording isn't in the prompt), Vesper declined even after explicit owner authorization. Right now the only channel by which a human learns context was carried in is which way an individual agent's live judgment falls. **Decision: visible, not silent** — grounded in the standing `design-principles.md` principle from 8/10 ("presentation must not imply a guarantee the mechanism doesn't provide"), applied from the opposite direction: §6 already says an agent carries everything it knows into a klatch turn, and a silent room implies the opposite. **Shape, scoped to avoid the "noise" objection Daedalus rightly raised:** not a content dump — Klatch already has the exact precedent one component over, `MessageList.tsx`'s passive "💭 Thought about this" thinking-artifact chip. Carried context gets the same treatment: `🧵 Carried context from N other conversations`, count only, no channel names, no expand (`/prompt-debug` already covers full detail for anyone who wants it). Doc: `docs/ux/carried-context-visibility-2026-08-13.md`. **What this needs from Daedalus, not built by me:** a message needs to carry, at creation time, whether layer 6 was active and a room count — sketched two shapes (new `ArtifactType: 'carried_context'` reusing the existing `message_artifacts`/`ArtifactList` render path, my lean; or a lighter boolean+count pair on `Message`), his call on persistence. **Deliberately not answered:** Theseus's separate disclosure-norm question (should the prompt state a sharing norm) stays Daedalus's call; his `?entityId=` observability gap stays his/Theseus's. Reply filed cc team (`iris-to-daedalus-cc-team-carried-context-visibility-decision-2026-08-13.md`) — **thread stays open**, this closes only my named item; backfill (xian) and the disclosure norm (Daedalus) are still live on the parent thread. Checked import-confirm-step-ux and ground-rules-UX for movement since 8/12 (`git log --follow` on the scope doc; `grep` for blank-slate/ground-rules mail) — neither has moved, both remain correctly parked, not stalled on me.
 - **Updated:** 2026-08-13 (START fire)
+- **2026-08-13 (STOP fire, ~19:20 PT) — carried-context chip built; two decisions Daedalus routed to me,
+  resolved.** Mail sweep since the START fire found real work: Daedalus's 17:17 memo
+  (`daedalus-to-theseus-cc-iris-team-you-found-a-better-reason-than-the-one-i-shipped-on-2026-08-13.md`, §5)
+  routed two open questions to me now that Round 41 persists `omittedCount`/`hasOlderHistory` on the
+  `carried_context` artifact and the server-side artifact (`createCarriedContextArtifact`,
+  `db/queries.ts:1034-1048`) had landed since my morning fire — the client half of my 8/13 START-fire
+  decision was buildable, not just decidable, so I built it. `MessageList.tsx`'s `ArtifactList` now renders
+  `🧵 Carried context from N other conversations` off `artifact.inputSummary`, same row/weight as the
+  existing thinking indicator, client never touches the artifact's JSON payload. **(a) Duplication with the
+  agent's own disclosure prose (Theseus's finding: the notice sometimes makes the model narrate the same
+  caveat) — chip doesn't yield.** It's the structural, judgment-independent signal; that's the entire reason
+  it exists (Corvus/Vesper variance). Any tuning for perceived noise is a `LOSSY_WINDOW_NOTICE`
+  wording lever (Daedalus's), not chip suppression. **(b) `hasOlderHistory` driving the chip — not used.**
+  Chip stays existence-only as originally scoped; extending it to flag truncation is a real future option
+  (both fields are persisted, no backfill needed post-`6175bfd`) but not motivated yet — no demonstrated
+  confusion from the plain chip, unlike the Corvus/Vesper evidence behind the original call. Doc:
+  `docs/ux/carried-context-visibility-2026-08-13.md` (new STOP-fire section). Tests:
+  `round48-carried-context-chip.test.tsx`, 5 new — render, singular/plural copy, absent-when-no-artifact,
+  coexistence with the thinking indicator, and a boundary test pinning that `messageCount`/`omittedCount`/
+  `hasOlderHistory` never leak into rendered text despite being present on the artifact payload passed in.
+  **Verified: `npm test` 1253 server (unchanged) / 226 client (+5), exit 0; `npm run typecheck` clean ×3
+  workspaces.** Reply filed and thread closed to `read/` (`iris-to-daedalus-cc-team-carried-context-chip-
+  built-2026-08-13.md`, cc Theseus/xian/Argus/Calliope/Pard) — nothing outstanding on my side; the residual
+  layer-6 items Daedalus's memo names (backfill to xian, whether the ask is useful to a human) are his/
+  xian's, untouched by this fire. Also read Janus's cc'd correction-landed memo (purely informational, no
+  action) and confirmed the import-confirm-step-ux and ground-rules-UX blockers haven't moved since the
+  START fire.
+- **Updated:** 2026-08-13 19:20 PT (STOP fire)
 
 ### Calliope (writing, chronicling & coordination — primary contact for xian)
 
