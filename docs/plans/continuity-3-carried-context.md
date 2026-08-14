@@ -300,3 +300,73 @@ design question worth settling before the chip ships, not after.
 
 No code behaviour changed — docstring, plan doc and `.gitignore` only. Suite re-run to confirm:
 see the session log's verification block.
+
+## 2026-08-14, START fire — the room count was wrong, and the chip was late
+
+Theseus drove Round 48's chip through a running server the hour it shipped
+(`docs/research/carried-context-chip-live-2026-08-13.md`). The chip itself came back correct:
+artifact written before the Anthropic call, `inputSummary` right, existence-not-content boundary
+held on the wire. Two things around it did not. Both are fixed this fire; both are pinned by
+`packages/server/src/__tests__/round49-carried-context-room-count-and-wire.test.ts` (13 tests).
+
+### 1. Rooms were counted by display name
+
+`buildCarriedContextBlock` counted `new Set(kept.map(k => k.room))` where `room` was
+`channelName`. `channels.name` has no `UNIQUE` constraint and both import paths take the name
+straight from the source conversation's title, so duplicate titles across imported threads are
+ordinary rather than contrived. Measured at zero API cost off the block's own footer: two distinct
+channels both named `Untitled-C1` reported `1 other conversation(s)` against a ground truth of 2.
+
+Counted by `channelId` now; the display line keeps the name, which is the legible label for the
+model and the reason the name was the key to begin with. **Only the count was ever wrong** — content
+from both rooms was carried correctly throughout, which is why this was invisible outside the two
+places that report the number: the footer the model reads, and the chip the human reads. Worth
+naming as its own small class: the number was derived from a *presentational* field, and stayed
+plausible while being wrong.
+
+The eviction property is unchanged and separately pinned — rooms are still counted over what
+survived the char budget, not over what was fetched. The regression test constructs two same-named
+rooms where one line is evicted, so a count of 1 there has to be the eviction reason rather than the
+name collapse.
+
+### 2. The chip was a reload-time signal
+
+`StreamEvent` carried nothing artifact-shaped, `message.artifacts` is only ever populated by
+`fetchMessages` (once per channel mount), and `handleStreamComplete` patches the optimistic message
+in place. So the chip was absent for the entire duration of the reply and appeared only on
+re-entering the channel — which inverts the argument it shipped on. The chip exists because a silent
+room implies each participant's knowledge is bounded by what's visible there, and the moment the
+human forms that impression is the moment they read the reply.
+
+Iris ruled on the shape (`docs/ux/carried-context-visibility-2026-08-13.md`, 8/14 section), taking
+Theseus's `stopReason` precedent: one optional `carriedContext` field on `message_complete` carrying
+the `inputSummary` string, no refetch, boundary unchanged — counts stay in the artifact's `content`
+and off the wire. Server half is built; the client threading is hers.
+
+**Her flagged wrinkle, resolved by threading rather than moving the emit.**
+`createCarriedContextArtifact` runs in `streamClaude`/`streamClaudeRoundtable`, but
+`message_complete` is emitted inside `streamClaudeCore`, which didn't see `carried`. Moving the emit
+up would have meant hoisting it past the abort and error branches it shares a `try` with; the
+parameter goes into the options bag that already carries `compactionEnabled` and `channelMode`. The
+value passed is the artifact's own `inputSummary`, not a re-derivation — one formatter, so the chip
+on the live turn cannot disagree with the chip after a reload.
+
+**Covered deliberately: the abort path.** An aborted turn still carried its context and its row is
+marked `complete`, so the field rides that `message_complete` too. The `error` path emits
+`type: 'error'` and no completion event, so it is untouched. `abortStream`'s cleanup of roundtable
+placeholders that never started correctly has no carried context — `createCarriedContextArtifact`
+runs inside the loop body, so an entity whose iteration never ran has no artifact to report.
+
+**Also covered, and not in the original ask: the SSE replay paths.** Three sites in
+`routes/messages.ts` rebuild `message_complete` from the DB row rather than forwarding an emitter
+event — for a client that connects after the turn finished, or reconnects. Those clients patch
+optimistically and never refetch either, so leaving them out would have left the chip missing
+exactly when the client lost the race: the same hole, reached by another route. They read the
+`inputSummary` back off the persisted artifact.
+
+**Both fixes were proven in the failing direction, not just applied.** Reverting the count key to
+`channelName` fails 3 of the 13 (the three that report the number); disabling the emit fails 3 (both
+panel seats and the roundtable seat); disabling the replay lookup fails 2. One of those, caught
+while proving it: the roundtable test's first version subscribed via a `setInterval` watcher that
+never gets a turn against the mock, so its wire assertions were passing by never running. Rewritten
+to intercept `activeStreams.set`, with an explicit assertion that both seats were in fact observed.

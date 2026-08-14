@@ -577,7 +577,7 @@ async function streamClaudeCore(
   entity: Entity,
   history: ChatMessage[],
   systemPrompt: string,
-  options?: { compactionEnabled?: boolean; channelMode?: string }
+  options?: { compactionEnabled?: boolean; channelMode?: string; carriedContext?: string }
 ): Promise<StreamResult> {
   const emitter = new EventEmitter();
   activeStreams.set(assistantMessageId, emitter);
@@ -585,6 +585,21 @@ async function streamClaudeCore(
   let fullContent = '';
   let compactionSummary: string | undefined;
   const MAX_TOOL_ROUNDS = 5; // Safety limit on tool-use loops
+
+  // Computed once and spread into every `message_complete` this function emits
+  // (clean finish and user abort alike). The artifact is written by the caller
+  // before we're invoked, so an aborted turn still carried its context and the
+  // chip should still appear — the message row is marked 'complete' on that path,
+  // not discarded. The `error` path emits `type: 'error'` and no
+  // `message_complete`, so it is deliberately not covered here.
+  //
+  // The other `message_complete` in this file — `abortStream`'s cleanup of
+  // roundtable placeholders that never started — correctly has no carried
+  // context: `createCarriedContextArtifact` runs inside the roundtable loop
+  // body, so an entity whose iteration never ran has no artifact to report.
+  const carriedContextField = options?.carriedContext
+    ? { carriedContext: options.carriedContext }
+    : {};
 
   try {
     const model = entity.model || DEFAULT_MODEL;
@@ -727,6 +742,7 @@ async function streamClaudeCore(
       messageId: assistantMessageId,
       content: fullContent,
       ...(stopReason ? { stopReason } : {}),
+      ...carriedContextField,
     });
   } catch (err) {
     // Check if this was an intentional abort
@@ -737,6 +753,7 @@ async function streamClaudeCore(
         type: 'message_complete',
         messageId: assistantMessageId,
         content: fullContent,
+        ...carriedContextField,
       });
     } else {
       let errorMsg: string;
@@ -782,13 +799,16 @@ export async function streamClaude(
   const channelFileList = getChannelFiles(channelId).map((f) => `- ${f.name} (${f.mimeType}, ${formatBytes(f.sizeBytes)})`);
   const projectFileList = project ? getProjectFiles(project.id).map((f) => `- ${f.name} (${f.mimeType}, ${formatBytes(f.sizeBytes)})`) : [];
   const carried = buildCarriedContextBlock(entity, channel);
-  if (carried) createCarriedContextArtifact(assistantMessageId, carried);
+  // Reuse the artifact's own `inputSummary` rather than re-deriving the string
+  // here — one formatter, so the chip on the live turn and the chip after reload
+  // cannot disagree.
+  const carriedArtifact = carried ? createCarriedContextArtifact(assistantMessageId, carried) : undefined;
   const systemPrompt = buildSystemPrompt(entity, channelPreamble, channel, project, channelFileList, projectFileList, {
     carriedContext: carried?.text,
   });
   const result = await streamClaudeCore(
     assistantMessageId, entity, history, systemPrompt,
-    { compactionEnabled, channelMode: channel?.mode }
+    { compactionEnabled, channelMode: channel?.mode, carriedContext: carriedArtifact?.inputSummary }
   );
 
   // Store compaction result if the API compacted
@@ -853,7 +873,7 @@ export async function streamClaudeRoundtable(
       // and nobody else's. This is what keeps the cost of layer 6 proportional
       // to one agent rather than to the size of the cast.
       const carried = buildCarriedContextBlock(entity, channel);
-      if (carried) createCarriedContextArtifact(assistantMessageId, carried);
+      const carriedArtifact = carried ? createCarriedContextArtifact(assistantMessageId, carried) : undefined;
       const systemPrompt = buildSystemPrompt(entity, channelPreamble, channel, project, channelFileList, projectFileList, {
         carriedContext: carried?.text,
       });
@@ -886,7 +906,7 @@ export async function streamClaudeRoundtable(
         entity,
         history,
         systemPrompt,
-        { compactionEnabled: i === 0 && compactionEnabled, channelMode: channel?.mode }
+        { compactionEnabled: i === 0 && compactionEnabled, channelMode: channel?.mode, carriedContext: carriedArtifact?.inputSummary }
       );
 
       // Store compaction if it happened on the first entity

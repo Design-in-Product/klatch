@@ -378,6 +378,25 @@ export interface StreamEvent {
    * bubble renders as a clean completion until the channel is reloaded.
    */
   stopReason?: MessageStopReason;
+  /**
+   * Present on `message_complete` when layer 6 (carried context) was active for
+   * this turn — the pre-formatted `inputSummary` of the `carried_context`
+   * artifact, e.g. `"2 other conversations"`. Absent when no context was carried.
+   *
+   * Same reason as `stopReason` above, and the same precedent: the artifact is
+   * written to the DB at stream start, but `message.artifacts` is only ever
+   * populated by `fetchMessages`, which runs once per channel mount. Without
+   * this field the chip is a reload-time signal — measured absent for the whole
+   * duration of the reply by Theseus 8/13
+   * (`docs/research/carried-context-chip-live-2026-08-13.md`), which is exactly
+   * the moment the chip exists to inform.
+   *
+   * Deliberately the formatted string and nothing else. `roomCount`,
+   * `messageCount`, `omittedCount` and `hasOlderHistory` stay in the artifact's
+   * `content` and off the wire, per Iris's existence-not-content boundary
+   * (`docs/ux/carried-context-visibility-2026-08-13.md`).
+   */
+  carriedContext?: string;
 }
 
 // ── @-mention parsing for directed mode ──────────────────────

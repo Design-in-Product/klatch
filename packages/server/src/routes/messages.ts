@@ -12,6 +12,7 @@ import {
   getLastRoundAssistantMessages,
   clearChannelCompaction,
   getArtifactsForChannel,
+  getMessageArtifacts,
 } from '../db/queries.js';
 import { streamClaude, streamClaudeRoundtable, activeStreams, abortStream } from '../claude/client.js';
 import type { StreamEvent, Entity, Message } from '@klatch/shared';
@@ -28,6 +29,23 @@ const app = new Hono();
  */
 function isFinished(status: Message['status']): boolean {
   return status === 'complete' || status === 'error' || status === 'incomplete';
+}
+
+/**
+ * `StreamEvent.carriedContext` for a message whose turn is already over, read
+ * back off the persisted artifact.
+ *
+ * The live path gets this field from `streamClaudeCore`, which still holds the
+ * value in memory. These replay paths have no emitter to get it from — the
+ * stream finished before the observer connected, or never produced one — so
+ * they read it from the row the stream wrote. Without this the field would be
+ * present on the ordinary path and silently absent whenever the client lost the
+ * race, which is the same reload-time hole the field exists to close, just
+ * reached by a different route.
+ */
+function carriedContextField(messageId: string): { carriedContext?: string } {
+  const artifact = getMessageArtifacts(messageId).find((a) => a.type === 'carried_context');
+  return artifact?.inputSummary ? { carriedContext: artifact.inputSummary } : {};
 }
 
 // Get all messages for a channel
@@ -299,6 +317,7 @@ app.get('/messages/:id/stream', (c) => {
             messageId,
             content: msg?.content ?? '',
             ...(msg?.stopReason ? { stopReason: msg.stopReason } : {}),
+            ...carriedContextField(messageId),
           } satisfies StreamEvent),
         });
         return;
@@ -324,6 +343,7 @@ app.get('/messages/:id/stream', (c) => {
               messageId,
               content: fresh.content ?? '',
               ...(fresh.stopReason ? { stopReason: fresh.stopReason } : {}),
+              ...carriedContextField(messageId),
             } satisfies StreamEvent),
           });
           return;
@@ -340,6 +360,7 @@ app.get('/messages/:id/stream', (c) => {
             type: 'message_complete',
             messageId,
             content: final?.content ?? '',
+            ...carriedContextField(messageId),
           } satisfies StreamEvent),
         });
         return;

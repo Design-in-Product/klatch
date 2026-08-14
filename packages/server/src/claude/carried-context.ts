@@ -294,12 +294,12 @@ export function buildCarriedContextBlock(
 
   // Fill newest-first so the budget evicts the oldest, then restore chronological
   // order — the same recency bias `getEntityTranscript`'s own LIMIT applies.
-  const kept: { line: string; room: string }[] = [];
+  const kept: { line: string; roomId: string }[] = [];
   let used = 0;
   for (let i = recent.length - 1; i >= 0; i--) {
     const line = formatLine(recent[i], entity.name, maxMessageChars);
     if (used + line.length > maxChars && kept.length > 0) break;
-    kept.push({ line, room: recent[i].channelName });
+    kept.push({ line, roomId: recent[i].channelId });
     used += line.length;
   }
   kept.reverse();
@@ -308,7 +308,17 @@ export function buildCarriedContextBlock(
   // Rooms are counted over what survived eviction, not over what was fetched.
   // Counting `recent` would name a conversation the block no longer contains
   // any line from — and that same count is now what the UI chip shows the human.
-  const rooms = [...new Set(kept.map((k) => k.room))];
+  //
+  // Counted by `channelId`, not by `channelName`: `channels.name` has no UNIQUE
+  // constraint, and imports take the name straight from the source conversation's
+  // title (`queries.ts` claude-code/claude-ai import paths), so duplicate titles
+  // across imported threads are ordinary rather than contrived. Counting names
+  // collapsed two distinct conversations into one — measured by Theseus 8/13
+  // (`docs/research/carried-context-chip-live-2026-08-13.md`): two channels both
+  // named "Untitled-C1" reported "1 other conversation(s)" against a ground truth
+  // of 2. Only the count was ever wrong; both rooms' content was carried, which
+  // is why it was invisible outside the footer the model reads and the UI chip.
+  const rooms = [...new Set(kept.map((k) => k.roomId))];
 
   const header =
     'Context carried from your own other conversations.\n\n' +
