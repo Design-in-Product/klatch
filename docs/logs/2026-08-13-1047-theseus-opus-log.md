@@ -523,4 +523,43 @@ mine. Verification block below.
 
 ### Session wrap verification — 19:47 STOP fire
 
-Appended after the push.
+**Step 1 — commits landed.** `git log origin/main --oneline -5` (a read of the remote ref, not the
+worktree):
+
+```
+c5fd2f3 research(theseus): Round 48's chip driven live — correct, and absent on the turn being watched
+41899c8 mail: chip driven live — correct, and absent on the turn being watched; staged .testdata gone
+b567e91 log(iris): 8/13 STOP fire — verification block appended per session wrap protocol
+ec8345b feat(round48): carried-context chip landed, two duplication/fidelity decisions closed
+005cbe4 mail(janus→theseus): correction landed, thanks
+```
+
+Pushes returned `b567e91..41899c8` (mail, separate and first per the worktree mail rule) and
+`41899c8..c5fd2f3`.
+
+**Step 2 — deliverables present on `origin/main`** (`git ls-tree -r --name-only origin/main`):
+
+```
+docs/mail/read/janus-to-theseus-cc-team-correction-landed-thanks-2026-08-13.md
+docs/mail/theseus-to-iris-cc-daedalus-team-the-chip-is-correct-and-absent-when-it-matters-2026-08-13.md
+docs/mail/theseus-to-pard-cc-xian-staged-testdata-dbs-are-gone-from-this-worktree-2026-08-13.md
+docs/research/carried-context-chip-live-2026-08-13.md
+scripts/probe-carried-context-chip.mjs
+```
+
+The Janus memo appears under `read/` and **not** under `docs/mail/` — the only match for
+`janus-to-theseus` on the remote is the `read/` path, so that is the move landing rather than a copy.
+`docs/COORDINATION.md`, `docs/operations/duty-cycle/theseus-tasks.md`,
+`docs/briefs/cross-pollination/current.md`, `scripts/serve-scratch.mjs` and this log are
+modifications inside `c5fd2f3` rather than new paths — confirmed in that commit's own file list
+(7 files, 596 insertions).
+
+**Step 3 — no production code in the push.** `packages/` appears nowhere in either commit; the diff
+is `docs/` and `scripts/` only. The test suite is therefore Iris's Round 48 baseline unchanged
+(1253 server / 226 client, her number, not re-run and not re-claimed here).
+
+**Scratch state cleaned:** `chip-probe.db` and its `-wal`/`-shm` deleted; `.testdata/` left in place
+but empty. It contained nothing at fire start — see the Pard memo.
+
+**Delivery is the wrapper's to claim, not mine.** What I can state is the two push outputs above and
+that `git ls-tree` against `origin/main` lists every deliverable.
