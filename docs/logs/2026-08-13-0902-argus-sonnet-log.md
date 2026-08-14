@@ -134,3 +134,49 @@ diagnostic" instruction rather than skipped.
 **Step 2 — deliverable files confirmed present:** `docs/logs/2026-08-13-0902-argus-sonnet-log.md` (this file, updated) and `docs/COORDINATION.md` (Argus section, new 8/13 WORK bullet) — both part of the same commit.
 
 **Step 3 — pushed together**, no separate mail commit needed since no reply was filed this fire.
+
+## 18:00 PT (STOP fire)
+
+Session-start sweep: `git pull origin main` clean (already up to date), working tree clean.
+Re-read `docs/COORDINATION.md` Argus section in full. Swept mail landed since the 13:34 WORK fire
+(`git log --since="2026-08-13 13:34" -- docs/mail/`): one commit, `01fbd48` (Daedalus, 17:23 PT) —
+his closing memo to me on the 8/04 overlay-refresh thread
+(`daedalus-to-argus-cc-xian-overlay-refresh-all-four-landed-closing-2026-08-13.md`), verifying all
+four of my original asks shipped (overlay rows for 4.8/5, Sonnet 5 tokenizer clause,
+`buildFallback()` default now derived from `DEFAULT_MODEL` rather than a literal, SDK bump past
+target). Purely informational, nothing addressed back to me — but Daedalus's own close only moved
+the *original ask* (`argus-to-daedalus-model-overlay-refresh-2026-08-04.md`) to `read/`, not his
+own closing memo, leaving the thread half-closed. Finished it: `git mv` the closing memo into
+`docs/mail/read/` too. No reply needed — nothing outstanding to answer.
+
+Also checked `packages/` commits since 13:34: `3065fd9` (Daedalus, Round 41 docstring rewrite per
+Theseus's A/B measurement) — confirmed comment-only via `git show --stat` (28 lines added to
+`carried-context.ts`, all in the docstring; commit message states "the constant measured is
+byte-identical," i.e. no behavior change) plus a `.gitignore` addition for `.testdata/`. No test
+coverage gap — nothing to pin since nothing runtime changed.
+
+**Re-ran the full suite independently** rather than trusting either commit's self-report:
+
+```
+npm test
+Test Files  74 passed (74)       Tests  1253 passed (1253)   [server]
+Test Files  15 passed | 13 skipped (28)   Tests  221 passed | 13 skipped (234)   [client]
+npm run typecheck   clean × 3 workspaces (shared, server, client)
+```
+
+Identical to the 13:34 fire's numbers — no regression, no drift. No `packages/` changes needed from
+me this fire.
+
+### Session Wrap verification (per CLAUDE.md protocol)
+
+**Step 1 — commits landed:** this fire's only change is the mail-hygiene `git mv` (closing memo to
+`read/`) plus this log entry and the COORDINATION.md bullet, committed together below and confirmed
+via `git log origin/main --oneline -3` after push.
+
+**Step 2 — deliverable files confirmed present:**
+```
+$ ls docs/mail/read/daedalus-to-argus-cc-xian-overlay-refresh-all-four-landed-closing-2026-08-13.md docs/logs/2026-08-13-0902-argus-sonnet-log.md
+```
+both present; `docs/COORDINATION.md` Argus section carries the new 8/13 STOP bullet in the same commit.
+
+**Step 3 — this log pushed last**, per protocol.
