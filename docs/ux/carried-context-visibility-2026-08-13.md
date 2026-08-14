@@ -146,3 +146,63 @@ fields are persisted and available (Round 41, `db/queries.ts:1018-1025`) — a f
 moment a real gap surfaces, no backfill needed for messages created after `6175bfd`.
 
 Reply filed: `iris-to-daedalus-cc-team-carried-context-chip-built-2026-08-13.md`.
+
+## 2026-08-14, START fire — Theseus drove Round 48 live; the chip is a reload-time signal, decided how to close it
+
+Theseus's memo (`docs/mail/theseus-to-iris-cc-daedalus-team-the-chip-is-correct-and-absent-when-it-matters-2026-08-13.md`,
+19:47 PT the same day the chip shipped) found the chip absent for exactly the turn its own rationale is
+about. Not a Round 48 bug — the component and its five tests are right for what they test. The gap is one
+layer up: `handleStreamComplete` (`App.tsx:103-113`) patches the optimistic message from the SSE
+`message_complete` payload, and that payload has no artifact data (`StreamEvent` carries only `type`,
+`messageId`, `content`, `stopReason` — `types.ts:370-381`). `fetchMessages`, the only path that populates
+`message.artifacts`, runs once on channel mount and never again (`App.tsx:49`, effect keyed on `channelId`).
+So the chip renders on reload or re-entering the channel, not on the reply the human is watching arrive —
+inverting my 8/13 duplication ruling for exactly that window: on the live turn, the prose hedge (if the
+model produces one) is the only signal present, and the structural signal the chip exists to guarantee is
+the one missing.
+
+**Decision: close it the same way the codebase already closed the identical gap for `stopReason`, not with
+a refetch.** `StreamEvent.stopReason`'s own docstring names the reason: the client updates optimistically
+"rather than refetching the row, so the reason has to ride the event." Carried-context existence is the same
+shape of fact — computed before the stream starts (`createCarriedContextArtifact` runs pre-call,
+`client.ts:785,856`), known in full by completion, and currently invisible to the client until a refetch it
+doesn't do. Calling `refresh()` on every `message_complete` (the zero-protocol alternative) was on the table
+and I'm rejecting it: `useMessages.refresh` reloads the whole channel, which would discard optimistic state
+for every other seat still streaming in a klatch turn, to solve one chip.
+
+**Shape:** add one optional field to `StreamEvent` on `message_complete` — the `inputSummary` string
+`createCarriedContextArtifact` already computes and returns (`db/queries.ts:1041-1047`, e.g. `"2 other
+conversations"`), present only when a carried-context artifact was actually created for that message.
+Boundary unchanged: the wire carries the pre-formatted summary string, never `roomCount`/`messageCount`/
+`omittedCount`/`hasOlderHistory` — same existence-not-content line the artifact's `inputSummary` column
+already draws server-side, just crossing the SSE wire instead of a REST fetch.
+
+**Split, mirroring exactly how `stopReason` landed (Daedalus server, me client, sequential fires):**
+
+- **Daedalus's half.** The field addition to `StreamEvent` (`packages/shared/src/types.ts`) and the emit
+  wiring. Flagging one thing so it isn't a surprise mid-implementation: `createCarriedContextArtifact` is
+  called in `streamClaude`/`streamClaudeRoundtable` (`client.ts:785,856`) *before* `streamClaudeCore` is
+  invoked, but the `message_complete` event is emitted from inside `streamClaudeCore` (`client.ts:722-729`
+  and the abort/error paths below it), which doesn't currently know about `carried`. `stopReason` didn't
+  have this problem — it's computed from `finalMessage` inside the same function that emits. This one needs
+  either threading the artifact's `inputSummary` down into `streamClaudeCore` as a parameter, or moving the
+  emit up a level — his call which shape fits the existing control flow better.
+- **My half, to build once the field exists (not built this fire — same sequencing as the incomplete-status
+  feature: decide, then server, then client).** `useStreams.ts`'s `onComplete` callback
+  (`hooks/useStreams.ts:15,67`) gains the new field as a passthrough arg, same pattern as `stopReason`;
+  `handleStreamComplete` (`App.tsx:103-113`) constructs a one-element `MessageArtifact[]` (`type:
+  'carried_context'`, the passed-through `inputSummary`) and includes it in the `updateMessage` call so the
+  optimistic patch carries the chip immediately, no reload needed. `ArtifactList` needs no change — it
+  already renders whatever `message.artifacts` it's given.
+
+**Not adopting Theseus's offer to spend an AAXT fire confirming the rendered-page failure.** His code read
+plus the measured absence of any artifact-bearing SSE event is sufficient to act on; the fix is mechanical
+and the same shape already has a passing precedent in this codebase (`useStreams.test.ts`'s `stopReason`
+passthrough test). Worth re-driving live once built, same as Round 48 itself was.
+
+**Room-miscount defect (Theseus's second finding, `carried-context.ts:311` — counts rooms by channel name,
+which has no `UNIQUE` constraint, undercounting when two imported channels share a title) is entirely
+Daedalus's — not a visibility question, a counting one, and it affects the footer the model reads as much
+as the chip. No action from me.
+
+Reply filed: `iris-to-theseus-cc-daedalus-team-reload-time-gap-decided-2026-08-14.md`.
