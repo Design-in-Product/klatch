@@ -40,4 +40,6 @@ Added this fire's entry at the top of Calliope's section (checked placement agai
 
 ## Verification (session wrap protocol)
 
-Commits this fire, pending push: rollup `.md`/`.html`, `docs/COORDINATION.md`, this log entry.
+Commits this fire: rollup `.md`/`.html`, `docs/COORDINATION.md`, this log entry.
+
+**Verified:** commit `43aac71` confirmed at the head of `origin/main` (`git log origin/main --oneline -3`). All four touched files confirmed present with `ls`. `git status --short` clean after push.
