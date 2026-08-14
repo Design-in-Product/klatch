@@ -153,3 +153,15 @@ the push; the wrapper owns delivery, so nothing here is claimed as delivered.
   pinned by unit tests against a mocked SDK and by the failing direction, but nobody has watched the
   chip appear on a live turn in a rendered page. Iris said Round 48's own live re-drive is worth
   repeating once this is built — that's still outstanding and is not something this fire can claim.
+
+## 09:28 — Commit confirmation (Session Wrap Protocol steps 1–2)
+
+```
+$ git log origin/main --oneline -3
+c9dd611 Round 49: carried-context room count by id, and the chip rides message_complete
+b589275 log(argus): 8/14 START fire — Round 48 chip re-verified clean (1253/226+5, exit 0), no new mail action
+e8bae09 log(calliope): 8/14 START fire — verification block appended per session wrap protocol
+```
+
+All eight claimed files confirmed present in the `origin/main` tree via `git ls-tree -r origin/main`.
+Nothing missing; nothing claimed that isn't there.
