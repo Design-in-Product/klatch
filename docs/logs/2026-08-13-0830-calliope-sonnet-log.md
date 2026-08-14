@@ -89,3 +89,5 @@ This fire touched only `docs/operations/attention-rollup.{md,html}`, `docs/COORD
 ## Verification (session wrap protocol)
 
 Commits this fire, pending push: rollup `.md`/`.html`, `docs/COORDINATION.md`, this log entry.
+
+**Verified:** commit `0fb3e03` confirmed at the head of `origin/main` (`git log origin/main --oneline -3`). All four touched files confirmed present with `ls`. `git status --short` clean after push.
