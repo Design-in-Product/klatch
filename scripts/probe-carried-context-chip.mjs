@@ -197,6 +197,7 @@ await settle(klatch.id, 'klatch');
 rule('STAGE 4 — what the SSE stream actually carried');
 
 let anyArtifactInStream = false;
+const liveField = {};
 for (const cap of captures) {
   const who = cap.entityId === wren.id ? 'Wren' : 'Thorne';
   const keys = new Set();
@@ -207,9 +208,37 @@ for (const cap of captures) {
   }
   const mentionsArtifact = [...keys].some((k) => /artifact|carried/i.test(k));
   if (mentionsArtifact) anyArtifactInStream = true;
+  const complete = cap.events.find((e) => e.type === 'message_complete');
+  // Absent-vs-empty-string matters: a chip driven off a falsy check and one driven
+  // off `!== undefined` only agree if the field is genuinely missing when nothing
+  // was carried. Record the distinction rather than the value alone.
+  liveField[who] = complete && 'carriedContext' in complete ? complete.carriedContext : undefined;
   console.log(`\n${who}: ${cap.events.length} events  ${JSON.stringify(types)}`);
   console.log(`  union of keys across all events: ${JSON.stringify([...keys])}`);
   console.log(`  any key mentioning artifact/carried: ${mentionsArtifact}`);
+  console.log(`  message_complete: 'carriedContext' in event = ${complete ? 'carriedContext' in complete : 'n/a'}` +
+    `, value = ${JSON.stringify(liveField[who])}`);
+}
+
+// ── Stage 4b: the SSE REPLAY path (0 API calls) ──────────────────────────────
+// Round 49 (Daedalus) also put the field on the three sites in `routes/messages.ts`
+// that rebuild `message_complete` from the DB row rather than forwarding an emitter
+// event — the path a client takes when it connects or reconnects AFTER the turn has
+// already finished. Stage 4's capture subscribes immediately and so only exercises
+// the live emitter path. Re-subscribing to a settled message costs nothing and is
+// the only way to see the replay branch from outside.
+rule('STAGE 4b — re-subscribe AFTER completion (SSE replay path, 0 API calls)');
+
+let replayCarried = null;
+for (const cap of captures) {
+  const who = cap.entityId === wren.id ? 'Wren' : 'Thorne';
+  const replay = await captureStream(cap.messageId, `${who}-replay`);
+  const complete = replay.find((e) => e.type === 'message_complete');
+  const has = complete ? 'carriedContext' in complete : null;
+  if (who === 'Wren') replayCarried = complete?.carriedContext ?? null;
+  console.log(`${who.padEnd(7)} replay: ${replay.length} event(s), types ${JSON.stringify([...new Set(replay.map((e) => e.type))])}`);
+  console.log(`        message_complete carries carriedContext: ${has}` +
+    (has ? ` → ${JSON.stringify(complete.carriedContext)}` : ''));
 }
 
 // ── Stage 5: the reload path — the URL the client actually fetches ───────────
@@ -279,4 +308,7 @@ console.log(`Count fidelity        : ${wrenSummary === '2 other conversations' ?
 console.log(`Negative control      : ${results.Thorne?.count === 0 ? 'PASS — no artifact for the seat that carried nothing' : 'FAIL — chip would appear on a seat with no carried context'}`);
 console.log(`Artifact before finish: ${midStreaming.length > 0 ? 'measured mid-flight above' : 'INCONCLUSIVE — both messages completed before the mid-flight read'}`);
 console.log(`Delivered to live turn: ${anyArtifactInStream ? 'YES — an SSE event carries it' : 'NO — no SSE event carries artifact data; the chip cannot appear until a refetch'}`);
+console.log(`  live field, Wren    : ${JSON.stringify(liveField.Wren)} ${liveField.Wren === wrenSummary ? '(matches the persisted artifact — one formatter)' : '(DRIFT from the persisted artifact)'}`);
+console.log(`  live field, Thorne  : ${liveField.Thorne === undefined ? 'absent (not empty string) — correct for a seat carrying nothing' : `PRESENT (${JSON.stringify(liveField.Thorne)}) — negative control broken on the wire`}`);
+console.log(`  replay field, Wren  : ${JSON.stringify(replayCarried)} ${replayCarried === wrenSummary ? '(replay path agrees with live path)' : '(replay path DIVERGES)'}`);
 console.log(`Same-name room count  : ${twinRoomCount === 2 ? 'PASS — 2 rooms counted as 2' : `UNDERCOUNT — two conversations reported as ${twinRoomCount}`}`);
