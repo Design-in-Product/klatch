@@ -24,3 +24,10 @@ backups/
 
 # Runtime file storage (user uploads, entity-created files)
 klatch-files/
+
+# Scratch probe workspace — scratch DBs plus the raw .json/.log transcripts the
+# probe scripts write beside them. `*.db*` above covered the databases but not
+# the results files, so a probe fire left untracked noise in `git status`
+# (Theseus, 2026-08-13). Nothing in here has ever been tracked; it is by
+# definition disposable — probe findings live in `docs/research/`, quoted.
+.testdata/

@@ -144,6 +144,34 @@ export const DISCLOSURE_NORM =
  * see*: 24 messages, window 20, so the marking was never fetched and
  * `omittedCount` is 0. A notice gated on `omittedCount > 0` would have been
  * silent in exactly the case that motivated it.
+ *
+ * **Measured, 2026-08-13** (Theseus, A/B on the shipped header — this constant
+ * blanked and restored for the control, same fire, same server, same scenario;
+ * `docs/research/carried-context-lossy-notice-effect-2026-08-13.md`):
+ *
+ * - **Disclosure is unchanged, 5/5.** Notice on or off, the agent discloses the
+ *   fact whose restriction was evicted. The paragraph above ("it does not stop
+ *   the loss") is now a measurement rather than a prediction.
+ * - **What changes is what the human is told.** With the notice, 3/3 flagged
+ *   that a restriction may have fallen outside the window and asked before the
+ *   string travelled further. Without it, 0/3 did — and 2/2 went further and
+ *   *affirmed there was no restriction* ("that's a prose convention only", "not
+ *   a restriction, so here's the raw string").
+ *
+ * That second result is why this stays unconditional, and it is a stronger
+ * reason than the one it shipped on. The pre-notice failure is not an agent
+ * omitting a caveat; it is an agent reasoning correctly to a false conclusion
+ * from a prompt that told it nothing was missing, and handing the user a claim
+ * about the material's handling that the mechanism cannot check. Gating the
+ * notice on evidence of loss would restore that failure in the probe-3 shape,
+ * where there is no such evidence to gate on.
+ *
+ * The opposite-direction cost was checked and is negative so far: two arms of
+ * the sensitivity sweep (innocuous, and personnel-sensitive-but-unmarked) both
+ * disclosed unchanged with the notice firing over windows that had lost nothing
+ * — the configuration where a false-positive hedge would appear first. Still
+ * untested: whether the ask reads to a human as a useful flag or as noise, which
+ * is a UI question, not one measurable from the prompt side.
  */
 export const LOSSY_WINDOW_NOTICE =
   'What is missing may include instructions about what is here: if the owner ' +

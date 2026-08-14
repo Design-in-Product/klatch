@@ -223,3 +223,80 @@ without it — probe 3 would need re-running against the new header to say that,
 instrument and his call on cost. It is plausible the notice makes agents hedge on material that was
 never restricted; that cost is also unmeasured. Recorded as the honest state rather than implied
 away.
+
+> **Superseded the same day.** Theseus ran both probes on the 14:47 fire. Both questions above are
+> answered; see the next section. This paragraph stays as written because the state it records was
+> true when the code shipped, and a plan doc that quietly back-dates its own confidence is worth
+> less than one that shows when it got the evidence.
+
+---
+
+# 2026-08-13 (STOP) — the notice, measured
+
+Theseus's A/B: `docs/research/carried-context-lossy-notice-effect-2026-08-13.md`. 23 live
+`claude-opus-5` calls. Control was this constant blanked from the footer and restored — same fire,
+same server, same scratch DB, same scenario, one variable. That is the right control: the rest of
+Round 41 (`hasOlderHistory`, the artifact fields, the layer-6 debug string) never reaches the model,
+so the only prompt-visible change is the appended sentence.
+
+## What it says
+
+**Disclosure unchanged, 5/5.** Notice on (n=3) or off (n=2), the agent discloses the fact whose
+restriction the window evicted. The notice does not fix the defect, exactly as its docstring said it
+would not.
+
+**What changes is what the human is told, and the split is clean.** With the notice, 3/3 raised the
+possibility of a restriction outside the window and asked before the string travelled further; 2 of
+3 cited the window explicitly. Without it, 0/3 (including the morning's pre-notice run) — and 2/2 of
+the fresh control runs *resolved the question the wrong way in so many words*: "that's a writeup
+naming convention, not a restriction, so here's the raw string."
+
+**That last result is the one that changes the record.** Both Theseus and I framed the pre-notice
+defect as *silent* loss. It is worse than silent. The agent produces a positive claim about the
+material's handling — that no restriction applies — which its prompt does not support and the
+mechanism cannot check. A user who reads that reasonably stops asking.
+
+So the argument for the notice being **unconditional rather than gated on evidence of loss** is now
+stronger than the one it shipped on, and it is an argument neither of us made when deciding: gating
+does not merely fail to warn in the probe-3 shape, it leaves the affirmative-wrong answer standing
+in exactly the case where there is no evidence to gate on.
+
+**Timidity: negative so far.** Sensitivity arms B (innocuous) and D (personnel-sensitive, unmarked)
+both disclosed unchanged, and — the detail that makes it a real check — both ran over windows that
+had lost nothing (layer 6 read `no older history`), so the unconditional notice fired where a
+false-positive hedge would surface first. It did not.
+
+## Filed from that round: agent-authored markings are evictable too
+
+Theseus flagged, as mine to file or ignore: in arm D the confidentiality condition the agent
+honoured came from **its own acknowledgement** in the 1-1 ("treating as confidential"), not from the
+owner's message. Filing it, because it widens option (2) rather than sitting beside it.
+
+Option (2) — never evict a marking — was deferred because detecting a marking is a policy surface.
+That deferral was reasoned about *owner-authored* markings, which at least have a plausible
+syntactic tell (an imperative from the human turn). An agent-authored one has no such tell: it is
+ordinary assistant prose that happens to constitute a commitment, and it is carried, honoured, and
+evicted on identical terms. Any future detector scoped to human turns would therefore be
+**incomplete by construction**, not merely imperfect. Recording that now so option (2) is not later
+picked up under the impression that "scan the owner's messages for restriction language" is a
+narrow-but-sound version of it. It is narrow and unsound.
+
+## Residual, restated
+
+Unchanged and still true: **Klatch will carry a fact whose restriction has fallen out of the window,
+and the mechanism cannot currently know it has done so.** What the measurement adds is that the
+agent will now say so out loud instead of assuring the user otherwise. That is a labelling
+improvement, not a fix, and the plan should not be read as having closed the defect.
+
+## Still unmeasured, and not mine to measure
+
+Whether the ask is *useful*. Three agents asked the owner a question the owner did not ask for. In
+the common case — nothing lost — the notice is a sentence in every prompt earning nothing, and its
+visible cost lands on Iris's surface, not in this file. Routed to her together with the duplication
+question it creates: if the carried-context chip and the agent both narrate the same gap, that is a
+design question worth settling before the chip ships, not after.
+
+## Verification (this fire)
+
+No code behaviour changed — docstring, plan doc and `.gitignore` only. Suite re-run to confirm:
+see the session log's verification block.
