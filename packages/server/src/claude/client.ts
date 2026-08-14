@@ -1,10 +1,11 @@
 import Anthropic from '@anthropic-ai/sdk';
 import { EventEmitter } from 'events';
-import { getMessages, getChannel, updateMessage, updateChannelCompaction, getProjectForChannel, getFileArtifactsForMessages, createFileArtifact, createCarriedContextArtifact, createFileWithMessageRef, getChannelFiles, getProjectFiles } from '../db/queries.js';
+import { getMessages, getChannel, updateMessage, updateChannelCompaction, getProjectForChannel, getFileArtifactsForMessages, createFileArtifact, createCarriedContextArtifact, createToolUseArtifact, createFileWithMessageRef, getChannelFiles, getProjectFiles } from '../db/queries.js';
 import type { Entity, Channel, Project, Message, MessageArtifact, MessageStopReason } from '@klatch/shared';
 import { DEFAULT_MODEL } from '@klatch/shared';
 import { readFile, isTextFile, isImageFile, saveFile } from '../files/storage.js';
-import { buildCarriedContextBlock } from './carried-context.js';
+import { buildCarriedContextBlock, RECALL_TOOL_NAME } from './carried-context.js';
+import { recallFromOtherConversations, RECALL_TOOL_DESCRIPTION, RECALL_DEFAULT_LIMIT, RECALL_MAX_LIMIT } from './recall.js';
 
 // Lazy-init: the Anthropic client must not be created at import time
 // because ESM hoists imports before dotenv.config() runs in index.ts.
@@ -490,7 +491,20 @@ export function buildSystemPrompt(entity: Entity, channelPreamble?: string, chan
 
 // ── Tool definitions ─────────────────────────────────────────
 
-const KLATCH_TOOLS: Anthropic.Tool[] = [
+/**
+ * The scope a recall call runs in — who is asking, and from where.
+ *
+ * Carried on the stream rather than looked up inside `executeTool` because the
+ * caller already holds both, and because the tool must not be able to widen its
+ * own scope: an entity id resolved at assembly time is the same one layer 6 was
+ * built from, by construction.
+ */
+export interface RecallScope {
+  entity: Entity;
+  channel: Channel | undefined;
+}
+
+const BASE_TOOLS: Anthropic.Tool[] = [
   {
     name: 'save_file',
     description: 'Save content as a downloadable file for the user. Use this when the user asks you to create, generate, or write a file — for example, a script, config file, document, or data export. The file will be stored and made available for download in the conversation.',
@@ -511,12 +525,80 @@ const KLATCH_TOOLS: Anthropic.Tool[] = [
   },
 ];
 
+/**
+ * The tools offered for one turn.
+ *
+ * The recall tool is present **exactly when layer 6 is** — both callers gate on
+ * `buildCarriedContextBlock` returning a value, and `buildCarriedContextBlock`
+ * itself returns `undefined` outside a klatch and when the entity has no other
+ * history. Two consequences worth stating rather than leaving as emergent
+ * behaviour:
+ *
+ * - In a 1-1 the tool is absent. Recall reaching *back* into klatch content from
+ *   a 1-1 is bidirectionality — open question 2 in
+ *   `composition-continuity-gap-2026-07-19.md`, unanswered — so offering it
+ *   there would ship the undecided direction through the side door.
+ * - An entity with nothing elsewhere never sees it, so a fresh agent cannot
+ *   spend a tool round discovering it has no history.
+ *
+ * The block footer names the tool unconditionally
+ * (`carried-context.ts`, `RECALL_TOOL_NAME`), which is only honest because of
+ * this equivalence. `round50-recall-tool.test.ts` pins it in both directions.
+ */
+function buildTools(recall?: RecallScope): Anthropic.Tool[] {
+  if (!recall) return BASE_TOOLS;
+  return [
+    ...BASE_TOOLS,
+    {
+      name: RECALL_TOOL_NAME,
+      description: RECALL_TOOL_DESCRIPTION,
+      input_schema: {
+        type: 'object' as const,
+        properties: {
+          query: {
+            type: 'string',
+            description: 'Distinctive keywords that must all appear in the same message. Not a question — literal words.',
+          },
+          limit: {
+            type: 'number',
+            description: `How many matching messages to return, most recent first. Default ${RECALL_DEFAULT_LIMIT}, maximum ${RECALL_MAX_LIMIT}.`,
+          },
+        },
+        required: ['query'],
+      },
+    },
+  ];
+}
+
 /** Execute a tool call and return the result */
 async function executeTool(
   toolName: string,
   toolInput: Record<string, unknown>,
   assistantMessageId: string,
+  recall?: RecallScope,
 ): Promise<{ result: string; isError: boolean }> {
+  if (toolName === RECALL_TOOL_NAME) {
+    // Reachable only when the tool was offered, which requires a scope — but an
+    // absent scope is a real answer rather than a throw, since the model can
+    // name any tool it likes and a 500 mid-turn is a worse outcome than a
+    // refusal the model can read.
+    if (!recall) {
+      return { result: `${RECALL_TOOL_NAME} is not available in this conversation.`, isError: true };
+    }
+    const result = recallFromOtherConversations(recall.entity, recall.channel, {
+      query: String(toolInput.query ?? ''),
+      ...(typeof toolInput.limit === 'number' ? { limit: toolInput.limit } : {}),
+    });
+    // Persisted so the call survives the stream. See `createToolUseArtifact` —
+    // a tool called live left no row at all before this.
+    createToolUseArtifact(
+      assistantMessageId,
+      RECALL_TOOL_NAME,
+      `Searched own conversations: ${String(toolInput.query ?? '')}`,
+    );
+    return { result: result.text, isError: result.isError };
+  }
+
   if (toolName === 'save_file') {
     const filename = String(toolInput.filename || 'file.txt');
     const content = String(toolInput.content || '');
@@ -577,7 +659,7 @@ async function streamClaudeCore(
   entity: Entity,
   history: ChatMessage[],
   systemPrompt: string,
-  options?: { compactionEnabled?: boolean; channelMode?: string; carriedContext?: string }
+  options?: { compactionEnabled?: boolean; channelMode?: string; carriedContext?: string; recall?: RecallScope }
 ): Promise<StreamResult> {
   const emitter = new EventEmitter();
   activeStreams.set(assistantMessageId, emitter);
@@ -585,6 +667,10 @@ async function streamClaudeCore(
   let fullContent = '';
   let compactionSummary: string | undefined;
   const MAX_TOOL_ROUNDS = 5; // Safety limit on tool-use loops
+  // Computed once: the tool list is a property of the turn, not of the round.
+  // Rebuilding it per round would let the offer change between one tool result
+  // and the model's follow-up, which is invisible from the transcript.
+  const turnTools = buildTools(options?.recall);
 
   // Computed once and spread into every `message_complete` this function emits
   // (clean finish and user abort alike). The artifact is written by the caller
@@ -619,7 +705,7 @@ async function streamClaudeCore(
           cache_control: { type: 'ephemeral' },
           system: systemPrompt || undefined,
           messages: conversationHistory,
-          tools: KLATCH_TOOLS,
+          tools: turnTools,
           ...(entity.effort ? { output_config: { effort: entity.effort } } : {}),
           betas: ['compact-2026-01-12'],
           context_management: {
@@ -657,7 +743,7 @@ async function streamClaudeCore(
           cache_control: { type: 'ephemeral' },
           system: systemPrompt || undefined,
           messages: conversationHistory,
-          tools: KLATCH_TOOLS,
+          tools: turnTools,
           ...(entity.effort ? { output_config: { effort: entity.effort } } : {}),
         } as any);
 
@@ -703,6 +789,7 @@ async function streamClaudeCore(
             toolUse.name,
             toolUse.input as Record<string, unknown>,
             assistantMessageId,
+            options?.recall,
           );
 
           toolResults.push({
@@ -808,7 +895,15 @@ export async function streamClaude(
   });
   const result = await streamClaudeCore(
     assistantMessageId, entity, history, systemPrompt,
-    { compactionEnabled, channelMode: channel?.mode, carriedContext: carriedArtifact?.inputSummary }
+    {
+      compactionEnabled,
+      channelMode: channel?.mode,
+      carriedContext: carriedArtifact?.inputSummary,
+      // Offered on exactly the condition layer 6 was assembled on — see
+      // `buildTools`. `carried` is the gate, not `channel.type`, so the two
+      // cannot drift apart.
+      ...(carried ? { recall: { entity, channel } } : {}),
+    }
   );
 
   // Store compaction result if the API compacted
@@ -906,7 +1001,15 @@ export async function streamClaudeRoundtable(
         entity,
         history,
         systemPrompt,
-        { compactionEnabled: i === 0 && compactionEnabled, channelMode: channel?.mode, carriedContext: carriedArtifact?.inputSummary }
+        {
+          compactionEnabled: i === 0 && compactionEnabled,
+          channelMode: channel?.mode,
+          carriedContext: carriedArtifact?.inputSummary,
+          // Per seat, inside the loop, for the same reason the block is: the
+          // scope must be *this* participant's, or one agent's recall reads
+          // another's transcript.
+          ...(carried ? { recall: { entity, channel } } : {}),
+        }
       );
 
       // Store compaction if it happened on the first entity

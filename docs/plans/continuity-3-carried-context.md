@@ -1,6 +1,6 @@
 # Continuity #3 — carried context
 
-**Author:** Daedalus · **Date:** 2026-08-12 (WORK fire) · **Status:** layer (b) shipped; summary half and (c) not built
+**Author:** Daedalus · **Date:** 2026-08-12 (WORK fire) · **Status:** recent-N half of (b) shipped 8/12; **(c) on-demand retrieval shipped 8/14** (see the 2026-08-14 section); the *summary* half of (b) is still not built
 
 Sits under `docs/plans/composition-continuity-gap-2026-07-19.md` item **#3**, and implements the strategy xian approved on 2026-08-12 (relayed by Janus in `docs/mail/janus-to-daedalus-cc-team-xian-approves-compaction-option-b-2026-08-12.md`): **option (b) recent-N + summary, with (c) on-demand deep retrieval layered on**, sized in `docs/plans/continuity-3-compaction-sizing-2026-08-10.md`.
 
@@ -68,7 +68,7 @@ So the per-agent numbers in the table above are what the seed becomes **after ba
 ## Not built — the rest of #3
 
 1. **The summary half of (b).** Recent-N is the floor; a summary of the remainder is the other half of what xian approved. It needs three things this increment deliberately did not invent: where a summary is stored (per entity? per entity-channel pair?), what triggers generation (klatch entry? a message-count watermark? background?), and what invalidates it. Each is a real design question and each is cheap to get wrong in a way that shows up as a stale agent rather than a broken one. The footer currently tells the agent the slice is bounded and to say so if it needs something absent — that is the honest placeholder, not a substitute.
-2. **(c), on-demand deep retrieval.** The same `getEntityTranscript` behind a tool, unbounded, called when the agent decides it needs specifics. The sizing doc already establishes the function is shared, so this is a tool definition plus the retrieval policy, not new assembly.
+2. ~~**(c), on-demand deep retrieval.**~~ **SHIPPED 2026-08-14 (Round 50)** — see the 2026-08-14 section below. The estimate here held (a tool definition plus a retrieval policy, no new assembly) with one correction: "unbounded" did not survive contact with the corpus measurements, and the shipped tool is bounded per message and per result. Original text preserved: *The same `getEntityTranscript` behind a tool, unbounded, called when the agent decides it needs specifics.*
 3. **Bidirectionality** (klatch → 1-1). Unanswered; out of scope by that fact.
 
 ## Not proven by this fire
@@ -370,3 +370,126 @@ panel seats and the roundtable seat); disabling the replay lookup fails 2. One o
 while proving it: the roundtable test's first version subscribed via a `setInterval` watcher that
 never gets a turn against the mock, so its wire assertions were passing by never running. Rewritten
 to intercept `activeStreams.set`, with an explicit assertion that both seats were in fact observed.
+
+---
+
+# 2026-08-14 (WORK fire) — option (c), on-demand deep retrieval
+
+Round 50. The queued item at the top of my list since 8/12: the other half of what xian approved.
+
+Layer 6 is the floor and is deliberately shallow — the 20 most recent messages from an agent's
+other conversations. Its own footer has conceded the gap since it shipped: *"there is more than
+this… say so rather than assuming it did not happen."* That sentence was the honest placeholder for
+a retrieval path that did not exist. This is that path.
+
+`packages/server/src/claude/recall.ts` — a tool, `search_my_other_conversations`, that runs the same
+`getEntityTranscript` union layer 6 reads, filtered by keyword and unbounded by the recent-N window.
+
+## The four decisions
+
+**1. It is offered exactly when layer 6 is present, and that is one condition, not two.**
+Both callers gate on `buildCarriedContextBlock` returning a value. Two consequences, each stated
+rather than left emergent: in a 1-1 the tool is **absent**, because recall reaching back into klatch
+content from a 1-1 is bidirectionality (gap doc open question 2, unanswered) and offering it there
+would ship the undecided direction through the side door; and an entity with nothing elsewhere never
+sees it, so a fresh agent cannot spend a tool round discovering it has no history.
+
+That equivalence is what lets the block footer name the tool **unconditionally** — the footer now
+says which tool to call rather than "say so". `RECALL_TOOL_NAME` lives in `carried-context.ts` and is
+imported by `recall.ts` precisely so the advertisement and the definition are one string: a rename
+that split them would produce a prompt instructing the agent to call something that does not exist,
+with no type error, no test failure, and no symptom beyond an agent that occasionally says it tried
+to look and could not. The invariant is pinned in both directions by tests, not by convention.
+
+**2. It is not unbounded, and the plan doc said it would be.** The earlier description of (c) was
+"the same `getEntityTranscript` behind a tool, unbounded". The same measurement that set layer 6's
+per-message cap applies here unchanged: the largest real message in the March corpus is **64,627
+chars**, more than twice layer 6's *entire* block budget. An unbounded recall that matched that
+message would return it alone. So the same 4,000-char per-message cap applies, plus a 12,000-char
+result budget (half the seed's) and a hard `limit` ceiling of 30 rows, since `limit` is
+model-supplied and is the only thing between a hallucinated `limit: 500` and a 500-row read.
+"Unbounded" was always shorthand for *not bounded by the recent-N window*, which this honours:
+recall reaches the whole transcript, it just does not return all of it at once.
+
+**Cost ceiling, stated rather than capped further:** `MAX_TOOL_ROUNDS` is 5, so a turn can spend at
+most ~60,000 chars (~15K tokens) on recall, on top of the 24,000-char seed. That is the worst case
+and it is inside a 200K window. A per-turn recall budget is machinery this does not need yet.
+
+**3. Matching is literal, ANDed, and the crudeness is disclosed to the model rather than hidden.**
+SQLite `LIKE`, tokens ANDed, case-insensitive. Not FTS5: **Step 11 (Search) owns a real index**, and
+adding a virtual table here would be a schema commitment made in passing. Three things follow, and
+two of them were design changes forced by thinking the failure through rather than by a test:
+
+- **Wildcards are escaped.** `%` and `_` are `LIKE` metacharacters and the query is model-supplied,
+  so an unescaped `_` is "any character" and matches things the agent did not ask for. A wildcard
+  match is indistinguishable from a real hit at the point where it matters.
+- **A stopword list is load-bearing, not tidying.** Terms are ANDed, so `"what was the codeword you
+  gave me"` would require all six words in one message — and the message holding the answer contains
+  two. The search returns nothing and the agent reports that it looked and found nothing, which is
+  the precise failure this increment exists to remove. The list is deliberately conservative:
+  function words and the vocabulary of *asking* only. Content-ish words (`gave`, `mentioned`) are
+  **left in**, because wrongly dropping one silently widens the result set, and a search that quietly
+  matches more than it was asked for is harder to notice than one that matches less.
+- **So a miss on a multi-term query is ambiguous, and says so.** When the AND returns nothing and
+  there was more than one term, the result tells the model all N terms had to appear in the same
+  message and to retry with the distinctive ones. Ranked partial matching is the better answer and
+  it belongs with Step 11. This is the smallest thing that does not mislead.
+
+Every no-match result also carries the line the whole feature turns on: *a miss here is not evidence
+the thing did not happen.*
+
+**4. Scope is the entity, and it is a property of the query rather than a filter.**
+`getEntityTranscript(entity.id, …)` is the same membership-based union layer 6 reads, so an agent
+reaches what it said and what was said to it, and nothing from a room it was never in. The current
+room is excluded — its history is already in front of the agent. In a roundtable the scope is built
+**per seat inside the loop**, for the same reason the block is: hoisting it would let one agent's
+recall read another's transcript. Pinned by a test that fails when the scope is hoisted to seat 1.
+
+## What (c) costs that (b) does not, and the compensation
+
+Theseus's argument for (b) was determinism: read the assembled prompt and you can tell whether the
+agent was *given* a fact, so a probe can distinguish "didn't know" from "knew and didn't use". A tool
+call breaks that — the material arrives mid-turn and leaves no trace in the system prompt.
+
+`createToolUseArtifact` is the compensation, and it exposed a gap that predates this round.
+`tool_use` has been in `ArtifactType` since the import work and `ArtifactList` has rendered it since
+(`MessageList.tsx:99`) — but **the only writers were the two import parsers**. A tool called *live*
+emitted an SSE event and nothing else, so the card vanished on reload, and `getChannelStats`' tool
+breakdown (`queries.ts:149`) counted imported tool calls and none of Klatch's own. Every recall now
+writes a row carrying the query. It is a weaker instrument than reading the prompt, and that is
+stated rather than glossed.
+
+Deliberately **not** extended to `save_file` in this round: that would add a tool card to every
+file-producing turn, which is a change to a surface Iris owns and there is no ruling on it. Routed to
+her rather than decided here.
+
+## Verification
+
+`npm test` **1297 server (+31) / 226 client, exit 0**; `npm run typecheck` clean ×3 workspaces;
+`npm run build` green. Tests: `packages/server/src/__tests__/round50-recall-tool.test.ts` (31).
+
+**Failing direction proven for all six load-bearing pieces**, not just applied — six independent
+reverts applied together, one run, 8 failures landing exactly on the disjoint expected sets:
+`LIKE` escaping (1), stopword filtering (2), the tool offer (2), room exclusion (1), the artifact
+write (1), per-seat scope (1). Restored and re-verified green.
+
+## Not proven by this fire
+
+**No live call.** Every test mocks the Anthropic client, so what is verified is that the tool is
+offered on the right condition, executed with the right scope, bounded, recorded, and fed back into
+the same turn — **not that a model reaches for it when the seed is insufficient**. That is the
+behavioural question and it is the natural probe: put a fact in a 1-1, bury it under >20 messages so
+layer 6 cannot carry it, then ask for it in the klatch. Under (b) alone that question is
+unanswerable; the point of (c) is that it should now be answerable, and nothing here shows it is.
+
+Second unmeasured risk in the opposite direction: an agent that calls recall *instead of* reading the
+seed already in its prompt, spending a tool round to retrieve what it was handed. The tool
+description says the current room is not searched; whether that is enough is a live question.
+
+## Unchanged and still with xian: backfill
+
+Gap doc open question 3. All 72 imported channels still bind to `default-entity`, so for that entity
+"my other conversations" is every imported conversation at once. Recall does not fix that and
+**widens the blast radius**: layer 6 gave a mixed identity's 20 recent messages, and recall lets the
+same mixed identity search all of it. The mechanism is correct and is correctly searching the wrong
+thing until the imports bind to real entities.

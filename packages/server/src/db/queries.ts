@@ -571,39 +571,40 @@ export interface EntityTranscriptOptions {
   limit?: number;
   /** Restrict to these channel types (e.g. only the agent's own 1-1s). */
   types?: ChannelType[];
+  /**
+   * Keyword filter — every token must appear somewhere in the message content.
+   *
+   * Substring matching, ANDed, case-insensitive (SQLite `LIKE` is
+   * case-insensitive for ASCII). Deliberately *not* semantic search and not
+   * FTS5: Step 11 (Search) is the increment that owns a real index, and adding
+   * an FTS virtual table here would be a schema commitment made in passing.
+   * Callers that surface this to a model must say plainly that it matches
+   * literal words, or the model will phrase a sentence and read the empty
+   * result as evidence the thing never happened.
+   *
+   * Tokens are escaped before interpolation — a query containing `%` or `_`
+   * matches those characters literally rather than acting as a wildcard.
+   */
+  search?: string[];
+}
+
+/** `LIKE`-safe form of a user/model-supplied token. */
+function escapeLike(token: string): string {
+  return token.replace(/[\\%_]/g, (ch) => `\\${ch}`);
 }
 
 /**
- * The entity-scoped assembly path — an agent's own transcript, unioned across
- * every channel it's in and interleaved chronologically.
+ * The WHERE clause shared by every entity-transcript read.
  *
- * **This is the query the continuity work was missing.** History has always
- * been assembled per channel (`getMessages` → `WHERE channel_id = ?`), which is
- * why an agent walking into a klatch arrived knowing nothing: there was no way
- * to ask "what does *this agent* know". Note what this is not: no schema
- * change, no data migration, no second store. The rows already carry both
- * `channel_id` and `entity_id`; only the assembly was single-channel. That is
- * the whole of "assembly inversion, not storage inversion".
- *
- * Every row is provenance-marked with its channel, because a carried message
- * is only intelligible if you know which room it was said in — and because a
- * future visibility rule (private channels, deferred 2026-08-10) would filter
- * here. Keeping this the single assembly path is what makes that a filter
- * rather than a refactor.
- *
- * Ordering matches `getMessages` (`created_at`, `rowid` tiebreak) so a
- * single-channel slice of this is byte-identical to that channel's own history.
- *
- * NOT yet wired into `buildSystemPrompt` — that is increment #3 proper and is
- * gated on the compaction-strategy decision (summary / recent-N+summary /
- * on-demand tool), which is still open with xian. All three options need this
- * union underneath them, so it is built first and independently.
+ * Extracted so `getEntityTranscript` and `countEntityTranscript` cannot drift:
+ * a count that answers a different question from the rows it is counting is
+ * worse than no count, because it reads as authoritative.
  */
-export function getEntityTranscript(
+function entityTranscriptWhere(
   entityId: string,
-  options: EntityTranscriptOptions = {}
-): TranscriptMessage[] {
-  const { excludeChannelId, limit, types } = options;
+  options: EntityTranscriptOptions
+): { where: string; params: unknown[] } {
+  const { excludeChannelId, types, search } = options;
 
   // An entity's transcript is its own utterances PLUS what was said to it.
   //
@@ -637,6 +638,46 @@ export function getEntityTranscript(
     clauses.push(`c.type IN (${types.map(() => '?').join(', ')})`);
     params.push(...types);
   }
+  for (const token of search || []) {
+    clauses.push(`m.content LIKE ? ESCAPE '\\'`);
+    params.push(`%${escapeLike(token)}%`);
+  }
+
+  return { where: clauses.join(' AND '), params };
+}
+
+/**
+ * The entity-scoped assembly path — an agent's own transcript, unioned across
+ * every channel it's in and interleaved chronologically.
+ *
+ * **This is the query the continuity work was missing.** History has always
+ * been assembled per channel (`getMessages` → `WHERE channel_id = ?`), which is
+ * why an agent walking into a klatch arrived knowing nothing: there was no way
+ * to ask "what does *this agent* know". Note what this is not: no schema
+ * change, no data migration, no second store. The rows already carry both
+ * `channel_id` and `entity_id`; only the assembly was single-channel. That is
+ * the whole of "assembly inversion, not storage inversion".
+ *
+ * Every row is provenance-marked with its channel, because a carried message
+ * is only intelligible if you know which room it was said in — and because a
+ * future visibility rule (private channels, deferred 2026-08-10) would filter
+ * here. Keeping this the single assembly path is what makes that a filter
+ * rather than a refactor.
+ *
+ * Ordering matches `getMessages` (`created_at`, `rowid` tiebreak) so a
+ * single-channel slice of this is byte-identical to that channel's own history.
+ *
+ * NOT yet wired into `buildSystemPrompt` — that is increment #3 proper and is
+ * gated on the compaction-strategy decision (summary / recent-N+summary /
+ * on-demand tool), which is still open with xian. All three options need this
+ * union underneath them, so it is built first and independently.
+ */
+export function getEntityTranscript(
+  entityId: string,
+  options: EntityTranscriptOptions = {}
+): TranscriptMessage[] {
+  const { limit } = options;
+  const { where, params } = entityTranscriptWhere(entityId, options);
 
   // Newest-first with LIMIT, then reversed — so a limit takes the most RECENT
   // N messages. Ordering ASC + LIMIT would take the oldest N, which is the
@@ -645,7 +686,7 @@ export function getEntityTranscript(
     SELECT m.*, c.name AS channel_name, c.type AS channel_type, c.source AS channel_source
     FROM messages m
     JOIN channels c ON c.id = m.channel_id
-    WHERE ${clauses.join(' AND ')}
+    WHERE ${where}
     ORDER BY m.created_at DESC, m.rowid DESC
     ${limit ? 'LIMIT ?' : ''}
   `;
@@ -661,6 +702,33 @@ export function getEntityTranscript(
       channelType: (row.channel_type as ChannelType) || 'chat',
       channelSource: (row.channel_source as ChannelSource) || 'native',
     }));
+}
+
+/**
+ * How many rows `getEntityTranscript` would match, ignoring `limit`.
+ *
+ * Exists for the on-demand recall tool (continuity #3, option (c)): a retrieval
+ * that shows the 10 most recent of 47 matches and says only "here are 10" lets
+ * the agent conclude it has seen everything. The count is what makes the
+ * truncation honest, and it is a real `COUNT(*)` rather than a
+ * fetch-one-past-the-limit probe because "at least 11" is not the sentence the
+ * agent needs. Shares `entityTranscriptWhere` with the row query by
+ * construction, so the two cannot answer different questions.
+ */
+export function countEntityTranscript(
+  entityId: string,
+  options: EntityTranscriptOptions = {}
+): number {
+  const { where, params } = entityTranscriptWhere(entityId, options);
+  const row = getDb()
+    .prepare(
+      `SELECT COUNT(*) AS n
+       FROM messages m
+       JOIN channels c ON c.id = m.channel_id
+       WHERE ${where}`
+    )
+    .get(...params) as { n: number };
+  return row.n;
 }
 
 // ── Project CRUD ──────────────────────────────────────────────
@@ -1045,6 +1113,41 @@ export function createCarriedContextArtifact(
      VALUES (?, ?, 'carried_context', NULL, ?, ?, ?)`
   ).run(id, messageId, inputSummary, content, now);
   return { id, messageId, type: 'carried_context', inputSummary, content, createdAt: now };
+}
+
+/**
+ * Record that a turn called a tool.
+ *
+ * **Why this did not exist until now.** `tool_use` has been in `ArtifactType`
+ * since the import work and `ArtifactList` has rendered it since
+ * (`MessageList.tsx:99`) — but the only writers were the two import parsers.
+ * A tool called *live* emitted an SSE `tool_use` event and nothing else, so the
+ * card vanished on reload and `getChannelStats`' tool breakdown
+ * (`queries.ts:149`) counted imported tool calls and none of Klatch's own.
+ *
+ * **Why it exists now.** Continuity #3's on-demand recall (option (c)) is the
+ * first tool whose *having been called* is itself a fact about the answer: the
+ * determinism Theseus argued option (b) for — read the prompt, know what the
+ * agent was given — does not hold for material fetched mid-turn. Without a row,
+ * a recall is unauditable the moment the stream ends. Storing the query in
+ * `inputSummary` keeps that legible to the human and to a probe.
+ *
+ * `input_summary` is the agent's own search terms, not carried content — no
+ * message text from another conversation is stored here, so Iris's
+ * existence-not-content rule for the carried-context chip is not bent by it.
+ */
+export function createToolUseArtifact(
+  messageId: string,
+  toolName: string,
+  inputSummary: string
+): MessageArtifact {
+  const id = uuidv4();
+  const now = new Date().toISOString();
+  getDb().prepare(
+    `INSERT INTO message_artifacts (id, message_id, type, tool_name, input_summary, created_at)
+     VALUES (?, ?, 'tool_use', ?, ?, ?)`
+  ).run(id, messageId, toolName, inputSummary, now);
+  return { id, messageId, type: 'tool_use', toolName, inputSummary, createdAt: now };
 }
 
 /** Get all file artifacts for a list of message IDs (batch query for context injection) */

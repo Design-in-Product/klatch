@@ -38,6 +38,24 @@ import { getEntityTranscript, type TranscriptMessage } from '../db/queries.js';
 export const CARRIED_CONTEXT_MAX_MESSAGES = 20;
 
 /**
+ * Name of the on-demand recall tool (continuity #3, option (c)) — declared here
+ * rather than in `recall.ts` on purpose.
+ *
+ * The block footer *advertises* the tool to the model by name. If the
+ * advertisement and the definition were separate literals, a rename would
+ * produce a prompt that instructs the agent to call something that does not
+ * exist — a failure with no type error, no test failure, and no symptom beyond
+ * an agent that occasionally says it tried to look and could not. `recall.ts`
+ * imports this constant and re-exports it, so there is one string.
+ *
+ * The tool is offered exactly when this block is present — both are gated on
+ * `buildCarriedContextBlock` returning a value (`client.ts`). That invariant is
+ * what lets the footer name the tool unconditionally, and it is pinned by a
+ * test rather than left as a convention.
+ */
+export const RECALL_TOOL_NAME = 'search_my_other_conversations';
+
+/**
  * Hard ceiling on the assembled block. Normally slack — the measured 20-message
  * tails all fit under it, so the message count is what binds and the cost stays
  * predictable. This exists for the tail: it is what stops an unusually verbose
@@ -228,7 +246,16 @@ export interface CarriedContextBlock {
   hasOlderHistory: boolean;
 }
 
-function formatLine(msg: TranscriptMessage, entityName: string, maxMessageChars: number): string {
+/**
+ * One provenance-marked transcript line.
+ *
+ * Exported because the on-demand recall tool (`recall.ts`) renders the same
+ * rows from the same query and must render them identically — an agent that
+ * sees `[room · date] name: …` in layer 6 and a different shape in a tool
+ * result has to work out that they are the same kind of thing. One formatter,
+ * two readers.
+ */
+export function formatTranscriptLine(msg: TranscriptMessage, entityName: string, maxMessageChars: number): string {
   const speaker = msg.role === 'assistant' ? entityName : 'user';
   const day = (msg.originalTimestamp || msg.createdAt || '').slice(0, 10);
   const where = day ? `${msg.channelName} · ${day}` : msg.channelName;
@@ -297,7 +324,7 @@ export function buildCarriedContextBlock(
   const kept: { line: string; roomId: string }[] = [];
   let used = 0;
   for (let i = recent.length - 1; i >= 0; i--) {
-    const line = formatLine(recent[i], entity.name, maxMessageChars);
+    const line = formatTranscriptLine(recent[i], entity.name, maxMessageChars);
     if (used + line.length > maxChars && kept.length > 0) break;
     kept.push({ line, roomId: recent[i].channelId });
     used += line.length;
@@ -334,7 +361,9 @@ export function buildCarriedContextBlock(
     `message(s) from ${rooms.length} other conversation(s)` +
     (omitted > 0 ? `, with ${omitted} more dropped to stay within budget` : '') +
     '. There is more than this. If you need something specific that is not here, ' +
-    'say so rather than assuming it did not happen.\n\n' +
+    `use the \`${RECALL_TOOL_NAME}\` tool to search the rest of your own history ` +
+    'rather than assuming it did not happen — and say so if you still cannot ' +
+    'find it.\n\n' +
     LOSSY_WINDOW_NOTICE;
 
   return {
