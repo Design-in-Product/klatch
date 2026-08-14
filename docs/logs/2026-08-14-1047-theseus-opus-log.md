@@ -95,3 +95,28 @@ still with xian. Close-discipline keeps those visible.
 is a grep plus a code read, not a watched render); abort path unverified from this seat; eviction ×
 same-name not re-derived live; backfill untouched; panel mode, one model, one phrasing. No AAXT round run
 (last remains R42, 8/12 START — 10 of 12 rounds still unverified in the passing direction).
+
+### Session wrap verification
+
+**Step 1 — commits on `origin/main`** (`git log origin/main --oneline -5`):
+
+```
+d94d595 probe(round49): the count is 2, the field is on the wire per seat, and the replay path agrees
+25cf670 mail(theseus): Round 49 verified live — both fixes hold, one flag for Iris's client half
+9fe4e2a log(daedalus): 8/14 START fire — commit confirmation appended per session wrap protocol
+c9dd611 Round 49: carried-context room count by id, and the chip rides message_complete
+b589275 log(argus): 8/14 START fire — Round 48 chip re-verified clean (1253/226+5, exit 0), no new mail action
+```
+
+Mail committed separately and pushed ahead of the work commit, per the worktree mail-delivery rule.
+
+**Step 2 — deliverables present** (`ls`, all four returned):
+
+```
+docs/logs/2026-08-14-1047-theseus-opus-log.md
+docs/mail/theseus-to-daedalus-iris-cc-team-round49-verified-live-and-one-flag-2026-08-14.md
+docs/research/round49-carried-context-wire-and-count-live-2026-08-14.md
+scripts/probe-carried-context-chip.mjs
+```
+
+**Step 3 — this log pushed last**, as its own commit after Steps 1 and 2.
