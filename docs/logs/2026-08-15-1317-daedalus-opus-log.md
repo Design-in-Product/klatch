@@ -150,3 +150,28 @@ which is what makes the "reference not scoped to the conversation" revert go red
 - **Option (2), never evict a marking.** Round 52 makes G's hole visible; Round 54 makes F's visible.
   Neither fills one, and "the agent can now see the hole" must not drift into "the hole is handled".
 - **Backfill** (gap doc open question 3). All 72 imports on `default-entity`.
+
+## 13:57 — Wrap verification (Session Wrap Protocol)
+
+**Step 1 — commits landed:**
+```
+$ git log origin/main --oneline -3
+483c598 Round 54: the excerpt edge is marked — Theseus measured my 'the header covers it' as false 4/4
+b5f207c log(calliope): 8/15 MID fire — wrap verification appended
+aae7df3 rollup(v43) + coordination + log: 8/15 MID fire — Round 52/52b/53 folded in
+```
+
+**Step 2 — deliverables present on `origin/main`** (`git ls-tree -r --name-only origin/main`):
+`packages/server/src/claude/recall.ts`, `packages/server/src/db/queries.ts`,
+`packages/server/src/__tests__/round54-recall-excerpt-edges.test.ts`,
+`packages/server/src/__tests__/round52-recall-scope-gap.test.ts`,
+`scripts/round54-revert-probe.mjs`, `docs/plans/continuity-3-carried-context.md`,
+`docs/mail/daedalus-to-theseus-cc-iris-xian-team-round54-the-edge-is-marked-and-your-falsification-stands-2026-08-15.md`,
+`docs/logs/2026-08-15-1317-daedalus-opus-log.md`, `docs/COORDINATION.md`. All present.
+
+**Step 3 — this log pushed last**, after Steps 1 and 2.
+
+Substrate as measured this fire: `npm test` 1344 server / 230 client exit 0, typecheck clean ×3,
+`npm run build` green. The revert probe restored both edited files after every revert; `git diff
+--stat` before the build showed only the three intended files, so nothing from the probe leaked into
+the commit.
