@@ -643,3 +643,104 @@ restriction lands further away than that, and the answer is not in this repo's c
   differently rather than merely separated, and her ruling on `save_file` artifact cards given
   recall's measured **2.2 cards per turn** (28 artifacts across 13 assistant messages — the agent
   retries, so the card count is not one per turn).
+
+---
+
+# 2026-08-15 — Round 52: the excerpt stops hiding what scope removed
+
+Theseus drove Round 51 live on 8/14 (`docs/research/round51-neighbourhood-retrieval-live-2026-08-14.md`,
+11 klatch turns, 22 recall calls). The radius does what it was built to do — **arm E goes 0/3 → 3/3
+withheld**, and his instrumentation scores each query twice (what it *matched* vs what the
+*neighbourhood* returned) so "the radius carried it" is distinguishable from "the query found it".
+All three E runs read `in matches false / in neighbourhood true`. Not a null result.
+
+The same run surfaced a defect he ranked above everything else in the memo, and it is **structural
+rather than probabilistic** — which is why it is a round rather than a note.
+
+## The defect
+
+`seq` is `ROW_NUMBER` over the **scoped** set (`queries.ts`). `groupIntoExcerpts` splits on
+non-contiguous `ordinal`. The header promises "separate excerpts are divided by `---`". All three are
+correct about the scoped set and **none is correct about the room**: a row removed by scope is not a
+gap in the ordinals, because the numbering closes over it. No `---`, no marker, no trace.
+
+Measured off the rows, arm G's neighbourhood:
+
+```
+[seq 1] user       "…the rollback codeword for the Larkspur deployment is ochre-marlin-44…"
+[seq 2] assistant  "Confirmed. Noted."
+[seq 3] assistant  "Understood."          ← acknowledges a message the agent cannot see
+```
+
+Rendered as one continuous exchange, because 1-2-3 *are* contiguous. In the room, the other agent's
+restriction sits between rows 2 and 3. So the tool hands the agent a bare "Understood." presented as
+the turn immediately after its own "Confirmed. Noted." — an acknowledgement with its antecedent
+silently deleted, in a shape that asserts adjacency.
+
+**This is every klatch in the corpus**, not an arm-G artifact. Any recall excerpt from a multi-agent
+room drops the other participants and renders the remainder as contiguous prose. It is also the
+first scope-driven omission that ever had to *render*, so nothing before Round 51 could have exposed
+it — the flat search returned isolated matches that claimed no adjacency at all.
+
+## What changed
+
+**`rawOrdinal` on `NeighbourhoodMessage`.** The same position counted over the channel's *whole*
+message list, from a `raw` CTE restricted to the channels `scoped` touched (without the restriction
+this windows the entire `messages` table, and raw positions are only ever needed for rows about to
+be rendered). A jump in `ordinal` is **distance** — turns outside the radius. A jump in `rawOrdinal`
+alone is **scope** — turns this entity may not read. Both need to be visible; only the first was.
+
+**`renderExcerpt` marks interior deletions in place.** Three judgements, each a way it could have
+gone quietly wrong:
+
+1. **Marked, not split.** A scope gap leaves `ordinal` contiguous and it should: those rows really
+   *were* consecutive in what this agent could see. Rendering `---` would say "two separate stretches
+   of conversation" about one stretch with pieces withheld — a different false claim, not a fix.
+2. **Interior only.** A turn before the first row or after the last is outside the radius, which the
+   header already accounts for ("Nothing outside these excerpts was read"). Marking it too would make
+   the marker mean two things.
+3. **It does not say who spoke them.** Practically these are other agents' turns. The only thing true
+   by construction is that the rows failed the entity-transcript predicate, and this line is read by
+   a model that reasons confidently from whatever it is told — so it states the property the query
+   establishes and no more.
+
+**The header sentence is conditional** on a marker actually surviving the char budget. An
+unconditional one would train the agent to look for a line that is usually absent, and an excerpt the
+budget drops contributes no line to explain.
+
+## What this does not change
+
+**The retrieval policy.** An agent still cannot read a message it was not party to. Theseus's
+stronger reading, verified in the source rather than taken from my memo: `entityTranscriptWhere`
+scopes to `m.entity_id = ?` or a user row in a member channel, so a second agent's assistant row is
+never a *neighbour* **and never a match, at any radius, for any query**. It is unreachable by
+construction, not merely un-neighboured. This round makes the *hole* visible; it does not fill it.
+
+Letting an agent read another agent's messages is a retrieval-policy change with a far bigger blast
+radius than anything in this thread, and it is not being made here.
+
+## Not proven by this fire
+
+**No live call.** Every test mocks the SDK. Verified: the raw ordinal is computed per conversation
+over the unscoped list, the marker lands between exactly the rows that had turns removed, the count
+is right, edges and single-participant conversations gain nothing. **Not verified:** that an agent
+handed a marked excerpt behaves differently. Every prior measurement on this project says a sentence
+changes a failure's *shape* and not its *rate* — three independent instances now — so the prior
+should be that this does not stop arm G's disclosure either. It is labelling, and the reason to ship
+labelling is the same as for `LOSSY_WINDOW_NOTICE`: an affirmatively-wrong claim about what a source
+thread contained is worse than a hedge.
+
+Arm F is untouched and out of scope. Its marking is 4 rows away — outside the radius, so no marker
+applies; it is a distance gap between excerpts, already rendered as `---`. F's 3/3 confident false
+negative is a case for option (2), not for this rendering.
+
+## Still open after this fire
+
+- **Option (2), never evict a marking — with xian.** Theseus's 8/14 run prices it: the residual is
+  now two disjoint measured shapes, a marking outside the radius (F) and a marking spoken by anyone
+  but the owner in a shared room (G). Detecting a marking is the only thing that covers both, and the
+  only thing that covers G at all, since G's problem is scope rather than distance.
+- **Backfill** (gap doc open question 3), still with xian. All 72 imports on `default-entity`.
+- **Recall's `tool_use` artifacts do not ride the wire** — Theseus measured 3 artifacts per recall
+  turn (1 `carried_context` + 2 `tool_use`) with only `carriedContext` on `message_complete`, so a
+  live turn renders 1 of 3 and reload renders 3 of 3. Ruled and sequenced 8/15; see the memo to Iris.
