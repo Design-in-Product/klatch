@@ -687,6 +687,54 @@ async function streamClaudeCore(
     ? { carriedContext: options.carriedContext }
     : {};
 
+  // Text from two tool rounds is one message, and needs a boundary between the
+  // rounds that the *stream* also carries.
+  //
+  // Before this, `fullContent += text` ran the rounds straight together:
+  // "I'll check my other threads." followed by "`ochre-marlin-44`" was stored and
+  // rendered as one run-on line. `save_file` could always have produced this and
+  // it stayed rare, because models don't narrate before writing a file. They do
+  // narrate before a lookup, so Round 50 turned it into the common case —
+  // Theseus measured it in 8 of 13 replies
+  // (`theseus-to-daedalus-cc-iris-team-recall-probe-...-2026-08-14.md`).
+  //
+  // Three judgements, recorded because Theseus flagged that the fix had them:
+  //
+  // 1. Insert a separator rather than suppress the pre-tool narration. The
+  //    narration is the model's own output and is often the only thing telling
+  //    the reader why the turn paused; suppressing it is a display decision on
+  //    Iris's surface, not a data one on mine.
+  // 2. `\n\n`, not `\n`. The client renders markdown (`MarkdownContent.tsx`),
+  //    where a single newline is a space — the two rounds would still read as
+  //    one paragraph, which is the defect.
+  // 3. Emitted as part of the delta, not appended to `fullContent` alone. The
+  //    client accumulates `text_delta` optimistically and only refetches on
+  //    channel mount, so a separator the stream didn't carry would appear on
+  //    reload and not during the turn — the live-vs-reload split the
+  //    carried-context chip had, reintroduced one layer down.
+  //
+  // Applied lazily, on the first text of the next round rather than at the end
+  // of the last, so a round that produces no text leaves no trailing blank line.
+  let pendingRoundSeparator = false;
+
+  const appendText = (text: string) => {
+    let chunk = text;
+    if (pendingRoundSeparator) {
+      pendingRoundSeparator = false;
+      // Never stack: a round that already ended on a blank line needs nothing,
+      // and one that ended on a single newline needs one more.
+      if (fullContent.length > 0 && !fullContent.endsWith('\n\n')) {
+        chunk = (fullContent.endsWith('\n') ? '\n' : '\n\n') + text;
+      }
+    }
+    fullContent += chunk;
+    emitter.emit('data', {
+      type: 'text_delta',
+      messageId: assistantMessageId,
+      content: chunk,
+    });
+  };
+
   try {
     const model = entity.model || DEFAULT_MODEL;
     // Mutable copy of history for tool-use continuation
@@ -721,14 +769,10 @@ async function streamClaudeCore(
 
         activeAnthropicStreams.set(assistantMessageId, stream);
 
-        stream.on('text', (text: string) => {
-          fullContent += text;
-          emitter.emit('data', {
-            type: 'text_delta',
-            messageId: assistantMessageId,
-            content: text,
-          });
-        });
+        // Shared handler, not a copy per branch: the round-separator state lives
+        // in one place, so the compaction and non-compaction paths cannot drift
+        // into producing differently-punctuated messages.
+        stream.on('text', appendText);
 
         stream.on('compaction', (compactedContent: string) => {
           compactionSummary = compactedContent;
@@ -749,14 +793,10 @@ async function streamClaudeCore(
 
         activeAnthropicStreams.set(assistantMessageId, stream);
 
-        stream.on('text', (text: string) => {
-          fullContent += text;
-          emitter.emit('data', {
-            type: 'text_delta',
-            messageId: assistantMessageId,
-            content: text,
-          });
-        });
+        // Shared handler, not a copy per branch: the round-separator state lives
+        // in one place, so the compaction and non-compaction paths cannot drift
+        // into producing differently-punctuated messages.
+        stream.on('text', appendText);
 
         finalMessage = await stream.finalMessage();
       }
@@ -805,6 +845,11 @@ async function streamClaudeCore(
           role: 'user',
           content: toolResults,
         });
+
+        // The model is about to speak again inside the same message. Whatever it
+        // said before the tool call and whatever it says after are separate
+        // paragraphs, not one sentence. See `appendText`.
+        pendingRoundSeparator = true;
 
         // Continue the loop — next iteration will stream the model's follow-up
         continue;

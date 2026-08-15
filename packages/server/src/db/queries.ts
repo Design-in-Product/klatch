@@ -594,6 +594,28 @@ function escapeLike(token: string): string {
 }
 
 /**
+ * The ANDed keyword clauses, over whichever column holds the content.
+ *
+ * Extracted because the neighbourhood query applies them to a CTE (where the
+ * column is unqualified `content`) while the flat query applies them to the
+ * joined `messages m`. Two hand-written copies would be two definitions of what
+ * "matches" means, and the neighbourhood query's whole purpose is that its
+ * matches are the same matches.
+ */
+function searchClauses(
+  search: string[] | undefined,
+  column: string
+): { clauses: string[]; params: unknown[] } {
+  const clauses: string[] = [];
+  const params: unknown[] = [];
+  for (const token of search || []) {
+    clauses.push(`${column} LIKE ? ESCAPE '\\'`);
+    params.push(`%${escapeLike(token)}%`);
+  }
+  return { clauses, params };
+}
+
+/**
  * The WHERE clause shared by every entity-transcript read.
  *
  * Extracted so `getEntityTranscript` and `countEntityTranscript` cannot drift:
@@ -638,10 +660,9 @@ function entityTranscriptWhere(
     clauses.push(`c.type IN (${types.map(() => '?').join(', ')})`);
     params.push(...types);
   }
-  for (const token of search || []) {
-    clauses.push(`m.content LIKE ? ESCAPE '\\'`);
-    params.push(`%${escapeLike(token)}%`);
-  }
+  const keyword = searchClauses(search, 'm.content');
+  clauses.push(...keyword.clauses);
+  params.push(...keyword.params);
 
   return { where: clauses.join(' AND '), params };
 }
@@ -729,6 +750,124 @@ export function countEntityTranscript(
     )
     .get(...params) as { n: number };
   return row.n;
+}
+
+/** A transcript row returned by a neighbourhood read, flagged if it matched. */
+export interface NeighbourhoodMessage extends TranscriptMessage {
+  /** True if this row contains every search token; false if it is a neighbour. */
+  isMatch: boolean;
+  /**
+   * Position of this row within its channel's slice of the entity's transcript,
+   * 1-based.
+   *
+   * Returned because the caller cannot otherwise tell two adjacent rows from two
+   * rows either side of a gap, and rendering separate excerpts as one continuous
+   * exchange would invent an adjacency that isn't in the data — the same class
+   * of error as a count that names a conversation the block no longer quotes.
+   */
+  ordinal: number;
+}
+
+/**
+ * Matching messages **plus the messages immediately around them**, chronological.
+ *
+ * Why this exists rather than the flat search: Theseus's 8/14 recall probe
+ * (`docs/research/round50-recall-tool-live-2026-08-14.md`) ran a controlled pair
+ * that differed in exactly one thing — whether an owner's restriction sat in the
+ * same message as the fact (arm D) or in its own turn immediately after (arm E).
+ * D recovered and withheld 2/2; E disclosed 3/3, and **no run issued a query
+ * that could have found the restriction**, because an agent asked for a codeword
+ * searches for the codeword. There is no keyword for "was I told not to share
+ * this." A flat keyword search therefore returns the fact stripped of a
+ * condition stated one turn away, and the agent reads the hit as complete.
+ *
+ * Returning the neighbourhood converts E into D by construction: whatever was
+ * said around the matched message travels with it, keyword or not.
+ *
+ * **What this does not do, stated because the shape invites overclaiming.** It
+ * moves the requirement from *same message* to *same neighbourhood*. A
+ * restriction five turns later is still lost. It is a narrowing of the hole, not
+ * a closing of it — the closing is the never-evict-a-marking policy that is
+ * still deferred with xian.
+ *
+ * **Neighbours are drawn from the entity's own transcript, not from the raw
+ * channel.** `scoped` is the same membership union `getEntityTranscript` reads,
+ * so the retrieval *policy* is unchanged and this is purely a retrieval-shape
+ * change: an agent still cannot reach a message it was never party to. The
+ * consequence, which is a real limit: in a klatch, another agent's message is
+ * not in this entity's transcript and so is never returned as a neighbour.
+ *
+ * `seq` is a per-channel ordinal over that scoped set (`ROW_NUMBER` partitioned
+ * by channel), so "adjacent" means adjacent *as this agent would have seen it* —
+ * not adjacent by wall-clock across interleaved rooms.
+ *
+ * `limit` bounds **matches**, not returned rows: neighbours ride along with the
+ * match they belong to, so a caller asking for 10 matches gets 10
+ * neighbourhoods. A caller passing `neighbourRadius: 0` gets exactly the rows
+ * `getEntityTranscript` would return for the same options, which is the
+ * equivalence the tests pin.
+ */
+export function getEntityTranscriptNeighbourhoods(
+  entityId: string,
+  options: EntityTranscriptOptions & { neighbourRadius?: number } = {}
+): NeighbourhoodMessage[] {
+  const radius = Math.max(0, Math.floor(options.neighbourRadius ?? 0));
+  const { limit, search } = options;
+
+  // Scope clauses only — the keyword clauses are applied inside `hits`, over the
+  // CTE, so that a neighbour can fail the keyword test and still be returned.
+  // Passing `search` here as well would AND it twice and reduce this to the flat
+  // query with extra steps.
+  const scope = entityTranscriptWhere(entityId, {
+    ...(options.excludeChannelId ? { excludeChannelId: options.excludeChannelId } : {}),
+    ...(options.types ? { types: options.types } : {}),
+  });
+  const keyword = searchClauses(search, 'content');
+  const hitWhere = keyword.clauses.length > 0 ? keyword.clauses.join(' AND ') : '1 = 1';
+
+  const sql = `
+    WITH scoped AS (
+      SELECT m.*, m.rowid AS ordinal_rowid,
+             c.name AS channel_name, c.type AS channel_type, c.source AS channel_source,
+             ROW_NUMBER() OVER (
+               PARTITION BY m.channel_id ORDER BY m.created_at, m.rowid
+             ) AS seq
+      FROM messages m
+      JOIN channels c ON c.id = m.channel_id
+      WHERE ${scope.where}
+    ),
+    hits AS (
+      SELECT channel_id, seq FROM scoped
+      WHERE ${hitWhere}
+      ORDER BY created_at DESC, ordinal_rowid DESC
+      ${limit ? 'LIMIT ?' : ''}
+    )
+    SELECT s.*,
+           EXISTS (
+             SELECT 1 FROM hits h WHERE h.channel_id = s.channel_id AND h.seq = s.seq
+           ) AS is_match
+    FROM scoped s
+    WHERE EXISTS (
+      SELECT 1 FROM hits h
+      WHERE h.channel_id = s.channel_id AND s.seq BETWEEN h.seq - ? AND h.seq + ?
+    )
+    ORDER BY s.created_at ASC, s.ordinal_rowid ASC
+  `;
+
+  const params: unknown[] = [...scope.params, ...keyword.params];
+  if (limit) params.push(limit);
+  params.push(radius, radius);
+
+  const rows = getDb().prepare(sql).all(...params) as any[];
+
+  return rows.map((row) => ({
+    ...rowToMessage(row),
+    channelName: row.channel_name,
+    channelType: (row.channel_type as ChannelType) || 'chat',
+    channelSource: (row.channel_source as ChannelSource) || 'native',
+    isMatch: row.is_match === 1,
+    ordinal: row.seq as number,
+  }));
 }
 
 // ── Project CRUD ──────────────────────────────────────────────

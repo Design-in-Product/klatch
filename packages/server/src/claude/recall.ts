@@ -1,5 +1,9 @@
 import type { Channel, Entity } from '@klatch/shared';
-import { countEntityTranscript, getEntityTranscript } from '../db/queries.js';
+import {
+  countEntityTranscript,
+  getEntityTranscriptNeighbourhoods,
+  type NeighbourhoodMessage,
+} from '../db/queries.js';
 import {
   CARRIED_CONTEXT_MAX_MESSAGE_CHARS,
   RECALL_TOOL_NAME,
@@ -74,6 +78,30 @@ export const RECALL_MAX_CHARS = 12_000;
  * actually used so the agent is not told it searched for something it did not.
  */
 const RECALL_MIN_TOKEN_CHARS = 3;
+
+/**
+ * How many messages either side of a match are returned with it.
+ *
+ * **Measured, not chosen for roundness.** Theseus's 8/14 probe
+ * (`docs/research/round50-recall-tool-live-2026-08-14.md`) ran arms D and E,
+ * identical but for whether an owner's restriction sat in the same message as
+ * the fact or in its own turn immediately after: D withheld 2/2, E disclosed
+ * 3/3, and the restriction in E was *reachable by keyword and never reached*,
+ * because an agent asked for a codeword searches for the codeword. In a 1-1 the
+ * restriction lands one or two positions after the message a query hits —
+ * depending on whether the hit is the ask or the answer — so 2 is the smallest
+ * radius that covers the measured case rather than the one it was tuned on.
+ *
+ * It is not a general fix and must not be described as one: a marking five turns
+ * later is still lost. See `getEntityTranscriptNeighbourhoods`.
+ */
+export const RECALL_NEIGHBOUR_RADIUS = 2;
+
+/** Prefix marking a line that actually contained the search terms. */
+const MATCH_MARKER = '▸ ';
+
+/** Separator between excerpts that are not contiguous in the source thread. */
+const EXCERPT_SEPARATOR = '\n\n---\n\n';
 
 /**
  * Function words dropped before matching.
@@ -188,7 +216,11 @@ export function recallFromOtherConversations(
   };
 
   const matchCount = countEntityTranscript(entity.id, options);
-  const rows = getEntityTranscript(entity.id, { ...options, limit });
+  const rows = getEntityTranscriptNeighbourhoods(entity.id, {
+    ...options,
+    limit,
+    neighbourRadius: RECALL_NEIGHBOUR_RADIUS,
+  });
 
   const termList = tokens.map((t) => `"${t}"`).join(' + ');
 
@@ -218,16 +250,48 @@ export function recallFromOtherConversations(
     };
   }
 
-  // Newest-first into the budget so a tight budget drops the *oldest* matches,
-  // then restored to chronological order for reading — the same recency bias
-  // layer 6 applies, for the same reason.
+  // Excerpts newest-first into the budget so a tight budget drops the *oldest*
+  // ones, then restored to chronological order for reading — the same recency
+  // bias layer 6 applies, for the same reason.
+  //
+  // The unit is the excerpt, not the line, and that is the whole point: an
+  // excerpt half-shown could drop exactly the neighbouring turn the radius was
+  // added to carry, which would reproduce the arm-E failure at the budget
+  // boundary instead of at the query.
+  const excerpts = groupIntoExcerpts(rows);
   const kept: string[] = [];
+  let shownMatches = 0;
+  let strippedExcerpts = 0;
   let used = 0;
-  for (let i = rows.length - 1; i >= 0; i--) {
-    const line = formatTranscriptLine(rows[i], entity.name, CARRIED_CONTEXT_MAX_MESSAGE_CHARS);
-    if (used + line.length > RECALL_MAX_CHARS && kept.length > 0) break;
-    kept.push(line);
-    used += line.length;
+
+  for (let i = excerpts.length - 1; i >= 0; i--) {
+    const excerpt = excerpts[i];
+    const lines = excerpt.map((m) => renderLine(m, entity.name));
+    const block = lines.join('\n\n');
+
+    if (used + block.length <= RECALL_MAX_CHARS) {
+      kept.push(block);
+      used += block.length;
+      shownMatches += excerpt.filter((m) => m.isMatch).length;
+      continue;
+    }
+
+    // Nothing kept yet and the newest excerpt alone overruns: fall back to its
+    // match lines only rather than blow the budget. Degrading to the pre-Round-51
+    // shape is the right failure — a match with no context is what the tool used
+    // to return, and a bounded honest result beats an unbounded complete one.
+    if (kept.length === 0) {
+      const matchLines = excerpt.filter((m) => m.isMatch);
+      for (const m of matchLines) {
+        const line = renderLine(m, entity.name);
+        if (used + line.length > RECALL_MAX_CHARS && kept.length > 0) break;
+        kept.push(line);
+        used += line.length;
+        shownMatches += 1;
+      }
+      if (matchLines.length < excerpt.length) strippedExcerpts += 1;
+    }
+    break;
   }
   kept.reverse();
 
@@ -235,22 +299,98 @@ export function recallFromOtherConversations(
   // not about what was fetched. An agent told "10 matches" that can only see 3
   // of them will reason as though it has seen the other seven.
   const parts = [`${matchCount} message(s) in your other conversations match ${termList}.`];
-  if (kept.length < matchCount) {
+  if (shownMatches < matchCount) {
     parts.push(
-      `Showing the ${kept.length} most recent. ${matchCount - kept.length} older ` +
+      `Showing the ${shownMatches} most recent. ${matchCount - shownMatches} older ` +
       `match(es) are not shown — narrow the terms, or ask for a smaller slice of ` +
       `a specific conversation.`
     );
   }
-  parts.push('Each line is marked with the conversation it came from.');
+  // The sentence that says what was *not* read. Theseus's ranked option (3), and
+  // it is here in its specific form rather than as a hedge: with the radius
+  // applied, the tool can state its actual extent instead of warning vaguely
+  // that there might be more. The measured failure it addresses is a *hit* read
+  // as complete — the result said "1 message matches", showed it, and said
+  // nothing about the turns either side, so 3/3 agents treated it as settling
+  // the question.
+  parts.push(
+    `Lines marked ${MATCH_MARKER.trim()} are the matches this result is built around; the ` +
+    `unmarked lines are the turns immediately before and after them, included ` +
+    `because a condition attached to a ` +
+    `fact is often in the next message rather than the same one. Each line names ` +
+    `the conversation it came from, and separate excerpts are divided by ---. ` +
+    `Nothing outside these excerpts was read.`
+  );
+  if (strippedExcerpts > 0) {
+    parts.push(
+      `The surrounding turns were too large to include here, so these matches are ` +
+      `shown alone — ask again with a smaller limit to see them in context.`
+    );
+  }
 
   return {
-    text: `${parts.join(' ')}\n\n${kept.join('\n\n')}`,
+    text: `${parts.join(' ')}\n\n${kept.join(EXCERPT_SEPARATOR)}`,
     isError: false,
     matchCount,
-    shownCount: kept.length,
+    shownCount: shownMatches,
     tokens,
   };
+}
+
+/** A matched line, marked; a neighbour, unmarked and indented to the same width. */
+function renderLine(msg: NeighbourhoodMessage, entityName: string): string {
+  const line = formatTranscriptLine(msg, entityName, CARRIED_CONTEXT_MAX_MESSAGE_CHARS);
+  return msg.isMatch ? `${MATCH_MARKER}${line}` : line;
+}
+
+/**
+ * Split the flat row list into contiguous excerpts.
+ *
+ * Rows arrive chronological across all channels, so two rows can be adjacent in
+ * the array while being a different conversation or twenty turns apart in the
+ * same one. Rendering those as one run would invent an exchange that never
+ * happened — which matters more here than usual, because the reason for
+ * returning neighbours at all is that the agent should read a condition as
+ * attached to the fact beside it.
+ *
+ * Overlapping neighbourhoods merge naturally: two matches three apart share the
+ * turns between them, the ordinals are contiguous, and they come out as one
+ * excerpt rather than two with a duplicated middle.
+ */
+function groupIntoExcerpts(rows: NeighbourhoodMessage[]): NeighbourhoodMessage[][] {
+  // Bucket by channel first. The rows arrive in one global chronological order,
+  // so two conversations active on the same day interleave in the array; walking
+  // it linearly would break every excerpt into single rows on the alternation
+  // rather than on a real gap. Within a bucket the order is already ascending by
+  // ordinal, since the row query and `ROW_NUMBER` sort on the same key.
+  const byChannel = new Map<string, NeighbourhoodMessage[]>();
+  for (const row of rows) {
+    const bucket = byChannel.get(row.channelId);
+    if (bucket) bucket.push(row);
+    else byChannel.set(row.channelId, [row]);
+  }
+
+  const excerpts: NeighbourhoodMessage[][] = [];
+  for (const bucket of byChannel.values()) {
+    let current: NeighbourhoodMessage[] = [];
+    for (const row of bucket) {
+      const prev = current[current.length - 1];
+      if (prev !== undefined && row.ordinal !== prev.ordinal + 1) {
+        excerpts.push(current);
+        current = [];
+      }
+      current.push(row);
+    }
+    if (current.length > 0) excerpts.push(current);
+  }
+
+  // Oldest excerpt first, keyed on each one's newest row — so the caller's
+  // budget loop, which walks from the end, drops the oldest excerpts first.
+  return excerpts.sort((a, b) => {
+    const aEnd = a[a.length - 1];
+    const bEnd = b[b.length - 1];
+    return (aEnd.createdAt || '').localeCompare(bEnd.createdAt || '') || aEnd.ordinal - bEnd.ordinal;
+  });
 }
 
 /**
@@ -264,14 +404,26 @@ export function recallFromOtherConversations(
  * scope *is*: its own conversations, excluding this room, because an agent that
  * thinks it can search the room it is in will use it instead of reading the
  * history already in front of it.
+ *
+ * A third clause was added after measurement rather than reasoning. Theseus's
+ * 8/14 probe found the tool called 2/2 in an arm where the answer was already in
+ * the agent's carried-context block — one run queried the literal token
+ * `"teal-osprey-19"`, a string it could only have read off its own prompt. The
+ * existing "this does not search the room you are in now" doesn't bite there:
+ * the block is not the room. Costs a round per turn rather than being wrong, so
+ * the fix is a sentence, not a mechanism.
  */
 export const RECALL_TOOL_DESCRIPTION =
   'Search your own earlier conversations — the ones outside this room — for ' +
   'something specific that is not in the context you were given. Use this when ' +
   'you need a detail you believe you discussed before but cannot see: a name, a ' +
-  'decision, a number, a filename. Matching is on literal words, not meaning, ' +
-  'and all terms must appear in the same message, so pass distinctive keywords ' +
-  'rather than a sentence (good: "basalt heron codeword"; poor: "what was the ' +
-  'codeword you gave me"). Results are the most recent matches, each labelled ' +
-  'with the conversation and date it came from. This does not search the room ' +
-  'you are in now — that history is already in front of you.';
+  'decision, a number, a filename. If the detail is already in front of you — in ' +
+  'this room\'s history or in the summary of your other conversations you were ' +
+  'given — you already have it and do not need to search for it. Matching is on ' +
+  'literal words, not meaning, and all terms must appear in the same message, so ' +
+  'pass distinctive keywords rather than a sentence (good: "basalt heron ' +
+  'codeword"; poor: "what was the codeword you gave me"). Each match comes back ' +
+  'with the messages immediately before and after it, labelled with the ' +
+  'conversation and date — read them, because a condition attached to a fact is ' +
+  'often stated in the next message rather than the same one. This does not ' +
+  'search the room you are in now — that history is already in front of you.';
