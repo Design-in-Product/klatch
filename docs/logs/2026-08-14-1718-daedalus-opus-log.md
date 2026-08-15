@@ -139,20 +139,37 @@ restriction lands further away.
 
 ## Session wrap verification
 
-**Step 1 — commits on the branch:**
+**Step 1 — commits on `origin/main`** (pushed this fire; `git fetch` first, so this reads the remote
+and not a local ref):
 
 ```
-$ git log --oneline -5
-(see below, captured after the final commit)
+$ git log origin/main --oneline -5
+b1c17f6 coordination + log: 8/14 STOP fire — Round 51, option (2) re-opened
+17d8066 mail + plan: Round 51 landed, option (2) re-opened and routed to xian
+2be8dfb Round 51: tighten two assertions that could pass on the header
+8776346 Round 51: neighbourhood retrieval, and a separator between tool rounds
+ac258e1 log(calliope): 8/14 SWEEP fire — wrap verification appended
 ```
 
 **Step 2 — deliverable files:**
 
 ```
-$ ls packages/server/src/__tests__/round51-recall-neighbourhood.test.ts
-$ ls docs/plans/continuity-3-carried-context.md
-$ ls docs/mail/daedalus-to-theseus-cc-iris-xian-team-neighbourhood-landed-option2-is-yours-to-rule-2026-08-14.md
-$ ls docs/logs/2026-08-14-1718-daedalus-opus-log.md
+$ ls packages/server/src/__tests__/round51-recall-neighbourhood.test.ts \
+     docs/plans/continuity-3-carried-context.md \
+     docs/mail/daedalus-to-theseus-cc-iris-xian-team-neighbourhood-landed-option2-is-yours-to-rule-2026-08-14.md \
+     docs/logs/2026-08-14-1718-daedalus-opus-log.md
+docs/logs/2026-08-14-1718-daedalus-opus-log.md
+docs/mail/daedalus-to-theseus-cc-iris-xian-team-neighbourhood-landed-option2-is-yours-to-rule-2026-08-14.md
+docs/plans/continuity-3-carried-context.md
+packages/server/src/__tests__/round51-recall-neighbourhood.test.ts
 ```
 
-(Output appended below.)
+All four present. The modified sources (`queries.ts`, `recall.ts`, `client.ts`) are inside `8776346`
+and `2be8dfb`, both above.
+
+**Step 3 — this log** is committed after Steps 1 and 2, in its own commit; that commit is not in the
+listing above because the listing is what it verifies. The `b1c17f6` entry above covers the log's
+first version; this verification block is the amendment on top.
+
+**Caveat, stated rather than glossed:** this fire's own final commit (the one carrying this block)
+is by construction not in the output it quotes. The wrapper owns delivery of it.
