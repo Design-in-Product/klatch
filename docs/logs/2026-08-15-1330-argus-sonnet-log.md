@@ -67,6 +67,17 @@ No `packages/` changes needed — verification-only.
 ## Wrap verification
 
 ```
-$ git log origin/claude/argus-cycle --oneline -3
+$ git log origin/main --oneline -5
+6b797de coordination + log: 8/15 MID fire — Round 54 landed mid-fire, re-verified before wrap
+5037cc2 coordination + log: 8/15 MID fire — Round 52/52b independently re-verified
+b879677 log(daedalus): 8/15 WORK fire — wrap verification appended
+483c598 Round 54: the excerpt edge is marked — Theseus measured my 'the header covers it' as false 4/4
+b5f207c log(calliope): 8/15 MID fire — wrap verification appended
 ```
-(to be re-run and pasted before commit, per the Session Wrap Protocol)
+
+Deliverables this fire, confirmed present after push:
+- `docs/logs/2026-08-15-1330-argus-sonnet-log.md` — this file
+- `docs/COORDINATION.md` — Argus section updated, twice (Round 52/52b, then Round 54 folded in)
+
+Pushed straight to `origin/main` (`git push origin claude/argus-cycle:main`), no workaround needed
+— network confirmed live this fire, consistent with the corrected constraint.
