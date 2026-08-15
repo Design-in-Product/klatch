@@ -140,6 +140,70 @@ function scopeGapLine(count: number): string {
 }
 
 /**
+ * Marks the boundary of an excerpt — how much of the conversation lies past it.
+ *
+ * **This reverses a judgement I made on 8/15 and Theseus measured.** Round 52
+ * marked interior gaps only, on the reasoning that a turn before the first row
+ * or after the last is outside the radius and already covered by the header's
+ * `"Nothing outside these excerpts was read."` That sentence has now been
+ * present in four arm-F results across two fires
+ * (`docs/research/round51-neighbourhood-retrieval-live-2026-08-14.md`,
+ * `docs/research/round53-scope-gap-marker-live-2026-08-15.md` finding 3) and all
+ * four asserted absence anyway — verbatim *"No restriction was attached to it
+ * there"*, a property of a thirty-message thread stated from three lines, with
+ * the owner's restriction four rows past the edge. The sentence is present and
+ * it is ignored. The first clause of that judgement is false.
+ *
+ * The second clause was the real argument and it survives: one marker meaning
+ * both "turns were removed from inside this" and "the conversation continues
+ * past this" would be less informative than either. So this is a *second*
+ * marker, distinguishable by wording and by position, not a widening of
+ * `scopeGapLine`.
+ *
+ * **The two counts are separated because the affordance differs, and the line
+ * states the affordance rather than the category.** Turns in the entity's own
+ * transcript that this search did not return are reachable — a different query
+ * finds them. Turns outside the transcript are unreachable at any radius by any
+ * query (`getEntityTranscriptNeighbourhoods`), so no amount of searching will
+ * produce them. Collapsing them into one number would tell an agent to go
+ * looking for something it can never have.
+ *
+ * Deliberately does **not** reuse `scopeGapLine`'s "not of your transcript".
+ * That phrase is what the interior header sentence quotes, and that sentence
+ * says "the lines either side of it are not consecutive" — a claim with no
+ * referent at an edge, where there is only one side. Two markers with two
+ * vocabularies, which is the whole point of it being a second marker.
+ *
+ * **The specific way this can fail, and it is not the way the interior marker
+ * could fail.** The interior marker is rare, so it is salient where it appears.
+ * An edge marker renders on nearly every excerpt that is not flush with the
+ * start or end of its conversation — which is most of them. Ubiquity is the
+ * property that made the header sentence ignorable, and this line has it. What
+ * it has that the header does not is a number and a position; whether that is
+ * the load-bearing difference is exactly what Theseus's arm F would measure, and
+ * it is not measured here. Shipped as a testable proposition, on his ask.
+ */
+function edgeGapLine(
+  side: 'earlier' | 'later',
+  ownCount: number,
+  outOfScopeCount: number,
+): string | undefined {
+  const clauses: string[] = [];
+  if (ownCount > 0) {
+    clauses.push(`${ownCount} that a different search of yours could reach`);
+  }
+  if (outOfScopeCount > 0) {
+    clauses.push(`${outOfScopeCount} that no search of yours can reach`);
+  }
+  if (clauses.length === 0) return undefined;
+  const total = ownCount + outOfScopeCount;
+  return (
+    `[… ${total} ${side} message(s) in this conversation, not shown here: ` +
+    `${clauses.join('; ')} …]`
+  );
+}
+
+/**
  * Function words dropped before matching.
  *
  * **This is load-bearing, not tidying.** Terms are ANDed, so every surviving
@@ -295,25 +359,26 @@ export function recallFromOtherConversations(
   // added to carry, which would reproduce the arm-E failure at the budget
   // boundary instead of at the query.
   const excerpts = groupIntoExcerpts(rows);
-  const kept: string[] = [];
+  const keptExcerpts: NeighbourhoodMessage[][] = [];
+  const strippedLines: string[] = [];
   let shownMatches = 0;
   let strippedExcerpts = 0;
-  let scopeGaps = 0;
   let used = 0;
 
   for (let i = excerpts.length - 1; i >= 0; i--) {
     const excerpt = excerpts[i];
-    const lines = renderExcerpt(excerpt, entity.name);
-    const block = lines.join('\n\n');
+    // Measured against the conversation boundary on both sides. The final render
+    // may use a neighbouring kept excerpt instead, which changes the *numbers* in
+    // an edge line but never whether one is emitted: two excerpts in the same
+    // channel are split precisely because rows lie between them, so the count is
+    // non-zero under either reference. The residual error is the width of a
+    // couple of integers, and it is stated here rather than left to be found.
+    const block = renderExcerpt(excerpt, entity.name, undefined, undefined).join('\n\n');
 
     if (used + block.length <= RECALL_MAX_CHARS) {
-      kept.push(block);
+      keptExcerpts.push(excerpt);
       used += block.length;
       shownMatches += excerpt.filter((m) => m.isMatch).length;
-      // Counted here rather than at render time: an excerpt the budget drops
-      // contributes no line to the result, so a header sentence explaining a
-      // marker the agent cannot see would be describing something absent.
-      scopeGaps += lines.length - excerpt.length;
       continue;
     }
 
@@ -321,12 +386,16 @@ export function recallFromOtherConversations(
     // match lines only rather than blow the budget. Degrading to the pre-Round-51
     // shape is the right failure — a match with no context is what the tool used
     // to return, and a bounded honest result beats an unbounded complete one.
-    if (kept.length === 0) {
+    //
+    // No edge markers on this path, deliberately: the neighbours are gone, so
+    // every line is its own boundary and a marker between each pair would say
+    // little the `strippedExcerpts` sentence does not already say outright.
+    if (keptExcerpts.length === 0) {
       const matchLines = excerpt.filter((m) => m.isMatch);
       for (const m of matchLines) {
         const line = renderLine(m, entity.name);
-        if (used + line.length > RECALL_MAX_CHARS && kept.length > 0) break;
-        kept.push(line);
+        if (used + line.length > RECALL_MAX_CHARS && strippedLines.length > 0) break;
+        strippedLines.push(line);
         used += line.length;
         shownMatches += 1;
       }
@@ -334,7 +403,26 @@ export function recallFromOtherConversations(
     }
     break;
   }
-  kept.reverse();
+  keptExcerpts.reverse();
+
+  // Second pass. The edge markers need to know which excerpts survived the
+  // budget, so they cannot be rendered during selection: an excerpt the budget
+  // dropped is not on the page, and measuring the edge against it would report a
+  // boundary the reader cannot see. Same discipline as the header counts — every
+  // number describes what is below it in *this* result.
+  const kept: string[] = strippedLines.length > 0 ? strippedLines : [];
+  let scopeGaps = 0;
+  let edgeGaps = 0;
+  for (let i = 0; i < keptExcerpts.length; i++) {
+    const excerpt = keptExcerpts[i];
+    const before = edgeReference(keptExcerpts, i, -1);
+    const after = edgeReference(keptExcerpts, i, +1);
+    const lines = renderExcerpt(excerpt, entity.name, before, after);
+    const interior = countScopeGaps(excerpt);
+    kept.push(lines.join('\n\n'));
+    scopeGaps += interior;
+    edgeGaps += lines.length - excerpt.length - interior;
+  }
 
   // Every number the header states is about what is *below it in this result*,
   // not about what was fetched. An agent told "10 matches" that can only see 3
@@ -379,6 +467,26 @@ export function recallFromOtherConversations(
       `qualifies one of them may be among the ones withheld.`
     );
   }
+  // Conditional for the same reason the scope-gap sentence is: it explains a
+  // line, and a sentence about a line that is not there teaches the agent to
+  // look for something usually absent.
+  //
+  // The last clause is the one this exists for. Theseus measured, four times
+  // across two fires, an agent reading three lines out of a thirty-message
+  // thread and stating a property of the thread — "No restriction was attached
+  // to it there" — with the restriction four rows outside the excerpt. That is
+  // the inference being contradicted, in the same words the failure uses.
+  if (edgeGaps > 0) {
+    parts.push(
+      `A line counting "earlier" or "later" message(s) is the edge of an ` +
+      `excerpt: the conversation runs on past it and those turns are not in ` +
+      `front of you. The ones it says a different search could reach are yours ` +
+      `to look for — search again with other terms if what you need may be ` +
+      `among them. Do not read an excerpt as a description of the whole ` +
+      `conversation: a condition on something shown here may have been stated ` +
+      `in a turn that is only counted.`
+    );
+  }
 
   return {
     text: `${parts.join(' ')}\n\n${kept.join(EXCERPT_SEPARATOR)}`,
@@ -396,7 +504,20 @@ function renderLine(msg: NeighbourhoodMessage, entityName: string): string {
 }
 
 /**
- * One excerpt's lines, with a marker wherever scope removed turns from inside it.
+ * The row an excerpt's edge is measured against.
+ *
+ * `undefined` means the conversation itself — the counts run to the start or the
+ * end of the channel. A row means the nearest excerpt *actually rendered* in the
+ * same conversation, which is the right reference because the reader can see it:
+ * saying "12 messages lie before this" when 3 of them are printed above the
+ * `---` would be a true statement about the channel and a false one about the
+ * page.
+ */
+type EdgeReference = NeighbourhoodMessage | undefined;
+
+/**
+ * One excerpt's lines: interior scope-gap markers, plus an edge marker at each
+ * end where the conversation continues past what is shown.
  *
  * The rows of an excerpt are contiguous by construction — `groupIntoExcerpts`
  * splits on a jump in the scoped `ordinal`. `rawOrdinal` is what shows that
@@ -404,13 +525,31 @@ function renderLine(msg: NeighbourhoodMessage, entityName: string): string {
  * different things: a jump in the raw position between two consecutively-scoped
  * rows is exactly the count of turns the scope withheld.
  *
- * Nothing is inserted at the excerpt's edges. A message before the first row or
- * after the last is outside the radius, which the header already accounts for
- * ("Nothing outside these excerpts was read"); this marks only deletions from
- * the *interior*, where the rendering would otherwise assert an adjacency.
+ * The edges use the same arithmetic against a different reference. Between two
+ * rendered rows the two ordinals are enough; at an edge there is no second row,
+ * which is why `scopedTotal`/`rawTotal` exist. The reference is the neighbouring
+ * *rendered* excerpt when there is one and the conversation boundary otherwise —
+ * see `EdgeReference`.
  */
-function renderExcerpt(excerpt: NeighbourhoodMessage[], entityName: string): string[] {
+function renderExcerpt(
+  excerpt: NeighbourhoodMessage[],
+  entityName: string,
+  before: EdgeReference,
+  after: EdgeReference,
+): string[] {
   const lines: string[] = [];
+  const first = excerpt[0];
+  const last = excerpt[excerpt.length - 1];
+
+  // Ordinals are 1-based, so the conversation boundary behaves as a row at
+  // position 0 on the left and one past the total on the right. Written that way
+  // rather than as two special cases so the subtraction is the same subtraction
+  // in all four combinations.
+  const ownBefore = first.ordinal - (before ? before.ordinal : 0) - 1;
+  const rawBefore = first.rawOrdinal - (before ? before.rawOrdinal : 0) - 1;
+  const leading = edgeGapLine('earlier', ownBefore, rawBefore - ownBefore);
+  if (leading !== undefined) lines.push(leading);
+
   for (let i = 0; i < excerpt.length; i++) {
     const row = excerpt[i];
     const prev = excerpt[i - 1];
@@ -420,7 +559,44 @@ function renderExcerpt(excerpt: NeighbourhoodMessage[], entityName: string): str
     }
     lines.push(renderLine(row, entityName));
   }
+
+  const ownAfter = (after ? after.ordinal : last.scopedTotal + 1) - last.ordinal - 1;
+  const rawAfter = (after ? after.rawOrdinal : last.rawTotal + 1) - last.rawOrdinal - 1;
+  const trailing = edgeGapLine('later', ownAfter, rawAfter - ownAfter);
+  if (trailing !== undefined) lines.push(trailing);
+
   return lines;
+}
+
+/**
+ * The nearest kept excerpt from the *same conversation*, in the given direction.
+ *
+ * Channel-scoped because the kept list is chronological across conversations, so
+ * the array neighbour is routinely a different room — and measuring one room's
+ * edge against another's row would produce a confident number about a
+ * conversation the reference is not even in.
+ */
+function edgeReference(
+  keptExcerpts: NeighbourhoodMessage[][],
+  index: number,
+  direction: 1 | -1,
+): EdgeReference {
+  const channelId = keptExcerpts[index][0].channelId;
+  for (let i = index + direction; i >= 0 && i < keptExcerpts.length; i += direction) {
+    const candidate = keptExcerpts[i];
+    if (candidate[0].channelId !== channelId) continue;
+    return direction === -1 ? candidate[candidate.length - 1] : candidate[0];
+  }
+  return undefined;
+}
+
+/** Interior lines only — the count the header's scope-gap sentence is about. */
+function countScopeGaps(excerpt: NeighbourhoodMessage[]): number {
+  let gaps = 0;
+  for (let i = 1; i < excerpt.length; i++) {
+    if (excerpt[i].rawOrdinal - excerpt[i - 1].rawOrdinal - 1 > 0) gaps += 1;
+  }
+  return gaps;
 }
 
 /**

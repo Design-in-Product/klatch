@@ -785,6 +785,27 @@ export interface NeighbourhoodMessage extends TranscriptMessage {
    * read). Both need to be visible; only the first was.
    */
   rawOrdinal: number;
+  /**
+   * How many rows this channel contributes to the entity's transcript in total,
+   * ignoring the search and the limit.
+   *
+   * `ordinal` and `rawOrdinal` locate a row relative to the rows *before* it, so
+   * between two returned rows they are sufficient. At the far edge of an excerpt
+   * they are not: nothing in a row says whether it is the last message of the
+   * conversation or the tenth of forty. The pair
+   * (`scopedTotal`, `rawTotal`) closes that, and the same subtraction that
+   * separates scope from distance in the interior works at the edges —
+   * `scopedTotal - ordinal` is how many of this entity's own turns follow,
+   * `(rawTotal - rawOrdinal) - (scopedTotal - ordinal)` is how many turns follow
+   * that are not this entity's to read.
+   *
+   * Both are counted over the channel, not over the result, so they are stable
+   * under the caller's char budget — which is what makes them usable to describe
+   * what the caller decided *not* to show.
+   */
+  scopedTotal: number;
+  /** How many messages the channel holds in total, ignoring the entity scope. */
+  rawTotal: number;
 }
 
 /**
@@ -832,6 +853,17 @@ export interface NeighbourhoodMessage extends TranscriptMessage {
  * *distance* from a gap made by *scope*, which is a distinction the renderer
  * needs and the scoped ordinal destroys. See `NeighbourhoodMessage.rawOrdinal`.
  *
+ * `scoped_total` and `raw_total` are the same two counts taken over the whole
+ * channel. They are here for the same reason `raw_seq` is: an ordinal describes
+ * a row's relation to what precedes it, so between two returned rows the pair of
+ * ordinals is enough, but at the first and last row of an excerpt there is no
+ * second row to subtract from. Theseus measured what that costs
+ * (`docs/research/round53-scope-gap-marker-live-2026-08-15.md` finding 3): three
+ * lines out of a thirty-message thread, and the agent asserted a property of the
+ * thread — "No restriction was attached to it there" — with the restriction four
+ * rows past the edge. Both totals are window functions over partitions the query
+ * already computes, so they cost no extra scan.
+ *
  * `limit` bounds **matches**, not returned rows: neighbours ride along with the
  * match they belong to, so a caller asking for 10 matches gets 10
  * neighbourhoods. A caller passing `neighbourRadius: 0` gets exactly the rows
@@ -862,7 +894,8 @@ export function getEntityTranscriptNeighbourhoods(
              c.name AS channel_name, c.type AS channel_type, c.source AS channel_source,
              ROW_NUMBER() OVER (
                PARTITION BY m.channel_id ORDER BY m.created_at, m.rowid
-             ) AS seq
+             ) AS seq,
+             COUNT(*) OVER (PARTITION BY m.channel_id) AS scoped_total
       FROM messages m
       JOIN channels c ON c.id = m.channel_id
       WHERE ${scope.where}
@@ -875,7 +908,8 @@ export function getEntityTranscriptNeighbourhoods(
       SELECT rm.id AS raw_id,
              ROW_NUMBER() OVER (
                PARTITION BY rm.channel_id ORDER BY rm.created_at, rm.rowid
-             ) AS raw_seq
+             ) AS raw_seq,
+             COUNT(*) OVER (PARTITION BY rm.channel_id) AS raw_total
       FROM messages rm
       WHERE rm.channel_id IN (SELECT channel_id FROM scoped)
     ),
@@ -887,6 +921,7 @@ export function getEntityTranscriptNeighbourhoods(
     )
     SELECT s.*,
            r.raw_seq AS raw_seq,
+           r.raw_total AS raw_total,
            EXISTS (
              SELECT 1 FROM hits h WHERE h.channel_id = s.channel_id AND h.seq = s.seq
            ) AS is_match
@@ -913,6 +948,8 @@ export function getEntityTranscriptNeighbourhoods(
     isMatch: row.is_match === 1,
     ordinal: row.seq as number,
     rawOrdinal: row.raw_seq as number,
+    scopedTotal: row.scoped_total as number,
+    rawTotal: row.raw_total as number,
   }));
 }
 

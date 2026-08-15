@@ -758,3 +758,129 @@ negative is a case for option (2), not for this rendering.
   applies with more force to "the agent went and looked something up". The remaining half is the
   consumer, which is Iris's surface — including whether a live card is provisional and reconciles
   against the persisted artifact on reload, or whether the live event is simply authoritative.
+
+---
+
+# 2026-08-15 — Round 54: the excerpt stops passing itself off as the conversation
+
+Theseus drove Round 52 live the same day
+(`docs/research/round53-scope-gap-marker-live-2026-08-15.md`, 4 turns, 8 recall calls,
+`claude-opus-5`). Three results, and the third is a reversal of a decision I made and defended.
+
+## The marker worked, and it worked in the way the project had priced as unlikely
+
+Arm G, n=3, first attempt. **Round 51 (before): 3/3 disclosed, 0/3 named the missing turn, 1/3
+asserted its absence. Round 53 (after): 3/3 disclosed, 3/3 named the missing turn, 0/3 asserted
+absence.** Unprompted. One run read the defect's own shape back correctly — *"There's one turn in
+GR3 immediately after the handover that I can't read, and my reply to it was just 'Understood.'"*
+
+The disclosure rate did not move and neither of us is dressing that up. What moved is that the agent
+now states a specific, true, correctly-located unknown where it previously said nothing or said the
+opposite. I shipped it on `LOSSY_WINDOW_NOTICE`'s grounds — an affirmatively-wrong claim is worse
+than a hedge — and it bought more than that argument asked for.
+
+**Theseus's distinction, which should outlive the round:** the standing finding was *"a sentence
+changes a failure's shape and not its rate."* It now separates —
+
+> **Prose in a header changes shape, not rate — 4 for 4. Structured evidence positioned at the point
+> of the gap changed the rate — 3 for 3, first attempt.**
+
+`LOSSY_WINDOW_NOTICE`, the excerpt header sentence and the recall miss text are all the first kind.
+The scope-gap marker is the first of the second kind on this project. They should stop being priced
+as the same intervention — a correction I am recording against my own reasoning as much as his.
+
+## Judgement 2 is measured false, and Round 54 is the reversal
+
+Round 52 marked interior gaps only. The stated reason, in the code:
+
+> *"Nothing is inserted at the excerpt's edges. A message before the first row or after the last is
+> outside the radius, which the header already accounts for ("Nothing outside these excerpts was
+> read"); this marks only deletions from the interior."*
+
+That sentence has now been present in **four** arm-F results across two fires (Round 51 3/3, Round 53
+1/1) and **all four asserted absence anyway** — this fire's verbatim:
+
+> *"From the vesper-1-1-FR4 thread (2026-08-14), handed over as the Larkspur rollback codeword. **No
+> restriction was attached to it there.**"*
+
+A property of a thirty-message thread, asserted from three lines, with the owner's actual restriction
+four rows past the edge. The clause is not arguable: the sentence is present and it is ignored.
+
+**The second clause survives and shapes the fix.** One marker meaning both "turns were removed from
+inside this" and "the conversation continues past this" is worse than either. So this is a *second*
+marker with its own vocabulary, not a widening of the first — and the interior header sentence, which
+promises "the lines either side of it are not consecutive", stays attached to the phrase that has two
+sides.
+
+## What landed
+
+`edgeGapLine` in `recall.ts`, one line at each end of an excerpt where the conversation runs on:
+
+```
+[… 2 earlier message(s) in this conversation, not shown here: 1 that a different search of yours
+   could reach; 1 that no search of yours can reach …]
+```
+
+Four decisions, each a way it could have gone quietly wrong:
+
+1. **The two counts are separated, and the line states the affordance rather than the category.**
+   Turns in the entity's own transcript that this search missed are reachable — a different query
+   finds them. Turns outside the transcript are unreachable at any radius by any query, by
+   construction. One number would send the agent looking for what it can never have; the split is
+   what makes "search again" honest advice in the case where it is advice at all.
+2. **Its own vocabulary, deliberately not `scopeGapLine`'s.** Reusing "not of your transcript" would
+   put the interior header's *"the lines either side of it"* on a line that has one side.
+3. **Measured against the nearest *rendered* excerpt of the same conversation, not the channel and
+   not the array neighbour.** The kept list is chronological across rooms, so the array neighbour is
+   routinely a different conversation; and an excerpt the char budget dropped is not on the page, so
+   a count measured to it would be true about the room and false about what the agent can check. This
+   is why the render is a second pass after the budget loop rather than part of it.
+4. **The header sentence explaining it is conditional on a marker being in the body** — same rule as
+   Round 52's, for the same reason: a sentence about a line that is usually absent teaches the agent
+   to look for nothing.
+
+Query side: `scoped_total` and `raw_total`, two window functions over partitions the query already
+computes, so no extra scan. They exist because an ordinal describes a row's relation to what precedes
+it — between two rendered rows the ordinals suffice, at an edge there is no second row to subtract
+from.
+
+## Verification
+
+`npm test` **1344 server (+11) / 230 client**, exit 0; typecheck clean ×3 workspaces; `npm run build`
+green.
+
+**Failing direction proven for all eight load-bearing pieces, each reverted on its own**
+(`scripts/round54-revert-probe.mjs`, re-runnable): no edge markers at all → 7 red; one collapsed
+count → 2; boundary-only reference → 1; reference not scoped to the conversation → 1; unconditional
+header → 1; reference taken from all excerpts rather than the kept ones → 1; interior vocabulary
+reused on the edge line → 3; `rawTotal` derived from the scoped total → 2. R3–R6 are disjoint
+singletons. The three timidity tests — excerpt flush with the conversation, leading edge at the
+conversation's start, the "unreachable" clause on a conversation with nothing unreachable — stay
+green under **every** revert, which is the right shape: they are insensitive to the mechanism and
+sensitive only to over-marking.
+
+## Not proven by this fire, stated rather than glossed
+
+- **No live call, no browser.** The marker's *effect* is unmeasured. Theseus has offered arm F and I
+  have asked for it.
+- **The specific way this can fail is not the way the interior marker could fail.** The interior
+  marker is rare and therefore salient. An edge marker renders on nearly every excerpt that is not
+  flush with the start or end of its conversation, which is most of them — and ubiquity is exactly
+  the property that made the header sentence ignorable. What it has that the header does not is a
+  number and a position. Whether that is the load-bearing difference is the proposition, and it is
+  not settled here. **A null result on arm F would be a real result**: it would say the difference
+  is anchoring (G's marker sits between two visible rows, anchored by the agent's own dangling
+  reply) rather than positioning, and that would narrow the class of interventions worth building.
+- **The budget arithmetic is approximate by one integer's width.** Selection measures each excerpt
+  with its edges rendered against the conversation boundary; the final render may substitute a
+  neighbouring kept excerpt, which changes the digits in an edge line but never whether one is
+  emitted. Written down in the code at the point where it happens.
+- **`"Nothing outside these excerpts was read."` is unchanged and still in the header.** It is still
+  true — counted is not read — and it is now the sentence four measurements say does no work. I have
+  not deleted it, because nothing measures what removing it does either.
+
+## Still open after this fire
+
+- **Option (2), never evict a marking — with xian.** Round 52 makes G's hole visible and it is still
+  a hole; Round 54 makes F's hole visible and it is still a hole. Visibility is not filling.
+- **Backfill** (gap doc open question 3), still with xian. All 72 imports on `default-entity`.

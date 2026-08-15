@@ -207,10 +207,15 @@ describe('Round 52 — the excerpt says the turn is missing', () => {
     expect(result.text).toContain('2 message(s) here are part of that conversation');
   });
 
-  it('does not mark the edges of an excerpt — that is the radius, not scope', () => {
-    // A turn before the first row or after the last is outside the
-    // neighbourhood, which the header already accounts for. Marking it would
-    // make the marker mean two different things.
+  it('marks an excerpt edge with the other marker, not this one (Round 54)', () => {
+    // Round 52 shipped this case *unmarked*, on the reasoning that a turn before
+    // the first row or after the last is outside the radius and covered by the
+    // header's "Nothing outside these excerpts was read." Theseus measured that
+    // sentence four times across two fires and all four ignored it
+    // (`round53-scope-gap-marker-live-2026-08-15.md` finding 3), so the edge is
+    // marked now — by `edgeGapLine`, which uses its own vocabulary. The interior
+    // phrase must stay off it: the header sentence quoting that phrase promises
+    // lines on *both* sides, which an edge does not have.
     say(klatch.id, colleague.id, 'corvus opens the room', t(1));
     say(klatch.id, agent.id, 'the escrow reference is pewter-lark', t(2));
     say(klatch.id, colleague.id, 'corvus closes the room', t(3));
@@ -220,6 +225,11 @@ describe('Round 52 — the excerpt says the turn is missing', () => {
     });
     expect(result.text).toContain('pewter-lark');
     expect(result.text).not.toContain(GAP_PHRASE);
+
+    const body = result.text.split('\n\n').slice(1);
+    expect(body[0]).toContain('1 earlier message(s) in this conversation');
+    expect(body[0]).toContain('no search of yours can reach');
+    expect(body[body.length - 1]).toContain('1 later message(s) in this conversation');
   });
 
   it('adds no marker to a conversation the agent had to itself', () => {
