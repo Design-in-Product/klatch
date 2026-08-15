@@ -1,7 +1,7 @@
 import Anthropic from '@anthropic-ai/sdk';
 import { EventEmitter } from 'events';
 import { getMessages, getChannel, updateMessage, updateChannelCompaction, getProjectForChannel, getFileArtifactsForMessages, createFileArtifact, createCarriedContextArtifact, createToolUseArtifact, createFileWithMessageRef, getChannelFiles, getProjectFiles } from '../db/queries.js';
-import type { Entity, Channel, Project, Message, MessageArtifact, MessageStopReason } from '@klatch/shared';
+import type { Entity, Channel, Project, Message, MessageArtifact, MessageStopReason, StreamEvent } from '@klatch/shared';
 import { DEFAULT_MODEL } from '@klatch/shared';
 import { readFile, isTextFile, isImageFile, saveFile } from '../files/storage.js';
 import { buildCarriedContextBlock, RECALL_TOOL_NAME } from './carried-context.js';
@@ -817,13 +817,19 @@ async function streamClaudeCore(
         // Execute each tool and collect results
         const toolResults: any[] = [];
         for (const toolUse of toolUseBlocks) {
-          // Emit a tool-use event for the client to display
+          // Emit a tool-use event for the client to display. `content: ''` is
+          // not padding — the SSE route forwards emitter events as `StreamEvent`
+          // and this one previously omitted a field the type declares required,
+          // which typechecked only because `emit` is untyped. See the field docs
+          // on `StreamEvent.toolName`: this event has always been on the wire and
+          // has never had a consumer.
           emitter.emit('data', {
             type: 'tool_use',
             messageId: assistantMessageId,
+            content: '',
             toolName: toolUse.name,
             toolInput: toolUse.input,
-          });
+          } satisfies StreamEvent);
 
           const { result, isError } = await executeTool(
             toolUse.name,

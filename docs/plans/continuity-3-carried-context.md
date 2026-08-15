@@ -741,6 +741,20 @@ negative is a case for option (2), not for this rendering.
   but the owner in a shared room (G). Detecting a marking is the only thing that covers both, and the
   only thing that covers G at all, since G's problem is scope rather than distance.
 - **Backfill** (gap doc open question 3), still with xian. All 72 imports on `default-entity`.
-- **Recall's `tool_use` artifacts do not ride the wire** — Theseus measured 3 artifacts per recall
-  turn (1 `carried_context` + 2 `tool_use`) with only `carriedContext` on `message_complete`, so a
-  live turn renders 1 of 3 and reload renders 3 of 3. Ruled and sequenced 8/15; see the memo to Iris.
+- **~~Recall's `tool_use` artifacts do not ride the wire~~ — the framing was wrong, and the server
+  half is done (Round 52b, 8/15).** Theseus measured 3 artifacts per recall turn (1
+  `carried_context` + 2 `tool_use`) with only `carriedContext` on `message_complete`, so a live turn
+  renders 1 of 3 and reload renders 3 of 3. Reading the code to price a new wire field found that
+  **`streamClaude` has emitted a live `tool_use` event since the tool loop shipped** — `messageId`,
+  `toolName`, `toolInput` — and the SSE route forwards every emitter event verbatim. The gap is real
+  and it is not a missing payload: the event was absent from the `StreamEvent` union (it typechecked
+  only because `EventEmitter.emit` is untyped, and it omitted the union's required `content`) and
+  **neither client hook branches on it**, so it was parsed and dropped. Now typed, `satisfies`-checked
+  at the emit site, and pinned by 4 tests including a per-call-not-per-turn assertion, since the
+  measured 2.0–2.2 cards/turn come from the agent retrying.
+
+  Deliberately **not** folded into `message_complete` as an artifact list: the argument that decided
+  `carriedContext` was that a signal matters while the reply is on screen, not after it, and that
+  applies with more force to "the agent went and looked something up". The remaining half is the
+  consumer, which is Iris's surface — including whether a live card is provisional and reconciles
+  against the persisted artifact on reload, or whether the live event is simply authoritative.

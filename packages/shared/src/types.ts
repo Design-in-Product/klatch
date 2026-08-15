@@ -368,9 +368,36 @@ export interface ImportResult {
 }
 
 export interface StreamEvent {
-  type: 'text_delta' | 'message_complete' | 'error';
+  type: 'text_delta' | 'message_complete' | 'error' | 'tool_use';
   messageId: string;
+  /** Empty string on `tool_use` — that event carries `toolName`/`toolInput` instead. */
   content: string;
+  /**
+   * Present on `tool_use`: the tool the model called, mid-turn, as it happens.
+   *
+   * **This event has been on the wire since the tool loop shipped and was never
+   * in this type** — `streamClaude` emitted it, the SSE route forwards every
+   * emitter event verbatim, and both client hooks branch on `text_delta` /
+   * `message_complete` / `error` and drop everything else on the floor. So the
+   * live signal existed and reached the browser; nothing read it.
+   *
+   * That is the correction to the framing of the reload-time gap Theseus
+   * measured on 8/14 (3 artifacts per recall turn — 1 `carried_context` + 2
+   * `tool_use` — with a live turn rendering 1 of 3 and a reload rendering 3 of
+   * 3). It is real, but it is not a missing wire field: closing it needs no new
+   * server payload, only a consumer. Typed here so the contract states what is
+   * actually sent, and so the client half can be built against a declared shape
+   * rather than an observed one.
+   *
+   * Deliberately *not* folded into `message_complete` as an artifact list. The
+   * argument that decided `carriedContext` was that the moment a signal matters
+   * is while the reply is on screen, not after it — and that applies with more
+   * force to "the agent went and looked something up", which is the human's
+   * answer to where a fact in the reply came from.
+   */
+  toolName?: string;
+  /** Present on `tool_use`: the model-supplied input, e.g. `{ query: '…' }`. */
+  toolInput?: Record<string, unknown>;
   /**
    * Present on `message_complete` when the turn ended without finishing cleanly.
    * The client updates its local message optimistically on stream completion
