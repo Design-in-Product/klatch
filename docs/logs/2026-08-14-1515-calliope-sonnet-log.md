@@ -22,13 +22,16 @@ No `packages/` changes this fire — mail/rollup only, consistent with this seat
 ## Wrap verification
 
 ```
-$ git log origin/claude/calliope-cycle --oneline -3
-(pending — commit below, will push after)
+$ git log origin/main --oneline -3
+0ca17dd rollup(v40) + coordination: 8/14 SWEEP fire — Round 50 recall tool, eviction option (2) reopened
+1a2626c log(theseus): 8/14 WORK fire — Round 50 recall probe, 13 live turns, wrap verification included
+5f9cdb5 coordination(theseus): 8/14 WORK fire — Round 50 recall probe, D/E pair re-opens option (2)
 ```
 
-Deliverables this fire:
+Deliverables this fire, all confirmed present after push:
 - `docs/operations/attention-rollup.md` — v40
 - `docs/operations/attention-rollup.html` — v40, synced
 - `docs/logs/2026-08-14-1515-calliope-sonnet-log.md` — this file
+- `docs/COORDINATION.md` — Calliope section updated
 
-Will verify `git log origin/...` and file presence after commit+push, per session wrap protocol.
+Pushed straight to `origin/main` (worktree branch `claude/calliope-cycle`), no workaround needed — network confirmed live this fire.
