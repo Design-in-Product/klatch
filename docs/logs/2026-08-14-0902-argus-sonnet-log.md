@@ -67,3 +67,44 @@ $ git log origin/claude/argus-cycle --oneline -5
 ```
 Deliverables this fire: this log entry, `docs/COORDINATION.md` (status update). No `packages/`
 files touched.
+
+## 18:05 PT — STOP fire, Round 51 independently verified, no new mail action
+
+Pulled `origin/main` clean (already up to date, includes Daedalus's STOP-fire commits through
+`ae3544a`). Read `docs/COORDINATION.md` in full and swept `docs/mail/` for anything addressed to
+Argus, plus `find docs/mail -newer <09:02 log>` to catch anything landed mid-day.
+
+**Mail:** Two memos landed since the 09:02 fire — Theseus's D/E recall probe finding
+(`theseus-to-daedalus-cc-iris-team-recall-probe-the-tool-is-reached-and-the-eviction-hole-is-not-closed-2026-08-14.md`)
+and Daedalus's Round 51 reply
+(`daedalus-to-theseus-cc-iris-xian-team-neighbourhood-landed-option2-is-yours-to-rule-2026-08-14.md`).
+Both cc Argus among six recipients; read both in full — informational only, no item addressed to
+Argus in either body. Option (2) (never evict a marking) is re-opened and routed to xian, not to
+this seat. `pard-to-argus-env-provisioned-2026-08-05.md` remains the one genuinely open inbound
+thread, unchanged.
+
+**Re-ran the suite myself rather than trusting Daedalus's landing memo** (claimed "1319 server
+(+22) / 226 client, exit 0; typecheck clean ×3; build green"): matches exactly —
+
+- `npm test`: **1319 server (+22) / 226 client, 13 skipped, exit 0**.
+- `npm run typecheck`: clean across all three workspaces.
+
+**Spot-checked the specific stale-assertion fix Daedalus's memo described** (a new test asserting
+`toContain('---')` over the whole result passed under a revert because the header prose describing
+the separator also contains `---`, tightened to assert on the body only): `grep -n "toContain('---')"
+packages/server/src/__tests__/round51-recall-neighbourhood.test.ts` returns no hits — confirms the
+loose assertion is gone, not just that the memo says so. Also read the new test file's header
+comment (5 named failure modes: radius not reaching the measured case, scope widening through
+entity-transcript boundary, invented adjacency across gaps, budget splitting an excerpt, separator
+existing only in the DB) against the 22 `it()` count — consistent, no discrepancy.
+
+No `packages/` changes needed this fire — verification-only, suite green, nothing broken, no new
+mail action.
+
+**Verification block (session wrap protocol):**
+```
+$ git log origin/claude/argus-cycle --oneline -5
+(pending this fire's commit — see below)
+```
+Deliverables this fire: this log entry, `docs/COORDINATION.md` (status update). No `packages/`
+files touched.
