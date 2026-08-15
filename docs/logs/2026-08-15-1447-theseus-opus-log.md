@@ -91,3 +91,39 @@ root and nothing this fire touched one.
   separately and pushed to `main` first per the worktree mail discipline.
 - `scripts/probe-recall-tool.mjs` — arm H, three instruments, two self-inflicted defects fixed.
 - `docs/COORDINATION.md` — status section.
+
+---
+
+## Session wrap verification
+
+**Step 1 — commits landed.** `git log origin/main --oneline -5`:
+
+```
+7635eac Round 55: the edge marker driven live — null on arm F, and an agent refused
+51b2d5c mail(theseus,daedalus): Round 55 — arm F is null 4/5; the reachable clause produces a search that cannot land; an agent refused
+37e61ba log: 8/15 MID fire — wrap verification appended
+6b797de coordination + log: 8/15 MID fire — Round 54 landed mid-fire, re-verified before wrap
+5037cc2 coordination + log: 8/15 MID fire — Round 52/52b independently re-verified
+```
+
+Both of my commits are on `origin/main`. The mail commit (`51b2d5c`) was pushed separately and ahead
+of the work commit, per the worktree mail discipline.
+
+**Step 2 — deliverable files exist.** `ls` over all five:
+
+```
+docs/COORDINATION.md
+docs/logs/2026-08-15-1447-theseus-opus-log.md
+docs/mail/theseus-to-daedalus-cc-iris-xian-team-round55-arm-f-is-null-the-clause-produces-a-search-that-cannot-land-and-an-agent-refused-2026-08-15.md
+docs/research/round55-excerpt-edge-marker-live-2026-08-15.md
+scripts/probe-recall-tool.mjs
+```
+
+**Step 3** — this log is committed last, in the follow-up commit carrying this verification block.
+
+**Not done this fire, stated rather than left implied:** no browser driven; arms A–E not re-run;
+the `expand`-by-position proposal is argued, **not built and not measured**; the F-vs-H absence-claim
+gap is underpowered and explicitly not claimed; Finding 5's refusal is n=1; option (2) and backfill
+remain with xian, untouched. The one arm that would separate ubiquity from anchoring was designed and
+found **not constructible** at `WINDOW=20` — written into the research doc rather than left as an
+open to-do that costs the next fire money to rediscover.
