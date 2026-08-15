@@ -104,6 +104,42 @@ const MATCH_MARKER = '▸ ';
 const EXCERPT_SEPARATOR = '\n\n---\n\n';
 
 /**
+ * Marks turns that sit inside an excerpt in the source room but are not in this
+ * entity's transcript.
+ *
+ * **Why this is not covered by `EXCERPT_SEPARATOR`.** The separator marks a gap
+ * created by *distance* — two matches far enough apart that the radius does not
+ * bridge them, which the scoped ordinal reports as a jump. A gap created by
+ * *scope* is invisible to that ordinal: `ROW_NUMBER` over the scoped set closes
+ * over every removed row, so the two rows either side of a withheld turn come
+ * back consecutively numbered and render as one continuous exchange. Theseus
+ * measured the result on arm G
+ * (`docs/research/round51-neighbourhood-retrieval-live-2026-08-14.md` §3): the
+ * agent's own "Confirmed. Noted." followed immediately by a bare "Understood.",
+ * with the other agent's restriction between them deleted and nothing saying so.
+ * An acknowledgement whose antecedent has been removed, in a shape that asserts
+ * adjacency.
+ *
+ * The scope *policy* is right and this does not change it — an agent still
+ * cannot read a message it was not party to. What changes is that the excerpt
+ * stops claiming those messages were never there. `groupIntoExcerpts`' own
+ * standard, applied one level down: rendering a gap as continuity invents an
+ * exchange that never happened.
+ *
+ * **Deliberately does not say who spoke them.** Practically these are other
+ * agents' turns, but the only thing true by construction is that the rows failed
+ * the entity-transcript predicate — and this line is read by a model that will
+ * reason from whatever it is told, so it states the property the query actually
+ * establishes and no more.
+ */
+function scopeGapLine(count: number): string {
+  return (
+    `[… ${count} message(s) here are part of that conversation but not of your ` +
+    `transcript, and were not read …]`
+  );
+}
+
+/**
  * Function words dropped before matching.
  *
  * **This is load-bearing, not tidying.** Terms are ANDed, so every surviving
@@ -262,17 +298,22 @@ export function recallFromOtherConversations(
   const kept: string[] = [];
   let shownMatches = 0;
   let strippedExcerpts = 0;
+  let scopeGaps = 0;
   let used = 0;
 
   for (let i = excerpts.length - 1; i >= 0; i--) {
     const excerpt = excerpts[i];
-    const lines = excerpt.map((m) => renderLine(m, entity.name));
+    const lines = renderExcerpt(excerpt, entity.name);
     const block = lines.join('\n\n');
 
     if (used + block.length <= RECALL_MAX_CHARS) {
       kept.push(block);
       used += block.length;
       shownMatches += excerpt.filter((m) => m.isMatch).length;
+      // Counted here rather than at render time: an excerpt the budget drops
+      // contributes no line to the result, so a header sentence explaining a
+      // marker the agent cannot see would be describing something absent.
+      scopeGaps += lines.length - excerpt.length;
       continue;
     }
 
@@ -327,6 +368,17 @@ export function recallFromOtherConversations(
       `shown alone — ask again with a smaller limit to see them in context.`
     );
   }
+  // Stated only when a marker is actually in the body. An unconditional sentence
+  // would train the agent to look for a line that is usually absent, and the
+  // header's job here is to explain what it can see rather than to hedge.
+  if (scopeGaps > 0) {
+    parts.push(
+      `Where a line reads "not of your transcript", other turns were spoken in ` +
+      `that conversation at that point and are not yours to read — so the lines ` +
+      `either side of it are not consecutive, and a message that answers or ` +
+      `qualifies one of them may be among the ones withheld.`
+    );
+  }
 
   return {
     text: `${parts.join(' ')}\n\n${kept.join(EXCERPT_SEPARATOR)}`,
@@ -344,6 +396,34 @@ function renderLine(msg: NeighbourhoodMessage, entityName: string): string {
 }
 
 /**
+ * One excerpt's lines, with a marker wherever scope removed turns from inside it.
+ *
+ * The rows of an excerpt are contiguous by construction — `groupIntoExcerpts`
+ * splits on a jump in the scoped `ordinal`. `rawOrdinal` is what shows that
+ * "contiguous in this agent's transcript" and "contiguous in the room" are
+ * different things: a jump in the raw position between two consecutively-scoped
+ * rows is exactly the count of turns the scope withheld.
+ *
+ * Nothing is inserted at the excerpt's edges. A message before the first row or
+ * after the last is outside the radius, which the header already accounts for
+ * ("Nothing outside these excerpts was read"); this marks only deletions from
+ * the *interior*, where the rendering would otherwise assert an adjacency.
+ */
+function renderExcerpt(excerpt: NeighbourhoodMessage[], entityName: string): string[] {
+  const lines: string[] = [];
+  for (let i = 0; i < excerpt.length; i++) {
+    const row = excerpt[i];
+    const prev = excerpt[i - 1];
+    if (prev !== undefined) {
+      const withheld = row.rawOrdinal - prev.rawOrdinal - 1;
+      if (withheld > 0) lines.push(scopeGapLine(withheld));
+    }
+    lines.push(renderLine(row, entityName));
+  }
+  return lines;
+}
+
+/**
  * Split the flat row list into contiguous excerpts.
  *
  * Rows arrive chronological across all channels, so two rows can be adjacent in
@@ -356,6 +436,13 @@ function renderLine(msg: NeighbourhoodMessage, entityName: string): string {
  * Overlapping neighbourhoods merge naturally: two matches three apart share the
  * turns between them, the ordinals are contiguous, and they come out as one
  * excerpt rather than two with a duplicated middle.
+ *
+ * **Splits on distance only, and that is deliberate.** A discontinuity created
+ * by scope leaves `ordinal` contiguous, so it does not — and should not — split
+ * an excerpt here: those rows really were consecutive in what this agent could
+ * see, and splitting them would say the wrong thing (two separate stretches of
+ * conversation) about turns that are one stretch with pieces withheld. It is
+ * marked in place instead, by `renderExcerpt`.
  */
 function groupIntoExcerpts(rows: NeighbourhoodMessage[]): NeighbourhoodMessage[][] {
   // Bucket by channel first. The rows arrive in one global chronological order,

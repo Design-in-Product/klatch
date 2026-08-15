@@ -766,6 +766,25 @@ export interface NeighbourhoodMessage extends TranscriptMessage {
    * of error as a count that names a conversation the block no longer quotes.
    */
   ordinal: number;
+  /**
+   * Position of this row among **all** messages in its channel, 1-based —
+   * ignoring the entity scope that produced `ordinal`.
+   *
+   * Exists because `ordinal` cannot see its own omissions. `ROW_NUMBER` over the
+   * scoped set closes over every row the scope removed, so a message that sits
+   * between two returned rows *in the room* leaves no gap in `ordinal` at all:
+   * no discontinuity, no marker, no trace. Theseus measured the consequence
+   * (`docs/research/round51-neighbourhood-retrieval-live-2026-08-14.md` §3) — in
+   * a klatch, an agent's own "Confirmed." and a later "Understood." render as one
+   * continuous exchange with the other agent's turn between them silently
+   * deleted, so the excerpt asserts an adjacency the room does not have.
+   *
+   * `ordinal` and `rawOrdinal` together are what let a caller tell the two kinds
+   * of discontinuity apart: a jump in `ordinal` is distance (turns outside the
+   * radius), a jump in `rawOrdinal` alone is scope (turns this entity may not
+   * read). Both need to be visible; only the first was.
+   */
+  rawOrdinal: number;
 }
 
 /**
@@ -796,10 +815,22 @@ export interface NeighbourhoodMessage extends TranscriptMessage {
  * change: an agent still cannot reach a message it was never party to. The
  * consequence, which is a real limit: in a klatch, another agent's message is
  * not in this entity's transcript and so is never returned as a neighbour.
+ * Stronger and true (Theseus, 8/14, read out of `entityTranscriptWhere`): it is
+ * never a *match* either, at any radius, for any query — so a restriction spoken
+ * by a second agent in a shared room is unreachable by construction, not merely
+ * un-neighboured. `raw_seq` exists so that at least the *hole* is visible.
  *
  * `seq` is a per-channel ordinal over that scoped set (`ROW_NUMBER` partitioned
  * by channel), so "adjacent" means adjacent *as this agent would have seen it* —
  * not adjacent by wall-clock across interleaved rooms.
+ *
+ * `raw_seq` is the same position counted over the channel's **whole** message
+ * list, and it is here because `seq` alone cannot report its own omissions: the
+ * scoped numbering closes over any row the scope removed, so two rows that had
+ * another participant's turn between them come back with consecutive `seq` and
+ * look adjacent. Returning both lets the caller distinguish a gap made by
+ * *distance* from a gap made by *scope*, which is a distinction the renderer
+ * needs and the scoped ordinal destroys. See `NeighbourhoodMessage.rawOrdinal`.
  *
  * `limit` bounds **matches**, not returned rows: neighbours ride along with the
  * match they belong to, so a caller asking for 10 matches gets 10
@@ -836,6 +867,18 @@ export function getEntityTranscriptNeighbourhoods(
       JOIN channels c ON c.id = m.channel_id
       WHERE ${scope.where}
     ),
+    -- The same ordering over the channel's unscoped message list. Restricted to
+    -- the channels the scoped CTE actually touched: without that this windows
+    -- the whole messages table, and the caller only ever needs raw positions for
+    -- rows it is about to render.
+    raw AS (
+      SELECT rm.id AS raw_id,
+             ROW_NUMBER() OVER (
+               PARTITION BY rm.channel_id ORDER BY rm.created_at, rm.rowid
+             ) AS raw_seq
+      FROM messages rm
+      WHERE rm.channel_id IN (SELECT channel_id FROM scoped)
+    ),
     hits AS (
       SELECT channel_id, seq FROM scoped
       WHERE ${hitWhere}
@@ -843,10 +886,12 @@ export function getEntityTranscriptNeighbourhoods(
       ${limit ? 'LIMIT ?' : ''}
     )
     SELECT s.*,
+           r.raw_seq AS raw_seq,
            EXISTS (
              SELECT 1 FROM hits h WHERE h.channel_id = s.channel_id AND h.seq = s.seq
            ) AS is_match
     FROM scoped s
+    JOIN raw r ON r.raw_id = s.id
     WHERE EXISTS (
       SELECT 1 FROM hits h
       WHERE h.channel_id = s.channel_id AND s.seq BETWEEN h.seq - ? AND h.seq + ?
@@ -867,6 +912,7 @@ export function getEntityTranscriptNeighbourhoods(
     channelSource: (row.channel_source as ChannelSource) || 'native',
     isMatch: row.is_match === 1,
     ordinal: row.seq as number,
+    rawOrdinal: row.raw_seq as number,
   }));
 }
 
