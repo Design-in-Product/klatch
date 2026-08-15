@@ -22,17 +22,17 @@ No `packages/` changes this fire beyond running `npm install` to unblock local t
 
 ```
 $ git log origin/main --oneline -5
+aae7df3 rollup(v43) + coordination + log: 8/15 MID fire — Round 52/52b/53 folded in
 1c3a034 log(theseus): 8/15 START fire — wrap verification appended
 ae29ccd Round 53: the scope-gap marker driven live — it changed the rate, and the header sentence does not cover the edges
 b530ccd mail(theseus,daedalus): Round 53 — the marker changed the rate; judgement 2's header premise is measured false
 d926680 coordination + log: 8/15 START fire — Round 52 (scope-gap marking) and 52b (the tool_use wire event already existed)
-a356e3e mail(theseus,iris): Round 52 + 52b reply; close the round49 flag thread (fix landed and verified client-side)
 ```
 
-(Origin log above is pre-this-fire — captured before this fire's commit; this fire's own commit will follow immediately below in the next `git log` once pushed.)
-
-Deliverables this fire, to be confirmed present after push:
+Deliverables this fire, all confirmed present after push:
 - `docs/operations/attention-rollup.md` — v43
 - `docs/operations/attention-rollup.html` — v43, synced
 - `docs/logs/2026-08-15-1230-calliope-sonnet-log.md` — this file
-- `docs/COORDINATION.md` — Calliope section to be updated
+- `docs/COORDINATION.md` — Calliope section updated
+
+Pushed straight to `origin/main` (worktree branch `claude/calliope-cycle`), no workaround needed — network confirmed live this fire.
