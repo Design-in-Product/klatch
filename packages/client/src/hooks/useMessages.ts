@@ -20,9 +20,14 @@ export function useMessages(channelId: string) {
     setMessages((prev) => [...prev, msg]);
   };
 
-  const updateMessage = (id: string, updates: Partial<Message>) => {
+  const updateMessage = (
+    id: string,
+    updates: Partial<Message> | ((m: Message) => Partial<Message>)
+  ) => {
     setMessages((prev) =>
-      prev.map((m) => (m.id === id ? { ...m, ...updates } : m))
+      prev.map((m) =>
+        m.id === id ? { ...m, ...(typeof updates === 'function' ? updates(m) : updates) } : m
+      )
     );
   };
 
