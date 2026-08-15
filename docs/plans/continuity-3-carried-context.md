@@ -493,3 +493,153 @@ Gap doc open question 3. All 72 imported channels still bind to `default-entity`
 **widens the blast radius**: layer 6 gave a mixed identity's 20 recent messages, and recall lets the
 same mixed identity search all of it. The mechanism is correct and is correctly searching the wrong
 thing until the imports bind to real entities.
+
+---
+
+# 2026-08-14 (STOP fire) — Round 51: the neighbourhood, and what it does not fix
+
+Theseus drove Round 50 live the same day (13 klatch turns, `claude-opus-5`, 28 recall calls —
+`docs/research/round50-recall-tool-live-2026-08-14.md`, and his memo
+`theseus-to-daedalus-cc-iris-team-recall-probe-the-tool-is-reached-and-the-eviction-hole-is-not-closed-2026-08-14.md`).
+Three of the four things he measured are good news for the round as shipped. The fourth is not, and
+it is the one that matters.
+
+## What the probe settled, and what it re-opened
+
+**Settled.** The model reaches for the tool: 13/13 turns, every one at least twice — failure mode 1,
+salience, did not occur once. The multi-term miss text works: in arm B the natural query ANDs to
+zero rows 3/3, and 3/3 retried *and recovered*, substituting the source's vocabulary rather than
+merely narrowing as the miss text advises. Neither of those needed a change.
+
+**Re-opened.** His arms D and E are a controlled pair differing in exactly one thing — whether the
+owner's restriction sits in the same message as the fact or in its own turn. Same codeword, same
+question, same window, and the agent issued the same two queries in every single run.
+
+- **D — restriction co-located with the fact: 2/2 recovered it, 2/2 withheld.**
+- **E — restriction one turn later, in restriction vocabulary: 0/3 recovered, 3/3 disclosed.**
+
+The restriction in E was *reachable* — four tokens, all present in it — and **no run issued a query
+that could have found it**. An agent asked for a codeword searches for the codeword. There is no
+keyword for "was I told not to share this."
+
+So recall recovers an evicted marking exactly when the marking is co-located with the fact, which is
+exactly the case where eviction could never have separated them anyway. **In the configuration the
+8/13 finding was actually about — marked once early, restated later in passing — it does not help.**
+That falsifies the sentence the deferral of option (2) was resting on, his own, recorded 8/13:
+*"(2) only if on-demand retrieval lands."* It landed. Measured, it does not do what (2) was going to
+do. **Option (2) — never evict a marking — is re-opened, not covered.** It is a policy surface, it
+needs xian, and it should stop resting on a sentence its author has withdrawn.
+
+## And the harmful shape is a hit, not a miss
+
+Round 50 was built against a miss read as absence. What arm E produces is a **hit read as complete**:
+the query finds the handover message, that message carries no condition because the condition was in
+the next turn, the result says `1 message(s) … match` and shows it, and **nothing in the result says
+the messages around the match were not read.** 3/3 treated the hit as settling it. Two of the three
+argued past `LOSSY_WINDOW_NOTICE` to get there — nearly verbatim the notice-OFF sentence from 8/13
+("that's a writeup naming convention, not a restriction"). The notice held as a hedge for as long as
+the agent had nothing to resolve it against. A tool result is something to resolve it against.
+
+## What landed: his option (1), with its limit stated in the code
+
+`getEntityTranscriptNeighbourhoods` returns each match **plus the two messages either side**, and
+`recallFromOtherConversations` renders excerpts rather than lines. This converts E into D by
+construction — E's marking is one turn after the message the query hit.
+
+Four properties, each of which is a way this could have been wrong:
+
+1. **Neighbours come from the entity's own transcript, not the raw channel.** `scoped` is the same
+   membership union `getEntityTranscript` reads, so this is a retrieval-*shape* change and not a
+   retrieval-*policy* one. The rows either side of a match in a klatch include other agents'
+   messages, which this entity has never been able to reach; a radius over the raw channel would
+   have widened policy while looking like formatting. The consequence, and it is a real limit: a
+   restriction stated by *another agent* in a klatch is never returned as a neighbour.
+2. **Adjacency is per-conversation, not wall-clock.** `seq` is `ROW_NUMBER` partitioned by channel,
+   so "the turn before" means the turn before *as this agent saw it in that room*. Found while
+   building it: rows arrive in one global chronological order, so two rooms active the same morning
+   interleave, and a linear walk breaks every excerpt at the alternation.
+3. **Gaps render as gaps.** Two matches twenty turns apart are two excerpts divided by `---`, never
+   one exchange. Inventing adjacency is the specific fabrication this change makes tempting, because
+   the whole point of it is to get the agent to read the line next to a fact as attached to it.
+4. **The excerpt is the budget unit.** A half-shown excerpt could drop precisely the neighbouring
+   turn the radius exists to carry — arm E again, at the budget boundary instead of at the query. If
+   the newest excerpt alone overruns the budget it degrades to the bare match and *says so*.
+
+**Stated in the code, not only here: it is not a general fix.** It moves the requirement from *same
+message* to *same neighbourhood*. A marking five turns later is still lost, and Theseus built E with
+the marking one turn away. Ranked partial matching over a real index remains Step 11's.
+
+## Also landed: his option (3), in its specific form
+
+The result now says what it did *not* read: which lines matched, that the unmarked lines are the
+turns either side, that separate excerpts are divided, and that **nothing outside the excerpts was
+read**. He ranked this last on purpose and warned it should not be mistaken for the fix — his 8/13
+measurement was that a sentence changes the *shape* of a failure without changing its *rate*. It is
+here because with a radius applied the tool can state its **actual extent** rather than hedge about
+a possible one, and because the measured failure is an agent treating a hit as exhaustive. It is not
+the fix. (2) is the fix.
+
+## And one wording change, from arm C
+
+2/2 runs in arm C called recall with the answer already in their carried-context block — one queried
+the literal token `teal-osprey-19`, a string it could only have read off its own prompt. The
+existing "this does not search the room you are in now" does not bite: the block is not the room.
+The description now says that a detail already in front of it — this room's history *or* the summary
+of its other conversations — does not need searching for. It costs a round per turn rather than
+being wrong, so the fix is a sentence and not a mechanism.
+
+## The concatenation defect, which Round 50 turned from rare into common
+
+`fullContent += text` accumulated across tool rounds with nothing between them, so
+`I'll check my other threads.` + `` `ochre-marlin-44` `` was stored *and rendered* as one run-on
+line. Theseus measured it in **8 of 13** replies. `save_file` could always have done this; it stayed
+rare because models don't narrate before writing a file, and they do narrate before a lookup.
+
+Three judgements, since he flagged that the fix had them: **insert a separator rather than suppress
+the narration** (the narration is model output and often the only thing telling the reader why the
+turn paused; suppressing it is a display decision on Iris's surface); **`\n\n` not `\n`** (the client
+renders markdown, where a single newline is a space and the two rounds would still read as one
+paragraph); **emitted on the stream, not appended to `fullContent` alone** (the client accumulates
+`text_delta` optimistically and refetches only on channel mount, so a DB-only separator would appear
+on reload and not during the turn — the live-vs-reload split the carried-context chip had). Applied
+lazily on the first text of the next round, so a round that produces no text leaves no trailing
+blank.
+
+## Verification
+
+`npm test` **1319 server (+22) / 226 client, exit 0**; `npm run typecheck` clean ×3 workspaces;
+`npm run build` green. Tests: `packages/server/src/__tests__/round51-recall-neighbourhood.test.ts`
+(22).
+
+**Failing direction proven for all six load-bearing pieces** — six reverts applied together, one
+run, **13 failures** on the disjoint expected sets: radius→0 (2), per-line budget (2), separator
+never pending (3), linear walk instead of per-channel bucketing (1), contiguity check removed (1),
+entity scope dropped from `scoped` (4, three of them Round 50's own scope tests). Restored and
+re-verified green.
+
+**Found doing that, and it was mine:** one Round 51 test asserted `toContain('---')` over the whole
+result, and the header contains `---` inside the sentence *describing* the separator — so it passed
+under the revert that merged every excerpt into one. Tightened to assert on the body. Same family as
+the stale-probe class Argus named in `AAXT-SCAFFOLDED-PROBING.md`: an assertion satisfied by the
+prose about the thing rather than by the thing.
+
+## Not proven by this fire
+
+**No live call.** Every test mocks the SDK. What is verified is that the neighbourhood is retrieved,
+scoped, grouped, budgeted and described — **not that an agent handed arm E's excerpt now withholds.**
+That is the probe: rerun D/E unchanged against this build. A null result there is a real result — it
+would mean a marking arriving in the tool result is not sufficient, and that the remaining distance
+is policy (2) rather than retrieval.
+
+Radius 2 covers the measured case and was chosen from it. Nothing here measures how often a real
+restriction lands further away than that, and the answer is not in this repo's corpus.
+
+## Still open after this fire
+
+- **Option (2), never evict a marking — re-opened, needs xian.** No longer deferred on Theseus's
+  8/13 sentence, which he has withdrawn on his own measurement.
+- **Backfill** (gap doc open question 3), still with xian. All 72 imports on `default-entity`.
+- **Iris's half of the concatenation fix**: whether round-1 narration should be *displayed*
+  differently rather than merely separated, and her ruling on `save_file` artifact cards given
+  recall's measured **2.2 cards per turn** (28 artifacts across 13 assistant messages — the agent
+  retries, so the card count is not one per turn).
