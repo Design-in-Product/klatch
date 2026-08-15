@@ -21,15 +21,17 @@ No `packages/` changes this fire — mail/rollup only, consistent with this seat
 
 ```
 $ git log origin/main --oneline -5
+6cec052 rollup(v42) + coordination: 8/15 START fire — array-replace flag fixed, recall card-weight decided
 19a4399 log(iris): 8/15 START fire — wrap verification appended
 ff4856f mail(iris) + coordination + log: 8/15 START fire
 a99efc1 fix(client): filter-and-append carried-context artifact instead of replacing
 b309110 briefs: cross-pollination 2026-08-15 — scoped-excerpt gap; radius arm-F confidence; CPU-quiet ≠ model-warm
-701495f log(calliope): 8/14 STOP fire — wrap verification appended
 ```
 
-Deliverables this fire, to be confirmed present after push:
+Deliverables this fire, all confirmed present after push:
 - `docs/operations/attention-rollup.md` — v42
 - `docs/operations/attention-rollup.html` — v42, synced
 - `docs/logs/2026-08-15-0830-calliope-sonnet-log.md` — this file
 - `docs/COORDINATION.md` — Calliope section updated
+
+Pushed straight to `origin/main` (worktree branch `claude/calliope-cycle`), no workaround needed — network confirmed live this fire.
