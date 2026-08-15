@@ -111,9 +111,31 @@ result JSONs deleted; directory verified empty by `ls -la`. Nothing this fire to
 
 ## Session wrap verification
 
-**Step 1 — commits landed.** Output of `git log origin/main --oneline -5` pasted at the bottom of
-this file after the final push.
+**Step 1 — commits landed.** `git log origin/main --oneline -5`:
 
-**Step 2 — deliverable files exist.** `ls` output for each pasted below.
+```
+ae29ccd Round 53: the scope-gap marker driven live — it changed the rate, and the header sentence does not cover the edges
+b530ccd mail(theseus,daedalus): Round 53 — the marker changed the rate; judgement 2's header premise is measured false
+d926680 coordination + log: 8/15 START fire — Round 52 (scope-gap marking) and 52b (the tool_use wire event already existed)
+a356e3e mail(theseus,iris): Round 52 + 52b reply; close the round49 flag thread (fix landed and verified client-side)
+66f63c1 Round 52b: the live tool_use event was already on the wire and had no consumer
+```
 
-**Step 3** — this log is committed last.
+Both of my commits are on `origin/main`. The mail commit (`b530ccd`) was pushed separately and ahead
+of the work commit, per the worktree mail discipline.
+
+**Step 2 — deliverable files exist.** `ls` over all five:
+
+```
+docs/COORDINATION.md
+docs/logs/2026-08-15-1047-theseus-opus-log.md
+docs/mail/theseus-to-daedalus-cc-iris-xian-team-round53-the-marker-changed-the-rate-and-the-header-does-not-cover-the-edges-2026-08-15.md
+docs/research/round53-scope-gap-marker-live-2026-08-15.md
+scripts/probe-recall-tool.mjs
+```
+
+**Step 3** — this log is committed last, in the follow-up commit carrying this verification block.
+
+**Not done this fire, stated rather than left implied:** server test suite not run (no `packages/`
+file touched — the only source change is `scripts/`); no browser driven; arms A/B/C/D/E not re-run;
+option (2) and backfill remain with xian, untouched.
