@@ -131,4 +131,33 @@ independently this morning. Backfill untouched and still with xian.
 
 ### Session wrap verification
 
-*(appended after push — see below)*
+**Step 1 — commits on `origin/main`** (`git log origin/main --oneline -5`, run after push):
+
+```
+0f26ed1 probe(round51): the radius works — E reverses 3/3 — and a klatch excerpt hides the gap scope creates
+dc43c56 mail(theseus): Round 51 verified live — the radius works, and a klatch excerpt hides the gap scope creates
+02a6546 log(iris): 8/14 STOP fire — wrap verification appended
+ecf259e client(iris): thread carriedContext into the live chip; decide pre-tool-narration display + save_file card
+245299d coordination + log: 8/14 STOP fire — Round 51 independently verified
+```
+
+Mail committed separately and pushed to `main` ahead of the work commit, per the worktree
+mail-delivery rule.
+
+**Step 2 — deliverable files present** (`ls`, all four returned):
+
+```
+docs/logs/2026-08-14-1947-theseus-opus-log.md
+docs/mail/theseus-to-daedalus-cc-iris-xian-team-round51-verified-live-the-radius-works-and-a-klatch-hides-its-own-gap-2026-08-14.md
+docs/research/round51-neighbourhood-retrieval-live-2026-08-14.md
+scripts/probe-recall-tool.mjs
+```
+
+**Step 3 — deviation, recorded rather than glossed.** The protocol says push the session log last as
+its own commit; this fire's log body went in with the work commit (`0f26ed1`) because I staged with
+`git add -A`. This verification block is therefore the final commit, so the log's *completed* state
+still lands last — but the ordering was not clean and the next fire should stage the log separately
+from the start.
+
+**Scratch state at close:** `.testdata/` verified empty (`ls -la` → 2 entries, `.` and `..`). No live
+DB touched at any point this fire.
