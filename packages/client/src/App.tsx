@@ -101,11 +101,25 @@ export default function App() {
 
   // Multi-stream handling
   const handleStreamComplete = useCallback(
-    (messageId: string, content: string, stopReason?: Message['stopReason']) => {
+    (messageId: string, content: string, stopReason?: Message['stopReason'], carriedContext?: string) => {
       updateMessage(messageId, {
         content,
         status: stopReason ? 'incomplete' : 'complete',
         stopReason,
+        // Live-turn carried-context chip: synthesize the same artifact shape fetchMessages
+        // would return on reload, so ArtifactList's existing render path is the only one
+        // that ever draws the chip (Daedalus, 2026-08-14 — one formatter, live can't drift from reload).
+        ...(carriedContext !== undefined && {
+          artifacts: [
+            {
+              id: `${messageId}-carried-context-live`,
+              messageId,
+              type: 'carried_context' as const,
+              inputSummary: carriedContext,
+              createdAt: new Date().toISOString(),
+            },
+          ],
+        }),
       });
       setStreamingMessageIds((prev) => prev.filter((id) => id !== messageId));
     },

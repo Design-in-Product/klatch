@@ -12,7 +12,12 @@ interface StreamState {
  */
 export function useStreams(
   messageIds: string[],
-  onComplete?: (messageId: string, content: string, stopReason?: StreamEvent['stopReason']) => void,
+  onComplete?: (
+    messageId: string,
+    content: string,
+    stopReason?: StreamEvent['stopReason'],
+    carriedContext?: StreamEvent['carriedContext']
+  ) => void,
   onError?: (messageId: string, content: string) => void
 ) {
   const [states, setStates] = useState<Map<string, StreamState>>(new Map());
@@ -64,7 +69,7 @@ export function useStreams(
             return next;
           });
           activeIdsRef.current.delete(messageId);
-          onCompleteRef.current?.(messageId, data.content, data.stopReason);
+          onCompleteRef.current?.(messageId, data.content, data.stopReason, data.carriedContext);
           eventSource.close();
         } else if (data.type === 'error') {
           setStates((prev) => {

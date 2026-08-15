@@ -102,7 +102,7 @@ describe('useStreams', () => {
       es._emit({ type: 'message_complete', messageId: 'msg-1', content: 'full response' });
     });
 
-    expect(onComplete).toHaveBeenCalledWith('msg-1', 'full response', undefined);
+    expect(onComplete).toHaveBeenCalledWith('msg-1', 'full response', undefined, undefined);
     expect(es.closed).toBe(true);
   });
 
@@ -115,7 +115,24 @@ describe('useStreams', () => {
       es._emit({ type: 'message_complete', messageId: 'msg-1', content: 'cut off mid', stopReason: 'max_tokens' });
     });
 
-    expect(onComplete).toHaveBeenCalledWith('msg-1', 'cut off mid', 'max_tokens');
+    expect(onComplete).toHaveBeenCalledWith('msg-1', 'cut off mid', 'max_tokens', undefined);
+  });
+
+  it('passes carriedContext through to onComplete when layer 6 was active for the turn', () => {
+    const onComplete = vi.fn();
+    renderHook(() => useStreams(['msg-1'], onComplete));
+    const es = MockEventSource.byUrl('/api/messages/msg-1/stream')!;
+
+    act(() => {
+      es._emit({
+        type: 'message_complete',
+        messageId: 'msg-1',
+        content: 'reply',
+        carriedContext: '2 other conversations',
+      });
+    });
+
+    expect(onComplete).toHaveBeenCalledWith('msg-1', 'reply', undefined, '2 other conversations');
   });
 
   it('calls onError when a stream errors', () => {
