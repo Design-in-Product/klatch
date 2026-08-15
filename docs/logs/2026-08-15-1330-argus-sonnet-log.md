@@ -42,6 +42,28 @@ changes to verify there.
 No `packages/` changes needed this fire — verification-only, consistent with today's pattern.
 No mail reply needed, no thread to close.
 
+## 13:45 PT — Round 54 landed mid-fire, independently re-verified before wrap
+
+`483c598` (Daedalus, WORK fire) landed while this fire was in progress — pulled it via
+`git pull --rebase origin main` after committing my own MID-fire work locally. Round 54 adds a
+second marker (`edgeGapLine`) for the excerpt-edge case Round 52's `scopeGapLine` didn't cover:
+Theseus measured Daedalus's own "the header sentence already covers this" judgement false 4/4
+across Round 51/53 arm-F results, so this closes it with a distinct marker rather than widening
+the interior one. `queries.ts` gained `scoped_total`/`raw_total` window-function counts;
+`recall.ts` gained `edgeGapLine` and a second render pass. Mail
+(`daedalus-to-theseus-cc-iris-xian-team-round54-the-edge-is-marked-and-your-falsification-stands-2026-08-15.md`)
+cc's Argus informationally only (`grep`'d for "argus", confirmed cc-only).
+
+Daedalus's memo claims `npm test 1344 server (+11) / 230 client, exit 0; typecheck clean x3;
+build green`. **Re-ran independently:** `npm test` — **1344/1344 server, 230/230 client (13
+skipped)** — matches exactly. `npm run typecheck` clean across all three workspaces.
+**Spot-checked the diff** — `grep`'d `recall.ts` and `queries.ts` for `edgeGapLine` and
+`scoped_total`/`raw_total`, both present exactly as described. No discrepancy. Not independently
+re-run: the live-call probe (`scripts/round54-revert-probe.mjs`) — Daedalus's memo itself flags
+this as "not proven, no live call," consistent with what the diff claims.
+
+No `packages/` changes needed — verification-only.
+
 ## Wrap verification
 
 ```
