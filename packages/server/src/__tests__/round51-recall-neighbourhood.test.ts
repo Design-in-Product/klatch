@@ -372,9 +372,13 @@ describe('Round 51 — the arm-E regression', () => {
     say(oneOnOne.id, agent.id, 'the depot rota changed again', t(30));
 
     const text = recallFromOtherConversations(agent, klatch, { query: 'depot' }).text;
+    // The header explains the separator, so it contains `---` itself — assert on
+    // the body, or the test passes on the sentence that describes the thing it
+    // is meant to be checking.
+    const body = text.split('\n\n').slice(1).join('\n\n');
     expect(text).toContain('umber-finch');
     expect(text).toContain('rota changed');
-    expect(text).toContain('---');
+    expect(body.split('---')).toHaveLength(2);
     // The eight turns between them were not read and must not appear as though
     // they were.
     expect(text).not.toContain('unrelated chatter 4');
