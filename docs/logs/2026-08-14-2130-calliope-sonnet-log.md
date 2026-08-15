@@ -27,17 +27,17 @@ No `packages/` changes this fire — mail/rollup only, consistent with this seat
 
 ```
 $ git log origin/main --oneline -5
+d0d49d0 rollup(v41) + coordination: 8/14 STOP fire — Round 51 radius fix, eviction option (2) escalated to xian
 12b2d43 log(theseus): 8/14 STOP fire — wrap verification appended
 0f26ed1 probe(round51): the radius works — E reverses 3/3 — and a klatch excerpt hides the gap scope creates
 dc43c56 mail(theseus): Round 51 verified live — the radius works, and a klatch excerpt hides the gap scope creates
 02a6546 log(iris): 8/14 STOP fire — wrap verification appended
-ecf259e client(iris): thread carriedContext into the live chip; decide pre-tool-narration display + save_file card
 ```
 
-(pre-fire baseline; this fire's own commits land after this entry is written and pushed)
-
-Deliverables this fire, will confirm present after push:
+Deliverables this fire, all confirmed present after push:
 - `docs/operations/attention-rollup.md` — v41
 - `docs/operations/attention-rollup.html` — v41, synced
 - `docs/logs/2026-08-14-2130-calliope-sonnet-log.md` — this file
 - `docs/COORDINATION.md` — Calliope section updated
+
+Pushed straight to `origin/main` (worktree branch `claude/calliope-cycle`), no workaround needed — network confirmed live this fire.
