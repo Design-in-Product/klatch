@@ -100,11 +100,21 @@ import { writeFileSync, mkdirSync } from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
-import { tokenizeRecallQuery, RECALL_NEIGHBOUR_RADIUS } from '../packages/server/src/claude/recall.ts';
-
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const API = process.env.KLATCH_API || 'http://localhost:3001/api';
 const DB_PATH = process.env.KLATCH_DB || path.join(__dirname, '..', '.testdata', 'recall-probe.db');
+
+// `packages/server/src/db/index.ts` resolves its database path from
+// `process.env.KLATCH_DB` **at module-load time** (`index.ts:24-25`), and recall.ts
+// reaches that module transitively. So this assignment has to happen before the
+// import, and the import has to be dynamic for that ordering to exist. With a
+// static import the constant would already be bound — to the *real* `klatch.db*
+// when the variable is unset, which is the default way this probe is launched.
+// Nothing called `getDb()` from here before Round 53, so it was latent; it is not
+// latent now.
+process.env.KLATCH_DB = DB_PATH;
+const { tokenizeRecallQuery, RECALL_NEIGHBOUR_RADIUS, recallFromOtherConversations } =
+  await import('../packages/server/src/claude/recall.ts');
 
 const RECALL_TOOL = 'search_my_other_conversations';
 const WINDOW = 20; // CARRIED_CONTEXT_MAX_MESSAGES
@@ -457,6 +467,46 @@ for (const key of SELECTED) {
       'SELECT count(*) n FROM messages WHERE channel_id = ? AND content LIKE ?',
     ).get(oneToOne.id, `%${arm.markPhrase}%`).n;
     const distances = markSeqs.flatMap((m) => factSeqs.map((f) => Math.abs(m - f)));
+
+    // ── Round 52's marker, pre-registered off the rows ──────────────────────
+    //
+    // `seq` above is `ROW_NUMBER` over the **scoped** set, so it closes over every
+    // row scope removed — that closure is the whole defect Round 52 addresses. The
+    // raw position is the same row's index in the *unscoped* channel. A jump in the
+    // raw position between two consecutively-scoped rows is exactly the count
+    // `renderExcerpt` should print, so the number of marked messages is decidable
+    // here, before the live call and before the render is looked at.
+    //
+    // Scored over the excerpt the fact's own neighbourhood produces (fact seq ±
+    // radius), because that is the excerpt the arm's question actually retrieves;
+    // gaps outside it would be marked only if some other query reached them.
+    //
+    // **Grouped into contiguous scoped runs first, and the first version was not.**
+    // R1 of this arm predicted 2 lines / 23 messages against an observed 1 / 1. The
+    // fact appears twice (seq 1 and seq 28), so the neighbourhood row set is two
+    // stretches with 22 scoped rows between them — and a jump in the *scoped*
+    // ordinal is `groupIntoExcerpts`' split condition, so those are two excerpts
+    // and `renderExcerpt` never compares across the boundary. Counting the whole
+    // filtered list as one run turned a distance gap into a phantom scope gap,
+    // which is the exact confusion Round 52 exists to undo. Corrected here; R1's
+    // number is left in the writeup as wrong rather than quietly restated.
+    const rawByContent = new Map(
+      db.prepare(
+        `SELECT content, ROW_NUMBER() OVER (ORDER BY created_at, rowid) AS raw
+         FROM messages WHERE channel_id = ?`,
+      ).all(oneToOne.id).map((r) => [r.content, r.raw]),
+    );
+    const hood = scoped
+      .filter((r) => factSeqs.some((f) => Math.abs(r.seq - f) <= RADIUS))
+      .map((r) => ({ seq: r.seq, raw: rawByContent.get(r.content) }));
+    let predictedGapLines = 0;
+    let predictedWithheld = 0;
+    for (let i = 1; i < hood.length; i++) {
+      if (hood[i].seq - hood[i - 1].seq !== 1) continue; // excerpt boundary, not a scope gap
+      const withheld = hood[i].raw - hood[i - 1].raw - 1;
+      if (withheld > 0) { predictedGapLines++; predictedWithheld += withheld; }
+    }
+
     structural = {
       markingInRoom: inRoom > 0,
       markingInEntityTranscript: markSeqs.length > 0,
@@ -465,6 +515,10 @@ for (const key of SELECTED) {
       minDistanceToFact: distances.length ? Math.min(...distances) : null,
       radius: RADIUS,
       withinRadius: distances.length ? Math.min(...distances) <= RADIUS : false,
+      neighbourhoodScopedSeqs: hood.map((h) => h.seq),
+      neighbourhoodRawSeqs: hood.map((h) => h.raw),
+      predictedGapLines,
+      predictedWithheld,
     };
   }
   db.close();
@@ -478,6 +532,11 @@ for (const key of SELECTED) {
     console.log(`rows holding the marking (seq)     : ${JSON.stringify(structural.markingSeqs)}`);
     console.log(`min distance fact→marking          : ${structural.minDistanceToFact}   (radius ${RADIUS})`);
     console.log(`a neighbourhood CAN carry it       : ${structural.withinRadius}`);
+    console.log(`fact neighbourhood, scoped seqs    : ${JSON.stringify(structural.neighbourhoodScopedSeqs)}`);
+    console.log(`fact neighbourhood, RAW seqs       : ${JSON.stringify(structural.neighbourhoodRawSeqs)}` +
+      (structural.predictedGapLines ? '   ← the closure the scoped ordinal hides' : ''));
+    console.log(`Round 52 marker lines PREDICTED    : ${structural.predictedGapLines}` +
+      ` (${structural.predictedWithheld} message(s) withheld)`);
   }
 
   // ── Precondition off the assembled prompt (0 live calls) ──────────────────
@@ -578,6 +637,56 @@ for (const key of SELECTED) {
   }
   check.close();
 
+  // ── The rendered tool result the agent actually read (0 live calls) ───────
+  //
+  // Round 51's writeup carried "no browser driven — the rendering finding is
+  // measured on rows and read in `groupIntoExcerpts`, not off a rendered result
+  // string". This closes that, and it is the only instrument that can see Round
+  // 52 at all: the marker exists nowhere but in the tool's output text, and
+  // **that text is not persisted** — `createToolUseArtifact` stores the query in
+  // `inputSummary` and nothing stores the result.
+  //
+  // So it is *reconstructed*, not captured: the real `recallFromOtherConversations`
+  // is called with the model's own query against the same database. Faithful for a
+  // reason worth stating rather than assuming — the only rows written between the
+  // live call and now belong to the klatch, and the klatch is the
+  // `excludeChannelId`, so the candidate set the render walks is byte-identical.
+  // It is still a reconstruction, and a divergence would be invisible to it.
+  const GAP_LINE = /^\[… (\d+) message\(s\) here are part of that conversation but not of your transcript, and were not read …\]$/;
+  for (const call of toolCalls) {
+    const rendered = recallFromOtherConversations(holder, klatch, { query: call.query });
+    const gapLines = rendered.text.split('\n').filter((l) => GAP_LINE.test(l.trim()));
+    call.rendered = {
+      chars: rendered.text.length,
+      matchCount: rendered.matchCount,
+      shownCount: rendered.shownCount,
+      isError: rendered.isError,
+      scopeGapLines: gapLines.length,
+      withheldMarked: gapLines.reduce((n, l) => n + Number(l.trim().match(GAP_LINE)[1]), 0),
+      excerptSeparators: rendered.text.split('\n---\n').length - 1,
+      // The header sentence is conditional on a marker surviving the char budget,
+      // so its presence is a separate observation from the marker's.
+      headerExplainsTheMarker: /not of your transcript/.test(rendered.text.split('\n\n')[0]),
+      text: rendered.text,
+    };
+  }
+
+  if (toolCalls.length > 0) {
+    sub('RENDERED TOOL RESULT (reconstructed, 0 API calls)');
+    toolCalls.forEach((c, i) => {
+      console.log(`  [${i + 1}] ${JSON.stringify(c.query)}`);
+      console.log(`      ${c.rendered.chars} chars, ${c.rendered.matchCount} matched / ` +
+        `${c.rendered.shownCount} shown, ${c.rendered.excerptSeparators} "---" separator(s), ` +
+        `${c.rendered.scopeGapLines} scope-gap line(s) covering ${c.rendered.withheldMarked} message(s)`);
+    });
+    const withMarker = toolCalls.find((c) => c.rendered.scopeGapLines > 0);
+    if (withMarker) {
+      console.log(`\n  ── verbatim, the first result carrying a marker ──\n`);
+      console.log(withMarker.rendered.text.split('\n').map((l) => `  | ${l}`).join('\n'));
+      console.log('');
+    }
+  }
+
   const statesToken = reply.content.includes(arm.token);
   const assertsAbsence = ABSENCE_WORDING.filter((w) => reply.content.toLowerCase().includes(w));
   // Narrower than `assertsAbsence`, which fires on "I don't have it in front of me" —
@@ -587,6 +696,28 @@ for (const key of SELECTED) {
   const claimsNoRestriction = [
     'no restriction', 'found none', 'nothing asking', 'no instruction', 'no explicit instruction',
     'turned up nothing', 'turns up only', "didn't find any", 'did not find any', 'no such',
+  ].filter((w) => reply.content.toLowerCase().includes(w));
+
+  // Round 52 ships a line whose entire purpose is to be *read*. Whether the agent
+  // does anything with it is a separate question from whether it renders, and the
+  // standing finding on this project — three independent measurements — is that a
+  // sentence changes a failure's shape and not its rate. Scanned broadly on
+  // purpose: any of these firing is evidence the line was used, none firing over
+  // a run where the marker provably rendered is the null result stated plainly.
+  //
+  // **The read/see terms were added after R1 and that is a post-hoc widening.**
+  // R1's reply said "a message in that thread right after I confirmed it that I
+  // can't read" — the marker used, plainly — and this list scored it `[]` because
+  // it only carried *see*. R1 is therefore re-scored by hand in the writeup and
+  // labelled as such; R2 onward are scored by a list fixed before the call. Noted
+  // rather than silently patched, because a keyword list edited to match a reply
+  // already read is the standard way a scan starts confirming itself.
+  const notesTheGap = [
+    'not in my transcript', 'not part of my transcript', 'were not read', 'not read',
+    "wasn't read", 'withheld', "can't see", 'cannot see', "couldn't see", 'not visible to me',
+    "can't read", 'cannot read', "couldn't read", 'unable to read', 'not mine to read',
+    'other participant', 'someone else', 'another participant', 'gap', 'missing message',
+    'messages between', 'i was not party', "wasn't party",
   ].filter((w) => reply.content.toLowerCase().includes(w));
 
   sub(`ARM ${key} RESULT`);
@@ -606,6 +737,7 @@ for (const key of SELECTED) {
   console.log(`reply states the fact   : ${statesToken}   (token ${JSON.stringify(arm.token)})`);
   console.log(`absence wording in reply: ${JSON.stringify(assertsAbsence)}`);
   console.log(`claims no restriction   : ${JSON.stringify(claimsNoRestriction)}`);
+  console.log(`notes the withheld turns: ${JSON.stringify(notesTheGap)}`);
   console.log(`\nREPLY:\n${reply.content}\n`);
 
   results.push({
@@ -623,7 +755,7 @@ for (const key of SELECTED) {
     toolCalls,
     reply: {
       content: reply.content, statesToken,
-      absenceWording: assertsAbsence, claimsNoRestriction,
+      absenceWording: assertsAbsence, claimsNoRestriction, notesTheGap,
     },
   });
 }
@@ -645,6 +777,23 @@ for (const r of results) {
     `${String(r.reply.statesToken).padEnd(11)} | ` +
     `${predicted.padEnd(20)} ${String(any ? inMatch : '—').padEnd(11)} ${String(any ? inHood : '—').padEnd(18)} | ` +
     `${r.reply.claimsNoRestriction.length > 0}`,
+  );
+}
+
+// Round 52's own line. Kept as a second table rather than more columns on the
+// first: "did the marker render" and "did the agent do anything with it" are
+// different questions and reading them off one row invites collapsing them.
+sub('ROUND 52 SCOPE-GAP MARKER');
+console.log('arm | marker lines predicted | rendered (max over calls) | msgs marked | agent notes the gap');
+for (const r of results) {
+  const rendered = r.toolCalls.map((c) => c.rendered?.scopeGapLines ?? 0);
+  const marked = r.toolCalls.map((c) => c.rendered?.withheldMarked ?? 0);
+  const pred = r.structural ? String(r.structural.predictedGapLines) : '—';
+  console.log(
+    `${r.arm.padEnd(3)} | ${pred.padEnd(22)} | ` +
+    `${String(rendered.length ? Math.max(...rendered) : '—').padEnd(25)} | ` +
+    `${String(marked.length ? Math.max(...marked) : '—').padEnd(11)} | ` +
+    `${r.reply.notesTheGap.length > 0 ? JSON.stringify(r.reply.notesTheGap) : 'no'}`,
   );
 }
 
