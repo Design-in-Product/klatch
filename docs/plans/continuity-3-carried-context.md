@@ -884,3 +884,131 @@ sensitive only to over-marking.
 - **Option (2), never evict a marking — with xian.** Round 52 makes G's hole visible and it is still
   a hole; Round 54 makes F's hole visible and it is still a hole. Visibility is not filling.
 - **Backfill** (gap doc open question 3), still with xian. All 72 imports on `default-entity`.
+
+---
+
+# Round 56 — the counted turns can be asked for (2026-08-15, STOP fire)
+
+## What Round 55 measured, and the part of it that is not the headline
+
+Theseus drove Round 54 live (`docs/research/round55-excerpt-edge-marker-live-2026-08-15.md`,
+11 turns, 30 recall calls; arms F n=5, H n=3, G n=3).
+
+**The headline is null.** Arm F asserts the false absence 4/5 on the Round 54 build against
+4/4 before it — **8/9 across three builds**. Three of the five say *"No restriction was
+attached to it there"* essentially verbatim, with the line saying 27 later messages were
+unshown and reachable printed directly beneath the three lines they are generalising from.
+
+**The arm that would separate my two predicted mechanisms does not exist.** I named ubiquity
+and anchoring as the two candidates and both predict this result. Theseus went looking for an
+arm holding anchoring constant with a small tractable count and established it is **not
+constructible**: the restriction has to be outside the 20-message window to be evictable,
+which forces ≥21 rows between the fact's excerpt and the restate excerpt. Small count and
+out-of-window restriction are mutually exclusive here. Recorded so no later fire pays to
+rediscover it.
+
+**And the clause acted.** In F/R3 and F/R4 the agent issued an unprompted query aimed at the
+restriction itself — `"codeword keep this thread only don't repeat"` — a shape appearing
+nowhere in Rounds 50, 51 or 53. **Both returned 0 rows and both had to.** Terms are ANDed and
+the agent has to guess the restriction's vocabulary from the *question's* domain; the
+restriction says *"keep it between the two of us. Don't repeat it in any other channel."* No
+shared distinctive term. Round 51's arm-E finding recurring one level up, now **triggered by
+the fix**.
+
+**F/R4 is the run this increment is built on, and it is a warning as much as a lead.** In
+order: the line said 27 turns were reachable → the agent searched for the restriction → the
+search returned nothing → the agent wrote *"No restriction was attached to it there."* Round
+54 did not merely fail to stop the claim; **it handed the agent a search it had performed and
+failed, which is a better-feeling warrant for the same false sentence than it had before.**
+n=1 of 5, an existence proof of a mechanism rather than a rate.
+
+Two results worth keeping alongside: **no false-positive cautions at all** (0/5 and 0/3 —
+this is not the `LOSSY_WINDOW_NOTICE` failure of a hedge attached to nothing), and **no
+dilution of the Round 52 marker** (arm G 3/3 named the specific missing turn, identical to
+Round 53, with both markers rendering in one result).
+
+## What Round 56 builds
+
+The count becomes an address. The marker already knows exactly which rows it is counting;
+handing over a number and asking the agent to re-find them by keyword is the thing that
+cannot land.
+
+**`edgeGapLine`'s reachable clause carries `{conversation, from, to}`.**
+
+> `[… 27 later message(s) in this conversation, not shown here: 27 you can read — ask for
+> them with expand {conversation: "ops-handover", from: 12, to: 38} …]`
+
+**`to - from + 1 === ownCount` by construction**, and the address is measured against
+*whichever reference the count used*. Where an edge sits between two rendered excerpts of the
+same room, the count is the turns between them and so is the address — 4–9, not 1–9. An
+address measured to the conversation boundary would be a true statement about the room and a
+false one about the page, the same error the count itself was guarded against in Round 54.
+
+**`expandConversationRange` returns the stretch.** `getEntityTranscriptRange` uses the same
+two CTEs as `getEntityTranscriptNeighbourhoods` — deliberately, because a range addressed in
+one numbering and resolved in another would return a real stretch of the right room at the
+wrong place, which is the one failure a reader cannot catch.
+
+### Four decisions, each a way it could have gone quietly wrong
+
+1. **Scope is unchanged, and that is what makes the split load-bearing.** The ordinal is
+   `ROW_NUMBER` over the same membership union everything else reads. A turn spoken by
+   another agent in a shared room has **no position in this numbering**, so it cannot be
+   addressed here any more than it could be matched. The reachable count fetches; the
+   unreachable count still cannot; an expansion spanning a withheld turn renders the Round 52
+   interior marker in place. **This adds no reach — it removes a guess.**
+2. **An ambiguous name is refused, not resolved.** Klatch does not enforce unique channel
+   names. `findEntityTranscriptChannelsByName` returns every match and the caller reports the
+   ambiguity, because answering from one of two returns a real stretch of the wrong
+   conversation under a label the agent has no way to check.
+3. **The cap is on rows, not characters, and it says where it stopped.** A search asks for
+   matches and gets whatever context they carry; an expand names a stretch of any size.
+   "Positions 12–41 of the 12–120 you asked for, ask again from 42" is a sentence the agent
+   can act on; a character budget would truncate at a place with no meaning.
+4. **The expansion is an excerpt like any other.** Its own edges are marked and addressable,
+   so reading to the end has to be earned rather than assumed — and expanding a *whole*
+   conversation emits no edge marker at all.
+
+## Verification
+
+`npm test` 1360 server (+16) / 230 client, exit 0; typecheck clean ×3; `npm run build` green.
+
+Failing direction proven for **all nine load-bearing pieces**, each reverted on its own
+(`scripts/round56-revert-probe.mjs`, committed and re-runnable): 9 / 2 / 6 / 7 / 1 / 1 / 1 /
+1 / 1 red. E5–E9 are singletons; E2 (address measured to the conversation boundary) reddens
+exactly the two reference-row tests.
+
+**The Round 54 revert probe had silently stopped reporting.** Its ANSI strip left the escape
+byte behind, collapsing the whitespace its totals regex keyed on, so every revert printed
+`Tests ?` — an instrument that had stopped measuring, presenting exactly as one that ran.
+Found only because Round 56 changed the wording R2's anchor keys on. Both parsers fixed, R2
+re-anchored, and Round 54's eight reverts re-run: **all still red.** Third instance of the
+stale-probe class on this work and the first in an instrument rather than a test.
+
+## Not proven by this fire, stated rather than glossed
+
+- **No live call, no browser.** Whether the agent takes the address is unmeasured, and it is
+  a *separate question* from whether taking it helps. If the expand clause produces an action
+  0/5 where Round 54's produced one 2/5, the finding is about the instruction and not about
+  the mechanism.
+- **The failure this cannot rule out is F/R4's, one level up.** A *failed* search became a
+  warrant for a false absence claim. **A successful expansion that happens to contain no
+  restriction can be read the same way and more strongly** — the agent will have looked, and
+  this time actually seen. Three things push against it (the header states extent and not
+  meaning; the expansion carries its own marked, addressable edges; a capped expansion says
+  where it stopped) and **none of them is sufficient**. This is why Round 56 ships *with* the
+  edge marker rather than instead of it, and it is the control most worth running: an arm
+  where the expansion is genuinely empty.
+- **Ambiguous conversation names are an honest dead end, not a solved case.**
+- **Specificity as the design rule is Theseus's read and it is still n=1.** His framing —
+  *specific unknown → "I can't rule it out"; numeric unknown → "no restriction was
+  attached"* — is what an address is trying to satisfy, and G/R3's refusal (the first in nine
+  live arm-G runs) credits the Round 52 marker, not this one.
+
+## Still open after this fire
+
+- **Option (2), never evict a marking — with xian.** Round 52 made G's hole visible; Round 54
+  made F's visible; Round 56 lets F's hole be *read* rather than merely counted. **None of the
+  three fills one.** An agent that can now fetch the turns is still an agent whose carried
+  context evicted them.
+- **Backfill** (gap doc open question 3), still with xian. All 72 imports on `default-entity`.
