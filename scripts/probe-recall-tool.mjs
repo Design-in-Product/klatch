@@ -133,6 +133,7 @@
 
 import Database from 'better-sqlite3';
 import { randomUUID } from 'crypto';
+import { buildRecogniser } from './lib/recall-recogniser.mjs';
 import { writeFileSync, mkdirSync } from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -150,7 +151,7 @@ const DB_PATH = process.env.KLATCH_DB || path.join(__dirname, '..', '.testdata',
 // Nothing called `getDb()` from here before Round 53, so it was latent; it is not
 // latent now.
 process.env.KLATCH_DB = DB_PATH;
-const { tokenizeRecallQuery, RECALL_NEIGHBOUR_RADIUS, recallFromOtherConversations, expandConversationRange } =
+const { tokenizeRecallQuery, RECALL_NEIGHBOUR_RADIUS, recallFromOtherConversations, expandConversationRange, RECALL_MARKER_PHRASES } =
   await import('../packages/server/src/claude/recall.ts');
 
 const RECALL_TOOL = 'search_my_other_conversations';
@@ -158,6 +159,28 @@ const WINDOW = 20; // CARRIED_CONTEXT_MAX_MESSAGES
 // Imported, not written as `2`, for the same reason the tokenizer is imported: a copy of a
 // constant under test drifts silently, and this one is the whole difference between arms E and F.
 const RADIUS = RECALL_NEIGHBOUR_RADIUS;
+
+// The marker vocabulary, imported rather than hand-copied as of 2026-08-16 (WORK fire).
+//
+// Until this fire the recogniser below wrote every marker substring out by hand. That is how
+// `REACHABLE_R54` came to read a false zero after Round 56 reworded the clause: a stale pattern
+// does not announce itself, it reports 0, and 0 is a legal value. Daedalus landed
+// `RECALL_MARKER_PHRASES` (`recall.ts:145`) as the single source `scopeGapLine`, `edgeGapLine`
+// and `gapSentences` all assemble from, so a recogniser can derive from the same record.
+//
+// **What this trade gives up, said plainly.** A probe that imports the substrings agrees with
+// the build by construction. It can never again read a false zero; it can also never again
+// notice that the wording moved. Detecting a rewording is now a test's job and it is done in
+// the build's own suite, longhand, in `round58-recall-marker-phrases.test.ts`. Measuring model
+// behaviour under whatever wording ships is this probe's job. Two jobs, two instruments.
+//
+// **The swap was measured, not eyeballed.** `scripts/verify-recogniser-equivalence.mjs` renders
+// real search and expand text and runs the old hand-written patterns and these derived ones over
+// it, comparing every extracted field. Both surfaces identical, markers confirmed fired. Run
+// before the swap, because replacing an instrument mid-experiment is the confound this whole
+// line of work exists to avoid.
+const P = RECALL_MARKER_PHRASES;
+const RECOGNISER = buildRecogniser(P);
 
 const j = async (method, pathname, body) => {
   const r = await fetch(API + pathname, {
@@ -1043,22 +1066,6 @@ for (const key of SELECTED) {
   // live call and now belong to the klatch, and the klatch is the
   // `excludeChannelId`, so the candidate set the render walks is byte-identical.
   // It is still a reconstruction, and a divergence would be invisible to it.
-  const GAP_LINE = /^\[… (\d+) message\(s\) here are part of that conversation but not of your transcript, and were not read …\]$/;
-  // Round 54's second marker. Matched with its own pattern rather than a loosened version of
-  // GAP_LINE, on purpose: Daedalus's stated design is two markers with two vocabularies, and a
-  // regex that accepted either would make "the interior phrase leaked onto the edge line" —
-  // the exact regression his test suite guards — invisible to this probe.
-  const EDGE_LINE = /^\[… (\d+) (earlier|later) message\(s\) in this conversation, not shown here: (.+) …\]$/;
-  // Round 54's reachable clause read `"N that a different search of yours could reach"`.
-  // Round 56 replaces it with an address (`recall.ts:216-221`) and leaves the *unreachable*
-  // clause untouched. Both wordings are matched here, separately rather than by one loosened
-  // pattern, for the reason the Round 54 probe's own totals regex failed this week: a
-  // stale pattern does not announce itself — it reports zero, and zero is a legal value.
-  // If a build ever renders neither, `edgeReachable` is 0 while `edgeLines` is not, which is
-  // visible in the printout rather than silent.
-  const REACHABLE_R54 = /(\d+) that a different search of yours could reach/;
-  const REACHABLE_R56 = /(\d+) you can read — ask for them with expand \{conversation: "([^"]*)", from: (\d+), to: (\d+)\}/;
-  const UNREACHABLE = /(\d+) that no search of yours can reach/;
   for (const call of toolCalls) {
     // An expansion is reconstructed through the function the route actually calls for it
     // (`client.ts:629-634`), not through the search path. Same reconstruction caveat as
@@ -1067,56 +1074,21 @@ for (const key of SELECTED) {
     const rendered = call.kind === 'expand'
       ? expandConversationRange(holder, klatch, call.expand)
       : recallFromOtherConversations(holder, klatch, { query: call.query });
-    const gapLines = rendered.text.split('\n').filter((l) => GAP_LINE.test(l.trim()));
-    const edgeLines = rendered.text.split('\n')
-      .map((l) => l.trim().match(EDGE_LINE))
-      .filter(Boolean)
-      .map((m) => ({
-        total: Number(m[1]),
-        side: m[2],
-        reachable: Number(m[3].match(REACHABLE_R56)?.[1] || m[3].match(REACHABLE_R54)?.[1] || 0),
-        // The address the line offered, or null where the build offers none. Kept as a
-        // structure rather than a boolean so `to - from + 1 === reachable` can be checked
-        // against the render itself, and so a model's call can be compared to it verbatim.
-        address: (() => {
-          const a = m[3].match(REACHABLE_R56);
-          return a ? { conversation: a[2], from: Number(a[3]), to: Number(a[4]) } : null;
-        })(),
-        unreachable: Number(m[3].match(UNREACHABLE)?.[1] || 0),
-        // The interior marker's phrase must never appear on an edge line — the interior
-        // header sentence promises "the lines either side of it are not consecutive", which
-        // has no referent where there is only one side.
-        leakedInteriorPhrase: /not of your transcript/.test(m[0]),
-      }));
     call.rendered = {
-      edgeLines: edgeLines.length,
-      edgeLineDetail: edgeLines,
-      edgeReachable: edgeLines.reduce((n, e) => n + e.reachable, 0),
-      edgeUnreachable: edgeLines.reduce((n, e) => n + e.unreachable, 0),
-      edgeVocabularyLeak: edgeLines.some((e) => e.leakedInteriorPhrase),
-      // Round 56's two claims about the address, checked against the render rather than
-      // taken from the landing memo: that one is offered at all, and that the range it
-      // names is exactly as long as the count beside it (`to - from + 1 === ownCount`).
-      addressesOffered: edgeLines.map((e) => e.address).filter(Boolean),
-      addressArithmeticOk: edgeLines
-        .filter((e) => e.address)
-        .every((e) => e.address.to - e.address.from + 1 === e.reachable),
+      // Everything the marker patterns determine, from the one shared recogniser —
+      // `scripts/lib/recall-recogniser.mjs`, the same module `verify-recogniser-equivalence.mjs`
+      // certifies. The fields below it are the ones the patterns do *not* determine.
+      ...RECOGNISER.read(rendered.text),
       // Did the text the agent actually read contain the restriction? For a search this
       // is the Round 51 radius question; for an expansion it is §3 of Daedalus's memo —
       // whether a completed lookup that legitimately contains no restriction licenses a
       // stronger false claim than a failed search did.
       holdsTheMarking: arm.markPhrase ? rendered.text.includes(arm.markPhrase) : null,
-      headerExplainsTheEdge: /is the edge of an excerpt/.test(rendered.text.split('\n\n')[0]),
       chars: rendered.text.length,
       matchCount: rendered.matchCount,
       shownCount: rendered.shownCount,
       isError: rendered.isError,
-      scopeGapLines: gapLines.length,
-      withheldMarked: gapLines.reduce((n, l) => n + Number(l.trim().match(GAP_LINE)[1]), 0),
       excerptSeparators: rendered.text.split('\n---\n').length - 1,
-      // The header sentence is conditional on a marker surviving the char budget,
-      // so its presence is a separate observation from the marker's.
-      headerExplainsTheMarker: /not of your transcript/.test(rendered.text.split('\n\n')[0]),
       text: rendered.text,
     };
   }
@@ -1138,7 +1110,13 @@ for (const key of SELECTED) {
       console.log(`      edge line(s): ${c.rendered.edgeLines}` +
         ` — ${c.rendered.edgeReachable} reachable / ${c.rendered.edgeUnreachable} unreachable;` +
         ` header explains the edge: ${c.rendered.headerExplainsTheEdge}` +
-        (c.rendered.edgeVocabularyLeak ? '   ← INTERIOR PHRASE LEAKED ONTO AN EDGE LINE' : ''));
+        (c.rendered.edgeVocabularyLeak ? '   ← INTERIOR PHRASE LEAKED ONTO AN EDGE LINE' : '') +
+        (c.rendered.recogniserBlind ? '   ← RECOGNISER BLIND: an edge line rendered clauses no pattern read; the counts above are not measurements' : ''));
+      for (const v of c.rendered.expectationViolations) {
+        console.log(`      !! EXPECTATION VIOLATED — ${v.name}`);
+        console.log(`         expected: ${v.expect}`);
+        console.log(`         ${v.why}`);
+      }
     });
     const withMarker = toolCalls.find((c) => c.rendered.scopeGapLines > 0)
       || toolCalls.find((c) => c.rendered.edgeLines > 0);
