@@ -68,8 +68,21 @@ const t = (n: number) => `2026-08-15T09:${String(n).padStart(2, '0')}:00.000Z`;
 
 /** The interior marker's phrase. It must never appear on an edge line. */
 const INTERIOR_PHRASE = 'not of your transcript';
-/** The two edge clauses, which state an affordance rather than a category. */
-const REACHABLE = 'a different search of yours could reach';
+/**
+ * The two edge clauses, which state an affordance rather than a category.
+ *
+ * The reachable clause carries an address as of Round 56 — Theseus measured the
+ * Round 54 wording ("a different search of yours could reach") producing real
+ * searches that structurally could not land
+ * (`docs/research/round55-excerpt-edge-marker-live-2026-08-15.md` §2). These
+ * tests assert the same properties they always did; only the clause they quote
+ * moved. `REACHABLE_STEM` is what every reachable clause shares regardless of
+ * address, so tests that only care that the split happened do not have to
+ * compute one.
+ */
+const REACHABLE_STEM = 'you can read — ask for them with expand';
+const reachable = (conversation: string, from: number, to: number) =>
+  `${REACHABLE_STEM} {conversation: "${conversation}", from: ${from}, to: ${to}}`;
 const UNREACHABLE = 'no search of yours can reach';
 /** The conditional header sentence that explains the edge marker. */
 const EDGE_HEADER = 'is the edge of an excerpt';
@@ -129,7 +142,8 @@ describe('Round 54 — the edge of an excerpt is stated, not left to the header'
     const lines = body(result.text);
     const last = lines[lines.length - 1];
     expect(last).toContain('3 later message(s) in this conversation');
-    expect(last).toContain(REACHABLE);
+    // Ordinals 6–8 of the 1-1: the restriction, the ack, and "thanks".
+    expect(last).toContain(reachable('vesper-1-1', 6, 8));
   });
 
   it('does not mark the leading edge when the excerpt starts the conversation', () => {
@@ -194,11 +208,11 @@ describe('Round 54 — reachable and unreachable are counted apart', () => {
     const lines = body(result.text);
     expect(lines[0]).toBe(
       '[… 2 earlier message(s) in this conversation, not shown here: ' +
-      `1 that ${REACHABLE}; 1 that ${UNREACHABLE} …]`
+      `1 ${reachable('weekly-review', 1, 1)}; 1 that ${UNREACHABLE} …]`
     );
     expect(lines[lines.length - 1]).toBe(
       '[… 2 later message(s) in this conversation, not shown here: ' +
-      `1 that ${REACHABLE}; 1 that ${UNREACHABLE} …]`
+      `1 ${reachable('weekly-review', 7, 7)}; 1 that ${UNREACHABLE} …]`
     );
   });
 
@@ -289,7 +303,9 @@ describe('Round 54 — the reference row', () => {
     const between = lines.findIndex((l) => l.includes('earlier message(s)'));
     expect(between).toBeGreaterThan(0);
     expect(lines[between]).toContain('6 earlier message(s) in this conversation');
-    expect(lines[between]).toContain(REACHABLE);
+    // The address must be measured against the same reference the count is:
+    // rows 4–9, not 1–9.
+    expect(lines[between]).toContain(reachable('vesper-1-1', 4, 9));
   });
 
   it('measures against the same conversation, not the array neighbour', () => {

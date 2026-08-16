@@ -5,7 +5,14 @@ import type { Entity, Channel, Project, Message, MessageArtifact, MessageStopRea
 import { DEFAULT_MODEL } from '@klatch/shared';
 import { readFile, isTextFile, isImageFile, saveFile } from '../files/storage.js';
 import { buildCarriedContextBlock, RECALL_TOOL_NAME } from './carried-context.js';
-import { recallFromOtherConversations, RECALL_TOOL_DESCRIPTION, RECALL_DEFAULT_LIMIT, RECALL_MAX_LIMIT } from './recall.js';
+import {
+  recallFromOtherConversations,
+  expandConversationRange,
+  RECALL_TOOL_DESCRIPTION,
+  RECALL_DEFAULT_LIMIT,
+  RECALL_MAX_LIMIT,
+  type ExpandRequest,
+} from './recall.js';
 
 // Lazy-init: the Anthropic client must not be created at import time
 // because ESM hoists imports before dotenv.config() runs in index.ts.
@@ -563,11 +570,39 @@ function buildTools(recall?: RecallScope): Anthropic.Tool[] {
             type: 'number',
             description: `How many matching messages to return, most recent first. Default ${RECALL_DEFAULT_LIMIT}, maximum ${RECALL_MAX_LIMIT}.`,
           },
+          // Grouped rather than flattened to three top-level arguments so a
+          // half-specified address is not expressible: a conversation with no
+          // range, or a range with no conversation, would each have to be
+          // guessed at, and the guess would return real rows from somewhere
+          // nobody asked about.
+          expand: {
+            type: 'object',
+            description:
+              'Instead of searching, return the turns an edge marker counted. Use the address a result gave you, not positions you worked out yourself.',
+            properties: {
+              conversation: {
+                type: 'string',
+                description: 'The conversation name, exactly as the expand address in the result spells it.',
+              },
+              from: { type: 'number', description: 'First position, from the expand address.' },
+              to: { type: 'number', description: 'Last position, from the expand address.' },
+            },
+            required: ['conversation', 'from', 'to'],
+          },
         },
-        required: ['query'],
       },
     },
   ];
+}
+
+/** The `expand` argument, if the model supplied a complete one. */
+function readExpandArg(toolInput: Record<string, unknown>): ExpandRequest | undefined {
+  const raw = toolInput.expand;
+  if (raw === null || typeof raw !== 'object') return undefined;
+  const { conversation, from, to } = raw as Record<string, unknown>;
+  if (typeof conversation !== 'string') return undefined;
+  if (typeof from !== 'number' || typeof to !== 'number') return undefined;
+  return { conversation, from, to };
 }
 
 /** Execute a tool call and return the result */
@@ -585,16 +620,26 @@ async function executeTool(
     if (!recall) {
       return { result: `${RECALL_TOOL_NAME} is not available in this conversation.`, isError: true };
     }
-    const result = recallFromOtherConversations(recall.entity, recall.channel, {
-      query: String(toolInput.query ?? ''),
-      ...(typeof toolInput.limit === 'number' ? { limit: toolInput.limit } : {}),
-    });
+    // `expand` wins when both are present. The model only ever gets an address
+    // by reading one out of a previous result, so a call carrying one is asking
+    // for a specific stretch it has already been told exists — running the
+    // keyword search instead would answer a question it did not ask.
+    const expand = readExpandArg(toolInput);
+    const query = String(toolInput.query ?? '');
+    const result = expand
+      ? expandConversationRange(recall.entity, recall.channel, expand)
+      : recallFromOtherConversations(recall.entity, recall.channel, {
+          query,
+          ...(typeof toolInput.limit === 'number' ? { limit: toolInput.limit } : {}),
+        });
     // Persisted so the call survives the stream. See `createToolUseArtifact` —
     // a tool called live left no row at all before this.
     createToolUseArtifact(
       assistantMessageId,
       RECALL_TOOL_NAME,
-      `Searched own conversations: ${String(toolInput.query ?? '')}`,
+      expand
+        ? `Expanded own conversation: ${expand.conversation} ${expand.from}–${expand.to}`
+        : `Searched own conversations: ${query}`,
     );
     return { result: result.text, isError: result.isError };
   }

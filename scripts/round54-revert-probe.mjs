@@ -23,9 +23,13 @@ const reverts = [
       ['if (leading !== undefined) lines.push(leading);', 'if (false && leading !== undefined) lines.push(leading);'],
       ['if (trailing !== undefined) lines.push(trailing);', 'if (false && trailing !== undefined) lines.push(trailing);'],
   ]},
+  // Re-anchored 8/15 after Round 56 rewrote the reachable clause to carry an
+  // address. The revert is the same one — collapse the two counts into one —
+  // and it still has to go red for the same reason: a single number sends the
+  // agent looking for turns nothing can reach.
   { name: 'R2 one collapsed count instead of two', file: RECALL, from: [
-      ['  if (ownCount > 0) {\n    clauses.push(`${ownCount} that a different search of yours could reach`);\n  }\n  if (outOfScopeCount > 0) {\n    clauses.push(`${outOfScopeCount} that no search of yours can reach`);\n  }',
-       '  if (ownCount + outOfScopeCount > 0) {\n    clauses.push(`${ownCount + outOfScopeCount} that a different search of yours could reach`);\n  }'],
+      ['  if (ownCount > 0) {\n    clauses.push(\n      address !== undefined\n        ? `${ownCount} you can read — ask for them with expand ` +\n          `{conversation: "${address.conversation}", from: ${address.from}, to: ${address.to}}`\n        : `${ownCount} that a different search of yours could reach`\n    );\n  }\n  if (outOfScopeCount > 0) {\n    clauses.push(`${outOfScopeCount} that no search of yours can reach`);\n  }',
+       '  if (ownCount + outOfScopeCount > 0) {\n    clauses.push(`${ownCount + outOfScopeCount} you can read`);\n  }'],
   ]},
   { name: 'R3 always measure to the conversation boundary', file: RECALL, from: [
       ['const before = edgeReference(keptExcerpts, i, -1);', 'const before = undefined;'],
@@ -53,6 +57,7 @@ const FILES = [
   'src/__tests__/round54-recall-excerpt-edges.test.ts',
   'src/__tests__/round52-recall-scope-gap.test.ts',
   'src/__tests__/round50-recall-tool.test.ts',
+  'src/__tests__/round56-recall-expand.test.ts',
 ].join(' ');
 
 for (const r of reverts) {
@@ -70,8 +75,10 @@ for (const r of reverts) {
   }
   writeFileSync(r.file, orig[r.file]);
   const clean = out.replace(/\[[0-9;]*m/g, '');
-  const failing = [...clean.matchAll(/× (.+?) \d+ms/g)].map((m) => m[1].trim());
-  const totals = (clean.match(/Tests {2}.*/) || ['?'])[0];
+  const failing = [...new Set(
+    [...clean.matchAll(/×\s+(.+)/g)].map((m) => m[1].replace(/\s+\d+ms$/, '').trim())
+  )];
+  const totals = (clean.match(/Tests\s+\d+ (?:failed|passed).*/) || ['?'])[0];
   console.log('\n### ' + r.name + '\n  ' + totals.trim());
   for (const f of failing) console.log('  - ' + f);
 }

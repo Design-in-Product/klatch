@@ -1,7 +1,9 @@
 import type { Channel, Entity } from '@klatch/shared';
 import {
   countEntityTranscript,
+  findEntityTranscriptChannelsByName,
   getEntityTranscriptNeighbourhoods,
+  getEntityTranscriptRange,
   type NeighbourhoodMessage,
 } from '../db/queries.js';
 import {
@@ -182,15 +184,41 @@ function scopeGapLine(count: number): string {
  * it has that the header does not is a number and a position; whether that is
  * the load-bearing difference is exactly what Theseus's arm F would measure, and
  * it is not measured here. Shipped as a testable proposition, on his ask.
+ *
+ * **Round 56 amends the reachable clause, and the amendment is Theseus's
+ * measurement rather than my second thought.** Arm F came back null 4/5 on the
+ * Round 54 build — but the clause *acted*: 2 of 5 runs issued an unprompted
+ * query aimed at the hidden restriction
+ * (`docs/research/round55-excerpt-edge-marker-live-2026-08-15.md` §2), a shape
+ * that appears nowhere in Rounds 50, 51 or 53. Both returned zero rows and both
+ * had to — terms are ANDed and the restriction shares no distinctive word with
+ * the question that provoked the search. In F/R4 the failed search then served
+ * as the warrant for the same false absence claim, which is a worse outcome than
+ * the passive version: *"a different search of yours could reach"* named an
+ * affordance the agent does not have.
+ *
+ * So the clause now hands over the address it already knows instead of a number
+ * and an instruction to go guessing. The range is in the same scoped ordinal the
+ * count is computed in — `ownCount` is exactly `to - from + 1` by construction,
+ * which `round56-recall-expand.test.ts` pins — and the conversation is named the
+ * way every rendered line already labels it. The unreachable clause is
+ * deliberately left saying nothing can reach those turns, because nothing can:
+ * they have no ordinal in this entity's numbering to name.
  */
 function edgeGapLine(
   side: 'earlier' | 'later',
   ownCount: number,
   outOfScopeCount: number,
+  address: { conversation: string; from: number; to: number } | undefined,
 ): string | undefined {
   const clauses: string[] = [];
   if (ownCount > 0) {
-    clauses.push(`${ownCount} that a different search of yours could reach`);
+    clauses.push(
+      address !== undefined
+        ? `${ownCount} you can read — ask for them with expand ` +
+          `{conversation: "${address.conversation}", from: ${address.from}, to: ${address.to}}`
+        : `${ownCount} that a different search of yours could reach`
+    );
   }
   if (outOfScopeCount > 0) {
     clauses.push(`${outOfScopeCount} that no search of yours can reach`);
@@ -456,37 +484,7 @@ export function recallFromOtherConversations(
       `shown alone — ask again with a smaller limit to see them in context.`
     );
   }
-  // Stated only when a marker is actually in the body. An unconditional sentence
-  // would train the agent to look for a line that is usually absent, and the
-  // header's job here is to explain what it can see rather than to hedge.
-  if (scopeGaps > 0) {
-    parts.push(
-      `Where a line reads "not of your transcript", other turns were spoken in ` +
-      `that conversation at that point and are not yours to read — so the lines ` +
-      `either side of it are not consecutive, and a message that answers or ` +
-      `qualifies one of them may be among the ones withheld.`
-    );
-  }
-  // Conditional for the same reason the scope-gap sentence is: it explains a
-  // line, and a sentence about a line that is not there teaches the agent to
-  // look for something usually absent.
-  //
-  // The last clause is the one this exists for. Theseus measured, four times
-  // across two fires, an agent reading three lines out of a thirty-message
-  // thread and stating a property of the thread — "No restriction was attached
-  // to it there" — with the restriction four rows outside the excerpt. That is
-  // the inference being contradicted, in the same words the failure uses.
-  if (edgeGaps > 0) {
-    parts.push(
-      `A line counting "earlier" or "later" message(s) is the edge of an ` +
-      `excerpt: the conversation runs on past it and those turns are not in ` +
-      `front of you. The ones it says a different search could reach are yours ` +
-      `to look for — search again with other terms if what you need may be ` +
-      `among them. Do not read an excerpt as a description of the whole ` +
-      `conversation: a condition on something shown here may have been stated ` +
-      `in a turn that is only counted.`
-    );
-  }
+  parts.push(...gapSentences(scopeGaps, edgeGaps));
 
   return {
     text: `${parts.join(' ')}\n\n${kept.join(EXCERPT_SEPARATOR)}`,
@@ -494,6 +492,225 @@ export function recallFromOtherConversations(
     matchCount,
     shownCount: shownMatches,
     tokens,
+  };
+}
+
+/**
+ * The header sentences that explain the two markers, stated only when the marker
+ * they explain is actually in the body.
+ *
+ * Shared by the search path and the expand path because both render through
+ * `renderExcerpt` and so can emit both markers. An unconditional sentence would
+ * train the agent to look for a line that is usually absent; a sentence that
+ * appears on one path and not the other would mean the same line is explained or
+ * not depending on how the rows were fetched.
+ */
+function gapSentences(scopeGaps: number, edgeGaps: number): string[] {
+  const sentences: string[] = [];
+  if (scopeGaps > 0) {
+    sentences.push(
+      `Where a line reads "not of your transcript", other turns were spoken in ` +
+      `that conversation at that point and are not yours to read — so the lines ` +
+      `either side of it are not consecutive, and a message that answers or ` +
+      `qualifies one of them may be among the ones withheld.`
+    );
+  }
+  // The last clause is the one this exists for. Theseus measured, eight times
+  // across three builds, an agent reading three lines out of a thirty-message
+  // thread and stating a property of the thread — "No restriction was attached
+  // to it there" — with the restriction four rows outside the excerpt. That is
+  // the inference being contradicted, in the same words the failure uses.
+  //
+  // The middle clause changed in Round 56 and the change is the increment: it
+  // used to say the reachable turns were "yours to look for" by searching again,
+  // which Theseus measured producing real searches that could not land. It now
+  // points at the address the line itself carries.
+  if (edgeGaps > 0) {
+    sentences.push(
+      `A line counting "earlier" or "later" message(s) is the edge of an ` +
+      `excerpt: the conversation runs on past it and those turns are not in ` +
+      `front of you. Where such a line gives an expand address, call this tool ` +
+      `again with exactly that expand argument and it will return those turns — ` +
+      `you do not have to guess their wording. Do not read an excerpt as a ` +
+      `description of the whole conversation: a condition on something shown ` +
+      `here may have been stated in a turn that is only counted.`
+    );
+  }
+  return sentences;
+}
+
+/** The address an edge marker hands over, as the model passes it back. */
+export interface ExpandRequest {
+  conversation: string;
+  from: number;
+  to: number;
+}
+
+/**
+ * How many rows one expand call will render, at most.
+ *
+ * Bounds the *rows*, where the search path bounds characters, because the two
+ * are asked for differently: a search asks for matches and gets whatever context
+ * they carry, while an expand asks for a stretch by position and can name a
+ * stretch of any size. A row cap is the bound the agent can reason about —
+ * "positions 12–38 of the 12–120 you asked for" is a sentence it can act on,
+ * where a character budget would truncate at a place with no meaning. The char
+ * budget still applies underneath it for the same reason it always did.
+ */
+export const RECALL_MAX_EXPAND_ROWS = 30;
+
+/**
+ * Return a stretch of one of the agent's other conversations by position.
+ *
+ * **This is the second half of Round 54, and it exists because Theseus measured
+ * the first half half-working.** The edge marker made the hole visible and
+ * provoked a real attempt to fill it — 2 of 5 runs searched for the hidden
+ * restriction unprompted, which nothing on this surface had ever produced. Both
+ * searches returned nothing and could not have returned anything: keyword terms
+ * are ANDed, and an agent asked about a codeword has no way to guess that the
+ * restriction says *"keep it between the two of us"*. Round 51's arm-E finding,
+ * recurring one level up.
+ *
+ * The marker already knows which rows it is counting. This lets them be asked
+ * for by that address rather than re-found by keyword — the difference between
+ * a lookup and a guess.
+ *
+ * **What this does not do.** It adds no reach. The rows returned are exactly the
+ * rows `getEntityTranscript` would return for that channel and range, which is
+ * the same membership union everything else in this file reads: a turn spoken by
+ * another agent in a shared room has no position in this numbering, so it cannot
+ * be addressed here any more than it could be matched by a search. That is the
+ * `edgeGapLine` split made real — the reachable count fetches, the unreachable
+ * count still cannot, and the result says so in the same words the excerpt did.
+ *
+ * **The failure this cannot rule out.** Theseus's F/R4 showed a *failed* search
+ * being read as a warrant for absence. A successful expansion that happens to
+ * contain no restriction could be read the same way, more strongly — the agent
+ * would have looked, and this time actually seen. The header therefore states
+ * the extent of what was returned and nothing about what it means, and the
+ * expandable edges of the expansion itself are marked exactly as any other
+ * excerpt's are. Whether that is enough is not decided here; it is arm F's to
+ * measure, and it is the reason this ships with the marker rather than instead
+ * of it.
+ */
+export function expandConversationRange(
+  entity: Entity,
+  channel: Channel | undefined,
+  request: ExpandRequest,
+): RecallResult {
+  const name = (request.conversation ?? '').trim();
+  const from = Math.floor(Number(request.from));
+  const to = Math.floor(Number(request.to));
+  const empty = { matchCount: 0, shownCount: 0, tokens: [] as string[] };
+
+  if (name === '' || !Number.isFinite(from) || !Number.isFinite(to)) {
+    return {
+      text:
+        `To expand a conversation, pass the name exactly as it appears in ` +
+        `brackets at the start of a line, and the two positions from an edge ` +
+        `marker — for example {conversation: "design-review", from: 12, to: 38}.`,
+      isError: true,
+      ...empty,
+    };
+  }
+
+  const options = channel ? { excludeChannelId: channel.id } : {};
+  const candidates = findEntityTranscriptChannelsByName(entity.id, name, options);
+
+  if (candidates.length === 0) {
+    return {
+      text:
+        `No conversation of yours outside this room is named "${name}". Use the ` +
+        `name exactly as it appears in brackets at the start of a line. This ` +
+        `does not reach the room you are in now.`,
+      isError: true,
+      ...empty,
+    };
+  }
+  // Names are not unique in Klatch, so a name can address two rooms. Answering
+  // from one of them would return a real stretch of the wrong conversation under
+  // a label the agent has no way to check — the one error a reader cannot catch.
+  if (candidates.length > 1) {
+    return {
+      text:
+        `${candidates.length} of your conversations are named "${name}", so ` +
+        `positions ${from}–${to} do not identify one stretch. Search for a ` +
+        `distinctive term instead — the excerpt it returns will be from one of ` +
+        `them and will carry its own edges.`,
+      isError: true,
+      ...empty,
+    };
+  }
+
+  const all = getEntityTranscriptRange(entity.id, candidates[0].id, from, to, options);
+
+  if (all.length === 0) {
+    return {
+      text:
+        `"${candidates[0].name}" has nothing of yours at positions ${from}–${to}. ` +
+        `Positions count only your own turns in that conversation, so a number ` +
+        `past its end returns nothing; the edge marker you took them from names ` +
+        `a range that exists.`,
+      isError: false,
+      ...empty,
+    };
+  }
+
+  // Forward from the low end, so a capped call and the next call after it tile
+  // the requested range instead of overlapping it.
+  const rows = all.slice(0, RECALL_MAX_EXPAND_ROWS);
+  const excerpts = groupIntoExcerpts(rows);
+
+  const kept: string[] = [];
+  let scopeGaps = 0;
+  let edgeGaps = 0;
+  let used = 0;
+  for (let i = 0; i < excerpts.length; i++) {
+    const excerpt = excerpts[i];
+    const lines = renderExcerpt(
+      excerpt,
+      entity.name,
+      edgeReference(excerpts, i, -1),
+      edgeReference(excerpts, i, +1),
+    );
+    const block = lines.join('\n\n');
+    if (used > 0 && used + block.length > RECALL_MAX_CHARS) break;
+    kept.push(block);
+    used += block.length;
+    const interior = countScopeGaps(excerpt);
+    scopeGaps += interior;
+    edgeGaps += lines.length - excerpt.length - interior;
+  }
+
+  // Counted off what was actually rendered, not off what was fetched — the same
+  // rule the search header follows, and for the same reason: an agent told it
+  // has positions 12–38 when 12–20 are on the page will reason from the other
+  // eighteen.
+  const shownRows = excerpts
+    .slice(0, kept.length)
+    .reduce((n, e) => n + e.length, 0);
+  const shown = rows.slice(0, shownRows);
+  const firstShown = shown[0].ordinal;
+  const lastShown = shown[shown.length - 1].ordinal;
+
+  const parts = [
+    `Positions ${firstShown}–${lastShown} of "${candidates[0].name}", your own ` +
+    `turns in that conversation, in order. Nothing outside this range was read.`,
+  ];
+  if (shownRows < all.length || lastShown < to) {
+    parts.push(
+      `You asked for ${from}–${to}; this is as far as one call goes. Ask again ` +
+      `with from: ${lastShown + 1} for the rest.`
+    );
+  }
+  parts.push(...gapSentences(scopeGaps, edgeGaps));
+
+  return {
+    text: `${parts.join(' ')}\n\n${kept.join(EXCERPT_SEPARATOR)}`,
+    isError: false,
+    matchCount: all.length,
+    shownCount: shownRows,
+    tokens: [],
   };
 }
 
@@ -547,7 +764,15 @@ function renderExcerpt(
   // in all four combinations.
   const ownBefore = first.ordinal - (before ? before.ordinal : 0) - 1;
   const rawBefore = first.rawOrdinal - (before ? before.rawOrdinal : 0) - 1;
-  const leading = edgeGapLine('earlier', ownBefore, rawBefore - ownBefore);
+  // The address is the reachable stretch itself, in the numbering the count is
+  // taken in: the positions strictly between the reference and this excerpt's
+  // first row. `to - from + 1 === ownBefore` is the invariant that keeps the
+  // number and the range from ever describing different stretches.
+  const leading = edgeGapLine('earlier', ownBefore, rawBefore - ownBefore, {
+    conversation: first.channelName,
+    from: (before ? before.ordinal : 0) + 1,
+    to: first.ordinal - 1,
+  });
   if (leading !== undefined) lines.push(leading);
 
   for (let i = 0; i < excerpt.length; i++) {
@@ -562,7 +787,11 @@ function renderExcerpt(
 
   const ownAfter = (after ? after.ordinal : last.scopedTotal + 1) - last.ordinal - 1;
   const rawAfter = (after ? after.rawOrdinal : last.rawTotal + 1) - last.rawOrdinal - 1;
-  const trailing = edgeGapLine('later', ownAfter, rawAfter - ownAfter);
+  const trailing = edgeGapLine('later', ownAfter, rawAfter - ownAfter, {
+    conversation: last.channelName,
+    from: last.ordinal + 1,
+    to: (after ? after.ordinal : last.scopedTotal + 1) - 1,
+  });
   if (trailing !== undefined) lines.push(trailing);
 
   return lines;
@@ -675,6 +904,13 @@ function groupIntoExcerpts(rows: NeighbourhoodMessage[]): NeighbourhoodMessage[]
  * existing "this does not search the room you are in now" doesn't bite there:
  * the block is not the room. Costs a round per turn rather than being wrong, so
  * the fix is a sentence, not a mechanism.
+ *
+ * A fourth, in Round 56, describes the second mode. It is placed after the
+ * search clauses and phrased as *what to do with an edge marker* rather than as
+ * a general capability, because the address is only ever obtained from a result:
+ * an agent that reads this as "I can ask for any stretch of any conversation"
+ * will invent positions, and an invented range is the one input here that
+ * returns real rows from a place nobody asked about.
  */
 export const RECALL_TOOL_DESCRIPTION =
   'Search your own earlier conversations — the ones outside this room — for ' +
@@ -689,4 +925,9 @@ export const RECALL_TOOL_DESCRIPTION =
   'with the messages immediately before and after it, labelled with the ' +
   'conversation and date — read them, because a condition attached to a fact is ' +
   'often stated in the next message rather than the same one. This does not ' +
-  'search the room you are in now — that history is already in front of you.';
+  'search the room you are in now — that history is already in front of you. ' +
+  'A result may also mark the edge of an excerpt with an expand address — ' +
+  'a conversation name and two positions. Pass that address back as `expand` ' +
+  'and this returns those turns themselves, so you never have to guess the ' +
+  'wording of something you have only been told the count of. Use an address ' +
+  'a result gave you rather than positions you reasoned out.';

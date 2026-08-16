@@ -953,6 +953,141 @@ export function getEntityTranscriptNeighbourhoods(
   }));
 }
 
+/**
+ * The channels in an entity's transcript whose name matches, exactly.
+ *
+ * Exists so a range can be addressed the way the render already labels it. Every
+ * line an agent reads is prefixed `[channel-name · date]`, so the name is the
+ * only handle it has ever been shown; asking it to quote a UUID it was never
+ * given would be asking it to invent one.
+ *
+ * Returns **every** match rather than the first, and that is the point. Klatch
+ * does not enforce unique channel names — Theseus filed a same-named-channel
+ * undercount on 8/13 — so a name can address two conversations. Picking one and
+ * proceeding would return a stretch of the wrong room under a label the agent
+ * would read as right. The caller reports the ambiguity instead; a dead end the
+ * agent can see beats a plausible answer it cannot check.
+ *
+ * Matching is exact and case-insensitive: exact because a substring match on a
+ * name would silently widen the address, case-insensitive because the agent is
+ * copying a string out of prose and `NOCASE` costs nothing that a wrong room
+ * does not cost more.
+ */
+export function findEntityTranscriptChannelsByName(
+  entityId: string,
+  name: string,
+  options: EntityTranscriptOptions = {}
+): { id: string; name: string }[] {
+  const { where, params } = entityTranscriptWhere(entityId, options);
+  const rows = getDb()
+    .prepare(
+      `SELECT DISTINCT c.id AS id, c.name AS name
+       FROM messages m
+       JOIN channels c ON c.id = m.channel_id
+       WHERE ${where} AND c.name = ? COLLATE NOCASE
+       ORDER BY c.name ASC, c.id ASC`
+    )
+    .all(...params, name) as { id: string; name: string }[];
+  return rows;
+}
+
+/**
+ * A slice of one channel's contribution to an entity's transcript, addressed by
+ * the same 1-based scoped ordinal the edge markers count in.
+ *
+ * **Why this exists, and it is a measurement rather than a design instinct.**
+ * Round 54 gave an excerpt an edge marker saying how many turns of the
+ * conversation lie past it and how many of those the agent could reach. Theseus
+ * ran it (`docs/research/round55-excerpt-edge-marker-live-2026-08-15.md`) and
+ * found the clause *works* — in 2 of 5 runs the agent issued an unprompted query
+ * aimed at the hidden restriction, an action no earlier round on this surface
+ * ever produced. Both returned zero rows, and they had to: terms are ANDed and
+ * the agent has to guess the restriction's vocabulary from the question's
+ * domain. In F/R4 the failed search then became the warrant for the same false
+ * claim — *"No restriction was attached to it there"* — which is worse than the
+ * passive version it replaced.
+ *
+ * So the count is turned into an address. The marker already knows exactly which
+ * rows it is counting; handing over a number and asking the agent to re-find
+ * them by keyword is what cannot land. A range lookup makes the reachable /
+ * unreachable split in `edgeGapLine` load-bearing instead of descriptive:
+ * reachable positions fetch, unreachable ones are absent from the result for the
+ * same reason they were absent from the excerpt.
+ *
+ * **Scope is unchanged and that is deliberate.** The ordinal is `ROW_NUMBER`
+ * over `entityTranscriptWhere` — the same union every other transcript read
+ * uses — so a position that is not this entity's to read has no ordinal to name.
+ * This adds no reach; it removes a guess.
+ *
+ * `from`/`to` are inclusive and clamped rather than validated, because an agent
+ * copying two numbers out of prose will sometimes be one off the end, and the
+ * honest answer to "positions 30–45 of a 38-row conversation" is rows 30–38, not
+ * an error. A range wholly outside the channel returns empty, which the caller
+ * reports as such.
+ */
+export function getEntityTranscriptRange(
+  entityId: string,
+  channelId: string,
+  from: number,
+  to: number,
+  options: EntityTranscriptOptions = {}
+): NeighbourhoodMessage[] {
+  const lo = Math.max(1, Math.floor(from));
+  const hi = Math.floor(to);
+  if (hi < lo) return [];
+
+  const scope = entityTranscriptWhere(entityId, options);
+
+  // Same two CTEs as `getEntityTranscriptNeighbourhoods`, and they must stay the
+  // same: the ordinals an edge marker prints come from that query, and a range
+  // addressed in one numbering and resolved in another would return a stretch of
+  // the right room at the wrong place — the one failure that would be invisible
+  // to a reader, since the rows themselves look perfectly plausible.
+  const sql = `
+    WITH scoped AS (
+      SELECT m.*, m.rowid AS ordinal_rowid,
+             c.name AS channel_name, c.type AS channel_type, c.source AS channel_source,
+             ROW_NUMBER() OVER (
+               PARTITION BY m.channel_id ORDER BY m.created_at, m.rowid
+             ) AS seq,
+             COUNT(*) OVER (PARTITION BY m.channel_id) AS scoped_total
+      FROM messages m
+      JOIN channels c ON c.id = m.channel_id
+      WHERE ${scope.where}
+    ),
+    raw AS (
+      SELECT rm.id AS raw_id,
+             ROW_NUMBER() OVER (
+               PARTITION BY rm.channel_id ORDER BY rm.created_at, rm.rowid
+             ) AS raw_seq,
+             COUNT(*) OVER (PARTITION BY rm.channel_id) AS raw_total
+      FROM messages rm
+      WHERE rm.channel_id IN (SELECT channel_id FROM scoped)
+    )
+    SELECT s.*, r.raw_seq AS raw_seq, r.raw_total AS raw_total, 0 AS is_match
+    FROM scoped s
+    JOIN raw r ON r.raw_id = s.id
+    WHERE s.channel_id = ? AND s.seq BETWEEN ? AND ?
+    ORDER BY s.created_at ASC, s.ordinal_rowid ASC
+  `;
+
+  const rows = getDb()
+    .prepare(sql)
+    .all(...scope.params, channelId, lo, hi) as any[];
+
+  return rows.map((row) => ({
+    ...rowToMessage(row),
+    channelName: row.channel_name,
+    channelType: (row.channel_type as ChannelType) || 'chat',
+    channelSource: (row.channel_source as ChannelSource) || 'native',
+    isMatch: false,
+    ordinal: row.seq as number,
+    rawOrdinal: row.raw_seq as number,
+    scopedTotal: row.scoped_total as number,
+    rawTotal: row.raw_total as number,
+  }));
+}
+
 // ── Project CRUD ──────────────────────────────────────────────
 
 export function getProject(id: string): Project | undefined {
