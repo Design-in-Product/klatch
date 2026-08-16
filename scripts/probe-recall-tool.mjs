@@ -609,6 +609,16 @@ const ARGS = process.argv.slice(3);
 // inline `VAR=1 npx …` prefix as a separate operation needing approval, so a flag is the
 // form that actually reaches the script. Either spelling works.
 const DRY = ARGS.includes('--dry') || process.env.KLATCH_PROBE_DRY === '1';
+// `--model=<id>` overrides the model the *holder* entity runs on. Every result this probe has
+// produced since Round 50 is a measurement of one model, and nothing in the writeups can tell
+// you which findings are about how agents handle a marked excerpt and which are about how
+// `claude-opus-5` in particular does. This is the only way to find out, and it is one flag
+// because the arms, the geometry and the recogniser must not move when the model does.
+//
+// The seeded *history* is unaffected: those rows are written straight to the scratch DB with
+// `DEFAULT_MODEL` in the `model` column and no call is made for them, so the transcript the
+// holder reads is byte-identical across models. Only the live turn changes hands.
+const MODEL = (ARGS.find((s) => s.startsWith('--model=')) || '').slice('--model='.length) || null;
 const SELECTED = (ARGS.filter((s) => !s.startsWith('--')).length
   ? ARGS.filter((s) => !s.startsWith('--'))
   : ['A', 'B', 'C'])
@@ -618,6 +628,7 @@ const SELECTED = (ARGS.filter((s) => !s.startsWith('--')).length
 rule(`ROUND 50 RECALL PROBE — run tag ${TAG}, arms ${SELECTED.join(' ')}`);
 console.log(`db  ${DB_PATH}`);
 console.log(`api ${API}`);
+console.log(`model ${MODEL || '(server default)'}`);
 
 const results = [];
 
@@ -633,7 +644,19 @@ for (const key of SELECTED) {
     name: n('Vesper'),
     handle: n('vesper').toLowerCase().replace(/[^a-z0-9]/g, ''),
     systemPrompt: 'You are Vesper, a release engineer. Be brief.',
+    ...(MODEL ? { model: MODEL } : {}),
   });
+  // Asserted rather than assumed. `POST /entities` validates the model against the discovered
+  // set and falls back rather than erroring, so an unrecognised id would otherwise produce a
+  // full run silently measuring the default model while the console header said otherwise —
+  // a cross-model comparison where both arms are the same model, and no way to see it after
+  // the fact. This is the whole experiment's single variable; it does not get to be implicit.
+  if (MODEL && holder.model !== MODEL) {
+    throw new Error(
+      `asked for model ${MODEL}, entity came back on ${holder.model} — refusing to run a ` +
+      `cross-model arm that is not actually cross-model`,
+    );
+  }
   // In every arm but G the fact lives in a private 1-1. G needs a room with a second
   // agent in it, because the variable under test is *whose transcript the restriction is
   // in* — which only exists as a question when someone other than the owner is speaking.
