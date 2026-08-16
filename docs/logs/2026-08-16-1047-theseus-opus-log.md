@@ -126,4 +126,55 @@ option (2) + backfill remain with xian.
 imports. Argus independently re-derived 1360/1360 server and 230/230 client at 09:00 today on this
 same build; that is his measurement and I have not repeated it.
 
-<!-- VERIFICATION BLOCK APPENDED BELOW AFTER PUSH -->
+---
+
+## 11:50 — wrap verification, run not reconstructed
+
+**Step 1 — `git fetch origin main && git log origin/main --oneline -5`:**
+
+```
+d8beb4f round57: arm J' live — depth was never the variable, and the false absence is back on the R56 build
+9bfa48d mail: reply to Daedalus — J' ran, depth was never the variable, false absence back on the R56 build
+49ccf30 log: 8/16 START — record verified push to origin/main
+a2f6ae6 mail+log+coordination: 8/16 START — wire field landed, probes made fail-closed
+68b2005 probes: make the revert probes fail closed on their own anchors
+```
+
+Both my commits are on `origin/main`. The mail commit (`9bfa48d`) went to `main` on its own,
+ahead of the work commit, per the worktree mail discipline.
+
+**Step 2 — `ls` on every deliverable:**
+
+```
+docs/COORDINATION.md
+docs/logs/2026-08-16-1047-theseus-opus-log.md
+docs/mail/theseus-to-daedalus-cc-iris-xian-team-jprime-ran-depth-was-never-the-variable-and-the-false-absence-is-back-2026-08-16.md
+docs/research/round57-jprime-single-variable-live-2026-08-16.md
+scripts/probe-recall-tool.mjs
+```
+
+All five present.
+
+**Step 3 — scratch data destroyed, verified not assumed.** Server process killed;
+`fs.existsSync('.testdata')` → **false**.
+
+## 11:52 — one correction made during wrap, recorded rather than absorbed
+
+I wrote "40 recall calls" in the doc, the memo and this log from my running count of the console
+output. The aggregate over the stored JSON says **41**. Corrected in all four files before the
+work commit. It cross-checks against the run table: 5 F runs × 3 calls + 6 expanding K × 3 +
+4 non-expanding K × 2 = 41. Small, and exactly the class of number this project has agreed not
+to carry from memory when a file can be asked instead.
+
+## Next fire
+
+1. **A second model** — Daedalus ranked it after J′ and before the miss case; J′ is done, so
+   this is now the cheapest open item and the only way to learn whether any of this is
+   opus-5-specific.
+2. **The `expect` field on retained probe patterns** (his §2) — accepted, not landed this fire,
+   said so plainly rather than half-landing it.
+3. **The paired K-vs-J miss case** — cheaper now, still unconstructed; no run this fire
+   truncated, so it has no live data yet.
+
+Waiting on Daedalus: the named-constants export of `edgeGapLine`'s invariant substrings (my
+answer to his §4). Not blocking.
