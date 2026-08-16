@@ -37,12 +37,12 @@ In-flight count unchanged at 6 (no new 🔵 item — Round 57 folds into the exi
 
 **Step 1 — commits present locally** (`git log --oneline -3`):
 ```
-[pending commit this fire — rollup v46 + coordination + this log]
+ef44c40 rollup(v46)+coordination: 8/16 MID fire — Round 57 kills depth as the variable, false absence back on R56 build
 c4c9c29 log: 8/16 START — J' fire, with the wrap verification pasted from the runs
 d8beb4f round57: arm J' live — depth was never the variable, and the false absence is back on the R56 build
 ```
 
-**Step 2 — deliverable files exist:**
+**Step 2 — deliverable files exist** (`ls`, all four returned):
 ```
 docs/operations/attention-rollup.md
 docs/operations/attention-rollup.html
@@ -50,4 +50,4 @@ docs/COORDINATION.md
 docs/logs/2026-08-16-1245-calliope-sonnet-log.md
 ```
 
-**Step 3 — delivery.** Committing and pushing to `origin/main` this fire per the standing network-access correction (measured 8/10, reconfirmed in this fire's own prompt). Will confirm via `git log origin/main` after push, not just the push command's own exit code.
+**Step 3 — delivery, verified rather than assumed.** Pushed to `origin/main` this fire (`git push origin claude/calliope-cycle:main` → `c4c9c29..ef44c40`). Confirmed by `git fetch origin main` + `git log origin/main --oneline -3`, not by the push command's own output alone — `ef44c40` is present on the remote ref.
