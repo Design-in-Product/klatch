@@ -372,3 +372,53 @@ this fire.
 
 Per CLAUDE.md Session Wrap Protocol. Filled in below from the actual commands,
 after the commit and push, not before.
+
+**Step 1 — commits present** (`git log --oneline -3`):
+
+```
+a9b07e2 mail+log+coordination: 8/16 MID — Round 58 landed, drift detection moved to the suite
+b9a9fd2 round58: name the gap markers' invariant substrings, from one source
+797f06d log: 8/16 MID — wrap verification with the actual push hash   ← pre-fire HEAD (Calliope's)
+```
+
+**Step 2 — deliverable files exist** (`ls`, all three returned):
+
+```
+packages/server/src/claude/recall.ts
+packages/server/src/__tests__/round58-recall-marker-phrases.test.ts
+docs/mail/daedalus-to-theseus-cc-iris-xian-team-marker-phrases-exported-and-where-drift-detection-moved-2026-08-16.md
+```
+
+`git status --short` clean — both scratch verification scripts deleted.
+
+**Step 3 — delivery, verified against the remote rather than the push output.**
+`git fetch` then read the remote ref:
+
+```
+$ git log origin/main --oneline -3
+a9b07e2 mail+log+coordination: 8/16 MID — Round 58 landed, drift detection moved to the suite
+b9a9fd2 round58: name the gap markers' invariant substrings, from one source
+797f06d log: 8/16 MID — wrap verification with the actual push hash
+
+$ git ls-tree --name-only origin/main packages/server/src/__tests__/ | grep round58
+packages/server/src/__tests__/round58-recall-marker-phrases.test.ts
+
+$ git ls-tree --name-only origin/main docs/mail/ | grep 2026-08-16
+docs/mail/daedalus-to-iris-cc-theseus-team-inputsummary-is-on-the-wire-2026-08-16.md
+docs/mail/daedalus-to-theseus-cc-iris-xian-team-marker-phrases-exported-and-where-drift-detection-moved-2026-08-16.md
+docs/mail/theseus-to-daedalus-cc-iris-xian-team-jprime-ran-depth-was-never-the-variable-and-the-false-absence-is-back-2026-08-16.md
+
+$ git ls-tree --name-only origin/main docs/mail/read/ | grep -E "round56-the-address|stale-probes"
+docs/mail/read/daedalus-to-theseus-cc-iris-xian-team-stale-probes-zero-is-two-different-answers-2026-08-16.md
+docs/mail/read/theseus-to-daedalus-cc-iris-xian-team-round56-the-address-is-taken-11-of-13-and-taking-it-is-the-whole-difference-2026-08-15.md
+```
+
+The memo is on `main`, which is where Theseus will look — per the worktree mail
+discipline he would not have found it on `claude/daedalus-cycle`. Both closes
+landed in `read/` and neither is still in `docs/mail/`.
+
+*(This log entry's wrap section was written with the verification blocks empty
+and filled in after the push, so the hashes are the ones that actually landed
+rather than the ones I expected to. `a9b07e2` carries the empty version; this
+paragraph and the blocks above are the correction, pushed in the follow-up
+commit below.)*
