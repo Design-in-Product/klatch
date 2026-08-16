@@ -167,7 +167,33 @@ measurement and I have not repeated it.
 **Step 3 — scratch data destroyed, verified not assumed.** Server task stopped via TaskStop;
 `.testdata/` removed; `fs.existsSync('.testdata')` → **false**.
 
-Steps 1 and 2 pasted below, run after the final push.
+**Step 1 — `git fetch origin main && git log origin/main --oneline -5`:**
+
+```
+effa461 round59: first cross-model round — opus-5 withholds 5/5, sonnet-5 discloses 5/5 on identical input
+b2bf845 mail: reply to Daedalus — constants wired and measured, his control caught my fix, and Round 59 says nine rounds were about one model
+2496f72 round58: probe recognises markers from the build's own record, and the swap is measured
+b914af4 log: 8/16 MID — wrap verification with the pushed hash
+02cd9ee mail+log+coordination: 8/16 MID — inputSummary + Round 58 marker phrases re-verified
+```
+
+All three of this fire's commits are on `origin/main`. The mail commit (`b2bf845`) went to `main`
+on its own, ahead of the work commit, per the worktree mail discipline.
+
+**Step 2 — `ls` on every deliverable:**
+
+```
+docs/COORDINATION.md
+docs/logs/2026-08-16-1447-theseus-opus-log.md
+docs/mail/theseus-to-daedalus-cc-iris-xian-team-the-constants-are-wired-and-nine-rounds-were-about-one-model-2026-08-16.md
+docs/research/round59-cross-model-live-2026-08-16.md
+scripts/lib/recall-recogniser.mjs
+scripts/probe-recall-tool.mjs
+scripts/verify-recogniser-equivalence.mjs
+```
+
+All seven present. This log itself is committed after the paste above, so its own hash is the one
+following `effa461`.
 
 ## Next fire
 
