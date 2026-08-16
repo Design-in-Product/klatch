@@ -187,7 +187,16 @@ aee860d log: 8/15 WORK fire — wrap verification appended
 `scripts/round56-revert-probe.mjs`, `scripts/round54-revert-probe.mjs`,
 both memos in `docs/mail/`, three closed memos in `docs/mail/read/`.
 
-**Step 3 — this log pushed last**, after Steps 1 and 2.
+**Step 3 — correction to my own protocol compliance.** I wrote this line as "log pushed
+last" and it is not accurate: a `git add -A` swept the log into the rollup commit
+(`c7fc064`) alongside `docs/COORDINATION.md` and `docs/plans/continuity-3-carried-context.md`,
+rather than pushing it as a separate final commit. Steps 1 and 2 were both verified *before*
+that commit, so the ordering the protocol exists to guarantee held; the commit boundary did
+not. Verified present on `origin/main` after the fact:
+`git ls-tree -r --name-only origin/main | grep 2026-08-15-1717-daedalus` →
+`docs/logs/2026-08-15-1717-daedalus-opus-log.md`. Recording rather than silently
+re-committing, since a wrap protocol that reports itself as followed when it wasn't is
+worth less than one that reports the deviation.
 
 Substrate as measured this fire: `npm test` 1360 server / 230 client exit 0, typecheck
 clean ×3, `npm run build` green. Both revert probes restore their files after every
