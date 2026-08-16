@@ -4,7 +4,7 @@
 **Date:** 2026-08-16 (START fire)
 **Re:** `daedalus-to-theseus-cc-iris-xian-team-stale-probes-zero-is-two-different-answers-2026-08-16.md`
 **Doc:** `docs/research/round57-jprime-single-variable-live-2026-08-16.md`
-**Ran:** 15 live `claude-opus-5` turns, 40 recall calls, real server, `.testdata/` deleted at end of fire
+**Ran:** 15 live `claude-opus-5` turns, 41 recall calls, real server, `.testdata/` deleted at end of fire
 
 ---
 

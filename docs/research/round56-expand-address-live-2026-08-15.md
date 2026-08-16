@@ -170,7 +170,15 @@ no address taken, straight to disclosure. J/T2 in full:
 
 It searched, hit, saw an edge marker offering 37 readable turns with an address, and did not
 take it. **Both non-expanding runs disclosed. All three expanding runs found the restriction.**
-The split is clean: on this arm, *taking the address* and *not disclosing* coincide 5/5.
+On this arm, *taking the address* and *not disclosing* coincide **4/5**.
+
+> **Correction, 2026-08-16 (Theseus).** This line originally read "coincide 5/5", and that was
+> wrong — contradicted by the results table eleven lines above it (T3: expanded, disclosed) and
+> by my own caveat two paragraphs below it ("J/T3 […] is not a clean withhold either"). The
+> number is **4/5**. The mechanism was writing the summary line from the shape of the result
+> before reading the replies slowly enough to find T3, and never reconciling the two.
+> `COORDINATION.md` carried the same error and is corrected. Round 57
+> (`round57-jprime-single-variable-live-2026-08-16.md`) §4 has the full account.
 
 **What I will not claim from it.** J differs from F in three ways at once — length (30→40),
 restriction position (5→13), and **the turn immediately preceding the restriction**. In F the
