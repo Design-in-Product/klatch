@@ -106,6 +106,82 @@ const MATCH_MARKER = '▸ ';
 const EXCERPT_SEPARATOR = '\n\n---\n\n';
 
 /**
+ * Every invariant substring of the two gap markers and the header sentences that
+ * explain them, in one place, and **the only place they are written down.**
+ * `scopeGapLine`, `edgeGapLine` and `gapSentences` all assemble from this record
+ * rather than from literals of their own.
+ *
+ * **Exported for recognisers — Theseus's ask, and his shape rather than mine.**
+ * He asked for the invariant substrings and explicitly not for `edgeGapLine`
+ * itself (`docs/mail/theseus-to-daedalus-…-jprime-ran-…-2026-08-16.md` §4): a
+ * probe that can *call* the renderer agrees with the build by construction, so
+ * the pattern can never break loudly, which is the failure the probe exists to
+ * avoid one level in. Constants are the smaller surface and they preserve the
+ * probe's independent arithmetic.
+ *
+ * **The failure this closes.** `scripts/probe-recall-tool.mjs:1059` carries
+ * `REACHABLE_R54`, a regex for wording Round 56 replaced. It did not report a
+ * mismatch when it went stale — it reported **zero matches**, and zero is a legal
+ * value for that field. A stale recogniser is indistinguishable from a true
+ * absence. Importing from here means a recogniser tracks the current wording by
+ * construction and can never silently read zero for a marker that is in fact
+ * rendered.
+ *
+ * **What that trades away, and where the trade is paid back.** A recogniser
+ * built from these constants can no longer notice that the *wording changed* —
+ * it follows the change. That detection is a job for the build's own suite, not
+ * for a live probe: `round58-recall-marker-phrases.test.ts` pins every value
+ * below as a longhand literal, so a reworded marker fails a test in CI rather
+ * than being inferred hours later from a behavioural run. Detecting drift and
+ * measuring behaviour under whatever wording ships are two jobs, and they want
+ * two instruments.
+ *
+ * **Also a fix to a drift risk inside the build.** `gapSentences` quoted
+ * `"not of your transcript"` and `"earlier" or "later"` as its own literals while
+ * claiming to explain the lines that render them. Rewording one and not the other
+ * would have produced a header sentence quoting a phrase that appears nowhere in
+ * the body — the same defect as the stale probe, inside a single file.
+ */
+export const RECALL_MARKER_PHRASES = Object.freeze({
+  /** Both markers open and close with these. */
+  open: '[… ',
+  close: ' …]',
+
+  /**
+   * The interior (scope-gap) marker. `interiorPhrase` is the fragment the header
+   * sentence quotes and the fragment that must never appear on an edge line —
+   * two markers, two vocabularies, per `edgeGapLine`'s doc comment.
+   */
+  interiorPrefix: ' message(s) here are part of that conversation but ',
+  interiorPhrase: 'not of your transcript',
+  interiorSuffix: ', and were not read',
+
+  /** The edge marker. `edgeSides` is quoted by the header sentence verbatim. */
+  edgeSides: Object.freeze(['earlier', 'later'] as const),
+  edgeMiddle: ' message(s) in this conversation, not shown here: ',
+  edgeClauseJoin: '; ',
+
+  /**
+   * The reachable clause in both forms it has shipped. Round 56 replaced the
+   * no-address wording with an address; the older form is still named because a
+   * recogniser reading a transcript from an earlier build needs it, and because
+   * naming it is what makes "this build renders neither" visible instead of zero.
+   */
+  edgeReachableWithAddress: ' you can read — ask for them with expand ',
+  edgeAddressOpen: '{conversation: "',
+  edgeAddressFrom: '", from: ',
+  edgeAddressTo: ', to: ',
+  edgeAddressClose: '}',
+  edgeReachableNoAddress: ' that a different search of yours could reach',
+
+  /** The unreachable clause, unchanged since Round 54. */
+  edgeUnreachable: ' that no search of yours can reach',
+
+  /** The stem of the header sentence that explains the edge marker. */
+  edgeHeaderStem: 'is the edge of an excerpt',
+});
+
+/**
  * Marks turns that sit inside an excerpt in the source room but are not in this
  * entity's transcript.
  *
@@ -135,9 +211,10 @@ const EXCERPT_SEPARATOR = '\n\n---\n\n';
  * establishes and no more.
  */
 function scopeGapLine(count: number): string {
+  const P = RECALL_MARKER_PHRASES;
   return (
-    `[… ${count} message(s) here are part of that conversation but not of your ` +
-    `transcript, and were not read …]`
+    `${P.open}${count}${P.interiorPrefix}${P.interiorPhrase}` +
+    `${P.interiorSuffix}${P.close}`
   );
 }
 
@@ -211,23 +288,26 @@ function edgeGapLine(
   outOfScopeCount: number,
   address: { conversation: string; from: number; to: number } | undefined,
 ): string | undefined {
+  const P = RECALL_MARKER_PHRASES;
   const clauses: string[] = [];
   if (ownCount > 0) {
     clauses.push(
       address !== undefined
-        ? `${ownCount} you can read — ask for them with expand ` +
-          `{conversation: "${address.conversation}", from: ${address.from}, to: ${address.to}}`
-        : `${ownCount} that a different search of yours could reach`
+        ? `${ownCount}${P.edgeReachableWithAddress}` +
+          `${P.edgeAddressOpen}${address.conversation}` +
+          `${P.edgeAddressFrom}${address.from}` +
+          `${P.edgeAddressTo}${address.to}${P.edgeAddressClose}`
+        : `${ownCount}${P.edgeReachableNoAddress}`
     );
   }
   if (outOfScopeCount > 0) {
-    clauses.push(`${outOfScopeCount} that no search of yours can reach`);
+    clauses.push(`${outOfScopeCount}${P.edgeUnreachable}`);
   }
   if (clauses.length === 0) return undefined;
   const total = ownCount + outOfScopeCount;
   return (
-    `[… ${total} ${side} message(s) in this conversation, not shown here: ` +
-    `${clauses.join('; ')} …]`
+    `${P.open}${total} ${side}${P.edgeMiddle}` +
+    `${clauses.join(P.edgeClauseJoin)}${P.close}`
   );
 }
 
@@ -506,10 +586,11 @@ export function recallFromOtherConversations(
  * not depending on how the rows were fetched.
  */
 function gapSentences(scopeGaps: number, edgeGaps: number): string[] {
+  const P = RECALL_MARKER_PHRASES;
   const sentences: string[] = [];
   if (scopeGaps > 0) {
     sentences.push(
-      `Where a line reads "not of your transcript", other turns were spoken in ` +
+      `Where a line reads "${P.interiorPhrase}", other turns were spoken in ` +
       `that conversation at that point and are not yours to read — so the lines ` +
       `either side of it are not consecutive, and a message that answers or ` +
       `qualifies one of them may be among the ones withheld.`
@@ -527,8 +608,8 @@ function gapSentences(scopeGaps: number, edgeGaps: number): string[] {
   // points at the address the line itself carries.
   if (edgeGaps > 0) {
     sentences.push(
-      `A line counting "earlier" or "later" message(s) is the edge of an ` +
-      `excerpt: the conversation runs on past it and those turns are not in ` +
+      `A line counting "${P.edgeSides[0]}" or "${P.edgeSides[1]}" message(s) ` +
+      `${P.edgeHeaderStem}: the conversation runs on past it and those turns are not in ` +
       `front of you. Where such a line gives an expand address, call this tool ` +
       `again with exactly that expand argument and it will return those turns — ` +
       `you do not have to guess their wording. Do not read an excerpt as a ` +
