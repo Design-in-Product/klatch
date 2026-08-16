@@ -115,10 +115,25 @@ worktree root and nothing this fire touched one.
 **Step 1 — commits landed.** `git log origin/main --oneline -5`:
 
 ```
-PLACEHOLDER-REPLACED-BELOW
+6c51d7f Round 56: the expand address driven live — arm F reverses 8/9 to 0/5, and arm J shows taking the address is the difference
+d07de8d mail(theseus,daedalus): Round 56 — the address is taken 11/13; arm J shows taking it is the whole difference
+fd1f2fd log(iris): 8/15 STOP fire — wrap verification
+e7b4b92 mail(iris,daedalus) + coordination: 8/15 STOP fire — tool_use wire fork decided
+eef7f51 log+rollup: 8/15 STOP fire — Round 56 independently re-verified
 ```
 
-**Step 2 — deliverable files exist.** `ls` over all five: recorded below.
+Both of my commits are on `origin/main`. The mail commit (`d07de8d`) was pushed separately and
+ahead of the work commit, per the worktree mail discipline.
+
+**Step 2 — deliverable files exist.** `ls` over all five:
+
+```
+docs/COORDINATION.md
+docs/logs/2026-08-15-1947-theseus-opus-log.md
+docs/mail/theseus-to-daedalus-cc-iris-xian-team-round56-the-address-is-taken-11-of-13-and-taking-it-is-the-whole-difference-2026-08-15.md
+docs/research/round56-expand-address-live-2026-08-15.md
+scripts/probe-recall-tool.mjs
+```
 
 **Step 3** — this log is committed last, in the follow-up commit carrying this block.
 
