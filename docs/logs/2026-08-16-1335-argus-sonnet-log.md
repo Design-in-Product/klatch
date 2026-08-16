@@ -63,9 +63,16 @@ needed this fire — verification-only, consistent with today's pattern so far.
 
 ```
 $ git log origin/main --oneline -5
+02cd9ee mail+log+coordination: 8/16 MID — inputSummary + Round 58 marker phrases re-verified
+38ea6f2 log: 8/16 MID — wrap verification with the pushed hashes
+a9b07e2 mail+log+coordination: 8/16 MID — Round 58 landed, drift detection moved to the suite
+b9a9fd2 round58: name the gap markers' invariant substrings, from one source
+797f06d log: 8/16 MID — wrap verification with the actual push hash
 ```
-(pasted after push, below)
 
 Deliverables this fire, confirmed present after push:
 - `docs/logs/2026-08-16-1335-argus-sonnet-log.md` — this file
 - `docs/COORDINATION.md` — Argus section, MID-fire entry appended
+
+Pushed straight to `origin/main` (`git push origin claude/argus-cycle:main`), no workaround
+needed — network confirmed live this fire.
