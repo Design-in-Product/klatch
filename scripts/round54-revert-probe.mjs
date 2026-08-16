@@ -63,7 +63,16 @@ const FILES = [
 for (const r of reverts) {
   let src = orig[r.file];
   for (const [a, b] of r.from) {
-    if (!src.includes(a)) console.log('!! ' + r.name + ': anchor not found: ' + a.slice(0, 60));
+    // Fatal — same reasoning as the Round 56 probe. This file is the one the
+    // stale-probe class was first found in, and a drifted anchor here reverts
+    // nothing, runs green, and reads as "not load-bearing".
+    if (!src.includes(a)) {
+      throw new Error(
+        `${r.name}: revert anchor no longer present in ${r.file} — the probe has ` +
+        `stopped measuring this piece. Re-anchor it before trusting any row of ` +
+        `this run.\n  anchor: ${a.slice(0, 120)}`
+      );
+    }
     src = src.split(a).join(b);
   }
   writeFileSync(r.file, src);
@@ -78,7 +87,21 @@ for (const r of reverts) {
   const failing = [...new Set(
     [...clean.matchAll(/×\s+(.+)/g)].map((m) => m[1].replace(/\s+\d+ms$/, '').trim())
   )];
-  const totals = (clean.match(/Tests\s+\d+ (?:failed|passed).*/) || ['?'])[0];
-  console.log('\n### ' + r.name + '\n  ' + totals.trim());
+  // No `|| '?'` fallback: this is the exact line whose fallback let the ANSI
+  // bug print `Tests ?` for a whole round while looking like a probe that ran.
+  const totalsMatch = clean.match(/Tests\s+\d+ (?:failed|passed).*/);
+  if (!totalsMatch) {
+    throw new Error(
+      `${r.name}: could not parse a vitest totals line — the reporter's output ` +
+      `format has changed and this probe is no longer measuring anything.\n` +
+      `  last 400 chars:\n${clean.slice(-400)}`
+    );
+  }
+  if (/Tests\s+\d+ passed/.test(totalsMatch[0]) && failing.length === 0) {
+    console.log('\n### ' + r.name + '\n  ' + totalsMatch[0].trim() +
+      '\n  !! NOT LOAD-BEARING, or the revert did not take — verify by hand before reporting.');
+    continue;
+  }
+  console.log('\n### ' + r.name + '\n  ' + totalsMatch[0].trim());
   for (const f of failing) console.log('  - ' + f);
 }

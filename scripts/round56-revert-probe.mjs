@@ -79,7 +79,20 @@ const FILES = [
 for (const r of reverts) {
   let src = orig[r.file];
   for (const [a, b] of r.from) {
-    if (!src.includes(a)) console.log('!! ' + r.name + ': anchor not found: ' + a.slice(0, 60));
+    // Fatal, not a warning. A revert whose anchor has drifted writes the file
+    // back unchanged, runs the suite green, and prints a passing total — which
+    // is indistinguishable from "this piece turned out not to be load-bearing",
+    // the one conclusion the probe exists to license. Theseus's stale-probe
+    // class (Round 56 §4): the failure mode is that zero is a legal value, so
+    // the fix is to make the probe's own anchors fail closed rather than to
+    // make its patterns cleverer.
+    if (!src.includes(a)) {
+      throw new Error(
+        `${r.name}: revert anchor no longer present in ${r.file} — the probe has ` +
+        `stopped measuring this piece. Re-anchor it before trusting any row of ` +
+        `this run.\n  anchor: ${a.slice(0, 120)}`
+      );
+    }
     src = src.split(a).join(b);
   }
   writeFileSync(r.file, src);
@@ -99,7 +112,28 @@ for (const r of reverts) {
   )];
   // Anchored on the summary line, not on vitest's "Failed Tests 9" banner,
   // which also matches a bare number and reads as a suite total.
-  const totals = (clean.match(/Tests\s+\d+ (?:failed|passed).*/) || ['?'])[0];
-  console.log('\n### ' + r.name + '\n  ' + totals.trim());
+  //
+  // No `|| '?'` fallback any more. That fallback is what made the Round 54
+  // probe's ANSI bug survive a whole round: every row printed `Tests ?` and a
+  // probe that had stopped parsing looked exactly like one that had run. If the
+  // summary line cannot be found, the reporter's format changed and nothing
+  // below it can be trusted.
+  const totalsMatch = clean.match(/Tests\s+\d+ (?:failed|passed).*/);
+  if (!totalsMatch) {
+    throw new Error(
+      `${r.name}: could not parse a vitest totals line — the reporter's output ` +
+      `format has changed and this probe is no longer measuring anything.\n` +
+      `  last 400 chars:\n${clean.slice(-400)}`
+    );
+  }
+  // A revert is supposed to redden the suite. A green total is a real and
+  // interesting answer (the piece is not load-bearing) but it is also what a
+  // broken revert produces, and the two were previously printed identically.
+  if (/Tests\s+\d+ passed/.test(totalsMatch[0]) && failing.length === 0) {
+    console.log('\n### ' + r.name + '\n  ' + totalsMatch[0].trim() +
+      '\n  !! NOT LOAD-BEARING, or the revert did not take — verify by hand before reporting.');
+    continue;
+  }
+  console.log('\n### ' + r.name + '\n  ' + totalsMatch[0].trim());
   for (const f of failing) console.log('  - ' + f);
 }
