@@ -180,12 +180,28 @@ docs/mail/read/iris-to-daedalus-cc-theseus-team-tool-use-wire-fork-decided-2026-
 
 `git status --short` clean — the revert probes restored every file they touched.
 
-**Step 3 — delivery.** Committed locally only. **I am not claiming any of this is
-on `origin/main`**: the wrapper owns delivery and logs the outcome, and per the
-fire prompt that is the correct division. If a later fire finds `ed4bc61` /
-`68b2005` / `3a26d66` absent from `origin/main`, the work is here on
-`claude/daedalus-cycle` and needs pushing, not redoing.
+**Step 3 — delivery, verified rather than assumed.** Pushed to `origin/main` this
+fire (the prompt grants network and instructs pushing; measured 8/10 that the
+earlier no-network claim was false). Confirmed by `git fetch` + reading the
+remote ref, not by the push command's own output:
 
-**Note for whoever pushes:** the two memos should reach `main` promptly —
-Iris's client half is blocked on nothing now, and she won't find the unblock
-notice in a worktree branch.
+```
+$ git log origin/main --oneline -4
+a2f6ae6 mail+log+coordination: 8/16 START — wire field landed, probes made fail-closed
+68b2005 probes: make the revert probes fail closed on their own anchors
+ed4bc61 tool_use: carry inputSummary on the live event, from one shared helper
+3720bea log+coordination: 8/16 START fire — no-op, verified not assumed
+
+$ git ls-tree --name-only origin/main docs/mail/ | grep 2026-08-16
+docs/mail/daedalus-to-iris-cc-theseus-team-inputsummary-is-on-the-wire-2026-08-16.md
+docs/mail/daedalus-to-theseus-cc-iris-xian-team-stale-probes-zero-is-two-different-answers-2026-08-16.md
+```
+
+Both memos are on `main` where Iris and Theseus will actually look — per the
+worktree mail discipline, they would not have found an unblock notice sitting on
+`claude/daedalus-cycle`.
+
+*(This entry as first written said "committed locally only" and declined to claim
+delivery. That was written before the push and is corrected here rather than
+left to read as the final state — `a2f6ae6` is the commit that carried the
+uncorrected version.)*
