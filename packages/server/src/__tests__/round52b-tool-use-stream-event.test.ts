@@ -204,3 +204,98 @@ describe('Round 52b — the tool_use event on the wire', () => {
     expect(events.filter((e) => e.type === 'tool_use')).toHaveLength(0);
   });
 });
+
+/**
+ * The `inputSummary` field, decided by Iris on the 8/15 STOP fire
+ * (`iris-to-daedalus-cc-theseus-team-tool-use-wire-fork-decided-2026-08-15`).
+ *
+ * The open fork was whether the live card's label is derived client-side from
+ * `toolInput` or carried on the event. Carrying it won: the server already
+ * computes the exact string for the *reload* artifact, and teaching the client
+ * a second copy of the recall vocabulary drifts the moment a third recall mode
+ * ships — which is not hypothetical, `expand` was itself the second mode and
+ * arrived after `query`.
+ *
+ * So the property under test is not "the field is populated" but **the live
+ * string and the reloaded string are the same string**. A test that hardcodes
+ * the expected prose in both places would pass while they drifted; these assert
+ * the event against the persisted artifact row.
+ */
+describe('Round 52b — inputSummary rides the tool_use event', () => {
+  it('carries the same string the reload path renders, for a search', async () => {
+    h.rounds.push(
+      { text: 'Checking.', tool: { name: RECALL_TOOL_NAME, input: { query: 'depot cipher' } } },
+      { text: 'Found it.' },
+    );
+
+    const { messageId, events } = await driveTurn(klatch);
+    const toolEvent = events.find((e) => e.type === 'tool_use')!;
+    const persisted = getMessageArtifacts(messageId).filter((a) => a.type === 'tool_use');
+
+    expect(persisted).toHaveLength(1);
+    expect(toolEvent.inputSummary).toBe(persisted[0].inputSummary);
+    // Pinned once, so a silent rewording of the shared helper is visible here
+    // rather than only in a screenshot.
+    expect(toolEvent.inputSummary).toBe('Searched own conversations: depot cipher');
+  });
+
+  it('renders the address, not the raw range object, for an expand', async () => {
+    // The expand form is the one that would have forced the client to learn a
+    // second vocabulary — `{conversation, from, to}` is three fields the card
+    // would have had to compose itself.
+    h.rounds.push(
+      {
+        text: 'Reading the rest.',
+        tool: {
+          name: RECALL_TOOL_NAME,
+          input: { expand: { conversation: 'vesper-1-1', from: 4, to: 12 } },
+        },
+      },
+      { text: 'Read it.' },
+    );
+
+    const { messageId, events } = await driveTurn(klatch);
+    const toolEvent = events.find((e) => e.type === 'tool_use')!;
+    const persisted = getMessageArtifacts(messageId).filter((a) => a.type === 'tool_use');
+
+    expect(toolEvent.inputSummary).toBe(persisted[0].inputSummary);
+    expect(toolEvent.inputSummary).toBe('Expanded own conversation: vesper-1-1 4–12');
+  });
+
+  it('stays consistent across a retry, where the two calls differ', async () => {
+    // The 2.0–2.2 cards per turn are retries with *different* arguments, so a
+    // summary computed once per turn and reused would mislabel the second card.
+    h.rounds.push(
+      { text: 'Looking.', tool: { name: RECALL_TOOL_NAME, input: { query: 'depot cipher' } } },
+      { text: 'Again.', tool: { name: RECALL_TOOL_NAME, input: { query: 'ochre marlin' } } },
+      { text: 'Found it.' },
+    );
+
+    const { messageId, events } = await driveTurn(klatch);
+    const live = events.filter((e) => e.type === 'tool_use').map((e) => e.inputSummary);
+    const reloaded = getMessageArtifacts(messageId)
+      .filter((a) => a.type === 'tool_use')
+      .map((a) => a.inputSummary);
+
+    expect(live).toEqual([
+      'Searched own conversations: depot cipher',
+      'Searched own conversations: ochre marlin',
+    ]);
+    expect(reloaded).toEqual(live);
+  });
+
+  it('omits the key entirely for a tool with no summary vocabulary', async () => {
+    // Not `undefined` — absent. The consumer falls back to `toolName`, and a
+    // key present with an undefined value would survive `JSON.stringify` as
+    // nothing anyway, so asserting absence is asserting what crosses the wire.
+    h.rounds.push(
+      { text: 'Searching the web.', tool: { name: 'web_search', input: { q: 'anything' } } },
+      { text: 'Done.' },
+    );
+
+    const { events } = await driveTurn(klatch);
+    const toolEvent = events.find((e) => e.type === 'tool_use')!;
+    expect(toolEvent.toolName).toBe('web_search');
+    expect('inputSummary' in toolEvent).toBe(false);
+  });
+});

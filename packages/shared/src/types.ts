@@ -399,6 +399,23 @@ export interface StreamEvent {
   /** Present on `tool_use`: the model-supplied input, e.g. `{ query: '…' }`. */
   toolInput?: Record<string, unknown>;
   /**
+   * Present on `tool_use` when the server can render the call in prose: the
+   * same string `createToolUseArtifact` writes to `message_artifacts`, e.g.
+   * `"Searched own conversations: staging freeze"`.
+   *
+   * The alternative was for the client to derive its own label from
+   * `toolInput`, which puts the recall vocabulary in two places and drifts the
+   * moment a third recall mode ships. Deciding memo: Iris, 8/15 STOP fire
+   * (`iris-to-daedalus-cc-theseus-team-tool-use-wire-fork-decided-2026-08-15`),
+   * following the precedent `carriedContext` already set — reuse the artifact's
+   * own `inputSummary` rather than re-deriving the string.
+   *
+   * Absent for tools with no summary vocabulary (currently everything except
+   * recall), so the consumer must fall back to `toolName` alone rather than
+   * treating this as required.
+   */
+  inputSummary?: string;
+  /**
    * Present on `message_complete` when the turn ended without finishing cleanly.
    * The client updates its local message optimistically on stream completion
    * rather than refetching the row, so the reason has to ride the event or the

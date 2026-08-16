@@ -605,6 +605,23 @@ function readExpandArg(toolInput: Record<string, unknown>): ExpandRequest | unde
   return { conversation, from, to };
 }
 
+/**
+ * The prose rendering of a tool call, or `undefined` for tools that have no
+ * summary vocabulary. Single source for both the persisted artifact (reload
+ * path) and the live `tool_use` event, so the live card and the reloaded card
+ * cannot disagree and a new recall mode only has to be worded once.
+ */
+export function toolUseInputSummary(
+  toolName: string,
+  toolInput: Record<string, unknown>,
+): string | undefined {
+  if (toolName !== RECALL_TOOL_NAME) return undefined;
+  const expand = readExpandArg(toolInput);
+  return expand
+    ? `Expanded own conversation: ${expand.conversation} ${expand.from}–${expand.to}`
+    : `Searched own conversations: ${String(toolInput.query ?? '')}`;
+}
+
 /** Execute a tool call and return the result */
 async function executeTool(
   toolName: string,
@@ -637,9 +654,8 @@ async function executeTool(
     createToolUseArtifact(
       assistantMessageId,
       RECALL_TOOL_NAME,
-      expand
-        ? `Expanded own conversation: ${expand.conversation} ${expand.from}–${expand.to}`
-        : `Searched own conversations: ${query}`,
+      // Non-null: `toolUseInputSummary` always returns a string for this tool.
+      toolUseInputSummary(RECALL_TOOL_NAME, toolInput)!,
     );
     return { result: result.text, isError: result.isError };
   }
@@ -868,12 +884,22 @@ async function streamClaudeCore(
           // which typechecked only because `emit` is untyped. See the field docs
           // on `StreamEvent.toolName`: this event has always been on the wire and
           // has never had a consumer.
+          // `inputSummary` is the same string the artifact will carry, computed
+          // here rather than left for the client to derive from `toolInput` —
+          // see the field docs on `StreamEvent.inputSummary`. Spread rather
+          // than set to `undefined` so a tool with no summary omits the key
+          // instead of putting a `undefined` through `JSON.stringify`.
+          const inputSummary = toolUseInputSummary(
+            toolUse.name,
+            toolUse.input as Record<string, unknown>,
+          );
           emitter.emit('data', {
             type: 'tool_use',
             messageId: assistantMessageId,
             content: '',
             toolName: toolUse.name,
             toolInput: toolUse.input,
+            ...(inputSummary ? { inputSummary } : {}),
           } satisfies StreamEvent);
 
           const { result, isError } = await executeTool(
