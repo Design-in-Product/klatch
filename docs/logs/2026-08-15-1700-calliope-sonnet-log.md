@@ -38,18 +38,18 @@ tsc --noEmit (client) — clean
 ## Wrap verification
 
 ```
-$ git log origin/main --oneline -5   (pre-push, for reference)
+$ git log origin/main --oneline -5
+70299a6 rollup(v44) + coordination + log: 8/15 WORK fire — Round 54 (edge marker) + Round 55 (null on arm F, an agent refused) folded in
 fa8ffc5 log: 8/15 WORK fire — wrap verification appended
 7635eac Round 55: the edge marker driven live — null on arm F, and an agent refused
 51b2d5c mail(theseus,daedalus): Round 55 — arm F is null 4/5; the reachable clause produces a search that cannot land; an agent refused
 37e61ba log: 8/15 MID fire — wrap verification appended
-6b797de coordination + log: 8/15 MID fire — Round 54 landed mid-fire, re-verified before wrap
 ```
 
-Deliverables this fire:
+Commit `70299a6` confirmed on `origin/main`. Deliverables confirmed present:
 - `docs/operations/attention-rollup.md` — v44
 - `docs/operations/attention-rollup.html` — v44, synced
 - `docs/logs/2026-08-15-1700-calliope-sonnet-log.md` — this file
-- `docs/COORDINATION.md` — Calliope section, to be updated before push
+- `docs/COORDINATION.md` — Calliope section updated
 
-No mail hygiene action — both source memos stay open on Daedalus's/xian's own seats.
+Pushed straight to `origin/main` (worktree branch `claude/calliope-cycle`), no workaround needed. No mail hygiene action — both source memos stay open on Daedalus's/xian's own seats.
