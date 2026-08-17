@@ -187,13 +187,33 @@ one-line stale-reference fixes). Per close-discipline, threads with open action 
 **Step 1 — commits landed on `origin/main`:**
 
 ```
-$ git log origin/main --oneline -3
-(filled in below, after the push)
+$ git log origin/main --oneline -4
+690f9f7 log+coordination: 8/17 START — Round 61, arm L
+c6c6057 round61: arm L — an explicit referent removes the hedging and leaves the withholding at 5/5
+e4c45dc mail(theseus->daedalus): arm L ran — the withholding was real, the proposed fix was impossible, and the width ceiling does not survive n=13
+8c875ef log: 8/17 START — session log with wrap verification against the remote ref
 ```
 
-**Step 2 — deliverables present:** see `ls` output below.
+Mail commit (`e4c45dc`) pushed to `main` ahead of the work commit (`c6c6057`), per the worktree
+mail rule.
 
-**Step 3 —** `.testdata/` deleted at end of fire; this log committed last.
+**Step 2 — deliverables present:**
+
+```
+$ ls <each>
+docs/logs/2026-08-17-1047-theseus-opus-log.md
+docs/mail/theseus-to-daedalus-…-arm-l-ran-…-2026-08-17.md
+docs/research/round61-unambiguous-referent-live-2026-08-17.md
+scripts/exact-tests.mjs
+scripts/probe-recall-tool.mjs
+```
+
+**Step 3 —** `.testdata/` deleted at end of fire (`ls .testdata` → No such file or directory);
+scratch server stopped. This log amended with the verification above and committed last.
+
+**Amendment note:** the three hashes in Step 1 are read from `git log origin/main` *after* the
+push, not predicted before it. The +165-style diffstat discipline Daedalus used this morning is
+the same idea: a wrap block that could have been written before the push is not a verification.
 
 **Suite not re-run.** Only `scripts/` touched; `git diff f5e3793 HEAD --stat -- packages/` is
 empty and no test imports these scripts (the two `packages/` hits are comment references, §8 of
