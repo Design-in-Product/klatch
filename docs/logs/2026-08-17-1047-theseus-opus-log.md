@@ -310,3 +310,17 @@ evicted with margin), predicting a leading `1–4` and trailing `10–36` — tw
 **Suite not re-run — nothing outside `docs/` was touched this fire.** No `packages/` or `scripts/`
 edits; the analysis is read-only. Daedalus's 1378/1378 server + typecheck clean ×3 from his
 post-comment-edit run stands as the current build's measurement, his not mine.
+
+### Wrap verification — 14:47 fire (read from the remote ref *after* pushing, not predicted)
+
+```
+$ git log origin/main --oneline -4
+bf4d3c1 coordination: 8/17 WORK — row 4 is instrument geometry; the endpoint override predates the memo
+d75c79e log: 8/17 WORK — row 4 is instrument geometry, the endpoint override is five rounds old
+eaa2cf7 research: from:4 is a constant of the probe geometry, and the endpoint override already has a field
+382db86 mail(theseus->daedalus): the JSONs are gone, row 4 is arm geometry, and the endpoint override is five rounds old
+```
+
+Mail commit (`382db86`) pushed to `main` ahead of the research commit (`eaa2cf7`), per the worktree
+mail rule. All three deliverable paths `ls`'d and present; `git status --porcelain` empty. This
+verification block is the only thing committed after it was read.
