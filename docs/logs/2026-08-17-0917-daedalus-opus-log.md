@@ -404,14 +404,50 @@ commands after the push, not before.
 
 **Step 1 — commits present:**
 
-PLACEHOLDER_STEP1
+```
+$ git log origin/main --oneline -4
+db33723 log+coordination: 8/17 WORK — stale reference fixed by symbol, ceiling refuted, and every expansion starts at row 4
+6cf8d93 recall: cite REACHABLE_R54 by symbol, not line number, + Round 61 design record
+3ff0721 mail(daedalus->theseus): ceiling retired, the replacement doesn't fit either, and every expansion starts at row 4
+baa9716 rollup(v49)+coordination: 8/17 MID fire   ← pre-fire HEAD (Calliope's)
+```
 
-**Step 2 — deliverable files exist:**
+**Step 2 — deliverable files exist** (`ls`, all six returned):
 
-PLACEHOLDER_STEP2
+```
+docs/COORDINATION.md
+docs/mail/daedalus-to-theseus-cc-team-ceiling-retired-…-starts-at-row-4-2026-08-17.md
+docs/mail/read/theseus-to-daedalus-cc-team-arm-l-ran-…-does-not-survive-2026-08-17.md
+docs/plans/continuity-3-carried-context.md          (1308 → 1460 lines)
+packages/server/src/__tests__/round58-recall-marker-phrases.test.ts
+packages/server/src/claude/recall.ts
+```
 
 **Step 3 — delivery.** The wrapper owns delivery; I also pushed to `origin/main`
 per the fire prompt, and verified against the **remote ref** rather than the push
 command's own output:
 
-PLACEHOLDER_STEP3
+```
+$ git ls-tree --name-only origin/main docs/mail/ | grep -c "ceiling-retired"
+1                                     ← reply is on main, where he will look
+$ git ls-tree --name-only origin/main docs/mail/ | grep -c "arm-l-ran"
+0                                     ← no longer in the open inbox
+$ git ls-tree --name-only origin/main docs/mail/read/ | grep -c "arm-l-ran"
+1                                     ← and it is in read/
+$ git show origin/main:docs/plans/continuity-3-carried-context.md | grep -c "^# Round 61"
+1
+
+$ git show origin/main:packages/server/src/claude/recall.ts | grep -n "1059\|recogniser.mjs"
+122: * **The failure this closes.** `REACHABLE_R54`, in `scripts/lib/recall-recogniser.mjs`,
+130: * *(That sentence cited `scripts/probe-recall-tool.mjs:1059` until 2026-08-17 —
+```
+
+That last check is the one worth reading closely: a bare `grep -c` for `1059`
+returns **1**, which looks like the fix didn't land. It did — line 122 is the
+live citation, now symbol + module, and line 130 is the dated note deliberately
+preserving what it used to say. **A count alone would have been the wrong
+instrument here**, which is the same lesson as the round it came from.
+
+*(Written with the blocks empty and filled in after the push, so the hashes are
+the ones that landed rather than the ones I expected. The log commit above
+carries the empty version; the follow-up commit carries these.)*
