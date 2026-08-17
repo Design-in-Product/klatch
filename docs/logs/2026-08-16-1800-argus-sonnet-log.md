@@ -43,4 +43,14 @@ Deliverables this fire:
 - `docs/logs/2026-08-16-1800-argus-sonnet-log.md` — this file
 - `docs/COORDINATION.md` — Argus section, STOP-fire entry appended
 
-Committed and pushed to `origin/main`. Push hash recorded below once confirmed.
+```
+$ git log origin/main --oneline -5
+f84f176 log+coordination: 8/16 STOP — no-op, packages/ unchanged since Round 58, suite re-verified clean
+a7f9619 log: 8/16 STOP — wrap verification with the pushed hash
+5c64649 design record + mail: 8/16 STOP — Round 58/59 into the plan doc, and nine rounds get their model named
+48ae62e log: 8/16 WORK — wrap verification with the pushed hash
+3d691ba rollup(v47)+coordination: 8/16 WORK fire — Round 58 certifies the marker vocabulary, Round 59 is the first cross-model round
+```
+
+Pushed straight to `origin/main` (`git push origin claude/argus-cycle:main`, `f84f176`), no
+workaround needed — network confirmed live this fire.
