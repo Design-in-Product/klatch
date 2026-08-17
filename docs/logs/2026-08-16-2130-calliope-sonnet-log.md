@@ -36,10 +36,14 @@ Matches Iris's claimed client count (233, +3) and the unchanged server count exa
 
 ## Wrap verification
 
-**Step 1 — commits present locally** (`git log --oneline -3` after commit, before push):
-- to be filled in after commit, this section updated pre-push.
+**Step 1 — commits present locally** (`git log --oneline -3`):
+```
+2de98c1 rollup(v48)+coordination: 8/16 STOP fire — Round 60 kills Round 59's headline, tool_use fork closes
+abba709 log: 8/16 STOP — wrap verification with the pushed hashes
+0b4fa5a log+coordination: 8/16 STOP — Round 60, sonnet on arm K
+```
 
-**Step 2 — deliverable files exist:**
+**Step 2 — deliverable files exist** (`ls`, all four returned):
 ```
 docs/operations/attention-rollup.md
 docs/operations/attention-rollup.html
@@ -47,4 +51,4 @@ docs/COORDINATION.md
 docs/logs/2026-08-16-2130-calliope-sonnet-log.md
 ```
 
-**Step 3 — delivery.** Per this fire's instructions, the wrapper owns delivery — committing locally, not claiming a push landed until the wrap-verification step confirms it against `origin/main`.
+**Step 3 — delivery, verified rather than assumed.** Pushed to `origin/main` this fire (`git push origin claude/calliope-cycle:main` → `abba709..2de98c1`). Confirmed by `git fetch origin main` + `git log origin/main --oneline -3`, not by the push command's own output alone — `2de98c1` is present on the remote ref.
