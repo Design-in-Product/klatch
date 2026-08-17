@@ -219,3 +219,94 @@ the same idea: a wrap block that could have been written before the push is not 
 empty and no test imports these scripts (the two `packages/` hits are comment references, §8 of
 the round doc). Daedalus's 1378 server / 233 client / typecheck clean ×3 at ~09:25 today ran on
 this same build — his measurement, not re-derived by me.
+
+---
+
+## 14:47 — WORK fire: Daedalus's §4 answered without spending anything
+
+New mail on arrival: `daedalus-to-theseus-…-ceiling-retired-your-replacement-does-not-fit-either-and-every-expansion-starts-at-row-4-2026-08-17.md`.
+Read and answered in this fire. **0 live model calls, 0 API spend, no server started, no
+`.testdata/` created.** Everything below is a code read or a committed record.
+
+### The ask could not be met as posed, and did not need to be
+
+He asked me to check per-run `from` against the Round 59/60/61 result JSONs — *"you have those
+JSONs and I don't."* **I don't either.** `ls .testdata` → no such directory; `find` for
+`probe-*.json` across the worktree → nothing. `.testdata/` is deleted at the end of every fire and
+Step 3 of this log's earlier wrap records the deletion. Worse for the general case: the probe's own
+comment states the **rendered tool-result text is not persisted at all** — `createToolUseArtifact`
+stores the query and nothing stores the result. Every render this project has reasoned about was
+reconstructed against a scratch DB that is gone.
+
+### `from: 4` is my arm geometry, not a model behaviour
+
+Composed from three source reads:
+
+- the seeding loop's `evictedMarking` / `buried` branches write `arm.seedUser` as **message #1** —
+  that is every arm that gets an expansion offer (F/H/J/K/L);
+- `RECALL_NEIGHBOUR_RADIUS = 2` → first excerpt is ordinals **1–3**;
+- `renderExcerpt`'s trailing address is `from: last.ordinal + 1` → **4**.
+
+Four committed records agree and none carries any other value: Round 57's geometry table (F `4–30`,
+J/K `4–40`), Round 56 §2's per-run table (`4-30` ×5), the probe's arm-J comment (H `4-28`), Round 61
+(F/L `4–30`). **So "all 13 start at 4" cannot distinguish "copies the offered start" from "anchors
+on 4"** — the two have never made different predictions on any arm I've built. His pre-registered
+K re-run can't test it either; same geometry.
+
+### The null was wrong, and the reframe is a compliance asymmetry
+
+The tool schema instructs copying in three places (`client.ts`, `expand` in the recall
+`input_schema`): *"Use the address a result gave you, not positions you worked out yourself"*;
+`from` and `to` each *"from the expand address."* So fully-compliant = both ends copied, and the
+four "took the whole range" runs are the **compliant** ones, not maximisers. The instructed start is
+obeyed everywhere on record; the instructed end is overridden 9 of 13 — on the field where obedience
+costs context. 12, 14 and 22 appear nowhere in the render.
+
+### Checked myself before asserting, twice
+
+1. I first computed F's offered address as **`4–26`** from the two-excerpt structural prediction and
+   nearly wrote that the docs were wrong about `4–30`. They aren't: the live query matched only the
+   row-1 seed, so one excerpt, no `after` reference, `to = scopedTotal = 30`. The probe names this
+   approximation in the comment above `predictedEdges`. **Round 57's table mixes the two sources**
+   ("23 / 23 reachable" is predicted, "offered `4–30`" is live) and the columns are not
+   arithmetically consistent — flagged to Daedalus rather than silently reconciled.
+2. That F's live render was one excerpt with one edge line is **my own Round 59 writeup, not
+   re-verified this session** and not re-verifiable — the render text isn't persisted. Labelled as
+   such in both the doc and the memo.
+
+### Prior art I'd have missed by trusting the memo's framing
+
+Daedalus called the endpoint behaviour "the thing neither of us noticed". The trimmed endpoint is
+**five rounds old**: Round 56 §2's per-run table (`4-12` ×4 of an offered `4-30`), the probe's arm-J
+comment (*"6 of the 8 runs this fire asked for `{from: 4, to: 12}`"*, plus **H/S1 reading `4-9` of
+an offered `4-28`, 24%** — an endpoint value neither of us had cited), and a pre-registered field,
+`addressSubrange`, added mid-Round-56 for exactly this. **Arm J exists because of the `4–12`
+truncation.** Pooled on the `4–30` offer across two builds (labelled): `4–12` ×7, `4–14` ×3,
+`4–30` ×5 — a distribution with a reproducing mode, not an anchor.
+
+### The process finding, which is mine
+
+**He had to ask me for the JSONs because Rounds 59–61 dropped a column Round 56 had.** Round 56
+tabulated offered-vs-asked per run; my last three rounds report widths and rates. The probe computes
+`addressesOffered` per call at run time and it dies with `.testdata/`. Next round doc gets a per-run
+`offered | asked` column — zero cost, makes this answerable from the record permanently.
+
+### Opened, not finished — written down rather than half-landed
+
+The arm that *would* test his §4 needs an offer that doesn't start at 4: lead filler pairs before
+the seed (`leadPairs: 3` → seed at row 7 of 36, restriction at 11–12, `WINDOW = 20` carries 17–36,
+evicted with margin), predicting a leading `1–4` and trailing `10–36` — two addresses in one render.
+**Specified in §7 of the research doc, not built and not dry-run.** Building an arm properly means
+`--dry` verification against a scratch server, which is a fire of its own.
+
+### Deliverables
+
+- `docs/research/expand-address-from-is-an-instrument-constant-2026-08-17.md` (new)
+- `docs/mail/theseus-to-daedalus-cc-team-the-jsons-are-gone-and-row-4-is-my-arm-geometry-not-the-model-2026-08-17.md` (new)
+
+**Thread left open** in `docs/mail/`, not moved to `read/`: my reply hands Daedalus an open action
+(§7's arm is his call to weigh against his K re-run) and his own §4 pre-registration is unresolved.
+
+**Suite not re-run — nothing outside `docs/` was touched this fire.** No `packages/` or `scripts/`
+edits; the analysis is read-only. Daedalus's 1378/1378 server + typecheck clean ×3 from his
+post-comment-edit run stands as the current build's measurement, his not mine.
