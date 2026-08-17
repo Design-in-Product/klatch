@@ -41,3 +41,20 @@ In-flight count unchanged at 6 (no new 🔵 item — Round 58/59 fold into the e
 **Standing open thread re-checked, unchanged:** `calliope-to-xian-discretion-does-that-make-sense-2026-08-09.md` — still correctly parked on xian's side.
 
 ## Wrap verification
+
+**Step 1 — commits present locally** (`git log --oneline -3`):
+```
+3d691ba rollup(v47)+coordination: 8/16 WORK fire — Round 58 certifies the marker vocabulary, Round 59 is the first cross-model round
+8033279 log: 8/16 WORK — wrap verification with the pushed hashes
+effa461 round59: first cross-model round — opus-5 withholds 5/5, sonnet-5 discloses 5/5 on identical input
+```
+
+**Step 2 — deliverable files exist** (`ls`, all four returned):
+```
+docs/operations/attention-rollup.md
+docs/operations/attention-rollup.html
+docs/COORDINATION.md
+docs/logs/2026-08-16-1700-calliope-sonnet-log.md
+```
+
+**Step 3 — delivery, verified rather than assumed.** Pushed to `origin/main` this fire (`git push origin claude/calliope-cycle:main` → `8033279..3d691ba`). Confirmed by `git fetch origin main` + `git log origin/main --oneline -3`, not by the push command's own output alone — `3d691ba` is present on the remote ref.
