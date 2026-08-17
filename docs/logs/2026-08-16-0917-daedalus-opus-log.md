@@ -422,3 +422,130 @@ and filled in after the push, so the hashes are the ones that actually landed
 rather than the ones I expected to. `a9b07e2` carries the empty version; this
 paragraph and the blocks above are the correction, pushed in the follow-up
 commit below.)*
+
+---
+
+## 17:19 PT — STOP fire
+
+Theseus's reply landed at 17:17
+(`docs/mail/theseus-to-daedalus-cc-iris-xian-team-the-constants-are-wired-and-nine-rounds-were-about-one-model-2026-08-16.md`),
+along with `2496f72` and `docs/research/round59-cross-model-live-2026-08-16.md`.
+Read, actioned, replied in this fire. Not a no-op.
+
+### 1. His wiring, verified rather than accepted
+
+Read `scripts/lib/recall-recogniser.mjs` (177 lines) rather than taking §2 from
+the memo. It **takes the frozen `RECALL_MARKER_PHRASES` record as a parameter**
+and derives every pattern from it — no literals of its own — and
+`scripts/verify-recogniser-equivalence.mjs` imports the same module. That is the
+level my own §2 argument implied and did not reach: I said a probe that imports
+the substrings agrees with the build by construction; he made the *verifier*
+test the code the probe runs, which is the same defect one level out and it was
+his catch, not mine.
+
+### 2. His negative control caught my `expect` field being wrong
+
+I proposed the field; he implemented it; his deliberately-reworded-record control
+failed it and was right to. My version asserted coverage per **edge line** — a
+drifted reachable clause sails through because the intact unreachable clause on
+the same line still matches. Two-meanings-of-zero alive inside the fix for it.
+
+The generalisation I'm keeping, written into the reply because it will recur on
+the per-condition schema: **the unit of the expectation has to equal the unit of
+the thing that can go stale independently.** Coverage at any coarser grain
+reports the survivor and hides the casualty.
+
+### 3. Round 59 → the design record (the fire's main deliverable)
+
+`docs/plans/continuity-3-carried-context.md` had stopped at Round 56. The
+constants, where drift detection went, and the cross-model result lived only in
+research docs and mail. Appended two sections. Three of the entries are
+corrections to the record rather than new claims:
+
+1. **Rounds 50–58 are conclusions about `claude-opus-5`.** Verified this fire:
+   `DEFAULT_MODEL = 'claude-opus-5'` (`packages/shared/src/types.ts:31`).
+2. **My Round 56 line — "lets F's hole be *read* rather than merely counted" —
+   is an outcome claim and isn't one.** Corrected in the new section quoting the
+   original, not by editing the Round 56 section, so the record carries the claim
+   and its correction. Theseus's sentence adopted: *readable, not read.*
+3. **The mixed-model klatch is the sharp case, and it's ours.** Verified:
+   `channel_entities` (`db/index.ts:73-78`) constrains nothing about model; each
+   entity carries its own, validated against the discovered set
+   (`routes/models.ts:107`). An opus seat and a sonnet seat in one room read the
+   same excerpt, same edge marker, same offered address — and can return answers
+   differing on whether the binding condition was ever read, **with nothing false
+   in either**. Round 51's detector fires on an utterance; there is no utterance
+   here to fire on.
+
+**Deliberately not changed: the edge-line wording, the tool description's fourth
+clause.** Three reasons, in the doc in order of weight — it lands silently in his
+input mid-pair (K-vs-J open, sonnet-on-K next); the wording hypothesis is one arm
+old; and a more insistent expand clause has a documented failure direction
+(invented addresses, the one input that returns real rows from a place nobody
+asked about).
+
+**The one build lever, priced not built:** below some reachable-count threshold,
+render the rows inline instead of offering an address — converting *will the
+agent take the address* into *did we render it*, which the build controls. It
+turns on a number, not a judgement. **Not computable here:** `find` for `*.db`
+in this worktree returned **zero hits** this fire, and the staged test-data DBs
+are gone from Theseus's per his 8/13 memo to Pard. Blocked on corpus, not design,
+and explicitly not before sonnet-on-K — a threshold picked to fix one arm is
+`REACHABLE_R54` with a number instead of a regex.
+
+### 4. One correction to his §6
+
+He wrote `POST /entities` "falls back rather than erroring." Read
+`packages/server/src/routes/entities.ts:62-65`: an **invalid** model id is a 400
+(`isValidModel` against the discovered set, `routes/models.ts:107`, which drops
+to the offline table only when the models API is unreachable). What silently
+defaults is an **absent** `model` field — so the real hazard is a typo'd *field
+name* (`{"modelId": …}` → 201, opus entity). His assertion is more worth keeping
+than his reason for it suggested.
+
+### 5. Doc fix
+
+`CLAUDE.md`'s tech-stack table said the AI default was Opus 4.6. It is
+`claude-opus-5`. Now points at `DEFAULT_MODEL` rather than restating a value that
+goes stale — same reasoning as de-hardcoding the effort ladder.
+
+### 6. Verification — run this fire, not recalled
+
+```
+npm test --workspace=@klatch/server → Test Files 82 passed (82)
+                                      Tests 1378 passed (1378)
+npm test (client, in the full run)  → 17 passed | 13 skipped (30)
+                                      230 passed | 13 skipped (243), exit 0
+npm run typecheck                   → clean (shared / server / client)
+find … -name "*.db" -not -path "*/node_modules/*" → no output (zero hits)
+```
+
+Server total unchanged from MID at 1378 — correct, since nothing in `packages/`
+moved after `b9a9fd2`; this fire's changes are docs only.
+
+### 7. Mail
+
+**Filed (1):**
+`docs/mail/daedalus-to-theseus-cc-iris-xian-team-the-klatch-case-is-the-sharp-one-and-the-lever-is-a-number-2026-08-16.md`
+
+**Closed to `read/` (2)** — the J′ thread, superseded by his 17:17 memo and my
+reply to it:
+- `theseus-to-daedalus-cc-iris-xian-team-jprime-ran-depth-was-never-the-variable-and-the-false-absence-is-back-2026-08-16.md`
+- `daedalus-to-theseus-cc-iris-xian-team-marker-phrases-exported-and-where-drift-detection-moved-2026-08-16.md`
+
+**Left open, correctly:** his 17:17 memo and my reply (live thread, his next arm
+and my offered schema additions both outstanding);
+`daedalus-to-iris-cc-theseus-team-inputsummary-is-on-the-wire-2026-08-16.md`
+(awaiting Iris's ack on the one divergence I flagged);
+`iris-to-daedalus-import-confirm-scope-2026-08-09.md` and
+`iris-to-daedalus-cc-team-carried-context-visibility-decision-2026-08-13.md`.
+
+### 8. Unchanged and still with xian
+
+**Option (2)** and **backfill** (all 72 imports on `default-entity`). No movement
+this fire, not restated at Theseus.
+
+## Wrap verification — STOP fire
+
+Per CLAUDE.md Session Wrap Protocol. Blocks below filled in after the commit and
+push, from the actual commands.

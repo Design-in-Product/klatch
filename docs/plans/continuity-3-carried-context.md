@@ -1012,3 +1012,132 @@ stale-probe class on this work and the first in an instrument rather than a test
   three fills one.** An agent that can now fetch the turns is still an agent whose carried
   context evicted them.
 - **Backfill** (gap doc open question 3), still with xian. All 72 imports on `default-entity`.
+
+---
+
+# Round 58 — the markers are named, and drift detection moved out of the probe
+
+Landed `b9a9fd2` (Daedalus, 8/16 MID), on Theseus's ask in
+`theseus-to-daedalus-cc-iris-xian-team-jprime-ran-depth-was-never-the-variable-and-the-false-absence-is-back-2026-08-16.md`.
+
+**`RECALL_MARKER_PHRASES` in `recall.ts`** — 17 strings (16 keys; `edgeSides` holds two),
+`Object.freeze`d. `scopeGapLine`, `edgeGapLine` and `gapSentences` all assemble from it.
+**The property that makes it worth anything is that it is the only place those strings are
+written**; exporting a copy alongside the literals would have shipped a constant that goes
+stale exactly the way his `REACHABLE_R54` did, which is worse than the status quo because it
+looks solved.
+
+**Exported: the substrings. Not exported: `edgeGapLine`.** His reason, adopted unchanged — a
+probe that can call the renderer agrees with the build by construction, so its pattern can
+never break loudly, which is the failure the probe exists to catch, one level in.
+
+**Found while doing it, and it was mine, in this file, the same morning.** `gapSentences`
+quoted `"not of your transcript"` and `"earlier" or "later"` as **its own literals** while
+claiming to explain the lines that render them. Reword one and not the other and the header
+sentence points at a line that no longer exists — the stale-probe defect inside a single
+function. Both now interpolate `P.interiorPhrase` / `P.edgeSides`.
+
+**The argument does not stop at the function boundary, and that is where the detection went.**
+A probe that imports the *substrings* also agrees with the build by construction: it will never
+again read a false zero, and it will also never notice that the wording moved. So drift
+detection moved to `packages/server/src/__tests__/round58-recall-marker-phrases.test.ts` (+14),
+which writes **every one of the 17 strings out longhand** — deliberately duplicating the source,
+so a reworded marker fails in CI in seconds. Two jobs, two instruments: drift detection is a
+test's job; behaviour under whatever wording ships is the probe's.
+
+**Theseus wired it 8/16 WORK (`2496f72`), and measured the swap rather than reasoning about
+it** — `scripts/verify-recogniser-equivalence.mjs` renders real search and expand text through
+the real render functions and compares old hand-written patterns against new derived ones on
+every pre-existing field, asserting the markers actually fired (a recogniser matching nothing
+agrees trivially). His first version reimplemented the recogniser inside the verifier — the same
+certifies-its-own-copy defect one level out — so the recogniser is now
+`scripts/lib/recall-recogniser.mjs`, imported by both. **Checked this fire rather than taken
+from the memo:** it takes the frozen record as a parameter and derives every pattern from it,
+no literals of its own.
+
+# Round 59 — nine rounds of build conclusions were conclusions about one model
+
+`docs/research/round59-cross-model-live-2026-08-16.md` (Theseus, 8/16 WORK). Arm F unchanged,
+`claude-sonnet-5` against a `claude-opus-5` baseline **re-run in the same fire on the same
+build through the same instrument**. Both models issue the identical first query and get the
+identical render — one excerpt, one edge line, the same offered address — measured, not
+inferred. Then: **opus took the address 5/5 and stated the codeword 0/5; sonnet took it 0/5 and
+stated the codeword 5/5.** Fisher two-tailed p = 0.0079.
+
+Three things follow for this document, and none of them is a defect report against the render.
+
+**1. Every claim above about "the agent" is, at minimum, a claim about `claude-opus-5`.** Not a
+caveat to add later — the live rounds all ran on the default, and the default is
+`DEFAULT_MODEL = 'claude-opus-5'` (`packages/shared/src/types.ts:31`, read this fire). Rounds
+50–58 should be read with the model named.
+
+**2. The build makes the gap addressable; it cannot make it read.** "Round 56 lets F's hole be
+*read* rather than merely counted" — written above, in the Round 56 section — is a statement
+about reachability that reads as a statement about outcome. Theseus's sharper form, adopted:
+*Round 56 made an evicted marking readable; it did not make it read.* Everything the render
+does is upstream of a decision it does not control, and 0/5 on one model is what that boundary
+looks like when it bites.
+
+**3. The mixed-model klatch is the sharp case, and it is ours rather than the probe's.**
+`channel_entities` (`db/index.ts:73-78`, read this fire) constrains nothing about model; each
+entity carries its own, validated against the discovered set (`routes/models.ts:107`). **A
+roster with an opus seat and a sonnet seat is a supported configuration**, and Round 59 says
+those two seats can read the same rendered excerpt, with the same edge marker and the same
+offered address, and return answers that differ on whether the binding condition was ever read.
+
+The failure mode is not the one Round 51 detects. Sonnet did not go quiet and did not assert a
+false absence (0/5, both models). **It volunteered a caveat 5/5** — a real seeded naming
+instruction from seq 29, which is inside the carried-context window and so already in the
+prompt — while handing over a codeword whose one condition, at seq 5, it never reached. Nothing
+it said was false. **A true partial disclosure presenting as a complete one**, with the shape of
+a careful condition-aware reply. In a klatch, the human reads two such answers side by side and
+has no signal distinguishing them, because there is nothing false in either.
+
+## What is deliberately not being changed, and why
+
+**Not the edge-line wording, and not the tool description's fourth clause.** Three reasons, in
+order of weight:
+
+1. **It would confound the open arms.** Theseus has K-vs-J unresolved and sonnet-on-K next.
+   Changing the render between arms is the confound this line of work has spent three rounds
+   removing; introducing one from the build side would be worse than from the probe side,
+   because it lands silently in his input.
+2. **The hypothesis that wording drives the rate is untested.** One arm, one day. Arm F is the
+   shortest arm with the restriction near the top; whether sonnet declines the address
+   everywhere or declines it *here* because one excerpt looked sufficient is exactly what the
+   next arm asks.
+3. **A more insistent clause has a known failure direction.** The fourth clause is phrased as
+   *what to do with an edge marker* rather than as a general capability precisely because an
+   agent reading it as "I can ask for any stretch of any conversation" will invent positions,
+   and an invented range is the one input here that returns real rows from a place nobody asked
+   about (`RECALL_TOOL_DESCRIPTION`'s doc comment, and Round 56 decision 1).
+
+## The one build-side option worth pricing, written down rather than half-built
+
+If address-taking turns out to be a stable model property rather than an arm artifact, the
+render-side lever is not a louder instruction — it is **making the expansion unnecessary for
+the small cases**: where an edge's reachable count is below some threshold, render those rows
+inline instead of offering an address. That converts *will the agent take the address* into
+*did we render it*, which is a property the build controls, and it leaves the address in place
+for the large cases where inlining cannot be afforded.
+
+It is not free and it cuts against the budget argument recorded above (worst case ~60,000
+chars of recall on top of the 24,000-char seed). **The question that decides it is a number,
+not a judgement: what fraction of edge markers in a real corpus have a reachable count small
+enough to inline, and what does inlining those cost per turn?** That is computable without a
+live call. **It is not computable in this worktree — there is no `.db` here (`find` this fire,
+zero hits), and the staged test-data DBs are reported gone from Theseus's worktree
+(`theseus-to-pard-cc-xian-staged-testdata-dbs-are-gone-from-this-worktree-2026-08-13.md`).**
+Blocked on corpus access, not on design.
+
+**Not recommended yet, and specifically not before sonnet-on-K.** A threshold picked to fix one
+arm is a constant that goes stale the way `REACHABLE_R54` did.
+
+## Still open after Round 59
+
+- **Option (2)** and **backfill**, both unchanged and both with xian.
+- **Per-condition arm schema** — Theseus's, deferred by him with a stated reason. An arm
+  declares the conditions it seeded and their depths; the probe reports which were surfaced,
+  which were reachable, which were read. `claimsNoRestriction` cannot separate withheld-after-
+  reading from disclosed-without-reading, and today it read 0/5 for both models.
+- **Whether the address-taking rate is a model property or an arm property** — sonnet on K.

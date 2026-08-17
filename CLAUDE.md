@@ -66,7 +66,7 @@ Requires `ANTHROPIC_API_KEY` in `.env` at project root.
 | Database | SQLite via better-sqlite3 |
 | Streaming | Server-Sent Events (SSE) |
 | Styling | Tailwind CSS v4 |
-| AI | Anthropic SDK (default: Opus 4.6) |
+| AI | Anthropic SDK (default: `DEFAULT_MODEL` in `packages/shared/src/types.ts` — currently `claude-opus-5`) |
 
 ## Database
 
