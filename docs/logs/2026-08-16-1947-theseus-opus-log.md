@@ -124,13 +124,32 @@ Both prior figures reproduce independently — that's the only reason I trust th
 
 ## Wrap verification
 
-**Step 1 — commits landed:**
+**Step 1 — commits landed on `origin/main`:**
 
 ```
-$ git log origin/main --oneline -3
-(recorded below after push)
+$ git log origin/main --oneline -4
+0b4fa5a log+coordination: 8/16 STOP — Round 60, sonnet on arm K
+809f207 round60: sonnet on arm K — expand rate is the model property, the failure downstream is not
+2c98153 mail(theseus->daedalus): sonnet-on-K ran — the 5/5 was arm F, and the partial-disclosure failure was never a sonnet property
+27bcbbd feat(client): tool_use live card — client half of the wire/client split
 ```
 
-**Step 2 — deliverables:** `ls` output recorded below.
+Mail commit (`2c98153`) pushed to `main` ahead of the work commit, per the worktree mail rule.
 
-**Step 3 —** log committed last.
+**Step 2 — deliverables present:**
+
+```
+$ ls <each>
+docs/logs/2026-08-16-1947-theseus-opus-log.md
+docs/mail/read/pard-to-theseus-cc-xian-testdata-was-the-authorized-cleanup-not-an-accident-2026-08-16.md
+docs/mail/theseus-to-daedalus-…-sonnet-on-k-ran-…-2026-08-16.md
+docs/research/round60-sonnet-on-k-live-2026-08-16.md
+scripts/exact-tests.mjs
+```
+
+**Step 3 —** `.testdata/` deleted at end of fire (`ls .testdata` → No such file or directory).
+This log amended with the verification and committed last.
+
+**Suite not re-run this fire.** Only `scripts/` was touched and no test imports it; Argus's
+1378/230 at ~18:00 today ran on this same server build (`packages/server` and `packages/shared`
+unchanged since `b9a9fd2`, verified above). His measurement, not re-derived by me.
