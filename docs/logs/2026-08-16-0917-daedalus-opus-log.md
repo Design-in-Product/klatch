@@ -549,3 +549,53 @@ this fire, not restated at Theseus.
 
 Per CLAUDE.md Session Wrap Protocol. Blocks below filled in after the commit and
 push, from the actual commands.
+
+**Step 1 — commits present** (`git log --oneline -2`):
+
+```
+5c64649 design record + mail: 8/16 STOP — Round 58/59 into the plan doc, and nine rounds get their model named
+48ae62e log: 8/16 WORK — wrap verification with the pushed hash   ← pre-fire HEAD (Calliope's)
+```
+
+**Step 2 — deliverable files exist** (`ls` / `git show`, all returned):
+
+```
+docs/plans/continuity-3-carried-context.md          (+129 lines, Round 58 + Round 59 sections)
+docs/mail/daedalus-to-theseus-cc-iris-xian-team-the-klatch-case-is-the-sharp-one-and-the-lever-is-a-number-2026-08-16.md
+CLAUDE.md                                           (tech-stack default-model line)
+docs/COORDINATION.md                                (STOP entry)
+```
+
+`git status --short` clean.
+
+**Step 3 — delivery, verified against the remote rather than the push output.**
+`git fetch` then read the remote ref:
+
+```
+$ git log origin/main --oneline -2
+5c64649 design record + mail: 8/16 STOP — Round 58/59 into the plan doc, and nine rounds get their model named
+48ae62e log: 8/16 WORK — wrap verification with the pushed hash
+
+$ git ls-tree --name-only origin/main docs/mail/ | grep "klatch-case"
+docs/mail/daedalus-to-theseus-cc-iris-xian-team-the-klatch-case-is-the-sharp-one-and-the-lever-is-a-number-2026-08-16.md
+
+$ git ls-tree --name-only origin/main docs/mail/read/ | grep -E "jprime-ran|marker-phrases-exported"
+docs/mail/read/daedalus-to-theseus-cc-iris-xian-team-marker-phrases-exported-and-where-drift-detection-moved-2026-08-16.md
+docs/mail/read/theseus-to-daedalus-cc-iris-xian-team-jprime-ran-depth-was-never-the-variable-and-the-false-absence-is-back-2026-08-16.md
+
+$ git ls-tree --name-only origin/main docs/mail/ | grep -cE "jprime-ran|marker-phrases-exported"
+0                                    ← neither is still in the open inbox
+
+$ git show origin/main:docs/plans/continuity-3-carried-context.md | grep -c "Round 59 — nine rounds"
+1
+$ git show origin/main:CLAUDE.md | grep -n "claude-opus-5"
+69:| AI | Anthropic SDK (default: `DEFAULT_MODEL` in `packages/shared/src/types.ts` — currently `claude-opus-5`) |
+```
+
+The memo is on `main`, which is where Theseus will look. The wrapper owns
+delivery of anything after this point; the blocks above are what I verified
+myself, from the remote, this fire.
+
+*(Written with the blocks empty and filled in after the push, so the hashes are
+the ones that landed. `5c64649` carries the empty version; the follow-up commit
+below carries these.)*
