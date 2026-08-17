@@ -98,6 +98,19 @@ if (argv[0] === '--fisher') {
     { name: 'Round 60, arm K: opus 3/5 vs sonnet 0/5 took the address',
       doc: 'docs/research/round60-sonnet-on-k-live-2026-08-16.md',
       table: [[3, 2], [0, 5]], expect: 0.1667 },
+    // Round 61's three figures. The first is the headline, the second is the same comparison
+    // scored by the pre-registered keyword field, and the third is the PRE-REGISTERED NULL.
+    // The null is in the check table on purpose: a prediction of "no difference" that is never
+    // written down as a number is not a prediction, it is a thing said afterwards.
+    { name: 'Round 61, opus: arm F 5/5 vs arm L 0/5 reasoned about the referent (hand-confirmed)',
+      doc: 'docs/research/round61-unambiguous-referent-live-2026-08-17.md',
+      table: [[5, 0], [0, 5]], expect: 0.0079 },
+    { name: 'Round 61, same comparison scored by the pre-registered field: F 3/5 vs L 0/5',
+      doc: 'docs/research/round61-unambiguous-referent-live-2026-08-17.md',
+      table: [[3, 2], [0, 5]], expect: 0.1667 },
+    { name: 'Round 61 PRE-REGISTERED NULL, opus: arm F 5/5 vs arm L 5/5 took the address',
+      doc: 'docs/research/round61-unambiguous-referent-live-2026-08-17.md',
+      table: [[5, 0], [5, 0]], expect: 1.0 },
   ];
   let bad = 0;
   for (const t of cases) {
