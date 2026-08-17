@@ -137,10 +137,36 @@ export default function App() {
     [updateMessage]
   );
 
+  // Live tool_use card: same artifact shape fetchMessages returns on reload, appended as each
+  // call happens mid-turn rather than waiting for message_complete — a card that only appears
+  // on reload isn't informing anyone while the reply is on screen (Iris, 8/15 STOP fire decision).
+  const handleToolUse = useCallback(
+    (messageId: string, toolName?: string, inputSummary?: string) => {
+      updateMessage(messageId, (m) => {
+        const liveToolCount = (m.artifacts ?? []).filter((a) => a.type === 'tool_use').length;
+        return {
+          artifacts: [
+            ...(m.artifacts ?? []),
+            {
+              id: `${messageId}-tool-use-live-${liveToolCount}`,
+              messageId,
+              type: 'tool_use' as const,
+              toolName,
+              inputSummary,
+              createdAt: new Date().toISOString(),
+            },
+          ],
+        };
+      });
+    },
+    [updateMessage]
+  );
+
   const { isAnyStreaming, getStreamContent, isMessageStreaming, reset: resetStreams } = useStreams(
     streamingMessageIds,
     handleStreamComplete,
-    handleStreamError
+    handleStreamError,
+    handleToolUse
   );
 
   const handleSend = async (content: string) => {

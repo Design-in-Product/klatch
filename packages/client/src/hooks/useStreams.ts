@@ -18,15 +18,22 @@ export function useStreams(
     stopReason?: StreamEvent['stopReason'],
     carriedContext?: StreamEvent['carriedContext']
   ) => void,
-  onError?: (messageId: string, content: string) => void
+  onError?: (messageId: string, content: string) => void,
+  onToolUse?: (
+    messageId: string,
+    toolName: StreamEvent['toolName'],
+    inputSummary: StreamEvent['inputSummary']
+  ) => void
 ) {
   const [states, setStates] = useState<Map<string, StreamState>>(new Map());
   const onCompleteRef = useRef(onComplete);
   const onErrorRef = useRef(onError);
+  const onToolUseRef = useRef(onToolUse);
 
   // Keep refs current to avoid stale closures
   onCompleteRef.current = onComplete;
   onErrorRef.current = onError;
+  onToolUseRef.current = onToolUse;
 
   // Track which message IDs we've already set up streams for
   const activeIdsRef = useRef<Set<string>>(new Set());
@@ -80,6 +87,8 @@ export function useStreams(
           activeIdsRef.current.delete(messageId);
           onErrorRef.current?.(messageId, data.content);
           eventSource.close();
+        } else if (data.type === 'tool_use') {
+          onToolUseRef.current?.(messageId, data.toolName, data.inputSummary);
         }
       };
 

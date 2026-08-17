@@ -135,6 +135,57 @@ describe('useStreams', () => {
     expect(onComplete).toHaveBeenCalledWith('msg-1', 'reply', undefined, '2 other conversations');
   });
 
+  it('calls onToolUse for each tool_use event, without closing the stream', () => {
+    const onToolUse = vi.fn();
+    const { result } = renderHook(() => useStreams(['msg-1'], undefined, undefined, onToolUse));
+    const es = MockEventSource.byUrl('/api/messages/msg-1/stream')!;
+
+    act(() => {
+      es._emit({
+        type: 'tool_use',
+        messageId: 'msg-1',
+        content: '',
+        toolName: 'search_my_other_conversations',
+        inputSummary: 'Searched own conversations: staging freeze',
+      });
+    });
+
+    expect(onToolUse).toHaveBeenCalledWith(
+      'msg-1',
+      'search_my_other_conversations',
+      'Searched own conversations: staging freeze'
+    );
+    expect(es.closed).toBe(false);
+    expect(result.current.isMessageStreaming('msg-1')).toBe(true);
+  });
+
+  it('calls onToolUse once per tool_use event, in order, for a turn with multiple calls', () => {
+    const onToolUse = vi.fn();
+    renderHook(() => useStreams(['msg-1'], undefined, undefined, onToolUse));
+    const es = MockEventSource.byUrl('/api/messages/msg-1/stream')!;
+
+    act(() => {
+      es._emit({ type: 'tool_use', messageId: 'msg-1', content: '', toolName: 'search_my_other_conversations', inputSummary: 'Searched own conversations: alpha' });
+      es._emit({ type: 'tool_use', messageId: 'msg-1', content: '', toolName: 'search_my_other_conversations', inputSummary: 'Expanded own conversation: beta 1–5' });
+    });
+
+    expect(onToolUse).toHaveBeenCalledTimes(2);
+    expect(onToolUse).toHaveBeenNthCalledWith(1, 'msg-1', 'search_my_other_conversations', 'Searched own conversations: alpha');
+    expect(onToolUse).toHaveBeenNthCalledWith(2, 'msg-1', 'search_my_other_conversations', 'Expanded own conversation: beta 1–5');
+  });
+
+  it('does not require inputSummary on tool_use events (tools with no summary vocabulary)', () => {
+    const onToolUse = vi.fn();
+    renderHook(() => useStreams(['msg-1'], undefined, undefined, onToolUse));
+    const es = MockEventSource.byUrl('/api/messages/msg-1/stream')!;
+
+    act(() => {
+      es._emit({ type: 'tool_use', messageId: 'msg-1', content: '', toolName: 'save_file' });
+    });
+
+    expect(onToolUse).toHaveBeenCalledWith('msg-1', 'save_file', undefined);
+  });
+
   it('calls onError when a stream errors', () => {
     const onError = vi.fn();
     renderHook(() => useStreams(['msg-1'], undefined, onError));
