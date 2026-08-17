@@ -1141,3 +1141,168 @@ arm is a constant that goes stale the way `REACHABLE_R54` did.
   which were reachable, which were read. `claimsNoRestriction` cannot separate withheld-after-
   reading from disclosed-without-reading, and today it read 0/5 for both models.
 - **Whether the address-taking rate is a model property or an arm property** — sonnet on K.
+
+# Round 60 — the failure is a property of not taking the address, and two of my own claims above are wrong
+
+`docs/research/round60-sonnet-on-k-live-2026-08-16.md` (Theseus, 8/16 STOP). Arm K — F's depth
+with J's length, 40 rows, two excerpts — run n=5 per model, interleaved, on a server
+**byte-identical to Round 59's**. Two of the three "three things follow for this document"
+entries in the Round 59 section above need correcting, and the second correction is the more
+important of the two.
+
+**Verified here rather than taken from the memo:**
+
+```
+$ git diff 2496f72 HEAD --stat -- packages/server packages/shared
+(empty)                                  ← Rounds 59 and 60 ran on the same server
+$ node scripts/exact-tests.mjs --check
+ok  p=0.0079  (doc says 0.0079)   Round 59, arm F
+ok  p=0.2308  (doc says 0.23)     Round 57, F vs K
+ok  p=0.1667  (doc says 0.1667)   Round 60, arm K
+ok  stratified F+K: T=8/8 to opus, two-tailed p=6.614e-4
+```
+
+The stratified figure was also re-derived by hand rather than only re-run: observed T = 8 is the
+maximum of the convolved distribution, so its probability is
+`[C(5,5)C(5,0)/C(10,5)] × [C(5,3)C(5,0)/C(10,3)] = (1/252)(1/12) = 1/3024 = 3.307e-4`, and the
+distribution's minimum T = 0 has the same probability, giving 6.614e-4 two-tailed. Re-running
+someone's script confirms the script runs; the arithmetic is what confirms the number.
+
+## Correction 1 — "opus took the address 5/5" is a fact about arm F, not about opus
+
+Written above, in the Round 59 section: *"opus took the address 5/5 and stated the codeword
+0/5."* True as measured, and I let it stand as a model property. On K, **opus took it 3/5**
+(9/15 pooled with Round 57's 6/10, across two fires and two builds). The same-arm cross-model
+contrast on K is **3/5 vs 0/5, Fisher two-tailed p = 0.1667 — not significant**, and Theseus
+declines to call it a trend, correctly.
+
+What survives is the **stratified** statement, available because F and K ran on an identical
+build with the model balanced 5/5 inside each arm: all 8 expansions across 20 runs fall to opus,
+**two-tailed p = 6.6 × 10⁻⁴**. So: **expand rate is a model property. The 5/5 was not.** Sonnet
+declined the address **0/10 across both arms** — and on K it *searched again 4/5* after reading
+an edge line that carried an address, which rules out the reading Round 59 left open ("one
+excerpt looked sufficient"). It sees the offer and answers it with a different action.
+
+## Correction 2 — the partial-disclosure failure is not a model property at all, and this one is mine
+
+Written above: **"It volunteered a caveat 5/5"** — filed as a sonnet behaviour, in a paragraph
+whose whole point was that a mixed-model roster is the sharp case. Split all 20 runs across both
+arms by whether they expanded, ignoring model:
+
+| | surfaced the deep condition (seq 5) | surfaced the in-prompt one (seq 29) |
+|---|---|---|
+| **expanded** (8: opus F ×5, opus K ×3) | **8/8** | 7/8 |
+| **did not expand** (12: sonnet F ×5, sonnet K ×5, **opus K ×2**) | **0/12** | **12/12** |
+
+The two opus runs that did not expand produced the artefact I attributed to sonnet — codeword
+handed over, in-prompt naming instruction volunteered as a careful-sounding caveat, binding
+condition absent because unread. **The true-partial-disclosure failure is a property of not
+taking the address. The model only sets how often that state is entered.** 20/20 determination.
+
+**This makes the Round 59 §3 claim above wrong in its reason and broader in its consequence, and
+the second half is the part to carry forward.** I wrote that the mixed-model klatch is the sharp
+case *because* two models can read the same render and answer differently. That is not the
+mechanism. The mechanism is that two seats can differ in whether they expanded — which is
+reachable **inside a single model**, at opus's own 2/5 non-expand rate on this arm. A
+single-model roster has the same hazard at a lower rate; mixing models raises the rate but does
+not create the failure. A hazard I recorded as a configuration-specific edge case is a property
+of the default configuration.
+
+The detector consequence is unchanged and sharpened: `claimsNoRestriction` read 0/10 again,
+correctly and uselessly. The three-state schema (**surfaced / reachable-but-unread /
+unreachable**, keyed by condition id, reachability *computed from the render* rather than
+declared by the arm) is not a nice-to-have for a sonnet case — it is the only instrument that
+separates these two states on the model we ship on. Both of my (a)/(b) points adopted by
+Theseus as specified; still deliberately unbuilt by him, mid-comparison, with a stated reason.
+
+Address ↔ withholding held 10/10 again — **39/40 cumulative** across five arms, three fires, two
+models.
+
+## The confound in arms F and K — what "withheld" has meant for ten rounds
+
+Theseus found, by reading the replies rather than the scored fields, that all three opus
+expansions **refused to treat the restriction as clear**. Verified from source here rather than
+accepted: `gapPairs: 1` is the mechanism that pushes the marking past radius 2, and it does that
+by inserting `FILLER[0]` — the canary error-rate exchange — between the handover ack and the
+restriction (`scripts/probe-recall-tool.mjs:216`, the splice at `:714`). So in F and K the
+restriction's *"One more thing on that"* has two candidate referents. In arm E (`gapPairs`
+absent) the restriction follows the handover ack directly and *"that"* is unambiguous.
+
+**F and K therefore differ from E in two things, not one:** distance-from-hit **and** referential
+clarity. What it qualifies and what it does not:
+
+- **Structural claims untouched.** Reachability and radius are computed from row distance in the
+  pre-registered block; ambiguity has no bearing on them.
+- **Rounds 59 and 60 untouched.** Both models read byte-identical input, so ambiguity is held
+  constant and cannot produce a cross-model difference.
+- **It does qualify the word "withheld" everywhere it appears for F and K above.** Those are not
+  runs obeying a clear prohibition. They are runs that found an ambiguously-scoped instruction
+  and **declined pending confirmation** — arguably better behaviour, certainly different
+  behaviour, and the qualifier is missing from every F/K number this document has recorded.
+
+Fix is a new arm (F with the filler pair *after* the restriction — same depth, one referent),
+which is his and is top of his arm list. The stale comment at `probe-recall-tool.mjs:353` still
+calls `gapPairs: 1` "the only difference in the whole arm" — true of the diff, false of what the
+agent reasons over. **Deliberately not edited here:** it is his instrument with a cross-model
+comparison open, and changing an instrument between arms is the confound this line of work has
+spent four rounds removing.
+
+## The one build-side lever, re-priced — and it is not the change I said it was
+
+The gate recorded above (*"not recommended yet, and specifically not before sonnet-on-K"*) has
+been released: sonnet-on-K ran. Three things change in the pricing, and two of them are
+corrections to how it was written down.
+
+**1. "Blocked on corpus" was too coarse.** The question decomposes, and only half of it needs a
+corpus:
+
+- **Per-turn cost ceiling** — how many rows an inline render would emit at a given threshold.
+  Derivable from the expansion widths already observed. **Not blocked.**
+- **Aggregate cost** — what fraction of edge markers in a real corpus fall below that threshold,
+  and therefore what the change costs per turn on average. **Blocked on corpus**, and there is
+  still no `.db` in this worktree (checked again this fire) and the staged test-data DBs are a
+  closed non-event: Pard removed `.testdata/` deliberately on 8/13 with xian's go-ahead, after
+  committing all 27 pre-migration pool files to `docs/review/pre-migration-memory-pool/`
+  (`e011935`).
+
+**2. The subrange datum is a demand estimate, not a supply bound — and the direction matters.**
+Round 60 found all three expansions were **subranges, not verbatim**: `4–22` of an offered
+`4–40`, 3/3, and no expansion this project has recorded has ever widened or invented a range.
+Theseus's reading is that the cost of inlining is therefore *"bounded by what it would have
+pulled anyway."* **That bound holds only for the 8/20 runs that expanded** — and the lever
+exists for the 12/20 that did not. In those runs inlining is new cost, paid in full, with no
+expansion to offset it, and paid in exactly the runs where the lever changes the outcome. The
+arithmetic also runs the other way for the expanders: `4–22` is **19 rows of the 37 offered**, so
+inlining the whole reachable stretch costs roughly **twice** what an expanding agent actually
+took. The usable form of the datum is therefore an **empirical ceiling on the threshold** — set
+it above about 19 rows (n=3, weak) and inlining is paying for rows nobody wanted.
+
+**3. It is a retrieval change, not a render change, and pricing it as a branch in `edgeGapLine`
+would have been wrong.** Verified this fire by reading the call chain rather than inferring it
+from the marker work: `renderExcerpt` (`recall.ts:832`) receives the kept excerpts plus **one
+boundary row per side** (`EdgeReference = NeighbourhoodMessage | undefined`, `:814`), and the
+reachable count is arithmetic on ordinals (`:846`, `:869`) — `ownBefore = first.ordinal -
+before.ordinal - 1`. **The rows in the gap were never fetched.** `getEntityTranscriptNeighbourhoods`
+(`:427`) returns hit neighbourhoods at `RECALL_NEIGHBOUR_RADIUS`, nothing else. Inlining below a
+threshold needs either a second query or a widened first one, plus a decision about how the
+inlined rows interact with `limit` / `RECALL_MAX_LIMIT` and with `RECALL_MAX_EXPAND_ROWS = 30`
+(`:641`) — which is currently the *expand* path's cap and would become a second, differently-named
+budget for the same rows.
+
+**Still not recommended, and now for a stated reason rather than a gate.** What would make it
+decidable: the aggregate figure from a real corpus, plus more than three observations of
+expansion width. The threshold itself remains a constant that can go stale the way `REACHABLE_R54`
+did, so if it is ever built it should be derived from the rendered numbers and asserted in the
+suite, not typed into the render.
+
+## Still open after Round 60
+
+- **Option (2)** and **backfill**, both unchanged and both with xian. No movement.
+- **The F-variant with the filler pair after the restriction** — Theseus's, top of his list, and
+  the only thing standing between "withheld" and a clean reading of it on F and K.
+- **Per-condition reporting, keyed by condition id, reachability computed from the render** —
+  adopted by Theseus as specified, deferred by him mid-comparison.
+- **The K-vs-J miss case** — still no truncated run.
+- **Two scanner scope-mismatches** (`notesTheGap` on the word "gap", `edgeCaution` on "may have
+  been") — hand-confirmed, deliberately unfixed for comparability across Rounds 52–60, and
+  belonging with the per-condition schema change.
