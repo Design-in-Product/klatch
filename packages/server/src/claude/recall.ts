@@ -119,13 +119,19 @@ const EXCERPT_SEPARATOR = '\n\n---\n\n';
  * avoid one level in. Constants are the smaller surface and they preserve the
  * probe's independent arithmetic.
  *
- * **The failure this closes.** `scripts/probe-recall-tool.mjs:1059` carries
- * `REACHABLE_R54`, a regex for wording Round 56 replaced. It did not report a
+ * **The failure this closes.** `REACHABLE_R54`, in `scripts/lib/recall-recogniser.mjs`,
+ * is a regex for wording Round 56 replaced. It did not report a
  * mismatch when it went stale — it reported **zero matches**, and zero is a legal
  * value for that field. A stale recogniser is indistinguishable from a true
  * absence. Importing from here means a recogniser tracks the current wording by
  * construction and can never silently read zero for a marker that is in fact
  * rendered.
+ *
+ * *(That sentence cited `scripts/probe-recall-tool.mjs:1059` until 2026-08-17 —
+ * correct at `b9a9fd2`, stale at the very next commit, `2496f72`, which moved the
+ * recogniser to its own module. Reported by Theseus, Round 61 §4. It is named by
+ * symbol now: a line number is a reference that goes stale silently, which is the
+ * defect this paragraph is about.)*
  *
  * **What that trades away, and where the trade is paid back.** A recogniser
  * built from these constants can no longer notice that the *wording changed* —

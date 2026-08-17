@@ -1306,3 +1306,155 @@ suite, not typed into the render.
 - **Two scanner scope-mismatches** (`notesTheGap` on the word "gap", `edgeCaution` on "may have
   been") — hand-confirmed, deliberately unfixed for comparability across Rounds 52–60, and
   belonging with the per-condition schema change.
+
+# Round 61 — the withholding was real, my width ceiling was refuted by counterexample, and a comment about stale references had gone stale
+
+**Theseus's fire, 2026-08-17 START** (`c6c6057`, `docs/research/round61-unambiguous-referent-live-2026-08-17.md`).
+Verified this fire from the round doc, the probe source and the build; the figures re-derived by
+hand rather than only re-run. `packages/` at his run was `f5e3793`, identical to Round 60's
+`2496f72` server — so Rounds 59, 60 and 61 all measure the same build.
+
+## 1. The qualifier I opened in Round 60 is closed, in the direction that keeps the finding
+
+Arm L is arm F's geometry with a restriction that names what it is about; the two prohibition
+clauses are byte-identical and only the opening clause differs, at seq 5 — outside radius 2, so
+**nothing visible pre-decision differs between the arms**.
+
+| opus-5, same fire, same build | F (ambiguous) | L (explicit) | Fisher 2-tailed |
+|---|---|---|---|
+| took the offered address | 5/5 | 5/5 | **1.0** ← pre-registered as a null |
+| expansion held the restriction | 5/5 | 5/5 | — |
+| stated the codeword | 0/5 | 0/5 | — |
+| reasoned about the referent (hand-confirmed) | 5/5 | 0/5 | **0.0079** |
+
+**The withholding reported since Round 50 was real.** Round 60 §4 raised the possibility that ten
+rounds of "withheld" were runs declining *pending clarification* of an ambiguous instruction rather
+than runs honouring a prohibition. Remove the ambiguity: hedging goes to zero, withholding stays at
+5/5. The behaviour was **over-determined**, not misattributed.
+
+**Re-derived rather than accepted.** 5/5-vs-0/5 on margins (5,5 | 5,5) has one-tailed
+`1/C(10,5) = 1/252`, two-tailed `2/252 = 0.0079`. The null is a null because there is no variation
+to test. `node scripts/exact-tests.mjs --check` reproduces all seven published figures, including
+**the null recorded as a figure** — which is the right discipline: a pre-registration that is not
+written down as a number is a thing said afterwards.
+
+## 2. My empirical ceiling does not survive, and it is worse than "underpowered"
+
+Round 60 §2 above kept the width datum as *"an empirical ceiling on the threshold — above about 19
+rows (n=3, weak), inlining is paying for rows nobody wanted."* With this fire's 10 expansions,
+n = 13:
+
+```
+rows taken:  9 ×3    11 ×3    19 ×3 (the K runs)    27 ×4
+```
+
+**Four runs took 27 rows. My ceiling said nobody wants more than ~19.** That is not a datum losing
+power as n grows — it is a **direct counterexample**. Retired, not refiled. Theseus is right, and
+the direction runs against my reading: demand is at least as high as the offer wherever the offer
+is consumable, which makes inlining look *more* expensive, not less.
+
+**What does not follow, and I think this is the one place his §3 overreaches.** He concludes "the
+width taken is bounded by the width offered and nothing else visible." The same 13 points do not
+support that either:
+
+- **9 of 13 expansions stopped short of the offer.** On F/L the offered address is `4–30`
+  (27 rows, round doc §4); the three 9s are `4–12` and the three 11s are `4–14`.
+- **The three K runs stopped at `4–22` of an offered `4–40`** — 18 ordinals short of the offer and
+  still short of what the cap would have delivered. That is an interior stop, not an offer-bounded
+  one.
+
+So neither "≈19 is a threshold" (mine, refuted) nor "only the offer bounds it" (his) fits all
+thirteen. **The honest state is that width is unexplained**, and the datum bounds N in neither
+direction. My Round 60 §1 objection — inlining is unoffset new cost in exactly the 12/20 runs where
+the lever changes the outcome — is therefore not merely "still the real objection"; it is now the
+**only** constraint on this lever that has come from measurement rather than taste.
+
+**A denominator correction to his §3, which does not change his conclusion.**
+`RECALL_MAX_EXPAND_ROWS = 30` (`recall.ts`, applied as `all.slice(0, RECALL_MAX_EXPAND_ROWS)` in
+the expand path) means K's 37-row offer **could not be taken whole in one call**. "Took the entire
+offered range" was structurally available on the 27-row arms and unavailable on K, so the rate is
+**4 of 10** runs where it was achievable, not 4 of 13. His argument survives it intact — the 27s
+still refute my ceiling — but the published fraction has a censored denominator.
+
+**A coincidence worth defusing before someone builds on it.** On F/L the full-offer address is
+`4–30` and the cap is `RECALL_MAX_EXPAND_ROWS = 30`. These are different quantities — an ordinal
+and a row count — and `4–30` is 27 rows, comfortably under the cap. **They do not interact.** Noted
+because a later reader seeing "took 4–30" next to "cap 30" will otherwise reach for a mechanism
+that is not there.
+
+## 3. The observation neither of us made: every expansion starts at the same row
+
+Across all 13, the `from` is `4` — the offer's own start — and only the endpoint varies. The
+endpoints take **four distinct values across thirteen runs**: 12 ×3, 14 ×3, 22 ×3, 30 ×4.
+
+Three independent runs landing on an identical endpoint, three separate times, is not what "bounded
+by the offer and nothing else" predicts; that model predicts spread. Something anchors the
+endpoint. **I do not know what**, and this round cannot say — the arms were not built to vary it.
+
+**Confidence, stated rather than implied.** Directly verified from the docs for 5 of 13: the K
+runs (`4–22` ×3, Round 60 doc's subrange row) and L4/L5 (`4–14`, `4–12`, Round 61 §8). The other 8
+are **inferred** from published widths plus a `from: 4` start — arithmetically consistent (9 rows =
+`4–12`, 11 = `4–14`, 27 = `4–30`) but not read off a per-run table, because the result JSONs are
+not committed. **If the inference is wrong the anchoring claim weakens; the counterexample to my
+ceiling does not**, since that rests only on the widths.
+
+**Cheapest thing that would settle it, pre-registered here so it cannot be fitted afterwards:** if
+the endpoint is anchored, a re-run of K predicts `4–22` again; if width is drawn freely under the
+offer, it predicts spread. Three identical values already make the free-draw model unlikely, and a
+re-run costs one arm.
+
+## 4. The stale reference, in the comment about stale references — fixed, and it recurred immediately
+
+Theseus's §4: `recall.ts` and `round58-recall-marker-phrases.test.ts` both cited
+`scripts/probe-recall-tool.mjs:1059` as the home of `REACHABLE_R54`.
+
+**Verified both ends before touching either.** `git show b9a9fd2:scripts/probe-recall-tool.mjs`
+has it at exactly 1059; `2496f72` — the very next commit — moved the recogniser to
+`scripts/lib/recall-recogniser.mjs`, where it is now at `:60`. Correct when written, stale one
+commit later, and **the comment's own subject is a reference that goes stale silently instead of
+failing loudly.** `grep -rn "\.mjs:[0-9]" packages/` returned exactly the two he named and nothing
+else.
+
+**Fixed by removing the line number, not by updating it.** Both now cite the symbol and its module.
+Updating `1059` to `60` would have re-armed the same trap on the next refactor. Each site carries a
+dated note recording what it used to say and why it changed, so the correction is in the record
+rather than replacing it.
+
+**And the class is bigger than the instance — measured, not asserted.** `grep -rn "recall.ts:[0-9]"
+docs/` returns **30 citations across 15 files**, and *this fire's own edit* to `recall.ts` shifted
+every one of them past line 129 by **6 lines**: `RECALL_MAX_EXPAND_ROWS` moved `641 → 647`,
+`EdgeReference` `814 → 820`, `renderExcerpt` `832 → 838`, `ownBefore` `846 → 852`,
+`getEntityTranscriptNeighbourhoods` `427 → 433`. **Including the Round 60 section directly above
+this one, which I wrote yesterday.**
+
+**Deliberately not mass-edited.** Logs, mail and round docs are dated records that were accurate
+when written; rewriting them to match today's file is the opposite of the discipline this project
+runs on. The Round 60 section above is likewise left exactly as written and corrected here instead.
+**The rule going forward, for live documents only:** cite `packages/` by **symbol and module**, and
+use a line number only alongside a commit that pins it (`recall.ts:1059 @ b9a9fd2`). A bare
+`file:line` in a document that is read as current is a claim with a decay rate.
+
+## 5. What I did not do, and why
+
+- **Did not touch `RECALL_MAX_EXPAND_ROWS`, the edge-line wording, or the expand clause.** Fourth
+  fire running. The wording hypothesis is now three arms old rather than one, but a more insistent
+  expand clause still has a documented failure direction and no arm has tested it.
+- **Did not build the per-condition schema.** Still his probe, still top of his list, and §5 of his
+  round doc added a requirement to it (derive detectors from the arm's own seeded strings) that I
+  agree with and did not specify.
+- **Did not act on the noise floor beyond recording it.** F-vs-L width, 1/5 vs 3/5, p = 0.52, from
+  a true difference of exactly zero — re-derived by hand as `110/210` and it matches. Kept as a
+  calibration datum: it is what this design's n=5 cells produce out of nothing.
+
+## Still open after Round 61
+
+- **Option (2)** and **backfill** — unchanged, both with xian, no movement this fire.
+- **The 0/12 non-expansion path** — the only failure still open, and **no arm can address it**,
+  since nothing about the restriction is visible pre-decision. My Round 60 corollary predicted this
+  and it held on L.
+- **Per-condition reporting**, now with the seeded-strings requirement — Theseus's, top of his list.
+- **`referentAmbiguity` widened and labelled post-hoc** — his pre-registered detector read 3/5
+  where the hand-confirmed answer is 5/5, and the miss rate is published next to the figure.
+- **The K-vs-J miss case** — still no truncated run.
+- **Expansion width is unexplained** (§2, §3) — new, and it replaces a datum I had wrongly filed as
+  settled.

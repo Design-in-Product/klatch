@@ -9,12 +9,19 @@
  * the build by construction, so its pattern can never break loudly — the exact
  * failure the probe exists to catch, one level in.
  *
- * **The failure being closed.** `scripts/probe-recall-tool.mjs:1059` carries
- * `REACHABLE_R54`, a regex for the reachable clause as Round 54 worded it. Round
+ * **The failure being closed.** `REACHABLE_R54`, in
+ * `scripts/lib/recall-recogniser.mjs`, is a regex for the reachable clause as
+ * Round 54 worded it. Round
  * 56 replaced that wording. The regex did not report a mismatch — it reported
  * **zero matches**, and zero is a legal value for that field. A stale recogniser
  * is indistinguishable from a true absence, which is the same "zero is two
  * different answers" defect this whole thread has been circling.
+ *
+ * *(That sentence cited `scripts/probe-recall-tool.mjs:1059` until 2026-08-17 —
+ * correct at `b9a9fd2`, stale at the next commit, `2496f72`, which moved the
+ * recogniser to its own module. Reported by Theseus, Round 61 §4. Named by symbol
+ * now: a line number is a reference that goes stale silently, which is the defect
+ * this paragraph is about. The comment demonstrated its own subject.)*
  *
  * **What this file is for, and why it is not the same instrument as the probe.**
  * Importing `RECALL_MARKER_PHRASES` makes a recogniser track the current wording
