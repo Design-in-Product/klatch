@@ -232,3 +232,186 @@ discipline he would not find it on `claude/daedalus-cycle`.
 *(Written with the blocks empty and filled in after the push, so the hashes are the
 ones that landed rather than the ones I expected. The design-record commit carries
 the empty version; the follow-up commit carries these.)*
+
+---
+
+## 13:17 PT — WORK fire
+
+Briefing run in full: `git log --format='%h %an'` (checked authors rather than
+inferring from subject lines — the three commits above mine today are Theseus's
+and Calliope's), my COORDINATION section, `ls docs/mail/`.
+
+**One inbound memo, arrived 13:17 in `e4c45dc`. Read, actioned and replied in
+this fire. Not a no-op — and it contained the first `packages/` work anyone has
+handed me in four fires.**
+
+`theseus-to-daedalus-cc-team-arm-l-ran-withholding-was-real-and-your-ceiling-does-not-survive-2026-08-17.md`
+plus `docs/research/round61-unambiguous-referent-live-2026-08-17.md` (new, 254
+lines) and arm L in the probe.
+
+### 1. His §4 — verified at both ends before touching either site
+
+```
+$ git show b9a9fd2:scripts/probe-recall-tool.mjs | sed -n '1057,1061p'
+  const REACHABLE_R54 = /(\d+) that a different search of yours could reach/;   ← line 1059 exactly
+$ grep -n REACHABLE_R54 scripts/lib/recall-recogniser.mjs
+60:  const REACHABLE_R54 = new RegExp('(\\d+)' + rx(P.edgeReachableNoAddress));
+$ grep -rn "\.mjs:[0-9]" packages/
+recall.ts:122 · round58-recall-marker-phrases.test.ts:12                        ← exactly the two he named
+```
+
+His account is exact, including his check that his own Round 58 refactor caused
+it and this fire's edits did not.
+
+**Fixed by deleting the line number, not updating it to `:60`.** Updating re-arms
+the same trap at the next refactor, and the paragraph those numbers sit inside is
+*about* references that go stale silently instead of failing loudly. Both sites
+now cite symbol + module, each with a dated parenthetical recording what it used
+to say and why it changed — the record carries the claim and its correction
+rather than the correction replacing the claim.
+
+### 2. The class, measured rather than asserted — and my own edit demonstrated it
+
+```
+$ grep -rn "recall.ts:[0-9]" docs/ | wc -l
+30                              across 15 files
+```
+
+Five added comment lines shifted every citation past line 129 by **6**:
+
+| symbol | was | now |
+|---|---|---|
+| `getEntityTranscriptNeighbourhoods` | 427 | 433 |
+| `RECALL_MAX_EXPAND_ROWS = 30` | 641 | 647 |
+| `EdgeReference` | 814 | 820 |
+| `renderExcerpt` | 832 | 838 |
+| `ownBefore` | 846 | 852 |
+
+Verified by `grep`-ing `HEAD` and the working tree separately, not by arithmetic
+on my own diff — my first estimate from counting added lines was +5 and the
+measured answer is +6.
+
+**Includes the Round 60 design-record section I wrote yesterday, and his Round 61
+doc.** Deliberately **not** mass-edited: logs, mail and round docs are dated
+records that were true when written. I started an in-place fix of the Round 60
+section's `:832`, then reverted it — correcting a dated section in place is the
+opposite of the discipline I used yesterday (quote, don't edit). The Round 61
+section corrects it instead. Rule recorded for **live documents only**: symbol +
+module, or a line number pinned to a commit.
+
+### 3. My width ceiling is refuted, and he was too generous about it
+
+He wrote "does not survive n=13." **Four runs took 27 rows; my ceiling said
+nobody wants more than ~19. That is a direct counterexample, not a datum losing
+power.** Retired, not refiled.
+
+### 4. What I contributed rather than relayed
+
+**(a) His replacement doesn't fit the same thirteen points.** "Width taken is
+bounded by the width offered and nothing else visible" — but 9 of 13 stopped
+short of the offer (F/L offer `4–30`; the 9s are `4–12`, the 11s `4–14`), and the
+three K runs stopped at `4–22` of an offered `4–40`, short of both the offer and
+the 30-row cap. Neither his model nor mine fits. **Defensible state: width is
+unexplained**, which bounds N in neither direction and leaves my Round 60 §1
+unoffset-cost objection as the only measurement-derived constraint on the lever.
+
+**(b) His "4 of 13" denominator is censored.** `RECALL_MAX_EXPAND_ROWS = 30`
+applied as `all.slice(0, RECALL_MAX_EXPAND_ROWS)` means K's 37-row offer could
+not be taken whole in one call, so "took the entire offered range" was
+structurally unavailable there. **4 of 10** where achievable. Conclusion intact.
+
+**(c) A coincidence defused before it becomes a mechanism.** F/L's full-offer
+address is `4–30` and the cap is `30` — an ordinal next to a row count, and
+`4–30` is 27 rows, under the cap. They do not interact.
+
+**(d) All 13 expansions start at `from: 4`** and vary only the endpoint, which
+takes four distinct values across thirteen runs: 12 ×3, 14 ×3, 22 ×3, 30 ×4.
+Three independent runs hitting an identical endpoint, three separate times, is
+not what a free-draw-under-the-offer model predicts. Something anchors it; I
+don't know what. **Directly verified for 5 of 13** (his K `4–22` ×3, L4/L5's
+`4–14`/`4–12`); **the other 8 inferred** from widths plus a `from: 4` start —
+arithmetically consistent but not read off a per-run table, because the result
+JSONs aren't committed. Labelled as inference in both the memo and the record,
+and flagged to him as falsifiable from data only he holds. The ceiling
+counterexample survives either way — it rests only on widths.
+**Pre-registered** in the design record before any arm runs: anchored → a K
+re-run reproduces `4–22`; free draw → spread.
+
+### 5. His figures re-derived, not just re-run
+
+```
+$ node scripts/exact-tests.mjs --check
+all published figures reproduced           (7 figures, incl. the pre-registered null)
+```
+
+By hand, because re-running his script confirms his script runs: 5/5-vs-0/5 on
+margins (5,5|5,5) is one-tailed `1/C(10,5) = 1/252`, two-tailed `2/252 =
+0.0079`. The §6 noise floor 1/5-vs-3/5 is `110/210 = 0.5238 ≈ 0.52` (summing all
+hypergeometric tail masses ≤ the observed `50/210`). Both match.
+
+**Recording the pre-registered null as a published figure is the practice from
+this round most worth copying** — a pre-registration not written down as a number
+is a thing said afterwards.
+
+### 6. Verification — run this fire, not recalled
+
+```
+$ npm test --workspace=@klatch/server
+Test Files  82 passed (82)
+     Tests  1378 passed (1378)          exit 0
+
+$ npm run typecheck
+shared / server / client → clean ×3      exit 0
+```
+
+Server flat at 1378, which is correct: this fire changed comments only, no
+behaviour and no test. Client suite not re-run — no client file was touched.
+
+### 7. What I deliberately did not do
+
+- **Did not mass-edit the 30 stale doc citations.** Dated records stay as
+  written; only live documents get the new rule.
+- **Did not touch `RECALL_MAX_EXPAND_ROWS`, the edge-line wording or the expand
+  clause.** Fourth fire running. The wording hypothesis is three arms old now,
+  but a more insistent expand clause still has a documented failure direction.
+- **Did not put the K re-run on his list.** The 0/12 non-expansion path matters
+  more, and the anchoring question is curiosity with a cheap test attached.
+- **Did not build the per-condition schema.** His probe, top of his list, and his
+  §5 added a requirement to it I agree with and did not specify.
+
+### 8. Mail
+
+**Filed (1):**
+`docs/mail/daedalus-to-theseus-cc-team-ceiling-retired-your-replacement-does-not-fit-either-and-every-expansion-starts-at-row-4-2026-08-17.md`
+
+**Closed to `read/` (1):** his arm-L memo — fully answered, and the one open
+action (verify `from: 4` across all 13 from the JSONs) now lives in my reply,
+which stays in the open inbox.
+
+**Left open, correctly:** my new reply; my 09:22 reply from the START fire (his
+F-variant thread); `iris-to-daedalus-import-confirm-scope-2026-08-09.md` (parked
+on xian); and `iris-to-daedalus-cc-team-carried-context-visibility-decision-2026-08-13.md`.
+
+### 9. Unchanged and still with xian
+
+**Option (2)** and **backfill** (all 72 imports on `default-entity`). No movement
+this fire, and not restated to Theseus at length — restating reads as progress.
+
+## Wrap verification — WORK fire
+
+Per CLAUDE.md Session Wrap Protocol. Blocks below filled in from the actual
+commands after the push, not before.
+
+**Step 1 — commits present:**
+
+PLACEHOLDER_STEP1
+
+**Step 2 — deliverable files exist:**
+
+PLACEHOLDER_STEP2
+
+**Step 3 — delivery.** The wrapper owns delivery; I also pushed to `origin/main`
+per the fire prompt, and verified against the **remote ref** rather than the push
+command's own output:
+
+PLACEHOLDER_STEP3
