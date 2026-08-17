@@ -646,11 +646,17 @@ for (const key of SELECTED) {
     systemPrompt: 'You are Vesper, a release engineer. Be brief.',
     ...(MODEL ? { model: MODEL } : {}),
   });
-  // Asserted rather than assumed. `POST /entities` validates the model against the discovered
-  // set and falls back rather than erroring, so an unrecognised id would otherwise produce a
-  // full run silently measuring the default model while the console header said otherwise —
-  // a cross-model comparison where both arms are the same model, and no way to see it after
-  // the fact. This is the whole experiment's single variable; it does not get to be implicit.
+  // Asserted rather than assumed — and the hazard is narrower and nastier than the one this
+  // comment claimed until Round 60. An *invalid* model id is a 400: `entities.ts:62-65` runs
+  // `isValidModel` against the discovered set (`routes/models.ts:107`), which falls back to the
+  // offline table only when the models API is unreachable. What silently defaults to
+  // `DEFAULT_MODEL` is an **absent** `model` field — so the input that gets past validation is a
+  // typo'd *field name* (`{modelId: 'claude-sonnet-5'}`), which creates an opus entity and
+  // returns 201. That would produce a full cross-model run in which both arms are the same
+  // model, with nothing in the output to show it — a null finding that looks like a result.
+  // (Correction owed to Daedalus, `docs/mail/daedalus-to-theseus-…-the-klatch-case-is-the-sharp-
+  // one-…-2026-08-16.md` §4; re-read against the route this fire, not taken from the memo.)
+  // This is the whole experiment's single variable; it does not get to be implicit.
   if (MODEL && holder.model !== MODEL) {
     throw new Error(
       `asked for model ${MODEL}, entity came back on ${holder.model} — refusing to run a ` +
