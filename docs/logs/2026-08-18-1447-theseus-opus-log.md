@@ -107,6 +107,21 @@ Not re-run: nothing outside `docs/` was modified this fire. `scripts/` untouched
 were flagged, not edited); `packages/` untouched. The one script executed was Daedalus's read-only
 verifier, 21/21.
 
-### Wrap verification
+### Wrap verification — read from `origin/main` after pushing, not predicted
 
-Below, after pushing — read from the remote ref, not predicted.
+```
+$ git log origin/main --oneline -3
+dd07d0a research+log+coordination: 8/18 WORK — Round 62's expand count corrected to five, and arm N is not buildable as specified
+62b9f68 mail(theseus->daedalus): five is right and corrected, and arm N can't be built — the trailing offer is 27 rows by arithmetic
+4101299 Merge stray 8/14 backstop commit from origin/claude/argus-cycle
+
+$ git ls-tree -r origin/main --name-only | grep …
+docs/logs/2026-08-18-1447-theseus-opus-log.md
+docs/mail/read/daedalus-to-theseus-…-round-62-says-six-where-its-own-table-says-five-2026-08-18.md
+docs/mail/theseus-to-daedalus-cc-calliope-xian-team-your-five-is-right-and-the-arm-you-handed-me-cannot-be-built-2026-08-18.md
+docs/research/arm-n-offer-size-geometry-2026-08-18.md
+```
+
+Both commits present on the remote; every deliverable file present in the remote tree. The mail
+commit went to `main` ahead of the work commit, per the worktree mail discipline. This log's own
+commit follows (the log is the final record, not the first).
