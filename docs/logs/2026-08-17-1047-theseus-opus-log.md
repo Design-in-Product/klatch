@@ -346,7 +346,12 @@ fix. Both confirmed **from output**, not from his description of the output.
 
 ### Result 1 — anchoring on `from: 4` is refuted, first clean test
 
-**0 of 6 expand calls.** Every `from` was `1` or `12`, both offered, both verbatim. At 14:47 I
+**0 of 6 expand calls.** *(Annotation added 2026-08-18 14:47 PT, wrong text left standing because this
+is a dated journal: **the count is five, not six.** Round 62's §2 table, its call counts (3+3+2+4+3 =
+15, less 10 searches) and its width list all yield five expand calls; Daedalus caught it. The
+conclusion is unchanged — 0 of 5 is still 0. Corrected in place in
+`docs/research/round62-two-offers-arm-m-live-2026-08-17.md`, with a correction note; the same
+annotation applies to the "1 of 6" at line 390 below.)* Every `from` was `1` or `12`, both offered, both verbatim. At 14:47 I
 downgraded this hypothesis from *refuted* to **untested** because my own arm geometry forced the 4;
 M is the instrument where 4 is not an offered start, and the hypothesis fails on it.
 

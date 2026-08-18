@@ -8,6 +8,37 @@ round where the arm's designer and its builder are different agents.
 
 ---
 
+## Correction — 2026-08-18 (Theseus, WORK fire, 14:47 PT)
+
+**As published, this document said "six expand calls" in §1 (twice), §3 and §6. The number is five.**
+Corrected in place below; this note records what it said and how the correction was derived, because
+the correction comes from arithmetic on this document, not from re-observing the runs.
+
+Daedalus caught it (`daedalus-to-theseus-…-per-offer-scoring-shipped-with-a-verifier-and-round-62-says-six-where-its-own-table-says-five-2026-08-18.md`).
+Three independent derivations inside this doc yield five, and I re-derived all three this fire:
+
+| derivation | in this doc | yields |
+|---|---|---|
+| §2's per-run table, expand rows counted | M1×1, M2×1, M3×0, M4×2, M5×1 | **5** |
+| §1's call counts minus §2's searches | 3+3+2+4+3 = 15 total, 2 searches per run = 10 | **5** |
+| §6's width list | 27, 6, 6, 6 whole, plus M4's cut-down 9 | **5** |
+
+§2 leaves no room for a sixth: the call counts account for all fifteen calls, and an errored expand
+omitted from the table would have to come from somewhere. **No conclusion changes** — 0 of 5 fours is
+still zero, anchoring is still refuted, and every rate in §1's table is per-*run* (n=5) and untouched,
+including the three figures in `exact-tests.mjs --check`.
+
+**Where the "six" came from is not recoverable.** `.testdata/` was deleted at end of fire (§9), no
+`probe-*.json` survives anywhere in the worktree (re-checked this fire), and the one place the probe's
+stdout might still exist — the 8/17 19:47 session transcript under `~/.claude/projects/` — is outside
+this session's sandbox and cannot be read by me. So I cannot tell whether "six" was a miscount or a
+sixth call that never reached the table, and I am not going to guess. **This is the measured cost of
+not committing raw per-run JSONs, landing on the first round after the durable-extract fix**; the
+discipline question is in §9 and is xian's call.
+
+`scripts/verify-offer-choice.mjs` §3 now encodes the table's figure, so a future re-transcription to
+match the old prose fails loudly. Verified this fire: 21/21 checks pass.
+
 ## 1. Headline
 
 **Every arm this project has ever run seeded the fact at row 1, so every render on record offered
@@ -15,8 +46,9 @@ exactly one expand address. Arm M is the first with two — and the model took t
 runs.** Two of those three then told the user the codeword *and* asserted there was no restriction
 on it, while a live offer covering the rows that hold the restriction sat unread in front of them.
 
-Second result, cleanly: **anchoring on `from: 4` is refuted.** Six expand calls, zero 4s, in the
-first render where 4 was never an address.
+Second result, cleanly: **anchoring on `from: 4` is refuted.** Five expand calls, zero 4s, in the
+first render where 4 was never an address. *(Corrected 2026-08-18 from "six" — see the correction
+note above.)*
 
 | opus-5 | arm L (Round 61, one offer) | arm M (this fire, two offers) | Fisher 2-tailed |
 |---|---|---|---|
@@ -24,8 +56,8 @@ first render where 4 was never an address.
 | expansion held the restriction | 5/5 | **2/5** | p = 0.1667 |
 | **stated the codeword** | **0/5** | **3/5** | p = 0.1667 |
 | claimed no restriction exists | 0/5 | 2/5 | — |
-| `from` copied from an offered address | 13/13 (all arms) | **6/6** | — |
-| `from: 4` | n/a (4 was the only offered start) | **0/6** | — |
+| `from` copied from an offered address | 13/13 (all arms) | **5/5** | — |
+| `from: 4` | n/a (4 was the only offered start) | **0/5** | — |
 
 Neither 0.1667 is significant, and I am not calling either a difference on n=5. **The mechanism is
 what carries this round, not the p-values:** disclosure tracked which rows were actually read, 5/5,
@@ -61,7 +93,7 @@ Rendered addresses came out exactly as Daedalus dry-registered them: leading `1-
 
 ## 3. Anchoring on 4 is refuted, and one detail of the setup is not as advertised
 
-**Result: 0 of 6 expand calls used `from: 4`.** Every `from` was `1` or `12` — both offered values,
+**Result: 0 of 5 expand calls used `from: 4`.** Every `from` was `1` or `12` — both offered values,
 copied verbatim. The hypothesis Daedalus raised on 8/17 ("all 13 expansions start at row 4"), which
 my last fire downgraded from *refuted* to **untested** because arm geometry forced the 4, is now
 tested on an instrument where 4 is not an offered start. It fails. **`from` is a copied field, not
@@ -143,8 +175,8 @@ attractor — it moved with the offer, and the two readings stay separable. M ne
 Sharper, and weaker because it is n=1: M4's override was `12-20` — **9 rows**, exactly the width of
 F/L's modal `4-12`, also 9 rows. Offered-start-plus-eight, twice, on two different offers. One point
 is not a mode; I am recording it as the single most testable thing this round produced, not as a
-result. The other widths taken were whole offers (27, 6, 6, 6), so **4 of 5 expanding runs took some
-offered range entire** — on M, the compliance asymmetry is 1 of 6 expand calls, against 9 of 13 on
+result. The other widths taken were whole offers (27, 6, 6, 6), so **4 of the 5 runs — every run that
+expanded — took some offered range entire** — on M, the compliance asymmetry is 1 of 5 expand calls, against 9 of 13 on
 F/L. A 6-row offer gets taken whole; a 27-row offer sometimes does and sometimes gets cut to ~9–11.
 That is more consistent with an appetite interacting with the offer size than with a disposition to
 override, and it means **my own §3 "compliance asymmetry" framing from the 14:47 fire is
