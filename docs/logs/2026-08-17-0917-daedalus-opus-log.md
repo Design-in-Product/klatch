@@ -451,3 +451,79 @@ instrument here**, which is the same lesson as the round it came from.
 *(Written with the blocks empty and filled in after the push, so the hashes are
 the ones that landed rather than the ones I expected. The log commit above
 carries the empty version; the follow-up commit carries these.)*
+
+## 17:17 PT — STOP fire
+
+Theseus's reply landed in this fire's sync (`docs/mail/theseus-to-daedalus-cc-team-the-jsons-are-gone-and-row-4-is-my-arm-geometry-not-the-model-2026-08-17.md`, 17:17). Read, actioned and replied in the same fire. **Zero API spend** — scratch server + two `--dry` runs, no live model calls.
+
+### 1. His §2 accepted, and my claim is worse off than "refuted"
+
+He is right that `from: 4` is forced by his arm geometry. **Verified the three reads myself rather than accepting the summary**, because accepting a correction is an assertion too:
+
+- `RECALL_NEIGHBOUR_RADIUS = 2` — `packages/server/src/claude/recall.ts:100`.
+- trailing address is `from: last.ordinal + 1`, `to: (after ? after.ordinal : last.scopedTotal + 1) - 1` — `renderExcerpt`, read directly.
+- both `evictedMarking` and `buried` branches write `arm.seedUser` as message #1 — `scripts/probe-recall-tool.mjs`, seeding loop. (The *third* branch, short-history, puts 2 filler pairs first — but those arms never get an expansion offer.)
+
+So "all 13 start at 4" is a property of the instrument. The anchoring hypothesis is **not refuted — untested**, which is the worse status given I had a pre-registered re-run behind it. **K re-run withdrawn.** Also verified his §3 schema quotes at `client.ts:581,587,588` — all three as quoted, so the compliance-asymmetry reframe rests on real text.
+
+### 2. Built his §7 arm — arm M — because it was implementation and free
+
+He specified the lead-filler arm and deliberately didn't build it ("I'm not half-landing an arm"). The mechanism is one field in the seeding loop and the geometry is decidable at `--dry` time, so it is my lane and costs nothing. **Not run live; it is his to run.** Three corrections found by reading the code the sketch lands in:
+
+1. **`leadPairs: 3` — the sketch's value — is the one that defeats the arm.** Seed at row 7 → excerpt 5–9 → *leading* address `1–4` with reachable count also 4. The numeral 4 stays in the render, in the `to` field directly above the `from` being read. A `from: 4` would then be equally consistent with anchoring and with field-mixing across two offers — a confound the arm itself introduces. `leadPairs: 4` removes 4 from the render entirely.
+2. **Lead pairs cannot come from `FILLER`** — the `evictedMarking` branch consumes it twice already, so the same rows would appear twice. Added `FILLER_LEAD` (5 pairs, 4 used), every pair a question *asked* rather than a handover, so L's "handed" referent resolution keeps working.
+3. **The sketch doesn't name a base arm, and F is wrong** — F carries the referential ambiguity L exists to remove. Built on **L**, which forces one byte change: L's *"what I handed you at the start"* is false once eight rows precede the handover, and points at lead filler. Changed to *"earlier in this conversation"*; both of L's constraints still hold; the two prohibition clauses stay byte-identical to F's and L's so `markPhrase` and reachability are untouched.
+
+### 3. His §6 offered-column and his §5 mixing trap, both closed mechanically
+
+The structural predictor computed each edge's reachable *count* but never emitted the `from`/`to`, though it held `first.seq`, `last.seq`, `before`, `after` and `scopedTotal`. It now emits the address on every arm at `--dry` time. The `offered` half of his per-run column was never live-only data.
+
+Added a second, separately-labelled line — `singleMatchOffer` — because the predictor's match set (the fact's own occurrences) and a live one-excerpt render are **different match sets**, which is exactly what Round 57's table put in adjacent columns without saying so. Arm L now prints both, and they visibly differ:
+
+```
+  excerpt 1 seq 1-3  leading=none (flush)  trailing=23 (23 reachable, …) addr 4-26
+IF the query matches only seq 1    : excerpt 1-3  leading=none (flush)  trailing=4-30   ← HYPOTHETICAL
+```
+
+`4-26` (23 rows, two excerpts) and `4-30` (27 rows, one excerpt, no `after`) — his §5 correction turned from something to remember into something the tool prints.
+
+### 4. The dry run corrected me on one number, which is the point of dry runs
+
+I predicted M's marking seqs as `[13,14]`. It prints **`[13]`**: `markSeqs` matches `markPhrase` against row content, and only `markUser` contains the phrase — `markAck` is `'Understood.'`. The restriction occupies two rows and is *detected* on one.
+
+I had copied that off **arm L's own `expectation` string, which says `[5,6]` and has been wrong since the arm was written** — confirmed by dry-running L (`[5]`). Harmless to every run (nothing branches on it). Fixed both, with a dated note on L's saying what it claimed. Reasoning recorded in-source: an `expectation` string is an operative assertion re-checked each run, not a dated record, so it is the opposite case from the round docs we agreed to leave alone. Offered to revert if he'd rather own that edit.
+
+Everything else in M's pre-registration confirmed by `--dry`: fact seqs `[9,37]`, totals `38/38`, restriction 4 rows past the hit, `withinRadius=false`, prompt-holds-fact `true` / prompt-holds-marking `false` (eviction with L's same 5-row margin), single-match offer leading `1-6` / trailing `12-38`, and no `4` among the addresses (1, 6, 12, 38, 34) or counts (6, 23, 27).
+
+### 5. Unchanged and still with xian
+
+Option (2) and the backfill (all 72 imports on `default-entity`). No movement this fire.
+
+## Wrap verification — STOP fire
+
+Per CLAUDE.md Session Wrap Protocol. Blocks below filled in from the actual commands after the push, not before.
+
+**Tests, run this fire (not recalled):**
+
+```
+npm test --workspace=packages/server   → 82 files, 1378/1378 passed
+npm test (client)                      → 17 passed / 13 skipped, 233/233, exit 0
+npm run typecheck                      → clean
+```
+
+Matches Argus's 13:32 baseline exactly. Only a `scripts/` file changed, so no `packages/` behaviour was at risk; run anyway rather than argued from.
+
+**Step 1 — commits present:**
+
+```
+$ git log origin/main --oneline -3
+PENDING
+```
+
+**Step 2 — deliverable files exist:**
+
+```
+PENDING
+```
+
+**Step 3 — `.testdata/` deleted:** `rm -rf .testdata` then `ls -d .testdata` → `No such file or directory`. Standing discipline, and the reason the JSONs are gone in the first place (his §1).
