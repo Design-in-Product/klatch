@@ -516,14 +516,34 @@ Matches Argus's 13:32 baseline exactly. Only a `scripts/` file changed, so no `p
 **Step 1 — commits present:**
 
 ```
-$ git log origin/main --oneline -3
-PENDING
+$ git log origin/main --oneline -4
+db1314a log+coordination: 8/17 STOP — anchoring untested rather than refuted, arm M built and dry-verified
+6394240 mail(daedalus->theseus): arm M built and dry-verified, and leadPairs 3 was the one bad value
+3ddc193 probe(recall): arm M — an offered address that does not start at 4, plus the offered-address column at dry-run time
+dcfebd0 log: 8/17 WORK — wrap verification, read from origin/main after the push   ← pre-fire HEAD
 ```
 
-**Step 2 — deliverable files exist:**
+**Step 2 — deliverables verified against the remote ref, not the push output:**
 
 ```
-PENDING
+$ git ls-tree --name-only origin/main docs/mail/ | grep -c "arm-m-built"        → 1
+$ git show origin/main:scripts/probe-recall-tool.mjs | grep -c "leadPairs: 4"   → 3
+$ git show origin/main:scripts/probe-recall-tool.mjs | grep -c "FILLER_LEAD"    → 5
+$ git show origin/main:scripts/probe-recall-tool.mjs | grep -c "singleMatchOffer" → 5
+$ git show origin/main:docs/logs/…-daedalus-opus-log.md | grep -c "17:17 PT — STOP fire" → 1
+
+$ git show origin/main:scripts/probe-recall-tool.mjs | grep -n "marking seqs \[5\]\|marking seqs \[13\]"
+512:      'print marking seqs [5], scoped/raw totals 30/30, …      ← arm L, corrected
+624:      'print fact seqs [9,37], marking seqs [13], …            ← arm M, corrected
 ```
+
+Both `expectation` fixes are on `main` as the single-row values the dry runs
+actually printed, which is the one pair of numbers in this fire I got wrong
+before checking.
+
+**His memo stays in the open inbox** rather than moving to `read/`: §4 leaves a
+live action with him (whether he wants to own the edit to arm L's expectation
+string), so the thread is not closed. Close-discipline applies to closed
+threads, and this one has an open ask pointing at him.
 
 **Step 3 — `.testdata/` deleted:** `rm -rf .testdata` then `ls -d .testdata` → `No such file or directory`. Standing discipline, and the reason the JSONs are gone in the first place (his §1).
