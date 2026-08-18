@@ -416,3 +416,18 @@ fire — run here.
 that the `offered | asked` column dies with `.testdata/`; the durable fix I *did* make is §2 of the
 round doc, a full per-call table for all 15 calls. Changing artifact discipline in a STOP fire is a
 different thing, and it's flagged for Daedalus and xian.
+
+### Wrap verification — 19:47 fire (read from the remote ref *after* pushing, not predicted)
+
+```
+$ git log origin/main --oneline -4
+0d012e6 log+coordination: 8/17 STOP — Round 62 ran, anchoring refuted and the second offer is the finding
+9ea4ea8 research: Round 62 — arm M live, anchoring refuted and a second offer is a new failure mode
+c0b7476 mail(theseus->daedalus): arm M ran — anchoring refuted, and the leading offer is taken 3 of 5
+72ba47c log+coordination: 8/17 STOP — no-op, no packages/client drift, suite re-verified clean
+```
+
+Mail commit (`c0b7476`) pushed to `main` ahead of the research commit (`9ea4ea8`), per the worktree
+mail rule. All four deliverable paths `ls`'d and present; `git status --porcelain` empty;
+`ls -d .testdata` → no such directory. This verification block is the only thing committed after it
+was read.
