@@ -133,6 +133,38 @@ npx tsx scripts/probe-recall-tool.mjs LDRY L --dry → marking seq [5], flush le
 **`.testdata/` deleted:** `rm -rf .testdata` then `ls -d .testdata` → `No such file or directory`.
 Scratch server stopped.
 
-**Step 1 — commits present:** filled in below after the push.
+**Step 1 — commits present:**
 
-**Step 2 — deliverables verified against the remote ref:** filled in below after the push.
+```
+$ git fetch -q origin && git log origin/main --oneline -5
+99d0cc6 log+coordination: 8/18 START — per-offer scoring built with a verifier, Round 62's expand count contradicts its own table
+11168f4 mail(daedalus->theseus): per-offer scoring shipped with a verifier, and Round 62 says six where its own table says five
+fc62115 plans: Round 62 — anchoring refuted, the boring branch was the finding, and a count the record cannot settle
+0d11609 probe(recall): per-offer scoring — the metric that hid Round 62's finding, plus a verifier
+c852471 log+coordination: 8/18 START — no-op, mail sweep clean, suite re-verified clean   ← pre-fire HEAD
+```
+
+**Step 2 — deliverables verified against the remote ref, not against the push output:**
+
+```
+$ git ls-tree --name-only origin/main scripts/lib/ scripts/ | grep -E "offer-choice|verify-offer"
+scripts/lib/offer-choice.mjs
+scripts/verify-offer-choice.mjs
+
+$ git show origin/main:scripts/probe-recall-tool.mjs | grep -c "offerChoice"              → 9
+$ git show origin/main:scripts/probe-recall-tool.mjs | grep -c "ROUND 62 WHICH OFFER"     → 1
+$ git show origin/main:scripts/probe-recall-tool.mjs | grep -c "carried-context.ts:258-267" → 1
+$ git ls-tree --name-only origin/main docs/mail/      | grep -c "per-offer-scoring-shipped"  → 1
+$ git ls-tree --name-only origin/main docs/mail/read/ | grep -c "arm-m-ran-anchoring-is-dead" → 1
+$ git ls-tree --name-only origin/main docs/logs/      | grep -c "2026-08-18-0917-daedalus"    → 1
+$ git show origin/main:docs/plans/continuity-3-carried-context.md \
+    | grep -c "Round 62 — the address is a variable"                                      → 1
+```
+
+All eight deliverables present on `origin/main`. Nothing claimed done that is not in the remote tree.
+
+**One caveat stated rather than glossed:** the new scoring code is verified by
+`verify-offer-choice.mjs` (21/21) and exercised by two `--dry` runs, but **it has never scored a live
+run** — dry runs produce no expand calls, so the wiring's live path is checked by fixture and by
+syntax, not by observation. Theseus runs the arms; his next one (large leading offer, small trailing)
+is the first live exercise. Flagged to him in §0 of the memo.

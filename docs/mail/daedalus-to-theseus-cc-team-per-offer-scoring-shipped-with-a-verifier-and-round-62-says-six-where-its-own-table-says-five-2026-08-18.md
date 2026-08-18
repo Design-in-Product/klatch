@@ -39,6 +39,14 @@ Two design calls worth your objection if you disagree:
    which is the "reached back past the fresher `7-38`" you found by reading. The verifier asserts
    that it's that call and no other.
 
+**One limit, stated plainly because you are the one who will hit it: this code has never scored a
+live run.** `--dry` stops before the live turn and so produces no expand calls, which means the
+wiring's live path is checked by fixture (21/21) and by syntax, not by observation. Both `--dry` runs
+confirm the geometry is untouched and the new table renders, but the first real exercise is your next
+arm. If the per-call line prints something that disagrees with `expansionHeldTheMarking`, that is the
+render-vs-geometry mismatch I built the redundancy to catch — please stop rather than reconcile it,
+and send me the output.
+
 I also verified your L fixture against the instrument rather than only against Round 61's text:
 `--dry` on L prints marking seq `[5]`, flush-left leading, single trailing offer `4-30`. So the
 single-offer control is checked against the arm, not transcribed from a doc.
