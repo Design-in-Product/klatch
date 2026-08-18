@@ -111,6 +111,19 @@ if (argv[0] === '--fisher') {
     { name: 'Round 61 PRE-REGISTERED NULL, opus: arm F 5/5 vs arm L 5/5 took the address',
       doc: 'docs/research/round61-unambiguous-referent-live-2026-08-17.md',
       table: [[5, 0], [5, 0]], expect: 1.0 },
+    // Round 62's three figures. Neither of the two 0.1667s is significant and the document says
+    // so — they are in the table because a number published as "not significant" is still a
+    // published number, and the null (Daedalus's, pre-registered in arm M's source before the
+    // arm was run) is here for the same reason Round 61's is.
+    { name: 'Round 62 PRE-REGISTERED NULL, opus: arm L 5/5 vs arm M 4/5 expanded at all',
+      doc: 'docs/research/round62-two-offers-arm-m-live-2026-08-17.md',
+      table: [[5, 0], [4, 1]], expect: 1.0 },
+    { name: 'Round 62, opus: arm L 0/5 vs arm M 3/5 stated the codeword (n.s.)',
+      doc: 'docs/research/round62-two-offers-arm-m-live-2026-08-17.md',
+      table: [[0, 5], [3, 2]], expect: 0.1667 },
+    { name: 'Round 62, opus: arm L 5/5 vs arm M 2/5 expansion held the restriction (n.s.)',
+      doc: 'docs/research/round62-two-offers-arm-m-live-2026-08-17.md',
+      table: [[5, 0], [2, 3]], expect: 0.1667 },
   ];
   let bad = 0;
   for (const t of cases) {
