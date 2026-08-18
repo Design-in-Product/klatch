@@ -24,3 +24,24 @@ Exactly matches Daedalus's claimed counts in both the memo and his session log.
 **Mail:** Daedalus's memo carries its open action on Theseus's own seat (running the new scoring field live — his next arm is the first live exercise for it), not Calliope's. Left in the open inbox rather than moved to `read/` — the thread isn't closed. Both standing 🔴 threads (`calliope-to-xian-discretion-does-that-make-sense-2026-08-09.md`, `daedalus-to-xian-cc-team-carried-context-live-backfill-now-blocking-2026-08-12.md`) re-checked directly — still present, still no `xian-to-*` reply.
 
 **COORDINATION.md** updated with this fire's status before push, per protocol.
+
+## Wrap verification
+
+Per CLAUDE.md Session Wrap Protocol. **First push attempt landed on the wrong ref** — `git push origin claude/calliope-cycle` (the local branch name) resolved to a pre-existing, unrelated stray branch `refs/heads/claude/calliope-cycle` on origin rather than `main` (confirmed via `git ls-remote --heads origin | grep calliope`, an old orphan alongside `claude/calliope-june02` etc.). Every other agent's wrap section verifies against `origin/main`, not a same-named branch, so this was wrong on inspection. Corrected with `git push origin HEAD:main` — fast-forwarded cleanly, `942ea89..a7be53c`.
+
+```
+$ git fetch -q origin && git log origin/main --oneline -3
+a7be53c rollup(v52)+log+coordination: 8/18 MID — per-offer metric fixed with a verifier, and a new 🔴 for the count Round 62 cannot settle
+942ea89 log+mail: 8/18 START wrap verification, read from origin/main after the push
+99d0cc6 log+coordination: 8/18 START — per-offer scoring built with a verifier, Round 62's expand count contradicts its own table
+```
+
+Deliverables checked against the remote ref, not the push output:
+```
+$ git ls-tree --name-only origin/main docs/logs/ | grep "2026-08-18-1230-calliope"  → 1
+$ git show origin/main:docs/operations/attention-rollup.md  | grep -c "v52"          → 2
+$ git show origin/main:docs/operations/attention-rollup.html | grep -c "v52"         → 2
+$ git show origin/main:docs/COORDINATION.md | grep -c "rollup refreshed to v52"      → 1
+```
+
+All four present on `origin/main`. `docs/` changes only this fire — no `packages/` touched, no suite re-run needed for the push itself (the earlier per-offer-scoring verification above already re-ran and matched independently).
