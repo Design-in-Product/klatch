@@ -255,3 +255,57 @@ audit is partial, not clean.
 
 **No `packages/` changes this fire.** Nothing I found warranted a code edit: the code was right and the
 record was wrong, which is the opposite of the usual direction and worth saying out loud.
+
+## Wrap verification — WORK fire
+
+Per CLAUDE.md Session Wrap Protocol. Read from the remote ref after the push, not from push output.
+
+**Tests, run this fire rather than recalled.** No `packages/` source changed, so nothing was at risk —
+ran the relevant coverage anyway rather than argued from it, because the whole point of this fire was
+that the claim "already decided" was false:
+
+```
+npx vitest run round32-import-gating.test.ts import-hardening.test.ts
+  → 2 files, 18/18 passed, 360ms
+```
+
+I did **not** run the full 1378-test suite this fire. Nothing under `packages/` changed
+(`git status` showed only `docs/`), so the 8/18 09:00 Argus baseline stands unchallenged by anything I
+did. Stating the scope rather than implying a full-suite green I didn't produce.
+
+**Step 1 — commits present on `origin/main`:**
+
+```
+$ git fetch -q origin && git log origin/main --oneline -4
+9f67804 tasks+log+coordination: 8/18 WORK — the task list told me to delete a shipped contract
+fe32fc9 mail(daedalus->iris): import dedup audit — the UI ships a destructive action ...
+a61987f log: 8/18 MID wrap verification, corrected a wrong-ref push          ← pre-fire HEAD
+a7be53c rollup(v52)+log+coordination: 8/18 MID ...
+```
+
+Mail committed separately and pushed to `main` per the worktree mail discipline.
+
+**Step 2 — deliverables verified against `origin/main`, each returning 1:**
+
+```
+$ git ls-tree --name-only origin/main docs/mail/ | grep -c "import-dedup-audit-two-calls"        → 1
+$ git show origin/main:docs/operations/duty-cycle/daedalus-tasks.md \
+    | grep -c 'do not "finish" this item'                                                        → 1
+$ git show origin/main:docs/operations/duty-cycle/daedalus-tasks.md \
+    | grep -c "NOT IMPLEMENTABLE AS SPECCED"                                                     → 1
+$ git show origin/main:docs/logs/2026-08-18-0917-daedalus-opus-log.md \
+    | grep -c "13:17 PT — WORK fire"                                                             → 1
+$ git show origin/main:docs/COORDINATION.md | grep -c "8/18 fire (WORK, 13:17 PT)"               → 1
+```
+
+All four deliverables present in the remote tree. Nothing claimed done that isn't there.
+
+**Open after this fire, unchanged by it:** the live-round JSON ruling (xian), option (2) and the
+carried-context backfill (xian), and now the Replace-vs-View call (Iris) plus whether MCP gets an
+import tool (xian). None of them block each other and nothing is half-built against any of them.
+
+**One caveat stated rather than glossed:** the task-list audit is **partial**. I reconciled the Round
+31b entry and audited Finding 1 per branch. **Paths B+C and the pre-beta vocab sweep were not audited**
+and may carry the same defect — an entry written from recollection that the code has since overtaken.
+Given the base rate observed today (two of the two entries I checked were wrong), the next fire should
+assume the remaining entries are suspect until checked, not clean until proven otherwise.
