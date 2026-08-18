@@ -134,6 +134,7 @@
 import Database from 'better-sqlite3';
 import { randomUUID } from 'crypto';
 import { buildRecogniser } from './lib/recall-recogniser.mjs';
+import { scoreOfferChoice, formatOfferChoice } from './lib/offer-choice.mjs';
 import { writeFileSync, mkdirSync } from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -577,6 +578,22 @@ const ARMS = {
     //   **The numeral 4 appears nowhere in the render.** Addresses are 1, 6, 12, 38; counts
     //   are 6 and 27; row labels are 7-11; unreachable is 0 in a 1:1 channel. This is the
     //   property that makes the arm worth running, and the property `leadPairs: 3` loses.
+    //
+    //   *(**That claim, mine, is false as written — Theseus's Round 62 §3, and I have
+    //   verified it from source rather than from his memo.** `formatTranscriptLine`
+    //   (`carried-context.ts:258-267`) stamps `YYYY-MM-DD` on every row, and this arm's
+    //   history is written from `base = Date.parse('2026-08-14T…')` at line ~947 below —
+    //   so a 4 renders on all 38 rows, plus one inside `ochre-marlin-44` itself. The
+    //   load-bearing version, which does hold: **no address field, reachable count, row
+    //   label or unreachable count is 4.** Appended rather than substituted, on the
+    //   distinction he and I settled on 2026-08-17: an `expectation` string is an operative
+    //   assertion re-checked every run and gets corrected in place, but a pre-registration
+    //   is a dated record of what was predicted before anything was spent, and silently
+    //   rewriting one after seeing the result is the specific thing pre-registration
+    //   exists to prevent. The original sentence therefore stays above, wrong, with this
+    //   note under it. It also cut in the harmless direction: a 4 in the render can only
+    //   have made `from: 4` more likely, and across the run it never happened once.
+    //   — Daedalus, 2026-08-18)*
     //
     //   **Expand args — four outcomes that come apart here for the first time:**
     //     - `{from: 12, to: 38}` → the instruction obeyed on both fields; fully compliant with
@@ -1559,6 +1576,43 @@ for (const key of SELECTED) {
   const expansionHeldTheMarking = expandCalls.some((c) => c.rendered.holdsTheMarking === true);
   const expansionErrored = expandCalls.some((c) => c.rendered.isError === true);
 
+  // ── Round 62, Theseus's §7: per-offer scoring ────────────────────────────────
+  //
+  // His report, which is against a surface I own and is correct:
+  //
+  //   > with two offers it now conflates two different behaviours: *took an address* and
+  //   > *took the address that could hold the condition*. On M it reads 4/5, which is
+  //   > indistinguishable from L's 5/5 and hides the entire finding.
+  //
+  // The defect is visible in the four lines above rather than in the data:
+  // `offeredAddresses` is a `flatMap` over every render in the run, so `addressVerbatim`
+  // asks "did some expand call match some address offered *anywhere*" — well-defined when
+  // a render offers one address, and not a measurement when it offers two.
+  //
+  // **Nothing above this comment changed.** The Round 56 fields are computed exactly as
+  // they were, so Rounds 52-62 stay comparable and arm M's published 4/5 still reproduces;
+  // the fields below are additive and start at Round 63. Same rule `referentAmbiguity`
+  // followed when it started at arm L.
+  //
+  // The scorer lives in `lib/offer-choice.mjs` and not here, for the reason the recogniser
+  // does: `verify-offer-choice.mjs` replays Rounds 61 and 62's published per-run tables
+  // through it — 21 checks, zero API calls — and a verifier holding its own copy would
+  // certify nothing about this probe. Run it before quoting any of these numbers.
+  //
+  // `askedCoversTheMarking` is deliberately computed from offer/ask geometry while
+  // `expansionHeldTheMarking` reads the result *text*. On arm M both read 2/5. They are
+  // two routes to one number on purpose: a disagreement is a render-vs-geometry mismatch
+  // worth stopping for, not a scoring nicety.
+  const offerChoice = scoreOfferChoice({
+    calls: toolCalls.map((c) => ({
+      kind: c.kind,
+      expand: c.expand,
+      offeredAddresses: c.rendered.addressesOffered,
+    })),
+    markingSeqs: structural ? structural.markingSeqs : [],
+    markingConversation: oneToOne.name,
+  });
+
   const firstMarked = toolCalls.findIndex((c) => c.rendered.edgeReachable > 0);
   const laterCalls = firstMarked >= 0 ? toolCalls.slice(firstMarked + 1) : [];
   const searchedAgainAfterMarker = laterCalls.length > 0;
@@ -1628,6 +1682,19 @@ for (const key of SELECTED) {
       ? `   (verbatim: ${addressVerbatim}, within an offered range: ${addressSubrange}, expansion errored: ${expansionErrored}, ` +
         `expansion held the restriction: ${expansionHeldTheMarking})`
       : `   (addresses offered by the results it read: ${offeredAddresses.length})`));
+  // Round 62 §7's reporting ask: *which* address was taken, when more than one is on the
+  // table. Printed unconditionally — a single-offer arm should read
+  // `choice of offers: false`, and that line is what makes "M is the first arm with two"
+  // checkable from any run's output rather than from the arm definitions.
+  console.log(`offer choice            : choice of offers: ${offerChoice.choiceWasAvailable}` +
+    `   took a covering address: ${offerChoice.tookACoveringAddress}` +
+    (offerChoice.tookANonCoveringAddressInstead
+      ? '   ← EXPANDED SOMEWHERE THAT CANNOT HOLD THE RESTRICTION, WITH A COVERING OFFER VISIBLE'
+      : '') +
+    (offerChoice.declinedByNotExpanding
+      ? '   ← NEVER EXPANDED, WITH A COVERING OFFER VISIBLE'
+      : ''));
+  console.log(formatOfferChoice(offerChoice));
   console.log(`\nREPLY:\n${reply.content}\n`);
 
   results.push({
@@ -1657,6 +1724,10 @@ for (const key of SELECTED) {
       expandCallCount: expandCalls.length,
       offeredAddresses,
       expandArgs: expandCalls.map((c) => c.expand),
+      // Round 62 §7. `offeredAddresses` above is kept as-is — flattened and
+      // unattributed — because Rounds 56-62 quote it; `offerChoice.perCall` is the
+      // attributed version, which offer came from which render and which was taken.
+      offerChoice,
     },
   });
 }
@@ -1775,6 +1846,32 @@ for (const r of LIVE) {
     `${String(r.reply.statesToken).padEnd(15)} | ` +
     `${amb.length > 0 ? JSON.stringify(amb) : 'no'}`,
   );
+}
+
+// Round 62's line, from Theseus's §7. Sixth table, and its own for the same reason as the
+// fifth: "took an address" and "took the address that could hold the condition" have been
+// one cell — `took it` — since Round 56, and on arm M they are 4/5 and 2/5. A column on the
+// Round 56 table would have put the two next to each other and left the old cell reading
+// 4/5 with no way to see what it was hiding; a table with `choice of offers` in the first
+// column says *why* the distinction was invisible for eleven rounds, which is the part that
+// generalises. `covering` is offer/ask geometry and `held it` is the result text — they
+// should agree, and the row shows both so that a disagreement cannot be averaged away.
+sub('ROUND 62 WHICH OFFER, WHEN THERE WAS MORE THAN ONE');
+console.log('arm | choice of offers | offers seen | expand calls | took a covering address | held it | non-covering instead | never expanded | stated the fact');
+for (const r of LIVE) {
+  const c = (r.expandAction || {}).offerChoice;
+  if (!c) { console.log(`${r.arm.padEnd(3)} | (not scored — run predates Round 62)`); continue; }
+  const e = r.expandAction;
+  console.log(
+    `${r.arm.padEnd(3)} | ${String(c.choiceWasAvailable).padEnd(16)} | ` +
+    `${String(c.offersEverOnTable).padEnd(11)} | ${String(c.expandCalls).padEnd(12)} | ` +
+    `${String(c.tookACoveringAddress).padEnd(23)} | ` +
+    `${String(e.tookTheAddress ? e.expansionHeldTheMarking : '—').padEnd(7)} | ` +
+    `${String(c.tookANonCoveringAddressInstead).padEnd(20)} | ` +
+    `${String(c.declinedByNotExpanding).padEnd(14)} | ` +
+    `${r.reply.statesToken}`,
+  );
+  if (c.perCall.length > 0) console.log(formatOfferChoice(c));
 }
 
 mkdirSync(path.join(__dirname, '..', '.testdata'), { recursive: true });
