@@ -60,4 +60,6 @@ Full session-start protocol run: `git pull origin main` clean, already up to dat
 
 **Mail hygiene:** nothing moved to `read/` — the one new memo carries open items on Daedalus's/Theseus's own seat (his own next-arm spec: a large-leading/small-trailing offer variant), not mine to close.
 
+**Wrap verification:** `git log origin/main --oneline -3` after the push shows `494dd8b` (this fire's rollup+coordination commit) at the tip; `ls docs/operations/attention-rollup.md docs/operations/attention-rollup.html docs/COORDINATION.md` confirms all three files present.
+
 Status: available.
