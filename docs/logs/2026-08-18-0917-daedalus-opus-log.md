@@ -168,3 +168,90 @@ All eight deliverables present on `origin/main`. Nothing claimed done that is no
 run** — dry runs produce no expand calls, so the wiring's live path is checked by fixture and by
 syntax, not by observation. Theseus runs the arms; his next one (large leading offer, small trailing)
 is the first live exercise. Flagged to him in §0 of the memo.
+
+---
+
+## 13:17 PT — WORK fire
+
+**Mail sweep first, per protocol: clean.** `git log --oneline 942ea89..HEAD -- docs/mail/` returns
+nothing — zero new memos since my START fire. The two commits that landed in between (`a7be53c`,
+`a61987f`) are Calliope's MID rollup+log; neither touches `docs/mail/` or `packages/`. My one open
+outbound ask (the live-round JSON ruling, §2 of yesterday's memo) is still with xian, untouched.
+
+**Zero API spend this fire** — reading, grep, one scoped vitest run. No probe runs, no live rounds.
+
+### 1. What I picked up, and why it turned into something else
+
+With no mail to drain, I went to the task list of record (`docs/operations/duty-cycle/daedalus-tasks.md`)
+for the smallest unblocked unit: the **Round 31b cosmetic follow-ups**, which have sat there since
+6/21 marked *"(2)+(3) code/doc touches are tiny — fold into a near-term fire."* Two decided items,
+described as needing only a doc note and a comment.
+
+I checked the code before writing it. **Both were already built — three months ago — and shipped the
+opposite contract from what the task list told me to implement.**
+
+`ef613fc` (2026-05-11), titled *"Round 32: import gating + empty-entities auto-attach (Argus 31b
+follow-ups)"* — the same follow-ups, by name:
+
+| Task list said (from 4/28) | What actually shipped 5/11 |
+|---|---|
+| (2) **permissive-by-design** — accept unknown future `format_version`, log a note, *don't hard-gate* | **Hard gate.** `klatch-import.ts:188-199` → `400` + structured `versionMismatch: { formatVersion, supportedVersions }`, *before* the transaction opens. No partial import. |
+| (3) **accept empty `entities: []` as valid** — *don't force a default entity* | **Auto-attach.** `klatch-import.ts:281-288` `INSERT OR IGNORE`s `default-entity`, matching `createChannel`. |
+
+Round 32's commit message states the reasoning that overrode the 4/28 call: *the import path
+materializes data into the DB, so accepting a version we can't model silently drops fields — the worst
+kind of fidelity loss. Better to refuse than to half-import.* That is a stronger argument than the
+forward-compat one it replaced, and it is the one that's canonical: `STEP-10-PHASE-1-PACKAGE-FORMAT.md`
+carries an **"Import-side validation (Round 32, 2026-05-11)"** subsection documenting both behaviours.
+
+**Verified live rather than assumed:** `npx vitest run round32-import-gating.test.ts
+import-hardening.test.ts` → **18/18 green** (8 gating + 10 hardening). The gate and the auto-attach are
+enforced, not vestigial.
+
+**The near-miss, stated plainly.** Had this fire executed the entry as written, I would have deleted a
+shipped, spec-documented, test-covered contract — removed the version gate and the auto-attach — and
+called it "finishing a tiny doc follow-up." The task list was not a stale *record*; it was a stale
+*instruction pointing backwards*, and the item's own framing ("tiny", "cosmetic") is exactly what makes
+it the kind of thing a fire executes without checking.
+
+**How it got that way:** the 4/28 decisions were carried verbatim into the task file at Phase 2 launch
+(`180e5d9`, 6/21) — 41 days *after* Round 32 superseded them. Item (1) of the same bullet was verified
+against code on 6/22 and correctly marked RESOLVED. Items (2) and (3) were not checked. One bullet,
+one author, one session: the item that got a tool call is right, the two that got recollection are both
+wrong. That is the CLAUDE.md failure mode in miniature — recalled context feels identical to verified
+fact — and it argues the discipline has to bite on *task lists*, not just on prose claims.
+
+Entry rewritten in place: all three closed, with the shipped contract, file:line, the superseding
+rationale, the test counts, and an explicit **"Nothing to do; do not 'finish' this item."**
+
+### 2. That one justified auditing the neighbours — one more entry was wrong
+
+**Finding 1 dedup (UUID re-import matching)**, marked *"Implementable now."* Audited per branch:
+
+- **(c) MCP 409 — not implementable as specced.** MCP registers exactly four tools: `list_channels`,
+  `get_context_package`, `get_manifest`, `reflect` (`mcp/server.ts:496,555,613,651`). **There is no
+  import tool on MCP.** Import is HTTP-only. The branch targets a surface that does not exist — so
+  it's a scope question (does MCP get an import tool?), not a build task.
+- **(b) UI channel match — built, but diverges from the spec.** `ImportDialog.tsx:432-478` renders the
+  inline conflict state Iris asked for, with existing-channel name, message count and a
+  "messages added since import" warning. But the two actions are **"Replace existing"** and
+  **"Import as new"**, where Iris specced **"View existing" / "Import as new copy"**. Shipped offers a
+  *destructive* action where she specced a *navigational* one. Backing 409
+  (`routes/import.ts:186-199`) is richer than specced and camelCase, not `reason`/`existing_channel_id`.
+  **Not something I should silently "conform"** — renaming a shipped destructive button is her call.
+- **(a) project match → silent attach + toast — not verified.** Klatch-package import does reuse an
+  existing project by id (`klatch-import.ts:236-240`); whether the claude.ai path attaches *and toasts*
+  is unchecked. **Labelled unverified rather than guessed at.**
+
+I did not audit the remaining open items (Paths B+C, vocab sweep). Stated so the next fire knows the
+audit is partial, not clean.
+
+### 3. Deliverables
+
+- `docs/operations/duty-cycle/daedalus-tasks.md` — Round 31b entry reconciled and closed; Finding 1
+  entry replaced with the per-branch verified state.
+- Memo to Iris (cc team) — the two calls I can't make alone: the Replace-vs-View divergence, and
+  whether MCP should have an import tool at all.
+
+**No `packages/` changes this fire.** Nothing I found warranted a code edit: the code was right and the
+record was wrong, which is the opposite of the usual direction and worth saying out loud.
