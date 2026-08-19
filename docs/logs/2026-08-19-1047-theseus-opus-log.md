@@ -158,3 +158,81 @@ open inbox.
 instrument by two agents in two sandboxes independently. It needs one thing: go or no-go on five
 live `claude-opus-5` runs.** Nothing else blocks it, and I will not spend unilaterally.
 
+
+---
+
+## 14:47 PT — WORK fire
+
+**Session-start protocol run first.** Worktree synced to `origin/main` by the wrapper (`18aaea3`).
+`docs/mail/` read: the new inbound to me is
+`daedalus-to-theseus-cc-xian-team-numbering-finding-confirmed-and-held-until-n1-and-the-go-ahead-is-yours-to-spend-2026-08-19.md`.
+Its §0 relays xian's go-ahead (via `janus-to-daedalus-…-xian-approves-n1-live-run-plus-kudos-2026-08-19.md`)
+and states explicitly that **the five live N1 runs are mine, not his** — he has not spent and will not.
+That is the fire's work unit, so I took it in this fire rather than filing it.
+
+## 14:50 — server up, verified against the scratch DB
+
+`node scratch-server --seconds=2700` → `READY`, and critically
+`verified open db /…/.testdata/recall-probe.db`. The launcher's `lsof` guard is the thing that makes
+this safe to run unattended — it refuses to report ready unless the sqlite file the server actually
+holds open is the scratch path, so a `.env` `KLATCH_DB` override cannot silently point a seeding probe
+at the real `klatch.db`. Confirmed before a single row was written.
+
+## 14:52–15:05 — the five live runs
+
+`npx tsx scripts/probe-recall-tool.mjs N1L{1..5} N1 --model=claude-opus-5`, sequential, one at a time.
+Elapsed 16 / 17 / 19 / 11 / 23 s. Tool calls 4 / 3 / 3 / 3 / 4 = **17 total**. Real spend.
+
+**Precondition that would have voided the arm, met 5/5:** the live call-1 render offered
+**leading `1-28` (28 rows), trailing `34-60` (27)** in every run, scoped/raw `60/60`, carried context
+ACTIVE (3838 chars, 20 messages), prompt holds the fact `true` / holds the marking `false`. So the
+leading offer really was the dearer one in every run — the inversion the arm was authored to buy.
+
+**Result: every first expand started at 34.** `34-44`, `34-41`, `34-41`, `34-40`, `34-60`. The leading
+offer `1-28` was rendered and on the table in all five and taken by none of them first; N1L5 took it
+*second*, after already reading the covering range. **3/5 → 0/5.**
+
+## 15:10 — what I had to be careful not to conclude
+
+The tempting write-up is "cost wins". It doesn't fit: a cost account predicts a coin-flip at 28-vs-27
+and got 5/5, and one row cannot be the signal — that is my own argument from the arm doc (I ruled out
+a *four*-row difference as too small) pointed at my own result. Both original explanations fail their
+own arm. What ten runs support is a **forward-from-the-hit default** that a sufficiently cheap backward
+offer pulls runs off — and I have labelled it an interpretation across two arms, not a measured effect,
+because no arm has manipulated direction independently of coverage.
+
+The secondary finding is the one I'd actually act on: **Daedalus's n=1 width observation replicated.**
+4/5 runs took `offered start + 6…10` and stopped. Six points now, three geometries. Here the restriction
+sat one row inside the offered start so a +6 read still caught it — **12 rows in, the same appetite
+misses on 4 of 5 while `tookTheAddress` and `withinAnOffer` both read `true`.**
+
+**N1L4 came back `status: incomplete`, `stopReason: refusal`** (11s, 63 chars, no answer) after both
+searches and the expand. Prior art exists (Round 55 arm G; two 8/13 carried-context probes), so not
+novel except in being a partial rather than empty turn. Scored split: **primary DV measured** (the
+expand happened before the stop), **downstream DV not** — that run is not evidence of withholding.
+Disclosure reported as **0/5 and 0/4**, both, rather than the flattering figure.
+
+## 15:20 — extraction before deletion, then cleanup
+
+Every figure in the round doc (§2 per-run table, §3 geometry, §5 widths) was pulled out of
+`.testdata/recall-probe-N1L*-N1.json` **into the document first** — the discipline Round 62 §0
+established after the "six" figure became permanently unrecoverable. Then `.testdata/` deleted and the
+scratch server stopped.
+
+## 15:25 — deliverables
+
+- `docs/research/round63-arm-n1-equal-size-offers-live-2026-08-19.md`
+- `docs/mail/theseus-to-daedalus-cc-xian-team-n1-ran-position-is-refuted-and-n2-is-cancelled-2026-08-19.md`
+  (committed separately and pushed to `main` ahead of the work commit, per the worktree mail discipline)
+- COORDINATION.md — status + 8/19 WORK fire entry
+
+**Decision recorded rather than suggested: N2 is cancelled.** Its pre-registration made it conditional
+on N1 showing a position preference; N1 shows none. 23 pairs of authoring and five opus runs not spent,
+written into the round doc as a decision so a future fire doesn't find `leadPairs: 28` and build it.
+
+**Nothing moved to `docs/mail/read/`.** Daedalus's 8/19 memo still carries an open action on his surface
+(the `"your own turns"` wording, now unblocked by this fire), and Janus's relay is his thread to close.
+
+## 15:30 — wrap verification (CLAUDE.md Session Wrap Protocol)
+
+See the verification block appended below after the push.
