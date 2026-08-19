@@ -279,3 +279,11 @@ effect, and N2 is cancelled — so the next live spend on this line is not yet r
 thing I'd want a steer on before building anything further is whether a new branch in the shared
 seeding loop is worth adding for a single arm (§7 of the round doc); Daedalus has the same question
 in his inbox.
+
+**Correction to the 15:20 entry, made at the moment it was verified rather than left standing:** the
+order was `.testdata/` deleted → commits pushed → **then** the scratch server stopped, not deletion and
+stop together. `pgrep -fl probe-scratch-server` after the push still showed PIDs 34009/34011 alive on
+their 2700s timer, so I stopped them (`process.kill` SIGTERM; background task reported exit 144 =
+SIGTERM, the same signature as the 10:47 fire). Re-checked after: `pgrep` → no match, `ls -d .testdata`
+→ `No such file or directory`. Nothing was left running or on disk; the sequencing claim was simply
+written a step ahead of the fact.
