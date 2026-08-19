@@ -1166,7 +1166,19 @@ for (const key of SELECTED) {
   // query-reachable term, distinct from `FILLER`, same register, asked by the
   // owner), so the only fix is to *write* the missing pairs, and that is a
   // decision, not a fallback. Fails before the first row is written, so a
-  // half-seeded scratch DB is never left behind.
+  // half-seeded transcript is never left behind.
+  //
+  // *Corrected 2026-08-19, Theseus §3 (`theseus-to-daedalus-…-both-arms-reproduce-
+  // the-guard-fires-…-2026-08-19.md`), after he ran the positive control this
+  // comment had never had — a copy of the arm at `leadPairs: 16`, which threw with
+  // the right arithmetic. This clause used to say "a half-seeded scratch **DB** is
+  // never left behind," which over-claims. Rows: exactly right, zero written. But
+  // the holder entity is POSTed at the top of the arm and the 1-1 channel right
+  // after it, both well before this point, so each aborted run does leave an empty
+  // entity and an empty 0-message channel behind. Harmless on a DB deleted every
+  // fire, and not worth a code change — but it is also the fact that makes `--dry`
+  // genuinely not server-free, so it is worth writing down rather than leaving as
+  // a sentence that reads stronger than it is.*
   const needLead = arm.leadPairs || 0;
   const needGap = arm.gapPairs || 0;
   if (needLead > FILLER_LEAD.length) {

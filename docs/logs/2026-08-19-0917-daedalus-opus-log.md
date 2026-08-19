@@ -158,3 +158,138 @@ stay visible in `docs/mail/`.
   permission grant. Separately, N1's remaining gate is a **spend decision**, not a
   verification gap — both arms are now instrument-confirmed.
 - **To Iris:** two shape questions on the project-match toast before I build it.
+
+---
+
+## 13:17 PT — WORK fire
+
+Briefing done: `git log` / `git status` (clean, `claude/daedalus-cycle` level with
+`origin/main` at `8200e38`), `docs/COORDINATION.md` §Daedalus, `ls docs/mail/`. **Two new
+memos addressed to me since the 09:17 START fire**, both read in full and both actioned in
+this fire:
+
+- `janus-to-daedalus-cc-team-xian-approves-n1-live-run-plus-kudos-2026-08-19.md`
+- `theseus-to-daedalus-cc-xian-team-both-arms-reproduce-the-guard-fires-and-the-header-mis-describes-its-own-numbering-2026-08-19.md`
+
+**Zero API spend this fire** — source reads, one new test file, one comment edit. 0 model
+calls, no probe run, no server started.
+
+### 13:18 — N1 go-ahead: relayed, explicitly not taken
+
+xian's answer via Janus is **go, run it live**, addressed to me. Theseus escalated the
+go/no-go and owns the arm, the recogniser and the pre-registration; I wrote *"his to run"*
+about arm M myself on 8/17, so the convention is on record.
+
+**Did not run it.** The live failure mode available right now is both of us reading the same
+cc and either (a) each assuming the other has it, or (b) each spending five opus runs.
+Relayed in §0 of my reply in the sharpest form I could write it — *the five live N1 runs are
+yours* — plus the launcher invocation so he doesn't rebuild it. Nothing structural is left on
+my side.
+
+### 13:19–13:21 — Theseus's §5 (the expand header) confirmed from source
+
+Claim: `recall.ts:784` and `:738` both say positions count *"only your own turns"*, and they
+don't. **Verified by reading the resolution path, not the memo and not the render:**
+`expandConversationRange` → `getEntityTranscriptRange` (`queries.ts:1028`) → `seq` over
+`entityTranscriptWhere` (`queries.ts:626-668`), whose predicate is
+`m.entity_id = ? OR (role='user' AND entity_id IS NULL AND EXISTS channel_entities …)`. Own
+utterances **plus** what was said to it, through membership — the function's own comment says
+so. In a 1-1 the only thing "only" can exclude is the owner, who is counted. His 2× is right.
+
+**New and adjacent, mine:** *nothing pinned either string.* `RECALL_MARKER_PHRASES` (Round 58)
+covers the scope-gap and edge markers by design and never reached the expand header;
+`grep "your own" packages/server/src/__tests__/` → **zero hits** before this fire. The one
+piece of prose that teaches the agent how to read the numbers had no drift detection on it —
+the `REACHABLE_R54` shape, on the surface Round 58 didn't cover.
+
+Closed it: **`packages/server/src/__tests__/recall-position-numbering-scope.test.ts`** (new,
+5 tests, all passing). §1 asserts the *scope of the numbering off the render* — 12 interleaved
+rows, 6 authored; `matchCount` 12, `Positions 1–12` renders, six `] Vesper: ` and six
+`] user: ` lines in the body; and the boundary that separates the two readings (7 resolves, 13
+does not; under "own turns only" the end would be at 7). §2 pins both sentences longhand as a
+**change-detector on a known defect**, annotated in-file as held rather than endorsed.
+
+*Correction to myself mid-task:* first draft called `expandConversationRange(entityId,
+channelId, name, from, to)`. Real signature is `(entity, channel, request)` — caught by
+reading `recall.ts:683` and the existing round56 call sites, before running.
+
+### 13:22 — The wording fix is written and deliberately **not landed**
+
+**Decision: `recall.ts` is untouched this fire, on purpose, until arm N1 has run live.**
+
+N1 is single-variable by construction (`leadPairs: 4 → 15`, proved by diff on 8/18) and exists
+to be compared against M, which ran under this exact prose. Rewording now makes it a
+two-variable arm. Stated at the strength the evidence supports rather than as a blanket
+freeze: N1's **primary** DV (which offer gets taken) is measured at the *search* render,
+strictly upstream of any expand call, so the header cannot reach it; what it *can* reach is
+calls 2+ within a run and any scoring of what the agent concluded — i.e. where M2/M5 live.
+Secondary, not fatal, and cheap to avoid.
+
+Proposed replacement recorded in the doc and the memo so it needs no re-deriving:
+`your own turns in that conversation` → `your turns and the turns addressed to you`, with
+Theseus's ordering kept (`:738` needs it more than the header — it teaches the numbering at
+the moment the agent has just got it wrong). **Deferred deliberately, not overlooked:** in a
+klatch a third agent's turns genuinely have no position, so the replacement is correct in a
+1-1 and correct-but-incomplete in a klatch. Whether the sentence varies by channel type is a
+design question and does not get settled inside a typo fix.
+
+### 13:23 — Theseus's §3 correction to my guard comment, landed
+
+He ran the positive control my guard never had (`leadPairs: 16`, in-process, tracked file
+untouched) — it threw, exit 1, arithmetic right. My 8/18 defect is closed by a test rather
+than an argument, and filing it as "confirmed" off a non-firing guard was my error.
+
+His correction verified by reading the ordering myself: holder entity POSTed at
+`probe-recall-tool.mjs:1083`, 1-1 channel at `:1114-1123`, guard at `:1170`. So *"a half-seeded
+scratch DB is never left behind"* over-claims — rows exactly right, **zero** written, but an
+empty entity and an empty 0-message channel survive each aborted run. Corrected in place with
+a dated note.
+
+**Comment-only, proved rather than asserted:** `git diff scripts/probe-recall-tool.mjs |
+grep -vE '^[+-]\s*//'` → **empty**, and `node --check` parses. The instrument's seeding is
+untouched, which matters because an arm is about to run through it. Also promotes his 8/18
+code-read to a standing fact: **`--dry` is genuinely not server-free.**
+
+## Verification (Session Wrap Protocol) — WORK fire
+
+- `npm test` → **exit 0**. Server **1386/1386, 83 test files** — was 1381/82, so **+5 and +1,
+  matching this fire's new file exactly**. Client **233 passed / 13 skipped**, unchanged.
+- `npm run typecheck` → clean, both packages.
+- `npx vitest run …recall-position-numbering-scope.test.ts` → **5 passed**.
+- **`packages/server/src/claude/recall.ts` not modified this fire** (`git status` clean of it)
+  — the deliberate hold, not an oversight.
+
+**Step 1 — commits landed** (read from `origin/main`, not locally):
+
+```
+$ git log origin/main --oneline -3
+0714d86 mail: reply to Theseus — numbering finding confirmed and pinned, wording held until N1, live run relayed as his to drive
+8200e38 docs+mail: project summary for xian's catch-up pass, rollup re-confirmed current
+6b27e5a mail(janus): xian's N1 go-ahead+kudos to Daedalus; rollup+summary ask to Calliope
+```
+
+Mail went as its own commit pushed straight to `main` ahead of the work commit, per the
+worktree mail discipline. Work commit verified below.
+
+## Files this fire
+
+- `packages/server/src/__tests__/recall-position-numbering-scope.test.ts` (new)
+- `docs/research/expand-header-numbering-mis-describes-its-scope-2026-08-19.md` (new)
+- `docs/mail/daedalus-to-theseus-cc-xian-team-numbering-finding-confirmed-and-held-until-n1-and-the-go-ahead-is-yours-to-spend-2026-08-19.md` (new)
+- `scripts/probe-recall-tool.mjs` (comment only)
+- `docs/logs/2026-08-19-0917-daedalus-opus-log.md` (this file)
+- `docs/COORDINATION.md` (updated)
+
+Mail close discipline: **neither inbound moved to `read/`.** Janus's carries an authorization
+for a spend that has not happened; Theseus's carries the run itself. Both threads are open and
+stay visible.
+
+## Open / handed off — WORK fire
+
+- **To Theseus:** the five live N1 runs, on xian's word. Explicitly his, not mine — §0 of the
+  reply exists to make sure exactly one of us spends.
+- **To Theseus (judgement call, invited pushback):** my hold on the `recall.ts` wording until
+  N1 lands. It's his experiment; if he'd rather have the fix first, I'll land it first.
+- **Queued, not blocked:** the `:784`/`:738` reword, to land as its own change with a round
+  number once N1 has run. §2 of the new test failing *is* the fix arriving.
+- **To Iris (unchanged from START):** two shape questions on the project-match toast.
