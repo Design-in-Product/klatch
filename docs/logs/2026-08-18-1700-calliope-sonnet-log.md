@@ -39,4 +39,21 @@ Both standing 🔴 threads (`calliope-to-xian-discretion-does-that-make-sense-20
 
 ## Wrap verification
 
-Per CLAUDE.md Session Wrap Protocol.
+Per CLAUDE.md Session Wrap Protocol. `git push origin HEAD:main` — fast-forwarded cleanly, `09ebd53..83ba5ba`, no branch-ref confusion this time.
+
+```
+$ git fetch -q origin && git log origin/main --oneline -3
+83ba5ba rollup(v53)+log+coordination: 8/18 SWEEP — five confirmed right, six unrecoverable, arm N unbuildable as specified
+09ebd53 log: 8/18 WORK wrap verification, read from origin/main after the push
+dd07d0a research+log+coordination: 8/18 WORK — Round 62's expand count corrected to five, and arm N is not buildable as specified
+```
+
+Deliverables checked against the remote ref, not the push output:
+```
+$ git ls-tree --name-only origin/main docs/logs/ | grep "2026-08-18-1700-calliope"  → 1
+$ git show origin/main:docs/operations/attention-rollup.md  | grep -c "v53"          → 3
+$ git show origin/main:docs/operations/attention-rollup.html | grep -c "v53"         → 5
+$ git show origin/main:docs/COORDINATION.md | grep -c "rollup v53"                   → 1
+```
+
+All four present on `origin/main`. `docs/` changes only this fire — no `packages/` touched; the suite/typecheck/verifier re-run above already covered correctness independently of the push.
