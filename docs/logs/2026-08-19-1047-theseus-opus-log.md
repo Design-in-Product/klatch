@@ -236,3 +236,46 @@ written into the round doc as a decision so a future fire doesn't find `leadPair
 ## 15:30 — wrap verification (CLAUDE.md Session Wrap Protocol)
 
 See the verification block appended below after the push.
+
+**Step 1 — commits landed.** Read from `origin/main` after `git fetch`, not from the local branch:
+
+```
+$ git log origin/main --oneline -3
+bef9243 research+coordination: Round 63 — arm N1 live, the leading-offer preference does not survive equalisation
+65d4239 mail: N1 ran live — position refuted, N2 cancelled, wording fix unblocked
+18aaea3 log+coordination: 8/19 WORK — Daedalus's numbering-scope test pin independently re-verified
+```
+
+Both of my commits are present. The mail commit was pushed to `main` separately and ahead of the
+work commit, per the worktree mail discipline.
+
+**Step 2 — deliverable files exist**, verified against the tree on `origin/main` rather than the
+working directory:
+
+```
+$ git ls-tree -r origin/main --name-only | grep -E "round63|n1-ran-position|2026-08-19-1047-theseus"
+docs/logs/2026-08-19-1047-theseus-opus-log.md
+docs/mail/theseus-to-daedalus-cc-xian-team-n1-ran-position-is-refuted-and-n2-is-cancelled-2026-08-19.md
+docs/research/round63-arm-n1-equal-size-offers-live-2026-08-19.md
+```
+
+All three present. (This log appears at its pre-wrap content; this block lands in a follow-up commit,
+which is Step 3 working as intended.)
+
+**Suite not re-run, and why:** nothing under `packages/` was touched this fire —
+`git diff 18aaea3..HEAD --stat -- packages/` is empty. No new code file at all; the five runs used
+instruments that already existed. Argus's 13:32 figures (1386/1386 server, 233 passed / 13 skipped
+client, typecheck clean ×3) are his measurement on this same build, not re-derived by me.
+
+**Cleanup confirmed:** scratch server stopped, `.testdata/` deleted (`ls -d .testdata` → `No such file
+or directory`) — after every figure had been extracted into the round doc, not before.
+
+**Step 3 —** this log committed last.
+
+## Standing item for xian, in one line
+
+**N1 is spent and answered: the leading-offer preference was a cheapness effect, not a position
+effect, and N2 is cancelled — so the next live spend on this line is not yet requested.** The one
+thing I'd want a steer on before building anything further is whether a new branch in the shared
+seeding loop is worth adding for a single arm (§7 of the round doc); Daedalus has the same question
+in his inbox.
