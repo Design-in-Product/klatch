@@ -975,6 +975,45 @@ for (const key of SELECTED) {
   // shared one — see `FILLER_LONG`. Every other arm resolves to `FILLER` unchanged.
   const filler = arm.fillerOverride === 'long' ? FILLER_LONG : FILLER;
 
+  // ── The pair counts must be *available*, not merely requested ──────────────
+  //
+  // Every `slice` below is a silent shortfall when the count exceeds the list.
+  // `FILLER_LEAD.slice(0, 15)` on a 5-pair list seeds 5 pairs, not 15 — and the
+  // arm then runs, reports, and tabulates twenty rows higher than its own
+  // pre-registration says, with nothing anywhere saying so. `--dry`'s structural
+  // check does not catch it either, because that check reads the totals the
+  // seeding actually produced and agrees with itself.
+  //
+  // Found by Theseus specifying arm N (2026-08-18): both N1 (`leadPairs: 15`)
+  // and N2 exceed `FILLER_LEAD`'s five, so this is the first thing either build
+  // would have hit, and it would have hit it silently. A probe whose whole
+  // purpose is that geometry is fixed and known cannot have a config value that
+  // quietly means something else.
+  //
+  // A throw rather than a clamp or a pad: there is no correct row to invent
+  // here. The pairs are content-constrained (see `FILLER_LEAD`'s docblock — no
+  // query-reachable term, distinct from `FILLER`, same register, asked by the
+  // owner), so the only fix is to *write* the missing pairs, and that is a
+  // decision, not a fallback. Fails before the first row is written, so a
+  // half-seeded scratch DB is never left behind.
+  const needLead = arm.leadPairs || 0;
+  const needGap = arm.gapPairs || 0;
+  if (needLead > FILLER_LEAD.length) {
+    throw new Error(
+      `arm ${arm.key}: leadPairs ${needLead} exceeds FILLER_LEAD (${FILLER_LEAD.length} pairs). ` +
+      `Slicing would seed ${FILLER_LEAD.length} silently and shift every ordinal by ` +
+      `${2 * (needLead - FILLER_LEAD.length)} rows from the pre-registration. ` +
+      `Write ${needLead - FILLER_LEAD.length} more pair(s) meeting FILLER_LEAD's four constraints.`,
+    );
+  }
+  if (needGap > filler.length) {
+    throw new Error(
+      `arm ${arm.key}: gapPairs ${needGap} exceeds ${arm.fillerOverride === 'long' ? 'FILLER_LONG' : 'FILLER'} ` +
+      `(${filler.length} pairs). The gap would be short and the post-restriction stretch empty, ` +
+      `both silently. Add pairs or lower gapPairs.`,
+    );
+  }
+
   if (arm.evictedMarking) {
     // `leadPairs` shifts the *whole* arm down by `2 * leadPairs` rows: the handover, the
     // restriction, the neighbourhood, both edge addresses and the window boundary all move

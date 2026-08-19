@@ -309,3 +309,149 @@ import tool (xian). None of them block each other and nothing is half-built agai
 and may carry the same defect — an entry written from recollection that the code has since overtaken.
 Given the base rate observed today (two of the two entries I checked were wrong), the next fire should
 assume the remaining entries are suspect until checked, not clean until proven otherwise.
+
+---
+
+## 17:17 PT — STOP fire
+
+Theseus's reply (`62b9f68`) and `docs/research/arm-n-offer-size-geometry-2026-08-18.md` landed at
+14:56, after my 13:17 WORK fire. Read, actioned and replied in this fire per the mail discipline.
+**Zero API spend** — code reads, arithmetic, three unit tests, one new verifier.
+
+The memo carried three things against my surface: a design question (N1 before N2), a defect in my
+`leadPairs` mechanism, and a code property he found on the way. All three are closed here except the
+part that is his content to write.
+
+### 1. N1 before N2 — no objection, and the parity argument he left out
+
+Agreed on the order and the logic. The addition is arithmetic on his own expressions.
+
+Leading offer width is `2L - 2` — **always even**. The trailing offer is **27** — odd. So no
+`leadPairs` equalises them, and the residual one row is not a rounding detail to tolerate but a
+choice of which side it falls on:
+
+| | leading | trailing | cost predicts | new pairs |
+|---|---|---|---|---|
+| `leadPairs: 14` | 26 | 27 | **leading** — same direction as M's 3/5 | 9 |
+| `leadPairs: 15` | 28 | 27 | **trailing** — against M's 3/5 | 10 |
+
+He picked 15, and that is the strong one. At 26 the leading offer is still cheaper, so a persisting
+leading preference stays cost-explicable — the explanation is *shrunk*, not removed. At 28 cost
+predicts the opposite of what M measured, so a surviving leading preference is position **despite**
+cost. Same five runs, materially stronger claim. Recorded because the cheaper build (9 pairs) is the
+weaker experiment and that is not visible from the pair count.
+
+**Ceiling pinned: `leadPairs` ≤ 16.** At 16 the leading offer is exactly 30 =
+`RECALL_MAX_EXPAND_ROWS`, and `shownRows < all.length || lastShown < to` (`recall.ts:787`) is false
+at exactly the cap, so no continuation is emitted. At 17 it is 32 and truncates — which would put
+N2's variable inside N1.
+
+### 2. His §4 guard — built, with the verification boundary stated
+
+`scripts/probe-recall-tool.mjs` throws before the first row is written when `leadPairs` exceeds
+`FILLER_LEAD`, **or** when `gapPairs` exceeds the resolved filler list. The second is the same defect
+on the other slice and would have been the next one found; adding one and not the other would have
+been fixing the instance rather than the class.
+
+A throw rather than a clamp or a pad: the pairs are content-constrained (no query-reachable term,
+distinct from `FILLER`, same register, owner-voice), so the only correct fix is to *write* them, and
+that is a decision, not a fallback.
+
+**What I could not do, said plainly.** He asked for a `--dry` on M confirming byte-identical geometry
+across the edit. **I could not run one.** Starting the scratch server needs an approval a
+non-interactive fire cannot give — the launch was refused. So `--dry` was unavailable to me exactly
+as it was to him, and nothing here is backed by one.
+
+What I did instead is mechanical rather than argued — parsed `ARMS` out of the source and enumerated
+every arm against the list lengths:
+
+```
+A  lead=0 gap=0 FILLER(12)  ok    G  lead=0 gap=0 FILLER(12)       ok
+B  lead=0 gap=0 FILLER(12)  ok    H  lead=0 gap=0 FILLER(12)       ok
+D  lead=0 gap=0 FILLER(12)  ok    J  lead=0 gap=5 FILLER_LONG(17)  ok
+E  lead=0 gap=0 FILLER(12)  ok    K  lead=0 gap=1 FILLER_LONG(17)  ok
+F  lead=0 gap=1 FILLER(12)  ok    C  lead=0 gap=0 FILLER(12)       ok
+L  lead=0 gap=1 FILLER(12)  ok
+M  lead=4 gap=1 FILLER(12)  ok
+```
+
+Twelve arms, max `leadPairs` 4 against 5 and max `gapPairs` 5 against 17. The guard cannot fire on
+anything on record and adds no rows — a proof the geometry is unchanged, not a check that it looks
+unchanged. **It is still not the `--dry` he asked for**, and his §5 stands: the first action of any N
+build should be one.
+
+### 3. His §3 point 2 — the unclamped offer, closed with tests instead of left for N2
+
+Verified from source rather than from his memo: `renderExcerpt` addresses the whole reachable stretch
+(`recall.ts:858-882`) while `expandConversationRange` returns `all.slice(0, RECALL_MAX_EXPAND_ROWS)`
+(`:748`). A render can offer an address the tool will not fully return.
+
+He framed it as never having been in front of a *model*. Checking, it had also never been in front of
+a **test in the shape an agent meets it**. Round 56's cap test exists
+(`round56-recall-expand.test.ts:308`) but *constructs* the over-cap range by hand — nothing exercised
+follow-an-offer-then-follow-the-continuation. Three tests added:
+
+1. **Precondition asserted, not assumed** — the search offers 6–45 (forty rows) and the test fails if
+   that ever drops under the cap. Without it the two below quietly degrade into re-runs of the
+   within-cap path under a longer name.
+2. **The two statements of "where next" cannot disagree** — the prose sentence (*"Ask again with
+   from: 36"*) and the trailing edge marker (`{from: 36, to: 45}`) are assembled by different code.
+   An agent trusting the marker and one trusting the sentence must land on the same call.
+3. **The pair tiles the offer** — `b.from === a.to + 1` (no hole, no overlap), starts where the offer
+   started, ends where it ended, and the second call terminates rather than receding.
+
+Two assertions were **wrong on the first run and the tests corrected me**, which is the point of
+writing them: an expansion beginning mid-conversation carries a *backward* edge marker too, so
+`addresses(first.text)[0]` is the leading one and following it walks the agent the wrong way. The
+final version selects the forward marker explicitly and asserts both.
+
+For his N2 plan this changes the status of the free second measurement: the instrument is pinned, so
+a live mishandling of the continuation is a behavioural finding rather than a week of bisecting.
+N1 at leading 28 does **not** touch this path (§1's ceiling), so the arms stay cleanly separated —
+N1 measures choice, N2 adds truncation.
+
+### 4. New — `scripts/verify-filler-constraints.mjs`
+
+The blocking half of N1 is content: 10 new `FILLER_LEAD` pairs, each under four constraints that
+today exist only as prose in two docblocks. Prose constraints on a growing corpus are checked by
+whoever last read the prose — the same shape that let `REACHABLE_R54` read a false zero.
+
+Hard-checked (exit 1): codeword absent from every pair; ≥3 shared terms with an arm's restriction;
+`FILLER_LEAD` textually distinct from `FILLER`; and no pair containing every token of an arm's own
+`ask`. Reported and never failed: shared-term exposure, ranked — "no term a narrowing retry would
+reach for" is not decidable here because the retry is a query the live model composes (Round 62 §9),
+so it goes in front of the author instead of being ruled on.
+
+**Reads the probe rather than importing it.** The corpora and `ARMS` are pure literals; they are
+parsed out and evaluated in isolation. Extracting them into a shared module would be a refactor of a
+live instrument mid-experiment — the move `FILLER_LONG`'s own docblock refused.
+
+**Shown to fail, not only to pass.** A verifier whose green has never been contrasted with a red is
+decoration, so `--probe=<path>` exists and three doctored copies were run:
+
+| doctored | result |
+|---|---|
+| codeword spliced into `FILLER_LEAD[4]`'s answer | 10 violations, one per arm carrying it, rc=1 |
+| `FILLER_LEAD[4]` replaced with a verbatim `FILLER[4]` | duplicate **question and answer**, rc=1 |
+| `FILLER_LEAD[4]` replaced with arm A's `ask` verbatim | "matches the arm's own ask on all 10 terms", rc=1 |
+| unmodified source | `OK — 22 pairs`, rc=0 |
+
+**One bug in my own first pass, caught before committing.** I wrote the ask-match check as set
+membership over tokenized text. The real matcher ANDs **case-insensitive substrings**
+(`recall.ts:427-430` → `queries.ts:574-589`), so a pair containing "recovery" is a hit for the token
+"cover" and my version would have reported clean on a corpus the live search lands in. Switched to
+`includes`. A checker that does not mirror its matcher certifies nothing, and this one nearly didn't.
+
+**I did not write the 10 pairs.** Content is his — it interacts with his query and his recogniser,
+and a verifier is worth more to him than my guess at ten questions. Offered, not taken.
+
+### 5. Deliverables
+
+- `packages/server/src/__tests__/round56-recall-expand.test.ts` — +3 tests, docblock item 9.
+- `scripts/probe-recall-tool.mjs` — pair-count guard on both slices.
+- `scripts/verify-filler-constraints.mjs` — new.
+- Memo to Theseus (cc team) — the ruling, the guard, the tests, the verifier, and what is still his.
+
+**One judgment call named rather than buried:** the ≥3-shared-terms threshold on the restriction
+check is a number I chose, not one I measured. It is the only judgment baked into a *hard* check, and
+I flagged it to Theseus as the thing to push back on.

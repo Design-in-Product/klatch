@@ -34,6 +34,20 @@
  *    edges of its own and they are marked like any other.
  * 8. **Timidity in the other direction.** Expanding a whole conversation must
  *    produce no edge marker and no sentence explaining one.
+ *
+ * 9. **An offer wider than one call.** Added 2026-08-18 (STOP), off Theseus's
+ *    reading of the probe geometry: `renderExcerpt` addresses the whole
+ *    reachable stretch (`:858-882`) while `expandConversationRange` returns
+ *    `all.slice(0, RECALL_MAX_EXPAND_ROWS)` (`:748`), so a search can hand over
+ *    an address the tool will not fully return. Item 6 above covers the cap, but
+ *    it *constructs* the over-cap range by hand; nothing exercised the path an
+ *    agent actually takes — follow an offer verbatim, then follow the
+ *    continuation — and no round has either, because every offer on record is 27
+ *    rows or fewer. What that path must satisfy is stronger than "it says where
+ *    it stopped": the two calls have to **tile** the offered range, no overlap
+ *    and no hole, and the expansion's own trailing address must name the same
+ *    next position the continuation sentence does. Two independent statements of
+ *    where to go next are two chances to disagree.
  */
 
 import { describe, it, expect, beforeEach } from 'vitest';
@@ -383,5 +397,103 @@ describe('Round 56 — the header points at the address, not at another search',
     const result = recallFromOtherConversations(agent, klatch, { query: 'escrow reference' });
     expect(result.text).not.toContain('is the edge of an excerpt');
     expect(result.text).not.toContain('expand argument');
+  });
+});
+
+// ── 7. An offer wider than one call, followed the way an agent follows it ──
+
+/** The `Positions X–Y` the header of an expansion claims for itself. */
+function shownRange(text: string): { from: number; to: number } {
+  const m = text.match(/Positions (\d+)–(\d+)/);
+  if (m === null) throw new Error(`no "Positions X–Y" header in:\n${text}`);
+  return { from: Number(m[1]), to: Number(m[2]) };
+}
+
+describe('Round 56 — an offer the tool cannot fill in one call still tiles', () => {
+  // 45 turns, the match at 3. Radius 2 shows 1–5, so the trailing edge offers
+  // 6–45 — forty rows against a cap of thirty. Deliberately wider than any
+  // offer any live round has produced (27 rows, arms E–M).
+  const TOTAL = 45;
+  function longTail() {
+    ask(oneOnOne.id, 'morning', t(1));
+    ask(oneOnOne.id, 'ready when you are', t(2));
+    ask(oneOnOne.id, 'the basalt codeword for the rollback is heron-72', t(3));
+    for (let n = 4; n <= TOTAL; n++) ask(oneOnOne.id, `turn ${n}`, t(n));
+  }
+
+  it('offers an address wider than the cap — the precondition, asserted not assumed', () => {
+    longTail();
+    const result = recallFromOtherConversations(agent, klatch, { query: 'basalt codeword' });
+
+    const offers = addresses(result.text);
+    expect(offers).toEqual([{ conversation: 'vesper-1-1', from: 6, to: TOTAL }]);
+    // If this ever stops holding, the two tests below stop testing anything —
+    // they would be re-testing item 6's within-cap path under a longer name.
+    expect(offers[0].to - offers[0].from + 1).toBeGreaterThan(RECALL_MAX_EXPAND_ROWS);
+  });
+
+  it('fills the offer as far as one call goes, and points at the exact next position', () => {
+    longTail();
+    const offer = addresses(
+      recallFromOtherConversations(agent, klatch, { query: 'basalt codeword' }).text
+    )[0];
+
+    // Followed verbatim. An agent copies the address it was handed; it does not
+    // know the cap exists and has no way to pre-trim to it.
+    const first = expandConversationRange(agent, klatch, {
+      conversation: offer.conversation,
+      from: offer.from,
+      to: offer.to,
+    });
+
+    expect(first.isError).toBe(false);
+    expect(first.shownCount).toBe(RECALL_MAX_EXPAND_ROWS);
+    expect(shownRange(first.text)).toEqual({ from: 6, to: 6 + RECALL_MAX_EXPAND_ROWS - 1 });
+    expect(first.text).toContain(`Ask again with from: ${6 + RECALL_MAX_EXPAND_ROWS}`);
+
+    // The prose sentence and the trailing edge marker are assembled separately
+    // and both tell the agent where to go next. They must not be able to
+    // disagree — an agent that trusts the marker and an agent that trusts the
+    // sentence have to end up at the same call. The expansion also looks
+    // backwards at the five turns the search excerpt already showed, which is
+    // item 7's rule holding on an expansion that began mid-conversation.
+    expect(addresses(first.text)).toEqual([
+      { conversation: 'vesper-1-1', from: 1, to: 5 },
+      { conversation: 'vesper-1-1', from: 6 + RECALL_MAX_EXPAND_ROWS, to: TOTAL },
+    ]);
+  });
+
+  it('completes the offered range on the continuation, with no overlap and no hole', () => {
+    longTail();
+    const offer = addresses(
+      recallFromOtherConversations(agent, klatch, { query: 'basalt codeword' }).text
+    )[0];
+
+    const first = expandConversationRange(agent, klatch, { ...offer });
+    // The *forward* marker. An expansion that starts mid-conversation carries a
+    // backward one too, and following that one walks the agent the wrong way.
+    const forward = addresses(first.text).filter((x) => x.from > offer.from);
+    expect(forward).toHaveLength(1);
+    const second = expandConversationRange(agent, klatch, { ...forward[0] });
+
+    const a = shownRange(first.text);
+    const b = shownRange(second.text);
+
+    // Tiling, stated as the three things that can go wrong rather than as one
+    // opaque equality: a hole loses turns silently, an overlap makes the agent
+    // read the same turns twice and count them twice, and a short second call
+    // leaves the offer unfilled with nothing left saying so.
+    expect(b.from).toBe(a.to + 1);              // no hole, no overlap
+    expect(a.from).toBe(offer.from);            // starts where the offer started
+    expect(b.to).toBe(offer.to);                // ends where the offer ended
+    expect(second.shownCount).toBe(TOTAL - (6 + RECALL_MAX_EXPAND_ROWS) + 1);
+
+    // Flush with the end of the conversation, so the second call must not offer
+    // a third — the continuation has to terminate, not recede. Only the
+    // backward marker remains, and it now spans everything before turn 36.
+    expect(second.text).not.toContain('as far as one call goes');
+    expect(addresses(second.text)).toEqual([
+      { conversation: 'vesper-1-1', from: 1, to: 6 + RECALL_MAX_EXPAND_ROWS - 1 },
+    ]);
   });
 });
