@@ -731,6 +731,7 @@ describe('ImportDialog — conflict resolution', () => {
     });
     expect(screen.getByText('Daedalus — 2026-03-07')).toBeInTheDocument();
     expect(screen.getByText('47')).toBeInTheDocument();
+    expect(screen.getByText('View existing')).toBeInTheDocument();
     expect(screen.getByText('Replace existing')).toBeInTheDocument();
     expect(screen.getByText('Import as new')).toBeInTheDocument();
   });
@@ -823,23 +824,29 @@ describe('ImportDialog — conflict resolution', () => {
     expect(importClaudeCodeSession).toHaveBeenLastCalledWith('/path/to/session.jsonl', undefined, true);
   });
 
-  it('Cancel from conflict state closes dialog', async () => {
+  it('View existing navigates to the existing channel without deleting or duplicating it', async () => {
     const user = userEvent.setup();
     const onClose = vi.fn();
+    const onImported = vi.fn();
     vi.mocked(importClaudeCodeSession).mockResolvedValue({
       status: 'conflict',
       conflict: conflictData,
     });
 
-    render(<ImportDialog isOpen={true} onClose={onClose} onImported={vi.fn()} />);
+    render(<ImportDialog isOpen={true} onClose={onClose} onImported={onImported} />);
     await user.type(screen.getByPlaceholderText(/\.jsonl/), '/path/to/session.jsonl');
     await user.click(screen.getByRole('button', { name: 'Import' }));
 
     await waitFor(() => {
       expect(screen.getByText('Already imported')).toBeInTheDocument();
     });
-    await user.click(screen.getByRole('button', { name: 'Cancel' }));
+    await user.click(screen.getByRole('button', { name: 'View existing' }));
 
+    expect(onImported).toHaveBeenCalledWith(
+      expect.objectContaining({ channelId: 'ch-existing', duplicate: true })
+    );
     expect(onClose).toHaveBeenCalled();
+    expect(deleteChannelApi).not.toHaveBeenCalled();
+    expect(importClaudeCodeSession).toHaveBeenCalledTimes(1);
   });
 });

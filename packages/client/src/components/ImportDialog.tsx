@@ -193,6 +193,19 @@ export function ImportDialog({ isOpen, onClose, onImported, onBulkImported, onCh
     }
   };
 
+  const handleViewExisting = () => {
+    if (!conflict) return;
+    onImported({
+      channelId: conflict.existingChannelId,
+      channelName: conflict.existingChannelName,
+      messageCount: conflict.existingMessageCount,
+      artifactCount: 0,
+      source: 'claude-code',
+      duplicate: true,
+    });
+    handleReset();
+  };
+
   const handleBulkDone = () => {
     if (onBulkImported) onBulkImported();
     handleReset();
@@ -456,25 +469,25 @@ export function ImportDialog({ isOpen, onClose, onImported, onBulkImported, onCh
 
               <div className="flex flex-col gap-2">
                 <button
+                  onClick={handleViewExisting}
+                  disabled={loading}
+                  className="w-full rounded bg-accent hover:bg-accent-hover px-3 py-2 text-sm font-medium text-white disabled:opacity-50 transition-colors"
+                >
+                  View existing
+                </button>
+                <button
+                  onClick={handleForkAgain}
+                  disabled={loading}
+                  className="w-full rounded bg-card border border-line px-3 py-2 text-sm font-medium text-secondary hover:bg-hover disabled:opacity-50 transition-colors"
+                >
+                  {loading ? 'Importing...' : 'Import as new'}
+                </button>
+                <button
                   onClick={handleReplace}
                   disabled={loading}
                   className="w-full rounded bg-red-600 hover:bg-red-700 px-3 py-2 text-sm font-medium text-white disabled:opacity-50 transition-colors"
                 >
                   {loading ? 'Replacing...' : 'Replace existing'}
-                </button>
-                <button
-                  onClick={handleForkAgain}
-                  disabled={loading}
-                  className="w-full rounded bg-accent hover:bg-accent-hover px-3 py-2 text-sm font-medium text-white disabled:opacity-50 transition-colors"
-                >
-                  {loading ? 'Importing...' : 'Import as new'}
-                </button>
-                <button
-                  onClick={handleReset}
-                  disabled={loading}
-                  className="w-full rounded bg-card border border-line px-3 py-2 text-sm font-medium text-secondary hover:bg-hover disabled:opacity-50 transition-colors"
-                >
-                  Cancel
                 </button>
               </div>
             </div>
