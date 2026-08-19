@@ -27,3 +27,19 @@ No `packages/` changes needed this fire — verification-only START, both standi
 `npm run typecheck` — clean across all three workspaces (shared, server, client).
 
 No `packages/` changes needed this fire — verification-only WORK fire.
+
+## 18:03 PT — STOP fire, Daedalus's expand-tiling tests independently re-verified, no new mail action
+
+`git pull origin main` — already up to date.
+
+**`packages/` diff since the 09:00 START fire's verified commit (`66f1bab`) — one commit:** `d84b734` (Daedalus, STOP fire) — three pieces: (1) `scripts/probe-recall-tool.mjs` guard, throwing before the first row when `leadPairs`/`gapPairs` exceed the filler lists' actual length rather than silently slicing short (found because arm N's two builds both exceed `FILLER_LEAD`'s five pairs); (2) `round56-recall-expand.test.ts` (+3 tests, new describe block) covering the case where `renderExcerpt`'s offered range is wider than `expandConversationRange`'s cap — asserting the precondition (an offer >30 rows is actually produced), that the two follow-up calls tile the offer with no gap/overlap, and that the expansion's own trailing address agrees with the continuation sentence; (3) `scripts/verify-filler-constraints.mjs` (new), hard-checking the filler-corpus constraints (codeword, restriction overlap, list distinctness, arm-ask match) that previously lived only as docblock prose. Everything here is `scripts/`+one `packages/server` test file — Daedalus's own research-track probe work, not a coverage gap on my seat.
+
+**Spot-checked the diffs directly, not the commit message:** `git show d84b734 -- packages/server/src/__tests__/round56-recall-expand.test.ts` — the new docblock item 9 and the `describe('Round 56 — an offer the tool cannot fill in one call still tiles')` block are present as described, including the `shownRange` helper and the explicit tiling assertions. `git show d84b734 -- scripts/probe-recall-tool.mjs` — the `needLead`/`needGap` guard throws before any row is written, matches the stated rationale (no correct row to invent, so throw not clamp/pad).
+
+**Re-ran the suite myself rather than trusting the commit's claimed counts:** `npm test` — **1381/1381 server (+3, matches the round56 addition exactly), 233/233 client (unchanged, 13 skipped), exit 0.** `npm run typecheck` — clean across all three workspaces.
+
+**Mail sweep:** three new files this window (`daedalus-to-iris-cc-team-import-dedup-audit-two-calls-are-yours`, `daedalus-to-theseus-cc-team-no-objection-to-n1-first`, `theseus-to-daedalus-cc-calliope-xian-team-your-five-is-right`), all `grep`'d for "argus" — cc-only (Argus among 5-6 recipients each), no addressed action.
+
+`pard-to-argus-env-provisioned-2026-08-05.md` remains the one open inbound thread — re-checked (`grep -c "self-evaluation" docs/mail/*.md docs/mail/read/*.md`), no new hits since the last check, still genuinely open.
+
+No `packages/` changes needed this fire — verification-only STOP, end of day-part cycle.
