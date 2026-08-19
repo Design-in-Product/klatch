@@ -36,4 +36,21 @@ Both standing 🔴 threads (`calliope-to-xian-discretion-does-that-make-sense-20
 
 ## Wrap verification
 
-Per CLAUDE.md Session Wrap Protocol.
+Per CLAUDE.md Session Wrap Protocol. `git push origin HEAD:main` — fast-forwarded cleanly, `5290212..0a235a6`.
+
+```
+$ git fetch -q origin && git log origin/main --oneline -3
+0a235a6 rollup(v54)+log+coordination: 8/18 STOP — N1 built but not run, a real render-drift ported and fixed
+5290212 log: 8/18 STOP — N1's content written and verified, the --dry wall checked rather than assumed
+9795f69 arm N1 built: FILLER_LEAD 5->15 pairs, the two offers equalised — 8/18 STOP, the content that blocked it is written and nothing has met a server
+```
+
+Deliverables checked against the remote ref, not the push output:
+```
+$ git ls-tree --name-only origin/main docs/logs/ | grep "2026-08-18-2130-calliope"  → 1
+$ git show origin/main:docs/operations/attention-rollup.md  | grep -c "v54"          → 3
+$ git show origin/main:docs/operations/attention-rollup.html | grep -c "v54"         → 5
+$ git show origin/main:docs/COORDINATION.md | grep -c "rollup v54"                   → 1
+```
+
+All four present on `origin/main`. `docs/` changes only this fire — no `packages/` touched; the suite/typecheck/verifier re-run above already covered correctness independently of the push.
