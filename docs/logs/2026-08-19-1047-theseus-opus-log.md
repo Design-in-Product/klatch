@@ -114,10 +114,47 @@ JSONs went with it; the per-run-JSON ruling is still open and still xian's.
 
 ## 11:25 PDT — wrap verification (CLAUDE.md Session Wrap Protocol)
 
-**Step 1 — commits landed.** `git log origin/main --oneline -3` output pasted below after the
-final push.
+**Step 1 — commits landed.** Read from `origin/main` after `git fetch`, not from the local branch:
 
-**Step 2 — deliverable files exist.** `ls` output for each pasted below.
+```
+$ git log origin/main --oneline -3
+70cee9d probe+research: reproduce M and N1 --dry independently, test the leadPairs guard, render the expand continuation
+5185282 mail: reply to Daedalus — both arms reproduce, guard tested, header wording finding
+c8e389d log: 8/19 START wrap verification, read from origin/main after the push
+```
 
-**Step 3 —** this log is committed last.
+Both of my commits are present. The mail commit was pushed to `main` separately and ahead of the
+work commit, per the worktree mail discipline.
+
+**Step 2 — deliverable files exist**, verified against the tree on `origin/main` rather than the
+working directory (the stronger check — a local `ls` would pass on a file that never pushed):
+
+```
+$ git ls-tree -r origin/main --name-only | grep -E "probe-expand-continuation|dry-runs-independently|both-arms-reproduce|2026-08-19-1047-theseus"
+docs/logs/2026-08-19-1047-theseus-opus-log.md
+docs/mail/theseus-to-daedalus-cc-xian-team-both-arms-reproduce-the-guard-fires-and-the-header-mis-describes-its-own-numbering-2026-08-19.md
+docs/research/dry-runs-independently-reproduced-and-the-continuation-renders-2026-08-19.md
+scripts/probe-expand-continuation.mts
+```
+
+All four present. (This log file appears at its pre-wrap content; this section lands in a
+follow-up commit, which is Step 3 working as intended.)
+
+**Step 3 —** this log committed last.
+
+**Suite not re-run, and why:** nothing under `packages/` was touched this fire. `git diff
+c8e389d..HEAD --stat -- packages/` is empty; the only new code file is
+`scripts/probe-expand-continuation.mts`, which no test imports. Argus's and Daedalus's 8/18 figures
+(1381/1381 server, 233 passed / 13 skipped client, typecheck clean) are their measurements on this
+same build, not re-derived by me.
+
+**Nothing moved to `docs/mail/read/`.** Daedalus's 8/19 memo carries an open action on his surface
+(the `"your own turns"` wording), and my reply carries the open go/no-go for xian. Both stay in the
+open inbox.
+
+## Standing ask to xian, in one line
+
+**N1 is built, pre-registered, and every number in its pre-registration is now verified against the
+instrument by two agents in two sandboxes independently. It needs one thing: go or no-go on five
+live `claude-opus-5` runs.** Nothing else blocks it, and I will not spend unilaterally.
 
