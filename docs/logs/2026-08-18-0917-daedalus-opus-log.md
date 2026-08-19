@@ -455,3 +455,67 @@ and a verifier is worth more to him than my guess at ten questions. Offered, not
 **One judgment call named rather than buried:** the ≥3-shared-terms threshold on the restriction
 check is a number I chose, not one I measured. It is the only judgment baked into a *hard* check, and
 I flagged it to Theseus as the thing to push back on.
+
+## Wrap verification — STOP fire
+
+Per CLAUDE.md Session Wrap Protocol. Read from the remote ref after the push, not from push output.
+
+**Tests, run this fire rather than recalled.** This fire changed `packages/` for the first time
+today, so the full suite was run rather than argued from:
+
+```
+npm test        → server 1381 passed (82 files) · client 233 passed, 13 skipped
+                  1378 → 1381 is exactly the three tests added here
+npm run typecheck → clean, both workspaces
+npx tsx scripts/verify-filler-constraints.mjs → OK, 22 pairs, rc=0
+  --probe=<doctored 1|2|3>                    → rc=1 on each
+```
+
+**Step 1 — commits present on `origin/main`:**
+
+```
+$ git fetch -q origin && git log origin/main --oneline -4
+d84b734 probe guard + expand-tiling tests + filler verifier: 8/18 STOP ...
+6900465 mail(daedalus->theseus): no objection to N1-first ...
+3525ebc log: 8/18 SWEEP wrap verification ...          ← pre-fire HEAD
+83ba5ba rollup(v53)+log+coordination: 8/18 SWEEP ...
+```
+
+Mail committed separately and pushed first, per the worktree mail discipline.
+
+**Step 2 — deliverables verified against `origin/main`, each returning 1:**
+
+```
+$ git ls-tree --name-only origin/main scripts/ | grep -c "verify-filler-constraints.mjs"        → 1
+$ git ls-tree --name-only origin/main docs/mail/ | grep -c "no-objection-to-n1-first"           → 1
+$ git show origin/main:scripts/probe-recall-tool.mjs | grep -c "exceeds FILLER_LEAD"            → 1
+$ git show origin/main:packages/server/src/__tests__/round56-recall-expand.test.ts \
+    | grep -c "an offer the tool cannot fill in one call still tiles"                           → 1
+$ git show origin/main:docs/logs/2026-08-18-0917-daedalus-opus-log.md \
+    | grep -c "17:17 PT — STOP fire"                                                            → 1
+$ git show origin/main:docs/COORDINATION.md | grep -c "8/18 fire (STOP, 17:17 PT)"              → 1
+$ git show origin/main:docs/operations/duty-cycle/daedalus-tasks.md \
+    | grep -c "Recall-probe support for arm N"                                                  → 1
+```
+
+All seven present in the remote tree. Nothing claimed done that isn't there.
+
+**Scratch state:** `.testdata/` created for the verifier's DB-path guard, then removed
+(`ls -d` → no such directory). No server was started this fire — the launch was refused for lack of
+approval, which is recorded above as the reason the `--dry` is missing rather than glossed.
+
+**Mail thread left open deliberately.** Theseus's memo stays in `docs/mail/` rather than moving to
+`read/`: my ask is answered, but it still carries the transcript grep (xian/Pard) and the
+attention-rollup denominator (Calliope). Closing it would hide two live actions that aren't mine.
+
+**Open after this fire, unchanged by it:** the per-run JSON ruling, option (2) and the
+carried-context backfill (all xian); Replace-vs-View and whether MCP gets an import tool (Iris/xian).
+
+**Two caveats stated rather than glossed:**
+1. **No `--dry` on M across the guard edit.** The enumeration proves the guard cannot fire on any arm
+   on record, which is stronger than an eyeball but is not the run Theseus asked for. Any N build
+   should start with one.
+2. **The ≥3-shared-terms threshold** in the restriction check is chosen, not measured — the only
+   judgment baked into a hard failure. Flagged to Theseus as the thing to push back on.
+3. Yesterday's caveat still stands unaddressed: **Paths B+C and the pre-beta vocab sweep have not
+   been audited** against shipped code, and today's base rate says assume suspect, not clean.
