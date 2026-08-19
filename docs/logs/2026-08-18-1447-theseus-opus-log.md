@@ -125,3 +125,155 @@ docs/research/arm-n-offer-size-geometry-2026-08-18.md
 Both commits present on the remote; every deliverable file present in the remote tree. The mail
 commit went to `main` ahead of the work commit, per the worktree mail discipline. This log's own
 commit follows (the log is the final record, not the first).
+
+---
+
+## 19:47 PT — STOP fire. The content job I declined at 14:47 is done; N1 is built and still unrun. Zero API spend.
+
+**Cost: zero.** No server, no live runs, no `.testdata/` created, no `packages/` edits. Ten pairs of
+prose, one arm definition, one verifier run, one suite run.
+
+Session start per CLAUDE.md: worktree synced to `origin/main` by the wrapper (`84f4b1c`, Iris's import
+dedup dialog), read `docs/COORDINATION.md`, swept `docs/mail/`. **One memo addressed to me, arrived
+this window:** `daedalus-to-theseus-cc-team-no-objection-to-n1-first-the-guard-is-in-and-the-untested-path-is-now-tested-2026-08-18.md`
+(his `6900465`, 17:32). Read, actioned and answered in this same fire. Two other new memos
+(`iris-to-daedalus-…-import-dedup-decided-and-built`, `daedalus-to-iris-…-import-dedup-audit`) are
+cc-team, not addressed to me, no action on my seat.
+
+### What I did with it, and why this was the fire to do it in
+
+At 14:47 I wrote that `leadPairs: 15` is *"not a config change; it is a content-authoring job"* and
+declined to half-land it. Two things changed between then and now, both of them Daedalus's: the
+**guard** that makes a short list a loud failure instead of a silent 20-row shift, and
+**`scripts/verify-filler-constraints.mjs`**, which turns four prose constraints into a hard check. With
+those in place the authoring job is no longer "write ten pairs and hope" — it is write ten pairs and
+have something contradict me. So I wrote them.
+
+**`FILLER_LEAD` 5 → 15 pairs.** Ten fresh subjects (CI flake rate, stale feature flags, certificate
+expiry, log retention, dependency audit, worker autoscaling, build cache, error budget, rate limiter,
+access review). None repeats a subject already in `FILLER` (12), `FILLER_LONG`'s own five, or the
+existing five leads. **Subject-level distinctness is the part no checker can see** — a near-duplicate
+subject is a second candidate for a narrowing retry even when not one string is shared — so that is the
+judgment I'm actually on the hook for here, and I've said so in the docblock rather than letting the
+green imply more than it covers.
+
+**Arm `N1` added:** M with `leadPairs: 4 → 15` and **every other byte identical**, including
+`markUser`'s *"earlier in this conversation"* clause, which stays true and stays non-deictic with 30
+rows in front of the handover because none of the ten new pairs hands anything over. Derived geometry:
+60 rows total (longest any arm has seeded — M is 38, J is 40), restriction at 35–36, eviction margin 5
+unchanged, single-excerpt offer **leading 1-28 (28 rows) / trailing 34-60 (27)**.
+
+**The one claim here that is a proof rather than an argument:**
+
+```
+$ git diff --stat
+ scripts/probe-recall-tool.mjs | 171 ++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 171 insertions(+)
+```
+
+171 insertions, **zero deletions** — so `FILLER_LEAD[0..4]` is byte-unchanged and arm M's
+`slice(0, 4)` seeds exactly the rows Round 62 measured. Not "I was careful not to touch M": the diff is
+incapable of having touched M. Written into the list's docblock as an **append-only** rule, because the
+hazard is invisible from the call site and the next person to grow this list will be growing it for N2.
+
+### His §1 — adopted, and it changed my reason for 15
+
+I had 15 as "the equalising value". His point is sharper and I've put it in the arm's comment: exact
+equality is unreachable (`2L − 2` even, trailing 27 odd), so the residual row is a **choice of side**.
+At 14 the leading offer is still cheaper and a leading preference stays cost-explicable; at 15 it is
+**dearer**, so cost predicts the *opposite* of M's 3/5. **And it survives the render ambiguity** —
+single-excerpt is 28-vs-27, two-excerpt is 28-vs-23, and in both the leading offer is the dearer one.
+That last part is mine and it matters, because mixing those two figures is exactly what cost a round in
+M's §5.
+
+His `≤ 16` ceiling is in as a guardrail. One number restated without ceremony: at 15 the leading offer
+is 28 against a 30-row cap, so headroom is one *pair*, not one row.
+
+### His §4 — the threshold question he invited pushback on. Answer: leave it alone
+
+Measured, not opined. `--verbose` emits a `note:` for every pair sharing 1–2 terms with a restriction.
+**Not one of my ten appears at any level** — zero shared terms. The corpus's worst offenders sit at 2 of
+3 and are all pre-existing (`FILLER[3]`, `FILLER[11]`, `FILLER_LONG(own)[3]`, all on the word "two"
+from *"between the two of us"*).
+
+So the threshold has never bound on anything, and loosening it the week it first passed on new content
+would be tuning against a sample of zero failures. What I did instead is name the false-positive shape
+now — the restriction's tokens split into register-bearing (`keep`, `between`, `repeat`, `channel`,
+`handed`, `earlier`, `conversation`, `understood`) and semantically empty (`one`, `two`, `more`,
+`thing`, `other`) — so that when a pair like *"Two of the other three are one week out"* trips it,
+whoever hits the red knows the fix is to count only the register-bearing half, **not** to lower the
+threshold and not to delete the check. Caveat recorded in the memo: my zero is a measurement of pairs
+written *with his verifier open*, not of pairs written naively.
+
+### The wall, checked this time rather than assumed a third time
+
+**No `--dry` run, for the third consecutive fire across two agents** (my 14:47, his 17:32, this one).
+I did not want to write "the sandbox won't let me" a third time on recollection, so I tested it:
+`curl` to `localhost:3001` came back **denied by the sandbox**. This fire cannot determine whether a
+server is up, let alone start one against the scratch DB. And `--dry` is not a server-free path — the
+probe POSTs the holder entity at `probe-recall-tool.mjs:1083`, before the `DRY` branch is consulted
+(read, not recalled).
+
+So **every number in the geometry table is a prediction.** The arm's `expectation` string states the
+28/27 pair as the thing to check and says that if the widths come back otherwise, the arm is measuring
+something other than an equal-cost choice and nothing should be spent on it. Surfaced to xian in the
+memo as a **standing blocker rather than an incident**: three fires have now produced work whose next
+step is a free, zero-spend `--dry`, and none could take it.
+
+### Mail disposition
+
+- **Left in `docs/mail/`:** Daedalus's inbound and my reply. The thread carries an **open action item
+  addressed to xian** (server access for `--dry`), and the close-discipline says parked-on-xian threads
+  stay visible.
+- **Moved to `docs/mail/read/`:** my 14:47 outbound (`theseus-to-daedalus-…-your-five-is-right-and-the-arm-you-handed-me-cannot-be-built`).
+  He replied to it, I actioned the reply, and the inbound it answered was already in `read/`. Closed.
+
+### Suite
+
+Re-run rather than assumed, though nothing under `packages/` moved:
+
+```
+npm test           → 1381/1381 server, 233/233 client (13 skipped), exit 0
+npm run typecheck  → clean
+node --check scripts/probe-recall-tool.mjs → clean
+npx tsx scripts/verify-filler-constraints.mjs → OK — 32 pairs
+    arms: A B D E F L M N1 G H J K C   ← N1 parsed into ARMS, so its own ask and
+                                          restriction were checked against the whole corpus
+```
+
+Test figures identical to Argus's 18:03 verification, as expected.
+
+### Wrap verification — read from `origin/main` after pushing, not predicted
+
+```
+$ git log origin/main --oneline -3
+9795f69 arm N1 built: FILLER_LEAD 5->15 pairs, the two offers equalised — 8/18 STOP, the content
+        that blocked it is written and nothing has met a server
+ce70070 mail(theseus->daedalus): the ten pairs are written, N1 is built, and don't loosen the
+        threshold yet
+84f4b1c import dedup conflict dialog: View existing lands, Replace deprioritized — 8/18 STOP
+
+$ git ls-tree -r origin/main --name-only | grep …
+docs/mail/read/theseus-to-daedalus-…-your-five-is-right-and-the-arm-you-handed-me-cannot-be-built-2026-08-18.md
+docs/mail/theseus-to-daedalus-cc-xian-team-the-ten-pairs-are-written-n1-is-built-and-dont-loosen-the-threshold-yet-2026-08-18.md
+docs/research/arm-n-offer-size-geometry-2026-08-18.md
+scripts/probe-recall-tool.mjs
+
+$ git show origin/main:scripts/probe-recall-tool.mjs | grep -n 'N1: {\|leadPairs: 15'
+683:  N1: {
+793:    leadPairs: 15,
+```
+
+Both commits present on the remote. Every deliverable file present in the remote tree, and the two
+things that matter most — **arm `N1` and `leadPairs: 15`** — read back out of the pushed blob rather
+than out of my working copy, along with 3 of the new pair subjects. The mail commit went to `main`
+ahead of the work commit, per the worktree mail discipline. This log's own commit follows.
+
+**Carried to the next fire, in priority order:**
+
+1. **`--dry` on M, then `--dry` on N1.** Free, zero-spend, blocked only on server access. Until it
+   runs, N1's geometry is a prediction and nothing should be spent on the arm.
+2. **The `origin/main` transcript grep** for where Round 62's "six" came from — still xian/Pard's,
+   still the cheapest open item on the board.
+3. **N2 remains content-blocked** — 13 further `FILLER_LEAD` pairs — and should stay that way until N1
+   shows a position preference.
