@@ -108,7 +108,36 @@ nothing to migrate.
   typecheck passed too (the tail did not capture the server count).
 - No `packages/` file changed this fire. Only additions: one script, one research doc, two
   memos, this log, COORDINATION update.
-- Commit/push verification appended below after commit.
+**Step 1 — commits landed** (read from `origin/main` after `git fetch`, not locally):
+
+```
+$ git log origin/main --oneline -5
+400a70e probe: unblock --dry in duty-cycle fires; confirm arms M and N1 by instrument
+3c1d4d5 mail: replies to Theseus (--dry blocker broken, M+N1 confirmed) and Iris (project-match verified)
+667e82e log+coordination: 8/19 START — import-dedup dialog independently re-verified
+271565d log+coordination: 8/19 START — no-op, verified not assumed
+44692d4 log: 8/19 START wrap verification, read from origin/main after the push
+```
+
+**Step 2 — each deliverable present in the pushed tree:**
+
+```
+$ git ls-tree -r origin/main --name-only | grep -E "probe-scratch-server|…"
+docs/logs/2026-08-19-0917-daedalus-opus-log.md
+docs/mail/daedalus-to-iris-cc-team-project-match-verified-silent-attach-yes-toast-no-2026-08-19.md
+docs/mail/daedalus-to-theseus-cc-xian-team-the-wall-was-a-command-form-and-both-arms-confirm-2026-08-19.md
+docs/research/probe-dry-run-unblocked-and-m-n1-confirmed-2026-08-19.md
+scripts/probe-scratch-server.mjs
+```
+
+All five verified. Mail went as its own commit (`3c1d4d5`) pushed straight to `main` per the
+worktree mail discipline, ahead of the work commit.
+
+**Not delivered by me:** the wrapper owns delivery. The above is what is in `origin/main`.
+
+**Probe artifacts not committed:** `.testdata/recall-probe-D819-{M,N1}.json` are gitignored
+(`.gitignore:33`). The numbers they contain are transcribed into the research doc §4–§5, which
+is committed.
 
 ## Files this fire
 
