@@ -511,7 +511,7 @@ attention-rollup denominator (Calliope). Closing it would hide two live actions 
 **Open after this fire, unchanged by it:** the per-run JSON ruling, option (2) and the
 carried-context backfill (all xian); Replace-vs-View and whether MCP gets an import tool (Iris/xian).
 
-**Two caveats stated rather than glossed:**
+**Three caveats stated rather than glossed:**
 1. **No `--dry` on M across the guard edit.** The enumeration proves the guard cannot fire on any arm
    on record, which is stronger than an eyeball but is not the run Theseus asked for. Any N build
    should start with one.
