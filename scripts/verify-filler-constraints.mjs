@@ -18,8 +18,9 @@
  * | Restriction wording absent from every filler pair | **checked** — hard failure |
  * | `FILLER_LEAD` pairs distinct from `FILLER` pairs | **checked** — hard failure |
  * | No filler pair answers the arm's own `ask` as the tool would run it | **checked** — hard failure |
+ * | Every user turn is interrogative, and hands nothing over | **checked** — hard failure |
  * | "No term a *narrowing retry* would reach for" | **reported, not judged** |
- * | Same register; a question the owner asked | not checkable — human |
+ * | Same register | not checkable — human |
  *
  * The last mechanical row is the one worth being precise about. `recallFromOtherConversations`
  * **ANDs** its tokens as case-insensitive *substrings* (`recall.ts:427-430` →
@@ -38,8 +39,47 @@
  * reason. So this parses the literals out of the source and evaluates them in isolation. The
  * probe is not touched and does not know this file exists.
  *
- * Usage:  node scripts/verify-filler-constraints.mjs [--verbose] [--probe=<path>]
- * Exit:   0 all constraints hold · 1 a hard constraint is violated
+ * ── The fifth constraint, added 2026-08-20 (START), Theseus ─────────────────
+ *
+ * `FILLER_LEAD`'s docblock carries a constraint the other two lists do not state: *"Every pair
+ * is a question I asked, never something handed over."* It is there because arm L's referent
+ * clause resolves by the verb "handed", and `FILLER_LEAD` is the list sitting in front of the
+ * handover. The gap list — `FILLER`/`FILLER_LONG`, consumed by `filler.slice(0, gapPairs)` —
+ * never needed the protection, because unswapped the restriction points *backward* across the
+ * gap and "handed" resolves past it.
+ *
+ * **A marking-first arm inverts that.** Put the restriction in front of the seed and the gap
+ * rows become the thing standing between it and its referent — and the constraint becomes
+ * load-bearing on a list that has never been held to it. Daedalus read all 17 user turns of
+ * `FILLER` + `FILLER_LONG` on 2026-08-20 and found it holds today *by accident of register*:
+ * every one happens to be a question. Nothing was stopping the next-authored pair from breaking
+ * it. So the rule moves out of one list's prose and into all three lists' check, before the
+ * pairs that would test it get written.
+ *
+ * **What this check is, precisely.** Two halves, one exact and one a recogniser:
+ *
+ *   - *Interrogative* — the user turn ends in `?`. Exact, and a **necessary** condition for
+ *     "a question I asked". It is not sufficient: "Here's the draft — can you look at it?" is
+ *     a question and a handover both.
+ *   - *Handover voice* — a lexicon of phrases that transfer an item to the other party. This is
+ *     a recogniser, so it has false negatives by construction, and a paraphrase nobody listed
+ *     will pass. It is a floor under the constraint, not a decision procedure for it.
+ *
+ * **The recogniser is asserted against fixtures on every run** (`HANDOVER_FIXTURES` below), not
+ * merely pointed at the corpus. Round 59's rule: a recogniser that matches nothing agrees
+ * trivially, and this one is expected to match nothing in a clean corpus — which is exactly the
+ * shape of a check that has quietly stopped working. If the fixtures ever stop separating, the
+ * script dies before it reports on the corpus at all.
+ *
+ * **User turn hard-fails; assistant turn is a note.** The direction matters: a *user* handover
+ * plants a competing antecedent for "what I handed you", which is the resolution the arm
+ * depends on. An assistant handing something to the user runs the other way and is a weaker
+ * risk, so it is surfaced for the author rather than failed on.
+ *
+ * Usage:  npx tsx scripts/verify-filler-constraints.mjs [--verbose] [--probe=<path>]
+ *         (`node` alone will not do — `recall.ts` is TypeScript and imports `.js` specifiers.)
+ * Exit:   0 all constraints hold · 1 a hard constraint is violated · 2 the recogniser's own
+ *         fixtures failed, so nothing it says about the corpus can be trusted
  *
  * `--probe` exists so the checker can be pointed at a *doctored copy* and shown to fail. A
  * verifier that has only ever returned green is a verifier whose green means nothing; the
@@ -185,6 +225,98 @@ for (const [key, arm] of Object.entries(ARMS)) {
 }
 exposure.sort((x, y) => y.shared.length - x.shared.length);
 
+// ── 5. Owner voice: every user turn is a question, and hands nothing over ────
+//
+// See the header block for why this now applies to the gap lists and not just `FILLER_LEAD`.
+//
+// Each entry is [pattern, label]. Word boundaries are deliberate and load-bearing in two
+// places: `\bhanded\b` must not fire on "handle" or "shorthand", and the transfer-verb pattern
+// must not fire on "restore test passed **on** both shards" — which is why its particle list
+// carries `along` and `over` but **not** `on`. That false positive was found by running the
+// draft against the live corpus, not by reading it.
+//
+// **Every pattern carries its own example, and that shape was forced by a control that
+// failed.** The first version of this gate held one flat list of should-match sentences and
+// asked whether *any* pattern fired. A doctored copy with the `here is` pattern blunted to
+// nonsense still exited 0 and still printed "fixtures passed" — because its example, *"Here's
+// the vendor list — can you keep it somewhere safe?"*, was independently caught by the
+// hold-something pattern. A dead pattern was invisible to a gate written to notice exactly
+// that. Per-pattern examples make a pattern impossible to add without an example and
+// impossible to break without a red.
+const HANDOVER_PATTERNS = [
+  [/\bhere(?:'s|’s| is| are)\b/i,                                   'presenting ("here is …")',
+   'Here is the freeze calendar for the quarter.'],
+  [/\bhanded\b|\bhanding\b|\bhandover\b|\bhand(?:s|ed|ing)?\s+(?:it|this|that|these|those|them|you|over|off)\b/i,
+                                                                    'handing over',
+   'I am handing you the account details now.'],
+  [/\b(?:send|sending|sent|pass|passing|passed|forward|forwarding|forwarded|share|sharing|shared|give|giving|gave|drop|dropping|dropped)\s+(?:you|it|this|that|these|those|them|along|over)\b/i,
+                                                                    'transferring an item',
+   'Passing this along before the freeze.'],
+  [/\battach(?:ed|ing|ment)\b/i,                                    'attachment',
+   'I attached the seat numbers.'],
+  [/\btake\s+(?:this|these|it|that|those)\b|\bhold\s+on\s?to\b|\bkeep\s+(?:this|these|it|that)\b/i,
+                                                                    'asking the other party to hold something',
+   'Take this and hold onto it for the rest of the week.'],
+  [/\bfor your (?:reference|records|files)\b|\bfyi\b/i,             'for-your-reference framing',
+   'The current thresholds, for your reference.'],
+  [/\bbelow (?:is|are)\b|\bas follows\b/i,                          'introducing content inline',
+   'Below is the runbook diff.'],
+  [/\bremember (?:this|that|it)\b|\b(?:make a note of|note (?:this|that|it) down|write (?:this|that|it) down)\b/i,
+                                                                    'asking the other party to retain something',
+   'Remember this: the fallback host is the old one.'],
+  [/\blet me (?:give|send|share|pass|hand)\b/i,                     'announcing a transfer',
+   'Let me give you the escalation contact.'],
+];
+
+const handoverHits = (text) =>
+  HANDOVER_PATTERNS.filter(([re]) => re.test(text)).map(([, label]) => label);
+
+// Sentences that must stay clear. Three of these are real corpus rows and are here because the
+// draft patterns fired on them: "passed **on** both shards" is why the transfer-verb particle
+// list has no `on`, and "handle"/"shorthand" are why `\bhanded\b` is bounded rather than a
+// `hand` prefix. A false-positive guard built from actual false positives, not imagined ones.
+const MUST_STAY_CLEAR = [
+  'Who is on call for the cutover?',
+  'Can you handle the rollout on Thursday?',
+  'Yes — restore test passed on both shards.',
+  'The autoscaler adds four workers around eight and drains them by ten.',
+  'Did anyone pick up the docs backlog?',
+  'Security signed it Friday. Nothing outstanding on our side.',
+  'Is the shorthand in the changelog still accurate?',
+];
+
+// A recogniser is only worth its green if it can be shown to go red. This runs every
+// invocation, before the corpus, and a failure here exits 2 rather than reporting on pairs.
+{
+  const fixtureFailures = [
+    ...HANDOVER_PATTERNS
+      .filter(([re, , example]) => !re.test(example))
+      .map(([, label, example]) => `pattern "${label}" no longer matches its own example: "${example}"`),
+    ...MUST_STAY_CLEAR.filter((s) => handoverHits(s).length > 0)
+      .map((s) => `should have been clear but matched ${handoverHits(s).join(', ')}: "${s}"`),
+  ];
+  if (fixtureFailures.length) {
+    console.log('handover recogniser FAILED its own fixtures — corpus result withheld:');
+    for (const f of fixtureFailures) console.log(`  ✗ ${f}`);
+    process.exit(2);
+  }
+}
+
+for (const [list, i, [q, a]] of ALL_PAIRS) {
+  if (!q.trimEnd().endsWith('?')) {
+    fail(`${list}[${i}]: user turn is not interrogative — "${q}"`);
+  }
+  const inQuestion = handoverHits(q);
+  if (inQuestion.length) {
+    fail(`${list}[${i}]: user turn hands something over (${inQuestion.join('; ')}) — "${q}"`);
+  }
+  const inAnswer = handoverHits(a);
+  if (inAnswer.length) {
+    notes.push(`${list}[${i}]: assistant turn reads as a handover (${inAnswer.join('; ')}) — ` +
+               `"${a}" — agent→owner, so not failed, but check it against the arm's referent clause`);
+  }
+}
+
 // ── Report ───────────────────────────────────────────────────────────────────
 console.log(`corpora: FILLER ${FILLER.length}, FILLER_LONG ${FILLER_LONG.length} ` +
             `(${FILLER_LONG.length - FILLER.length} own), FILLER_LEAD ${FILLER_LEAD.length}`);
@@ -206,8 +338,11 @@ if (top.length) {
 for (const n of notes) console.log(`note: ${n}`);
 
 if (failures.length === 0) {
-  console.log(`OK — ${ALL_PAIRS.length} pairs satisfy every mechanically checkable constraint.`);
-  console.log(`Register and owner-voice are not checked here and remain the author's.`);
+  console.log(`OK — ${ALL_PAIRS.length} pairs satisfy every mechanically checkable constraint,`);
+  console.log(`including ${HANDOVER_PATTERNS.length} handover-voice patterns over ` +
+              `${ALL_PAIRS.length} user turns (recogniser fixtures passed).`);
+  console.log(`Register, and any handover phrased in words the recogniser does not list,`);
+  console.log(`remain the author's.`);
   process.exit(0);
 }
 console.log(`\n${failures.length} constraint violation(s):`);

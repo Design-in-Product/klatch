@@ -213,6 +213,18 @@ async function settle(channelId, label) {
  * "rollback", "codeword", "Larkspur", "offsite", "venue", "annex", "relocated". A filler
  * row that matched a narrowing retry would make a hit unreadable: the agent would have
  * found *something* and I could not tell whether it found the thing.
+ *
+ * **Owner-voice constraint, added 2026-08-20 (START), Theseus.** Every user turn here is a
+ * question the owner asked, and hands nothing over — the rule `FILLER_LEAD` has carried since
+ * arm M, now binding on this list too. Reason: this is the **gap** list
+ * (`filler.slice(0, gapPairs)`), and a marking-first arm puts these rows *between* the
+ * restriction and the referent its "handed" clause has to resolve to. Unswapped they sit behind
+ * the restriction and never needed it; swapped they are the only thing in the way. It held here
+ * by accident of register until now — Daedalus read all 17 user turns on 2026-08-20 and every
+ * one happened to be a question. It is enforced by `scripts/verify-filler-constraints.mjs`
+ * check 5 (interrogative form, exact; handover-voice, a recogniser with per-pattern fixtures).
+ * A paraphrase the recogniser does not list will still pass, so the check is a floor, not a
+ * ruling.
  */
 const FILLER = [
   ['Where did the canary land on error rate last night?', 'Held at 0.02% through the full 15-minute soak. No regressions.'],
@@ -240,7 +252,9 @@ const FILLER = [
  * byte-identical to what Rounds 50–56 measured against.
  *
  * Same constraint as `FILLER`: no pair may contain the codeword, the restriction's wording, or
- * any term a narrowing retry would plausibly reach for, or a hit becomes unreadable.
+ * any term a narrowing retry would plausibly reach for, or a hit becomes unreadable. **And, from
+ * 2026-08-20, `FILLER`'s owner-voice constraint** — question form, hands nothing over — since
+ * arms with `fillerOverride: 'long'` draw their gap rows from here.
  */
 const FILLER_LONG = [
   ...FILLER,
@@ -288,10 +302,14 @@ const FILLER_LONG = [
  * All ten new pairs were checked with `scripts/verify-filler-constraints.mjs`, which hard-fails
  * on the codeword, on three-or-more shared terms with an arm's restriction, on duplication
  * against `FILLER`, and on matching an arm's own `ask` the way the substring `LIKE` search would
- * actually run it. Register and owner-voice are not machine-checkable and remain mine: every
- * question below is one the owner asks about work already in flight, and none of them hands
- * anything over — the constraint above, which now has to survive **thirty** rows in front of the
- * handover rather than eight.
+ * actually run it. Every question below is one the owner asks about work already in flight, and
+ * none of them hands anything over — the constraint above, which now has to survive **thirty**
+ * rows in front of the handover rather than eight.
+ *
+ * **Update 2026-08-20 (START):** the "hands nothing over" half of that is no longer mine alone.
+ * `verify-filler-constraints.mjs` check 5 now enforces it mechanically, on this list and on the
+ * two gap lists — see `FILLER`'s docblock for why it had to spread. What remains the author's is
+ * **register**, and any handover phrased in words the recogniser does not list.
  */
 const FILLER_LEAD = [
   // ── Indices 0-4: frozen. Arm M seeds exactly these via `slice(0, 4)` (0-3), and index 4 is
