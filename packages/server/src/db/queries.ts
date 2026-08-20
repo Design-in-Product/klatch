@@ -1164,18 +1164,48 @@ export function findOrCreateProject(
   matchValue: string,
   memory: string = ''
 ): Project {
+  return findOrCreateProjectWithMatch(name, instructions, source, sourceMetadata, matchKey, matchValue, memory)
+    .project;
+}
+
+/**
+ * As `findOrCreateProject`, but also reports which of the three outcomes
+ * occurred: `matched` is true when an existing project row was attached to
+ * (either pass), false when a new row was created.
+ *
+ * Split out rather than folded into `findOrCreateProject`'s return type on
+ * purpose. Both do the same work — this one is the implementation and the other
+ * delegates, so they cannot drift — but only the claude.ai bulk-import route
+ * cares about the flag, while ~20 call sites (mostly tests) want the bare
+ * `Project` and would have churned for nothing. Widening the shared return type
+ * to serve one caller is the cost this avoids.
+ *
+ * Consumed by `routes/import.ts` to populate the `projects` field on the bulk
+ * import response, which the dialog renders as "Attached to N existing
+ * project(s)" (Iris's 8/19 decision: aggregate count, one line in the existing
+ * result panel, no toast and no per-project rows).
+ */
+export function findOrCreateProjectWithMatch(
+  name: string,
+  instructions: string,
+  source: ChannelSource,
+  sourceMetadata: Record<string, unknown>,
+  matchKey: string,
+  matchValue: string,
+  memory: string = ''
+): { project: Project; matched: boolean } {
   // First-pass: canonical Klatch project id match (round-trip from Klatch export)
   const byId = getProject(matchValue);
-  if (byId) return byId;
+  if (byId) return { project: byId, matched: true };
 
   // Source-identity match (true claude-ai / claude-code origin)
   const existing = getDb()
     .prepare(`SELECT * FROM projects WHERE json_valid(source_metadata) AND json_extract(source_metadata, '$.${matchKey}') = ?`)
     .get(matchValue) as any;
-  if (existing) return rowToProject(existing);
+  if (existing) return { project: rowToProject(existing), matched: true };
 
   // Create new
-  return createProject(name, instructions, source, sourceMetadata, memory);
+  return { project: createProject(name, instructions, source, sourceMetadata, memory), matched: false };
 }
 
 /**

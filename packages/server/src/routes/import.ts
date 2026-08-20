@@ -9,7 +9,7 @@ import { scanClaudeCodeSessions, scanExportedSessions } from '../import/session-
 import { importKlatchPackage } from '../import/klatch-import.js';
 import { resolveImportEntity } from '../import/entity-resolve.js';
 import { guessEntityName } from '../import/entity-guess.js';
-import { importSession, findChannelByOriginalSessionId, getImportConflictInfo, countChannelsByOriginalSessionId, findOrCreateProject, findUniqueProjectByName } from '../db/queries.js';
+import { importSession, findChannelByOriginalSessionId, getImportConflictInfo, countChannelsByOriginalSessionId, findOrCreateProject, findOrCreateProjectWithMatch, findUniqueProjectByName } from '../db/queries.js';
 import { MODEL_ALIASES, AVAILABLE_MODELS } from '@klatch/shared';
 import type { ModelId } from '@klatch/shared';
 
@@ -557,6 +557,13 @@ function processImport(
     // This happens before conversation import so channels can be linked.
     const projectIdMap = new Map<string, string>(); // ZIP project UUID → Klatch project ID
 
+    // Reported to the client so the result panel can say "Attached to N existing
+    // project(s)". An array of {uuid, name, matched} rather than a bare count:
+    // per Iris's 8/19 decision the dialog renders only the aggregate today, but a
+    // count in the wire shape would foreclose per-project detail without another
+    // route change, and both fields are already in hand here.
+    const projectResults: Array<{ uuid: string; name: string; matched: boolean }> = [];
+
     for (const [zipUuid, projInfo] of projects.entries()) {
       // Project instructions = prompt_template (project conventions/rules)
       // Project memory = project-scoped memories + global account memories (merged)
@@ -569,7 +576,7 @@ function processImport(
       if (memoryMd) memoryParts.push('## Account memories (from claude.ai)\n\n' + memoryMd);
       const mergedMemory = memoryParts.join('\n\n');
 
-      const project = findOrCreateProject(
+      const { project, matched } = findOrCreateProjectWithMatch(
         projInfo.name,
         instructions,
         'claude-ai',
@@ -585,6 +592,7 @@ function processImport(
         mergedMemory
       );
       projectIdMap.set(zipUuid, project.id);
+      projectResults.push({ uuid: zipUuid, name: project.name, matched });
     }
 
     const imported: Array<{
@@ -678,6 +686,10 @@ function processImport(
     }
 
     // All duplicates → 409 (only when there are actual skipped duplicates)
+    // `projects` is reported here too, and that is not redundant: the
+    // find-or-create loop above runs *before* any conversation is imported, so
+    // by this point the attach has already happened. Omitting it on the 409 would
+    // report zero project activity for an import that did some.
     if (imported.length === 0 && skipped.length > 0 && skipped.every((s) => s.reason === 'duplicate')) {
       return c.json({
         error: 'All conversations already imported',
@@ -685,6 +697,7 @@ function processImport(
         skipped,
         totalImported: 0,
         totalSkipped: skipped.length,
+        projects: projectResults,
       }, 409);
     }
 
@@ -697,6 +710,7 @@ function processImport(
       skipped,
       totalImported: imported.length,
       totalSkipped: skipped.length,
+      projects: projectResults,
     }, 201);
   } catch (err) {
     console.error('Import failed:', err);
