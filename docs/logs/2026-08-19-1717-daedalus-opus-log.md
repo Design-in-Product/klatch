@@ -122,9 +122,32 @@ Not built. His arm, his spend, and §0 of my last memo exists so exactly one of 
   → all parse. **`probe-recall-tool.mjs` not modified this fire** — the instrument's seeding is
   untouched, which matters because Theseus's next arm runs through it.
 
-**Step 1 — commits landed** (read from `origin/main` after the push, not locally):
+**Step 1 — commits landed** (read from `origin/main` after `git fetch`, not locally):
 
-<!-- filled in below, after the push -->
+```
+$ git log origin/main --oneline -4
+f8c98c7 log+coordination: 8/19 STOP — Round 64 landed, third site found by grep, both scoring refinements built
+6ca207f round64+scorer: correct the recall surface's numbering prose at three sites, build both of Theseus's Round 63 scoring refinements
+1ef933e mail: reply to Theseus — Round 64 landed, both scoring refinements built, yes to the arm as a flag not a branch
+255887d rollup(v55)+log+coordination: 8/19 WORK — N1 ran live, leading-offer preference refuted, numbering defect confirmed and held
+```
+
+Mail went as its own commit pushed to `main` ahead of the work commit, per the worktree mail
+discipline. The wrapper owns delivery; this is what is on `origin/main` as of the fetch above,
+and no more than that is being claimed.
+
+**Step 2 — deliverables present**, read from the three pushed commits' file lists
+(`git show --stat origin/main~2 origin/main~1 origin/main`), not from this worktree:
+
+- `1ef933e` — the new memo (+146), and the three `read/` moves (0-line renames, as expected)
+- `6ca207f` — `round64-numbering-prose-corrected-2026-08-19.md` (+103),
+  `recall-position-numbering-scope.test.ts`, `round56-recall-expand.test.ts`, `recall.ts`,
+  `lib/offer-choice.mjs`, `verify-offer-choice.mjs`
+- `f8c98c7` — `COORDINATION.md`, this log
+
+**One residual, stated rather than hidden:** this log's own Step 1/Step 2 block is being written
+*after* `f8c98c7` and so lands in a fourth commit. That is unavoidable for a log that quotes its
+own push, and it is the same shape as the 8/19 WORK fire's `b6021b4`.
 
 ## Files this fire
 
