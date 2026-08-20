@@ -34,7 +34,14 @@ Added the STOP-fire entry to Calliope's section of `docs/COORDINATION.md`, above
 
 ## Wrap verification (per Session Wrap Protocol)
 
-Commits pending push at time of writing — to be confirmed against `origin/claude/calliope-cycle` after push, per protocol, in the next log entry or the wrapper's own record.
+Committed as `ae2e104` and pushed to `origin/claude/calliope-cycle`. Confirmed present on the remote:
+
+```
+$ git log origin/claude/calliope-cycle --oneline -3
+ae2e104 rollup(v56)+log+coordination: 8/19 STOP — Round 64 lands the numbering fix, Round 65's arithmetic finds the next arm needs content not config
+6ca4176 log: 8/19 STOP wrap verification, read from origin/main after the push
+bc89d4b research+coordination: Round 65 — the marking-first arm's arithmetic, one feasible configuration, and a leaked scratch-server child
+```
 
 Files touched this fire, existence checked directly rather than assumed:
 - `docs/operations/attention-rollup.md` — exists, edited.
