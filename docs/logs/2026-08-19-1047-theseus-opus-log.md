@@ -287,3 +287,125 @@ their 2700s timer, so I stopped them (`process.kill` SIGTERM; background task re
 SIGTERM, the same signature as the 10:47 fire). Re-checked after: `pgrep` → no match, `ls -d .testdata`
 → `No such file or directory`. Nothing was left running or on disk; the sequencing claim was simply
 written a step ahead of the fact.
+
+---
+
+# 8/19 STOP fire — 19:47 PT
+
+Second fire of the day (WORK at 14:47 was the first). Appending rather than opening a new file:
+one log per day keeps the N1 → Round 65 arc readable in one pass, and the STOP work is the
+direct continuation of the WORK fire's §7.
+
+## 19:47 — briefing
+
+`git log --oneline -3` on arrival: `35597b2` / `6ad5bef` (Iris, 19:19) and `b6f6a45` (Argus,
+18:02). Four commits landed after mine at 14:59 — Calliope's rollup v55, Daedalus's Round 64
+(`6ca207f` + mail `1ef933e`), Argus's re-verification, Iris's project-match decision.
+
+**Mail addressed to me, read immediately:**
+`daedalus-to-theseus-cc-xian-team-round64-landed-both-scoring-refinements-built-and-yes-to-the-flag-but-not-as-a-branch-2026-08-19.md`.
+Three things in it that are mine to act on: (1) yes to the §4 direction-vs-coverage arm, as a
+`markingBeforeSeed` **flag** on the existing branch rather than a new branch; (2) condition 1 —
+prove no ordinal drift with `--dry` before spending; (3) condition 2 — match the restriction's
+offset from the offered start to N1's, or direction is confounded with appetite. He explicitly
+did not build any of it: *"It is your arm, you said you would do the arithmetic and a `--dry`
+first."*
+
+That is the fire's work unit, and it is entirely free — no API calls. Correct shape for a STOP.
+
+## 20:05 — the solver, and why it self-checks
+
+Wrote `scripts/geometry-marking-before-seed.mjs`. It re-derives the `evictedMarking` row layout
+rather than importing the probe (top-level `await`, live network calls — the same argument
+`FILLER_LONG`'s docblock makes against refactoring an instrument mid-experiment).
+
+**It self-checks against arm N1's observed geometry before printing any recommendation**, and
+exits 1 on mismatch. This was worth doing: my hand-arithmetic before writing it said the minimum
+filler length was 22 at `leadPairs: 1`. The solver says **21 at `leadPairs: 2`**. My hand figure
+was wrong — I had used a different fencepost convention for the eviction margin. The solver
+reproduces N1 (60 rows, fact `[31,59]`, marking `[35]`, offers `1-28`/`34-60`, two-excerpt
+trailing `34-56`) and M (`1-6`/`12-38`) exactly, so it is the number I trust.
+
+**Result:** 0 of 208 configurations feasible on `FILLER`, 0 of 288 on `FILLER_LONG`. Exactly one
+at P=21: `L=2 G=10` → 52 rows, mark@5, fact@27, offers `1-24`/`30-52`, restriction +4 into the
+leading offer, handover evicted by 6.
+
+## 20:20 — the scratch server refused to boot, and the refusal was correct
+
+`node scripts/probe-scratch-server.mjs` → exit 2, *"server is up but never created
+`.testdata/recall-probe.db` — it opened a different database."*
+
+Did **not** assume the documented dotenv-override cause. Checked what was actually listening:
+`GET /api/channels` → 200, eleven channels, named `vesper-1-1-N1N1L1`…`recall-room-N1N1L4`.
+Those are **arm N1's channels, from my own 14:47 fire.** `.testdata/` had been deleted hours
+before, so that process was serving an unlinked sqlite file it still held open.
+
+`pgrep -fl "packages/server/src/index.ts"` → **34012 / 34013**, in this worktree.
+
+**My 14:47 log's cleanup claim was false.** It records SIGTERM to 34009/34011 — the
+`probe-scratch-server.mjs` *parents* — and a confirming `pgrep -fl probe-scratch-server`
+returning no match. But the parent spawns the real server as a child, and the child's command
+line is `node …/tsx packages/server/src/index.ts`; it never contains the string
+`probe-scratch-server`. **I grepped for a pattern the surviving process could not match, got no
+match, and reported clean.** Same shape as the hand-copied marker substrings that made
+`REACHABLE_R54` read a false zero.
+
+Cost: a stray server on :3001 for ~5 hours holding a deleted file. No live calls, no writes to
+anything real. `probe-scratch-server.mjs`'s `-shm` guard is what caught it, by refusing to boot.
+
+Killed 34012/34013 (SIGTERM), verified `process.kill(pid, 0)` → ESRCH on both, verified
+`fetch('http://localhost:3001/api/channels')` → `fetch failed`. **Verified by the port, not by a
+process name** — the port has no pattern to get wrong.
+
+## 20:35 — the `--dry` baseline
+
+Restarted the scratch server; it reported `verified open db … READY` this time.
+
+First attempt at the probe used plain `node` and died on `ERR_MODULE_NOT_FOUND` for
+`queries.js` — the probe dynamically imports `recall.ts` and needs `npx tsx`. My error, corrected
+against the 14:47 log's own recorded invocation rather than guessed.
+
+`npx tsx scripts/probe-recall-tool.mjs DRYBASE E F L M N1 G H J --dry` → **exit 0, all eight
+arms, zero API calls.** Full fingerprint table in §5 of the round doc.
+
+**This is the first `--dry` since Round 64 touched `recall.ts`, so it does double duty:** N1
+reads 60 rows / fact `[31,59]` / marking `[35]` / offers `1-28` and `34-60` — identical to what
+this afternoon's five live runs produced *before* the prose changed. M reads `1-6`/`12-38`,
+matching its own doc. Daedalus's "prose-only, no ordinals moved" is now measured, not taken.
+
+## 20:50 — the finding that decided the fire
+
+The arithmetic was supposed to size the arm. It surfaced a content problem instead.
+
+**Under the swap, `markUser`'s own sentence becomes false.** It reads *"One more thing on what I
+handed you **earlier in this conversation**"* — and in a marking-first arm nothing has been
+handed over yet. It must be rewritten. And the only feasible geometry puts **20 rows of filler
+between the restriction and the referent it is now pointing forward at**, which reintroduces
+exactly the referential ambiguity arm L exists to remove and that Round 60 found was driving F's
+expansions.
+
+So the wording is not downstream of the build — it is the build's main risk. **Not authored, on
+purpose.** Round 63 §7 committed to "the arithmetic, then a `--dry`" first; the arithmetic's
+answer is *decide the sentence before spending authoring on the corpus*.
+
+Two corrections recorded rather than smoothed: my Round 63 §7 *"a new branch in the seeding loop,
+not a config change"* was **wrong** (Daedalus's flag call is right); his *"one arm field"*
+**understates** it (flag + 21-pair list + rewritten lead clause).
+
+## 21:00 — cleanup, in the order the leak proves is correct
+
+SIGTERM to child **and** parent (70827, 70826, 70825) → all three ESRCH → `fetch` on :3001 fails
+→ **then** `rm -rf .testdata`. Confirmed after:
+`pgrep -fl "packages/server/src/index.ts"` → no match; `ls -d .testdata` → `No such file or
+directory`. Every figure in the round doc was extracted from the result JSON before deletion.
+
+## 21:05 — wrap verification (CLAUDE.md Session Wrap Protocol)
+
+See the verification block appended below after the push.
+
+## Standing item for xian, in one line
+
+**No spend is requested.** The direction-vs-coverage arm is feasible but its restriction wording
+is undecided, and I am not asking for five opus runs on an instrument whose key sentence is
+still open. The only input I've asked for is Daedalus's read on that sentence, and it isn't
+blocking — I'll take it myself if he'd rather not.
