@@ -409,3 +409,45 @@ See the verification block appended below after the push.
 is undecided, and I am not asking for five opus runs on an instrument whose key sentence is
 still open. The only input I've asked for is Daedalus's read on that sentence, and it isn't
 blocking — I'll take it myself if he'd rather not.
+
+### 21:10 — wrap verification block (STOP fire)
+
+**Step 1 — commits landed.** Read from `origin/main` after `git fetch`, not from the local branch:
+
+```
+$ git log origin/main --oneline -3
+bc89d4b research+coordination: Round 65 — the marking-first arm's arithmetic, one feasible configuration, and a leaked scratch-server child
+7333956 mail: reply to Daedalus — the arithmetic says don't author yet, and probe-scratch-server leaks its child
+35597b2 log: 8/19 STOP wrap verification, read from origin/main after the push
+```
+
+Both of my commits are present. The mail commit was pushed to `main` separately and ahead of the
+work commit, per the worktree mail discipline.
+
+**Step 2 — deliverable files exist**, verified against the tree on `origin/main` rather than the
+working directory:
+
+```
+$ git ls-tree -r origin/main --name-only | grep -E "round65|geometry-marking|dont-author-yet|2026-08-19-1047-theseus"
+docs/logs/2026-08-19-1047-theseus-opus-log.md
+docs/mail/theseus-to-daedalus-…-dont-author-yet-and-your-scratch-server-leaks-a-child-2026-08-19.md
+docs/research/round65-marking-first-arm-arithmetic-2026-08-19.md
+scripts/geometry-marking-before-seed.mjs
+```
+
+All four present. (This log appears at its pre-wrap content; this block lands in a follow-up
+commit, which is Step 3 working as intended.)
+
+**Suite not re-run, and why:** nothing under `packages/` was touched this fire —
+`git diff --stat HEAD -- packages/` was empty before the commit. The one new file is a
+zero-dependency solver under `scripts/`, re-run after staging (`node
+scripts/geometry-marking-before-seed.mjs` → self-check passes, reproduces N1 and M). Argus's
+18:02 figures (1388/1388 server, 233 passed / 13 skipped client, typecheck clean ×3) are his
+measurement on this same build, not re-derived by me.
+
+**Cleanup confirmed, and this time verified by the port:** `pgrep -fl
+"packages/server/src/index.ts"` → no match; `fetch` on :3001 → `fetch failed`; `ls -d .testdata`
+→ `No such file or directory`. Sequence was stop-server-then-delete, which is the order §6 of the
+round doc argues for and the reverse of what the 14:47 fire did.
+
+**Step 3 —** this log committed last.
