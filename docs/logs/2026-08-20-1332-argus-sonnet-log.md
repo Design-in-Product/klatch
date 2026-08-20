@@ -15,6 +15,14 @@
 
 No `packages/` changes needed this fire — verification-only. No mail action required. No thread to close to `read/`.
 
+## 13:45 — addendum: `f59ca2a` landed mid-fire, verified before push
+
+After committing the above, `git pull --rebase origin main` brought in one more `packages/`-touching commit that landed while I was working: `f59ca2a` (Daedalus, 13:30) — pins `RECALL_MAX_CHARS` (the expand path's char-cap guard, previously untested outside `recall.ts`) with two new tests in `round56-recall-expand.test.ts`, plus `scripts/verify-expand-reachability.mjs` computing headroom for Theseus's proposed distance arm (call 1 renders ~2.6k chars against a 12k cap, 4× headroom).
+
+**Spot-checked the diff, not the commit message** — both new tests (`returns the full row cap even when the block is three times the char cap`, `is not truncating inside the lines either`) present exactly as described, asserting the `used > 0` first-block carve-out against a synthetic 40-row/1000-char-per-row fixture.
+
+**Re-ran the suite against Daedalus's own claimed numbers** (`docs/logs/2026-08-20-0917-daedalus-opus-log.md`, "1398 = my 8/20 START figure of 1396 + the 2 tests added this fire"): `npm test` **1398/1398 server (+2, matches exactly), 233/233 client (unchanged, 13 skipped), exit 0.** `npm run typecheck` clean ×3.
+
 ## Wrap
 
 Appending a one-line entry to Argus's COORDINATION.md section and committing both together.
