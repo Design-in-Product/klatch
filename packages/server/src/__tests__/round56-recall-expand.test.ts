@@ -58,6 +58,7 @@ import {
   recallFromOtherConversations,
   expandConversationRange,
   RECALL_MAX_EXPAND_ROWS,
+  RECALL_MAX_CHARS,
 } from '../claude/recall.js';
 import { DEFAULT_MODEL } from '@klatch/shared';
 import type { Channel, Entity } from '@klatch/shared';
@@ -500,5 +501,86 @@ describe('Round 56 — an offer the tool cannot fill in one call still tiles', (
     expect(addresses(second.text)).toEqual([
       { conversation: 'vesper-1-1', from: 1, to: 6 + RECALL_MAX_EXPAND_ROWS - 1 },
     ]);
+  });
+});
+
+// ── 8. The *other* cap on this path, added 2026-08-20 ──────────────────────
+//
+// `RECALL_MAX_CHARS` was referenced nowhere outside `recall.ts` until this block
+// — no test, no probe, no recogniser. It is the second of two caps an expansion
+// passes through, and the two behave differently:
+//
+//   `RECALL_MAX_EXPAND_ROWS`  `all.slice(0, 30)`   — always binds at 30 rows
+//   `RECALL_MAX_CHARS`        `recall.ts:764`      — cannot drop the first block
+//
+// The break is `if (used > 0 && used + block.length > RECALL_MAX_CHARS)`. The
+// `used > 0` guard keeps the first block whatever its size, and in a 1-1 with no
+// scope gaps `groupIntoExcerpts` returns the fetched rows as **one** block — so
+// on that shape the char cap can never shorten a call. That is a deliberate
+// property, not an accident of the corpora: an agent that followed the address it
+// was handed and got back fewer rows than the header promises would be reasoning
+// from a page that silently disagrees with its own `Positions X–Y`.
+//
+// **Why it is pinned now.** Theseus's proposed distance arm (Round 66 §4) puts a
+// restriction 15 rows past the offered start and reads whether the agent gets to
+// it. If a char cap could shorten call 1 below +15, "the agent stopped early" and
+// "the tool stopped early" would be the same observation, and the arm's headline
+// result would be uninterpretable. `scripts/verify-expand-reachability.mjs` does
+// that arithmetic (call 1 renders ~2.6k chars against a 12k cap, so the arm has
+// 4× headroom); this pins the behaviour the arithmetic assumes.
+//
+// Not asserted here: the *search* path's char budget (`recall.ts:492`, `:511`),
+// which is a different loop with a different contract — it drops whole excerpts
+// and then strips lines, and it has no `used > 0` carve-out. One cap, one test.
+
+describe('Round 56 — the char budget cannot shorten a single-excerpt expansion', () => {
+  // 1,000 chars a row, well under the 4,000-char per-line truncation, so nothing
+  // is lost inside a line either. Thirty of them is ~31k rendered against a 12k
+  // cap: if the guard were `used + block.length > RECALL_MAX_CHARS` alone, this
+  // call would come back with zero rows.
+  const WIDE = 1_000;
+  const TOTAL = 40;
+  function fatTail() {
+    ask(oneOnOne.id, 'the basalt codeword for the rollback is heron-72', t(1));
+    for (let n = 2; n <= TOTAL; n++) {
+      ask(oneOnOne.id, `turn ${n} ${'x'.repeat(WIDE)}`, t(n));
+    }
+  }
+
+  it('returns the full row cap even when the block is three times the char cap', () => {
+    fatTail();
+    const expanded = expandConversationRange(agent, klatch, {
+      conversation: 'vesper-1-1',
+      from: 1,
+      to: TOTAL,
+    });
+
+    expect(expanded.isError).toBe(false);
+    // The precondition, asserted rather than assumed — as with item 7's width
+    // check, if this stops holding the test below stops testing anything.
+    expect(expanded.text.length).toBeGreaterThan(RECALL_MAX_CHARS * 2);
+    expect(expanded.shownCount).toBe(RECALL_MAX_EXPAND_ROWS);
+    expect(shownRange(expanded.text)).toEqual({ from: 1, to: RECALL_MAX_EXPAND_ROWS });
+
+    // The header's claim and the page agree: the last row it says it shows is on
+    // the page, and the first row it says it does not show is not.
+    expect(expanded.text).toContain(`turn ${RECALL_MAX_EXPAND_ROWS}`);
+    expect(expanded.text).not.toContain(`turn ${RECALL_MAX_EXPAND_ROWS + 1}`);
+    expect(expanded.text).toContain(`Ask again with from: ${RECALL_MAX_EXPAND_ROWS + 1}`);
+  });
+
+  it('is not truncating inside the lines either', () => {
+    fatTail();
+    const expanded = expandConversationRange(agent, klatch, {
+      conversation: 'vesper-1-1',
+      from: 1,
+      to: TOTAL,
+    });
+
+    // `formatTranscriptLine`'s own marker. A row dropped for length and a row
+    // kept but cut short are different failures, and only one of them changes
+    // `shownCount` — so the count above cannot stand in for this.
+    expect(expanded.text).not.toContain('(this message truncated for length)');
+    expect(expanded.text).toContain('x'.repeat(WIDE));
   });
 });
