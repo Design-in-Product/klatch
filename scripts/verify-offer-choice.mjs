@@ -69,6 +69,27 @@ const ROUND61 = {
 // L reads 5/5 on `expansionHeldTheMarking` and why one offer cannot ask M's question.
 const MARKING_L = { markingSeqs: [5], markingConversation: CONV };
 
+// ── Round 63, arm N1: the equal-size control, and §5's two scoring refinements ───
+//
+// Transcribed from the round doc's §2 per-call table (`round63-arm-n1-equal-size-offers-
+// live-2026-08-19.md:63-79`), which Theseus extracted from the per-run JSONs *before*
+// `.testdata/` was deleted — so unlike M and L, this fixture's source was the raw runs.
+// Offers are `1-28` (leading) and `34-60` (trailing); the restriction is at seq 35, one
+// row inside the trailing offer's start, so `34-60` covers and `1-28` does not.
+//
+// N1L5 is the fixture that matters: it took the covering offer whole on call 3 and then
+// expanded the *other* offer on call 4. That is §5.1's false alarm, and it is why this
+// arm is here rather than left as a paragraph in a memo.
+const ROUND63 = {
+  N1L1: [search(o(1, 28), o(34, 60)), search(), expand(34, 44), search(o(1, 28), o(34, 56))],
+  N1L2: [search(o(1, 28), o(34, 60)), search(o(1, 28), o(34, 60)), expand(34, 41)],
+  N1L3: [search(o(1, 28), o(34, 60)), search(o(1, 28), o(34, 60)), expand(34, 41)],
+  N1L4: [search(o(1, 28), o(34, 60)), search(), expand(34, 40)],
+  N1L5: [search(o(1, 28), o(34, 60)), search(), expand(34, 60),
+         expand(1, 28, o(1, 33), o(29, 60))],
+};
+const MARKING_N1 = { markingSeqs: [35], markingConversation: CONV };
+
 const scoreAll = (runs, marking) =>
   Object.fromEntries(Object.entries(runs).map(([k, calls]) =>
     [k, scoreOfferChoice({ calls, ...marking })]));
@@ -156,6 +177,49 @@ console.log('  but "0 of 6" is in a published record three times and one of the 
 console.log('  wrong. The raw JSONs that would settle it were deleted at end of fire (§9), so');
 console.log('  this is unresolvable from the repository. That is the concrete cost of not');
 console.log('  committing them, and it landed on the first round after the durable-extract fix.');
+
+console.log('\n── 3b. Arm N1, and the two Round 63 §5 refinements ─────────────────────\n');
+
+const N = scoreAll(ROUND63, MARKING_N1);
+const countN = (f) => Object.values(N).filter((s) => s[f]).length;
+
+// Round 63 §1 table: every first expand started at 34, the trailing offer's start; the
+// leading offer went 0/5; expansion held the restriction 5/5.
+check('runs taking a covering address (doc: held the restriction 5/5)', countN('tookACoveringAddress'), 5);
+check('first-expand starts, all runs (doc: every one was 34)',
+  [...new Set(Object.values(N).map((s) => s.perCall[0].asked.from))], [34]);
+check('runs facing a genuine choice of offers (two equal offers, by construction)',
+  countN('choiceWasAvailable'), 5);
+
+// §5.1 — the false alarm. The per-call field is unchanged and still true; what changes is
+// that the run-level reading, and the printed line, now distinguish it from M2/M5.
+check('N1L5 call 4 still declines a covering offer at that call (field unchanged)',
+  N.N1L5.perCall[1].declinedACoveringOfferHere, true);
+check('  …but an earlier call had already read one (the new fact)',
+  N.N1L5.perCall[1].coveringAlreadyReadBefore, true);
+check('runs declining a covering offer they had NOT already read (doc §5.1: none on N1)',
+  countN('declinedACoveringOfferUnread'), 0);
+// M4 belongs here and I expected it not to — this check failed on the first run and the
+// field was right. M4 asked `1-6` at call 3 with two covering offers on the table and
+// nothing covering read yet (a genuine unread decline), then took `12-20` at call 4 and
+// recovered. So this field is NOT a synonym for `tookANonCoveringAddressInstead`, which is
+// a run-level "never took a covering address" and is M2/M5 only. The pair of them separates
+// declined-and-recovered from declined-and-stopped, which is worth having.
+check('  arm M: runs with an unread decline at some call (M2, M5 — and M4, which recovered)',
+  Object.entries(M).filter(([, s]) => s.declinedACoveringOfferUnread).map(([k]) => k),
+  ['M2', 'M4', 'M5']);
+check('  …and the run-level "never covered" field stays M2/M5, so the two are not synonyms',
+  Object.entries(M).filter(([, s]) => s.tookANonCoveringAddressInstead).map(([k]) => k), ['M2', 'M5']);
+check('  the shout is gone from N1L5\'s printed line',
+  formatOfferChoice(N.N1L5).includes('NOT TAKEN'), false);
+check('  and still present on M2\'s',
+  formatOfferChoice(M.M2).includes('NOT TAKEN'), true);
+
+// §5.2 — "offered start + N" as a field, checked against the doc's own §3 column.
+check('first-expand +N per run (doc §3: +10, +7, +7, +6, whole offer = +26)',
+  Object.values(N).map((s) => s.perCall[0].startPlusN), [10, 7, 7, 6, 26]);
+check('M4\'s 12-20 as +N (doc: offered-start-plus-eight)',
+  M.M4.perCall[1].startPlusN, 8);
 
 console.log('\n── 4. Sample of the per-call reporting line (Theseus\'s §7 ask) ─────────\n');
 console.log(`  M4 — the run with two expand calls:\n${formatOfferChoice(M.M4)}`);

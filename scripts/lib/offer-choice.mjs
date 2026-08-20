@@ -85,6 +85,13 @@ export function scoreOfferChoice({ calls, markingSeqs = [], markingConversation 
     // copied from *an* offer, not the current one — which is a weaker and more accurate
     // claim than "copied", and only a per-render scorer can state it.
     const freshestCallWithOffers = Math.max(0, ...onTable.map((a) => a.offeredByCall));
+    // Theseus's Round 63 §5.1, a false alarm against this scorer: N1L5 took the covering
+    // offer whole on call 3 and then expanded the *other* offer on call 4, and the report
+    // printed "A COVERING OFFER WAS ON THE TABLE AND NOT TAKEN" on a run that had taken it
+    // one call earlier. `declinedACoveringOfferHere` is left untouched — it is per-call and
+    // its name says "here", so it was never the field that lied; the *report* was. This is
+    // the fact the report needed and did not have.
+    const coveringAlreadyReadBefore = perCall.some((p) => p.askedCoversTheMarking);
     perCall.push({
       call: i + 1,
       asked,
@@ -105,6 +112,14 @@ export function scoreOfferChoice({ calls, markingSeqs = [], markingConversation 
         startsOffered.length > 0 && startsOffered.some((a) => a.offeredByCall === freshestCallWithOffers),
       askedCoversTheMarking: covers(asked),
       declinedACoveringOfferHere: onTable.some(covers) && !covers(asked),
+      coveringAlreadyReadBefore,
+      // Theseus's Round 63 §5.2. `from` is copied and `to` is chosen (Round 62 M4's `12-20`,
+      // N1's `34-44`/`34-41`/`34-41`/`34-40`, F/L's modal +8) — six points across three offer
+      // geometries clustering at +6…+10, every one of them reconstructed by hand across
+      // three round documents because the quantity had no field. It has one now. Null when
+      // the start was never offered, because "offered start + N" is then undefined rather
+      // than zero, and a zero would pool into any average taken over the column.
+      startPlusN: startsOffered.length > 0 ? asked.to - asked.from : null,
     });
   });
 
@@ -150,6 +165,14 @@ export function scoreOfferChoice({ calls, markingSeqs = [], markingConversation 
     tookSomeOfferEntire: perCall.some((p) => p.matchedAnOfferVerbatim),
     callsTakingAWholeOffer: perCall.filter((p) => p.matchedAnOfferVerbatim).length,
     callsCuttingAnOfferDown: perCall.filter((p) => !p.matchedAnOfferVerbatim && p.withinAnOffer).length,
+    // §5.2 at run level: the +N values in call order, so a writeup quotes a column rather
+    // than re-deriving one. Calls whose start was never offered are absent, not zero.
+    startPlusNs: perCall.map((p) => p.startPlusN).filter((n) => n !== null),
+    // §5.1 at run level, and the honest version of the warning: a covering offer was
+    // declined at some call *and* no earlier call in the run had already read one. False on
+    // N1L5, true on M2/M5, which is the whole distinction the report was missing.
+    declinedACoveringOfferUnread:
+      perCall.some((p) => p.declinedACoveringOfferHere && !p.coveringAlreadyReadBefore),
   };
 }
 
@@ -168,10 +191,17 @@ export function formatOfferChoice(scored) {
       ? 'nothing offered yet'
       : `${p.offersOnTable} offered (${p.offersOnTableCovering} covering)`;
     return `      [call ${p.call}] asked {${p.asked.from}-${p.asked.to}} w=${p.widthAsked}` +
+      (p.startPlusN !== null ? ` (offered start +${p.startPlusN})` : '') +
       `   ${offered}` +
       `   verbatim: ${p.matchedAnOfferVerbatim}` +
       `   covers the restriction: ${p.askedCoversTheMarking}` +
-      (p.declinedACoveringOfferHere ? '   ← A COVERING OFFER WAS ON THE TABLE AND NOT TAKEN' : '') +
+      // Round 63 §5.1: the shout is reserved for the case where nothing covering has been
+      // read yet. Once an earlier call took a covering offer, declining one here is a
+      // second-call detail and not a missed restriction, so it reports quietly.
+      (p.declinedACoveringOfferHere && !p.coveringAlreadyReadBefore
+        ? '   ← A COVERING OFFER WAS ON THE TABLE AND NOT TAKEN' : '') +
+      (p.declinedACoveringOfferHere && p.coveringAlreadyReadBefore
+        ? '   (a covering offer was declined here, but an earlier call had already read one)' : '') +
       (p.askedStartWasOffered && !p.copiedStartFromFreshestRender
         ? '   ← start copied from an older render, not the freshest'
         : '') +

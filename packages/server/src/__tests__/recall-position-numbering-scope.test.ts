@@ -6,7 +6,7 @@
  * numbering-2026-08-19.md` §5), against my surface. Verified from source here
  * rather than accepted from the memo.
  *
- * `expandConversationRange` says, in two places:
+ * `expandConversationRange` said, in two places:
  *
  *   - the header — *"Positions N–M of X, **your own turns** in that
  *     conversation, in order."*
@@ -27,31 +27,49 @@
  * the one piece of prose on the recall surface that *teaches the agent how to
  * read the numbers* was the piece with no drift detection on it.
  *
- * The wording is **not corrected here**, on purpose. Arm N1 has not run live
- * yet, and it exists to be compared against arm M (Round 62), which ran under
- * this exact text. Rewording the expand header before N1 spends would put the
- * two arms in front of different prose in the one dimension — how an offered
- * range is read — that N1's dependent variable sits next to. So the sequence is:
- * N1 runs, then the wording changes, and the change gets a round number rather
- * than arriving inside someone else's measurement.
+ * **The hold, and its discharge — Round 64, 2026-08-19 (STOP fire).** When this
+ * file was written at 13:22 the wording was deliberately left wrong: arm N1 had
+ * not run, and it existed to be compared against arm M (Round 62), which ran
+ * under this exact text. Rewording before N1 spent would have put the two arms
+ * in front of different prose in the one dimension — how an offered range is
+ * read — that N1's dependent variable sits next to.
  *
- * That makes §2 below a **change-detector on a known defect**, not an
- * endorsement. If it fails because the text was fixed, that is the fix landing —
- * update the literals and delete this paragraph. If it fails for any other
- * reason, the wording moved without anyone deciding to move it, which is the
- * thing Round 58 exists to catch and this surface was missing.
+ * N1 ran at 14:47 PT (`docs/research/round63-arm-n1-equal-size-offers-live-
+ * 2026-08-19.md`; Theseus's memo §0 discharges the hold in as many words). The
+ * fix is landed here as **Round 64**, and the round number is the boundary
+ * marker: **arms up to and including N1 ran under pre-64 prose.** Any arm that
+ * runs from now on does not, and a later comparison that ignores this line is
+ * comparing across a changed instrument.
  *
- * §1 is the durable half and stays after the wording is fixed: it asserts the
+ * The replacement is *"your turns and the user's"* at all three sites, chosen
+ * over the shorter *"your turns and the turns addressed to you"* because it is
+ * the only phrasing that is exactly true in a klatch as well as a 1-1. The scope
+ * is `m.entity_id = you` OR (`role = 'user'` AND you are a member of that
+ * channel) — read from `entityTranscriptWhere`, not from its docblock. So a
+ * *third agent's* turn in a shared room is not numbered even when it is
+ * unmistakably addressed to you, and "addressed to you" would have promised it.
+ * "the user's" also matches the label the agent can see on the page:
+ * `formatTranscriptLine` prints exactly two speakers, the entity's name and
+ * `user`.
+ *
+ * §1 is the durable half and was always going to outlive the fix: it asserts the
  * *scope of the numbering* from the render, so a future change to
  * `entityTranscriptWhere` that quietly narrowed positions back to authored rows
  * would fail here even if every string still matched.
+ *
+ * §3 is new with the fix and covers a **third site**, found by `grep` this fire
+ * rather than reported: the zero-token search branch said it matches *"literal
+ * words in your own messages"*. Same defect, upstream surface — an agent that
+ * believed it would pick keywords out of its own phrasing and avoid the ones it
+ * only ever heard. It ships with a behavioural test, so the sentence is pinned
+ * to a demonstrated fact rather than to an argument about a SQL clause.
  */
 
 import { describe, it, expect, beforeEach } from 'vitest';
 import './setup.js';
 import { createChannel, createEntity } from '../db/queries.js';
 import { getDb } from '../db/index.js';
-import { expandConversationRange } from '../claude/recall.js';
+import { expandConversationRange, recallFromOtherConversations } from '../claude/recall.js';
 import { DEFAULT_MODEL } from '@klatch/shared';
 import type { Channel, Entity } from '@klatch/shared';
 import { v4 as uuidv4 } from 'uuid';
@@ -160,6 +178,10 @@ describe('expand positions number both speakers, not only the agent', () => {
 });
 
 // ── 2. Change-detector on the two sentences (see the file docblock) ──
+//
+// Round 64 fixed both. These stay, unchanged in purpose: the wording is the one
+// piece of prose on this surface that teaches the agent how to read the numbers,
+// and until this file existed nothing pinned it in either direction.
 
 describe('the expand surface\'s statements about its own numbering', () => {
   it('renders the header sentence as this build words it', () => {
@@ -170,12 +192,15 @@ describe('the expand surface\'s statements about its own numbering', () => {
     });
 
     // Longhand, duplicating the source deliberately — the Round 58 mechanism.
-    // KNOWN DEFECT: "your own turns" describes half of what §1 just proved is
-    // numbered. Held, not fixed, until arm N1 has run live. See the docblock.
+    // Round 64: the sentence now names both speakers §1 proves are numbered.
     expect(result.text).toContain(
-      'Positions 1–12 of "vesper-1-1", your own turns in that conversation, in order.'
+      'Positions 1–12 of "vesper-1-1", your turns and the user\'s in that conversation, in order.'
     );
     expect(result.text).toContain('Nothing outside this range was read.');
+    // The defect, pinned negatively as well as positively. A revert or a
+    // half-applied edit that reinstated "your own turns" would pass the
+    // `toContain` above only by accident; this cannot pass either way.
+    expect(result.text).not.toContain('your own turns');
   });
 
   it('renders the empty-range sentence as this build words it', () => {
@@ -187,11 +212,46 @@ describe('the expand surface\'s statements about its own numbering', () => {
 
     expect(result.matchCount).toBe(0);
     expect(result.isError).toBe(false);
-    // KNOWN DEFECT, and worse here than in the header: this branch is teaching
-    // the numbering at the moment the agent has just got it wrong. Theseus's §5
-    // singles it out for that reason.
+    // Theseus's §5 singled this branch out over the header, and his ordering was
+    // right: it teaches the numbering at the moment the agent has just got it
+    // wrong, so a wrong rule here is read at the one point it will be acted on.
     expect(result.text).toContain(
-      'Positions count only your own turns in that conversation, so a number past its end returns nothing'
+      'Positions count your turns and the user\'s in that conversation, so a number past its end returns nothing'
     );
+    expect(result.text).not.toContain('only your own turns');
+    // The lead clause moved too, and had to: "nothing *of yours* at positions
+    // 40–45" would have contradicted the corrected sentence directly after it.
+    expect(result.text).toContain('"vesper-1-1" has nothing at positions 40–45.');
+  });
+});
+
+// ── 3. The third site: what a *search* matches (Round 64) ──
+
+describe('the search surface describes the same scope it queries', () => {
+  it('matches a word only the user ever said', () => {
+    // The proof the prose rests on, stated as behaviour. `quokka` appears in one
+    // row, authored by the owner, `entity_id` NULL — the exact shape
+    // `insertMessage` writes and the exact shape a narrow `m.entity_id = ?`
+    // scope would drop.
+    ask(oneOnOne.id, 'do you remember the quokka photo', t(1));
+    say(oneOnOne.id, agent.id, 'I do, it was a good one', t(2));
+
+    const result = recallFromOtherConversations(agent, here, { query: 'quokka' });
+
+    expect(result.matchCount).toBe(1);
+    expect(result.text).toContain('quokka photo');
+  });
+
+  it('says so in the branch that tells the agent how to pick keywords', () => {
+    const result = recallFromOtherConversations(agent, here, { query: '???' });
+
+    expect(result.isError).toBe(true);
+    // Found by grep this fire, not reported: the old sentence said "your own
+    // messages", which would steer an agent away from the terms it only heard —
+    // and the test above shows those terms are exactly the ones that work.
+    expect(result.text).toContain(
+      'This tool matches literal words in your turns and in the user\'s'
+    );
+    expect(result.text).not.toContain('your own messages');
   });
 });

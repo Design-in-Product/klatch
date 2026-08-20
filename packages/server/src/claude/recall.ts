@@ -410,8 +410,8 @@ export function recallFromOtherConversations(
     return {
       text:
         `No searchable terms in "${request.query}". This tool matches literal ` +
-        `words in your own messages — pass distinctive keywords (a name, a ` +
-        `filename, an unusual noun) rather than a question.`,
+        `words in your turns and in the user's — pass distinctive keywords (a ` +
+        `name, a filename, an unusual noun) rather than a question.`,
       isError: true,
       matchCount: 0,
       shownCount: 0,
@@ -734,10 +734,10 @@ export function expandConversationRange(
   if (all.length === 0) {
     return {
       text:
-        `"${candidates[0].name}" has nothing of yours at positions ${from}–${to}. ` +
-        `Positions count only your own turns in that conversation, so a number ` +
-        `past its end returns nothing; the edge marker you took them from names ` +
-        `a range that exists.`,
+        `"${candidates[0].name}" has nothing at positions ${from}–${to}. ` +
+        `Positions count your turns and the user's in that conversation, so a ` +
+        `number past its end returns nothing; the edge marker you took them ` +
+        `from names a range that exists.`,
       isError: false,
       ...empty,
     };
@@ -781,8 +781,9 @@ export function expandConversationRange(
   const lastShown = shown[shown.length - 1].ordinal;
 
   const parts = [
-    `Positions ${firstShown}–${lastShown} of "${candidates[0].name}", your own ` +
-    `turns in that conversation, in order. Nothing outside this range was read.`,
+    `Positions ${firstShown}–${lastShown} of "${candidates[0].name}", your ` +
+    `turns and the user's in that conversation, in order. Nothing outside this ` +
+    `range was read.`,
   ];
   if (shownRows < all.length || lastShown < to) {
     parts.push(

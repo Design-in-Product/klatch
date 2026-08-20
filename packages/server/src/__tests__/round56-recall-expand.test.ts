@@ -300,7 +300,12 @@ describe('Round 56 — addresses that cannot be resolved say so', () => {
     });
     expect(expanded.isError).toBe(false);
     expect(expanded.shownCount).toBe(0);
-    expect(expanded.text).toContain('nothing of yours at positions 40–50');
+    // Round 64 dropped "of yours" from this clause: the sentence right after it
+    // now says positions count the user's turns too, and "nothing *of yours*"
+    // contradicted it. The assertion this round cares about — an empty range is
+    // reported, not invented — is unchanged. See
+    // `recall-position-numbering-scope.test.ts` for the wording pin itself.
+    expect(expanded.text).toContain('nothing at positions 40–50');
   });
 
   it('rejects a half-specified address rather than guessing the rest', () => {
