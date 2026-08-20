@@ -183,3 +183,111 @@ leaked from the leak testing).
   are theirs.
 - Iris: client side of the project-match line, including whether the dialog's **409** branch
   renders it — flagged as the case where the line will most often be true.
+
+---
+
+# 8/20 WORK fire (13:17 PT)
+
+## 13:17 — Briefing
+
+`git log` at open: last Daedalus commit `72e746c` (09:33, START wrap). Three Theseus commits and
+one Calliope commit have landed since — Calliope's `b49af9b` is their own MID no-op, not mine;
+this is my first fire since 09:33. One new inbound addressed to me:
+`theseus-to-daedalus-…-check-five-is-in-my-gate-failed-its-own-control-and-your-confound-kills-the-swap-2026-08-20.md`
+(Theseus, 10:58). Read in full at open, replied in the same fire.
+
+Two items were mine at open: Round 66 §5 item 4's unresolved cap question (§4 flags it, does not
+resolve it) and item 5, my own Round 64 klatch leftover. Both closed below.
+
+## 13:20 — Ran Theseus's two scripts myself before reasoning from Round 66's numbers
+
+```
+npx tsx scripts/verify-filler-constraints.mjs   →  32 pairs, 9 handover patterns, OK
+npx tsx scripts/geometry-distance-arm.mjs       →  both measured arms reproduce, table as published
+```
+
+Both needed `npx tsx`, not bare `node` (`verify-filler-constraints.mjs` reaches `recall.ts`
+transitively; bare `node` throws `ERR_MODULE_NOT_FOUND` on `queries.js`). Usage line says so.
+
+## 13:22 — Re-derived the bound from the seeding loop, not from the memo
+
+Read `probe-recall-tool.mjs:1218-1240` (`evictedMarking`'s `put()` order) and derived:
+`total = 2L+2F+6`, `offeredStart = 2L+4`, `markRow = 2L+2G+3`, so **`markOffset = 2G − 1`**,
+independent of `L` and `F`; `margin = 2(F−G) − 17`, which is the probe's own `margin = 2P − 17`;
+`margin ≥ 1 ⇒ G ≤ F − 9`. Theseus's bound, second route.
+
+**My first margin formula was off by one** — it reported 0 where the probe's own arm docblocks
+(`:622`, `:772`) and Round 66 both say the margin is 1. Caught because the checker asserts against
+M's and N1's *published* margins rather than reporting its own. Fixed to the probe's definition
+(rows above the carried window's first row, `total − WINDOW + 1`).
+
+## 13:24 — The question §4 leaves open, answered: the marking is inside call 1
+
+`+15 < RECALL_MAX_EXPAND_ROWS (30)`, so on the distance arm the restriction is on the page of the
+first expand call. A miss is an appetite miss, not a cap artefact — which matters because
+otherwise "the agent stopped early" and "the tool stopped early" are the same observation.
+
+Hypothesis of mine that died on contact: I expected `FILLER_LONG` to pressure the 12,000-char
+budget. **`FILLER_LONG` is `[...FILLER, 5 more]`** (`:259`) — a longer *list*, not longer *rows*.
+Call 1 renders 2,608 chars (N1: 2,484), 4× clear of the cap, zero lines meeting the 4,000-char
+per-line cut. Recorded because it makes the arm *cheaper* to pre-register than Round 66 implies.
+
+New: `scripts/verify-expand-reachability.mjs`. Reads `WINDOW`, `RADIUS` and both caps from the
+modules rather than copying them, and throws if the probe's hard-coded `WINDOW` ever drifts from
+`CARRIED_CONTEXT_MAX_MESSAGES`.
+
+## 13:25 — The constant that rests on had no test; added two, and ran the control
+
+`grep -rl RECALL_MAX_CHARS packages/ scripts/` at open → **one file**, `recall.ts` itself. No test,
+no probe, no recogniser. The guard the whole §4 answer leans on is `used > 0 &&` at `recall.ts:764`.
+
+Item 8 of `round56-recall-expand.test.ts` (+2 tests): 30 rows × 1,000 chars ≈ 31k rendered against
+a 12k cap; asserts the full row cap returns, the header's claim matches the page, and separately
+that no line carries the truncation marker.
+
+**Negative control run rather than assumed** (Theseus's §2 lesson this fire, applied):
+
+```
+guard blunted to `used + block.length > RECALL_MAX_CHARS`
+  →  2 failed | 19 passed     ← both new tests red, everything else green
+guard restored
+  →  21 passed ; git diff --stat packages/server/src/claude/recall.ts  →  empty
+```
+
+## 13:27 — Item 5 closed with no edit
+
+The `"your own turns"` wording landed in Round 64; what was still open was my own deferred klatch
+half. Settled by reading source, not by preference:
+
+- **Reachable** — `recall.ts` passes only `excludeChannelId`, no `types` filter (`:428`, `:705`).
+- **Exhaustive by construction** — `entityTranscriptWhere` (`queries.ts:647-652`) admits exactly
+  two kinds of row, and `formatTranscriptLine` (`carried-context.ts:258`) prints exactly two
+  labels. *"Your turns and the user's"* names both.
+- **The klatch fact is already stated at the point of occurrence**, with a count, by the interior
+  scope-gap marker — exercised on a klatch at `round56-recall-expand.test.ts:222`.
+
+Decision: no third clause. Reopening trigger written down in the research doc rather than left to
+a later fire's instinct.
+
+## 13:29 — Verification
+
+```
+npm test        →  server 1398/1398 (84 files), client 233 passed / 13 skipped, exit 0
+npm run typecheck →  clean, shared + server + client
+npx tsx scripts/verify-expand-reachability.mjs  →  exit 0
+```
+
+1398 = my 8/20 START figure of 1396 + the 2 tests added this fire. No existing test moved. Client
+unchanged.
+
+Commits: `fb2b239` (mail, separate per the worktree discipline), `f59ca2a` (checker + tests + doc).
+
+**Open, carried forward — not mine to close:**
+
+- The distance arm (`F=17, L=20, G=8`, 80 rows, five opus runs) — **xian's go/no-go.** This fire
+  removed one reason to hesitate and added nothing to the case for running it.
+- Iris: client side of the project-match line, including whether the dialog's 409 branch renders it.
+
+**Mail hygiene:** nothing moved to `read/`. Theseus's 10:58 memo carries the distance arm, which is
+open with xian; Iris's carries a client-side item on their seat. Moving either would hide a live
+decision.
