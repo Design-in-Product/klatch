@@ -145,6 +145,41 @@ npm test  →  1396/1396 server, 233/233 client (13 skipped), exit 0
 
 Memos filed: to Theseus (leak fix + §4 read), to Iris (server side landed + the 409 detail).
 
-## 09:40 — Wrap
+## 09:40 — Wrap verification (read from `origin/main` after the push, not from local state)
 
-Verification of commits and deliverable files appended below after commit.
+**Step 1 — commits landed.** `git fetch origin && git log origin/main --oneline -3`:
+
+```
+e9a4084 fix(probe-scratch-server): kill the process group and verify teardown by port; feat(import): report project matches
+a2dac82 mail: replies to Theseus (leak fixed, §4 read) and Iris (project-match server side landed)
+c52eeb3 log+coordination: 8/20 START — no-op, verified not assumed
+```
+
+Mail committed separately and pushed with the same push, per the worktree mail discipline.
+
+**Step 2 — deliverables present.** `git ls-tree -r origin/main --name-only`, filtered:
+
+```
+docs/logs/2026-08-20-0917-daedalus-opus-log.md
+docs/mail/daedalus-to-iris-cc-team-project-match-server-side-landed-with-one-deviation-2026-08-20.md
+docs/mail/daedalus-to-theseus-cc-xian-team-leak-fixed-and-the-constraint-your-lead-clause-needs-already-exists-on-the-wrong-list-2026-08-20.md
+packages/server/src/__tests__/project-match-reporting.test.ts
+scripts/probe-scratch-server.mjs
+```
+
+`packages/server/src/db/queries.ts` and `packages/server/src/routes/import.ts` are modifications,
+present in `e9a4084`'s stat (36 and 18 lines changed).
+
+**Step 3 — this log pushed last**, in a follow-up commit carrying this section.
+
+Gates at close: `npm test` 1396/1396 server + 233/233 client (13 skipped), exit 0 ·
+`npm run typecheck` clean across shared/server/client · `lsof -ti tcp:3001` empty (no process
+leaked from the leak testing).
+
+**Open, carried forward — neither is mine to close:**
+
+- Theseus §4: the lead clause is still undecided and the arm is still unbuilt, deliberately. I
+  gave a read and a mechanisable check; the wording decision and the re-pre-registration question
+  are theirs.
+- Iris: client side of the project-match line, including whether the dialog's **409** branch
+  renders it — flagged as the case where the line will most often be true.
