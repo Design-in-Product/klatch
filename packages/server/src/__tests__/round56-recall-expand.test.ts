@@ -491,6 +491,15 @@ describe('Round 56 — an offer the tool cannot fill in one call still tiles', (
     expect(forward).toHaveLength(1);
     const second = expandConversationRange(agent, klatch, { ...forward[0] });
 
+    // Both preconditions, before the helper reads a header out of either text.
+    // `shownRange` throws when there is no `Positions X–Y` — legibly, but as a
+    // throw, so nothing below is shown to bind. Under the routing control of
+    // 2026-08-20 (item 8's comment) that is exactly what happened here: this
+    // test died in the helper and none of the four tiling assertions ran. Named
+    // first, the same control lands on `isError` instead.
+    expect(first.isError).toBe(false);
+    expect(second.isError).toBe(false);
+
     const a = shownRange(first.text);
     const b = shownRange(second.text);
 
@@ -571,9 +580,61 @@ describe('Round 56 — an offer the tool cannot fill in one call still tiles', (
 //                                        two swapped) the 1,000-char run
 //
 // `shownCount` went red as `expected 25 to be 30` under the first of those,
-// before the reorder below moved the page assertions in front of it. `isError`
-// is the one assertion no control here exercises; the error returns it guards are
-// covered by items 1–4.
+// before the reorder below moved the page assertions in front of it.
+//
+// ── `isError`, and why five controls could not reach it (2026-08-20, STOP) ──
+//
+// The five above left `isError` unexercised, and the first read of that was that
+// it might be asserting nothing. It isn't. The reason none of them touched it is
+// structural: `isError: false` on the success path (`recall.ts:798`) is a
+// **literal**, not a computation, and all five mutate code *downstream of the
+// routing decision* — `all.slice` at `:748`, `firstShown`/`lastShown` at
+// `:780`/`:791`, the per-message cap inside `formatTranscriptLine`. Every one of
+// them runs only once `:798` is already the return being taken. No mutation of
+// the success path's body can flip a literal on the success path. The gap was in
+// the control set's *family*, not in the assertion.
+//
+// So the missing family is a **routing** mutation — one that sends this call into
+// an error return it should not take. Two were run, and both reach line 610 by
+// name, as an `AssertionError` and not a crash:
+//
+//   mutation                                  red on
+//   `candidates.length > 1` → `> 0`           `isError` — `expected true to be
+//                                             false`, on the line below
+//                                             (11 red in this file)
+//   first guard also rejects                  the same line (7 red in this file,
+//   `to − from + 1 > MAX_EXPAND_ROWS`         1,394 green across the suite)
+//
+// The second is the more informative of the two: a wide-range misroute is caught
+// **only** inside this file — seven tests, and nowhere else in 1,401. Read by
+// which line went red rather than by the count, they split three ways:
+//
+//   item 7 (1st), item 8 (1st), item 10 (1st)   red on `isError` itself
+//   item 5, item 8 (2nd), item 10 (2nd)         red on a count or a page assertion
+//   item 7 (2nd)                                **no assertion at all** — it died
+//                                               inside the `shownRange` helper
+//
+// That last one is the same shape as the crash this whole note is about, one
+// item away and found by the control rather than by reading. It threw legibly —
+// the helper prints the offending text — but a throw is not an assertion, so
+// none of its four tiling claims were shown to bind. Fixed in place by naming
+// the two preconditions before the helper runs; the same control now lands on
+// `isError` there. Line numbers are deliberately not quoted in this note: they
+// moved when item 10 landed and again when this note was written, and a stale
+// `:610` in a comment is how the previous round of this argument started.
+//
+// But `isError` here is not a *unique* detector, and shouldn't be sold as one:
+// under both controls the item's second test, which asserts no `isError` at all,
+// went red anyway on its page assertion. What line 610 buys is legibility — it
+// names "this took an error return" instead of leaving the reader to infer it
+// from a `toContain` that failed against an error message. That is a precondition's
+// job, and it is the right first assertion in the test for exactly that reason.
+// Preconditions carry a different burden of proof than claims do: not "does it
+// discriminate", but "does it abort before the test asserts something false".
+// Both controls show it doing that.
+//
+// The error returns it guards are also covered by items 1–4, as stated — that
+// part was right.
 //
 // The generalisation, which is Theseus's and worth keeping: a control that goes
 // red proves the suite noticed *something*. Only a control that reaches a named
