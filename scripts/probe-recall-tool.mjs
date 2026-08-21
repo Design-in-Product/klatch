@@ -135,6 +135,7 @@ import Database from 'better-sqlite3';
 import { randomUUID } from 'crypto';
 import { buildRecogniser } from './lib/recall-recogniser.mjs';
 import { scoreOfferChoice, formatOfferChoice } from './lib/offer-choice.mjs';
+import { readCallKind, callKindWarning } from './lib/recall-call-kind.mjs';
 import { writeFileSync, mkdirSync } from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -1577,27 +1578,15 @@ for (const key of SELECTED) {
   // a call classified as a search when it was an expansion would be handed to the
   // tokenizer, which would produce tokens from the summary's own prose and score a
   // lookup as a keyword miss. That is the exact confusion this fire exists to avoid.
-  const EXPAND_SUMMARY = /^Expanded own conversation:\s+(.+)\s+(\d+)–(\d+)$/;
+  //
+  // **Round 69, 2026-08-21.** The pattern and the query strip moved to
+  // `lib/recall-call-kind.mjs` and gained the empty-tail detector. Same reason the
+  // recogniser moved in Round 58 — `verify-empty-tail-detector.mjs` certifies the module
+  // this line imports, so what it certifies is the code this probe runs, and it proves the
+  // extraction inert over every summary the real `toolUseInputSummary` can emit.
   const toolCalls = (reply.artifacts || [])
     .filter((a) => a.type === 'tool_use' && a.toolName === RECALL_TOOL)
-    .map((a) => {
-      const summary = String(a.inputSummary || '');
-      const m = summary.match(EXPAND_SUMMARY);
-      if (m) {
-        return {
-          inputSummary: summary,
-          kind: 'expand',
-          query: '',
-          expand: { conversation: m[1], from: Number(m[2]), to: Number(m[3]) },
-        };
-      }
-      return {
-        inputSummary: summary,
-        kind: 'search',
-        query: summary.replace(/^Searched own conversations:\s*/, ''),
-        expand: null,
-      };
-    });
+    .map((a) => readCallKind(a.inputSummary));
 
   // ── Would each query have hit? Real tokenizer, ANDed in SQL (0 live calls) ─
   //
@@ -1627,7 +1616,12 @@ for (const key of SELECTED) {
     // nothing is ANDed, and `rows: 0` on a lookup would read in the summary table as a
     // miss. Left null so a later assertion on a number cannot pass vacuously against a
     // zero that means "not applicable" — the defect class from Round 55's own instrument.
-    if (call.kind === 'expand') {
+    //
+    // `unknown` joins it (Round 69) for the same reason one level out: a summary in a
+    // vocabulary neither form covers has no query in it, and tokenizing it would produce
+    // tokens from the summary's own prose. Nulls, not zeroes, so it cannot be silently
+    // aggregated as a miss.
+    if (call.kind === 'expand' || call.kind === 'unknown') {
       call.tokens = null;
       call.rows = null;
       call.neighbourhoodRows = null;
@@ -1637,6 +1631,13 @@ for (const key of SELECTED) {
     }
     call.tokens = tokenizeRecallQuery(call.query);
     if (call.tokens.length === 0) {
+      // **Deliberately still `false` and not `null`, Round 69.** An empty-tailed search
+      // (`call.noQuery`) may be a mis-typed expand that was dropped rather than a search
+      // that missed — but it may equally be a model that called with `query: ""`, and the
+      // artifact cannot tell them apart. Nulling it here would change a field that has
+      // been scored this way since Round 56 for a case that could have occurred in earlier
+      // rounds unlabelled, i.e. a mid-experiment instrument change. The flag is additive
+      // and the warning below is loud; adjudication is by hand.
       call.rows = 0;
       call.neighbourhoodRows = 0;
       call.hitTheAnswer = false;
@@ -1683,6 +1684,14 @@ for (const key of SELECTED) {
     // (`client.ts:629-634`), not through the search path. Same reconstruction caveat as
     // below: faithful because the only rows written since the live call belong to the
     // klatch, which is the excluded channel.
+    //
+    // **Round 69.** A `kind: 'unknown'` call has no reconstruction: the probe does not know
+    // which function the route called, so anything rendered for it is a fabrication. It is
+    // rendered through the search path anyway — every downstream field reads `c.rendered.*`
+    // and a null would turn a stale-vocabulary warning into a crash that loses a paid run —
+    // but the fabrication is recorded on the call, counted at run level, and printed. A run
+    // with `unscorableCalls > 0` is not scorable without hand adjudication.
+    call.reconstructionFabricated = call.kind === 'unknown';
     const rendered = call.kind === 'expand'
       ? expandConversationRange(holder, klatch, call.expand)
       : recallFromOtherConversations(holder, klatch, { query: call.query });
@@ -1816,6 +1825,16 @@ for (const key of SELECTED) {
   const expansionHeldTheMarking = expandCalls.some((c) => c.rendered.holdsTheMarking === true);
   const expansionErrored = expandCalls.some((c) => c.rendered.isError === true);
 
+  // ── Round 69, instrument health rather than a DV ────────────────────────────
+  //
+  // How many of this arm's calls the probe cannot honestly score: an empty-tailed search
+  // (which may be a dropped, mis-typed expand rather than a search that missed) or a
+  // summary in a vocabulary neither form covers. **Not pre-registered as a dependent
+  // variable and not to be reported as one** — it is a flag saying "hand-adjudicate this
+  // arm before quoting its numbers", and it exists because Round 68 showed the quiet
+  // failure lands in exactly the column these arms are scored from.
+  const unscorableCalls = toolCalls.filter((c) => c.noQuery || c.kind === 'unknown').length;
+
   // ── Round 62, Theseus's §7: per-offer scoring ────────────────────────────────
   //
   // His report, which is against a surface I own and is correct:
@@ -1901,6 +1920,10 @@ for (const key of SELECTED) {
   console.log(`recall tool calls       : ${toolCalls.length}`);
   toolCalls.forEach((c, i) => {
     console.log(`  [${i + 1}] query   : ${JSON.stringify(c.query)}`);
+    // Round 69: printed next to the query, not in a footer, because the thing a reader
+    // has to not-skim is that *this* row's empty query may not be a query at all.
+    const warning = callKindWarning(c);
+    if (warning) console.log(`      ${warning}`);
     console.log(`      tokens  : ${JSON.stringify(c.tokens)}`);
     console.log(`      matched : ${c.rows} rows → neighbourhood ${c.neighbourhoodRows} rows` +
       `   holds the answer: ${c.hitTheAnswer}`);
@@ -1909,6 +1932,10 @@ for (const key of SELECTED) {
         (c.hitTheMarking && !c.markingInMatches ? '   ← carried by the radius, not by the query' : ''));
     }
   });
+  if (unscorableCalls > 0) {
+    console.log(`UNSCORABLE CALLS        : ${unscorableCalls} of ${toolCalls.length}` +
+      '   ← this arm is not scorable without hand adjudication (see the per-call lines above)');
+  }
   console.log(`reply states the fact   : ${statesToken}   (token ${JSON.stringify(arm.token)})`);
   console.log(`absence wording in reply: ${JSON.stringify(assertsAbsence)}`);
   console.log(`claims no restriction   : ${JSON.stringify(claimsNoRestriction)}`);
@@ -1950,6 +1977,11 @@ for (const key of SELECTED) {
     },
     turn: { elapsedSeconds: elapsed, status: reply.status, stopReason: reply.stopReason ?? null },
     toolCalls,
+    // Round 69. In the per-run JSON so a later fire reading a stored run — rather than the
+    // console output of the fire that produced it — can still see that an arm needs hand
+    // adjudication. The per-call `noQuery` / `kind` are inside `toolCalls`; this is the
+    // count, at the level a summary table reads from.
+    unscorableCalls,
     reply: {
       content: reply.content, statesToken,
       absenceWording: assertsAbsence, claimsNoRestriction, notesTheGap, edgeCaution,
