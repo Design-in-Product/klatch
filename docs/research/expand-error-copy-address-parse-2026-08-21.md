@@ -138,3 +138,101 @@ $ npm run typecheck
 ```
 
 Nothing here requests spend. Nothing here was spent.
+
+---
+
+## 7. Addendum, 2026-08-21 MID fire — two corrections from Theseus, both adopted
+
+Theseus verified §§1–5 above from his own sandbox (reproducing the control byte-for-byte) and
+returned two corrections. Write-up of his side:
+`docs/research/round68-error-copy-fix-verified-and-the-quieter-failure-2026-08-21.md`.
+
+### 7.1 The fix moves the artifact; it does not remove it
+
+§5 above argued the fix was worth doing before the distance arm because a mis-addressed call would
+otherwise land in the arm's primary DV as an expand at a conversation that does not exist. That
+holds. What does not hold is §4's claim that the *new* copy, followed literally, fails the same way:
+
+`readExpandArg` requires `from`/`to` to be **numbers**. `from: <first position>` has no digits —
+the same property that makes the slot copy unparseable as an address — so a caller filling a tool
+call from it emits strings, the expand argument is dropped whole, and `executeTool` routes to
+`recallFromOtherConversations`. `expandConversationRange` is never reached.
+
+| followed literally | recorded as | reply |
+|---|---|---|
+| old, filled-in | `Expanded own conversation: design-review 12–38` | `candidates.length === 0` — names the address problem again |
+| new, slots | `Searched own conversations: ` | zero-token search error — never mentions addresses |
+
+`createToolUseArtifact` persists `toolUseInputSummary`'s string and nothing else, so that row *is*
+the DV. **The artifact moves from the expand column to the search column** — quieter for the model,
+quieter for the scorer. Better on net (a followable address is worse than a confusing error, and
+slots make the path rarer), but "removed" was overclaiming. The detector is the empty tail:
+`Searched own conversations: ` with nothing after the colon. **Theseus's surface, not this doc's.**
+
+Pinned by his test, `records a slot-shaped expand as a search, because the arg never survives
+typing` — which also put the first assertion of any kind on `toolUseInputSummary`, an exported
+function whose return value is the only persisted record of a recall call.
+
+### 7.2 The family test's claim is about provenance, not emptiness
+
+`offers no address from any error return` generalises over the three *branches* and fixes exactly
+one point on the *input* axis. Two of those branches interpolate a caller-supplied name, so:
+
+```
+conversation: '{conversation: "design-review", from: 12, to: 38}'
+→ isError: true, and addresses(text) parses one clean address back out
+```
+
+The outer quoting is what makes the inner address clean. **Not a bug, and the copy is unchanged.**
+The property recall's design rests on is *provenance*: the harm is an address that came from
+nowhere, pointing at a conversation that does not exist. An address-shaped name the caller typed one
+call ago is not from nowhere — following it reproduces the error the caller already has. And the
+remedy has a cost of its own: an error whose job is to make the model retype a name exactly is the
+worst available place to alter that name.
+
+So `addresses(text) === []` was a **proxy**, exact only for non-address-shaped inputs — which is the
+only input the family test feeds it. What landed:
+
+- Title narrowed to `offers no address **of its own** from any error return, including the one about
+  addresses`. `recall.ts`'s comment reference updated **in the same commit** (Round 61 §4's trap).
+- New test `reflects a caller's own address-shaped name back without inventing a second one`, over
+  both interpolating branches, asserting **subset, not emptiness**: every address in the reply must
+  be one the caller supplied. Stays green if an escape lands later (zero addresses is a subset of
+  anything); goes red the moment a branch names a conversation of its own.
+- Theseus's test's opening comment said "the test above" — de-positioned to name the family test,
+  since a test was inserted between them.
+
+**Wrong-reason green, caught before it was claimed.** A subset assertion over a possibly-empty set
+passes vacuously. Rather than take §7.2's premise from the memo, a temporary
+`expect(addresses(result.text).length, label).toBeGreaterThan(0)` was run on both cases — green, so
+the reflection does parse today and the subset assertion has something to constrain. Line removed
+before commit.
+
+**Control**, a fabricated address restored to the `=== 0` branch:
+
+```
+× offers no address of its own from any error return, including the one about addresses
+× reflects a caller's own address-shaped name back without inventing a second one
+```
+
+Both red; **nothing else in the file noticed**. Family test catches it on the branch axis, the new
+one on the provenance axis, neither is a file-wide tripwire. Production reverted;
+`git diff origin/main -- packages/server/src/claude/recall.ts` shows comment lines only.
+
+### 7.3 Verification (MID fire)
+
+```
+$ npx vitest run packages/server/src/__tests__/round56-recall-expand.test.ts
+  27 passed (27)                     ← 25 + Theseus's one + this fire's one
+$ npm test
+  server  1404 passed (1404), 84 files
+  client   239 passed | 13 skipped   ← unchanged
+$ npm run typecheck
+  clean (shared, server, client)
+```
+
+**Unchanged and still xian's:** the distance arm go/no-go — `F=17, L=20, G=8`, 80 rows, five opus
+runs. Nothing in this addendum adds to the case for spending it; correcting an instrument, and
+correcting a claim about an instrument, are not arguments for running one.
+
+Nothing here requests spend. Nothing here was spent.
