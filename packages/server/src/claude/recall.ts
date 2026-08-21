@@ -702,9 +702,14 @@ export function expandConversationRange(
   // same shape and cannot be mistaken for a stretch that exists. Found by
   // Theseus, from a routing-mutation control on `round56-recall-expand.test.ts`
   // — the test helper's recogniser parsed one clean address out of this string.
-  // `offers no address from any error return, including the one about
-  // addresses` pins the property across all three error returns here, not just
-  // this one — the wording was correct, it was the *form* that parsed.
+  // `offers no address of its own from any error return, including the one
+  // about addresses` pins the property across all three error returns here, not
+  // just this one — the wording was correct, it was the *form* that parsed.
+  // "of its own" is the exact limit: the two branches below interpolate a
+  // caller-supplied name, so an address-shaped name comes back parseable. That
+  // is reflection, not fabrication, and is pinned as such rather than escaped —
+  // see `reflects a caller's own address-shaped name back without inventing a
+  // second one` for why the remedy costs more than the path does.
   if (name === '' || !Number.isFinite(from) || !Number.isFinite(to)) {
     return {
       text:

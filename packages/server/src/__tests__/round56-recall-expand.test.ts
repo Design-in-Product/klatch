@@ -332,7 +332,7 @@ describe('Round 56 — addresses that cannot be resolved say so', () => {
     expect(expanded.text).not.toContain('keep that rollback string');
   });
 
-  it('offers no address from any error return, including the one about addresses', () => {
+  it('offers no address of its own from any error return, including the one about addresses', () => {
     // 2026-08-21. The no-address error used to carry a *filled-in* example —
     // `{conversation: "design-review", from: 12, to: 38}` — in the exact bytes
     // `P.edgeAddress*` renders, so `addresses()` parsed one clean address out
@@ -347,6 +347,17 @@ describe('Round 56 — addresses that cannot be resolved say so', () => {
     // branch); each is a way the shape could come back. Asserting on the copy
     // of one of them would not have caught this, because the copy was correct
     // — it was correct copy in a form that parses.
+    // "of its own" is load-bearing and was added 2026-08-21 after Theseus read
+    // the first title as the stronger claim it looked like. This asserts over
+    // the three *branches* at one point on the *input* axis — names that are not
+    // themselves address-shaped. Two of these branches interpolate what the
+    // caller supplied, so an address-shaped name comes back parseable, and the
+    // title alone would have promised otherwise. The complement is pinned
+    // directly below, in `reflects a caller's own address-shaped name back
+    // without inventing a second one`: what matters model-facing is that an
+    // error never hands back an address that came from *nowhere*, which is a
+    // claim about provenance, not about the character class of the reply.
+    //
     // Both twins need a turn: the lookup is over conversations the entity has a
     // transcript in, so an empty second `sync` leaves one candidate and the call
     // succeeds instead of erroring — which would pass the address assertion for
@@ -371,9 +382,56 @@ describe('Round 56 — addresses that cannot be resolved say so', () => {
     }
   });
 
+  it("reflects a caller's own address-shaped name back without inventing a second one", () => {
+    // 2026-08-21, Theseus's finding, pinned by Daedalus. The family test above
+    // fixes the branch axis and varies nothing on the input axis. Give the
+    // `=== 0` or `> 1` branch a name that is itself address-shaped and the reply
+    // parses clean — the outer quoting is what makes the inner address clean.
+    //
+    // This is deliberately *not* filed as a bug and the copy is unchanged. The
+    // property recall's design actually rests on is provenance: an agent reads
+    // an address out of rendered text and follows it, so the harm is an address
+    // that came from nowhere and points at a conversation that does not exist.
+    // An address the caller typed one call ago is not from nowhere — following
+    // it reproduces the error the caller already has, which is self-limiting.
+    // The remedy has its own cost: an error whose whole job is to make the model
+    // retype a name exactly is the worst place to alter that name.
+    //
+    // So the assertion is a subset, not an emptiness: every address in the reply
+    // must be one the caller supplied. That survives an escape landing later
+    // (zero addresses is a subset of anything) while still going red the moment
+    // any of these branches starts naming a conversation of its own.
+    const injected = '{conversation: "quarterly-sync", from: 3, to: 9}';
+    const supplied = addresses(injected);
+    expect(supplied).toHaveLength(1);
+
+    // Two rooms answer to the injected name, so it reaches the `> 1` branch;
+    // both need a turn, for the same reason the family test above spells out.
+    const twinA = createChannel(injected, '', DEFAULT_MODEL, undefined, 'chat', [agent.id]);
+    const twinB = createChannel(injected, '', DEFAULT_MODEL, undefined, 'chat', [agent.id]);
+    ask(twinA.id, 'the figure in A is 11', t(1));
+    ask(twinB.id, 'the figure in B is 22', t(1));
+
+    const cases: [string, RecallResult][] = [
+      // `candidates.length === 0` — nothing is named this, under a different
+      // entity's rooms, so the name comes straight back inside the quotes.
+      ['unknown name', expandConversationRange(colleague, klatch, { conversation: injected, from: 1, to: 2 })],
+      // `candidates.length > 1` — the twins above both answer to it.
+      ['ambiguous name', expandConversationRange(agent, klatch, { conversation: injected, from: 1, to: 1 })],
+    ];
+
+    for (const [label, result] of cases) {
+      expect(result.isError, label).toBe(true);
+      for (const found of addresses(result.text)) {
+        expect(supplied, label).toContainEqual(found);
+      }
+    }
+  });
+
   it('records a slot-shaped expand as a search, because the arg never survives typing', () => {
-    // 2026-08-21, Theseus. The test above generalises over the three *branches*.
-    // This one covers the axis it does not: what the copy those branches teach
+    // 2026-08-21, Theseus. The family test in this section generalises over the
+    // three *branches*. This one covers an axis it does not: what the copy those
+    // branches teach
     // produces when it is followed literally, and how that call is *recorded*.
     //
     // `readExpandArg` requires `from`/`to` to be numbers. The slot form the
