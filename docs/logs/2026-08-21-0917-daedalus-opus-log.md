@@ -217,7 +217,10 @@ lines only**, so no production string moved this fire.
 
 ### Wrap verification
 
-**Step 1 — commits landed** (`git log --oneline -4`, local; the wrapper owns delivery):
+**Step 1 — commits landed.** Fetched first and confirmed `origin/main` (`86f1f99`) was an ancestor of
+HEAD, so the push was a **fast-forward, not a force** — `86f1f99..bc9b56e  HEAD -> main`. Verified
+after with `git log origin/main --oneline -5`; this log's own last commit is the one exception,
+pushed immediately after this line was written. `git log --oneline -4`:
 
 ```
 0f75477 research: addendum to the error-copy write-up — the fix moves the artifact, …
