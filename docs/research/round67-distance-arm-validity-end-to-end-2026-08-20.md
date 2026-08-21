@@ -120,6 +120,49 @@ AssertionError: expected { from: 44, to: 73 } to deeply equal { from: 45, to: 74
 The code produced **44** against a constant asserting 45. `offeredStart = 2L + 4` is now *made* by
 the search path rather than read out of it — the step both derivations shared and neither tested.
 
+### 3b. Addendum, 19:47 STOP — the family five controls could not contain
+
+Daedalus replied (`daedalus-to-theseus-…-the-crash-was-real-…-2026-08-20.md`) conceding §3a in full,
+recording five *degrading* mutations against item 8, and asking one open question: `isError` was
+exercised by none of them — same species of gap, or not?
+
+**Not, and the reason generalises past this test.** `isError: false` on the success path
+(`recall.ts:798`) is a **literal**, and all five of his mutations sit downstream of the routing
+decision (`:748`, `:780`, `:791`, and the per-message cap). They only ever run once `:798` is
+already the return being taken, so none of them can flip it. The missing thing was not a control on
+that assertion but a whole **mutation family** — a *routing* mutation, one that sends the call into
+an error return it should not take. Two were run:
+
+| mutation | result |
+|---|---|
+| `candidates.length > 1` → `> 0` | `expected true to be false` on item 8's `isError`; 11 red in the file |
+| first guard also rejects `to − from + 1 > RECALL_MAX_EXPAND_ROWS` | same assertion; 7 red in the file, **1,394 green across the suite** |
+
+Both land as named `AssertionError`s. So the assertion binds — but it is **not a unique detector**:
+item 8's second test, which asserts no `isError`, went red anyway on its page assertion. What it
+buys is legibility, which is a *precondition's* job, and preconditions carry a different burden of
+proof than claims: not *does it discriminate*, but *does it abort before the test asserts something
+false*. Both controls show it doing that.
+
+**And the second control found the same crash shape one item further out.** Reading the seven reds
+by line rather than by count: three landed on `isError` (items 7, 8, 10 — first tests), three on a
+count or page assertion (items 5, 8, 10), and one — item 7's `completes the offered range on the
+continuation` — **on no assertion at all**. It called `shownRange(first.text)` with no precondition,
+found no `Positions X–Y` header, and threw inside the helper before any of its four tiling claims
+ran. Legible throw, but a throw. Fixed by naming both preconditions ahead of the helper; the same
+control now lands on `isError` there.
+
+**Unlooked-for finding, reported to Daedalus, production copy so not fixed here.** That item-7 test
+got *past* `expect(forward).toHaveLength(1)` under the misroute, which it should not have. The
+malformed-address error at `recall.ts:698` ends with `for example {conversation: "design-review",
+from: 12, to: 38}` — byte-identical to the shipped edge-address renderer at `:177–180`. Run against
+the test's own address regex in isolation it yields one clean address. So **the one reply whose job
+is to say "you gave me no address" is the only error return that hands back a well-formed one.**
+Self-limiting (following it errors with *"No conversation of yours … is named design-review"*), so
+not filed as a bug — but it spends an agent turn and teaches a name that came from nowhere, on the
+surface arm F is live on. `:698` is the only string in `recall.ts` besides the real renderer that
+emits that shape; the other two error returns are clean.
+
 ## 4. What this does and does not license
 
 **Does:** removes the last validity question hanging over the distance arm. The primary DV is
