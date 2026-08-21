@@ -129,3 +129,119 @@ after): server **1402/1402 (84 files)**, client **239 passed / 13 skipped**.
 one question my §5 puts back to Theseus: frozen server vs. corrected instrument. If he wants the
 former I revert the string; I don't expect that and did not wait on it, because the branch the
 change touches is one the arm should never reach unless it is producing the artifact.
+
+---
+
+## 13:17 PT — MID fire: Theseus's two corrections, both adopted; the defect in §5 was my title, not the copy
+
+**Spend: zero API calls, zero live runs, no server started.** Five local test runs, two of them the
+full suite.
+
+**Opened with:** `git log` (HEAD `86f1f99`, Calliope's v59 rollup — hers, not mine), `ls docs/mail/`.
+One new memo since my START wrap:
+`theseus-to-daedalus-cc-xian-team-your-control-replicates-take-the-corrected-instrument-and-the-slot-copy-routes-to-search-2026-08-21.md`. Read in full, acted on and replied in this fire.
+
+### What he returned
+
+**§1–2 — my control reproduces from his sandbox, and he chose the corrected instrument.** He
+answered my open §5 question (frozen server vs. corrected instrument) by checking the premise rather
+than asserting it: no round doc records a malformed expand call, every recorded `from` is an offered
+start. Labelled honestly — the per-run JSONs are gone, so that is the committed record, not raw data.
+Keep the string. **That question is closed and the answer is his, not mine.**
+
+**§3 — my §2 claim was wrong.** I wrote that the new slot copy, followed literally, lands on the same
+`candidates.length === 0` error. It does not: `readExpandArg` types `from`/`to` as numbers, slots
+have no digits, the expand arg is dropped whole, and the call routes to `recallFromOtherConversations`.
+**The fix moves the artifact from the expand column to the search column rather than removing it** —
+`createToolUseArtifact` persists `toolUseInputSummary`'s string and nothing else, so that row *is* the
+DV. Adopted his wording into the record. My fix-before-the-arm argument survives; "removed" was
+overclaiming. **The empty-tail detector (`Searched own conversations: ` with nothing after the colon)
+is his surface and I did not reach for it.**
+
+**§4 — his new test stays.** Same standing arrangement as last fire: test-only, additive, and it puts
+the first assertion of any kind on `toolUseInputSummary`. One thing moved: its opening comment said
+"the test above," and I inserted a test between them — de-positioned to name the family test instead.
+Positional references in a test file are a stale comment waiting to happen.
+
+### §5 — I took a third option he did not list
+
+He offered a sentence in the comment, a narrower title, or neither, and made none of the calls.
+Working the case through, the finding is sharper than a wording problem.
+
+**The property recall's design rests on is provenance, not emptiness.** The harm is an address that
+came from *nowhere* — it points at a conversation that does not exist and costs the agent a turn. An
+address-shaped name the caller typed one call ago is not from nowhere; following it reproduces the
+error the caller already has. So `addresses(text) === []` was a **proxy**, exact only for
+non-address-shaped inputs — the only input the family test feeds it. The title read as the general
+claim **because I believed the general claim.**
+
+Landed (`9d8aa8a`):
+
+- **Title narrowed** → `offers no address **of its own** from any error return, including the one
+  about addresses`. "Of its own" is the whole content of the correction.
+- **`recall.ts`'s comment reference updated in the same commit** — it named the old title. Round 61
+  §4's own trap; it would have gone stale within the hour.
+- **New test** `reflects a caller's own address-shaped name back without inventing a second one` —
+  both interpolating branches (`=== 0` via `colleague`, `> 1` via twin rooms named the injected
+  string), asserting **subset, not emptiness**: every address in the reply must be one the caller
+  supplied. Stays green if an escape lands later; red the moment a branch names a conversation of its
+  own. **Copy unchanged** — an error whose job is to make the model retype a name exactly is the worst
+  available place to alter that name.
+
+### The wrong-reason green I nearly claimed
+
+A subset assertion over a possibly-empty set **passes vacuously**. Had his §5 premise been wrong, my
+test would have gone green for the opposite of its intended reason and the memo would have claimed a
+pin I did not have. So I did not take the premise from the memo — temporary line on both cases:
+
+```
+expect(addresses(result.text).length, label).toBeGreaterThan(0);   // TEMP
+27 passed
+```
+
+Green, so the reflection does parse today and the assertion has something to constrain. Removed
+before commit. **Second fire running that the first run is what caught a wrong-reason green** (last
+time the empty twin room). Writing it down as a pattern rather than trusting it as a habit.
+
+**Control**, fabricated address restored to the `=== 0` branch:
+
+```
+× offers no address of its own from any error return, including the one about addresses
+× reflects a caller's own address-shaped name back without inventing a second one
+```
+
+Both red, **and nothing else in the file noticed** — family test catches it on the branch axis, the
+new one on the provenance axis, neither a file-wide tripwire. Reverted; `git status` checked before
+committing, and `git diff origin/main -- packages/server/src/claude/recall.ts` returns **comment
+lines only**, so no production string moved this fire.
+
+### Wrap verification
+
+**Step 1 — commits landed** (`git log --oneline -4`, local; the wrapper owns delivery):
+
+```
+0f75477 research: addendum to the error-copy write-up — the fix moves the artifact, …
+2bdfa41 mail: reply to Theseus — his §3 correction adopted, and my §5 defect was the title not the copy
+9d8aa8a test(recall)+round68: the family test's claim is about provenance, not emptiness
+86f1f99 rollup(v59)+log+coordination: 8/21 MID — Round 68 closes …
+```
+
+Mail committed separately per the worktree mail rule.
+
+**Step 2 — deliverables present** (`ls`): recorded in the terminal block below this entry.
+
+**Step 3 —** this log and the COORDINATION.md entry commit last.
+
+**Verified, not recalled:** `npm test` server **1404/1404 (84 files)** — Theseus's 1403 plus my one —
+client **239 passed / 13 skipped**, unchanged. `npm run typecheck` clean across shared, server,
+client.
+
+**Mail hygiene:** his memo stays in `docs/mail/`, not moved to `read/`. Its items addressed to me are
+closed, but its §6 carries the distance-arm go/no-go, which is parked on xian — the close-discipline
+rule keeps parked-on-xian threads visible.
+
+**Left open, not finished this fire:** arm 4, the distance arm — `F=17, L=20, G=8`, 80 rows, five
+opus runs, **still xian's call, and this fire added nothing to the case for spending it.** Correcting
+an instrument, and correcting a claim about an instrument, are not arguments for running one. Also
+open and not mine to close: per-condition reporting, the K-vs-J miss case, the 0/12 non-expansion
+path, the per-run JSON ruling, option (2), the backfill.
