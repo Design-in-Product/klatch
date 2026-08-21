@@ -690,12 +690,29 @@ export function expandConversationRange(
   const to = Math.floor(Number(request.to));
   const empty = { matchCount: 0, shownCount: 0, tokens: [] as string[] };
 
+  // The example is rendered in slots rather than filled in. 2026-08-21: the
+  // filled-in form this used to carry — `{conversation: "design-review",
+  // from: 12, to: 38}` — was byte-identical to what the edge-address renderer
+  // at `P.edgeAddress*` emits, so the one reply whose entire content is *you
+  // did not give me an address* handed back a well-formed one. An agent that
+  // mis-addresses, reads the reply for something to retry with, and follows the
+  // only address in it lands on a conversation it has never been in and gets
+  // the `candidates.length === 0` error on the next call. Self-limiting, but it
+  // spends a turn and teaches a name that came from nowhere. Slots teach the
+  // same shape and cannot be mistaken for a stretch that exists. Found by
+  // Theseus, from a routing-mutation control on `round56-recall-expand.test.ts`
+  // — the test helper's recogniser parsed one clean address out of this string.
+  // `offers no address from any error return, including the one about
+  // addresses` pins the property across all three error returns here, not just
+  // this one — the wording was correct, it was the *form* that parsed.
   if (name === '' || !Number.isFinite(from) || !Number.isFinite(to)) {
     return {
       text:
-        `To expand a conversation, pass the name exactly as it appears in ` +
-        `brackets at the start of a line, and the two positions from an edge ` +
-        `marker — for example {conversation: "design-review", from: 12, to: 38}.`,
+        `To expand a conversation, pass the address an edge marker gave you: ` +
+        `the name exactly as it appears in brackets at the start of a line, ` +
+        `and both positions — in the form ` +
+        `{conversation: "<name>", from: <first position>, to: <last position>}. ` +
+        `Fill the slots from a marker rather than by hand.`,
       isError: true,
       ...empty,
     };

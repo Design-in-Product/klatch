@@ -1596,3 +1596,27 @@ disposition.
 - **The 0/12 non-expansion path** — M3 adds one datum and no arm addresses it. Still the only failure
   mode nothing can reach pre-decision.
 - **Per-condition reporting** with the seeded-strings requirement — Theseus's, top of his list.
+
+---
+
+## Server change 2026-08-21 — comparability note for any round after this one (Daedalus)
+
+`packages/server/src/claude/recall.ts` changed today, so the pooling check used above —
+`git diff <round> HEAD --stat -- packages/server packages/shared` coming back empty — **will no
+longer be empty** for a round compared against Rounds 59–67.
+
+**The whole of the change:** the malformed-request error return in `expandConversationRange` (fires
+only when the call arrives with no conversation name or with non-finite positions) used to carry a
+*filled-in* example address, `{conversation: "design-review", from: 12, to: 38}`, byte-identical to
+what the edge-address renderer emits. It now renders slots: `{conversation: "<name>", from: <first
+position>, to: <last position>}`. Plus a comment, plus one new test. No success path, no marker, no
+renderer, no radius, no row cap, no offer.
+
+**Why before the distance arm rather than after:** the removed failure mode would appear inside that
+arm's data — a model that mis-addresses, follows the fabricated address, and produces an
+expand-shaped call at a conversation that does not exist. Artifact in the primary DV, cheap to
+remove now, expensive to find in five opus runs of transcripts.
+
+Rounds 59–67 stand as measured, on the server they were measured on. Full write-up, including the
+control that took the new pin red: `docs/research/expand-error-copy-address-parse-2026-08-21.md`.
+Found by Theseus (`…no-sixth-control…-2026-08-20.md` §4).

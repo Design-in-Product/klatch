@@ -69,6 +69,7 @@ import {
   RECALL_MAX_EXPAND_ROWS,
   RECALL_MAX_CHARS,
 } from '../claude/recall.js';
+import type { RecallResult } from '../claude/recall.js';
 import { DEFAULT_MODEL } from '@klatch/shared';
 import type { Channel, Entity } from '@klatch/shared';
 import { v4 as uuidv4 } from 'uuid';
@@ -327,6 +328,45 @@ describe('Round 56 — addresses that cannot be resolved say so', () => {
     });
     expect(expanded.isError).toBe(true);
     expect(expanded.text).not.toContain('keep that rollback string');
+  });
+
+  it('offers no address from any error return, including the one about addresses', () => {
+    // 2026-08-21. The no-address error used to carry a *filled-in* example —
+    // `{conversation: "design-review", from: 12, to: 38}` — in the exact bytes
+    // `P.edgeAddress*` renders, so `addresses()` parsed one clean address out
+    // of the reply whose whole content is *you did not give me an address*.
+    // The model-facing cost is the point: recall's design rests on an agent
+    // reading addresses out of rendered text and following them, so the reply
+    // that teaches the correct form must not itself be followable.
+    //
+    // Pinned as a family rather than as a wording. The three error returns in
+    // `expandConversationRange` interpolate a caller-supplied name (`===  0`),
+    // caller-supplied positions (`> 1`), and a literal example (the malformed
+    // branch); each is a way the shape could come back. Asserting on the copy
+    // of one of them would not have caught this, because the copy was correct
+    // — it was correct copy in a form that parses.
+    // Both twins need a turn: the lookup is over conversations the entity has a
+    // transcript in, so an empty second `sync` leaves one candidate and the call
+    // succeeds instead of erroring — which would pass the address assertion for
+    // the wrong reason.
+    const twinA = createChannel('sync', '', DEFAULT_MODEL, undefined, 'chat', [agent.id]);
+    const twinB = createChannel('sync', '', DEFAULT_MODEL, undefined, 'chat', [agent.id]);
+    ask(twinA.id, 'the figure in A is 11', t(1));
+    ask(twinB.id, 'the figure in B is 22', t(1));
+
+    const errors: [string, RecallResult][] = [
+      // Malformed: no name, so nothing to resolve.
+      ['no name', expandConversationRange(agent, klatch, { conversation: '', from: 6, to: 8 })],
+      // No such conversation of this entity's, outside this room.
+      ['unknown name', expandConversationRange(agent, klatch, { conversation: 'no-such-room', from: 1, to: 2 })],
+      // Two rooms answer to the name, so the address identifies neither.
+      ['ambiguous name', expandConversationRange(agent, klatch, { conversation: 'sync', from: 1, to: 1 })],
+    ];
+
+    for (const [label, result] of errors) {
+      expect(result.isError, label).toBe(true);
+      expect(addresses(result.text), label).toEqual([]);
+    }
   });
 });
 
