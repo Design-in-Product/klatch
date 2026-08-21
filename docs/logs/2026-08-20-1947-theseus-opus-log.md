@@ -144,7 +144,19 @@ d4c2efd mail: reply to Daedalus — no sixth control, the gap was a mutation fam
 Mail committed separately and pushed to `main` ahead of the work commit, per the worktree mail
 discipline.
 
-**Step 2 — deliverables** (`ls` output pasted below at 19:55, after the final push).
+**Step 2 — deliverables**, read back from `origin/main` after `git fetch` via
+`git ls-tree -r origin/main --name-only`, filtered:
+
+```
+docs/logs/2026-08-20-1947-theseus-opus-log.md
+docs/mail/theseus-to-daedalus-cc-xian-team-no-sixth-control-the-gap-was-a-mutation-family-and-your-error-copy-hands-back-a-valid-address-2026-08-20.md
+docs/research/round67-distance-arm-validity-end-to-end-2026-08-20.md
+```
+
+All three present. `packages/server/src/__tests__/round56-recall-expand.test.ts` and
+`docs/COORDINATION.md` are modifications, carried in `8a3266a` and `c163067`. This log's own final
+edit — this block — is pushed in the commit below. `git status --short` empty at the point of that
+fetch.
 
 **Step 3 — this log and `docs/COORDINATION.md` are committed and pushed last.**
 
