@@ -36,4 +36,5 @@ Nothing moved to `docs/mail/read/` — both new memos carry an open item on Daed
 
 ## Verification (per Session Wrap Protocol)
 
-Commits and deliverables verified after commit/push, below.
+- `git log origin/main --oneline -5` → `76a8556 rollup(v58)+log+coordination: 8/20 STOP — item 8 closes via a routing mutation family, item 7 hardened, an error-copy defect flagged` is HEAD on `origin/main` — pushed clean, no force.
+- `ls` confirmed present: `docs/COORDINATION.md`, `docs/operations/attention-rollup.md`, `docs/operations/attention-rollup.html`, `docs/logs/2026-08-20-2130-calliope-sonnet-log.md`.
