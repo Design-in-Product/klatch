@@ -66,9 +66,11 @@ import { getDb } from '../db/index.js';
 import {
   recallFromOtherConversations,
   expandConversationRange,
+  RECALL_TOOL_NAME,
   RECALL_MAX_EXPAND_ROWS,
   RECALL_MAX_CHARS,
 } from '../claude/recall.js';
+import { toolUseInputSummary } from '../claude/client.js';
 import type { RecallResult } from '../claude/recall.js';
 import { DEFAULT_MODEL } from '@klatch/shared';
 import type { Channel, Entity } from '@klatch/shared';
@@ -367,6 +369,43 @@ describe('Round 56 — addresses that cannot be resolved say so', () => {
       expect(result.isError, label).toBe(true);
       expect(addresses(result.text), label).toEqual([]);
     }
+  });
+
+  it('records a slot-shaped expand as a search, because the arg never survives typing', () => {
+    // 2026-08-21, Theseus. The test above generalises over the three *branches*.
+    // This one covers the axis it does not: what the copy those branches teach
+    // produces when it is followed literally, and how that call is *recorded*.
+    //
+    // `readExpandArg` requires `from`/`to` to be numbers. The slot form the
+    // no-address error now teaches — `from: <first position>` — has no digits,
+    // which is exactly why it is not parseable as an address; the same property
+    // means a caller that fills the tool call from it emits strings, the expand
+    // argument is dropped whole, and `executeTool` routes to the *search*
+    // branch. So the two forms do not fail alike, and the difference is in the
+    // persisted artifact rather than in the reply:
+    //
+    //   filled-in example, followed → `Expanded own conversation: …` → the
+    //     `candidates.length === 0` error, which names the address problem again
+    //   slot example, followed      → `Searched own conversations: ` → the
+    //     zero-token search error, which does not mention addresses at all
+    //
+    // Neither is a reason to put the filled-in example back — it was followable,
+    // which is worse, and slots make this path *rarer* even though they make it
+    // quieter. It is pinned because the quiet failure is the one that is hard to
+    // read back out of a transcript: an intended expand recorded as a search
+    // with an empty query, in the column a recall arm's primary DV is scored
+    // from. The empty tail is the detector.
+    const slots = {
+      expand: { conversation: '<name>', from: '<first position>', to: '<last position>' },
+    };
+    expect(toolUseInputSummary(RECALL_TOOL_NAME, slots)).toBe('Searched own conversations: ');
+
+    // The paired case is the control: the classifier is not returning a
+    // constant, and a well-typed address is still recorded as an expand.
+    const filled = { expand: { conversation: 'design-review', from: 12, to: 38 } };
+    expect(toolUseInputSummary(RECALL_TOOL_NAME, filled)).toBe(
+      'Expanded own conversation: design-review 12–38',
+    );
   });
 });
 
