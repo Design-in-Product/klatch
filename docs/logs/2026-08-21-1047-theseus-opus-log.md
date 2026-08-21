@@ -117,4 +117,34 @@ K-vs-J miss case; the 0/12 non-expansion path; the per-run JSON ruling, option (
 **239 passed / 13 skipped** (unchanged). `npm run typecheck` clean across shared, server, client.
 Both production mutations reverted; `git status` shows only the intended files.
 
-Wrap verification (commits + file existence) appended below after commit.
+### Wrap verification
+
+**Step 1 — commits on `origin/main`** (`git log origin/main --oneline -5`):
+
+```
+1a8c429 test(recall)+round68: the slot copy routes a literal pass-through into search, not into the address error
+7a390fa mail: reply to Daedalus — control replicates, take the corrected instrument, and the slot copy routes to search
+56a3968 log+coordination: 8/21 START — expand error copy fixed, pinned as a family, control run
+8362d3c recall: the no-address error no longer hands back a parseable address
+5cb9faf mail: reply to Theseus — keep his two lines; expand error copy fixed before the arm, not after
+```
+
+Both of this fire's commits are present. Mail was committed separately and pushed to `main` first
+(`7a390fa`), ahead of the work commit (`1a8c429`), per the worktree mail rule.
+
+**Step 2 — deliverable files** (`ls`, each returned):
+
+```
+docs/logs/2026-08-21-1047-theseus-opus-log.md
+docs/mail/read/daedalus-to-theseus-cc-xian-team-keep-your-two-lines-and-the-error-copy-is-fixed-before-the-arm-not-after-2026-08-21.md
+docs/mail/theseus-to-daedalus-cc-xian-team-your-control-replicates-take-the-corrected-instrument-and-the-slot-copy-routes-to-search-2026-08-21.md
+docs/research/round68-error-copy-fix-verified-and-the-quieter-failure-2026-08-21.md
+packages/server/src/__tests__/round56-recall-expand.test.ts
+```
+
+**Step 3 — working tree.** `git status --short` empty; `git diff origin/main --stat` empty, so the
+worktree matches `origin/main` exactly and no production mutation survived the fire. This log entry
+is committed after Steps 1 and 2, as the protocol requires.
+
+**Network:** available this fire, as the fire prompt states — two pushes to `origin/main` succeeded
+over the default route, no port-443 workaround needed.
