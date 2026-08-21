@@ -291,3 +291,110 @@ Commits: `fb2b239` (mail, separate per the worktree discipline), `f59ca2a` (chec
 **Mail hygiene:** nothing moved to `read/`. Theseus's 10:58 memo carries the distance arm, which is
 open with xian; Iris's carries a client-side item on their seat. Moving either would hide a live
 decision.
+
+---
+
+# STOP fire — 2026-08-20 17:17 PT
+
+## 17:19 — Mail at open: Theseus, and it lands on my own 13:17 work
+
+`theseus-to-daedalus-…-your-reachability-answer-holds-but-it-rested-on-a-number-neither-of-us-ran-2026-08-20.md`.
+His §1–2 close the shared-unrun-step question (item 10 produces `offeredStart = 2L + 4` from the
+render rather than deriving it) and his §3 turns the same instrument on my item 8. Read and acted on
+in this fire.
+
+## 17:20 — Reproduced his finding at my own tree before replying
+
+```
+guard blunted to `used + block.length > RECALL_MAX_CHARS`
+  × returns the full row cap even when the block is three times the char cap
+  × is not truncating inside the lines either
+      TypeError: Cannot read properties of undefined (reading 'ordinal')
+      ❯ expandConversationRange src/claude/recall.ts:780:31
+  Tests  2 failed | 22 passed
+```
+
+`:780` here, `:775` in his memo — the line moved when item 10 landed; same statement. **He is right.**
+Both tests die inside the code under test, so `shownCount`, `shownRange`, `toContain('turn 30')` and
+`not.toContain('turn 31')` never executed. What I wrote at 13:25 — "2 failed | 19 passed" — was a
+statement about *coverage* that I reported as a statement about *binding*.
+
+## 17:21 — Why his first option was empty, which is worth more than the fix
+
+He offered two closes: assert a shape that survives the blunting, or blunt something that degrades.
+I could not build the first, and the reason is structural rather than a lack of ingenuity:
+
+- `used > 0` has an effect **only** when the first block alone exceeds the cap. Checked both
+  orderings (fat-first / fat-second): on every other shape the blunted loop and the real loop keep
+  identical blocks, so nothing discriminates.
+- On the one fixture that does discriminate, the blunted loop keeps nothing. An empty page is the
+  negation of the property under test *and* the one page `expandConversationRange` cannot render.
+
+So the faithful control of that guard **crashes by construction** — there is no returned value for
+any assertion to survive on. His second option, applied to *other* mutations, is the only close.
+
+## 17:22 — Five degrading controls, one per assertion. Each run; each red named
+
+| mutation | red on |
+|---|---|
+| `all.slice(0, CAP − 5)` | `toContain('turn 30')` — the page |
+| `all.slice(0, CAP + 5)` | `not.toContain('turn 31')` |
+| `firstShown = shown[0].ordinal + 1` | `shownRange` → `{from: 2, to: 30}` vs `{1, 30}` |
+| `lastShown + 2` in the continuation | `to contain 'Ask again with from: 31'` |
+| per-message cap 4,000 → 500 | truncation marker; and, with test 2's pair swapped, the 1,000-char run |
+
+`shownCount` red as `expected 25 to be 30` under the first. **`isError` is exercised by none of
+them** — named in the memo rather than buried; items 1–4 cover the error returns it guards.
+
+Side result worth keeping: under the per-message-cap mutation, item 8's first test went red on
+`expected 17489 to be greater than 24000` — the **precondition**, doing exactly its job. The fixture
+stopped setting up the situation and said so, instead of quietly testing something else.
+
+## 17:23 — His §3 lesson was in my test too, and reading it did not catch it
+
+The short-slice control landed on `shownCount` — an arithmetic restatement — and aborted before
+`toContain('turn 30')`, the only assertion in that test that looks at what an agent would read. Same
+shadow he found in item 10, one item away, and I had read his description of it before running.
+Reading is not what catches this; forcing the failure is.
+
+Reordered — page observations first, header arithmetic after. Same control re-run:
+
+```
+AssertionError: expected 'Positions 1–25 of "vesper-1-1", your …' to contain 'turn 30'
+```
+
+**The sharpening this fire earns:** a control that goes red proves the suite noticed *something*;
+only a control that reaches a **named** assertion proves that assertion is load-bearing. "N red, M
+green" is not a result until you have read which line produced the red. That sentence is now in item
+8's comment block along with the whole table.
+
+## 17:24 — `shown[0].ordinal`: agreed with Theseus, no fix
+
+Unreachable today for the reason he gives, and a guard there would be a branch no test can reach.
+What I did instead: the comment now records the **second** reason the `used > 0` carve-out is
+load-bearing — it is the only thing standing between `:780` and a TypeError — at the place someone
+would edit. Previously only the first reason was written down.
+
+## 17:25 — Verification
+
+```
+npm test          →  server 1401/1401 (84 files); client 233 passed / 13 skipped; exit 0
+npm run typecheck →  clean, shared + server + client
+git status        →  recall.ts and carried-context.ts unmodified; test file the only change
+```
+
+1401 is unchanged from Theseus's figure — this fire added **no tests** and **no production code**.
+Both mutated sources were reverted between every one of the six runs.
+
+Commits: `d4762ad` (mail, separate and pushed to `main` per the worktree discipline), `27b792b`
+(test reorder + control record).
+
+**Open, carried forward — not mine to close:**
+
+- The distance arm (`F=17, L=20, G=8`, 80 rows, five opus runs) — **xian's call.** Validity now
+  closed on five accounts; this fire added the fifth (the arm's regression test is known to *bind*,
+  not merely known to be green). Nothing added to the case *for* spending it.
+- Iris: client side of the project-match line, including the dialog's 409 branch.
+
+**Mail hygiene:** nothing moved to `read/`. Both live Theseus threads carry the distance arm, which
+is open with xian; moving either would hide a live decision.
