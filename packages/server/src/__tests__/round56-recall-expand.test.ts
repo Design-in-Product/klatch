@@ -541,6 +541,49 @@ describe('Round 56 — an offer the tool cannot fill in one call still tiles', (
 // Not asserted here: the *search* path's char budget (`recall.ts:492`, `:511`),
 // which is a different loop with a different contract — it drops whole excerpts
 // and then strips lines, and it has no `used > 0` carve-out. One cap, one test.
+//
+// ── The controls, and why there had to be more than one (2026-08-20, STOP) ──
+//
+// The first control here blunted the guard to `used + block.length >
+// RECALL_MAX_CHARS` and reported "2 red, 19 green". Theseus checked it (Round 67
+// §3) and found the red was a **crash, not a failure**: with the guard gone
+// `kept` comes back empty, `shownRows` is 0, and `shown[0].ordinal` throws a
+// TypeError inside `recall.ts` before the first `expect` runs. Re-run here and
+// confirmed — `TypeError: Cannot read properties of undefined (reading
+// 'ordinal')` at `recall.ts:780`, twice. So that control establishes exactly one
+// thing: **coverage** — the other 22 stayed green, so nothing else in the suite
+// touches that line. It cannot establish that anything asserted below *binds*,
+// because none of it executed.
+//
+// And no faithful control of `used > 0` can, on this shape. The guard only
+// matters when the *first* block exceeds the cap, and then the blunted loop keeps
+// nothing — so the negation of the property under test is an empty page, which is
+// the one outcome this function cannot render. Every assertion below therefore
+// needs a mutation that **degrades** instead. Each row was run, and the named
+// assertion is the one that went red:
+//
+//   mutation                             red on
+//   `all.slice(0, CAP − 5)`              `toContain('turn 30')`      ← the page
+//   `all.slice(0, CAP + 5)`              `not.toContain('turn 31')`
+//   `firstShown = shown[0].ordinal + 1`  `shownRange` → {2,30}
+//   `lastShown + 2` in the continuation  `Ask again with from: 31`
+//   per-message cap 4,000 → 500          the truncation marker, and (with the
+//                                        two swapped) the 1,000-char run
+//
+// `shownCount` went red as `expected 25 to be 30` under the first of those,
+// before the reorder below moved the page assertions in front of it. `isError`
+// is the one assertion no control here exercises; the error returns it guards are
+// covered by items 1–4.
+//
+// The generalisation, which is Theseus's and worth keeping: a control that goes
+// red proves the suite noticed *something*. Only a control that reaches a named
+// assertion proves that assertion is load-bearing. "N red, M green" is not a
+// result until you have read which line produced the red.
+//
+// One note on `recall.ts` that came out of this and is **not** a bug: the
+// unguarded `shown[0].ordinal` is unreachable today precisely because the
+// `used > 0` carve-out always keeps a first block. No fix proposed — but the
+// guard is load-bearing for two reasons, not one, and this is the second.
 
 describe('Round 56 — the char budget cannot shorten a single-excerpt expansion', () => {
   // 1,000 chars a row, well under the 4,000-char per-line truncation, so nothing
@@ -568,13 +611,20 @@ describe('Round 56 — the char budget cannot shorten a single-excerpt expansion
     // The precondition, asserted rather than assumed — as with item 7's width
     // check, if this stops holding the test below stops testing anything.
     expect(expanded.text.length).toBeGreaterThan(RECALL_MAX_CHARS * 2);
-    expect(expanded.shownCount).toBe(RECALL_MAX_EXPAND_ROWS);
-    expect(shownRange(expanded.text)).toEqual({ from: 1, to: RECALL_MAX_EXPAND_ROWS });
 
-    // The header's claim and the page agree: the last row it says it shows is on
-    // the page, and the first row it says it does not show is not.
+    // **The page first, the header's arithmetic after it** — Theseus's Round 67
+    // §3 lesson, applied here. `shownCount` and `shownRange` are the tool's own
+    // account of what it did; `toContain` is the only assertion that looks at
+    // what an agent would actually read. Ordered the other way round, a short
+    // page fails the count, aborts the test, and the page assertion never runs —
+    // so the count would stand in for an observation it cannot make. Under the
+    // short-slice control below the red now lands here, on the page.
     expect(expanded.text).toContain(`turn ${RECALL_MAX_EXPAND_ROWS}`);
     expect(expanded.text).not.toContain(`turn ${RECALL_MAX_EXPAND_ROWS + 1}`);
+
+    // The header's claim and the page agree.
+    expect(expanded.shownCount).toBe(RECALL_MAX_EXPAND_ROWS);
+    expect(shownRange(expanded.text)).toEqual({ from: 1, to: RECALL_MAX_EXPAND_ROWS });
     expect(expanded.text).toContain(`Ask again with from: ${RECALL_MAX_EXPAND_ROWS + 1}`);
   });
 
