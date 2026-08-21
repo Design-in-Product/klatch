@@ -370,6 +370,7 @@ export interface ClaudeAiImportResponse {
   }>;
   totalImported: number;
   totalSkipped: number;
+  projects: Array<{ uuid: string; name: string; matched: boolean }>;
 }
 
 export interface ZipPreviewResponse {
@@ -441,6 +442,15 @@ export async function importClaudeAiExport(
     method: 'POST',
     body: formData,
   });
+  if (res.status === 409) {
+    // All-duplicates conflict: the body is a full ClaudeAiImportResponse
+    // (imported: [], skipped, totalImported: 0, projects) rather than a bare
+    // error — the find-or-create project pass already ran before this response
+    // was built, so it's data to render, not just a message to throw.
+    const body = await res.json();
+    if (Array.isArray(body.imported)) return body;
+    throw new Error(body.error || 'Import failed');
+  }
   if (!res.ok) {
     let errorMessage = `Import failed: ${res.statusText}`;
     try {

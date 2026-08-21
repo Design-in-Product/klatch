@@ -288,6 +288,7 @@ describe('ImportDialog — claude.ai mode', () => {
       skipped: [],
       totalImported: 2,
       totalSkipped: 0,
+      projects: [],
     });
 
     render(<ImportDialog {...defaultProps} />);
@@ -315,6 +316,7 @@ describe('ImportDialog — claude.ai mode', () => {
       skipped: [{ conversationId: 'c2', reason: 'duplicate' }],
       totalImported: 1,
       totalSkipped: 1,
+      projects: [],
     });
 
     render(<ImportDialog {...defaultProps} />);
@@ -327,6 +329,82 @@ describe('ImportDialog — claude.ai mode', () => {
     expect(screen.getByText(/1.*\(duplicate or empty\)/)).toBeInTheDocument();
   });
 
+  it('shows attached-projects count in bulk success state, aggregate not per-project', async () => {
+    const user = userEvent.setup();
+    vi.mocked(importClaudeAiExport).mockResolvedValue({
+      imported: [
+        { channelId: 'ch1', channelName: 'New Chat', messageCount: 8, artifactCount: 0, conversationId: 'c1' },
+      ],
+      skipped: [],
+      totalImported: 1,
+      totalSkipped: 0,
+      projects: [
+        { uuid: 'p1', name: 'Klatch', matched: true },
+        { uuid: 'p2', name: 'Side Project', matched: true },
+        { uuid: 'p3', name: 'Brand New', matched: false },
+      ],
+    });
+
+    render(<ImportDialog {...defaultProps} />);
+    await uploadZipWithPreview(user);
+    await user.click(screen.getByRole('button', { name: /Import selected/ }));
+
+    await waitFor(() => {
+      expect(screen.getByText('Import complete')).toBeInTheDocument();
+    });
+    // Only the two matched (existing) projects count — the newly created one doesn't
+    expect(screen.getByText(/2 existing projects/)).toBeInTheDocument();
+    // Aggregate, not itemized — no project names rendered in the result panel
+    expect(screen.queryByText('Klatch')).not.toBeInTheDocument();
+    expect(screen.queryByText('Side Project')).not.toBeInTheDocument();
+  });
+
+  it('omits the attached-projects line when no project matched an existing one', async () => {
+    const user = userEvent.setup();
+    vi.mocked(importClaudeAiExport).mockResolvedValue({
+      imported: [
+        { channelId: 'ch1', channelName: 'New Chat', messageCount: 8, artifactCount: 0, conversationId: 'c1' },
+      ],
+      skipped: [],
+      totalImported: 1,
+      totalSkipped: 0,
+      projects: [{ uuid: 'p1', name: 'Brand New', matched: false }],
+    });
+
+    render(<ImportDialog {...defaultProps} />);
+    await uploadZipWithPreview(user);
+    await user.click(screen.getByRole('button', { name: /Import selected/ }));
+
+    await waitFor(() => {
+      expect(screen.getByText('Import complete')).toBeInTheDocument();
+    });
+    expect(screen.queryByText(/existing project/)).not.toBeInTheDocument();
+  });
+
+  it('shows "Already imported" (not "Import complete") when a re-import is all duplicates, with the attached-projects line still present', async () => {
+    const user = userEvent.setup();
+    // The all-duplicates 409 no longer throws — importClaudeAiExport resolves
+    // with totalImported: 0, same shape as the success case.
+    vi.mocked(importClaudeAiExport).mockResolvedValue({
+      imported: [],
+      skipped: [{ conversationId: 'c1', reason: 'duplicate' }, { conversationId: 'c2', reason: 'duplicate' }],
+      totalImported: 0,
+      totalSkipped: 2,
+      projects: [{ uuid: 'p1', name: 'Klatch', matched: true }],
+    });
+
+    render(<ImportDialog {...defaultProps} />);
+    await uploadZipWithPreview(user);
+    await user.click(screen.getByRole('button', { name: /Import selected/ }));
+
+    await waitFor(() => {
+      expect(screen.getByText('Already imported')).toBeInTheDocument();
+    });
+    expect(screen.queryByText('Import complete')).not.toBeInTheDocument();
+    expect(screen.getByText(/2.*\(duplicate or empty\)/)).toBeInTheDocument();
+    expect(screen.getByText(/1 existing project/)).toBeInTheDocument();
+  });
+
   it('navigates to channel when clicking an imported conversation', async () => {
     const user = userEvent.setup();
     const onImported = vi.fn();
@@ -337,6 +415,7 @@ describe('ImportDialog — claude.ai mode', () => {
       skipped: [],
       totalImported: 1,
       totalSkipped: 0,
+      projects: [],
     });
 
     render(<ImportDialog isOpen={true} onClose={vi.fn()} onImported={onImported} />);
@@ -361,6 +440,7 @@ describe('ImportDialog — claude.ai mode', () => {
       skipped: [],
       totalImported: 1,
       totalSkipped: 0,
+      projects: [],
     });
 
     render(<ImportDialog isOpen={true} onClose={vi.fn()} onImported={vi.fn()} onBulkImported={onBulkImported} />);
@@ -384,6 +464,7 @@ describe('ImportDialog — claude.ai mode', () => {
       skipped: [],
       totalImported: 1,
       totalSkipped: 0,
+      projects: [],
     });
 
     render(<ImportDialog {...defaultProps} />);
@@ -528,6 +609,7 @@ describe('ImportDialog — selective import browse UI', () => {
       skipped: [],
       totalImported: 1,
       totalSkipped: 0,
+      projects: [],
     });
 
     render(<ImportDialog {...defaultProps} />);
@@ -555,6 +637,7 @@ describe('ImportDialog — selective import browse UI', () => {
       skipped: [],
       totalImported: 1,
       totalSkipped: 0,
+      projects: [],
     });
 
     render(<ImportDialog {...defaultProps} />);
