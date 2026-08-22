@@ -459,12 +459,29 @@ export function tapWarnings(summary) {
     out.push(`← ${summary.incoherentCalls} INCOHERENT CALL(S): the artifact says expand and `
       + 'the wire carries no expand key. Should be unreachable; treat as instrument drift.');
   }
+  // Round 74, and it is a defect in Round 72's own fix: this line used to end
+  // "Producer-side grammar drift is the likely cause." Round 72's *other* half had already
+  // disproved that as the sole cause — the branch fires on a LOOSE ARGUMENT with today's
+  // producer unchanged, because `readExpandArg` accepts any string name and any number
+  // position where `EXPAND_SUMMARY` needs a non-empty name and non-negative integers. An
+  // operator sent to the summary grammar goes to the wrong file for the case that is
+  // reachable now. Both causes are named, argument-first, because that is the order in
+  // which they can be checked and the order of their likelihood today.
+  //
+  // The discriminator is stated rather than computed: applying it here would mean reading
+  // `tapInput.expand` and deciding whether the arguments are well-formed, which is the
+  // `readExpandArg` reimplementation the whole join exists to refuse (Round 58). The tap
+  // hands the operator the bytes and the test to run on them, and stops.
   if (summary.unreadableSummaryCalls > 0) {
     out.push(`← ${summary.unreadableSummaryCalls} UNREADABLE SUMMARY: the tap CAPTURED a `
       + 'frame for these calls and the artifact summary is in a vocabulary the classifier '
       + 'does not recognise, so the tap declined to adjudicate rather than guess. The raw '
       + 'arguments the model sent ARE in this run\'s JSON (`tapInput`) — adjudicate from '
-      + 'those, not from the summary. Producer-side grammar drift is the likely cause.');
+      + 'those, not from the summary. Two causes produce this and they need different '
+      + 'responses. Check `tapInput.expand` FIRST: a LOOSE ARGUMENT the model sent (an '
+      + 'empty or blank conversation name, a negative or fractional position) renders into '
+      + 'a summary the classifier cannot parse with no producer change at all. Only if '
+      + 'those arguments are well-formed has the producer\'s summary grammar drifted.');
   }
   // The remainder, and the subtraction is the point: before Round 72 this line printed
   // "no frame reached them" over rows whose frame the same run had just captured and

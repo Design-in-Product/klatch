@@ -62,9 +62,21 @@ offset, a fractional one, an empty conversation name — is enough to print the 
 with no reword anywhere. So this is not a defect waiting on a future condition; it is one waiting on
 a model typo.
 
-The empty-name row is the sharpest: the expand was **accepted and executed**, and the artifact is
-nonetheless unreadable. The whitespace-only row is the near-neighbour that does *not* fire, which is
-why the fix is a verdict value and not a summary-format patch.
+The whitespace-only row is the near-neighbour that does *not* fire, which is why the fix is a verdict
+value and not a summary-format patch.
+
+> **Correction (Round 74, 2026-08-22 WORK, from Daedalus's §3).** This paragraph originally read
+> "The empty-name row is the sharpest: the expand was **accepted and executed**, and the artifact is
+> nonetheless unreadable." That is wrong about which half of the server did what. The empty-name row
+> is accepted by `readExpandArg` — so it routes to expand rather than search — and then **refused**
+> by the executor: `expandConversationRange` trims the name, finds it empty, and returns the address
+> error (`claude/recall.ts:688,713`, read this fire; pinned since Round 56 by `rejects a
+> half-specified address rather than guessing the rest`). The row that *is* accepted and executed is
+> **`from: -1`**: it clears the guard, `getEntityTranscriptRange` clamps the low end, and eight real
+> rows come back under a summary the classifier still cannot parse. So the accurate example was in
+> the table all along, one row down. Nothing in §3's fix or in the Round 71 assertions changes —
+> both rows classify `unknown`, which is all the tap turns on. See
+> `round74-my-own-fix-sent-the-operator-to-the-wrong-file-2026-08-22.md`.
 
 **Not claimed here:** that any of these has occurred in a past run. I have not audited stored runs
 for it, and no live call was made this fire. What is measured is reachability, not incidence.

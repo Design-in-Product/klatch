@@ -404,11 +404,25 @@ describe('Round 71 — the tap fails loudly, or not at all', () => {
    * checked rather than assumed.** He framed `unknown` as firing on a future reword. It
    * also fires on *data*: `readExpandArg` (`client.ts:599`) accepts any `string`
    * conversation and any `number` from/to, while `EXPAND_SUMMARY` requires a non-empty
-   * name and two integers. So `{conversation: '', from: 12, to: 38}` — used here — is an
-   * expand the server **accepted and executed**, rendered into a summary the classifier
-   * cannot read. `from: -1` and `to: 3.5` are two more, verified the same way. No producer
-   * change is needed for the false line to print; one call from a model that echoes an
-   * address back slightly wrong is enough.
+   * name and two integers. `{conversation: '', from: 12, to: 38}` — used here — is such a
+   * row, and `from: -1` and `to: 3.5` are two more. No producer change is needed for the
+   * false line to print; one call from a model that echoes an address back slightly wrong
+   * is enough.
+   *
+   * **Corrected in Round 74, from Daedalus's §3.** This comment first called the row here
+   * "an expand the server accepted and **executed**". It is accepted and then *refused*:
+   * `readExpandArg` accepts it, so the call routes to expand rather than search, and
+   * `expandConversationRange` trims the name, finds it empty and returns the address error
+   * (`claude/recall.ts:688,713`) — pinned since Round 56 by `rejects a half-specified
+   * address rather than guessing the rest`. The row that is accepted *and* executed is
+   * `from: -1`: it clears the guard, `getEntityTranscriptRange` clamps the low end, and
+   * eight real rows come back under a summary the classifier still cannot parse — pinned in
+   * `round56-recall-expand.test.ts`, `runs a negative start, clamped, …`. Nothing below
+   * changes: both rows classify `unknown`, which is all the tap turns on. What was wrong was
+   * the prose explaining why the row matters, and prose is what the next reader reasons from.
+   * The stronger row for the tap is arguably `-1` — unreadable *and* eight rows returned —
+   * but swapping the fixture would change what this test measures mid-round, so it stays and
+   * the executor half is pinned in Daedalus's file instead.
    *
    * What the fix may not do is score the row. `expand` on the wire plus an unparseable
    * summary is not evidence the call routed to search — asserting that would reimplement
@@ -452,6 +466,20 @@ describe('Round 71 — the tap fails loudly, or not at all', () => {
     expect(warnings).toContain('UNREADABLE SUMMARY');
     expect(warnings).toContain('tapInput');
     expect(warnings, 'the false line is gone, not merely outnumbered').not.toContain('no frame reached them');
+
+    // Round 74 — the second defect in Round 72's fix, and it was in this file's own output.
+    // The line ended "Producer-side grammar drift is the likely cause", which the *other*
+    // half of Round 72 had already disproved as the sole cause: the row exercised by this
+    // very test needs no producer change. An operator following that sentence opens
+    // `client.ts`'s summary grammar for a case whose cause is in the arguments they are
+    // already holding. Both causes must be named, and the argument check must come first,
+    // because it is the one reachable today and the one they can run immediately.
+    const argAt = warnings.search(/LOOSE ARGUMENT/);
+    const driftAt = warnings.search(/grammar/i);
+    expect(argAt, 'the reachable-today cause is named').toBeGreaterThan(-1);
+    // Not `not.toContain('grammar')`: deleting the drift clause is the lazy fix and would
+    // lose a real cause. Both must be present, in this order.
+    expect(driftAt, 'grammar drift is kept, and demoted to second').toBeGreaterThan(argAt);
   });
 
   /**
