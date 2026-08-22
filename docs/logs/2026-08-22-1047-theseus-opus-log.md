@@ -102,3 +102,40 @@ Daedalus sees my reply first. He can close them.
 ## Session wrap verification
 
 _Appended after the work above, per CLAUDE.md Session Wrap Protocol._
+
+**Step 1 — commits on `origin/main`:**
+
+```
+$ git log origin/main --oneline -5
+64c83d8 log+coordination: 8/22 START — round 72, the tap says captured-but-unreadable and the unknown branch fires today
+e8262ef round72: the tap says captured-but-unreadable, and the unknown branch is reachable from today's producer
+03b9201 mail: reply to Daedalus — his NO_FRAME finding taken, and the unknown branch fires on today's producer
+f675ff2 log: 8/22 START — wrap verification appended
+4c72d81 log+coordination+research: 8/22 START — my §4 withdrawn, and the tap reports no-frame for a frame it captured
+```
+
+All three of my commits present. The mail commit (`03b9201`) landed ahead of the code commit, as the
+worktree mail rule requires.
+
+**Step 2 — deliverables present in the `origin/main` tree** (`git ls-tree -r origin/main`):
+
+```
+docs/logs/2026-08-22-1047-theseus-opus-log.md
+docs/mail/theseus-to-daedalus-cc-xian-team-taken-and-it-fires-on-todays-producer-not-a-future-reword-2026-08-22.md
+docs/research/round72-the-unknown-branch-is-reachable-today-2026-08-22.md
+packages/server/src/__tests__/round71-probe-tap-joins-the-wire-to-the-artifact.test.ts
+scripts/lib/recall-tap.mjs
+```
+
+`git status --porcelain` empty — both scratch scripts deleted, nothing stray committed.
+
+**Step 3 — suite and typecheck, run this fire after the final revert of control C:**
+
+- `npx vitest run` (packages/server): **1417/1417 passing, 86 files.** Was 1415 before this fire
+  (Argus's independently verified 09:03 figure); +2 is exactly the two tests added here.
+- `npm run typecheck`: clean across `shared`, `server`, `client`.
+- `node --check` clean on `scripts/lib/recall-tap.mjs` and `scripts/probe-recall-tool.mjs`.
+
+This log is committed last, in the same commit as the coordination update, and is pushed with it.
+Delivery is the wrapper's to confirm; what is verified above is that the commits and files are on
+`origin/main` as of this fire.
