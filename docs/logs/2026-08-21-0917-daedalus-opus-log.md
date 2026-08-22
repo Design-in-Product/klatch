@@ -248,3 +248,118 @@ opus runs, **still xian's call, and this fire added nothing to the case for spen
 an instrument, and correcting a claim about an instrument, are not arguments for running one. Also
 open and not mine to close: per-condition reporting, the K-vs-J miss case, the 0/12 non-expansion
 path, the per-run JSON ruling, option (2), the backfill.
+
+---
+
+## 17:17 PT — STOP fire. Theseus's tier-two tap: decision taken, free two thirds landed, one correction
+
+**Zero API spend, no live runs, no server started.** Four local runs, two of them the full suite.
+Round 69 memo read at open, acted on and replied in the same fire.
+
+### The question he asked, and why I answered "before"
+
+His §4 asked whether a live-path tap should be proven before an arm or validated during it, and gave
+a recommendation rather than a decision. His premise: it "cannot be exercised without spend," because
+`--dry` never reaches the live turn.
+
+The premise holds for less of the tap than it looks. **Three parts, one of which needs a live turn:**
+
+1. **client → emitter** — already pinned before this fire, `round52b-tool-use-stream-event.test.ts:144-156`.
+2. **emitter → SSE frame** — free. Unpinned until now. Landed.
+3. **a real turn emitting in time** — only this needs the arm.
+
+Verified his three §4 code claims rather than taking them, and all three replicate: `client.ts:896-903`
+emits `toolInput` raw, `types.ts:400` declares it, `routes/messages.ts:382` forwards with
+`JSON.stringify(event)` and no filter. Refined one: the emit is at **:901**, `executeTool` at **:905** —
+four lines, not the vaguer "before" I first wrote. That gap is the whole mechanism: the wire sees the
+input *before* `readExpandArg` rejects it.
+
+### The control, and what it found
+
+Four tests green on the **first** run — the condition under which I now reflexively run a control
+rather than bank the green. Mutated `routes/messages.ts:382` to destructure `toolInput` off the event
+before `JSON.stringify`, ran the **full server suite**:
+
+```
+Test Files  1 failed | 84 passed (85)
+     Tests  3 failed | 1405 passed (1408)
+```
+
+All three failures in the file added this fire. **Nothing in the other 84 files noticed.** The single
+line Theseus's entire tier-two proposal rests on had no test at all — a refactor dropping `toolInput`
+on the way to the wire would have gone green. Same shape as his §3: a control on the *other* agent's
+code reaching a hole neither memo predicted. Reverted; `git diff -- packages/` shows no tracked-file
+change, only the new untracked test.
+
+### The correction to his §4
+
+> "The route already handles a late subscriber, so the race is designed for."
+
+Read this session, `routes/messages.ts:300-320`: handled for **liveness**, not **capture**. A late
+subscriber gets one `message_complete` reconstructed from the DB and **no `tool_use` frames** — nothing
+replays them, and `toolInput` is persisted nowhere (`createToolUseArtifact` writes `input_summary` and
+only that). So a lost race is byte-indistinguishable from a turn that called no tool: the quiet hole
+the tap exists to close, reproduced one layer up inside the instrument.
+
+Not a bug in the route — the replay branch does what it was built for. The consequence is a **scoring
+rule**: read the tap against the artifact row, never instead of it. Artifact present + no frame = lost
+race, not "no expand attempted." Now the fourth test rather than a caveat in a memo.
+
+Mitigating facts, both verified: the emitter is registered synchronously before the stream is awaited
+(`client.ts:726`; `round49`'s test at :219 already relies on it), and the tool_use event follows a
+model preamble, so the window is normally wide. It is the *silence* of the failure I want handled, not
+its likelihood.
+
+### What I deliberately left to Theseus
+
+The probe-side subscriber. Prior art exists and is better than a fresh write —
+`probe-carried-context-chip.mjs:89`, `captureStream`, a working frame reader against this exact
+endpoint that has already run live. But `probe-recall-tool.mjs` is his instrument mid-experiment, and
+Round 58's refusal to change an instrument on argument binds me harder than it binds him. Asked for two
+constraints rather than assuming them: failure-isolation (worst case a missing field, never a lost opus
+turn — that is what makes "validate on the first run" safe rather than a gamble), and the lost-race
+case as a distinct `unscorableCalls` reason in the **per-run JSON**, since a later fire reads a stored
+run and not the console of the fire that produced it.
+
+Adopted his §2(a) outright: the slot copy is one route into the empty tail, not the route. `{from: '12',
+to: '38'}` needs no bad copy anywhere, so my Round 68 fix's blast radius is narrower than the
+phenomenon's. It is now the first test in the new file rather than a concession in a memo.
+
+### Wrap verification
+
+**Step 1 — commits landed.** Fetched first, confirmed `origin/main` (`89bd863`) was an ancestor of HEAD,
+so the push was a **fast-forward, not a force**: `89bd863..a17d89f  HEAD -> main`. `git log origin/main
+--oneline -3` after the push:
+
+```
+a17d89f test(round70): pin toolInput across the emitter to SSE hop, and pin that a late subscriber loses it silently
+e8c8146 mail: reply to Theseus — build the tap before the arm, two thirds of it was free, …
+89bd863 log: 8/21 SWEEP — wrap verification appended
+```
+
+Mail committed and pushed separately per the worktree mail rule. This log and the COORDINATION.md entry
+commit last.
+
+**Step 2 — deliverables present** (`ls`): recorded in the terminal block below this entry.
+
+**Verified, not recalled:** `npm test` server **1408/1408 (85 files)** — Theseus's 1404 plus my 4 —
+client **239 passed / 13 skipped**, unchanged. `npm run typecheck` clean across shared, server, client.
+
+**Mail hygiene:** his memo stays in `docs/mail/`, not moved to `read/`. The items addressed to me are
+closed, but its §6 carries the distance-arm go/no-go, parked on xian — close-discipline keeps
+parked-on-xian threads visible.
+
+**Left open, not finished this fire:** the distance arm — `F=17, L=20, G=8`, 80 rows, five opus runs —
+**still xian's call, and this fire adds nothing to the case for spending it.** Removing a risk from an
+instrument is not a reason to run one. Also open and not mine to close: the probe-side subscriber
+(Theseus's, with my two constraints), per-condition reporting, the K-vs-J miss case, the 0/12
+non-expansion path, the per-run JSON ruling, option (2), the backfill.
+
+**Step 2 terminal block** — every deliverable `ls`'d this fire:
+
+```
+-rw-r--r--  docs/COORDINATION.md                                                     575364
+-rw-r--r--  docs/logs/2026-08-21-0917-daedalus-opus-log.md                            20789
+-rw-r--r--  docs/mail/daedalus-to-theseus-…-two-thirds-of-the-tap-was-free-…-2026-08-21.md   8288
+-rw-r--r--  packages/server/src/__tests__/round70-tool-input-on-the-sse-wire.test.ts  12962
+```
