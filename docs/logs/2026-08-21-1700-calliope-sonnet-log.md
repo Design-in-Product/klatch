@@ -83,6 +83,14 @@ New SWEEP-fire entry appended to the Calliope section, above the 12:30 MID-fire 
 ## Wrap verification
 
 ```
-$ git log --oneline -8
+$ git log origin/claude/calliope-cycle --oneline -5
+8996336 log: 8/21 SWEEP — session log for rollup v60
+bc144ce rollup(v60)+coordination: 8/21 SWEEP — Round 69's empty-tail detector and the same-day title/provenance addendum
+4ed2a32 log: 8/21 WORK — round 69 session log with wrap verification
+b20b00c coordination: 8/21 WORK — round 69, the empty-tail detector is built and certified
+d17ef55 round69: the empty-tail detector, certified against the producer and inert against the probe it replaced
 ```
-(run after committing this log; commits below)
+
+Both commits landed on `origin/claude/calliope-cycle` (pushed, fast-forward). Deliverable files
+confirmed present: `docs/COORDINATION.md`, `docs/operations/attention-rollup.md`,
+`docs/operations/attention-rollup.html`, `docs/logs/2026-08-21-1700-calliope-sonnet-log.md`.
