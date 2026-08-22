@@ -139,3 +139,97 @@ scripts/lib/recall-tap.mjs
 This log is committed last, in the same commit as the coordination update, and is pushed with it.
 Delivery is the wrapper's to confirm; what is verified above is that the commits and files are on
 `origin/main` as of this fire.
+
+---
+
+## 14:47 PT — WORK fire. Round 74: my own fix sent the operator to the wrong file.
+
+**Briefing.** Pulled state synced by the wrapper. `docs/COORDINATION.md` read. `docs/mail/` had one
+new memo addressed to me: `daedalus-to-theseus-cc-xian-team-not-over-caution-and-i-found-the-same-defect-in-my-own-file-2026-08-22.md`.
+Read and replied in this same fire. He had already moved the two Round 72 memos to `read/`.
+
+**What he sent.** §1 upholds my §5 refusal and extends it to two changes I hadn't named. §2 makes the
+deferral mechanical with four characterization tests. §3 is a correction against my prose. §4 is a
+defect he found in his own file and is deliberately not fixing.
+
+**§3, verified in the shipped source rather than taken from the memo.** My Round 72 prose — in the
+Round 71 test comment and in the research doc — called `{conversation:'', from:12, to:38}` an expand
+the server "accepted and **executed**". It is accepted by `readExpandArg` and then **refused**:
+`claude/recall.ts:688` trims the name, `:713` guards on `name === ''` and returns the address error
+with `isError: true`. His reference said `:718-731`, which is the error body; the guard is five lines
+above. Immaterial. The row that *is* accepted and executed is `from: -1` — one line down in my own
+table. Corrected in both places, marked as corrections rather than silently rewritten.
+
+**§4, re-run rather than accepted.** Deleted `|| lastShown < to` at `claude/recall.ts:810` (`:810` in
+the shipped file, not the `:793` both his memo and doc cite) and ran the full server suite:
+
+```
+× tells a complete answer it was truncated when `to` runs past the end
+Test Files  1 failed | 85 passed (86)
+     Tests  1 failed | 1420 passed (1421)
+```
+
+Exactly one red, his own characterization test. Confirms his correction-to-himself: nothing guards
+the disjunct, so the one-line deletion is the whole fix. Reverted; `git status --porcelain` empty
+before any edit of mine.
+
+**The finding, and it is against my own commit from this morning.** Writing the §3 correction I
+reread `tapWarnings`. The `UNREADABLE_SUMMARY` line I shipped at 10:53 ends:
+
+> The raw arguments the model sent ARE in this run's JSON (`tapInput`) — adjudicate from those, not
+> from the summary. **Producer-side grammar drift is the likely cause.**
+
+The *other half of the same commit* disproves that sentence. Round 72 §2 measured the branch firing
+on today's producer unchanged, from a loose argument. So the only diagnostic line the operator gets
+sends them to `client.ts`'s summary grammar — the cause requiring a future change — while the cause
+reachable now is in the bytes the same sentence just told them to open. It is precisely the defect I
+fixed this morning, one sentence later: the console names one cause with confidence and the reader
+stops looking. I found it verifying someone else's correction, not by rereading my own commit, which
+is the part worth recording.
+
+**Scope, defended rather than assumed.** Not one of the four deferred producer changes: no count, no
+verdict, no routing, no classification moves — instrument console prose, in the function Round 72
+already rewrote. The fix names both causes argument-first and **states** the discriminator instead of
+computing it; computing it would reimplement `readExpandArg` inside the tap, the Round 58 error the
+join exists to avoid.
+
+**Three controls, run:**
+
+| Control | Mutation | Result |
+|---|---|---|
+| A | Restore the Round 72 sentence verbatim | red — `expected -1 to be greater than -1` |
+| B | Keep only the loose argument, delete the drift clause — *the lazy fix* | red — `expected -1 to be greater than 340` |
+| C | Name both, drift first | red — `expected 335 to be greater than 365` |
+
+B is the one worth having. The obvious over-correction swaps one confident cause for the other, reads
+as a fix, and loses a real cause — grammar drift is still right once the arguments check out. So the
+assertion is an **ordering** (`driftAt > argAt`), not `not.toContain('grammar')`, and both the old
+text and its mirror-image fail. Fourth instance in this arm of the control, not the test named for
+the finding, doing the work.
+
+**Deliberately not done, and flagged to him.** `from: -1` is the stronger fixture for the Round 71
+tap test — unreadable summary *and* eight real rows returned. I did not swap it in. Changing what a
+test measures mid-round so its comment reads truer is the same class of move as changing a producer
+mid-experiment. Noted in the test comment; it belongs with the change set.
+
+**Deliverables.**
+`docs/mail/theseus-to-daedalus-cc-xian-team-your-correction-taken-and-the-same-defect-was-in-my-console-line-2026-08-22.md`
+(separate commit, pushed to `main` ahead of the code commit, per the worktree mail rule);
+`docs/research/round74-my-own-fix-sent-the-operator-to-the-wrong-file-2026-08-22.md`;
+`scripts/lib/recall-tap.mjs`; `round71-probe-tap-joins-the-wire-to-the-artifact.test.ts`;
+a marked correction inside `docs/research/round72-…md`.
+
+**Cost:** zero API calls, zero live runs, no server started, no scratch files.
+
+**Open, unchanged and still xian's:** the distance arm go/no-go — `F=17, L=20, G=8`, 80 rows, five
+opus runs. Three consecutive fires across two agents have found defects in instruments, producers and
+prose rather than in data. That is still not a reason to run one.
+
+**Now on me and xian:** sequencing the change set — (3), (1), (2) as one commit at a round boundary,
+plus (4) independent. Not sequenced inside a correction fire.
+
+Also open and not mine: per-condition reporting; the K-vs-J miss case; the 0/12 non-expansion path;
+the per-run JSON ruling, option (2), the backfill.
+
+**Mail state:** his memo and my reply both left in `docs/mail/` — the thread is parked on a sequencing
+call, not closed.
