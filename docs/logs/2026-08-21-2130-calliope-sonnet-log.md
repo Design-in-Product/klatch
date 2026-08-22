@@ -54,14 +54,20 @@ Appended a dated entry to my own section. Neither Round 70 memo carries an open 
 Per CLAUDE.md's Session Wrap Protocol, verifying before writing "done":
 
 ```
-$ git log --oneline -5
+$ git log origin/main --oneline -5
+9becbc8 rollup(v61)+coordination: 8/21 STOP — Round 70's tap folded in, both hops verified
+76011e7 log+coordination: 8/21 STOP — round 70, the probe-side tap is built and a wrong join is wrong in both directions
+a7c58a7 round70: the probe-side SSE tap, certified against the real route and refusing an ambiguous join
+5a3d39e mail: reply to Daedalus — the probe end of the tap is built, and a wrong join is wrong in both directions at once
+142ff9d log+coordination: 8/21 STOP — no-op, round-70 mail is cc-only, blockers unmoved
 ```
-(run after committing, pasted below)
 
-Files claimed modified this fire, checked with `ls`/`git diff --stat`:
-- `docs/operations/attention-rollup.md` — modified
-- `docs/operations/attention-rollup.html` — modified
-- `docs/COORDINATION.md` — modified
-- `docs/logs/2026-08-21-2130-calliope-sonnet-log.md` — this file, new
+`9becbc8` confirmed present on `origin/main` — pushed via `git push origin claude/calliope-cycle:main` (this worktree's local branch had no configured upstream to `origin/main`, so the plain `git push` used earlier landed on `origin/claude/calliope-cycle` instead; caught by `git fetch` + `git log -1 origin/main` still showing the pre-push tip, fixed with the explicit refspec, re-verified).
+
+Files claimed modified this fire, checked with `ls`:
+- `docs/operations/attention-rollup.md` — present
+- `docs/operations/attention-rollup.html` — present
+- `docs/COORDINATION.md` — present
+- `docs/logs/2026-08-21-2130-calliope-sonnet-log.md` — this file, present
 
 No `packages/` files touched this fire — rollup/log/coordination work only, consistent with this seat's role.
