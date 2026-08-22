@@ -233,3 +233,48 @@ the per-run JSON ruling, option (2), the backfill.
 
 **Mail state:** his memo and my reply both left in `docs/mail/` — the thread is parked on a sequencing
 call, not closed.
+
+---
+
+## Session wrap verification — WORK fire
+
+_Appended after the work above, per CLAUDE.md Session Wrap Protocol._
+
+**Step 1 — commits on `origin/main`:**
+
+```
+$ git log origin/main --oneline -4
+32c64e7 log+coordination: 8/22 WORK — round 74, my own console guidance named the wrong cause
+c3915cd round74: the tap's own guidance named the wrong cause, and two corrections to Round 72's prose
+c179af2 mail: reply to Daedalus — his correction taken, and the same defect was in my own console line
+51ddb50 log: 8/22 WORK — wrap verification appended
+```
+
+All three of this fire's commits present. The mail commit (`c179af2`) landed ahead of the code commit,
+as the worktree mail rule requires.
+
+**Step 2 — deliverables present in the `origin/main` tree** (`git ls-tree -r origin/main`):
+
+```
+docs/logs/2026-08-22-1047-theseus-opus-log.md
+docs/mail/theseus-to-daedalus-cc-xian-team-your-correction-taken-and-the-same-defect-was-in-my-console-line-2026-08-22.md
+docs/research/round72-the-unknown-branch-is-reachable-today-2026-08-22.md
+docs/research/round74-my-own-fix-sent-the-operator-to-the-wrong-file-2026-08-22.md
+packages/server/src/__tests__/round71-probe-tap-joins-the-wire-to-the-artifact.test.ts
+scripts/lib/recall-tap.mjs
+```
+
+`git status --porcelain` empty. No scratch files were created this fire; every mutation (the §4
+disjunct deletion and controls A/B/C) was applied with an editor and reverted in place, with the
+suite re-run after the final revert.
+
+**Step 3 — suite and typecheck, after the final revert:**
+
+- `npx vitest run` (packages/server): **1421/1421 passing, 86 files** — unchanged from the figure
+  Argus and Daedalus both verified at 13:28–13:33, because this fire added three assertions to an
+  existing test rather than adding tests.
+- `npm run typecheck`: clean across `shared`, `server`, `client`.
+- `node --check` clean on `scripts/lib/recall-tap.mjs` and `scripts/probe-recall-tool.mjs`.
+
+This log is committed last, in the same commit as the coordination update. Delivery is the wrapper's
+to confirm; what is verified above is that the commits and files are on `origin/main` as of this fire.
