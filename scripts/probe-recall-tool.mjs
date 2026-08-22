@@ -136,6 +136,9 @@ import { randomUUID } from 'crypto';
 import { buildRecogniser } from './lib/recall-recogniser.mjs';
 import { scoreOfferChoice, formatOfferChoice } from './lib/offer-choice.mjs';
 import { readCallKind, callKindWarning } from './lib/recall-call-kind.mjs';
+import {
+  startRecallTap, alignTapToCalls, tapSummary, tapWarnings, TAP_STATUS,
+} from './lib/recall-tap.mjs';
 import { writeFileSync, mkdirSync } from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -1563,8 +1566,66 @@ for (const key of SELECTED) {
   // ── The live turn (1 call, plus one per tool round the model takes) ────────
   sub('LIVE TURN');
   const t0 = Date.now();
-  await j('POST', `/channels/${klatch.id}/messages`, { content: arm.ask });
+  const posted = await j('POST', `/channels/${klatch.id}/messages`, { content: arm.ask });
+
+  // ── Round 70, the tier-two tap: subscribe before settling ─────────────────
+  //
+  // `createToolUseArtifact` persists `input_summary` and nothing else, so a dropped
+  // (mis-typed) expand and a genuine `query: ""` are byte-identical in the artifact —
+  // Round 69's detector marks that row and cannot diagnose it. The live `tool_use` frame
+  // carries `toolInput` **raw** (`client.ts:901`, four lines before `executeTool` runs
+  // `readExpandArg` at `:905`) and `routes/messages.ts:383` forwards it unfiltered, so
+  // the exact discriminator is on the wire. `lib/recall-tap.mjs` reads it;
+  // `round71-probe-tap-joins-the-wire-to-the-artifact.test.ts` certifies that module
+  // against the real route rather than against a fixture of my own.
+  //
+  // **This is the earliest a subscriber can exist and it is still a race.** POST returns
+  // after `streamClaude` is started but not awaited, and the emitter is registered
+  // synchronously (`client.ts:726`), so the emitter is there — but nothing replays
+  // `tool_use` frames to a late subscriber, and a lost race is byte-identical to a turn
+  // that called no tool (Daedalus's Round 70 §2, `routes/messages.ts:300-320`). Hence the
+  // scoring rule enforced in `alignTapToCalls`: **read the tap against the artifact rows,
+  // never instead of them.**
+  //
+  // Wrapped because a tap must never cost a paid turn. Everything from here to
+  // `tapCapture` degrades to `null`, and a `null` capture scores exactly as Round 69 did.
+  let tap = null;
+  let tapStartError = null;
+  try {
+    const assistantId = posted?.assistants?.[0]?.assistantMessageId;
+    if (!assistantId) throw new Error('POST returned no assistantMessageId');
+    tap = startRecallTap({ apiBase: API, messageId: assistantId, toolName: RECALL_TOOL });
+  } catch (err) {
+    tapStartError = `tap not started: ${err?.message ?? String(err)}`;
+  }
+
   const msgs = await settle(klatch.id, `arm-${key}`);
+
+  // The turn has settled, so the terminator has been written — but `settle()` polls REST
+  // once a second and the reader may still be draining the last chunks, so aborting here
+  // would truncate a capture that was about to complete and manufacture the very
+  // `lost-race`/`partial` this exists to detect. Grace first, abort only as a backstop.
+  //
+  // The timer is `unref`'d so a tap that has already finished cannot hold the process open
+  // for the grace period; `done` never rejects, so no `catch` is needed here and adding one
+  // would imply it can.
+  let tapCapture = null;
+  if (tap) {
+    const GRACE_MS = 10_000;
+    let graceTimer;
+    const grace = new Promise((r) => {
+      graceTimer = setTimeout(() => r(GRACE_MS), GRACE_MS);
+      graceTimer.unref?.();
+    });
+    const first = await Promise.race([tap.done, grace]);
+    clearTimeout(graceTimer);
+    if (first === GRACE_MS) {
+      tap.abort();
+      tapCapture = await tap.done;
+    } else {
+      tapCapture = first;
+    }
+  }
   const reply = msgs.filter((m) => m.role === 'assistant').pop();
   const elapsed = Math.round((Date.now() - t0) / 1000);
 
@@ -1587,6 +1648,47 @@ for (const key of SELECTED) {
   const toolCalls = (reply.artifacts || [])
     .filter((a) => a.type === 'tool_use' && a.toolName === RECALL_TOOL)
     .map((a) => readCallKind(a.inputSummary));
+
+  // ── Round 70: join the wire to the artifact, or refuse to ─────────────────
+  //
+  // Ordering is the whole join: `client.ts` emits (`:896`) and then executes (`:905`)
+  // inside one sequential loop, so the frames and the artifact rows are written in the
+  // same order, and the frame's `inputSummary` comes from the *same*
+  // `toolUseInputSummary(name, input)` call the artifact will store (`:892` and `:658`) —
+  // byte-identical by construction, which is why a disagreement is evidence of drift and
+  // not of formatting. `alignTapToCalls` requires the alignment to be **unique** and
+  // attaches nothing when it is not; a wrong join answers the tap's own question by coin
+  // flip, and the measured failure is wrong in both directions at once (Round 71 control C).
+  //
+  // Nothing below this block *depends* on the tap. Every field it writes is additive and
+  // every Round 56-69 field is computed exactly as before, so an arm run with a failed tap
+  // is comparable to every arm before Round 70.
+  const tapAlignment = alignTapToCalls(
+    tapCapture?.frames ?? [],
+    toolCalls,
+    {
+      // `status === FAILED` is the module's own contract for "no clean read happened":
+      // it is the initial value and is only cleared on the success path. Tested that way
+      // rather than on `reason`, because a *truncated* read has a reason and still has
+      // real, alignable frames — treating it as a failure would throw away a partial
+      // capture, and partial-but-unique still resolves calls (Round 71, last assertion).
+      captureFailed: !tapCapture || tapStartError !== null
+        || tapCapture.status === TAP_STATUS.FAILED,
+      captureReason: tapStartError ?? tapCapture?.reason ?? 'tap did not run',
+    },
+  );
+  toolCalls.forEach((c, i) => {
+    c.tapVerdict = tapAlignment.verdicts[i];
+    c.tapInput = tapAlignment.inputs[i];
+  });
+  const tap70 = {
+    ...tapSummary(tapAlignment, toolCalls),
+    // Kept even on the success path: a capture that ended without its terminator is
+    // reported as `partial`, and the *reason* it was partial is not recoverable from the
+    // alignment alone. A later fire reads this JSON and not this console.
+    captureReason: tapStartError ?? tapCapture?.reason ?? null,
+    framesCaptured: tapCapture?.frames?.length ?? 0,
+  };
 
   // ── Would each query have hit? Real tokenizer, ANDed in SQL (0 live calls) ─
   //
@@ -1936,6 +2038,23 @@ for (const key of SELECTED) {
     console.log(`UNSCORABLE CALLS        : ${unscorableCalls} of ${toolCalls.length}` +
       '   ← this arm is not scorable without hand adjudication (see the per-call lines above)');
   }
+  // ── Round 70: the tap's own health, printed whether or not it worked ────────
+  //
+  // Printed unconditionally, because the failure this line exists for is a *silence*:
+  // a lost race yields zero frames, which is byte-identical to a turn that called no
+  // tool, and a tap that quietly returned nothing for a whole run would otherwise read
+  // as a clean sheet. A run whose tap never appears in the log is the one case a reader
+  // cannot distinguish from a run whose tap worked and found nothing.
+  console.log(`tap (round 70)          : ${tap70.status}` +
+    `   frames ${tap70.framesCaptured}/${toolCalls.length}` +
+    `   resolved ${tap70.resolvedByTap}/${tap70.flaggedCalls} flagged` +
+    (tap70.captureReason ? `   (${tap70.captureReason})` : ''));
+  toolCalls.forEach((c, i) => {
+    if (c.tapVerdict && c.tapVerdict !== 'no-frame') {
+      console.log(`  call ${i + 1} on the wire : ${c.tapVerdict}   ${JSON.stringify(c.tapInput)}`);
+    }
+  });
+  for (const w of tapWarnings(tap70)) console.log(`  ${w}`);
   console.log(`reply states the fact   : ${statesToken}   (token ${JSON.stringify(arm.token)})`);
   console.log(`absence wording in reply: ${JSON.stringify(assertsAbsence)}`);
   console.log(`claims no restriction   : ${JSON.stringify(claimsNoRestriction)}`);
@@ -1982,6 +2101,17 @@ for (const key of SELECTED) {
     // adjudication. The per-call `noQuery` / `kind` are inside `toolCalls`; this is the
     // count, at the level a summary table reads from.
     unscorableCalls,
+    // Round 70, and constraint 2 of Daedalus's memo §3: the tap's silence has to be legible
+    // to a fire that reads this JSON months from now and never saw the console. Recorded
+    // whether or not the tap worked — a run with no `tap` key at all is exactly the
+    // ambiguity the field exists to remove. `notADv` is inside the object, so a later
+    // reader cannot lift these numbers into a results table by mistake.
+    //
+    // `unscorableCalls` above is deliberately **unchanged**: the tap can only ever *reduce*
+    // unscorability, never add to it, so folding a lost race into that count would make a
+    // Round 69 number depend on a race and stop Round 69's runs being comparable with
+    // Round 70's. `unresolvedCalls` is the tap-aware figure and lives here instead.
+    tap: tap70,
     reply: {
       content: reply.content, statesToken,
       absenceWording: assertsAbsence, claimsNoRestriction, notesTheGap, edgeCaution,
