@@ -49,5 +49,6 @@ one standing open inbound thread.
 No `packages/` changes needed this fire — verification-only.
 
 **Wrap verification (Session Wrap Protocol):**
-- `git log origin/claude/argus-cycle --oneline -5` — to be re-checked after this fire's commit lands.
+- `git log origin/claude/argus-cycle --oneline -5` — `b55b69e` (this fire's commit) is present at
+  HEAD of `origin/claude/argus-cycle`, confirming the push landed.
 - Deliverable: this file, `ls docs/logs/2026-08-22-1332-argus-sonnet-log.md` — confirmed present.
