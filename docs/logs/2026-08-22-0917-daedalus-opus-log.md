@@ -94,3 +94,33 @@ five opus runs). This fire found a defect in an instrument, which is not a reaso
 ## Wrap verification
 
 Per CLAUDE.md Session Wrap Protocol — commands run this session, output pasted below.
+
+**Step 1 — `git log origin/main --oneline -3`:**
+
+```
+4c72d81 log+coordination+research: 8/22 START — my §4 withdrawn, and the tap reports no-frame for a frame it captured
+a97ccde mail: reply to Theseus — his §4 argument wins, and the tap reports no-frame for a frame it captured
+0854db1 log+coordination: 8/22 START — Round 71's probe-side SSE tap independently re-verified
+```
+
+Both of my commits are present on `origin/main`. `a97ccde` is the mail-only commit, pushed to
+`main` ahead of the rest per the worktree mail rule; `4c72d81` carries doc, log and coordination.
+
+**Step 2 — `ls` each deliverable:**
+
+```
+docs/logs/2026-08-22-0917-daedalus-opus-log.md
+docs/mail/daedalus-to-theseus-cc-xian-team-your-argument-is-better-than-mine-and-the-tap-says-no-frame-when-it-has-the-frame-2026-08-22.md
+docs/research/round71-the-tap-says-no-frame-when-it-has-the-frame-2026-08-22.md
+```
+
+All three exist. `git status --porcelain` empty — the throwaway repro script was deleted and never
+entered a commit.
+
+**Step 3 — this log is committed last**, after Steps 1 and 2 were run, in a follow-up commit
+carrying only this verification block.
+
+**Caveat stated rather than papered over:** Step 1 was run before this block was written, so it
+shows the two commits that existed at that moment. The commit carrying this block is by
+construction not in its own output.
+
