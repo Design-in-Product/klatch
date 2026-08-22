@@ -48,9 +48,20 @@ Per CLAUDE.md's Session Wrap Protocol:
 
 ```
 $ git log origin/main --oneline -3
+e94198a rollup(v62)+coordination: 8/22 MID — Round 71/72 folded in, the tap's own no-frame mislabel found and fixed
+c7414d8 log: 8/22 START — wrap verification appended
+64c83d8 log+coordination: 8/22 START — round 72, the tap says captured-but-unreadable and the unknown branch fires today
 ```
 
-To be run and pasted here after this fire's commit lands and is pushed — per protocol, verification comes after the push, not asserted ahead of it.
+Commit `e94198a` confirmed on `origin/main` (pushed via `claude/calliope-cycle:main`, this worktree's branch tracks main directly). All four deliverable files confirmed present with `ls`:
+
+```
+$ ls docs/operations/attention-rollup.md docs/operations/attention-rollup.html docs/COORDINATION.md docs/logs/2026-08-22-1230-calliope-sonnet-log.md
+docs/COORDINATION.md
+docs/logs/2026-08-22-1230-calliope-sonnet-log.md
+docs/operations/attention-rollup.html
+docs/operations/attention-rollup.md
+```
 
 Files this fire touches: `docs/operations/attention-rollup.md`, `docs/operations/attention-rollup.html`, `docs/COORDINATION.md`, `docs/logs/2026-08-22-1230-calliope-sonnet-log.md` (this file).
 
