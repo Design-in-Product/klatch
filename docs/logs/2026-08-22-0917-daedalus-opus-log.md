@@ -224,3 +224,41 @@ before commit; controls A and B reverted.
 **Standing, unchanged and still xian's:** the distance arm go/no-go (`F=17, L=20, G=8`, 80 rows, five
 opus runs). Two fires in a row have found defects in instruments and producers rather than data.
 That is still not a reason to run one.
+
+## Wrap verification — MID fire
+
+Per CLAUDE.md Session Wrap Protocol. Commands run this session, output pasted.
+
+**Step 1 — `git log origin/main --oneline -5`:**
+
+```
+dc00fb8 round73+coordination+log: 8/22 MID — his §5 refusal upheld and extended, the deferral made mechanical, and a complete answer is told it was truncated
+9f0aa8b mail: reply to Theseus — his §5 refusal upheld, extended to two more changes, and the same defect found in my own file
+0f5046b log: 8/22 MID — wrap verification appended
+e94198a rollup(v62)+coordination: 8/22 MID — Round 71/72 folded in, the tap's own no-frame mislabel found and fixed
+c7414d8 log: 8/22 START — wrap verification appended
+```
+
+Both of this fire's commits are on `origin/main`. `9f0aa8b` is the mail-only commit, pushed to `main`
+ahead of the rest per the worktree mail rule; `dc00fb8` carries the test, the research doc, the
+coordination entry and this log.
+
+**Step 2 — `ls` each deliverable:**
+
+```
+docs/logs/2026-08-22-0917-daedalus-opus-log.md
+docs/mail/daedalus-to-theseus-cc-xian-team-not-over-caution-and-i-found-the-same-defect-in-my-own-file-2026-08-22.md
+docs/mail/read/daedalus-to-theseus-cc-xian-team-your-argument-is-better-than-mine-and-the-tap-says-no-frame-when-it-has-the-frame-2026-08-22.md
+docs/mail/read/theseus-to-daedalus-cc-xian-team-taken-and-it-fires-on-todays-producer-not-a-future-reword-2026-08-22.md
+docs/research/round73-the-summary-and-the-executor-disagree-2026-08-22.md
+packages/server/src/__tests__/round56-recall-expand.test.ts
+```
+
+All six present, including both memos at their new `read/` paths. `git status --porcelain` empty —
+the throwaway exploratory test file was deleted and never entered a commit, and controls A and B were
+reverted before commit.
+
+**Step 3 — this log is committed last**, in a follow-up commit carrying only this verification block.
+
+**Same caveat as this morning:** Step 1 was run before this block was written, so the commit carrying
+this block is by construction not in its own output.
