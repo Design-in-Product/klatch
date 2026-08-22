@@ -992,3 +992,165 @@ describe('Round 66 — the distance arm puts its restriction inside the first ex
     expect(second.text).not.toContain(RESTRICTION);
   });
 });
+
+// ── 11. What the summary says vs. what the executor did ──────
+
+/**
+ * Round 73 (2026-08-22 MID) — characterization, not a fix.
+ *
+ * Round 72 turned on a disagreement between two spellings of "a valid expand
+ * address": `readExpandArg` (`client.ts:599`) accepts any `string` conversation
+ * and any `number` from/to, while the probe's `EXPAND_SUMMARY`
+ * (`scripts/lib/recall-call-kind.mjs:72`) requires a non-empty name and two
+ * non-negative integers. Theseus asked (memo, §5) whether declining to tighten
+ * the producer mid-experiment was over-caution. **It was not**, and the answer
+ * is in this block: tightening `readExpandArg` would change *routing*, not just
+ * a label, because the rejected shapes fall through to the search branch with
+ * whatever `query` is present — usually none. The reasoning is in
+ * `docs/research/round73-the-summary-and-the-executor-disagree-2026-08-22.md`.
+ *
+ * Deferring is only safe if today's behaviour is written down, because the next
+ * person to touch `readExpandArg`, `EXPAND_SUMMARY` or the tool's `input_schema`
+ * will otherwise re-derive it from the regex. So these tests pin what the three
+ * loose shapes actually do — measured through the real modules, not read off the
+ * types — and turn red on any of the three changes, which is the point.
+ *
+ * The classifier half is Theseus's and is pinned separately in
+ * `round71-probe-tap-joins-the-wire-to-the-artifact.test.ts`. Nothing here
+ * imports the instrument: the producer must not be shaped to suit it.
+ */
+describe('Round 73 — a loose expand argument, and what each half of the server does with it', () => {
+  beforeEach(() => {
+    for (let n = 1; n <= 8; n++) ask(oneOnOne.id, `turn ${n}`, t(n));
+  });
+
+  it('records an empty name as an expand that happened, while the executor refuses it', () => {
+    // This is the row Round 72's fix was tested on, and the correction is which
+    // half of the server does what. The artifact says an expansion occurred;
+    // `expandConversationRange` returned the address error and read nothing.
+    // "Accepted" and "executed" come apart here — `readExpandArg` accepts it
+    // (so the call routes to expand rather than search), and the executor then
+    // declines it. An operator reconstructing the call from the artifact alone
+    // sees a successful-looking expand of a nameless conversation.
+    const input = { expand: { conversation: '', from: 12, to: 38 } };
+    expect(toolUseInputSummary(RECALL_TOOL_NAME, input)).toBe('Expanded own conversation:  12–38');
+
+    const result = expandConversationRange(agent, klatch, input.expand);
+    expect(result.isError, 'refused, not executed').toBe(true);
+    expect(result.matchCount).toBe(0);
+    expect(result.text).toContain('pass the address an edge marker gave you');
+  });
+
+  it('runs a negative start, clamped, and states the positions it actually returned', () => {
+    // The row that *does* match "accepted and executed": `from: -1` survives
+    // `readExpandArg`, `getEntityTranscriptRange` clamps the low end to 1
+    // (`queries.ts:1035`), and eight real rows come back. The header is honest
+    // about it — `firstShown`/`lastShown` are the rendered ordinals, so the
+    // clamp is stated rather than hidden, and only the "you asked for" clause
+    // echoes the raw -1. That is the property worth pinning: the executor
+    // normalizes and then reports the normalized extent.
+    const input = { expand: { conversation: 'vesper-1-1', from: -1, to: 38 } };
+    expect(toolUseInputSummary(RECALL_TOOL_NAME, input)).toBe(
+      'Expanded own conversation: vesper-1-1 -1–38',
+    );
+
+    const result = expandConversationRange(agent, klatch, input.expand);
+    expect(result.isError).toBe(false);
+    expect(result.shownCount).toBe(8);
+    expect(result.text).toContain('Positions 1–8 of "vesper-1-1"');
+    expect(result.text, 'the clamp is not reported as the range read').not.toContain('Positions -1');
+  });
+
+  it('floors a fractional end before reading, and echoes the floored number', () => {
+    // `Math.floor(3.5)` is 3, `hi < lo`, so nothing is read. The empty-range
+    // sentence quotes the floored `to`, not the raw one — so the reply is a
+    // true statement about what was looked for and does not match the argument
+    // the artifact recorded. Pinned because a future `input_schema` change from
+    // `number` to `integer` would make this path unreachable and this test is
+    // where that shows up.
+    const input = { expand: { conversation: 'vesper-1-1', from: 12, to: 3.5 } };
+    expect(toolUseInputSummary(RECALL_TOOL_NAME, input)).toBe(
+      'Expanded own conversation: vesper-1-1 12–3.5',
+    );
+
+    const result = expandConversationRange(agent, klatch, input.expand);
+    expect(result.isError).toBe(false);
+    expect(result.matchCount).toBe(0);
+    expect(result.text).toContain('has nothing at positions 12–3.');
+  });
+
+  /**
+   * **A finding, deliberately pinned as-is rather than fixed.**
+   *
+   * The continuation clause fires on `shownRows < all.length || lastShown < to`
+   * (`recall.ts:793`). The second disjunct is true whenever `to` runs past the
+   * end of the conversation — including when *everything asked for that exists*
+   * was returned. The agent is then told a complete answer was truncated and
+   * handed a continuation address that returns nothing.
+   *
+   * This needs no grammar drift: `{from: 1, to: 38}` is a well-formed address
+   * the classifier reads cleanly as `expand`. It does need a `to` past the end,
+   * which a faithfully echoed edge address never has — an edge marker only names
+   * ranges that exist. So it is reachable when the model works positions out for
+   * itself, which the tool description tells it not to do ("Use the address a
+   * result gave you, not positions you worked out yourself") and cannot prevent.
+   * **Reachability, not incidence — no stored run was checked.**
+   *
+   * **The disjunct is not a half-right guard — it is never right.** Scoped
+   * ordinals are contiguous, so `all.length` is exactly the part of the
+   * requested range that exists, and every genuine truncation (row cap or char
+   * budget) makes `shownRows < all.length` true on its own. `shownRows ===
+   * all.length && lastShown < to` therefore holds only when `to` ran past the
+   * end — i.e. only when nothing was withheld. Verified by control, not argued:
+   * deleting `|| lastShown < to` turns *this* test red and leaves "caps the rows
+   * and says where to continue" (§6) green. An earlier draft of this comment
+   * claimed the deletion would restore silent truncation; the control disproved
+   * it, and the one-line deletion is in fact the whole fix.
+   *
+   * Why it is not fixed here anyway: this is the model-facing surface,
+   * mid-experiment, with the distance arm's go/no-go still open. Changing a
+   * sentence the model reads changes what a run measures — the same objection I
+   * gave Theseus about `readExpandArg` one memo ago, and it applies to my own
+   * file or it is not a rule. The cost of waiting is one wasted turn on a
+   * self-limiting path; the cost of a mid-arm producer change is what Round 58
+   * exists to refuse. **This test is red-on-fix by design** — whoever lands the
+   * deletion should delete it and assert the absence instead.
+   */
+  it('tells a complete answer it was truncated when `to` runs past the end', () => {
+    const complete = expandConversationRange(agent, klatch, {
+      conversation: 'vesper-1-1',
+      from: 1,
+      to: 38,
+    });
+
+    expect(complete.isError).toBe(false);
+    // Nothing was withheld: every row in range was fetched and every one rendered.
+    expect(complete.matchCount).toBe(8);
+    expect(complete.shownCount).toBe(8);
+    expect(complete.text).toContain('Positions 1–8 of "vesper-1-1"');
+
+    // And yet:
+    expect(complete.text).toContain('this is as far as one call goes');
+    expect(complete.text).toContain('Ask again with from: 9 for the rest');
+
+    // There is no rest. The offered continuation reads nothing, which is what
+    // makes this a wasted turn rather than a wrong answer.
+    const rest = expandConversationRange(agent, klatch, {
+      conversation: 'vesper-1-1',
+      from: 9,
+      to: 38,
+    });
+    expect(rest.matchCount).toBe(0);
+    expect(rest.text).toContain('has nothing at positions 9–38');
+
+    // The control: an exact `to` gets no continuation clause, so the trigger is
+    // the over-wide end and not the expansion path in general.
+    const exact = expandConversationRange(agent, klatch, {
+      conversation: 'vesper-1-1',
+      from: 1,
+      to: 8,
+    });
+    expect(exact.shownCount).toBe(8);
+    expect(exact.text).not.toContain('this is as far as one call goes');
+  });
+});
