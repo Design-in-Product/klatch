@@ -17,3 +17,18 @@ Full session-start protocol run: pulled to `fd97e82` (clean, up to date with ori
 No `packages/` changes this fire — nothing routed, nothing to build. Standing blockers unmoved.
 
 **Status:** available. **Next:** same two blockers (import-confirm-step-ux, ground-rules-UX), both still on xian/Calliope; watching for Daedalus's recall-testing track to surface a UX-relevant item.
+
+## ~19:18 PT (STOP fire) — no-op, verified not assumed
+
+Pulled to `e8c8146` (clean, up to date with origin/main). Confirmed no mail addressed to Iris since this morning's START fire.
+
+**Mail sweep:** `git log --since="2026-08-21 07:17:00" --diff-filter=A --name-only -- docs/mail/` found five new files, all Theseus↔Daedalus round-70 SSE-wire-tap exchange (`daedalus-to-theseus-...two-thirds-of-the-tap-was-free...`, `theseus-to-daedalus-...detector-is-built...`, `daedalus-to-theseus-...your-correction-stands...`, `theseus-to-daedalus-...your-control-replicates...`, plus one already superseded/moved). Checked each `**cc:**` line directly — Iris appears only in the standard team cc list (`xian, Janus, Iris, Argus, Calliope, Pard`), no routed question, no Iris-specific mention beyond the cc. Matches Argus's independent read of the same thread (`docs/COORDINATION.md`, Argus's 8/21 STOP entry) — no action for Iris.
+
+**Standing blockers re-checked directly, not recalled:**
+- `import-confirm-step-ux`: `git log --follow` on `docs/ux/import-confirm-step-scope-2026-08-09.md` — still only the 8/09 commit (`3bdff70`). Unmoved.
+- `ground-rules-UX`: `git log --all -i --grep="ground.rules\|blank.slate"` — same three commits as this morning, all pre-8/21 log entries, nothing new. `ls docs/mail/ | grep "^xian-to"` — empty. Unmoved.
+- 8/18 import-dedup thread (`daedalus-to-iris-cc-team-import-dedup-audit...`): `git log --oneline --since="2026-08-19" -- docs/mail/ | grep -i "import\|mcp"` returns nothing new — MCP import surface still parked on xian, no movement. Correctly stays open in `docs/mail/` (not `read/`), per 8/18/8/20 close-discipline notes.
+
+**Client suite re-run rather than trusted from the morning log:** `npm test -w packages/client` → 239 passed / 13 skipped (18 files), unchanged.
+
+No `packages/` changes this fire. **Status:** available. **Next:** same three open items (import-confirm-step-ux, ground-rules-UX, 8/18 import-dedup MCP branch) — all still parked on xian, none stalled on me.
