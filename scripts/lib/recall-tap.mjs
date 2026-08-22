@@ -112,6 +112,24 @@ export const TAP_VERDICT = {
   PLAIN_SEARCH: 'plain-search',
   /** Summary says expand and the wire carries no `expand` key. Should be unreachable. */
   INCOHERENT: 'incoherent',
+  /**
+   * A frame **was** captured and the artifact summary is in a vocabulary
+   * `readCallKind` cannot parse (`kind: 'unknown'`). Round 72, and it is Daedalus's
+   * finding against this file: this used to return `NO_FRAME`, so one value carried
+   * "nothing was captured" and "everything was captured and none of it is readable"
+   * at once, and the console printed the first over the second.
+   *
+   * The distinction is worth a value because the two demand opposite actions. `NO_FRAME`
+   * means the evidence is *gone* — nothing replays `tool_use` frames — so the artifact
+   * is all there will ever be. This means the evidence is *present and in the JSON*
+   * (`inputs[i]` → `c.tapInput`) and only the artifact-side reading of it failed. The
+   * operator told to "adjudicate by hand" needs to know which of those they are holding.
+   *
+   * It is deliberately **not** scored. Deciding this row routed to search would be a
+   * `readExpandArg` reimplementation — the Round 58 rule, and the same one-source-twice
+   * error the join exists to avoid. The tap reports what it holds and stops.
+   */
+  UNREADABLE_SUMMARY: 'unreadable-summary',
   /** No frame reached this call. Unchanged from pre-tap behaviour, and labelled as such. */
   NO_FRAME: 'no-frame',
 };
@@ -344,7 +362,10 @@ export function readTapVerdict(call, toolInput) {
   if (call.kind === 'expand') {
     return expandPresent ? TAP_VERDICT.ACCEPTED_EXPAND : TAP_VERDICT.INCOHERENT;
   }
-  if (call.kind !== 'search') return TAP_VERDICT.NO_FRAME;
+  // Neither `expand` nor `search`, and `toolInput` is non-null by the guard above — so
+  // this is `kind: 'unknown'` *with* a frame in hand. Round 72: this used to fall through
+  // to `NO_FRAME` and tell the operator the evidence had not arrived while holding it.
+  if (call.kind !== 'search') return TAP_VERDICT.UNREADABLE_SUMMARY;
   if (call.noQuery) {
     return expandPresent ? TAP_VERDICT.DROPPED_EXPAND : TAP_VERDICT.TRUE_EMPTY_SEARCH;
   }
@@ -371,7 +392,14 @@ export function tapSummary(alignment, calls) {
   const flagged = calls
     .map((c, i) => ({ i, flagged: c.noQuery || c.kind === 'unknown' }))
     .filter((x) => x.flagged);
-  const resolved = flagged.filter((x) => alignment.verdicts[x.i] !== TAP_VERDICT.NO_FRAME);
+  // Round 72, and §1's rule applied to §2's fix: `UNREADABLE_SUMMARY` is a *new reason
+  // string*, not a new resolution. The tap holding the bytes is not the tap adjudicating
+  // the row — it declined to, deliberately — so `resolvedByTap` must not move, or the
+  // "the tap can only ever reduce unscorability" invariant becomes a claim instead of a
+  // guarantee. Spelled as an explicit predicate rather than `!== NO_FRAME` because the
+  // next verdict added would otherwise inherit "resolved" by default.
+  const adjudicated = (v) => v !== TAP_VERDICT.NO_FRAME && v !== TAP_VERDICT.UNREADABLE_SUMMARY;
+  const resolved = flagged.filter((x) => adjudicated(alignment.verdicts[x.i]));
 
   return {
     notADv: 'instrument health, not a dependent variable — see lib/recall-tap.mjs',
@@ -388,6 +416,13 @@ export function tapSummary(alignment, calls) {
     droppedExpandCalls: count(TAP_VERDICT.DROPPED_EXPAND),
     trueEmptySearches: count(TAP_VERDICT.TRUE_EMPTY_SEARCH),
     incoherentCalls: count(TAP_VERDICT.INCOHERENT),
+    /**
+     * Additive, Round 72. A subset of `unresolvedCalls` — every row with this verdict has
+     * `kind: 'unknown'` and is therefore already in `flagged`, so the two split cleanly:
+     * `unresolvedCalls - unreadableSummaryCalls` is the count that genuinely saw no frame.
+     * No existing count changes value.
+     */
+    unreadableSummaryCalls: count(TAP_VERDICT.UNREADABLE_SUMMARY),
   };
 }
 
@@ -424,8 +459,19 @@ export function tapWarnings(summary) {
     out.push(`← ${summary.incoherentCalls} INCOHERENT CALL(S): the artifact says expand and `
       + 'the wire carries no expand key. Should be unreachable; treat as instrument drift.');
   }
-  if (summary.unresolvedCalls > 0) {
-    out.push(`← ${summary.unresolvedCalls} flagged call(s) the tap could not adjudicate `
+  if (summary.unreadableSummaryCalls > 0) {
+    out.push(`← ${summary.unreadableSummaryCalls} UNREADABLE SUMMARY: the tap CAPTURED a `
+      + 'frame for these calls and the artifact summary is in a vocabulary the classifier '
+      + 'does not recognise, so the tap declined to adjudicate rather than guess. The raw '
+      + 'arguments the model sent ARE in this run\'s JSON (`tapInput`) — adjudicate from '
+      + 'those, not from the summary. Producer-side grammar drift is the likely cause.');
+  }
+  // The remainder, and the subtraction is the point: before Round 72 this line printed
+  // "no frame reached them" over rows whose frame the same run had just captured and
+  // stored. Both halves stay visible and they still sum to `unresolvedCalls`.
+  const noFrame = summary.unresolvedCalls - (summary.unreadableSummaryCalls ?? 0);
+  if (noFrame > 0) {
+    out.push(`← ${noFrame} flagged call(s) the tap could not adjudicate `
       + '(no frame reached them). Unchanged from Round 69: adjudicate by hand.');
   }
   return out;

@@ -392,4 +392,97 @@ describe('Round 71 — the tap fails loudly, or not at all', () => {
     expect(partial.offset).toBe(1);
     expect(partial.verdicts).toEqual([TAP_VERDICT.NO_FRAME, TAP_VERDICT.DROPPED_EXPAND]);
   });
+
+  /**
+   * Round 72, and it is Daedalus's finding against this file: `readTapVerdict` returned
+   * `NO_FRAME` for `kind: 'unknown'` **whether or not a frame was captured**, so one value
+   * meant both "the evidence is gone" and "the evidence is in hand and unreadable" — and
+   * the console printed the first over the second, telling an operator to hand-adjudicate
+   * from an artifact while the run's own JSON held the raw arguments.
+   *
+   * **The case is reachable from today's producer, which his memo did not claim and I
+   * checked rather than assumed.** He framed `unknown` as firing on a future reword. It
+   * also fires on *data*: `readExpandArg` (`client.ts:599`) accepts any `string`
+   * conversation and any `number` from/to, while `EXPAND_SUMMARY` requires a non-empty
+   * name and two integers. So `{conversation: '', from: 12, to: 38}` — used here — is an
+   * expand the server **accepted and executed**, rendered into a summary the classifier
+   * cannot read. `from: -1` and `to: 3.5` are two more, verified the same way. No producer
+   * change is needed for the false line to print; one call from a model that echoes an
+   * address back slightly wrong is enough.
+   *
+   * What the fix may not do is score the row. `expand` on the wire plus an unparseable
+   * summary is not evidence the call routed to search — asserting that would reimplement
+   * `readExpandArg` and make the join one source read twice, the Round 58 rule and the
+   * error this module was built to avoid. So `resolvedByTap` must not move and
+   * `unresolvedCalls` must keep the row; only the reason string changes. Both are asserted
+   * below, because a fix that quietly promoted the row to "resolved" would look like an
+   * improvement in the console and be a regression in the invariant.
+   */
+  it('says "captured but unreadable" for a frame it holds, rather than "no frame reached it"', async () => {
+    h.rounds.push(
+      // Accepted by readExpandArg — `conversation` is a string, `from`/`to` are numbers.
+      { text: 'Checking.', tool: { name: RECALL_TOOL_NAME, input: { expand: { conversation: '', from: 12, to: 38 } } } },
+      { text: 'done' },
+    );
+
+    const { turn, frames } = await driveWithTap(klatch);
+    const calls = callsFor(turn);
+
+    // The artifact side first: this is the real producer's own output, not a fixture.
+    expect(calls).toHaveLength(1);
+    expect(calls[0].inputSummary).toBe('Expanded own conversation:  12–38');
+    expect(calls[0].kind, 'the live producer reaches the unknown branch on data alone').toBe('unknown');
+
+    const alignment = alignTapToCalls(frames, calls);
+    // The premise of the whole finding: a frame WAS captured for this call.
+    expect(alignment.status).toBe(TAP_STATUS.CAPTURED);
+    expect(alignment.inputs[0]).toEqual({ expand: { conversation: '', from: 12, to: 38 } });
+    expect(alignment.verdicts).toEqual([TAP_VERDICT.UNREADABLE_SUMMARY]);
+    expect(alignment.verdicts[0], 'the pre-Round-72 value, which was the defect').not.toBe(TAP_VERDICT.NO_FRAME);
+
+    const summary = tapSummary(alignment, calls);
+    // The counts do not move. §1's rule — new information goes in reason strings and
+    // additive objects, never into a count another round is compared against.
+    expect(summary.flaggedCalls).toBe(1);
+    expect(summary.resolvedByTap, 'holding the bytes is not adjudicating the row').toBe(0);
+    expect(summary.unresolvedCalls, 'still hand-adjudicate; only the reason changed').toBe(1);
+    expect(summary.unreadableSummaryCalls).toBe(1);
+
+    const warnings = tapWarnings(summary).join(' ');
+    expect(warnings).toContain('UNREADABLE SUMMARY');
+    expect(warnings).toContain('tapInput');
+    expect(warnings, 'the false line is gone, not merely outnumbered').not.toContain('no frame reached them');
+  });
+
+  /**
+   * The discriminator for the test above, and the reason it is a separate case: a fix that
+   * simply deleted the "no frame reached them" line would pass every assertion there and
+   * lose a true warning. Here the frame genuinely did not arrive, so that line must stay —
+   * and the two must be able to appear in one run without either suppressing the other.
+   */
+  it('keeps the genuine no-frame warning, and prints both halves when a run has both', () => {
+    const unreadable = readCallKind('Expanded own conversation:  12–38');
+    const emptyTail = readCallKind('Searched own conversations: ');
+    const calls = [unreadable, emptyTail];
+
+    // One frame, for the first call only — a unique alignment at offset 0, so the second
+    // row is genuinely unresolved and the first is captured-but-unreadable.
+    const frames = [{ inputSummary: unreadable.inputSummary, toolInput: { expand: { conversation: '', from: 12, to: 38 } } }];
+
+    const alignment = alignTapToCalls(frames, calls);
+    expect(alignment.status).toBe(TAP_STATUS.PARTIAL);
+    expect(alignment.verdicts).toEqual([TAP_VERDICT.UNREADABLE_SUMMARY, TAP_VERDICT.NO_FRAME]);
+
+    const summary = tapSummary(alignment, calls);
+    expect(summary.flaggedCalls, 'both rows are Round 69 flagged').toBe(2);
+    expect(summary.resolvedByTap).toBe(0);
+    expect(summary.unresolvedCalls).toBe(2);
+    expect(summary.unreadableSummaryCalls).toBe(1);
+
+    const warnings = tapWarnings(summary);
+    expect(warnings.some((w: string) => w.includes('UNREADABLE SUMMARY'))).toBe(true);
+    // Exactly one, not two: the split subtracts rather than double-counting.
+    expect(warnings.some((w: string) => w.includes('1 flagged call(s)') && w.includes('no frame reached them'))).toBe(true);
+    expect(warnings.join(' '), 'the halves sum to unresolvedCalls, never exceed it').not.toContain('2 flagged call(s)');
+  });
 });
