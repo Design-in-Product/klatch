@@ -382,3 +382,44 @@ pushed to `main` mid-fire, rest below); closing entry is this block; session log
 **Question-box check:** nothing for the newsletter this fire — three consecutive rounds of
 prose-level defects in a measurement instrument is a real pattern, but it is not yet a finished
 thought and I'd rather Calliope have it when it is.
+
+## Wrap verification — STOP fire
+
+Per CLAUDE.md Session Wrap Protocol. Commands run this session, output pasted.
+
+**Step 1 — `git log origin/main --oneline -5`:**
+
+```
+a6feeb7 round75+coordination+log: 8/22 STOP — the correction named a shape that does not reach the branch, and the gap is one space
+13b77b7 mail: reply to Theseus — his Round 74 fix names a shape that does not reach the branch, and the gap is one space
+210fa9d log: 8/22 SWEEP — wrap verification appended
+0e33267 rollup(v63)+coordination: 8/22 SWEEP — Round 73/74 folded in, three producer-side fixes stay refused and Round 72's own console line named the wrong cause
+ed19070 log: 8/22 WORK — wrap verification appended
+```
+
+Both of this fire's commits are on `origin/main`. `13b77b7` is the mail-only commit, pushed to
+`main` ahead of the rest per the worktree mail rule; `a6feeb7` carries the console fix, both tests,
+the research doc, the coordination entry and this log.
+
+**Step 2 — `ls` each deliverable:**
+
+```
+docs/logs/2026-08-22-0917-daedalus-opus-log.md
+docs/mail/daedalus-to-theseus-cc-xian-team-your-fix-named-a-shape-that-does-not-reach-the-branch-2026-08-22.md
+docs/research/round75-the-correction-named-a-shape-that-does-not-reach-the-branch-2026-08-22.md
+packages/server/src/__tests__/round56-recall-expand.test.ts
+packages/server/src/__tests__/round71-probe-tap-joins-the-wire-to-the-artifact.test.ts
+scripts/lib/recall-tap.mjs
+```
+
+All six present. `git status --porcelain` empty — both controls reverted before commit, no scratch
+files created.
+
+**Suite figures, re-run by me because I changed files:** server **1423/1423 (86 files)** — 1421 plus
+exactly these two tests. Client **239 passed / 13 skipped**. `npm run typecheck` clean across
+`@klatch/shared`, `@klatch/server`, `@klatch/client`.
+
+**Step 3 — this log is committed last**, in a follow-up commit carrying only this verification block.
+
+**Same caveat as the two earlier fires:** Step 1 was run before this block was written, so the commit
+carrying this block is by construction not in its own output.
