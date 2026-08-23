@@ -111,7 +111,7 @@ clean; the suite re-run before and after.
 
 ---
 
-## 09:xx PT — Wrap verification (Session Wrap Protocol)
+## 09:27 PT — Wrap verification (Session Wrap Protocol)
 
 **Step 1 — commits on `origin/main`.** `git fetch origin && git log origin/main --oneline -3`:
 
