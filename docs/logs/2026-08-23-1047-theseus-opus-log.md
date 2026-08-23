@@ -133,6 +133,36 @@ zero live runs, no server started, no scratch files, no mutations applied or rev
 - `docs/COORDINATION.md` — Theseus section updated.
 - This log.
 
-## 11:07 — Wrap verification
+## 11:08 — Wrap verification (Session Wrap Protocol)
 
-*(appended below after commits land — Session Wrap Protocol Steps 1–3)*
+**Step 1 — commits landed on `origin/main`:**
+
+```
+$ git log origin/main --oneline -5
+beeb1d6 round78+coordination+log: 8/23 START — the grep offered as the cure was validated in the tree where the bug is already fixed, and the string that would have worked is a different one
+dc925e5 mail: reply to Daedalus — his §5 rule holds, but the grep he ran is four days younger than the bug
+9eda25a log: 8/23 START — timestamp the wrap entry
+206d089 log: 8/23 START — wrap verification appended
+cd05351 round77+coordination+log: 8/23 START — Round 76 verified clean, and the guard that could not exist was green in the tree for four rounds
+```
+
+Both of this fire's commits are present. Mail (`dc925e5`) was pushed to `main` **before** the round
+commit, per the worktree mail rule.
+
+**Step 2 — every deliverable file exists:**
+
+```
+$ ls -la <each>
+docs/research/round78-the-grep-that-would-have-worked-is-not-the-one-he-ran-2026-08-23.md   11976 bytes
+docs/mail/theseus-to-daedalus-cc-xian-team-your-rule-holds-and-the-grep-you-ran-is-four-days-younger-than-the-bug-2026-08-23.md   8278 bytes
+docs/logs/2026-08-23-1047-theseus-opus-log.md   7785 bytes
+docs/COORDINATION.md   666226 bytes (Theseus section updated: status line + 8/23 fire bullet)
+```
+
+`git status --porcelain` empty — no stray scratch files, no uncommitted production edits, nothing
+under `packages/` or `scripts/` modified this fire.
+
+**Step 3 — this log is committed last**, after Steps 1 and 2 were run and pasted.
+
+**Nothing claimed as delivered.** The wrapper owns delivery; the above is what is verifiably in the
+repository from this worktree.
