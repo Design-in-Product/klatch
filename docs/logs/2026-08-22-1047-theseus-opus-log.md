@@ -278,3 +278,100 @@ suite re-run after the final revert.
 
 This log is committed last, in the same commit as the coordination update. Delivery is the wrapper's
 to confirm; what is verified above is that the commits and files are on `origin/main` as of this fire.
+
+---
+
+## 19:47 PT — STOP fire. Round 76: the classifier says the branch cannot fire, and the console says it did.
+
+**Session start.** Pulled state was current (wrapper synced to `origin/main` immediately before the
+fire; `db3ff58` at HEAD). Read `docs/COORDINATION.md` and swept `docs/mail/`. One memo addressed to
+me since the WORK fire: `daedalus-to-theseus-cc-xian-team-your-fix-named-a-shape-that-does-not-reach-
+the-branch-2026-08-22.md` (`13b77b7`), Daedalus's Round 75. It closes my §1 and §3 and states
+explicitly that nothing in it waits on me. So this fire owed no reply — it owed a re-measurement.
+
+**Re-measured his claims rather than accepting them.** Through the shipped modules, this session:
+
+```
+name = ""    | "Expanded own conversation:  12–38"    -> unknown | expand= null
+name = " "   | "Expanded own conversation:   12–38"   -> expand  | {"conversation":" ",...}
+name = "   " | "Expanded own conversation:     12–38" -> expand  | {"conversation":" ",...}
+name = "\t"  | "Expanded own conversation: \t 12–38"  -> expand  | {"conversation":"\t",...}
+-1/38, 1.5/38, 12/38.5                                -> unknown (all three)
+```
+
+All hold, including the three-spaces-in / one-space-out detail. His `recall.ts:688` (trim) and `:713`
+(guard) references verified in the file. I also checked the one thing that would have made his whole
+instruction circular and that nobody had checked: whether `tapInput.expand` is the wire or is derived
+from the summary. Derived, it would be `null` on every row the warning counts. **It is the wire** —
+`probe-recall-tool.mjs:1682`.
+
+**Finding, one file deeper than the last three rounds.** `scripts/lib/recall-call-kind.mjs:118`, the
+comment on the `kind: 'unknown'` return itself, says *"Neither form. Unreachable against today's
+producer — and that is the point of having it."* False, and false since Round 69. The branch fires
+today on an empty name, a negative position or a fractional position, from the shipped expand mode.
+So `tapWarnings` tells an operator the row is a model-side loose argument while the classifier tells
+a reader the branch cannot fire at all — i.e. that a nonzero count is an instrument fault. **Two
+halves of one instrument, routing the same row to opposite files.**
+
+The part I own: Round 72's commit subject is *"round72: the tap says captured-but-unreadable, and the
+unknown branch is reachable from today's producer"* (`e8262ef`) — and it touched `round71-…test.ts`
+and `recall-tap.mjs`, not this file. `recall-call-kind.mjs` has **one commit in its entire history**
+(`d17ef55`). Nobody has opened it in seven rounds.
+
+**Fixed the comment, only the comment.** No count, verdict, routing or classification moves — the
+category Daedalus claimed for Round 75 and I claimed for Round 74.
+
+**A second finding, drafted and killed by its own control.** I had it written: only *empty* is pinned
+in the tap's test file, so flooring and clamping `toolUseInputSummary` the way the executor already
+does would silently drop two of the console line's three shapes out of the branch. Ran the mutation
+instead of filing it:
+
+| Control | Mutation | Result |
+|---|---|---|
+| A | `Math.max(0, Math.floor(…))` on both positions in `toolUseInputSummary` | **red — exactly 2, and exactly the right 2** |
+
+```
+FAIL round56 > runs a negative start, clamped, …      Expected "…-1–38"  / Received "…0–38"
+FAIL round56 > floors a fractional end before reading Expected "…12–3.5" / Received "…12–3"
+```
+
+Daedalus's Round 73 pair (`round56-recall-expand.test.ts:1078,:1098`) is the guard, byte-exact on the
+renderer. Reverted; green after. I had looked in the tap's test file, not found it, and was one memo
+away from reporting an absence that was a failure to search under a second name — the CLAUDE.md trap,
+in the fire where I was auditing someone else's prose for precision.
+
+**Deliberately not done.** No test guarding the comment: a test that reads the module and goes red on
+any rewording is a brittle novel mechanism introduced mid-experiment to guard prose. No control on the
+fix, and said so rather than performing one — a comment has no runtime surface. The structural point
+is recorded instead: the console line's claims are assertable, so Rounds 74 and 75 caught each defect
+within a fire; the classifier's claim is a comment, and was wrong for seven rounds.
+
+**Open, unchanged, still xian's:** the distance arm go/no-go — `F=17, L=20, G=8`, 80 rows, five opus
+runs. Five consecutive fires across two agents have found defects in instruments, producers and prose
+rather than in data. That is still not a reason to run one.
+
+**Still on me and xian:** sequencing (3), (1), (2) as one commit at a round boundary, plus (4)
+independent, plus (5) from Round 75. Not sequenced in a STOP fire.
+
+**Mail state:** his memo and my reply both left in `docs/mail/` — the thread is parked on a sequencing
+call, not closed.
+
+**Cost:** zero API calls, zero live runs, no server started, no scratch files.
+
+---
+
+## Session wrap verification — STOP fire
+
+_Appended after the work above, per CLAUDE.md Session Wrap Protocol._
+
+**Step 1 — commits on `origin/main`:** (pasted below after the push)
+
+**Step 2 — deliverables:** (verified below)
+
+**Step 3 — suite and typecheck, after the final revert:**
+
+- `npx vitest run` (packages/server): **1423/1423 passing, 86 files** — unchanged from Argus's and
+  Daedalus's 18:02 figure, because this fire changed a comment and added no tests.
+- `npm run typecheck`: clean across `shared`, `server`, `client`.
+- `node --check` clean on `scripts/lib/recall-call-kind.mjs`.
+- `git status --porcelain` empty after the control revert and before committing.
