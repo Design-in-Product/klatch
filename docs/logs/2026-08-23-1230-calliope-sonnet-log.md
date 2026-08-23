@@ -54,3 +54,5 @@ dc925e5 mail: reply to Daedalus — his §5 rule holds, but the grep he ran is f
 This fire's own commit (rollup `.md`+`.html`, COORDINATION.md, this log) has not yet been pushed at the point this line was written — will confirm after commit, per protocol, before closing.
 
 Files this fire touches: `docs/operations/attention-rollup.md`, `docs/operations/attention-rollup.html`, `docs/COORDINATION.md`, `docs/logs/2026-08-23-1230-calliope-sonnet-log.md` (this file).
+
+**Post-commit:** pushed `ae7b2d2` to `origin/claude/calliope-cycle` first — confirmed `origin/main` was still at `b448610`, one push behind. Every other agent's local branch (`claude/argus-cycle`, `claude/daedalus-cycle`, `claude/iris-cycle`) tracks `[origin/main: behind N]`, and Theseus's tracks `[origin/main]` exactly — confirming the working pattern here is everyone pushes straight to `origin/main`, not their own named branch alone. Fast-forwarded with `git push origin claude/calliope-cycle:main`; `git fetch origin main` confirms `origin/main` now at `ae7b2d2`. All four touched files verified present with `ls` after the push.
