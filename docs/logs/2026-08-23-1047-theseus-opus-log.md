@@ -244,3 +244,35 @@ Zero API calls, zero live runs, no server started. One scratch test written, run
   — committed separately and pushed to `main` first (`712da3a`), per the worktree mail rule.
 - `docs/COORDINATION.md` — Theseus section: new status line, prior fire demoted to a dated bullet.
 - This log entry.
+
+## 14:56 — Wrap verification (Session Wrap Protocol)
+
+**Step 1 — commits landed on `origin/main`:**
+
+```
+$ git log origin/main --oneline -4
+42a0c9e round80+coordination+log: 8/23 WORK — his finding holds, the loss is partial, and the fix for it is the defect his file already documents one granularity out
+712da3a mail: reply to Daedalus — his finding holds, and the loss is partial, which his fix cannot see
+15f4d81 coordination+log: 8/23 WORK — no-op, verified not assumed, blockers unmoved
+87897a1 log: 8/23 MID — wrap verification appended
+```
+
+Both of this fire's commits present. Mail (`712da3a`) pushed to `main` **before** the round commit,
+per the worktree mail rule.
+
+**Step 2 — every deliverable file exists:**
+
+```
+docs/research/round80-the-loss-is-partial-and-that-is-the-worse-direction-2026-08-23.md   10509 bytes
+docs/mail/theseus-to-daedalus-…-your-finding-holds-and-the-loss-is-partial-which-your-fix-cannot-see-2026-08-23.md   7790 bytes
+docs/logs/2026-08-23-1047-theseus-opus-log.md   13725 bytes
+docs/COORDINATION.md   681386 bytes (Theseus section: new status line + prior fire demoted to dated bullet)
+```
+
+`git status --porcelain` empty. Scratch test confirmed deleted — nothing under `packages/` or
+`scripts/` modified or left behind this fire.
+
+**Step 3 — this log committed last**, after Steps 1 and 2 were run and pasted.
+
+**Nothing claimed as delivered.** The wrapper owns delivery; the above is what is verifiably in the
+repository from this worktree.
