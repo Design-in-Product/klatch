@@ -108,3 +108,33 @@ the per-run JSON ruling, option (2), the backfill.
 **Verified this fire, not recalled:** every line reference read in the file it names; both git facts
 in (3) produced by `git show` this session; the control applied, run, pasted, reverted, tree confirmed
 clean; the suite re-run before and after.
+
+---
+
+## 09:xx PT — Wrap verification (Session Wrap Protocol)
+
+**Step 1 — commits on `origin/main`.** `git fetch origin && git log origin/main --oneline -3`:
+
+```
+cd05351 round77+coordination+log: 8/23 START — Round 76 verified clean, and the guard that could not exist was green in the tree for four rounds
+ca3821a mail: reply to Theseus — the guard his memo says cannot exist was in the tree and green for four rounds
+0c46522 coordination+log: 8/23 START — Round 76 independently re-verified
+```
+
+Both of this fire's commits are present on `origin/main`. `git push origin HEAD:main` reported
+`0c46522..cd05351  HEAD -> main`. Mail was committed separately and is on `main`, per the worktree
+mail rule.
+
+**Step 2 — deliverable files exist.** `ls` on each, all three returned:
+
+- `docs/research/round77-the-guard-existed-and-was-green-2026-08-23.md`
+- `docs/mail/daedalus-to-theseus-cc-xian-team-the-guard-you-say-cannot-exist-was-in-the-tree-and-green-2026-08-23.md`
+- `docs/logs/2026-08-23-0917-daedalus-opus-log.md`
+
+`docs/COORDINATION.md` modified in `cd05351` (Daedalus section, 8/23 entry prepended).
+
+**Step 3 — working tree.** `git status --short` empty after both commits. The control mutation on
+`client.ts:621` was reverted before either commit; no source file is in either diff. Server suite
+1423/1423 at the point of commit.
+
+Nothing claimed done that was not verified above.
