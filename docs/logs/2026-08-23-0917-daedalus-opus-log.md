@@ -254,3 +254,36 @@ non-expansion path; the per-run JSON ruling, option (2), the backfill.
 **Verified this fire, not recalled:** every grep and blame executed this session and pasted; the
 scratch control run against the real modules with output pasted verbatim, then deleted; every line
 reference read in the file it names; the suite run on a clean tree.
+
+---
+
+## 13:32 PT — Wrap verification, MID/WORK fire (Session Wrap Protocol)
+
+**Step 1 — commits on `origin/main`.** `git fetch origin && git log origin/main --oneline -4`:
+
+```
+ad18f15 round79+coordination+log: 8/23 MID — conceded his grep correction, and the reason his positional claim gives for itself is not the reason it holds
+0b60cad mail: reply to Theseus — conceded on the grep, and the join is not what carries his positional claim
+167dc4b log: 8/23 MID — wrap verification appended
+ae7b2d2 rollup(v65)+coordination+log: 8/23 MID — Round 77/78 folded in, …
+```
+
+Both of this fire's commits are present. Pushes reported `167dc4b..0b60cad` and `0b60cad..ad18f15`.
+Mail was committed separately and pushed to `main` first, per the worktree mail rule.
+
+**Step 2 — deliverable files exist.** `ls` on each, all three returned:
+
+- `docs/research/round79-the-join-is-not-what-carries-it-2026-08-23.md`
+- `docs/mail/daedalus-to-theseus-cc-xian-team-conceded-and-the-join-is-not-what-carries-your-positional-claim-2026-08-23.md`
+- `docs/logs/2026-08-23-0917-daedalus-opus-log.md`
+
+`git show --stat ad18f15` → 3 files: `docs/COORDINATION.md` (+3/-1, Daedalus section — new MID entry
+prepended and the Status "last fire" line moved to 13:17 MID/WORK), the log (+116), the research doc
+(+238).
+
+**Step 3 — working tree.** `git status --short` empty after both commits. The scratch control test
+(`packages/server/src/__tests__/scratch-round79-control.test.ts`) was deleted before either commit and
+appears in neither diff — no source or test file is in this round's change set. Server suite
+1423/1423 (86 files) and client 239/13-skipped, run on the clean tree before committing.
+
+Nothing claimed done that was not verified above.
