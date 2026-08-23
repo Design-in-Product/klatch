@@ -166,3 +166,81 @@ under `packages/` or `scripts/` modified this fire.
 
 **Nothing claimed as delivered.** The wrapper owns delivery; the above is what is verifiably in the
 repository from this worktree.
+
+---
+
+# 14:47 — WORK fire (Round 80)
+
+Briefing done: `git log` (5), `docs/COORDINATION.md`, `ls docs/mail/`. One new memo addressed to me
+since my START fire —
+`daedalus-to-theseus-cc-xian-team-conceded-and-the-join-is-not-what-carries-your-positional-claim-2026-08-23.md`
+(13:17 PT). Read in full, acted on and replied to in this same fire. The two other commits in the
+window (`ad18f15`, `15f4d81`) are Daedalus's and Argus's own log/coordination traffic, not mine —
+checked by author via `git show --stat` rather than inferred from the commit subject.
+
+## 14:48 — What he asked and what I did with it
+
+His §3 is a finding against **my** file (`scripts/lib/recall-recogniser.mjs`) and it refutes the
+reason I gave for `headerExplainsTheEdge` surviving. I did not take it on the memo. I read the
+producer myself:
+
+- `recall.ts:573` and `:816` — both `gapSentences` call sites confirmed.
+- `:816` block: first `parts` element interpolates `"${candidates[0].name}"` raw. His §3 is right.
+- `recall.ts:291` `edgeGapLine` — address interpolated raw into the clause.
+- `recall.ts:882` `conversation: first.channelName` / `:901` `last.channelName` — **per excerpt**,
+  verified by `grep -n "channelName,"`. This is the line his argument turns on and it is what sent
+  me to the search path instead of the expand path.
+
+## 14:50–14:52 — Scratch vitest, six cases, deleted after
+
+Real `recallFromOtherConversations`, real `RECALL_MARKER_PHRASES`, real `buildRecogniser` imported
+from `scripts/lib/recall-recogniser.mjs`. No re-implementation of the split or the patterns.
+
+| case (2nd channel's name) | edgeLines | edgeReachable | blind | violations | D79 §4 flag | coverage check |
+|---|---|---|---|---|---|---|
+| `vesper-notes` (control) | 2 | 6 | false | [] | — | no fire |
+| `vesper\nnotes` | 1 | 3 | false | [] | **false** | fires |
+| `vesper\n\nnotes` | 1 | 3 | false | [] | **false** | fires |
+| `vesper; notes` | 2 | 6 | **true** | 1 | — | no fire |
+| `vesper "notes"` | 2 | 3 | **true** | 1 | — | no fire |
+| marker quoted inline in a turn | 2 | — | false | — | — | no fire |
+| marker pasted on its own line | 2 | — | false | — | — | **fires (false +)** |
+
+**The finding:** partial loss. His §4 mitigation is silent on the search path for *both* thresholds,
+because one intact conversation keeps `edgeLines` non-zero. And partial is worse than total — `3`
+where the answer is `6` is plausible in a way `0` is not.
+
+**Framing:** this is `clausesOf`'s own documented lesson one granularity out. His per-render check is
+passed by an intact neighbour *line* exactly as the old per-line check was passed by an intact
+neighbour *clause*.
+
+**My open control is closed:** the `; ` over-split behaves as its doc comment claims — loud, counts
+unaffected. That **corrects my own R79 note**: over-split cannot corrupt a count, because
+`reachable`/`unreachable` match `m[3]` whole and only `unreadClauses` splits.
+
+## 14:51 — An error of mine, caught mid-fire
+
+My first run showed a false positive on the quoted-marker control. It was **contaminated DB state** —
+the channel still carried the previous case's name, so the extra opener was the broken fragment, not
+the quoted turn. Re-ran with an explicit reset: false positive gone. The real one is a different
+control (pasted marker on its own line), found afterwards. Recording it because the output looked
+like the answer I was reaching for, which is the same failure mode as citing a recollection.
+
+## 14:53 — Suite and cost
+
+```
+Server: Test Files 86 passed (86) | Tests 1423 passed (1423)
+Client: Test Files 18 passed | 13 skipped (31) | Tests 239 passed | 13 skipped (252)
+```
+
+Matches Argus's 13:32 run and Daedalus's exactly. **No code, no test, no count changed this fire.**
+Zero API calls, zero live runs, no server started. One scratch test written, run, and deleted —
+`git status` verified below.
+
+## 14:53 — Deliverables
+
+- `docs/research/round80-the-loss-is-partial-and-that-is-the-worse-direction-2026-08-23.md`
+- `docs/mail/theseus-to-daedalus-cc-xian-team-your-finding-holds-and-the-loss-is-partial-which-your-fix-cannot-see-2026-08-23.md`
+  — committed separately and pushed to `main` first (`712da3a`), per the worktree mail rule.
+- `docs/COORDINATION.md` — Theseus section: new status line, prior fire demoted to a dated bullet.
+- This log entry.
