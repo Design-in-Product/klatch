@@ -138,3 +138,119 @@ mail rule.
 1423/1423 at the point of commit.
 
 Nothing claimed done that was not verified above.
+
+---
+
+## 13:17 PT — MID/WORK fire. Round 79: conceded his grep correction, and the reason his own positional claim gives for itself is not the reason it holds.
+
+**Spend: zero API calls, zero live runs, no server started. No code changed.**
+
+**Briefing.** Wrapper-synced tree current. `git log`: since my 09:27 wrap, Theseus's three 8/23 START
+commits (`dc925e5` mail, `beeb1d6` round78, `b448610` wrap) and Calliope's two MID commits (`ae7b2d2`
+rollup v65, `167dc4b` wrap). Read `docs/COORDINATION.md` (my section) and `docs/mail/`. One memo
+addressed to me, delivered 13:17 today:
+`theseus-to-daedalus-…-your-rule-holds-and-the-grep-you-ran-is-four-days-younger-than-the-bug-2026-08-23.md`.
+Read in full and replied in this fire.
+
+**(1) His §2 verified and conceded flat.** All three rows of his table reproduced this session:
+
+```
+$ git grep -in "unknown branch" e8262ef -- scripts packages
+e8262ef:…/round71-…test.ts:434: … 'the live producer reaches the unknown branch on data alone' …   [1 hit — the assertion]
+$ git grep -in "today.s producer" e8262ef -- scripts packages
+…/round71-…test.ts:403  |  scripts/lib/recall-call-kind.mjs:118                                    [2 hits, opposite polarity]
+```
+
+`d17ef55`: 0 / 1. `HEAD`: 2 (one his citation at `recall-call-kind.mjs:128`) / 3. My Round 77 §5
+demonstration was run in the corrected tree — the collision exists *because* his Round 76 rewrite
+quoted my assertion's message into the comment. **I validated a grep in the tree where the bug was
+already fixed, one section after writing that a mechanism which can only fire after the bug is fixed
+is not a guard.** Rule survives; demonstration withdrawn.
+
+**(2) His replacement string is correctly dated; its one positive case is his own coinage.** Produced
+this fire:
+
+```
+$ git blame -L 118,118 d17ef55 -- scripts/lib/recall-call-kind.mjs   → Theseus, 2026-08-21
+$ git blame -L 403,403 e8262ef -- …/round71-…test.ts                 → Theseus, 2026-08-22
+$ git grep -in "today.s producer" d17ef55 -- docs | wc -l            → 0
+$ git grep -in "today.s producer" HEAD    -- docs | wc -l            → 96
+```
+
+Both colliding lines his, one day apart, and the phrase had zero prior occurrences in `docs/` — the
+96 are downstream of the coinage, not house style he drew on. The mechanism is **author-consistency**,
+not proposition-structure. Same standing he gave my §5; second independent reason not to enforce
+either rule.
+
+**(3) The finding — `scripts/lib/recall-recogniser.mjs`, first file of his §5 sweep.** His claim:
+`headerExplainsTheEdge`'s `text.split('\n\n')[0]` survives *"because both `gapSentences` call sites
+(`recall.ts:573`, `:816`) `parts.join(' ')`"*. Citations all check. **The join is not what carries
+it.** `join(' ')` gives one paragraph only if no *element* of `parts` holds a blank line — true at
+`:573` (all literals), false at `:816`, whose first element interpolates `candidates[0].name`.
+Unconstrained: `routes/channels.ts:144` rejects only `!name?.trim()`, `createChannel` (`queries.ts:162`)
+inserts raw, schema `name TEXT NOT NULL` (`db/index.ts:45`), `expandConversationRange` (`recall.ts:688`)
+`.trim()`s the request. Interior newlines survive all four.
+
+**Run, not reasoned.** Scratch vitest importing the *real* `buildRecogniser` and real
+`expandConversationRange` — no re-implementation of the split. Twelve turns, expand 4–6:
+
+```
+BASELINE 'vesper-1-1'   headerExplainsTheEdge: true   edgeLines: 2
+ODD 'vesper\n\n1-1'  edgeHeaderStem in text: true   split[0]="Positions 4–6 of \"vesper"
+                     headerExplainsTheEdge: false   headerExplainsTheMarker: false
+                     edgeLines: 0  edgeReachable: 0  edgeUnreachable: 0
+                     recogniserBlind: false  addressesOffered: []  addressArithmeticOk: true
+                     expectationViolations: []
+N1  'vesper\n1-1'    edgeLines: 0  edgeReachable: 0  edgeUnreachable: 0
+                     recogniserBlind: false  addressesOffered: []  addressArithmeticOk: true
+```
+
+Render content-correct in all three (both markers, both addresses right); only the reading fails.
+Two thresholds: `\n\n` breaks the header flags **with the sentence present** — the failure he named
+and said the join ruled out; and **a single `\n` is enough for the worse one**, which no join
+anywhere touches — the name also goes into the edge marker's address, splitting each edge line across
+three physical lines so `EDGE_LINE` (per-line; `read()` splits on `'\n'` at `:114`) matches nothing.
+
+**Why (the single-`\n` case) is the finding:** `recogniserBlind: false`, `expectationViolations: []`.
+Every guard clean and every number zero — the false zero the file's own comment 26 lines up
+(`:135-140`) says deriving patterns from the record made "unreachable in practice". Deriving from the
+record closes **vocabulary** drift; it does nothing about **line geometry** broken by interpolated
+data, and the blind flag is downstream of a segmentation that already dropped the rows. Adjacent to,
+and not a resolution of, the `clausesOf` over-split he labelled *checked by construction and NOT run*
+— his is clause-level, this is line-level — but it is an **executed** counterexample in the same
+"it fails loudly" family.
+
+**Scope, stated honestly:** probe corpus names are `design-review`-shaped. **No published number is
+wrong and I am not claiming one is.** The defect is in the memo's stated reason and in the
+instrument's loudness guarantee. Round 76's killed second finding is the standard I held to.
+
+**(4) Mitigation proposed, not shipped** (change set still parked). Instrument-only, one expression:
+`edgeHeaderStem` in `text` **and** `edgeLines === 0` → the render explained a marker it then failed
+to find. Fires on both thresholds, derived from the record like everything else in the file.
+Name-sanitising at the write boundary is the other fix and is a product call. **Explicitly rejected:**
+a test pinning `parts.join(' ')` at both sites — it passes in every failing case above, because it
+guards the stated reason rather than the claim. My own Round 77 §5 error, one level in.
+
+**(5) Floor question — his correction taken, settled against my reading.** Not carrying "nearing its
+floor" forward. Third straight fire to find something.
+
+**Suite.** Server **1423/1423 (86 files)**, client **239 passed / 13 skipped** — run at the end of the
+fire on a clean tree. Scratch file deleted before the run; `git status --short` empty.
+
+**Artifacts:**
+- `docs/research/round79-the-join-is-not-what-carries-it-2026-08-23.md`
+- `docs/mail/daedalus-to-theseus-cc-xian-team-conceded-and-the-join-is-not-what-carries-your-positional-claim-2026-08-23.md` (separate commit, pushed to `main` as `0b60cad`)
+- `docs/COORDINATION.md` — Daedalus section updated.
+
+**Open, still xian's:** sequencing of (3),(1),(2) as one commit at a round boundary, plus (4)
+independent, plus (5); the §(4) instrument flag joins that queue. And the **distance arm go/no-go** —
+nine fires across two agents have found defects in instruments, producers and prose rather than in
+data; still not a reason to run the arm.
+
+**Also open, not mine:** Theseus's four unopened single-commit instrument files and his unrun
+`clausesOf` over-split control; per-condition reporting; the K-vs-J miss case; the 0/12
+non-expansion path; the per-run JSON ruling, option (2), the backfill.
+
+**Verified this fire, not recalled:** every grep and blame executed this session and pasted; the
+scratch control run against the real modules with output pasted verbatim, then deleted; every line
+reference read in the file it names; the suite run on a clean tree.
