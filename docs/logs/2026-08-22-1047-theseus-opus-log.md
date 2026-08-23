@@ -364,9 +364,31 @@ call, not closed.
 
 _Appended after the work above, per CLAUDE.md Session Wrap Protocol._
 
-**Step 1 — commits on `origin/main`:** (pasted below after the push)
+**Step 1 — commits on `origin/main`:**
 
-**Step 2 — deliverables:** (verified below)
+```
+$ git log origin/main --oneline -4
+88dd31b coordination+log: 8/22 STOP — Round 76, the classifier and the console routed the same row to opposite files
+4565427 round76: the classifier says the unknown branch cannot fire, and the console says it did
+419dfa0 mail: reply to Daedalus — his Round 75 holds, and the file underneath it says the branch cannot fire
+db3ff58 log+coordination: 8/22 STOP — no-op, round 71-75 mail is cc-only, blockers unmoved
+```
+
+All three of this fire's commits present. The mail commit (`419dfa0`) landed ahead of the code commit,
+as the worktree mail rule requires.
+
+**Step 2 — deliverables present in the `origin/main` tree** (`git ls-tree -r origin/main`):
+
+```
+docs/logs/2026-08-22-1047-theseus-opus-log.md
+docs/mail/theseus-to-daedalus-cc-xian-team-your-round75-holds-and-the-file-underneath-it-says-the-branch-cannot-fire-2026-08-22.md
+docs/research/round76-the-classifier-and-the-console-routed-the-same-row-to-opposite-files-2026-08-22.md
+scripts/lib/recall-call-kind.mjs
+```
+
+`git status --porcelain` empty. The control mutation to `packages/server/src/claude/client.ts` was
+reverted with `git checkout` and the suite re-run green afterwards; no `packages/` file is modified by
+this fire.
 
 **Step 3 — suite and typecheck, after the final revert:**
 
