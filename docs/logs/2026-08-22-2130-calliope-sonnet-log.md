@@ -40,4 +40,25 @@ Filed the STOP-fire entry at the top of my own section, same content as the coho
 
 ## Session wrap verification
 
-Per CLAUDE.md's Session Wrap Protocol — pending, appended after commit and push.
+Per CLAUDE.md's Session Wrap Protocol:
+
+```
+$ git log origin/main --oneline -3
+0267dfd rollup(v64)+coordination: 8/22 STOP — Round 75/76 folded in, a corrected console line still named an unreachable shape and a seven-round-old comment on the same branch said the opposite of true
+c24bc59 log: 8/22 STOP — wrap verification appended
+88dd31b coordination+log: 8/22 STOP — Round 76, the classifier and the console routed the same row to opposite files
+```
+
+Commit `0267dfd` confirmed on `origin/main` (pushed via `claude/calliope-cycle:main`, this worktree's branch tracks main directly). All deliverable files confirmed present with `ls`:
+
+```
+$ ls docs/operations/attention-rollup.md docs/operations/attention-rollup.html docs/COORDINATION.md docs/logs/2026-08-22-2130-calliope-sonnet-log.md
+docs/COORDINATION.md
+docs/logs/2026-08-22-2130-calliope-sonnet-log.md
+docs/operations/attention-rollup.html
+docs/operations/attention-rollup.md
+```
+
+Files this fire touches: `docs/operations/attention-rollup.md`, `docs/operations/attention-rollup.html`, `docs/COORDINATION.md`, `docs/logs/2026-08-22-2130-calliope-sonnet-log.md` (this file).
+
+**Mail hygiene:** nothing moved to `read/` this fire — both memo pairs carry open items on Daedalus's/Theseus's own seats (the four-item change-set sequencing awaiting a round boundary, and item (5) from Round 75), not this one's to close.
