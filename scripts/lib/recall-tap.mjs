@@ -472,15 +472,38 @@ export function tapWarnings(summary) {
   // `tapInput.expand` and deciding whether the arguments are well-formed, which is the
   // `readExpandArg` reimplementation the whole join exists to refuse (Round 58). The tap
   // hands the operator the bytes and the test to run on them, and stops.
+  //
+  // Round 75 (Daedalus), and it is a defect in Round 74's fix — third instance of the same
+  // class in three fires, this time in the correction itself. Round 74's line named "an
+  // empty **or blank** conversation name" as a shape that lands here. Measured through the
+  // shipped modules: it does not. `EXPAND_SUMMARY`'s `(.+)` matches a single whitespace
+  // character, so `'Expanded own conversation:    12–38'` (name `'   '`) parses as a clean
+  // expand with `conversation: ' '` and verdicts `ACCEPTED_EXPAND` — the tap's quietest
+  // verdict, never flagged, never counted here. Only the exactly-empty name reaches this
+  // branch. So an operator who read Round 74's line, grepped `tapInput.expand` for a blank
+  // name and found one would believe they had explained a row that is not in this count —
+  // the wrong-file failure Round 74 was written to stop, one word further in. The line now
+  // says which one is which, because "empty" and "blank" are the same word colloquially and
+  // the operator is the person who cannot afford them to be.
+  //
+  // The blank row is a real and separate finding, pinned not fixed: the executor trims and
+  // refuses it (`recall.ts:688,713`) exactly as it refuses the empty one, so the producer
+  // makes no distinction between the two and the tap reports them at opposite ends of its
+  // scale. Narrowing `EXPAND_SUMMARY` would move rows between verdicts mid-experiment —
+  // the Round 58 refusal — so it joins the parked change set instead. Pinned in
+  // `round56-recall-expand.test.ts` (producer half) and below (classifier half).
   if (summary.unreadableSummaryCalls > 0) {
     out.push(`← ${summary.unreadableSummaryCalls} UNREADABLE SUMMARY: the tap CAPTURED a `
       + 'frame for these calls and the artifact summary is in a vocabulary the classifier '
       + 'does not recognise, so the tap declined to adjudicate rather than guess. The raw '
       + 'arguments the model sent ARE in this run\'s JSON (`tapInput`) — adjudicate from '
       + 'those, not from the summary. Two causes produce this and they need different '
-      + 'responses. Check `tapInput.expand` FIRST: a LOOSE ARGUMENT the model sent (an '
-      + 'empty or blank conversation name, a negative or fractional position) renders into '
-      + 'a summary the classifier cannot parse with no producer change at all. Only if '
+      + 'responses. Check `tapInput.expand` FIRST: a LOOSE ARGUMENT the model sent — a '
+      + 'conversation name that is exactly the empty string, or a negative or fractional '
+      + 'position — renders into a summary the classifier cannot parse with no producer '
+      + 'change at all. A whitespace-only name is not one of them: it parses, scores as '
+      + 'ACCEPTED_EXPAND and never reaches this count, so finding one has NOT explained '
+      + 'this row (the executor refuses it too — separate finding, Round 75). Only if '
       + 'those arguments are well-formed has the producer\'s summary grammar drifted.');
   }
   // The remainder, and the subtraction is the point: before Round 72 this line printed

@@ -1041,6 +1041,40 @@ describe('Round 73 — a loose expand argument, and what each half of the server
     expect(result.text).toContain('pass the address an edge marker gave you');
   });
 
+  it('refuses a whitespace-only name exactly as it refuses an empty one', () => {
+    // Round 75, added to this block because it belongs beside the other three shapes:
+    // the executor draws no line between `''` and `'   '` — `:688` trims before the `:713`
+    // guard — so both are the same refusal, with the same reply.
+    //
+    // The reason it is worth its own case is what happens on the *other* side of the
+    // server. The empty name renders a summary the probe's classifier cannot parse; the
+    // whitespace one renders `'Expanded own conversation:    12–38'`, which parses, because
+    // the classifier's `(.+)` matches a space. So two calls the producer treats identically
+    // are read as maximally different by the instrument — and the difference is a regex
+    // accident, not a property of the producer. Pinned here, from the producer side only:
+    // nothing in this file imports the instrument (see this block's header), and the
+    // classifier half is in `round71-probe-tap-joins-the-wire-to-the-artifact.test.ts`.
+    //
+    // Not fixed, same rule as the three above and as Round 73's deferral: tightening
+    // `readExpandArg` to reject blank names changes routing, and tightening the classifier
+    // moves rows between verdicts mid-experiment. Both are the Round 58 refusal. This test
+    // is what makes the deferral safe to hold — it turns red the moment either side moves.
+    const input = { expand: { conversation: '   ', from: 12, to: 38 } };
+    expect(toolUseInputSummary(RECALL_TOOL_NAME, input)).toBe(
+      'Expanded own conversation:     12–38',
+    );
+
+    const result = expandConversationRange(agent, klatch, input.expand);
+    expect(result.isError, 'refused, exactly as the empty name is').toBe(true);
+    expect(result.matchCount).toBe(0);
+    expect(result.text).toContain('pass the address an edge marker gave you');
+
+    // The two refusals are byte-identical, which is the point: the producer has one
+    // behaviour here and the two rows only come apart downstream.
+    const emptyResult = expandConversationRange(agent, klatch, { conversation: '', from: 12, to: 38 });
+    expect(result.text).toBe(emptyResult.text);
+  });
+
   it('runs a negative start, clamped, and states the positions it actually returned', () => {
     // The row that *does* match "accepted and executed": `from: -1` survives
     // `readExpandArg`, `getEntityTranscriptRange` clamps the low end to 1

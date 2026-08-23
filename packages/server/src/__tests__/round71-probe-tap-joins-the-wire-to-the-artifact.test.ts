@@ -513,4 +513,77 @@ describe('Round 71 — the tap fails loudly, or not at all', () => {
     expect(warnings.some((w: string) => w.includes('1 flagged call(s)') && w.includes('no frame reached them'))).toBe(true);
     expect(warnings.join(' '), 'the halves sum to unresolvedCalls, never exceed it').not.toContain('2 flagged call(s)');
   });
+
+  /**
+   * Round 75 (Daedalus, 2026-08-22 STOP) — a defect in Round 74's fix, which was itself a
+   * defect in Round 72's fix. Third instance in three fires of the same class: the console
+   * names a cause the reader cannot check, and the reader stops looking.
+   *
+   * Round 74's line named "an empty **or blank** conversation name" among the shapes that
+   * land in UNREADABLE SUMMARY. Blank does not. `EXPAND_SUMMARY` is
+   * `/^Expanded own conversation:\s+(.+)\s+(\d+)–(\d+)$/` and `(.+)` happily matches a
+   * single space, so a whitespace-only name parses — `readCallKind` returns `kind: 'expand'`
+   * with `conversation: ' '`, and the row scores `ACCEPTED_EXPAND`. It is never flagged
+   * (`tapSummary`'s predicate is `noQuery || kind === 'unknown'`) and never counted here.
+   *
+   * The failure is the one Round 74 was written to prevent, one word further in: an
+   * operator reads the line, greps `tapInput.expand`, finds a blank name and concludes they
+   * have explained the row. They have explained a different row — one the tap called clean.
+   *
+   * **The blank row is a real finding and is deliberately not fixed here.** The executor
+   * trims and refuses it (`recall.ts:688,713`) exactly as it refuses the empty one, so the
+   * producer draws no distinction between two rows the tap reports at opposite ends of its
+   * scale — loudest unscorable warning vs. quietest clean verdict — and the discriminator
+   * between them is a regex accident. Narrowing `EXPAND_SUMMARY` or adding a trim to
+   * `readCallKind` would move rows between verdicts mid-experiment, which is the Round 58
+   * refusal and the same rule Round 73 applied to `readExpandArg` and Round 74 to the
+   * fixture swap. It joins the parked change set as item (5); the producer half is pinned in
+   * `round56-recall-expand.test.ts`.
+   *
+   * Note what `ACCEPTED_EXPAND` does *not* claim: its docstring says "summary says expand,
+   * wire says expand", and "accepted" there means accepted by `readExpandArg`. That is true
+   * of the blank row. So this is not a mislabelled verdict — the tap is silent about
+   * executor outcomes by design, and that is exactly why the console line had to be the
+   * thing corrected rather than the classifier.
+   *
+   * Controls, run before commit:
+   *   A  restore "an empty or blank conversation name"      → red (`not.toMatch` fires)
+   *   B  the lazy fix — delete "or blank", say nothing more  → red (no whitespace clause)
+   * B is the one worth having. "Empty" and "blank" are the same word in ordinary use, so
+   * deleting one of them leaves the operator's wrong conclusion exactly as reachable while
+   * reading as a fix. The line has to say which is which, so the assertion demands it.
+   */
+  it('does not tell the operator a blank conversation name lands in UNREADABLE SUMMARY', () => {
+    // The behavioural anchor, computed here so the prose assertions below are not
+    // free-floating string checks: empty reaches the branch, whitespace-only does not.
+    const empty = readCallKind('Expanded own conversation:  12–38');
+    const blank = readCallKind('Expanded own conversation:    12–38');
+    expect(empty.kind, 'exactly-empty is unparseable').toBe('unknown');
+    expect(blank.kind, 'whitespace-only parses instead').toBe('expand');
+    expect(blank.expand.conversation, 'and parses to a name made of one space').toBe(' ');
+
+    // Both rows through the real join, with a frame each. They land on opposite verdicts.
+    const calls = [empty, blank];
+    const frames = [
+      { inputSummary: empty.inputSummary, toolInput: { expand: { conversation: '', from: 12, to: 38 } } },
+      { inputSummary: blank.inputSummary, toolInput: { expand: { conversation: '   ', from: 12, to: 38 } } },
+    ];
+    const alignment = alignTapToCalls(frames, calls);
+    expect(alignment.verdicts).toEqual([TAP_VERDICT.UNREADABLE_SUMMARY, TAP_VERDICT.ACCEPTED_EXPAND]);
+
+    const summary = tapSummary(alignment, calls);
+    expect(summary.unreadableSummaryCalls, 'one row, not two').toBe(1);
+    expect(summary.flaggedCalls, 'the blank row is not even flagged').toBe(1);
+
+    const warnings = tapWarnings(summary).join(' ');
+    // Control A: Round 74's wording asserted the false shape outright.
+    expect(warnings, "the shape that does not reach this count is not listed as one that does")
+      .not.toMatch(/empty or blank/);
+    // Control B: the lazy fix drops "or blank" and stops, leaving the two words to be read
+    // as synonyms. The line must name the distinction, not merely avoid the false half.
+    expect(warnings, 'the blank case is named as NOT explaining the row')
+      .toMatch(/whitespace-only name is not one of them/);
+    expect(warnings, 'and the true shape is still named exactly')
+      .toMatch(/exactly the empty string/);
+  });
 });

@@ -262,3 +262,123 @@ reverted before commit.
 
 **Same caveat as this morning:** Step 1 was run before this block was written, so the commit carrying
 this block is by construction not in its own output.
+
+---
+
+# STOP fire — 2026-08-22 17:17 PT
+
+Third fire of the day. Session-start protocol run: worktree synced by the wrapper (`210fa9d`),
+`docs/COORDINATION.md` read, `docs/mail/` listed. One new memo addressed to me since the MID fire:
+`theseus-to-daedalus-cc-xian-team-your-correction-taken-and-the-same-defect-was-in-my-console-line-2026-08-22.md`
+(17:17 stamp, arrived with the sync). Read in full, in the same turn.
+
+## 17:18 PT — independent re-verification of Round 74
+
+`git diff dc00fb8..HEAD --stat -- packages/ scripts/` → two files, +51/−6: `recall-tap.mjs` (+19/−1)
+and `round71-…test.ts` (+38/−4). No other tracked file under `packages/` or `scripts/` touched.
+**Read the diff itself, not the memo.** Theseus's Round 74 is as described: the `UNREADABLE SUMMARY`
+console line no longer ends "Producer-side grammar drift is the likely cause"; it names two causes
+argument-first, and the test asserts an *ordering* (`driftAt > argAt`) rather than a negative, so
+his own Control B — the lazy fix that deletes the drift clause — goes red too.
+
+Suite re-run by me: server **1421/1421** (86 files), client **239 passed / 13 skipped**, typecheck
+clean across all three packages. Matches his claimed figures.
+
+## 17:25 PT — Round 75: his fix names a shape that does not reach the branch
+
+Checking the new console line's claims one at a time rather than reading them. The line lists, as
+shapes that produce `UNREADABLE SUMMARY`: "an empty **or blank** conversation name, a negative or
+fractional position." Ran all four through the shipped modules:
+
+```
+readCallKind('Expanded own conversation:  12–38')            → unknown  (name '')
+readCallKind('Expanded own conversation:   12–38')           → expand   {conversation: ' ', …}
+readCallKind('Expanded own conversation:     12–38')         → expand   {conversation: ' ', …}
+readCallKind('Expanded own conversation: \t 12–38')          → expand   {conversation: '\t', …}
+readCallKind('Expanded own conversation: vesper-1-1 -1–38')  → unknown
+readCallKind('Expanded own conversation: vesper-1-1 12–3.5') → unknown
+```
+
+and through the verdict layer:
+
+```
+''    → unknown → unreadable-summary
+' '   → expand  → accepted-expand
+'   ' → expand  → accepted-expand
+'\t'  → expand  → accepted-expand
+```
+
+**Blank does not reach the branch.** `EXPAND_SUMMARY`'s `(.+)` matches a single space, so a
+whitespace-only name hands the match one space *more* than it needs and it succeeds with
+`conversation: ' '`; an empty name hands it one *less* and it fails. `readCallKind` never re-checks
+`m[1]` (`recall-call-kind.mjs:88-98`), and `tapSummary` flags only `noQuery || kind === 'unknown'`,
+so the blank row produces no warning at all. The discriminator between the loudest unscorable
+warning and the quietest clean verdict is one space character.
+
+Consequence, and it is Round 74's own failure one word further in: an operator reads the line,
+greps `tapInput.expand`, finds a blank name and stops. They have explained a row the tap called
+clean, not the row they are holding.
+
+## 17:34 PT — what I fixed, what I refused, and the controls
+
+**Fixed:** the console prose only. Names the empty string exactly, and names the whitespace case as
+one that does *not* explain the row. Defended against my own rule before making it — no count, no
+verdict, no routing, no classification moves; the same category Theseus claimed for Round 74 and I
+upheld. I am not claiming a wider one for myself.
+
+**Did not take the one-word fix.** Deleting "or blank" reads as a correction and leaves the wrong
+conclusion exactly as reachable, because "empty" and "blank" are the same word in ordinary use.
+Ran it as Control B.
+
+| Control | Mutation | Result |
+|---|---|---|
+| A | Restore Theseus's wording verbatim | red — `expected '← 1 UNREADABLE SUMMARY…' not to match /empty or blank/` |
+| B | Delete "or blank", say nothing more — *the lazy fix* | red — `expected … to match /whitespace-only name is not one of them/` |
+
+Both applied via edit, run, output pasted, reverted. Exactly one test red each time, mine.
+
+**Refused, pinned instead:** the blank row itself. `recall.ts:688` trims before the `:713` guard, so
+the executor refuses `'   '` and `''` with byte-identical text — the producer has one behaviour and
+the instrument reports two. Narrowing `EXPAND_SUMMARY` or trimming `m[1]` moves rows between
+verdicts mid-experiment: Round 58, the rule I applied to `readExpandArg` in Round 73 and Theseus
+applied to his own fixture swap this morning. `EXPAND_SUMMARY` additionally carries a documented
+byte-identity guarantee to the pre-extraction probe. Joins the parked set as **item (5)**.
+
+**Recorded so a later fire doesn't "fix" it:** `ACCEPTED_EXPAND` means accepted *by `readExpandArg`*,
+which is true of the blank row. Not a mislabelled verdict. The tap is silent about executor outcomes
+by design, and that is exactly why the console sentence was the right thing to change.
+
+## 17:41 PT — deliverables
+
+- `scripts/lib/recall-tap.mjs` — one console string + the comment above it
+- `packages/server/src/__tests__/round71-probe-tap-joins-the-wire-to-the-artifact.test.ts` — +1 test
+  (classifier + console half)
+- `packages/server/src/__tests__/round56-recall-expand.test.ts` — +1 test (producer half); the
+  existing split kept, since nothing in `round56` imports the instrument
+- `docs/research/round75-the-correction-named-a-shape-that-does-not-reach-the-branch-2026-08-22.md`
+- `docs/mail/daedalus-to-theseus-cc-xian-team-your-fix-named-a-shape-that-does-not-reach-the-branch-2026-08-22.md`
+  — committed separately and pushed to `main` first, per the worktree mail rule
+
+Also, from checking my own board rather than the code: the `Next` bullet in my COORDINATION section
+sits inside a block stamped 2026-08-09 while the fire log above it is current to today. Verified
+before annotating — `grep -rn source_channel_id packages/server/src/db/` returns nothing, so `#2` is
+stale in date but not in content. Annotated the `Updated` stamp rather than rewriting the bullet.
+Also noted a naming drift another reader would trip on: the 13:17 LaunchAgent is `daedalus-WORK`,
+but entries from 8/21 label that slot MID. Same fire, two names; recorded, not renamed mid-cycle.
+
+**Mail state:** Theseus's memo stays in `docs/mail/` with my reply beside it — the change set is
+parked on a sequencing call that is his and xian's, so the thread is not closed. Nothing in my reply
+is waiting on him.
+
+**Cost this fire:** zero API calls, zero live runs, no server started. No scratch files created;
+both controls reverted before commit.
+
+**Standing, unchanged and still xian's:** the distance arm go/no-go (`F=17, L=20, G=8`, 80 rows,
+five opus runs). Four consecutive fires across Theseus and me have now found defects in instruments,
+producers and prose rather than in data. That is still not a reason to run one.
+
+**STOP procedure, per `docs/operations/duty-cycle-klatch-v0.2.md:136-140`:** final sync done (mail
+pushed to `main` mid-fire, rest below); closing entry is this block; session log closed here.
+**Question-box check:** nothing for the newsletter this fire — three consecutive rounds of
+prose-level defects in a measurement instrument is a real pattern, but it is not yet a finished
+thought and I'd rather Calliope have it when it is.
