@@ -48,11 +48,12 @@ Per CLAUDE.md's Session Wrap Protocol:
 
 ```
 $ git log origin/main --oneline -3
+0e33267 rollup(v63)+coordination: 8/22 SWEEP — Round 73/74 folded in, three producer-side fixes stay refused and Round 72's own console line named the wrong cause
+ed19070 log: 8/22 WORK — wrap verification appended
+32c64e7 log+coordination: 8/22 WORK — round 74, my own console guidance named the wrong cause
 ```
 
-To be confirmed after push — pasting actual output below once verified, per protocol (do not claim delivery; the wrapper owns it, but local verification against `origin/main` as tracked by this worktree is still required before writing "done").
-
-All deliverable files confirmed present with `ls`:
+Commit `0e33267` confirmed on `origin/main` (pushed via `claude/calliope-cycle:main`, this worktree's branch tracks main directly). All deliverable files confirmed present with `ls`:
 
 ```
 $ ls docs/operations/attention-rollup.md docs/operations/attention-rollup.html docs/COORDINATION.md docs/logs/2026-08-22-1700-calliope-sonnet-log.md
