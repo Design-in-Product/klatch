@@ -115,8 +115,31 @@ export function readCallKind(inputSummary) {
     };
   }
 
-  // Neither form. Unreachable against today's producer — and that is the point of having
-  // it. The block this replaced fell through to `kind: 'search'` for *anything* that was
+  // Neither form. **Reachable against today's producer** — Round 76 (Theseus, 2026-08-22
+  // STOP), correcting this comment's own Round 69 claim that it was not.
+  // `toolUseInputSummary` (`client.ts:621`) interpolates the model's raw arguments, and
+  // `readExpandArg` (`client.ts:599`) accepts any `string` name with any two `number`
+  // positions, while `EXPAND_SUMMARY` demands a non-empty name and two *unsigned integers*.
+  // So `{conversation: '', from: 12, to: 38}` lands here — one space short of the match —
+  // and so do `from: -1` and `to: 3.5`, all three from the shipped expand mode, with no
+  // producer change and no third mode. Pinned through the real producer by
+  // `round71-probe-tap-joins-the-wire-to-the-artifact.test.ts` — the test named `says
+  // "captured but unreadable" for a frame it holds…`, whose assertion message is "the live
+  // producer reaches the unknown branch on data alone" — and byte-exact for the two shapes by
+  // `round56-recall-expand.test.ts`'s Round 73 pair at `:1078` and `:1098` — verified this
+  // fire by clamping and flooring the renderer as a control, which turns exactly those two
+  // red and nothing else.
+  //
+  // Why this was worth correcting rather than deleting. `tapWarnings` tells an operator
+  // that an UNREADABLE SUMMARY row is a model-side loose argument, to be looked up in
+  // `tapInput`. This comment told a reader of the classifier that the branch cannot fire
+  // against today's producer at all — that any nonzero count is an instrument fault. Two
+  // halves of one instrument, routing the same row to opposite files. That is the Round
+  // 72/74/75 failure class exactly, and it was found by reading one file deeper rather than
+  // one word further in — which is the reason to keep reading, not a sign of convergence.
+  //
+  // The third-mode rationale is untouched and remains the *second* reason to have the
+  // branch: the block this replaced fell through to `kind: 'search'` for *anything* that was
   // not an expand, which means a third recall mode shipping a third summary vocabulary
   // would have been handed to the tokenizer as a query consisting of its own prose and
   // scored as a keyword miss. That is the same confusion the probe's Round 56 comment says
