@@ -138,3 +138,91 @@ before the suite run and appears in neither diff; `.testdata/` is unmodified (th
 copy, never in place). No source or test file is in this round's change set.
 
 Nothing claimed done that was not verified above.
+
+## 13:17 PT — MID/WORK fire. Round 85.
+
+Session-start briefing done: pulled state (wrapper synced), read `docs/COORDINATION.md`, read
+`docs/mail/` — one new memo to me, Theseus's Round 84
+(`theseus-to-daedalus-cc-xian-team-the-corpus-we-both-called-missing-was-in-git-ls-files-2026-08-24.md`,
+13:17 arrival). Answered in this fire.
+
+**Zero API spend, no live runs, no server started. No product code changed.**
+
+### What I did
+
+**1. Rebuilt Round 84 rather than checking it.** `P` from `recall.ts`, cap from
+`carried-context.ts`, patterns from `buildRecogniser`, parse from the shipped
+`parseClaudeCodeSessionFromContent`, row rule read off `queries.ts:1308-1327`. All eleven cells
+identical: 155 rows / 199 838 chars / mean 1 289.3 / 0 openers / 0 well-formed / 0 matched /
+0 orphans / 0 stem / 0 straddles / 9 over cap (5.8 %). **No correction to any number in Round 84.**
+His date limit verified under `git log -S`: markers landed `483c598` 2026-08-15, phrases `b9a9fd2`
+2026-08-16, corpus ends 2026-03-22.
+
+**2. Ran the control his method lacked.** He positive-controlled the recogniser, not the
+extraction. The parser retains **199 838 of 4 112 645 bytes = 4.86 %**, so a zero there had two
+readings. Measured the widest corpus — all 17 files, all 4 112 645 raw bytes, unparsed,
+newline-unescaped: **0 openers, 0 matched, 0 orphans, 0 stem.** The discard hides nothing;
+strengthens Round 84 rather than correcting it. Exclusions checked rather than assumed: 12 of 17
+files yield no rows, 11 are 100 % `isSidechain`, the 12th is five `file-history-snapshot` events.
+
+**3. Found the predicate under four rounds is half blind — while trying to agree with him.** I
+went to report that my Round 83 doc pasted a live marker into prose. My broad predicate
+disagreed with three published rounds, so I reconstructed both forms at both refs instead of
+assuming mine was right:
+
+| `docs/**.md` | openers | matched | orphans |
+|---|---|---|---|
+| `9558902^` line-start | 7 | 4 | 3 |
+| `9558902^` anywhere | 22 | 4 | 18 |
+| HEAD line-start | 10 | 4 | 6 |
+| HEAD anywhere | 30 | 4 | 26 |
+
+Line-start reproduces Rounds 82/83/84 exactly. It cannot see a marker quoted mid-sentence in
+backticks — which my Round 83 §1 does. **His +0 stands** (correct under the shared predicate) and
+**Round 83 §3 is withdrawn**. Both predicates now reported side by side, mid-sentence control unit
+added to the positive control and the suite.
+
+**4. One correction to Round 84, on the denominator not the zero.** 12 of 17 files contribute
+nothing; 4 fixtures contribute 12 rows and **583 chars total** (mean 48.6); **143 of 155 rows and
+99.7 % of chars are one session**, 2026-03-11→03-22 (measured — the filename names only the last
+day). Honest bound: 0/143 real rows, **n = 1 session**. Makes his db ask more justified, not less.
+
+**5. His §5 cap correction is right, and the number was already committed.** The docblock on the
+cap constant itself (`carried-context.ts:66-75`) predicts ~8 % over cap; measured 5.8 %. Neither
+of us read it — same category of miss as the corpus that was in `git ls-files`.
+
+### Built (so nobody rebuilds this a fourth time)
+
+- `scripts/measure-marker-floor.mjs` — transcripts (default) / `--db <path>` / `--docs <ref>`.
+  Positive control runs first and exits non-zero rather than reporting. Counts only, never a
+  message body (deliberately unlike its two content-blind neighbours — stated in the header).
+  DBs readonly + `fileMustExist` + `PRAGMA table_info`-probed; `better-sqlite3` imported lazily.
+- `scripts/lib/marker-floor.mjs` — classifier extracted so the test certifies the code the script
+  runs, per `recall-recogniser.mjs`'s own stated reason.
+- `packages/server/src/__tests__/round85-marker-floor.test.ts` — 6 tests.
+
+Verified: `npx tsx scripts/measure-marker-floor.mjs --docs '9558902^'` prints 1 310 / 7 / 4 / 3 /
+3 stem / 818 over cap (62.4 %) / 0 straddles — all seven Round 82–84 cells.
+
+**Compliance measured rather than claimed** (the specific thing Round 83 got wrong): all five
+artifacts this fire read 0 openers under both predicates and 0 stem.
+
+### Suite
+
+Run on the clean tree after `.scratch-r85*/` were removed: server **1429/1429 (87 files)**, client
+**239 passed / 13 skipped**; `npm run typecheck` clean across all three workspaces.
+
+### Artifacts
+
+- `docs/research/round85-the-discarded-95-percent-hides-nothing-and-the-155-rows-are-one-session-2026-08-24.md`
+- `docs/mail/daedalus-to-theseus-cc-xian-team-your-zero-survives-the-widest-corpus-and-the-predicate-under-it-is-half-blind-2026-08-24.md`
+- `scripts/measure-marker-floor.mjs`, `scripts/lib/marker-floor.mjs`,
+  `packages/server/src/__tests__/round85-marker-floor.test.ts`
+- `docs/COORDINATION.md` — Daedalus section updated
+
+### Open, unchanged, and xian's
+
+Copy `~/klatch-inbound/dbs/klatch-main.db` into `.testdata/` in **both** worktrees. A file copy,
+not a build. Only xian can do it: the source is outside every agent's sandbox and `.gitignore:33`
+keeps `.testdata/` from travelling through git. When it lands:
+`npx tsx scripts/measure-marker-floor.mjs --db .testdata/klatch-main.db`.
