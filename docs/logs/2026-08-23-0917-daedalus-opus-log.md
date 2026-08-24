@@ -287,3 +287,111 @@ appears in neither diff — no source or test file is in this round's change set
 1423/1423 (86 files) and client 239/13-skipped, run on the clean tree before committing.
 
 Nothing claimed done that was not verified above.
+
+---
+
+## 17:17 PT — STOP fire, Round 81
+
+**Briefing.** Pulled state was current (wrapper synced immediately before the fire; `git status -sb`
+showed `claude/daedalus-cycle...origin/main` with no divergence). Read `docs/COORDINATION.md`
+Daedalus section and the Argus/Theseus entries; `ls docs/mail/` showed one new file addressed to me
+since the 13:17 fire — `theseus-to-daedalus-cc-xian-team-your-finding-holds-and-the-loss-is-partial-which-your-fix-cannot-see-2026-08-23.md`
+(landed with commit `712da3a`, his Round 80 at `42a0c9e`). Read in full, in this fire, and replied in
+this fire.
+
+**Cost.** Zero API calls, zero live runs, no server started. One scratch vitest
+(`packages/server/src/__tests__/scratch-round81-control.test.ts`), run twelve ways, deleted before
+the suite. `git status --short` empty before it was written and after it was removed.
+
+**(1) His Round 80 §3 reproduced, not accepted.** Real `recallFromOtherConversations`, real
+`RECALL_MARKER_PHRASES`, real `buildRecogniser` imported from `scripts/lib/recall-recogniser.mjs` —
+no re-implementation of the split or the patterns. Search path, two conversations of eight turns,
+term at position 3, radius 2. His three rows came back identical:
+
+```
+control  'vesper-notes'    edgeLines: 2  edgeReachable: 6  blind: false  violations: 0
+\n       'vesper\nnotes'   edgeLines: 1  edgeReachable: 3  blind: false  violations: 0
+\n\n     'vesper\n\nnotes' edgeLines: 1  edgeReachable: 3  blind: false  violations: 0
+```
+
+`addressArithmeticOk: true` and `headerExplainsTheEdge: true` throughout. His §6 self-correction
+also reproduced — a `'; '` name gives `recogniserBlind: true`, one violated expectation, and
+`edgeReachable: 6`, **unharmed** — and his §7 quoted-name contrast (`"` in the name → `edgeReachable:
+3` *and* blind).
+
+**(2) My R79 §4 flag withdrawn, and for a stronger reason than he gave.** He said it is silent on
+partial. It is also *structurally subsumed*: `edgeHeaderStem` is emitted iff `edgeGaps > 0`
+(`recall.ts:615`), and `edgeGaps` accumulates in the **second** pass over `keptExcerpts`
+(`recall.ts:530-539`) — over what renders, not what was fetched. So stem-present implies a marker
+line is on the page; with `edgeLines === 0` that line pushes his §5 count above `matched`. §4 ⟹ his
+check, always. Confirmed empirically by the vocabulary-drift row. Off the queue as a standalone
+option.
+
+**(3) His explicitly-unrun narrow variant — run.** Confirmed his stated reasoning (misses the `\n`
+case) and extended it (also misses `\n\n`). **Corrected the conclusion it was offered for:** narrow
+does not avoid the false positive it was narrowed for. His FP line
+`[… 3 later message(s) pasted …]` is *well-formed*, so requiring `P.close` keeps it; narrowing
+removes the elided paste, not the complete one.
+
+**(4) The finding — `broad ≡ narrow ∨ orphan`.** Third candidate this fire, **orphan**: some line
+opens with `P.open` and carries no `P.close`. Twelve cases:
+
+| case | §4 | broad | narrow | orphan |
+|---|---|---|---|---|
+| `\n` / `\n\n` partial loss | no | **yes** | no | **yes** |
+| vocabulary drift, geometry intact | **yes** | **yes** | **yes** | no |
+| partial drift, interior marker only | no | **yes** | **yes** | no |
+| complete marker pasted on its own line | no | **FP** | **FP** | no |
+| elided marker pasted on its own line | no | **FP** | no | **FP** |
+| long turn truncated mid-paste at 4 k | no | **FP** | no | **FP** |
+| inline quote / control / `; ` / `"` / truncated-after-paste | no | no | no | no |
+
+Union exact on every row. Proved rather than tallied: `openers = wellFormed + orphans`, and every
+recognised line is well-formed because `GAP_LINE` and `EDGE_LINE` both anchor `rx(P.close) + '$'`
+(`recall-recogniser.mjs:45`, `:53`), so `wellFormed ≥ matched`; if `orphans === 0` the two
+predicates coincide, and if `orphans > 0` both fire.
+
+**Why it is more than tidiness.** His §10 hands xian *"a choice between two known-imperfect
+checks"*. The decomposition says it is two independent decisions, and his noise-floor objection —
+*"our own transcripts paste these markers constantly"* — reaches **narrow** (whose only FP is the
+complete paste, the shape a quoting transcript actually contains) and does **not** reach orphan.
+Orphan is clean on the complete paste, on the inline quote, and on a long turn truncated *after* a
+complete paste. The half that answers his §3 is the half his own argument doesn't touch.
+
+**(5) My own false positive, found by looking.** Orphan looked too clean, so I checked the
+truncation path: `formatTranscriptLine` slices content at 4 000 chars and appends the truncation
+notice (`carried-context.ts:263-265`), so a paste straddling the cap loses its close and reads as an
+orphan. Control — same 4 200-char turn with the marker at the *front* — does not fire, so it is the
+boundary and not the length. Filed **measured, not recommended**, the standing Theseus gave broad.
+Frequency unmeasured; no number offered.
+
+**(6) A setup error of mine, recorded.** My first run of his row 7 showed no fire in any check,
+which looked briefly like a refutation of his false positive. It was my setup — the pasted turn was
+at position 6, past the trailing edge, where it never renders. His row is right. Same class as the
+contaminated-state error he recorded in his §9: a null result that looked like the answer.
+
+**Not run, stated as such.** A partial *edge*-vocabulary drift (one clause wording changing while
+another holds) — row 12 is the interior-marker analogue only. The identity in (4) does not depend on
+it; narrow's coverage claim is stated over the two drift rows actually run.
+
+**Scope.** Probe corpus names are `design-review`-shaped. **No published number is wrong and I am
+not claiming one is.** Every defect this round is in the instrument's loudness guarantee and in the
+shape of the proposal on xian's desk.
+
+**Suite.** Server **1423/1423 (86 files)**, client **239 passed / 13 skipped** — run at the end of
+the fire on a clean tree, scratch file already deleted.
+
+**Artifacts:**
+- `docs/research/round81-his-check-is-two-checks-and-only-one-of-them-has-an-objection-2026-08-23.md`
+- `docs/mail/daedalus-to-theseus-cc-xian-team-your-check-is-two-checks-and-the-objection-only-reaches-one-2026-08-23.md` (separate commit, pushed to `main` as `f9cabcb`)
+- `docs/COORDINATION.md` — Daedalus section updated.
+
+**Open, xian's:** R79 sequencing of (3),(1),(2) + the instrument flag — now **two** decisions rather
+than one binary, with the geometry half carrying no standing objection — plus the change set still
+unshipped. **Distance arm go/no-go:** eleventh fire; defects still in instruments and prose rather
+than in data; still not a reason to run the arm.
+
+**Verified this fire, not recalled:** every count above produced by the scratch run against the real
+modules and pasted verbatim; every line reference read in the file it names (`recall.ts:615`,
+`:530-539`; `recall-recogniser.mjs:45`, `:53`; `carried-context.ts:263-265`); the suite run on a
+clean tree.
