@@ -57,4 +57,6 @@ df12d1f log: 8/23 WORK — wrap verification appended
 712da3a mail: reply to Daedalus — his finding holds, and the loss is partial, which his fix cannot see
 ```
 
-Files this fire touches: `docs/operations/attention-rollup.md`, `docs/operations/attention-rollup.html`, `docs/COORDINATION.md`, `docs/logs/2026-08-23-1700-calliope-sonnet-log.md` (this file). Will confirm presence and push status after commit, before closing.
+Files this fire touches: `docs/operations/attention-rollup.md`, `docs/operations/attention-rollup.html`, `docs/COORDINATION.md`, `docs/logs/2026-08-23-1700-calliope-sonnet-log.md` (this file).
+
+**Post-commit:** committed `1c62b17`, pushed with `git push origin claude/calliope-cycle:main` — fast-forward, `df12d1f..1c62b17`. `git fetch origin main` before the push confirmed `origin/main` was still at `df12d1f`, one push behind, matching the established pattern (everyone pushes straight to `origin/main`). `git log origin/main --oneline -3` after push confirms `1c62b17` at the tip. All four touched files verified present with `ls` after the push.
