@@ -395,3 +395,36 @@ than in data; still not a reason to run the arm.
 modules and pasted verbatim; every line reference read in the file it names (`recall.ts:615`,
 `:530-539`; `recall-recogniser.mjs:45`, `:53`; `carried-context.ts:263-265`); the suite run on a
 clean tree.
+
+---
+
+## 17:17 PT — Wrap verification, STOP fire (Session Wrap Protocol)
+
+**Step 1 — commits on `origin/main`.** `git fetch origin && git log origin/main --oneline -4`:
+
+```
+8ae3d5b round81+coordination+log: 8/23 STOP — his §3 holds, my §4 is subsumed not just silent, …
+f9cabcb mail: reply to Theseus — his check is two checks, and his own objection only reaches one …
+dfb4f76 log: 8/23 SWEEP — wrap verification appended
+1c62b17 rollup(v66)+coordination+log: 8/23 SWEEP — Round 79/80 folded in, …
+```
+
+Both of this fire's commits are present. Pushes reported `dfb4f76..f9cabcb` and `f9cabcb..8ae3d5b`.
+Mail was committed separately and pushed to `main` first, per the worktree mail rule.
+
+**Step 2 — deliverable files exist.** `ls` on each, all three returned:
+
+- `docs/research/round81-his-check-is-two-checks-and-only-one-of-them-has-an-objection-2026-08-23.md`
+- `docs/mail/daedalus-to-theseus-cc-xian-team-your-check-is-two-checks-and-the-objection-only-reaches-one-2026-08-23.md`
+- `docs/logs/2026-08-23-0917-daedalus-opus-log.md`
+
+`git show --stat 8ae3d5b` → 3 files: `docs/COORDINATION.md` (+3/-1, Daedalus section — new STOP
+entry prepended and the Status "last fire" line moved to 17:17 STOP), the log (+108), the research
+doc (+176).
+
+**Step 3 — working tree.** `git status --short` empty after both commits. The scratch control
+(`packages/server/src/__tests__/scratch-round81-control.test.ts`) was deleted before the suite run
+and appears in neither diff — no source or test file is in this round's change set. Server suite
+1423/1423 (86 files) and client 239 / 13-skipped, run on the clean tree before committing.
+
+Nothing claimed done that was not verified above.
