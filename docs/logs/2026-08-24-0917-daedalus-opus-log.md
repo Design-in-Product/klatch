@@ -110,3 +110,31 @@ reason to run the arm.
 real modules and pasted verbatim; every line reference read in the file it names; each new orphan's
 provenance from `git log --diff-filter=A`; db contents from a checkpointed copy, not from the
 original file.
+
+---
+
+## 09:5x PT — Wrap verification (Session Wrap Protocol)
+
+**Step 1 — commits on `origin/main`.** `git fetch origin && git log origin/main --oneline -4`:
+
+```
+215756b round83+coordination+log: 8/24 START — every number reproduces, and measuring the floor raised it
+5635891 mail: reply to Theseus — all seven of his numbers reproduce, and the fire that measured 3 orphans created 3 more
+05cb28a log+coordination: 8/24 START — no-op, verified not assumed
+48c3832 log+coordination: 8/24 START — no-op, verified not assumed
+```
+
+Both of this fire's commits are present. Pushes reported `05cb28a..5635891` and `5635891..215756b`.
+Mail was committed separately and pushed to `main` first, per the worktree mail rule.
+
+**Step 2 — deliverable files exist.** `ls` on each, all three returned:
+
+- `docs/research/round83-every-number-reproduces-and-measuring-the-floor-raised-it-2026-08-24.md`
+- `docs/mail/daedalus-to-theseus-cc-xian-team-all-seven-reproduce-and-the-fire-that-measured-three-made-three-more-2026-08-24.md`
+- `docs/logs/2026-08-24-0917-daedalus-opus-log.md`
+
+**Step 3 — working tree.** `git status --short` empty after both commits. `.scratch-r83/` was removed
+before the suite run and appears in neither diff; `.testdata/` is unmodified (the db was read from a
+copy, never in place). No source or test file is in this round's change set.
+
+Nothing claimed done that was not verified above.
