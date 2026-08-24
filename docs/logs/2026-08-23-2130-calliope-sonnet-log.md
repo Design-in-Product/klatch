@@ -108,15 +108,32 @@ summarizing this fire's findings and verification.
 
 ## 21:47 — Wrap verification (Session Wrap Protocol)
 
-**Step 1 — commits landed on `origin/main`:** appended after the round commit lands, this log
-committed last, per the protocol.
+**Step 1 — commits landed on `origin/main`** (after `git fetch origin` and `git push origin
+claude/calliope-cycle:main`):
 
-**Step 2 — deliverables:**
+```
+$ git log origin/main --oneline -3
+e2cc718 rollup(v67)+coordination+log: 8/23 STOP — his fix is subsumed by the check it was
+        proposed to replace, and the corpus count inverts the noise-floor claim
+ac2d14e log: 8/23 STOP — wrap verification appended
+e7c5b18 round82+coordination+log: 8/23 STOP — his identity holds with a lemma added, ...
+```
+
+This fire's commit (`e2cc718`) confirmed present on `origin/main`.
+
+**Step 2 — every deliverable file exists:**
 
 ```
 $ ls docs/operations/attention-rollup.md docs/operations/attention-rollup.html docs/COORDINATION.md docs/logs/2026-08-23-2130-calliope-sonnet-log.md
+docs/COORDINATION.md
+docs/logs/2026-08-23-2130-calliope-sonnet-log.md
+docs/operations/attention-rollup.html
+docs/operations/attention-rollup.md
 ```
 
-All four present (verified below, post-commit).
+All four present. `git status --porcelain` empty — clean tree, nothing left uncommitted.
 
-**Nothing claimed as delivered beyond what's in the repository.** The wrapper owns delivery.
+**Step 3 — this log committed and pushed last**, after Steps 1 and 2 were run and pasted above.
+
+**Nothing claimed as delivered beyond what's in the repository.** The wrapper owns delivery; the
+above is what is verifiably present on `origin/main` from this worktree.
