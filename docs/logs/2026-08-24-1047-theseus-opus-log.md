@@ -138,3 +138,109 @@ worktree mail discipline.
 ```
 
 All four present. **Step 3 — this log is committed last**, after Steps 1 and 2 were verified.
+
+---
+
+## 14:47 PT — WORK fire. Round 86.
+
+**Briefing.** Wrapper synced the tree pre-fire. Read `docs/COORDINATION.md` §Theseus Prime and `ls docs/mail/`
+— one new memo to me: `daedalus-to-theseus-cc-xian-team-your-zero-survives-the-widest-corpus-and-the-predicate-under-it-is-half-blind-2026-08-24.md`
+(his Round 85). Read in full and replied in this same fire.
+
+**Cost: zero API calls, zero live runs, no server.** Five scratch `.mts` under `.scratch/`, run, deleted
+before commit. **No code changed** — nothing under `packages/` or `scripts/`.
+
+### What I did
+
+**1. Rebuilt Round 85 on a second instrument.** Patterns assembled in a fresh scratch module from `P`
+(`recall.ts:151`) and the cap (`carried-context.ts:76`) — deliberately *not* importing
+`scripts/lib/marker-floor.mjs`, so this is an independent instrument rather than a second run of his.
+
+Transcripts: **155 rows · 199 838 chars · mean 1 289.3 · 0/0/0 narrow · 0/0/0 broad · 0 stem · 9 over cap
+(5.8 %)**. Raw bytes: 17 files · **4 112 645 bytes** · 0 under both. `docs/**.md` at HEAD: narrow
+**10/4/6**, broad **30/4/26**, stem 7, 833 of 1 328 over cap.
+
+His §4 denominators all exact: 143 rows / 199 255 chars / 99.7 % from the primary transcript; 4 fixtures
+= 12 rows / 583 chars; 12 zero-row files = 11 at 100 % `isSidechain` + `research/1f171719-…` at five
+`file-history-snapshot` events and nothing else; primary transcript's own event timestamps span
+**2026-03-11 → 2026-03-22**. **No correction to any number in Round 85.** One commit hash: he named
+`483c598` as where markers landed; `5848778` (Round 52) is one commit earlier, same day, and is the first.
+
+**2. His §3 finding is real; the inference from it is too strong, and structurally so.** `GAP_LINE` and
+`EDGE_LINE` (`recall-recogniser.mjs:43-54`) are `^…$`-anchored on the *trimmed* line, so
+`read ⟹ the line starts with the opener ⟹ the narrow branch also fires`. **`matchedAnywhere ≡ matched`
+for every possible input.** Verified three ways — empirically (rows 0/0, raw 0/0, docs **4/4**),
+adversarially (a space-prefixed well-formed marker: narrow `0/0`, broad `1/0`), and arithmetically on his
+own table (26 − 6 = 20 = 30 − 10, so every broad-only opener lands in orphans and none in matched).
+**The false-positive floor is `matched`, and it could not have moved.**
+
+**3. Where the finding does bite, classified rather than characterised.** Per opener occurrence I recorded
+whether `P.close` appears later on the same line and whether a digit follows the opener:
+
+| | closed+digit | closed, no digit | open, no digit | open+digit |
+|---|---|---|---|---|
+| narrow orphans (6) | 0 | 0 | 0 | **6** |
+| broad-only (20) | 14 | 3 | 2 | 1 |
+
+All 6 narrow orphans are one severed signature. **17 of 20 broad-only lines carry an intact close** —
+nothing severed. 2 of the remaining 3 quote the `open` field as a bare string literal in a pasted JSON
+record and are not markers at all. Proposed three named counts (`read` 4 / `severed` 6 / `embedded` 17 /
+residue 3) and **deliberately did not land it** — his module, and `marker-floor.mjs:24-45` argues the
+two-predicate design, so the columns and the argument should move in one commit.
+
+**4. The finding of the fire: the DB we have been asking xian for is tracked in git.**
+`git ls-files -- 'backups/*'` → `backups/klatch.db.backup-2026-03-14`, **5 230 592 bytes**. A real
+populated multi-channel klatch DB inside every agent's sandbox — **139 channels, 2 652 rows,
+2 823 903 chars** — and it is *named in the docblock Daedalus quoted in his own §5*
+(`carried-context.ts:30-32`). Both of us read that docblock this week; neither read the path in it.
+
+Measured with my own classifier, `better-sqlite3` readonly on a `.scratch/` copy so the tracked file is
+never opened for write, counts only, no message body read out: **0/0/0 narrow · 0/0/0 broad · 0 stem ·
+0 straddles · 90 over cap (3.4 %) · mean 1 064.8**. Cross-checked identical on every cell against
+`scripts/measure-marker-floor.mjs --db` (his instrument, my corpus), positive control passing first.
+
+n goes from 1 session to 139 channels (85 with at least one row, 23 substantive carrying 98.9 % of
+characters). Rule-of-three bound tightens **~2.1 % → ~0.11 %**. **Honest limit travels with it:** the
+backup is 2026-03-14, the first marker landed 2026-08-15 — 154 days. It can hold no true positive. Clean
+noise-floor corpus, useless for anything else, same as the transcripts at 17× the size.
+
+**Consequence: the ask to xian is withdrawn.** `~/klatch-inbound/dbs/klatch-main.db` is a genuinely
+different corpus and still nice-to-have, but it is not blocking and nobody should be waiting on it.
+
+**5. Correction to his §5.** With the docblock's corpus in hand the comparison runs against the corpus
+itself. Filtered to `LENGTH(content) > 0` (**n = 2 600**) — a filter pinned rather than guessed, because
+it reproduces all three counts exactly and no other filter I tried does (whole DB 558/2 302; `claude-ai`
+only 639/2 416; assistant rows only 1 013/2 751):
+
+| docblock | measured |
+|---|---|
+| median 580 | **580** exact |
+| p90 2 334 | **2 334** exact |
+| max 64 627 | **64 627** exact |
+| "~92 % are under this" | **96.5 %** — off by 4.5 points |
+
+Three measurements and one estimate, and the estimate is the one his §5 read as agreement with the corpus.
+True over-cap exposure: docblock corpus **3.5 %**, whole March DB **3.4 %**, transcripts **5.8 %**,
+`docs/**.md` **62.7 %**. The design decision it supports is untouched and still right. The sentence has
+been in the tree since `c863300` (Round 38, 2026-08-12) beside three exact counts; the cap has never
+changed, and ~92 % would correspond to a ~2 625-char threshold.
+
+**Unit note, immaterial at this cap:** that largest row is 64 627 by SQLite `LENGTH()` and 64 628 by JS
+`.length` — one non-BMP character. Calibration in characters, enforcement in code units
+(`carried-context.ts:308`).
+
+### Open / unchanged
+
+- **Lever withdrawn.** Nothing on this arm is waiting on xian.
+- **One open code item, Daedalus's:** the three-count instrument, if he takes the reading in §3.
+- **Ordering stays undecided** and still has nothing to partition — 0 openers at 2 652 rows as at 155.
+- **Every corpus reachable from inside the sandbox now reads zero.** The next real evidence has to come
+  from a post-2026-08-15 corpus, and none is in the repo. A statement about what is left, not an ask.
+- **Distance arm go/no-go remains xian's.** Unchanged.
+
+### Deliverables
+
+- `docs/research/round86-the-db-the-ask-was-for-is-tracked-in-git-and-the-floor-is-predicate-invariant-2026-08-24.md`
+- `docs/mail/theseus-to-daedalus-cc-xian-team-the-db-we-asked-xian-for-was-tracked-in-git-and-the-floor-cannot-move-2026-08-24.md`
+- `docs/COORDINATION.md` — Theseus Prime section updated
+- this log
