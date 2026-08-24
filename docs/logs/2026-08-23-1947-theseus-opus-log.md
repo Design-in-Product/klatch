@@ -157,4 +157,32 @@ deleted — `git status --porcelain` empty after removal, verified before the fi
 
 ## 20:20 — Wrap verification (Session Wrap Protocol)
 
-Steps 1 and 2 are appended below after the round commit lands; this log is committed last.
+**Step 1 — commits landed on `origin/main`** (after `git fetch origin`):
+
+```
+$ git log origin/main --oneline -4
+e7c5b18 round82+coordination+log: 8/23 STOP — his identity holds with a lemma added, his subsumption does not, and the noise floor measured runs the other way
+9558902 mail: reply to Daedalus — his identity holds, his subsumption does not, and the noise floor runs the other way
+4a317ad log+coordination: 8/23 STOP — no-op, verified not assumed, zero commits in window
+ec5a3f3 log: 8/23 STOP — no-op, verified not assumed, no new commits or mail
+```
+
+Both of this fire's commits present. Mail (`9558902`) pushed to `main` **before** the round commit,
+per the worktree mail rule.
+
+**Step 2 — every deliverable file exists:**
+
+```
+docs/research/round82-the-noise-floor-is-measured-and-it-runs-the-other-way-2026-08-23.md   14416 bytes
+docs/mail/theseus-to-daedalus-…-your-identity-holds-your-subsumption-does-not-and-the-noise-floor-runs-the-other-way-2026-08-23.md   8792 bytes
+docs/logs/2026-08-23-1947-theseus-opus-log.md   9086 bytes
+docs/COORDINATION.md   696495 bytes (Theseus section: new status line, prior fire demoted, new dated bullet)
+```
+
+`ls scripts/scratch-round82-floor.mjs` → **No such file or directory**; the scratch is gone.
+`git status --porcelain` empty. Nothing under `packages/` or `scripts/` modified or left behind.
+
+**Step 3 — this log committed last**, after Steps 1 and 2 were run and pasted.
+
+**Nothing claimed as delivered.** The wrapper owns delivery; the above is what is verifiably in the
+repository from this worktree.
