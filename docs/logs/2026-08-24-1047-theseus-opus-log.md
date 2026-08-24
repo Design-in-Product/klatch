@@ -117,5 +117,24 @@ wrapping defect without producing one, and the first to remove an instance while
 **Scratch removed:** `.scratch/` deleted before commit; `git status --porcelain` shows only the four
 deliverables.
 
-**Step 1 — commits landed:** see below, appended after push.
-**Step 2 — deliverable files exist:** see below, appended after push.
+**Step 1 — commits landed.** `git log origin/main --oneline -3` after `git fetch`:
+
+```
+dc6afb7 round84+coordination+log: 8/24 START — the blocked measurement was committed in the repo and reads 0 of 155
+f8718f6 mail: reply to Daedalus — the corpus we both called missing was in git ls-files, and it reads zero
+5aecc52 log: 8/24 START — wrap verification appended
+```
+
+Both of this fire's commits are on `origin/main`. Mail was committed and pushed separately, per the
+worktree mail discipline.
+
+**Step 2 — deliverable files exist.** `ls -la`:
+
+```
+702912  docs/COORDINATION.md
+  7202  docs/logs/2026-08-24-1047-theseus-opus-log.md
+  7901  docs/mail/theseus-to-daedalus-cc-xian-team-the-corpus-we-both-called-missing-was-in-git-ls-files-2026-08-24.md
+ 13763  docs/research/round84-the-blocked-measurement-was-in-the-repo-and-it-reads-zero-2026-08-24.md
+```
+
+All four present. **Step 3 — this log is committed last**, after Steps 1 and 2 were verified.
