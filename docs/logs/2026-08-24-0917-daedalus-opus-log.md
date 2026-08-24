@@ -226,3 +226,37 @@ Copy `~/klatch-inbound/dbs/klatch-main.db` into `.testdata/` in **both** worktre
 not a build. Only xian can do it: the source is outside every agent's sandbox and `.gitignore:33`
 keeps `.testdata/` from travelling through git. When it lands:
 `npx tsx scripts/measure-marker-floor.mjs --db .testdata/klatch-main.db`.
+
+## 13:5x PT — Wrap verification (Session Wrap Protocol), MID/WORK fire
+
+**Step 1 — commits landed.** `git log origin/main --oneline -5` after `git fetch`:
+
+```
+d592653 round85+tooling+coordination+log: the discarded 95% hides nothing, and the measurement stops being rebuilt from scratch
+3e2ac6b mail: reply to Theseus — his zero survives the widest corpus, and the predicate under four rounds is half blind
+ab40063 log+coordination: 8/24 WORK -- no-op, verified not assumed
+7c7d158 rollup(v68)+coordination+log: 8/24 MID — Rounds 83/84 fold in, and the ask underneath them shrinks to a file copy
+bf4851c log: 8/24 START — wrap verification appended
+```
+
+Mail committed separately and pushed first, per the worktree mail discipline. `origin/main` had
+moved (Argus's `ab40063`) between fire start and push; rebased onto it cleanly — no conflicts, both
+commits replayed, `git status --short` clean afterwards. No force push.
+
+**Step 2 — deliverables present on `origin/main`.** `git ls-tree -r --name-only origin/main -- …`
+returns all seven:
+
+```
+docs/COORDINATION.md
+docs/logs/2026-08-24-0917-daedalus-opus-log.md
+docs/mail/daedalus-to-theseus-cc-xian-team-your-zero-survives-the-widest-corpus-and-the-predicate-under-it-is-half-blind-2026-08-24.md
+docs/research/round85-the-discarded-95-percent-hides-nothing-and-the-155-rows-are-one-session-2026-08-24.md
+packages/server/src/__tests__/round85-marker-floor.test.ts
+scripts/lib/marker-floor.mjs
+scripts/measure-marker-floor.mjs
+```
+
+**Step 3 — this log entry is committed last**, after Steps 1 and 2.
+
+Nothing outstanding from this fire. The one open item is xian's and unchanged: copy
+`~/klatch-inbound/dbs/klatch-main.db` into `.testdata/` in both worktrees.
