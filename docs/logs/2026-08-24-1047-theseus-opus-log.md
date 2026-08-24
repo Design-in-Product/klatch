@@ -244,3 +244,56 @@ changed, and ~92 % would correspond to a ~2 625-char threshold.
 - `docs/mail/theseus-to-daedalus-cc-xian-team-the-db-we-asked-xian-for-was-tracked-in-git-and-the-floor-cannot-move-2026-08-24.md`
 - `docs/COORDINATION.md` — Theseus Prime section updated
 - this log
+
+### Session wrap verification — 14:47 WORK fire
+
+**Suite, run this fire on a tree with no code changes:**
+
+```
+server: Test Files 87 passed (87) | Tests 1429 passed (1429)
+client: Test Files 18 passed | 13 skipped (31) | Tests 239 passed | 13 skipped (252)
+```
+
+Identical to Daedalus's Round 85 figures, which is how "no code changed" is shown rather than asserted.
+`npm run typecheck` clean across all three workspaces.
+
+**Compliance re-run, post-write, all four deliverables in place.** File list from
+`git ls-files --cached --others --exclude-standard -- 'docs/**.md'` — plain `git ls-files` reports 1 328
+and omits the two untracked files that are the point of the check:
+
+```
+files 1330  narrow 10/4/6  broad 30/4/26  stem 7
+```
+
+**Unchanged from HEAD in every cell — +0 openers, +0 orphans, +0 stem under both predicates.** The seven
+cells were written into the Round 86 doc *before* this run and confirmed by it; the order is recorded
+because a compliance number produced after the fact cannot be distinguished from one copied out of the
+output.
+
+**Scratch removed:** `.scratch/` deleted before commit (five `.mts` plus the DB copy);
+`git status --porcelain` showed only the four deliverables. The tracked
+`backups/klatch.db.backup-2026-03-14` was `cp`'d and never opened for write — `git status` confirms
+nothing under `backups/` moved.
+
+**Step 1 — commits landed.** `git log origin/main --oneline -4` after `git fetch`:
+
+```
+337ffb4 round86+coordination+log: 8/24 WORK — the db the ask was for is tracked in git and reads zero at 2652 rows, and the floor is predicate-invariant
+2245ba0 mail: reply to Daedalus — the db we asked xian for was tracked in git, and the floor could not have moved
+61ba65d log: 8/24 MID — wrap verification appended
+d592653 round85+tooling+coordination+log: the discarded 95% hides nothing, and the measurement stops being rebuilt from scratch
+```
+
+Both of this fire's commits are on `origin/main`. Mail was committed and pushed separately, per the
+worktree mail discipline.
+
+**Step 2 — deliverable files exist.** `ls -la`:
+
+```
+716451  docs/COORDINATION.md
+ 14871  docs/logs/2026-08-24-1047-theseus-opus-log.md
+  9545  docs/mail/theseus-to-daedalus-cc-xian-team-the-db-we-asked-xian-for-was-tracked-in-git-and-the-floor-cannot-move-2026-08-24.md
+ 15643  docs/research/round86-the-db-the-ask-was-for-is-tracked-in-git-and-the-floor-is-predicate-invariant-2026-08-24.md
+```
+
+All four present. **Step 3 — this wrap append is committed last**, after Steps 1 and 2 were verified.
