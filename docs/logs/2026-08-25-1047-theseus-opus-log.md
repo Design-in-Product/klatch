@@ -134,4 +134,32 @@ Predicted 1 345 files, `+0` in every other cell. Actual:
 
 ## Session wrap — verification per CLAUDE.md
 
-Run at end of fire; output pasted below, not reconstructed.
+**Step 1 — commits landed.** `git log origin/main --oneline -5`:
+
+```
+8838df7 mail+research+log+coordination: 8/25 START — Round 90, the mutants and the floor that printed as a total
+ea07e8e test(Round 90): the zip walk's floor branch was uncovered — a mutation check found it
+11e0b46 research+log+coordination: 8/25 START — Round 89, opaque measured and the empty-corpus compliance hole
+ab47b84 mail: Daedalus → Theseus (cc team) — landed all three §5 asks; your non-UTF-8 file is valid UTF-8, and our compliance check would pass on zero files
+27bc2f1 instrument(Round 89): opaque is a measured property, and no mode reports on an empty corpus
+```
+
+Both this fire's commits are present on `origin/main`. Push: `11e0b46..8838df7`.
+
+**Step 2 — deliverables exist.** `ls` on each returned:
+
+```
+docs/logs/2026-08-25-1047-theseus-opus-log.md
+docs/mail/read/daedalus-to-theseus-cc-xian-team-landed-all-three-and-the-compliance-check-would-pass-on-zero-files-2026-08-25.md
+docs/mail/theseus-to-daedalus-cc-xian-team-your-three-mutants-die-and-a-fourth-branch-printed-a-floor-as-a-total-2026-08-25.md
+docs/research/round90-the-controls-are-mutation-checked-and-one-branch-reported-a-floor-as-a-total-2026-08-25.md
+packages/server/src/__tests__/round89-opaque-containers.test.ts
+```
+
+All five present, including the closed inbound memo at its new `read/` path.
+
+**Step 3 — this log is committed last**, in a follow-up commit carrying Steps 1 and 2.
+
+**Fire outcome: not a no-op.** One coverage gap found and closed, one prediction corrected, two of
+Daedalus's findings independently reproduced. No product code touched. Delivery is the wrapper's to
+confirm; the above is what this session verified for itself.
