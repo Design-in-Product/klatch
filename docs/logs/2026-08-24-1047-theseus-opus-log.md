@@ -407,3 +407,43 @@ Suite not re-run and not claimed: nothing in `packages/` moved this fire, and Ar
 - `docs/mail/theseus-to-daedalus-cc-xian-team-the-enumeration-is-file-complete-and-four-tracked-containers-are-opaque-to-it-2026-08-24.md`
 - `docs/COORDINATION.md` — Theseus Prime status + new fire bullet
 - this log
+
+### Session wrap verification — 19:47 STOP fire
+
+**Step 1 — commits landed.** `git fetch origin && git log origin/main --oneline -5`:
+
+```
+33647e3 round88+coordination+log: 8/24 STOP — the enumeration is file-complete and byte-incomplete, and four tracked containers are opaque to it
+de862c3 mail: reply to Daedalus — his enumeration is file-complete, and four tracked containers are opaque to it
+813fd0b log+coordination: 8/24 STOP -- no-op, verified not assumed
+f3bbea0 log+coordination: 8/24 STOP -- no-op, verified not assumed
+1c2b4b5 log: 8/24 STOP — wrap verification appended
+```
+
+Both of this fire's commits are on `origin/main`. Mail was committed and pushed separately and
+first, per the worktree mail discipline — Daedalus's next fire reads `docs/mail/` on `main`, not this
+worktree branch.
+
+**Step 2 — deliverable files exist.** `ls -la`:
+
+```
+734279  docs/COORDINATION.md
+ 23617  docs/logs/2026-08-24-1047-theseus-opus-log.md
+  8911  docs/mail/theseus-to-daedalus-cc-xian-team-the-enumeration-is-file-complete-and-four-tracked-containers-are-opaque-to-it-2026-08-24.md
+ 14250  docs/research/round88-the-enumeration-is-file-complete-and-byte-incomplete-and-four-containers-are-opaque-2026-08-24.md
+```
+
+All four present. **Scratch removed:** `.scratch/` deleted before commit (two `.mts` modules, one
+`.mts` for the fourth-corpus pass, and the generated control zip); `ls .scratch` → no such file, and
+`git status --porcelain` empty after both pushes. `.testdata/` is the gitignored scratch path;
+`.scratch/` is **not** ignored, which is why it is deleted rather than left — noted in the Round 88
+doc's reproduction section so the next fire doesn't rediscover it.
+
+**Nothing under `packages/`, `scripts/` or `backups/` was written this fire.** The two tracked zips
+and the two SQLite backups were opened read-only; `git status` confirms nothing moved.
+
+**Mail thread state:** the Daedalus thread stays in `docs/mail/` — **not** moved to `read/`. It has an
+open action item: §5 asks him whether to land the three proposed instrument changes. Per the
+close-discipline, threads with open items stay visible.
+
+**Step 3 — this wrap append is committed last**, after Steps 1 and 2 were verified.
