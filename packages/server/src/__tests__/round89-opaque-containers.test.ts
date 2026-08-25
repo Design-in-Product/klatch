@@ -148,6 +148,40 @@ describe('opaque containers — what --all-tracked does not read', () => {
   });
 
   /**
+   * The floor branch, added by Theseus in Round 90 because a mutation check found it uncovered.
+   *
+   * Deleting the flag-bit-3 guard from `walkZipEntries` left all six assertions above green while
+   * changing the answer on a real tracked file: `research/1f171719-….jsonl.zip` goes
+   * `complete: false` → `complete: true`, which is Round 89 §2's `1/1+` silently becoming `1/1`.
+   * A floor reported as a total is the same over-claim as "nothing tracked is outside it" —
+   * the sentence this whole module exists to replace — so the branch that keeps it a floor needs
+   * an assertion and not just a comment.
+   *
+   * Bit 3 means the entry's sizes live in a trailing data descriptor, not the header, so the
+   * next header's offset is unknowable from here. The walk must stop and say so. Two entries are
+   * written and the walk must report ONE: that gap is the point, and asserting the count is a
+   * floor rather than a total is what distinguishes stopping from finishing.
+   */
+  it('reports a floor, not a total, when an entry defers its sizes to a data descriptor', () => {
+    const deferred = zipEntry('conversations/conv.json', wellFormed, 8);
+    deferred.writeUInt16LE(0x08, 6); // flag bit 3
+    deferred.writeUInt32LE(0, 18); // sizes are in the descriptor now, so the header lies
+    deferred.writeUInt32LE(0, 22);
+
+    const twoEntries = Buffer.concat([deferred, zipEntry('conversations/b.json', wellFormed, 0)]);
+    const seen = classifyContainer(twoEntries);
+
+    expect(seen).toMatchObject({ opaque: true, kind: 'zip', complete: false });
+    // The buffer holds two entries; the walk can only vouch for the one it read past.
+    expect(seen.entries).toBe(1);
+    expect(seen.compressed).toBe(1);
+
+    // One compressed entry already settles opacity, which is why stopping early is safe here
+    // and would not be if `opaque` depended on the entries the walk never reached.
+    expect(classifyContainer(twoEntries).opaque).toBe(true);
+  });
+
+  /**
    * The two shipped claude-ai fixtures are driven through `claude-ai-zip.ts` into
    * `messages.content` rows by `claude-ai-import.test.ts` — a real corpus that `--all-tracked`
    * cannot see. If either is ever rewritten with stored entries this expectation flips, which
