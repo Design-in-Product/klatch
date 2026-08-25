@@ -260,3 +260,67 @@ scripts/measure-marker-floor.mjs
 
 Nothing outstanding from this fire. The one open item is xian's and unchanged: copy
 `~/klatch-inbound/dbs/klatch-main.db` into `.testdata/` in both worktrees.
+
+## 17:17 PT — STOP fire: Round 87, Theseus's §6.4 closed
+
+Session-start briefing done: pulled state current (wrapper synced), `docs/COORDINATION.md` read,
+`docs/mail/` swept. Two memos addressed to me today; the 13:17 one was answered in that fire. The
+17:17 arrival — `theseus-to-daedalus-...-the-db-we-asked-xian-for-was-tracked-in-git-and-the-floor-cannot-move-2026-08-24.md`
+— was read in full and acted on in this same fire, per the mail discipline. Its §6.4 named one open
+code item and named it as mine.
+
+**Verified before building on it, not after.** Theseus's §2 claim (`matchedAnywhere ≡ matched` for
+every possible input) checked at the source: `scripts/lib/recall-recogniser.mjs:41` and `:51` are
+both `'^' + rx(P.open) + …`, and `marker-floor.mjs` tests them on the *trimmed* line. The identity
+is a property of the anchors. His §3 hand classification and his §4 DB numbers were reproduced on
+my own instrument rather than accepted.
+
+**Built (Round 87):**
+
+- `scripts/lib/marker-floor.mjs` — reparameterised from two overlapping opener predicates to five
+  disjoint categories: `read` / `severed` / `unparsed` / `embedded` / `residue`, plus `digitless`
+  per category. `unparsed` is not in Theseus's proposal; it is the reason his four could not land
+  as four (an anchored, closed, unread line has nowhere to go in a four-bucket scheme). All six
+  Rounds 82-85 columns are still emitted, derived in `withDerived` rather than remeasured, so no
+  published count becomes incomparable. Docblock argument replaced, not amended.
+- `scripts/measure-marker-floor.mjs` — five-category reporting with the legacy columns beneath;
+  new `--all-tracked` (every tracked file, raw bytes, no parser, no extension filter, streamed via
+  generator); new `--docs WORKTREE` (the per-round compliance check as a mode).
+- `packages/server/src/__tests__/round85-marker-floor.test.ts` — 6 tests → **12**. New: the
+  partition property over ten shapes, `matchedAnywhere === matched` asserted as an invariant,
+  legacy-column derivation, `digitless`, tally re-derivation, generator acceptance.
+
+**Measured this fire** (positive control passed first in every run):
+
+| corpus | rows/files | chars | read/sev/unp/emb/res | over cap |
+|---|---|---|---|---|
+| `backups/klatch.db.backup-2026-03-14` | 2 652 | 2 823 903 | 0/0/0/0/0 | 90 (3.4 %) |
+| `backups/klatch.db.backup-2026-03-15-pre-fresh` | 219 | 97 399 | 0/0/0/0/0 | 4 (1.8 %) |
+| tracked transcripts | 155 | 199 838 | 0/0/0/0/0 | 9 (5.8 %) |
+| `docs/**.md` @ HEAD | 1 330 | 10 264 170 | 4/6/0/17/3 | 835 |
+| every tracked file | 1 659 | 28 053 136 | 4/6/0/17/10 | — |
+
+139 channels in the March DB confirmed independently. Theseus's Round 86 reproduces in every cell;
+**no correction to any number in it.**
+
+**Two findings of my own, both about coverage rather than about the floor.** `git ls-files --
+'backups/*'` returns two files and his memo quotes one — the `-pre-fresh` DB had never been
+measured. And `fixtures/claude-ai/` holds five conversation exports that go through a different
+shipped parser, which `transcriptCorpus()`'s `'*.jsonl'` glob has never seen. Third consecutive
+round in which a tracked corpus was missing from someone's list, mine this time. `--all-tracked`
+exists so the enumeration is no longer a list anyone maintains. It failed loudly on its first run
+on a C-quoted non-ASCII path (`QA/Screenshot …AM 2.png`) — the correct direction — fixed with `-z`.
+
+**Suite, run on the clean tree after `.scratch-r87/` was removed:** server **1435/1435 (87 files)**,
+client **239 passed / 13 skipped**, `npm run typecheck` clean across all three workspaces.
+
+**Compliance, cells written into the doc before the run and confirmed by it:** `--docs WORKTREE`
+with both deliverables in place — 1 332 files, read 4 / severed 6 / unparsed 0 / embedded 17 /
+residue 3 / stem 7, legacy 10/4/6 and 30/4/26. **+0 in every cell** against HEAD.
+
+**Artifacts:** `docs/research/round87-...-2026-08-24.md`,
+`docs/mail/daedalus-to-theseus-...-your-reading-is-landed-with-a-fifth-bucket-...-2026-08-24.md`,
+the three code files above, `docs/COORDINATION.md`.
+
+**Open:** nothing on this arm waits on anyone, including xian. The `klatch-main.db` ask stays
+withdrawn. Distance arm go/no-go remains xian's.

@@ -28,13 +28,21 @@
  *
  * ## What it measures, and the three definitions it does not re-type
  *
- *   opener   — a line containing `P.open`. The cheapest possible detector.
- *   matched  — an opener line that `GAP_LINE` or `EDGE_LINE` reads in full.
- *   orphan   — an opener line that neither reads. In `docs/**.md` these are, without
- *              exception so far, a real marker hard-wrapped by a human pasting it into prose.
+ *   opener line — a line containing `P.open`. The cheapest possible detector, and the
+ *              population the five categories partition.
+ *   read     — `GAP_LINE` or `EDGE_LINE` reads the whole trimmed line.
+ *   severed  — opener at column zero, no close on the line. A marker that was cut.
+ *   unparsed — opener at column zero, close present, read by neither pattern. Drift.
+ *   embedded — opener past column zero, close on the same line. Quoted whole inside prose.
+ *   residue  — opener past column zero, no close. Undecidable; `digitless` usually settles it.
  *   straddle — a unit over the cap where an opener begins before `CARRIED_CONTEXT_MAX_MESSAGE_CHARS`
  *              and its close falls after, so truncation would sever the marker.
  *   stem     — occurrences of `P.edgeHeaderStem`, the header sentence's invariant fragment.
+ *
+ * Round 87 replaced Round 85's two opener predicates with these five categories, after Theseus
+ * showed (Round 86 §2-3) that one of the six columns was a provable copy of another and that
+ * the difference between the other two merged severing with quoting. Every Round 82-85 column
+ * is still printed, derived from the five; the reparameterisation costs no comparability.
  *
  * `P` comes from `recall.ts`, the cap from `carried-context.ts`, the patterns from
  * `buildRecogniser`. No literal is re-typed here — that is the defect `RECALL_MARKER_PHRASES`
@@ -83,7 +91,7 @@ const { parseClaudeCodeSessionFromContent } =
   await import('../packages/server/src/import/parser.ts');
 
 const { patterns } = buildRecogniser(P);
-const { tally, runControls } = buildFloorClassifier(P, CAP, patterns);
+const { tally, runControls, BUCKETS } = buildFloorClassifier(P, CAP, patterns);
 
 const argv = process.argv.slice(2);
 const dbPaths = argv.flatMap((a, i) => (a === '--db' ? [argv[i + 1]] : []));
@@ -96,7 +104,22 @@ const showOrphans = argv.includes('--show-orphans');
 const docsRef = argv.includes('--docs') ? (argv[argv.indexOf('--docs') + 1] || 'HEAD') : null;
 // Transcripts are the default corpus, and stay on alongside `--db` only if asked, so that a
 // run against a real database reports that database's floor rather than a blended one.
-const wantTranscripts = (dbPaths.length === 0 && !docsRef) || argv.includes('--transcripts');
+// `--all-tracked` answers a different question from every other mode: not "what is the floor in
+// this corpus" but "have we enumerated the corpora correctly". Rounds 84 and 86 both turned on a
+// corpus that was tracked in git the whole time and simply absent from someone's list — the 17
+// transcripts, then `backups/klatch.db.backup-2026-03-14`. A third such miss is cheap to make and
+// expensive to argue about, so the enumeration stops being a list a human maintains: this reads
+// *every* tracked file as raw bytes, no parser, no extension filter. Binary files are read too
+// and are not a problem — marker text inside a SQLite page is stored as plain UTF-8 and survives
+// the decode, which is the only reason this can stand in for the DB modes at all.
+//
+// It is deliberately not a floor measurement. `docs/**.md` is in it, and our own memos about
+// markers are in `docs/`, so the total is not expected to be zero. What the five categories buy
+// here is that a non-zero total is still readable: `read`/`embedded` are us writing about markers,
+// and `unparsed` is the cell that must stay zero.
+const allTracked = argv.includes('--all-tracked');
+const wantTranscripts =
+  (dbPaths.length === 0 && !docsRef && !allTracked) || argv.includes('--transcripts');
 
 // ── Reporting ─────────────────────────────────────────────────
 
@@ -105,18 +128,27 @@ function report(label, t) {
   console.log(`\n── ${label} ──`);
   console.log(`  units            ${t.units}`);
   console.log(`  chars            ${t.chars}  (mean ${t.units ? (t.chars / t.units).toFixed(1) : '—'})`);
-  // Line-start first, because it is the predicate Rounds 82-84 published; the broad column
-  // beside it, because a floor measured only at line start misses the commonest way a human
-  // puts the shape into prose. See `lib/marker-floor.mjs` for why both are reported.
-  console.log(`  openers          ${t.openers} at line start   |  ${t.openersAnywhere} anywhere on the line`);
-  console.log(`  …matched         ${t.matched}                 |  ${t.matchedAnywhere}`);
-  console.log(`  …orphans         ${t.orphans}                 |  ${t.orphansAnywhere}`);
+  // The five categories are the headline, because they name mechanisms and partition the
+  // population; Rounds 82-85's two opener predicates are printed underneath as arithmetic over
+  // them, so a reader holding those printouts can still line the cells up. See
+  // `lib/marker-floor.mjs` for why the reparameterisation happened.
+  const d = t.digitless;
+  console.log(`  opener lines     ${t.openersAnywhere}`);
+  console.log(`  …read            ${t.read}`);
+  console.log(`  …severed         ${t.severed}   (col 0, no close — cut)              digitless ${d.severed}`);
+  console.log(`  …unparsed        ${t.unparsed}   (col 0, closed, unread — drift)      digitless ${d.unparsed}`);
+  console.log(`  …embedded        ${t.embedded}   (mid-line, closed — quoted whole)    digitless ${d.embedded}`);
+  console.log(`  …residue         ${t.residue}   (mid-line, no close — undecidable)   digitless ${d.residue}`);
   console.log(`  header stem      ${t.stem}`);
   console.log(`  over ${CAP} cap  ${t.over}  (${pct(t.over)})`);
   console.log(`  cap straddles    ${t.straddles}`);
-  if (showOrphans && t.orphanLines.length) {
-    console.log('  orphan lines:');
-    for (const l of t.orphanLines) console.log(`    ${l}`);
+  console.log(`  ── as Rounds 82-85 reported it (derived, not remeasured) ──`);
+  console.log(`  openers          ${t.openers} at line start   |  ${t.openersAnywhere} anywhere on the line`);
+  console.log(`  …matched         ${t.matched}                 |  ${t.matchedAnywhere}`);
+  console.log(`  …orphans         ${t.orphans}                 |  ${t.orphansAnywhere}`);
+  if (showOrphans && t.unreadLines.length) {
+    console.log('  unread opener lines:');
+    for (const u of t.unreadLines) console.log(`    ${u.bucket.padEnd(9)} ${u.line}`);
   }
 }
 
@@ -124,7 +156,7 @@ function report(label, t) {
 
 /**
  * The control units live in `lib/marker-floor.mjs` beside the classifier they exercise, so
- * that `round85-marker-floor.test.ts` runs the same three and a drift shows up in CI whether
+ * that `round85-marker-floor.test.ts` runs the same set and a drift shows up in CI whether
  * or not anyone runs this script. Here the only decision is what to do about a failure:
  * refuse to report, and exit non-zero.
  */
@@ -132,10 +164,11 @@ function positiveControl() {
   const { passed, results } = runControls();
   for (const r of results) {
     const c = r.counts;
+    const landed = BUCKETS.filter((b) => c[b] > 0).map((b) => `${b}=${c[b]}`).join(' ') || 'none';
     console.log(
-      `  ${r.passed ? 'ok  ' : 'FAIL'}  ${r.name.padEnd(26)} ` +
-      `line-start: openers=${c.openers} matched=${c.matched} orphans=${c.orphans}  |  ` +
-      `anywhere: openers=${c.openersAnywhere} orphans=${c.orphansAnywhere}  |  stem=${c.stem}`
+      `  ${r.passed ? 'ok  ' : 'FAIL'}  ${r.name.padEnd(38)} ${landed.padEnd(12)}  |  ` +
+      `legacy: openers=${c.openers}/${c.openersAnywhere} matched=${c.matched} ` +
+      `orphans=${c.orphans}/${c.orphansAnywhere}  |  stem=${c.stem}`
     );
   }
   if (!passed) {
@@ -234,17 +267,67 @@ if (wantTranscripts) {
 }
 
 if (docsRef) {
-  // Read via `git cat-file` rather than a checkout, so an arbitrary ref can be measured without
-  // touching the working tree.
-  const files = execSync(`git ls-tree -r --name-only ${docsRef} -- docs`, { encoding: 'utf8' })
-    .trim().split('\n').filter((f) => f.endsWith('.md'));
-  const units = files.map((f) =>
-    execSync(`git cat-file -p ${docsRef}:"${f}"`, { encoding: 'utf8', maxBuffer: 1 << 28 })
-  );
-  report(`docs/**.md at ${docsRef} (proxy corpus — retired, see Round 84 §7.4)`, tally(units));
+  // `--docs WORKTREE` measures the working tree instead of a ref, which is the *compliance*
+  // check rather than a corpus measurement: both Theseus and I have to confirm each round that
+  // the memo and research doc we are about to commit added no marker line of their own. Every
+  // round so far that has been hand-rolled at the shell, and a hand-rolled step is one whose
+  // file list can quietly be wrong — plain `git ls-files` reports only the tracked set and omits
+  // the two new files that are the entire point of the check, which is why the untracked half of
+  // this glob is spelled out. (Theseus's Round 86 §7 note; adopted here so nobody re-derives it.)
+  let files, read;
+  if (docsRef === 'WORKTREE') {
+    files = execSync('git ls-files --cached --others --exclude-standard -z -- docs', {
+      encoding: 'utf8', maxBuffer: 1 << 28,
+    }).split('\0').filter((f) => f.endsWith('.md'));
+    read = (f) => readFileSync(f, 'utf8');
+  } else {
+    // Read via `git cat-file` rather than a checkout, so an arbitrary ref can be measured without
+    // touching the working tree.
+    files = execSync(`git ls-tree -r --name-only ${docsRef} -- docs`, { encoding: 'utf8', maxBuffer: 1 << 28 })
+      .trim().split('\n').filter((f) => f.endsWith('.md'));
+    read = (f) => execSync(`git cat-file -p ${docsRef}:"${f}"`, { encoding: 'utf8', maxBuffer: 1 << 28 });
+  }
+  const label = docsRef === 'WORKTREE'
+    ? 'docs/**.md in the working tree, tracked + untracked (compliance check)'
+    : `docs/**.md at ${docsRef} (proxy corpus — retired, see Round 84 §7.4)`;
+  report(label, tally(files.map(read)));
 }
 
 for (const path of dbPaths) {
   const contents = await dbCorpus(path);
   if (contents) report(`${path} → messages.content rows`, tally(contents));
+}
+
+if (allTracked) {
+  // `-z`, not the default: `git ls-files` C-quotes any path with a non-ASCII byte in it, and
+  // this repo has several (`QA/Screenshot …‑AM 2.png` carries a narrow no-break space). Parsing
+  // the quoted form back would be a second place to get UTF-8 wrong, so ask for it raw. Found by
+  // the first run of this mode crashing on exactly that file — which is itself the point of the
+  // mode: an enumeration that silently skipped unreadable paths would be the miss it exists to
+  // prevent, so it fails loudly instead.
+  const files = execSync('git ls-files -z', { encoding: 'utf8', maxBuffer: 1 << 28 })
+    .split('\0').filter(Boolean);
+  // Tallied one file at a time rather than mapped into an array first: the tracked set includes
+  // several megabytes of PNG and two SQLite backups, and holding every decoded string at once is
+  // needless when `tally` only ever needs one.
+  let bytes = 0;
+  const t = tally((function* () {
+    for (const f of files) {
+      // Newlines unescaped for the same reason transcript `--raw` does it: JSONL and JSON store
+      // them as `\n` inside string values, and a line predicate over the escaped form sees one
+      // enormous line and reads zero for the wrong reason.
+      const text = readFileSync(f, 'utf8').replace(/\\n/g, '\n');
+      bytes += Buffer.byteLength(text);
+      yield text;
+    }
+  })());
+  report(`every tracked file, raw bytes, no parser (${files.length} files) — enumeration check`, t);
+  console.log(`\n  ${bytes} bytes read. This is the widest corpus reachable from inside the`);
+  console.log('  sandbox; nothing tracked is outside it. It subsumes the transcript, --docs and');
+  console.log('  --db modes for opener-shape purposes, so a corpus omitted from someone\'s list');
+  console.log('  is still counted here.');
+  if (t.unparsed === 0) {
+    console.log('  → unparsed=0 across every tracked byte: no line anywhere in the repo carries a');
+    console.log('    complete anchored marker that the current patterns cannot read.');
+  }
 }
