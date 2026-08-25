@@ -23,8 +23,11 @@
 //     packages/server` and `KLATCH_DB=… npx tsx packages/server/src/index.ts`
 //     both come back "requires approval" — the inline `VAR=… ` prefix makes the
 //     sandbox treat it as a separate operation. The probe's own docblock already
-//     noted this for its `--dry` flag (`probe-recall-tool.mjs:1047-1049`); nobody
-//     had applied the same observation to the server launch.
+//     noted this for its `--dry` flag (`probe-recall-tool.mjs`, the `const DRY =`
+//     docblock — cited here as `:1047-1049` until 2026-08-25, stale by 26 lines
+//     already when written and by 220 after arm Q landed, so it now names the
+//     symbol rather than the line, per Round 61 §4); nobody had applied the same
+//     observation to the server launch.
 //
 // So the unblock is not "wait for an interactive session" and not a new standing
 // approval. It is: set the env *in-process* and spawn the child from there. A

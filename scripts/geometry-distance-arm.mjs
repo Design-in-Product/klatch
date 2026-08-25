@@ -39,7 +39,8 @@ const CARRIED_CONTEXT_MAX_MESSAGES = 20;
 const RECALL_MAX_EXPAND_ROWS = 30;
 
 /**
- * The `evictedMarking` seeding loop (`probe-recall-tool.mjs:1226-1241`) as algebra.
+ * The `evictedMarking` seeding loop (`probe-recall-tool.mjs`, `if (arm.evictedMarking) {` — cited
+ * as `:1226-1241` until 2026-08-25, already 4 lines stale when written) as algebra.
  *
  *   2·L  lead pairs · 2 seed · 2·G gap pairs · 2 marking · 2·(F−G) rest · 2 restate
  *

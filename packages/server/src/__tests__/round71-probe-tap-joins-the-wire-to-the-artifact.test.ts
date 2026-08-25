@@ -167,7 +167,11 @@ async function driveWithTap(channel: Channel): Promise<{ turn: string; frames: a
   };
 }
 
-/** The artifact side, read exactly the way `probe-recall-tool.mjs:1587` reads it. */
+/**
+ * The artifact side, read exactly the way `probe-recall-tool.mjs` reads it — see the
+ * `alignTapToCalls` scoring-rule comment there. (Cited as `:1587` until 2026-08-25; arm Q's
+ * ~194 lines moved it to `:1781`, which is why this now names the symbol. Round 61 §4's rule.)
+ */
 function callsFor(turn: string) {
   return getMessageArtifacts(turn)
     .filter((a) => a.type === 'tool_use' && a.toolName === RECALL_TOOL_NAME)

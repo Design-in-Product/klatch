@@ -9,7 +9,8 @@
  *
  * ── What it models ────────────────────────────────────────────────────────────
  *
- * The `evictedMarking` seeding branch (`probe-recall-tool.mjs:1200-1223`) emits, in order:
+ * The `evictedMarking` seeding branch (`probe-recall-tool.mjs`, `if (arm.evictedMarking) {` —
+ * cited as `:1200-1223` until 2026-08-25, stale by 22 lines when written) emits, in order:
  *
  *     leadPairs × (q,a) from FILLER_LEAD
  *     seedUser, seedAck                     ← the handover; carries the token
