@@ -38,6 +38,8 @@
  *   straddle — a unit over the cap where an opener begins before `CARRIED_CONTEXT_MAX_MESSAGE_CHARS`
  *              and its close falls after, so truncation would sever the marker.
  *   stem     — occurrences of `P.edgeHeaderStem`, the header sentence's invariant fragment.
+ *   opaque   — `--all-tracked` only: a tracked file whose bytes hold compressed content, so this
+ *              scan did not reach its text and its five zeros mean "unread", not "clean".
  *
  * Round 87 replaced Round 85's two opener predicates with these five categories, after Theseus
  * showed (Round 86 §2-3) that one of the six columns was a provable copy of another and that
@@ -83,6 +85,7 @@ import { readFileSync } from 'fs';
 import { execSync } from 'child_process';
 import { buildRecogniser } from './lib/recall-recogniser.mjs';
 import { buildFloorClassifier } from './lib/marker-floor.mjs';
+import { classifyContainer, decodesLosslessly } from './lib/opaque-container.mjs';
 
 const { RECALL_MARKER_PHRASES: P } = await import('../packages/server/src/claude/recall.ts');
 const { CARRIED_CONTEXT_MAX_MESSAGE_CHARS: CAP } =
@@ -110,8 +113,15 @@ const docsRef = argv.includes('--docs') ? (argv[argv.indexOf('--docs') + 1] || '
 // transcripts, then `backups/klatch.db.backup-2026-03-14`. A third such miss is cheap to make and
 // expensive to argue about, so the enumeration stops being a list a human maintains: this reads
 // *every* tracked file as raw bytes, no parser, no extension filter. Binary files are read too
-// and are not a problem — marker text inside a SQLite page is stored as plain UTF-8 and survives
-// the decode, which is the only reason this can stand in for the DB modes at all.
+// and are mostly not a problem — marker text inside a SQLite page is stored as plain UTF-8 and
+// survives the decode, which is the only reason this can stand in for the DB modes at all.
+//
+// The exception, measured in Round 88 and counted here since Round 89: DEFLATE. A compressed
+// container's text is not present in its bytes as a substring at all, so it reads zero for a
+// reason that has nothing to do with the corpus being clean — the same two-meanings-of-zero
+// problem the positive control exists to solve, and the same one the `unparsed` bucket exists
+// to keep visible. So the mode counts `opaque` files and prints file-level coverage rather than
+// the byte-level claim it used to make. See `lib/opaque-container.mjs`.
 //
 // It is deliberately not a floor measurement. `docs/**.md` is in it, and our own memos about
 // markers are in `docs/`, so the total is not expected to be zero. What the five categories buy
@@ -179,6 +189,32 @@ function positiveControl() {
     );
     process.exit(2);
   }
+}
+
+/**
+ * Refuse to report on an empty file list.
+ *
+ * Found 2026-08-25 (Round 89) by running `--docs WORKTREE` from `packages/server/` instead of
+ * the repo root. `git ls-files -- docs` is resolved relative to the *current directory*, so it
+ * matched nothing, and the mode printed a full report with `units 0` and every cell at zero —
+ * which reads exactly like a clean compliance check, and is the signal both of us have been
+ * using each round to certify that a memo added no marker line.
+ *
+ * That is the two-meanings-of-zero failure the positive control was built to prevent, arriving
+ * through the corpus rather than through the predicates: the patterns were fine, there was
+ * simply nothing to apply them to. A control that can be passed by measuring nothing is worse
+ * than no control, because it is trusted. Every enumerating mode is therefore required to find
+ * at least one file, and dies non-zero rather than reporting if it does not.
+ */
+function requireNonEmpty(files, what) {
+  if (files.length) return;
+  console.error(
+    `\n${what}: enumerated 0 files. Refusing to report — an all-zero table over an empty ` +
+    `corpus is indistinguishable from a clean one, and this mode is used as a compliance ` +
+    `check.\nThe usual cause is the working directory: git pathspecs here resolve relative ` +
+    `to it. Run from the repository root.`
+  );
+  process.exit(3);
 }
 
 // ── Corpus: tracked transcripts, through the shipped parser ───
@@ -290,6 +326,7 @@ if (docsRef) {
   const label = docsRef === 'WORKTREE'
     ? 'docs/**.md in the working tree, tracked + untracked (compliance check)'
     : `docs/**.md at ${docsRef} (proxy corpus — retired, see Round 84 §7.4)`;
+  requireNonEmpty(files, `--docs ${docsRef}`);
   report(label, tally(files.map(read)));
 }
 
@@ -307,27 +344,66 @@ if (allTracked) {
   // prevent, so it fails loudly instead.
   const files = execSync('git ls-files -z', { encoding: 'utf8', maxBuffer: 1 << 28 })
     .split('\0').filter(Boolean);
+  requireNonEmpty(files, '--all-tracked');
   // Tallied one file at a time rather than mapped into an array first: the tracked set includes
   // several megabytes of PNG and two SQLite backups, and holding every decoded string at once is
   // needless when `tally` only ever needs one.
-  let bytes = 0;
+  //
+  // Three self-measurements ride along, added in Round 89 at Theseus's Round 88 §5 request. All
+  // three exist to make the mode's *own* reach a number rather than a sentence:
+  //   onDisk   — what the files actually weigh, which is the only honest denominator.
+  //   decoded  — what this scan handled, after a lossy UTF-8 decode and the newline unescape.
+  //              It is not a corpus size and is printed only so the gap to `onDisk` is visible.
+  //   opaque   — files whose text this scan provably did not reach. See `lib/opaque-container.mjs`.
+  let onDisk = 0;
+  let decoded = 0;
+  let lossy = 0;
+  const opaque = [];
   const t = tally((function* () {
     for (const f of files) {
+      const buf = readFileSync(f);
+      onDisk += buf.length;
+      const raw = buf.toString('utf8');
+      if (!decodesLosslessly(buf, raw)) lossy++;
+      const container = classifyContainer(buf);
+      if (container.opaque) opaque.push({ file: f, ...container });
       // Newlines unescaped for the same reason transcript `--raw` does it: JSONL and JSON store
       // them as `\n` inside string values, and a line predicate over the escaped form sees one
       // enormous line and reads zero for the wrong reason.
-      const text = readFileSync(f, 'utf8').replace(/\\n/g, '\n');
-      bytes += Buffer.byteLength(text);
+      const text = raw.replace(/\\n/g, '\n');
+      decoded += Buffer.byteLength(text);
       yield text;
     }
   })());
   report(`every tracked file, raw bytes, no parser (${files.length} files) — enumeration check`, t);
-  console.log(`\n  ${bytes} bytes read. This is the widest corpus reachable from inside the`);
-  console.log('  sandbox; nothing tracked is outside it. It subsumes the transcript, --docs and');
-  console.log('  --db modes for opener-shape purposes, so a corpus omitted from someone\'s list');
-  console.log('  is still counted here.');
+  // The claim this mode used to print was "nothing tracked is outside it", which no measurement
+  // could have contradicted. What it can actually support is file-level completeness plus a
+  // counted byte-level exception, so that is what it says now.
+  console.log(`\n  ${files.length} of ${files.length} tracked files enumerated — the list is git's, not`);
+  console.log('  a human\'s, so a corpus omitted from someone\'s list is still counted here. It');
+  console.log('  subsumes the transcript, --docs and --db modes for opener-shape purposes.');
+  console.log(`  ${onDisk} bytes on disk; ${decoded} scanned after decode+unescape.`);
+  console.log(`  ${lossy} files decode lossily (PNG, MP4, the SQLite backups) — still searchable:`);
+  console.log('  marker text inside a SQLite page is plain UTF-8 and survives the decode.');
+  if (opaque.length) {
+    console.log(`\n  opaque            ${opaque.length}  (compressed containers — text NOT reached by this scan)`);
+    for (const o of opaque) {
+      console.log(`    ${o.kind}  ${o.compressed}/${o.entries}${o.complete ? '' : '+'} entries compressed  ${o.file}`);
+    }
+    console.log('  These read 0 in all five categories for a reason that is not corpus cleanliness.');
+    console.log('  Round 88 measured the loss from outside: 0 of 17 and 0 of 29 inflated lines are');
+    console.log('  findable in the raw decode of the two claude-ai fixtures. File-level coverage is');
+    console.log('  complete; byte-level coverage is short by these, and that bound is what moves.');
+  } else {
+    console.log('\n  opaque            0  (no tracked file is a compressed container)');
+  }
   if (t.unparsed === 0) {
-    console.log('  → unparsed=0 across every tracked byte: no line anywhere in the repo carries a');
-    console.log('    complete anchored marker that the current patterns cannot read.');
+    // Scoped to what was actually read. Saying "across every tracked byte" here would re-make,
+    // in the conclusion, the claim the paragraph above just retired.
+    console.log(`  → unparsed=0 across every byte this scan read (${files.length - opaque.length} of ${files.length} files): no`);
+    console.log('    line there carries a complete anchored marker the current patterns cannot read.');
+    if (opaque.length) {
+      console.log(`    Unmeasured: the ${opaque.length} opaque files above. Inflate them to close this.`);
+    }
   }
 }
