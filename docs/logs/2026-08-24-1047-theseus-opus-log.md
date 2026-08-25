@@ -297,3 +297,113 @@ worktree mail discipline.
 ```
 
 All four present. **Step 3 — this wrap append is committed last**, after Steps 1 and 2 were verified.
+
+---
+
+## 19:47 PT — STOP fire (Round 88): the enumeration is file-complete and byte-incomplete
+
+**Session-start protocol run:** `git log` (worktree synced by wrapper, clean, `claude/theseus-cycle`),
+`docs/COORDINATION.md` read, `ls docs/mail/` swept. One new memo addressed to me since the WORK fire:
+`daedalus-to-theseus-cc-xian-team-your-reading-is-landed-with-a-fifth-bucket-and-the-backups-glob-returns-two-2026-08-24.md`
+(Daedalus, 17:1x, committed `2de5b46`), read in full in the same turn per the mail discipline. It
+closes my Round 86 §6.4, lands Round 87 (`de1db2e`), and ends with a direct question to me: is there
+another in-sandbox measurement on this arm worth a fire. **This fire is the answer to that question.**
+
+### What reproduced
+
+- `npx tsx scripts/measure-marker-floor.mjs --all-tracked` → **1 662 files · 28 099 448 chars ·
+  38 openers · read 4 / severed 6 / unparsed 0 / embedded 17 / residue 11 · stem 14**, against his
+  1 659 / 28 053 136 / 37 / 4-6-0-17-10 / 14. Delta explained, not waved at: three files landed after
+  his fire (Argus's 18:02 log, Iris's 19:18 edit, his own Round 87 doc), carrying one opener and one
+  residue. `read`/`severed`/`unparsed`/`embedded` identical.
+- `--docs WORKTREE` → **1 333 files · 4-6-0-17-3 · stem 7** against his 1 332 at every same cell. The
+  +1 is `docs/logs/2026-08-24-1802-argus-sonnet-log.md`, confirmed by
+  `git diff --name-status de1db2e HEAD -- docs`, and it adds **zero** opener lines.
+- **No correction to any number in Round 87.**
+
+### Finding 1 — `--all-tracked` enumerates every tracked file and cannot read four of them
+
+`readFileSync(f, 'utf8')` is what makes the mode strong against SQLite and blind to DEFLATE. Read
+the local file headers directly: all three entries across the two claude-ai fixture zips are
+**method 8**.
+
+Constructed control, because a real corpus reading zero can't distinguish clean from unreadable —
+which is Daedalus's own `unparsed` argument one level out. Marker assembled from `P` (99 chars),
+embedded in a claude-ai-shaped conversation, written with `AdmZip`, the same writer
+`create-test-zip.ts` used for the tracked fixtures:
+
+```
+marker as a bare line          -> read 1 · severed 0 · unparsed 0 · embedded 0 · residue 0
+loose .json,  raw utf8 decode  -> read 0 · severed 0 · unparsed 0 · embedded 1 · residue 0
+same bytes in .zip, raw decode -> read 0 · severed 0 · unparsed 0 · embedded 0 · residue 0
+entry inflated by AdmZip       -> read 0 · severed 0 · unparsed 0 · embedded 1 · residue 0
+raw zip decode contains the literal opener?  false
+```
+
+Against the tracked fixtures: **0 of 17** and **0 of 29** inflated lines over 12 chars are findable
+in the raw decode. Total loss, not sampling loss. Verified these are not idle bytes:
+`packages/server/src/import/claude-ai-zip.ts` is shipped (not a test module) and
+`claude-ai-import.test.ts` drives both fixtures through it.
+
+**Four tracked compressed containers, 260 205 inflated chars, and every one reads 0 in all five
+categories. No floor number in Rounds 82–87 moves.** Stated as loudly as the gap — Daedalus reported
+`backups/*` while saying it moved no bound, and the discipline has to cut both ways.
+
+### Finding 2 — the printed byte figure is a decoded weight
+
+`bytes += Buffer.byteLength(text)` after a lossy decode; every invalid byte becomes U+FFFD and
+re-encodes to three.
+
+```
+on-disk bytes                 28532740
+bytes as --all-tracked counts 31729963   (+3197223, +11.2%)
+```
+
+**27 of 1 662 files decode lossily, holding 34.0 % of tracked on-disk byte mass.** Includes one
+genuine oddity: `packages/server/src/__tests__/round17-compaction-effort.test.ts` is a tracked source
+file whose bytes are not valid UTF-8. Reads 0 in all five. Flagged, not chased.
+
+### A correction to myself, made before it reached the memo
+
+`git ls-files -- '*.jsonl'` returns 17; `'*.jsonl.zip'` returns 1; overlap 0. I had
+`research/1f171719-….jsonl.zip` written up as the fourth tracked corpus invisible to both modes —
+precisely the shape Daedalus said he'd rather hear about than have us find next round. **It is not
+one.** The zip entry is byte-identical to `research/1f171719-….jsonl` (sha256 `f5b49f58aa4babf4…`,
+67 753 B both), which is tracked loose beside it and already one of the 17; its five
+`file-history-snapshot` lines make it the zero-row file Round 86 §4 already named. The wrong read is
+kept in the doc rather than deleted.
+
+### Deliberately not done
+
+Three instrument changes proposed and **not landed**: print an `opaque` count (`PK\x03\x04` magic,
+no extension list), report on-disk bytes beside decoded weight, narrow the printed claim. Daedalus
+wrote the mode two hours earlier and his §7 closed the arm's last open code item; landing an unasked
+edit to the instrument that measures us, in the same day-part, is the wrong order. Asked him
+directly; it's a ten-minute fire if he says land it.
+
+### Compliance — cells written before the run, confirmed by it
+
+Before writing any deliverable: **1 333 · 4-6-0-17-3 · stem 7**, legacy narrow 10/4/6, broad 30/4/26.
+Predicted in the doc and the memo **before** the post-write run: 1 335 files, +0 in every other cell.
+Post-write run:
+
+```
+units 1335 · read 4 · severed 6 · unparsed 0 · embedded 17 · residue 3 · stem 7
+legacy: openers 10 / 30, matched 4 / 4, orphans 6 / 26
+```
+
+**+0 in every cell, prediction exact.** Both deliverables quote `P` by field name and never
+transcribe the opener, the close or the header stem — the arm's convention, measured not claimed.
+
+### Cost and scope
+
+Zero API calls, zero live runs, no server started. **No product code and no instrument code changed.**
+Suite not re-run and not claimed: nothing in `packages/` moved this fire, and Argus's 18:02 figures
+(server 1435/1435, client 239 / 13 skipped) are the standing state.
+
+### Deliverables
+
+- `docs/research/round88-the-enumeration-is-file-complete-and-byte-incomplete-and-four-containers-are-opaque-2026-08-24.md`
+- `docs/mail/theseus-to-daedalus-cc-xian-team-the-enumeration-is-file-complete-and-four-tracked-containers-are-opaque-to-it-2026-08-24.md`
+- `docs/COORDINATION.md` — Theseus Prime status + new fire bullet
+- this log
