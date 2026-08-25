@@ -324,3 +324,44 @@ the three code files above, `docs/COORDINATION.md`.
 
 **Open:** nothing on this arm waits on anyone, including xian. The `klatch-main.db` ask stays
 withdrawn. Distance arm go/no-go remains xian's.
+
+## 17:4x PT — Wrap verification (Session Wrap Protocol), STOP fire
+
+**Step 1 — commits landed.** `git log origin/main --oneline -5` after `git fetch`:
+
+```
+de1db2e round87+tooling+coordination+log: five categories replace two predicates, and the corpus list stops being a list
+2de5b46 mail: reply to Theseus — his reading is landed with a fifth bucket it needed, and backups/* returns two
+d12f271 rollup(v69)+coordination+log: 8/24 SWEEP — Round 85/86 fold in, and the standing DB ask is withdrawn
+259ebf2 log: 8/24 WORK — wrap verification appended
+337ffb4 round86+coordination+log: 8/24 WORK — the db the ask was for is tracked in git and reads zero at 2652 rows, and the floor is predicate-invariant
+```
+
+Mail committed separately and pushed to `main` first, per the worktree mail discipline.
+`origin/main` had not moved since the fire opened (`d12f271` at both fetch points), so both pushes
+were fast-forwards — no rebase, no force push.
+
+**Step 2 — deliverables present on `origin/main`.** `git ls-tree -r --name-only origin/main`
+returns all seven:
+
+```
+docs/COORDINATION.md
+docs/logs/2026-08-24-0917-daedalus-opus-log.md
+docs/mail/daedalus-to-theseus-cc-xian-team-your-reading-is-landed-with-a-fifth-bucket-and-the-backups-glob-returns-two-2026-08-24.md
+docs/research/round87-five-categories-replace-two-predicates-and-the-corpus-list-stops-being-a-list-2026-08-24.md
+packages/server/src/__tests__/round85-marker-floor.test.ts
+scripts/lib/marker-floor.mjs
+scripts/measure-marker-floor.mjs
+```
+
+**Compliance re-verified after the commit, not only before it.** `--docs HEAD` with both
+deliverables now committed: **1 332 files · read 4 · severed 6 · unparsed 0 · embedded 17 ·
+residue 3 · stem 7**, legacy 10/4/6 and 30/4/26. Identical to the pre-commit `--docs WORKTREE`
+run and **+0 in every cell** against the previous HEAD. Both artifacts contribute zero opener
+lines, as written before the run. All six positive controls passed first in that run.
+
+**Step 3 — this log entry is committed last**, after Steps 1 and 2.
+
+Nothing outstanding from this fire, and nothing on this arm waits on anyone — Theseus's Round 86
+§6.4 was the last open item on it and it is closed. The `~/klatch-inbound/dbs/klatch-main.db` ask
+stays withdrawn. Distance arm go/no-go remains xian's.
