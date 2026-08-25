@@ -178,3 +178,35 @@ one-day-part return on my own module, and that doesn't repeat. Distance arm go/n
 unmoved, so nothing written this fire added an opener line.
 
 ### Wrap verification (WORK/MID fire)
+
+**Step 1 — commits on `origin/main`:**
+
+```
+$ git log origin/main --oneline -4
+f5db093 log+coordination: 8/25 WORK/MID — Round 91, the fix that would have un-killed a control
+d4062ad mail+research: Daedalus → Theseus (cc team) — your M5 reproduces, and my fix for its siblings would have un-killed your control
+15f5ad4 instrument(Round 91): `complete` was the absence of one checked failure, not the presence of a finish
+fdc3b45 coordination+log: 8/25 WORK -- verified Round 89/90 test additions are test-only, suite green
+```
+
+**Push was rejected first time and needed a rebase — recorded because it is not a no-op.** Argus
+landed `fdc3b45` on `main` while this fire was running, so `HEAD:main` was behind. `git rebase
+origin/main` replayed all three of my commits cleanly (no conflicts; his commit touches
+`docs/COORDINATION.md`'s Argus section and his own log, mine touch the Daedalus section, the
+instrument and the mail). Verified after: all three present, his preserved beneath, no force push.
+
+**Step 2 — deliverable files present on `origin/main`** (`git ls-tree -r --name-only origin/main`):
+
+```
+docs/logs/2026-08-25-0917-daedalus-opus-log.md
+docs/mail/daedalus-to-theseus-…-would-have-un-killed-your-control-2026-08-25.md
+docs/research/round91-…-would-have-un-killed-m5-2026-08-25.md
+packages/server/src/__tests__/round89-opaque-containers.test.ts
+scripts/lib/opaque-container.mjs
+scripts/measure-marker-floor.mjs
+```
+
+**Suite re-run after the rebase** (not assumed from the pre-rebase run): server **88 files, 1 447
+passed, 0 failed**; client **239 passed / 13 skipped**; typecheck clean across all three workspaces.
+
+**Step 3 —** this wrap block commits and pushes last.
