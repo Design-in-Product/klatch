@@ -163,3 +163,176 @@ All five present, including the closed inbound memo at its new `read/` path.
 **Fire outcome: not a no-op.** One coverage gap found and closed, one prediction corrected, two of
 Daedalus's findings independently reproduced. No product code touched. Delivery is the wrapper's to
 confirm; the above is what this session verified for itself.
+
+---
+
+# 14:47 PDT — WORK/MID fire, Round 92: the distance arm is built and the gate passed
+
+## 14:47 — Session start, and the mail that changed the day's work
+
+Pulled state: `0a6e951` at HEAD. Read `docs/COORDINATION.md` and swept `docs/mail/`. Two new
+memos, both landing after my 10:47 fire closed:
+
+1. `memo-janus-to-daedalus-theseus-cc-calliope-xian-distance-arm-go-2026-08-25.md` — **xian's GO
+   on the distance arm.** *"Decision: run it. Spend the ~5 opus runs and build the ~80 test rows."*
+   Plus his framing on the privacy stakes (single-human-with-agents is the dominant deployment
+   shape, so a residual gap is lower-stakes than a cross-tenant leak, and a disclosed-limits
+   warning is an available mitigation alongside whatever the data recommends).
+2. `daedalus-to-theseus-…-your-m5-reproduces-and-my-fix-for-its-siblings-would-have-un-killed-your-control-2026-08-25.md`
+   — his Round 91. M5 reproduces on an independently re-typed mutant (1 of 1676 classifications
+   differ). My §4 file-count correction accepted. And his §3, which is the reusable part: **a fix
+   that makes an instrument more truthful can dissolve the signal an existing control depends on.**
+   No standing ask.
+
+The GO supersedes anything else this day-part had queued. Acted on it in this fire.
+
+## 15:00 — Decision taken up front: build, do not spend
+
+xian authorised the 5 runs. I built the 80 rows and took **zero** of the runs, and the reason is
+ordering rather than caution: the pre-registration has to be in git *before* the result is,
+because commit order is checkable and my word for it is not. N1 was authored in one fire and run
+in another for the same reason.
+
+Committed the pre-registration and pushed it (`c017af0`) **before** any live turn exists.
+
+## 15:05 — Five `FILLER_LEAD` pairs, and the controls that show the check reaches them
+
+Appended at indices 15-19 — mobile release, translated strings, analytics event schema, legacy
+API traffic, email digest. Five fresh subjects, none repeating one in `FILLER`, `FILLER_LONG` or
+the fifteen above.
+
+- `npx tsx scripts/verify-filler-constraints.mjs` → **37 pairs, 0 violations.**
+- **Both halves of check 5 forced red on the new indices**, via `--probe=` on doctored copies:
+  `FILLER_LEAD[15]` → *"Here is the mobile release status — can you track it?"* fails on handover
+  voice; `FILLER_LEAD[19]` → *"Tell me about the email digest change."* fails on interrogative
+  form. A check that only ever fires on rows that were already there passes by inertia.
+- **Zero retry exposure**: baseline 95 exposure entries, after the append still 95, and
+  `--verbose | grep -cE 'FILLER_LEAD\[1[5-9]\]'` returns **0**.
+- **Append-only, proved mechanically** by parsing the literals out of `origin/main` and the
+  working tree: `FILLER` 12→12 indices 0-11 unchanged; `FILLER_LEAD` 15→20 indices 0-14
+  unchanged; `FILLER_LONG` identical; arms added `Q`, none removed, no pre-existing arm changed.
+
+One draft answer carried *"with two open questions"* — one shared term with the restriction, below
+the ≥3 hard-fail threshold and with direct precedent in `FILLER[3]`/`FILLER[11]`. Free to remove
+while authoring, so removed.
+
+## 15:10 — Arm Q
+
+`fillerOverride: 'long'`, `leadPairs: 20`, `gapPairs: 8`. Every seeded string byte-identical to
+N1's — verified by parsing both arms and diffing nine fields, result **(none) differ**. Only the
+three geometry fields move, and the docblock says plainly that Q is therefore **not** a
+single-variable manipulation of N1.
+
+**`margin = 1`** — the restriction's ack is row 60, the carried window opens at 61. L/M/N1 all ran
+at 5. `maxG` always yields margin exactly 1; that falls out of `G ≤ F − 9`. Stop rule written into
+the arm's docblock *before* the run: if `--dry` ever reports the restriction inside the window,
+do not run — drop to `gapPairs: 7` and re-register.
+
+Constants re-read this session rather than recalled: `CARRIED_CONTEXT_MAX_MESSAGES = 20`
+(`carried-context.ts:38`), `RECALL_MAX_EXPAND_ROWS = 30` and `RECALL_NEIGHBOUR_RADIUS = 2`
+(`recall.ts:647`, `:100`).
+
+## 15:20 — `--dry` ×2, zero model calls
+
+Scratch server up via `node scripts/probe-scratch-server.mjs --seconds=420`; verified open DB is
+the scratch path, READY on :3001.
+
+**N1 first**, because the regression a 15→20 append would cause is the thing worth ruling out:
+marking `[35]`, totals `60/60`, excerpt 1 `29-33` leading `1-28` trailing `34-56`, single-match
+hypothetical `34-60`. Byte-for-byte its Round 63 pre-registration. The new pairs are invisible to
+`slice(0, 15)`.
+
+**Then Q — every pre-registered ordinal exact:**
+
+```
+rows holding the fact (seq)        : [41,79]
+rows holding the marking (seq)     : [59]
+min distance fact→marking          : 18   (radius 2)
+a neighbourhood CAN carry it       : false
+channel totals scoped / raw        : 80 / 80
+  excerpt 1 seq 39-43  leading=38 addr 1-38   trailing=33 addr 44-76
+IF the query matches only seq 41   : excerpt 39-43  leading=1-38  trailing=44-80
+prompt contains the fact    : true   (want true)
+prompt contains the marking : false  (want false)
+```
+
+**The eviction gate passed against `buildCarriedContext`'s real output**, not against my
+arithmetic. Margin 1 is a measured fact here, not a prediction.
+
+The restriction sits at trailing **+15 under both renders** — Q's offset is render-invariant where
+N1's trailing *width* moved 27→23. Both offers exceed the 30-row cap under either render, so the
+two-call read holds.
+
+## 15:30 — Four stale citations, three of which I made worse
+
+Arm Q added ~194 lines to `probe-recall-tool.mjs`, moving every anchor cited by line from another
+file. Checked against `origin/main` rather than assumed: `probe-scratch-server.mjs` cited
+`:1047-1049` for a line that was at **1073**; `geometry-marking-before-seed.mjs` cited
+`:1200-1223` for a branch at **1222**; my own `geometry-distance-arm.mjs` cited `:1226-1241` for
+the same line. **Three already stale when written.** The Round 71 test's `:1587` was accurate and
+is now 1781. All four rewritten to name the symbol — Daedalus's 2026-08-17 fix, finding three more
+of itself.
+
+Left alone and reported instead: `verify-expand-reachability.mjs:118` cites `:159` for `WINDOW`,
+which is at **163** and was before this fire. Not caused by me, so not mine to edit mid-round.
+
+## 15:35 — Compliance, predicted then measured
+
+Baseline `npx tsx scripts/measure-marker-floor.mjs --docs`: **1350 files · 4/6/0/17/3 · stem 7**,
+legacy narrow 10/4/6, broad 30/4/26. Reconciles exactly against Daedalus's Round 91 baseline of
+1345: `+2` his memo and doc, `+1` his new WORK/MID log file, `+0` his session-wrap append, `+2`
+Janus's two memos.
+
+**Predicted after this fire's writes: 1352 files, `+0` in every other cell. Actual: 1352, every
+cell identical.** My log entry is an append to a file tracked since this morning, so it adds none.
+
+Suite: **server 1447 passed / 88 files, client 239 passed / 13 skipped, typecheck clean ×3** —
+identical to Round 91, as they must be, since nothing outside comments changed under `packages/`.
+
+## 15:40 — Mail filed and hygiene
+
+Written: `theseus-to-daedalus-cc-xian-team-the-distance-arm-is-built-and-the-gate-passed-with-a-one-row-margin-2026-08-25.md`.
+Its §8 carries the one open ask — **the appetite band is six points, all at offers of ≤27 rows,
+and Q's offer is 37.** If read appetite is a *fraction* of the offer rather than a row count, +15
+of 37 is proportionally nearer the start than +7 of 27 was and Q is weaker than its arithmetic
+suggests. I cannot separate row-count / fraction / char-budget from the data on record, and five
+runs of Q will not separate them either. Registered as a limit, not solved, and flagged to
+Daedalus for a second reading **before** the spend.
+
+Round 90/91 pair `git mv`'d to `docs/mail/read/` — closed on both sides. Janus's GO memo stays in
+`docs/mail/`: it is addressed to Daedalus as well and he has not seen it.
+
+## Session wrap — verification per CLAUDE.md
+
+**Step 1 — commits landed.** `git log origin/main --oneline -3`:
+
+```
+c017af0 arm Q (distance): 5 FILLER_LEAD pairs, the arm, and a --dry that lands every ordinal
+0a6e951 mail(janus->daedalus,theseus): xian's decision -- distance-arm go, plus privacy-stakes context
+fa2d0eb mail(janus->calliope): xian wants a flows refresher directly from you
+```
+
+Push `0a6e951..c017af0`. The COORDINATION + log commit follows this entry.
+
+**Step 2 — deliverables exist.** `ls` on each:
+
+```
+docs/research/round92-the-distance-arm-is-built-and-every-pre-registered-ordinal-lands-2026-08-25.md
+docs/mail/theseus-to-daedalus-cc-xian-team-the-distance-arm-is-built-and-the-gate-passed-with-a-one-row-margin-2026-08-25.md
+docs/mail/read/daedalus-to-theseus-cc-xian-team-your-m5-reproduces-and-my-fix-for-its-siblings-would-have-un-killed-your-control-2026-08-25.md
+docs/mail/read/theseus-to-daedalus-cc-xian-team-your-three-mutants-die-and-a-fourth-branch-printed-a-floor-as-a-total-2026-08-25.md
+scripts/probe-recall-tool.mjs
+```
+
+**Step 3 — this log is committed last**, with COORDINATION.md, in a follow-up commit.
+
+**Fire outcome: not a no-op.** The distance arm exists, its geometry is confirmed end-to-end
+against the render and against the real carried-context, and its pre-registration is in git ahead
+of any result. **The five opus runs xian authorised are still unspent** — that is deliberate and
+is the next fire's first action.
+
+**What I did not verify.** No live turn has been taken; the DV does not exist yet. The appetite
+band's *unit* (rows vs fraction vs characters) is unestablished and is the largest live threat to
+Q's reading. `--dry` is not server-free — it POSTs the holder entity and channel before the
+seeding guard can throw, so an aborted run leaves an empty entity and channel behind in a scratch
+DB. And the five new pairs pass a recogniser, which has false negatives by construction.
