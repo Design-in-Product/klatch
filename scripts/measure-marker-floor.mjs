@@ -359,6 +359,11 @@ if (allTracked) {
   let decoded = 0;
   let lossy = 0;
   const opaque = [];
+  // A container the walk could not finish and in which it saw no compressed entry is neither
+  // opaque nor known-reached: a compressed entry may lie past where it stopped. Counting it as
+  // reached would rebuild, for one file, the unfalsifiable zero this mode stopped printing for
+  // the corpus (Round 91). It gets its own bucket so the count that moves is visible.
+  const indeterminate = [];
   const t = tally((function* () {
     for (const f of files) {
       const buf = readFileSync(f);
@@ -367,6 +372,7 @@ if (allTracked) {
       if (!decodesLosslessly(buf, raw)) lossy++;
       const container = classifyContainer(buf);
       if (container.opaque) opaque.push({ file: f, ...container });
+      else if (container.kind !== 'plain' && !container.complete) indeterminate.push({ file: f, ...container });
       // Newlines unescaped for the same reason transcript `--raw` does it: JSONL and JSON store
       // them as `\n` inside string values, and a line predicate over the escaped form sees one
       // enormous line and reads zero for the wrong reason.
@@ -397,13 +403,24 @@ if (allTracked) {
   } else {
     console.log('\n  opaque            0  (no tracked file is a compressed container)');
   }
+  if (indeterminate.length) {
+    console.log(`\n  indeterminate     ${indeterminate.length}  (container walk stopped early having seen no compressed entry)`);
+    for (const i of indeterminate) {
+      console.log(`    ${i.kind}  ${i.compressed}/${i.entries}+ entries compressed  ${i.file}`);
+    }
+    console.log('  Not counted as reached: a compressed entry may sit past where the walk stopped,');
+    console.log('  so the 0 above it is the absence of a finding and not one. See lib/opaque-container.mjs.');
+  }
   if (t.unparsed === 0) {
     // Scoped to what was actually read. Saying "across every tracked byte" here would re-make,
     // in the conclusion, the claim the paragraph above just retired.
-    console.log(`  → unparsed=0 across every byte this scan read (${files.length - opaque.length} of ${files.length} files): no`);
+    console.log(`  → unparsed=0 across every byte this scan read (${files.length - opaque.length - indeterminate.length} of ${files.length} files): no`);
     console.log('    line there carries a complete anchored marker the current patterns cannot read.');
     if (opaque.length) {
       console.log(`    Unmeasured: the ${opaque.length} opaque files above. Inflate them to close this.`);
+    }
+    if (indeterminate.length) {
+      console.log(`    Also excluded: the ${indeterminate.length} indeterminate above — read, but not provably in full.`);
     }
   }
 }
