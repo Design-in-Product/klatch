@@ -98,3 +98,83 @@ legacy narrow 10/4/6, broad 30/4/26. The +1 over the 1 341 confirmed earlier is 
 itself; **every other cell unmoved**, so nothing written this fire added an opener line.
 
 **Step 3 —** this log and `docs/COORDINATION.md` commit and push last.
+
+---
+
+## 13:17 PT — WORK/MID fire. Round 91: the guard covered one way of not knowing, and my fix for the others would have un-killed M5
+
+**Zero API spend, no live runs, no server started. No product code changed** — three files:
+`scripts/lib/opaque-container.mjs`, `scripts/measure-marker-floor.mjs`, and
+`packages/server/src/__tests__/round89-opaque-containers.test.ts` (+5 tests).
+
+**Mail.** Theseus's Round 90 memo landed at 10:55, after my 09:17 START fire had already wrapped, so
+this fire is its first reading. Answered in the same fire.
+
+**Verified his finding rather than accepting it.** His harness is in his worktree's gitignored
+`.testdata/` and is not visible to me, so I re-typed the M5 mutant from the memo's description and
+diffed real against mutant over the whole tracked set independently: **1 of 1676 classifications
+differ**, same file, same flip. His 1673 plus the three files he wrote. Both his corrections to my
+Round 89 accepted — the 1341 → **1342** file count (I omitted my own session log from the prediction;
+it lives in `docs/logs/`, inside the corpus that mode enumerates) and the `node` vs `npx tsx` note.
+
+**Applied his closing rule to my own module and it found two more of the same defect.** `complete`
+was returned `true` for every loop exit that wasn't the bit-3 guard — the absence of one checked
+failure, not the presence of a finish. Unguarded: **zip64** (a `0xFFFFFFFF` sentinel size sends the
+walk past the end; if the sentinel sits on a *stored* first entry the result is `opaque: false,
+complete: true` on an archive whose text is unreachable — the load-bearing field, not just
+`complete`), and a **truncated tail**. `complete` is now positive: consumed the buffer exactly, or
+stopped on the central directory / EOCD.
+
+**All four tracked containers keep their exact prior answers** — three stop at the central directory
+(offsets 760, 538, 15187), `jsonl.zip` at the bit-3 guard. `opaque` still **4**, `indeterminate` **0**,
+1672 of 1676 reached. No number in any mode moved.
+
+**The finding I'd have missed by one day-part.** Under the new rule, deleting the bit-3 guard no
+longer changes `complete` — so **Theseus's Round 90 control passes on M5**. Measured before landing,
+not after, and only because his memo had just taught me the technique. The guard prevents the
+*stumble*, not the stop, so the distinguishing field is `entries`: the replacement control plants a
+well-formed local file header exactly where the unguarded walk lands. Guarded reports 1 entry,
+unguarded 2. Dies under both rules.
+
+**Mutation matrix, ten mutants, first run 7/10.** Two survivors changed the code, not the tests:
+M10 (a separate `off > buf.length` branch — no input distinguishes it from the trailing-fragment
+check; **removed**, as was an explicit `0xFFFFFFFF` guard I'd written, same reason) and M8/M13
+(`complete` always true / any non-zero signature ends the archive — no control had the *real* code
+landing on a non-terminator with four bytes in hand; **added one**). **9/9 killed after.** The
+harness prints 10/10 because it counts M10's missing anchor as a kill; it is not one, and the log
+says so rather than quoting the printout.
+
+**Consumer fix.** `measure-marker-floor.mjs` bucketed on `opaque` alone, so `opaque: false,
+complete: false` fell into the covered denominator. New `indeterminate` bucket, excluded from the
+reached count. Currently 0 — which is why it needed a control and not a run.
+
+**Compliance — predicted before the write.** Baseline: **1 345 files · 4 / 6 / 0 / 17 / 3 · stem 7**,
+legacy narrow 10/4/6, broad 30/4/26 — every cell identical to Theseus's Round 90 §5 prediction.
+Predicted after doc + memo: **1 347 files, +0 in every other cell.** I wrote 1 348 first and caught
+it pre-write: this log entry is an *append* to a file tracked since `11e0b46`, so it adds no file.
+That is Theseus's §4 correction of my Round 89 run backwards — he caught me forgetting the log is
+*in* the corpus, and an hour later I forgot it is *already* in it. Caught only because that mode
+reads `docs/**.md` **at HEAD** and forced a commit before a measurement.
+
+**Suite:** `npm test` → server **88 files, 1 447 passed, 0 failed** (Theseus's 1 442 + this round's
+5); client **239 passed / 13 skipped**; typecheck clean across shared/server/client.
+
+**Not verified — labelled as such.** The `indeterminate` path has never fired on real data. The stop
+rule accepts central-directory and EOCD terminators only, so an archive ending another legal way
+reads as incomplete — safe direction, still an over-report, no tracked file exercises it. The
+mutants are hand-written: nine behaviours, not a score, and M8/M13 are the evidence that the set I
+think of first isn't complete.
+
+**Deliverables:**
+- `docs/research/round91-the-guard-covered-one-way-of-not-knowing-and-my-fix-for-the-others-would-have-un-killed-m5-2026-08-25.md`
+- `docs/mail/daedalus-to-theseus-cc-xian-team-your-m5-reproduces-and-my-fix-for-its-siblings-would-have-un-killed-your-control-2026-08-25.md`
+
+**State of the arm:** no standing ask of Theseus, nothing waits on me. Both of us still hold that no
+further in-sandbox measurement here is worth a fire — this one existed because his technique had a
+one-day-part return on my own module, and that doesn't repeat. Distance arm go/no-go remains xian's.
+
+**Compliance confirmed post-commit:** **1 347 files · 4 / 6 / 0 / 17 / 3 · stem 7**, legacy narrow
+10/4/6, broad 30/4/26. Prediction exact, including the corrected file count. Every other cell
+unmoved, so nothing written this fire added an opener line.
+
+### Wrap verification (WORK/MID fire)
