@@ -131,3 +131,117 @@ as a rename in the same commit.
 
 **Note on delivery:** the wrapper owns delivery. What is verified here is that the commit is on
 `origin/main` and the files are in its tree — nothing beyond that is claimed.
+
+---
+
+## 13:17 PT — MID/WORK fire — Round 97
+
+**Spend:** zero live turns, zero model calls. **No product code changed; Theseus's harness read, not
+edited.** Session-start briefing done: pulled state (worktree synced by wrapper), read
+`docs/COORDINATION.md`, swept `docs/mail/`.
+
+### Mail
+
+One new inbound addressed to me:
+`theseus-to-daedalus-cc-xian-team-the-decoy-was-in-every-prompt-and-the-arm-is-built-2026-08-26.md`
+(arrived with commit `0ea04b6`). Read and answered in this same fire, per the mail discipline. It
+carried one explicit ask — *"If you disagree that §3's flush edge belongs in the registered null, say
+so before the spend rather than after"* — which is answered in §2 of the reply.
+
+Thread left **open** in `docs/mail/`: it has a live action item (xian's GO on Arm R, plus the free
+check I hand back in §3 of the reply). Not moved to `read/`.
+
+### What I did
+
+Verified Theseus's Round 96 build independently rather than taking it on report. Could **not** re-run
+`--dry`: the probe needs a server on `:3001` and launching one required an approval a
+non-interactive fire can't grant. So I re-derived from source and cross-checked against artifacts
+already on this worktree — which turned out to be the more productive route.
+
+**Confirmed:** window is last-20 (`carried-context.ts:313-320`) → rows 61-80, restate pair inside;
+row arithmetic (`FILLER_LEAD` 20 pairs, `FILLER_LONG` = `FILLER` 12 + 5 = 17, `gapPairs` 8 → 41 / 59
+/ 79-80 / total 80); the fact line is an existing hard gate (`:1867` `wantToken`, `:1877` throw), not
+a new check; `predictedEdges[1].trailing: null` is forced by `:1715` when the last excerpt ends at
+`scopedTotal`; and a comment-stripped field diff of arms Q and R shows the only *seeded* difference
+is `restateUser` + `restateAck`. R is built to my §2 spec exactly.
+
+**Three margin corrections.** (1) The 69 is **chars**, not bytes — the instrument accumulates
+`line.length`; in bytes it's 71 (em-dash in Q's ack). Conclusion unaffected. (2) The 3785/3815 gap is
+the **run tag**: `n()` (`:1446`) suffixes it onto 20 channel names + 10 entity names = 30
+occurrences, so +1 tag char = +30 chars. Tested at three tag lengths — `R93Q` (4) → **3755** from my
+own `.testdata`, `R94L1` (5) → 3785, `R96DRY` (6) → 3815. Exactly +30 per char; nothing moved.
+(3) The −69 is clean only because of 6× headroom (3,815 against `CARRIED_CONTEXT_MAX_CHARS` 24,000);
+at a tighter margin a shrink could silently re-admit an evicted row.
+
+Also found: the token's only occurrences are seq 41 (outside the window) and seq 79 (inside), so the
+prompt holds it **solely via the decoy row** — stripping it would flip `promptHoldsToken` and throw
+the arm void, not merely move the geometry.
+
+### The finding
+
+Read N1's dry artifacts on this worktree (`recall-probe-R93N1-N1.json`, `recall-probe-D819-N1.json`,
+identical): `messagesInOneToOne: 60`, `factSeqs [31,59]`, ex1 `[29,33]` lead 1-28 / trail 34-56,
+ex2 `[57,60]` **trailing null**, `predictedFlushEdges: 1`.
+
+**N1 — the 5/5 arm — has the flush-terminal second excerpt, has the identical decoy string
+(`restateUser`: 12 occurrences, 2 distinct; eleven arms share it, R is the twelfth), has the decoy in
+its carried window (last 20 of 60 = rows 41-60), and its predicted second excerpt *is* the restate
+pair.** All three nominated suppressors are constant across the 5/5 ↔ 1/5 split.
+
+So: **no**, the flush edge doesn't belong flat in R's registered null — refuted as a standalone
+suppressor at n=5 — only as an interaction term. And Theseus's own §2 ("presence doesn't suppress")
+is stronger than he claimed it: n=5 from N1, not n=1 from L3.
+
+**Handed back as the gating free check:** whether N1's *live* runs actually retrieved `[57,60]` is
+behaviour I don't have — Round 63 does. If they did, retrieval-framing is refuted before R runs and
+those five turns land on a settled question. If they didn't, R's premise is intact. Zero turns,
+decidable from artifacts, should precede GO.
+
+### Secondary finding — Round 94's headline is confounded
+
+Closed form, checked against all three artifacts rather than trusted:
+`leading = 2L-2`, `trailing (offered) = 2G+2T-1`, `offset = 2G-1` → **`trailing = offset + 2T`**.
+`T ≥ 9` is forced by the marking-eviction gate (`total - marking = 2T+3 ≥ 20`), so **Q already runs
+the minimum offered width possible at +15.**
+
+N1 → Q moved four things together: total 60→80, leading 28→38, trailing 23→33, offset +1→+15.
+**The distance reading is confounded with offer width.**
+
+And read in the source: `edgeGapLine` (`recall.ts:291-318`) renders per-edge counts and addresses,
+`:544` renders the match count — **nothing renders `scopedTotal`.** The model is never told how long
+the conversation is, so length can only act *through* the offered widths. This bears directly on
+xian's preferred warning, which as phrased names a property the agent cannot observe.
+
+**Arm S specified, not built:** N1 + `fillerOverride: 'long'` (one field) → total 70, fact 31,
+marking 35, restate 69, leading 28, **trailing 33**, offset **+1**, flush 1. Holds N1's distance and
+takes Q's width. All gates pass with 15 rows of margin where Q has 1. Given one GO I'd take S over R
+— stated in the memo as a preference, not a finding.
+
+### Deliverables
+
+- `docs/research/round97-the-decoy-and-the-flush-edge-are-both-in-n1-which-expanded-5-of-5-2026-08-26.md`
+- `docs/mail/daedalus-to-theseus-cc-xian-team-no-to-the-flush-edge-because-n1-has-it-too-and-n1-expanded-5-of-5-2026-08-26.md`
+- `docs/COORDINATION.md` (Daedalus section)
+
+### Not done, deliberately
+
+- **Arm S not built.** Theseus's harness, and the §3 check may change what's worth running. A
+  half-landed arm is worse than none — his rule, and it applies to me.
+- **Harness untouched.** Every line number above came from reading it.
+- **Suite not re-run:** nothing changed. Argus's 09:01 fire recorded server 1447/1447, client
+  239/239 + 13 skipped, typecheck clean. Not duplicating a green run I didn't perturb.
+
+### Could not verify, explicitly
+
+- **R's `--dry` output.** Not reproduced — server start needed an approval unavailable here. R's
+  structural identity to Q is **derived** (the computation depends only on row counts and on
+  `content.includes(token)`/`includes(markPhrase)`, and R retains the token while every seeding field
+  is byte-identical), not observed. Theseus observed it; I did not reproduce the observation.
+- **N1's live second-query behaviour** — the gating check in §3; transcripts are Round 63's.
+- **N1's 5/5 expansion figure** — Theseus's, Round 63, read from the round-95 doc, eight days old.
+- **R94L3's reply reproducing the naming instruction** — taken as he reports it; those artifacts are
+  on his worktree, not mine. My `.testdata/` holds `R93*` and `D819*` only.
+
+### Wrap verification (CLAUDE.md Session Wrap Protocol)
+
+Recorded in the commit that carries this entry; see the follow-up block below.
