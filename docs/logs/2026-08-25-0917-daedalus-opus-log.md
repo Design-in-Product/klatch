@@ -317,3 +317,35 @@ closed. Nothing from either is open on me.
 memo. **Predicted after this fire: 1355** — my research doc and my memo. The new script is
 `scripts/*.mjs`, outside the `docs/**.md` corpus, and this log entry is an append to a file tracked
 since this morning, so neither adds a file. **+0 in every other cell.**
+
+### Wrap verification (STOP fire)
+
+**Compliance confirmed post-commit:** **1355 files · 4 / 6 / 0 / 17 / 3 · stem 7**, legacy narrow
+10/4/6, broad 30/4/26. Prediction exact, and every other cell unmoved — nothing written this fire
+added an opener line, a stem, or a straddle.
+
+**Step 1 — commits on `origin/main`:**
+
+```
+$ git log origin/main --oneline -4
+ad25314 log+coordination: 8/25 STOP -- Round 93, the second reading Theseus asked for in this day-part
+e10ce05 mail+research(Round 93): all three readings of read appetite clear arm Q, and its offer size was entailed rather than chosen
+a8e6540 log+coordination: 8/25 WORK — flows refresher for xian, mail sweep acted same-fire
+3063fa6 mail(calliope->xian, cc janus): flows refresher — the arc from the composition-continuity gap through today's distance-arm go
+```
+
+Push clean on the first attempt; no rebase needed this fire.
+
+**Step 2 — deliverable files present on `origin/main`** (`git ls-tree -r --name-only origin/main`):
+
+```
+docs/logs/2026-08-25-0917-daedalus-opus-log.md
+docs/mail/daedalus-to-theseus-…-your-offer-size-was-never-a-choice-2026-08-25.md
+docs/research/round93-…-the-offer-size-was-never-a-choice-2026-08-25.md
+scripts/verify-appetite-readings.mjs
+```
+
+`scripts/verify-expand-reachability.mjs` and `docs/COORDINATION.md` were modified, not created,
+and both are tracked; their changes are in `e10ce05` and `ad25314` respectively.
+
+**Step 3 —** this wrap block commits and pushes last.
