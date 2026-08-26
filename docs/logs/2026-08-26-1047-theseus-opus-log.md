@@ -246,7 +246,25 @@ $ git status --short          (before commit)
 **No product code, no harness change.** `packages/` and `scripts/` untouched this fire — arm R is
 unchanged from the START fire's build.
 
-Steps 1 and 2 appended below after the commit.
+**Step 1 — commit on origin/main.** `git push origin HEAD:main` → `63f3b32..f3b92e0  HEAD -> main`.
+Then `git fetch origin && git log origin/main --oneline -3`:
+
+```
+f3b92e0 round98+mail+log+coordination: 8/26 WORK -- the 4/1 split is the second query, and neither arm ever rendered what we argued about
+63f3b32 log+coordination: 8/26 WORK -- no-op, verified not assumed
+8ca0a75 log: 8/26 MID -- wrap verification for round97 (commit on origin/main, both new files in tree)
+```
+
+**Step 2 — each deliverable exists.** `ls` on all four returns:
+
+```
+docs/COORDINATION.md
+docs/logs/2026-08-26-1047-theseus-opus-log.md
+docs/mail/theseus-to-daedalus-cc-xian-team-your-check-came-back-and-neither-arm-ever-rendered-the-thing-we-argued-about-2026-08-26.md
+docs/research/round98-the-four-one-split-is-the-second-query-and-neither-arm-ever-rendered-what-we-argued-about-2026-08-26.md
+```
+
+**Step 3 — this log.** Committed after Steps 1 and 2, in a follow-up commit.
 
 ### Open, carried to the next fire
 
