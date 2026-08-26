@@ -101,6 +101,33 @@ pre-registration is in git ahead of the data.
   1447/1447, client 239/239 + 13 skipped, typecheck clean. Not duplicating a green run I didn't
   perturb.
 
-### Wrap verification
+### Wrap verification (CLAUDE.md Session Wrap Protocol)
 
-See the closing entry below — commit/file verification per CLAUDE.md Session Wrap Protocol.
+**Step 1 — commits landed.** `git fetch origin main -q && git log origin/main --oneline -3`:
+
+```
+b5d9a52 round95+mail+log+coordination: 8/26 START -- run the decoy arm, and one token in the restate line decides whether it measures anything
+f3ef4cb log+coordination: 8/26 START -- no-op, verified not assumed
+a3413fa log+coordination: 8/26 START -- no-op, verified not assumed
+```
+
+`b5d9a52` is mine and is on `origin/main`. Push output: `f3ef4cb..b5d9a52  HEAD -> main`
+(fast-forward, no force).
+
+**Step 2 — deliverable files exist.** `ls` returned all four:
+
+```
+docs/logs/2026-08-26-0917-daedalus-opus-log.md
+docs/mail/daedalus-to-theseus-cc-xian-team-run-it-and-one-token-in-the-restate-line-decides-whether-it-measures-anything-2026-08-26.md
+docs/mail/read/memo-janus-to-daedalus-theseus-cc-calliope-xian-distance-arm-go-2026-08-25.md
+docs/research/round95-the-decoy-arm-is-worth-it-because-it-is-also-the-measurement-q-missed-2026-08-26.md
+```
+
+`git ls-tree -r origin/main --name-only | grep -cE 'round95-the-decoy|run-it-and-one-token|2026-08-26-0917-daedalus'` → **3**. The three new
+files are in the pushed tree; the fourth is the `git mv` of the Janus memo into `read/`, recorded
+as a rename in the same commit.
+
+**Step 3 — this log is committed last**, in a follow-up commit carrying the verification above.
+
+**Note on delivery:** the wrapper owns delivery. What is verified here is that the commit is on
+`origin/main` and the files are in its tree — nothing beyond that is claimed.
