@@ -149,3 +149,110 @@ scripts/probe-recall-tool.mjs
   excerpt belongs in the registered null. If he doesn't, better to hear it before five turns land
   on it than after. Flagged as such in the memo §7.
 - **N1 is still Round 63's**, now six days old, unverified against today's model.
+
+---
+
+## 14:47 PT — WORK fire
+
+Session-start protocol: worktree synced by wrapper to `63f3b32`, branch `claude/theseus-cycle`,
+`git status` clean. `docs/COORDINATION.md` Theseus section and `ls docs/mail/` both read. Since the
+START fire, ten commits landed from Daedalus/Argus/Calliope; none touch `scripts/` or `packages/`.
+
+**Mail:** one new memo addressed to me —
+`daedalus-to-theseus-cc-xian-team-no-to-the-flush-edge-because-n1-has-it-too-and-n1-expanded-5-of-5-2026-08-26.md`
+(13:29 PT). Read in full. It answers my Round 96 §7 ask with a **no** on the flush-terminal
+survivor, and — more usefully — names one **free artifact check it says should happen before xian
+rules on GO** (§3): *did N1's live runs actually retrieve the second excerpt `57-60`?* Acted on it
+in this fire. Everything below is the same fire. Zero live turns, zero model calls.
+
+### The clocked item: §3 answered — no
+
+Round 63's own doc, §3 and §Limits, read this session:
+
+- §3, live call-1 render, all five runs identically: **leading `1-28` (28), trailing `34-60` (27)**
+  — one excerpt.
+- §Limits: *"All five runs produced the **single-excerpt render** … The two-excerpt widths (28/23)
+  **never became the decision render**."*
+- §2's per-call table, call 2: N1L2/L3 repeated the single-excerpt render, N1L1/L4/L5 came back
+  **(miss, 0 rows)**.
+
+**No N1 run on any call received a two-excerpt render.** Daedalus's conditional was *"if they
+didn't, R's premise is intact and R should run exactly as built."* Answered R-favourable.
+
+(Labelled: this is the Round 63 **doc**, not artifacts — those JSONs were deleted at end of that
+fire per its own §Limits. Nothing here can re-check it.)
+
+### Then Q's artifacts, and the thing that was actually there
+
+All five `.testdata/recall-probe-R94L{1..5}-Q.json` still present. Read via
+`toolCalls[].rendered` rather than console summaries.
+
+**Call 1, identical in all five:** `matchCount: 1`, `excerptSeparators: 0`, `edgeLines: 2`, offers
+`[1-38, 44-80]`. **Q's call 1 was single-excerpt too.** Seq 79 was not a hit for the opening query.
+
+**Call 2 is the 4/1 split, and the splitter is the query string:**
+
+| run | call-2 query | render | expanded |
+|---|---|---|---|
+| L1, L2, L4, L5 | `ochre-marlin-44` | 2 excerpts, `▸`41 + `▸`79, **3 edge lines** (flush) | **no**, 0/4 |
+| L3 | `codeword rollback string exact` | **0 matches** | **yes** — `expand 44-80`, held the marking |
+
+Combined with N1's six: **two-excerpt render → 0/4 expand; no such render → 6/6 expand. Ten runs,
+no exception.** This was in `toolCalls[].query` the whole time; no round doc had tabulated it.
+
+**L3 is stronger than co-occurrence.** Its expand returned `shownCount: 30 / matchCount: 37` with
+`1-43` and `74-80` offered as continuations — rows 74-80 **truncated out and not taken**. L3 was
+never *shown* 79-80 by a tool call, yet its reply reproduces "the Tuesday revert" verbatim. Carried
+context. So: a run that had the decoy, **acted on it**, and expanded anyway.
+
+### Two corrections, one of them to my own registration
+
+1. **Daedalus's §2 refutation fails.** It needs N1's flush-terminal second excerpt to have been
+   present; `predictedFlushEdges: 1` is a `--dry` field and N1 rendered **no flush edge live**. A
+   structural prediction read as an observation — third time in four days on this line, and I made
+   the same error in the registration he was refuting.
+2. **My Round 96 §Finding 2 null was wrong in both survivors.** "80-row length" is struck — nothing
+   renders `scopedTotal`, confirmed in the render text, so it was never an observable. The flush
+   edge stays but as **confounded, not surviving**: it and the `▸`-marked decoy arrive in the same
+   render, and **R does not separate them**.
+
+### Free improvement to Daedalus's arm S
+
+His closed form is right about the two-excerpt geometry, which nobody saw. Live single-excerpt:
+`leading = fact-3`, `trailing = total-fact-2` → N1 **28/27/+1**, Q **38/37/+15** (not 23 and 33).
+S (total 70, fact 31) would render **leading 28, trailing 37, offset +1** — **trailing 37 identical
+to Q's live 37**, so S vs Q varies only leading width and offset instead of three things. Not built;
+arithmetic only; conditional on opening-query behaviour, which Round 63 flagged as undecidable at
+`--dry` time and Q's own call 2 proves can vary within an arm.
+
+### Registered ahead of any R data (Round 98 §5a)
+
+R only measures anything on runs reaching the two-excerpt render. So: conditional denominator;
+**both denominators always reported** (Round 63 §6's discipline); underpowered and say so if <3/5
+reach it; **call-2 query string recorded verbatim per run**.
+
+---
+
+### Wrap verification
+
+```
+$ git status --short          (before commit)
+ M docs/COORDINATION.md
+ M docs/logs/2026-08-26-1047-theseus-opus-log.md
+?? docs/mail/theseus-to-daedalus-cc-xian-team-your-check-came-back-and-neither-arm-ever-rendered-the-thing-we-argued-about-2026-08-26.md
+?? docs/research/round98-the-four-one-split-is-the-second-query-and-neither-arm-ever-rendered-what-we-argued-about-2026-08-26.md
+```
+
+**No product code, no harness change.** `packages/` and `scripts/` untouched this fire — arm R is
+unchanged from the START fire's build.
+
+Steps 1 and 2 appended below after the commit.
+
+### Open, carried to the next fire
+
+- **Arm R still needs xian's GO** for 5 live opus runs. The free check Daedalus wanted ahead of the
+  ruling is done and came back in favour of running it. Ask restated in the reply memo §6/§7.
+- **R vs S** — I argue for R (memo §6); Daedalus preferred S. Not a strong disagreement, and §2 did
+  most of S's audit for free. If he still prefers S after reading §2, I'd defer.
+- **Undecidable with the current corpus:** whether call 2's query is *caused by* call 1's render or
+  is independent variation. Ten runs can't tell, and it changes how the §0 association reads.
