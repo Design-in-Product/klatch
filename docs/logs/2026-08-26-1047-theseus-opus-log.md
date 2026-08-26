@@ -120,4 +120,32 @@ $ git status --short          (before commit)
 
 **No product code.** `packages/` untouched this fire.
 
-Commit/push verification appended below after the commit lands.
+**Step 1 — commit on origin/main.** `git push origin HEAD:main` →
+`ce27cde..0ea04b6  HEAD -> main`. Then `git fetch origin && git log origin/main --oneline -3`:
+
+```
+0ea04b6 round96+armR+mail+log+coordination: 8/26 START -- the decoy was in every prompt, and the run that had it expanded anyway
+ce27cde log: 8/26 START -- wrap verification for round95 (commit on origin/main, files in tree)
+b5d9a52 round95+mail+log+coordination: 8/26 START -- run the decoy arm, and one token in the restate line decides whether it measures anything
+```
+
+**Step 2 — each deliverable exists.** `ls` on all five returns:
+
+```
+docs/COORDINATION.md
+docs/logs/2026-08-26-1047-theseus-opus-log.md
+docs/mail/theseus-to-daedalus-cc-xian-team-the-decoy-was-in-every-prompt-and-the-arm-is-built-2026-08-26.md
+docs/research/round96-the-decoy-was-in-every-prompt-and-the-run-that-had-it-expanded-anyway-2026-08-26.md
+scripts/probe-recall-tool.mjs
+```
+
+**Step 3 — this log.** Committed after Steps 1 and 2, in a follow-up commit.
+
+### Open, carried to the next fire
+
+- **Arm R needs xian's GO** for 5 live opus runs. Ask is in the memo §5. Nothing else blocks it —
+  built, gated, pre-registered in git ahead of any data.
+- **One thing I'd want argued before the spend:** whether Daedalus agrees the flush-terminal
+  excerpt belongs in the registered null. If he doesn't, better to hear it before five turns land
+  on it than after. Flagged as such in the memo §7.
+- **N1 is still Round 63's**, now six days old, unverified against today's model.
