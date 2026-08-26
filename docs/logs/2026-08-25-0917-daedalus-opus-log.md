@@ -210,3 +210,110 @@ scripts/measure-marker-floor.mjs
 passed, 0 failed**; client **239 passed / 13 skipped**; typecheck clean across all three workspaces.
 
 **Step 3 —** this wrap block commits and pushes last.
+
+
+---
+
+## 17:17 PT — STOP fire. Round 93: the three readings of appetite all clear, and the offer size was entailed
+
+**Briefing done first.** `git log` (synced by the wrapper), `docs/COORDINATION.md`, `ls docs/mail/`.
+Two memos arrived after my 13:17 fire closed and both are addressed to me:
+
+- `memo-janus-to-daedalus-theseus-cc-calliope-xian-distance-arm-go-2026-08-25.md` — **xian's GO on
+  the distance arm**, relayed by Janus at ~14:15 PT. Spend the ~5 opus runs, build the ~80 test
+  rows. Plus his threat-model framing: the dominant deployment is one human across their own
+  agents, so a residual carried-context gap there is lower-stakes than cross-human leakage, and a
+  disclosed-limits warning is available alongside whatever the arm recommends.
+- `theseus-to-daedalus-…-the-distance-arm-is-built-and-the-gate-passed-with-a-one-row-margin-2026-08-25.md`
+  — he built the arm, passed the gate, **did not spend**, and asked me for a second reading on his
+  §8 **"in this day-part"** before he takes the five runs at his next fire.
+
+That deadline is what this fire is for. Acted in the same fire as the read, per the mail rule.
+
+### What he asked, and what I did with it
+
+§8: the appetite band "+6…+10" could be a **row count**, a **fraction of the offer**, or a
+**character budget**; he could not separate them from the record and said the pre-registration
+rests on the row-count reading.
+
+**I did not try to separate them. I checked whether the arm cares.** Each reading calibrated on
+the same six points, projected onto Q's restriction at +15:
+
+```
+render                  reading       reaches  restriction  clearance
+single-match (37 rows)  row count         +10          +15  5 row(s) clear
+single-match (37 rows)  fraction          +13          +15  2 row(s) clear
+single-match (37 rows)  char budget       +11          +15  4 row(s) clear
+two-excerpt (33 rows)   row count         +10          +15  5 row(s) clear
+two-excerpt (33 rows)   fraction          +12          +15  3 row(s) clear
+two-excerpt (33 rows)   char budget       +11          +15  4 row(s) clear
+```
+
+All six clear. §8 is a limit on what a miss will *mean*, not on whether one is predicted.
+**Recommendation: run it, unchanged.**
+
+**Verified this session, not recalled:**
+- Four `--dry` runs (L, M, N1, Q) against a local scratch server. Zero API calls, zero model
+  turns. Q reproduced Theseus's §3 numbers exactly — fact seqs `[41,79]`, marking `[59]`,
+  `80/80`, single-match trailing `44-80`, two-excerpt `44-76`.
+- All six appetite points sit on an offer of **exactly 27** — F/L `4-30` (Round 56 §2), M
+  `12-38`, N1 `34-60`. His memo said "27 or fewer"; there is no variation at all, which makes
+  readings 1 and 2 *perfectly confounded* rather than under-determined.
+- Character totals recomputed from the seeded rows in `.testdata/recall-probe.db`, not from the
+  arm literals. Ceiling 647 chars (N1L1).
+- Row-content identity: N1[34] === Q[44], and N1[37..44] === Q[45..52] 8/8 — the rows the model
+  *walks* are the same corpus, which is stronger than the byte-identical arm strings he checked.
+
+**A wrong turn I caught before it reached the memo.** I predicted the char-budget reading would
+be strongly favourable, reasoning that `FILLER_LONG` rows are longer, so +15 of them would blow
+past the char ceiling. Measured: 53.9 chars/row against N1's 57.0. `FILLER_LONG` is
+`[...FILLER, 5 more]` — a longer *list*, not longer rows. And `verify-expand-reachability.mjs`
+already says exactly that in its own output, so it was not even an unrecorded fact — it was one I
+would have contradicted. Recorded in the doc as confirmation rather than discovery.
+
+**Two corrections to his memo, one in his favour.** "+15 of 37 is proportionally nearer the start
+than +7 of 27" is backwards (0.4054 vs 0.2593) — Q is the furthest in proportionally on record,
+so the fraction reading thins the clearance rather than sinking the arm. And "27 or fewer" above.
+
+**His §2, which he asked me to push on, got firmer instead.** `markOffset = 2G−1`,
+`trailWidth = 2F+3`, eviction `G ≤ F−9` ⇒ +15 pins G=8 pins F≥17 pins the offer ≥ 37 rows. The
+offer-size change is **entailed**, not chosen; §2 and §8 are one problem. And F=17/18 are the
+only feasible values whose prediction survives the fraction reading — so growing the filler list
+would lose the finding, which is worth saying out loud because "more headroom" reads like a
+strengthening.
+
+**His §6 item done, plus one he did not catch.** `verify-expand-reachability.mjs:118` cited
+`:159` for `WINDOW` (actual 163, his flag) and `:162` for `RADIUS` (actual 166, not flagged) in
+the same sentence. Both now symbol names.
+
+**Mutation-checked, because a green check nobody has seen fail is not evidence.** Two doctored
+copies of the new verifier: `gapPairs 8→5` → exit 1 on the row-count row; `N1L1.offset 10→9` →
+exit 1 before any ceiling prints. Both copies removed; tree clean.
+
+**Not verified — labelled as such.** The six read positions are hand-entered from Rounds
+56/62/63 and cannot be regenerated from code; the offers they were measured against are
+re-derived and asserted, but a wrong round-doc table would be inherited. Character counts are of
+raw message content, not the rendered expand output — the per-row scaffolding is roughly
+constant, which pushes the char reading *toward* the row-count reading and so only strengthens
+the "Q cannot separate 1 from 3" claim. The fractional ceiling 0.3704 rests on a single run
+(N1L1); taking the maximum is the conservative choice but it is one run.
+
+**Suite:** server **88 files, 1447 passed, 0 failed**; client **239 passed / 13 skipped**;
+typecheck clean ×3 — identical to Rounds 91/92, as it must be, since nothing under `packages/`
+moved this fire.
+
+**Deliverables:**
+- `scripts/verify-appetite-readings.mjs` (new)
+- `docs/research/round93-the-three-readings-agree-on-the-sign-and-the-offer-size-was-never-a-choice-2026-08-25.md`
+- `docs/mail/daedalus-to-theseus-cc-xian-team-run-it-all-three-readings-clear-and-your-offer-size-was-never-a-choice-2026-08-25.md`
+
+**Mail state.** Theseus's Round 92 memo and Janus's GO memo both stay in `docs/mail/` — the GO
+licenses a spend not yet taken and the arm run is an open action on Theseus, so neither thread is
+closed. Nothing from either is open on me.
+
+**Compliance, predicted before the write.** Baseline `npx tsx scripts/measure-marker-floor.mjs
+--docs` taken this fire: **1353 files · 4 / 6 / 0 / 17 / 3 · stem 7**, legacy narrow 10/4/6, broad
+30/4/26. That reconciles against Theseus's predicted 1352 with **+1** for Calliope's flows-refresher
+memo. **Predicted after this fire: 1355** — my research doc and my memo. The new script is
+`scripts/*.mjs`, outside the `docs/**.md` corpus, and this log entry is an append to a file tracked
+since this morning, so neither adds a file. **+0 in every other cell.**
