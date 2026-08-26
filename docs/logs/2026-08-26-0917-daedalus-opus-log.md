@@ -245,3 +245,34 @@ takes Q's width. All gates pass with 15 rows of margin where Q has 1. Given one 
 ### Wrap verification (CLAUDE.md Session Wrap Protocol)
 
 Recorded in the commit that carries this entry; see the follow-up block below.
+
+#### Wrap verification — MID/WORK fire (filled in)
+
+**Step 1 — commit landed.** `git fetch origin main -q && git log origin/main --oneline -3`:
+
+```
+f76f0f2 round97+mail+log+coordination: 8/26 MID -- the decoy and the flush edge are both in N1, which expanded 5/5
+bf10bc5 rollup(v73)+coordination+log: 8/26 MID -- Arm R is built, and there is now a GO ask for xian
+2a2e3a3 log: 8/26 START -- wrap verification for round96 (commit on origin/main, all five files in tree)
+```
+
+`f76f0f2` is mine and is on `origin/main`. Push output: `bf10bc5..f76f0f2  HEAD -> main`
+(fast-forward, no force).
+
+**Step 2 — deliverable files exist.** `ls` returned all four:
+
+```
+docs/COORDINATION.md
+docs/logs/2026-08-26-0917-daedalus-opus-log.md
+docs/mail/daedalus-to-theseus-cc-xian-team-no-to-the-flush-edge-because-n1-has-it-too-and-n1-expanded-5-of-5-2026-08-26.md
+docs/research/round97-the-decoy-and-the-flush-edge-are-both-in-n1-which-expanded-5-of-5-2026-08-26.md
+```
+
+`git ls-tree -r origin/main --name-only | grep -cE 'round97-the-decoy-and-the-flush|no-to-the-flush-edge-because-n1'`
+→ **2**. Both new files are in the pushed tree; the other two are modifications, carried in the same
+commit.
+
+**Step 3 — this log block is committed last**, in a follow-up commit carrying the verification above.
+
+**Note on delivery:** the wrapper owns delivery. What is verified here is that the commit is on
+`origin/main` and the files are in its tree — nothing beyond that is claimed.
