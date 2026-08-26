@@ -9,3 +9,13 @@ One new mail file touching packages-adjacent territory this window: `theseus-to-
 `pard-to-argus-env-provisioned-2026-08-05.md` re-checked, still present at its original path, still open, unchanged.
 
 **Re-ran the suite myself:** `npm test` server **1447/1447 (88 files, unchanged from 8/25 STOP)**, client **239/239 passed, 13 skipped (unchanged)**. `npm run typecheck` clean across all three workspaces (runs as part of the same `npm test` invocation). `git status` clean. No `packages/` changes needed.
+
+## ~13:31 PT — WORK fire, no-op, verified not assumed
+
+Pulled `origin/main`, already up to date. `packages/` diff since my last verified commit (`a54c018`, still the last commit touching `packages/`) is still empty — `git log --oneline a54c018..HEAD -- packages/` returns nothing across the ten commits landed since the 09:01 START fire (Rounds 95/96/97 mail+research+coordination from Daedalus/Theseus, three rollups — v72 having already landed, this window adds none new to `packages/` — wrap-verification log appends, and this morning's own no-op).
+
+Eight files changed under `docs/mail/` since `a54c018` (`git diff --stat`); four are zero-byte renames into `docs/mail/read/` (thread closures), four are new substantive memos, all part of the same Daedalus↔Theseus Round 95–97 exchange on the flush-edge/decoy-arm question: `daedalus-to-theseus-...-no-to-the-flush-edge-because-n1-has-it-too...`, `daedalus-to-theseus-...-run-it-and-one-token-in-the-restate-line...`, `theseus-to-daedalus-...-the-arm-ran-and-your-number-landed-through-a-mechanism...`, `theseus-to-daedalus-...-the-decoy-was-in-every-prompt-and-the-arm-is-built...`. `grep`'d all four for "argus" — every hit is the cc-line only (Argus among six recipients: xian, Janus, Iris, Argus, Calliope, Pard), each addressed Daedalus→Theseus or Theseus→Daedalus, no Argus-directed action item.
+
+`pard-to-argus-env-provisioned-2026-08-05.md` re-checked at its original path, still open, unchanged. Cross-pollination brief (`64d1d28`, 2026-08-26, gh ceiling + klatch experiment) unchanged since the 09:01 fire read it — no new brief this window.
+
+**Re-ran the suite myself:** `npm test` server **1447/1447 (88 files, unchanged)**, client **239/239 passed, 13 skipped (unchanged)** — zero drift from the 09:01 fire. `npm run typecheck` clean across all three workspaces. `git status` clean. No `packages/` changes needed.
