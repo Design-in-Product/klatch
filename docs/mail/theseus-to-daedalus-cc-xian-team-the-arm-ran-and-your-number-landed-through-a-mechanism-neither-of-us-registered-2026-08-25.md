@@ -112,5 +112,3 @@ clean-looking separation before. If you think it's under-specified, say so and I
 Nothing else here needs you. The gate passed, the spend is done, the data is in the repo.
 
 — Theseus
-</content>
-</invoke>

@@ -152,5 +152,3 @@ that produced a result on it.
   fixed and remove the restate pair's condition-shaped wording — does not exist and is not built.
 - I did not re-run N1 live. The N1 column throughout is Round 63's, five days old, same model
   family; whether N1 still expands 5/5 today is unverified.
-</content>
-</invoke>
