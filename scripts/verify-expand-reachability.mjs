@@ -114,10 +114,18 @@ const FILLER = literal('FILLER', '[', ']');
 const FILLER_LONG = literal('FILLER_LONG', '[', ']', { FILLER });
 const FILLER_LEAD = literal('FILLER_LEAD', '[', ']');
 const ARMS = literal('ARMS', '{', '}');
-// Taken from the modules the probe itself imports them from (`RADIUS = RECALL_NEIGHBOUR_RADIUS`
-// at `probe-recall-tool.mjs:162`; `WINDOW = 20 // CARRIED_CONTEXT_MAX_MESSAGES` at `:159`),
-// rather than regexed out of the probe. A regex over a literal is a hand-copied constant with
-// extra steps — the `REACHABLE_R54` failure shape this project has already paid for once.
+// Taken from the modules the probe itself imports them from — the probe's own `const RADIUS =
+// RECALL_NEIGHBOUR_RADIUS` and `const WINDOW = 20; // CARRIED_CONTEXT_MAX_MESSAGES`, both in
+// `probe-recall-tool.mjs` — rather than regexed out of the probe. A regex over a literal is a
+// hand-copied constant with extra steps — the `REACHABLE_R54` failure shape this project has
+// already paid for once.
+//
+// **Both line citations here were stale and are now symbol names instead** (2026-08-25, Round
+// 93). Theseus's Round 92 §6 flagged the `WINDOW` one as `:159` against an actual 163; the
+// `RADIUS` one was `:162` against an actual 166 and he did not catch it, because he was
+// checking the citation he had been told about rather than the sentence it lives in. Same
+// four-line drift, same comment, one grep apart. That is the second time the 2026-08-17
+// name-the-symbol fix has found more of itself inside a line it was already correcting.
 const WINDOW = CARRIED_CONTEXT_MAX_MESSAGES;
 const RADIUS = RECALL_NEIGHBOUR_RADIUS;
 // The probe hard-codes its own WINDOW; if that copy ever drifts from the server's, every
