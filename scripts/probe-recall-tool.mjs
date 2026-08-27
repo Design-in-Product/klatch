@@ -136,6 +136,7 @@ import { randomUUID } from 'crypto';
 import { buildRecogniser } from './lib/recall-recogniser.mjs';
 import { scoreOfferChoice, formatOfferChoice } from './lib/offer-choice.mjs';
 import { readCallKind, callKindWarning } from './lib/recall-call-kind.mjs';
+import { readPremiseRenderHeld } from './lib/premise-render.mjs';
 import {
   startRecallTap, alignTapToCalls, tapSummary, tapWarnings, TAP_STATUS,
 } from './lib/recall-tap.mjs';
@@ -353,6 +354,46 @@ const FILLER_LEAD = [
   ['Did the email digest change reduce the unsubscribe rate?', 'Down by about a fifth since we moved to weekly sends.'],
 ];
 
+/**
+ * ── `premiseRender` — the render an arm's DV is conditional on, as a field ────
+ *
+ * Round 102, Theseus, 2026-08-27 (START). Specified by Daedalus (Round 99 §6), deferred by
+ * Round 100 §5 to a fire with a full day-part ahead, built here because xian's GO on arm R
+ * has not landed — Round 100's rule was **"if GO lands first, GO wins"**, and it has not.
+ *
+ * **Why it exists.** Several arms score a DV *conditioned on what the model was shown*. R is
+ * the sharpest case: its primary DV is "≥4/5 expand, **conditioned on the second search
+ * returning the 9-row neighbourhood**", and if that condition fails the arm is *void, not
+ * null*. Until now that condition lived only as English in a docblock, so whether it held was
+ * a hand-adjudicated reading of console output. Round 100 §4 is what a hand-adjudicated
+ * condition costs: R's own null was registered against `1/5` when its conditioning rule makes
+ * the denominator `0/4`, and nobody noticed for two rounds.
+ *
+ * **What is declared, and what is deliberately not.** `grep -n "arm's premise"` returns three
+ * hits in two arms — `:803`/`N1` and `:970`+`:974`/`Q` — and R declares none, which was
+ * Round 100's argument for the field. Of the **15** arms in this table (counted from the
+ * source this session; Round 100 §5 said "eleven" and was wrong), exactly those three get a
+ * value. **The other twelve get `null`, not a guess.** Assigning a premise to an arm that
+ * never declared one would manufacture the pre-registration the field exists to record — the
+ * Round 101 error (a `--dry` prediction cited as an observation) in a new costume.
+ *
+ * **The shape carries a call selector, because the arms disagree about which call.** N1 and Q
+ * pre-register *call 1's* single-excerpt widths as their premise; R conditions on *call 2's*
+ * two-excerpt neighbourhood. One bare `'single' | 'two'` cannot say which call it is about,
+ * and an assertion against the wrong call is worse than none.
+ *
+ *   premiseRender: { call: 'first' | 'second', excerpts: 1 | 2, note: '<why, in one line>' }
+ *
+ * **Evidence class, stated in the field rather than around it.** `premiseRenderHeld` reads
+ * `call.rendered`, which is **reconstructed, not captured** — see the docblock at the
+ * `call.rendered` assembly. So the assertion is reconstruction-class and the record says so
+ * in its own `evidenceClass` key. This is the whole lesson of Rounds 99-102: a retraction or
+ * a caveat that lives in prose does not travel with the number. The caveat is now a key.
+ *
+ * **Additive by construction.** `structural.premiseRender` is new; nothing reads it but the
+ * printer and the run record. Gated by `--dry` on every arm before and after this edit, with
+ * the requirement that the artifacts differ in the new keys and nowhere else (Round 100 §5).
+ */
 const ARMS = {
   A: {
     key: 'A',
@@ -724,6 +765,13 @@ const ARMS = {
     evictedMarking: true,
     token: 'ochre-marlin-44',
     markPhrase: 'keep it between the two of us',
+    // Round 102: promoted from the prose below, not invented here. The block headed
+    // "Offered address, single-excerpt render" ends "This is the arm's premise" — call 1,
+    // one excerpt, leading `1-28` / trailing `34-60`.
+    premiseRender: {
+      call: 'first', excerpts: 1,
+      note: "single-excerpt call-1 render, leading 1-28 / trailing 34-60 — declared \"the arm's premise\" in this block",
+    },
     //
     // ── NOT RUN. Two `--dry` runs before anything is spent ─────────────────
     //
@@ -859,6 +907,15 @@ const ARMS = {
     fillerOverride: 'long',
     token: 'ochre-marlin-44',
     markPhrase: 'keep it between the two of us',
+    // Round 102: promoted from the prose below. Same shape as N1's and for the same reason —
+    // "Offered address, single-excerpt render … This is the arm's premise", call 1, one
+    // excerpt, leading `1-38` / trailing `44-80`. Round 98 §1 read exactly that off all five
+    // live artifacts, so this is the one arm where the field can be checked against runs that
+    // already happened: it should come back `held: true` for L1-L5.
+    premiseRender: {
+      call: 'first', excerpts: 1,
+      note: "single-excerpt call-1 render, leading 1-38 / trailing 44-80 — declared \"the arm's premise\" in this block",
+    },
     //
     // ── NOT RUN YET. `--dry` before anything is spent ──────────────────────
     //
@@ -1038,6 +1095,16 @@ const ARMS = {
     fillerOverride: 'long',
     token: 'ochre-marlin-44',
     markPhrase: 'keep it between the two of us',
+    // Round 102: **R is the arm this field was built for** — Round 100 §5's argument was that R
+    // is the only arm whose DV is conditional on a render and which declares no premise. It has
+    // one now, and it is not N1's or Q's: R conditions on the **second** search returning the
+    // 9-row two-excerpt neighbourhood ("Primary: ≥4/5 expand, conditioned on…"), and a failure
+    // of that condition makes the arm **void, not null**. Note the call selector — copying N1's
+    // `call: 'first'` here would assert against the opening search, which R does not score.
+    premiseRender: {
+      call: 'second', excerpts: 2,
+      note: 'two-excerpt 9-row neighbourhood on the SECOND search; condition failure voids the arm rather than nulling it',
+    },
     //
     // ── NOT RUN. `--dry` before anything is spent; live spend needs xian's GO ──
     //
@@ -1152,6 +1219,22 @@ const ARMS = {
     //   unrelated reasons, the arm is **void, not null** — the condition, not the outcome, is
     //   what failed. Record all five second-query strings either way.
     //
+    //   **This condition is now a field, not a reading (Round 102, 2026-08-27).** It is
+    //   declared in `premiseRender` above (`{ call: 'second', excerpts: 2 }`), asserted at run
+    //   time by `lib/premise-render.mjs`, and written to each run's JSON as
+    //   `premiseRenderHeld`. Whoever scores R reads a key; they do not re-adjudicate console
+    //   output, which is how Round 100 §4's denominator error survived two rounds.
+    //
+    //   **Validated against runs that already happened, at zero cost.**
+    //   `node scripts/verify-premise-render.mjs` replays the rule over Q's five Round 94
+    //   artifacts: it keeps L1/L2/L4/L5 and voids L3 — **exactly the 0/4 denominator Round 100
+    //   found by hand two rounds late**, derived mechanically. That is also the evidence the
+    //   condition is not vacuous: on real runs it excluded one of five.
+    //
+    //   **It is reconstruction-class and says so.** `premiseRenderHeld.evidenceClass` is
+    //   `'reconstructed'` because the render it reads is re-derived, not captured. Do not
+    //   report a `held: true` as an observation of what the model saw.
+    //
     //   **Secondary — Q's missing DV:** of the runs that expand, most narrow rather than take
     //   `44-80` verbatim, with requested ranges clustering short of `+15`. Report every
     //   requested range. An empty `startPlusNs` column is labelled *"the DV did not exist this
@@ -1183,11 +1266,37 @@ const ARMS = {
     //   with a reachable count (both read 2026-08-27; cited by symbol, not line — see below).
     //   This file computes
     //   the same value in `singleMatchOffer` (`trailing: { from: last + 1, to: scopedTotal }`)
-    //   and pre-registers it for Q as `44-80`. Round 98 §2 read it off the live artifacts: call
-    //   1, **all five Q runs**, `addressesOffered: [1-38, 44-80]`. The number 80 was on screen on
-    //   every decision call in all ten runs — and L3 quoted it back, `expand {from: 44, to: 80}`,
-    //   *"the covering offer from call 1, verbatim."* Whatever else is true, "never an
-    //   observable" is not.
+    //   and pre-registers it for Q as `44-80`.
+    //
+    //   **The conclusion holds. The sentence that carried it did not, and Theseus corrected it
+    //   2026-08-27 (Round 102) off the artifacts Daedalus could not reach from his worktree.**
+    //   The 8/27 version of this paragraph read *"the number 80 was on screen on every decision
+    //   call in all ten runs."* Checked three ways, all this session:
+    //
+    //   - **The literal 80 is arm-Q-only.** Every N1 structural record on this worktree
+    //     (`.testdata/recall-probe-Q1-N1.json`, `…-R94N1-N1.json`) prints `scopedTotal: 60`, and
+    //     Round 98 §2 records N1's live single-excerpt offer as `1-28` / `34-60`. In N1's five
+    //     runs the rendered bound was **60**. So the true general claim is *a trailing bound
+    //     equal to that arm's own `scopedTotal` was rendered*, and the literal-80 version is
+    //     false for half the ten.
+    //   - **Evidence class, per arm, and the strongest witness is not the one that was cited.**
+    //     `addressesOffered` is produced by `RECOGNISER.read(rendered.text)`, and `rendered.text`
+    //     is re-derived by calling `recallFromOtherConversations` now — **reconstruction-class**,
+    //     as the docblock at the `call.rendered` assembly says in terms. It was quoted here as if
+    //     it settled the question. The one **captured-class** witness is L3's third call: `kind:
+    //     'expand'`, `{ conversation: 'vesper-1-1-QR94L3', from: 44, to: 80 }`, parsed by
+    //     `readCallKind` from the stored `input_summary` that `toolUseInputSummary` wrote at live
+    //     time. The model **emitted** 80. That cannot be reconstructed into existence — and it
+    //     covers **one run**, not ten. N1's five are doc-class only; Round 98's Limits records
+    //     that N1's result JSONs were deleted.
+    //   - **Verified first-hand 2026-08-27** across `recall-probe-R94L{1..5}-Q.json`: call 1 in
+    //     all five carries `addressesOffered: [1-38, 44-80]` and the reconstructed edge line
+    //     `[… 37 later message(s) … expand {conversation: "vesper-1-1-QR94Lp", from: 44, to: 80} …]`.
+    //     Round 98 §2's reading is confirmed at its own evidence class, no higher.
+    //
+    //   Net: `scopedTotal` reaches the text as an expand bound — *"never an observable"* is
+    //   false, and the strike's ground stays retracted. Only the run count and the evidence
+    //   class move.
     //
     //   What survives is narrower: **nothing renders the length _as a length_.** It renders as
     //   the upper bound of an expand address. Whether a model reads a range bound as a
@@ -1205,6 +1314,21 @@ const ARMS = {
     //   say which. Naming any of them as independently excluded licenses a follow-up arm that
     //   tests one believing another was ruled out — the error this paragraph has now made in
     //   both directions, which is why the ground is recorded and not just the conclusion.
+    //
+    //   **One empirical anchor for the third member that was not on the table when the triple was
+    //   registered (Theseus, 2026-08-27).** *"No arm here has tested it"* is right about a
+    //   deliberate test and wrong about existing variation: **N1 already ran at a different
+    //   length.** N1's `scopedTotal` is **60**, Q's is **80** — read off the structural artifacts
+    //   this session, not recalled — and the two arms split **5/5 expand (N1) vs 1/5 (Q)**
+    //   (Round 98 §0). So the rendered bound has already varied across an arm pair, in the
+    //   direction of the outcome. That does **not** promote it: the same N1→Q step also moves the
+    //   fact→restate distance (`+1` → `+15`, Round 94's live variable) *and* the second-query
+    //   render, which Round 98 found predicts all ten runs with no exception. It is a fourth thing
+    //   aligned with the same 5-vs-5 split, not an independent signal.
+    //
+    //   What it does change is the standing of R's contrast: R holds `scopedTotal` at 80, so R vs
+    //   Q is the one comparison in this file where the bound is **not** moving. That is an
+    //   argument for R and against reading N1→Q as though it isolated anything.
     //
     //   No further wording arm until the set is addressed, and the arm that addresses it has to
     //   break the pair apart.
@@ -1898,6 +2022,10 @@ for (const key of SELECTED) {
       neighbourhoodRawSeqs: hood.map((h) => h.raw),
       predictedGapLines,
       predictedWithheld,
+      // Round 102. Pre-registration, so it belongs in the block that is decided before the live
+      // turn and is visible at `--dry`. `null` for the twelve arms that declare no premise —
+      // see the `premiseRender` docblock above `ARMS` for why those are not guesses.
+      premiseRender: arm.premiseRender ?? null,
     };
   }
   db.close();
@@ -2256,6 +2384,36 @@ for (const key of SELECTED) {
     };
   }
 
+  // ── Round 102: did the arm's premised render actually arrive? ──────────────
+  //
+  // The assertion half of `premiseRender` (declared per arm; see the docblock above `ARMS`).
+  // It answers, as a recorded field rather than a reading of console output, the question R's
+  // own scoring rule turns on: *was the model shown the thing this arm's DV is conditional
+  // on?* R treats a failure as **void, not null**, and Round 100 §4 is the cost of leaving
+  // that to adjudication — a null registered against `1/5` when the conditioning rule makes it
+  // `0/4`, unnoticed for two rounds.
+  //
+  // In `lib/premise-render.mjs` rather than inline, for the reason `recall-recogniser.mjs`
+  // (Round 58) and `recall-call-kind.mjs` (Round 69) give: this predicate cannot run at
+  // `--dry`, so the only free way to exercise it is to replay it over stored artifacts, and a
+  // replay against a transcribed copy would certify the transcription instead of the probe.
+  // `verify-premise-render.mjs` imports the same module this line does. Its docblock carries
+  // the three things it deliberately does not do (throw, feed `unscorableCalls`, or upgrade
+  // its own evidence class).
+  const premiseRenderHeld = readPremiseRenderHeld(arm.premiseRender, toolCalls);
+
+  if (premiseRenderHeld !== null) {
+    sub('ROUND 102 PREMISE RENDER (reconstructed, 0 API calls)');
+    const p = premiseRenderHeld.premise;
+    console.log(`premised   : ${p.excerpts}-excerpt render on the ${p.call} call`);
+    console.log(`  ${p.note}`);
+    console.log(`observed   : ${premiseRenderHeld.observedExcerpts === null
+      ? `— (${premiseRenderHeld.why})`
+      : `${premiseRenderHeld.observedExcerpts} excerpt(s)`}`);
+    console.log(`HELD       : ${premiseRenderHeld.held === null ? 'undecidable' : premiseRenderHeld.held}` +
+      `   [evidence class: reconstructed, not captured — the scoring rule is in the arm's docblock]`);
+  }
+
   if (toolCalls.length > 0) {
     sub('RENDERED TOOL RESULT (reconstructed, 0 API calls)');
     toolCalls.forEach((c, i) => {
@@ -2541,6 +2699,11 @@ for (const key of SELECTED) {
     // adjudication. The per-call `noQuery` / `kind` are inside `toolCalls`; this is the
     // count, at the level a summary table reads from.
     unscorableCalls,
+    // Round 102. In the per-run JSON for the reason `unscorableCalls` is: a later fire reads
+    // this file, not the console of the fire that produced it. `null` for an arm with no
+    // declared premise, which is a different statement from the key being absent — an absent
+    // key means the run predates the field.
+    premiseRenderHeld,
     // Round 70, and constraint 2 of Daedalus's memo §3: the tap's silence has to be legible
     // to a fire that reads this JSON months from now and never saw the console. Recorded
     // whether or not the tap worked — a run with no `tap` key at all is exactly the
