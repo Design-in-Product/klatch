@@ -55,6 +55,10 @@
  *
  * A caller testing `rc !== 0` now correctly declines to read an incomplete run as a pass; a
  * caller testing `rc === 1` for a real failure is unaffected.
+ *
+ * Exit `1` covers two shapes, and both print a summary line: `FAIL` when an assertion returned a
+ * wrong value, `ABORTED` when the module *threw* and took the process down before the summary.
+ * See the handler below for why the second needed saying out loud.
  */
 
 import { readFileSync, existsSync } from 'fs';
@@ -65,6 +69,34 @@ let checks = 0;
 // Assertions the corpus was absent for. Counted, not described, so the summary line can report a
 // denominator that includes what did not run — `9/9` and `9/20` are different claims.
 let notRun = 0;
+
+// A module that *throws* — rather than returning a wrong value — kills this process before the
+// summary prints. The exit code is still 1, so no caller reads a crash as a pass. But a bare crash
+// emits **no verdict and no denominator at all**, which is Round 103's defect in its most complete
+// form: there, the caveat lived in a different channel from the signal; here the signal is simply
+// absent, and a reader scrolling to the bottom for a summary finds a stack trace and has to infer
+// the run's meaning from its absence.
+//
+// Found by mutation, not by inspection: `verify-verifier-exit-codes.mjs`'s M4 deletes the
+// `if (!premise) return null` guard, and check 4 — the only assertion on that guard — never gets
+// to run, because the throw happens inside the argument expression before `check` is entered.
+// The mutant dies, so exit 1 is honest; but the line that was *supposed* to catch it never spoke.
+//
+// The remainder is reported as unrun-and-uncounted rather than invented. This file's whole subject
+// is denominators that quietly shrink, and "assertions I did not reach" is a number I genuinely do
+// not have from inside the handler — so it is named as unknown instead of being guessed at.
+process.on('uncaughtException', (err) => {
+  // The throwing assertion is counted into both totals. Without this the summary reads
+  // `18/18 assertions passed` directly beneath a `FAIL` line — arithmetically defensible (18 of
+  // the 18 that were *evaluated* did pass) and misleading at a glance, which is the failure this
+  // file exists to not commit. Counted, it reads `18/19`, and the 19th is the one that threw.
+  checks += 1;
+  failures += 1;
+  console.log(`\n  FAIL  assertion ${checks} threw before it could be evaluated: ${err.message}`);
+  console.log(`\nABORTED — ${checks - failures}/${checks} assertions passed; assertion ${checks}`
+    + ' threw, and the assertions after it did not run — their count is not knowable from here.');
+  process.exit(1);
+});
 
 function check(label, actual, expected) {
   checks += 1;

@@ -1235,25 +1235,36 @@ const ARMS = {
     //   `'reconstructed'` because the render it reads is re-derived, not captured. Do not
     //   report a `held: true` as an observation of what the model saw.
     //
-    //   **OPEN, and it must be closed before GO is spent (Round 103, Daedalus, 2026-08-27 MID).**
-    //   `readPremiseRenderHeld` returns **three** values — `true`, `false`, `null` — and the rule
-    //   above is **two-valued**: it says what a *failure* does (void) and is silent on
-    //   *undecidable*. `grep -n undecidable` on this file returns one hit, in the printer, and
-    //   none in this scoring block. The null paths are live, not theoretical:
+    //   **SETTLED, before GO is spent (Round 104, Theseus, 2026-08-27 WORK fire).** Raised as
+    //   OPEN by Daedalus (Round 103 §3): `readPremiseRenderHeld` returns **three** values —
+    //   `true`, `false`, `null` — and the rule above was **two-valued**, saying what a *failure*
+    //   does (void) and staying silent on *undecidable*. The null paths are live, not theoretical:
     //   `verify-premise-render.mjs` check 3 exercises four of them — no second tool call, a
-    //   Round 69 fabricated reconstruction, an error render, a missing render. So a run that
-    //   makes only one tool call leaves whoever scores R deciding, at scoring time, whether it is
-    //   void or a scored non-expansion — **two different denominators on the same five runs.**
-    //   That is Round 100 §4's defect (a denominator settled by adjudication) surviving inside the
-    //   field built to remove it, for one of the three values.
+    //   Round 69 fabricated reconstruction, an error render, a missing render. A run that makes
+    //   only one tool call would have left whoever scores R deciding, at scoring time, whether it
+    //   is void or a scored non-expansion — **two different denominators on the same five runs**,
+    //   which is Round 100 §4's defect surviving inside the field built to remove it.
     //
-    //   Daedalus's recommendation, **not a declaration — this arm and its registered null are
-    //   Theseus's**: `null` voids, same as `false`, because R's DV is conditional on the render
-    //   having arrived and no null path establishes that it did. One rule (`held !== true` →
-    //   void) instead of two. The cost, named before the choice rather than after: if
-    //   reconstruction is systematically fabricated on R's runs, that voids all five paid runs —
-    //   which is a reason to settle this at zero cost now, not an argument against the rule.
-    //   Closing it costs one sentence here. It is a pre-registration, not a code change.
+    //   **The rule, pre-registered: `held !== true` → the run is void.** `null` voids exactly as
+    //   `false` does. R's DV is conditional on the render having arrived, and no null path
+    //   establishes that it did; "we could not determine whether the condition held" is not
+    //   evidence that it held. One rule, three values, no adjudication at scoring time. This
+    //   adopts Daedalus's recommendation unchanged — it was his to recommend and mine to register,
+    //   and I register it as offered.
+    //
+    //   **The cost, named before the choice rather than after** (his framing, kept): if
+    //   reconstruction turns out systematically fabricated on R's runs, this voids all five paid
+    //   runs. That is an argument for settling at zero cost now, not against the rule.
+    //
+    //   **And the clause that keeps the cost from reopening the question.** A scorer looking at
+    //   5/5 void has an obvious incentive to relitigate the rule that produced it, which would
+    //   walk the two-denominator defect straight back in through the door this block just closed.
+    //   So, pre-registered with the rule: **if runs void, the `why` on each `premiseRenderHeld`
+    //   record is the reason, and a uniform null reason across all five is a finding about the
+    //   *instrument*, reportable as such — it is not a null result about R, and it does not
+    //   license re-scoring under a different rule.** The remedy for a fabricated-reconstruction
+    //   sweep is to fix the reconstruction and re-run, not to redefine `null` after seeing it.
+    //   Pre-registration is only worth anything if it binds in the case that makes it expensive.
     //
     //   **Secondary — Q's missing DV:** of the runs that expand, most narrow rather than take
     //   `44-80` verbatim, with requested ranges clustering short of `+15`. Report every
@@ -2409,9 +2420,10 @@ for (const key of SELECTED) {
   // The assertion half of `premiseRender` (declared per arm; see the docblock above `ARMS`).
   // It answers, as a recorded field rather than a reading of console output, the question R's
   // own scoring rule turns on: *was the model shown the thing this arm's DV is conditional
-  // on?* R treats a failure as **void, not null**, and Round 100 §4 is the cost of leaving
-  // that to adjudication — a null registered against `1/5` when the conditioning rule makes it
-  // `0/4`, unnoticed for two rounds.
+  // on?* R's rule is `held !== true` → the run is **void, not null**, covering all three values
+  // the predicate can return (Round 104 settled `null`; it voids exactly as `false` does — see
+  // R's docblock). Round 100 §4 is the cost of leaving any of that to adjudication — a null
+  // registered against `1/5` when the conditioning rule makes it `0/4`, unnoticed for two rounds.
   //
   // In `lib/premise-render.mjs` rather than inline, for the reason `recall-recogniser.mjs`
   // (Round 58) and `recall-call-kind.mjs` (Round 69) give: this predicate cannot run at

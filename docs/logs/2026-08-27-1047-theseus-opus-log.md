@@ -230,3 +230,138 @@ scripts/verify-premise-render.mjs
 All seven present. `git diff --stat -- packages/` empty — checked, not assumed.
 
 **Step 3 —** this block is committed and pushed after Steps 1 and 2, as the final record.
+
+---
+
+## 14:47 PT — WORK fire (Round 104)
+
+Session-start protocol run: `git log`/`git status` (clean, tracking `origin/main`), `docs/COORDINATION.md`,
+`ls docs/mail/`. The MID and WORK commits since my 10:47 fire are **Daedalus's and Argus's**, not mine —
+checked with `git show --stat` rather than inferred from the subject lines.
+
+**New mail addressed to me:** `daedalus-to-theseus-cc-xian-team-your-verifier-said-pass-with-eleven-of-twenty-assertions-unrun-2026-08-27.md`.
+Two concrete asks, both actionable this fire, both taken now rather than parked.
+
+### Ask 1 (his §2) — confirm exit 0
+
+```
+$ node scripts/verify-premise-render.mjs
+PASS — 20/20 assertions passed          exit code: 0
+```
+
+His counter is right; nothing to revert. Did not stop there: "I ran it, it was green" in a memo is his
+own Round 103 finding one level up. Built **`scripts/verify-verifier-exit-codes.mjs`** — all three exit
+codes, four mutants, an unmutated control.
+
+```
+A. exit 0 — corpus present                    ok  rc 0, PASS 20/20
+B. exit 2 — corpus absent (his worktree,       ok  rc 2, INCOMPLETE, notRun == 11 exactly, ran 9
+   reproduced from a corpus-free cwd)          ok  denominator is 20 with corpus AND without
+C. exit 1 — 4 mutants                          ok  M0 control clean; M1/M2/M3/M4 all KILLED
+
+PASS — 16/16 assertions passed
+```
+
+No fabricated artifacts — B *removes* corpus rather than inventing it, C mutates the module only, mutants
+under gitignored `.testdata/` per Round 90. **No tracked file modified to run any of it.**
+
+### The thing neither of us saw by reading
+
+M4 (delete the `if (!premise) return null` guard) killed the process via a throw *before* `check` was
+entered — exit 1, but **no verdict and no denominator**. His Round 103 defect in its most complete form:
+there the caveat was in the wrong channel, here the signal is absent entirely.
+
+Fixed in `verify-premise-render.mjs`: `uncaughtException` handler, fourth verdict `ABORTED`, remainder
+named as unknown rather than guessed at. First draft printed `18/18 assertions passed` under a `FAIL`
+line — defensible arithmetic, misleading at a glance, the exact thing that file exists not to do. The
+throwing assertion is now counted:
+
+```
+  FAIL  assertion 19 threw before it could be evaluated: Cannot read properties of null (reading 'call')
+
+ABORTED — 18/19 assertions passed; assertion 19 threw, and the assertions after it did not run
+          — their count is not knowable from here.
+```
+
+Caught the `18/18` because I quoted an `ABORTED` line into the round doc from expectation and then went
+back to run it. Actual output differed from what I'd written. Ran it, corrected both.
+
+### His §4 mechanism does not occur
+
+He wrote that an `excerptSeparators + 1` simplification "would quietly repair L3 back into the
+denominator." Built M2 as exactly that, expecting to confirm him.
+
+```
+  ok    L3 — R's premise (call 2, 2 excerpts) → false
+  ok    R's conditioning rule keeps {1,2,4,5} and voids {3}      <- PASSES under the mutant
+  FAIL  zero-match render → 0 excerpts, held FALSE (not null)
+          expected {"held":false,"observedExcerpts":0}
+          actual   {"held":true,"observedExcerpts":1}
+```
+
+L3 yields 1 under the mutant, R premises 2, so L3 is still dropped and the denominator does not move.
+The real failure is worse: against a **1-excerpt** premise a zero-match render returns `held: true` — a
+search that found nothing satisfies the premise that an excerpt arrived. False `true` on the conditioning
+field. Exposes **N1 and Q**; R is immune. Right instinct, wrong failure mode.
+
+### Ask 2 (his §3) — R's registered `null`, settled
+
+`held !== true` → **void**. Adopted as offered, pre-registered in R's docblock before GO is spent. Also
+updated the generic call-site comment (~line 2423) that still said "a failure is void, not null" — else
+the settled rule lives in one docblock and the stale two-valued one in another.
+
+Added one clause he did not name: a uniform null reason across all five runs is a finding about the
+**instrument** and **does not license re-scoring under a different rule**. Without it, a scorer facing
+5/5 void has every incentive to relitigate the rule that produced it.
+
+### Gate
+
+Probe diff is comments-only — verified mechanically, not by reading: `git diff -U0` filtered for changed
+lines that are neither `//` comments nor blank returns **zero lines**. Ran the full gate anyway.
+
+```
+node scripts/probe-scratch-server.mjs --reclaim   → nothing listening
+node scripts/probe-scratch-server.mjs --seconds=900 → READY, verified open db = recall-probe.db
+
+npx tsx <HEAD copy>            R104A A B D E F L M N1 Q R G H J K C --dry
+npx tsx probe-recall-tool.mjs  R104B A B D E F L M N1 Q R G H J K C --dry
+
+artifact JSON, tag normalised        → byte-identical (diff 0 lines)
+console output, tag + PID normalised → byte-identical, 34290 bytes both
+substantive: 15 records, arms A B D E F L M N1 Q R G H J K C, 37,473 bytes, all 15 with premiseRender
+
+node --check scripts/probe-recall-tool.mjs          → OK
+node scripts/verify-premise-render.mjs              → PASS 20/20, exit 0
+node scripts/verify-verifier-exit-codes.mjs         → PASS 16/16, exit 0
+```
+
+**Sandbox note for the record:** `KLATCH_DB=… npm run dev -w packages/server` and the `env KLATCH_DB=…`
+form were both refused this fire, exactly as `probe-scratch-server.mjs`'s docblock predicts. Daedalus's
+script is what made the gate runnable from inside a fire. First attempt without it produced a
+`SQLITE_CONSTRAINT_FOREIGNKEY` at arm A seeding — the server was on `klatch.db` while the probe seeded
+`recall-probe.db`. Worth knowing that's the signature of that misconfiguration.
+
+Teardown: `TaskStop` on the scratch server, `--reclaim` → *nothing listening on :3001*. Scratch HEAD copy
+(`scripts/zz-probe-head-gate.mjs`) deleted; `git status` shows only intended files.
+
+### Deliverables this fire
+
+- `docs/research/round104-exit-0-confirmed-and-the-m2-mutant-does-not-move-a-denominator-it-makes-a-zero-match-render-satisfy-the-premise-2026-08-27.md`
+- `docs/mail/theseus-to-daedalus-cc-xian-team-exit-0-is-20-of-20-and-your-m2-mechanism-is-wrong-in-a-way-that-matters-2026-08-27.md`
+- `scripts/verify-verifier-exit-codes.mjs` (new)
+- `scripts/verify-premise-render.mjs` (`ABORTED` handler + docblock)
+- `scripts/probe-recall-tool.mjs` (**comments only** — R's null pre-registered, call-site comment made three-valued)
+- `docs/COORDINATION.md`, this log
+
+**Spend: zero live turns, zero model calls.** `packages/` untouched.
+
+### Open, carried
+
+- **xian's GO for 5 live opus runs on arm R.** Unchanged, both seats agree — and **the one pre-condition
+  Daedalus flagged as needing to precede the spend (his §3) is now closed** at zero cost.
+- **`premiseRenderHeld` has never executed on a live run.** By construction; R has not run. Everything
+  above is stored artifacts, synthetic edge cases, and mutants.
+- **§3's N1/Q exposure is a property of a hypothetical refactor**, not of the shipped module. Shipped
+  `countRenderedExcerpts` has its 0-match branch and is correct.
+- **Daedalus's Round 103 §1 artifact claims** (his R93-era `scopedTotal: 60` files, the correction banner
+  on `round101-…md`) — read in his memo, not reproduced from his worktree. Doc-class to me.
