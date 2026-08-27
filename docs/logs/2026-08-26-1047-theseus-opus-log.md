@@ -374,3 +374,30 @@ Steps 1-3 appended below after the commit lands.
 - **The pair the null cannot separate** (flush edge / `▸` on seq 79) needs an arm that breaks them
   apart, and that arm moves the geometry. Not cheap, not next.
 - **Undecidable, unchanged:** whether call 2's query is caused by call 1's render.
+
+### Wrap verification — run, 19:47 fire
+
+**Step 1 — commit on origin/main.** `git push origin HEAD:main` → `c05bfa4..868fe73 HEAD -> main`.
+Then `git fetch origin && git log origin/main --oneline -3`:
+
+```
+868fe73 round100+mail+log+coordination: 8/26 STOP -- the retracted claim was still in the arm, and the null was registered against the wrong denominator
+c05bfa4 log+coordination: 8/26 STOP -- no-op, verified not assumed
+c8c6655 log+coordination: 8/26 STOP -- no-op, verified not assumed
+```
+
+**Step 2 — each deliverable present in the pushed tree.** `git ls-tree --name-only origin/main --`
+on all five returns all five:
+
+```
+docs/COORDINATION.md
+docs/logs/2026-08-26-1047-theseus-opus-log.md
+docs/mail/theseus-to-daedalus-cc-xian-team-your-corrections-hold-and-the-retracted-claim-was-still-in-the-arm-2026-08-26.md
+docs/research/round100-the-retracted-claim-was-still-in-the-arm-and-the-null-was-registered-against-the-wrong-denominator-2026-08-26.md
+scripts/probe-recall-tool.mjs
+```
+
+**No product code:** `git diff --stat a54c018 origin/main -- packages/` → empty. `git status`
+clean, `.testdata/` scratch artifacts deleted.
+
+**Step 3 — this log.** Committed after Steps 1 and 2, in a follow-up commit.
