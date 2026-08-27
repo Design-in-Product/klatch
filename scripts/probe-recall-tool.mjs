@@ -1088,12 +1088,31 @@ const ARMS = {
     // out of seq 79, which moves the geometry, so it is not cheap and is not this arm.
     //
     // **2. The second excerpt is flush-terminal, and that is a second suppressor candidate this
-    // arm does not remove.** `structural.predictedFlushEdges: 1` and `predictedEdges[1].trailing:
-    // null` — the 77-80 excerpt runs to the last row of the conversation, so it renders with
-    // **no "later message(s)" edge line after it**. Nothing in that excerpt signals anything
-    // further to read. Q's `restateUser` also opens *"Last thing before the kickoff"*. The
-    // neighbourhood therefore reads as the end of the transcript twice over, structurally and
-    // lexically.
+    // arm does not remove.** — the 77-80 excerpt runs to the last row of the conversation, so it
+    // renders with **no "later message(s)" edge line after it**. Nothing in that excerpt signals
+    // anything further to read. Q's `restateUser` also opens *"Last thing before the kickoff"*.
+    // The neighbourhood therefore reads as the end of the transcript twice over, structurally
+    // and lexically.
+    //
+    // **Provenance corrected 2026-08-26 (STOP), and the correction is the point.** As written
+    // at the START fire this paragraph cited `structural.predictedFlushEdges: 1` and
+    // `predictedEdges[1].trailing: null` under a heading that says *measured*. Those are
+    // `--dry` structural fields — present in a live run's JSON, but predictions of a render,
+    // not observations of one. Round 97 §5c (Daedalus) and this block (Theseus) each read a
+    // predicted render as an observed one, four rounds apart; Round 98 §3 and Round 99 §1
+    // are the two concessions. **The live evidence exists and it is not this field.** Round 98
+    // §2 read Q's five live artifacts: call 1 is single-excerpt in all five (`excerptSeparators:
+    // 0`), so no run ever rendered a flush edge on the decision call; **call 2** in L1/L2/L4/L5
+    // queried the token, returned 2 excerpts with **3 edge lines for 2 excerpts** — the flush
+    // edge, reconstructed from the live query — and those four runs expanded 0/4. So the claim
+    // stands, on call-2 renders in four runs, and it never held for call 1 in any of the ten
+    // runs on record. Cite the call-2 renders, not `predictedFlushEdges`.
+    //
+    // One notch of caution on "observed", per Round 99 §4: the rendered tool-result text is
+    // **not persisted** and is *reconstructed* by this file (see the `createToolUseArtifact`
+    // docblock below). Query strings (`inputSummary`) and expand/decline (the artifact call
+    // list) are captured; render *shape* is reconstructed. The 0/4 above rests on the captured
+    // columns; the flush edge itself rests on the reconstructed one.
     //
     // R keeps the flush edge (it is a property of seq 79 being a match, which §2's constraint
     // requires) and keeps "Last thing before the kickoff" in the replacement string, so the
@@ -1135,18 +1154,47 @@ const ARMS = {
     //   DV is "does the read reach `+15`," read off the requested range, which needs no
     //   calibration transfer. **Do not claim a depth shift.**
     //
-    //   **Registered null:** expansion stays ~1/5 → the decoy wording is not the suppressor.
-    //   Two survivors, not one: Q's 80-row length (the longest any arm has seeded, `:958`) and
-    //   the flush-terminal second excerpt above. No further wording arm until one is addressed.
+    //   **Registered null:** expansion stays at Q's conditioned rate → the decoy wording is not
+    //   the suppressor. **Survivors, corrected 2026-08-26 (STOP) against Round 98 §Finding 2 —
+    //   the version written at the START fire named the wrong two.** Struck: *"Q's 80-row
+    //   length"*. `scopedTotal` is never rendered — no line of a tool result states the
+    //   conversation's length — so it was never an observable to the model and cannot be a
+    //   suppressor it responds to. What remains is **one confounded pair, not two survivors**:
+    //   the flush-terminal second excerpt and the `▸` mark on seq 79. They arrive in the same
+    //   render, and R holds **both** constant (the token stays in `restateUser`, so seq 79 stays
+    //   in the match set, stays `▸`-marked, and stays flush-terminal). That is deliberate — it
+    //   is what makes R a wording manipulation — but it means a null leaves the pair alive
+    //   *jointly* and R cannot say which half. Naming them as two independent survivors, as
+    //   this block previously did, would license a follow-up arm that tests one of them
+    //   believing the other had been excluded. No further wording arm until the pair is
+    //   addressed, and the arm that addresses it has to break them apart.
     //
     //   **Registered spoiler:** a run that expands, stops short of `+15`, *and* names the
     //   restriction breaks the 5/5 "expansion predicts holding" streak. Low prior, highest
     //   value, and it should not have to be noticed to be reported.
     //
-    //   **On n = 5:** under the null (p ≈ 0.2, Q's observed rate) the chance of ≥4/5 expanding
-    //   is ≈ 0.0067. Five is adequate here *because the predicted effect is enormous*
-    //   (0.2 → ≥0.8), not because five is generally enough. **3/5 has no reading** — report it
-    //   as no reading rather than splitting it.
+    //   **On n = 5 — the baseline was computed on the wrong denominator. Corrected 2026-08-26
+    //   (STOP), before any spend.** As written: "under the null (p ≈ 0.2, Q's observed rate) the
+    //   chance of ≥4/5 expanding is ≈ 0.0067." **0.2 is Q's *unconditioned* rate (1 of 5), and
+    //   the primary DV above is conditioned.** Round 98 §2 split Q's five runs on exactly this
+    //   condition: L1/L2/L4/L5's second search returned the 9-row neighbourhood and expanded
+    //   **0/4**; L3's second search returned **0 matches** — it fails the condition and, under
+    //   the rule above, would be excluded as void — and it is the single run that expanded. So
+    //   **the one expansion in "1/5" is the one run the condition removes.** Q's baseline on
+    //   R's own denominator is **0/4, not 1/5**.
+    //
+    //   Two consequences, both against interest and both registered here rather than discovered
+    //   in the writeup. (a) The comparison is **more** likely to clear, not less — a 0/4 baseline
+    //   makes ≥4/5 easier to call a difference than a 1/5 baseline does, so ≈0.0067 understates
+    //   how readily this arm produces a significant-looking result. (b) **0 of 4 is a weak
+    //   estimate of a rate.** Rule of three puts the upper bound near 0.53 — the data cannot
+    //   exclude a true baseline high enough that 4/5 means little. Report the exact conditioned
+    //   counts on both sides (Q 0/4, R x/n) and the denominators, and **do not quote a p-value
+    //   off p = 0.2**. Five is adequate here only because the predicted effect is enormous
+    //   (≈0 → ≥0.8), not because five is generally enough, and not because the baseline is
+    //   well estimated. **3/5 has no reading** — report it as no reading rather than splitting
+    //   it. If fewer than 4 of R's 5 runs reach the condition, report **both** denominators and
+    //   say the arm is underpowered (Round 63 §6's discipline, Round 98 §5a).
     //
     //   **Cost: 5 live opus runs, and not before xian says go.** The seeding, the structural
     //   check and the prompt gate are free and come first.

@@ -274,3 +274,103 @@ docs/research/round98-the-four-one-split-is-the-second-query-and-neither-arm-eve
   most of S's audit for free. If he still prefers S after reading §2, I'd defer.
 - **Undecidable with the current corpus:** whether call 2's query is *caused by* call 1's render or
   is independent variation. Ten runs can't tell, and it changes how the §0 association reads.
+
+---
+
+## 19:47 PT — STOP fire
+
+**Round 100.** Zero live turns, zero model calls. Two free `--dry` runs of arm R. No product
+code; `packages/` untouched. Harness edited — **comment lines only**, proved two ways.
+
+### Session start
+
+`git log --oneline -3` → `c05bfa4` (Iris, STOP no-op), `c8c6655` (Argus, STOP no-op), `ddabd94`
+(Daedalus, round99 wrap). Branch `claude/theseus-cycle` tracking `origin/main`, clean.
+`ls docs/mail/` → one new inbound addressed to me:
+`daedalus-to-theseus-cc-xian-team-conceded-and-the-harness-warned-us-four-times-in-files-we-both-read-2026-08-26.md`
+(his commit `83c15aa`). Read in full, acted on in this fire.
+
+### Verified before asserting
+
+Every claim of his that I repeat, checked against the file this session:
+
+| His claim | Where | Result |
+|---|---|---|
+| N1 block pre-registers 28/27 as "the arm's premise" | `probe-recall-tool.mjs:803` | confirmed verbatim |
+| Q block pre-registers 38/37 as premise + "do not mix the two sets of widths" | `:970`, `:974` | confirmed verbatim |
+| `singleMatchOffer` comment names the trap and Round 57 | `:1756-1774` | confirmed |
+| Render text "is not persisted … *reconstructed*, not captured" | `:2116-2130` | confirmed verbatim |
+| Round 63 limits: 5/5 single-excerpt, two-excerpt widths never the decision render | `round63-…:240-250` | confirmed |
+| Rule 5's four fields exist | `:2450`, `:2143`, `recall-recogniser.mjs:154`/`:170` | all four exist |
+| Rule 5 fields survive to the artifact (he didn't check this) | `call.rendered` inside serialized `toolCalls` (`:2445`) | **yes** — gate is assertable post-hoc |
+| `laterQueryDiffered` at `:2470` | computed `:2327-2329`, written `:2468` | **four lines off** |
+| `premiseRender` does not exist | `grep -rn premiseRender scripts/` | **nothing**; only his round doc/memo/log + COORDINATION |
+| Nothing renders `scopedTotal` (my own Round 98 claim, re-checked) | `recall.ts:898`, `:903` | only used to compute a trailing `to:` address |
+
+### What the fire found
+
+1. **The retracted claim was still in arm R's docblock.** Fact 2 of "Two facts measured off Q's
+   artifacts" cited `structural.predictedFlushEdges: 1` — a `--dry` field — as an observation. I
+   wrote it at this morning's START fire; Round 98 §3 and Round 99 §1 both retracted it in prose;
+   neither of us went back to the file. Re-provenanced to the live call-2 renders (0/4 expanded),
+   with the caveat that call 1 never rendered a flush edge in any of the ten runs.
+2. **The registered null named a survivor that was never observable.** "Q's 80-row length"
+   struck. One confounded pair remains (flush edge + `▸` on seq 79), which R holds constant
+   together.
+3. **The power calculation used the denominator R's own rule excludes.** DV conditioned on the
+   two-excerpt render; null quoted p ≈ 0.2 = Q's *unconditioned* 1/5; the one expansion is L3,
+   the run the condition voids. **Q's baseline on R's denominator is 0/4.** Registered both
+   consequences against interest.
+4. **§6 decision:** `premiseRender` wanted, argument stronger than he made it (`grep -n "arm's
+   premise"` → two hits; **R declares none**), **not built tonight** — per-arm metadata, eleven
+   arms, end of a day-part, file about to be paid against. Build at next START, gated on the same
+   `--dry` proof; **GO wins if it lands first.**
+
+### Inertness proof
+
+```
+$ git diff --stat scripts/probe-recall-tool.mjs
+ scripts/probe-recall-tool.mjs | 74 ++++++++++++++++++++++++++++++--------
+ 1 file changed, 61 insertions(+), 13 deletions(-)
+
+$ git diff -U0 scripts/probe-recall-tool.mjs | grep -E '^[+-]' | grep -v '^[+-][+-]' | grep -vE '^[+-]\s*//'
+(no output)
+```
+
+`node scripts/probe-scratch-server.mjs` → READY, `lsof`-verified holding
+`.testdata/recall-probe.db`. `npx tsx scripts/probe-recall-tool.mjs RD100A R --dry` before the
+edit, `RD100B` after. Key-by-key comparison: **SAME** `arm, label, expectation, dryRun, model,
+messagesInOneToOne, window, holdingChannelType, markingSpeaker, structural`; **DIFF** only `tag`
+(`RD100A`/`RD100B`) and the entity name inside `precondition.layer6` (`Vesper-RRD100A`/`…B`).
+`structural` byte-identical. Every pre-registered ordinal exact — transcribed into the round doc
+before `.testdata/` deletion. Teardown: `TaskStop`, then `lsof -ti tcp:3001` → free, no orphaned
+grandchild.
+
+### Note for whoever runs `--dry` next
+
+Plain `node scripts/probe-recall-tool.mjs` fails with `ERR_MODULE_NOT_FOUND` on
+`packages/server/src/db/queries.js` — it needs the TS loader. **`npx tsx scripts/probe-recall-tool.mjs`
+works.** And `--dry` still requires the scratch server on :3001 (it seeds through the API), so
+`node scripts/probe-scratch-server.mjs` first. Neither is written down anywhere I could find.
+
+### Wrap verification
+
+```
+$ git status --short          (before commit)
+ M docs/COORDINATION.md
+ M docs/logs/2026-08-26-1047-theseus-opus-log.md
+ M scripts/probe-recall-tool.mjs
+?? docs/mail/theseus-to-daedalus-cc-xian-team-your-corrections-hold-and-the-retracted-claim-was-still-in-the-arm-2026-08-26.md
+?? docs/research/round100-the-retracted-claim-was-still-in-the-arm-and-the-null-was-registered-against-the-wrong-denominator-2026-08-26.md
+```
+
+Steps 1-3 appended below after the commit lands.
+
+### Open, carried to the next fire
+
+- **Arm R still needs xian's GO** for 5 live opus runs. Both seats now agree on the arm (Daedalus
+  withdrew S in Round 99 §7). Ask unchanged in size.
+- **`premiseRender` build** — decided, scheduled for the next START fire, subordinate to GO.
+- **The pair the null cannot separate** (flush edge / `▸` on seq 79) needs an arm that breaks them
+  apart, and that arm moves the geometry. Not cheap, not next.
+- **Undecidable, unchanged:** whether call 2's query is caused by call 1's render.
