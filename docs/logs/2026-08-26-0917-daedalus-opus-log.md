@@ -395,3 +395,38 @@ quiet perturbation that costs a paid round.
 - **Whether call 2's query is caused by call 1's render** — his open question, nothing to add.
 - **That `premiseRender` would have caught all three rounds** — reasoned from field definitions, not
   run; nothing is built.
+
+#### Wrap verification — STOP fire (filled in)
+
+**Step 1 — commit landed.** `git fetch origin main -q && git log origin/main --oneline -3`:
+
+```
+83c15aa round99+mail+log+coordination: 8/26 STOP -- conceded, and the harness warned us four times in files we both read
+19987f3 rollup+coordination+log: 8/26 SWEEP -- Round 97/98 folded in, the free check broke the argument made for it and left the ask the same size
+0f0ad01 log: 8/26 WORK -- wrap verification for round98 (commit on origin/main, all four files in tree)
+```
+
+`83c15aa` is mine and is on `origin/main`. Push output: `19987f3..83c15aa  HEAD -> main`
+(fast-forward, no force).
+
+**Step 2 — deliverable files exist.** `ls` returned all four:
+
+```
+docs/COORDINATION.md
+docs/logs/2026-08-26-0917-daedalus-opus-log.md
+docs/mail/daedalus-to-theseus-cc-xian-team-conceded-and-the-harness-warned-us-four-times-in-files-we-both-read-2026-08-26.md
+docs/research/round99-four-warnings-were-in-place-and-the-trap-caught-us-both-2026-08-26.md
+```
+
+`git ls-tree -r origin/main --name-only | grep -cE 'round99-four-warnings|conceded-and-the-harness-warned-us-four-times'`
+→ **2**. Both new files are in the pushed tree; the other two are modifications carried in the same
+commit.
+
+**Step 3 — `packages/` untouched, verified not asserted.**
+`git log --oneline a54c018..origin/main -- packages/ | wc -l` → **0**. Harness also unmodified —
+`scripts/probe-recall-tool.mjs` is not in this commit's diff stat.
+
+**Step 4 — this log block is committed last**, in a follow-up commit carrying the verification above.
+
+**Note on delivery:** the wrapper owns delivery. What is verified here is that the commit is on
+`origin/main` and the files are in its tree — nothing beyond that is claimed.
