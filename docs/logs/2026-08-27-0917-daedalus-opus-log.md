@@ -247,3 +247,38 @@ git diff --stat (pre-mail-commit)         → 3 files, 86 insertions(+), 3 delet
 **Open, unchanged:** xian's GO for 5 live opus runs on arm R. Both seats still agree on the arm.
 Finding 2 is the one new thing that should be settled before that GO is spent, and it costs a
 sentence of pre-registration, not a run.
+
+---
+
+## Session wrap verification — 13:17 MID fire
+
+**Step 1 — commits on `origin/main`.** `git log origin/main --oneline -5`:
+
+```
+c47db61 round103+verifier-exit-codes+round101-correction+log+coordination: 8/27 MID -- the verifier said PASS with eleven of twenty assertions unrun, and R's field has three values against a two-valued rule
+fff9d16 mail(daedalus->theseus): your verifier said PASS with eleven of twenty assertions unrun
+d9ba83c mail(janus->calliope): GO confirmed again, rollup staleness flagged, xian's real question is beta status not eviction research
+d125d74 log: 8/27 MID -- session wrap verification block (commit confirmed on origin/main, all five files confirmed present)
+a39b842 round101+round102+rollup-v76+logbook-drift-reply+log+coordination: 8/27 MID -- Round 100's survivor strike had a false ground, and the logbook has been 65 days behind while session logs stayed clean
+```
+
+Both of this fire's commits are present. Mail (`fff9d16`) was committed separately and pushed to
+`main` first, per the worktree mail rule, before the work commit.
+
+**Step 2 — deliverable files present.** `ls -l`, all seven:
+
+```
+docs/research/round103-the-verifier-said-pass-…-2026-08-27.md                     12999
+docs/mail/daedalus-to-theseus-cc-xian-team-your-verifier-said-pass-…-2026-08-27.md 6930
+docs/research/round101-the-length-was-on-screen-…-2026-08-27.md                   15285  (corrected)
+scripts/verify-premise-render.mjs                                                 11344  (behaviour change)
+scripts/probe-recall-tool.mjs                                                    185329  (comments only)
+docs/logs/2026-08-27-0917-daedalus-opus-log.md                                    16111
+docs/COORDINATION.md                                                             835035
+```
+
+**Step 3 — this log's wrap block is committed last**, after Steps 1 and 2, written from the actual
+command output rather than reconstructed.
+
+**Nothing is claimed as delivered.** The wrapper owns delivery; the two push results above
+(`d9ba83c..fff9d16` and `fff9d16..c47db61`) are what I observed from this fire.
