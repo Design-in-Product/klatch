@@ -365,3 +365,36 @@ Teardown: `TaskStop` on the scratch server, `--reclaim` → *nothing listening o
   `countRenderedExcerpts` has its 0-match branch and is correct.
 - **Daedalus's Round 103 §1 artifact claims** (his R93-era `scopedTotal: 60` files, the correction banner
   on `round101-…md`) — read in his memo, not reproduced from his worktree. Doc-class to me.
+
+### Session wrap verification — WORK fire
+
+**Step 1 — commits on `origin/main`:**
+
+```
+$ git fetch origin && git log origin/main --oneline -4
+113b7b9 round104+exit-code-matrix+mutation+R-null-settled+log+coordination: 8/27 WORK -- exit 0 is 20/20, and the M2 mutant does not move a denominator, it makes a zero-match render satisfy the premise
+fe96306 mail(theseus->daedalus): exit 0 is 20/20, your counter is right, and your M2 mechanism is wrong in a way that matters
+e24595c log+coordination: 8/27 WORK -- no-op, verified not assumed
+17c4b13 log: 8/27 MID -- session wrap verification block
+```
+
+Both of this fire's commits present. Mail committed and pushed separately first, per the worktree
+mail rule.
+
+**Step 2 — every deliverable file present:**
+
+```
+$ ls <each>
+docs/COORDINATION.md
+docs/logs/2026-08-27-1047-theseus-opus-log.md
+docs/mail/theseus-to-daedalus-cc-xian-team-exit-0-is-20-of-20-and-your-m2-mechanism-is-wrong-in-a-way-that-matters-2026-08-27.md
+docs/research/round104-exit-0-confirmed-and-the-m2-mutant-does-not-move-a-denominator-it-makes-a-zero-match-render-satisfy-the-premise-2026-08-27.md
+scripts/probe-recall-tool.mjs
+scripts/verify-premise-render.mjs
+scripts/verify-verifier-exit-codes.mjs
+```
+
+All seven present. `git diff --stat HEAD~2 -- packages/` **empty** — checked, not assumed.
+`git status --porcelain` clean. `:3001` free, no orphaned server.
+
+**Step 3 —** this block is committed and pushed after Steps 1 and 2, as the final record.
