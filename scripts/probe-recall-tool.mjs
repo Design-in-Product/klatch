@@ -1132,9 +1132,18 @@ const ARMS = {
     //   moved something and the arm is void.
     //
     //   **Prompt gate, both lines, transcribed:** `prompt contains the fact: true` and
-    //   `prompt contains the marking: false`. Both are already hard gates in this file
-    //   (`:1714`, `:1724`, `:1727`, read 2026-08-26) — the fact line is *not* a new check, it is
-    //   an existing one Round 94 §6 failed to transcribe while transcribing the marking line.
+    //   `prompt contains the marking: false`. Both are already hard gates in this file — the
+    //   three `ARM ${key} void:` throws guarding `promptHoldsToken`, `promptHoldsMarking` and
+    //   `promptNamesTool`. **Cited by symbol, 2026-08-27.** The `:1714`/`:1724`/`:1727` written
+    //   here on 8/26 were wrong the day they were written: at the commit that introduced them
+    //   (`0ea04b6`) those lines sat inside the `predictedEdges` edge-address re-derivation, and
+    //   the three throws were at 1878/1881/1884. The claim they were offered for is true — the
+    //   gates exist — so this is a coordinate failure, not a factual one, which is exactly the
+    //   kind that survives review. Not replaced with fresher numbers; see the citation note in
+    //   the registered-null block below.
+    //
+    //   The fact line is *not* a new check; it is an existing one that Round 94 §6 failed to
+    //   transcribe while it was transcribing the marking line.
     //   Record both. `promptHoldsToken` is the one most at risk here, because this arm edits the
     //   very row that puts the token in the window.
     //
@@ -1155,19 +1164,55 @@ const ARMS = {
     //   calibration transfer. **Do not claim a depth shift.**
     //
     //   **Registered null:** expansion stays at Q's conditioned rate → the decoy wording is not
-    //   the suppressor. **Survivors, corrected 2026-08-26 (STOP) against Round 98 §Finding 2 —
-    //   the version written at the START fire named the wrong two.** Struck: *"Q's 80-row
-    //   length"*. `scopedTotal` is never rendered — no line of a tool result states the
-    //   conversation's length — so it was never an observable to the model and cannot be a
-    //   suppressor it responds to. What remains is **one confounded pair, not two survivors**:
-    //   the flush-terminal second excerpt and the `▸` mark on seq 79. They arrive in the same
-    //   render, and R holds **both** constant (the token stays in `restateUser`, so seq 79 stays
-    //   in the match set, stays `▸`-marked, and stays flush-terminal). That is deliberate — it
-    //   is what makes R a wording manipulation — but it means a null leaves the pair alive
-    //   *jointly* and R cannot say which half. Naming them as two independent survivors, as
-    //   this block previously did, would license a follow-up arm that tests one of them
-    //   believing the other had been excluded. No further wording arm until the pair is
-    //   addressed, and the arm that addresses it has to break them apart.
+    //   the suppressor. **Survivors — named wrong at the 8/26 START fire, struck at the 8/26 STOP
+    //   fire, and re-corrected 2026-08-27 (Daedalus, Round 101): the strike reached the right
+    //   answer on a false ground, and the ground is what a later arm would reuse.**
+    //
+    //   **Whose ground it is.** The STOP version struck *"Q's 80-row length"* because `scopedTotal`
+    //   "is never rendered … so it was never an observable to the model." That sentence is
+    //   Theseus's, but the claim is **mine** — Round 97 §3 (Daedalus, 8/26 MID), *"Nothing renders
+    //   `scopedTotal`. There is no 'this conversation has 80 messages' anywhere in what the model
+    //   sees. So 'Q's 80-row length' is not an observable to the subject."* He adopted a finding I
+    //   handed him. It is false, and the refutation was inside my own sentence: the same paragraph
+    //   describes `edgeGapLine` as rendering *"a per-edge count and address … from `<X>` to
+    //   `<Y>`"* — and on a terminal trailing edge `<Y>` **is** `scopedTotal`. I read the emitter
+    //   and not its caller.
+    //
+    //   `renderExcerpt` in `recall.ts` passes `to: last.scopedTotal` as the trailing edge's address
+    //   when no later excerpt follows, and `edgeGapLine` emits `', to: ' + address.to` for any edge
+    //   with a reachable count (both read 2026-08-27; cited by symbol, not line — see below).
+    //   This file computes
+    //   the same value in `singleMatchOffer` (`trailing: { from: last + 1, to: scopedTotal }`)
+    //   and pre-registers it for Q as `44-80`. Round 98 §2 read it off the live artifacts: call
+    //   1, **all five Q runs**, `addressesOffered: [1-38, 44-80]`. The number 80 was on screen on
+    //   every decision call in all ten runs — and L3 quoted it back, `expand {from: 44, to: 80}`,
+    //   *"the covering offer from call 1, verbatim."* Whatever else is true, "never an
+    //   observable" is not.
+    //
+    //   What survives is narrower: **nothing renders the length _as a length_.** It renders as
+    //   the upper bound of an expand address. Whether a model reads a range bound as a
+    //   conversation length is not decidable from these artifacts and no arm here has tested it.
+    //   That is a reason to rank it below the other two, not a reason to call it excluded.
+    //
+    //   So the constant set R holds is a **triple, not a pair**: the flush-terminal second
+    //   excerpt, the `▸` mark on seq 79, and the rendered `to: 80` bound. The first two are
+    //   genuinely confounded — they arrive in the same render, and the token staying in
+    //   `restateUser` holds both at once. The third is **not held by the same knob**: length
+    //   moves by changing the filler count while the restate pair stays terminal, which preserves
+    //   flush-ness and the `▸`. It is not free either — that move changes the fact→restate
+    //   distance, which Round 94 showed is live. So: one confounded pair, plus a third that
+    //   trades this confound for the distance one. Under a null all three stay alive and R cannot
+    //   say which. Naming any of them as independently excluded licenses a follow-up arm that
+    //   tests one believing another was ruled out — the error this paragraph has now made in
+    //   both directions, which is why the ground is recorded and not just the conclusion.
+    //
+    //   No further wording arm until the set is addressed, and the arm that addresses it has to
+    //   break the pair apart.
+    //
+    //   **Citations in this block are by symbol, not by line.** `laterQueryDiffered` was cited at
+    //   `:2470`, corrected to `:2468` at the 8/26 STOP fire, and was `:2516` by the end of that
+    //   same commit — the 61 inserted comment lines moved it. A line number written into the file
+    //   it points at invalidates itself on write. Symbol names do not.
     //
     //   **Registered spoiler:** a run that expands, stops short of `+15`, *and* names the
     //   restriction breaks the 5/5 "expansion predicts holding" streak. Low prior, highest
