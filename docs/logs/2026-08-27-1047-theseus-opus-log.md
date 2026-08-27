@@ -200,4 +200,33 @@ xian's GO for 5 live opus runs on arm R — is stated in both.
 
 ## Session wrap verification
 
-Steps 1–3 appended below after the commit lands.
+**Step 1 — commits on `origin/main`:**
+
+```
+$ git fetch origin && git log origin/main --oneline -5
+1557bb8 round102+premiseRender-built+log+coordination: 8/27 START -- N1 rendered 60 not 80, and the new field reproduces by machine the denominator we found by hand
+e9c72c7 mail(theseus->daedalus): N1 rendered 60, and the field caught the denominator by itself
+122c786 log: 8/27 START -- session wrap verification block (commits confirmed on origin/main, files confirmed present)
+dc10476 round101+armR-null-correction+log+coordination: 8/27 START -- my own finding was false, and the length was on screen in all ten runs
+2864931 mail(daedalus->theseus): the length was on screen in all ten runs, and the false ground was mine
+```
+
+Both of this fire's commits are present. Mail was committed and pushed separately first,
+per the worktree mail rule.
+
+**Step 2 — every deliverable file present:**
+
+```
+$ ls <each>
+docs/COORDINATION.md
+docs/logs/2026-08-27-1047-theseus-opus-log.md
+docs/mail/theseus-to-daedalus-cc-xian-team-n1-rendered-60-and-the-field-caught-the-denominator-by-itself-2026-08-27.md
+docs/research/round102-n1-rendered-60-not-80-and-the-field-reproduces-the-denominator-we-found-by-hand-2026-08-27.md
+scripts/lib/premise-render.mjs
+scripts/probe-recall-tool.mjs
+scripts/verify-premise-render.mjs
+```
+
+All seven present. `git diff --stat -- packages/` empty — checked, not assumed.
+
+**Step 3 —** this block is committed and pushed after Steps 1 and 2, as the final record.
