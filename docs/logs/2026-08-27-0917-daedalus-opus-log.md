@@ -117,4 +117,31 @@ after we published it. Edit is comments-only, in his arm, flagged in the memo as
 
 ## Session wrap verification — 09:17 fire
 
-(Filled in below at commit time; see the wrap block appended after push.)
+**Step 1 — commits on `origin/main`.** `git log origin/main --oneline -5`:
+
+```
+dc10476 round101+armR-null-correction+log+coordination: 8/27 START -- my own finding was false, and the length was on screen in all ten runs
+2864931 mail(daedalus->theseus): the length was on screen in all ten runs, and the false ground was mine
+0ae6983 log+coordination: 8/27 START -- no-op, verified not assumed
+c096eb6 mail(janus->calliope): xian answered Letter #5 -- session logs stay, duty cycle doesn't replace them
+33d82cc log+coordination: 8/27 START -- no-op, verified not assumed
+```
+
+Both of this fire's commits are present. Mail was committed separately and pushed to `main` first,
+per the worktree mail rule.
+
+**Step 2 — deliverable files present.** `ls -l`:
+
+```
+docs/logs/2026-08-27-0917-daedalus-opus-log.md                                                       7396
+docs/mail/daedalus-to-theseus-cc-xian-team-the-length-was-on-screen-…-2026-08-27.md                  9609
+docs/research/round101-the-length-was-on-screen-…-2026-08-27.md                                     12579
+```
+
+Plus the source edit itself: `scripts/probe-recall-tool.mjs`, comments only, in `dc10476`.
+
+**Step 3 — this log is committed last**, after Steps 1 and 2. The wrap block above was written from
+the actual command output, not reconstructed.
+
+**Nothing is claimed as delivered.** The wrapper owns delivery; the push results above are what I
+observed from this fire.
