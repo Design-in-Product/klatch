@@ -276,3 +276,122 @@ commit.
 
 **Note on delivery:** the wrapper owns delivery. What is verified here is that the commit is on
 `origin/main` and the files are in its tree — nothing beyond that is claimed.
+
+---
+
+## 17:17 PT — STOP fire — Round 99
+
+**Fire type:** STOP. **Spend:** zero live turns, zero model calls. **No product code** (`packages/`
+untouched). **Harness read, not edited.**
+
+**Trigger:** Theseus's Round 98 memo landed at commit `f3b92e0` (14:54 PT) addressed to me and
+unanswered at fire start. Mail discipline says answer in the same fire; did that.
+
+### What I conceded, and how I checked it rather than taking it
+
+His §3: my Round 97 §2 refutation leaned on `predictedFlushEdges: 1`, a `--dry` field, as if the
+flush-terminal second excerpt were present in N1's decision render. Verified against **my own**
+`.testdata/`: all six artifacts are `dryRun: true`, `hasToolCalls: false`
+(`D819-{M,N1}`, `R93{L-L,M-M,N1-N1,Q-Q}`). No live render exists in my corpus. Conceded.
+
+### The finding that came out of checking it
+
+It is **not** "a structural prediction read as an observation." The dry `structural` block carries
+**two mutually exclusive predicted renders**, both correct about their own match set:
+`predictedEdges` (two-excerpt: N1 28/23 + flush edge) and `singleMatchOffer` (one-excerpt: N1
+28/**27**, no flush edge). We each read the wrong one, four rounds apart.
+
+Theseus's §4 closed form confirmed from my own files — `leading = fact − 3`, `trailing = total −
+fact − 2`:
+
+| arm | total | fact | leading | check | trailing | check |
+|---|---|---|---|---|---|---|
+| N1 (`R93N1`) | 60 | 31 | `1-28` = 28 | 28 ✓ | `34-60` = 27 | 27 ✓ |
+| Q (`R93Q`) | 80 | 41 | `1-38` = 38 | 38 ✓ | `44-80` = 37 | 37 ✓ |
+
+**Consequence he didn't draw:** his §4 table heads those columns "predicted vs live". The 27 and 37
+were in `singleMatchOffer` in the same dry file seven days earlier. The live call selected between
+two predictions; it corrected neither. Right numbers, wrong axis.
+
+**My own §4 retired:** `leading = 2L−2`, `trailing = 2G+2T−1`, `offset = 2G−1` is the two-excerpt
+geometry — correct about a render nobody got. Confound survives the substitution: 60→80 still moves
+total, leading 28→38, trailing **27→37**, offset +1→+15.
+
+### Four warnings were already in place
+
+All predate Round 94; all in files one of us read this week.
+
+1. `scripts/probe-recall-tool.mjs:1756-1774` — comment headed "*The offer a live render actually
+   makes, which is NOT the block above*"; names the trap, names Round 57 as its prior cost.
+2. `:1844-1853` — console tag `← HYPOTHETICAL: one-excerpt render, not the prediction above`.
+3. Arm blocks `:801-809` (N1) and `:967-976` (Q) — both name the single-excerpt render as **"the
+   arm's premise"**; Q's adds "*Do not mix the two sets of widths in the writeup; that mistake cost
+   M a round.*" **I read this block in Round 97** (my 13:17 entry records a comment-stripped Q/R
+   field diff).
+4. `docs/research/round63-arm-n1-equal-size-offers-live-2026-08-19.md:245-246` — committed limits:
+   "leading 28 / trailing 27 … The two-excerpt widths (28 / 23) never became the decision render."
+
+The Round 57 fix (label both, print both) was applied correctly and **did not prevent recurrence** —
+it labels console and prose; both of us argue from JSON and round docs, where the two blocks are
+plain sibling keys. Not a discipline result.
+
+### One notch off "observed" — and it does not touch his finding
+
+Harness `:2116-2130`: the tool result text "is not persisted … it is *reconstructed*, not captured."
+Explicitly **not** filed as the same error class — it is an in-fire replay with the model's own
+query, and the harness gives its faithfulness argument (`excludeChannelId`). His §2 table splits:
+query strings **observed** (`inputSummary`), expand/decline **observed** (call list), render shape
+**reconstructed**. The two columns carrying the ten-run association are the observed ones, so §0 is
+untouched — only the word "observed" on the render column overstates.
+
+### Registered: §5 rule 5, zero build cost
+
+Accepted his rules 1-4 (rule 4 executable today: `toolCalls[].query` persisted;
+`edgeAction.laterQueryDiffered` / `laterQueryFoundTheMarking` at `:2470`). Added a scorability gate
+using **fields that already exist** — verified each: `unscorableCalls` (`:2450`),
+`reconstructionFabricated` (`:2143`), `recogniserBlind` (`recall-recogniser.mjs:154`),
+`expectationViolations` (`:170`). Rationale: the §5.1 DV reads `excerptSeparators` and the `▸` mark,
+both reconstruction-derived; the harness's own blind-recogniser string is "*the counts above are not
+measurements*."
+
+### Position change
+
+**Withdrew my R-vs-S preference; took Theseus's R.** Two corrections against my own S spec: Round 97
+costed S's contrast as "trailing 33 vs Q's 33" — two-excerpt widths. Single-excerpt: S (total 70,
+fact 31) → leading 28, trailing **37** vs Q's 37. Confirms his arithmetic, and means S's contrast
+survives *both* renders. S is better than I costed it and still observational; R manipulates. Ask
+unchanged in size: **5 live opus runs, arm R, built and gated.**
+
+### Specified, deliberately not built
+
+`structural.premiseRender: 'single' | 'two'` + live-run assertion → `premiseRenderHeld`. Additive
+keys, Round-70-comparable, would have caught 94/96/97 mechanically. **Not building it** — Theseus's
+harness, GO pending on R, and changing artifact shape between "built and gated" and "run" is the
+quiet perturbation that costs a paid round.
+
+### Deliverables
+
+- `docs/research/round99-four-warnings-were-in-place-and-the-trap-caught-us-both-2026-08-26.md`
+- `docs/mail/daedalus-to-theseus-cc-xian-team-conceded-and-the-harness-warned-us-four-times-in-files-we-both-read-2026-08-26.md`
+- `docs/COORDINATION.md` (Daedalus section)
+- this log entry
+
+### Not done, deliberately
+
+- **Harness untouched.** Every line number above came from reading it.
+- **Arm S not built**, and now not recommended — R is the ask.
+- **`premiseRender` not built** — see above.
+- **Suite not re-run:** nothing changed. Argus's 13:31 WORK fire recorded `packages/` diff still
+  empty and re-ran the suite himself (server 1447/1447, client 239/239 + 13 skipped, typecheck
+  clean). Not duplicating a green run I did not perturb.
+
+### Could not verify, explicitly
+
+- **Theseus's Q live L1-L5 per-run figures** — his worktree; all six of mine are dry. Taken as
+  reported.
+- **N1's live 5/5 expand rate and live render** — Round 63 doc, seven days old. I confirmed the doc
+  says what he quotes (`:245-246`); the artifacts behind it were deleted at end of that fire.
+- **R live** — never run. §5/§6 are registration, not result.
+- **Whether call 2's query is caused by call 1's render** — his open question, nothing to add.
+- **That `premiseRender` would have caught all three rounds** — reasoned from field definitions, not
+  run; nothing is built.
