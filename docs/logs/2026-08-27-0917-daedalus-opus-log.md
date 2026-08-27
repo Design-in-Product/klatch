@@ -145,3 +145,105 @@ the actual command output, not reconstructed.
 
 **Nothing is claimed as delivered.** The wrapper owns delivery; the push results above are what I
 observed from this fire.
+
+---
+
+## 13:17 PT — MID/WORK fire. Round 103: the verifier built to stop prose-only caveats printed PASS with 11 of 20 assertions unrun, and R's three-valued field still meets a two-valued scoring rule.
+
+**Briefing (all first-hand this fire):**
+
+- `git log --format='%h %an %ad %s' -8` — HEAD `d9ba83c` (xian, mail janus→calliope). Since my
+  09:17 fire: two Theseus commits (`e9c72c7` mail, `1557bb8` Round 102 + `premiseRender` built,
+  `352251e` wrap), two Calliope commits (`a39b842`, `d125d74`), one xian. Working tree clean at
+  start; branch `claude/daedalus-cycle` tracking `origin/main`.
+- `ls docs/mail/` — **one new memo addressed to me**:
+  `theseus-to-daedalus-cc-xian-team-n1-rendered-60-and-the-field-caught-the-denominator-by-itself-2026-08-27.md`.
+  Read in full, acted on and replied to in this same fire.
+- `docs/COORDINATION.md` Daedalus section re-read. No new assignment; the standing item is the
+  Round 94→10x recall thread and xian's un-landed GO on arm R.
+
+**What his memo asked of me, and what I did with each:**
+
+1. **§1 — my Round 101 §6 `--dry` gap closed.** He ran `R102PRE R --dry` on my comment edit before
+   touching the file; every pre-registered ordinal landed. Item closed, and closed by the seat that
+   had the scratch server, which is the right split.
+2. **§2(a) — my Round 101 §1 generalisation is false.** Did **not** take it. Verified from my own
+   worktree, which carries a *different arm era* than his: `recall-probe-R93N1-N1.json` → 60,
+   `recall-probe-D819-N1.json` → 60, `recall-probe-R93Q-Q.json` → 80. R93 and D819 agree with his
+   R94 read. **The correction is applied in the artifact** — `round101-…md` now has a top banner
+   and the false clause struck through in place at §1 with his §2(b) evidence-class point attached
+   — because filing it only in Round 103 would reproduce, in my own document, the failure Round 100
+   found in his arm and Round 101 named.
+3. **§4 — the `premiseRender` field I specified in Round 99 §6 is built.** Read
+   `scripts/lib/premise-render.mjs` end to end. Both departures from my spec accepted; the call
+   selector is a **correction to me** (a bare `'single' | 'two'` asserts against whichever call the
+   reader assumes), not a departure.
+
+**Finding 1 — the verifier printed `PASS` and exited `0` with 11 of 20 assertions unrun.** Measured,
+not inferred: `node scripts/verify-premise-render.mjs` on this worktree → `PASS — 9/9 checks`,
+exit code `0` (captured via `spawnSync`), while the five-run replay silently did not execute for
+want of the `R94L*-Q` corpus. His `20/20` was true on his worktree; the two runs are
+indistinguishable from the verdict line or the exit status. The SKIP branch's own comment already
+argued the case against itself — *"a verifier that reports success when its corpus is missing is
+worse than one that fails — it is the 'silent cap' this project's brief names by that name"* — and
+the code beneath it did the forbidden thing. **Fifth instance in five rounds of one shape:** a
+caveat living in a different channel from the signal it qualifies (Round 100 §4, my Round 101 §1,
+his Round 102 §2(b), this). Rule now stated: *a caveat has to live in the channel the signal is read
+from.*
+
+**Fixed in `scripts/verify-premise-render.mjs`:** `notRun` counter set to `2 * Q_RUNS.length + 1`
+— derived, **not** the literal `11`, which would go stale the first time a replay check is added
+(citation drift wearing a number instead of a line reference); third verdict `INCOMPLETE`;
+denominator `checks + notRun`; exit codes documented and implemented as **0** pass / **1** failure /
+**2** incomplete. After: `INCOMPLETE — 9/20 assertions passed, 11 NOT RUN (replay corpus absent…)`,
+exit `2`. **This edit is not comments-only** — unlike Round 101 it changes what the script prints
+and returns — so it is flagged in the memo as his to override or move behind a flag.
+
+**Finding 2 — an undeclared denominator, and it should close before GO is spent.**
+`readPremiseRenderHeld` returns `true | false | null`. R's rule is two-valued: *"if that condition
+fails the arm is void, not null."* That covers `false`. `null` is undeclared — `grep -n undecidable`
+on the probe returns one hit, in the printer, and none in R's scoring block, while the verifier's
+own check 3 exercises four reachable null paths (no second call, Round 69 fabrication, error render,
+missing render). A live R run making one tool call would then be adjudicated at scoring time: void,
+or a scored non-expansion — **two denominators on the same five runs.** That is Round 100 §4's exact
+defect surviving for one of three values, inside the field built to remove it. Recommended (**not**
+declared — R and its registered null are Theseus's) that `null` voids like `false`, with the cost
+named up front: if reconstruction is systematically fabricated on R's runs, all five paid runs void.
+Filed as an **OPEN** block in R's docblock, not only in the round.
+
+**Deliverables:**
+
+- `docs/research/round103-the-verifier-said-pass-with-eleven-of-twenty-assertions-unrun-2026-08-27.md`
+- `docs/mail/daedalus-to-theseus-cc-xian-team-your-verifier-said-pass-with-eleven-of-twenty-assertions-unrun-2026-08-27.md`
+- `scripts/verify-premise-render.mjs` — behaviour change (summary line, exit codes, docblock)
+- `scripts/probe-recall-tool.mjs` — **comments only** (the OPEN block in R)
+- `docs/research/round101-…-2026-08-27.md` — correction banner + in-place strike at §1
+
+**Proof:**
+
+```
+node --check  verify-premise-render.mjs / lib/premise-render.mjs / probe-recall-tool.mjs → all OK
+node scripts/verify-premise-render.mjs   before → PASS — 9/9 checks            exit 0
+                                          after → INCOMPLETE — 9/20, 11 NOT RUN exit 2
+                                          (checks 3 and 4: 9/9 ok, unchanged both sides)
+git diff -U0 -- scripts/probe-recall-tool.mjs | grep non-comment +/-  → no output
+git status --porcelain -- packages/       → empty
+git diff --stat (pre-mail-commit)         → 3 files, 86 insertions(+), 3 deletions(-)
+```
+
+**Not verified this fire (stated as such in the doc and the memo):**
+
+- **Exit 0 and exit 1 of the edited verifier.** No Q corpus here. I declined to synthesise five
+  files named like captured Round 94 artifacts to get a green run — fabricating an artifact
+  indistinguishable from a live one, in the thread that invented `reconstructionFabricated` to stop
+  exactly that, is not a trade worth a test result. Asked Theseus for one free confirming run; if it
+  returns `INCOMPLETE` on his worktree my counter is wrong and the change should be reverted.
+- **The `0/4` reproduction** (his §4 headline) — needs the corpus. Doc-class to me.
+- **The 15-arm count** — his correction of Round 100 §5's "eleven"; I did not count the table.
+- **N1's live tool calls** — JSONs deleted; `scopedTotal: 60` is first-hand from structural
+  artifacts, the render step leans on Round 98's doc-class read.
+- **`premiseRenderHeld` live**, and **arm R live** — neither has ever run.
+
+**Open, unchanged:** xian's GO for 5 live opus runs on arm R. Both seats still agree on the arm.
+Finding 2 is the one new thing that should be settled before that GO is spent, and it costs a
+sentence of pre-registration, not a run.

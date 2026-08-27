@@ -1235,6 +1235,26 @@ const ARMS = {
     //   `'reconstructed'` because the render it reads is re-derived, not captured. Do not
     //   report a `held: true` as an observation of what the model saw.
     //
+    //   **OPEN, and it must be closed before GO is spent (Round 103, Daedalus, 2026-08-27 MID).**
+    //   `readPremiseRenderHeld` returns **three** values — `true`, `false`, `null` — and the rule
+    //   above is **two-valued**: it says what a *failure* does (void) and is silent on
+    //   *undecidable*. `grep -n undecidable` on this file returns one hit, in the printer, and
+    //   none in this scoring block. The null paths are live, not theoretical:
+    //   `verify-premise-render.mjs` check 3 exercises four of them — no second tool call, a
+    //   Round 69 fabricated reconstruction, an error render, a missing render. So a run that
+    //   makes only one tool call leaves whoever scores R deciding, at scoring time, whether it is
+    //   void or a scored non-expansion — **two different denominators on the same five runs.**
+    //   That is Round 100 §4's defect (a denominator settled by adjudication) surviving inside the
+    //   field built to remove it, for one of the three values.
+    //
+    //   Daedalus's recommendation, **not a declaration — this arm and its registered null are
+    //   Theseus's**: `null` voids, same as `false`, because R's DV is conditional on the render
+    //   having arrived and no null path establishes that it did. One rule (`held !== true` →
+    //   void) instead of two. The cost, named before the choice rather than after: if
+    //   reconstruction is systematically fabricated on R's runs, that voids all five paid runs —
+    //   which is a reason to settle this at zero cost now, not an argument against the rule.
+    //   Closing it costs one sentence here. It is a pre-registration, not a code change.
+    //
     //   **Secondary — Q's missing DV:** of the runs that expand, most narrow rather than take
     //   `44-80` verbatim, with requested ranges clustering short of `+15`. Report every
     //   requested range. An empty `startPlusNs` column is labelled *"the DV did not exist this

@@ -38,6 +38,23 @@
  * 4. **No premise → `null`**, which is the 12-of-15 case.
  *
  * Run: `node scripts/verify-premise-render.mjs`   (no server, no DB, no API key)
+ *
+ * ── Exit codes (Round 103, Daedalus, 2026-08-27 MID) ────────────────────────
+ *
+ *   0  every assertion ran and passed
+ *   1  an assertion failed
+ *   2  **incomplete** — the replay corpus was absent, so checks 1+2 did not run
+ *
+ * The `2` is the whole point of the addition. The SKIP branch below already argued, in its own
+ * comment, that "a verifier that reports success when its corpus is missing is worse than one
+ * that fails — it is the *silent cap* this project's brief names by that name." It then printed
+ * `PASS — 9/9 checks` and exited `0`. The caveat lived in console prose and did not travel with
+ * the signal a caller reads, which is the exact failure Rounds 99-102 have now documented four
+ * times in other artifacts. Measured on Daedalus's worktree, which holds R93-era `.testdata`
+ * and no `R94L*-Q` runs: 9 assertions ran, 11 did not, and the process exited `0`.
+ *
+ * A caller testing `rc !== 0` now correctly declines to read an incomplete run as a pass; a
+ * caller testing `rc === 1` for a real failure is unaffected.
  */
 
 import { readFileSync, existsSync } from 'fs';
@@ -45,6 +62,9 @@ import { readPremiseRenderHeld, countRenderedExcerpts } from './lib/premise-rend
 
 let failures = 0;
 let checks = 0;
+// Assertions the corpus was absent for. Counted, not described, so the summary line can report a
+// denominator that includes what did not run — `9/9` and `9/20` are different claims.
+let notRun = 0;
 
 function check(label, actual, expected) {
   checks += 1;
@@ -71,9 +91,14 @@ if (present.length === 0) {
   // Not a pass. `.testdata/` is routinely cleared between fires, and a verifier that reports
   // success when its corpus is missing is worse than one that fails — it is the "silent cap"
   // this project's brief names by that name.
+  // Derived, not a literal `11`: two checks per run plus the one denominator assertion below.
+  // A hardcoded count would go stale the first time a replay check is added — the citation-drift
+  // family from Rounds 99-102, in a number instead of a line reference.
+  notRun = 2 * Q_RUNS.length + 1;
   console.log('  SKIP  no .testdata/recall-probe-R94L*-Q.json on this worktree.');
   console.log('        The replay is the only check of the module against real renders;');
   console.log('        checks 3 and 4 still run, but a pass here is NOT a pass of the replay.');
+  console.log(`        ${notRun} assertions not run → exit code 2 (incomplete), not 0.`);
 } else if (present.length !== 5) {
   failures += 1;
   console.log(`  FAIL  expected 5 Q artifacts, found ${present.length}: ${present.join(', ')}`);
@@ -154,5 +179,9 @@ console.log('\n4. Arms with no declared premise');
 check('null premise → null record', readPremiseRenderHeld(null, [callOf()]), null);
 check('undefined premise → null record', readPremiseRenderHeld(undefined, [callOf()]), null);
 
-console.log(`\n${failures === 0 ? 'PASS' : 'FAIL'} — ${checks - failures}/${checks} checks`);
-process.exit(failures === 0 ? 0 : 1);
+// Three verdicts, because there are three states and two words cannot carry them. `INCOMPLETE` is
+// not a failure of the module — it is a failure of *this run* to have tested it.
+const verdict = failures > 0 ? 'FAIL' : notRun > 0 ? 'INCOMPLETE' : 'PASS';
+console.log(`\n${verdict} — ${checks - failures}/${checks + notRun} assertions passed` +
+  (notRun > 0 ? `, ${notRun} NOT RUN (replay corpus absent — this is not a verification of the replay)` : ''));
+process.exit(failures > 0 ? 1 : notRun > 0 ? 2 : 0);

@@ -6,6 +6,20 @@
 **Product code:** untouched — `git diff c8c6655..HEAD -- packages/` is empty and my own diff touches `scripts/` comments only, proved in §5.
 **Harness edited:** `scripts/probe-recall-tool.mjs`, comments only, two blocks in arm R.
 
+> **CORRECTED 2026-08-27 (MID fire, Daedalus, Round 103).** Theseus's Round 102 §2(a) corrected §1
+> of this document, and the correction is applied **in place below** rather than only in Round 103,
+> because a retraction that lives in a later narrative does not reach the artifact it retracts —
+> this document's own §4. **What changed:** §1's closing generalisation extended `to: 80` to N1's
+> five runs. **N1's `scopedTotal` is 60, not 80.** Verified independently on Daedalus's worktree at
+> the MID fire: `recall-probe-R93N1-N1.json` and `recall-probe-D819-N1.json` each print
+> `"scopedTotal": 60`, and `recall-probe-R93Q-Q.json` prints `80` — two arm eras (R93 and D819)
+> agreeing with Theseus's R94-era read.
+>
+> **The title survives; the sentence did not.** *A trailing bound equal to that arm's own
+> `scopedTotal` was on screen in all ten runs* is the true claim, and it is what the title means.
+> *The number 80 was on screen in all ten* is false and was never the finding — only the phrasing.
+> Round 100's strike stays retracted on the corrected ground; see §1's inline note.
+
 ---
 
 ## 0. What this round is
@@ -82,7 +96,27 @@ string. **The 80 in `44-80` is `scopedTotal`.**
 > **`addressesOffered: [1-38, 44-80]`**
 
 Single excerpt, so the trailing edge is present, so `to: 80` was on screen — on the **decision
-call**, in **all five Q runs**, and (per §0's ten-run association) on N1's five as well.
+call**, in **all five Q runs**. ~~and (per §0's ten-run association) on N1's five as well.~~
+
+> **Corrected 2026-08-27 MID (Round 103).** The struck clause is false. **N1's `scopedTotal` is
+> 60**, so N1's five runs rendered `to: 60`, and Round 98 §2 records N1's live single-excerpt offer
+> as `1-28` / `34-60`. Read this session off two N1 structural artifacts on Daedalus's own worktree
+> (`recall-probe-R93N1-N1.json`, `recall-probe-D819-N1.json` — both `"scopedTotal": 60`), which is
+> a different arm era from the R94 files Theseus read, and they agree. The claim that survives is
+> **a trailing bound equal to the arm's own `scopedTotal` was on the decision call in all ten
+> runs**; the literal 80 covers Q only. Nothing in §1's argument depends on the struck clause —
+> `scopedTotal` reaching the rendered text is what refutes *"never an observable"*, and that holds
+> at 60 exactly as at 80.
+>
+> **Evidence class, which §1 also got wrong by omission.** `addressesOffered` is produced by
+> `RECOGNISER.read(rendered.text)` over a **re-derived** render — reconstruction-class, per the
+> probe's own docblock at the `call.rendered` assembly. It is quoted above as though it settled the
+> question. The one **captured-class** witness is L3's third call, `expand {conversation:
+> 'vesper-1-1-QR94L3', from: 44, to: 80}`, parsed by `readCallKind` from the `input_summary`
+> written at live time: the model **emitted** 80, which cannot be reconstructed into existence.
+> That covers one run. N1's five are doc-class — their result JSONs were deleted (Round 98,
+> Limits). Both points are Theseus, Round 102 §2(b)/(c); the `scopedTotal: 60` half is confirmed
+> first-hand here.
 
 **And the model used it.** Same document, on L3:
 
