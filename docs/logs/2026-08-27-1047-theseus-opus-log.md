@@ -398,3 +398,149 @@ All seven present. `git diff --stat HEAD~2 -- packages/` **empty** — checked, 
 `git status --porcelain` clean. `:3001` free, no orphaned server.
 
 **Step 3 —** this block is committed and pushed after Steps 1 and 2, as the final record.
+
+---
+
+## 19:47 PT — STOP fire. The GO was spent. The decoy was not the cause.
+
+**Spend: 5 live `claude-opus-5` runs on arm R** — xian's GO, spent. Plus 3 `--dry` runs (0 model
+calls), one scratch server, torn down. **No product code; `packages/` untouched.**
+
+### Mail, read and actioned in this fire
+
+Two new memos, both addressed to me, both landed since my 14:47 fire:
+
+- `calliope-to-daedalus-theseus-cc-xian-janus-arm-r-go-is-confirmed-spend-it-2026-08-27.md`
+- `daedalus-to-theseus-cc-xian-team-the-go-was-stale-in-the-file-you-read-before-spending-and-your-denominator-moves-by-one-2026-08-27.md`
+
+**Verified the GO first-hand rather than acting on the relay.** Read
+`memo-janus-to-calliope-cc-team-xian-go-confirmed-plus-beta-status-question-2026-08-27.md` §1
+directly: *"xian's approval on Arm R (the distance-arm experiment — 5 live opus runs) stands.
+Nothing has changed his mind. If anything was waiting on a second confirmation before spending
+real money, this is it."* Daedalus's tiebreak (`round105-…` §5) assigns the spend to this seat
+because the Q comparison corpus lives only here — confirmed all five
+`.testdata/recall-probe-R94L{1..5}-Q.json` present, dated Aug 25, before spending.
+
+### Pre-spend gate
+
+Daedalus's edit to my probe checked **mechanically, not read**: `git diff -U0 113b7b9..HEAD --
+scripts/probe-recall-tool.mjs` → 39 changed lines, **0 non-comment non-blank**.
+
+Two `--dry` runs, arms Q and R together. Console structural block **byte-identical, 15 lines**;
+artifact `structural` identical on every field except `premiseRender`, which is supposed to differ
+(Q `call: first, excerpts: 1`; R `call: second, excerpts: 2`). Geometry confirmed: fact `[41,79]`,
+marking `[59]`, distance 18, 80/80, excerpts `39-43` + `77-80`, trailing `44-76`, restriction at
+offered start +15, 104 reachable, `predictedFlushEdges: 1`.
+
+**Gate methodology finding.** The "two `--dry` runs must be byte-identical" check *cannot* be run
+with two different tags. `R106DRY` vs `R106DRYB` differ in exactly 4 leaves — the two tags and the
+two `precondition.layer6` strings, where carried-context chars move by 30 (3845→3875, 3776→3806)
+because the tag is in the entity name which is in the carried transcript. Deterministic in tag
+length. The byte-identity form needs the **tag held fixed and the script varied** (what Round 104
+did). Recorded before it produces a false gate failure and spooks a seat off a spend.
+
+### The result
+
+```
+                        expand    states the token    claims "no restriction"
+  R (5 live, this fire)   1/5            4/5                   1/5
+  Q (5 live, Round 94)    1/5            4/5                   3/5
+```
+
+**The hypothesis arm R was built to test is falsified.** Removing Q's condition-shaped restate
+wording, holding every other byte, does not move expansion. Registered premise → R 1/3 scorable;
+ordinal-free → 1/5; unconditioned → 1/5. Target was ≥4/5. **No conditioning rule reaches it**,
+which is what makes the conclusion safe to state despite the defect below.
+
+L2 is the clean run: five searches, `expand {44, 76}` (covers seq 59), then withheld. L4 is the
+false negative — states the token, never expands, volunteers *"no restriction attached either
+time"* having declined an offered address that covered the marking.
+
+**`premiseRenderHeld` executed live for the first time**, 5/5 decidable, `why: null` throughout.
+`evidenceClass` is `"reconstructed"` in all five and **that is not a finding** — it is a constant
+at `lib/premise-render.mjs:74`, the module's only class. Daedalus's warned-about
+fabricated-reconstruction sweep did not occur: `reconstructionFabricated` false on **0 of 25**
+calls across both corpora.
+
+### The finding that is mine
+
+R's premise conditions on **query order**, not on what was rendered. Both search orders appear:
+
+```
+token-second (L2, L3, L4)  → second render is 9-row / 2-excerpt → HOLDS
+token-first  (L1, L5)      → second render is 5-row / 1-excerpt → FAILS
+```
+
+L1 and L5 saw the identical pair of renders L3 and L4 saw. They are voided for the order they
+searched in and nothing else. The premise was written to mean *"the model saw the 9-row
+two-excerpt neighbourhood"*; what it tests is *"the model saw it second."* Round 103's shape one
+level in — a pre-registration naming an ordinal where it meant a property.
+
+**Ordinal-free counterfactual computed (R 5/5, Q 4/5) and deliberately not used.** My own Round
+104 §3 clause binds harder here than in the case I wrote it for, because the outcomes are in hand
+and the rule's effect on the number is visible. Written into the doc and the arm's docblock so the
+*next* render-conditioned arm registers it before spending — not so this one is re-scored after.
+
+**Related hazard, flagged not claimed:** cross-scored both corpora under both premises. Q under
+R's premise holds 4/5, and the one Q run that fails it is Q's only expansion; in R the expander
+holds. Inconsistent direction, n=5, noise — but on a variable meant to be exogenous. Premise future
+arms on a property fixed by the geometry, not by the model's call sequence.
+
+### Daedalus's Round 105 §3 — confirmed by running, and his §4 is escapable
+
+His `mutantAssertions` fix executed, not agreed-with:
+
+```
+corpus present (this worktree)     →  PASS — 16/16                     exit 0
+corpus absent  (scratch REPO root) →  INCOMPLETE — 5/16, 11 NOT RUN    exit 2
+```
+
+**16 both ways.** His derivation was right and his reproduction of my number exact.
+
+His §4 (*"you can't find it by running"*) is true of a **worktree** and false of a **REPO root**.
+`REPO` is `dirname(import.meta.url)/..` (`verify-verifier-exit-codes.mjs:60`), so copying
+`scripts/` + `scripts/lib/` into a gitignored `.testdata/` directory gives a corpus-free REPO on
+the corpus-*holding* seat — same bytes, **nothing deleted**, paid artifacts never at risk. One
+`node -e`. That produced his 5/16 exactly. His standing practice is right about the need and
+pessimistic about the cost: it needs a second REPO root, not a second seat.
+
+**Still open, still his to-me:** nothing asserts that harness's own denominator is stable. The
+mechanism now exists; not built in the fire that spent the GO.
+
+### Also fixed: a second stale GO line, in the field readers actually see
+
+Daedalus de-staled the authorization comment at `:1109`. The arm's `expectation` **string** at
+`:1491` still read *"Do not spend without xian's GO"* — and that one **prints in every run's
+output and lands in every artifact**. Rewritten to carry the result. Docblock updated with the
+result, the premise defect, and the counterfactual.
+
+### Gate after the edits
+
+```
+node --check scripts/probe-recall-tool.mjs            → OK
+npx tsx … R106POST R --dry                            → geometry unchanged ([41,79] / [59] / 18)
+node scripts/verify-premise-render.mjs                → PASS 20/20, exit 0
+node scripts/verify-verifier-exit-codes.mjs           → PASS 16/16, exit 0
+```
+
+Scratch server reclaimed (`:3001 is free`). Scratch REPO copy and dry-run capture deleted.
+`git status` shows only intended files. `git diff --stat 113b7b9..HEAD -- packages/` **empty**.
+
+### Deliverables this fire
+
+- `docs/research/round106-arm-r-spent-the-decoy-was-not-the-cause-r-expands-1-of-5-exactly-like-q-and-my-premise-conditions-on-query-order-2026-08-27.md`
+- `docs/mail/theseus-to-daedalus-cc-xian-team-spent-it-the-decoy-was-not-the-cause-and-my-premise-conditions-on-query-order-2026-08-27.md`
+- `scripts/probe-recall-tool.mjs` — arm R docblock (result + premise defect) and the stale
+  `expectation` string
+- `docs/COORDINATION.md`, this log
+
+### Open, carried
+
+- **The next variable is unknown.** Expansion is 1/5 in *both* arms with a covering address
+  visibly offered (5 addresses on the table in every non-expanding run). Rounds 61/62: the address
+  is offered and declined. R: decoy wording isn't why. I have no candidate for what is.
+- **R's premise needs re-registering ordinal-free** before any further render-conditioned arm is
+  spent. Not applied retroactively, on purpose.
+- **The conditioner-vs-DV independence hazard** should be a standing check in arm design.
+- **Daedalus's §3 leftover** — assert `verify-verifier-exit-codes.mjs`'s own denominator stability.
+- **n=5 per arm, and R-vs-Q is not a same-session paired design.** Q's corpus is 2 days old.

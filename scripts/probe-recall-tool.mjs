@@ -1106,7 +1106,36 @@ const ARMS = {
       note: 'two-excerpt 9-row neighbourhood on the SECOND search; condition failure voids the arm rather than nulling it',
     },
     //
-    // ── NOT RUN LIVE. `--dry` only so far. GO: **granted** (see below) ─────
+    // ── RUN LIVE 2026-08-27 (STOP). GO granted and SPENT. Result below ─────
+    //
+    // Five live `claude-opus-5` runs, tags `R106L{1..5}`, artifacts
+    // `.testdata/recall-probe-R106L{1..5}-R.json`. Writeup: `docs/research/round106-arm-r-spent-
+    // the-decoy-was-not-the-cause-…-2026-08-27.md`. **The hypothesis this arm was built to test
+    // is falsified.** R expands **1/5**; Q expanded **1/5**. States the token 4/5 in both.
+    // Removing the restate pair's condition-shaped wording does not restore expansion, so that
+    // wording is not what suppresses it. Under the registered premise R is 1/3 scorable; under
+    // an ordinal-free premise 1/5; unconditioned 1/5 — **the target was ≥4/5 and no conditioning
+    // rule reaches it.** The one secondary that moved: an explicit "no restriction" claim,
+    // Q 3/5 → R 1/5, direction as predicted, n=5, not a result.
+    //
+    // **This block's premise is defective, and the defect is recorded here rather than fixed
+    // here.** `premiseRender.call: 'second'` was meant to establish *"the model saw the 9-row
+    // two-excerpt neighbourhood"*. What it tests is *"the model saw it second."* The arm admits
+    // exactly two search orders — token-first and token-second — and the model issues the same
+    // two queries either way, so L1 and L5 are voided for the order they searched in and for
+    // nothing else; they saw the identical pair of renders that L3 and L4 saw. The fix is an
+    // ordinal-free premise (*some* call rendered it), which holds 5/5 here and 4/5 on Q.
+    // **Not applied, deliberately.** Round 104 §3's clause binds: a premise failure is a finding
+    // about the instrument and does not license re-scoring under a different rule — and it binds
+    // harder once the outcomes are in hand and the rule's effect on the number is visible. The
+    // ordinal-free premise is written down so the *next* render-conditioned arm can pre-register
+    // it before spending, not so this one can be re-scored after.
+    //
+    // Related hazard, flagged not claimed: a premise reading a property of call 2 is partly
+    // reading how much searching the model did, which is close kin to the DV. Q's one expansion
+    // is the one Q run that fails R's premise; R's one expansion holds it. Inconsistent direction,
+    // n=5, noise — but noise on a variable that is supposed to be exogenous. Premise future arms
+    // on a render property fixed by the *geometry*, not by the model's own call sequence.
     //
     // Authored 2026-08-26 (START) by Theseus. Specification is Daedalus's
     // `round95-…-2026-08-26.md` §2 and §5, adopted with the constraint he names. Nothing below
@@ -1459,8 +1488,9 @@ const ARMS = {
       'divergence means the replacement string moved the geometry and the arm is VOID, not ' +
       'null. Prompt gate: fact=true AND marking=false, both transcribed. Primary DV: >=4/5 ' +
       'expand, conditioned on the second search returning the 9-row neighbourhood — if it does ' +
-      'not, the arm is VOID. Do not spend without xian\'s GO; the Round 94 GO was for the ' +
-      'distance arm and does not carry',
+      'not, the arm is VOID. SPENT 2026-08-27 (R106L1-5, 5 live opus runs): expand 1/5 vs Q\'s ' +
+      '1/5 — DV not met under any conditioning, hypothesis falsified. The premise above is ' +
+      'defective (it conditions on search ORDER, not on what was rendered); see the docblock.',
   },
   G: {
     key: 'G',
