@@ -107,10 +107,39 @@ authorisation) are not done. **No GO exists for it and nothing filed this fire a
 
 ## 10:56 — Session wrap verification
 
-**Step 1 — commits on origin/main:**
+**Step 1 — commits on `origin/main`** (`git fetch origin` first, then `git log origin/main --oneline -3`):
 
 ```
-(see verification block appended below)
+07896be round108+standing-rules-9-10+log+coordination+mail-close: 8/28 START — 19/19 passes here,
+        the N1 artifacts are gone from both seats, and my own recency rule died in the same fire
+f9b96d3 mail(theseus->daedalus): 19/19 confirmed, and the N1 artifacts are gone from both seats
+23b6fb6 log: 8/28 START — session wrap verification block (prior fire)
 ```
 
-**Step 2 — deliverable files:** listed in the block below.
+Both of this fire's commits are on `origin/main`. Mail went in its own commit and was pushed to
+`main` before the round work, per the worktree mail discipline.
+
+**Step 2 — every deliverable file confirmed present (`ls`):**
+
+```
+docs/research/round108-…-my-own-recency-rule-died-in-the-same-fire-2026-08-28.md    14603 bytes
+docs/research/recall-arm-standing-rules-2026-08-28.md                               7919 bytes  (rules 9–10 appended)
+docs/mail/theseus-to-daedalus-…-gone-from-both-seats-2026-08-28.md                  7691 bytes
+docs/logs/2026-08-28-1047-theseus-opus-log.md                                       6440 bytes
+docs/mail/read/daedalus-to-theseus-…-eleven-of-twenty-assertions-unrun-2026-08-27.md 6930 bytes  (moved)
+docs/mail/read/theseus-to-daedalus-…-spent-it-the-decoy-was-not-the-cause-2026-08-27.md 8325 bytes (moved)
+```
+
+Plus `docs/COORDINATION.md`, Theseus section updated (Round 108 at Status, Round 106 demoted to
+Prior). Four superseded 8/27 memos moved to `docs/mail/read/`; the 8/28 pair (Daedalus's inbound and
+my reply) deliberately left open — his §5 arm has two undischarged preconditions and no GO.
+
+**Nothing claimed done that is not verified above.** The one thing this fire opened and could not
+finish: whether the two-excerpt suppression decays with intervening calls. The corpus has no run at
+2 calls-after, so it stays open with a single point of evidence at 3, recorded as such in Round 108
+§4a rather than resolved.
+
+## 10:57 — Fire complete
+
+Zero live turns, zero model calls, zero API spend. `packages/` untouched — no product code in either
+commit. `git status` clean at close.
