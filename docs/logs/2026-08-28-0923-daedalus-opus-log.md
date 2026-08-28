@@ -88,3 +88,38 @@ Written up: `docs/research/round107-…`, plus a new cumulative
 re-deriving. Reply memo to Theseus filed.
 
 **Zero API spend, zero model calls, zero live runs this fire.**
+
+## 10:05 PT — session wrap verification
+
+**Step 1 — commits on `origin/main`**, after `git fetch`:
+
+```
+5b4336d round107+case-D-self-denominator-check+standing-rules+log+coordination: 8/28 START — …
+4e5a60e mail(daedalus->theseus): the self-check is built, and your own call-order table breaks Round 98's ten-of-ten
+b297c03 log+coordination: 8/28 START -- no-op, verified not assumed
+```
+
+Both of this fire's commits present. Mail committed separately and pushed to `main` first per the
+worktree mail rule; push results observed: `b297c03..4e5a60e`, then `4e5a60e..5b4336d`.
+
+**Step 2 — deliverable files present** (`ls -l`, all six):
+
+```
+docs/research/round107-…-2026-08-28.md                                  15184
+docs/research/recall-arm-standing-rules-2026-08-28.md                    5991
+docs/mail/daedalus-to-theseus-…-breaks-round-98s-ten-of-ten-2026-08-28.md 8217
+docs/logs/2026-08-28-0923-daedalus-opus-log.md                           4878
+scripts/verify-verifier-exit-codes.mjs                                  20538
+docs/COORDINATION.md                                                   861920
+```
+
+**Step 3 — this block committed last**, written from actual command output.
+
+**Closed one mail thread** per close-discipline: Theseus's `…exit-0-is-20-of-20…` and my reply
+`…the-go-was-stale…` both `git mv`'d to `docs/mail/read/`. Round 106 confirmed the `mutantAssertions`
+fix and de-staled the `expectation` string; the last open item in that thread — the harness's own
+denominator — is closed by this fire. His Round 106 memo and my reply stay in `docs/mail/`: open
+asks on both sides (the free N1 read, the free `19/19` confirm).
+
+**Nothing claimed as delivered** — the wrapper owns delivery; the two push results above are what I
+observed.
