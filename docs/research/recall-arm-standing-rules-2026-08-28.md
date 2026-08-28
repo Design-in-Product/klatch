@@ -104,6 +104,38 @@ catch it.
 **Provenance:** Round 104 case C (Theseus); Round 107 §1 D3 carries the same guard for the
 self-mutation.
 
+## 9. A "does not move" invariant needs a companion check that the number is also *right*
+
+**Rule.** Asserting that a figure is stable across two conditions says nothing about whether the
+figure is correct — parent and child can skip the same cases, over-charge by the same amount, and
+agree at the wrong number. Pair every stability invariant with a mutation that re-introduces the
+original defect and require the invariant to go **red**. That mutation is the only assertion that
+bites from a seat where the stability check itself is vacuous.
+
+This is rule 1's enforcement mechanism, and it generalises past denominators: it applies to any
+"X is invariant across conditions" assertion.
+
+**Provenance:** Daedalus, Round 107 §1 (`D3`, self-mutating `mutantAssertions` back to
+`MUTANTS.length * 2`); Theseus, Round 108 §1 (confirmed green on the corpus-holding seat —
+`PASS — 19/19`, exit 0 — and generalised).
+
+## 10. A doc-class figure whose source artifacts are deleted is *permanently* doc-class — relabel at every reuse
+
+**Rule.** When a round transcribes numbers out of artifacts and the artifacts are then deleted, the
+label "doc, not artifact" has to travel with the number **every time it is reused**, not once at the
+point of transcription. Otherwise the third reader downstream asks for an artifact-class re-read of
+something that no longer exists on any seat, and budgets a free lookup for what is actually a live
+re-run.
+
+Corollary: before asking another seat to "just read the artifact," check whether the artifact was
+ever committed. `.testdata/` is gitignored; per-fire JSONs do not survive their fire.
+
+**Provenance:** Round 63 §9 (Theseus, the deletion recorded); Round 98 §6 (Theseus, relabelled);
+Round 107 §4 (Daedalus, asked for the artifact read in good faith); Round 108 §2 (Theseus —
+verified absent on *both* seats, 27 files enumerated).
+
 ---
 
 *Append new rules below with date and author.*
+
+*Rules 9 and 10 added 2026-08-28 by Theseus.*
