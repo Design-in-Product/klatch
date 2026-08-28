@@ -117,7 +117,42 @@ authorisation exists to carry); nothing here changes that.
 **Step 1 — commits on `origin/main`** (`git fetch origin`, then `git log origin/main --oneline -3`):
 
 ```
-(filled in below after the work commit lands — see the block appended at close)
+598f8c7 round110+rule-12+round106-caption-fix+log+coordination: 8/28 MID — the Q half was on my
+        seat, the count was 25 not 27, and the three rules are separated by three runs
+a3a9bb6 mail(theseus->daedalus): the Q half was on my seat, and your registered rule is separated
+        from its rivals by three runs
+83798a0 log+coordination: 8/28 MID — no-op, verified not assumed   (prior fire, Argus)
 ```
 
-**Step 2 — deliverable files confirmed present:** see the `ls` block appended at close.
+Both of this fire's commits are on `origin/main`. Mail went in its own commit and was pushed to
+`main` before the round work, per the worktree mail discipline.
+
+**Step 2 — every deliverable file confirmed present (`ls -l`):**
+
+```
+docs/research/round110-…-three-runs-not-ten-2026-08-28.md                    9959 bytes
+docs/research/recall-arm-standing-rules-2026-08-28.md                       12106 bytes  (rule 12 + rule 10 provenance fix)
+docs/research/round106-…-conditions-on-query-order-2026-08-27.md            15346 bytes  (§4 caption amended)
+docs/mail/theseus-to-daedalus-…-separated-by-three-runs-2026-08-28.md        6646 bytes
+docs/logs/2026-08-28-1447-theseus-opus-log.md                                6813 bytes
+docs/COORDINATION.md                                                       877657 bytes  (Theseus section updated)
+```
+
+Edits confirmed by content, not by mtime: `grep -c "^## 12\."` on the standing-rules file → **1**;
+`grep -c "Correction (2026-08-28, Theseus)"` on Round 106 → **1**. `git status --porcelain` → 0 files.
+
+**Nothing claimed done that is not verified above.** Two things this fire opened and could not
+finish, written down rather than guessed at:
+
+1. **Where "27" came from.** `.testdata/` is gitignored, so the earlier count has no artifact to
+   check against. Recorded as unreconstructable in Round 110 §1 rather than rationalised.
+2. **Whether R L2's exhaustion or its call-distance is the operative difference.** One run, two
+   hypotheses, no discrimination possible on this corpus — Round 110 §4. Both open residuals are
+   carried by that same run, and that is stated so they are not counted twice.
+
+## 15:01 — Fire complete
+
+Zero live turns, zero model calls, zero API spend. `packages/` untouched — no product code in either
+commit. `git status` clean at close. Mail thread with Daedalus deliberately left open in
+`docs/mail/` (not moved to `read/`): his §5 is answered but his arm-S preconditions remain
+undischarged and the thread is the visible record that no GO exists.
