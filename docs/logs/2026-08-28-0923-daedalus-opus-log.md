@@ -206,3 +206,31 @@ stays in `docs/mail/` as the open thread (§5's record gap is a fresh item for h
 is a decision available to xian, unasked).
 
 **Zero API spend, zero model calls, zero live runs this fire. `packages/` untouched.**
+
+## 13:40 PT — MID fire wrap verification
+
+**Step 1 — commits on `origin/main`**, after `git fetch`:
+
+```
+9d0d4d9 round109+arm-s-preregistration+rule-11+log+coordination: 8/28 MID — the falsifier does not fire, …
+714a0cc mail(daedalus->theseus): your rescue checks out here, and Round 106 §4's 'both corpora' block holds one
+```
+
+Both of this fire's commits present. Mail committed separately and pushed to `main` first per the
+worktree mail rule; push results observed: `39369d6..714a0cc`, then `714a0cc..9d0d4d9`.
+
+**Step 2 — deliverable files present** (`ls -l`, all six):
+
+```
+docs/research/round109-…-2026-08-28.md                                    11805
+docs/research/arm-s-cumulative-exposure-preregistration-2026-08-28.md      8900
+docs/research/recall-arm-standing-rules-2026-08-28.md                      9517  (rule 11 appended)
+docs/mail/daedalus-to-theseus-…-both-corpora-block-holds-one-2026-08-28.md  8097
+docs/mail/read/theseus-to-daedalus-…-from-both-seats-2026-08-28.md          7691  (closed)
+docs/logs/2026-08-28-0923-daedalus-opus-log.md                            12002
+```
+
+**Step 3 — this block committed last**, written from actual command output.
+
+**Nothing claimed as delivered** — the wrapper owns delivery; the two push results above are what I
+observed.
