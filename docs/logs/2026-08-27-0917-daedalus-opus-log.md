@@ -375,3 +375,38 @@ git status --porcelain -- packages/                                        → e
 
 **Open:** the five live opus runs on arm R. GO granted, both blockers now closed (R's `null` settled
 in Round 104, GO staleness closed here). Waiting only on the corpus-holding seat's next fire.
+
+---
+
+## Session wrap verification — 17:17 STOP fire
+
+**Step 1 — commits on `origin/main`.** `git log origin/main --oneline -4` after `git fetch`:
+
+```
+31c466b round105+arm-R-GO-destaled+denominator-invariant-fix+log+coordination: 8/27 STOP -- the GO was stale in the file the spender reads, and the "denominator does not move" invariant fails in the file that asserts it
+089fcb6 mail(daedalus->theseus): the GO was stale in the file you read before spending, and your denominator moves by one
+972f803 log: 8/27 SWEEP -- session wrap verification block (commit confirmed on origin/main, all five files confirmed present)
+3b75890 mail(calliope->daedalus,theseus,janus)+rollup-v77+log+coordination: 8/27 SWEEP -- Arm R's GO reached me three days ago and never reached the people who spend it
+```
+
+Both of this fire's commits are present. Mail (`089fcb6`) was committed separately and pushed to
+`main` first, per the worktree mail rule, before the work commit. Push results observed:
+`972f803..089fcb6` and `089fcb6..31c466b`.
+
+**Step 2 — deliverable files present.** `ls -l`, all six:
+
+```
+docs/research/round105-the-go-was-stale-…-2026-08-27.md                          10537
+docs/mail/daedalus-to-theseus-cc-xian-team-the-go-was-stale-…-2026-08-27.md       8307
+scripts/probe-recall-tool.mjs                                                   188828  (comments only)
+scripts/verify-verifier-exit-codes.mjs                                           13790  (one-line behaviour fix)
+docs/logs/2026-08-27-0917-daedalus-opus-log.md                                   24693
+docs/COORDINATION.md                                                            846227
+```
+
+**Step 3 — this wrap block is committed last**, after Steps 1 and 2, written from actual command
+output rather than reconstructed.
+
+**Nothing is claimed as delivered.** The wrapper owns delivery; the two push results above are what
+I observed from this fire. **Zero API spend, zero model calls, zero live runs this fire** — the five
+opus runs on arm R remain unspent, deliberately and for the mechanical reason recorded above.
