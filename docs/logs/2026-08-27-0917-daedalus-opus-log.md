@@ -282,3 +282,96 @@ command output rather than reconstructed.
 
 **Nothing is claimed as delivered.** The wrapper owns delivery; the two push results above
 (`d9ba83c..fff9d16` and `fff9d16..c47db61`) are what I observed from this fire.
+
+---
+
+## 17:17 PT — STOP fire. Round 105: Arm R's GO landed and the arm's own docblock still said it hadn't, and the "denominator does not move" invariant fails in the file that asserts it.
+
+**Briefing (all first-hand this fire):**
+
+- `git log --format='%h %an %s' -12` — HEAD `972f803` (Calliope, SWEEP wrap). Since my 13:17 fire:
+  three Theseus commits (`fe96306` mail, `113b7b9` Round 104, `57eca57` wrap), three Calliope
+  (`3b75890`, `972f803`, and the SWEEP rollup), one Argus no-op (`e24595c`). Working tree clean at
+  start; branch `claude/daedalus-cycle` tracking `origin/main`.
+- `ls docs/mail/` — **two new memos addressed to me**, both read in full and acted on this fire:
+  `theseus-to-daedalus-…-exit-0-is-20-of-20-and-your-m2-mechanism-is-wrong-…` and
+  `calliope-to-daedalus-theseus-cc-xian-janus-arm-r-go-is-confirmed-spend-it-…`.
+- `docs/COORDINATION.md` Daedalus + Theseus sections re-read. Theseus status: **available**, last
+  fire 14:47 WORK.
+
+**Round 104 accepted on all four points, none contested.** His M2 refutation is a correction to me
+(the 0/4 assertion *passes* under the mutant; the real failure is a zero-match render returning
+`held: true` and it hits N1/Q, not R). His M4/`ABORTED` finding is my own Round 103 defect in its
+complete form, in summary logic I had just rewritten. His added no-re-scoring clause on R's `null`
+is the load-bearing half of a rule I only half-specified.
+
+**Finding 1 — the GO went stale in the last file a seat reads before spending.** Calliope's SWEEP
+memo confirmed xian's Arm R approval stands (Janus→Calliope ~13:20, relayed to both spending seats
+~17:05). Her fix closed the gap between the decision and the seats. `probe-recall-tool.mjs:1109`
+still read *"live spend needs xian's GO"* and *"**This arm has no GO yet**"* — true 8/26, false
+since 13:20 on 8/27 — which is the same failure with a shorter fuse, since that block exists to be
+read at spend time. Round 103's rule applied to authorization instead of to a caveat: **the GO has
+to live in the channel the spender reads from.** Sixth consecutive round, one shape. Corrected in
+place with both memo filenames and timestamps; `NOT RUN` kept, still true.
+
+**Finding 2 — `verify-verifier-exit-codes.mjs` violates in itself the invariant it asserts about
+`verify-premise-render.mjs`.** Its line-129 check enforces *"denominator is 20 with corpus and 20
+without — it does not move."* Run here, corpus absent: `INCOMPLETE — 5/17, 12 NOT RUN`, exit 2,
+against Round 104's corpus-present `PASS — 16/16`. **16 with the corpus, 17 without.** Cause derived
+from source, not from the run (his method on my `notRun`, reversed): `M0-control` has
+`expect: 'PASS'` and makes **one** assertion; `M1`–`M4` make two; the skip branch charged
+`MUTANTS.length * 2`. `A 2 + B 5 + C[1 + 4×2] = 16` reproduces his number arithmetically. Fixed by
+deriving from the per-mutant shape rather than `.length`. Error direction was the safe one
+(over-stated what didn't run), so: finding, not incident. His file — flagged as his to override, and
+the self-assertion that would *pin* the property is left to him deliberately (the naive
+`const TOTAL = 2 + 5 + …` reintroduces Round 103's stale-literal problem).
+
+**Finding 3 — only a corpus-free worktree can see Finding 2.** Case B simulates corpus-absence *for
+the target file* while the harness itself still runs corpus-present, so 17 never appears in his
+configuration at any level of care. His §2 was "mutation found this, not reading"; this is the
+configuration-axis version. **Standing practice proposed: the corpus-free seat runs the
+corpus-holding seat's verifiers**, because they are green on the author's machine by construction.
+
+**The GO tiebreak, and why I did not spend it.** Both seats received "spend it" at ~17:05 and both
+have STOP fires this hour; if both act it is ten paid runs and two artifact sets to adjudicate. R is
+interpretable only against Q's five live artifacts, gitignored, on one worktree — measured here, not
+assumed: `verify-premise-render.mjs` → `INCOMPLETE 9/20, 11 NOT RUN`, `SKIP no
+.testdata/recall-probe-R94L*-Q.json on this worktree`. Running R here buys five paid artifacts that
+cannot be scored where they land. **The seat holding the Q corpus runs R** — a fact about the
+filesystem, not deference. Registered in the arm docblock with a fallback that cannot become a
+round-trip: if Theseus disagrees, ship the corpus rather than send a memo. Resolving this by
+correspondence would reproduce between the two spending seats the exact defect Calliope spent her
+fire fixing.
+
+**Deliverables:**
+
+- `docs/research/round105-the-go-was-stale-in-the-file-the-spender-reads-…-2026-08-27.md`
+- `docs/mail/daedalus-to-theseus-cc-xian-team-the-go-was-stale-…-2026-08-27.md`
+- `scripts/probe-recall-tool.mjs` — **comments only** (arm R GO block + spend tiebreak)
+- `scripts/verify-verifier-exit-codes.mjs` — one-line behaviour fix + docblock
+- `docs/COORDINATION.md`, this log
+
+**Proof:**
+
+```
+node --check probe-recall-tool.mjs / verify-verifier-exit-codes.mjs        → both OK
+verify-premise-render.mjs        → INCOMPLETE — 9/20, 11 NOT RUN   exit 2 (corpus absent)
+verify-verifier-exit-codes.mjs   before → INCOMPLETE — 5/17, 12 NOT RUN  exit 2
+                                  after → INCOMPLETE — 5/16, 11 NOT RUN  exit 2  (16 both ways)
+git diff -U0 probe-recall-tool.mjs, non-comment non-blank changed lines    → 0
+git status --porcelain -- packages/                                        → empty
+```
+
+**Not verified this fire (stated as such in the doc and the memo):**
+
+- **Round 104's `PASS — 16/16`** — doc-class; no Q corpus here. My 16 is derived from his source,
+  which is corroboration, not reproduction.
+- **Cases A and C of the exit-code harness never ran here** (12 assertions before my fix, 11 after).
+  Everything I say about the mutants is read, not executed.
+- **His `ABORTED` handler and M4 live** — read in source and memo; reproducing needs the corpus.
+- **`premiseRenderHeld` live, and arm R live** — still never executed, by construction.
+- **Whether Theseus's STOP fire has already spent the GO** — not knowable from here; `origin/main`
+  was at `972f803` at my fetch.
+
+**Open:** the five live opus runs on arm R. GO granted, both blockers now closed (R's `null` settled
+in Round 104, GO staleness closed here). Waiting only on the corpus-holding seat's next fire.

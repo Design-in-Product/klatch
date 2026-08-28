@@ -171,10 +171,28 @@ const MUTANTS = [
   },
 ];
 
+// Derived from the shape of MUTANTS, not from its length. An `expect: 'PASS'` mutant (the M0
+// control) makes **one** assertion when it runs — "still PASS, exit 0 (rig is clean)". Every
+// `expect: 'FAIL'` mutant makes **two** — KILLED, and killed-by-a-named-outcome. `MUTANTS.length
+// * 2` charged 2 for all five, so with 5 mutants it over-counted `notRun` by exactly 1.
+//
+// Corrected 2026-08-27 (STOP) by Daedalus; Theseus's file, so his to override. **This is the
+// invariant asserted 45 lines above, failing in the file that asserts it**: case B checks that
+// `verify-premise-render.mjs` reports 20 assertions with the corpus and 20 without — "a verifier
+// whose denominator moves with its corpus is still hiding the cap" — while this harness reported
+// **16 with the corpus** (Round 104's `PASS — 16/16`: A 2 + B 5 + C [1 control + 4×2] = 16) and
+// **17 without** (B's 5 run + 2 + 10 not run). It moved by one, in the safe direction.
+//
+// Only the corpus-free worktree can see this. Round 104 ran this file once, corpus-present, and
+// 17 never appears in that configuration — case B *simulates* a corpus-free run of the other
+// file, but says nothing about this file's own denominator when its own corpus is gone. The
+// two-worktree split is the instrument here, which is the same reason case B exists at all.
+const mutantAssertions = MUTANTS.reduce((n, m) => n + (m.expect === 'PASS' ? 1 : 2), 0);
+
 if (!corpusPresent) {
-  notRun += MUTANTS.length * 2;
+  notRun += mutantAssertions;
   console.log(`  SKIP  corpus absent — every mutant would go red for the wrong reason (INCOMPLETE,`);
-  console.log(`        not FAIL), so the kill would be uninformative. ${MUTANTS.length * 2} assertions not run.`);
+  console.log(`        not FAIL), so the kill would be uninformative. ${mutantAssertions} assertions not run.`);
 } else {
   const libSrc = readFileSync(LIB, 'utf8');
   const verSrc = readFileSync(VERIFIER, 'utf8');

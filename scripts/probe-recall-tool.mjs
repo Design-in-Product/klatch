@@ -1106,13 +1106,44 @@ const ARMS = {
       note: 'two-excerpt 9-row neighbourhood on the SECOND search; condition failure voids the arm rather than nulling it',
     },
     //
-    // ── NOT RUN. `--dry` before anything is spent; live spend needs xian's GO ──
+    // ── NOT RUN LIVE. `--dry` only so far. GO: **granted** (see below) ─────
     //
     // Authored 2026-08-26 (START) by Theseus. Specification is Daedalus's
     // `round95-…-2026-08-26.md` §2 and §5, adopted with the constraint he names. Nothing below
-    // has been confirmed against a live run. **This arm has no GO yet** — Round 94's five turns
-    // ran on xian's GO relayed by Janus for the *distance* arm; that authorization does not
-    // extend to this one.
+    // has been confirmed against a live run.
+    //
+    // **GO GRANTED — corrected here 2026-08-27 (STOP) by Daedalus.** Until this edit the two
+    // lines above read *"live spend needs xian's GO"* and *"**This arm has no GO yet**"*. Both
+    // were true when written on 8/26 and are false now. Provenance, first-hand this fire:
+    // Janus → Calliope (`memo-janus-to-calliope-cc-team-xian-go-confirmed-plus-beta-status-
+    // question-2026-08-27.md`, ~13:20 PT) — *"xian's approval on Arm R … stands. Nothing has
+    // changed his mind."* — relayed to both spending seats by name in `calliope-to-daedalus-
+    // theseus-cc-xian-janus-arm-r-go-is-confirmed-spend-it-2026-08-27.md` (~17:05 PT). The
+    // 8/25 distance-arm GO did *not* cover this arm; a second, explicit approval does.
+    //
+    // This correction is not bookkeeping. Calliope's finding was that a GO sat granted for three
+    // days without reaching the seats that spend it, and both 8/27 fires still wrote "on your
+    // GO". A stale block *in this file* is that same failure with a shorter fuse: this is the
+    // last thing a seat reads before spending, so an out-of-date authorization line here can
+    // re-open a settled question at the exact moment it costs five live runs to re-ask. Same
+    // rule as Round 103's, applied to authorization rather than to a caveat: **the GO has to
+    // live in the channel the spender reads from.**
+    //
+    // ── Who spends it, and the mechanical reason it is not whichever seat reads this first ──
+    //
+    // R's result is only interpretable **against Q's five live runs** — R is Q's geometry with
+    // the decoy wording removed, so the comparison set is `.testdata/recall-probe-R94L{1..5}-Q
+    // .json`. Those artifacts are gitignored and live on **one** worktree. Measured from
+    // Daedalus's worktree this fire, not assumed: `verify-premise-render.mjs` → `INCOMPLETE
+    // 9/20, 11 NOT RUN`, exit 2, corpus absent. So the rule is a fact about the filesystem, not
+    // a preference: **the seat holding the Q corpus runs R** — currently Theseus.
+    // Running it here would buy five paid artifacts that cannot be scored where they land.
+    //
+    // The failure mode to avoid is *both* seats reading "spend it" in the same hour and firing
+    // five runs each. So this is written down rather than left to inference, and it comes with
+    // a fallback that does not require a round-trip: if Theseus judges Daedalus should run it
+    // instead, the unblock is to ship the five Q artifacts, not to send a memo asking. Neither
+    // seat should wait on the other for permission that has already been granted.
     //
     // ── The single field that moves, and why it is the only one ────────────
     //
