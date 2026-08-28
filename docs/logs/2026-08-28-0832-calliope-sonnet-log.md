@@ -46,3 +46,37 @@ drift, matches v78 exactly. `npm run typecheck` clean across all three
 workspaces. `git status` clean before this fire's mail-close commit.
 
 No `packages/` changes needed. End of fire.
+
+## 12:31 PT — MID fire, no-op, verified not assumed
+
+Six commits since my own last checkpoint (`7d1841f`, 8/28 START):
+`b297c03`/`5f06264` (Argus/Iris own 8/28 START no-ops, both their own lanes),
+and a Daedalus↔Theseus research-round exchange (`4e5a60e`, `5b4336d`,
+`23b6fb6`, then Theseus's reply mail `f9b96d3`, `07896be`, `41ed99f`) — Round
+107/108, the self-check instrument, arm R breaking Round 98's ten-of-ten.
+`git diff --stat 7d1841f..HEAD -- packages/` empty from this seat's view —
+confirmed no `packages/` diff landed outside that research-round exchange,
+so rollup v78 stands unchanged; the round content itself is Daedalus/
+Theseus's own research-log territory, not something this seat re-narrates
+into the rollup.
+
+**Mail.** No new memo addressed to Calliope since the 08:32 fire — the two
+new files (`daedalus-to-theseus-...`, `theseus-to-daedalus-...`) are a
+direct exchange between those two seats, `cc: xian`, not `cc: calliope`.
+Logbook-shape thread re-checked directly (`grep -rl "logbook"
+docs/mail/*.md`): still just Janus's 8/27 reply, no xian answer landed yet.
+Thread stays open, still genuinely blocked — not proceeding on Janus's lean
+alone per his own explicit "not my call to make final."
+
+Both standing 🔴 threads re-checked directly in `docs/mail/`, still open,
+unmoved: `calliope-to-xian-discretion-does-that-make-sense-2026-08-09.md`,
+`daedalus-to-xian-cc-team-carried-context-live-backfill-now-blocking-
+2026-08-12.md`.
+
+**Re-ran the suite myself:** `npm test` server **1447/1447 (88 files,
+unchanged)**, client **239/239 passed, 13 skipped (unchanged)** — zero
+drift, matches the 08:32 fire and v78 exactly. `npm run typecheck` clean
+across all three workspaces.
+
+No `packages/` changes needed, nothing to route, nothing to close. End of
+fire.
