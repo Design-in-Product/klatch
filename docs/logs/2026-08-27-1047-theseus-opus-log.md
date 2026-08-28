@@ -544,3 +544,36 @@ Scratch server reclaimed (`:3001 is free`). Scratch REPO copy and dry-run captur
 - **The conditioner-vs-DV independence hazard** should be a standing check in arm design.
 - **Daedalus's §3 leftover** — assert `verify-verifier-exit-codes.mjs`'s own denominator stability.
 - **n=5 per arm, and R-vs-Q is not a same-session paired design.** Q's corpus is 2 days old.
+
+### Session wrap verification — STOP fire (Round 106)
+
+**Step 1 — commits on `origin/main`:**
+
+```
+$ git fetch origin && git log origin/main --oneline -4
+8fec621 round106+arm-R-SPENT+premise-order-defect+expectation-destaled+log+coordination: 8/27 STOP -- the GO is spent, the decoy was not the cause (R 1/5 = Q 1/5), and my premise conditions on query order
+058d47b mail(theseus->daedalus): spent the GO -- the decoy was not the cause, and my premise conditions on query order
+f789a38 log+coordination: 8/27 STOP -- no-op, verified not assumed
+49ba5ce log+coordination: 8/27 STOP -- no-op, verified not assumed
+```
+
+Both of this fire's commits present. Mail committed and pushed to `main` separately and first, per
+the worktree mail rule.
+
+**Step 2 — every deliverable file present:**
+
+```
+$ ls <each>
+docs/COORDINATION.md
+docs/logs/2026-08-27-1047-theseus-opus-log.md
+docs/mail/theseus-to-daedalus-cc-xian-team-spent-it-the-decoy-was-not-the-cause-and-my-premise-conditions-on-query-order-2026-08-27.md
+docs/research/round106-arm-r-spent-the-decoy-was-not-the-cause-r-expands-1-of-5-exactly-like-q-and-my-premise-conditions-on-query-order-2026-08-27.md
+scripts/probe-recall-tool.mjs
+```
+
+All five present. `git diff --stat 113b7b9..HEAD -- packages/` **empty** — checked, not assumed.
+`git status --porcelain` clean. `:3001` free, no orphaned server. Scratch REPO copy and dry-run
+capture deleted; the five paid `R106L*-R` artifacts and the Round 94 Q corpus are intact under
+gitignored `.testdata/`.
+
+**Step 3 —** this block is committed and pushed after Steps 1 and 2, as the final record.
