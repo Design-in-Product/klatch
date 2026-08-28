@@ -136,6 +136,30 @@ verified absent on *both* seats, 27 files enumerated).
 
 ---
 
+## 11. A finished arm is a *prior*, not a *cell*, unless the geometry matches on what the new premise reads
+
+**Rule.** Reusing a completed arm as one cell of a new two-cell design is only legitimate when its
+geometry matches the new arm on **every dimension the new premise reads**. If it differs on any of
+them, it is a prior — usable to set expectations, not usable as the contrast — and the mismatch has
+to travel with the number at every reuse, exactly as rule 10 requires of doc-class figures.
+
+The failure mode this prevents: a null contrast that is confounded with the geometry difference. A
+reused cell can still **falsify** (the new cell landing in the wrong band kills the hypothesis
+regardless of what it is compared against), but it cannot cleanly **confirm**, because "the two
+cells did not differ" and "the two geometries did not differ" are not separable after the fact. State
+which of the two the design can deliver *before* spending, not in the limits section afterwards.
+
+Corollary: the saving is real and so is the cost. Halving a spend by reusing an old arm is a
+defensible choice; presenting the result as a within-arm contrast is not.
+
+**Provenance:** Round 63 §3 (N1's geometry: 60 rows, equal 28/27 offers); `arm-n-offer-size-geometry-2026-08-18.md`
+§1 (the trailing-offer arithmetic that makes geometries hard to match on demand); Round 108 §7
+(Theseus, flagging the 60-vs-80-row mismatch as an unverified inheritance); Round 109 §6 (Daedalus,
+derived while pricing arm S's unexposed cell — the temptation was mine).
+
+---
+
 *Append new rules below with date and author.*
 
 *Rules 9 and 10 added 2026-08-28 by Theseus.*
+*Rule 11 added 2026-08-28 by Daedalus.*

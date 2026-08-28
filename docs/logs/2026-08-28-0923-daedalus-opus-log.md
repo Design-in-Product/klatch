@@ -123,3 +123,86 @@ asks on both sides (the free N1 read, the free `19/19` confirm).
 
 **Nothing claimed as delivered** — the wrapper owns delivery; the two push results above are what I
 observed.
+
+---
+
+## 13:17 PT — MID fire opens
+
+Wrapper synced this worktree to `origin/main` at `39369d6`. Briefing per CLAUDE.md: `git log`,
+`docs/COORDINATION.md` head, `ls docs/mail/`, today's logs. Since my START fire wrapped at 10:05,
+four commits landed — Theseus's mail-to-me (10:53), his Round 108 + rules 9/10 + mail-close (10:54),
+his wrap-verification log (10:55), and Calliope's MID no-op (12:33).
+
+**Mail addressed to me, new since my last fire:**
+`theseus-to-daedalus-cc-xian-team-19-of-19-and-the-n1-artifacts-are-gone-from-both-seats-2026-08-28.md`.
+Read in full at the top of the fire. It answers both asks in my 09:27 memo: the exit-0 confirm (§1)
+and the N1 artifact read (§2/§3). It makes no request — its §6 is a status line on my preconditions.
+
+Work unit chosen: **re-derive his load-bearing claims on this seat rather than ack them**, then
+discharge the one precondition I can discharge for free.
+
+## 13:25 PT — what re-derived, and what didn't
+
+**§1, from the complementary direction.** Can't reproduce `PASS — 19/19` here; no corpus. Ran the
+harness anyway:
+
+```
+INCOMPLETE — 8/19 assertions passed, 11 NOT RUN (Q corpus absent — exit 0 and the mutants were not exercised)
+```
+
+8 ran (B 5 + D 3), 11 not run (A 2 + C 9), denominator **19**. Two seats, opposite corpus states,
+same denominator — standing rule 1 observed rather than asserted. D3 killed `M5-pre-fix-accounting`
+at `pre-fix 20 vs fixed 19` here as it did there.
+
+**§3, the falsifier.** Read Round 63 §2 directly (lines 63–79) rather than taking call-completeness
+on report. **17 rows** — 4/3/3/3/4 — against the doc's own line 4, *"17 tool calls in total."* Header
+and table agree; no elision. Every offered-column value across all 17 is two addresses or a miss;
+**no three-address row anywhere in the arm.** Five second calls: L1 miss, L2/L3 two-address, L4/L5
+miss. All five expanded. **My falsifier does not fire; N1 is 5/5 and 14/15 stands** — ten
+artifact-class, five permanently doc-class, label repeated on reuse per rule 10.
+
+**§5, his recency rule's two killers.** Confirmed from Round 106 §4 lines 151–155 with no artifact:
+R L1 and L5 token-first, two-excerpt on call 1, single-excerpt on call 2, `expand=0` both. Recency
+predicts expansion. Two clean misses.
+
+**Found while doing that — Round 106 §4's code block is captioned *"Every call in both corpora, in
+order"* and contains one.** Lines 151–155 are `R106L1`–`R106L5` only; arm Q's per-call query
+sequence is not in §3's block either (that one prints counts and premise fields). Searched the round
+docs on this seat; the only committed Q per-call fact is §4's parenthetical about L3. Consequence:
+**2 of the 10 scores behind his 8/10 are checkable from here and 8 are not.** Not an error in his
+scoring — a gap in what the record can support. Same shape as the elision I flagged in Round 107 §3.
+
+**Not verified:** his §4 L2 six-call table (no R corpus here — carried as his), the Q half of the
+8/10, `PASS — 19/19` as an observation, cases A and C internals (still 11 NOT RUN).
+
+## 13:35 PT — precondition 2 discharged, and rule 11 is against my own shortcut
+
+Wrote `docs/research/arm-s-cumulative-exposure-preregistration-2026-08-28.md`. Registers the
+ordinal-free scoring rule — *a run is EXPOSED iff at least one call returned a render with
+`excerptSeparators >= 1`, ordinal irrelevant; exposure suppresses expansion* — with numeric
+predictions per cell (unexposed ≥4/5 expand, exposed ≤1/5) and the single result that kills it (both
+cells in the same band). Its own §0 states that I chose this rule *after* seeing Q/N1/R, so its
+14/15 is a fit, and that registering it against a corpus that does not exist is the only move that
+makes it a prediction. Theseus's Round 108 §5 — his unregistered refinement losing, and being worth
+less for it — is the argument I acted on.
+
+Precondition 3 (`expectation` carrying the authorisation) **cannot** be discharged: there is no
+authorisation. The document records the requirement for when there is one. **No GO, none implied,
+nothing asks for one.** It does price two options so a GO could be one word: **A** both cells / 10
+live runs / clean contrast; **B** exposed cell only / 5 runs / N1's 5/5 as a prior.
+
+Option B is where I nearly took something free, so **standing rule 11**, appended and provenanced to
+Theseus's §7 as well as my own §6: *a finished arm is a prior, not a cell, unless the geometry
+matches on every dimension the new premise reads.* N1 is 60 rows with equal 28/27 offers; this
+family is 80 rows with 9- and 5-row neighbourhoods. A reused cell can falsify but cannot cleanly
+confirm, and which of the two a design can deliver gets stated before the spend.
+
+Round doc: `docs/research/round109-…-2026-08-28.md`. Reply memo filed and, per the worktree mail
+rule, committed separately and pushed to `main` first.
+
+**Mail closed:** the 8/28 pair — his `…19-of-19…` and my `…self-check-is-built…` — both `git mv`'d
+to `docs/mail/read/`. His memo asks nothing; my memo's two asks are answered in it. My new memo
+stays in `docs/mail/` as the open thread (§5's record gap is a fresh item for him; §6's option A/B
+is a decision available to xian, unasked).
+
+**Zero API spend, zero model calls, zero live runs this fire. `packages/` untouched.**
