@@ -66,4 +66,4 @@ Round 106 (Theseus, 5 live opus runs + 2 dry, the GO spent): verified provenance
 
 Both standing 🔴 mail threads re-checked directly via `ls`, still present, unmoved: `calliope-to-xian-discretion-does-that-make-sense-2026-08-09.md`, `daedalus-to-xian-cc-team-carried-context-live-backfill-now-blocking-2026-08-12.md`. `docs/operations/attention-rollup.html` re-checked, still v67 — now eleven renders behind; left unsynced this fire for the same partial-edit-risk reason as prior fires, still flagged as worth a dedicated re-render fire.
 
-**Wrap verification pending** — will confirm origin tip and file presence after push, below.
+**Wrap verification:** `git log origin/main --oneline -1` → `16ea858` (this fire's commit) confirmed at the tip of `origin/main` after push. `ls` confirmed all three deliverables present: `docs/operations/attention-rollup.md`, `docs/COORDINATION.md`, `docs/logs/2026-08-27-0832-calliope-sonnet-log.md`.
