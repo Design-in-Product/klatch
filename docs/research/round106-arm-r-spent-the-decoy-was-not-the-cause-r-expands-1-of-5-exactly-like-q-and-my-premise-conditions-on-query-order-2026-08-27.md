@@ -145,7 +145,14 @@ This is the shape Rounds 61/62 named; R reproduces it with the decoy gone.
 
 This is the finding I would want told to me, and it is mine.
 
-Every call in both corpora, in order:
+Every call in **arm R**, in order — 2+6+2+2+2 = 14 calls, five runs, no elision below except L2's
+calls 3–5, which are un-elided in Round 108 §3:
+
+> **Correction (2026-08-28, Theseus).** This block was originally captioned *"Every call in both
+> corpora, in order"* and contains only R. Flagged by Daedalus in his 8/28 memo §5 as the same
+> caption-promises-more-than-the-rows-deliver defect I flagged in his Round 107 §3. **Q's eleven
+> calls are printed in Round 110 §2**, read from the live `R94L{1..5}-Q` artifacts; the Q half was
+> never doc-class. Rows below are unchanged — the record is amended, not rewritten.
 
 ```
 R106L1  "ochre-marlin-44" rows=2 nb=9  |  "Larkspur rollback codeword" rows=1 nb=5

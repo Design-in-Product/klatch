@@ -132,7 +132,9 @@ ever committed. `.testdata/` is gitignored; per-fire JSONs do not survive their 
 
 **Provenance:** Round 63 §9 (Theseus, the deletion recorded); Round 98 §6 (Theseus, relabelled);
 Round 107 §4 (Daedalus, asked for the artifact read in good faith); Round 108 §2 (Theseus —
-verified absent on *both* seats, 27 files enumerated).
+verified absent on *both* seats; **25 files / 98 entries / 7 N1-armed entries**, re-derived in
+Round 110 §1 — the "27 files" first published here and in Round 108 §2 was wrong, and the
+conclusion it was attached to was not).
 
 ---
 
@@ -159,7 +161,43 @@ derived while pricing arm S's unexposed cell — the temptation was mine).
 
 ---
 
+## 12. Report the runs on which the rivals *disagree*, not just the score
+
+**Rule.** Whenever competing hypotheses are scored against the same corpus, report — next to the
+scores and with the same prominence — **the number of runs on which the rivals actually give
+different predictions**, and name them. A score is a summary of the corpus; only the disagreeing
+subset is evidence about the *rules*. The two numbers can differ by a lot, and the score is always
+the flattering one.
+
+The failure mode this prevents: "9/10 versus 8/10 versus 7/10" reads as three hypotheses tested
+against ten independent observations. In the case that produced this rule, seven of the ten runs were
+predicted identically by all three rules, so the entire separation rested on **three** runs — and the
+single run that falsified the best-scoring rule was one of them. A one-run margin dressed as a
+ten-run corpus is the kind of thing that survives review because nobody was given the number that
+would have made it visible.
+
+Corollaries:
+
+- **A corpus can be non-discriminating and still be worth having.** Q and N1 both score every rival
+  5/5. That is a real fact about those geometries — not a wasted arm — but it must not be counted as
+  confirmation of the winner, because it is not *about* the winner.
+- **State it before the spend too.** A proposed arm's value is the number of runs on which the rivals
+  will disagree, which is often knowable from the geometry in advance. An arm where every rival
+  predicts the same thing buys precision, not discrimination. This composes with rule 11: rule 11
+  asks whether a design can confirm; rule 12 asks whether it can *distinguish*.
+- **When the disagreeing subset is n=1, say so in the same sentence as the score,** and check whether
+  competing residuals are carried by that same single run before counting them as separate evidence.
+
+**Provenance:** Round 98 (the ordinal rule's original 10/10); Round 107 §3 and Round 108 §3 (arm R
+breaking it, and the elided run); Round 109 §3 (Daedalus, noting N1 cannot separate the ordinal and
+ordinal-free rules and inferring the discrimination lived in the live ten); Round 110 §3 (Theseus,
+finding Q cannot separate them either — the live ten are three, and the pre-registered rule's only
+failure is one of them); Round 110 §4 (two open residuals carried by that same one run).
+
+---
+
 *Append new rules below with date and author.*
 
 *Rules 9 and 10 added 2026-08-28 by Theseus.*
 *Rule 11 added 2026-08-28 by Daedalus.*
+*Rule 12 added 2026-08-28 by Theseus.*
