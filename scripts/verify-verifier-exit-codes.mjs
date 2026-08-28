@@ -19,7 +19,7 @@
  * that prose caveats do not travel. This is re-runnable by anyone holding the corpus, and its
  * exit code means the same thing as the one it checks.
  *
- * ── The three cases ─────────────────────────────────────────────────────────
+ * ── The four cases ──────────────────────────────────────────────────────────
  *
  *   A  exit 0 — real verifier, cwd = repo root. Corpus present → `PASS — 20/20`.
  *   B  exit 2 — real verifier, cwd = a scratch dir with no `.testdata/`. This is Daedalus's
@@ -28,6 +28,20 @@
  *      not: `notRun` must come out to exactly **11**, and the denominator must be **20 in both
  *      A and B**. A verifier whose denominator moves with its corpus is still hiding the cap.
  *   C  exit 1 — four mutants of `lib/premise-render.mjs`. Each must be KILLED.
+ *   D  **this file's own denominator**, under the same invariant it charges the file in case B.
+ *      Round 105 (Daedalus): case B asserts the *target's* denominator does not move, while this
+ *      harness reported 16 with the corpus and 17 without — the invariant failing in the file
+ *      that asserts it, visible only from a corpus-free seat. Added 2026-08-28 (Daedalus), on the
+ *      mechanism Theseus supplied in Round 106 §2: `REPO` here is `dirname(import.meta.url)/..`,
+ *      so a corpus-free **REPO root** — `scripts/` copied under gitignored `.testdata/` — is a
+ *      corpus-free run of this harness on the corpus-*holding* seat. Nothing is deleted; no paid
+ *      artifact is ever at risk. That collapses Round 105's two-seat instrument to one seat.
+ *
+ *      D3 is the part that matters for whoever is reading: it re-mutates this file's own
+ *      `mutantAssertions` back to the pre-fix `MUTANTS.length * 2` and requires the denominator
+ *      to move. Without it, D2 is vacuous on a corpus-free seat (both parent and child skip case
+ *      C, so both over-charge by the same 1 and agree at the wrong number). With it, the seat
+ *      that cannot see the bug by configuration can still see it by mutation.
  *
  * ── The no-fabrication rule this obeys ──────────────────────────────────────
  *
@@ -46,13 +60,18 @@
  *
  * Run: `node scripts/verify-verifier-exit-codes.mjs`   (needs the Round 94 Q corpus for A and C)
  *
+ * `KLATCH_EXITCODES_SELFCHECK=1` marks a run as case D's own child and suppresses case D — the
+ * recursion guard. The suppressed run still **charges** D's assertions to `notRun`, because a
+ * guard that silently shrank the child's denominator would be the exact defect case D exists to
+ * catch, reintroduced by the mechanism that checks for it.
+ *
  * Exit codes, same three-valued scheme as the file it checks:
  *   0  every case ran and passed
  *   1  a case failed (wrong exit code, wrong verdict, or a SURVIVED mutant)
  *   2  incomplete — the Q corpus is absent, so A and C could not run
  */
 
-import { readFileSync, writeFileSync, mkdirSync, rmSync, existsSync } from 'fs';
+import { readFileSync, writeFileSync, mkdirSync, rmSync, existsSync, cpSync } from 'fs';
 import { spawnSync } from 'child_process';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
@@ -78,9 +97,19 @@ function check(label, ok, detail) {
 }
 
 /** Run a verifier file and return { rc, out }. `out` is stdout+stderr, as a caller would see it. */
-function run(file, cwd) {
-  const r = spawnSync(process.execPath, [file], { cwd, encoding: 'utf8' });
+function run(file, cwd, env) {
+  const r = spawnSync(process.execPath, [file], {
+    cwd,
+    encoding: 'utf8',
+    env: env ? { ...process.env, ...env } : process.env,
+  });
   return { rc: r.status, out: `${r.stdout || ''}${r.stderr || ''}` };
+}
+
+/** The verdict line every file in this family ends with: `VERDICT — ran/total assertions passed`. */
+function readVerdict(out) {
+  const m = out.match(/^(PASS|FAIL|INCOMPLETE|ABORTED) — (\d+)\/(\d+) assertions passed/m);
+  return m ? { verdict: m[1], ran: Number(m[2]), total: Number(m[3]) } : null;
 }
 
 const corpusPresent = Q_RUNS.every((p) => existsSync(p));
@@ -240,7 +269,89 @@ if (!corpusPresent) {
   }
 }
 
+// ── D: this harness's own denominator ───────────────────────────────────────
+//
+// Case B charges `verify-premise-render.mjs` with "20 with the corpus and 20 without". This case
+// charges *this file* with the same thing, and it is the one case here that needs no corpus at
+// all — so the seat that cannot run A or C can still run it.
+console.log("\nD. this harness's own denominator — 'it does not move', applied to the instrument");
+
+// Charged whether they run or are skipped. D1 rig-is-genuinely-corpus-free, D2 denominators
+// agree, D3 D2 is load-bearing.
+const SELF_ASSERTIONS = 3;
+
+if (process.env.KLATCH_EXITCODES_SELFCHECK === '1') {
+  notRun += SELF_ASSERTIONS;
+  console.log('  SKIP  running as case D\'s own child; recursing here would not terminate.');
+  console.log(`        ${SELF_ASSERTIONS} assertions not run — still charged, so parent and child`);
+  console.log('        denominators are comparable. Shrinking it here would fake the invariant.');
+} else {
+  // Everything A/B/C accounted for. D's own three are added back below, so the number this
+  // compares against is what the final line will print.
+  const expectedTotal = cases + notRun + SELF_ASSERTIONS;
+
+  /** Copy `scripts/` into a fresh gitignored REPO root and return it. Nothing is deleted. */
+  function buildFreeRepo(name, patch) {
+    const root = join(SCRATCH, name);
+    rmSync(root, { recursive: true, force: true });
+    mkdirSync(root, { recursive: true });
+    // The whole tree, not a hand-picked subset: a copy that omitted a dependency would report
+    // a crash as a denominator finding.
+    cpSync(join(REPO, 'scripts'), join(root, 'scripts'), { recursive: true });
+    const self = join(root, 'scripts/verify-verifier-exit-codes.mjs');
+    if (patch) writeFileSync(self, patch(readFileSync(self, 'utf8')));
+    return { root, self };
+  }
+
+  const free = buildFreeRepo('free-repo');
+  const d = run(free.self, free.root, { KLATCH_EXITCODES_SELFCHECK: '1' });
+  const dv = readVerdict(d.out);
+
+  // D1. Without this, D2 could compare two corpus-present runs and pass vacuously.
+  check('the copied REPO root is genuinely corpus-free (INCOMPLETE, exit 2)',
+    d.rc === 2 && dv !== null && dv.verdict === 'INCOMPLETE',
+    dv ? `rc ${d.rc}, verdict ${dv.verdict}` : `rc ${d.rc}, no verdict line:\n${d.out.trim().split('\n').slice(-4).join('\n')}`);
+
+  // D2. The invariant itself.
+  check(`this run and a corpus-free copy of it both report ${expectedTotal} — the denominator does not move`,
+    dv !== null && dv.total === expectedTotal,
+    `this run ${expectedTotal}, corpus-free copy ${dv ? dv.total : '?'}`);
+
+  // D3. D2 is vacuous on a corpus-free seat unless something proves it can fail: parent and
+  // child both skip case C there, so both would over-charge by the same amount and agree at the
+  // wrong number. Re-mutate the accounting to Round 105's pre-fix expression and require the
+  // denominator to move. This is the only assertion in the file that reproduces that bug on a
+  // seat of either kind.
+  const PRE_FIX = 'MUTANTS.length * 2';
+  const FIXED = "MUTANTS.reduce((n, m) => n + (m.expect === 'PASS' ? 1 : 2), 0)";
+  let applied = false;
+  const mutant = buildFreeRepo('free-repo-M5', (s) => {
+    applied = s.includes(FIXED);
+    return s.replace(FIXED, PRE_FIX);
+  });
+  if (!applied) {
+    // A mutant that did not apply is a silently-skipped test — the failure family this whole
+    // thread is about. Fail loudly rather than report a kill that never happened.
+    check('M5-pre-fix-accounting — patch applied', false,
+      'the `mutantAssertions` expression drifted; D2 is unproven, not passing');
+  } else {
+    const m5 = run(mutant.self, mutant.root, { KLATCH_EXITCODES_SELFCHECK: '1' });
+    const m5v = readVerdict(m5.out);
+    check('M5-pre-fix-accounting — KILLED: the pre-fix denominator does move (D2 is load-bearing)',
+      m5v !== null && m5v.total !== expectedTotal,
+      m5v ? `pre-fix copy reported ${m5v.total}, same as this run — D2 would not have caught Round 105`
+          : `no verdict line from the mutant:\n${m5.out.trim().split('\n').slice(-4).join('\n')}`);
+    if (m5v) console.log(`        pre-fix ${m5v.total} vs fixed ${expectedTotal} — the one that hid, and the one that does not`);
+  }
+}
+
+// Name every reason assertions did not run, not just the first. A `NOT RUN` count whose
+// parenthetical explains only some of it is the same shape as the cap this file exists to catch.
+const skipReasons = [];
+if (!corpusPresent) skipReasons.push('Q corpus absent — exit 0 and the mutants were not exercised');
+if (process.env.KLATCH_EXITCODES_SELFCHECK === '1') skipReasons.push("case D suppressed — this run is case D's own child");
+
 const verdict = failures > 0 ? 'FAIL' : notRun > 0 ? 'INCOMPLETE' : 'PASS';
 console.log(`\n${verdict} — ${cases - failures}/${cases + notRun} assertions passed`
-  + (notRun > 0 ? `, ${notRun} NOT RUN (Q corpus absent — exit 0 and the mutants were not exercised)` : ''));
+  + (notRun > 0 ? `, ${notRun} NOT RUN (${skipReasons.join('; ')})` : ''));
 process.exit(failures > 0 ? 1 : notRun > 0 ? 2 : 0);
