@@ -87,18 +87,28 @@ above are reported alongside; they do not replace the registered one.
 
 ---
 
-## 2a. Rule-12 disclosure — this arm distinguishes the rivals on **zero** runs
+## 2a. Rule-12 disclosure — S-exposed discriminates on **10 shapes, every one flagged and ambiguous**; S-unexposed on **zero**
 
-*Added 2026-08-28 (STOP fire) under standing rule 12, before any authorisation. Derivation and
-output: Round 111 §3; verifier `scripts/verify-rule-discrimination.mjs`.*
+*Added 2026-08-28 (STOP fire) under standing rule 12, before any authorisation. Heading corrected
+2026-08-29 (Round 113): it read "this arm distinguishes the rivals on **zero** runs" for a day after
+the body below was corrected away from zero — a stale headline over an amended section, which is
+the same shape as the defect rule 14 was written about, recurring in the commit that fixed it.
+Derivation and output: Round 113 §2; verifier `scripts/verify-rule-discrimination.mjs`.*
 
 Rule 12's second corollary requires a proposed arm to state, before the spend, on how many of its
 runs the rivals will actually disagree. Enumerating the run shapes each cell can produce:
 
-| cell | shapes reachable | shapes the rivals split on | surviving §3 **as narrowed** (operative) | surviving §3 as *originally* written (superseded) |
+| cell | kind-shapes reachable (≤4 calls) | shapes the rivals split on | surviving §3 **as narrowed** (operative) | surviving §3 as *originally* written (superseded) |
 |---|---|---|---|---|
-| **S-unexposed** | 4 | **0** (guaranteed by geometry) | 0 | 0 |
-| **S-exposed** | 15 | 10 | **10** (7 of them ambiguous on `seps` alone) | 0 |
+| **S-unexposed**, gate 2 holding | 80 | **0** (geometric — see the gate caveat below) | 0 | 0 |
+| **S-unexposed**, gate-2 breach | 90 | 78 | **0** (all removed by §3.1) | 0 |
+| **S-exposed** | 85 | 62 | **10** (all 10 of their sep-shapes ambiguous on `seps` alone) | 0 |
+
+*Table recomputed 2026-08-29 (Round 113) over **render kinds** rather than `excerptSeparators`
+sequences. The shape counts changed because the alphabet did, not because the geometry did: a
+sequence of `sep` values cannot express §3's void clause, whose antecedent names `rows` and which
+neighbourhood rendered. The row that matters — S-exposed's 10 — is unchanged from Theseus's
+Round 112 recompute; the ambiguity count and the S-unexposed caveat are not.*
 
 **Corrected 2026-08-28 STOP fire (Theseus, Round 112 §3). The number is not 0 of 10.** As first
 written this section reported 0, computed under the void clause **as originally written** — the same
@@ -113,8 +123,16 @@ stays at or near zero."* That was an intuition standing where a count belongs �
 12 exists to prevent — and the recomputation, not the reasoning, is what caught it.
 
 **S-unexposed's 0 is untouched and was never in dispute:** no render in it ever carries `sep >= 1`,
-so all three rivals predict expand on every reachable shape. It is guaranteed by geometry rather than
-by an exclusion clause. That is the durable half of the original claim.
+so all three rivals predict expand on every reachable shape.
+
+*Sharpened 2026-08-29 (Round 113 §3), and this corrects a sentence Rounds 111 and 112 both wrote.*
+Both said the zero was "guaranteed by geometry, not by an exclusion clause". Enumerating the breach
+case shows that is two claims: **given gate 2, the zero is geometric** — 0 of 80 shapes discriminate,
+no clause consulted. **If gate 2 is breached at runtime**, 78 of 90 reachable shapes discriminate and
+every one of them is removed by §3.1. So the exclusion clause *is* load-bearing here; it is the
+runtime backstop for the case the pre-spend gate was supposed to have excluded, which is what a
+backstop is for. The durable claim is "geometric **given gate 2**, clause-covered otherwise" — not
+"geometric, full stop". Gate 2 is itself underived (§6, first bullet), so the condition is not idle.
 
 **The operative pre-spend disclosure:**
 
@@ -124,15 +142,23 @@ by an exclusion clause. That is the durable half of the original claim.
 > renders `sep 0`, and lands on a discriminating shape. That rate is **10/10 in the only corpus
 > available** (Round 112 §4) and **undetermined for S's one-target geometry**, since the Q/R prompts
 > present two search targets and S-exposed presents one. Every discriminating run carries
-> `sequenceEndogenous: true`, so any rival comparison drawn from this arm is flagged evidence. Seven
-> of the ten shapes are additionally ambiguous on `seps` alone (a later `sep >= 1` is a permitted
-> repeat or a voiding second neighbourhood, and the sep sequence does not say which).
+> `sequenceEndogenous: true`, so any rival comparison drawn from this arm is flagged evidence. **All
+> ten** shapes are additionally ambiguous on `seps` alone — *(corrected 2026-08-29, Round 113 §2;
+> this read "seven of the ten" for a day)*. Seven are ambiguous because a later `sep >= 1` is a
+> permitted repeat or a voiding second neighbourhood. The other three are ambiguous for the mirror
+> reason: a later `sep 0` is an unproductive miss (survives, flagged) or a **productive** second
+> neighbourhood rendering one excerpt (voids). Round 112 §3 is what establishes that productive
+> renders print `sep 0` — the correction follows from Theseus's own finding, applied to the limb his
+> recompute did not reach.
 
 Flagged, caveated, resting on an untransferred base rate — but not zero.
 
-*Recompute verified by `scripts/verify-rule-discrimination-from-artifacts.mjs`. Note that
-`scripts/verify-rule-discrimination.mjs` still computes the superseded strict number and prints PASS
-next to it; read its arm-S section as historical.*
+*Both verifiers now compute the operative number. `scripts/verify-rule-discrimination.mjs` was
+rewritten 2026-08-29 (Round 113) under rule 14: it enumerates render kinds, encodes §3.1's antecedent
+rather than a `sep === 0` proxy for it, and prints the superseded strict number as a labelled
+historical column instead of self-checking it as the answer.
+`scripts/verify-rule-discrimination-from-artifacts.mjs` remains the transcription check and the only
+one that reads `rows` first-hand.*
 
 **Consequence for what this arm claims.** Two questions were being run together and are now split:
 
@@ -149,8 +175,12 @@ This remains a downward revision of the arm's advertised value relative to Round
 any GO. A result from arm S must not be reported as evidence for the ordinal-free rule *over its
 rivals* **unless** the flagged discriminating runs are reported with their flag, their count, and the
 `seps`-ambiguity caveat above. Round 111 §6 sketches, and does not propose, what a dedicated Q2 arm
-would require — and that sketch was priced against an arm S with *zero* Q2 power, so its motivation
-needs redoing before arm T is argued for (Round 112 §7).
+would require — and that sketch was priced against an arm S with *zero* Q2 power. **That re-pricing
+is done: Round 113 §5, and it cuts arm T's case down rather than making it.** Arm T's margin over the
+operative arm S is no longer "some Q2 power vs none"; it is unflagged-vs-flagged,
+unambiguous-vs-ambiguous, and guaranteed-vs-base-rate-dependent — real, much smaller than the
+15-vs-0 it was sketched against, and conditional on a buildability nobody has derived. The
+record-schema fix in §3 closes the ambiguity limb of that margin for free and without a GO.
 
 **Scoring gap, stated so no seat silently defaults it.** The ordinal rule reads *call 2*. A one-call
 run has no call 2, so the ordinal rule is **`undefined`** on it — not "expand", not "suppress".
@@ -177,7 +207,18 @@ Pre-spend on `--dry`, per cell, in the structural check — not after the live c
    the tool — the four preconditions N1 recorded 5/5 (Round 63 §3).
 
 **Recorded per run whether or not it bears on the DV** (Round 106 §4's hazard, made operative):
-`calls`, the full ordered query list, and `excerptSeparators` on every render.
+`calls`, the full ordered query list, `excerptSeparators` on every render, and — *added 2026-08-29,
+Round 113 §4* — **`rows` on every call, and an identifier for the neighbourhood each render showed**
+(the address of its first matched row is sufficient and is already in the render).
+
+*Why this was a defect and not an enhancement:* §3.1's void clause turns on whether a query was
+productive and whether a **second distinct** neighbourhood rendered. Neither is recoverable from
+`excerptSeparators`, and the list above did not carry either. A scoring seat holding only the
+originally-specified record could not have applied the operative clause at all — it could only have
+applied a proxy for it, which is precisely the substitution rule 14's second corollary forbids and
+the one that produced the superseded number. The query list is *not* a substitute: two distinct
+queries can render the same neighbourhood, and one query can be productive in one run and `rows=0`
+in another.
 
 **The void clause, narrowed and split** *(amended 2026-08-28 STOP fire; Round 111 §3 and §5. The
 original read: "If the model issues an unproductive second query and the run still shows two
@@ -197,12 +238,25 @@ Two exogeneity claims, and only one of them is load-bearing for this arm:
    adds a null render (`sep 0`) without changing which neighbourhoods the model saw — exposure is
    untouched. Such runs are **scored normally under the registered rule** and flagged
    `sequenceEndogenous: true`. They are the only runs on which the ordinal and recency rivals can
-   depart from the registered rule, so voiding them would delete the arm's entire (already
-   near-zero) discriminating power — see §2a. Any rival-comparison drawn from a flagged run carries
-   the flag with it.
+   depart from the registered rule, so voiding them would delete **the arm's entire discriminating
+   power** — all 10 surviving shapes, see §2a. *(Corrected 2026-08-29, Round 113: this read "the
+   arm's entire (already near-zero) discriminating power". The parenthesis was the superseded number
+   surviving inside the very clause whose narrowing superseded it — rule 14's failure mode, in the
+   text of the amendment itself.)* Any rival-comparison drawn from a flagged run carries the flag
+   with it.
 
-**Per-run scoring record:** `{ cell, seps[], expanded, ordinal, free, recency, sequenceEndogenous,
-voided, voidReason }`, with `ordinal: "undefined"` written literally for one-call runs (§2a).
+**Per-run scoring record** *(amended 2026-08-29, Round 113 §4 — the three fields after `seps[]` are
+new, and without them `voided` cannot be computed from the record at all):*
+
+```
+{ cell, seps[], rows[], neighbourhoods[], productive[],
+  expanded, ordinal, free, recency, sequenceEndogenous, voided, voidReason }
+```
+
+with `ordinal: "undefined"` written literally for one-call runs (§2a). **The invariant to check at
+scoring time:** `voided` must be derivable from `cell`, `neighbourhoods[]` and `productive[]` alone.
+If any scoring path reads `seps[]` to decide voiding, it is applying the superseded proxy — `seps[]`
+is input to the three rival rules and to nothing else.
 
 ---
 
@@ -226,12 +280,21 @@ it, because a null contrast would be confounded with the geometry difference.
 because the informative cell is the exposed one — the unexposed prediction is the one already
 supported by 5/5 at another geometry. If the appetite is for a result worth citing, option A.
 
-**Amended 2026-08-28 (STOP fire), and it moves option A down.** §2a establishes that neither option
-distinguishes the registered rule from its rivals — the rule-12 number is zero either way. Option A's
-advantage was "a result worth citing"; what it buys is a **clean within-arm contrast on Q1**, not a
-verdict among the three rules. That is still worth something and it is less than the earlier phrasing
-implied. If the appetite is specifically for Q2, **neither option delivers it** and the honest answer
-is that no arm currently designed does.
+**Amended 2026-08-28 (STOP fire), and it moves option A down.** Option A's advantage was "a result
+worth citing"; what it buys is mostly a **clean within-arm contrast on Q1**, not a verdict among the
+three rules. That is still worth something and it is less than the earlier phrasing implied.
+
+**Re-amended 2026-08-29 (Round 113 §5), and this moves option A back up a little.** The 8/28
+amendment justified itself with *"§2a establishes that neither option distinguishes the registered
+rule from its rivals — the rule-12 number is zero either way"*, which was the superseded number
+propagating one section downstream from the table that had already been corrected. Under the
+operative clause the ordering between the options changes, because **all of the arm's Q2 power lives
+in the exposed cell**: S-unexposed discriminates on nothing under either option, so option B — the
+exposed cell only — retains **100% of a Q2 power that is flagged, ambiguous and base-rate-dependent**
+rather than 0% of a power that did not exist. The Q1 argument is unchanged and still favours A. So
+the corrected read is: **A for Q1, B loses nothing on Q2**, where the 8/28 text said Q2 was
+unavailable either way. If the appetite is specifically for a *clean* Q2 verdict, neither option
+delivers that and no arm currently designed does — that much of the sentence survives.
 
 ---
 

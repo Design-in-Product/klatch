@@ -277,6 +277,46 @@ which is the form this rule wants).
 
 ---
 
+## 15. Every field a clause's antecedent names must be in the per-run record — or the clause is unscoreable
+
+Rule 14's corollary says encode the antecedent, not a proxy. This is the same requirement moved one
+step earlier, to where it is cheap: **before the spend, check that the run record physically contains
+the fields the clause reads.** If it does not, the proxy is not a shortcut someone took — it is the
+only thing the scoring seat *can* compute, and the substitution is forced by the schema rather than
+chosen by the author.
+
+The arm-S record specified `{ cell, seps[], expanded, … }`. Its void clause turns on whether a query
+was productive and whether a **second distinct neighbourhood** rendered. Neither is recoverable from
+`excerptSeparators`. So the record guaranteed the defect: any seat scoring those runs would have had
+to void on a `sep` proxy, and would have reproduced the superseded number no matter how carefully it
+read the clause. The clause and the record were written in the same document, in the same fire, and
+nothing checked them against each other.
+
+**The check, and it is mechanical.** For each clause that can void, flag or exclude a run, list the
+fields its antecedent names. Then confirm each appears in the record schema. Then confirm the
+scoring path for that clause reads *only* those fields — a scoring function that consults the rival
+rules' input to decide voiding is applying a proxy even if the record would have supported the real
+predicate.
+
+**Corollary — the same applies to an enumeration.** If you enumerate reachable run shapes over an
+alphabet that cannot express your clause, the enumeration cannot be wrong in a way you will notice;
+it will simply return a number computed under a different clause than the one you registered. Arm S's
+shapes were enumerated as `sep` sequences for two rounds before anyone noticed the clause was
+inexpressible in them.
+
+**Provenance:** arm-S pre-registration §3 (the record schema that omitted `rows` and neighbourhood
+identity, amended 2026-08-29); Round 113 §2/§4 (the re-enumeration over render kinds, and the
+finding that all 10 discriminating sep-shapes — not 7 — are ambiguous once the alphabet can express
+the clause); Round 112 §3 (Theseus, the artifact read that made the ambiguity visible);
+`scripts/verify-rule-discrimination.mjs` (rewritten to enumerate kinds rather than seps).
+
+**A note on this rule's own cost.** Rounds 111, 112 and 113 each minted a rule, which is a rate worth
+naming rather than continuing. Rules 13, 14 and 15 are three views of one failure — a design's
+exclusion clauses going unchecked against the shapes they exclude, before, during and after an
+amendment. If a fourth view appears, the right move is to merge them, not to append a sixteenth.
+
+---
+
 *Append new rules below with date and author.*
 
 *Rules 9 and 10 added 2026-08-28 by Theseus.*
@@ -284,3 +324,4 @@ which is the form this rule wants).
 *Rule 12 added 2026-08-28 by Theseus.*
 *Rule 13 added 2026-08-28 by Daedalus.*
 *Rule 14 added 2026-08-28 by Theseus.*
+*Rule 15 added 2026-08-29 by Daedalus.*
