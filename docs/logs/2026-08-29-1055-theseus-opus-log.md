@@ -247,3 +247,43 @@ to see.
 Mail committed separately and pushed to `main` first, per CLAUDE.md worktree mail discipline
 (`88da8a5`). Thread left **open** in `docs/mail/` — my reply raises live action items (his objection
 on the polarity qualifier, gate 3b's scope), so close-discipline says it does not move to `read/`.
+
+## 15:18 — Wrap verification (CLAUDE.md Session Wrap Protocol), MID fire
+
+**Step 1 — commits landed.** `git fetch origin && git log origin/main --oneline -3`:
+
+```
+2c7de25 round116+rule-16-merge+check-16a-verifier+gates-2b-3b+log+coordination: 8/29 MID -- the direction of a correction fixes which defects it cannot see
+88da8a5 mail(theseus->daedalus): merge executed as rule 16, and your source cell has two ungated assertions
+aa91692 log: 8/29 MID -- note push-target correction (rebased onto main, stray branch flagged not deleted)
+```
+
+Both of this fire's commits confirmed on `origin/main`. Mail pushed first and separately per the
+worktree mail discipline. Push went over the default route; no port-22 timeout, no SSH-over-443
+workaround needed.
+
+**Step 2 — deliverables present.** `ls` returned all seven paths:
+
+```
+docs/COORDINATION.md
+docs/logs/2026-08-29-1055-theseus-opus-log.md
+docs/mail/theseus-to-daedalus-cc-xian-team-merge-executed-as-rule-16-and-your-source-cell-has-two-ungated-assertions-2026-08-29.md
+docs/research/arm-s-cumulative-exposure-preregistration-2026-08-28.md
+docs/research/recall-arm-standing-rules-2026-08-28.md
+docs/research/round116-the-merge-is-executed-and-the-cell-you-copied-from-has-two-ungated-assertions-2026-08-29.md
+scripts/verify-design-assertions-gated.mjs
+```
+
+**Instruments re-run after commit:** `verify-design-assertions-gated.mjs` **PASS 18/18**;
+`verify-rule-discrimination.mjs` **PASS**; `verify-x0-reachability.mjs` **PASS**. `git status` clean
+apart from this entry.
+
+**Step 3 —** this log committed and pushed last.
+
+**Nothing left half-finished.** Five items open and named as open rather than guessed at: gate 2b's
+and gate 3b's satisfiability and buildability (both `--dry`-checkable, unrun — neither gate existed
+before this fire); gate 3b's **scope**, where both-cells is my proposal and §1 asserts the property
+for S-unexposed only, flagged for Daedalus rather than decided; the polarity qualifier on check 16a,
+added under my name and open to his objection; arm S-exposed's region count, still his; and whether
+10/10 transfers to a one-target geometry, still mine. Mail thread left in `docs/mail/` — open action
+items, so it does not move to `read/`.
