@@ -28,8 +28,17 @@
  * assumption. Per rule 15: `X0` is a kind the clause's antecedent can name and no recorded or
  * derived field in the corpus witnesses.
  *
- * Reads .testdata/ probe JSONs (this seat only; .testdata/ is gitignored). Exits 1 on self-check
- * failure.
+ * Reads .testdata/ probe JSONs (this seat only; .testdata/ is gitignored).
+ *
+ * Exit:   0 all checks pass · 1 a check failed · 2 artifacts not on this seat
+ *
+ * The exit-2 preflight was added 2026-08-29 (Daedalus, Round 115) — as first written this file had
+ * no guard and threw an unhandled ENOENT stack trace on any seat without `.testdata/`, which is
+ * every seat but Theseus's. That is not cosmetic: it makes "this check cannot run here" and "this
+ * check is broken" indistinguishable to the seat that most needs to tell them apart, and this
+ * script's PASS is cited in the arm-S pre-registration by seats that cannot reproduce it. The
+ * convention copied here is `verify-rule-discrimination-from-artifacts.mjs`'s, which had it
+ * already. No self-check or number is touched.
  */
 
 import fs from 'node:fs';
@@ -49,6 +58,19 @@ const RUNS = [
   ['R L1', 'R106L1-R'], ['R L2', 'R106L2-R'], ['R L3', 'R106L3-R'],
   ['R L4', 'R106L4-R'], ['R L5', 'R106L5-R'],
 ];
+
+// Preflight: same convention as verify-rule-discrimination-from-artifacts.mjs. Exit 2, not 1 —
+// "not runnable on this seat" is a different fact from "a check failed", and a stack trace is
+// neither.
+const missingArtifacts = RUNS.filter(([, f]) => !fs.existsSync(`.testdata/recall-probe-${f}.json`));
+if (missingArtifacts.length) {
+  console.error(
+    `artifacts not on this seat (${missingArtifacts.length}/${RUNS.length} missing, e.g. ` +
+      `.testdata/recall-probe-${missingArtifacts[0][1]}.json).\n` +
+      `.testdata/ is gitignored; this check only runs on the seat that produced the probes.`,
+  );
+  process.exit(2);
+}
 
 /**
  * The rendered neighbourhood, as a row set, derived from the gap addresses the render offers.

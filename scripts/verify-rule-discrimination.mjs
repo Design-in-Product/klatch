@@ -249,9 +249,41 @@ const MAXLEN = 4;
 // PRE-SPEND `--dry` check (§3.2); the void clause is the RUNTIME backstop for the case where the
 // gate passed and the geometry did not hold. Enumerating them together hid which one was doing
 // the work, so they are enumerated apart.
+//
+// ── SPLIT AGAIN 2026-08-29 (Round 115) ────────────────────────────────────────────────────────
+// S-exposed was enumerated over ONE alphabet — [E, M, X1, X0] — mixing kinds that are in-cell with
+// kinds that are only reachable if a geometric property the design ASSERTS has failed.
+// Pre-registration §1 says of S-exposed: "the token-bearing neighbourhood is the *only* productive
+// query." If that holds, X0 and X1 — both defined as a SECOND distinct productive neighbourhood —
+// cannot occur at all. They are breach kinds, exactly as Z is for S-unexposed.
+//
+// The block above already segregated S-unexposed's breach kind because mixing it hid which
+// condition was doing the work (Round 113 §3). The same discipline was not applied one cell over,
+// in the same file, in the same commit. That is why "is X0 reachable?" looked like a question about
+// the ten-run corpus (Rounds 112–114) rather than what it is: a question about a gate nobody wrote.
+//
+// §3's gate list checks S-unexposed's geometric claim (gate 2, by enumerating the query set) and
+// does NOT check S-exposed's (gate 1 only checks the call-1 render). See Round 115 §2.
 const CELLS = [
   {
     cell: 'S-exposed',
+    label: 'S-exposed, gate 1b HOLDING (one productive neighbourhood, per §1)',
+    shapes: enumerateKindShapes([K.E], [K.E, K.M], MAXLEN),
+  },
+  {
+    cell: 'S-exposed',
+    label: 'S-exposed, gate-1b BREACH reachable',
+    shapes: enumerateKindShapes([K.E], [K.E, K.M, K.X1, K.X0], MAXLEN).filter((s) =>
+      s.some((k) => k.id === 'X0' || k.id === 'X1'),
+    ),
+  },
+  {
+    // HISTORICAL, printed not asserted. The single unsplit alphabet Rounds 113 and 114 argued over.
+    // Retained under rule 14: the superseded framing's numbers stay visible beside the operative
+    // ones instead of being remembered. The 10-of-10 (Round 113) and 7-of-10 (Round 114) ambiguity
+    // counts are both properties OF THIS ROW and of no other.
+    cell: 'S-exposed',
+    label: 'S-exposed, UNSPLIT alphabet (SUPERSEDED framing, Rounds 113–114)',
     shapes: enumerateKindShapes([K.E], [K.E, K.M, K.X1, K.X0], MAXLEN),
   },
   {
@@ -303,6 +335,9 @@ for (const { cell, label, shapes } of CELLS) {
     gaps: gaps.length,
     discSepShapes: discSepShapes.size,
     ambiguousSepShapes: ambiguous.length,
+    // Round 115: the sep-shapes themselves, so invariance across the gate-1b split can be checked
+    // as set equality rather than as two counts that happen to match.
+    survivingSepShapeList: [...new Set(survive.map((s) => seps(s).join(',')))].sort(),
   };
 
   console.log(`  ${key}`);
@@ -348,21 +383,75 @@ check(
   armS['S-unexposed, gate-2 BREACH reachable'].survive,
   0,
 );
-check('S-exposed discriminating kind-shapes SURVIVE the operative clause (Round 112 §2)', armS['S-exposed'].survive > 0, true);
+
+const SEX_HOLD = armS['S-exposed, gate 1b HOLDING (one productive neighbourhood, per §1)'];
+const SEX_BREACH = armS['S-exposed, gate-1b BREACH reachable'];
+const SEX_UNSPLIT = armS['S-exposed, UNSPLIT alphabet (SUPERSEDED framing, Rounds 113–114)'];
+
+check('S-exposed discriminating kind-shapes SURVIVE the operative clause (Round 112 §2)', SEX_UNSPLIT.survive > 0, true);
 check(
   'the Round 111 number, reproduced as history: zero survive the SUPERSEDED strict clause',
-  armS['S-exposed'].strictSurvive,
+  SEX_UNSPLIT.strictSurvive,
   0,
 );
 check(
-  'every discriminating sep-shape in S-exposed is ambiguous on seps alone — not 7 of 10 (Round 113 §2)',
-  armS['S-exposed'].ambiguousSepShapes,
-  armS['S-exposed'].discSepShapes,
+  'HISTORICAL, unsplit alphabet: every discriminating sep-shape is ambiguous — the Round 113 §2 number',
+  SEX_UNSPLIT.ambiguousSepShapes,
+  SEX_UNSPLIT.discSepShapes,
 );
 check(
   'both cells admit an unscoreable one-call shape (the ordinal rule has no call 2)',
-  [armS['S-exposed'].gaps > 0, armS['S-unexposed, gate 2 HOLDING'].gaps > 0],
+  [SEX_HOLD.gaps > 0, armS['S-unexposed, gate 2 HOLDING'].gaps > 0],
   [true, true],
+);
+
+// ── Round 115 §2–§3. The gate-1b split, and what it does to the ambiguity dispute. ─────────────
+check(
+  'GIVEN GATE 1b, S-exposed admits no X0 and no X1, so NOTHING in it can be voided',
+  SEX_HOLD.survive,
+  SEX_HOLD.disc,
+);
+check(
+  'and its discriminating sep-shapes are then UNAMBIGUOUS on seps alone — 0, not 10 and not 7',
+  SEX_HOLD.ambiguousSepShapes,
+  0,
+);
+check(
+  'a gate-1b BREACH reaches discriminating shapes — so the ambiguity is conditional on the gate',
+  SEX_BREACH.disc > 0,
+  true,
+);
+check(
+  'and every one of them is removed by §3.1, which is the runtime backstop — same shape as gate 2',
+  SEX_BREACH.survive,
+  0,
+);
+// The load-bearing invariance. If this fails, the gate-1b reading changes the arm's advertised
+// discriminating power and cannot be adopted without re-opening §2a's headline number.
+check(
+  'the SURVIVING sep-shapes are IDENTICAL across the split — the 10 does not move with the gate',
+  SEX_HOLD.survivingSepShapeList,
+  SEX_UNSPLIT.survivingSepShapeList,
+);
+check(
+  'and there are ten of them, matching §2a as it stands',
+  SEX_HOLD.survivingSepShapeList.length,
+  10,
+);
+// Why the dispute existed at all: ambiguity is a CROSS-GATE artifact. Neither block alone has any.
+check(
+  'ambiguity is zero WITHIN each block and nonzero only when they are mixed — it measured the mixing',
+  [SEX_HOLD.ambiguousSepShapes, SEX_BREACH.ambiguousSepShapes, SEX_UNSPLIT.ambiguousSepShapes > 0],
+  [0, 0, true],
+);
+// The identical property, one cell over, found in Round 113 and not carried across in that commit.
+check(
+  'S-unexposed shows the same pattern, which is why this one should have been caught then',
+  [
+    armS['S-unexposed, gate 2 HOLDING'].ambiguousSepShapes,
+    armS['S-unexposed, gate-2 BREACH reachable'].ambiguousSepShapes,
+  ],
+  [0, 0],
 );
 
 // ── (c) The proxy defect, quantified ──────────────────────────────────────────────────────────
@@ -448,19 +537,24 @@ const allPairsCovered = new Set(
 
 console.log(`
   The comparison as it stood (Round 111 §6):  arm T 15 of 15  vs  arm S 0 of 10.
-  The comparison as it stands now:            arm T 15 of 15  vs  arm S ${armS['S-exposed'].survive} discriminating
-  kind-shapes surviving the operative clause, every one of them flagged sequenceEndogenous, all
-  ${armS['S-exposed'].discSepShapes} of their sep-shapes ambiguous unless the per-run record carries \`rows\` and query identity.
+  The comparison as it stands now:            arm T 15 of 15  vs  arm S ${SEX_HOLD.survive} discriminating
+  kind-shapes surviving the operative clause, every one of them flagged sequenceEndogenous. That
+  count is unchanged by the Round 115 gate-1b split — the surviving sep-shapes are set-identical
+  across it (self-check above), so nothing in this pricing moves with the gate.
 
   So arm T's margin is no longer "some Q2 power vs none". It is:
     · unflagged vs flagged  — T's sequence is forced by geometry, so no T run is sequenceEndogenous;
-    · unambiguous vs ambiguous — T's cells fix the render kinds, so seps identify them; and
     · guaranteed vs base-rate-dependent — T lands on its shape by construction, S lands on one only
       if the model issues a second query (10/10 observed, Round 112 §4; a two-target geometry, so
       undetermined for S's one-target cells).
-  That margin is real and it is much smaller than a 15-vs-0. It is also conditional on a
-  buildability nobody has derived, and the recording fix below closes the ambiguity limb of it for
-  free — which is the cheaper move and does not need a GO.`);
+  The third limb — unambiguous vs ambiguous — is GONE, not merely closeable. Round 113 §5 priced it
+  as closeable for free by the §3 record fix. Round 115 finds it was never a margin at all: arm S's
+  ambiguity is ${SEX_HOLD.ambiguousSepShapes} given gate 1b, and the ${SEX_UNSPLIT.ambiguousSepShapes} that Rounds 113/114 disputed is a property of the
+  unsplit alphabet rather than of the cell. T never had this limb to win.
+
+  That margin is real, it is much smaller than a 15-vs-0, and it is now two limbs rather than three.
+  It remains conditional on a buildability nobody has derived — and gate 1b adds a second underived
+  condition on the S side of the comparison, which cuts the other way. See Round 115 §5.`);
 
 console.log('\n  self-checks:');
 check('every T cell discriminates', ARM_T_CELLS.every((c) => discriminates(c.seps)), true);
@@ -471,8 +565,76 @@ check(
 );
 check(
   "arm S's operative Q2 power is not zero, so the 15-vs-0 framing no longer holds",
-  armS['S-exposed'].survive > 0,
+  SEX_HOLD.survive > 0,
   true,
+);
+check(
+  "T's ambiguity limb is empty under gate 1b — it was priced as closeable, it was never a margin",
+  SEX_HOLD.ambiguousSepShapes,
+  0,
+);
+
+// ── (e) Did gate 1b hold in the corpus? The two runs that match gate 1's shape ─────────────────
+// Round 114 §2 (Theseus) reports zero X0 witnesses across all ten runs. That result has a reading
+// stronger than "X0 is unwitnessed", and it is the reading that bears on arm S: it is evidence
+// about GATE 1b, in the only corpus runs whose trajectory matches S-exposed's gate-1 shape.
+//
+// A run matches gate 1 iff its FIRST render carries sep >= 1. In such a run gate 1b is breached iff
+// some later render introduced a neighbourhood not already on screen — i.e. a later X1 (a second
+// sep>=1 render introducing new rows) or a later X0 (a productive sep-0 render introducing new
+// rows). The first disjunct is derivable HERE from the sep table; the second is Theseus's zero.
+
+console.log('\n=== (e) Gate 1b in the ten-run corpus — the runs matching S-exposed`s gate-1 shape ===\n');
+
+const gate1Runs = LIVE_RUNS.filter((r) => r.seps.length > 0 && r.seps[0] >= 1);
+// Derivable here: a later X1 requires a SECOND sep>=1 render. Count them per run.
+const laterSepGE1 = (r) => r.seps.slice(1).filter((s) => s >= 1).length;
+// REPORTED — Round 114 §2: no productive sep-0 render in ANY of the ten runs introduced a new
+// neighbourhood. This seat cannot open the artifacts; the dependency is named, not hidden.
+const REPORTED_X0_WITNESSES = 0;
+
+for (const r of gate1Runs) {
+  console.log(
+    `  ${r.id}  seps=[${r.seps.join(',')}]  later sep>=1 renders: ${laterSepGE1(r)} (derived here)` +
+      `   later X0: ${REPORTED_X0_WITNESSES} (REPORTED, Round 114 §2)`,
+  );
+}
+console.log(`
+  In both, gate 1b HELD: no later render introduced a neighbourhood the call-1 render had not
+  already shown. The mechanism is not luck — the sep>=1 render is the UNION of the family's two
+  regions, so every later render is a subset of it. Gate 1b is therefore ENTAILED by gate 1 in any
+  geometry with exactly two regions where the exposing query reaches both.
+
+  CLASS LABEL, and it is the whole caveat: this is arm R's TWO-target geometry. Arm S-exposed is a
+  ONE-target geometry whose region count is not stated in the pre-registration. Standing rule 11 —
+  a finished arm is a prior, not a cell, unless the geometry matches on what the premise reads.
+  This is a prior of 2 of 2, and the entailment above is what makes it a \`--dry\`-checkable
+  question rather than a base rate: count the regions.`);
+
+console.log('\n  self-checks:');
+check(
+  'exactly two corpus runs match gate 1 (call-1 render carries sep>=1)',
+  gate1Runs.map((r) => r.id),
+  ['R L1', 'R L5'],
+);
+check(
+  'neither has a second sep>=1 render, so neither admits a later X1 — derived from the sep table',
+  gate1Runs.map((r) => laterSepGE1(r)),
+  [0, 0],
+);
+check(
+  'with Round 114 §2`s zero X0, gate 1b held in 2 of 2 — a two-target-geometry PRIOR, not a derivation',
+  [gate1Runs.length, REPORTED_X0_WITNESSES],
+  [2, 0],
+);
+// The shape those two runs exhibit is the one the whole dispute was about.
+check(
+  'and the shape they exhibit, [1,0], is a SURVIVING sep-shape under both readings of the alphabet',
+  [
+    SEX_HOLD.survivingSepShapeList.includes('1,0'),
+    SEX_UNSPLIT.survivingSepShapeList.includes('1,0'),
+  ],
+  [true, true],
 );
 
 console.log(

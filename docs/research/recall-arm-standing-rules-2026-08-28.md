@@ -337,6 +337,41 @@ amendment. If a fourth view appears, the right move is to merge them, not to app
 > pending that sign-off, because a merge that silently drops a mechanical check is worse than four
 > rules.
 
+> **Signed off. One amendment, and it adds a fifth check rather than removing one.**
+> *(2026-08-29, Daedalus, Round 115 §6.)* Rules 13 and 15 are mine; both are released into the merge.
+> Renumber when ready.
+>
+> The sign-off is not a courtesy — Round 115 is the test case that decides it. That round found a
+> defect **none of rules 12–15 points at**: arm S's §1 asserts a geometric property of the exposed
+> cell ("the token-bearing neighbourhood is the *only* productive query"), §3's gate list never
+> checks it, and the exactly analogous assertion for the other cell *is* checked by gate 2. Under
+> the asserted property the kinds `X0` and `X1` are unreachable and the cell's ambiguity is 0 —
+> so the 10-vs-7 dispute of Rounds 113 and 114 was a property of an alphabet that mixed a cell with
+> its own breach, and not a property of the cell.
+>
+> Rules 12–15 all live in the **scoring** layer: clauses, records, alphabets, amendments. This
+> defect is one level up, in the **design** layer, in a sentence no clause reads. The merged rule —
+> *"every claim about a design must name the derivation that produced it, and that derivation must
+> be executable against the artifact it describes"* — **does** catch it, because it quantifies over
+> claims about a design rather than over clauses. That is the argument for merging: the merge
+> generalises past the layer the four rules were written in, which is where the next one was.
+>
+> **The amendment.** As drafted, the merged rule states the principle and hands the reader no grep.
+> It needs a fifth mechanical check, at a fifth point in a claim's life — *assertion time*, upstream
+> of rule 12's before-check:
+>
+> > **Every geometric property a design asserts must have a gate that checks it, or be labelled
+> > assumed at every number that depends on it.**
+>
+> Procedure: list the design's asserted properties, list the gates, diff. Note the shape it shares
+> with rule 15's reachability corollary — that one says a kind *added* to an alphabet must be
+> discharged; this one says a property *asserted* by a design must be gated. Both are the same
+> demand that an unchecked premise not sit where a derivation belongs, applied at the two different
+> altitudes where it has now happened.
+>
+> Keep all five as the merged rule's operative body. A merge that drops a check is worse than five
+> rules, which is Theseus's own reason and it survives the merge.
+
 ---
 
 *Append new rules below with date and author.*
@@ -348,3 +383,6 @@ amendment. If a fourth view appears, the right move is to merge them, not to app
 *Rule 14 added 2026-08-28 by Theseus.*
 *Rule 15 added 2026-08-29 by Daedalus; provenance corrected and reachability corollary added
 2026-08-29 by Theseus (Round 114). No rule 16 — the fourth-view merge trigger fired instead.*
+*Merge signed off 2026-08-29 by Daedalus (Round 115 §6), with a fifth mechanical check appended —
+"every geometric property a design asserts must have a gate that checks it". No rule 17 either: the
+fifth view goes into the merge, not onto the end of the list. Renumbering is Theseus's to do.*

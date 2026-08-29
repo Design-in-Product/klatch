@@ -100,6 +100,11 @@ record does not. Second consecutive round of a superseded property surviving in 
 Derivation and output: Round 113 §2 and Round 114 §§1–3; verifiers
 `scripts/verify-rule-discrimination.mjs` and `scripts/verify-x0-reachability.mjs`.*
 
+*Round 115 (2026-08-29) leaves this heading alone, and that is now a checked fact rather than an
+oversight: **the 10 is set-identical across the gate-1b split**, so the one number the heading
+carries does not move. What Round 115 changes is the **ambiguity** discussion below — see the
+disclosure block.*
+
 Rule 12's second corollary requires a proposed arm to state, before the spend, on how many of its
 runs the rivals will actually disagree. Enumerating the run shapes each cell can produce:
 
@@ -107,7 +112,14 @@ runs the rivals will actually disagree. Enumerating the run shapes each cell can
 |---|---|---|---|---|
 | **S-unexposed**, gate 2 holding | 80 | **0** (geometric — see the gate caveat below) | 0 | 0 |
 | **S-unexposed**, gate-2 breach | 90 | 78 | **0** (all removed by §3.1) | 0 |
-| **S-exposed** | 85 | 62 | **10** (all 10 of their sep-shapes ambiguous on `seps` alone) | 0 |
+| **S-exposed**, gate 1b holding | 15 | 10 | **10** (0 of their sep-shapes ambiguous) | 0 |
+| **S-exposed**, gate-1b breach | 70 | 52 | **0** (all removed by §3.1) | 0 |
+| *S-exposed, unsplit alphabet (superseded)* | *85* | *62* | *10* (*10 ambiguous*) | *0* |
+
+*S-exposed row split 2026-08-29 (Round 115 §3), mirroring the S-unexposed split that Round 113 §3
+introduced and did not carry one cell over. The unsplit row is retained as the superseded framing
+because the 10-vs-7 ambiguity dispute of Rounds 113–114 is a property of it and of nothing else.
+The operative **10** is unchanged and set-identical across the split.*
 
 *Table recomputed 2026-08-29 (Round 113) over **render kinds** rather than `excerptSeparators`
 sequences. The shape counts changed because the alphabet did, not because the geometry did: a
@@ -147,27 +159,32 @@ backstop is for. The durable claim is "geometric **given gate 2**, clause-covere
 > renders `sep 0`, and lands on a discriminating shape. That rate is **10/10 in the only corpus
 > available** (Round 112 §4) and **undetermined for S's one-target geometry**, since the Q/R prompts
 > present two search targets and S-exposed presents one. Every discriminating run carries
-> `sequenceEndogenous: true`, so any rival comparison drawn from this arm is flagged evidence. **All
-> ten** shapes are additionally ambiguous on `seps` alone — *conservatively; **seven** is the
-> witnessed number and the other three ride on an underived assumption, see immediately below.*
-> Seven are ambiguous because a later `sep >= 1` is a permitted repeat (`E`) or a voiding second
-> neighbourhood (`X1`) — **both attested**, seven `X1`-like renders in the corpus. The other three
-> — `[1,0]`, `[1,0,0]`, `[1,0,0,0]` — are ambiguous only for the mirror reason: a later `sep 0` is
-> an unproductive miss (survives, flagged) or a **productive** second neighbourhood rendering one
-> excerpt, kind `X0` (voids). **`X0` has zero witnesses.** All 11 productive `sep 0` renders in the
-> corpus re-rendered rows already on screen; no render in the ten runs ever showed a new
-> neighbourhood at `sep 0`. Its reachability in arm S's one-target geometry is **underived** and is
-> listed in §6. The ambiguity of these three is therefore an assumption, held conservatively rather
-> than derived. Note the discriminating-shape count of **10 is invariant** across the assumption —
-> `X0` is a voiding kind and can only add voided shapes, never surviving ones.
+> `sequenceEndogenous: true`, so any rival comparison drawn from this arm is flagged evidence.
+> **Ambiguity on `seps` alone is zero, given gate 1b** — and the whole of the 10-vs-7 dispute below
+> was a property of an enumeration, not of this cell. *(Rewritten 2026-08-29, Round 115 §3.)*
+> Kinds `X0` and `X1` are both defined as a **second distinct productive neighbourhood**, which
+> §1 asserts S-exposed does not admit and **gate 1b now checks**. Enumerating the cell together
+> with its own breach — as Rounds 113 and 114 both did — returns 10 ambiguous sep-shapes;
+> enumerating the two apart, the way S-unexposed has been enumerated since Round 113 §3, returns
+> **0 within each block**. The ambiguity measured the mixing. Under a gate-1b breach, `X0` and `X1`
+> are reachable and §3.1 removes **every** discriminating shape they appear in — the same structure
+> as gate 2 and the same runtime backstop. **The discriminating count of 10 is set-identical across
+> the split** (checked as set equality, not as two matching counts), so nothing else in this
+> section moves.
 >
-> *(History: this read "seven of the ten" as first written 2026-08-28 (Round 112 §3); raised to
-> "all ten" 2026-08-29 (Round 113 §2) with the superseded justification "Round 112 §3 is what
-> establishes that productive renders print `sep 0` — the correction follows from Theseus's own
-> finding"; that attribution is withdrawn 2026-08-29 (Round 114 §1) — Round 112 §3 established
-> that a `sep 0` render can be productive, which is weaker than the distinct-neighbourhood
-> property `X0` needs. Ten is retained as the conservative pre-spend disclosure, not as a derived
-> count. Verifier: `scripts/verify-x0-reachability.mjs`.)*
+> *(History, quoted so the change is visible. This read "seven of the ten" as first written
+> 2026-08-28 (Round 112 §3); raised to "all ten" 2026-08-29 (Round 113 §2); the Round 113
+> attribution to Theseus's artifact read was withdrawn 2026-08-29 (Round 114 §1), which established
+> that **`X0` has zero witnesses** — all 11 productive `sep 0` renders in the corpus re-rendered
+> rows already on screen — and held the number at "10 conservatively, 7 witnessed, the difference
+> riding on `X0`'s reachability". The superseded sentence: **"All ten shapes are additionally
+> ambiguous on `seps` alone — conservatively; seven is the witnessed number and the other three
+> ride on an underived assumption."** Round 115 §1–§3 finds that neither 10 nor 7 is a property of
+> the cell: `X0`'s reachability was never a corpus question, because §1 already asserted the
+> property that decides it and no gate checked the assertion. Theseus's zero is retained and is
+> load-bearing in a different place — Round 115 §4 reads it as evidence that **gate 1b held in 2 of
+> 2** corpus runs matching gate 1's shape. Verifiers: `scripts/verify-rule-discrimination.mjs`
+> (36 self-checks) and `scripts/verify-x0-reachability.mjs`.)*
 
 Flagged, caveated, resting on an untransferred base rate — but not zero.
 
@@ -191,14 +208,28 @@ one that reads `rows` first-hand.*
 
 This remains a downward revision of the arm's advertised value relative to Round 109, entered before
 any GO. A result from arm S must not be reported as evidence for the ordinal-free rule *over its
-rivals* **unless** the flagged discriminating runs are reported with their flag, their count, and the
-`seps`-ambiguity caveat above. Round 111 §6 sketches, and does not propose, what a dedicated Q2 arm
+rivals* **unless** the flagged discriminating runs are reported with their flag, their count, and
+**gate 1b's verdict on the runs being reported**. *(Amended 2026-08-29, Round 115 §3: this required
+"the `seps`-ambiguity caveat above", which no longer exists as a caveat — ambiguity is 0 given gate
+1b. What has to travel with the number is not an ambiguity warning but the gate: whether gate 1b
+passed at `--dry`, and whether any reported run breached it at runtime, in which case §3.1 has
+already voided it and it is not among the runs being reported at all.)* Round 111 §6 sketches, and does not propose, what a dedicated Q2 arm
 would require — and that sketch was priced against an arm S with *zero* Q2 power. **That re-pricing
 is done: Round 113 §5, and it cuts arm T's case down rather than making it.** Arm T's margin over the
-operative arm S is no longer "some Q2 power vs none"; it is unflagged-vs-flagged,
-unambiguous-vs-ambiguous, and guaranteed-vs-base-rate-dependent — real, much smaller than the
-15-vs-0 it was sketched against, and conditional on a buildability nobody has derived. The
-record-schema fix in §3 closes the ambiguity limb of that margin for free and without a GO.
+operative arm S is no longer "some Q2 power vs none"; it is unflagged-vs-flagged and
+guaranteed-vs-base-rate-dependent — real, much smaller than the 15-vs-0 it was sketched against, and
+conditional on a buildability nobody has derived.
+
+*Amended 2026-08-29 (Round 115 §5). This read "unflagged-vs-flagged, **unambiguous-vs-ambiguous**,
+and guaranteed-vs-base-rate-dependent … The record-schema fix in §3 closes the ambiguity limb of
+that margin for free and without a GO." The middle limb was **never a margin**: arm S's ambiguity is
+0 given gate 1b, so there was nothing for the record fix to close and nothing for arm T to win.
+Cutting the other way, and recorded because it tells against this document's own arm: **gate 1b is a
+second underived condition on the S side**, where the Round 113 pricing counted one (gate 2's
+satisfiability). Net — T's margin is two limbs rather than three, and S carries one more open
+`--dry` check. The record-schema fix in §3 stays regardless: gate 1b is the pre-spend check and
+§3.1 is the runtime backstop for its breach, and the backstop is only computable if the record
+carries the fields §3 now names.*
 
 **Scoring gap, stated so no seat silently defaults it.** The ordinal rule reads *call 2*. A one-call
 run has no call 2, so the ordinal rule is **`undefined`** on it — not "expand", not "suppress".
@@ -216,6 +247,18 @@ Pre-spend on `--dry`, per cell, in the structural check — not after the live c
 
 1. **S-exposed:** the call-1 render carries `excerptSeparators >= 1`. If it does not, the cell is not
    the geometry it claims and nothing is spent.
+1b. **S-exposed:** **no** query in the registered query set is productive in a neighbourhood other
+   than the token-bearing one. Same method as gate 2 below — enumerate the set, do not observe one
+   run. *(Added 2026-08-29, Round 115 §2.)* §1 above **asserts** this property — "the token-bearing
+   neighbourhood is the *only* productive query" — and until this fire nothing checked it, while the
+   exactly analogous assertion for the other cell was checked by gate 2. Under it, render kinds `X0`
+   and `X1` (both defined as a **second distinct** productive neighbourhood) are unreachable and
+   S-exposed's discriminating sep-shapes are **unambiguous**; under a breach they are reachable and
+   §3.1 removes every discriminating shape they appear in. **Gate 1b is entailed by gate 1** in any
+   geometry with exactly two regions where the exposing query reaches both, since the `sep >= 1`
+   render is then the union and every later render a subset — so the pre-spend check reduces to
+   counting the regions (Round 115 §4; held 2 of 2 in the corpus runs matching gate 1's shape, at a
+   two-target geometry, so a prior and not a derivation — standing rule 11).
 2. **S-unexposed:** **no** query in the registered query set produces `excerptSeparators >= 1`. This
    is a claim about the geometry, so it must be checked by enumerating the set, not by observing one
    run. If any query can produce it, the cell is not exogenous.
@@ -347,10 +390,30 @@ delivers that and no arm currently designed does — that much of the sentence s
   reaching the new neighbourhood re-reaches the old one and prints two excerpts. Reaching `X0`
   requires a registered query matching **exactly one row, in a region not yet rendered**. Whether
   arm S's one-target geometry and registered query set admit one is **not derived here** and is a
-  `--dry`-time check, same class as the gate-2 bullet above. §2a holds the ambiguity at 10
-  conservatively rather than reverting to the witnessed 7; the discriminating count of 10 is
-  unaffected either way. The mirror kind `B0` in S-unexposed is unenumerated for the same reason and
-  matters only under a gate-2 breach.
+  `--dry`-time check, same class as the gate-2 bullet above.
+
+  **Restated 2026-08-29 (Round 115 §§1–4), and the restatement is the point.** This bullet was
+  written as an open question about the *corpus* — is `X0` witnessed? It is not that. §1 already
+  **asserts** that S-exposed's token-bearing neighbourhood is the only productive query, which
+  settles `X0` and `X1` together, and until Round 115 no gate checked that assertion. The check is
+  now **gate 1b** (§3), and it reduces further: gate 1b is *entailed* by gate 1 in any geometry with
+  exactly two regions where the exposing query reaches both, so what is actually open is
+  **arm S-exposed's region count** — an arithmetic fact this document does not state. Theseus's
+  zero-witness result is retained and relocated: read against the two corpus runs that match gate
+  1's shape (R L1, R L5, both `[1,0]`, neither with a second `sep >= 1` render), it says **gate 1b
+  held 2 of 2** — at a two-target geometry, so a prior and not a derivation (standing rule 11).
+  §2a's ambiguity is **0 given gate 1b**; the superseded "10 conservatively / 7 witnessed" framing
+  is quoted there. The discriminating count of 10 is set-identical across the split.
+
+  The mirror kind `B0` in S-unexposed was listed here as open for the same reason. **It is not the
+  same situation** *(Round 115 §7)*: §1 makes no one-productive-query claim for S-unexposed, so
+  `B0` is in-cell, has been enumerated in the gate-2-holding block since Round 113, and contributes
+  0 ambiguity there (self-check). It needs no reachability discharge.
+
+- **Whether gate 1b is satisfiable jointly with gate 1.** *(Added 2026-08-29, Round 115 §7.)* Gate 1
+  requires a query reaching two regions; gate 1b requires that no query reach a third. Plausibly
+  compatible — it is what the corpus geometry does — but not derived, and it is a second underived
+  condition on the S side of the arm-T comparison, which §2a now records against itself.
 - **That the ordinal-free rule is true.** It is registered, not supported. Its 14/15 is a retrofit
   and stays labelled as one.
 - **N1's per-call renders as artifact-class.** They are doc-class from Round 63 §2 and permanently

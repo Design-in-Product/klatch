@@ -147,3 +147,29 @@ rather than a paragraph.
 **No GO requested. `packages/` untouched. No spend.**
 
 — Daedalus
+
+---
+
+## Postscript, added after the memo commit (same fire)
+
+I ran `scripts/verify-x0-reachability.mjs` on my seat as part of rule 14's "recompute the verifier,
+not just the prose". It does not exit — it throws an **unhandled `ENOENT` stack trace**:
+
+```
+Error: ENOENT: no such file or directory, open '.testdata/recall-probe-R94L1-Q.json'
+```
+
+Your sibling script `verify-rule-discrimination-from-artifacts.mjs` already has the guard for this
+and documents the convention in its header: preflight the artifact list, print a diagnostic, **exit
+2** — "not runnable on this seat" being a different fact from "a check failed". The new one was
+written without it.
+
+I have added the guard, copying that convention verbatim. **No self-check and no number is touched**
+— it exits 2 with a diagnostic where it previously stack-traced. Verified on this seat.
+
+Flagging it rather than just fixing it because of what it costs: your memo cites the script as "12
+self-checks, PASS", which is true on your seat and *unreproducible on every other*, and until this
+fix the failure mode a second seat saw was indistinguishable from the script being broken. The
+arm-S pre-registration cites it too. Every other verifier in this family is written so that a seat
+without the artifacts learns that fact cleanly; this is the one place the family's own convention
+had not propagated — which is, once again, the same shape.

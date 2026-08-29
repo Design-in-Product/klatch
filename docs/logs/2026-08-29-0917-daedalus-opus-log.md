@@ -128,3 +128,115 @@ both first-`--dry`-checkable, and §4 of Round 113 raises the stakes on gate 2);
 second-query rate transfers to a one-target geometry (Theseus's, unresolvable from the Q/R corpus);
 the ≤4-call enumeration truncation. No GO requested for any arm, and none should be inferred from the
 re-pricing.
+
+---
+
+## 13:17 PT — MID fire. Round 115: the ambiguity was a missing gate, not a missing witness.
+
+**Zero API spend, zero model calls, zero live runs. `packages/` untouched.**
+
+Theseus's Round 114 memo (`…-the-kind-that-carries-your-correction-has-zero-witnesses-2026-08-29.md`)
+was in `docs/mail/` unanswered at fire time. It asked one thing of me directly — sign-off on his
+rules 12–15 merge before he renumbers — and parked two `--dry`-time checks as open, chief among them
+*"is render kind `X0` reachable in arm S?"*, filed in §6 beside gate 2's satisfiability.
+
+### The finding, and it is a defect of mine
+
+`X0` is not that class of question. The pre-registration's **§1 already asserts** the property that
+settles it — S-exposed's token-bearing neighbourhood is *"the **only** productive query"* — and `X0`
+and `X1` are both defined, in my own verifier, as **a second distinct productive neighbourhood**. If
+§1 holds, neither can occur.
+
+And **§3's gate list never checked §1.** Gate 1 checks that one *render* came out right. Gate 2 does
+the real enumeration — **for the other cell** — and spells out the method in a sentence I could have
+re-read at any point in the last three rounds: *"This is a claim about the geometry, so it must be
+checked by enumerating the set, not by observing one run."*
+
+The defect is in my verifier: I enumerated S-exposed over one mixed alphabet `[E, M, X1, X0]`,
+**twenty lines below the block where I had segregated S-unexposed's breach kind `Z` and written down
+the reason for segregating it** (Round 113 §3). Same file, same commit. The reason did not travel one
+cell over.
+
+### What the split returns (verifier extended, **23 → 36 self-checks, PASS**)
+
+| block | kind-shapes | rivals split on | survive §3.1 | ambiguous |
+|---|---|---|---|---|
+| S-exposed, gate 1b HOLDING | 15 | 10 | **10** (all flagged) | **0** |
+| S-exposed, gate-1b BREACH | 70 | 52 | **0** (all removed by §3.1) | **0** |
+| *S-exposed, unsplit (superseded)* | *85* | *62* | *10* | *10* |
+
+**Ambiguity is zero within each block and nonzero only in the union.** The 10-vs-7 dispute of
+Rounds 113 and 114 was measuring the mixing; neither number is a property of the cell. My 10 wasn't
+and Theseus's 7 wasn't — and his refusal to revert to 7 was right for a reason neither of us had.
+
+**The 10 does not move.** Checked as *set equality* of surviving sep-shapes, not as two counts that
+happen to match — the check that had to pass before the gate-1b reading could be adopted at all,
+since failing it would have quietly changed the arm's advertised power:
+`["1,0","1,0,0","1,0,0,0","1,0,0,1","1,0,1","1,0,1,0","1,0,1,1","1,1,0","1,1,0,0","1,1,1,0"]`.
+
+### Theseus's zero, relocated rather than disputed
+
+Read against the only two corpus runs matching gate 1's shape — **R L1 and R L5**, both `[1,0]`,
+**neither with a second `sep >= 1` render** (derivable here from the sep table) — his zero-`X0`
+result says **gate 1b held 2 of 2**. The mechanism is not luck: the `sep >= 1` render is the *union*
+of the family's two regions, so every later render is a subset and can introduce nothing. So **gate
+1b is entailed by gate 1** in any two-region geometry where the exposing query reaches both, and the
+open item stops being a base rate and becomes **"count the regions."** Class label carried in full:
+arm R's two-target geometry vs arm S's one-target — standing rule 11, a prior and not a derivation.
+
+`B0` is **not** the mirror case, contra Round 114 §6: §1 makes no one-productive-query claim for
+S-unexposed, so `B0` is in-cell, has been enumerated in the gate-2-holding block since Round 113,
+and contributes 0 ambiguity. No reachability discharge needed.
+
+### Against my own arm, both directions, not netted out
+
+Round 113 §5 gave arm T three limbs of margin and called the middle one — unambiguous-vs-ambiguous —
+closeable for free by the record fix. **It was never a margin.** T is at two limbs. Cutting the other
+way: **gate 1b is a second underived condition on the S side**, where Round 113 counted one. Small —
+it reduces to a region count — but it goes in the ledger, entered in §2a against this document's own
+arm. **No GO requested, none implied.**
+
+### Merge signed off, with a fifth check
+
+13 and 15 are mine; both released. Renumbering is Theseus's. The sign-off is earned, not polite:
+Round 115's defect is one **none of rules 12–15 points at**. All four live in the *scoring* layer —
+clauses, records, alphabets, amendments. This one is a layer up, in a design sentence no clause
+reads. His merged rule catches it precisely because it quantifies over *claims about a design*. That
+is the argument for merging and I did not have it before this fire.
+
+Amendment, a fifth mechanical check at a fifth point — **assertion time**, upstream of rule 12:
+*every geometric property a design asserts must have a gate that checks it, or be labelled assumed at
+every number that depends on it.* **No rule 17** — the fifth view goes into the merge.
+
+### Incidental: Theseus's verifier crashes on every seat but his
+
+Running `scripts/verify-x0-reachability.mjs` here (rule 14 — recompute the verifier, not just the
+prose) produced an **unhandled `ENOENT` stack trace**, not an exit. Its sibling
+`verify-rule-discrimination-from-artifacts.mjs` already has the guard and documents the convention:
+preflight the artifact list, diagnostic, **exit 2** — "not runnable on this seat" being a different
+fact from "a check failed". Added that guard verbatim; **no self-check or number touched**; verified
+exit 2 with diagnostic. Flagged rather than silently fixed because his memo cites the script as "12
+self-checks, PASS" — true on his seat, unreproducible on every other, and until now the failure mode
+a second seat saw was indistinguishable from the script being broken.
+
+### Not verified, carried forward
+
+- **Arm S-exposed's region count** — what the entailment reduces to. Stated nowhere; no arm-S
+  geometry exists, so not derivable on any seat today.
+- **Gate 1b's joint satisfiability with gate 1** — gate 1 needs a query reaching two regions, 1b
+  needs none reaching a third. Plausible, not derived. Added to §6.
+- **Gate 2's satisfiability and buildability** — untouched, as in Rounds 113 and 114.
+- **Whether 10/10 second-query transfers to a one-target geometry** — still Theseus's, still open.
+- **The `rows` column** — still not on this seat. Every dependency on Theseus's reported figures,
+  including the zero this round leans on, is marked REPORTED at the point of use in the verifier.
+
+### Deliverables this fire
+
+`scripts/verify-rule-discrimination.mjs` (extended, 36 self-checks, PASS) ·
+`scripts/verify-x0-reachability.mjs` (exit-2 guard) ·
+`docs/research/round115-the-ambiguity-was-a-missing-gate-not-a-missing-witness-2026-08-29.md` ·
+`docs/research/arm-s-cumulative-exposure-preregistration-2026-08-28.md` (six amendments) ·
+`docs/research/recall-arm-standing-rules-2026-08-28.md` (merge sign-off + fifth check) ·
+`docs/mail/daedalus-to-theseus-…-merge-is-signed-off-2026-08-29.md` (committed and pushed to `main`
+separately per the worktree mail rule, `b0dd7e3`) · thread closed, inbound + superseded outbound
+`git mv`'d to `docs/mail/read/` · `docs/COORDINATION.md` · this log.
