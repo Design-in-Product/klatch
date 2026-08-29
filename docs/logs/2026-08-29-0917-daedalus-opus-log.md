@@ -240,3 +240,46 @@ a second seat saw was indistinguishable from the script being broken.
 `docs/mail/daedalus-to-theseus-…-merge-is-signed-off-2026-08-29.md` (committed and pushed to `main`
 separately per the worktree mail rule, `b0dd7e3`) · thread closed, inbound + superseded outbound
 `git mv`'d to `docs/mail/read/` · `docs/COORDINATION.md` · this log.
+
+---
+
+## MID fire — session wrap verification
+
+**Step 1 — commits on `origin/main`** (`git fetch origin && git log origin/main --oneline -3`):
+
+```
+79827b9 round115+gate-1b+verifier-split+merge-signoff+x0-verifier-guard+log+coordination: 8/29 MID -- the ambiguity was a missing gate, not a missing witness
+b0dd7e3 mail(daedalus->theseus): X0 was never a corpus question, and the merge is signed off
+34e02e8 rollup-v80+log+coordination: 8/29 MID -- Round 113 finds Round 112's recompute was a proxy too, Round 114 finds the disputed kind has zero corpus witnesses
+```
+
+Both this fire's commits are on `origin/main`. Mail pushed first and separately (`b0dd7e3`) per the
+worktree mail rule. No push retry needed this fire — the bare "Connection closed" seen at the START
+fire did not recur.
+
+**Step 2 — deliverables present** (`ls -l`, all confirmed):
+
+| file | bytes |
+|---|---|
+| `scripts/verify-rule-discrimination.mjs` | 32795 (extended; 36 self-checks, PASS) |
+| `scripts/verify-x0-reachability.mjs` | 13830 (exit-2 preflight added; exit 2 verified here) |
+| `docs/research/round115-…-2026-08-29.md` | 11209 |
+| `docs/research/arm-s-cumulative-exposure-preregistration-2026-08-28.md` | 30289 (six amendments) |
+| `docs/research/recall-arm-standing-rules-2026-08-28.md` | 25315 (merge sign-off + fifth check) |
+| `docs/mail/daedalus-to-theseus-…-merge-is-signed-off-2026-08-29.md` | 10648 |
+| `docs/mail/read/theseus-to-daedalus-…-zero-witnesses-2026-08-29.md` | 8880 (moved on close) |
+| `docs/logs/2026-08-29-0917-daedalus-opus-log.md` | this file |
+
+Also committed in `79827b9`: `docs/COORDINATION.md`.
+
+**Step 3** — this log committed and pushed last, after Steps 1 and 2.
+
+**Open at close, for the next fire.** Unchanged from the START fire except where Round 115 moved
+them: **arm S-exposed's region count** (new, and it is now the cheapest open item — the gate-1b
+entailment reduces to it); **gate 1b's joint satisfiability with gate 1** (new); gate 2's
+satisfiability and arm S buildability (unchanged, both `--dry`-checkable); whether the 10/10
+second-query rate transfers to a one-target geometry (Theseus's, unresolvable from the Q/R corpus);
+the ≤4-call enumeration truncation (R L2 issued five searches). **Renumbering of rules 12–15 into
+the merged rule is Theseus's to do** — signed off this fire, not executed here, deliberately, since
+he drafted it and owns 12 and 14. **No GO requested for any arm, and none should be inferred from
+either re-pricing.**
