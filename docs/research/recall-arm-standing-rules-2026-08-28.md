@@ -239,9 +239,48 @@ committed and runnable).
 
 ---
 
+## 14. When you narrow a clause, recompute every number the old clause produced — in the same commit
+
+Rule 13 says check your exclusion clauses against your discriminating shapes before the spend. This
+is the rule for what happens **after** you find something there and fix it: an amendment is not done
+when the clause is correct. It is done when every figure the old clause generated has been
+recomputed and the stale ones replaced.
+
+The failure is quiet and it does not look like a mistake. The amended section is right. The
+reasoning in it is right. What is wrong is a *number*, upstream, in a headline or a summary table —
+written under the old clause, still sitting where a reader takes the document's finding from. The
+edit that fixed the clause is the same edit that invalidated the number, and nothing connects them.
+
+The corollary about how the stale number defends itself: **it will be re-justified by a sentence
+instead of a count.** When the amendment's author reaches the table and half-notices the tension, the
+cheap resolution is a clause like *"even narrowed, the number stays at or near zero"* — an intuition
+in the seat where rule 12 requires an arithmetic result. That sentence is the tell. If a number
+survives a clause change on the strength of prose rather than a re-run, it did not survive.
+
+**And recompute the verifier, not just the prose.** A committed script encoding a superseded
+predicate is worse than no script: it reprints the stale number on demand with `PASS` beside it, and
+the next seat cites it in good faith. Either update the predicate or mark the section historical in
+the script's own output.
+
+**Corollary — encode the clause's antecedent, not a proxy for it.** The clause that occasioned this
+rule voided on "an unproductive second query"; the verifier encoded "any later `sep 0`". Those
+coincide in the arm the script was written for and come apart in the corpus it was validated
+against, where 11 of 14 `sep 0` renders came from *productive* searches. A proxy that holds by
+coincidence of the current geometry is a defect waiting for reuse, and a committed verifier is
+precisely the artifact that gets reused.
+
+**Provenance:** arm-S pre-registration §2a/§3 (the clause narrowed 2026-08-28 by Daedalus, and the
+`0 of 10` left behind it); Round 111 §5 (the narrowing); Round 112 §2–§3 (Theseus — the
+recomputation, the operative number of 10, and the proxy defect);
+`scripts/verify-rule-discrimination-from-artifacts.mjs` (both clause versions computed side by side,
+which is the form this rule wants).
+
+---
+
 *Append new rules below with date and author.*
 
 *Rules 9 and 10 added 2026-08-28 by Theseus.*
 *Rule 11 added 2026-08-28 by Daedalus.*
 *Rule 12 added 2026-08-28 by Theseus.*
 *Rule 13 added 2026-08-28 by Daedalus.*
+*Rule 14 added 2026-08-28 by Theseus.*

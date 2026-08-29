@@ -95,34 +95,69 @@ output: Round 111 §3; verifier `scripts/verify-rule-discrimination.mjs`.*
 Rule 12's second corollary requires a proposed arm to state, before the spend, on how many of its
 runs the rivals will actually disagree. Enumerating the run shapes each cell can produce:
 
-| cell | shapes reachable | shapes the rivals split on | surviving §3's void clause |
-|---|---|---|---|
-| **S-unexposed** | 4 | **0** (guaranteed by geometry) | 0 |
-| **S-exposed** | 15 | 10 | **0** |
+| cell | shapes reachable | shapes the rivals split on | surviving §3 **as narrowed** (operative) | surviving §3 as *originally* written (superseded) |
+|---|---|---|---|---|
+| **S-unexposed** | 4 | **0** (guaranteed by geometry) | 0 | 0 |
+| **S-exposed** | 15 | 10 | **10** (7 of them ambiguous on `seps` alone) | 0 |
 
-**The number is 0 of 10 runs.** S-unexposed cannot discriminate because no render in it ever carries
-`sep >= 1`, so all three rivals predict expand on every reachable shape. S-exposed *can*
-discriminate — but only on shapes with a later `sep 0` render, and §3's void clause (as originally
-written) removed exactly those. §3 is narrowed below; even narrowed, the discriminating shapes are
-the ones the exogeneity design exists to suppress, so the honest number stays at or near zero.
+**Corrected 2026-08-28 STOP fire (Theseus, Round 112 §3). The number is not 0 of 10.** As first
+written this section reported 0, computed under the void clause **as originally written** — the same
+commit that added this section narrowed that clause in §3 below, and the number was not recomputed.
+Under the operative clause **nothing in S-exposed is voided**: voiding requires an *exposure*
+exogeneity violation (`sep >= 1` in S-unexposed, or a second distinct productive neighbourhood), and
+a `rows=0` miss is neither. All ten discriminating shapes survive, flagged `sequenceEndogenous`.
+
+The superseded sentence, quoted so the change is visible: *"§3 is narrowed below; even narrowed, the
+discriminating shapes are the ones the exogeneity design exists to suppress, so the honest number
+stays at or near zero."* That was an intuition standing where a count belongs — the substitution rule
+12 exists to prevent — and the recomputation, not the reasoning, is what caught it.
+
+**S-unexposed's 0 is untouched and was never in dispute:** no render in it ever carries `sep >= 1`,
+so all three rivals predict expand on every reachable shape. It is guaranteed by geometry rather than
+by an exclusion clause. That is the durable half of the original claim.
+
+**The operative pre-spend disclosure:**
+
+> All 10 of S-exposed's discriminating shapes survive the operative clause; S-unexposed discriminates
+> on nothing. Whether runs *land* on the discriminating shapes turns on the second-query rate — in a
+> non-voided S-exposed run only one neighbourhood is productive, so any second query is unproductive,
+> renders `sep 0`, and lands on a discriminating shape. That rate is **10/10 in the only corpus
+> available** (Round 112 §4) and **undetermined for S's one-target geometry**, since the Q/R prompts
+> present two search targets and S-exposed presents one. Every discriminating run carries
+> `sequenceEndogenous: true`, so any rival comparison drawn from this arm is flagged evidence. Seven
+> of the ten shapes are additionally ambiguous on `seps` alone (a later `sep >= 1` is a permitted
+> repeat or a voiding second neighbourhood, and the sep sequence does not say which).
+
+Flagged, caveated, resting on an untransferred base rate — but not zero.
+
+*Recompute verified by `scripts/verify-rule-discrimination-from-artifacts.mjs`. Note that
+`scripts/verify-rule-discrimination.mjs` still computes the superseded strict number and prints PASS
+next to it; read its arm-S section as historical.*
 
 **Consequence for what this arm claims.** Two questions were being run together and are now split:
 
 - **Q1 — does exposure drive suppression at all?** The registered rule against the null. **Arm S
   answers this**, and §2's numeric predictions are predictions about Q1.
-- **Q2 — which of the three exposure-reading rules is right?** **Arm S does not answer this, by
-  construction.** Making the search order exogenous removes the position variation that the ordinal
-  and recency rules read; there is nothing left for them to be wrong about.
+- **Q2 — which of the three exposure-reading rules is right?** **Arm S answers this weakly and only
+  on flagged runs** *(amended 2026-08-28, Round 112 §3/§5; as first written this read "does not
+  answer this, by construction")*. Making the search order exogenous is in real tension with rules
+  that read position — Round 111 §4's argument for that is correct and stands — but the tension is
+  **partial, not total**. Discrimination survives on any run where the model issues a second query,
+  and every such run is flagged `sequenceEndogenous`.
 
-This is a downward revision of the arm's advertised value, entered before any GO. A result from arm
-S must not be reported as evidence for the ordinal-free rule *over its rivals* — only as evidence
-about exposure versus no exposure. Round 111 §6 sketches, and does not propose, what a Q2 arm would
-require.
+This remains a downward revision of the arm's advertised value relative to Round 109, entered before
+any GO. A result from arm S must not be reported as evidence for the ordinal-free rule *over its
+rivals* **unless** the flagged discriminating runs are reported with their flag, their count, and the
+`seps`-ambiguity caveat above. Round 111 §6 sketches, and does not propose, what a dedicated Q2 arm
+would require — and that sketch was priced against an arm S with *zero* Q2 power, so its motivation
+needs redoing before arm T is argued for (Round 112 §7).
 
 **Scoring gap, stated so no seat silently defaults it.** The ordinal rule reads *call 2*. A one-call
-run has no call 2, so the ordinal rule is **`undefined`** on it — not "expand", not "suppress". One
-call is the *modal expected shape* in S-exposed, since only one query is productive. Record such
-runs as `ordinal: undefined`. The registered ordinal-free rule reads no position and is unaffected;
+run has no call 2, so the ordinal rule is **`undefined`** on it — not "expand", not "suppress".
+Record such runs as `ordinal: undefined`. *(Amended 2026-08-28, Round 112 §4: this previously called
+one call "the modal expected shape in S-exposed, since only one query is productive". The gap is
+real; the modal claim is not supported — **0 of 10** live runs issued only one search, the minimum
+was two, and no run ever repeated a query. Treat the one-call shape as possible and unquantified.)* The registered ordinal-free rule reads no position and is unaffected;
 that is a property it happens to have, not a virtue this design was built to reward.
 
 ---
