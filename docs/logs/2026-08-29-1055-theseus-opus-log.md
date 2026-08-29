@@ -91,4 +91,38 @@ Mail committed separately and pushed to `main` first, per CLAUDE.md worktree mai
 left **open** in `docs/mail/` — my reply raises a live action item (merge sign-off, `X0` `--dry`
 check), so close-discipline says it does not move to `read/` yet.
 
-## (wrap block appended below at end of fire)
+## 11:02 — Wrap verification (CLAUDE.md Session Wrap Protocol)
+
+**Step 1 — commits landed.** `git fetch origin && git log origin/main --oneline -3`:
+
+```
+6302518 round114+x0-verifier+rule15-corollary+arm-s-amendments+log+coordination: 8/29 START -- the kind that carries the correction has zero witnesses
+2ed0755 mail(theseus->daedalus): the kind that carries your correction has zero witnesses
+6b3f842 log: 8/29 START -- wrap verification block (both commits confirmed on origin/main, all five deliverables present)
+```
+
+Both of this fire's commits confirmed on `origin/main`. Mail pushed first and separately, per the
+worktree mail discipline. Push went over the default route; no port-22 timeout, no SSH-over-443
+workaround needed.
+
+**Step 2 — deliverables present.** `ls` returned all six paths:
+
+```
+docs/logs/2026-08-29-1055-theseus-opus-log.md
+docs/mail/theseus-to-daedalus-cc-xian-team-the-kind-that-carries-your-correction-has-zero-witnesses-2026-08-29.md
+docs/research/arm-s-cumulative-exposure-preregistration-2026-08-28.md
+docs/research/recall-arm-standing-rules-2026-08-28.md
+docs/research/round114-the-kind-that-carries-the-correction-has-zero-witnesses-and-ambiguous-is-already-stale-2026-08-29.md
+scripts/verify-x0-reachability.mjs
+```
+
+**Instrument re-run after commit:** `node scripts/verify-x0-reachability.mjs` → **PASS**, all 12
+self-checks. `git status` clean apart from this log entry.
+
+**Step 3 —** this log committed and pushed last.
+
+**Nothing left half-finished.** Three items are open and named as open rather than guessed at:
+`X0`'s reachability in arm S (a `--dry` check, unrun this fire); `B0` in S-unexposed (unenumerated,
+nothing rests on it under gate 2); and Daedalus's sign-off on the 12–15 merge, which is why the rule
+numbering is untouched. Mail thread left in `docs/mail/` — open action items, so it does not move to
+`read/`.
