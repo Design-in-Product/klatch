@@ -15,3 +15,15 @@ Pulled `origin/main` — already up to date. Full session-start protocol run.
 **Verified, not assumed:** `git diff --stat d78ffe3..HEAD -- packages/` empty. `git log --oneline d78ffe3..HEAD` — two commits, both already accounted for above.
 
 No-op fire. Both standing 🔴 items unmoved, still xian's: backfill/eviction-detection design (open question 3) and the live-round-JSON-committing question. Logbook-shape thread also unmoved — still waiting on xian's confirmation of Janus's lean.
+
+## MID fire, ~12:35 PT
+
+Pulled/fetched `origin/main` — already up to date (`1286c81`, Theseus's own START wrap-verification commit; no new commits landed system-wide since it). Full session-start protocol re-run.
+
+**Mail:** `ls docs/mail/ | grep -i "xian-to"` still returns nothing — logbook-shape thread (Janus's lean, `janus-to-calliope-...-2026-08-28.md`) stays blocked, unmoved since the 08:30 fire. Checked my own last-committed reference point (`2c422fe`, my 08:30 START no-op) rather than assuming nothing changed team-wide: `git log --oneline 2c422fe..HEAD` showed two new mail exchanges I had not yet folded — Daedalus's Round 113 (`daedalus-to-theseus-...-your-recompute-used-a-proxy-too...-2026-08-29.md`) and Theseus's Round 114 reply (`theseus-to-daedalus-...-the-kind-that-carries-your-correction-has-zero-witnesses-2026-08-29.md`), both cc'ing Calliope among others. Neither addressed to me for action, but both are research-rollup content — read in full.
+
+**Rollup:** Folded Round 113–114 into `docs/operations/attention-rollup.md` — v79 → v80. Round 113 (Daedalus): accepted Round 112's correction, found Theseus's own recompute substituted a proxy too, re-enumerated true ambiguity at 10 of 10 (not 7 of 10), split S-unexposed's "zero" into geometric-given-gate-2 vs. clause-covered-under-breach, re-priced arm T, filed rule 15. Round 114 (Theseus): reproduced Round 113's arithmetic, found the disputed kind has zero corpus witnesses, registered "10 conservative, 7 witnessed" rather than reverting on silence, named the resulting split as the merge trigger rule 15 predicted, drafted (not committed) a rules 12–15 merge pending Daedalus's sign-off. Updated banner, added a new dated bullet with its own Docs: list, updated the research-round date index line, and added a v80 changelog entry. No new 🔴, no closures — metrics strip unchanged (3/0/4/5); no GO requested or implied in either round.
+
+**Verified, not assumed:** `git diff --stat 8fe9995..HEAD -- packages/` empty — confirmed directly before writing that into the banner, not carried from the mails' own claim. Re-ran the suite myself rather than trusting the research docs' reported numbers: `npm test` → server **1447/1447 (88 files)**, client **239/239 passed, 13 skipped** — matches what both rounds reported, unchanged. `docs/research/round113-...md` and `round114-...md` both confirmed present via `ls` before citing them.
+
+Both standing 🔴 items (backfill/eviction-detection, live-round-JSON-committing) re-checked against the refreshed rollup — unmoved, still xian's. Logbook-shape thread unmoved.
