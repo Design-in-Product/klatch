@@ -21,7 +21,7 @@ into a prediction. If arm S is never authorised, this document still has value: 
 that the rule was fixed before the data, so no later seat has to take my word for the ordering.
 
 **The docblock is not this file.** Standing rule 5 (de-stale every field a reader sees) says the
-registration has to travel into the operative fields. If arm S is ever built, §2 and §3 below must
+registration has to travel into the operative fields. If arm S is ever built, §2, **§2a** and §3 below must
 be copied **verbatim** into (a) the arm entry's `expectation` string in `scripts/probe-recall-tool.mjs`
 and (b) the file docblock, and the authorisation line must be written at the same time — not after.
 Standing rule 3 and Round 106 §4 are why: `expectation` is the field that prints into every artifact.
@@ -87,6 +87,46 @@ above are reported alongside; they do not replace the registered one.
 
 ---
 
+## 2a. Rule-12 disclosure — this arm distinguishes the rivals on **zero** runs
+
+*Added 2026-08-28 (STOP fire) under standing rule 12, before any authorisation. Derivation and
+output: Round 111 §3; verifier `scripts/verify-rule-discrimination.mjs`.*
+
+Rule 12's second corollary requires a proposed arm to state, before the spend, on how many of its
+runs the rivals will actually disagree. Enumerating the run shapes each cell can produce:
+
+| cell | shapes reachable | shapes the rivals split on | surviving §3's void clause |
+|---|---|---|---|
+| **S-unexposed** | 4 | **0** (guaranteed by geometry) | 0 |
+| **S-exposed** | 15 | 10 | **0** |
+
+**The number is 0 of 10 runs.** S-unexposed cannot discriminate because no render in it ever carries
+`sep >= 1`, so all three rivals predict expand on every reachable shape. S-exposed *can*
+discriminate — but only on shapes with a later `sep 0` render, and §3's void clause (as originally
+written) removed exactly those. §3 is narrowed below; even narrowed, the discriminating shapes are
+the ones the exogeneity design exists to suppress, so the honest number stays at or near zero.
+
+**Consequence for what this arm claims.** Two questions were being run together and are now split:
+
+- **Q1 — does exposure drive suppression at all?** The registered rule against the null. **Arm S
+  answers this**, and §2's numeric predictions are predictions about Q1.
+- **Q2 — which of the three exposure-reading rules is right?** **Arm S does not answer this, by
+  construction.** Making the search order exogenous removes the position variation that the ordinal
+  and recency rules read; there is nothing left for them to be wrong about.
+
+This is a downward revision of the arm's advertised value, entered before any GO. A result from arm
+S must not be reported as evidence for the ordinal-free rule *over its rivals* — only as evidence
+about exposure versus no exposure. Round 111 §6 sketches, and does not propose, what a Q2 arm would
+require.
+
+**Scoring gap, stated so no seat silently defaults it.** The ordinal rule reads *call 2*. A one-call
+run has no call 2, so the ordinal rule is **`undefined`** on it — not "expand", not "suppress". One
+call is the *modal expected shape* in S-exposed, since only one query is productive. Record such
+runs as `ordinal: undefined`. The registered ordinal-free rule reads no position and is unaffected;
+that is a property it happens to have, not a virtue this design was built to reward.
+
+---
+
 ## 3. The validity gate, checked before spending
 
 Pre-spend on `--dry`, per cell, in the structural check — not after the live call:
@@ -102,9 +142,32 @@ Pre-spend on `--dry`, per cell, in the structural check — not after the live c
    the tool — the four preconditions N1 recorded 5/5 (Round 63 §3).
 
 **Recorded per run whether or not it bears on the DV** (Round 106 §4's hazard, made operative):
-`calls`, the full ordered query list, and `excerptSeparators` on every render. If the model issues an
-unproductive second query and the run still shows two renders, the exogeneity claim has failed for
-that run — **record it and void the run; do not re-score it.**
+`calls`, the full ordered query list, and `excerptSeparators` on every render.
+
+**The void clause, narrowed and split** *(amended 2026-08-28 STOP fire; Round 111 §3 and §5. The
+original read: "If the model issues an unproductive second query and the run still shows two
+renders, the exogeneity claim has failed for that run — record it and void the run; do not re-score
+it." That conflated two different exogeneity claims and, under the strict reading, voided every run
+on which the rival rules disagree. The text is amended, not deleted, and the original is quoted here
+so the change is visible.)*
+
+Two exogeneity claims, and only one of them is load-bearing for this arm:
+
+1. **Exposure exogeneity — load-bearing. Violation voids the run.** The cell must determine whether
+   the run was exposed. Void if a render carrying `sep >= 1` appears in **S-unexposed**, or if a
+   second *distinct productive neighbourhood* renders in either cell. Either means the run is not in
+   the cell it was assigned to, and the registered rule's input is corrupt. Record and void; do not
+   re-score.
+2. **Sequence exogeneity — not load-bearing. Violation is recorded, not voided.** A `rows=0` miss
+   adds a null render (`sep 0`) without changing which neighbourhoods the model saw — exposure is
+   untouched. Such runs are **scored normally under the registered rule** and flagged
+   `sequenceEndogenous: true`. They are the only runs on which the ordinal and recency rivals can
+   depart from the registered rule, so voiding them would delete the arm's entire (already
+   near-zero) discriminating power — see §2a. Any rival-comparison drawn from a flagged run carries
+   the flag with it.
+
+**Per-run scoring record:** `{ cell, seps[], expanded, ordinal, free, recency, sequenceEndogenous,
+voided, voidReason }`, with `ordinal: "undefined"` written literally for one-call runs (§2a).
 
 ---
 
@@ -127,6 +190,13 @@ it, because a null contrast would be confounded with the geometry difference.
 **My read:** option B is the right first cut *if* the appetite is for a cheap falsification attempt,
 because the informative cell is the exposed one — the unexposed prediction is the one already
 supported by 5/5 at another geometry. If the appetite is for a result worth citing, option A.
+
+**Amended 2026-08-28 (STOP fire), and it moves option A down.** §2a establishes that neither option
+distinguishes the registered rule from its rivals — the rule-12 number is zero either way. Option A's
+advantage was "a result worth citing"; what it buys is a **clean within-arm contrast on Q1**, not a
+verdict among the three rules. That is still worth something and it is less than the earlier phrasing
+implied. If the appetite is specifically for Q2, **neither option delivers it** and the honest answer
+is that no arm currently designed does.
 
 ---
 

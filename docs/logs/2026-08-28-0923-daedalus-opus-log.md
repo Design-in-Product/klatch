@@ -234,3 +234,106 @@ docs/logs/2026-08-28-0923-daedalus-opus-log.md                            12002
 
 **Nothing claimed as delivered** — the wrapper owns delivery; the two push results above are what I
 observed.
+
+---
+
+## 17:17 PT — STOP fire opens: Theseus filed a memo at 14:51 with a question aimed at my arm
+
+Session-start protocol run: `git log` (worktree synced to `origin/main`, clean), COORDINATION.md
+read, `docs/mail/` listed, cross-pollination brief re-read (`1ad3f5c`, unchanged since the MID fire).
+
+New since my 13:25 commits: three from Theseus (`a3a9bb6` mail, `598f8c7` Round 110 + rule 12 +
+Round 106 caption fix, `84a434b` his wrap block) and one from Calliope (`41df4eb`, SWEEP no-op).
+Mail addressed to me, read immediately per the mail rule: `theseus-to-daedalus-…-the-q-half-was-on-
+my-seat-and-your-rule-is-separated-by-three-runs-2026-08-28.md`.
+
+Its §6 second corollary is the actionable item, and he explicitly left it open:
+
+> "…the question I would want answered in the same breath is how many of its ten runs the ordinal,
+> ordinal-free and exhaustion rules would split on. **I have not answered that question.**"
+
+That is a question about *my* pre-registration. Answering it in the fire that read the memo.
+
+## 17:35 PT — I built the verifier because I did not trust my own hand-derivation, and I was right not to
+
+`scripts/verify-rule-discrimination.mjs`, committed and runnable. Encodes the three rival rules as
+functions over a run's ordered `excerptSeparators` sequence, scores the ten live runs, computes the
+disagreeing subset, and enumerates the run shapes a *proposed* arm can produce. 13 self-checks
+(counted: `node scripts/verify-rule-discrimination.mjs | grep -c '^  ok  \|^  FAIL'` → 13), exit 1
+on any failure.
+
+**His numbers reproduce.** Ordinal 7/10, free 9/10, recency 8/10, misses exactly where he has them,
+disagreeing set exactly `R L1, R L2, R L5`. Round 110 §3 holds on this seat by arithmetic.
+
+**Class label, and it is not optional here.** The sep-sequences are transcribed from the committed
+record, not read from artifacts. `ls .testdata/recall-probe-*.json` this fire → **6 files**, none
+of them Q or R: `D819-M`, `D819-N1`, `R93L-L`, `R93M-M`, `R93N1-N1`, `R93Q-Q`. I checked the
+arithmetic; I could not check the transcription; the verifier's header names the source per run.
+Round 106 §4's caption fix I *could* check — confirmed in tree at `598f8c7`, rows unchanged.
+
+**The verifier caught me.** My hand-derivation said the unexposed cell had 0 discriminating shapes;
+the first run said 1. The cause was mine: I had counted a one-call run as *discriminating* because
+the ordinal rule returns `undefined` on it (no call 2 to read) and `undefined` is a distinct value.
+That is a **scoring gap**, not evidence, and collapsing the two inflates exactly the number rule 12
+exists to deflate. Split `unscoreable` from `discriminates`, re-ran, all 13 green. Writing this down
+because the fix arrived from the instrument and not from care — which is the whole argument for
+building the instrument.
+
+## 17:50 PT — the answer is zero, and my own void clause is why
+
+**S-unexposed: 4 shapes reachable, 0 discriminating — guaranteed, not estimated.** Gate 2 requires
+no query produce `sep >= 1`, so every render is `sep 0`, so all three rivals predict expand on every
+shape. A fourth non-discriminating corpus, alongside Theseus's Q and N1.
+
+**S-exposed: 15 shapes, 10 discriminate, 0 survive §3's void clause.** A `rows=0` search *does*
+render — his own Q L3 call 2 is the printed proof (`rows=0 nb=0 offered=[(none)] sep=0`) — so
+*"void any run where an unproductive second query still shows two renders"* fires on precisely the
+shapes with a later `sep 0` render, which is precisely where ordinal and recency depart from
+ordinal-free. **The exclusion rule was aimed with precision at the arm's own evidence.**
+
+Rule-12 number for arm S option A as registered: **0 of 10.**
+
+Why, and it is not a slip: the order-endogeneity arm S removes is the same variation that separates
+the rules. Ordinal reads a position, recency reads a position, ordinal-free reads none. Fix position
+by construction and the position-reading rules become **unfalsifiable, not wrong**. Q1 (*does
+exposure drive anything*) and Q2 (*which exposure-reading rule is right*) are different questions and
+my Round 109 §3 ran them together. Arm S is a Q1 arm.
+
+Two refinements to his three-run count fell out, one each way: the three runs are **two
+configurations** (R L1 and R L5 are sep-identical — one shape twice, not two observations), and
+**ordinal vs recency is separated by exactly one run**, R L2. The elided run carries the falsification
+pressure on my rule *and* the entire basis for preferring either of his two over each other.
+
+## 18:00 PT — amended before the GO, not after, and rule 13 is against my own clause
+
+Pre-registration amended in three places. New **§2a**: the 0-of-10 number, the Q1/Q2 split, stated
+as a **downward revision of the arm's advertised value** — a result from arm S must not be reported
+as evidence for the ordinal-free rule *over its rivals*. **§4** re-priced the same direction: option
+A buys a clean Q1 contrast, not a verdict among the rules; if the appetite is Q2, no currently
+designed arm delivers it. **§3's void clause narrowed and split**, with the original quoted in place
+so the change is visible — exposure exogeneity is load-bearing and voids a run; sequence exogeneity
+is not and only flags it (`sequenceEndogenous: true`). One predicate had been enforcing two claims.
+The one-call scoring gap is now written as `undefined` rather than defaulted.
+
+The registered rule, its predictions and its falsifier are **unchanged**. Round 104 §3 binds: this
+is a finding about discriminating power and does not license re-registering.
+
+**Standing rule 13**, provenanced to his rule 12 and to my own §3: *check the design's exclusion
+clauses against its discriminating shapes, before the spend.* The argument is that exclusions exist
+to remove **contaminated** runs and contamination is usually the same thing as **variation** — so
+the runs a design most wants to throw away are frequently the only ones carrying information about
+which hypothesis is right, and nothing warns you, because every clause is individually defensible.
+
+Round 111 §6 sketches a Q2 arm for contrast (three forced-sequence cells, 15/15 against arm S's
+0/10) and I flagged it myself as retrofit-adjacent — T1 is R L1/L5's shape, T2 is R L2's. Four
+things it does not establish are listed there. **Sketch, not a proposal.**
+
+**No GO, none implied, nothing here asks for one — including for arm S**, which this fire made a
+*weaker* buy than it looked this morning. That is the correct direction for a disclosure to move a
+decision.
+
+**Mail closed:** his inbound and my prior outbound both `git mv`'d to `docs/mail/read/`. My new memo
+stays in `docs/mail/` as the open thread. Committed separately and pushed to `main` first per the
+worktree mail rule.
+
+**Zero API spend, zero model calls, zero live runs this fire. `packages/` untouched.**

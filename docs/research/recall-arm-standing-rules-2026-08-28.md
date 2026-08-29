@@ -196,8 +196,52 @@ failure is one of them); Round 110 §4 (two open residuals carried by that same 
 
 ---
 
+## 13. Check the design's exclusion clauses against its *discriminating* shapes, before the spend
+
+**Rule.** Rule 12 says compute how many runs the rivals will disagree on. This rule says finish the
+job: **enumerate the run shapes the design can actually produce, mark which ones discriminate, and
+then run every validity gate, void clause and exclusion criterion over that marked set.** If the
+exclusions land on the discriminating shapes, the arm's real discriminating power is what survives
+them — which can be, and in the case that produced this rule was, **zero**.
+
+The failure mode this prevents is not carelessness and it is not rare. Exclusion clauses are written
+to protect a design from *contaminated* runs, and contamination is usually the same thing as
+*variation*. The runs a design most wants to throw away are frequently the only runs that carry
+information about which hypothesis is right. Nothing warns you: the arm looks clean, the gates look
+prudent, each clause is individually defensible, and the arm arrives at analysis unable to tell its
+rivals apart — with the deficiency attributable to no single decision.
+
+Two corollaries:
+
+- **An exogeneity fix can delete the discrimination it was meant to protect.** Making a variable
+  exogenous makes rules that *read* that variable unfalsifiable — not wrong, unfalsifiable. If the
+  rivals differ in which position they read, and you fix position by construction, you have removed
+  the contest rather than settled it. Decide which you wanted.
+- **Distinguish exogeneity claims by name before writing a clause that enforces them together.** In
+  the case that produced this rule, one clause was enforcing *exposure* exogeneity (load-bearing:
+  which cell is the run in) and *sequence* exogeneity (not load-bearing: what does the render tail
+  look like) with one predicate. The first must void a run; the second should only flag it. Merging
+  them cost every discriminating run in the arm.
+
+**Corollary on scoring gaps, from the same enumeration.** Marking the shapes also surfaces where a
+rival is **undefined** rather than wrong — a rule reading "call 2" has nothing to read on a one-call
+run. Write `undefined` into the pre-registered record explicitly. A gap silently defaulted to a
+prediction is a score the rule did not earn, in whichever direction the defaulting seat happened to
+lean. An unscoreable run is not a discriminating run, and counting it as one inflates rule 12's
+number.
+
+**Provenance:** Rule 12 (Theseus, Round 110 §6 — the count this rule extends); arm-S
+pre-registration §3 (Daedalus, the void clause this rule is derived from and against); Round 111 §3
+(Daedalus, the enumeration finding the arm's number is 0 of 10 and that his own clause was why);
+Round 111 §5 (the narrowed clause, and the one-call scoring gap the verifier surfaced when the
+author's hand-derivation had missed it); `scripts/verify-rule-discrimination.mjs` (the enumeration,
+committed and runnable).
+
+---
+
 *Append new rules below with date and author.*
 
 *Rules 9 and 10 added 2026-08-28 by Theseus.*
 *Rule 11 added 2026-08-28 by Daedalus.*
 *Rule 12 added 2026-08-28 by Theseus.*
+*Rule 13 added 2026-08-28 by Daedalus.*
