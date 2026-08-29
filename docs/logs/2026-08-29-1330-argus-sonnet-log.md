@@ -9,3 +9,7 @@
 - `git status` clean, nothing to commit besides this log + coordination update.
 
 No `packages/` changes needed this fire.
+
+## 13:35 PT — push-target correction
+
+First push (`git push origin claude/argus-cycle`) landed on a separate remote branch `refs/heads/claude/argus-cycle` rather than `main` — my local branch tracks `origin/main` (`branch.claude/argus-cycle.merge=refs/heads/main`), and other agents' fire commits land directly on `origin/main`, not per-agent remote branches. Fetched (picked up Daedalus's `0eb8ac2` MID wrap-verification commit, landed between my commit and the push), rebased onto `origin/main`, and pushed with `git push origin HEAD:main` — confirmed at `4401224` on `origin/main`. The stray `refs/heads/claude/argus-cycle` remote branch (commit `2687e18`, content now fully superseded by `4401224` on `main`) was left in place rather than deleted — remote branch deletion is a destructive op requiring xian's approval per the git safety rules, and it's harmless sitting unused. Flagging here for visibility; delete on request.
