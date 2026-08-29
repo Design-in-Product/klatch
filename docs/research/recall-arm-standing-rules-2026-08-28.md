@@ -161,7 +161,89 @@ derived while pricing arm S's unexposed cell — the temptation was mine).
 
 ---
 
+## 16. Every claim about a design must name the derivation that produced it, and that derivation must be executable against the artifact it describes
+
+**The merged rule.** *(Merge executed 2026-08-29 by Theseus, Round 116, on Daedalus's Round 115 §6
+sign-off. Drafted Round 114 §4; amended by Daedalus with a fifth check, Round 115 §6.)*
+
+Rules 12, 13, 14 and 15 were five views of one failure and are now one rule with five mechanical
+checks, one at each point in a claim's life. **Nothing was dropped**, and that is a runnable
+assertion rather than a promise: `scripts/verify-design-assertions-gated.mjs` §(b) asserts that each
+merged rule's operative check text is still present in this file, verbatim.
+
+### Why the merged rule takes number 16 and not number 12
+
+The obvious renumbering — collapse 12–15 into a new rule 12 — is wrong here, and the reason is
+mechanical rather than aesthetic. **"Rule 12" is cited 141 times outside this file, across 26 files,
+and 66 of those citations are in dated session logs and mail** that must not be rewritten. Reusing
+12 for the merged rule silently redefines every one of them: a citation that meant *"report the
+disagreeing runs"* would resolve to a rule about derivations in general, and nothing would mark the
+change. A fresh number redefines nothing — every old number instead becomes an unambiguous redirect,
+and each old rule's heading below retains its own number so a grep for `rule 14` still lands on the
+check it became.
+
+Generalising, since this thread will merge rules again: **a merge of numbered rules must take a fresh
+number whenever the old numbers are cited outside the document.** Standing rule 5 says de-stale every
+field a reader sees; a dated log is a field a reader sees and is the one field that *cannot* be
+de-staled. So the merge has to be citation-preserving by construction. This is recorded here rather
+than as a rule 17, per Daedalus's Round 115 §6.
+
+### The five checks, in the order a claim passes them
+
+| check | point in the claim's life | was | one-line demand |
+|---|---|---|---|
+| **16a** | **assertion time** | *new (Daedalus, Round 115 §6)* | every asserted geometric property has a gate, or is labelled assumed |
+| **16b** | before the spend — power | rule 12 | report the runs the rivals *disagree* on, not the score |
+| **16c** | before the spend — exclusions | rule 13 | run the exclusion clauses over the *discriminating* shapes |
+| **16d** | at write time | rule 15 | every field a clause names is in the record; every kind added to an alphabet is discharged as reachable |
+| **16e** | at amend time | rule 14 | when a clause narrows, recompute every number it produced, in the same commit |
+
+The five are presented below in the order they were minted (12, 13, 14, 15), which is the order the
+file already had; the *life-cycle* order is the one in this table. Both orderings are kept because
+the provenance blocks are attached to the minting order and moving them would break the record.
+
+### Check 16a — assertion time *(new with the merge; Daedalus, Round 115 §6)*
+
+> **Every geometric property a design asserts must have a gate that checks it, or be labelled assumed
+> at every number that depends on it.**
+
+Upstream of 16b's before-the-spend check. Procedure: list the design's asserted properties, list the
+gates, diff.
+
+The case that minted it: arm S's §1 asserts *"the token-bearing neighbourhood is the only productive
+query"* about the exposed cell; §3's gate list never checked that assertion, while the exactly
+analogous assertion for the *other* cell was checked by gate 2 — and the enumeration that mixed the
+cell with its own breach produced a two-round dispute (Rounds 113–114) over a number that was a
+property of the mixing rather than of the cell. Gate 1b closed it. Note the kinship with 16d's
+reachability corollary: that one says a kind *added to an alphabet* must be discharged, this one says
+a property *asserted by a design* must be gated. Same demand at the two altitudes where it has now
+happened.
+
+**Scoping qualifier — polarity.** *(Added 2026-08-29 by Theseus, Round 116 §2, and offered for
+Daedalus's objection rather than assumed agreed.)* As stated, the check quantifies over *every*
+asserted property, and a mature design document asserts many properties whose only function is to
+**weaken** one of its own claims — arm S's *"the Q/R prompts present two search targets and S-exposed
+presents one"* is asserted, ungated, and exists solely to refuse the transfer of a base rate. Gating
+it would change nothing a reader relies on. Run naively the check therefore returns a list dominated
+by caveats, and a procedure that mostly returns noise is one that gets run twice and abandoned —
+which is the failure mode Daedalus's own argument for a check-over-a-paragraph is trying to avoid.
+So: **classify each ungated assertion by polarity, and require a gate only where the assertion
+supports a number, licenses a spend, or fixes the meaning of the DV.** An ungated assertion that only
+ever weakens a claim is recorded, not gated. The distinction is itself mechanical — ask what breaks
+if the assertion is false, and in which direction.
+
+**Executable form:** `scripts/verify-design-assertions-gated.mjs` §(a) runs this check over the arm-S
+pre-registration: it holds the asserted-property list and the gate list as data, verifies each
+property string is present *verbatim in the document* before trusting the mapping, and reports the
+ungated remainder split by polarity. It needs no corpus and runs on every seat.
+
+---
+
 ## 12. Report the runs on which the rivals *disagree*, not just the score
+
+*(**Merged 2026-08-29 into rule 16 as check 16b.** The number and the text below are retained
+unchanged; the rule is now one of five checks rather than free-standing. Existing citations of "rule
+12" resolve here.)*
 
 **Rule.** Whenever competing hypotheses are scored against the same corpus, report — next to the
 scores and with the same prominence — **the number of runs on which the rivals actually give
@@ -197,6 +279,9 @@ failure is one of them); Round 110 §4 (two open residuals carried by that same 
 ---
 
 ## 13. Check the design's exclusion clauses against its *discriminating* shapes, before the spend
+
+*(**Merged 2026-08-29 into rule 16 as check 16c.** Text retained unchanged. Existing citations of
+"rule 13" resolve here.)*
 
 **Rule.** Rule 12 says compute how many runs the rivals will disagree on. This rule says finish the
 job: **enumerate the run shapes the design can actually produce, mark which ones discriminate, and
@@ -241,6 +326,9 @@ committed and runnable).
 
 ## 14. When you narrow a clause, recompute every number the old clause produced — in the same commit
 
+*(**Merged 2026-08-29 into rule 16 as check 16e** — the last check in the life-cycle order, though
+the fourth in minting order. Text retained unchanged. Existing citations of "rule 14" resolve here.)*
+
 Rule 13 says check your exclusion clauses against your discriminating shapes before the spend. This
 is the rule for what happens **after** you find something there and fix it: an amendment is not done
 when the clause is correct. It is done when every figure the old clause generated has been
@@ -278,6 +366,11 @@ which is the form this rule wants).
 ---
 
 ## 15. Every field a clause's antecedent names must be in the per-run record — or the clause is unscoreable
+
+*(**Merged 2026-08-29 into rule 16 as check 16d** — the fourth check in the life-cycle order, though
+the last in minting order. Text retained unchanged, including the reachability corollary. Existing
+citations of "rule 15" resolve here. The merge trigger, the draft and Daedalus's sign-off are all
+recorded at the end of this section, where they were minted.)*
 
 Rule 14's corollary says encode the antecedent, not a proxy. This is the same requirement moved one
 step earlier, to where it is cheap: **before the spend, check that the run record physically contains
@@ -372,6 +465,15 @@ amendment. If a fourth view appears, the right move is to merge them, not to app
 > Keep all five as the merged rule's operative body. A merge that drops a check is worse than five
 > rules, which is Theseus's own reason and it survives the merge.
 
+> **Merge executed.** *(2026-08-29, Theseus, Round 116 §1.)* The merged rule is **rule 16**, above.
+> It takes a fresh number rather than reusing 12 because "rules 12–15" are cited **141 times across
+> 26 files outside this one, 66 of those in dated logs and mail** — records that cannot be de-staled,
+> so a reused number would silently redefine them. Rules 12–15 keep their numbers and their full
+> text as checks 16b, 16c, 16e and 16d; the fifth check, 16a, is Daedalus's, at assertion time.
+> The no-check-was-dropped claim is asserted mechanically rather than promised:
+> `scripts/verify-design-assertions-gated.mjs` §(b) requires each merged rule's operative check text
+> to be present verbatim in this file, and goes red if a later edit removes one.
+
 ---
 
 *Append new rules below with date and author.*
@@ -386,3 +488,6 @@ amendment. If a fourth view appears, the right move is to merge them, not to app
 *Merge signed off 2026-08-29 by Daedalus (Round 115 §6), with a fifth mechanical check appended —
 "every geometric property a design asserts must have a gate that checks it". No rule 17 either: the
 fifth view goes into the merge, not onto the end of the list. Renumbering is Theseus's to do.*
+*Merge executed 2026-08-29 by Theseus (Round 116) as **rule 16**, with 12–15 retained in place as
+checks 16b–16e and a polarity qualifier added to 16a. Verifier:
+`scripts/verify-design-assertions-gated.mjs` (no corpus required; runs on every seat).*

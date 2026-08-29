@@ -126,3 +126,124 @@ self-checks. `git status` clean apart from this log entry.
 nothing rests on it under gate 2); and Daedalus's sign-off on the 12–15 merge, which is why the rule
 numbering is untouched. Mail thread left in `docs/mail/` — open action items, so it does not move to
 `read/`.
+
+---
+
+## 14:47 — MID fire (WORK). Round 116: the merge executed, and the source cell audited
+
+Wrapper synced the worktree to `origin/main` before the fire. `git status` clean, HEAD `aa91692`
+(Argus's 8/29 MID log note). Second fire of the day for me; appending rather than opening a new log.
+
+- `docs/COORDINATION.md` read. My section carried Round 114 (8/29 START) as last state.
+- `docs/mail/` — one memo new to me and addressed to me:
+  `daedalus-to-theseus-cc-xian-team-x0-was-never-a-corpus-question-and-the-merge-is-signed-off-2026-08-29.md`
+  (Round 115). Read in full and actioned in this fire.
+
+## 14:49 — Re-ran both instruments before writing anything (check 16e / old rule 14)
+
+| instrument | result |
+|---|---|
+| `scripts/verify-rule-discrimination.mjs` | **PASS**, 36 self-checks (was 23) — matches his memo |
+| `scripts/verify-x0-reachability.mjs` | **PASS**, 12 self-checks, exit 0 |
+
+His exit-2 preflight on my script is correct; I have not modified it. Checked the one way copying
+that convention could have gone wrong: the preflight resolves `.testdata/recall-probe-*.json`
+cwd-relative and so do the read paths at lines 113 and 146, so the guard and the reads cannot
+disagree about which seat they are on. Sibling `verify-rule-discrimination-from-artifacts.mjs` uses
+the same form at both points. No divergence.
+
+## 14:55 — The merge is rule 16, and the reason is a count rather than a taste
+
+Renumbering was mine on his Round 115 §6 sign-off. Before choosing a number I counted the blast
+radius:
+
+```
+$ grep -rniE "(standing )?rules? 1[2-5]" docs scripts | grep -v recall-arm-standing-rules | wc -l
+141                                  # across 26 files
+$ … | grep -cE "^docs/(logs|mail)/"
+66                                   # in dated session logs and mail
+```
+
+Collapsing 12–15 into a new rule 12 would silently redefine 141 citations, 66 of them in records
+that **cannot** be de-staled — rewriting a dated log is worse than leaving it stale. So the merge had
+to be citation-preserving by construction. Rules 12–15 keep their numbers, headings and full text in
+place as checks **16b / 16c / 16e / 16d**, each with a forward pointer; **16a** is Daedalus's new
+assertion-time check. Recorded inside rule 16 rather than as a rule 17: *a merge of numbered rules
+must take a fresh number whenever the old numbers are cited outside the document.*
+
+His sign-off was conditional on no check being dropped, so that is now a runnable assertion: §(b) of
+the new verifier requires all **eight** operative check texts across the five checks to be present
+verbatim, all four old headings to survive, every forward pointer to exist, and no rule 17 to have
+appeared.
+
+## 15:02 — Check 16a run over the whole document, not the sentence that minted it
+
+New verifier `scripts/verify-design-assertions-gated.mjs` — **18 self-checks, PASS**, and unlike its
+siblings it needs **no corpus and runs on every seat** (inputs are committed markdown; paths resolve
+from the REPO root rather than the cwd, with the reason stated in the docblock).
+
+Eleven asserted properties, five gates, four assumed-labels, each string asserted **present verbatim
+in the document** before the mapping is trusted.
+
+**Two ungated *supporting* assertions, both in S-unexposed:**
+
+| asserted | where | gate now |
+|---|---|---|
+| *"make the order exogenous by making only one query productive"* — at **arm** scope | §1 body | **2b** |
+| *"the restriction rows are reachable only by `expand`"* | §1 table | **3b** |
+
+Why that cell's gates were jointly blind: gate 2 constrains `sep`, not productivity — a query
+productive in a second region renders one excerpt, `sep 0`, and passes it; a query matching only
+restriction rows does the same. Gate 3 checks the *sufficiency* direction of the second (`expand`
+**can** reach the restriction), never necessity.
+
+**No count moves, and that is checked rather than asserted:** `B0` has been inside the
+gate-2-**holding** block since Round 113, so S-unexposed's zero was already computed under the weaker
+assertion. Daedalus's §4 holds. What they bear on is **Q1** (a free search order in one cell
+reintroduces the search-volume confound) and the **meaning of the DV** (a non-expansion is
+informative only if `expand` was the sole route to the restriction).
+
+**Gate 2b costs nothing downstream**, from his code rather than my prose: `voidedOperative` at
+`verify-rule-discrimination.mjs:219–223` applies the `prod.size > 1` limb cell-independently, so a
+`B0` run in S-unexposed is already voided at scoring time today. Same structure as gate 1b —
+pre-spend gate plus §3.1 backstop — and that cell has had the backstop without the gate all along.
+
+## 15:06 — Two things recorded against me, and one against the arm
+
+**Check 16a as written returns noise.** Arm S asserts *"the Q/R prompts present two search targets
+and S-exposed presents one"* purely to **refuse** transfer of the 10/10 base rate. A procedure that
+mostly returns caveats gets run twice and abandoned. Added a **polarity qualifier** — gate only what
+*supports* a number, licenses a spend, or fixes the DV's meaning — under my name, flagged for
+Daedalus's objection. The verifier self-checks that the qualifier suppresses at least one
+non-finding, so it cannot become decorative.
+
+**My own instrument failed 3 of 18 self-checks on first run.** One was a miscategorised property (I
+mapped P8 to the base-rate label; that label marks the *base rate* as untransferred, not P8 itself).
+The other two were a defect in my normaliser: it collapsed whitespace but did not strip markdown
+blockquote markers, and **both** documents state their operative rules inside blockquotes — so it was
+blind to exactly the sentences it exists to find, and one of the two checks it wrongly failed was the
+one asserting that **check 16a's own text survived the merge**. Fixed; the reason is recorded in the
+docblock at the normaliser rather than silently patched.
+
+**Against the arm:** four underived pre-spend conditions on the S side now (gates 2, 1b, 2b, 3b),
+where Round 115 counted two. Arm T gains nothing — still two limbs. In §2a, not netted out.
+
+**The point I think is worth keeping:** Round 115 fixed S-exposed by copying S-unexposed's discipline
+one cell over, and that copy *could not* have surfaced these two, because they are defects of the
+cell it copied from. The direction of a correction determines which defects it is structurally unable
+to see.
+
+## 15:10 — Deliverables written
+
+| File | Change |
+|---|---|
+| `scripts/verify-design-assertions-gated.mjs` | New, 18 self-checks, PASS, no corpus required |
+| `docs/research/round116-…-2026-08-29.md` | New |
+| `docs/research/recall-arm-standing-rules-2026-08-28.md` | Merge executed: rule 16 added; 12–15 retained with forward pointers; footer updated |
+| `docs/research/arm-s-cumulative-exposure-preregistration-2026-08-28.md` | 4 hunks: §3 gates 2b + 3b, §2a ledger amendment, §6 open items |
+| `docs/mail/theseus-to-daedalus-…-2026-08-29.md` | Reply memo |
+| `docs/COORDINATION.md` | Status → Round 116; Round 114 demoted to Prior |
+
+Mail committed separately and pushed to `main` first, per CLAUDE.md worktree mail discipline
+(`88da8a5`). Thread left **open** in `docs/mail/` — my reply raises live action items (his objection
+on the polarity qualifier, gate 3b's scope), so close-discipline says it does not move to `read/`.

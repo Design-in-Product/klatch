@@ -231,6 +231,19 @@ satisfiability). Net — T's margin is two limbs rather than three, and S carrie
 §3.1 is the runtime backstop for its breach, and the backstop is only computable if the record
 carries the fields §3 now names.*
 
+*Amended again 2026-08-29 (Round 116 §2), and it moves the same way — against this arm. Running
+standing rule 16's check 16a over this whole document (list the asserted geometric properties, list
+the gates, diff) returns **two** further ungated assertions beyond the one Round 115 found, **both in
+S-unexposed**: single-productivity at arm scope (now gate 2b) and restriction-reachability-only-by-
+`expand` (now gate 3b). **No count in this section moves** — `B0` has been inside the
+gate-2-**holding** block since Round 113, so S-unexposed's zero was already computed under the weaker
+assertion and is correct as it stands. What moves is the ledger: where Round 113 counted one
+underived pre-spend condition on the S side and Round 115 counted two, there are now **four** (gate
+2's satisfiability, gate 1b's, gate 2b's, gate 3b's). Arm T's margin is unchanged at two limbs; the S
+side of that comparison is worse. Recorded here rather than netted out, per Round 115 §5's own
+accounting. Verifier: `scripts/verify-design-assertions-gated.mjs` §(a) — 18 self-checks, no corpus
+required, runs on every seat.*
+
 **Scoring gap, stated so no seat silently defaults it.** The ordinal rule reads *call 2*. A one-call
 run has no call 2, so the ordinal rule is **`undefined`** on it — not "expand", not "suppress".
 Record such runs as `ordinal: undefined`. *(Amended 2026-08-28, Round 112 §4: this previously called
@@ -262,8 +275,43 @@ Pre-spend on `--dry`, per cell, in the structural check — not after the live c
 2. **S-unexposed:** **no** query in the registered query set produces `excerptSeparators >= 1`. This
    is a claim about the geometry, so it must be checked by enumerating the set, not by observing one
    run. If any query can produce it, the cell is not exogenous.
+2b. **S-unexposed:** **no** query in the registered query set is productive in more than one
+   neighbourhood. *(Added 2026-08-29, Round 116 §2 — the exact mirror of gate 1b, in the cell gate 1b
+   was modelled on.)* §1's body states the arm's design fix as *"make the order exogenous by making
+   only one query productive"* — at **arm** scope, both cells. §1's table then realises it for
+   S-exposed only, and gate 2 constrains `sep`, not productivity: a query productive in a second
+   region renders one excerpt, so `sep 0`, so it **passes gate 2**. The kind is already in the
+   enumeration — `B0`, in the gate-2-**holding** block since Round 113 — so no number moves, and
+   that is the point: the enumeration is computed under the weaker assertion and is correct, while
+   the cell is left with the free search order the whole arm exists to remove. Not an ambiguity
+   question (Round 115 §4 disposed of that correctly and for the right reason); a **Q1** question,
+   because search volume is Round 106 §4's kin-of-the-DV hazard and a cell with two productive
+   queries invites more of it than a cell with one.
+
+   **Gate 2b adds no new mechanism — it supplies the missing pre-spend half of a backstop that
+   already exists.** §3.1's void clause voids *"if a second distinct productive neighbourhood renders
+   in **either cell**"*, and `verify-rule-discrimination.mjs:219–223` encodes exactly that: the
+   `prod.size > 1` limb is cell-independent, so a `B0` run in S-unexposed is already voided at
+   scoring time today. The structure is therefore identical to gate 1b's — pre-spend gate, §3.1
+   runtime backstop — and S-unexposed has had the backstop without the gate since the clause was
+   written. That asymmetry is what check 16a surfaces and it is why this gate is cheap to adopt:
+   nothing downstream changes.
 3. **The restriction is inside an offered address in both cells** — otherwise the DV is unreachable
    and a non-expansion means nothing (Rounds 61/62's shape).
+3b. **No query in the registered query set renders any restriction row, in either cell.** *(Added
+   2026-08-29, Round 116 §2.)* §1 asserts *"the restriction rows are reachable only by `expand`"*.
+   Gate 3 checks the **sufficiency** direction — `expand` can reach the restriction. Nothing checked
+   **necessity**, and the two existing gates in that cell are jointly blind to a breach: a query
+   matching only restriction rows renders a single excerpt, `sep 0`, passing gate 2, while gate 3 is
+   satisfied either way. This is load-bearing for the **meaning of the DV** rather than for any
+   count: the DV is *does the run issue an `expand` call*, and a non-expansion is informative only
+   if `expand` was the sole route to the restriction. If it was not, a suppressed run and a run that
+   read the restriction by query are recorded identically. **Scope note:** §1 asserts this for
+   S-unexposed only; the gate is written for both cells because the DV argument is cell-independent
+   and gate 3 is already a both-cells gate. Extending the scope is a Round 116 proposal, flagged for
+   Daedalus rather than assumed agreed — if he prefers it S-unexposed-scoped, the S-exposed analogue
+   becomes an unasserted property rather than an ungated one, which is a different and weaker
+   finding.
 4. **Carried context ACTIVE**, prompt holds the fact, prompt does not hold the marking, prompt names
    the tool — the four preconditions N1 recorded 5/5 (Round 63 §3).
 
@@ -410,6 +458,16 @@ delivers that and no arm currently designed does — that much of the sentence s
   `B0` is in-cell, has been enumerated in the gate-2-holding block since Round 113, and contributes
   0 ambiguity there (self-check). It needs no reachability discharge.
 
+- **Whether gates 2b and 3b are satisfiable jointly with gate 2, and whether either is buildable.**
+  *(Added 2026-08-29, Round 116 §2.)* Gate 2b asks that no registered query be productive in two
+  neighbourhoods; gate 3b asks that no registered query render a restriction row. Both are
+  `--dry`-checkable by enumeration, same method as gate 2, and neither has been checked because
+  neither existed until this fire. Gate 3b interacts with gate 3 in a way worth deriving before
+  spending: gate 3 requires the restriction to sit inside an **offered** address, and an offered
+  address is by construction a region the model can ask about — so 3b is a constraint on the
+  registered *query set*, not on the geometry, and may be satisfiable by query-set design alone.
+  Not derived here. **These two are the reason S now carries four underived pre-spend conditions
+  rather than two** (§2a).
 - **Whether gate 1b is satisfiable jointly with gate 1.** *(Added 2026-08-29, Round 115 §7.)* Gate 1
   requires a query reaching two regions; gate 1b requires that no query reach a third. Plausibly
   compatible — it is what the corpus geometry does — but not derived, and it is a second underived
