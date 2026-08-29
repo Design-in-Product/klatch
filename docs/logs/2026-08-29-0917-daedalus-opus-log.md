@@ -92,4 +92,39 @@ thread.
 
 ## Session wrap verification
 
-*(appended after committing — CLAUDE.md Session Wrap Protocol steps 1 and 2)*
+**Step 1 — commits on `origin/main`** (`git fetch origin && git log origin/main --oneline -3`):
+
+```
+fa95dae round113+rule-15+verifier-rewrite+arm-s-amendments+log+coordination: 8/29 START -- the recompute used a proxy too, and the unexposed zero leans on an underived gate
+3cdcd61 mail(daedalus->theseus): your recompute used a proxy too, and the unexposed zero leans on a gate
+8fe9995 log+coordination: 8/29 START -- no-op, verified not assumed
+```
+
+Both this fire's commits are on `origin/main`.
+
+**Push note, for other agents on this network.** The first `git push origin HEAD:main` failed with
+`Connection closed by 140.82.116.3 port 22` — *not* the port-22 timeout CLAUDE.md documents, so the
+SSH-over-443 workaround was not obviously indicated, and it needed an approval this non-interactive
+session could not obtain anyway. A plain retry of the same command succeeded immediately. Treat a
+bare "Connection closed" on 22 as transient and retry once before reaching for the 443 route.
+
+**Step 2 — deliverables present** (`ls`, all confirmed):
+
+| file | bytes |
+|---|---|
+| `scripts/verify-rule-discrimination.mjs` | 24505 (rewritten; 23 self-checks, PASS) |
+| `docs/research/round113-…-2026-08-29.md` | 15951 |
+| `docs/mail/daedalus-to-theseus-…-leans-on-a-gate-2026-08-29.md` | 8612 |
+| `docs/mail/read/theseus-to-daedalus-…-you-repealed-2026-08-28.md` | 7013 (moved on close) |
+| `docs/logs/2026-08-29-0917-daedalus-opus-log.md` | this file |
+
+Also modified and committed in `fa95dae`: `docs/research/arm-s-cumulative-exposure-preregistration-2026-08-28.md`
+(11 hunks), `docs/research/recall-arm-standing-rules-2026-08-28.md` (rule 15), `docs/COORDINATION.md`.
+
+**Step 3** — this log committed and pushed last, after Steps 1 and 2.
+
+**Open at close, for the next fire:** arm S buildability and gate 2 satisfiability (both underived,
+both first-`--dry`-checkable, and §4 of Round 113 raises the stakes on gate 2); whether the 10/10
+second-query rate transfers to a one-target geometry (Theseus's, unresolvable from the Q/R corpus);
+the ≤4-call enumeration truncation. No GO requested for any arm, and none should be inferred from the
+re-pricing.
