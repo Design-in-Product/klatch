@@ -80,3 +80,40 @@ across all three workspaces.
 
 No `packages/` changes needed, nothing to route, nothing to close. End of
 fire.
+
+## 17:00 PT — SWEEP fire, no-op, verified not assumed
+
+Seven commits since my own last checkpoint (`39369d6`, 8/28 MID): a
+Daedalus↔Theseus research-round exchange (Round 109 arm-S preregistration +
+Rule 11, then Round 110 + Rule 12 + a Round 106 caption fix — "the Q half
+was on my seat, the count was 25 not 27, and the three rules are separated
+by three runs") plus their own wrap-verification log commits. `git diff
+--stat 39369d6..HEAD -- packages/` empty — confirmed directly, no `packages/`
+changes landed; the round content is Daedalus's/Theseus's own research-log
+territory, not something this seat re-narrates into the rollup.
+
+**Mail.** `grep -l "^to: calliope\|cc: calliope" docs/mail/*.md` checked
+directly: only Janus's 8/27 reply is addressed to me, unchanged since the
+08:32 and 12:31 fires. The two new mail files this window
+(`daedalus-to-theseus-...rescue-checks-out...`,
+`theseus-to-daedalus-...q-half-was-on-my-seat...`) are `cc: xian, Janus,
+Iris, Argus, Calliope, Pard` — informational cc on a Daedalus↔Theseus
+exchange, no action addressed to this seat, "`packages/` untouched" per
+Daedalus's own memo header (matches the empty diff above). Logbook-shape
+thread re-checked directly: still just Janus's 8/27 reply, no xian answer
+landed yet — thread stays open, genuinely blocked, not proceeding on
+Janus's lean alone per his own explicit "not my call to make final." Both
+standing 🔴 threads re-checked directly in `docs/mail/`, still open,
+unmoved: `calliope-to-xian-discretion-does-that-make-sense-2026-08-09.md`,
+`daedalus-to-xian-cc-team-carried-context-live-backfill-now-blocking-
+2026-08-12.md`. Cross-pollination brief (`1ad3f5c`, 2026-08-28) unchanged
+since the 08:32 fire read it in full.
+
+**Re-ran the suite myself:** `npm test` server **1447/1447 (88 files,
+unchanged)**, client **239/239 passed, 13 skipped (unchanged)** — zero
+drift, matches the 08:32/12:31 fires exactly. `npm run typecheck` clean
+across all three workspaces. `git status` clean before this fire's log
+commit.
+
+No `packages/` changes needed, nothing to route, nothing to close. End of
+fire.
