@@ -87,13 +87,18 @@ above are reported alongside; they do not replace the registered one.
 
 ---
 
-## 2a. Rule-12 disclosure — S-exposed discriminates on **10 shapes, every one flagged and ambiguous**; S-unexposed on **zero**
+## 2a. Rule-12 disclosure — S-exposed discriminates on **10 shapes, every one flagged**; S-unexposed on **zero**
 
 *Added 2026-08-28 (STOP fire) under standing rule 12, before any authorisation. Heading corrected
 2026-08-29 (Round 113): it read "this arm distinguishes the rivals on **zero** runs" for a day after
 the body below was corrected away from zero — a stale headline over an amended section, which is
 the same shape as the defect rule 14 was written about, recurring in the commit that fixed it.
-Derivation and output: Round 113 §2; verifier `scripts/verify-rule-discrimination.mjs`.*
+Heading corrected **again** 2026-08-29 (Round 114 §5): it then read "10 shapes, every one flagged
+**and ambiguous**", asserting unscoped a property that the same commit's §3 record amendment had
+already removed — ambiguity is a property of adjudicating from `seps[]` alone, and the amended
+record does not. Second consecutive round of a superseded property surviving in this heading.
+Derivation and output: Round 113 §2 and Round 114 §§1–3; verifiers
+`scripts/verify-rule-discrimination.mjs` and `scripts/verify-x0-reachability.mjs`.*
 
 Rule 12's second corollary requires a proposed arm to state, before the spend, on how many of its
 runs the rivals will actually disagree. Enumerating the run shapes each cell can produce:
@@ -143,13 +148,26 @@ backstop is for. The durable claim is "geometric **given gate 2**, clause-covere
 > available** (Round 112 §4) and **undetermined for S's one-target geometry**, since the Q/R prompts
 > present two search targets and S-exposed presents one. Every discriminating run carries
 > `sequenceEndogenous: true`, so any rival comparison drawn from this arm is flagged evidence. **All
-> ten** shapes are additionally ambiguous on `seps` alone — *(corrected 2026-08-29, Round 113 §2;
-> this read "seven of the ten" for a day)*. Seven are ambiguous because a later `sep >= 1` is a
-> permitted repeat or a voiding second neighbourhood. The other three are ambiguous for the mirror
-> reason: a later `sep 0` is an unproductive miss (survives, flagged) or a **productive** second
-> neighbourhood rendering one excerpt (voids). Round 112 §3 is what establishes that productive
-> renders print `sep 0` — the correction follows from Theseus's own finding, applied to the limb his
-> recompute did not reach.
+> ten** shapes are additionally ambiguous on `seps` alone — *conservatively; **seven** is the
+> witnessed number and the other three ride on an underived assumption, see immediately below.*
+> Seven are ambiguous because a later `sep >= 1` is a permitted repeat (`E`) or a voiding second
+> neighbourhood (`X1`) — **both attested**, seven `X1`-like renders in the corpus. The other three
+> — `[1,0]`, `[1,0,0]`, `[1,0,0,0]` — are ambiguous only for the mirror reason: a later `sep 0` is
+> an unproductive miss (survives, flagged) or a **productive** second neighbourhood rendering one
+> excerpt, kind `X0` (voids). **`X0` has zero witnesses.** All 11 productive `sep 0` renders in the
+> corpus re-rendered rows already on screen; no render in the ten runs ever showed a new
+> neighbourhood at `sep 0`. Its reachability in arm S's one-target geometry is **underived** and is
+> listed in §6. The ambiguity of these three is therefore an assumption, held conservatively rather
+> than derived. Note the discriminating-shape count of **10 is invariant** across the assumption —
+> `X0` is a voiding kind and can only add voided shapes, never surviving ones.
+>
+> *(History: this read "seven of the ten" as first written 2026-08-28 (Round 112 §3); raised to
+> "all ten" 2026-08-29 (Round 113 §2) with the superseded justification "Round 112 §3 is what
+> establishes that productive renders print `sep 0` — the correction follows from Theseus's own
+> finding"; that attribution is withdrawn 2026-08-29 (Round 114 §1) — Round 112 §3 established
+> that a `sep 0` render can be productive, which is weaker than the distinct-neighbourhood
+> property `X0` needs. Ten is retained as the conservative pre-spend disclosure, not as a derived
+> count. Verifier: `scripts/verify-x0-reachability.mjs`.)*
 
 Flagged, caveated, resting on an untransferred base rate — but not zero.
 
@@ -290,8 +308,13 @@ rule from its rivals — the rule-12 number is zero either way"*, which was the 
 propagating one section downstream from the table that had already been corrected. Under the
 operative clause the ordering between the options changes, because **all of the arm's Q2 power lives
 in the exposed cell**: S-unexposed discriminates on nothing under either option, so option B — the
-exposed cell only — retains **100% of a Q2 power that is flagged, ambiguous and base-rate-dependent**
-rather than 0% of a power that did not exist. The Q1 argument is unchanged and still favours A. So
+exposed cell only — retains **100% of a Q2 power that is flagged and base-rate-dependent**
+rather than 0% of a power that did not exist. *(Amended 2026-08-29, Round 114 §5: this read
+"flagged, **ambiguous** and base-rate-dependent" for the length of one commit. The word was
+unscoped and already superseded — ambiguity is a property of adjudicating from `seps[]` alone, and
+§3's record amendment in the same commit records `rows[]`, `neighbourhoods[]` and `productive[]` so
+that no scoring seat has to. Round 113 §5 drew exactly this conclusion for arm T's margin and it did
+not propagate the two sections to here.)* The Q1 argument is unchanged and still favours A. So
 the corrected read is: **A for Q1, B loses nothing on Q2**, where the 8/28 text said Q2 was
 unavailable either way. If the appetite is specifically for a *clean* Q2 verdict, neither option
 delivers that and no arm currently designed does — that much of the sentence survives.
@@ -316,6 +339,18 @@ delivers that and no arm currently designed does — that much of the sentence s
   geometry exists in which no query renders `excerptSeparators >= 1` is **not derived here** and is
   the first thing to check on `--dry` before any code is written for real. If it does not exist, the
   unexposed cell is unbuildable and option B becomes the only form of this arm.
+- **That render kind `X0` is reachable in S-exposed.** *(Added 2026-08-29, Round 114 §1.)* `X0` — a
+  productive query rendering a **second distinct** neighbourhood as a **single** excerpt, so `sep 0`
+  — is the kind that makes `[1,0]`, `[1,0,0]` and `[1,0,0,0]` unadjudicable on `seps` alone. It has
+  **zero witnesses** in the ten-run corpus: all 11 productive `sep 0` renders re-rendered rows
+  already on screen, because the second-target token matches in both regions and so any query
+  reaching the new neighbourhood re-reaches the old one and prints two excerpts. Reaching `X0`
+  requires a registered query matching **exactly one row, in a region not yet rendered**. Whether
+  arm S's one-target geometry and registered query set admit one is **not derived here** and is a
+  `--dry`-time check, same class as the gate-2 bullet above. §2a holds the ambiguity at 10
+  conservatively rather than reverting to the witnessed 7; the discriminating count of 10 is
+  unaffected either way. The mirror kind `B0` in S-unexposed is unenumerated for the same reason and
+  matters only under a gate-2 breach.
 - **That the ordinal-free rule is true.** It is registered, not supported. Its 14/15 is a retrofit
   and stays labelled as one.
 - **N1's per-call renders as artifact-class.** They are doc-class from Round 63 §2 and permanently

@@ -307,13 +307,35 @@ inexpressible in them.
 **Provenance:** arm-S pre-registration §3 (the record schema that omitted `rows` and neighbourhood
 identity, amended 2026-08-29); Round 113 §2/§4 (the re-enumeration over render kinds, and the
 finding that all 10 discriminating sep-shapes — not 7 — are ambiguous once the alphabet can express
-the clause); Round 112 §3 (Theseus, the artifact read that made the ambiguity visible);
-`scripts/verify-rule-discrimination.mjs` (rewritten to enumerate kinds rather than seps).
+the clause); `scripts/verify-rule-discrimination.mjs` (rewritten to enumerate kinds rather than
+seps). *Provenance line corrected 2026-08-29 (Round 114 §1): it credited "Round 112 §3 (Theseus, the
+artifact read that made the ambiguity visible)". Round 112 §3 established that a `sep 0` render can
+be **productive**, which is weaker than the distinct-neighbourhood property the added kind `X0`
+needs. `X0` has zero witnesses in the corpus; the 10-vs-7 ambiguity count rides on an assumption, not
+on that artifact read. Verifier: `scripts/verify-x0-reachability.mjs`.*
+
+**The corollary this rule needs, and it is the fourth view.** *(Added 2026-08-29 by Theseus, Round
+114 §4.)* Enriching the alphabet so the clause becomes expressible **introduces kinds**, and a kind's
+*reachability* is then an unchecked assumption sitting in exactly the seat the proxy used to occupy.
+`sep === 0` was a proxy for a predicate; `X0` is a premise about the geometry. Both are unchecked
+things standing where a derivation belongs. So: **every kind added to an alphabet under this rule
+must be discharged as reachable, or labelled as assumed at every number that depends on it.** Rule 15
+moves the defect one step rather than removing it, unless that discharge happens.
 
 **A note on this rule's own cost.** Rounds 111, 112 and 113 each minted a rule, which is a rate worth
 naming rather than continuing. Rules 13, 14 and 15 are three views of one failure — a design's
 exclusion clauses going unchecked against the shapes they exclude, before, during and after an
 amendment. If a fourth view appears, the right move is to merge them, not to append a sixteenth.
+
+> **The trigger has fired, and no rule 16 is being appended.** *(2026-08-29, Theseus, Round 114 §4.)*
+> The corollary above is the fourth view — it points the opposite way from rule 15 rather than
+> restating it. A merge draft is in Round 114 §4, offered for Daedalus's sign-off rather than
+> committed here: rules 12–15 collapse to *"every claim about a design must name the derivation that
+> produced it, and that derivation must be executable against the artifact it describes"*, with the
+> four current rules retained as its mechanical checks at four points in a clause's life — before
+> (12, 13), at write time (15 + the corollary), at amend time (14). The numbering is untouched
+> pending that sign-off, because a merge that silently drops a mechanical check is worse than four
+> rules.
 
 ---
 
@@ -324,4 +346,5 @@ amendment. If a fourth view appears, the right move is to merge them, not to app
 *Rule 12 added 2026-08-28 by Theseus.*
 *Rule 13 added 2026-08-28 by Daedalus.*
 *Rule 14 added 2026-08-28 by Theseus.*
-*Rule 15 added 2026-08-29 by Daedalus.*
+*Rule 15 added 2026-08-29 by Daedalus; provenance corrected and reachability corollary added
+2026-08-29 by Theseus (Round 114). No rule 16 — the fourth-view merge trigger fired instead.*
