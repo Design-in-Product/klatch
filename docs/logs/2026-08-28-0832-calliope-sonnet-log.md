@@ -117,3 +117,66 @@ commit.
 
 No `packages/` changes needed, nothing to route, nothing to close. End of
 fire.
+
+## ~20:15 PT — STOP fire, substantive: rollup refreshed to v79 (Round 107–112
+folded in), no new mail action
+
+Eight commits since my own last checkpoint (`41df4eb`, SWEEP fire ~17:00 PT):
+a Daedalus mail+round111+log+coordination set (rule 12 applied to arm S,
+answer zero), a Theseus mail+round112+log+coordination set (the zero
+recomputed under the operative clause, answer ten), plus Argus's and Iris's
+own 8/28 STOP no-ops. `git diff --stat 41df4eb..HEAD -- packages/` empty
+across all eight — confirmed directly, not trusted from either memo's
+"`packages/` untouched" header.
+
+**Mail.** Two new files this window (`daedalus-to-theseus-...-the-answer-is-
+zero-2026-08-28.md`, `theseus-to-daedalus-...-your-transcription-holds-and-
+your-zero-is-from-the-clause-you-repealed-2026-08-28.md`), both cc-only —
+Argus among six-seven recipients, no addressed action. Neither is to
+Calliope. Logbook-shape thread re-checked (`grep -rl "logbook" docs/mail/
+docs/mail/read/`): still just Janus's 8/27 reply, no xian answer landed —
+stays open, blocked. Both standing 🔴 threads re-checked directly, still
+open, unmoved: `calliope-to-xian-discretion-does-that-make-sense-
+2026-08-09.md`, `daedalus-to-xian-cc-team-carried-context-live-backfill-now-
+blocking-2026-08-12.md`.
+
+**Rollup refresh.** Six research rounds (107–112) had accumulated since the
+last fold-in at v78 (Round 105/106, 8/27) — flagged as "their own research-
+log territory" and deliberately deferred through today's START/MID/SWEEP
+fires. Read all six docs in full this fire rather than take any memo's
+summary: Round 107 (Daedalus) found Round 98's cross-corpus "10/10, no
+exception" rule breaks under Arm R (drops to 12/15) and proposed an
+ordinal-free replacement (14/15); Round 108 (Theseus) confirmed the self-
+check harness `19/19` live, closed the one open falsifier by showing Round
+63's doc-class table is call-complete with no counterexample, and killed his
+own "recency" refinement with the corpus's two hardest runs; Round 109
+(Daedalus) independently re-derived both from the opposite corpus state,
+found a completeness gap in his own prior table, and produced the arm-S
+pre-registration; Round 110 (Theseus) recovered the table Daedalus assumed
+lost and found all discrimination among the three rival rules lives in
+exactly 3 of 10 live runs; Round 111 (Daedalus) applied that discipline
+(standing rule 12) to his own arm-S design and got zero — arm S cannot tell
+the three rules apart at all, by a void clause he wrote himself — amended in
+place rather than re-registered; Round 112 (Theseus) verified the ten-run
+transcription (10/10 match) but found the "0" was computed under the
+*original* void clause, the one the same commit had already narrowed — under
+the operative clause the number is 10 of 10 surviving, landing arm S's real
+Q2 power at "unmeasured and flagged," between the two prior claims. Four new
+standing rules filed (11–14). No GO requested or implied anywhere in the
+chain; the underlying eviction-detection design question is untouched and
+still xian's — metrics strip unchanged (3/0/4/5).
+
+Folded into the eviction-option-2 🔴 item as one dense bullet (matching the
+Round 105/106 bullet's density, not six separate ones), the "Date added"
+footer, banner rewritten to v79 (not stacked — prior banners live in git
+history and their own changelog entries), and a new v79 changelog entry
+added. `.html` mirror left unsynced (now twelve renders behind since v67) —
+not hand-patched this fire, same partial-edit-risk reasoning as v69–v78.
+
+**Re-ran the suite myself, both before writing and after:** `npm test`
+server **1447/1447 (88 files, unchanged)**, client **239/239 passed, 13
+skipped (unchanged)** — zero drift, matches all three earlier fires today
+exactly. `npm run typecheck` clean across all three workspaces. Only file
+touched: `docs/operations/attention-rollup.md` (no `packages/` changes).
+
+End of day-part cycle.
