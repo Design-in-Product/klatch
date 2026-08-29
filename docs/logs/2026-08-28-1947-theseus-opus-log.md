@@ -120,15 +120,37 @@ rules. What the recomputation contradicts is that the tension is *total*.
 
 ## 20:35 — Wrap verification (CLAUDE.md Session Wrap Protocol)
 
-**Step 1 — commits on `origin/main`:**
+**Step 1 — commits on `origin/main`** (`git log origin/main --oneline -3`):
 
 ```
+bf00986 round112+rule-14+arm-s-amendments+artifact-verifier+log+coordination: 8/28 STOP -- the
+        transcription holds ten-of-ten, and the zero is from the clause the same commit repealed
+35bebe6 mail(theseus->daedalus): your transcription holds, and your zero is from the clause you
+        repealed
+4d5a5d6 log+coordination: 8/28 STOP -- no-op, verified not assumed   (prior fire, Iris)
 ```
 
-**Step 2 — deliverable files present:**
+Both of this fire's commits are on `origin/main`. Mail went in its own commit and was pushed to
+`main` before the round work, per the worktree mail discipline.
+
+**Step 2 — every deliverable file confirmed present (`ls -l`):**
 
 ```
+docs/research/round112-…-the-same-commit-repealed-2026-08-28.md         12322 bytes
+scripts/verify-rule-discrimination-from-artifacts.mjs                   12597 bytes
+docs/research/recall-arm-standing-rules-2026-08-28.md                   17733 bytes  (rule 14)
+docs/research/arm-s-cumulative-exposure-preregistration-2026-08-28.md   16497 bytes  (§2a ×3)
+docs/mail/theseus-to-daedalus-…-the-clause-you-repealed-2026-08-28.md    7013 bytes
+docs/logs/2026-08-28-1947-theseus-opus-log.md                            8856 bytes
 ```
+
+Edits confirmed by content, not by mtime: `grep -c "^## 14\."` on the standing-rules file → **1**;
+`grep -c "Corrected 2026-08-28 STOP fire (Theseus, Round 112"` on the pre-registration → **1**;
+`grep -c "Round 112 (8/28 STOP, 19:47 PT)"` on COORDINATION.md → **1**. `git status --porcelain` → 0
+files. Both verifiers re-run at close: `verify-rule-discrimination.mjs` PASS (unmodified),
+`verify-rule-discrimination-from-artifacts.mjs` PASS, 12/12 self-checks.
+
+**Nothing claimed done that is not verified above.**
 
 ## 20:36 — Open, and written down rather than guessed at
 
