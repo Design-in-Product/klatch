@@ -337,3 +337,62 @@ stays in `docs/mail/` as the open thread. Committed separately and pushed to `ma
 worktree mail rule.
 
 **Zero API spend, zero model calls, zero live runs this fire. `packages/` untouched.**
+
+## 18:05 PT — STOP fire wrap verification
+
+**Step 1 — commits on `origin/main`**, after `git fetch`:
+
+```
+5e43ec7 round111+rule-13+arm-s-amendments+verifier+log+coordination: 8/28 STOP — arm S's rule-12 number is zero, …
+d0f74fb mail(daedalus->theseus): I answered rule 12's question about arm S, and the answer is zero
+```
+
+Both of this fire's commits present. Mail committed separately and pushed to `main` first per the
+worktree mail rule; push results observed: `41df4eb..d0f74fb`, then `d0f74fb..5e43ec7`.
+
+**Step 2 — deliverable files present** (`ls -l`, all seven):
+
+```
+docs/research/round111-…-2026-08-28.md                                    13936
+scripts/verify-rule-discrimination.mjs                                    12702
+docs/research/arm-s-cumulative-exposure-preregistration-2026-08-28.md     13563  (§2a new, §3 narrowed, §4 re-priced)
+docs/research/recall-arm-standing-rules-2026-08-28.md                     15126  (rule 13 appended)
+docs/mail/daedalus-to-theseus-…-the-answer-is-zero-2026-08-28.md           7203
+docs/mail/read/theseus-to-daedalus-…-separated-by-three-runs-2026-08-28.md 6646  (closed)
+docs/logs/2026-08-28-0923-daedalus-opus-log.md                            20215
+```
+
+**Instrument re-checked at wrap, not assumed from earlier in the fire:** verifier exit code read via
+`execFileSync` rather than from a shell prompt → **0**, 13/13 self-checks passing.
+`git status --porcelain -- packages/` → **empty**. No product code touched.
+
+**Step 3 — this block committed last**, written from actual command output.
+
+**Nothing claimed as delivered** — the wrapper owns delivery; the two push results above are what I
+observed.
+
+---
+
+## Day close (STOP) — 2026-08-28, Daedalus
+
+Four fires, all zero-spend, `packages/` untouched in every one. The day's arc was a single thread
+with Theseus, each fire answering the last:
+
+- **09:23 START — Round 107.** Case D added to `verify-verifier-exit-codes.mjs` (the instrument now
+  checks its own denominator); arm R breaks Round 98's 10/10, 12/15.
+- **13:17 MID — Round 109.** The N1 falsifier re-derived here and does not fire; found Round 106
+  §4's "both corpora" block holds one; arm-S scoring rule pre-registered against a corpus that does
+  not exist; standing rule 11.
+- **17:17 STOP — Round 111.** Answered rule 12's open question: arm S's discriminating power is
+  **0 of 10**, and the cause is a void clause in my own pre-registration. Amended before any GO;
+  standing rule 13.
+
+Rules 11 and 13 are both mine and both are against my own work, which is the honest summary of the
+day. **No authorisation exists, none was requested, and arm S ends the day a weaker buy than it
+began it.**
+
+**Open, carried forward:** arm S's buildability (undetermined, first-`--dry`-checkable); Q2 has no
+arm that answers it and the sketch in Round 111 §6 is retrofit-adjacent by my own flag; the Q/R
+artifacts remain single-seat and gitignored, so every score in this thread has a transcription
+dependency that no seat can currently discharge. My memo to Theseus is the one open thread in
+`docs/mail/`.
