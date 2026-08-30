@@ -41,3 +41,19 @@ Pulled `origin/main` — already up to date. Full session-start protocol re-run.
 Both standing 🔴 items (backfill/eviction-detection, live-round-JSON-committing) re-checked against the refreshed rollup — unmoved, still xian's. Logbook-shape thread unmoved — still waiting on xian's confirmation of Janus's lean.
 
 **Wrap verification:** committed as `f46ca28`, pushed `claude/calliope-cycle:main` → `origin/main` (fast-forward, `c9e9ab5..f46ca28`). `git log origin/main --oneline -3` confirms `f46ca28` present. All three deliverables confirmed via `ls`: `docs/operations/attention-rollup.md`, `docs/logs/2026-08-29-0830-calliope-sonnet-log.md`, `docs/COORDINATION.md`.
+
+## STOP fire, ~21:35 PT
+
+Session-start protocol run in full. `git pull origin main` — already up to date.
+
+**Mail:** `ls docs/mail/ | grep -iE "calliope|team|all-agents"` — nothing new addressed to me beyond the already-open Janus logbook-shape thread. `ls docs/mail/ | grep -i "xian-to"` — still empty, confirmed directly. Logbook-shape thread stays open and blocked; not proceeding on Janus's lean alone.
+
+**Commits since my own last checkpoint (`f46ca28`, SWEEP ~17:00 PT):** `git log --oneline f46ca28..HEAD` — eight commits, two research-round pairs: Daedalus's Round 117 (STOP fire) and Theseus's Round 118 (STOP fire), each with their own mail+research+log+coordination commits plus wrap-verification log commits. `git diff --stat f46ca28..HEAD -- packages/` empty — confirmed directly, `scripts/`/`docs/research/`-only, matches the pattern of prior rounds.
+
+**Read both research docs in full** (confirmed present via `ls` before citing): `docs/research/round117-the-region-count-was-decided-by-the-design-not-open-2026-08-29.md`, `docs/research/round118-the-check-that-closed-the-item-could-not-have-gone-red-2026-08-29.md`. Round 117 (Daedalus): adopted both of Theseus's Round 116 rulings, then found arm S-exposed's region count — the item he'd called the cheapest open one last fire — was never open at all; gate 3b entails a third region by construction, no corpus needed; his own Round 115 antecedent withdrawn as false when written; fixed a *retired*-branch gap the correction exposed in Theseus's verifier; found the merge-citation counts don't reproduce across seats because the denominator moves with its corpus (rule 1), replaced the number with the class. Round 118 (Theseus): found the check that closed the count was vacuous (predicate conjoined with its own negation) and its closure was hostage in the encoding to the still-open gate-3b-satisfiability question — both fixed, blast radius pre-registered ahead of the check that would trigger it; split the as-of label by tense; flagged against himself that reading a green verifier's prose isn't reading the verifier. No count moves in either round; no GO requested by either.
+
+**Rollup refreshed to v82.** Folded Round 117–118 as a new dated bullet into the eviction-option-2 🔴 item (own Docs: list), rewrote the banner, appended the "Date added" trailer, added a v82 changelog entry above v81. Metrics strip unchanged (3/0/4/5) — no new 🔴, no closures. `attention-rollup.html` still unsynced since v67, now fifteen renders behind — not hand-patched, same reasoning as v69–v81.
+
+**Verified, not assumed:** `git diff --stat f46ca28..HEAD -- packages/` empty. Re-ran the full suite myself: `npm test` → server **1447/1447 (88 files)**, client **239/239 passed, 13 skipped** — matches both rounds' reported numbers, unchanged. `npm run typecheck` clean across all three workspaces (ran as part of `npm test`).
+
+Both standing 🔴 items (backfill/eviction-detection, live-round-JSON-committing) re-checked against the refreshed rollup — unmoved, still xian's. Logbook-shape thread re-checked directly — still no xian reply, stays open and blocked.
