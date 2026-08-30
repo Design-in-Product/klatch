@@ -105,6 +105,12 @@ const GATES = [
   { id: '2', text: 'query in the registered query set produces `excerptSeparators >= 1`' },
   { id: '3', text: 'The restriction is inside an offered address in both cells' },
   { id: '4', text: 'Carried context ACTIVE' },
+  // Added 2026-08-29 (Round 117 §2). Gates 2b and 3b were written into §3 by Round 116 but were not
+  // added to this list, so the list no longer described the document it checks — standing rule 5,
+  // in the instrument. They are added here WITHOUT remapping P4/P6u, because those two `gate: null`
+  // entries are what makes check 16a's finding visible; see `fixedBy` below.
+  { id: '2b', text: 'query in the registered query set is productive in more than one neighbourhood' },
+  { id: '3b', text: 'No query in the registered query set renders any restriction row, in either cell.' },
 ];
 
 /**
@@ -112,7 +118,11 @@ const GATES = [
  * branch of check 16a ("or be labelled assumed at every number that depends on it").
  */
 const LABELS = [
-  { id: 'L-region', text: 'region count** — an arithmetic fact this document does not state' },
+  // L-region was retired 2026-08-29 (Round 117 §1): the region count it labelled assumed is now
+  // stated (3, and >= 3 by construction), so the label is replaced by a closure record. Removing it
+  // outright turned this check red first — which is the check working, and is why the replacement is
+  // a named closure rather than a deletion.
+  { id: 'L-region-closed', text: 'the count is 3, and no seat needed a corpus to say so' },
   { id: 'L-1b-sat', text: 'Whether gate 1b is satisfiable jointly with gate 1' },
   { id: 'L-build', text: 'That the two cells are buildable at the stated geometry' },
   { id: 'L-base-rate', text: 'undetermined for S' },
@@ -160,6 +170,7 @@ const PROPERTIES = [
     where: '§1 table',
     text: 'the restriction rows are reachable only by `expand`',
     gate: null,
+    fixedBy: '3b',
     label: null,
     polarity: 'SUPPORTS',
     note:
@@ -194,6 +205,7 @@ const PROPERTIES = [
     where: '§1 body',
     text: 'Make the order exogenous by making only one query productive.',
     gate: null,
+    fixedBy: '2b',
     label: null,
     polarity: 'SUPPORTS',
     note:
@@ -253,12 +265,32 @@ const PROPERTIES = [
   {
     id: 'P9',
     cell: 'S-exposed',
-    where: '§3 gate 1b, §6',
+    where: '§3 gate 1b (quoted as history), §6',
     text: 'exactly two regions where the exposing query reaches both',
     gate: null,
-    label: 'L-region',
+    label: 'L-region-closed',
     polarity: 'SUPPORTS',
-    note: 'the entailment condition that reduces gate 1b to a region count; labelled open in §6',
+    retired: 'Round 117 §1 — antecedent corrected; the property is FALSE for S-exposed (3 regions)',
+    note:
+      'RETIRED, not satisfied. This was the entailment condition Round 115 §4 wrote and Round 115 §5 ' +
+      'called the cheapest open item. Round 117 §1 derived the count as 3, and >= 3 by construction ' +
+      '(gate 3b puts the restriction region outside the call-1 union, and an `expand` must have ' +
+      'somewhere to go), so the property was already false when it was written. Its text survives in ' +
+      'the document ONLY as a quoted history inside the correction note — which is a trap this check ' +
+      'would otherwise fall into, since a verbatim search still finds it. Superseded by P9prime.',
+  },
+  {
+    id: 'P9prime',
+    cell: 'S-exposed',
+    where: '§3 gate 1b',
+    text: 'every **query-renderable** row lies inside the union the exposing query renders',
+    gate: '3b',
+    label: null,
+    polarity: 'SUPPORTS',
+    note:
+      'the CORRECTED entailment antecedent (Round 117 §1). Gated by gate 3b at S-exposed scope — 3b ' +
+      'is the only clause in the design that says the restriction region is not query-renderable, ' +
+      'which is why Round 116 §6`s both-cells scope call is load-bearing rather than merely tidy.',
   },
 ];
 
@@ -333,6 +365,18 @@ ok('the polarity qualifier is load-bearing — it suppresses at least one non-fi
 ok('P1 is now gated — the defect that minted check 16a is closed', verdict(PROPERTIES.find((p) => p.id === 'P1')), verdict(PROPERTIES.find((p) => p.id === 'P1')) === 'GATED');
 ok('P9 takes the labelled-assumed branch rather than counting as a finding', verdict(PROPERTIES.find((p) => p.id === 'P9')), verdict(PROPERTIES.find((p) => p.id === 'P9')) === 'LABELLED');
 
+// Added 2026-08-29 (Round 117 §2). §(a) reports check 16a's verdict AS OF the moment it was run —
+// before Round 116 wrote gates 2b and 3b. That is the right thing to report (a finding that edits
+// itself away is not a finding), but on its own it leaves the section asserting `gate: null` about
+// a document that now has the gate. `fixedBy` records the fix and these two checks bind it: every
+// finding must name a gate, and that gate must exist in the document.
+const findingsWithoutFix = ungatedSupporting.filter((p) => !p.fixedBy);
+const fixesNotInDocument = ungatedSupporting.filter((p) => p.fixedBy && !gateIds.has(p.fixedBy));
+ok('every check-16a finding names the gate that closed it', findingsWithoutFix.map((p) => p.id), findingsWithoutFix.length === 0);
+ok('and every such gate is present verbatim in §3 — the fix landed in the document, not just here', fixesNotInDocument.map((p) => p.id), fixesNotInDocument.length === 0);
+ok('P9prime — the corrected entailment antecedent — is gated by 3b at S-exposed scope', verdict(PROPERTIES.find((p) => p.id === 'P9prime')), verdict(PROPERTIES.find((p) => p.id === 'P9prime')) === 'GATED');
+ok('P9 is retired rather than deleted, so the correction is legible as a correction', PROPERTIES.find((p) => p.id === 'P9').retired !== undefined, PROPERTIES.find((p) => p.id === 'P9').retired !== undefined);
+
 // ---------------------------------------------------------------------------------------------
 // §(b) The 12-15 merge dropped no mechanical check
 // ---------------------------------------------------------------------------------------------
@@ -351,7 +395,12 @@ const MERGED_CHECKS = [
   { id: '16e-p', was: 'rule 14 corollary', text: 'antecedent, not a proxy for it' },
 ];
 
-/** Headings that must survive so the 141 existing citations of rules 12-15 still resolve. */
+/**
+ * Headings that must survive so the existing citations of rules 12-15 still resolve. (The count was
+ * "141" here until Round 117 §3: it is a denominator that moves with the corpus — every log citing a
+ * rule increments it — and it re-measured at 127/130/157/161 at four commits on the same day.
+ * Standing rule 1. The class is what the argument needs; the figure was never load-bearing.)
+ */
 const CITATION_ANCHORS = [
   { id: 'rule 12', text: '12. Report the runs on which the rivals *disagree*, not just the score' },
   { id: 'rule 13', text: 'exclusion clauses against its *discriminating* shapes, before the spend' },
@@ -383,6 +432,88 @@ ok('rules 12-15 keep their own headings, so existing citations resolve', lostAnc
 ok('the merged rule exists as rule 16 and not as a reused number', lostAnchors.find((a) => a.id === 'rule 16') === undefined, lostAnchors.find((a) => a.id === 'rule 16') === undefined);
 ok('each old rule carries a forward pointer to the check it became', lostRedirects.map((r) => r.id), lostRedirects.length === 0);
 ok('no rule 17 was appended', rules.includes(norm('## 17.')) === false, !rules.includes(norm('## 17.')));
+
+// ---------------------------------------------------------------------------------------------
+// §(c) Polarity is a RELATION, not a property — every use of a WEAKENS assertion must itself weaken
+//      (Daedalus, Round 117 §2, amending Theseus's Round 116 §3 qualifier)
+// ---------------------------------------------------------------------------------------------
+//
+// The polarity qualifier is adopted: without it check 16a returns a list dominated by caveats and
+// gets abandoned, which is the outcome the check-not-a-paragraph argument exists to prevent. The
+// amendment is to WHERE polarity lives. §(a) above classifies the PROPERTY — but "supports" and
+// "weakens" are not properties of an assertion, they are properties of a USE of it. P8 is weakening
+// today because all five of its uses are refusals. Nothing stops a later round from citing P8 to
+// support a number, and at that moment §(a) still reports it as recorded-not-gated, silently: the
+// classification would have flipped and no check would notice.
+//
+// That is the same failure this whole thread keeps finding — a correction that cannot see the
+// defects lying in the direction it came from. A polarity assigned once, at classification time, is
+// blind to every use added after it.
+//
+// So: for each WEAKENS property, hold its use sites as data with an explicit per-site classification,
+// and assert that the number of MARKERS in the document equals the number of CLASSIFIED sites. A
+// sixth use of P8 appearing anywhere turns this red until someone classifies it. That is the whole
+// mechanism — it does not try to read English, it refuses to let a use go unlooked-at.
+
+console.log('\n=== (c) Use-site polarity — every use of a WEAKENS assertion must itself weaken ===\n');
+
+/**
+ * Use sites of each WEAKENS property. `marker` is a regex over the normalised document matching
+ * every surface form the property is cited under (it is cited by paraphrase, not verbatim, which is
+ * exactly why a verbatim-text check would miss four of P8's five uses).
+ */
+const WEAKENING_USES = [
+  {
+    prop: 'P8',
+    marker: /(one|two)[- ]target geometr|two search targets and S-exposed presents one/gi,
+    sites: [
+      { where: '§2a disclosure', use: 'REFUSES', what: 'declines transfer of the 10/10 second-query base rate to arm S' },
+      { where: '§2a disclosure', use: 'REFUSES', what: 'names S-exposed one-target, which is what the refusal turns on' },
+      { where: '§3 gate 1b', use: 'REFUSES', what: 'downgrades the corpus 2-of-2 from a derivation to a prior (standing rule 11)' },
+      { where: '§6 open items', use: 'REFUSES', what: 'labels gate 1b`s satisfiability not-derived-here' },
+      { where: '§6 open items', use: 'REFUSES', what: 'repeats the prior-not-derivation downgrade at the point of use' },
+    ],
+  },
+];
+
+const SUPPORTING_USES = ['SUPPORTS', 'GATES', 'DEFINES-DV'];
+let useSiteFindings = [];
+let markerMismatches = [];
+
+for (const w of WEAKENING_USES) {
+  const found = armS.match(w.marker) || [];
+  console.log(`  ${w.prop}  markers in document: ${found.length}   classified use sites: ${w.sites.length}`);
+  for (const s of w.sites) {
+    console.log(`       ${s.use.padEnd(9)} ${s.where.padEnd(16)} ${s.what}`);
+  }
+  if (found.length !== w.sites.length) markerMismatches.push(`${w.prop}: ${found.length} markers vs ${w.sites.length} classified`);
+  useSiteFindings.push(...w.sites.filter((s) => SUPPORTING_USES.includes(s.use)).map((s) => `${w.prop} @ ${s.where}`));
+  console.log('');
+}
+
+console.log(`  Verdict: ${useSiteFindings.length === 0
+  ? 'every use of every WEAKENS property is itself a refusal — the classification composes safely.'
+  : 'a WEAKENS property is cited in a supporting position — it needs a gate after all.'}
+
+  Honest limit, stated because it is against this check: arm S has exactly ONE weakening property
+  today, so §(c) is green on n=1. It is not vacuous — the five sites are real and the marker count
+  binds them — but it has never gone red on live data. The mutation below is what shows it can.\n`);
+
+const MUTANT_SITES = WEAKENING_USES[0].sites.map((s, i) => (i === 2 ? { ...s, use: 'SUPPORTS' } : s));
+const mutantFindings = MUTANT_SITES.filter((s) => SUPPORTING_USES.includes(s.use));
+
+ok('every classified use site of a WEAKENS property is itself a refusal', useSiteFindings, useSiteFindings.length === 0);
+ok(
+  'the marker count equals the classified-site count — an unclassified sixth use turns this red',
+  markerMismatches,
+  markerMismatches.length === 0,
+);
+ok('P8 is the WEAKENS property under test, and it is the one the qualifier suppresses', ungatedWeakening.map((p) => p.id), ungatedWeakening.map((p) => p.id).join() === 'P8');
+ok(
+  'MUTANT — reclassifying one site as SUPPORTS turns §(c) red, so the check is not decorative',
+  mutantFindings.map((s) => s.where),
+  mutantFindings.length === 1,
+);
 
 // ---------------------------------------------------------------------------------------------
 

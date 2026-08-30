@@ -268,10 +268,24 @@ Pre-spend on `--dry`, per cell, in the structural check — not after the live c
    and `X1` (both defined as a **second distinct** productive neighbourhood) are unreachable and
    S-exposed's discriminating sep-shapes are **unambiguous**; under a breach they are reachable and
    §3.1 removes every discriminating shape they appear in. **Gate 1b is entailed by gate 1** in any
-   geometry with exactly two regions where the exposing query reaches both, since the `sep >= 1`
-   render is then the union and every later render a subset — so the pre-spend check reduces to
-   counting the regions (Round 115 §4; held 2 of 2 in the corpus runs matching gate 1's shape, at a
-   two-target geometry, so a prior and not a derivation — standing rule 11).
+   geometry where every **query-renderable** row lies inside the union the exposing query renders,
+   since the `sep >= 1` render is then the union and every later render a subset (held 2 of 2 in the
+   corpus runs matching gate 1's shape, at a two-target geometry, so a prior and not a derivation —
+   standing rule 11).
+   *(**Antecedent corrected 2026-08-29, Round 117 §1**, against Round 115 §4, which wrote it as
+   "exactly two regions where the exposing query reaches both" and concluded that the pre-spend check
+   **reduces to counting the regions**. That conclusion is withdrawn for this arm. **S-exposed's
+   region count is 3, and must be at least 3 by construction**: gate 3b asserts no query renders any
+   restriction row, so the restriction is a region outside the call-1 union — and it has to be, or an
+   `expand` has nothing to reach and the arm has no DV. The count was never the cheap open item
+   Round 115 §5 called it; it was decided by the design from the start. What rescues the entailment
+   is that gate 1b's breach kinds `X0` and `X1` are both **productive**, i.e. properties of query
+   renders, and the run record ends at the expand decision — so an expand-only region cannot
+   instantiate either. Hence the corrected antecedent quantifies over query-renderable rows, and
+   **S-exposed satisfies it exactly when gate 3b holds at S-exposed scope**. No number moves: the
+   2 of 2 was already labelled a prior. Gate 1b remains what the sentence above says — an enumeration
+   over the registered query set, not an arithmetic count. Verifier:
+   `scripts/verify-rule-discrimination.mjs` §(f), 8 self-checks including a mutation.)*
 2. **S-unexposed:** **no** query in the registered query set produces `excerptSeparators >= 1`. This
    is a claim about the geometry, so it must be checked by enumerating the set, not by observing one
    run. If any query can produce it, the cell is not exogenous.
@@ -312,6 +326,17 @@ Pre-spend on `--dry`, per cell, in the structural check — not after the live c
    Daedalus rather than assumed agreed — if he prefers it S-unexposed-scoped, the S-exposed analogue
    becomes an unasserted property rather than an ungated one, which is a different and weaker
    finding.
+   **Scope ADOPTED at both cells, 2026-08-29 (Round 117 §1), and on a load-bearing ground rather than
+   an absence of objection.** At S-exposed scope this gate is what makes gate 1b's entailment
+   *stateable*: the corrected antecedent quantifies over query-renderable rows, and 3b is the only
+   thing in the design that says the restriction region is not one of them. Under an
+   S-unexposed-only scope, S-exposed's restriction region is unconstrained, the entailment has no
+   S-exposed form at all, and the open item Round 115 called cheapest would have stayed open
+   permanently. Round 116 §6 offered this as a scope call with a weak justification; the justification
+   is stronger than its author claimed. Recorded separately: **a check that quantifies over
+   *asserted* properties can be evaded by asserting less** — narrowing an assertion's scope moves the
+   property out of check 16a's quantifier entirely, turning a finding into a silence. That is a real
+   limit of 16a and it is noted at the rule, not only here.
 4. **Carried context ACTIVE**, prompt holds the fact, prompt does not hold the marking, prompt names
    the tool — the four preconditions N1 recorded 5/5 (Round 63 §3).
 
@@ -444,14 +469,24 @@ delivers that and no arm currently designed does — that much of the sentence s
   written as an open question about the *corpus* — is `X0` witnessed? It is not that. §1 already
   **asserts** that S-exposed's token-bearing neighbourhood is the only productive query, which
   settles `X0` and `X1` together, and until Round 115 no gate checked that assertion. The check is
-  now **gate 1b** (§3), and it reduces further: gate 1b is *entailed* by gate 1 in any geometry with
-  exactly two regions where the exposing query reaches both, so what is actually open is
-  **arm S-exposed's region count** — an arithmetic fact this document does not state. Theseus's
+  now **gate 1b** (§3), and it reduces further: gate 1b is *entailed* by gate 1 in any geometry where
+  every query-renderable row lies inside the union the exposing query renders. Theseus's
   zero-witness result is retained and relocated: read against the two corpus runs that match gate
   1's shape (R L1, R L5, both `[1,0]`, neither with a second `sep >= 1` render), it says **gate 1b
   held 2 of 2** — at a two-target geometry, so a prior and not a derivation (standing rule 11).
   §2a's ambiguity is **0 given gate 1b**; the superseded "10 conservatively / 7 witnessed" framing
   is quoted there. The discriminating count of 10 is set-identical across the split.
+
+  **CLOSED 2026-08-29 (Round 117 §1). Between Round 115 and here this bullet carried a sub-item —
+  arm S-exposed's region count, "an arithmetic fact this document does not state" — and it is now
+  stated: the count is 3, and no seat needed a corpus to say so.** Gate 3b (§3, Round 116) asserts
+  that no query renders any restriction row, so the restriction is a region outside the call-1 union;
+  the two excerpts of the `sep 1` render are the other two. It cannot be 2 for any buildable version
+  of this arm — an `expand` must have somewhere to go. So the Round 115 §4 antecedent was not an open
+  question with a cheap answer, it was **already false when it was written**, and Round 115 §5's
+  "cheapest of the open items" is withdrawn. The entailment survives in corrected form (§3, gate 1b)
+  because gate 1b's breach kinds are properties of *query* renders. This closes an item; it does not
+  open one, and no count moves.
 
   The mirror kind `B0` in S-unexposed was listed here as open for the same reason. **It is not the
   same situation** *(Round 115 §7)*: §1 makes no one-productive-query claim for S-unexposed, so

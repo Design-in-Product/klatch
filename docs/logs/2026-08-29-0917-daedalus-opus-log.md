@@ -283,3 +283,124 @@ the ≤4-call enumeration truncation (R L2 issued five searches). **Renumbering 
 the merged rule is Theseus's to do** — signed off this fire, not executed here, deliberately, since
 he drafted it and owns 12 and 14. **No GO requested for any arm, and none should be inferred from
 either re-pricing.**
+
+---
+
+## 17:17 PT — STOP fire. Round 117: the count I called cheapest was decided by the design, not open.
+
+**Not a no-op.** Theseus's Round 116 reply (`88da8a5`, mail; `2c7de25`, work) landed after the MID
+fire. No SWEEP fire on this seat — the two 17:0x commits on `main` are Calliope's rollup v81, not
+mine. Mail read and answered in this same fire.
+
+**Zero API spend, zero model calls, zero live runs. `packages/` untouched** — `git status --porcelain`
+shows only `docs/` and `scripts/`, confirmed in-session.
+
+### His side reproduces before I touched anything
+
+`verify-design-assertions-gated.mjs` **PASS, 18 self-checks** as received. `verify-rule-discrimination.mjs`
+**PASS, 36**. `verify-x0-reachability.mjs` **exit 2** with its diagnostic here — the guard added last
+fire behaving as designed on a seat without `.testdata/`.
+
+### The two rulings he asked for
+
+**Gate 3b's scope: both cells.** He offered cell-independence of the DV argument and flagged it for
+objection. Adopted — but the load-bearing reason is the one neither of us had: at S-exposed scope,
+gate 3b is the *only* clause in the design asserting the restriction region is not query-renderable,
+which is what makes my gate-1b entailment stateable for that cell. Under an S-unexposed-only scope
+the entailment has no S-exposed form and my open item never closes.
+
+His side note is sharper than he made it: **check 16a quantifies over asserted properties, so it can
+be evaded by asserting less.** A narrowed scope turns a finding into a silence, and silence is the
+one output the check cannot tell apart from compliance. Recorded at the rule as a known limit, no
+mechanical check proposed — the thing to detect is a sentence nobody wrote.
+
+**The polarity qualifier: adopted, with one amendment.** He is right that the check does not survive
+without it. The amendment is where polarity lives: *supports* and *weakens* are properties of a
+**use**, not of an assertion. P8 is weakening today because all five of its uses are refusals; a
+classification assigned once at classification time is blind to every use added after. That is Round
+116 §5's own shape reappearing inside the fix for it. Second limb — *every use of a weakening
+assertion must itself weaken* — enforced as **marker count == classified-site count**, so a sixth use
+of P8 goes red until someone looks at it. It does not read English; it refuses to let a use go
+unexamined.
+
+### The finding, and it is against my own Round 115
+
+Answering the scope question closed my open item **against me**. Round 115 §4 wrote the entailment as
+*"exactly two regions where the exposing query reaches both"* and §5 called the resulting count "the
+cheapest of the open items."
+
+Gate 3b asserts *no query renders any restriction row*. A range no query renders is not inside the
+range the exposing query renders. So S-exposed is: two excerpts of the `sep 1` call-1 render, plus the
+restriction region. **Three** — and ≥3 by construction, because the DV is *does the run issue an
+`expand` call*, so the restriction must be off-screen or `expand` has nowhere to go. **The antecedent
+was false when I wrote it**, derivable from §1 and the DV alone, no corpus and no second seat needed.
+I missed it because I was treating the entailment as a question about arm S's unknown geometry while
+reading the document that fixed it.
+
+Corrected antecedent — **every *query-renderable* row lies inside the union the exposing query
+renders** — survives because `X0`/`X1` are both `productive`, i.e. properties of query renders, and
+the run record ends at the expand decision, so an expand-only region cannot instantiate either.
+
+**No number moves.** The 2-of-2 was already a prior, not a derivation (rule 11); S-exposed's surviving
+discriminating shapes are still 10, self-checked. What changes: gate 1b is an enumeration over the
+registered query set, not an arithmetic check — one of the four underived S-side conditions was being
+priced cheaper than it is.
+
+### Incidental: his instrument caught my edit, and found a gap in my check
+
+Correcting the antecedent deleted the sentence labelling the region count assumed, and
+`verify-design-assertions-gated.mjs` went **red** on `L-region`. Working exactly as built — and it
+exposed a hole in check 16a's data model: branches for *gated* and *labelled assumed*, **none for
+retired**, so a property whose assertion is *corrected* is indistinguishable from one quietly
+*dropped*. Added the branch rather than deleting the entry: `L-region` → a named closure record, P9
+**retired** with its reason, new `P9prime` carrying the corrected antecedent gated by 3b. Trap named
+in the entry: P9's old text survives in the document quoted inside the correction note, so a verbatim
+search still finds it.
+
+Also de-staled: **gates 2b and 3b were in §3 but had never been added to that verifier's gate list**,
+so the list had stopped describing the document it checks. Added — *without* remapping P4/P6u, since
+their `gate: null` is what keeps his finding visible and a finding that edits itself away is not one.
+Recorded on a new `fixedBy` field with two checks. Left for him rather than changed: his §(a) verdict
+line is present-tense about a now-historical state and probably wants an as-of label.
+
+### Round 116's citation figures do not reproduce
+
+Re-measured with his own command: **127** at `79827b9`, **130** at `88da8a5`, **157** at `2c7de25`,
+**161 across 29 files, 65 in logs/mail** at `1c89b49`; his memo says 141/26/66. Neither seat did the
+arithmetic wrong — **the denominator moves with its corpus**, since every log citing a rule
+increments it, including the logs of the fires doing the measuring. Standing rule 1, applying to a
+merge's justification rather than to a verifier. **His argument and the number 16 stand**; the figure
+was replaced by the class in the rules file and in his verifier's comment.
+
+### Verified independently this fire, not trusted from any memo
+
+`npm test` — server **1447/1447 (88 files)**, client **239/239 (13 skipped)**; `npm run typecheck`
+clean ×2 workspaces. `verify-rule-discrimination.mjs` **44 self-checks, PASS** (was 36).
+`verify-design-assertions-gated.mjs` **26 self-checks, PASS** (was 18).
+
+### Not verified, carried forward
+
+- **Gates 2b/3b satisfiability and buildability** — `--dry`-checkable by enumeration, unchecked.
+- **Gate 2's satisfiability and arm S buildability** — unchanged since Round 113.
+- **Gate 1b jointly with gate 1** — unchanged; §1 changes what the entailment says, not whether the
+  two gates can hold together.
+- **Whether 10/10 transfers to a one-target geometry** — Theseus's, still open.
+- **The ≤4-call enumeration truncation** (R L2 issued five searches) — unchanged.
+- **§(c) is green at n=1.** Arm S has one weakening property; the mutation is the only evidence the
+  check can go red.
+- **§(f)'s region inventory is derived from the document, not from a build.** If arm S is ever built
+  off §1, it is wrong and the self-checks will not know.
+
+### Deliverables this fire
+
+`docs/research/round117-the-region-count-was-decided-by-the-design-not-open-2026-08-29.md` ·
+`scripts/verify-rule-discrimination.mjs` (§(f), 44 self-checks, PASS; repo-artifact preflight → exit 2) ·
+`scripts/verify-design-assertions-gated.mjs` (§(c), 26 self-checks, PASS) ·
+`docs/research/arm-s-cumulative-exposure-preregistration-2026-08-28.md` (gate 1b antecedent corrected,
+gate 3b scope adopted, §6 region-count item closed) ·
+`docs/research/recall-arm-standing-rules-2026-08-28.md` (16a polarity ruling + known limit; merge
+figures → classes) · `docs/mail/daedalus-to-theseus-…-both-rulings-yes-and-the-region-count-was-never-open-2026-08-29.md`
+(committed and pushed to `main` separately per the worktree mail rule, `9037cdc`) ·
+`docs/COORDINATION.md` · this log.
+
+**No GO requested for any arm, and none should be inferred from the closure.**

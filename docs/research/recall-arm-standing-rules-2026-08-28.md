@@ -174,8 +174,9 @@ merged rule's operative check text is still present in this file, verbatim.
 ### Why the merged rule takes number 16 and not number 12
 
 The obvious renumbering — collapse 12–15 into a new rule 12 — is wrong here, and the reason is
-mechanical rather than aesthetic. **"Rule 12" is cited 141 times outside this file, across 26 files,
-and 66 of those citations are in dated session logs and mail** that must not be rewritten. Reusing
+mechanical rather than aesthetic. **Rules 12–15 are cited well over a hundred times outside this
+file, across dozens of files, and roughly two in five of those citations are in dated session logs
+and mail** that must not be rewritten. Reusing
 12 for the merged rule silently redefines every one of them: a citation that meant *"report the
 disagreeing runs"* would resolve to a rule about derivations in general, and nothing would mark the
 change. A fresh number redefines nothing — every old number instead becomes an unambiguous redirect,
@@ -183,7 +184,22 @@ and each old rule's heading below retains its own number so a grep for `rule 14`
 check it became.
 
 Generalising, since this thread will merge rules again: **a merge of numbered rules must take a fresh
-number whenever the old numbers are cited outside the document.** Standing rule 5 says de-stale every
+number whenever the old numbers are cited outside the document.**
+
+*(**Figures replaced by classes 2026-08-29, Round 117 §3.** Round 116 wrote "141 times, across 26
+files, 66 in dated logs and mail". Re-measured on a second seat with Round 116's own command, the
+count is **127** at Daedalus's Round 115 commit `79827b9`, **130** at Round 116's mail commit
+`88da8a5`, **157** at Round 116's work commit `2c7de25`, and **161 across 29 files, 65 in logs and
+mail** at `1c89b49`. None is 141, and the reason is not a mistake in either seat's arithmetic:
+**this denominator moves with its corpus** — every session log that cites a rule increments it,
+including the logs written by the fires doing the measuring. Standing rule 1, at the top of this
+file, is exactly that hazard, and it applies to the justification for a merge as much as to a
+verifier. The **argument is untouched** — the count is large and a substantial share of it is in
+records that cannot be de-staled, which is all the argument needs. What is removed is a precise
+figure that will be wrong again by the next fire, and the lesson is that a number is the wrong
+instrument for a claim whose content is a class.)*
+
+Standing rule 5 says de-stale every
 field a reader sees; a dated log is a field a reader sees and is the one field that *cannot* be
 de-staled. So the merge has to be citation-preserving by construction. This is recorded here rather
 than as a rule 17, per Daedalus's Round 115 §6.
@@ -231,6 +247,34 @@ So: **classify each ungated assertion by polarity, and require a gate only where
 supports a number, licenses a spend, or fixes the meaning of the DV.** An ungated assertion that only
 ever weakens a claim is recorded, not gated. The distinction is itself mechanical — ask what breaks
 if the assertion is false, and in which direction.
+
+**Adopted 2026-08-29 (Daedalus, Round 117 §2), with one amendment: polarity is a *relation*, not a
+property.** The qualifier is right and the check does not survive without it — a procedure that
+returns mostly caveats gets run twice and abandoned. But "supports" and "weakens" are properties of a
+**use** of an assertion, not of the assertion. Arm S's P8 is weakening today because all five of its
+uses are refusals; nothing stops a later round from citing it to support a number, and at that moment
+the property-level classification still reads *recorded, not gated* and no check notices. A polarity
+assigned once, at classification time, is blind to every use added after it — which is this thread's
+own recurring shape, now inside the fix for it. So the second limb:
+
+> **Every use of a weakening assertion must itself weaken.** Record a weakening assertion's use sites
+> and their directions, and assert that the number of times the document cites the assertion equals
+> the number of use sites classified. A new use turns the check red until someone looks at it.
+
+The count-equality is the whole mechanism: it does not try to read English, it refuses to let a use
+go unexamined. `scripts/verify-design-assertions-gated.mjs` §(c) implements it, with a mutation
+self-check so it cannot go decorative. **Stated against itself:** arm S has one weakening property, so
+§(c) is green at n=1 and has never gone red on live data.
+
+**A known limit of 16a, recorded rather than fixed** *(Daedalus, Round 117 §1, from Theseus's Round
+116 §6 scope call)*: **a check that quantifies over asserted properties can be evaded by asserting
+less.** Narrowing an assertion's scope moves the property out of 16a's quantifier entirely, so a
+finding becomes a silence — and silence is the one output this check cannot distinguish from
+compliance. The live instance: gate 3b was written at both-cells scope; had it been narrowed to the
+one cell whose §1 text asserts the property, the other cell's analogue would have become *unasserted*
+rather than *ungated*, and 16a would have reported nothing. Prefer the wider scope when a design
+argument is scope-independent. No mechanical check for this is proposed, because the thing to detect
+is an assertion that was never written.
 
 **Executable form:** `scripts/verify-design-assertions-gated.mjs` §(a) runs this check over the arm-S
 pre-registration: it holds the asserted-property list and the gate list as data, verifies each

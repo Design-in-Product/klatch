@@ -40,8 +40,17 @@
  * · The arm-S / arm-T sections are pure derivation from geometry and need no corpus.
  *
  * Usage:  node scripts/verify-rule-discrimination.mjs
- * Exit:   0 if every self-check passes, 1 if any fails.
+ * Exit:   0 if every self-check passes, 1 if any fails, 2 if a repo artifact it reads is absent.
+ *
+ * Section (f) reads `docs/research/arm-s-cumulative-exposure-preregistration-2026-08-28.md` — a
+ * TRACKED repo file, not `.testdata/`, so it is present on every seat and in every clone. It is
+ * still preflighted rather than read blind: the convention (from
+ * `verify-rule-discrimination-from-artifacts.mjs`, and added to `verify-x0-reachability.mjs` in
+ * Round 115) is that "not runnable here" must exit 2 with a diagnostic, never throw — a crash is
+ * indistinguishable from a broken script, which is a different fact from a failed check.
  */
+
+import { readFileSync, existsSync } from 'node:fs';
 
 // ── The three rival rules ─────────────────────────────────────────────────────────────────────
 // Each takes the ordered list of `excerptSeparators` values, one per render produced strictly
@@ -603,13 +612,17 @@ console.log(`
   In both, gate 1b HELD: no later render introduced a neighbourhood the call-1 render had not
   already shown. The mechanism is not luck — the sep>=1 render is the UNION of the family's two
   regions, so every later render is a subset of it. Gate 1b is therefore ENTAILED by gate 1 in any
-  geometry with exactly two regions where the exposing query reaches both.
+  geometry where every QUERY-RENDERABLE row lies inside the union the exposing query renders.
 
-  CLASS LABEL, and it is the whole caveat: this is arm R's TWO-target geometry. Arm S-exposed is a
-  ONE-target geometry whose region count is not stated in the pre-registration. Standing rule 11 —
+  AMENDED 2026-08-29 (Round 117 §1), and the amendment is against this seat's own Round 115 §4,
+  which stated the antecedent as "exactly two regions where the exposing query reaches both" and
+  called the resulting count the cheapest open item. Arm R satisfies THAT antecedent — two regions
+  total — so nothing in this section moves. Arm S-exposed cannot satisfy it at all: see (f).
+
+  CLASS LABEL, and it is the whole caveat: this is arm R's TWO-target geometry. Standing rule 11 —
   a finished arm is a prior, not a cell, unless the geometry matches on what the premise reads.
-  This is a prior of 2 of 2, and the entailment above is what makes it a \`--dry\`-checkable
-  question rather than a base rate: count the regions.`);
+  This is a prior of 2 of 2. It is NOT a derivation for arm S, and after (f) it is no longer a
+  \`--dry\`-checkable question either: gate 1b stays an enumeration over the registered query set.`);
 
 console.log('\n  self-checks:');
 check(
@@ -635,6 +648,135 @@ check(
     SEX_UNSPLIT.survivingSepShapeList.includes('1,0'),
   ],
   [true, true],
+);
+
+// ── (f) Arm S-exposed's region count — CLOSED, and against Round 115 §4 ─────────────────────────
+// Round 115 §4 (this seat) stated the entailment as:
+//
+//     "Gate 1b is ENTAILED by gate 1 in any geometry with exactly two regions where the exposing
+//      query reaches both"
+//
+// and called the resulting question — arm S-exposed's region count — "the cheapest of the open
+// items" (Round 115 §5). Both are wrong, and Theseus's Round 116 gate 3b is what makes them
+// checkable rather than merely arguable.
+//
+// The mechanism the entailment rests on is a SUBSET argument: the sep>=1 render is the union of the
+// exposing family's regions, so every later render is a subset of it and can introduce nothing. That
+// step needs "no renderable row lies outside the union" — which the antecedent supplied by asserting
+// the geometry has exactly two regions in total. Arm R's two-target geometry satisfies it.
+//
+// Arm S-exposed CANNOT, by construction. Gate 3b — "No query in the registered query set renders any
+// restriction row, in either cell" — asserts a row-range that no query renders. A range no query
+// renders is not inside the range the exposing query renders. So it is a third region, and the
+// antecedent "exactly two regions" is FALSE for S-exposed. The count was never open: it is >= 3, and
+// it has to be, or the arm has no DV to measure (the restriction must be off-screen for an `expand`
+// to be the thing that reaches it).
+//
+// What rescues the entailment is that the relevant quantity was never "regions" but "regions a QUERY
+// can render". Gate 1b's breach kinds X0 and X1 are both `productive: true` — productivity is a
+// property of a query render, and `seps` is defined in this file (line ~84) as the per-render list
+// "up to but NOT including the expand call". An expand-only range therefore cannot instantiate X0 or
+// X1 at all. Corrected antecedent:
+//
+//     Gate 1b is ENTAILED by gate 1 in any geometry where every QUERY-RENDERABLE row lies inside the
+//     union the exposing query renders.
+//
+// Arm R satisfies it by having two regions total. Arm S-exposed satisfies it IFF gate 3b holds at
+// S-EXPOSED scope — i.e. exactly Theseus's Round 116 §6 both-cells scope call, which he flagged for
+// objection. It is adopted here, and on a stronger ground than he gave: at S-exposed scope gate 3b
+// is what makes S-exposed's version of this antecedent stateable at all. Under an S-unexposed-only
+// scope the third region is unconstrained and the entailment has no S-exposed form.
+//
+// NO NUMBER MOVES. The corpus 2-of-2 was already labelled a PRIOR, not a derivation (standing rule
+// 11), and section (e) above is untouched. What is retracted is the claim that the pre-spend check
+// "reduces to counting the regions" for arm S. Gate 1b stays what its own text says it is: an
+// enumeration over the registered query set.
+
+console.log('\n=== (f) Arm S-exposed`s region count — closed, against Round 115 §4 ===\n');
+
+const PREREG_PATH = new URL(
+  '../docs/research/arm-s-cumulative-exposure-preregistration-2026-08-28.md',
+  import.meta.url,
+);
+if (!existsSync(PREREG_PATH)) {
+  console.error(
+    `\n  arm-S pre-registration not found at ${PREREG_PATH.pathname}.\n` +
+      `  Section (f) checks a gate string verbatim against that tracked repo file; without it this\n` +
+      `  check is not runnable here. Sections (a)–(e) above ran and their verdicts stand.\n`,
+  );
+  process.exit(2);
+}
+const prereg = readFileSync(PREREG_PATH, 'utf8').replace(/\s+/g, ' ');
+const GATE_3B_TEXT = 'No query in the registered query set renders any restriction row, in either cell.';
+
+// The S-exposed region inventory, as the design asserts it. Each entry names what renders it.
+const S_EXPOSED_REGIONS = [
+  { id: 'E-a', renderedBy: 'query', why: '§1: call-1 render is two-excerpt (`excerptSeparators: 1`) — first excerpt' },
+  { id: 'E-b', renderedBy: 'query', why: '§1: … second excerpt of the same sep-1 render' },
+  { id: 'RESTR', renderedBy: 'expand', why: 'gate 3b: no query renders any restriction row' },
+];
+const queryRenderable = S_EXPOSED_REGIONS.filter((r) => r.renderedBy === 'query');
+const outsideUnionAndQueryRenderable = S_EXPOSED_REGIONS.filter(
+  (r) => !queryRenderable.includes(r) && r.renderedBy === 'query',
+);
+
+for (const r of S_EXPOSED_REGIONS) {
+  console.log(`  ${r.id.padEnd(6)} rendered by ${r.renderedBy.padEnd(6)} — ${r.why}`);
+}
+console.log(`
+  region count (S-exposed):                 ${S_EXPOSED_REGIONS.length}   → old antecedent wanted exactly 2: FALSE
+  of those, QUERY-renderable:               ${queryRenderable.length}   → all inside the call-1 union
+  query-renderable OUTSIDE the union:       ${outsideUnionAndQueryRenderable.length}   → corrected antecedent: SATISFIED, given gate 3b
+
+  Arm R, for contrast: 2 regions total, the exposing query reaches both — it satisfies the OLD
+  antecedent, so section (e)'s 2-of-2 prior is unaffected by this correction.`);
+
+console.log('\n  self-checks:');
+check(
+  'gate 1b`s breach kinds are both PRODUCTIVE — so productivity is a property of QUERY renders',
+  [K.X0.productive, K.X1.productive],
+  [true, true],
+);
+check(
+  'an expand-only range cannot instantiate X0 or X1 — no kind in the alphabet is an expand render',
+  Object.values(K).every((k) => k.productive === false || typeof k.nbhd === 'string'),
+  true,
+);
+check(
+  'gate 3b is present verbatim in the pre-registration, at BOTH-cells scope',
+  prereg.includes(GATE_3B_TEXT.replace(/\s+/g, ' ')),
+  true,
+);
+check(
+  'S-exposed`s region count is 3, not 2 — Round 115 §4`s antecedent is FALSE for this arm',
+  S_EXPOSED_REGIONS.length === 2,
+  false,
+);
+check(
+  'and it is >= 3 BY CONSTRUCTION: dropping the restriction region leaves the DV nothing to reach',
+  S_EXPOSED_REGIONS.some((r) => r.renderedBy === 'expand'),
+  true,
+);
+check(
+  'the CORRECTED antecedent is satisfied for S-exposed: no query-renderable row outside the union',
+  outsideUnionAndQueryRenderable.length,
+  0,
+);
+// Mutation (standing rule 8 — a mutant that did not apply is a silently-skipped test). Drop gate 3b
+// from S-exposed scope and the restriction region becomes query-renderable-for-all-we-know, which
+// puts a renderable row outside the union and voids the corrected antecedent too.
+const MUTANT_REGIONS = S_EXPOSED_REGIONS.map((r) =>
+  r.id === 'RESTR' ? { ...r, renderedBy: 'unconstrained' } : r,
+);
+check(
+  'MUTANT — without gate 3b at S-exposed scope, the corrected antecedent is unstateable, not merely unmet',
+  MUTANT_REGIONS.every((r) => r.renderedBy === 'query' || r.renderedBy === 'expand'),
+  false,
+);
+check(
+  'no count moves: S-exposed`s surviving discriminating shapes are still 10 under gate 1b',
+  SEX_HOLD.survive,
+  10,
 );
 
 console.log(
