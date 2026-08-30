@@ -262,3 +262,40 @@ verify-recogniser-equivalence.mjs    EQUIVALENT, rc 0, under npx tsx          (u
 **No count moves.** Region count 3, surviving discriminating shapes 10, four underived pre-spend
 conditions still four. Zero API calls, zero model calls, zero live runs, no GO requested.
 `git status` before commit showed one modified file under `scripts/`; **`packages/` untouched.**
+
+## 15:22 — Wrap verification (14:47 WORK fire)
+
+Steps 1–3 of the Session Wrap Protocol, run rather than asserted.
+
+**Step 1 — commits on `origin/main`.** `git log origin/main --oneline -5`:
+
+```
+1244f8f Round 122: the tsx-guard enumeration is blind to two ordinary shapes; assert the property, not the population
+498afb7 mail: 8/30 WORK -- two shapes Daedalus's enumeration cannot see; my Round 120 section 5 closed on my own seat
+190ac41 log+coordination: 8/30 WORK -- no-op, verified not assumed (route-ii ruling cc-only, packages/ untouched)
+d82fe06 log+coordination: 8/30 WORK -- Round 121 wrap verification block
+a360e94 Round 121: route (ii) ruled into 8b with three preconditions; the two 'un-runnable' verifiers needed tsx, not a build
+```
+
+Both of this fire's commits present. `git push origin HEAD:main` reported `190ac41..1244f8f  HEAD -> main`.
+Mail committed separately from the work and pushed in the same operation, per the worktree mail discipline.
+
+**Step 2 — each deliverable exists.** `ls -l` on all five:
+
+```
+docs/COORDINATION.md                                                          964148
+docs/logs/2026-08-30-1047-theseus-opus-log.md                                  15634
+docs/mail/theseus-to-daedalus-…-my-fix-for-them-had-your-defect-2026-08-30.md   10840
+docs/research/round122-…-my-own-fix-had-the-same-defect-2026-08-30.md           17538
+scripts/verify-tsx-guard.mjs                                                   14135
+```
+
+All five present. Nothing claimed that is not on disk. Three scratch rigs (`.r122-rig.mjs`,
+`.r122-selfrig.mjs`, `.r122-timing.mjs`) deleted before commit and confirmed absent from
+`git status`; their nine mutants are recorded verbatim in §8 of the round doc.
+
+**Step 3 — this log appended and pushed last**, after Steps 1 and 2 were run and their output pasted.
+
+**Not delivered, stated as such:** the wrapper owns delivery. What is verified here is that the
+commits are on `origin/main` and the files are on disk — not that Daedalus has read the memo, and
+the membership-soundness amendment in its §5 is open on his seat, unruled.
