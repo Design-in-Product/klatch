@@ -337,7 +337,7 @@ const ungated = PROPERTIES.filter((p) => verdict(p) === 'UNGATED');
 const ungatedSupporting = ungated.filter((p) => p.polarity === 'SUPPORTS');
 const ungatedWeakening = ungated.filter((p) => p.polarity === 'WEAKENS');
 
-console.log('  THE DIFF:');
+console.log('  THE DIFF — as of Round 116, before gates 2b/3b were written (see TENSE below):');
 console.log(`    properties asserted:                    ${PROPERTIES.length}`);
 console.log(`    gated:                                  ${PROPERTIES.filter((p) => verdict(p) === 'GATED').length}`);
 console.log(`    labelled assumed:                       ${PROPERTIES.filter((p) => verdict(p) === 'LABELLED').length}`);
@@ -355,12 +355,78 @@ console.log(`  Reading: both findings are in S-UNEXPOSED, and P4 is a strict spe
 
   Note where these were invisible from. Round 115 fixed S-exposed by copying the discipline already
   applied to S-unexposed. The copy could not surface these, because they are defects OF the cell that
-  was being copied FROM.\n`);
+  was being copied FROM.
 
-ok('check 16a returns exactly 2 ungated supporting properties in arm S', ungatedSupporting.map((p) => p.id), ungatedSupporting.length === 2);
+  TENSE (Round 118 §2). The two counts above are AS OF ROUND 116 — they are what check 16a returned
+  before gates 2b and 3b were written. Both findings are CLOSED in the document today, recorded on
+  the fixedBy field and asserted live below. Keeping the historical view is deliberate: a finding
+  that edits itself away is not a finding. Keeping it SEPARATE from the live view is the Round 118
+  amendment — an as-of label on an assertion over live data decays into a lie the first time the
+  data moves.
+
+  HONEST LIMIT, stated because it is against this section: fixedBy records WHICH gate closed a
+  finding, and nothing checks that the named gate actually closes it. The two checks below verify the
+  gate is named and that it exists in the document — not that it is the right one. Re-pointing P4's
+  fixedBy from 3b to gate 1 would pass every check here. This is the same class as the gate field
+  itself (both are author-judgment mappings from a property to a gate), so it is not a NEW hole — but
+  unlike the gate field, fixedBy has no mutation showing it can go red on MIS-attribution, only on
+  absence. Named, not faked: the check that would catch it needs to read a gate's text against a
+  property's, which is not something this instrument does.\n`);
+
+// AS-OF SPLIT, added 2026-08-29 (Round 118 §2, Theseus), answering Round 117 §5's hand-back: "your
+// §(a) verdict line is present-tense about a now-historical state. It probably wants an as-of label."
+//
+// An as-of label alone would not have held. The line asserted a COUNT (=== 2) over LIVE data: add a
+// twelfth property tomorrow that is ungated and supporting, and the check goes red at 3, and the only
+// repair that turns it green again is editing the 2 to a 3 — at which point the "as of Round 116"
+// label is false, because it is no longer the Round 116 state being reported. A frozen claim and a
+// live datum cannot share one assertion; the label would have decayed into a lie on the first fire
+// that added a property.
+//
+// So the two tenses are separated instead:
+//   FROZEN — the Round 116 findings were exactly {P4, P6u}. Asserted over IDS, not a count, so
+//            adding properties cannot disturb it. It goes red only if P4 or P6u is quietly re-gated
+//            or deleted from this table, which is exactly what a historical record should resist.
+//   LIVE   — no property is ungated-and-unfixed TODAY. Counts `fixedBy` as a gate. This is the check
+//            with ongoing value: it goes red the moment any new ungated supporting property appears.
+const ROUND_116_FINDINGS = ['P4', 'P6u'];
+ok(
+  'FROZEN, as of Round 116 — check 16a`s findings were exactly {P4, P6u}',
+  ungatedSupporting.map((p) => p.id),
+  ROUND_116_FINDINGS.every((id) => ungatedSupporting.some((p) => p.id === id)) &&
+    ungatedSupporting.length === ROUND_116_FINDINGS.length,
+);
+const openToday = PROPERTIES.filter(
+  (p) => !p.gate && !p.fixedBy && !p.label && p.polarity === 'SUPPORTS',
+);
+ok(
+  'LIVE, today — no property is ungated AND unfixed: both Round 116 findings were closed in the document by Round 117',
+  openToday.map((p) => p.id),
+  openToday.length === 0,
+);
+// The two views must DISAGREE, or the as-of label is decorative — a frozen claim that happens to
+// equal the live one tells you nothing about which tense you are reading.
+ok(
+  'the frozen and live views disagree, which is what makes the as-of label load-bearing rather than decorative',
+  [ungatedSupporting.length, openToday.length],
+  ungatedSupporting.length !== openToday.length,
+);
+// Mutation: un-name P6u's fix and it reappears as open today, while the frozen Round 116 record is
+// unmoved. This is what gives `fixedBy` teeth — without it, `fixedBy` is a field nothing reads.
+const MUTANT_PROPS = PROPERTIES.map((p) => (p.id === 'P6u' ? { ...p, fixedBy: null } : p));
+const mutantOpen = MUTANT_PROPS.filter(
+  (p) => !p.gate && !p.fixedBy && !p.label && p.polarity === 'SUPPORTS',
+);
+ok(
+  'MUTANT — drop P6u`s fixedBy and it reopens as a live finding, while the frozen record is unchanged',
+  mutantOpen.map((p) => p.id),
+  mutantOpen.length === 1 && mutantOpen[0].id === 'P6u',
+);
 ok('both findings are in the S-unexposed cell', ungatedSupporting.map((p) => p.cell), ungatedSupporting.every((p) => p.cell === 'S-unexposed'));
-ok('P4 (restriction reachable only by expand) is ungated', verdict(PROPERTIES.find((p) => p.id === 'P4')), verdict(PROPERTIES.find((p) => p.id === 'P4')) === 'UNGATED');
-ok('P6u (one productive query, S-unexposed) is ungated while P6e is gated', [verdict(PROPERTIES.find((p) => p.id === 'P6u')), verdict(PROPERTIES.find((p) => p.id === 'P6e'))], verdict(PROPERTIES.find((p) => p.id === 'P6u')) === 'UNGATED' && verdict(PROPERTIES.find((p) => p.id === 'P6e')) === 'GATED');
+// These two read the frozen `gate` field, so they carry the same as-of scope as the FROZEN check
+// above — labelled here rather than left to be read as a claim about the document today.
+ok('P4 (restriction reachable only by expand) was ungated as of Round 116', verdict(PROPERTIES.find((p) => p.id === 'P4')), verdict(PROPERTIES.find((p) => p.id === 'P4')) === 'UNGATED');
+ok('P6u (one productive query, S-unexposed) was ungated as of Round 116 while P6e was gated', [verdict(PROPERTIES.find((p) => p.id === 'P6u')), verdict(PROPERTIES.find((p) => p.id === 'P6e'))], verdict(PROPERTIES.find((p) => p.id === 'P6u')) === 'UNGATED' && verdict(PROPERTIES.find((p) => p.id === 'P6e')) === 'GATED');
 ok('the polarity qualifier is load-bearing — it suppresses at least one non-finding', ungatedWeakening.map((p) => p.id), ungatedWeakening.length >= 1);
 ok('P1 is now gated — the defect that minted check 16a is closed', verdict(PROPERTIES.find((p) => p.id === 'P1')), verdict(PROPERTIES.find((p) => p.id === 'P1')) === 'GATED');
 ok('P9 takes the labelled-assumed branch rather than counting as a finding', verdict(PROPERTIES.find((p) => p.id === 'P9')), verdict(PROPERTIES.find((p) => p.id === 'P9')) === 'LABELLED');

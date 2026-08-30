@@ -691,6 +691,30 @@ check(
 // 11), and section (e) above is untouched. What is retracted is the claim that the pre-spend check
 // "reduces to counting the regions" for arm S. Gate 1b stays what its own text says it is: an
 // enumeration over the registered query set.
+//
+// ── Round 118 (Theseus), two corrections to the section above, both against this seat ────────────
+//
+// (1) THE CORRECTED-ANTECEDENT CHECK WAS VACUOUS AS FIRST WRITTEN. It read
+//
+//       queryRenderable            = REGIONS.filter(r => r.renderedBy === 'query')
+//       outsideUnionAndRenderable  = REGIONS.filter(r => !queryRenderable.includes(r)
+//                                                        && r.renderedBy === 'query')
+//
+//     — a conjunction of a predicate with its own negation. It is the empty list for EVERY possible
+//     input, so `check(..., 0)` passed on a tautology and would have passed on a geometry that
+//     violated the antecedent outright. The mutation did not catch it, because the mutation asserted
+//     over `renderedBy` rather than over this filter. Standing rule 8's own failure mode, one level
+//     up: a mutant that does not exercise the check it is placed under is a silently-skipped test.
+//     The two fields are now independent (`queryRenderable`, `outsideCall1Union`) and the filter is a
+//     real conjunction over them — the gate-3b mutant now drives it to ['RESTR'].
+//
+// (2) THE TWO GROUNDS FOR ">= 3" WERE PACKED INTO ONE FIELD. See the inventory comment below. The
+//     consequence is not cosmetic: gate 3b's satisfiability is an OPEN item (§6), and an encoding in
+//     which the 3b mutant also fells the ">= 3 BY CONSTRUCTION" check says, mechanically, that a
+//     closed item is hostage to an open one. It is not — the DV ground stands whatever becomes of
+//     3b. Three checks now pin this, including a mutation in each direction.
+//
+// Still no number moves: the count is 3, the surviving-shape count is 10, section (e) untouched.
 
 console.log('\n=== (f) Arm S-exposed`s region count — closed, against Round 115 §4 ===\n');
 
@@ -710,14 +734,57 @@ const prereg = readFileSync(PREREG_PATH, 'utf8').replace(/\s+/g, ' ');
 const GATE_3B_TEXT = 'No query in the registered query set renders any restriction row, in either cell.';
 
 // The S-exposed region inventory, as the design asserts it. Each entry names what renders it.
+//
+// AMENDED 2026-08-29 (Round 118 §1, Theseus, against Round 117 §(f) — this seat's own encoding).
+// The docblock above states TWO independent grounds for RESTR being a third region:
+//
+//   (i)  gate 3b — no registered query renders a restriction row, so it is outside the call-1 union;
+//   (ii) the DV — the restriction must be off-screen at the decision or `expand` has nothing to
+//        reach and the arm measures nothing. This one cites no gate at all.
+//
+// The prose had both. The DATA MODEL had one field, `renderedBy`, carrying both — so the gate-3b
+// mutation below (which sets it to 'unconstrained') knocked out ground (ii) as collateral, and the
+// ">= 3 BY CONSTRUCTION" check went red for a reason its own text does not name. Read literally, the
+// instrument said the count's closure depends on gate 3b, whose satisfiability is an OPEN item (§6).
+// It does not: ground (ii) is untouched by 3b's fate. Left as it was, the next fire to find 3b
+// unsatisfiable would have reopened an item that never rested on it.
+//
+// So the two grounds are now separate fields. `queryRenderable` is what gate 3b decides;
+// `outsideCall1Union` is what the DV decides. The mutation strips only the former.
 const S_EXPOSED_REGIONS = [
-  { id: 'E-a', renderedBy: 'query', why: '§1: call-1 render is two-excerpt (`excerptSeparators: 1`) — first excerpt' },
-  { id: 'E-b', renderedBy: 'query', why: '§1: … second excerpt of the same sep-1 render' },
-  { id: 'RESTR', renderedBy: 'expand', why: 'gate 3b: no query renders any restriction row' },
+  {
+    id: 'E-a',
+    renderedBy: 'query',
+    queryRenderable: true,
+    outsideCall1Union: false,
+    groundsForSeparateRegion: [],
+    why: '§1: call-1 render is two-excerpt (`excerptSeparators: 1`) — first excerpt',
+  },
+  {
+    id: 'E-b',
+    renderedBy: 'query',
+    queryRenderable: true,
+    outsideCall1Union: false,
+    groundsForSeparateRegion: [],
+    why: '§1: … second excerpt of the same sep-1 render',
+  },
+  {
+    id: 'RESTR',
+    renderedBy: 'expand',
+    queryRenderable: false, // decided by gate 3b
+    outsideCall1Union: true, // decided by the DV, independently of any gate
+    groundsForSeparateRegion: ['gate-3b', 'DV'],
+    why: 'gate 3b: no query renders any restriction row · DV: `expand` must have somewhere to go',
+  },
 ];
-const queryRenderable = S_EXPOSED_REGIONS.filter((r) => r.renderedBy === 'query');
+const queryRenderable = S_EXPOSED_REGIONS.filter((r) => r.queryRenderable);
 const outsideUnionAndQueryRenderable = S_EXPOSED_REGIONS.filter(
-  (r) => !queryRenderable.includes(r) && r.renderedBy === 'query',
+  (r) => r.queryRenderable && r.outsideCall1Union,
+);
+// Grounds for the >= 3 conclusion that do NOT cite gate 3b. If this is empty, the closure of the
+// region count really is hostage to an open item and should be re-labelled as conditional.
+const gate3bFreeGrounds = S_EXPOSED_REGIONS.flatMap((r) =>
+  r.groundsForSeparateRegion.filter((g) => g !== 'gate-3b'),
 );
 
 for (const r of S_EXPOSED_REGIONS) {
@@ -729,7 +796,13 @@ console.log(`
   query-renderable OUTSIDE the union:       ${outsideUnionAndQueryRenderable.length}   → corrected antecedent: SATISFIED, given gate 3b
 
   Arm R, for contrast: 2 regions total, the exposing query reaches both — it satisfies the OLD
-  antecedent, so section (e)'s 2-of-2 prior is unaffected by this correction.`);
+  antecedent, so section (e)'s 2-of-2 prior is unaffected by this correction.
+
+  Grounds for RESTR being a third region:    ${S_EXPOSED_REGIONS.find((r) => r.id === 'RESTR').groundsForSeparateRegion.join(', ')}
+  of those, NOT citing gate 3b:              ${gate3bFreeGrounds.join(', ') || 'NONE'}
+  → the >= 3 count is closed on the DV ground alone. Gate 3b's satisfiability is still OPEN (§6),
+    and that open item cannot reopen this closed one. What DOES need 3b is the corrected antecedent,
+    not the count — the two mutations below separate them.`);
 
 console.log('\n  self-checks:');
 check(
@@ -754,8 +827,16 @@ check(
 );
 check(
   'and it is >= 3 BY CONSTRUCTION: dropping the restriction region leaves the DV nothing to reach',
-  S_EXPOSED_REGIONS.some((r) => r.renderedBy === 'expand'),
+  S_EXPOSED_REGIONS.some((r) => r.outsideCall1Union),
   true,
+);
+// Round 118 §1. The check above now reads `outsideCall1Union` (the DV ground) rather than
+// `renderedBy` (which the gate-3b mutation overwrites). This one asserts the independence itself,
+// so it is not merely implicit in the field split.
+check(
+  'the >= 3 conclusion has at least one ground that does not cite gate 3b — so 3b`s open satisfiability cannot reopen a closed item',
+  gate3bFreeGrounds,
+  ['DV'],
 );
 check(
   'the CORRECTED antecedent is satisfied for S-exposed: no query-renderable row outside the union',
@@ -764,14 +845,36 @@ check(
 );
 // Mutation (standing rule 8 — a mutant that did not apply is a silently-skipped test). Drop gate 3b
 // from S-exposed scope and the restriction region becomes query-renderable-for-all-we-know, which
-// puts a renderable row outside the union and voids the corrected antecedent too.
+// puts a renderable row outside the union and voids the corrected antecedent.
+//
+// Round 118 §1: the mutant now flips ONLY `queryRenderable`, which is the single fact gate 3b
+// decides. Round 117's mutant overwrote `renderedBy`, the field both grounds were packed into, so it
+// knocked out the DV ground as collateral. Two checks below pin the difference: the antecedent must
+// break, and the >= 3 count must NOT.
 const MUTANT_REGIONS = S_EXPOSED_REGIONS.map((r) =>
-  r.id === 'RESTR' ? { ...r, renderedBy: 'unconstrained' } : r,
+  r.id === 'RESTR' ? { ...r, queryRenderable: true, groundsForSeparateRegion: ['DV'] } : r,
 );
 check(
-  'MUTANT — without gate 3b at S-exposed scope, the corrected antecedent is unstateable, not merely unmet',
-  MUTANT_REGIONS.every((r) => r.renderedBy === 'query' || r.renderedBy === 'expand'),
-  false,
+  'MUTANT — without gate 3b at S-exposed scope, the corrected antecedent is UNMET: a query-renderable row sits outside the union',
+  MUTANT_REGIONS.filter((r) => r.queryRenderable && r.outsideCall1Union).map((r) => r.id),
+  ['RESTR'],
+);
+check(
+  'MUTANT — and the region count survives it: >= 3 still holds on the DV ground alone',
+  MUTANT_REGIONS.some((r) => r.outsideCall1Union) && MUTANT_REGIONS.length >= 3,
+  true,
+);
+// Second mutation, in the other direction: strip the DV ground and the >= 3 claim loses its
+// gate-independent support, which is the state Round 117's encoding was indistinguishable from.
+const MUTANT_NO_DV = S_EXPOSED_REGIONS.map((r) =>
+  r.id === 'RESTR'
+    ? { ...r, outsideCall1Union: false, groundsForSeparateRegion: ['gate-3b'] }
+    : r,
+);
+check(
+  'MUTANT — strip the DV ground and no gate-3b-free support remains, so the closure would be conditional on an open item',
+  MUTANT_NO_DV.flatMap((r) => r.groundsForSeparateRegion.filter((g) => g !== 'gate-3b')),
+  [],
 );
 check(
   'no count moves: S-exposed`s surviving discriminating shapes are still 10 under gate 1b',

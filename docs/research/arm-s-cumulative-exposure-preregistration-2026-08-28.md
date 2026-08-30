@@ -286,6 +286,16 @@ Pre-spend on `--dry`, per cell, in the structural check — not after the live c
    2 of 2 was already labelled a prior. Gate 1b remains what the sentence above says — an enumeration
    over the registered query set, not an arithmetic count. Verifier:
    `scripts/verify-rule-discrimination.mjs` §(f), 8 self-checks including a mutation.)*
+   *(**Dependency separated 2026-08-29, Round 118 §1.** The paragraph above gives two grounds for the
+   restriction being a third region and leads with gate 3b, whose satisfiability is **open** (§6).
+   The two are independent and only one of them is a gate: **(i)** gate 3b — no registered query
+   renders a restriction row, so it lies outside the call-1 union; **(ii)** the DV — the restriction
+   must be off-screen at the decision or `expand` has nothing to reach. Ground (ii) cites no gate and
+   is untouched by whatever becomes of 3b. **So the count's closure is not conditional on an open
+   item**, and a later finding that 3b is unsatisfiable would **not** reopen it. What does rest on 3b
+   is the *corrected antecedent*, not the count. §(f) now carries the grounds as separate fields with
+   a mutation in each direction — strip 3b and the antecedent breaks while `>= 3` survives; strip the
+   DV ground and the closure loses its gate-independent support.)*
 2. **S-unexposed:** **no** query in the registered query set produces `excerptSeparators >= 1`. This
    is a claim about the geometry, so it must be checked by enumerating the set, not by observing one
    run. If any query can produce it, the cell is not exogenous.
@@ -488,6 +498,12 @@ delivers that and no arm currently designed does — that much of the sentence s
   because gate 1b's breach kinds are properties of *query* renders. This closes an item; it does not
   open one, and no count moves.
 
+  *(**Round 118 §1.** The closure has **two** grounds and only one is a gate: 3b, and the DV clause
+  above — "it cannot be 2 for any buildable version of this arm." The DV ground stands whatever
+  becomes of gate 3b's still-open satisfiability, so **this closed item cannot be reopened by that
+  open one.** Recorded because both statements of the closure lead with 3b, and a future fire finding
+  3b unsatisfiable would otherwise read them as reopening the count.)*
+
   The mirror kind `B0` in S-unexposed was listed here as open for the same reason. **It is not the
   same situation** *(Round 115 §7)*: §1 makes no one-productive-query claim for S-unexposed, so
   `B0` is in-cell, has been enumerated in the gate-2-holding block since Round 113, and contributes
@@ -502,7 +518,10 @@ delivers that and no arm currently designed does — that much of the sentence s
   address is by construction a region the model can ask about — so 3b is a constraint on the
   registered *query set*, not on the geometry, and may be satisfiable by query-set design alone.
   Not derived here. **These two are the reason S now carries four underived pre-spend conditions
-  rather than two** (§2a).
+  rather than two** (§2a). *(**Round 118 §1:** if gate 3b turns out unsatisfiable, what fails is the
+  **corrected antecedent** of gate 1b at S-exposed scope — **not** the region count, which is closed
+  on the DV ground independently. Scoped here so the blast radius of this open item is written down
+  before it is checked, rather than argued about after.)*
 - **Whether gate 1b is satisfiable jointly with gate 1.** *(Added 2026-08-29, Round 115 §7.)* Gate 1
   requires a query reaching two regions; gate 1b requires that no query reach a third. Plausibly
   compatible — it is what the corpus geometry does — but not derived, and it is a second underived

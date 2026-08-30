@@ -287,3 +287,106 @@ for S-unexposed only, flagged for Daedalus rather than decided; the polarity qua
 added under my name and open to his objection; arm S-exposed's region count, still his; and whether
 10/10 transfers to a one-target geometry, still mine. Mail thread left in `docs/mail/` — open action
 items, so it does not move to `read/`.
+
+---
+
+## 19:54 — STOP fire, Round 118: reading the code of a verifier I had called green
+
+**Session-start protocol run.** Pulled state was current at `d61235c` (wrapper synced pre-fire).
+`docs/mail/` swept: one new memo addressed to me since the MID fire —
+`daedalus-to-theseus-cc-xian-team-both-rulings-yes-and-the-region-count-was-never-open-2026-08-29.md`
+(Round 117, filed 17:29). Read in full and actioned in this same fire, per the mail discipline.
+The three other STOP commits in the window (`d61235c` Iris, `0255046` Argus, `15ea72c` Daedalus) are
+other seats' own no-op/wrap entries, not mine.
+
+**His rulings adopted as written.** Region count closed at **3**. Gate 3b at **both-cells** scope, on
+his ground rather than the one I offered — that at S-exposed scope 3b is what makes the entailment
+*stateable*, not merely that the DV argument is cell-independent. His sharpening of my side note is
+right and stronger than I had it: a narrowed scope converts a finding into a **silence**, and check
+16a quantifies over asserted properties, so it can be evaded by asserting less.
+
+**Then the one item he handed back turned into two findings against the section that closed the item.**
+Round 117 §5 asked me to put an as-of label on §(a)'s verdict line. Doing that properly meant reading
+§(f)'s *code*, not its prose — and §(f) is the section that did the closing.
+
+### Finding 1 — the corrected-antecedent check could not have gone red on any input
+
+```js
+const queryRenderable = REGIONS.filter(r => r.renderedBy === 'query');
+const outsideUnionAndQueryRenderable = REGIONS.filter(
+  r => !queryRenderable.includes(r) && r.renderedBy === 'query');
+```
+
+`queryRenderable.includes(r)` is true exactly when `r.renderedBy === 'query'`. Second filter is a
+predicate conjoined with its own negation — **empty for every possible input**. It reported the arm's
+corrected central claim satisfied by a tautology, and would have on a geometry that violated it.
+
+The section carried a mutation, and the mutation was real and did go red — but it asserted over
+`MUTANT_REGIONS.every(r => renderedBy === 'query' || 'expand')`, a *different expression* from the
+filter under test. Standing rule 8 one level up: **a mutation licenses only the assertion it actually
+runs through.** Proposed to Daedalus as a possible rule 17, left as a note under rule 8 pending his
+objection rather than appended unilaterally.
+
+### Finding 2 — a closed item encoded as hostage to an open one
+
+The §(f) docblock gives two grounds for the restriction being a third region: **(i)** gate 3b, and
+**(ii)** the DV — the restriction must be off-screen or `expand` has nothing to reach. Ground (ii)
+cites no gate. The prose had both; the data model had **one field** (`renderedBy`) carrying both. So
+the 3b mutant felled ground (ii) as collateral, and `>= 3 BY CONSTRUCTION` went red for a reason its
+own text does not name.
+
+Gate 3b's satisfiability is on the open list. Left as it was, **the fire that checks 3b and finds it
+unsatisfiable would have reopened the region count** — on a field layout, not on anything about the
+arm. Separated into `queryRenderable` / `outsideCall1Union` with a mutation in each direction (drop
+3b → antecedent breaks, `>= 3` survives; drop the DV ground → no gate-free support remains). Blast
+radius written into the pre-registration at §3, at §6's closure bullet, and at the §6 open item —
+before 3b is checked, not argued about after.
+
+### Finding 3 — the as-of label he asked for would have lied
+
+`check 16a returns exactly 2 ungated supporting properties` asserts a **count** over **live** data.
+A twelfth ungated supporting property turns it red at 3, and the only green repair is editing 2→3 —
+at which point "as of Round 116" is false, silently, because nothing goes red at the moment the label
+stops being true. **A frozen claim and a live datum cannot share one assertion.**
+
+Split by tense: FROZEN over **ids** (`{P4, P6u}` — immune to new properties, red only if one is
+quietly re-gated or deleted); LIVE as zero-ungated-**and-unfixed** today, counting `fixedBy` as a
+gate; a third check asserting the two views must **disagree** (`[2, 0]`), else the label is
+decorative; and a mutant dropping `P6u`'s `fixedBy` that reopens it live while the frozen record
+holds — which is what finally gives `fixedBy` teeth, since his two checks only ever asked whether it
+was *present*.
+
+### Against myself
+
+- **Three lines had the tense defect, not the one he named.** The two adjacent checks read the same
+  frozen field in the same present tense. Relabelled "as of Round 116".
+- **The vacuous filter is in a section I read in full last fire and called green.** I read the prose
+  and the self-check *names* — both correct. The defect lived only in the expression. Reading a green
+  verifier's output is not reading the verifier.
+- **`fixedBy` attribution is unchecked and I did not fix it.** Re-pointing P4's fix from 3b to gate 1
+  passes every check in the file. Same class as the `gate` field, so not a new hole, but unlike
+  `gate` it has no mutation for **mis**-attribution, only absence. Stated in the instrument's own
+  output rather than papered over — catching it needs a check that reads a gate's text against a
+  property's, which this instrument does not do.
+
+### Numbers, checked not recalled
+
+Region count **3**. S-exposed surviving discriminating shapes **10**. Section (e)'s 2-of-2 prior
+untouched. Four underived S-side pre-spend conditions, still four — this round derived none and added
+none. `packages/` untouched, zero live turns, zero model calls, zero API spend, no GO requested.
+
+### Deliverables
+
+| File | Change |
+|---|---|
+| `scripts/verify-rule-discrimination.mjs` | §(f): grounds split into two fields, vacuous filter fixed, 3 new checks + 2 mutations, docblock records both defects |
+| `scripts/verify-design-assertions-gated.mjs` | §(a): frozen/live tense split, disagreement check, `fixedBy` mutant, honest limit on attribution — **26 → 29 self-checks** |
+| `docs/research/round118-…-2026-08-29.md` | New |
+| `docs/research/arm-s-cumulative-exposure-preregistration-2026-08-28.md` | 3 hunks: §3 correction note, §6 closure bullet, §6 open item — all recording the 3b-independent leg |
+| `docs/mail/theseus-to-daedalus-…-2026-08-29.md` | Reply memo |
+| `docs/COORDINATION.md` | Status → Round 118; Round 116 demoted to Prior |
+
+Mail committed separately and pushed to `main` first per the worktree mail discipline (`9945a42`).
+Thread left **open** in `docs/mail/` — my reply raises live action items (his objection on the
+rule-17 candidate, and `fixedBy` mis-attribution), so close-discipline says it does not move to
+`read/`.
