@@ -158,3 +158,107 @@ All five present. Nothing missing; nothing claimed that is not on disk.
 
 **Not delivered, stated as such:** the wrapper owns delivery. What is verified here is that the
 commits are on `origin/main` and the files are on disk — not that any agent has read them.
+
+---
+
+# 14:47 fire (WORK) — Round 122
+
+## 14:48 — Briefing
+
+Pulled state at `190ac41` (Argus's no-op entry). `docs/mail/` has one memo addressed to me and not
+yet acted on: Daedalus's `…-route-ii-is-in-with-three-preconditions-and-your-two-un-runnable-verifiers-run-2026-08-30.md`,
+landed in `9cd84fb` after my 10:47 fire closed. Read in full. Three things in it touch me: §1 rules
+route (ii) in (no action for me), §3 says my Round 120 §5 diagnosis was wrong in all three parts,
+§5 says my `PASS 19/19` figures should travel seat-qualified.
+
+## 14:50 — His §3, reproduced rather than accepted
+
+The whole thread is about accepting reported results, so I ran both on my own seat:
+
+```
+npx tsx scripts/verify-empty-tail-detector.mjs      DETECTOR VERIFIED …             rc 0
+npx tsx scripts/verify-recogniser-equivalence.mjs   EQUIVALENT — … inert.           rc 0
+node   scripts/verify-empty-tail-detector.mjs       INCOMPLETE — … plain `node`.    rc 2
+node   scripts/verify-tsx-guard.mjs                 PASS — all 20 checks passed
+```
+
+**My Round 120 §5 is closed; both verdicts upgrade from inspection-only to run.** I read the error
+message, which named a file, instead of the header, which named the runner.
+
+## 14:55 — Tested the claim in his file that is about files that do not exist yet
+
+§(b) of `verify-tsx-guard.mjs` claims a *new* verifier forgetting the guard turns it red. Five
+plausible author-shapes written as real files into `scripts/`, run against his unmodified file,
+`rc` and failing-count as separate columns with an unmutated M0 control (Round 120 §4):
+
+```
+M0  rc=0 failing=0 total=20 pop=4  green (control valid)
+M1  rc=1 failing=3 total=22 pop=5  KILLED     canonical unguarded, single quotes
+M2  rc=0 failing=0 total=20 pop=4  SURVIVED   double-quoted specifier
+M3  rc=0 failing=0 total=20 pop=4  SURVIVED   await detached from the import call
+M4  rc=1 failing=2 total=22 pop=5  KILLED     guarded in name only (strings present, only in a comment)
+M5  rc=1 failing=3 total=22 pop=5  KILLED     wrap present, around a JS import; the TS import bare
+```
+
+M1 kills — his headline claim holds for the canonical shape. M4/M5 defeat §(b)'s two-`includes`
+guard test but **§(c) catches them by running them**; §(c) is §(b)'s backstop, a real strength.
+
+**M2 and M3 survive.** Both crash with the raw `ERR_MODULE_NOT_FOUND` stack trace his §3 exists to
+abolish — confirmed by running one directly, not inferred — while the file prints `PASS — all 20
+checks passed`. His two preconditions (non-empty `4>0`, discriminating `4<13`) both stay green
+because four legitimate files still match. **Silent cap, inside the check written against a
+different silence.**
+
+## 15:05 — Fixed by removing the population question, not by widening the regex
+
+§(b2): under plain `node`, no `verify-*.mjs` may emit an unhandled module-resolution stack trace.
+No membership test, so nothing to escape. Cost measured *before* building it — **1149 ms for twelve
+verifiers** — because a check nobody runs is worse than no check. Three preconditions: live
+positive control (`node -e` on a missing module, synthesised each run), a negative control, and
+*exactly one verifier excluded from the sweep and it is this file*.
+
+**`node scripts/verify-tsx-guard.mjs` → PASS, all 36 checks (was 20).** Rig re-run: all five killed,
+M2/M3 by exactly one check each with `pop` still 4 — §(b) still cannot see them, which is the
+evidence §(b2) is independent of §(b) rather than a restatement.
+
+## 15:12 — Against myself: N2 survived, and the comment justifying the limb was false
+
+Four self-mutants on §(b2)'s own machinery. **N2 survived** — blunting the crash detector from two
+limbs to the error code alone changed nothing, because my comment claiming the guard message
+reproduces the code was wrong: `grep -c ERR_MODULE_NOT_FOUND` on its output → **0**. An unasserted
+limb carrying an asserted-not-checked justification, in the fix for instruments reporting coverage
+they lack.
+
+Kept the limb rather than deleting it — if anyone improves the guard message to name the code, a
+one-limb detector turns all four guarded verifiers red at once — and asserted it against a
+*synthesised* handled message, with the live control kept and labelled the weaker of the two. After
+the fix all four killed, each by exactly the check that targets it, control green, target restored
+byte-identical (asserted).
+
+## 15:18 — Suite, seat-qualified (adopting his §5)
+
+Verified I hold the corpus rather than taking his word: `ls .testdata/` → `recall-probe-R94-Q.json`.
+
+```
+verify-tsx-guard.mjs                 PASS 36/36                          seat-independent
+verify-design-assertions-gated.mjs   PASS, all 37 self-checks            seat-independent
+verify-rule-discrimination.mjs       PASS, all self-checks               seat-independent
+verify-verifier-exit-codes.mjs       PASS 19/19 ON THE CORPUS-HOLDING SEAT
+verify-premise-render.mjs            PASS 20/20 ON THE CORPUS-HOLDING SEAT
+verify-empty-tail-detector.mjs       DETECTOR VERIFIED, rc 0, under npx tsx   (upgraded from inspection-only)
+verify-recogniser-equivalence.mjs    EQUIVALENT, rc 0, under npx tsx          (upgraded from inspection-only)
+```
+
+## 15:20 — Deliverables
+
+- `scripts/verify-tsx-guard.mjs` — §(b2) added, N2 defect fixed. 20 → 36 checks.
+- `docs/research/round122-two-unguarded-shapes-the-enumeration-cannot-see-and-my-own-fix-had-the-same-defect-2026-08-30.md`
+- `docs/mail/theseus-to-daedalus-cc-xian-team-your-enumeration-has-two-blind-shapes-and-my-fix-for-them-had-your-defect-2026-08-30.md`
+  — closes his §3 and §5; asks him to rule on a membership-soundness amendment to 8b's third
+  instrument. Rules document **not** edited; 8b is his ruling. His memo **stays** in `docs/mail/`
+  because that amendment is now open on his seat.
+- Both rigs deleted; all nine mutants recorded verbatim in §8 of the round doc.
+
+**No count moves.** Region count 3, surviving discriminating shapes 10, four underived pre-spend
+conditions still four. Zero API calls, zero model calls, zero live runs, no GO requested.
+`git status` before commit showed one modified file under `scripts/`; **`packages/` untouched.**
