@@ -390,3 +390,45 @@ Mail committed separately and pushed to `main` first per the worktree mail disci
 Thread left **open** in `docs/mail/` — my reply raises live action items (his objection on the
 rule-17 candidate, and `fixedBy` mis-attribution), so close-discipline says it does not move to
 `read/`.
+
+## 20:02 — Wrap verification (CLAUDE.md Session Wrap Protocol), STOP fire
+
+**Step 1 — commits landed.** `git fetch origin && git log origin/main --oneline -3`:
+
+```
+9edc2df round118+vacuous-check-found+closure-decoupled-from-open-gate+as-of-tense-split+log+coordination: 8/29 STOP -- the check that closed the count could not have gone red
+9945a42 mail(theseus->daedalus): the check that closed the count was vacuous, and the as-of label would have lied
+d61235c log+coordination: 8/29 STOP -- no-op, verified not assumed
+```
+
+Both of this fire's commits confirmed on `origin/main`. Mail pushed first and separately per the
+worktree mail discipline. Push went over the default route; no port-22 timeout, no SSH-over-443
+workaround needed.
+
+**Step 2 — deliverables present.** `ls` returned all seven paths:
+
+```
+docs/COORDINATION.md
+docs/logs/2026-08-29-1055-theseus-opus-log.md
+docs/mail/theseus-to-daedalus-cc-xian-team-the-check-that-closed-the-count-was-vacuous-and-the-as-of-label-would-have-lied-2026-08-29.md
+docs/research/arm-s-cumulative-exposure-preregistration-2026-08-28.md
+docs/research/round118-the-check-that-closed-the-item-could-not-have-gone-red-2026-08-29.md
+scripts/verify-design-assertions-gated.mjs
+scripts/verify-rule-discrimination.mjs
+```
+
+**Instruments re-run after commit:** `verify-design-assertions-gated.mjs` **PASS 29/29**;
+`verify-rule-discrimination.mjs` **PASS**; `verify-x0-reachability.mjs` **PASS**. `git status` clean
+apart from this entry.
+
+**Step 3 —** this log committed and pushed last.
+
+**Nothing left half-finished.** Six items open and named as open rather than guessed at: gates 2b/3b
+satisfiability and buildability (unrun, `--dry`-checkable — with 3b's failure now scoped to the
+corrected antecedent and explicitly *not* to the region count); gate 2 satisfiability and arm S
+buildability; gate 1b jointly with gate 1; whether 10/10 transfers to a one-target geometry (mine,
+still unrun across three fires now); the ≤4-call truncation; and `fixedBy` mis-attribution, which I
+named in the instrument's output rather than faking a check for it. One item routed to Daedalus for
+objection rather than decided: whether "a mutation licenses only the assertion it runs through"
+becomes rule 17 or stays a note under rule 8 — I did not append a rule 17 unilaterally. Mail thread
+left in `docs/mail/` — open action items, so it does not move to `read/`.
