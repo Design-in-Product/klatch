@@ -95,14 +95,46 @@ artifacts. A mutant may only turn a pass red.
 **Provenance:** Round 104 docblock (Theseus), recording Daedalus's refusal to synthesise five files
 named like captured Round 94 artifacts; `reconstructionFabricated` exists for the same reason.
 
-## 8. A mutant that did not apply is a silently-skipped test
+## 8. A mutant that did not apply is a silently-skipped test — and a mutant that applied but ran through a different expression licenses nothing
 
-**Rule.** Every mutation must assert that its patch matched. A `replace` that matched nothing reports
-a kill that never happened — the same failure family as the silent cap, inside the tool built to
-catch it.
+**Rule 8a — application.** *(Original limb; the sentence below is unchanged, so every existing
+citation of "rule 8" resolves to exactly what it meant.)* Every mutation must assert that its patch
+matched. A `replace` that matched nothing reports a kill that never happened — the same failure
+family as the silent cap, inside the tool built to catch it.
 
-**Provenance:** Round 104 case C (Theseus); Round 107 §1 D3 carries the same guard for the
-self-mutation.
+**Rule 8b — attribution.** *(Added Round 118 §2 by Theseus as a candidate; ruled into 8 rather than
+minted as rule 17 by Daedalus, Round 119 §1.)* **A mutation licenses only the assertion it actually
+runs through.** A mutant may apply, and go red, and still exercise nothing of the check it sits
+under — if the mutant asserts over a *re-expression* of the check's predicate rather than the
+predicate itself, the red comes from somewhere the claim does not live. The check under it is
+unlicensed and can be vacuous while the file reports green mutation coverage.
+
+Two demands, and the second is the load-bearing one:
+
+- **Assertable.** The mutation must *move the value of the expression the check reads*. Assert that
+  directly — `f(real) !== f(mutant)` — as a `BITES` check alongside the mutant. This catches a
+  mutation that has stopped biting; it does not catch a re-expression that never bit.
+- **Structural.** The check and its mutant must apply the **same named binding**, not two copies of
+  one intent. Factor the predicate to a function and call it on both inventories. This is the limb
+  that cannot be discharged by a check — nothing inside the file can detect a future editor
+  re-inlining one call site — so it is discharged by construction or not at all. Say which.
+
+**Why this is limb (b) of rule 8 and not rule 17.** The merge-numbering rule at §16 says a *merge*
+takes a fresh number when the old numbers are cited outside the document, because reusing a cited
+number silently redefines every citation. Widening is the opposite case: 8a's old meaning survives
+as a special case of the wider rule — non-application is just the degenerate instance where the
+mutation runs through *zero* assertions — so every prior "rule 8" citation stays true, and true for
+the same reason it was true when written. **Renumbering breaks citations; widening that preserves
+the old limb as a special case does not.** The residual cost is precision, not correctness: a bare
+"rule 8" no longer says which limb. Lettering fixes that going forward without touching the past,
+which is the same instrument §16 used for 12–15.
+
+**Provenance:** 8a — Round 104 case C (Theseus); Round 107 §1 D3 carries the same guard for the
+self-mutation. 8b — Theseus, Round 118 §2 (found in `verify-rule-discrimination.mjs` §(f): a
+corrected-antecedent check that was empty for every possible input, sitting under a mutation that
+asserted over a different field and went red anyway). Ruled and discharged by Daedalus, Round 119 —
+including against Round 118's own fix, which re-expressed all three predicates inline at their
+mutant sites and had already drifted at one of them.
 
 ## 9. A "does not move" invariant needs a companion check that the number is also *right*
 

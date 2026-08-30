@@ -777,15 +777,29 @@ const S_EXPOSED_REGIONS = [
     why: 'gate 3b: no query renders any restriction row · DV: `expand` must have somewhere to go',
   },
 ];
-const queryRenderable = S_EXPOSED_REGIONS.filter((r) => r.queryRenderable);
-const outsideUnionAndQueryRenderable = S_EXPOSED_REGIONS.filter(
-  (r) => r.queryRenderable && r.outsideCall1Union,
-);
+// ── Round 119 (Daedalus), standing rule 8b: a mutation licenses only the assertion it actually
+// runs through. Round 118 fixed the vacuous filter but re-expressed each predicate INLINE at its
+// mutant site, so check and mutant were two copies of one intent — the drift the rule is about,
+// one level down. They are now single named bindings applied to both the real and the mutant
+// inventory, so no later edit can move one without moving the other. Discharge is STRUCTURAL, not
+// assertional: no check can detect a future editor re-inlining one of these. What IS assertable is
+// that the mutation still moves the licensed expression's value, and each has a `BITES` check below.
+const queryRenderableRows = (regions) => regions.filter((r) => r.queryRenderable);
+const renderableOutsideUnion = (regions) =>
+  regions.filter((r) => r.queryRenderable && r.outsideCall1Union);
 // Grounds for the >= 3 conclusion that do NOT cite gate 3b. If this is empty, the closure of the
 // region count really is hostage to an open item and should be re-labelled as conditional.
-const gate3bFreeGrounds = S_EXPOSED_REGIONS.flatMap((r) =>
-  r.groundsForSeparateRegion.filter((g) => g !== 'gate-3b'),
-);
+const gate3bFreeSupport = (regions) =>
+  regions.flatMap((r) => r.groundsForSeparateRegion.filter((g) => g !== 'gate-3b'));
+// The ">= 3 BY CONSTRUCTION" claim in full. Round 118's real check asserted only the `some(...)`
+// half while its mutant asserted `some(...) && length >= 3` — already a different expression from
+// the one it licensed, before any later edit. One binding now carries the whole claim.
+const countIsAtLeastThreeByConstruction = (regions) =>
+  regions.some((r) => r.outsideCall1Union) && regions.length >= 3;
+
+const queryRenderable = queryRenderableRows(S_EXPOSED_REGIONS);
+const outsideUnionAndQueryRenderable = renderableOutsideUnion(S_EXPOSED_REGIONS);
+const gate3bFreeGrounds = gate3bFreeSupport(S_EXPOSED_REGIONS);
 
 for (const r of S_EXPOSED_REGIONS) {
   console.log(`  ${r.id.padEnd(6)} rendered by ${r.renderedBy.padEnd(6)} — ${r.why}`);
@@ -827,7 +841,7 @@ check(
 );
 check(
   'and it is >= 3 BY CONSTRUCTION: dropping the restriction region leaves the DV nothing to reach',
-  S_EXPOSED_REGIONS.some((r) => r.outsideCall1Union),
+  countIsAtLeastThreeByConstruction(S_EXPOSED_REGIONS),
   true,
 );
 // Round 118 §1. The check above now reads `outsideCall1Union` (the DV ground) rather than
@@ -856,12 +870,27 @@ const MUTANT_REGIONS = S_EXPOSED_REGIONS.map((r) =>
 );
 check(
   'MUTANT — without gate 3b at S-exposed scope, the corrected antecedent is UNMET: a query-renderable row sits outside the union',
-  MUTANT_REGIONS.filter((r) => r.queryRenderable && r.outsideCall1Union).map((r) => r.id),
+  renderableOutsideUnion(MUTANT_REGIONS).map((r) => r.id),
   ['RESTR'],
 );
 check(
   'MUTANT — and the region count survives it: >= 3 still holds on the DV ground alone',
-  MUTANT_REGIONS.some((r) => r.outsideCall1Union) && MUTANT_REGIONS.length >= 3,
+  countIsAtLeastThreeByConstruction(MUTANT_REGIONS),
+  true,
+);
+// Rule 8b, assertable half: the mutation must MOVE the value of the very expression the check reads.
+// A mutant that applies, goes red elsewhere, and leaves this expression where it was licenses nothing.
+check(
+  'BITES — the gate-3b mutation moves the licensed expression itself, not merely some neighbouring one',
+  renderableOutsideUnion(S_EXPOSED_REGIONS).length !== renderableOutsideUnion(MUTANT_REGIONS).length,
+  true,
+);
+// And the other direction is a real claim too: this mutation must NOT move the count expression.
+// Round 117's mutant did move it, which is the collateral Round 118 separated out.
+check(
+  'BITES — and it leaves the count expression alone, so the two grounds are genuinely independent',
+  countIsAtLeastThreeByConstruction(S_EXPOSED_REGIONS) ===
+    countIsAtLeastThreeByConstruction(MUTANT_REGIONS),
   true,
 );
 // Second mutation, in the other direction: strip the DV ground and the >= 3 claim loses its
@@ -873,8 +902,13 @@ const MUTANT_NO_DV = S_EXPOSED_REGIONS.map((r) =>
 );
 check(
   'MUTANT — strip the DV ground and no gate-3b-free support remains, so the closure would be conditional on an open item',
-  MUTANT_NO_DV.flatMap((r) => r.groundsForSeparateRegion.filter((g) => g !== 'gate-3b')),
+  gate3bFreeSupport(MUTANT_NO_DV),
   [],
+);
+check(
+  'BITES — the DV-stripping mutation moves the support expression the closure check reads',
+  gate3bFreeSupport(S_EXPOSED_REGIONS).length !== gate3bFreeSupport(MUTANT_NO_DV).length,
+  true,
 );
 check(
   'no count moves: S-exposed`s surviving discriminating shapes are still 10 under gate 1b',
