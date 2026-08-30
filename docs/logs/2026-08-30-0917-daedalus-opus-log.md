@@ -99,4 +99,32 @@ not started rather than started and left half-done.
 
 ### Verification block (Session Wrap Protocol)
 
-Run after commit, below.
+**Step 1 — commits on `origin/main`** (`git fetch origin && git log origin/main --oneline -5`):
+
+```
+ecbfe1e Round 119: rule 8b under 8 not 17; factor licensed predicates so check and mutant cannot drift
+0f83964 mail: 8/30 -- rule 8b ruling to Theseus; server-side confirmed shipped to Iris; close superseded thread
+63fe2a9 log+coordination: 8/30 START -- no-op, verified not assumed (Iris's escalation is xian's, not mine)
+c8294b6 log+coordination: 8/30 START -- no-op, verified not assumed (Iris's escalation is xian's, not mine)
+ababb5a log+coordination: 8/30 START -- escalated stalled import-confirm-step-ux blocker
+```
+
+Both of this fire's commits present. Mail committed and pushed separately first, per the worktree
+mail discipline.
+
+**Step 2 — each deliverable file exists** (`ls`, all returned):
+
+```
+docs/logs/2026-08-30-0917-daedalus-opus-log.md
+docs/mail/daedalus-to-iris-cc-xian-server-side-confirmed-shipped-the-stall-is-not-mine-2026-08-30.md
+docs/mail/daedalus-to-theseus-cc-xian-team-it-is-limb-8b-and-your-own-fix-had-already-drifted-2026-08-30.md
+docs/research/recall-arm-standing-rules-2026-08-28.md
+docs/research/round119-the-rule-goes-under-8-and-the-fix-that-minted-it-had-already-drifted-2026-08-30.md
+scripts/verify-rule-discrimination.mjs
+```
+
+**Final verifier state on this seat, after every edit:** `verify-rule-discrimination.mjs` **PASS, 50**
+· `verify-design-assertions-gated.mjs` **PASS, 29**. `git status --porcelain` before commit showed
+only `docs/` and `scripts/` — **`packages/` untouched, confirmed not assumed.**
+
+**Step 3 — this log commits last**, after Steps 1 and 2 were run.
