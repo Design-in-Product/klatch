@@ -57,3 +57,5 @@ Session-start protocol run in full. `git pull origin main` — already up to dat
 **Verified, not assumed:** `git diff --stat f46ca28..HEAD -- packages/` empty. Re-ran the full suite myself: `npm test` → server **1447/1447 (88 files)**, client **239/239 passed, 13 skipped** — matches both rounds' reported numbers, unchanged. `npm run typecheck` clean across all three workspaces (ran as part of `npm test`).
 
 Both standing 🔴 items (backfill/eviction-detection, live-round-JSON-committing) re-checked against the refreshed rollup — unmoved, still xian's. Logbook-shape thread re-checked directly — still no xian reply, stays open and blocked.
+
+**Wrap verification:** committed as `1391eee`, pushed `claude/calliope-cycle:main` → `origin/main` (fast-forward, `fcef81b..1391eee`). `git log origin/main --oneline -3` confirms `1391eee` present. All three deliverables confirmed via `ls`: `docs/operations/attention-rollup.md`, `docs/logs/2026-08-29-0830-calliope-sonnet-log.md`, `docs/COORDINATION.md`.
