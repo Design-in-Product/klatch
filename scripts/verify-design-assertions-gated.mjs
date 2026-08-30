@@ -333,8 +333,15 @@ for (const p of PROPERTIES) {
   console.log(`       [${p.polarity}] ${p.note}\n`);
 }
 
+// Rule 8b, structural limb (Round 120): both views are FUNCTIONS of an inventory, not expressions
+// over the one global inventory, so the mutation below applies the very same binding the live check
+// applies rather than a second copy of its intent. Before this, `openToday` and its mutant were two
+// inline copies of one four-clause predicate — correct today, one edit from silently uncoupling.
+const frozenFindingsIn = (props) => props.filter((p) => verdict(p) === 'UNGATED' && p.polarity === 'SUPPORTS');
+const openTodayIn = (props) => props.filter((p) => !p.gate && !p.fixedBy && !p.label && p.polarity === 'SUPPORTS');
+
 const ungated = PROPERTIES.filter((p) => verdict(p) === 'UNGATED');
-const ungatedSupporting = ungated.filter((p) => p.polarity === 'SUPPORTS');
+const ungatedSupporting = frozenFindingsIn(PROPERTIES);
 const ungatedWeakening = ungated.filter((p) => p.polarity === 'WEAKENS');
 
 console.log('  THE DIFF — as of Round 116, before gates 2b/3b were written (see TENSE below):');
@@ -396,9 +403,7 @@ ok(
   ROUND_116_FINDINGS.every((id) => ungatedSupporting.some((p) => p.id === id)) &&
     ungatedSupporting.length === ROUND_116_FINDINGS.length,
 );
-const openToday = PROPERTIES.filter(
-  (p) => !p.gate && !p.fixedBy && !p.label && p.polarity === 'SUPPORTS',
-);
+const openToday = openTodayIn(PROPERTIES);
 ok(
   'LIVE, today — no property is ungated AND unfixed: both Round 116 findings were closed in the document by Round 117',
   openToday.map((p) => p.id),
@@ -414,13 +419,31 @@ ok(
 // Mutation: un-name P6u's fix and it reappears as open today, while the frozen Round 116 record is
 // unmoved. This is what gives `fixedBy` teeth — without it, `fixedBy` is a field nothing reads.
 const MUTANT_PROPS = PROPERTIES.map((p) => (p.id === 'P6u' ? { ...p, fixedBy: null } : p));
-const mutantOpen = MUTANT_PROPS.filter(
-  (p) => !p.gate && !p.fixedBy && !p.label && p.polarity === 'SUPPORTS',
-);
+const mutantOpen = openTodayIn(MUTANT_PROPS);
+// This check's SENTENCE makes two claims — the live view reopens AND the frozen view does not move —
+// and until Round 120 its EXPRESSION evaluated only the first. `MUTANT_PROPS` had exactly one reader.
+// That is rule 8b one level up from where Round 118 found it: a check licensed for a claim it never
+// ran through, this time by its own name rather than by its mutant. Both conjuncts now evaluated.
 ok(
   'MUTANT — drop P6u`s fixedBy and it reopens as a live finding, while the frozen record is unchanged',
-  mutantOpen.map((p) => p.id),
-  mutantOpen.length === 1 && mutantOpen[0].id === 'P6u',
+  { live: mutantOpen.map((p) => p.id), frozen: frozenFindingsIn(MUTANT_PROPS).map((p) => p.id) },
+  mutantOpen.length === 1 && mutantOpen[0].id === 'P6u' &&
+    frozenFindingsIn(MUTANT_PROPS).map((p) => p.id).join() === ungatedSupporting.map((p) => p.id).join(),
+);
+// Rule 8b, assertable limb: the mutation must MOVE the value of the expression the live check reads.
+// A mutant that applies and goes red somewhere adjacent licenses nothing.
+ok(
+  'BITES — the fixedBy mutation moves the live expression the LIVE check reads',
+  [openTodayIn(PROPERTIES).length, openTodayIn(MUTANT_PROPS).length],
+  openTodayIn(PROPERTIES).length !== openTodayIn(MUTANT_PROPS).length,
+);
+// And the independence claim in the other direction, asserted rather than argued: the same mutation
+// must NOT move the frozen expression. This is what makes the two tenses genuinely separate rather
+// than two labels on one datum — the defect the as-of split exists to prevent.
+ok(
+  'BITES — and it leaves the FROZEN expression alone, so the two tenses are independent, not co-labelled',
+  frozenFindingsIn(MUTANT_PROPS).length,
+  frozenFindingsIn(MUTANT_PROPS).length === frozenFindingsIn(PROPERTIES).length,
 );
 ok('both findings are in the S-unexposed cell', ungatedSupporting.map((p) => p.cell), ungatedSupporting.every((p) => p.cell === 'S-unexposed'));
 // These two read the frozen `gate` field, so they carry the same as-of scope as the FROZEN check
@@ -543,8 +566,16 @@ const WEAKENING_USES = [
 ];
 
 const SUPPORTING_USES = ['SUPPORTS', 'GATES', 'DEFINES-DV'];
-let useSiteFindings = [];
 let markerMismatches = [];
+
+// Rule 8b, structural limb (Round 120). The finding predicate is a FUNCTION of a use-site inventory,
+// so the mutant below runs the same binding over a mutated inventory. Two things were wrong before:
+// the predicate was re-expressed inline at the mutant site, AND the mutant read `WEAKENING_USES[0]`
+// while the check looped the whole list — so the day a second WEAKENS property is added, the check
+// widens and the mutant does not, and the mutation would license only the first property's arm while
+// the verdict line spoke for all of them. n=1 today, which is exactly why it was invisible.
+const supportingSitesIn = (uses) =>
+  uses.flatMap((w) => w.sites.filter((s) => SUPPORTING_USES.includes(s.use)).map((s) => `${w.prop} @ ${s.where}`));
 
 for (const w of WEAKENING_USES) {
   const found = armS.match(w.marker) || [];
@@ -553,9 +584,10 @@ for (const w of WEAKENING_USES) {
     console.log(`       ${s.use.padEnd(9)} ${s.where.padEnd(16)} ${s.what}`);
   }
   if (found.length !== w.sites.length) markerMismatches.push(`${w.prop}: ${found.length} markers vs ${w.sites.length} classified`);
-  useSiteFindings.push(...w.sites.filter((s) => SUPPORTING_USES.includes(s.use)).map((s) => `${w.prop} @ ${s.where}`));
   console.log('');
 }
+
+const useSiteFindings = supportingSitesIn(WEAKENING_USES);
 
 console.log(`  Verdict: ${useSiteFindings.length === 0
   ? 'every use of every WEAKENS property is itself a refusal — the classification composes safely.'
@@ -565,8 +597,12 @@ console.log(`  Verdict: ${useSiteFindings.length === 0
   today, so §(c) is green on n=1. It is not vacuous — the five sites are real and the marker count
   binds them — but it has never gone red on live data. The mutation below is what shows it can.\n`);
 
-const MUTANT_SITES = WEAKENING_USES[0].sites.map((s, i) => (i === 2 ? { ...s, use: 'SUPPORTS' } : s));
-const mutantFindings = MUTANT_SITES.filter((s) => SUPPORTING_USES.includes(s.use));
+// Mutate the INVENTORY, not a slice of it: reclassify one site of the first WEAKENS property and
+// leave every other property's sites as they are. The shape survives a second WEAKENS property being
+// added — the mutant then carries it too, unmutated, exactly as the check does.
+const MUTANT_USES = WEAKENING_USES.map((w, wi) =>
+  (wi === 0 ? { ...w, sites: w.sites.map((s, i) => (i === 2 ? { ...s, use: 'SUPPORTS' } : s)) } : w));
+const mutantFindings = supportingSitesIn(MUTANT_USES);
 
 ok('every classified use site of a WEAKENS property is itself a refusal', useSiteFindings, useSiteFindings.length === 0);
 ok(
@@ -577,8 +613,22 @@ ok(
 ok('P8 is the WEAKENS property under test, and it is the one the qualifier suppresses', ungatedWeakening.map((p) => p.id), ungatedWeakening.map((p) => p.id).join() === 'P8');
 ok(
   'MUTANT — reclassifying one site as SUPPORTS turns §(c) red, so the check is not decorative',
-  mutantFindings.map((s) => s.where),
+  mutantFindings,
   mutantFindings.length === 1,
+);
+// Rule 8b, assertable limb: the mutation moves the value of the expression §(c)'s live check reads.
+ok(
+  'BITES — the reclassification moves the finding expression §(c) itself reads',
+  [supportingSitesIn(WEAKENING_USES).length, supportingSitesIn(MUTANT_USES).length],
+  supportingSitesIn(WEAKENING_USES).length !== supportingSitesIn(MUTANT_USES).length,
+);
+// The marker-count check must NOT move under it — a reclassification changes a site's USE, never how
+// many sites there are. Asserted rather than assumed, because if it did move, §(c)'s two checks would
+// be reading one fact under two names and the marker check would be decorative.
+ok(
+  'BITES — and it leaves the marker/site-count check alone, so §(c)`s two checks are independent',
+  MUTANT_USES.map((w) => w.sites.length),
+  MUTANT_USES.map((w) => w.sites.length).join() === WEAKENING_USES.map((w) => w.sites.length).join(),
 );
 
 // ---------------------------------------------------------------------------------------------
