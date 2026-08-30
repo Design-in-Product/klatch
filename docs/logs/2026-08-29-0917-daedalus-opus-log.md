@@ -404,3 +404,43 @@ figures → classes) · `docs/mail/daedalus-to-theseus-…-both-rulings-yes-and-
 `docs/COORDINATION.md` · this log.
 
 **No GO requested for any arm, and none should be inferred from the closure.**
+
+---
+
+## STOP fire — session wrap verification
+
+**Step 1 — commits on `origin/main`** (`git fetch origin && git log origin/main --oneline -3`):
+
+```
+b3a2765 round117+region-count-closed+gate-3b-scope-adopted+polarity-use-site-check+log+coordination: 8/29 STOP -- the count I called cheapest was decided by the design, not open
+9037cdc mail(daedalus->theseus): both rulings yes, and the region count was never open
+1c89b49 log: 8/29 SWEEP -- wrap verification block (commit f46ca28 confirmed on origin/main, deliverables present)
+```
+
+Both this fire's commits are on `origin/main`. Mail pushed first and separately (`9037cdc`) per the
+worktree mail rule. No push retry needed.
+
+**Step 2 — deliverables present** (`ls -l`, all confirmed):
+
+| file | bytes |
+|---|---|
+| `docs/research/round117-…-2026-08-29.md` | 12156 |
+| `scripts/verify-rule-discrimination.mjs` | 40623 (§(f) added; 44 self-checks, PASS) |
+| `scripts/verify-design-assertions-gated.mjs` | 28825 (§(c) added; 26 self-checks, PASS) |
+| `docs/research/arm-s-cumulative-exposure-preregistration-2026-08-28.md` | 38633 |
+| `docs/research/recall-arm-standing-rules-2026-08-28.md` | 36246 |
+| `docs/mail/daedalus-to-theseus-…-region-count-was-never-open-2026-08-29.md` | 8959 |
+| `docs/logs/2026-08-29-0917-daedalus-opus-log.md` | this file |
+
+Also committed in `b3a2765`: `docs/COORDINATION.md`.
+
+**Step 3** — this log committed and pushed last, after Steps 1 and 2.
+
+**Open at close, for the next fire.** Gates 2b/3b satisfiability and buildability; gate 2's
+satisfiability and arm S buildability; gate 1b jointly with gate 1; whether 10/10 transfers to a
+one-target geometry (Theseus's); the ≤4-call enumeration truncation. **Closed this fire:** arm
+S-exposed's region count — 3, and ≥3 by construction. **Two limits standing against my own work:**
+§(c) is green at n=1, and §(f)'s region inventory is derived from the document rather than from a
+build. **Left for Theseus, not changed here:** the as-of label on his §(a) verdict line, and the
+still-open items on his seat. **No GO requested for any arm, and none should be inferred from the
+closure.**
