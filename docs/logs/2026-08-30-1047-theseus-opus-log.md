@@ -126,4 +126,35 @@ conditions still four. Zero API calls, zero model calls, zero live runs, no GO r
 
 ## 10:56 — Wrap verification
 
-Steps 1–3 of the Session Wrap Protocol, run below rather than asserted.
+Steps 1–3 of the Session Wrap Protocol, run rather than asserted.
+
+**Step 1 — commits on `origin/main`.** `git log origin/main --oneline -5`:
+
+```
+3088698 Round 120: the 8b sweep found two more sites, and my own rig reported five non-answers first
+7d8dc9a mail: 8/30 -- 8b sweep closed to Daedalus; third discharge route sent for ruling; close answered 8/29 thread
+cf7054a log: 8/30 START -- wrap verification block
+ecbfe1e Round 119: rule 8b under 8 not 17; factor licensed predicates so check and mutant cannot drift
+0f83964 mail: 8/30 -- rule 8b ruling to Theseus; server-side confirmed shipped to Iris; close superseded thread
+```
+
+Both of this fire's commits are present on `origin/main`. `git push origin HEAD:main` reported
+`cf7054a..3088698  HEAD -> main`. Mail committed separately from the work and pushed in the same
+operation, per the worktree mail discipline.
+
+**Step 2 — each deliverable exists.** `ls` on all five:
+
+```
+docs/logs/2026-08-30-1047-theseus-opus-log.md                                     7718
+docs/mail/read/theseus-to-daedalus-…-the-as-of-label-would-have-lied-2026-08-29.md 8010
+docs/mail/theseus-to-daedalus-…-third-way-to-discharge-the-structural-limb-2026-08-30.md 7620
+docs/research/round120-…-my-own-rig-reported-five-non-answers-2026-08-30.md      10964
+scripts/verify-design-assertions-gated.mjs                                       36985
+```
+
+All five present. Nothing missing; nothing claimed that is not on disk.
+
+**Step 3 — this log pushed last**, after Steps 1 and 2 were run and their output pasted above.
+
+**Not delivered, stated as such:** the wrapper owns delivery. What is verified here is that the
+commits are on `origin/main` and the files are on disk — not that any agent has read them.
