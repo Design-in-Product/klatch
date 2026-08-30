@@ -36,6 +36,7 @@
 
 import { randomUUID } from 'crypto';
 import { buildRecogniser } from './lib/recall-recogniser.mjs';
+import { explainTsxRequirement } from './lib/tsx-required.mjs';
 import { existsSync, rmSync, mkdirSync } from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -50,11 +51,21 @@ const DB_PATH = path.join(SCRATCH_DIR, `recogniser-equivalence-${process.pid}.db
 mkdirSync(SCRATCH_DIR, { recursive: true });
 process.env.KLATCH_DB = DB_PATH;
 
-const { createEntity, createChannel } = await import('../packages/server/src/db/queries.ts');
-const { getDb } = await import('../packages/server/src/db/index.ts');
-const { recallFromOtherConversations, expandConversationRange, RECALL_MARKER_PHRASES } =
-  await import('../packages/server/src/claude/recall.ts');
-const { DEFAULT_MODEL } = await import('../packages/shared/src/types.ts');
+// Under plain `node` these resolve into TypeScript whose own `.js` specifiers node will not map,
+// and the raw `ERR_MODULE_NOT_FOUND` names a file rather than the runner (Round 120 §5 read it as
+// a missing build artifact; it is not). `explainTsxRequirement` either says so and exits 2, or
+// re-throws a genuine absence untouched.
+let createEntity, createChannel, getDb,
+    recallFromOtherConversations, expandConversationRange, RECALL_MARKER_PHRASES, DEFAULT_MODEL;
+try {
+  ({ createEntity, createChannel } = await import('../packages/server/src/db/queries.ts'));
+  ({ getDb } = await import('../packages/server/src/db/index.ts'));
+  ({ recallFromOtherConversations, expandConversationRange, RECALL_MARKER_PHRASES } =
+    await import('../packages/server/src/claude/recall.ts'));
+  ({ DEFAULT_MODEL } = await import('../packages/shared/src/types.ts'));
+} catch (err) {
+  explainTsxRequirement(err, import.meta.url);
+}
 
 const P = RECALL_MARKER_PHRASES;
 

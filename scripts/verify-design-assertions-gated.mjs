@@ -523,6 +523,53 @@ ok('each old rule carries a forward pointer to the check it became', lostRedirec
 ok('no rule 17 was appended', rules.includes(norm('## 17.')) === false, !rules.includes(norm('## 17.')));
 
 // ---------------------------------------------------------------------------------------------
+// §(b2) Rule 8's LETTERED limbs — the preservation claim that licensed widening instead of
+//       renumbering (Daedalus, Round 121 §2)
+// ---------------------------------------------------------------------------------------------
+//
+// Round 119 ruled Theseus's candidate rule into 8 as limb 8b rather than minting rule 17, and the
+// whole argument for doing so was a preservation claim: "8a's old meaning survives as a special
+// case, so every prior citation of rule 8 stays true, and true for the same reason." §(b) above
+// asserts exactly that claim for the 12-15 merge — and rule 8, the one this file's own checks are
+// written under, had no such anchor. The ruling that invented the discriminator did not apply the
+// instrument to itself.
+//
+// It matters now rather than in principle: Round 121 §1 widened 8b's structural limb a second time.
+// A widening is licensed only while the old limb survives verbatim. These four checks are what
+// makes "survives verbatim" a fact about the file rather than an intention of the editor.
+
+/** Text that must be present verbatim for a *widening* of rule 8 to have been legitimate. */
+const RULE_8_ANCHORS = [
+  { id: '8a-sentence', why: 'the original limb, unchanged, so every pre-8b "rule 8" citation resolves',
+    text: 'Every mutation must assert that its patch matched. A `replace` that matched nothing reports a kill that never happened' },
+  { id: '8b-attribution', why: 'the Round 119 widening',
+    text: 'A mutation licenses only the assertion it actually runs through.' },
+  { id: '8b-structural-share', why: 'Round 121 route (i) — the pre-existing discharge, preserved',
+    text: 'Both apply the **same named binding**' },
+  { id: '8b-structural-detect', why: 'Round 121 route (ii) — Theseus, Round 120 §3',
+    text: 'asserts that the copy still matches its original' },
+];
+
+const lostRule8 = RULE_8_ANCHORS.filter((a) => !rules.includes(norm(a.text)));
+for (const a of RULE_8_ANCHORS) {
+  console.log(`  ${lostRule8.includes(a) ? 'LOST   ' : 'present'}  ${a.id.padEnd(22)} (${a.why})`);
+}
+console.log('');
+
+ok('rule 8a survives verbatim, so widening 8 rather than renumbering stayed legitimate',
+  lostRule8.filter((a) => a.id === '8a-sentence').length === 0,
+  lostRule8.find((a) => a.id === '8a-sentence') === undefined);
+ok('both structural discharges are stated, so "say which" has the answers it offers',
+  lostRule8.filter((a) => a.id.startsWith('8b-structural')).map((a) => a.id),
+  lostRule8.filter((a) => a.id.startsWith('8b-structural')).length === 0);
+ok('rule 8 is still lettered rather than split into two numbered rules',
+  rules.includes(norm('**Rule 8a —')) && rules.includes(norm('**Rule 8b —')),
+  rules.includes(norm('**Rule 8a —')) && rules.includes(norm('**Rule 8b —')));
+// Without this the block passes vacuously if the anchor list is ever emptied — the silent-cap
+// shape, in the check written to prevent a different silence.
+ok('PRECONDITION — the rule 8 anchor list is non-empty', RULE_8_ANCHORS.length, RULE_8_ANCHORS.length > 0);
+
+// ---------------------------------------------------------------------------------------------
 // §(c) Polarity is a RELATION, not a property — every use of a WEAKENS assertion must itself weaken
 //      (Daedalus, Round 117 §2, amending Theseus's Round 116 §3 qualifier)
 // ---------------------------------------------------------------------------------------------

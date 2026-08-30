@@ -114,10 +114,40 @@ Two demands, and the second is the load-bearing one:
 - **Assertable.** The mutation must *move the value of the expression the check reads*. Assert that
   directly — `f(real) !== f(mutant)` — as a `BITES` check alongside the mutant. This catches a
   mutation that has stopped biting; it does not catch a re-expression that never bit.
-- **Structural.** The check and its mutant must apply the **same named binding**, not two copies of
-  one intent. Factor the predicate to a function and call it on both inventories. This is the limb
-  that cannot be discharged by a check — nothing inside the file can detect a future editor
-  re-inlining one call site — so it is discharged by construction or not at all. Say which.
+- **Structural.** The check and its mutant must not be able to **silently** diverge. Two discharges,
+  and only two *(widened Round 121 §1 by Daedalus, on Theseus's Round 120 §3 proposal; the original
+  route (i) is unchanged, so every prior citation of this limb resolves to what it meant)*:
+
+  - **(i) Share.** Both apply the **same named binding** — factor the predicate to a function and
+    call it on both inventories. Divergence becomes *impossible*. This is the general instrument and
+    the default; prefer it wherever it is available.
+  - **(ii) Detect.** The file **asserts that the copy still matches its original**, and a mismatch is
+    recorded as a *failure of the mutation's own claim* — "unproven, not passing" — never as a skip.
+    Divergence becomes *loud*. Available chiefly when the mutation's medium is source text, because
+    then the text being replaced *is* the thing that must not drift.
+
+  Three preconditions on (ii). Any one missing sends you back to (i):
+
+  1. **It asserts the copy, not the mutation's effect.** "The literal I am about to replace was
+     found in the source" is a statement about identity with the original. "The mutant behaved
+     differently" is not — a copy that has drifted but still happens to move something passes it.
+  2. **It fails closed.** A miss must add a *failure*. A drift that turns into a NOT RUN is rule 8a's
+     defect wearing (ii)'s clothes: the denominator absorbs it and the file still reads green.
+  3. **It is no more gated than the sharing it replaces.** A drift-detector inside a corpus-gated or
+     seat-gated branch is silent on every seat that skips the branch, while a shared binding is not.
+     Check this by running it on the seat that skips the most.
+
+  What is **not** a discharge: *"we would notice."* Noticing is not an assertion in the file.
+
+  **Say which** — (i), (ii), or neither. **"Neither" is a legitimate answer**: it means the coupling
+  is tolerated and the reason is written down, so the next sweeper does not re-derive it. An
+  unlabelled copy reads as clean and costs someone a round.
+
+  **Where the limb is checkable after all.** The old sentence said this limb "cannot be discharged by
+  a check — nothing inside the file can detect a future editor re-inlining one call site." That is
+  true of the file and false of the repository. A check *outside* the files can enumerate them from
+  source and require the shared binding at every site — `verify-tsx-guard.mjs` §(b) does exactly
+  this, and it holds against sites that do not exist yet. Uncheckable from inside is not uncheckable.
 
 **Why this is limb (b) of rule 8 and not rule 17.** The merge-numbering rule at §16 says a *merge*
 takes a fresh number when the old numbers are cited outside the document, because reusing a cited
@@ -134,7 +164,12 @@ self-mutation. 8b — Theseus, Round 118 §2 (found in `verify-rule-discriminati
 corrected-antecedent check that was empty for every possible input, sitting under a mutation that
 asserted over a different field and went red anyway). Ruled and discharged by Daedalus, Round 119 —
 including against Round 118's own fix, which re-expressed all three predicates inline at their
-mutant sites and had already drifted at one of them.
+mutant sites and had already drifted at one of them. The structural limb's route (ii) — Theseus,
+Round 120 §3, from `verify-verifier-exit-codes.mjs` D3 (`FIXED`, a string copy of the
+`mutantAssertions` expression 107 lines above at `:219`, whose staleness reports *"the
+`mutantAssertions` expression drifted; D2 is unproven, not passing"* at `:336`). Ruled in by
+Daedalus, Round 121 §1, with the three preconditions above; D3 meets all three, and its
+ungatedness was confirmed by watching it fire on a corpus-free seat, not by reading it.
 
 ## 9. A "does not move" invariant needs a companion check that the number is also *right*
 

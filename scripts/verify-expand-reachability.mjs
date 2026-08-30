@@ -77,6 +77,7 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { explainTsxRequirement } from './lib/tsx-required.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const PROBE = path.join(__dirname, 'probe-recall-tool.mjs');
@@ -86,14 +87,22 @@ const VERBOSE = process.argv.includes('--verbose');
 // transitively and that module binds its path at load time. Nothing here opens a connection,
 // but a default that resolves to the real `klatch.db` is not a default worth relying on.
 process.env.KLATCH_DB = path.join(__dirname, '..', '.testdata', 'verify-expand-reachability.db');
-const { RECALL_MAX_EXPAND_ROWS, RECALL_MAX_CHARS, RECALL_NEIGHBOUR_RADIUS } = await import(
-  '../packages/server/src/claude/recall.ts'
-);
-const {
-  formatTranscriptLine,
-  CARRIED_CONTEXT_MAX_MESSAGE_CHARS,
-  CARRIED_CONTEXT_MAX_MESSAGES,
-} = await import('../packages/server/src/claude/carried-context.ts');
+// Under plain `node` these resolve into TypeScript whose own `.js` specifiers node will not map,
+// and the raw `ERR_MODULE_NOT_FOUND` names a file rather than the runner (Round 121).
+let RECALL_MAX_EXPAND_ROWS, RECALL_MAX_CHARS, RECALL_NEIGHBOUR_RADIUS,
+    formatTranscriptLine, CARRIED_CONTEXT_MAX_MESSAGE_CHARS, CARRIED_CONTEXT_MAX_MESSAGES;
+try {
+  ({ RECALL_MAX_EXPAND_ROWS, RECALL_MAX_CHARS, RECALL_NEIGHBOUR_RADIUS } = await import(
+    '../packages/server/src/claude/recall.ts'
+  ));
+  ({
+    formatTranscriptLine,
+    CARRIED_CONTEXT_MAX_MESSAGE_CHARS,
+    CARRIED_CONTEXT_MAX_MESSAGES,
+  } = await import('../packages/server/src/claude/carried-context.ts'));
+} catch (err) {
+  explainTsxRequirement(err, import.meta.url);
+}
 
 const src = fs.readFileSync(PROBE, 'utf8');
 

@@ -34,6 +34,7 @@ import { fileURLToPath } from 'url';
 import {
   readCallKind, callKindWarning, SEARCH_PREFIX,
 } from './lib/recall-call-kind.mjs';
+import { explainTsxRequirement } from './lib/tsx-required.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const SCRATCH_DIR = path.join(__dirname, '..', '.testdata');
@@ -46,8 +47,17 @@ const DB_PATH = path.join(SCRATCH_DIR, `empty-tail-detector-${process.pid}.db`);
 mkdirSync(SCRATCH_DIR, { recursive: true });
 process.env.KLATCH_DB = DB_PATH;
 
-const { toolUseInputSummary } = await import('../packages/server/src/claude/client.ts');
-const { RECALL_TOOL_NAME } = await import('../packages/server/src/claude/carried-context.ts');
+// Under plain `node` these resolve into TypeScript whose own `.js` specifiers node will not map,
+// and the raw `ERR_MODULE_NOT_FOUND` names a file rather than the runner (Round 120 §5 read it as
+// a missing build artifact; it is not). `explainTsxRequirement` either says so and exits 2, or
+// re-throws a genuine absence untouched.
+let toolUseInputSummary, RECALL_TOOL_NAME;
+try {
+  ({ toolUseInputSummary } = await import('../packages/server/src/claude/client.ts'));
+  ({ RECALL_TOOL_NAME } = await import('../packages/server/src/claude/carried-context.ts'));
+} catch (err) {
+  explainTsxRequirement(err, import.meta.url);
+}
 
 let failures = 0;
 const ok = (label, cond, detail) => {

@@ -89,6 +89,7 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { explainTsxRequirement } from './lib/tsx-required.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const OVERRIDE = (process.argv.find((s) => s.startsWith('--probe=')) || '').slice('--probe='.length);
@@ -99,7 +100,14 @@ const VERBOSE = process.argv.includes('--verbose');
 // so point it somewhere harmless before importing. Nothing here opens a connection, but a
 // default that resolves to the real `klatch.db` is not a default worth relying on.
 process.env.KLATCH_DB = path.join(__dirname, '..', '.testdata', 'verify-filler-constraints.db');
-const { tokenizeRecallQuery } = await import('../packages/server/src/claude/recall.ts');
+// Under plain `node` this resolves into TypeScript whose own `.js` specifiers node will not map,
+// and the raw `ERR_MODULE_NOT_FOUND` names a file rather than the runner (Round 121).
+let tokenizeRecallQuery;
+try {
+  ({ tokenizeRecallQuery } = await import('../packages/server/src/claude/recall.ts'));
+} catch (err) {
+  explainTsxRequirement(err, import.meta.url);
+}
 
 const src = fs.readFileSync(PROBE, 'utf8');
 
