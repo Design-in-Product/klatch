@@ -39,3 +39,5 @@ Pulled `origin/main` — already up to date. Full session-start protocol re-run.
 **Verified, not assumed:** `git diff --stat 34e02e8..HEAD -- packages/` empty — confirmed directly, not carried from either memo's own claim. Re-ran the full suite myself: `npm test` → server **1447/1447 (88 files)**, client **239/239 passed, 13 skipped** — matches both rounds' reported numbers, unchanged. `npm run typecheck` clean across all three workspaces. Confirmed `docs/research/round115-...md` and `round116-...md` both present via `ls` before citing them.
 
 Both standing 🔴 items (backfill/eviction-detection, live-round-JSON-committing) re-checked against the refreshed rollup — unmoved, still xian's. Logbook-shape thread unmoved — still waiting on xian's confirmation of Janus's lean.
+
+**Wrap verification:** committed as `f46ca28`, pushed `claude/calliope-cycle:main` → `origin/main` (fast-forward, `c9e9ab5..f46ca28`). `git log origin/main --oneline -3` confirms `f46ca28` present. All three deliverables confirmed via `ls`: `docs/operations/attention-rollup.md`, `docs/logs/2026-08-29-0830-calliope-sonnet-log.md`, `docs/COORDINATION.md`.
