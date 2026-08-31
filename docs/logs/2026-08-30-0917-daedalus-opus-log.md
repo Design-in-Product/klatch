@@ -269,3 +269,100 @@ them from source and reports all four `guarded`.
 9/20** (corpus absent, correct) · the two artifact-gated checks report artifacts absent.
 
 **Step 3 — this log commits last**, after Steps 1 and 2 were run.
+
+---
+
+## 17:17 PT — STOP fire
+
+**Briefing done first:** wrapper had synced the worktree to `origin/main` (HEAD `0077828`, Calliope's
+v84 rollup). Read the Daedalus section of `docs/COORDINATION.md` and `ls docs/mail/`. One item
+addressed to me and arrived after my last fire: Theseus's Round 122 memo, whose §7 named exactly one
+thing as mine — **rule on the membership-soundness amendment to 8b.** Round 122 itself was Theseus's
+work, not mine; I confirmed that from `git show --stat` rather than assuming the rollup's summary.
+
+**Zero API spend, zero model calls, zero live probe runs. `packages/` untouched** —
+`git status --porcelain -- packages/` empty, confirmed in-session.
+
+### 1. Ruled by testing the amendment, not by reading it
+
+The thread's whole subject is instruments certifying coverage they lack, so accepting a proposal on
+its own account would be that failure at the level of the rule. First act was re-running
+`node scripts/verify-tsx-guard.mjs` on this seat: **PASS 36**, 2.5s wall — Theseus's report confirmed
+independently.
+
+Then read `:195`: `const swept = verifiers.filter((f) => f !== SELF)`. `verifiers` is my own `:121`
+array (`readdirSync` + `startsWith('verify-')` + `endsWith('.mjs')`). **§(b2) was not
+population-free. It reused §(b)'s membership test**, changing its *kind* — source text → filenames —
+not its existence. So the amendment's justifying clause was suspect on inspection and needed a run.
+
+### 2. Two mutants, both survived
+
+Theseus's own standard: a real file in `scripts/`, run against the unmodified target.
+
+```
+M0  (control)                              PASS 36  pop=4   control valid
+M6  scripts/verify-r123-mts-escape.mts     PASS 36  pop=4   SURVIVED
+M7  scripts/checks/verify-r123-nested.mjs  PASS 36  pop=4   SURVIVED
+```
+
+Both crash raw when run directly — `node:internal/modules/esm/resolve:272 / throw new
+ERR_MODULE_NOT_FOUND` — observed, not inferred. With both in the tree the target printed
+`13 verifiers, 4 of them import TypeScript` and `PASS — all 36 checks passed`. Non-empty and
+discriminating stayed green for the same reason as in Round 122: four legitimate files still matched.
+
+Neither shape is exotic by his own test — `scripts/lib/` establishes subdirectories in this repo and
+`probe-expand-continuation.mts` establishes the extension; node here is v26.5.0, so a `.mts` verifier
+runs. **Third consecutive round of the identical shape**, each found inside the check written against
+the previous one.
+
+### 3. The finding that changed the ruling
+
+"Sweep everything under `scripts/`" is unavailable: `serve-scratch.mjs` is a server (a blind sweep
+blocks to the 120s timeout), the `probe-carried-context*` family and `aaxt-mcp-live-probe.ts` are
+live probes (spend), seed scripts write. **The property is only assertable on files it is safe to
+execute** — so the population must be bounded, and whatever bounds it is a membership test.
+
+So the trade is unbounded-for-bounded, not test-for-no-test, and the bounded one can be *asserted*
+where the unbounded one never could. That went into 8b with two preconditions.
+
+### 4. Repair to `verify-tsx-guard.mjs`
+
+Recursive walk; named `isVerifierPath` predicate; seven predicate cases (4 true, 3 false) plus a
+precondition that the walk reaches below the top level and rejects part of what it finds;
+self-exclusion keyed to relative path; false docblock sentence struck and replaced with the
+measurement; `check-foo.mjs` residual written down rather than half-closed.
+
+Kill confirmation with both mutants present: **`FAIL — 5 of 48 checks failed`.** M6 dies three times
+(§(b), §(b2), §(c)); **M7 dies by §(b2) alone** — §(b)'s regex wants `'../packages/` and a nested file
+needs `'../../packages/` — which is independent evidence §(b2) is not a restatement of §(b).
+
+Mutants deleted, `scripts/checks/` removed, `git status --short` showed one modified file, target
+restored to **`PASS — all 44 checks passed`** (36 + 7 predicate + 1 precondition).
+
+### 5. Deliverables this fire
+
+- `docs/research/round123-the-population-free-check-had-a-population-and-the-membership-amendment-is-ruled-in-2026-08-30.md`
+- `docs/research/recall-arm-standing-rules-2026-08-28.md` — 8b, new "And what that instrument costs"
+  paragraph + provenance
+- `docs/mail/read/daedalus-to-theseus-cc-xian-team-amendment-ruled-in-with-its-last-clause-struck-…-2026-08-30.md`
+- `scripts/verify-tsx-guard.mjs` — repaired
+- Thread closed: Theseus's Round 122 memo and my Round 121 memo `git mv`'d to `docs/mail/read/`
+
+### Numbers
+
+Region count **3**. Surviving discriminating shapes **10**. Section (e)'s 2-of-2 untouched. Four
+underived pre-spend conditions, still four. **No count moves.**
+
+### Still open
+
+- **`fixedBy` mis-attribution — fourth round.** Recorded in the round doc and the memo that "held
+  deliberately" has now been written four times and is starting to read as a euphemism. Commitment
+  made: if unmoved next WORK fire, write it up as declined-with-reason so it stops holding a slot on
+  the open list under a label that implies motion.
+- **Route (ii)'s three preconditions are prose and unchecked.** Taking Theseus's §7 point that §(b2)
+  is the same shape of answer. Precondition 2 (*fails closed*) named as the behaviourally-assertable
+  candidate — drift the copy in a scratch tree, require a *failure* rather than a NOT RUN. Not built
+  this fire; named rather than left generic.
+- **The `check-foo.mjs` residual** in §(b2) — a verifier named outside the convention entirely is in
+  neither set. Stated in the file, open by choice: source-scanning the unrunnable remainder would
+  re-introduce the unbounded test the route exists to escape.
