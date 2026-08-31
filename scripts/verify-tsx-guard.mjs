@@ -132,6 +132,52 @@
  *      family's house style is to quote these specifiers in prose, so it is a latent over-fire whose
  *      blast radius Round 126 tripled, and item 1 of this header is the reason that matters.
  *
+ *   8. **The bucket was a file-level predicate over a site-level property.** Round 127 pointed a
+ *      mutant at Round 126's repair rather than at its residual. M15: two dynamic import sites in
+ *      one file — site B in the space form §(b) cannot read, behind a swallowing catch; site A
+ *      readable and correctly guarded. Every limb reported health. §(b2) saw no raw trace (the guard
+ *      converted site A's throw), §(c) saw exit 2 with the right message, §(b) read the file as
+ *      guarded, and the bucket did not contain it **because the bucket asked its question of the
+ *      file**: site A made `importsTsSource` true, so the file was not a candidate, and site B was
+ *      never declared. `PASS — all 110 checks passed`, count 105 → 110. Fourth consecutive round in
+ *      which the denominator moved the reassuring way while coverage fell.
+ *
+ *      The control isolates it: M16 is M15 with site A deleted and site B untouched — same specifier,
+ *      same catch, same depth — and it died in the bucket at `FAIL — 1 of 106`. The masking was the
+ *      mechanism, not the shape of site B. Note what this is: Round 125 split the negative bucket
+ *      precisely because *"the negative result was carrying two meanings"*, and then aggregated the
+ *      split back over the file with an `||`. One readable site anywhere in a file re-fused the two
+ *      meanings the split had just separated.
+ *
+ *      So the anchor — a quoted `packages/**.ts` specifier literal — is enumerated, each occurrence
+ *      is classified narrow / broad-only / neither, and the file-level predicates are *derived* from
+ *      the site-level ones instead of being computed alongside them. M15 under the repaired file:
+ *      `FAIL — 1 of 114`, naming `checks/verify-r127-mask.mjs:11`, the line of site B. The bucket
+ *      reports `file:line` now, because a red naming only the file leaves the reader to re-derive
+ *      which specifier is the unreadable one, and item 1 is about what an expensive red costs.
+ *
+ *      **Containment was never a property of the predicates.** Round 125 asserted `narrow ⊆ broad`
+ *      per row and Round 126 added it per live file, and it held in both places — but it is false for
+ *      a constructible input: `import(` followed by more than 40 characters of whitespace and then
+ *      the specifier is narrow-true and broad-false (measured directly on the Round 126 predicate
+ *      pair). Eleven rows and eight live files held it; the predicates never did. Writing the narrow
+ *      reading in as a disjunct of the broad one makes containment hold **by construction**, and
+ *      changes what the containment rows assert: no longer drift between two independent regexes, but
+ *      an edit that removes the disjunct. Under the old pair such a file would have turned the
+ *      instrument red on the CONTAINMENT check — a correct, guarded verifier producing a red it
+ *      cannot clear without rewriting its whitespace. Item 1 again, and it is now unreachable.
+ *
+ *      **Residual, stated rather than half-closed.** Theseus's Round 126 §4 named the prose over-fire
+ *      as the strongest target and this round did **not** fix it. What this round adds is that it is
+ *      not latent, as Round 126 recorded it — it is live, at line 113 of this file, in the sentence
+ *      Round 126 wrote to describe its own repair. It reads as absent because the one file in this
+ *      repo whose house style quotes these specifiers in prose is the file excluded from the
+ *      population, and because the file-level bucket would have masked it even so (this file has
+ *      narrow sites). "Zero broad matches fall inside a comment, measured" was true of the population
+ *      and false of the repo. The over-fire's mechanism is also now demonstrated rather than
+ *      asserted: the 40-character window reaches backwards *across a line break*, which is how it
+ *      caught the unrelated third row of this file's own `THREE_CLASSES` fixture on the first run.
+ *
  * §(c) is the end-to-end assertion: both directions of both runners, run rather than argued.
  *
  * ── Costs nothing ──────────────────────────────────────────────────────────
@@ -263,6 +309,23 @@ ok('PRECONDITION — the walk reaches below the top level and the predicate reje
 // §(b)'s predicate cases below quote real specifiers, so an unexcluded self-scan would classify this
 // file as a TypeScript importer and §(c) would then run it under `node` expecting exit 2 — a
 // verifier recursing into itself and failing on the way. One exclusion, asserted once, used twice.
+//
+// Round 127, Daedalus, applying Round 126's own amendment to the line directly above the code
+// Round 126 wrote. That paragraph is a *run*-limb reason — the clause that carries it is "§(c) would
+// then run it". §(b) reads and runs nothing, so under the amendment it is not entitled to the bound
+// and must state its own. It has one, and it is a different one: this is the only module under
+// `scripts/` that quotes `packages/**.ts` specifiers **as data** — as §(b)'s own predicate fixtures,
+// and as prose about those fixtures. Measured on this file at the time of writing: 15 anchors, 6
+// read as imports, 7 in an import position the narrow reading cannot parse, 2 in no import position
+// at all — and *not one of them is an import this file performs*. Including it would put seven
+// entries in the bucket, every one of them a fixture or a sentence.
+//
+// So the bound survives, which is worth saying plainly: re-derivation is not a synonym for widening,
+// and Rounds 123-126 widened every time. What changes is what generalises. The run-side reason
+// generalises by "is this safe to execute", a property of any file. The read-side reason generalises
+// by "does this file carry the instrument's own fixtures" — which is a property of *this* file and
+// would not transfer to a second instrument written next to it under a different name. Two reasons
+// that license one exclusion today and would license different ones tomorrow.
 const SELF = path.relative(SCRIPTS, fileURLToPath(import.meta.url)).split(path.sep).join('/');
 const swept = verifiers.filter((f) => f !== SELF);
 // Self-exclusion is a hole in both populations, so assert its size. A rename that stopped matching
@@ -274,6 +337,13 @@ ok('PRECONDITION — exactly one verifier is excluded, and it is this file',
 // `verify-*`. §(b)'s guard assertion and the unclassified bucket run over this; §(b2) and §(c) keep
 // running over `swept`, because those limbs execute their targets and this one does not.
 const readable = allUnderScripts.filter(isModuleSource).filter((f) => f !== SELF);
+// The read limb's exclusion gets the same bounding assertion the run limb's has had since Round 124.
+// It did not have one: `swept`'s size was asserted, `readable`'s was not, so a second exclusion
+// creeping into the read population — or a rename that stopped matching — was unasserted on exactly
+// the limb Round 126 widened. Same hole, other limb, which is this round's subject twice over.
+ok('PRECONDITION — exactly one module is excluded from the read population, and it is this file',
+  { excluded: allUnderScripts.filter(isModuleSource).filter((f) => !readable.includes(f)) },
+  allUnderScripts.filter(isModuleSource).length - readable.length === 1);
 
 for (const [rel, want] of [
   ['measure-marker-floor.mjs', true],
@@ -304,7 +374,35 @@ ok('PRECONDITION — the run population is a strict subset of the read populatio
 // Depth- and quote-agnostic, and it does not require `await` adjacent to the call (the Round 122
 // detached-await escape). It still requires a *literal* specifier: a computed one is out of reach
 // here by construction, which is the residual recorded at §(b2), not a hole this predicate hides.
-const importsTsSource = (src) => /import\(\s*['"`](?:\.\.\/)+packages\/[^'"`\n]*\.ts['"`]/.test(src);
+// Round 127, Daedalus. Every reading in this section is a question about a *site* — "is this
+// specifier in an import position, and can §(b) parse it?" — and both readings were written as
+// predicates over a whole file. Measured cost below at item 8: one readable site clears every
+// unreadable site in the same file. So the anchor — a quoted `packages/**.ts` specifier literal —
+// is enumerated, each occurrence is classified, and the file-level verdicts are *derived* from the
+// site-level ones rather than computed separately. One definition, two granularities.
+const ANCHOR_SOURCE = "['\"`](?:\\.\\./)+packages/[^'\"`\\n]*\\.ts['\"`]";
+
+const anchorsOf = (src) => [...src.matchAll(new RegExp(ANCHOR_SOURCE, 'g'))].map((m) => {
+  const pre = src.slice(0, m.index);
+  // `(?![\s\S])` rather than `$`, which also matches before a trailing newline — an anchor at the
+  // start of a line would otherwise be read one character out of position.
+  const narrow = /import\(\s*(?![\s\S])/.test(pre);
+  return {
+    index: m.index,
+    line: pre.split('\n').length,
+    text: m[0],
+    narrow,
+    // Round 125 asserted containment (narrow ⊆ broad) per row and it held on the table — but it is
+    // not true in general: `import(` + more than 40 characters of whitespace + the specifier is
+    // narrow and *not* windowed, so the broad reading was never actually a superset. Writing the
+    // disjunct in makes containment hold **by construction** instead of by assertion. The rows
+    // below keep asserting it, with their job changed: they now catch an edit that removes this
+    // disjunct, rather than drift between two independent regexes.
+    broad: narrow || /\bimport\b[\s\S]{0,40}(?![\s\S])/.test(pre),
+  };
+});
+
+const importsTsSource = (src) => anchorsOf(src).some((a) => a.narrow);
 
 // §(a)'s treatment, and Round 123's for `isVerifierPath`: true cases, false cases, and a
 // precondition that both kinds are present. The first four trues are the four escapes this file has
@@ -328,8 +426,7 @@ const importsTsSource = (src) => /import\(\s*['"`](?:\.\.\/)+packages\/[^'"`\n]*
 // nobody has thought of yet stops being a silent pass and becomes a red that asks for a
 // classification. Broader than `importsTsSource` by construction, and that containment is asserted
 // on the shared case table below rather than left to inspection.
-const mentionsTsSpecifier = (src) =>
-  /\bimport\b[\s\S]{0,40}?['"`](?:\.\.\/)+packages\/[^'"`\n]*\.ts['"`]/.test(src);
+const mentionsTsSpecifier = (src) => anchorsOf(src).some((a) => a.broad);
 
 // §(a)'s treatment, and Round 123's for `isVerifierPath`: true cases, false cases, and a
 // precondition that both kinds are present. The first four trues are the four escapes this file has
@@ -371,6 +468,45 @@ ok('PRECONDITION — the broad reading discriminates (at least one true case and
   mentionsTsSpecifier("await import ('../../packages/x.ts')") === true
     && mentionsTsSpecifier("import fs from 'node:fs'") === false);
 
+// Round 127. The site enumerator gets §(a)'s treatment in its own right: the three classes must all
+// be reachable, or a degenerate `anchorsOf` makes every derived verdict above meaningless while the
+// case table still passes (each row is a single-site fixture, so a file-level predicate that had
+// collapsed to "first site wins" satisfies all eleven).
+//
+// The ordering here is load-bearing and was got wrong first: with the `neither` row written last it
+// measured as `broad-only`, because the 40-character window reaches *backwards across the line
+// break* into the previous row's `import` token. That is the over-fire of item 8 in miniature, and
+// it bit this file's own fixture before it bit anything else — so the unrelated row goes first.
+const THREE_CLASSES = [
+  "const s = '../packages/c.ts';",           // neither — a specifier in no import position
+  "await import('../packages/a.ts');",       // narrow, therefore broad
+  "await import ('../packages/b.ts');",      // broad only
+].join('\n');
+ok('PRECONDITION — the site enumerator reaches all three classes on one input',
+  anchorsOf(THREE_CLASSES).map((a) => (a.narrow ? 'narrow' : a.broad ? 'broad-only' : 'neither')),
+  anchorsOf(THREE_CLASSES).length === 3
+    && anchorsOf(THREE_CLASSES).filter((a) => a.narrow).length === 1
+    && anchorsOf(THREE_CLASSES).filter((a) => a.broad && !a.narrow).length === 1
+    && anchorsOf(THREE_CLASSES).filter((a) => !a.broad).length === 1);
+
+// Round 127, and the reason the bucket is enumerated per site rather than per file. M15: two import
+// sites in one file, the first unreadable behind a swallowing catch, the second readable and
+// correctly guarded. Under the file-level bucket the readable site made the file `importsTsSource`,
+// so the file was not in the bucket at all and the unreadable site was never declared — `PASS — all
+// 110`, count 105 → 110. The control one variable away (M16, site A deleted, same site B, same
+// catch, same depth) died in the bucket at `FAIL 1/106`. The masking *was* the mechanism, so the
+// shape is kept here as a fixture rather than as a mutant that gets deleted: a future edit that
+// collapses the bucket back to a file-level predicate reopens the escape here, loudly.
+const MASKED = [
+  "try { await import ('../../packages/masked.ts'); } catch {}",
+  "await import('../../packages/readable.ts');",
+].join('\n');
+ok('MASKING — the file-level reading calls M15 fully classified (narrow ∧ broad)', undefined,
+  importsTsSource(MASKED) === true && mentionsTsSpecifier(MASKED) === true);
+ok('MASKING — …and the site-level reading declares the unreadable site anyway',
+  anchorsOf(MASKED).filter((a) => a.broad && !a.narrow).map((a) => a.text),
+  anchorsOf(MASKED).filter((a) => a.broad && !a.narrow).length === 1);
+
 const srcOf = (f) => fs.readFileSync(path.join(SCRIPTS, f), 'utf8');
 
 // Round 126: the containment above is asserted on eleven synthetic rows and was never asserted on
@@ -388,15 +524,18 @@ const importsTsRead = readable.filter((f) => importsTsSource(srcOf(f)));
 // Run-side: §(c) may only execute what it is safe to execute, so it keeps the narrow population.
 const importsTs = swept.filter((f) => importsTsSource(srcOf(f)));
 
-// The unclassified bucket. A file here mentions a TypeScript specifier in an import position that
-// `importsTsSource` could not parse — so §(b) cannot say whether it is guarded, and §(c) will never
-// run it. That is not a pass and it is not a failure of the file under test; it is this instrument
-// declining to answer, and it has to say so out loud. Empty on today's tree; M8 is the file that
-// puts something in it.
-const unclassified = readable.filter((f) => {
-  const src = srcOf(f);
-  return mentionsTsSpecifier(src) && !importsTsSource(src);
-});
+// The unclassified bucket, per *site*. A site here is a TypeScript specifier in an import position
+// that `importsTsSource` could not parse — so §(b) cannot say whether that import is guarded, and
+// §(c) will never exercise it. That is not a pass and it is not a failure of the file under test; it
+// is this instrument declining to answer, and it has to say so out loud. Empty on today's tree; M8
+// and M16 are the files that put something in it, and M15 is the file the file-level version could
+// not see. Reported as `file:line` because a red naming only the file leaves the reader to re-derive
+// which of its specifiers is the unreadable one — and item 1 of the header is about the cost of a
+// red that is expensive to clear.
+const unclassified = readable.flatMap((f) =>
+  anchorsOf(srcOf(f))
+    .filter((a) => a.broad && !a.narrow)
+    .map((a) => `${f}:${a.line}`));
 ok('every verifier mentioning a TypeScript specifier is one §(b) can actually read', unclassified,
   unclassified.length === 0);
 

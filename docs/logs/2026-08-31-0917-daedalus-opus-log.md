@@ -126,3 +126,66 @@ All present. Nothing missing, nothing claimed that isn't verified.
 checks passed**; `npm test` → **239 passed, 13 skipped, 0 failed**; `tsc --noEmit` clean.
 
 **Step 3** — this log is committed and pushed last, after Steps 1 and 2.
+
+---
+
+## 13:17 PT — WORK fire (≡ MID slot). Round 127: the bucket asked its question of the file
+
+Session-start protocol run: pulled state is current (wrapper synced), `docs/COORDINATION.md` read,
+`docs/mail/` checked. One inbound addressed to me — Theseus's Round 126 memo, discharged in this
+fire (work done, reply filed, inbound moved to `docs/mail/read/`).
+
+**Baseline reproduced before touching anything:** `node scripts/verify-tsx-guard.mjs` →
+`PASS — all 105 checks passed` at `e07e806`, matching Theseus's Round 126 number on my seat.
+
+**The mutant went at Round 126's repair, not at its residual.** Theseus offered the prose over-fire
+as the strongest target; I declined it (his reason for declining stands) and pointed M15 one level up
+instead — at what the bucket asks its question *of*.
+
+- **M15** — two dynamic import sites in one file: site B in the R125 space form behind a swallowing
+  catch, site A readable and correctly guarded. **`PASS — all 110`, SURVIVED.** Count 105 → 110,
+  fourth consecutive round the denominator moved the reassuring way while coverage fell. Every limb
+  green for a locally correct reason; the bucket didn't contain the file because site A made
+  `importsTsSource` true, so site B was never declared.
+- **M16 control** — site A deleted, site B byte-identical, same catch/depth: **`FAIL — 1 of 106`**,
+  bucket, naming the file. Masking isolated as the mechanism.
+
+**Finding.** R125 split the negative bucket for exactly the right reason, then aggregated both
+readings back over the file with `.some()`. The aggregate re-fused the two meanings the split had
+just separated, via an implicit `||` nobody read as a policy decision.
+
+**Repair.** Anchor = the quoted specifier literal. `anchorsOf` enumerates every occurrence and
+classifies narrow / broad-only / neither; both file-level predicates derive from that one
+enumeration; bucket is per site and reports `file:line`. R125's eleven-row table untouched and still
+passing — each row is a single-site fixture, which is why it could not have caught this. M15's shape
+kept as a **standing fixture** rather than deleted with the mutants.
+
+**Second finding — containment was never a property of the predicates.** `narrow ⊆ broad` was
+asserted per row (R125) and per live file (R126) and held in both. Measured on the R126 pair:
+`import(` + 45 spaces + specifier is narrow-true, broad-false. Broad is now `narrow ∨ windowed`, so
+containment holds by construction.
+
+**Third finding — the over-fire Theseus called latent is live.** Measured, no mutant:
+`verify-tsx-guard.mjs` has 15 anchors (6 narrow, 7 broad-only, 2 neither), none of them an import it
+performs. Broad-only at **line 113** — the docblock sentence Round 126 wrote to describe its own
+repair. Hidden by the self-exclusion *and* by the file-level bucket. Not repaired; reason stated.
+
+**Rule 8b.** Theseus's Round 126 amendment ruled and adopted as **clause 4**, by application: the
+`SELF` exclusion carried a run-limb reason (*"§(c) would then run it"*) worn by the read limb —
+his finding, still live, one screen above where he stopped. Re-derived, and the bound **survives**
+on a read-side reason. Adopted with the qualification that re-derivation is not a synonym for
+widening. Two clause-3 amendments added (site-granularity; containment by construction). Rising-
+denominator tell updated to four rounds. Also repaired: `readable` had no bounding assertion where
+`swept` has had one since R124 — same hole, other limb.
+
+**Measured final state:** clean tree `PASS — all 109`; M15 → `FAIL 1/114` naming
+`checks/verify-r127-mask.mjs:11`; M16 → `FAIL 1/110`; `npm test` **239 passed / 13 skipped / 0
+failed**; `tsc --noEmit -p packages/server` clean. Mutants and `scripts/checks/` deleted after
+measurement.
+
+**Correction made in-fire:** the M15/M16 numbers first written into the round doc (`1/113`, `1/109`)
+were measured against an intermediate version of the file, before the read-population assertion was
+added. Re-measured against the final file and corrected to `1/114` and `1/110` in both the doc and
+the script header. Nothing shipped on the stale numbers.
+
+Nothing in this fire needs xian.

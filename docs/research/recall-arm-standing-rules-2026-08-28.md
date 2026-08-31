@@ -232,11 +232,49 @@ Two demands, and the second is the load-bearing one:
      and assert the difference empty. An unanticipated shape then turns the instrument **red asking
      for a classification** instead of passing as a true negative.
 
+     **Two amendments, Round 127, both measured.** *(a) Assert the difference empty at the
+     granularity of the property, not of the container.* Clause 3 did not say which, and the first
+     implementation asked the question of a whole **file** when the property is a property of each
+     **site**. M15 — two dynamic import sites in one file, one unreadable behind a swallowing catch,
+     one readable and guarded — passed every limb at `PASS — all 110`, because the readable site made
+     the file a positive and the unreadable one was never declared. The control with the readable site
+     deleted, everything else identical, died in the bucket at `FAIL — 1 of 106`. **An aggregate over
+     the container re-fuses the two meanings the split had just separated** — and does it with an
+     `||` that nobody reads as a policy decision. *(b) Containment must hold by construction, not by
+     assertion.* `narrow ⊆ broad` was asserted per row (Round 125) and per live file (Round 126) and
+     held in both — and is false for the predicate pair: `import(`, more than the window's width in
+     whitespace, then the specifier, is narrow-true and broad-false. Eleven rows and eight live files
+     held a property the predicates did not have. Define the broad reading as `narrow ∨ wide` and
+     containment stops being something that can be true of your fixtures and false of your instrument.
+
+  4. **A constraint on a shared population must be re-derived for each limb that inherits it.**
+     *(Proposed Round 126 §5 by Theseus; ruled Round 127 by Daedalus, by application rather than by
+     reading.)* The bound belongs to whichever limb's requirement produced it. A limb without that
+     requirement is not entitled to the bound and must state its own — or take the wider population.
+     Round 126 measured the cost of not doing this: §(b2)'s population was bounded because *"the
+     property is only assertable on files it is safe to run"*, a reason about **running**, and §(b),
+     which reads source and runs nothing, wore the bound anyway from the moment Round 123 fused them.
+     Three tracked files sat outside both populations for three rounds, one of them printing the exact
+     raw stack trace the instrument existed to abolish, all under `PASS — all 88`.
+
+     **Adopted with one qualification the proposal did not carry, and it is the useful half:
+     re-derivation is not a synonym for widening.** Rounds 123-126 widened on every application, so
+     the rule reads as a licence to widen. Round 127 applied it to the self-exclusion in the same
+     file — a bound written with a run-limb reason (*"§(c) would then run it"*) and worn by the read
+     limb — and the re-derivation **confirmed** the bound: the read limb has its own reason, that this
+     is the only module quoting those specifiers as instrument fixtures rather than importing them.
+     What re-derivation changes is not always the population. Sometimes it changes only **what
+     generalises** — here from a property of any file (*is it safe to execute*) to a property of this
+     one (*does it carry the instrument's own fixtures*), which would license different exclusions the
+     next time either reason is invoked. A rule that only ever fires when it widens is a rule nobody
+     will run against a bound they believe in.
+
   **The failure this exists to name, in one line:** *absence from a filter's positive list reads
   identically to a negative verdict from it* — and every mechanism here except clause 3 is blind to
-  it. Note also the tell, seen twice now: in both Round 124 and Round 125 the **check count rose**
-  while coverage shrank (44 → 45, then 62 → 63), because the widest limb swept one file more while
-  the narrow limbs lost it. A rising denominator is not evidence of rising coverage.
+  it. Note also the tell, seen **four times** now: in Rounds 124, 125, 126 and 127 the **check count
+  rose** while coverage shrank (44 → 45, 62 → 63, 88 → 89, 105 → 110), because the widest limb swept
+  one file more while the narrow limbs lost it. A rising denominator is not evidence of rising
+  coverage — and four rounds of the same tell make it the strongest single regularity in this thread.
 
   Clause 3 relocates the membership question rather than closing it — onto a predicate that is
   *deliberately over-broad*, where a false negative is harder to hit by accident, and where the
