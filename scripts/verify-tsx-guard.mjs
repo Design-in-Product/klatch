@@ -55,6 +55,26 @@
  *      cases, the same treatment §(a) gives `isTsResolutionFailure`. A membership test you cannot
  *      escape was not on offer. One whose rule is written down and tested was.
  *
+ *   5. **Round 123 widened one limb's population and left two limbs on the old one.** §(b2)'s sweep
+ *      became depth- and extension-agnostic; §(b)'s content test and §(c)'s end-to-end runs stayed
+ *      gated by a regex anchored to exactly one `../`. Round 124 measured the gap that opened
+ *      between them. A verifier at `scripts/checks/` that imports TypeScript, imports the guard,
+ *      writes the guard call on a branch that never runs, and exits **0** from its catch — i.e.
+ *      reports a pass having verified nothing under the wrong runner, the precise failure §(a)–§(c)
+ *      exist to prevent — left this file at `PASS — all 45 checks passed`. The identical file at
+ *      the top level died by §(c), twice. Depth was the only variable.
+ *
+ *      §(b2) did not save it: the swallowing catch means there is no stack trace to see. §(b2)
+ *      covers the *unguarded* case at any depth (re-measured: the same file with no try/catch turns
+ *      §(b2) red), and that coverage is what made the Round 123 repair look complete. The case only
+ *      §(c) can see — a guard that is present in the source and inert at runtime — is the one whose
+ *      population was left narrow. And the check count moved the reassuring way while this was true:
+ *      44 → 45, because §(b2) swept one file more. Coverage read as growing while it shrank.
+ *
+ *      So the membership test below is depth-agnostic and quote-agnostic, named, and asserted on
+ *      true and false cases — the treatment Round 123 gave `isVerifierPath`, applied to the other
+ *      population in the same file. The residual is written down at §(b2) rather than half-closed.
+ *
  * §(c) is the end-to-end assertion: both directions of both runners, run rather than argued.
  *
  * ── Costs nothing ──────────────────────────────────────────────────────────
@@ -173,15 +193,74 @@ ok('PRECONDITION — the walk reaches below the top level and the predicate reje
   { seen: allUnderScripts.length, verifiers: verifiers.length },
   allUnderScripts.some((r) => r.includes('/')) && verifiers.length > 0 && verifiers.length < allUnderScripts.length);
 
-const importsTs = verifiers.filter((f) =>
-  /await import\(\s*\n?\s*'\.\.\/packages\/[^']*\.ts'/.test(fs.readFileSync(path.join(SCRIPTS, f), 'utf8')));
+// Round 124: hoisted from §(b2), because §(b) needs it too and two exclusions would be two holes.
+// This file must be out of both the source scan and the run sweep, and for the same reason in each:
+// §(b)'s predicate cases below quote real specifiers, so an unexcluded self-scan would classify this
+// file as a TypeScript importer and §(c) would then run it under `node` expecting exit 2 — a
+// verifier recursing into itself and failing on the way. One exclusion, asserted once, used twice.
+const SELF = path.relative(SCRIPTS, fileURLToPath(import.meta.url)).split(path.sep).join('/');
+const swept = verifiers.filter((f) => f !== SELF);
+// Self-exclusion is a hole in both populations, so assert its size. A rename that stopped matching
+// would silently re-include this file; a second exclusion creeping in would go unnoticed.
+ok('PRECONDITION — exactly one verifier is excluded, and it is this file',
+  { excluded: verifiers.filter((f) => f === SELF) }, verifiers.length - swept.length === 1);
 
-const unguarded = importsTs.filter((f) => {
-  const s = fs.readFileSync(path.join(SCRIPTS, f), 'utf8');
-  return !(s.includes("from './lib/tsx-required.mjs'") && s.includes('explainTsxRequirement(err, import.meta.url)'));
-});
+// Round 124, Theseus. This was the *other* population in this file, and Round 123 did not widen it.
+// It read `'\.\./packages/` — anchored to exactly one `../`, single quotes only, `await` required —
+// so a verifier one directory down was outside it however it was written. That is invisible rather
+// than merely incomplete: a file outside `importsTs` is reported as "does not import TypeScript",
+// which is indistinguishable from the true negative, and §(c) never runs it. Measured, not reasoned
+// — see item 5 of the header for the mutant that survived at `PASS — all 45 checks passed`.
+//
+// Depth- and quote-agnostic, and it does not require `await` adjacent to the call (the Round 122
+// detached-await escape). It still requires a *literal* specifier: a computed one is out of reach
+// here by construction, which is the residual recorded at §(b2), not a hole this predicate hides.
+const importsTsSource = (src) => /import\(\s*['"`](?:\.\.\/)+packages\/[^'"`\n]*\.ts['"`]/.test(src);
 
-console.log(`  ${verifiers.length} verifiers, ${importsTs.length} of them import TypeScript:`);
+// §(a)'s treatment, and Round 123's for `isVerifierPath`: true cases, false cases, and a
+// precondition that both kinds are present. The first four trues are the four escapes this file has
+// actually been shown to have — Round 122's double quote and detached await, Round 124's depth —
+// so a future edit that re-narrows the predicate reopens them here rather than in silence.
+for (const [label, src, want] of [
+  ["today's shape", "await import('../packages/server/src/db/queries.ts')", true],
+  ['double-quoted (R122)', 'await import("../packages/server/src/db/queries.ts")', true],
+  ['detached await (R122)', "const p = import('../packages/x.ts');\nawait p;", true],
+  ['one directory down (R124)', "await import('../../packages/server/src/db/queries.ts')", true],
+  ['newline before the specifier', "await import(\n  '../packages/x.ts'\n)", true],
+  ['a .js specifier is not a TypeScript import', "await import('../packages/x.js')", false],
+  ['a non-packages import', "await import('./lib/tsx-required.mjs')", false],
+  ['a mention outside an import position', '// see ../packages/server/src/db/queries.ts', false],
+  ['a static import', "import fs from 'node:fs'", false],
+]) {
+  ok(`PREDICATE — ${label} ${want ? 'is' : 'is not'} a TypeScript import`, undefined,
+    importsTsSource(src) === want);
+}
+
+const importsTs = swept.filter((f) => importsTsSource(fs.readFileSync(path.join(SCRIPTS, f), 'utf8')));
+
+// Round 124: the guard-detection half was depth-anchored too, and it fails the *other* way — a
+// correctly guarded verifier at `scripts/checks/` writes `from '../lib/tsx-required.mjs'`, which
+// `"from './lib/…'"` does not contain, so it was reported UNGUARDED. Measured: that file turned this
+// one red while §(b2) and §(c) both reported it healthy (exit 2, names the invocation). Loud and
+// wrong rather than silent and wrong, so cheaper — but it is item 1 of the header, the over-fire,
+// and a red that a correct file cannot clear is the fastest way to get a check switched off.
+const importsGuardSource = (src) => /from '(?:\.\.?\/)+lib\/tsx-required\.mjs'/.test(src)
+  && src.includes('explainTsxRequirement(err, import.meta.url)');
+
+for (const [label, src, want] of [
+  ['flat, correctly guarded', "from './lib/tsx-required.mjs'\nexplainTsxRequirement(err, import.meta.url)", true],
+  ['one directory down (R124)', "from '../lib/tsx-required.mjs'\nexplainTsxRequirement(err, import.meta.url)", true],
+  ['imports the guard but never calls it', "from './lib/tsx-required.mjs'", false],
+  ['calls the guard but never imports it', 'explainTsxRequirement(err, import.meta.url)', false],
+  ['a different lib', "from './lib/other.mjs'\nexplainTsxRequirement(err, import.meta.url)", false],
+]) {
+  ok(`PREDICATE — ${label} ${want ? 'reads as' : 'does not read as'} guarded`, undefined,
+    importsGuardSource(src) === want);
+}
+
+const unguarded = importsTs.filter((f) => !importsGuardSource(fs.readFileSync(path.join(SCRIPTS, f), 'utf8')));
+
+console.log(`  ${swept.length} verifiers scanned (${verifiers.length} less this file), ${importsTs.length} of them import TypeScript:`);
 for (const f of importsTs) console.log(`    ${unguarded.includes(f) ? 'UNGUARDED' : 'guarded  '}  ${f}`);
 console.log('');
 
@@ -191,7 +270,7 @@ ok('every TypeScript-importing verifier imports the guard and wraps its import',
 // shape, in the check written to catch a different silence.
 ok('PRECONDITION — the enumeration is non-empty', importsTs.length, importsTs.length > 0);
 ok('PRECONDITION — it does not match every verifier (the regex discriminates)',
-  [importsTs.length, verifiers.length], importsTs.length < verifiers.length);
+  [importsTs.length, swept.length], importsTs.length < swept.length);
 
 const run = (cmd, argv) => {
   const r = spawnSync(cmd, argv, { cwd: REPO, encoding: 'utf8', timeout: 120000 });
@@ -220,6 +299,16 @@ const run = (cmd, argv) => {
 // entirely — `check-foo.mjs` — is in neither set. Source-scanning the unrunnable remainder would
 // re-introduce exactly the unbounded test §(b2) exists to escape, so it is not done here; the
 // convention is the claim, and `isVerifierPath` is where to change it.
+//
+// Round 124 adds a second residual, and this one no limb reaches. §(b2) sees a crash; §(b) and §(c)
+// see a literal specifier. A verifier that builds its specifier at runtime *and* swallows the
+// resulting error, exiting 0, presents neither: nothing to read and nothing to catch. Both halves
+// are needed — a computed specifier alone still crashes and dies at §(b2); a swallowed literal alone
+// is now read and dies at §(c). Closing it would need a fourth limb asserting that a verifier which
+// exits 0 under plain `node` actually verified something, which is `verify-verifier-exit-codes.mjs`'s
+// subject rather than this file's — and that instrument is single-target today (it names
+// `verify-premise-render.mjs`), so it has no population to widen and no version of this escape.
+// Stated here so the next round starts from where the coverage actually ends.
 
 console.log('\n=== (b2) Population-free: no verifier crashes raw under plain node ===\n');
 
@@ -255,13 +344,6 @@ const HANDLED_BUT_NAMES_THE_CODE = [
 ok('PRECONDITION — …and not on a handled failure that merely names the code (synthesised)',
   undefined, !rawResolutionCrash(HANDLED_BUT_NAMES_THE_CODE));
 
-const SELF = path.relative(SCRIPTS, fileURLToPath(import.meta.url)).split(path.sep).join('/');
-const swept = verifiers.filter((f) => f !== SELF);
-// Self-exclusion is a hole in the sweep, so assert its size. A rename that stopped matching would
-// silently re-include this file and recurse; a second exclusion creeping in would go unnoticed.
-ok('PRECONDITION — exactly one verifier is excluded from the sweep, and it is this file',
-  { excluded: verifiers.filter((f) => f === SELF) }, verifiers.length - swept.length === 1);
-
 for (const f of swept) {
   const r = run('node', [`scripts/${f}`]);
   ok(`${f} — under plain node: no raw resolution stack trace`, { rc: r.rc }, !rawResolutionCrash(r.out));
@@ -274,14 +356,23 @@ for (const f of swept) {
 console.log('\n=== (c) End to end, both runners, run rather than argued ===\n');
 
 // One representative per guarded site would leave the others unasserted; run all of them.
+//
+// Round 124 adds the cross-limb assertion. §(b) decides "is this guarded?" by reading the source;
+// §(c) decides it by running the file. Two independent measurements of one property, and until now
+// nothing required them to agree — which is how §(b) came to report a file UNGUARDED that §(c) was
+// simultaneously reporting as exiting 2 with the right message. Requiring agreement means either
+// test drifting is caught by the other, and neither has to be trusted alone.
 for (const f of importsTs) {
   const bad = run('node', [`scripts/${f}`]);
-  ok(`${f} — plain node: exit 2, not a stack trace`,
-    { rc: bad.rc },
-    bad.rc === 2 && bad.out.includes('run under plain `node`') && !bad.out.includes('ERR_MODULE_NOT_FOUND\n    at'));
+  const behaviourallyGuarded = bad.rc === 2 && bad.out.includes('run under plain `node`')
+    && !bad.out.includes('ERR_MODULE_NOT_FOUND\n    at');
+  ok(`${f} — plain node: exit 2, not a stack trace`, { rc: bad.rc }, behaviourallyGuarded);
   ok(`${f} — …and it names the invocation that works`,
     undefined,
     bad.out.includes(`npx tsx scripts/${f}`));
+  ok(`${f} — §(b)'s source verdict and §(c)'s behavioural verdict agree`,
+    { source: unguarded.includes(f) ? 'unguarded' : 'guarded', behaviour: behaviourallyGuarded ? 'guarded' : 'unguarded' },
+    !unguarded.includes(f) === behaviourallyGuarded);
 }
 
 // The guard must not have broken the thing it guards. Two targets, chosen because they are the
