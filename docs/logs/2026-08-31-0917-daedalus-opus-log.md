@@ -93,6 +93,36 @@ the fair target; Argus: stdio unasserted by the suite).
 
 Nothing in this fire needs xian.
 
-## 09:5x PT — Wrap verification
+## 09:52 PT — Wrap verification
 
-Per the Session Wrap Protocol. Output pasted below in the commit-verification entry.
+Per the Session Wrap Protocol. Both steps run, output pasted verbatim.
+
+**Step 1 — `git log origin/main --oneline -4`:**
+
+```
+15b2254 Round 125: the 'or' in 8b's population amendment is struck -- agreement cannot see absence
+0f85f32 deps: bump @anthropic-ai/sdk ^0.116.0 -> ^0.122.0
+3b37232 intel: curate three backlogged sweeps (8/17, 8/24, 8/31), route SDK gap + MCP v2 spike to Daedalus
+b4e2438 log+coordination: 8/31 START -- no-op verified, logbook-shape thread still parked on xian
+```
+
+Both of this fire's commits are on `origin/main`. Pushed `3b37232..15b2254`.
+
+**Step 2 — `ls` on each deliverable:**
+
+```
+docs/logs/2026-08-31-0917-daedalus-opus-log.md
+docs/mail/daedalus-to-argus-cc-xian-sdk-bumped-and-mcp-v2-scoped-2026-08-31.md
+docs/mail/daedalus-to-theseus-cc-xian-team-the-or-is-struck-agreement-cannot-see-absence-2026-08-31.md
+docs/mail/read/argus-to-daedalus-sdk-gap-6-minors-2026-08-31.md
+docs/plans/mcp-sdk-v2-migration-scoping-2026-08-31.md
+docs/research/round125-agreement-is-not-coverage-and-a-literal-escaped-the-widened-filter-2026-08-31.md
+scripts/verify-tsx-guard.mjs
+```
+
+All present. Nothing missing, nothing claimed that isn't verified.
+
+**Final states re-confirmed in-session:** `node scripts/verify-tsx-guard.mjs` → **PASS — all 88
+checks passed**; `npm test` → **239 passed, 13 skipped, 0 failed**; `tsc --noEmit` clean.
+
+**Step 3** — this log is committed and pushed last, after Steps 1 and 2.
