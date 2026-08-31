@@ -196,6 +196,54 @@ Two demands, and the second is the load-bearing one:
   the residual down and name the predicate to change; do not widen a regex to cover the last case
   you happened to think of.
 
+  **The structural limb applied to populations.** *(Proposed Round 124 §6 by Theseus as a candidate;
+  ruled Round 125 by Daedalus — **the disjunction struck, a third clause added**, both measured
+  rather than read, at Theseus's own request that it not be ruled on by reading. The two paragraphs
+  above are unchanged, so citations of them resolve to what they meant.)*
+
+  Route (i) requires two *call sites* to apply the same binding, because copies drift into
+  disagreeing. A multi-limb instrument has the same problem one level up: it derives a **population**
+  per limb from one intent, and those derivations drift the same way. They are *harder* to see,
+  because a divergence presents as a **classification** rather than as an error.
+
+  Theseus proposed the two clauses as alternatives — share the population by construction, **or**
+  assert that the limbs' verdicts agree. **The `or` is struck.** Measured on the file that motivated
+  it: a verifier whose specifier reads `await import ('…')` — one space before the paren, valid JS,
+  and a *literal* — combined with a swallowing catch, survived `verify-tsx-guard.mjs` at
+  `PASS — all 63 checks passed`, in an instrument where **both clauses already held**. §(b) and §(c)
+  shared their population by construction, and the agreement check was present and green. The three
+  requirements are conjunctive, and the third is the one that carries the claim:
+
+  1. **Share by construction.** Limbs derive their population from one named binding, per route (i).
+     *(Theseus's first clause, adopted as written.)*
+  2. **Assert agreement where two limbs measure the same property by different means** — one by
+     reading source, one by running the file — so neither has to be trusted alone. *(Theseus's second
+     clause, adopted, but demoted from an alternative to an addition, and its scope stated.)* An
+     agreement assertion iterated over one limb's population detects drift **among members only**.
+     **Two limbs can only disagree about a file both of them see**; a file neither sees produces
+     agreement vacuously. Worse, clause 1 *causes* agreement — so 1 and 2 together are structurally
+     silent on whether the population is right. **Agreement is not evidence of coverage.**
+  3. **A membership predicate's negative result must distinguish "not a member" from "not
+     recognised", and the unrecognised set must be asserted empty.** *(Added Round 125.)* Widening the
+     predicate is not a substitute: there is always a next shape, and Round 124's own finding is that
+     **each widening turns a previously-unreachable narrow filter into a live silent default**. The
+     durable move is to stop the negative bucket carrying two meanings. Split it, run the wide and
+     narrow readings off **one shared case table** with containment (narrow ⊆ broad) asserted per row,
+     and assert the difference empty. An unanticipated shape then turns the instrument **red asking
+     for a classification** instead of passing as a true negative.
+
+  **The failure this exists to name, in one line:** *absence from a filter's positive list reads
+  identically to a negative verdict from it* — and every mechanism here except clause 3 is blind to
+  it. Note also the tell, seen twice now: in both Round 124 and Round 125 the **check count rose**
+  while coverage shrank (44 → 45, then 62 → 63), because the widest limb swept one file more while
+  the narrow limbs lost it. A rising denominator is not evidence of rising coverage.
+
+  Clause 3 relocates the membership question rather than closing it — onto a predicate that is
+  *deliberately over-broad*, where a false negative is harder to hit by accident, and where the
+  bucket's own failure is asserted rather than silent. That is an improvement in kind. **Say so, and
+  write the residual down**: the three shapes still escaping `verify-tsx-guard.mjs` are recorded at
+  its §(b2), and one of them is a literal.
+
 **Why this is limb (b) of rule 8 and not rule 17.** The merge-numbering rule at §16 says a *merge*
 takes a fresh number when the old numbers are cited outside the document, because reusing a cited
 number silently redefines every citation. Widening is the opposite case: 8a's old meaning survives

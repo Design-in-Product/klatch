@@ -75,6 +75,27 @@
  *      true and false cases — the treatment Round 123 gave `isVerifierPath`, applied to the other
  *      population in the same file. The residual is written down at §(b2) rather than half-closed.
  *
+ *   6. **Widening is not a strategy, and agreement does not cover absence.** Round 124 closed item 5
+ *      by widening `importsTsSource` and by adding a cross-limb agreement check. Round 125 pointed a
+ *      mutant at both. `await import ('…')` — one space before the paren, valid JS — is a *literal*
+ *      the widened predicate still does not read. Combined with a swallowing catch one directory
+ *      down, it left this file at `PASS — all 63 checks passed`, count moved 62 → 63 again. Each half
+ *      alone was caught (no-space ∧ swallow died at §(c) including the agreement check; space ∧ crash
+ *      died at §(b2)), so the escape was the conjunction, as in Round 124.
+ *
+ *      The agreement check did not fire, and could not have: it is iterated inside `importsTs`, so it
+ *      compares verdicts only for files §(b) already admitted. **Two limbs can only disagree about a
+ *      file both of them see.** A file neither sees produces agreement vacuously — and here §(b) and
+ *      §(c) *did* share their population by construction, which is what made them agree. Sharing a
+ *      population makes limbs consistent; it does not make the population right.
+ *
+ *      So the repair is not a wider regex. `importsTsSource`'s **negative result was carrying two
+ *      meanings** — "not a TypeScript importer" and "not recognised" — and only the first is a
+ *      finding. The bucket is split: a second, deliberately over-broad reading runs off the same case
+ *      table, containment (narrow ⊆ broad) is asserted per row, and the difference — recognised-as-
+ *      mentioning-TypeScript but unparsed — is asserted **empty**. An unread shape now turns this file
+ *      red asking for a classification instead of passing as a true negative.
+ *
  * §(c) is the end-to-end assertion: both directions of both runners, run rather than argued.
  *
  * ── Costs nothing ──────────────────────────────────────────────────────────
@@ -221,22 +242,80 @@ const importsTsSource = (src) => /import\(\s*['"`](?:\.\.\/)+packages\/[^'"`\n]*
 // precondition that both kinds are present. The first four trues are the four escapes this file has
 // actually been shown to have — Round 122's double quote and detached await, Round 124's depth —
 // so a future edit that re-narrows the predicate reopens them here rather than in silence.
-for (const [label, src, want] of [
-  ["today's shape", "await import('../packages/server/src/db/queries.ts')", true],
-  ['double-quoted (R122)', 'await import("../packages/server/src/db/queries.ts")', true],
-  ['detached await (R122)', "const p = import('../packages/x.ts');\nawait p;", true],
-  ['one directory down (R124)', "await import('../../packages/server/src/db/queries.ts')", true],
-  ['newline before the specifier', "await import(\n  '../packages/x.ts'\n)", true],
-  ['a .js specifier is not a TypeScript import', "await import('../packages/x.js')", false],
-  ['a non-packages import', "await import('./lib/tsx-required.mjs')", false],
-  ['a mention outside an import position', '// see ../packages/server/src/db/queries.ts', false],
-  ['a static import', "import fs from 'node:fs'", false],
+// Round 125, Daedalus. Theseus's Round 124 residual said the remaining escape needs a *computed*
+// specifier, because "§(b)/§(c) need a literal to read". Measured false: `importsTsSource` matches
+// `import\(`, and `await import ('…')` — one space, valid JS — is a *literal* it does not read. The
+// mutant using it (space ∧ swallowing catch, one directory down) left this file at
+// `PASS — all 63 checks passed`, count moved 62 → 63. Round 124's conjunction shape exactly, one
+// level out, and each half alone is still caught: no-space ∧ swallow dies at §(c) (all three limbs,
+// agreement included); space ∧ crash dies at §(b2).
+//
+// The repair is deliberately *not* a wider `importsTsSource`. Round 122 established that widening
+// this regex is whack-a-mole — that is the whole reason §(b2) exists. What is actually wrong is that
+// the predicate's **negative result carries two different meanings**: "affirmatively not a TypeScript
+// importer" and "I did not recognise this file", and only the first is a finding. Round 124 named
+// this ("absence from the list reads identically to does-not-import-TypeScript") and closed it by
+// widening the population. Widening cannot close it in general — there is always a next shape. So the
+// negative bucket is *split* instead, and the unrecognised half is asserted empty. A quoting style
+// nobody has thought of yet stops being a silent pass and becomes a red that asks for a
+// classification. Broader than `importsTsSource` by construction, and that containment is asserted
+// on the shared case table below rather than left to inspection.
+const mentionsTsSpecifier = (src) =>
+  /\bimport\b[\s\S]{0,40}?['"`](?:\.\.\/)+packages\/[^'"`\n]*\.ts['"`]/.test(src);
+
+// §(a)'s treatment, and Round 123's for `isVerifierPath`: true cases, false cases, and a
+// precondition that both kinds are present. The first four trues are the four escapes this file has
+// actually been shown to have — Round 122's double quote and detached await, Round 124's depth —
+// so a future edit that re-narrows the predicate reopens them here rather than in silence. Rows 6-7
+// are Round 125's: literals the narrow predicate cannot read, which is what the broad one is for.
+//
+// One table, two predicates, per rule 8b route (i): the wide and narrow readings cannot be given
+// divergent inputs, because there is only one set of inputs.
+for (const [label, src, wantNarrow, wantBroad] of [
+  ["today's shape", "await import('../packages/server/src/db/queries.ts')", true, true],
+  ['double-quoted (R122)', 'await import("../packages/server/src/db/queries.ts")', true, true],
+  ['detached await (R122)', "const p = import('../packages/x.ts');\nawait p;", true, true],
+  ['one directory down (R124)', "await import('../../packages/server/src/db/queries.ts')", true, true],
+  ['newline before the specifier', "await import(\n  '../packages/x.ts'\n)", true, true],
+  ['space before the paren (R125)', "await import ('../../packages/x.ts')", false, true],
+  ['comment inside the parens (R125)', "await import(/* the db */ '../packages/x.ts')", false, true],
+  ['a .js specifier is not a TypeScript import', "await import('../packages/x.js')", false, false],
+  ['a non-packages import', "await import('./lib/tsx-required.mjs')", false, false],
+  ['a mention outside an import position', '// see ../packages/server/src/db/queries.ts', false, false],
+  ['a static import', "import fs from 'node:fs'", false, false],
 ]) {
-  ok(`PREDICATE — ${label} ${want ? 'is' : 'is not'} a TypeScript import`, undefined,
-    importsTsSource(src) === want);
+  ok(`PREDICATE — ${label} ${wantNarrow ? 'is' : 'is not'} a TypeScript import`, undefined,
+    importsTsSource(src) === wantNarrow);
+  ok(`PREDICATE — ${label} ${wantBroad ? 'does' : 'does not'} mention a TypeScript specifier`, undefined,
+    mentionsTsSpecifier(src) === wantBroad);
+  // The containment that makes the split meaningful. If the broad reading ever stops being a
+  // superset of the narrow one, the unclassified bucket below silently stops covering the narrow
+  // predicate's blind spot — and it would go on reporting empty. Asserted per row, on the measured
+  // predicates rather than on the intent columns.
+  ok(`PREDICATE — ${label}: narrow ⊆ broad`, undefined,
+    !importsTsSource(src) || mentionsTsSpecifier(src));
 }
+// A broad reading that had degenerated to always-true would make the containment above vacuous and
+// the bucket below fire on everything; always-false would make the bucket vacuously empty. Both are
+// the silent-cap shape, so both are named here.
+ok('PRECONDITION — the broad reading discriminates (at least one true case and one false case)',
+  undefined,
+  mentionsTsSpecifier("await import ('../../packages/x.ts')") === true
+    && mentionsTsSpecifier("import fs from 'node:fs'") === false);
 
 const importsTs = swept.filter((f) => importsTsSource(fs.readFileSync(path.join(SCRIPTS, f), 'utf8')));
+
+// The unclassified bucket. A file here mentions a TypeScript specifier in an import position that
+// `importsTsSource` could not parse — so §(b) cannot say whether it is guarded, and §(c) will never
+// run it. That is not a pass and it is not a failure of the file under test; it is this instrument
+// declining to answer, and it has to say so out loud. Empty on today's tree; M8 is the file that
+// puts something in it.
+const unclassified = swept.filter((f) => {
+  const src = fs.readFileSync(path.join(SCRIPTS, f), 'utf8');
+  return mentionsTsSpecifier(src) && !importsTsSource(src);
+});
+ok('every verifier mentioning a TypeScript specifier is one §(b) can actually read', unclassified,
+  unclassified.length === 0);
 
 // Round 124: the guard-detection half was depth-anchored too, and it fails the *other* way — a
 // correctly guarded verifier at `scripts/checks/` writes `from '../lib/tsx-required.mjs'`, which
@@ -309,6 +388,26 @@ const run = (cmd, argv) => {
 // subject rather than this file's — and that instrument is single-target today (it names
 // `verify-premise-render.mjs`), so it has no population to widen and no version of this escape.
 // Stated here so the next round starts from where the coverage actually ends.
+//
+// Round 125 corrects the *scope* of that residual, which was written narrower than it was. "A
+// computed specifier" was not the condition; **"a specifier §(b) cannot read"** was, and literals
+// live in that set too — `await import ('…')`, one space, was one, and it survived. The unclassified
+// bucket in §(b) now catches the readable-but-unparsed literals. Measured, so the boundary is stated
+// where it actually falls rather than where it is tidiest — three shapes still escape *both* the
+// narrow and the broad reading, and only the first is what Round 124 described:
+//
+//   1. A genuinely computed specifier — `import([..].join('/'))`. No literal anywhere to read.
+//   2. A literal bound to a variable first — `const s = '../packages/x.ts'; await import(s)`. The
+//      literal is in the source, but it precedes the `import` token rather than following it, so the
+//      broad reading's window does not cover it. This one is a literal, and it escapes.
+//   3. A comment longer than the broad reading's 40-character window sitting inside the parens.
+//
+// Each still needs the swallowing catch to survive §(b2), so all three are conjunctions rather than
+// single defects. The honest summary of what the bucket bought: it does not remove the membership
+// question, it moves it onto a predicate that is *deliberately over-broad*, where a false negative is
+// harder to hit by accident than on a precise one — and where the failure of the bucket itself is now
+// asserted (containment, plus a discrimination precondition) rather than silent. That is an
+// improvement in kind, not a closure, and the next round should start from these three.
 
 console.log('\n=== (b2) Population-free: no verifier crashes raw under plain node ===\n');
 
