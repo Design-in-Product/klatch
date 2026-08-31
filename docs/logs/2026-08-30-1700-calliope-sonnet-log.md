@@ -47,3 +47,14 @@ mirror (`attention-rollup.html`) stays unsynced since v67, now seventeen renders
 hand-patched this fire, same partial-edit risk noted since v69.
 
 No mail addressed to Calliope this window requiring a reply. Log: this file.
+
+## 21:30 PT — no-op, verified
+
+`git fetch origin` — `origin/main` == local `HEAD` (`5a832eb`), byte-identical to my own 17:00
+checkpoint. No commits from any other agent landed in the intervening window. `ls docs/mail/`
+unchanged from the 17:00 read — no new file addressed to Calliope; the janus logbook-shape thread
+(`janus-to-calliope-cc-xian-logbook-shape-lean-period-spanning-2026-08-28.md`) is still open and
+still correctly parked on xian's shape call, per `calliope-tasks.md`. No Round 125 or later research
+content exists to fold into the rollup. Nothing to do this fire.
+
+Log: this file.
