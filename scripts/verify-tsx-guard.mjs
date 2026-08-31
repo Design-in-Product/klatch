@@ -34,11 +34,26 @@
  *      `import()` call, both left this file at `PASS — all 20 checks passed` while crashing with
  *      exactly the raw `ERR_MODULE_NOT_FOUND` stack trace §3 of the Round 121 memo set out to kill.
  *
- *      §(b2) removes the population question instead of widening the regex. It asserts the property
- *      directly on **every** `verify-*.mjs`: run under plain `node`, none may emit an unhandled
- *      resolution stack trace. No membership test, so nothing to escape — a computed specifier or a
- *      quoting style nobody has thought of yet is covered for free. Measured cost of the whole
- *      sweep: ~1.1s. §(b) is kept for its report line and for locating *which* site is unguarded.
+ *      §(b2) removes the *source-text* population question instead of widening the regex. It asserts
+ *      the property directly on every verifier: run under plain `node`, none may emit an unhandled
+ *      resolution stack trace. A computed specifier or a quoting style nobody has thought of yet is
+ *      covered for free. Measured cost of the whole sweep: ~1.1s. §(b) is kept for its report line
+ *      and for locating *which* site is unguarded.
+ *
+ *   4. **§(b2) inherited §(b)'s membership test.** Round 122 wrote that §(b2) has "no membership
+ *      test, so nothing to escape." Round 123 measured it: §(b2) reused §(b)'s array, so it was
+ *      scoped by `readdirSync(scripts/)` + `.endsWith('.mjs')` — blind to depth and to extension.
+ *      An unguarded `verify-*.mts`, and an unguarded `verify-*.mjs` one directory down, each crashed
+ *      raw under `node` at `PASS — all 36 checks passed`. The escape had moved from source-text
+ *      shape to filename shape; it had not gone away.
+ *
+ *      What is available is not *no* membership test but a **bounded** one: the property is only
+ *      assertable on files it is safe to run, so the population is a naming convention this repo
+ *      controls, rather than the open set of ways a person may write `import()`. §(b) now walks
+ *      `scripts/` recursively for `verify-*.{mjs,mts}`, and — this is the part that carries the
+ *      claim — the predicate defining that population is itself asserted, on true cases and false
+ *      cases, the same treatment §(a) gives `isTsResolutionFailure`. A membership test you cannot
+ *      escape was not on offer. One whose rule is written down and tested was.
  *
  * §(c) is the end-to-end assertion: both directions of both runners, run rather than argued.
  *
@@ -118,9 +133,45 @@ ok('PRECONDITION — at least one case is true and at least one is false',
 
 console.log('\n=== (b) Every scripts/verify-*.mjs importing TypeScript routes its failure here ===\n');
 
-const verifiers = fs.readdirSync(SCRIPTS)
-  .filter((f) => f.startsWith('verify-') && f.endsWith('.mjs'))
-  .sort();
+// Round 123, Daedalus. §(b2) was written as "population-free", but it reused the array below, so
+// it inherited this membership test verbatim — one on *filenames* rather than on source text.
+// Measured, not reasoned: an unguarded `scripts/verify-r123-escape.mts` and an unguarded
+// `scripts/checks/verify-r123-nested.mjs` each crashed raw under `node` while this file printed
+// `13 verifiers, 4 of them import TypeScript` and `PASS — all 36 checks passed`. A flat
+// `readdirSync` + `.endsWith('.mjs')` is blind to depth and to extension, and neither variation is
+// exotic: `scripts/lib/` already establishes subdirectories here and `probe-expand-continuation.mts`
+// already establishes the extension.
+//
+// So the population is walked, and the predicate that defines it is itself asserted below — a
+// membership test that cannot be escaped is not available here, but one whose *rule* is stated and
+// tested is, and that is the difference this repair is making.
+const isVerifierPath = (rel) => /(?:^|\/)verify-[^/]*\.m[jt]s$/.test(rel);
+
+const walk = (dir, base = '') => fs.readdirSync(dir, { withFileTypes: true }).flatMap((e) => {
+  const rel = base ? `${base}/${e.name}` : e.name;
+  return e.isDirectory() ? walk(path.join(dir, e.name), rel) : [rel];
+});
+
+const allUnderScripts = walk(SCRIPTS).sort();
+const verifiers = allUnderScripts.filter(isVerifierPath);
+
+// The predicate gets §(a)'s treatment — true cases and false cases, and a precondition that both
+// kinds are present, so a predicate that has degenerated to always-true or always-false is caught
+// here rather than by the silence downstream. The two Round 123 escapes are the first two trues.
+for (const [rel, want] of [
+  ['verify-r123-escape.mts', true],
+  ['checks/verify-r123-nested.mjs', true],
+  ['verify-tsx-guard.mjs', true],
+  ['lib/tsx-required.mjs', false],
+  ['probe-expand-continuation.mts', false],
+  ['verify-notes.md', false],
+  ['unverify-x.mjs', false],
+]) {
+  ok(`PREDICATE — ${rel} is ${want ? '' : 'not '}a verifier path`, undefined, isVerifierPath(rel) === want);
+}
+ok('PRECONDITION — the walk reaches below the top level and the predicate rejects some of what it finds',
+  { seen: allUnderScripts.length, verifiers: verifiers.length },
+  allUnderScripts.some((r) => r.includes('/')) && verifiers.length > 0 && verifiers.length < allUnderScripts.length);
 
 const importsTs = verifiers.filter((f) =>
   /await import\(\s*\n?\s*'\.\.\/packages\/[^']*\.ts'/.test(fs.readFileSync(path.join(SCRIPTS, f), 'utf8')));
@@ -153,9 +204,22 @@ const run = (cmd, argv) => {
 //
 // §(b) can only be as good as its membership regex, and a regex that misses one file fails
 // silently *and* takes §(c) down with it, since §(c) iterates `importsTs`. So assert the property
-// on the whole directory and let membership fall out: under plain `node`, no verifier may emit an
-// unhandled module-resolution stack trace. Either it does not import TypeScript (runs normally),
-// or it does and the guard converts the throw into an exit-2 explanation.
+// on the whole population and let *content* membership fall out: under plain `node`, no verifier
+// may emit an unhandled module-resolution stack trace. Either it does not import TypeScript (runs
+// normally), or it does and the guard converts the throw into an exit-2 explanation.
+//
+// Round 123: this removes the *source-text* membership test, not the membership test. The
+// population is still whatever `isVerifierPath` admits, because the property is only assertable on
+// files it is safe to execute, and this repo's `scripts/` also holds servers and live probes that
+// a blind sweep must not run. Trading an unbounded membership test (how one may write a dynamic
+// import) for a bounded one (a filename convention this repo controls) is the whole of the gain —
+// the bounded one is stated as a predicate and tested in §(b) above, which the unbounded one
+// never could be.
+//
+// One residual, written down rather than half-closed: a verifier named outside the convention
+// entirely — `check-foo.mjs` — is in neither set. Source-scanning the unrunnable remainder would
+// re-introduce exactly the unbounded test §(b2) exists to escape, so it is not done here; the
+// convention is the claim, and `isVerifierPath` is where to change it.
 
 console.log('\n=== (b2) Population-free: no verifier crashes raw under plain node ===\n');
 
@@ -191,7 +255,7 @@ const HANDLED_BUT_NAMES_THE_CODE = [
 ok('PRECONDITION — …and not on a handled failure that merely names the code (synthesised)',
   undefined, !rawResolutionCrash(HANDLED_BUT_NAMES_THE_CODE));
 
-const SELF = path.basename(fileURLToPath(import.meta.url));
+const SELF = path.relative(SCRIPTS, fileURLToPath(import.meta.url)).split(path.sep).join('/');
 const swept = verifiers.filter((f) => f !== SELF);
 // Self-exclusion is a hole in the sweep, so assert its size. A rename that stopped matching would
 // silently re-include this file and recurse; a second exclusion creeping in would go unnoticed.

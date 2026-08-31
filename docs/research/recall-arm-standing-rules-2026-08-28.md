@@ -149,6 +149,53 @@ Two demands, and the second is the load-bearing one:
   source and require the shared binding at every site — `verify-tsx-guard.mjs` §(b) does exactly
   this, and it holds against sites that do not exist yet. Uncheckable from inside is not uncheckable.
 
+  **And what that instrument costs.** *(Added Round 123 §1 by Daedalus, on Theseus's Round 122 §5
+  proposal; the paragraph above is unchanged, so citations of it resolve to what they meant.)*
+
+  > **An enumerated population is only as sound as its membership test, and a membership test that
+  > misses a member fails silently.** Non-empty and not-everything preconditions do not detect it:
+  > they catch the test matching *nothing* and matching *everything*, and missing *one* is neither.
+  > A missed member is invisible twice over — the enumeration reports full coverage of a population
+  > that excludes the offender, and every downstream section that iterates the same list never
+  > reaches it either.
+
+  Measured both times it was claimed, not argued. Round 122 (Theseus): two unguarded verifiers — one
+  with a **double-quoted** specifier, one with the **`await` detached** from the `import()` — left
+  `verify-tsx-guard.mjs` §(b) at `PASS`, both preconditions green, while crashing raw.
+
+  **The repair, and its honest price.** Theseus's Round 122 §5 proposed *"where the property can be
+  asserted on the whole population directly, prefer that — it has no membership test to be wrong."*
+  **Adopted in substance, and the last clause struck**, because Round 123 measured it false on the
+  file that motivated it: §(b2) was written as "population-free" but reused §(b)'s array, so it
+  inherited a membership test on *filenames* — and an unguarded `verify-*.mts`, and an unguarded
+  `verify-*.mjs` one directory down, each crashed raw at `PASS — all 36 checks passed`. Neither
+  variation is exotic; this repo already contains a `.mts` script and a `scripts/` subdirectory.
+  The escape had moved from source-text shape to filename shape. It had not gone away. What the rule
+  says instead:
+
+  > **Where the property can be asserted by *running* the population rather than by reading it,
+  > prefer that.** It trades an **unbounded** membership test — the open set of ways the property
+  > might be written, which no lexical test can be shown to cover — for a **bounded** one: the set
+  > of files it is safe to execute, which the repository controls. That is the whole of the gain,
+  > and it is a real one. It is not the elimination of the test.
+
+  Two preconditions, because the bounded test now carries the claim:
+
+  1. **The predicate is named and asserted, not inlined.** Give it a name, and test it on true cases
+     and false cases with a precondition that both kinds are present — the treatment §(a) of that
+     same file gives `isTsResolutionFailure`. An unbounded test could never be asserted this way;
+     that a bounded one *can* is the reason to prefer it, so declining to is forfeiting the trade.
+  2. **The bound is written where it is read, and holes have asserted size.** What the population
+     excludes, and why. Theseus's *"exactly one verifier is excluded from the sweep, and it is this
+     file"* is the pattern: a hole whose size is asserted cannot silently widen. A hole nobody wrote
+     down is the silent cap one level out from the check written against it.
+
+  **Say which, here too** — enumerate-and-read, assert-by-running, or neither. And the residual is
+  stated, never closed by half-measures: where a member falls outside the convention entirely,
+  source-scanning the remainder re-introduces the unbounded test the route exists to escape. Write
+  the residual down and name the predicate to change; do not widen a regex to cover the last case
+  you happened to think of.
+
 **Why this is limb (b) of rule 8 and not rule 17.** The merge-numbering rule at §16 says a *merge*
 takes a fresh number when the old numbers are cited outside the document, because reusing a cited
 number silently redefines every citation. Widening is the opposite case: 8a's old meaning survives
@@ -169,7 +216,13 @@ Round 120 §3, from `verify-verifier-exit-codes.mjs` D3 (`FIXED`, a string copy 
 `mutantAssertions` expression 107 lines above at `:219`, whose staleness reports *"the
 `mutantAssertions` expression drifted; D2 is unproven, not passing"* at `:336`). Ruled in by
 Daedalus, Round 121 §1, with the three preconditions above; D3 meets all three, and its
-ungatedness was confirmed by watching it fire on a corpus-free seat, not by reading it.
+ungatedness was confirmed by watching it fire on a corpus-free seat, not by reading it. The
+membership-soundness paragraph — Theseus, Round 122 §2/§5, from five author-shape mutants against
+`verify-tsx-guard.mjs` §(b), two of which survived; ruled in by Daedalus, Round 123 §1, after two
+further mutants (a `verify-*.mts`, and a `verify-*.mjs` one directory down) survived §(b2) as well
+and showed that the proposal's own justifying clause — "it has no membership test to be wrong" —
+was false of the file it was written about. Three consecutive rounds of the same shape, each found
+inside the check written against the previous one.
 
 ## 9. A "does not move" invariant needs a companion check that the number is also *right*
 
