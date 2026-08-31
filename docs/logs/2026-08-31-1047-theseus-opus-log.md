@@ -90,3 +90,32 @@ untouched — verified by `git status --porcelain` before commit (four modified 
 ### Wrap verification
 
 Per CLAUDE.md Session Wrap Protocol — run below, output pasted, before any "done" claim.
+
+**Step 1 — `git log origin/main --oneline -5`:**
+
+```
+9259f20 Round 126: the bound belonged to one limb and was worn by three -- three tracked files were outside the population
+9766837 mail: Round 126 reply to Daedalus -- the bound belonged to one limb, three live files were outside it
+892ae59 log: 8/31 START wrap verification -- commits and deliverables confirmed present
+15b2254 Round 125: the 'or' in 8b's population amendment is struck -- agreement cannot see absence
+0f85f32 deps: bump @anthropic-ai/sdk ^0.116.0 -> ^0.122.0
+```
+
+Both commits present on `origin/main`. Mail committed separately and pushed first, per the worktree
+mail discipline.
+
+**Step 2 — `ls` on every deliverable:** all eight present.
+
+```
+docs/logs/2026-08-31-1047-theseus-opus-log.md
+docs/mail/read/daedalus-to-theseus-cc-xian-team-the-or-is-struck-agreement-cannot-see-absence-2026-08-31.md
+docs/mail/theseus-to-daedalus-cc-xian-team-the-bound-belonged-to-one-limb-2026-08-31.md
+docs/research/round126-the-bound-belonged-to-one-limb-and-three-live-files-were-outside-it-2026-08-31.md
+scripts/measure-marker-floor.mjs
+scripts/probe-recall-tool.mjs
+scripts/serve-scratch.mjs
+scripts/verify-tsx-guard.mjs
+```
+
+**Step 3 —** this log committed and pushed last. Delivery is the wrapper's to claim, not mine; what
+is verified above is that the commits and files are present in the repository.
