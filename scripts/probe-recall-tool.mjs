@@ -143,6 +143,7 @@ import {
 import { writeFileSync, mkdirSync } from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { explainTsxRequirement } from './lib/tsx-required.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const API = process.env.KLATCH_API || 'http://localhost:3001/api';
@@ -157,8 +158,18 @@ const DB_PATH = process.env.KLATCH_DB || path.join(__dirname, '..', '.testdata',
 // Nothing called `getDb()` from here before Round 53, so it was latent; it is not
 // latent now.
 process.env.KLATCH_DB = DB_PATH;
-const { tokenizeRecallQuery, RECALL_NEIGHBOUR_RADIUS, recallFromOtherConversations, expandConversationRange, RECALL_MARKER_PHRASES } =
-  await import('../packages/server/src/claude/recall.ts');
+// Round 126: guarded like the verifiers. This probe is outside the `verify-*` convention, so
+// §(b) of verify-tsx-guard.mjs could not see it until the read population was widened. Under plain
+// `node` it printed a raw ERR_MODULE_NOT_FOUND naming `queries.js` as missing. The wrapper is inert
+// under `tsx` — the runner this probe is always launched with — so no live path changes.
+let tokenizeRecallQuery, RECALL_NEIGHBOUR_RADIUS, recallFromOtherConversations,
+  expandConversationRange, RECALL_MARKER_PHRASES;
+try {
+  ({ tokenizeRecallQuery, RECALL_NEIGHBOUR_RADIUS, recallFromOtherConversations, expandConversationRange, RECALL_MARKER_PHRASES } =
+    await import('../packages/server/src/claude/recall.ts'));
+} catch (err) {
+  explainTsxRequirement(err, import.meta.url);
+}
 
 const RECALL_TOOL = 'search_my_other_conversations';
 const WINDOW = 20; // CARRIED_CONTEXT_MAX_MESSAGES

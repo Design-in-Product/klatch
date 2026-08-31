@@ -34,6 +34,7 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { explainTsxRequirement } from './lib/tsx-required.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const name = (process.argv[2] || 'scratch').replace(/[^a-zA-Z0-9._-]/g, '-');
@@ -49,4 +50,11 @@ fs.mkdirSync(dir, { recursive: true });
 process.env.KLATCH_DB = dbPath;
 console.log(`[serve-scratch] KLATCH_DB = ${dbPath}`);
 
-await import('../packages/server/src/index.ts');
+// Round 126: guarded like the verifiers. This file is outside the `verify-*` convention, so
+// §(b) of verify-tsx-guard.mjs could not see it until the read population was widened; run under
+// plain `node` it printed a raw ERR_MODULE_NOT_FOUND naming `queries.js` as missing.
+try {
+  await import('../packages/server/src/index.ts');
+} catch (err) {
+  explainTsxRequirement(err, import.meta.url);
+}

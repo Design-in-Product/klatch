@@ -96,6 +96,42 @@
  *      mentioning-TypeScript but unparsed — is asserted **empty**. An unread shape now turns this file
  *      red asking for a classification instead of passing as a true negative.
  *
+ *   7. **The bound belonged to one limb and was worn by three.** Round 126 pointed a mutant at
+ *      Round 125's clause 3, as invited. Residual shape 2 reproduces — a specifier literal bound to
+ *      a variable *before* the import token escapes both readings and, with a swallowing catch one
+ *      directory down, left this file at `PASS — all 89`, count 88 → 89. Third time the denominator
+ *      has risen while coverage fell. Controls one variable away: inline literal `FAIL 3/92` at §(c)
+ *      including the agreement check, no-catch `FAIL 1/89` at §(b2).
+ *
+ *      But the larger finding was not in the mutants. §(b2)'s docblock bounds the population to the
+ *      `verify-*` naming convention and states the reason: *"the property is only assertable on files
+ *      it is safe to run."* That is a reason about **running**. §(b) reads source text and runs
+ *      nothing, so it never had that constraint — it inherited the bound when Round 123 fused the two
+ *      populations, and no round since has asked whether the justification transferred. It did not.
+ *
+ *      Measured, on the clean tree, no mutant involved: `measure-marker-floor.mjs`,
+ *      `probe-recall-tool.mjs` and `serve-scratch.mjs` all dynamically import `../packages/**.ts`,
+ *      none imported the guard, and all three were in **neither** population. Run under plain `node`,
+ *      `measure-marker-floor.mjs` printed the raw `ERR_MODULE_NOT_FOUND` naming `queries.js` as
+ *      missing — the exact stack trace §3 of the Round 121 memo set out to abolish, and the exact
+ *      misattribution Round 120 §5 read as a missing build artifact. This file reported
+ *      `PASS — all 88 checks passed` over it, and had done since Round 123.
+ *
+ *      So the two populations are separated: `readable` (every `.m[jt]s` under `scripts/`) carries
+ *      §(b)'s guard assertion and the unclassified bucket; `swept` (the naming convention) still
+ *      carries §(b2) and §(c), which execute their targets. Nesting is asserted, and so is the
+ *      widening doing work — if `importsTsRead` ever stops admitting a file `swept` cannot reach,
+ *      the read population has silently collapsed back and the three files go dark again.
+ *
+ *      The residual this creates, stated rather than discovered later: the unclassified bucket now
+ *      over-fires across 37 files instead of 12. A **correct** verifier — no TypeScript import, no
+ *      guard needed, clean exit 0 — that merely writes the word `import` within 40 characters of a
+ *      quoted `.ts` specifier *in a comment* turns this file red, and the only way to clear it is to
+ *      reword the comment. Measured (M14 `FAIL 1/89`, M0 control `PASS 89`). Not live today: zero of
+ *      the broad reading's matches across `scripts/` currently fall inside a comment. But this file
+ *      family's house style is to quote these specifiers in prose, so it is a latent over-fire whose
+ *      blast radius Round 126 tripled, and item 1 of this header is the reason that matters.
+ *
  * §(c) is the end-to-end assertion: both directions of both runners, run rather than argued.
  *
  * ── Costs nothing ──────────────────────────────────────────────────────────
@@ -188,6 +224,14 @@ console.log('\n=== (b) Every scripts/verify-*.mjs importing TypeScript routes it
 // tested is, and that is the difference this repair is making.
 const isVerifierPath = (rel) => /(?:^|\/)verify-[^/]*\.m[jt]s$/.test(rel);
 
+// Round 126, Theseus. The `verify-` convention bounds the population this file may *execute*.
+// §(b2)'s docblock states the reason: "the property is only assertable on files it is safe to run,
+// and this repo's `scripts/` also holds servers and live probes that a blind sweep must not run."
+// That reason is real, and it is a reason about *running*. §(b) does not run anything — it reads
+// source text — so it never had that constraint, and inherited the bound anyway when Round 123
+// fused the two populations. Measured cost of the inheritance: three tracked files.
+const isModuleSource = (rel) => /\.m[jt]s$/.test(rel);
+
 const walk = (dir, base = '') => fs.readdirSync(dir, { withFileTypes: true }).flatMap((e) => {
   const rel = base ? `${base}/${e.name}` : e.name;
   return e.isDirectory() ? walk(path.join(dir, e.name), rel) : [rel];
@@ -225,6 +269,30 @@ const swept = verifiers.filter((f) => f !== SELF);
 // would silently re-include this file; a second exclusion creeping in would go unnoticed.
 ok('PRECONDITION — exactly one verifier is excluded, and it is this file',
   { excluded: verifiers.filter((f) => f === SELF) }, verifiers.length - swept.length === 1);
+
+// Round 126, Theseus. The READ population — every module under `scripts/`, not just the ones named
+// `verify-*`. §(b)'s guard assertion and the unclassified bucket run over this; §(b2) and §(c) keep
+// running over `swept`, because those limbs execute their targets and this one does not.
+const readable = allUnderScripts.filter(isModuleSource).filter((f) => f !== SELF);
+
+for (const [rel, want] of [
+  ['measure-marker-floor.mjs', true],
+  ['probe-recall-tool.mjs', true],
+  ['serve-scratch.mjs', true],
+  ['lib/tsx-required.mjs', true],
+  ['checks/verify-r123-nested.mjs', true],
+  ['probe-expand-continuation.mts', true],
+  ['verify-notes.md', false],
+  ['lib/recall-call-kind.js', false],
+]) {
+  ok(`PREDICATE — ${rel} is ${want ? '' : 'not '}module source`, undefined, isModuleSource(rel) === want);
+}
+
+// The two populations are nested, not parallel. If this ever inverts, a file would be run by §(b2)
+// without §(b) having read it — the Round 124 gap with the limbs swapped.
+ok('PRECONDITION — the run population is a strict subset of the read population',
+  { run: swept.length, read: readable.length },
+  swept.every((f) => readable.includes(f)) && swept.length < readable.length);
 
 // Round 124, Theseus. This was the *other* population in this file, and Round 123 did not widen it.
 // It read `'\.\./packages/` — anchored to exactly one `../`, single quotes only, `await` required —
@@ -303,15 +371,30 @@ ok('PRECONDITION — the broad reading discriminates (at least one true case and
   mentionsTsSpecifier("await import ('../../packages/x.ts')") === true
     && mentionsTsSpecifier("import fs from 'node:fs'") === false);
 
-const importsTs = swept.filter((f) => importsTsSource(fs.readFileSync(path.join(SCRIPTS, f), 'utf8')));
+const srcOf = (f) => fs.readFileSync(path.join(SCRIPTS, f), 'utf8');
+
+// Round 126: the containment above is asserted on eleven synthetic rows and was never asserted on
+// a single one of the files the bucket actually runs over. The bucket's soundness depends on
+// containment holding for the REAL inputs; a predicate pair can satisfy the table and break here.
+for (const f of readable) {
+  const src = srcOf(f);
+  if (importsTsSource(src)) {
+    ok(`CONTAINMENT — ${f}: narrow ⊆ broad on the live file`, undefined, mentionsTsSpecifier(src));
+  }
+}
+
+// Read-side: every module under scripts/ that imports TypeScript, not merely every verifier.
+const importsTsRead = readable.filter((f) => importsTsSource(srcOf(f)));
+// Run-side: §(c) may only execute what it is safe to execute, so it keeps the narrow population.
+const importsTs = swept.filter((f) => importsTsSource(srcOf(f)));
 
 // The unclassified bucket. A file here mentions a TypeScript specifier in an import position that
 // `importsTsSource` could not parse — so §(b) cannot say whether it is guarded, and §(c) will never
 // run it. That is not a pass and it is not a failure of the file under test; it is this instrument
 // declining to answer, and it has to say so out loud. Empty on today's tree; M8 is the file that
 // puts something in it.
-const unclassified = swept.filter((f) => {
-  const src = fs.readFileSync(path.join(SCRIPTS, f), 'utf8');
+const unclassified = readable.filter((f) => {
+  const src = srcOf(f);
   return mentionsTsSpecifier(src) && !importsTsSource(src);
 });
 ok('every verifier mentioning a TypeScript specifier is one §(b) can actually read', unclassified,
@@ -337,19 +420,26 @@ for (const [label, src, want] of [
     importsGuardSource(src) === want);
 }
 
-const unguarded = importsTs.filter((f) => !importsGuardSource(fs.readFileSync(path.join(SCRIPTS, f), 'utf8')));
+const unguarded = importsTsRead.filter((f) => !importsGuardSource(srcOf(f)));
 
-console.log(`  ${swept.length} verifiers scanned (${verifiers.length} less this file), ${importsTs.length} of them import TypeScript:`);
-for (const f of importsTs) console.log(`    ${unguarded.includes(f) ? 'UNGUARDED' : 'guarded  '}  ${f}`);
+console.log(`  ${readable.length} modules read (${swept.length} of them runnable verifiers), ${importsTsRead.length} import TypeScript:`);
+for (const f of importsTsRead) console.log(`    ${unguarded.includes(f) ? 'UNGUARDED' : 'guarded  '}  ${f}${swept.includes(f) ? '' : '   (read-only: outside the run population)'}`);
 console.log('');
 
-ok('every TypeScript-importing verifier imports the guard and wraps its import', unguarded, unguarded.length === 0);
+ok('every TypeScript-importing module under scripts/ imports the guard and wraps its import',
+  unguarded, unguarded.length === 0);
 
 // Without this, §(b) passes vacuously the day the regex stops matching anything — the silent-cap
 // shape, in the check written to catch a different silence.
-ok('PRECONDITION — the enumeration is non-empty', importsTs.length, importsTs.length > 0);
-ok('PRECONDITION — it does not match every verifier (the regex discriminates)',
-  [importsTs.length, swept.length], importsTs.length < swept.length);
+ok('PRECONDITION — the enumeration is non-empty', importsTsRead.length, importsTsRead.length > 0);
+ok('PRECONDITION — it does not match every module (the regex discriminates)',
+  [importsTsRead.length, readable.length], importsTsRead.length < readable.length);
+// Round 126: the widening is only doing work if it admits files the old population excluded. If
+// this ever goes to zero the read population has silently collapsed back onto `swept`, and the
+// three files that motivated it would go unchecked again — passing, as they did for three rounds.
+ok('PRECONDITION — the read population admits TypeScript importers the run population cannot reach',
+  importsTsRead.filter((f) => !swept.includes(f)),
+  importsTsRead.some((f) => !swept.includes(f)));
 
 const run = (cmd, argv) => {
   const r = spawnSync(cmd, argv, { cwd: REPO, encoding: 'utf8', timeout: 120000 });

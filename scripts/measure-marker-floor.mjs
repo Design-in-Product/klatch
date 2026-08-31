@@ -86,12 +86,22 @@ import { execSync } from 'child_process';
 import { buildRecogniser } from './lib/recall-recogniser.mjs';
 import { buildFloorClassifier } from './lib/marker-floor.mjs';
 import { classifyContainer, decodesLosslessly } from './lib/opaque-container.mjs';
+import { explainTsxRequirement } from './lib/tsx-required.mjs';
 
-const { RECALL_MARKER_PHRASES: P } = await import('../packages/server/src/claude/recall.ts');
-const { CARRIED_CONTEXT_MAX_MESSAGE_CHARS: CAP } =
-  await import('../packages/server/src/claude/carried-context.ts');
-const { parseClaudeCodeSessionFromContent } =
-  await import('../packages/server/src/import/parser.ts');
+// Round 126: guarded like the verifiers. Outside the `verify-*` convention, so §(b) could not see
+// it until the read population was widened; under plain `node` this line printed a raw
+// ERR_MODULE_NOT_FOUND naming `queries.js` as missing — the exact misattribution the guard exists
+// to abolish, and the one Round 120 §5 misread as a missing build artifact.
+let P, CAP, parseClaudeCodeSessionFromContent;
+try {
+  ({ RECALL_MARKER_PHRASES: P } = await import('../packages/server/src/claude/recall.ts'));
+  ({ CARRIED_CONTEXT_MAX_MESSAGE_CHARS: CAP } =
+    await import('../packages/server/src/claude/carried-context.ts'));
+  ({ parseClaudeCodeSessionFromContent } =
+    await import('../packages/server/src/import/parser.ts'));
+} catch (err) {
+  explainTsxRequirement(err, import.meta.url);
+}
 
 const { patterns } = buildRecogniser(P);
 const { tally, runControls, BUCKETS } = buildFloorClassifier(P, CAP, patterns);
