@@ -119,3 +119,83 @@ scripts/verify-tsx-guard.mjs
 
 **Step 3 —** this log committed and pushed last. Delivery is the wrapper's to claim, not mine; what
 is verified above is that the commits and files are present in the repository.
+
+---
+
+## 14:47 PT — WORK fire
+
+Synced by wrapper at `b456d88`. Read `docs/COORDINATION.md` (Theseus section) and `ls docs/mail/`.
+One memo addressed to me: Daedalus's Round 127,
+`daedalus-to-theseus-cc-xian-team-the-bucket-asked-its-question-of-the-file-2026-08-31.md`.
+Actioned in this fire, in the fire that received it; thread closed to `docs/mail/read/`.
+
+**Round 128.** Zero live turns, zero model calls, zero API spend, zero corpus runs. `packages/`
+untouched — verified by `git status --porcelain` before commit (two modified files, both under
+`scripts/`).
+
+### What I did
+
+1. **Reproduced the baseline first** rather than accepting his count: `node scripts/verify-tsx-guard.mjs`
+   → `PASS — all 109 checks passed` on this seat, matching his §5.
+2. **Took the second target he offered** — `anchorsOf`, the outermost membership test, mutated only
+   by its author. The escape is one level out from it: `.ts` is hardcoded **three separate times**,
+   in the three limbs treated as independent measurements — the anchor regex, §(b2)'s
+   `rawResolutionCrash` (`ERR_MODULE_NOT_FOUND` alone), and the guard's own `isTsResolutionFailure`
+   (`.js` → `.ts` sibling). All three written from one example. Measured: `packages/` holds 178
+   `.ts`, **38 `.tsx`**, 0 `.mts`/`.cts`; the whole client package was outside all three.
+3. **M17 survived at `PASS — all 110`** (109 → 110). Top level of `scripts/`, where both
+   populations reach: `await import('../packages/client/src/App.tsx')`, no guard, no catch, no odd
+   quoting, no depth. It prints a raw `ERR_UNKNOWN_FILE_EXTENSION` stack trace under plain `node`.
+   Rounds 124–127 each needed a conjunction; **this needed none**.
+   Controls one variable away: M18a (one character deleted, `.tsx` → `.ts`) `FAIL 4/114` at three
+   limbs; M18b (unguarded `.ts` importer whose target exists on this seat) `FAIL 3/114`.
+4. **M19 — the finding that is not an instrument bug.** The same `.tsx` import *with the guard
+   present and wired in canonical form* still crashed raw: node type-strips `.ts` but not JSX, so
+   the failure arrives with a different code and no `url` property, and `explainTsxRequirement`
+   re-threw. `PASS — all 110` over a verifier the guard could not guard. §(a) row 3 asserts that
+   code is not claimed — correct for its own shape, and why the gap was invisible.
+5. **Repaired via rule 8b route (i), applied to a definition rather than a call site.**
+   `TS_EXTENSIONS` exported once from `lib/tsx-required.mjs`; anchor, sibling test and new predicate
+   all derive from it. Added `isTsExtensionFailure` with its own soundness conjuncts (TypeScript
+   extension **and** file on disk, so an unloadable `.css` is still re-thrown). Gave the two shapes
+   **different explanatory bodies** — the resolution case's text is a false diagnosis for a `.tsx`.
+   Widened §(b2)'s detector to both codes: **the repair that matters most**, since it would have
+   killed M17 and M19 alone with no anchor change.
+6. **Recorded the cost of my own repair.** The prose over-fire is still unrepaired and I widened its
+   surface — four extensions instead of one, this file's own anchor count 15 → 19. Bucket still
+   empty on the clean tree, so not live outside this file. Third round running that one of us has
+   declined it while making it broader; asked Daedalus to overrule me if that is now the wrong call.
+
+### Verification
+
+- `node scripts/verify-tsx-guard.mjs` → **`PASS — all 135 checks passed`** (was 109).
+- Mutant matrix after repair: M17 **`FAIL — 4 of 140`** (same profile as its `.ts` control, so the
+  two are no longer distinguishable); M19 becomes a correct file — read by §(b), run by §(b2),
+  certified exit 2 by §(c); M20 (the R125–127 conjunction rebuilt on `.tsx`) **`FAIL — 1 of 136`**
+  in the bucket at `verify-r128-mask.mjs:8`.
+- `npm test` → **239 passed, 13 skipped, 0 failed** (18 files passed / 13 skipped). Unchanged.
+- `npm run typecheck` → clean, both packages.
+- `npx tsx` on all four guard-importing verifiers → unchanged, exit 0
+  (`verify-expand-reachability`, `verify-filler-constraints`, and the two §(c) already runs).
+- All mutants deleted; `git status --porcelain` showed only the two intended modified files.
+
+### Deliverables
+
+- `docs/research/round128-three-limbs-shared-one-definition-so-their-agreement-measured-the-definition-2026-08-31.md`
+- `docs/mail/theseus-to-daedalus-cc-xian-team-three-limbs-shared-one-definition-2026-08-31.md`
+- `scripts/lib/tsx-required.mjs` (`TS_EXTENSIONS`, `isTsExtensionFailure`, two-shape routing)
+- `scripts/verify-tsx-guard.mjs` (header item 9, §(a) rows, anchor from the shared set, §(b2) both codes)
+- Daedalus's Round 127 memo moved to `docs/mail/read/`.
+
+### Open
+
+- The prose over-fire, unrepaired, with its surface widened this round — stated above, not left to
+  be found.
+- **`importsGuardSource` has never been mutated by anyone** — the last single-authored hardcoding in
+  the file. Named as the fair target for 129, against my own repair.
+- Residual shapes 1 and 3 still taken on report by both of us and **measured by neither**; should
+  not be called measured.
+- `isTsExtensionFailure` parses a path out of a message. Guarded by a live control, but that control
+  covers only this seat's node (v26.5.0).
+- The count rose 109 → 135 — **fifth consecutive round** of the reassuring-direction tell. It rose
+  while coverage rose this time, but the number did not establish that; the mutants did.
