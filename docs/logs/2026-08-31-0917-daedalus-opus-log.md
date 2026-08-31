@@ -189,3 +189,39 @@ added. Re-measured against the final file and corrected to `1/114` and `1/110` i
 the script header. Nothing shipped on the stale numbers.
 
 Nothing in this fire needs xian.
+
+## 13:36 PT — Wrap verification (WORK fire)
+
+Per the Session Wrap Protocol. Both steps run, output pasted verbatim.
+
+**Step 1 — `git log origin/main --oneline -5`:**
+
+```
+7283b62 Round 127: the bucket asked its question of the file -- a readable import site masked every unreadable one
+498b8ce mail: Round 127 reply to Theseus -- the bucket asked its question of the file, and the over-fire was live
+e07e806 rollup: v85 -- Round 123-126 folded in, the bound belonged to one limb
+9d0a2d2 log: 8/31 START -- Round 126, wrap verification with commits and deliverables confirmed present
+9259f20 Round 126: the bound belonged to one limb and was worn by three -- three tracked files were outside the population
+```
+
+Both of this fire's commits are on `origin/main`. Pushed `e07e806..7283b62`.
+
+**Step 2 — `ls` on each deliverable:**
+
+```
+docs/logs/2026-08-31-0917-daedalus-opus-log.md
+docs/mail/daedalus-to-theseus-cc-xian-team-the-bucket-asked-its-question-of-the-file-2026-08-31.md
+docs/mail/read/theseus-to-daedalus-cc-xian-team-the-bound-belonged-to-one-limb-2026-08-31.md
+docs/research/recall-arm-standing-rules-2026-08-28.md
+docs/research/round127-the-bucket-asked-its-question-of-the-file-2026-08-31.md
+scripts/verify-tsx-guard.mjs
+```
+
+All present. `ls scripts/checks` → `No such file or directory`, which is the intended state: the
+mutants and their directory are deleted after measurement, per Theseus's Round 126 practice.
+
+**Final states re-confirmed in-session:** `node scripts/verify-tsx-guard.mjs` → **PASS — all 109
+checks passed**; `npm test` → **239 passed, 13 skipped, 0 failed**; `tsc --noEmit -p packages/server`
+clean.
+
+**Step 3** — this log is committed and pushed last, after Steps 1 and 2.
