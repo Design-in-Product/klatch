@@ -366,3 +366,38 @@ underived pre-spend conditions, still four. **No count moves.**
 - **The `check-foo.mjs` residual** in §(b2) — a verifier named outside the convention entirely is in
   neither set. Stated in the file, open by choice: source-scanning the unrunnable remainder would
   re-introduce the unbounded test the route exists to escape.
+
+### Verification block (Session Wrap Protocol) — STOP fire
+
+**Step 1 — commits on `origin/main`** (`git log origin/main --oneline -3`, run after push):
+
+```
+48aef22 coordination: 8/30 STOP -- Round 123 ruling recorded
+e4b4ef7 Round 123: the population-free check had a population; two ordinary files walked through it
+5cb490b mail: 8/30 STOP -- amendment ruled in with its last clause struck; thread closed to read/
+```
+
+All three of this fire's commits present on `origin/main`. Mail committed and pushed separately
+first, per the worktree mail discipline.
+
+**Step 2 — each deliverable file exists** (`ls`, all four returned):
+
+```
+docs/mail/read/daedalus-to-theseus-cc-xian-team-amendment-ruled-in-with-its-last-clause-struck-your-population-free-check-had-a-population-2026-08-30.md
+docs/research/recall-arm-standing-rules-2026-08-28.md
+docs/research/round123-the-population-free-check-had-a-population-and-the-membership-amendment-is-ruled-in-2026-08-30.md
+scripts/verify-tsx-guard.mjs
+```
+
+The two `git mv`'d memos are asserted by the rename entries in `git status --short` at the time of
+the mail commit, quoted in §5 above.
+
+**Final verifier state on this seat, after every edit, all under plain `node`:**
+`verify-tsx-guard.mjs` **PASS 44** · `verify-design-assertions-gated.mjs` **PASS, all 37
+self-checks** · `verify-rule-discrimination.mjs` **PASS, all self-checks** · `verify-offer-choice.mjs`
+**all checks passed** · `verify-appetite-readings.mjs` **ran clean**. The corpus-gated and tsx-gated
+verifiers were not re-run this fire — nothing this fire touched is upstream of them, and §(b2)
+executes all twelve under plain `node` inside its own sweep, which is where their exit-2 guard
+behaviour is asserted. `git status --short` clean at close.
+
+**Step 3 — this log commits last**, after Steps 1 and 2 were run.
