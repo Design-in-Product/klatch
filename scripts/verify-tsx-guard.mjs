@@ -178,6 +178,70 @@
  *      asserted: the 40-character window reaches backwards *across a line break*, which is how it
  *      caught the unrelated third row of this file's own `THREE_CLASSES` fixture on the first run.
  *
+ *   9. **Three limbs shared one definition, so their agreement measured the definition.** Round 128
+ *      pointed a mutant at `anchorsOf`, the outermost membership test, as invited. It found
+ *      something one level out from the instrument: `.ts` was hardcoded *three separate times*, in
+ *      the three limbs that are supposed to be independent measurements — the anchor regex here
+ *      (`\.ts['"`]`), §(b2)'s crash detector (`ERR_MODULE_NOT_FOUND` alone), and the guard's own
+ *      `isTsResolutionFailure` (`.js` → `.ts` sibling). Each was written from the same single
+ *      example, `packages/server/src/db/queries.ts`, and each encoded "TypeScript" as "a `.ts` file
+ *      that fails to resolve". `packages/client` is **38 `.tsx` files** and was outside all three.
+ *
+ *      **M17** — a verifier importing `'../packages/client/src/App.tsx'`, no guard, no catch, at the
+ *      top level of `scripts/` where both populations reach — is the crudest possible instance of
+ *      the defect §(a)-§(c) exist to catch. It printed a raw `ERR_UNKNOWN_FILE_EXTENSION` stack
+ *      trace under plain `node` at **`PASS — all 110`**, count 109 → 110. Note what is *absent*: no
+ *      swallowing catch, no unreadable quoting, no depth. Rounds 124-127 each needed a conjunction
+ *      to survive. **This is a single defect**, and it survived every limb.
+ *
+ *      Controls, one variable away. **M18a** is M17 with one character deleted — `.tsx` → `.ts`,
+ *      same file, same absent guard: **`FAIL — 4 of 114`**, three limbs firing. **M18b**, an
+ *      unguarded `.ts` importer against a target that exists on this seat, so the control cannot be
+ *      dismissed as a missing file: **`FAIL — 3 of 114`**. The extension was the only variable.
+ *
+ *      **M19 is the one that matters most**, because it is not an instrument bug. The `.tsx`
+ *      importer *with the guard present and wired in canonical form* — the shape §(b) reads as
+ *      correct and §(c) would certify — still crashed raw, because `node` type-strips `.ts` but does
+ *      not strip JSX, so the failure arrives as `ERR_UNKNOWN_FILE_EXTENSION` and
+ *      `explainTsxRequirement` re-threw it. `PASS — all 110` over a verifier the guard could not
+ *      guard. §(a) row 3 asserts that code is *not* claimed — correct for its own shape, and the
+ *      reason the gap was invisible: the limb that would have noticed was the limb asserting it.
+ *
+ *      The structural finding, which is Round 125's one level further out. Round 125 established
+ *      that agreement cannot see absence — two limbs agree *vacuously* about a file neither sees.
+ *      Here all three limbs **saw** the file and agreed anyway, because what they shared was not a
+ *      population but a **definition**. Round 124 added the cross-limb agreement check on the
+ *      premise that §(b) and §(c) are two independent measurements of one property; independence is
+ *      only protective if the limbs can disagree, and limbs that share a hardcoded concept cannot.
+ *      **Agreement between limbs that share an assumption measures the assumption, not the file.**
+ *
+ *      So the repair is rule 8b route (i) applied to a *definition* rather than to a call site:
+ *      `TS_EXTENSIONS` is exported from `lib/tsx-required.mjs` and the anchor, the guard's sibling
+ *      test and the extension predicate all derive from it. `isTsExtensionFailure` covers the second
+ *      wrong-runner shape with its own soundness conjuncts (the extension is TypeScript's *and* the
+ *      file is on disk, so an unloadable `.css` is still re-thrown), and `explainTsxRequirement`
+ *      gives it a *different* body — the resolution case's "its own `.js` specifiers, building will
+ *      not help" is a precise diagnosis there and a false one here, and item 1 is about exactly that.
+ *      §(b2)'s detector takes both codes, which is the repair that matters most: §(b2) is the limb
+ *      that does not read source, so it should have caught this whatever the anchor could parse.
+ *
+ *      Measured after: M17 **`FAIL — 4 of 140`**, the same profile as its `.ts` control, so the two
+ *      are no longer distinguishable to this file. M19 becomes a *correct* file, read by §(b), run
+ *      by §(b2), certified exit-2 by §(c). M20 — the Round 125-127 conjunction rebuilt on `.tsx`,
+ *      unreadable site behind a swallowing catch — lands in the bucket at `verify-r128-mask.mjs:8`;
+ *      before this round it was not an anchor at all, so there was nothing to declare.
+ *
+ *      **The count went 109 → 135, and that is the fifth consecutive round it has risen.** It rose
+ *      here while coverage rose, which is the opposite of items 5-8 — but the count did not
+ *      establish that and cannot. The mutants did. The tell is worth exactly as much as before.
+ *
+ *      Residual, stated rather than found later: the prose over-fire of item 7 is **still
+ *      unrepaired**, reason unchanged, and this round widened its surface — the anchor now matches
+ *      four extensions instead of one, and this file's own anchor count went 15 → 19. Measured on
+ *      the clean tree, the bucket is still empty, so it is not live outside this file. Two of the
+ *      three limbs' definitions are now shared; the third, `importsGuardSource`, still spells its
+ *      own path convention (`(?:\.\.?\/)+lib\/tsx-required\.mjs`) and no round has mutated it.
+ *
  * §(c) is the end-to-end assertion: both directions of both runners, run rather than argued.
  *
  * ── Costs nothing ──────────────────────────────────────────────────────────
@@ -194,7 +258,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { spawnSync } from 'node:child_process';
 import { fileURLToPath, pathToFileURL } from 'node:url';
-import { isTsResolutionFailure } from './lib/tsx-required.mjs';
+import { isTsResolutionFailure, isTsExtensionFailure, TS_EXTENSIONS } from './lib/tsx-required.mjs';
 
 const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const SCRIPTS = path.join(REPO, 'scripts');
@@ -214,6 +278,21 @@ if (!fs.existsSync(REAL_TS)) {
 }
 const err = (url, code = 'ERR_MODULE_NOT_FOUND') => Object.assign(new Error('x'), { code, url });
 const asJs = (p) => pathToFileURL(p.replace(/\.ts$/, '.js')).href;
+
+// Round 128. The second wrong-runner shape needs a second fixture, and the same treatment: built
+// from a path that EXISTS as `.tsx` on this seat, so it cannot go vacuous if the tree is
+// reorganised. `packages/client` is 38 `.tsx` files and no other instrument in this repo had ever
+// pointed at one.
+const REAL_TSX = path.join(REPO, 'packages/client/src/App.tsx');
+if (!fs.existsSync(REAL_TSX)) {
+  console.error(`INCOMPLETE — ${path.relative(REPO, REAL_TSX)} is not on this seat; §(a) has no .tsx fixture.`);
+  process.exit(2);
+}
+// Node attaches no structured path to this one — own properties are exactly `stack`, `message`,
+// `code` — so the message is the only carrier and the predicate has to parse it. §(b2) asserts
+// this reconstruction against an error the *running* node actually threw.
+const extErr = (file, ext = path.extname(file), code = 'ERR_UNKNOWN_FILE_EXTENSION') =>
+  Object.assign(new Error(`Unknown file extension "${ext}" for ${file}`), { code });
 
 // ---------------------------------------------------------------------------------------------
 // §(a) The predicate fires on the wrong-runner shape and on nothing else
@@ -249,6 +328,52 @@ ok('PRECONDITION — at least one case is true and at least one is false',
   undefined,
   isTsResolutionFailure(err(asJs(REAL_TS))) === true
     && isTsResolutionFailure(err(asJs(REAL_TS), 'EOTHER')) === false);
+
+// Round 128, Theseus. The guard covered one of the two ways its own subject occurs. `node`
+// type-strips `.ts`, so a `.ts` import survives to fail on the `.js` specifiers inside it —
+// `ERR_MODULE_NOT_FOUND`, the shape above. It does not strip JSX, so a `.tsx` import dies earlier
+// at format detection with `ERR_UNKNOWN_FILE_EXTENSION`, which the predicate above rejects (row 3,
+// "a different error code is not claimed" — correctly, for its own shape). Measured: M19, a `.tsx`
+// importer with the guard present and wired in canonical form, crashed with a raw stack trace,
+// because `explainTsxRequirement` re-threw. The same treatment, on the second shape.
+
+ok('the .tsx shape is recognised: a TypeScript extension node cannot load',
+  path.relative(REPO, REAL_TSX),
+  isTsExtensionFailure(extErr(REAL_TSX)) === true);
+
+// The soundness conjunct, and it is the important one. An unloadable `.css`, `.vue` or `.wasm`
+// import raises the identical code, and telling that author to re-run under `tsx` would be a
+// confident wrong diagnosis — header item 1, in the helper written to remove one.
+ok('a non-TypeScript unloadable extension is NOT claimed as a runner problem', undefined,
+  isTsExtensionFailure(extErr(path.join(REPO, 'packages/client/src/index.css'))) === false);
+
+// Distinguishes "the loader is wrong" from "the file is not there". The guard's whole message is
+// that nothing is missing, so it must not say that about a path it has not confirmed exists.
+ok('a TypeScript extension that is not on disk is not claimed', undefined,
+  isTsExtensionFailure(extErr(path.join(REPO, 'packages/client/src/NoSuchComponent.tsx'))) === false);
+
+ok('a different error code is not claimed (.tsx shape)', undefined,
+  isTsExtensionFailure(extErr(REAL_TSX, '.tsx', 'ERR_MODULE_NOT_FOUND')) === false);
+
+// Fails closed: the path is parsed out of prose, so a message this predicate cannot read must
+// re-throw the original error rather than guess. §(b2) checks the live message still parses.
+ok('an unparseable message is not claimed', undefined,
+  isTsExtensionFailure(Object.assign(new Error('something else entirely'),
+    { code: 'ERR_UNKNOWN_FILE_EXTENSION' })) === false);
+
+ok('a null/undefined error is not claimed (.tsx shape)', undefined,
+  isTsExtensionFailure(undefined) === false && isTsExtensionFailure(null) === false);
+
+ok('PRECONDITION — the .tsx predicate has at least one true case and one false case', undefined,
+  isTsExtensionFailure(extErr(REAL_TSX)) === true
+    && isTsExtensionFailure(extErr(REAL_TSX, '.tsx', 'EOTHER')) === false);
+
+// The two predicates partition rather than overlap: each must reject the other's shape, or
+// `explainTsxRequirement` could print the resolution body for an extension failure — the wrong
+// cause, stated confidently, which is the defect this file exists to prevent.
+ok('PRECONDITION — the two wrong-runner predicates do not both claim either shape', undefined,
+  isTsResolutionFailure(extErr(REAL_TSX)) === false
+    && isTsExtensionFailure(err(asJs(REAL_TS))) === false);
 
 // ---------------------------------------------------------------------------------------------
 // §(b) Every verifier that dynamically imports TypeScript is wrapped — enumerated, not listed
@@ -380,7 +505,20 @@ ok('PRECONDITION — the run population is a strict subset of the read populatio
 // unreadable site in the same file. So the anchor — a quoted `packages/**.ts` specifier literal —
 // is enumerated, each occurrence is classified, and the file-level verdicts are *derived* from the
 // site-level ones rather than computed separately. One definition, two granularities.
-const ANCHOR_SOURCE = "['\"`](?:\\.\\./)+packages/[^'\"`\\n]*\\.ts['\"`]";
+// Round 128, Theseus. The anchor is the outermost membership test — both readings and the bucket
+// derive from it — and its extension was written `\.ts`, from the one example this thread has used
+// since Round 121. `.tsx` is not an anchor at all, so a `.tsx` importer is not narrow, not broad,
+// and *not in the bucket either*: Round 125's split separated two meanings inside the anchor set,
+// and everything outside that set still carries the single silent meaning the split was built to
+// remove. The bucket inherited the anchor's blind spot, which is item 8's finding one level out.
+//
+// The extension set comes from `lib/tsx-required.mjs` rather than being spelled here, because this
+// is the third place the same concept was hardcoded and the drift between the three is the whole
+// of item 9. Sorted longest-first there, so the alternation cannot match the `ts` of `.tsx` and
+// then fail on the trailing `x` — asserted below on every member, which is what catches a re-sort.
+const ANCHOR_SOURCE = "['\"`](?:\\.\\./)+packages/[^'\"`\\n]*"
+  + `(?:${TS_EXTENSIONS.map((e) => e.replace('.', '\\.')).join('|')})`
+  + "['\"`]";
 
 const anchorsOf = (src) => [...src.matchAll(new RegExp(ANCHOR_SOURCE, 'g'))].map((m) => {
   const pre = src.slice(0, m.index);
@@ -444,7 +582,19 @@ for (const [label, src, wantNarrow, wantBroad] of [
   ['newline before the specifier', "await import(\n  '../packages/x.ts'\n)", true, true],
   ['space before the paren (R125)', "await import ('../../packages/x.ts')", false, true],
   ['comment inside the parens (R125)', "await import(/* the db */ '../packages/x.ts')", false, true],
+  // Round 128. One row per TypeScript extension, because the anchor missing one is invisible in
+  // exactly the way item 9 measured: not a false negative in the bucket, but no bucket entry at all.
+  ['a .tsx specifier (R128)', "await import('../packages/client/src/App.tsx')", true, true],
+  ['a .mts specifier (R128)', "await import('../packages/x.mts')", true, true],
+  ['a .cts specifier (R128)', "await import('../packages/x.cts')", true, true],
+  // The `.tsx` case in the shape that would have survived: unreadable site, so the bucket must
+  // still declare it. Before this round it was not an anchor and there was nothing to declare.
+  ['a .tsx specifier the narrow reading cannot parse (R128)',
+    "await import ('../packages/client/src/App.tsx')", false, true],
   ['a .js specifier is not a TypeScript import', "await import('../packages/x.js')", false, false],
+  // The extension must be terminal. `.tsx.bak` is not TypeScript and a suffix-blind alternation
+  // would claim it — over-fire, header item 1, in the predicate this round widened.
+  ['a .ts inside a longer extension (R128)', "await import('../packages/x.ts.bak')", false, false],
   ['a non-packages import', "await import('./lib/tsx-required.mjs')", false, false],
   ['a mention outside an import position', '// see ../packages/server/src/db/queries.ts', false, false],
   ['a static import', "import fs from 'node:fs'", false, false],
@@ -467,6 +617,19 @@ ok('PRECONDITION — the broad reading discriminates (at least one true case and
   undefined,
   mentionsTsSpecifier("await import ('../../packages/x.ts')") === true
     && mentionsTsSpecifier("import fs from 'node:fs'") === false);
+
+// Round 128. Every member of the shared extension set must actually reach the anchor. This is the
+// check that catches a re-sort of `TS_EXTENSIONS`: with `.ts` first, the alternation matches the
+// `ts` of `.tsx` and then requires the closing quote, which the `x` is not — so `.tsx` silently
+// stops being an anchor and the escape this round measured reopens, with no other symptom. Written
+// as a loop over the exported set rather than as three literals, so an extension added there
+// without a row here cannot pass unasserted.
+ok('PRECONDITION — every TypeScript extension in the shared set reaches the anchor',
+  TS_EXTENSIONS.filter((e) => anchorsOf(`await import('../packages/x${e}')`).length !== 1),
+  TS_EXTENSIONS.every((e) => {
+    const a = anchorsOf(`await import('../packages/x${e}')`);
+    return a.length === 1 && a[0].narrow && a[0].text.endsWith(`${e}'`);
+  }));
 
 // Round 127. The site enumerator gets §(a)'s treatment in its own right: the three classes must all
 // be reachable, or a degenerate `anchorsOf` makes every derived verdict above meaningless while the
@@ -644,7 +807,16 @@ console.log('\n=== (b2) Population-free: no verifier crashes raw under plain nod
 // at least one raw stack frame. Both limbs are required, and the second one is the interesting
 // one — see the synthesised negative control below for why it is here and why no live output
 // currently exercises it.
-const rawResolutionCrash = (out) => /ERR_MODULE_NOT_FOUND/.test(out) && /\n {4}at /.test(out);
+//
+// Round 128, Theseus. This was the third hardcoding of "TypeScript means `.ts`", and the one that
+// mattered most, because §(b2) is the limb that does *not* depend on reading source: it was supposed
+// to catch whatever the anchor missed. It could not — a `.tsx` importer crashes with
+// `ERR_UNKNOWN_FILE_EXTENSION`, and this predicate demanded `ERR_MODULE_NOT_FOUND`. So M17 (no
+// guard, no catch — the crudest possible instance of the defect §(a)-§(c) exist to catch) printed a
+// raw stack trace under plain `node` while this file reported `PASS — all 110 checks passed`. Both
+// codes now, from one binding, with the two-limb structure intact: a code plus a raw frame.
+const WRONG_RUNNER_CODES = ['ERR_MODULE_NOT_FOUND', 'ERR_UNKNOWN_FILE_EXTENSION'];
+const rawResolutionCrash = (out) => WRONG_RUNNER_CODES.some((c) => out.includes(c)) && /\n {4}at /.test(out);
 
 // Positive control, run rather than assumed: if this predicate ever stops recognising the crash
 // shape — a node release reformats the trace, say — every check below passes vacuously, which is
@@ -671,6 +843,28 @@ const HANDLED_BUT_NAMES_THE_CODE = [
 ].join('\n');
 ok('PRECONDITION — …and not on a handled failure that merely names the code (synthesised)',
   undefined, !rawResolutionCrash(HANDLED_BUT_NAMES_THE_CODE));
+
+// Round 128. The same positive control for the second shape, and it is load-bearing twice over.
+// Run live, against a real `.tsx` on this seat: if node ever starts stripping JSX, this crash stops
+// happening and the check below goes vacuous — which is the silence §(b2) exists to remove, so it
+// must be asserted rather than assumed.
+const extControl = run('node', ['--input-type=module', '-e',
+  `await import(${JSON.stringify(pathToFileURL(REAL_TSX).href)})`]);
+ok('PRECONDITION — the crash detector recognises an unloadable-extension failure',
+  { rc: extControl.rc }, rawResolutionCrash(extControl.out));
+
+// …and that `isTsExtensionFailure` can still read what node actually threw. The predicate parses a
+// path out of prose because node attaches no structured field for it, so a release that reformats
+// the message would disarm the guard silently — a verifier would go back to crashing raw with the
+// guard present and every limb of this file green, which is precisely M19. Reconstructed from the
+// running node's own message rather than from a string frozen at the time of writing.
+const extLine = extControl.out.split('\n').find((l) => l.includes('ERR_UNKNOWN_FILE_EXTENSION') && l.includes('for '));
+ok('PRECONDITION — the live node message still parses into the .tsx predicate',
+  { line: extLine === undefined ? null : extLine.trim().slice(0, 60) },
+  extLine !== undefined
+    && isTsExtensionFailure(Object.assign(
+      new Error(extLine.slice(extLine.indexOf('Unknown file extension'))),
+      { code: 'ERR_UNKNOWN_FILE_EXTENSION' })) === true);
 
 for (const f of swept) {
   const r = run('node', [`scripts/${f}`]);
