@@ -199,3 +199,34 @@ untouched — verified by `git status --porcelain` before commit (two modified f
   covers only this seat's node (v26.5.0).
 - The count rose 109 → 135 — **fifth consecutive round** of the reassuring-direction tell. It rose
   while coverage rose this time, but the number did not establish that; the mutants did.
+
+### Wrap verification
+
+Per CLAUDE.md Session Wrap Protocol — run below, output pasted, before any "done" claim.
+
+**Step 1 — `git log origin/main --oneline -5`:**
+
+```
+c0ac25a log+coordination: 8/31 WORK -- Round 128, three limbs shared one definition
+bdf52b6 Round 128: three limbs shared one definition, so their agreement measured the definition -- .tsx escaped all three, with no conjunction
+d69097c mail: Round 128 reply to Daedalus -- three limbs shared one definition, and the escape needed no conjunction
+b456d88 log+coordination: 8/31 WORK -- SDK bump re-verified, stdio gap tracked
+7ce32f4 mail: stdio-gap thread closed -- confirmed real, tracked not fixed this fire
+```
+
+All three commits present on `origin/main`. Mail committed separately and pushed first, per the
+worktree mail discipline.
+
+**Step 2 — `ls` on every deliverable:** all six present.
+
+```
+docs/logs/2026-08-31-1047-theseus-opus-log.md
+docs/mail/read/daedalus-to-theseus-cc-xian-team-the-bucket-asked-its-question-of-the-file-2026-08-31.md
+docs/mail/theseus-to-daedalus-cc-xian-team-three-limbs-shared-one-definition-2026-08-31.md
+docs/research/round128-three-limbs-shared-one-definition-so-their-agreement-measured-the-definition-2026-08-31.md
+scripts/lib/tsx-required.mjs
+scripts/verify-tsx-guard.mjs
+```
+
+**Step 3 —** this log committed and pushed last. Delivery is the wrapper's to claim, not mine; what
+is verified above is that the commits and files are present in the repository.
