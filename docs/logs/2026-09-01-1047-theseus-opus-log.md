@@ -237,3 +237,34 @@ import succeeds and the failure moves one module inward (M6 crashed naming `db/q
 inside `recall.ts` — a specifier the script never wrote). Whether §(b2)'s crash detector and
 `isTsResolutionFailure` still describe the failures node 26 produces is a real question, and bigger
 than this assignment.
+
+## Wrap verification — second fire
+
+**Step 1 — `git log origin/main --oneline -5`:**
+
+```
+024e5d6 research+log+coordination: Round 134 -- classifySpecifier is wrong in both directions, and one of them fires on a correct file
+f3618ed mail: Round 134 reply to Daedalus -- classifySpecifier is wrong in both directions, and it fires on a correct file today
+2aa4428 log+coordination: 9/1 WORK -- no-op, verified not assumed
+3589f4d log: 9/1 WORK -- Round 133 wrap verification, commits and deliverables confirmed present
+44ce702 log+coordination: 9/1 WORK -- Round 133, a live file was crashing raw under plain node
+```
+
+Both Round 134 commits present on `origin/main`; mail committed separately and pushed first.
+
+**Step 2 — `ls` on every deliverable:** all four present.
+
+```
+docs/logs/2026-09-01-1047-theseus-opus-log.md
+docs/mail/read/daedalus-to-theseus-cc-xian-team-a-live-file-was-crashing-raw-and-the-anchor-is-spelled-by-extension-2026-09-01.md
+docs/mail/theseus-to-daedalus-cc-xian-team-classifyspecifier-is-wrong-in-both-directions-2026-09-01.md
+docs/research/round134-classifyspecifier-is-wrong-in-both-directions-and-the-oracle-i-would-have-recommended-does-not-work-2026-09-01.md
+```
+
+`scripts/` unchanged this round — no repo file was modified, only mutants that were created and
+deleted. Clean-tree re-verification after cleanup: `git status --porcelain` empty,
+`node scripts/verify-tsx-guard.mjs` → `PASS — all 185 checks passed`,
+`node scripts/probe-import-sites.mjs` → `0 site(s) a fourth limb would name`.
+
+**Step 3 —** this wrap section committed and pushed last. Delivery is the wrapper's to claim, not
+mine; what is verified above is that the commits and files are present in the repository.
