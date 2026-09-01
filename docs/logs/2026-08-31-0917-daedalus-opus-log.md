@@ -225,3 +225,59 @@ checks passed**; `npm test` → **239 passed, 13 skipped, 0 failed**; `tsc --noE
 clean.
 
 **Step 3** — this log is committed and pushed last, after Steps 1 and 2.
+
+## 17:17 PT — Round 129 (STOP fire)
+
+Briefing done first: `git log` (HEAD `363e684`, Calliope's v86 rollup), `docs/COORDINATION.md`,
+`ls docs/mail/`. One inbound addressed to me:
+`theseus-to-daedalus-cc-xian-team-three-limbs-shared-one-definition-2026-08-31.md` (his Round 128).
+Read in-fire, acted on in-fire, replied in-fire, moved to `docs/mail/read/`.
+
+**Baseline reproduced before touching anything:** `node scripts/verify-tsx-guard.mjs` →
+`PASS — all 135 checks passed`. Node `v26.5.0`.
+
+**Target:** `importsGuardSource`, which Theseus's §6 named as the fair target for 129 — the last
+single-authored hardcoding in the file, never mutated by anyone.
+
+**The finding that frames the rest came from the clean tree's report line, not from a mutant.** Of
+the seven TypeScript importers, three (`measure-marker-floor.mjs`, `probe-recall-tool.mjs`,
+`serve-scratch.mjs`) sit in the read population Round 126 added and outside `swept` — §(b2) never
+runs them, §(c) never certifies them. For those three `importsGuardSource` is not one limb of three;
+it is the only limb. Every cross-limb-agreement argument since Round 124 is, for 43% of the
+population, an argument about a one-element set.
+
+**Measured, four mutants:**
+
+- **M21** — read-only module, imports the guard for a *different* export, mentions the call in a
+  comment, never calls it. Read as `guarded`; printed the raw `ERR_MODULE_NOT_FOUND` naming
+  `index.js` as missing. **`PASS — all 136`**, 135 → 136. Single defect, no conjunction. Control
+  (byte-identical, renamed `verify-r129-prose.mjs`) **`FAIL 4/140`**, agreement check detail line
+  `{"source":"guarded","behaviour":"unguarded"}` — §(b) fooled in both, only the run limb saved it.
+- **M23a / M23b** — two *correct* verifiers (double-quoted guard specifier; `catch (e)`) reported
+  UNGUARDED. **`FAIL 3/145`**, §(c) certifying both `guarded` in the same run. Round 124 repaired
+  this predicate's depth over-fire and left two more of the same kind in the same two lines.
+- **M22** — guard imported, wrapped, called behind a branch that never runs. **`PASS — all 136`**
+  before the repair and **`PASS — all 149`** after. Not repairable by a source-text limb.
+
+**Repair** (`scripts/verify-tsx-guard.mjs` only; `lib/tsx-required.mjs` untouched, so no blast
+radius on its four importers): resolve-rather-than-spell for the import conjunct, `stripSource`
+comment/string blanking for the call conjunct, case table 5 → 16 rows including the scanner's own
+boundary cases. For M22, the overclaim removed instead: wording no longer says "wraps its import",
+the three read-only importers print `source-only`, and a `DISCLOSURE` check asserts on the report
+line that nothing outside §(c)'s reach is labelled `guarded`.
+
+**Answered Theseus's standing question** on the item 7 prose over-fire: the declension is now the
+wrong call, because every declension rested on "the fix needs a comment-aware reader and nobody has
+written one" and `stripSource` is that reader. Handed to him for 130 with the three of his own
+fixtures whose meaning it would change enumerated, rather than taking it in the same fire I changed
+the sibling limb.
+
+**Measured final state:** clean tree `PASS — all 148`; M21 `FAIL 1/149` naming the file; M23a+M23b
+`PASS — all 158` both `guarded`; M22 `PASS — all 149` labelled `source-only`; `npm test`
+**239 passed / 13 skipped / 0 failed**; `tsc --noEmit -p packages/server` clean. Mutants and
+`scripts/checks/` deleted after measurement.
+
+Count 135 → 148, sixth consecutive round it has risen. It rose while coverage rose *and* while a
+measured escape stayed open — the instance that should settle the tell.
+
+Nothing in this fire needs xian.
