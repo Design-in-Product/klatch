@@ -348,6 +348,58 @@
  *      coverage. This round is the cleanest instance yet — it rose while a five-round-old over-fire
  *      was closed, *and* while the round discovered the instrument had been miscounting its own
  *      source the entire time. Agreed, and taken as settled: the denominator is not evidence.
+ *      **The stated price was already being charged — see item 12.**
+ *
+ *  12. **The residual named in item 11 was not a risk, it was three files and this one.** Round 131
+ *      (Daedalus) took the price paragraph above at its word and measured it: `stripSource` tracked
+ *      quotes but not regex literals, so an unbalanced quote inside a regex (`/\bhere(?:'s)\b/i`,
+ *      `"([^"]*)"`) desynchronised the scan for the rest of the file. Not hypothetical —
+ *      `verify-recogniser-equivalence.mjs` read 221 of 322 lines as string interior, from line 80.
+ *      His M27, a read-only module with a genuine unguarded import under a `p.replace(/\//g, '-')`,
+ *      sat at `PASS — all 168` while doing exactly what §(b) exists to catch.
+ *
+ *      Round 132 repairs it: a conservative regex-literal heuristic in the scanner, prev-token test
+ *      plus a scan-ahead bounded to the line, with the stepped-over span blanked in both readings.
+ *      Written up in `docs/research/round132-*`. Four measurements.
+ *
+ *      **The three files were four, and the fourth was this one.** Measured character-exact, by
+ *      running both scanners over the same text: at `818f391` this file was itself misread from
+ *      line 993 — its own `SPECIFIERS` regex, `/\bfrom\s*(['"])([^'"\n]*)\1/g` — for 14 lines,
+ *      including the whole body of `importsGuardSource`. Round 131 §2 stated the opposite, on a
+ *      coarser tell. So the SELF control added in item 11 was reading a desynchronised scan of the
+ *      region it was asserting over. The verdict it reported was right; the reason was not, and
+ *      "right for the wrong reason" is the state item 11 found the header itself in.
+ *
+ *      **The repair moves no verdict on the live tree, and that is the point.** Anchor tallies are
+ *      identical before and after on all 38 modules under `scripts/` — 0 moved — and no character
+ *      anywhere in the population is *newly* read as string interior. What changed is what the
+ *      scanner can see at all: 27, 47, 168 and 14 lines of real code returned to the code reading in
+ *      the four files. A repair that fixes nothing visible today and everything invisible tomorrow
+ *      is the honest shape of this defect, and the mutants are the only way to show it.
+ *
+ *      **M28** — a read-only module, unguarded import under a `/"([^"]*)"/g`: `PASS — all 168` at
+ *      `818f391`, never named; `FAIL — 1 of 186` here, report line `UNGUARDED`. **M29** is pointed
+ *      at the heuristic rather than at what it replaced, per Round 131 §4: an unguarded site sharing
+ *      its line with `o.in / n`, so a scanner that misfires on that division steps over the
+ *      specifier's opening quote and loses the site. It dies at `818f391` (`FAIL 1/169`) and here
+ *      (`FAIL 1/186`) — it is not a regression mutant — and it goes **silent at §(b)** the moment
+ *      the dotted-keyword guard is removed. What catches it then is the round's third control.
+ *
+ *      **Round 131 §4's declined signal is shippable, because the repair is what made it green.**
+ *      Daedalus found that per-quote odd parity in the strings-blanked reading flags exactly the
+ *      desynchronised files, and declined to ship it: it went red on three correct files, and a red
+ *      a correct file cannot clear is item 1. Those are the three files repaired above. Measured: 3
+ *      of 37 modules red under the old scanner, **0 of 37** under this one. It is shipped as a
+ *      precondition, and on M29-with-the-guard-removed it is what turns a silent miss back into a
+ *      named red. Necessary and not sufficient — an even-parity misread still escapes it.
+ *
+ *      **Residual, stated and now also tabled.** A regex literal that does not close on its own line
+ *      is not recognised and the `/` falls through to division; valid JS cannot write one, so the
+ *      row asserts the fall-through is safe rather than that the shape is absent. And the heuristic
+ *      is a heuristic: its misfire direction is bounded to one line in *extent* but not in
+ *      *consequence*, since stepping over an odd number of quote characters flips the scan's string
+ *      state from there on. That is the case the parity precondition exists to catch, and M29 is the
+ *      measurement that it does.
  *
  * §(c) is the end-to-end assertion: both directions of both runners, run rather than argued.
  *
@@ -631,28 +683,92 @@ ok('PRECONDITION — the run population is a strict subset of the read populatio
 // the outermost membership test, so every reading in this file inherits whatever it gets wrong.
 // One scanner, three readings, so no two of them can disagree about where a comment ends.
 //
-// Residual, stated: this tracks `'`, `"` and `` ` `` but not regex literals, so an *unbalanced*
-// quote inside one (`/it's/`) desynchronises the scan for the rest of the file. For the call
-// conjunct the failure is toward reading code as string — UNGUARDED, a loud red. **At the anchor
-// the direction inverts**: a desynchronised scan can make a real import site look string-interior,
-// and the site then leaves the population silently — the failure mode Round 124 named and every
-// round since has tried to abolish. That is the price of this repair and it is not hypothetical;
-// the two live controls that bound it are the offset-preservation precondition and the SELF check
-// below, both measured on the real tree rather than on fixtures.
+// Round 130 stated this residual and Round 131 measured it: this tracked `'`, `"` and `` ` `` but
+// not regex literals, so an unbalanced quote inside one (`/it's/`, `"([^"]*)"`) desynchronised the
+// scan for the rest of the file. On the clean tree that was **three of the 37 modules in
+// `readable`** — not hypothetical, and not caught by either live control, because both readings
+// stay length-preserving while wrong. Item 12. Repaired below; the two failure directions it had
+// are kept in the prose because they are what the repair is measured against.
+//
+// A `/` is regex-open or division depending on the token before it, and this file has no parser, so
+// the decision is a heuristic and the honest question is what its two error directions cost.
+//
+//   * **Declining to fire** on a real regex leaves the scan exactly as it was before this round —
+//     an unrepaired instance of the old defect, never a new one.
+//   * **Misfiring** on a division steps over a span of real code. The span is bounded to one line
+//     (a regex literal cannot contain a newline, so an unterminated scan-ahead returns −1 and the
+//     `/` falls through to division) — but **the consequence is not bounded to that line.** If the
+//     stepped-over span holds an *odd* number of quote characters, the scan's string state is
+//     flipped from that point on, which is the same unbounded desync this repair exists to remove.
+//     Round 130 stated the price of a repair in a sentence and Round 131 found it was already being
+//     charged; that is not a mistake to make twice, so the residual is written at full strength and
+//     then measured rather than argued.
+//
+// Two things bound it in practice. The prev-token test admits only characters that cannot *end* an
+// expression, so `a / b`, `f(x) / 2`, `xs[i] / 2`, `'s' / 2` and `2 / 3` are all division by
+// construction — a misfire needs punctuation-or-keyword immediately before a division, which valid
+// JS does not contain. That is an argument, not a measurement, and the argument is exactly the kind
+// this file has been wrong about before. So the measurement: the parity precondition below asserts
+// on every module read that the scan ends with no string span open, which is precisely the
+// odd-parity case above. Daedalus proposed that signal in Round 131 §4 and declined to ship it
+// because it went red on the clean tree — it went red on the three files this repair fixes. It is
+// green now, and it costs nothing, so the repair is what made it shippable.
+//
+// A stepped-over span is **blanked in both readings**, not emitted verbatim, for two reasons that
+// point the same way. It makes the parity precondition exact — every quote surviving the
+// strings-blanked reading is then a real delimiter, with none leaking out of a regex body like the
+// apostrophe in `/\bhere(?:'s)\b/i`, which is live in `verify-filler-constraints.mjs` today. And a
+// regex body is not code: an anchor inside one is not an import site and a `explainTsxRequirement(…)`
+// inside one is not a call, so blanking is what both consumers already wanted.
+const REGEX_MAY_OPEN_AFTER = /[(,=:[!&|?{};+\-*%<>~^]/;
+const REGEX_MAY_OPEN_AFTER_WORD = new Set([
+  'return', 'typeof', 'instanceof', 'in', 'of', 'case', 'new', 'delete', 'void', 'throw',
+  'do', 'else', 'yield', 'await',
+]);
+
+// The index just past a regex literal opening at `i`, or −1 if no such literal closes on this line.
+// `[` opens a character class, in which `/` is an ordinary character — `/[/]/` is one literal, not
+// two. Kept separate from the scanner so the case table below can point at it directly.
+const regexLiteralEnd = (src, i) => {
+  let j = i + 1;
+  let inClass = false;
+  while (j < src.length) {
+    const c = src[j];
+    if (c === '\n') return -1;
+    if (c === '\\') { if (src[j + 1] === '\n' || j + 1 >= src.length) return -1; j += 2; continue; }
+    if (inClass) { if (c === ']') inClass = false; j += 1; continue; }
+    if (c === '[') { inClass = true; j += 1; continue; }
+    if (c === '/') return j === i + 1 ? -1 : j + 1;
+    j += 1;
+  }
+  return -1;
+};
+
 const stripSource = (src, blankStrings) => {
   let out = '';
   let i = 0;
   let quote = null;
+  // The last significant character of *code* — comment bodies and string bodies do not update it,
+  // so `a /* c */ / b` is division and `('x') / 2` is division. Null at start of file, where a `/`
+  // cannot be division.
+  let prev = null;
+  // The identifier immediately before `prev`, and whether it was reached through a `.` — so the
+  // keyword list reads `return /x/` as a regex and `obj.in / 2` as division.
+  let word = '';
+  let wordDotted = false;
   while (i < src.length) {
     const c = src[i];
     if (quote) {
       if (c === '\\') { out += '  '; i += 2; continue; }
-      if (c === quote) { quote = null; out += c; i += 1; continue; }
+      if (c === quote) { quote = null; out += c; prev = c; word = ''; i += 1; continue; }
       out += c === '\n' ? '\n' : (blankStrings ? ' ' : c);
       i += 1;
       continue;
     }
-    if (c === "'" || c === '"' || c === '`') { quote = c; out += c; i += 1; continue; }
+    if (c === "'" || c === '"' || c === '`') { quote = c; out += c; prev = c; word = ''; i += 1; continue; }
+    // Comments first, and not by accident: `//` is a comment and never an empty regex, and a regex
+    // may not open with the quantifier `*`, so `/*` is never one either. Testing the regex branch
+    // first would read every line comment in this file as an unterminated literal.
     if (c === '/' && src[i + 1] === '/') {
       while (i < src.length && src[i] !== '\n') { out += ' '; i += 1; }
       continue;
@@ -663,11 +779,82 @@ const stripSource = (src, blankStrings) => {
       for (; i < stop; i += 1) out += src[i] === '\n' ? '\n' : ' ';
       continue;
     }
+    if (c === '/'
+      && (prev === null || REGEX_MAY_OPEN_AFTER.test(prev)
+        || (!wordDotted && REGEX_MAY_OPEN_AFTER_WORD.has(word)))) {
+      const stop = regexLiteralEnd(src, i);
+      if (stop !== -1) {
+        // Blanked identically in both readings — see the note above. Identical in both is what
+        // keeps conjunct 2 sound here: the two readings never disagree inside a span that is
+        // neither code nor string, so no anchor can be found in one and judged by the other.
+        for (; i < stop; i += 1) out += ' ';
+        prev = '/';
+        word = '';
+        continue;
+      }
+    }
     out += c;
+    if (!/\s/.test(c)) {
+      if (/[\w$]/.test(c)) {
+        if (word === '') wordDotted = prev === '.';
+        word += c;
+      } else {
+        word = '';
+      }
+      prev = c;
+    }
     i += 1;
   }
   return out;
 };
+
+// Round 132, and it points at the heuristic rather than at the defect it replaced — Daedalus's
+// Round 131 §4 asked for exactly that, on the grounds that a repair verified only against the
+// minimal instance of the stated residual would look like it worked. Every row is `MARK` placed in
+// one position, and one question asked of it: does the strings-blanked reading still contain it?
+// `MARK` survives iff the scanner called that span code. The rows where it must *not* survive are
+// as load-bearing as the rows where it must — a scanner that read everything as code would satisfy
+// half a table, which is item 5's failure in miniature, so the precondition below asserts both
+// outcomes are present and the count of each.
+//
+// Rows 2-5 and 11 are the misfire direction: `MARK` sits *inside* the span a misfiring scanner
+// would step over, and there is a second `/` on the line so that the step-over has somewhere to
+// end. If the prev-token test ever admits a division, these go red before anything else does.
+const SCAN_ROWS = [
+  // The repair, in the shape that is live in the tree three times over: an unbalanced quote inside
+  // a regex literal. Before this round, `MARK` here was string interior.
+  ['a regex after `(` — its apostrophe is not a string', "f(/a'b/); const MARK = 1;", true],
+  ['a regex after `=>` — R131 §3, and the /it\'s/ that started it', "const p = (s) => /it's/.test(s); const MARK = 1;", true],
+  ['a regex after a keyword', "function f(s) { return /a'b/.test(s); }\nconst MARK = 1;", true],
+  // Division. `MARK` is inside what a misfire would blank.
+  ['division after an identifier', 'const r = a / MARK + c / d;', true],
+  ['division after `)`', 'const r = f(x) / MARK + c / d;', true],
+  ['division after `]`', 'const r = xs[0] / MARK + c / d;', true],
+  ['division after a digit', 'const r = 4 / MARK + c / d;', true],
+  ['division after a keyword reached through a dot', 'const r = o.in / MARK + c / d;', true],
+  // A `/` inside a character class is an ordinary character, not the closing delimiter. Get this
+  // wrong and the literal ends early, the apostrophe after it opens a string, and `MARK` is lost —
+  // which is `p.replace(/\//g, '-')`, the shape of Daedalus's M27, one class deeper.
+  ['a `/` inside a character class does not close the literal', "p.replace(/[/]'x/g, ''); const MARK = 1;", true],
+  // Comment openers win the tie, because `//` is never an empty regex and `/*` never opens one.
+  ['`//` is a line comment, not an empty regex', "const s = 'a'; // it's fine\nconst MARK = 1;", true],
+  ['`/*` is a block comment, not a regex', "const a = 1; /* it's fine */ const MARK = 1;", true],
+  // Blanked, and each for a different reason — the negative half of the table.
+  ['a string body is not code', "const s = 'MARK';", false],
+  ['a comment body is not code', 'const a = 1; // MARK\n', false],
+  ['a regex body is not code', 'const re = /MARK/g;', false],
+  // The residual, as a row rather than as a sentence: a regex literal that does not close on its
+  // own line is not recognised, the `/` falls through to division, and an unbalanced quote after it
+  // desynchronises exactly as it did before this round. Valid JS cannot write one — a literal may
+  // not contain a newline — so this row asserts the fall-through is *safe*, not that it is absent.
+  ['an unterminated `/` on the line falls through to division (residual)', "const re = /a'b\nconst MARK = 1;", false],
+];
+for (const [label, src, wantCode] of SCAN_ROWS) {
+  ok(`SCANNER — ${label}`, { wantCode }, stripSource(src, true).includes('MARK') === wantCode);
+}
+ok('PRECONDITION — the scanner table exercises both outcomes',
+  { code: SCAN_ROWS.filter((r) => r[2]).length, blanked: SCAN_ROWS.filter((r) => !r[2]).length },
+  SCAN_ROWS.filter((r) => r[2]).length === 11 && SCAN_ROWS.filter((r) => !r[2]).length === 4);
 
 const ANCHOR_SOURCE = "['\"`](?:\\.\\./)+packages/[^'\"`\\n]*"
   + `(?:${TS_EXTENSIONS.map((e) => e.replace('.', '\\.')).join('|')})`
@@ -911,6 +1098,27 @@ const desynced = readable.filter((f) => {
 });
 ok('PRECONDITION — the scanner preserves offsets on every module it reads', desynced,
   desynced.length === 0);
+
+// Round 132, live control 1 of 3, and the one that measures the regex heuristic's bad direction
+// instead of arguing it away. In the strings-blanked reading every quote character that survives is
+// a *delimiter*: bodies are blanked, escapes are blanked, comment bodies are blanked, and (this
+// round) regex bodies are blanked. Delimiters pair, so an odd count of any of the three means the
+// scan reached end of file with a string span still open — which is exactly the unbounded desync,
+// whether it came from a regex the heuristic declined or a division it misfired on.
+//
+// Daedalus proposed this signal in Round 131 §4 and declined to ship it, correctly: it went red on
+// `verify-recogniser-equivalence.mjs`, `verify-filler-constraints.mjs` and `lib/tsx-required.mjs`,
+// and a red a correct file cannot clear is item 1 of this header. Those are the three files the
+// repair above fixes, so the signal is green now and shipping it costs nothing. It is necessary and
+// not sufficient — an even-parity misread still escapes it, which is why it is one of three controls
+// and not the argument on its own.
+const QUOTES = ["'", '"', '`'];
+const unterminated = readable.filter((f) => {
+  const blanked = stripSource(srcOf(f), true);
+  return QUOTES.some((q) => blanked.split(q).length % 2 === 0);
+});
+ok('PRECONDITION — no module is left with a string span open at end of file', unterminated,
+  unterminated.length === 0);
 
 // Round 130, live control 2 of 2, and the one that measures the repair rather than its preconditions.
 // This file is the largest prose-bearing module in the repo — 20 raw anchors of fixture tables and
