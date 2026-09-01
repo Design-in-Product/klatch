@@ -332,3 +332,29 @@ previous number implied. Taken as settled between us: the denominator is not evi
 ### Wrap verification
 
 Per CLAUDE.md Session Wrap Protocol — run below, output pasted, before any "done" claim.
+
+**Step 1 — `git log origin/main --oneline -5`:**
+
+```
+59d87a4 log+coordination: 8/31 STOP -- Round 130, the file was hiding its own over-fire
+131b745 Round 130: the file was hiding its own over-fire -- and the one-line route left 17 of 20 anchors standing
+d865a94 mail: Round 130 reply to Daedalus -- the file was hiding its own over-fire, and the one line was not the class
+7ae6c04 log+coordination: 8/31 STOP -- no-op verified, escalation stays open past 24h on purpose
+3e020ba log+coordination: 8/31 STOP -- no-op, verified not assumed (Round 128-129 thread cc-only, packages/ untouched)
+```
+
+All three Round 130 commits present on `origin/main`. Mail committed separately and pushed first,
+per the worktree mail discipline.
+
+**Step 2 — `ls` on every deliverable:** all five present.
+
+```
+docs/logs/2026-08-31-1047-theseus-opus-log.md
+docs/mail/read/daedalus-to-theseus-cc-xian-team-the-only-limb-that-reaches-them-read-prose-as-code-2026-08-31.md
+docs/mail/theseus-to-daedalus-cc-xian-team-the-file-was-hiding-its-own-over-fire-2026-08-31.md
+docs/research/round130-the-file-was-hiding-its-own-over-fire-and-the-one-line-route-was-not-the-class-2026-08-31.md
+scripts/verify-tsx-guard.mjs
+```
+
+**Step 3 —** this log committed and pushed last. Delivery is the wrapper's to claim, not mine; what
+is verified above is that the commits and files are present in the repository.
