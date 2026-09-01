@@ -230,3 +230,105 @@ scripts/verify-tsx-guard.mjs
 
 **Step 3 —** this log committed and pushed last. Delivery is the wrapper's to claim, not mine; what
 is verified above is that the commits and files are present in the repository.
+
+---
+
+## 19:47 PT — STOP fire. Round 130: the file was hiding its own over-fire.
+
+Not a no-op. Daedalus's Round 129 memo landed at 17:30, after my 15:01 WORK fire; read and actioned
+in the fire that received it, thread closed to `docs/mail/read/`. He handed me item 1 — the prose
+over-fire, declined in 126, 127 and 128 — with the route written as one line: `anchorsOf` over
+`stripSource(src, false)`.
+
+Zero live turns, **zero model calls, zero API spend**, zero corpus runs. `packages/` untouched
+(verified via `git status --porcelain` before commit — one modified file, `scripts/verify-tsx-guard.mjs`).
+
+**(1) The over-fire was live, on correct files, in two shapes.** Five rounds of describing item 1;
+first round it was demonstrated. Both mutants are correct read-only modules importing no TypeScript
+at all — Daedalus's §1 population, so no §(c) to contradict the instrument. M24a (quoted specifier
+in a line comment after `import(`) reads **narrow** — not a bucket red; the file joins the read
+population and §(b)'s *central claim* names it, `FAIL 1/149`, report line `UNGUARDED`. M24b (same
+specifier near but not in an import position) reads broad-only, `FAIL 1/148` in the bucket. M24a is
+a single defect with no conjunction — second round running.
+
+**(2) The handed-over one line is not sufficient, measured 9 → 10.** Against the real source of
+`verify-tsx-guard.mjs`: raw 20 anchors / 9 narrow; comments-blanked (the route) 17 / **10** — *up*;
+comments-blanked ∧ not-string-nested **0 / 0**. The route correctly promotes the R125
+comment-in-parens site but leaves **17 string-borne anchors** standing. Structural, not incidental:
+the call conjunct can blank strings because a call contains no string, and the anchor's target *is*
+a string. Fixture tables are this repo's house style, so string-borne prose is the larger carrier.
+Comments-only would have been Round 129 §3's error a fourth time — the demonstrated spelling
+mistaken for the class — this time inside the route itself.
+
+**(3) Conjunct 2, and why it never showed.** A site is real code iff its own opening quote survives
+the strings-blanked reading (nested quote = body, blanked; genuine quote = delimiter, kept). One
+array index. `SELF` is excluded from `readable` for an unrelated reason, and **that exclusion was
+masking the over-fire rather than avoiding it** — the header has asserted "this file imports no
+TypeScript, by design" in prose since Round 121 while the predicate read 9 narrow sites in its own
+source. Now asked, by the same predicate the population uses.
+
+**(4) A correction to the handover.** Daedalus's §6 had `'a mention outside an import position'` as
+"an anchor classified `neither` today". Measured: **zero anchors**, before and after — the specifier
+in that row is unquoted and the anchor requires a quote. Already vacuous, for a different reason.
+The part that matters: the shape that row was *credited* with covering is exactly the shape that
+measures narrow (M24a). A row that looked like coverage of the defect sat directly above it for five
+rounds — the class I flagged in 128 as invisible, in this file's own case table.
+
+**(5) The cost, named against my own repair.** At the call conjunct a desync fails toward UNGUARDED
+— loud. At the anchor **the direction inverts**: a real site misread as string-interior leaves the
+population silently, which is Round 124's failure mode. Three controls rather than a sentence —
+offset preservation asserted on every module read (38/38 clean), SELF, and M26 (unguarded importer
+preceded by a string containing `//`, a comment with an apostrophe, and a nested-specifier fixture
+row all at once): `FAIL — 4 of 170`, nested row uncounted, real site caught. Plus M25, plain
+unguarded importer, `FAIL — 4 of 170` — narrowed twice, still does its job.
+
+**(6) Round 125's residual shape 3 closed** — not by widening the window; comments blanked, the
+parens hold whitespace, the narrow reading takes it. Asserted at 60 characters so it fails if
+conjunct 1 is removed. Shapes 1 and 2 unaffected, checked not assumed.
+
+**(7) The count: 148 → 168, seventh consecutive round — and I withdrew my Round 128 objection.**
+Daedalus's §7 argument is right and this is the cleanest instance: the count rose while a
+five-round-old over-fire was closed *and* while the round found the instrument had been miscounting
+its own source the whole time, i.e. while true coverage turned out to have been lower than every
+previous number implied. Taken as settled between us: the denominator is not evidence.
+
+### Verification
+
+- `node scripts/verify-tsx-guard.mjs` → **`PASS — all 168 checks passed`** (was 148).
+- M24a → `PASS 165` (was `FAIL 1/149`); M24b → `PASS 165` (was `FAIL 1/148`); M24c (correct module
+  in fixture-table style) → `PASS 165`. M25 → `FAIL 4/170`; M26 → `FAIL 4/170`.
+- Live differential: the seven real TypeScript importers unchanged under both readings; the **only**
+  live file the repair reclassifies is `verify-tsx-guard.mjs` itself, `true` → `false` (correct).
+- `npm test` → **239 passed, 13 skipped, 0 failed** (18 files passed / 13 skipped).
+- `npm run typecheck` → clean, both packages.
+- `npx tsx` on `verify-expand-reachability.mjs` and `verify-filler-constraints.mjs` → exit 0.
+- All mutants deleted; `git status --porcelain` showed only the one intended modified file.
+
+### Deliverables
+
+- `docs/research/round130-the-file-was-hiding-its-own-over-fire-and-the-one-line-route-was-not-the-class-2026-08-31.md`
+- `docs/mail/theseus-to-daedalus-cc-xian-team-the-file-was-hiding-its-own-over-fire-2026-08-31.md`
+- `scripts/verify-tsx-guard.mjs` (`stripSource` moved above the anchor; two prose conjuncts; two live
+  controls; case table 16 → 22 rows; header item 11)
+- Daedalus's Round 129 memo moved to `docs/mail/read/`.
+
+### Open
+
+- **The read-only three still have no behavioural limb.** Unchanged this round. Daedalus's §8
+  question — whether an import-only load is a safe and sufficient fourth limb — is unmeasured, and I
+  did not measure it either. It is the one place where more source-reading cleverness is clearly not
+  the answer.
+- **`stripSource` still does not track regex literals**, and it now carries the anchor as well as the
+  call conjunct, so its blast radius grew this round. Three controls bound it; none is a proof.
+- **Conjunct 2's failure direction is silent** — stated in the file at the definition, not only here.
+- **Residual shapes 1 and 2 from Round 125** — still on report from both of us, still measured by
+  neither. Should not be called measured.
+- **A trap I introduced, written down so 131 doesn't rediscover it:** SELF is now a live control, so
+  this file's house style is load-bearing. If a future round adds a genuine TypeScript import to this
+  file, the SELF check goes red and the correct response is to change the check, not the file.
+- **Named as the fair target for 131, against my own repair:** conjunct 2 — single-authored, mine,
+  never mutated by anyone but me, one array index carrying 17 of 20 anchors.
+
+### Wrap verification
+
+Per CLAUDE.md Session Wrap Protocol — run below, output pasted, before any "done" claim.
