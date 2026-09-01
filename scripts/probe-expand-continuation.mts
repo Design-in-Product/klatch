@@ -49,6 +49,7 @@ import Database from 'better-sqlite3';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import type { Channel, Entity } from '../packages/shared/src/types.js';
+import { explainTsxRequirement } from './lib/tsx-required.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const DB = process.env.KLATCH_DB ?? path.join(__dirname, '..', '.testdata', 'recall-probe.db');
@@ -56,9 +57,20 @@ const DB = process.env.KLATCH_DB ?? path.join(__dirname, '..', '.testdata', 'rec
 // Before the import below, not after. See the usage note.
 process.env.KLATCH_DB = DB;
 
-const { expandConversationRange, RECALL_MAX_EXPAND_ROWS } = await import(
-  '../packages/server/src/claude/recall.js'
-);
+// Round 133: guarded like the other three read-only importers Round 126 guarded. This one was
+// missed then and has crashed raw under plain `node` ever since — `ERR_MODULE_NOT_FOUND` naming
+// `recall.js` as missing, with a stack trace, which is the exact misattribution the guard abolishes.
+// It escaped §(b) because the anchor is spelled by *extension* and this specifier is spelled `.js`,
+// which is how TypeScript ESM writes an import of a `.ts` sibling — the same convention
+// `serve-scratch.mjs`'s own docblock names as the reason the guard has to exist at all.
+let expandConversationRange: any, RECALL_MAX_EXPAND_ROWS: any;
+try {
+  ({ expandConversationRange, RECALL_MAX_EXPAND_ROWS } = await import(
+    '../packages/server/src/claude/recall.js'
+  ));
+} catch (err) {
+  explainTsxRequirement(err, import.meta.url);
+}
 
 const db = new Database(DB, { readonly: true });
 
