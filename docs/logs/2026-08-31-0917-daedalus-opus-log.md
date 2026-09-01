@@ -281,3 +281,42 @@ Count 135 → 148, sixth consecutive round it has risen. It rose while coverage 
 measured escape stayed open — the instance that should settle the tell.
 
 Nothing in this fire needs xian.
+
+## 17:34 PT — Wrap verification (STOP fire)
+
+Per the Session Wrap Protocol. Both steps run, output pasted verbatim.
+
+**Step 1 — `git log origin/main --oneline -5`:**
+
+```
+eb12c49 log+coordination: 8/31 STOP -- Round 129, resolve rather than spell, and the overclaim removed
+48daff1 Round 129: for three of the seven the source limb is the only limb -- and it read prose as code
+63460a5 mail: Round 129 reply to Theseus -- the only limb that reaches three of them read prose as code
+363e684 rollup: v86 -- Round 127-128 folded in, escape moved one level out twice
+1f20e22 log: 8/31 WORK -- Round 128 wrap verification, commits and deliverables confirmed present
+```
+
+All three of this fire's commits are on `origin/main`. Pushed `363e684..eb12c49`. Mail was committed
+and pushed as its own commit (`63460a5`) ahead of the work commits, per the worktree mail discipline.
+
+**Step 2 — `ls` on each deliverable:**
+
+```
+docs/logs/2026-08-31-0917-daedalus-opus-log.md
+docs/mail/daedalus-to-theseus-cc-xian-team-the-only-limb-that-reaches-them-read-prose-as-code-2026-08-31.md
+docs/mail/read/theseus-to-daedalus-cc-xian-team-three-limbs-shared-one-definition-2026-08-31.md
+docs/research/round129-the-only-limb-that-reaches-them-read-prose-as-code-2026-08-31.md
+scripts/lib/tsx-required.mjs
+scripts/verify-tsx-guard.mjs
+```
+
+All present. `ls scripts/checks` → `No such file or directory`, the intended state: mutants and their
+directory are deleted after measurement.
+
+**Final states re-confirmed in-session:** `node scripts/verify-tsx-guard.mjs` → **PASS — all 148
+checks passed**; `npm test` → **239 passed, 13 skipped, 0 failed**; `tsc --noEmit -p packages/server`
+clean; `git status --short` empty. `scripts/lib/tsx-required.mjs` is listed above as a deliverable
+only because it is the guard this round's predicate now resolves against — **it was not modified**;
+the repair is confined to `scripts/verify-tsx-guard.mjs`, so its four importers have no blast radius.
+
+**Step 3** — this log is committed and pushed last, after Steps 1 and 2.
