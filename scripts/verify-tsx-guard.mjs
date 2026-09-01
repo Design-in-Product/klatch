@@ -298,6 +298,56 @@
  *      the fix needed a comment-aware reader nobody had written. `stripSource` is that reader, and
  *      it was written this round for the sibling limb. See §6 of the Round 129 memo for the route
  *      and for the three of Round 125-128's fixtures whose meaning it would change.
+ *      **Closed in item 11, and the route as written was not sufficient.**
+ *
+ *  11. **The one-line route was not the class, and the file was hiding its own over-fire.**
+ *      Round 130 took item 1 — the prose over-fire, named as the strongest target in Round 126,
+ *      declined in 126, 127 and 128, handed over in 129 §6 as `anchorsOf` over `stripSource(src,
+ *      false)`. Two findings, neither of them the handover.
+ *
+ *      **First: it was live, and on correct files, in two shapes rather than one.** Measured on
+ *      read-only modules that import no TypeScript whatever. A quoted specifier inside a line
+ *      comment, after the word `import(`, reads **narrow** — so the file joins the read population
+ *      and §(b)'s central claim names it, `FAIL 1/149`, report line `UNGUARDED`. The same specifier
+ *      near but not in an import position reads **broad-only** and lands in the unclassified
+ *      bucket, `FAIL 1/148`. Both are reds a correct file cannot clear by being more correct, on a
+ *      population §(c) cannot reach to contradict — item 10's read-only three, in the over-fire
+ *      direction. Item 1 has been the header's first named failure mode since Round 121 and this is
+ *      the first round it was demonstrated rather than described.
+ *
+ *      **Second: comment-blanking alone does not close it.** On this file's own source the
+ *      comment-only reading moves the narrow count 9 → **10** — up, not down: it correctly promotes
+ *      the R125 comment-in-parens site while leaving **17 string-borne anchors** standing, because
+ *      the anchor's target *is* a string and so the call conjunct's string-blanking is unavailable
+ *      to it. Fixture tables and worked examples are the house style here, and they are the bulk of
+ *      the class. So conjunct 2: a site is real code iff its own opening quote survives the
+ *      strings-blanked reading — a nested specifier's quote is body and is blanked, a genuine one's
+ *      is a delimiter and is kept. Exact, one array index. Together: **9 → 0**, which is the true
+ *      answer, and the answer the header has asserted in prose since Round 121 while the predicate
+ *      disagreed.
+ *
+ *      **Why it never showed: the file is excluded from its own population.** `SELF` is out of
+ *      `readable` for an unrelated reason, and that exclusion was masking the over-fire rather than
+ *      avoiding it — the one file guaranteed to exercise both prose conjuncts was the one file
+ *      never asked. It is asked now, by the same predicate the population uses, and that is the
+ *      round's second live control. Round 129 §3's shape, a fourth time: widening the demonstrated
+ *      spelling is not closing the class, and here the sibling spelling was the larger carrier.
+ *
+ *      **The cost, which is real and is not a sentence.** At the call conjunct a desynchronised
+ *      scan fails toward UNGUARDED — loud. **At the anchor the direction inverts**: a real site
+ *      misread as string-interior leaves the population silently, which is Round 124's failure
+ *      mode. Two live controls bound it — offset preservation asserted on every module read, and
+ *      SELF — plus a mutant, M26: an unguarded importer preceded by a string containing `//`, a
+ *      comment containing an apostrophe, and a nested-specifier fixture row, all at once.
+ *      `FAIL — 4 of 170`, the nested row correctly uncounted and the real site correctly caught.
+ *      M25, a plain unguarded importer, also `FAIL — 4 of 170`: the anchor was narrowed twice and
+ *      still does its job.
+ *
+ *      **The count went 148 → 165: seventh consecutive round.** Daedalus proposed in 129 §7 that a
+ *      number moving the same direction whether coverage rises, falls, or both is not measuring
+ *      coverage. This round is the cleanest instance yet — it rose while a five-round-old over-fire
+ *      was closed, *and* while the round discovered the instrument had been miscounting its own
+ *      source the entire time. Agreed, and taken as settled: the denominator is not evidence.
  *
  * §(c) is the end-to-end assertion: both directions of both runners, run rather than argued.
  *
@@ -573,29 +623,115 @@ ok('PRECONDITION — the run population is a strict subset of the read populatio
 // is the third place the same concept was hardcoded and the drift between the three is the whole
 // of item 9. Sorted longest-first there, so the alternation cannot match the `ts` of `.tsx` and
 // then fail on the trailing `x` — asserted below on every member, which is what catches a re-sort.
+// Comment bodies (and optionally string bodies) blanked, offsets and line breaks preserved.
+//
+// Round 129 wrote this for `importsGuardSource`'s two conjuncts: strings *kept* for the import
+// conjunct — the specifier is one — and blanked for the call conjunct, which contains no string.
+// Round 130 moves it above the anchor, because the anchor needs it too and needed it first: it is
+// the outermost membership test, so every reading in this file inherits whatever it gets wrong.
+// One scanner, three readings, so no two of them can disagree about where a comment ends.
+//
+// Residual, stated: this tracks `'`, `"` and `` ` `` but not regex literals, so an *unbalanced*
+// quote inside one (`/it's/`) desynchronises the scan for the rest of the file. For the call
+// conjunct the failure is toward reading code as string — UNGUARDED, a loud red. **At the anchor
+// the direction inverts**: a desynchronised scan can make a real import site look string-interior,
+// and the site then leaves the population silently — the failure mode Round 124 named and every
+// round since has tried to abolish. That is the price of this repair and it is not hypothetical;
+// the two live controls that bound it are the offset-preservation precondition and the SELF check
+// below, both measured on the real tree rather than on fixtures.
+const stripSource = (src, blankStrings) => {
+  let out = '';
+  let i = 0;
+  let quote = null;
+  while (i < src.length) {
+    const c = src[i];
+    if (quote) {
+      if (c === '\\') { out += '  '; i += 2; continue; }
+      if (c === quote) { quote = null; out += c; i += 1; continue; }
+      out += c === '\n' ? '\n' : (blankStrings ? ' ' : c);
+      i += 1;
+      continue;
+    }
+    if (c === "'" || c === '"' || c === '`') { quote = c; out += c; i += 1; continue; }
+    if (c === '/' && src[i + 1] === '/') {
+      while (i < src.length && src[i] !== '\n') { out += ' '; i += 1; }
+      continue;
+    }
+    if (c === '/' && src[i + 1] === '*') {
+      const end = src.indexOf('*/', i + 2);
+      const stop = end === -1 ? src.length : end + 2;
+      for (; i < stop; i += 1) out += src[i] === '\n' ? '\n' : ' ';
+      continue;
+    }
+    out += c;
+    i += 1;
+  }
+  return out;
+};
+
 const ANCHOR_SOURCE = "['\"`](?:\\.\\./)+packages/[^'\"`\\n]*"
   + `(?:${TS_EXTENSIONS.map((e) => e.replace('.', '\\.')).join('|')})`
   + "['\"`]";
 
-const anchorsOf = (src) => [...src.matchAll(new RegExp(ANCHOR_SOURCE, 'g'))].map((m) => {
-  const pre = src.slice(0, m.index);
-  // `(?![\s\S])` rather than `$`, which also matches before a trailing newline — an anchor at the
-  // start of a line would otherwise be read one character out of position.
-  const narrow = /import\(\s*(?![\s\S])/.test(pre);
-  return {
-    index: m.index,
-    line: pre.split('\n').length,
-    text: m[0],
-    narrow,
-    // Round 125 asserted containment (narrow ⊆ broad) per row and it held on the table — but it is
-    // not true in general: `import(` + more than 40 characters of whitespace + the specifier is
-    // narrow and *not* windowed, so the broad reading was never actually a superset. Writing the
-    // disjunct in makes containment hold **by construction** instead of by assertion. The rows
-    // below keep asserting it, with their job changed: they now catch an edit that removes this
-    // disjunct, rather than drift between two independent regexes.
-    broad: narrow || /\bimport\b[\s\S]{0,40}(?![\s\S])/.test(pre),
-  };
-});
+// Round 130, Theseus. Daedalus handed this over in his Round 129 §6 with the route written as one
+// line — `anchorsOf` over `stripSource(src, false)` — and the first thing this round measured is
+// that the one line is **not sufficient**, on the only large prose-bearing file the repo has.
+//
+// The over-fire, item 1, five rounds old and never repaired: `src.matchAll` cannot tell an import
+// site from a sentence about one, exactly as `src.includes` could not at item 10. Measured twice
+// this round on *correct* read-only modules that load no TypeScript at all — a quoted specifier in
+// a comment after the word `import(` reads **narrow**, so the file joins the read population and is
+// named by §(b)'s central claim (`FAIL 1/149`, report line `UNGUARDED`); the same specifier near
+// but not in an import position reads **broad-only**, so it lands in the unclassified bucket
+// (`FAIL 1/148`). Both are reds a correct file cannot clear by being more correct.
+//
+// Two conjuncts, because the demonstrated spelling is not the class — the lesson of Rounds 128
+// (three limbs, one definition) and 129 (§3, two more over-fires in the two lines Round 124 had
+// already repaired for over-firing). Repairing comments alone would have been that error a fourth
+// time, and here it is measurable rather than a worry: on this file's own source the comment-only
+// reading takes the narrow count 9 → **10**, because it promotes the R125 comment-in-parens row
+// while leaving 17 string-borne anchors standing. Both conjuncts together take it to **0**, which
+// is the true answer — the header has claimed "this file imports no TypeScript, by design" in
+// prose since Round 121, and the predicate has disagreed with it the whole time.
+//
+//   1. Comment bodies blanked. Prose is not code.
+//   2. The site must not be nested inside another string literal. Blanking strings is not available
+//      here the way it is for the call conjunct — the anchor's target *is* a string — so instead:
+//      an anchor is real code iff its own opening quote survives in the strings-blanked reading.
+//      A nested specifier's quote is body, and is blanked; a genuine specifier's quote is a
+//      delimiter, and is kept. Exact rather than heuristic, and it costs one array index.
+//
+// Conjunct 2 is what the population needed: this file is 20 raw anchors of fixture tables and
+// worked examples, and its exclusion from `readable` — written for an unrelated reason — is the
+// only thing that has kept it from turning itself red. That exclusion was masking the over-fire,
+// not avoiding it. Asserted below on SELF rather than left as an argument.
+const anchorsOf = (src) => {
+  const code = stripSource(src, false);
+  const noStrings = stripSource(src, true);
+  return [...code.matchAll(new RegExp(ANCHOR_SOURCE, 'g'))].filter(
+    // Offsets align because `stripSource` is length-preserving — asserted on the live population
+    // below, since this index is the whole of conjunct 2 and a length drift would silently void it.
+    (m) => noStrings[m.index] === m[0][0],
+  ).map((m) => {
+    const pre = code.slice(0, m.index);
+    // `(?![\s\S])` rather than `$`, which also matches before a trailing newline — an anchor at the
+    // start of a line would otherwise be read one character out of position.
+    const narrow = /import\(\s*(?![\s\S])/.test(pre);
+    return {
+      index: m.index,
+      line: pre.split('\n').length,
+      text: m[0],
+      narrow,
+      // Round 125 asserted containment (narrow ⊆ broad) per row and it held on the table — but it
+      // is not true in general: `import(` + more than 40 characters of whitespace + the specifier
+      // is narrow and *not* windowed, so the broad reading was never actually a superset. Writing
+      // the disjunct in makes containment hold **by construction** instead of by assertion. The
+      // rows below keep asserting it, with their job changed: they now catch an edit that removes
+      // this disjunct, rather than drift between two independent regexes.
+      broad: narrow || /\bimport\b[\s\S]{0,40}(?![\s\S])/.test(pre),
+    };
+  });
+};
 
 const importsTsSource = (src) => anchorsOf(src).some((a) => a.narrow);
 
@@ -638,7 +774,12 @@ for (const [label, src, wantNarrow, wantBroad] of [
   ['one directory down (R124)', "await import('../../packages/server/src/db/queries.ts')", true, true],
   ['newline before the specifier', "await import(\n  '../packages/x.ts'\n)", true, true],
   ['space before the paren (R125)', "await import ('../../packages/x.ts')", false, true],
-  ['comment inside the parens (R125)', "await import(/* the db */ '../packages/x.ts')", false, true],
+  // Round 130. Was `false, true` — a real import site the narrow reading could not parse, so the
+  // bucket had to declare it. With comment bodies blanked the parens hold only whitespace and the
+  // narrow reading parses it correctly. The row is kept with its verdict changed rather than
+  // deleted: it is the one fixture that proves conjunct 1 does something, and it is the reason
+  // residual shape 3 at §(b2) — "a comment longer than the window inside the parens" — dissolves.
+  ['comment inside the parens (R125)', "await import(/* the db */ '../packages/x.ts')", true, true],
   // Round 128. One row per TypeScript extension, because the anchor missing one is invisible in
   // exactly the way item 9 measured: not a false negative in the bucket, but no bucket entry at all.
   ['a .tsx specifier (R128)', "await import('../packages/client/src/App.tsx')", true, true],
@@ -653,7 +794,35 @@ for (const [label, src, wantNarrow, wantBroad] of [
   // would claim it — over-fire, header item 1, in the predicate this round widened.
   ['a .ts inside a longer extension (R128)', "await import('../packages/x.ts.bak')", false, false],
   ['a non-packages import', "await import('./lib/tsx-required.mjs')", false, false],
-  ['a mention outside an import position', '// see ../packages/server/src/db/queries.ts', false, false],
+  // Round 130. This row was named as one whose meaning the repair changes. Measured: it never had
+  // the meaning its label claims, before the repair or after. The specifier is *unquoted*, so the
+  // anchor — which requires a quote — never matched it: zero anchors, both columns trivially false,
+  // and the row has been asserting "unquoted text is not an anchor" while reading as though it
+  // covered mentions-in-prose. The class my Round 128 called invisible, in this file's own table.
+  // Kept, relabelled to what it actually tests, and followed by the rows that do the job it was
+  // credited with — the three prose shapes measured live this round.
+  ['an unquoted mention (R130: never an anchor, quoted rows below)',
+    '// see ../packages/server/src/db/queries.ts', false, false],
+  ['a quoted mention in a line comment, in import position (R130 M24a)',
+    "// await import('../packages/server/src/db/queries.ts')", false, false],
+  ['a quoted mention in a block comment (R130)',
+    "/* await import('../packages/x.ts') */", false, false],
+  ['a quoted mention in prose near the word import (R130 M24b)',
+    "// we do not import '../packages/x.ts' here", false, false],
+  // Round 125's residual shape 3, promoted from a residual to an asserted closure. It escaped both
+  // readings because the comment was longer than the broad reading's 40-character window; blanked,
+  // the parens hold whitespace and the *narrow* reading takes it. Written long enough to have
+  // escaped — 60 characters — so the row would fail if conjunct 1 were removed.
+  ['R125 residual shape 3: a comment longer than the window, inside the parens',
+    `await import(/* ${'x'.repeat(60)} */ '../packages/x.ts')`, true, true],
+  // Conjunct 2. A specifier nested inside another string literal is data, not a site — this file's
+  // own fixture tables are made of exactly this, which is why SELF read as an importer for nine
+  // rounds. Note the outer quotes differ from the inner ones; that is the shape, not an accident.
+  ['a specifier nested inside another string literal (R130)',
+    'const row = "await import(\'../packages/x.ts\')";', false, false],
+  // …and the control one variable away: the same specifier as a genuine string-valued constant is
+  // still an anchor, classified `neither`. Conjunct 2 must remove nested sites, not all strings.
+  ['a specifier as a plain string constant', "const s = '../packages/c.ts';", false, false],
   ['a static import', "import fs from 'node:fs'", false, false],
 ]) {
   ok(`PREDICATE — ${label} ${wantNarrow ? 'is' : 'is not'} a TypeScript import`, undefined,
@@ -729,6 +898,32 @@ ok('MASKING — …and the site-level reading declares the unreadable site anywa
 
 const srcOf = (f) => fs.readFileSync(path.join(SCRIPTS, f), 'utf8');
 
+// Round 130, live control 1 of 2 on the scanner. Conjunct 2 of the anchor compares an index taken
+// in one `stripSource` reading against a character in the other, so both must be exactly as long as
+// the input. They are, by construction — every branch emits one character per character consumed —
+// except that the escape branch emits two for a trailing lone backslash, which is the one input
+// shape that would slide every index in the file by one and void conjunct 2 *silently*. Asserted on
+// the real population rather than reasoned about, because "by construction" is what item 10's
+// `includes` and item 1's `matchAll` both were.
+const desynced = readable.filter((f) => {
+  const src = srcOf(f);
+  return stripSource(src, false).length !== src.length || stripSource(src, true).length !== src.length;
+});
+ok('PRECONDITION — the scanner preserves offsets on every module it reads', desynced,
+  desynced.length === 0);
+
+// Round 130, live control 2 of 2, and the one that measures the repair rather than its preconditions.
+// This file is the largest prose-bearing module in the repo — 20 raw anchors of fixture tables and
+// worked examples — and it loads no TypeScript at runtime. The header has said so in prose since
+// Round 121 ("this file imports no TypeScript, by design"); the predicate disagreed until this round,
+// reading 9 narrow sites in its own source. It never showed, because `SELF` is excluded from
+// `readable` for an unrelated reason — so the exclusion was masking the over-fire rather than
+// avoiding it, and the one file guaranteed to exercise both prose conjuncts was the one file never
+// asked. Asked here, and by the same predicate the population uses:
+ok('SELF — this file is not read as a TypeScript importer (both prose conjuncts, live)',
+  anchorsOf(srcOf(SELF)).map((a) => `${a.line}:${a.text}`),
+  !importsTsSource(srcOf(SELF)) && !mentionsTsSpecifier(srcOf(SELF)));
+
 // Round 126: the containment above is asserted on eleven synthetic rows and was never asserted on
 // a single one of the files the bucket actually runs over. The bucket's soundness depends on
 // containment holding for the REAL inputs; a predicate pair can satisfy the table and break here.
@@ -792,46 +987,6 @@ ok('every verifier mentioning a TypeScript specifier is one §(b) can actually r
 // widening this predicate would not change that. That residual is disclosed below rather than
 // papered over, which is the other half of this round's repair.
 const GUARD_PATH = path.join(SCRIPTS, 'lib', 'tsx-required.mjs');
-
-// Comment bodies (and optionally string bodies) blanked, offsets and line breaks preserved. Strings
-// are *kept* for the import conjunct — the specifier is one — and blanked for the call conjunct,
-// which contains no string. One scanner, two readings, so the two conjuncts cannot disagree about
-// where a comment ends.
-//
-// Residual, stated: this tracks `'`, `"` and `` ` `` but not regex literals, so an *unbalanced*
-// quote inside one (`/it's/`) desynchronises the scan for the rest of the file. The failure is
-// toward reading code as string — i.e. toward UNGUARDED, a loud red, not a silent pass. For the four
-// files §(c) runs, §(c)'s agreement check is a live control on this. For the read-only three there
-// is no such control, which is this round's finding and not something the scanner can fix.
-const stripSource = (src, blankStrings) => {
-  let out = '';
-  let i = 0;
-  let quote = null;
-  while (i < src.length) {
-    const c = src[i];
-    if (quote) {
-      if (c === '\\') { out += '  '; i += 2; continue; }
-      if (c === quote) { quote = null; out += c; i += 1; continue; }
-      out += c === '\n' ? '\n' : (blankStrings ? ' ' : c);
-      i += 1;
-      continue;
-    }
-    if (c === "'" || c === '"' || c === '`') { quote = c; out += c; i += 1; continue; }
-    if (c === '/' && src[i + 1] === '/') {
-      while (i < src.length && src[i] !== '\n') { out += ' '; i += 1; }
-      continue;
-    }
-    if (c === '/' && src[i + 1] === '*') {
-      const end = src.indexOf('*/', i + 2);
-      const stop = end === -1 ? src.length : end + 2;
-      for (; i < stop; i += 1) out += src[i] === '\n' ? '\n' : ' ';
-      continue;
-    }
-    out += c;
-    i += 1;
-  }
-  return out;
-};
 
 // The binding name is the caller's business; `import.meta.url` is the part that carries meaning.
 const GUARD_CALL = /\bexplainTsxRequirement\s*\(\s*[A-Za-z_$][\w$]*\s*,\s*import\s*\.\s*meta\s*\.\s*url\s*\)/;
@@ -978,10 +1133,16 @@ const run = (cmd, argv) => {
 //   2. A literal bound to a variable first — `const s = '../packages/x.ts'; await import(s)`. The
 //      literal is in the source, but it precedes the `import` token rather than following it, so the
 //      broad reading's window does not cover it. This one is a literal, and it escapes.
-//   3. A comment longer than the broad reading's 40-character window sitting inside the parens.
+//   3. ~~A comment longer than the broad reading's 40-character window sitting inside the parens.~~
+//      **Closed in Round 130** and not by widening the window: with comment bodies blanked the
+//      parens hold only whitespace, so the *narrow* reading takes it. Now an asserted row in the
+//      case table above rather than a residual here — written at 60 characters, long enough that
+//      it would have escaped, so the row fails if conjunct 1 is ever removed.
 //
-// Each still needs the swallowing catch to survive §(b2), so all three are conjunctions rather than
-// single defects. The honest summary of what the bucket bought: it does not remove the membership
+// Shapes 1 and 2 are unaffected by Round 130 — checked, not assumed: shape 2's literal is a real
+// string constant, so conjunct 2 correctly keeps it as an anchor, and it goes on escaping both
+// readings for the reason given above (it precedes the `import` token). Both still need the
+// swallowing catch to survive §(b2), so both are conjunctions rather than single defects. The honest summary of what the bucket bought: it does not remove the membership
 // question, it moves it onto a predicate that is *deliberately over-broad*, where a false negative is
 // harder to hit by accident than on a precise one — and where the failure of the bucket itself is now
 // asserted (containment, plus a discrimination precondition) rather than silent. That is an
