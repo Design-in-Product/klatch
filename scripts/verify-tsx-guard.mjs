@@ -242,6 +242,63 @@
  *      three limbs' definitions are now shared; the third, `importsGuardSource`, still spells its
  *      own path convention (`(?:\.\.?\/)+lib\/tsx-required\.mjs`) and no round has mutated it.
  *
+ *  10. **For three of the seven, the source limb is not one limb of three — it is the only one.**
+ *      Round 129 pointed a mutant at `importsGuardSource`, the last definition still spelling its
+ *      own convention, as Round 128 invited. The predicate was two loose file-level conjuncts: a
+ *      regex for the guard's *path shape* and `src.includes()` of one exact *call string*. Four
+ *      measurements, and the population is what makes them matter — of the seven TypeScript
+ *      importers, three (`measure-marker-floor.mjs`, `probe-recall-tool.mjs`, `serve-scratch.mjs`)
+ *      are in the read population Round 126 added and outside §(b2) and §(c), which execute. For
+ *      those three, this predicate is the entire claim. No other limb reaches them.
+ *
+ *      **M21 reads prose as code.** A module in that population that imports the guard for one of
+ *      its *other* exports and mentions the call in a comment — `// callers wrap it:
+ *      explainTsxRequirement(err, import.meta.url)` — was reported **`guarded`** while printing the
+ *      raw `ERR_MODULE_NOT_FOUND` naming `index.js` as missing: the exact stack trace Round 121
+ *      exists to abolish, on the exact misattribution Round 120 §5 read as a missing build artifact,
+ *      in the population Round 126 widened *because* `measure-marker-floor.mjs` was doing this.
+ *      `PASS — all 136`, count 135 → 136. **Single defect, no conjunction** — no swallowing catch, no
+ *      unreadable specifier, no extension trick. The control is one variable away and it is the
+ *      *filename*: the identical file renamed `verify-r129-prose.mjs` dies `FAIL — 4 of 140`, and
+ *      the agreement check names the mechanism, `{source: "guarded", behaviour: "unguarded"}`. §(b)
+ *      is fooled in both files; only the run limb saved the second one.
+ *
+ *      **M23a and M23b over-fire on a correct file, twice.** `from "…"` (double-quoted guard
+ *      specifier) and `catch (e)` (any binding not spelled `err`) each read UNGUARDED on a verifier
+ *      that exits 2 with the right message — `FAIL — 3 of 145`, with §(c) certifying `guarded` in
+ *      the same run. Round 124 repaired this predicate's *depth* over-fire and left two more of
+ *      exactly its kind inside it. Item 1, and a red a correct file cannot clear.
+ *
+ *      So the repair is rule 8b route (i) again, and this time against a *convention* rather than a
+ *      concept: **resolve rather than spell.** The specifier is resolved against the importing
+ *      file's own directory and compared with the guard's real path, so quoting, depth and any
+ *      `./a/../b` spelling are right by construction instead of by alternation. And **read code
+ *      rather than text**: one scanner blanks comment bodies for the import conjunct and comment
+ *      *and* string bodies for the call conjunct, so neither a sentence nor a log line satisfies it.
+ *      Measured: M21 `FAIL 1/149`, named; M23a and M23b both green at `PASS — all 158`.
+ *
+ *      **M22 is not repaired, and cannot be by this limb.** The guard imported, wrapped around the
+ *      import, and called behind an `if` that never runs — Round 124's shape — escapes at
+ *      `PASS — all 149`. Reachability is not a property of source text. Renamed `verify-*` it dies
+ *      `FAIL — 3 of 140` at §(c); the variable is again the filename, i.e. whether any limb runs it.
+ *      What Round 129 does instead is stop the instrument overclaiming: the check said the source
+ *      reading established the import was **"wrapped"**, which is the one thing source text cannot
+ *      establish, and the report printed the same word `guarded` for a run-certified verdict and an
+ *      unverified one. The three now print **`source-only`**, the wording says "imports the guard
+ *      and calls it", and a DISCLOSURE check asserts on the report line itself that nothing outside
+ *      §(c)'s reach is labelled `guarded`. An unrepairable escape stated in the output is a
+ *      different object from one absorbed by a word — which is this whole thread's subject.
+ *
+ *      **The count went 135 → 148: sixth consecutive round.** It rose while coverage rose *and*
+ *      while a measured escape stayed open, which is the combination that should settle it. The
+ *      denominator carries no information about coverage; the mutants do.
+ *
+ *      Residual, stated: item 7's prose over-fire is **still unrepaired** — but its reason has now
+ *      changed, and that is a finding rather than a repetition. Three rounds declined it because
+ *      the fix needed a comment-aware reader nobody had written. `stripSource` is that reader, and
+ *      it was written this round for the sibling limb. See §6 of the Round 129 memo for the route
+ *      and for the three of Round 125-128's fixtures whose meaning it would change.
+ *
  * §(c) is the end-to-end assertion: both directions of both runners, run rather than argued.
  *
  * ── Costs nothing ──────────────────────────────────────────────────────────
@@ -708,28 +765,157 @@ ok('every verifier mentioning a TypeScript specifier is one §(b) can actually r
 // one red while §(b2) and §(c) both reported it healthy (exit 2, names the invocation). Loud and
 // wrong rather than silent and wrong, so cheaper — but it is item 1 of the header, the over-fire,
 // and a red that a correct file cannot clear is the fastest way to get a check switched off.
-const importsGuardSource = (src) => /from '(?:\.\.?\/)+lib\/tsx-required\.mjs'/.test(src)
-  && src.includes('explainTsxRequirement(err, import.meta.url)');
+// Round 129, Daedalus. Theseus named this as the fair target for the round: after Round 128 shared
+// two of the three "what is TypeScript" definitions, `importsGuardSource` was the last limb still
+// spelling its own convention — a path shape (`(?:\.\.?\/)+lib\/tsx-required\.mjs`) and one exact
+// call string — and no round had ever mutated it. Four measurements, item 10 of the header:
+//
+//   * **It reads prose as code.** `src.includes(...)` cannot tell a call from a sentence about a
+//     call. M21 — a read-only module that imports the guard for one of its *other* exports and
+//     mentions the call in a comment — read as `guarded` while printing the raw
+//     `ERR_MODULE_NOT_FOUND` stack trace Round 121 exists to abolish. Single defect, no conjunction.
+//   * **It over-fires on the quote style**, and **on the binding name**: two *correct* verifiers
+//     (M23a `from "…"`, M23b `catch (e)`) were reported UNGUARDED while §(c) certified them exit-2
+//     in the same run. Round 124 repaired this predicate's depth over-fire and left two more of the
+//     same kind in it.
+//
+// So: **resolve rather than spell**, which is rule 8b route (i) applied to the third definition —
+// the specifier is resolved against the importing file's own directory and compared with the guard's
+// real path, so quoting, depth, and any `./a/../` spelling are correct by construction rather than
+// by alternation. And **read code rather than text**: the call conjunct runs over source with
+// comment bodies *and* string bodies blanked, so neither a sentence nor a log line can satisfy it.
+//
+// What this deliberately does not do is decide *reachability*. M22 — the guard imported, wrapped
+// around the import, and called behind an `if` that never runs — is Round 124's shape, and no
+// source-text limb can see it. For files §(c) runs, §(c) sees it (measured: the same file named
+// `verify-*` dies `FAIL 3/140`). For the read-only population §(c) cannot run, nothing does, and
+// widening this predicate would not change that. That residual is disclosed below rather than
+// papered over, which is the other half of this round's repair.
+const GUARD_PATH = path.join(SCRIPTS, 'lib', 'tsx-required.mjs');
 
-for (const [label, src, want] of [
-  ['flat, correctly guarded', "from './lib/tsx-required.mjs'\nexplainTsxRequirement(err, import.meta.url)", true],
-  ['one directory down (R124)', "from '../lib/tsx-required.mjs'\nexplainTsxRequirement(err, import.meta.url)", true],
-  ['imports the guard but never calls it', "from './lib/tsx-required.mjs'", false],
-  ['calls the guard but never imports it', 'explainTsxRequirement(err, import.meta.url)', false],
-  ['a different lib', "from './lib/other.mjs'\nexplainTsxRequirement(err, import.meta.url)", false],
+// Comment bodies (and optionally string bodies) blanked, offsets and line breaks preserved. Strings
+// are *kept* for the import conjunct — the specifier is one — and blanked for the call conjunct,
+// which contains no string. One scanner, two readings, so the two conjuncts cannot disagree about
+// where a comment ends.
+//
+// Residual, stated: this tracks `'`, `"` and `` ` `` but not regex literals, so an *unbalanced*
+// quote inside one (`/it's/`) desynchronises the scan for the rest of the file. The failure is
+// toward reading code as string — i.e. toward UNGUARDED, a loud red, not a silent pass. For the four
+// files §(c) runs, §(c)'s agreement check is a live control on this. For the read-only three there
+// is no such control, which is this round's finding and not something the scanner can fix.
+const stripSource = (src, blankStrings) => {
+  let out = '';
+  let i = 0;
+  let quote = null;
+  while (i < src.length) {
+    const c = src[i];
+    if (quote) {
+      if (c === '\\') { out += '  '; i += 2; continue; }
+      if (c === quote) { quote = null; out += c; i += 1; continue; }
+      out += c === '\n' ? '\n' : (blankStrings ? ' ' : c);
+      i += 1;
+      continue;
+    }
+    if (c === "'" || c === '"' || c === '`') { quote = c; out += c; i += 1; continue; }
+    if (c === '/' && src[i + 1] === '/') {
+      while (i < src.length && src[i] !== '\n') { out += ' '; i += 1; }
+      continue;
+    }
+    if (c === '/' && src[i + 1] === '*') {
+      const end = src.indexOf('*/', i + 2);
+      const stop = end === -1 ? src.length : end + 2;
+      for (; i < stop; i += 1) out += src[i] === '\n' ? '\n' : ' ';
+      continue;
+    }
+    out += c;
+    i += 1;
+  }
+  return out;
+};
+
+// The binding name is the caller's business; `import.meta.url` is the part that carries meaning.
+const GUARD_CALL = /\bexplainTsxRequirement\s*\(\s*[A-Za-z_$][\w$]*\s*,\s*import\s*\.\s*meta\s*\.\s*url\s*\)/;
+const SPECIFIERS = /\bfrom\s*(['"])([^'"\n]*)\1/g;
+
+const importsGuardSource = (src, dir) => {
+  const code = stripSource(src, false);
+  const importsIt = [...code.matchAll(SPECIFIERS)]
+    .map((m) => m[2])
+    .filter((s) => s.startsWith('.'))
+    .some((s) => path.resolve(dir, s) === GUARD_PATH);
+  return importsIt && GUARD_CALL.test(stripSource(code, true));
+};
+
+// The predicate resolves against a real path, so a move or rename of the guard makes every file read
+// UNGUARDED — loud, but it would be loud for the wrong reason. Name it here instead.
+ok('PRECONDITION — the guard module is at the path this predicate resolves against',
+  path.relative(REPO, GUARD_PATH), fs.existsSync(GUARD_PATH));
+
+const CHECKS_DIR = path.join(SCRIPTS, 'checks');
+for (const [label, src, dir, want] of [
+  ['flat, correctly guarded', "from './lib/tsx-required.mjs'\nexplainTsxRequirement(err, import.meta.url)", SCRIPTS, true],
+  ['one directory down (R124)', "from '../lib/tsx-required.mjs'\nexplainTsxRequirement(err, import.meta.url)", CHECKS_DIR, true],
+  ['imports the guard but never calls it', "from './lib/tsx-required.mjs'", SCRIPTS, false],
+  ['calls the guard but never imports it', 'explainTsxRequirement(err, import.meta.url)', SCRIPTS, false],
+  ['a different lib', "from './lib/other.mjs'\nexplainTsxRequirement(err, import.meta.url)", SCRIPTS, false],
+  // Round 129. The two over-fires, as rows: both files are correct and both were reported UNGUARDED.
+  ['a double-quoted guard specifier (R129 M23a)',
+    'from "./lib/tsx-required.mjs"\nexplainTsxRequirement(err, import.meta.url)', SCRIPTS, true],
+  ['a catch binding not named `err` (R129 M23b)',
+    "from './lib/tsx-required.mjs'\nexplainTsxRequirement(e, import.meta.url)", SCRIPTS, true],
+  ['whitespace inside the call',
+    "from './lib/tsx-required.mjs'\nexplainTsxRequirement( err , import.meta.url )", SCRIPTS, true],
+  // …and the escape. Prose and log lines are not calls.
+  ['the call written only in a line comment (R129 M21)',
+    "from './lib/tsx-required.mjs'\n// callers wrap it: explainTsxRequirement(err, import.meta.url)", SCRIPTS, false],
+  ['the call written only in a block comment (R129)',
+    "from './lib/tsx-required.mjs'\n/* explainTsxRequirement(err, import.meta.url) */", SCRIPTS, false],
+  ['the call written only inside a string literal (R129)',
+    "from './lib/tsx-required.mjs'\nconsole.log('explainTsxRequirement(err, import.meta.url)')", SCRIPTS, false],
+  ['the guard import written only in a comment (R129)',
+    "// from './lib/tsx-required.mjs'\nexplainTsxRequirement(err, import.meta.url)", SCRIPTS, false],
+  // Resolution, not spelling: the first of these the old regex could not read and the second it
+  // would have claimed. The extension must be terminal, as at the anchor.
+  ['a specifier that goes up and back down (R129)',
+    "from './checks/../lib/tsx-required.mjs'\nexplainTsxRequirement(err, import.meta.url)", SCRIPTS, true],
+  ['a path that merely ends the same way (R129)',
+    "from './lib/tsx-required.mjs.bak'\nexplainTsxRequirement(err, import.meta.url)", SCRIPTS, false],
+  // The scanner's own boundary cases, asserted here rather than assumed. A `//` inside a string is
+  // not a comment; if it were, the specifier on the same line would disappear and a correct file
+  // would read UNGUARDED — item 1, introduced by the repair for item 10.
+  ['a string containing `//` before the import (R129)',
+    "const u = 'https://example.test/x';\nfrom './lib/tsx-required.mjs'\nexplainTsxRequirement(err, import.meta.url)",
+    SCRIPTS, true],
+  ['a comment containing an apostrophe (R129)',
+    "// it's fine\nfrom './lib/tsx-required.mjs'\nexplainTsxRequirement(err, import.meta.url)", SCRIPTS, true],
 ]) {
   ok(`PREDICATE — ${label} ${want ? 'reads as' : 'does not read as'} guarded`, undefined,
-    importsGuardSource(src) === want);
+    importsGuardSource(src, dir) === want);
 }
 
-const unguarded = importsTsRead.filter((f) => !importsGuardSource(srcOf(f)));
+const dirOf = (f) => path.dirname(path.join(SCRIPTS, f));
+const unguarded = importsTsRead.filter((f) => !importsGuardSource(srcOf(f), dirOf(f)));
+
+// Round 129. A guard claim is *run*-certified only for files §(c) executes. For the rest, this
+// section's source reading is the whole of the claim — and until now the report printed the same
+// word for both, and the check below said the source reading had established that the import was
+// "wrapped", which is the one thing source text cannot establish (M22). Three of today's seven
+// TypeScript importers are in that position. They get their own word.
+const sourceOnly = importsTsRead.filter((f) => !importsTs.includes(f));
+const labelFor = (f) => (unguarded.includes(f) ? 'UNGUARDED  ' : sourceOnly.includes(f) ? 'source-only' : 'guarded    ');
 
 console.log(`  ${readable.length} modules read (${swept.length} of them runnable verifiers), ${importsTsRead.length} import TypeScript:`);
-for (const f of importsTsRead) console.log(`    ${unguarded.includes(f) ? 'UNGUARDED' : 'guarded  '}  ${f}${swept.includes(f) ? '' : '   (read-only: outside the run population)'}`);
+for (const f of importsTsRead) console.log(`    ${labelFor(f)}  ${f}${swept.includes(f) ? '' : '   (read-only: outside the run population)'}`);
 console.log('');
 
-ok('every TypeScript-importing module under scripts/ imports the guard and wraps its import',
+ok('every TypeScript-importing module under scripts/ imports the guard and calls it',
   unguarded, unguarded.length === 0);
+
+// The disclosure, asserted on the report line itself rather than left to the reader: an edit that
+// drops the `source-only` label re-fuses a run-certified verdict with an unverified one, which is
+// what this round found. Non-vacuous today — the three read-only importers are exactly its members.
+ok('DISCLOSURE — no module outside §(c)\'s reach is reported as `guarded`', sourceOnly,
+  importsTsRead.every((f) => labelFor(f).trim() !== 'guarded' || importsTs.includes(f)));
 
 // Without this, §(b) passes vacuously the day the regex stops matching anything — the silent-cap
 // shape, in the check written to catch a different silence.
