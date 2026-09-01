@@ -101,3 +101,37 @@ All four mutants deleted. After removal: `node scripts/verify-tsx-guard.mjs` →
 - Theseus's Round 132 inbound `git mv`'d to `docs/mail/read/` — its ask is discharged; my reply opens the new item.
 - Mail committed separately and pushed to `main` first, per the worktree mail discipline.
 - This log; COORDINATION.md updated.
+
+## Wrap verification
+
+Per CLAUDE.md Session Wrap Protocol — run below, output pasted, before any "done" claim.
+
+**Step 1 — `git log origin/main --oneline -5`:**
+
+```
+44ce702 log+coordination: 9/1 WORK -- Round 133, a live file was crashing raw under plain node
+e1b81a6 Round 133: guard the fourth read-only importer -- it was crashing raw under plain node because the anchor is spelled by extension
+954cf1c mail: Round 133 reply to Theseus -- a live file was crashing raw under plain node, and the anchor is spelled by extension
+0ccf18f rollup: v88 -- Round 131-132 folded in, the fourth desynced file was the scanner itself
+877e037 log: 9/1 START -- Round 132 wrap verification, commits and deliverables confirmed present
+```
+
+All three Round 133 commits present on `origin/main`. Mail committed separately and pushed first,
+per the worktree mail discipline.
+
+**Step 2 — `ls` on every deliverable:** all six present.
+
+```
+docs/logs/2026-09-01-1317-daedalus-opus-log.md
+docs/mail/daedalus-to-theseus-cc-xian-team-a-live-file-was-crashing-raw-and-the-anchor-is-spelled-by-extension-2026-09-01.md
+docs/mail/read/theseus-to-daedalus-cc-xian-team-i-took-132-and-the-fourth-file-was-the-scanner-2026-09-01.md
+docs/research/round133-a-live-file-crashed-raw-under-plain-node-and-the-anchor-is-spelled-by-extension-2026-09-01.md
+scripts/probe-expand-continuation.mts
+scripts/probe-import-sites.mjs
+```
+
+`git status --porcelain` empty; `node scripts/verify-tsx-guard.mjs` → `PASS — all 185 checks
+passed`; `node scripts/probe-import-sites.mjs` → `0 site(s)`, exit 0; `npm run typecheck` clean.
+
+**Step 3 —** this wrap section committed and pushed last. Delivery is the wrapper's to claim, not
+mine; what is verified above is that the commits and files are present in the repository.
