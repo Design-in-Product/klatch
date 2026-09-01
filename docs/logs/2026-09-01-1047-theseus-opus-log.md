@@ -124,3 +124,116 @@ scripts/verify-tsx-guard.mjs
 `git status --porcelain` empty; `node scripts/verify-tsx-guard.mjs` → `PASS — all 185 checks passed`.
 
 **Step 3 —** this log's wrap section committed and pushed last. Delivery is the wrapper's to claim, not mine; what is verified above is that the commits and files are present in the repository.
+
+---
+
+# Second fire — 9/1 WORK, 14:47 PT
+
+Round 134. Daedalus's Round 133 memo landed 13:17, after my 10:47 fire and before this one; read and
+actioned in the fire that received it, inbound `git mv`'d to `docs/mail/read/`. His §5 nominated a
+fair target against his own work — `classifySpecifier` in `scripts/probe-import-sites.mjs` — and
+asked that someone who did not write the argument go looking for the input that breaks it. I took it.
+
+## 14:49 — Baseline, before anything
+
+```
+git status --porcelain            (empty)
+node scripts/verify-tsx-guard.mjs → PASS — all 185 checks passed
+node scripts/probe-import-sites.mjs → 37 modules parsed, 16 dynamic-import sites,
+                                      0 with parse diagnostics; 0 site(s) a fourth limb would name
+```
+
+## 14:52 — The under-fire: directory specifiers take the `resolves` branch
+
+M1, unguarded `await import('./r134-fixture')` over a side-effect-free `index.ts`:
+
+```
+plain node:  Error [ERR_UNSUPPORTED_DIR_IMPORT] … at finalizeResolution   (raw crash)
+tsx:         M1 loaded 1
+§(b):        PASS — all 185          (count unmoved — no anchor, so no row)
+probe:       resolves   r134-m1-dirimport.mjs:2  ./r134-fixture      0 named
+```
+
+`existsSync` is true for a directory; `path.extname` is `''`; `''` is not in `TS_EXT` → `'resolves'`,
+the clean verdict. M1b (`index.js`) crashes identically under plain node, so `'resolves'` is wrong
+for every directory specifier, not only TypeScript ones.
+
+## 14:56 — And the Round 126 guard does not repair the shape
+
+M2 = M1 wrapped in Round 126's exact guard shape. **Still a raw stack trace under plain node.**
+`explainTsxRequirement` rethrows at `lib/tsx-required.mjs:133`: `isTsResolutionFailure` wants
+`ERR_MODULE_NOT_FOUND`, `isTsExtensionFailure` wants `ERR_UNKNOWN_FILE_EXTENSION`, this is a third
+code. Not just invisible to two readings — the documented repair doesn't abolish it.
+
+## 15:01 — The over-fire, and it is live
+
+Node here is **v26.5.0**, which strips types natively. M8, a real repo path (the same specifier
+`verify-recogniser-equivalence.mjs:65` imports), unguarded `await import('../packages/shared/src/types.ts')`:
+
+```
+plain node:  M8 loaded string        rc 0 — runs clean
+§(b):        FAIL — 1 of 187   UNGUARDED r134-m8-realts.mjs
+probe:       UNGUARDED  …/types.ts  (typescript)
+```
+
+Both instruments red on a file correct under both runners. M7 (fixture form) same. So the classifier
+is wrong in both directions from one substitution — it answers "lands on TypeScript?" where the limb
+needs "fails under plain node?" — and §(b) shares the premise, so the fourth limb's independence is
+in mechanism, not in claim.
+
+## 15:04 — Two structural findings on the site-finder
+
+- M3 (static `.ts` import): §(b) `FAIL — 1 of 185` and names it; probe finds 16 sites, names 0. The
+  visitor matches dynamic `import()` only. Additive limb, so not a regression — but 133 §3's
+  "agrees with §(b) on all 7 files" is a fact about today's tree, not a property.
+- M4 (static, `.js` spelling): byte-identical crash to 133 §1's live file, `PASS — all 185` and probe
+  `0 named` — silent in both, for two independent reasons — and unrepairable by the Round 126 shape,
+  since a static import cannot be wrapped in `try`.
+
+Smaller: M5 (template literal) is reported `<computed>`/`UNREADABLE` — precision loss, no silent
+miss, §(b) catches it too. M6 (absolute specifier) is `'bare'` and silent in both; sized as a
+boundary of `startsWith('.')`, not proposed for repair.
+
+## 15:08 — The recommendation I did not send
+
+I had written up "ask node's resolver instead of the filesystem — `import.meta.resolve`", then ran it
+before sending, per Daedalus's own §2 lesson:
+
+```
+  RESOLVES  ../packages/shared/src/types.ts
+  RESOLVES  ../packages/server/src/claude/recall.js      ← does not exist
+  RESOLVES  ../packages/server/src/db                    ← directory
+  RESOLVES  ../packages/server/src/claude/recall.ts
+```
+
+All four. It is URL resolution and skips `finalizeResolution`'s existence and directory checks — a
+*worse* proxy than `existsSync`. Recorded as §7 of the research doc, because the near-miss is the
+point: the correction cost one command and would have cost a round.
+
+Consequence for 135: failures in the under-fire shapes happen before the target evaluates, so an
+import attempt is free on those paths — but you cannot know in advance which path you're on, and the
+attempt that doesn't fail is the one that executed the target. There is no reading-level oracle for
+loadability. That is a bound on the design, not a defect in the code.
+
+## 15:10 — Cleanup and deliverables
+
+Eight mutants and two fixtures created under `scripts/`, all deleted. Clean tree re-verified:
+`git status --porcelain` empty, `PASS — all 185`, probe `0 site(s) a fourth limb would name`.
+
+Zero live turns, zero model calls, zero API spend, zero corpus runs; `packages/` untouched.
+
+- `docs/research/round134-classifyspecifier-is-wrong-in-both-directions-and-the-oracle-i-would-have-recommended-does-not-work-2026-09-01.md`
+- `docs/mail/theseus-to-daedalus-cc-xian-team-classifyspecifier-is-wrong-in-both-directions-2026-09-01.md`
+- Daedalus's inbound moved to `docs/mail/read/`; mail committed separately and pushed to `main`
+  first, per the worktree mail discipline (`f3618ed`).
+
+No repair shipped, on the same reasoning Daedalus gave in 133 §5 and I gave in 132: the round that
+finds the reason is not the round that does it. No case-table rows, on 131's reasoning — which now
+cuts both ways, since a row asserting today's predicate would codify the over-fire as well as the
+under-fire. Nothing this fire needs xian.
+
+Open lead I did not investigate and said so in the memo: under node 26 the first hop of a `.ts`
+import succeeds and the failure moves one module inward (M6 crashed naming `db/queries.js` from
+inside `recall.ts` — a specifier the script never wrote). Whether §(b2)'s crash detector and
+`isTsResolutionFailure` still describe the failures node 26 produces is a real question, and bigger
+than this assignment.
