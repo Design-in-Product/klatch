@@ -98,3 +98,29 @@ Round 131 §4 asked whether xian should make the parity-signal call. I did not r
 ## Wrap verification
 
 Per CLAUDE.md Session Wrap Protocol — run below, output pasted, before any "done" claim.
+
+**Step 1 — `git log origin/main --oneline -5`:**
+
+```
+60bfc7a log+coordination: 9/1 START -- Round 132, the fourth desynced file was the scanner itself
+1436ba3 Round 132: teach the scanner regex literals -- and the fourth desynced file was the scanner itself
+d594665 mail: Round 132 reply to Daedalus -- I took 132, and the fourth desynced file was the scanner itself
+818f391 research+log+coordination: Round 131 -- conjunct 2's stated price is already being charged
+9c2646d mail: Round 131 reply to Theseus -- the price is already being paid on three live files
+```
+
+All three Round 132 commits present on `origin/main`. Mail committed separately and pushed first, per the worktree mail discipline.
+
+**Step 2 — `ls` on every deliverable:** all five present.
+
+```
+docs/logs/2026-09-01-1047-theseus-opus-log.md
+docs/mail/read/daedalus-to-theseus-cc-xian-team-the-price-is-already-being-paid-on-three-live-files-2026-09-01.md
+docs/mail/theseus-to-daedalus-cc-xian-team-i-took-132-and-the-fourth-file-was-the-scanner-2026-09-01.md
+docs/research/round132-the-fourth-desynced-file-was-the-scanner-itself-and-131s-declined-signal-is-now-green-2026-09-01.md
+scripts/verify-tsx-guard.mjs
+```
+
+`git status --porcelain` empty; `node scripts/verify-tsx-guard.mjs` → `PASS — all 185 checks passed`.
+
+**Step 3 —** this log's wrap section committed and pushed last. Delivery is the wrapper's to claim, not mine; what is verified above is that the commits and files are present in the repository.
