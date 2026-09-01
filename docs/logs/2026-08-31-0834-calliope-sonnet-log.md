@@ -100,3 +100,75 @@ thread stays parked on xian, unmoved. Daedalus→Argus SDK/MCP-v2 memo read, no 
 action for this seat.
 
 Only file touched: `docs/operations/attention-rollup.md`, this log, and the coordination entry below.
+
+## 17:05 PT (SWEEP fire) — substantive: rollup refreshed to v86, Round 127–128 folded in
+
+Pulled clean, already up to date. `git log --oneline e07e806..HEAD` (my own v85 rollup commit) showed
+five new commits, none mine: Daedalus's Round 127 reply, Argus's stdio-gap closure, and Theseus's
+Round 128 reply, each with their own mail+research+log(+coordination) pairs.
+
+**Mail sweep:** `git log --oneline e07e806..HEAD -- docs/mail/ docs/research/` — three memo commits,
+none addressed to Calliope. `grep -l "^to: calliope" docs/mail/*.md` — only the standing
+`janus-to-calliope-cc-xian-logbook-shape-lean-period-spanning-2026-08-28.md` thread, still parked on
+xian (no `xian-to-*` reply on disk), no new action needed this fire.
+
+**Checked, not recalled:** rollup banner still read v85 (last folding Round 123–126). Read Round
+127 and 128 in full from `docs/research/`.
+
+**Round 127 (Daedalus, WORK fire):** pointed a mutant at Round 126's *repair* (clause 3 of rule 8b)
+rather than its residual. Two dynamic import sites in one file — one readable and correctly guarded,
+one unreadable behind a swallowing catch — and every limb reported healthy, because the readable site
+made the whole file `importsTsSource`, so the bucket's own "no site is readable" test was never asked
+of the unreadable site. `PASS — all 110` on the mutant (105 → 110); control (readable site deleted)
+correctly failed at 1/106. Root cause: Round 125 split the negative bucket's two meanings, then
+recombined them with `.some()` over the whole file — re-fusing exactly what it had just separated, one
+level up. Repaired by enumerating every anchor site once (`anchorsOf`) and deriving file-level
+verdicts from site-level ones; bucket reports `file:line`. 105 → 109. Separately: found the "prose
+over-fire" v85 scored as latent is in fact live, in Round 126's own docblock line describing its own
+repair (`verify-tsx-guard.mjs:113`), invisible only because that file self-excludes from the read
+population — and the self-exclusion's justifying comment gives a run-limb reason ("§(c) would then run
+it") for what is also a read-limb bound. Adopted Theseus's Round 126 amendment as rule 8b clause 4 by
+applying it there, with a qualification: re-derivation is not a synonym for widening (this file's
+read-side reason is *narrower* than its run-side one, not wider).
+
+**Round 128 (Theseus, WORK fire):** invited to mutate the new `anchorsOf`, found the escape one level
+further out again — "TypeScript" was hardcoded as ".ts file that fails to resolve" independently in
+all three limbs, each written from the same one example file (`queries.ts`). `.tsx` (measured: 38 real
+files under `packages/client`, 178 `.ts`) escaped all three with **no conjunction needed** — unlike
+Rounds 124–127, which each needed two shapes at once to survive. A top-level, unguarded `.tsx` dynamic
+import crashed raw under plain `node` while the tool reported `PASS — all 110`; a *correctly guarded*
+`.tsx` import also crashed raw and still passed the guard — node type-strips `.ts` but not `.tsx`, so
+the failure arrives one stage earlier, with none of the error properties the guard's parser looks for.
+Structural finding, stated as a rule: agreement between limbs that share a *definition* measures the
+definition, not the file (Round 125's "agreement can't see absence," one level further out, harder to
+spot because a shared definition is three regexes in three files nobody laid side by side). Repaired
+by exporting `TS_EXTENSIONS` once and deriving the anchor, the guard's sibling test, and the extension
+predicate all from it, plus a second wrong-runner detector at the limb that never reads source (the
+repair Theseus says "would have killed both mutants on its own"). 109 → 135. Fifth consecutive round
+the denominator rose — this time while coverage genuinely rose too, recorded so the tell keeps its
+meaning.
+
+No count moves on the eviction-detection track across either round (region count 3, surviving shapes
+10 — independently confirmed via `verify-rule-discrimination.mjs`, not taken from either memo). No GO
+requested by either round. `git diff --stat e07e806..HEAD -- packages/` empty — both rounds are
+`scripts/`/`docs/research/`-only.
+
+**Separately, informational:** Argus closed the stdio-transport test-coverage gap thread — confirmed
+the gap directly (`grep`: only `bin.ts` references `Stdio*Transport`, all four MCP test files use
+`InMemoryTransport`), independently re-verified Daedalus's SDK bump, and recommended folding a
+subprocess test into the MCP v2 migration's step 4 rather than risking a flaky spawn in the shared
+1447-test suite this fire. Both memos already closed to `docs/mail/read/` by Argus himself; no cc to
+Calliope, no action for this seat, noted for completeness only.
+
+Folded both rounds into the rollup: banner rewritten to v86 (old v85 banner demoted to the single
+inline "Prior banner," matching established practice), v86 changelog entry added. No body-section
+bullet added, matching the last several versions' banner+changelog-only practice.
+
+**Verified before writing, not carried from either memo's own claims:** re-ran the suite myself:
+server **1447/1447 (88 files)**, client **239/239 (13 skipped)**, typecheck clean across all three
+workspaces — unchanged; ran `node scripts/verify-tsx-guard.mjs` directly, confirmed **135/135** (not
+Theseus's printed count); ran `verify-design-assertions-gated.mjs` (37/37) and
+`verify-rule-discrimination.mjs` (surviving shapes 10, unchanged) directly as well.
+
+Only files touched: `docs/operations/attention-rollup.md`, this log, and the coordination entry
+below.
