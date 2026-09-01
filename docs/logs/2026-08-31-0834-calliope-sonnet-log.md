@@ -172,3 +172,62 @@ Theseus's printed count); ran `verify-design-assertions-gated.mjs` (37/37) and
 
 Only files touched: `docs/operations/attention-rollup.md`, this log, and the coordination entry
 below.
+
+## 21:45 PT (STOP fire) — substantive: rollup refreshed to v87, Round 129–130 folded in
+
+Pulled clean, already up to date at `50b4a06`. `git log --oneline 363e684..HEAD` (my own v86 rollup
+checkpoint) showed ten new commits, none mine: Daedalus's Round 129 reply (WORK fire) and Theseus's
+Round 130 reply (STOP fire), each with their own mail+research+log+coordination pairs, plus two
+unrelated no-op STOP entries (Argus, Iris) folded into COORDINATION.md between them.
+
+**Mail sweep:** `grep -l "^to: calliope" docs/mail/*.md` — only the standing
+`janus-to-calliope-cc-xian-logbook-shape-lean-period-spanning-2026-08-28.md` thread, still parked on
+xian (`ls docs/mail/ | grep -i "^xian-to"` empty, no reply on disk). Round 129's and Round 130's own
+mail files are already closed to `docs/mail/read/` by their own participants (`git show 63460a5`,
+`git show d865a94` — both zero-insertion renames on the old path). No cc to Calliope on either, no
+action for this seat.
+
+**Checked, not recalled:** rollup banner still read v86 (last folding Round 127–128). Read Round 129
+and 130 in full from `docs/research/`.
+
+**Round 129 (Daedalus, WORK fire):** named the frame first — of the seven modules that import
+TypeScript, three sit in the read-only population with no behavioural limb to cross-check them, so for
+those three `importsGuardSource` "is not one limb of three, it is the only limb." Mutating it found a
+file that imports the guard module for an unrelated export and mentions the wrapping call only in a
+comment — reads `PASS`, reproducing the exact raw-resolution stack trace Round 121 set out to abolish,
+through prose rather than code. Also found two correct verifiers over-firing on quote style and
+catch-binding name — the same class Round 124 repaired for one spelling five rounds ago and never
+generalized. Repaired via `stripSource` (blank comment/string bodies, preserve offsets) plus resolving
+the import specifier against the guard's real path rather than matching a path convention; 135 → 148.
+Left an inert-guard escape unrepaired and named rather than absorbed — no source-text predicate can
+close it, so it's now reported `source-only` instead of sharing the word `guarded` with a run-certified
+verdict. Handed Round 130 the fair target: the anchor conjunct, plus the reader (`stripSource`) it needs
+and three fixtures whose meaning the route would change.
+
+**Round 130 (Theseus, STOP fire):** measured the handed-over one-line route against the tool's own
+source before applying it, and found it insufficient — comment-blanking alone raises the narrow count
+9 → 10 but leaves 17 string-borne anchors standing, since the anchor's *target* is itself a string and
+can't be blanked the way a call body can. Repaired with a second conjunct (a site is real code iff its
+own opening quote survives a strings-blanked reading). In building the control, found
+`verify-tsx-guard.mjs` excludes *itself* from the population it evaluates everyone else with — and that
+self-exclusion is what kept the file from ever being asked whether it passes its own check: it didn't,
+on 9 sites in its own source, for nine rounds. Also corrected Round 129's handover on one fixture — a
+row credited with testing "a mention outside an import position" tested zero anchors both before and
+after, for a different (unquoted-specifier) reason than stated, sitting directly above the exact shape
+it was credited with catching. 148 → 168.
+
+No count moves on the eviction-detection track across either round (region count 3, surviving shapes
+10 — independently confirmed via `verify-rule-discrimination.mjs`, not taken from either memo). No GO
+requested by either round. `git diff --stat 363e684..HEAD -- packages/` empty — both rounds are
+`scripts/`/`docs/research/`-only.
+
+Folded both rounds into the rollup: banner rewritten to v87 (old v86 banner demoted to the single
+inline "Prior banner," matching established practice), v87 changelog entry added. No body-section
+bullet added, matching the last several versions' banner+changelog-only practice.
+
+**Verified before writing, not carried from either memo's own claims:** re-ran the suite myself: server
+**1447/1447 (88 files)**, client **239/239 (13 skipped)**, typecheck clean across all three
+workspaces — unchanged; ran `node scripts/verify-tsx-guard.mjs` directly, confirmed **168/168** (not
+either memo's printed count for the final state).
+
+Only files touched: `docs/operations/attention-rollup.md`, this log, and the coordination entry below.
