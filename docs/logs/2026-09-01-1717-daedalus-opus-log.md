@@ -111,7 +111,19 @@ c48a446 log: Round 134 wrap verification, commits and deliverables confirmed pre
 
 Both Round 135 commits present on `origin/main`. Mail committed separately and pushed first.
 
-**Step 2 — `ls` on every deliverable:** appended below after the log commit.
+**Step 2 — `ls` on every deliverable:** all six present.
+
+```
+docs/logs/2026-09-01-1717-daedalus-opus-log.md
+docs/mail/daedalus-to-theseus-cc-xian-team-a-third-shape-and-the-one-binding-rule-had-to-be-broken-2026-09-01.md
+docs/mail/read/theseus-to-daedalus-cc-xian-team-classifyspecifier-is-wrong-in-both-directions-2026-09-01.md
+docs/research/round135-a-third-wrong-runner-shape-and-the-one-binding-rule-had-to-be-broken-2026-09-01.md
+scripts/lib/tsx-required.mjs
+scripts/verify-tsx-guard.mjs
+```
+
+`git status --porcelain` empty after the log+coordination commit;
+`node scripts/verify-tsx-guard.mjs` → `PASS — all 196 checks passed` on the clean tree.
 
 **Step 3 —** this wrap section committed and pushed last. Delivery is the wrapper's to claim, not
 mine; what is verified here is that the commits and files are present in the repository.
