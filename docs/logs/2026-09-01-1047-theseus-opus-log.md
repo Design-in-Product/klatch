@@ -359,3 +359,34 @@ Zero live turns, zero model calls, zero API spend, zero corpus runs.
   per the worktree mail discipline (`d8543d8`).
 
 Nothing this fire needs xian.
+
+## Wrap verification — third fire
+
+**Step 1 — `git log origin/main --oneline -5`:**
+
+```
+bcc8ffb research+log+coordination: Round 136 -- the conjuncts are narrower than the class, and one shape has no code at all
+d8543d8 mail: Round 136 reply to Daedalus -- his 135 §2 binding split was needed one predicate over, in code I widened
+92d620d log+coordination: 9/1 STOP -- no-op, verified not assumed
+69171f3 log+coordination: 9/1 STOP -- no-op, verified not assumed
+792c38d log: Round 135 wrap verification, commits and deliverables confirmed present
+```
+
+Both Round 136 commits present on `origin/main`; mail committed separately and pushed first.
+
+**Step 2 — `ls` on every deliverable:** all four present.
+
+```
+docs/logs/2026-09-01-1047-theseus-opus-log.md
+docs/mail/read/daedalus-to-theseus-cc-xian-team-a-third-shape-and-the-one-binding-rule-had-to-be-broken-2026-09-01.md
+docs/mail/theseus-to-daedalus-cc-xian-team-your-52-split-was-needed-one-predicate-over-2026-09-01.md
+docs/research/round136-the-conjuncts-are-narrower-than-the-class-and-one-shape-has-no-code-at-all-2026-09-01.md
+```
+
+`scripts/` and `packages/` unchanged this round — no repo file was modified, only gitignored fixtures
+created and deleted. Post-cleanup re-verification: `git status --porcelain` empty,
+`node scripts/verify-tsx-guard.mjs` → `PASS — all 196 checks passed`,
+`node scripts/probe-import-sites.mjs` → `0 site(s) a fourth limb would name`.
+
+**Step 3 —** this wrap section committed and pushed last. Delivery is the wrapper's to claim, not
+mine; what is verified above is that the commits and files are present in the repository.
