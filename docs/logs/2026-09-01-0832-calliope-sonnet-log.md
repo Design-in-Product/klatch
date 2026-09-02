@@ -95,3 +95,93 @@ twenty-one renders stale — not hand-patched this fire, same partial-edit risk 
 
 No product/spec decision needed from xian this fire. `docs/COORDINATION.md` updated in the
 same commit pattern as prior rollup fires.
+
+## 17:00 PT (WORK fire) — substantive: rollup refreshed to v89, Round 133–134 folded in
+
+Pulled clean, already up to date. `git log --oneline 2aa4428..HEAD` (Argus's 9/1 WORK
+checkpoint, later than my own 12:45 MID checkpoint above) showed three new commits, all
+Theseus's (Round 134: mail, research+log+coordination, wrap-verification log). Daedalus's own
+Round 133 (mail, repair, log+coordination, wrap) had already landed earlier in the window and
+was visible at Argus's checkpoint but not yet folded into the rollup.
+
+**Round 133 (Daedalus)** took the read-only fourth limb Theseus handed him in 132. Measured
+the three read-only-population files under plain `node` before reasoning about them (all three
+crash at their first guarded import under `tsx`'s absence, confirming the run-limb bound is
+real, not assumed). Found a fourth file by following a hazard-scan flag rather than by going
+looking: `scripts/probe-expand-continuation.mts` held an unguarded dynamic import to a `.js`
+specifier over a `.ts` sibling — crashing raw (`ERR_MODULE_NOT_FOUND`) under plain `node` while
+`verify-tsx-guard.mjs` read `PASS — all 185` at the exact same moment. Cause: the scanner's
+anchor (`ANCHOR_SOURCE`) requires a `TS_EXTENSIONS` member in the specifier text itself, and a
+`.js`-spelled specifier onto a `.ts` file doesn't have one. Two mutants (`.js` vs `.ts`
+specifier, one line apart) confirmed: `.js` never named, count unmoved; `.ts` named and fails.
+Guarded the live file in Round 126's shape, verified inert on the working path (plain `node`
+now reports `INCOMPLETE`, no stack trace; `tsx` still reaches real work). Built
+`scripts/probe-import-sites.mjs`, a genuinely independent fourth-limb reading using the
+`typescript` package's own parser (already a resolvable dependency, nothing new added) rather
+than the scanner's regex approach — on the clean tree it agrees with the existing scanner on
+all 7 files it sees and names zero after the repair. Caught his own mid-round bug: the first
+draft of `classifySpecifier` called every `existsSync` hit "resolves," so no known-guarded site
+ever registered as TypeScript — a tell (zero `typescript` rows, which no correct reading of
+this tree produces) that led him to fix it before shipping. Named §5 (`classifySpecifier`) as a
+fair target against his own new function, for someone who didn't write the argument.
+
+**Round 134 (Theseus)** took that target and found `classifySpecifier` wrong in both
+directions, on the same fire. **Under-fire:** a directory specifier — `existsSync` true,
+`path.extname` `''`, not in `TS_EXT` — reads `resolves`, but a directory import crashes raw
+under plain `node` with `ERR_UNSUPPORTED_DIR_IMPORT`, a third error code neither of the Round
+126 guard's two checks (`ERR_MODULE_NOT_FOUND`, `ERR_UNKNOWN_FILE_EXTENSION`) recognizes — so
+even a file doing everything the guard shape asks still emits the raw stack trace it exists to
+replace. **Over-fire, the more serious half:** this worktree runs node v26.5.0, which strips
+types natively. A real repo import (the same specifier `verify-recogniser-equivalence.mjs:65`
+uses, `../packages/shared/src/types.ts`) loads clean under both runners, but both the existing
+scanner and the new fourth limb read it red — the fourth limb was built to be mechanistically
+independent of the scanner (parser vs. regex-scan, filesystem vs. enumeration) and reproduces
+its exact error anyway, because the independence lived in the mechanism, not in the shared
+premise both readings make about what "needs tsx" means. Traced the bound underneath both
+failures: every misread happens at module-resolution time, before the target evaluates, so an
+import attempt is free on the failing paths — but there is no way to know in advance which path
+you're on, and the one attempt that doesn't fail is exactly the attempt that already executed
+the target. **No reading-level oracle for loadability exists** — a bound on the design, not a
+defect in either function. A candidate fix he'd drafted before running it (`import.meta.resolve`
+instead of `existsSync`) was measured first and found strictly worse: it resolves a nonexistent
+file and a bare directory identically to a real module, since it skips the existence/directory
+checks a real load performs — filed as a documented near-miss rather than sent as a
+recommendation. No repair shipped, no case-table rows added, count holds at **185** — both
+choices made deliberately, on both rounds' own stated reasoning that the round which finds the
+reason for a fix is not the round that takes it. One open lead flagged, not investigated: under
+node 26 a `.ts` import's failure can surface one hop inward, naming a specifier the script never
+wrote — whether the existing crash detector still describes what node 26 actually produces is
+an open question, named as bigger than this round's assignment.
+
+Both rounds: zero API/model calls, zero corpus runs, `packages/` untouched. Round 133's mail
+closed to `docs/mail/read/` same-session by its own participants. Round 134's memo — cc-only to
+this seat, explicitly "nothing here needs xian" — stays open in `docs/mail/`, correctly not
+mine to move since I'm cc, not the addressee; Daedalus is the right party to close it.
+
+**Mail sweep:** `grep -l "^to: calliope" docs/mail/*.md` — only the standing
+`janus-to-calliope-cc-xian-logbook-shape-lean-period-spanning-2026-08-28.md` thread, day 5+
+since 8/28, `ls docs/mail/ | grep -i "^xian-to"` still empty, no reply on disk, no new signal.
+Cross-poll brief unchanged since 9/1 09:00, already noted at prior fires today.
+
+**Verified before writing, not carried from either memo's claimed numbers:**
+- `npm test` (root): server **1447/1447 (88 files)**, client **239/239 (13 skipped)** — zero
+  drift.
+- `npm run typecheck` clean across all three workspaces.
+- `node scripts/verify-tsx-guard.mjs` directly: **PASS — all 185 checks passed**, matches both
+  rounds' stated count (unmoved).
+- `node scripts/probe-import-sites.mjs` directly: **0 site(s)** a fourth limb would name,
+  matches Round 133's post-repair state.
+- `node scripts/verify-rule-discrimination.mjs` directly: eviction-detection track unchanged —
+  region count 3, surviving shapes 10.
+- `git diff --stat 2aa4428..HEAD -- packages/` — empty. Both rounds are `scripts/` and
+  `docs/research/` only.
+
+**Rollup refreshed:** `docs/operations/attention-rollup.md` v88 → v89. Banner rotated (v88's
+text preserved verbatim as the new prior banner; v87's prior-banner text dropped — already
+captured in its own changelog entry, same pattern as v87→v88 and earlier). Added a v89
+changelog bullet. Metrics strip unchanged (3/0/4/5) — no new 🔴, no closures.
+`docs/operations/attention-rollup.html` still unsynced since v67 (Round 81/82), now
+twenty-two renders stale — not hand-patched this fire, same partial-edit risk noted since v69.
+
+No product/spec decision needed from xian this fire. `docs/COORDINATION.md` updated in the
+same commit pattern as prior rollup fires.
