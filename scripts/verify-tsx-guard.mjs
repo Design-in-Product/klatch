@@ -417,7 +417,10 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { spawnSync } from 'node:child_process';
 import { fileURLToPath, pathToFileURL } from 'node:url';
-import { isTsResolutionFailure, isTsExtensionFailure, TS_EXTENSIONS } from './lib/tsx-required.mjs';
+import {
+  isTsResolutionFailure, isTsExtensionFailure, isTsDirImportFailure,
+  TS_EXTENSIONS, TS_DIR_INDEX_EXTENSIONS,
+} from './lib/tsx-required.mjs';
 
 const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const SCRIPTS = path.join(REPO, 'scripts');
@@ -527,12 +530,86 @@ ok('PRECONDITION — the .tsx predicate has at least one true case and one false
   isTsExtensionFailure(extErr(REAL_TSX)) === true
     && isTsExtensionFailure(extErr(REAL_TSX, '.tsx', 'EOTHER')) === false);
 
-// The two predicates partition rather than overlap: each must reject the other's shape, or
+// Round 135, Daedalus. Found by Theseus's Round 134 §1. The third way the wrong runner presents,
+// and the second time a file carrying the guard in canonical form crashed raw anyway: `node`'s ESM
+// resolver does no directory-index lookup, so `import('./x')` over a directory holding `index.ts`
+// dies at `finalizeResolution` with `ERR_UNSUPPORTED_DIR_IMPORT` — a code neither predicate above
+// accepts — while `tsx` loads it. Measured both runners on a fixture before this was written.
+//
+// The fixture is a real directory on this seat holding a real `index.ts`, for the reason REAL_TS
+// and REAL_TSX are: it cannot go vacuous if the tree is reorganised without turning this red.
+const REAL_TS_DIR = path.join(REPO, 'packages/server/src/db');
+if (!fs.existsSync(path.join(REAL_TS_DIR, 'index.ts'))) {
+  console.error(`INCOMPLETE — ${path.relative(REPO, REAL_TS_DIR)}/index.ts is not on this seat; §(a) has no directory fixture.`);
+  process.exit(2);
+}
+// Unlike the `.tsx` shape, node attaches a structured `url` here (own properties are `code`,
+// `message`, `stack`, `url` — measured on v26.5.0), so the predicate reads a field rather than
+// parsing prose and there is no reformatting to fail closed against.
+const dirErr = (dir, code = 'ERR_UNSUPPORTED_DIR_IMPORT') =>
+  Object.assign(new Error(`Directory import '${dir}' is not supported resolving ES modules`),
+    { code, url: pathToFileURL(dir).href });
+
+ok('the directory shape is recognised: a directory whose index.ts only tsx resolves',
+  path.relative(REPO, REAL_TS_DIR),
+  isTsDirImportFailure(dirErr(REAL_TS_DIR)) === true);
+
+// The soundness conjunct, and it is why this predicate does not reuse `TS_EXTENSIONS`. Measured on
+// this seat: `tsx` resolves `<dir>/index` for `.js`, `.ts`, `.tsx` and `.json` only — its own
+// failure names `index.json` as the last candidate tried. So `.mts` and `.cts` are members of
+// `TS_EXTENSIONS` for which "re-run under tsx" is a remedy that does not work. A directory holding
+// only `index.mts` must be re-thrown, not answered.
+ok('PRECONDITION — the directory-index binding is narrower than TS_EXTENSIONS, deliberately',
+  { dirIndex: TS_DIR_INDEX_EXTENSIONS, tsOnly: TS_EXTENSIONS.filter((e) => !TS_DIR_INDEX_EXTENSIONS.includes(e)) },
+  TS_DIR_INDEX_EXTENSIONS.every((e) => TS_EXTENSIONS.includes(e))
+    && TS_EXTENSIONS.some((e) => !TS_DIR_INDEX_EXTENSIONS.includes(e)));
+
+// A real directory that exists and holds `index.css` but no TypeScript index — so an implementation
+// that globbed `index.*`, or that asked only "is this a directory?", is red here rather than
+// telling the author of a genuinely unresolvable import to re-run under a runner that also fails.
+ok('a directory with no TypeScript index is NOT claimed as a runner problem', undefined,
+  isTsDirImportFailure(dirErr(path.join(REPO, 'packages/client/src'))) === false);
+
+// The guard's whole message is that nothing is missing, so it must not say that about a path it has
+// not confirmed is a directory on disk.
+ok('a directory that is not on disk is not claimed', undefined,
+  isTsDirImportFailure(dirErr(path.join(REPO, 'packages/server/src/no-such-dir'))) === false);
+
+ok('a file path carrying this code is not claimed', undefined,
+  isTsDirImportFailure(dirErr(REAL_TS)) === false);
+
+ok('a different error code is not claimed (directory shape)', undefined,
+  isTsDirImportFailure(dirErr(REAL_TS_DIR, 'ERR_MODULE_NOT_FOUND')) === false);
+
+ok('a non-file: url is not claimed (directory shape)', undefined,
+  isTsDirImportFailure(Object.assign(new Error('x'),
+    { code: 'ERR_UNSUPPORTED_DIR_IMPORT', url: 'node:sqlite' })) === false);
+
+ok('a null/undefined error is not claimed (directory shape)', undefined,
+  isTsDirImportFailure(undefined) === false && isTsDirImportFailure(null) === false);
+
+ok('PRECONDITION — the directory predicate has at least one true case and one false case', undefined,
+  isTsDirImportFailure(dirErr(REAL_TS_DIR)) === true
+    && isTsDirImportFailure(dirErr(REAL_TS_DIR, 'EOTHER')) === false);
+
+// The predicates partition rather than overlap: each must reject the others' shapes, or
 // `explainTsxRequirement` could print the resolution body for an extension failure — the wrong
-// cause, stated confidently, which is the defect this file exists to prevent.
-ok('PRECONDITION — the two wrong-runner predicates do not both claim either shape', undefined,
-  isTsResolutionFailure(extErr(REAL_TSX)) === false
-    && isTsExtensionFailure(err(asJs(REAL_TS))) === false);
+// cause, stated confidently, which is the defect this file exists to prevent. Round 135 makes this
+// three-way rather than adding a third pair, so a fourth shape extends one check instead of three.
+const SHAPES = [
+  ['resolution', err(asJs(REAL_TS))],
+  ['extension', extErr(REAL_TSX)],
+  ['directory', dirErr(REAL_TS_DIR)],
+];
+const PREDICATES = [
+  ['resolution', isTsResolutionFailure],
+  ['extension', isTsExtensionFailure],
+  ['directory', isTsDirImportFailure],
+];
+const misclaimed = SHAPES.flatMap(([shape, e]) =>
+  PREDICATES.filter(([name, p]) => p(e) !== (name === shape)).map(([name]) => `${name} on ${shape}`));
+ok('PRECONDITION — each wrong-runner predicate claims its own shape and only its own',
+  misclaimed, misclaimed.length === 0);
 
 // ---------------------------------------------------------------------------------------------
 // §(b) Every verifier that dynamically imports TypeScript is wrapped — enumerated, not listed
@@ -1370,7 +1447,17 @@ console.log('\n=== (b2) Population-free: no verifier crashes raw under plain nod
 // guard, no catch — the crudest possible instance of the defect §(a)-§(c) exist to catch) printed a
 // raw stack trace under plain `node` while this file reported `PASS — all 110 checks passed`. Both
 // codes now, from one binding, with the two-limb structure intact: a code plus a raw frame.
-const WRONG_RUNNER_CODES = ['ERR_MODULE_NOT_FOUND', 'ERR_UNKNOWN_FILE_EXTENSION'];
+//
+// Round 135, Daedalus, from Theseus's Round 134 §5, which asked whether this list still describes
+// the failures node actually produces. It did not. A directory import raises a *third* code,
+// `ERR_UNSUPPORTED_DIR_IMPORT`, and a swept verifier crashing that way would have been reported
+// clean by this limb — M17 exactly, in the shape Round 128's fix did not generalise to. The pattern
+// is now twice-confirmed: every time this list has been written from the shapes in front of it, the
+// next shape has been outside it, so the positive control below is what keeps it honest rather than
+// the list's own plausibility.
+const WRONG_RUNNER_CODES = [
+  'ERR_MODULE_NOT_FOUND', 'ERR_UNKNOWN_FILE_EXTENSION', 'ERR_UNSUPPORTED_DIR_IMPORT',
+];
 const rawResolutionCrash = (out) => WRONG_RUNNER_CODES.some((c) => out.includes(c)) && /\n {4}at /.test(out);
 
 // Positive control, run rather than assumed: if this predicate ever stops recognising the crash
@@ -1420,6 +1507,25 @@ ok('PRECONDITION — the live node message still parses into the .tsx predicate'
     && isTsExtensionFailure(Object.assign(
       new Error(extLine.slice(extLine.indexOf('Unknown file extension'))),
       { code: 'ERR_UNKNOWN_FILE_EXTENSION' })) === true);
+
+// Round 135. The same positive control for the third shape, live, against a real directory on this
+// seat. Two things go vacuous without it: if node ever adds directory-index resolution the crash
+// stops happening, and if it renames the code the detector silently loses a limb — either way this
+// check is the only thing standing between that and a green sweep over a crashing file.
+const dirControl = run('node', ['--input-type=module', '-e',
+  `await import(${JSON.stringify(pathToFileURL(REAL_TS_DIR).href)})`]);
+ok('PRECONDITION — the crash detector recognises an unsupported-directory-import failure',
+  { rc: dirControl.rc }, rawResolutionCrash(dirControl.out));
+
+// …and that `isTsDirImportFailure` claims what the running node actually threw, not a synthesis of
+// it. §(a)'s rows build the error by hand; this one takes node's own. The `url` is read from the
+// message because the child process cannot hand back the object — the predicate itself uses the
+// structured field, which is why there is no fragility here of the kind §(a)'s `.tsx` rows carry.
+const dirLine = dirControl.out.split('\n').find((l) => l.includes("Directory import '"));
+const dirPath = dirLine === undefined ? null : /Directory import '([^']*)'/.exec(dirLine)?.[1] ?? null;
+ok('PRECONDITION — the live node directory failure is claimed by the directory predicate',
+  { dir: dirPath === null ? null : path.relative(REPO, dirPath) },
+  dirPath !== null && isTsDirImportFailure(dirErr(dirPath)) === true);
 
 for (const f of swept) {
   const r = run('node', [`scripts/${f}`]);

@@ -117,6 +117,67 @@ export function isTsExtensionFailure(err) {
 }
 
 /**
+ * The extensions `tsx` will resolve as a *directory index* and `node` will not — Round 135, Daedalus.
+ *
+ * Deliberately NOT `TS_EXTENSIONS`, and that is the whole content of this binding. Measured on this
+ * seat (node v26.5.0, `.testdata/r135/d1-matrix.mjs`), one directory per extension, run under both
+ * runners:
+ *
+ *     index.tsx   node ERR_UNSUPPORTED_DIR_IMPORT   tsx ok
+ *     index.ts    node ERR_UNSUPPORTED_DIR_IMPORT   tsx ok
+ *     index.mts   node ERR_UNSUPPORTED_DIR_IMPORT   tsx ERR_MODULE_NOT_FOUND
+ *     index.cts   node ERR_UNSUPPORTED_DIR_IMPORT   tsx ERR_MODULE_NOT_FOUND
+ *
+ * `tsx`'s own failure names the last candidate it tried — `…/index.json` — which is its probe order
+ * stated by the tool itself: `index.js`, `index.ts`, `index.tsx`, `index.json`. So `.mts` and `.cts`
+ * are members of `TS_EXTENSIONS` for which "re-run under `tsx`" is a **false** remedy, and `.js` and
+ * `.json` are extensions `tsx` does resolve but for which "it imports TypeScript source" is a
+ * **false** diagnosis. The intersection — TypeScript *and* resolvable — is these two.
+ *
+ * Rule 8b's one-binding move (Round 128) is right when the limbs ask the same question. This limb
+ * asks a different one that merely looks the same: not "what is TypeScript?" but "what does `tsx`
+ * find at `<dir>/index`?". Reusing `TS_EXTENSIONS` here would have imported a correct answer to the
+ * wrong question and produced the over-fire item 1 of `verify-tsx-guard.mjs`'s header names.
+ */
+export const TS_DIR_INDEX_EXTENSIONS = ['.tsx', '.ts'];
+
+/**
+ * The third way the wrong runner presents — Round 135, Daedalus. Found by Theseus's Round 134 §1.
+ *
+ * `node`'s ESM resolver does no directory-index lookup at all: `import('./x')` where `x/` is a
+ * directory throws `ERR_UNSUPPORTED_DIR_IMPORT` at `finalizeResolution`, before anything is loaded.
+ * `tsx` does do that lookup. So a directory holding `index.ts` is a wrong-runner failure in exactly
+ * the sense the other two predicates mean, and it arrives as a *third* code that neither of them
+ * accepts — measured: a fixture wrapped in Round 126's exact guard shape still crashed raw, because
+ * `explainTsxRequirement` re-threw. That is M19's defect a second time, in a shape Round 128's fix
+ * did not generalise to.
+ *
+ * Easier to make sound than either predecessor, for once. The error carries a structured `url`
+ * (own properties are `code`, `message`, `stack`, `url` — measured on node v26.5.0), so unlike
+ * `isTsExtensionFailure` there is no prose to parse and no reformatting to fail closed against. The
+ * conjuncts are that the path really is a directory on this seat and that it holds an index `tsx`
+ * would have resolved — so a directory with only `index.mts`, where `tsx` fails too, is re-thrown
+ * untouched rather than answered with a remedy that does not work.
+ *
+ * No `packages/` conjunct, matching `isTsExtensionFailure` and unlike `isTsResolutionFailure`.
+ * That conjunct exists there to separate "wrong runner" from "genuinely missing file", an ambiguity
+ * this shape does not have: node found the directory and declined to look inside it.
+ */
+export function isTsDirImportFailure(err) {
+  if (!err || err.code !== 'ERR_UNSUPPORTED_DIR_IMPORT' || typeof err.url !== 'string') return false;
+  if (!err.url.startsWith('file:')) return false;
+  const dir = fileURLToPath(err.url);
+  let stat;
+  try {
+    stat = fs.statSync(dir);
+  } catch {
+    return false;
+  }
+  if (!stat.isDirectory()) return false;
+  return TS_DIR_INDEX_EXTENSIONS.some((ext) => fs.existsSync(path.join(dir, `index${ext}`)));
+}
+
+/**
  * Report the wrong runner and exit 2 — or re-throw, if this is a genuine absence.
  *
  * @param {unknown} err        the error thrown by a top-level `await import('….ts')`
@@ -124,29 +185,38 @@ export function isTsExtensionFailure(err) {
  * @returns {never}
  */
 export function explainTsxRequirement(err, selfUrl) {
-  const resolution = isTsResolutionFailure(err);
   // Round 128: two shapes, one remedy. They must not share an explanation — the resolution case's
   // body ("its own `.js` specifiers", "building will not help") is a precise diagnosis there and a
   // false one for an unloadable `.tsx`, where nothing was resolved and no `.js` was involved. A
   // guard that hands out the wrong cause is item 1 of `verify-tsx-guard.mjs`'s header, and the
-  // reason this helper exists at all.
-  if (!resolution && !isTsExtensionFailure(err)) throw err;
+  // reason this helper exists at all. Round 135 adds the third shape on the same terms; the
+  // discriminant is named so a fourth cannot be bolted on as another trailing `else`.
+  const shape = isTsResolutionFailure(err) ? 'resolution'
+    : isTsExtensionFailure(err) ? 'extension'
+    : isTsDirImportFailure(err) ? 'directory'
+    : null;
+  if (shape === null) throw err;
 
   const repo = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
   const self = path.relative(repo, fileURLToPath(selfUrl));
 
   console.error(`\nINCOMPLETE — nothing was verified: this script was run under plain \`node\`.`);
-  if (resolution) {
+  if (shape === 'resolution') {
     console.error(`\nIt imports TypeScript source, whose own \`.js\` import specifiers only \`tsx\``);
     console.error(`resolves. Nothing is missing from this seat and building \`packages/\` will not`);
     console.error(`help — the specifier resolves to \`src/\`, not \`dist/\`. Re-run as:\n`);
-  } else {
+  } else if (shape === 'extension') {
     console.error(`\nIt imports a TypeScript file whose extension \`node\` cannot load. \`node\``);
     console.error(`type-strips \`.ts\` but does not strip JSX, so a \`.tsx\` import fails at format`);
     console.error(`detection. The file is present and unmodified; only the runner is wrong.`);
     console.error(`Re-run as:\n`);
+  } else {
+    console.error(`\nIt imports a *directory* whose \`index\` only \`tsx\` resolves. \`node\`'s ESM`);
+    console.error(`resolver does no directory-index lookup at all, so it stops at the directory`);
+    console.error(`itself; \`tsx\` looks inside. Nothing is missing and the index is unmodified —`);
+    console.error(`only the runner is wrong. Re-run as:\n`);
   }
   console.error(`    npx tsx ${self}\n`);
-  console.error(`(original error, for the record: ${resolution ? err.url : err.message.split('\n')[0]})\n`);
+  console.error(`(original error, for the record: ${shape === 'extension' ? err.message.split('\n')[0] : err.url})\n`);
   process.exit(2);
 }
