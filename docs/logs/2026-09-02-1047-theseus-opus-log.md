@@ -99,3 +99,90 @@ inbound but silently skipped the still-untracked reply — `e6876d7` is the fix,
 Post-commit re-verify: `node scripts/verify-tsx-guard.mjs` → `PASS — all 207 checks passed`.
 **Delivery is the wrapper's, not mine — nothing here is claimed as pushed.** `.testdata/r138/` removed; `git status` clean apart from this
 fire's tracked changes.
+
+---
+
+## 14:47 PT — WORK fire. Round 139: the Friday Piper Morgan question, measured.
+
+**Briefing.** Synced state at `b045787`. Read the Theseus section of `docs/COORDINATION.md` and
+swept `docs/mail/`. Three memos bearing on me, all actioned in this fire:
+
+1. `calliope-to-daedalus-theseus-cc-team-xian-urgent-friday-piper-morgan-test-2026-09-02.md` —
+   explicitly says treat Friday as the live priority **over** the round-track work. Three questions,
+   Q1 the load-bearing one: does a fresh import sidestep the backfill question entirely?
+2. `argus-to-daedalus-theseus-calliope-cc-xian-cowork-branch-found-and-4b-answer-2026-09-02.md` —
+   notes §4c of the cowork memo is still open on me.
+3. `cowork-to-daedalus-argus-theseus-cc-calliope-import-defects-and-descope-2026-08-28.md` §4c — the
+   doc-capability-probe question.
+
+I dropped the round track for this fire, as Calliope asked.
+
+**Baseline before anything else.** `npm test` → **exit 0** (both workspace projects). I captured the
+run with `tail -25`, so the visible tail is the client project's summary — 239 passed, 13 skipped —
+and I did not capture the server project's counts. Exit 0 is the claim I'll stand behind; the
+server-side totals I did not read this fire and am not quoting.
+
+**Spend: zero model calls, zero API calls.** Import is entirely local. Nothing under `packages/`
+was changed — the only new executable file is `scripts/probe-import-entity-binding.mts`.
+
+### What I measured
+
+Built `scripts/probe-import-entity-binding.mts` and drove the real import route against a scratch
+SQLite DB (`KLATCH_DB` under gitignored `.testdata/`), using five real sessions from five distinct
+agent worktrees in `~/.claude/projects` as a proxy for the Piper Morgan cast. **31 checks, all
+reproducing from the script's final location.**
+
+- **Arm A** — five sessions POSTed *with* `entityName`: five distinct entities minted, each channel
+  bound to exactly its own, zero assistant messages carrying a wrong `entity_id`. 22/22.
+- **Arm B** — a second Argus session, same name: `matched-by-name`, entity count unchanged, Argus
+  owns two channels. The five-sessions-one-agent case works.
+- **Arm C** — a session with **no** entity fields, which is the literal shape the shipped client
+  sends: lands on `default-entity`, mints nothing, returns no `entityDisposition`.
+- **Arms D/E** — claude.ai ZIP: every channel on `default-entity`; POSTing `entityName: 'PiperCXO'`
+  returns **201 with the name silently discarded**.
+
+**Finding: Calliope's Q1 reasoning is half right, and the wrong half is the half Friday runs on.**
+The server mints per-agent entities exactly as Increment #1 claims. The client never asks it to —
+`packages/client/src/api/client.ts:621` has no entity parameter, and `grep -rn entityGuess
+packages/client/src` returns zero hits. A fresh import through the UI reproduces the same
+72-imports-on-`default-entity` shape she is trying to escape.
+
+**This independently reproduces Iris's 8/30 memo**, which I read only after finding it in the code.
+Her 21-day-stalled confirm-step scope doc and the Friday blocker are the same item. Said so plainly
+in my reply and pointed her at her own option 2.
+
+**The fact I could not verify, and did not guess past:** whether xian's current department-head
+conversations arrive as Claude Code sessions or as claude.ai exports. That answer changes which of
+two very different jobs Friday needs — client-only, or a server change the claude.ai route has never
+had. Named it as an open question for xian rather than picking a branch.
+
+### Corrections and limits I wrote down rather than smoothed over
+
+- **`msgs=2` on 200–460KB sessions looked wrong and I checked it before reporting.** Parsed one
+  fixture directly: 39 lines, 1 human user event, 15 assistant events, 7 tool-result user events.
+  Duty-cycle sessions are one turn with enormous tool payloads, so 2 messages is correct — but it
+  means my corpus is a *shallow* proxy. Nothing here measures how a 400-message transcript imports.
+- **Carried context (Continuity #3) was not tested.** Arm A establishes the separation precondition
+  and nothing more. Calliope's claim about it stands unverified; I said so in the memo.
+- **The curl fallback recipe is route-level, not server-level.** I drove the same Hono route the dev
+  server mounts; I did not stand up `npm run dev` and curl it. Small gap, real, unclosed.
+- **Checked the unmerged branch rather than assuming.** `git diff origin/main
+  origin/claude/cowork-import-hardening -- packages/server/src/routes/import.ts | grep -cE
+  '^[+-].*(entityId|entityName|resolveImportEntity)'` → **0**. The finding holds either way.
+- **I relabelled one check mid-build.** "claude.ai ZIP import succeeded" was counted as a gap when
+  it is a precondition, which would have inflated the gap count by one. Moved to arm B. The probe
+  reports behavior arms (a failure is a regression, exit 1) separately from gap arms (a failure is
+  the *fix* landing) for the same reason.
+
+### Deliverables this fire
+
+```
+docs/research/friday-import-entity-binding-2026-09-02.md
+scripts/probe-import-entity-binding.mts
+docs/mail/theseus-to-calliope-daedalus-cc-iris-argus-xian-friday-answer-measured-2026-09-02.md
+docs/mail/theseus-to-cowork-cc-daedalus-argus-calliope-xian-4c-answer-doc-capability-probe-2026-09-02.md
+```
+
+§4c is answered from the instance I ran today rather than from theory: a doc capability claim that
+is true at the server layer and false at the product layer, which is exactly the AXT shape, and
+which survived 24 days across four agents.
