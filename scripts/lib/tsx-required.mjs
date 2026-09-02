@@ -60,8 +60,97 @@ import { fileURLToPath } from 'node:url';
  * is. Longest-first, because callers build regex alternations from this and `ts|tsx` would match
  * the `ts` of `.tsx` and then fail on the trailing `x`. `verify-tsx-guard.mjs` asserts the
  * alternation against every member, which is what catches that ordering if it is ever re-sorted.
+ *
+ * ── Round 137, Daedalus: this binding kept ONE of its three consumers ────────
+ *
+ * Theseus's Round 136 §5 sharpened the rule the hard way: *shared bindings are as dangerous as
+ * shared premises when the binding is more general than any limb's question* — generality is what
+ * makes them look reusable. `TS_EXTENSIONS` answers "what spellings does TypeScript use?", and
+ * measurement says only one consumer ever asked that. The anchor regex in `verify-tsx-guard.mjs`
+ * scans *source text* for `import('…/x.ts')`, so TypeScript's spellings are exactly its question
+ * and it still derives from here. The two runtime predicates asked different questions and were
+ * given this answer because it was the one already exported; both are now bound below.
+ *
+ * The two questions turn out to disagree in *opposite directions* from this set, which is why no
+ * single widening or narrowing could have served both (Round 137, measured):
+ *
+ *   - `isTsResolutionFailure` needs it NARROWER (drop `.mts`/`.cts`: `tsx` will not resolve a
+ *     `.js` specifier onto them, so the guard printed a remedy that does not work) and also WIDER
+ *     (add `.jsx`, which `tsx` does resolve onto and which is not TypeScript at all).
+ *   - `isTsExtensionFailure` needs it only WIDER (add `.jsx`), because every member here is a file
+ *     `tsx` loads *directly* even where node refuses it.
+ *
+ * Same extensions, opposite verdicts, because "what can `tsx` run?" and "what can `tsx` resolve a
+ * `.js` specifier onto?" are not the same set. That asymmetry is the whole argument for three
+ * bindings rather than one, and it is asserted in `verify-tsx-guard.mjs` so it cannot re-merge.
  */
 export const TS_EXTENSIONS = ['.tsx', '.mts', '.cts', '.ts'];
+
+/**
+ * What `tsx` resolves a `./x.js` import specifier ONTO — Round 137, Daedalus.
+ *
+ * Found by Theseus's Round 136 §2, which caught the over-fire; the membership below is one member
+ * wider than the `['.tsx', '.ts']` he proposed there, and finding that is what this round added.
+ *
+ * Measured on this seat (node v26.5.0, `.testdata/r137/`), one directory per row, `outer.ts`
+ * importing `./inner.js` with `inner.<ext>` on disk — contents identical across every row, so the
+ * extension is the only variable:
+ *
+ *     sibling   node                    tsx runs it?   in TS_EXTENSIONS?
+ *     .tsx      ERR_MODULE_NOT_FOUND    yes            yes
+ *     .ts       ERR_MODULE_NOT_FOUND    yes            yes
+ *     .jsx      ERR_MODULE_NOT_FOUND    yes            NO   ← the member inheritance could not reach
+ *     .mts      ERR_MODULE_NOT_FOUND    NO             yes  ← false remedy: Round 136 §2's over-fire
+ *     .cts      ERR_MODULE_NOT_FOUND    NO             yes  ← same
+ *     .json     ERR_MODULE_NOT_FOUND    NO             n/a
+ *
+ * `tsx`'s own words on the `.mts` row: `Error: Cannot find module './inner.js'`, from
+ * `nextResolveSimple`. Round 128's docblock defended the widening as "any TypeScript sibling means
+ * the file is present and the loader was wrong" — a true sentence, and not the claim this guard
+ * makes. The guard claims a **remedy**, and present-and-mis-loaded does not imply `tsx`-resolvable.
+ *
+ * ── Why this is NOT `TS_DIR_INDEX_EXTENSIONS`, which has the same value today ──
+ *
+ * It would be the tidiest possible merge and it is the exact error Round 128 made. The two lists
+ * agree on all six rows above and **diverge on `.json`**: `tsx` resolves `<dir>/index.json` but
+ * will not resolve `./inner.js` onto `inner.json` (measured, `.testdata/r137/two-questions.mjs`).
+ * So the equality is a coincidence of the TypeScript rows, not a shared definition, and a witness
+ * to that lives in `verify-tsx-guard.mjs` so a future reader cannot collapse them on inspection.
+ *
+ * `.jsx` is a member despite not being TypeScript, for the same reason `.mts` is not one despite
+ * being TypeScript: the question is what `tsx` resolves, not what TypeScript is. That is Round
+ * 135's generalisation, holding in the limb next door.
+ */
+export const TSX_JS_SPECIFIER_EXTENSIONS = ['.tsx', '.ts', '.jsx'];
+
+/**
+ * What `tsx` loads DIRECTLY where plain `node` may refuse the extension — Round 137, Daedalus.
+ *
+ * `isTsExtensionFailure`'s membership filter. Theseus's Round 136 §6 item 1 explicitly recorded
+ * that he had *not* measured whether reusing `TS_EXTENSIONS` here was over-wide, and flagged
+ * "looks unreachable" as this file's classic wrong-when-it-feels-safe claim. Measured, contents
+ * held constant, one direct import per row:
+ *
+ *     .tsx   node ERR_UNKNOWN_FILE_EXTENSION   tsx ok    predicate fired
+ *     .jsx   node ERR_UNKNOWN_FILE_EXTENSION   tsx ok    predicate DECLINED  ← under-fire
+ *     .ts    node LOADED (type-stripped)        tsx ok    unreachable on this node
+ *     .mts   node LOADED (type-stripped)        tsx ok    unreachable on this node
+ *     .cts   node SyntaxError, `code` undefined tsx ok    unreachable — Round 136 §4's bound
+ *     .css   node ERR_UNKNOWN_FILE_EXTENSION   tsx FAILS declined, correctly (header item 1)
+ *
+ * So it was over-wide in the harmless direction and over-**narrow** in a direction neither of us
+ * was looking: it is a *superset* of `TS_EXTENSIONS`, not a subset. `.ts`/`.mts`/`.cts` stay in
+ * deliberately even though this node never raises `ERR_UNKNOWN_FILE_EXTENSION` for them — that is
+ * a property of *this* node's type-stripping, measured on one node only, and a release that stops
+ * stripping would make those rows live again. Keeping them is sound because every member is a file
+ * `tsx` loads directly, so a wide set here cannot print a false remedy; the `.css` row is the
+ * control that shows the *existence* conjunct, not the membership one, is what stops the over-fire.
+ *
+ * Note the asymmetry with `TSX_JS_SPECIFIER_EXTENSIONS`: `.mts` belongs here and not there. Wide is
+ * safe in this limb and unsafe in that one, on the same extension, for the reason given on
+ * `TS_EXTENSIONS` above.
+ */
+export const TSX_LOADABLE_EXTENSIONS = ['.tsx', '.jsx', '.mts', '.cts', '.ts'];
 
 /**
  * Does `err` mean "this file was run under plain `node` and needs `tsx`"?
@@ -72,14 +161,29 @@ export function isTsResolutionFailure(err) {
   if (!err || err.code !== 'ERR_MODULE_NOT_FOUND' || typeof err.url !== 'string') return false;
   if (!err.url.startsWith('file:')) return false;
   const missing = fileURLToPath(err.url);
-  if (!missing.endsWith('.js') || !missing.includes(`${path.sep}packages${path.sep}`)) return false;
-  // The conjunct that makes this sound: a sibling TypeScript file is what `tsx` would have
-  // resolved to. Round 128 widened `.ts` to `TS_EXTENSIONS` here — a `.js` specifier written
-  // inside TypeScript resolves to whichever TypeScript extension is actually on disk, and in
-  // `packages/client` that is `.tsx`. Soundness is unchanged: any TypeScript sibling means the
-  // file is present and the loader was wrong, which is the whole claim.
-  const stem = missing.slice(0, -'.js'.length);
-  return TS_EXTENSIONS.some((ext) => fs.existsSync(stem + ext));
+  if (!missing.includes(`${path.sep}packages${path.sep}`)) return false;
+  // Round 137: the `.js` term was an under-fire — Theseus's Round 136 §3. An *extensionless*
+  // inner specifier (`from './inner'` inside a `.ts`, `inner.ts` on disk) raises the same
+  // `ERR_MODULE_NOT_FOUND` with url `…/inner`, carrying no extension at all, so `endsWith('.js')`
+  // declined and the guard re-threw a raw stack for a file `tsx` runs. `packages/client` is
+  // written this way throughout — eight non-`.tsx` files plus every component import in
+  // `App.tsx` — so this is latent only because no verifier imports client source today, which is
+  // exactly where `packages/client` sat before Round 128 made it live.
+  //
+  // Both spellings reduce to the same stem, and the sibling test below is unchanged by which one
+  // arrived. A url with some *other* extension (`.css`, `.json`) is not this shape and still
+  // declines, so the widening is to two known spellings rather than to "anything".
+  const stem = missing.endsWith('.js') ? missing.slice(0, -'.js'.length)
+    : path.extname(missing) === '' ? missing
+    : null;
+  if (stem === null) return false;
+  // The conjunct that makes this sound: a sibling file is what `tsx` would have resolved to. The
+  // membership is `TSX_JS_SPECIFIER_EXTENSIONS`, NOT `TS_EXTENSIONS` — see that binding's docblock
+  // for the measured table. Round 128 widened this to `TS_EXTENSIONS` on the argument that any
+  // TypeScript sibling proves the file present and the loader wrong; true, but the guard claims a
+  // remedy, and `tsx` will not resolve a `.js` specifier onto `.mts`/`.cts`. A `.js` with no
+  // sibling in the set stays false and is re-thrown — measured control: `tsx` fails on it too.
+  return TSX_JS_SPECIFIER_EXTENSIONS.some((ext) => fs.existsSync(stem + ext));
 }
 
 /**
@@ -112,7 +216,10 @@ export function isTsExtensionFailure(err) {
   const m = /^Unknown file extension "([^"]*)" for (.+)$/.exec(err.message.split('\n')[0]);
   if (!m) return false;
   const [, ext, file] = m;
-  if (!TS_EXTENSIONS.includes(ext)) return false;
+  // Round 137: `TSX_LOADABLE_EXTENSIONS`, not `TS_EXTENSIONS` — a superset, adding `.jsx`, which
+  // node refuses at format detection exactly as it refuses `.tsx` and which `tsx` loads. See that
+  // binding's docblock for the measured table and for why the unreachable rows stay.
+  if (!TSX_LOADABLE_EXTENSIONS.includes(ext)) return false;
   return fs.existsSync(file);
 }
 
@@ -202,13 +309,16 @@ export function explainTsxRequirement(err, selfUrl) {
 
   console.error(`\nINCOMPLETE — nothing was verified: this script was run under plain \`node\`.`);
   if (shape === 'resolution') {
-    console.error(`\nIt imports TypeScript source, whose own \`.js\` import specifiers only \`tsx\``);
+    // Round 137: "TypeScript" was too narrow in both bodies — `.jsx` is a member of both limbs
+    // and is not TypeScript. Naming the cause wrongly is item 1 of `verify-tsx-guard.mjs`'s
+    // header, so the wording tracks the measured membership rather than the older assumption.
+    console.error(`\nIt imports TypeScript or JSX source, whose own import specifiers only \`tsx\``);
     console.error(`resolves. Nothing is missing from this seat and building \`packages/\` will not`);
     console.error(`help — the specifier resolves to \`src/\`, not \`dist/\`. Re-run as:\n`);
   } else if (shape === 'extension') {
-    console.error(`\nIt imports a TypeScript file whose extension \`node\` cannot load. \`node\``);
-    console.error(`type-strips \`.ts\` but does not strip JSX, so a \`.tsx\` import fails at format`);
-    console.error(`detection. The file is present and unmodified; only the runner is wrong.`);
+    console.error(`\nIt imports a source file whose extension \`node\` cannot load. \`node\``);
+    console.error(`type-strips \`.ts\` but does not strip JSX, so a \`.tsx\`/\`.jsx\` import fails at`);
+    console.error(`format detection. The file is present and unmodified; only the runner is wrong.`);
     console.error(`Re-run as:\n`);
   } else {
     console.error(`\nIt imports a *directory* whose \`index\` only \`tsx\` resolves. \`node\`'s ESM`);

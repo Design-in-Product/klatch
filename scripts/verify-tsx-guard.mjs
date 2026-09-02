@@ -417,9 +417,11 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { spawnSync } from 'node:child_process';
 import { fileURLToPath, pathToFileURL } from 'node:url';
+import os from 'node:os';
 import {
   isTsResolutionFailure, isTsExtensionFailure, isTsDirImportFailure,
   TS_EXTENSIONS, TS_DIR_INDEX_EXTENSIONS,
+  TSX_JS_SPECIFIER_EXTENSIONS, TSX_LOADABLE_EXTENSIONS,
 } from './lib/tsx-required.mjs';
 
 const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -591,6 +593,82 @@ ok('a null/undefined error is not claimed (directory shape)', undefined,
 ok('PRECONDITION — the directory predicate has at least one true case and one false case', undefined,
   isTsDirImportFailure(dirErr(REAL_TS_DIR)) === true
     && isTsDirImportFailure(dirErr(REAL_TS_DIR, 'EOTHER')) === false);
+
+// ---------------------------------------------------------------------------------------------
+// Round 137, Daedalus. Found by Theseus's Round 136 §2/§3, extended by measurement here.
+//
+// The sibling limb inherited `TS_EXTENSIONS` in Round 128 and was wrong in BOTH directions:
+// `.mts`/`.cts` are TypeScript that `tsx` will not resolve a `.js` specifier onto (so the guard
+// printed `Re-run as: npx tsx <file>` for a file tsx cannot run — a false remedy, and the one
+// over-fire in this family that speaks rather than staying silent), while `.jsx` is not
+// TypeScript at all and IS resolved (an under-fire inheritance could not reach). These rows use
+// fixtures on disk rather than the repo tree, because the repo has no `.mts` or `.jsx` sibling —
+// asserting them against the tree would go vacuous instead of red.
+const R137 = fs.mkdtempSync(path.join(os.tmpdir(), 'r137-'));
+const sibDir = (ext) => {
+  const d = path.join(R137, `sib${ext.replace('.', '-')}`, 'packages', 'x');
+  fs.mkdirSync(d, { recursive: true });
+  fs.writeFileSync(path.join(d, `inner${ext}`), 'export const v = 1;\n');
+  return path.join(d, 'inner.js');
+};
+
+for (const ext of ['.tsx', '.ts', '.jsx']) {
+  ok(`a .js whose ${ext} sibling exists IS claimed — tsx resolves the specifier onto it`, ext,
+    isTsResolutionFailure(err(pathToFileURL(sibDir(ext)).href)) === true);
+}
+// The over-fire Round 136 §2 caught. Measured under both runners: node raises
+// ERR_MODULE_NOT_FOUND, and `tsx` fails too — `Cannot find module './inner.js'`, from
+// `nextResolveSimple`. A remedy that does not work must not be printed.
+for (const ext of ['.mts', '.cts']) {
+  ok(`a .js whose only sibling is ${ext} is NOT claimed — tsx does not resolve onto it either`, ext,
+    isTsResolutionFailure(err(pathToFileURL(sibDir(ext)).href)) === false);
+}
+
+// Round 136 §3's `.js`-term under-fire: an extensionless inner specifier (`from './inner'` inside
+// a `.ts`) arrives with url `…/inner`, no extension. `packages/client` is written this way
+// throughout, so this is latent only because no verifier imports client source today.
+const extlessDir = path.join(R137, 'extless', 'packages', 'x');
+fs.mkdirSync(extlessDir, { recursive: true });
+fs.writeFileSync(path.join(extlessDir, 'inner.ts'), 'export const v = 1;\n');
+ok('an extensionless specifier with a .ts sibling IS claimed (Round 136 §3)', undefined,
+  isTsResolutionFailure(err(pathToFileURL(path.join(extlessDir, 'inner')).href)) === true);
+
+// …and the widening is to two known spellings, not to "anything": some other extension is a
+// different shape and must still be re-thrown, or a genuinely unresolvable `.css` import would be
+// answered with a runner diagnosis. Header item 1 again, at the seam the widening opened.
+ok('a url with some other extension is still NOT claimed', undefined,
+  isTsResolutionFailure(err(pathToFileURL(path.join(extlessDir, 'inner.css')).href)) === false);
+
+// The `.jsx` under-fire in the OTHER limb — Round 136 §6 item 1 recorded this as unmeasured.
+// node refuses `.jsx` at format detection exactly as it refuses `.tsx`, and `tsx` loads it.
+const realJsx = path.join(R137, 'a.jsx');
+fs.writeFileSync(realJsx, 'export const v = 1;\n');
+ok('a .jsx extension failure IS claimed — node refuses it, tsx loads it', undefined,
+  isTsExtensionFailure(extErr(realJsx)) === true);
+
+// The two bindings below have the SAME VALUE today and answer different questions. Measured
+// divergence: `tsx` resolves `<dir>/index.json` but will NOT resolve `./inner.js` onto
+// `inner.json`. This check is the witness, so a future reader cannot collapse them on inspection
+// the way Round 128 collapsed three limbs onto `TS_EXTENSIONS`.
+ok('PRECONDITION — the specifier and directory-index bindings are separate, not one binding',
+  { specifier: TSX_JS_SPECIFIER_EXTENSIONS, dirIndex: TS_DIR_INDEX_EXTENSIONS },
+  TSX_JS_SPECIFIER_EXTENSIONS !== TS_DIR_INDEX_EXTENSIONS);
+
+// The asymmetry that is the whole argument for three bindings rather than one: `.mts` belongs in
+// the loadable set (tsx runs it directly) and must NOT be in the specifier set (tsx will not
+// resolve a `.js` onto it). One list cannot be both, so a future re-merge onto `TS_EXTENSIONS`
+// turns this red rather than silently restoring the false remedy.
+ok('PRECONDITION — .mts is loadable-by-tsx but not a .js-specifier target',
+  { loadable: TSX_LOADABLE_EXTENSIONS, specifier: TSX_JS_SPECIFIER_EXTENSIONS },
+  TSX_LOADABLE_EXTENSIONS.includes('.mts') && !TSX_JS_SPECIFIER_EXTENSIONS.includes('.mts'));
+
+// `.jsx` is in both runtime bindings and in neither TypeScript-spelling binding — the concrete
+// statement that these limbs ask "what does tsx do?", not "what is TypeScript?" (Round 135's
+// generalisation). If someone re-derives either from TS_EXTENSIONS, this is the check that fires.
+ok('PRECONDITION — .jsx is in both runtime bindings and in neither TypeScript-spelling binding',
+  { ts: TS_EXTENSIONS, dirIndex: TS_DIR_INDEX_EXTENSIONS },
+  TSX_JS_SPECIFIER_EXTENSIONS.includes('.jsx') && TSX_LOADABLE_EXTENSIONS.includes('.jsx')
+    && !TS_EXTENSIONS.includes('.jsx') && !TS_DIR_INDEX_EXTENSIONS.includes('.jsx'));
 
 // The predicates partition rather than overlap: each must reject the others' shapes, or
 // `explainTsxRequirement` could print the resolution body for an extension failure — the wrong
