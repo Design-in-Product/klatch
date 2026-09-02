@@ -5,7 +5,7 @@ import path from 'path';
 import { parseClaudeCodeSession, parseClaudeCodeSessionFromContent } from '../import/parser.js';
 import { parseClaudeAiConversation } from '../import/claude-ai-parser.js';
 import { extractFromZip } from '../import/claude-ai-zip.js';
-import { scanClaudeCodeSessions, scanExportedSessions } from '../import/session-scanner.js';
+import { scanClaudeCodeSessions, scanExportedSessions, encodeProjectDirName, getClaudeProjectsDir } from '../import/session-scanner.js';
 import { importKlatchPackage } from '../import/klatch-import.js';
 import { resolveImportEntity } from '../import/entity-resolve.js';
 import { guessEntityName } from '../import/entity-guess.js';
@@ -223,15 +223,20 @@ function processClaudeCodeImport(
       }
     } catch { /* best-effort — file may be unreadable */ }
 
-    const encodedCwd = session.cwd.replace(/\//g, '-');
-    const memoryMdPath = path.join(
-      os.homedir(), '.claude', 'projects', encodedCwd, 'memory', 'MEMORY.md'
-    );
-    try {
-      if (fs.existsSync(memoryMdPath)) {
-        memoryMd = fs.readFileSync(memoryMdPath, 'utf-8');
-      }
-    } catch { /* best-effort — file may be unreadable */ }
+    // Claude Code replaces every non-alphanumeric character with '-', not just '/'.
+    // The old `replace(/\//g, '-')` therefore missed any path containing '.', '_' or a
+    // space, so this lookup silently found nothing and no project memory was injected.
+    const encodedCwd = encodeProjectDirName(session.cwd);
+    if (encodedCwd) {
+      const memoryMdPath = path.join(
+        getClaudeProjectsDir(), encodedCwd, 'memory', 'MEMORY.md'
+      );
+      try {
+        if (fs.existsSync(memoryMdPath)) {
+          memoryMd = fs.readFileSync(memoryMdPath, 'utf-8');
+        }
+      } catch { /* best-effort — file may be unreadable */ }
+    }
   }
 
   // ── Create/find project ──
@@ -308,6 +313,30 @@ function processClaudeCodeImport(
     entityId: resolvedEntity.entityId,
   });
 
+  // DRIFT CANARY.
+  // A Claude Code schema change that empties every turn while preserving turn boundaries
+  // used to return `201 Created, messageCount: 0` — a successful import of nothing, with
+  // the operator learning exactly as much as if it had worked. The parsers are frozen
+  // (see docs/import-pipeline-review-2026-08-28.md), and a frozen parser whose failure
+  // mode is silent is worse than a deleted one. This is the price of freezing safely.
+  //
+  // The same discipline already exists for our OWN format at
+  // import/klatch-import.ts:189, where an unrecognized format_version is refused outright
+  // with the comment "accepting a version we don't recognize would silently drop fields we
+  // can't model — the worst kind of fidelity loss." We were version-disciplined exactly
+  // where we control the format and version-blind exactly where we don't.
+  if (session.turns.length > 0 && result.messageCount === 0) {
+    return c.json({
+      error:
+        `Import produced no messages from ${session.turns.length} parsed turn(s). ` +
+        `This usually means the Claude Code transcript format has changed and the parser ` +
+        `no longer recognizes message content. Nothing was written.`,
+      turnsParsed: session.turns.length,
+      versionsSeen: session.versions,
+      integrity: session.integrity,
+    }, 422);
+  }
+
   return c.json({
     ...result,
     sessionId: session.sessionId,
@@ -315,6 +344,20 @@ function processClaudeCodeImport(
       ? { entityId: resolvedEntity.entityId, entityDisposition: resolvedEntity.disposition }
       : {}),
     ...(session.skippedLines ? { skippedLines: session.skippedLines } : {}),
+    // Integrity receipt: every silent drop in the parser surfaced as a number, so a
+    // Claude Code format change reads as a suspicious count rather than a thin import.
+    ...(session.integrity ? { integrity: session.integrity } : {}),
+    // Say out loud when the transcript carried event types we walked past. `attachment`
+    // is the live case: 622 of 3,096 events in a September 2026 survey, all skipped.
+    ...(session.integrity && session.integrity.skippedContentBearing.total > 0
+      ? {
+          warning:
+            `Skipped ${session.integrity.skippedContentBearing.total} event(s) that may carry content: ` +
+            Object.entries(session.integrity.skippedContentBearing.byType)
+              .map(([t, n]) => `${t} (${n})`).join(', ') +
+            `. These event types are not yet handled by the importer.`,
+        }
+      : {}),
   }, 201);
 }
 
@@ -608,81 +651,103 @@ function processImport(
       existingChannelId?: string;
     }> = [];
 
+    // The loop below is NOT transactional — each importSession is its own transaction.
+    // A throw partway through used to fall to the catch and return a bare 500, leaving the
+    // channels already committed in the database and named in no response. The caller could
+    // not tell "nothing happened" from "39 of 100 channels landed". We now catch per
+    // conversation, record the failure, and let the batch finish.
+    const failed: Array<{ conversationId: string; error: string }> = [];
+
     for (const { conversation } of conversationFiles) {
       const conv = conversation as { uuid?: string; name?: string; created_at?: string; updated_at?: string; project_uuid?: string };
+      try {
 
-      // Skip conversations not in the selection set (if filtering)
-      if (selectionSet && conv.uuid && !selectionSet.has(conv.uuid)) {
-        continue;
-      }
-
-      const parsed = parseClaudeAiConversation(conversation);
-
-      if (parsed.turns.length === 0) {
-        if (parsed.sessionId) {
-          skipped.push({ conversationId: parsed.sessionId, reason: 'empty' });
-        }
-        continue;
-      }
-
-      // Dedup check using the conversation UUID (skip if forceImport)
-      if (parsed.sessionId && !forceImport) {
-        const existing = findChannelByOriginalSessionId(parsed.sessionId);
-        if (existing) {
-          skipped.push({
-            conversationId: parsed.sessionId,
-            reason: 'duplicate',
-            existingChannelId: existing.id,
-          });
+        // Skip conversations not in the selection set (if filtering).
+        // `conv.uuid &&` used to short-circuit here, so a conversation with no uuid passed
+        // the filter and was imported even when the user had selected two of five hundred —
+        // and, having no uuid, it then skipped the dedup check below too, so every re-run
+        // added another copy. A conversation we cannot identify cannot be in the selection.
+        if (selectionSet && !(conv.uuid && selectionSet.has(conv.uuid))) {
+          if (conv.uuid) continue;
+          skipped.push({ conversationId: '(no uuid)', reason: 'unidentifiable-under-selection' });
           continue;
         }
-      }
 
-      // Resolve project: prefer conv.project_uuid from export, fall back to user's manual assignment
-      const effectiveProjectUuid = conv.project_uuid || (conv.uuid && projectAssignments?.[conv.uuid]) || undefined;
-      const projectName = effectiveProjectUuid ? projects.get(effectiveProjectUuid)?.name : undefined;
-      const projectId = effectiveProjectUuid ? projectIdMap.get(effectiveProjectUuid) : undefined;
+        const parsed = parseClaudeAiConversation(conversation);
 
-      // Build channel name — just the conversation name, not prefixed with project
-      // (project context comes from sidebar grouping, not the channel name)
-      const convName = parsed.slug || `claude.ai — ${parsed.sessionId || 'import'}`;
-      let channelName = convName;
-
-      // Disambiguate name for fork-again imports
-      if (forceImport && parsed.sessionId) {
-        const existingCount = countChannelsByOriginalSessionId(parsed.sessionId);
-        if (existingCount > 0) {
-          channelName = `${channelName} (${existingCount + 1})`;
+        if (parsed.turns.length === 0) {
+          if (parsed.sessionId) {
+            skipped.push({ conversationId: parsed.sessionId, reason: 'empty' });
+          }
+          continue;
         }
+
+        // Dedup check using the conversation UUID (skip if forceImport)
+        if (parsed.sessionId && !forceImport) {
+          const existing = findChannelByOriginalSessionId(parsed.sessionId);
+          if (existing) {
+            skipped.push({
+              conversationId: parsed.sessionId,
+              reason: 'duplicate',
+              existingChannelId: existing.id,
+            });
+            continue;
+          }
+        }
+
+        // Resolve project: prefer conv.project_uuid from export, fall back to user's manual assignment
+        const effectiveProjectUuid = conv.project_uuid || (conv.uuid && projectAssignments?.[conv.uuid]) || undefined;
+        const projectName = effectiveProjectUuid ? projects.get(effectiveProjectUuid)?.name : undefined;
+        const projectId = effectiveProjectUuid ? projectIdMap.get(effectiveProjectUuid) : undefined;
+
+        // Build channel name — just the conversation name, not prefixed with project
+        // (project context comes from sidebar grouping, not the channel name)
+        const convName = parsed.slug || `claude.ai — ${parsed.sessionId || 'import'}`;
+        let channelName = convName;
+
+        // Disambiguate name for fork-again imports
+        if (forceImport && parsed.sessionId) {
+          const existingCount = countChannelsByOriginalSessionId(parsed.sessionId);
+          if (existingCount > 0) {
+            channelName = `${channelName} (${existingCount + 1})`;
+          }
+        }
+
+        // Build project knowledge context (equivalent of CLAUDE.md for claude.ai imports)
+        const project = effectiveProjectUuid ? projects.get(effectiveProjectUuid) : undefined;
+        const claudeMd = project?.docsContent || undefined;
+
+        const result = importSession({
+          channelName,
+          source: 'claude-ai',
+          sourceMetadata: {
+            originalSessionId: parsed.sessionId,
+            conversationName: parsed.slug,
+            projectUuid: effectiveProjectUuid,
+            projectName,
+            createdAt: conv.created_at,
+            updatedAt: conv.updated_at,
+            eventCount: parsed.eventCount,
+            importedAt: new Date().toISOString(),
+            claudeMd,
+            memoryMd,
+          },
+          turns: parsed.turns,
+          projectId,
+        });
+
+        imported.push({
+          ...result,
+          conversationId: parsed.sessionId || '',
+        });
+      } catch (convErr) {
+        // One conversation failing must not discard the report for the rest.
+        failed.push({
+          conversationId: conv.uuid || '(unknown)',
+          error: convErr instanceof Error ? convErr.message : 'Unknown error',
+        });
+        console.error(`Import failed for conversation ${conv.uuid || '(unknown)'}:`, convErr);
       }
-
-      // Build project knowledge context (equivalent of CLAUDE.md for claude.ai imports)
-      const project = effectiveProjectUuid ? projects.get(effectiveProjectUuid) : undefined;
-      const claudeMd = project?.docsContent || undefined;
-
-      const result = importSession({
-        channelName,
-        source: 'claude-ai',
-        sourceMetadata: {
-          originalSessionId: parsed.sessionId,
-          conversationName: parsed.slug,
-          projectUuid: effectiveProjectUuid,
-          projectName,
-          createdAt: conv.created_at,
-          updatedAt: conv.updated_at,
-          eventCount: parsed.eventCount,
-          importedAt: new Date().toISOString(),
-          claudeMd,
-          memoryMd,
-        },
-        turns: parsed.turns,
-        projectId,
-      });
-
-      imported.push({
-        ...result,
-        conversationId: parsed.sessionId || '',
-      });
     }
 
     // All duplicates → 409 (only when there are actual skipped duplicates)
@@ -702,14 +767,26 @@ function processImport(
     }
 
     if (imported.length === 0) {
+      // Distinguish "nothing here" from "everything we tried threw" — the second used to
+      // present as the first, with the failures invisible.
+      if (failed.length > 0) {
+        return c.json({
+          error: `All ${failed.length} conversation(s) failed to import`,
+          imported: [], skipped, failed,
+          totalImported: 0, totalSkipped: skipped.length, totalFailed: failed.length,
+          projects: projectResults,
+        }, 500);
+      }
       return c.json({ error: 'No valid conversations found in ZIP' }, 400);
     }
 
     return c.json({
       imported,
       skipped,
+      failed,
       totalImported: imported.length,
       totalSkipped: skipped.length,
+      totalFailed: failed.length,
       projects: projectResults,
     }, 201);
   } catch (err) {

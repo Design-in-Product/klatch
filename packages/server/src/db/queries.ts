@@ -1319,9 +1319,17 @@ export function importSession(params: ImportSessionParams): ImportResult {
       // Assistant message
       if (turn.assistantText || (turn.artifacts && turn.artifacts.length > 0)) {
         const assistantMsgId = uuidv4();
+        // Use the assistant event's own timestamp and uuid when the parser supplied them.
+        // Both rows used to carry the USER's values, so in a session spanning days a reply
+        // written hours later displayed the question's clock time, and original_id was
+        // shared by two rows rather than identifying either. Falls back for older callers
+        // and fixtures that predate assistantTimestamp/assistantOriginalId.
         insertMsg.run(
           assistantMsgId, channelId, 'assistant', turn.assistantText || '', 'complete',
-          turn.model || channelModel, boundEntityId, turn.timestamp, turn.originalId, now
+          turn.model || channelModel, boundEntityId,
+          turn.assistantTimestamp || turn.timestamp,
+          turn.assistantOriginalId || turn.originalId,
+          now
         );
         messageCount++;
 

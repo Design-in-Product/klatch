@@ -1,0 +1,65 @@
+{
+  "$comment": "Provenance for import test fixtures. Every .jsonl fixture must have an entry here; fixture-provenance.test.ts enforces it. See PROVENANCE.md for why this file exists.",
+  "lastReviewed": "2026-09-02",
+  "reviewIntervalDays": 120,
+  "fixtures": {
+    "simple-session.jsonl": {
+      "claudeCodeVersion": "2.1.19",
+      "origin": "hand-written",
+      "capturedOn": "2026-03-10"
+    },
+    "malformed.jsonl": {
+      "claudeCodeVersion": "2.1.19",
+      "origin": "hand-written",
+      "capturedOn": "2026-03-10"
+    },
+    "subagent-session.jsonl": {
+      "claudeCodeVersion": "2.1.19",
+      "origin": "hand-written",
+      "capturedOn": "2026-03-10"
+    },
+    "tool-heavy-session.jsonl": {
+      "claudeCodeVersion": "2.1.19",
+      "origin": "hand-written",
+      "capturedOn": "2026-03-10"
+    },
+    "compaction-subagent.jsonl": {
+      "claudeCodeVersion": "2.1.30",
+      "origin": "hand-written",
+      "capturedOn": "2026-03-10"
+    },
+    "real-shapes-2.1.81.jsonl": {
+      "claudeCodeVersion": "2.1.81",
+      "origin": "structural \u2014 synthetic text, shapes transcribed from exports/sessions/theseus-2026-03-22.jsonl",
+      "capturedOn": "2026-08-28",
+      "covers": [
+        "no conversation event on line 1; sessionId absent from the first event",
+        "flagless machine-authored user events (/command echo, local-command-stdout, Unknown skill)",
+        "<task-notification> carrying permissionMode: bypassPermissions",
+        "tool_result arriving on a user-role event",
+        "thinking and image content blocks",
+        "a fork point (two children of one parent, milliseconds apart)",
+        "an orphan whose parent is a system event",
+        "duplicate timestamps",
+        "a conversation event with no timestamp",
+        "two Claude Code versions in one file",
+        "event types absent from JSONL-SCHEMA.md (last-prompt, queue-operation, system/turn_duration)"
+      ]
+    },
+    "real-shapes-2.1.241.jsonl": {
+      "claudeCodeVersion": "2.1.241",
+      "origin": "captured \u2014 20 live transcripts via scripts/refresh-import-fixtures.mjs --emit, all message text redacted",
+      "capturedOn": "2026-09-02",
+      "covers": [
+        "current-era event types: attachment, bridge-session, custom-title, ai-title, atis-latch, mode",
+        "sessionId present on line 1 (changed since March, where it was absent)",
+        "five Claude Code versions across the sample",
+        "no image content blocks \u2014 see openFindings"
+      ]
+    }
+  },
+  "openFindings": [
+    "2026-09-02 survey of 20 live transcripts (Claude Code 2.1.229-2.1.241) found SIX event types the parser does not handle. One is content-bearing: `attachment` \u2014 622 of 3,096 events, the second most common type in the sample, and zero of them existed in the March capture. In the same sample there were NO `image` content blocks (March had 4), which suggests attachments moved out of message content into their own event type. Every one is currently dropped by isConversationEvent. Untriaged.",
+    "The other five (custom-title, bridge-session, ai-title, atis-latch, mode) look like session bookkeeping and are probably correct to skip, but that has not been confirmed."
+  ]
+}
