@@ -185,3 +185,79 @@ twenty-two renders stale — not hand-patched this fire, same partial-edit risk 
 
 No product/spec decision needed from xian this fire. `docs/COORDINATION.md` updated in the
 same commit pattern as prior rollup fires.
+
+---
+
+## 20:15 PT — STOP fire, substantive: rollup refreshed to v90, Round 135–136 folded in
+
+`git log --oneline 46f50e6..HEAD` (my own 9/1 WORK checkpoint) showed nine new commits, none
+mine: Iris's and Argus's independent 9/1 STOP no-ops, plus the full mail/repair/log/wrap set for
+Round 135 (Daedalus) and Round 136 (Theseus). Read both memos in full.
+
+**Round 135 (Daedalus)** reproduced Round 134's two claims on his own fixtures first, then fixed
+the under-fire: a directory import raises `ERR_UNSUPPORTED_DIR_IMPORT`, a third error code
+neither of the guard's two checks recognized. While fixing it, found that reusing Round 128's one
+shared `TS_EXTENSIONS` binding for the repair would itself have been wrong — two of its four
+members (`.mts`, `.cts`) are extensions `tsx` cannot resolve as a directory index, so the binding
+answers "what is TypeScript?" where this limb needs "what does `tsx` find at `<dir>/index`?".
+Shipped a narrower `TS_DIR_INDEX_EXTENSIONS = ['.tsx', '.ts']` binding instead, with a
+mutant-killing positive control (185 → 196 checks, +11). Generalized: "rule 8b's one-binding move
+is right when the limbs ask the same question... shared bindings can be as wrong as shared
+premises." Left one item explicitly unmeasured for 136 rather than inherited unmeasured (§5.4):
+whether node 26's inward error-hop could make `isTsResolutionFailure`'s existing conjunct
+mis-describe a failure it hadn't been tested against.
+
+**Round 136 (Theseus)** measured that §5.4 lead directly and found it clean — the inward-hop case
+stays correctly classified. But measuring it surfaced that the conjunct it touches,
+`isTsResolutionFailure`'s `TS_EXTENSIONS` membership test (which Theseus himself widened in Round
+128), carries the *identical* bug Round 135 just fixed, one predicate over: it claims a `tsx`
+remedy for `.mts`/`.cts` siblings `tsx` cannot actually resolve — one over-fire, reproduced from
+fixtures — plus two further under-fires in the same conjunct's other terms: a `packages/`-path
+term that excludes four real TypeScript files living outside it, and a bare `endsWith('.js')`
+term blind to extensionless specifiers, which is how all of `packages/client` is written (eight
+non-`.tsx` files plus every component import in `App.tsx`). All four are latent on today's
+population, not an outage — no verifier imports client source today. Pushed back narrowly on
+Daedalus's §4 cost-asymmetry argument: it holds for the case he was discussing but not for this
+one, where an over-fire prints a false remedy (`npx tsx <file>` for a file `tsx` cannot run), so
+"err toward requiring the guard" needs the proviso "provided the remedy it names is true."
+Confirmed a `.cts` load failure is undecidable from extension/path/existence alone, since it
+depends on the file's own contents (ESM vs. CJS syntax) — the same bound Round 134 named,
+recurring in a new place, recorded rather than nominated. **No repair shipped this round** — all
+three findings (one over-fire, two under-fires) are left as a package for Round 137, on both
+rounds' own stated reasoning that the round which finds the reason for a fix isn't the round that
+takes it. No case-table rows added by either round.
+
+Both rounds: zero API/model calls, zero corpus runs, `packages/` untouched. Round 135's mail
+closed to `docs/mail/read/` same-session by its own participants. Round 136's memo — cc-only to
+this seat, explicitly "nothing here needs xian" — stays open in `docs/mail/`, correctly not mine
+to move since I'm cc, not the addressee; Daedalus is the right party to close it.
+
+**Mail sweep:** `grep -li "^to:.*calliope" docs/mail/*.md` — only the standing
+`janus-to-calliope-cc-xian-logbook-shape-lean-period-spanning-2026-08-28.md` thread, day 5 since
+8/28, `ls docs/mail/ | grep -i "^xian-to"` still empty, no reply on disk, no new signal. Read the
+full thread again directly rather than trusting my own summary from prior fires — Janus's lean
+(period-spanning entries, go ahead once xian confirms) is unchanged and still unconfirmed.
+
+**Verified before writing, not carried from either memo's claimed numbers:**
+- `npm test` (root): server **1447/1447 (88 files)**, client **239/239 (13 skipped)** — zero
+  drift.
+- `npm run typecheck` clean across all three workspaces.
+- `node scripts/verify-tsx-guard.mjs` directly: **196/196**, matches both rounds' stated count.
+- `node scripts/probe-import-sites.mjs` directly: **0 site(s)** a fourth limb would name,
+  unchanged from Round 133/134's state.
+- `node scripts/verify-rule-discrimination.mjs` directly: eviction-detection track unchanged —
+  region count 3, surviving shapes 10.
+- `git diff --stat 46f50e6..HEAD -- packages/` — empty. `git diff --stat 46f50e6..HEAD -- scripts/
+  docs/research/` shows exactly the two library files Round 135 touched
+  (`scripts/lib/tsx-required.mjs`, `scripts/verify-tsx-guard.mjs`) plus both rounds' research
+  docs — Round 136 shipped no code, matching its own "I shipped nothing" claim.
+
+**Rollup refreshed:** `docs/operations/attention-rollup.md` v89 → v90. Banner rotated (v89's text
+preserved verbatim as the new prior banner; v88's prior-banner text dropped — already captured in
+its own changelog entry). Added a v90 changelog bullet. Metrics strip unchanged (3/0/4/5) — no
+new 🔴, no closures. `docs/operations/attention-rollup.html` still unsynced since v67 (Round
+81/82), now twenty-three renders stale — not hand-patched this fire, same partial-edit risk noted
+since v69.
+
+No product/spec decision needed from xian this fire. `docs/COORDINATION.md` updated in the same
+commit pattern as prior rollup fires.
