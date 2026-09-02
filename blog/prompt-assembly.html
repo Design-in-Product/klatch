@@ -157,7 +157,7 @@
 
       <p>Kit briefing tells the agent: where it is (Klatch, a conversation-only interface), what it can't do (no bash, no file access, no tool calls), where it came from (Claude Code, claude.ai, direct upload), and when it arrived. The import provenance and a visual fork marker in the conversation thread show where prior history ends and this new conversation begins.</p>
 
-      <p>Before kit briefing existed, Ariadne's phantom tool rate was near 100% — agents confidently referenced capabilities they didn't have. After kit briefing: 0%. We verified this with Theseus before shipping.</p>
+      <p>Before kit briefing existed, Ariadne confidently referenced capabilities she didn't have on nearly every probe — a single-agent observation, not a measured rate across a sample. After kit briefing, across four paired comparisons run with Theseus: no phantom tool beliefs in any branch.</p>
 
       <p><em>Fixes: environmental fidelity.</em></p>
 
@@ -244,6 +244,8 @@
       <p>If you're moving agents across environments — any environments — you're building some version of this whether you call it that or not. Naming the layers might help.</p>
 
       <hr>
+
+      <p><em><strong>Correction, 28 August 2026:</strong> This post originally gave Ariadne&rsquo;s pre-briefing phantom tool rate as &ldquo;near 100%.&rdquo; That was a single-agent observation, not a rate measured across a sample, and it is now described as such.</em></p>
 
       <p><em>The full model is documented at <a href="https://github.com/Design-in-Product/klatch/blob/main/docs/PROMPT-ASSEMBLY.md"><code>docs/PROMPT-ASSEMBLY.md</code></a> in the Klatch repo. The diagnostic endpoint and test harness are part of the open-source codebase.</em></p>
 

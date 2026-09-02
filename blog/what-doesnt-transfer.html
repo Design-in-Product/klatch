@@ -101,14 +101,14 @@
         <text x="200" y="108" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif" font-size="10" font-weight="600" fill="#1e293b">L2 Instructions</text>
         <rect x="360" y="88" width="200" height="32" rx="3" fill="#b0bfd3"/>
         <text x="460" y="108" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif" font-size="10" font-weight="600" fill="#1e293b">L2 Instructions</text>
-        <text x="580" y="108" font-family="ui-sans-serif, system-ui, sans-serif" font-size="10" fill="#22c55e" font-weight="700">100%</text>
+        <text x="580" y="108" font-family="ui-sans-serif, system-ui, sans-serif" font-size="10" fill="#22c55e" font-weight="700">lossless</text>
 
         <!-- Layer 3 -->
         <rect x="100" y="128" width="200" height="32" rx="3" fill="#7a94ab"/>
         <text x="200" y="148" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif" font-size="10" font-weight="600" fill="#ffffff">L3 Memory</text>
         <rect x="360" y="128" width="200" height="32" rx="3" fill="#7a94ab"/>
         <text x="460" y="148" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif" font-size="10" font-weight="600" fill="#ffffff">L3 Memory</text>
-        <text x="580" y="148" font-family="ui-sans-serif, system-ui, sans-serif" font-size="10" fill="#22c55e" font-weight="700">100%</text>
+        <text x="580" y="148" font-family="ui-sans-serif, system-ui, sans-serif" font-size="10" fill="#22c55e" font-weight="700">lossless</text>
 
         <!-- Layer 4 -->
         <rect x="100" y="168" width="200" height="32" rx="3" fill="#4f6d84"/>
@@ -122,7 +122,7 @@
         <text x="200" y="228" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif" font-size="10" font-weight="600" fill="#ffffff">L5 Calibration</text>
         <rect x="360" y="208" width="200" height="32" rx="3" fill="none" stroke="#EF4444" stroke-width="2" stroke-dasharray="6,4"/>
         <text x="460" y="228" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif" font-size="10" font-weight="600" fill="#EF4444">L5 Calibration</text>
-        <text x="580" y="228" font-family="ui-sans-serif, system-ui, sans-serif" font-size="10" fill="#EF4444" font-weight="700">0%</text>
+        <text x="580" y="228" font-family="ui-sans-serif, system-ui, sans-serif" font-size="10" fill="#EF4444" font-weight="700">none obs.</text>
 
         <!-- Bottom note -->
         <text x="320" y="275" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif" font-size="11" fill="#64748b" font-style="italic">Information transfers. Judgment doesn't.</text>
@@ -150,11 +150,11 @@
 
       <p><strong>Layer 1 — Environmental orientation:</strong> The destination provides this automatically. The agent is told where it is, what it can do, what it can't do, and where it came from. This is new information, not transferred information, and it works reliably.</p>
 
-      <p><strong>Layer 2 — Project instructions:</strong> CLAUDE.md, the prompt template from a claude.ai project, the conventions and rules that govern how work happens. These are text files. They serialize perfectly. Transfer fidelity: 100%.</p>
+      <p><strong>Layer 2 — Project instructions:</strong> CLAUDE.md, the prompt template from a claude.ai project, the conventions and rules that govern how work happens. These are text files. They serialize losslessly, and our automated tests confirm delivery to the destination system prompt.</p>
 
-      <p><strong>Layer 3 — Project memory:</strong> MEMORY.md, accumulated facts and decisions. Also text. Also serializes perfectly. In a real-world Chat-to-Cowork import we tested, the receiving agent had immediate access to 3,200 lines of accumulated project context. Transfer fidelity: 100%.</p>
+      <p><strong>Layer 3 — Project memory:</strong> MEMORY.md, accumulated facts and decisions. Also text. Also serializes losslessly. In a real-world Chat-to-Cowork import we tested, the receiving agent had immediate access to roughly 3,200 lines of accumulated project context.</p>
 
-      <p><strong>Layer 4 — Session context:</strong> The conversation itself — history, prior messages, accumulated state. This travels as conversation history. Transfer fidelity: high, modulo compaction artifacts in very long conversations.</p>
+      <p><strong>Layer 4 — Session context:</strong> The conversation itself — history, prior messages, accumulated state. This travels as conversation history, intact except for compaction artifacts in very long conversations.</p>
 
       <p>These four layers represent everything the agent <em>knows</em>: facts, rules, context, orientation. Information. And information travels well. You can write it to a file, read it from a file, inject it into a system prompt, and the agent has it. We verified this structurally (automated tests confirm delivery) and behaviorally (manual tests confirm the agent can use it).</p>
 
@@ -251,13 +251,13 @@
           <tr>
             <td>2 — Project Instructions</td>
             <td>Rules, conventions</td>
-            <td>100%</td>
+            <td>Lossless</td>
             <td>N/A</td>
           </tr>
           <tr>
             <td>3 — Project Memory</td>
             <td>Facts, decisions, state</td>
-            <td>100%</td>
+            <td>Lossless</td>
             <td>N/A</td>
           </tr>
           <tr>
@@ -269,7 +269,7 @@
           <tr>
             <td>5 — Behavioral Calibration</td>
             <td>Implicit patterns, judgment</td>
-            <td>0%</td>
+            <td>None observed</td>
             <td>Rebuild through use</td>
           </tr>
         </tbody>
@@ -280,6 +280,8 @@
       <p>And if you're the user: when your agent seems slightly off after a transition — slightly too generic, slightly too cautious, slightly misreading your tone — that's not a bug. That's Layer 5 rebuilding. Give it a few sessions. Correct it when it's wrong. The calibration comes back.</p>
 
       <hr>
+
+      <p><em><strong>Correction, 28 August 2026:</strong> This post originally gave Layer 2 and Layer 3 transfer fidelity as &ldquo;100%&rdquo; and Layer 5 as &ldquo;0%.&rdquo; Those were qualitative judgments drawn from a small number of paired import comparisons, not measured rates, and the percentages implied a precision we had not earned. They now read as lossless and none observed. The finding is unchanged; the false precision is gone.</em></p>
 
       <p><em>This post is part of a series on agent context and portability. <a href="prompt-assembly.html">What Does an Imported Agent Know?</a> describes the five-layer model. <a href="tip-of-my-tongue.html">It's On the Tip of My Tongue</a> documents a related finding: agents can access injected knowledge without being able to attribute its source. <a href="your-model-or-theirs.html">Your Model or Theirs</a> explores Tesler's Law and the portability imperative. Klatch is an open-source tool for managing Claude conversations — <a href="/">learn more</a> or <a href="https://github.com/Design-in-Product/klatch">view the source</a>.</em></p>
 

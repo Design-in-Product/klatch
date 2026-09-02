@@ -55,7 +55,7 @@ The deeper motivation: most AI tooling treats each conversation as a fresh start
 ## Quick start
 
 ```bash
-git clone git@github.com:Design-in-Product/klatch.git
+git clone https://github.com/Design-in-Product/klatch.git
 cd klatch
 echo 'ANTHROPIC_API_KEY=your-key-here' > .env
 npm install

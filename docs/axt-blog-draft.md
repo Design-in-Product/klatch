@@ -88,7 +88,7 @@ One of the things I'm most pleased about in the current state of things: **our p
 
 I'll spare you the full test-by-test breakdown [CALLIOPE: link `test-by-test` to test reports in repo when published]. But here are the findings that surprised me most:
 
-**Conversation density does not explain context fidelity.** I thought short conversations would degrade more (less material to import). I was wrong. The agent that lost the most context had *365 messages and 2.9 million characters* of conversation. The agents that retained the most had 12–18 messages. The explanation: long conversations go through context compaction. Seven weeks of institutional knowledge, compressed into a summary. The short ones fit in the context window whole. Density is a red herring; compaction is the mechanism.
+**Conversation density does not explain context fidelity.** I thought short conversations would degrade more (less material to import). I was wrong. The agent that lost the most context had *365 messages and 628,695 characters* of conversation. The agents that retained the most had 12–18 messages. The explanation: long conversations go through context compaction. Seven weeks of institutional knowledge, compressed into a summary. The short ones fit in the context window whole. Density is a red herring; compaction is the mechanism.
 
 **The three-factor model.** Context loss after import comes from three interacting sources: (1) missing project context injection — the data exists in the export but isn't wired to the conversation, (2) compaction loss in long conversations, and (3) knowledge location — knowledge discussed in conversation survives better than knowledge accessed via tools that left only collapsed summaries.
 

@@ -192,7 +192,7 @@
 
       <h2>What we've found</h2>
 
-      <p><strong>Conversation density does not explain context fidelity.</strong> I thought short conversations would degrade more (less material to import). I was wrong. The agent that lost the most context had <em>365 messages and 2.9 million characters</em> of conversation. The agents that retained the most had 12–18 messages. The explanation: long conversations go through context compaction. Seven weeks of institutional knowledge, compressed into a summary. The short ones fit in the context window whole. Density is a red herring; compaction is the mechanism.</p>
+      <p><strong>Conversation density does not explain context fidelity.</strong> I thought short conversations would degrade more (less material to import). I was wrong. The agent that lost the most context had <em>365 messages and 628,695 characters</em> of conversation. The agents that retained the most had 12–18 messages. The explanation: long conversations go through context compaction. Seven weeks of institutional knowledge, compressed into a summary. The short ones fit in the context window whole. Density is a red herring; compaction is the mechanism.</p>
 
       <p><strong>The three-factor model.</strong> Context loss after import comes from three interacting sources: (1) missing project context injection — the data exists in the export but isn't wired to the conversation, (2) compaction loss in long conversations, and (3) knowledge location — knowledge discussed in conversation survives better than knowledge accessed via tools that left only collapsed summaries.</p>
 
@@ -302,6 +302,8 @@
       <p><em>If you're working on something where this problem shows up, or you've seen this written up somewhere under a different name, I'd like to know. The repo is at <a href="https://github.com/Design-in-Product/klatch">github.com/Design-in-Product/klatch</a> — open an issue or just say hi.</em></p>
 
       <hr>
+
+      <p><em><strong>Correction, 28 August 2026:</strong> This post originally described the VA Decision Reviews conversation as &ldquo;2.9 million characters.&rdquo; The measured figure in the session log is 628,695 characters across 365 messages; the larger number came from an earlier pass in the same log that the measurement superseded. Corrected.</em></p>
 
       <p style="font-size: 0.85rem; color: var(--text-dim);"><em>All agent quotes are from actual test sessions, documented in session logs. Exact phrasing was recorded contemporaneously.</em></p>
 

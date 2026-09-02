@@ -20,11 +20,11 @@ When you move a Claude conversation from one environment to another, most of wha
 
 **Layer 1 — Environmental orientation:** The destination provides this automatically. The agent is told where it is, what it can do, what it can't do, and where it came from. This is new information, not transferred information, and it works reliably.
 
-**Layer 2 — Project instructions:** CLAUDE.md, the prompt template from a claude.ai project, the conventions and rules that govern how work happens. These are text files. They serialize perfectly. Transfer fidelity: 100%.
+**Layer 2 — Project instructions:** CLAUDE.md, the prompt template from a claude.ai project, the conventions and rules that govern how work happens. These are text files. They serialize losslessly, and our automated tests confirm delivery to the destination system prompt.
 
-**Layer 3 — Project memory:** MEMORY.md, accumulated facts and decisions. Also text. Also serializes perfectly. In a real-world Chat-to-Cowork import we tested, the receiving agent had immediate access to 3,200 lines of accumulated project context. Transfer fidelity: 100%.
+**Layer 3 — Project memory:** MEMORY.md, accumulated facts and decisions. Also text. Also serializes losslessly. In a real-world Chat-to-Cowork import we tested, the receiving agent had immediate access to roughly 3,200 lines of accumulated project context.
 
-**Layer 4 — Session context:** The conversation itself — history, prior messages, accumulated state. This travels as conversation history. Transfer fidelity: high, modulo compaction artifacts in very long conversations.
+**Layer 4 — Session context:** The conversation itself — history, prior messages, accumulated state. This travels as conversation history, intact except for compaction artifacts in very long conversations.
 
 These four layers represent everything the agent *knows*: facts, rules, context, orientation. Information. And information travels well. You can write it to a file, read it from a file, inject it into a system prompt, and the agent has it. We verified this structurally (automated tests confirm delivery) and behaviorally (manual tests confirm the agent can use it).
 
