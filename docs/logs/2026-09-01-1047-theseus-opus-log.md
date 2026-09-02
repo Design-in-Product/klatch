@@ -268,3 +268,94 @@ deleted. Clean-tree re-verification after cleanup: `git status --porcelain` empt
 
 **Step 3 —** this wrap section committed and pushed last. Delivery is the wrapper's to claim, not
 mine; what is verified above is that the commits and files are present in the repository.
+
+---
+
+# Third fire — 9/1 STOP, 19:47 PT
+
+## 19:47 — Briefing
+
+Pulled state is current (wrapper synced). `docs/COORDINATION.md` read; `docs/mail/` swept. One memo
+addressed to me and unread: `daedalus-to-theseus-cc-xian-team-a-third-shape-and-the-one-binding-rule-
+had-to-be-broken-2026-09-01.md`, filed 17:27 — after my 14:58 Round 134 wrap commit. Read and
+actioned in the fire that received it, per the mail discipline.
+
+Checked authorship before assuming: the two `9/1 STOP -- no-op` commits above mine are **Iris**
+(`92d620d`) and **Argus** (`69171f3`), not me. My last commit is `c48a446`, Round 134 wrap.
+
+His §5.4 nominates the one thing he fixed without measuring, against his own work — whether node 26
+moves failures one module inward in ways `isTsResolutionFailure`'s `.js`-under-`packages` conjunct
+mis-describes. Taken as this fire's unit.
+
+## 19:49 — Baseline, before touching anything
+
+```
+git status --porcelain            (empty)
+node scripts/verify-tsx-guard.mjs   → PASS — all 196 checks passed
+node scripts/probe-import-sites.mjs → 0 site(s) a fourth limb would name
+node --version → v26.5.0    npx tsx --version → tsx v4.21.0
+```
+
+## 19:50 — Method
+
+Nine fixture trees under gitignored `.testdata/r136/`, each imported **unguarded** by the running
+node, the thrown error passed to all three shipped predicates, then the same outer file run under
+`npx tsx` in a child process. The tsx step is the one that makes a verdict into a finding: it decides
+whether "re-run under `tsx`" is a *true* remedy, which is what separates under-fire from correct
+re-throw and over-fire from correct claim. Two follow-on matrices, one row per `TS_EXTENSIONS`
+member: `.js`-specifier-onto-sibling, and direct import.
+
+Fixtures went in `.testdata/` rather than `scripts/` deliberately — this round measures the
+**predicates**, not the guard's sweep, so perturbing the guard's own population would have been noise.
+That choice is also the round's boundary (see 19:58).
+
+## 19:52 — Results
+
+His §5.4 worry does **not** reproduce: the `url` names the module that actually failed, not the outer
+file; two modules inward names `mid.js`; his Round 135 directory predicate survives the inward hop;
+the no-sibling soundness control stays `false` with tsx failing too.
+
+Four shapes that do not hold, all latent on today's population:
+
+1. **Over-fire.** `.js` specifier onto an `.mts` or `.cts` sibling → `resolution=true`, but tsx cannot
+   resolve it (`Cannot find module './inner.js'` from `nextResolveSimple`). Guard prints a remedy that
+   does not work. **Same two members Daedalus split out for `TS_DIR_INDEX_EXTENSIONS` in his §2** — and
+   the widening from `.ts` to `TS_EXTENSIONS` here is mine, Round 128.
+2. **Under-fire, `packages/` term.** C1 vs C2 differ by one path segment and disagree; tsx runs both.
+3. **Under-fire, `.js` term.** Extensionless inner specifier → url with no extension → declines;
+   `packages/client` is written this way throughout.
+4. **No `code` at all.** Direct `.cts`: bare `SyntaxError`, `code === undefined`, own props
+   `["stack","message"]`, no `url`; tsx loads it. Control with contents as the only variable — ESM in
+   `.cts` throws, **CJS in `.cts` LOADS** — so the failure is a property of contents, not extension,
+   and no call-site test can decide it. Filed as a **bound**, not nominated as a repair.
+
+## 19:56 — Live-risk checks, run rather than assumed
+
+`git ls-files -- '*.mts' '*.cts'` → one file, `scripts/probe-expand-continuation.mts`; none under
+`packages/`. Probe's 16 dynamic-import sites all target `packages/server`/`packages/shared`. Four TS
+files exist outside `packages/`. Extensionless relative imports: 8 non-`.tsx` files in
+`packages/client`, none in server `.ts`. Conclusion: all four shapes latent, stated up front in both
+the doc and the memo so the round is not read as an outage.
+
+## 19:58 — What I did not do
+
+No repair shipped (his 133 §5, my 132 and 134 — and the code I'd be changing is mine, on a reading of
+my own). No case-table rows (131's reasoning: a row asserting today's predicate would codify the
+over-fire). Two things explicitly not measured and flagged as such in both deliverables:
+`isTsExtensionFailure`'s membership filter, and whether the three under-fire shapes escape §(b2)'s
+crash detector — I measured predicates, not the sweep.
+
+## 20:00 — Cleanup and deliverables
+
+`.testdata/r136/` deleted. Clean-tree re-verification after cleanup: `git status --porcelain` shows
+only the three intended files, `PASS — all 196`, probe `0 named`. No file under `scripts/` or
+`packages/` modified.
+
+Zero live turns, zero model calls, zero API spend, zero corpus runs.
+
+- `docs/research/round136-the-conjuncts-are-narrower-than-the-class-and-one-shape-has-no-code-at-all-2026-09-01.md`
+- `docs/mail/theseus-to-daedalus-cc-xian-team-your-52-split-was-needed-one-predicate-over-2026-09-01.md`
+- Daedalus's inbound moved to `docs/mail/read/`; mail committed separately and pushed to `main` first
+  per the worktree mail discipline (`d8543d8`).
+
+Nothing this fire needs xian.
