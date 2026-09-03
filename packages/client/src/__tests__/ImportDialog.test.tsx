@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ImportDialog } from '../components/ImportDialog';
 
@@ -9,10 +9,11 @@ vi.mock('../api/client', () => ({
   importClaudeAiExport: vi.fn(),
   previewClaudeAiExport: vi.fn(),
   deleteChannelApi: vi.fn(),
+  fetchClaudeCodeSessions: vi.fn(),
 }));
 
-import { importClaudeCodeSession, importClaudeAiExport, previewClaudeAiExport, deleteChannelApi } from '../api/client';
-import type { ZipPreviewResponse } from '../api/client';
+import { importClaudeCodeSession, importClaudeAiExport, previewClaudeAiExport, deleteChannelApi, fetchClaudeCodeSessions } from '../api/client';
+import type { ZipPreviewResponse, SessionBrowseResponse, SessionInfo } from '../api/client';
 
 const defaultProps = {
   isOpen: true,
@@ -38,6 +39,7 @@ beforeEach(() => {
   vi.mocked(previewClaudeAiExport).mockReset();
   vi.mocked(deleteChannelApi).mockReset();
   vi.mocked(previewClaudeAiExport).mockReset();
+  vi.mocked(fetchClaudeCodeSessions).mockReset();
   defaultProps.onClose = vi.fn();
   defaultProps.onImported = vi.fn();
 });
@@ -931,5 +933,225 @@ describe('ImportDialog — conflict resolution', () => {
     expect(onClose).toHaveBeenCalled();
     expect(deleteChannelApi).not.toHaveBeenCalled();
     expect(importClaudeCodeSession).toHaveBeenCalledTimes(1);
+  });
+});
+
+describe('ImportDialog — import confirm-step (entity name)', () => {
+  const identitySession: SessionInfo = {
+    path: '/sessions/a.jsonl',
+    sessionId: 'sess-a',
+    projectPath: '/proj',
+    projectName: 'proj',
+    sizeBytes: 2048,
+    modifiedAt: '2026-09-01T12:00:00.000Z',
+    alreadyImported: false,
+    firstUserMessage: 'You are Daedalus, continuing the migration',
+    messageCount: 12,
+    entityGuess: { name: 'Daedalus', basis: 'identity-claim' as const, rationale: 'Session opens with "You are Daedalus"' },
+  };
+  const identitySessionB = {
+    ...identitySession,
+    path: '/sessions/b.jsonl',
+    sessionId: 'sess-b',
+    firstUserMessage: 'You are Daedalus, resuming from the last checkpoint',
+  };
+  const projectNameSession: SessionInfo = {
+    path: '/sessions/c.jsonl',
+    sessionId: 'sess-c',
+    projectPath: '/proj',
+    projectName: 'proj',
+    sizeBytes: 1024,
+    modifiedAt: '2026-09-01T12:00:00.000Z',
+    alreadyImported: false,
+    firstUserMessage: 'Let\'s ship the migration script',
+    messageCount: 4,
+    entityGuess: { name: 'proj', basis: 'project-name' as const, rationale: "No identity line found; suggesting the project name 'proj'." },
+  };
+  const noneSession: SessionInfo = {
+    path: '/sessions/d.jsonl',
+    sessionId: 'sess-d',
+    projectPath: '/proj',
+    projectName: 'proj',
+    sizeBytes: 512,
+    modifiedAt: '2026-09-01T12:00:00.000Z',
+    alreadyImported: false,
+    firstUserMessage: 'quick question',
+    messageCount: 1,
+    entityGuess: { name: '', basis: 'none' as const, rationale: 'Nothing identifies the agent.' },
+  };
+  const alreadyImportedSession: SessionInfo = {
+    path: '/sessions/e.jsonl',
+    sessionId: 'sess-e',
+    projectPath: '/proj',
+    projectName: 'proj',
+    sizeBytes: 512,
+    modifiedAt: '2026-09-01T12:00:00.000Z',
+    alreadyImported: true,
+    existingChannelName: 'proj — 2026-08-01',
+    firstUserMessage: 'already here',
+    messageCount: 2,
+  };
+
+  function buildBrowse(sessions: SessionInfo[]): SessionBrowseResponse {
+    return {
+      projects: [{ projectPath: '/proj', projectName: 'proj', sessions }],
+      totalProjects: 1,
+      totalSessions: sessions.length,
+    };
+  }
+
+  async function openBrowser(user: ReturnType<typeof userEvent.setup>, sessions: SessionInfo[]) {
+    vi.mocked(fetchClaudeCodeSessions).mockResolvedValue(buildBrowse(sessions));
+    render(<ImportDialog {...defaultProps} />);
+    await user.click(screen.getByRole('button', { name: 'Browse...' }));
+    await waitFor(() => {
+      expect(screen.getByText(sessions[0].firstUserMessage as string)).toBeInTheDocument();
+    });
+  }
+
+  function rowFor(text: string | undefined): HTMLElement {
+    if (!text) throw new Error('rowFor requires a fingerprint text');
+    const el = screen.getByText(text).closest('label');
+    if (!el) throw new Error(`No row found for "${text}"`);
+    return el as HTMLElement;
+  }
+
+  it('prefills the entity field from an identity-claim guess, quiet styling', async () => {
+    const user = userEvent.setup();
+    await openBrowser(user, [identitySession]);
+
+    const input = within(rowFor(identitySession.firstUserMessage)).getByPlaceholderText('Agent name');
+    expect(input).toHaveValue('Daedalus');
+    expect(input).toHaveAttribute('title', identitySession.entityGuess!.rationale);
+  });
+
+  it('prefills a project-name guess, flagged amber with the rationale shown inline (not just on hover)', async () => {
+    const user = userEvent.setup();
+    await openBrowser(user, [projectNameSession]);
+
+    const row = rowFor(projectNameSession.firstUserMessage);
+    const input = within(row).getByPlaceholderText('Agent name');
+    expect(input).toHaveValue('proj');
+    expect(input).not.toHaveAttribute('title');
+    expect(within(row).getByText(projectNameSession.entityGuess!.rationale)).toBeInTheDocument();
+  });
+
+  it('leaves a none-basis guess empty, with a placeholder naming the default-agent fallback', async () => {
+    const user = userEvent.setup();
+    await openBrowser(user, [noneSession]);
+
+    const input = within(rowFor(noneSession.firstUserMessage)).getByPlaceholderText(/leave blank for the default agent/);
+    expect(input).toHaveValue('');
+  });
+
+  it('does not render an entity field for an already-imported session', async () => {
+    const user = userEvent.setup();
+    await openBrowser(user, [alreadyImportedSession]);
+
+    const row = rowFor(alreadyImportedSession.firstUserMessage);
+    expect(within(row).queryByRole('textbox')).not.toBeInTheDocument();
+  });
+
+  it('stays individually editable after prefill', async () => {
+    const user = userEvent.setup();
+    await openBrowser(user, [identitySession]);
+
+    const input = within(rowFor(identitySession.firstUserMessage)).getByPlaceholderText('Agent name');
+    await user.clear(input);
+    await user.type(input, 'Daedalus (renamed)');
+    expect(input).toHaveValue('Daedalus (renamed)');
+  });
+
+  it('offers a group-confirm banner when two selected sessions independently guess the same identity-claim name', async () => {
+    const user = userEvent.setup();
+    await openBrowser(user, [identitySession, identitySessionB]);
+
+    expect(screen.getByText(/2 sessions identify as/)).toBeInTheDocument();
+    expect(screen.getByText('Daedalus')).toBeInTheDocument();
+
+    // Edit one field away from the guess, then Confirm all should restore it.
+    const inputA = within(rowFor(identitySession.firstUserMessage)).getByPlaceholderText('Agent name');
+    await user.clear(inputA);
+    await user.type(inputA, 'Someone else');
+    expect(inputA).toHaveValue('Someone else');
+
+    await user.click(screen.getByRole('button', { name: 'Confirm all' }));
+    expect(inputA).toHaveValue('Daedalus');
+    const inputB = within(rowFor(identitySessionB.firstUserMessage)).getByPlaceholderText('Agent name');
+    expect(inputB).toHaveValue('Daedalus');
+  });
+
+  it('never groups project-name or none guesses, even when they coincide', async () => {
+    const user = userEvent.setup();
+    const secondProjectNameSession = { ...projectNameSession, path: '/sessions/f.jsonl', sessionId: 'sess-f', firstUserMessage: 'second one, same project' };
+    await openBrowser(user, [projectNameSession, secondProjectNameSession]);
+
+    expect(screen.queryByText(/sessions identify as/)).not.toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: 'Confirm all' })).not.toBeInTheDocument();
+  });
+
+  it('sends the confirmed entity name for each session on import', async () => {
+    const user = userEvent.setup();
+    await openBrowser(user, [identitySession, projectNameSession]);
+    vi.mocked(importClaudeCodeSession).mockImplementation(async (sessionPath) => ({
+      status: 'success',
+      data: {
+        channelId: `ch-${sessionPath}`,
+        channelName: 'x',
+        messageCount: 1,
+        artifactCount: 0,
+        source: 'claude-code',
+        duplicate: false,
+        entityDisposition: 'minted',
+      },
+    }));
+
+    await user.click(screen.getByRole('button', { name: /Import selected/ }));
+
+    await waitFor(() => {
+      expect(importClaudeCodeSession).toHaveBeenCalledWith(identitySession.path, undefined, undefined, 'Daedalus');
+    });
+    expect(importClaudeCodeSession).toHaveBeenCalledWith(projectNameSession.path, undefined, undefined, 'proj');
+  });
+
+  it('sends no entity name when a none-basis field is left blank', async () => {
+    const user = userEvent.setup();
+    await openBrowser(user, [noneSession]);
+    vi.mocked(importClaudeCodeSession).mockResolvedValue({
+      status: 'success',
+      data: { channelId: 'ch-d', channelName: 'x', messageCount: 1, artifactCount: 0, source: 'claude-code', duplicate: false },
+    });
+
+    await user.click(screen.getByRole('button', { name: /Import selected/ }));
+
+    await waitFor(() => {
+      expect(importClaudeCodeSession).toHaveBeenCalledWith(noneSession.path, undefined, undefined, undefined);
+    });
+  });
+
+  it('shows mint vs. merge disposition inline in the bulk result list', async () => {
+    const user = userEvent.setup();
+    await openBrowser(user, [identitySession, identitySessionB]);
+
+    vi.mocked(importClaudeCodeSession).mockImplementation(async (sessionPath) => ({
+      status: 'success',
+      data: {
+        channelId: sessionPath === identitySession.path ? 'ch-a' : 'ch-b',
+        channelName: sessionPath === identitySession.path ? 'Channel A' : 'Channel B',
+        messageCount: 1,
+        artifactCount: 0,
+        source: 'claude-code',
+        duplicate: false,
+        entityDisposition: sessionPath === identitySession.path ? 'minted' : 'matched-by-name',
+      },
+    }));
+
+    await user.click(screen.getByRole('button', { name: /Import selected/ }));
+
+    await waitFor(() => {
+      expect(screen.getByText('Channel A')).toBeInTheDocument();
+    });
+    expect(screen.getByText('→ new agent: Daedalus')).toBeInTheDocument();
+    expect(screen.getByText('→ added to Daedalus')).toBeInTheDocument();
   });
 });

@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { importClaudeCodeSession, uploadClaudeCodeSession, importClaudeAiExport, previewClaudeAiExport, deleteChannelApi, fetchClaudeCodeSessions } from '../api/client';
-import type { ImportResponse, ImportConflict, ClaudeAiImportResponse, ZipPreviewResponse, SessionBrowseResponse } from '../api/client';
+import type { ImportResponse, ImportConflict, ClaudeAiImportResponse, ZipPreviewResponse, SessionBrowseResponse, ResolveDisposition } from '../api/client';
 
 type ImportMode = 'claude-code' | 'claude-ai';
 
@@ -40,6 +40,9 @@ export function ImportDialog({ isOpen, onClose, onImported, onBulkImported, onCh
   const [browseLoading, setBrowseLoading] = useState(false);
   const [browseError, setBrowseError] = useState<string | null>(null);
   const [expandedProjects, setExpandedProjects] = useState<Set<string>>(new Set());
+  // Confirmed (or edited) entity name per session path — prefilled from each
+  // session's entityGuess, editable, sent as entityName on import.
+  const [sessionEntityNames, setSessionEntityNames] = useState<Record<string, string>>({});
 
   if (!isOpen) return null;
 
@@ -230,6 +233,7 @@ export function ImportDialog({ isOpen, onClose, onImported, onBulkImported, onCh
     setProjectAssignments({});
     setSessionBrowse(null);
     setSelectedSessions(new Set());
+    setSessionEntityNames({});
     setBrowseError(null);
     if (fileInputRef.current) fileInputRef.current.value = '';
     if (jsonlInputRef.current) jsonlInputRef.current.value = '';
@@ -247,6 +251,7 @@ export function ImportDialog({ isOpen, onClose, onImported, onBulkImported, onCh
     setProjectAssignments({});
     setSessionBrowse(null);
     setSelectedSessions(new Set());
+    setSessionEntityNames({});
     setBrowseError(null);
     setJsonlFile(null);
     if (jsonlInputRef.current) jsonlInputRef.current.value = '';
@@ -283,12 +288,20 @@ export function ImportDialog({ isOpen, onClose, onImported, onBulkImported, onCh
       // Auto-expand all projects, pre-select non-imported sessions
       setExpandedProjects(new Set(data.projects.map((p) => p.projectPath)));
       const nonImported = new Set<string>();
+      const initialNames: Record<string, string> = {};
       for (const proj of data.projects) {
         for (const s of proj.sessions) {
-          if (!s.alreadyImported) nonImported.add(s.path);
+          if (!s.alreadyImported) {
+            nonImported.add(s.path);
+            // Prefill per basis: identity-claim and project-name both carry a
+            // proposed name; 'none' prefills empty (blank stays a legitimate,
+            // discoverable choice — leaving it binds to the default agent).
+            if (s.entityGuess?.name) initialNames[s.path] = s.entityGuess.name;
+          }
         }
       }
       setSelectedSessions(nonImported);
+      setSessionEntityNames(initialNames);
     } catch (err) {
       setBrowseError(err instanceof Error ? err.message : 'Failed to browse sessions');
     } finally {
@@ -299,7 +312,12 @@ export function ImportDialog({ isOpen, onClose, onImported, onBulkImported, onCh
   const handleCloseBrowse = () => {
     setSessionBrowse(null);
     setSelectedSessions(new Set());
+    setSessionEntityNames({});
     setBrowseError(null);
+  };
+
+  const updateSessionEntityName = (sessionPath: string, name: string) => {
+    setSessionEntityNames((prev) => ({ ...prev, [sessionPath]: name }));
   };
 
   const toggleSession = (sessionPath: string) => {
@@ -332,12 +350,13 @@ export function ImportDialog({ isOpen, onClose, onImported, onBulkImported, onCh
     setError(null);
     setBulkResult(null);
 
-    const imported: Array<{ channelId: string; channelName: string; messageCount: number; artifactCount: number; conversationId: string }> = [];
+    const imported: Array<{ channelId: string; channelName: string; messageCount: number; artifactCount: number; conversationId: string; entityDisposition?: ResolveDisposition; entityName?: string }> = [];
     const errors: string[] = [];
 
     for (const sessionPath of selectedSessions) {
       try {
-        const result = await importClaudeCodeSession(sessionPath);
+        const confirmedName = sessionEntityNames[sessionPath]?.trim() || undefined;
+        const result = await importClaudeCodeSession(sessionPath, undefined, undefined, confirmedName);
         if (result.status === 'success') {
           imported.push({
             channelId: result.data.channelId,
@@ -345,6 +364,8 @@ export function ImportDialog({ isOpen, onClose, onImported, onBulkImported, onCh
             messageCount: result.data.messageCount,
             artifactCount: result.data.artifactCount,
             conversationId: result.data.sessionId || '',
+            entityDisposition: result.data.entityDisposition,
+            entityName: confirmedName,
           });
         } else {
           // Duplicate — skip silently (already imported)
@@ -554,6 +575,15 @@ export function ImportDialog({ isOpen, onClose, onImported, onBulkImported, onCh
                     >
                       <span className="text-primary">{conv.channelName}</span>
                       <span className="text-muted ml-2">({conv.messageCount} messages)</span>
+                      {/* Mint vs. merge reads very differently on purpose — the asymmetry
+                          (wrongly-separate is fixable later, wrongly-merged mostly isn't)
+                          is exactly what a user should be able to tell apart at a glance. */}
+                      {conv.entityDisposition === 'minted' && conv.entityName && (
+                        <span className="text-accent ml-2">→ new agent: {conv.entityName}</span>
+                      )}
+                      {(conv.entityDisposition === 'matched-by-name' || conv.entityDisposition === 'bound-existing') && conv.entityName && (
+                        <span className="text-muted ml-2">→ added to {conv.entityName}</span>
+                      )}
                     </button>
                   ))}
                 </div>
@@ -622,6 +652,65 @@ export function ImportDialog({ isOpen, onClose, onImported, onBulkImported, onCh
                         {browseError}
                       </div>
                     )}
+
+                    {/* Group-confirm: when multiple checked sessions independently guess the
+                        same name via identity-claim (the system agreeing with itself), offer
+                        a one-click fill for all of them rather than N individual confirms.
+                        project-name/none guesses never group here — batching weak evidence
+                        compounds it into a bigger wrong merge. */}
+                    {(() => {
+                      const groups: Record<string, string[]> = {};
+                      for (const p of sessionBrowse.projects) {
+                        for (const s of p.sessions) {
+                          if (
+                            !s.alreadyImported &&
+                            selectedSessions.has(s.path) &&
+                            s.entityGuess?.basis === 'identity-claim' &&
+                            s.entityGuess.name
+                          ) {
+                            const key = s.entityGuess.name.trim().toLowerCase();
+                            (groups[key] ||= []).push(s.path);
+                          }
+                        }
+                      }
+                      const groupable = Object.entries(groups).filter(([, paths]) => paths.length >= 2);
+                      if (groupable.length === 0) return null;
+                      return (
+                        <div className="space-y-1.5">
+                          {groupable.map(([key, paths]) => {
+                            let displayName = key;
+                            for (const p of sessionBrowse.projects) {
+                              const hit = p.sessions.find((s) => paths.includes(s.path));
+                              if (hit?.entityGuess?.name) { displayName = hit.entityGuess.name; break; }
+                            }
+                            return (
+                              <div
+                                key={key}
+                                className="flex items-center justify-between gap-2 rounded bg-accent/10 border border-accent/30 px-2.5 py-1.5 text-xs"
+                              >
+                                <span className="text-secondary">
+                                  {paths.length} sessions identify as{' '}
+                                  <span className="font-medium text-primary">{displayName}</span> — confirm as one agent?
+                                </span>
+                                <button
+                                  type="button"
+                                  onClick={() =>
+                                    setSessionEntityNames((prev) => {
+                                      const next = { ...prev };
+                                      for (const path of paths) next[path] = displayName;
+                                      return next;
+                                    })
+                                  }
+                                  className="shrink-0 text-accent hover:text-accent-hover font-medium"
+                                >
+                                  Confirm all
+                                </button>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      );
+                    })()}
 
                     {sessionBrowse.projects.length === 0 ? (
                       <div className="rounded border border-line px-4 py-6 text-center text-sm text-muted">
@@ -704,6 +793,45 @@ export function ImportDialog({ isOpen, onClose, onImported, onBulkImported, onCh
                                           </>
                                         )}
                                       </div>
+                                      {/* Entity confirm field. Free text is primary, prefilled per
+                                          basis; leaving it blank is a legitimate choice (binds to the
+                                          default agent, same as today). Never rendered for an
+                                          already-imported session — nothing left to confirm. */}
+                                      {!session.alreadyImported && (
+                                        <div
+                                          className="w-full mt-1"
+                                          onClick={(e) => e.stopPropagation()}
+                                          onMouseDown={(e) => e.stopPropagation()}
+                                        >
+                                          {session.entityGuess?.basis === 'project-name' ? (
+                                            <div className="space-y-0.5">
+                                              <input
+                                                type="text"
+                                                value={sessionEntityNames[session.path] ?? ''}
+                                                onChange={(e) => updateSessionEntityName(session.path, e.target.value)}
+                                                placeholder="Agent name"
+                                                className="w-full rounded bg-input border border-amber-400 dark:border-amber-500/70 px-2 py-1 text-xs text-primary placeholder-muted focus:outline-none focus:border-accent"
+                                              />
+                                              <p className="text-[11px] text-amber-600 dark:text-amber-400">
+                                                {session.entityGuess.rationale}
+                                              </p>
+                                            </div>
+                                          ) : (
+                                            <input
+                                              type="text"
+                                              value={sessionEntityNames[session.path] ?? ''}
+                                              onChange={(e) => updateSessionEntityName(session.path, e.target.value)}
+                                              title={session.entityGuess?.basis === 'identity-claim' ? session.entityGuess.rationale : undefined}
+                                              placeholder={
+                                                session.entityGuess?.basis === 'identity-claim'
+                                                  ? 'Agent name'
+                                                  : 'Name this agent, or leave blank for the default agent'
+                                              }
+                                              className="w-full rounded bg-input border border-line px-2 py-1 text-xs text-primary placeholder-muted focus:outline-none focus:border-accent"
+                                            />
+                                          )}
+                                        </div>
+                                      )}
                                     </div>
                                   </label>
                                   );

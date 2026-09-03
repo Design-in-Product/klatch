@@ -351,8 +351,25 @@ export async function regenerateLastResponse(
 
 // ── Import API ────────────────────────────────────────────────
 
+/** Mirrors the server's `GuessBasis` (`entity-guess.ts`) — what an entity-name guess was made from. */
+export type GuessBasis = 'identity-claim' | 'project-name' | 'none';
+
+/** Mirrors the server's `EntityNameGuess` (`entity-guess.ts`). */
+export interface EntityNameGuess {
+  /** Proposed name. Empty string when basis is 'none'. */
+  name: string;
+  basis: GuessBasis;
+  /** One line the UI can show verbatim so the user can evaluate the guess. */
+  rationale: string;
+}
+
+/** Mirrors the server's `ResolveDisposition` (`entity-resolve.ts`) — what confirming an entity name actually did. */
+export type ResolveDisposition = 'bound-existing' | 'matched-by-name' | 'minted' | 'default';
+
 export interface ImportResponse extends ImportResult {
   sessionId?: string;
+  entityId?: string;
+  entityDisposition?: ResolveDisposition;
 }
 
 export interface ClaudeAiImportResponse {
@@ -362,6 +379,9 @@ export interface ClaudeAiImportResponse {
     messageCount: number;
     artifactCount: number;
     conversationId: string;
+    /** Only set on the claude-code multi-import path, where a confirm-step entity name may be sent. */
+    entityDisposition?: ResolveDisposition;
+    entityName?: string;
   }>;
   skipped: Array<{
     conversationId: string;
@@ -483,6 +503,8 @@ export interface SessionInfo {
   messageCount?: number;
   /** True if the fingerprint scan hit its line cap before EOF — messageCount is a lower bound. */
   fingerprintCapped?: boolean;
+  /** Proposed entity name for this session, so the confirm step can prefill rather than ask the user to invent one. */
+  entityGuess?: EntityNameGuess;
 }
 
 export interface ProjectSessions {
@@ -588,12 +610,18 @@ export type ImportCodeResult =
 export async function uploadClaudeCodeSession(
   file: File,
   channelName?: string,
-  forceImport?: boolean
+  forceImport?: boolean,
+  /** Confirmed entity name — reused if one already has it, minted otherwise. */
+  entityName?: string,
+  /** Existing entity chosen explicitly; wins over entityName. */
+  entityId?: string
 ): Promise<ImportCodeResult> {
   const formData = new FormData();
   formData.append('file', file);
   if (channelName) formData.append('channelName', channelName);
   if (forceImport) formData.append('forceImport', 'true');
+  if (entityName) formData.append('entityName', entityName);
+  if (entityId) formData.append('entityId', entityId);
 
   const res = await fetch(`${BASE}/import/claude-code`, {
     method: 'POST',
@@ -621,7 +649,11 @@ export async function uploadClaudeCodeSession(
 export async function importClaudeCodeSession(
   sessionPath: string,
   channelName?: string,
-  forceImport?: boolean
+  forceImport?: boolean,
+  /** Confirmed entity name — reused if one already has it, minted otherwise. */
+  entityName?: string,
+  /** Existing entity chosen explicitly; wins over entityName. */
+  entityId?: string
 ): Promise<ImportCodeResult> {
   const res = await fetch(`${BASE}/import/claude-code`, {
     method: 'POST',
@@ -630,6 +662,8 @@ export async function importClaudeCodeSession(
       sessionPath,
       channelName: channelName || undefined,
       forceImport: forceImport || undefined,
+      entityName: entityName || undefined,
+      entityId: entityId || undefined,
     }),
   });
   if (res.status === 409) {
