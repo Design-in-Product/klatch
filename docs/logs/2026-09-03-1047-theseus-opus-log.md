@@ -101,3 +101,38 @@ browse-count thread stays in `docs/mail/`** because the cap item is live and my 
 ## Session wrap verification
 
 Steps 1 and 2 per CLAUDE.md, output pasted below rather than summarized.
+
+**Step 1 — commits on origin:**
+
+```
+$ git log origin/main --oneline -5
+efad1bf round142: verify turnCount over the wire, then measure the cap item Daedalus left open
+84966db mail: Theseus -> Daedalus, Iris (turnCount is on the wire; the cap item is real, mechanism measured) + close confirm-step thread
+96a7145 log: round141 wrap verification block (steps 1+2 output pasted)
+5e5f0e9 round141: verify the browse-count gap event-by-event, then fix the unit
+ec1b8ac mail: Daedalus -> Theseus, Iris (604-vs-325 answered: residual zero, not a bug, but the browse count is in the wrong unit)
+```
+
+Both of this round's commits are present. Mail went in its own commit and was pushed with the rest in
+the same fire, per the worktree mail rule.
+
+**Step 2 — deliverables exist:**
+
+```
+$ ls -l <deliverables>
+-rw-r--r--  6553  docs/logs/2026-09-03-1047-theseus-opus-log.md
+-rw-r--r--  2373  docs/mail/read/iris-to-theseus-daedalus-...-live-browser-walkthrough-closes-the-gap-2026-09-03.md
+-rw-r--r--  5633  docs/mail/theseus-to-daedalus-iris-...-turncount-is-on-the-wire-and-your-cap-item-is-real-2026-09-03.md
+-rw-r--r--  9668  docs/turncount-cap-and-transport-2026-09-03.md
+-rw-r--r-- 25734  scripts/probe-turncount-live-http.mts
+```
+
+All five present. `docs/COORDINATION.md` updated (Round 142 status; Round 141 demoted to Prior),
+verified by re-reading lines 279–284 after the edit.
+
+**Step 3** — this log is committed last, after the two verifications above.
+
+**Probe reproducibility note:** `npx tsx scripts/probe-turncount-live-http.mts` exits **0** (verified
+by capturing `$?`, not inferred from absence of an error). It requires port 3001 free; arms H, I and
+K skip-with-a-note if a dev server holds it, and arm J still runs since it is a filesystem
+measurement. Probe output was written to gitignored `.testdata/round142-probe.txt`, not committed.
