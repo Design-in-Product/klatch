@@ -136,3 +136,85 @@ verified by re-reading lines 279–284 after the edit.
 by capturing `$?`, not inferred from absence of an error). It requires port 3001 free; arms H, I and
 K skip-with-a-note if a dev server holds it, and arm J still runs since it is a filesystem
 measurement. Probe output was written to gitignored `.testdata/round142-probe.txt`, not committed.
+
+---
+
+## 14:47 PT — WORK fire, Round 144: is the number in front of xian measured where it's described?
+
+**Session-start protocol done.** Worktree synced by the wrapper at `e957234`, branch
+`claude/theseus-cycle`. Read `docs/COORDINATION.md` (my section: available, Round 142 status) and
+`ls docs/mail/` — one new memo addressed to me since the 10:47 fire:
+`daedalus-to-theseus-iris-cc-calliope-argus-xian-cap-cost-measured-the-cap-is-nearly-free-to-remove-2026-09-03.md`,
+read in full. It answers the cost side I left on his seat, routes the remove-vs-raise cap decision to
+xian, and asks Iris to hold the `+`-marker design work until that lands. Nothing in it asks me for
+anything — it says explicitly "if the cap stays, Theseus's recommendation is right and I have nothing
+to add." So no reply was owed; I went looking for the gap instead.
+
+**The gap I found.** Daedalus's memo routes the decision to xian phrased as *"browse goes 1.39 s →
+2.03 s"*. That's a user-facing sentence attached to an in-process measurement — `probe-scan-latency-
+vs-cap.mts` sums `extractSessionFingerprint` calls and never starts a server. Read the endpoint path
+this session (`routes/import.ts:48-75`, `session-scanner.ts:240-300`): browse also does a readdir per
+project dir, a `statSync` per file, a dedup DB lookup per file, `scanExportedSessions`, a
+`guessEntityName` per session, and serialisation. Same class as Round 141 arm F and Round 142 arm H —
+a value measured one layer below the surface it's described at. **Nobody had ever timed the endpoint**
+(my own arm H fetched it for correctness without timing it).
+
+**New instrument:** `scripts/probe-browse-latency-end-to-end.mts`, exit **0**, 12 checks / 7
+measurements. Arms L (real HTTP at shipped cap), M (in-process fingerprint sum at both caps —
+independent repro on my own harness, not a re-run of his), N (real HTTP uncapped), O (does the
+decomposition hold), P (how the non-fingerprint remainder scales with imported channels).
+
+**Result — my hypothesis was wrong, reporting it as a negative.** I expected meaningful
+non-fingerprint endpoint cost, which would have made the regression a smaller fraction of browse and
+the decision easier. It isn't there.
+
+- **Browse over real HTTP: 1417 ms capped → 2129 ms uncapped. +712 ms, +50%.**
+- **The endpoint is 98% fingerprinting**: 1388 ms scan + 29 ms everything else.
+- Self-validating: predicted 2086 ms from the fingerprint delta vs 2129 measured — **2.0% off**.
+- **Daedalus's number survives and is if anything slightly understated** (+712 end-to-end vs +645
+  quoted). xian should rule on it as written; I have nothing to add to the trade itself.
+
+**His figures replicate on a second instrument.** Cap fires on 11/508 files (2.2%), turns 817 → 1989
+(41.1%), cost +669 ms — against his 11/506, 815 → 1980, 41.2%, +645 ms. Corpus grew by two sessions
+between his fire and mine; that's the entire drift.
+
+**Method note, since arm N required touching source.** The product call sites deliberately don't pass
+`lineCap`, so the only way to an uncapped number at the HTTP surface is to change
+`FINGERPRINT_LINE_CAP` for the life of one server process. The probe captures the file's bytes +
+sha256 at start, restores in a `finally`, and asserts byte-identity before exit (exits 1 if restore
+failed). Verified clean at `d31e0352dc26` on both runs; `git status` clean for `packages/`. Nothing
+was committed in the patched state.
+
+**Two findings the decomposition exposes that weren't priced before:**
+
+1. **The fingerprint cache Daedalus flagged is a 48× cut, not an optimisation.** He called it "toward
+   zero"; the decomposition gives the actual floor — **29 ms**, the whole non-fingerprint endpoint,
+   and a cache still pays the statSync inside it. So browse goes 1417 → ~29 ms. That reframes the cap
+   as sequencing rather than trade: the +712 ms is a cost the cache deletes outright. Not my call,
+   and I did not make it — but it wasn't in front of xian when he was asked to rule.
+
+2. **The dedup lookup is an unindexed full-table JSON scan, O(files × channels).**
+   `findChannelByOriginalSessionId` (`queries.ts:1365`) falls back to
+   `json_extract(source_metadata,'$.originalSessionId') = ?` with no index covering it — verified by
+   grepping `CREATE INDEX` in `db/index.ts`, which returns three, all on `message_artifacts` and
+   `file_refs`. Browse runs it once per file. Measured over 508 lookups: 0 channels → 11 ms, 100 →
+   19 ms, 500 → 56 ms, 2000 → 201 ms (21 → 396 µs each), linear as the code shape predicts.
+   **Invisible on every machine we measure on** — the repo's `klatch.db` has 2 channels, 0 with an
+   `originalSessionId`, so both his baseline and my 29 ms remainder are readings at the left edge of
+   that table. Today it hides behind 1388 ms of scanning; **after the cache lands it *is* browse
+   latency**, 201 ms against a 29 ms floor. Routed to Daedalus with two shapes (expression index, or
+   hoist to one `Map` before the file walk) and no implementation from me — implementation is his
+   seat. Caveat stated in the memo so nobody over-reads it: the dedup cost is paid identically capped
+   or uncapped, so it moves browse's *base*, never the cap delta.
+
+**Deliverables:** `docs/browse-latency-end-to-end-2026-09-03.md`,
+`scripts/probe-browse-latency-end-to-end.mts`, memo
+`docs/mail/theseus-to-daedalus-cc-iris-calliope-argus-xian-your-number-survives-at-the-endpoint-and-two-things-it-exposes-2026-09-03.md`.
+
+**Nothing under `packages/` touched. Zero model calls.** The Daedalus thread stays in `docs/mail/`
+(not moved to `read/`) — it has an open action item parked on xian's seat.
+
+**Honest limits carried forward:** one machine, one corpus, warm page cache throughout — I inherit
+Daedalus's limits. The 98/2 split is measured against a scratch DB with 0 real channels; arm P is the
+correction for exactly that. Client render cost after `JSON.parse` is not measured (payload 0.31 MB,
+so I'd expect it small — not claimed). No cold-cache measurement.
