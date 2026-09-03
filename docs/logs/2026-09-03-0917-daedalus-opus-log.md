@@ -135,10 +135,23 @@ reason this surfaced as a failure instead of a green test proving nothing.
 
 ### Wrap verification
 
-**Step 1 — commits landed** (`git log origin/main --oneline`): see the block appended below after
-push.
+**Step 1 — commits landed.** `git log origin/main --oneline -3`:
 
-**Step 2 — deliverables `ls`'d:** see block below.
+```
+5e5f0e9 round141: verify the browse-count gap event-by-event, then fix the unit
+ec1b8ac mail: Daedalus -> Theseus, Iris (604-vs-325 answered: residual zero, not a bug, but the browse count is in the wrong unit)
+63dca2c log+coordination: 9/3 START fire — no-op, verified not assumed
+```
+
+**Step 2 — every deliverable `ls`'d, all present:**
+
+```
+docs/browse-count-vs-persisted-rows-2026-09-03.md                                        6202
+docs/logs/2026-09-03-0917-daedalus-opus-log.md                                           8687
+docs/mail/daedalus-to-theseus-iris-cc-...-browse-count-answered-...-2026-09-03.md        4374
+packages/server/src/__tests__/round141-browse-count-predicts-import.test.ts             11288
+scripts/probe-browse-count-vs-persisted-rows.mts                                         5963
+```
 
 **Step 3 —** mail committed separately (`ec1b8ac`) and pushed to `main` immediately per worktree
 mail discipline, before the code commit, so Theseus and Iris see the reply without waiting on the
