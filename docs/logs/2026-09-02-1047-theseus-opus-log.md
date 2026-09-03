@@ -202,3 +202,87 @@ after the push, not by the push output alone. `ls` confirms all four deliverable
 `.testdata/` removed; `git status` clean apart from this wrap block. No mail moved to `read/` —
 Calliope's Friday memo now carries a decision for xian, Argus's memo has items open on Daedalus, and
 the cowork memo still has §1/§4a/§4d open, so all three stay visible in `docs/mail/`.
+
+---
+
+## 19:47 PT — STOP fire (Round 141): Iris's confirm step, over a real listening server
+
+Session-start protocol: pulled (worktree synced by wrapper to `f26b8fc`), read `COORDINATION.md`,
+`ls docs/mail/`. **New mail addressed to me:**
+`iris-to-theseus-calliope-daedalus-cc-xian-team-confirm-step-built-friday-blocker-closed-2026-09-02.md`
+— Iris took option 2 from her own 8/30 escalation and built the client half of the confirm step,
+citing my 14:47 measurement as the signal to stop waiting on a 21-day-idle review slot.
+
+Read it immediately and acted in the same fire, per the mail discipline.
+
+### Why this was the work unit
+
+Her memo names her own gap: *"no live walkthrough against a running dev server with real
+`~/.claude/projects` sessions this fire — against the test suite and mocked fetch only."* My own
+14:47 log names the mirror image: *"The curl fallback recipe is route-level, not server-level. I
+drove the same Hono route the dev server mounts; I did not stand up `npm run dev` and curl it."*
+
+Same missing measurement from both sides, and it is squarely my role. Built
+`scripts/probe-import-live-http.mts`: spawns `packages/server/src/index.ts` as a child process
+against a scratch `KLATCH_DB` and drives it with real `fetch`. **22/22 checks passed.**
+
+### Verified before asserting — three times it changed what I wrote
+
+1. **A defect I nearly reported, killed by checking.** `capped=undefined` on an 8654-line file that
+   must have hit the 1500-line cap looked like "the UI shows a capped count as if exact." The field
+   is `fingerprintCapped`, not `capped` — my throwaway script read the wrong name. It *is*
+   propagated (`session-scanner.ts:255,323`) and the client *does* render `"N+"`
+   (`round38-ui-context-aaxt-import-browser.test.tsx:474`). **No defect.** Filed the residue to
+   Daedalus as a product-layer question, not a bug report.
+2. **`piper` in the corpus is not the Friday answer.** It appears as an identity-claim name, which
+   looked like it closed the transport question I refused to guess past this morning. It is **one
+   session** (565 msgs, project `27`). One session is not a cast; the corpus is overwhelmingly
+   Klatch's own agents. Question stays open, and I said so in the memo before anyone could read the
+   optimistic version.
+3. **Checked Iris's numbers instead of repeating them.** Server **1447/1447**, client **249 passed /
+   13 skipped** — both match her claim. Captured **both** workspace totals explicitly this time;
+   Round 139's log had to admit `tail -25` truncated the server's.
+
+### The two results that mattered
+
+- **Arm D — the multipart path nobody had ever driven.** Her `uploadClaudeCodeSession` appends
+  `entityName`/`entityId` as *form fields* (`client.ts:623-624`). My Round 139 probe posted JSON
+  only; her tests mock `fetch`. Server does read them (`routes/import.ts:115-122`) and the binding
+  lands. Had it not, the failure would have been silent-discard-with-201 — the exact shape I
+  documented for the claude.ai ZIP route — with a fully green suite.
+- **Arm F — the check mocked tests structurally cannot make.** The live browse endpoint emits
+  `entityGuess` for **499/499** real sessions. Had it not, the confirm field ships permanently blank
+  and every import silently takes the no-entity path.
+
+**Arm G closed my own Round 139 depth limit:** a 604-message real session, imported in 84ms, bound
+to its own entity, 325 rows persisted, **zero assistant rows NULL-stamped or mis-stamped**.
+
+**Corpus shape (reported, not asserted):** 95.4% `identity-claim`, 4.6% `project-name`, `none`
+**0/499** — one of Iris's three treatments is unexercised outside her unit tests. 476 claims
+collapse to 12 names, 8 with ≥2 sessions, so her group-confirm banner earns its place.
+
+### Safety
+
+Scratch DB throughout; **verified xian's `klatch.db` uncontaminated** — 0 `probe-*` channels,
+entities still exactly `Claude, Vesper-AGATE`. `.testdata/` removed. Zero model calls, zero API
+spend. Nothing under `packages/` changed.
+
+### Not done, stated plainly
+
+**No browser.** I drove the HTTP surface the client calls, not the rendered UI. Iris's confirm-field
+styling, group-confirm banner and mint-vs-merge copy are covered by her 10 unit tests and by nothing
+in my run — the human click-through is **narrowed, not replaced**. Arms A–E use synthetic 2-event
+fixtures so the probe runs in a sandbox; `probe-import-entity-binding.mts` remains the real-corpus
+breadth instrument. The browse-count question is Daedalus's; the Friday transport question is
+xian's.
+
+### Deliverables
+
+```
+scripts/probe-import-live-http.mts
+docs/research/import-confirm-step-live-http-acceptance-2026-09-02.md
+docs/mail/theseus-to-iris-daedalus-cc-calliope-argus-xian-confirm-step-verified-live-http-2026-09-02.md
+```
+
+Mail: nothing moved to `read/`. Iris's memo asks xian for review against the shipped diff and my
+reply opens a question for Daedalus, so the thread stays active in `docs/mail/`.
