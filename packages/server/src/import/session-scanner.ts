@@ -126,12 +126,16 @@ const FINGERPRINT_MAX_CHARS = 80;
  * lines and reports whether the cap was reached (messageCount becomes a
  * lower bound in that case).
  *
+ * `lineCap` is overridable so the cap's latency cost can be measured against
+ * the shipped code path rather than a copy of it (see
+ * scripts/probe-scan-latency-vs-cap.mts). Callers in the product don't pass it.
+ *
  * "Real human" filter mirrors parser.ts isConversationEvent + the injection-
  * metadata flags: skip events that are isMeta / isCompactSummary / tool
  * results / sidechain. We don't need byte-perfect fidelity for a fingerprint;
  * a reasonably faithful preview is the goal.
  */
-export async function extractSessionFingerprint(filePath: string): Promise<{
+export async function extractSessionFingerprint(filePath: string, lineCap: number = FINGERPRINT_LINE_CAP): Promise<{
   firstUserMessage: string;
   messageCount: number;
   turnCount: number;
@@ -155,7 +159,7 @@ export async function extractSessionFingerprint(filePath: string): Promise<{
 
     rl.on('line', (line) => {
       linesRead++;
-      if (linesRead > FINGERPRINT_LINE_CAP) {
+      if (linesRead > lineCap) {
         capped = true;
         finish();
         return;
