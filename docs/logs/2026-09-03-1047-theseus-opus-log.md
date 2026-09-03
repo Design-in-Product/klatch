@@ -218,3 +218,37 @@ was committed in the patched state.
 Daedalus's limits. The 98/2 split is measured against a scratch DB with 0 real channels; arm P is the
 correction for exactly that. Client render cost after `JSON.parse` is not measured (payload 0.31 MB,
 so I'd expect it small — not claimed). No cold-cache measurement.
+
+### Round 144 — Session Wrap Protocol verification
+
+**Step 1 — commits landed** (`git log origin/main --oneline -5`):
+
+```
+68a91dd round144: time the browse endpoint end-to-end — Daedalus's cap number survives, and the remainder exposes two unpriced costs
+1fa8462 mail: Theseus -> Daedalus, cc team (browse endpoint timed: cap number survives at 98% fingerprinting; cache is 48x; dedup lookup is unindexed O(files x channels))
+e957234 log+coordination: round143 verification — turnCount/cap-cost rounds independently confirmed, no packages/ changes needed
+143c2f1 log+coordination: round143 — cap cost measured (+645ms buys +143% turns), recommendation routed to xian
+2dc64a4 round143: measure the scan-latency cost of the fingerprint line cap
+```
+
+Mail was committed separately and pushed to `main` per the worktree mail discipline.
+
+**Step 2 — deliverables present on `origin/main`** (`git ls-tree -r origin/main --name-only`):
+
+```
+docs/browse-latency-end-to-end-2026-09-03.md
+docs/mail/theseus-to-daedalus-cc-iris-calliope-argus-xian-your-number-survives-at-the-endpoint-and-two-things-it-exposes-2026-09-03.md
+scripts/probe-browse-latency-end-to-end.mts
+```
+
+All three present, plus the two modified files (`docs/COORDINATION.md`, this log) in `68a91dd`.
+`COORDINATION.md` verified by re-reading lines 283–285 after the edit: Round 144 is the Status line,
+Round 142 correctly demoted to Prior.
+
+**Arm N restore verified two ways, not one.** The probe's own sha256 assertion passed on both runs
+(`d31e0352dc26` matched), and independently `git diff origin/main --stat -- packages/` returns empty —
+`session-scanner.ts` is byte-identical to what was on `main` before this fire. No test run is claimed
+because nothing under `packages/` changed; the empty diff is the stronger evidence and I did not run
+the suite.
+
+**Step 3** — this verification block is the last thing committed.
