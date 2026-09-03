@@ -95,3 +95,61 @@ docs/COORDINATION.md (Argus section updated)
 
 No `packages/` changes this fire — the work was mail investigation, diff review, and a reply, not a
 code change. `git worktree list` re-checked clean — `/tmp/cowork-verify` no longer present.
+
+---
+
+## 18:02 PT — STOP fire. No-op, verified not assumed.
+
+Pulled — already up to date at `f3c1488` (Round 140 STOP fire, Calliope). `packages/` diff since my
+last verified point (`23ab995`, this session's own 13:30 WORK fire) is **empty**:
+`git diff --stat 23ab995 HEAD -- packages/` returns nothing across the six commits landed since —
+Theseus's Friday-answer measurement (`d619605`, `entityGuess`/entity-binding probe work, explicitly
+"zero model calls... nothing under `packages/` touched"), Round 139 (`e9eb498`, fresh-import-doesn't-
+sidestep-backfill finding), a wrap-verification log, the Friday-hypothesis rollup (`7771cd1`,
+§4d answered), and Daedalus's two mails (`2168012`, backfill sizing to Calliope + §4 Q1 answer to
+Cowork) folded into Round 140's STOP commit.
+
+**Read all three new mail files plus the two folded into `2168012`.** None carries an Argus action
+item:
+- Theseus → Calliope/Daedalus cc Argus: Friday Q1 measured (client never sends an entity name;
+  claude.ai import path has no entity plumbing at all). Cc-only, response-requested is xian/Iris,
+  not me. Notes in passing that the unmerged `cowork-import-hardening` branch I surfaced 13:30
+  changes none of this finding (diffed for entity-binding lines: zero) — good cross-check, no action.
+- Theseus → Cowork cc Argus: §4c answer (doc-capability probe design, three properties: executable
+  through the user's door, partial-truth-capable, distinguishes false-from-unreachable). References
+  my own §4 Q2 answer approvingly ("Argus's §2 answer... makes the same point from the other side").
+  Informational.
+- Daedalus → Cowork cc Argus: §4 Q1 answer (the schema doc and the parser that ignored it shipped in
+  the *same* commit, `f5fd82d` — not drift, never-together; the doc had already flagged the
+  discriminator as contaminated). Confirms my 13:30 finding is still the live state: "the fix is not
+  on `main`... your hardening work is on an unmerged branch (Argus found it on 9/2)." **Flags the one
+  open decision as xian's**: merge the branch or have someone review it first. Not mine to act on —
+  correctly routed to xian, not to me.
+- Daedalus → Calliope cc Argus: backfill sizing (P1/P2/P3 populations, a NULL-stamped assistant-row
+  gap invisible to every entity, an 80-char guess-input ceiling). Cc-only, no addressed action.
+- Calliope → Cowork cc Argus: §4d answer (the verify-before-asserting discipline that
+  `COORDINATION.md` already enforces never crossed into `CHANGELOG.md`/`PROMPT-ASSEMBLY.md`).
+  Cites my §2 answer as the argument against a prose linter. Informational.
+
+**Cowork thread status**: all four addressees' §4 sub-questions are now answered (mine at 13:30,
+Theseus's §4c, Calliope's §4d, Daedalus's §4 Q1 today) — but the thread's remaining open item, the
+merge-or-review decision on `origin/claude/cowork-import-hardening`, is explicitly routed to xian by
+Daedalus, not resolved. Per close-discipline, a thread with an open action item stays in
+`docs/mail/` regardless of how many sub-answers have landed — leaving
+`cowork-to-daedalus-argus-theseus-cc-calliope-import-defects-and-descope-2026-08-28.md` and my own
+reply where they are; not my call to close since the outstanding action isn't mine.
+
+**Re-ran the suite myself**: `npm test` server **1447/1447 (88 files)**, client **239/239 (13
+skipped, 18 files + 13 skipped = 31)** — zero drift from the 13:30 baseline. `npm run typecheck`
+clean across all three workspaces (`shared`, `server`, `client`). `git status` clean apart from this
+fire's own log/coordination edits.
+
+### Wrap verification
+
+```
+git log origin/claude/argus-cycle --oneline -3   # to be confirmed after push
+docs/logs/2026-09-02-1330-argus-sonnet-log.md    # this entry, appended not created new
+```
+
+No `packages/` changes this fire, no new mail authored — nothing addressed to Argus required a
+reply. End of day-part cycle.
