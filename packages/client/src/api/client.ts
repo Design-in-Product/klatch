@@ -499,9 +499,21 @@ export interface SessionInfo {
   isExported?: boolean;
   /** Content fingerprint — first real human-typed user message, truncated ~80 chars. */
   firstUserMessage?: string;
-  /** Approximate message count (turns). May be a lower bound if fingerprintCapped. */
+  /**
+   * Approximate count of raw JSONL user+assistant *events* — NOT turns, and not
+   * what the import persists. Measured on real sessions it runs 2–3x higher
+   * than the row count, because each assistant tool-call is its own event but
+   * collapses into one row plus artifacts. Use `turnCount` for anything the
+   * user reads as a size. May be a lower bound if fingerprintCapped.
+   */
   messageCount?: number;
-  /** True if the fingerprint scan hit its line cap before EOF — messageCount is a lower bound. */
+  /**
+   * Human turn boundaries — how many exchanges this session becomes once
+   * imported. This is the count that predicts what lands. May be a lower bound
+   * if fingerprintCapped.
+   */
+  turnCount?: number;
+  /** True if the fingerprint scan hit its line cap before EOF — counts are a lower bound. */
   fingerprintCapped?: boolean;
   /** Proposed entity name for this session, so the confirm step can prefill rather than ask the user to invent one. */
   entityGuess?: EntityNameGuess;

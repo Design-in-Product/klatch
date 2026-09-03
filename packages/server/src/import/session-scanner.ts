@@ -3,6 +3,7 @@ import os from 'os';
 import path from 'path';
 import readline from 'readline';
 import { findChannelByOriginalSessionId } from '../db/queries.js';
+import { isHumanTurnBoundary } from './parser.js';
 
 export interface SessionInfo {
   /** Full path to the JSONL file */
@@ -29,6 +30,20 @@ export interface SessionInfo {
   firstUserMessage?: string;
   /** Approximate message count (user + assistant turns). May be capped — see fingerprintCapped. */
   messageCount?: number;
+  /**
+   * Number of human turn boundaries — i.e. how many exchanges this session
+   * becomes once imported. This is the count that predicts what lands:
+   * `importSession` persists at most two rows per turn.
+   *
+   * `messageCount` counts raw events instead, and is 2–3x larger on real
+   * sessions because every assistant tool-call event is its own JSONL event
+   * but collapses into one row plus artifacts. Measured on real sessions:
+   * 469 events -> 75 turns -> 143 rows. See
+   * `scripts/probe-browse-count-vs-persisted-rows.mts` for the reconciliation.
+   *
+   * Also capped — see fingerprintCapped.
+   */
+  turnCount?: number;
   /** True if the fingerprint scan hit its line-read cap before reaching EOF (messageCount is a lower bound). */
   fingerprintCapped?: boolean;
 }
@@ -119,6 +134,7 @@ const FINGERPRINT_MAX_CHARS = 80;
 export async function extractSessionFingerprint(filePath: string): Promise<{
   firstUserMessage: string;
   messageCount: number;
+  turnCount: number;
   capped: boolean;
 }> {
   return new Promise((resolve) => {
@@ -127,13 +143,14 @@ export async function extractSessionFingerprint(filePath: string): Promise<{
 
     let firstUserMessage = '';
     let messageCount = 0;
+    let turnCount = 0;
     let linesRead = 0;
     let capped = false;
 
     const finish = () => {
       rl.close();
       stream.destroy();
-      resolve({ firstUserMessage, messageCount, capped });
+      resolve({ firstUserMessage, messageCount, turnCount, capped });
     };
 
     rl.on('line', (line) => {
@@ -156,6 +173,19 @@ export async function extractSessionFingerprint(filePath: string): Promise<{
         const content = event.message.content;
         const isToolResult = Array.isArray(content) && content.every((b: any) => b?.type === 'tool_result');
         if (isToolResult) return;
+
+        // Count turns with the importer's own predicate, so the browse screen
+        // and the import agree by construction rather than by coincidence.
+        // Boundary detection is per-event and order-independent, so counting in
+        // stream order matches groupIntoTurns' post-sort count.
+        //
+        // The two filters are near-identical but not provably equal: this
+        // scanner also drops isVisibleInTranscriptOnly, which
+        // isHumanTurnBoundary does not check. Measured across the repo's real
+        // sessions the divergence is 0 events; the probe script reports it as
+        // "boundaries scanner missed" if that ever stops being true.
+        if (isHumanTurnBoundary(event)) turnCount++;
+
         // First real human-typed user message wins
         if (!firstUserMessage) {
           const text = extractFingerprintText(content);
@@ -170,9 +200,9 @@ export async function extractSessionFingerprint(filePath: string): Promise<{
       messageCount++;
     });
 
-    rl.on('close', () => resolve({ firstUserMessage, messageCount, capped }));
-    rl.on('error', () => resolve({ firstUserMessage, messageCount, capped }));
-    stream.on('error', () => resolve({ firstUserMessage, messageCount, capped }));
+    rl.on('close', () => resolve({ firstUserMessage, messageCount, turnCount, capped }));
+    rl.on('error', () => resolve({ firstUserMessage, messageCount, turnCount, capped }));
+    stream.on('error', () => resolve({ firstUserMessage, messageCount, turnCount, capped }));
   });
 }
 
@@ -252,6 +282,7 @@ export async function scanClaudeCodeSessions(): Promise<ProjectSessions[]> {
         existingChannelName: existing?.name,
         firstUserMessage: fp.firstUserMessage || undefined,
         messageCount: fp.messageCount,
+        turnCount: fp.turnCount,
         fingerprintCapped: fp.capped || undefined,
       });
     }
@@ -320,6 +351,7 @@ export async function scanExportedSessions(repoRoot: string): Promise<ProjectSes
       isExported: true,
       firstUserMessage: fp.firstUserMessage || undefined,
       messageCount: fp.messageCount,
+      turnCount: fp.turnCount,
       fingerprintCapped: fp.capped || undefined,
     });
   }
