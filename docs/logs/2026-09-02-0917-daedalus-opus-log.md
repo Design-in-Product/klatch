@@ -101,3 +101,148 @@ scripts/verify-tsx-guard.mjs
 
 **Delivery:** not claimed. Commits are local to `claude/daedalus-cycle`; the wrapper owns push to
 `origin/main` and logs the outcome. This log and the COORDINATION entry commit last.
+
+---
+
+## 17:17 PT — STOP fire (Round 140): the entity backfill, scoped and sized
+
+**Note on the missing slot:** there is no 13:17 WORK entry in this log and no separate 13:17
+Daedalus log file (`ls docs/logs/` — latest before this fire is `2026-09-02-1330-argus-sonnet-log.md`).
+Recording the gap rather than explaining it; I have no evidence of what happened in that slot.
+
+**Briefing.** Synced by wrapper at `7771cd1`, tree clean. Swept `docs/mail/` — four items
+addressed to me were open: two Calliope memos from the 13:17 round (backfill decided / Paths B-C
+correction), the 5-day-late Cowork import-defects memo (§4 Q1 is mine), plus three cc's already
+answered by others (Argus §4b, Theseus §4c, Calliope §4d). Took the two Calliope asks as the fire's
+work and answered Cowork Q1 in the same fire.
+
+### Round 140 — backfill scoping. Deliverable: `docs/plans/entity-backfill-scoping-2026-09-02.md`
+
+Calliope asked whether `entity-guess.ts`/`entity-resolve.ts` can run retroactively over the
+already-imported channels, or whether backfill needs its own pass. **Both, and the split is the
+finding.**
+
+- **Guess/resolve runs retroactively, unchanged.** `guessEntityName` is pure over (opening human
+  turn, project name); both reconstruct from the DB (`ORDER BY rowid LIMIT 1` + a `project_id`
+  join). No filesystem, no source JSONL.
+- **The write half is not `importSession` and does not exist.** Reading `importSession` and
+  `entityTranscriptWhere` together: the binding is in **two** tables and the rows are **three**
+  populations — P1 `channel_entities`, P2 assistant rows stamped `default-entity`, P3 assistant
+  rows with `entity_id IS NULL`. A backfill that re-points P1 and stops looks repaired in the UI
+  and leaves every agent's answers pooled on the default.
+
+**P3 — predicted from the code, then measured, not assumed.** `messages.entity_id` was added by
+`ALTER TABLE ... ADD COLUMN` with no default (`db/index.ts:103`). An assistant row with NULL there
+satisfies neither disjunct of `entityTranscriptWhere`. I built a fixture and ran that clause
+verbatim:
+
+```
+c-c1 has 2 assistant rows in the table
+transcript for 'default-entity' → c-c1 contributes its user row only
+transcript for 'e-argus'        → c-c1 contributes nothing
+```
+
+Invisible to every entity. Re-pointing `channel_entities` does not reach them and neither would
+re-importing. **Whether P3 is non-empty on xian's real DB is unmeasured** — see below.
+
+**Second finding, in backfill's favour:** `session-scanner.ts:106` caps the guess input at
+`FINGERPRINT_MAX_CHARS = 80`. The live import path sees 80 characters of the opener; a backfill
+reading the DB sees all of it. So there is a class of channel where backfill finds an identity
+claim the live path structurally cannot. Demonstrated on the fixture (an opener whose "You are
+Daedalus" sits past char 80 guesses `Daedalus` from the DB and `klatch` live). "Just re-import"
+was never equivalent.
+
+**Shipped:** `scripts/probe-backfill-entity-sizing.mts` — read-only (`readonly: true`, no
+migrations, no writes), selects exactly one message body per channel (the opener *is* the guess
+input; `--no-openers` suppresses even that). Exercised against a six-row synthetic DB covering:
+claim inside 80 chars, claim past 80 chars, pre-migration NULL rows, no claim at all, a
+double-bound channel, and a control not bound to the default. All six discriminate correctly.
+
+### What I did NOT do, written down rather than guessed at
+
+- **I did not verify "72."** The live `klatch.db` is outside this worktree and the sandbox does not
+  reach the main checkout (`ls` of the worktree root: no `klatch.db`). The repo also disagrees with
+  itself — `queries.ts:1259` says "~49" about the same population. I told Calliope explicitly not
+  to put a total in the rollup until the probe runs, and gave her the one command that produces it.
+- **No apply pass.** Nothing this fire writes to any database.
+- **Whether the probe's `live80` column matches what the scanner actually saw.** It is a
+  reconstruction: the probe reads the DB's first user message, the scanner read the source JSONL's
+  first non-meta human event, and those filters are not identical. Doesn't affect the backfill
+  (the DB is what exists) but the column is inference, not recording.
+
+### Paths B/C — Calliope's correction was right, and there is a further layer
+
+Verified §11a of `docs/ux/spec-composition-gesture.md` (`851e10c`, 8/10): Paths B and C→"continue
+role" SCHEDULED, C→"new agent" HELD. `daedalus-tasks.md` item 8 was stale as she said — **updated**.
+
+But I didn't just copy §11a across: **§11a's own blocker-clearance is stale.** §11a:239 clears
+Path B on "imports now mint a real entity via guess-and-confirm." Verified against the shipped
+client this session — `packages/client/src/api/client.ts:621-634` POSTs `sessionPath`,
+`channelName`, `forceImport` and **no entity fields**. Server half is correct
+(`routes/import.ts:275`); the client never asks. A JIT import built today lands on
+`default-entity` — the exact thing §11a calls "the exact broken thing" — and would *grow* the
+backfill population. **Path B's real dependency is Iris's confirm step, not continuity #2/#3.**
+Same conclusion Theseus reached by probe today; I got there from the client source.
+**Path C→"continue existing role" is the genuinely-unblocked, genuinely-small half.**
+
+### Cowork §4 Q1 — answered, and it is neither option offered
+
+Question: was the negative turn-boundary test a considered choice (permissionMode absent from the
+March transcripts) or an unexamined default? Archaeology, run this session:
+
+- `docs/JSONL-SCHEMA.md` and `parser.ts` were added in **the same commit** — `f5fd82d`, 2026-03-10
+  (`git log --diff-filter=A` on both paths). **Not drift. There was no interval.** The doc stating
+  the right rule and the code implementing the wrong one arrived together.
+- The field was **not** absent. `git show f5fd82d:docs/JSONL-SCHEMA.md` line 72 documents
+  `permissionMode` with its value domain; line 151 records "Does `permissionMode` ever appear on
+  compaction summaries? (Not observed)" — an empirical claim, so the distribution had been surveyed.
+- Line 65 of that same original doc: task notifications *"Has `permissionMode` (**anomalous**)"*.
+  **The author knew the positive discriminator was contaminated and wrote it down** — that anomaly
+  is 3 of Cowork's 9 fabricated turns. Line 59/142 state the rule as a **conjunction**; the code
+  shipped one conjunct.
+
+So: examined as a description, never as a discriminator. Whether dropping the failing-closed half
+was reasoned or defaulted is **not recoverable from the artifacts** and I did not pick one. The
+lesson I proposed is narrower than either of Cowork's: when the clean discriminator is
+known-contaminated, fail-open vs. fail-closed *is* the design decision, and here it was made
+silently — `parser.ts:261-262` records what the filter is for and nothing about what it is exposed
+to. I also endorsed hypothesis (f) with a reason: the self-report and the capability diverged
+inside a single commit, which is the tightest form of the pattern AXT exists to catch.
+
+**Status finding that changes what to do next:** the Cowork fix is **not on `main`**. Verified —
+`parser.ts:255` is still single-argument `isHumanTurnBoundary(event)` with the negative test, and
+`scripts/refresh-import-fixtures.mjs` does not exist here (I looked for it in order to run
+Addendum 4's command). **I did not merge the branch**: five files under
+`packages/server/src/import/`, unreviewed, from a scheduled fire with no human in the loop — not a
+unilateral call. **Flagged to xian as a decision: merge it, or assign a review.**
+
+### Mail handling
+
+Two replies filed and committed separately from the work, per worktree mail discipline
+(`2168012`). **Nothing moved to `docs/mail/read/`** — both Calliope threads have a live open action
+(run the probe against the real DB, which needs a seat with DB access) and the Cowork thread has
+two (the merge call, then the two refresh commands). Open threads stay visible.
+
+### What xian is needed for
+
+1. **Merge the Cowork import-hardening branch, or assign a reviewer.** Two of its addendum items
+   are blocked on the merge, not on effort.
+2. **One read-only probe run against the real `klatch.db`** — `npx tsx
+   scripts/probe-backfill-entity-sizing.mts <path>` — converts the backfill scoping into an actual
+   estimate. I'll do the conversion the same fire the output lands.
+
+### Wrap verification (17:5x PT)
+
+**Step 1 — `git log --oneline -3`:**
+```
+0183768 round140: scope the entity backfill — the binding lives in two tables, and NULL-stamped assistant rows are invisible to every entity
+2168012 mail: Daedalus -> Calliope (backfill sized: two tables, three populations) and -> Cowork (§4 Q1: the schema doc shipped in the same commit as the parser that ignored it)
+7771cd1 rollup+mail+log+coordination: Friday hypothesis measured (half right), §4d answered
+```
+
+**Step 2 — every claimed deliverable `ls`'d:** see the verification block committed with this entry.
+
+**Step 3 — `git diff --stat` on `packages/`: empty.** No product code touched this fire; no
+database written by anything in it.
+
+**Delivery:** not claimed. The wrapper owns push and logs the outcome.
