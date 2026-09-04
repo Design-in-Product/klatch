@@ -13,3 +13,26 @@ Two new mail files since my 9/3 13:30 fire, both read in full:
 Cross-pollination brief (2026-09-04, `d84337c`) already read per the citing commits above — hoist-vs-correctness and monitoring silent-vs-quiet insights, neither Argus-actionable this fire.
 
 **Re-ran the suite myself**: `npm test` server **1477/1477** (91 files), client **249/249, 13 skipped** — matches the last verified baseline exactly, zero drift. `npm run typecheck` clean across all three workspaces. `git status` clean. No `packages/` changes needed.
+
+## 13:30 PT — WORK fire, real `packages/` activity verified (cap ruling shipped, fingerprint cache, multi-root scanner)
+
+Pulled twice this fire — a second `git pull` mid-session picked up two more commits that landed while I was verifying the first batch (Round 149, Daedalus, ~10:30 PT). Final HEAD: `272019e`.
+
+`packages/` diff since last verified point (`eb3eede`, 09:01 START) is **not empty** — real product code across two rounds:
+
+**Round 147 + cap ruling (`dba7699`, `040c434`, `18d4631`, `02be70d`, `e1ee197`):**
+- `dba7699`/`040c434`: `getSessionFingerprint(path, stat, cap)` caches browse fingerprints keyed on `(path, mtime, size, cap)`, dedup fields deliberately excluded from the cache (function of the DB, not the file). Endpoint A/B: 1430ms → 7ms warm, 204×. Corrected a stale 29ms floor to 7ms (the error was a subtraction inheriting the subtrahend's underestimate, inverted).
+- `18d4631`: xian ruled the line cap removed. `FINGERPRINT_LINE_CAP` 1500 → 50,000, survives as a pathological-file guard not a latency knob. Two tests correctly re-pinned rather than deleted (round143, round33) to keep the shipped default from drifting silently. CI landed, path-filtered to `packages/` + manifests.
+- `e1ee197`: self-correction — the "~3x headroom" claim for 50,000 was measured only against `~/.claude/projects`; Janus's second corpus (`~/.claude-pm/projects`, PM's eleven department heads) runs up to 40,458 lines, so real headroom is ~24%, not 3x. Ruling itself still holds (40,458 < 50,000).
+- `432c2ad` (Theseus, round148): priced browse against the second corpus at the endpoint — 1966ms cache-cold / 4ms warm, nothing capped across 592 sessions; flagged Round 147's 1477ms cache-cold figure as non-reproducing (measured 2164/2177ms instead).
+
+**Round 149 (`4602561`, Daedalus):** scanner now walks more than one Claude config root. `CLAUDE_CONFIG_DIR` (Claude Code's own var, replace semantics) relocates the base root; new `KLATCH_EXTRA_SESSION_ROOTS` (additive, `path.delimiter`-separated) adds roots on top — the two answer different questions and Daedalus took both rather than choosing. `SessionInfo.sourceRoot` added to the client type, populated only in the multi-root case (absent, not undefined, for every current single-root user — verified at the byte level). Union of both roots: 593 sessions, 92 projects, **9ms warm**. Also surfaced and left unfixed (scoped in the doc, not a regression): `decodeProjectPath` is wrong on 76/76 of PM's projects and 10/16 of the shipped root's own — cosmetic on `projectPath`-as-key, not `projectName`-as-label, verified safe as a merge key since the encoding is injective.
+
+**Independently verified, not re-trusted from the mail:**
+- `grep`'d `FINGERPRINT_LINE_CAP` — confirmed 50,000 in `packages/server/src/import/session-scanner.ts` (non-test).
+- `grep`'d `ImportDialog.tsx:759` — `fingerprintCapped ? messageCount+ : messageCount` still unswapped, consistent with Iris's labelling call still being her build to make, not a bug.
+- `grep`'d `session-scanner.ts` for `KLATCH_EXTRA_SESSION_ROOTS`/`CLAUDE_CONFIG_DIR`/`sourceRoot` — code matches the mail's description: `CLAUDE_CONFIG_DIR` relocates, `KLATCH_EXTRA_SESSION_ROOTS` adds, `sourceRoot` only set when `multiRoot`.
+- Confirmed `round149-multi-root-session-scan.test.ts` exists.
+- Read all five new mail files in full (`daedalus-to-theseus-iris-...cache-built...`, `janus-to-calliope-daedalus-iris-...transport-answered...`, `calliope-to-iris-...cap-ruling-landed...`, `theseus-to-daedalus-iris-...second-corpus-priced...`, `daedalus-to-janus-theseus-iris-...scanner-sees-piper-morgan...`) — all part of the same ongoing Daedalus/Theseus/Janus/Iris/Calliope performance-and-scanner thread, all cc-only to Argus, no memo addressed to Argus with an action item.
+
+**Re-ran the suite myself** (twice, once per pull): final run at HEAD `272019e` — `npm test` server **1504/1504** (93 files, +15 net from the 09:01 baseline of 1477/91 across two rounds' worth of new/re-pinned tests), client **249/249, 13 skipped** (unchanged). `npm run typecheck` clean across all three workspaces. `git status` clean. No `packages/` changes needed from this seat — verification-only fire.
