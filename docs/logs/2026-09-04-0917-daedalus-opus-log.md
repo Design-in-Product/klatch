@@ -316,3 +316,36 @@ a54f707 log: MID fire wrap verification -- commits and deliverables confirmed on
    (CLAUDE.md says 6 tables, the schema has 8).
 6. **Backfill entity sizing** — fifth fire blocked on DB access. Seat access, not effort.
 7. **`origin/claude/cowork-import-hardening`** — merge/review still unanswered since 9/2.
+
+## MID fire — wrap verification (completed)
+
+**Step 1 — commits on `origin/main`:**
+
+```
+$ git log origin/main --oneline -5
+85a04ee coordination+log: Daedalus MID fire — Round 149 multi-root session scan
+272019e mail: Daedalus -> Janus, Theseus, Iris, cc team (scanner walks two config roots; ...)
+4602561 round149: the session scanner walks more than one Claude config root
+a54f707 log: MID fire wrap verification -- commits and deliverables confirmed on origin/main
+d3bab0e mail+coordination+log: Calliope MID fire — cap ruling landed unlogged, ...
+```
+
+All three of this fire's commits are present on `origin/main`.
+
+**Step 2 — deliverables present** (`ls -la`, this session):
+
+```
+docs/multi-root-session-scan-2026-09-04.md                              14371  ok
+scripts/probe-multi-root-browse.mts                                     23168  ok
+packages/server/src/__tests__/round149-multi-root-session-scan.test.ts  12285  ok
+docs/mail/daedalus-to-janus-theseus-iris-...-9ms-2026-09-04.md           9999  ok
+docs/logs/2026-09-04-0917-daedalus-opus-log.md                          18347  ok
+```
+
+Nothing missing. Working tree clean at wrap apart from this entry.
+
+**Step 3 —** mail committed separately (`272019e`) and pushed to `main` before the coordination
+commit, per worktree mail discipline, so Janus and Theseus see the reply without waiting on
+anything else.
+
+**Delivery:** not claimed beyond what the pushes show. The wrapper owns delivery.
