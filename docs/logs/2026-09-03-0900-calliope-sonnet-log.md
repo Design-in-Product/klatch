@@ -167,3 +167,88 @@ after push: still only Round 143's additive test file and scanner param — this
 `packages/` file, docs only.
 
 **Step 3** — this verification block is the last thing committed and pushed.
+
+## STOP fire (~21:34 PT)
+
+Session-start protocol: `git pull origin main` clean, already up to date at `50e73da`. `docs/COORDINATION.md`
+is too large for a single Read (987 lines); scoped via `git log --oneline 6ab75a4..HEAD` (my own SWEEP-fire
+checkpoint), which showed nine new commits, none mine: Daedalus's Round 145 (mail + doc + coordination/log +
+wrap-log, dedup hoist), Argus's independent Round 145 verification (no `packages/` changes needed), Iris's
+9/3 STOP fire (mail + log + coordination, holding the labelling call), Theseus's Round 146 (mail +
+coordination/log + wrap-log, endpoint verification).
+
+**Mail:** three new memos since my SWEEP-fire checkpoint, all cc'd (none addressed to this seat), read in
+full:
+
+- `daedalus-to-theseus-cc-iris-calliope-argus-xian-dedup-hoisted-and-i-took-your-second-shape-2026-09-03.md`
+  — Round 145. Hoists the dedup lookup Round 144 flagged as becoming the dominant cost once the fingerprint
+  cache lands: `findChannelByOriginalSessionId`'s per-file unindexed O(files × channels) `json_extract` scan
+  replaced by `createChannelBySessionIdResolver()` — one scan of `channels` builds two maps, each lookup
+  becomes a Map hit. Measured **198.5 ms → 4.1 ms at 2000 channels** (unit, 0 mismatches against the
+  per-call function across 508 ids), replicating Theseus's own arm P curve on a second instrument first
+  (198.5 vs. his 201 ms at 2000). Swapped at three read-only sites (both scanners, plus the claude.ai ZIP
+  preview loop). Deliberately left live at the bulk-import site: a snapshot resolver there would stop
+  seeing channels created earlier in the same batch, silently reintroducing duplicates within one ZIP —
+  documented at the call site, pinned by a test (`does not see a channel created after the resolver was
+  built`). Explicit that this doesn't change the cap decision: the dedup cost is paid identically capped or
+  uncapped, so it moves browse's *base*, not the capped-vs-uncapped *delta*.
+- `iris-to-daedalus-theseus-cc-calliope-argus-xian-holding-the-labelling-call-for-the-cap-ruling-2026-09-03.md`
+  — checked the client directly (`grep -rn turnCount packages/client/src`) rather than trusting either
+  memo: `turnCount` is on the type but unused, `ImportDialog.tsx:759` still renders `messageCount+`.
+  Deliberately not designing the qualitative capped-session fallback until the cap decision lands (moot if
+  the cap goes); has a same-day plan ready either direction. Confirmed no `xian-to-*` reply exists yet
+  (`ls docs/mail | grep "^xian-to"` empty).
+- `theseus-to-daedalus-cc-iris-calliope-argus-xian-hoist-verified-at-the-endpoint-and-the-slope-is-the-headline-2026-09-03.md`
+  — Round 146. Didn't take Daedalus's unit number on word, timed the real HTTP endpoint (pre-hoist source
+  restored from `afe0889^`, sha-verified back): **224 ms saved at 2000 channels**, reconciling with
+  Daedalus's 194 ms to within 2% once a 27 ms constant (present even at 0 channels — per-file primary-key
+  round trips the resolver also replaces) is separated from the channel-scaling portion. **Headline: the
+  slope drops from ~104 ms to ~5 ms per 1000 imported channels** — browse's base cost is now approximately
+  independent of import history, not just a smaller constant. Payload checked byte-identical on 512
+  real-shaped sessions (50 genuinely already-imported), not just the resolver's own unit test. One
+  correction against his own Round 144 number: a cost measured in a tight loop is a lower bound on the same
+  cost measured in situ (his own arm P 11 ms became 27 ms through the route, 2.4x) — flagged as relevant
+  when the fingerprint cache gets sized. Also documented a testing hazard for future server-restart probes:
+  `SIGTERM` is asynchronous, so a probe that only waits for the port to answer can time a stale server
+  generation.
+
+**Rollup work:** none of the three change the cap decision itself, so I folded them into the *existing*
+cap-decision 🔴 item as a new sub-bullet rather than adding a fifth needs-you entry — this is shipped,
+verified perf work under an already-counted item, not a new decision. `docs/operations/attention-rollup.md`:
+banner → v100 (v99 demoted to a single "Prior banner" line), new sub-bullet under "Browse latency cap"
+naming the base-cost drop and Iris's holding status, new v100 changelog entry. No metrics-strip count
+change — needs-you stays 4.
+
+**Verified before writing, not carried from any memo:** re-ran the suite myself — server **1477/1477
+(91 files)**, client **249/249 (13 skipped)** — matches Theseus's and Argus's independently-reported counts
+exactly, zero drift. `npm run typecheck` clean across all three workspaces. `git diff --stat
+6ab75a4..HEAD -- packages/` shows only Round 145's additive resolver + test + two call-site swaps (279
+insertions, 7 deletions), confirming Round 146 touched nothing under `packages/` — matches Theseus's own
+sha256 + empty-diff restore claim independently.
+
+**Mail hygiene:** nothing moved to `docs/mail/read/` this fire — all three memos are report-only or carry
+the still-open cap decision (Daedalus's and Theseus's dedup memos reference it explicitly; Iris's is
+entirely about holding on it), not this seat's to close. That's on Daedalus's/Theseus's/Iris's own seats
+per past practice on cc-only threads.
+
+Standing threads re-checked, unchanged: the discretion-model memo
+(`calliope-to-xian-discretion-does-that-make-sense-2026-08-09.md`) is still in `docs/mail/` unanswered — not
+re-investigated in depth this fire (not new signal, not part of today's mail arrivals), noted only because
+Iris's memo referenced a "ground-rules-UX" blocker in passing; worth a dedicated look at a future mail-sweep
+fire rather than a tangent here. Backfill transport decision and logbook-shape thread also unchanged, not
+re-checked this fire (no new signal since SWEEP).
+
+### Wrap verification (Session Wrap Protocol)
+
+**Step 1 — confirm commits landed** (after push): pasted below once pushed.
+
+**Step 2 — deliverables present**, confirmed with `ls`:
+
+```
+docs/operations/attention-rollup.md   (modified — v100 banner, cap-decision sub-bullet, changelog)
+docs/COORDINATION.md                  (modified — new Calliope status entry)
+docs/logs/2026-09-03-0900-calliope-sonnet-log.md  (this file — STOP fire section)
+```
+
+**Step 3** — this verification block is the last thing committed and pushed; Step 1 output follows in the
+wrap-verification commit.
