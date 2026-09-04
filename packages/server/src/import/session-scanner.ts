@@ -130,11 +130,18 @@ export async function extractSessionId(filePath: string): Promise<string | undef
  * so intermediate values were dominated rather than balanced. The choice was 1500 or
  * nothing, and nothing won.
  *
- * **Why 50_000 and not Infinity.** Measured 2026-09-04: the largest file in the local
- * corpus is 15,371 lines, so this clears every real session with ~3x headroom and
- * `capped` is false corpus-wide — which is what makes `turnCount` exact and retires
- * the `turnCount+` rendering question. It exists only so one malformed or machine-
- * generated file cannot hang Browse.
+ * **Why 50_000 and not Infinity.** It exists only so one malformed or machine-generated
+ * file cannot hang Browse. `capped` should be false corpus-wide — that is what makes
+ * `turnCount` exact and retires the `turnCount+` rendering question.
+ *
+ * **Headroom is thinner than it first looked, and the correction is worth reading.**
+ * The value was chosen against `~/.claude/projects`, whose largest file is 15,371 lines
+ * (~3x headroom). Janus flagged the same day that the corpus this feature actually
+ * exists for — Piper Morgan's eleven department heads — lives in a *second* config
+ * directory, `~/.claude-pm/projects`, which `defaultSessionRoot()` below cannot see.
+ * Verified directly: those files run 13,054–40,397 lines. So the real headroom over the
+ * largest known session is **~24%, not 3x**, and one more growth step reaches it.
+ * If this guard ever starts biting, that is the number that moved.
  *
  * **Revisit if:** `capped` starts coming back true on real sessions (the guard is
  * biting, not guarding), or browse latency regresses past what the fingerprint cache

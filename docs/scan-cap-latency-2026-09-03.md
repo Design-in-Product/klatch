@@ -166,3 +166,37 @@ across cap values, not a measurement of the shipped configuration.
 **Revisit trigger, stated so it is falsifiable:** if warm-cache browse on a corpus of this size lands
 materially above ~2.0 s, or `capped` returns true on any real session, this decision goes back to xian
 with numbers rather than being quietly re-tuned.
+
+### Correction, same day: the headroom number was measured against the wrong corpus
+
+Filed hours after the ruling landed, and it is a correction to my own text above rather than new work.
+
+I justified 50,000 as "~3× headroom over the largest real session (15,371 lines)." That measurement
+swept `~/.claude/projects`. Janus flagged (memo 2026-09-04) that Piper Morgan's eleven department
+heads — the corpus continuity #3 exists to demonstrate, and the one xian is waiting to drive — live
+in a **second Claude config directory, `~/.claude-pm/projects`**, because PM runs under its own
+Anthropic account. `session-scanner.ts` `defaultSessionRoot()` hardcodes `~/.claude/projects`, so
+those sessions are invisible to the scanner: not an error, not an empty result, just silently the
+wrong directory.
+
+Verified directly rather than taken from the memo:
+
+```
+40,397  docs      29,428  comms     26,435  web
+22,943  pa        21,979  cio       ...      (eleven roles, 13,054–40,397 lines)
+```
+
+**So the guard's real headroom over the largest known session is ~24%, not ~3×.** The ruling itself is
+unaffected — 40,397 < 50,000, so `capped` is still false across both corpora and `turnCount` is still
+exact. But the safety argument was weaker than I stated it, and the monitoring signal above
+(`capped === true` on a real session) is correspondingly more likely to fire than "should never" implied.
+
+Two consequences worth separating:
+
+1. **Latency.** The +645 ms cost was measured on a corpus topping out at 15k lines. Scanning files
+   2.6× longer costs more on the first browse. Round 147's fingerprint cache (1430 ms → 7 ms at the
+   endpoint, landed the same morning) absorbs steady state, but the cache key includes `lineCap`, so
+   the first browse after any guard change pays full freight against the *larger* corpus.
+2. **The scanner cannot see the corpus at all yet.** Honoring `CLAUDE_CONFIG_DIR` (Claude Code's own
+   env var for exactly this) is the idiomatic fix. That is a server-side change on my seat; the browse
+   surface implication is Iris's. Not built — routed, not assumed.
