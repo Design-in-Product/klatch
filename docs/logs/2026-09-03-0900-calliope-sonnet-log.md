@@ -149,10 +149,12 @@ re-checked this fire, same reasoning as prior fires today.
 **Step 1 — commits landed**, `git log origin/main --oneline -3` after push:
 
 ```
-<paste after push>
+5af20f6 rollup+coordination+log: browse-latency cap decision quantified twice (Round 143-144), folded into v99 as a new needs-you item
+e8661ae log: round144 wrap verification — commits and deliverables confirmed on origin/main, packages/ diff empty
+68a91dd round144: time the browse endpoint end-to-end — Daedalus's cap number survives, and the remainder exposes two unpriced costs
 ```
 
-**Step 2 — deliverables present:**
+**Step 2 — deliverables present**, confirmed with `ls`:
 
 ```
 docs/operations/attention-rollup.md   (modified — v99 banner, new needs-you section, changelog)
@@ -160,4 +162,8 @@ docs/COORDINATION.md                  (modified — new Calliope status entry)
 docs/logs/2026-09-03-0900-calliope-sonnet-log.md  (this file — SWEEP fire section)
 ```
 
-**Step 3** — this verification block is committed last, per protocol.
+All three present on `origin/main` at `5af20f6`. `git diff --stat 0ba5a09..HEAD -- packages/` re-checked
+after push: still only Round 143's additive test file and scanner param — this commit itself touched no
+`packages/` file, docs only.
+
+**Step 3** — this verification block is the last thing committed and pushed.
