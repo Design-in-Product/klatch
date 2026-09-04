@@ -135,12 +135,14 @@ const FINGERPRINT_MAX_CHARS = 80;
  * results / sidechain. We don't need byte-perfect fidelity for a fingerprint;
  * a reasonably faithful preview is the goal.
  */
-export async function extractSessionFingerprint(filePath: string, lineCap: number = FINGERPRINT_LINE_CAP): Promise<{
+export interface SessionFingerprint {
   firstUserMessage: string;
   messageCount: number;
   turnCount: number;
   capped: boolean;
-}> {
+}
+
+export async function extractSessionFingerprint(filePath: string, lineCap: number = FINGERPRINT_LINE_CAP): Promise<SessionFingerprint> {
   return new Promise((resolve) => {
     const stream = fs.createReadStream(filePath, { encoding: 'utf-8' });
     const rl = readline.createInterface({ input: stream, crlfDelay: Infinity });
@@ -221,6 +223,85 @@ function extractFingerprintText(content: any): string {
   return '';
 }
 
+interface FingerprintCacheEntry {
+  /** Modification time the fingerprint was computed against, in float ms. */
+  mtimeMs: number;
+  /** File size the fingerprint was computed against. */
+  sizeBytes: number;
+  /** Line cap the fingerprint was computed under — see the note below on why this is part of validity. */
+  lineCap: number;
+  fp: SessionFingerprint;
+}
+
+/**
+ * Fingerprint cache, process-lifetime, in-memory.
+ *
+ * Browse spends nearly all its time in `extractSessionFingerprint`, which is a
+ * pure function of file *content*. Session JSONL files are append-only and
+ * overwhelmingly unchanged between two browses, so the same bytes get parsed
+ * again on every visit to the import screen.
+ *
+ * **One entry per path, not per (path, version).** A changed file overwrites its
+ * own entry, so the map is bounded by the number of distinct session files this
+ * process has seen — not by how often they change. An actively-appended session
+ * re-keys in place rather than accumulating a row per browse.
+ *
+ * **What is deliberately NOT cached:** `alreadyImported` / `existingChannelId` /
+ * `existingChannelName`. Those are functions of the database, not of the file, and
+ * caching them would leave the browse screen claiming a just-imported session is
+ * still unimported until its file happened to change. They stay live on every scan
+ * (cheap since Round 145 hoisted the lookup out of the loop). Pinned by test.
+ *
+ * **Why `lineCap` is part of the key.** The cap is under an open decision (Round 143,
+ * routed to xian). If it is raised or removed, every cached `capped: true` entry is
+ * a stale *undercount* for a file that never changed — mtime and size alone would
+ * not catch it. Keying on the cap makes a cap change self-invalidating.
+ *
+ * **Known limit:** validity is `(mtimeMs, size)`. A file rewritten to the identical
+ * byte length within a single mtime tick would hit stale. The window is narrower than
+ * "one millisecond" — `stat.mtimeMs` carries the filesystem's own resolution, which is
+ * sub-millisecond on APFS (observed: `...825.5498`) — but it is not zero. Appends
+ * change the size, so this cannot occur on the append-only JSONL this reads; it is
+ * recorded because a future writer of these files might not be append-only.
+ *
+ * Persistence across restarts is a separate decision and is deliberately not built
+ * here — see `docs/fingerprint-cache-2026-09-04.md`.
+ */
+const fingerprintCache = new Map<string, FingerprintCacheEntry>();
+
+/**
+ * Fingerprint a session file, reusing a previous result when the file is provably
+ * unchanged. `stat` is passed in rather than re-`stat`ing because every caller
+ * already holds one.
+ */
+export async function getSessionFingerprint(
+  filePath: string,
+  stat: fs.Stats,
+  lineCap: number = FINGERPRINT_LINE_CAP,
+): Promise<SessionFingerprint> {
+  const hit = fingerprintCache.get(filePath);
+  if (hit && hit.mtimeMs === stat.mtimeMs && hit.sizeBytes === stat.size && hit.lineCap === lineCap) {
+    return hit.fp;
+  }
+
+  const fp = await extractSessionFingerprint(filePath, lineCap);
+  // Frozen because the same object is handed to every future caller — a caller that
+  // mutated it would corrupt the cache for everyone after it.
+  const frozen = Object.freeze(fp);
+  fingerprintCache.set(filePath, { mtimeMs: stat.mtimeMs, sizeBytes: stat.size, lineCap, fp: frozen });
+  return frozen;
+}
+
+/** Drop all cached fingerprints. For tests and probes; nothing in the product calls this. */
+export function clearSessionFingerprintCache(): void {
+  fingerprintCache.clear();
+}
+
+/** Number of cached entries. For tests and probes. */
+export function sessionFingerprintCacheSize(): number {
+  return fingerprintCache.size;
+}
+
 /**
  * Scan ~/.claude/projects/ for Claude Code session files.
  * Returns sessions grouped by project, with dedup detection.
@@ -273,11 +354,13 @@ export async function scanClaudeCodeSessions(): Promise<ProjectSessions[]> {
       // Skip tiny files (< 100 bytes — likely empty or corrupted)
       if (stat.size < 100) continue;
 
-      // Check dedup against database
+      // Check dedup against database. Deliberately NOT cached with the fingerprint —
+      // this answer changes when the user imports, without the file changing.
       const existing = findChannel(sessionId);
 
-      // Content fingerprint — first user message + approximate turn count
-      const fp = await extractSessionFingerprint(filePath);
+      // Content fingerprint — first user message + approximate turn count.
+      // Cached on (path, mtime, size, cap); recomputed only when the file changed.
+      const fp = await getSessionFingerprint(filePath, stat);
 
       sessions.push({
         path: filePath,
@@ -348,7 +431,8 @@ export async function scanExportedSessions(repoRoot: string): Promise<ProjectSes
     // Extract session ID: try the filename (sans .jsonl), or read from file
     const sessionId = file.name.replace('.jsonl', '');
     const existing = findChannel(sessionId);
-    const fp = await extractSessionFingerprint(filePath);
+    // Same split as scanClaudeCodeSessions: dedup live, fingerprint cached.
+    const fp = await getSessionFingerprint(filePath, stat);
 
     sessions.push({
       path: filePath,
