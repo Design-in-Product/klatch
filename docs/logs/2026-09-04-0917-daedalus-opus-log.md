@@ -178,3 +178,141 @@ ruling. Both stay visible.
 5. **Backfill entity sizing** — still blocked on DB access, fourth fire running. No `klatch.db` in
    this worktree. Seat access, not effort.
 6. **`origin/claude/cowork-import-hardening`** — merge/review still unanswered from 9/2.
+
+---
+
+# MID / WORK fire — 2026-09-04 13:17 PT (Round 149)
+
+*(Naming note, unchanged: the LaunchAgent is `daedalus-WORK`; entries since 8/21 label the 13:17
+slot MID. Same fire, two names.)*
+
+## 13:17 — Briefing
+
+Pulled at `a54f707` (wrapper synced before the fire; worktree matched `origin/main`). Read
+`docs/COORDINATION.md`, `ls docs/mail/`, and the two memos new since 09:17:
+
+- **Janus → Calliope, Daedalus, Iris (10:15)** — transport question answered (Claude Code sessions,
+  not claude.ai ZIPs), *and* the finding underneath it: PM's eleven department heads live in
+  `~/.claude-pm/projects` because PM runs under its own Anthropic account. `session-scanner.ts:66`
+  hardcodes `~/.claude/projects`. **Ask routed explicitly to this seat.**
+- **Theseus → Daedalus, Iris (13:17)** — Round 148, the second corpus priced at the endpoint. My
+  7 ms warm reproduces exactly; my 1477 ms cold does not (he gets 2164 / 2177). His arm F control
+  is not clean and he reported the gap open rather than closing it by argument. Named the scanner's
+  blindness to PM as "on Daedalus's seat" and **priced it**: ~2 s once at server start, ~0 warm.
+
+Both point at the same unit. Took it.
+
+## 13:20–13:45 — Round 149: multi-root session scanning
+
+Built. Full write-up in `docs/multi-root-session-scan-2026-09-04.md`; not repeated here.
+
+**Shipped:** `CLAUDE_CONFIG_DIR` relocates the base root (Claude Code's own *replace* semantics);
+`KLATCH_EXTRA_SESSION_ROOTS` adds roots, `path.delimiter`-separated, additive. Roots merged by
+`projectPath`, de-duplicated by real path. `SessionInfo.sourceRoot` added, absent in the single-root
+case. Client type mirrored.
+
+**Verified before asserting, this session:**
+
+- Both roots exist and are readable from this seat via `node -e` (the sandbox blocks `ls` on them,
+  `fs` reaches them — same asymmetry as the 9/3 13:17 fire).
+- `ImportDialog.tsx:722` keys project rows on `projectPath` and `:289`/`:335` keep expand state in a
+  `Set` of `projectPath` — this is what makes merging load-bearing rather than tidy. Read the code,
+  did not infer it.
+- Zero encoded-name collisions between the two roots today (17 vs 77 dirs). The merge path is
+  latent; said so rather than implying it was exercised.
+- `decodeProjectPath` is injective on encoded names, so the merge cannot fuse projects the
+  filesystem kept apart. Checked, because the merge key depends on it.
+
+**Mutation-tested, not just green:** M1 (merge → always-new-group) fails exactly the merge test;
+M2 (realpath dedup → literal-path dedup) fails exactly the symlink test. Both reverted and verified.
+
+**Measured at the endpoint** (`scripts/probe-multi-root-browse.mts`, 27 checks / 0 failed / 0
+skipped, nothing patched, scanner sha256 unmoved): shipped 517 sessions 2200 ms cold / 7 ms warm;
+second root 76 sessions 1948 / 5, all eleven department heads present by name; **union 593 sessions
+across 92 projects, 4099 ms cold, 9 ms warm, 403 KB.** Nothing capped anywhere. Theseus's ~4130 ms
+projection lands within 0.8%.
+
+**Suite:** server **1489 → 1504** (92 → 93 files; delta exactly the +15 added — baseline measured on
+a stashed clean tree this fire, not recalled). Client **249 / 13 skipped**, unchanged. `npm run
+typecheck` clean ×3.
+
+## Two things I got wrong in this fire and caught
+
+1. **My own instrument was green by luck.** The probe first asserted exact cross-arm session counts
+   against `~/.claude/projects` — a *live* store that this very session is appending to. Passed on
+   run 1, failed three checks on run 2 with the code unchanged (518 → 517 between arms). Repaired to
+   bounded set differences with offending ids printed, plus arm F re-measuring the shipped root last
+   so the run reports drift (today: 0, tolerance 8). Recorded in the doc because a green-by-luck
+   instrument is worse than a red one.
+2. **Arm E's headline assertion could not fail.** "Name the default root twice, expect no change"
+   is masked: without root dedup the scanner walks the root twice, but the per-project `sessionId`
+   dedup swallows the second pass, so the count is identical. The real discriminator is `sourceRoot`.
+   Fixed the check and wrote the reason at the call site.
+
+## Corrections to the record
+
+- **Withdrawing Round 147's 1477 ms cache-cold figure.** Does not reproduce: 2200 and 2273 ms here,
+  after Theseus's 2164 / 2177. Five measurements at ~2.2 s, one at 1.48 s, and the outlier is mine.
+  Nothing downstream depended on it (the 204× headline is warm-path, and 7 ms reproduces exactly).
+  Handed Theseus a lead on the cause, labelled as a lead: Round 147 equalised over one corpus
+  (~531 MB), every ~2.2 s run equalised over both (~990 MB). Same variable, 1.47×. Not a controlled
+  discrimination — different probe, different day.
+- **Round 147 recorded the post-change server baseline as 1487.** Measured on a clean tree today it
+  is **1489**. I cannot reconstruct the discrepancy; recording the measured number.
+- **Stale comment fixed in `session-scanner.ts`:** the cap docblock referred to `defaultSessionRoot()`,
+  a function that does not exist in the file (or anywhere — grepped). Also updated: that comment said
+  the second root "cannot be seen," which this fire made false.
+
+## Found, not caused, not fixed: `decodeProjectPath` is lossy
+
+Claude Code maps every `/` to `-` with no escape; the decoder maps every `-` back to `/`. A directory
+name containing a hyphen cannot round-trip. Measured at the endpoint: **10 of 16** decoded project
+paths on the shipped root and **76 of 76** on the second do not exist on disk — including all eleven
+department heads (`piper-morgan-worktrees` → `piper/morgan/worktrees`). Latent in the UI because
+Browse renders `projectName` (the basename, which is correct) and uses `projectPath` only as a key.
+The docblock's claim that we "validate by checking if the decoded path exists" is stale — nothing
+validates. Not fixed: the repair is a filesystem search over candidate splittings, not an inversion,
+and that is a round of its own.
+
+## Mail close-discipline
+
+Moved to `docs/mail/read/`: **nothing**, deliberately. Both inbound memos carry open action items —
+Janus's import-sizing question at 40k lines (unanswered; I said so in my reply rather than letting
+the "built it" imply it), and Theseus's open cold-browse gap plus his own probe re-pin. Open threads
+stay visible.
+
+## Commits this fire
+
+- `4602561` — round149 code, tests, probe, doc
+- `272019e` — mail, committed separately and pushed to `main` first per worktree mail discipline
+
+## Session Wrap verification
+
+**Step 1 — commits landed:**
+
+```
+$ git log origin/main --oneline -3
+272019e mail: Daedalus -> Janus, Theseus, Iris, cc team (scanner walks two config roots; ...)
+4602561 round149: the session scanner walks more than one Claude config root
+a54f707 log: MID fire wrap verification -- commits and deliverables confirmed on origin/main
+```
+
+**Step 2 — deliverables present:** see the `ls` block appended below at wrap time.
+
+**Delivery:** not claimed beyond what the pushes show. The wrapper owns delivery.
+
+## Open on this seat, for the next fire
+
+1. **`decodeProjectPath`** — new, and the sharpest available unit: 76/76 wrong on the corpus xian is
+   about to browse. Needs a validating decoder (candidate-splitting search against the filesystem),
+   which is a design question about what to do when zero or several candidates exist.
+2. **Import at 40k lines** — Janus's sizing ask. Browse is fine; import is untested past 604
+   messages. This is the step *after* the one xian is about to take.
+3. **Discriminate the cold-browse gap** — re-run arm B without arm A's second-root read, everything
+   else held. Cheap, specific, and it closes something Theseus left open.
+4. **The cap ruling** — landed 9/4 per Calliope; the constant is already `50_000` in the file.
+   Nothing outstanding on this seat.
+5. **Cache persistence** — still deliberately unbuilt, still blocked on the Drizzle-threshold call
+   (CLAUDE.md says 6 tables, the schema has 8).
+6. **Backfill entity sizing** — fifth fire blocked on DB access. Seat access, not effort.
+7. **`origin/claude/cowork-import-hardening`** — merge/review still unanswered since 9/2.
