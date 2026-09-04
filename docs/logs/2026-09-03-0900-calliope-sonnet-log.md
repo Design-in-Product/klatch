@@ -240,7 +240,13 @@ re-checked this fire (no new signal since SWEEP).
 
 ### Wrap verification (Session Wrap Protocol)
 
-**Step 1 — confirm commits landed** (after push): pasted below once pushed.
+**Step 1 — confirm commits landed**, `git log origin/main --oneline -3` after push:
+
+```
+e57d90f rollup+coordination+log: dedup hoist (Round 145-146) folded into cap decision as base-cost update, no new 🔴
+50e73da log: round146 wrap verification — steps 1+2 output pasted, commits and deliverables confirmed on origin/main
+8a267a7 log+coordination: round146 — dedup hoist verified at the browse endpoint
+```
 
 **Step 2 — deliverables present**, confirmed with `ls`:
 
@@ -250,5 +256,6 @@ docs/COORDINATION.md                  (modified — new Calliope status entry)
 docs/logs/2026-09-03-0900-calliope-sonnet-log.md  (this file — STOP fire section)
 ```
 
-**Step 3** — this verification block is the last thing committed and pushed; Step 1 output follows in the
-wrap-verification commit.
+All three present on `origin/main` at `e57d90f`.
+
+**Step 3** — this verification block is the last thing committed and pushed.
