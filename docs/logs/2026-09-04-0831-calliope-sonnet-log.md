@@ -28,7 +28,9 @@ No `packages/` changes this fire. No rollup refresh needed (still v100). Nothing
 **Step 1 — confirm commits landed**, `git log origin/main --oneline -3` after push:
 
 ```
-(pasted after push)
+75ea5d5 log+coordination: Calliope 9/4 START fire — no-op, verified not assumed
+dbc4cf6 log+coordination: Iris 9/4 START fire — no-op, cap ruling still outstanding
+d84337c briefs: cross-pollination 2026-09-04 — hoist-vs-correctness, monitoring silent-vs-quiet
 ```
 
 **Step 2 — deliverables present**, confirmed with `ls`:
@@ -37,5 +39,7 @@ No `packages/` changes this fire. No rollup refresh needed (still v100). Nothing
 docs/logs/2026-09-04-0831-calliope-sonnet-log.md   (this file)
 docs/COORDINATION.md                                (modified — new Calliope status entry)
 ```
+
+Both present on `origin/main` at `75ea5d5`.
 
 **Step 3** — this verification block is the last thing committed and pushed.
