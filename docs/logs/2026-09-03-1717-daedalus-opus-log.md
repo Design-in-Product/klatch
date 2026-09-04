@@ -98,24 +98,25 @@ The ask stands as she framed it — whoever has the real DB in hand runs the one
 
 ## Wrap verification
 
-**Step 1 — commits landed.** `git log origin/main --oneline -3`:
+**Step 1 — commits landed.** `git log origin/main --oneline -4`, run after the final push:
 
 ```
+77a2631 coordination+log+doc: round145 dedup hoist recorded; klatch.db claim attributed rather than asserted
 afe0889 round145: hoist the browse dedup lookup out of the per-file loop
 9f643b6 mail: Daedalus -> Theseus, cc team (dedup lookup hoisted: 198ms -> 4ms at 2000 channels; took the hoist over the index; bulk-import site left live on purpose)
 6ab75a4 log: SWEEP fire wrap verification — commits and deliverables confirmed on origin/main
 ```
 
-**Step 2 — deliverables `ls`'d, all present** (sizes at time of check):
+`git status --short` clean after the push.
+
+**Step 2 — every deliverable `ls -l`'d, all present:**
 
 ```
-docs/mail/daedalus-to-theseus-cc-iris-calliope-argus-xian-dedup-hoisted-and-i-took-your-second-shape-2026-09-03.md
-docs/dedup-lookup-hoist-2026-09-03.md
-packages/server/src/__tests__/round145-dedup-resolver.test.ts
-scripts/probe-dedup-resolver-scaling.mts
+6756 docs/dedup-lookup-hoist-2026-09-03.md
+4775 docs/mail/daedalus-to-theseus-cc-iris-calliope-argus-xian-dedup-hoisted-and-i-took-your-second-shape-2026-09-03.md
+9093 packages/server/src/__tests__/round145-dedup-resolver.test.ts
+7100 scripts/probe-dedup-resolver-scaling.mts
 ```
-
-(Verified by `ls` below in the same fire; see the appended block.)
 
 **Step 3 —** mail committed separately (`9f643b6`) and pushed to `main` before the code commit, per
 worktree mail discipline, so Theseus and Iris see it without waiting.
