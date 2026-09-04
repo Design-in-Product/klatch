@@ -2,7 +2,7 @@ import fs from 'fs';
 import os from 'os';
 import path from 'path';
 import readline from 'readline';
-import { findChannelByOriginalSessionId } from '../db/queries.js';
+import { createChannelBySessionIdResolver } from '../db/queries.js';
 import { isHumanTurnBoundary } from './parser.js';
 
 export interface SessionInfo {
@@ -235,6 +235,11 @@ export async function scanClaudeCodeSessions(): Promise<ProjectSessions[]> {
   const entries = fs.readdirSync(projectsDir, { withFileTypes: true });
   const projects: ProjectSessions[] = [];
 
+  // One channels scan for the whole walk instead of one per session file — the
+  // per-call lookup is unindexed, so in a loop it costs O(files x channels).
+  // Nothing here writes channels, so a snapshot is safe.
+  const findChannel = createChannelBySessionIdResolver();
+
   for (const entry of entries) {
     if (!entry.isDirectory()) continue;
 
@@ -269,7 +274,7 @@ export async function scanClaudeCodeSessions(): Promise<ProjectSessions[]> {
       if (stat.size < 100) continue;
 
       // Check dedup against database
-      const existing = findChannelByOriginalSessionId(sessionId);
+      const existing = findChannel(sessionId);
 
       // Content fingerprint — first user message + approximate turn count
       const fp = await extractSessionFingerprint(filePath);
@@ -324,6 +329,9 @@ export async function scanExportedSessions(repoRoot: string): Promise<ProjectSes
 
   const sessions: SessionInfo[] = [];
 
+  // Same reason as scanClaudeCodeSessions: one channels scan, not one per file.
+  const findChannel = createChannelBySessionIdResolver();
+
   for (const file of files) {
     if (!file.isFile() || !file.name.endsWith('.jsonl')) continue;
 
@@ -339,7 +347,7 @@ export async function scanExportedSessions(repoRoot: string): Promise<ProjectSes
 
     // Extract session ID: try the filename (sans .jsonl), or read from file
     const sessionId = file.name.replace('.jsonl', '');
-    const existing = findChannelByOriginalSessionId(sessionId);
+    const existing = findChannel(sessionId);
     const fp = await extractSessionFingerprint(filePath);
 
     sessions.push({

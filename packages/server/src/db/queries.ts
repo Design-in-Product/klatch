@@ -1374,6 +1374,56 @@ export function findChannelByOriginalSessionId(sessionId: string): Channel | und
 }
 
 /**
+ * Batch form of `findChannelByOriginalSessionId`, for callers that resolve many
+ * session ids in one pass.
+ *
+ * The per-call version's second pass is an unindexed full-table scan with a JSON
+ * parse per row, so calling it in a loop is O(items x channels). The browse scan
+ * does one lookup per session file; measured over 508 lookups (Theseus,
+ * 2026-09-03) that is 11 ms at 0 channels but 201 ms at 2000, and it grows in
+ * both dimensions. This builds the same two-pass index in a single scan, so each
+ * lookup is O(1).
+ *
+ * Semantics match the per-call version exactly: a canonical channel-id match
+ * wins over a source-identity match, and where several channels share one
+ * `originalSessionId` the first row in table order wins (as `.get()` does).
+ *
+ * Snapshot, not a view: the index is built when this is called. Do not use it in
+ * a loop that creates or edits channels as it goes — the bulk-import path needs
+ * the live per-call version so a channel imported earlier in the batch is seen.
+ */
+export function createChannelBySessionIdResolver(): (sessionId: string) => Channel | undefined {
+  const rows = getDb().prepare('SELECT * FROM channels').all() as any[];
+
+  const byId = new Map<string, any>();
+  const byOriginalSessionId = new Map<string, any>();
+
+  for (const row of rows) {
+    byId.set(row.id, row);
+
+    if (!row.source_metadata) continue;
+    let parsed: any;
+    try {
+      parsed = JSON.parse(row.source_metadata);
+    } catch {
+      continue; // mirrors the SQL's json_valid() guard
+    }
+    const originalSessionId = parsed?.originalSessionId;
+    // json_extract returns INTEGER for a JSON number, which never equals a bound
+    // TEXT param in SQLite — so a non-string id doesn't match there either.
+    if (typeof originalSessionId !== 'string') continue;
+    if (!byOriginalSessionId.has(originalSessionId)) {
+      byOriginalSessionId.set(originalSessionId, row);
+    }
+  }
+
+  return (sessionId: string) => {
+    const row = byId.get(sessionId) ?? byOriginalSessionId.get(sessionId);
+    return row ? rowToChannel(row) : undefined;
+  };
+}
+
+/**
  * Get conflict info for a channel that was previously imported.
  * Returns message count and whether the user has added new (non-imported) messages.
  */

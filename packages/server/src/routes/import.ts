@@ -9,7 +9,7 @@ import { scanClaudeCodeSessions, scanExportedSessions } from '../import/session-
 import { importKlatchPackage } from '../import/klatch-import.js';
 import { resolveImportEntity } from '../import/entity-resolve.js';
 import { guessEntityName } from '../import/entity-guess.js';
-import { importSession, findChannelByOriginalSessionId, getImportConflictInfo, countChannelsByOriginalSessionId, findOrCreateProject, findOrCreateProjectWithMatch, findUniqueProjectByName } from '../db/queries.js';
+import { importSession, findChannelByOriginalSessionId, createChannelBySessionIdResolver, getImportConflictInfo, countChannelsByOriginalSessionId, findOrCreateProject, findOrCreateProjectWithMatch, findUniqueProjectByName } from '../db/queries.js';
 import { MODEL_ALIASES, AVAILABLE_MODELS } from '@klatch/shared';
 import type { ModelId } from '@klatch/shared';
 
@@ -400,7 +400,10 @@ app.post('/import/claude-ai/preview', async (c) => {
   const { conversations: conversationFiles, projects, memories } = exportData;
 
   try {
-    // Build conversation previews with dedup detection
+    // Build conversation previews with dedup detection. One channels scan for
+    // the whole export, not one per conversation — same O(items x channels)
+    // shape as the browse scan. Preview only; nothing here writes channels.
+    const findChannel = createChannelBySessionIdResolver();
     const conversations = conversationFiles.map(({ conversation }) => {
       const conv = conversation as {
         uuid?: string; name?: string; created_at?: string; updated_at?: string;
@@ -408,7 +411,7 @@ app.post('/import/claude-ai/preview', async (c) => {
       };
 
       const uuid = conv.uuid || '';
-      const existing = uuid ? findChannelByOriginalSessionId(uuid) : undefined;
+      const existing = uuid ? findChannel(uuid) : undefined;
       const projectName = conv.project_uuid ? projects.get(conv.project_uuid)?.name : undefined;
 
       return {
@@ -625,7 +628,10 @@ function processImport(
         continue;
       }
 
-      // Dedup check using the conversation UUID (skip if forceImport)
+      // Dedup check using the conversation UUID (skip if forceImport).
+      // Deliberately the live per-call lookup, not the batch resolver used for
+      // the preview above: this loop imports as it goes, so it has to see
+      // channels created earlier in the same batch.
       if (parsed.sessionId && !forceImport) {
         const existing = findChannelByOriginalSessionId(parsed.sessionId);
         if (existing) {
