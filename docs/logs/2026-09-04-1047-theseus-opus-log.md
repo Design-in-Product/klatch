@@ -124,3 +124,137 @@ Also modified and committed: `scripts/probe-browse-endpoint-vs-channel-count.mts
 No claim in this log is made about work I did not verify present. The three deliberate omissions
 (transform-based arm S; one-corpus-only run to close the cold-figure gap; cap cost on the second
 corpus) are recorded as not done, not as done.
+
+---
+
+# WORK fire — 2026-09-04 14:47 PT (Round 150)
+
+**14:47 — Briefing.** Worktree synced by the wrapper to `d46e245`. Read `docs/COORDINATION.md`
+(my section) and swept `docs/mail/`. Two memos landed at 14:47 since my START fire:
+`daedalus-to-janus-theseus-iris-...-scanner-sees-piper-morgan-and-the-union-costs-9ms-2026-09-04.md`
+(addressed to me) and `calliope-to-iris-cc-daedalus-theseus-argus-xian-cap-ruling-landed-...` (cc).
+Read the first in full.
+
+**14:48 — Picking the unit.** Daedalus's memo confirmed my ~4130 ms projection to 0.8% by
+building the multi-root scanner, withdrew his 1477 ms, and named two things open on or near my
+seat: (a) the cold-figure discrimination run, (b) Janus's import-sizing question — *"the import
+path is untested at that size and I did not test it this fire."* He wrote (b) down twice, once to
+me and once to xian as the step xian would actually take next. **Took (b).** Every latency number
+the team holds is about **browse**; import is a different code path — parses every event,
+materialises turns, writes rows — and had never been run at this size. (a) is cheaper but internal;
+(b) is the one xian hits first.
+
+**14:50 — Sized the corpus before designing anything, and the finding fell out immediately.**
+`~/.claude-pm/projects`: 76 files, 456.7 MB, **3 files over 50 MB**. Checked `MAX_IMPORT_SIZE`
+in source — `routes/import.ts:17`, 50 MB, enforced on `stat.size` before the parser runs. So three
+of Janus's eleven department heads are un-importable. Did **not** report it from the branch: built
+the probe to POST the real path and read the real status.
+
+**14:52 — Built `scripts/probe-import-large-session.mts`.** Arms A (cap read *out of source*,
+refusing to run if it can't find the constant — a hardcoded 50 would keep "passing" after the
+constant moved), B (are over-cap sessions *offered*? multi-root browse via
+`KLATCH_EXTRA_SESSION_ROOTS`), C (endpoint's actual answer for an over-cap file), D/E (import every
+under-cap head), F (read-back), G (controls), I (added later — price the refused files).
+**No source patching, unlike Round 148**: import is path-based and `validateImportPath` accepts any
+absolute non-traversing path, so the second corpus is reachable directly. Arm G asserts the empty
+`packages/` diff rather than trusting that claim. Server lifecycle discipline reused from Round
+146/148 (port genuinely free *and* this child printed its own banner).
+
+**14:53 — First run: 33 checks, 3 failed — all three the same defect.** 3/3 over-cap sessions
+appear in the browse list and are rejected on click, HTTP 400 in 5 ms.
+
+**14:53 — Did not trust my own headline number.** Both the 45.3 MB and the 32.7 MB import returned
+**exactly 55 messages**. Identical counts from different files is the shape of a bug in the
+instrument, so I parsed all three directly with the importer's own parser before writing anything
+down: web 29 turns, ppm 29 turns, exec 146. **Coincidence, not a bug** — 29 turns → 55 rows in both.
+Reported as such rather than as a finding.
+
+**14:54 — That check turned into a better arm.** Chasing the 55 surfaced the real question:
+does browse's `turnCount` — documented as predicting *"how many exchanges this session becomes once
+imported"* — hold on this corpus? Extended the probe to import **all eight** under-cap heads
+(cheap: ~250 ms each) and cross-check. Doing all eight also made the sequence double as a
+dedup-scaling reading, since each import runs against a DB one import larger than the last.
+
+**14:54 — Checked whether finding 4 was already known before framing it as new.** Browse
+`messageCount` overstates rows-that-land by 13.9×–245× here. Read
+`daedalus-to-theseus-iris-...-browse-count-answered-not-a-bug-but-the-unit-is-wrong-2026-09-03.md`
+first: **already ruled on** — residual zero, nothing lost, wrong unit, `turnCount` shipped, label
+left to Iris. So this is *new magnitude on a settled question*, not a new bug, and the memo says
+exactly that. Verified `ImportDialog.tsx:759` still renders `messageCount` before claiming what
+xian would see.
+
+**14:56 — Added arm I after the cap finding, to make it actionable without ruling on it.** Parsed
+the three refused files in-process — no import, no change to the cap. 242–350 ms at 4–5 ms/MB,
+*cheaper per byte than the eight the cap allows*. Deliberately did **not** conclude "remove the
+cap": it also guards the multipart upload path, which genuinely buffers (`arrayBuffer.byteLength`)
+and which I did not measure. Wrote the narrow claim instead.
+
+**14:57 — Final run: 69 checks, 3 failed, 0 skipped.** The three failures are the defect, not the
+instrument. Controls clean: `git diff --stat -- packages/` empty, `klatch.db` mtime and size
+unchanged, second corpus file count identical before and after.
+
+Findings:
+
+- **3 of 11 department heads cannot be imported** — `docs` 70.3 MB, `lead` 59.9 MB, `comms`
+  51.8 MB, all over `MAX_IMPORT_SIZE`. Offered in browse, HTTP 400 in 5 ms on click. **New with
+  the second corpus:** shipped-root max is 34.2 MB (68% of cap), 0 of 518 over — the cap has never
+  bound because nothing we had reached it.
+- **Janus's question answered: size is not the problem.** Eight heads import in **3,152 ms total**
+  at 6–7 ms/MB, linear (spread 1.11×), dedup not dominant, peak RSS 131.6 MB on the first import
+  and ~0 after. Read-back with artifacts is **26 ms / 4.5 MB / 5,218 artifacts**.
+- **The cap refuses files cheaper per byte than the ones it allows** — 4–5 ms/MB parse-only vs
+  6–7 ms/MB end-to-end. Measured input for a ruling I did not make.
+- **Browse `messageCount` overstates by 13.9×–245×** on PM's corpus vs Daedalus's 1.9×/3.3×.
+  Not a new bug — same ruled question, two orders of magnitude more force. Iris's label call.
+- **`turnCount`'s documented bound holds on all 8 heads** — first check of it against this corpus.
+- **Corroborations:** `lead` = 370 turns, exactly my Round 148 max `turnCount` from a different
+  instrument. `docs` head now **40,514 lines** (40,397 → 40,458 → 40,514, **+117 in one day**);
+  headroom 23.4% and falling. Browse reported 594 sessions vs Daedalus's 593 — drift, not conflict.
+
+**Not done, deliberately:** the multipart upload path at these sizes (the one place a byte cap
+plausibly earns its keep); what the over-cap heads should do instead of erroring (product, not
+measurement); whether a 5,218-artifact channel is readable as opposed to fast (Iris's — I did not
+open a browser); Round 148's cold-figure gap, where Daedalus named the exact discriminating run.
+All four written into the doc rather than left implicit.
+
+**Housekeeping:** trimmed my oldest rollup entry (Round 142) from `COORDINATION.md` when adding
+Round 150, keeping my section at four entries. Round 142's detail survives in
+`docs/turncount-cap-and-transport-2026-09-03.md` and in the 9/3 session log.
+
+## Wrap verification — WORK fire (Round 150)
+
+Per CLAUDE.md Session Wrap Protocol — run after the work commit, before pushing this log.
+
+**Step 1 — commits on `origin/main`:**
+
+```
+$ git log origin/main --oneline -5
+9406bb5 round150: test the import path at department-head size
+81dd5e6 mail: Theseus -> Daedalus, Janus, Iris, cc team (import tested at size: ...)
+d46e245 coordination+log: Argus WORK fire — cap ruling, fingerprint cache, multi-root scanner verified
+af0534f log: Round 149 wrap verification -- commits and deliverables confirmed on origin/main
+85a04ee coordination+log: Daedalus MID fire — Round 149 multi-root session scan
+```
+
+Both of this fire's commits are present on `origin/main`. Mail was committed separately and pushed
+to `main` first, per the worktree mail rule, before the work commit.
+
+**Step 2 — deliverable files present:**
+
+```
+scripts/probe-import-large-session.mts                                        31531 bytes
+docs/import-large-session-2026-09-04.md                                        9855 bytes
+docs/mail/theseus-to-daedalus-janus-iris-...-three-heads-cannot-be-imported-2026-09-04.md   6515 bytes
+docs/logs/2026-09-04-1047-theseus-opus-log.md                                 14921 bytes
+```
+
+Also modified and committed: `docs/COORDINATION.md` (status → Round 150; oldest rollup entry,
+Round 142, trimmed to hold my section at four entries).
+
+**Step 3 — this log is committed and pushed last**, after Steps 1 and 2 verified.
+
+No claim in this log is made about work I did not verify present. The four deliberate omissions
+(multipart upload path at size; what the over-cap heads should do instead of erroring; whether a
+5,218-artifact channel renders readably; Round 148's cold-figure discrimination run) are recorded
+as not done, not as done. The three probe failures are the defect under test, not instrument
+errors — the probe exits 1 by design while they stand.
