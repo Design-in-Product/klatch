@@ -88,3 +88,76 @@ only the additive `turnCount` plumbing, no existing behavior or test removed.
 
 No new mail addressed to Calliope beyond the two cc'd memos above. Standing logbook-shape thread (parked on
 xian since 8/28) not re-checked this fire, same reasoning as the START fire.
+
+## SWEEP fire (~17:00 PT)
+
+Session-start protocol: `git pull origin main --ff-only` clean, already up to date. `docs/COORDINATION.md`
+is too large for a single Read (1.1MB); scoped via `git log --oneline 0ba5a09..HEAD` (my own MID-fire
+checkpoint), which showed six new commits, none mine: Daedalus's Round 143 (mail + round143 script +
+wrap log — cap latency cost), Argus's independent Round 143 verification (no `packages/` changes
+needed), Theseus's Round 144 (mail + round144 script + wrap log — end-to-end HTTP timing of the browse
+endpoint).
+
+**Mail:** two new memos since my MID-fire checkpoint, both cc'd (neither addressed to this seat), read
+in full:
+
+- `daedalus-to-theseus-iris-cc-calliope-argus-xian-cap-cost-measured-the-cap-is-nearly-free-to-remove-2026-09-03.md`
+  — Round 143. Measures the cap cost Daedalus's own 9/3 memo left explicitly unmeasured. Removing the
+  fingerprint line cap costs +645 ms and buys +143% turns (815→1980, 41.2%→100%) on the real
+  506-session corpus. No intermediate cap size is a compromise — marginal cost/turn is flat (~0.5
+  ms/turn) across cap sizes. Parallelism doesn't rescue it: the scan is CPU-bound (`JSON.parse` +
+  readline in one Node thread), not I/O-bound, so a promise pool can't help. The cap bites only 11/506
+  files (2.2%) but those 11 hold 58.8% of the corpus's entire turn signal — it's aimed precisely at the
+  sessions where depth matters most. Explicitly routed the remove/raise/leave decision to xian as a
+  user-facing latency regression, not his to take unilaterally. Also asked Iris to hold the qualitative
+  capped-session rendering design until the cap decision lands, since it evaporates if the cap goes.
+  Shipped `round143-scan-cap-latency.test.ts` (+7 server tests) and an overridable `lineCap` param on
+  `extractSessionFingerprint` (default unchanged, all existing call sites checked, additive).
+- `theseus-to-daedalus-cc-iris-calliope-argus-xian-your-number-survives-at-the-endpoint-and-two-things-it-exposes-2026-09-03.md`
+  — Round 144. Didn't take the in-process number on word — timed the real HTTP endpoint instead: 1417
+  ms capped → 2129 ms uncapped, +712 ms (2% off Daedalus's predicted 2086 ms), confirming 98% of browse
+  latency is fingerprinting (29 ms is everything else — statSync, dedup lookup, entity guessing,
+  serialization). Surfaced two costs neither agent had priced: (1) a `(path, mtime, size)` fingerprint
+  cache would cut fingerprinting 48x (1417 ms → ~29 ms), reframing the cap decision as sequencing
+  (cap now, cache later) rather than a permanent trade; (2) `findChannelByOriginalSessionId`
+  (`queries.ts:1365`) is an unindexed full-table `json_extract` scan run once per file during browse —
+  invisible on every machine tested (0 channels with `originalSessionId` in this repo's DB) but
+  O(files × channels), measured at 201 ms on 2000 channels, and becomes the dominant cost once the
+  cache lands. Patched `FINGERPRINT_LINE_CAP` temporarily to drive the uncapped HTTP arm; verified the
+  restore two ways (sha256 match, empty `git diff --stat -- packages/`) before committing.
+
+**Rollup work:** this is a genuinely new decision, not a restatement of the transport or backfill 🔴s
+already on the board, so I gave it its own `###` section under "Needs You" rather than folding it into
+an existing item — `docs/operations/attention-rollup.md` banner → v99 (v98 demoted to a single "Prior
+banner" line), metrics strip needs-you **3 → 4**, new v99 changelog entry. Updated the metrics-strip
+footnote to enumerate all four items by name (cap decision, eviction-detection, raw-JSON commits,
+transport decision) rather than leaving the new one implicit.
+
+**Verified before writing, not carried from either memo:** re-ran the suite myself — server
+**1465/1465 (90 files)**, client **249/249 (13 skipped)** — matches Argus's independently-reported
+counts exactly, zero drift. `npm run typecheck` clean across all three workspaces. `git diff --stat
+0ba5a09..HEAD -- packages/` shows only Round 143's additive test file and scanner param change (211
+insertions, 2 deletions) — confirms Round 144 touched nothing under `packages/`, matching Theseus's own
+sha256 + empty-diff restore claim independently.
+
+No mail moved to `docs/mail/read/` this fire — both new memos carry the still-open remove/raise/leave
+decision, not this seat's to close. Standing logbook-shape thread (parked on xian since 8/28) not
+re-checked this fire, same reasoning as prior fires today.
+
+### Wrap verification (Session Wrap Protocol)
+
+**Step 1 — commits landed**, `git log origin/main --oneline -3` after push:
+
+```
+<paste after push>
+```
+
+**Step 2 — deliverables present:**
+
+```
+docs/operations/attention-rollup.md   (modified — v99 banner, new needs-you section, changelog)
+docs/COORDINATION.md                  (modified — new Calliope status entry)
+docs/logs/2026-09-03-0900-calliope-sonnet-log.md  (this file — SWEEP fire section)
+```
+
+**Step 3** — this verification block is committed last, per protocol.
