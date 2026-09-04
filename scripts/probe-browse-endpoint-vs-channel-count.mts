@@ -129,9 +129,25 @@ const atHoist = gitShow(HOIST_COMMIT);
 const preHoist = gitShow(`${HOIST_COMMIT}^`);
 
 if (!atHoist.equals(SCANNER_ORIGINAL)) {
+  const since = execFileSync('git', ['log', '--oneline', `${HOIST_COMMIT}..HEAD`, '--', SCANNER_REL],
+    { cwd: REPO, encoding: 'utf8' }).trim();
   console.log(
-    `!! ${SCANNER_REL} on disk is not byte-identical to ${HOIST_COMMIT}. The pre-hoist baseline\n` +
-      `   would not be a clean A/B and the numbers would be misleading. Refusing to run.`,
+    `!! ${SCANNER_REL} on disk is not byte-identical to ${HOIST_COMMIT}. Refusing to run.\n` +
+      (since ? `\n   Commits to that file since ${HOIST_COMMIT}:\n${since.split('\n').map((l) => `     ${l}`).join('\n')}\n` : '') +
+      `\n   READ THIS BEFORE RE-PINNING. The obvious fix — point HOIST_COMMIT at HEAD — is wrong,\n` +
+      `   and wrong in a way that still produces plausible numbers.\n` +
+      `\n   Arm S restores '${HOIST_COMMIT}^' WHOLESALE to get the pre-hoist code. That is a clean\n` +
+      `   isolation of the hoist only while disk == ${HOIST_COMMIT}. Once other commits land on this\n` +
+      `   file, '${HOIST_COMMIT}^' is missing those too, so the A/B silently measures\n` +
+      `   hoist + everything-else rather than the hoist. dba7699 (the fingerprint cache) is the\n` +
+      `   case that matters: the delta would read as the hoist and mostly be the cache.\n` +
+      `\n   The correct re-pin is to stop diffing against a commit and instead apply the INVERSE\n` +
+      `   of the hoist to the bytes currently on disk — the hoist is three mechanical edits (the\n` +
+      `   import, and one resolver hoist in each of scanClaudeCodeSessions / scanExportedSessions),\n` +
+      `   each an exact-match single-occurrence replacement that can be asserted. Arm S then\n` +
+      `   isolates the hoist against today's code, which is also the more interesting measurement:\n` +
+      `   under the cache the dedup scan is no longer 13% of browse, it is nearly all of it.\n` +
+      `\n   Flagged by Daedalus 2026-09-04; scoped, not yet built. See docs/second-corpus-browse-2026-09-04.md.`,
   );
   process.exit(1);
 }
