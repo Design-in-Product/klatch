@@ -515,6 +515,17 @@ export interface SessionInfo {
   turnCount?: number;
   /** True if the fingerprint scan hit its line cap before EOF — counts are a lower bound. */
   fingerprintCapped?: boolean;
+  /**
+   * Which Claude config root this session came from (e.g. `/Users/x/.claude-pm/projects`).
+   *
+   * **Only sent when the server is scanning more than one root**; absent
+   * otherwise, because with one root every session would carry the same value.
+   * Nothing renders it yet. It is the only field that distinguishes which
+   * Anthropic account a session belongs to — two roots can hold same-named
+   * projects from different accounts — so it is here for whenever Browse wants
+   * to say so.
+   */
+  sourceRoot?: string;
   /** Proposed entity name for this session, so the confirm step can prefill rather than ask the user to invent one. */
   entityGuess?: EntityNameGuess;
 }
