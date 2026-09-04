@@ -73,16 +73,34 @@ function toolResult(): object {
 // ── 1. The default must not move ────────────────────────────
 
 describe('Round 143: adding lineCap did not change the shipped default', () => {
-  it('still caps at 1500 when no cap is passed', async () => {
+  // Updated 2026-09-04 (xian's ruling: remove the cap, keep a pathological guard).
+  // The assertion this replaces pinned the default at 1500 and failed the moment the
+  // guard moved — which is what it was for. It is re-pinned rather than deleted: the
+  // point was never the number, it was that the shipped default cannot drift silently.
+  it('does not cap a session that the old 1500 cap would have clipped', async () => {
     const events: object[] = [userText('first')];
     for (let i = 0; i < 1599; i++) events.push(assistantText(`a${i}`));
     const filePath = writeFixture(events);
 
     const withoutArg = await extractSessionFingerprint(filePath);
-    const withExplicit1500 = await extractSessionFingerprint(filePath, 1500);
+    const withOldCap = await extractSessionFingerprint(filePath, 1500);
+
+    // The whole point of the ruling: this file used to come back a lower bound.
+    expect(withoutArg.capped).toBe(false);
+    expect(withOldCap.capped).toBe(true);
+    expect(withoutArg.messageCount).toBeGreaterThan(withOldCap.messageCount);
+  });
+
+  it('still applies the guard at its documented value, so the default cannot drift', async () => {
+    const events: object[] = [userText('first')];
+    for (let i = 0; i < 50_100; i++) events.push(assistantText(`a${i}`));
+    const filePath = writeFixture(events);
+
+    const withoutArg = await extractSessionFingerprint(filePath);
+    const withExplicitGuard = await extractSessionFingerprint(filePath, 50_000);
 
     expect(withoutArg.capped).toBe(true);
-    expect(withoutArg).toEqual(withExplicit1500);
+    expect(withoutArg).toEqual(withExplicitGuard);
   });
 
   it('a file under the default cap is unaffected by the parameter existing', async () => {

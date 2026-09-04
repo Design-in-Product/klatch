@@ -115,16 +115,43 @@ export async function extractSessionId(filePath: string): Promise<string | undef
   });
 }
 
-/** Default cap on lines read for fingerprint scan — keeps Browse responsive on long sessions. */
-const FINGERPRINT_LINE_CAP = 1500;
+/**
+ * Pathological-file guard on lines read per session during the fingerprint scan.
+ *
+ * **This is no longer a latency knob.** It was 1500 until 2026-09-04, when xian
+ * ruled to remove the cap and keep only a backstop against a runaway file.
+ *
+ * The measurement behind the ruling (Round 143, `docs/scan-cap-latency-2026-09-03.md`,
+ * 506 sessions / 547 MB): the 1500 cap bit 11 of 506 files (2.2%) but those 11 held
+ * 1165 of 1980 turns (58.8%) — it spent 59% of the corpus's turn signal to skip a
+ * third of its bytes, aimed precisely at the deep sessions a size hint is *for*.
+ * Removing it cost +645 ms on a 1387 ms browse and took turn counts 41.2% -> 100%.
+ * There was no knee to find: marginal cost was flat (0.50-0.55 ms/turn at every cap),
+ * so intermediate values were dominated rather than balanced. The choice was 1500 or
+ * nothing, and nothing won.
+ *
+ * **Why 50_000 and not Infinity.** Measured 2026-09-04: the largest file in the local
+ * corpus is 15,371 lines, so this clears every real session with ~3x headroom and
+ * `capped` is false corpus-wide — which is what makes `turnCount` exact and retires
+ * the `turnCount+` rendering question. It exists only so one malformed or machine-
+ * generated file cannot hang Browse.
+ *
+ * **Revisit if:** `capped` starts coming back true on real sessions (the guard is
+ * biting, not guarding), or browse latency regresses past what the fingerprint cache
+ * below absorbs. Both are monitorable from the scan result; see the monitoring note
+ * in `docs/scan-cap-latency-2026-09-03.md`.
+ */
+const FINGERPRINT_LINE_CAP = 50_000;
 /** Truncate the surfaced first-user-message to this many chars (per Iris T1.6). */
 const FINGERPRINT_MAX_CHARS = 80;
 
 /**
  * Pull a content fingerprint from a JSONL session — first real human-typed
  * user message + approximate turn count. Streams up to FINGERPRINT_LINE_CAP
- * lines and reports whether the cap was reached (messageCount becomes a
- * lower bound in that case).
+ * lines and reports whether the guard was reached (messageCount and turnCount
+ * become lower bounds in that case). Since 2026-09-04 the guard is set above
+ * every real session in the corpus, so `capped` should be false in practice —
+ * a true is a signal worth investigating, not a routine outcome.
  *
  * `lineCap` is overridable so the cap's latency cost can be measured against
  * the shipped code path rather than a copy of it (see

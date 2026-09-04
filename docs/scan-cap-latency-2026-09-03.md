@@ -113,3 +113,56 @@ browse**. Fingerprints are a pure function of file content; `(path, mtime, size)
 key. That would take the steady-state browse cost toward zero and make the cap question moot at any
 corpus size. Flagging, not building — it's a real design change and belongs in a decision, not a
 measurement fire.
+
+---
+
+## RULED 2026-09-04 — cap removed, guard retained, and what to watch
+
+**xian's ruling:** *"let's remove the cap, but monitor for ill side-effects in case we need to revisit."*
+
+**Shipped:** `FINGERPRINT_LINE_CAP` 1500 → **50,000**, in `session-scanner.ts`. The constant survives
+as a pathological-file guard, not a latency knob. Rationale, measurement, and revisit conditions are
+written at the constant itself so a future reader hits them before the number.
+
+**Why 50,000 rather than removing the parameter.** Measured the same day against the live corpus:
+the largest session file is **15,371 lines**, so 50,000 clears every real session with ~3× headroom.
+`capped` should now be **false corpus-wide**, which is the property that makes `turnCount` exact and
+retires the `turnCount+` rendering question. The guard exists so that one malformed or
+machine-generated file cannot hang Browse — a failure mode with no upper bound, unlike the tail this
+cap was clipping.
+
+**Tests re-pinned, not deleted.** Two tests failed on the change, correctly — they existed to stop the
+shipped default drifting silently:
+
+- `round143-scan-cap-latency.test.ts` — "still caps at 1500" now asserts the inverse (a 1,600-line
+  file comes back **uncapped**, and the same file under an explicit 1500 comes back capped), plus a
+  new test pinning the guard at its documented 50,000.
+- `round33-session-fingerprint.test.ts` — the lower-bound property is still pinned, but now has to be
+  provoked with a 50,100-line file. A second test asserts the payload of the ruling directly: a
+  session the old cap clipped now reports an **exact** count.
+
+Suite after: **1489 server / 249 client** (13 skipped), typecheck clean ×3, `npm run build` green.
+
+### The monitoring xian asked for — two signals, both already observable
+
+1. **`capped === true` on a real session.** This is the direct "guard is biting, not guarding" alarm.
+   It should never fire; the corpus maximum is 3× under the guard. If it does, either a genuinely
+   pathological file exists (good — the guard did its job, inspect the file) or session sizes have
+   grown an order of magnitude (in which case the fingerprint cache below matters more than the guard).
+   `capped` is already on the fingerprint and already crosses the wire; no instrumentation needed.
+
+2. **Browse latency past what the cache absorbs.** Predicted cost of this change is **+645 ms** on a
+   506-session corpus (1387 → 2032 ms), measured pre-hoist. Two things now work against it that did
+   not exist when that number was taken: the dedup hoist (Round 145/146, −224 ms at 2000 channels,
+   slope 104 → 5 ms per 1000) and the fingerprint cache keyed on `(path, mtime, size, lineCap)`.
+   **Note the cache key includes `lineCap`** — so this change invalidates every cached entry exactly
+   once, and the first browse after deploy pays full freight. A slow *first* browse is expected and is
+   not the signal.
+
+**Re-time rather than assume:** the honest test is Theseus's endpoint timing (Round 144/146 method)
+re-run against the shipped default, warm and cold. The +645 ms figure is a prediction from a probe
+across cap values, not a measurement of the shipped configuration.
+
+**Revisit trigger, stated so it is falsifiable:** if warm-cache browse on a corpus of this size lands
+materially above ~2.0 s, or `capped` returns true on any real session, this decision goes back to xian
+with numbers rather than being quietly re-tuned.

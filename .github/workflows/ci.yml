@@ -1,0 +1,60 @@
+# Verify that packages/ still typechecks, tests, and builds.
+#
+# Why this exists: from the initial commit until 2026-08-10 the root `npm run build`
+# was red and every "suite green" claim on file was honest — vitest does not
+# typecheck, and nothing but a human typing `npm run build` ever ran it. Root
+# `npm test` now runs typecheck across all three workspaces first; this workflow is
+# the backstop for when that discipline slips.
+#
+# Path filter is deliberate. Five agents push to this repo continuously and the
+# overwhelming majority of commits are docs — of 92 commits on main between 09-01
+# and 09-04, four touched packages/. Running on all of them would produce ~90
+# meaningless green runs a week and the signal would be ignored within a week.
+#
+# No secrets. The AAXT suites gate on RUN_UI_AAXT=1 and skip by default; nothing
+# else in the suite reads an API key. Do not add ANTHROPIC_API_KEY here — see the
+# billing note in CLAUDE.md.
+
+name: CI
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'packages/**'
+      - 'package.json'
+      - 'package-lock.json'
+      - '.github/workflows/ci.yml'
+  pull_request:
+    paths:
+      - 'packages/**'
+      - 'package.json'
+      - 'package-lock.json'
+      - '.github/workflows/ci.yml'
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          # better-sqlite3 is a native module; keep this in step with the version
+          # the fleet develops on, or the prebuild is rejected and it compiles from
+          # source. Local dev as of 2026-09-04 is v26.5.0.
+          node-version: '24'
+          cache: 'npm'
+
+      - name: Install
+        run: npm ci
+
+      # Runs typecheck across shared/server/client first, then both suites.
+      # ~30s locally (1477 server / 249 client, 13 skipped).
+      - name: Test
+        run: npm test
+
+      - name: Build
+        run: npm run build

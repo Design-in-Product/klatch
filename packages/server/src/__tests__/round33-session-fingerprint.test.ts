@@ -196,22 +196,37 @@ describe('Round 33 fingerprint: filter discipline', () => {
 // ── 3. Cap behavior ─────────────────────────────────────────
 
 describe('Round 33 fingerprint: cap behavior', () => {
-  it('capped=true when more than FINGERPRINT_LINE_CAP (1500) lines; messageCount is a lower bound', async () => {
-    // 1600 events: 1 user, 1599 assistant (just to grow the file past the cap)
+  // Rewritten 2026-09-04. FINGERPRINT_LINE_CAP moved 1500 -> 50_000 (xian's ruling:
+  // remove the cap, keep a pathological-file guard). The lower-bound property is still
+  // worth pinning — it is what `capped` means — but it now has to be provoked with a
+  // file larger than any real session, because that is the whole point of the change.
+  it('capped=true past FINGERPRINT_LINE_CAP (50_000) lines; messageCount is a lower bound', async () => {
     const events: object[] = [userText('the very first user msg')];
-    for (let i = 0; i < 1599; i++) {
+    for (let i = 0; i < 50_100; i++) {
       events.push(assistantText(`assistant turn ${i}`));
     }
     const filePath = writeFixture(events);
     const fp = await extractSessionFingerprint(filePath);
     expect(fp.capped).toBe(true);
     expect(fp.firstUserMessage).toBe('the very first user msg');
-    // Cap is a hard stop at line 1501 — so messageCount is at most 1500
-    // (the cap lets through linesRead == FINGERPRINT_LINE_CAP). Pin
-    // "lower bound" property: count is well below total events but
-    // the cap is honored.
-    expect(fp.messageCount).toBeLessThan(1600);
-    expect(fp.messageCount).toBeGreaterThanOrEqual(1500);
+    // Hard stop at line 50_001, so the count is a lower bound: short of the true
+    // total, but the guard is honored.
+    expect(fp.messageCount).toBeLessThan(50_101);
+    expect(fp.messageCount).toBeGreaterThanOrEqual(50_000);
+  });
+
+  // The ruling's actual payload: the sessions the old cap clipped now read exact.
+  // 1,600 lines was over the old cap; the largest file in the real corpus measured
+  // 15,371 lines on 2026-09-04, so nothing real reaches the new guard.
+  it('a session that the old 1500 cap clipped now reports an exact count', async () => {
+    const events: object[] = [userText('the very first user msg')];
+    for (let i = 0; i < 1599; i++) {
+      events.push(assistantText(`assistant turn ${i}`));
+    }
+    const filePath = writeFixture(events);
+    const fp = await extractSessionFingerprint(filePath);
+    expect(fp.capped).toBe(false);
+    expect(fp.messageCount).toBe(1600);
   });
 
   it('capped=false when total lines stay under the cap', async () => {
