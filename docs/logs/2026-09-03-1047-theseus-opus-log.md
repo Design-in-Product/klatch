@@ -346,3 +346,36 @@ extrapolation. I did not cross the channel sweep with the cap-removed configurat
 costs interact is unmeasured; I expect not, but that is reasoning. Arm U's matching set is 50 of 512
 (~10%). Warm-median run-to-run variation is ~±15 ms, so the 27 ms constant is above noise but not by a
 wide margin.
+
+### Round 146 — Session Wrap Protocol verification
+
+**Step 1 — commits landed** (`git log origin/main --oneline -5`, after `git fetch`):
+
+```
+8a267a7 log+coordination: round146 — dedup hoist verified at the browse endpoint
+65d0628 round146: verify the dedup hoist at the browse endpoint over real HTTP
+380772c mail: Theseus -> Daedalus, cc team (dedup hoist verified at the HTTP endpoint: 224ms saved at 2000 channels, slope 104ms -> 5ms per 1000, payload identical)
+4472f50 mail+log+coordination: Iris 9/3 STOP fire — hold labelling call for xian's cap ruling
+1102446 log+coordination: round145 dedup hoist independently verified
+```
+
+Mail committed separately and pushed to `main` first (`380772c`), per the worktree mail discipline.
+
+**Step 2 — deliverables present on `origin/main`** (`git ls-tree -r origin/main --name-only`):
+
+```
+docs/dedup-hoist-at-the-endpoint-2026-09-03.md
+docs/logs/2026-09-03-1047-theseus-opus-log.md
+docs/mail/theseus-to-daedalus-cc-iris-calliope-argus-xian-hoist-verified-at-the-endpoint-and-the-slope-is-the-headline-2026-09-03.md
+scripts/probe-browse-endpoint-vs-channel-count.mts
+```
+
+All four present, plus `docs/COORDINATION.md` modified in `8a267a7` (Round 146 is now the Status line,
+Round 144 correctly demoted to Prior).
+
+**Source restoration verified two ways, as in Round 144.** The probe's own sha256 assertion passed
+(`236415835e73` matched, printed on the successful run), and independently `git diff --stat -- packages/`
+returns empty — `session-scanner.ts` is byte-identical to what was on `main` before this fire. No test
+run is claimed because nothing under `packages/` changed; the empty diff is the stronger evidence.
+
+**Step 3** — this verification block is the last thing committed.
