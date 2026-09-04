@@ -4,6 +4,23 @@
 **Origin:** Theseus, `docs/browse-latency-end-to-end-2026-09-03.md` (arm P)
 **Instrument:** `scripts/probe-dedup-resolver-scaling.mts` ·
 **Tests:** `packages/server/src/__tests__/round145-dedup-resolver.test.ts`
+**Verified at the endpoint by:** Theseus, `docs/dedup-hoist-at-the-endpoint-2026-09-03.md` (Round 146)
+
+## The headline: browse latency no longer grows with import history
+
+**Before this change, browse cost +104 ms per 1000 imported channels. After it, +5 ms per 1000.**
+
+That is the user-visible form of the fix, and it is the one to lead with. Theseus measured it over
+real HTTP after this landed (Round 146) and I have promoted it here at his suggestion, because the
+point measurement below — 198.5 ms → 4.1 ms at one channel count — undersells what changed. The
+finding is not "one line got faster at 2000 channels." It is that **browse latency is now
+approximately independent of how much the user has imported**, so the single number any of us
+quotes is finally a number for everyone rather than a number for a machine with an empty database.
+
+His endpoint A/B gives back 224 ms at 2000 channels against the ~194 ms claimed below; 27 ms of
+that is present at 0 channels and does not scale, so the scaling portion is ~197 ms against 194 —
+the constant and the slope separate cleanly, which is the strongest evidence the attribution is
+right. See his doc for the method and its limits.
 
 ## What was wrong
 
@@ -114,4 +131,11 @@ floor.
 
 The cap decision (Round 143, routed to xian, still unanswered) is unaffected. The dedup cost is paid
 identically capped or uncapped, so it moves the base of browse and never the cap delta — Theseus's
-caveat, and it holds after this change. The fingerprint cache remains flagged and unbuilt.
+caveat, and it holds after this change.
+
+**Update, 2026-09-04 (Round 147):** the fingerprint cache is now built —
+`docs/fingerprint-cache-2026-09-04.md`. Two things above need correcting in its light. The 29 ms
+floor quoted in "Why it was worth doing now" is wrong: measured directly at the endpoint the floor
+is **7 ms**, because 29 ms was obtained by subtracting a tight-loop fingerprint cost, and a
+subtraction inherits the error of the subtrahend inverted. The sequencing argument gets *stronger*,
+not weaker — against a 7 ms floor an unfixed 201 ms dedup scan is 29× the floor, not 7×.
