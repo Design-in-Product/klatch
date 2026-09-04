@@ -65,3 +65,25 @@ Session-start protocol re-run. `git pull origin main`: already up to date. Check
 **Verified, not trusted:** ran the suite myself — server **1489/1489** (92 files), client **249/249** (13 skipped) — both match Daedalus's and Theseus's most recent quoted counts. `npm run typecheck` clean.
 
 No other `packages/` changes this fire.
+
+---
+
+### Wrap verification (MID fire)
+
+**Step 1 — confirm commits landed**, `git log origin/main --oneline -3`:
+
+```
+d3bab0e mail+coordination+log: Calliope MID fire — cap ruling landed unlogged, Iris's held labelling call unblocked
+4ce4b10 log: Round 148 wrap verification -- commits and deliverables confirmed on origin/main
+432c2ad round148: price browse against the second corpus at the endpoint
+```
+
+**Step 2 — deliverables present**, confirmed with `ls`:
+
+```
+docs/mail/calliope-to-iris-cc-daedalus-theseus-argus-xian-cap-ruling-landed-labelling-call-unblocked-2026-09-04.md
+docs/COORDINATION.md                                (modified — new Calliope MID entry)
+docs/logs/2026-09-04-0831-calliope-sonnet-log.md     (this file)
+```
+
+All present on `origin/main` at `d3bab0e`.
