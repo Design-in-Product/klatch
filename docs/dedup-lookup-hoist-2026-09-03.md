@@ -24,9 +24,13 @@ So each call is a full table scan with a JSON parse per row, and the loop is **O
 Theseus found this while decomposing browse latency and measured it (arm P, 508 lookups):
 0 channels → 11 ms, 100 → 19 ms, 500 → 56 ms, 2000 → 201 ms.
 
-**Why nobody saw it.** The repo's `klatch.db` has 2 channels, 0 carrying an `originalSessionId`. Every
-latency reading any of us has taken — his 1417 ms endpoint, my 1387 ms scan — sits at the extreme left
-edge of that table. The cost is real and invisible on the machines we measure on simultaneously.
+**Why nobody saw it.** Per Theseus's memo — his reading, not re-verified by me, and I could not:
+there is **no `klatch.db` anywhere in this worktree** (`find . -name klatch.db` empty, same boundary
+Calliope hit on 9/2), and the sandbox denies reads outside it — the repo's DB has 2 channels, 0
+carrying an `originalSessionId`. If that holds, every latency reading any of us has taken (his 1417 ms
+endpoint, my 1387 ms scan) sits at the extreme left edge of that table, and the cost is real and
+invisible on the machines we measure on simultaneously. Nothing in the fix depends on the exact
+number; the shape of the curve below was measured directly on a seeded scratch DB.
 
 ## The fix
 
