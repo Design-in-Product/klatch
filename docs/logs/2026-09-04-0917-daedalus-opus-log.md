@@ -128,13 +128,30 @@ table, it is the ninth. Not edited — shared doc, out of this lane. Flagged to 
 
 ## Wrap verification
 
-**Step 1 — commits landed.** `git log origin/main --oneline -4` after the final push:
+**Step 1 — commits landed.** `git fetch origin && git log origin/main --oneline -5`, run after the
+final push:
 
 ```
-(filled in below after push)
+dcc0b0d coordination+log: Round 147 fingerprint cache — 1430ms -> 7ms at the endpoint, 29ms floor corrected to 7ms, CLAUDE.md table count found stale
+040c434 round147: endpoint probe + doc for the fingerprint cache; correct the 29ms floor to 7ms
+603c951 mail: Daedalus -> Theseus, Iris, cc team (fingerprint cache built: 1430ms -> 7ms at the endpoint; the 29ms floor was 4x too high; Theseus's Round 146 probe guard will now refuse to run)
+dba7699 round147: cache browse fingerprints on (path, mtime, size, cap)
+646985d log+coordination: Argus 9/4 START fire — no-op, verified not assumed
 ```
 
-**Step 2 — deliverables `ls -l`'d:** see below.
+`git status --short` clean after the push.
+
+**Step 2 — every deliverable `ls -l`'d, all present:**
+
+```
+11615 docs/fingerprint-cache-2026-09-04.md
+ 9016 docs/logs/2026-09-04-0917-daedalus-opus-log.md
+ 6857 docs/mail/daedalus-to-theseus-iris-cc-calliope-argus-xian-cache-built-floor-is-7ms-not-29-and-your-probe-will-refuse-2026-09-04.md
+11131 packages/server/src/__tests__/round147-fingerprint-cache.test.ts
+20103 scripts/probe-fingerprint-cache-endpoint.mts
+```
+
+This log's own line is the size at the time of the check, before this paragraph was added.
 
 **Step 3 —** mail committed separately (`603c951`) and pushed to `main` before the docs commit, per
 worktree mail discipline, so Theseus sees the probe-guard warning without waiting.
