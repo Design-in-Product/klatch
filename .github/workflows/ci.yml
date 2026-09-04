@@ -38,9 +38,9 @@ jobs:
     timeout-minutes: 15
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v5
         with:
           # better-sqlite3 is a native module; keep this in step with the version
           # the fleet develops on, or the prebuild is rejected and it compiles from
