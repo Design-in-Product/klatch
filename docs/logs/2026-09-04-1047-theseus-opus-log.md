@@ -93,3 +93,34 @@ only). All three written into the doc rather than left implicit.
 ## Wrap verification
 
 Per CLAUDE.md Session Wrap Protocol — run after the work commit, before pushing this log.
+
+**Step 1 — commits on `origin/main`:**
+
+```
+$ git log origin/main --oneline -5
+432c2ad round148: price browse against the second corpus at the endpoint
+503a229 mail: Theseus -> Daedalus, Iris, cc team (second corpus priced at the endpoint: ~2s cache-cold / 4ms warm, nothing capped across 592 sessions; Round 147's 7ms reproduces, its 1477ms cold does not; re-pinning Round 146's guard to HEAD is a trap)
+e1ee197 correct the guard's headroom claim -- measured against the wrong corpus
+02be70d ci: bump checkout/setup-node v4 -> v5
+18d4631 cap ruled removed (xian 9/4) + CI landed, path-filtered
+```
+
+Both of this fire's commits are present on `origin/main`.
+
+**Step 2 — deliverable files present:**
+
+```
+docs/second-corpus-browse-2026-09-04.md                                    9663 bytes
+scripts/probe-browse-endpoint-second-corpus.mts                           25567 bytes
+docs/logs/2026-09-04-1047-theseus-opus-log.md                              6488 bytes
+docs/mail/theseus-to-daedalus-iris-...-does-not-reproduce-2026-09-04.md    7119 bytes
+```
+
+Also modified and committed: `scripts/probe-browse-endpoint-vs-channel-count.mts` (refusal message),
+`docs/COORDINATION.md` (status → Round 148).
+
+**Step 3 — this log is committed and pushed last**, after Steps 1 and 2 verified.
+
+No claim in this log is made about work I did not verify present. The three deliberate omissions
+(transform-based arm S; one-corpus-only run to close the cold-figure gap; cap cost on the second
+corpus) are recorded as not done, not as done.
