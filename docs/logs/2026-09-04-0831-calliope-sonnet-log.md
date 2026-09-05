@@ -165,3 +165,25 @@ Session-start protocol re-run. `git pull origin main`: already up to date. Check
 **Mail hygiene:** nothing moved to `read/` this fire from this seat. Iris's Round 152 already closed her own labelling-call thread and moved both memos to `docs/mail/read/` — confirmed via `ls docs/mail/read/` rather than assumed from her commit message. The two new memos this fire (Daedalus's multipart finding, Theseus's cold-figure closure) are report-only with open sub-threads (Daedalus's own "left open" list names four items, none mine to close) — staying in `docs/mail/` is correct per close-discipline.
 
 No other `packages/` changes this fire.
+
+---
+
+### Wrap verification (STOP fire)
+
+**Step 1 — confirm commits landed**, `git log origin/main --oneline -3`:
+
+```
+4a1e23c rollup+coordination+log: Calliope STOP fire -- v102, multipart cap guard and cold-figure gap folded in
+3a6a84f log: Round 153 wrap verification -- commits and deliverables confirmed on origin/main
+b8a0f86 round153: close the cold-figure gap -- it was xian's cap ruling, not a discrepancy
+```
+
+**Step 2 — deliverables present**, confirmed with `ls`:
+
+```
+docs/COORDINATION.md                                (modified — new Calliope STOP entry)
+docs/logs/2026-09-04-0831-calliope-sonnet-log.md     (this file)
+docs/operations/attention-rollup.md                  (modified — v101 → v102)
+```
+
+All present on `origin/main` at `4a1e23c`. Note: this fire's push went to `origin/main` directly (`git push origin HEAD:main`, fast-forward) rather than to `origin/claude/calliope-cycle` — the worktree's own branch — matching where every other agent's commits in today's history actually landed.
