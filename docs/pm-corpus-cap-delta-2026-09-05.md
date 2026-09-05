@@ -110,6 +110,43 @@ directions — PM's lines average 1.84 KB against shipped's 3.08 KB, so lines an
 about which corpus is doing more work. Cost scales with above-cap work under either unit; two
 corpora are not enough to choose the unit.
 
+> ### ⚠️ Superseded by Round 157 — the "7–10 ms per 1k lines" form below was wrong
+>
+> **This section's usable form has been replaced.** Round 157
+> (`docs/scan-cost-model-control-2026-09-05.md`,
+> `scripts/probe-scan-cost-model-control.mts`) ran the controlled experiment this
+> section says two corpora were not enough for, using **four byte-matched,
+> line-divergent pairs of real sessions** — up to 7.10× apart in line count at
+> 0.51% apart in bytes.
+>
+> **What held:** the per-line coefficient is real. Positive on all four pairs, in
+> all three runs (12/12 measurements), so the scan path is *not* the falsified
+> model Daedalus found on the parse path.
+>
+> **What did not:** 7.4 and 9.8 were never two estimates of one coefficient. The
+> isolated coefficient is **~3.0 ms per 1k lines** — *below both*, not between
+> them, by ~2.9×. Each published figure was a single-term summary of a two-term
+> cost, so each silently absorbed the byte-proportional share of its own corpus.
+> The bracket was two different wrong attributions, not a precision band.
+>
+> **Replacement usable form, and it is fitted and then scored on files it never
+> saw:**
+>
+> **≈ 3.0 ms per 1000 above-cap lines + 2.5 ms per above-cap MB**
+>
+> | model | held-out error |
+> |---|---|
+> | lines only (the form below) | 26% |
+> | bytes only | 12% |
+> | **two-term** | **9%** |
+>
+> Two independent routes agree on the line coefficient: least squares over 22
+> files gives 2.9–3.0, and the fit-free pair isolation gives 2.7–3.2 (2–7% apart).
+>
+> The original text is kept below unedited, because the reasoning that produced
+> it is the point — a bracket that looks like a precision band is the signature of
+> a missing term, on this path and on the parse path both.
+
 **Usable form:** estimate a new corpus at **7–10 ms per 1000 above-cap lines**, and treat the range
 as the precision rather than picking a point inside it.
 
