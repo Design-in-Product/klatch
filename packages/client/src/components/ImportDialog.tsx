@@ -755,8 +755,12 @@ export function ImportDialog({ isOpen, onClose, onImported, onBulkImported, onCh
                                     hour: 'numeric',
                                     minute: '2-digit',
                                   });
-                                  const messageCountLabel = session.messageCount !== undefined
-                                    ? `${session.fingerprintCapped ? `${session.messageCount}+` : session.messageCount} msg${session.messageCount === 1 ? '' : 's'}`
+                                  // turnCount is exact corpus-wide as of the 9/4 cap ruling
+                                  // (FINGERPRINT_LINE_CAP 1500 -> 50,000; see docs/scan-cap-latency-2026-09-03.md) --
+                                  // no `+` hedge needed. Also the right unit: messageCount counts raw
+                                  // JSONL events, not what import persists (see client.ts SessionInfo doc).
+                                  const turnCountLabel = session.turnCount !== undefined
+                                    ? `${session.turnCount} exchange${session.turnCount === 1 ? '' : 's'}`
                                     : null;
                                   return (
                                   <label
@@ -781,8 +785,8 @@ export function ImportDialog({ isOpen, onClose, onImported, onBulkImported, onCh
                                       </div>
                                       {/* Secondary line: structural metadata */}
                                       <div className="text-xs text-muted flex items-center gap-1.5 flex-wrap">
-                                        {messageCountLabel && <span>{messageCountLabel}</span>}
-                                        {messageCountLabel && <span aria-hidden>\u00b7</span>}
+                                        {turnCountLabel && <span>{turnCountLabel}</span>}
+                                        {turnCountLabel && <span aria-hidden>\u00b7</span>}
                                         <span>{dateLabel}</span>
                                         {session.alreadyImported && (
                                           <>

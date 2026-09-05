@@ -16,11 +16,16 @@
  * Claim categories:
  *   IP1 — content fingerprint enables session identification by topic
  *   IP2 — already-imported sessions are distinguishable from new ones
- *   IP3 — message count is readable per session
- *   IP4 — fingerprintCapped suffix ("+") communicates approximate count
+ *   IP3 — turn count is readable per session
  *   IP5 — last-active date is readable per session
  *   IP6 — per-project session counts are visible
  *   IP7 — total session/project counts are visible at the header
+ *
+ * IP4 (fingerprintCapped suffix "+" communicates approximate count) retired
+ * 2026-09-04: xian's cap ruling (FINGERPRINT_LINE_CAP 1500 -> 50,000, see
+ * docs/scan-cap-latency-2026-09-03.md) made turnCount exact corpus-wide, so
+ * the label dropped the "+" hedge entirely (ImportDialog.tsx) rather than
+ * keep rendering it for a case that no longer occurs in practice.
  *
  * Gate: RUN_UI_AAXT=1.
  */
@@ -266,6 +271,7 @@ const IS1_RICH: any = {
           sessionId: 'a1', path: '/p/a1.jsonl',
           firstUserMessage: 'help me debug the SSE streaming race condition in messages route',
           messageCount: 47,
+          turnCount: 47,
           fingerprintCapped: false,
           modifiedAt: '2026-05-17T14:32:00Z',
           alreadyImported: false,
@@ -274,6 +280,7 @@ const IS1_RICH: any = {
           sessionId: 'a2', path: '/p/a2.jsonl',
           firstUserMessage: 'review the new export-preview UI before I commit',
           messageCount: 12,
+          turnCount: 12,
           fingerprintCapped: false,
           modifiedAt: '2026-05-16T09:15:00Z',
           alreadyImported: false,
@@ -282,7 +289,11 @@ const IS1_RICH: any = {
           sessionId: 'a3', path: '/p/a3.jsonl',
           firstUserMessage: 'lets continue from where we left off on the round 31 round-trip work',
           messageCount: 500,
-          fingerprintCapped: true,  // 500+
+          turnCount: 500,
+          // fingerprintCapped no longer changes what's rendered (IP4 retired 9/4) --
+          // kept true here as a regression check that a capped session still shows
+          // a plain turn count, not a stale "+".
+          fingerprintCapped: true,
           modifiedAt: '2026-04-28T08:36:00Z',
           alreadyImported: true,
           existingChannelName: 'daedalus-round31-roundtrip',
@@ -297,6 +308,7 @@ const IS1_RICH: any = {
           sessionId: 'b1', path: '/p/b1.jsonl',
           firstUserMessage: 'M2g check-in — where are we on Slack DM aggregation',
           messageCount: 89,
+          turnCount: 89,
           fingerprintCapped: false,
           modifiedAt: '2026-05-17T22:14:00Z',
           alreadyImported: false,
@@ -318,6 +330,7 @@ const IS2_SINGLE: any = {
           sessionId: 'x1', path: '/p/x1.jsonl',
           firstUserMessage: 'hello, just exploring',
           messageCount: 3,
+          turnCount: 3,
           fingerprintCapped: false,
           alreadyImported: false,
         }),
@@ -338,6 +351,7 @@ const IS3_NO_FINGERPRINT: any = {
           sessionId: 'e1', path: '/p/e1.jsonl',
           firstUserMessage: undefined,
           messageCount: undefined,
+          turnCount: undefined,
           fingerprintCapped: false,
           modifiedAt: '2026-05-10T00:00:00Z',
           alreadyImported: false,
@@ -346,6 +360,7 @@ const IS3_NO_FINGERPRINT: any = {
           sessionId: 'e2', path: '/p/e2.jsonl',
           firstUserMessage: 'a normal first message',
           messageCount: 5,
+          turnCount: 5,
           fingerprintCapped: false,
           modifiedAt: '2026-05-11T00:00:00Z',
           alreadyImported: false,
@@ -367,6 +382,7 @@ const IS4_DENSE: any = {
         path: `/p/d${i}.jsonl`,
         firstUserMessage: `session ${i + 1} — first user message about topic ${['auth', 'routing', 'tests', 'db', 'ui', 'api', 'deploy', 'monitoring'][i]}`,
         messageCount: 10 + i * 5,
+        turnCount: 10 + i * 5,
         fingerprintCapped: false,
         modifiedAt: `2026-05-${10 + i}T12:00:00Z`,
         alreadyImported: i % 3 === 0, // every third is imported
@@ -388,6 +404,7 @@ const IS5_ALL_IMPORTED: any = {
           sessionId: 'i1', path: '/p/i1.jsonl',
           firstUserMessage: 'old session one',
           messageCount: 50,
+          turnCount: 50,
           alreadyImported: true,
           existingChannelName: 'old-one',
         }),
@@ -395,6 +412,7 @@ const IS5_ALL_IMPORTED: any = {
           sessionId: 'i2', path: '/p/i2.jsonl',
           firstUserMessage: 'old session two',
           messageCount: 30,
+          turnCount: 30,
           alreadyImported: true,
           existingChannelName: 'old-two',
         }),
@@ -449,31 +467,17 @@ const PROBE_BUILDERS: Array<(s: TestState) => Probe[]> = [
     }];
   },
 
-  // IP3 — message count readability
+  // IP3 — turn count readability
   (s) => {
-    const sess = s.browseResponse.projects.flatMap((p: any) => p.sessions).find((x: any) => typeof x.messageCount === 'number' && !x.fingerprintCapped);
+    const sess = s.browseResponse.projects.flatMap((p: any) => p.sessions).find((x: any) => typeof x.turnCount === 'number');
     if (!sess) return [];
     return [{
       id: `${s.name}.IP3`,
       state: s.name,
-      claim: 'IP3-message-count-readable',
-      question: `Pick any one session in the list that shows a message count and tell me approximately how many messages it has.`,
-      expectedAnswer: `At least one session has a visible message count, e.g., "${sess.firstUserMessage}" with ${sess.messageCount} messages`,
-      category: 'message-count-readable',
-    }];
-  },
-
-  // IP4 — fingerprintCapped suffix communicates approximate
-  (s) => {
-    const capped = s.browseResponse.projects.flatMap((p: any) => p.sessions).find((x: any) => x.fingerprintCapped);
-    if (!capped) return [];
-    return [{
-      id: `${s.name}.IP4`,
-      state: s.name,
-      claim: 'IP4-capped-count-meaning',
-      question: `For the session starting with "${capped.firstUserMessage}", the displayed message count has a "+" symbol after it (showing "${capped.messageCount}+"). What does the "+" indicate?`,
-      expectedAnswer: `The "+" indicates the count is approximate — the actual number is at least ${capped.messageCount} but could be more (a hint that the conversation may be longer than ${capped.messageCount} messages)`,
-      category: 'capped-count-meaning',
+      claim: 'IP3-turn-count-readable',
+      question: `Pick any one session in the list that shows a count of exchanges and tell me approximately how many it has.`,
+      expectedAnswer: `At least one session has a visible exchange count, e.g., "${sess.firstUserMessage}" with ${sess.turnCount} exchanges`,
+      category: 'turn-count-readable',
     }];
   },
 
@@ -526,7 +530,7 @@ describeIfEnabled('Round 38 — UI-as-context AAXT (ImportDialog session browser
     mockBrowse.mockReset();
   });
 
-  it('semantic conveyance probe across 5 states × 7 claim categories', async () => {
+  it('semantic conveyance probe across 5 states × 6 claim categories', async () => {
     if (!process.env.OPENAI_API_KEY && !process.env.ANTHROPIC_API_KEY) {
       throw new Error('No API key available');
     }
