@@ -258,3 +258,97 @@ No claim in this log is made about work I did not verify present. The four delib
 5,218-artifact channel renders readably; Round 148's cold-figure discrimination run) are recorded
 as not done, not as done. The three probe failures are the defect under test, not instrument
 errors — the probe exits 1 by design while they stand.
+
+---
+
+# STOP fire — 2026-09-04 19:47 PT (Round 153)
+
+**19:47 — Briefing.** Worktree synced by the wrapper at `7077c40`. Read `docs/COORDINATION.md`
+(my section, Argus's and Daedalus's 9/4 entries) and swept `docs/mail/` by `git log` since my last
+fire rather than by `ls` mtime — mtimes all read as the sync time and would have told me nothing.
+Two things landed since 14:57:
+
+- `764be0a` / `d75428e` — Daedalus, Round 151, addressed to me: he took the multipart upload path I
+  named as unmeasured and showed the premise under it was false. The cap never guarded the
+  buffering; `formData()` reads the body before any handler line runs. Shipped a `Content-Length`
+  pre-read guard. **No action owed on my side** — he corrected a claim I had explicitly declined to
+  make, and the one item he routed to me (my 370 turns = his 370) was an agreement, not an ask.
+- `7077c40` — Iris, Round 152: swapped `messageCount`+`+` for `turnCount` in `ImportDialog`. That is
+  my Round 150 finding (13.9×–245× overstatement) acted on and closed. Her thread moved to
+  `docs/mail/read/`. **Nothing owed.**
+
+**19:50 — Choosing the unit: the item both of us have now carried twice.** Daedalus's memo closes
+with "Round 148's cold-figure gap, still not done." My own 14:47 log says the same. Two agents,
+two fires, both writing *unexplained* next to a 47% disagreement between two measurements of the
+same endpoint. That is the shape of a number that becomes folklore, and it is mine — I am the one
+who reported the figure that did not reproduce.
+
+**19:52 — The hypothesis, formed from the commit clock rather than from the numbers.** Daedalus's
+1477 ms was measured at `dba7699` (09:23). `18d4631` raised `FINGERPRINT_LINE_CAP` 1500 → 50_000
+at 10:18. My 2164 ms was after it. **We were not timing the same build**, and neither write-up said
+so because neither of us had looked at what landed between them. Round 143 had already priced the
+cap change in isolation at +645 ms, and 1477 + 645 = 2122 — 2% from my 2164.
+
+**That arithmetic is not a measurement** and I did not report it as one: it crosses two runs, two
+corpora (506/547 MB vs 516/531 MB) and two machine states. Built
+`scripts/probe-browse-cold-figure-gap.mts` to do it as one experiment instead.
+
+**19:55 — Arms.** A (shipped-root inventory + single-corpus page-cache warm), B (cap 50_000,
+fresh server, cold + warm), C (cap 1_500, patched for one server generation, sha256-restored),
+D (cap 50_000 again as a drift control), E (patch verified by effect), F (the reconciliation).
+
+Two design choices worth recording. **(1) One corpus, deliberately.** My Round 148 probe warmed the
+page cache over *both* corpora (989 MB); Daedalus warmed one (531 MB). If that asymmetry was what
+moved the figure, every Round 148 number was contaminated, not just this one — so this probe warms
+one, and arm B either reproduces 2164 or the whole Round 148 doc needs revisiting. **(2) The patch
+had to be proved by behaviour, not by text.** Text-matching proves the *file* changed; it does not
+prove the *server I timed* ran the changed cap. Arm E checks that arm C returns capped sessions and
+that the count matches files counted independently on disk. I took this directly from Daedalus's
+own arm-D correction this morning — a plausible number produced by an arm that never actually
+exercised anything is the failure mode both of us have now hit.
+
+**20:05 — Result: 28 checks, 0 failed, 0 skipped. The gap closes to 15 ms.**
+
+```
+arm B  cap 50_000 (shipped)       2203 ms cold    8 ms warm
+arm C  cap  1_500 (pre-ruling)    1492 ms cold    8 ms warm
+arm D  cap 50_000 again, control  2227 ms cold    7 ms warm
+```
+
+- **Daedalus's 1477 reproduces at cap 1500 to within 1%** (1492 ms).
+- **My 2164 reproduces at cap 50_000 to within 2%** (2203 ms), and arm D says it is not drift (1%).
+- Cap delta **723 ms**; the unexplained gap was 687 ms; **residual 15 ms**, inside noise.
+- **The two-corpus page-cache hypothesis is dead** — single-corpus warm, arm B still 2203 ms.
+  Excluded, not merely doubted. This was the outcome that would have cost me the Round 148 doc.
+- **Patch proved by effect:** arm C returned **11 capped sessions**; arm A independently counted
+  **11 files over 1500 lines on disk**. Exact match. Turn total 2047 → 831.
+
+**20:06 — The finding underneath the finding.** At cap 1500, 11 of 522 sessions hid **1216 of 2047
+turns — 59.4% of the corpus's turn signal**. Daedalus's Round 143 measured **58.8%** on a 506-file
+corpus, at the scanner, with a different instrument. Different corpus, different layer, same number.
+That is an independent reproduction of the finding xian ruled on, and it is the strongest form that
+finding has had.
+
+**20:07 — The number for xian, recorded as a price and not as a reopening.** His cap ruling costs
+**723 ms on every cache-cold browse** (48% over the pre-ruling cold browse) — paid **once per server
+start**, absorbed entirely by Daedalus's fingerprint cache thereafter (8 ms warm at either cap), and
+bought 59.4% of the turn signal. On these numbers the ruling looks right. I am not making the call
+again; I am attaching the number nobody had written down. Also flagged that it is **not a constant**:
+~1.4 ms/file here, and the corpus grew **+6 files / +12.5 MB in one day** (516/531.2 MB → 522/543.7 MB).
+
+**20:08 — Deliverables.** `docs/browse-cold-figure-gap-2026-09-04.md`, the probe, memo to Daedalus
+cc Janus/Iris/Calliope/Argus/xian. Mail committed separately and pushed to `main` first per the
+worktree rule (`12e7f5f`, confirmed on `origin/main`).
+
+**Not done, deliberately:** the same cap delta on `~/.claude-pm/projects` — 86% of the bytes in 15%
+of the files, heads at 40k+ lines, where the delta is a **different and larger** number and the one
+continuity #3 actually depends on; whether 723 ms/server-start is acceptable (xian's, already
+ruled); Round 146's arm-S transform re-pin, still scoped-not-built; Daedalus's 9× accepted-multipart
+cost (his, self-flagged). Written into the doc rather than left implicit. **`packages/` untouched
+this fire** — `git diff -- packages/` empty, `session-scanner.ts` sha256-verified byte-identical.
+
+## Wrap verification — STOP fire (Round 153)
+
+Per CLAUDE.md Session Wrap Protocol — run after the work commit, before pushing this log. Results
+appended below the commit.
+
