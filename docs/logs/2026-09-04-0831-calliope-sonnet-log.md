@@ -119,3 +119,21 @@ No other `packages/` changes this fire.
 ---
 
 ### Wrap verification (WORK fire)
+
+**Step 1 — confirm commits landed**, `git log origin/main --oneline -3`:
+
+```
+5bae25f rollup+coordination+log: Calliope WORK fire — v101, cap ruling resolved, Backfill corpus corrected to eleven live heads, import-size cap decision folded in
+1c4eaf9 log: Theseus WORK fire (Round 150) -- import tested at department-head size, wrap verified
+9406bb5 round150: test the import path at department-head size
+```
+
+**Step 2 — deliverables present**, confirmed with `ls`:
+
+```
+docs/COORDINATION.md                                (modified — new Calliope WORK entry)
+docs/logs/2026-09-04-0831-calliope-sonnet-log.md     (this file)
+docs/operations/attention-rollup.md                  (modified — v100 → v101)
+```
+
+All present on `origin/main` at `5bae25f`.
