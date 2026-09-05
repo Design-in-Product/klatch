@@ -256,14 +256,26 @@ check('A', 'MAX_IMPORT_SIZE read from source', true,
   `${mb(MAX_IMPORT_SIZE)} (routes/import.ts, not hardcoded in this probe)`);
 
 /**
- * For each `arrayBuffer.byteLength > MAX_IMPORT_SIZE` guard, find the
- * `formData()` and `arrayBuffer()` calls that precede it in the same handler,
- * and report the ordering. Positional, derived from the file — not recalled.
+ * Where does the exact per-file cap check sit relative to the copy?
+ *
+ * ROUND 154 UPDATE. When this probe was written, all four sites read
+ * `arrayBuffer.byteLength > MAX_IMPORT_SIZE`, and this arm asserted that
+ * ordering — body copied, THEN checked. Round 154 measured the cost of that
+ * ordering on the Content-Length fall-through path (95.3 MB, more than two full
+ * copies of a 45.3 MB file, spent to reject it) and moved the check onto
+ * `file.size` in `rejectOversizeFile`, one line ahead of `arrayBuffer()`.
+ *
+ * So this arm now recognises BOTH shapes and says which build it is measuring,
+ * rather than failing on the newer one. It still fails if it can find neither —
+ * that would mean the cap check has gone missing, which is the thing worth
+ * screaming about.
  */
 const lineOf = (idx: number) => importSrc.slice(0, idx).split('\n').length;
 const byteLengthGuards = [...importSrc.matchAll(/arrayBuffer\.byteLength > MAX_IMPORT_SIZE/g)];
-check('A', 'multipart cap sites found', byteLengthGuards.length > 0,
-  `${byteLengthGuards.length} sites checking arrayBuffer.byteLength against the cap`);
+const sizeGuards = [...importSrc.matchAll(/rejectOversizeFile\(c, file\)/g)];
+check('A', 'multipart cap sites found', byteLengthGuards.length + sizeGuards.length > 0,
+  `${byteLengthGuards.length} checking arrayBuffer.byteLength (pre-Round-154 shape), ` +
+  `${sizeGuards.length} checking file.size via rejectOversizeFile (Round 154 shape)`);
 
 let bufferedBeforeCap = 0;
 for (const g of byteLengthGuards) {
@@ -279,9 +291,25 @@ for (const g of byteLengthGuards) {
       : `unexpected ordering (formData ${fdIdx === -1 ? 'absent' : lineOf(fdIdx)}, arrayBuffer ${abIdx === -1 ? 'absent' : lineOf(abIdx)})`,
     'measurement');
 }
-check('A', 'every multipart site buffers before it checks',
-  bufferedBeforeCap === byteLengthGuards.length,
-  `${bufferedBeforeCap}/${byteLengthGuards.length} sites allocate the whole body first`,
+
+/** Round 154 shape: the check must precede `arrayBuffer()` in the same handler. */
+let checkedBeforeCopy = 0;
+for (const g of sizeGuards) {
+  const guardIdx = g.index!;
+  const abIdx = importSrc.indexOf('.arrayBuffer()', guardIdx);
+  const ok = abIdx !== -1 && guardIdx < abIdx;
+  if (ok) checkedBeforeCopy++;
+  check('A', `site at line ${lineOf(guardIdx)}`, true,
+    ok
+      ? `cap line ${lineOf(guardIdx)} -> arrayBuffer() line ${lineOf(abIdx)} — the check runs BEFORE the copy`
+      : 'unexpected ordering: no arrayBuffer() found after the cap check in this handler',
+    'measurement');
+}
+
+check('A', 'ordering of the exact per-file check, per site',
+  bufferedBeforeCap + checkedBeforeCopy === byteLengthGuards.length + sizeGuards.length,
+  `${bufferedBeforeCap} site(s) allocate the whole body first (old shape), ` +
+  `${checkedBeforeCopy} site(s) refuse before the copy (Round 154)`,
   'measurement');
 
 /**
@@ -290,11 +318,15 @@ check('A', 'every multipart site buffers before it checks',
  * inferring it from the numbers it is about to take.
  */
 const guardSites = [...importSrc.matchAll(/rejectOversizeBeforeRead\(c\)/g)];
-const GUARD_PRESENT = guardSites.length >= byteLengthGuards.length && guardSites.length > 0;
+// Round 154: the site count is the sum of both cap-check shapes, not just the
+// pre-154 one — otherwise this compares 4 guards against 0 sites and calls it
+// guarded for the wrong reason.
+const multipartSiteCount = byteLengthGuards.length + sizeGuards.length;
+const GUARD_PRESENT = guardSites.length >= multipartSiteCount && guardSites.length > 0;
 check('A', 'pre-read guard present at every multipart site', true,
   GUARD_PRESENT
-    ? `${guardSites.length} call sites of rejectOversizeBeforeRead vs ${byteLengthGuards.length} multipart sites — measuring the GUARDED build`
-    : `${guardSites.length} call sites vs ${byteLengthGuards.length} multipart sites — measuring the UNGUARDED build`,
+    ? `${guardSites.length} call sites of rejectOversizeBeforeRead vs ${multipartSiteCount} multipart sites — measuring the GUARDED build`
+    : `${guardSites.length} call sites vs ${multipartSiteCount} multipart sites — measuring the UNGUARDED build`,
   'measurement');
 
 // The path-based sites, for contrast: they stat() and can refuse without reading.

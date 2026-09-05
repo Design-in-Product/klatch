@@ -61,6 +61,34 @@ function rejectOversizeBeforeRead(c: any): Response | null {
   }, 400);
 }
 
+/**
+ * The exact per-file cap check — now read from `file.size`, not from the copy.
+ *
+ * `rejectOversizeBeforeRead` above handles the common case, but it deliberately
+ * falls through when Content-Length is absent or malformed. On that fall-through
+ * the request body has been buffered by `formData()` and the file is over the
+ * cap — and every site here used to spend a SECOND full copy on
+ * `await file.arrayBuffer()` before looking at its `byteLength`, purely to
+ * learn a number `file.size` already had.
+ *
+ * Measured on 2026-09-05 (Round 154, `probe-accepted-multipart-allocation.mts`,
+ * arm F) on a 45.3 MB payload: refusing on `file.size` peaks at 153.8 MB over
+ * baseline (3.40x the file); refusing on `arrayBuffer.byteLength` peaks at
+ * 249.1 MB (5.50x). 95.3 MB — more than two full copies of the file — spent to
+ * reject it. The same arm verified `file.size === (await file.arrayBuffer())
+ * .byteLength` on a real multipart File rather than taking it from the spec,
+ * because the cap's correctness rides on the two being the same authority.
+ *
+ * This does NOT change what size is allowed. Same threshold, same message, same
+ * status; it only stops making the copy before deciding not to use it.
+ */
+function rejectOversizeFile(c: any, file: File): Response | null {
+  if (file.size <= MAX_IMPORT_SIZE) return null;
+  return c.json({
+    error: `File too large (${Math.round(file.size / 1024 / 1024)}MB). Maximum is ${MAX_IMPORT_SIZE / 1024 / 1024}MB.`,
+  }, 400);
+}
+
 /** Expand ~ to home directory safely using os.homedir() */
 function expandHome(filePath: string): string {
   if (filePath.startsWith('~/') || filePath === '~') {
@@ -153,10 +181,9 @@ app.post('/import/claude-code', async (c) => {
     if (!file.name.endsWith('.jsonl')) {
       return c.json({ error: 'File must be a Claude Code session file (.jsonl).' }, 400);
     }
+    const oversize = rejectOversizeFile(c, file);
+    if (oversize) return oversize;
     const arrayBuffer = await file.arrayBuffer();
-    if (arrayBuffer.byteLength > MAX_IMPORT_SIZE) {
-      return c.json({ error: `File too large (${Math.round(arrayBuffer.byteLength / 1024 / 1024)}MB). Maximum is ${MAX_IMPORT_SIZE / 1024 / 1024}MB.` }, 400);
-    }
     const channelName = formData.get('channelName') as string | null;
     const forceImport = formData.get('forceImport') === 'true';
     const entityName = formData.get('entityName') as string | null;
@@ -414,10 +441,9 @@ app.post('/import/claude-ai/preview', async (c) => {
     if (!file.name.endsWith('.zip')) {
       return c.json({ error: 'File must be a .zip file' }, 400);
     }
+    const oversize = rejectOversizeFile(c, file);
+    if (oversize) return oversize;
     const arrayBuffer = await file.arrayBuffer();
-    if (arrayBuffer.byteLength > MAX_IMPORT_SIZE) {
-      return c.json({ error: `File too large (${Math.round(arrayBuffer.byteLength / 1024 / 1024)}MB). Maximum is ${MAX_IMPORT_SIZE / 1024 / 1024}MB.` }, 400);
-    }
     zipBuffer = Buffer.from(arrayBuffer);
   } else {
     const body = await c.req.json<{ zipPath: string }>();
@@ -532,10 +558,9 @@ app.post('/import/claude-ai', async (c) => {
     if (!file.name.endsWith('.zip')) {
       return c.json({ error: 'File must be a .zip file' }, 400);
     }
+    const oversize = rejectOversizeFile(c, file);
+    if (oversize) return oversize;
     const arrayBuffer = await file.arrayBuffer();
-    if (arrayBuffer.byteLength > MAX_IMPORT_SIZE) {
-      return c.json({ error: `File too large (${Math.round(arrayBuffer.byteLength / 1024 / 1024)}MB). Maximum is ${MAX_IMPORT_SIZE / 1024 / 1024}MB.` }, 400);
-    }
     const selectionField = formData.get('selectedConversationIds');
     if (selectionField && typeof selectionField === 'string') {
       try {
@@ -807,10 +832,9 @@ app.post('/import/klatch', async (c) => {
     if (!file.name.endsWith('.zip')) {
       return c.json({ error: 'File must be a .zip file' }, 400);
     }
+    const oversize = rejectOversizeFile(c, file);
+    if (oversize) return oversize;
     const arrayBuffer = await file.arrayBuffer();
-    if (arrayBuffer.byteLength > MAX_IMPORT_SIZE) {
-      return c.json({ error: `File too large (${Math.round(arrayBuffer.byteLength / 1024 / 1024)}MB). Maximum is ${MAX_IMPORT_SIZE / 1024 / 1024}MB.` }, 400);
-    }
     zipBuffer = Buffer.from(arrayBuffer);
     forceImport = formData.get('forceImport') === 'true';
   } else {
