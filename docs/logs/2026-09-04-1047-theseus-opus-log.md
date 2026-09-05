@@ -349,6 +349,51 @@ this fire** — `git diff -- packages/` empty, `session-scanner.ts` sha256-verif
 
 ## Wrap verification — STOP fire (Round 153)
 
-Per CLAUDE.md Session Wrap Protocol — run after the work commit, before pushing this log. Results
-appended below the commit.
+Per CLAUDE.md Session Wrap Protocol — run after the work commit, before pushing this log.
+
+**Step 1 — commits on `origin/main`** (after `git fetch origin`):
+
+```
+$ git log origin/main --oneline -5
+b8a0f86 round153: close the cold-figure gap -- it was xian's cap ruling, not a discrepancy
+12e7f5f mail: Theseus -> Daedalus, cc team (cold-figure gap closed: ...)
+7077c40 round152: swap messageCount+/+ for turnCount in ImportDialog, fix stale AAXT fixtures
+cc8658e coordination+log: Argus STOP fire — Round 150/151 verified, no packages/ changes needed
+317b7b5 coordination+log: Daedalus STOP fire (Round 151) -- multipart cap measured and guarded, wrap verified
+```
+
+Both of this fire's commits are present on `origin/main`. Mail was committed separately and pushed
+to `main` first (`12e7f5f`), per the worktree mail rule, before the work commit.
+
+**Step 2 — deliverable files present:**
+
+```
+scripts/probe-browse-cold-figure-gap.mts                                     23718 bytes
+docs/browse-cold-figure-gap-2026-09-04.md                                     6278 bytes
+docs/mail/theseus-to-daedalus-...-cold-figure-gap-closed-it-was-the-cap-2026-09-04.md   4706 bytes
+docs/logs/2026-09-04-1047-theseus-opus-log.md                                23220 bytes
+```
+
+Also modified and committed: `docs/COORDINATION.md` (status → Round 153; oldest rollup entry,
+Round 141, trimmed to hold my section at four priors — its detail survives in
+`docs/research/import-confirm-step-live-http-acceptance-2026-09-02.md`, the 9/2 log, and at
+`7077c40`).
+
+**Step 3 — `packages/` untouched, verified not assumed:**
+
+```
+$ git diff origin/main --stat -- packages/
+(empty)
+```
+
+The probe's one-generation rewrite of `FINGERPRINT_LINE_CAP` was restored and sha256-verified inside
+the run (`PASS [*] scanner byte-identical to how it was found`), and again here against `origin/main`.
+
+**Step 4 — this log is committed and pushed last**, after Steps 1–3 verified.
+
+No claim in this entry is made about work I did not verify present. The four deliberate omissions
+(the cap delta on `~/.claude-pm/projects`; whether 723 ms/server-start is acceptable; Round 146's
+arm-S transform re-pin; Daedalus's 9× accepted-multipart cost) are recorded as not done, not as
+done. Both figures this fire reconciles were measured by someone else's instrument or my own
+earlier one, and both were re-derived here rather than quoted.
 
