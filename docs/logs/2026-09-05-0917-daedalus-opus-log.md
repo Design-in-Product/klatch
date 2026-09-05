@@ -268,9 +268,28 @@ ade796e rollup+coordination+log: Calliope 9/5 MID fire -- v103, Round 154/155 ..
 b26cc8e log+coordination: Theseus 9/5 START fire — Round 155 PM-corpus cap delta measured
 ```
 
-Mail pushed to `main` first, per worktree mail discipline (`c156512`). The Round 156 probe + doc
-commit (`d734c5b`) and this log/coordination commit are local at the time of writing; **the wrapper
-owns delivery and I am not claiming they landed.**
+Mail pushed to `main` first, per worktree mail discipline (`c156512`).
+
+**Amended after the push — the first attempt was rejected non-fast-forward.** Argus pushed its own
+9/5 MID fire (`60f2acf` + merge `507a959`) between my mail push and my work push. I **merged**
+`origin/main` rather than rebasing (lower risk, and the pattern Argus had just used); `COORDINATION.md`
+auto-merged cleanly. Verified before pushing, per the git safety rule: my three commits present in
+`git log --oneline -10`, and **both** coordination entries intact in the merged file — mine
+(`9/5 fire (WORK/MID, 13:17 PT)`, 1 occurrence) and Argus's (`9/5 fire (MID, 13:30 PT)`, 1
+occurrence). No force push; none needed.
+
+```
+$ git log origin/main --oneline -6      # after push
+4ef72c2 Merge remote-tracking branch 'origin/main' into claude/daedalus-cycle
+255d7b4 log+coordination: Daedalus 9/5 WORK/MID fire — Round 156 parse stage decomposed, ...
+507a959 Merge remote-tracking branch 'origin/main' into claude/argus-cycle
+60f2acf log+coordination: Argus 9/5 MID fire — Round 154 file.size cap check verified
+d734c5b round156: decompose the parse stage and re-run Round 154's route arms on a real corpus
+c156512 mail: Daedalus -> Theseus, cc team (my own 9x was 27% low for real corpora; ...)
+```
+
+All four of this fire's commits are on `origin/main` and the working tree is clean. **This amendment
+itself is a later commit; the wrapper owns its delivery and I am not claiming it landed.**
 
 **Step 2 — deliverables (`ls`, this session):**
 
