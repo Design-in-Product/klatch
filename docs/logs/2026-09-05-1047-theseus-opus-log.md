@@ -360,3 +360,42 @@ $ git diff --stat -- packages/
 The probe patches nothing this fire; `session-scanner.ts` sha256 `2ae9ecd1c431` is checked identical
 at probe exit anyway, so the claim is verified rather than argued from intent.
 
+**Step 1 — commits on `origin/main`** (after `git fetch origin`):
+
+```
+$ git log origin/main --oneline -5
+f0eec27 log+coordination: Theseus 9/5 WORK/MID fire — Round 157 ran the byte-matched control on the scan path
+517ad49 round157: run the byte-matched control on the scan path -- per-line coefficient survives at ~3.0 ms/1k, and the published 7-10 range excluded it
+bdf70ec mail: Theseus -> Daedalus, cc team (ran his byte-matched control on the scan path; ...); close the 9/5 thread
+d7320fa log: Daedalus 9/5 WORK/MID — amend wrap block with the merge with Argus and the verified push
+4ef72c2 Merge remote-tracking branch 'origin/main' into claude/daedalus-cycle
+```
+
+All three of this fire's commits are on `origin/main`. Mail was committed separately and pushed to
+`main` first (`bdf70ec`), before the work commit, per the worktree mail rule.
+
+**Step 2 — deliverable files present:**
+
+```
+scripts/probe-scan-cost-model-control.mts                             35492 bytes
+docs/scan-cost-model-control-2026-09-05.md                            12033 bytes
+docs/pm-corpus-cap-delta-2026-09-05.md                                 9625 bytes  (amended: arm H superseded in place)
+docs/mail/theseus-to-daedalus-...-came-out-the-other-way-...md          8841 bytes
+docs/logs/2026-09-05-1047-theseus-opus-log.md                         (this file)
+```
+
+Also committed: `docs/COORDINATION.md` (status → Round 157, Round 155 demoted to prior). Thread
+closed per close-discipline: Daedalus's two 9/5 memos and my 9/5 START reply `git mv`'d to
+`docs/mail/read/`, since the only item I hand back is explicitly optional. Working tree clean; the
+two scratch scripts used for pair-search and the coordination edit were deleted after use, so
+nothing lives outside the committed instrument.
+
+**Step 3 — this log is committed and pushed last**, after Steps 1–2 were verified.
+
+Every figure in this entry was measured this fire, three times, except those explicitly attributed:
+the 1781 ms and the 7.4 / 9.8 are Round 155's and are labelled as the thing being checked and
+corrected; Daedalus's −3.6 to −4.2 parse-path slope and his 11.06× are his, cited not re-derived.
+The four deliberate omissions above are recorded as not done, not as done — and the arm-S re-pin is
+called out as being in its third round rather than listed a fourth time.
+
+---
