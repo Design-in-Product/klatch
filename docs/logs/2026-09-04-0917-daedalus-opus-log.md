@@ -349,3 +349,79 @@ commit, per worktree mail discipline, so Janus and Theseus see the reply without
 anything else.
 
 **Delivery:** not claimed beyond what the pushes show. The wrapper owns delivery.
+
+---
+
+## 17:17 PT — STOP fire, Round 151: the cap never guarded the upload path
+
+**Briefing:** pulled state was current (wrapper synced). Read `COORDINATION.md` Daedalus section
+and `ls docs/mail/`. One memo new on this seat since 13:17: Theseus's Round 150 (17:17, "import
+tested at size — three heads cannot be imported"). Read in full.
+
+**Unit taken.** Theseus's memo names exactly one item as mine and leaves it explicitly unmeasured:
+
+> "That is not an argument for removing it — it also guards the multipart upload path, which
+> genuinely does buffer (`arrayBuffer.byteLength`), and **I did not measure that path.**"
+
+Took that, not the cap ruling itself — the ruling is xian's and Theseus deliberately did not make
+it either.
+
+**Scoping check before building.** Confirmed the multipart path is user-facing, not just for cloud
+agents: `packages/client/src/api/client.ts` posts `FormData` for `previewClaudeAiExport`,
+`importClaudeAiExport`, and the Claude Code file upload. A claude.ai export ZIP is exactly the case
+where a real user picks a large file from a file dialog.
+
+**Finding.** `MAX_IMPORT_SIZE` is checked against `arrayBuffer.byteLength` at four multipart sites,
+which reads as if the cap prevents the allocation. It does not — `c.req.formData()` reads the whole
+body first. Discriminating run: the same 70.3 MB refused by the cap (329 ms, 169.6 MB peak over
+baseline) vs. refused by the `.jsonl` check one line *above* the cap (277 ms, 170.5 MB).
+Indistinguishable. Control: path-based route `stat()`s and refuses for 0.0 MB / 107 ms.
+
+What the cap *does* buy there, and it survives: it bounds the second and larger allocation. Accepted
+45.3 MB upload = 419.2 MB peak (9.25× the file).
+
+**Confound I hit and got wrong before getting it right.** Run 1 shared one server across arms and
+reported arm D at 1.6 MB, concluding "formData() is not buffering the whole part." False — V8 does
+not return pages, so arm D ran against the 644 MB heap arm C had grown. Fixed with a fresh server
+per arm; sleeping does not fix it. This is Theseus's own Round 150 note ("~0 after, because V8's
+heap is already sized"), which I had read that morning and walked into from the other side. The
+reasoning is now a comment in `freshServer()` so the next reader doesn't rediscover it.
+
+**Shipped.** `rejectOversizeBeforeRead(c)` at all four multipart sites, refusing on `Content-Length`
+before `formData()`. Arm C 329 ms/169.6 MB → 95 ms/0.0 MB; arm D 277 ms/170.5 MB → 109 ms/0.0 MB;
+control unchanged; accepted-upload arm F deliberately unchanged (425.0 MB) — the guard refuses only
+what was already going to be refused. `Content-Length` presence verified on the wire (arm B), not
+assumed. 1 MB envelope allowance so it can never refuse a file the exact check would allow. Absent
+or malformed length falls through. The cap's *value* is untouched.
+
+**A test-writing slip, corrected in-fire.** First version of the tests asserted on the marker word
+"uploaded" — but the fall-through error is "No file **uploaded**", so three negative tests failed
+for the wrong reason. Switched the discriminator to `/too large/i`, which only the guard emits.
+
+### Wrap verification
+
+**Step 1 — commits on `origin/main`:**
+
+```
+$ git log origin/main --oneline -3
+d75428e round151: refuse oversized multipart uploads before reading the body
+764be0a mail: Daedalus -> Theseus, Janus, Iris, cc team (measured the multipart path Theseus left open...)
+5d8a8bf log: WORK fire wrap verification -- commits and deliverables confirmed on origin/main
+```
+
+**Step 2 — deliverables (`ls`, this session):** see the verification block committed with this log.
+
+**Step 3 —** mail committed separately (`764be0a`) and pushed to `main` *before* the code commit,
+per worktree mail discipline.
+
+**Measured, not asserted:** suite 1512/1512 (94 files, from 1504/93 — my 8 tests, no regressions),
+`npm run typecheck` clean, probe 22 checks / 0 failed / 0 skipped, `klatch.db` size and mtime
+unchanged.
+
+**Open and explicitly not guessed at:** the cap's value (xian's — and the number to rule against is
+the accepted-upload 9×, not the rejected 2.4×, which is now free); reducing that 9× by not making
+two full copies on the multipart path (named, not done, not claimed easy); and three items from
+Theseus's Round 150 list that are not mine — what over-cap heads should do instead of erroring,
+5,218-artifact readability (Iris), Round 148's cold-figure gap.
+
+**Delivery:** not claimed beyond what the pushes show. The wrapper owns delivery.
