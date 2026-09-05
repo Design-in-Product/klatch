@@ -137,3 +137,31 @@ docs/operations/attention-rollup.md                  (modified — v100 → v101
 ```
 
 All present on `origin/main` at `5bae25f`.
+
+---
+
+## ~21:35 PT (STOP fire) — substantive: rollup refreshed to v102, both new items sharpen already-counted decisions
+
+Session-start protocol re-run. `git pull origin main`: already up to date. Checkpoint: my own last commit `5bae25f` (WORK-fire wrap verification, ~19:0X PT).
+
+**`git log --oneline 5bae25f..HEAD`** showed seven new commits, none mine: `764be0a`/`d75428e`/`317b7b5` (Daedalus, Round 151 — multipart upload cap measured and guarded + mail + wrap log), `cc8658e` (Argus, STOP fire — independently verified Round 150/151, no `packages/` changes of its own), `7077c40` (Iris, Round 152 — swapped `messageCount+`/`+` for `turnCount` in `ImportDialog`, closing her held labelling call, fixed stale round38 AAXT fixtures, moved both sides of that mail thread to `docs/mail/read/` herself), `12e7f5f`/`b8a0f86`/`3a6a84f` (Theseus, Round 153 — closed the cache-cold browse discrepancy + mail + wrap log).
+
+**Read both new mail memos in full**, not just skimmed for headlines:
+
+- **Daedalus → Theseus/Janus/Iris** (`daedalus-to-theseus-janus-iris-cc-calliope-argus-xian-the-cap-never-guarded-the-upload-path-and-now-it-does-2026-09-04.md`): measured the multipart path Theseus had explicitly left open. `c.req.formData()` reads the whole request body before any handler check runs, so refusing an over-cap file via the size cap cost the same (329 ms, 169.6 MB peak) as refusing it one line earlier via the `.jsonl` extension check (277 ms, 170.5 MB peak) — the cap was never what stood between an oversized upload and full memory residency. Shipped `rejectOversizeBeforeRead(c)` at all four multipart sites: rejection now costs 95–109 ms at 0.0 MB peak, at any cap value. What the cap still bounds, unmoved: an accepted upload's ~9× memory cost (45.3 MB file → 419.2 MB peak). For xian: the number to weigh the `MAX_IMPORT_SIZE` decision against is now the 9× accepted-upload cost, not the old buffering concern, which is resolved. Also flagged the multipart path itself as a bigger lever than the cap (streaming would avoid the 9× entirely) — noted as "I'd rather fix than rule around," not requested as an action this fire.
+- **Theseus → Daedalus, cc Janus/Iris** (`theseus-to-daedalus-cc-janus-iris-calliope-argus-xian-cold-figure-gap-closed-it-was-the-cap-2026-09-04.md`): closed the cache-cold browse discrepancy both he and Daedalus had flagged "unexplained" across Rounds 147/148 (1477 ms vs. 2164/2177 ms, same endpoint and corpus). Root cause: the two measurements straddled `18d4631` (the cap ruling) landing mid-session — Daedalus measured before (09:23), Theseus after (post-10:18), not the same build. Reproduced directly with three fresh servers and a sha256-restored constant: cap 1500 → 1492 ms cold, cap 50,000 → 2203/2227 ms cold, 8 ms warm either cap. Gives the ruling a price never written down: 723 ms per cache-cold browse (48%, paid once per server start, absorbed by the fingerprint cache thereafter) against 59.4% of the corpus's turn signal bought — independently reproducing Round 143's 58.8% from a different instrument at a different layer. Explicit: recording the price, not reopening the ruling.
+
+**Checked the rollup (v101) against both and found it needed updating in three places, not just a banner refresh:** the Backfill 🔴 section's multipart caveat (line 43) still framed the buffering concern as unmeasured and open — now resolved, needed rewriting rather than appending to; the cap ✅ section had no record of the cold-figure price tag at all; the banner and changelog needed the standard fold-in.
+
+**Rewrote the rollup to v102:**
+- Banner: new v102 summary of both landings; v101 demoted to "Prior banner (v101, superseded)."
+- Backfill 🔴 section: replaced the "not measured this round" multipart caveat with the resolved finding — rejection is free at any cap now, the live tradeoff is the 9× accepted-upload cost.
+- Cap ✅ section: added a new bullet recording the 723 ms/59.4% price tag, sourced to both the doc and the mail memo.
+- New v102 changelog entry.
+- Metrics strip: unchanged at 3 needs-you — both landings sharpen numbers under already-counted open items (the Backfill import-size decision, the cap ruling's own record), neither opens a new one.
+
+**Verified before writing, not carried from any memo:** re-ran the suite myself — server **1512/1512 (94 files)**, client **249/249 (13 skipped)** — matches Daedalus's Round 151 count exactly; `npm run typecheck` clean across all three workspaces; `git status` clean before I started editing.
+
+**Mail hygiene:** nothing moved to `read/` this fire from this seat. Iris's Round 152 already closed her own labelling-call thread and moved both memos to `docs/mail/read/` — confirmed via `ls docs/mail/read/` rather than assumed from her commit message. The two new memos this fire (Daedalus's multipart finding, Theseus's cold-figure closure) are report-only with open sub-threads (Daedalus's own "left open" list names four items, none mine to close) — staying in `docs/mail/` is correct per close-discipline.
+
+No other `packages/` changes this fire.
