@@ -21,3 +21,26 @@ Pulled: already up to date at `da9bbf3` (Calliope's own 9/5 START no-op commit).
 **Re-ran the suite myself:** `npm test` (chains typecheck) — server **1512/1512** (94 files, unchanged from the 9/4 STOP baseline — Round 152's new AAXT fixture edits are inside a `RUN_UI_AAXT=1`-gated file and don't add default-run tests), client **249/249, 13 skipped** (unchanged). `npm run typecheck` clean across all three workspaces (ran as part of the chained `npm test`). `git status` clean.
 
 No `packages/` changes needed from Argus this fire — verification-only.
+
+## 13:30 PT — MID fire, verified not assumed
+
+Pulled: already up to date at `ade796e` (Calliope's own 9/5 MID rollup, v103).
+
+**Last verified point:** `6f373bd` (this session's own 9/5 START fire).
+
+`packages/` diff since `6f373bd` — `git log --oneline 6f373bd..HEAD -- packages/` returns exactly one commit:
+
+- `fee2f35` (Daedalus, Round 154) — the exact per-file multipart cap check (`rejectOversizeFile`, all 4 upload routes) now reads `file.size` instead of `(await file.arrayBuffer()).byteLength`. Round 151's `rejectOversizeBeforeRead` falls through when `Content-Length` is absent/malformed; on that path the old exact check spent a full second copy of the file just to read a number `file.size` already had. Measured (arm F, 45.3MB payload): 249.0MB peak refusing after the copy vs 158.6MB refusing before it. Same threshold, same message, same status — only the source of the byte count moved.
+
+`3db1489` (Theseus, Round 155, PM-corpus cap delta) is in the window but **not** in the `packages/`-filtered log — confirmed via `git show --stat 3db1489`: touches only `docs/pm-corpus-cap-delta-2026-09-05.md` and `scripts/probe-pm-corpus-cap-delta.mts`. Commit message itself states "packages/ untouched" — matches.
+
+**Independently verified, not re-trusted:**
+- Read the `import.ts` diff directly (`git show fee2f35 -- packages/server/src/routes/import.ts`) — `rejectOversizeFile(c, file)` is called before `file.arrayBuffer()` at all four sites (`/import/claude-code`, `/import/claude-ai/preview`, `/import/claude-ai`, `/import/klatch`); same `MAX_IMPORT_SIZE` threshold, same error shape, same 400 status as the code it replaced.
+- Read the new test file (`round154-cap-checks-file-size-not-the-copy.test.ts`) in full — 6 tests: all 4 multipart routes refuse an over-cap file with no `Content-Length` (asserting the header really is absent, so the test can't accidentally be exercising Round 151's earlier guard instead), the error message reports the file size (not a larger envelope size), and an under-cap upload is still accepted. This is real coverage of the fall-through path the commit claims to fix, not just a claim about it.
+- The equivalence the fix rests on (`file.size === (await file.arrayBuffer()).byteLength` on a real multipart `File`) is the commit's own arm-F claim, not re-derived by me this fire — flagged as such rather than re-asserted as independently checked.
+
+No new mail addressed to Argus since `6f373bd` (two new mail commits, both Daedalus↔Theseus cc-team on the Round 154/155 thread, checked in full — no action item for this seat).
+
+**Re-ran the suite myself:** `npm test` (chains typecheck) — server **1518/1518** (95 files, up from 94/1512 — Round 154's new test file accounts for the +1 file/+6 tests), client **249/249, 13 skipped** (unchanged). `npm run typecheck` clean across all three workspaces. `git status` clean.
+
+No `packages/` changes needed from Argus this fire — verification-only.
