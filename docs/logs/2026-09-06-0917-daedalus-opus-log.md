@@ -83,3 +83,93 @@ packages/client/src/components/ChannelSidebar.tsx
 (The log itself and the COORDINATION update land in the following commit, per Step 3.)
 
 **Open / next.** Iris's two copy calls; the `entityId`-in-import-dialog gap; the parked floor question (triggers above). Nothing blocked on xian.
+
+---
+
+## 13:17 PT — MID/WORK fire. Round 162: both of Theseus's Path C consequences closed, and one was routed to the wrong seat.
+
+**Briefing.** Worktree synced by the wrapper to `a28f8d0`. Read `docs/COORDINATION.md` (Daedalus section — the file is 1.2 MB, read by section and tail rather than whole), `docs/operations/duty-cycle/daedalus-tasks.md`, and `ls docs/mail/`.
+
+**Mail.** One new inbound addressed to this seat: `theseus-to-daedalus-iris-cc-janus-calliope-argus-xian-path-c-holds-at-the-endpoint-and-the-agent-arrives-blank-2026-09-06.md` (Round 161). Read in full, acted on in the same fire.
+
+His result first, because it's the load-bearing part: **Path C survives at the real endpoint, 18/18.** He didn't trust my commit message's source-line citations — Round 141 arm F is his standing reason not to — and went looking for the `entityGuess` shape (typed, populated, unit-tested against mocked fetch, would have shipped permanently blank because the route never spread it). It isn't there. The binding is real on the wire.
+
+He then reported two consequences and one boundary. **All three turned out to be server-side, i.e. mine.**
+
+### The routing correction, and it went in my favour
+
+Theseus routed the "form writes *You are a helpful assistant.* above the agent's identity" finding to Iris as a one-line client change — send `undefined` when the optional field is blank — on the grounds that it's the component's fallback string. In Round 160 I had said copy calls were hers, so this was consistent with my own framing.
+
+**It would not have fixed it.** `channels.ts:201`:
+
+```ts
+systemPrompt?.trim() || 'You are a helpful assistant.',
+```
+
+The route substitutes the same string whether or not the client sends one. Iris's one-liner would have changed the request body and nothing the model sees.
+
+I want the shape of my own error recorded plainly: I accepted a routing that assigned a defect to a surface based on **where the symptom text was authored**, without following the value one hop further. Theseus's instrument caught the string at the endpoint; it cannot tell you which layer put it there. Checking that was mine to do and I didn't do it in Round 160.
+
+### Why the fix belongs in assembly, and not at creation
+
+1. **A creation-time fix helps only channels created after it lands.** Every existing channel carries the stored boilerplate. The population that matters most is the one Theseus himself named in his §2: **imported channels are always `type: 'chat'` bound to the minted entity** (`queries.ts:1290`) — precisely the "real identity at layer 5" case where the generic line contradicts something. Assembly covers them today; the route could not.
+2. **The literal already had four meanings, and prompt assembly held the odd one out.** Verified each by reading it this session: `App.tsx:526` hides the channel-context panel when the purpose equals it; `ChannelSidebar.tsx:143` strips it from the clone-from-klatch prefill; the create form placeholds the field "(optional)"; and — this is the one that matters — **`probe-generator.ts:58` skips L4 probes below 40 chars, a threshold Theseus added in Round 28 (4/26) specifically because this 28-char addendum produced a false-positive Phantom score.**
+
+So the server already knew this string wasn't content. Round 28 fixed the symptom in the scorer. This fixes it in the prompt.
+
+### Built
+
+- `DEFAULT_CHANNEL_PREAMBLE` + `isDefaultChannelPreamble()` in `packages/shared/src/types.ts` — one definition for a convention that existed in four places as a bare literal.
+- `buildSystemPrompt` layer 4 skips it.
+- **All three** prompt-debug L4 reporters (`channels.ts`, ×2 in `aaxt.ts`) follow assembly, reporting `EMPTY — default purpose, not sent`. Not tidiness: AAXT parses those exact strings to decide which layers to probe, so a reporter saying ACTIVE for a layer assembly drops would have quietly re-created his Round 28 finding.
+- **Second consequence:** the chat roster guard counted raw array entries, so `entityIds: [X, X]` was 400 on a chat and 201-with-one-seat on a klatch (`createChannel` dedups; the guard didn't). A chat is 1:1 in *agents* — `[X, X]` is one agent said twice. Deduped before the count, and the deduped roster is what's passed to `createChannel` so the guarded and used values can't drift. Dedup runs **after** unknown-id validation; pinned by a test, because that ordering is what a future refactor gets wrong.
+
+### Tests
+
+12 new (`round162-boilerplate-preamble-and-distinct-roster.test.ts`).
+
+- **Negative control:** stashed the three source files — keeping the shared constant so the suite still compiles, which makes the control test behaviour rather than imports — and re-ran. **6 of 12 fail.** The 6 that pass are the predicate unit test, real-purpose passthrough, plain-`EMPTY` reporting, klatch dedup, chat+2-distinct → 400, and unknown-id → 400: the unchanged-behaviour guards, which should pass either way. Restored with `git stash pop`, confirmed by `git status`.
+- Test-helper note: my first draft imported `resetTestDb` from `./setup.js`, which doesn't exist — setup is import-for-side-effect (`import './setup.js'`) and the app factory lives in `./app.js`. Caught by the first run, not by assumption.
+- **`round20-ux-evaluation-fixes.test.ts:94` passes untouched.** It asserts the assembled prompt contains the string — and it still does, from layer 5 where it belongs. That is the load-bearing regression check for this change and I'm glad it predates me.
+
+**Suite:** server **1518 → 1530/1530** (96 files); client 260/260 + 13 skipped, unchanged; `npm run typecheck` clean across all three workspaces.
+
+### Deliberately not done
+
+- **Did not touch the four client literals.** `round33b-remaining-ui.test.ts:88` pins one of them by regex against the source text, so unifying them is a coordinated change on Iris's surface, not a drive-by. Constant exported and ready.
+- **Did not remove the route's stored fallback.** `POST /channels` returns the same `systemPrompt` it always has; `channels.test.ts:66` still holds. What is *stored* is an API-contract question, separate from what reaches the model.
+- **Did not claim a behavioural effect.** Zero model calls this fire, same as his. Nobody has measured whether a model resolves the contradiction in favour of layer 5. His framing is the right one — "usually does" is the wrong guarantee for the one gesture whose entire purpose is *be this specific agent*.
+- **Did not pre-empt xian on bidirectionality.** Should a 1:1 bound to an existing agent carry that agent's history? Real per-turn cost (2340 chars on his six-message fixture) and an unruled sub-question (whether the current room is excluded; `excludeChannelId` already supports it). Shipping a default would have decided it by accident.
+- **Did not investigate the stale channel-row model** (`client.ts:800` — the row holds `claude-opus-5` while the turn runs on `entity.model`). Named as open in the doc; Theseus flagged it as correct behaviour with an open question about settings surfaces.
+
+### Filed
+
+- `daedalus-to-theseus-iris-cc-janus-calliope-argus-xian-your-arm-e-fix-would-not-have-fixed-it-2026-09-06.md`
+- `docs/research/round162-the-generic-line-was-server-side-2026-09-06.md`
+- **Theseus's inbound stays open in `docs/mail/`** — it carries live items on Iris's seat and one on xian's. Not mine to close.
+
+### Wrap verification
+
+```
+$ git log origin/main --oneline -4
+8aa563c docs: Round 162 — the generic line was server-side, and the fix reaches imports
+2709b94 mail: arm E was server-side — Theseus's routing corrected, Iris's remainder named
+aeef9f2 round162: the boilerplate preamble is not sent, and the chat guard counts agents
+a28f8d0 rollup+roadmap: Path C shipped and verified — v106, two stale "unbuilt" lines corrected
+```
+
+All three code/doc/mail commits are on `origin/main`. Deliverables confirmed present (`ls`):
+
+```
+docs/mail/daedalus-to-theseus-iris-cc-janus-calliope-argus-xian-your-arm-e-fix-would-not-have-fixed-it-2026-09-06.md
+docs/research/round162-the-generic-line-was-server-side-2026-09-06.md
+packages/server/src/__tests__/round162-boilerplate-preamble-and-distinct-roster.test.ts
+packages/server/src/claude/client.ts
+packages/server/src/routes/aaxt.ts
+packages/server/src/routes/channels.ts
+packages/shared/src/types.ts
+```
+
+(This log entry, the COORDINATION update and the `daedalus-tasks.md` update land in the following commit, per Step 3.)
+
+**Open / next.** Iris: arm E's client half (now cosmetic w.r.t. the model, but an optional field still writes a stored instruction), the four literals, `entityId` in the import dialog, and Round 160's two copy/sizing calls. xian: bidirectionality. Mine: the parked floor question, unchanged triggers, none fired.
