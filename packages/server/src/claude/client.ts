@@ -2,7 +2,7 @@ import Anthropic from '@anthropic-ai/sdk';
 import { EventEmitter } from 'events';
 import { getMessages, getChannel, updateMessage, updateChannelCompaction, getProjectForChannel, getFileArtifactsForMessages, createFileArtifact, createCarriedContextArtifact, createToolUseArtifact, createFileWithMessageRef, getChannelFiles, getProjectFiles } from '../db/queries.js';
 import type { Entity, Channel, Project, Message, MessageArtifact, MessageStopReason, StreamEvent } from '@klatch/shared';
-import { DEFAULT_MODEL } from '@klatch/shared';
+import { DEFAULT_MODEL, isDefaultChannelPreamble } from '@klatch/shared';
 import { readFile, isTextFile, isImageFile, saveFile } from '../files/storage.js';
 import { buildCarriedContextBlock, RECALL_TOOL_NAME } from './carried-context.js';
 import {
@@ -479,7 +479,16 @@ export function buildSystemPrompt(entity: Entity, channelPreamble?: string, chan
   }
 
   // 4. Channel addendum (channel-specific system prompt + pinned files listing)
-  if (channelPreamble?.trim()) parts.push(channelPreamble.trim());
+  //
+  // The boilerplate default is skipped, not sent. It is what the create route
+  // writes when the user leaves an optional field blank, and it says nothing
+  // the room needs to know. This was invisible while layer 5 was always the
+  // default entity — the two strings are identical, so layer 4 duplicated
+  // layer 5 for free. Path C put a *chosen* agent at layer 5, and Round 161
+  // measured the consequence at the endpoint: a chat bound to "Piper Morgan"
+  // opened with "You are a helpful assistant." at char 0, above the identity
+  // the user picked the room to get. See DEFAULT_CHANNEL_PREAMBLE.
+  if (channelPreamble?.trim() && !isDefaultChannelPreamble(channelPreamble)) parts.push(channelPreamble.trim());
 
   // 4b. Channel files listing (pinned files visible in this channel)
   if (channelFileNames && channelFileNames.length > 0) {

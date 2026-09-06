@@ -12,6 +12,7 @@ import { buildCarriedContext } from '../claude/carried-context.js';
 import { generateProbes } from '../aaxt/probe-generator.js';
 import { getAuxiliaryInfo } from '../aaxt/auxiliary.js';
 import { runAAXT } from '../aaxt/runner.js';
+import { isDefaultChannelPreamble } from '@klatch/shared';
 
 const app = new Hono();
 
@@ -68,9 +69,11 @@ app.post('/channels/:id/aaxt-probe', async (c) => {
     })(),
     '4_channelAddendum': (() => {
       const parts: string[] = [];
-      if (channel.systemPrompt?.trim()) parts.push(`${channel.systemPrompt.length} chars`);
+      const boilerplate = isDefaultChannelPreamble(channel.systemPrompt);
+      if (channel.systemPrompt?.trim() && !boilerplate) parts.push(`${channel.systemPrompt.length} chars`);
       if (channelFileList.length > 0) parts.push(`${channelFileList.length} file(s) pinned`);
-      return parts.length > 0 ? `ACTIVE — ${parts.join('; ')}` : 'EMPTY';
+      if (parts.length > 0) return `ACTIVE — ${parts.join('; ')}`;
+      return boilerplate ? 'EMPTY — default purpose, not sent' : 'EMPTY';
     })(),
     '5_entityPrompt': `ACTIVE — "${entity.name}" (${entity.systemPrompt?.length || 0} chars)`,
     '6_carriedContext': carriedContext
@@ -151,9 +154,11 @@ app.post('/channels/:id/aaxt-run', async (c) => {
     })(),
     '4_channelAddendum': (() => {
       const parts: string[] = [];
-      if (channel.systemPrompt?.trim()) parts.push(`${channel.systemPrompt.length} chars`);
+      const boilerplate = isDefaultChannelPreamble(channel.systemPrompt);
+      if (channel.systemPrompt?.trim() && !boilerplate) parts.push(`${channel.systemPrompt.length} chars`);
       if (channelFileList.length > 0) parts.push(`${channelFileList.length} file(s) pinned`);
-      return parts.length > 0 ? `ACTIVE — ${parts.join('; ')}` : 'EMPTY';
+      if (parts.length > 0) return `ACTIVE — ${parts.join('; ')}`;
+      return boilerplate ? 'EMPTY — default purpose, not sent' : 'EMPTY';
     })(),
     '5_entityPrompt': `ACTIVE — "${entity.name}" (${entity.systemPrompt?.length || 0} chars)`,
     '6_carriedContext': carriedContext

@@ -5,7 +5,7 @@ import { getAllChannelsEnriched, getChannel, getChannelStats, createChannel, upd
 import { buildSystemPrompt } from '../claude/client.js';
 import { buildCarriedContextBlock } from '../claude/carried-context.js';
 import type { ModelId, InteractionMode, ChannelType } from '@klatch/shared';
-import { INTERACTION_MODES } from '@klatch/shared';
+import { INTERACTION_MODES, isDefaultChannelPreamble, DEFAULT_CHANNEL_PREAMBLE } from '@klatch/shared';
 import { isValidModel } from './models.js';
 
 const app = new Hono();
@@ -89,9 +89,11 @@ app.get('/channels/:id/prompt-debug', (c) => {
       })(),
       '4_channelAddendum': (() => {
         const parts: string[] = [];
-        if (channel.systemPrompt?.trim()) parts.push(`${channel.systemPrompt.length} chars`);
+        const boilerplate = isDefaultChannelPreamble(channel.systemPrompt);
+        if (channel.systemPrompt?.trim() && !boilerplate) parts.push(`${channel.systemPrompt.length} chars`);
         if (channelFileList.length > 0) parts.push(`${channelFileList.length} file(s) pinned: ${channelFileList.map((f) => f.name).join(', ')}`);
-        return parts.length > 0 ? `ACTIVE — ${parts.join('; ')}` : 'EMPTY';
+        if (parts.length > 0) return `ACTIVE — ${parts.join('; ')}`;
+        return boilerplate ? 'EMPTY — default purpose, not sent' : 'EMPTY';
       })(),
       '5_entityPrompt': `"${entity.name}" — ${entity.systemPrompt?.length || 0} chars`,
       '6_carriedContext': carried
@@ -179,18 +181,28 @@ app.post('/channels', async (c) => {
   // (round7). The "deliberate pick" is a client-UX guard, not an API invariant — so
   // we do NOT reject it. Revisit if the klatch-creation redesign (project-optional)
   // changes the contract.
+  //
+  // Count *distinct* agents, not raw array entries. `createChannel` dedups the
+  // roster (`[...new Set(entityIds)]`, plus INSERT OR IGNORE), so the two
+  // layers disagreed about what a repeated id meant: `[X, X]` on a klatch was
+  // 201 with one seat, and the same array on a chat was 400. Theseus found the
+  // split at the endpoint in Round 161. A chat is 1:1 in *agents*, and `[X, X]`
+  // is one agent said twice — rejecting it enforced the array's shape rather
+  // than the invariant. No user path produces it today; the guard is fixed
+  // because it was measuring the wrong thing, not because anything broke.
   const resolvedType: ChannelType = type || 'chat';
-  if (resolvedType === 'chat' && entityIds && entityIds.length > 1) {
+  const distinctEntityIds = entityIds ? [...new Set(entityIds)] : undefined;
+  if (resolvedType === 'chat' && distinctEntityIds && distinctEntityIds.length > 1) {
     return c.json({ error: 'A chat is 1:1 — use type "klatch" for multiple agents' }, 400);
   }
 
   const channel = createChannel(
     name.trim(),
-    systemPrompt?.trim() || 'You are a helpful assistant.',
+    systemPrompt?.trim() || DEFAULT_CHANNEL_PREAMBLE,
     model,
     mode,
     type,
-    entityIds
+    distinctEntityIds
   );
 
   if (projectId) {

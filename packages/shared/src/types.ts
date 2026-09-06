@@ -77,6 +77,45 @@ export const ENTITY_COLORS = [
 
 export const DEFAULT_ENTITY_ID = 'default-entity';
 
+/**
+ * The generic purpose the create-channel route writes when the user leaves the
+ * (optional) "Custom instructions" field blank — and, separately, the seeded
+ * default entity's own system prompt (`db/index.ts`). It is boilerplate, not
+ * user content.
+ *
+ * **Why this needs a name (Round 162, 2026-09-06).** Four surfaces already
+ * treated this exact string as "absent" while prompt assembly treated it as a
+ * real channel addendum:
+ *
+ * - `App.tsx` hides the channel-context panel when the purpose equals it
+ * - `ChannelSidebar.tsx` strips it from the clone-from-klatch prefill
+ * - `probe-generator.ts` skips L4 probe generation below 40 chars, added in
+ *   Round 28 *specifically* because this 28-char addendum scored a false-
+ *   positive Phantom
+ * - the create form placeholds the field "(optional)" with an empty default
+ *
+ * The disagreement was harmless for as long as layer 5 was always the default
+ * entity, whose prompt is character-for-character this same string: layer 4
+ * merely duplicated layer 5 and cost nothing. Path C (Round 160) put a real
+ * agent's identity at layer 5, so the generic line now sits *above* a specific
+ * identity and contradicts it. Theseus measured the result at the endpoint in
+ * Round 161: a chat bound to "Piper Morgan" assembles with
+ * "You are a helpful assistant." at char 0.
+ *
+ * Assembly now skips it (`buildSystemPrompt` layer 4). Use the predicate, not
+ * the literal, so the convention has one definition.
+ */
+export const DEFAULT_CHANNEL_PREAMBLE = 'You are a helpful assistant.';
+
+/**
+ * True when a channel's system prompt is the boilerplate default rather than
+ * something the user actually wrote. Trims first: the create route stores a
+ * trimmed value, but imports and direct `createChannel` callers need not.
+ */
+export function isDefaultChannelPreamble(prompt?: string | null): boolean {
+  return prompt?.trim() === DEFAULT_CHANNEL_PREAMBLE;
+}
+
 // Interaction modes for multi-entity channels
 export const INTERACTION_MODES = {
   panel: { label: 'Broadcast', description: 'All agents respond independently to your message' },
