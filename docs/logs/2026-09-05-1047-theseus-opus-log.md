@@ -399,3 +399,182 @@ The four deliberate omissions above are recorded as not done, not as done — an
 called out as being in its third round rather than listed a fourth time.
 
 ---
+
+## 19:47 PT — STOP fire, Round 159: built the arm-S transform re-pin
+
+**Not a no-op.** Session-start protocol run: pulled (worktree synced by wrapper, HEAD `7d8d12f`),
+read `docs/COORDINATION.md`, `ls docs/mail/`. One new memo addressed to this seat since the 14:47
+fire: Daedalus's Round 158 reply, `daedalus-to-theseus-cc-janus-iris-calliope-argus-xian-i-took-your-optional-question-and-it-overturned-my-falsification-2026-09-05.md`.
+Read in full this fire.
+
+**It contained exactly one open action and it was mine:** Round 146's arm-S transform re-pin, which
+I have carried scoped-not-built for three rounds and explicitly asked to have scheduled or dropped.
+Daedalus declined to take it unilaterally and offered to take it in a WORK fire if I said so.
+
+**I took the third option and built it.** Round 159.
+
+### What was actually wrong, verified not recalled
+
+`git log afe0889..HEAD -- packages/server/src/import/session-scanner.ts` returns **four** commits:
+`4602561` (multi-root), `e1ee197` (headroom correction), `18d4631` (cap ruling), `dba7699`
+(fingerprint cache). Arm S restored `afe0889^` wholesale, so a naive `HOIST_COMMIT`→HEAD re-pin
+would have A/B'd all five changes and labelled the total "the hoist" — no error, plausible number,
+and `dba7699` alone is ~200× the effect under test.
+
+### The mechanism
+
+Arm S now applies the **inverse of the hoist** to today's bytes: 3 edits / 5 textual sites, each
+with an asserted occurrence count, plus four post-conditions. Any count mismatch is a refusal, not
+a partial patch. `const findChannel = createChannelBySessionIdResolver();` appears **twice
+identically** (lines 484 and 616 on disk), so that site is a counted global replace rather than a
+unique-string one — checked before writing the transform, not assumed.
+
+**New arm V, which runs before anything is patched:** apply the same transform to `afe0889` and
+require byte-identity with `afe0889^`.
+
+```
+PASS [V] transform applied to afe0889 reproduces afe0889^ byte-for-byte
+         (12,763 bytes, sha256 d31e0352dc26)      — all four runs
+PASS [V] disk 2ae9ecd1c431 → transformed c7a5044c5497; 27,373 → 26,784 bytes (−589)
+```
+
+The commit pair became a **test fixture for the transform** rather than the source of the patched
+bytes. That is the transferable part and it is what I want to remember from this round: when a
+controlled A/B's baseline has drifted out from under you, don't re-pin the baseline — derive it, and
+use the stale pin to prove the derivation exact.
+
+### Measured — four independent full runs
+
+| seeded channels | pre-hoist warm | hoisted warm | saving | % of warm browse |
+|---|---|---|---|---|
+| 0 | 19 / 19 / 21 / 20 ms | 7 / 8 / 7 / 7 ms | 12 / 10 / 13 / 13 ms | 56–66% |
+| 500 | 69 / 68 / 69 / 68 ms | 8 ms | ~61 ms | 88.2–89.0% |
+| 2000 | 222 / 218 / 218 / 220 ms | 9 ms | 212 / 210 / 208 / 211 ms | **95.8–96.0%** |
+
+Warm slope per 1000 channels: pre-hoist **+99 to +101 ms**, hoisted **+0 to +1 ms**.
+Cold column at 2000 channels: **8.5–9.4%** of a ~2.25 s browse. Reported as a separate row, not
+blended, because "% of browse" is now ambiguous about which browse.
+
+**The framing I corrected in myself while writing it up.** My 9/4 prediction was "under the cache
+the dedup scan is nearly all of browse." It measured out at 96%, so the prediction was right — but
+the sentence is wrong. The saving is 208–212 ms against Round 146's 224 ms: **the same quantity**.
+Round 146's 13.7% and today's 96.0% are both correct on their day. **The cache did not make the
+hoist more valuable; it made the hoist's value visible.** A percentage-of-total is a claim about the
+*other* work in the total and goes stale when that work is optimised — a different failure mode from
+a wrong measurement, and it doesn't announce itself.
+
+### The non-reproduction, reported open
+
+Round 146 isolated **27 ms** of its 224 as a zero-channel floor (one lookup per session *file*).
+Re-measured: **12 / 10 / 13 / 13 ms — 0.37–0.48× — on MORE files (528 now vs 508 then).** Wrong
+direction for a per-file cost.
+
+The floor is real (positive in all four runs, and 56–66% of the entire warm browse at 0 channels).
+Its Round 146 magnitude is **not confirmed**. Best guess is the same visibility effect turned on my
+own earlier number — 27 ms was 1.7% of a 1634 ms disk-bound browse and inside that run's variance.
+**Not tested**, and "the floor genuinely shrank" is not excluded. Written into the doc as an open
+non-reproduction rather than explained away.
+
+Round 146's arm-T annotation on that quantity read *"expect ~0"*. It was never ~0. Corrected in the
+probe, not just noted in the doc.
+
+### Checks, suite, source integrity
+
+```
+21 checks (9 regression, 12 measurement), 0 failed, 0 skipped
+arm U: 528 sessions identical on (sessionId, alreadyImported, existingChannelId), hoisted vs
+       pre-hoist; 50 seeded to genuinely match real ids, 50 came back already-imported in both
+       — so the identity check is not trivially true
+
+npm test  server 95 files / 1518 passed;  client 18 passed | 13 skipped / 249 passed | 13 skipped
+npm run typecheck  clean across @klatch/shared, @klatch/server, @klatch/client
+git diff --stat -- packages/   (empty)
+session-scanner.ts sha256 2ae9ecd1c431 — identical before and after all four runs
+```
+
+The suite run matters more than usual this fire: arm S writes a patched scanner to disk and restores
+it in a `finally`. The sha256 check already proves byte-identity; the suite is the independent
+confirmation that nothing was left patched.
+
+### Deliberately not done
+
+- **Why the zero-channel floor is half Round 146's** — variance-in-the-denominator vs a real
+  reduction. Re-running Round 146's probe at its own commit would settle it, and is cheap. Named,
+  not run.
+- **The floor on the second corpus** — it is per-*file*; PM has 76 files vs our 528, so the
+  prediction is ~7× smaller and falsifiable. Unrun.
+- **The union cold browse** — unchanged from Rounds 155/157; still arithmetic-not-a-measurement.
+- **Whether ~1.9 s/server-start on PM is acceptable** — xian's, already ruled.
+
+**The arm-S re-pin is off my open list after three rounds of carrying it, and off Daedalus's.**
+
+Deliverables: `docs/hoist-inverse-transform-repin-2026-09-05.md`,
+`scripts/probe-browse-endpoint-vs-channel-count.mts` (re-pinned), memo to Daedalus cc
+Janus/Iris/Calliope/Argus/xian. Mail committed separately and pushed to `main` first per the
+worktree rule.
+
+## 20:0x PT — Wrap verification (STOP fire, Round 159)
+
+Per CLAUDE.md Session Wrap Protocol. Run before any "done" claim.
+
+**Suite and typecheck, run by me this fire, not quoted:**
+
+```
+server:  Test Files 95 passed (95)                Tests 1518 passed (1518)
+client:  Test Files 18 passed | 13 skipped (31)   Tests 249 passed | 13 skipped (262)
+npm run typecheck: clean across @klatch/shared, @klatch/server, @klatch/client
+```
+
+Unchanged from this morning's Round 155 and this afternoon's Round 157 figures, which is what should
+happen — no `packages/` code was touched. This fire the suite carries extra weight: arm S writes a
+patched `session-scanner.ts` to disk and restores it in a `finally`, so a green suite is independent
+confirmation on top of the sha256 byte-identity check.
+
+**`packages/` untouched, verified not assumed:**
+
+```
+$ git diff --stat -- packages/
+(empty)
+```
+
+`session-scanner.ts` sha256 `2ae9ecd1c431` checked identical at probe exit on all four runs — the
+probe asserts it itself and prints `verified unmodified` before its summary.
+
+**Step 1 — commits on `origin/main`** (after `git fetch origin`):
+
+```
+$ git log origin/main --oneline -3
+a16da7e round159: build the arm-S transform re-pin -- the hoist is 96% of warm browse, not 13.7%, and the cache is why
+7ffbf5a mail: Theseus -> Daedalus, cc team (arm-S re-pin built; the cache made the hoist visible, not valuable)
+7d8d12f log+coordination: Iris 9/5 STOP fire — no-op, verified not assumed
+```
+
+Both of this fire's work commits are on `origin/main`. Mail was committed separately and pushed to
+`main` first (`7ffbf5a`), before the work commit (`a16da7e`), per the worktree mail rule.
+
+**Step 2 — deliverable files present:**
+
+```
+scripts/probe-browse-endpoint-vs-channel-count.mts                    36022 bytes  (re-pinned)
+docs/hoist-inverse-transform-repin-2026-09-05.md                       9241 bytes
+docs/mail/theseus-to-daedalus-...-visible-not-valuable-2026-09-05.md   8091 bytes
+docs/COORDINATION.md                                                (status → Round 159, 157 demoted)
+docs/logs/2026-09-05-1047-theseus-opus-log.md                       (this file)
+```
+
+**Step 3 — this log is committed and pushed last**, after Steps 1–2 were verified.
+
+**Thread state:** left in `docs/mail/` rather than moved to `read/`. Daedalus's Round 158 memo and my
+reply both stay visible, because my reply hands back a live loose end — the 27 ms floor
+non-reproduction is against one of *his* team's recorded numbers and he may want it. The single open
+action that reopened the thread (the arm-S re-pin) is closed by having been built.
+
+**Provenance discipline for this entry:** every figure is from this fire's four runs of the
+instrument, except Round 146's 1634 / 1409 / −224 ms / 13.7% / 27 ms / 508 files, quoted from
+`docs/dedup-hoist-at-the-endpoint-2026-09-03.md` and labelled as the thing under test, and
+Daedalus's 198.5 → 4.1 ms unit claim (`afe0889`), cited not re-derived. The two
+Round-146-comparison checks were added after run 3 and appear in run 4 only — but they are computed
+from `savedAtK` / `savedAtZero`, which were recorded in all four runs, and all four values are
+listed. The four items under "Deliberately not done" are recorded as not done, not as done.
+
+---
