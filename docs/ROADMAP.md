@@ -271,7 +271,7 @@ The plumbing for composition was ready before Iris's UX design phase. Her Phase 
 - Increments 2–5: Picker polish + default project + cross-reference — Iris-reviewed ✅ (on `claude/daedalus`, awaiting merge)
 - Increment 6: Clone existing klatch ✅
 - Increment 7: @mention override ✅ (merged 6/28; declared "composition complete" at this point)
-- **Paths B/C (JIT import + new agent in picker): NOT BUILT.** Still `[ ]` item 8 in `docs/operations/duty-cycle/daedalus-tasks.md`. In xian's 6/26 beta scope; not reconciled at the 6/27 completion call.
+- **Paths B/C — updated 2026-09-06.** Path C "continue existing role" (start a 1:1 with an agent you already imported) **BUILT and endpoint-verified** 2026-09-06 (`717bfb6`; 18/18 live-HTTP regression sweep, `docs/ux/path-c-continue-existing-role-built-2026-09-06.md`). Path B (JIT import minting a real entity) is unblocked — the 9/2 confirm-step build already threads `entityName`/`entityId` through both import call sites — but not yet built. Path C "new agent from scratch" remains deliberately HELD on `PREMISE.md` framing grounds (minting vs. importing shouldn't look like the same menu choice), not descoped.
 - **Agent continuity (new, 2026-07-19): NOT BUILT.** The blocking item. See `docs/plans/composition-continuity-gap-2026-07-19.md`.
 
 **After beta:** Step 11 (Search) is the next major step. Not a beta requirement.
