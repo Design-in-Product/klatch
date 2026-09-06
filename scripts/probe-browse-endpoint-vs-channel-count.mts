@@ -42,11 +42,26 @@
  * Zero model calls. Two scratch DBs under `.testdata/`; xian's `klatch.db` is
  * never opened. The corpus under ~/.claude/projects is read-only throughout.
  *
+ * ─── Round 159 re-pin (Theseus, 2026-09-05 STOP fire) ───────────────────────
+ * Arm S used to restore `afe0889^` WHOLESALE, guarded by a byte-identity check
+ * against `afe0889`. Four commits have landed on session-scanner.ts since —
+ * the fingerprint cache, the cap ruling, the headroom correction, multi-root
+ * scanning — so that guard has been refusing to run since 2026-09-04, which is
+ * correct behaviour and not a bug. The obvious fix (re-pin HOIST_COMMIT at
+ * HEAD) is wrong and wrong QUIETLY: it would measure hoist+cache+cap+multiroot
+ * and print it as the hoist.
+ *
+ * Arm S now applies the INVERSE of the hoist to the bytes on disk today, and a
+ * new arm V validates that transform against the hoist commit pair before
+ * anything is patched. See the arm-V block below for the full reasoning.
+ *
  * Arms:
+ *   V  the inverse-hoist transform is exactly the inverse of the hoist —
+ *      applied to afe0889 it must reproduce afe0889^ byte-for-byte
  *   R  browse endpoint over real HTTP, HOISTED (shipped) code, at 0 / 500 /
  *      2000 seeded channels
- *   S  the same sweep with the PRE-HOIST source (afe0889^) temporarily
- *      restored — the per-call lookup Daedalus replaced
+ *   S  the same sweep with the hoist inverted on TODAY's source — the per-call
+ *      lookup Daedalus replaced, against today's cache/cap/multi-root scanner
  *   T  the comparison: what the hoist is worth at the endpoint, per channel
  *      count, and whether it matches the 198.5 → 4.1 ms unit claim
  *   U  behavioural identity at the surface: with 50 channels seeded to match
@@ -55,14 +70,11 @@
  *
  * ─── On source mutation ─────────────────────────────────────────────────────
  * Arm S needs the pre-hoist code running behind a real server, so the file is
- * replaced with its exact bytes from `git show afe0889^:...` for the duration
- * of one server process and restored in a `finally`. Before exiting, the probe
- * re-reads the file and asserts it is byte-identical to what it read at start;
- * if not, it says so loudly and exits 1. The probe also refuses to start unless
- * the file currently on disk is byte-identical to `afe0889` — if someone has
- * edited the scanner since, the "pre-hoist" comparison would be against the
- * wrong baseline and the numbers would be a lie. Nothing is committed in the
- * patched state. Same discipline as Round 144 arm N.
+ * replaced with its transformed bytes for the duration of one server process
+ * and restored in a `finally`. Before exiting, the probe re-reads the file and
+ * asserts it is byte-identical to what it read at start; if not, it says so
+ * loudly and exits 1. Nothing is committed in the patched state. Same
+ * discipline as Round 144 arm N.
  */
 
 import fs from 'fs';
@@ -117,7 +129,38 @@ async function portIsFree(port: number): Promise<boolean> {
 fs.rmSync(SCRATCH, { recursive: true, force: true });
 fs.mkdirSync(SCRATCH, { recursive: true });
 
-// ── Source guard ─────────────────────────────────────────────────────────────
+// ── Arm V — the inverse-hoist transform, and its validation ──────────────────
+//
+// Round 159 (2026-09-05) replaced the original arm-S mechanism. It used to get
+// its pre-hoist code by restoring `afe0889^` WHOLESALE, guarded by a check that
+// the file on disk was byte-identical to `afe0889`. That guard fired correctly
+// from 2026-09-04 onward and the probe refused to run for three rounds, because
+// four commits have landed on this file since the hoist:
+//
+//   dba7699  the fingerprint cache        18d4631  the cap ruling
+//   e1ee197  the headroom correction      4602561  multi-root scanning
+//
+// Re-pinning HOIST_COMMIT at HEAD would have been the obvious fix and it is
+// WRONG — `afe0889^` is missing all four, so the A/B would have silently
+// measured hoist+cache+cap+multi-root and reported it as the hoist. It would
+// not have errored. It would have produced a plausible number, and dba7699
+// alone is ~200× the effect under test.
+//
+// So arm S no longer diffs against a commit. It applies the INVERSE of the
+// hoist to whatever bytes are on disk today — three mechanical edits, five
+// textual sites, every one an exact-match replacement with an ASSERTED
+// occurrence count. That isolates the hoist against today's code, which is also
+// the better measurement: under dba7699 the dedup scan is no longer 13% of
+// browse, it is nearly all of the warm path, because the fingerprint half is a
+// Map hit and the dedup half was deliberately left uncached.
+//
+// The transform is not trusted on its own say-so. Arm V validates it against
+// the hoist commit pair before anything is patched: apply the SAME transform to
+// `afe0889` and assert the output is BYTE-IDENTICAL to `afe0889^`. If the
+// transform is truly the inverse of the hoist, that must hold exactly — and if
+// it ever stops holding, the probe refuses rather than measuring the wrong
+// thing. The commit pair is now a test fixture for the transform, not the
+// source of the patched bytes.
 
 const SCANNER_ORIGINAL = fs.readFileSync(SCANNER);
 const SCANNER_SHA = crypto.createHash('sha256').update(SCANNER_ORIGINAL).digest('hex');
@@ -125,44 +168,132 @@ const SCANNER_SHA = crypto.createHash('sha256').update(SCANNER_ORIGINAL).digest(
 const gitShow = (rev: string) =>
   execFileSync('git', ['show', `${rev}:${SCANNER_REL}`], { cwd: REPO, maxBuffer: 32 * 1024 * 1024 });
 
-const atHoist = gitShow(HOIST_COMMIT);
-const preHoist = gitShow(`${HOIST_COMMIT}^`);
+const atHoist = gitShow(HOIST_COMMIT).toString('utf8');
+const preHoist = gitShow(`${HOIST_COMMIT}^`).toString('utf8');
 
-if (!atHoist.equals(SCANNER_ORIGINAL)) {
-  const since = execFileSync('git', ['log', '--oneline', `${HOIST_COMMIT}..HEAD`, '--', SCANNER_REL],
-    { cwd: REPO, encoding: 'utf8' }).trim();
+/**
+ * The three edits the hoist made, inverted. Each is (pattern, replacement,
+ * expected occurrence count) — the count is the assertion. A silent 0-match or
+ * an unexpected extra match is the failure mode that would corrupt the A/B, so
+ * every site is counted rather than merely replaced.
+ */
+const HOIST_INVERSE: Array<{ what: string; find: RegExp; to: string; expect: number }> = [
+  {
+    what: 'import: the resolver factory back to the per-call lookup',
+    find: /import \{ createChannelBySessionIdResolver \} from '\.\.\/db\/queries\.js';/g,
+    to: "import { findChannelByOriginalSessionId } from '../db/queries.js';",
+    expect: 1,
+  },
+  {
+    // Deletes the resolver construction AND the contiguous run of `//` comment
+    // lines the hoist added directly above it, AND the blank line after — that
+    // whole block is what afe0889 inserted, so removing less than all of it
+    // would not reproduce afe0889^ and arm V would catch it.
+    what: 'resolver construction + its comment block, in both scanners',
+    find: /(?:^[ \t]*\/\/.*\n)*^[ \t]*const findChannel = createChannelBySessionIdResolver\(\);\n\n/gm,
+    to: '',
+    expect: 2,
+  },
+  {
+    what: 'call sites: the hoisted resolver back to the per-call lookup',
+    find: /findChannel\(sessionId\)/g,
+    to: 'findChannelByOriginalSessionId(sessionId)',
+    expect: 2,
+  },
+];
+
+/** Applies the inverse hoist, asserting every site count. Throws on any miss. */
+function applyInverseHoist(src: string, label: string): string {
+  let out = src;
+  for (const e of HOIST_INVERSE) {
+    const n = (out.match(e.find) ?? []).length;
+    if (n !== e.expect) {
+      throw new Error(
+        `inverse-hoist transform does not apply to ${label}: expected ${e.expect} occurrence(s) ` +
+          `of "${e.what}", found ${n}. Refusing to run — a partial transform would measure ` +
+          `something other than the hoist and would not look like an error.`,
+      );
+    }
+    out = out.replace(e.find, e.to);
+  }
+  // Post-conditions: nothing hoisted may survive, and the per-call form must be
+  // present at exactly the two read-only sites the hoist replaced.
+  if (out.includes('createChannelBySessionIdResolver')) {
+    throw new Error(`inverse-hoist left a resolver reference in ${label}`);
+  }
+  if (/findChannel\(/.test(out)) {
+    throw new Error(`inverse-hoist left a hoisted call site in ${label}`);
+  }
+  if ((out.match(/findChannelByOriginalSessionId\(sessionId\)/g) ?? []).length !== 2) {
+    throw new Error(`inverse-hoist did not produce exactly two per-call lookups in ${label}`);
+  }
+  if (out === src) throw new Error(`inverse-hoist was a no-op on ${label}`);
+  return out;
+}
+
+// Arm V, run before anything is patched. If this fails the probe never touches
+// the working tree.
+let transformValidated = false;
+let vDetail = '';
+try {
+  const rebuilt = applyInverseHoist(atHoist, `${HOIST_COMMIT} (the hoist commit itself)`);
+  transformValidated = rebuilt === preHoist;
+  vDetail = transformValidated
+    ? `transform applied to ${HOIST_COMMIT} reproduces ${HOIST_COMMIT}^ byte-for-byte ` +
+      `(${Buffer.byteLength(rebuilt)} bytes, sha256 ` +
+      `${crypto.createHash('sha256').update(rebuilt).digest('hex').slice(0, 12)})`
+    : `transform applied to ${HOIST_COMMIT} does NOT reproduce ${HOIST_COMMIT}^ ` +
+      `(${Buffer.byteLength(rebuilt)} vs ${Buffer.byteLength(preHoist)} bytes) — ` +
+      `the transform is not the inverse of the hoist`;
+} catch (e) {
+  vDetail = `transform failed against the commit pair: ${(e as Error).message}`;
+}
+
+if (!transformValidated) {
   console.log(
-    `!! ${SCANNER_REL} on disk is not byte-identical to ${HOIST_COMMIT}. Refusing to run.\n` +
-      (since ? `\n   Commits to that file since ${HOIST_COMMIT}:\n${since.split('\n').map((l) => `     ${l}`).join('\n')}\n` : '') +
-      `\n   READ THIS BEFORE RE-PINNING. The obvious fix — point HOIST_COMMIT at HEAD — is wrong,\n` +
-      `   and wrong in a way that still produces plausible numbers.\n` +
-      `\n   Arm S restores '${HOIST_COMMIT}^' WHOLESALE to get the pre-hoist code. That is a clean\n` +
-      `   isolation of the hoist only while disk == ${HOIST_COMMIT}. Once other commits land on this\n` +
-      `   file, '${HOIST_COMMIT}^' is missing those too, so the A/B silently measures\n` +
-      `   hoist + everything-else rather than the hoist. dba7699 (the fingerprint cache) is the\n` +
-      `   case that matters: the delta would read as the hoist and mostly be the cache.\n` +
-      `\n   The correct re-pin is to stop diffing against a commit and instead apply the INVERSE\n` +
-      `   of the hoist to the bytes currently on disk — the hoist is three mechanical edits (the\n` +
-      `   import, and one resolver hoist in each of scanClaudeCodeSessions / scanExportedSessions),\n` +
-      `   each an exact-match single-occurrence replacement that can be asserted. Arm S then\n` +
-      `   isolates the hoist against today's code, which is also the more interesting measurement:\n` +
-      `   under the cache the dedup scan is no longer 13% of browse, it is nearly all of it.\n` +
-      `\n   Flagged by Daedalus 2026-09-04; scoped, not yet built. See docs/second-corpus-browse-2026-09-04.md.`,
+    `!! Arm V FAILED — ${vDetail}\n` +
+      `\n   Refusing to run. The transform is the only thing that makes arm S an isolation of\n` +
+      `   the hoist rather than of hoist-plus-everything-since. If it cannot reproduce the\n` +
+      `   known pre-hoist bytes from the known hoisted bytes, it cannot be trusted to produce\n` +
+      `   pre-hoist bytes from today's.`,
   );
   process.exit(1);
 }
-if (preHoist.equals(atHoist)) {
-  console.log(`!! ${HOIST_COMMIT} did not change ${SCANNER_REL} — wrong commit pinned. Refusing to run.`);
+
+// Now the same transform against today's bytes. Computed here, before any
+// server runs, so a shape change on disk is a refusal and not a mid-run abort.
+let preHoistToday: string;
+try {
+  preHoistToday = applyInverseHoist(SCANNER_ORIGINAL.toString('utf8'), `${SCANNER_REL} on disk`);
+} catch (e) {
+  console.log(
+    `!! ${(e as Error).message}\n` +
+      `\n   The hoist's shape has changed on disk since Round 159 wrote this transform.\n` +
+      `   Fix the transform to match the new shape — do NOT fall back to restoring a commit\n` +
+      `   wholesale, which is the failure this arm exists to prevent. Arm V will tell you\n` +
+      `   whether the repaired transform is still the inverse of the hoist.`,
+  );
   process.exit(1);
 }
-if (!preHoist.toString('utf8').includes('findChannelByOriginalSessionId(sessionId)')) {
-  console.log(`!! pre-hoist source does not contain the per-call lookup — pin is wrong. Refusing to run.`);
-  process.exit(1);
-}
-console.log(
-  `scanner on disk matches ${HOIST_COMMIT} (sha256 ${SCANNER_SHA.slice(0, 12)}); ` +
-    `pre-hoist bytes read from ${HOIST_COMMIT}^\n`,
-);
+
+const since = execFileSync('git', ['log', '--oneline', `${HOIST_COMMIT}..HEAD`, '--', SCANNER_REL],
+  { cwd: REPO, encoding: 'utf8' }).trim();
+const commitsSince = since ? since.split('\n').length : 0;
+
+check('V', 'inverse-hoist transform reproduces the known pre-hoist bytes from the known hoisted bytes',
+  transformValidated, vDetail);
+check('V', 'the transform was validated against a commit pair that is genuinely stale', commitsSince > 0,
+  commitsSince > 0
+    ? `${commitsSince} commit(s) to ${SCANNER_REL} since ${HOIST_COMMIT} — a wholesale restore of ` +
+      `${HOIST_COMMIT}^ would have measured the hoist PLUS all of them:\n${since.split('\n').map((l) => `        ${l}`).join('\n')}`
+    : `no commits to the scanner since ${HOIST_COMMIT} — the wholesale restore would still have been valid`);
+check('V', 'arm S patch bytes come from today\'s disk, not from a commit', true,
+  `disk sha256 ${SCANNER_SHA.slice(0, 12)} → transformed ` +
+    `sha256 ${crypto.createHash('sha256').update(preHoistToday).digest('hex').slice(0, 12)}; ` +
+    `${SCANNER_ORIGINAL.length} → ${Buffer.byteLength(preHoistToday)} bytes ` +
+    `(${Buffer.byteLength(preHoistToday) - SCANNER_ORIGINAL.length} bytes)`,
+  'measurement');
+console.log('');
 
 function restoreScanner(): boolean {
   fs.writeFileSync(SCANNER, SCANNER_ORIGINAL);
@@ -424,7 +555,8 @@ if (!canRun) {
 
   let patched = false;
   try {
-    fs.writeFileSync(SCANNER, preHoist);
+    // Round 159: transformed from disk (arm V), NOT `git show afe0889^`.
+    fs.writeFileSync(SCANNER, preHoistToday);
     patched = true;
     percall = await sweep(DB_PERCALL, 'percall');
   } finally {
@@ -475,7 +607,14 @@ if (!hoisted || !percall) {
   check('T', `unit claim (~${UNIT_CLAIM.toFixed(0)} ms saved at ${K} channels) reaches the endpoint`,
     savedAtK > UNIT_CLAIM * 0.5,
     `endpoint saved ${ms(savedAtK)} at ${K} channels vs ${ms(UNIT_CLAIM)} claimed at the unit; ` +
-    `at 0 channels the two versions differ by ${savedAtZero >= 0 ? '' : '−'}${Math.abs(savedAtZero).toFixed(0)} ms (expect ~0)`);
+    // Round 146 annotated this zero-channel delta "expect ~0" and it is not ~0 —
+    // it is the hoist's FIXED floor. At 0 seeded channels the pre-hoist code
+    // still issues one prepared-statement lookup per session FILE (528 of them)
+    // against a 1-row channels table, so the saving is per-call overhead with
+    // the scan cost taken out. Invisible in Round 146 at 0.5% of a 2.3 s browse;
+    // under the cache it is most of a warm one. Reported, not asserted to zero.
+    `at 0 channels they still differ by ${savedAtZero >= 0 ? '' : '−'}${Math.abs(savedAtZero).toFixed(0)} ms ` +
+    `— the per-call FLOOR (one lookup per session file, not per channel), not noise`);
 
   // Slope: how much does each version's browse time grow per 1000 channels?
   const slope = (r: Map<number, BrowseResult>) => {
@@ -485,6 +624,57 @@ if (!hoisted || !percall) {
   };
   check('T', 'browse latency growth per 1000 imported channels', true,
     `pre-hoist +${ms(slope(percall.byK))}/1000, hoisted +${ms(slope(hoisted.byK))}/1000`,
+    'measurement');
+
+  // Round 159 addition — the reason the re-pin was worth doing at all. Round 146
+  // measured this before dba7699 existed, when the fingerprint scan dominated
+  // browse and the dedup line was ~13% of it. Under the cache the FIRST browse
+  // still pays full fingerprint freight and every browse after is a Map hit —
+  // so the hoist's share of the warm path should be far larger than its share
+  // of the cold one, from the same saving in absolute ms. Reported as two rows
+  // rather than one, because a single "% of browse" figure is now ambiguous
+  // about which browse it means, and that ambiguity is what made 13% stale.
+  const coldRows: string[] = [];
+  const warmRows: string[] = [];
+  for (const K of STEPS) {
+    const hc = hoisted.byK.get(K)!.samples[0], pc = percall.byK.get(K)!.samples[0];
+    const hw = median(hoisted.byK.get(K)!.samples.slice(1)), pw = median(percall.byK.get(K)!.samples.slice(1));
+    coldRows.push(`${K}: ${ms(pc)} → ${ms(hc)} (${(100 * (pc - hc) / pc).toFixed(1)}% of cold browse)`);
+    warmRows.push(`${K}: ${ms(pw)} → ${ms(hw)} (${(100 * (pw - hw) / pw).toFixed(1)}% of warm browse)`);
+  }
+  check('T', 'the hoist as a share of COLD (cache-filling) browse', true, coldRows.join('; '), 'measurement');
+  check('T', 'the hoist as a share of WARM (cache-hit) browse', true, warmRows.join('; '), 'measurement');
+
+  const Kmax = STEPS[STEPS.length - 1];
+  const warmShare = (() => {
+    const hw = median(hoisted.byK.get(Kmax)!.samples.slice(1));
+    const pw = median(percall.byK.get(Kmax)!.samples.slice(1));
+    return 100 * (pw - hw) / pw;
+  })();
+  // Round 146's own table: 2000 channels, 1634 ms → 1409 ms, −224 ms = 13.7%.
+  // That percentage is not wrong; it is measured against a browse that
+  // re-fingerprinted every file on every request. dba7699 removed that
+  // denominator from the warm path without touching the numerator.
+  const R146_SHARE = 13.7;
+  check('T', `Round 146's 13.7%-of-browse figure is stale in its DENOMINATOR, not its numerator`,
+    warmShare > R146_SHARE,
+    `at ${Kmax} channels the hoist is ${warmShare.toFixed(1)}% of warm browse vs Round 146's ` +
+    `${R146_SHARE}% (its 1634→1409 ms row); the saving in absolute ms is unchanged — ` +
+    `${ms(savedAtK)} today vs 224 ms then — so what moved is what it is a share OF`);
+
+  // Round 146 isolated a 27 ms component of its 224 ms that was present at 0
+  // channels and did not scale. Same quantity, re-measured under the cache where
+  // it is resolvable rather than 1.7% of a disk-bound number. Reported as a
+  // reproduction attempt with its own verdict, not folded into the headline.
+  const R146_FLOOR = 27;
+  const floorRatio = savedAtZero / R146_FLOOR;
+  check('T', `Round 146's 27 ms zero-channel floor reproduces in KIND but not in MAGNITUDE`,
+    savedAtZero > 0,
+    `measured ${ms(savedAtZero)} at 0 channels against Round 146's 27 ms — ${floorRatio.toFixed(2)}× — ` +
+    `and on MORE files (528 now vs 508 then), so the direction is wrong for a per-file cost. ` +
+    `The floor is real and positive in every run; its Round 146 magnitude is not confirmed. ` +
+    `Most likely 27 ms was 1.7% of a 1634 ms disk-bound browse and inside that run's variance, ` +
+    `whereas here it is ~60% of a 19 ms one. NOT asserted — flagged as an open non-reproduction.`,
     'measurement');
 }
 
