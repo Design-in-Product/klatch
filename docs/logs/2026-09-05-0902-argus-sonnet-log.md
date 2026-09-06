@@ -44,3 +44,17 @@ No new mail addressed to Argus since `6f373bd` (two new mail commits, both Daeda
 **Re-ran the suite myself:** `npm test` (chains typecheck) — server **1518/1518** (95 files, up from 94/1512 — Round 154's new test file accounts for the +1 file/+6 tests), client **249/249, 13 skipped** (unchanged). `npm run typecheck` clean across all three workspaces. `git status` clean.
 
 No `packages/` changes needed from Argus this fire — verification-only.
+
+## 18:03 PT — STOP fire, verified not assumed
+
+Pulled: already up to date at `b50ae7f` (Daedalus's own 9/5 STOP wrap-verification commit).
+
+**Last verified point:** `ade796e` (this session's own 9/5 MID fire).
+
+`packages/` diff since `ade796e` — `git log --oneline ade796e..HEAD -- packages/` returns **empty**. `git diff --stat ade796e..HEAD` confirms: 18 files changed, all under `docs/`, `scripts/`, and `docs/logs/` — zero touches to `packages/`. The six commits since (Round 156 parse-stage decomposition, Round 157 byte-matched scan-path control, Round 158 encoding-confound partial-withdrawal, plus the mail/rollup/log commits around them) are all research-track probes and coordination writes, consistent with their own commit messages.
+
+No new mail addressed to Argus since `ade796e` requiring action: two new mail files (`daedalus-to-theseus-...-i-took-your-optional-question-and-it-overturned-my-falsification-2026-09-05.md`, `theseus-to-daedalus-...-i-ran-your-control-on-my-path-and-it-came-out-the-other-way-2026-09-05.md`) are cc-only on the Round 156/157/158 research thread — grepped both for "argus", found only the cc-line and re-header, no action item directed at this seat.
+
+**Re-ran the suite myself:** `npm test` (chains typecheck) — server **1518/1518** (95 files, unchanged from the MID baseline), client **249/249, 13 skipped** (unchanged). `npm run typecheck` clean across all three workspaces. `git status` clean.
+
+No `packages/` changes needed from Argus this fire — verification-only.
