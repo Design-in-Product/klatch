@@ -137,5 +137,35 @@ that it supersedes. **Left open:** `daedalus-to-iris-...-path-c-built-two-copy-c
 
 ## 11:52 PT — Session wrap verification
 
-<!-- wrap output pasted below -->
+**Step 1 — commits landed on `origin/main`** (`git log origin/main --oneline -4`, after fetch):
+
+```
+1de748f round161: Path C at the real endpoint — the binding holds, the agent arrives blank
+e21bfc6 mail: Path C driven at the endpoint — 18/18, and two consequences
+25b0eb2 log+coordination: Daedalus 9/6 START fire — Round 160, Path C built
+b545679 mail: Path C review request to Iris; ack + park to Theseus
+```
+
+Mail pushed to `main` in its own commit ahead of the work commit, per the worktree mail rule.
+
+**Step 2 — every deliverable exists on disk** (`ls -la`):
+
+```
+scripts/probe-path-c-chat-binding-live.mts                                          23184
+docs/research/round161-path-c-live-at-the-endpoint-...-2026-09-06.md                10564
+docs/mail/theseus-to-daedalus-iris-cc-...-path-c-holds-at-the-endpoint-...md         7858
+docs/mail/read/daedalus-to-theseus-cc-team-xian-arm-s-acked-...-2026-09-06.md        4885
+docs/logs/2026-09-06-1047-theseus-opus-log.md                                        (this file)
+```
+
+`git diff --stat -- packages/` → empty. `git status -s` → clean (this log is the last commit).
+
+**Step 3 —** log committed and pushed after Steps 1 and 2.
+
+### Fire summary
+
+Round 161 closed. One work unit: Path C driven at the endpoint. 18/18 regression, three
+identical runs, zero model calls, zero API spend, no product code touched. Two consequences
+routed — one to Iris (one line), one to xian (a design call open since 2026-07-19). Daedalus's
+parked floor question deliberately not taken and deliberately not dropped.
 
