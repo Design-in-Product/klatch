@@ -64,16 +64,38 @@ export function ChannelSidebar({
     setShowForm(true);
   };
 
+  // Roster cap, derived from type so the picker can never compose a roster the API
+  // would reject: a klatch seats up to 5; a chat is 1:1 and the route returns 400 for
+  // chat + 2 agents (`routes/channels.ts` type/roster coherence, 2026-06-21).
+  const rosterCap = newType === 'klatch' ? 5 : 1;
+
+  // Switching Klatch → Chat narrows an over-cap roster instead of carrying it into a
+  // request the server rejects. Klatch → Klatch and the empty case are untouched.
+  const selectType = (type: ChannelType) => {
+    setNewType(type);
+    if (type === 'chat') {
+      setSelectedEntityIds((prev) => (prev.size > 1 ? new Set([[...prev][0]]) : prev));
+    }
+  };
+
   const toggleEntity = (id: string) => {
     setSelectedEntityIds((prev) => {
+      if (prev.has(id)) {
+        const next = new Set(prev);
+        next.delete(id);
+        return next;
+      }
+      // At cap 1 (chat), picking a different agent *replaces* the selection — radio
+      // semantics, since there is no ambiguity about what to drop. A klatch at cap
+      // refuses instead: which of the five to unseat is the user's call, not ours.
+      if (rosterCap === 1) return new Set([id]);
       const next = new Set(prev);
-      if (next.has(id)) next.delete(id);
-      else if (next.size < 5) next.add(id);
+      if (next.size < rosterCap) next.add(id);
       return next;
     });
   };
 
-  // Agent picker (composition spec §3 Path A): typeahead-filter by name/handle,
+  // Agent picker (composition spec §3, Paths A and C): typeahead-filter by name/handle,
   // partition roles-first (name-as-proxy — a named agent is a role; nameless = one-off).
   const { roleAgents, otherAgents } = useMemo(() => {
     const q = agentSearch.trim().toLowerCase();
@@ -90,7 +112,9 @@ export function ChannelSidebar({
     () => entities.filter((e) => selectedEntityIds.has(e.id)),
     [entities, selectedEntityIds]
   );
-  const atCap = selectedEntityIds.size >= 5;
+  // Only a multi-seat roster can be "full" in a way the user must resolve. At cap 1 the
+  // rows stay live because clicking one replaces the selection.
+  const atCap = rosterCap > 1 && selectedEntityIds.size >= rosterCap;
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -102,7 +126,10 @@ export function ChannelSidebar({
       newType === 'klatch' ? 'klatch' : undefined,
       newType === 'klatch' ? newMode : undefined,
       newType === 'klatch' ? (newProjectId || undefined) : undefined,
-      newType === 'klatch' && selectedEntityIds.size > 0 ? [...selectedEntityIds] : undefined
+      // Sent for chats too (composition spec §3 Path C, "Continue existing role"): a
+      // one-agent roster binds the new chat to an existing agent rather than the shared
+      // default entity. Empty stays undefined — that is the pre-existing new-assistant path.
+      selectedEntityIds.size > 0 ? [...selectedEntityIds] : undefined
     );
     resetForm();
   };
@@ -464,7 +491,7 @@ export function ChannelSidebar({
               <div className="flex rounded overflow-hidden border border-line">
                 <button
                   type="button"
-                  onClick={() => setNewType('chat')}
+                  onClick={() => selectType('chat')}
                   className={`flex-1 text-xs py-1 font-medium transition-colors ${
                     newType === 'chat'
                       ? 'bg-accent text-white'
@@ -475,7 +502,7 @@ export function ChannelSidebar({
                 </button>
                 <button
                   type="button"
-                  onClick={() => setNewType('klatch')}
+                  onClick={() => selectType('klatch')}
                   className={`flex-1 text-xs py-1 font-medium transition-colors ${
                     newType === 'klatch'
                       ? 'bg-accent text-white'
@@ -528,97 +555,114 @@ export function ChannelSidebar({
                     </select>
                   )}
 
-                  {/* Agent picker — composition spec §3 Path A (existing agents) */}
-                  {entities.length > 0 && (
-                    <div className="space-y-1">
-                      <div className="text-xs font-medium text-muted uppercase tracking-wider">
-                        Agents {selectedEntityIds.size > 0 && `(${selectedEntityIds.size}/5)`}
-                      </div>
+                </>
+              )}
 
-                      {/* Selected agents as removable chips */}
-                      {selectedAgents.length > 0 && (
-                        <div className="flex flex-wrap gap-1">
-                          {selectedAgents.map((ent) => (
-                            <span
-                              key={ent.id}
-                              className="inline-flex items-center gap-1 rounded-full bg-badge px-2 py-0.5 text-[11px] text-primary"
-                            >
-                              <span className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ backgroundColor: ent.color }} />
-                              <span className="truncate max-w-[8rem]">{ent.name}</span>
-                              <button
-                                type="button"
-                                onClick={() => toggleEntity(ent.id)}
-                                aria-label={`Remove ${ent.name}`}
-                                className="text-muted hover:text-primary leading-none"
-                              >
-                                ×
-                              </button>
-                            </span>
-                          ))}
-                        </div>
-                      )}
+              {/* Agent picker. Composition spec §3 serves both types from this one list:
+                  Path A seats existing agents on a klatch roster, and Path C ("Continue
+                  existing role", scheduled §11a 2026-08-10) binds a 1:1 chat to an agent
+                  that already exists instead of to the shared default entity. Same list,
+                  same typeahead, same roles-first tiering — only the cap differs. */}
+              {entities.length > 0 && (
+                <div className="space-y-1">
+                  <div className="text-xs font-medium text-muted uppercase tracking-wider">
+                    {newType === 'klatch'
+                      ? `Agents${selectedEntityIds.size > 0 ? ` (${selectedEntityIds.size}/5)` : ''}`
+                      : 'Continue with an existing agent'}
+                  </div>
 
-                      {/* Typeahead search */}
-                      <input
-                        type="text"
-                        value={agentSearch}
-                        onChange={(e) => setAgentSearch(e.target.value)}
-                        placeholder="Search agents by name or @handle"
-                        className="w-full rounded bg-input border border-line px-2 py-1 text-xs text-primary placeholder-muted focus:outline-none focus:border-accent"
-                      />
-
-                      {/* Roles first, other agents below */}
-                      <div className="space-y-1 max-h-32 overflow-y-auto">
-                        {[{ label: 'Roles', list: roleAgents }, { label: 'Other agents', list: otherAgents }]
-                          .filter((g) => g.list.length > 0)
-                          .map((g) => (
-                            <div key={g.label}>
-                              <div className="text-[9px] font-medium text-muted uppercase tracking-wider px-1.5 mb-0.5">{g.label}</div>
-                              {g.list.map((ent) => {
-                                const checked = selectedEntityIds.has(ent.id);
-                                return (
-                                  <label
-                                    key={ent.id}
-                                    className={`flex items-center gap-1.5 px-1.5 py-0.5 rounded text-xs ${
-                                      !checked && atCap ? 'opacity-40 cursor-not-allowed' : 'hover:bg-hover cursor-pointer'
-                                    }`}
-                                  >
-                                    <input
-                                      type="checkbox"
-                                      checked={checked}
-                                      onChange={() => toggleEntity(ent.id)}
-                                      disabled={!checked && atCap}
-                                      className="accent-accent"
-                                    />
-                                    <span className="w-2 h-2 rounded-full flex-shrink-0" style={{ backgroundColor: ent.color }} />
-                                    <span className="text-primary truncate">{ent.name}</span>
-                                    {ent.handle && <span className="text-muted text-[9px] flex-shrink-0">@{ent.handle}</span>}
-                                    <span className="text-[9px] px-1 py-0.5 rounded bg-badge text-muted ml-auto flex-shrink-0">
-                                      {getModelLabel(ent.model)}
-                                    </span>
-                                  </label>
-                                );
-                              })}
-                            </div>
-                          ))}
-                        {roleAgents.length === 0 && otherAgents.length === 0 && (
-                          <div className="text-[11px] text-muted px-1.5 py-1">No agents match "{agentSearch}".</div>
-                        )}
-                      </div>
+                  {/* The chat picker is optional, and saying so matters: an empty selection is
+                      the pre-existing "new assistant" path, not an unfinished form. */}
+                  {newType === 'chat' && selectedEntityIds.size === 0 && (
+                    <div className="text-[11px] text-muted">
+                      Optional — leave empty to start with a new assistant.
                     </div>
                   )}
 
-                  {/* Mode selector */}
-                  <select
-                    value={newMode}
-                    onChange={(e) => setNewMode(e.target.value as InteractionMode)}
-                    className="w-full rounded bg-input border border-line px-2.5 py-1.5 text-sm text-primary focus:outline-none focus:border-accent"
-                  >
-                    {Object.entries(INTERACTION_MODES).map(([key, { label, description }]) => (
-                      <option key={key} value={key}>{label} — {description}</option>
-                    ))}
-                  </select>
-                </>
+                  {/* Selected agents as removable chips */}
+                  {selectedAgents.length > 0 && (
+                    <div className="flex flex-wrap gap-1">
+                      {selectedAgents.map((ent) => (
+                        <span
+                          key={ent.id}
+                          className="inline-flex items-center gap-1 rounded-full bg-badge px-2 py-0.5 text-[11px] text-primary"
+                        >
+                          <span className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ backgroundColor: ent.color }} />
+                          <span className="truncate max-w-[8rem]">{ent.name}</span>
+                          <button
+                            type="button"
+                            onClick={() => toggleEntity(ent.id)}
+                            aria-label={`Remove ${ent.name}`}
+                            className="text-muted hover:text-primary leading-none"
+                          >
+                            ×
+                          </button>
+                        </span>
+                      ))}
+                    </div>
+                  )}
+
+                  {/* Typeahead search */}
+                  <input
+                    type="text"
+                    value={agentSearch}
+                    onChange={(e) => setAgentSearch(e.target.value)}
+                    placeholder="Search agents by name or @handle"
+                    className="w-full rounded bg-input border border-line px-2 py-1 text-xs text-primary placeholder-muted focus:outline-none focus:border-accent"
+                  />
+
+                  {/* Roles first, other agents below */}
+                  <div className="space-y-1 max-h-32 overflow-y-auto">
+                    {[{ label: 'Roles', list: roleAgents }, { label: 'Other agents', list: otherAgents }]
+                      .filter((g) => g.list.length > 0)
+                      .map((g) => (
+                        <div key={g.label}>
+                          <div className="text-[9px] font-medium text-muted uppercase tracking-wider px-1.5 mb-0.5">{g.label}</div>
+                          {g.list.map((ent) => {
+                            const checked = selectedEntityIds.has(ent.id);
+                            return (
+                              <label
+                                key={ent.id}
+                                className={`flex items-center gap-1.5 px-1.5 py-0.5 rounded text-xs ${
+                                  !checked && atCap ? 'opacity-40 cursor-not-allowed' : 'hover:bg-hover cursor-pointer'
+                                }`}
+                              >
+                                <input
+                                  type="checkbox"
+                                  checked={checked}
+                                  onChange={() => toggleEntity(ent.id)}
+                                  disabled={!checked && atCap}
+                                  className="accent-accent"
+                                />
+                                <span className="w-2 h-2 rounded-full flex-shrink-0" style={{ backgroundColor: ent.color }} />
+                                <span className="text-primary truncate">{ent.name}</span>
+                                {ent.handle && <span className="text-muted text-[9px] flex-shrink-0">@{ent.handle}</span>}
+                                <span className="text-[9px] px-1 py-0.5 rounded bg-badge text-muted ml-auto flex-shrink-0">
+                                  {getModelLabel(ent.model)}
+                                </span>
+                              </label>
+                            );
+                          })}
+                        </div>
+                      ))}
+                    {roleAgents.length === 0 && otherAgents.length === 0 && (
+                      <div className="text-[11px] text-muted px-1.5 py-1">No agents match "{agentSearch}".</div>
+                    )}
+                  </div>
+                </div>
+              )}
+
+              {/* Mode selector — klatch-only; a 1:1 chat has no orchestration to choose. */}
+              {newType === 'klatch' && (
+                <select
+                  value={newMode}
+                  onChange={(e) => setNewMode(e.target.value as InteractionMode)}
+                  className="w-full rounded bg-input border border-line px-2.5 py-1.5 text-sm text-primary focus:outline-none focus:border-accent"
+                >
+                  {Object.entries(INTERACTION_MODES).map(([key, { label, description }]) => (
+                    <option key={key} value={key}>{label} — {description}</option>
+                  ))}
+                </select>
               )}
 
               <textarea
