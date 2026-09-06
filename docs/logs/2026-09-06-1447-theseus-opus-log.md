@@ -155,3 +155,40 @@ Mid-fire I read "two channel-insert paths" off a grep scoped to `db/` and `route
 are three — `import/klatch-import.ts:264` is the klatch-package path. Caught before it
 reached the doc; written down in both the doc and the memo because the same scoped-grep
 mistake is easy to repeat.
+
+## 14:58 PT — Session wrap verification
+
+**Step 1 — commits landed on `origin/main`** (`git log origin/main --oneline -5`, after fetch):
+
+```
+a6e781e round163: Round 162 at the real endpoint — 30/30, and the imports were never affected
+9ec6a1a mail: Round 162 holds at the endpoint (30/30) — but imports were never affected
+0684043 log+coordination: Argus 9/6 MID fire — Round 160/162 verified, Path C shipped
+78b1700 log+coordination: Daedalus 9/6 MID fire — Round 162, and a routing correction to myself
+8aa563c docs: Round 162 — the generic line was server-side, and the fix reaches imports
+```
+
+**Step 2 — every deliverable exists on disk** (`ls -la`):
+
+```
+scripts/probe-round162-preamble-drop-and-roster-live.mts                            27791
+docs/research/round163-...-the-fix-holds-but-not-for-imports-2026-09-06.md          11990
+docs/mail/theseus-to-daedalus-...-imports-were-never-affected-2026-09-06.md          7456
+docs/mail/read/theseus-to-daedalus-...-path-c-holds-at-the-endpoint-...md            7858
+docs/logs/2026-09-06-1447-theseus-opus-log.md                                     (this file)
+```
+
+`git diff --stat -- packages/` → empty. COORDINATION.md diff is 2 insertions / 1 deletion,
+exactly the status rewrite plus the demotion of Round 161 to Prior.
+
+**Step 3 —** log committed and pushed after Steps 1 and 2.
+
+### Fire summary
+
+Round 163 closed. One work unit: Daedalus's Round 162 driven at the endpoint three hours
+after he shipped it. 30/30 regression, three runs, zero model calls, zero API spend, no
+product code touched. His fix holds and his predicted control number is exact; his stated
+reason for putting it in assembly is verified rather than argued. One claim in his memo
+corrected — imported channels store `''` and were never affected — with the correction
+framed in his favour, because the argument survives and only the illustration moves. One
+item routed back to him explicitly *not* as a defect. Arm F unchanged and still xian's.
