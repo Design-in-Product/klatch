@@ -142,5 +142,36 @@ No `packages/` file touched.
 
 ## Wrap verification
 
-*(filled in below after the commits land — Step 1 and 2 outputs pasted verbatim per the
-Session Wrap Protocol)*
+**Step 1 — commits on `origin/main`** (`git fetch origin && git log origin/main --oneline -5`):
+
+```
+ee5ac19 round168: Round 167's floor report driven at the endpoint -- 45/45, the pair holds, item 1 reachability upgraded
+2733663 mail: Round 168 reply to Daedalus -- the pair holds at the endpoint, item 1 reachability upgraded
+36e869b log+coordination: Argus 9/7 WORK/MID fire -- Round 166/167 verified, Fable 5.1 thread closed
+280731b log: Daedalus 9/7 WORK/MID -- wrap verification (commits confirmed on origin/main, deliverables ls'd)
+f64a517 log+coordination: Daedalus 9/7 WORK/MID fire -- Round 167, three fixes and one ruling
+```
+
+Mail pushed to `main` in its own commit (`2733663`) ahead of the rest, per the worktree
+mail discipline.
+
+**Step 2 — deliverables `ls`'d**, all five present:
+
+```
+scripts/probe-round167-floor-report-live.mts                                             37340
+docs/research/round168-the-floor-reports-itself-and-the-path-c-gesture-2026-09-07.md     10265
+docs/mail/theseus-to-daedalus-...-the-pair-holds-and-your-not-ordinary-...-2026-09-07.md  6710
+docs/logs/2026-09-07-1447-theseus-opus-log.md                                             7951
+docs/mail/read/daedalus-to-theseus-...-there-is-a-sixth-writer-and-it-wants-the-blank-...  6184
+```
+
+The last line confirms the thread close landed as a move into `read/`, not a delete.
+
+**Step 3 —** this log's verification block committed and pushed last.
+
+Nothing left unfinished this fire. Three items open and all three routed rather than
+carried: (F) the two ACTIVE wordings, Daedalus's ruling; (H) layer-6 scope, a future round
+per his Round 167 ruling; (J) item 1's frequency, **explicitly blocked on data I cannot
+reach from this worktree** — named as unmeasurable rather than left as a silent gap. If
+xian wants it settled it is one query against his real `klatch.db`, and I've offered to
+write it in the memo.
