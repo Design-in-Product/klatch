@@ -2,7 +2,7 @@ import { Hono } from 'hono';
 import fs from 'fs';
 import path from 'path';
 import { getAllChannelsEnriched, getChannel, getChannelStats, createChannel, updateChannel, deleteChannel, setChannelProject, getChannelEntities, getProjectForChannel, getChannelFiles, getProjectFiles, getEntity } from '../db/queries.js';
-import { buildSystemPrompt } from '../claude/client.js';
+import { assembleSystemPrompt } from '../claude/client.js';
 import { buildCarriedContextBlock } from '../claude/carried-context.js';
 import type { ModelId, InteractionMode, ChannelType } from '@klatch/shared';
 import { INTERACTION_MODES, isDefaultChannelPreamble, DEFAULT_CHANNEL_PREAMBLE } from '@klatch/shared';
@@ -63,7 +63,7 @@ app.get('/channels/:id/prompt-debug', (c) => {
   const projectFileList = project ? getProjectFiles(project.id) : [];
   const projectFileNames = projectFileList.map((f) => `- ${f.name} (${f.mimeType})`);
   const carried = buildCarriedContextBlock(entity, channel);
-  const assembled = buildSystemPrompt(entity, channel.systemPrompt, channel, project, channelFileNames, projectFileNames, { carriedContext: carried?.text });
+  const { prompt: assembled, floorApplied } = assembleSystemPrompt(entity, channel.systemPrompt, channel, project, channelFileNames, projectFileNames, { carriedContext: carried?.text });
 
   return c.json({
     channelId: id,
@@ -108,6 +108,13 @@ app.get('/channels/:id/prompt-debug', (c) => {
         : channel.type === 'klatch'
           ? `EMPTY — "${entity.name}" has no history in any other channel`
           : 'INACTIVE — carried context applies to klatches only',
+      // Not a seventh layer — the terminal floor, reported because otherwise a
+      // floored assembly reads as content from nowhere: every layer above
+      // INACTIVE or EMPTY, and 28 characters on the wire. Round 167, Theseus
+      // item 2; the same reader-can-tell property Round 162 gave layer 4.
+      '7_floor': floorApplied
+        ? 'ACTIVE — layers 1–6 assembled nothing; DEFAULT_CHANNEL_PREAMBLE substituted so the prompt is not zero-length'
+        : 'INACTIVE — layers 1–6 assembled content, floor not needed',
     },
     assembledPrompt: assembled,
     assembledLength: assembled.length,

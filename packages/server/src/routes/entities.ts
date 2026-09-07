@@ -99,7 +99,10 @@ app.patch('/entities/:id', async (c) => {
     handle?: string | null;
     model?: ModelId;
     effort?: EffortLevel;
-    systemPrompt?: string;
+    // `| null` because the wire can carry it and the route now handles it —
+    // typing it `string` while the code guards with `?.` would read as a
+    // redundant guard and invite the next tidy-up to remove it.
+    systemPrompt?: string | null;
     color?: string;
   }>();
 
@@ -135,9 +138,23 @@ app.patch('/entities/:id', async (c) => {
     // erasure, not selection (Iris's prefill ruling, 2026-09-07): nothing in
     // the UI expresses blank as a choice, so the safe read is the same one
     // create already makes.
+    //
+    // The `?.` is load-bearing, not defensive habit. The pre-Round-166 code was
+    // a bare `body.systemPrompt?.trim()`, which did two jobs at once — skip on
+    // absent, survive a non-string. The ternary took over the first and dropped
+    // the second, so `{"systemPrompt": null}` took the false branch (`null !==
+    // undefined`) and threw on `.trim()`: a 500 where Round 165 had a 200.
+    // Theseus found it at the endpoint in Round 167 and checked the blast
+    // radius — not reachable from the shipped UI (`api/client.ts` types it
+    // `systemPrompt?: string`, `EntityManager.tsx` always sends `.trim()` of a
+    // string), and nothing stored was corrupted. API-surface robustness, not a
+    // user bug. `null` now substitutes, which is the same reading of a cleared
+    // field the empty string gets. A non-string like `42` still throws, as it
+    // did before Round 166 — a `typeof` guard would make the route total at the
+    // cost of silently swallowing a client bug, so it stays loud.
     systemPrompt: body.systemPrompt === undefined
       ? undefined
-      : (body.systemPrompt.trim() || DEFAULT_CHANNEL_PREAMBLE),
+      : (body.systemPrompt?.trim() || DEFAULT_CHANNEL_PREAMBLE),
     color: body.color,
   });
 

@@ -445,8 +445,37 @@ export interface PromptAssemblyOptions {
  * keeps it adjacent to the live conversation it is supposed to be continuous
  * with, and keeps identity from being read through the lens of one week's
  * activity.
+ *
+ * The assembly itself lives in `assembleSystemPrompt` below; this is the
+ * string-only face of it, which is what every sender wants. Callers that also
+ * need to *report* on the assembly (prompt-debug, AAXT) call that one directly.
  */
 export function buildSystemPrompt(entity: Entity, channelPreamble?: string, channel?: Channel, project?: Project | null, channelFileNames?: string[], projectFileNames?: string[], options: PromptAssemblyOptions = {}): string {
+  return assembleSystemPrompt(entity, channelPreamble, channel, project, channelFileNames, projectFileNames, options).prompt;
+}
+
+/**
+ * The same assembly, with the terminal floor's firing reported rather than
+ * inferred.
+ *
+ * Round 167 (Theseus, item 2): when the floor fires, `prompt-debug` showed every
+ * layer INACTIVE or EMPTY and a 28-character assembled prompt — content from
+ * nowhere. That is the symmetric case to the one Round 162 deliberately closed
+ * for layer 4, where `EMPTY — default purpose, not sent` was added precisely so
+ * a reader could tell "nothing written" from "written and dropped". A reader who
+ * knows the constant could infer the floor from the length, but requiring that
+ * inference is what Round 162 decided against.
+ *
+ * Reported from the assembly itself rather than re-derived at each debug site.
+ * The three layer-reporting call sites (`channels.ts` prompt-debug and the two
+ * in `aaxt.ts`) would otherwise each need their own floor test, and the only
+ * test available to them is on the output string — which is the wrong predicate.
+ * Theseus's Round 167 probe pins exactly this: an agent whose identity *is* the
+ * boilerplate assembles 28 characters with the floor silent, so "the output
+ * equals the constant" and "the floor fired" are different questions.
+ * `parts.length === 0` is the right predicate; this returns its answer.
+ */
+export function assembleSystemPrompt(entity: Entity, channelPreamble?: string, channel?: Channel, project?: Project | null, channelFileNames?: string[], projectFileNames?: string[], options: PromptAssemblyOptions = {}): { prompt: string; floorApplied: boolean } {
   const parts: string[] = [];
 
   // 1. Kit briefing for imported channels — automatic orientation on transition
@@ -522,9 +551,10 @@ export function buildSystemPrompt(entity: Entity, channelPreamble?: string, chan
   // that one removed content and could yield nothing; this one only ever fires
   // when nothing else did, so it can never sit above a real identity (Round
   // 162's concern) and never displaces one (Round 164's).
-  if (parts.length === 0) parts.push(DEFAULT_CHANNEL_PREAMBLE);
+  const floorApplied = parts.length === 0;
+  if (floorApplied) parts.push(DEFAULT_CHANNEL_PREAMBLE);
 
-  return parts.join('\n\n');
+  return { prompt: parts.join('\n\n'), floorApplied };
 }
 
 // ── Tool definitions ─────────────────────────────────────────

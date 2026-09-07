@@ -7,7 +7,7 @@
 
 import { Hono } from 'hono';
 import { getChannel, getChannelEntities, getProjectForChannel, getChannelFiles, getProjectFiles } from '../db/queries.js';
-import { buildSystemPrompt } from '../claude/client.js';
+import { assembleSystemPrompt } from '../claude/client.js';
 import { buildCarriedContext } from '../claude/carried-context.js';
 import { generateProbes } from '../aaxt/probe-generator.js';
 import { getAuxiliaryInfo } from '../aaxt/auxiliary.js';
@@ -47,7 +47,7 @@ app.post('/channels/:id/aaxt-probe', async (c) => {
   // is the observability property option (b) was chosen for — a probe can now
   // distinguish "the agent wasn't given this" from "was given it and didn't use it".
   const carriedContext = buildCarriedContext(entity, channel);
-  const assembled = buildSystemPrompt(entity, channel.systemPrompt, channel, project, channelFileNames, projectFileNames, { carriedContext });
+  const { prompt: assembled, floorApplied } = assembleSystemPrompt(entity, channel.systemPrompt, channel, project, channelFileNames, projectFileNames, { carriedContext });
 
   // Build prompt-debug equivalent inline
   const layers: Record<string, string> = {
@@ -81,6 +81,13 @@ app.post('/channels/:id/aaxt-probe', async (c) => {
       : channel.type === 'klatch'
         ? `EMPTY — "${entity.name}" has no history in any other channel`
         : 'INACTIVE — carried context applies to klatches only',
+    // Not a seventh layer — the terminal floor. A probe reads `layers` to decide
+    // what the prompt was supposed to convey; without this, a floored assembly
+    // looks like an agent given nothing that nonetheless carries 28 characters
+    // of instruction. Round 167, Theseus item 2.
+    '7_floor': floorApplied
+      ? 'ACTIVE — layers 1–6 assembled nothing; DEFAULT_CHANNEL_PREAMBLE substituted'
+      : 'INACTIVE — layers 1–6 assembled content, floor not needed',
   };
 
   try {
@@ -132,7 +139,7 @@ app.post('/channels/:id/aaxt-run', async (c) => {
   // is the observability property option (b) was chosen for — a probe can now
   // distinguish "the agent wasn't given this" from "was given it and didn't use it".
   const carriedContext = buildCarriedContext(entity, channel);
-  const assembled = buildSystemPrompt(entity, channel.systemPrompt, channel, project, channelFileNames, projectFileNames, { carriedContext });
+  const { prompt: assembled, floorApplied } = assembleSystemPrompt(entity, channel.systemPrompt, channel, project, channelFileNames, projectFileNames, { carriedContext });
 
   // Build prompt-debug layers (same as aaxt-probe)
   const layers: Record<string, string> = {
@@ -166,6 +173,13 @@ app.post('/channels/:id/aaxt-run', async (c) => {
       : channel.type === 'klatch'
         ? `EMPTY — "${entity.name}" has no history in any other channel`
         : 'INACTIVE — carried context applies to klatches only',
+    // Not a seventh layer — the terminal floor. A probe reads `layers` to decide
+    // what the prompt was supposed to convey; without this, a floored assembly
+    // looks like an agent given nothing that nonetheless carries 28 characters
+    // of instruction. Round 167, Theseus item 2.
+    '7_floor': floorApplied
+      ? 'ACTIVE — layers 1–6 assembled nothing; DEFAULT_CHANNEL_PREAMBLE substituted'
+      : 'INACTIVE — layers 1–6 assembled content, floor not needed',
   };
 
   try {

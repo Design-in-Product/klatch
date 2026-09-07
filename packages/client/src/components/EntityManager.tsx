@@ -204,6 +204,14 @@ function EntityForm({
       if (newHandle !== oldHandle) updates.handle = newHandle;
       if (model !== entity.model) updates.model = model;
       if (effectiveEffort !== entity.effort) updates.effort = effectiveEffort;
+      // Changed-fields-only, and for `systemPrompt` that is load-bearing rather
+      // than an optimisation: the server substitutes the boilerplate for a
+      // cleared prompt (Round 166) while the import writers deliberately keep
+      // `''`, and the API carries no signal that would let the route tell
+      // "cleared" from "unchanged". Making this branch unconditional — the
+      // obvious symmetry with the create branch below — silently boilerplates
+      // every imported agent on its next unrelated edit. Round 167, Theseus
+      // item 4; pinned by `round167-entity-edit-omits-unchanged.test.tsx`.
       if (systemPrompt.trim() !== entity.systemPrompt) updates.systemPrompt = systemPrompt.trim();
       if (color !== entity.color) updates.color = color;
       if (Object.keys(updates).length > 0) onSave(updates);
