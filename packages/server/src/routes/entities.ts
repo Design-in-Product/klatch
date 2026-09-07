@@ -13,7 +13,7 @@ import {
   getKlatchesForEntity,
 } from '../db/queries.js';
 import type { ModelId, EffortLevel } from '@klatch/shared';
-import { ENTITY_COLORS, DEFAULT_ENTITY_ID, DEFAULT_MODEL } from '@klatch/shared';
+import { ENTITY_COLORS, DEFAULT_ENTITY_ID, DEFAULT_MODEL, DEFAULT_CHANNEL_PREAMBLE } from '@klatch/shared';
 import { isValidModel, effortLevelsForModel } from './models.js';
 
 const VALID_EFFORT_LEVELS: EffortLevel[] = ['low', 'medium', 'high', 'xhigh', 'max'];
@@ -84,7 +84,7 @@ app.post('/entities', async (c) => {
   const entity = createEntity(
     name.trim(),
     entityModel as ModelId,
-    systemPrompt?.trim() || 'You are a helpful assistant.',
+    systemPrompt?.trim() || DEFAULT_CHANNEL_PREAMBLE,
     entityColor,
     handle?.trim() || undefined,
     effort
@@ -122,7 +122,22 @@ app.patch('/entities/:id', async (c) => {
     handle: body.handle !== undefined ? (body.handle?.trim() || null) : undefined,
     model: body.model,
     effort: body.effort,
-    systemPrompt: body.systemPrompt?.trim(),
+    // Substitute on *empty*, pass through on *absent*. `updateEntity` coalesces
+    // with `??`, which takes `''` as a value rather than an absence, so the
+    // bare `?.trim()` twelve lines below the create route's fallback let a
+    // `{"systemPrompt": ""}` PATCH store a zero-length prompt — including on
+    // the seeded default agent, which `:139` guards against DELETE and nothing
+    // guarded against being emptied. Reachable in two UI gestures (open the
+    // agent, clear the field, save). Round 166; found by Theseus, Round 165.
+    //
+    // This route substitutes and the two import writers deliberately do not —
+    // see the note at `import/klatch-import.ts`. A user clearing a field is
+    // erasure, not selection (Iris's prefill ruling, 2026-09-07): nothing in
+    // the UI expresses blank as a choice, so the safe read is the same one
+    // create already makes.
+    systemPrompt: body.systemPrompt === undefined
+      ? undefined
+      : (body.systemPrompt.trim() || DEFAULT_CHANNEL_PREAMBLE),
     color: body.color,
   });
 

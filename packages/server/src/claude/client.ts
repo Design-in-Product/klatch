@@ -2,7 +2,7 @@ import Anthropic from '@anthropic-ai/sdk';
 import { EventEmitter } from 'events';
 import { getMessages, getChannel, updateMessage, updateChannelCompaction, getProjectForChannel, getFileArtifactsForMessages, createFileArtifact, createCarriedContextArtifact, createToolUseArtifact, createFileWithMessageRef, getChannelFiles, getProjectFiles } from '../db/queries.js';
 import type { Entity, Channel, Project, Message, MessageArtifact, MessageStopReason, StreamEvent } from '@klatch/shared';
-import { DEFAULT_MODEL, isDefaultChannelPreamble } from '@klatch/shared';
+import { DEFAULT_MODEL, isDefaultChannelPreamble, DEFAULT_CHANNEL_PREAMBLE } from '@klatch/shared';
 import { readFile, isTextFile, isImageFile, saveFile } from '../files/storage.js';
 import { buildCarriedContextBlock, RECALL_TOOL_NAME } from './carried-context.js';
 import {
@@ -507,6 +507,22 @@ export function buildSystemPrompt(entity: Entity, channelPreamble?: string, chan
 
   // 6. Carried context — the entity's recent activity in its other channels
   if (options.carriedContext?.trim()) parts.push(options.carriedContext.trim());
+
+  // Terminal floor. Round 164 justified layer 4's skip by asserting layer 5 is
+  // guaranteed non-empty; Round 165 (Theseus) reached a zero-length assembly
+  // through writers that assertion did not cover, and Round 166 found a third —
+  // `import/entity-resolve.ts` mints imported agents with a *deliberately*
+  // blank prompt, because an imported agent's identity is its transcript and
+  // inventing a role prompt at import time is the drift PREMISE.md warns about.
+  //
+  // So the guarantee cannot be restored at every writer without overwriting a
+  // blank the design wants. It is restored here instead, where it is actually
+  // needed: layer 4's skip is a *fall-through* rule, and this is the thing it
+  // falls through to. A floor is not the layer-5 filter Round 164 refused —
+  // that one removed content and could yield nothing; this one only ever fires
+  // when nothing else did, so it can never sit above a real identity (Round
+  // 162's concern) and never displaces one (Round 164's).
+  if (parts.length === 0) parts.push(DEFAULT_CHANNEL_PREAMBLE);
 
   return parts.join('\n\n');
 }

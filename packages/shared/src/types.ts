@@ -5,6 +5,7 @@ export const AVAILABLE_MODELS = {
   'claude-opus-4-6': { label: 'Opus 4.6', description: 'Prior-generation Opus' },
   'claude-sonnet-5': { label: 'Sonnet 5', description: 'Newest Sonnet — balanced speed and quality (new tokenizer: ~1.3× tokens vs 4.6)' },
   'claude-sonnet-4-6': { label: 'Sonnet', description: 'Balanced speed and quality' },
+  'claude-fable-5-1': { label: 'Fable 5.1', description: 'Newest Fable — frontier capability, export-control-cleared' },
   'claude-fable-5': { label: 'Fable 5', description: 'Frontier capability, export-control-cleared' },
   'claude-haiku-4-5-20251001': { label: 'Haiku', description: 'Fastest, most compact' },
 } as const;
@@ -159,6 +160,11 @@ export type EffortLevel = 'low' | 'medium' | 'high' | 'xhigh' | 'max';
  */
 export function fallbackEffortLevels(modelId: string): EffortLevel[] {
   const FIVE_LEVEL = new Set([
+    // `claude-fable-5-1` verified against the live Models API 2026-09-07, not
+    // inferred from Fable 5: `capabilities.effort` reports all five supported.
+    // The comment above is the reason to check rather than assume — a
+    // wrong-but-present entry here disables real levels in the offline picker.
+    'claude-fable-5-1',
     'claude-fable-5',
     'claude-opus-5',
     'claude-opus-4-8',

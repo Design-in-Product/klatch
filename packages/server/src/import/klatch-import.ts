@@ -303,6 +303,15 @@ export function importKlatchPackage(params: KlatchImportParams): KlatchImportOut
             e.handle || null,
             e.model || DEFAULT_MODEL,
             e.effort || 'high',
+            // Preserved, not substituted. Theseus (Round 165) proposed a
+            // `|| DEFAULT_CHANNEL_PREAMBLE` here alongside the PATCH fix; the
+            // PATCH fix landed and this one deliberately did not. `e.prompt` is
+            // the agent's prompt as it stood on the sending instance, and a
+            // blank one is very often that instance's own minted-on-import
+            // blank (`entity-resolve.ts`) — writing boilerplate over it would
+            // manufacture a role prompt for an agent whose identity is its
+            // transcript. The zero-length-assembly risk this leaves open is
+            // closed by the terminal floor in `buildSystemPrompt`. Round 166.
             e.prompt || '',
             e.color || '#3B82F6',
             JSON.stringify(reflections),

@@ -24,6 +24,7 @@ import {
   getAllProjects,
 } from '../db/queries.js';
 import type { Channel, Entity, Project } from '@klatch/shared';
+import { DEFAULT_CHANNEL_PREAMBLE } from '@klatch/shared';
 
 // Mock the claude client streaming (not needed for prompt assembly tests)
 vi.mock('../claude/client.js', async () => {
@@ -356,10 +357,17 @@ describe('buildSystemPrompt — 4-layer assembly', () => {
     expect(prompt).toBe('Hello.');
   });
 
-  it('all layers empty returns empty string', () => {
+  // Was `expect(prompt).toBe('')` until Round 166 (2026-09-07). That assertion
+  // pinned the exact state Theseus reached from the endpoint in Round 165 and
+  // named a defect: every layer empty means the send sites pass
+  // `system: undefined`, so an agent goes out with no system prompt at all.
+  // `buildSystemPrompt` now floors at the boilerplate when — and only when —
+  // nothing else assembled. The layer-skipping this file is really about is
+  // unchanged and still pinned by the four cases above.
+  it('all layers empty falls through to the boilerplate floor (Round 166)', () => {
     const entity = makeEntity({ systemPrompt: '' });
     const prompt = buildSystemPrompt(entity, '', makeChannel({ source: 'native' }), null);
-    expect(prompt).toBe('');
+    expect(prompt).toBe(DEFAULT_CHANNEL_PREAMBLE);
   });
 });
 
