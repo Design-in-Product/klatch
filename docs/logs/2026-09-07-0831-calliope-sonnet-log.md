@@ -38,3 +38,47 @@ workspaces.
 **No-op fire on product/coordination work** — nothing required of this seat beyond verification.
 No mail moved to `read/` (Iris's own memo is hers to move once Daedalus's writer-side fix
 closes the parent thread, not mine).
+
+## 12:32 PT (MID fire)
+
+`git log --oneline fbe3102..HEAD` (my own 08:31 START checkpoint) showed five new commits: Round
+166 (Daedalus, `b88fb2d`) and its mail, Round 167 (Theseus, `34e1787`) and its mail, and Theseus's
+own wrap-verification log. Read both round memos in full.
+
+**Round 166 closes the defect my own START-fire entry described as "remains open on his surface."**
+Daedalus re-derived the entity-prompt writer enumeration mechanically (grepped every INSERT/UPDATE
+call site) rather than trusting Round 164's count of three or Round 165's count of five — six
+writers total, three can blank. The sixth, `import/entity-resolve.ts:93`, mints `''` on purpose:
+an imported agent's identity is its transcript, not a role prompt invented at import time.  Ruled:
+adopt Theseus's PATCH one-liner (`entities.ts:140`, substitutes the shared preamble, not a 400),
+decline his klatch-import one-liner (would manufacture the exact prompt writer six refuses), and
+move the actual guarantee to `buildSystemPrompt`'s assembly floor — one site, not six. Named the
+recurring lesson explicitly: an invariant maintained at N call sites is wrong-shaped when N keeps
+being wrong. 12 new tests, server 1535→1547, no endpoint drive by design.
+
+**Round 167 verified it at a real endpoint.** Theseus re-pointed his probe: 36/36, all five of
+Round 165's failures closed, verified with a stricter predicate (the floor string must not appear
+*anywhere* in the assembled text, not just leave it non-empty — catches a floor joined after real
+content). Four open items filed as measurements, none a defect in the floor: uneven layer-6
+delivery by room type for blank-identity agents, floor-firing unaccounted-for in `prompt-debug`,
+an unreachable-from-UI `PATCH null` 500, and a client-side-only dirty-tracking coupling holding the
+substitute/preserve split apart. All four routed to Daedalus or filed as measurement, none opens a
+new needs-you item.
+
+**Rollup refreshed v108→v109.** New banner with full Round 166/167 detail; prior v108 paragraph
+demoted to a one-line "Prior banner, superseded" summary, matching the existing v106/v107
+convention; metrics-strip footnote updated (needs-you count unchanged at 3 — this thread was never
+counted, routed to Daedalus throughout); Paths B/C 🔵 in-flight entry extended through Round 167;
+v109 changelog entry added. Checked every mail and `docs/research/` filename I cited against the
+actual files rather than transcribing from the memos — caught and fixed one self-introduced typo
+in a mail filename (`floor-holds-at-the-endpoint` → `floor-holds`, matching the real file) before
+committing. `docs/ROADMAP.md` re-checked directly — no update needed, its Path C entry describes
+the BUILT status, unaffected by a bugfix/verification arc on top of it.
+
+**Verified, not carried from either memo:** `npm test` — server **1547/1547 (98 files)**, client
+**262/262 (13 skipped)** — matches both agents' claimed counts exactly; `npm run typecheck` clean
+across all three workspaces; `git log origin/main --oneline -3` confirms `b88fb2d` and `34e1787`
+both on `main`, matching local HEAD.
+
+No mail moved to `read/` — both memos are cc's to this seat on a thread still carrying four open
+items on Daedalus's/Theseus's own surface, not this seat's to close.
