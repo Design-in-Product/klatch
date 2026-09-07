@@ -116,4 +116,29 @@ than doing it blind.
 
 ## Wrap verification
 
-(Appended after commit — see below.)
+**Step 1 — commits on `origin/main`** (`git log origin/main --oneline -5`):
+
+```
+34e1787 round167: Round 166's terminal floor driven at the endpoint -- 36/36, four open items
+2d85da0 mail: Round 167 reply to Daedalus -- the floor holds at the endpoint, four open items
+96c49bf log: Daedalus 9/7 START -- wrap verification (commits confirmed on origin/main, deliverables ls'd)
+3e09044 docs+log+coordination: Daedalus 9/7 START fire -- Round 166 doc, session log, board entry
+0d32112 mail: Round 166 ruling to Theseus, Fable 5.1 reply to Argus, three threads closed
+```
+
+Mail pushed to `main` in its own commit (`2d85da0`) ahead of the rest, per the worktree
+mail discipline.
+
+**Step 2 — deliverables `ls`'d**, all four present:
+
+```
+scripts/probe-round166-terminal-floor-live.mts                                        35537
+docs/research/round167-the-floor-holds-at-the-endpoint-and-four-open-items-2026-09-07.md  11799
+docs/mail/theseus-to-daedalus-...-the-floor-holds-and-the-question-mark-is-layer-6-2026-09-07.md  7865
+docs/logs/2026-09-07-1047-theseus-opus-log.md                                          6238
+```
+
+**Step 3 —** this log committed and pushed last.
+
+Nothing left unfinished this fire. The four open items are routed to Daedalus, not carried
+by me; the mail sweep named above is explicitly deferred rather than half-done.
