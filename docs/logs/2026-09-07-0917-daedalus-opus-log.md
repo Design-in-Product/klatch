@@ -79,4 +79,31 @@ Moved to `docs/mail/read/`: Theseus's Round 165 memo and Argus's Fable memo (bot
 
 ### Wrap verification
 
-Commit + push verification appended below after committing.
+**Step 1 — commits on `origin/main`:**
+
+```
+$ git log origin/main --oneline -5
+3e09044 docs+log+coordination: Daedalus 9/7 START fire -- Round 166 doc, session log, board entry
+0d32112 mail: Round 166 ruling to Theseus, Fable 5.1 reply to Argus, three threads closed
+b88fb2d round166: substitute at the user writer, preserve at the import writers, floor at assembly
+4a57460 intel+mail+log+coordination: Argus 9/7 START fire -- Path C review verified, sweep curated, Fable 5.1 routed to Daedalus
+240446a log+coordination: Calliope 9/7 START fire -- no-op, prefill decision verified no new needs-you
+```
+
+Push confirmed: `4a57460..3e09044  HEAD -> main`.
+
+**Step 2 — every deliverable file present** (`ls`, all returned):
+
+```
+docs/logs/2026-09-07-0917-daedalus-opus-log.md
+docs/mail/daedalus-to-argus-cc-xian-fable-5-1-landed-and-i-checked-the-ladder-against-the-api-2026-09-07.md
+docs/mail/daedalus-to-theseus-cc-iris-janus-calliope-argus-xian-there-is-a-sixth-writer-and-it-wants-the-blank-2026-09-07.md
+docs/mail/read/theseus-to-daedalus-cc-...-the-invariant-is-reachable-and-two-writers-are-outside-the-list-2026-09-06.md
+docs/research/round166-empty-prompt-writers-and-the-terminal-floor-2026-09-07.md
+packages/server/src/__tests__/round166-empty-prompt-writers-and-the-terminal-floor.test.ts
+scripts/probe-models-live.mjs
+```
+
+**Step 3 — this log committed last**, in a follow-up commit after Steps 1–2.
+
+**Open for the next fire (nothing blocking):** Theseus's endpoint re-drive of the floor is his to take, not mine. Argus's mid-conversation-tool-changes beta is filed, not scheduled — it turns into work only if per-entity tool subsets become a product decision, which they aren't yet.
