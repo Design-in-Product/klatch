@@ -47,10 +47,12 @@ const baseProps = {
 };
 
 /**
- * The list checkbox for an agent. Once selected, the name renders twice — the list row
- * and the selection chip — so match on the one that is a <label> wrapping a checkbox.
- * (The sibling suite's helper takes the first match, which only holds while every agent
- * it touches is still unselected; these tests re-click selected rows.)
+ * The list input for an agent (checkbox on a klatch roster, radio on a chat's cap-of-one
+ * roster — real radio semantics, since picking one row there always replaces any other).
+ * Once selected, the name renders twice — the list row and the selection chip — so match
+ * on the one that is a <label> wrapping the input. (The sibling suite's helper takes the
+ * first match, which only holds while every agent it touches is still unselected; these
+ * tests re-click selected rows.)
  */
 function listCheckbox(name: string): HTMLElement {
   const label = screen
@@ -58,7 +60,9 @@ function listCheckbox(name: string): HTMLElement {
     .map((el) => el.closest('label'))
     .find((el): el is HTMLLabelElement => el !== null);
   if (!label) throw new Error(`No picker row found for "${name}"`);
-  return within(label).getByRole('checkbox');
+  const input = label.querySelector('input');
+  if (!input) throw new Error(`No input found in picker row for "${name}"`);
+  return input;
 }
 
 const openChatForm = () => fireEvent.click(screen.getByText('+ New Chat'));
@@ -103,6 +107,29 @@ describe('Path C — the chat form offers existing agents', () => {
 
     fireEvent.click(screen.getByRole('button', { name: 'Klatch' }));
     expect(screen.getByRole('option', { name: /Broadcast/i })).toBeInTheDocument();
+  });
+});
+
+describe('Path C — the chat picker uses real radio semantics, not a checkbox pretending to be one', () => {
+  it('renders radio inputs sharing one name on a chat, checkboxes on a klatch', () => {
+    render(<ChannelSidebar {...baseProps} entities={[ent('e1', 'Alpha'), ent('e2', 'Beta')]} />);
+
+    openChatForm();
+    expect(listCheckbox('Alpha')).toHaveAttribute('type', 'radio');
+    expect(listCheckbox('Alpha')).toHaveAttribute('name', listCheckbox('Beta').getAttribute('name'));
+
+    fireEvent.click(screen.getByRole('button', { name: 'Klatch' }));
+    expect(listCheckbox('Alpha')).toHaveAttribute('type', 'checkbox');
+  });
+
+  it('re-clicking the selected radio still clears it — a native radio would not fire change here', () => {
+    render(<ChannelSidebar {...baseProps} entities={[ent('e1', 'Alpha')]} />);
+    openChatForm();
+
+    fireEvent.click(listCheckbox('Alpha'));
+    expect(listCheckbox('Alpha')).toBeChecked();
+    fireEvent.click(listCheckbox('Alpha'));
+    expect(listCheckbox('Alpha')).not.toBeChecked();
   });
 });
 

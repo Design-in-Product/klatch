@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useEffect, useRef } from 'react';
 import type { Channel, Entity, ModelId, InteractionMode, ChannelType, Message } from '@klatch/shared';
-import { INTERACTION_MODES } from '@klatch/shared';
+import { INTERACTION_MODES, DEFAULT_CHANNEL_PREAMBLE } from '@klatch/shared';
 import { getModelLabel } from './hooks/useModels';
 import { ChannelSidebar } from './components/ChannelSidebar';
 import { CrossRefStrip } from './components/CrossRefStrip';
@@ -523,7 +523,7 @@ export default function App() {
               </svg>
             </div>
             {activeChannel?.systemPrompt &&
-             activeChannel.systemPrompt.trim() !== 'You are a helpful assistant.' && (
+             activeChannel.systemPrompt.trim() !== DEFAULT_CHANNEL_PREAMBLE && (
               <p className="text-xs text-secondary truncate">
                 {activeChannel.systemPrompt}
               </p>

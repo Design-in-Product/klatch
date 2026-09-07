@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import type { Channel, Entity, ChannelType, InteractionMode } from '@klatch/shared';
-import { INTERACTION_MODES } from '@klatch/shared';
+import { INTERACTION_MODES, DEFAULT_CHANNEL_PREAMBLE } from '@klatch/shared';
 import { getModelLabel } from '../hooks/useModels';
 import { KlatchLogo } from './KlatchLogo';
 import { fetchChannelEntities, type Project } from '../api/client';
@@ -122,7 +122,7 @@ export function ChannelSidebar({
     if (!name) return;
     onCreateChannel(
       name,
-      newPrompt.trim() || 'You are a helpful assistant.',
+      newPrompt.trim() || DEFAULT_CHANNEL_PREAMBLE,
       newType === 'klatch' ? 'klatch' : undefined,
       newType === 'klatch' ? newMode : undefined,
       newType === 'klatch' ? (newProjectId || undefined) : undefined,
@@ -140,7 +140,7 @@ export function ChannelSidebar({
     const source = channels.find((ch) => ch.id === sourceId);
     if (!source) return;
     setNewName(`Copy of ${source.name}`);
-    setNewPrompt(source.systemPrompt === 'You are a helpful assistant.' ? '' : source.systemPrompt);
+    setNewPrompt(source.systemPrompt === DEFAULT_CHANNEL_PREAMBLE ? '' : source.systemPrompt);
     setNewMode((source.mode as InteractionMode) || 'panel');
     setNewProjectId(source.projectId || '');
     try {
@@ -628,9 +628,16 @@ export function ChannelSidebar({
                                 }`}
                               >
                                 <input
-                                  type="checkbox"
+                                  type={newType === 'chat' ? 'radio' : 'checkbox'}
+                                  name={newType === 'chat' ? 'chat-agent-picker' : undefined}
                                   checked={checked}
-                                  onChange={() => toggleEntity(ent.id)}
+                                  // A radio's native `change` event doesn't fire when clicking an
+                                  // already-checked one, which would break re-clicking a selected
+                                  // agent to fall back to "new assistant" — so the toggle lives on
+                                  // `click` (fires every press, checkbox or radio) with `onChange`
+                                  // as the no-op React's controlled-input contract requires.
+                                  onClick={() => toggleEntity(ent.id)}
+                                  onChange={() => {}}
                                   disabled={!checked && atCap}
                                   className="accent-accent"
                                 />

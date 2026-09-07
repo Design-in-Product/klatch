@@ -84,8 +84,11 @@ describe('Round 33b T1.1 — App suppresses default systemPrompt in header', () 
   it('App.tsx contains the literal-default-suppression guard', () => {
     const src = readClient('App.tsx');
     // Pin: the conditional renders the prompt ONLY when it's non-default.
-    // Comparison normalization (trim() + literal string) is part of the contract.
-    expect(src).toMatch(/systemPrompt\.trim\(\)\s*!==\s*['"]You are a helpful assistant\.['"]/);
+    // Comparison normalization (trim()) is part of the contract; the default
+    // value itself moved to the shared DEFAULT_CHANNEL_PREAMBLE constant
+    // (Round 162/164) so it isn't a client-local literal anymore.
+    expect(src).toMatch(/systemPrompt\.trim\(\)\s*!==\s*DEFAULT_CHANNEL_PREAMBLE/);
+    expect(src).toMatch(/import\s*\{[^}]*DEFAULT_CHANNEL_PREAMBLE[^}]*\}\s*from\s*['"]@klatch\/shared['"]/);
   });
 });
 

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import type { Entity, ModelId, EffortLevel } from '@klatch/shared';
-import { AVAILABLE_MODELS, ENTITY_COLORS, DEFAULT_ENTITY_ID, DEFAULT_MODEL, DEFAULT_EFFORT } from '@klatch/shared';
+import { AVAILABLE_MODELS, ENTITY_COLORS, DEFAULT_ENTITY_ID, DEFAULT_MODEL, DEFAULT_EFFORT, DEFAULT_CHANNEL_PREAMBLE } from '@klatch/shared';
 import { useModels } from '../hooks/useModels';
 import type { DiscoveredModel } from '../api/client';
 
@@ -188,7 +188,7 @@ function EntityForm({
   // `DEFAULT_EFFORT` remains the floor for the offline case.
   const [effort, setEffort] = useState<EffortLevel | null>(entity?.effort ?? null);
   const effectiveEffort: EffortLevel = effort ?? recommendedEffort ?? DEFAULT_EFFORT;
-  const [systemPrompt, setSystemPrompt] = useState(entity?.systemPrompt ?? 'You are a helpful assistant.');
+  const [systemPrompt, setSystemPrompt] = useState(entity?.systemPrompt ?? DEFAULT_CHANNEL_PREAMBLE);
   const [color, setColor] = useState(entity?.color ?? ENTITY_COLORS[0]);
 
   const handleSubmit = (e: React.FormEvent) => {
