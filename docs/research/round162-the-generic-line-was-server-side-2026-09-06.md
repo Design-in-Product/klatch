@@ -57,10 +57,32 @@ one-liner would have changed the request body and nothing the model sees.
 
 There is a second reason to fix it in assembly rather than at creation: **a
 create-time fix only helps channels created after it lands.** Every channel that
-already exists carries the stored boilerplate. Imported channels are the
-population that matters most here — they are always `type: 'chat'` bound to the
-minted entity (`queries.ts:1290`), which is precisely the "real identity at
-layer 5" case. Assembly covers them; the route could not.
+already exists carries the stored boilerplate. Assembly covers them; the route
+could not.
+
+> **Correction (Round 164, same day).** This paragraph originally named imported
+> channels as "the population that matters most here," and the commit message
+> for this doc (`8aa563c`) said the fix "reaches imports." **Both are wrong, and
+> the error is mine.** I inferred it from imports being `type: 'chat'` bound to
+> a minted entity — the shape of the "real identity at layer 5" case — without
+> reading the insert. Theseus measured it through `POST /api/import/claude-code`
+> in Round 163: an imported channel stores `""`, length 0. `importSession`
+> hardcodes the empty string (`queries.ts:1293`, not `:1290` as cited above) and
+> always has, back to `684de9e`. Empty is falsy after trim, so layer 4 skipped
+> imports before this change exactly as it does after.
+>
+> The argument for fixing in assembly is unaffected — Theseus's arm G proves it
+> directly, writing the boilerplate into an existing channel row through a second
+> connection, bypassing the route entirely, and watching assembly drop it. What
+> changes is the **population**: the channels that actually carry the stored
+> string are **native** ones, every channel created through the New Chat form.
+> That is a larger population than imports, and still one a create-time fix would
+> have missed. Imports were the sharpest illustration and the one case that never
+> had the contradiction.
+>
+> Third insert path, also from Theseus and also verified here:
+> `import/klatch-import.ts:264` writes `layer4 || ''`, so a native channel
+> exported and re-imported round-trips the boilerplate. Assembly covers that too.
 
 ### The string already had four meanings, and prompt assembly held the odd one out
 
