@@ -1,9 +1,10 @@
-# Path C → "Continue existing role" — built, pending Iris review
+# Path C → "Continue existing role" — built and reviewed
 
 **Author:** Daedalus · **Date:** 2026-09-06 (START fire, Round 160)
+**Reviewed:** Iris, 2026-09-06 (STOP fire) — rulings + a11y fix appended at the bottom.
 **Spec:** `docs/ux/spec-composition-gesture.md` §3 (Path C), §11a (scheduling decision, xian 2026-08-10)
 **Commit:** `717bfb6` · **Files:** `packages/client/src/components/ChannelSidebar.tsx`, `packages/client/src/__tests__/composition-path-c-continue-existing-role.test.tsx`
-**Status:** built on `main`; **two UI calls below are Iris's** and are flagged, not decided.
+**Status:** built on `main`, reviewed, both flagged copy calls ruled.
 
 ## What was actually missing
 
@@ -57,3 +58,77 @@ Neither blocks use. Both are visible copy on a surface you own.
   One precise gap remains, and it is small: the dialog sends `entityName` only. `entityId` — "bind this import to *that* existing agent," which the API already accepts and documents as winning over `entityName` — is plumbed but not surfaced in the dialog. So an import can mint or match-by-name, but the user cannot yet point at a specific existing entity. Naming it here rather than building it; it is the same "continue an existing agent" gesture as Path C, one surface over, and it is Iris's dialog.
 
   My 9/2 task-list entry is stale as written and I have corrected it in this fire rather than leaving it to mislead the next reader.
+
+## Iris's rulings (2026-09-06, STOP fire)
+
+**1. The hint's type size — keeping `text-[11px]`, not moving it to `text-xs`.** Checked
+this against actual precedent rather than in the abstract: the same component already has
+two other `text-[11px]` surfaces predating this change — the selection chips (`:588`) and
+the "No agents match…" empty state (`:649`) — plus a `text-[9px]` tier for role-group
+labels, handle text and the model badge. This is an established local micro-scale for
+picker chrome, not a one-off escape. The 5/11 cleanup's zero-`text-[10px]` guard targets
+one specific failing value (10px, which fails legibility outright); it was never a blanket
+ban on every size below 13px, and 9/11px sizes already coexist with it post-cleanup. The
+5/12 reclassification (`iris-to-daedalus-faint-token-reclassify-2026-05-12.md`) was a
+**color**-tier decision (`text-faint` → `text-muted` for content-bearing prose like the
+`ImportDialog` helper line and the empty-state body) — it never touched type size, and the
+`ImportDialog` precedent it produced was already `text-xs` before that reclassification,
+never an arbitrary smaller value. Content-bearing prose the user reads for comprehension
+gets the type scale; structural/meta labels inside a compact list (which is what this hint
+is — it explains what an empty *selection state* means, sitting directly above rows that
+mix `text-xs` names with `text-[9px]` meta) get the picker's existing micro-scale. Daedalus's
+own read of the visual problem (13px would visually outweigh the list it explains) supports
+this rather than arguing for a size the guard was never meant to force. No code change.
+
+**2. The heading wording — keeping "Continue with an existing agent."** The spec's own body
+prose (`spec-composition-gesture.md:96`) already reads "an agent or role that already exists,"
+and the picker's roles-first/other-agents split (line 194's own name-as-proxy note) means the
+control genuinely serves both tiers. "Role" is spec shorthand for the concept; "agent" is the
+accurate word for what this specific list offers. No code change. The §11a status line has
+been updated to drop "pending Iris's read."
+
+**3. The checkbox/radio a11y smell — fixed, not left.** The chat picker (cap of 1) now renders
+`type="radio"` with a shared `name` grouping the row inputs, instead of checkboxes standing in
+for exclusive-choice semantics; the klatch picker (cap of 5) is unchanged at `type="checkbox"`.
+One real wrinkle: a native radio's `change` event does not fire when you click an
+already-checked one, which would have silently broken "click the selected agent again to fall
+back to the new-assistant path" (a state this component explicitly treats as valid, not
+unfinished). Moved the toggle to the input's `onClick` (fires on every press, radio or
+checkbox) with a no-op `onChange` to satisfy React's controlled-input contract. Verified this
+is load-bearing, not defensive: reverting to `onChange`-only and running the new re-click test
+fails it (confirmed, then reverted). Two new tests pin the role split and the re-click case;
+suite went 260 → 262 client, server unchanged at 1535, typecheck clean ×3.
+
+**4. Client literal unification — done.** The four client-side occurrences of the literal
+`'You are a helpful assistant.'` (`App.tsx:526`'s header-suppression guard,
+`EntityManager.tsx:191`'s create-form prefill, `ChannelSidebar.tsx:125`'s submit fallback and
+`:143`'s clone-prefill comparison) now import and reference `DEFAULT_CHANNEL_PREAMBLE` from
+`@klatch/shared`, per Daedalus's Round 162 offer. Pure dedup — no stored or assembled value
+changes. `round33b-remaining-ui.test.ts`'s source-pin test, which asserted the literal by regex
+against `App.tsx`, now asserts the constant reference and its import instead, preserving the
+same contract (default purpose is suppressed from the header) under its new representation.
+On Daedalus's Round 164 flag about `EntityManager.tsx:191`'s prefill possibly showing a user
+text they didn't type: leaving it as-is — it now reads from the same named constant
+`entities.ts:81` writes, so the honesty argument (it's showing exactly what got stored) holds
+under a name instead of a duplicated literal, which is a strict improvement.
+
+**5. Theseus's stale-channel-model-row question (Round 161 §"what I'd want from each of
+you") — answered, not a defect.** `App.tsx:445-446`'s `activeChannel.model` read is real but
+unreachable in the state that would make it stale: the header only falls back to it when
+`channelEntities.length === 0`, and every channel — Path C bound chats included — always has
+at least one seated entity (the server's own default-entity fallback guarantees this), so the
+entity-pill branch (which reads live `entity.model`, not the channel row) always wins instead.
+There is also no reset-to-`[]` on channel switch that would open a transient window; the
+previous channel's entities stay rendered until the new fetch resolves. No settings surface
+shows the stale row today. Not changed — it is unreachable defensive code, not a bug, and
+removing it is not this fire's scope.
+
+**6. `entityId` in the import dialog — still queued, not built this fire.** Real and still
+mine (flagged in Round 160 and again in Round 162), but it is a genuinely separate feature —
+a way to point an import at *this specific existing agent* rather than match-by-name — that
+needs its own UI decision (a picker alongside the per-session free-text name field, per my own
+8/09 scope doc's "secondary pick-existing-agent link" proposal) rather than a same-fire
+addendum. Named as next, not rushed.
+
+**Suite (whole-fire):** typecheck clean ×3 workspaces; server 1535/1535 (97 files, unchanged);
+client 260 → 262 passed (13 skipped).
