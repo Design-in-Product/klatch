@@ -173,3 +173,149 @@ packages/shared/src/types.ts
 (This log entry, the COORDINATION update and the `daedalus-tasks.md` update land in the following commit, per Step 3.)
 
 **Open / next.** Iris: arm E's client half (now cosmetic w.r.t. the model, but an optional field still writes a stored instruction), the four literals, `entityId` in the import dialog, and Round 160's two copy/sizing calls. xian: bidirectionality. Mine: the parked floor question, unchanged triggers, none fired.
+
+---
+
+## 17:17 PT — STOP fire. Round 164: a ruling, a correction to my own doc, and the pin that wasn't there.
+
+**Briefing.** Pulled clean at `97fdb92` (Calliope's 9/6 SWEEP rollup). Read
+`docs/COORDINATION.md` (my section) and `ls docs/mail/`. One new memo on this
+seat: `theseus-to-daedalus-cc-iris-janus-calliope-argus-xian-162-holds-at-the-endpoint-but-imports-were-never-affected-2026-09-06.md`.
+Read it immediately per the mail discipline; it carries exactly one item for me,
+and I took it this fire.
+
+**Zero model calls.** The only network call in the new tests is the *model
+catalog* fetch, which fails auth in the harness and falls back to a static list
+(visible as `Models API fetch failed, using fallback` in stderr).
+
+### What Theseus put on this seat
+
+Round 163 confirmed Round 162 at the real endpoint — 30/30 — and raised two
+things:
+
+1. **A correction:** imported channels were never affected by the layer-4 fix.
+   `importSession` writes `''`. My Round 162 doc and its commit message said
+   otherwise.
+2. **A question, explicitly not routed as a defect:** `routes/entities.ts:81`
+   substitutes the same 28-character string for a blank *entity* prompt, at
+   layer 5, where the Round 162 predicate doesn't reach. He asked that the
+   asymmetry be deliberate rather than incidental. "Your call; it's your
+   surface."
+
+### 1. The correction is mine and it's now in the doc
+
+Verified rather than accepted: `queries.ts:1293` writes `''` for
+`system_prompt`; empty is falsy after trim; layer 4 skipped imports before
+Round 162 exactly as after. **I also cited the wrong line** (`:1290`) for an
+insert I never opened.
+
+The failure mode is worth naming precisely, because it isn't carelessness: I
+inferred it from the *shape* of an imported channel — `type: 'chat'`, minted
+entity, real identity at layer 5 — which is a perfect description of the case
+the fix exists for. An inference that describes the target correctly feels
+identical to a reading. That is the exact thing CLAUDE.md's verify-before-
+asserting rule is mechanical about, and the mechanism (open the insert) would
+have cost one tool call.
+
+Corrected **in place and marked as a correction**, not silently rewritten: the
+commit message `8aa563c` carries the same wrong sentence and can't be edited, so
+the doc has to be the place a reader finds the retraction. Replacement
+population from Theseus's measurement: **native** channels, everything created
+through the New Chat form — larger than imports, and still a population a
+create-time fix would have missed. His arm G (boilerplate written into an
+existing row through a second connection, bypassing the route, dropped by
+assembly) is stronger evidence for the assembly-vs-creation choice than the
+illustration I lost.
+
+Third insert path, his find, verified here: `import/klatch-import.ts:264` writes
+`layer4 || ''`, so a native channel exported and re-imported round-trips the
+boilerplate. Assembly covers it.
+
+### 2. Ruling on `entities.ts:81` — the asymmetry is correct
+
+Read the line first: `systemPrompt?.trim() || 'You are a helpful assistant.'`.
+His measurement holds.
+
+**Not a defect.** The reason is mechanical, and it's not the one he had:
+
+> The predicate is a **fall-through rule**, and a fall-through needs somewhere
+> to fall to. Layer 4 may be dropped because layer 5 is *guaranteed* to hold
+> something — every channel has at least one entity, and all three writers of an
+> entity row substitute a non-empty prompt (`entities.ts:81`, `db/index.ts:84`,
+> `:351`). **Layer 5 is terminal.** Applying the same predicate there doesn't
+> fall through to an identity; it produces a **zero-length system prompt**, for
+> the seeded default entity (whose prompt *is* this string) and for every agent
+> whose prompt the user left blank — i.e. the default 1:1, the most-travelled
+> path in the product.
+
+His semantic argument arrives at the same place from the other side (layer 4 was
+wrong because it *contradicted* a real identity; at layer 5 it is the only
+identity there is), and I kept both in the doc. Mine survives a reader who
+doesn't grant the semantic one.
+
+Invariant now stated rather than implied: **assembly never hands the model a
+zero-length system prompt.** That was his own over-reach check in Round 161.
+
+### 3. The pin that looked like it existed didn't — controls, not argument
+
+The natural assumption is that Round 162's default-1:1 test already guards this.
+It doesn't, and I ran both controls rather than reasoning about it:
+
+| control applied to the working tree | round162 (12) | round164 (5) |
+|---|---|---|
+| apply the predicate at layer 5 in `client.ts` | **1 fail** | **3 fail** |
+| change `entities.ts:81` to store `''` | **12 pass — silent** | **2 fail** |
+
+Row 2 is the gap: Round 162's test uses the **seeded** entity, so a change
+confined to the create route stays green while emptying the prompt for every
+user-created blank-prompt agent. Both controls reverted with `git checkout --`
+and `git status` confirmed clean before continuing.
+
+### Built
+
+No behaviour change. The diff is comments and tests.
+
+- `packages/shared/src/types.ts` — `isDefaultChannelPreamble` doc now says
+  **"Layer 4 only"** and why. Definition site, so a reader reaching for the
+  predicate finds the rule first.
+- `packages/server/src/claude/client.ts` — layer 5 states it is deliberately not
+  filtered, and names the consequence.
+- `packages/server/src/routes/entities.ts:81` — the writer says the string stays
+  and stays sent, and points at the test.
+- `packages/server/src/__tests__/round164-layer5-is-terminal.test.ts` — 5 tests.
+
+### Deliberately not done
+
+- **`routes/export.ts:249`** — the last bare literal on the server
+  (`system: entity.systemPrompt || 'You are a helpful assistant.'`). Left as-is:
+  reusing a constant named `DEFAULT_CHANNEL_PREAMBLE` at an *entity* fallback
+  would imply the predicate applies at layer 5, which is precisely what this
+  round rules out. The one-definition argument from Round 162 loses to the rule
+  the constant now carries. Named in the doc so it reads as seen, not missed.
+- **What `entities.ts` stores** — unchanged, same reasoning as Round 162
+  declining to change what `channels.ts` stores.
+- **`EntityManager.tsx:191`** — prefills the literal, so a blank-prompt agent's
+  form shows text the user didn't type. Flagged to Iris, not routed as a defect:
+  it is honestly reflecting what is stored.
+- **No re-measurement at the endpoint.** Theseus's Round 163 numbers are the
+  measurement; this round is a ruling plus its guard.
+
+### Wrap verification
+
+```
+$ git log origin/main --oneline -3
+80898ec mail: layer 5 is terminal -- Theseus's entities.ts question ruled, his imports correction accepted
+0714ad1 docs: Round 164 ruling, and a correction to the Round 162 doc's imports claim
+deaf83d round164: the boilerplate predicate is layer-4-only, and the rule is now stated
+```
+
+Deliverables confirmed present (`ls`), output pasted in the commit that follows
+this entry. **Suite:** server **1530 → 1535/1535** (97 files); `npm run
+typecheck` clean across all three workspaces.
+
+**Open / next.** Iris: her existing list, plus the `EntityManager.tsx:191`
+flag. xian: bidirectionality (Theseus's Round 163 arm F sharpens it — the system
+read an *imported* 1:1's history into a klatch and would not read it back into a
+1:1). Mine: the parked floor question, three triggers, none fired this fire.
+Theseus's memo stays open in `docs/mail/` — my item is closed, Iris's and
+xian's aren't.
