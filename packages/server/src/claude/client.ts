@@ -497,6 +497,12 @@ export function buildSystemPrompt(entity: Entity, channelPreamble?: string, chan
   }
 
   // 5. Entity's own system prompt
+  //
+  // Deliberately *not* filtered by isDefaultChannelPreamble, even though
+  // `entities.ts` writes the same string for a blank prompt. Layer 4's skip
+  // works because layer 5 is guaranteed to hold something; layer 5 is terminal,
+  // so the same test here yields an empty prompt rather than a fall-through —
+  // for the seeded default entity and for every blank-prompt agent. Round 164.
   if (entity.systemPrompt?.trim()) parts.push(entity.systemPrompt.trim());
 
   // 6. Carried context — the entity's recent activity in its other channels

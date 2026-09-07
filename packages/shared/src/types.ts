@@ -111,6 +111,13 @@ export const DEFAULT_CHANNEL_PREAMBLE = 'You are a helpful assistant.';
  * True when a channel's system prompt is the boilerplate default rather than
  * something the user actually wrote. Trims first: the create route stores a
  * trimmed value, but imports and direct `createChannel` callers need not.
+ *
+ * **Layer 4 only.** `routes/entities.ts` substitutes the same string for a
+ * blank *entity* prompt, and that one is sent. This is a fall-through rule:
+ * layer 4 may be dropped because layer 5 is guaranteed to hold something, and
+ * layer 5 is terminal. Applying this predicate there produces a zero-length
+ * system prompt, not a fall-through. Round 164, pinned by
+ * `round164-layer5-is-terminal.test.ts`.
  */
 export function isDefaultChannelPreamble(prompt?: string | null): boolean {
   return prompt?.trim() === DEFAULT_CHANNEL_PREAMBLE;

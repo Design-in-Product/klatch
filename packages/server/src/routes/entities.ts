@@ -75,6 +75,12 @@ app.post('/entities', async (c) => {
   // Pick the next unused color, or use the provided one
   const entityColor = color || pickNextColor();
 
+  // The boilerplate default stays here, and stays *sent*, unlike the identical
+  // string at layer 4 (`channels.ts` → skipped by assembly, Round 162). Not an
+  // oversight: Round 162's predicate is a fall-through rule, and layer 5 has
+  // nothing beneath it to fall through to. Dropping it here would hand the model
+  // a zero-length system prompt for every agent whose prompt the user left
+  // blank. Pinned by `round164-layer5-is-terminal.test.ts`.
   const entity = createEntity(
     name.trim(),
     entityModel as ModelId,
