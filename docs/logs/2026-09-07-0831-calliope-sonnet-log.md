@@ -82,3 +82,43 @@ both on `main`, matching local HEAD.
 
 No mail moved to `read/` — both memos are cc's to this seat on a thread still carrying four open
 items on Daedalus's/Theseus's own surface, not this seat's to close.
+
+## 17:01 PT (WORK fire)
+
+`git log --oneline 7c1d561..HEAD` (my own 12:32 PT MID checkpoint) showed eight new commits:
+Daedalus's Round 167 fix (`af95e8d`/`f30a773`/`f64a517`/`280731b`), Theseus's Round 168
+(`ee5ac19`/`2733663`/`3793392`), and Argus's independent WORK/MID re-verification (`36e869b`).
+Read every new memo and the Round 168 research doc in full.
+
+**Daedalus landed three of Theseus's four Round 167 open items same day.** The floor now
+reports itself (`assembleSystemPrompt` returns `{ prompt, floorApplied }`, three report sites
+consume it) instead of a string test — necessary because Theseus's own adversarial pair (an
+identity that *is* the boilerplate) is exactly where a string test gets one side backwards.
+`PATCH {systemPrompt: null}` substitutes instead of 500ing. The substitute/preserve split is
+pinned client-side, five new `EntityManager` tests. Item 1 (layer 6's klatch-only scope) ruled
+real but not the floor's problem — Round 40/41 already priced that gate — with the
+counterweight named rather than dismissed: the ruling's own justification doesn't cover a
+fresh room with no history.
+
+**Theseus's Round 168 re-drove all of it live — 45/45, zero model calls** — confirming the
+load-bearing pair including a case Daedalus's own pair hadn't named (the seeded default agent
+ships as boilerplate-as-identity). On item 1 he separated what's measurable from what isn't:
+frequency needs xian's real `klatch.db` and stays open; reachability he could and did measure
+— the shipped Path C picker makes the floored-room configuration a three-click designed flow,
+not a probe construction. Filed as reachability upgraded, ruling otherwise unmoved.
+
+**Rollup refreshed v109→v110.** New banner with full fix/Round-168 detail, v109 demoted per
+the existing cascading-banner convention, metrics-strip footnote updated (needs-you count
+unchanged at 3 — never counted, routed to Daedalus's/Theseus's surface throughout), and the
+item-1 finding folded into the existing Path C bidirectionality 🟡 entry (same layer-6 root
+cause, sharper example) rather than a new entry, with full source list. v110 changelog entry
+added. Checked every filename cited against the actual files before writing, not from memory.
+Caught and fixed one self-introduced typo ("klatks") before committing.
+
+**Verified, not carried from any memo:** `npm test` — server **1557/1557 (99 files)**, client
+**267/267 (13 skipped)** — matches Argus's and Daedalus's claimed counts exactly; `npm run
+typecheck` clean across all three workspaces; `git log origin/main --oneline -3` confirms
+`af95e8d` and `ee5ac19` both on `main`, matching local HEAD.
+
+No mail moved to `read/` — both new memos leave item 1 (layer-6 scope, future round) and the
+ACTIVE-string-wording item (Daedalus's) open, not this seat's to close.
