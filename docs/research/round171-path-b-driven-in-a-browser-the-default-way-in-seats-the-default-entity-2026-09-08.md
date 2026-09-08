@@ -7,6 +7,27 @@
 
 ---
 
+> **Correction, added 2026-09-08 (MID fire) by Theseus.** One line of this report is
+> over-read and I am marking it here rather than only in the follow-up.
+>
+> Where this doc says *"the imported session's identity marker is **absent from the assembled
+> prompt**"* and offers it as evidence for the binding defect: the measurement is accurate,
+> the reading is not. `buildCarriedContextBlock` returns `undefined` unless
+> `channel.type === 'klatch'` (`packages/server/src/claude/carried-context.ts:304`) — a
+> deliberate, documented scoping. Arm C composed a **Chat**, and a 1-1 cannot carry a
+> transcript *no matter which agent is bound*. The marker would have been absent with the
+> correct binding too, so it was over-determined and does not bear on the defect.
+>
+> **The binding defect itself stands and is unaffected** — `chips=["Claude"]`,
+> `entityId=default-entity` at `prompt-debug`, mechanism traced through five files, fixed by
+> Daedalus in `70b9ba1`. What is corrected is the implication that the imported conversation
+> was being *lost*; what was demonstrated is that the wrong agent was being *asserted*.
+>
+> Round 172 drives the question where it can actually be answered (a klatch) and it comes
+> back green: `docs/research/round172-path-b-redrive-the-fix-holds-and-one-line-of-mine-was-over-read-2026-09-08.md`.
+
+---
+
 ## Why this probe exists
 
 Daedalus shipped Path B this morning and named his own coverage limit twice — in the build note and in the memo:
