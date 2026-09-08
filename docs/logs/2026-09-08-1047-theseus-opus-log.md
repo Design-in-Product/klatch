@@ -99,3 +99,55 @@ All three commits verified present on `origin/main`. The mail commit is separate
 **Mail state:** Daedalus's inbound stays in the open inbox rather than moving to `read/` — my half is answered, but its Iris half (the shape question) still wants her ruling, and my answer narrows it rather than closing it.
 
 **Still open on my seat from Round 170:** the frequency probe needs one path to the real `klatch.db` from xian. Unchanged this fire; the tool layer still refuses `/Users/xian/Development/klatch/` from this worktree.
+
+---
+
+## 14:50 PT — MID fire. Briefing.
+
+Worktree synced by the wrapper; head at `bc044e5` (Argus's MID entry). Swept `docs/mail/` — **one new memo addressed to me**, landed at 14:47: `daedalus-to-theseus-iris-cc-janus-calliope-argus-xian-you-found-it-and-i-took-both-shapes-2026-09-08.md`. Daedalus fixed Round 171 in `70b9ba1` — the confirm step now exists on the manual path, and `resolveJitSeat` (a new file, `packages/client/src/utils/jitSeat.ts`) refuses the placeholder on the fallback branch. Explicit ask to me: **"re-run your arm B and arm F."**
+
+Taken this fire. Squarely my work unit, explicitly addressed, and re-driving a fix on the round I opened this morning is the cheapest time it will ever be to do it.
+
+## 14:55 PT — Scoped the re-run wider than the ask, deliberately
+
+Round 171's arm B drove one case because the field did not exist. Reading `jitSeat.ts:38` and `entity-resolve.ts:82-85` before writing anything, the fix creates four distinguishable outcomes on that one route — and the two most worth driving are the ones a *careless* version breaks, not the happy path:
+
+- **B3** — a user who *types* "Claude". Resolve returns `matched-by-name` with the id **on the import result**; `resolveJitSeat` treats an id that arrived with the import as an answer. A guard one branch higher refuses this. Daedalus pinned it in a unit test and named it himself.
+- **F1** — the duplicate path on a **named** import, where the channel fallback's answer is a real agent. A guard one branch lower refuses this. **No test in the repo covers it.**
+
+New instrument `scripts/probe-round172-path-b-confirm-step-redrive.mts`, same isolation discipline as Round 171 (`KLATCH_DB` scratch + `CLAUDE_CONFIG_DIR` synthetic tree, both asserted by arm S). Both notice strings are read **out of `ChannelSidebar.tsx`** rather than retyped, so an Iris copy edit fails the probe loudly instead of silently un-asserting it.
+
+## 15:20 PT — First run: 26/27, and the one red was mine
+
+`FAIL [B1] the imported session's own identity text reached the assembled prompt — marker present=false`
+
+I had promoted that check from Round 171's `open` register to `regression`. Went to read the source rather than write it up. `buildCarriedContextBlock` returns `undefined` unless `channel.type === 'klatch'` (`carried-context.ts:304`) — deliberate, documented in the function's own comment, tied to xian's unanswered open question 2 in `composition-continuity-gap-2026-07-19.md`.
+
+**So my own Round 171 line was over-read.** Arm C there composed a **Chat**; a 1-1 cannot carry a transcript no matter which agent is bound. The marker would have been absent with the correct binding too. The measurement was accurate; presenting it as evidence for the binding defect was not. The binding defect itself stands untouched — `chips=["Claude"]`, `entityId=default-entity`, mechanism through five files. What changes is that my sentence implied the conversation was being *lost* when what I'd shown was that the wrong agent was being *asserted*.
+
+Worth recording how I caught it: **only because a check I'd wrongly promoted went red.** As an `open` line it would have reported red forever and I'd have kept believing it meant something it didn't. Running a check is not the same as knowing what a red one means.
+
+Correction filed in three places, not one: a blockquote at the top of the Round 171 doc, the Round 172 doc, and the memo.
+
+## 15:35 PT — Arm K, and the second run
+
+If layer 6 is the only conveyance and layer 6 is klatch-scoped, the question has an answer only in a klatch — and nobody had driven that through the composition gesture. Added arm K: New Klatch → Import an agent → manual path, name `Tarn` → seat → Create Klatch → `prompt-debug`.
+
+**Clean run: 29/29 regression checks pass, 25 measurements, zero open items failing.**
+
+```
+PASS [B1] a named manual-path import seats the agent that was named — chips=["Piper Morgan"] (R171 got ["Claude"])
+PASS [B2] it does NOT seat the shared default entity (the Round 171 defect) — chips=[]
+PASS [B2] the form says out loud that nothing was identified
+PASS [B3] typing the default agent's name still seats it — chips=["Claude"]
+PASS [F1] the guard did not break legitimate recovery — chips=["Wren"]
+PASS [F2] the duplicate path no longer seats the placeholder as if it were an agent — chips=[]
+PASS [K]  the imported session's own text reaches the klatch's assembled prompt — marker present=true
+MEAS [K]  layer 6 — "ACTIVE — 2013 chars carried from "Tarn"'s other channels (2 message(s) from 1 conversation(s))"
+```
+
+Arm K is **PREMISE.md's central claim driven end to end for the first time**: import a conversation from Claude Code, seat it in a klatch you're composing, and the agent arrives carrying what it already said — 2013 characters of it in the prompt the API would be sent, marker inside. Verified on screen too (read `03-B2-blank-unidentified.png` directly): no chip, notice present, picker listing `Claude` and `Piper Morgan` directly below it.
+
+The two browser console errors are both `409 (Conflict)` — arms F1/F2 deliberately re-importing. Expected and accounted for.
+
+**Limits stated, not buried:** `manualEntityName` feeds four call sites (submit `:133`, replace `:175`, fork-again `:198`), each branching on `jsonlFile`. I drove **one of eight** combinations. Single-session Browse import and "can the default entity be deleted" both carried forward unclosed from Round 171.
