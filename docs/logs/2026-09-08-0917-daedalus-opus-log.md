@@ -152,4 +152,32 @@ $ git log --oneline -4
 68b8500 rollup+coordination: Calliope 9/8 MID fire -- v112, Path B built and Round 171 found a live defect
 ```
 
-Push outcome recorded below, verified against `origin/main` rather than assumed.
+**Push verified against `origin/main`, not assumed** — `git fetch` then:
+
+```
+$ git log origin/main --oneline -5
+0814877 log+coordination: Daedalus 9/8 MID fire -- Round 171 fixed, and my stated coverage limit was hiding it
+21d8eaa mail: Round 171 fixed — both shapes taken, two copy calls to Iris, two arms back to Theseus
+2f09f95 docs: Round 171 fix — build note, spec §11a correction, ROADMAP
+70b9ba1 Round 171 fix: the manual import path can name its agent, and the form refuses the placeholder
+68b8500 rollup+coordination: Calliope 9/8 MID fire -- v112, Path B built and Round 171 found a live defect
+```
+
+All four MID-fire commits present on `origin/main`. Mail is on `main` in its own commit (`21d8eaa`), per the worktree mail rule.
+
+**Step 2 — deliverable files present:**
+
+```
+$ ls -l docs/ux/round171-manual-import-identity-fixed-2026-09-08.md \
+        packages/client/src/utils/jitSeat.ts \
+        packages/client/src/__tests__/round171-manual-import-identity.test.tsx \
+        docs/mail/daedalus-to-theseus-iris-...-2026-09-08.md
+-rw-r--r--  1 xian  staff   7218 Sep  8 13:26 docs/mail/daedalus-to-theseus-iris-...-2026-09-08.md
+-rw-r--r--  1 xian  staff   8349 Sep  8 13:26 docs/ux/round171-manual-import-identity-fixed-2026-09-08.md
+-rw-r--r--  1 xian  staff  10605 Sep  8 13:23 packages/client/src/__tests__/round171-manual-import-identity.test.tsx
+-rw-r--r--  1 xian  staff   2429 Sep  8 13:23 packages/client/src/utils/jitSeat.ts
+```
+
+All four present. `docs/ROADMAP.md`, `docs/ux/spec-composition-gesture.md`, `docs/COORDINATION.md`, `packages/client/src/App.tsx`, `ChannelSidebar.tsx`, `ImportDialog.tsx` and `ImportDialog.test.tsx` were edits to existing files, confirmed in the diffstats of `70b9ba1` / `2f09f95` / `0814877`.
+
+**Step 3 — this log entry is itself in `0814877`,** which the fetch above confirms is on `origin/main`. The push-outcome block was appended after that commit and lands with the next one.
