@@ -251,3 +251,153 @@ packages/server/src/__tests__/round167-floor-reported-and-null-prompt.test.ts
 on the floored vs. boilerplate-as-identity pair is his to take — asked for in the memo.
 Item 1's layer-6 scope question is filed as a known asymmetry, not scheduled; it becomes
 work only if frequency data says imported agents actually land in fresh native 1:1s.
+
+---
+
+## 17:17 PT — STOP fire (Round 169): one source for the floor report, and a claim of mine withdrawn
+
+**Session start.** Pulled clean at `7938870` (Calliope's 9/7 WORK rollup, v110). Worktree
+clean, branch `claude/daedalus-cycle`. Read `docs/COORDINATION.md` and swept `docs/mail/`.
+
+**Mail: one new memo, addressed to me.**
+`theseus-to-daedalus-cc-iris-janus-calliope-argus-xian-the-pair-holds-and-your-not-ordinary-is-the-one-thing-that-does-not-2026-09-07.md`
+(Round 168, WORK/MID). Read in full at session start; acted on and replied in the same fire.
+
+### What Theseus's drive established
+
+- **The Round 167 pair holds at the endpoint.** 45 regression / 0 failed / 3 open / 17
+  measurements, two runs line-identical, zero model calls. Same 28 bytes, opposite verdicts:
+  writer-six blank → `7_floor` **ACTIVE**, boilerplate-as-identity → **INACTIVE**.
+- **The case I hadn't named, and should have:** the *seeded default agent every fresh
+  install ships* is a boilerplate-as-identity agent. A string-derived floor report would
+  have mislabelled the first room a new user ever opens. Now pinned.
+- **Round 167 instrument re-run against my refactor: 36/36, byte-identical output** — the
+  best available evidence for the "`buildSystemPrompt` is a thin face" claim, since
+  `export/assemble.ts:80` feeds the result to `generateHandoffBriefing` without returning
+  it and no endpoint can see the string. Theseus checked that rather than assuming it.
+- **Implication, not equivalence, over 12 rooms:** ACTIVE ⟹ 28 bytes (2/2); the converse
+  fails — 5 rooms assemble the constant, only 2 by way of the floor.
+
+### The item handed to me — ruled and fixed
+
+Arm F found a divergence the pair structurally could not: between **sites**, not states.
+Verified at source this session before touching anything:
+
+- `packages/server/src/routes/channels.ts:116` → `'ACTIVE — … substituted so the prompt is not zero-length'`
+- `packages/server/src/routes/aaxt.ts:89` and `:181` → `'ACTIVE — … substituted'`
+- INACTIVE byte-identical at all three.
+
+Same floor state, two strings, depending on which endpoint you asked. Theseus flagged it
+and declined to rule — correctly; it's a contract question, not a measurement.
+
+**Ruling, two parts:**
+
+1. **One source.** `FLOOR_REPORT` exported from `packages/server/src/claude/client.ts`,
+   next to the `assembleSystemPrompt` that computes `floorApplied`. Three sites converted
+   to one-liners. Theseus offered "align them or decide out loud"; I took neither, because
+   aligning three copies leaves three copies and copies are the mechanism. Same move Round
+   167 made one level down (report *from* the assembly, not re-derived per site) — the
+   text was the half of that I left undone.
+2. **The leading verdict token is the contract; the prose after the em-dash is not.**
+   Freezing the full string makes every future improvement to the explanation breaking,
+   and improving it is exactly what Round 162 did for layer 4 and Round 167 did for the
+   floor. Verdict stable and machine-readable, explanation free to get better.
+
+**Which wording won and why that direction:** the longer one — more informative, and
+already what the endpoint under test emitted. So bytes moved **only at the two `aaxt.ts`
+sites**, which Theseus flagged as source-compared rather than endpoint-verified. Given a
+choice of where to move bytes, moving them where nothing is pinned beats moving them under
+a passing probe.
+
+**Trap found while writing the test:** `'INACTIVE'` **contains** `'ACTIVE'`. `startsWith`
+is safe; `includes` reads every room as floored. Theseus's phrasing already said
+`startsWith`; it now fails loudly if someone reaches for the other one.
+
+**Coverage limit written into the test file header rather than left implied:** the two
+`aaxt.ts` sites still cannot be driven without model spend. What pins them is the shared
+constant plus a compile-time reference — not a measurement. The defect class is closed
+**structurally, not observationally**. Recorded so a future reader doesn't read the green
+as endpoint coverage.
+
+### Correction to my own Round 167 ruling — withdrawn, not qualified
+
+I wrote: *"That's reachable but not ordinary… a configuration only a probe constructs."*
+**False.** Theseus's arm J is three facts from shipped client code; the damaging one is
+`roleAgents = filtered.filter((e) => e.name.trim().length > 0)`
+(`ChannelSidebar.tsx:106`). Writer six mints imported agents **from a confirmed name**, so
+a blank-prompt imported agent lands in the picker's **primary tier, by name**, visually
+identical to an agent with a real identity — inside a section my own comment labels Path C,
+in a form whose purpose field says *"Optional — leave empty…"*. Three clicks, no probe.
+
+I asserted it from the shape of the server-side configuration and never checked what the
+client offers. That is the precise failure mode CLAUDE.md's verify-before-asserting rule
+exists for, and it cost Theseus a round to correct.
+
+**What changes: the disposition, not the ruling.** Layer 6's klatch-only scope was priced
+in Round 40/41; widening it is still its own round, and Theseus agrees. But *"probe-only,
+therefore not worth a round"* and *"designed flow of unknown frequency, therefore
+unscheduled pending evidence"* are different states, and only the second is true. Filed as
+the second. His sharpening of my own framing stands unanswered: Round 40's justification is
+*"the channel's own history is already the whole of what it knows there"* — and **a fresh
+Path C room has no history**, so the justification as written doesn't cover the room the
+shipped picker produces.
+
+### Open, and the one input ask
+
+**Blocked on xian — the only open item on this thread.** The frequency question (how often
+a blank-prompt imported agent lands in a fresh native 1:1) cannot be measured from either
+worktree: both `klatch.db`s are synthetic seeding. Theseus checked read-only — 2000
+imported channels, 2 native, 2 entities, **0 messages**. That's a scaling corpus, not a
+record of use. The evidence is *unavailable*, which is a different state from negative.
+**Ask: point us at the real `klatch.db`.** One read-only query over
+`channels`/`entities`/`channel_entities`; Theseus has offered to write it and should, since
+he'll drive it. Three rounds have circled a question one query settles.
+
+**Mail close-discipline:** thread left in `docs/mail/` — item 1 has an open action (xian's
+input), so it stays visible per the close rule. Nothing moved to `read/` this fire.
+
+**No research doc this round**, deliberately: code + one test file + the memo carry it.
+Round 169's substance is one ruling, one refactor and one concession. Consistent with the
+round-track proportionality flag and with the same call made in Round 167.
+
+### Verification
+
+**Tests.** Targeted first, then full:
+
+```
+$ npx vitest run .../round168-floor-report-single-source.test.ts .../round167-floor-reported-and-null-prompt.test.ts
+ ✓ round168-floor-report-single-source.test.ts (4 tests) 34ms
+ ✓ round167-floor-reported-and-null-prompt.test.ts (10 tests) 38ms
+ Test Files  2 passed (2)
+      Tests  14 passed (14)
+
+$ npm test
+ Test Files  20 passed | 13 skipped (33)
+      Tests  267 passed | 13 skipped (280)
+```
+
+`npx tsc --noEmit -p packages/server` — no output, clean.
+
+**Step 1 — commits on `origin/main`:**
+
+```
+$ git push origin HEAD:main
+To github.com:Design-in-Product/klatch.git
+   7938870..6324f09  HEAD -> main
+```
+
+- `70fc176` — round169: one source for the layer-7 floor report, and the prefix is the contract
+- `6324f09` — mail: Round 169 reply to Theseus
+
+**Step 2 — deliverable files present** (`ls`, all returned):
+
+- `packages/server/src/claude/client.ts` (modified — `FLOOR_REPORT` added)
+- `packages/server/src/routes/channels.ts` (modified)
+- `packages/server/src/routes/aaxt.ts` (modified, both sites)
+- `packages/server/src/__tests__/round168-floor-report-single-source.test.ts` (new, 4 tests)
+- `docs/mail/daedalus-to-theseus-cc-iris-janus-calliope-argus-xian-one-source-for-the-floor-report-and-you-are-right-about-the-picker-2026-09-07.md` (new)
+
+**Step 3 — this log section and the COORDINATION entry committed last**, after Steps 1–2.
+
+**Open for the next fire:** nothing blocking on this seat. The layer-6 frequency question
+is parked on xian's input and is not mine to advance without it.
