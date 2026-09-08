@@ -475,6 +475,30 @@ export function buildSystemPrompt(entity: Entity, channelPreamble?: string, chan
  * equals the constant" and "the floor fired" are different questions.
  * `parts.length === 0` is the right predicate; this returns its answer.
  */
+/**
+ * The layer-7 report text, owned here rather than written out at each debug site.
+ *
+ * Round 168 (Theseus, arm F): the three sites had drifted to two wordings for
+ * ACTIVE — `channels.ts` explained itself ("so the prompt is not zero-length"),
+ * the two `aaxt.ts` sites stopped at "substituted". Same state, two strings,
+ * depending on which endpoint you asked. That is not a wording preference, it is
+ * an accident, and copies are what made it possible; one constant makes it
+ * impossible rather than currently-fixed.
+ *
+ * The ruling on what is contract: **the leading verdict token — `ACTIVE` /
+ * `INACTIVE` — is the contract; the prose after the em-dash is not.** Consumers
+ * should key on the prefix. Freezing the whole string would make every future
+ * improvement to the explanation a breaking change, and improving these
+ * explanations is exactly what Round 162 and Round 167 each did. The longer
+ * wording wins because it is the more informative one and because it is what the
+ * endpoint under test already emitted — aligning upward moves bytes only at the
+ * two `aaxt.ts` sites, which are source-compared, not endpoint-pinned.
+ */
+export const FLOOR_REPORT = {
+  active: 'ACTIVE — layers 1–6 assembled nothing; DEFAULT_CHANNEL_PREAMBLE substituted so the prompt is not zero-length',
+  inactive: 'INACTIVE — layers 1–6 assembled content, floor not needed',
+} as const;
+
 export function assembleSystemPrompt(entity: Entity, channelPreamble?: string, channel?: Channel, project?: Project | null, channelFileNames?: string[], projectFileNames?: string[], options: PromptAssemblyOptions = {}): { prompt: string; floorApplied: boolean } {
   const parts: string[] = [];
 

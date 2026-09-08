@@ -7,7 +7,7 @@
 
 import { Hono } from 'hono';
 import { getChannel, getChannelEntities, getProjectForChannel, getChannelFiles, getProjectFiles } from '../db/queries.js';
-import { assembleSystemPrompt } from '../claude/client.js';
+import { assembleSystemPrompt, FLOOR_REPORT } from '../claude/client.js';
 import { buildCarriedContext } from '../claude/carried-context.js';
 import { generateProbes } from '../aaxt/probe-generator.js';
 import { getAuxiliaryInfo } from '../aaxt/auxiliary.js';
@@ -85,9 +85,10 @@ app.post('/channels/:id/aaxt-probe', async (c) => {
     // what the prompt was supposed to convey; without this, a floored assembly
     // looks like an agent given nothing that nonetheless carries 28 characters
     // of instruction. Round 167, Theseus item 2.
-    '7_floor': floorApplied
-      ? 'ACTIVE — layers 1–6 assembled nothing; DEFAULT_CHANNEL_PREAMBLE substituted'
-      : 'INACTIVE — layers 1–6 assembled content, floor not needed',
+    // Round 168: text owned by FLOOR_REPORT so the three sites cannot drift.
+    // This site previously stopped at "substituted"; aligned to the longer,
+    // self-explaining wording prompt-debug already emitted.
+    '7_floor': floorApplied ? FLOOR_REPORT.active : FLOOR_REPORT.inactive,
   };
 
   try {
@@ -177,9 +178,10 @@ app.post('/channels/:id/aaxt-run', async (c) => {
     // what the prompt was supposed to convey; without this, a floored assembly
     // looks like an agent given nothing that nonetheless carries 28 characters
     // of instruction. Round 167, Theseus item 2.
-    '7_floor': floorApplied
-      ? 'ACTIVE — layers 1–6 assembled nothing; DEFAULT_CHANNEL_PREAMBLE substituted'
-      : 'INACTIVE — layers 1–6 assembled content, floor not needed',
+    // Round 168: text owned by FLOOR_REPORT so the three sites cannot drift.
+    // This site previously stopped at "substituted"; aligned to the longer,
+    // self-explaining wording prompt-debug already emitted.
+    '7_floor': floorApplied ? FLOOR_REPORT.active : FLOOR_REPORT.inactive,
   };
 
   try {

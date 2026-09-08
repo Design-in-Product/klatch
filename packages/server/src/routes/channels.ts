@@ -2,7 +2,7 @@ import { Hono } from 'hono';
 import fs from 'fs';
 import path from 'path';
 import { getAllChannelsEnriched, getChannel, getChannelStats, createChannel, updateChannel, deleteChannel, setChannelProject, getChannelEntities, getProjectForChannel, getChannelFiles, getProjectFiles, getEntity } from '../db/queries.js';
-import { assembleSystemPrompt } from '../claude/client.js';
+import { assembleSystemPrompt, FLOOR_REPORT } from '../claude/client.js';
 import { buildCarriedContextBlock } from '../claude/carried-context.js';
 import type { ModelId, InteractionMode, ChannelType } from '@klatch/shared';
 import { INTERACTION_MODES, isDefaultChannelPreamble, DEFAULT_CHANNEL_PREAMBLE } from '@klatch/shared';
@@ -112,9 +112,8 @@ app.get('/channels/:id/prompt-debug', (c) => {
       // floored assembly reads as content from nowhere: every layer above
       // INACTIVE or EMPTY, and 28 characters on the wire. Round 167, Theseus
       // item 2; the same reader-can-tell property Round 162 gave layer 4.
-      '7_floor': floorApplied
-        ? 'ACTIVE — layers 1–6 assembled nothing; DEFAULT_CHANNEL_PREAMBLE substituted so the prompt is not zero-length'
-        : 'INACTIVE — layers 1–6 assembled content, floor not needed',
+      // Round 168: text owned by FLOOR_REPORT so the three sites cannot drift.
+      '7_floor': floorApplied ? FLOOR_REPORT.active : FLOOR_REPORT.inactive,
     },
     assembledPrompt: assembled,
     assembledLength: assembled.length,
