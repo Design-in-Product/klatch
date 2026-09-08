@@ -122,3 +122,61 @@ typecheck` clean across all three workspaces; `git log origin/main --oneline -3`
 
 No mail moved to `read/` — both new memos leave item 1 (layer-6 scope, future round) and the
 ACTIVE-string-wording item (Daedalus's) open, not this seat's to close.
+
+## ~21:35 PT (STOP fire)
+
+`git log --oneline 7938870..HEAD` (my own 17:01 PT WORK checkpoint) showed eight new commits:
+Daedalus's Round 169 (`70fc176`/`6324f09`/`2d9c976`), Argus's independent verification
+(`acb8ae7`), Iris's STOP no-op (`fccfb3a`), and Theseus's Round 170 (`bb11bb1`/`26c6a73`/
+`a836ab9`). Read every new memo in full.
+
+**Round 169 (Daedalus) closes the ACTIVE-string wording gap Round 168 flagged and withdraws a
+claim outright rather than qualifying it.** The three `'7_floor'` report sites had drifted to
+two wordings behind the same verdict — fixed at the source with a new exported `FLOOR_REPORT`
+constant (`client.ts:497`), all three sites now one-liners against it, a new test pinning
+whole-string equality (not just the `startsWith('ACTIVE')` prefix a real consumer would key on)
+and the `'INACTIVE'.includes('ACTIVE')` trap explicitly. On item 1: "That claim is false and
+I'm withdrawing it, not qualifying it... I asserted it from the shape of the server-side
+configuration and never checked what the client offers" — Theseus's arm J showed the picker's
+`name.trim().length > 0` filter puts a blank-identity agent in the primary tier by name, three
+ordinary clicks from the floored room. The layer-6-scope ruling is unmoved; the disposition is
+("designed flow, frequency unscheduled" replaces "probe-only"). Asked xian directly for a
+read-only query against his real `klatch.db`, offering Theseus to write it.
+
+**Round 170 (Theseus) wrote the query and it's genuinely blocked, not deferred.**
+`scripts/probe-round170-floor-frequency.mts` — read-only via SQLite's backup API, splits fresh
+vs. used floored rooms rather than fresh-only as asked (a used one settles the question harder).
+Self-tested against this worktree's own corpus first and it printed a worthless zero — **0
+blank-prompt agents exist in it** — so built a `--fixture` mode with a known answer, all green
+including Round 168's own pair replayed as a self-test. `/Users/xian/Development/klatch` is
+outside every worktree's sandbox, re-checked this fire, not recalled — confirmed a sandbox
+boundary, not the network gap earlier fires assumed. One line filed for xian:
+`npx tsx scripts/probe-round170-floor-frequency.mts /path/to/klatch.db`, or run-it-yourself.
+
+**Rollup refreshed v110→v111.** New banner, metrics-strip footnote sharpened (needs-you count
+unchanged at 3 — still never counted, still routed to Daedalus's/Theseus's surface), Path C
+bidirectionality 🟡 entry extended with both rounds and the concrete one-line ask, v111
+changelog entry added. `FLOOR_REPORT` and its three call sites checked directly in source
+before writing, not taken from either memo's citations. `docs/ROADMAP.md` re-checked — no
+update, still a bugfix/verification arc under the current build status.
+
+**Separately, a real documentation-hygiene finding, not looked for — found while reaching for
+the `.html` mirror to sync it.** `docs/operations/attention-rollup.html` was last touched
+**2026-08-23, v67** (`e2cc718`) — the `.md` is now v111. 44 versions, 15 days, and no
+COORDINATION.md entry flagged it; the last entry to even mention `.html` sync-checking is from
+**2026-08-17 (v49)**. Every rollup entry since then (mine included) let the habit lapse without
+recording the decision to stop — exactly the kind of stale-doc gap CLAUDE.md's
+verify-before-asserting section warns about, found in this seat's own artifact. Did not
+attempt to hand-reconstruct 44 versions of prose into HTML this fire — too large and
+error-prone for a file with no evidence anyone reads it (Janus's 8/9 note: the `.md` is the
+source of truth, the claude.ai artifact republished from it is the actual check-in surface).
+Filed `calliope-to-xian-cc-team-rollup-html-mirror-stale-since-823-2026-09-07.md` asking xian to
+pick: retire the `.html` mirror, or authorize one dedicated catch-up pass and resumed syncing.
+
+**Verified before writing, not carried from any memo:** re-ran the suite myself — server
+**1561/1561 (100 files)**, client **267/267 (13 skipped)** — matches Argus's independently
+reported counts; `npm run typecheck` clean across all three workspaces; `git log origin/main
+--oneline -3` confirms `70fc176` and `26c6a73` both on `main`, matching local HEAD.
+
+No mail moved to `read/` — the floor-report thread's own frequency question stays open on
+xian, and the new `.html`-drift memo is itself the thing awaiting a reply.
