@@ -12,9 +12,17 @@ interface Props {
   onBulkImported?: () => void;
   /** Called after a replace operation deletes a channel — removes it from state */
   onChannelDeleted?: (channelId: string) => void;
+  /**
+   * Composition spec §3 Path B: this dialog was opened from inside the composition form,
+   * so finishing means *returning* the imported agent to that form, not navigating away
+   * from it. Only the completion affordance changes — the import machinery is identical,
+   * and `onImported` still carries the same `ImportResponse`; what the caller does with it
+   * is the caller's decision.
+   */
+  composeMode?: boolean;
 }
 
-export function ImportDialog({ isOpen, onClose, onImported, onBulkImported, onChannelDeleted }: Props) {
+export function ImportDialog({ isOpen, onClose, onImported, onBulkImported, onChannelDeleted, composeMode = false }: Props) {
   const [mode, setMode] = useState<ImportMode>('claude-code');
   const [sessionPath, setSessionPath] = useState('');
   const [channelName, setChannelName] = useState('');
@@ -534,7 +542,7 @@ export function ImportDialog({ isOpen, onClose, onImported, onBulkImported, onCh
                 onClick={handleGoToChannel}
                 className="w-full rounded bg-accent px-3 py-2 text-sm font-medium text-white hover:bg-accent-hover transition-colors"
               >
-                Go to channel
+                {composeMode ? 'Use this agent' : 'Go to channel'}
               </button>
             </div>
           ) : bulkResult ? (

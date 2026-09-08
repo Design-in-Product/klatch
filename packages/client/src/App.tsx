@@ -56,6 +56,12 @@ export default function App() {
   const [showExportReview, setShowExportReview] = useState(false);
   const [showEntityManager, setShowEntityManager] = useState(false);
   const [showImportDialog, setShowImportDialog] = useState(false);
+  // Composition spec §3 Path B: the import dialog is the same dialog either way; what
+  // differs is where a finished import goes. Opened from the sidebar it navigates to the
+  // imported channel; opened from inside the setup form it hands the agent back to that
+  // form, which is still mounted underneath.
+  const [importForComposition, setImportForComposition] = useState(false);
+  const [jitImport, setJitImport] = useState<{ entityId?: string; token: number } | null>(null);
   const [projects, setProjects] = useState<Project[]>([]);
   const [activeProjectId, setActiveProjectId] = useState<string | null>(null);
   const [sendError, setSendError] = useState<string | null>(null);
@@ -455,7 +461,16 @@ export default function App() {
         onSelectChannel={handleSelectChannel}
         onCreateChannel={handleCreateChannel}
         onOpenEntities={() => setShowEntityManager(true)}
-        onOpenImport={() => setShowImportDialog(true)}
+        onOpenImport={() => {
+          setImportForComposition(false);
+          setShowImportDialog(true);
+        }}
+        onImportAgent={() => {
+          setImportForComposition(true);
+          setShowImportDialog(true);
+        }}
+        importedAgentId={jitImport?.entityId}
+        importToken={jitImport?.token}
         projects={projects}
         entities={allEntities}
         onOpenProjectSettings={(projectId) => {
@@ -632,25 +647,50 @@ export default function App() {
       {/* Import Dialog */}
       <ImportDialog
         isOpen={showImportDialog}
+        composeMode={importForComposition}
         onClose={() => {
           setShowImportDialog(false);
+          setImportForComposition(false);
           // Always re-fetch channels on close — an import may have completed
           // before the user dismissed via backdrop/X instead of "Done" button,
           // and we need the enriched projectName from the JOIN.
           fetchChannels().then(setChannels).catch(console.error);
+          // Same reasoning for agents: an import mints one, and until Path B the
+          // registry was only ever loaded at mount — so a newly imported agent did
+          // not appear in the picker until a reload.
+          fetchEntities().then(setAllEntities).catch(console.error);
         }}
         onImported={(result) => {
-          // Refresh channels and navigate to the imported channel
+          const compose = importForComposition;
           fetchChannels().then((chs) => {
             setChannels(chs);
-            setActiveChannelId(result.channelId);
-          });
+            // Path B keeps the user in the setup form they opened this from; navigating
+            // to the imported channel would discard the half-composed roster.
+            if (!compose) setActiveChannelId(result.channelId);
+          }).catch(console.error);
+          fetchEntities().then(setAllEntities).catch(console.error);
+          if (compose) {
+            if (result.entityId) {
+              setJitImport({ entityId: result.entityId, token: Date.now() });
+            } else {
+              // The duplicate path ("View existing") synthesizes its result from the
+              // conflict payload, which carries no entity. Ask the channel instead —
+              // the agent is bound there — and fall back to a token with no id, which
+              // the picker reports rather than swallowing.
+              fetchChannelEntities(result.channelId)
+                .then((ents) => setJitImport({ entityId: ents[0]?.id, token: Date.now() }))
+                .catch(() => setJitImport({ token: Date.now() }));
+            }
+          }
           setShowImportDialog(false);
+          setImportForComposition(false);
         }}
         onBulkImported={() => {
           // Refresh channels after claude.ai bulk import
-          fetchChannels().then((chs) => setChannels(chs));
+          fetchChannels().then((chs) => setChannels(chs)).catch(console.error);
+          fetchEntities().then(setAllEntities).catch(console.error);
           setShowImportDialog(false);
+          setImportForComposition(false);
         }}
         onChannelDeleted={(deletedId) => {
           // Remove replaced channel from state; navigate away if it was active

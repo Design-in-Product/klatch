@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import type { Channel, Entity, ChannelType, InteractionMode } from '@klatch/shared';
 import { INTERACTION_MODES, DEFAULT_CHANNEL_PREAMBLE } from '@klatch/shared';
 import { getModelLabel } from '../hooks/useModels';
@@ -14,6 +14,21 @@ interface Props {
   onOpenEntities?: () => void;
   onOpenImport?: () => void;
   onOpenProjectSettings?: (projectId: string) => void;
+  /**
+   * Composition spec §3 Path B (just-in-time import): open the import surface *from
+   * inside* the setup form, without leaving it. The caller opens the same dialog it
+   * uses for a standalone import, but in a mode that hands the minted agent back here
+   * instead of navigating to the imported channel.
+   */
+  onImportAgent?: () => void;
+  /** The agent a Path B import minted or bound. Selected into the roster when `importToken` changes. */
+  importedAgentId?: string;
+  /**
+   * Bumped by the caller on every completed Path B import. The effect keys on this and
+   * not on `importedAgentId`, so importing the *same* agent twice — or re-importing
+   * after the user removed the chip — still re-seats it rather than going silent.
+   */
+  importToken?: number;
   projects?: Project[];
   entities?: Entity[];
   isOpen?: boolean;
@@ -30,6 +45,9 @@ export function ChannelSidebar({
   onOpenEntities,
   onOpenImport,
   onOpenProjectSettings,
+  onImportAgent,
+  importedAgentId,
+  importToken,
   projects = [],
   entities = [],
   isOpen,
@@ -45,6 +63,9 @@ export function ChannelSidebar({
   const [newMode, setNewMode] = useState<InteractionMode>('panel');
   const [selectedEntityIds, setSelectedEntityIds] = useState<Set<string>>(new Set());
   const [agentSearch, setAgentSearch] = useState('');
+  // Path B only: said out loud when a completed import could not be seated. Silently
+  // dropping the agent the user just imported is the failure mode worth a line of UI.
+  const [importNotice, setImportNotice] = useState<string | null>(null);
 
   const resetForm = () => {
     setNewName('');
@@ -54,6 +75,7 @@ export function ChannelSidebar({
     setNewMode('panel');
     setSelectedEntityIds(new Set());
     setAgentSearch('');
+    setImportNotice(null);
     setShowForm(false);
   };
 
@@ -78,7 +100,49 @@ export function ChannelSidebar({
     }
   };
 
+  // Path B: a completed just-in-time import seats its agent in the roster being composed.
+  // Keyed on `importToken`, so the caller controls when this fires; `importedAgentId` alone
+  // would go quiet on a repeat import of the same agent.
+  //
+  // Selection by id does not wait on the entity list: `selectedEntityIds` is a set of ids and
+  // the chip renders once the refreshed `entities` prop arrives, so this is correct whether or
+  // not the caller's refetch has landed yet.
+  useEffect(() => {
+    if (!importToken) return;
+    if (!importedAgentId) {
+      // The import finished but no agent came back with it. Reachable: a claude.ai bulk
+      // import (many channels, no single agent to seat) and any path where the channel
+      // has no entity bound. Better to name it than to leave the form unchanged and
+      // let the user conclude the button is broken.
+      setImportNotice('Imported, but no agent came back with it — pick one from the list.');
+      return;
+    }
+    if (selectedEntityIds.has(importedAgentId)) {
+      setImportNotice(null);
+      return;
+    }
+    // Cap 1 (chat) replaces, matching the picker's own radio semantics — the user asked
+    // for this agent most recently, so it wins.
+    if (rosterCap === 1) {
+      setImportNotice(null);
+      setSelectedEntityIds(new Set([importedAgentId]));
+      return;
+    }
+    if (selectedEntityIds.size >= rosterCap) {
+      // The import succeeded and the agent exists; it just cannot be seated here. Say so
+      // rather than letting the gesture appear to have done nothing.
+      setImportNotice(`Imported — the roster is full (${rosterCap}). Remove an agent to seat it.`);
+      return;
+    }
+    setImportNotice(null);
+    setSelectedEntityIds(new Set([...selectedEntityIds, importedAgentId]));
+    // `rosterCap` is read, not tracked: this must fire on a new import, not when the user
+    // flips Chat/Klatch after one.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [importToken, importedAgentId]);
+
   const toggleEntity = (id: string) => {
+    setImportNotice(null);
     setSelectedEntityIds((prev) => {
       if (prev.has(id)) {
         const next = new Set(prev);
@@ -656,6 +720,33 @@ export function ChannelSidebar({
                       <div className="text-[11px] text-muted px-1.5 py-1">No agents match "{agentSearch}".</div>
                     )}
                   </div>
+                </div>
+              )}
+
+              {/* Path B — just-in-time import (composition spec §3, scheduled §11a 2026-08-10).
+                  Deliberately *outside* the `entities.length > 0` gate above: on a fresh install
+                  the registry is empty, and that is exactly the case where the composition
+                  gesture should be the front door for import rather than a dead end. The import
+                  machinery is unchanged — this is the UX integration point §5 named. */}
+              {onImportAgent && (
+                <div className="space-y-1">
+                  <button
+                    type="button"
+                    onClick={onImportAgent}
+                    className="flex items-center gap-1.5 w-full rounded border border-dashed border-line px-2 py-1.5 text-xs text-secondary hover:text-primary hover:bg-hover transition-colors"
+                  >
+                    <svg className="w-3.5 h-3.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+                    </svg>
+                    Import an agent
+                  </button>
+                  {importNotice ? (
+                    <div className="text-[11px] text-muted">{importNotice}</div>
+                  ) : (
+                    <div className="text-[11px] text-muted">
+                      Bring one in from Claude Code or claude.ai — it arrives with its conversation.
+                    </div>
+                  )}
                 </div>
               )}
 
