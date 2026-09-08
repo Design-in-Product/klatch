@@ -26,6 +26,17 @@ export function ImportDialog({ isOpen, onClose, onImported, onBulkImported, onCh
   const [mode, setMode] = useState<ImportMode>('claude-code');
   const [sessionPath, setSessionPath] = useState('');
   const [channelName, setChannelName] = useState('');
+  // The confirm step for the manual path and the .jsonl upload path. Round 171 found
+  // these were the only import routes in this dialog that skipped identity confirmation
+  // altogether: they sent no `entityName`, resolve returned `default`, and the channel
+  // silently bound the placeholder entity. Blank still means "I'm not saying" — the
+  // import proceeds and the caller reports it rather than seating a placeholder.
+  //
+  // Deliberately not pre-filled from a guess the way the Browse rows are. Browse has a
+  // scanned `entityGuess` per session and is confirming twenty at a time; here there is
+  // one session and no guess in hand, and per the rule in `routes/import.ts` a plausible
+  // wrong name is likelier to be waved through than a blank field.
+  const [manualEntityName, setManualEntityName] = useState('');
   const [zipFile, setZipFile] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -119,9 +130,10 @@ export function ImportDialog({ isOpen, onClose, onImported, onBulkImported, onCh
           return;
         }
         // Upload path (JSONL file) or manual path
+        const confirmedName = manualEntityName.trim() || undefined;
         const importResult = jsonlFile
-          ? await uploadClaudeCodeSession(jsonlFile, channelName.trim() || undefined)
-          : await importClaudeCodeSession(sessionPath.trim(), channelName.trim() || undefined);
+          ? await uploadClaudeCodeSession(jsonlFile, channelName.trim() || undefined, undefined, confirmedName)
+          : await importClaudeCodeSession(sessionPath.trim(), channelName.trim() || undefined, undefined, confirmedName);
         if (!jsonlFile && !sessionPath.trim()) return;
         if (importResult.status === 'conflict') {
           setConflict(importResult.conflict);
@@ -158,10 +170,12 @@ export function ImportDialog({ isOpen, onClose, onImported, onBulkImported, onCh
     try {
       await deleteChannelApi(conflict.existingChannelId);
       if (onChannelDeleted) onChannelDeleted(conflict.existingChannelId);
-      // Re-import (now no duplicate exists)
+      // Re-import (now no duplicate exists) — carrying the same confirmed name, since
+      // replacing a channel doesn't change who the session is.
+      const confirmedName = manualEntityName.trim() || undefined;
       const importResult = jsonlFile
-        ? await uploadClaudeCodeSession(jsonlFile, channelName.trim() || undefined)
-        : await importClaudeCodeSession(sessionPath.trim(), channelName.trim() || undefined);
+        ? await uploadClaudeCodeSession(jsonlFile, channelName.trim() || undefined, undefined, confirmedName)
+        : await importClaudeCodeSession(sessionPath.trim(), channelName.trim() || undefined, undefined, confirmedName);
       if (importResult.status === 'success') {
         setConflict(null);
         setResult(importResult.data);
@@ -181,9 +195,10 @@ export function ImportDialog({ isOpen, onClose, onImported, onBulkImported, onCh
     setLoading(true);
     setError(null);
     try {
+      const confirmedName = manualEntityName.trim() || undefined;
       const importResult = jsonlFile
-        ? await uploadClaudeCodeSession(jsonlFile, channelName.trim() || undefined, true)
-        : await importClaudeCodeSession(sessionPath.trim(), channelName.trim() || undefined, true);
+        ? await uploadClaudeCodeSession(jsonlFile, channelName.trim() || undefined, true, confirmedName)
+        : await importClaudeCodeSession(sessionPath.trim(), channelName.trim() || undefined, true, confirmedName);
       if (importResult.status === 'success') {
         setConflict(null);
         setResult(importResult.data);
@@ -230,6 +245,7 @@ export function ImportDialog({ isOpen, onClose, onImported, onBulkImported, onCh
   const handleReset = () => {
     setSessionPath('');
     setChannelName('');
+    setManualEntityName('');
     setZipFile(null);
     setJsonlFile(null);
     setError(null);
@@ -250,6 +266,7 @@ export function ImportDialog({ isOpen, onClose, onImported, onBulkImported, onCh
 
   const switchMode = (newMode: ImportMode) => {
     setMode(newMode);
+    setManualEntityName('');
     setError(null);
     setResult(null);
     setBulkResult(null);
@@ -950,6 +967,31 @@ export function ImportDialog({ isOpen, onClose, onImported, onBulkImported, onCh
                         placeholder="Auto-generated from project + date"
                         className="w-full rounded bg-input border border-line px-3 py-2 text-sm text-primary placeholder-muted focus:outline-none focus:border-accent"
                       />
+                    </div>
+
+                    {/*
+                      The confirm step, on the one route that never had it. Browse rows
+                      carry a scanned guess; a typed path or an uploaded file does not, so
+                      this asks instead of proposing. Left blank the import still runs and
+                      binds nothing — which the composition form now reports rather than
+                      seating a placeholder agent.
+                    */}
+                    <div>
+                      <label htmlFor="import-agent-name" className="block text-sm font-medium text-secondary mb-1">
+                        Agent <span className="text-muted font-normal">(optional)</span>
+                      </label>
+                      <input
+                        id="import-agent-name"
+                        type="text"
+                        value={manualEntityName}
+                        onChange={(e) => setManualEntityName(e.target.value)}
+                        placeholder="Who is this? e.g. Daedalus"
+                        className="w-full rounded bg-input border border-line px-3 py-2 text-sm text-primary placeholder-muted focus:outline-none focus:border-accent"
+                      />
+                      <p className="mt-1 text-xs text-muted">
+                        Matches an existing agent by name, or creates one. Leave blank to import the
+                        transcript without binding it to an agent.
+                      </p>
                     </div>
                   </>
                 )

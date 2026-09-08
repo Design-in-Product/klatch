@@ -29,6 +29,14 @@ interface Props {
    * after the user removed the chip — still re-seats it rather than going silent.
    */
   importToken?: number;
+  /**
+   * The import completed but resolved no identity of its own — the channel is bound to
+   * the default entity as a placeholder, not as an answer. Distinguishes "nothing came
+   * back" (a bulk import, an unbound channel) from "the session never said who it is",
+   * which have the same remedy but are not the same fact. Round 171 (Theseus, 2026-09-08)
+   * found the second case being reported as an agent.
+   */
+  importUnidentified?: boolean;
   projects?: Project[];
   entities?: Entity[];
   isOpen?: boolean;
@@ -48,6 +56,7 @@ export function ChannelSidebar({
   onImportAgent,
   importedAgentId,
   importToken,
+  importUnidentified,
   projects = [],
   entities = [],
   isOpen,
@@ -114,7 +123,11 @@ export function ChannelSidebar({
       // import (many channels, no single agent to seat) and any path where the channel
       // has no entity bound. Better to name it than to leave the form unchanged and
       // let the user conclude the button is broken.
-      setImportNotice('Imported, but no agent came back with it — pick one from the list.');
+      setImportNotice(
+        importUnidentified
+          ? "Imported — the session didn't name an agent. Pick one, or re-import with a name."
+          : 'Imported, but no agent came back with it — pick one from the list.'
+      );
       return;
     }
     if (selectedEntityIds.has(importedAgentId)) {

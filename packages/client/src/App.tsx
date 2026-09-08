@@ -1,6 +1,7 @@
 import React, { useState, useCallback, useEffect, useRef } from 'react';
 import type { Channel, Entity, ModelId, InteractionMode, ChannelType, Message } from '@klatch/shared';
 import { INTERACTION_MODES, DEFAULT_CHANNEL_PREAMBLE } from '@klatch/shared';
+import { resolveJitSeat } from './utils/jitSeat';
 import { getModelLabel } from './hooks/useModels';
 import { ChannelSidebar } from './components/ChannelSidebar';
 import { CrossRefStrip } from './components/CrossRefStrip';
@@ -61,7 +62,7 @@ export default function App() {
   // imported channel; opened from inside the setup form it hands the agent back to that
   // form, which is still mounted underneath.
   const [importForComposition, setImportForComposition] = useState(false);
-  const [jitImport, setJitImport] = useState<{ entityId?: string; token: number } | null>(null);
+  const [jitImport, setJitImport] = useState<{ entityId?: string; unidentified?: boolean; token: number } | null>(null);
   const [projects, setProjects] = useState<Project[]>([]);
   const [activeProjectId, setActiveProjectId] = useState<string | null>(null);
   const [sendError, setSendError] = useState<string | null>(null);
@@ -471,6 +472,7 @@ export default function App() {
         }}
         importedAgentId={jitImport?.entityId}
         importToken={jitImport?.token}
+        importUnidentified={jitImport?.unidentified}
         projects={projects}
         entities={allEntities}
         onOpenProjectSettings={(projectId) => {
@@ -671,14 +673,15 @@ export default function App() {
           fetchEntities().then(setAllEntities).catch(console.error);
           if (compose) {
             if (result.entityId) {
-              setJitImport({ entityId: result.entityId, token: Date.now() });
+              setJitImport({ ...resolveJitSeat(result.entityId), token: Date.now() });
             } else {
-              // The duplicate path ("View existing") synthesizes its result from the
-              // conflict payload, which carries no entity. Ask the channel instead —
-              // the agent is bound there — and fall back to a token with no id, which
-              // the picker reports rather than swallowing.
+              // The import returned no entity — the duplicate path ("View existing")
+              // synthesizes its result from a conflict payload that carries none, and the
+              // manual path resolves none when nothing named the session. Ask the channel,
+              // and let `resolveJitSeat` decide whether the channel's answer is an answer
+              // or the placeholder every unidentified import gets (Round 171).
               fetchChannelEntities(result.channelId)
-                .then((ents) => setJitImport({ entityId: ents[0]?.id, token: Date.now() }))
+                .then((ents) => setJitImport({ ...resolveJitSeat(undefined, ents), token: Date.now() }))
                 .catch(() => setJitImport({ token: Date.now() }));
             }
           }

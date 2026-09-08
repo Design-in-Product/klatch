@@ -103,7 +103,9 @@ describe('ImportDialog', () => {
     await user.type(screen.getByPlaceholderText(/\.jsonl/), '/path/to/session.jsonl');
     await user.click(screen.getByRole('button', { name: 'Import' }));
 
-    expect(importClaudeCodeSession).toHaveBeenCalledWith('/path/to/session.jsonl', undefined);
+    // Trailing `undefined`s: forceImport, then the confirm-step name — the manual path
+    // sends `entityName` since Round 171, and blank means it sends none.
+    expect(importClaudeCodeSession).toHaveBeenCalledWith('/path/to/session.jsonl', undefined, undefined, undefined);
   });
 
   it('shows success state after successful import', async () => {
@@ -204,7 +206,7 @@ describe('ImportDialog', () => {
     await user.type(screen.getByPlaceholderText(/Auto-generated/), 'my-custom-name');
     await user.click(screen.getByRole('button', { name: 'Import' }));
 
-    expect(importClaudeCodeSession).toHaveBeenCalledWith('/path/to/session.jsonl', 'my-custom-name');
+    expect(importClaudeCodeSession).toHaveBeenCalledWith('/path/to/session.jsonl', 'my-custom-name', undefined, undefined);
   });
 
   it('resets state and closes when Cancel is clicked', async () => {
@@ -906,7 +908,7 @@ describe('ImportDialog — conflict resolution', () => {
     });
     // Second call should have forceImport = true
     expect(importClaudeCodeSession).toHaveBeenCalledTimes(2);
-    expect(importClaudeCodeSession).toHaveBeenLastCalledWith('/path/to/session.jsonl', undefined, true);
+    expect(importClaudeCodeSession).toHaveBeenLastCalledWith('/path/to/session.jsonl', undefined, true, undefined);
   });
 
   it('View existing navigates to the existing channel without deleting or duplicating it', async () => {
