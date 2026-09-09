@@ -33,3 +33,21 @@ Theseus's browser drive found exactly the gap that limit predicted, and it's rea
 **Mail:** no memo addressed to Calliope (`ls docs/mail | grep '^xian-to'` empty). Both new memos are cc's on threads open on Daedalus's/Iris's own surfaces — nothing of mine to close. Daedalus's own commit already moved the closed prefill-mechanism thread to `docs/mail/read/`. Re-checked the four standing memos addressed to this seat (Daedalus backfill-sizing, Janus logbook-shape, Janus transport, Theseus Friday-answer) — all present, unchanged from the START-fire check.
 
 COORDINATION.md updated with this fire's entry. Committing and pushing now.
+
+## SWEEP fire, ~17:0x PT
+
+Since the MID checkpoint (`68b8500`), nine new commits landed, none mine: `git log --oneline 68b8500..HEAD`. Read both new memos in full.
+
+**Daedalus fixed Round 171 same day (`70b9ba1`), both shapes at once:** a new optional Agent field on the manual/upload import paths (resolving through `resolveImportEntity`, deliberately not pre-filled — Browse's own rule is that a plausible wrong name is more dangerous than a blank one), plus an extracted `resolveJitSeat` that refuses to seat the placeholder default entity on the fallback branch while still letting a typed "Claude" seat for real. Named his own miss: his own Round 171 START log had already stated the `App.tsx` wiring was untested, and the defect lived exactly there.
+
+**Theseus re-drove it at a real endpoint (Round 172): 29/29 regression checks, 25 measurements, zero model calls.** Widened to five arms, including the two riskiest (guard doesn't over- or under-refuse). Caught and published his own over-read from Round 171: the "identity marker absent from the assembled prompt" line was a correct measurement read as the wrong cause — `buildCarriedContextBlock` never fires outside a klatch by design, and arm C had composed a Chat. The binding defect itself still stood and is independently re-verified. **Arm K, new:** composed a full New Klatch end to end and found the imported transcript's own text in the assembled prompt via `/prompt-debug` — the first live drive of `PREMISE.md`'s central claim, not inferred from source.
+
+**Verified independently before writing anything:** server **1561/1561 (100 files)**, unchanged; client **295/295 (13 skipped)**, up from 282 — exactly the +13 Daedalus stated; `npm run typecheck` clean across all three workspaces (ran all three myself, not taken on citation). `git log origin/main --oneline -3` confirms `b2343e2` on `main`. Checked directly: both new memos, `docs/ux/round171-manual-import-identity-fixed-2026-09-08.md`, `docs/research/round172-path-b-redrive-the-fix-holds-and-one-line-of-mine-was-over-read-2026-09-08.md`, and `docs/research/round172-shots/07-K-klatch-after-import.png` all exist.
+
+**`docs/ROADMAP.md` line 274 found stale, not just re-checked — corrected.** It still read "Still not endpoint-driven: App's wiring... and the single-session Browse import," true as of the Round 171 fix commit (`2f09f95`) but overtaken the same day by Round 172's endpoint drive of that exact wiring. Narrowed to what's still actually true: only the single-session Browse import remains undriven.
+
+**Rollup refreshed v112 → v113:** new banner with full Round 171-fix/Round 172-redrive detail including the self-correction and the arm K milestone; metrics-strip footnote updated (needs-you count unchanged at 3 — this closes the item v112 flagged, never counted toward the total); the Paths B/C 🟡 entry rewritten to reflect the fix and re-verification; new v113 changelog entry appended.
+
+**Mail:** no memo addressed to Calliope (`ls docs/mail | grep '^xian-to'` empty — the rollup-html-mirror-drift memo and Theseus's Round 170 frequency-query ask both remain unanswered). Both new memos are cc's on a thread open on Daedalus's/Theseus's own surfaces (the two Iris copy questions, the two still-open items) — nothing of mine to close. The four standing memos addressed to this seat (Daedalus backfill-sizing, Janus logbook-shape, Janus transport, Theseus Friday-answer) re-checked present, unchanged.
+
+COORDINATION.md updated with this fire's entry. Committing and pushing now.
