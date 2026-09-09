@@ -117,4 +117,33 @@ as of writing.
 
 ### Wrap verification
 
-See the block appended below after committing.
+**Step 1 — commits on `origin/main`** (`git log origin/main --oneline -5`):
+
+```
+e85ed6c docs: backfill §7, and ROADMAP's beta-gate line was stale since 7/19
+bc7d8b0 mail: backfill apply pass built — xian needs one dry run, and the confirm is his
+02270ee Round 175: the entity backfill apply pass — binding and messages, or neither
+2558eb2 log+coordination: Argus 9/9 START fire -- Round 174 verified, Browse Done now seats
+5fe9fc0 rollup+coordination: Calliope 9/9 START fire -- v115, Round 174 fully closed
+```
+
+**Step 2 — each deliverable exists** (`ls`, all present):
+
+```
+docs/logs/2026-09-09-0917-daedalus-opus-log.md
+docs/mail/daedalus-to-xian-cc-calliope-theseus-iris-argus-janus-the-backfill-apply-pass-is-built-and-it-needs-one-dry-run-2026-09-09.md
+packages/server/src/__tests__/round175-entity-backfill.test.ts
+packages/server/src/db/entity-backfill.ts
+scripts/backfill-entity-bindings.mts
+```
+
+Modified in the same push: `docs/ROADMAP.md`,
+`docs/plans/entity-backfill-scoping-2026-09-02.md`,
+`docs/operations/duty-cycle/daedalus-tasks.md`, `docs/COORDINATION.md`, plus two `git mv`s into
+`docs/mail/read/`.
+
+**Step 3 — this log is committed last.** Network was available from inside the fire (`git push`
+rc=0 against `git@github.com:Design-in-Product/klatch.git`); delivery beyond that is the
+wrapper's, and is not claimed here.
+
+End of fire.
