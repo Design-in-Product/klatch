@@ -34,3 +34,21 @@ Pulled: already up to date at `db0a29f` (Daedalus's own 9/8 MID wrap-verificatio
 Three new mail files this window (`daedalus-to-iris-theseus-...path-b-built...`, `theseus-to-daedalus-iris-...i-drove-path-b-in-a-browser...`, `daedalus-to-theseus-iris-...you-found-it-and-i-took-both-shapes...`), all read in full — all addressed among Daedalus/Iris/Theseus, Argus cc-only, no routed question. Cross-pollination brief (9/8) unchanged since the START fire, already read.
 
 No `packages/` changes needed from this seat — verification-only fire, both commits hold up. Committing this log and the COORDINATION.md update.
+
+---
+
+## STOP fire — 2026-09-08 18:01 PT — real `packages/` activity verified: Round 173 closes Theseus's undriven Browse route, and it was broken
+
+Pulled: already up to date at `a8362ca` (Daedalus's own 9/8 STOP wrap-coordination commit). `packages/` diff since my own 9/8 MID checkpoint (`db0a29f`) is **not empty**: `609ddf4` (Daedalus, Round 173) — Theseus's Round 172 named single-session Browse import as undriven by either of them; driven at the component level, it was broken, and in Round 171's own family, one layer over: 171 was a route that didn't *send* the confirmed name, this is a route that didn't *return* the resolved entity. `handleImportSelected` recorded `entityDisposition`/`entityName` off each import result but not `entityId`; `handleGoToBulkChannel` called `onImported` with a channel id and four zeros, so every Browse import reached the composition form through App's fallback branch — judged by the channel's binding, which is `DEFAULT_ENTITY_ID` both for an unidentified import and for a user who confirmed the name "Claude". Theseus's arm B3 failing on the sibling route, not `resolveJitSeat` being wrong.
+
+**Independently verified, not re-trusted:**
+- Read the full diff on `packages/client/src/api/client.ts` and `ImportDialog.tsx` directly — `ClaudeAiImportResponse.imported[]` gains `entityId`; `handleGoToBulkChannel` signature changed from `(channelId: string)` to `(conv: ...imported[number])`, now passes `channelName`/`messageCount`/`artifactCount`/`entityId` through instead of zeros, and `source` is derived from `mode` instead of hardcoded `'claude-ai'` — matches the memo's description exactly, no overclaim.
+- Read `round173-import-identity-on-every-route.test.tsx` (290 lines) in full — the Browse-route describe block uses a properly-typed `SessionInfo`/`SessionBrowseResponse` fixture (the memo's own account of catching an earlier `as never`-cast wrong-shape fixture via a React key-warning is consistent with what's in the file now — no cast present); the six `manualEntityName` call-site tests each assert the confirmed name reaches the right client-call argument position for {submit, replace, fork-again} × {typed, uploaded}, plus a blank-on-upload case.
+- Confirmed the "not fixed" claim (multi-select Browse in compose mode seats nothing) is stated as an open product question in the commit message and the mail, not silently deferred.
+- Read `daedalus-to-theseus-iris-cc-janus-calliope-argus-xian-your-undriven-route-was-broken-and-your-other-five-were-fine-2026-09-08.md` in full — Argus cc-only among Daedalus/Theseus/Iris, no routed question; matches the commit exactly, including the negative-control figure (2/10 fail on revert) and the self-correction about the earlier bad fixture.
+- Checked `docs/ROADMAP.md`'s diff (`0620802`) — the stale "Browse import still not endpoint-driven" line replaced with what the drive found and fixed; accurate against the commit.
+- No other new mail since `db0a29f`: the two other 9/8-dated files in `docs/mail/` (`path-b-built...`, `both-arms-rerun-green...`) both predate my MID checkpoint (`git log --diff-filter=A` confirms `afa504e`/`f00563b`, both already read and logged in the MID entry above).
+
+**Re-ran the suite myself**: `npm test` server **1561/1561** (100 files, unchanged — no server file touched), client **305/305, 13 skipped** (up from 295 — Round 173's 10 new tests, matches the commit's claimed delta exactly). `npm run typecheck` clean across all three workspaces. `git status` clean.
+
+End of day-part cycle. No `packages/` changes needed from this seat — verification-only fire, Round 173 holds up. Committing this log and the COORDINATION.md update.
