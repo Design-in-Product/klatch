@@ -348,3 +348,146 @@ describe('Round 175 — backfill undo', () => {
     expect(getAllEntities().map((e) => e.id)).toContain('e-wren');
   });
 });
+
+/**
+ * Round 178 — the defects Theseus's Round 176 found in the layer above this
+ * module (`docs/research/round176-backfill-cli-driven-end-to-end-2026-09-09.md`).
+ *
+ * Three of them share one shape: an operator mistake — a copied id, a typo, an
+ * underscore where a hyphen belongs — comes back as `Candidates: 0` and exit 0,
+ * which reads as *"your corpus has nothing to fix."* That is the
+ * `resolves-to-default` failure mirrored: a *nothing-to-do* the caller cannot
+ * tell from an answer. The remedy is the same one — name what you did not find.
+ */
+describe('Round 178 — channelIds resolution (Theseus R176 G2/G5)', () => {
+  const ID_A = 'a1b2c3d4-0000-4000-8000-000000000001';
+  const ID_B = 'b7c8d9e0-0000-4000-8000-000000000002';
+  const ID_C = '9f8e7d6c-0000-4000-8000-000000000003';
+
+  function seedThree() {
+    seedImportedChannel({ id: ID_A, opener: 'You are Wren.', p2: ['a'] });
+    seedImportedChannel({ id: ID_B, opener: 'You are Sable.', p2: ['b'] });
+    seedImportedChannel({ id: ID_C, opener: 'You are Rook.', p2: ['c'] });
+  }
+
+  it('takes the 8-character ids the review sheet prints', () => {
+    seedThree();
+    // The exact round trip xian was offered: read the sheet, hand back what you
+    // see. The sheet prints `channelId.slice(0, 8)`.
+    const plan = planEntityBackfill({ channelIds: [ID_A.slice(0, 8), ID_C.slice(0, 8)] });
+
+    expect(plan.filter!.unmatched).toEqual([]);
+    expect(plan.filter!.ambiguous).toEqual([]);
+    expect(plan.summary.candidates).toBe(2);
+    expect(plan.summary.inScope).toBe(3);
+    expect(plan.rows.map((r) => r.channelId).sort()).toEqual([ID_A, ID_C].sort());
+  });
+
+  it('still takes full ids', () => {
+    seedThree();
+    const plan = planEntityBackfill({ channelIds: [ID_B] });
+    expect(plan.summary.candidates).toBe(1);
+    expect(plan.rows[0].channelId).toBe(ID_B);
+    expect(plan.filter!.resolved).toEqual([ID_B]);
+  });
+
+  it('reports an unknown id by name instead of an empty corpus', () => {
+    seedThree();
+    const plan = planEntityBackfill({ channelIds: [ID_A.slice(0, 8), 'deadbeef'] });
+
+    expect(plan.filter!.unmatched).toEqual(['deadbeef']);
+    // The distinction the bare count could not make: one of two asked-for
+    // channels resolved, out of three in scope.
+    expect(plan.summary.candidates).toBe(1);
+    expect(plan.summary.inScope).toBe(3);
+  });
+
+  it('refuses an ambiguous prefix rather than guessing which channel was meant', () => {
+    // Two ids that agree for their first 8 characters — the collision the sheet's
+    // 8-char column can actually produce.
+    const TWIN_1 = 'cafef00d-0000-4000-8000-00000000000a';
+    const TWIN_2 = 'cafef00d-0000-4000-8000-00000000000b';
+    seedImportedChannel({ id: TWIN_1, opener: 'You are Wren.', p2: ['a'] });
+    seedImportedChannel({ id: TWIN_2, opener: 'You are Sable.', p2: ['b'] });
+
+    const plan = planEntityBackfill({ channelIds: ['cafef00d'] });
+
+    expect(plan.filter!.ambiguous).toEqual([{ requested: 'cafef00d', matches: [TWIN_1, TWIN_2] }]);
+    expect(plan.summary.candidates).toBe(0);
+    expect(plan.rows).toEqual([]);
+  });
+
+  it('lets an exact id win over the same string being a prefix of another', () => {
+    seedImportedChannel({ id: 'chan-1', opener: 'You are Wren.', p2: ['a'] });
+    seedImportedChannel({ id: 'chan-12', opener: 'You are Sable.', p2: ['b'] });
+
+    const plan = planEntityBackfill({ channelIds: ['chan-1'] });
+
+    expect(plan.filter!.ambiguous).toEqual([]);
+    expect(plan.rows.map((r) => r.channelId)).toEqual(['chan-1']);
+  });
+
+  it('reports no filter at all when none was asked for', () => {
+    seedThree();
+    const plan = planEntityBackfill();
+    expect(plan.filter).toBeUndefined();
+    expect(plan.summary.inScope).toBe(plan.summary.candidates);
+  });
+});
+
+describe('Round 178 — undo restores added_at (Theseus R176)', () => {
+  const ORIGINAL_ADDED_AT = '2026-01-15 04:05:06';
+
+  it('puts the default binding back with the clock it had, not the undo run’s', () => {
+    seedImportedChannel({ id: 'c1', opener: 'You are Wren.', p2: ['hello'] });
+    getDb()
+      .prepare('UPDATE channel_entities SET added_at = ? WHERE channel_id = ?')
+      .run(ORIGINAL_ADDED_AT, 'c1');
+
+    const applied = applyEntityBackfill(planEntityBackfill());
+    expect(applied.record.channels[0].fromAddedAt).toBe(ORIGINAL_ADDED_AT);
+
+    undoEntityBackfill(applied.record);
+
+    const restored = getDb()
+      .prepare('SELECT added_at FROM channel_entities WHERE channel_id = ? AND entity_id = ?')
+      .get('c1', DEFAULT_ENTITY_ID) as { added_at: string };
+    expect(restored.added_at).toBe(ORIGINAL_ADDED_AT);
+  });
+
+  it('keeps the roster order the default binding had, once a second entity exists', () => {
+    // Why the column matters: `getChannelEntities` orders by `added_at`
+    // (`queries.ts:485`). Without the round trip the restored default carries the
+    // undo's clock and sorts last, behind anything added between apply and undo.
+    seedImportedChannel({ id: 'c1', opener: 'You are Wren.', p2: ['hello'] });
+    getDb()
+      .prepare('UPDATE channel_entities SET added_at = ? WHERE channel_id = ?')
+      .run(ORIGINAL_ADDED_AT, 'c1');
+
+    const applied = applyEntityBackfill(planEntityBackfill());
+
+    getDb().prepare('INSERT INTO entities (id, name) VALUES (?, ?)').run('e-late', 'Late');
+    getDb()
+      .prepare('INSERT INTO channel_entities (channel_id, entity_id, added_at) VALUES (?, ?, ?)')
+      .run('c1', 'e-late', '2026-06-01 00:00:00');
+
+    undoEntityBackfill(applied.record);
+
+    expect(getChannelEntities('c1').map((e) => e.id)).toEqual([DEFAULT_ENTITY_ID, 'e-late']);
+  });
+
+  it('replays a record written before the field existed, with the undo’s clock', () => {
+    seedImportedChannel({ id: 'c1', opener: 'You are Wren.', p2: ['hello'] });
+    const applied = applyEntityBackfill(planEntityBackfill());
+
+    // A v1 record from a run before `fromAddedAt` was recorded.
+    const legacy = JSON.parse(JSON.stringify(applied.record));
+    delete legacy.channels[0].fromAddedAt;
+
+    expect(() => undoEntityBackfill(legacy)).not.toThrow();
+    const restored = getDb()
+      .prepare('SELECT added_at FROM channel_entities WHERE channel_id = ? AND entity_id = ?')
+      .get('c1', DEFAULT_ENTITY_ID) as { added_at: string } | undefined;
+    expect(restored?.added_at).toBeTruthy();
+  });
+});

@@ -110,13 +110,41 @@ export interface BackfillPlanRow {
   p3: number;
 }
 
+/**
+ * What a `channelIds` filter actually resolved to.
+ *
+ * Present only when a filter was supplied. Exists because `Candidates: 0` and
+ * `Candidates: 0 of 72` are different facts and the first one reads like the
+ * second's opposite: a filter that matched nothing looks exactly like a corpus
+ * with nothing to fix. Theseus's Round 176 G2/G5 — the same "a placeholder the
+ * caller cannot tell from an answer" shape that `resolves-to-default` guards,
+ * mirrored.
+ */
+export interface BackfillFilterReport {
+  /** Ids as the operator typed them. */
+  requested: string[];
+  /** Requested ids that matched no in-scope candidate. */
+  unmatched: string[];
+  /** Requested prefixes that matched more than one in-scope candidate. */
+  ambiguous: { requested: string; matches: string[] }[];
+  /** Full channel ids the filter resolved to. */
+  resolved: string[];
+}
+
 export interface BackfillPlan {
   rows: BackfillPlanRow[];
   /** Bases this plan would apply. Echoed so a stored plan explains itself. */
   bases: GuessBasis[];
+  /** Set when `channelIds` was supplied. See `BackfillFilterReport`. */
+  filter?: BackfillFilterReport;
   summary: {
     /** Channels in scope (source filter + bound to the default). */
     candidates: number;
+    /**
+     * Channels in scope *before* any `channelIds` filter. Equal to `candidates`
+     * when no filter was supplied; the denominator in "3 of 72" when one was.
+     */
+    inScope: number;
     apply: number;
     skipped: number;
     /** Distinct names that would mint a new agent. */
@@ -137,6 +165,12 @@ export interface PlanOptions {
   /**
    * Restrict to these channel ids. This is how a human confirm round trips:
    * review the full plan, hand back the ids you approve, apply only those.
+   *
+   * **Matched as prefixes**, because the review sheet prints 8 characters and
+   * the round trip is "copy what you see, hand it back". An entry that matches
+   * more than one candidate is ambiguous and matches *none* of them — see
+   * `BackfillFilterReport`. Full ids work unchanged (an exact match always wins,
+   * even if it is also a prefix of some other id).
    */
   channelIds?: string[];
 }
@@ -214,9 +248,34 @@ export function planEntityBackfill(options: PlanOptions = {}): BackfillPlan {
   }[];
   const byName = new Map(existing.map((e) => [normalizeName(e.name), e.id]));
 
+  // Resolve the operator's ids against the in-scope candidates before planning,
+  // so what a filter did and did not find is reportable rather than inferable
+  // from a row count.
+  let filter: BackfillFilterReport | undefined;
+  let selected: Set<string> | undefined;
+  if (options.channelIds) {
+    const requested = options.channelIds;
+    const unmatched: string[] = [];
+    const ambiguous: { requested: string; matches: string[] }[] = [];
+    const resolved = new Set<string>();
+    for (const want of requested) {
+      const exact = candidates.find((c) => c.id === want);
+      if (exact) {
+        resolved.add(exact.id);
+        continue;
+      }
+      const hits = candidates.filter((c) => c.id.startsWith(want));
+      if (hits.length === 0) unmatched.push(want);
+      else if (hits.length > 1) ambiguous.push({ requested: want, matches: hits.map((c) => c.id) });
+      else resolved.add(hits[0].id);
+    }
+    filter = { requested, unmatched, ambiguous, resolved: [...resolved] };
+    selected = resolved;
+  }
+
   const rows: BackfillPlanRow[] = [];
   for (const ch of candidates) {
-    if (options.channelIds && !options.channelIds.includes(ch.id)) continue;
+    if (selected && !selected.has(ch.id)) continue;
 
     const opener = (openerStmt.get(ch.id) as { content: string } | undefined)?.content ?? '';
     const guess = guessEntityName(opener, ch.project_name ?? undefined);
@@ -266,8 +325,10 @@ export function planEntityBackfill(options: PlanOptions = {}): BackfillPlan {
   return {
     rows,
     bases,
+    filter,
     summary: {
       candidates: rows.length,
+      inScope: candidates.length,
       apply: apply.length,
       skipped: rows.length - apply.length,
       newAgents: [...new Set(apply.filter((r) => r.action === 'minted').map((r) => r.guessName))],
@@ -291,6 +352,19 @@ export interface BackfillUndoChannel {
    * checking it is orphaned — a later import could have bound to it in between.
    */
   mintedHere: boolean;
+  /**
+   * `channel_entities.added_at` on the default binding this run deleted.
+   *
+   * Undo re-INSERTs that row, and without this it would carry the undo's clock
+   * instead of the original's. That column is the roster ordering key
+   * (`queries.ts:485`, `ORDER BY ce.added_at ASC`), so on a channel that gained
+   * a second entity between apply and undo the restored default would sort last
+   * rather than back where it was. Theseus's Round 176.
+   *
+   * Optional: records written before this field existed replay with the undo's
+   * clock, which is the old behaviour, not a new failure.
+   */
+  fromAddedAt?: string | null;
   /** Assistant rows that were stamped `fromEntityId` before the run (P2). */
   p2MessageIds: string[];
   /** Assistant rows that were NULL before the run (P3). Restored to NULL. */
@@ -344,6 +418,9 @@ export function applyEntityBackfill(plan: BackfillPlan): ApplyResult {
     'DELETE FROM channel_entities WHERE channel_id = ? AND entity_id = ?'
   );
   const stamp = db.prepare('UPDATE messages SET entity_id = ? WHERE id = ?');
+  const addedAtOf = db.prepare(
+    'SELECT added_at FROM channel_entities WHERE channel_id = ? AND entity_id = ?'
+  );
 
   for (const row of plan.rows) {
     if (row.action === 'skipped') continue;
@@ -365,6 +442,11 @@ export function applyEntityBackfill(plan: BackfillPlan): ApplyResult {
       const p2MessageIds = assistant.filter((m) => m.entity_id !== null).map((m) => m.id);
       const p3MessageIds = assistant.filter((m) => m.entity_id === null).map((m) => m.id);
 
+      // Read before the DELETE below removes the row it lives on.
+      const fromAddedAt =
+        (addedAtOf.get(row.channelId, DEFAULT_ENTITY_ID) as { added_at: string } | undefined)
+          ?.added_at ?? null;
+
       bind.run(row.channelId, toEntityId);
       unbind.run(row.channelId, DEFAULT_ENTITY_ID);
       for (const m of assistant) stamp.run(toEntityId, m.id);
@@ -374,6 +456,7 @@ export function applyEntityBackfill(plan: BackfillPlan): ApplyResult {
         fromEntityId: DEFAULT_ENTITY_ID,
         toEntityId,
         mintedHere: resolved.disposition === 'minted',
+        fromAddedAt,
         p2MessageIds,
         p3MessageIds,
       } satisfies BackfillUndoChannel;
@@ -405,8 +488,13 @@ export interface UndoResult {
  */
 export function undoEntityBackfill(record: BackfillUndoRecord): UndoResult {
   const db = getDb();
+  // COALESCE, not a bare `?`: `added_at` is NOT NULL DEFAULT datetime('now'),
+  // and binding NULL to the column would violate the constraint rather than
+  // fall through to the default. Records without `fromAddedAt` therefore replay
+  // with the undo's clock, which is what they did before the field existed.
   const bind = db.prepare(
-    'INSERT OR IGNORE INTO channel_entities (channel_id, entity_id) VALUES (?, ?)'
+    `INSERT OR IGNORE INTO channel_entities (channel_id, entity_id, added_at)
+     VALUES (?, ?, COALESCE(?, datetime('now')))`
   );
   const unbind = db.prepare(
     'DELETE FROM channel_entities WHERE channel_id = ? AND entity_id = ?'
@@ -416,7 +504,7 @@ export function undoEntityBackfill(record: BackfillUndoRecord): UndoResult {
   let reverted = 0;
   for (const ch of record.channels) {
     const back = db.transaction(() => {
-      bind.run(ch.channelId, ch.fromEntityId);
+      bind.run(ch.channelId, ch.fromEntityId, ch.fromAddedAt ?? null);
       unbind.run(ch.channelId, ch.toEntityId);
       for (const id of ch.p2MessageIds) stamp.run(ch.fromEntityId, id);
       for (const id of ch.p3MessageIds) stamp.run(null, id);

@@ -20,6 +20,22 @@ export type GuessBasis =
   /** Nothing usable to guess from. The user has to name it. */
   | 'none';
 
+/**
+ * Every `GuessBasis` value, as data — so a caller taking a basis from an
+ * operator (the backfill CLI's `--bases`) can reject an unknown one instead of
+ * casting it through `as any[]` and reporting the resulting all-excluded run as
+ * an empty corpus. Theseus's Round 176 G1.
+ *
+ * The assertion below fails to compile if a member is added to `GuessBasis`
+ * without being added here, so the list cannot drift from the type.
+ */
+export const GUESS_BASES = ['identity-claim', 'project-name', 'none'] as const;
+type _BasesAreExhaustive = Exclude<GuessBasis, (typeof GUESS_BASES)[number]> extends never
+  ? true
+  : never;
+const _basesAreExhaustive: _BasesAreExhaustive = true;
+void _basesAreExhaustive;
+
 export interface EntityNameGuess {
   /** Proposed name. Empty string when basis is 'none'. */
   name: string;
