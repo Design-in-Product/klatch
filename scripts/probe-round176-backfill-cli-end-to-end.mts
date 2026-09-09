@@ -365,7 +365,12 @@ check('G3', 'no argument prints usage', gNoArgs.code === 1 && /usage:/.test(gNoA
 const gDir = cli([DATA]);
 check('G3', 'a directory path fails loudly, not silently', gDir.code !== 0, `exit ${gDir.code} · ${(gDir.err.split('\n')[0] || '').slice(0, 80)}`);
 
-const gNothing = cli([DB, '--apply', '--channels=not-a-real-id']);
+// G4's vehicle changed in Round 179. It used to be `--channels=not-a-real-id`,
+// which after Round 178 is an operator error and refuses (exit 2) — the right
+// answer to a different question. G4's invariant is "there is genuinely nothing
+// to do", so its input must be one that is genuinely not a mistake:
+// `--bases=none` narrows to a basis every row legitimately skips.
+const gNothing = cli([DB, '--apply', '--bases=none']);
 check('G4', '--apply with nothing to move discards the snapshot', gNothing.code === 0 && /Nothing to apply\. Snapshot discarded\./.test(gNothing.out) && backupsBeside().length === 0, `exit ${gNothing.code} · backups beside DB: ${backupsBeside().length}`);
 check('G', 'no operator-error arm mutated the DB', sha(DB) === hashG, sha(DB) === hashG ? 'sha256 unchanged across all of arm G' : 'FILE CHANGED');
 
@@ -525,7 +530,26 @@ if (postUndo !== preApply) {
 }
 const undoTwice = cli([DB, `--undo=${path.join(DATA, recordFile)}`]);
 check('E', 'undo is safe to run twice', undoTwice.code === 0 && dumpTables(DB) === postUndo, `exit ${undoTwice.code}; state after a second undo is identical to state after the first`);
-open_('E', 'undo takes no snapshot of its own', `backfill-entity-bindings.mts:84 guards the \`db.backup()\` with \`if (!undoPath)\`, so \`--undo\` is the one mode that writes to the real database with no backup taken in the same invocation. The apply's backup still exists and covers it, but the memo's "two independent ways back" is two ways back from an *apply*; an undo run has one, and it is a file the operator has to still have.`);
+// Round 179: this was an unconditional `open_` with no paired check, so it kept
+// printing after Daedalus fixed it — the one item in Round 176 that could not
+// close itself. Paired now, and the pairing is on evidence rather than on the
+// line the CLI prints: the backup file has to exist and be a readable database.
+const undoBackupPath = /^Backup \(taken before anything was written\): (.+)$/m.exec(undo.out)?.[1];
+let undoBackupReadable = false;
+if (undoBackupPath && fs.existsSync(undoBackupPath)) {
+  try {
+    const b = new Database(undoBackupPath, { readonly: true, fileMustExist: true });
+    undoBackupReadable = (b.prepare('SELECT COUNT(*) AS n FROM messages').get() as { n: number }).n > 0;
+    b.close();
+  } catch {
+    undoBackupReadable = false;
+  }
+}
+if (undoBackupReadable) {
+  check('E', 'undo takes a snapshot of its own', true, `${path.basename(undoBackupPath!)} — a readable database, taken before undo wrote anything`);
+} else {
+  open_('E', 'undo takes no snapshot of its own', `\`--undo\` is the one mode that writes to the real database with no backup taken in the same invocation (announced path: ${undoBackupPath ?? 'none printed'}). The apply's backup still exists and covers it, but "two independent ways back" is two ways back from an *apply*; an undo run has one, and it is a file the operator has to still have.`);
+}
 
 // ── report ──────────────────────────────────────────────────────────────────
 const failed = checks.filter((c) => c.ok === false);
