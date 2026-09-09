@@ -151,3 +151,94 @@ Arm K is **PREMISE.md's central claim driven end to end for the first time**: im
 The two browser console errors are both `409 (Conflict)` — arms F1/F2 deliberately re-importing. Expected and accounted for.
 
 **Limits stated, not buried:** `manualEntityName` feeds four call sites (submit `:133`, replace `:175`, fork-again `:198`), each branching on `jsonlFile`. I drove **one of eight** combinations. Single-session Browse import and "can the default entity be deleted" both carried forward unclosed from Round 171.
+
+---
+
+## 19:50 PT — STOP fire. Briefing.
+
+Worktree synced by the wrapper; head at `b1538e5` (Iris's 9/8 STOP entry). Swept `docs/mail/` — **one new memo addressed to me**, landed at 19:47: `daedalus-to-theseus-iris-cc-janus-calliope-argus-xian-your-undriven-route-was-broken-and-your-other-five-were-fine-2026-09-08.md`.
+
+Daedalus took all four of my Round 172 carried-forward items. Two closed, one answered, one still xian's:
+
+- **Single-session Browse import** — the one I named as undriven by either of us. He drove it at the component level and it was **broken**, in Round 171's own family one layer over: 171 was a route that didn't *send* the confirmed name, this is a route that didn't *return* the resolved entity. Fixed in Round 173 (`609ddf4`) by carrying `entityId` on the result row.
+- **The other seven call-site combinations** — six drivable, all six were already fine. Null result reported plainly.
+- **Can the default entity be deleted** — not through the API (`routes/entities.ts:171-173` refuses before the existence check), with an honest caveat that the guard is on the route and not in `queries.ts:467`.
+- **Round 170's frequency probe** — still needs one path from xian. Carried.
+
+Explicit ask to me: **a read on multi-select "Done" (`onBulkImported`), which still seats nothing in compose mode.** He declined to guess at it — "with three imports there's no single agent to seat, and 'seat all three' is a product decision" — and recorded it as an open question rather than inventing an answer.
+
+Taken this fire. It is squarely my seat, it is explicitly addressed to me, and the route he just fixed is one I named as undriven — the honest thing is to drive it rather than accept a component-level green on the round I opened.
+
+## 19:55 PT — Scoped it as a verification *and* an affordance question
+
+Read the fix at source before writing the probe: `ImportDialog.tsx:247-259` (`handleGoToBulkChannel`), `App.tsx:665-690` (the two branches), `jitSeat.ts` (unchanged), `ChannelSidebar.tsx:118-150` (the notice effect). Two things that shaped the arms:
+
+1. **`onBulkImported` sets no `jitImport` at all** — not a chip, not a notice. So finishing a Browse import via "Done" is *silent* in compose mode, and that is true for one import as much as for three. Daedalus's framing assumed N > 1; nothing in the code branches on N.
+2. **The result row is a `<button>` with `hover:bg-hover` and no border or fill** — at rest it renders as static text. The seating gesture and the discarding gesture are not equally advertised.
+
+So the probe drives both: the fix's three discriminations (N1/N2/N3), a measurement of *why* the fix was needed (arm X), and the two ways a user can actually finish this dialog (M2 = one session then "Done", M1 = two sessions then "Done").
+
+New instrument `scripts/probe-round174-browse-route-seating-in-a-browser.mts`, same isolation discipline as 171/172 (`KLATCH_DB` scratch + `CLAUDE_CONFIG_DIR` synthetic tree, both asserted by arm S), both notice strings read out of `ChannelSidebar.tsx` rather than retyped. One new fixture per arm in its own project directory — the Browse panel pre-selects every not-yet-imported session, and a distinct cwd per arm both prevents an earlier arm swallowing a later one's fixture (Round 171 lost a run to that) and gives each arm an unambiguous row to click.
+
+## 20:15 PT — Clean run, first try: 17/17, 3 open checks failing
+
+```
+PASS [N1] a Browse import with a confirmed name seats that agent — chips=["Wren"]
+PASS [N1] a Browse-seated chat binds the imported agent, not the default entity — entityId=b51e65f1-… name="Wren"
+PASS [N2] a blank-name Browse import seats nothing — chips=[]
+PASS [N2] the form says out loud that nothing was identified
+PASS [N3] typing the default agent's name on the Browse route still seats it — chips=["Claude"]
+PASS [X]  the two channels are bound identically, so the channel cannot tell them apart
+MEAS [X]  blank=default-entity · typed=default-entity — the row's entityId is the whole difference
+```
+
+**Daedalus's Round 173 fix holds end to end.** N1 goes all the way to `prompt-debug` on the composed channel rather than stopping at the chip. Arm X is the measurement I most wanted: it shows *why* the row's `entityId` was necessary rather than restating his argument — ask the channel and you get one answer for two different truths, one of which is a lie.
+
+**The finding is an affordance, not a binding:**
+
+```
+MEAS [M2] the completion button on this route reads — "Done"
+MEAS [M2] what the form got when the import was finished via "Done" — chips=[] · notice=null
+OPEN [M2] finishing a single-session Browse import via "Done" seats the imported agent — chips=[]
+OPEN [M2] or, failing that, says something about what happened — notice=null
+```
+
+One session, one confirmed name, one minted agent, no ambiguity about what to seat — and the composition form comes back unchanged with nothing said. I read the screenshot directly rather than trusting the assertion: the screen offers exactly one thing that looks like an action, the full-width accent **Done**; the row above it (`r174-m2 — 2026-09-07 (2 messages) → new agent: Tarn`) has no border and no fill and nothing saying it is the seating gesture. The manual path's equivalent primary reads **"Use this agent."** So on this route the primary button is the discarding action and the seating action is unlabelled.
+
+**Softening fact, reported because it is true and cuts against my own headline:** the agent is not lost. The registry refresh on dialog close puts it in the picker (`["Claude","Wren","Tarn"]`), so it is recoverable by hand. This is a gesture that appears to have done nothing, not data loss — and saying so is the difference between a finding and an overclaim.
+
+## 20:25 PT — The answer I gave Daedalus, and where I stopped
+
+His question splits and only half of it is a product decision:
+
+- **N = 1 is not a product question.** The route knows the answer and drops it. Same defect family as 171 and 173: a route holding the evidence that fails to hand it to the form.
+- **N > 1 is,** and it is Iris's. I drove two (`chips=[] · notice=null`, both agents minted). The two shapes I can see are "seat all up to the cap and say what was displaced" and "seat none, say what was imported, let the user pick" — **I have no measurement that decides between them and did not invent one.** Noted that a Chat's roster cap is 1, so seating two is not expressible there; the question is really about Klatches.
+
+One thing separable from the ruling either way: a multi-import that seats nothing has no reason to be *silent*. The notice machinery already exists with copy for two adjacent cases.
+
+Two copy items routed to Iris: the compose-mode vocabulary is inconsistent across the dialog's two import routes, and the result row is the only seating affordance while not looking like one.
+
+**Named as a non-finding before anyone can read it as one:** arm N2's confirm field pre-filled `"n2"`. That is the `project-name` basis guess derived from my fixture's synthetic cwd, behaving exactly as `entity-guess.ts:102-111` documents — its own rationale copy says the guess "names the work, not the agent." I checked the source rather than reporting the odd string. An artifact of my path naming.
+
+## 20:35 PT — Wrap verification
+
+**Step 1 — commits:**
+
+```
+$ git log origin/main --oneline -3
+2f11868 mail: Round 174 to Daedalus and Iris — the Browse fix holds, and "Done" discards the seat
+62321b2 Round 174: the Browse route driven in a browser — the fix holds, "Done" throws it away
+b1538e5 log+coordination: Iris 9/8 STOP fire -- Path B copy ruled, hint-stacking fixed
+```
+
+Both present on `origin/main`. Mail committed separately from the work and pushed to `main` per the worktree mail discipline, so Daedalus and Iris see it in the ordinary place.
+
+**Step 2 — deliverables, each `ls`-verified:** see the run below.
+
+**Step 3 — this log entry and the COORDINATION.md update are the last commit,** after the above.
+
+**Mail state:** Daedalus's inbound stays in the open inbox rather than moving to `read/`. My half is answered, but the multi-select question it raised is still unresolved between him and Iris, and my reply adds an action for him (the N = 1 case). Moving it would hide a live thread.
+
+**Still open on my seat, carried not dropped:**
+- **Round 170's frequency probe** needs one path to the real `klatch.db` from xian. Unchanged this fire; the tool layer still refuses `/Users/xian/Development/klatch/` from this worktree.
+- **Browse multi-select with N ≥ 3, and selections mixing identified and unidentified sessions** — undriven, named so it is not mistaken for covered.
