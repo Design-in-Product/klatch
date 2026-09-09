@@ -147,3 +147,96 @@ rc=0 against `git@github.com:Design-in-Product/klatch.git`); delivery beyond tha
 wrapper's, and is not claimed here.
 
 End of fire.
+
+---
+
+## 13:17 PT (MID/WORK fire) — Round 178: Theseus found four defects in the layer I disclaimed, and all four are closed
+
+**Briefing.** Worktree synced by the wrapper at `fdfb91a`. Read `docs/COORDINATION.md` (my
+section, `:174`) and `docs/mail/`. One memo on my seat, filed 13:17 today:
+`theseus-to-daedalus-xian-...-your-cli-holds-and-the-approve-by-id-workflow-does-not-2026-09-09.md`.
+
+**He took exactly the layer I disclaimed this morning.** My 09:17 "Not claimed" said the CLI
+wiring is exercised by hand, not by a test, and that the module underneath it is unit-tested and
+the wiring above it is not. That sentence is what he tested — real script, real subprocess, real
+argv, real `db.backup()`, against a file-backed DB built by the real `importSession`, verified
+through his own read-only handle in raw SQL. Everything I claimed held at the file level. Six open
+items, four of them mine to fix.
+
+### The defect that mattered, and why it wasn't cosmetic
+
+`--channels` is the only documented path to the approve-by-id shape I offered xian, and it could
+not take the ids the sheet prints: `backfill-entity-bindings.mts:155` printed
+`channelId.slice(0, 8)` while `entity-backfill.ts:219` filtered with `includes` on full uuids.
+Ids copied straight off the sheet → `Candidates: 0`, **exit 0**. It reads as a clean run.
+
+Theseus's framing is the one I adopted: that is **`resolves-to-default` mirrored.** I added that
+skip reason yesterday because "moved 1 channel" would have reported a success for a channel that
+did not move — a placeholder the caller can't tell from an answer. `Candidates: 0` is the same
+lie the other way round: a *nothing-to-do*, indistinguishable from a corpus full of things to do.
+Three of his six findings (G1, G2, G5) are that one shape with different inputs.
+
+### What shipped
+
+- **`--channels` matches unambiguous prefixes.** Exact match wins outright; a prefix matching more
+  than one in-scope candidate matches **none** and is reported ambiguous. Guessing which of two
+  channels an operator meant is worse than refusing.
+- **The plan reports what a filter did *not* find.** New `BackfillFilterReport` (requested /
+  unmatched / ambiguous / resolved) and `summary.inScope`, so the sheet prints
+  `Candidates: 2 of 8 in scope matched your --channels filter` rather than a bare count, and each
+  unresolved entry is echoed by name with a line defining "in scope".
+- **An unresolvable entry refuses the whole run** (exit 2, nothing written, snapshot discarded)
+  rather than applying the subset that resolved. `--channels` is a list of approvals.
+- **`--bases` is validated, not cast.** `GUESS_BASES` exported next to the type in
+  `entity-guess.ts` with a compile-time exhaustiveness assertion, so the validator cannot drift
+  from the union. Unknown value → named error, valid list printed, exit 1.
+- **`undo` restores `channel_entities.added_at`** via `BackfillUndoChannel.fromAddedAt`, read
+  inside the transaction before the DELETE removes the row it lives on. Optional field;
+  `COALESCE(?, datetime('now'))` so older records still replay with the old behaviour.
+- **`--undo` takes its own snapshot.** The `if (!undoPath)` guard is gone. His argument carried
+  it: you reach for `--undo` because something already went wrong.
+
+### Verification
+
+- **His probe, unmodified, against the fixed CLI: 6 open → 2, one new FAIL.** G1, G2, G5 and the
+  `added_at` item all close on their own paired checks. Check count 52 → 51 because the `added_at`
+  branch emits one check instead of a check-plus-`open_` when the dumps match.
+- **The two remaining are both mine to explain, and neither is a live defect:**
+  - Arm A (WAL sidecars beside the real DB) — known, inherited, documented in the CLI header.
+  - Arm E's "undo takes no snapshot" is an **unconditional `open_`** at `:528` with no paired
+    check, so it prints regardless. It is stale — the same run shows undo printing its backup
+    line. I did **not** edit his probe (his round's evidence, and he may be running it); reported
+    it instead.
+- **G4 fails deliberately.** It asserts `--apply` with nothing to move exits 0 and discards the
+  snapshot, using `--channels=not-a-real-id` as its vehicle — which is now precisely the G2 case
+  he asked me to make loud. The invariant still holds and his own run measured it
+  (`backups beside DB: 0`). **I did not want to assert that from reading my own diff**, so
+  `scripts/probe-round178-backfill-operator-error-paths.mts` arm R pins the same claim with an
+  input that is genuinely not an error (`--apply --bases=none`, every candidate legitimately
+  skipping): exit 0, `Nothing to apply. Snapshot discarded.`, 0 backups, sha256 unchanged.
+- **New probe: 26 checks, 0 failed.** Deliberately not a rewrite of his — it pins what *replaced*
+  each defect (refusal text, exit code, on-disk residue) rather than only that the defect is gone.
+  Builds its fixture by spawning his probe's own `R176_ROLE=build` role, so both instruments
+  measure the same corpus.
+- **9 new unit tests**; server **1578 → 1587** across 101 files, client **311 passed / 13
+  skipped** unchanged (no client file touched), `npm run typecheck` clean.
+- **Negative controls**, each applied to the working tree and reverted: prefix matching → exact
+  matching, **3 fail**; `fromAddedAt` → `null` on the undo INSERT, **2 fail**.
+- **A test caught my own fixture, not my code:** my first ids had two channels sharing their first
+  8 characters, so "sheet ids work" failed on a *correct* ambiguity refusal. Fixed the fixture and
+  gave the ambiguous case its own test with ids chosen to collide on purpose.
+
+### Mail
+
+Filed `daedalus-to-theseus-xian-cc-iris-janus-calliope-argus-all-four-fixed-and-your-g4-now-fails-on-purpose-2026-09-09.md`
+— the four fixes, the two notes on his instrument, and the correction xian needs: **`--channels`
+works now**, and the default no-flag run he was told to use was never affected. Left the thread
+in `docs/mail/` rather than closing it: xian's dry run and the §4(c) call are both still open on
+his seat.
+
+### Not claimed
+
+**Still no run against any real corpus.** Every number here is from unit tests or the gitignored
+`.testdata/r176` fixture, which is Theseus's and is 8 channels. The **72 is still unverified**,
+and whether P3 is non-empty on the real corpus remains predicted-from-schema and
+fixture-demonstrated only. Only xian's dry run answers those.

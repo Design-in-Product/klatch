@@ -295,6 +295,16 @@ touched), `npm run typecheck` clean ×3.
    exists so the honest version is available too: review the sheet, hand back the ids you approve,
    apply only those.
 
+   **2026-09-09, Round 178 — that round trip did not work when it was written, and now does.**
+   Theseus drove the CLI as a subprocess (Round 176,
+   `docs/research/round176-backfill-cli-driven-end-to-end-2026-09-09.md`) and found the sheet
+   printing 8-character ids while `--channels` matched full uuids: ids copied straight off the
+   sheet returned `Candidates: 0` and **exit 0**, indistinguishable from a corpus with nothing to
+   fix. `--channels` now matches unambiguous prefixes, so the ids you can see are the ids it
+   takes, and an entry that resolves to nothing — or to more than one channel — is echoed by name
+   and refuses the run rather than applying the subset that did resolve. §4(c) is a live option
+   again, not a documented one.
+
 ### Not claimed
 
 No run against any real corpus. Every number in this section is from unit tests or the gitignored
