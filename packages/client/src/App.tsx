@@ -62,7 +62,7 @@ export default function App() {
   // imported channel; opened from inside the setup form it hands the agent back to that
   // form, which is still mounted underneath.
   const [importForComposition, setImportForComposition] = useState(false);
-  const [jitImport, setJitImport] = useState<{ entityId?: string; unidentified?: boolean; token: number } | null>(null);
+  const [jitImport, setJitImport] = useState<{ entityId?: string; unidentified?: boolean; multipleCount?: number; token: number } | null>(null);
   const [projects, setProjects] = useState<Project[]>([]);
   const [activeProjectId, setActiveProjectId] = useState<string | null>(null);
   const [sendError, setSendError] = useState<string | null>(null);
@@ -473,6 +473,7 @@ export default function App() {
         importedAgentId={jitImport?.entityId}
         importToken={jitImport?.token}
         importUnidentified={jitImport?.unidentified}
+        importMultipleCount={jitImport?.multipleCount}
         projects={projects}
         entities={allEntities}
         onOpenProjectSettings={(projectId) => {
@@ -688,10 +689,18 @@ export default function App() {
           setShowImportDialog(false);
           setImportForComposition(false);
         }}
-        onBulkImported={() => {
-          // Refresh channels after claude.ai bulk import
+        onBulkImported={(count) => {
+          // Refresh channels after a bulk import (claude.ai ZIP, or Browse multi-select)
+          const compose = importForComposition;
           fetchChannels().then((chs) => setChannels(chs)).catch(console.error);
           fetchEntities().then(setAllEntities).catch(console.error);
+          // N === 1 never reaches here — the dialog's own primary button seats it directly
+          // (Round 174). N > 1 in compose mode seats nothing; say so rather than leave the
+          // form silently unchanged, per Theseus's Round 174 finding that a multi-import
+          // reaching "Done" has no reason to go quiet.
+          if (compose && count > 1) {
+            setJitImport({ multipleCount: count, token: Date.now() });
+          }
           setShowImportDialog(false);
           setImportForComposition(false);
         }}

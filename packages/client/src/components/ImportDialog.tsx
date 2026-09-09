@@ -8,8 +8,11 @@ interface Props {
   isOpen: boolean;
   onClose: () => void;
   onImported: (result: ImportResponse) => void;
-  /** Called after claude.ai bulk import — refreshes channel list */
-  onBulkImported?: () => void;
+  /** Called after a bulk import (claude.ai ZIP, or Browse multi-select) — refreshes channel
+   *  list. Carries the imported count so a compose-mode caller can tell a single-agent
+   *  import (which the primary button seats directly, bypassing this) from a multi-agent
+   *  one (which does not — see Round 174, Theseus, 2026-09-08). */
+  onBulkImported?: (count: number) => void;
   /** Called after a replace operation deletes a channel — removes it from state */
   onChannelDeleted?: (channelId: string) => void;
   /**
@@ -233,7 +236,7 @@ export function ImportDialog({ isOpen, onClose, onImported, onBulkImported, onCh
   };
 
   const handleBulkDone = () => {
-    if (onBulkImported) onBulkImported();
+    if (onBulkImported) onBulkImported(bulkResult?.imported.length ?? 0);
     handleReset();
   };
 
@@ -633,11 +636,22 @@ export function ImportDialog({ isOpen, onClose, onImported, onBulkImported, onCh
                   ))}
                 </div>
               )}
+              {/* Round 174 (Theseus, 2026-09-08): in compose mode with exactly one imported
+                  row, there is no ambiguity about what to seat — the row already resolved
+                  it. The primary button does that seating directly, in the manual path's
+                  own words ("Use this agent"), instead of closing and leaving the only
+                  seating affordance an unlabeled, hover-only row. N > 1 stays "Done" and
+                  seats nothing — which agent(s) to seat from a multi-import is a real
+                  product question, not decided here; see docs/ux/browse-done-seating-2026-09-09.md. */}
               <button
-                onClick={handleBulkDone}
+                onClick={
+                  composeMode && bulkResult.imported.length === 1
+                    ? () => handleGoToBulkChannel(bulkResult.imported[0])
+                    : handleBulkDone
+                }
                 className="w-full rounded bg-accent px-3 py-2 text-sm font-medium text-white hover:bg-accent-hover transition-colors"
               >
-                Done
+                {composeMode && bulkResult.imported.length === 1 ? 'Use this agent' : 'Done'}
               </button>
             </div>
           ) : (

@@ -37,6 +37,15 @@ interface Props {
    * found the second case being reported as an agent.
    */
   importUnidentified?: boolean;
+  /**
+   * A completed compose-mode import resolved more than one agent (a Browse multi-select or
+   * a claude.ai bulk import) — none is seated, since which of several to seat is a real
+   * choice, not this effect's to make. Carries the count so the notice can say what happened
+   * rather than leave the form silently unchanged. Round 174 (Theseus, 2026-09-08): a
+   * multi-import reaching "Done" was going quiet, the one part of that finding true
+   * regardless of how the seating question itself is answered.
+   */
+  importMultipleCount?: number;
   projects?: Project[];
   entities?: Entity[];
   isOpen?: boolean;
@@ -57,6 +66,7 @@ export function ChannelSidebar({
   importedAgentId,
   importToken,
   importUnidentified,
+  importMultipleCount,
   projects = [],
   entities = [],
   isOpen,
@@ -118,6 +128,10 @@ export function ChannelSidebar({
   // not the caller's refetch has landed yet.
   useEffect(() => {
     if (!importToken) return;
+    if (importMultipleCount) {
+      setImportNotice(`Imported ${importMultipleCount} agents — pick one from the list to seat it.`);
+      return;
+    }
     if (!importedAgentId) {
       // The import finished but no agent came back with it. Reachable: a claude.ai bulk
       // import (many channels, no single agent to seat) and any path where the channel
