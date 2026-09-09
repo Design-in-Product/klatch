@@ -134,12 +134,14 @@ counts, the proposed name and basis per channel, which names reuse an existing e
 new one, and every 80-char-ceiling case. **This is the artifact xian needs to make the call**,
 because backfill is a guess-and-confirm operation and the sheet is the confirm.
 
-**(b) The apply pass — not built.** A transaction per channel: re-point the `channel_entities`
-row, `UPDATE messages SET entity_id = ? WHERE channel_id = ? AND role = 'assistant'` (covering
-both P2 and P3 in one statement), minting or matching via `resolveImportEntity`. Mechanically
-small — the hard parts are all in (a) and (c). Needs: a dry-run/apply flag pair, a backup of the
-DB taken before it runs, and a reversal record (which channels moved from what to what) so a bad
-batch is undoable without restoring the whole file.
+**(b) The apply pass — ~~not built~~ BUILT 2026-09-09 (Round 175).** See §7 below for what
+shipped, what it refuses to do, and the two things still open. *Original scoping, left standing
+because the build followed it:* a transaction per channel: re-point the `channel_entities` row,
+`UPDATE messages SET entity_id = ? WHERE channel_id = ? AND role = 'assistant'` (covering both P2
+and P3 in one statement), minting or matching via `resolveImportEntity`. Mechanically small — the
+hard parts are all in (a) and (c). Needs: a dry-run/apply flag pair, a backup of the DB taken
+before it runs, and a reversal record (which channels moved from what to what) so a bad batch is
+undoable without restoring the whole file.
 
 **(c) The confirm — a decision, not code.** `entity-guess.ts:9-12` says it outright: a confirmation
 the user cannot evaluate is a rubber stamp. 72 guesses is too many to confirm one at a time and too
@@ -220,6 +222,81 @@ the sheet. All six discriminate correctly.
   measure whether they ever disagree on real data — for backfill it does not matter, since the DB
   is what exists, but it means the probe's `live80` column is a *reconstruction* of what the
   scanner would have seen, not a recording of what it did see.
-- No apply pass. Nothing in this session writes to any database.
+- ~~No apply pass. Nothing in this session writes to any database.~~ **Superseded by §7 (2026-09-09).**
 - Whether P3 is non-empty on the real corpus. Predicted from the schema history, demonstrated on a
-  fixture, unmeasured in production.
+  fixture, unmeasured in production. **Still true on 2026-09-09** — the apply pass handles P3, and
+  nobody has yet counted it anywhere but a fixture.
+
+---
+
+## 7. The apply pass, built — Round 175, 2026-09-09 (Daedalus)
+
+§4(b) is built. `packages/server/src/db/entity-backfill.ts` (logic) +
+`scripts/backfill-entity-bindings.mts` (CLI) + `round175-entity-backfill.test.ts` (17 tests,
+in-memory DB).
+
+**Three functions, and the split is deliberate.** `planEntityBackfill` reads and mints nothing;
+`applyEntityBackfill` writes only what a plan already enumerated; `undoEntityBackfill` reverses a
+run from its record. Planning cannot mint, so a review pass cannot half-perform the operation it
+is reviewing.
+
+**What it moves, per channel, in one transaction:** the `channel_entities` row off
+`default-entity` and onto the resolved agent (P1), **and** every assistant row in that channel
+that was stamped `default-entity` (P2) or left NULL (P3). Both or neither. §2's trap — a
+re-point that looks repaired in the UI and leaves the agent's answers pooled on the placeholder —
+is what the round is guarding against, so the load-bearing test is not on the binding: it asserts
+`getEntityTranscript(newAgent)` contains the user turn, the P2 reply **and** the P3 reply, and
+that `getEntityTranscript(DEFAULT_ENTITY_ID)` is empty afterwards.
+
+**Four reasons it refuses to move a channel**, each reported by name rather than folded into a
+count:
+
+| reason | why |
+|---|---|
+| `no-guess` | `guessEntityName` found nothing. A human has to name it. |
+| `basis-excluded` | The guess's basis is outside the run's filter. Default filter is `identity-claim` only — §4(c)'s middle path, now a flag (`--bases=`) rather than a decision baked in. |
+| `multi-bound` | The channel already carries a second, non-default entity. Which agent the assistant rows belong to is then a per-message judgement, not a re-point. |
+| `resolves-to-default` | **The one I did not anticipate when scoping.** The seeded default agent is named "Claude" (`db/index.ts:351`), so a session opening *"You are Claude"* matches it by name and "moving" it is a no-op. Applying it anyway would report a success for a channel that did not move — the Round 171/173 shape one layer over: a placeholder the caller cannot tell from an answer. |
+
+**Scope is stated, not implied.** Only `source IN ('claude-code','claude-ai')` — the predicate the
+"72" was measured with (`composition-continuity-gap-2026-07-19.md:140`). `native` and `klatch`
+channels bound to the default are **counted and printed** as out-of-scope rather than silently
+dropped, because "we left N channels alone" should be a number the operator sees.
+
+**A dry run cannot write to the database it reports on.** `getDb()` runs schema init and
+migrations on whatever it opens — additive and idempotent, but still a write, and a review pass
+that mutates the thing under review is the wrong shape. So every invocation takes a `db.backup()`
+snapshot from a **read-only** handle first; the dry run plans against the snapshot and deletes it,
+and `--apply` keeps that same snapshot beside the DB as the backup. Verified on a file-backed
+fixture: after a dry run the fixture's entity table and channel count are unchanged.
+
+**Two ways back from an apply, both exercised end to end on that fixture:** restore the snapshot,
+or `--undo=<record>`. The record stores **message ids, not a predicate**, because after a run P2
+and P3 rows are indistinguishable — both carry the new entity id, and only the record remembers
+which were NULL. Undo restores P2 to `default-entity`, P3 to NULL, re-points the binding, and
+deletes a minted agent **only if nothing references it** — an agent minted by the backfill and
+then used by a later import is not this run's to delete. Row-level comparison after the round
+trip: `messages`, `channel_entities` and `entities` all identical to the pre-apply backup.
+
+**Verification.** 17 tests. Negative controls, each applied to the working tree and reverted:
+drop the P3 half of the stamp → 2 fail; remove the `resolves-to-default` guard → 1 fails; remove
+the `unbind` so the default binding stays alongside the new one → 3 fail. Suite: server
+**1561 → 1578** across **101** files, client 311/311 + 13 skipped unchanged (no client file
+touched), `npm run typecheck` clean ×3.
+
+### Still open, and both are xian's
+
+1. **The sizing still needs one run against the real `klatch.db`.** Unchanged from §0 — no agent's
+   worktree reaches it. The dry run *is* the review sheet now, so the same single command answers
+   "how big is this" and "what would it do":
+   `npx tsx scripts/backfill-entity-bindings.mts /path/to/klatch.db`. It writes nothing.
+2. **The confirm (§4(c)) is still a decision, not code.** The build's default — apply
+   `identity-claim` only — is the middle path §4(c) proposed, not a ruling. `--channels=<ids>`
+   exists so the honest version is available too: review the sheet, hand back the ids you approve,
+   apply only those.
+
+### Not claimed
+
+No run against any real corpus. Every number in this section is from unit tests or the gitignored
+`.testdata/r175` fixture. The apply pass has never been pointed at a database that anyone cares
+about, and the first time it is, it should be with `--apply` omitted.
