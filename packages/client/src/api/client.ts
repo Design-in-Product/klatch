@@ -382,6 +382,13 @@ export interface ClaudeAiImportResponse {
     /** Only set on the claude-code multi-import path, where a confirm-step entity name may be sent. */
     entityDisposition?: ResolveDisposition;
     entityName?: string;
+    /**
+     * The entity the import itself resolved, when it resolved one. Round 173: without this
+     * the Browse route reaches the composition form with no entity and is judged by the
+     * channel's binding, which cannot tell a confirmed "Claude" from the placeholder every
+     * unidentified import gets. Same field the manual path already carries on `ImportResponse`.
+     */
+    entityId?: string;
   }>;
   skipped: Array<{
     conversationId: string;

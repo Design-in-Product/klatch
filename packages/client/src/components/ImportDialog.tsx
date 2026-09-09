@@ -237,8 +237,23 @@ export function ImportDialog({ isOpen, onClose, onImported, onBulkImported, onCh
     handleReset();
   };
 
-  const handleGoToBulkChannel = (channelId: string) => {
-    onImported({ channelId, channelName: '', messageCount: 0, artifactCount: 0, source: 'claude-ai', duplicate: false });
+  /**
+   * A single row of a bulk/browse result, clicked. Round 173: this used to hand `onImported`
+   * a channel id and nothing else, so a Browse import reached the composition form through
+   * the fallback branch and was judged by the channel's binding — which is `DEFAULT_ENTITY_ID`
+   * both for an unidentified import and for a user who confirmed "Claude". The row already
+   * knows what the import resolved; pass it, and `resolveJitSeat` can tell the two apart.
+   */
+  const handleGoToBulkChannel = (conv: ClaudeAiImportResponse['imported'][number]) => {
+    onImported({
+      channelId: conv.channelId,
+      channelName: conv.channelName,
+      messageCount: conv.messageCount,
+      artifactCount: conv.artifactCount,
+      source: mode === 'claude-code' ? 'claude-code' : 'claude-ai',
+      duplicate: false,
+      entityId: conv.entityId,
+    });
     handleReset();
   };
 
@@ -375,7 +390,7 @@ export function ImportDialog({ isOpen, onClose, onImported, onBulkImported, onCh
     setError(null);
     setBulkResult(null);
 
-    const imported: Array<{ channelId: string; channelName: string; messageCount: number; artifactCount: number; conversationId: string; entityDisposition?: ResolveDisposition; entityName?: string }> = [];
+    const imported: Array<{ channelId: string; channelName: string; messageCount: number; artifactCount: number; conversationId: string; entityDisposition?: ResolveDisposition; entityName?: string; entityId?: string }> = [];
     const errors: string[] = [];
 
     for (const sessionPath of selectedSessions) {
@@ -391,6 +406,11 @@ export function ImportDialog({ isOpen, onClose, onImported, onBulkImported, onCh
             conversationId: result.data.sessionId || '',
             entityDisposition: result.data.entityDisposition,
             entityName: confirmedName,
+            // Kept so the composition form can be told what the *import* resolved rather
+            // than having to ask the channel (Round 173). The channel's answer is the
+            // placeholder whenever nothing identified the session, and it looks identical
+            // to a user who confirmed the name "Claude".
+            entityId: result.data.entityId,
           });
         } else {
           // Duplicate — skip silently (already imported)
@@ -595,7 +615,7 @@ export function ImportDialog({ isOpen, onClose, onImported, onBulkImported, onCh
                   {bulkResult.imported.map((conv) => (
                     <button
                       key={conv.channelId}
-                      onClick={() => handleGoToBulkChannel(conv.channelId)}
+                      onClick={() => handleGoToBulkChannel(conv)}
                       className="w-full text-left rounded px-2.5 py-1.5 text-sm hover:bg-hover transition-colors"
                     >
                       <span className="text-primary">{conv.channelName}</span>
