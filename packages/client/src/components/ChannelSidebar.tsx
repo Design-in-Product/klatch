@@ -649,8 +649,12 @@ export function ChannelSidebar({
                   </div>
 
                   {/* The chat picker is optional, and saying so matters: an empty selection is
-                      the pre-existing "new assistant" path, not an unfinished form. */}
-                  {newType === 'chat' && selectedEntityIds.size === 0 && (
+                      the pre-existing "new assistant" path, not an unfinished form. Suppressed
+                      while importNotice is showing: a just-completed import that didn't seat
+                      an agent already tells the user a choice exists ("pick one, or…") — a
+                      second, differently-worded "optional" line right below it repeats the
+                      point instead of adding to it (Theseus, Round 172/173). */}
+                  {newType === 'chat' && selectedEntityIds.size === 0 && !importNotice && (
                     <div className="text-[11px] text-muted">
                       Optional — leave empty to start with a new assistant.
                     </div>

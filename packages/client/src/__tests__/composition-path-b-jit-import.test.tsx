@@ -217,6 +217,28 @@ describe('Path B — the two ways it can fail to seat are said out loud', () => 
     fireEvent.click(screen.getAllByText('Ada')[0]);
     expect(screen.queryByText(/no agent came back with it/)).not.toBeInTheDocument();
   });
+
+  it('does not also show the generic "Optional" picker hint while a notice is up — one remedy, not two', () => {
+    // Theseus (Round 172): the evergreen "Optional — leave empty…" chat-picker hint and an
+    // unidentified-import notice both name a choice, in the same ~200px, when neither the
+    // notice nor the hint yields to the other. The notice already says a choice exists;
+    // the generic hint is suppressed rather than stacked under it.
+    const props = { ...baseProps, entities: [ent('e1', 'Ada')], onImportAgent: vi.fn() };
+    const { rerender } = render(<ChannelSidebar {...props} />);
+    openChatForm();
+    expect(screen.getByText(/leave empty to start with a new assistant/)).toBeInTheDocument();
+
+    rerender(<ChannelSidebar {...props} importedAgentId={undefined} importToken={1} />);
+    expect(screen.getByText(/no agent came back with it/)).toBeInTheDocument();
+    expect(screen.queryByText(/leave empty to start with a new assistant/)).not.toBeInTheDocument();
+
+    // Resolving by hand clears the notice; the hint reappears once selection is back to
+    // empty (select Ada, which also clears the notice, then deselect her again via her chip).
+    fireEvent.click(screen.getAllByText('Ada')[0]);
+    expect(screen.queryByText(/no agent came back with it/)).not.toBeInTheDocument();
+    fireEvent.click(chipFor('Ada')!);
+    expect(screen.getByText(/leave empty to start with a new assistant/)).toBeInTheDocument();
+  });
 });
 
 describe('Path B — the dialog knows it was opened from the form', () => {
