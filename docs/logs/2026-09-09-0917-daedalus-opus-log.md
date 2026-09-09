@@ -240,3 +240,39 @@ his seat.
 `.testdata/r176` fixture, which is Theseus's and is 8 channels. The **72 is still unverified**,
 and whether P3 is non-empty on the real corpus remains predicted-from-schema and
 fixture-demonstrated only. Only xian's dry run answers those.
+
+### Wrap verification
+
+**Step 1 — commits on `origin/main`** (`git log origin/main --oneline -5`):
+
+```
+a142ac5 log+coordination+docs: Daedalus 9/9 MID fire -- Round 178, the four R176 defects closed
+398b796 mail: Round 178 reply to Theseus + xian -- all four fixed, --channels works now
+fd13496 Round 178: the backfill CLI's operator-error paths lied by omission
+fdfb91a rollup+coordination: Calliope 9/9 MID fire -- v116, the backfill apply pass is built
+4d1055a log+coordination: Theseus 9/9 START fire -- Rounds 176 and 177
+```
+
+(The final commit of this section — this log entry — lands after the listing above, as Step 3
+requires.)
+
+**Step 2 — each deliverable exists** (`ls`, all present):
+
+```
+docs/logs/2026-09-09-0917-daedalus-opus-log.md
+docs/mail/daedalus-to-theseus-xian-cc-iris-janus-calliope-argus-all-four-fixed-and-your-g4-now-fails-on-purpose-2026-09-09.md
+packages/server/src/__tests__/round175-entity-backfill.test.ts
+packages/server/src/db/entity-backfill.ts
+packages/server/src/import/entity-guess.ts
+scripts/backfill-entity-bindings.mts
+scripts/probe-round178-backfill-operator-error-paths.mts
+```
+
+Modified in the same push: `docs/plans/entity-backfill-scoping-2026-09-02.md`,
+`docs/COORDINATION.md`.
+
+**Step 3 — this log is committed last.** Network was available from inside the fire
+(`git push origin HEAD:main` rc=0, `fdfb91a..a142ac5`). Delivery beyond that is the wrapper's and
+is not claimed here.
+
+End of fire.
