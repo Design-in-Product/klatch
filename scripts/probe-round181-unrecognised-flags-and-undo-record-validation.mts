@@ -257,7 +257,24 @@ measure(
 // space form: a misspelled `--undo` does not mean "no record", it means the undo
 // branch is skipped — and with `--apply` on the line, the run *re-applies* the
 // backfill the operator was reversing.
+//
+// Re-vehicled 2026-09-10 (Round 182). N2 and N3 used to take their record from
+// N1's run. Round 182 refuses N1, so no record was written: N2 printed
+// `exit undefined` and failed, and N3's `if (nRecord)` skipped without a word —
+// the total dropped from 32 checks to 31 and nothing said so. The invariant
+// held; the input stopped being an example of it (Round 176's G4 again). The
+// record now comes from a correctly spelled, unfiltered `--apply` — the same
+// four-channel record N1 used to leave, so the numbers below stay comparable —
+// and a missing record is a FAIL here, never a silent skip.
+await restorePristine();
+const nSource = cli([DB, '--apply']);
 const nRecord = recordsBeside()[0] ? path.join(DATA, recordsBeside()[0]) : '';
+check(
+  'N2',
+  'setup: a correctly spelled --apply writes the record N2/N3 reverse',
+  nSource.code === 0 && !!nRecord && nBefore - stillOnDefault() === 4,
+  `exit ${nSource.code} · ${nBefore - stillOnDefault()} moved · record ${nRecord ? 'written' : 'MISSING'}`
+);
 const nUndoOk = nRecord ? cli([DB, `--undo=${nRecord}`]) : null;
 check(
   'N2',
@@ -265,12 +282,25 @@ check(
   !!nUndoOk && nUndoOk.code === 0 && stillOnDefault() === nBefore,
   `exit ${nUndoOk?.code} · ${stillOnDefault()} of ${nBefore} channels back on the default`
 );
-if (nRecord) {
+if (!nRecord) {
+  check('N3', '`--apply --und=<record>` was driven', false, 'no record to aim it at — see N2 setup');
+} else {
+  const nBackups = backupsBeside().length;
   const nUndoTypo = cli([DB, '--apply', `--und=${nRecord}`]);
   const afterTypo = stillOnDefault();
   if (nUndoTypo.code !== 0 || afterTypo === nBefore) {
     check('N3', '`--apply --und=<record>` (misspelled undo) does not re-apply the backfill', true,
       `exit ${nUndoTypo.code} · ${afterTypo} of ${nBefore} still on the default`);
+    // Stronger than the arm could assert when it was written: the refusal now
+    // exists, so assert it is the parse-boundary refusal, that it writes no
+    // snapshot or second record, and that the remedy is pasteable.
+    check('N3', '…and refuses at the parse boundary, writing no snapshot and no record',
+      nUndoTypo.code === 1 && /^Refusing to run/m.test(nUndoTypo.err) &&
+        backupsBeside().length === nBackups && recordsBeside().length === 1,
+      `exit ${nUndoTypo.code} · ${backupsBeside().length - nBackups} new backup(s) · ${recordsBeside().length} record(s)`);
+    check('N3', '…and suggests --undo with the record path carried across',
+      nUndoTypo.err.includes(`did you mean --undo=${nRecord}?`),
+      nUndoTypo.err.includes('did you mean --undo=') ? 'suggestion present, path in full' : 'no suggestion');
   } else {
     open_(
       'N3',
