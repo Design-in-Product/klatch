@@ -535,24 +535,128 @@ export function checkUndoRecord(value: unknown): UndoRecordCheck {
   return { ok: true, record: value as BackfillUndoRecord };
 }
 
+/**
+ * Where one record channel stands in the database undo is pointed at, now.
+ *
+ * - `revert` — still bound to the agent the run moved it to. Undo writes it.
+ * - `already-reverted` — back on `fromEntityId`, and every recorded row is in
+ *   its pre-run state (P2 on the default, P3 NULL). Writing would change nothing.
+ * - `changed-since` — neither: something moved it after the run. A later apply
+ *   re-minted its agent, or the user re-seated it in the app. Undo leaves it.
+ * - `not-in-database` — no such channel. Usually a record from another database.
+ */
+export type UndoDisposition = 'revert' | 'already-reverted' | 'changed-since' | 'not-in-database';
+
+export interface UndoChannelState {
+  channelId: string;
+  channelName: string | null;
+  disposition: UndoDisposition;
+  /** Who is seated on the channel now, in roster order. */
+  seatedNow: { id: string; name: string }[];
+  /** Whether the agent this record moved the channel to still exists. */
+  toEntityExists: boolean;
+}
+
+/**
+ * The classifier undo and its preview share. Theseus's Round 183: undo used to
+ * write every record channel without reading it first, so a record the database
+ * had moved past was applied over whatever was there. An older record undone
+ * after a re-apply re-bound the placeholder *beside* the newer run's agent (the
+ * unbind targeted an id the first undo had deleted, and the bind is INSERT OR
+ * IGNORE) and re-stamped that agent's transcript back to the default; a record
+ * from another database threw on the foreign key and was reported as a partial
+ * failure. All of it printed the same success line as a correct undo.
+ *
+ * The rule: a channel is written only if it is still in the state this record's
+ * run left it in. Anything else is named and left, not merged — which of the
+ * run's writes and the later ones to keep is not something to guess.
+ */
+function undoClassifier(db: ReturnType<typeof getDb>) {
+  const channelRow = db.prepare('SELECT name FROM channels WHERE id = ?');
+  const seated = db.prepare(
+    `SELECT e.id, e.name FROM channel_entities ce JOIN entities e ON e.id = ce.entity_id
+      WHERE ce.channel_id = ? ORDER BY ce.added_at ASC, ce.rowid ASC`
+  );
+  const bound = db.prepare('SELECT 1 FROM channel_entities WHERE channel_id = ? AND entity_id = ?');
+  const entityExists = db.prepare('SELECT 1 FROM entities WHERE id = ?');
+  const stampOf = db.prepare('SELECT entity_id FROM messages WHERE id = ?');
+
+  return (ch: BackfillUndoChannel): UndoChannelState => {
+    const channel = channelRow.get(ch.channelId) as { name: string | null } | undefined;
+    const toEntityExists = !!entityExists.get(ch.toEntityId);
+    if (!channel) {
+      return {
+        channelId: ch.channelId,
+        channelName: null,
+        disposition: 'not-in-database',
+        seatedNow: [],
+        toEntityExists,
+      };
+    }
+    const seatedNow = seated.all(ch.channelId) as { id: string; name: string }[];
+
+    let disposition: UndoDisposition;
+    if (bound.get(ch.channelId, ch.toEntityId)) {
+      // Reverting re-binds `fromEntityId`; if it is not here, the bind would throw
+      // on the foreign key. A record naming an agent this database never had is
+      // not this database's record, whatever its channel ids say.
+      disposition = entityExists.get(ch.fromEntityId) ? 'revert' : 'changed-since';
+    } else {
+      // A recorded row that has since been deleted is not a change: the record
+      // legitimately outlives its rows (Round 180), and the UPDATE would match
+      // nothing either way.
+      const preRun = (ids: string[], expected: string | null) =>
+        ids.every((id) => {
+          const row = stampOf.get(id) as { entity_id: string | null } | undefined;
+          return !row || row.entity_id === expected;
+        });
+      disposition =
+        bound.get(ch.channelId, ch.fromEntityId) &&
+        preRun(ch.p2MessageIds, ch.fromEntityId) &&
+        preRun(ch.p3MessageIds, null)
+          ? 'already-reverted'
+          : 'changed-since';
+    }
+    return { channelId: ch.channelId, channelName: channel.name, disposition, seatedNow, toEntityExists };
+  };
+}
+
+/** Classify every channel in a record against the database, writing nothing. */
+export function planEntityUndo(record: BackfillUndoRecord): UndoChannelState[] {
+  const classify = undoClassifier(getDb());
+  return record.channels.map(classify);
+}
+
 export interface UndoResult {
+  /** Channels this run actually wrote — not channels the record named. */
   reverted: number;
-  /** Minted entities removed because nothing else referenced them. */
+  /** Every record channel, in record order, as classified at the moment of writing. */
+  channels: UndoChannelState[];
+  /** Minted entities this run deleted (counted from the DELETE, not from the record). */
   entitiesRemoved: string[];
-  /** Minted entities kept because something bound to them after the run. */
+  /** Minted entities still present and still seated or stamped somewhere. */
   entitiesKept: string[];
 }
 
 /**
  * Reverse a run from its record.
  *
+ * Each channel is classified (`undoClassifier`) inside the same transaction that
+ * writes it, so nothing can move between the look and the write, and only
+ * `revert` channels are written. Running it twice, or after the backup has been
+ * restored, reverts nothing and says so.
+ *
  * Entity removal is conditional on purpose: an entity minted by the backfill and
  * then used by a later import is not this run's to delete. The check is against
  * present state (`channel_entities` and stamped `messages`), not against the
- * record, because the record cannot know what happened afterwards.
+ * record, because the record cannot know what happened afterwards. An entity
+ * that no longer exists is neither removed nor kept — it is not reported at all,
+ * because this run did nothing to it (Round 183: a second undo used to report
+ * the first one's deletions again).
  */
 export function undoEntityBackfill(record: BackfillUndoRecord): UndoResult {
   const db = getDb();
+  const classify = undoClassifier(db);
   // COALESCE, not a bare `?`: `added_at` is NOT NULL DEFAULT datetime('now'),
   // and binding NULL to the column would violate the constraint rather than
   // fall through to the default. Records without `fromAddedAt` therefore replay
@@ -567,34 +671,42 @@ export function undoEntityBackfill(record: BackfillUndoRecord): UndoResult {
   const stamp = db.prepare('UPDATE messages SET entity_id = ? WHERE id = ?');
 
   let reverted = 0;
+  const channels: UndoChannelState[] = [];
   for (const ch of record.channels) {
-    const back = db.transaction(() => {
+    const back = db.transaction((): UndoChannelState => {
+      const state = classify(ch);
+      if (state.disposition !== 'revert') return state;
       bind.run(ch.channelId, ch.fromEntityId, ch.fromAddedAt ?? null);
-      unbind.run(ch.channelId, ch.toEntityId);
+      // `revert` means this binding was read a moment ago in this transaction,
+      // so the DELETE finds exactly one row. Counted from `.changes` anyway: the
+      // number printed is the number of channels written, by construction.
+      if (unbind.run(ch.channelId, ch.toEntityId).changes) reverted++;
       for (const id of ch.p2MessageIds) stamp.run(ch.fromEntityId, id);
       for (const id of ch.p3MessageIds) stamp.run(null, id);
+      return state;
     });
-    back();
-    reverted++;
+    channels.push(back());
   }
 
   const entitiesRemoved: string[] = [];
   const entitiesKept: string[] = [];
   const mintedIds = [...new Set(record.channels.filter((c) => c.mintedHere).map((c) => c.toEntityId))];
+  const entityExists = db.prepare('SELECT 1 FROM entities WHERE id = ?');
   const bindingCount = db.prepare(
     'SELECT COUNT(*) AS n FROM channel_entities WHERE entity_id = ?'
   );
   const stampCount = db.prepare('SELECT COUNT(*) AS n FROM messages WHERE entity_id = ?');
+  const deleteEntity = db.prepare('DELETE FROM entities WHERE id = ?');
   for (const id of mintedIds) {
+    if (!entityExists.get(id)) continue;
     const bound = (bindingCount.get(id) as { n: number }).n;
     const stamped = (stampCount.get(id) as { n: number }).n;
     if (bound === 0 && stamped === 0) {
-      db.prepare('DELETE FROM entities WHERE id = ?').run(id);
-      entitiesRemoved.push(id);
+      if (deleteEntity.run(id).changes) entitiesRemoved.push(id);
     } else {
       entitiesKept.push(id);
     }
   }
 
-  return { reverted, entitiesRemoved, entitiesKept };
+  return { reverted, channels, entitiesRemoved, entitiesKept };
 }

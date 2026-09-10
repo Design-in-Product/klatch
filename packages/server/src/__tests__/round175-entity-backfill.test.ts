@@ -18,7 +18,9 @@ import {
   planEntityBackfill,
   applyEntityBackfill,
   undoEntityBackfill,
+  planEntityUndo,
   checkUndoRecord,
+  type BackfillUndoRecord,
 } from '../db/entity-backfill.js';
 import { getChannelEntities, getEntityTranscript, getAllEntities } from '../db/queries.js';
 import { DEFAULT_ENTITY_ID } from '@klatch/shared';
@@ -572,5 +574,189 @@ describe('Round 180 — undo record shape check (Theseus R179)', () => {
     // rest. Refusing here would block the recovery path over a stale id.
     expect(checkUndoRecord(record).ok).toBe(true);
     expect(() => undoEntityBackfill(record)).not.toThrow();
+  });
+});
+
+/**
+ * Round 184 — undo reads each channel before it writes it (Theseus's Round 183,
+ * `docs/research/round183-the-undo-record-against-the-database-it-is-aimed-at-2026-09-10.md`).
+ *
+ * `checkUndoRecord` sees a record's shape; nothing saw *which database, now*. Undo
+ * wrote every record channel blind, so an older record undone after a re-apply
+ * half-reverted the newer run, a record from another database threw on the
+ * foreign key, and all of it reported the record's channel count as reverted.
+ * Every test here asserts the rows, not only the returned counts, because the
+ * counts were the thing that was wrong.
+ */
+describe('Round 184 — undo against the database it is aimed at (Theseus R183)', () => {
+  const assistantStamps = (channelId: string) =>
+    (
+      getDb()
+        .prepare("SELECT entity_id FROM messages WHERE channel_id = ? AND role = 'assistant' ORDER BY id")
+        .all(channelId) as { entity_id: string | null }[]
+    ).map((r) => r.entity_id);
+  const dumpState = () =>
+    JSON.stringify([
+      getDb().prepare('SELECT * FROM channel_entities ORDER BY channel_id, entity_id').all(),
+      getDb().prepare('SELECT id, entity_id FROM messages ORDER BY id').all(),
+      getDb().prepare('SELECT id FROM entities ORDER BY id').all(),
+    ]);
+  const reseat = (channelId: string, fromId: string, toId: string, toName: string) => {
+    getDb().prepare('INSERT OR IGNORE INTO entities (id, name) VALUES (?, ?)').run(toId, toName);
+    getDb().prepare('INSERT INTO channel_entities (channel_id, entity_id) VALUES (?, ?)').run(channelId, toId);
+    getDb().prepare('DELETE FROM channel_entities WHERE channel_id = ? AND entity_id = ?').run(channelId, fromId);
+  };
+
+  it('leaves a channel a later run re-applied, rather than half-reverting it (A1)', () => {
+    seedImportedChannel({ id: 'c-wren', opener: 'You are Wren.', p2: ['a'], p3: ['b'] });
+    seedImportedChannel({ id: 'c-rook', opener: 'You are Rook.', p2: ['c'] });
+    const recordA = applyEntityBackfill(planEntityBackfill()).record;
+    undoEntityBackfill(recordA);
+    const recordB = applyEntityBackfill(planEntityBackfill({ channelIds: ['c-wren'] })).record;
+    const wrenA = recordA.channels.find((c) => c.channelId === 'c-wren')!.toEntityId;
+    const wrenB = recordB.channels[0].toEntityId;
+    // The precondition Theseus measured: undo deleted A's Wren, so B re-minted.
+    expect(wrenB).not.toBe(wrenA);
+    const before = dumpState();
+
+    const stale = undoEntityBackfill(recordA);
+
+    expect(dumpState()).toBe(before);
+    expect(getChannelEntities('c-wren').map((e) => e.id)).toEqual([wrenB]);
+    expect(assistantStamps('c-wren')).toEqual([wrenB, wrenB]);
+    expect(stale.reverted).toBe(0);
+    expect(stale.entitiesRemoved).toEqual([]);
+    expect(Object.fromEntries(stale.channels.map((s) => [s.channelId, s.disposition]))).toEqual({
+      'c-wren': 'changed-since',
+      'c-rook': 'already-reverted',
+    });
+
+    // The newer record is untouched by the attempt and still undoes its own run.
+    const good = undoEntityBackfill(recordB);
+    expect(good.reverted).toBe(1);
+    expect(good.entitiesRemoved).toEqual([wrenB]);
+    expect(getChannelEntities('c-wren').map((e) => e.id)).toEqual([DEFAULT_ENTITY_ID]);
+    expect(assistantStamps('c-wren')).toEqual([DEFAULT_ENTITY_ID, null]);
+  });
+
+  it('reports what it wrote, not what the record named, when the run is already undone (A2/D2)', () => {
+    seedImportedChannel({ id: 'c1', opener: 'You are Daedalus.', p2: ['a'], p3: ['b'] });
+    const record = applyEntityBackfill(planEntityBackfill()).record;
+    const first = undoEntityBackfill(record);
+    expect(first.reverted).toBe(1);
+    expect(first.entitiesRemoved).toHaveLength(1);
+    const before = dumpState();
+
+    const second = undoEntityBackfill(record);
+
+    expect(dumpState()).toBe(before);
+    expect(second.reverted).toBe(0);
+    // A's minted agent was deleted by the first undo; the second did nothing to it.
+    expect(second.entitiesRemoved).toEqual([]);
+    expect(second.entitiesKept).toEqual([]);
+    expect(second.channels.map((s) => s.disposition)).toEqual(['already-reverted']);
+  });
+
+  it('classifies a record from another database as not here, and attempts no write (C)', () => {
+    seedImportedChannel({ id: 'c1', opener: 'You are Wren.', p2: ['a'] });
+    const foreign: BackfillUndoRecord = {
+      version: 1,
+      createdAt: '2026-09-10T00:00:00.000Z',
+      bases: ['identity-claim'],
+      channels: [
+        {
+          channelId: 'c-from-another-database',
+          fromEntityId: DEFAULT_ENTITY_ID,
+          toEntityId: 'e-from-another-database',
+          mintedHere: true,
+          p2MessageIds: ['m-from-another-database'],
+          p3MessageIds: [],
+        },
+      ],
+    };
+    const before = dumpState();
+
+    let result: ReturnType<typeof undoEntityBackfill> | undefined;
+    expect(() => {
+      result = undoEntityBackfill(foreign);
+    }).not.toThrow();
+
+    expect(dumpState()).toBe(before);
+    expect(result!.reverted).toBe(0);
+    expect(result!.entitiesRemoved).toEqual([]);
+    expect(result!.channels).toEqual([
+      {
+        channelId: 'c-from-another-database',
+        channelName: null,
+        disposition: 'not-in-database',
+        seatedNow: [],
+        toEntityExists: false,
+      },
+    ]);
+  });
+
+  it('leaves a channel the user re-seated after the run, and keeps the agent its rows still name (B)', () => {
+    seedImportedChannel({ id: 'c1', opener: 'You are Wren.', p2: ['a'] });
+    const record = applyEntityBackfill(planEntityBackfill()).record;
+    const wren = record.channels[0].toEntityId;
+    reseat('c1', wren, 'e-kestrel', 'Kestrel');
+    const before = dumpState();
+
+    const result = undoEntityBackfill(record);
+
+    expect(dumpState()).toBe(before);
+    expect(getChannelEntities('c1').map((e) => e.id)).toEqual(['e-kestrel']);
+    expect(result.channels[0]).toMatchObject({
+      disposition: 'changed-since',
+      seatedNow: [{ id: 'e-kestrel', name: 'Kestrel' }],
+      toEntityExists: true,
+    });
+    expect(result.entitiesKept).toEqual([wren]);
+  });
+
+  it('reverts the channels still in the run’s state and leaves the rest', () => {
+    seedImportedChannel({ id: 'c-a', opener: 'You are Wren.', p2: ['a'] });
+    seedImportedChannel({ id: 'c-b', opener: 'You are Rook.', p2: ['b'] });
+    const record = applyEntityBackfill(planEntityBackfill()).record;
+    const rook = record.channels.find((c) => c.channelId === 'c-b')!.toEntityId;
+    reseat('c-b', rook, 'e-kestrel', 'Kestrel');
+
+    const result = undoEntityBackfill(record);
+
+    expect(result.reverted).toBe(1);
+    expect(getChannelEntities('c-a').map((e) => e.id)).toEqual([DEFAULT_ENTITY_ID]);
+    expect(assistantStamps('c-a')).toEqual([DEFAULT_ENTITY_ID]);
+    expect(getChannelEntities('c-b').map((e) => e.id)).toEqual(['e-kestrel']);
+    expect(assistantStamps('c-b')).toEqual([rook]);
+  });
+
+  it('does not re-bind an agent this database never had, which would throw on the foreign key', () => {
+    seedImportedChannel({ id: 'c1', opener: 'You are Wren.', p2: ['a'] });
+    const record = JSON.parse(JSON.stringify(applyEntityBackfill(planEntityBackfill()).record));
+    record.channels[0].fromEntityId = 'e-this-database-never-had';
+    const before = dumpState();
+
+    let result: ReturnType<typeof undoEntityBackfill> | undefined;
+    expect(() => {
+      result = undoEntityBackfill(record);
+    }).not.toThrow();
+
+    expect(dumpState()).toBe(before);
+    expect(result!.channels[0].disposition).toBe('changed-since');
+  });
+
+  it('previews exactly the classification undo then acts on, and writes nothing doing it', () => {
+    seedImportedChannel({ id: 'c-a', opener: 'You are Wren.', p2: ['a'] });
+    seedImportedChannel({ id: 'c-b', opener: 'You are Rook.', p2: ['b'] });
+    const record = applyEntityBackfill(planEntityBackfill()).record;
+    const rook = record.channels.find((c) => c.channelId === 'c-b')!.toEntityId;
+    reseat('c-b', rook, 'e-kestrel', 'Kestrel');
+    const before = dumpState();
+
+    const preview = planEntityUndo(record);
+
+    expect(dumpState()).toBe(before);
+    expect(preview.map((s) => s.disposition).sort()).toEqual(['changed-since', 'revert']);
+    expect(undoEntityBackfill(record).channels).toEqual(preview);
   });
 });

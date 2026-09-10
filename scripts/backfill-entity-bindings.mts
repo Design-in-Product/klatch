@@ -40,6 +40,17 @@
  * for the same reason: you reach for it because something already went wrong,
  * which is the worst moment to have one way back.
  *
+ * **Undo reads each channel before it writes it.** Only a channel still in the
+ * state the run left it in is reverted; one already reverted is reported as such,
+ * and one that changed since the run (a later `--apply` re-minted its agent, or
+ * someone re-seated it in the app) is named, with who is seated now, and left.
+ * Theseus's Round 183 measured the blind version: an older record undone after a
+ * re-apply half-reverted the newer run, a record from another database was
+ * reported as "failed part-way", and all three printed the success line a
+ * correct undo prints. The counts are now what was written. Undo that writes
+ * nothing exits 0 only when everything was already reverted, and a record none
+ * of whose channels exist here is refused as belonging to another database.
+ *
  * **An operator mistake is never reported as an empty corpus, and never as a
  * wider run than was asked for.** An unknown `--bases` value is refused by name,
  * and `--channels` entries that match no candidate — or match more than one —
@@ -116,26 +127,38 @@ function editDistance(a: string, b: string): number {
 
 // The suggestion carries the operator's own value across, so it can be pasted
 // back as-is — and so the id they typed appears in the refusal, in full.
-function didYouMean(token: string): string {
+//
+// Including a value typed after a *space*: `--channel <id>` (wrong name and no
+// `=`) used to suggest a bare `--channels`, which does not echo the id and, pasted
+// back, draws Round 180's equals-sign refusal on a second try (Theseus's Round
+// 183, Q3). The next token is taken as the value only when it is not a flag and
+// is not the only positional — `--channel <db>` must not suggest `--channels=<db>`.
+function didYouMean(token: string, next: string | undefined, positionals: number): string {
   const eq = token.indexOf('=');
   const typed = (eq === -1 ? token : token.slice(0, eq)).replace(/^-+/, '').toLowerCase();
   const near = KNOWN_FLAGS.find((k) => editDistance(typed, k) <= 2);
   if (!near) return '';
-  return near === 'apply' ? ' — did you mean --apply?' : ` — did you mean --${near}${eq === -1 ? '' : token.slice(eq)}?`;
+  if (near === 'apply') return ' — did you mean --apply?';
+  if (eq !== -1) return ` — did you mean --${near}${token.slice(eq)}?`;
+  if (next !== undefined && !next.startsWith('-') && positionals >= 2) {
+    return ` — did you mean --${near}=${next}? (with an equals sign; "${next}" was read as a separate argument)`;
+  }
+  return ` — did you mean --${near}=<value>?`;
 }
 
 const argv = process.argv.slice(2);
 const flags: string[] = [];
 const positional: string[] = [];
 const argProblems: string[] = [];
-for (const token of argv) {
+const positionalCount = argv.filter((t) => !t.startsWith('-')).length;
+for (const [i, token] of argv.entries()) {
   if (!token.startsWith('-')) {
     positional.push(token);
     continue;
   }
   const name = /^--([a-z]+)(?:=|$)/.exec(token)?.[1];
   if (!name || !KNOWN_FLAGS.includes(name)) {
-    argProblems.push(`  ${token}: not a flag this script knows${didYouMean(token)}`);
+    argProblems.push(`  ${token}: not a flag this script knows${didYouMean(token, argv[i + 1], positionalCount)}`);
   } else if (name === 'apply' && token !== '--apply') {
     argProblems.push(`  ${token}: --apply takes no value — pass it bare`);
   } else if (VALUE_FLAGS.includes(name) && flags.some((f) => /^--([a-z]+)/.exec(f)?.[1] === name)) {
@@ -311,18 +334,82 @@ if (undoPath) {
     result = undoEntityBackfill(checked.record);
   } catch (err) {
     // The snapshot is *kept* here, unlike every other refusal: undo writes one
-    // transaction per channel, so a throw part-way through leaves earlier
-    // channels reverted. That is a state the operator may want to get out of.
-    console.error(`\nundo failed part-way: ${(err as Error).message}`);
+    // transaction per channel, so a throw part-way through may leave earlier
+    // channels reverted. "May", not "does": Round 183 measured this catch telling
+    // an operator their database was half-reverted when no channel had been
+    // written. That case (a record from another database) no longer reaches a
+    // write; for anything else, undo reads each channel before writing it, so the
+    // same command run again reports exactly where each one stands.
+    console.error(`\nundo stopped on a database error: ${(err as Error).message}`);
+    console.error(
+      '  Channels before the failing one may already be reverted. Run the same --undo again to see\n' +
+        '  where each channel stands: undo reads a channel before writing it and never writes one twice.'
+    );
     console.error(`The backup from before this run is intact at:\n  ${snapshotPath}`);
     process.exit(1);
   }
+
+  // Every channel, as undo found it. The success line below used to count the
+  // record's channels, not the channels written, so a correct undo, an undo aimed
+  // at a database that had moved past the record, and an undo run after the backup
+  // was restored all printed `Reverted 4 channel(s). Agents removed: 2` (Round 183).
+  const LABEL = {
+    revert: 'REVERTED',
+    'already-reverted': 'ALREADY REVERTED — nothing to do',
+    'changed-since': 'CHANGED SINCE THE RUN — left as it is',
+    'not-in-database': 'NOT IN THIS DATABASE',
+  } as const;
+  const total = checked.record.channels.length;
+  const count = (d: keyof typeof LABEL) => result.channels.filter((s) => s.disposition === d).length;
   console.log(
-    `Reverted ${result.reverted} channel(s). Agents removed: ${result.entitiesRemoved.length}` +
+    `\nRecord written ${checked.record.createdAt}, ${total} channel(s). Each was read before anything was written to it:`
+  );
+  for (const [i, s] of result.channels.entries()) {
+    const name = s.disposition === 'not-in-database' ? '—' : s.channelName || '(unnamed)';
+    console.log(`  ${s.channelId.slice(0, 8).padEnd(10)}${name.slice(0, 32).padEnd(34)}${LABEL[s.disposition]}`);
+    if (s.disposition === 'changed-since') {
+      const to = checked.record.channels[i].toEntityId;
+      const seated = s.seatedNow.map((e) => `${e.name || '(unnamed)'} [${e.id}]`).join(', ') || 'nobody';
+      console.log(
+        `            seated now: ${seated}. This record moved it to [${to}]` +
+          (s.toEntityExists ? ', which is no longer seated here.' : ', which no longer exists.')
+      );
+    }
+  }
+
+  console.log(
+    `\nReverted ${result.reverted} channel(s). Agents removed: ${result.entitiesRemoved.length}` +
       (result.entitiesKept.length
-        ? `; kept because something bound to them after the run: ${result.entitiesKept.join(', ')}`
+        ? `; kept because something still seats or stamps them: ${result.entitiesKept.join(', ')}`
         : '')
   );
+
+  const missing = count('not-in-database');
+  const changed = count('changed-since');
+  if (total > 0 && missing === total) {
+    // Round 183's arm C: the data was safe (the foreign key stopped the first
+    // bind), but the operator heard "failed part-way". Now nothing is attempted.
+    discardSnapshot();
+    console.error(
+      `\nNone of the ${total} channel(s) in this record exist in this database, so it was not written against it.\n` +
+        `  Database: ${dbPath}\n` +
+        '  Nothing was written and the snapshot was discarded. Check which database the record came from.'
+    );
+    process.exit(2);
+  }
+  if (changed || missing) {
+    console.log(
+      `  ${changed + missing} channel(s) left as they are (above). Undo writes only to a channel still in the\n` +
+        '  state this record\'s run left it in. If a later --apply moved one, undo with that run\'s record.'
+    );
+  }
+  if (result.reverted === 0 && result.entitiesRemoved.length === 0) {
+    discardSnapshot();
+    console.log('Nothing was written; the snapshot was discarded.');
+    // Everything already reverted is a clean answer; anything left because it
+    // changed is an undo that did not do what was asked, and must not exit 0.
+    process.exit(changed || missing ? 2 : 0);
+  }
   process.exit(0);
 }
 
