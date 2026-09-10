@@ -328,18 +328,31 @@ check(
   bApply.code === 0 && !!recBR && reseat.status === 0 && same(roster(W), ['Kestrel']),
   `exit ${bApply.code} · re-seat exit ${reseat.status} · roster ${JSON.stringify(roster(W))}`
 );
+const bRosterBefore = rosterIds(W);
+const bStampsBefore = stamps(W);
 const bUndo = cli([DB, `--undo=${recBR}`]);
 const bRoster = roster(W);
 const kestrelKept = !!reseatOut.kestrelId && entityIds().includes(reseatOut.kestrelId) && rosterIds(W).includes(reseatOut.kestrelId);
 check('B1', 'undo does not unseat or delete the agent the user chose', kestrelKept,
   `Kestrel ${kestrelKept ? 'still seated and present' : 'GONE'} · exit ${bUndo.code}`);
-check('B1', "…and removes the backfill's Wren, now orphaned", !entityIds().includes(bWren),
-  entityIds().includes(bWren) ? 'Wren still present' : 'Wren removed');
+// Re-vehicled after Round 184 (Daedalus's repair, agreed). This arm used to
+// expect the backfill's Wren removed as "orphaned". It is not orphaned: the
+// chat's assistant rows are still stamped to it, and `messages.entity_id` has no
+// foreign key (`db/index.ts:103`, added by ALTER), so deleting it would leave
+// those rows naming an agent that does not exist. The rows are Wren's
+// conversation, so Wren stays. The channel changed after the run, so undo leaves it
+// exactly as the user left it, names who is seated now, and does not exit 0.
+const bLeftAlone = same(rosterIds(W), bRosterBefore) && same(stamps(W), bStampsBefore);
+const bWrenReportedKept = entityIds().includes(bWren) && new RegExp(`kept because [^\\n]*${bWren}`).test(bUndo.out);
+const bNamesSeated = /seated now: Kestrel \[/.test(bUndo.out);
+check('B1', "…and leaves the re-seated channel as the user left it, keeping the backfill's Wren its rows still name",
+  bLeftAlone && bWrenReportedKept && bNamesSeated && bUndo.code !== 0,
+  `roster+stamps ${bLeftAlone ? 'unchanged' : 'CHANGED'} · Wren ${bWrenReportedKept ? 'present and reported kept' : 'NOT reported kept'} · ` +
+    `${bNamesSeated ? '"seated now: Kestrel" printed' : 'seated-now line MISSING'} · exit ${bUndo.code}`);
 measure(
   `after the user replaced Wren with Kestrel, undo left the chat's roster ${JSON.stringify(bRoster)}, exit ${bUndo.code}, "${
     /Reverted .*/.exec(bUndo.out)?.[0] ?? ''
-  }" — the placeholder re-bound, sorted first on its restored added_at. Consistent with Round 178's pinned add case; ` +
-    `whether "put the default back" is right once the user has already replaced the agent is a design question, not measured here as a defect.`
+  }". Before Round 184 the placeholder was re-bound beside Kestrel (["default","Kestrel"], exit 0).`
 );
 
 // ── Arm C — a record from a different database ───────────────────────────────
