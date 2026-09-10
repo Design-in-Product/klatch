@@ -18,6 +18,7 @@ import {
   planEntityBackfill,
   applyEntityBackfill,
   undoEntityBackfill,
+  checkUndoRecord,
 } from '../db/entity-backfill.js';
 import { getChannelEntities, getEntityTranscript, getAllEntities } from '../db/queries.js';
 import { DEFAULT_ENTITY_ID } from '@klatch/shared';
@@ -412,7 +413,17 @@ describe('Round 178 — channelIds resolution (Theseus R176 G2/G5)', () => {
 
     const plan = planEntityBackfill({ channelIds: ['cafef00d'] });
 
-    expect(plan.filter!.ambiguous).toEqual([{ requested: 'cafef00d', matches: [TWIN_1, TWIN_2] }]);
+    // Matches carry name and full id so the refusal is actionable: the operator is
+    // told to choose, and these are the two things to choose between (Round 179).
+    expect(plan.filter!.ambiguous).toEqual([
+      {
+        requested: 'cafef00d',
+        matches: [
+          { id: TWIN_1, name: expect.any(String) },
+          { id: TWIN_2, name: expect.any(String) },
+        ],
+      },
+    ]);
     expect(plan.summary.candidates).toBe(0);
     expect(plan.rows).toEqual([]);
   });
@@ -489,5 +500,77 @@ describe('Round 178 — undo restores added_at (Theseus R176)', () => {
       .prepare('SELECT added_at FROM channel_entities WHERE channel_id = ? AND entity_id = ?')
       .get('c1', DEFAULT_ENTITY_ID) as { added_at: string } | undefined;
     expect(restored?.added_at).toBeTruthy();
+  });
+});
+
+/**
+ * Round 180 — `checkUndoRecord` (Theseus R179 finding 5).
+ *
+ * `undoEntityBackfill` reads its argument's shape directly, so anything else
+ * threw from inside the module: `--undo=<a JSON file that isn't a record>` came
+ * out as `TypeError: record.channels is not iterable` plus a stack, which tells
+ * the operator nothing about which file they pointed at. The guard is here rather
+ * than in the CLI so it is checked against a record a real apply produced.
+ */
+describe('Round 180 — undo record shape check (Theseus R179)', () => {
+  it('accepts a record a real apply produced', () => {
+    seedImportedChannel({ id: 'c1', opener: 'You are Wren.', p2: ['hello'] });
+    const applied = applyEntityBackfill(planEntityBackfill());
+
+    // Through JSON, because that is how the CLI gets it back.
+    const checked = checkUndoRecord(JSON.parse(JSON.stringify(applied.record)));
+    expect(checked.ok).toBe(true);
+    if (checked.ok) expect(checked.record.channels[0].channelId).toBe('c1');
+  });
+
+  it('accepts a record written before `fromAddedAt` existed', () => {
+    seedImportedChannel({ id: 'c1', opener: 'You are Wren.', p2: ['hello'] });
+    const applied = applyEntityBackfill(planEntityBackfill());
+    const legacy = JSON.parse(JSON.stringify(applied.record));
+    delete legacy.channels[0].fromAddedAt;
+
+    // The optional field stays optional: the check must not turn an old record
+    // that still replays into a refusal.
+    expect(checkUndoRecord(legacy).ok).toBe(true);
+  });
+
+  it('names what is wrong, rather than throwing from inside undo', () => {
+    for (const [value, problem] of [
+      [null, 'not a JSON object'],
+      [[], 'not a JSON object'],
+      ['a string', 'not a JSON object'],
+      [{ hello: 'world' }, 'version is undefined, expected 1'],
+      [{ version: 2, channels: [] }, 'version is 2, expected 1'],
+      [{ version: 1 }, 'no `channels` array'],
+      [{ version: 1, channels: [null] }, 'channels[0] is not an object'],
+      [{ version: 1, channels: [{}] }, 'channels[0].channelId is not a string'],
+      [
+        { version: 1, channels: [{ channelId: 'c1', fromEntityId: 'e1' }] },
+        'channels[0].toEntityId is not a string',
+      ],
+      [
+        {
+          version: 1,
+          channels: [{ channelId: 'c1', fromEntityId: 'e1', toEntityId: 'e2' }],
+        },
+        'channels[0].p2MessageIds is not an array',
+      ],
+    ] as [unknown, string][]) {
+      const checked = checkUndoRecord(value);
+      expect(checked.ok).toBe(false);
+      if (!checked.ok) expect(checked.problem).toBe(problem);
+    }
+  });
+
+  it('passes a record naming a since-deleted message — that is legitimate', () => {
+    seedImportedChannel({ id: 'c1', opener: 'You are Wren.', p2: ['hello'] });
+    const applied = applyEntityBackfill(planEntityBackfill());
+    const record = JSON.parse(JSON.stringify(applied.record));
+    record.channels[0].p2MessageIds.push('a-message-that-no-longer-exists');
+
+    // Shallow on purpose: the UPDATE matches nothing and undo still reverts the
+    // rest. Refusing here would block the recovery path over a stale id.
+    expect(checkUndoRecord(record).ok).toBe(true);
+    expect(() => undoEntityBackfill(record)).not.toThrow();
   });
 });

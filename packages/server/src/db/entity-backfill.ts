@@ -125,8 +125,16 @@ export interface BackfillFilterReport {
   requested: string[];
   /** Requested ids that matched no in-scope candidate. */
   unmatched: string[];
-  /** Requested prefixes that matched more than one in-scope candidate. */
-  ambiguous: { requested: string; matches: string[] }[];
+  /**
+   * Requested prefixes that matched more than one in-scope candidate.
+   *
+   * Matches carry their channel name, and their full id, because the refusal has
+   * to be actionable: Theseus's Round 179 found the CLI truncating matches to 12
+   * characters, and two ids ambiguous on 8 characters usually agree on 12 — the
+   * message told the operator to choose and printed the same string twice. What
+   * distinguishes two candidates is the rest of the id, or their names.
+   */
+  ambiguous: { requested: string; matches: { id: string; name: string | null }[] }[];
   /** Full channel ids the filter resolved to. */
   resolved: string[];
 }
@@ -256,7 +264,7 @@ export function planEntityBackfill(options: PlanOptions = {}): BackfillPlan {
   if (options.channelIds) {
     const requested = options.channelIds;
     const unmatched: string[] = [];
-    const ambiguous: { requested: string; matches: string[] }[] = [];
+    const ambiguous: BackfillFilterReport['ambiguous'] = [];
     const resolved = new Set<string>();
     for (const want of requested) {
       const exact = candidates.find((c) => c.id === want);
@@ -266,7 +274,11 @@ export function planEntityBackfill(options: PlanOptions = {}): BackfillPlan {
       }
       const hits = candidates.filter((c) => c.id.startsWith(want));
       if (hits.length === 0) unmatched.push(want);
-      else if (hits.length > 1) ambiguous.push({ requested: want, matches: hits.map((c) => c.id) });
+      else if (hits.length > 1)
+        ambiguous.push({
+          requested: want,
+          matches: hits.map((c) => ({ id: c.id, name: c.name ?? null })),
+        });
       else resolved.add(hits[0].id);
     }
     filter = { requested, unmatched, ambiguous, resolved: [...resolved] };
@@ -468,6 +480,59 @@ export function applyEntityBackfill(plan: BackfillPlan): ApplyResult {
   }
 
   return { record, applied: record.channels.length, minted };
+}
+
+export type UndoRecordCheck =
+  | { ok: true; record: BackfillUndoRecord }
+  | { ok: false; problem: string };
+
+/**
+ * Decide whether parsed JSON is a backfill undo record, before anything is
+ * written.
+ *
+ * `undoEntityBackfill` assumes its argument's shape — it iterates
+ * `record.channels` directly — so handing it any other JSON object used to throw
+ * `TypeError: record.channels is not iterable` from inside the module, with a
+ * stack trace in place of an operator-facing sentence (Theseus's Round 179,
+ * finding 5). The check lives here rather than in the CLI so it is unit-tested
+ * against real records and so any other caller of `undoEntityBackfill` can reach
+ * it.
+ *
+ * Deliberately shallow on the message-id arrays: it confirms they are arrays,
+ * not that every element is a live row. A record naming a since-deleted message
+ * is a legitimate record (the UPDATE matches nothing), not a malformed one.
+ */
+export function checkUndoRecord(value: unknown): UndoRecordCheck {
+  if (typeof value !== 'object' || value === null || Array.isArray(value)) {
+    return { ok: false, problem: 'not a JSON object' };
+  }
+  const r = value as Record<string, unknown>;
+  if (r.version !== 1) {
+    return {
+      ok: false,
+      problem: `version is ${JSON.stringify(r.version)}, expected 1`,
+    };
+  }
+  if (!Array.isArray(r.channels)) {
+    return { ok: false, problem: 'no `channels` array' };
+  }
+  for (const [i, raw] of (r.channels as unknown[]).entries()) {
+    if (typeof raw !== 'object' || raw === null) {
+      return { ok: false, problem: `channels[${i}] is not an object` };
+    }
+    const ch = raw as Record<string, unknown>;
+    for (const key of ['channelId', 'fromEntityId', 'toEntityId']) {
+      if (typeof ch[key] !== 'string') {
+        return { ok: false, problem: `channels[${i}].${key} is not a string` };
+      }
+    }
+    for (const key of ['p2MessageIds', 'p3MessageIds']) {
+      if (!Array.isArray(ch[key])) {
+        return { ok: false, problem: `channels[${i}].${key} is not an array` };
+      }
+    }
+  }
+  return { ok: true, record: value as BackfillUndoRecord };
 }
 
 export interface UndoResult {

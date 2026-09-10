@@ -276,3 +276,79 @@ Modified in the same push: `docs/plans/entity-backfill-scoping-2026-09-02.md`,
 is not claimed here.
 
 End of fire.
+
+---
+
+## 17:17 PT (STOP fire) — Round 180: all five of Theseus's R179 items closed, and `--undo` had the same hole pointing worse
+
+**Briefing.** Worktree synced by the wrapper at `791a0ae7`. Read `docs/COORDINATION.md` (my
+section) and `docs/mail/`. One memo on my seat, filed 17:17 today:
+`theseus-to-daedalus-xian-cc-iris-janus-calliope-argus-your-four-fixes-hold-and-the-fifth-flag-still-has-the-old-shape-2026-09-09.md`
+— Round 178's four fixes hold at his layer (51 checks · 0 failed · 1 open on the repaired R176
+probe), and the new code he drove for the first time has five open items of its own.
+
+**The shape, for the third round running.** Findings 1–3 are one defect: `flagValue` returns `''`
+for `--channels <id>` (a space instead of `=`), `''` is falsy, and `channelIds` became `undefined`
+— which means *no filter*, not *empty filter*. He measured 7 of 11 channels moving where 1 was
+approved, exit 0, the approved id appearing nowhere in the output. Same family as Round 178's
+`resolves-to-default` mirror, and pointing the worse way: the answer is **bigger** than what was
+asked for.
+
+### What shipped
+
+- **An empty list is no longer the same request as no list.** `--channels` with no values — the
+  space form, `--channels=`, `--channels=$UNSET`, `--channels=,,` — refuses with exit 1 and the
+  snapshot discarded, using the rule `--bases` already followed. The space form gets a second line
+  naming the id it found in `positional[1]`, because there the remedy is different: the ids are in
+  argv, unread.
+- **`--undo` had the identical hole, and it was the worst instance in the file.** `undoPath` being
+  `''` didn't mean "no filter", it meant the undo branch was skipped entirely: a dry run where a
+  reversal was asked for, and with `--apply` on the same line a **re-apply of the backfill being
+  reversed**. Measured on the pre-fix script out of `git show HEAD:` against Theseus's fixture:
+  `Applied: 7 channel(s) re-pointed, 4 agent(s) minted.`, exit 0, a new undo record written. Not
+  in his memo — found by driving finding 5. Now refused, with the stray argument named.
+- **The ambiguity refusal is actionable.** `BackfillFilterReport.ambiguous[].matches` carries
+  `{ id, name }` instead of a bare id; the CLI prints full ids with channel names beneath the
+  header instead of `slice(0, 12)` — two ids ambiguous on 8 characters usually agree on 12, so the
+  old message printed the same string twice and told the operator to choose between them.
+- **The `--undo` error paths speak in this script's voice, before the snapshot.**
+  `no such undo record: <path>` (parallel to the script's own `no such database:`, the line Theseus
+  named), `undo record is not valid JSON: <path>`, and a new exported `checkUndoRecord()` in
+  `entity-backfill.ts` → `not a backfill undo record: <path>` plus the precise problem. Read and
+  parse happen before `db.backup()`, so those refuse with zero litter. **One deliberate exception:**
+  a throw from inside `undoEntityBackfill` keeps the backup and reprints its path, because undo
+  commits one transaction per channel and a partial revert is a state the operator may want out of.
+- **`discardSnapshot()` hoisted** over four copy-pasted disposal sites; one of them
+  (`Nothing to apply`) had been missing the `-wal`/`-shm` lines.
+
+**The validator went in the module, not the CLI**, so it is unit-tested against a record a real
+apply produced — including a legacy record with `fromAddedAt` stripped and a record naming a
+since-deleted message id. That last one passes on purpose: the UPDATE matches nothing, undo still
+reverts the rest, and refusing it would block a recovery path over a stale id.
+
+**One wording decision recorded:** I first wrote `matches 2 in-scope channels` and reverted to
+Round 179's `matches 2 channels`, because Theseus's J1 asserts on that phrase. The defect was the
+truncation, not the wording; breaking an assertion to add two words would have cost him an arm for
+nothing.
+
+### Verification
+
+- `npx tsc --noEmit -p packages/server` — clean.
+- `npm test` — **311 passed · 13 skipped · 0 failed** (37 files). `round175-entity-backfill.test.ts`
+  is 30 tests, 4 of them new (`checkUndoRecord`), plus the R178 ambiguity assertion updated for the
+  `{ id, name }` shape.
+- `probe-round179-…` (Theseus's, unmodified) run twice against the fixed code:
+  **33 checks · 1 failed · 4 open**, from 2 failed · 5 open. L1 and J1's first arm flipped to PASS
+  on their own.
+- **The remaining five are detection-side, in his probe, not in my code.** His predicates
+  recognise "honoured" but not "refused", which is the outcome he asked for; each arm's own
+  interpolated measurement contradicts its prose (H1 prints `exit 1`; L2's TypeError no longer
+  occurs). Same category as G4 and Arm E. Handed back with the exact predicate repairs in a table.
+- Every CLI output quoted in the memo is pasted from a run I drove on `.testdata/r179`. One live
+  `--apply --channels=<one id>` → `--undo=` round trip: 1 moved, 1 minted, 1 reverted, 1 removed.
+
+**Still not claimed:** no run against any real corpus; the 72 is unverified and only xian's dry run
+answers it. Unchanged by this round — his two commands are the same two commands.
+
+### Wrap verification (CLAUDE.md Session Wrap Protocol)
+

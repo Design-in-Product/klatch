@@ -40,12 +40,28 @@
  * for the same reason: you reach for it because something already went wrong,
  * which is the worst moment to have one way back.
  *
- * **An operator mistake is never reported as an empty corpus.** An unknown
- * `--bases` value is refused by name, and `--channels` entries that match no
- * candidate — or match more than one — are echoed and the run refuses rather
- * than applying the subset that did resolve. Theseus's Round 176 found all three
- * returning `Candidates: 0` and exit 0, which reads as "your corpus has nothing
- * to fix."
+ * **An operator mistake is never reported as an empty corpus, and never as a
+ * wider run than was asked for.** An unknown `--bases` value is refused by name,
+ * and `--channels` entries that match no candidate — or match more than one —
+ * are echoed and the run refuses rather than applying the subset that did
+ * resolve. Theseus's Round 176 found all three returning `Candidates: 0` and exit
+ * 0, which reads as "your corpus has nothing to fix."
+ *
+ * `--channels` **needs its equals sign.** `--channels <id>` used to leave the
+ * approval list empty, and an empty list was indistinguishable from no list at
+ * all: Theseus's Round 179 measured 7 of 11 channels moving where 1 was
+ * approved, exit 0. An empty list now refuses (with the `=` named), because the
+ * direction of that failure — bigger than what was asked for — is the worst one
+ * this tool has. **So does `--undo`**, which had the same hole for a worse reason:
+ * `--undo <record> --apply` re-applied the backfill the operator was reversing.
+ * Every value-taking flag here now refuses an empty value rather than reading it
+ * as an absent one.
+ *
+ * **Every refusal speaks in this script's voice and disposes of its snapshot.**
+ * A missing or malformed `--undo` record is a sentence, not a Node stack, and is
+ * checked before the snapshot is taken. The one deliberate exception is a throw
+ * from inside `undoEntityBackfill`: undo commits per channel, so the backup is
+ * kept and its path reprinted.
  *
  * Known, inherited from Theseus's 8/12 note on `inspect-klatch-db.mjs`: opening
  * a WAL database read-only still creates `-wal`/`-shm` sidecars beside it. Both
@@ -82,15 +98,75 @@ if (!fs.existsSync(dbPath)) {
 }
 
 const apply = flags.includes('--apply');
-const undoPath = flagValue('undo');
+const undoArg = flagValue('undo');
+// Asked for, as distinct from usable — the same distinction `--channels` needs
+// below, and for a worse reason. `--undo <record>` (a space) made `undoArg` `''`,
+// `''` is falsy, and the undo branch was skipped entirely: on its own that is a
+// dry run where a reversal was asked for, and *with* `--apply` on the same line it
+// re-applies the backfill the operator was trying to undo. Found driving Round
+// 179's finding 5, not reported by it.
+const undoRequested = undoArg !== undefined;
+if (undoRequested && !undoArg!.length) {
+  const stray = positional[1];
+  console.error('--undo was given with no value: no record to reverse.');
+  console.error(
+    `  Use an equals sign: --undo=<record.json>` +
+      (stray ? ` — "${stray}" was read as an extra argument.` : '.')
+  );
+  process.exit(1);
+}
+const undoPath = undoRequested ? undoArg! : undefined;
 const stamp = new Date().toISOString().replace(/[:.]/g, '-');
 
 // The snapshot. Kept beside the DB when it is a backup (apply, undo), thrown
 // away after a dry run (there it was only ever a read surface).
 const snapshotPath =
-  apply || undoPath
+  apply || undoRequested
     ? `${dbPath}.backup-backfill-${stamp}`
     : path.join(os.tmpdir(), `klatch-backfill-dryrun-${stamp}.db`);
+
+// Every refusal below this point has to clean up after itself. A snapshot of a
+// 100MB database left beside it by a typo is litter the operator did not ask for,
+// and three of the four disposal sites were already identical copies of this.
+function discardSnapshot(): void {
+  fs.rmSync(snapshotPath, { force: true });
+  for (const side of ['-wal', '-shm']) fs.rmSync(snapshotPath + side, { force: true });
+}
+
+// Read and shape-check the undo record *before* the snapshot, so a missing or
+// wrong-shaped file refuses without leaving a copy of the database behind. Both
+// used to surface as raw Node errors — `ENOENT` with a stack, or
+// `TypeError: record.channels is not iterable` from inside the module — after the
+// snapshot had already been written (Theseus's Round 179, finding 5).
+let undoRecordJson: unknown;
+if (undoPath) {
+  let raw: string;
+  try {
+    raw = fs.readFileSync(undoPath, 'utf8');
+  } catch (err) {
+    // "no such undo record", deliberately parallel to this script's own
+    // `no such database: <path>` — the line Theseus named as the voice the undo
+    // paths should have been speaking in.
+    const e = err as NodeJS.ErrnoException;
+    console.error(
+      e.code === 'ENOENT'
+        ? `no such undo record: ${undoPath}`
+        : `cannot read undo record: ${undoPath}`
+    );
+    if (e.code !== 'ENOENT') console.error(`  ${e.message}`);
+    console.error(
+      '  The record is the `.backfill-<stamp>.json` file an --apply run printed beside your database.'
+    );
+    process.exit(1);
+  }
+  try {
+    undoRecordJson = JSON.parse(raw);
+  } catch (err) {
+    console.error(`undo record is not valid JSON: ${undoPath}`);
+    console.error(`  ${(err as Error).message}`);
+    process.exit(1);
+  }
+}
 
 const source = new Database(dbPath, { readonly: true, fileMustExist: true });
 await source.backup(snapshotPath);
@@ -104,15 +180,36 @@ const {
   planEntityBackfill,
   applyEntityBackfill,
   undoEntityBackfill,
+  checkUndoRecord,
   BACKFILL_SOURCES,
   DEFAULT_APPLY_BASES,
 } = await import('../packages/server/src/db/entity-backfill.js');
 const { GUESS_BASES } = await import('../packages/server/src/import/entity-guess.js');
 
 if (undoPath) {
+  const checked = checkUndoRecord(undoRecordJson);
+  if (!checked.ok) {
+    discardSnapshot();
+    console.error(`not a backfill undo record: ${undoPath}`);
+    console.error(`  ${checked.problem}`);
+    console.error(
+      '  Expected the `.backfill-<stamp>.json` file an --apply run wrote beside your database.\n' +
+        '  Nothing was written and the snapshot was discarded.'
+    );
+    process.exit(1);
+  }
   console.log(`Backup (taken before anything was written): ${snapshotPath}`);
-  const record = JSON.parse(fs.readFileSync(undoPath, 'utf8'));
-  const result = undoEntityBackfill(record);
+  let result;
+  try {
+    result = undoEntityBackfill(checked.record);
+  } catch (err) {
+    // The snapshot is *kept* here, unlike every other refusal: undo writes one
+    // transaction per channel, so a throw part-way through leaves earlier
+    // channels reverted. That is a state the operator may want to get out of.
+    console.error(`\nundo failed part-way: ${(err as Error).message}`);
+    console.error(`The backup from before this run is intact at:\n  ${snapshotPath}`);
+    process.exit(1);
+  }
   console.log(
     `Reverted ${result.reverted} channel(s). Agents removed: ${result.entitiesRemoved.length}` +
       (result.entitiesKept.length
@@ -130,8 +227,7 @@ if (basesArg !== undefined) {
   // "0 would move" — a typo dressed as a finding about the corpus.
   const unknown = requested.filter((b) => !GUESS_BASES.includes(b as never));
   if (unknown.length || !requested.length) {
-    fs.rmSync(snapshotPath, { force: true });
-    for (const side of ['-wal', '-shm']) fs.rmSync(snapshotPath + side, { force: true });
+    discardSnapshot();
     console.error(
       unknown.length
         ? `unknown --bases value(s): ${unknown.join(', ')}`
@@ -143,7 +239,36 @@ if (basesArg !== undefined) {
   bases = requested as typeof DEFAULT_APPLY_BASES;
 }
 const channelsArg = flagValue('channels');
-const channelIds = channelsArg ? channelsArg.split(',').filter(Boolean) : undefined;
+// `undefined` means no filter; an *empty* filter must never mean the same thing.
+// `--channels <id>` (a space instead of an `=`) made `flagValue` return `''`, `''`
+// is falsy, and the whole approval list silently switched off — Theseus measured
+// 7 of 11 channels moving instead of the 1 approved, exit 0, the id appearing
+// nowhere in the output (Round 179, findings 1–3). `--bases` above already
+// refuses this; the rule is the same one, and it covers `--channels=` and
+// `--channels=,,` with it.
+if (channelsArg !== undefined && !channelsArg.split(',').filter(Boolean).length) {
+  discardSnapshot();
+  console.error('--channels was given with no values: nothing would be approved.');
+  // `--channels` with no `=` at all is the space slip specifically, and it has a
+  // different remedy from an empty or comma-only list: the ids are sitting in
+  // argv, unread. Name them.
+  if (flags.includes('--channels')) {
+    const stray = positional[1];
+    console.error(
+      '  Use an equals sign: --channels=<id>,<id>. A space after --channels switches the approval' +
+        '\n  list off entirely rather than filling it' +
+        (stray ? `, and "${stray}" was read as an extra argument.` : '.')
+    );
+  } else {
+    console.error(
+      '  Pass the ids you approved off the sheet (--channels=<id>,<id>), or drop the flag to plan\n' +
+        '  the whole corpus. An empty list is not the same request as no list.'
+    );
+  }
+  process.exit(1);
+}
+const channelIds =
+  channelsArg !== undefined ? channelsArg.split(',').filter(Boolean) : undefined;
 
 const plan = planEntityBackfill({ bases, channelIds });
 
@@ -167,9 +292,17 @@ if (plan.filter) {
     filterProblems.push(`  --channels ${id}: matched no in-scope candidate on this sheet`);
   }
   for (const a of plan.filter.ambiguous) {
+    // Full ids and names, not a truncation. Ids ambiguous on 8 characters usually
+    // agree on 12, so the old `slice(0, 12)` printed the same string twice and
+    // told the operator to choose between two things it had made identical
+    // (Theseus's Round 179, finding 4). What disambiguates them is the rest of
+    // the id — which is also exactly what you paste back.
     filterProblems.push(
+      // Wording held to Round 179's string deliberately: Theseus's J1 asserts on
+      // "matches N channels", and the fix here is the list below, not a rename.
       `  --channels ${a.requested}: ambiguous prefix, matches ${a.matches.length} channels ` +
-        `(${a.matches.map((m) => m.slice(0, 12)).join(', ')})`
+        `— pass one of these in full:\n` +
+        a.matches.map((m) => `      ${m.id}  ${m.name || '(unnamed)'}`).join('\n')
     );
   }
   if (filterProblems.length) {
@@ -216,8 +349,7 @@ for (const r of plan.rows) {
 }
 
 if (!apply) {
-  fs.rmSync(snapshotPath, { force: true });
-  for (const side of ['-wal', '-shm']) fs.rmSync(snapshotPath + side, { force: true });
+  discardSnapshot();
   console.log(
     '\nDry run — planned against a read-only snapshot, which has been deleted. Your database was\n' +
       'not opened for writing and no agent was minted. Re-run with --apply to move these, or with\n' +
@@ -230,8 +362,7 @@ if (!apply) {
 // list of approvals, and quietly acting on some of them is the mistake the flag
 // exists to prevent.
 if (filterProblems.length) {
-  fs.rmSync(snapshotPath, { force: true });
-  for (const side of ['-wal', '-shm']) fs.rmSync(snapshotPath + side, { force: true });
+  discardSnapshot();
   console.error(
     '\nRefusing to apply: some --channels entries did not resolve (above). Nothing was written and\n' +
       'the snapshot was discarded. Fix or drop those entries and re-run.'
@@ -240,7 +371,7 @@ if (filterProblems.length) {
 }
 
 if (plan.summary.apply === 0) {
-  fs.rmSync(snapshotPath, { force: true });
+  discardSnapshot();
   console.log('\nNothing to apply. Snapshot discarded.');
   process.exit(0);
 }
