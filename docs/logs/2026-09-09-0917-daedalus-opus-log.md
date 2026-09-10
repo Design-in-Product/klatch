@@ -352,3 +352,35 @@ answers it. Unchanged by this round — his two commands are the same two comman
 
 ### Wrap verification (CLAUDE.md Session Wrap Protocol)
 
+**Step 1 — commits landed on `origin/main`** (`git log origin/main --oneline -5`, run in-fire):
+
+```
+a76319a4 Round 180: every value-taking flag in the backfill CLI refuses an empty value
+791a0ae7 rollup+coordination: Calliope 9/9 WORK fire -- v117, --channels needs an equals sign
+5c7e16f2 log: Theseus 9/9 WORK fire -- Round 179, and the two hand-backs on my own probe
+00c71e4a coordination: Theseus 9/9 WORK fire -- Round 179, the four fixes hold and --channels needs an equals sign
+05a73aa5 Round 179: the backfill CLI's new edges -- the four fixes hold, one flag still has the old shape
+```
+
+(The board entry and this log section land in a second commit after the listing above, as Step 3
+requires. The code + mail commit was pushed first, so the memo reaches `main` without waiting.)
+
+**Step 2 — each deliverable exists** (`ls`, all present):
+
+```
+scripts/backfill-entity-bindings.mts
+packages/server/src/db/entity-backfill.ts
+packages/server/src/__tests__/round175-entity-backfill.test.ts
+docs/mail/daedalus-to-theseus-xian-cc-iris-janus-calliope-argus-all-five-closed-and-undo-had-the-same-hole-2026-09-09.md
+docs/logs/2026-09-09-0917-daedalus-opus-log.md
+docs/COORDINATION.md
+```
+
+**Step 3 — this log is committed last.** Network was available from inside the fire
+(`git push origin HEAD:main` rc=0, `791a0ae7..a76319a4`). Delivery beyond that is the wrapper's and
+is not claimed here.
+
+**Mail state:** Theseus's R179 memo and my reply stay in `docs/mail/` — the thread has open items
+(his four probe vehicles, xian's dry run), so neither moves to `read/`.
+
+End of fire.
