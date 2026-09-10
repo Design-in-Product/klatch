@@ -283,3 +283,127 @@ Step 3 — this log pushed last.
 
 One line, and it replaces this morning's: **`--channels` works now — use it with an `=`.** A
 space instead of the equals sign silently applies to your whole corpus and reports success.
+
+---
+
+# Theseus — 2026-09-09 (STOP fire, Opus 5)
+
+Same worktree, same branch. Network available (pushed to `origin/main` twice before this entry).
+
+## 19:4x — briefing
+
+Pulled state is `ea5c6099` (Iris's 9/9 STOP entry). Read `docs/COORDINATION.md` (my section:
+status **available**, one carried item — Round 170's frequency probe, still blocked on a path to
+the real `klatch.db` from xian) and swept `docs/mail/`.
+
+One memo addressed to me was new: **`daedalus-to-theseus-xian-...-all-five-closed-and-undo-had-the-same-hole-2026-09-09.md`**
+(9/9 STOP). It closes all five of my Round 179 findings, reports a sixth he found himself in
+`--undo`, and hands me back five arms of my own probe to re-vehicle. Actioned in the same turn as
+the read.
+
+## 19:5x — reproduced his number before touching anything
+
+Ran `probe-round179-…` unmodified against the fixed code: **33 checks · 1 failed · 4 open**, the
+exact shape Daedalus reported. Confirms his read that the remainder is detection-side — H1's own
+interpolated detail prints `exit 1` while its prose says "silently plans the WHOLE corpus", and I1
+reported `0 moved` while its `<= 1` bound passed for a reason unrelated to what it was written to
+catch.
+
+## 20:0x — the five hand-backs, re-vehicled in place
+
+Same treatment as Round 176's G4 and arm E: the invariant holds, the input stopped being an example
+of it. None weakened; each carries a comment saying what it used to assert and why that stopped
+being the question. Three got stronger:
+
+- **H1** — the old check said the typed id "appears 0 times in stdout". Its inverse is the arm now:
+  naming the id sitting unread in argv is the remedy, so I assert it is echoed **in full**.
+- **H1/H3/H4 (new)** — the space form and the empty form give *different* remedies, deliberately.
+  An arm checking only the shared first line would pass if the two crossed over.
+- **I1** — `movedCount <= 1` is too weak now; a refusal and a correct one-channel move both satisfy
+  it. Asserts the refusal.
+- **J1's third** — both full ids on their own indented lines with names beside them, **and an
+  echoed id pasted straight back**, which is the invariant "distinguishable" was standing in for.
+- **L2** — matched loosely on `not a backfill( undo)? record`; asserts no `TypeError` and the
+  specific problem line. **L1/L2 (new)** — neither refusal leaves a snapshot, the half of my own
+  finding 5 that I described but never asserted.
+
+**Re-run: 40 checks · 0 failed · 0 open.** Round 179's probe is a green regression suite over Round
+180 now, not a report of it.
+
+## 20:1x–21:0x — Round 181: what Round 180's rule cannot see
+
+New instrument `scripts/probe-round181-unrecognised-flags-and-undo-record-validation.mts`.
+Organising question: Round 180 closed the family under *a value-taking flag with an empty value
+refuses*, which fires when `flagValue` returns a defined-but-empty string. It cannot fire when
+`flagValue` returns `undefined` — and that is what it returns for a flag it does not recognise,
+because nothing validates that a `--flag` in argv is one the script knows.
+
+**32 checks · 0 failed · 7 open · 2 measurements. Two runs, same shape. Zero model calls.**
+`klatch.db` never opened; fixture in `.testdata/r181/` (gitignored).
+
+**Headline: `--channel=<id>` (singular) is silently ignored and the run covers the whole corpus,
+exit 0.** Four spellings identical (`--channel=`, `--chanels=`, `--Channels=`, `-channels=`):
+`Candidates: 8 — 4 would move` against a control of `1 of 8`; with `--apply`, **4 of 8 in-scope
+channels moved where 1 was approved**, and neither the token as typed nor the id inside it appears
+anywhere in stdout or stderr. Round 179's finding 1, different door. **Worse: `--apply
+--und=<record>` re-applies the backfill it was meant to reverse, exit 0** — Daedalus's own Round
+180 consequence, reached by misspelling rather than by spacing; the correctly spelled control in
+the same arm reverted all 4. Third: `--base=none` silently uses the default bases.
+
+**What holds (25 checks):** `checkUndoRecord` refuses a JSON array, a `null`, a bare string,
+`version: 2`, a v1 record with no `channels`, and a channel entry missing `toEntityId` — all six in
+the tool's voice, no `TypeError`, each naming its own problem (asserted per-input, because the
+problem line is what makes a refusal actionable). A truncated record is named as invalid JSON, not
+as a wrong shape. A directory refuses as `cannot read undo record:`. Nine refused undo runs left
+sha256 unchanged and 0 new backup files. The record the apply in that arm had just written still
+passes and reverses.
+
+**Correction to my own arm, mid-round.** M1's "was the operator told?" check first scored the
+dry-run footer's ``--channels=<ids>`` hint line as an echo of what the operator typed. It is not —
+it matches the substring while telling them nothing about their slip, and to someone who believes
+they just passed `--channels` it reads as generic advice. Re-vehicled to check the token exactly as
+typed and the id inside it. Same family as the two instrument errors in Round 176 and J5's in Round
+179: an arm that passes for a reason unrelated to its question.
+
+Writeup `docs/research/round181-unrecognised-flags-and-the-undo-record-validator-2026-09-09.md`;
+memo to Daedalus + xian cc team, pushed to `main` separately per the worktree mail discipline; his
+9/9 STOP memo and my 14:56 one it answers moved to `docs/mail/read/`.
+
+## Carried, unchanged
+
+**Round 170's frequency probe** still needs one path to the real `klatch.db` from xian. The tool
+layer still refuses `/Users/xian/Development/klatch/` from this worktree. Unchanged this fire.
+
+## Wrap verification
+
+Step 1 — commits on `origin/main`:
+
+```
+$ git log origin/main --oneline -3
+fa9cda30 Round 181: Round 180's five re-vehicled green, and a misspelled --channels still applies to everything
+2506724e mail: Round 181 report to Daedalus + xian -- five re-vehicled, and a sixth member of the family
+ea5c6099 log+coordination: Iris 9/9 STOP fire -- no-op, Round 174 browser-verified and closed by Theseus
+```
+
+Both of this fire's work commits are on `origin/main`. The mail commit was pushed at the moment it
+was made, before the work commit, per the worktree mail discipline.
+
+Step 2 — deliverable files, each `ls`'d:
+
+```
+docs/mail/read/daedalus-to-theseus-xian-cc-iris-janus-calliope-argus-all-five-closed-and-undo-had-the-same-hole-2026-09-09.md
+docs/mail/read/theseus-to-daedalus-xian-cc-iris-janus-calliope-argus-your-four-fixes-hold-and-the-fifth-flag-still-has-the-old-shape-2026-09-09.md
+docs/mail/theseus-to-daedalus-xian-cc-iris-janus-calliope-argus-your-five-are-closed-and-the-family-has-a-sixth-member-2026-09-09.md
+docs/research/round181-unrecognised-flags-and-the-undo-record-validator-2026-09-09.md
+scripts/probe-round179-backfill-flag-spellings-and-undo-errors.mts
+scripts/probe-round181-unrecognised-flags-and-undo-record-validation.mts
+```
+
+Step 3 — this log and the COORDINATION update pushed last.
+
+## What xian needs from this fire
+
+One line, and it replaces this afternoon's: **the equals sign is now enforced; the letter `s` is
+not.** `--channel=<id>` (singular) is silently ignored and applies to your whole corpus at exit 0.
+Before adding `--apply`, look at the `Candidates:` line for the words `matched your --channels
+filter` — if that phrase is absent, the filter did not take.
