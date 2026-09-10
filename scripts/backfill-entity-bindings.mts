@@ -57,6 +57,16 @@
  * Every value-taking flag here now refuses an empty value rather than reading it
  * as an absent one.
  *
+ * **Every token in argv is read, or the run refuses** — before the database is
+ * opened. The empty-value rule could not see a flag with the wrong *name*:
+ * `--channel=<id>` (singular) returned `undefined`, which is also "not given",
+ * and Theseus's Round 181 measured it applying the whole corpus at exit 0, and
+ * `--apply --und=<record>` re-applying the backfill being reversed. So a flag
+ * this script does not know is refused (with a pasteable "did you mean"), as is
+ * a value flag given twice, `--apply` given a value, a stray argument after the
+ * path (`--channels=a, b` in a shell), and `--channels`/`--bases` beside
+ * `--undo`, which never reads them.
+ *
  * **Every refusal speaks in this script's voice and disposes of its snapshot.**
  * A missing or malformed `--undo` record is a sentence, not a Node stack, and is
  * checked before the snapshot is taken. The one deliberate exception is a throw
@@ -73,9 +83,78 @@ import os from 'os';
 import path from 'path';
 import Database from 'better-sqlite3';
 
+const USAGE =
+  'usage: npx tsx scripts/backfill-entity-bindings.mts <klatch.db> [--apply] [--bases=a,b] [--channels=id,id] [--undo=<record.json>]';
+
+// Every token in argv is read, or the run refuses. Round 180's rule refuses a
+// value-taking flag with an *empty* value; it could not see a flag with the wrong
+// *name*, because `flagValue` returns `undefined` for a name it does not know and
+// `undefined` is also "not given". Theseus's Round 181: `--channel=<id>` (the
+// singular) planned and applied the whole corpus, 4 of 8 moved where 1 was
+// approved, exit 0; `--apply --und=<record>` re-applied the backfill it was meant
+// to reverse. Driving that turned up the rest of the family, all exit 0 on the
+// same fixture: a second `--bases=none` dropped behind the first (4 would move
+// instead of 0), a second `--channels=` dropped, `--channels=a, b` losing `b` to
+// the shell as a stray argument, `--apply=yes` running dry. One rule at the parse
+// boundary closes all of them rather than one guard per spelling.
+const VALUE_FLAGS = ['bases', 'channels', 'undo'];
+const KNOWN_FLAGS = ['apply', ...VALUE_FLAGS];
+
+function editDistance(a: string, b: string): number {
+  const row = Array.from({ length: b.length + 1 }, (_, j) => j);
+  for (let i = 1; i <= a.length; i++) {
+    let diag = row[0];
+    row[0] = i;
+    for (let j = 1; j <= b.length; j++) {
+      const up = row[j];
+      row[j] = Math.min(row[j] + 1, row[j - 1] + 1, diag + (a[i - 1] === b[j - 1] ? 0 : 1));
+      diag = up;
+    }
+  }
+  return row[b.length];
+}
+
+// The suggestion carries the operator's own value across, so it can be pasted
+// back as-is — and so the id they typed appears in the refusal, in full.
+function didYouMean(token: string): string {
+  const eq = token.indexOf('=');
+  const typed = (eq === -1 ? token : token.slice(0, eq)).replace(/^-+/, '').toLowerCase();
+  const near = KNOWN_FLAGS.find((k) => editDistance(typed, k) <= 2);
+  if (!near) return '';
+  return near === 'apply' ? ' — did you mean --apply?' : ` — did you mean --${near}${eq === -1 ? '' : token.slice(eq)}?`;
+}
+
 const argv = process.argv.slice(2);
-const flags = argv.filter((a) => a.startsWith('--'));
-const positional = argv.filter((a) => !a.startsWith('--'));
+const flags: string[] = [];
+const positional: string[] = [];
+const argProblems: string[] = [];
+for (const token of argv) {
+  if (!token.startsWith('-')) {
+    positional.push(token);
+    continue;
+  }
+  const name = /^--([a-z]+)(?:=|$)/.exec(token)?.[1];
+  if (!name || !KNOWN_FLAGS.includes(name)) {
+    argProblems.push(`  ${token}: not a flag this script knows${didYouMean(token)}`);
+  } else if (name === 'apply' && token !== '--apply') {
+    argProblems.push(`  ${token}: --apply takes no value — pass it bare`);
+  } else if (VALUE_FLAGS.includes(name) && flags.some((f) => /^--([a-z]+)/.exec(f)?.[1] === name)) {
+    // Only the first was ever read. Which one the operator meant is not
+    // something to guess: `--bases=identity-claim --bases=none` is two requests.
+    argProblems.push(`  ${token}: --${name} was already given — pass it once`);
+  } else {
+    flags.push(token);
+  }
+}
+if (argProblems.length) {
+  console.error(
+    `Refusing to run: ${argProblems.length === 1 ? 'an argument' : `${argProblems.length} arguments`} ` +
+      'would have been ignored, and an ignored flag changes what this run covers.'
+  );
+  for (const line of argProblems) console.error(line);
+  console.error(USAGE);
+  process.exit(1);
+}
 
 function flagValue(name: string): string | undefined {
   const hit = flags.find((f) => f === `--${name}` || f.startsWith(`--${name}=`));
@@ -86,8 +165,17 @@ function flagValue(name: string): string | undefined {
 
 const dbArg = positional[0];
 if (!dbArg) {
+  console.error(USAGE);
+  process.exit(1);
+}
+// One path, nothing after it. `--channels=a, b` hands the shell two words and `b`
+// used to vanish here. A bare value flag (`--channels <id>`) is left to its own
+// refusal below, which names the stray as the value it was meant to be.
+const strays = positional.slice(1);
+if (strays.length && !VALUE_FLAGS.some((n) => flags.includes(`--${n}`))) {
+  console.error(`Refusing to run: unexpected argument(s) after the database path: ${strays.map((s) => `"${s}"`).join(', ')}`);
   console.error(
-    'usage: npx tsx scripts/backfill-entity-bindings.mts <klatch.db> [--apply] [--bases=a,b] [--channels=id,id] [--undo=<record.json>]'
+    '  This script reads one path. Channel ids go inside the list with no spaces: --channels=<id>,<id>'
   );
   process.exit(1);
 }
@@ -114,6 +202,25 @@ if (undoRequested && !undoArg!.length) {
       (stray ? ` — "${stray}" was read as an extra argument.` : '.')
   );
   process.exit(1);
+}
+// The same rule, by mode. `--undo` reverses a whole record; `--channels` and
+// `--bases` narrow a *forward* plan and are never read on the undo path, so
+// `--undo=<record> --channels=<id>` reads as "put back that one" and reverses
+// every channel the record holds. (`--apply` beside `--undo` is only redundant —
+// undo writes either way — so it is let through.)
+if (undoRequested) {
+  const unread = ['channels', 'bases'].filter((n) => flagValue(n) !== undefined);
+  if (unread.length) {
+    console.error(
+      `Refusing to run: ${unread.map((n) => `--${n}`).join(' and ')} cannot narrow an --undo.`
+    );
+    console.error(
+      '  --undo reverses every channel in the record it is given. Drop ' +
+        (unread.length === 1 ? 'the filter' : 'the filters') +
+        ' to reverse the whole run; there is no partial undo.'
+    );
+    process.exit(1);
+  }
 }
 const undoPath = undoRequested ? undoArg! : undefined;
 const stamp = new Date().toISOString().replace(/[:.]/g, '-');
