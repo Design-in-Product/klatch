@@ -28,6 +28,15 @@
  * an 8-character prefix. uuids will not collide on request, and an ambiguity
  * arm that only fires when the build gets lucky is not an arm.
  *
+ * **Re-vehicled 2026-09-09 (STOP fire), after Round 180 closed all five findings.**
+ * Five arms — H1, H3, H4, I1, J1's third check and L2 — were written to recognise
+ * *honoured* and could not recognise *refused*, so the fix read as the defect
+ * still standing (33 checks · 1 failed · 4 open against fixed code, every arm's
+ * own interpolated measurement contradicting its prose). The invariants are
+ * unchanged and none was weakened; what changed is which output satisfies them.
+ * Same category as Round 176's G4 and arm E. Each re-vehicled arm carries a
+ * comment saying what it used to assert and why that stopped being the question.
+ *
  *   npx tsx scripts/probe-round179-backfill-flag-spellings-and-undo-errors.mts
  */
 
@@ -215,24 +224,31 @@ console.log('\nArm H — `--flag value` (a space) and `--flag=` (empty)');
 const hHash = sha(DB);
 const wren = seeded['wren'];
 
+// Re-vehicled after Round 180 (Daedalus). The original arm asked "honoured or
+// refused?" and could only recognise *honoured*, so the fix — refusal — read as
+// the defect still standing. The invariant was always "an operator error must
+// not come back as an answer"; what changed is which output satisfies it.
 const hSpace = cli([DB, '--channels', wren]);
-const hSpaceFiltered = FILTERED.test(hSpace.out);
-if (hSpaceFiltered) {
-  check('H1', '`--channels <id>` (space) is honoured or refused', true, hSpace.out.match(FILTERED)![0]);
-} else {
-  open_(
-    'H1',
-    '`--channels <id>` with a space silently plans the WHOLE corpus',
-    `\`--channels\` and the id as separate argv words makes \`flagValue\` return '' (backfill-entity-bindings.mts:68), '' is falsy at :146, and \`channelIds\` becomes \`undefined\` — which means *no filter*. Measured: ${
-      UNFILTERED.exec(hSpace.out)?.[0] ?? '(no candidates line)'
-    }, exit ${hSpace.code}, for an operator who approved one channel. The id is swallowed as \`positional[1]\` and never echoed. This is the mirror of the fix Round 178 shipped: an operator error read as an answer — except here the answer is bigger than what was asked for, not smaller.`
-  );
-}
 check(
   'H1',
-  'the swallowed id is nowhere in the output',
-  !hSpace.out.includes(wren) || hSpaceFiltered,
-  hSpaceFiltered ? 'filter honoured, moot' : `the id the operator typed (${wren.slice(0, 8)}) appears 0 times in stdout`
+  '`--channels <id>` (a space, not `=`) refuses instead of switching the filter off',
+  hSpace.code === 1 && /--channels was given with no values/.test(hSpace.err),
+  `exit ${hSpace.code} · "${errLine(hSpace.err, /given with no values/)}"`
+);
+check(
+  'H1',
+  'no plan is printed at all — the run stops before the corpus is read',
+  !FILTERED.test(hSpace.out) && !UNFILTERED.test(hSpace.out),
+  UNFILTERED.exec(hSpace.out)?.[0] ?? FILTERED.exec(hSpace.out)?.[0] ?? 'no Candidates line in stdout'
+);
+// The inverse of the original arm's second check. Round 179 measured the typed
+// id appearing 0 times; the remedy for *this* slip is that the ids are sitting
+// in argv unread, so naming them is the whole point of the message.
+check(
+  'H1',
+  'the refusal names the id left sitting in argv, in full',
+  hSpace.err.includes(wren),
+  `"${wren.slice(0, 8)}…" ${hSpace.err.includes(wren) ? 'echoed as the stray argument' : 'NOT echoed'}`
 );
 
 // The control: the sibling flag, same slip, and Round 178's own fix in it.
@@ -245,35 +261,41 @@ check(
 );
 
 const hEmpty = cli([DB, '--channels=']);
-if (FILTERED.test(hEmpty.out)) {
-  check('H3', '`--channels=` (empty) is honoured or refused', true, hEmpty.out.match(FILTERED)![0]);
-} else {
-  open_(
-    'H3',
-    '`--channels=` with no value silently plans the whole corpus',
-    `Same falsy-'' path as H1, reached by typing the flag and deleting its value: ${
-      UNFILTERED.exec(hEmpty.out)?.[0] ?? '(no candidates line)'
-    }, exit ${hEmpty.code}. \`--bases=\` on the same line is refused with "given with no values" — the two flags disagree about what an empty list means.`
-  );
-}
+check(
+  'H3',
+  '`--channels=` (typed, then emptied) refuses under the same rule',
+  hEmpty.code === 1 && /--channels was given with no values/.test(hEmpty.err),
+  `exit ${hEmpty.code} · "${errLine(hEmpty.err, /given with no values/)}"`
+);
 
 const hDegenerate = cli([DB, '--channels=,,']);
-const hDegMatch = FILTERED.exec(hDegenerate.out);
+// Round 179's H4 asserted the `0 of 11` denominator line, which its own note
+// called the *mild* acceptable outcome. It is now the strict one: a comma-only
+// list is an empty list and refuses like one.
 check(
   'H4',
-  'a comma-only --channels list at least states its denominator',
-  hDegMatch?.[1] === '0' && !!hDegMatch?.[2],
-  hDegMatch?.[0] ?? hDegenerate.out.slice(-160)
+  'a comma-only `--channels=,,` refuses rather than reporting a 0 denominator',
+  hDegenerate.code === 1 && /--channels was given with no values/.test(hDegenerate.err),
+  `exit ${hDegenerate.code} · "${errLine(hDegenerate.err, /given with no values/)}"`
 );
-if (!/did not resolve|no values/.test(hDegenerate.out + hDegenerate.err)) {
-  open_(
-    'H4',
-    'a comma-only --channels list reports 0 candidates and exits 0',
-    `\`--channels=,,\` survives \`.filter(Boolean)\` as an empty array, which is truthy, so the filter is applied and matches nothing: "${
-      hDegMatch?.[0] ?? '?'
-    }", exit ${hDegenerate.code}, nothing echoed as unresolved. Milder than H1/H3 — the "of ${inScope} in scope" wording does tell the reader a filter ran — but the empty list itself is never named, and \`--bases\` refuses the same input.`
-  );
-}
+// The two slips share a refusal but not a remedy, and that distinction is
+// deliberate (Round 180). An arm that only checked the shared first line would
+// pass if the second line were dropped or crossed over.
+check(
+  'H1/H3/H4',
+  'the space form and the empty form give *different* remedies',
+  /Use an equals sign/.test(hSpace.err) &&
+    !/Use an equals sign/.test(hEmpty.err) &&
+    /not the same request as no list/.test(hEmpty.err) &&
+    /not the same request as no list/.test(hDegenerate.err),
+  `space → "Use an equals sign…"; \`--channels=\` and \`,,\` → "…not the same request as no list"`
+);
+check(
+  'H1/H3/H4',
+  'none of the three refusals left a snapshot beside the DB',
+  backupsBeside().length === 0,
+  `${backupsBeside().length} backup file(s) after 3 refusals`
+);
 check('H', 'no arm-H run mutated the DB', sha(DB) === hHash, sha(DB) === hHash ? 'sha256 unchanged' : 'FILE CHANGED');
 
 // ── Arm I — what H1 costs when --apply is on the line ────────────────────────
@@ -291,22 +313,27 @@ const wrenStillDefault = ro((db) =>
     .prepare('SELECT COUNT(*) AS n FROM channel_entities WHERE channel_id = ? AND entity_id = ?')
     .get(wren, DEFAULT_ENTITY_ID)
 ).n;
-if (movedCount <= 1) {
-  check('I1', 'approving one channel moves at most one channel', true, `${movedCount} moved (exit ${iRun.code})`);
-} else {
-  open_(
-    'I1',
-    'approving one channel with a space moves the whole corpus',
-    `\`--apply --channels ${wren.slice(0, 8)}…\` (space, not \`=\`) re-pointed **${movedCount} channels**, not the 1 approved: "${
-      /Applied: .*/.exec(iRun.out)?.[0] ?? '(no Applied line)'
-    }", exit ${iRun.code}. The approved channel did move (${
-      wrenStillDefault === 0 ? 'yes' : 'no'
-    }), so nothing in the output distinguishes this from the run the operator wanted. The undo record covers it — ${
-      recordsBeside().length
-    } record(s) written — which is the difference between this and a disaster, but the recovery is the operator noticing.`
-  );
-}
-measure(`with --apply and a space: ${movedCount} of ${beforeApply} in-scope channels moved, ${recordsBeside().length} undo record written`);
+// Round 179 measured 7 of 11 channels moving here. `movedCount <= 1` was the
+// right bound then; on its own it is now too weak — a run that refused and a run
+// that moved the single approved channel both satisfy it, and only one of those
+// is what the code does. Assert the refusal itself.
+check(
+  'I1',
+  '`--apply --channels <id>` (space) refuses before writing anything',
+  iRun.code === 1 && movedCount === 0 && wrenStillDefault === 1,
+  `exit ${iRun.code} · ${movedCount} of ${beforeApply} channels moved · the approved channel is ${
+    wrenStillDefault === 1 ? 'still on the default' : 'MOVED'
+  }`
+);
+check(
+  'I1',
+  'and left neither a backup nor an undo record behind',
+  backupsBeside().length === 0 && recordsBeside().length === 0,
+  `${backupsBeside().length} backup(s), ${recordsBeside().length} record(s) beside klatch.db`
+);
+measure(
+  `with --apply and a space: ${movedCount} of ${beforeApply} in-scope channels moved (was 7 of 11 in Round 179), ${recordsBeside().length} undo record written`
+);
 await restorePristine();
 
 // ── Arm J — the prefix matcher, on ids built to collide ──────────────────────
@@ -332,17 +359,32 @@ check(
 // The matches are echoed so the operator can pick one of them. Whether they
 // can depends on the echo being long enough to tell them apart — and ids that
 // are ambiguous are by construction ids that share a prefix.
-const jAmbLine = / {2}--channels [^\n]*ambiguous prefix[^\n]*/.exec(jAmbiguous.out)?.[0] ?? '';
-const jAmbShown = /\(([^)]*)\)/.exec(jAmbLine)?.[1]?.split(', ') ?? [];
-if (jAmbShown.length === 2 && jAmbShown[0] !== jAmbShown[1]) {
-  check('J1', 'the echoed matches are distinguishable from each other', true, jAmbLine.trim());
-} else {
-  open_(
-    'J1',
-    'the ambiguity report prints both matches identically, so it cannot be acted on',
-    `The refusal is right and the message names the problem, but it truncates each match to 12 characters (backfill-entity-bindings.mts:172, \`m.slice(0, 12)\`). Two ids ambiguous on 8 characters usually share 12: here it prints "${jAmbLine.trim()}" — the same string twice, for two different channels. The operator is told to choose and shown nothing to choose between; the remedy the message implies (paste a longer id) is the one thing the output does not enable. Printing enough characters to make the matches unique — or the names beside them — closes it.`
-  );
-}
+// Re-vehicled after Round 180: the matches used to be a parenthesised, 12-char
+// truncated list on the header line — which printed the same string twice. They
+// are now indented lines *below* the header, `      <full-id>  <name>`. The old
+// predicate parsed parens off one line and can no longer see them at all.
+const jAmbShown = jAmbiguous.out
+  .split('\n')
+  .map((l) => /^ {6}(\S+) {2}(.*)$/.exec(l))
+  .filter(Boolean) as RegExpExecArray[];
+check(
+  'J1',
+  'both matches are echoed in full, one per line, with the channel name beside them',
+  jAmbShown.length === 2 &&
+    jAmbShown.map((m) => m[1]).sort().join() === [TWIN_A, TWIN_B].sort().join() &&
+    jAmbShown.every((m) => /^kite-(one|two)$/.test(m[2].trim())),
+  jAmbShown.map((m) => `${m[1]} ${m[2].trim()}`).join(' | ') || '(no indented match lines)'
+);
+// The point of the echo is that the operator can act on it. "Distinguishable"
+// is the invariant Round 179 wrote; the strict form is that what is printed is
+// literally what you paste back — so paste it back and check it resolves.
+const jPasteBack = cli([DB, `--channels=${jAmbShown[0]?.[1] ?? 'nothing-was-echoed'}`]);
+check(
+  'J1',
+  'and pasting an echoed id straight back resolves to exactly one channel',
+  FILTERED.exec(jPasteBack.out)?.[1] === '1' && jPasteBack.code === 0,
+  `${FILTERED.exec(jPasteBack.out)?.[0] ?? '(no candidates line)'} · exit ${jPasteBack.code}`
+);
 
 const jExact = cli([DB, `--channels=${TWIN_A}`]);
 check(
@@ -473,40 +515,47 @@ const appliedState = stillOnDefault();
 const backupsBeforeUndoErrors = backupsBeside().length;
 
 const lMissing = cli([DB, '--undo=' + path.join(DATA, 'no-such-record.json')]);
-const lMissingSpoke = /no such (undo )?record|not a backfill record|usage:/i.test(lMissing.err);
-if (lMissingSpoke) {
-  check('L1', '--undo names a missing record in the tool\'s own voice', true, lMissing.err.trim().split('\n')[0]?.slice(0, 80));
-} else {
-  open_(
-    'L1',
-    '--undo of a missing record is a raw Node stack trace, and it leaves a backup behind',
-    `\`--undo=<missing>\` prints "${
-      /Error: ENOENT[^\n]*/.exec(lMissing.err)?.[0]?.slice(0, 70) ?? lMissing.err.split('\n')[0]
-    }" with a stack, exit ${lMissing.code} — where the same script says \`no such database: <path>\` for a bad positional (backfill-entity-bindings.mts:80). It also took its snapshot first (:96), so a full-size copy of the database is left beside it with nothing to clean it up: ${
-      backupsBeside().length - backupsBeforeUndoErrors
-    } new backup file(s) after this one run.`
-  );
-}
+check(
+  'L1',
+  "--undo names a missing record in the tool's own voice",
+  lMissing.code === 1 && /^no such undo record: /m.test(lMissing.err),
+  `exit ${lMissing.code} · "${errLine(lMissing.err, /no such undo record/)}"`
+);
 
 fs.writeFileSync(path.join(DATA, 'not-a-record.json'), '{"ok":true}');
 const lShape = cli([DB, '--undo=' + path.join(DATA, 'not-a-record.json')]);
-const lShapeSpoke = /not a backfill record|missing .*channels|usage:/i.test(lShape.err);
-if (lShapeSpoke) {
-  check('L2', '--undo names a wrong-shaped record in the tool\'s own voice', true, lShape.err.trim().split('\n')[0]?.slice(0, 80));
-} else {
-  open_(
-    'L2',
-    '--undo of a well-formed JSON file that is not a record throws from inside the module',
-    `A JSON file the operator points at by mistake — the sheet, another tool's output — reaches \`undoEntityBackfill\` unvalidated (backfill-entity-bindings.mts:114-115) and throws "${
-      /TypeError: [^\n]*/.exec(lShape.err)?.[0]?.slice(0, 60) ?? '?'
-    }" from entity-backfill.ts, exit ${lShape.code}. Same snapshot-then-crash shape as L1.`
-  );
-}
+// Round 180's wording is `not a backfill undo record` — one word longer than
+// Round 179's predicate, which was written against a message that did not exist
+// yet. Matched loosely on purpose: the assertion is the voice and the named
+// problem, not the adjective order.
+check(
+  'L2',
+  "--undo names a wrong-shaped record in the tool's own voice, not a TypeError",
+  lShape.code === 1 &&
+    /not a backfill( undo)? record: /.test(lShape.err) &&
+    !/TypeError/.test(lShape.err),
+  `exit ${lShape.code} · "${errLine(lShape.err, /not a backfill/)}"`
+);
+check(
+  'L2',
+  'and says what is wrong with it, specifically enough to fix',
+  /version is undefined|expected 1|channels/.test(lShape.err),
+  `"${errLine(lShape.err, /version|channels|expected/) || '(no problem line)'}"`
+);
 check(
   'L1/L2',
   'a failed undo writes nothing to the database',
-  stillOnDefault() === appliedState && sha(DB) === sha(DB),
+  stillOnDefault() === appliedState,
   `${stillOnDefault()} channels still on the default, unchanged by two failed undo runs`
+);
+// Round 179 measured both of these refusing *after* `db.backup()` had run, so a
+// full-size copy of the database was left beside it by a typo. The read and the
+// parse now happen before the snapshot; the shape check discards its own.
+check(
+  'L1/L2',
+  'and neither refusal left a snapshot beside the database',
+  backupsBeside().length === backupsBeforeUndoErrors,
+  `${backupsBeside().length - backupsBeforeUndoErrors} new backup file(s) after two failed undo runs`
 );
 
 // The backward-replay claim: a record written before `fromAddedAt` existed must
