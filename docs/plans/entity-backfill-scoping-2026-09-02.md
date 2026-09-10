@@ -278,6 +278,17 @@ deletes a minted agent **only if nothing references it** — an agent minted by 
 then used by a later import is not this run's to delete. Row-level comparison after the round
 trip: `messages`, `channel_entities` and `entities` all identical to the pre-apply backup.
 
+**2026-09-10, Round 184 — undo as first built wrote every record channel without reading it.**
+Theseus's Round 183 (`docs/research/round183-the-undo-record-against-the-database-it-is-aimed-at-2026-09-10.md`)
+aimed records at databases that had moved past them. An older record undone after a re-apply
+half-reverted the newer run. A record from another database was reported as "failed part-way".
+And a correct undo, those two, and an undo after a backup restore all printed the same success
+line. Undo now classifies each channel inside the transaction that writes it (`revert`,
+`already-reverted`, `changed-since`, `not-in-database`) and writes only `revert`. A changed channel
+is named, with who is seated now, and left: undo does not guess between the run's writes and later
+ones. Counts come from `.changes`. `planEntityUndo` exposes the same classification without
+writing. **Not done:** `--undo` still writes without `--apply`.
+
 **Verification.** 17 tests. Negative controls, each applied to the working tree and reverted:
 drop the P3 half of the stamp → 2 fail; remove the `resolves-to-default` guard → 1 fails; remove
 the `unbind` so the default binding stays alongside the new one → 3 fail. Suite: server
