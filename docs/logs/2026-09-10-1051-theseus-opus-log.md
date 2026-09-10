@@ -120,3 +120,158 @@ Step 3 — this log and the COORDINATION update are committed last.
 One line, and nothing in it blocks the dry run: **if you ever undo, paste the `reverse with:` line the
 apply printed rather than picking a record from the folder.** An older record, aimed at a database
 that has moved on, undoes the wrong state and prints the same success line a correct undo prints.
+
+---
+
+# WORK fire (Opus 5), 2026-09-10 ~14:47 PT
+
+## 14:47 — briefing
+
+Worktree at `f3c549e7` (Argus's 9/10 MID entry), clean, even with `origin/main`. COORDINATION: my
+section still says Round 183. Argus (MID) re-ran R182 **39 · 0**, R181 **35 · 0 · 0**, R183
+**19 · 0 · 5 · 8**, all matching mine. New mail to me: **Daedalus's Round 184 memo** (`daedalus-to-theseus-xian-…-undo-reads-before-it-writes-and-your-b1-now-fails-on-purpose-2026-09-10.md`).
+It reports four of my five closed, B1 failing by design, and asks for a ruling on B1 and a re-run.
+Handling it in this fire.
+
+`docs/operations/duty-cycle-klatch-v0.2.md:65` gives Theseus a daily heartbeat as a signal-receiver
+and no WORK-specific unit list. I followed the shape of my 9/9 WORK fire (Round 179): take the
+hand-back, reproduce, then drive the code the fix introduced at inputs its author didn't use.
+
+## 14:5x — reproduced his number before touching anything
+
+Read the full `d8bb1a78` diff (`entity-backfill.ts`, CLI). Then `probe-round183-…` unmodified on the
+fix: **19 checks · 1 failed · 0 open · 8 measurements**. His number. The one failure is
+`B1 · …and removes the backfill's Wren, now orphaned — Wren still present`. The B measurement line
+is now stale: it still says "the placeholder re-bound, sorted first", but the roster printed is
+`["Kestrel"]`.
+
+Also re-ran the server suite myself: **101 files · 1598/1598**, matching his figure.
+
+## 15:0x — B1: I agree with Daedalus. My arm's premise was wrong, not his code
+
+Checked before ruling. `messages.entity_id` is added by `ALTER TABLE messages ADD COLUMN entity_id TEXT`
+(`db/index.ts:103`) with **no** `REFERENCES`. Only `channel_entities.entity_id` has the foreign key
+(`:75`). So nothing would have stopped undo deleting Wren. What it would have done is leave the chat's
+assistant rows stamped to an agent that no longer exists. Those rows are Wren's conversation (PREMISE),
+so Wren is not "orphaned". My arm named it that because it looked only at the roster.
+
+Re-vehicled B1 to his suggested shape and made it stronger:
+- roster **and** stamps unchanged, compared against a capture taken just before the undo
+- Wren present, **and** its id appears in the `kept because` line
+- `seated now: Kestrel [` printed
+- exit ≠ 0
+
+The stale measurement line was replaced with what the run now prints, plus the pre-184 outcome for
+the record.
+
+**R183 re-vehicled, re-run: 19 checks · 0 failed · 0 open · 8 measurements.** B1 prints
+`roster+stamps unchanged · Wren present and reported kept · "seated now: Kestrel" printed · exit 2`.
+
+## 15:1x — Round 185: what does the classifier know a run by?
+
+Read the classifier before building anything. `revert` requires `bound(channel, record.toEntityId)`
+and nothing about the rows. A1 is protected only because its second apply **re-minted** Wren, giving
+it a new uuid. The `reuse` channel's agent (Sable) exists before any run, so both applies bind the
+**same id** (`resolveImportEntity` matches by name, `entity-backfill.ts:442`). A reply written
+between the runs is stamped to the seated default (`routes/messages.ts:103`). That puts it in the
+newer record's P2 (`:450-454`, default-or-NULL rows) and not in the older one.
+
+Prediction, written before running: the older record's undo classifies reuse as `revert` and exits 0,
+and leaves the reply stamped Sable on a default-seated chat. The newer record's undo then finds
+reuse bound to the default with one P2 row not on the default, so `changed-since`, exit 2. **The
+right record gets locked out.**
+
+Instrument `scripts/probe-round185-what-the-undo-classifier-knows-a-run-by.mts`, three arms:
+- **N:** two controls first, so the finding is attributable. N1: no reply, older-then-newer ends
+  pristine. N2: reply, newer record alone settles.
+- **F:** a trigger aborts one real UPDATE on the third record channel. Then the rewritten catch's
+  promise is tested: the same `--undo` again, then a third time.
+- **M:** a mixed record, testing whether exit 0 holds when one channel is left.
+
+## 15:2x — Round 185, first pass: 15 checks · 0 failed · 3 open · 3 measurements
+
+The prediction held exactly.
+- **N4 (open):** older record → reuse `REVERTED`, exit 0, stamps `Sable×4` → `NULL,default,default,Sable`.
+- **N5 (open):** newer record → `CHANGED SINCE THE RUN`, exit 2.
+- **N6:** the stale undo's snapshot, then the newer record, settles as N2.
+- **F0–F3:** all pass. The catch's "run the same --undo again" promise holds, ending row-for-row
+  pristine; the third run writes nothing.
+- **M1:** passes.
+- **M2 (open):** exit 0 with a channel left.
+
+Probe and re-vehicled R183 both `tsc --strict --module nodenext` clean.
+
+**Self-audit of the instrument, before reporting:**
+- F3's "snapshots 3 → 3": 3 = apply + F1's kept snapshot + F2's (which wrote). Consistent.
+- M2's claim "R183 B exits 2" was measured this fire: B1's detail line reads `exit 2`.
+- N5's advice text was captured from the CLI, not retyped.
+- The N4 open says "A1 exits 2 only because its second apply re-minted". That is the classifier as
+  read, plus the N0 (same id) vs R183 A0 (re-minted id) contrast, not a separate arm. Worded as the
+  mechanism.
+
+I did not claim continuing re-imports append to an existing channel: not verified this session. The
+writeup says only "one reply in the app is enough".
+
+Writeup `docs/research/round185-what-the-undo-classifier-knows-a-run-by-2026-09-10.md`, memo
+`docs/mail/theseus-to-daedalus-xian-cc-…-b1-agreed-and-a-name-matched-agent-gives-both-runs-one-id-2026-09-10.md`.
+Second run started for the two-runs-same-shape check.
+
+## 15:3x — second run, mail, commits
+
+**Second run: 15 checks · 0 failed · 3 open · 3 measurements.** Same checks in the same states.
+
+Mail:
+- Daedalus's Round 184 memo and my Round 183 memo moved to `docs/mail/read/`. B1's ruling and my
+  re-run were that thread's last open items.
+- N4/N5/M2 are opened fresh in the new memo.
+- Daedalus's 9/9 apply-pass memo (xian's dry run) is left in `docs/mail/`, still open.
+
+No other memo to me was new this fire.
+
+## Carried, unchanged
+
+**Round 170's frequency probe** still needs one path to the real `klatch.db` from xian.
+
+## Wrap verification (WORK fire)
+
+Step 1 — commits on `origin/main` (after `git fetch`):
+
+```
+$ git log origin/main --oneline -4
+580bf864 Round 185: B1 re-vehicled green, and undo's classifier knows a run by its agent id
+fd3c5e28 mail: Round 185 reply to Daedalus + xian -- B1 agreed, a name-matched agent gives both runs one id; R183/R184 thread to read/
+f3c549e7 log+coordination: Argus 9/10 MID fire -- Round 182 verified closing the argv gap, Round 183 verified finding undo doesn't check the database it targets
+8b65166d log+coordination: Daedalus 9/10 WORK fire -- Round 184, undo reads each channel before it writes it
+```
+
+Both of this fire's work commits are on `origin/main`. Mail was pushed first, on its own.
+
+Step 2 — deliverable files, each `ls`'d, all seven present:
+
+```
+docs/logs/2026-09-10-1051-theseus-opus-log.md
+docs/mail/read/daedalus-to-theseus-xian-cc-iris-janus-calliope-argus-undo-reads-before-it-writes-and-your-b1-now-fails-on-purpose-2026-09-10.md
+docs/mail/read/theseus-to-daedalus-xian-cc-iris-janus-calliope-argus-n2-is-green-and-undo-prints-one-line-for-three-outcomes-2026-09-10.md
+docs/mail/theseus-to-daedalus-xian-cc-iris-janus-calliope-argus-b1-agreed-and-a-name-matched-agent-gives-both-runs-one-id-2026-09-10.md
+docs/research/round185-what-the-undo-classifier-knows-a-run-by-2026-09-10.md
+scripts/probe-round183-undo-record-against-the-database-it-is-aimed-at.mts
+scripts/probe-round185-what-the-undo-classifier-knows-a-run-by.mts
+```
+
+`git diff --stat d8bb1a78 HEAD -- packages/ scripts/backfill-entity-bindings.mts` is empty.
+
+What I measured this fire:
+- server suite: 101 files · 1598/1598
+- R183 probe: twice (before and after the re-vehicle)
+- R185 probe: twice
+
+**Not** re-run by me: R176/178/179/181/182, and the client suite. Those figures are Daedalus's and
+Argus's.
+
+Step 3 — this log and the COORDINATION update are committed last.
+
+## What xian needs from this fire
+
+One line, and nothing in it blocks the dry run: **if you ever undo after applying more than once,
+undo the newest run first** (paste its `reverse with:` line). Everything else in this fire is
+Daedalus's to rule on.
