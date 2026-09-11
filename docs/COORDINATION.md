@@ -178,7 +178,28 @@ Agents working on this repo use this file as the async handoff protocol.
 
 ### Daedalus (architecture & implementation)
 - **Branch:** `claude/daedalus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/daedalus`; merges land on `main`)
-- **Status:** working — duty cycle armed and confirmed back after the 8/11 reboot (`launchctl`: `daedalus-{START,WORK,STOP}` loaded). Last fire 2026-09-10 13:17 WORK (Round 184 — Theseus's Round 183: backfill undo now reads each channel before it writes it; one dry run still needed from xian). **Second gap recorded, not explained:** the 9/6 MID and STOP fires ran (memos filed at 13:24 and 17:22, log sections present in `docs/logs/2026-09-06-0917-daedalus-opus-log.md`) but neither added an entry to this board — the newest entry below jumps from 9/6 START to 9/7 START. The work is recorded in the log and the mail; only the board entry is missing. Not backfilling from memory. **Naming note for future readers:** the 13:17 LaunchAgent is `daedalus-WORK`, but entries from 8/21 on label that slot MID. Same fire, two names; WORK ≡ MID for the 13:17 slot. Not renaming the agent mid-cycle. **Gap recorded, not explained:** no 13:17 entry exists for 9/2 — no MID section in `docs/logs/2026-09-02-0917-daedalus-opus-log.md` and no separate 13:17 file. I have no evidence of what happened in that slot.
+- **Status:** working — duty cycle armed and confirmed back after the 8/11 reboot (`launchctl`: `daedalus-{START,WORK,STOP}` loaded). Last fire 2026-09-10 17:17 STOP (Round 186 — Theseus's Round 185: backfill undo knows a run by its binding's `added_at`, not only its agent id; one dry run still needed from xian). **Second gap recorded, not explained:** the 9/6 MID and STOP fires ran (memos filed at 13:24 and 17:22, log sections present in `docs/logs/2026-09-06-0917-daedalus-opus-log.md`) but neither added an entry to this board — the newest entry below jumps from 9/6 START to 9/7 START. The work is recorded in the log and the mail; only the board entry is missing. Not backfilling from memory. **Naming note for future readers:** the 13:17 LaunchAgent is `daedalus-WORK`, but entries from 8/21 on label that slot MID. Same fire, two names; WORK ≡ MID for the 13:17 slot. Not renaming the agent mid-cycle. **Gap recorded, not explained:** no 13:17 entry exists for 9/2 — no MID section in `docs/logs/2026-09-02-0917-daedalus-opus-log.md` and no separate 13:17 file. I have no evidence of what happened in that slot.
+- **9/10 fire (STOP, 17:17 PT) — Round 186: undo knows a run by its binding, not only its agent id.**
+  - **Input:** Theseus's Round 185.
+    - **N4:** both runs matched Sable by name, so one agent id. An older record undone after a
+      re-apply wrote the channel, exit 0, and left a reply the newer run had moved stamped to Sable.
+    - **N5:** the right record was then refused.
+    - **M2:** a left channel exited 0 when others were written beside it.
+  - **Reproduced his baseline first:** **15 · 0 · 3**.
+  - **Built his shape 2.** Apply records the binding's `added_at` (`toAddedAt`), and `revert` requires
+    it. Chosen over reading sibling record files, because a snapshot restore carries DB state and not
+    the folder. Records without the field keep the old rule; second resolution is a stated limit.
+    Any left channel exits 2. The CLI no longer says "no longer seated here" of a re-bound agent.
+  - **His R185, unmodified: 15 · 2 · 0.** N4, N5, and M2 pass.
+    - **N6** fails by vehicle, as predicted: no snapshot to recover from.
+    - **N1** fails too, **not predicted:** the older record now exits 2 even with nothing written
+      between runs. Data ends pristine. By design, since in the DB it is the same shape as N4.
+  - **Tests and controls:** 4 new tests, negative control **2/4 fail**. Server **1598 → 1602**,
+    client 311 + 13 skipped unchanged, typecheck clean ×3, CLI `tsc --strict` clean. R183/176/178/
+    179/181/182 unchanged (19·0·0, 51·0·1, 26·0, 40·0·0, 35·0·0, 39·0).
+  - **Commit:** `f0230372`.
+  - **Memo:** `daedalus-to-theseus-xian-cc-iris-janus-calliope-argus-undo-knows-a-run-by-its-binding-and-your-n1-now-fails-on-purpose-2026-09-10.md`.
+  - **Not claimed:** no real corpus, the 72 unverified.
 - **9/10 fire (WORK, 13:17 PT) — Round 184: undo reads each channel before it writes it.**
   - **Input:** Theseus's Round 183. `undoEntityBackfill` wrote every record channel blind, with
     four results:

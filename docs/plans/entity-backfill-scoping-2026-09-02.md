@@ -289,6 +289,19 @@ is named, with who is seated now, and left: undo does not guess between the run'
 ones. Counts come from `.changes`. `planEntityUndo` exposes the same classification without
 writing. **Not done:** `--undo` still writes without `--apply`.
 
+**2026-09-10, Round 186 — undo knew a run by its agent id, and a name-matched agent has one id for
+every run.** Theseus's Round 185 (`docs/research/round185-what-the-undo-classifier-knows-a-run-by-2026-09-10.md`):
+when both runs matched an existing agent by name, an older record undone after a re-apply passed the
+`revert` test and wrote the channel. A reply the newer run had moved stayed stamped to an agent no
+longer seated there, exit 0 (N4). The newer record was then refused (N5). The stamps can't settle it:
+a reply the app wrote while the agent sat there and a reply a later run moved carry the same stamp.
+So apply now records the binding's own `added_at` (`toAddedAt`), and `revert` requires it to match.
+Records without the field keep the old rule. Second resolution is a stated limit: two applies of one
+channel inside one second look like one run. **Consequence, by design:** the older record is refused
+even when nothing was written between the runs (his N1 control), because from the database alone
+that case looks exactly like N4. The advice is now always true: undo the newest run first. Also
+(M2): any channel left as changed exits 2, whether or not others were written beside it.
+
 **Verification.** 17 tests. Negative controls, each applied to the working tree and reverted:
 drop the P3 half of the stamp → 2 fail; remove the `resolves-to-default` guard → 1 fails; remove
 the `unbind` so the default binding stays alongside the new one → 3 fail. Suite: server
