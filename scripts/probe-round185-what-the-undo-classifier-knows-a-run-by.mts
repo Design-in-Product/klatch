@@ -32,6 +32,11 @@
  * now regression failures. N1 and N6 asserted the pre-186 outcome and now assert
  * the refusal (see Arm N).
  *
+ * Hardened 9/11 START, after Argus (`argus-to-theseus-…-round185-n0-n1-flaky-…`):
+ * two back-to-back runs put N0's two applies in one second, so N0 and N1 failed.
+ * Both second applies (N0's and N3's) now wait past a second boundary, and N3 also
+ * asserts the two runs' `toAddedAt` differ, since N4 makes the same comparison.
+ *
  *   npx tsx scripts/probe-round185-what-the-undo-classifier-knows-a-run-by.mts
  */
 
@@ -127,6 +132,12 @@ function role(name: string, env: Record<string, string>): { status: number | nul
   }
   return { status: r.status, json };
 }
+
+// `added_at` is `datetime('now')`, second resolution. An arm that compares two
+// runs' bindings of one agent waits past a second boundary before the second run,
+// so its result is the rule and not Round 186's stated limit. Added 9/11 START
+// after Argus ran N0/N1 twice and the second run put both applies in one second.
+const tick = () => new Promise((r) => setTimeout(r, 1100));
 
 // tsx's own DeprecationWarning lands on stderr under this Node; it is not the CLI.
 const cliLines = (s: string) =>
@@ -268,6 +279,7 @@ await restorePristine();
 const n0A = cli([DB, '--apply']);
 const n0RecA = recordFrom(n0A.out);
 const n0UA = cli([DB, `--undo=${n0RecA}`]);
+await tick();
 const n0B = cli([DB, '--apply', `--channels=${R}`]);
 const n0RecB = recordFrom(n0B.out);
 const n0a = entryFor(n0RecA, R);
@@ -322,18 +334,23 @@ const n3RecA = recordFrom(n3A.out);
 const n3UA = cli([DB, `--undo=${n3RecA}`]);
 const n3Reply = role('reply', { R185_CHANNEL: R });
 const replyId: string = n3Reply.json.assistantId ?? '';
+// The reply subprocess usually spans a second boundary, but nothing guaranteed it,
+// and N4 is the same comparison N1 is.
+await tick();
 const n3B = cli([DB, '--apply', `--channels=${R}`]);
 const n3RecB = recordFrom(n3B.out);
 const n3a = entryFor(n3RecA, R);
 const n3b = entryFor(n3RecB, R);
 check(
   'N3',
-  'setup: the reply was stamped to the seated default, so the newer record carries it and the older does not',
+  'setup: the reply was stamped to the seated default, so the newer record carries it and the older does not; the runs\' bindings carry different added_at',
   n3A.code === 0 && n3UA.code === 0 && n3Reply.status === 0 && n3B.code === 0 &&
     n3Reply.json.entityId === DEFAULT_ENTITY_ID && !!n3a && !!n3b &&
-    n3b.p2MessageIds.includes(replyId) && !n3a.p2MessageIds.includes(replyId) && stampOf(replyId) === SABLE,
+    n3b.p2MessageIds.includes(replyId) && !n3a.p2MessageIds.includes(replyId) && stampOf(replyId) === SABLE &&
+    !!n3a.toAddedAt && !!n3b.toAddedAt && n3a.toAddedAt !== n3b.toAddedAt,
   `reply stamped ${label(n3Reply.json.entityId ?? null)} at write, ${label(stampOf(replyId))} after the newer apply · ` +
-    `in newer record ${!!n3b?.p2MessageIds.includes(replyId)} · in older ${!!n3a?.p2MessageIds.includes(replyId)}`
+    `in newer record ${!!n3b?.p2MessageIds.includes(replyId)} · in older ${!!n3a?.p2MessageIds.includes(replyId)} · ` +
+    `toAddedAt ${n3a?.toAddedAt} / ${n3b?.toAddedAt}`
 );
 
 const n4Backups = backupsIn(DATA);

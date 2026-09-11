@@ -26,6 +26,11 @@
  * in a subprocess, behind the route's guards. Zero model calls. `klatch.db` is
  * never opened: fixtures live in `.testdata/r187/` (gitignored).
  *
+ * Re-vehicled 9/11 START, after Daedalus's Round 188 (`968d1006`): S2, G1 and G2
+ * are closed, so their open branches are now failures. S2's pass branch used to be
+ * a bare `true`; it now asserts the earlier-binding line and the older-record
+ * advice are printed, and that no later-run wording is.
+ *
  *   npx tsx scripts/probe-round187-the-binding-rule-at-the-inputs-it-was-argued-from.mts
  */
 
@@ -243,7 +248,7 @@ function voiceFor(out: string, ch: string): string[] {
   const at = lines.findIndex((l) => l.startsWith(ch.slice(0, 8) + ' '));
   return [
     ...(at === -1 ? [] : lines.slice(at, at + 2)),
-    ...lines.filter((l) => /left as they are|If a later --apply|Nothing was written/.test(l)),
+    ...lines.filter((l) => /left as they are|If a later --apply|restored from a backup|Nothing was written/.test(l)),
   ].map((l) => l.replace(DATA, '…'));
 }
 
@@ -301,18 +306,20 @@ check(
   `exit ${s1.code} · reuse ${labelFor(s1.out, R)} · wrote ${s1Wrote ? 'SOMETHING' : 'nothing'} · ${s1Snaps} snapshot(s) left`
 );
 const s1Voice = voiceFor(s1.out, R);
-const s1SaysLater = /later binding/.test(s1.out);
+const s1SaysLater = /later binding|If a later --apply/.test(s1.out);
+const s1SaysEarlier = /seated by an earlier binding than this run's: this database is from before the run/.test(s1.out);
+const s1PointsOlder = /restored from a backup, the record that fits it is an older run's/.test(s1.out);
 const bindingIsEarlier = !!sBinding && !!sb?.toAddedAt && sBinding < sb.toAddedAt;
-if (s1SaysLater && bindingIsEarlier) {
-  open_(
-    'S2',
-    "after a restore, the refusal names a later binding and a later --apply, and the binding it read is earlier than the record's run",
-    `seated binding added_at ${sBinding} < record toAddedAt ${sb?.toAddedAt}. It printed: ${JSON.stringify(s1Voice)}. ` +
-      `\`reboundSince\` is \`binding.added_at !== ch.toAddedAt\`: different, not later. The only record that settles this channel is the older one (S3).`
-  );
-} else {
-  check('S2', "the refusal's stated reason agrees with the binding it read", true, `says later: ${s1SaysLater} · binding earlier: ${bindingIsEarlier} · ${JSON.stringify(s1Voice)}`);
-}
+// Open in Round 187, closed by Round 188 (`968d1006`), so its return is a failure.
+// Was a bare pass branch; it now asserts what 188 prints, and that neither later-run
+// line does.
+check(
+  'S2',
+  "after a restore, the refusal names an earlier binding and points to the older record, and says nothing of a later run",
+  bindingIsEarlier && s1SaysEarlier && s1PointsOlder && !s1SaysLater,
+  `binding ${sBinding} ${bindingIsEarlier ? '<' : 'NOT <'} record toAddedAt ${sb?.toAddedAt} · earlier-binding line ${s1SaysEarlier ? 'printed' : 'NOT printed'} · ` +
+    `older-record advice ${s1PointsOlder ? 'printed' : 'NOT printed'} · later-run wording ${s1SaysLater ? 'PRINTED' : 'absent'} · ${JSON.stringify(s1Voice)}`
+);
 
 const s3 = cli([DB, `--undo=${sRecA}`]);
 const sChannels = sRecA ? readRecord(sRecA).channels : [];
@@ -401,34 +408,33 @@ check('G0', 'setup: apply --channels=<reuse>; the record carries both added_at f
 const g1File = gRec ? editedRecord(gRec, 'g1', (c) => (c.toAddedAt = 12345)) : '';
 const g1Before = dump(DB);
 const g1 = cli([DB, `--undo=${g1File}`]);
-const g1RefusedAtParse = g1.code !== 0 && labelFor(g1.out, R) === '(no line)' && dump(DB) === g1Before;
-if (g1RefusedAtParse) {
-  check('G1', 'a record whose toAddedAt is a number is refused as malformed, before any channel is read', true,
-    `exit ${g1.code} · ${JSON.stringify(cliLines(g1.err).slice(0, 2))}`);
-} else {
-  open_(
-    'G1',
-    'a record whose toAddedAt is a number passes the shape check, and its channel is refused as re-bound',
-    `exit ${g1.code} · reuse ${labelFor(g1.out, R)} · wrote ${dump(DB) === g1Before ? 'nothing' : 'SOMETHING'} · printed ${JSON.stringify(voiceFor(g1.out, R))}`
-  );
-}
+// G1/G2 were open in Round 187 and closed by Round 188, so their return is a failure.
+const g1RefusedAtParse =
+  g1.code === 1 && labelFor(g1.out, R) === '(no line)' && dump(DB) === g1Before && /channels\[0\]\.toAddedAt is 12345/.test(g1.err);
+check(
+  'G1',
+  'a record whose toAddedAt is a number is refused as malformed, before any channel is read',
+  g1RefusedAtParse,
+  g1RefusedAtParse
+    ? `exit ${g1.code} · ${JSON.stringify(cliLines(g1.err).slice(0, 2))}`
+    : `exit ${g1.code} · reuse ${labelFor(g1.out, R)} · wrote ${dump(DB) === g1Before ? 'nothing' : 'SOMETHING'} · printed ${JSON.stringify(voiceFor(g1.out, R))}`
+);
 
 const g2File = gRec ? editedRecord(gRec, 'g2', (c) => (c.fromAddedAt = 'not a date')) : '';
 const g2Before = dump(DB);
 const g2 = cli([DB, `--undo=${g2File}`]);
-const g2RefusedAtParse = g2.code !== 0 && labelFor(g2.out, R) === '(no line)' && dump(DB) === g2Before;
+const g2RefusedAtParse =
+  g2.code === 1 && labelFor(g2.out, R) === '(no line)' && dump(DB) === g2Before && /channels\[0\]\.fromAddedAt is "not a date"/.test(g2.err);
 const g2DefaultAt = addedAt(R, DEFAULT_ENTITY_ID);
-if (g2RefusedAtParse) {
-  check('G2', 'a record whose fromAddedAt is not a timestamp is refused as malformed, before anything is written', true,
-    `exit ${g2.code} · ${JSON.stringify(cliLines(g2.err).slice(0, 2))}`);
-} else {
-  open_(
-    'G2',
-    "a record whose fromAddedAt is not a timestamp passes the shape check, and undo writes the value into the default's binding",
-    `exit ${g2.code} · reuse ${labelFor(g2.out, R)} · the default's added_at on reuse is now ${JSON.stringify(g2DefaultAt)} (the record ` +
-      `as apply wrote it said ${JSON.stringify(gFromAddedAt)}). \`getChannelEntities\` orders a roster by this column.`
-  );
-}
+check(
+  'G2',
+  'a record whose fromAddedAt is not a timestamp is refused as malformed, before anything is written',
+  g2RefusedAtParse,
+  g2RefusedAtParse
+    ? `exit ${g2.code} · ${JSON.stringify(cliLines(g2.err).slice(0, 2))}`
+    : `exit ${g2.code} · reuse ${labelFor(g2.out, R)} · the default's added_at on reuse is now ${JSON.stringify(g2DefaultAt)} (the record ` +
+        `as apply wrote it said ${JSON.stringify(gFromAddedAt)})`
+);
 
 // ── Arm Z — this probe changed no product code ───────────────────────────────
 const touched = execFileSync('git', ['status', '--porcelain', '--', 'packages', 'scripts/backfill-entity-bindings.mts'], {
