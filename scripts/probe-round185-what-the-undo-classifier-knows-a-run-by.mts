@@ -27,6 +27,11 @@
  * routes call them. Zero model calls. `klatch.db` is never opened: fixtures live
  * in `.testdata/r185/` (gitignored).
  *
+ * Re-vehicled 9/10 STOP, after Daedalus's Round 186 (`f0230372`: undo knows a run
+ * by its binding's `added_at`). N4/N5/M2 are closed, so their open branches are
+ * now regression failures. N1 and N6 asserted the pre-186 outcome and now assert
+ * the refusal (see Arm N).
+ *
  *   npx tsx scripts/probe-round185-what-the-undo-classifier-knows-a-run-by.mts
  */
 
@@ -200,6 +205,7 @@ interface RecordChannel {
   channelId: string;
   toEntityId: string;
   mintedHere: boolean;
+  toAddedAt?: string | null;
   p2MessageIds: string[];
   p3MessageIds: string[];
 }
@@ -252,6 +258,12 @@ const settledAfterReply = (): boolean =>
 console.log('\nArm N — an older record, when the later run bound the same agent id');
 
 // N0/N1: Round 183's A1 sequence, on the channel whose agent is not re-minted.
+// Round 186 re-vehicle: N1 used to expect the older record to revert first. It
+// did, but only because with nothing written between the runs both records name
+// the same rows. In the database N1 and N4 are one shape (same agent id, a binding
+// newer than the record's), so the older record is now refused in both. N1 asserts
+// that refusal. N0 asserts what makes it the rule and not Round 186's stated
+// one-second limit: the two runs' bindings carry different added_at.
 await restorePristine();
 const n0A = cli([DB, '--apply']);
 const n0RecA = recordFrom(n0A.out);
@@ -262,19 +274,27 @@ const n0a = entryFor(n0RecA, R);
 const n0b = entryFor(n0RecB, R);
 check(
   'N0',
-  'setup: apply → undo → apply --channels=<reuse>; both records move reuse to the same Sable id, matched by name, not minted',
+  'setup: apply → undo → apply --channels=<reuse>; both records move reuse to the same Sable id, matched by name, not minted, by bindings with different added_at',
   n0A.code === 0 && n0UA.code === 0 && n0B.code === 0 && !!n0a && !!n0b &&
-    n0a.toEntityId === SABLE && n0b.toEntityId === SABLE && !n0a.mintedHere && !n0b.mintedHere,
-  `exits ${n0A.code}/${n0UA.code}/${n0B.code} · A→${n0a ? label(n0a.toEntityId) : '(absent)'} · B→${n0b ? label(n0b.toEntityId) : '(absent)'} · mintedHere ${n0a?.mintedHere}/${n0b?.mintedHere}`
+    n0a.toEntityId === SABLE && n0b.toEntityId === SABLE && !n0a.mintedHere && !n0b.mintedHere &&
+    !!n0a.toAddedAt && !!n0b.toAddedAt && n0a.toAddedAt !== n0b.toAddedAt,
+  `exits ${n0A.code}/${n0UA.code}/${n0B.code} · A→${n0a ? label(n0a.toEntityId) : '(absent)'} · B→${n0b ? label(n0b.toEntityId) : '(absent)'} · mintedHere ${n0a?.mintedHere}/${n0b?.mintedHere} · ` +
+    `toAddedAt ${n0a?.toAddedAt} / ${n0b?.toAddedAt}`
 );
+const n1Before = dump(DB);
+const n1Backups = backupsIn(DATA);
 const n1Stale = cli([DB, `--undo=${n0RecA}`]);
+const n1StaleWrote = dump(DB) !== n1Before;
+const n1StaleSnaps = backupsIn(DATA).filter((f) => !n1Backups.includes(f)).length;
 const n1UB = cli([DB, `--undo=${n0RecB}`]);
 check(
   'N1',
-  'control: with nothing written between the runs, undoing the older record then the newer one ends pristine',
-  n1Stale.code === 0 && n1UB.code === 0 && dump(DB) === pristineDump,
-  `older: exit ${n1Stale.code}, reuse ${labelFor(n1Stale.out, R)} · newer: exit ${n1UB.code}, reuse ${labelFor(n1UB.out, R)} · ` +
-    `${dump(DB) === pristineDump ? 'row-for-row pristine' : 'DIFFERS from pristine'}`
+  'control: with nothing written between the runs, the older record is refused and writes nothing, and the newer then ends pristine',
+  n1Stale.code === 2 && labelFor(n1Stale.out, R) === 'CHANGED SINCE THE RUN' && !n1StaleWrote && n1StaleSnaps === 0 &&
+    /seated again by a later binding/.test(n1Stale.out) &&
+    n1UB.code === 0 && labelFor(n1UB.out, R) === 'REVERTED' && dump(DB) === pristineDump,
+  `older: exit ${n1Stale.code}, reuse ${labelFor(n1Stale.out, R)}, wrote ${n1StaleWrote ? 'SOMETHING' : 'nothing'}, ${n1StaleSnaps} snapshot(s) left · ` +
+    `newer: exit ${n1UB.code}, reuse ${labelFor(n1UB.out, R)} · ${dump(DB) === pristineDump ? 'row-for-row pristine' : 'DIFFERS from pristine'}`
 );
 
 // N2: the same sequence plus one more reply between the runs, undone with the
@@ -319,36 +339,34 @@ check(
 const n4Backups = backupsIn(DATA);
 const n4RosterBefore = rosterIds(R);
 const n4StampsBefore = stamps(R);
+const n4DumpBefore = dump(DB);
 const n4 = cli([DB, `--undo=${n3RecA}`]);
 const n4Snap = backupsIn(DATA).filter((f) => !n4Backups.includes(f));
+const n4WholeSame = dump(DB) === n4DumpBefore;
 const n4LeftAlone = same(rosterIds(R), n4RosterBefore) && same(stamps(R), n4StampsBefore);
-if (n4.code !== 0 && n4LeftAlone) {
-  check('N4', 'an older record does not write a channel a later run re-applied (A1, with the agent id held constant)', true,
-    `exit ${n4.code} · reuse ${labelFor(n4.out, R)} · roster and stamps unchanged`);
-} else {
-  open_(
-    'N4',
-    'an older record writes a channel a later run re-applied, when that run bound the same agent id, and exits 0',
-    `\`--undo=<older>\` after the newer apply: exit ${n4.code}, reuse ${labelFor(n4.out, R)}, "${/Reverted .*/.exec(n4.out)?.[0] ?? ''}". ` +
-      `reuse roster ${JSON.stringify(n4RosterBefore.map(label))} → ${JSON.stringify(rosterIds(R).map(label))}; assistant stamps ` +
-      `${JSON.stringify(n4StampsBefore.map(label))} → ${JSON.stringify(stamps(R).map(label))}. The reply the newer run moved is not in the older ` +
-      `record, so it is left stamped ${label(stampOf(replyId))} on a chat whose only seat is the default. The classifier's \`revert\` test is ` +
-      `"still bound to toEntityId", and both runs bound the same id, so the older record passes it. A1 exits 2 only because its second apply re-minted.`
-  );
-}
+// N4/N5 were open in Round 185 and closed by Round 186, so their return is a failure.
+check(
+  'N4',
+  'an older record does not write a channel a later run re-applied (A1, with the agent id held constant)',
+  n4.code !== 0 && n4LeftAlone,
+  n4.code !== 0 && n4LeftAlone
+    ? `exit ${n4.code} · reuse ${labelFor(n4.out, R)} · roster and stamps unchanged`
+    : `exit ${n4.code}, reuse ${labelFor(n4.out, R)}, "${/Reverted .*/.exec(n4.out)?.[0] ?? ''}". reuse roster ` +
+        `${JSON.stringify(n4RosterBefore.map(label))} → ${JSON.stringify(rosterIds(R).map(label))}; assistant stamps ` +
+        `${JSON.stringify(n4StampsBefore.map(label))} → ${JSON.stringify(stamps(R).map(label))}; reply stamped ${label(stampOf(replyId))}`
+);
 
 const n5 = cli([DB, `--undo=${n3RecB}`]);
-const n5Voice = cli5Voice(n5.out, R);
-if (n5.code === 0 && settledAfterReply()) {
-  check('N5', 'the newer record still reverses its own run afterwards', true, `exit ${n5.code} · reuse ${labelFor(n5.out, R)}`);
-} else {
-  open_(
-    'N5',
-    "after that, the newer record — the right one — is refused for the channel it moved",
-    `\`--undo=<newer>\`: exit ${n5.code}, reuse ${labelFor(n5.out, R)}. It printed: ${JSON.stringify(n5Voice)}. The advice names the record the ` +
-      `operator is already using. Reply row still ${label(stampOf(replyId))}; roster ${JSON.stringify(rosterIds(R).map(label))}.`
-  );
-}
+const n5Settled = n5.code === 0 && settledAfterReply();
+check(
+  'N5',
+  'the newer record still reverses its own run afterwards',
+  n5Settled,
+  n5Settled
+    ? `exit ${n5.code} · reuse ${labelFor(n5.out, R)}`
+    : `exit ${n5.code}, reuse ${labelFor(n5.out, R)}. It printed: ${JSON.stringify(cli5Voice(n5.out, R))}. ` +
+        `Reply row ${label(stampOf(replyId))}; roster ${JSON.stringify(rosterIds(R).map(label))}.`
+);
 
 function cli5Voice(out: string, ch: string): string[] {
   const lines = cliLines(out);
@@ -359,19 +377,18 @@ function cli5Voice(out: string, ch: string): string[] {
   ].map((l) => l.replace(DATA, '…'));
 }
 
-// Recovery: the snapshot the older-record undo took is the state after the newer apply.
-if (n4Snap.length === 1) {
-  await copyDb(path.join(DATA, n4Snap[0]), DB);
-  const n6 = cli([DB, `--undo=${n3RecB}`]);
-  check(
-    'N6',
-    "recovery: restore the snapshot the older-record undo took, then undo with the newer record — settles as N2 did",
-    n6.code === 0 && labelFor(n6.out, R) === 'REVERTED' && settledAfterReply(),
-    `exit ${n6.code} · reuse ${labelFor(n6.out, R)} · stamps ${JSON.stringify(stamps(R).map(label))}`
-  );
-} else {
-  check('N6', "recovery: the older-record undo left exactly one snapshot to restore", false, `${n4Snap.length} new snapshot(s)`);
-}
+// N6, Round 186 re-vehicle: Round 185 restored the snapshot the older-record undo
+// took, because that undo wrote. It is now refused, so there is no snapshot and
+// nothing to recover from. N6 asserts that across the whole database, which N4
+// (reuse's roster and stamps only) does not.
+const n6Printed = /Nothing was written; the snapshot was discarded/.test(n4.out);
+check(
+  'N6',
+  'the refused older-record undo leaves the whole database as it was and no snapshot behind: nothing to recover from',
+  n4.code === 2 && n4WholeSame && n4Snap.length === 0 && n6Printed,
+  `exit ${n4.code} · whole DB ${n4WholeSame ? 'unchanged' : 'CHANGED'} · ${n4Snap.length} new snapshot(s) · ` +
+    `"Nothing was written" ${n6Printed ? 'printed' : 'NOT printed'}`
+);
 
 // ── Arm F — a database error part-way through undo ────────────────────────────
 // Round 184 rewrote the catch: "Channels before the failing one may already be
@@ -469,18 +486,8 @@ check(
     same(stamps(W), mStampsBefore) && reverted(m.out) === others.length && /1 channel\(s\) left as they are/.test(m.out),
   `others ${othersReverted ? 'REVERTED' : 'NOT all reverted'} · wren ${labelFor(m.out, W)} · "${/Reverted .*/.exec(m.out)?.[0] ?? ''}"`
 );
-if (m.code !== 0) {
-  check('M2', 'an undo that left a channel it was asked to revert does not exit 0', true, `exit ${m.code}`);
-} else {
-  open_(
-    'M2',
-    'an undo that left a channel exits 2 alone and 0 in company',
-    `exit ${m.code}, after printing "1 channel(s) left as they are". The CLI's own rule, beside its exit: "anything left because it changed is ` +
-      `an undo that did not do what was asked, and must not exit 0". It sits inside \`if (result.reverted === 0 && …)\`, so it holds only ` +
-      `when nothing else was written. Round 183's B (the same re-seat, in a one-channel record) exits 2. No data harm; the exit code is ` +
-      `the one part of the output a script or a glance at \`$?\` reads.`
-  );
-}
+// Open in Round 185, closed by Round 186.
+check('M2', 'an undo that left a channel it was asked to revert does not exit 0', m.code === 2, `exit ${m.code}`);
 measure(`M's stdout: ${JSON.stringify(cliLines(m.out).map((l) => l.replace(DATA, '…')))}`);
 
 // ── Arm Z — this probe changed no product code ───────────────────────────────
