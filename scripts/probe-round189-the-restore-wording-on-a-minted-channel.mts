@@ -239,7 +239,20 @@ function voice(out: string): string[] {
 }
 
 const LATER_WORDING = /If a later --apply|later binding/;
-const BEFORE_WORDING = /this database is from before the run|restored from a backup/;
+
+// Round 191: Round 190's exact sentences, so a pass means the right line on the right channel.
+const MINTED_BEFORE_LINE =
+  /which no longer exists, and everyone seated on it was seated before this run: this database is from before the run \(a restored backup\?\)\.$/;
+const BOUND_BEFORE_LINE =
+  /and it is seated by an earlier binding than this run's: this database is from before the run \(a restored backup\?\)\.$/;
+const OLDER_ADVICE = /If this database was restored from a backup, the record that fits it is an older run's: undo with that one\./;
+/** The reason line printed under a channel's label line, or '' if none. */
+function reasonFor(out: string, ch: string): string {
+  const lines = out.split('\n');
+  const i = lines.findIndex((l) => l.trim().startsWith(ch.slice(0, 8) + ' '));
+  const next = i >= 0 ? (lines[i + 1] ?? '').trim() : '';
+  return next.startsWith('seated now:') ? next : '';
+}
 
 // ── fixture ───────────────────────────────────────────────────────────────────
 
@@ -308,18 +321,20 @@ check(
 
 const m1Voice = voice(m1.out);
 const mAllSeatsEarlier = mSeats.length > 0 && !!mb?.toAddedAt && mSeats.every((s) => s.added_at < mb.toAddedAt!);
-if (BEFORE_WORDING.test(m1.out) && !LATER_WORDING.test(m1.out)) {
-  check('M2', "the refusal names a database from before the run and points to the older record", true, JSON.stringify(m1Voice));
-} else {
-  open_(
-    'M2',
-    'after the same restore, a minted channel is told a later --apply moved it, and the restore line never prints',
-    `It printed: ${JSON.stringify(m1Voice)}. Every seat on wren is earlier than the record's run ` +
-      `(${mSeats.map((s) => s.added_at).join(', ')} < ${mb?.toAddedAt}: ${mAllSeatsEarlier}). ` +
-      "`boundBeforeRun` is computed only inside `if (binding)`; the record's agent is not in this database, so the not-bound branch decides, with neither flag. " +
-      'The record that settles it is the older one (M3).'
-  );
-}
+// Closed by Round 190 (`7a0ba775`). Re-vehicled in Round 191: the open branch is now a failure, and the
+// pass asserts wren's own reason line and the one advice line, not a restore word anywhere in the output.
+// The bound-branch sentence ("it is seated by an earlier binding") would be false here, so it must not print.
+check(
+  'M2',
+  "wren's reason says its agent no longer exists and every seat predates the run; the advice points to the older record; no later-run wording, no \"it is seated\"",
+  MINTED_BEFORE_LINE.test(reasonFor(m1.out, W)) &&
+    countOf(m1.out, OLDER_ADVICE) === 1 &&
+    !LATER_WORDING.test(m1.out) &&
+    !BOUND_BEFORE_LINE.test(m1.out) &&
+    mAllSeatsEarlier,
+  `every seat on wren earlier than the run: ${mAllSeatsEarlier} (${mSeats.map((s) => s.added_at).join(', ')} < ${mb?.toAddedAt}). ` +
+    `It printed: ${JSON.stringify(m1Voice)}`
+);
 
 const m3 = undoWith(m.recA);
 const m3Channels = m.recA ? readRecord(m.recA).channels : [];
@@ -358,19 +373,19 @@ check(
   `exit ${u1.code} · ${JSON.stringify(u1Labels)} · wrote ${u1.wrote ? 'SOMETHING' : 'nothing'} · ${u1.snaps} snapshot(s) left`
 );
 
-const u1Before = countOf(u1.out, /this database is from before the run/);
-const u1Gone = countOf(u1.out, /which no longer exists/);
-if (u1Before === uChannelsB.length && !LATER_WORDING.test(u1.out)) {
-  check('U2', 'every channel is named as from before the run, and no later-run advice prints', true, JSON.stringify(voice(u1.out)));
-} else {
-  open_(
-    'U2',
-    'one restore, two directions: the summary tells the operator to use the older record and the newer one',
-    `${u1Before} of ${uChannelsB.length} channel(s) named "from before the run", ${u1Gone} "which no longer exists". ` +
-      `Summary: later-run advice ${LATER_WORDING.test(u1.out) ? 'PRINTED' : 'absent'}, restore advice ${/restored from a backup/.test(u1.out) ? 'printed' : 'absent'}. ` +
-      `It printed: ${JSON.stringify(voice(u1.out))}`
-  );
-}
+// Closed by Round 190. Re-vehicled in Round 191: checked per channel. reuse (Sable, bound) carries the
+// earlier-binding line, each minted channel carries the no-longer-exists line, and the summary has
+// the older-record advice once and no later-run advice.
+const uReasons = Object.fromEntries(uChannelsB.map((c) => [c.channelId, reasonFor(u1.out, c.channelId)]));
+const uMintedOk = uGoneB.length === 3 && uGoneB.every((ch) => MINTED_BEFORE_LINE.test(uReasons[ch]));
+check(
+  'U2',
+  'one restore, one direction: reuse gets the earlier-binding line, the three minted channels the no-longer-exists line, one older-record advice, no later-run wording',
+  BOUND_BEFORE_LINE.test(uReasons[R] ?? '') && uMintedOk && countOf(u1.out, OLDER_ADVICE) === 1 && !LATER_WORDING.test(u1.out),
+  `reuse: ${BOUND_BEFORE_LINE.test(uReasons[R] ?? '') ? 'earlier-binding line' : 'NOT the earlier-binding line'} · ` +
+    `minted: ${uGoneB.filter((ch) => MINTED_BEFORE_LINE.test(uReasons[ch])).length} of ${uGoneB.length} with the no-longer-exists line · ` +
+    `advice ×${countOf(u1.out, OLDER_ADVICE)} · later wording ${LATER_WORDING.test(u1.out) ? 'PRINTED' : 'absent'}. It printed: ${JSON.stringify(voice(u1.out))}`
+);
 
 const u3 = undoWith(u.recA);
 check(
@@ -447,16 +462,35 @@ await restorePristine();
 const vA = cli([DB, '--apply', `--channels=${W}`]);
 const vRec = recordFrom(vA.out);
 const vFuture = vRec ? editedRecord(vRec, 'v-to', (c) => (c.toAddedAt = '9999-99-99 99:99:99')) : '';
+// Round 190 closed V (`isSqliteDatetime`). Re-vehicled in Round 191 from measurements to checks: each
+// is refused at the record check, in the tool's voice, naming its own field and value, before any
+// channel is classified, with nothing written and no snapshot left.
+const vRefused = (r: ReturnType<typeof undoWith>, field: string, value: string) => {
+  const err = cliLines(r.err);
+  return (
+    r.code === 1 &&
+    err.some((l) => l.startsWith('not a backfill undo record:')) &&
+    err.includes(`channels[0].${field} is ${JSON.stringify(value)}, expected null or a YYYY-MM-DD HH:MM:SS timestamp`) &&
+    err.some((l) => l.includes('Nothing was written and the snapshot was discarded.')) &&
+    labelFor(r.out, W) === '(no line)' &&
+    !r.wrote &&
+    r.snaps === 0
+  );
+};
 const v1 = undoWith(vFuture);
-measure(
-  `V1: an untouched database, the run's own record with toAddedAt "9999-99-99 99:99:99" → exit ${v1.code}, wren ${labelFor(v1.out, W)}, ` +
-    `wrote ${v1.wrote ? 'SOMETHING' : 'nothing'}. It printed: ${JSON.stringify(voice(v1.out))}`
+check(
+  'V1',
+  'toAddedAt "9999-99-99 99:99:99" on the run\'s own record is refused at the record check: exit 1, field and value named, nothing written',
+  vRefused(v1, 'toAddedAt', '9999-99-99 99:99:99'),
+  `exit ${v1.code} · wren ${labelFor(v1.out, W)} · wrote ${v1.wrote ? 'SOMETHING' : 'nothing'} · ${v1.snaps} snapshot(s) · stderr ${JSON.stringify(cliLines(v1.err))}`
 );
 const vFrom = vRec ? editedRecord(vRec, 'v-from', (c) => (c.fromAddedAt = '0000-00-00 00:00:00')) : '';
 const v2 = undoWith(vFrom);
-measure(
-  `V2: the same record with fromAddedAt "0000-00-00 00:00:00" → exit ${v2.code}, wren ${labelFor(v2.out, W)}; ` +
-    `the default's added_at on wren is now ${JSON.stringify(addedAt(W, DEFAULT_ENTITY_ID))}`
+check(
+  'V2',
+  'fromAddedAt "0000-00-00 00:00:00" is refused the same way, so it is never written into the default\'s binding',
+  vRefused(v2, 'fromAddedAt', '0000-00-00 00:00:00') && addedAt(W, DEFAULT_ENTITY_ID) === null,
+  `exit ${v2.code} · wren ${labelFor(v2.out, W)} · default's added_at on wren ${JSON.stringify(addedAt(W, DEFAULT_ENTITY_ID))} · stderr ${JSON.stringify(cliLines(v2.err))}`
 );
 
 // ── Arm Z — this probe changed no product code ───────────────────────────────

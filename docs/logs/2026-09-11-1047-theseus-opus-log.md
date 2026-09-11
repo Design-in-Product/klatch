@@ -210,3 +210,220 @@ Step 3 — this log and the COORDINATION update are committed last.
 One line, and nothing in it blocks the dry run: **after restoring a backup, undo with the record
 from the run the backup is in (the older one), whatever the refusal suggests.** On a chat whose
 agent the backfill created, it still suggests the newer one. M2/U2 are Daedalus's to rule on.
+
+---
+
+# WORK fire (14:47 PT)
+
+## 14:47 — briefing
+
+Worktree at `309da3cd` (Argus's Round 190 sweep), clean, up to date with `origin/main`.
+
+New to me since START:
+- **Daedalus's Round 190** (`7a0ba775`, 13:25) and his memo
+  `daedalus-to-theseus-argus-cc-xian-calliope-on-a-minted-channel-the-restore-now-reads-as-a-restore-2026-09-11.md`.
+  It closes M2/U2 with my shape, narrowed on both caveats I named, and closes V as well: `checkUndoRecord` now
+  round-trips each `added_at` through `Date`. His Round 188 memo gap is explained there too: the START
+  fire left its docs uncommitted, and they are now at `8eae5c4d`.
+- **Argus's sweep** (`309da3cd`): R189/R187/R185 match Daedalus's tables, server 1611, client 311. That's his
+  measurement, not mine.
+- His one invitation: *"If you can find a path that writes an older `added_at` some other way, the rule
+  misnames it."*
+
+## 14:5x — the premise, read before driving anything
+
+- **V's round trip is UTC.** `Date.parse(at.replace(' ', 'T') + 'Z')` (`entity-backfill.ts`, `isSqliteDatetime`).
+  So a daylight-saving gap can't make a real `datetime('now')` string fail. I had that down as a candidate;
+  it's ruled out from the code.
+- **Writers of `channel_entities`:** every INSERT takes the column default `datetime('now')`
+  (`db/index.ts:76`), except undo's (`entity-backfill.ts:781`). No `UPDATE channel_entities` anywhere in
+  `packages/server/src` or `scripts/`.
+- **Writers of `messages.entity_id`:** only apply (`:443`) and undo (`:787`).
+- **Candidacy:** `otherBindings > 0` → `multi-bound`, skipped (`:315`). So at apply time a candidate has exactly
+  one seat, the default. And every record's `fromEntityId` is `DEFAULT_ENTITY_ID` (`:484`).
+- **`.klatch` import** into an existing channel id forks under a new uuid (`klatch-import.ts:220`), so it can't
+  add a seat to a recorded channel.
+- **Consequence, from the code (not yet driven):** after a run, the only way a recorded channel can hold a
+  seat older than `toAddedAt` that is neither the run's agent nor the default is a database from before the
+  run. The rule looks sound at every writer I can find. Also, "undone, then disturbed" (default seated by
+  undo **and** recorded stamps changed) needs stamps changed without apply's unseat. Apply unseats in the same
+  transaction and nothing else stamps, so no product writer seems able to reach it. If so, the exclusion is
+  defensive.
+
+## 14:5x — reproduction, first attempt void
+
+The first background chain wrote nowhere: its `mkdir` was in a command the tool layer refused. Every
+redirect then failed, and `|| true` reported exit 0. **No result from it is counted.** Re-run with the
+directory created first in the same chain.
+
+## 14:53 — Round 190 reproduced on `309da3cd` (which contains `7a0ba775`)
+
+- **R189 unmodified: 12 · 0 failed · 0 open · 6.** M2 and U2 took their pass branches. V1/V2 exit 1 at the record
+  check.
+- **R187: 11 · 0 · 0 · 4.**
+- **R185: 15 · 0 · 0 · 3.**
+
+All three are Daedalus's "After" column exactly. Outputs are in `.testdata/r191-repro/` (gitignored).
+
+## 14:5x — R189 re-vehicled on Round 190
+
+Same lesson as R187's S2: a pass branch that only greps for a restore word anywhere in the output would
+go on passing a wrong line on the wrong channel.
+- **M2** asserts wren's own reason line is the minted-channel sentence, verbatim. It also asserts the
+  older-record advice prints once, with no later-run wording and no bound-branch "it is seated" sentence.
+  The open branch is gone, so a regression now fails.
+- **U2** is checked per channel. reuse must carry the earlier-binding sentence, and each of the three minted
+  channels the no-longer-exists sentence. The advice prints ×1, with no later-run wording.
+- **V1/V2** changed from measurements to checks: exit 1, `not a backfill undo record:`, the exact
+  `channels[0].<field> is "<value>", expected …` problem, "Nothing was written and the snapshot was
+  discarded.", no channel classified, nothing written, 0 snapshots. V2 also asserts the default's
+  `added_at` on wren is still absent.
+- `tsc --noEmit --strict`: clean.
+- **Run 1: 14 checks · 0 failed · 0 open · 4 measurements.**
+
+## 14:5x — the restore Round 190 now names, done the way a person does it
+
+Round 190's refusal now says *"this database is from before the run (a restored backup?)"*. The CLI header
+(`:37`) lists "restore the snapshot" as one of two ways back, and so do the scoping doc (`:273`) and
+Daedalus's 9/9 dry-run memo (`:58`). **Nothing I can find says how.** I searched docs for "restore the
+snapshot / restore the backup / copy the backup / backup-backfill". Every restore in R185/R187/R189 used the
+probe's own `copyDb` (delete sidecars, then `db.backup()`), which is not what a person types.
+
+Checked at source first:
+- the DB is WAL (`db/index.ts:33`);
+- the CLI never closes its writable connection (the only `close()` is the read-only source, `:306`);
+- the server has no SIGINT/close handling, and `getDb()` is lazy;
+- Round 176 told xian he can run the CLI with `npm run dev` up.
+
+**Scouts, not scored** (`.testdata/r191-scout/`, gitignored):
+- **Solo** (no other connection): `--apply` exits, `-wal` absent, db 98,304 bytes. `cp backup klatch.db` →
+  **the backup's state** (2 entities, 10 default seats, 0 re-stamped, integrity ok). The restore works.
+- **K** (a holder opened with `getDb()`, stopped with group SIGINT, then `cp`): `-wal` is 589,192 bytes after
+  apply and **still 589,192 after the stop** (exit 130). After `cp`, a fresh reader sees **the post-run state**:
+  4 entities, 6 default seats, 12 re-stamped, integrity ok.
+- **L** (`cp` while the holder still runs): the holder and a fresh reader both see post-run. After a holder
+  write and stop, still post-run.
+
+**Reading, to be measured properly before it's reported:** with a second connection alive during apply,
+the run's pages stay in `klatch.db-wal`. A stop without a close leaves them there. A file copy replaces
+only `klatch.db`, and SQLite replays the stale WAL over it on next open. The "restore" gives back the run
+it was meant to undo, silently, with integrity ok. The solo case works, which is why no probe so far would
+have seen this.
+
+Next: an instrument with the real dev server (`tsx watch src/index.ts`) on a scratch DB, and controls
+for the procedure that does work.
+
+## 15:0x — why the holder is not the Hono server
+
+I read `packages/server/src/index.ts`. It loads `.env` with **`override: true`** (`:17`) and hardcodes port 3001
+(`:48`). The `lsof :3001` and `grep -c KLATCH_DB .env` checks needed approval this fire can't get. So a real
+server would rest scratch isolation on a file I haven't read, on a port xian may be using. The holder is
+the server's own `getDb()` module under `tsx watch` (the dev server's runner). The substitution is stated
+in the probe header.
+
+## 15:0x — R189 re-vehicled run 2, R191 run 1
+
+- **R189 re-vehicled, run 2: 14 · 0 · 0 · 4**, same as run 1.
+- `tsc --strict` on R191: clean.
+- **R191 run 1: 8 checks · 0 failed · 2 open · 6 measurements.**
+  - **S1 (no other connection): `cp` gives back the backup**, row for row.
+  - **K0:** the connection saw the backup's hash before the apply and the post-run hash after. Ctrl-C to its
+    group ended every process of it without force (exit 130). The `-wal` was 589,192 bytes before and after
+    the stop.
+  - **K1 open:** after `cp`, the file reads **the post-run state, row for row** (hash `a2c9…`, integrity ok). No
+    command printed an error.
+  - **D:** the dry run on that file prints `Candidates: 4 — 0 would move, 4 skipped`. On the correctly
+    restored S file it prints `Candidates: 8 — 4 would move, 4 skipped`, the same as before the apply. **So
+    the dry run tells the two apart**, if the operator compares.
+  - **U:** `--undo` with the run's record on K's file gives REVERTED ×4, exit 0, and the backup row for row.
+    **Undo recovers a failed `cp` restore.**
+  - **L1 open:** `cp` while the connection is up. The connection, a new reader, and the file after a write and
+    Ctrl-C all read post-run.
+  - **C1 (stop, delete both sidecars, then `cp`): the backup, row for row.** The dry run is back to
+    `8 — 4 would move`.
+
+**Three faults in my own instrument, caught before reporting:**
+1. Arm A's "the file alone reads post-run" is wrong. `view()` opens the file **with** its WAL. What
+   `klatch.db` holds by itself was never measured. Fix: view a sidecar-free copy.
+2. The fixture's main file was 4,096 bytes, with everything in the WAL (the builder never checkpoints). A
+   long-lived real DB has most pages in the main file. Fix: checkpoint (TRUNCATE) after build, so the WAL
+   holds only what happens after.
+3. The case most likely to do harm isn't driven. The app is used between the apply and the restore, long
+   enough to cross the 1000-page autocheckpoint and restart the WAL. A stale WAL would then hold only recent
+   frames, and replaying them over the backup could mix pages from two states. Adding arm H for that. I'm
+   not claiming what it shows until it runs.
+
+## 15:1x — instrument revised; predictions for run 2, written before it runs
+
+Changes:
+- every fixture is checkpointed (TRUNCATE) after build, with a guard that the WAL is empty and the main file is
+  larger than one page;
+- every state is read both with its WAL and as `klatch.db` by itself;
+- views survive a corrupt file;
+- arm H is new: the holder writes 1500 messages through `createChannel` + `insertMessage`, one transaction each,
+  after the apply;
+- C now also runs after the same 1500 writes, so the control covers H's case.
+
+Predictions:
+- **S1 passes** (no other connection).
+- **K1 still open, checkpointed fixture or not.** The `-wal` holds only the apply's frames (plus the holder's
+  open-time migration writes). After `cp`, the app reads post-run, and `klatch.db` by itself reads **the backup**:
+  the whole difference is in the WAL.
+- **A:** the app starting again doesn't merge the WAL (run 1's sidecars were unchanged after it), so
+  `klatch.db` by itself is still the backup. Low confidence on the mechanism. Run 1's CLI solo exit did delete
+  its WAL.
+- **D, U:** as in run 1.
+- **L1 open.**
+- **H:** the 1500 writes cross 1000 pages, so an autocheckpoint copies the run's pages into the main file, and
+  later writes restart the WAL. After `cp`, the replayed WAL holds only the recent frames. **Prediction:
+  NEITHER state, and possibly an integrity failure.** Confidence on integrity: low. I don't know which pages
+  the last frames touch.
+- **C1 passes.**
+
+## 15:2x — R191 run 2 (revised instrument): 10 checks · 0 failed · 3 open · 7 measurements
+
+Every prediction held.
+- **S1 passes.** After the apply the sidecars are absent, and `cp` gives the backup.
+- **K1 open.** The `-wal` is 86,552 bytes after the apply, unchanged by Ctrl-C (exit 130, no process left, not
+  forced). After `cp` the app reads **post-run**, and `klatch.db` by itself reads **the backup**. The whole
+  difference is the stale WAL.
+- **D:** `Candidates: 4 — 0 would move`, against `8 — 4 would move` before the apply and after a real restore.
+- **A:** the app starting again (exit 0) sees post-run. After it exits the sidecars are unchanged, and `klatch.db`
+  by itself is still the backup. It doesn't merge the WAL.
+- **U:** `--undo` gives REVERTED ×4, exit 0, and the backup.
+- **L1 open.** Same reading, and after the connection writes and stops, `klatch.db` by itself is still the backup.
+- **H0:** the 1500 `insertMessage` writes (3480 bytes each, autocheckpoint 1000) took the `-wal` to 4,132,392
+  bytes. After Ctrl-C, `klatch.db` by itself held 1452 of 1554 messages. So the autocheckpoint had moved most
+  of the run and the use into the main file, and the WAL held the rest.
+- **H1 open: after `cp`, the database is corrupt.** `database disk image is malformed`, and `integrity_check`
+  reports tree 4, pages 1343–1442, `btreeInitPage() returns error code 11`. `klatch.db` by itself is the backup,
+  intact. The WAL replayed over it is what breaks it.
+  - The app starting again: **exit 3, `database disk image is malformed`**.
+  - `--undo` with the run's record: **exit 1**, `undo stopped on a database error: database disk image is
+    malformed`, then "Channels before the failing one may already be reverted."
+- **C1 passes after the same 1500 writes.** The `-wal` was 4,132,392 bytes when deleted. After `cp`, the backup row
+  for row, and the dry run is back to `8 — 4 would move`.
+
+Instrument fault: my integrity string split rows rather than lines, so H printed about 100 lines twice.
+Fixed. Adding H2: from H's corrupt state, is the apply's backup file untouched, and does stop + delete sidecars
++ `cp` recover it? Then run 3 on the final instrument.
+
+## 15:3x — R191 run 3 (final instrument): 11 checks · 0 failed · 3 open · 7 measurements
+
+- `tsc --strict`: clean.
+- **Every state is the same as run 2.** S1, K0, L0, H0, C1 and Z pass. K1, L1 and H1 are open. D/A/U read the same.
+- **H1 is corrupt again:** 101 integrity lines from `Tree 4 page 1456`. `klatch.db` by itself held 1466 of 1554 messages
+  after the stop (1452 in run 2), so the page ranges vary between runs and the corruption doesn't.
+- **H2 passes:** after the app (exit 3) and undo (exit 1) both failed on the corrupt file, the apply's backup is
+  untouched. Delete both sidecars, then `cp`, gives back the backup row for row, integrity ok.
+
+## 15:3x — writeup, memo, board
+
+- **Writeup** `docs/research/round191-restoring-the-backup-the-way-a-person-does-2026-09-11.md`. One overclaim was
+  caught on re-read before commit. The draft said `--undo` "works in every case measured here"; it was driven on
+  two files and failed on one. Shape 2's detection is marked open, because an idle connection holds no lock, so a
+  TRUNCATE checkpoint may not see the server. Not measured.
+- **Memo** `docs/mail/theseus-to-daedalus-cc-xian-argus-calliope-190-holds-and-the-restore-it-names-fails-with-the-dev-server-up-2026-09-11.md`.
+- **Thread closed** with `git mv` to `docs/mail/read/`: my R189 memo and Daedalus's R190 reply (M2/U2/V closed,
+  reproduced, re-vehicled).
+- **COORDINATION:** my status is now Round 191, with Round 189 kept below as a dated entry.
