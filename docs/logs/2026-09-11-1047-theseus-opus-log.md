@@ -427,3 +427,57 @@ Fixed. Adding H2: from H's corrupt state, is the apply's backup file untouched, 
 - **Thread closed** with `git mv` to `docs/mail/read/`: my R189 memo and Daedalus's R190 reply (M2/U2/V closed,
   reproduced, re-vehicled).
 - **COORDINATION:** my status is now Round 191, with Round 189 kept below as a dated entry.
+
+## Wrap verification (WORK fire)
+
+Step 1 — commits on `origin/main` (after push):
+
+```
+$ git log origin/main --oneline -3
+c8483430 Round 191: Round 190 reproduces and its premise holds, and the restore its wording names gives back the run -- or a corrupt database
+be3a93b4 mail: Round 191 to Daedalus cc xian/Argus/Calliope -- 190 reproduces and holds; the restore its wording names fails with the dev server up, and corrupts after app use; R189/R190 thread to read/
+309da3cd coordination+log: Argus 9/11 WORK fire -- Round 190 swept per Daedalus's memo, all three probes reproduce clean
+```
+
+Both of this fire's work commits are on `origin/main`. Mail was pushed first, on its own, per the worktree
+discipline.
+
+Step 2 — deliverable files, each `ls`'d, all seven present:
+
+```
+docs/logs/2026-09-11-1047-theseus-opus-log.md
+docs/mail/read/daedalus-to-theseus-argus-cc-xian-calliope-on-a-minted-channel-the-restore-now-reads-as-a-restore-2026-09-11.md
+docs/mail/read/theseus-to-daedalus-argus-cc-xian-calliope-188-holds-and-on-a-minted-channel-the-restore-still-reads-as-a-later-run-2026-09-11.md
+docs/mail/theseus-to-daedalus-cc-xian-argus-calliope-190-holds-and-the-restore-it-names-fails-with-the-dev-server-up-2026-09-11.md
+docs/research/round191-restoring-the-backup-the-way-a-person-does-2026-09-11.md
+scripts/probe-round189-the-restore-wording-on-a-minted-channel.mts
+scripts/probe-round191-restoring-the-backup-the-way-a-person-does.mts
+```
+
+No product or CLI file changed. `c8483430`'s stat lists only `COORDINATION.md`, this log, the writeup and the two
+probes; `be3a93b4`'s lists only mail. Arm Z (`git status --porcelain -- packages scripts/backfill-entity-bindings.mts`)
+was clean on every R189 and R191 run.
+
+What I measured this fire:
+- R189: three runs (unmodified on Round 190, then re-vehicled twice)
+- R187, R185: one run each (unmodified, reproduction)
+- R191: three runs (run 1 on an earlier instrument; runs 2 and 3 on the final one, same states)
+- two scouts before building the instrument
+- `tsc --strict` on both probes, clean
+
+**Not** re-run by me: the server and client suites (no product file changed) and R176/178/179/181/182/183.
+Argus's sweep reports server 1611 / client 311 on `309da3cd`; that figure is his, not re-measured here.
+
+Step 3 — this log is committed and pushed last.
+
+## Carried, unchanged
+
+**Round 170's frequency probe** still needs one path to the real `klatch.db` from xian.
+
+## What xian needs from this fire
+
+Three lines, none about the dry run: **stop `npm run dev` before any `--apply`; to undo an apply prefer
+`--undo`; and if you ever copy the backup back by hand, stop the app and delete `klatch.db-wal` and
+`klatch.db-shm` first.** A plain copy with the server up restores nothing and says nothing; after the app has
+been used since the apply, it leaves a database the app cannot open. The backup file itself survives, and the
+delete-then-copy procedure recovers from there.
