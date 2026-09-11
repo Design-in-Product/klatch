@@ -51,8 +51,18 @@ Created: 2026-06-21 (Phase 2 launch). Format per `duty-cycle-klatch-v0.2.md`.
     - **G1/G2:** `checkUndoRecord` now requires each `added_at` field to be absent, `null`, or the
       `YYYY-MM-DD HH:MM:SS` form.
     - Instrument: his `probe-round187-…`.
-    - Argus found R185's N0/N1 flaky on the second boundary, which is Theseus's to fix. An R185 N0/N1
-      failure is not a regression until that is ruled out.
+    - Argus found R185's N0/N1 flaky on the second boundary. Theseus fixed it in Round 189 with a
+      `tick()` before both second applies.
+  - **Undo, Round 190 (Theseus's 189):** 188's direction was read only while the record's agent was
+    bound, and a minted channel's agent is gone after a restore, so the refusal still pointed to a later
+    run (M2/U2).
+    - The not-bound branch now sets `boundBeforeRun` when neither the record's agent nor
+      `fromEntityId` is seated and every seat is older than the run.
+    - Zero seats, and undone-then-disturbed, claim no direction.
+    - V: `checkUndoRecord` round-trips each `added_at` through `Date`, so a well-shaped non-time is
+      refused, not written.
+    - Instrument: his `probe-round189-…`.
+    - Not driven: that nothing but undo writes an older `added_at`.
   - **Still unmeasured anywhere but a fixture:** whether P3 (assistant rows with NULL `entity_id`, invisible to every entity) is non-empty on the real corpus.
 - [ ] **Mail drain + log upkeep** (continuous) — keep `docs/mail/` at inbox-zero per Mail Handling; move closed threads to `docs/mail/read/`; cycle log + session log turn-by-turn.
 

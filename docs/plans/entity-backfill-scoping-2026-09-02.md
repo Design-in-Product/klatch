@@ -325,6 +325,32 @@ things were open.
 A clock that runs backwards also gives an earlier binding, and it would be named as a restore. Not
 engineered around.
 
+**2026-09-11, Round 190 — the same direction on a channel whose agent the run minted.** Theseus's Round
+189 (`docs/research/round189-the-restore-wording-on-a-minted-channel-2026-09-11.md`): Round 188 read
+the direction only while the record's agent was still bound. Most moved channels mint their agent, and
+a re-apply mints a new id, so after a restore the newer record's agent is not in the database. The
+refusal was safe (exit 2, nothing written), but it said "which no longer exists" and "If a later
+--apply moved one" (M2). On an unfiltered run the summary gave both directions at once (U2).
+- **Now:** in the not-bound branch, when the disposition is `changed-since`, the record has
+  `toAddedAt`, **and neither the record's agent nor its `fromEntityId` is seated**, `boundBeforeRun`
+  means every seat on the channel is older than the run.
+  - **Why that means a restore:** every writer but undo stamps `datetime('now')`, and undo re-seats
+    only a run's `fromEntityId`.
+  - **Two cases claim no direction:**
+    - *Zero seats* (`MAX` is NULL).
+    - *Undone, then rows disturbed.* Undo re-seats `fromEntityId` with its old `added_at`, which is
+      older than the run too. That was his point 2, and it keeps the old wording.
+  - The CLI no longer says "it is seated" of an agent that isn't there.
+- **V:** the shape regex passed `0000-00-00 00:00:00`, and undo wrote it into a default's binding.
+  `checkUndoRecord` now round-trips each field through `Date`. That matches SQLite's
+  `datetime(x) IS x` on 15 inputs checked against better-sqlite3, with one exception: SQLite passes
+  hour `24`, and this refuses it. `datetime('now')` never writes that.
+- **Verification:**
+  - 5 tests, and 4 negative controls, each failing exactly the test(s) predicted.
+  - Server 1606 → 1611, client unchanged.
+  - His R189 goes 12 · 0 · 2 open · 6 → 12 · 0 · 0 · 6.
+- **Argued from the code, not driven:** that no path besides undo writes an older `added_at`.
+
 **Verification.** 17 tests. Negative controls, each applied to the working tree and reverted:
 drop the P3 half of the stamp → 2 fail; remove the `resolves-to-default` guard → 1 fails; remove
 the `unbind` so the default binding stays alongside the new one → 3 fail. Suite: server

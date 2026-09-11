@@ -180,7 +180,28 @@ Agents working on this repo use this file as the async handoff protocol.
 
 ### Daedalus (architecture & implementation)
 - **Branch:** `claude/daedalus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/daedalus`; merges land on `main`)
-- **Status:** working — duty cycle armed and confirmed back after the 8/11 reboot (`launchctl`: `daedalus-{START,WORK,STOP}` loaded). Last fire 2026-09-10 17:17 STOP (Round 186 — Theseus's Round 185: backfill undo knows a run by its binding's `added_at`, not only its agent id; one dry run still needed from xian). **Second gap recorded, not explained:** the 9/6 MID and STOP fires ran (memos filed at 13:24 and 17:22, log sections present in `docs/logs/2026-09-06-0917-daedalus-opus-log.md`) but neither added an entry to this board — the newest entry below jumps from 9/6 START to 9/7 START. The work is recorded in the log and the mail; only the board entry is missing. Not backfilling from memory. **Naming note for future readers:** the 13:17 LaunchAgent is `daedalus-WORK`, but entries from 8/21 on label that slot MID. Same fire, two names; WORK ≡ MID for the 13:17 slot. Not renaming the agent mid-cycle. **Gap recorded, not explained:** no 13:17 entry exists for 9/2 — no MID section in `docs/logs/2026-09-02-0917-daedalus-opus-log.md` and no separate 13:17 file. I have no evidence of what happened in that slot.
+- **Status:** working — duty cycle armed and confirmed back after the 8/11 reboot (`launchctl`: `daedalus-{START,WORK,STOP}` loaded). Last fire 2026-09-11 13:17 WORK (Round 190 — Theseus's Round 189: on a minted channel a restore is now named as a restore, and undo records' `added_at` must be a real time; one dry run still needed from xian). **Second gap recorded, not explained:** the 9/6 MID and STOP fires ran (memos filed at 13:24 and 17:22, log sections present in `docs/logs/2026-09-06-0917-daedalus-opus-log.md`) but neither added an entry to this board — the newest entry below jumps from 9/6 START to 9/7 START. The work is recorded in the log and the mail; only the board entry is missing. Not backfilling from memory. **Naming note for future readers:** the 13:17 LaunchAgent is `daedalus-WORK`, but entries from 8/21 on label that slot MID. Same fire, two names; WORK ≡ MID for the 13:17 slot. Not renaming the agent mid-cycle. **Gap recorded, not explained:** no 13:17 entry exists for 9/2 — no MID section in `docs/logs/2026-09-02-0917-daedalus-opus-log.md` and no separate 13:17 file. I have no evidence of what happened in that slot.
+- **9/11 fire (WORK, 13:17 PT) — Round 190: the restore direction on a minted channel.**
+  - **Input:** Theseus's Round 189. Round 188's direction was read only while the record's agent was
+    bound. A minted channel's agent is gone after a restore, so the refusal still pointed to a later run
+    (M2), and U2's summary gave both directions.
+  - **Reproduced first:** R189 **12 · 0 · 2 open · 6**.
+  - **Built** (`7a0ba775`):
+    - In the not-bound branch, with neither the record's agent nor `fromEntityId` seated, every seat
+      older than the run sets `boundBeforeRun`. Zero seats and undone-then-disturbed claim no direction.
+    - The CLI names a gone agent correctly.
+    - V: `checkUndoRecord` round-trips `added_at` through `Date`.
+  - **Verified:**
+    - R189 **12 · 0 · 0 · 6**, R187 11 · 0 · 0 · 4, R185 15 · 0 · 0 · 3, on the committed HEAD.
+    - 5 tests; 4 negative controls, each failing the predicted test(s).
+    - Server **1606 → 1611**, client 311 + 13 skipped unchanged.
+  - **Not driven:** that no path but undo writes an older `added_at`.
+  - **Mail:** `daedalus-to-theseus-argus-cc-xian-calliope-on-a-minted-channel-the-restore-now-reads-as-a-restore-2026-09-11.md`.
+    Theseus's R189 memo stays in `docs/mail/` until he verifies.
+- **9/11 fire (START, 09:17 PT) — Round 188 (Theseus's 187: S2, G1/G2).** Code landed at `968d1006`.
+  The fire then stopped: no memo and no board entry, and its log, plan-doc and task-list edits were left
+  uncommitted. The WORK fire committed those as they stood (`8eae5c4d`) and wrote this entry from the
+  repo. Cause unknown.
 - **9/10 fire (STOP, 17:17 PT) — Round 186: undo knows a run by its binding, not only its agent id.**
   - **Input:** Theseus's Round 185.
     - **N4:** both runs matched Sable by name, so one agent id. An older record undone after a
