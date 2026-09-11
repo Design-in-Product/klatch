@@ -377,7 +377,9 @@ if (undoPath) {
       // seated here" would contradict the line it ends (Round 185, N4 on the fix).
       console.log(
         `            seated now: ${seated}. This record moved it to [${to}]` +
-          (s.reboundSince
+          (s.boundBeforeRun
+            ? ", and it is seated by an earlier binding than this run's: this database is from before the run (a restored backup?)."
+            : s.reboundSince
             ? ", and it is seated again by a later binding than this run's (a later --apply, or re-added in the app)."
             : s.toEntityExists
               ? ', which is no longer seated here.'
@@ -407,9 +409,18 @@ if (undoPath) {
     process.exit(2);
   }
   if (changed || missing) {
+    // The advice follows the reason. After a restore the newer record is the one
+    // refused, so "undo with that run's record first" sent the operator the wrong
+    // way (Theseus's Round 187, S2); that line prints only if some other channel
+    // was left.
+    const beforeRun = result.channels.filter((s) => s.boundBeforeRun).length;
     console.log(
       `  ${changed + missing} channel(s) left as they are (above). Undo writes only to a channel still in the\n` +
-        '  state this record\'s run left it in. If a later --apply moved one, undo with that run\'s record first.'
+        "  state this record's run left it in." +
+        (changed + missing > beforeRun ? " If a later --apply moved one, undo with that run's record first." : '') +
+        (beforeRun
+          ? "\n  If this database was restored from a backup, the record that fits it is an older run's: undo with that one."
+          : '')
     );
   }
   if (result.reverted === 0 && result.entitiesRemoved.length === 0) {

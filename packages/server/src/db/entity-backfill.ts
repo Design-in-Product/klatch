@@ -548,9 +548,28 @@ export function checkUndoRecord(value: unknown): UndoRecordCheck {
         return { ok: false, problem: `channels[${i}].${key} is not an array` };
       }
     }
+    // Not shallow here, unlike the id arrays: these two decide a refusal and a
+    // write. `toAddedAt` is what `revert` compares, and `fromAddedAt` is written
+    // into the roster ordering column. Apply copies both from `datetime('now')`,
+    // so any other value was not written by a run — a number passed through and
+    // was refused as re-bound, and "not a date" was written into a default's
+    // binding (Theseus's Round 187, G1/G2). Absent and null stay legitimate: they
+    // are records from before each field existed.
+    for (const key of ['fromAddedAt', 'toAddedAt']) {
+      const at = ch[key];
+      if (at != null && !(typeof at === 'string' && SQLITE_DATETIME.test(at))) {
+        return {
+          ok: false,
+          problem: `channels[${i}].${key} is ${JSON.stringify(at)}, expected null or a YYYY-MM-DD HH:MM:SS timestamp`,
+        };
+      }
+    }
   }
   return { ok: true, record: value as BackfillUndoRecord };
 }
+
+/** The fixed-width form `datetime('now')` writes, so string order is time order. */
+const SQLITE_DATETIME = /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/;
 
 /**
  * Where one record channel stands in the database undo is pointed at, now.
@@ -579,6 +598,13 @@ export interface UndoChannelState {
    * the app. Always false for a record without `toAddedAt`.
    */
   reboundSince: boolean;
+  /**
+   * Seated on the record's agent by an *earlier* binding than the run's own: the
+   * database is from before this run, usually a restored backup, and the record
+   * that fits it is an older run's (Theseus's Round 187, S2). Always false for a
+   * record without `toAddedAt`.
+   */
+  boundBeforeRun: boolean;
 }
 
 /**
@@ -619,12 +645,14 @@ function undoClassifier(db: ReturnType<typeof getDb>) {
         seatedNow: [],
         toEntityExists,
         reboundSince: false,
+        boundBeforeRun: false,
       };
     }
     const seatedNow = seated.all(ch.channelId) as { id: string; name: string }[];
 
     let disposition: UndoDisposition;
     let reboundSince = false;
+    let boundBeforeRun = false;
     const binding = bindingAddedAt.get(ch.channelId, ch.toEntityId) as { added_at: string } | undefined;
     if (binding) {
       // Bound to the run's agent is not the same as bound by the run. An agent
@@ -636,11 +664,23 @@ function undoClassifier(db: ReturnType<typeof getDb>) {
       // sat there carries the same stamp as one a later run moved — so the binding's
       // own `added_at` does. Second resolution: two applies of one channel inside one
       // second still look like one run, which is the rule before this field existed.
-      reboundSince = ch.toAddedAt != null && binding.added_at !== ch.toAddedAt;
+      //
+      // Which way it moved is the reason, and the reason is the advice. Later is a
+      // later apply or the app, and the newer record is the one to use. Earlier is
+      // a database from before this run, and the older record is the one to use.
+      // `added_at` is fixed-width `datetime('now')` (and `checkUndoRecord` holds
+      // the record's side to that form), so string order is time order. It used to
+      // test only "different", so after a restore it blamed a later run that never
+      // happened (Theseus's Round 187, S2).
+      if (ch.toAddedAt != null && binding.added_at !== ch.toAddedAt) {
+        if (binding.added_at < ch.toAddedAt) boundBeforeRun = true;
+        else reboundSince = true;
+      }
       // Reverting re-binds `fromEntityId`; if it is not here, the bind would throw
       // on the foreign key. A record naming an agent this database never had is
       // not this database's record, whatever its channel ids say.
-      disposition = !reboundSince && entityExists.get(ch.fromEntityId) ? 'revert' : 'changed-since';
+      disposition =
+        !reboundSince && !boundBeforeRun && entityExists.get(ch.fromEntityId) ? 'revert' : 'changed-since';
     } else {
       // A recorded row that has since been deleted is not a change: the record
       // legitimately outlives its rows (Round 180), and the UPDATE would match
@@ -664,6 +704,7 @@ function undoClassifier(db: ReturnType<typeof getDb>) {
       seatedNow,
       toEntityExists,
       reboundSince,
+      boundBeforeRun,
     };
   };
 }

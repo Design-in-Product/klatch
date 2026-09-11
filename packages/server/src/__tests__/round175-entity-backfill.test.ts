@@ -692,6 +692,7 @@ describe('Round 184 — undo against the database it is aimed at (Theseus R183)'
         seatedNow: [],
         toEntityExists: false,
         reboundSince: false,
+        boundBeforeRun: false,
       },
     ]);
   });
@@ -854,5 +855,99 @@ describe('Round 186 — undo knows a run by its binding, not only its agent (The
     expect(result.channels[0]).toMatchObject({ disposition: 'revert', reboundSince: false });
     expect(getChannelEntities('c-reuse').map((e) => e.id)).toEqual([DEFAULT_ENTITY_ID]);
     expect(assistantStamps('c-reuse')).toEqual([DEFAULT_ENTITY_ID, null]);
+  });
+});
+
+/**
+ * Round 188 — Theseus's Round 187,
+ * `docs/research/round187-the-binding-rule-at-the-inputs-it-was-argued-from-2026-09-10.md`.
+ *
+ * S2: after a snapshot restore the database holds an earlier run's binding of the
+ * same agent, and the refusal called it a later one. G1/G2: the shape check read
+ * neither `added_at` field, though one decides a refusal and the other is written.
+ */
+describe('Round 188 — which way the binding moved, and the added_at fields are checked (Theseus R187)', () => {
+  const seedSable = () => {
+    getDb().prepare('INSERT INTO entities (id, name) VALUES (?, ?)').run('e-sable', 'Sable');
+    seedImportedChannel({ id: 'c-reuse', opener: 'You are Sable.', p2: ['a'], p3: ['b'] });
+  };
+  const setBindingAt = (channelId: string, entityId: string, at: string) =>
+    getDb()
+      .prepare('UPDATE channel_entities SET added_at = ? WHERE channel_id = ? AND entity_id = ?')
+      .run(at, channelId, entityId);
+
+  it("refuses an added_at field that is not null or datetime('now')'s form, and names it (G1/G2)", () => {
+    seedImportedChannel({ id: 'c1', opener: 'You are Wren.', p2: ['a'] });
+    const applied = JSON.stringify(applyEntityBackfill(planEntityBackfill()).record);
+
+    for (const [key, value] of [
+      ['toAddedAt', 12345],
+      ['fromAddedAt', 'not a date'],
+      ['toAddedAt', '2026-09-11T02:56:26'],
+      ['fromAddedAt', ''],
+    ] as [string, unknown][]) {
+      const record = JSON.parse(applied);
+      record.channels[0][key] = value;
+      const checked = checkUndoRecord(record);
+      expect(checked.ok).toBe(false);
+      if (!checked.ok) {
+        expect(checked.problem).toBe(
+          `channels[0].${key} is ${JSON.stringify(value)}, expected null or a YYYY-MM-DD HH:MM:SS timestamp`
+        );
+      }
+    }
+  });
+
+  it('accepts both fields as apply writes them, as null, and absent', () => {
+    seedImportedChannel({ id: 'c1', opener: 'You are Wren.', p2: ['a'] });
+    const applied = JSON.parse(JSON.stringify(applyEntityBackfill(planEntityBackfill()).record));
+    expect(checkUndoRecord(applied).ok).toBe(true);
+
+    const nulls = JSON.parse(JSON.stringify(applied));
+    nulls.channels[0].fromAddedAt = null;
+    nulls.channels[0].toAddedAt = null;
+    expect(checkUndoRecord(nulls).ok).toBe(true);
+
+    const absent = JSON.parse(JSON.stringify(applied));
+    delete absent.channels[0].fromAddedAt;
+    delete absent.channels[0].toAddedAt;
+    expect(checkUndoRecord(absent).ok).toBe(true);
+  });
+
+  it('calls an earlier binding one from before the run, not a later one, and writes nothing (S2)', () => {
+    seedSable();
+    const record = applyEntityBackfill(planEntityBackfill()).record;
+    // The state Theseus measured after the restore: the binding the database holds
+    // is an earlier run's, and this record is from the later run.
+    setBindingAt('c-reuse', 'e-sable', '2026-09-01 00:00:00');
+    record.channels[0].toAddedAt = '2026-09-02 00:00:00';
+    const before = dumpState();
+
+    const result = undoEntityBackfill(record);
+
+    expect(dumpState()).toBe(before);
+    expect(result.reverted).toBe(0);
+    expect(result.channels[0]).toMatchObject({
+      disposition: 'changed-since',
+      boundBeforeRun: true,
+      reboundSince: false,
+    });
+  });
+
+  it('still calls a later binding re-bound, not before the run', () => {
+    seedSable();
+    const record = applyEntityBackfill(planEntityBackfill()).record;
+    setBindingAt('c-reuse', 'e-sable', '2026-09-02 00:00:00');
+    record.channels[0].toAddedAt = '2026-09-01 00:00:00';
+    const before = dumpState();
+
+    const result = undoEntityBackfill(record);
+
+    expect(dumpState()).toBe(before);
+    expect(result.channels[0]).toMatchObject({
+      disposition: 'changed-since',
+      boundBeforeRun: false,
+      reboundSince: true,
+    });
   });
 });
