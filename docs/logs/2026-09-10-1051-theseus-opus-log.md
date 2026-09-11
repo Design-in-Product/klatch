@@ -275,3 +275,161 @@ Step 3 — this log and the COORDINATION update are committed last.
 One line, and nothing in it blocks the dry run: **if you ever undo after applying more than once,
 undo the newest run first** (paste its `reverse with:` line). Everything else in this fire is
 Daedalus's to rule on.
+
+---
+
+# STOP fire (Opus 5), 2026-09-10 ~19:47 PT
+
+## 19:47 — briefing
+
+Worktree at `e4c2402a` (Iris's 9/10 STOP entry), clean, even with `origin/main`.
+
+New mail addressed to me:
+- **Daedalus's Round 186 memo** (`daedalus-to-theseus-xian-…-undo-knows-a-run-by-its-binding-and-your-n1-now-fails-on-purpose-2026-09-10.md`).
+  N4/N5/M2 are closed. N1 and N6 fail by design, and he asks me to rule on both.
+- **Pard's duty-cycle standard proposal** (`pard-to-calliope-cc-team-…-2026-09-10.md`). It is
+  addressed to Calliope. I'm cc'd, nothing in it is asked of me, and the adopt/opt-out call is
+  hers. Left in `docs/mail/`.
+
+Argus's STOP entry re-ran R185 unmodified (**15 · 2 · 0**), R183 (**19 · 0 · 0 · 8**), and the
+server suite (**1602/1602**).
+
+## 19:5x — reproduced his number before touching anything
+
+Ran `probe-round185-…` unmodified on `f0230372`: **15 checks · 2 failed · 0 open · 3 measurements**.
+- N1 fails: `older: exit 2, reuse CHANGED SINCE THE RUN · newer: exit 0, reuse REVERTED · row-for-row pristine`.
+- N6 fails: `0 new snapshot(s)`.
+- N4, N5, M2 and Z pass.
+
+This matches his table and Argus's.
+
+Read the full diff before ruling. What it does:
+- `toAddedAt` is read right after `bind.run`.
+- `reboundSince = ch.toAddedAt != null && binding.added_at !== ch.toAddedAt`.
+- The M2 exit moved out of the nothing-written branch.
+- `checkUndoRecord` is **unchanged**: it type-checks `channelId`/`fromEntityId`/`toEntityId` and
+  the two arrays, and neither `added_at` field. Undo writes `fromAddedAt` verbatim through
+  `COALESCE(?, datetime('now'))` (`entity-backfill.ts:713,726`).
+- The route refuses removing a chat's last seat (`routes/entities.ts:227`).
+
+## 20:0x — rulings, and what I built
+
+**N1: agreed.** With nothing written between the runs, both records name the same rows. My old
+control was measuring that coincidence, not the rule. Re-vehicled N1 to his shape and made it stronger:
+- the older record exits 2, labelled `CHANGED SINCE THE RUN`
+- whole-DB dump unchanged, and no snapshot left
+- prints `seated again by a later binding`
+- the newer record then settles pristine
+
+N0 now also asserts the two runs' `toAddedAt` differ. Without that, N1 could be passing because of
+the one-second limit rather than the rule.
+
+**N6: agreed, but kept as its own check rather than folded into N4.** N4 compares reuse's roster
+and stamps. N6 now asserts:
+- the whole database is unchanged
+- zero snapshots
+- `Nothing was written; the snapshot was discarded` is printed
+
+N4/N5/M2's open branches are now FAIL branches: they were closed, so their return is a regression.
+
+**Round 187** (`scripts/probe-round187-the-binding-rule-at-the-inputs-it-was-argued-from.mts`)
+drives his rule at the inputs he argued from and didn't drive:
+- **S:** the snapshot restore his shape-2 rationale rests on.
+- **P:** his flagged app re-add judgement, behind the route's guards.
+- **L:** a legacy record, the stated limit, measured.
+- **G:** the two `added_at` fields the shape check doesn't read.
+
+Prediction, written before running: **S2 opens.** After a restore, the seated binding is *earlier*
+than the newer record's run, but `!==` can't say which way. So the CLI will print "seated again by a
+later binding … (a later --apply, or re-added in the app)" when neither happened.
+
+## 20:0x — results
+
+**R185 re-vehicled: 15 · 0 · 0 · 3.** N0 prints `toAddedAt 02:56:17 / 02:56:18`, so N1 passes on the
+rule and not on the one-second limit.
+
+**R187: 11 checks · 0 failed · 3 open · 4 measurements.**
+- **S0/S1/S3 pass.** After the restore, B's undo is refused and writes nothing. A's undo ends
+  pristine, including every binding's `added_at`. His rationale holds.
+- **S2 open, as predicted.** The binding is `02:56:26`, the record's run `02:56:28`, and the CLI
+  prints "seated again by a later binding … undo with that run's record first".
+- **P0/P1 pass.** Roster and stamps are identical to the run's state, only the binding moved; undo
+  exits 2, writes nothing, and names the app. **I agree with his judgement**, not opened.
+- **L (measured):** a legacy older record exits 0 `REVERTED` and leaves the reply stamped Sable on a
+  default-only chat. That is exactly R185's N4 harm.
+- **G1 open:** `toAddedAt: 12345` passes the shape check and is refused as re-bound.
+- **G2 open:** `fromAddedAt: "not a date"` passes, and undo writes it verbatim, exit 0. The field
+  dates from Round 178 (`fd134961`, found with `git log -S`), not Round 186.
+
+**Second run of both, same shape:** R185 15 · 0 · 0 · 3, R187 11 · 0 · 3 · 4. `tsc --strict --module
+nodenext` on both probes: no output (clean).
+
+**Self-audit before reporting:**
+- **S2 is not a timing artefact.** S0 asserts the restored binding equals A's `toAddedAt` and differs
+  from B's, and the `<` comparison is on the printed fixed-width values.
+- **G0's `fromAddedAt` equals S's `02:56:26`.** That is the pristine fixture's default binding time
+  (the fixture was built seconds before arm S), not a leak between arms: every arm starts from
+  `restorePristine()`.
+- **P's "no later record" is a folder count** (1 record), not an inference.
+- **L is labelled a measurement.** It is his stated limit, not a finding.
+
+Writeup `docs/research/round187-the-binding-rule-at-the-inputs-it-was-argued-from-2026-09-10.md`.
+Memo `docs/mail/theseus-to-daedalus-xian-cc-…-n1-and-n6-agreed-and-after-a-restore-the-refusal-blames-a-later-run-2026-09-10.md`.
+Thread closed: his Round 186 memo and my Round 185 memo `git mv`'d to `docs/mail/read/`. The 9/9
+apply-pass memo (xian's dry run) stays. Pard's proposal stays for Calliope.
+
+## Question-box check (STOP item 4)
+
+Considered. Nothing this fire is curiosity-shaped: every question it raised is a work question, and
+those are in the memo. A considered no.
+
+Cycle log: the last `cycle-log-theseus-*` is 2026-06-26. This session log is the practice in use, so
+no cycle log was written.
+
+## Carried, unchanged
+
+**Round 170's frequency probe** still needs one path to the real `klatch.db` from xian.
+
+## Wrap verification (STOP fire)
+
+Step 1 — commits on `origin/main` (after `git fetch`):
+
+```
+$ git log origin/main --oneline -4
+7e69dbb9 Round 187: N1/N6 re-vehicled green, and after a restore the binding rule's refusal blames a later run
+4fd6e999 mail: Round 187 reply to Daedalus + xian -- N1/N6 agreed, after a restore the refusal blames a later run; R185/R186 thread to read/
+e4c2402a log+coordination: Iris 9/10 STOP fire -- no-op, backfill-CLI thread stays out of UX lane
+c11d6592 mail(pard->calliope, cc team): duty-cycle standard v1.4 as a PROPOSAL — Klatch satisfies 4/5, recommending adopt-with-exception on continuity
+```
+
+Both of this fire's work commits are on `origin/main`. Mail was pushed first, on its own.
+
+Step 2 — deliverable files, each `ls`'d, all seven present:
+
+```
+docs/logs/2026-09-10-1051-theseus-opus-log.md
+docs/mail/read/daedalus-to-theseus-xian-cc-iris-janus-calliope-argus-undo-knows-a-run-by-its-binding-and-your-n1-now-fails-on-purpose-2026-09-10.md
+docs/mail/read/theseus-to-daedalus-xian-cc-iris-janus-calliope-argus-b1-agreed-and-a-name-matched-agent-gives-both-runs-one-id-2026-09-10.md
+docs/mail/theseus-to-daedalus-xian-cc-iris-janus-calliope-argus-n1-and-n6-agreed-and-after-a-restore-the-refusal-blames-a-later-run-2026-09-10.md
+docs/research/round187-the-binding-rule-at-the-inputs-it-was-argued-from-2026-09-10.md
+scripts/probe-round185-what-the-undo-classifier-knows-a-run-by.mts
+scripts/probe-round187-the-binding-rule-at-the-inputs-it-was-argued-from.mts
+```
+
+`git diff --stat f0230372 HEAD -- packages/ scripts/backfill-entity-bindings.mts` is empty.
+
+What I measured this fire:
+- R185: three runs (unmodified, then re-vehicled twice)
+- R187: twice
+- `tsc --strict` on both probes
+
+**Not** re-run by me: the server and client suites (no product file changed), and R176/178/179/181/182/183.
+Those figures are Daedalus's and Argus's.
+
+Step 3 — this log and the COORDINATION update are committed last.
+
+## What xian needs from this fire
+
+One line, and nothing in it blocks the dry run: **if you ever restore a backup and then undo, use the
+record from the run the backup is in (the older one), not the newest.** The newest is refused safely,
+but its message blames a later run. S2 and G1/G2 are Daedalus's to rule on.
