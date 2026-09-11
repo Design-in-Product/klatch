@@ -47,9 +47,12 @@
  * Theseus's Round 183 measured the blind version: an older record undone after a
  * re-apply half-reverted the newer run, a record from another database was
  * reported as "failed part-way", and all three printed the success line a
- * correct undo prints. The counts are now what was written. Undo that writes
- * nothing exits 0 only when everything was already reverted, and a record none
- * of whose channels exist here is refused as belonging to another database.
+ * correct undo prints. The counts are now what was written. A run is known by
+ * the binding it made, not only by the agent it bound: an agent matched by name
+ * has one id for every run, so a later apply of the same agent leaves an older
+ * record's channel alone (Round 185). Undo exits 0 only when no channel was left,
+ * and a record none of whose channels exist here is refused as belonging to
+ * another database.
  *
  * **An operator mistake is never reported as an empty corpus, and never as a
  * wider run than was asked for.** An unknown `--bases` value is refused by name,
@@ -370,9 +373,15 @@ if (undoPath) {
     if (s.disposition === 'changed-since') {
       const to = checked.record.channels[i].toEntityId;
       const seated = s.seatedNow.map((e) => `${e.name || '(unnamed)'} [${e.id}]`).join(', ') || 'nobody';
+      // A re-bound channel lists the record's agent under "seated now", so "no longer
+      // seated here" would contradict the line it ends (Round 185, N4 on the fix).
       console.log(
         `            seated now: ${seated}. This record moved it to [${to}]` +
-          (s.toEntityExists ? ', which is no longer seated here.' : ', which no longer exists.')
+          (s.reboundSince
+            ? ", and it is seated again by a later binding than this run's (a later --apply, or re-added in the app)."
+            : s.toEntityExists
+              ? ', which is no longer seated here.'
+              : ', which no longer exists.')
       );
     }
   }
@@ -400,17 +409,20 @@ if (undoPath) {
   if (changed || missing) {
     console.log(
       `  ${changed + missing} channel(s) left as they are (above). Undo writes only to a channel still in the\n` +
-        '  state this record\'s run left it in. If a later --apply moved one, undo with that run\'s record.'
+        '  state this record\'s run left it in. If a later --apply moved one, undo with that run\'s record first.'
     );
   }
   if (result.reverted === 0 && result.entitiesRemoved.length === 0) {
     discardSnapshot();
     console.log('Nothing was written; the snapshot was discarded.');
-    // Everything already reverted is a clean answer; anything left because it
-    // changed is an undo that did not do what was asked, and must not exit 0.
-    process.exit(changed || missing ? 2 : 0);
   }
-  process.exit(0);
+  // Exit 0 means every channel in the record is back where the run found it,
+  // reverted now or already. A channel left because it changed is an undo that did
+  // not do what was asked, whether or not other channels were written beside it.
+  // This rule used to sit inside the nothing-written branch above, so a re-seated
+  // chat exited 2 in a one-channel record and 0 in a four-channel one (Theseus's
+  // Round 185, M2).
+  process.exit(changed || missing ? 2 : 0);
 }
 
 const basesArg = flagValue('bases');

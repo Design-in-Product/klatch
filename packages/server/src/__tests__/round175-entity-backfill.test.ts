@@ -588,25 +588,25 @@ describe('Round 180 — undo record shape check (Theseus R179)', () => {
  * Every test here asserts the rows, not only the returned counts, because the
  * counts were the thing that was wrong.
  */
-describe('Round 184 — undo against the database it is aimed at (Theseus R183)', () => {
-  const assistantStamps = (channelId: string) =>
-    (
-      getDb()
-        .prepare("SELECT entity_id FROM messages WHERE channel_id = ? AND role = 'assistant' ORDER BY id")
-        .all(channelId) as { entity_id: string | null }[]
-    ).map((r) => r.entity_id);
-  const dumpState = () =>
-    JSON.stringify([
-      getDb().prepare('SELECT * FROM channel_entities ORDER BY channel_id, entity_id').all(),
-      getDb().prepare('SELECT id, entity_id FROM messages ORDER BY id').all(),
-      getDb().prepare('SELECT id FROM entities ORDER BY id').all(),
-    ]);
-  const reseat = (channelId: string, fromId: string, toId: string, toName: string) => {
-    getDb().prepare('INSERT OR IGNORE INTO entities (id, name) VALUES (?, ?)').run(toId, toName);
-    getDb().prepare('INSERT INTO channel_entities (channel_id, entity_id) VALUES (?, ?)').run(channelId, toId);
-    getDb().prepare('DELETE FROM channel_entities WHERE channel_id = ? AND entity_id = ?').run(channelId, fromId);
-  };
+const assistantStamps = (channelId: string) =>
+  (
+    getDb()
+      .prepare("SELECT entity_id FROM messages WHERE channel_id = ? AND role = 'assistant' ORDER BY id")
+      .all(channelId) as { entity_id: string | null }[]
+  ).map((r) => r.entity_id);
+const dumpState = () =>
+  JSON.stringify([
+    getDb().prepare('SELECT * FROM channel_entities ORDER BY channel_id, entity_id').all(),
+    getDb().prepare('SELECT id, entity_id FROM messages ORDER BY id').all(),
+    getDb().prepare('SELECT id FROM entities ORDER BY id').all(),
+  ]);
+const reseat = (channelId: string, fromId: string, toId: string, toName: string) => {
+  getDb().prepare('INSERT OR IGNORE INTO entities (id, name) VALUES (?, ?)').run(toId, toName);
+  getDb().prepare('INSERT INTO channel_entities (channel_id, entity_id) VALUES (?, ?)').run(channelId, toId);
+  getDb().prepare('DELETE FROM channel_entities WHERE channel_id = ? AND entity_id = ?').run(channelId, fromId);
+};
 
+describe('Round 184 — undo against the database it is aimed at (Theseus R183)', () => {
   it('leaves a channel a later run re-applied, rather than half-reverting it (A1)', () => {
     seedImportedChannel({ id: 'c-wren', opener: 'You are Wren.', p2: ['a'], p3: ['b'] });
     seedImportedChannel({ id: 'c-rook', opener: 'You are Rook.', p2: ['c'] });
@@ -691,6 +691,7 @@ describe('Round 184 — undo against the database it is aimed at (Theseus R183)'
         disposition: 'not-in-database',
         seatedNow: [],
         toEntityExists: false,
+        reboundSince: false,
       },
     ]);
   });
@@ -758,5 +759,100 @@ describe('Round 184 — undo against the database it is aimed at (Theseus R183)'
     expect(dumpState()).toBe(before);
     expect(preview.map((s) => s.disposition).sort()).toEqual(['changed-since', 'revert']);
     expect(undoEntityBackfill(record).channels).toEqual(preview);
+  });
+});
+
+describe('Round 186 — undo knows a run by its binding, not only its agent (Theseus R185)', () => {
+  // `added_at` has second resolution, and apply → undo → apply inside one test
+  // lands in one second, where two bindings of one agent cannot be told apart —
+  // the stated limit. Dating the first run a day back, row and record together,
+  // is the timeline an operator has, not a way around the rule.
+  const EARLIER = '2026-09-01 00:00:00';
+  const dateRunEarlier = (record: BackfillUndoRecord) => {
+    for (const ch of record.channels) {
+      getDb()
+        .prepare('UPDATE channel_entities SET added_at = ? WHERE channel_id = ? AND entity_id = ?')
+        .run(EARLIER, ch.channelId, ch.toEntityId);
+      ch.toAddedAt = EARLIER;
+    }
+  };
+  const seedSable = () => {
+    getDb().prepare('INSERT INTO entities (id, name) VALUES (?, ?)').run('e-sable', 'Sable');
+    seedImportedChannel({ id: 'c-reuse', opener: 'You are Sable.', p2: ['a'], p3: ['b'] });
+  };
+
+  it('records the added_at of the binding the run made', () => {
+    seedImportedChannel({ id: 'c1', opener: 'You are Wren.', p2: ['a'] });
+    const record = applyEntityBackfill(planEntityBackfill()).record;
+    const row = getDb()
+      .prepare('SELECT added_at FROM channel_entities WHERE channel_id = ? AND entity_id = ?')
+      .get('c1', record.channels[0].toEntityId) as { added_at: string };
+
+    expect(record.channels[0].toAddedAt).toBe(row.added_at);
+  });
+
+  it('leaves a channel a later run bound to the same agent, and the later record still undoes it (N4/N5)', () => {
+    seedSable();
+    const recordA = applyEntityBackfill(planEntityBackfill()).record;
+    // The precondition Theseus measured: matched by name, so both runs bind one id.
+    expect(recordA.channels[0]).toMatchObject({ toEntityId: 'e-sable', mintedHere: false });
+    dateRunEarlier(recordA);
+    undoEntityBackfill(recordA);
+    // A reply while the default sits there, stamped to it as the message route does.
+    getDb()
+      .prepare(
+        "INSERT INTO messages (id, channel_id, role, content, entity_id, created_at) VALUES (?, ?, 'assistant', ?, ?, ?)"
+      )
+      .run('c-reuse-reply', 'c-reuse', 'between the runs', DEFAULT_ENTITY_ID, '2026-09-09T12:00:00.000Z');
+    const recordB = applyEntityBackfill(planEntityBackfill({ channelIds: ['c-reuse'] })).record;
+    expect(recordB.channels[0].toEntityId).toBe('e-sable');
+    expect(recordB.channels[0].p2MessageIds).toContain('c-reuse-reply');
+    expect(recordA.channels[0].p2MessageIds).not.toContain('c-reuse-reply');
+    const before = dumpState();
+
+    const stale = undoEntityBackfill(recordA);
+
+    expect(dumpState()).toBe(before);
+    expect(stale.reverted).toBe(0);
+    expect(stale.channels[0]).toMatchObject({
+      disposition: 'changed-since',
+      reboundSince: true,
+      seatedNow: [{ id: 'e-sable', name: 'Sable' }],
+    });
+
+    const good = undoEntityBackfill(recordB);
+    expect(good.reverted).toBe(1);
+    expect(good.entitiesRemoved).toEqual([]);
+    expect(getChannelEntities('c-reuse').map((e) => e.id)).toEqual([DEFAULT_ENTITY_ID]);
+    // a2-0, a3-0, reply: the reply back on the default it was written under.
+    expect(assistantStamps('c-reuse')).toEqual([DEFAULT_ENTITY_ID, null, DEFAULT_ENTITY_ID]);
+  });
+
+  it('leaves a channel whose agent was taken off and put back in the app', () => {
+    seedSable();
+    const record = applyEntityBackfill(planEntityBackfill()).record;
+    dateRunEarlier(record);
+    getDb().prepare('DELETE FROM channel_entities WHERE channel_id = ? AND entity_id = ?').run('c-reuse', 'e-sable');
+    getDb().prepare('INSERT INTO channel_entities (channel_id, entity_id) VALUES (?, ?)').run('c-reuse', 'e-sable');
+    const before = dumpState();
+
+    const result = undoEntityBackfill(record);
+
+    expect(dumpState()).toBe(before);
+    expect(result.channels[0]).toMatchObject({ disposition: 'changed-since', reboundSince: true });
+  });
+
+  it('still reverts with a record written before toAddedAt existed', () => {
+    seedSable();
+    const record = JSON.parse(JSON.stringify(applyEntityBackfill(planEntityBackfill()).record));
+    delete record.channels[0].toAddedAt;
+    expect(checkUndoRecord(record).ok).toBe(true);
+
+    const result = undoEntityBackfill(record);
+
+    expect(result.reverted).toBe(1);
+    expect(result.channels[0]).toMatchObject({ disposition: 'revert', reboundSince: false });
+    expect(getChannelEntities('c-reuse').map((e) => e.id)).toEqual([DEFAULT_ENTITY_ID]);
+    expect(assistantStamps('c-reuse')).toEqual([DEFAULT_ENTITY_ID, null]);
   });
 });

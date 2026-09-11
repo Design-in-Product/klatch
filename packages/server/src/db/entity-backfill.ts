@@ -377,6 +377,17 @@ export interface BackfillUndoChannel {
    * clock, which is the old behaviour, not a new failure.
    */
   fromAddedAt?: string | null;
+  /**
+   * `channel_entities.added_at` on the binding this run made to `toEntityId`.
+   *
+   * What tells this run's binding from a later one to the same agent. An agent
+   * matched by name has one id for every run, so "still bound to `toEntityId`"
+   * cannot tell an older record from a newer one (Theseus's Round 185, N4).
+   * Undo reverts only a binding whose `added_at` still matches.
+   *
+   * Optional: records written before this field existed keep the old rule.
+   */
+  toAddedAt?: string | null;
   /** Assistant rows that were stamped `fromEntityId` before the run (P2). */
   p2MessageIds: string[];
   /** Assistant rows that were NULL before the run (P3). Restored to NULL. */
@@ -460,6 +471,11 @@ export function applyEntityBackfill(plan: BackfillPlan): ApplyResult {
           ?.added_at ?? null;
 
       bind.run(row.channelId, toEntityId);
+      // The bind always inserts here: a channel carrying any other binding is
+      // skipped as `multi-bound` by the plan, so this row is this run's own.
+      const toAddedAt =
+        (addedAtOf.get(row.channelId, toEntityId) as { added_at: string } | undefined)
+          ?.added_at ?? null;
       unbind.run(row.channelId, DEFAULT_ENTITY_ID);
       for (const m of assistant) stamp.run(toEntityId, m.id);
 
@@ -469,6 +485,7 @@ export function applyEntityBackfill(plan: BackfillPlan): ApplyResult {
         toEntityId,
         mintedHere: resolved.disposition === 'minted',
         fromAddedAt,
+        toAddedAt,
         p2MessageIds,
         p3MessageIds,
       } satisfies BackfillUndoChannel;
@@ -542,7 +559,8 @@ export function checkUndoRecord(value: unknown): UndoRecordCheck {
  * - `already-reverted` — back on `fromEntityId`, and every recorded row is in
  *   its pre-run state (P2 on the default, P3 NULL). Writing would change nothing.
  * - `changed-since` — neither: something moved it after the run. A later apply
- *   re-minted its agent, or the user re-seated it in the app. Undo leaves it.
+ *   re-minted its agent or bound the same one again, or the user re-seated it in
+ *   the app. Undo leaves it.
  * - `not-in-database` — no such channel. Usually a record from another database.
  */
 export type UndoDisposition = 'revert' | 'already-reverted' | 'changed-since' | 'not-in-database';
@@ -555,6 +573,12 @@ export interface UndoChannelState {
   seatedNow: { id: string; name: string }[];
   /** Whether the agent this record moved the channel to still exists. */
   toEntityExists: boolean;
+  /**
+   * Seated on the record's agent, but by a later binding than the run's own: a
+   * later apply bound the same agent again, or it was taken off and put back in
+   * the app. Always false for a record without `toAddedAt`.
+   */
+  reboundSince: boolean;
 }
 
 /**
@@ -578,6 +602,9 @@ function undoClassifier(db: ReturnType<typeof getDb>) {
       WHERE ce.channel_id = ? ORDER BY ce.added_at ASC, ce.rowid ASC`
   );
   const bound = db.prepare('SELECT 1 FROM channel_entities WHERE channel_id = ? AND entity_id = ?');
+  const bindingAddedAt = db.prepare(
+    'SELECT added_at FROM channel_entities WHERE channel_id = ? AND entity_id = ?'
+  );
   const entityExists = db.prepare('SELECT 1 FROM entities WHERE id = ?');
   const stampOf = db.prepare('SELECT entity_id FROM messages WHERE id = ?');
 
@@ -591,16 +618,29 @@ function undoClassifier(db: ReturnType<typeof getDb>) {
         disposition: 'not-in-database',
         seatedNow: [],
         toEntityExists,
+        reboundSince: false,
       };
     }
     const seatedNow = seated.all(ch.channelId) as { id: string; name: string }[];
 
     let disposition: UndoDisposition;
-    if (bound.get(ch.channelId, ch.toEntityId)) {
+    let reboundSince = false;
+    const binding = bindingAddedAt.get(ch.channelId, ch.toEntityId) as { added_at: string } | undefined;
+    if (binding) {
+      // Bound to the run's agent is not the same as bound by the run. An agent
+      // matched by name has one id for every run, so apply → undo → apply binds
+      // the same id twice, and the older record used to pass here and write the
+      // channel: rows the newer run moved stayed stamped to an agent the undo had
+      // just unseated, and the newer record was then refused (Theseus's Round 185,
+      // N4/N5). The stamps cannot settle it — a reply the app wrote while the agent
+      // sat there carries the same stamp as one a later run moved — so the binding's
+      // own `added_at` does. Second resolution: two applies of one channel inside one
+      // second still look like one run, which is the rule before this field existed.
+      reboundSince = ch.toAddedAt != null && binding.added_at !== ch.toAddedAt;
       // Reverting re-binds `fromEntityId`; if it is not here, the bind would throw
       // on the foreign key. A record naming an agent this database never had is
       // not this database's record, whatever its channel ids say.
-      disposition = entityExists.get(ch.fromEntityId) ? 'revert' : 'changed-since';
+      disposition = !reboundSince && entityExists.get(ch.fromEntityId) ? 'revert' : 'changed-since';
     } else {
       // A recorded row that has since been deleted is not a change: the record
       // legitimately outlives its rows (Round 180), and the UPDATE would match
@@ -617,7 +657,14 @@ function undoClassifier(db: ReturnType<typeof getDb>) {
           ? 'already-reverted'
           : 'changed-since';
     }
-    return { channelId: ch.channelId, channelName: channel.name, disposition, seatedNow, toEntityExists };
+    return {
+      channelId: ch.channelId,
+      channelName: channel.name,
+      disposition,
+      seatedNow,
+      toEntityExists,
+      reboundSince,
+    };
   };
 }
 
