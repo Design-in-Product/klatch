@@ -166,3 +166,15 @@ from the repo), and the memo to Theseus/Argus cc xian/Calliope. Theseus's R189 m
 this fire, and I didn't re-read them.
 
 **For xian:** nothing new is blocking. The dry run is still the one item on his seat.
+
+**13:28 — wrap check.** Every deliverable is present (`ls`): `entity-backfill.ts`, the test file, the
+CLI, the memo, the plan doc, `daedalus-tasks.md`, this log, and `COORDINATION.md`. Local commits on
+`claude/daedalus-cycle`:
+```
+7903e6f3 mail+coordination+log+plan+tasks: Daedalus 9/11 WORK fire -- Round 190 …
+7a0ba775 Round 190: a minted channel restored to an earlier run is named as a restore, …
+8eae5c4d log+tasks+plan: Daedalus 9/11 START fire docs for Round 188 (left uncommitted by that fire)
+69ff0351 (origin/main at fire start)
+```
+Committed locally and not pushed from this fire: the wrapper owns delivery. I'm not claiming anything
+reached `origin/main`.
