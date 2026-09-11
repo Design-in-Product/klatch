@@ -951,3 +951,117 @@ describe('Round 188 — which way the binding moved, and the added_at fields are
     });
   });
 });
+
+/**
+ * Round 190 — Theseus's Round 189,
+ * `docs/research/round189-the-restore-wording-on-a-minted-channel-2026-09-11.md`.
+ *
+ * M2/U2: Round 188's direction was read only where the record's agent is still
+ * bound. A minted channel re-mints on re-apply, so after a restore the newer
+ * record's agent is absent and the refusal pointed to a later run. V: the shape
+ * regex let well-formed non-times through, and one was written.
+ */
+describe('Round 190 — the restore direction on a minted channel, and added_at must be a time (Theseus R189)', () => {
+  const setBindingAt = (channelId: string, entityId: string, at: string) =>
+    getDb()
+      .prepare('UPDATE channel_entities SET added_at = ? WHERE channel_id = ? AND entity_id = ?')
+      .run(at, channelId, entityId);
+  const seedWren = () => seedImportedChannel({ id: 'c1', opener: 'You are Wren.', p2: ['a'], p3: ['b'] });
+
+  it('calls a minted channel restored to an earlier run from before the run, and the older record settles it (M2)', () => {
+    seedWren();
+    const recordA = applyEntityBackfill(planEntityBackfill()).record;
+    expect(recordA.channels[0].mintedHere).toBe(true);
+    setBindingAt('c1', recordA.channels[0].toEntityId, '2026-09-01 00:00:00');
+    recordA.channels[0].toAddedAt = '2026-09-01 00:00:00';
+    // The newer run as the restored database has it: its agent was minted after
+    // the backup, so it is not here, and its binding would have been later.
+    const recordB: BackfillUndoRecord = JSON.parse(JSON.stringify(recordA));
+    recordB.channels[0].toEntityId = 'e-wren-second-run';
+    recordB.channels[0].toAddedAt = '2026-09-02 00:00:00';
+    const before = dumpState();
+
+    const stale = undoEntityBackfill(recordB);
+
+    expect(dumpState()).toBe(before);
+    expect(stale.reverted).toBe(0);
+    expect(stale.channels[0]).toMatchObject({
+      disposition: 'changed-since',
+      toEntityExists: false,
+      boundBeforeRun: true,
+      reboundSince: false,
+    });
+
+    const good = undoEntityBackfill(recordA);
+    expect(good.reverted).toBe(1);
+    expect(getChannelEntities('c1').map((e) => e.id)).toEqual([DEFAULT_ENTITY_ID]);
+  });
+
+  it('claims no direction when the run was undone and its rows disturbed afterwards', () => {
+    seedWren();
+    const record = applyEntityBackfill(planEntityBackfill()).record;
+    expect(undoEntityBackfill(record).reverted).toBe(1);
+    // Undo re-seats the default with the clock it had, which is older than the run.
+    setBindingAt('c1', DEFAULT_ENTITY_ID, '2000-01-01 00:00:00');
+    getDb().prepare('UPDATE messages SET entity_id = NULL WHERE id = ?').run(record.channels[0].p2MessageIds[0]);
+
+    const result = undoEntityBackfill(record);
+
+    expect(result.channels[0]).toMatchObject({ disposition: 'changed-since', boundBeforeRun: false });
+  });
+
+  it('does not call a channel re-seated in the app after the run one from before it', () => {
+    seedWren();
+    const record = applyEntityBackfill(planEntityBackfill()).record;
+    const wren = record.channels[0].toEntityId;
+    setBindingAt('c1', wren, '2000-01-01 00:00:00');
+    record.channels[0].toAddedAt = '2000-01-01 00:00:00';
+    getDb().prepare('INSERT INTO entities (id, name) VALUES (?, ?)').run('e-kestrel', 'Kestrel');
+    getDb().prepare('INSERT INTO channel_entities (channel_id, entity_id) VALUES (?, ?)').run('c1', 'e-kestrel');
+    getDb().prepare('DELETE FROM channel_entities WHERE channel_id = ? AND entity_id = ?').run('c1', wren);
+
+    const result = undoEntityBackfill(record);
+
+    expect(result.channels[0]).toMatchObject({
+      disposition: 'changed-since',
+      toEntityExists: true,
+      boundBeforeRun: false,
+      reboundSince: false,
+    });
+  });
+
+  it('claims no direction for a channel nobody is seated on', () => {
+    seedWren();
+    const record = applyEntityBackfill(planEntityBackfill()).record;
+    getDb().prepare('DELETE FROM channel_entities WHERE channel_id = ?').run('c1');
+
+    const result = undoEntityBackfill(record);
+
+    expect(result.channels[0]).toMatchObject({ disposition: 'changed-since', seatedNow: [], boundBeforeRun: false });
+  });
+
+  it('refuses an added_at that has the shape of a time but is not one (V)', () => {
+    seedWren();
+    const applied = JSON.stringify(applyEntityBackfill(planEntityBackfill()).record);
+
+    for (const [key, value] of [
+      ['toAddedAt', '9999-99-99 99:99:99'],
+      ['fromAddedAt', '0000-00-00 00:00:00'],
+      ['fromAddedAt', '2026-02-30 12:00:00'],
+      ['toAddedAt', '2026-09-11 24:00:00'],
+    ] as [string, string][]) {
+      const record = JSON.parse(applied);
+      record.channels[0][key] = value;
+      const checked = checkUndoRecord(record);
+      expect(checked.ok, value).toBe(false);
+      if (!checked.ok) {
+        expect(checked.problem).toBe(
+          `channels[0].${key} is ${JSON.stringify(value)}, expected null or a YYYY-MM-DD HH:MM:SS timestamp`
+        );
+      }
+    }
+    const leapDay = JSON.parse(applied);
+    leapDay.channels[0].fromAddedAt = '2028-02-29 23:59:59';
+    expect(checkUndoRecord(leapDay).ok).toBe(true);
+  });
+});

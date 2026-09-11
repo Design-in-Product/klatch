@@ -377,8 +377,11 @@ if (undoPath) {
       // seated here" would contradict the line it ends (Round 185, N4 on the fix).
       console.log(
         `            seated now: ${seated}. This record moved it to [${to}]` +
-          (s.boundBeforeRun
+          (s.boundBeforeRun && s.seatedNow.some((e) => e.id === to)
             ? ", and it is seated by an earlier binding than this run's: this database is from before the run (a restored backup?)."
+            : s.boundBeforeRun
+            ? // A minted agent a restore took with it: "it is seated" would be false here.
+              `, which ${s.toEntityExists ? 'is not seated here' : 'no longer exists'}, and everyone seated on it was seated before this run: this database is from before the run (a restored backup?).`
             : s.reboundSince
             ? ", and it is seated again by a later binding than this run's (a later --apply, or re-added in the app)."
             : s.toEntityExists

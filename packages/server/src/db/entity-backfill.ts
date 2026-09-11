@@ -557,7 +557,7 @@ export function checkUndoRecord(value: unknown): UndoRecordCheck {
     // are records from before each field existed.
     for (const key of ['fromAddedAt', 'toAddedAt']) {
       const at = ch[key];
-      if (at != null && !(typeof at === 'string' && SQLITE_DATETIME.test(at))) {
+      if (at != null && !(typeof at === 'string' && isSqliteDatetime(at))) {
         return {
           ok: false,
           problem: `channels[${i}].${key} is ${JSON.stringify(at)}, expected null or a YYYY-MM-DD HH:MM:SS timestamp`,
@@ -570,6 +570,19 @@ export function checkUndoRecord(value: unknown): UndoRecordCheck {
 
 /** The fixed-width form `datetime('now')` writes, so string order is time order. */
 const SQLITE_DATETIME = /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/;
+
+/**
+ * That form, and a real time in it. The shape alone passed `0000-00-00 00:00:00`,
+ * which undo then wrote into a default's binding (Theseus's Round 189, V2). A
+ * round trip through `Date` refuses anything that normalizes to another string —
+ * the same test as SQLite's `datetime(x) IS x`, except that SQLite also passes
+ * hour `24`, which `datetime('now')` never writes.
+ */
+function isSqliteDatetime(at: string): boolean {
+  if (!SQLITE_DATETIME.test(at)) return false;
+  const t = Date.parse(`${at.replace(' ', 'T')}Z`);
+  return !Number.isNaN(t) && new Date(t).toISOString().slice(0, 19).replace('T', ' ') === at;
+}
 
 /**
  * Where one record channel stands in the database undo is pointed at, now.
@@ -599,10 +612,12 @@ export interface UndoChannelState {
    */
   reboundSince: boolean;
   /**
-   * Seated on the record's agent by an *earlier* binding than the run's own: the
-   * database is from before this run, usually a restored backup, and the record
-   * that fits it is an older run's (Theseus's Round 187, S2). Always false for a
-   * record without `toAddedAt`.
+   * The database is from before this run, usually a restored backup, and the
+   * record that fits it is an older run's. Either the record's agent is seated by
+   * an *earlier* binding than the run's own (Theseus's Round 187, S2), or — for an
+   * agent the run minted, which a restore removes — neither the record's agent nor
+   * its `fromEntityId` is seated and every seat is older than the run (Round 189,
+   * M2/U2). Always false for a record without `toAddedAt`.
    */
   boundBeforeRun: boolean;
 }
@@ -633,6 +648,7 @@ function undoClassifier(db: ReturnType<typeof getDb>) {
   );
   const entityExists = db.prepare('SELECT 1 FROM entities WHERE id = ?');
   const stampOf = db.prepare('SELECT entity_id FROM messages WHERE id = ?');
+  const seatLatest = db.prepare('SELECT MAX(added_at) AS latest FROM channel_entities WHERE channel_id = ?');
 
   return (ch: BackfillUndoChannel): UndoChannelState => {
     const channel = channelRow.get(ch.channelId) as { name: string | null } | undefined;
@@ -690,12 +706,24 @@ function undoClassifier(db: ReturnType<typeof getDb>) {
           const row = stampOf.get(id) as { entity_id: string | null } | undefined;
           return !row || row.entity_id === expected;
         });
+      const fromSeated = !!bound.get(ch.channelId, ch.fromEntityId);
       disposition =
-        bound.get(ch.channelId, ch.fromEntityId) &&
-        preRun(ch.p2MessageIds, ch.fromEntityId) &&
-        preRun(ch.p3MessageIds, null)
+        fromSeated && preRun(ch.p2MessageIds, ch.fromEntityId) && preRun(ch.p3MessageIds, null)
           ? 'already-reverted'
           : 'changed-since';
+      // The same direction, for a channel whose run minted its agent. A re-apply
+      // mints a new id, so after a restore the record's agent is not here at all and
+      // the branch above never runs (Theseus's Round 189, M2/U2). The seats still
+      // say which way: every writer but undo stamps `datetime('now')`, so a seat
+      // older than the run was there before it. Undo is the exception, and it
+      // re-seats only a run's `fromEntityId` — which is why that one being seated
+      // decides nothing here (undone, then its rows disturbed, is older too). With
+      // neither agent seated and every seat older, the database is from before the
+      // run. No seats at all has no direction (MAX is NULL).
+      if (disposition === 'changed-since' && !fromSeated && ch.toAddedAt != null) {
+        const { latest } = seatLatest.get(ch.channelId) as { latest: string | null };
+        boundBeforeRun = latest != null && latest < ch.toAddedAt;
+      }
     }
     return {
       channelId: ch.channelId,
