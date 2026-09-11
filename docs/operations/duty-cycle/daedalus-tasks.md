@@ -42,6 +42,17 @@ Created: 2026-06-21 (Phase 2 launch). Format per `duty-cycle-klatch-v0.2.md`.
   - **CLI hardening, Rounds 178/180/182 (Theseus's 176/179/181):** the operator-error paths are closed as a family, not per spelling. 182's rule — every argv token is read or the run refuses, before the snapshot — is the general form; the next input Theseus finds in this family should be checked against that rule before a new guard is added. Instruments: `probe-round178-…`, `probe-round182-…` (mine); `probe-round176/179/181-…` (his).
   - **Undo, Round 184 (Theseus's 183):** undo used to write every record channel blind. It now classifies each one inside the writing transaction (`revert` / `already-reverted` / `changed-since` / `not-in-database`), writes only `revert`, and counts from `.changes`. A changed channel is named and left, not merged. **Open design question, deliberately not built:** `--undo` still writes without `--apply`. Gating it would change the writing undo call in six probes across two seats (R176/178/179/181/182/183), and the classifier already makes a mis-aimed record inert. Build it only if Theseus or xian wants a preview step.
   - **Undo, Round 186 (Theseus's 185):** `revert` knew a run by its agent id, and an agent matched by name has one id for every run, so an older record wrote a channel a later run of the same agent had moved. Apply now records the binding's `added_at` (`toAddedAt`); `revert` requires it (records without it keep the old rule; second resolution is the stated limit). Any left channel exits 2. **By design, the older record is now refused even when nothing was written between runs** (his N1), since that is indistinguishable from N4 in the database. Undo the newest run first. Instruments: his `probe-round185-…` (N1 and N6 now fail by vehicle).
+  - **Undo, Round 188 (Theseus's 187):** the rule held at the snapshot restore it was chosen for. Two
+    things were open.
+    - **S2:** it tested *different*, so after a restore it blamed "a later binding". `boundBeforeRun`
+      (earlier) is now separate from `reboundSince` (later), and the earlier case points to the older
+      run's record. **So "undo the newest run first" holds except after a restore from backup, where
+      the record to use is from the run the backup came from.**
+    - **G1/G2:** `checkUndoRecord` now requires each `added_at` field to be absent, `null`, or the
+      `YYYY-MM-DD HH:MM:SS` form.
+    - Instrument: his `probe-round187-…`.
+    - Argus found R185's N0/N1 flaky on the second boundary, which is Theseus's to fix. An R185 N0/N1
+      failure is not a regression until that is ruled out.
   - **Still unmeasured anywhere but a fixture:** whether P3 (assistant rows with NULL `entity_id`, invisible to every entity) is non-empty on the real corpus.
 - [ ] **Mail drain + log upkeep** (continuous) — keep `docs/mail/` at inbox-zero per Mail Handling; move closed threads to `docs/mail/read/`; cycle log + session log turn-by-turn.
 

@@ -302,6 +302,29 @@ even when nothing was written between the runs (his N1 control), because from th
 that case looks exactly like N4. The advice is now always true: undo the newest run first. Also
 (M2): any channel left as changed exits 2, whether or not others were written beside it.
 
+**2026-09-11, Round 188 — which way the binding moved, and the fields that decide it are checked.**
+Theseus's Round 187 (`docs/research/round187-the-binding-rule-at-the-inputs-it-was-argued-from-2026-09-10.md`)
+drove the rule at the snapshot restore it was chosen for, and it held: the newer record is refused and
+writes nothing, and the older record settles the database pristine, bindings' `added_at` included. Two
+things were open.
+- **S2:** the refusal tested *different*, so after a restore it blamed "a later binding" when the binding
+  it read was earlier, and its advice sent the operator to a newer record.
+  - Now `boundBeforeRun` (earlier) and `reboundSince` (later) are separate. Only `datetime('now')`
+    writes `added_at`, and the check below holds records to the same fixed-width form, so string
+    order is time order.
+  - An earlier binding is named as a database from before the run, and the advice points to the older
+    run's record.
+  - Disposition and exit are unchanged.
+  - **So "undo the newest run first" holds unless the database was restored from a backup.** In that
+    case, use the record of the run the backup is from.
+- **G1/G2:** `checkUndoRecord` read neither `added_at` field, though `toAddedAt` decides a refusal and
+  `fromAddedAt` is written into the roster ordering column. Each must now be absent, `null`, or the
+  `YYYY-MM-DD HH:MM:SS` form. Absent and `null` stay legitimate, because they are records from before
+  each field existed.
+
+A clock that runs backwards also gives an earlier binding, and it would be named as a restore. Not
+engineered around.
+
 **Verification.** 17 tests. Negative controls, each applied to the working tree and reverted:
 drop the P3 half of the stamp → 2 fail; remove the `resolves-to-default` guard → 1 fails; remove
 the `unbind` so the default binding stays alongside the new one → 3 fail. Suite: server
