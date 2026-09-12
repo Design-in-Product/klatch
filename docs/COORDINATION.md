@@ -183,7 +183,53 @@ Agents working on this repo use this file as the async handoff protocol.
 
 ### Daedalus (architecture & implementation)
 - **Branch:** `claude/daedalus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/daedalus`; merges land on `main`)
-- **Status:** working — duty cycle armed and confirmed back after the 8/11 reboot (`launchctl`: `daedalus-{START,WORK,STOP}` loaded). Last fire 2026-09-11 17:17 STOP (Round 192 — Theseus's Round 191: the restore steps now print wherever the CLI names a backup, and an apply checkpoints so the file it leaves is the same whether or not the app is up; one dry run still needed from xian). **Second gap recorded, not explained:** the 9/6 MID and STOP fires ran (memos filed at 13:24 and 17:22, log sections present in `docs/logs/2026-09-06-0917-daedalus-opus-log.md`) but neither added an entry to this board — the newest entry below jumps from 9/6 START to 9/7 START. The work is recorded in the log and the mail; only the board entry is missing. Not backfilling from memory. **Naming note for future readers:** the 13:17 LaunchAgent is `daedalus-WORK`, but entries from 8/21 on label that slot MID. Same fire, two names; WORK ≡ MID for the 13:17 slot. Not renaming the agent mid-cycle. **Gap recorded, not explained:** no 13:17 entry exists for 9/2 — no MID section in `docs/logs/2026-09-02-0917-daedalus-opus-log.md` and no separate 13:17 file. I have no evidence of what happened in that slot.
+- **Status:** working — duty cycle armed and confirmed back after the 8/11 reboot (`launchctl`: `daedalus-{START,WORK,STOP}` loaded). Last fire 2026-09-12 09:17 START (Round 194 — Theseus's Round 193: step 4 of the restore steps now quotes the `Candidates:` line a correct restore will print, and the corruption arm is documented at its measured width of one write; the backfill's first real dry run is still the one item on this seat, still needs a path from xian). Prior fire 2026-09-11 17:17 STOP (Round 192 — Theseus's Round 191: the restore steps now print wherever the CLI names a backup, and an apply checkpoints so the file it leaves is the same whether or not the app is up; one dry run still needed from xian). **Second gap recorded, not explained:** the 9/6 MID and STOP fires ran (memos filed at 13:24 and 17:22, log sections present in `docs/logs/2026-09-06-0917-daedalus-opus-log.md`) but neither added an entry to this board — the newest entry below jumps from 9/6 START to 9/7 START. The work is recorded in the log and the mail; only the board entry is missing. Not backfilling from memory. **Naming note for future readers:** the 13:17 LaunchAgent is `daedalus-WORK`, but entries from 8/21 on label that slot MID. Same fire, two names; WORK ≡ MID for the 13:17 slot. Not renaming the agent mid-cycle. **Gap recorded, not explained:** no 13:17 entry exists for 9/2 — no MID section in `docs/logs/2026-09-02-0917-daedalus-opus-log.md` and no separate 13:17 file. I have no evidence of what happened in that slot.
+- **9/12 fire (START, 09:17 PT) — Round 194: step 4 checks itself, and H's width is one write, not 1,500.**
+  - **Input:** Theseus's Round 193. He reproduced Round 192 from his seat (**11 · 0 · 1 open · 7**,
+    K1/L1 pass, H1 open — my table exactly) and ran shape 1 as a *procedure*: the printed steps
+    pasted through `/bin/sh` on a path with a space **and** an apostrophe, exit 0, database back to
+    the backup row for row. He then named two things.
+  - **Reproduced first, unmodified, on `1cdb2b22`:** his R193 probe **14 · 0 failed · 2 open · 4**.
+    B11 `-wal` 32,992 B, B201 346,112 B — his numbers and Argus's sweep exactly.
+  - **His correction, adopted.** My commit said "H1 is unchanged." True, and it hid the point: the
+    1,500 messages Round 191 needed were an artifact of the bug, not a property of the arm. Pre-192
+    the only way to get frames on top of a main file that already held the run was to cross the
+    autocheckpoint. `checkpointAfterWrite()` removed that requirement along with the silent branch,
+    so the **first** frame anything else writes is enough — 1 message → 32,992 B → malformed, same
+    as 20, same as 1,500. The condition is *anything written since the run*, and step 1 is never a
+    long-session precaution. Corrected in `restoreInstructions()`'s prose, the CLI header, and the
+    scoping doc (amended, not rewritten). A unit test fails if "after further use" returns.
+  - **Built** (his item 1 — step 4 could check itself):
+    - `candidatesLine(plan)` exported from `entity-backfill.ts` — **one source** for the line the
+      CLI prints and the line step 4 quotes.
+    - `restoreInstructions(dbPath, backupPath, expectedCandidates?)` — step 4 now reads *its
+      `Candidates:` line should read, word for word:* followed by the line. A caller that can't
+      compute it gets the older comparison wording, never a guessed number.
+    - **The trap, and why this wasn't a one-liner:** step 4 says *re-run with no flags*, so the
+      quoted line must be the line a **no-flag** run produces — not this run's. They differ under
+      `--channels` (filtered form) and `--bases`. Quoting this run's own line tells the operator to
+      expect a string their correct restore can never produce. The CLI reuses this run's plan only
+      when it *is* the unflagged plan, else re-plans read-only before any write.
+    - **Undo is a third line again:** an undo's backup is the *post-apply* state, so its expectation
+      is computed **before** `undoEntityBackfill` and reused in the catch. Never fatal — a plan that
+      throws on a malformed database falls back to prose.
+    - The quote is indented past the numbered-step prefix, so the `^Candidates:` anchors every
+      reader of this output uses still find exactly one line.
+  - **Verified:** new probe `probe-round194-…mts` **14 · 0 failed · 0 open** (S/F/B/U arms, all four
+    printed lines distinct). Theseus's R193 probe against the change: 13 pass · 2 open, **Z failing
+    by design** (it asserts no product file differs from HEAD; this round changes three) — **his Q4
+    still passes**, which was the risk in the change. Server **1615 → 1621**, client 311 + 13
+    skipped unchanged, typecheck clean, CLI `tsc --strict` clean.
+  - **Negative controls: 5, each failing the test or arm predicted and nothing else** — and two
+    failed *more* than predicted (control 3 took U2 as well as U1; control 5, a single missing full
+    stop, took four arms). All reverted; probe re-run clean afterwards.
+  - **Not built:** his item 2, shape 3 (`--restore=<backup>`). His case for it got stronger — what it
+    replaces is a four-step hand procedure whose step 1 nothing can verify — but it is a new flag on
+    a tool that has not had its first real dry run. Named in the writeup, xian's call.
+  - **Mail:** `daedalus-to-theseus-cc-xian-argus-calliope-step-4-checks-itself-and-you-were-right-that-h-is-the-headline-2026-09-12.md`.
+    His R193 memo stays in `docs/mail/` until he verifies.
+  - **Still blocking, unchanged:** the backfill's first dry run against xian's real `klatch.db`, and
+    Round 170's frequency probe. Both need one path from xian; neither is touched by this round.
 - **9/11 fire (STOP, 17:17 PT) — Round 192: the restore steps travel with the backup, and an apply now ends the same way whether or not the app is up.**
   - **Input:** Theseus's Round 191. Three places named "restore the snapshot" as a way back from
     an apply and **none said how**. Done the way a person does it (`cp`) with the dev server up,
