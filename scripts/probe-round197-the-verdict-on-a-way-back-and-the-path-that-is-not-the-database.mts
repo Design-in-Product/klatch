@@ -1,0 +1,541 @@
+/**
+ * Round 197 — the verdict the new listing puts on a way back, and what the tool
+ * does when the path it is given is not the database.
+ *
+ * Round 196 (`d35b9b01`) closed Round 195's M2/M3/M4 and N2 by giving every arm
+ * that ends "this database cannot be read" a sentence, and by listing the
+ * `.backup-backfill-*` files actually beside the database **each with its own
+ * verdict**, under a printed rule: *"a snapshot taken after the damage is a copy
+ * of it, so newest is not the answer — take the newest one that reads as
+ * sound"*. Reproduced unmodified this fire: **21 · 0 failed · 0 open · 3**.
+ *
+ * That rule is now load-bearing: it is the sentence an operator follows at the
+ * moment they have a database that will not open. It rests entirely on
+ * `quickCheck()` (CLI `:386-409`) being able to tell a way back from something
+ * that is not one. Daedalus put the invariant in writing — *"a
+ * `.backup-backfill-*` file beside the database is never a known-bad copy"* —
+ * and asked to be told if it reads the other way. This round drives the verdict
+ * itself, at the files a half-finished copy actually leaves behind.
+ *
+ * Three things are driven, in the order an operator meets them:
+ *
+ *   P. The listing, with a **zero-length** `.backup-backfill-*` beside the
+ *      database — what a `cp` that died before it wrote anything leaves, and
+ *      what a `cp` onto a full disk leaves. Measured first, outside the CLI:
+ *      SQLite reads a 0-byte file as a valid empty database and `quick_check`
+ *      returns `ok`.
+ *   Q. The same listing at every other shape a failed copy leaves: a truncated
+ *      database, a text file, a directory, a file with no read permission.
+ *   R. The path itself. `klatch.db-wal` sits beside `klatch.db` and is one tab
+ *      away from it; `fileMustExist` is satisfied by anything on disk.
+ *   S. What the listing costs. Round 196's F4 measured `quick_check` on a 94KB
+ *      backup (12ms) and recorded the cost on a corpus the size of xian's as
+ *      **not measured**. It is measured here, and it is per file listed.
+ *
+ * Zero model calls. `klatch.db` is never opened: fixtures are Round 176's, built
+ * under `.testdata/r197/` (gitignored).
+ *
+ *   npx tsx scripts/probe-round197-the-verdict-on-a-way-back-and-the-path-that-is-not-the-database.mts
+ */
+
+import { execFileSync, spawnSync } from 'node:child_process';
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+import Database from 'better-sqlite3';
+
+const HERE = path.dirname(fileURLToPath(import.meta.url));
+const ROOT = path.resolve(HERE, '..');
+const DATA = path.join(ROOT, '.testdata', 'r197');
+const CLI = path.join(ROOT, 'scripts', 'backfill-entity-bindings.mts');
+const R176 = path.join(ROOT, 'scripts', 'probe-round176-backfill-cli-end-to-end.mts');
+
+type Result = { arm: string; name: string; ok: boolean | 'open'; detail: string };
+const checks: Result[] = [];
+const measurements: string[] = [];
+function check(arm: string, name: string, ok: boolean, detail: string): void {
+  checks.push({ arm, name, ok, detail });
+  console.log(`  [${ok ? 'PASS' : 'FAIL'}] ${arm} · ${name} — ${detail}`);
+}
+function open_(arm: string, name: string, detail: string): void {
+  checks.push({ arm, name, ok: 'open', detail });
+  console.log(`  [OPEN] ${arm} · ${name} — ${detail}`);
+}
+function meas(arm: string, detail: string): void {
+  measurements.push(`${arm}: ${detail}`);
+  console.log(`  [MEAS] ${arm}: ${detail}`);
+}
+
+/** Round 176's fixture, checkpointed so the main file holds all of it. */
+function build(dirName: string): string {
+  const dir = path.join(DATA, dirName);
+  fs.rmSync(dir, { recursive: true, force: true });
+  fs.mkdirSync(dir, { recursive: true });
+  fs.mkdirSync(path.join(ROOT, '.testdata', 'r176'), { recursive: true });
+  const db = path.join(dir, 'klatch.db');
+  execFileSync('npx', ['tsx', R176], {
+    cwd: ROOT,
+    env: { ...process.env, R176_ROLE: 'build', KLATCH_DB: db },
+    stdio: 'ignore',
+  });
+  const w = new Database(db, { fileMustExist: true });
+  w.pragma('wal_checkpoint(TRUNCATE)');
+  w.close();
+  return db;
+}
+
+function cli(args: string[]) {
+  const t0 = Date.now();
+  const r = spawnSync('npx', ['tsx', CLI, ...args], { cwd: ROOT, encoding: 'utf8' });
+  return { code: r.status ?? -1, out: (r.stdout ?? '') + (r.stderr ?? ''), ms: Date.now() - t0 };
+}
+
+const ownLine = (out: string) => /^Candidates:.*$/m.exec(out)?.[0] ?? '(none)';
+const quoted = (out: string) => /^ {4,}(Candidates:.*)$/m.exec(out)?.[1] ?? '(none)';
+const backupOf = (out: string) =>
+  /^Backup \(taken before anything was written\): (.+)$/m.exec(out)?.[1] ?? '';
+const firstLine = (out: string) =>
+  out
+    .split('\n')
+    .find((l) => l.trim() && !/Deprecation|trace-deprecation/.test(l))
+    ?.trim() ?? '(nothing)';
+const hasStack = (out: string) => /SqliteError|^\s+at [A-Za-z]/m.test(out);
+
+/**
+ * The verdict lines the CLI prints, read the way an operator reads them: each
+ * `.backup-backfill-*` name in printed order, with the word under it.
+ *
+ * Parsed from the block `waysBack()` prints (CLI `:421-443`) rather than
+ * re-derived, because the claim under test is what the operator is *told*, not
+ * what SQLite would say if asked again.
+ */
+function listing(out: string): Array<{ name: string; sound: boolean; why: string }> {
+  const lines = out.split('\n');
+  const start = lines.findIndex((l) => /^Backups beside this database, newest first/.test(l));
+  if (start < 0) return [];
+  const rows: Array<{ name: string; sound: boolean; why: string }> = [];
+  for (let i = start + 1; i < lines.length; i++) {
+    const name = /^ {2}(\S.*\.backup-backfill-\S*)$/.exec(lines[i]);
+    if (!name) continue;
+    const verdict = lines[i + 1] ?? '';
+    rows.push({
+      name: name[1].trim(),
+      sound: /SQLite reads it as sound/.test(verdict),
+      why: verdict.trim(),
+    });
+  }
+  return rows;
+}
+
+/** What a file holds, as a reader would find it. Handle closed on every path. */
+function holds(p: string): { ok: boolean; text: string; channels: number } {
+  if (!fs.existsSync(p)) return { ok: false, text: 'absent', channels: -1 };
+  let d: Database.Database | undefined;
+  try {
+    d = new Database(p, { readonly: true, fileMustExist: true });
+    const q = (d.pragma('quick_check(1)') as Array<Record<string, unknown>>)[0];
+    const verdict = String(Object.values(q)[0]);
+    let channels = -1;
+    try {
+      channels = (d.prepare('SELECT count(*) n FROM channels').get() as { n: number }).n;
+    } catch {
+      channels = -1;
+    }
+    return {
+      ok: verdict === 'ok',
+      text: `quick_check ${verdict.split('\n').filter((l) => !/^\*{3}/.test(l))[0] ?? verdict} (channels ${channels})`,
+      channels,
+    };
+  } catch (err) {
+    return { ok: false, text: `READ FAILED: ${(err as Error).message}`, channels: -1 };
+  } finally {
+    try {
+      d?.close();
+    } catch {
+      /* a handle that will not close is still better closed-attempted than leaked */
+    }
+  }
+}
+
+/** A writer that exits without closing its handle — the WAL survives it. */
+function writeOneMessage(db: string): void {
+  const r = spawnSync(
+    'node',
+    [
+      '-e',
+      `const D=require('better-sqlite3');const d=new D(process.argv[1]);d.pragma('journal_mode=WAL');` +
+        `d.prepare("INSERT INTO messages (id, channel_id, role, content, status, created_at) ` +
+        `VALUES (?, (SELECT id FROM channels LIMIT 1), 'user', ?, 'complete', datetime('now'))")` +
+        `.run('r197-'+Date.now(), 'x'.repeat(3000));process.exit(0);`,
+      db,
+    ],
+    { cwd: ROOT, encoding: 'utf8' }
+  );
+  if (r.status !== 0) throw new Error(`fixture writer failed: ${r.stderr}`);
+}
+
+/** Steps 2 and 3 of the printed restore, done right. */
+function restoreByHand(db: string, backup: string): boolean {
+  if (!backup || !fs.existsSync(backup)) return false;
+  fs.rmSync(`${db}-wal`, { force: true });
+  fs.rmSync(`${db}-shm`, { force: true });
+  fs.copyFileSync(backup, db);
+  return true;
+}
+
+/** A `.backup-backfill-*` name stamped later than every one already there. */
+function laterStamp(db: string, minutesLater: number): string {
+  const stamp = new Date(Date.now() + minutesLater * 60_000).toISOString().replace(/[:.]/g, '-');
+  return `${db}.backup-backfill-${stamp}`;
+}
+
+const sizeOf = (p: string): number | 'absent' => (fs.existsSync(p) ? fs.statSync(p).size : 'absent');
+
+console.log(
+  '=== Round 197 — the verdict on a way back, and the path that is not the database ===\n'
+);
+
+// ── Arm P — a copy that died before it wrote anything ────────────────────────
+console.log('Arm P — the listing, with a zero-length .backup-backfill-* beside the database');
+{
+  const db = build('p');
+  const preApply = cli([db]);
+  const applied = cli([db, '--apply']);
+  const goodBackup = backupOf(applied.out);
+  writeOneMessage(db);
+  fs.copyFileSync(goodBackup, db); // step 3 with step 2 skipped — Round 191's H
+  // What a `cp` that died in its first instant leaves: the destination is
+  // created and truncated before a byte of the source is read. A full disk
+  // leaves the same file. Stamped later than the apply's own backup, because
+  // that is the order these happen in: the good backup first, the failed rescue
+  // copy second.
+  const empty = laterStamp(db, 1);
+  fs.writeFileSync(empty, '');
+  const corrupt = holds(db);
+  check(
+    'P0',
+    'setup: the naive copy leaves a malformed database, with two .backup-backfill-* files beside it',
+    !corrupt.ok && fs.existsSync(empty) && sizeOf(empty) === 0,
+    `db: ${corrupt.text} · ${path.basename(goodBackup)} ${sizeOf(goodBackup)} B · ${path.basename(empty)} ${sizeOf(empty)} B`
+  );
+
+  const dry = cli([db]); // step 4's own command
+  const rows = listing(dry.out);
+  const emptyRow = rows.find((r) => r.name === path.basename(empty));
+  check(
+    'P1',
+    'the refusal still answers in a sentence and lists both files',
+    dry.code === 1 && !hasStack(dry.out) && rows.length === 2,
+    `exit ${dry.code} · stack ${hasStack(dry.out)} · listed ${rows.length} · first line: "${firstLine(dry.out)}"`
+  );
+  open_(
+    'P2',
+    'the zero-length file is listed as a way back that SQLite "reads as sound"',
+    `${path.basename(empty)} → "${emptyRow?.why ?? '(not listed)'}" · the file is ${sizeOf(empty)} bytes`
+  );
+  const firstSound = rows.find((r) => r.sound);
+  open_(
+    'P3',
+    "the tool's own rule — take the newest one that reads as sound — points at that file",
+    `printed order: ${rows.map((r) => `${r.name.replace(/^klatch\.db\./, '')}=${r.sound ? 'sound' : 'unreadable'}`).join(', ')} · ` +
+      `newest sound: ${firstSound ? path.basename(firstSound.name) : '(none)'} · ` +
+      `is the empty one: ${firstSound?.name === path.basename(empty)}`
+  );
+
+  // Follow the rule literally, with the file it points at.
+  restoreByHand(db, empty);
+  const afterEmpty = holds(db);
+  open_(
+    'P4',
+    'following that rule replaces the database with an empty one, and SQLite calls the result sound',
+    `after the four steps: ${afterEmpty.text} · db size ${sizeOf(db)} B · the corpus was ${corrupt.channels < 0 ? 'unreadable' : corrupt.channels} channels, the backup holds ${holds(goodBackup).channels}`
+  );
+
+  // The mitigation, driven rather than assumed: step 4 exists to tell the
+  // operator whether the restore worked, and this is the case it has to catch.
+  const after = cli([db]);
+  check(
+    'P5',
+    "step 4's check does catch it: the line it prints does not match the line the apply quoted",
+    after.code === 0 && ownLine(after.out) !== quoted(applied.out),
+    `after the empty restore "${ownLine(after.out)}" · quoted "${quoted(applied.out)}" · exit ${after.code}`
+  );
+  check(
+    'P6',
+    'control: the real backup is untouched by all of this and still restores the corpus',
+    (() => {
+      restoreByHand(db, goodBackup);
+      const h = holds(db);
+      const back = cli([db]);
+      return h.ok && ownLine(back.out) === quoted(applied.out);
+    })(),
+    `${path.basename(goodBackup)} → ${holds(db).text} · pre-apply line was "${ownLine(preApply.out)}"`
+  );
+  meas(
+    'P',
+    `a 0-byte file is a valid empty SQLite database: quick_check returns "ok" on it, ` +
+      `integrity_check returns "ok" on it, and the CLI's own quickCheck() (:386-409) reports the ` +
+      `same. Every other shape a failed copy leaves is caught — see arm Q.`
+  );
+}
+
+// ── Arm Q — the other shapes a failed copy leaves ────────────────────────────
+console.log('\nArm Q — the listing at every other shape a half-finished copy leaves');
+{
+  const db = build('q');
+  const applied = cli([db, '--apply']);
+  const goodBackup = backupOf(applied.out);
+  const good = fs.readFileSync(goodBackup);
+  writeOneMessage(db);
+  fs.copyFileSync(goodBackup, db);
+
+  const made: Array<{ label: string; file: string }> = [];
+  const add = (label: string, minutes: number, make: (p: string) => void) => {
+    const p = laterStamp(db, minutes);
+    make(p);
+    made.push({ label, file: path.basename(p) });
+    return p;
+  };
+  add('truncated at a page boundary', 1, (p) =>
+    fs.writeFileSync(p, good.subarray(0, Math.floor(good.length / 2 / 4096) * 4096))
+  );
+  add('a text file', 2, (p) => fs.writeFileSync(p, 'not a database, just what was in the buffer\n'));
+  add('a directory', 3, (p) => fs.mkdirSync(p));
+  const noperm = add('no read permission', 4, (p) => {
+    fs.writeFileSync(p, good);
+    fs.chmodSync(p, 0o000);
+  });
+  add('zero length', 5, (p) => fs.writeFileSync(p, ''));
+
+  const dry = cli([db]);
+  const rows = listing(dry.out);
+  const byName = new Map(rows.map((r) => [r.name, r]));
+  check(
+    'Q1',
+    'the refusal survives all of them: a sentence, no stack, exit 1, and every file named',
+    dry.code === 1 &&
+      !hasStack(dry.out) &&
+      made.every((m) => byName.has(m.file)) &&
+      byName.has(path.basename(goodBackup)),
+    `exit ${dry.code} · stack ${hasStack(dry.out)} · listed ${rows.length} of ${made.length + 1} · first line: "${firstLine(dry.out)}"`
+  );
+  const wrong = made.filter((m) => byName.get(m.file)?.sound);
+  check(
+    'Q2',
+    'a truncated database, a text file and a directory are each refused as a way back',
+    ['truncated at a page boundary', 'a text file', 'a directory'].every(
+      (l) => byName.get(made.find((m) => m.label === l)!.file)?.sound === false
+    ),
+    made
+      .filter((m) => m.label !== 'zero length')
+      .map((m) => `${m.label} → ${byName.get(m.file)?.sound ? 'SOUND' : 'refused'}`)
+      .join(' · ')
+  );
+  check(
+    'Q3',
+    'the one the apply actually took is still marked sound, so the listing is not simply pessimistic',
+    byName.get(path.basename(goodBackup))?.sound === true,
+    `${path.basename(goodBackup)} → "${byName.get(path.basename(goodBackup))?.why}"`
+  );
+  open_(
+    'Q4',
+    'zero length is the one shape that gets through, and it is the only one that was already reported as sound',
+    `files the listing calls sound that are not a way back: ${wrong.length} (${wrong.map((w) => w.label).join(', ') || 'none'})`
+  );
+  meas(
+    'Q',
+    `verdict wording per shape: ` +
+      made.map((m) => `${m.label} → "${byName.get(m.file)?.why ?? '(not listed)'}"`).join(' | ')
+  );
+  meas(
+    'Q5',
+    `a file with no read permission reports "${byName.get(path.basename(noperm))?.why ?? '(not listed)'}" — ` +
+      `the same wording a missing file gets, and nothing about permissions. The remedy (chmod) is ` +
+      `different from the remedy for a damaged file, and the operator is not pointed at it.`
+  );
+  fs.chmodSync(noperm, 0o600); // leave the fixture removable
+}
+
+// ── Arm R — the path given is not the database ───────────────────────────────
+console.log('\nArm R — the path is one tab away: klatch.db-wal, and a file that is not a database');
+{
+  const db = build('r');
+  writeOneMessage(db); // leave a real -wal beside a real database
+  const wal = `${db}-wal`;
+  const walBefore = sizeOf(wal);
+  const dbBefore = holds(db);
+  check(
+    'R0',
+    'setup: a real database with a real -wal sitting beside it',
+    dbBefore.ok && typeof walBefore === 'number' && walBefore > 0,
+    `db ${dbBefore.text} · ${path.basename(wal)} ${walBefore} B`
+  );
+
+  const dryWal = cli([wal]);
+  const thrown = /^\s*(\w*Error: .*)$/m.exec(dryWal.out)?.[1] ?? '(no error line)';
+  open_(
+    'R1',
+    "the dry run aimed at klatch.db-wal answers with a Node stack, not this script's voice",
+    `exit ${dryWal.code} · stack ${hasStack(dryWal.out)} · "${thrown}" · ` +
+      `thrown from ${/(better-sqlite3\/lib\/methods\/\w+\.js:\d+)/.exec(dryWal.out)?.[1] ?? '(unknown)'}, ` +
+      `reached from the CLI's own source.backup() at :454-456 — above the try that unreadable() ` +
+      `is the catch for · any of the script's own voice: ${/^(no such database|Candidates:|Dry run|cannot )/m.test(dryWal.out)}`
+  );
+  const applyWal = cli([wal, '--apply']);
+  const walAfter = sizeOf(wal);
+  const dbAfter = holds(db);
+  check(
+    'R2',
+    '--apply aimed at klatch.db-wal writes nothing into it and leaves the real database readable',
+    walAfter === walBefore && dbAfter.ok && dbAfter.channels === dbBefore.channels,
+    `exit ${applyWal.code} · ${path.basename(wal)} ${walBefore} → ${walAfter} B · db after: ${dbAfter.text} · ` +
+      `no data harm; the failure is the voice · first line: "${firstLine(applyWal.out)}"`
+  );
+
+  // The other half of the same slip: a path that exists and is empty. `cp`
+  // creates one; so does a shell redirect; so does `touch`.
+  const typo = path.join(path.dirname(db), 'klatch.db.bak');
+  fs.writeFileSync(typo, '');
+  const tablesIn = (p: string): number => {
+    try {
+      const d = new Database(p, { readonly: true, fileMustExist: true });
+      const n = (
+        d.prepare("SELECT count(*) n FROM sqlite_master WHERE type='table'").get() as { n: number }
+      ).n;
+      d.close();
+      return n;
+    } catch {
+      return -1;
+    }
+  };
+  const dryTypo = cli([typo]);
+  const afterDry = { size: sizeOf(typo), tables: tablesIn(typo) };
+  const applyTypo = cli([typo, '--apply']);
+  const afterApply = { size: sizeOf(typo), tables: tablesIn(typo) };
+  open_(
+    'R3',
+    'aimed at an empty file, the tool reports a clean run over a corpus that does not exist',
+    `dry run exit ${dryTypo.code} ("${ownLine(dryTypo.out)}") · --apply exit ${applyTypo.code} ("${ownLine(applyTypo.out)}") · ` +
+      `no refusal, no warning that this file holds nothing`
+  );
+  // The first cut of this arm asserted `tables === -1` for the untouched file,
+  // reading "not a database" into a 0-byte one. It is a *valid empty* database
+  // — the same fact arm P is about — so it opens, and reports 0 tables. The
+  // check the arm was for is the size and the schema: both unchanged by the dry
+  // run, both changed by the apply.
+  check(
+    'R4',
+    'the dry run itself leaves the file it was pointed at alone (its snapshot is the read surface)',
+    afterDry.size === 0 && afterDry.tables === 0 && afterApply.tables > 0,
+    `after the dry run: ${path.basename(typo)} ${afterDry.size} B, ${afterDry.tables} tables · ` +
+      `after --apply: ${afterApply.size} B, ${afterApply.tables} tables, ${holds(typo).channels} channels — ` +
+      `the apply is what builds a Klatch schema in it`
+  );
+  meas(
+    'R',
+    `the guard at CLI :246 is fs.existsSync — it separates "no such database" from everything else, ` +
+      `and anything on disk satisfies it. What decides the rest is whether SQLite will open the ` +
+      `file, and it opens an empty one.`
+  );
+}
+
+// ── Arm S — what the listing costs, per file, at size ────────────────────────
+console.log("\nArm S — Round 196's F4, measured at size: quick_check is O(db), once per file listed");
+{
+  const dir = path.join(DATA, 's');
+  fs.rmSync(dir, { recursive: true, force: true });
+  fs.mkdirSync(dir, { recursive: true });
+  const base = build('s-src');
+  const grow = (target: number, name: string): string => {
+    const p = path.join(dir, name);
+    fs.copyFileSync(base, p);
+    const d = new Database(p, { fileMustExist: true });
+    d.pragma('journal_mode=DELETE');
+    const ch = (d.prepare('SELECT id FROM channels LIMIT 1').get() as { id: string }).id;
+    const ins = d.prepare(
+      "INSERT INTO messages (id, channel_id, role, content, status, created_at) VALUES (?, ?, 'user', ?, 'complete', datetime('now'))"
+    );
+    const body = 'x'.repeat(2000);
+    const batch = d.transaction((n: number) => {
+      for (let i = 0; i < n; i++) ins.run(`r197-${name}-${i}-${Math.random()}`, ch, body);
+    });
+    // Small batches: the first cut inserted 2,000 rows (~4MB) at a time, so the
+    // 1MB and 8MB rungs both landed at 8MB and the ladder's bottom two points
+    // were the same file measured twice. Two equal sizes timed 3ms and 2ms, and
+    // a monotonicity check over them was checking scheduler noise.
+    while (fs.statSync(p).size < target) batch(250);
+    d.close();
+    return p;
+  };
+  const timeQuickCheck = (p: string): number => {
+    const t0 = Date.now();
+    const d = new Database(p, { readonly: true, fileMustExist: true });
+    d.pragma('quick_check(1)');
+    d.close();
+    return Date.now() - t0;
+  };
+  const points: Array<{ mb: number; ms: number }> = [];
+  for (const mb of [8, 24, 64]) {
+    const p = grow(mb * 1024 * 1024, `size-${mb}mb.db`);
+    const ms = Math.min(timeQuickCheck(p), timeQuickCheck(p)); // warm, best of two
+    points.push({ mb: +(fs.statSync(p).size / 1024 / 1024).toFixed(1), ms });
+  }
+  meas(
+    'S1',
+    `quick_check, best of two warm runs: ` +
+      points.map((p) => `${p.mb}MB → ${p.ms}ms`).join(' · ') +
+      ` — roughly ${(points[points.length - 1].ms / points[points.length - 1].mb).toFixed(1)}ms per MB on this machine, warm cache`
+  );
+  const perMb = points[points.length - 1].ms / points[points.length - 1].mb;
+  check(
+    'S2',
+    'the cost is linear enough in file size to extrapolate a refusal on a large corpus',
+    points.every((p, i) => i === 0 || p.ms >= points[i - 1].ms),
+    `${points.map((p) => `${p.mb}MB=${p.ms}ms`).join(' ')} · a refusal listing N backups pays this N+1 times ` +
+      `(N listed, plus the database itself)`
+  );
+  meas(
+    'S3',
+    `extrapolated from ${perMb.toFixed(1)}ms/MB: one 500MB database with 3 backups beside it is ` +
+      `~${Math.round((perMb * 500 * 4) / 1000)}s of quick_check before the refusal prints. ` +
+      `Cold cache is not measured, and is the case that matters (a refusal arrives when something ` +
+      `has just gone wrong, not in a loop).`
+  );
+}
+
+// ── Arm Z — files changed ────────────────────────────────────────────────────
+console.log('\nArm Z — files changed');
+{
+  const changed = spawnSync('git', ['status', '--porcelain', 'packages', 'scripts'], {
+    cwd: ROOT,
+    encoding: 'utf8',
+  }).stdout.trim();
+  // Probes are this round's own instruments, not the thing under test — this
+  // fire re-vehicles Round 195's as well. What Z is for is the CLI and
+  // `packages/`: a measurement taken against edited product is not a
+  // measurement of what is on `main`.
+  const offenders = changed
+    .split('\n')
+    .filter((l) => l.trim() && !/scripts\/probe-round\d+-/.test(l))
+    .join('; ');
+  check('Z', 'no product or CLI file differs from HEAD', offenders === '', offenders || 'clean');
+}
+
+const passed = checks.filter((c) => c.ok === true).length;
+const failed = checks.filter((c) => c.ok === false);
+const open = checks.filter((c) => c.ok === 'open');
+console.log('\n' + '='.repeat(78));
+console.log(
+  `${checks.length} checks · ${failed.length} failed · ${open.length} open · ${measurements.length} measurements`
+);
+if (failed.length) {
+  console.log('\nFAILED:');
+  for (const f of failed) console.log(`  ${f.arm} · ${f.name}\n    ${f.detail}`);
+}
+if (open.length) {
+  console.log('\nOPEN:');
+  for (const o of open) console.log(`  ${o.arm} · ${o.name}`);
+}
+console.log('='.repeat(78));
+void passed;
+process.exit(failed.length ? 1 : 0);

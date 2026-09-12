@@ -248,14 +248,34 @@ console.log(
   const dry = cli([db]);
   const tmpAfter = tmpSnapshots();
   const hasStack = /SqliteError|at runMigrations|at planEntityBackfill/.test(dry.out);
-  open_(
+  // Re-vehicled after Round 196 (`d35b9b01`), which closed this. It was an
+  // `open_` reporting a Node stack; it is now a check on the sentence that
+  // replaced it, so this file is a regression suite rather than a report.
+  //
+  // The voice detector is widened, because Daedalus is right that the old one
+  // (`no such database|Candidates:|Dry run`) named three phrases that all
+  // predate the fix — it would have scored the new sentence as an absence of
+  // voice. `cannot read this database:` is the sentence under test, asserted
+  // with the path in it, and the stack is asserted absent rather than present.
+  const firstLine = (out: string) =>
+    out
+      .split('\n')
+      .find((l) => l.trim() && !/Deprecation|trace-deprecation/.test(l))
+      ?.trim() ?? '(nothing)';
+  const voice = (out: string) =>
+    /^(no such database|Candidates:|Dry run|cannot read this database|cannot use this database|cannot back up this database)/m.test(
+      out
+    );
+  check(
     'M2',
-    "step 4's own command on a malformed database answers with a Node stack trace, not a sentence",
+    "step 4's own command on a malformed database answers in a sentence, names the fault, and does not take Node's stack with it",
+    dry.code === 1 &&
+      !hasStack &&
+      voice(dry.out) &&
+      firstLine(dry.out) === `cannot read this database: ${db}` &&
+      /SQLite reads it as damaged:/.test(dry.out),
     `exit ${dry.code} · stack trace: ${hasStack} · the script's own voice anywhere in the output: ` +
-      `${/^(no such database|Candidates:|Dry run)/m.test(dry.out)} · first line: "${dry.out
-        .split('\n')
-        .find((l) => l.trim() && !/Deprecation|trace-deprecation/.test(l))
-        ?.trim()}"`
+      `${voice(dry.out)} · first line: "${firstLine(dry.out)}"`
   );
   meas(
     'M2',
@@ -270,29 +290,54 @@ console.log(
   const afterApply = snapshotsBeside(db);
   const orphan = afterApply.filter((f) => f !== path.basename(goodBackup));
   const orphanHolds = orphan.length ? holds(path.join(path.dirname(db), orphan[0])) : { ok: false, text: 'none' };
-  open_(
+  // Re-vehicled: the refusal, and the snapshot count that goes with it. The
+  // count is the load-bearing half — the header's rule is "every refusal …
+  // disposes of its snapshot", and a second `.backup-backfill-*` differing from
+  // the first only by timestamp is what made M6/M7 hard to read.
+  check(
     'M3',
-    'a second --apply on the malformed database crashes the same way and leaves its snapshot behind',
+    'a second --apply on the malformed database refuses in a sentence and leaves no new snapshot beside the database',
+    ap.code === 1 &&
+      !/SqliteError|at runMigrations/.test(ap.out) &&
+      afterApply.length === before &&
+      voice(ap.out),
     `exit ${ap.code} · stack trace: ${/SqliteError|at runMigrations/.test(ap.out)} · ` +
       `.backup-backfill-* beside the database ${before} → ${afterApply.length} · ` +
-      `the new one holds: ${orphanHolds.text} · the header's rule is "every refusal … disposes of its snapshot"`
+      `the new one holds: ${orphanHolds.text} · first line: "${firstLine(ap.out)}"`
   );
 
   // 3 — --undo, which the CLI header calls one of "two independent ways back".
   const un = cli([db, `--undo=${record}`]);
   const named = intactOf(un.out) || backupOf(un.out);
   const namedHolds = holds(named);
-  open_(
+  // Re-vehicled, and this is the one to read closely: the fix is that **no file
+  // is named as a way back at all** on this arm, because the refusal happens
+  // before anything is written. So the assertion is the absence of a named
+  // backup *plus* the presence of the refusal — an absence alone would also be
+  // satisfied by the script printing nothing.
+  check(
     'M4',
-    'the undo names its own fresh snapshot as the backup that is "intact" — and that file is malformed',
+    'the undo names no unreadable file as a way back: it refuses before it can take a snapshot to call intact',
+    un.code === 1 && named === '' && !namedHolds.ok && voice(un.out) && afterApply.length === before,
     `exit ${un.code} · named "${path.basename(named)}" · it holds: ${namedHolds.text} · ` +
-      `the four steps printed below it copy that file over the database`
+      `first line: "${firstLine(un.out)}"`
   );
+  // M5 drove Daedalus's "never fatal" claim about `unflaggedCandidates()` — on a
+  // malformed database the plan throws, the catch fires, and step 4 prints prose
+  // rather than a guessed line. Round 196 removed the arm: the undo refuses
+  // before it prints any steps, so **neither** wording appears. Its failure was
+  // the fix, which is not a thing a check can say, so the check is re-aimed at
+  // what replaced it. The fallback stays in the code for plans that throw for
+  // other reasons; it is no longer reachable *here*.
   check(
     'M5',
-    'step 4 falls back to prose rather than a guessed line when the plan cannot be computed (Daedalus\'s claim, driven)',
-    !/word for word/.test(un.out) && /should read as it did before the run/.test(un.out),
-    `step 4 wording: ${/word for word/.test(un.out) ? 'QUOTED' : 'prose fallback'} · never fatal: the run reached its own error path`
+    'Round 196 removed this arm rather than fixing its wording: the undo prints no restore steps at all now, quoted or prose',
+    !/word for word/.test(un.out) &&
+      !/should read as it did before the run/.test(un.out) &&
+      !/^ {2}1\. /m.test(un.out) &&
+      /Nothing was written/.test(un.out),
+    `step 4 wording: ${/word for word/.test(un.out) ? 'QUOTED' : /should read as it did before the run/.test(un.out) ? 'prose fallback' : 'neither — no steps printed'} · ` +
+      `"Nothing was written": ${/Nothing was written/.test(un.out)}`
   );
   check(
     'M6',
@@ -302,8 +347,9 @@ console.log(
   );
   meas(
     'M4',
-    `after this sequence ${snapshotsBeside(db).length} .backup-backfill-* files sit beside the database, ` +
-      `and the one the tool last pointed at is ${namedHolds.ok ? 'readable' : 'NOT readable'}: ` +
+    `after this sequence ${snapshotsBeside(db).length} .backup-backfill-* files sit beside the database ` +
+      `(before Round 196 it was 3, two of them unreadable copies of the damage), and the tool now names ` +
+      `${named === '' ? 'none of them as intact' : `"${path.basename(named)}"`}: ` +
       JSON.stringify(snapshotsBeside(db))
   );
 
