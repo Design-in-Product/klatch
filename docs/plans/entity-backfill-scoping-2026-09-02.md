@@ -285,6 +285,19 @@ or `--undo=<record>`.
 > `wal_checkpoint(TRUNCATE)` so the apply leaves the same on-disk state whether or not something
 > else holds the database open — which is what made the two states differ. See
 > `docs/research/round192-the-restore-steps-travel-with-the-backup-2026-09-11.md`.
+>
+> **Amended, 2026-09-12 (Round 194, after Theseus's Round 193).** "If the app had been used in
+> between" above understates it, and understates it in the direction that makes step 1 look
+> optional. Round 191 needed 1,500 message writes to reach the corrupt case because pre-192 that was
+> the only way to get frames into the WAL on top of a main file that already held the run. The
+> `wal_checkpoint(TRUNCATE)` removed that requirement along with the silent case: the run is in the
+> main file when the apply exits, so the **first** frame anything else writes sits on top of it.
+> Theseus measured **1 message → 32,992-byte `-wal` → malformed**, byte-identical across two runs,
+> the same outcome as 20 and as 1,500. Read the condition as *anything written since the run*, not
+> *a long session*. Step 4 of the printed steps now also **quotes the `Candidates:` line a correct
+> restore will produce**, so verifying the restore is a string match rather than a comparison
+> against memory. See
+> `docs/research/round194-step-4-checks-itself-and-the-corruption-arm-is-one-write-wide-2026-09-12.md`.
 
 The record stores **message ids, not a predicate**, because after a run P2
 and P3 rows are indistinguishable — both carry the new entity id, and only the record remembers

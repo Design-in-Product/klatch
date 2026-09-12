@@ -90,17 +90,63 @@ function shellQuote(p: string): string {
  * undo logic and reachable by the unit tests — rather than in three copies in
  * the CLI, which is the drift Round 169 ruled on one level up. The prefix of
  * each numbered line is what a caller may rely on; the prose is not.
+ *
+ * **How wide the corruption arm is, measured** (Theseus's Round 193). Round 191
+ * needed 1,500 message writes to reach it, and the prose here said "after
+ * further use", which reads like a condition about long sessions. It isn't —
+ * and the reason it isn't is `checkpointAfterWrite()`, one level up. Pre-192 the
+ * only way to get frames into the WAL *on top of* a main file that already held
+ * the run was to cross SQLite's autocheckpoint, hence 1,500. Post-192 the run is
+ * in the main file when the apply exits, so the **first** frame anything else
+ * writes already sits on top of it: 1 message → 32,992-byte `-wal` → malformed,
+ * the same as 20 and the same as 1,500. Step 1 is therefore never a precaution.
+ *
+ * `expectedCandidates`, when the caller knows it, turns step 4 from a comparison
+ * against memory into a string match — see the CLI's `unflaggedCandidates`.
+ * Callers that cannot compute it get the older wording rather than a wrong line.
  */
-export function restoreInstructions(dbPath: string, backupPath: string): string {
+export function restoreInstructions(
+  dbPath: string,
+  backupPath: string,
+  expectedCandidates?: string
+): string {
+  // Indented past the numbered-step prefix on purpose. Every reader of this
+  // tool's output that looks for the run's own summary anchors on a
+  // `Candidates:` at column 0 (`probe-round193`'s `candidatesLine`, and the
+  // tests here); an echo at column 0 would be a second one of those.
+  const step4 = expectedCandidates
+    ? 're-run this script with no flags. Its `Candidates:` line should read, word for word:\n' +
+      `       ${expectedCandidates}`
+    : 're-run this script with no flags: the `Candidates:` line should read as it did before the run';
   return (
     'To put that file back by hand, stop the app and delete the sidecars first. A plain copy while\n' +
     'something still holds the database open restores nothing — the app goes on reading the run — and\n' +
-    'after further use it can leave a database SQLite calls malformed (Theseus\'s Round 191):\n' +
+    'one message written since the run is enough to leave a database SQLite calls malformed\n' +
+    "(Theseus's Rounds 191 and 193):\n" +
     '  1. stop `npm run dev`, and anything else holding this database open\n' +
     `  2. rm -f ${shellQuote(dbPath + '-wal')} ${shellQuote(dbPath + '-shm')}\n` +
     `  3. cp ${shellQuote(backupPath)} ${shellQuote(dbPath)}\n` +
-    '  4. re-run this script with no flags: the `Candidates:` line should read as it did before the run'
+    `  4. ${step4}`
   );
+}
+
+/**
+ * The run's one-line verdict, as the CLI prints it and as step 4 above quotes it.
+ *
+ * One source for both, because step 4's whole value is that the two strings can
+ * be compared character by character. Two format strings that agree today is
+ * exactly the drift Round 169 ruled on: the copies do not diverge loudly, they
+ * diverge into an instruction that tells an operator a correct restore failed.
+ *
+ * The filtered and unfiltered forms differ because `Candidates: 0` and
+ * `Candidates: 0 of 72` are different facts — see `BackfillFilterReport`.
+ */
+export function candidatesLine(plan: BackfillPlan): string {
+  const { candidates, inScope, apply, skipped } = plan.summary;
+  return plan.filter
+    ? `Candidates: ${candidates} of ${inScope} in scope matched your --channels filter — ` +
+        `${apply} would move, ${skipped} skipped.`
+    : `Candidates: ${candidates} — ${apply} would move, ${skipped} skipped.`;
 }
 
 export type BackfillAction =

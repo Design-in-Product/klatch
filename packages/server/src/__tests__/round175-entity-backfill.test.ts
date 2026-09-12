@@ -21,6 +21,7 @@ import {
   planEntityUndo,
   checkUndoRecord,
   restoreInstructions,
+  candidatesLine,
   type BackfillUndoRecord,
 } from '../db/entity-backfill.js';
 import { getChannelEntities, getEntityTranscript, getAllEntities } from '../db/queries.js';
@@ -1115,5 +1116,96 @@ describe('Round 192 — the restore steps that go with every backup path (Theseu
     const text = restoreInstructions(DB, BACKUP);
     expect(text).toMatch(/restores nothing/);
     expect(text).toMatch(/malformed/);
+  });
+
+  /**
+   * Theseus's Round 193: with Round 192's checkpoint in, one message of app use
+   * after the apply is enough to make a hand `cp` malformed — 1, 20 and 1,500
+   * all end the same way. The old prose said "after further use", which reads as
+   * a condition about long sessions and let step 1 look optional.
+   */
+  it('names one message, not a long session, as what makes the copy dangerous', () => {
+    const text = restoreInstructions(DB, BACKUP);
+    expect(text).toMatch(/one message/);
+    expect(text).not.toMatch(/after further use/);
+  });
+});
+
+describe('Round 194 — step 4 checks itself (Theseus R193)', () => {
+  const DB = '/Users/xian/Development/klatch/klatch.db';
+  const BACKUP = `${DB}.backup-backfill-2026-09-11T17-30-00-000Z`;
+  const EXPECTED = 'Candidates: 8 — 4 would move, 4 skipped.';
+
+  /**
+   * The point of the round: step 4 used to ask the operator to compare a line
+   * against one printed ~100 lines earlier, or remembered. That is the one step
+   * in the procedure a person can get wrong while doing everything right.
+   */
+  it('quotes the line a correct restore will print, when the caller knows it', () => {
+    const text = restoreInstructions(DB, BACKUP, EXPECTED);
+    expect(text).toContain(EXPECTED);
+    const step4 = text.split('\n').find((l) => l.trim().startsWith('4. '))!;
+    expect(step4).toContain('word for word');
+    // Still four numbered steps: the quote is a continuation line, not a step 5.
+    const steps = text.split('\n').filter((l) => /^ {2}\d\. /.test(l));
+    expect(steps.map((l) => l.trim().slice(0, 3))).toEqual(['1. ', '2. ', '3. ', '4. ']);
+  });
+
+  /**
+   * Every reader of this tool's output that wants the run's own verdict anchors
+   * on a `Candidates:` at column 0 — the tests here and `probe-round193`'s
+   * `candidatesLine`. An echo at column 0 would be a second one of those, and
+   * the probes that match it unanchored would start reading whichever came
+   * first. Indentation is what keeps this a quote rather than a claim.
+   */
+  it('indents the quote so it is not a second column-0 Candidates line', () => {
+    const text = restoreInstructions(DB, BACKUP, EXPECTED);
+    expect(text.split('\n').filter((l) => /^Candidates:/.test(l))).toEqual([]);
+    const quote = text.split('\n').find((l) => l.includes(EXPECTED))!;
+    expect(quote).toMatch(/^ {4,}Candidates:/);
+  });
+
+  /**
+   * A caller that cannot compute the line — the malformed-database arm, where
+   * planning throws and these steps matter most — must get the older wording,
+   * never a guessed number.
+   */
+  it('falls back to the comparison wording when the line is not known', () => {
+    const text = restoreInstructions(DB, BACKUP);
+    expect(text).toContain('should read as it did before the run');
+    expect(text).not.toContain('word for word');
+  });
+
+  it('builds the quoted line from the same source the run prints', () => {
+    seedImportedChannel({ id: 'c1', opener: 'You are Daedalus, the architect.' });
+    seedImportedChannel({ id: 'c2', opener: 'Fix the flaky test in the sidebar.' });
+
+    const plan = planEntityBackfill();
+    expect(candidatesLine(plan)).toBe(
+      `Candidates: ${plan.summary.candidates} — ${plan.summary.apply} would move, ` +
+        `${plan.summary.skipped} skipped.`
+    );
+    expect(restoreInstructions(DB, BACKUP, candidatesLine(plan))).toContain(candidatesLine(plan));
+  });
+
+  /**
+   * `Candidates: 0` and `Candidates: 0 of 72` are different facts (Round 176
+   * G2). The filtered form has to survive being routed through one function,
+   * because step 4 tells the operator to re-run with **no** flags — the CLI is
+   * responsible for not quoting a filtered line there, and it can only get that
+   * right if the two forms stay distinguishable here.
+   */
+  it('keeps the filtered form distinct from the unfiltered one', () => {
+    seedImportedChannel({ id: 'c1', opener: 'You are Daedalus, the architect.' });
+    seedImportedChannel({ id: 'c2', opener: 'You are Wren and you keep the notes.' });
+
+    const all = planEntityBackfill();
+    const one = planEntityBackfill({ channelIds: ['c1'] });
+
+    expect(candidatesLine(all)).not.toContain('in scope matched your --channels filter');
+    expect(candidatesLine(one)).toContain(
+      `Candidates: ${one.summary.candidates} of ${one.summary.inScope} in scope matched your --channels filter`
+    );
+    expect(candidatesLine(one)).not.toBe(candidatesLine(all));
   });
 });

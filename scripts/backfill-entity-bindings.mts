@@ -44,10 +44,14 @@
  * first, not just copying the file.** This header said "restore the snapshot"
  * for eleven days and never said how. Theseus's Round 191 did it the way a
  * person does — `cp` — with the dev server up: the copy restored *nothing* (the
- * app read the post-run state, row for row, no error anywhere), and after the
- * app had been used for a while it left a **corrupt** database. `restoreSteps()`
+ * app read the post-run state, row for row, no error anywhere), and once the app
+ * had written anything at all it left a **corrupt** database. Round 191 reached
+ * that with 1,500 messages; Theseus's Round 193 measured the width after
+ * `checkpointAfterWrite()` landed and it is **one** — 1, 20 and 1,500 all end
+ * malformed, so the steps are never a long-session precaution. `restoreSteps()`
  * below prints the four steps wherever this script names a backup; the text is
- * `restoreInstructions()` in `entity-backfill.ts`, one source for all of them.
+ * `restoreInstructions()` in `entity-backfill.ts`, one source for all of them,
+ * and step 4 now quotes the `Candidates:` line a correct restore will print.
  *
  * **Undo reads each channel before it writes it.** Only a channel still in the
  * state the run left it in is reverted; one already reverted is reported as such,
@@ -351,6 +355,7 @@ const {
   undoEntityBackfill,
   checkUndoRecord,
   restoreInstructions,
+  candidatesLine,
   BACKFILL_SOURCES,
   DEFAULT_APPLY_BASES,
 } = await import('../packages/server/src/db/entity-backfill.js');
@@ -358,7 +363,36 @@ const {
 // One source, three sites. Round 191's failure is that the backup path was
 // printed as a way back with no instructions attached; the instructions have to
 // travel with the path, at every site that prints one.
-const restoreSteps = (): string => restoreInstructions(dbPath, snapshotPath);
+const restoreSteps = (expected?: string): string =>
+  restoreInstructions(dbPath, snapshotPath, expected);
+
+/**
+ * The `Candidates:` line step 4's dry run will print **if the restore worked** —
+ * so the operator can match a string instead of remembering one.
+ *
+ * Step 4 says *re-run this script with no flags*, and that is the line this has
+ * to predict: not the line this run printed. They differ whenever the run
+ * carried `--channels` (filtered form, different numbers) or `--bases`, so
+ * echoing this run's own line would hand the operator a number their correct
+ * restore can never produce — a restore that worked, reported as failed, at the
+ * moment they are least able to judge it. Planned fresh against the unflagged
+ * defaults instead.
+ *
+ * Call it only where the database still holds what the backup holds: before any
+ * write on the apply path, and before `undoEntityBackfill` on the undo path (the
+ * undo's backup is its own pre-state, not the pre-apply state).
+ *
+ * Never fatal. This is a help string; a plan that throws — a malformed database
+ * being exactly the arm where these steps matter most — falls back to the older
+ * wording rather than taking the run down with it.
+ */
+function unflaggedCandidates(): string | undefined {
+  try {
+    return candidatesLine(planEntityBackfill({ bases: DEFAULT_APPLY_BASES }));
+  } catch {
+    return undefined;
+  }
+}
 
 /**
  * End a writing run with the same on-disk state whether or not something else
@@ -415,8 +449,12 @@ if (undoPath) {
     );
     process.exit(1);
   }
+  // Computed once, before the undo writes anything, and reused in the catch
+  // below: after a part-way undo the database no longer holds what the backup
+  // holds, so re-planning there would predict the half-reverted state.
+  const undoExpected = unflaggedCandidates();
   console.log(`Backup (taken before anything was written): ${snapshotPath}`);
-  console.log(restoreSteps());
+  console.log(restoreSteps(undoExpected));
   let result;
   try {
     result = undoEntityBackfill(checked.record);
@@ -437,7 +475,7 @@ if (undoPath) {
     // copy already corrupted, and undo exits here on it. The backup file itself
     // survived that, so these four steps are the only way back that arm has.
     console.error(`The backup from before this run is intact at:\n  ${snapshotPath}`);
-    console.error(restoreSteps());
+    console.error(restoreSteps(undoExpected));
     process.exit(1);
   }
 
@@ -591,12 +629,11 @@ console.log(
   `\nScope: channels with source in {${BACKFILL_SOURCES.join(', ')}} bound to \`default-entity\`.`
 );
 console.log(`Bases applied: ${bases.join(', ')}`);
-console.log(
-  plan.filter
-    ? `\nCandidates: ${plan.summary.candidates} of ${plan.summary.inScope} in scope matched your ` +
-        `--channels filter — ${plan.summary.apply} would move, ${plan.summary.skipped} skipped.`
-    : `\nCandidates: ${plan.summary.candidates} — ${plan.summary.apply} would move, ${plan.summary.skipped} skipped.`
-);
+// `candidatesLine` and not a format string here: step 4 of the restore steps
+// quotes this line for the operator to match character by character, and two
+// copies of the format would diverge into an instruction that reports a correct
+// restore as a failure.
+console.log(`\n${candidatesLine(plan)}`);
 
 // Say what the filter did not find, by name. A filter that resolved nothing and
 // a corpus with nothing in it print the same row count otherwise.
@@ -691,7 +728,18 @@ if (plan.summary.apply === 0) {
 }
 
 console.log(`\nBackup (taken before anything was written): ${snapshotPath}`);
-console.log(restoreSteps());
+// Reuse this run's plan only when it *is* the unflagged plan — `bases` is the
+// exported default array by reference until `--bases` replaces it (above), and
+// `plan.filter` is set only when `--channels` was. Otherwise plan again: one
+// extra read-only pass, before any write, to avoid printing a number step 4's
+// own command cannot produce.
+console.log(
+  restoreSteps(
+    plan.filter === undefined && bases === DEFAULT_APPLY_BASES
+      ? candidatesLine(plan)
+      : unflaggedCandidates()
+  )
+);
 
 const result = applyEntityBackfill(plan);
 const recordPath = `${dbPath}.backfill-${stamp}.json`;
