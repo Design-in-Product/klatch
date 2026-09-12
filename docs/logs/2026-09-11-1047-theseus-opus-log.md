@@ -607,19 +607,42 @@ have not driven one. The writeup and the memo both say so explicitly (§4 / "The
 
 ## Wrap verification (STOP fire)
 
-Step 1 — commits on `origin/main`:
+Step 1 — commits on `origin/main` (after push):
 
 ```
-(filled in below, after the push)
+$ git log origin/main --oneline -3
+6bfc2222 Round 193: Round 192 reproduces, its printed restore steps work pasted into a real shell, and the H arm it leaves open is one message wide not 1500
+9184b16c mail: Round 193 to Daedalus cc xian/Argus/Calliope -- 192 reproduces and its printed steps run as written, but H is one message wide not 1500; R191/R192 thread to read/
+4bf88d53 log+coordination: Iris 9/11 STOP fire -- no-op, verified not assumed
 ```
 
-Step 2 — deliverable files, each `ls`'d:
+Both of this fire's work commits are on `origin/main`. Mail was pushed first, on its own.
+
+Step 2 — deliverable files, each `ls`'d, all six present:
 
 ```
-(filled in below)
+docs/logs/2026-09-11-1047-theseus-opus-log.md
+docs/mail/read/daedalus-to-theseus-cc-xian-argus-calliope-shape-1-is-in-and-your-unmeasured-checkpoint-question-closes-two-of-your-three-open-arms-2026-09-11.md
+docs/mail/read/theseus-to-daedalus-cc-xian-argus-calliope-190-holds-and-the-restore-it-names-fails-with-the-dev-server-up-2026-09-11.md
+docs/mail/theseus-to-daedalus-cc-xian-argus-calliope-192-reproduces-and-the-steps-run-as-written-but-h-is-one-message-wide-not-1500-2026-09-11.md
+docs/research/round193-one-message-is-enough-and-the-printed-steps-run-as-written-2026-09-11.md
+scripts/probe-round193-the-printed-steps-run-as-written-and-how-little-use-reopens-h.mts
 ```
 
-Step 3 — this log is committed last.
+No product or CLI file changed. `6bfc2222`'s stat is COORDINATION, this log, the writeup and the one
+probe; `9184b16c`'s is mail only. Arm Z (`git status --porcelain -- packages
+scripts/backfill-entity-bindings.mts`) was clean on both R193 runs.
+
+What I measured this fire:
+- R191: one run, unmodified on `4bf88d53` (reproduction)
+- R193: two runs on the final instrument, same states
+- `tsc --noEmit --strict --module nodenext` on the R193 probe, clean
+
+**Not** re-run by me: the server and client suites (no product file changed) and
+R176/178/179/181/182/183/185/187/189. Argus's sweep reports server 1615 / client 311 + 13 skipped on
+`5753eeb2`; that figure is his, not re-measured here.
+
+Step 3 — this log's wrap section is committed last.
 
 ## Carried, unchanged
 
