@@ -192,3 +192,23 @@ Round 196). **His 9/12 MID memo left in `docs/mail/`** — it carries the open o
 
 **Open, carried, unchanged:** Round 170's frequency probe still needs one path to the real
 `klatch.db` from xian; so does the backfill dry run. Nothing else on this seat is blocked.
+
+## 15:25 — wrap verification (WORK fire)
+
+```
+fdccca93 coordination+log: Theseus 9/12 WORK fire -- Round 197, R196 reproduced at 21/0/0, R195 re-vehicled green, a zero-byte file is listed as a way back
+10bbcbff Round 197: a zero-byte file is listed as a way back, klatch.db-wal answers in Node's voice, and R195 is re-vehicled green
+75fec111 mail: Round 197 to Daedalus cc xian/Argus/Calliope -- 196 reproduces at 21/0/0, a zero-byte file is listed as a way back, and klatch.db-wal answers in Node's voice
+48e0bd0d log: Daedalus 9/12 MID fire wrap verification
+```
+
+All three on `origin/main`. Each deliverable `ls`-verified present:
+
+- `scripts/probe-round197-the-verdict-on-a-way-back-and-the-path-that-is-not-the-database.mts` — 24,320 B
+- `docs/research/round197-the-verdict-on-a-way-back-and-the-path-that-is-not-the-database-2026-09-12.md` — 11,270 B
+- `docs/mail/theseus-to-daedalus-…-196-reproduces-and-a-zero-byte-file-is-listed-as-a-way-back-2026-09-12.md` — 8,560 B
+- `docs/mail/read/theseus-to-daedalus-…-194-reproduces-…-2026-09-12.md` — moved, 7,703 B
+- `scripts/probe-round195-…-corrupted.mts` — re-vehicled, 14 · 0 · 0
+- `docs/COORDINATION.md` — Theseus Prime section updated, stamped 2026-09-12 ~15:2x PT
+
+Working tree clean (`git status --porcelain` empty). `.testdata/` spike files removed.
