@@ -183,3 +183,112 @@ rest of this fire rather than waiting on anything.
 Theseus's Round 193 memo stays in `docs/mail/` until he verifies Round 194 — same rule I've applied
 each round. My reply above is filed beside it. The Round 191/192 pair he moved to `read/` on his
 last fire is correctly closed.
+
+---
+
+## 13:17 PT — MID fire (WORK)
+
+**Round 196 — the three commands after a bad restore answer in this script's voice, and step 4 is a
+line you can paste.**
+
+### 13:18 — Briefing
+
+Pulled by the wrapper to `adcf3d5b`. `docs/mail/` holds one memo addressed to me:
+`theseus-to-daedalus-cc-xian-argus-calliope-194-reproduces-and-all-three-commands-after-a-failed-restore-answer-badly-2026-09-12.md`.
+Read it in full before touching anything. He reproduced Round 194 unmodified at **14 · 0 · 0** and
+opened three items (M2, M3, M4) plus N2 on the corruption arm. Acted on all four this fire.
+
+### 13:20 — Measured the unknown before designing around it
+
+Theseus named `PRAGMA quick_check` as the candidate for M4 and flagged explicitly that he had **not**
+verified it catches this corruption. Built `.testdata/r196-explore.mts` (not committed) on his
+fixture recipe:
+
+- `quick_check(1)` on the `cp`-corrupted database: returns
+  `Tree 4 page 24: btreeInitPage() returns error code 11`, 0ms — **catches it, does not throw**.
+- `integrity_check` on the same file: **THROWS** `database disk image is malformed`. The obvious
+  choice would have reintroduced the failure mode it was meant to fix.
+- `db.backup()` from a corrupt read-only source: **succeeds**, copy is the same size, and
+  `quick_check` on the copy reports the same fault. M4's mechanism, driven rather than cited.
+
+That inverted the design: the check goes on the **snapshot at the moment it is taken**, which closes
+M3 and M4 before either can happen, rather than on the undo path after the crash.
+
+### 13:22–13:29 — Built
+
+1. `packages/server/src/db/entity-backfill.ts` — `restoreInstructions()` takes a fourth argument (the
+   invocation without the path, appended and `shellQuote`d here); `shellQuote` exported.
+2. `scripts/backfill-entity-bindings.mts` — `quickCheck()`, `waysBack()`, `sidecarNote()`; the
+   snapshot verdict on writing runs; `unreadable()` for the dry-run path; `reverse with:` quoted;
+   header paragraph on the new rule.
+3. Six tests in `round175-entity-backfill.test.ts` (**60 → 66** on that file, measured both ways).
+4. `scripts/probe-round196-…mts` — arms A (the three commands), B (control), D (N2 from the
+   operator's side), E (`reverse with:` through a real shell on a spaced path), F (the pragma
+   measurement).
+
+**Probe's own first cut was wrong and it passed.** Arm D filtered `--channels` to a channel the run
+would *skip*, so nothing applied, no backup and no steps printed, and D1/D3 compared `'(none)'` to
+`'(none)'` and went green. Only D2 (looking for a command that also wasn't there) failed. Fixed to
+pick a mover and to assert the quote is not `(none)` before comparing. Recorded because it is the
+same class as the bug the round is about.
+
+### 13:29–13:33 — Five negative controls
+
+Each fix switched off in turn via a file marker, probe re-run, then reverted:
+
+| control | off | result |
+|---|---|---|
+| 1 | snapshot verdict | 4 red (A5, A6, A7, A8) — A6 reproduces M4 verbatim, 2 unreadable files named as ways back |
+| 2 | `try` around the plan | 2 red (A2 `stack true`, A3) |
+| 3 | step 4's command | 3 red (D2, D3, E3) |
+| 4 | `reverse with:` quoting | 1 red (E2) |
+| 5 | `integrity_check` for `quick_check` | **green on purpose** — the wrapper catches the throw either way; measured cost is message precision (`Tree 4 page 24…` → `database disk image is malformed`) |
+
+All reverted; `grep -n "control("` across the touched files returns nothing; probe re-runs clean.
+
+### 13:33 — Verification
+
+- Probe 196: **21 · 0 failed · 0 open · 3 measurements**, two runs (pre- and post-control sweep).
+- Round 194 probe unmodified: **14 · 0 · 0**.
+- Round 193 probe unmodified: **14 · 1 failed (Z — dirty tree, by design) · 2 open (B11, B201) · 4**.
+- Round 195 probe unmodified: **14 · 2 failed · 3 open** — read rather than counted. M2/M3/M4 are
+  `open_()` calls (unconditional) whose details now carry the fixed behaviour; M2's "own voice:
+  false" is his pre-fix phrase whitelist; **M5 fails because its arm is no longer reachable**, the
+  undo refusing before it prints any steps. Z fails for the usual dirty-tree reason.
+- `npm test`: server **1627/1627**, client **311/311 + 13 skipped**.
+- `npm run typecheck` clean across all three workspaces; `tsc --noEmit --strict --module nodenext`
+  clean on `backfill-entity-bindings.mts` and the new probe.
+
+### Not claimed
+
+No real corpus — every arm is Round 176's 94KB fixture, so the `quick_check` cost on a database the
+size of xian's is **unmeasured**. The printed commands assume the repo root as cwd (relative script
+path), same as `reverse with:` always has; named in the writeup, not fixed. `--restore=<backup>` is
+**not built** and its ordering is xian's call. I diverged from Theseus's shape 2 on one point —
+he said keep a corrupt snapshot as evidence, I discard it, because the refusal now happens before any
+write and the invariant "a `.backup-backfill-*` file is never a known-bad copy" is worth more. Said
+so in the memo for him to push back on.
+
+### Session wrap verification
+
+**Step 1 — commits on `origin/main`** (after `git fetch`):
+
+```
+PLACEHOLDER_LOG_1
+```
+
+**Step 2 — every deliverable present in the pushed tree** (`git ls-tree -r --name-only origin/main`):
+
+```
+PLACEHOLDER_LOG_2
+```
+
+### Mail thread hygiene
+
+Theseus's Round 195 memo stays in `docs/mail/` until he verifies Round 196 — the rule I've applied
+each round. My reply is filed beside it and went to `main` separately at `6ef81dfa` per the worktree
+mail rule. The Round 193/194 thread is now closed: he verified 194 this morning at 14 · 0 · 0, his
+inbound was already in `read/` (he moved it on his own fire — checked, not assumed), so my Round 194
+reply follows it there this fire. One correction against myself: I `git mv`'d his Round 195 memo to
+`read/` first and moved it straight back — it has an open action (his verification of 196) and
+belongs in `docs/mail/`.

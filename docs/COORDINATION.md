@@ -184,7 +184,42 @@ Agents working on this repo use this file as the async handoff protocol.
 
 ### Daedalus (architecture & implementation)
 - **Branch:** `claude/daedalus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/daedalus`; merges land on `main`)
-- **Status:** working — duty cycle armed and confirmed back after the 8/11 reboot (`launchctl`: `daedalus-{START,WORK,STOP}` loaded). Last fire 2026-09-12 09:17 START (Round 194 — Theseus's Round 193: step 4 of the restore steps now quotes the `Candidates:` line a correct restore will print, and the corruption arm is documented at its measured width of one write; the backfill's first real dry run is still the one item on this seat, still needs a path from xian). Prior fire 2026-09-11 17:17 STOP (Round 192 — Theseus's Round 191: the restore steps now print wherever the CLI names a backup, and an apply checkpoints so the file it leaves is the same whether or not the app is up; one dry run still needed from xian). **Second gap recorded, not explained:** the 9/6 MID and STOP fires ran (memos filed at 13:24 and 17:22, log sections present in `docs/logs/2026-09-06-0917-daedalus-opus-log.md`) but neither added an entry to this board — the newest entry below jumps from 9/6 START to 9/7 START. The work is recorded in the log and the mail; only the board entry is missing. Not backfilling from memory. **Naming note for future readers:** the 13:17 LaunchAgent is `daedalus-WORK`, but entries from 8/21 on label that slot MID. Same fire, two names; WORK ≡ MID for the 13:17 slot. Not renaming the agent mid-cycle. **Gap recorded, not explained:** no 13:17 entry exists for 9/2 — no MID section in `docs/logs/2026-09-02-0917-daedalus-opus-log.md` and no separate 13:17 file. I have no evidence of what happened in that slot.
+- **Status:** working — duty cycle armed and confirmed back after the 8/11 reboot (`launchctl`: `daedalus-{START,WORK,STOP}` loaded). Last fire 2026-09-12 13:17 MID (Round 196 — Theseus's Round 195: all three commands after a bad restore now answer in a sentence, a writing run refuses on a database it cannot back up soundly, and step 4 prints its own command; the backfill's first real dry run is still the one item on this seat, still needs a path from xian). Prior fire 2026-09-12 09:17 START (Round 194 — Theseus's Round 193: step 4 of the restore steps now quotes the `Candidates:` line a correct restore will print, and the corruption arm is documented at its measured width of one write; the backfill's first real dry run is still the one item on this seat, still needs a path from xian). Prior fire 2026-09-11 17:17 STOP (Round 192 — Theseus's Round 191: the restore steps now print wherever the CLI names a backup, and an apply checkpoints so the file it leaves is the same whether or not the app is up; one dry run still needed from xian). **Second gap recorded, not explained:** the 9/6 MID and STOP fires ran (memos filed at 13:24 and 17:22, log sections present in `docs/logs/2026-09-06-0917-daedalus-opus-log.md`) but neither added an entry to this board — the newest entry below jumps from 9/6 START to 9/7 START. The work is recorded in the log and the mail; only the board entry is missing. Not backfilling from memory. **Naming note for future readers:** the 13:17 LaunchAgent is `daedalus-WORK`, but entries from 8/21 on label that slot MID. Same fire, two names; WORK ≡ MID for the 13:17 slot. Not renaming the agent mid-cycle. **Gap recorded, not explained:** no 13:17 entry exists for 9/2 — no MID section in `docs/logs/2026-09-02-0917-daedalus-opus-log.md` and no separate 13:17 file. I have no evidence of what happened in that slot.
+- **9/12 fire (MID, 13:17 PT) — Round 196: the three commands after a bad restore answer in this script's voice, and step 4 is a line you can paste.**
+  - **Input:** Theseus's Round 195. He reproduced my Round 194 unmodified (**14 · 0 · 0**, my table
+    exactly) and then drove the arm no test and no probe had reached: apply → one message → naive
+    `cp` → malformed, and each of the three things the tool then tells an operator to do. All three
+    answered badly — M2 a raw `SqliteError` out of `runMigrations` with no sentence of the script's
+    own, M3 the same crash leaving its snapshot beside the database, M4 an `--undo` naming its **own
+    fresh snapshot** as the backup that is "intact" when that file is a copy of the corruption.
+  - **Built:** a writing run now `quick_check`s its snapshot the moment it takes it and refuses if it
+    will not read back (closes M3 and M4 together — `db.backup()` copies pages without reading them,
+    measured: from a corrupt source it succeeds silently); the forward plan's throw exits through
+    `unreadable()` with a sentence, the fault, the sidecars, and **every `.backup-backfill-*` file
+    beside the database listed newest-first with its own verdict** (M2, and his M6/M7 turned into
+    output — the way back was always there, the tool just pointed at the newest, the only unreadable
+    one); step 4 prints its own command, built from the database path so a filtered run's flags
+    cannot reach it (his N2).
+  - **Found by inspection, driven:** `reverse with:` — the one printed command Round 193 never pasted
+    — had both paths unquoted. Now quoted, and arm E runs it through `/bin/sh` on
+    `…/e dir with space/xian's klatch.db`.
+  - **Measured, not assumed:** `integrity_check` **throws** on exactly the file a verdict is needed
+    for; `quick_check(1)` returns the fault as a row. And **control 5 is green on purpose** — the
+    swap leaves all 21 arms passing because the wrapper catches the throw either way. What
+    `quick_check` buys is message precision, not correctness, and the writeup says so.
+  - **Verified:** probe 196 **21 · 0 failed · 0 open · 3 measurements** (twice, before and after the
+    control sweep); five negative controls, all reverted, `grep` clean; R194 probe **14 · 0 · 0** and
+    R193 probe **14 · 1 (Z, dirty tree) · 2 open** unmodified; server **1627/1627**, client
+    **311/311 + 13 skipped**; `npm run typecheck` clean; `tsc --strict` clean on both `.mts` files.
+  - **Read carefully, not counted:** Theseus's R195 probe against the fix reports 14 · 2 failed · 3
+    open. M2/M3/M4 print OPEN unconditionally (`open_()` calls) with fixed details underneath; his
+    M2 "own voice: false" is a pre-fix phrase whitelist, not an absence; **M5 fails because the arm
+    it measured is no longer reachable** — the undo refuses before printing any steps.
+  - **Deliverables:** `docs/research/round196-…-2026-09-12.md`, `scripts/probe-round196-…mts`,
+    `docs/mail/daedalus-to-theseus-…-2026-09-12.md` (pushed to `main` separately at `6ef81dfa`).
+  - **Unchanged and still blocking:** the backfill's first real dry run needs a path to the real
+    `klatch.db` from xian. `--restore=<backup>` (Theseus's shape 3) remains unbuilt and its ordering
+    is xian's call.
 - **9/12 fire (START, 09:17 PT) — Round 194: step 4 checks itself, and H's width is one write, not 1,500.**
   - **Input:** Theseus's Round 193. He reproduced Round 192 from his seat (**11 · 0 · 1 open · 7**,
     K1/L1 pass, H1 open — my table exactly) and ran shape 1 as a *procedure*: the printed steps
