@@ -110,3 +110,85 @@ answered it; the xian item keeps the thread visible.
 
 **Open, carried, unchanged:** Round 170's frequency probe still needs one path to the real
 `klatch.db` from xian; so does the backfill dry run. Nothing else on this seat is blocked.
+
+---
+
+# WORK fire — 2026-09-12, ~14:47 PT (same day, second fire)
+
+Worktree synced to `origin/main` at `48e0bd0d` by the wrapper before this fire.
+
+## 14:47 — briefing
+
+- `git log` head `48e0bd0d` (Daedalus's 9/12 MID wrap verification).
+- `docs/COORDINATION.md` read; my board entry was Round 195, status available.
+- Mail: one new memo addressed to me —
+  `docs/mail/daedalus-to-theseus-cc-xian-argus-calliope-all-three-answer-in-a-sentence-now-and-your-m5-arm-is-gone-on-purpose-2026-09-12.md`
+  (Round 196). Read in full at the top of the fire. It closes my M2/M3/M4/N2, takes my shapes 1–3,
+  diverges on one (discards the corrupt snapshot rather than keeping it as evidence, with a stated
+  invariant), measures my `quick_check` question, and reads my 195 probe back to me with three
+  corrections. Answered in this same fire.
+
+## 14:50 — reproduced first, before touching anything (on `48e0bd0d`)
+
+- **Daedalus's R196 probe, unmodified: 21 · 0 failed · 0 open · 3 measurements.** His table line for
+  line, F1–F4 included (F4 12ms on the healthy 94,208-byte backup).
+- **My R195 probe against his fix, unmodified: 14 · 1 failed · 3 open.** His reading exactly. The
+  second failure he saw (Z) was his own tree's edited product files; my tree is clean, so Z passes.
+
+## 15:00 — two premises measured before building anything
+
+Both outside the CLI, because an arm built on a guess is not an arm:
+
+- A **0-byte file** opens as a valid empty SQLite database; `quick_check` **and** `integrity_check`
+  both return `ok`. This is the round's headline.
+- A **truncated** database (page-aligned, at 99% / 75% / 50% / 10%) throws `database disk image is
+  malformed` on both pragmas — so a *partial* copy is caught. Only the degenerate case gets through.
+
+A third premise — a stale-index database, where `quick_check` passes and `integrity_check` fails —
+was **attempted and abandoned**: `writable_schema` let the schema row be deleted but not re-inserted
+(`table sqlite_master may not be modified`), and the arm was not worth a second construction route
+this fire. Recorded here rather than dropped: it is the one real `quick_check` weakness I did not
+drive, and it does not arise from the naive-`cp` damage this family is about.
+
+## 15:05 — Round 195 re-vehicled
+
+M2/M3/M4 were `open_()` calls reporting behaviour Round 196 changed; M5's failure *was* the fix.
+All four are checks now. **14 · 0 failed · 0 open**, two runs. Daedalus's correction to my voice
+detector adopted (the old one tested three phrases that all predate the fix).
+
+## 15:10 — Round 197 built and run three times
+
+`scripts/probe-round197-the-verdict-on-a-way-back-and-the-path-that-is-not-the-database.mts` —
+**18 checks · 0 failed · 6 open · 6 measurements**, three runs, same states, zero model calls,
+`tsc --noEmit --strict --module nodenext` clean, arm Z clean, `klatch.db` never opened.
+
+Open: **P2/P3/P4** (the listing calls a zero-byte file a way back, it is the newest, and Round 196's
+own rule points at it — mitigated by step 4, driven as P5), **Q4** (one of six shapes gets through),
+**R1** (`klatch.db-wal` answers with a raw Node stack from the CLI's `source.backup()` at `:454-456`,
+above the try `unreadable()` is the catch for; no data harm), **R3** (aimed at an empty file, exit 0
+and `Candidates: 0` over a corpus that does not exist; the apply builds a schema in it).
+
+Measured: `quick_check` ≈ **0.4ms/MB** warm (8MB→3ms, 24.9MB→8ms, 64.5MB→28ms), paid **N+1** times
+per refusal — Round 196's F4, which he recorded as unmeasured.
+
+**Two own-instrument errors caught before reporting**, both recorded in the writeup:
+1. R4 asserted an untouched 0-byte file would read as "not a database". It is a *valid empty* one —
+   the exact fact the round is about — so it opens with 0 tables. My error, not the tool's.
+2. S2's grower inserted ~4MB per batch, so the 1MB and 8MB rungs were the same file measured twice
+   (3ms, then 2ms) and the monotonicity check over them was scheduler noise. Batch cut to 250 rows,
+   ladder moved to 8/24/64MB.
+
+## 15:20 — filed
+
+- Memo `docs/mail/theseus-to-daedalus-cc-xian-argus-calliope-196-reproduces-and-a-zero-byte-file-is-listed-as-a-way-back-2026-09-12.md`,
+  committed alone and **pushed to `main` first** per the worktree mail discipline (`75fec111`).
+- Writeup `docs/research/round197-the-verdict-on-a-way-back-and-the-path-that-is-not-the-database-2026-09-12.md`.
+- Four shapes offered to Daedalus, none built: a size floor in `quickCheck()`; `source.backup()`
+  inside the try; permissions wording in the verdict; an empty-corpus note.
+
+**Mail disposition:** replied in the same fire. My 9/12 START memo → `read/` (answered in full by his
+Round 196). **His 9/12 MID memo left in `docs/mail/`** — it carries the open ordering call for xian
+(dry run first, or `--restore=` first), so the thread stays visible.
+
+**Open, carried, unchanged:** Round 170's frequency probe still needs one path to the real
+`klatch.db` from xian; so does the backfill dry run. Nothing else on this seat is blocked.
