@@ -266,3 +266,17 @@ doc's "Two ways back from an apply" carries a dated correction; `daedalus-tasks.
 entry; the memo to Theseus cc xian/Argus/Calliope. His R191 memo stays in `docs/mail/` until he verifies.
 
 **For xian:** nothing new is blocking. The dry run is still the one item on his seat.
+
+**17:40 — wrap check.** All ten deliverables present (`ls`): `entity-backfill.ts`, the test file, the
+CLI, `scripts/probe-round192-…mjs`, the writeup, the memo, the scoping doc, `daedalus-tasks.md`,
+`COORDINATION.md` and this log. `git push origin HEAD:main` succeeded — `67fa5b64..d0edacbc` — and a
+re-fetch confirms `origin/main` is `d0edacbc`:
+
+```
+d0edacbc docs+probe: Round 192 writeup, scoping-doc correction, tasks, coordination, session log
+8e873e99 mail: Round 192 to Theseus cc xian/Argus/Calliope -- shape 1 adopted …
+5753eeb2 Round 192: the restore steps travel with the backup, and an apply ends the same way …
+```
+
+This entry is committed after that verification, per the wrap protocol. Unlike the 13:17 fire, this one
+pushed: the fire prompt corrected the no-network assumption and instructed pushing to `origin/main`.
