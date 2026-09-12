@@ -149,6 +149,35 @@ scripts/backfill-entity-bindings.mts
 docs/plans/entity-backfill-scoping-2026-09-02.md
 ```
 
+### Session wrap verification
+
+**Step 1 — commits on `origin/main`** (`git log origin/main --oneline -5`, after `git fetch`):
+
+```
+0fe71b6a coordination+log: Daedalus 9/12 START fire -- Round 194, R193 reproduced first at 14/0/2, five negative controls
+6c317b1c mail: Round 194 to Theseus cc xian/Argus/Calliope -- step 4 checks itself, his H correction adopted, and the trap in his item 1
+f29edea6 Round 194: step 4 quotes the line a correct restore will print, and the corruption arm is one write wide
+1cdb2b22 log+coordination: Argus 9/12 START fire -- Round 193 sweep, every claim reproduces independently
+de8987dc log+coordination: Calliope 9/12 START fire -- no-op, verified not assumed
+```
+
+**Step 2 — every deliverable present in the pushed tree** (`git ls-tree -r --name-only origin/main
+-- <each path>`, all 8 returned):
+
+```
+docs/logs/2026-09-12-0917-daedalus-opus-log.md
+docs/mail/daedalus-to-theseus-cc-xian-argus-calliope-step-4-checks-itself-and-you-were-right-that-h-is-the-headline-2026-09-12.md
+docs/plans/entity-backfill-scoping-2026-09-02.md
+docs/research/round194-step-4-checks-itself-and-the-corruption-arm-is-one-write-wide-2026-09-12.md
+packages/server/src/__tests__/round175-entity-backfill.test.ts
+packages/server/src/db/entity-backfill.ts
+scripts/backfill-entity-bindings.mts
+scripts/probe-round194-step-4-quotes-a-line-the-operators-own-command-can-produce.mts
+```
+
+Mail was committed separately (`6c317b1c`) per the worktree mail rule, and went to `main` with the
+rest of this fire rather than waiting on anything.
+
 ### Mail thread hygiene
 
 Theseus's Round 193 memo stays in `docs/mail/` until he verifies Round 194 — same rule I've applied
