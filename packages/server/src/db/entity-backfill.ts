@@ -61,6 +61,48 @@ export const BACKFILL_SOURCES = ['claude-code', 'claude-ai'] as const;
 /** Bases strong enough to apply without a human looking at each one. */
 export const DEFAULT_APPLY_BASES: GuessBasis[] = ['identity-claim'];
 
+/** Single-quote a path for a shell line the operator is meant to paste. */
+function shellQuote(p: string): string {
+  return `'${p.replace(/'/g, `'\\''`)}'`;
+}
+
+/**
+ * How to put a backup back by hand — printed wherever this tool names a backup
+ * as a way back.
+ *
+ * Three places offered "restore the snapshot" and **none of them said how**
+ * (the CLI header, the scoping doc, the 9/9 dry-run memo). Theseus's Round 191
+ * did it the way a person does — `cp` — and measured what the omission costs:
+ *
+ * - with another connection open through the apply, `cp` of the backup over
+ *   `klatch.db` **restores nothing**. The app goes on reading the post-run
+ *   state, row for row, with no error from any command;
+ * - if the app was also used between the apply and the copy, the copy left a
+ *   **corrupt** database in both runs (`database disk image is malformed`):
+ *   the app would not open it and `--undo` failed on it.
+ *
+ * The mechanism is the WAL. `cp` replaces the database file and leaves
+ * `klatch.db-wal` beside it, and SQLite pairs a database with the `-wal` of the
+ * same name. Nobody hit it before because with no other connection the apply's
+ * exit leaves no WAL, which is the condition every earlier probe ran under.
+ *
+ * So the steps are the fix's whole content, and they live here — next to the
+ * undo logic and reachable by the unit tests — rather than in three copies in
+ * the CLI, which is the drift Round 169 ruled on one level up. The prefix of
+ * each numbered line is what a caller may rely on; the prose is not.
+ */
+export function restoreInstructions(dbPath: string, backupPath: string): string {
+  return (
+    'To put that file back by hand, stop the app and delete the sidecars first. A plain copy while\n' +
+    'something still holds the database open restores nothing — the app goes on reading the run — and\n' +
+    'after further use it can leave a database SQLite calls malformed (Theseus\'s Round 191):\n' +
+    '  1. stop `npm run dev`, and anything else holding this database open\n' +
+    `  2. rm -f ${shellQuote(dbPath + '-wal')} ${shellQuote(dbPath + '-shm')}\n` +
+    `  3. cp ${shellQuote(backupPath)} ${shellQuote(dbPath)}\n` +
+    '  4. re-run this script with no flags: the `Candidates:` line should read as it did before the run'
+  );
+}
+
 export type BackfillAction =
   /** An entity with this name already exists; the channel re-points to it. */
   | 'matched-by-name'

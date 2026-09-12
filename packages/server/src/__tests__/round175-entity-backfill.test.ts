@@ -20,6 +20,7 @@ import {
   undoEntityBackfill,
   planEntityUndo,
   checkUndoRecord,
+  restoreInstructions,
   type BackfillUndoRecord,
 } from '../db/entity-backfill.js';
 import { getChannelEntities, getEntityTranscript, getAllEntities } from '../db/queries.js';
@@ -1063,5 +1064,56 @@ describe('Round 190 — the restore direction on a minted channel, and added_at 
     const leapDay = JSON.parse(applied);
     leapDay.channels[0].fromAddedAt = '2028-02-29 23:59:59';
     expect(checkUndoRecord(leapDay).ok).toBe(true);
+  });
+});
+
+describe('Round 192 — the restore steps that go with every backup path (Theseus R191)', () => {
+  const DB = '/Users/xian/Development/klatch/klatch.db';
+  const BACKUP = `${DB}.backup-backfill-2026-09-11T17-30-00-000Z`;
+
+  it('names the four steps in order, the app first', () => {
+    const text = restoreInstructions(DB, BACKUP);
+    const steps = text.split('\n').filter((l) => /^ {2}\d\. /.test(l));
+    expect(steps.map((l) => l.trim().slice(0, 3))).toEqual(['1. ', '2. ', '3. ', '4. ']);
+    // Stopping the app is step 1 because it is the one the other three depend
+    // on: Round 191's L arm deleted nothing and copied with the server up, and
+    // the copy still did not take. Anchored on the *start* of the step, not on
+    // the phrase anywhere in it — the negative control that reordered the steps
+    // and kept the phrase passed all 54 tests against the looser version.
+    expect(steps[0].trim()).toMatch(/^1\. stop `npm run dev`/);
+    expect(steps[0]).not.toContain('cp ');
+    expect(steps[1]).toMatch(/^ {2}2\. rm -f /);
+    expect(steps[2]).toMatch(/^ {2}3\. cp /);
+  });
+
+  /**
+   * The two ways this text can be actively harmful, both of which read fine in a
+   * diff: deleting the *backup's* sidecars (leaving the database's in place, so
+   * the copy silently does not take — Round 191's K), and copying the database
+   * over the backup, which destroys the only way back at the moment it is needed.
+   */
+  it('deletes the database sidecars and copies backup → database, not the reverse', () => {
+    const text = restoreInstructions(DB, BACKUP);
+    const rm = text.split('\n').find((l) => l.includes('rm -f'))!;
+    expect(rm).toContain(`'${DB}-wal'`);
+    expect(rm).toContain(`'${DB}-shm'`);
+    expect(rm).not.toContain(BACKUP);
+
+    const cp = text.split('\n').find((l) => l.trim().startsWith('3. cp'))!;
+    expect(cp.trim()).toBe(`3. cp '${BACKUP}' '${DB}'`);
+    expect(cp.indexOf(BACKUP)).toBeLessThan(cp.lastIndexOf(DB));
+  });
+
+  it('quotes paths so a pasted line survives a space', () => {
+    const spaced = '/Users/xian/My Klatch/klatch.db';
+    const text = restoreInstructions(spaced, `${spaced}.backup-backfill-x`);
+    expect(text).toContain(`rm -f '${spaced}-wal' '${spaced}-shm'`);
+    expect(text).toContain(`cp '${spaced}.backup-backfill-x' '${spaced}'`);
+  });
+
+  it('says what a plain copy costs, so the steps read as necessary rather than tidy', () => {
+    const text = restoreInstructions(DB, BACKUP);
+    expect(text).toMatch(/restores nothing/);
+    expect(text).toMatch(/malformed/);
   });
 });

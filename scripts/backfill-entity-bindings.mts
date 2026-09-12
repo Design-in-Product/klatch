@@ -40,6 +40,15 @@
  * for the same reason: you reach for it because something already went wrong,
  * which is the worst moment to have one way back.
  *
+ * **Restoring the snapshot means stopping the app and deleting the sidecars
+ * first, not just copying the file.** This header said "restore the snapshot"
+ * for eleven days and never said how. Theseus's Round 191 did it the way a
+ * person does — `cp` — with the dev server up: the copy restored *nothing* (the
+ * app read the post-run state, row for row, no error anywhere), and after the
+ * app had been used for a while it left a **corrupt** database. `restoreSteps()`
+ * below prints the four steps wherever this script names a backup; the text is
+ * `restoreInstructions()` in `entity-backfill.ts`, one source for all of them.
+ *
  * **Undo reads each channel before it writes it.** Only a channel still in the
  * state the run left it in is reverted; one already reverted is reported as such,
  * and one that changed since the run (a later `--apply` re-minted its agent, or
@@ -266,6 +275,33 @@ function discardSnapshot(): void {
   for (const side of ['-wal', '-shm']) fs.rmSync(snapshotPath + side, { force: true });
 }
 
+// Uncheckpointed writes sitting beside the database, read *before* this script
+// opens anything. Measured this round (`.testdata/r192-wal-signal.mjs`): a
+// read-only open creates a **zero-length** `-wal` and a 32KB `-shm` and leaves
+// both behind on close, so neither file *existing* says anything at all. Only a
+// non-zero `-wal` does, and even that says "there are committed frames nothing
+// has checkpointed" — something has this database open now, or something exited
+// without closing it. It cannot tell those apart.
+const walBytes = fs.existsSync(dbPath + '-wal') ? fs.statSync(dbPath + '-wal').size : 0;
+
+// Warned, not refused. The condition Theseus's Round 191 needs is another
+// connection open *through* the apply, and this is the closest honest proxy
+// available before opening the file: `wal_checkpoint(TRUNCATE)` cannot tell an
+// idle connection from none at all (it returned `busy:0` with a reader open, in
+// the same measurement), so there is no test that separates a live server from a
+// WAL left by a crash. Refusing on the proxy would block a legitimate run on a
+// database nothing has open, which is the "bigger than what was asked for"
+// direction this script refuses in — one step over.
+if ((apply || undoRequested) && walBytes > 0) {
+  console.log(
+    `Note: ${path.basename(dbPath)}-wal is ${walBytes.toLocaleString()} bytes — this database has writes\n` +
+      '  nothing has checkpointed, so something probably has it open (the dev server), or something exited\n' +
+      '  without closing it. Stop `npm run dev` first if you can: with another connection open, copying the\n' +
+      '  backup back over the database afterwards does not take effect, and can corrupt it (Round 191).\n' +
+      '  Running anyway — this is a warning, not a refusal, because a WAL left by a crash looks the same.'
+  );
+}
+
 // Read and shape-check the undo record *before* the snapshot, so a missing or
 // wrong-shaped file refuses without leaving a copy of the database behind. Both
 // used to surface as raw Node errors — `ENOENT` with a stack, or
@@ -314,10 +350,58 @@ const {
   applyEntityBackfill,
   undoEntityBackfill,
   checkUndoRecord,
+  restoreInstructions,
   BACKFILL_SOURCES,
   DEFAULT_APPLY_BASES,
 } = await import('../packages/server/src/db/entity-backfill.js');
+
+// One source, three sites. Round 191's failure is that the backup path was
+// printed as a way back with no instructions attached; the instructions have to
+// travel with the path, at every site that prints one.
+const restoreSteps = (): string => restoreInstructions(dbPath, snapshotPath);
+
+/**
+ * End a writing run with the same on-disk state whether or not something else
+ * has the database open.
+ *
+ * That difference is the whole of Round 191's K arm. With no other connection,
+ * SQLite checkpoints when the last one closes, so the apply's exit leaves no
+ * WAL and a hand copy of the backup works (his S1). With the dev server also
+ * holding the file, the close is not the last one, the run's frames stay in
+ * `klatch.db-wal`, and the same copy gives back the run instead of the backup —
+ * silently. Doing the checkpoint ourselves removes the branch.
+ *
+ * Measured before writing this (`.testdata/r192-wal-signal.mjs`): a TRUNCATE
+ * checkpoint with an idle second connection open returns `busy:0` and empties
+ * the WAL; it only reports busy against a connection inside a read transaction,
+ * where it is a no-op and this run's output says so. Never fatal, and never in
+ * the error path above — the file there may be the malformed one.
+ *
+ * It does **not** close his H arm: the app writing after the run builds a new
+ * WAL, and step 2 of the restore steps is what covers that.
+ */
+function checkpointAfterWrite(): void {
+  try {
+    const rows = getDb().pragma('wal_checkpoint(TRUNCATE)') as Array<{
+      busy: number;
+      log: number;
+      checkpointed: number;
+    }>;
+    const r = rows[0];
+    if (r && r.busy !== 0) {
+      console.log(
+        `\nNote: could not empty ${path.basename(dbPath)}-wal — something is reading the database right now.\n` +
+          '  The run is committed either way. Delete the sidecars before copying the backup back (step 2).'
+      );
+    }
+  } catch (err) {
+    console.log(`\nNote: could not checkpoint the write-ahead log (${(err as Error).message}).`);
+  }
+}
 const { GUESS_BASES } = await import('../packages/server/src/import/entity-guess.js');
+// Already loaded transitively by `entity-backfill.js` above — named here only so
+// `checkpointAfterWrite` can reach the connection the writes went through.
+const { getDb } = await import('../packages/server/src/db/index.js');
 
 if (undoPath) {
   const checked = checkUndoRecord(undoRecordJson);
@@ -332,6 +416,7 @@ if (undoPath) {
     process.exit(1);
   }
   console.log(`Backup (taken before anything was written): ${snapshotPath}`);
+  console.log(restoreSteps());
   let result;
   try {
     result = undoEntityBackfill(checked.record);
@@ -348,7 +433,11 @@ if (undoPath) {
       '  Channels before the failing one may already be reverted. Run the same --undo again to see\n' +
         '  where each channel stands: undo reads a channel before writing it and never writes one twice.'
     );
+    // The arm where the steps matter most: Round 191's H is a database a hand
+    // copy already corrupted, and undo exits here on it. The backup file itself
+    // survived that, so these four steps are the only way back that arm has.
     console.error(`The backup from before this run is intact at:\n  ${snapshotPath}`);
+    console.error(restoreSteps());
     process.exit(1);
   }
 
@@ -409,6 +498,7 @@ if (undoPath) {
         `  Database: ${dbPath}\n` +
         '  Nothing was written and the snapshot was discarded. Check which database the record came from.'
     );
+    checkpointAfterWrite();
     process.exit(2);
   }
   if (changed || missing) {
@@ -430,6 +520,10 @@ if (undoPath) {
     discardSnapshot();
     console.log('Nothing was written; the snapshot was discarded.');
   }
+  // Unconditional, including the nothing-written branch: `getDb()` runs the
+  // schema init and migrations on open, so even an undo that reverts no channel
+  // has put frames in the WAL.
+  checkpointAfterWrite();
   // Exit 0 means every channel in the record is back where the run found it,
   // reverted now or already. A channel left because it changed is an undo that did
   // not do what was asked, whether or not other channels were written beside it.
@@ -597,6 +691,7 @@ if (plan.summary.apply === 0) {
 }
 
 console.log(`\nBackup (taken before anything was written): ${snapshotPath}`);
+console.log(restoreSteps());
 
 const result = applyEntityBackfill(plan);
 const recordPath = `${dbPath}.backfill-${stamp}.json`;
@@ -609,3 +704,4 @@ console.log(`Undo record: ${recordPath}`);
 console.log(
   `  reverse with:  npx tsx scripts/backfill-entity-bindings.mts ${dbArg} --undo=${recordPath}`
 );
+checkpointAfterWrite();
