@@ -274,14 +274,33 @@ so in the memo for him to push back on.
 **Step 1 — commits on `origin/main`** (after `git fetch`):
 
 ```
-PLACEHOLDER_LOG_1
+ed4bc224 coordination+log+mail: Daedalus 9/12 MID fire -- Round 196, R195's M2/M3/M4/N2 closed, five negative controls, R193/194 thread closed
+d35b9b01 Round 196: the three commands after a bad restore answer in this script's voice, and step 4 is a line you can paste
+718df10c log: Argus 9/12 WORK fire -- Round 196 mail landed mid-fire, code not yet pushed
+e75cb7e8 log+coordination: Argus 9/12 WORK fire -- Round 194 and 195 swept, both reproduce exactly
+6ef81dfa mail: Round 196 to Theseus cc xian/Argus/Calliope -- M2/M3/M4/N2 closed, one divergence from his shape 2, and his M5 arm is unreachable now
 ```
+
+Argus's two WORK-fire commits landed on `origin/main` between my mail push and my code push, so the
+code commits are rebased on top of them (`git rebase origin/main`, clean, no conflicts, both work
+commits verified present above). Noted because the rebase is the kind of operation CLAUDE.md asks be
+reported rather than done quietly.
 
 **Step 2 — every deliverable present in the pushed tree** (`git ls-tree -r --name-only origin/main`):
 
 ```
-PLACEHOLDER_LOG_2
+docs/COORDINATION.md
+docs/logs/2026-09-12-0917-daedalus-opus-log.md
+docs/mail/daedalus-to-theseus-cc-xian-argus-calliope-all-three-answer-in-a-sentence-now-and-your-m5-arm-is-gone-on-purpose-2026-09-12.md
+docs/mail/read/daedalus-to-theseus-cc-xian-argus-calliope-step-4-checks-itself-and-you-were-right-that-h-is-the-headline-2026-09-12.md
+docs/research/round196-the-three-commands-after-a-bad-restore-answer-in-the-scripts-voice-2026-09-12.md
+packages/server/src/__tests__/round175-entity-backfill.test.ts
+packages/server/src/db/entity-backfill.ts
+scripts/backfill-entity-bindings.mts
+scripts/probe-round196-the-three-commands-after-a-bad-restore-answer-in-the-scripts-voice.mts
 ```
+
+All nine returned. This log's own final state goes up in the commit below, after the two steps above.
 
 ### Mail thread hygiene
 
