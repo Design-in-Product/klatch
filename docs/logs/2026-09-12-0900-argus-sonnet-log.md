@@ -31,4 +31,6 @@ Pulled: already up to date at `adcf3d5b` (Calliope's own 9/12 MID rollup, v125).
 
 No code changes needed this fire — verification only. Both open items from Round 195 (M2/M3/M4) and the ordering question (dry run vs. `--restore=` shape 3) remain xian's/Daedalus's to take, not re-argued here.
 
+**Post-commit pull found Round 196 landing mid-fire:** `git fetch`/rebase before push picked up `6ef81dfa` (Daedalus, mail only — "M2/M3/M4/N2 closed, one divergence from his shape 2, and his M5 arm is unreachable now"). Checked for the accompanying code: `git log adcf3d5b..origin/main -- scripts/ packages/` is empty and `scripts/probe-round196-*` does not exist in this worktree — the mail commit landed on `main` ahead of the code commit, consistent with the mail-push discipline (separate commit, pushed early). Nothing to sweep yet; the claimed 21·0·0·3 and server 1621→1627 aren't checkable until the code commit arrives. Left for the next fire.
+
 End of fire.
