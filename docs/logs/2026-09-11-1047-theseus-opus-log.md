@@ -481,3 +481,154 @@ Three lines, none about the dry run: **stop `npm run dev` before any `--apply`; 
 `klatch.db-shm` first.** A plain copy with the server up restores nothing and says nothing; after the app has
 been used since the apply, it leaves a database the app cannot open. The backup file itself survives, and the
 delete-then-copy procedure recovers from there.
+
+---
+
+# STOP fire (19:47 PT)
+
+## 19:47 — briefing
+
+Worktree at `4bf88d53` (Iris's 9/11 STOP no-op), clean, synced to `origin/main` by the wrapper.
+
+New to me since WORK:
+- **Daedalus's Round 192** (`5753eeb2`, 17:29) and his memo
+  `daedalus-to-theseus-cc-xian-argus-calliope-shape-1-is-in-and-your-unmeasured-checkpoint-question-closes-two-of-your-three-open-arms-2026-09-11.md`.
+  Adopts my shape 1 (`restoreInstructions()`, one source, three CLI sites + header), narrows one site I
+  asked for with a classifier reason, and answers my §6 item 2: a TRUNCATE checkpoint returns `busy: 0`
+  against an idle connection, so **shape 2 has no detector** — my caution was right. He turned the same
+  fact into `checkpointAfterWrite()`. His numbers on my probe: 11 · 0 · 1 open · 7.
+- **Argus's sweep** (`e4b4f455`): read the diff and all four tests, re-ran my R191 probe unmodified,
+  **11 · 0 · 1 · 7**, server 1615, client 311 + 13 skipped. His measurement, not mine.
+- **Iris's STOP fire** (`4bf88d53`): no-op.
+- Cross-pollination brief re-read: a cleanup that installs no check is a rollback.
+
+## 19:5x — a tool-layer trap I walked into again, recorded
+
+My first attempt to start the R191 reproduction chained `mkdir -p … && npx tsx … > file` with a trailing
+`echo "EXIT=$?"`. The tool layer refused the `echo` and **discarded the whole chain** — no directory, no
+run, no output file. This is the same shape as the WORK fire's 14:5x void, one clause later. **Nothing
+from that attempt is counted.** Re-issued without the trailing clause and it ran. Note for the next
+fire: a refused clause voids the command it is in, so the `> file` redirect is not evidence the command
+ran; check the file exists.
+
+## 20:0x — R191 unmodified on Round 192: 11 · 0 failed · 1 open · 7 measurements
+
+Reproduced from my own seat on `4bf88d53`. **K1 PASS, L1 PASS, H1 OPEN** — Daedalus's "After" column
+exactly, and Argus's sweep number exactly.
+
+What the pass branches rest on, read rather than assumed:
+- `-wal` after the apply with the connection open is **0** (was 86,552 pre-192 on his rig, 589,192 on my
+  run-1 fixture), and `klatch.db` by itself already reads the post-run state. The checkpoint moved the
+  run into the main file, which is the whole mechanism.
+- H1 is unchanged: 1500 messages, `-wal` 4,132,392 bytes, `database disk image is malformed`, 101
+  integrity lines from `Tree 4 page 1442`.
+
+## 20:0x — Round 192's product diff, read before building
+
+- `restoreInstructions(dbPath, backupPath)` in `entity-backfill.ts`, four numbered steps, `shellQuote()`
+  single-quoting both paths. `dbPath = path.resolve(dbArg)` (`backfill-entity-bindings.mts:217`), so the
+  printed steps are absolute and don't depend on cwd.
+- `restoreSteps()` called at the apply's backup line, the undo's, and the undo catch. Not at the
+  `(a restored backup?)` site. I read the classifier after his memo and **agree** with the exclusion.
+- `checkpointAfterWrite()` on the apply path, the undo path (unconditional, including the
+  nothing-written branch), and the `--channels` refusal — never in the error path, where the file may be
+  the malformed one.
+- The `-wal` note is computed from `fs.statSync` **before** the script opens anything, and is a warning,
+  not a refusal.
+
+**The gap that reading opened.** Round 191 chose 1500 messages to cross SQLite's 1000-page
+autocheckpoint, because pre-192 that was the only way to get frames into the WAL *on top of* a main file
+that already held the run. Post-192 the checkpoint puts the run in the main file at the apply's exit — so
+that condition is now reached by **any** write at all, and "any" was never measured. That is the round.
+
+## 20:1x — Round 193 instrument, with predictions written before it ran
+
+`scripts/probe-round193-the-printed-steps-run-as-written-and-how-little-use-reopens-h.mts`. Arms:
+- **Q:** the four printed steps pasted into `/bin/sh -c` **verbatim**, on a fixture built under
+  `.testdata/r193/q it's here/` — a space *and* an apostrophe, the case `shellQuote()` exists for.
+- **B1 / B20:** the app writes 1, then 20, messages after the apply; Ctrl-C; the naive `cp`.
+- **W:** the `-wal` note fires with the right byte count (W1) and a negative control where it must stay
+  silent (W2).
+- **N:** what step 4's own dry run leaves behind. Measured only.
+- **Z:** no product file touched.
+
+Predictions recorded in the probe header before run 1: Q passes; **B1 already fails**, with the failure
+mode left unpredicted (1554 messages' frames produced malformed, but one message's may land on pages the
+backup also has and lie silently instead); W1 prints, W2 doesn't; N leaves a WAL. `tsc --noEmit --strict
+--module nodenext`: clean.
+
+## 20:2x — R193 run 1: 14 checks · 0 failed · 2 open · 4 measurements
+
+Every prediction held, and **B came out stronger than I predicted** — malformed, not merely wrong.
+
+- **B11 OPEN. One message is enough.** `-wal` 0 after the apply; one `insertMessage` takes it to
+  **32,992 bytes**; Ctrl-C leaves it; after `cp` the database is `database disk image is malformed`.
+  `klatch.db` by itself is the backup, intact — the 32,992 bytes beside it are what break it.
+- **B201 OPEN**, twenty messages, `-wal` **346,112 bytes**, same result.
+- **B12 / B202 PASS:** from both states the printed steps recover the backup row for row, backup file
+  untouched.
+- **Q0–Q4 PASS.** Steps 2 and 3 through a real shell exit 0 with no output; the quoting survives the
+  apostrophe at the endpoint, not only in Daedalus's unit test. Step 4's own test is usable:
+  `Candidates: 8 — 4 would move, 4 skipped.` before the apply and after the steps.
+- **W1/W2 PASS.** The note's byte count matches what the probe measured independently; on a freshly
+  checkpointed solo fixture it does not print.
+- **N (measured):** step 4 leaves `{db: 94208, wal: 0, shm: 32768}` — a *zero-length* WAL, the harmless
+  kind, which is Daedalus's own Round 192 measurement about read-only opens. Recorded so nobody reads the
+  sidecars' reappearance as a failure.
+
+**A dry-run signal worth naming:** on both B files the dry run exits **1** with no `Candidates:` line.
+So step 4 catches the failure. That was not driven in Round 191 (D ran on K's file, not H's).
+
+## 20:3x — R193 run 2: 14 · 0 · 2 · 4, every state matching
+
+The `-wal` figures are **identical**, not merely similar: 32,992 after one message and 346,112 after
+twenty, both runs. Row hashes differ between runs because the fixture's ids are freshly generated; the
+states they name do not.
+
+## 20:3x — a claim I narrowed on re-read before committing
+
+The draft writeup said Round 192 "removed the silent-wrong branch." Pre-192, K1 was dangerous precisely
+because it was silent; post-192 every case I drove either works or fails loudly. But that is four arms,
+not a proof — a frame set that happened to be self-consistent with the backup would lie silently and I
+have not driven one. The writeup and the memo both say so explicitly (§4 / "The part that is better").
+
+## 20:4x — writeup, memo, board
+
+- **Writeup** `docs/research/round193-one-message-is-enough-and-the-printed-steps-run-as-written-2026-09-11.md`.
+- **Memo** `docs/mail/theseus-to-daedalus-cc-xian-argus-calliope-192-reproduces-and-the-steps-run-as-written-but-h-is-one-message-wide-not-1500-2026-09-11.md`.
+  Two items offered, **neither asked for**: step 4 could print the expected `Candidates:` line so the
+  operator matches a string instead of a memory; and shape 3 (`--restore=`) reads better after this round
+  because its case is no longer "1500 messages" but "anything written since the apply". Both Daedalus's
+  or xian's to call.
+- **Thread closed** with `git mv` to `docs/mail/read/`: Daedalus's Round 192 reply and my Round 191 memo.
+  Left in `docs/mail/`: Daedalus's 9/9 apply-pass memo (xian's dry run), still open.
+- **COORDINATION:** my status is now Round 193, with Round 191 kept below as a dated entry.
+- Mail committed and pushed to `main` on its own first, per the worktree discipline: `9184b16c`.
+
+## Wrap verification (STOP fire)
+
+Step 1 — commits on `origin/main`:
+
+```
+(filled in below, after the push)
+```
+
+Step 2 — deliverable files, each `ls`'d:
+
+```
+(filled in below)
+```
+
+Step 3 — this log is committed last.
+
+## Carried, unchanged
+
+**Round 170's frequency probe** still needs one path to the real `klatch.db` from xian.
+
+## What xian needs from this fire
+
+One line, and it sharpens the third line from the WORK fire rather than adding a fourth: **one message of
+app use after an `--apply` is enough to make a hand `cp` of the backup leave a database the app cannot
+open.** So steps 1–3 as the CLI prints them are the procedure *always*, not a precaution for long
+sessions. The backup file survives every case measured, and the tool's own printed steps recover it.
+Nothing here touches the dry run, which is still the one item on your seat.
