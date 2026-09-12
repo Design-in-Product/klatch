@@ -15,4 +15,20 @@ Cross-pollination brief (`docs/briefs/cross-pollination/current.md`, 2026-09-12)
 
 `ls docs/mail | grep -v read` shows no other unread memo addressed to Argus. No code changes needed this fire — verification only.
 
+## ~13:30 PT (WORK fire) — Round 194 (Daedalus) and Round 195 (Theseus) swept; both reproduce exactly.
+
+Pulled: already up to date at `adcf3d5b` (Calliope's own 9/12 MID rollup, v125). `packages/`+`scripts/` diff since my last checkpoint (`1cdb2b22`): `f29edea6` (Daedalus, Round 194 — `entity-backfill.ts` gains exported `candidatesLine(plan)`, the CLI's step 4 now quotes it instead of prose, one new test file) and `174a19d0` (Theseus, Round 195 — scripts-only, no product/CLI file touched, arm Z clean).
+
+**Mail read, both cc Argus, neither addressed to this seat:**
+- `daedalus-to-theseus-cc-xian-argus-calliope-step-4-checks-itself-and-you-were-right-that-h-is-the-headline-2026-09-12.md` — Round 194 ships `candidatesLine()` as the one source for the printed and quoted line, catching a trap in Theseus's own item 1: step 4 must quote the *no-flag* line, not the run's own (they diverge under `--channels`/`--bases`, and the `--undo` case needs the post-apply line computed before the undo writes). Adopts Theseus's H-correction wholesale (1,500 was an artifact of the pre-192 bug, not a property of the arm; one write is now enough). Flags that his own first probe cut crashed on `copyFileSync('')` (arm F picked a SKIP row) — a probe bug, not a product one, but worth knowing since we both grep these logs.
+- `theseus-to-daedalus-cc-xian-argus-calliope-194-reproduces-and-all-three-commands-after-a-failed-restore-answer-badly-2026-09-12.md` — Round 195 reproduces 194 clean (14·0·0), then drives the branch nothing has tested yet: apply → one message → naive `cp` → malformed database, then each of the three things the tool tells the operator to do next. **Three open defects:** M2 (step 4's own no-flag command crashes with a raw Node stack trace, not the script's voice, on a malformed DB), M3 (a second `--apply` crashes the same way and leaves its snapshot beside the database, uncleaned), M4 (`--undo` takes a fresh snapshot of the *malformed* database via SQLite's backup API — which copies pages without validating them — then calls that copy "intact"). M4 is the one Theseus would fix first. Explicitly flags his own probe bug: first cut reported M7 as a FAIL because `holds()` only closed its handle on the success path, leaking connections across a same-process series of failed opens; fixed with `try/finally`.
+
+**Independently verified, not re-trusted:**
+- Re-ran Round 194's probe myself, unmodified: `probe-round194-step-4-quotes-a-line-the-operators-own-command-can-produce.mts` → **14 checks · 0 failed · 0 open** — matches exactly, including F/B/U arms (filtered/widened/undo lines all diverge from the no-flag quote as claimed) and Z (no product/CLI file differs from HEAD, as expected running after both rounds landed).
+- Re-ran Round 195's probe myself, unmodified: `probe-round195-the-check-step-and-the-undo-path-on-a-database-a-bad-restore-corrupted.mts` → **14 checks · 0 failed · 3 open · 3 measurements** — matches exactly. M2/M3/M4 open as claimed (confirmed the M2 stack trace really does originate in `packages/server/src/db/index.ts:114` via `runMigrations`, not a probe artifact). M7 **passes** — the `try/finally` fix Theseus described holds; no leaked-connection cross-contamination this run.
+- **Full suite, independently:** server **1621/1621** (101 files, matches Daedalus's claimed 1615→1621), client **311/311, 13 skipped** (unchanged). `npm run typecheck` clean across all three workspaces. `npx tsc --noEmit --strict --module nodenext scripts/backfill-entity-bindings.mts` clean (the CLI's separate strict check Daedalus claimed).
+- `git status` clean throughout.
+
+No code changes needed this fire — verification only. Both open items from Round 195 (M2/M3/M4) and the ordering question (dry run vs. `--restore=` shape 3) remain xian's/Daedalus's to take, not re-argued here.
+
 End of fire.
