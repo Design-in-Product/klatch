@@ -1209,3 +1209,80 @@ describe('Round 194 — step 4 checks itself (Theseus R193)', () => {
     expect(candidatesLine(one)).not.toBe(candidatesLine(all));
   });
 });
+
+describe('Round 196 — step 4 is a line you can paste (Theseus R195, N2)', () => {
+  const DB = '/Users/xian/Development/klatch/klatch.db';
+  const BACKUP = `${DB}.backup-backfill-2026-09-11T17-30-00-000Z`;
+  const EXPECTED = 'Candidates: 8 — 4 would move, 4 skipped.';
+  const CMD = 'npx tsx scripts/backfill-entity-bindings.mts';
+
+  /**
+   * Steps 2 and 3 are shell lines; steps 1 and 4 were prose. The natural way to
+   * compose "re-run this script with no flags" is to scroll up and reuse the
+   * command you just ran — and after a `--channels` apply *that* command prints
+   * the filtered `Candidates:` line while step 4 quotes the unfiltered one. A
+   * correct restore reported as a failure, reached from the operator's side
+   * rather than the tool's.
+   */
+  it('prints the command step 4 asks for, with no flags on it', () => {
+    const text = restoreInstructions(DB, BACKUP, EXPECTED, CMD);
+    const line = text.split('\n').find((l) => l.includes(CMD))!;
+    expect(line.trim()).toBe(`${CMD} '${DB}'`);
+    expect(line).not.toContain('--channels');
+    expect(line).not.toContain('--bases');
+    expect(line).not.toContain('--apply');
+  });
+
+  it('quotes the path so the pasted line survives a space', () => {
+    const spaced = '/Users/xian/My Klatch/klatch.db';
+    const text = restoreInstructions(spaced, `${spaced}.backup-backfill-x`, EXPECTED, CMD);
+    expect(text).toContain(`${CMD} '${spaced}'`);
+  });
+
+  /**
+   * Same rule the quoted line lives under: readers of this tool's output anchor
+   * numbered steps on `^ {2}\d\. ` and the run's own verdict on a column-0
+   * `Candidates:`. A command line that broke either would be a step 5 or a
+   * second verdict to every probe that reads this output.
+   */
+  it('keeps the command a continuation line, not a fifth step', () => {
+    const text = restoreInstructions(DB, BACKUP, EXPECTED, CMD);
+    const steps = text.split('\n').filter((l) => /^ {2}\d\. /.test(l));
+    expect(steps.map((l) => l.trim().slice(0, 3))).toEqual(['1. ', '2. ', '3. ', '4. ']);
+    expect(text.split('\n').filter((l) => /^Candidates:/.test(l))).toEqual([]);
+    const cmdLine = text.split('\n').find((l) => l.includes(CMD))!;
+    expect(cmdLine).toMatch(/^ {4,}/);
+  });
+
+  /** The command is an addition to step 4, not a replacement for what it checks. */
+  it('still quotes the expected line under the command', () => {
+    const text = restoreInstructions(DB, BACKUP, EXPECTED, CMD);
+    expect(text).toContain('word for word');
+    expect(text).toContain(EXPECTED);
+    expect(text.indexOf(CMD)).toBeLessThan(text.indexOf(EXPECTED));
+  });
+
+  /** A caller that passes no command gets the Round 194 text unchanged. */
+  it('prints no command line when the caller does not give one', () => {
+    const text = restoreInstructions(DB, BACKUP, EXPECTED);
+    expect(text).not.toContain('npx tsx');
+    expect(text).toContain('word for word');
+    expect(text).toContain(EXPECTED);
+    const fallback = restoreInstructions(DB, BACKUP);
+    expect(fallback).toContain('should read as it did before the run');
+    expect(fallback).not.toContain('npx tsx');
+  });
+
+  /**
+   * The command is composed from the database path, not echoed from argv, so
+   * there is no route by which the flags of the run that printed it can reach
+   * it. Guarded here because the whole point of the round is that the operator
+   * must not re-run a filtered command against an unfiltered quote.
+   */
+  it('builds the command from the database path alone', () => {
+    const a = restoreInstructions(DB, BACKUP, EXPECTED, CMD);
+    const b = restoreInstructions(DB, `${DB}.backup-backfill-other`, EXPECTED, CMD);
+    const cmdOf = (t: string) => t.split('\n').find((l) => l.includes(CMD))!.trim();
+    expect(cmdOf(a)).toBe(cmdOf(b));
+  });
+});

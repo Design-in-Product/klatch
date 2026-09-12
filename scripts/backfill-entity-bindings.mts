@@ -100,6 +100,23 @@
  * from inside `undoEntityBackfill`: undo commits per channel, so the backup is
  * kept and its path reprinted.
  *
+ * **That rule covered every input except the database itself.** Theseus's Round
+ * 195 drove the three things this tool tells an operator to do *after* a restore
+ * that went wrong — step 4's own re-run, another `--apply`, and `--undo` — on a
+ * database a naive `cp` had corrupted, and all three answered badly: a raw
+ * `SqliteError` out of `runMigrations` with no sentence in it, a second snapshot
+ * left beside the database because the throw skipped `discardSnapshot()`, and —
+ * worst — an `--undo` that named its own fresh snapshot as the backup that is
+ * "intact" when that file was a page-for-page copy of the corruption. `backup()`
+ * copies pages and does not read them, so nothing anywhere said so. Now: a
+ * writing run `quick_check`s its snapshot before calling it a way back and
+ * refuses if it will not read back; a plan that throws on the dry-run path exits
+ * through `unreadable()` with a sentence, the sidecars named, and every
+ * `.backup-backfill-*` file beside the database listed **with its own verdict**,
+ * newest first — because after a bad restore they differ only by timestamp and
+ * the newest is a copy of the damage. `quick_check` and not `integrity_check`:
+ * measured, the latter throws on exactly these files.
+ *
  * Known, inherited from Theseus's 8/12 note on `inspect-klatch-db.mjs`: opening
  * a WAL database read-only still creates `-wal`/`-shm` sidecars beside it. Both
  * are gitignored.
@@ -201,6 +218,13 @@ function flagValue(name: string): string | undefined {
   const eq = hit.indexOf('=');
   return eq === -1 ? '' : hit.slice(eq + 1);
 }
+
+/**
+ * This script's own invocation, without the database path — the path is
+ * appended and quoted at each site that prints a command, so a pasted line
+ * survives a space (`shellQuote`, one source).
+ */
+const SCRIPT_COMMAND = 'npx tsx scripts/backfill-entity-bindings.mts';
 
 const dbArg = positional[0];
 if (!dbArg) {
@@ -341,9 +365,136 @@ if (undoPath) {
   }
 }
 
+/**
+ * What SQLite makes of a database file, from a handle this function closes.
+ *
+ * `quick_check`, not `integrity_check`, and **measured rather than reasoned**:
+ * on exactly the file this matters for — the database a naive `cp` corrupted,
+ * Theseus's Round 195 — `integrity_check` *throws* `database disk image is
+ * malformed`, so the check meant to produce a verdict produces the same
+ * uncaught error it was added to prevent. `quick_check(1)` returns the fault as
+ * a row instead (`Tree 4 page 24: btreeInitPage() returns error code 11`), in
+ * under a millisecond on Round 176's fixture. It is O(db) on a healthy file,
+ * which is the price of the one claim it backs.
+ *
+ * The `finally` is not tidiness. Theseus's own Round 195 probe closed its handle
+ * on the success path only, and on these arms most reads throw by design: every
+ * throw leaked a connection and poisoned later opens *in the same process* with
+ * `disk I/O error`, which reported a correct restore as a failure. Same class of
+ * bug as the one the round is about.
+ */
+function quickCheck(p: string): { ok: boolean; why: string } {
+  if (!fs.existsSync(p)) return { ok: false, why: 'the file is not there' };
+  let d: Database.Database | undefined;
+  try {
+    d = new Database(p, { readonly: true, fileMustExist: true });
+    const rows = d.pragma('quick_check(1)') as Array<Record<string, unknown>>;
+    const first = rows.length ? String(Object.values(rows[0])[0]) : '(no result)';
+    // The banner line SQLite prefixes to a fault ("*** in database main ***")
+    // is noise in a one-line verdict; the line under it is the fault.
+    const why = first
+      .split('\n')
+      .filter((l) => !/^\*{3}/.test(l))
+      .join('; ');
+    return { ok: first === 'ok', why: why || first };
+  } catch (err) {
+    return { ok: false, why: (err as Error).message };
+  } finally {
+    try {
+      d?.close();
+    } catch {
+      /* a handle that will not close is still better closed-attempted than leaked */
+    }
+  }
+}
+
+/**
+ * The `.backup-backfill-*` files actually sitting beside this database, newest
+ * first, each with its own verdict.
+ *
+ * Printed on every arm that tells an operator to go back to a backup. Round 195
+ * M6/M7: after a bad restore three of these differ only by timestamp, the way
+ * back is among them, and the tool pointed at the newest — the only unreadable
+ * one. The newest is the *worst* default here, because a snapshot taken after
+ * the damage is a copy of the damage.
+ */
+function waysBack(): string {
+  const dir = path.dirname(dbPath);
+  const base = path.basename(dbPath);
+  let names: string[];
+  try {
+    names = fs
+      .readdirSync(dir)
+      .filter((f) => f.startsWith(`${base}.backup-backfill-`) && !/-wal$|-shm$/.test(f))
+      .sort()
+      .reverse();
+  } catch {
+    return '';
+  }
+  if (!names.length) return '\nNo `.backup-backfill-*` file is sitting beside this database.';
+  const rows = names.map((n) => {
+    const v = quickCheck(path.join(dir, n));
+    return `  ${n}\n      ${v.ok ? 'SQLite reads it as sound' : `UNREADABLE — ${v.why}`}`;
+  });
+  return (
+    `\nBackups beside this database, newest first (a snapshot taken after the damage is a copy of\nit, so newest is not the answer — take the newest one that reads as sound):\n` +
+    rows.join('\n')
+  );
+}
+
+/** The sidecars, named, because a bad restore is usually one of these left behind. */
+const sidecarNote = (): string => {
+  const parts = ['-wal', '-shm']
+    .map((s) => ({ s, size: fs.existsSync(dbPath + s) ? fs.statSync(dbPath + s).size : undefined }))
+    .filter((p) => p.size !== undefined)
+    .map((p) => `${path.basename(dbPath)}${p.s} (${p.size!.toLocaleString()} bytes)`);
+  return parts.length ? `\nSidecars beside it right now: ${parts.join(', ')}.` : '';
+};
+
 const source = new Database(dbPath, { readonly: true, fileMustExist: true });
 await source.backup(snapshotPath);
 source.close();
+
+// A file this script is about to call a way back has to be one. `backup()`
+// copies pages; it does not read them — measured this round: from a corrupt
+// source it *succeeds*, and the copy carries the same fault, with no error from
+// either end. So a writing run on a damaged database used to take a snapshot,
+// print it as the backup "taken before anything was written", print four steps
+// whose step 3 copies it over the database, and — on the undo path — call it
+// "intact" in the catch (Theseus's Round 195, M3 and M4).
+//
+// Checked only where the snapshot is a *backup*. A dry run's snapshot is a read
+// surface that gets deleted, names no way back, and pays nothing for this.
+if (apply || undoRequested) {
+  const verdict = quickCheck(snapshotPath);
+  if (!verdict.ok) {
+    // Which of the two it is changes the remedy, so say which. A damaged source
+    // is Round 195's arm; a sound source with an unreadable copy is a failure of
+    // the copy itself (no room on the disk, an interrupted write) and the
+    // database is still fine.
+    const own = quickCheck(dbPath);
+    discardSnapshot();
+    if (own.ok) {
+      console.error(`\ncannot back up this database: ${dbPath}`);
+      console.error(`  The database reads as sound, but the copy just taken does not: ${verdict.why}`);
+      console.error(
+        '  Refusing to write against a backup that cannot be read back. Nothing was written and the\n' +
+          '  copy was discarded. Check for room on the disk and run this again.'
+      );
+    } else {
+      console.error(`\ncannot use this database: ${dbPath}`);
+      console.error(`  SQLite reads it as damaged: ${own.why}`);
+      console.error(
+        '  A backup taken from it now is a copy of the damage, so this run would hand you a way back\n' +
+          '  that cannot be read. Nothing was written and the snapshot was discarded.'
+      );
+      const sidecars = sidecarNote();
+      if (sidecars) console.error(sidecars);
+      console.error(waysBack());
+    }
+    process.exit(1);
+  }
+}
 
 // `db/index.ts` resolves its path once, at import time, from KLATCH_DB. Set it
 // before the dynamic imports below or it opens the worktree's own klatch.db.
@@ -355,6 +506,7 @@ const {
   undoEntityBackfill,
   checkUndoRecord,
   restoreInstructions,
+  shellQuote,
   candidatesLine,
   BACKFILL_SOURCES,
   DEFAULT_APPLY_BASES,
@@ -364,7 +516,51 @@ const {
 // printed as a way back with no instructions attached; the instructions have to
 // travel with the path, at every site that prints one.
 const restoreSteps = (expected?: string): string =>
-  restoreInstructions(dbPath, snapshotPath, expected);
+  restoreInstructions(dbPath, snapshotPath, expected, SCRIPT_COMMAND);
+
+/**
+ * Every arm that ends with "this database cannot be read", in this script's
+ * voice rather than Node's.
+ *
+ * The header's rule — *"Every refusal speaks in this script's voice … a
+ * sentence, not a Node stack"* — covered every input except the database
+ * itself. Theseus's Round 195, M2: step 4 tells the operator to re-run this
+ * script with no flags to find out whether their restore worked, and on a
+ * database a bad restore corrupted that command printed nothing of its own —
+ * just `SqliteError: database disk image is malformed` out of `runMigrations`,
+ * uncaught. The one arm where these steps matter most was the one arm with no
+ * sentence in it.
+ */
+function unreadable(err: Error): never {
+  const msg = err.message;
+  // `code` is better evidence than the message, and present on a better-sqlite3
+  // error; the message test is the fallback for anything wrapped on the way up.
+  const code = String((err as NodeJS.ErrnoException).code ?? '');
+  const corrupt =
+    /^SQLITE_(CORRUPT|NOTADB)/.test(code) || /malformed|not a database|file is encrypted/i.test(msg);
+  const own = corrupt ? quickCheck(dbPath) : undefined;
+  discardSnapshot();
+  console.error(`\ncannot read this database: ${dbPath}`);
+  console.error(
+    corrupt
+      ? `  SQLite reads it as damaged: ${own && !own.ok ? own.why : msg}`
+      : `  ${msg}`
+  );
+  if (corrupt) {
+    console.error(
+      '  A copy made while something still held the database open, without deleting the sidecars\n' +
+        '  first, leaves it exactly like this — it is what step 2 of the restore steps exists for.\n' +
+        '  Nothing was written and the snapshot was discarded. The way back is a backup that still\n' +
+        '  reads as sound, restored with all four steps.'
+    );
+    const sidecars = sidecarNote();
+    if (sidecars) console.error(sidecars);
+    console.error(waysBack());
+  } else {
+    console.error('  Nothing was written and the snapshot was discarded.');
+  }
+  process.exit(1);
+}
 
 /**
  * The `Candidates:` line step 4's dry run will print **if the restore worked** —
@@ -474,7 +670,16 @@ if (undoPath) {
     // The arm where the steps matter most: Round 191's H is a database a hand
     // copy already corrupted, and undo exits here on it. The backup file itself
     // survived that, so these four steps are the only way back that arm has.
+    //
+    // "Intact" is now a measured word rather than an assumed one. Theseus's
+    // Round 195, M4: on a corrupted database this line named the snapshot this
+    // run had just taken — a page-for-page copy of the corruption — and the four
+    // steps under it copy that file over the database. The snapshot verdict at
+    // the top of the run is what makes the word true here; a damaged database
+    // never reaches this catch any more, and a snapshot that would not read back
+    // never became a backup.
     console.error(`The backup from before this run is intact at:\n  ${snapshotPath}`);
+    console.error('  (SQLite read it as sound when it was taken, before this run wrote anything.)');
     console.error(restoreSteps(undoExpected));
     process.exit(1);
   }
@@ -622,7 +827,17 @@ if (channelsArg !== undefined && !channelsArg.split(',').filter(Boolean).length)
 const channelIds =
   channelsArg !== undefined ? channelsArg.split(',').filter(Boolean) : undefined;
 
-const plan = planEntityBackfill({ bases, channelIds });
+// The plan is the first thing that opens the database for real — `getDb()` runs
+// the schema init and the migrations on the way — so this is where a damaged
+// file surfaces on the dry-run path. (A writing run never reaches here on one:
+// the snapshot verdict above refuses first.) The dry run pays for no check up
+// front and gets its sentence here instead.
+let plan;
+try {
+  plan = planEntityBackfill({ bases, channelIds });
+} catch (err) {
+  unreadable(err as Error);
+}
 
 console.log(`\n${'='.repeat(78)}\n${dbPath}\n${'='.repeat(78)}`);
 console.log(
@@ -750,6 +965,10 @@ console.log(
 );
 console.log(`Undo record: ${recordPath}`);
 console.log(
-  `  reverse with:  npx tsx scripts/backfill-entity-bindings.mts ${dbArg} --undo=${recordPath}`
+  // Quoted, both of them. This line was written to be pasted and was the one
+  // printed command that had never been driven through a shell — on xian's own
+  // corpus path it would need no quotes, and on any path with a space in it the
+  // shell splits the line and the undo runs against the wrong argument.
+  `  reverse with:  ${SCRIPT_COMMAND} ${shellQuote(dbPath)} --undo=${shellQuote(recordPath)}`
 );
 checkpointAfterWrite();

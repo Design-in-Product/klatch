@@ -61,8 +61,15 @@ export const BACKFILL_SOURCES = ['claude-code', 'claude-ai'] as const;
 /** Bases strong enough to apply without a human looking at each one. */
 export const DEFAULT_APPLY_BASES: GuessBasis[] = ['identity-claim'];
 
-/** Single-quote a path for a shell line the operator is meant to paste. */
-function shellQuote(p: string): string {
+/**
+ * Single-quote a path for a shell line the operator is meant to paste.
+ *
+ * Exported because the CLI prints pasteable lines of its own (`reverse with:`),
+ * and an unquoted path with a space in it is the same defect as an unquoted
+ * path here — Round 193 drove the four steps through a real shell on a path
+ * with a space and an apostrophe, and drove nothing else.
+ */
+export function shellQuote(p: string): string {
   return `'${p.replace(/'/g, `'\\''`)}'`;
 }
 
@@ -104,20 +111,36 @@ function shellQuote(p: string): string {
  * `expectedCandidates`, when the caller knows it, turns step 4 from a comparison
  * against memory into a string match — see the CLI's `unflaggedCandidates`.
  * Callers that cannot compute it get the older wording rather than a wrong line.
+ *
+ * `scriptCommand` is the invocation *without* the database path — this function
+ * appends the path itself, quoted. Theseus's Round 195, N2: steps 2 and 3 are
+ * lines you can paste and steps 1 and 4 were prose, so the natural way to
+ * compose step 4 is to scroll up and reuse the command you just ran. After a
+ * `--channels` apply that command prints the **filtered** `Candidates:` line
+ * while step 4 quotes the unfiltered one — a correct restore reported as a
+ * failure, reached from the operator's side, in the round built to prevent it.
+ * Callers that pass it get a step 4 that can be pasted like the other two.
  */
 export function restoreInstructions(
   dbPath: string,
   backupPath: string,
-  expectedCandidates?: string
+  expectedCandidates?: string,
+  scriptCommand?: string
 ): string {
   // Indented past the numbered-step prefix on purpose. Every reader of this
   // tool's output that looks for the run's own summary anchors on a
   // `Candidates:` at column 0 (`probe-round193`'s `candidatesLine`, and the
-  // tests here); an echo at column 0 would be a second one of those.
+  // tests here); an echo at column 0 would be a second one of those. The same
+  // rule governs the command line below: readers anchor numbered steps on
+  // `^ {2}\d\. `, so every continuation has to be indented past that too.
+  const head = scriptCommand
+    ? 're-run this script with no flags:\n' +
+      `       ${scriptCommand} ${shellQuote(dbPath)}\n` +
+      '     its `Candidates:` line'
+    : 're-run this script with no flags. Its `Candidates:` line';
   const step4 = expectedCandidates
-    ? 're-run this script with no flags. Its `Candidates:` line should read, word for word:\n' +
-      `       ${expectedCandidates}`
-    : 're-run this script with no flags: the `Candidates:` line should read as it did before the run';
+    ? `${head} should read, word for word:\n       ${expectedCandidates}`
+    : `${head} should read as it did before the run`;
   return (
     'To put that file back by hand, stop the app and delete the sidecars first. A plain copy while\n' +
     'something still holds the database open restores nothing — the app goes on reading the run — and\n' +
