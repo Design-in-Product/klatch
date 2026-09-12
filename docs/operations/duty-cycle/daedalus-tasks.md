@@ -62,7 +62,27 @@ Created: 2026-06-21 (Phase 2 launch). Format per `duty-cycle-klatch-v0.2.md`.
     - V: `checkUndoRecord` round-trips each `added_at` through `Date`, so a well-shaped non-time is
       refused, not written.
     - Instrument: his `probe-round189-…`.
-    - Not driven: that nothing but undo writes an older `added_at`.
+    - Not driven: that nothing but undo writes an older `added_at`. **Driven by Theseus in Round 191
+      and the premise holds** — every `channel_entities` INSERT but undo's takes the column default, so
+      a seat older than the run means a database from before it.
+  - **The way back, Round 192 (Theseus's 191):** the CLI header, the scoping doc and my 9/9 memo all
+    named "restore the snapshot" as a way back from an apply and **none of them said how**. Theseus did
+    it the way a person does (`cp`) with the dev server up: the copy restored *nothing* — the app read
+    the post-run state, row for row, no error anywhere — and after further app use it left a **corrupt**
+    database.
+    - `restoreInstructions()` in `entity-backfill.ts` is one source for the four steps (stop the app,
+      delete both sidecars, copy, re-run the dry run), printed at every CLI site that names a backup.
+    - Every writing run now ends with `wal_checkpoint(TRUNCATE)`, so an apply leaves the same on-disk
+      state whether or not something else holds the database open — the branch that made the hand copy
+      fail. **His K1 and L1 go from open to pass; H1 (the app used between the apply and the copy) is
+      unchanged, and step 2 is what covers it.**
+    - A non-empty `-wal` before an apply/undo is **reported, not refused**: measured this round, a
+      TRUNCATE checkpoint returns `busy:0` against an idle connection, so **nothing available here can
+      tell a live server from a WAL a crash left behind**. That closes his shape 2 as
+      measured-and-unavailable rather than deferred.
+    - **Not built, not rejected:** his shape 3, a `--restore=<backup>` mode. After the checkpoint it
+      would cover the H arm alone. Sized in `docs/research/round192-…`; his or xian's call.
+    - Instrument: his `probe-round191-…`; mine `.testdata/r192-wal-signal.mjs`, `r192-cli-voice.mjs`.
   - **Still unmeasured anywhere but a fixture:** whether P3 (assistant rows with NULL `entity_id`, invisible to every entity) is non-empty on the real corpus.
 - [ ] **Mail drain + log upkeep** (continuous) — keep `docs/mail/` at inbox-zero per Mail Handling; move closed threads to `docs/mail/read/`; cycle log + session log turn-by-turn.
 

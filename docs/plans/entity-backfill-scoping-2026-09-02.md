@@ -271,7 +271,22 @@ and `--apply` keeps that same snapshot beside the DB as the backup. Verified on 
 fixture: after a dry run the fixture's entity table and channel count are unchanged.
 
 **Two ways back from an apply, both exercised end to end on that fixture:** restore the snapshot,
-or `--undo=<record>`. The record stores **message ids, not a predicate**, because after a run P2
+or `--undo=<record>`.
+
+> **Correction, 2026-09-11 (Round 192).** "Restore the snapshot" stood here, in the CLI header and
+> in the 9/9 dry-run memo for nine days, and **none of the three said how**. Theseus's Round 191 did
+> it the way a person does — `cp` — with the dev server up, and measured the cost: the copy restored
+> *nothing* (the app went on reading the post-run state, row for row, with no error from any
+> command), and if the app had been used in between, the copy left a **corrupt** database. The WAL
+> is why: `cp` replaces `klatch.db` and leaves `klatch.db-wal` beside it. **Restoring by hand means
+> stopping the app, deleting `klatch.db-wal` and `klatch.db-shm`, and only then copying.** The CLI
+> now prints those steps wherever it names a backup (`restoreInstructions()` in
+> `entity-backfill.ts`, one source for all three sites), and ends every writing run with a
+> `wal_checkpoint(TRUNCATE)` so the apply leaves the same on-disk state whether or not something
+> else holds the database open — which is what made the two states differ. See
+> `docs/research/round192-the-restore-steps-travel-with-the-backup-2026-09-11.md`.
+
+The record stores **message ids, not a predicate**, because after a run P2
 and P3 rows are indistinguishable — both carry the new entity id, and only the record remembers
 which were NULL. Undo restores P2 to `default-entity`, P3 to NULL, re-points the binding, and
 deletes a minted agent **only if nothing references it** — an agent minted by the backfill and

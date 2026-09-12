@@ -178,3 +178,91 @@ CLI, the memo, the plan doc, `daedalus-tasks.md`, this log, and `COORDINATION.md
 ```
 Committed locally and not pushed from this fire: the wrapper owns delivery. I'm not claiming anything
 reached `origin/main`.
+
+## 17:17 PT (STOP fire) — Round 192: Theseus's Round 191 (the restore his 190 wording names)
+
+**Briefing.** Worktree synced to `origin/main` = `67fa5b64`, clean. Read my COORDINATION section and
+`docs/mail/`. One new memo on my seat:
+`theseus-to-daedalus-cc-xian-argus-calliope-190-holds-and-the-restore-it-names-fails-with-the-dev-server-up-2026-09-11.md`
+plus `docs/research/round191-…`. He reproduced 190 unmodified, re-vehicled R189 so M2/U2 assert exact
+sentences, found no other path to an older `added_at` (so 190's premise holds), and moved my R190 thread
+to `read/`. **The item on me is his §6: three fix shapes, my call, shape 1 recommended.** No other new
+mail; the older open memos (Argus 7/19, cowork 8/28, the 9/2 threads, Theseus 9/3–9/8) predate this fire.
+
+**~17:19 — reproduced first, from my seat, unmodified on `67fa5b64`:**
+- R189 **14 · 0 · 0 · 4**, R187 **11 · 0 · 0 · 4**, R185 **15 · 0 · 0 · 3**
+- R191 **11 · 0 · 3 open · 7** — K1, L1, H1, his run-3 numbers exactly.
+
+Outputs `.testdata/r186-r192base-r18{9,7,5}.txt` and `-r191.txt`. R191 runs in ~2 min, so it is
+affordable as a verification instrument this fire — which is what made shape 2's open question worth
+opening rather than deferring.
+
+**~17:21 — measured before designing** (`.testdata/r192-wal-signal.mjs`, scratch DB in tmp, zero model
+calls). Three results, two of which changed the design:
+1. A **read-only** open creates a **zero-length** `-wal` and a 32KB `-shm` and leaves both on close. So
+   sidecar *existence* says nothing — this script's own dry run makes them. Only a non-zero `-wal` does.
+   That killed my first version of the warning, which tested for the file.
+2. `wal_checkpoint(TRUNCATE)` with an **idle** second connection returns **`busy: 0`** and empties the
+   WAL; it only reports busy against a connection inside an open read transaction. **His caution on
+   shape 2 was right and shape 2 has no detector** — nothing here separates a live server from a WAL a
+   crash left. Closed as measured-and-unavailable rather than deferred.
+3. The same fact read the other way is a fix: his K arm exists because SQLite checkpoints on the *last*
+   close, and the dev server makes the CLI's exit not the last one. Doing it ourselves removes the branch.
+
+**Predicted, written before running the probe on the change:**
+- R191: K1 and L1 flip to pass; **H1 does not** (the app's own writes after the run build a new WAL);
+  S1/H2/C1 unchanged; Z fails while the tree is dirty.
+- R189/R187/R185 unchanged but Z.
+- Test file 50 → 54.
+- Negative controls: cp direction reversed → the direction test; the backup's sidecars → the direction
+  test; unquoted paths → the spaces test; **steps reordered → 0 fail, because my step-1 test greps for a
+  phrase instead of anchoring it.**
+
+**~17:23 — built.**
+- `restoreInstructions(dbPath, backupPath)` in `entity-backfill.ts`: one source, four steps, paths
+  single-quoted. In the module rather than the CLI because that is the only surface the unit tests
+  reach, and because three copies in the CLI is the drift Round 169 ruled on.
+- Printed at the apply's backup line, the undo's, the catch's `intact at:`, and the header.
+- **Not** at `(a restored backup?)`. Read the classifier before ruling: that sentence only prints when
+  the restore already worked — a failed hand copy leaves the post-run state, where the record's agent is
+  still seated, so the disposition is `revert` (his own K1 measured `--undo` reverting all four), and a
+  corrupt one exits at the catch. The steps belong where a backup is *offered*.
+- `checkpointAfterWrite()` at the end of the apply, the undo, and the undo refusal that writes no
+  channel (`getDb()` runs migrations on open, so even that has put frames in the WAL). Never fatal, not
+  in the error path — the file there may be the malformed one.
+- The `-wal` note before apply/undo: reports and runs anyway.
+
+**Verified.**
+- Test file **54/54** (50 + 4). `npm run typecheck` clean. CLI `tsc --noEmit --strict --module nodenext`
+  clean (typecheck does not cover `scripts/`).
+- **Negative controls** (`.testdata/r192-negctl.mjs`, one mutation at a time, sha identical after,
+  `NEGCTL` count 0): 2 / 2 / 2 / **0** / 1 failing tests, matching every prediction including the fourth.
+  **The fourth is the one worth recording:** "copy it now, stop `npm run dev` afterwards" passed all 54,
+  because my step-order test grepped for the phrase anywhere in step 1. Re-anchored on the step's start
+  plus "step 1 contains no `cp`"; on the re-run that control fails it. The 0-fail row is reported as it
+  ran, before the repair.
+- **Read by hand** (`.testdata/r192-cli-voice.mjs`): the dry run prints no steps and no note; apply and
+  undo print the steps under their real interpolated paths; the note fires at 8,272 bytes when a second
+  connection leaves a WAL. No test reads the CLI's own output, so it got read.
+- **Full suites:** server **101 files · 1611 → 1615**, client **311 passed · 13 skipped** (unchanged, no
+  client file touched).
+- Code + tests committed on their own (`5753eeb2`) so his arm Z compares against a HEAD with the fix.
+
+**~17:32 — probes on the committed HEAD:**
+- R189 **14 · 0 · 0 · 4**, R187 **11 · 0 · 0 · 4**, R185 **15 · 0 · 0 · 3**.
+- **R191 11 · 0 failed · 1 open · 7** (was 3 open). K0 now reports `-wal` **0** after an apply with the
+  connection still open (was 86,552). **K1 and L1 pass; H1 unchanged.** L1 passing is more than I
+  predicted — I expected the running server's page cache to still show the old state after the copy; all
+  three reads agree on the backup.
+
+**Not claimed.** No real corpus; every number is from unit tests or the gitignored 8-channel fixture, and
+the 72 is still unverified. The checkpoint is measured on **his substitution** — `getDb()` under
+`tsx watch`, not the Hono process under `concurrently` — and that limit is his, carried, not resolved.
+His shape 3 (`--restore=<backup>`) is not built and not rejected; after the checkpoint it would cover the
+H arm alone.
+
+**Docs:** `docs/research/round192-the-restore-steps-travel-with-the-backup-2026-09-11.md`; the scoping
+doc's "Two ways back from an apply" carries a dated correction; `daedalus-tasks.md`; my COORDINATION
+entry; the memo to Theseus cc xian/Argus/Calliope. His R191 memo stays in `docs/mail/` until he verifies.
+
+**For xian:** nothing new is blocking. The dry run is still the one item on his seat.

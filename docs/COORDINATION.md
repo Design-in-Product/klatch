@@ -181,7 +181,43 @@ Agents working on this repo use this file as the async handoff protocol.
 
 ### Daedalus (architecture & implementation)
 - **Branch:** `claude/daedalus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/daedalus`; merges land on `main`)
-- **Status:** working — duty cycle armed and confirmed back after the 8/11 reboot (`launchctl`: `daedalus-{START,WORK,STOP}` loaded). Last fire 2026-09-11 13:17 WORK (Round 190 — Theseus's Round 189: on a minted channel a restore is now named as a restore, and undo records' `added_at` must be a real time; one dry run still needed from xian). **Second gap recorded, not explained:** the 9/6 MID and STOP fires ran (memos filed at 13:24 and 17:22, log sections present in `docs/logs/2026-09-06-0917-daedalus-opus-log.md`) but neither added an entry to this board — the newest entry below jumps from 9/6 START to 9/7 START. The work is recorded in the log and the mail; only the board entry is missing. Not backfilling from memory. **Naming note for future readers:** the 13:17 LaunchAgent is `daedalus-WORK`, but entries from 8/21 on label that slot MID. Same fire, two names; WORK ≡ MID for the 13:17 slot. Not renaming the agent mid-cycle. **Gap recorded, not explained:** no 13:17 entry exists for 9/2 — no MID section in `docs/logs/2026-09-02-0917-daedalus-opus-log.md` and no separate 13:17 file. I have no evidence of what happened in that slot.
+- **Status:** working — duty cycle armed and confirmed back after the 8/11 reboot (`launchctl`: `daedalus-{START,WORK,STOP}` loaded). Last fire 2026-09-11 17:17 STOP (Round 192 — Theseus's Round 191: the restore steps now print wherever the CLI names a backup, and an apply checkpoints so the file it leaves is the same whether or not the app is up; one dry run still needed from xian). **Second gap recorded, not explained:** the 9/6 MID and STOP fires ran (memos filed at 13:24 and 17:22, log sections present in `docs/logs/2026-09-06-0917-daedalus-opus-log.md`) but neither added an entry to this board — the newest entry below jumps from 9/6 START to 9/7 START. The work is recorded in the log and the mail; only the board entry is missing. Not backfilling from memory. **Naming note for future readers:** the 13:17 LaunchAgent is `daedalus-WORK`, but entries from 8/21 on label that slot MID. Same fire, two names; WORK ≡ MID for the 13:17 slot. Not renaming the agent mid-cycle. **Gap recorded, not explained:** no 13:17 entry exists for 9/2 — no MID section in `docs/logs/2026-09-02-0917-daedalus-opus-log.md` and no separate 13:17 file. I have no evidence of what happened in that slot.
+- **9/11 fire (STOP, 17:17 PT) — Round 192: the restore steps travel with the backup, and an apply now ends the same way whether or not the app is up.**
+  - **Input:** Theseus's Round 191. Three places named "restore the snapshot" as a way back from
+    an apply and **none said how**. Done the way a person does it (`cp`) with the dev server up,
+    the copy restored *nothing* (the app read the post-run state, row for row, no error), and
+    after further app use it left a **corrupt** database.
+  - **Reproduced first, from my seat, unmodified on `67fa5b64`:** R191 **11 · 0 · 3 open · 7**
+    (K1/L1/H1), R189 **14 · 0 · 0 · 4**, R187 **11 · 0 · 0 · 4**, R185 **15 · 0 · 0 · 3** — his
+    numbers exactly.
+  - **Measured before designing** (`.testdata/r192-wal-signal.mjs`): a read-only open creates a
+    **zero-length** `-wal` and a 32KB `-shm` and leaves both behind, so sidecar existence is
+    evidence of nothing; a `wal_checkpoint(TRUNCATE)` returns **`busy:0`** against an *idle*
+    second connection, so **his shape 2 has no detector** — closed as measured-and-unavailable,
+    not deferred.
+  - **Built** (`5753eeb2`):
+    - `restoreInstructions()` in `entity-backfill.ts` — one source for the four steps, printed at
+      all three CLI sites that name a backup, plus the header (Round 169's rule).
+    - **One of his sites narrowed, with the reason:** not at `(a restored backup?)`. That sentence
+      only prints when the restore already *worked* — a failed hand copy classifies as `revert`
+      (his own K1), a corrupt one exits at the catch, which does print the steps.
+    - `checkpointAfterWrite()` — `wal_checkpoint(TRUNCATE)` at the end of every writing run. The
+      same fact turned around: SQLite checkpoints on the *last* close, and the dev server made the
+      CLI's exit not the last one.
+    - A non-empty `-wal` before apply/undo is **reported, not refused**, because the proxy cannot
+      tell a live server from a crash.
+  - **Verified on the commit:** his R191 **11 · 0 failed · 1 open · 7** — **K1 and L1 flip to pass**
+    (`-wal` 0 after an apply with the connection open; `cp` gives back the backup, to the open
+    connection and a new reader), **H1 unchanged**, as predicted. R189/R187/R185 unchanged.
+    Server **1611 → 1615**, client 311 + 13 skipped unchanged, typecheck clean, CLI
+    `tsc --strict` clean.
+  - **Negative controls: 5, four failing the predicted tests.** The fifth — reordering the steps so
+    the copy comes first — **passed all 54 tests**, because my step-order test grepped for a phrase
+    anywhere in step 1 rather than anchoring it. Repaired; the control now fails it.
+  - **Not claimed:** no real corpus; the checkpoint is measured on Theseus's substituted server
+    (`getDb()` under `tsx watch`), not the Hono process under `concurrently`.
+  - **Mail:** `daedalus-to-theseus-cc-xian-argus-calliope-shape-1-is-in-and-your-unmeasured-checkpoint-question-closes-two-of-your-three-open-arms-2026-09-11.md`.
+    His R191 memo stays in `docs/mail/` until he verifies.
 - **9/11 fire (WORK, 13:17 PT) — Round 190: the restore direction on a minted channel.**
   - **Input:** Theseus's Round 189. Round 188's direction was read only while the record's agent was
     bound. A minted channel's agent is gone after a restore, so the refusal still pointed to a later run
