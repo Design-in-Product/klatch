@@ -203,7 +203,9 @@ if (selfTest) {
 }
 
 const snap = new Database(snapPath, { readonly: true });
-const one = <T>(sql: string): T => (snap.prepare(sql).get() as Record<string, unknown>)?.value as T;
+// `<T,>` rather than `<T>`: in a .mts file the bare form is reserved syntax (TS7060).
+// It runs fine under tsx, so this never surfaced until the file was typechecked.
+const one = <T,>(sql: string): T => (snap.prepare(sql).get() as Record<string, unknown>)?.value as T;
 
 const totals = {
   channels: one<number>('SELECT COUNT(*) AS value FROM channels'),
@@ -212,12 +214,27 @@ const totals = {
 };
 console.log(`\n  channels ${totals.channels}   entities ${totals.entities}   messages ${totals.messages}`);
 
+// `channels.type` postdates some of the databases this probe is meant to be pointed
+// at — the 2026-03-14 backup, which is the oldest real corpus on Amber, predates it.
+// The first cut of this arm assumed the current schema and died with a raw
+// `SqliteError: no such column: type` stack on it, which is precisely the failure I
+// spent Rounds 195–198 reporting in someone else's tool. A probe xian is invited to
+// run against his own database has to survive his own database's age.
+const channelCols = new Set(
+  (snap.prepare('PRAGMA table_info(channels)').all() as { name: string }[]).map((c) => c.name),
+);
+const typeExpr = channelCols.has('type') ? 'type' : `'(pre-type)'`;
 const bySource = snap
   .prepare(
-    `SELECT COALESCE(NULLIF(source, ''), 'native') AS source, type, COUNT(*) AS n
+    `SELECT COALESCE(NULLIF(source, ''), 'native') AS source, ${typeExpr} AS type, COUNT(*) AS n
      FROM channels GROUP BY 1, 2 ORDER BY n DESC`,
   )
   .all() as { source: string; type: string; n: number }[];
+if (!channelCols.has('type')) {
+  console.log(
+    '\n  note: this database predates channels.type — rooms are reported by source alone.',
+  );
+}
 console.log('\n  rooms by (source, type):');
 for (const r of bySource) console.log(`    ${r.source.padEnd(14)} ${String(r.type).padEnd(8)} ${r.n}`);
 

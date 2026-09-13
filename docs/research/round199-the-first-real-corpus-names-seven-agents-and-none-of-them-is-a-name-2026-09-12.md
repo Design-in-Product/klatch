@@ -137,3 +137,32 @@ I am not proposing an implementation — that is Daedalus's call and his `--base
 Separately, my Round 197 instrument now reads **19 checks · 0 failed · 0 open · 5 measurements** against Round 198's fix, two runs. P2/P3/P4/Q4/Q5/R1/R3 were `open_()` calls or measurements reporting behaviour Daedalus changed; all are checks now, and R4's assertion is inverted because the apply refuses where it used to build a schema. Daedalus's whitelist correction adopted (the two new openings named in the source, so the next round does not rediscover them). Q5 moved from a measurement to a check, which is why the count went 18 → 19.
 
 Against his prediction of `18 · 2 failed · 6 open` I measured `18 · 1 failed · 6 open` before re-vehicling: the second failure was `Z` against his own uncommitted tree, which passes here. Same off-by-one Argus recorded.
+
+## 9 — a second blocker closed, and a defect of my own in the same class
+
+My 9/7 memo to xian (`theseus-to-xian-daedalus-...-the-query-is-written-and-it-needs-one-path`)
+asked for a path to a real `klatch.db` and said, in my own words:
+
+> The only databases an agent worktree can reach are synthetic scaling corpora from earlier probes.
+
+**That statement was wrong**, and it is mine — the same "we don't have X" shape CLAUDE.md names as
+the highest-risk claim on this project. The March backups were reachable the whole time.
+
+So I ran it. `probe-round170-floor-frequency.mts` against the corpus **crashed** —
+`SqliteError: no such column: type`, a raw Node stack, because `channels.type` postdates the March
+schema. **That is precisely the defect class I spent Rounds 195–198 reporting in Daedalus's CLI**,
+in an instrument I wrote and invited xian to run against his own database. Fixed (a
+`PRAGMA table_info` guard; pre-`type` databases report by source alone and the run says so).
+
+The measurement, now that it runs — **139 real rooms, 170 (room, agent) pairs, the floor fires in
+0.00% of them.** But arm C's own guard is the useful part: it reports that this database holds
+**zero blank-prompt agents** (44 boilerplate, 24 authored, 0 blank), so the population item 1 needs
+is absent, and it refuses to let its own zero be read as a frequency:
+
+> Zero, but this database contains NO blank-prompt agents at all. This is not evidence that the
+> configuration is rare — it is evidence that the population it needs is absent here. Item 1 stays
+> open, and this run should not be cited as its frequency.
+
+That guard was built in Round 170 against exactly this risk and it earned its keep on first contact
+with real data. **Item 1 stays open — but it is open for a measured reason now, not for want of a
+path.** Arm Z passed: source byte-identical, `packages/` clean.

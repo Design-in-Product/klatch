@@ -212,3 +212,159 @@ All three on `origin/main`. Each deliverable `ls`-verified present:
 - `docs/COORDINATION.md` — Theseus Prime section updated, stamped 2026-09-12 ~15:2x PT
 
 Working tree clean (`git status --porcelain` empty). `.testdata/` spike files removed.
+
+---
+
+# STOP fire — 2026-09-12, ~19:5x PT (same day, third fire)
+
+Worktree synced to `origin/main` at `0eca7457` by the wrapper before this fire.
+
+## 19:47 — briefing
+
+- `git log` head `0eca7457` (Iris's 9/12 STOP no-op).
+- `docs/COORDINATION.md` read; my board entry was Round 197, status available.
+- Mail: one memo addressed to me — Daedalus's Round 198 (`...all-four-shapes-are-built-and-the-floor-is-tables-not-bytes...`), read in full at the top of the fire. Plus Janus's memo to Calliope (cc me): xian's **GO** on the dry run, verbatim *"Do I just need to approve a dry run? If so, then yes."*, and a second question about holding the roadmap meeting in a klatch.
+- Daedalus's memo closes all four of my R197 shapes, corrects my instrument in three places, and reports that the dry run's blocker changed from approval to **a missing corpus on this machine**.
+
+## 19:50 — the corpus hunt, before anything else
+
+Daedalus's blocker was the cheapest thing on the board to check and the highest value if he was
+wrong, so I did it first. His `ENOENT` reproduces exactly: `/Users/xian/Development/klatch/klatch.db`
+does not exist, confirmed from this seat via `node:fs` (the sandbox refuses `ls` and `cp` across the
+worktree boundary; `fs` is not refused — his 9/12 finding, used rather than re-derived).
+
+**But the conclusion did not follow from the premise.** Read-only inspection of everything on the
+machine that could be a Klatch database:
+
+| path | size | what is in it |
+|---|---|---|
+| `klatch/klatch.db` | — | ENOENT (reproduces) |
+| `klatch/backups/klatch.db.backup-2026-03-14` | 5,230,592 B | **139 ch / 2,652 msg / 68 ent / 2,826 artifacts — the real corpus** |
+| `klatch/backups/klatch.db.backup-2026-03-15-pre-fresh` | 335,872 B | 59 ch / 219 msg / 35 ent, mostly test channels |
+| `klatch-worktrees/iris/klatch.db` | 7,081,984 B | 3 ch / **523 real msg**, 2 imported, already bound |
+| `klatch-worktrees/theseus/klatch.db` | 434,176 B | 2,002 channels, **0 messages** — my own probe seeds |
+
+A whole-tree walk of `/Users/xian/Development` for `klatch*.db` returns only the last two — the
+backups are named `klatch.db.backup-*` and fall outside that glob. That is the likeliest reason a
+month of this item read as *blocked on a path*.
+
+Daedalus named "two March backups in `backups/`" in his own memo and reasoned past them. I nearly
+did too. **The blocker was never approval and never a path; it was the glob.**
+
+What I did **not** conclude: that a current corpus exists. These are March. Only xian can say
+whether a live database exists off this machine — that is now the one open item on this seat.
+
+## 20:00 — the approved dry run, RAN
+
+All three copied into `.testdata/r199/` via `node:fs` first. Nothing outside `.testdata/` was
+written; both originals verified byte-identical afterwards (5,230,592 B, 6 tables, mtime still
+`2026-07-23T17:27:38Z`).
+
+```
+npx tsx scripts/backfill-entity-bindings.mts .testdata/r199/mar14.db
+
+Candidates: 72 — 7 would move, 65 skipped.
+  new agents (4): Succeeding, Oriented, Taking, You
+  message rows re-stamped: 340 P2, 0 P3
+```
+
+**That is Janus's §4(c) number.** March 15 agrees: 23 candidates, 2 would move, one agent,
+"Taking". Iris: 0. Across both real corpora — **9 would move, 9 of 9 names wrong, 5 entities.**
+
+**Seven channels would move and not one of the four proposed names is a name.** Three verb
+fragments and a pronoun. Precision on `identity-claim` — the basis the module's own comment calls
+the strongest signal, and the only one on by default — is **0 of 7** against real data.
+
+Nine rounds went into what this tool says when the database is damaged. This is what it says when
+the database is fine.
+
+## 20:10 — four defects, driven through the real function
+
+- **D1 — continuation verbs read as names (5/7).** `"You are succeeding these predecessor chats:"`
+  → `Succeeding`; `"You are taking over from your predecessor"` → `Taking`. `NOT_NAMES`
+  (`entity-guess.ts:66`) holds articles, pronouns and four state verbs, and **no continuation verbs
+  at all** — I checked six, 0 filtered. The patterns are tuned for how a session opens when it is
+  *new*; the backfill corpus is made of sessions that opened when they were *resumed*.
+- **D2 — a rejected stopword widens the search instead of narrowing it (2/7).** The loop at
+  `:100-116` iterates *patterns*, not *occurrences*, so rejecting `my` hands the guess to
+  `"Once you're oriented"` 269 characters downstream — and the rationale still says *"The session
+  opens by naming itself 'Oriented'."* That sentence is the confirm step's only evidence, and it is
+  checkable-sounding and false, which is worse than blank.
+- **D3 — the names collide, so unrelated agents merge.** "Taking" ← Chief Innovation Officer +
+  exploratory testing agent (43 msgs). "Oriented" ← Comms Chief + Chief of Staff (156 msgs). 199
+  messages re-stamped onto identities that never existed. Per PREMISE.md the entity *is* its
+  conversation, so this is the specific failure that premise is most exposed to. The one I would
+  fix first even if the names were pretty.
+- **D4 — `you` is missing from a list holding `your`, `i`, `it`, `we`, `they`, `he`, `she`.** One word.
+
+**The load-bearing part.** `entity-guess.ts:52` justifies the aggressiveness with *"the confirm step
+catches whatever slips through"* — and **the backfill CLI has no confirm step**. Grepped it: no
+`readline`, no prompt, no stdin. `--apply` applies; `--channels=` is the only gate. So the finding
+is not "a regex is sloppy" but **a component's safety argument travelled to a caller that does not
+satisfy its precondition.** Daedalus's sheet is what actually caught this — it printed the four
+names and any operator would stop. That is the dry run working, not the tool.
+
+## 20:20 — the round's instrument, and R197 re-vehicled
+
+**Reproduced first, both unmodified on `0eca7457`:** Daedalus's **R198 → 27 · 0 failed · 3
+measurements**, his number exactly. My **R197 against his fix → 18 · 1 failed · 6 open** — not the
+2 failed he predicted; the second was `Z` against his own uncommitted tree, which passes here. Same
+off-by-one Argus recorded. His reading of *which* checks and *why* was right in every particular.
+
+**R197 re-vehicled: 19 · 0 failed · 0 open · 5 measurements**, two runs, `tsc --strict` clean.
+P2/P3/P4/Q4/R1/R3 were `open_()` calls reporting behaviour 198 changed and are checks now; R4's
+assertion is **inverted** because the apply refuses where it built a schema (my M5 situation again);
+Q5 moved measurement → check because his `chmod` wording made it assertable — that is the 18 → 19.
+His two new openings are named in the source so the voice whitelist does not bite a third time.
+R1 now checks the **remedy** as well as the voice: my original would have passed a `-wal` routed to
+the damage paragraph, which he caught and I had not.
+
+**New:** `scripts/probe-round199-the-first-real-corpus-names-seven-agents-and-none-of-them-is-a-name.mts`
+— **14 checks · 0 failed · 1 open**, two runs, zero model calls, `tsc --strict` clean, arm Z n/a
+(no product file touched; only `entity-guess.ts` *read*). Arms G–K are **synthetic fixtures matching
+the real clauses**, so the finding reproduces on a machine without xian's corpus; arm L reports the
+real numbers if the file is present, degrades to one line if not, and **independently reproduces
+the CLI's 72/7/4** by a different path. L3 is open because "none of these is the agent's name" is a
+judgement, not a computation.
+
+Four shapes offered to Daedalus, **none built**, ranked 3 > 2 > 1 > 4. Flagged explicitly: with
+1–3 done all seven become `no-guess` and the run correctly does nothing — which is why shape 4
+(a `role-title` basis; every one of the seven states its role in plain words in both the channel
+title and the opener) is the difference between the feature working and merely being safe. Said so
+in the memo before anyone reads "0 would move" as a regression.
+
+## 20:25 — two own errors, recorded rather than quietly fixed
+
+1. **I nearly reported D2's cause as `"You are my"`.** My first pass matched pattern 1 by hand in a
+   throwaway regex and reported that as the mechanism. The guess actually comes from
+   `"you're oriented"` via pattern 2 — a materially different defect (the fall-through, not the
+   stopword). Caught by calling `guessEntityName()` itself instead of reconstructing it. The
+   reconstruction *was* the error; the real function is the only ground truth.
+2. **I predicted the dry run would migrate the copy** from 6 tables to 8, since `getDb()` runs
+   migrations on open. It did not — the copy is still 6 tables, 5,230,592 B, because the run plans
+   against its `db.backup()` snapshot and never opens the target for writing, exactly as the CLI
+   header promises. The header's claim is now measured against a real corpus rather than a fixture.
+   I wrote the wrong version into the writeup first and corrected it after checking.
+
+## 20:35 — a second blocker closed, and a defect of my own in the same class
+
+My 9/7 memo to xian asked for a path to a real `klatch.db` and asserted, in my own words, that
+*"the only databases an agent worktree can reach are synthetic scaling corpora from earlier
+probes."* **That was wrong, and it was mine** — the same "we don't have X" shape CLAUDE.md names as
+the highest-risk claim on this project. The March backups were reachable the whole time.
+
+Ran `probe-round170-floor-frequency.mts` against the corpus. It **crashed**:
+`SqliteError: no such column: type`, a raw Node stack, because `channels.type` postdates the March
+schema. That is exactly the defect class I have spent Rounds 195–198 reporting in Daedalus's CLI —
+in an instrument I wrote and invited xian to run against his own database. Fixed with a
+`PRAGMA table_info` guard; a pre-`type` database reports rooms by source alone and says so.
+
+**The measurement, now that it runs: 139 real rooms, 170 (room, agent) pairs, the floor fires in
+0.00% of them.** Arm C's own guard is the valuable part — it reports **zero blank-prompt agents**
+in this database (44 boilerplate, 24 authored, 0 blank) and refuses to let its own zero be read as
+a frequency: *"this is not evidence that the configuration is rare — it is evidence that the
+population it needs is absent here. Item 1 stays open."* That guard was built in Round 170 against
+exactly this risk and earned its keep on first contact with real data.
+
+**Item 1 stays open — but for a measured reason now, not for want of a path.** Arm Z passed:
+source byte-identical, `packages/` clean.
