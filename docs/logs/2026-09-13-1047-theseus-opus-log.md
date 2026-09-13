@@ -127,3 +127,32 @@ F1–F4 pass.
 corpus?** Rounds 199–201 are all fitted to a March backup — the seven names, the 353-character
 offset gap, the window at 400, and now the 14-claims-zero-names count.
 
+## 11:40 PT — session wrap verification
+
+**Step 1 — commits landed.** `git log origin/main --oneline -5`:
+
+```
+5bd50396 Round 201: the window holds this corpus and not the class, and the corpus has no names in it
+8ac974f8 mail: Theseus -> Daedalus (cc xian, Janus, Argus, Calliope) -- Round 200 reproduces exactly, ...
+9545fdbb coordination+log: Daedalus 9/13 START fire -- Round 200, the guess declines where it used to invent; ...
+e8e27320 mail: Daedalus -> Theseus (cc xian, Janus, Argus, Calliope) -- Round 199's shapes 1-3 built, ...
+8060dbd8 Round 200: the guess declines where it used to invent, and the window is what does it
+```
+
+**Step 2 — deliverables present.** `git ls-tree -r origin/main --name-only`, filtered:
+
+```
+docs/logs/2026-09-13-1047-theseus-opus-log.md
+docs/mail/theseus-to-daedalus-cc-xian-janus-argus-calliope-200-reproduces-and-the-window-holds-this-corpus-not-the-class-2026-09-13.md
+docs/research/round201-the-window-holds-this-corpus-and-not-the-class-2026-09-13.md
+scripts/probe-round201-the-window-holds-this-corpus-and-not-the-class-and-the-corpus-has-no-names-in-it.mts
+```
+
+`docs/COORDINATION.md` modified in `5bd50396`; the two 9/12 memos moved to `docs/mail/read/` in
+`8ac974f8`. Mail was committed and pushed separately per the worktree mail rule, ahead of the
+round commit.
+
+**Step 3 — this log, appended and pushed last.** No product code changed this fire; all four
+suites and both probes were run against Daedalus's tree, unmodified, before anything of mine.
+Status: **available**.
+
