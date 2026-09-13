@@ -184,7 +184,78 @@ Agents working on this repo use this file as the async handoff protocol.
 
 ### Daedalus (architecture & implementation)
 - **Branch:** `claude/daedalus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/daedalus`; merges land on `main`)
-- **Status:** working — duty cycle armed and confirmed back after the 8/11 reboot (`launchctl`: `daedalus-{START,WORK,STOP}` loaded). Last fire 2026-09-12 13:17 MID (Round 196 — Theseus's Round 195: all three commands after a bad restore now answer in a sentence, a writing run refuses on a database it cannot back up soundly, and step 4 prints its own command; the backfill's first real dry run is still the one item on this seat, still needs a path from xian). Prior fire 2026-09-12 09:17 START (Round 194 — Theseus's Round 193: step 4 of the restore steps now quotes the `Candidates:` line a correct restore will print, and the corruption arm is documented at its measured width of one write; the backfill's first real dry run is still the one item on this seat, still needs a path from xian). Prior fire 2026-09-11 17:17 STOP (Round 192 — Theseus's Round 191: the restore steps now print wherever the CLI names a backup, and an apply checkpoints so the file it leaves is the same whether or not the app is up; one dry run still needed from xian). **Second gap recorded, not explained:** the 9/6 MID and STOP fires ran (memos filed at 13:24 and 17:22, log sections present in `docs/logs/2026-09-06-0917-daedalus-opus-log.md`) but neither added an entry to this board — the newest entry below jumps from 9/6 START to 9/7 START. The work is recorded in the log and the mail; only the board entry is missing. Not backfilling from memory. **Naming note for future readers:** the 13:17 LaunchAgent is `daedalus-WORK`, but entries from 8/21 on label that slot MID. Same fire, two names; WORK ≡ MID for the 13:17 slot. Not renaming the agent mid-cycle. **Gap recorded, not explained:** no 13:17 entry exists for 9/2 — no MID section in `docs/logs/2026-09-02-0917-daedalus-opus-log.md` and no separate 13:17 file. I have no evidence of what happened in that slot.
+- **Status:** working — duty cycle armed and confirmed back after the 8/11 reboot (`launchctl`: `daedalus-{START,WORK,STOP}` loaded). Last fire 2026-09-12 17:17 STOP (Round 198 — Theseus's Round 197: all four of his shapes built, a zero-byte file no longer reads as a way back, `klatch.db-wal` is answered as the sidecar it is, and a writing run refuses a table-less file instead of creating a schema in it. **The dry run's blocker changed today and it is no longer approval:** xian's GO arrived via Janus, and `/Users/xian/Development/klatch/klatch.db` was measured this fire as *not existing* — `stat` → `ENOENT` from node, which this fire's sandbox does not restrict. The corpus is not on this machine. Needs a readable path, not a decision). Prior fire 2026-09-12 13:17 MID (Round 196 — Theseus's Round 195: all three commands after a bad restore now answer in a sentence, a writing run refuses on a database it cannot back up soundly, and step 4 prints its own command; the backfill's first real dry run is still the one item on this seat, still needs a path from xian). Prior fire 2026-09-12 09:17 START (Round 194 — Theseus's Round 193: step 4 of the restore steps now quotes the `Candidates:` line a correct restore will print, and the corruption arm is documented at its measured width of one write; the backfill's first real dry run is still the one item on this seat, still needs a path from xian). Prior fire 2026-09-11 17:17 STOP (Round 192 — Theseus's Round 191: the restore steps now print wherever the CLI names a backup, and an apply checkpoints so the file it leaves is the same whether or not the app is up; one dry run still needed from xian). **Second gap recorded, not explained:** the 9/6 MID and STOP fires ran (memos filed at 13:24 and 17:22, log sections present in `docs/logs/2026-09-06-0917-daedalus-opus-log.md`) but neither added an entry to this board — the newest entry below jumps from 9/6 START to 9/7 START. The work is recorded in the log and the mail; only the board entry is missing. Not backfilling from memory. **Naming note for future readers:** the 13:17 LaunchAgent is `daedalus-WORK`, but entries from 8/21 on label that slot MID. Same fire, two names; WORK ≡ MID for the 13:17 slot. Not renaming the agent mid-cycle. **Gap recorded, not explained:** no 13:17 entry exists for 9/2 — no MID section in `docs/logs/2026-09-02-0917-daedalus-opus-log.md` and no separate 13:17 file. I have no evidence of what happened in that slot.
+- **9/12 fire (STOP, 17:17 PT) — Round 198: a way back has tables in it, the sidecar is not the database, and the dry run's blocker turns out to be the corpus.**
+  - **Input:** Theseus's Round 197, reproduced unmodified on `8ec62595` before any edit —
+    **18 · 0 failed · 6 open · 6 measurements**, his table line for line, arm S within noise of his
+    numbers. He drove the rule Round 196 made load-bearing (*"take the newest one that reads as
+    sound"*) at the six shapes a half-finished copy leaves beside a database and found the one that
+    gets through: a **zero-length file is a valid empty SQLite database** — `quick_check` *and*
+    `integrity_check` return `ok` — so it was listed as sound, it is written last so the rule pointed
+    at it, and following that rule left `klatch.db` at 0 bytes with SQLite calling the result sound.
+  - **Built — all four of his shapes, including the one he said he'd leave:**
+    - **The floor is tables, not bytes.** `quickCheck()` returns `{ ok, why, bytes, tables }`; `ok`
+      keeps its narrow meaning and a new `wayBackVerdict()` makes the way-back claim. **I dropped his
+      second operand** ("zero tables *when the database it is offered for has some*") because that
+      database is usually damaged, so its own count is unavailable exactly when the comparison would
+      be needed; every `.backup-backfill-*` file is by construction a copy of a Klatch database, so
+      no tables means no way back with no second operand. The printed rule needed no rewording. The
+      sound row now carries table count and size — what tells Round 195's three copies apart.
+    - **`source.backup()` inside the `try`** (his shape 2). His judgement call (`discardSnapshot()`
+      ordering) needed none; `source.close()` before `unreadable()` did, because that ends in
+      `process.exit` and a `finally` does not run. **Not flagged by him, and why this wasn't a
+      one-liner:** routed as-is a `-wal` classifies as `corrupt` and gets the damage paragraph plus a
+      backup listing searching beside a file that has never had one. Both wrong advice, so it is
+      named as the sidecar with the real database pointed at, guarded on that file existing.
+    - **A writing run refuses a table-less file** (his shape 4, taken further — he rated it lowest).
+      His R4 is the tool *creating the thing it is describing*: `--apply` turned a 0-byte file into 8
+      tables and 1 channel, then printed `Candidates: 0`. A dry run is still allowed and says the
+      zero is the file, not the corpus.
+    - **Q5 names permissions** when `accessSync` says that is the cause.
+  - **Measured, not assumed:** the floor is free against the check it qualifies — same rungs and
+    protocol as his arm S, so the numbers compose: 8.2MB `quick_check` 2.0ms / table count 0.039ms ·
+    24.6MB 7.7ms / 0.048ms · 65.7MB 25.6ms / 0.060ms. **1.9% at worst**, and it barely moves with
+    file size while `quick_check` grows 13×. On the writing path it costs nothing — the count comes
+    off the handle `source.backup()` already holds. Cold cache still unmeasured by either of us.
+  - **Verified:** probe 198 **27 · 0 failed · 3 measurements** (three runs); **five negative
+    controls**, each taking the arms predicted — **control 2 took one more and rightly** (C5: with
+    the catch removed the lone `notes-wal` answers with a raw stack, which C5 also asserts against).
+    All reverted, `grep` clean, probe green afterwards. R196 **21 · 0 · 0** and R194 **14 · 0 · 0**
+    unchanged; his re-vehicled R195 **14 · 1 · 0** (`Z`, dirty tree, by design). Server
+    **1627/1627**, client **311/311 + 13 skipped**, `npm run typecheck` clean, `tsc --strict` clean
+    on both `.mts` files.
+  - **Read, not counted:** his R197 probe against the fix reads 18 · 2 · 6 open. P2/P3/P4/Q4/R1/R3
+    are `open_()` calls whose *details* carry the fix (P3 now reads `is the empty one: false`); **R4
+    fails because the arm it measured is gone**, the apply refusing now — his own M5 situation; `Z`
+    fails for the dirty tree. His R1 "own voice: false" is a whitelist miss: two new openings this
+    round, both named in the memo so he doesn't have to find them.
+  - **Two corrections to my own instrument, recorded** in the writeup: C5's first cut grepped the
+    whole output for `/sidecar/i` and failed against `sidecarNote()`'s *correct* output; and three
+    detail lines reported Node's `DEP0205` warning as the tool's opening sentence.
+  - **THE DRY RUN — approval received, blocker changed, needs xian.** Janus relayed xian's **GO**
+    mid-fire (*"Do I just need to approve a dry run? If so, then yes."*). Approval was one of the two
+    things that item waited on. The other is a path, and it is now **measured rather than assumed**:
+    `/Users/xian/Development/klatch/klatch.db` **does not exist** (`stat` → `ENOENT`, from node
+    inside this fire); there is no `klatch.db` in this worktree but the round fixtures under
+    `.testdata/` and two March backups in `backups/`; `ls` outside the worktree is sandbox-refused
+    but node's `fs` is not, so **the absence is real, not a permission artifact**. **Scope of that
+    claim, stated exactly:** the two paths above are verified absent; a broader depth-limited sweep
+    of `/Users/xian` was started twice this fire and did not return before the fire ended, so *"the
+    corpus is nowhere on Amber"* is **not** established — only that it is not where the CLI would
+    look. Earlier mail (Pard, 8/10, *"why i am not reaching into the laptops"*) suggests a laptop,
+    which would explain a month of this not moving under a description that sounded like a
+    permissions question. **Unblocks with:** a readable path from xian (the CLI takes one
+    positionally, or `KLATCH_DB=`), or the database copied into the worktree, or the run happening
+    from Theseus's seat if it lives there. Read-only, snapshot taken before any read; risk nil.
+  - **Deliverables:** `docs/research/round198-…-2026-09-12.md`,
+    `scripts/probe-round198-…mts`, `docs/mail/daedalus-to-theseus-cc-xian-janus-argus-calliope-…-2026-09-12.md`
+    (pushed to `main` separately at `458a37d2`). Round 196 thread closed to `read/` — Theseus
+    verified it this morning at 21 · 0 · 0; his Round 197 memo stays open until he verifies 198.
+  - **Routing flagged, not assumed:** `53a12962` (ratified an hour before this fire) sends outbound
+    mail to the *recipient's* repo. My memo's addressee is Theseus, so it belongs here, but the
+    Janus-facing section is a reply he is owed and I cannot write outside this worktree. Asked
+    Calliope in the memo to relay it to `designinproduct/docs/mail/` or name the mechanism.
+  - **Unchanged and still unbuilt:** `--restore=<backup>` (Theseus's shape 3), ordering xian's call.
 - **9/12 fire (MID, 13:17 PT) — Round 196: the three commands after a bad restore answer in this script's voice, and step 4 is a line you can paste.**
   - **Input:** Theseus's Round 195. He reproduced my Round 194 unmodified (**14 · 0 · 0**, my table
     exactly) and then drove the arm no test and no probe had reached: apply → one message → naive

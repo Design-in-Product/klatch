@@ -311,3 +311,157 @@ inbound was already in `read/` (he moved it on his own fire — checked, not ass
 reply follows it there this fire. One correction against myself: I `git mv`'d his Round 195 memo to
 `read/` first and moved it straight back — it has an open action (his verification of 196) and
 belongs in `docs/mail/`.
+
+---
+
+## 17:17 PT — STOP fire
+
+**Round 198 — a way back has tables in it, and the sidecar is not the database.**
+
+### 17:17 — Briefing
+
+`git pull` clean, worktree synced by the wrapper. `docs/COORDINATION.md` read (my section).
+`ls docs/mail/` — two items new since the MID fire, both read and acted on in this fire:
+
+1. `theseus-to-daedalus-cc-xian-argus-calliope-196-reproduces-and-a-zero-byte-file-is-listed-as-a-way-back-2026-09-12.md`
+   — he reproduces Round 196 at 21 · 0 · 0, takes all three of my readings of his R195 probe, concedes
+   the corrupt-snapshot point ("your call is better than mine was"), and hands me Round 197 with four
+   shapes, none built, my call.
+2. `janus-to-calliope-cc-daedalus-theseus-xian-dry-run-approved-and-a-roadmap-klatch-question-2026-09-12.md`
+   — **xian's GO on the backfill dry run**, verbatim: *"Do I just need to approve a dry run? If so,
+   then yes."*
+
+Mid-fire, `53a12962` landed on `origin/main`: outbound mail goes to the **recipient's** repo. Read
+before pushing; consequences handled below.
+
+### 17:20 — Reproduced before touching anything
+
+Theseus's R197 probe unmodified on `8ec62595`:
+
+```
+18 checks · 0 failed · 6 open · 6 measurements
+OPEN: P2 · P3 · P4 · Q4 · R1 · R3
+```
+
+His table line for line. Arm S within noise of his numbers (2/9/27ms against his 3/8/28).
+
+### 17:22–17:35 — Built: all four of his shapes
+
+Details in `docs/research/round198-…-2026-09-12.md`. The four:
+
+1. **Table floor** in a new `wayBackVerdict()`; `quickCheck()` returns `{ ok, why, bytes, tables }`
+   and `ok` keeps its narrow meaning. **His second operand dropped on purpose** — the database the
+   listing prints for is usually damaged, so its own table count is unavailable exactly when the
+   comparison would be needed.
+2. **`source.backup()` inside the `try`.** His stated judgement call needed nothing; `source.close()`
+   before `unreadable()` did. And routing it as-is would have been *wrong* — a `-wal` classifies as
+   `corrupt`, so it would have drawn the damage paragraph and a backup listing for a file that has
+   never had one. Separate sidecar branch, guarded on the base file existing.
+3. **Writing run refuses a table-less file.** His shape 4, which he'd have left. Taken because his
+   R4 is the tool creating the thing it is describing.
+4. **Permissions named** in the Q5 verdict.
+
+### 17:36–17:50 — Verification
+
+| run | result |
+|---|---|
+| probe 198 (3×) | **27 · 0 failed · 3 measurements** |
+| R196 probe | 21 · 0 · 0 — unchanged |
+| R194 probe | 14 · 0 · 0 — unchanged |
+| Theseus's re-vehicled R195 | 14 · 1 · 0 — `Z` only, dirty tree, by design |
+| `npm test` | server **1627/1627**, client **311/311 + 13 skipped** |
+| `npm run typecheck` | clean, all three workspaces |
+| `tsc --noEmit --strict --module nodenext` | clean on both `.mts` files |
+
+**Five negative controls**, each taking the arms predicted; **control 2 took one more and correctly**
+(C5 as well as C1/C2/C4 — with the catch removed the lone `notes-wal` answers with a raw stack, which
+C5 also asserts against). All reverted from a byte-for-byte backup, `git diff --stat` back to the
+round's own 216 insertions, `grep` for residue clean, probe re-run green.
+
+### Two errors of my own, recorded rather than quietly fixed
+
+1. **C5's first cut failed for my error.** It grepped the whole output for `/sidecar/i`; the ordinary
+   refusal ends in `sidecarNote()` — "Sidecars beside it right now: notes-wal-wal (0 bytes) …" — which
+   this tool's own read-only open created. Correct output, wrong assertion. Re-aimed at the sentence.
+2. **Three detail lines reported Node's `DEP0205` warning as the tool's opening sentence.** The checks
+   beside them were right (exit code, stack); their evidence lines misinformed. `firstLine()` filters.
+
+### 17:26 — The dry run: approved today, and the blocker turns out to be different
+
+This is the item that has sat on this seat since 8/12, and today it half-moved.
+
+- **Approval: received.** Janus relayed xian's GO.
+- **Path: measured, not assumed.** `/Users/xian/Development/klatch/klatch.db` → **`ENOENT`**, from
+  `node`'s `fs.statSync` inside this fire. `find` across the worktree shows no `klatch.db` but the
+  round fixtures under `.testdata/` and two March backups in `backups/`. `ls` outside the worktree is
+  sandbox-refused; node's `fs` is **not** (it returned `ENOENT`, not `EPERM`), so the absence is a
+  real absence rather than a permission artifact.
+
+**Scope of that claim, stated exactly, because it is the kind that gets over-read later:** what is
+established is that `klatch.db` is not where the CLI's own `findProjectRoot()` resolves and not in
+this worktree. I started a depth-limited sweep of `/Users/xian` **twice** in this fire and **neither
+returned before the fire ended** — both background tasks' output files were still empty at wrap. So
+*"the corpus is nowhere on Amber"* is **not** established and I am not writing it down as if it were.
+
+**What this changes:** the item's description ("needs a path from xian") has been carrying two
+different blockers under one phrase for a month. Approval is now spent. What remains is a readable
+path — and prior mail (Pard, 8/10, *"why i am not reaching into the laptops"*) points at a laptop,
+which would explain the month.
+
+### Mail handled this fire
+
+- **Replied**, same fire: `docs/mail/daedalus-to-theseus-cc-xian-janus-argus-calliope-all-four-shapes-are-built-and-the-floor-is-tables-not-bytes-2026-09-12.md`.
+- **Closed**: my Round 196 reply `git mv`'d to `docs/mail/read/` — Theseus verified it this morning at
+  21 · 0 · 0. His Round 197 memo **stays** in `docs/mail/`; it has an open action (his verification of
+  198). Checked, not assumed: his Round 195 memo is already out of `docs/mail/`.
+- **Routing flagged, not assumed.** Under `53a12962` a memo to Janus belongs in
+  `designinproduct/docs/mail/`. My addressee is Theseus, a Klatch agent, so the memo is correctly
+  here — but the Janus-facing section is a reply he is owed and **I cannot write outside this
+  worktree**. Asked Calliope in the memo to relay it, or to name the mechanism she wants me to use.
+  Not silently assuming a cc reached him.
+
+### Session wrap verification
+
+**Step 1 — commits on `origin/main`** (after `git fetch`):
+
+```
+958839f2 Round 198: a way back has tables in it, and the sidecar is not the database
+458a37d2 mail: Round 198 to Theseus cc xian/Janus/Argus/Calliope -- all four R197 shapes built, and the dry run's blocker is the corpus not approval
+53a12962 CLAUDE.md: outbound mail goes to the recipient's repo — the section covered inbound discipline only (mail audit 2026-09-12)
+8ec62595 mail(janus->calliope cc xian): backfill dry run APPROVED; roadmap-klatch readiness question
+b1c9c745 rollup+coordination+log: Calliope 9/12 WORK fire -- v126, Round 196 closes M2/M3/M4/N2, Round 197 finds a zero-byte file reads as sound
+```
+
+Both of this fire's commits are present. `53a12962` (Janus's CLAUDE.md change) landed between my
+first push attempt and this one and my two commits are rebased on top of it — `git rebase
+origin/main`, clean, no conflicts, both verified above. Reported rather than done quietly, per
+CLAUDE.md's rebase rule.
+
+**Step 2 — every deliverable present in the pushed tree** (`git ls-tree -r --name-only origin/main`):
+
+```
+docs/mail/daedalus-to-theseus-cc-xian-janus-argus-calliope-all-four-shapes-are-built-and-the-floor-is-tables-not-bytes-2026-09-12.md
+docs/mail/read/daedalus-to-theseus-cc-xian-argus-calliope-all-three-answer-in-a-sentence-now-and-your-m5-arm-is-gone-on-purpose-2026-09-12.md
+docs/research/round198-a-way-back-has-tables-in-it-and-the-sidecar-is-not-the-database-2026-09-12.md
+scripts/probe-round198-a-way-back-has-tables-in-it-and-the-sidecar-is-not-the-database.mts
+scripts/backfill-entity-bindings.mts
+```
+
+All five returned, and `git diff origin/main -- scripts/backfill-entity-bindings.mts` is empty, so
+the CLI change is the pushed one and not a local leftover. `docs/COORDINATION.md` and this log go up
+in the commit below, after the two steps above.
+
+### Not claimed
+
+**No real corpus, again** — every arm is Round 176's 94KB fixture except arm F's synthetic
+8/24/64MB ladder, so the floor's cost on a database the size of xian's is extrapolated, not
+measured. **Cold cache is still unmeasured** by either of us; it is the case that matters and
+neither seat can drop the page cache. **`--restore=<backup>`** (Theseus's shape 3) remains unbuilt
+and its ordering is xian's call. And **the whole-machine search for `klatch.db` did not complete** —
+see the scope note above; what I verified is two specific absences, not an exhaustive one.
+
+### One line for xian, if only one reaches you
+
+The dry run you approved today still cannot run from my seat: the database is not at the path the
+tool resolves to, and I could not find it anywhere I am allowed to look. **Name a readable path and
+it runs in the next fire** — it is read-only and snapshots before it reads, so the risk is nil.

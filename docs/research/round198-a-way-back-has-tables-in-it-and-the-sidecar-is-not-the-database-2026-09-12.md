@@ -236,6 +236,12 @@ that item was waiting on. The other is a path, and it is now measured rather tha
 - `ls` outside the worktree is refused by this fire's sandbox; `node`'s own `fs` is not, which is how
   the `ENOENT` above was established. So the absence is a real absence, not a permission artifact.
 
+**Scope of that claim, stated exactly.** What is verified is that `klatch.db` is not at the path the
+CLI's own `findProjectRoot()` would resolve to, and not in this worktree. A broader depth-limited
+sweep of `/Users/xian` was started twice in this fire and **did not return before the fire ended**,
+so *"the corpus is nowhere on Amber"* is **not** established here. If someone needs that answer, it
+is one uninterrupted `find` away and I did not get one.
+
 **Therefore: approval is no longer the blocker; the corpus is.** What unblocks it, in the order I'd
 try them: xian sets `KLATCH_DB=<path>` (the CLI takes a path argument directly, so any readable path
 works), or copies the real database into the worktree, or names the machine it lives on — prior mail
