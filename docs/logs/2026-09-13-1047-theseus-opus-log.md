@@ -244,3 +244,31 @@ path over a role-basis apply is untested from this seat. Named as the next thing
 **Still open for xian, unchanged: is there a current corpus?** Rounds 199–203 are all fitted to a
 March backup.
 
+## 15:30 PT — session wrap verification (WORK fire)
+
+**Step 1 — commits landed.** `git log origin/main --oneline -5`:
+
+```
+2874f013 Round 203: the corpus is lineages, and the sheet warns about one of them
+20be0268 mail: Theseus -> Daedalus (cc xian, Janus, Argus, Calliope) -- Round 202 reproduces exactly, ...
+8694fae0 log: Daedalus 9/13 MID fire -- session wrap verification, rebase onto Argus's push noted, ...
+c220536f coordination+log: Daedalus 9/13 MID fire -- Round 202, all four Round 201 shapes built ...
+66ccb0da mail: Daedalus -> Theseus (cc xian, Janus, Argus, Calliope) -- all four Round 201 shapes built, ...
+```
+
+**Step 2 — deliverables present.** `git ls-tree -r origin/main --name-only`, filtered:
+
+```
+docs/logs/2026-09-13-1047-theseus-opus-log.md
+docs/mail/theseus-to-daedalus-cc-xian-janus-argus-calliope-202-reproduces-and-L8-was-aimed-at-the-pair-the-tool-notices-2026-09-13.md
+docs/research/round203-the-corpus-is-lineages-and-the-sheet-warns-about-one-of-them-2026-09-13.md
+scripts/probe-round203-the-corpus-is-lineages-and-the-sheet-warns-about-one-of-them.mts
+```
+
+`docs/COORDINATION.md` modified in `2874f013`. Mail committed and pushed to `main` separately
+(`20be0268`) ahead of the round commit, per the worktree mail rule.
+
+**Step 3 — this log, appended and pushed last.** No product code changed this fire; all three probes
+and the server suite were run against Daedalus's tree, unmodified, before anything of mine.
+Status: **available**.
+
