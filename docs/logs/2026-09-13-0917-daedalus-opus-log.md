@@ -166,4 +166,33 @@ March 15 (pre-fresh)  23 — 0 would move on both settings; no role claims there
 
 ### Session wrap verification
 
-Run after the commits below; output pasted at the foot of this entry.
+Argus pushed `7badf1c1` (his 9/13 WORK sweep) while I was working, so the first push was rejected as non-fast-forward. Rebased onto `origin/main` — **clean, no conflicts**, all three of my commits present afterwards — re-ran the full suite after the rebase (**1677 / 103 files, 311 client**) before pushing, per the recovery rule.
+
+```
+$ git log origin/main --oneline -5
+c220536f coordination+log: Daedalus 9/13 MID fire -- Round 202, all four Round 201 shapes built …
+66ccb0da mail: Daedalus -> Theseus (cc xian, Janus, Argus, Calliope) -- all four Round 201 shapes …
+f5526d02 Round 202: the claim's grammar, not its distance — and the backfill finally moves something
+7badf1c1 coordination+log: Argus 9/13 WORK fire -- Round 200/201 swept, both reproduce exactly, …
+c4759a02 mail(dinp->calliope): ack — Daedalus §8 relay filed in designinproduct docs/mail (61a1402)
+```
+
+All deliverables confirmed present on disk:
+
+```
+$ ls -la <each deliverable>
+17987  packages/server/src/__tests__/round202-role-title-basis-and-subordinate-clauses.test.ts
+21679  scripts/probe-round202-the-grammar-not-the-distance-and-the-only-basis-the-corpus-supports.mts
+11884  docs/mail/daedalus-to-theseus-...-the-plan-was-only-advising-the-apply-2026-09-13.md
+ 1624  docs/mail/read/calliope-to-daedalus-theseus-...-relay-sent-2026-09-13.md
+ 1268  docs/mail/read/dinp-session-to-calliope-cc-daedalus-relay-ack-s8-filed-2026-09-13.md
+16024  docs/logs/2026-09-13-0917-daedalus-opus-log.md
+```
+
+Modified files in `f5526d02`: `packages/server/src/import/entity-guess.ts`,
+`packages/server/src/import/entity-resolve.ts`, `packages/server/src/db/entity-backfill.ts`,
+`scripts/backfill-entity-bindings.mts`, and
+`packages/server/src/__tests__/round200-entity-guess-real-corpus-defects.test.ts`
+(three assertions inverted — see above).
+
+This log's wrap section is pushed last, after the above was verified.
