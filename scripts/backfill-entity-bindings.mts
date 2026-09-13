@@ -117,6 +117,21 @@
  * the newest is a copy of the damage. `quick_check` and not `integrity_check`:
  * measured, the latter throws on exactly these files.
  *
+ * **And a file SQLite will open is still not a way back.** Theseus's Round 197
+ * found the one shape of the six a half-finished copy leaves that got through:
+ * a **zero-length** file is a *valid empty* SQLite database — `quick_check` and
+ * `integrity_check` both return `ok` on it — and it is what a `cp` that died in
+ * its first instant leaves, because `cp` truncates the destination before it
+ * reads the source. It was listed as sound, it was the newest, so this tool's
+ * own rule pointed at it, and following that rule left the database at 0 bytes.
+ * The verdict is now a table-count floor (`wayBackVerdict`), not `ok`. Two
+ * neighbours of the same slip are closed with it: the copy itself is inside the
+ * `try` that `unreadable()` catches, so `klatch.db-wal` — the path tab
+ * completion offers next — is answered as *the sidecar, not the database*
+ * rather than with a `backup.js` stack; and a **writing** run against a file
+ * with no tables refuses instead of building a Klatch schema in it and
+ * reporting no work to do.
+ *
  * Known, inherited from Theseus's 8/12 note on `inspect-klatch-db.mjs`: opening
  * a WAL database read-only still creates `-wal`/`-shm` sidecars beside it. Both
  * are gitignored.
@@ -382,9 +397,26 @@ if (undoPath) {
  * throw leaked a connection and poisoned later opens *in the same process* with
  * `disk I/O error`, which reported a correct restore as a failure. Same class of
  * bug as the one the round is about.
+ *
+ * **`ok` is not the same claim as "a way back", and Round 197 is the proof.**
+ * A zero-length file is a *valid empty* SQLite database: it opens, and both
+ * `quick_check` and `integrity_check` return `ok` on it. That is exactly what a
+ * `cp` that died in its first instant leaves, because `cp` truncates the
+ * destination before it reads the source. So this function also reports `bytes`
+ * and `tables`, and the callers that make the way-back claim read those — see
+ * `wayBackVerdict`. `ok` keeps its narrow meaning: SQLite read the file back.
  */
-function quickCheck(p: string): { ok: boolean; why: string } {
-  if (!fs.existsSync(p)) return { ok: false, why: 'the file is not there' };
+type Verdict = { ok: boolean; why: string; bytes: number; tables: number };
+
+/** `-1` for both counts means "not established", never "zero". */
+function quickCheck(p: string): Verdict {
+  if (!fs.existsSync(p)) return { ok: false, why: 'the file is not there', bytes: -1, tables: -1 };
+  let bytes = -1;
+  try {
+    bytes = fs.statSync(p).size;
+  } catch {
+    /* a stat that fails leaves bytes unestablished; the open below will say why */
+  }
   let d: Database.Database | undefined;
   try {
     d = new Database(p, { readonly: true, fileMustExist: true });
@@ -396,9 +428,36 @@ function quickCheck(p: string): { ok: boolean; why: string } {
       .split('\n')
       .filter((l) => !/^\*{3}/.test(l))
       .join('; ');
-    return { ok: first === 'ok', why: why || first };
+    const ok = first === 'ok';
+    // Only meaningful on a file that read back. `sqlite_master` and not
+    // `sqlite_schema`: the older name works on every SQLite this has to run on.
+    // A throw here falls to the catch and reports as unreadable, which is the
+    // honest verdict for a file whose schema cannot be read.
+    const tables = ok
+      ? Number(
+          (
+            d
+              .prepare(
+                "select count(*) as n from sqlite_master where type = 'table' and name not like 'sqlite_%'"
+              )
+              .get() as { n: number }
+          ).n
+        )
+      : -1;
+    return { ok, why: why || first, bytes, tables };
   } catch (err) {
-    return { ok: false, why: (err as Error).message };
+    // Q5, Theseus's Round 197: an unreadable-by-permission file reports `unable
+    // to open database file` — the same wording SQLite gives for several other
+    // causes, and the remedy (chmod) is not one the operator is pointed at.
+    let why = (err as Error).message;
+    if (/unable to open database file/i.test(why)) {
+      try {
+        fs.accessSync(p, fs.constants.R_OK);
+      } catch {
+        why += ' — this file exists but is not readable by you (check its permissions)';
+      }
+    }
+    return { ok: false, why, bytes, tables: -1 };
   } finally {
     try {
       d?.close();
@@ -406,6 +465,41 @@ function quickCheck(p: string): { ok: boolean; why: string } {
       /* a handle that will not close is still better closed-attempted than leaked */
     }
   }
+}
+
+/**
+ * The verdict printed beside a `.backup-backfill-*` file — the one line that
+ * makes the way-back claim.
+ *
+ * Theseus's Round 197, arms P and Q: of the six shapes a half-finished copy
+ * leaves beside a database, five are caught by `ok` alone (truncated at a page
+ * boundary, a text file, a directory, no read permission, and the sound one).
+ * **Zero length is the sixth, and it is the one that reads as sound.** Worse, it
+ * is written last, so the rule this listing prints — *take the newest one that
+ * reads as sound* — points at it, and following that rule with all four restore
+ * steps leaves the database at 0 bytes with SQLite calling the result sound. He
+ * measured the corpus lost that way at 10 channels.
+ *
+ * The floor is **tables, not bytes**. Every `.backup-backfill-*` file is by
+ * construction a copy this tool took of a Klatch database, and a Klatch database
+ * has tables; so a candidate with none is not a way back whatever its size, and
+ * the rule needs no comparison against a target whose own table count may be
+ * unknowable (it is usually damaged when this prints). Zero bytes is named
+ * separately inside that verdict because it is the fact an operator can check
+ * with `ls`.
+ *
+ * The sound case carries its shape — table count and size — because Round 195's
+ * M6/M7 was three candidate files differing only by timestamp.
+ */
+function wayBackVerdict(v: Verdict): string {
+  if (!v.ok) return `UNREADABLE — ${v.why}`;
+  if (v.tables === 0) {
+    return (
+      `NOT A WAY BACK — ${v.bytes === 0 ? 'the file is empty (0 bytes)' : `${v.bytes.toLocaleString()} bytes, no tables`}. ` +
+      `SQLite opens it and calls it sound;\n      a copy that died in its first instant looks exactly like this.`
+    );
+  }
+  return `SQLite reads it as sound — ${v.tables} tables, ${v.bytes.toLocaleString()} bytes`;
 }
 
 /**
@@ -417,6 +511,10 @@ function quickCheck(p: string): { ok: boolean; why: string } {
  * back is among them, and the tool pointed at the newest — the only unreadable
  * one. The newest is the *worst* default here, because a snapshot taken after
  * the damage is a copy of the damage.
+ *
+ * The printed rule — *take the newest one that reads as sound* — is only safe
+ * because `wayBackVerdict` and not `Verdict.ok` decides which files get that
+ * phrase. Round 197 found the one shape where they disagree.
  */
 function waysBack(): string {
   const dir = path.dirname(dbPath);
@@ -433,8 +531,7 @@ function waysBack(): string {
   }
   if (!names.length) return '\nNo `.backup-backfill-*` file is sitting beside this database.';
   const rows = names.map((n) => {
-    const v = quickCheck(path.join(dir, n));
-    return `  ${n}\n      ${v.ok ? 'SQLite reads it as sound' : `UNREADABLE — ${v.why}`}`;
+    return `  ${n}\n      ${wayBackVerdict(quickCheck(path.join(dir, n)))}`;
   });
   return (
     `\nBackups beside this database, newest first (a snapshot taken after the damage is a copy of\nit, so newest is not the answer — take the newest one that reads as sound):\n` +
@@ -451,8 +548,43 @@ const sidecarNote = (): string => {
   return parts.length ? `\nSidecars beside it right now: ${parts.join(', ')}.` : '';
 };
 
+// Opening the file is not reading it: SQLite does not touch a page until it
+// must, so `new Database()` succeeds on anything on disk and `backup()` is
+// where a file that is not a database finds out. Round 197's arm R drove the
+// path one tab away — `klatch.db-wal` is what completion offers after
+// `klatch.db` — and got `SqliteError: file is not a database` with a raw stack
+// out of `better-sqlite3/lib/methods/backup.js:43`, because these three lines
+// sat *above* the `try` that `unreadable()` is the catch for. Same class as
+// Round 195's M2, through a door Round 196 did not close. `unreadable()`
+// already handles `SQLITE_NOTADB`; it just never saw the throw.
 const source = new Database(dbPath, { readonly: true, fileMustExist: true });
-await source.backup(snapshotPath);
+let sourceTables = -1;
+try {
+  // Read before the copy, from the handle already open, so the table count
+  // below costs no second `quick_check` on a large database. A schema read that
+  // throws lands in the same catch as a backup that throws, which is right:
+  // both mean this file is not a database this tool can work from.
+  sourceTables = Number(
+    (
+      source
+        .prepare(
+          "select count(*) as n from sqlite_master where type = 'table' and name not like 'sqlite_%'"
+        )
+        .get() as { n: number }
+    ).n
+  );
+  await source.backup(snapshotPath);
+} catch (err) {
+  // Closed before the exit rather than in a `finally`: `unreadable()` ends in
+  // `process.exit`, which does not run one. It disposes of whatever partial
+  // file the failed copy left (`discardSnapshot`, force, no-throw-if-absent).
+  try {
+    source.close();
+  } catch {
+    /* see quickCheck: a handle that will not close is still better attempted */
+  }
+  unreadable(err as Error);
+}
 source.close();
 
 // A file this script is about to call a way back has to be one. `backup()`
@@ -465,6 +597,48 @@ source.close();
 //
 // Checked only where the snapshot is a *backup*. A dry run's snapshot is a read
 // surface that gets deleted, names no way back, and pays nothing for this.
+// Round 197's R3/R4, and the one place this tool can still create the thing it
+// is describing. `fs.existsSync` at `:246` separates "no such database" from
+// everything else, and an empty file satisfies it — so a run aimed at one
+// reported `Candidates: 0 — 0 would move, 0 skipped.` and exit 0, over a corpus
+// that does not exist. On a **dry run** that is only misleading (a note, below,
+// after the line itself). On a **writing** run it is worse than misleading:
+// `db/index.ts` runs the migrations on open, so the apply built an 8-table
+// Klatch schema and seated the default entity in a file that held nothing —
+// 0 → 4,096 bytes, 1 channel — and then told the operator it had found nothing
+// to do. The operator this reaches is the one whose restore just went wrong and
+// is typing paths under stress, which is also the operator arm P hands an empty
+// file to. Refusing costs nothing real: a backfill over a database with no
+// tables has no work in it by definition, and the app, not this script, is what
+// creates a Klatch database.
+const dbBytes = (() => {
+  try {
+    return fs.statSync(dbPath).size;
+  } catch {
+    return -1;
+  }
+})();
+// Zero bytes is the shape an operator can check with `ls`, so name it when it
+// is the shape; a non-empty file with no tables is a different animal and the
+// sentence should not claim otherwise.
+const emptyFileNote = dbBytes === 0 ? ' — it is empty, 0 bytes' : '';
+
+if ((apply || undoRequested) && sourceTables === 0) {
+  discardSnapshot();
+  console.error(`\nthis file is not a Klatch database: ${dbPath}`);
+  console.error(
+    `  SQLite opens it${emptyFileNote} and reads it as sound, but it holds no tables, so there is\n` +
+      '  nothing here to back up and nothing to backfill. Writing to it would create a Klatch schema in\n' +
+      '  a file that never held one, and report that it found no work to do.'
+  );
+  console.error(
+    '  If a restore just went wrong, this is what a copy that died in its first instant leaves.\n' +
+      '  Nothing was written and the snapshot was discarded.'
+  );
+  console.error(waysBack());
+  process.exit(1);
+}
+
 if (apply || undoRequested) {
   const verdict = quickCheck(snapshotPath);
   if (!verdict.ok) {
@@ -538,6 +712,25 @@ function unreadable(err: Error): never {
   const code = String((err as NodeJS.ErrnoException).code ?? '');
   const corrupt =
     /^SQLITE_(CORRUPT|NOTADB)/.test(code) || /malformed|not a database|file is encrypted/i.test(msg);
+  // The path one tab away. `klatch.db-wal` is what completion offers after
+  // `klatch.db`, and Round 197's R1 is someone taking it: the file is real, it
+  // is beside the database, and it is not a database. Diagnosing that as
+  // *damage* would be wrong twice over — the remedy is not a restore, and the
+  // backup listing below would search beside a file that has never had one.
+  // Only when the database it is a sidecar *of* is actually there: a bare file
+  // that happens to end in `-wal` is not this mistake.
+  const sidecarOf = /^(.*)(-wal|-shm)$/.exec(dbPath);
+  if (sidecarOf && fs.existsSync(sidecarOf[1])) {
+    discardSnapshot();
+    console.error(`\nthis is not the database, it is one of its sidecars: ${dbPath}`);
+    console.error(`  SQLite will not read it: ${msg}`);
+    console.error(
+      `  You probably want the file next to it:\n      ${sidecarOf[1]}\n` +
+        `  (${path.basename(sidecarOf[1])}${sidecarOf[2]} is the write-ahead log; tab completion offers it right after the\n` +
+        '  database itself.) Nothing was written and the snapshot was discarded.'
+    );
+    process.exit(1);
+  }
   const own = corrupt ? quickCheck(dbPath) : undefined;
   discardSnapshot();
   console.error(`\ncannot read this database: ${dbPath}`);
@@ -849,6 +1042,22 @@ console.log(`Bases applied: ${bases.join(', ')}`);
 // copies of the format would diverge into an instruction that reports a correct
 // restore as a failure.
 console.log(`\n${candidatesLine(plan)}`);
+
+// Round 197's R3, the half of it that stays legal. A writing run over a
+// table-less file refuses above; a *dry* run over one is a reasonable thing to
+// do by accident and nothing to refuse — but `Candidates: 0 — 0 would move`
+// over a file that held nothing reads identically to the same line over a
+// corpus that is simply already backfilled, and the two want opposite next
+// steps. Said straight after the line it qualifies, because that is the line
+// step 4 asks the operator to compare. `sourceTables` is the count read from
+// the file *before* this run touched anything.
+if (sourceTables === 0) {
+  console.log(
+    `\nNote: this file held no tables before this run${emptyFileNote} — the zero above is the file,\n` +
+      '  not the corpus. If you meant a database you have just restored, check the path; this is what a\n' +
+      '  copy that died in its first instant leaves behind.'
+  );
+}
 
 // Say what the filter did not find, by name. A filter that resolved nothing and
 // a corpus with nothing in it print the same row count otherwise.
