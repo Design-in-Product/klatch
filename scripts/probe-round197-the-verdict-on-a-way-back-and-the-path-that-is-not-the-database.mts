@@ -228,28 +228,38 @@ console.log('Arm P — the listing, with a zero-length .backup-backfill-* beside
     dry.code === 1 && !hasStack(dry.out) && rows.length === 2,
     `exit ${dry.code} · stack ${hasStack(dry.out)} · listed ${rows.length} · first line: "${firstLine(dry.out)}"`
   );
-  open_(
+  // Round 198 built the floor: a candidate with no tables is not a way back,
+  // whatever SQLite says about it. These three were `open_()` calls reporting
+  // the behaviour it changed; they are checks now.
+  check(
     'P2',
-    'the zero-length file is listed as a way back that SQLite "reads as sound"',
+    'the zero-length file is named as NOT a way back, and the verdict cites the fact `ls` would show',
+    /NOT A WAY BACK/.test(emptyRow?.why ?? '') && /0 bytes/.test(emptyRow?.why ?? ''),
     `${path.basename(empty)} → "${emptyRow?.why ?? '(not listed)'}" · the file is ${sizeOf(empty)} bytes`
   );
   const firstSound = rows.find((r) => r.sound);
-  open_(
+  check(
     'P3',
-    "the tool's own rule — take the newest one that reads as sound — points at that file",
+    "the tool's own rule — take the newest one that reads as sound — no longer points at that file",
+    firstSound !== undefined && firstSound.name !== path.basename(empty),
     `printed order: ${rows.map((r) => `${r.name.replace(/^klatch\.db\./, '')}=${r.sound ? 'sound' : 'unreadable'}`).join(', ')} · ` +
       `newest sound: ${firstSound ? path.basename(firstSound.name) : '(none)'} · ` +
       `is the empty one: ${firstSound?.name === path.basename(empty)}`
   );
 
-  // Follow the rule literally, with the file it points at.
-  restoreByHand(db, empty);
-  const afterEmpty = holds(db);
-  open_(
+  // Follow the rule literally — it now lands on a file with tables in it.
+  restoreByHand(db, firstSound ? path.join(path.dirname(db), firstSound.name) : goodBackup);
+  const afterRule = holds(db);
+  check(
     'P4',
-    'following that rule replaces the database with an empty one, and SQLite calls the result sound',
-    `after the four steps: ${afterEmpty.text} · db size ${sizeOf(db)} B · the corpus was ${corrupt.channels < 0 ? 'unreadable' : corrupt.channels} channels, the backup holds ${holds(goodBackup).channels}`
+    "following the tool's own rule now restores the corpus rather than emptying the database",
+    afterRule.ok && afterRule.channels === holds(goodBackup).channels,
+    `after the four steps: ${afterRule.text} · db size ${sizeOf(db)} B · the corpus was ${corrupt.channels < 0 ? 'unreadable' : corrupt.channels} channels, the backup holds ${holds(goodBackup).channels}`
   );
+
+  // Defence in depth: drive the empty restore anyway, as an operator who ignores
+  // the verdict and copies the newest file by date. P5 is the second line.
+  restoreByHand(db, empty);
 
   // The mitigation, driven rather than assumed: step 4 exists to tell the
   // operator whether the restore worked, and this is the case it has to catch.
@@ -337,9 +347,10 @@ console.log('\nArm Q — the listing at every other shape a half-finished copy l
     byName.get(path.basename(goodBackup))?.sound === true,
     `${path.basename(goodBackup)} → "${byName.get(path.basename(goodBackup))?.why}"`
   );
-  open_(
+  check(
     'Q4',
-    'zero length is the one shape that gets through, and it is the only one that was already reported as sound',
+    'no shape gets through any more: nothing the listing calls sound is anything but a way back',
+    wrong.length === 0,
     `files the listing calls sound that are not a way back: ${wrong.length} (${wrong.map((w) => w.label).join(', ') || 'none'})`
   );
   meas(
@@ -347,11 +358,13 @@ console.log('\nArm Q — the listing at every other shape a half-finished copy l
     `verdict wording per shape: ` +
       made.map((m) => `${m.label} → "${byName.get(m.file)?.why ?? '(not listed)'}"`).join(' | ')
   );
-  meas(
+  // Round 198 took this shape too: the remedy for a permissions problem is chmod,
+  // not a restore, and the verdict now says so. Was a measurement, is a check.
+  check(
     'Q5',
-    `a file with no read permission reports "${byName.get(path.basename(noperm))?.why ?? '(not listed)'}" — ` +
-      `the same wording a missing file gets, and nothing about permissions. The remedy (chmod) is ` +
-      `different from the remedy for a damaged file, and the operator is not pointed at it.`
+    'an unreadable-by-permissions file is told apart from a damaged one, and pointed at its own remedy',
+    /permission/i.test(byName.get(path.basename(noperm))?.why ?? ''),
+    `a file with no read permission reports "${byName.get(path.basename(noperm))?.why ?? '(not listed)'}"`
   );
   fs.chmodSync(noperm, 0o600); // leave the fixture removable
 }
@@ -373,13 +386,29 @@ console.log('\nArm R — the path is one tab away: klatch.db-wal, and a file tha
 
   const dryWal = cli([wal]);
   const thrown = /^\s*(\w*Error: .*)$/m.exec(dryWal.out)?.[1] ?? '(no error line)';
-  open_(
+  // Round 198 put a branch above the corrupt one. Two things had to be true and
+  // only one of them was what I asked for: the voice, and the *advice*. Routing
+  // a -wal to the damage paragraph would have been a sentence in the right voice
+  // giving the wrong remedy, so this checks the remedy too.
+  //
+  // The voice whitelist below is the same class of miss as Round 196's: it
+  // enumerated openings that all predate the fix. Round 198's two new ones —
+  // "this is not the database, it is one of its sidecars:" and "this file is not
+  // a Klatch database:" — are named here rather than left to be rediscovered.
+  const ownVoice =
+    /^(no such database|Candidates:|Dry run|cannot |this is not the database, it is one of its sidecars:|this file is not a Klatch database:)/m.test(
+      dryWal.out
+    );
+  check(
     'R1',
-    "the dry run aimed at klatch.db-wal answers with a Node stack, not this script's voice",
-    `exit ${dryWal.code} · stack ${hasStack(dryWal.out)} · "${thrown}" · ` +
-      `thrown from ${/(better-sqlite3\/lib\/methods\/\w+\.js:\d+)/.exec(dryWal.out)?.[1] ?? '(unknown)'}, ` +
-      `reached from the CLI's own source.backup() at :454-456 — above the try that unreadable() ` +
-      `is the catch for · any of the script's own voice: ${/^(no such database|Candidates:|Dry run|cannot )/m.test(dryWal.out)}`
+    "the dry run aimed at klatch.db-wal answers in this script's voice, and points at the database rather than a restore",
+    dryWal.code === 1 &&
+      !hasStack(dryWal.out) &&
+      ownVoice &&
+      /sidecar/i.test(firstLine(dryWal.out)) &&
+      !/backup/i.test(firstLine(dryWal.out)),
+    `exit ${dryWal.code} · stack ${hasStack(dryWal.out)} · "${thrown}" · own voice: ${ownVoice} · ` +
+      `first line: "${firstLine(dryWal.out)}"`
   );
   const applyWal = cli([wal, '--apply']);
   const walAfter = sizeOf(wal);
@@ -412,24 +441,28 @@ console.log('\nArm R — the path is one tab away: klatch.db-wal, and a file tha
   const afterDry = { size: sizeOf(typo), tables: tablesIn(typo) };
   const applyTypo = cli([typo, '--apply']);
   const afterApply = { size: sizeOf(typo), tables: tablesIn(typo) };
-  open_(
+  // Round 198 split these two apart, which is the right shape: an empty database
+  // is a legal thing to point a *reading* run at, and never a legal thing to
+  // write into. So the dry run still runs — but says the zero is the file and
+  // not the corpus — and the writing run refuses.
+  check(
     'R3',
-    'aimed at an empty file, the tool reports a clean run over a corpus that does not exist',
-    `dry run exit ${dryTypo.code} ("${ownLine(dryTypo.out)}") · --apply exit ${applyTypo.code} ("${ownLine(applyTypo.out)}") · ` +
-      `no refusal, no warning that this file holds nothing`
+    'aimed at an empty file, the dry run says the zero is the file rather than the corpus, and the writing run refuses',
+    dryTypo.code === 0 && /0 bytes|empty/i.test(dryTypo.out) && applyTypo.code === 1,
+    `dry run exit ${dryTypo.code} ("${ownLine(dryTypo.out)}", empty-file note: ${/0 bytes|empty/i.test(dryTypo.out)}) · ` +
+      `--apply exit ${applyTypo.code} · first line: "${firstLine(applyTypo.out)}"`
   );
-  // The first cut of this arm asserted `tables === -1` for the untouched file,
-  // reading "not a database" into a 0-byte one. It is a *valid empty* database
-  // — the same fact arm P is about — so it opens, and reports 0 tables. The
-  // check the arm was for is the size and the schema: both unchanged by the dry
-  // run, both changed by the apply.
+  // This arm's assertion is inverted from the round that found it, and the
+  // inversion *is* the fix — Round 197 asserted the apply builds a Klatch schema
+  // in an empty file, because it did. It refuses now, so the file stays as the
+  // operator left it. A probe whose failure is the product improving has to be
+  // re-aimed, not silenced; same situation as my M5 last round.
   check(
     'R4',
-    'the dry run itself leaves the file it was pointed at alone (its snapshot is the read surface)',
-    afterDry.size === 0 && afterDry.tables === 0 && afterApply.tables > 0,
+    'neither run builds a Klatch schema in the file: the dry run never wrote, and the apply now refuses to',
+    afterDry.size === 0 && afterDry.tables === 0 && afterApply.size === 0 && afterApply.tables === 0,
     `after the dry run: ${path.basename(typo)} ${afterDry.size} B, ${afterDry.tables} tables · ` +
-      `after --apply: ${afterApply.size} B, ${afterApply.tables} tables, ${holds(typo).channels} channels — ` +
-      `the apply is what builds a Klatch schema in it`
+      `after --apply: ${afterApply.size} B, ${afterApply.tables} tables — the refusal leaves it untouched`
   );
   meas(
     'R',
