@@ -1104,6 +1104,23 @@ console.log(
   `  message rows re-stamped: ${plan.summary.p2} P2 (were \`default-entity\`), ` +
     `${plan.summary.p3} P3 (were NULL — invisible to every entity today).`
 );
+// Named, not left to be noticed. The sheet used to print a colliding name once
+// in `new agents (…)` with nothing to say two channels were behind it; Round 199
+// found two such pairs on the real corpus, each merging two unrelated agents.
+for (const c of plan.summary.collisions) {
+  console.log(
+    `\n  ! "${c.name}" would take ${c.channels.length} channels — ${c.messages} message rows onto one identity:`
+  );
+  for (const ch of c.channels) {
+    console.log(`      ${ch.id.slice(0, 8)}  ${(ch.name || '(unnamed)').slice(0, 60)}`);
+  }
+  console.log(
+    c.action === 'minted'
+      ? '    These become one new agent. That is right if they are the same agent and wrong if they\n' +
+          '    are not — the sheet cannot tell, so check the titles above before approving either.'
+      : '    These join the same existing agent. Same check.'
+  );
+}
 if (Object.keys(plan.excluded).length) {
   console.log(
     `  bound to the default but out of scope, untouched: ${JSON.stringify(plan.excluded)}`
@@ -1121,6 +1138,12 @@ for (const r of plan.rows) {
       `${(r.source ?? '—').padEnd(12)}${r.guessBasis.padEnd(16)}` +
       `P2=${String(r.p2).padEnd(5)}P3=${String(r.p3).padEnd(5)}${verdict}`
   );
+  // The guess has always carried *what it was guessed from*, and this sheet has
+  // never shown it. `entity-guess.ts` opens by arguing that a confirmation step
+  // the user can't evaluate is a rubber stamp — and then the one caller that
+  // actually gates an apply printed the name and dropped the reason. Only for
+  // rows that would move: the 65 skipped rows have nothing to confirm.
+  if (r.action !== 'skipped') console.log(`              ↳ ${r.rationale}`);
 }
 
 if (!apply) {

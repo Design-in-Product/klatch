@@ -270,6 +270,36 @@ export interface BackfillPlan {
     newAgents: string[];
     /** Distinct names that would reuse an existing agent. */
     reusedAgents: string[];
+    /**
+     * Names that **more than one channel in this plan** would bind to — the
+     * reuse-by-name rule seen from the side where it costs something.
+     *
+     * "Five sessions saying Daedalus make one Daedalus" is the rule working. Two
+     * unrelated agents collapsing into one entity because the guess gave them
+     * both a generic name is the same rule doing damage, and the plan could not
+     * previously tell the operator which it was looking at: the sheet printed
+     * `new agents (4): …, Taking, …` once, for two channels.
+     *
+     * Round 199 measured what that costs. On xian's March corpus `"Taking"` was
+     * the Chief Innovation Officer channel *and* the exploratory-testing channel;
+     * `"Oriented"` was the Comms Chief *and* the Chief of Staff. Per `PREMISE.md`
+     * the entity **is** its conversation, so merging two conversations into one
+     * entity is the specific failure the premise is most exposed to.
+     *
+     * Round 200's naming fixes take this corpus to zero collisions, but they
+     * cannot make the class impossible — a control run with the naming fixes in
+     * and the window bound out still merged two unrelated channels into
+     * `"Oriented"`. So this is reported structurally rather than left to whether
+     * the names happen to be good.
+     */
+    collisions: {
+      name: string;
+      /** 'minted' if the name is new, 'matched-by-name' if it lands on an existing agent. */
+      action: BackfillAction;
+      channels: { id: string; name: string | null }[];
+      /** Message rows that would be re-stamped onto this one identity. */
+      messages: number;
+    }[];
     p2: number;
     p3: number;
     skipReasons: Record<string, number>;
@@ -445,6 +475,25 @@ export function planEntityBackfill(options: PlanOptions = {}): BackfillPlan {
     if (r.skipReason) skipReasons[r.skipReason] = (skipReasons[r.skipReason] ?? 0) + 1;
   }
 
+  // Grouped on the *normalized* name, because that is what the binding itself
+  // reuses: "taking" and "Taking" are one entity, so they are one collision.
+  const byGuess = new Map<string, BackfillPlanRow[]>();
+  for (const r of apply) {
+    const key = normalizeName(r.guessName);
+    const group = byGuess.get(key);
+    if (group) group.push(r);
+    else byGuess.set(key, [r]);
+  }
+  const collisions = [...byGuess.values()]
+    .filter((group) => group.length > 1)
+    .map((group) => ({
+      name: group[0].guessName,
+      action: group[0].action,
+      channels: group.map((r) => ({ id: r.channelId, name: r.channelName })),
+      messages: group.reduce((n, r) => n + r.p2 + r.p3, 0),
+    }))
+    .sort((a, b) => b.messages - a.messages);
+
   return {
     rows,
     bases,
@@ -458,6 +507,7 @@ export function planEntityBackfill(options: PlanOptions = {}): BackfillPlan {
       reusedAgents: [
         ...new Set(apply.filter((r) => r.action === 'matched-by-name').map((r) => r.guessName)),
       ],
+      collisions,
       p2: apply.reduce((n, r) => n + r.p2, 0),
       p3: apply.reduce((n, r) => n + r.p3, 0),
       skipReasons,
