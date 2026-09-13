@@ -156,3 +156,91 @@ round commit.
 suites and both probes were run against Daedalus's tree, unmodified, before anything of mine.
 Status: **available**.
 
+---
+
+## 14:47 PT — WORK fire opens (Round 203)
+
+Briefing done: `git log` at `8694fae0` (Daedalus's 9/13 MID wrap), worktree clean,
+`docs/COORDINATION.md` Theseus section read, `docs/mail/` listed.
+
+**New mail, addressed to me, read in full this fire:**
+`daedalus-to-theseus-cc-xian-janus-argus-calliope-all-four-shapes-built-and-the-plan-was-only-advising-the-apply-2026-09-13.md`
+(Round 202). It claims all four of my Round 201 shapes built, the plan/apply divergence found and
+fixed, `role-title` at 9 of 9 on the real corpus, and it hands me probe `L8` — the two Comms Chiefs,
+split or merge — explicitly as mine or xian's.
+
+Note on the commit reference: the memo cites `fd88a403`; the commit on `main` is `f5526d02`
+(Daedalus's own MID log records a rebase onto Argus's push). Same content, rehashed — not a
+discrepancy, recorded so it doesn't read as one later.
+
+Baseline hashes before any work, identical to this morning's:
+`klatch.db.backup-2026-03-14` 5,230,592 B sha256 `c2295121bbdfdbbb` mtime `2026-07-23T17:27:38.145Z`;
+`klatch.db.backup-2026-03-15-pre-fresh` 335,872 B sha256 `1afc9e10c6e8ed35`.
+
+## 14:48–14:55 PT — reproduction, all of it, before any work of mine
+
+- `probe-round202` unmodified: **20 checks · 0 failed · 3 open** — his line exactly, including every
+  real-corpus measurement (L1–L6: `72 — 0 would move` default, `72 — 9 would move` with role-title,
+  821 P2 / 0 P3, the nine names, the one collision).
+- `probe-round201` (mine) against his fix: **26 · 3 failed** — **D1, E2, E3**, his predicted list.
+- `probe-round200` (his): **22 · 4 failed** — **G×2 (358c1952, cff40904), H2, K2**, his predicted list.
+- `npm test --workspace=packages/server`: **1677 passed / 103 files.** His number.
+- His `-pre-fresh` path correction confirmed by `stat` from this seat.
+
+All four shapes are built and do what the memo says. Nine names read by hand against nine openers —
+each guess is the job that opener assigns.
+
+## 14:55–15:15 PT — exploration: what L8 is actually a question about
+
+Six throwaway scripts under `.testdata/r203/`, then folded into a probe.
+
+1. **The 9 role-title hits enumerated against the corpus** — matches his list exactly.
+2. **The channel *names* carry a convention** — `M/D-M/D: Role (model) - topics`, 8 of 139 channels,
+   all `claude-ai`, 7 of the 8 being role-title hits. Grouping by role label: **chief of staff ×3,
+   cio ×2, comms chief ×2, hosr ×2**, date ranges contiguous to the day.
+3. **The collision warning fires once.** Confirmed at the CLI sheet, not the plan object: one block,
+   the Comms Chiefs. The three Chiefs of Staff are silent because two mint under *different* names.
+4. **Succession is stated in prose** — 14 of 139 openers, 6 quoting a predecessor channel by name,
+   3 resolving inside this corpus. `e7a7a513` is the only lineage channel that states nothing.
+5. **`1e2ced26` is a third recall miss** — `"Your are the Chief Experience Officer"`, one word.
+   Driven both ways; corrected it yields `role-title "Chief Experience Officer"`. `P2=110`, and I
+   verified it is the largest skipped row count on the sheet (the skipped values top out 33, 51, 110).
+6. **D4's stated reason for `e93d3810` is incomplete** — supplying `your` does not recover it;
+   `ROLE_PATTERN_SOURCES` takes `my|our|the|a|an` and `your` is not among them. Driven.
+
+**Two own errors, caught in the doing:** I first called `guessEntityName` with an options object — it
+is positional, `(opener, projectName)` — and got `.trim is not a function`. And I imported
+`normalizeName` from `entity-guess.js`; it is module-private to `entity-backfill.ts:361`, so the probe
+copies it verbatim with a comment saying so rather than pretending to import it.
+
+**One limit of my own instrument, recorded rather than smoothed over:** the lineage grouper keys on the
+text before `(model)`, so `7d162b7e` (`"1/5,11,16: Chief Innovation Offi…"`, `P2=14`) does not group
+with the two `CIO` channels though it is plainly the same role. I found it reading Daedalus's CLI sheet,
+not from my grouper. **Four lineages is a lower bound, not a count** — said so in the probe, the
+writeup and the memo.
+
+## 15:15–15:25 PT — Round 203 probe
+
+`scripts/probe-round203-the-corpus-is-lineages-and-the-sheet-warns-about-one-of-them.mts` —
+**15 checks · 0 failed · 2 open · 7 measurements**, two runs identical, `tsc --strict --module
+nodenext` clean. Arms A–C synthetic (the lineage-without-a-warning finding reproduces with no corpus
+present); D–F measure the real backup and degrade to one line if it is absent; Z asserts `packages/`
+untouched.
+
+## 15:25 PT — verification and filing
+
+- Corpora re-hashed after all work: `c2295121bbdfdbbb` and `1afc9e10c6e8ed35`, both identical to the
+  baselines above, mtimes unchanged. Nothing written outside `.testdata/`.
+- Writeup: `docs/research/round203-the-corpus-is-lineages-and-the-sheet-warns-about-one-of-them-2026-09-13.md`
+- Memo: `docs/mail/theseus-to-daedalus-cc-xian-janus-argus-calliope-202-reproduces-and-L8-was-aimed-at-the-pair-the-tool-notices-2026-09-13.md`,
+  committed separately and pushed to `main` first per the worktree mail rule.
+- COORDINATION.md Theseus section updated; Round 201 demoted to "Previous", Round 199 to "Prior".
+- **Mail close-discipline:** Daedalus's Round 202 memo and my Round 201 reply both stay in
+  `docs/mail/` — they carry xian's open corpus question and my new §8 items, all unresolved.
+
+**Not done and not claimed this fire:** `--apply` was never run against the real corpus, and the undo
+path over a role-basis apply is untested from this seat. Named as the next thing in the memo §7.
+
+**Still open for xian, unchanged: is there a current corpus?** Rounds 199–203 are all fitted to a
+March backup.
+
