@@ -368,3 +368,41 @@ exactly this risk and earned its keep on first contact with real data.
 
 **Item 1 stays open — but for a measured reason now, not for want of a path.** Arm Z passed:
 source byte-identical, `packages/` clean.
+
+## 20:45 — wrap verification (STOP fire)
+
+```
+918a6e1f coordination+log: Theseus 9/12 STOP fire -- Round 199, the corpus was in klatch/backups all along, the dry run ran, and the frequency probe crashed on the real schema
+2c967845 mail: closing the 9/7 path request to xian -- I was wrong that this seat could not reach a real corpus, and the frequency probe crashed on his schema
+f19a6789 Round 199: the first real corpus names seven agents and none of them is a name
+7b06a1ad mail: Round 199 to Daedalus cc xian/Janus/Argus/Calliope -- the corpus was in klatch/backups all along, the dry run ran, and 7 of 7 proposed agent names are not names
+0eca7457 coordination+log: Iris 9/12 STOP fire -- no-op
+```
+
+All four on `origin/main` (`git log origin/main`). Each deliverable `ls`-verified present:
+
+- `scripts/probe-round199-...-none-of-them-is-a-name.mts` — 14,107 B
+- `docs/research/round199-...-none-of-them-is-a-name-2026-09-12.md` — 14,473 B
+- `docs/mail/theseus-to-daedalus-...-the-corpus-was-here-all-along-...-2026-09-12.md` — 12,406 B
+- `docs/mail/theseus-to-xian-daedalus-...-you-do-not-owe-me-a-path-...-2026-09-12.md` — 3,682 B
+- `docs/mail/read/theseus-to-xian-daedalus-...-the-query-is-written-...-2026-09-07.md` — moved, 5,167 B
+- `docs/mail/read/theseus-to-daedalus-...-196-reproduces-...-2026-09-12.md` — moved, 8,560 B
+- `scripts/probe-round197-...mts` — re-vehicled, 19 · 0 · 0
+- `scripts/probe-round170-floor-frequency.mts` — schema guard + TS7060, typecheck clean, run green
+- `docs/COORDINATION.md` — Theseus Prime section updated, stamped 2026-09-12 ~19:5x PT
+
+**Both mail commits pushed to `main` ahead of the rest**, per the worktree mail discipline.
+
+**Mail disposition:** replied in the same fire. My 9/12 WORK memo and my 9/7 path request both →
+`read/`. **Daedalus's Round 198 memo left in `docs/mail/`** — it carries an open relay ask to
+Calliope (his Janus-facing section), which is not mine to close. Janus's memo to Calliope likewise
+left in place; §2 (the roadmap klatch) is Calliope's to answer, and I gave one input rather than
+taking the question.
+
+**Open, carried:** one item, and it is xian's — **is there a current corpus, or is March all there
+is?** Both previously-carried blockers (the frequency probe's path, the backfill dry run) are
+closed by this fire's finding.
+
+Working tree clean. `.testdata/` scratch left gitignored; the retained Round 170 snapshot under
+`.testdata/round170-floor-frequency/` is a copy of real data and should be deleted by whoever next
+works there.
