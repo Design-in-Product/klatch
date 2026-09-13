@@ -186,7 +186,69 @@ Agents working on this repo use this file as the async handoff protocol.
 
 ### Daedalus (architecture & implementation)
 - **Branch:** `claude/daedalus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/daedalus`; merges land on `main`)
-- **Status:** working — duty cycle armed and confirmed back after the 8/11 reboot (`launchctl`: `daedalus-{START,WORK,STOP}` loaded). Last fire 2026-09-12 17:17 STOP (Round 198 — Theseus's Round 197: all four of his shapes built, a zero-byte file no longer reads as a way back, `klatch.db-wal` is answered as the sidecar it is, and a writing run refuses a table-less file instead of creating a schema in it. **The dry run's blocker changed today and it is no longer approval:** xian's GO arrived via Janus, and `/Users/xian/Development/klatch/klatch.db` was measured this fire as *not existing* — `stat` → `ENOENT` from node, which this fire's sandbox does not restrict. The corpus is not on this machine. Needs a readable path, not a decision). Prior fire 2026-09-12 13:17 MID (Round 196 — Theseus's Round 195: all three commands after a bad restore now answer in a sentence, a writing run refuses on a database it cannot back up soundly, and step 4 prints its own command; the backfill's first real dry run is still the one item on this seat, still needs a path from xian). Prior fire 2026-09-12 09:17 START (Round 194 — Theseus's Round 193: step 4 of the restore steps now quotes the `Candidates:` line a correct restore will print, and the corruption arm is documented at its measured width of one write; the backfill's first real dry run is still the one item on this seat, still needs a path from xian). Prior fire 2026-09-11 17:17 STOP (Round 192 — Theseus's Round 191: the restore steps now print wherever the CLI names a backup, and an apply checkpoints so the file it leaves is the same whether or not the app is up; one dry run still needed from xian). **Second gap recorded, not explained:** the 9/6 MID and STOP fires ran (memos filed at 13:24 and 17:22, log sections present in `docs/logs/2026-09-06-0917-daedalus-opus-log.md`) but neither added an entry to this board — the newest entry below jumps from 9/6 START to 9/7 START. The work is recorded in the log and the mail; only the board entry is missing. Not backfilling from memory. **Naming note for future readers:** the 13:17 LaunchAgent is `daedalus-WORK`, but entries from 8/21 on label that slot MID. Same fire, two names; WORK ≡ MID for the 13:17 slot. Not renaming the agent mid-cycle. **Gap recorded, not explained:** no 13:17 entry exists for 9/2 — no MID section in `docs/logs/2026-09-02-0917-daedalus-opus-log.md` and no separate 13:17 file. I have no evidence of what happened in that slot.
+- **Status:** working — duty cycle armed and confirmed back after the 8/11 reboot (`launchctl`: `daedalus-{START,WORK,STOP}` loaded). Last fire 2026-09-13 09:17 START (Round 200 — Theseus's Round 199 shapes 1–3 built plus a structural guard for D3; **the first real dry run went 72 → 0 would move on xian's March corpus, and 23 → 0 on the March 15 one.** The corpus was never missing — see the correction at the head of the 9/13 entry below, which retracts the "needs a readable path" claim in my 9/12 entry. **One item on this seat now: shape 4, a `role-title` basis** — `0 would move` is correct *and* is a backfill that does nothing, and shape 4 is the difference between the feature being safe and the feature working. **One question for xian, not blocking the build but blocking the fit:** is there a current corpus, or is March all of it?). Prior fire 2026-09-12 17:17 STOP (Round 198 — Theseus's Round 197: all four of his shapes built, a zero-byte file no longer reads as a way back, `klatch.db-wal` is answered as the sidecar it is, and a writing run refuses a table-less file instead of creating a schema in it. **The dry run's blocker changed today and it is no longer approval:** xian's GO arrived via Janus, and `/Users/xian/Development/klatch/klatch.db` was measured this fire as *not existing* — `stat` → `ENOENT` from node, which this fire's sandbox does not restrict. The corpus is not on this machine. Needs a readable path, not a decision). Prior fire 2026-09-12 13:17 MID (Round 196 — Theseus's Round 195: all three commands after a bad restore now answer in a sentence, a writing run refuses on a database it cannot back up soundly, and step 4 prints its own command; the backfill's first real dry run is still the one item on this seat, still needs a path from xian). Prior fire 2026-09-12 09:17 START (Round 194 — Theseus's Round 193: step 4 of the restore steps now quotes the `Candidates:` line a correct restore will print, and the corruption arm is documented at its measured width of one write; the backfill's first real dry run is still the one item on this seat, still needs a path from xian). Prior fire 2026-09-11 17:17 STOP (Round 192 — Theseus's Round 191: the restore steps now print wherever the CLI names a backup, and an apply checkpoints so the file it leaves is the same whether or not the app is up; one dry run still needed from xian). **Second gap recorded, not explained:** the 9/6 MID and STOP fires ran (memos filed at 13:24 and 17:22, log sections present in `docs/logs/2026-09-06-0917-daedalus-opus-log.md`) but neither added an entry to this board — the newest entry below jumps from 9/6 START to 9/7 START. The work is recorded in the log and the mail; only the board entry is missing. Not backfilling from memory. **Naming note for future readers:** the 13:17 LaunchAgent is `daedalus-WORK`, but entries from 8/21 on label that slot MID. Same fire, two names; WORK ≡ MID for the 13:17 slot. Not renaming the agent mid-cycle. **Gap recorded, not explained:** no 13:17 entry exists for 9/2 — no MID section in `docs/logs/2026-09-02-0917-daedalus-opus-log.md` and no separate 13:17 file. I have no evidence of what happened in that slot.
+- **9/13 fire (START, 09:17 PT) — Round 200: the guess declines where it used to invent, and the window is what does it. `8060dbd8` + mail `e8e27320`, both on `origin/main`.**
+  - **Correction to my own 9/12 STOP entry, first:** I wrote "The corpus is not on this machine.
+    Needs a readable path." That was wrong. `/Users/xian/Development/klatch/klatch.db` is indeed
+    ENOENT, but **`/Users/xian/Development/klatch/backups/klatch.db.backup-2026-03-14` is xian's
+    real corpus** — 139 channels, 2,652 messages — and was reachable the whole time. A walk for
+    `klatch*.db` does not match `klatch.db.backup-*`. I had even named "two March backups in
+    `backups/`" in my own memo and reasoned past them. The CLAUDE.md rule about "we don't have X"
+    being the highest-risk statement on this project, broken by me in the entry that quoted it.
+  - **Input:** Theseus's Round 199, reproduced unmodified before any edit — March 14
+    **`Candidates: 72 — 7 would move`**, `new agents (4): Succeeding, Oriented, Taking, You`,
+    `340 P2 / 0 P3`, both collisions; March 15 **23 candidates, 2 would move**. His numbers exactly.
+    First dry run ever against a database that is *fine*: **0 of 7 proposed names correct**, on
+    `identity-claim`, the only basis applied by default.
+  - **Measured before designing.** Walked all 139 openers recording every identity-pattern hit and
+    its offset. **Real claims sit at offsets 0–158; every fall-through false positive at 511–1706.
+    A 353-character gap with nothing in it.** The window is 400 because of that gap, not by taste.
+  - **Built — his shapes 1, 2, 3, plus the reporting half of D3:** continuation verbs in
+    `NOT_NAMES` *and* a general `-ing`+preposition net; the scan rewritten to take every pattern's
+    every occurrence in **document order inside the window**, so rejecting a stopword narrows
+    instead of widening; `you` plus the rest of the pronoun set; and `plan.summary.collisions`,
+    which names any guess two or more channels would share with the channels and the message count.
+    The CLI now also prints each moving row's `rationale` — carried on the row since Round 175,
+    never printed, on the one path that gates an apply — and the rationale **quotes the matched
+    claim** instead of asserting "the session opens by naming itself X". Cut the "the confirm step
+    catches whatever slips through" justification: Round 199 §4 showed this CLI has no confirm step.
+  - **Result: 72 → 0 would move, 23 → 0 would move.**
+  - **Where I went against his recommendation, and why — measured, four variants:** as-shipped
+    **7** would move; shapes 1+2 with the window **out** and iteration in **5** (`Up, Ready, Aware,
+    Settled, Oriented`); shapes 1+2 on old scan semantics **2** (`Oriented` ×2); as built **0**.
+    His shape 3 offered the bound *or* occurrence-iteration — **iteration alone is a widening**:
+    three of those five (`Up` 93 rows, `Aware` 174, `Settled` 148) are channels correctly silent
+    today, so it adds 415 re-stamped rows onto invented identities. And **the collision survives
+    good names** (variant 3, the Comms Chief and the Chief of Staff merged into one `"Oriented"`,
+    156 rows), which is why D3 got a structural guard rather than being declared fixed.
+  - **Verified:** every new test **mutation-checked**, not merely run — pronouns out → 2 fail,
+    `-ing` net out → 1, window out → 3, document-order sort reversed → 1; each mechanism has a
+    uniquely-covering test and none is decoration. All controls reverted, `grep -c` for markers **0**
+    in all three touched files. **Server 1649 / 102 files pass, client 311.** Probe 200
+    **22 · 0 failed · 1 open · 5 measurements**, twice. Probe 198 **27 · 0 · 3** (matches Argus's
+    sweep this morning). Probe 197 **19 · 0 · 0 · 5** after commit — mid-round it read `19 · 1`, the
+    `Z` clean-tree check against my own uncommitted edits, by design. Both backups byte-identical,
+    mtime still `2026-07-23T17:27:38Z`; nothing written outside `.testdata/`.
+  - **Argus — your sweep changes tomorrow, expected diff:** **`probe-round199` now reports
+    `14 · 7 failed · 1 open`** — G:succeeding-predecessors, G:taking-over-from, G:taking-on-a-role,
+    G:stopwords, H2, J1, J2. Every one asserts a defect is *present*, so **the failures are the fix
+    landing, not a regression.** Arm I still passes but **vacuously** (the colliding name is now
+    `""`). L2 now reads `0 produce an identity-claim guess`. I have **not** rewritten his probe —
+    it is his round's record and re-vehicling is his call.
+  - **Open, deliberately, and the honest caveat on this round:** `0 would move` is the *correct*
+    answer and also **a backfill that does nothing**. Carried into probe 200 as OPEN item `L3` so
+    the zero is not read as a green light. **Shape 4 (a `role-title` basis) is not built** — all
+    seven channels state their role in plain words in both title and opener, so it plausibly gets
+    7/7 where the strongest basis now gets 0. I think it may be the right *primary* basis for
+    imported claude-ai sessions rather than a fallback (per `PREMISE.md`, these conversations
+    identify themselves by role). Proposed as my next round, starting with a design note.
+  - **Needs xian, not me:** **is there a current corpus?** Everything fitted today — the window at
+    400 above all — is fitted to a March backup. If the live database is on a laptop, shape 4 must
+    not be fitted to these numbers. (Theseus's §7.2; I've seconded it rather than re-asking.)
+  - **Mail:** replied in full to Theseus (cc xian, Janus, Argus, Calliope). Closed the withdrawn-path
+    thread to `docs/mail/read/`. **Left the Round 199 memo open in `docs/mail/`** — shape 4 and the
+    corpus question are still live on it. Janus-facing paragraph flagged for Calliope's relay, per
+    Theseus's §9; `designinproduct/docs/mail/` is not writable from this seat either.
 - **9/12 fire (STOP, 17:17 PT) — Round 198: a way back has tables in it, the sidecar is not the database, and the dry run's blocker turns out to be the corpus.**
   - **Input:** Theseus's Round 197, reproduced unmodified on `8ec62595` before any edit —
     **18 · 0 failed · 6 open · 6 measurements**, his table line for line, arm S within noise of his
