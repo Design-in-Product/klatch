@@ -24,6 +24,20 @@ export interface ResolveEntityParams {
   entityName?: string;
   /** Model for a newly minted entity. Defaults to the app default. */
   model?: string;
+  /**
+   * Whether `entityName` may bind to an entity that already has that name.
+   * Defaults to **true** — the five-sessions-one-Daedalus rule this module opens
+   * by arguing for, and every existing caller's behavior.
+   *
+   * `false` when the name is not a claim about *who*. A `role-title` guess
+   * (`entity-guess.ts`) proposes a job — "Chief of Staff" — and two sessions
+   * holding one job are two agents, so reusing on that name merges strangers.
+   * Round 202: the backfill plan had already decided this per basis and the apply
+   * pass then called this function, which re-derived the binding from the name
+   * alone. The plan said `minted` and the apply bound by name anyway — the sheet
+   * and the write disagreed, which is worse than either rule.
+   */
+  reuseByName?: boolean;
 }
 
 export type ResolveDisposition =
@@ -80,7 +94,10 @@ export function resolveImportEntity(params: ResolveEntityParams): ResolvedEntity
   }
 
   const entities: Entity[] = getAllEntities();
-  const match = entities.find((e) => normalizeName(e.name) === normalizeName(confirmed));
+  const match =
+    params.reuseByName === false
+      ? undefined
+      : entities.find((e) => normalizeName(e.name) === normalizeName(confirmed));
   if (match) {
     return { entityId: match.id, disposition: 'matched-by-name' };
   }

@@ -82,7 +82,15 @@ describe('D2 — a rejected stopword must narrow the search, not widen it', () =
       'Hello! You are my tech-savvy communications chief here on the Piper Morgan project. ' +
       'x'.repeat(1699) +
       " Once you're oriented, please review this batch of omnibus logs.";
-    expect(guessEntityName(opener).basis).toBe('none');
+    // Round 202 changed the right answer here and not the defect. This asserted
+    // `none`, because a role claim was something the module declined; the
+    // `role-title` basis now reads the *near* claim, which is the same fact this
+    // test was always about — what it must never do is reach 1,699 characters
+    // down and report `"Oriented"` as how the session opens.
+    const guess = guessEntityName(opener);
+    expect(guess.basis).toBe('role-title');
+    expect(guess.name).toBe('tech-savvy communications chief');
+    expect(guess.name).not.toBe('Oriented');
   });
 
   it('takes the earliest surviving claim, not the earliest-listed pattern', () => {
@@ -149,23 +157,48 @@ describe('D4 — `you` belongs in the stopword list', () => {
   });
 });
 
-describe('the corpus openers that were always right to decline', () => {
-  it('still declines, for the same reason as before', () => {
-    // Real openers that produced no guess before this round and must still
-    // produce none — the fixes must not have changed *why* these decline.
-    const openers = [
-      'You are my chief architect and you help me maintain our architecture.', // 0111a366
-      'You are my Executive Assistant and Chief of Staff.', // 8ef10002
-      'You are the Head of Sapient Resources (HoSR) for the Piper Morgan project.', // e07e9d56
-      'You are my career coach today. Help me apply for this job!', // ef2a2e35
+describe('the corpus openers this round called "always right to decline"', () => {
+  /**
+   * **This block asserted the wrong thing and Round 201 measured why.**
+   *
+   * These four real openers declined in Round 200, and I wrote them down as
+   * openers it was *right* to decline — reasoning from the only basis the module
+   * had. Theseus's Round 201 §4 walked all 14 in-window claims in the corpus and
+   * found that **none of them proposes a name**: every one is a role claim, so
+   * `identity-claim` was not being cautious here, it had a recall ceiling of 0
+   * out of 0. Declining on these was the module correctly reporting that its one
+   * basis did not apply — not the corpus having nothing to say.
+   *
+   * Round 202 gives them a basis. The assertions are inverted deliberately; the
+   * fixtures are unchanged, and they are still verbatim from the corpus.
+   */
+  it('now reads the role each of them states', () => {
+    const openers: [string, string][] = [
+      ['You are my chief architect and you help me maintain our architecture.', 'chief architect'], // 0111a366
+      ['You are my Executive Assistant and Chief of Staff.', 'Executive Assistant and Chief of Staff'], // 8ef10002
+      [
+        'You are the Head of Sapient Resources (HoSR) for the Piper Morgan project.',
+        'Head of Sapient Resources (HoSR)',
+      ], // e07e9d56
+      ['You are my career coach today. Help me apply for this job!', 'career coach'], // ef2a2e35
     ];
-    for (const opener of openers) expect(guessEntityName(opener).basis).toBe('none');
+    for (const [opener, title] of openers) {
+      const guess = guessEntityName(opener);
+      expect(guess.basis).toBe('role-title');
+      expect(guess.name).toBe(title);
+    }
   });
 
-  it('falls back to the project name rather than to nothing', () => {
-    const guess = guessEntityName('You are my chief architect.', 'Piper Morgan');
+  it('falls back to the project name when there is no claim of either kind', () => {
+    const guess = guessEntityName('Here are the logs from yesterday, please read them.', 'Piper Morgan');
     expect(guess.basis).toBe('project-name');
     expect(guess.name).toBe('Piper Morgan');
+  });
+
+  it('prefers a role claim to the project name — the project names the work', () => {
+    const guess = guessEntityName('You are my chief architect.', 'Piper Morgan');
+    expect(guess.basis).toBe('role-title');
+    expect(guess.name).toBe('chief architect');
   });
 });
 

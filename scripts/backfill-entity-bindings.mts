@@ -1094,6 +1094,21 @@ if (plan.filter) {
 if (Object.keys(plan.summary.skipReasons).length) {
   console.log(`  skipped, by reason: ${JSON.stringify(plan.summary.skipReasons)}`);
 }
+// A zero that is correct still has to be told apart from a zero that means
+// nothing is here. On xian's March corpus the default run finds nothing because
+// the one basis it applies has no true positive available on that corpus — while
+// nine channels state a role and are excluded without a word. Naming the bases
+// behind `basis-excluded`, and the flag that would include them, is the
+// difference between "there is nothing to do" and "you have not asked yet".
+const excludedBases = Object.entries(plan.summary.basisExcluded);
+if (excludedBases.length) {
+  const widened = [...new Set([...plan.bases, ...excludedBases.map(([b]) => b)])];
+  console.log(
+    `  excluded by basis: ${excludedBases.map(([b, n]) => `${n} ${b}`).join(', ')}` +
+      ` — this run applies {${plan.bases.join(', ')}}. To see them:` +
+      ` --bases=${widened.join(',')}`
+  );
+}
 console.log(
   `  new agents (${plan.summary.newAgents.length}): ${plan.summary.newAgents.join(', ') || '(none)'}`
 );
@@ -1109,16 +1124,25 @@ console.log(
 // found two such pairs on the real corpus, each merging two unrelated agents.
 for (const c of plan.summary.collisions) {
   console.log(
-    `\n  ! "${c.name}" would take ${c.channels.length} channels — ${c.messages} message rows onto one identity:`
+    c.mergesIntoOne
+      ? `\n  ! "${c.name}" would take ${c.channels.length} channels — ${c.messages} message rows onto one identity:`
+      : `\n  ! "${c.name}" is the name ${c.channels.length} separate agents would carry — ${c.messages} message rows, not merged:`
   );
   for (const ch of c.channels) {
     console.log(`      ${ch.id.slice(0, 8)}  ${(ch.name || '(unnamed)').slice(0, 60)}`);
   }
+  // Which way the shared name fails depends on whether the basis reuses by name.
+  // Saying "these become one new agent" about a `role-title` group would be
+  // false: it mints one agent per channel, and the cost is ambiguous labels
+  // rather than a merged transcript.
   console.log(
-    c.action === 'minted'
-      ? '    These become one new agent. That is right if they are the same agent and wrong if they\n' +
+    !c.mergesIntoOne
+      ? '    A role is a job, not a person, so these do not merge — you get that many agents with\n' +
+          '    the same name. If they are in fact one agent continuing, merge them by hand after.'
+      : c.action === 'minted'
+        ? '    These become one new agent. That is right if they are the same agent and wrong if they\n' +
           '    are not — the sheet cannot tell, so check the titles above before approving either.'
-      : '    These join the same existing agent. Same check.'
+        : '    These join the same existing agent. Same check.'
   );
 }
 if (Object.keys(plan.excluded).length) {
@@ -1144,6 +1168,16 @@ for (const r of plan.rows) {
   // actually gates an apply printed the name and dropped the reason. Only for
   // rows that would move: the 65 skipped rows have nothing to confirm.
   if (r.action !== 'skipped') console.log(`              ↳ ${r.rationale}`);
+  // The one row an operator should look at twice: an entity of this name exists
+  // and this plan is deliberately not binding to it. Minting is the safe default
+  // and it is also wrong whenever the two really are one agent continuing, so
+  // the choice is shown rather than made silently.
+  if (r.action !== 'skipped' && r.sameNameEntityId) {
+    console.log(
+      `              ↳ note: an agent named "${r.guessName}" already exists (${r.sameNameEntityId.slice(0, 8)}).` +
+        ` A ${r.guessBasis} guess does not reuse it — this mints a second one.`
+    );
+  }
 }
 
 if (!apply) {

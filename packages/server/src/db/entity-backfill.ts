@@ -38,7 +38,11 @@
 
 import { getDb } from './index.js';
 import { DEFAULT_ENTITY_ID } from '@klatch/shared';
-import { guessEntityName, type GuessBasis } from '../import/entity-guess.js';
+import {
+  BASIS_REUSES_BY_NAME,
+  guessEntityName,
+  type GuessBasis,
+} from '../import/entity-guess.js';
 import { resolveImportEntity } from '../import/entity-resolve.js';
 
 /**
@@ -213,6 +217,16 @@ export interface BackfillPlanRow {
   skipReason?: BackfillSkipReason;
   /** Set only when the plan would reuse an entity that already exists. */
   targetEntityId?: string;
+  /**
+   * An existing entity with this guess's name that the plan is **not** reusing,
+   * because the basis does not reuse by name (`BASIS_REUSES_BY_NAME`).
+   *
+   * Present so the split is on the sheet instead of silent. A `role-title` guess
+   * of "Chief of Staff" against an existing "Chief of Staff" is exactly the row
+   * an operator should look at twice: minting is the safe default and it is also
+   * wrong whenever the two sessions really are one agent continuing.
+   */
+  sameNameEntityId?: string;
   /** `channel_entities` rows to re-point (1 for every candidate). */
   p1: number;
   /** Assistant rows stamped `default-entity` in this channel. */
@@ -299,10 +313,30 @@ export interface BackfillPlan {
       channels: { id: string; name: string | null }[];
       /** Message rows that would be re-stamped onto this one identity. */
       messages: number;
+      /**
+       * True when these rows really do collapse into a single entity — i.e. the
+       * basis reuses by name. False for a `role-title` group, where the same name
+       * produces that many separate agents; the shared name is then a labelling
+       * problem, not a merged transcript.
+       */
+      mergesIntoOne: boolean;
     }[];
     p2: number;
     p3: number;
     skipReasons: Record<string, number>;
+    /**
+     * Of the rows skipped as `basis-excluded`, how many on each basis — and so
+     * what a wider `--bases` would find.
+     *
+     * `0 would move` and `0 would move, and nothing else is available either`
+     * are different facts, and the first reads like the second. On xian's March
+     * corpus the default run reports zero because the only basis it applies,
+     * `identity-claim`, has no true positive available to it there (Round 201);
+     * nine channels state a role and are excluded silently. Reporting them is
+     * how a correct zero stops looking like an empty corpus — the same shape as
+     * `BackfillFilterReport`, one level over.
+     */
+    basisExcluded: Record<string, number>;
   };
   /** Bound to the default but outside `BACKFILL_SOURCES`. Reported, not touched. */
   excluded: Record<string, number>;
@@ -450,19 +484,31 @@ export function planEntityBackfill(options: PlanOptions = {}): BackfillPlan {
       p3,
     };
 
-    const targetId = guess.name ? byName.get(normalizeName(guess.name)) : undefined;
+    // The name lookup is always performed — `resolves-to-default` and the
+    // `sameNameEntityId` note both need to know an entity of this name exists.
+    // Whether the plan *binds* to it is the basis's decision, not the name's:
+    // a role title is a claim about what job, not about who, so two sessions
+    // holding one job are two entities (`BASIS_REUSES_BY_NAME`, and Theseus's
+    // Round 201 §5 — this line read `targetId ? 'matched-by-name' : 'minted'`
+    // and never consulted the basis at all).
+    const nameMatch = guess.name ? byName.get(normalizeName(guess.name)) : undefined;
+    const mayReuse = BASIS_REUSES_BY_NAME[guess.basis];
+    const targetId = mayReuse ? nameMatch : undefined;
 
     let skipReason: BackfillSkipReason | undefined;
     if (otherBindings > 0) skipReason = 'multi-bound';
     else if (!guess.name) skipReason = 'no-guess';
     else if (!bases.includes(guess.basis)) skipReason = 'basis-excluded';
-    else if (targetId === DEFAULT_ENTITY_ID) skipReason = 'resolves-to-default';
+    else if (nameMatch === DEFAULT_ENTITY_ID) skipReason = 'resolves-to-default';
+
+    const sameName = !mayReuse && nameMatch ? { sameNameEntityId: nameMatch } : {};
 
     if (skipReason) {
-      rows.push({ ...base, skipReason, targetEntityId: targetId });
+      rows.push({ ...base, ...sameName, skipReason, targetEntityId: targetId });
     } else {
       rows.push({
         ...base,
+        ...sameName,
         action: targetId ? 'matched-by-name' : 'minted',
         targetEntityId: targetId,
       });
@@ -471,8 +517,11 @@ export function planEntityBackfill(options: PlanOptions = {}): BackfillPlan {
 
   const apply = rows.filter((r) => r.action !== 'skipped');
   const skipReasons: Record<string, number> = {};
+  const basisExcluded: Record<string, number> = {};
   for (const r of rows) {
     if (r.skipReason) skipReasons[r.skipReason] = (skipReasons[r.skipReason] ?? 0) + 1;
+    if (r.skipReason === 'basis-excluded')
+      basisExcluded[r.guessBasis] = (basisExcluded[r.guessBasis] ?? 0) + 1;
   }
 
   // Grouped on the *normalized* name, because that is what the binding itself
@@ -491,6 +540,12 @@ export function planEntityBackfill(options: PlanOptions = {}): BackfillPlan {
       action: group[0].action,
       channels: group.map((r) => ({ id: r.channelId, name: r.channelName })),
       messages: group.reduce((n, r) => n + r.p2 + r.p3, 0),
+      // A shared name is only a *merge* if the basis reuses by name. On a
+      // `role-title` group these become that many same-named agents instead —
+      // still worth a second look (the name will read ambiguously in the UI), but
+      // it is the opposite failure from the one this warning was written for, and
+      // saying "these become one new agent" about it would be false.
+      mergesIntoOne: group.some((r) => BASIS_REUSES_BY_NAME[r.guessBasis]),
     }))
     .sort((a, b) => b.messages - a.messages);
 
@@ -511,6 +566,7 @@ export function planEntityBackfill(options: PlanOptions = {}): BackfillPlan {
       p2: apply.reduce((n, r) => n + r.p2, 0),
       p3: apply.reduce((n, r) => n + r.p3, 0),
       skipReasons,
+      basisExcluded,
     },
     excluded,
   };
@@ -611,7 +667,17 @@ export function applyEntityBackfill(plan: BackfillPlan): ApplyResult {
 
     const move = db.transaction(() => {
       // Resolve inside the transaction so a mint cannot survive a failed move.
-      const resolved = resolveImportEntity({ entityName: row.guessName });
+      //
+      // `reuseByName` carries the plan's decision into the write. Without it this
+      // call re-derived the binding from the name alone, so a `role-title` row the
+      // sheet showed as `MINTED` with a "does not reuse it" note bound to the
+      // existing entity anyway, and two role rows sharing a name in one plan
+      // collapsed into one agent. The plan is what the operator approved; the
+      // apply pass has no business reaching a different answer.
+      const resolved = resolveImportEntity({
+        entityName: row.guessName,
+        reuseByName: BASIS_REUSES_BY_NAME[row.guessBasis],
+      });
       const toEntityId = resolved.entityId;
       if (!toEntityId) {
         // resolveImportEntity only returns 'default' for a blank name, which the
