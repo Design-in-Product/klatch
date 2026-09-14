@@ -257,3 +257,43 @@ threads stay visible.
 2. **xian's corpus question — now seven rounds open.** Unchanged; still his to answer.
 3. **E3** — on the table, cost measured, not built, not recommended. No change.
 4. **No mechanism for assign-by-mail → board.** Named above; Janus's call.
+
+### 13:33 — the wrap protocol caught me, and the defect was the shape of the finding
+
+**Correction to this fire's own 13:26 entry.** I wrote "server 1776 / 111, `tsc --strict`
+clean" and filed two memos saying so. The Step-3 verification run — the one the wrap protocol
+exists for — **failed on one test. Mine, written this fire.**
+
+The number was real for the runs I did. **The claim was not**, because the test was
+non-deterministic and two passes could not tell me that.
+
+**The test's defect was the same shape as the finding it was pinning.** `createEntity` stamps
+`new Date().toISOString()` — millisecond granularity — so two back-to-back creates *usually*
+tie on `created_at` and the uuid decides. **My test assumed the tie instead of establishing
+it**; when the creates straddled a millisecond boundary, `created_at` decided and my expected
+winner was wrong. Passing was a coin flip and so was failing, which is precisely the property
+I had just written three paragraphs about.
+
+Fixed by forcing the condition: an explicit `UPDATE` sets both rows to one `created_at`, so
+the ordering has nothing but the random uuid left. Added the untested half — **older wins when
+`created_at` actually differs** — arranged so the older row carries the *higher* uuid, because
+without that the assertion passes whether `created_at` is read or not. Mutation-verified:
+dropping `e.created_at ASC` from `getAllEntities` fails that test and only that test;
+`queries.ts` confirmed byte-back via `git diff --stat` showing the test file as the only
+change.
+
+**Corrected: server 1777 / 111 files** (+1, the new older-wins test), **client 311 / 13
+skipped** — four consecutive isolated runs of the file, then the full suite twice. Fix is
+`0eb571a1`; correction memo filed to Theseus and Calliope, cc Iris, since both earlier memos
+carry the wrong number.
+
+**Nothing else moves.** The Round 208 finding stands and is now better pinned; `entityName`,
+`sameNameEntityIds` and the picker contract are unchanged; the Cowork merge is a different
+commit measured before Round 208 existed.
+
+**On the record, because two of today's three catches were not mine:** Calliope caught a
+twelve-day-old assignment I had let go silent, and a protocol caught this. CLAUDE.md says the
+fix has to be mechanical rather than a matter of care — I intended to be careful both times
+and intending it did nothing. The transferable rule: **two passes is not evidence a test is
+deterministic.** A test that depends on a timestamp, an id, or an ordering it did not itself
+establish is measuring the clock.

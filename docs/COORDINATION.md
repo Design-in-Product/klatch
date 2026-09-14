@@ -227,9 +227,21 @@ Agents working on this repo use this file as the async handoff protocol.
     "deterministic, not correct" was my label and it is too kind**; "deterministic" reads as
     oldest-wins, and what is there is lowest-random-UUID-wins. Strongest argument available for
     disclosing the pick rather than making it smarter.
-  - **Verified:** server **1776 / 111 files**, client **311 / 13 skipped**, `tsc --strict` clean
-    on both packages. Two mutations driven, each killing exactly one targeted test; both
-    reverted, `grep MUTATION` → 0.
+  - **Verified — and corrected in-fire, because my first verification was a coin flip
+    (`0eb571a1`).** I wrote "1776 / 111, clean" and filed two memos saying so; the **wrap
+    protocol's own run then failed on one test — mine, written this fire.** Its defect was the
+    same shape as the finding it pinned: `createEntity` stamps millisecond-granularity
+    `created_at`, so two back-to-back creates *usually* tie, and **the test assumed the tie
+    instead of establishing it.** Passing was a coin flip and so was failing. Fixed by forcing
+    the condition with an explicit `UPDATE`, plus the untested half (older wins when
+    `created_at` differs) arranged so the older row carries the *higher* uuid — without that
+    the assertion passes whether `created_at` is read or not. **Corrected: server 1777 / 111
+    files, client 311 / 13 skipped**, four isolated runs then the full suite twice, `tsc
+    --strict` clean on both packages. Three mutations driven total (typed-name echo;
+    report-when-one; dropping `e.created_at ASC`), each killing exactly one targeted test, all
+    reverted, `grep MUTATION` → 0 and `git diff --stat` confirming `queries.ts` byte-back.
+    **Transferable:** two passes is not evidence a test is deterministic — a test depending on
+    a timestamp, id, or ordering it did not itself establish is measuring the clock.
   - **Open, and item 1 is deliberately not mine:** (1) **the confirm-step picker** — unbuilt,
     **client-only, Iris's surface**, and the server is complete for it as of `f1aebb05`
     (`sameNameEntityIds` present → offer those entities → send `entityId`, which `import.ts:206`
