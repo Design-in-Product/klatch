@@ -153,3 +153,89 @@ thread has an open action (my §7.1 answer proposes client-side work nobody has 
 xian's corpus question, now seven rounds open. Not moved to `read/`.
 
 
+
+---
+
+# WORK fire — 2026-09-14 ~14:50–15:0x PT (Round 209)
+
+## 14:50 PT — briefing.
+
+`git log` current at `c94c2988`. Two new memos addressed to me, both Daedalus, both read in
+full this fire: the picker-is-server-complete memo and the coin-flip correction. Argus's 9/14
+WORK log flags a probe-hygiene gap and names it mine ("worth Theseus knowing before he retires
+or re-aims this probe"). Took that as the assignment.
+
+**Deliberately did not re-do Argus's work.** He had already verified Round 208 at source
+(`entity-resolve.ts:88,147`, `queries.ts:370`, `fixture-provenance.test.ts:180`, `grep MUTATION`
+→ 0) and matched the numbers. Duplicating a static source read is waste; my seat is driving
+things.
+
+## 14:52 PT — suite, run myself.
+
+Server **1777 / 111 files**, client **311 / 13 skipped**. That is Daedalus's *corrected* figure
+(`0eb571a1`), not the 1776 in both his earlier memos. Correction holds. First attempt piped
+through `tail -25` and lost the server half — re-ran the server workspace alone rather than
+infer it.
+
+## 14:55–15:00 PT — the corruption, reproduced only on the third try.
+
+Did not take the mechanism from Argus's memo. Two faithful-looking reconstructions **failed**:
+
+1. hand-built WAL from the same corpus bytes → no corruption (a WAL is valid against an
+   identical file and replays cleanly);
+2. the real CLI with `--apply` → no corruption (checkpoints on close; sidecars land on the
+   `.backup-backfill-*` file, `f-reach.db-wal` is 0 bytes).
+3. **`planOf()`, the probe's own child mode → reproduced.** 4,276,592 B `f-reach.db-wal` —
+   Argus's "4.2 MB" to the byte. `COLD planOf: exit 1 -> SqliteError: database disk image is
+   malformed`; `CONTROL planOf (after unlink): exit 0`.
+
+Detail that explains the symptom's location: **read-only opens survive a stale WAL**
+(`READONLY: {"n":68}`). Arm D opens `readonly: true`; only the plan child dies.
+
+Scratch reproductions written under `.testdata/` (gitignored) — `r209-repro{,2,3}.mjs`,
+`r209-plan-child.mjs`. Not committed.
+
+## 15:0x PT — fixes, and the thing I was not looking for.
+
+Back-ported `probe-round207`'s hygiene. On opening 207 to copy the idiom, found it **already
+carried this exact diagnosis at `:115-131`, including the same 4,276,592 B figure** — I had
+written it and not carried it back. Recorded as my own gap, not a new discovery.
+
+Three fixes: `WORK` cleared not merely created; `copyCorpus()` takes sidecars with the file;
+**arm C no longer throws out of the probe** on a missing undo record (C2–C5 degrade to OPEN).
+That third one meant **arms D/E/F/Z had been unreachable since Round 206** — every corpus
+measurement silently not running.
+
+`tsc --strict` then caught a stale projection: `:65` asked for `r.sameNameEntityId`, which
+Round 206 replaced with the plural. Returning `null` for every row. **No check read it**, so
+nothing scored wrong — corrected anyway.
+
+**Then the headline.** With D/E/F reachable, arm E failed 3 and passed 1. The sheet's note now
+reads `4 agents named "chief of staff" already exist (fc4a59b6, d064dae8, 45691e94, 1e18ec34)`
+— Round 206 fixing my own Round 205 §4, cited by name at `backfill-entity-bindings.mts:1197`.
+E1 matched `/already exists/`; verb is now `exist`; `notes` empty; **E4 tested `notes[0] ?? ''`
+and PASSED**, asserting the operator gets no sign three more carry the name — while the note
+names all four. Swept the file for the shape, found **B2**, same thing: no `MATCHED-BY-NAME`
+row post-206 → `matchLine === ''` → both `!includes` true → **green**.
+
+Generalisation: a check whose subject can default to empty, asserting a negative, goes green
+exactly when the defect is *fixed*. Same family as Daedalus's Round 208 correction one layer
+over — his test assumed the tie it needed; these assume the subject they need.
+
+Arm E re-aimed (4/4 green against the real sheet); B2 guarded, now fails honestly. **Arms A/B/C
+left pinning pre-206 expectations deliberately** — retiring them is a call about Daedalus's
+behaviour change, recommended in the memo, not taken unilaterally.
+
+**Probe: 23 checks · 8 failed · 5 open · 2 measurements**, two runs diffed IDENTICAL,
+`tsc --strict` clean, zero model calls. Progression this fire: aborted-at-C → 10 failed (with
+E4/B2 vacuously green) → 8 failed (honest).
+
+## Wrap verification.
+
+**Step 1 — commits landed:**
+
+```
+85b523ab mail: Theseus -> Daedalus/Argus, two checks went green when the defect was fixed
+c94c2988 coordination+log: Argus 9/14 WORK fire -- Rounds 206-208 and Cowork merge swept, one probe-hygiene gap flagged
+cd8d98a9 coordination+log: Daedalus 9/14 WORK -- in-fire correction, 1777/111 not 1776/111
+```

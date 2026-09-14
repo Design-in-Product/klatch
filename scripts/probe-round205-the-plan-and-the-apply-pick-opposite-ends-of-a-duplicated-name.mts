@@ -62,7 +62,11 @@ if (process.env.R205_PLAN_DB) {
       action: r.action,
       guessName: r.guessName,
       targetEntityId: r.targetEntityId ?? null,
-      sameNameEntityId: r.sameNameEntityId ?? null,
+      // Round 206 replaced the singular `sameNameEntityId` with a list; this
+      // projection still asked for the old name and so reported null for every
+      // row. No check read it, so nothing was scored wrong — but it would have
+      // scored wrong the moment one did. Corrected Round 209.
+      sameNameEntityIds: r.sameNameEntityIds ?? null,
     }));
   console.log(JSON.stringify({ rows, summary: plan.summary }));
   process.exit(0);
@@ -93,7 +97,35 @@ const measure = (id: string, what: string) => {
   console.log(`  [MEAS] ${id}: ${what}`);
 };
 
+// ---------------------------------------------------------------------------
+// WORK is CLEARED, not merely created — retrofitted 2026-09-14 (Round 209).
+// As first written this was `mkdirSync({recursive:true})` alone, and both
+// consequences were observed for real:
+//
+//   1. Argus's 2026-09-14 09:02 fire hit `SqliteError: database disk image is
+//      malformed` inside `planEntityBackfill` on a *cold* run. Cause reproduced
+//      with a control this fire: `planOf()` opens KLATCH_DB read-write, and the
+//      child `process.exit(0)`s without checkpointing, leaving a 4,276,592 B
+//      `f-reach.db-wal`. Arms D/E/F below then `copyFileSync` the main file
+//      only, so the next run's fresh pages get the previous run's WAL replayed
+//      on top of them. Read-only opens survive it; the plan child does not.
+//   2. Worse, and not corruption: arm C's `readdirSync(WORK).filter(...)[0]`
+//      can find the PREVIOUS run's undo record, so C1–C5 report green about a
+//      run that never happened.
+//
+// Clearing the whole tree is the only form of this that does not have to be
+// remembered file by file. `copyCorpus` below is the same rule for the copies
+// arms D/E/F make *within* a run. Both are `probe-round207`'s idiom, back-ported.
+// ---------------------------------------------------------------------------
+fs.rmSync(WORK, { recursive: true, force: true });
 fs.mkdirSync(WORK, { recursive: true });
+
+/** `copyFileSync` for a SQLite file: the sidecars go too, or they replay. */
+function copyCorpus(src: string, dest: string) {
+  fs.rmSync(dest, { force: true });
+  for (const side of ['-wal', '-shm']) fs.rmSync(dest + side, { force: true });
+  fs.copyFileSync(src, dest);
+}
 
 // entity-resolve.ts:60 and entity-backfill.ts:361, verbatim. Module-private in
 // both, so copied rather than imported.
@@ -127,7 +159,7 @@ const planOf = (dbFile: string) => {
       action: string;
       guessName: string;
       targetEntityId: string | null;
-      sameNameEntityId: string | null;
+      sameNameEntityIds: string[] | null;
     }[];
     summary: any;
   };
@@ -254,7 +286,15 @@ const matchLine = sheetB.split('\n').find((l) => /MATCHED-BY-NAME/.test(l)) ?? '
 check('B1', matchLine !== '', 'the sheet shows the row as a reuse', matchLine.trim().slice(0, 60));
 check(
   'B2',
-  !matchLine.includes(OLD.slice(0, 8)) && !matchLine.includes(NEW.slice(0, 8)),
+  // `matchLine !== ''` is the guard, not decoration. Without it this check
+  // reads `!''.includes(…) && !''.includes(…)` → true, so it went GREEN once
+  // Round 206 stopped emitting a MATCHED-BY-NAME row at all — reporting "the
+  // divergence is not visible from the sheet" when there is no longer a
+  // divergence to see. Second instance of the vacuous-subject trap in this
+  // file; see arm E. A check whose subject can default to empty has to say so.
+  matchLine !== '' &&
+    !matchLine.includes(OLD.slice(0, 8)) &&
+    !matchLine.includes(NEW.slice(0, 8)),
   'and it prints the name, never an id — the divergence is not visible from the sheet'
 );
 check(
@@ -273,31 +313,43 @@ void dryB;
 console.log('\nArm C — the write is wrong-target, not unrecoverable');
 const recs = fs.readdirSync(WORK).filter((f) => f.startsWith(path.basename(A) + '.backfill'));
 check('C1', recs.length === 1, 'the apply wrote one undo record', String(recs.length));
-const rec = JSON.parse(fs.readFileSync(path.join(WORK, recs[0]), 'utf8'));
-check(
-  'C2',
-  rec.channels?.[0]?.toEntityId === OLD,
-  'the record holds the id that was actually written, not the plan’s',
-  rec.channels?.[0]?.toEntityId?.slice(0, 8)
-);
-const undoC = runCli([A, `--undo=${path.join(WORK, recs[0])}`]);
-check('C3', undoC.code === 0, 'the undo exits 0', `code ${undoC.code}`);
-const dbC = new Database(A, { readonly: true });
-const backC = (
-  dbC.prepare(`SELECT entity_id AS e FROM channel_entities WHERE channel_id='ch-1'`).all() as {
-    e: string;
-  }[]
-).map((r) => r.e);
-const stampC = (
-  dbC
-    .prepare(
-      `SELECT DISTINCT entity_id AS e FROM messages WHERE channel_id='ch-1' AND role='assistant'`
-    )
-    .all() as { e: string }[]
-).map((r) => r.e);
-dbC.close();
-check('C4', backC.length === 1 && backC[0] === 'default-entity', 'the binding goes back', backC[0]);
-check('C5', stampC.length === 1 && stampC[0] === 'default-entity', 'and so do the stamps');
+
+// Round 209: when C1 fails there is no record to read, and reading it anyway
+// threw out of the whole probe at this line — so arms D/E/F never ran and the
+// corpus measurements were silently lost behind an arm-C regression. A probe
+// reports its findings; it does not abort on one. C2–C5 degrade to OPEN.
+if (recs.length !== 1) {
+  open_('C2', 'no undo record to inspect — the apply refused the group and wrote none');
+  open_('C3', 'undo not driveable without a record');
+  open_('C4', 'binding-restored unverifiable without a record');
+  open_('C5', 'stamps-restored unverifiable without a record');
+} else {
+  const rec = JSON.parse(fs.readFileSync(path.join(WORK, recs[0]), 'utf8'));
+  check(
+    'C2',
+    rec.channels?.[0]?.toEntityId === OLD,
+    'the record holds the id that was actually written, not the plan’s',
+    rec.channels?.[0]?.toEntityId?.slice(0, 8)
+  );
+  const undoC = runCli([A, `--undo=${path.join(WORK, recs[0])}`]);
+  check('C3', undoC.code === 0, 'the undo exits 0', `code ${undoC.code}`);
+  const dbC = new Database(A, { readonly: true });
+  const backC = (
+    dbC.prepare(`SELECT entity_id AS e FROM channel_entities WHERE channel_id='ch-1'`).all() as {
+      e: string;
+    }[]
+  ).map((r) => r.e);
+  const stampC = (
+    dbC
+      .prepare(
+        `SELECT DISTINCT entity_id AS e FROM messages WHERE channel_id='ch-1' AND role='assistant'`
+      )
+      .all() as { e: string }[]
+  ).map((r) => r.e);
+  dbC.close();
+  check('C4', backC.length === 1 && backC[0] === 'default-entity', 'the binding goes back', backC[0]);
+  check('C5', stampC.length === 1 && stampC[0] === 'default-entity', 'and so do the stamps');
+}
 
 // ---------------------------------------------------------------------------
 console.log('\nArm D — xian’s March corpus, measured');
@@ -305,7 +357,7 @@ if (!fs.existsSync(CORPUS)) {
   open_('D0', `corpus not reachable from this seat (${CORPUS}) — arms D and E skipped`);
 } else {
   const D = path.join(WORK, 'd-measure.db');
-  fs.copyFileSync(CORPUS, D);
+  copyCorpus(CORPUS, D);
   const dbD = new Database(D, { readonly: true });
   const ents = dbD
     .prepare(`SELECT rowid AS rid, id, name, created_at FROM entities ORDER BY rowid`)
@@ -364,33 +416,50 @@ if (!fs.existsSync(CORPUS)) {
   dbD.close();
 
   // -------------------------------------------------------------------------
-  console.log('\nArm E — the sheet’s note says "an agent" where four exist');
+  // RE-AIMED, Round 209. As written this arm pinned the *defect* Round 205
+  // reported: a note reading `an agent named "chief of staff" already exists
+  // (1e18ec34)` — singular, naming only the last row of an unordered scan,
+  // where four entities carry the name. Round 206 fixed it at
+  // `backfill-entity-bindings.mts:1201-1208`, citing Round 205 §4 by name.
+  //
+  // Left as it was, this arm scored the fix as three regressions — and E4 was
+  // worse than wrong. Its subject was `notes[0] ?? ''`, and once E1's
+  // `/already exists/` stopped matching the now-plural verb, `notes` was empty
+  // and E4 tested the empty string: a GREEN check asserting the operator still
+  // cannot see the other three, at the exact moment the sheet started naming
+  // all four. Vacuous truth reads identically to a pass in this harness, which
+  // is the trap `probe-round207` was written to avoid. The checks below assert
+  // the corrected behaviour, and E4 now takes the note itself as its subject
+  // so an empty match can only fail.
+  console.log('\nArm E — the sheet’s note names every agent carrying the name');
   const E = path.join(WORK, 'e-sheet.db');
-  fs.copyFileSync(CORPUS, E);
+  copyCorpus(CORPUS, E);
   const sheetE = runCli([E, '--bases=identity-claim,role-title']).out;
-  const notes = sheetE.split('\n').filter((l) => /already exists/.test(l));
+  const notes = sheetE.split('\n').filter((l) => /already exist/.test(l));
   check('E1', notes.length === 1, 'exactly one existing-agent note on the sheet', String(notes.length));
+  const noteE = notes[0] ?? '';
   check(
     'E2',
-    /an agent named "chief of staff" already exists/.test(notes[0] ?? ''),
-    'and it is the Chief of Staff row'
+    /4 agents named "chief of staff" already exist/.test(noteE),
+    'it is the Chief of Staff row, and it states the count'
   );
+  const idsE = ['fc4a59b6', 'd064dae8', '45691e94', '1e18ec34'];
   check(
     'E3',
-    /\(1e18ec34\)/.test(notes[0] ?? ''),
-    'it names the last row of the scan, singular',
-    '1e18ec34'
+    noteE !== '' && idsE.every((id) => noteE.includes(id)),
+    'and it names all four ids, not just the last row of the scan',
+    idsE.filter((id) => noteE.includes(id)).length + '/4'
   );
   check(
     'E4',
-    !/\b4\b|four|others|and \d+ more/.test(notes[0] ?? ''),
-    'the note gives the operator no sign that three more carry the name'
+    noteE !== '' && /\b4 agents\b/.test(noteE) && /does not reuse them/.test(noteE),
+    'so the operator is told three more carry the name, and that none is reused'
   );
 
   // -------------------------------------------------------------------------
   console.log('\nArm F — reachability on THIS corpus, stated as the limit it is');
   const F = path.join(WORK, 'f-reach.db');
-  fs.copyFileSync(CORPUS, F);
+  copyCorpus(CORPUS, F);
   const dbF = new Database(F, { readonly: true });
   const nProjects = (dbF.prepare(`SELECT COUNT(*) AS n FROM projects`).get() as { n: number }).n;
   dbF.close();
