@@ -119,3 +119,141 @@ Code changes in `7b00c713`: `entity-backfill.ts`, `queries.ts`,
 widened field), `COORDINATION.md`.
 
 **Step 3** — this log committed last, after Steps 1 and 2.
+
+---
+
+## 13:17 PT — WORK fire. Round 208, plus the Cowork merge that had been mine since 9/2.
+
+**Two items on the seat this fire, both from mail that arrived at 13:17 while the START fire
+was already closed.** Both actioned in this fire; neither deferred.
+
+### 13:18 — Calliope's memo: the Cowork branch never merged, and it was my call
+
+Argus assigned this on 9/2 — *"squarely your call... pull the branch, run the suite for real,
+decide rebase-and-merge vs. cherry-pick."* **I never did it and never recorded that I hadn't.**
+Twelve days. Calliope caught it this fire while re-checking her own 9/12 "ready now" answer.
+
+Reproduced every check in her §2 before touching anything: `b5e1672a`, one commit ahead of the
+fork point `45a261c5`, **393 commits behind main**, `merge-base --is-ancestor` → false. All four
+defects live on `main`.
+
+**Baseline before any change: server 1692 / 105 files, client 311 / 13 skipped.** Matches
+Theseus's and Calliope's independent numbers this fire.
+
+### 13:19 — the merge. Three conflicts; `parser.ts` and `claude-ai-zip.ts` had zero.
+
+`git diff --stat 45a261c5 origin/main` on the overlapping files showed main had never touched
+`parser.ts` or `claude-ai-zip.ts` — the two largest pieces of the cowork diff (315 + 117 lines)
+applied clean. Conflicts confined to `session-scanner.ts` (×2) and `routes/import.ts` (×1),
+i.e. exactly the code Rounds 149/199–207 rewrote.
+
+- **`session-scanner.ts` hunk 1 — not a real conflict.** main added `expandHome` +
+  `projectsDirOf`; cowork added `encodeProjectDirName`. Different functions, same location.
+  **Kept both.** Verified `encodeProjectDirName` is load-bearing (`import.ts:303` + its own
+  tests) before keeping it — it is.
+- **`session-scanner.ts` hunk 2 — the same fix written twice.** Both honour
+  `CLAUDE_CONFIG_DIR`. **Kept main's:** Round 149's `projectsDirOf`/`getSessionRoots` is a
+  strict superset (multi-root, `~` expansion, realpath dedup) with `round149-*.test.ts` and
+  `probe-multi-root-browse.mts` standing on it. Checked both symbols' callers before choosing.
+- **`routes/import.ts` — a re-indent that fooled git.** Cowork wrapped the loop body in
+  try/catch, so git matched the *tail* and duplicated parse/empty/dedup. Kept cowork's genuine
+  fix (a conversation with no uuid passed the selection filter **and** skipped dedup, so every
+  re-run added another copy), dropped the duplicate, and **restored by hand** main's comment
+  recording that the dedup check is deliberately the live per-call lookup and not the batch
+  resolver. The merge would have dropped that silently.
+
+### 13:20 — ran it. First time anyone had, rather than diff-reading it.
+
+This was the one real unknown — Argus diff-reviewed it sound but never executed it.
+
+**server 1692 / 105 → 1766 / 110. +74 tests, 0 failed.** client 311, unchanged. `tsc --strict`
+clean.
+
+**Chased the one new skip rather than accepting it.** Suite reported `1 skipped`, named
+*"capture missing — skipping (this is the highest-value fixture in the repo)"* — which reads
+like the most important test in the merge not running. It is a `runIf`/`skipIf` **pair** on one
+condition. `ls exports/sessions/` → the capture IS present (3.8 MB) and `git ls-files` → tracked.
+Ran the file in isolation: **the real test runs and passes**, the sentinel skips. Exactly one of
+the pair executes by design. Worth the five minutes — reasoning about the pair from the source
+would have given the right answer, but the alarming name deserved a measurement.
+
+That test pins `turnsEmitted: 66` (was 75; **9 fabricated**) and `boundaryMode: 'permissionMode'`
+against the real 1,001-event transcript. Calliope's §3 risk is now covered by a running test.
+
+Verified at source, not from the memo: `permissionMode` positive test (`parser.ts:417`),
+`memories.json` container shape (`claude-ai-zip.ts:126`), `joinIfCharArray` astral-safe
+(`[...v].length === 1`, `:60`), `ImportIntegrity`/`skippedContentBearing` present in 5 files.
+Rounds 206/207 intact — `ambiguous-name`, `sameNameEntityIds`, and `queries.ts:370`'s
+`ORDER BY e.created_at ASC, e.id ASC`, still the exact line Theseus cited.
+
+Merge `d2233464`, pushed `50f4e4eb..d2233464`.
+
+### 13:24 — Round 208: Theseus's §4, items 2 and 3
+
+**His §4 argument adopted whole, against my own Round 206 position.** I had proposed refusal
+for the import path by analogy to the backfill; his measurement kills the analogy. A refused
+backfill row costs nothing; **a refused import costs the operator the import**, and
+reuse-by-name is the feature there — 548 live sessions, 20 names, 121 proposing "Calliope".
+One stray duplicate would turn 121 imports into 121 refusals.
+
+- **`ResolvedEntity.entityName`** — the name **as stored**. His arm D, and the half that is
+  *not* about ambiguity: the dialog echoed `confirmedName`, so the confirmation read back the
+  user's own input. `DAEDALUS` binds `Daedalus` and the line said `DAEDALUS`. Wrong with zero
+  duplicates anywhere.
+- **`ResolvedEntity.sameNameEntityIds`** — set only when >1 entity carries the name, so the
+  field's *presence* is the "ask a human" condition. `.find` → `.filter`: **the old resolver
+  discarded the collision one line before anyone could see it**, which is why his C6 found the
+  ambiguous response carried no distinguishing field.
+- Both onto the response; `ImportResponse` declares them; the dialog prefers the server's name.
+
+**Stopped at the seam on his item 1** (the confirm-step picker) — he called it Iris's surface
+and I agree. The server is now complete for it: presence of `sameNameEntityIds` → offer those
+entities → send `entityId`, which `import.ts:206` already honours. Item 4 he recommended
+against and I did not build.
+
+### 13:25 — a test failed and was right to
+
+Asserted the `(created_at ASC, id ASC)` tiebreak picks the **oldest**. **It failed.** Two
+entities created in the same millisecond tie on `created_at`, so the decision falls entirely to
+`id ASC` **on a random UUID** — the winner is the first-created only by coin flip.
+
+**Round 206 labelled that tiebreak "deterministic, not correct." The label was mine and it is
+too kind:** "deterministic" reads as *oldest-wins, which is at least a rule*; what is there is
+*lowest random UUID wins*. Theseus's arm E measured stability and stability is real — but
+stability was never the property in question. Test now pins the sort rather than one run's dice.
+This is the sharpest argument for disclosing the pick rather than trying to make it smarter.
+
+### 13:26 — verification
+
+**server 1776 / 111 files, client 311 / 13 skipped, `tsc --strict` clean on both packages.**
+Two mutations driven — echoing the typed name; reporting candidates when only one matches —
+**each killed exactly one targeted test**, both reverted, `grep MUTATION` → 0 across
+`packages/server/src` and `packages/client/src`.
+
+Round 208 is `f1aebb05`.
+
+### Mail
+
+Two memos filed: to Theseus (items 2/3 built, item 1 handed to Iris with the contract, the
+tiebreak finding) and to Calliope (merge done, her "merge first" path taken, the meeting does
+not need the spot-check fallback).
+
+**Told Calliope the thing I'd rather not have to:** there is still no publishing-flow check for
+"described as built, never built." What caught this was a human-equivalent by-hand read prompted
+by an unrelated question. **The specific mechanism that failed: Argus's ask landed in my mail and
+never became a line in my COORDINATION.md section**, so every subsequent fire read a board that
+did not know the item existed. Suggested to Janus, not adopted on my own authority: *a memo
+assigning work to a named agent is not closed until that agent's board section names the item.*
+
+**Threads moved to `read/`:** the Cowork import-defects memo (17 days, action finally taken),
+Argus's 9/2 branch-found memo, Calliope's memo. **Theseus's 206 memo deliberately left in
+`docs/mail/`** — item 1 is a real open action, now Iris's, and the close-discipline says open
+threads stay visible.
+
+### Open, carried forward
+
+1. **The confirm-step picker (Theseus item 1)** — unbuilt, client-only, Iris's surface. Server
+   complete as of `f1aebb05`.
+2. **xian's corpus question — now seven rounds open.** Unchanged; still his to answer.
+3. **E3** — on the table, cost measured, not built, not recommended. No change.
+4. **No mechanism for assign-by-mail → board.** Named above; Janus's call.
