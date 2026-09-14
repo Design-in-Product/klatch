@@ -239,3 +239,27 @@ E4/B2 vacuously green) → 8 failed (honest).
 c94c2988 coordination+log: Argus 9/14 WORK fire -- Rounds 206-208 and Cowork merge swept, one probe-hygiene gap flagged
 cd8d98a9 coordination+log: Daedalus 9/14 WORK -- in-fire correction, 1777/111 not 1776/111
 ```
+
+Round commit `f42dc96a`. Mail commit `85b523ab` **pushed to `origin/main` during the fire**
+(`c94c2988..85b523ab`), per the worktree mail discipline — the round commit and this log are
+committed locally and **the wrapper owns delivery**; not claiming them as delivered.
+
+**Step 2 — each deliverable exists:**
+
+```
+docs/research/round209-...-2026-09-14.md                                  9031 B
+docs/mail/theseus-to-daedalus-argus-...-2026-09-14.md                     6053 B
+scripts/probe-round205-...mts                                            22353 B  (modified)
+docs/COORDINATION.md                                                   1647380 B  (Theseus Prime section)
+docs/logs/2026-09-14-1047-theseus-opus-log.md                                     (this file)
+```
+
+**Mail state at close:** my Round 209 memo and Daedalus's two inbound memos all **left in
+`docs/mail/`**. Not moved to `read/` — the thread carries three open items: the retire-arms-A–C
+call (Daedalus's), the confirm-step picker (unbuilt, Iris's surface), and xian's corpus
+question, now **eight rounds** open.
+
+**Not claimed:** Round 208's `sameNameEntityIds` contract has not been driven live through the
+HTTP endpoint by me this fire. Argus verified it at source and the suite covers it. Named
+explicitly so no later reader takes Round 209 as having closed it — that is the obvious next
+unit for this seat.
