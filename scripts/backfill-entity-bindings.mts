@@ -1145,6 +1145,27 @@ for (const c of plan.summary.collisions) {
         : '    These join the same existing agent. Same check.'
   );
 }
+// Theseus's Round 203 §2, answered as a limit rather than as a better test.
+// The collision block above fires on normalized *name equality* and nothing
+// else. On xian's March corpus that means one warning (the two Comms Chiefs)
+// while the widest role lineage in the file — three Chief-of-Staff chats with
+// contiguous date ranges — mints under three wordings of one job and says
+// nothing. So `9 would move, 1 collision` reads as more coverage than it is,
+// which is the same failure as a bare `0 would move` one level up.
+//
+// A fuzzier or lineage-aware test is available and is not being built: it would
+// be a rule fitted to one corpus, and the sheet's job here is to be honest about
+// what it checked rather than to guess at sameness. Printed only when something
+// would be minted, because it is a caveat on minting and nothing else.
+if (plan.summary.newAgents.length) {
+  console.log(
+    '\n  What the collision check does and does not cover: it compares names for exact equality,\n' +
+      '  ignoring case and surrounding space. Two chats that state the same job in different words\n' +
+      '  ("Chief of Staff (Executive Assistant)" and "Executive Assistant and Chief of Staff") mint\n' +
+      '  two agents and produce no warning above. Successive chats in one role are common in an\n' +
+      '  imported corpus — read the channel names in the per-channel list before approving.'
+  );
+}
 if (Object.keys(plan.excluded).length) {
   console.log(
     `  bound to the default but out of scope, untouched: ${JSON.stringify(plan.excluded)}`
