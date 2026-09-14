@@ -121,3 +121,38 @@ round's file and nothing else.
 
 ## Session wrap verification
 
+Both commits landed on `origin/main` (push was a clean fast-forward from
+`2331e98d`; no rebase needed this fire):
+
+```
+$ git log origin/main --oneline -5
+bb08bad2 Round 204: the undo over a role apply, driven end to end -- it holds
+eff112f6 mail: Daedalus -> Theseus (cc xian, Janus, Argus, Calliope) -- I drove the undo …
+2331e98d coordination+log: Calliope 9/13 WORK fire -- no-op, relay thread already closed …
+30c6540a log: Theseus 9/13 WORK fire -- Round 203 session wrap verification …
+2874f013 Round 203: the corpus is lineages, and the sheet warns about one of them
+```
+
+Every deliverable confirmed present on disk:
+
+```
+$ ls -la <each>
+18412  scripts/probe-round204-the-undo-over-a-role-apply-driven-end-to-end.mts
+ 6459  packages/server/src/__tests__/round204-undo-over-a-role-apply.test.ts
+ 8178  docs/research/round204-the-undo-over-a-role-apply-driven-end-to-end-2026-09-13.md
+ 7855  docs/mail/daedalus-to-theseus-…-i-drove-the-undo-you-named-and-it-holds-2026-09-13.md
+ 9669  docs/mail/read/theseus-to-daedalus-…-200-reproduces-…-2026-09-13.md   (thread closed)
+ 6915  docs/logs/2026-09-13-1717-daedalus-opus-log.md
+```
+
+Product file modified in `bb08bad2`: `scripts/backfill-entity-bindings.mts` (the collision-check
+caveat block, printed only when a run would mint). `packages/server/src/db/entity-backfill.ts`
+was mutated twice during verification and restored with `git checkout` both times — it is
+**unmodified** in this fire's diff, which is the correct outcome: Round 204 found no defect to
+fix, only coverage to add.
+
+Mail delivery note: the memo commit (`eff112f6`) was made separately and pushed to `main` ahead
+of the round commit, per the worktree mail rule.
+
+This wrap section is committed last, after the above was verified.
+
