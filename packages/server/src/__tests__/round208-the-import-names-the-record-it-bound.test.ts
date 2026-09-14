@@ -25,6 +25,7 @@
 import { describe, it, expect } from 'vitest';
 import { resolveImportEntity } from '../import/entity-resolve.js';
 import { createEntity, getAllEntities } from '../db/queries.js';
+import { getDb } from '../db/index.js';
 import { DEFAULT_MODEL } from '@klatch/shared';
 
 describe('Round 208 — the resolved name is the stored one, not the typed one', () => {
@@ -112,30 +113,58 @@ describe('Round 208 — a duplicated name is reported, not refused', () => {
     expect(resolved.sameNameEntityIds).toBeUndefined();
   });
 
-  it('picks the (created_at, id) winner — stable, and NOT necessarily the oldest', () => {
+  it('breaks a created_at tie on the RANDOM UUID — not on which was created first', () => {
     const a = createEntity('Janus', DEFAULT_MODEL, '', '#fff');
     const b = createEntity('Janus', DEFAULT_MODEL, '', '#000');
 
-    // Round 206 added `ORDER BY e.created_at ASC, e.id ASC` to getAllEntities and
-    // labelled it "deterministic, not correct." This test found the label is if
-    // anything too kind. These two are created in the same millisecond, so
-    // created_at ties and the whole decision falls to `id ASC` — on a **random
-    // UUID**. The winner is therefore the lower UUID, which is the first-created
-    // entity only by coin flip. Written as a sort rather than as `a` so it pins
-    // the rule instead of one run's dice.
-    const expected = [a.id, b.id].sort()[0];
+    // Force the tie rather than racing for it. `createEntity` stamps
+    // `new Date().toISOString()` — millisecond granularity — so two back-to-back
+    // creates usually land in the same millisecond but not always. The first
+    // version of this test just created two and assumed the tie; it passed twice
+    // and then failed, because that assumption is a coin flip. Pinning the
+    // condition explicitly is the only way to test the tie-break at all.
+    getDb()
+      .prepare('UPDATE entities SET created_at = ? WHERE id IN (?, ?)')
+      .run('2026-09-14T00:00:00.000Z', a.id, b.id);
+
+    // With created_at equal, `ORDER BY e.created_at ASC, e.id ASC` has nothing
+    // left but the id — and entity ids are uuidv4. So the winner is the lower
+    // random UUID, which is the first-created entity ONLY by chance.
+    //
+    // Round 206 labelled this tiebreak "deterministic, not correct." That label
+    // reads as "oldest-wins, which is at least a rule"; what is actually here is
+    // "lowest random UUID wins," which is a rule about nothing. It is the
+    // sharpest argument for `sameNameEntityIds` above: the pick cannot be
+    // justified, so it has to be disclosed rather than made smarter.
+    const lowerUuid = [a.id, b.id].sort()[0];
 
     const ordered = getAllEntities().filter((e) => e.name.toLowerCase() === 'janus');
-    expect(ordered[0].id).toBe(expected);
+    expect(ordered[0].id).toBe(lowerUuid);
 
-    // Stable across repeated resolutions — Theseus's arm E, from this side. That
-    // stability is the only property on offer here; it is not oldest-wins, and no
-    // refusal stands behind it the way one does in the backfill. Which is the
-    // argument for `sameNameEntityIds` above: the pick cannot be justified, so it
-    // has to be disclosed.
+    // Stable across repeated resolutions — Theseus's arm E, from this side.
+    // Stability is the only property on offer, and it was never the one in doubt.
     for (let i = 0; i < 5; i++) {
-      expect(resolveImportEntity({ entityName: 'Janus' }).entityId).toBe(expected);
+      expect(resolveImportEntity({ entityName: 'Janus' }).entityId).toBe(lowerUuid);
     }
+  });
+
+  it('prefers the older entity when created_at actually differs', () => {
+    const older = createEntity('Terminus', DEFAULT_MODEL, '', '#fff');
+    const newer = createEntity('Terminus', DEFAULT_MODEL, '', '#000');
+
+    // The other half of the rule, pinned with the timestamps forced apart so it
+    // does not depend on how fast the two creates ran. Deliberately arranged so
+    // the OLDER row has the HIGHER uuid — otherwise the assertion passes whether
+    // created_at is consulted or not, which is the bug the first draft had.
+    const [lo, hi] = [older.id, newer.id].sort();
+    getDb()
+      .prepare('UPDATE entities SET created_at = ? WHERE id = ?')
+      .run('2026-09-14T00:00:00.000Z', hi);
+    getDb()
+      .prepare('UPDATE entities SET created_at = ? WHERE id = ?')
+      .run('2026-09-14T00:00:01.000Z', lo);
+
+    expect(resolveImportEntity({ entityName: 'Terminus' }).entityId).toBe(hi);
   });
 
   it('does not report candidates when reuse-by-name is off — it minted, it did not pick', () => {
