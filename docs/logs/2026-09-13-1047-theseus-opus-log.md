@@ -272,3 +272,107 @@ scripts/probe-round203-the-corpus-is-lineages-and-the-sheet-warns-about-one-of-t
 and the server suite were run against Daedalus's tree, unmodified, before anything of mine.
 Status: **available**.
 
+---
+
+## 19:47 PT — STOP fire opens (Round 205)
+
+Briefing done: `git log` at `57eb5533` (Iris's 9/13 STOP entry), worktree clean on
+`claude/theseus-cycle` tracking `origin/main`, `docs/COORDINATION.md` Theseus section read,
+`docs/mail/` listed.
+
+**New mail, addressed to me, read in full this fire:**
+`daedalus-to-theseus-cc-xian-janus-argus-calliope-i-drove-the-undo-you-named-and-it-holds-2026-09-13.md`
+(Round 204, commit `bb08bad2`). It takes my Round 203 §7 — nobody had driven undo after a
+9-entity/821-row role apply — and claims it holds, with `added_at` and the conditional-removal
+branch checked separately. It also files one item undispositioned (§2: `resolveImportEntity`
+first-match-wins over a case-variant pair) and answers my §8.1 as a stated limit on the sheet
+rather than a widened check.
+
+Baseline hashes before any work: `klatch.db.backup-2026-03-14` 5,230,592 B sha256
+`c2295121bbdfdbbb` mtime `2026-07-23T17:27:38.145Z`; `klatch.db.backup-2026-03-15-pre-fresh`
+335,872 B sha256 `1afc9e10c6e8ed35`.
+
+## 19:47–19:50 PT — reproduction, all of it, before any work of mine
+
+- `probe-round204` unmodified: **40 checks · 0 failed · 0 open · 3 measurements** — his line
+  exactly, arm for arm (A–G plus the new H arm on the sheet caveat).
+- `npm test --workspace=packages/server`: **1683 passed / 104 files.** His number.
+- `probe-round203` (mine) over his changes: **15 · 0 failed · 2 open** — unchanged.
+- `probe-round201` (mine): **26 · 3 failed** — D1, E2, E3, the known residual.
+
+**Round 204 holds and I have no correction to it.** My §7 is closed.
+
+## 19:50–20:05 PT — exploration: his §2, and what is underneath it
+
+Five throwaway scripts under `.testdata/r205/`, then folded into a probe.
+
+1. **The Comms Chief pair does *not* share a `created_at`** (`…06.997Z` / `…07.002Z`, 5 ms
+   apart), so his "whichever `getAllEntities()` returns first" is deterministic here, not a tie.
+   A same-millisecond pair does exist in his mint set (`ceb7d259` / `59efb778`, both `…06.997Z`)
+   — different names, harmless there.
+2. **There are two resolvers, not one.** Plan: `entity-backfill.ts:432`, `new Map` over an
+   unordered `SELECT` → **last** row. Apply: `:677` → `entity-resolve.ts:96-100`,
+   `getAllEntities()` = `ORDER BY created_at ASC` + `.find()` → **first** row.
+3. **Driven end to end through the real CLI:** plan `targetEntityId` = `bbbbbbbb` (newer), the
+   binding and all three message stamps after `--apply` = `aaaaaaaa` (older). The sheet prints
+   `MATCHED-BY-NAME → "Daedalus"` — the name, never an id — so it is invisible from the sheet.
+4. **The undo record holds the id actually written**, so the divergence is recoverable: undo
+   exits 0 and everything goes back to `default-entity`. Wrong-target, not unrecoverable.
+5. **Real corpus measured:** 68 entities, 26 distinct normalized names, **24 carried by more than
+   one**, **66 of 68 inside a duplicate group**, and **24 of 24 groups resolve differently under
+   the two rules**. `chief of staff` ×4; the sheet's note names one of the four, singular.
+6. **Reachability limit, stated not dressed up:** 0 projects and 0 identity-claim guesses on this
+   corpus, so **no reusing basis fires today** and nothing here is a live mis-write against this
+   backup. Carried as arm F3 OPEN.
+
+**Two own errors, both caught in the doing and both recorded:**
+
+- **`planEntityBackfill(db, {bases})`** — the signature is `planEntityBackfill(options)`, one
+  argument, database from `getDb()`. My `Database` was consumed as the options object, so the
+  plan ran against the **ambient** database: this worktree's gitignored `klatch.db`, whose mtime
+  moved to 19:51 when `initSchema()` + `runMigrations()` ran against it. Only a read followed the
+  migration, and the file is a local dev db — but I opened a database I did not intend to, and
+  the same slip against `applyEntityBackfill` would have been a write. Corpus backups re-hashed
+  immediately after: unchanged. The probe now sets `KLATCH_DB` and re-execs itself, because
+  `db/index.ts` resolves `DB_PATH` once at import time.
+- **My fixture wrote `added_at` as ISO-8601**, so the apply produced an undo record its own
+  validator refused (`expected null or a YYYY-MM-DD HH:MM:SS timestamp`). I chased it as a
+  possible defect for one step before checking the writers. Every production writer of
+  `channel_entities` omits the column and takes the schema default (`db/index.ts:76`;
+  `entity-backfill.ts:1008` uses `COALESCE` for the same reason), so ISO cannot arise from
+  product code — **the refusal is Round 175's G1/G2 guard working correctly on my bad test
+  data.** Fixture fixed, with a comment at the insert so it is not reintroduced.
+
+**And one over-read of my own, caught before filing rather than after:** I first wrote that the
+apply's pick "loses the agent's transcript." It does not — `1e18ec34`'s single channel is
+`dir-handle`, `source: native`, 2 messages, a fixture, and none of the four `Chief of Staff` rows
+holds an imported transcript. The channel-count asymmetry is real; the stakes I attached to it
+were not. Corrected in the writeup (§4) and in COORDINATION.md before either was committed.
+
+## 20:05–20:15 PT — Round 205 probe
+
+`scripts/probe-round205-the-plan-and-the-apply-pick-opposite-ends-of-a-duplicated-name.mts` —
+**27 checks · 0 failed · 1 open · 2 measurements**, three runs identical, `tsc --strict --module
+nodenext` clean. Arms A–C synthetic (the finding reproduces with no corpus present); D–F measure
+the real backup and degrade to one OPEN line if it is absent; Z asserts `packages/` untouched and
+the corpus byte-identical.
+
+## 20:15 PT — verification and filing
+
+- Corpora re-hashed after all work: `c2295121bbdfdbbb` and `1afc9e10c6e8ed35`, identical to the
+  baselines above, mtimes unchanged.
+- Writeup: `docs/research/round205-the-plan-and-the-apply-pick-opposite-ends-of-a-duplicated-name-2026-09-13.md`
+- Memo: `docs/mail/theseus-to-daedalus-cc-xian-janus-argus-calliope-204-holds-and-there-are-two-resolvers-not-one-2026-09-13.md`,
+  committed separately (`bb851211`) and pushed to `main` first per the worktree mail rule.
+- COORDINATION.md Theseus section updated; Round 203 demoted to "Previous", Round 201 to "Prior".
+- **Mail close-discipline:** Daedalus's Round 204 memo and my Round 203 reply both stay in
+  `docs/mail/` — they carry xian's open corpus question and my new §6 asks, all unresolved.
+
+**Not done and not claimed this fire:** no fix proposed for the two-resolver disagreement — which
+rule should win is Daedalus's call and is entangled with whether a duplicated name should be
+resolvable at all. `--apply` still never run against xian's live database.
+
+**Still open for xian, six rounds: is there a current corpus?** With a new data point this round —
+the March backup's `entities` table is measurably a dev database (two seeding runs twelve minutes
+apart account for every duplicate group), while its `channels` side is real imports.
+
