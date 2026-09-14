@@ -415,7 +415,18 @@ function processClaudeCodeImport(
     ...result,
     sessionId: session.sessionId,
     ...(resolvedEntity.entityId
-      ? { entityId: resolvedEntity.entityId, entityDisposition: resolvedEntity.disposition }
+      ? {
+          entityId: resolvedEntity.entityId,
+          entityDisposition: resolvedEntity.disposition,
+          // The name as stored, so the client's result line can name the record
+          // it wrote to instead of echoing what the user typed (Round 207 arm D).
+          entityName: resolvedEntity.entityName,
+          // Present only when the confirmed name was carried by more than one
+          // entity — i.e. exactly when the binding above was an arbitrary pick.
+          ...(resolvedEntity.sameNameEntityIds
+            ? { sameNameEntityIds: resolvedEntity.sameNameEntityIds }
+            : {}),
+        }
       : {}),
     ...(session.skippedLines ? { skippedLines: session.skippedLines } : {}),
     // Integrity receipt: every silent drop in the parser surfaced as a number, so a

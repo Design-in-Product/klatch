@@ -54,6 +54,38 @@ export interface ResolvedEntity {
   /** Undefined only when disposition is 'default'. */
   entityId?: string;
   disposition: ResolveDisposition;
+  /**
+   * The **stored** name of the entity actually bound — not the string the caller
+   * passed. These differ whenever the match was case-insensitive: confirming
+   * `DAEDALUS` binds an entity stored as `Daedalus`. Undefined only for 'default'.
+   *
+   * Round 207 (Theseus, arm D) drove the consequence: the import dialog echoed
+   * `confirmedName` back on its result line, so the confirmation read back the
+   * user's own input rather than the record it had just written to. A caller
+   * that prints this field instead is telling the truth about where the
+   * transcript went, and it is the true thing to print even when no name in the
+   * database is duplicated.
+   */
+  entityName?: string;
+  /**
+   * Every entity carrying the confirmed name, when **more than one** does.
+   * Undefined when the name identifies exactly one entity (537 of 548 sessions
+   * on the live corpus Theseus measured) — so its presence is exactly the
+   * condition "this binding was an arbitrary pick."
+   *
+   * Set only for 'matched-by-name'. On 'bound-existing' the caller already
+   * chose by id, so there is nothing arbitrary left to report; on 'minted'
+   * nothing carried the name at all.
+   *
+   * **Why report rather than refuse.** The backfill plan (Round 206) refuses an
+   * ambiguous name, and that is right there: a refused backfill row costs
+   * nothing, it simply doesn't move. An import is the other way round — a
+   * refusal costs the operator the import, and reuse-by-name is the *feature*
+   * on this path (121 Calliope sessions should land on one Calliope). One stray
+   * duplicate would turn 121 imports into 121 refusals. So the import binds and
+   * says what it did; the confirm step is where a human picks.
+   */
+  sameNameEntityIds?: string[];
 }
 
 /** Case- and whitespace-insensitive, so "daedalus" and "Daedalus " are one agent. */
@@ -85,7 +117,7 @@ export function resolveImportEntity(params: ResolveEntityParams): ResolvedEntity
     if (!existing) {
       throw new Error(`Entity not found: ${entityId}`);
     }
-    return { entityId: existing.id, disposition: 'bound-existing' };
+    return { entityId: existing.id, entityName: existing.name, disposition: 'bound-existing' };
   }
 
   const confirmed = (entityName || '').trim();
@@ -94,12 +126,26 @@ export function resolveImportEntity(params: ResolveEntityParams): ResolvedEntity
   }
 
   const entities: Entity[] = getAllEntities();
-  const match =
+  // Keep every entity of that name, not just the first. The binding still takes
+  // the first (see `sameNameEntityIds` for why this path reports rather than
+  // refuses), but a caller cannot offer a picker for a collision it was never
+  // told about, and the old `.find` discarded that fact before anyone could see it.
+  const matches =
     params.reuseByName === false
-      ? undefined
-      : entities.find((e) => normalizeName(e.name) === normalizeName(confirmed));
-  if (match) {
-    return { entityId: match.id, disposition: 'matched-by-name' };
+      ? []
+      : entities.filter((e) => normalizeName(e.name) === normalizeName(confirmed));
+  if (matches.length > 0) {
+    // `getAllEntities` orders by (created_at ASC, id ASC) — deterministic under
+    // ties, and still arbitrary. Round 206 labelled it exactly that way and the
+    // label holds here: on this path the tiebreak is the whole answer, because
+    // no refusal stands behind it the way one does in the backfill.
+    const match = matches[0];
+    return {
+      entityId: match.id,
+      entityName: match.name,
+      disposition: 'matched-by-name',
+      ...(matches.length > 1 ? { sameNameEntityIds: matches.map((e) => e.id) } : {}),
+    };
   }
 
   // System prompt is deliberately empty. An imported agent's identity is its
@@ -113,5 +159,5 @@ export function resolveImportEntity(params: ResolveEntityParams): ResolvedEntity
     '',
     nextColor(entities.length)
   );
-  return { entityId: minted.id, disposition: 'minted' };
+  return { entityId: minted.id, entityName: minted.name, disposition: 'minted' };
 }

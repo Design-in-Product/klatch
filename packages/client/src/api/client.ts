@@ -370,6 +370,18 @@ export interface ImportResponse extends ImportResult {
   sessionId?: string;
   entityId?: string;
   entityDisposition?: ResolveDisposition;
+  /**
+   * The bound entity's name **as stored**, which differs from the confirmed
+   * string whenever the match was case-insensitive. Print this rather than what
+   * the user typed — otherwise the confirmation echoes its own input.
+   */
+  entityName?: string;
+  /**
+   * Every entity sharing the confirmed name, present only when more than one
+   * does — so its presence is exactly "this binding was an arbitrary pick, ask
+   * a human." Mirrors the backfill plan's field of the same name.
+   */
+  sameNameEntityIds?: string[];
 }
 
 export interface ClaudeAiImportResponse {

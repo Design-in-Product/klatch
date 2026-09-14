@@ -408,7 +408,12 @@ export function ImportDialog({ isOpen, onClose, onImported, onBulkImported, onCh
             artifactCount: result.data.artifactCount,
             conversationId: result.data.sessionId || '',
             entityDisposition: result.data.entityDisposition,
-            entityName: confirmedName,
+            // The server's stored name, falling back to what was typed only when
+            // the server didn't resolve one. This line used to be `confirmedName`
+            // unconditionally, so the confirmation read back the user's own input:
+            // typing `DAEDALUS` bound the entity stored as `Daedalus` and the line
+            // still said `DAEDALUS` (Round 207, Theseus, arm D).
+            entityName: result.data.entityName ?? confirmedName,
             // Kept so the composition form can be told what the *import* resolved rather
             // than having to ask the channel (Round 173). The channel's answer is the
             // placeholder whenever nothing identified the session, and it looks identical
