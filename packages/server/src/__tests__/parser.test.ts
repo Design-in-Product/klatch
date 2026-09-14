@@ -350,10 +350,20 @@ describe('parseEvents — edge cases', () => {
     expect(result.turns.length).toBe(1);
     // No text block → assistantText should be empty string
     expect(result.turns[0].assistantText).toBe('');
-    // But artifacts should still be captured
-    expect(result.turns[0].artifacts).toBeDefined();
-    expect(result.turns[0].artifacts!.length).toBe(1);
-    expect(result.turns[0].artifacts![0].toolName).toBe('Read');
+    // But artifacts should still be captured.
+    //
+    // CHANGED 2026-08-28: this used to assert exactly one artifact, which encoded the
+    // defect that tool RESULTS were never captured — they arrive on user-role events and
+    // the turn loop only read assistant ones. The fixture below always contained a
+    // tool_result; the parser simply threw it away. Now both are kept, so the count is 2.
+    // The test's stated intent (assistantText is empty with no text block) is unchanged.
+    const artifacts = result.turns[0].artifacts!;
+    expect(artifacts).toBeDefined();
+    expect(artifacts.length).toBe(2);
+    expect(artifacts.find(a => a.type === 'tool_use')!.toolName).toBe('Read');
+    const toolResult = artifacts.find(a => a.type === 'tool_result')!;
+    expect(toolResult).toBeDefined();
+    expect(toolResult.content).toContain('file contents here');
   });
 
   it('tolerates malformed JSONL lines (parser receives only valid parsed events)', () => {

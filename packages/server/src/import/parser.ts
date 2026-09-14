@@ -88,8 +88,65 @@ export interface ParsedTurn {
   assistantText: string;
   timestamp: string;        // ISO timestamp of the root user event
   originalId: string;       // uuid of root user event
+  /**
+   * Timestamp and uuid of the LAST assistant event in the turn. Both messages used to be
+   * stamped with the user's values, so in a session spanning days an answer written hours
+   * after the question displayed the question's clock time, and original_id was not a
+   * message identity (both rows shared one), which blocks any future merge or dedup.
+   * Optional so older callers and fixtures keep working.
+   */
+  assistantTimestamp?: string;
+  assistantOriginalId?: string;
   model?: string;           // model used for assistant response
   artifacts?: ParsedArtifact[];
+}
+
+/**
+ * Import integrity receipt. Every silent-failure path in the parser should end
+ * up as a visible number here, so that a Claude Code format change surfaces as
+ * a suspicious count rather than as a quietly thinner conversation.
+ */
+export interface ImportIntegrity {
+  eventCount: number;                          // raw JSONL events read
+  conversationEvents: number;                  // survived isConversationEvent()
+  turnsEmitted: number;
+  skippedLines: number;                        // malformed JSONL lines
+  injectedUserEventsFiltered: number;          // user events rejected as non-human
+  unrecognizedEventTypes: Record<string, number>;
+  versionsSeen: string[];
+  boundaryMode: 'permissionMode' | 'legacy-flags';
+  /**
+   * Tree shape, reported rather than acted on. Turn grouping is a flat timestamp sort;
+   * parentUuid is not walked. That is a deliberate freeze decision, not an oversight —
+   * the flat sort also means cycles cannot hang the parser and the 44 genuinely orphaned
+   * events in our reference capture are not dropped, which a strict walker would do.
+   * What it CANNOT do is choose between sibling branches after a rewind or resume: both
+   * are emitted, interleaved by timestamp, and read as one conversation. These counts
+   * make that visible so a reader can tell when a transcript is affected.
+   */
+  treeShape: {
+    roots: number;          // events whose parentUuid is null
+    orphans: number;        // conversation events whose parent is not a conversation event
+    forkPoints: number;     // parents with more than one conversation-event child
+    duplicateTimestamps: number;
+  };
+  artifactsByType: Record<string, number>;
+  compactionSummariesFound: number;
+  /**
+   * Events the parser skipped that look like they carried something — they had a `message`,
+   * or they hung off a user/assistant event. Distinct from `unrecognizedEventTypes`, which
+   * counts everything non-conversational including pure session bookkeeping.
+   *
+   * This exists because of `attachment`. A 2026-09-02 survey of 20 live transcripts
+   * (Claude Code 2.1.229–2.1.241) found 622 `attachment` events in 3,096 — the second most
+   * common type in the sample — with zero present in the March capture, and no `image`
+   * content blocks anywhere (March had 4). Attachments appear to have moved out of message
+   * content into their own event type, and `isConversationEvent` drops every one.
+   *
+   * Until the payload is handled, an import must at least SAY what it walked past. A
+   * silently thinner import is the failure this pipeline was audited for.
+   */
+  skippedContentBearing: { total: number; byType: Record<string, number> };
 }
 
 export interface ParsedSession {
@@ -98,6 +155,7 @@ export interface ParsedSession {
   gitBranch?: string;
   slug?: string;
   version?: string;
+  versions?: string[];       // every Claude Code version seen — real files span more than one
   model?: string;            // most commonly used model
   turns: ParsedTurn[];
   compactionSummary?: string; // from acompact-* subagent events
@@ -105,6 +163,7 @@ export interface ParsedSession {
   skippedLines?: number;     // malformed JSONL lines that were skipped
   firstTimestamp?: string;
   lastTimestamp?: string;
+  integrity?: ImportIntegrity;
 }
 
 // ── Event classification ──────────────────────────────────────
@@ -212,10 +271,53 @@ export function extractToolArtifacts(content: string | RawContentBlock[]): Parse
         inputSummary: summarizeToolInput(block),
         content: JSON.stringify({ name: block.name, input: block.input, id: block.id }),
       });
+      continue;
+    }
+
+    // The three types below are declared on ParsedArtifact and were never emitted, so
+    // "Read foo.ts" was stored and the file contents it returned were not. On our
+    // reference capture that discarded 213 tool_results, 47 thinking blocks and 4 images
+    // — 1,597 KB against 415 KB kept — with nothing recording that it happened.
+    // Images keep a descriptor rather than the base64 payload: storing screenshots inline
+    // is what made the discard defensible in the first place.
+    if (block.type === 'tool_result') {
+      const text = typeof block.content === 'string' ? block.content : '';
+      artifacts.push({
+        type: 'tool_result',
+        toolName: block.is_error ? 'error' : 'result',
+        inputSummary: truncate(text.replace(/\s+/g, ' ').trim(), 80),
+        content: JSON.stringify({ tool_use_id: block.tool_use_id, content: text, is_error: !!block.is_error }),
+      });
+      continue;
+    }
+
+    if (block.type === 'thinking' && typeof block.thinking === 'string') {
+      artifacts.push({
+        type: 'thinking',
+        toolName: 'thinking',
+        inputSummary: truncate(block.thinking.replace(/\s+/g, ' ').trim(), 80),
+        content: block.thinking,
+      });
+      continue;
+    }
+
+    if (block.type === 'image' && block.source) {
+      const bytes = typeof block.source.data === 'string' ? block.source.data.length : 0;
+      artifacts.push({
+        type: 'image',
+        toolName: 'image',
+        inputSummary: `${block.source.media_type || 'image'} (~${Math.round(bytes * 0.75 / 1024)} KB, not stored)`,
+        content: JSON.stringify({ media_type: block.source.media_type, type: block.source.type, approxBytes: Math.round(bytes * 0.75) }),
+      });
     }
   }
 
   return artifacts;
+}
+
+/** Trim a string for a one-line summary field. */
+function truncate(text: string, max: number): string {
+  return text.length <= max ? text : text.slice(0, max - 1) + '\u2026';
 }
 
 // ── Compaction summary extraction ─────────────────────────────
@@ -224,7 +326,8 @@ export function extractToolArtifacts(content: string | RawContentBlock[]): Parse
  * Extract the <summary> text from compaction subagent events.
  * Looks for assistant messages from acompact-* agents with <summary> tags.
  */
-function extractCompactionFromEvents(events: RawEvent[]): string | undefined {
+function extractCompactionSummaries(events: RawEvent[]): string[] {
+  const summaries: string[] = [];
   for (const event of events) {
     // Only look at sidechain assistant events from compaction agents
     if (!event.isSidechain) continue;
@@ -233,9 +336,22 @@ function extractCompactionFromEvents(events: RawEvent[]): string | undefined {
 
     const text = extractTextContent(event.message.content);
     const match = text.match(/<summary>([\s\S]*?)<\/summary>/);
-    if (match) return match[1].trim();
+    if (match) summaries.push(match[1].trim());
   }
-  return undefined;
+  return summaries;
+}
+
+/**
+ * The compaction summary for a session, taking the LAST one.
+ *
+ * This used to return the first match in file order. A session compacted three times
+ * therefore carried its *stalest* summary, while findCompactionSummary() — reading the
+ * same thing from subagent files thirty lines away — deliberately iterated latest-first.
+ * Two paths, opposite attribution rules, and the caller preferred the stale one.
+ */
+function extractCompactionFromEvents(events: RawEvent[]): string | undefined {
+  const summaries = extractCompactionSummaries(events);
+  return summaries.length > 0 ? summaries[summaries.length - 1] : undefined;
 }
 
 // ── Turn boundary detection ───────────────────────────────────
@@ -252,7 +368,41 @@ function extractCompactionFromEvents(events: RawEvent[]): string | undefined {
  * Hook/skill/image injections: isMeta=true
  * Tool results: content is array of tool_result blocks (no text blocks)
  */
-export function isHumanTurnBoundary(event: RawEvent): boolean {
+/** First text block (or string content) of a user event, untrimmed. */
+function firstTextOf(event: RawEvent): string | undefined {
+  const content = event.message?.content;
+  if (typeof content === 'string') return content;
+  if (Array.isArray(content)) {
+    const block = content.find((b) => b.type === 'text' && typeof b.text === 'string');
+    return block?.text;
+  }
+  return undefined;
+}
+
+/**
+ * Machine-authored user text, identified by shape rather than by a flag.
+ * These all appear in real transcripts as role='user' with real text content;
+ * some carry permissionMode and some carry no metadata at all.
+ */
+const MACHINE_TEXT_PREFIXES = [
+  '<task-notification>',      // background agent completion (has permissionMode — anomalous)
+  '<command-name>',           // /slash command echo
+  '<local-command-stdout>',   // output of a /slash command
+  '<command-message>',
+  '<system-reminder>',
+  'Unknown skill:',           // skill resolution failure
+  'Stop hook feedback:',      // hook feedback that arrived without isMeta
+];
+
+export function isMachineAuthoredText(text: string): boolean {
+  const t = text.trimStart();
+  return MACHINE_TEXT_PREFIXES.some((prefix) => t.startsWith(prefix));
+}
+
+export function isHumanTurnBoundary(
+  event: RawEvent,
+  opts?: { requirePermissionMode?: boolean },
+): boolean {
   if (event.type !== 'user') return false;
   if (event.message?.role !== 'user') return false;
 
@@ -262,6 +412,26 @@ export function isHumanTurnBoundary(event: RawEvent): boolean {
   // the "compaction misattribution" bug. See Step 8¾ verification.
   if (event.isCompactSummary) return false;  // Compaction context injection
   if (event.isMeta) return false;             // Hook feedback, skill injection, image reference
+  if (event.isVisibleInTranscriptOnly) return false; // transcript-only echoes
+
+  // POSITIVE test. docs/JSONL-SCHEMA.md: a real human message *has* permissionMode.
+  // Testing only for the ABSENCE of isMeta/isCompactSummary was the original design and
+  // it fails open: every format change is additive, so each new kind of injected user
+  // event — /slash command echoes, local-command stdout, skill errors — arrives with no
+  // flag at all, passes the negative test, and becomes a fabricated "You" turn that also
+  // splits the real turn it landed inside. Measured on
+  // exports/sessions/theseus-2026-03-22.jsonl: 6-7 of 75 turns fabricated, one of them
+  // stealing 269 characters of assistant text from the human turn before it.
+  //
+  // Older transcripts predate permissionMode entirely, so the caller tells us whether
+  // this session uses it (see parseEvents); when it doesn't, we fall back to the legacy
+  // negative test rather than emitting zero turns.
+  if (opts?.requirePermissionMode && event.permissionMode === undefined) return false;
+
+  // Structural injections that DO carry permissionMode (documented as anomalous in
+  // docs/JSONL-SCHEMA.md) or that predate it — excluded by shape, in both modes.
+  const firstText = firstTextOf(event);
+  if (firstText !== undefined && isMachineAuthoredText(firstText)) return false;
 
   const content = event.message.content;
   if (!content) return false;
@@ -295,16 +465,22 @@ export function isHumanTurnBoundary(event: RawEvent): boolean {
  * - All assistant text content -> assistantText
  * - All tool_use blocks -> artifacts
  */
-export function groupIntoTurns(events: RawEvent[]): ParsedTurn[] {
-  // Sort by timestamp to ensure chronological order
+export function groupIntoTurns(
+  events: RawEvent[],
+  opts?: { requirePermissionMode?: boolean },
+): ParsedTurn[] {
+  // Sort by timestamp to ensure chronological order.
+  // Guard the operands: a single event with a missing or malformed timestamp used to
+  // throw a TypeError here and abort the whole import with a 500. Claude Code 2.1.69
+  // shipped a fix for its own crash on exactly that shape, so it exists in the wild.
   const sorted = [...events].sort((a, b) =>
-    a.timestamp.localeCompare(b.timestamp)
+    (a.timestamp || '').localeCompare(b.timestamp || '')
   );
 
   // Find turn boundary indices (human-typed user messages)
   const boundaryIndices: number[] = [];
   for (let i = 0; i < sorted.length; i++) {
-    if (isHumanTurnBoundary(sorted[i])) {
+    if (isHumanTurnBoundary(sorted[i], opts)) {
       boundaryIndices.push(i);
     }
   }
@@ -327,10 +503,29 @@ export function groupIntoTurns(events: RawEvent[]): ParsedTurn[] {
     const assistantTextParts: string[] = [];
     const artifacts: ParsedArtifact[] = [];
     let model: string | undefined;
+    let assistantTimestamp: string | undefined;
+    let assistantOriginalId: string | undefined;
 
     for (const event of turnEvents) {
-      if (event.message?.role !== 'assistant') continue;
-      if (!event.message.content) continue;
+      if (!event.message?.content) continue;
+
+      // Tool RESULTS come back as user-role events, not assistant ones — which is why
+      // extracting artifacts only from assistant messages lost all of them. Verified on
+      // exports/sessions/theseus-2026-03-22.jsonl: 213 tool_result blocks, every one of
+      // them on a user event. Collect artifacts from those too, but never their text:
+      // a tool result is not something the human said.
+      if (event.message.role === 'user') {
+        if (event.uuid !== turnRoot.uuid) {
+          artifacts.push(...extractToolArtifacts(event.message.content));
+        }
+        continue;
+      }
+
+      if (event.message.role !== 'assistant') continue;
+
+      // Last assistant event in the turn owns the reply's clock time and identity.
+      if (event.timestamp) assistantTimestamp = event.timestamp;
+      if (event.uuid) assistantOriginalId = event.uuid;
 
       const text = extractTextContent(event.message.content);
       if (text.trim()) assistantTextParts.push(text);
@@ -351,6 +546,8 @@ export function groupIntoTurns(events: RawEvent[]): ParsedTurn[] {
       assistantText: assistantText || '',
       timestamp: turnRoot.timestamp,
       originalId: turnRoot.uuid,
+      assistantTimestamp,
+      assistantOriginalId,
       model,
       artifacts: artifacts.length > 0 ? artifacts : undefined,
     });
@@ -386,12 +583,20 @@ export function parseEvents(events: unknown[]): ParsedSession {
   // Extract metadata: scan for the first event with each field
   // (queue-operation events lack cwd/gitBranch/slug/version)
   const first = rawEvents[0];
-  const sessionId = first.sessionId;
+  // Scan for sessionId rather than trusting event 0. Real transcripts do not begin with a
+  // conversation event — line 1 of exports/sessions/theseus-2026-03-22.jsonl is a
+  // file-history-snapshot with no sessionId, while 897 of its 1,001 lines carry one.
+  // When this came back undefined the 409 duplicate check was silently skipped and
+  // originalSessionId never reached source_metadata.
+  const sessionId = rawEvents.find(e => e.sessionId)?.sessionId ?? first.sessionId;
   const metaEvent = rawEvents.find(e => e.cwd) || first;
   const cwd = metaEvent.cwd;
   const gitBranch = metaEvent.gitBranch;
   const slug = metaEvent.slug;
   const version = metaEvent.version;
+  // Real sessions span Claude Code versions (the committed capture spans 2.1.73 and
+  // 2.1.81), so record the set, not just the first one seen.
+  const versions = [...new Set(rawEvents.map(e => e.version).filter(Boolean) as string[])].sort();
 
   // Find timestamps
   const timestamps = rawEvents
@@ -401,8 +606,75 @@ export function parseEvents(events: unknown[]): ParsedSession {
   const firstTimestamp = timestamps[0];
   const lastTimestamp = timestamps[timestamps.length - 1];
 
-  // Group conversation events into turns
-  const turns = groupIntoTurns(conversationEvents);
+  // Group conversation events into turns.
+  // A session "uses" permissionMode if any user event carries it; only then do we apply
+  // the positive boundary test. Transcripts older than the field fall back to the legacy
+  // negative test, so back-compat is decided per file rather than by a global flag.
+  const requirePermissionMode = rawEvents.some(
+    e => e.type === 'user' && e.permissionMode !== undefined,
+  );
+  const turns = groupIntoTurns(conversationEvents, { requirePermissionMode });
+
+  // Integrity receipt — see ImportIntegrity. Everything the parser drops silently gets a
+  // number here so that a format change reads as a suspicious count, not a thin import.
+  const userEvents = conversationEvents.filter(e => e.type === 'user');
+  const injectedUserEventsFiltered = userEvents.filter(
+    e => !isHumanTurnBoundary(e, { requirePermissionMode }),
+  ).length;
+
+  const unrecognizedEventTypes: Record<string, number> = {};
+  for (const e of rawEvents) {
+    if (e.type === 'user' || e.type === 'assistant') continue;
+    unrecognizedEventTypes[e.type] = (unrecognizedEventTypes[e.type] || 0) + 1;
+  }
+
+  // Tree shape, measured but not acted on — see ImportIntegrity.treeShape.
+  const convByUuid = new Set(conversationEvents.map(e => e.uuid));
+  const childCounts = new Map<string, number>();
+  let roots = 0;
+  let orphans = 0;
+  for (const e of conversationEvents) {
+    if (e.parentUuid == null) { roots++; continue; }
+    if (!convByUuid.has(e.parentUuid)) orphans++;
+    childCounts.set(e.parentUuid, (childCounts.get(e.parentUuid) || 0) + 1);
+  }
+  const forkPoints = [...childCounts.values()].filter(n => n > 1).length;
+  const tsCounts = new Map<string, number>();
+  for (const e of conversationEvents) {
+    if (!e.timestamp) continue;
+    tsCounts.set(e.timestamp, (tsCounts.get(e.timestamp) || 0) + 1);
+  }
+  const duplicateTimestamps = [...tsCounts.values()].filter(n => n > 1).length;
+
+  // Events that are not conversation events but look like they carried something.
+  //
+  // Deliberately excludes the types the parser has always known about and skips on
+  // purpose: `system` telemetry (turn_duration, stop_hook_summary, compact_boundary),
+  // `progress`, `file-history-snapshot`, `queue-operation`. Those hang off conversation
+  // events routinely and carry no importable content, so counting them would make this
+  // number fire on every transcript and mean nothing — the alarm-fatigue failure that
+  // the refresh script's `isSidechain` false positive already demonstrated once.
+  //
+  // What survives the filter is a type nobody has classified yet that nonetheless looks
+  // attached to the conversation. That is exactly `attachment`.
+  const KNOWN_SKIPPED_TYPES = new Set([
+    'system', 'progress', 'file-history-snapshot', 'queue-operation', 'last-prompt',
+  ]);
+  const skippedByType: Record<string, number> = {};
+  for (const e of rawEvents) {
+    if (isConversationEvent(e)) continue;
+    if (KNOWN_SKIPPED_TYPES.has(e.type)) continue;
+    const looksContentBearing = !!e.message || (!!e.parentUuid && convByUuid.has(e.parentUuid));
+    if (looksContentBearing) skippedByType[e.type] = (skippedByType[e.type] || 0) + 1;
+  }
+  const skippedContentBearingTotal = Object.values(skippedByType).reduce((a, b) => a + b, 0);
+
+  const artifactsByType: Record<string, number> = {};
+  for (const turn of turns) {
+    for (const a of turn.artifacts || []) {
+      artifactsByType[a.type] = (artifactsByType[a.type] || 0) + 1;
+    }
+  }
 
   // Determine most common model
   const modelCounts = new Map<string, number>();
@@ -433,6 +705,21 @@ export function parseEvents(events: unknown[]): ParsedSession {
     eventCount: rawEvents.length,
     firstTimestamp,
     lastTimestamp,
+    versions,
+    integrity: {
+      eventCount: rawEvents.length,
+      conversationEvents: conversationEvents.length,
+      turnsEmitted: turns.length,
+      skippedLines: 0, // filled in by the file-reading layer, which owns the count
+      injectedUserEventsFiltered,
+      unrecognizedEventTypes,
+      versionsSeen: versions,
+      boundaryMode: requirePermissionMode ? 'permissionMode' : 'legacy-flags',
+      treeShape: { roots, orphans, forkPoints, duplicateTimestamps },
+      artifactsByType,
+      compactionSummariesFound: extractCompactionSummaries(rawEvents).length,
+      skippedContentBearing: { total: skippedContentBearingTotal, byType: skippedByType },
+    },
   };
 }
 
@@ -527,6 +814,7 @@ export function parseJsonlContent(content: string): ReadJsonlResult {
 export function parseClaudeCodeSessionFromContent(content: string): ParsedSession {
   const { events, skippedLines } = parseJsonlContent(content);
   const session = parseEvents(events);
+  if (session.integrity) session.integrity.skippedLines = skippedLines;
   if (skippedLines > 0) {
     session.skippedLines = skippedLines;
   }
@@ -542,6 +830,7 @@ export function parseClaudeCodeSessionFromContent(content: string): ParsedSessio
 export async function parseClaudeCodeSession(sessionPath: string): Promise<ParsedSession> {
   const { events, skippedLines } = await readJsonlFile(sessionPath);
   const session = parseEvents(events);
+  if (session.integrity) session.integrity.skippedLines = skippedLines;
   if (skippedLines > 0) {
     session.skippedLines = skippedLines;
   }

@@ -48,11 +48,20 @@ export interface ClaudeAiExport {
  * Bug discovered during Theseus Day 4 testing (2026-03-14).
  */
 function joinIfCharArray(value: unknown): string | null {
-  if (Array.isArray(value) && value.length > 0 && value.every((v) => typeof v === 'string' && v.length === 1)) {
-    return value.join('');
-  }
   if (typeof value === 'string') return value;
-  return null;
+  if (!Array.isArray(value) || value.length === 0) return null;
+  if (!value.every((v) => typeof v === 'string')) return null;
+  const parts = value as string[];
+
+  // Char array: every element is a single CODE POINT. Note [...v].length rather than
+  // v.length — an astral character (any emoji) has .length === 2 in JS, so the old test
+  // failed on the whole array if a single emoji appeared anywhere in the memory, and the
+  // caller then fell through to '' — silent loss of the entire memory.
+  if (parts.every((v) => [...v].length === 1)) return parts.join('');
+
+  // Otherwise it is a list of whole strings. Keep all of them rather than returning null
+  // and dropping the lot; a one-element array of a full string is the common real case.
+  return parts.join('\n\n');
 }
 
 export function extractFromZip(zipBuffer: Buffer): ClaudeAiExport {
@@ -103,44 +112,86 @@ export function extractFromZip(zipBuffer: Buffer): ClaudeAiExport {
         continue;
       }
 
-      // memories.json — can contain both conversation-level and project-scoped memories
+      // memories.json — conversation-level and project-scoped memories.
+      //
+      // Real exports wrap the payload in a SINGLE-ELEMENT ARRAY:
+      //   [{ conversations_memory: "<string>", project_memories: {...}, account_uuid }]
+      // (research/claude-export-format-analysis.docx). The original code treated any
+      // array as a list of memory items requiring uuid/id, so the real container was
+      // skipped; the object branch was guarded by !Array.isArray and never ran; and
+      // joinIfCharArray — the 2026-03-14 char-array fix — was unreachable on real data.
+      // Every claude.ai import therefore produced empty memory, silently, while
+      // CHANGELOG.md:182 and docs/PROMPT-ASSEMBLY.md:69 said otherwise.
+      // Fixed 2026-08-28. Both container and loose-item shapes are now accepted.
       if (basename === 'memories.json') {
-        // Handle array format (conversation-level memories)
+        const isContainer = (v: any): boolean =>
+          !!v && typeof v === 'object' && !Array.isArray(v) &&
+          ('conversations_memory' in v || 'project_memories' in v);
+
+        const containers: any[] = [];
+        const looseItems: any[] = [];
+
         if (Array.isArray(parsed)) {
-          for (const mem of parsed) {
-            if (mem && (mem.uuid || mem.id)) {
-              const memContent = joinIfCharArray(mem.content) ?? (typeof mem.text === 'string' ? mem.text : '');
-              memories.push({
-                uuid: mem.uuid || mem.id,
-                content: memContent,
-                createdAt: mem.created_at || mem.createdAt,
-              });
-            }
+          for (const el of parsed) {
+            if (isContainer(el)) containers.push(el);
+            else if (el && typeof el === 'object') looseItems.push(el);
           }
+        } else if (parsed && typeof parsed === 'object') {
+          containers.push(parsed);
         }
 
-        // Handle object format with project_memories map
-        if (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) {
-          // Top-level conversation memories
-          if (Array.isArray(parsed.conversations_memory)) {
-            for (const mem of parsed.conversations_memory) {
-              if (mem && (mem.uuid || mem.id)) {
-                const memContent = joinIfCharArray(mem.content) ?? (typeof mem.text === 'string' ? mem.text : '');
-                memories.push({
-                  uuid: mem.uuid || mem.id,
-                  content: memContent,
-                  createdAt: mem.created_at || mem.createdAt,
-                });
-              }
+        // An item that carries its own uuid is a user-declared entry: emit it even when
+        // the content is empty, which is the long-standing contract (see
+        // memories-parsing.test.ts, "handles memory with empty content"). Entries we
+        // *synthesize* from a container are skipped when they would carry nothing —
+        // inventing a blank memory would put a misleading count in the import preview.
+        const pushItem = (mem: any, fallbackUuid: string, skipIfEmpty: boolean) => {
+          const memContent =
+            joinIfCharArray(mem.content) ?? (typeof mem.text === 'string' ? mem.text : '');
+          if (skipIfEmpty && !memContent.trim()) return;
+          memories.push({
+            uuid: mem.uuid || mem.id || fallbackUuid,
+            content: memContent,
+            createdAt: mem.created_at || mem.createdAt,
+          });
+        };
+
+        // Loose items: [{uuid, content}, ...] — the shape the existing tests use.
+        looseItems.forEach((mem, i) => {
+          if (mem.uuid || mem.id) pushItem(mem, `memory-${i}`, false);
+        });
+
+        for (const container of containers) {
+          const accountUuid =
+            typeof container.account_uuid === 'string' ? container.account_uuid : 'account';
+
+          // conversations_memory is a STRING in real exports; older/other shapes give an
+          // array of items or a char array. Accept all three rather than one.
+          const cm = container.conversations_memory;
+          if (Array.isArray(cm) && cm.some((m: any) => m && typeof m === 'object' && !Array.isArray(m))) {
+            cm.forEach((mem: any, i: number) => {
+              if (mem && typeof mem === 'object') pushItem(mem, `${accountUuid}-cm-${i}`, true);
+            });
+          } else {
+            const joined = joinIfCharArray(cm);
+            if (joined && joined.trim()) {
+              memories.push({ uuid: `${accountUuid}-conversations-memory`, content: joined });
             }
           }
 
-          // Project-scoped memories (keyed by project UUID)
-          if (parsed.project_memories && typeof parsed.project_memories === 'object') {
-            for (const [projUuid, memValue] of Object.entries(parsed.project_memories)) {
-              const joined = joinIfCharArray(memValue);
+          // Project-scoped memories, keyed by project UUID.
+          if (container.project_memories && typeof container.project_memories === 'object') {
+            for (const [projUuid, memValue] of Object.entries(container.project_memories)) {
+              // A project's value may itself be an object wrapper rather than a bare string.
+              const raw =
+                memValue && typeof memValue === 'object' && !Array.isArray(memValue)
+                  ? ((memValue as any).content ?? (memValue as any).text ?? (memValue as any).memory)
+                  : memValue;
+              const joined = joinIfCharArray(raw);
               if (joined && joined.trim()) {
-                projectMemories.set(projUuid, joined);
+                // Merge rather than overwrite when a project appears in more than one container.
+                const existing = projectMemories.get(projUuid);
+                projectMemories.set(projUuid, existing ? `${existing}\n\n${joined}` : joined);
               }
             }
           }

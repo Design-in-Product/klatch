@@ -119,6 +119,27 @@ function projectsDirOf(configDir: string): string {
 }
 
 /**
+ * Encode a cwd the way Claude Code names its project directory.
+ *
+ * Claude Code replaces EVERY non-alphanumeric character with '-', not just '/'
+ * (code.claude.com/docs/en/sessions). The old `cwd.replace(/\//g, '-')` was therefore
+ * wrong for any path containing '.', '_' or a space — which is most of them — and the
+ * MEMORY.md lookup built on it silently found nothing and injected no project memory.
+ *
+ * Names longer than 200 characters are truncated and hashed by Claude Code, so they are
+ * not derivable from the cwd at all; callers get null and should fall back rather than
+ * guess. Since 2.1.234 the directory name can also be overridden entirely by
+ * CLAUDE_CODE_PROJECT_DIR_NAME, which we honour here.
+ */
+export function encodeProjectDirName(cwd: string): string | null {
+  const override = process.env.CLAUDE_CODE_PROJECT_DIR_NAME;
+  if (override) return override;
+  const encoded = cwd.replace(/[^a-zA-Z0-9]/g, '-');
+  if (encoded.length > 200) return null; // truncated + hashed upstream; not reconstructible
+  return encoded;
+}
+
+/**
  * Get the base directory where Claude Code stores project data.
  *
  * Honors `CLAUDE_CONFIG_DIR`, Claude Code's own variable for relocating its
