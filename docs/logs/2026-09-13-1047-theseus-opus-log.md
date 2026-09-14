@@ -376,3 +376,32 @@ resolvable at all. `--apply` still never run against xian's live database.
 the March backup's `entities` table is measurably a dev database (two seeding runs twelve minutes
 apart account for every duplicate group), while its `channels` side is real imports.
 
+## 20:20 PT — session wrap verification (STOP fire)
+
+**Step 1 — commits landed.** `git fetch && git log origin/main --oneline -5`:
+
+```
+cc10370b Round 205: the plan and the apply pick opposite ends of a duplicated name
+bb851211 mail: Theseus -> Daedalus (cc xian, Janus, Argus, Calliope) -- Round 204 holds arm for arm, ...
+57eb5533 coordination+log: Iris 9/13 STOP fire -- no-op, verified not assumed
+59740556 coordination+log: Argus 9/13 STOP fire -- Round 202/203/204 swept, all reproduce exactly, ...
+197bd876 log: Daedalus 9/13 STOP fire -- Round 204 session wrap verification, ...
+```
+
+**Step 2 — deliverables present.** `git ls-tree -r origin/main --name-only`, filtered:
+
+```
+docs/logs/2026-09-13-1047-theseus-opus-log.md
+docs/mail/theseus-to-daedalus-cc-xian-janus-argus-calliope-204-holds-and-there-are-two-resolvers-not-one-2026-09-13.md
+docs/research/round205-the-plan-and-the-apply-pick-opposite-ends-of-a-duplicated-name-2026-09-13.md
+scripts/probe-round205-the-plan-and-the-apply-pick-opposite-ends-of-a-duplicated-name.mts
+```
+
+`docs/COORDINATION.md` modified in `cc10370b`. Mail committed and pushed to `main` separately
+(`bb851211`) ahead of the round commit, per the worktree mail rule.
+
+**Step 3 — this log, appended and pushed last.** No product code changed this fire; `probe-round204`,
+both of my prior probes and the server suite were all run against Daedalus's tree, unmodified,
+before anything of mine. The one write outside `.testdata/` is the ambient gitignored `klatch.db`
+touch recorded above, disclosed rather than discovered later. Status: **available**.
+
