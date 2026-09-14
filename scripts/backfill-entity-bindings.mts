@@ -1193,10 +1193,29 @@ for (const r of plan.rows) {
   // and this plan is deliberately not binding to it. Minting is the safe default
   // and it is also wrong whenever the two really are one agent continuing, so
   // the choice is shown rather than made silently.
-  if (r.action !== 'skipped' && r.sameNameEntityId) {
+  //
+  // The count is load-bearing, not decoration. This note named one id and read
+  // as though that were the whole story; on xian's real corpus four entities
+  // normalize to "chief of staff", and "merge by hand afterwards" is a very
+  // different job against four than against one (Theseus, Round 205 §4).
+  if (r.action !== 'skipped' && r.sameNameEntityIds?.length) {
+    const ids = r.sameNameEntityIds.map((id) => id.slice(0, 8)).join(', ');
+    const n = r.sameNameEntityIds.length;
     console.log(
-      `              ↳ note: an agent named "${r.guessName}" already exists (${r.sameNameEntityId.slice(0, 8)}).` +
-        ` A ${r.guessBasis} guess does not reuse it — this mints a second one.`
+      `              ↳ note: ${n === 1 ? 'an agent' : `${n} agents`} named "${r.guessName}"` +
+        ` already ${n === 1 ? 'exists' : 'exist'} (${ids}).` +
+        ` A ${r.guessBasis} guess does not reuse ${n === 1 ? 'it' : 'them'} — this mints another.`
+    );
+  }
+  // A refusal the operator can act on: which agents collided, and the two ways
+  // forward. Printed on a skipped row precisely because the skip is the finding.
+  if (r.skipReason === 'ambiguous-name' && r.sameNameEntityIds?.length) {
+    const ids = r.sameNameEntityIds.map((id) => id.slice(0, 8)).join(', ');
+    console.log(
+      `              ↳ ${r.sameNameEntityIds.length} agents are named "${r.guessName}" (${ids}), so` +
+        ` reusing "the" one of that name would mean picking one. Not picking: every\n` +
+        `                available rule is arbitrary and the sheet cannot show which it chose.` +
+        ` Merge or rename\n                them, or bind this channel by hand, then re-run.`
     );
   }
 }

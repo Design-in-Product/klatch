@@ -201,7 +201,23 @@ export type BackfillSkipReason =
    * is the Round 171/173 failure shape one layer over: a placeholder that cannot
    * be told from an answer.
    */
-  | 'resolves-to-default';
+  | 'resolves-to-default'
+  /**
+   * More than one entity carries the guessed name, so reusing "the" entity of
+   * that name means picking one of several — and every available rule for
+   * picking is arbitrary. Oldest-by-`created_at` is not even well defined:
+   * `getAllEntities` orders by a millisecond timestamp with no tiebreak, so two
+   * same-named agents minted in the same millisecond order unspecified
+   * (Theseus, Round 205 §6.3).
+   *
+   * Refusing is the only option that does not silently choose on the operator's
+   * behalf. The alternative — pick one and print the name — puts a decision the
+   * operator cannot see behind an approval they did give, which is the shape
+   * this whole plan/apply split exists to prevent. `sameNameEntityIds` carries
+   * the candidates so a human can disambiguate by hand and re-run with
+   * `--channels`.
+   */
+  | 'ambiguous-name';
 
 export interface BackfillPlanRow {
   channelId: string;
@@ -218,15 +234,22 @@ export interface BackfillPlanRow {
   /** Set only when the plan would reuse an entity that already exists. */
   targetEntityId?: string;
   /**
-   * An existing entity with this guess's name that the plan is **not** reusing,
-   * because the basis does not reuse by name (`BASIS_REUSES_BY_NAME`).
+   * **Every** existing entity carrying this guess's name that the plan is not
+   * binding to. Two cases reach it: the basis does not reuse by name
+   * (`BASIS_REUSES_BY_NAME`), so the plan mints alongside them; or several
+   * carry the name and the plan refuses to pick (`ambiguous-name`).
    *
    * Present so the split is on the sheet instead of silent. A `role-title` guess
    * of "Chief of Staff" against an existing "Chief of Staff" is exactly the row
    * an operator should look at twice: minting is the safe default and it is also
    * wrong whenever the two sessions really are one agent continuing.
+   *
+   * A list rather than one id because the decision it informs — mint a second,
+   * or merge by hand afterwards — changes with the count. On xian's March corpus
+   * four entities normalize to `chief of staff`; this field named one of them
+   * and the note read as though that were all of them (Theseus, Round 205 §4).
    */
-  sameNameEntityId?: string;
+  sameNameEntityIds?: string[];
   /** `channel_entities` rows to re-point (1 for every candidate). */
   p1: number;
   /** Assistant rows stamped `default-entity` in this channel. */
@@ -429,7 +452,19 @@ export function planEntityBackfill(options: PlanOptions = {}): BackfillPlan {
     id: string;
     name: string;
   }[];
-  const byName = new Map(existing.map((e) => [normalizeName(e.name), e.id]));
+  // Every id per name, not one. `new Map(existing.map(...))` kept whichever row
+  // the unordered scan returned last — a silent pick, and a *different* silent
+  // pick from the apply pass's `getAllEntities()` (`ORDER BY created_at ASC` +
+  // `.find()`, first row). Theseus drove the two apart end to end in Round 205:
+  // the sheet approved the newer agent and the older one got the channel. The
+  // plan no longer collapses the group; see `ambiguous-name`.
+  const byName = new Map<string, string[]>();
+  for (const e of existing) {
+    const key = normalizeName(e.name);
+    const group = byName.get(key);
+    if (group) group.push(e.id);
+    else byName.set(key, [e.id]);
+  }
 
   // Resolve the operator's ids against the in-scope candidates before planning,
   // so what a filter did and did not find is reportable rather than inferable
@@ -491,17 +526,23 @@ export function planEntityBackfill(options: PlanOptions = {}): BackfillPlan {
     // holding one job are two entities (`BASIS_REUSES_BY_NAME`, and Theseus's
     // Round 201 §5 — this line read `targetId ? 'matched-by-name' : 'minted'`
     // and never consulted the basis at all).
-    const nameMatch = guess.name ? byName.get(normalizeName(guess.name)) : undefined;
+    const nameMatches = guess.name ? (byName.get(normalizeName(guess.name)) ?? []) : [];
     const mayReuse = BASIS_REUSES_BY_NAME[guess.basis];
-    const targetId = mayReuse ? nameMatch : undefined;
+    // Reuse binds to a name only when the name identifies exactly one entity.
+    // With several, there is no non-arbitrary pick and the plan says so instead
+    // of making one (`ambiguous-name`).
+    const targetId = mayReuse && nameMatches.length === 1 ? nameMatches[0] : undefined;
 
     let skipReason: BackfillSkipReason | undefined;
     if (otherBindings > 0) skipReason = 'multi-bound';
     else if (!guess.name) skipReason = 'no-guess';
     else if (!bases.includes(guess.basis)) skipReason = 'basis-excluded';
-    else if (nameMatch === DEFAULT_ENTITY_ID) skipReason = 'resolves-to-default';
+    else if (nameMatches.includes(DEFAULT_ENTITY_ID)) skipReason = 'resolves-to-default';
+    else if (mayReuse && nameMatches.length > 1) skipReason = 'ambiguous-name';
 
-    const sameName = !mayReuse && nameMatch ? { sameNameEntityId: nameMatch } : {};
+    // Set whenever entities of this name exist and the plan is not binding to
+    // one of them — covers both the mint-alongside case and the refusal.
+    const sameName = nameMatches.length && !targetId ? { sameNameEntityIds: nameMatches } : {};
 
     if (skipReason) {
       rows.push({ ...base, ...sameName, skipReason, targetEntityId: targetId });
@@ -674,7 +715,17 @@ export function applyEntityBackfill(plan: BackfillPlan): ApplyResult {
       // existing entity anyway, and two role rows sharing a name in one plan
       // collapsed into one agent. The plan is what the operator approved; the
       // apply pass has no business reaching a different answer.
+      //
+      // Round 205: carrying the *decision* was not enough — both phases still
+      // did their own name lookup, by different rules (`Map` over an unordered
+      // scan here, `ORDER BY created_at ASC` + `.find()` there), so on a
+      // duplicated name they bound opposite ends of the table while both
+      // printed the same label. Carry the *identity*. An explicit id is the
+      // `bound-existing` path, which throws if the entity has gone away between
+      // plan and apply — the right failure, and louder than re-picking.
+      // `targetEntityId` is undefined exactly on the rows the sheet said MINTED.
       const resolved = resolveImportEntity({
+        entityId: row.targetEntityId,
         entityName: row.guessName,
         reuseByName: BASIS_REUSES_BY_NAME[row.guessBasis],
       });

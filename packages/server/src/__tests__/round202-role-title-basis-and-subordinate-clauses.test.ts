@@ -250,7 +250,7 @@ describe('the basis reaches the binding decision (Round 201 §5)', () => {
     expect(row.targetEntityId).toBeUndefined();
     // The near-miss is reported, not hidden: minting is the safe default and it
     // is wrong whenever the two sessions really are one agent continuing.
-    expect(row.sameNameEntityId).toBe('ent-cos');
+    expect(row.sameNameEntityIds).toEqual(['ent-cos']);
   });
 
   it('leaves identity-claim reuse exactly as it was', () => {
@@ -265,7 +265,7 @@ describe('the basis reaches the binding decision (Round 201 §5)', () => {
     const row = planEntityBackfill().rows.find((r) => r.channelId === 'c-name')!;
     expect(row.action).toBe('matched-by-name');
     expect(row.targetEntityId).toBe('ent-dae');
-    expect(row.sameNameEntityId).toBeUndefined();
+    expect(row.sameNameEntityIds).toBeUndefined();
   });
 
   it('two channels holding the same job become two entities, and the collision is still reported', () => {

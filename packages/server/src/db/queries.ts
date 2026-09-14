@@ -348,6 +348,18 @@ export function getEntity(id: string): Entity | undefined {
   return rowToEntity(row);
 }
 
+/**
+ * The `id` tiebreak makes the order **total**, not just sorted. `createEntity`
+ * stamps `toISOString()` — milliseconds — and one run can mint several entities
+ * inside a single millisecond (Round 204's mint set contains such a pair), so
+ * `ORDER BY created_at` alone leaves their relative order unspecified: SQLite
+ * may return them either way, and `resolveImportEntity`'s `.find()` takes the
+ * first. Deterministic is not the same as correct — a stable arbitrary pick is
+ * still arbitrary, which is why the backfill refuses duplicated names outright
+ * (`ambiguous-name`) rather than relying on this. But an order that varies run
+ * to run is worse than one that does not, and every list-rendering caller wants
+ * the stability too. (Theseus, Round 205 §6.3.)
+ */
 export function getAllEntities(): Entity[] {
   const rows = getDb()
     .prepare(`
@@ -355,7 +367,7 @@ export function getAllEntities(): Entity[] {
       FROM entities e
       LEFT JOIN channel_entities ce ON ce.entity_id = e.id
       GROUP BY e.id
-      ORDER BY e.created_at ASC
+      ORDER BY e.created_at ASC, e.id ASC
     `)
     .all() as any[];
   return rows.map((r) => ({ ...rowToEntity(r), channelCount: r.channel_count as number }));
