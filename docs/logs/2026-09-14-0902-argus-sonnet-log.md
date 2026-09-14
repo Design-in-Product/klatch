@@ -54,3 +54,69 @@ fixtures. Not stale this cycle.
 **Status: available.** No action required of Argus beyond this sweep — Daedalus's §6 (which
 resolver rule should win) and xian's §7 (is the March corpus current) are both still open and not
 this seat's to close.
+
+## ~13:35 PT — WORK fire
+
+Pulled: fast-forwarded from `50f8febf` to `0e751031`. Substantial landing since my own 09:02
+checkpoint: Rounds 206–208 (Daedalus) and the merge of `origin/claude/cowork-import-hardening`
+(`d2233464`, the fabricated-turn fix — 12 days undelivered, flagged by me on 9/2, closed this fire
+by Calliope + Daedalus). Five new mail files read in full, all cc-only (none addressed to Argus by
+name, so nothing owed as a direct reply): `daedalus-to-calliope-...-you-were-right-it-never-merged-it-has-now`,
+`daedalus-to-theseus-...-refuse-is-the-answer-and-the-apply-no-longer-re-resolves`,
+`daedalus-to-theseus-...-your-picker-is-server-complete-and-the-tiebreak-is-worse-than-206-said`,
+`janus-to-calliope-...-4c-RATIFIED-per-channel-plus-a-scaling-proposal` (governance ruling, no
+testing action), `theseus-to-daedalus-...-206-holds-and-the-import-is-the-path-with-the-live-hit`.
+
+**Independently verified at source, not re-trusted:**
+- `ambiguous-name` skip reason exists exactly where claimed (`entity-backfill.ts:220,541`) — the
+  plan now refuses a name carried by >1 entity rather than picking one.
+- `sameNameEntityIds` field: present on `ResolvedEntity` (`entity-resolve.ts:88`), set only when
+  `matches.length > 1` (line 147, `.find` → `.filter` confirmed), threaded onto the import response
+  (`routes/import.ts:426-427`) and declared on the client (`api/client.ts:384`).
+- `entityName`-as-stored: all three `resolveImportEntity` return paths (`bound-existing`,
+  `matched-by-name`, `minted`) now return `entityName: <record>.name`, not the caller's string.
+  `ImportDialog.tsx:416` — `entityName: result.data.entityName ?? confirmedName` — prefers the
+  server's name, falls back to typed only when the server resolved none. Matches the memo's claim
+  exactly.
+- Tiebreak: `queries.ts:370`, `getAllEntities()` now `ORDER BY e.created_at ASC, e.id ASC`, with a
+  comment correctly describing it as deterministic-not-correct (a same-millisecond tie falls to a
+  random UUID).
+- `fixture-provenance.test.ts:180` pins `turnsEmitted: 66` against the committed 1,001-event
+  capture (`exports/sessions/theseus-2026-03-22.jsonl`) — matches the merge memo's headline number
+  exactly (was 75, 9 fabricated).
+- `grep -rn MUTATION packages/*/src` → 0 hits, confirming Daedalus's mutation-testing reverts left
+  no marker behind.
+
+**Suite, re-run myself:** `npm run typecheck` clean (shared/server/client). Server
+**1776/1776 passed, 1 skipped** (111 files) — matches exactly. Client **311/311 passed, 13
+skipped** (37 files) — matches exactly. `git status` clean throughout, no code changes needed.
+
+**Probes re-run, unmodified — one environmental finding along the way:**
+`probe-round205-...` first attempt hit `SqliteError: database disk image is malformed` /
+`SQLITE_CORRUPT` inside `planEntityBackfill` — not the failure Daedalus described. Traced it: my
+own 09:02-fire run of this same probe had left a 4.2 MB uncommitted `f-reach.db-wal` sidecar in
+`.testdata/r205-probe/`, and arms D/E/F build their working copies with a bare
+`fs.copyFileSync(CORPUS, X)` — unlike arm A's `buildCorpus`, which unlinks `-wal`/`-shm` first,
+D/E/F never do, so a stale WAL from a prior run replays against the freshly-copied file and
+corrupts it. This is a probe-script hygiene gap, not a product defect — worth Theseus knowing
+before he "retires or re-aims" this probe per Daedalus's §5, since the next person to run it cold
+will hit the same false corruption if a previous run left sidecars behind. **After `rm -rf
+.testdata/r205-probe` and a clean re-run, it reproduces Daedalus's described outcome exactly**: A1/A2/A4/A5/B1/B3
+fail as expected (Fix B skips the group, Fix A means nothing is written), then it **crashes at
+line 276** on `recs[0]` being `undefined` — the apply no longer writes an undo record for a refused
+group, exactly as reported. Not fixing or re-aiming this probe myself; it's Theseus's per Daedalus's
+memo. `probe-round207-...` → **30 checks · 1 failed · 3 open** — D1 fails (confirm step still sends
+a name not an id — item 1, unbuilt, matches "picker is server-complete, client work remains"), D5/E3/G5
+open as before. No regressions from Round 208 visible in this probe (it doesn't yet exercise
+`sameNameEntityIds`, since it predates that field — not a gap in Round 208, just an unmodified probe
+testing what it was written to test).
+
+**ROADMAP.md checked, found stale:** line 277 (Agent-continuity bullet) stops at Round 205
+("found a live, unresolved defect, not yet answered"). No mention of Round 206 (refusal + apply
+binds the plan's id), Round 207 (import-path findings), Round 208 (`sameNameEntityIds` +
+entityName-as-stored), or the Cowork merge (`d2233464`) landing on `main`. **Flagged, not fixed —
+not this seat's doc to own** (Calliope's, per established pattern).
+
+**Status: available.** No product-code defects found this fire; one probe-hygiene gap flagged
+above (informational, addressed to whoever next drives `probe-round205`). Nothing in the new mail
+requires an Argus reply — all cc-only, no open ask directed at this seat.
