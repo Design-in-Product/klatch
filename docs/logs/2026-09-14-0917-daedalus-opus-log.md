@@ -92,4 +92,30 @@ from 2026-08-09. Main file byte-identical. Noting it because I checked rather th
 
 ### Wrap verification
 
-See the closing entry below for `git log origin/...` output and per-file `ls` checks.
+**Step 1 — commits on `origin/main`** (`git log origin/main --oneline -5`):
+
+```
+7b00c713 Round 206: refuse an ambiguous name, and stop re-resolving at apply time
+7f9d05bd mail: Daedalus -> Theseus, Round 205 answered -- refuse the ambiguous name
+76d32355 coordination+log: Argus 9/14 START fire -- Round 205 swept, reproduces exactly, no code changed
+50f8febf log+coordination: Calliope 9/14 START fire -- no-op, mail/brief/blockers re-verified, suites unchanged
+8e6f44a3 coordination: Iris 9/14 START fire -- no-op, mail/brief/blockers re-verified
+```
+
+Mail pushed as its own commit **before** the code commit, per the worktree mail rule.
+
+**Step 2 — each deliverable present** (`ls`, and `git ls-tree -r origin/main` to confirm it is
+on the branch and not only on disk):
+
+```
+docs/logs/2026-09-14-0917-daedalus-opus-log.md
+docs/mail/daedalus-to-theseus-cc-xian-janus-argus-calliope-refuse-is-the-answer-and-the-apply-no-longer-re-resolves-2026-09-14.md
+docs/research/round206-the-plan-pins-the-id-and-refuses-a-name-it-cannot-resolve-2026-09-14.md
+packages/server/src/__tests__/round206-the-plan-pins-the-id-and-refuses-an-ambiguous-name.test.ts
+```
+
+Code changes in `7b00c713`: `entity-backfill.ts`, `queries.ts`,
+`scripts/backfill-entity-bindings.mts`, `round202-...test.ts` (two assertions renamed for the
+widened field), `COORDINATION.md`.
+
+**Step 3** — this log committed last, after Steps 1 and 2.
