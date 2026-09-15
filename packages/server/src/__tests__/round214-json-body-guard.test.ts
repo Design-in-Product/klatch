@@ -26,13 +26,19 @@
  * A global handler would also have to sniff for `SyntaxError`, and `SyntaxError`
  * is not unique to request parsing — routes `JSON.parse` *stored* data too, where
  * a corrupt row is a genuine server fault and "your JSON was malformed" is a lie.
- * So two control assertions matter as much as the 400s: a genuine internal error
- * still returns 500, and a corrupt stored row still gets its own answer. A guard
- * that turned those into 400s would pass every test above and be wrong.
+ * So the control assertions matter as much as the 400s: a guard that turned those
+ * into 400s would pass every malformed-body test here and still be wrong.
  *
- * The last test is structural: it asserts no route reads a body with a bare
- * `c.req.json()`. Non-circular — it reads the route sources, so a 16th site
- * added tomorrow without the guard turns it red.
+ * Be precise about what each control covers, because a mutation showed the
+ * obvious reading was too generous. The internal-error test mounts its own bare
+ * app, so it pins **the helper**, not the assembled app — adding `onError` to
+ * `createTestApp` left all 14 original checks green. The app-level property is
+ * pinned separately and structurally.
+ *
+ * The last three tests are structural: no route reads a body with a bare
+ * `c.req.json()`, the guard is wired at all 15 sites, and no blanket `onError` is
+ * registered. Non-circular — they read the sources, so a 16th site added
+ * tomorrow without the guard turns one red.
  */
 
 import './setup.js';
@@ -174,7 +180,13 @@ describe('Round 214 — malformed JSON bodies refuse with a sentence', () => {
 
   // ── The two controls that a SyntaxError-sniffing global handler would fail ──
 
-  it('a genuine internal error is still a 500, not flattened into a 400', async () => {
+  it('the helper does not swallow a genuine internal error into a 400', async () => {
+    // Scoped claim, and the scope is the point: this mounts its own bare app, so
+    // it pins the *helper's* behaviour — that it catches only the body read and
+    // lets everything after it through. It does NOT prove the assembled app has
+    // no blanket error handler; a mutation adding `onError` to createTestApp left
+    // this test green, which is how the gap was found. The app-level property is
+    // pinned structurally in the last test instead.
     const sub = new Hono();
     sub.post('/boom', async (c) => {
       await readJsonBody<{ a?: number }>(c);
@@ -239,5 +251,26 @@ describe('Round 214 — malformed JSON bodies refuse with a sentence', () => {
     }
 
     expect(callSites).toBe(15);
+  });
+
+  it('no blanket onError is registered that could flatten 500s into 4xx', () => {
+    // The real risk this guards is a future agent "fixing" 500s globally by
+    // adding `app.onError`, which would re-break the distinction this round was
+    // about: a malformed *request* is the client's fault (400), a genuine
+    // internal fault is the server's (500), and a corrupt *stored* row is the
+    // latter even though its symptom is also a SyntaxError.
+    //
+    // This exists because a mutation proved the test above could not see it: an
+    // onError added to createTestApp left all 14 checks green.
+    //
+    // If you are adding an onError deliberately, that may well be right — but
+    // make it narrow, and update this test knowingly rather than deleting it.
+    const srcDir = path.join(__dirname, '..');
+    const guarded = [path.join(srcDir, 'index.ts'), path.join(srcDir, '__tests__', 'app.ts')];
+
+    for (const file of guarded) {
+      const src = fs.readFileSync(file, 'utf8');
+      expect(src, `${path.basename(file)} registers an onError`).not.toMatch(/\.onError\s*\(/);
+    }
   });
 });
