@@ -240,6 +240,55 @@ export async function removeEntityFromChannel(channelId: string, entityId: strin
   return res.json();
 }
 
+export interface ReassignChannelEntityResponse {
+  channelId: string;
+  fromEntityId: string;
+  toEntityId: string;
+  /** `messages.entity_id` rows moved with the binding. */
+  messagesReassigned: number;
+  /**
+   * The vacated entity now holds nothing anywhere — the caller may offer to
+   * delete it (`deleteEntity`). Never true for the default entity. This route
+   * deliberately does not delete it for you.
+   */
+  fromEntityOrphaned: boolean;
+  /** The channel's roster after the move, in roster order. */
+  entities: Entity[];
+}
+
+/**
+ * Rebind a channel from one entity to another in a single transaction.
+ *
+ * **Use this, not `removeEntityFromChannel` + `assignEntityToChannel`.** That
+ * pair moves only the `channel_entities` row and leaves every message's
+ * `entity_id` pointing at the old entity, silently — the gap Iris named on
+ * 2026-09-14 when declining to build the one-click reassign against the
+ * primitives above. This is what the import confirm step's "actually, bind it
+ * to this one instead" should call.
+ *
+ * Refuses rather than guesses: 404 if the channel, the target, or the *current*
+ * binding isn't there (a stale read), 409 if the target is already on the
+ * roster (that would be a seat merge), 400 if from === to.
+ */
+export async function reassignChannelEntity(
+  channelId: string,
+  fromEntityId: string,
+  toEntityId: string
+): Promise<ReassignChannelEntityResponse> {
+  const res = await fetch(`${BASE}/channels/${channelId}/entities/${fromEntityId}`, {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ toEntityId }),
+  });
+  if (!res.ok) {
+    // Surface the server's own sentence — each refusal here means something
+    // different to the operator, and `statusText` flattens all five to "Not Found".
+    const detail = await res.json().catch(() => null);
+    throw new Error(detail?.error || `Failed to reassign entity: ${res.statusText}`);
+  }
+  return res.json();
+}
+
 // ── Message API ──────────────────────────────────────────────
 
 export interface AssistantInfo {
