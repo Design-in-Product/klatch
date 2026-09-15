@@ -353,10 +353,16 @@ try {
     // shared identifier, imported, not a re-introduced literal. Goes red on regression
     // instead of throwing at import — the whole point of this round's fix.
     const sidebar = fs.readFileSync(path.join(REPO, 'packages/client/src/components/ChannelSidebar.tsx'), 'utf8');
+    const usesShared = /newPrompt\.trim\(\)\s*\|\|\s*DEFAULT_CHANNEL_PREAMBLE/.test(sidebar);
+    const importsShared = /import\s*\{[^}]*\bDEFAULT_CHANNEL_PREAMBLE\b[^}]*\}\s*from\s*'@klatch\/shared'/.test(sidebar);
+    // The detail reports what was *found*, not what was expected. A failure message that
+    // restates the assertion tells the next reader nothing they didn't get from the name.
+    const fallbackLine = sidebar.match(/newPrompt\.trim\(\)\s*\|\|[^,\n]*/)?.[0]?.trim() ?? '(no `newPrompt.trim() ||` expression found at all)';
     check('M', 'the client fallback is the shared constant, not a literal of its own',
-      /newPrompt\.trim\(\)\s*\|\|\s*DEFAULT_CHANNEL_PREAMBLE/.test(sidebar)
-        && /import\s*\{[^}]*\bDEFAULT_CHANNEL_PREAMBLE\b[^}]*\}\s*from\s*'@klatch\/shared'/.test(sidebar),
-      'ChannelSidebar.tsx imports DEFAULT_CHANNEL_PREAMBLE from @klatch/shared and uses it as the blank-field fallback');
+      usesShared && importsShared,
+      usesShared && importsShared
+        ? 'ChannelSidebar.tsx imports DEFAULT_CHANNEL_PREAMBLE from @klatch/shared and uses it as the blank-field fallback'
+        : `fallback reads \`${fallbackLine}\` · imports the shared constant=${importsShared} — a literal here drifts from the constant the layer-4 predicate compares against`);
   }
 
   // ── Arm G — the fix reaches channels that already existed ─────────────────────
