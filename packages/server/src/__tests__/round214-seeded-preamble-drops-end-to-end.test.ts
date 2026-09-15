@@ -11,11 +11,18 @@
  * > reasoned from `isDefaultChannelPreamble`, which I read this session, not
  * > measured end to end.
  *
- * This measures that chain. The four sites now source `DEFAULT_CHANNEL_PREAMBLE`
- * (`db/index.ts` ×3, `routes/export.ts` ×1), so the strings cannot drift — which
- * makes a string-equality test tautological and this test the one that carries
- * weight. It runs the real schema seed, reads the row the seed wrote, and asserts
- * `buildSystemPrompt` does not open with the boilerplate.
+ * This measures the *assembly* half of that chain: it reads the seeded channel
+ * purpose out of the database and asserts `buildSystemPrompt` does not open with
+ * the boilerplate. The four sites now source `DEFAULT_CHANNEL_PREAMBLE`
+ * (`db/index.ts` ×3, `routes/export.ts` ×1).
+ *
+ * **Scope correction, found by mutation.** An earlier version of this docstring
+ * claimed it ran the real schema seed. It does not: `vitest.config.ts` registers
+ * `setup.ts` as a global `setupFiles` entry, and that file mocks `db/index.js`
+ * and declares its own schema and seed rows. The row read below is `setup.ts`'s.
+ * Pointing the `db/index.ts` seed at a different string left this file fully
+ * green, which is how the overclaim was caught. The production seed is executed
+ * in `round214-real-seed-path.test.ts` instead, via `vi.importActual`.
  *
  * Why this is the defect worth a test rather than the literals being tidy: layer
  * 4 drops the channel's stored purpose *only* when `isDefaultChannelPreamble`
@@ -51,8 +58,9 @@ vi.mock('../claude/client.js', async (importOriginal) => {
 });
 
 describe('Round 214 — the seeded preamble drops, measured end to end', () => {
-  it('the seed writes a purpose the predicate recognises', () => {
-    // Reads the row the real schema seed wrote, not the constant.
+  it('the fixture seeds a purpose the predicate recognises', () => {
+    // Reads the row setup.ts's seed wrote, not the constant. See the scope
+    // correction above: this is the test fixture's seed, not db/index.ts's.
     const row = getDb()
       .prepare("SELECT system_prompt FROM channels WHERE id = 'default'")
       .get() as { system_prompt: string } | undefined;

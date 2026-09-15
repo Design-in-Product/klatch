@@ -1,6 +1,6 @@
 import Database from 'better-sqlite3';
 import { vi, beforeEach, afterAll } from 'vitest';
-import { DEFAULT_MODEL, DEFAULT_ENTITY_ID, ENTITY_COLORS, MODEL_ALIASES, DEFAULT_INTERACTION_MODE } from '@klatch/shared';
+import { DEFAULT_MODEL, DEFAULT_ENTITY_ID, ENTITY_COLORS, MODEL_ALIASES, DEFAULT_INTERACTION_MODE, DEFAULT_CHANNEL_PREAMBLE } from '@klatch/shared';
 
 let testDb: Database.Database;
 
@@ -109,11 +109,16 @@ function createFreshDb(): Database.Database {
     CREATE INDEX IF NOT EXISTS idx_file_refs_scope ON file_refs(scope, scope_id);
     CREATE INDEX IF NOT EXISTS idx_file_refs_file ON file_refs(file_id);
 
+    -- The shared constant, not a copy of its text. This fixture is a second
+    -- definition of the schema (the first is db/index.ts), and these two seeds
+    -- are what the whole suite reads. Hardcoding the string here lets the test
+    -- fixture drift from production silently: the suite would go on asserting
+    -- against a stale preamble that isDefaultChannelPreamble no longer matches.
     INSERT OR IGNORE INTO channels (id, name, system_prompt)
-    VALUES ('default', 'general', 'You are a helpful assistant.');
+    VALUES ('default', 'general', '${DEFAULT_CHANNEL_PREAMBLE}');
 
     INSERT OR IGNORE INTO entities (id, name, model, system_prompt, color)
-    VALUES ('${DEFAULT_ENTITY_ID}', 'Claude', '${DEFAULT_MODEL}', 'You are a helpful assistant.', '${ENTITY_COLORS[0]}');
+    VALUES ('${DEFAULT_ENTITY_ID}', 'Claude', '${DEFAULT_MODEL}', '${DEFAULT_CHANNEL_PREAMBLE}', '${ENTITY_COLORS[0]}');
 
     INSERT OR IGNORE INTO channel_entities (channel_id, entity_id)
     VALUES ('default', '${DEFAULT_ENTITY_ID}');
