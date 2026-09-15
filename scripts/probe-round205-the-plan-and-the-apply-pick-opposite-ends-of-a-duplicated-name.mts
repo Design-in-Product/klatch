@@ -29,6 +29,23 @@
  * *this* corpus, today, no reusing basis fires, so nothing here is a live
  * mis-write against it. Arm Z asserts nothing was written outside `.testdata/`.
  *
+ * ── Round 211 (2026-09-14 STOP): arms A–C retired and re-aimed ───────────────
+ *
+ * The defect above was FIXED by Round 206 — the row is refused now — so arms
+ * A–C spent two rounds failing correctly, which is the same as not being read.
+ * Retired on Daedalus's Round 210 ruling, **re-aimed rather than deleted**,
+ * because deleting them removes the only thing in the repo that runs the CLI as
+ * a process. They now pin the refusal end to end: the plan's `ambiguous-name`
+ * skip carrying both ids (A), the sheet an operator actually reads (B), and the
+ * no-undo-record-on-refusal plus a resolvable control that makes that zero mean
+ * something (C). Full history and the three mutation controls:
+ * `docs/research/round211-*`.
+ *
+ * What the re-aim is worth, measured rather than asserted: deleting the
+ * `ambiguousNameNote` print from `backfill-entity-bindings.mts:1207` — the
+ * operator's entire refusal explanation — leaves **all 1785 tests in 112 files
+ * green**, and fails exactly one check anywhere in this repo: B2 below.
+ *
  * Run: npx tsx scripts/probe-round205-the-plan-and-the-apply-pick-opposite-ends-of-a-duplicated-name.mts
  */
 
@@ -60,6 +77,10 @@ if (process.env.R205_PLAN_DB) {
     .map((r) => ({
       channelId: r.channelId,
       action: r.action,
+      // Added Round 211. Post-206 the interesting rows are *skipped* ones, and
+      // `action: 'skipped'` alone does not say which refusal fired — arm A now
+      // distinguishes `ambiguous-name` from `no-guess`/`basis-excluded`.
+      skipReason: r.skipReason ?? null,
       guessName: r.guessName,
       targetEntityId: r.targetEntityId ?? null,
       // Round 206 replaced the singular `sameNameEntityId` with a list; this
@@ -157,6 +178,7 @@ const planOf = (dbFile: string) => {
     rows: {
       channelId: string;
       action: string;
+      skipReason: string | null;
       guessName: string;
       targetEntityId: string | null;
       sameNameEntityIds: string[] | null;
@@ -165,8 +187,16 @@ const planOf = (dbFile: string) => {
   };
 };
 
-/** A minimal corpus: one channel with an identity-claim opener, N seeded agents. */
-function buildCorpus(file: string, entities: { id: string; name: string; created: string }[]) {
+/**
+ * A minimal corpus: one channel with an identity-claim opener, N seeded agents.
+ * The opener is a parameter as of Round 211 — arm C's control needs a corpus
+ * whose guess *resolves*, which means naming a different agent in the opener.
+ */
+function buildCorpus(
+  file: string,
+  entities: { id: string; name: string; created: string }[],
+  opener = 'You are Daedalus, and we are picking up where we left off.'
+) {
   for (const s of ['', '-wal', '-shm']) if (fs.existsSync(file + s)) fs.unlinkSync(file + s);
   const db = new Database(file);
   db.exec(`
@@ -209,14 +239,7 @@ function buildCorpus(file: string, entities: { id: string; name: string; created
     `INSERT INTO messages (id, channel_id, role, content, status, created_at, entity_id)
      VALUES (?,?,?,?,'complete',?,?)`
   );
-  m.run(
-    'm-u',
-    'ch-1',
-    'user',
-    'You are Daedalus, and we are picking up where we left off.',
-    '2026-03-14T00:00:01.000Z',
-    null
-  );
+  m.run('m-u', 'ch-1', 'user', opener, '2026-03-14T00:00:01.000Z', null);
   for (let i = 0; i < 3; i++)
     m.run(`m-a${i}`, 'ch-1', 'assistant', 'ok', '2026-03-14T00:00:02.000Z', 'default-entity');
   db.close();
@@ -230,7 +253,35 @@ console.log('Round 205 — the plan and the apply pick opposite ends of a duplic
 console.log('='.repeat(78));
 
 // ---------------------------------------------------------------------------
-console.log('\nArm A — two agents, one name: the plan names one and the apply writes the other');
+// ARMS A–C, RETIRED AND RE-AIMED — Round 211 (Theseus, 2026-09-14 STOP fire).
+//
+// As written 2026-09-13 these three arms pinned the *pre-206* behaviour: a
+// duplicated name resolved to some entity, the plan and the apply picked
+// opposite ends of it, and the sheet could not show which. Round 206 removed
+// that behaviour on purpose — the row is refused instead — so all eight failing
+// checks were failing *correctly*, which trains a reader to skim a red line.
+// Round 209 §4 recommended retirement and left the call to Daedalus because it
+// is a call about his deliberate change; Round 210 ruled yes, on the condition
+// that A5, B2 and C1 got suite coverage first, and built it
+// (`round210-what-retiring-the-round205-probe-arms-would-have-thrown-away.test.ts`,
+// 8 tests). Verified present and green from this seat before touching anything.
+//
+// **Retired is not deleted.** Straight deletion would also have removed the one
+// thing these arms uniquely do: drive the real CLI as a process. Round 210 says
+// so itself — C1's counterpart is pinned at `plan.summary.apply === 0`, the
+// *condition*, not the CLI branch it drives, and B2's note is now asserted at
+// `ambiguousNameNote()`, not at the sheet the operator actually reads. Nothing
+// in the suite spawns the script. So the arms below keep their ids and their
+// end-to-end shape and are re-aimed at what the tool does now.
+//
+// A6 is gone rather than re-aimed. Daedalus's Round 210 §3 caught it passing
+// vacuously — `undefined !== 'default-entity'` — a third instance of Round 209's
+// trap that my own sweep missed because I swept for `?? ''` and this one arrived
+// through `undefined`. Its claim ("the approved agent is not the agent that got
+// the channel") has no referent once the row is refused. The new A6 asserts the
+// positive that replaced it: there is no approved agent at all.
+// ---------------------------------------------------------------------------
+console.log('\nArm A — two agents, one name: the row is refused, end to end');
 // Case-variant on purpose — this is Daedalus's Round 204 §2 pair, in miniature.
 const A = path.join(WORK, 'a-two-agents-one-name.db');
 buildCorpus(A, [
@@ -239,14 +290,39 @@ buildCorpus(A, [
 ]);
 
 const planA = planOf(A);
-const rowA = planA.rows.find((r) => r.channelId === 'ch-1')!;
-check('A1', rowA?.action === 'matched-by-name', 'the plan reuses rather than mints', rowA?.action);
+const rowA = planA.rows.find((r) => r.channelId === 'ch-1');
+check(
+  'A1',
+  rowA?.action === 'skipped' && rowA?.skipReason === 'ambiguous-name',
+  'the plan refuses rather than picking one of the two',
+  `${rowA?.action}${rowA?.skipReason ? ` (${rowA.skipReason})` : ''}`
+);
 check(
   'A2',
-  rowA?.targetEntityId === NEW,
-  'and it names the LAST row of the unordered scan',
-  `${rowA?.targetEntityId?.slice(0, 8)} (NEW)`
+  (rowA?.sameNameEntityIds?.length ?? 0) === 2 &&
+    !!rowA?.sameNameEntityIds?.includes(OLD) &&
+    !!rowA?.sameNameEntityIds?.includes(NEW),
+  'and it carries BOTH colliding ids, not one of them',
+  (rowA?.sameNameEntityIds ?? []).map((i) => i.slice(0, 8)).join(', ') || '(none)'
 );
+// The subject, established before the apply rather than assumed after it. "The
+// stamps did not move" is worth nothing if there were no stamps to move, and
+// "the binding is still the default" is worth nothing if it never was — both are
+// the Round 209 trap one level up from a check.
+const dbPre = new Database(A, { readonly: true });
+const preBound = (
+  dbPre.prepare(`SELECT entity_id AS e FROM channel_entities WHERE channel_id='ch-1'`).all() as {
+    e: string;
+  }[]
+).map((r) => r.e);
+const preStamped = (
+  dbPre
+    .prepare(
+      `SELECT entity_id AS e FROM messages WHERE channel_id='ch-1' AND role='assistant' ORDER BY id`
+    )
+    .all() as { e: string }[]
+).map((r) => r.e);
+dbPre.close();
 
 const applyA = runCli([A, '--bases=identity-claim', '--apply']);
 check('A3', applyA.code === 0, 'the apply exits 0', `code ${applyA.code}`);
@@ -259,81 +335,138 @@ const boundA = (
 const stampedA = (
   dbA
     .prepare(
-      `SELECT DISTINCT entity_id AS e FROM messages WHERE channel_id='ch-1' AND role='assistant'`
+      `SELECT entity_id AS e FROM messages WHERE channel_id='ch-1' AND role='assistant' ORDER BY id`
     )
     .all() as { e: string }[]
 ).map((r) => r.e);
 dbA.close();
-check('A4', boundA.length === 1 && boundA[0] === OLD, 'the binding written is the FIRST row by created_at', `${boundA[0]?.slice(0, 8)} (OLD)`);
-check('A5', stampedA.length === 1 && stampedA[0] === OLD, 'and every message stamp follows the write, not the plan', `${stampedA[0]?.slice(0, 8)}`);
+check(
+  'A4',
+  preBound.join() === 'default-entity' && boundA.join() === 'default-entity',
+  'the binding was the default before, and a refused row leaves it there',
+  `${preBound.join() || '(none)'} → ${boundA.join() || '(none)'}`
+);
+check(
+  'A5',
+  preStamped.length === 3 &&
+    preStamped.every((e) => e === 'default-entity') &&
+    stampedA.join() === preStamped.join(),
+  'there were three default-stamped rows to move, and none of them moved',
+  // Computed, not asserted. Under the Round 211 mutation control this line read
+  // "3 rows, unchanged" on a FAILING check, because the detail was built from
+  // the before-state alone — a detail string that cannot contradict its check is
+  // the Round 209 trap wearing a third hat, and the one place it still bites is
+  // the line a reader trusts when the check goes red.
+  `${preStamped.length} before [${preStamped.map((e) => e.slice(0, 8)).join(' ')}] → [${stampedA
+    .map((e) => e.slice(0, 8))
+    .join(' ')}]`
+);
 check(
   'A6',
-  rowA?.targetEntityId !== boundA[0],
-  'so the agent the operator approved is not the agent that got the channel',
-  `plan ${rowA?.targetEntityId?.slice(0, 8)} vs db ${boundA[0]?.slice(0, 8)}`
+  rowA !== undefined && rowA.targetEntityId === null,
+  'and the plan names no target at all — there is no approved agent to diverge from',
+  `targetEntityId=${rowA?.targetEntityId ?? 'null'}`
 );
 
 // ---------------------------------------------------------------------------
-console.log('\nArm B — the sheet cannot show the operator which one it means');
-const dryB = runCli([A.replace('.db', '-dry.db'), '--bases=identity-claim']);
+console.log('\nArm B — the sheet, read as an operator reads it: through the CLI');
+// Why this arm still exists after Round 210 covered `ambiguousNameNote()`: that
+// test asserts the note's *text*, from the function. Nothing in the suite asserts
+// the CLI calls it, on the right row, and prints it. Between the function and the
+// operator sit `backfill-entity-bindings.mts:1206-1207` and a spawned process,
+// and that gap is exactly where Round 209's E4 hid for two rounds.
 const B = A.replace('.db', '-dry.db');
 buildCorpus(B, [
   { id: OLD, name: 'Daedalus', created: '2024-01-01T00:00:00.000Z' },
   { id: NEW, name: 'daedalus', created: '2026-01-01T00:00:00.000Z' },
 ]);
 const sheetB = runCli([B, '--bases=identity-claim']).out;
-const matchLine = sheetB.split('\n').find((l) => /MATCHED-BY-NAME/.test(l)) ?? '';
-check('B1', matchLine !== '', 'the sheet shows the row as a reuse', matchLine.trim().slice(0, 60));
+const skipLine = sheetB.split('\n').find((l) => /SKIP \(ambiguous-name\)/.test(l)) ?? '';
+check('B1', skipLine !== '', 'the sheet shows the row as a refusal', skipLine.trim().slice(0, 60));
+// Guarded in its own expression, not by its neighbour. Round 209 found B2 green
+// because `''.includes(…)` is false and this check read a negative; it now reads
+// a positive, but the guard stays — a positive over an absent subject fails
+// honestly, and the next person to invert this line inherits the guard.
+const noteB = sheetB.split('\n').find((l) => /agents are named/.test(l)) ?? '';
 check(
   'B2',
-  // `matchLine !== ''` is the guard, not decoration. Without it this check
-  // reads `!''.includes(…) && !''.includes(…)` → true, so it went GREEN once
-  // Round 206 stopped emitting a MATCHED-BY-NAME row at all — reporting "the
-  // divergence is not visible from the sheet" when there is no longer a
-  // divergence to see. Second instance of the vacuous-subject trap in this
-  // file; see arm E. A check whose subject can default to empty has to say so.
-  matchLine !== '' &&
-    !matchLine.includes(OLD.slice(0, 8)) &&
-    !matchLine.includes(NEW.slice(0, 8)),
-  'and it prints the name, never an id — the divergence is not visible from the sheet'
+  noteB !== '' &&
+    noteB.includes(OLD.slice(0, 8)) &&
+    noteB.includes(NEW.slice(0, 8)) &&
+    /\b2 agents are named "Daedalus"/.test(noteB),
+  'and the refusal note the CLI prints names BOTH ids and counts them',
+  noteB.trim().slice(0, 72) || '(no note)'
 );
 check(
   'B3',
-  /reused agents \(1\): Daedalus/.test(sheetB),
-  'the summary counts one reused agent where two carry the name'
+  /reused agents \(0\): \(none\)/.test(sheetB) && /new agents \(0\)/.test(sheetB),
+  'the summary claims neither a reuse nor a mint',
+  // Same correction as A5's: read the sheet's own two lines back rather than
+  // restating the expectation.
+  [/ {2}new agents \(.*/, / {2}reused agents \(.*/]
+    .map((re) => sheetB.split('\n').find((l) => re.test(l))?.trim() ?? '(absent)')
+    .join(' · ')
 );
 check(
   'B4',
   !/collision/i.test(sheetB),
   'and no collision block fires — that check only covers the mint case'
 );
-void dryB;
 
 // ---------------------------------------------------------------------------
-console.log('\nArm C — the write is wrong-target, not unrecoverable');
+console.log('\nArm C — an all-refused run writes no undo record, and the control that proves it');
 const recs = fs.readdirSync(WORK).filter((f) => f.startsWith(path.basename(A) + '.backfill'));
-check('C1', recs.length === 1, 'the apply wrote one undo record', String(recs.length));
+check(
+  'C1',
+  recs.length === 0 && /Nothing to apply\. Snapshot discarded\./.test(applyA.out),
+  'the refused apply wrote no undo record, and said so before exiting',
+  `${recs.length} record(s)`
+);
 
-// Round 209: when C1 fails there is no record to read, and reading it anyway
-// threw out of the whole probe at this line — so arms D/E/F never ran and the
-// corpus measurements were silently lost behind an arm-C regression. A probe
-// reports its findings; it does not abort on one. C2–C5 degrade to OPEN.
-if (recs.length !== 1) {
-  open_('C2', 'no undo record to inspect — the apply refused the group and wrote none');
-  open_('C3', 'undo not driveable without a record');
+// The control. Without it "no undo record" is equally consistent with a probe
+// that never produces one — a passing C1 over a CLI whose undo machinery is
+// broken outright. C2–C5 drive the whole write/undo path on a corpus whose guess
+// resolves, which is the coverage the old arm C had and the suite still lacks:
+// nothing in `packages/server` spawns this script.
+const CTRL = path.join(WORK, 'c-control-resolvable.db');
+buildCorpus(
+  CTRL,
+  [{ id: OLD, name: 'Sterling', created: '2024-01-01T00:00:00.000Z' }],
+  'You are Sterling, and we are picking up where we left off.'
+);
+const applyCtrl = runCli([CTRL, '--bases=identity-claim', '--apply']);
+const ctrlRecs = fs
+  .readdirSync(WORK)
+  .filter((f) => f.startsWith(path.basename(CTRL) + '.backfill'));
+check(
+  'C2',
+  applyCtrl.code === 0 && ctrlRecs.length === 1,
+  'an apply that DOES resolve writes exactly one undo record — so C1 is a fact about the refusal, not about this probe',
+  `code ${applyCtrl.code}, ${ctrlRecs.length} record(s)`
+);
+
+if (ctrlRecs.length !== 1) {
+  open_('C3', 'no undo record on the control — undo not driveable');
   open_('C4', 'binding-restored unverifiable without a record');
   open_('C5', 'stamps-restored unverifiable without a record');
 } else {
-  const rec = JSON.parse(fs.readFileSync(path.join(WORK, recs[0]), 'utf8'));
+  const recPath = path.join(WORK, ctrlRecs[0]);
+  const rec = JSON.parse(fs.readFileSync(recPath, 'utf8'));
+  const dbW = new Database(CTRL, { readonly: true });
+  const wroteBound = (
+    dbW.prepare(`SELECT entity_id AS e FROM channel_entities WHERE channel_id='ch-1'`).all() as {
+      e: string;
+    }[]
+  ).map((r) => r.e);
+  dbW.close();
   check(
-    'C2',
-    rec.channels?.[0]?.toEntityId === OLD,
-    'the record holds the id that was actually written, not the plan’s',
-    rec.channels?.[0]?.toEntityId?.slice(0, 8)
+    'C3',
+    wroteBound.join() === OLD && rec.channels?.[0]?.toEntityId === OLD,
+    'the write landed on the resolved agent and the record names the id that was actually written',
+    `db ${wroteBound.join().slice(0, 8)} / record ${rec.channels?.[0]?.toEntityId?.slice(0, 8) ?? '(none)'}`
   );
-  const undoC = runCli([A, `--undo=${path.join(WORK, recs[0])}`]);
-  check('C3', undoC.code === 0, 'the undo exits 0', `code ${undoC.code}`);
-  const dbC = new Database(A, { readonly: true });
+  const undoC = runCli([CTRL, `--undo=${recPath}`]);
+  const dbC = new Database(CTRL, { readonly: true });
   const backC = (
     dbC.prepare(`SELECT entity_id AS e FROM channel_entities WHERE channel_id='ch-1'`).all() as {
       e: string;
@@ -347,8 +480,18 @@ if (recs.length !== 1) {
       .all() as { e: string }[]
   ).map((r) => r.e);
   dbC.close();
-  check('C4', backC.length === 1 && backC[0] === 'default-entity', 'the binding goes back', backC[0]);
-  check('C5', stampC.length === 1 && stampC[0] === 'default-entity', 'and so do the stamps');
+  check(
+    'C4',
+    undoC.code === 0 && backC.length === 1 && backC[0] === 'default-entity',
+    'the undo exits 0 and the binding goes back',
+    `code ${undoC.code}, ${backC.join() || '(none)'}`
+  );
+  check(
+    'C5',
+    stampC.length === 1 && stampC[0] === 'default-entity',
+    'and so do the stamps',
+    stampC.join() || '(none)'
+  );
 }
 
 // ---------------------------------------------------------------------------

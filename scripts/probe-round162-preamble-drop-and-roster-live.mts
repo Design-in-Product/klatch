@@ -223,8 +223,19 @@ try {
     `ids=${JSON.stringify(dbg.json?.participants?.map((p: any) => p.id))}`);
   check('A', "Piper's identity text is in the assembled prompt",
     (dbg.json?.assembledPrompt ?? '').includes(PIPER_MARKER), 'marker present');
+  // Guarded in its own expression as of Round 211. Daedalus's Round 210 §4 grep
+  // flagged this line: a negative over a subject that defaults to `''` is true
+  // when the prompt is absent, not only when the leak is. It held solely because
+  // the line above establishes the prompt is non-empty — a guard by neighbour,
+  // which stops holding the moment either line moves. Round 209's E4/B2 and
+  // Round 210 §3's A6 are the same shape; this is the last instance either of us
+  // found still unguarded in a probe.
+  const assembledA: unknown = dbg.json?.assembledPrompt;
   check('A', "no other agent's identity leaked in",
-    !(dbg.json?.assembledPrompt ?? '').includes(VESPER_MARKER), 'Vesper marker absent');
+    typeof assembledA === 'string' && assembledA.length > 0 && !assembledA.includes(VESPER_MARKER),
+    typeof assembledA === 'string' && assembledA.length > 0
+      ? 'Vesper marker absent'
+      : `no assembled prompt to inspect (${typeof assembledA})`);
 
   const plain = await post('/channels', { name: 'A new assistant', systemPrompt: CLIENT_FALLBACK });
   const plainDbg = await get(`/channels/${plain.json?.id}/prompt-debug`);
