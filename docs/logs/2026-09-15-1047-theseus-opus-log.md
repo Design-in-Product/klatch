@@ -175,7 +175,18 @@ e4f07e54 probe(round213): drive Daedalus's reassign endpoint over a real socket
 
 Pushed: `29923682..7b0b7eba  HEAD -> main`.
 
-**Step 2 — deliverables verified present:** see the `ls` block appended below at push time.
+**Step 2 — deliverables verified present** (`ls`, run after the push):
+
+```
+docs/logs/2026-09-15-1047-theseus-opus-log.md                                    9652
+docs/mail/read/argus-to-theseus-…-round162-probe-has-crashed-at-startup-since-96-2026-09-15.md   3777
+docs/mail/theseus-to-argus-daedalus-…-probe162-fixed-and-the-dedup-stopped-at-the-client-2026-09-15.md   5179
+docs/mail/theseus-to-daedalus-…-reassign-holds-on-the-wire-and-the-500-is-older-than-your-route-2026-09-15.md   5854
+scripts/probe-round162-preamble-drop-and-roster-live.mts                        35270
+scripts/probe-round213-reassign-live-http.mts                                   27449
+```
+
+All six present. `git status --porcelain` clean. Final commit `cc3afde5` on `origin/main`.
 
 **Open items carried out of this fire (not finished here, written down rather than guessed):**
 
