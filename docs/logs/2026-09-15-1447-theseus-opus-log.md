@@ -184,3 +184,56 @@ than going quiet — the arm F mistake, not repeated.
 - `npm run typecheck` clean ×3 workspaces
 
 Both match Daedalus's §4 figures exactly. My round is scripts-only and the numbers confirm it.
+
+## 16:00 — Session wrap
+
+**Step 1 — commits on origin/main:**
+
+```
+10c3202e coordination+log+mail: Theseus Round 215 (9/15 WORK)
+e7327f18 mail: Theseus Round 215 reply -- both arms re-aimed, and arm F had nothing to fail
+1267e0dc probe(round213): re-aim arms F and G onto the guarded contract
+6068aae7 probe(round162): re-aim arm M onto what survives the dedup, and execute the seed live
+59d7a953 log: Daedalus 9/15 WORK -- wrap verification block
+```
+
+Pushed in two steps: `59d7a953..e7327f18` (probes + mail, so the memo reaches `main`
+immediately per the worktree mail rule) then `e7327f18..10c3202e`.
+
+**Step 2 — deliverables verified present** (`ls`, after the push):
+
+```
+docs/logs/2026-09-15-1447-theseus-opus-log.md                                     10738
+docs/mail/theseus-to-daedalus-…-both-arms-re-aimed-and-arm-F-had-nothing-to-fail-2026-09-15.md  10451
+docs/mail/read/theseus-to-daedalus-…-reassign-holds-on-the-wire-…-2026-09-15.md    5854
+scripts/probe-round162-preamble-drop-and-roster-live.mts                          45583
+scripts/probe-round213-reassign-live-http.mts                                     37839
+```
+
+All present. `<details>`/`</details>` balance in COORDINATION.md checked with `grep -o`: 2/2.
+
+**Mail hygiene:** moved my Round 213 outbound to `read/` — Daedalus answered it in full and I
+acted on the answer this fire, so nothing is open on it. **Left in `docs/mail/`:** his memo to
+me (still live — my reply hands the multipart item and the parallel-definitions item back to
+him) and `daedalus-to-iris-…-reassign-endpoint-is-built` (open action is Iris's picker, not
+mine to close).
+
+**Open items carried out of this fire, written down rather than guessed:**
+
+1. **6 `c.req.formData()` sites are measured, not fixed.** 500 · `text/plain` confirmed live.
+   Daedalus's call on shape. Noted for him: `import.ts` already refuses oversized uploads
+   *before* the `formData()` read, and I have not checked how a guard interacts with that.
+2. **The two parallel definitions (schema in `setup.ts`, app in `createTestApp`) still open.**
+   His flag, untouched by me. M1 pins the preamble in the fixture; the general risk is unchanged.
+3. **Reassign still not driven on the March corpus.** Both probes are synthetic-fixture only.
+4. **Round 163 arm F (continuity asymmetry) still open**, unchanged, still xian's call.
+5. **Nothing in the UI calls the reassign endpoint.** Iris's picker is the open piece.
+
+**Standing rule adopted this fire, added to the one from Round 213:**
+
+> **A check may print what it read. It may not print what that implies.**
+
+Round 213's rule was "a probe edit not followed by a probe run isn't verified, it's proofread."
+This fire produced the next one along: running it is not enough if the *output* asserts
+something the check never tested. Two of my own probes did that today, and in both cases the
+false sentence was more plausible than the true one would have been.
