@@ -18,6 +18,7 @@ import { streamClaude, streamClaudeRoundtable, activeStreams, abortStream } from
 import type { StreamEvent, Entity, Message } from '@klatch/shared';
 import { resolveMentions } from '@klatch/shared';
 import { getDb } from '../db/index.js';
+import { readJsonBody } from './json-body.js';
 
 const app = new Hono();
 
@@ -70,7 +71,7 @@ app.get('/channels/:channelId/messages', (c) => {
 // Send a message — creates user msg + N assistant placeholders (one per entity), kicks off N streams
 app.post('/channels/:channelId/messages', async (c) => {
   const channelId = c.req.param('channelId');
-  const { content } = await c.req.json<{ content: string }>();
+  const { content } = await readJsonBody<{ content: string }>(c);
 
   // Input validation
   if (!content?.trim()) {

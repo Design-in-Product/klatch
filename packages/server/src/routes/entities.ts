@@ -16,6 +16,7 @@ import {
 import type { ModelId, EffortLevel } from '@klatch/shared';
 import { ENTITY_COLORS, DEFAULT_ENTITY_ID, DEFAULT_MODEL, DEFAULT_CHANNEL_PREAMBLE } from '@klatch/shared';
 import { isValidModel, effortLevelsForModel } from './models.js';
+import { readJsonBody } from './json-body.js';
 
 const VALID_EFFORT_LEVELS: EffortLevel[] = ['low', 'medium', 'high', 'xhigh', 'max'];
 
@@ -47,14 +48,14 @@ app.get('/entities/:id/klatches', (c) => {
 });
 
 app.post('/entities', async (c) => {
-  const { name, handle, model, effort, systemPrompt, color } = await c.req.json<{
+  const { name, handle, model, effort, systemPrompt, color } = await readJsonBody<{
     name: string;
     handle?: string;
     model?: ModelId;
     effort?: EffortLevel;
     systemPrompt?: string;
     color?: string;
-  }>();
+  }>(c);
 
   if (!name?.trim()) {
     return c.json({ error: 'Entity name is required' }, 400);
@@ -95,7 +96,7 @@ app.post('/entities', async (c) => {
 
 app.patch('/entities/:id', async (c) => {
   const id = c.req.param('id');
-  const body = await c.req.json<{
+  const body = await readJsonBody<{
     name?: string;
     handle?: string | null;
     model?: ModelId;
@@ -105,7 +106,7 @@ app.patch('/entities/:id', async (c) => {
     // redundant guard and invite the next tidy-up to remove it.
     systemPrompt?: string | null;
     color?: string;
-  }>();
+  }>(c);
 
   if (body.model && !(await isValidModel(body.model))) {
     return c.json({ error: `Invalid model: ${body.model}` }, 400);
@@ -198,7 +199,7 @@ app.get('/channels/:channelId/entities', (c) => {
 
 app.post('/channels/:channelId/entities', async (c) => {
   const channelId = c.req.param('channelId');
-  const { entityId } = await c.req.json<{ entityId: string }>();
+  const { entityId } = await readJsonBody<{ entityId: string }>(c);
 
   const channel = getChannel(channelId);
   if (!channel) {
@@ -255,7 +256,7 @@ app.delete('/channels/:channelId/entities/:entityId', (c) => {
 app.patch('/channels/:channelId/entities/:entityId', async (c) => {
   const channelId = c.req.param('channelId');
   const fromEntityId = c.req.param('entityId');
-  const { toEntityId } = await c.req.json<{ toEntityId: string }>();
+  const { toEntityId } = await readJsonBody<{ toEntityId: string }>(c);
 
   if (!toEntityId || typeof toEntityId !== 'string') {
     return c.json({ error: 'toEntityId is required' }, 400);

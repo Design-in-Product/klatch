@@ -1,5 +1,6 @@
 import { Hono } from 'hono';
 import { getAllProjects, getProject, createProject, updateProject, deleteProject } from '../db/queries.js';
+import { readJsonBody } from './json-body.js';
 
 const app = new Hono();
 
@@ -18,11 +19,11 @@ app.get('/:id', (c) => {
 
 /** POST /projects — create a new project */
 app.post('/', async (c) => {
-  const { name, instructions, memory } = await c.req.json<{
+  const { name, instructions, memory } = await readJsonBody<{
     name: string;
     instructions?: string;
     memory?: string;
-  }>();
+  }>(c);
 
   if (!name?.trim()) {
     return c.json({ error: 'Project name is required' }, 400);
@@ -41,11 +42,11 @@ app.post('/', async (c) => {
 /** PATCH /projects/:id — update a project */
 app.patch('/:id', async (c) => {
   const id = c.req.param('id');
-  const updates = await c.req.json<{
+  const updates = await readJsonBody<{
     name?: string;
     instructions?: string;
     memory?: string;
-  }>();
+  }>(c);
 
   const project = updateProject(id, updates);
   if (!project) return c.json({ error: 'Project not found' }, 404);

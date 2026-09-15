@@ -23,6 +23,7 @@ import { streamClaude, streamClaudeRoundtable } from '../claude/client.js';
 import { resolveMentions } from '@klatch/shared';
 import { getDb } from '../db/index.js';
 import { saveFile, validateFile, getFilePath, MAX_FILE_SIZE_BYTES } from '../files/storage.js';
+import { readJsonBody } from './json-body.js';
 
 const app = new Hono();
 
@@ -242,7 +243,11 @@ function guessMimeType(filename: string): string {
  * Idempotent — if already pinned, returns the existing ref.
  */
 app.post('/files/pin', async (c) => {
-  const data = await c.req.json();
+  const data = await readJsonBody<{
+    channelId?: string;
+    fileId?: string;
+    storageKey?: string;
+  }>(c);
   const { channelId, fileId: rawFileId, storageKey } = data;
 
   if (!channelId) {
@@ -313,7 +318,10 @@ app.post('/files/:id/promote', async (c) => {
     return c.json({ error: 'File not found' }, 404);
   }
 
-  const data = await c.req.json();
+  const data = await readJsonBody<{
+    targetScope?: 'channel' | 'project';
+    targetId?: string;
+  }>(c);
   const { targetScope, targetId } = data;
 
   if (!targetScope || !targetId) {

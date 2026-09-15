@@ -12,6 +12,7 @@ import { guessEntityName } from '../import/entity-guess.js';
 import { importSession, findChannelByOriginalSessionId, createChannelBySessionIdResolver, getImportConflictInfo, countChannelsByOriginalSessionId, findOrCreateProject, findOrCreateProjectWithMatch, findUniqueProjectByName } from '../db/queries.js';
 import { MODEL_ALIASES, AVAILABLE_MODELS } from '@klatch/shared';
 import type { ModelId } from '@klatch/shared';
+import { readJsonBody } from './json-body.js';
 
 // Max file size for imports (50 MB)
 const MAX_IMPORT_SIZE = 50 * 1024 * 1024;
@@ -197,7 +198,7 @@ app.post('/import/claude-code', async (c) => {
     });
   } else {
     // ── Path-based import (local sessions) ──
-    const { sessionPath, channelName, forceImport, entityName, entityId } = await c.req.json<{
+    const { sessionPath, channelName, forceImport, entityName, entityId } = await readJsonBody<{
       sessionPath: string;
       channelName?: string;
       forceImport?: boolean;
@@ -205,7 +206,7 @@ app.post('/import/claude-code', async (c) => {
       entityName?: string;
       /** Existing entity chosen explicitly; wins over entityName. */
       entityId?: string;
-    }>();
+    }>(c);
 
     if (!sessionPath) {
       return c.json({ error: 'sessionPath is required' }, 400);
@@ -500,7 +501,7 @@ app.post('/import/claude-ai/preview', async (c) => {
     const arrayBuffer = await file.arrayBuffer();
     zipBuffer = Buffer.from(arrayBuffer);
   } else {
-    const body = await c.req.json<{ zipPath: string }>();
+    const body = await readJsonBody<{ zipPath: string }>(c);
     const { zipPath } = body;
     if (!zipPath || !zipPath.endsWith('.zip')) {
       return c.json({ error: 'File must be a .zip file' }, 400);
@@ -632,7 +633,7 @@ app.post('/import/claude-ai', async (c) => {
 
     return processImport(c, Buffer.from(arrayBuffer), selectedConversationIds, forceImport, projectAssignments);
   } else {
-    const body = await c.req.json<{ zipPath?: string; selectedConversationIds?: string[]; forceImport?: boolean; projectAssignments?: Record<string, string> }>();
+    const body = await readJsonBody<{ zipPath?: string; selectedConversationIds?: string[]; forceImport?: boolean; projectAssignments?: Record<string, string> }>(c);
     selectedConversationIds = body.selectedConversationIds;
     const zipPath = body.zipPath;
     if (!zipPath || !zipPath.endsWith('.zip')) {
@@ -926,7 +927,7 @@ app.post('/import/klatch', async (c) => {
     zipBuffer = Buffer.from(arrayBuffer);
     forceImport = formData.get('forceImport') === 'true';
   } else {
-    const body = await c.req.json<{ zipPath?: string; forceImport?: boolean }>();
+    const body = await readJsonBody<{ zipPath?: string; forceImport?: boolean }>(c);
     if (!body.zipPath || !body.zipPath.endsWith('.zip')) {
       return c.json({ error: 'File must be a .zip file' }, 400);
     }

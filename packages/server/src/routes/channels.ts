@@ -7,6 +7,7 @@ import { buildCarriedContextBlock } from '../claude/carried-context.js';
 import type { ModelId, InteractionMode, ChannelType } from '@klatch/shared';
 import { INTERACTION_MODES, isDefaultChannelPreamble, DEFAULT_CHANNEL_PREAMBLE } from '@klatch/shared';
 import { isValidModel } from './models.js';
+import { readJsonBody } from './json-body.js';
 
 const app = new Hono();
 
@@ -139,7 +140,7 @@ app.get('/channels/:id/stats', (c) => {
 });
 
 app.post('/channels', async (c) => {
-  const { name, systemPrompt, model, mode, type, projectId, entityIds } = await c.req.json<{
+  const { name, systemPrompt, model, mode, type, projectId, entityIds } = await readJsonBody<{
     name: string;
     systemPrompt?: string;
     model?: ModelId;
@@ -147,7 +148,7 @@ app.post('/channels', async (c) => {
     type?: ChannelType;
     projectId?: string;
     entityIds?: string[];
-  }>();
+  }>(c);
 
   if (!name?.trim()) {
     return c.json({ error: 'Channel name is required' }, 400);
@@ -221,13 +222,13 @@ app.post('/channels', async (c) => {
 
 app.patch('/channels/:id', async (c) => {
   const id = c.req.param('id');
-  const body = await c.req.json<{
+  const body = await readJsonBody<{
     name?: string;
     systemPrompt?: string;
     model?: ModelId;
     mode?: InteractionMode;
     projectId?: string | null;
-  }>();
+  }>(c);
 
   if (body.model && !(await isValidModel(body.model))) {
     return c.json({ error: `Invalid model: ${body.model}` }, 400);
