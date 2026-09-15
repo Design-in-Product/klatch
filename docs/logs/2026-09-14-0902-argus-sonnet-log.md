@@ -120,3 +120,60 @@ not this seat's doc to own** (Calliope's, per established pattern).
 **Status: available.** No product-code defects found this fire; one probe-hygiene gap flagged
 above (informational, addressed to whoever next drives `probe-round205`). Nothing in the new mail
 requires an Argus reply — all cc-only, no open ask directed at this seat.
+
+## ~18:01 PT — STOP fire
+
+Pulled: already up to date at `519e5c8b` (Daedalus's own 9/14 STOP wrap-verification commit).
+`packages/`+`scripts/` diff since my own WORK checkpoint (`cd8d98a9`): `f42dc96a` (Theseus, Round
+209 — my own 09:02-fire probe-hygiene flag traced to its exact producer and fixed) and `4803d0aa`
+(Daedalus, Round 210 — the coverage that had to exist before arms A–C could be retired). Two new
+mail files address Argus directly (not cc-only): Theseus's Round 209 report ("Argus: your
+corruption is real...") reproduces the `f-reach.db-wal` corruption I flagged this morning with a
+control — confirmed the producer is `planOf()`'s child process, which opens read-write in WAL mode
+and `process.exit(0)`s without checkpointing; Daedalus's Round 210 answers Theseus's retire-arms-A–C
+question (yes, after backfilling three gaps the arms were the only thing covering). Neither poses a
+question back to Argus — read in full, no reply owed.
+
+**Independently verified at source, not re-trusted:**
+- `entity-backfill.ts` diff — `mintAlongsideNote()`/`ambiguousNameNote()` extracted exactly as
+  described, `NOTE_PREFIX` and the singular/plural branching match both memos' quoted text.
+- `scripts/backfill-entity-bindings.mts` diff — the two inline `console.log` note blocks replaced
+  by calls to the extracted functions, nothing else changed at that call site.
+- `scripts/probe-round205-...mts` diff — `WORK` now `rmSync`'d before `mkdirSync` (not merely
+  created), new `copyCorpus()` helper strips `-wal`/`-shm` before copying and is used at all three
+  D/E/F call sites, arm C degrades to `open_()` on all four sub-checks instead of throwing when
+  `recs.length !== 1`, arm B2 gets an explicit `matchLine !== ''` guard, arm E re-aimed to assert
+  the plural/four-ids text directly rather than the old singular/one-id text. All match both
+  memos' described fixes exactly, line for line.
+- `packages/server/src/__tests__/round210-...test.ts` (new, 237 lines) — read in full: 8 tests
+  (A5 ×2, C1 ×1, B2 ×3, mint-alongside ×2), each establishes its subject (there IS a note, there
+  ARE stamps to move, there IS a candidate row) before asserting the negative — exactly the
+  discipline both memos describe, not just claimed in prose.
+- `round151`/`round154` multipart-cap test diffs — Daedalus's §4 grep-driven retrofit: 4 call
+  sites in `round151` converted to a `pastTheSizeGuard()` helper that asserts `typeof body.error
+  === 'string'` before the negative match; 1 site in `round154` gets the same two-step assertion
+  inline — matches his claimed "four in round151, one in round154, all the same line" exactly.
+
+**Re-ran the probe myself, unmodified, after `rm -rf .testdata/r205-probe`:** **23 checks · 8
+failed · 5 open · 2 measurements** — failures A1 A2 A4 A5 B1 B2 B3 C1, matches both memos' claimed
+numbers exactly. Arm E: **4/4 green** (E1–E4 all PASS, the note now names all four Chief-of-Staff
+ids in the plural) — matches Daedalus's §1 claim that the extraction changed no bytes. Arm Z2
+clean (no `packages/` dirt from my own run).
+
+**Suite, re-run myself:** server **1785/1785 passed, 1 skipped** (112 files, up from 1777/111 —
+Daedalus's new test file, matches exactly). Client **311/311, 13 skipped** (unchanged). `npm run
+typecheck` clean across all three workspaces (the new round210 test file is inside
+`packages/server`'s own tsconfig scope, covered by that run). `git status` clean throughout.
+
+**ROADMAP.md checked, still stale as flagged this morning:** line 277 (Agent-continuity bullet)
+stops at Round 205's "found a live, unresolved defect, not yet answered" framing — no mention of
+Rounds 206–210 or the Cowork merge. Same gap as my WORK-fire flag, not a new finding; not fixed
+here, not this seat's doc.
+
+**Mail hygiene:** nothing to close on this seat — both new memos are open threads between
+Theseus and Daedalus (the retire-arms-A–C action sits with Theseus, "at your convenience"), no
+Argus action item, correctly left in `docs/mail/`. The §7.2/corpus-question memo (janus→calliope,
+cc Argus) read in full — informational, closes a 31-day-old item, no Argus action.
+
+**Status: available.** No product-code defects found this fire; every claim in both new memos
+reproduces exactly. End of day-part cycle. Full detail above.
