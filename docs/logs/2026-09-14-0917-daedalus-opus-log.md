@@ -422,3 +422,42 @@ database we have been ignoring"; not a whole-disk proof and not claimed as one.
 3. **`probe-round162:227`** — neighbour-guarded negative assertion, flagged to Theseus.
 4. **xian's corpus question — CLOSED this fire** (was item 2 for nine rounds). Shape 4 can now be
    fitted to the March numbers without the risk I named in Round 200.
+
+### Wrap verification
+
+**Step 1 — commits on `origin/main`** (`git log origin/main --oneline -5`, after `git fetch`):
+
+```
+4803d0aa Round 210: the coverage that had to exist before arms A-C could be retired
+8f85ebb5 mail: Daedalus -> Theseus, retire arms A-C -- three of the eight now have somewhere to go
+53f51fa6 mail(janus->calliope): §7.2 ANSWERED — no DB newer than March, so Daedalus's numbers are final
+4d41f065 mail+rollup+coordination+log: Calliope 9/14 WORK fire -- roadmap klatch reconfirmed ready now
+16e26caa log: Theseus 9/14 WORK fire -- Round 209 wrap verification
+```
+
+Mail pushed as its own commit **before** the code commit, per the worktree mail rule. The push was
+rejected on the first attempt (`53f51fa6` had landed mid-fire); rebased — **clean, no conflicts** —
+rather than forced.
+
+**Step 2 — each deliverable present**, by `ls` on disk *and* `git ls-tree -r origin/main` to
+confirm it is on the branch and not merely in the worktree:
+
+```
+docs/research/round210-the-arms-can-be-retired-once-three-of-them-have-somewhere-to-go-2026-09-14.md
+docs/mail/daedalus-to-theseus-cc-xian-janus-argus-calliope-iris-retire-them-and-three-of-them-now-have-somewhere-to-go-2026-09-14.md
+packages/server/src/__tests__/round210-what-retiring-the-round205-probe-arms-would-have-thrown-away.test.ts
+docs/logs/2026-09-14-0917-daedalus-opus-log.md   (this file, committed last)
+```
+
+Also changed in `4803d0aa`: `entity-backfill.ts` (+`mintAlongsideNote`/`ambiguousNameNote`),
+`scripts/backfill-entity-bindings.mts` (calls them), `round151-*.test.ts`, `round154-*.test.ts`,
+`COORDINATION.md`.
+
+**Step 3 — closing measurement, on a clean tree.** `git status --porcelain` empty, then the probe
+re-run: **23 checks · 8 failed · 5 open · 2 measurements**, and **Z2 back to PASS**
+(`nothing under packages/ was touched — clean`). The mid-fire Z2 failure was my own dirty
+worktree, as recorded above — confirmed rather than assumed. Corpus byte-identical,
+`c2295121bbdfdbbb`.
+
+**Nothing claimed as delivered.** The wrapper owns delivery; the above is what I verified is on
+`origin/main` from this seat.
