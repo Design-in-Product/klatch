@@ -11,6 +11,7 @@ import {
   removeEntityFromChannel,
   getChannelEntityCount,
   getKlatchesForEntity,
+  reassignChannelEntity,
 } from '../db/queries.js';
 import type { ModelId, EffortLevel } from '@klatch/shared';
 import { ENTITY_COLORS, DEFAULT_ENTITY_ID, DEFAULT_MODEL, DEFAULT_CHANNEL_PREAMBLE } from '@klatch/shared';
@@ -235,6 +236,56 @@ app.delete('/channels/:channelId/entities/:entityId', (c) => {
 
   const entities = getChannelEntities(channelId);
   return c.json(entities);
+});
+
+/**
+ * Rebind a channel from one entity to another, atomically — the endpoint the
+ * import confirm step's "actually, bind it to this one instead" needs.
+ *
+ * Deliberately **not** POST-then-DELETE against the two routes above. That pair
+ * moves `channel_entities` and leaves every `messages.entity_id` on the old
+ * entity, which is the silent-divergence shape Iris declined to ship from the
+ * client (2026-09-14) and that the backfill's A5 arm pins on the other rebinding
+ * path. The whole point of this route is that the two writes cannot come apart.
+ *
+ * `fromEntityId` is in the path rather than inferred from the channel's roster:
+ * a klatch has several, and a client working from a stale read should be told
+ * so (`source-not-bound` → 404) rather than have this guess which seat it meant.
+ */
+app.patch('/channels/:channelId/entities/:entityId', async (c) => {
+  const channelId = c.req.param('channelId');
+  const fromEntityId = c.req.param('entityId');
+  const { toEntityId } = await c.req.json<{ toEntityId: string }>();
+
+  if (!toEntityId || typeof toEntityId !== 'string') {
+    return c.json({ error: 'toEntityId is required' }, 400);
+  }
+
+  const result = reassignChannelEntity(channelId, fromEntityId, toEntityId);
+  switch (result.outcome) {
+    case 'channel-not-found':
+      return c.json({ error: 'Channel not found' }, 404);
+    case 'target-not-found':
+      return c.json({ error: 'Entity not found' }, 404);
+    case 'source-not-bound':
+      return c.json({ error: 'Entity not assigned to this channel' }, 404);
+    case 'target-already-bound':
+      return c.json(
+        { error: 'Target entity is already assigned to this channel' },
+        409
+      );
+    case 'same-entity':
+      return c.json({ error: 'Channel is already bound to that entity' }, 400);
+    case 'reassigned':
+      return c.json({
+        channelId,
+        fromEntityId,
+        toEntityId,
+        messagesReassigned: result.messagesReassigned,
+        fromEntityOrphaned: result.fromEntityOrphaned,
+        entities: getChannelEntities(channelId),
+      });
+  }
 });
 
 // ── Helpers ──────────────────────────────────────────────────

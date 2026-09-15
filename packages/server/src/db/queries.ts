@@ -526,6 +526,135 @@ export function getChannelEntityCount(channelId: string): number {
   return row.count;
 }
 
+export type ReassignChannelEntityOutcome =
+  | 'reassigned'
+  | 'channel-not-found'
+  | 'target-not-found'
+  | 'source-not-bound'
+  | 'target-already-bound'
+  | 'same-entity';
+
+export interface ReassignChannelEntityResult {
+  outcome: ReassignChannelEntityOutcome;
+  /** `messages.entity_id` rows moved. 0 on every outcome but 'reassigned'. */
+  messagesReassigned: number;
+  /**
+   * True when `fromEntityId` now holds no bindings and no stamped messages
+   * anywhere — i.e. the caller may offer to delete it. **Never true for the
+   * default entity**, which has to survive an empty database.
+   *
+   * Reported, not acted on: this function does not delete. The import case that
+   * motivates it (a mint the operator immediately reassigns away from) leaves a
+   * real orphan, but deleting an entity is a separate, louder operation that
+   * already has its own route, and "reassign" silently removing an agent is the
+   * kind of hidden second effect this whole function exists to avoid.
+   */
+  fromEntityOrphaned: boolean;
+}
+
+/**
+ * Move a channel from one entity to another, atomically.
+ *
+ * **Why this exists rather than assign+remove.** An imported channel carries the
+ * binding in two places: the `channel_entities` join row *and* `entity_id` on
+ * every assistant message (`importSession` stamps them at insert). The two
+ * client-callable primitives above touch only the join row, so using them to
+ * "fix" a binding leaves every message pointing at the old entity — silently,
+ * and the entity-scoped assembly path (`getMessagesForEntity`) reads the stamps.
+ * That is the same defect shape the backfill's A5 arm was built to catch on the
+ * other rebinding path (Iris, 2026-09-14; Theseus, Round 211 §4).
+ *
+ * **Scope of the message move is `entity_id = fromEntityId`, not the whole
+ * channel.** User messages are stamped NULL by design — they belong to the
+ * channel's roster, not to an agent (see the assembly query's NULL branch) — and
+ * a klatch's other participants keep their own stamps. So a reassign on a
+ * multi-bound channel moves exactly the departing agent's rows.
+ *
+ * **The seat keeps its `added_at`.** `getChannelEntities` orders the roster by
+ * `added_at`, so writing a fresh timestamp would silently move the reassigned
+ * agent to the end of a klatch's roster. A reassign changes who holds the seat,
+ * not when the seat was created.
+ *
+ * Refuses rather than guesses in three cases: the source isn't bound (the client
+ * is working from a stale read), the target is already bound (that is a *merge*
+ * of two roster seats, with its own questions about ordering and message
+ * provenance — not this operation), and source === target.
+ */
+export function reassignChannelEntity(
+  channelId: string,
+  fromEntityId: string,
+  toEntityId: string
+): ReassignChannelEntityResult {
+  const db = getDb();
+  const refuse = (outcome: ReassignChannelEntityOutcome): ReassignChannelEntityResult => ({
+    outcome,
+    messagesReassigned: 0,
+    fromEntityOrphaned: false,
+  });
+
+  const txn = db.transaction((): ReassignChannelEntityResult => {
+    if (!db.prepare('SELECT 1 FROM channels WHERE id = ?').get(channelId)) {
+      return refuse('channel-not-found');
+    }
+    if (!db.prepare('SELECT 1 FROM entities WHERE id = ?').get(toEntityId)) {
+      return refuse('target-not-found');
+    }
+    const bound = db
+      .prepare('SELECT added_at FROM channel_entities WHERE channel_id = ? AND entity_id = ?')
+      .get(channelId, fromEntityId) as { added_at: string } | undefined;
+    if (!bound) return refuse('source-not-bound');
+    if (fromEntityId === toEntityId) return refuse('same-entity');
+    if (
+      db
+        .prepare('SELECT 1 FROM channel_entities WHERE channel_id = ? AND entity_id = ?')
+        .get(channelId, toEntityId)
+    ) {
+      return refuse('target-already-bound');
+    }
+
+    // COALESCE for the same reason the undo pass uses it: `added_at` is NOT NULL
+    // with a default, so binding NULL would violate the constraint rather than
+    // fall through. `bound.added_at` is non-null here by the read above; the
+    // COALESCE is the safe form, not a live branch.
+    db.prepare(
+      `INSERT INTO channel_entities (channel_id, entity_id, added_at)
+       VALUES (?, ?, COALESCE(?, datetime('now')))`
+    ).run(channelId, toEntityId, bound.added_at ?? null);
+
+    const moved = db
+      .prepare('UPDATE messages SET entity_id = ? WHERE channel_id = ? AND entity_id = ?')
+      .run(toEntityId, channelId, fromEntityId).changes;
+
+    db.prepare('DELETE FROM channel_entities WHERE channel_id = ? AND entity_id = ?').run(
+      channelId,
+      fromEntityId
+    );
+
+    // Orphan check reads the post-move state, inside the transaction: the rows
+    // this call just removed are exactly the ones that would make the answer
+    // wrong if read before.
+    const stillBound = (
+      db
+        .prepare('SELECT COUNT(*) AS n FROM channel_entities WHERE entity_id = ?')
+        .get(fromEntityId) as { n: number }
+    ).n;
+    const stillStamped = (
+      db.prepare('SELECT COUNT(*) AS n FROM messages WHERE entity_id = ?').get(fromEntityId) as {
+        n: number;
+      }
+    ).n;
+
+    return {
+      outcome: 'reassigned',
+      messagesReassigned: moved,
+      fromEntityOrphaned:
+        fromEntityId !== DEFAULT_ENTITY_ID && stillBound === 0 && stillStamped === 0,
+    };
+  });
+
+  return txn();
+}
+
 /**
  * Klatches (type='klatch' channels) that a given entity participates in.
  * Powers the 1-1 chat cross-reference surface ("Also in: #klatch-a …").
