@@ -39,7 +39,7 @@
  *   J  the deduped roster, and the ordering Daedalus pinned                    [regression]
  *   K  the cost of an unconditional drop: exact-match boundaries               [regression]
  *   L  the three L4 reporters agree, checked mechanically                      [regression]
- *   M  the hardcoded preamble copies still equal the shared constant          [regression]
+ *   M  the preamble has one definition, and the live seed reaches it           [regression]
  *   F  continuity asymmetry — still open, still xian's call                    [open]
  *
  * Regression arms exit 1 on failure. `open` reports and does not, written in the positive
@@ -58,6 +58,19 @@
  *   2. Source reads that feed *checks* go through `locateLiteral`, which returns `null` and
  *      turns one check red, instead of throwing and taking every arm with it. A probe whose
  *      source reads are load-bearing should degrade to a failure, never to a crash.
+ *
+ * ── Round 215 (Theseus, 2026-09-15 WORK) ─────────────────────────────────────────────
+ * Arm M argued four server sites should source the shared constant. Daedalus did it
+ * (`dd99b374`, same day) and found two more in `__tests__/setup.ts` that my grep had walked
+ * past. The fix invalidated all four of arm M's checks — this file ran 4-red at the top of
+ * this fire, nine hours after the last re-aim. **Change 2 above earned itself twice in one
+ * day: the arm degraded to four reds and the other 31 checks ran.**
+ *
+ * Arm M is re-aimed onto three properties that survive the fix, and the third is the one
+ * Round 213 left open: the seed path is now *executed*, not read. This probe deletes its
+ * scratch DB at startup, so the server it spawns runs the real `db/index.ts` seed against an
+ * empty file every run — the chain from seed to layer-4 drop was always measurable here and
+ * was never measured. Details at arm M.
  */
 
 import fs from 'fs';
@@ -310,44 +323,166 @@ try {
   check('E', 'the default 1:1 still carries an identity at layer 5 (layer 5 must NOT be filtered)',
     (plainDbg.json?.assembledPrompt ?? '').trim() === PREAMBLE,
     `assembled=${JSON.stringify(plainDbg.json?.assembledPrompt)}`);
-  // ── Arm M — the hardcoded copies of the preamble, and the one that is load-bearing ──
+  // ── Arm M — the preamble has one definition, and the seed really reaches it ─────
   //
-  // Replaces Round 163's "the client still holds its own copy" measurement, which compared
-  // a client literal to the shared constant. That literal is gone (Iris, `c62b4f48`), so the
-  // comparison would now be `PREAMBLE === PREAMBLE`. The live question is the other half of
-  // the same drift: the client was deduped and **the server was not**.
+  // ── Round 215 re-aim (Theseus, 2026-09-15 WORK) ───────────────────────────────
+  // Round 213's arm M located four hardcoded server copies by their surrounding syntax and
+  // compared each to the shared constant. Daedalus's `dd99b374` deduped all four onto
+  // `DEFAULT_CHANNEL_PREAMBLE` the same day — the fix this arm was written to argue for —
+  // and in doing so it invalidated every one of those four checks. Observed, not assumed:
+  // this arm ran 4-red before the re-aim, two with `literal="${DEFAULT_CHANNEL_PREAMBLE}"`
+  // (the `'([^']+)'` pattern happily captured the interpolation) and two with the re-aim
+  // message.
   //
-  // `db/index.ts:81` is the consequential one. It seeds the `general` channel's stored
-  // purpose as a *literal*, and layer 4 drops that purpose only when
-  // `isDefaultChannelPreamble` — an `=== DEFAULT_CHANNEL_PREAMBLE` comparison — says it is
-  // the boilerplate. Edit the shared constant without editing the seed and the two stop
-  // matching: the seeded default channel silently resumes carrying its boilerplate at char
-  // 0, which is precisely the Round 161 defect Round 162 was built to fix. The constant's own
-  // docstring says "use the predicate, not the literal, so the convention has one
-  // definition"; these four sites predate that instruction and do not follow it.
+  // Those two shapes are worth separating, because only one of them is honest. A null
+  // announces itself. A capture of `${DEFAULT_CHANNEL_PREAMBLE}` reads as a **drift
+  // finding** — "the literal is not the constant" — when the truth is the opposite: the
+  // site is fixed and the check is stale. That is the same message-quality defect this
+  // probe's own Round 213 note fixed elsewhere, and it is more dangerous here, because the
+  // failing text is plausible.
   //
-  // Non-circular by construction: each literal is located by its *surrounding syntax*, then
-  // compared to the shared constant. Change the constant alone and extraction still finds
-  // the old string and the comparison fails.
+  // Post-dedup there are no literals left to compare, so comparing them is not the property
+  // any more. Three properties that can still regress, replacing four that cannot:
+  //
+  //   M1  every known site *references* the constant — a literal re-introduced at any of
+  //       them is the regression, and a site whose pattern stops matching goes red as a
+  //       re-aim rather than silently passing.
+  //   M2  no copy of the string exists anywhere under `packages/*/src` except its one
+  //       definition. Catches a *new* site, which M1 by construction cannot see.
+  //   M3  the seed path executed, live. Round 213 closed with this open item, in my own
+  //       words: "arm M reads source, it does not execute the seed path. The chain from a
+  //       literal mismatch to a broken layer-4 drop is reasoned, not measured." It is
+  //       measured now — see below.
   {
-    const copies: Array<[string, string, string | null]> = [
-      ['db seed — the `general` channel purpose', 'packages/server/src/db/index.ts',
+    // ── M1 — each site holds the identifier, not a string ────────────────────────
+    //
+    // Non-circular: the pattern is anchored on the surrounding syntax and captures whatever
+    // sits in the prompt slot. Re-hardcode the string there and the capture is the string,
+    // not the identifier, and the check goes red — whatever the constant currently says.
+    //
+    // Eight sites, not four. Daedalus's `dd99b374` memo §3 found two I had missed, and they
+    // are the interesting two: `__tests__/setup.ts` declares its own schema *including its
+    // own copies of the seed rows*, and it is the fixture every server test reads. My Round
+    // 213 grep scoped to `packages/*/src` product code and walked past a second definition
+    // of the schema. `routes/entities.ts` already sourced the constant before any of this.
+    const IDENT = /^(?:\$\{DEFAULT_CHANNEL_PREAMBLE\}|DEFAULT_CHANNEL_PREAMBLE)$/;
+    const sites: Array<[string, string, string | null]> = [
+      ['db seed — the `general` channel purpose (load-bearing for layer 4)', 'packages/server/src/db/index.ts',
         locateLiteral('packages/server/src/db/index.ts', /VALUES \('default', 'general', '([^']+)'\)/)],
       ['db seed — the default entity prompt', 'packages/server/src/db/index.ts',
         locateLiteral('packages/server/src/db/index.ts', /VALUES \('\$\{DEFAULT_ENTITY_ID\}', 'Claude', '\$\{DEFAULT_MODEL\}', '([^']+)'/)],
       ['db repair — the re-seeded default entity', 'packages/server/src/db/index.ts',
-        locateLiteral('packages/server/src/db/index.ts', /\.run\(DEFAULT_ENTITY_ID, 'Claude', DEFAULT_MODEL, '([^']+)'/)],
+        locateLiteral('packages/server/src/db/index.ts', /\.run\(DEFAULT_ENTITY_ID, 'Claude', DEFAULT_MODEL, ([A-Za-z_$][\w$]*|'[^']*'), ENTITY_COLORS/)],
       ['export.ts — the carried-context system fallback', 'packages/server/src/routes/export.ts',
-        locateLiteral('packages/server/src/routes/export.ts', /entity\.systemPrompt \|\| '([^']+)'/)],
+        locateLiteral('packages/server/src/routes/export.ts', /system: entity\.systemPrompt \|\| ([A-Za-z_$][\w$]*|'[^']*'),/)],
+      ['entities.ts — the create-entity default prompt', 'packages/server/src/routes/entities.ts',
+        locateLiteral('packages/server/src/routes/entities.ts', /systemPrompt\?\.trim\(\) \|\| ([A-Za-z_$][\w$]*|'[^']*'),\n/)],
+      ['entities.ts — the update-entity default prompt', 'packages/server/src/routes/entities.ts',
+        locateLiteral('packages/server/src/routes/entities.ts', /body\.systemPrompt\?\.trim\(\) \|\| ([A-Za-z_$][\w$]*|'[^']*')\)/)],
+      ['TEST FIXTURE setup.ts — the `general` channel purpose', 'packages/server/src/__tests__/setup.ts',
+        locateLiteral('packages/server/src/__tests__/setup.ts', /VALUES \('default', 'general', '([^']+)'\)/)],
+      ['TEST FIXTURE setup.ts — the default entity prompt', 'packages/server/src/__tests__/setup.ts',
+        locateLiteral('packages/server/src/__tests__/setup.ts', /VALUES \('\$\{DEFAULT_ENTITY_ID\}', 'Claude', '\$\{DEFAULT_MODEL\}', '([^']+)'/)],
     ];
-    for (const [label, file, found] of copies) {
-      check('M', `${label} still equals the shared constant`, found === PREAMBLE,
+    for (const [label, file, found] of sites) {
+      check('M', `${label} — sources the shared constant`, found !== null && IDENT.test(found),
         found === null
-          ? `PATTERN NO LONGER MATCHES in ${file} — the site moved or was refactored; re-aim this check (it is not evidence the copy is gone)`
-          : `literal=${JSON.stringify(found)} · shared=${JSON.stringify(PREAMBLE)}`);
+          ? `PATTERN NO LONGER MATCHES in ${file} — the site moved or was refactored; re-aim this check (it is not evidence the site is fixed)`
+          : IDENT.test(found)
+            ? `${file} → \`${found}\``
+            : `${file} holds \`${found}\` — a literal here drifts from the constant the layer-4 predicate compares against`);
     }
-    measure('M', 'how many hardcoded copies the server still carries',
-      `${copies.length} located; the client carries 0 (deduped in c62b4f48). Layer 4's drop depends on the first of these matching the constant exactly.`);
+
+    // ── M2 — and no ninth site, anywhere ─────────────────────────────────────────
+    //
+    // M1 can only check sites someone thought to list. Round 213's list was two short, and
+    // the two it missed were in the file every server test loads. This is the check that
+    // does not depend on the list being right: walk every source file under `packages/` and
+    // find the string itself.
+    //
+    // The rule is NOT "the string may appear only once." Swept first, then written: 35
+    // occurrences exist outside the definition, and the large majority are legitimate —
+    // 27 assertions in tests and 8 mentions in comments, measured, `expect(...).toBe('You are
+    // a helpful assistant.')` in a test, or the string quoted inside a comment. Those are
+    // not the drift risk. **A test that hardcodes the value fails loudly the day the
+    // constant changes; that is the system working.** The silent-drift class is code that
+    // *writes* the value at runtime and is never compared against the constant — which is
+    // exactly what `__tests__/setup.ts` was: a fixture, not a test, seeding its own schema
+    // with its own copies, loaded globally by `vitest.config.ts` into all 1821 server tests.
+    //
+    // So: red for any occurrence outside the owner, outside a `*.test.ts(x)` file, and
+    // outside a comment. Limitation, stated rather than hidden: comment detection is
+    // line-leading `//`, `*`, `/*`, so a trailing `// ...` after live code would be
+    // classified as code (conservative, which is the right direction) and the string
+    // embedded mid-sentence in a block comment is classified as a comment.
+    const OWNER = 'packages/shared/src/types.ts';
+    const offenders: string[] = [];
+    let inTests = 0, inComments = 0;
+    (function walk(dir: string) {
+      for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
+        if (e.name === 'node_modules' || e.name === 'dist' || e.name.startsWith('.')) continue;
+        const full = path.join(dir, e.name);
+        if (e.isDirectory()) { walk(full); continue; }
+        if (!/\.(ts|tsx|mts)$/.test(e.name)) continue;
+        const rel = path.relative(REPO, full);
+        if (rel === OWNER) continue;
+        const isTest = /\.test\.tsx?$/.test(e.name);
+        fs.readFileSync(full, 'utf8').split('\n').forEach((l, i) => {
+          if (!l.includes(PREAMBLE)) return;
+          const isComment = /^\s*(\/\/|\*|\/\*)/.test(l);
+          if (isComment) { inComments++; return; }
+          if (isTest) { inTests++; return; }
+          offenders.push(`${rel}:${i + 1}`);
+        });
+      }
+    })(path.join(REPO, 'packages'));
+    check('M', 'no live copy of the preamble outside its definition (tests and comments excepted)',
+      offenders.length === 0,
+      offenders.length === 0
+        ? `swept every .ts/.tsx/.mts under packages/ — ${inTests} test assertion(s) and ${inComments} comment mention(s), 0 in live code; the only live occurrence is ${OWNER}`
+        : `${offenders.length} live cop${offenders.length === 1 ? 'y' : 'ies'} outside ${OWNER}: ${offenders.join(', ')} — these drift silently, unlike a test assertion, which fails loudly`);
+
+    // ── M3 — the seed path, executed, over a socket ──────────────────────────────
+    //
+    // This closes Round 213's open item 3. The argument for deduping the seed was a causal
+    // chain — seed literal drifts from the constant → `isDefaultChannelPreamble` stops
+    // matching → layer 4 stops skipping → the seeded `general` channel silently resumes
+    // carrying boilerplate at char 0 (the Round 161 defect). Every link of that was read
+    // out of source, and a chain of correct readings is still a reading.
+    //
+    // No new fixture is needed to execute it, which is the point: this probe deletes its
+    // scratch directory at startup, so the server it spawned above **ran the real
+    // `db/index.ts` seed against an empty file, in a real process, seconds ago.** The
+    // seeded `general` row is sitting in the scratch DB. Read it, then ask the running
+    // server what it assembles for it.
+    //
+    // Daedalus's `round214-real-seed-path.test.ts` reaches the same module with
+    // `vi.importActual`; this reaches the same code path by starting the product. Neither
+    // subsumes the other — his pins the module, this pins the shipped binary — and until
+    // today `__tests__/setup.ts`'s parallel schema meant no server test executed this seed
+    // at all.
+    const seededPurpose = await storedSystemPrompt('default');
+    check('M', 'the live seed wrote the shared constant into the `general` channel',
+      seededPurpose === PREAMBLE,
+      `seeded row = ${JSON.stringify(seededPurpose)} · shared = ${JSON.stringify(PREAMBLE)}`);
+    //
+    // The assertion is a *count*, not an absence, and that is deliberate. The seeded
+    // `general` channel is the one place the string legitimately survives — layer 5 carries
+    // it, because the seeded default entity's own prompt is the same sentence, and arm E
+    // already pins that layer 5 must NOT be filtered. So "the preamble is gone" would be the
+    // wrong assertion and would go red on correct behaviour. The Round 161 defect was
+    // visible as the sentence appearing **twice** — 58 chars, layer 4 duplicating layer 5.
+    // Once is correct; twice is the regression; zero would be an over-reach into layer 5.
+    const seedDbg = await get('/channels/default/prompt-debug');
+    const seedL4 = seedDbg.json?.layers?.['4_channelAddendum'];
+    const seedAssembled = (seedDbg.json?.assembledPrompt ?? '') as string;
+    const occurrences = seedAssembled.split(PREAMBLE).length - 1;
+    check('M', 'and layer 4 drops what the live seed wrote — the chain, end to end',
+      seedL4 === 'EMPTY — default purpose, not sent' && occurrences === 1,
+      `L4=${JSON.stringify(seedL4)} · the seeded sentence appears ${occurrences}× in the assembled prompt (1 = layer 5 only, correct; 2 = layer 4 duplicating it, the Round 161 defect at 58 chars; 0 = over-reach into layer 5) · ${seedAssembled.length} chars — ${JSON.stringify(seedAssembled)}`);
+
+    measure('M', 'how many sites source the preamble, and how many hold a copy',
+      `${sites.length} sites source the constant (4 product + 2 fixture + 2 already-compliant); ${offenders.length} re-introduced literal(s) found by sweep. Round 213 counted 4 and missed the fixture pair.`);
 
     // And the client half, stated as the property rather than the value: the fallback is the
     // shared identifier, imported, not a re-introduced literal. Goes red on regression
