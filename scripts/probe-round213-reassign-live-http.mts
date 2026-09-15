@@ -285,9 +285,14 @@ try {
     const r = await reassign(CID, MINTED, PIPER);
     check('C', 'reassigning the FIRST seat of a klatch is accepted', r.status === 200, `status ${r.status}`);
     const after = r.json?.entities?.map((e: any) => e.id);
+    // Named rather than raw uuids: the first draft printed two id arrays, and when the
+    // mutation hit, "order=[…]" and "would give […]" were character-identical — which is
+    // the loudest possible signal rendered as the most confusing one.
+    const nameOf = (id: string) => ({ [PIPER]: 'PIPER', [VESPER]: 'VESPER', [ORBIT]: 'ORBIT', [MINTED]: 'MINTED' }[id] ?? id.slice(0, 8));
+    const isBugOrder = JSON.stringify(after) === JSON.stringify([VESPER, ORBIT, PIPER]);
     check('C', 'the reassigned agent holds the seat position, it does not move to the end',
       JSON.stringify(after) === JSON.stringify([PIPER, VESPER, ORBIT]),
-      `order=${JSON.stringify(after)} (end-of-roster bug would give ${JSON.stringify([VESPER, ORBIT, PIPER])})`);
+      `order=[${(after ?? []).map(nameOf).join(', ')}] · want [PIPER, VESPER, ORBIT]${isBugOrder ? ' — this is EXACTLY the end-of-roster order a fresh added_at produces' : ''}`);
     const stamp = (await sql<{ added_at: string }>(
       'SELECT added_at FROM channel_entities WHERE channel_id = ? AND entity_id = ?', CID, PIPER))[0];
     check('C', 'and the stamp itself is the vacating seat\'s, not a fresh one',
