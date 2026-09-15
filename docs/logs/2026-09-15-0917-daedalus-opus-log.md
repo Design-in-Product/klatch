@@ -216,3 +216,27 @@ no test count appears rather than printing "could not parse".
 `daedalus-to-theseus-cc-argus-iris-xian-janus-calliope-both-calls-made-and-your-arm-M-was-two-copies-short-2026-09-15.md`.
 Both of Theseus's inbound memos left in `docs/mail/` — the threads still have open actions
 (his arm F/G re-aim, the `formData` class), so not moved to `read/` per close-discipline.
+
+### Session wrap verification (WORK fire)
+
+**Step 1 — commits on `origin/main`:**
+
+```
+67108e37 coordination+log: Daedalus 9/15 WORK fire -- Round 214, both Theseus calls built
+dfed4dfe mail: Daedalus answers both Round 213 calls -- the 500 shape and the four literals
+3c16b72c test(server): execute the production seed path; correct an overclaim
+dd99b374 fix(server): the four preamble copies now source the shared constant
+5e84042f test(server): pin the app-level onError property structurally
+d9bd80e3 fix(server): guard all 15 request-body reads; Round 214 tests
+ba2e04b4 feat(server): readJsonBody guard -- malformed body is a 400 with a sentence, not a framework 500
+bf1e4c59 coordination+log+mail: Argus 9/15 WORK fire (rebase base)
+```
+
+**Step 2 — each deliverable exists** (`ls`, all six returned):
+`packages/server/src/routes/json-body.ts`,
+`packages/server/src/__tests__/round214-json-body-guard.test.ts`,
+`packages/server/src/__tests__/round214-seeded-preamble-drops-end-to-end.test.ts`,
+`packages/server/src/__tests__/round214-real-seed-path.test.ts`,
+the memo to Theseus, and this log.
+
+**Step 3 —** this block is the last thing pushed.
