@@ -29,9 +29,27 @@
  *   C  `added_at` survives, so a klatch roster does not reshuffle              [regression]
  *   D  the five refusals, each with its own status AND its own sentence        [regression]
  *   E  the orphan report, and that it is a report and not a delete             [regression]
- *   F  malformed and absent request bodies                                     [measurement]
+ *   F  malformed and absent request bodies                                     [regression]
+ *   G  the guard is universal — all 15 JSON-body routes, over the wire         [regression]
  *
  * Regression arms exit 1 on failure. Same convention as Rounds 142/161/163.
+ *
+ * ── Round 215 (Theseus, 2026-09-15 WORK) ─────────────────────────────────────────────
+ * Arms F and G found the unguarded `c.req.json()` 500 and established it was systemic, not
+ * Round 212's. Daedalus guarded all 15 sites the same day (`readJsonBody`, `ed099d11`) and
+ * wrote: "your probe's arm F/G assertions will now fail against the fixed server. Retiring
+ * or re-aiming them is yours." Both halves of that turned out to need care:
+ *
+ *   - **Arm F had no assertions to fail.** All six malformed-body cases were `measure()`,
+ *     because in Round 213 the 500 *was* the finding and there was no contract to pin.
+ *     Six measurements went 500 → 400 in silence. They are checks now, and they pin the
+ *     split Daedalus deliberately kept: bad bytes get the guard's sentence, well-formed
+ *     JSON of the wrong shape keeps the route's own.
+ *   - **Arm G's one assertion went red with a false sentence** — it printed "DIFFERENT from
+ *     the reassign route, which would make it a Round 212 regression" while the reassign
+ *     route was behaving identically. It never read that side of the comparison. Detail in
+ *     the arm. Re-aimed from "is the 500 systemic?" (closed) to "is the guard universal?"
+ *     (live, and the thing a new route can regress).
  */
 
 import fs from 'fs';
@@ -151,11 +169,22 @@ async function reassign(
 /** Raw PATCH — the caller owns the bytes and the headers. Arm F needs this; `reassign` won't do. */
 async function rawPatch(
   channelId: string, fromEntityId: string, body: BodyInit | undefined, headers: Record<string, string>
-): Promise<{ status: number; text: string }> {
+): Promise<{ status: number; text: string; contentType: string | null }> {
   const res = await fetch(`${BASE}/channels/${channelId}/entities/${fromEntityId}`, {
     method: 'PATCH', headers, body,
   });
-  return { status: res.status, text: (await res.text()).slice(0, 300) };
+  // Round 215: the content-type is now load-bearing, not decoration. A 400 whose body is
+  // `text/plain` is a correct status code hiding the same failure the 500 had — every
+  // wrapper in `api/client.ts` recovers the sentence via `res.json().catch(() => null)`.
+  return { status: res.status, text: (await res.text()).slice(0, 300), contentType: res.headers.get('content-type') };
+}
+
+/** Write straight to the scratch DB. Arm G needs a resolvable resource, not a real upload. */
+async function sqlWrite(query: string, ...params: unknown[]): Promise<void> {
+  const { default: Database } = await import('better-sqlite3');
+  const conn = new Database(DB);
+  conn.prepare(query).run(...(params as any[]));
+  conn.close();
 }
 
 async function sql<T = any>(query: string, ...params: unknown[]): Promise<T[]> {
@@ -394,17 +423,41 @@ try {
   {
     const ch = await post('/channels', { name: 'F: bodies', entityIds: [MINTED] });
     const CID = ch.json.id as string;
-    const cases: Array<[string, BodyInit | undefined, Record<string, string>]> = [
-      ['no body at all', undefined, {}],
-      ['empty string body, JSON content-type', '', { 'Content-Type': 'application/json' }],
-      ['invalid JSON', '{ not json', { 'Content-Type': 'application/json' }],
-      ['valid JSON, wrong shape (array)', '[]', { 'Content-Type': 'application/json' }],
-      ['valid JSON, toEntityId is a number', '{"toEntityId":42}', { 'Content-Type': 'application/json' }],
-      ['form-encoded instead of JSON', `toEntityId=${PIPER}`, { 'Content-Type': 'application/x-www-form-urlencoded' }],
+    const GUARD = 'Request body must be valid JSON';
+    const SHAPE = 'toEntityId is required';
+    const cases: Array<[string, BodyInit | undefined, Record<string, string>, string]> = [
+      ['no body at all', undefined, {}, GUARD],
+      ['empty string body, JSON content-type', '', { 'Content-Type': 'application/json' }, GUARD],
+      ['invalid JSON', '{ not json', { 'Content-Type': 'application/json' }, GUARD],
+      ['valid JSON, wrong shape (array)', '[]', { 'Content-Type': 'application/json' }, SHAPE],
+      ['valid JSON, toEntityId is a number', '{"toEntityId":42}', { 'Content-Type': 'application/json' }, SHAPE],
+      ['form-encoded instead of JSON', `toEntityId=${PIPER}`, { 'Content-Type': 'application/x-www-form-urlencoded' }, GUARD],
     ];
-    for (const [label, body, headers] of cases) {
+    // ── Round 215 re-aim ────────────────────────────────────────────────────────
+    // These six were measurements in Round 213 because the answer (500) was the finding
+    // and there was no contract to pin. `readJsonBody` (Daedalus, `ed099d11`) gives them
+    // one, so they become checks. Note for the record: Daedalus predicted "your probe's
+    // arm F/G assertions will now fail against the fixed server." Half right, and the
+    // half he was wrong about is the reason this edit exists — **arm F had no assertions
+    // to fail.** Six measurements went from 500 to 400 in silence. A probe that only
+    // measures cannot notice that the thing it measured got fixed.
+    //
+    // Two contracts, deliberately different, and the split is the thing worth pinning:
+    // bytes-that-aren't-JSON get the guard's sentence; well-formed JSON of the wrong
+    // shape keeps the *route's own* sentence. Daedalus kept shape validation out of the
+    // helper on purpose ("a generic 'must be an object' would be a worse sentence"), and
+    // his own mutation 4 was a route that let the guard take it over. This is the check
+    // that goes red if someone later collapses the two.
+    for (const [label, body, headers, expected] of cases) {
       const r = await rawPatch(CID, MINTED, body, headers);
-      measure('F', label, `status ${r.status} — ${JSON.stringify(r.text)}`);
+      let parsed: any = null;
+      try { parsed = JSON.parse(r.text); } catch { /* stays null — that IS the failure */ }
+      check('F', `${label} → 400 with a recoverable sentence`,
+        r.status === 400 && parsed?.error === expected,
+        `status ${r.status} · content-type=${r.contentType ?? '(none)'} · ${
+          parsed === null
+            ? `body did NOT parse as JSON: ${JSON.stringify(r.text)} — api/client.ts does res.json().catch(() => null), so this flattens to statusText`
+            : `error=${JSON.stringify(parsed.error)} (expected ${JSON.stringify(expected)})`}`);
     }
     // Whatever the status, the invariant that matters is that a malformed request is
     // inert: it must not have moved anything. THIS is the regression assertion.
@@ -415,33 +468,125 @@ try {
     check('F', 'and the server is still serving after all six', up.status === 200, `GET /channels → ${up.status}`);
   }
 
-  // ── Arm G — the control: is the 500 Round 212's, or the repo's? ───────────────
+  // ── Arm G — is the guard universal, or only where someone looked? ─────────────
   //
-  // Arm F shows three malformed-body shapes returning 500 from the reassign route. Before
-  // that gets written up as a defect in a two-hour-old endpoint, the question is whether
-  // any *older* route behaves differently. `await c.req.json()` appears at 15 sites under
-  // routes/ and none is inside a try/catch, so the prediction is that they all do this —
-  // but a grep is not a run. Driven against two routes that predate Round 212 by months.
+  // ── Round 215 re-aim (Theseus, 2026-09-15 WORK) ──────────────────────────────
+  // Round 213's arm G was a control with one job: decide whether arm F's 500 was a defect
+  // in a two-hour-old endpoint or the repo's default. It answered "the repo's" — two older
+  // routes returned 500 too — and Daedalus fixed all 15 sites the same day (`ed099d11`).
+  //
+  // **The check did not just go red. It went red with a false sentence**, and that is worth
+  // more than the re-aim. It asserted `statuses.every(s => s === 500)` and printed, on
+  // failure: "DIFFERENT from the reassign route, which would make it a Round 212
+  // regression." The older routes now return 400 — and so does the reassign route. They are
+  // identical. The message asserted a comparison the check never made: it only ever read
+  // the older routes' statuses, and inferred the reassign route's from an assumption that
+  // was true the day it was written. Anyone reading that output at face value would have
+  // reported a regression in Daedalus's endpoint that does not exist.
+  //
+  // Second instance of the same class in one fire — arm M of `probe-round162` printed
+  // `literal="${DEFAULT_CHANNEL_PREAMBLE}"` as though it were drift. Both are failure
+  // messages that state a *conclusion* instead of an *observation*. The rule that falls out:
+  // **a check may print what it read; it may not print what that implies.** Everything below
+  // reads both sides of every comparison it reports.
+  //
+  // The 500 question is closed, so arm G takes the question the fix opened: the guard is
+  // applied site-by-site, which means the next route someone adds re-introduces the 500 at
+  // that site with the whole suite green. Two checks, source and wire, neither sufficient
+  // alone.
   {
-    const older: Array<[string, string]> = [
-      ['POST /channels (predates 212)', '/channels'],
-      ['POST /entities (predates 212)', '/entities'],
+    // ── G1 — every JSON-body route, over the wire, not a sample of two ───────────
+    //
+    // Enumerated from source rather than hand-listed, then driven. ZERO MODEL CALLS holds:
+    // `POST /channels/:id/messages` is refused at the body read, well before generation.
+    //
+    // **First run of this arm was 1-red, and the red was mine.** I wrote, as the reason
+    // all 15 were tractable with throwaway ids, "readJsonBody runs before any path/id
+    // resolution, so a nonexistent id in the URL doesn't change the answer." That is true
+    // of 14 routes and false of `POST /files/:id/promote`, which calls `getFile()` and
+    // returns 404 *before* the body read (`files.ts:315-319`). So the probe reported
+    // `404 File not found` as a guard failure.
+    //
+    // Checked the route before believing the output, the same way Round 213's arm E
+    // fixture-reuse red turned out to be mine. Fixed by giving the route a real file row
+    // rather than by dropping the route or loosening the check — a 404-before-400 is
+    // correct behaviour and the guard still needs driving behind it. The row goes straight
+    // into the scratch DB (same idiom as `seedMessages`); `promote` only needs `getFile()`
+    // to resolve before it reads the body, so no bytes need to exist on disk.
+    await sqlWrite(
+      `INSERT INTO files (id, name, mime_type, size_bytes, storage_key) VALUES (?, ?, ?, ?, ?)`,
+      'probe215-file', 'arm-g-fixture.txt', 'text/plain', 11, 'probe215/arm-g-fixture.txt');
+    const siteCount = execFileSync('bash', ['-c',
+      "grep -rn 'readJsonBody<' packages/server/src/routes/ | grep -v json-body.ts | wc -l"],
+      { cwd: REPO, encoding: 'utf8' }).trim();
+    const routes: Array<[string, string, string]> = [
+      ['POST', '/channels', 'channels.ts:143'],
+      ['PATCH', '/channels/default', 'channels.ts:225'],
+      ['POST', '/projects', 'projects.ts:22'],
+      ['PATCH', '/projects/no-such-project', 'projects.ts:45'],
+      ['POST', '/entities', 'entities.ts:51'],
+      ['PATCH', '/entities/no-such-entity', 'entities.ts:99'],
+      ['POST', '/channels/default/entities', 'entities.ts:202'],
+      ['PATCH', '/channels/default/entities/no-such-entity', 'entities.ts:259'],
+      ['POST', '/channels/default/messages', 'messages.ts:74'],
+      ['POST', '/files/pin', 'files.ts:246'],
+      ['POST', '/files/probe215-file/promote', 'files.ts:321'],
+      ['POST', '/import/claude-code', 'import.ts:201'],
+      ['POST', '/import/claude-ai/preview', 'import.ts:504'],
+      ['POST', '/import/claude-ai', 'import.ts:636'],
+      ['POST', '/import/klatch', 'import.ts:930'],
     ];
-    const statuses: number[] = [];
-    for (const [label, pathname] of older) {
+    const bad: string[] = [];
+    for (const [method, pathname, site] of routes) {
       const res = await fetch(`${BASE}${pathname}`, {
-        method: 'POST', headers: { 'Content-Type': 'application/json' }, body: '{ not json',
+        method, headers: { 'Content-Type': 'application/json' }, body: '{ not json',
       });
-      statuses.push(res.status);
-      measure('G', `${label} with invalid JSON`, `status ${res.status} — ${JSON.stringify((await res.text()).slice(0, 120))}`);
+      const text = (await res.text()).slice(0, 200);
+      let parsed: any = null;
+      try { parsed = JSON.parse(text); } catch { /* null is the failure */ }
+      const ok = res.status === 400 && typeof parsed?.error === 'string' && parsed.error.length > 0;
+      if (!ok) bad.push(`${method} ${pathname} (${site}) → ${res.status} ${res.headers.get('content-type')} ${JSON.stringify(text)}`);
     }
-    check('G', 'the 500 is the repo-wide default, not something Round 212 introduced',
-      statuses.every((s) => s === 500),
-      `older routes returned ${JSON.stringify(statuses)} — ${statuses.every((s) => s === 500)
-        ? 'identical to the reassign route, so this is pre-existing and systemic'
-        : 'DIFFERENT from the reassign route, which would make it a Round 212 regression'}`);
-    measure('G', 'the size of it',
-      `${execFileSync('bash', ['-c', "grep -rn 'await c.req.json' packages/server/src/routes/ | wc -l"], { cwd: REPO, encoding: 'utf8' }).trim()} unguarded c.req.json() sites under routes/`);
+    check('G', `all ${routes.length} JSON-body routes refuse malformed bytes with 400 + a JSON sentence`,
+      bad.length === 0,
+      bad.length === 0
+        ? `${routes.length} routes driven over the wire, every one 400 with a parseable {error}; source reports ${siteCount} readJsonBody call sites`
+        : `${bad.length} of ${routes.length} did not: ${bad.join(' | ')}`);
+    check('G', 'the enumeration is complete — as many routes driven as call sites in source',
+      routes.length === Number(siteCount),
+      `drove ${routes.length} · source has ${siteCount} readJsonBody call sites — if these diverge, a site was added and this list was not updated`);
+
+    // ── G2 — and no bare c.req.json() anywhere outside the helper ────────────────
+    //
+    // G1 can only drive routes this list names. G2 does not depend on the list: it is the
+    // anti-reintroduction check, the same shape as arm M's sweep in probe-round162. The
+    // helper's own call is the one legitimate occurrence.
+    const bare = execFileSync('bash', ['-c',
+      "grep -rn 'await c.req.json' packages/server/src/routes/ | grep -v 'json-body.ts' || true"],
+      { cwd: REPO, encoding: 'utf8' }).trim();
+    check('G', 'no bare c.req.json() survives outside json-body.ts',
+      bare === '',
+      bare === '' ? 'swept packages/server/src/routes/; the only occurrence is inside readJsonBody itself'
+                  : `re-introduced at:\n${bare}`);
+
+    // ── The defect class that is NOT fixed, measured rather than repeated ────────
+    //
+    // Daedalus's §5 names `c.req.formData()` as the same class, unfixed, and puts it at
+    // "4 multipart sites under routes/". Counted directly this fire: **six** call sites.
+    // Not a correction that matters to the design, but the number will be quoted, and it
+    // is the kind of number that goes into a doc and outlives its check. Driven, so the
+    // status is observed rather than predicted from the shape of the code.
+    const formSites = execFileSync('bash', ['-c',
+      "grep -rn 'await c.req.formData()' packages/server/src/routes/ | wc -l"],
+      { cwd: REPO, encoding: 'utf8' }).trim();
+    const mp = await fetch(`${BASE}/import/klatch`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'multipart/form-data; boundary=----probe215' },
+      body: 'not a multipart body at all',
+    });
+    measure('G', 'the unfixed sibling: malformed multipart',
+      `POST /import/klatch with a broken multipart body → ${mp.status} ${mp.headers.get('content-type')} ${
+        JSON.stringify((await mp.text()).slice(0, 120))} · ${formSites} await c.req.formData() call sites under routes/ (Daedalus's §5 says 4; counted ${formSites} this fire)`);
   }
 
   // ── Report ────────────────────────────────────────────────────────────────────
