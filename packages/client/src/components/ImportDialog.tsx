@@ -393,7 +393,7 @@ export function ImportDialog({ isOpen, onClose, onImported, onBulkImported, onCh
     setError(null);
     setBulkResult(null);
 
-    const imported: Array<{ channelId: string; channelName: string; messageCount: number; artifactCount: number; conversationId: string; entityDisposition?: ResolveDisposition; entityName?: string; entityId?: string }> = [];
+    const imported: Array<{ channelId: string; channelName: string; messageCount: number; artifactCount: number; conversationId: string; entityDisposition?: ResolveDisposition; entityName?: string; entityId?: string; sameNameEntityIds?: string[] }> = [];
     const errors: string[] = [];
 
     for (const sessionPath of selectedSessions) {
@@ -419,6 +419,9 @@ export function ImportDialog({ isOpen, onClose, onImported, onBulkImported, onCh
             // placeholder whenever nothing identified the session, and it looks identical
             // to a user who confirmed the name "Claude".
             entityId: result.data.entityId,
+            // Present only when the confirmed name was carried by more than one
+            // entity — the bind above was an arbitrary pick among these.
+            sameNameEntityIds: result.data.sameNameEntityIds,
           });
         } else {
           // Duplicate — skip silently (already imported)
@@ -581,6 +584,21 @@ export function ImportDialog({ isOpen, onClose, onImported, onBulkImported, onCh
                 {result.artifactCount > 0 && (
                   <p><span className="text-muted">Artifacts:</span> {result.artifactCount}</p>
                 )}
+                {/* Mint vs. merge reads very differently on purpose, same asymmetry as the
+                    bulk row list below — this panel never carried the disposition copy the
+                    2026-08-09 scope doc specified for it (only the multi-import list got it
+                    when built 9/2). */}
+                {result.entityDisposition === 'minted' && result.entityName && (
+                  <p><span className="text-muted">Agent:</span> <span className="text-accent">Created new agent {result.entityName}</span></p>
+                )}
+                {(result.entityDisposition === 'matched-by-name' || result.entityDisposition === 'bound-existing') && result.entityName && (
+                  <p><span className="text-muted">Agent:</span> Added to existing agent {result.entityName}</p>
+                )}
+                {result.sameNameEntityIds && result.sameNameEntityIds.length > 1 && (
+                  <p className="text-amber-600 dark:text-amber-400">
+                    {result.sameNameEntityIds.length} agents share this name — this session was bound to one of them, not necessarily the one you meant.
+                  </p>
+                )}
               </div>
               <LayerFidelityReadout channelId={result.channelId} />
               <button
@@ -636,6 +654,11 @@ export function ImportDialog({ isOpen, onClose, onImported, onBulkImported, onCh
                       )}
                       {(conv.entityDisposition === 'matched-by-name' || conv.entityDisposition === 'bound-existing') && conv.entityName && (
                         <span className="text-muted ml-2">→ added to {conv.entityName}</span>
+                      )}
+                      {conv.sameNameEntityIds && conv.sameNameEntityIds.length > 1 && (
+                        <div className="text-amber-600 dark:text-amber-400 text-xs mt-0.5">
+                          {conv.sameNameEntityIds.length} agents share this name — bound to one of them, not necessarily the one you meant
+                        </div>
                       )}
                     </button>
                   ))}

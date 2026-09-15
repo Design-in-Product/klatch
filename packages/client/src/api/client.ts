@@ -401,6 +401,12 @@ export interface ClaudeAiImportResponse {
      * unidentified import gets. Same field the manual path already carries on `ImportResponse`.
      */
     entityId?: string;
+    /**
+     * Every entity sharing the confirmed name, present only when more than one
+     * does — mirrors `ImportResponse.sameNameEntityIds` (the manual path's
+     * same field). The bind above was an arbitrary pick among these.
+     */
+    sameNameEntityIds?: string[];
   }>;
   skipped: Array<{
     conversationId: string;

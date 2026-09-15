@@ -135,6 +135,84 @@ describe('ImportDialog', () => {
     expect(screen.getByText('Go to channel')).toBeInTheDocument();
   });
 
+  it('shows minted-agent copy in the single-import success panel', async () => {
+    const user = userEvent.setup();
+    vi.mocked(importClaudeCodeSession).mockResolvedValue({
+      status: 'success',
+      data: {
+        channelId: 'ch1',
+        channelName: 'test-session',
+        messageCount: 10,
+        artifactCount: 0,
+        source: 'claude-code',
+        duplicate: false,
+        entityDisposition: 'minted',
+        entityName: 'Daedalus',
+      },
+    });
+
+    render(<ImportDialog {...defaultProps} />);
+    await user.type(screen.getByPlaceholderText(/\.jsonl/), '/path/to/session.jsonl');
+    await user.click(screen.getByRole('button', { name: 'Import' }));
+
+    await waitFor(() => {
+      expect(screen.getByText('Created new agent Daedalus')).toBeInTheDocument();
+    });
+  });
+
+  it('shows an ambiguity note in the single-import success panel when the confirmed name is shared', async () => {
+    const user = userEvent.setup();
+    vi.mocked(importClaudeCodeSession).mockResolvedValue({
+      status: 'success',
+      data: {
+        channelId: 'ch1',
+        channelName: 'test-session',
+        messageCount: 10,
+        artifactCount: 0,
+        source: 'claude-code',
+        duplicate: false,
+        entityDisposition: 'matched-by-name',
+        entityName: 'Daedalus',
+        sameNameEntityIds: ['ent-1', 'ent-2'],
+      },
+    });
+
+    render(<ImportDialog {...defaultProps} />);
+    await user.type(screen.getByPlaceholderText(/\.jsonl/), '/path/to/session.jsonl');
+    await user.click(screen.getByRole('button', { name: 'Import' }));
+
+    await waitFor(() => {
+      expect(screen.getByText('Added to existing agent Daedalus')).toBeInTheDocument();
+    });
+    expect(screen.getByText(/2 agents share this name/)).toBeInTheDocument();
+  });
+
+  it('shows no ambiguity note in the single-import success panel when the name is unique', async () => {
+    const user = userEvent.setup();
+    vi.mocked(importClaudeCodeSession).mockResolvedValue({
+      status: 'success',
+      data: {
+        channelId: 'ch1',
+        channelName: 'test-session',
+        messageCount: 10,
+        artifactCount: 0,
+        source: 'claude-code',
+        duplicate: false,
+        entityDisposition: 'matched-by-name',
+        entityName: 'Daedalus',
+      },
+    });
+
+    render(<ImportDialog {...defaultProps} />);
+    await user.type(screen.getByPlaceholderText(/\.jsonl/), '/path/to/session.jsonl');
+    await user.click(screen.getByRole('button', { name: 'Import' }));
+
+    await waitFor(() => {
+      expect(screen.getByText('Added to existing agent Daedalus')).toBeInTheDocument();
+    });
+    expect(screen.queryByText(/share this name/)).not.toBeInTheDocument();
+  });
+
   it('shows error state on import failure', async () => {
     const user = userEvent.setup();
     vi.mocked(importClaudeCodeSession).mockRejectedValue(new Error('File not found'));
@@ -1155,5 +1233,32 @@ describe('ImportDialog — import confirm-step (entity name)', () => {
     });
     expect(screen.getByText('→ new agent: Daedalus')).toBeInTheDocument();
     expect(screen.getByText('→ added to Daedalus')).toBeInTheDocument();
+  });
+
+  it('shows an ambiguity note per bulk row when its confirmed name is shared, not for rows where it is not', async () => {
+    const user = userEvent.setup();
+    await openBrowser(user, [identitySession, identitySessionB]);
+
+    vi.mocked(importClaudeCodeSession).mockImplementation(async (sessionPath) => ({
+      status: 'success',
+      data: {
+        channelId: sessionPath === identitySession.path ? 'ch-a' : 'ch-b',
+        channelName: sessionPath === identitySession.path ? 'Channel A' : 'Channel B',
+        messageCount: 1,
+        artifactCount: 0,
+        source: 'claude-code',
+        duplicate: false,
+        entityDisposition: 'matched-by-name',
+        // Only Channel A's bind was ambiguous.
+        sameNameEntityIds: sessionPath === identitySession.path ? ['ent-1', 'ent-2'] : undefined,
+      },
+    }));
+
+    await user.click(screen.getByRole('button', { name: /Import selected/ }));
+
+    await waitFor(() => {
+      expect(screen.getByText('Channel A')).toBeInTheDocument();
+    });
+    expect(screen.getAllByText(/agents share this name/)).toHaveLength(1);
   });
 });
