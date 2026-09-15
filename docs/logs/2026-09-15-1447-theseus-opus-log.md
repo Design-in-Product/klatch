@@ -30,3 +30,157 @@ session finds **six** `await c.req.formData()` call sites (`files.ts:44,370`;
 before asserting either way.
 
 Taking both work units in this fire, plus the formData count.
+
+## 14:55 — Arm M: predicted red, confirmed red, and one of the two shapes was dishonest
+
+Ran `probe-round162` before touching it. **31/35 regression, four reds, all in arm M** — the
+prediction holds and the Round 213 degrade-don't-crash change earned itself a second time in
+one day: four checks went red and the other 31 ran.
+
+The two failure *shapes* are not equally good, and this is the finding worth keeping:
+
+| site | detail printed |
+|---|---|
+| `db/index.ts` ×2 | `literal="${DEFAULT_CHANNEL_PREAMBLE}" · shared="You are a helpful assistant."` |
+| `db/index.ts:357`, `export.ts` | `PATTERN NO LONGER MATCHES … re-aim this check` |
+
+The first two captured the *interpolation* out of the quotes — `'([^']+)'` matched
+`'${DEFAULT_CHANNEL_PREAMBLE}'` happily. That failure text reads as **a drift finding: "the
+literal is not the constant."** The truth is the exact opposite — the site is fixed and the
+check is stale. A null announces itself; a plausible-looking capture does not. Same
+message-quality class as the two detail-message flaws I fixed in Round 213, and worse than
+either, because this one would have been believed.
+
+## 15:05 — Re-aim: three properties that survive the fix
+
+Post-dedup there are no literals to compare, so comparing them isn't a property. Replaced:
+
+- **M1 — every known site *references* the constant.** Eight sites, not four: Daedalus found
+  two in `__tests__/setup.ts` my Round 213 grep walked past (it scoped to product code and so
+  missed a second definition of the schema), and `routes/entities.ts` ×2 were already
+  compliant before any of this. Anchored on surrounding syntax, captures whatever sits in the
+  prompt slot; a re-hardcoded string is the red, a moved site is a re-aim red.
+- **M2 — a sweep of `packages/**` for the string itself.** The rule is deliberately *not*
+  "appears once." Swept first, then wrote the rule: **35 occurrences outside the definition —
+  27 assertions in tests, 8 mentions in comments, 0 in live code.** A test that hardcodes the
+  value fails *loudly* the day the constant changes; that is the system working. The
+  silent-drift class is code that *writes* the value and is never compared to the constant —
+  which is precisely what `setup.ts` was. So: red only for live, non-test, non-comment code.
+  Comment detection is line-leading `//`/`*`/`/*`; limitation stated in the source.
+- **M3 — the seed path executed.** This closes Round 213 open item 3 in my own words ("arm M
+  reads source, it does not execute the seed path"). No new fixture was needed, which is the
+  embarrassing part: **this probe already wipes its scratch dir at startup, so the server it
+  spawns has been running the real `db/index.ts` seed against an empty file on every run
+  since Round 163.** The chain was always measurable here and was never measured. Reads the
+  seeded row out of the scratch DB, then asks the running server what it assembles for it.
+
+M3's assembly check asserts a **count, not an absence** — deliberately. The seeded `general`
+channel legitimately carries the sentence *once*, from layer 5, and arm E already pins that
+layer 5 must not be filtered. Once = correct, twice = the Round 161 defect, zero = over-reach.
+"The preamble is gone" would have been a wrong assertion that went red on correct behaviour.
+
+**35/35 → 42/42 regression, 12 measurements.** Committed `6068aae7` *before* mutating.
+
+## 15:20 — Four mutations, 4/4 predicted
+
+| # | Mutation | Result |
+|---|---|---|
+| 1 | re-hardcode the load-bearing seed, **same value** | 2 red — M1 site 1 + M2 names `db/index.ts:87` |
+| 2 | seed drifts: `assistant.` → `assistant!` | **3 red**, incl. the chain |
+| 3 | layer 4 stops skipping (`!isDefaultChannelPreamble` removed) | 7 red across E, M, G, K, L |
+| 4 | re-hardcode the **fixture** seed in `setup.ts` | 2 red — M1 + M2, and M2 correctly calls it live code, not a test assertion |
+
+**Mutation 2 is the one that was worth the arm.** A one-character edit to the seed and the
+assembled prompt for the default channel went **28 chars → 58 chars:**
+
+```
+"You are a helpful assistant!\n\nYou are a helpful assistant."
+```
+
+That is the Round 161 defect, reproduced live, over a socket, by editing one character in a
+seed that no server test executed until today. Round 213 reasoned this chain from source and
+said so. It is now measured.
+
+One honest limitation in mutation 2's output: the occurrence counter counts the *shared
+constant*, so a drifted seed duplicates a near-copy and the count stays `1`. The check still
+went red — on `L4="ACTIVE — 28 chars"` — and the 58-char assembled string is printed in full,
+so the reader sees it. Noting it rather than letting the parenthetical imply the count alone
+would have caught it.
+
+Mutation 3 is the control for M3 specifically: there the count *does* read 2, 58 chars.
+
+Reverted all four. `git diff --stat -- packages/` empty, `grep -rn MUTATION packages/*/src`
+empty, `git status --porcelain` clean.
+
+## 15:35 — Arms F and G: Daedalus's prediction was half right, and the wrong half is the finding
+
+His §5 said both arms' assertions would now fail. Ran it first.
+
+**Arm F did not fail — arm F had nothing that could fail.** All six malformed-body cases were
+`measure()`, because in Round 213 the 500 *was* the finding and there was no contract to pin.
+Six cases went `500` → `400 {"error":"Request body must be valid JSON"}` **in silence**, and
+the summary still read a clean 34/34. A probe that only measures cannot notice that the thing
+it measured got fixed.
+
+**Arm G's one assertion went red with a false sentence.** It printed "DIFFERENT from the
+reassign route, which would make it a Round 212 regression" — while the reassign route was
+behaving identically. The check only ever read the older routes' statuses and inferred the
+reassign route's from an assumption that was true when written and false nine hours later.
+
+**Second instance of that class in this fire, in the other probe.** Arm M's two
+`literal="${DEFAULT_CHANNEL_PREAMBLE}"` failures read as drift findings when the sites were in
+fact fixed. Both are failure messages that state a **conclusion** rather than an
+**observation**. Rule adopted and applied to both files:
+
+> **A check may print what it read. It may not print what that implies.**
+
+## 15:45 — The re-aim
+
+- **Arm F** — six checks now, pinning the split Daedalus kept deliberately: bad bytes get the
+  guard's sentence, well-formed JSON of the wrong shape keeps the route's own
+  (`toEntityId is required`). Content-type asserted too — a 400 with a `text/plain` body is the
+  same failure the 500 had, since `api/client.ts` recovers via `res.json().catch(() => null)`.
+- **Arm G** — re-aimed from "is the 500 systemic?" (closed, and fixed) to "is the guard
+  universal?" All **15** JSON-body routes enumerated from source and driven over the wire; a
+  sweep for a re-introduced bare `c.req.json()`; and a check that the driven list length equals
+  the source call-site count — the check that would have caught my own Round 213 arm-M list
+  being two short.
+
+**First run of the new arm G was 1-red and the red was mine.** I had justified throwaway ids
+with "`readJsonBody` runs before any path/id resolution." True of 14 routes, false of
+`POST /files/:id/promote`, which calls `getFile()` and 404s first (`files.ts:315-319`). Read
+the route before believing the output — the Round 213 arm-E lesson. Fixed the fixture, not the
+check: a 404-before-400 is correct behaviour and the guard still needs driving behind it.
+
+**Three mutations, 3/3 predicted:**
+
+| # | Mutation | Result |
+|---|---|---|
+| 1 | guard returns `text/plain` (Daedalus's rejected shape) | 5 red — 4 in F, 1 in G naming all 15; the two *shape* cases correctly stayed green |
+| 2 | one site reverts to a bare `c.req.json()` | 3 red — the 500 at that site, count divergence 15 vs 14, and the sweep |
+| 3 | guard takes over shape validation | 1 red — `[]` got the guard's sentence, not the route's |
+
+**34/34 → 42/42 regression.** Committed `1267e0dc` before mutating.
+
+## 15:50 — The formData sibling: measured, and the count corrected
+
+Daedalus's §5 puts the unfixed multipart class at "4 multipart sites under `routes/`". Counted
+this fire: **6** — `files.ts:44,370` and `import.ts:177,491,608,916`. Four of them are in
+`import.ts`, which may be the source of 4; not guessing at his method.
+
+Driven rather than predicted:
+
+```
+POST /import/klatch, malformed multipart → 500 · text/plain; charset=UTF-8 · "Internal Server Error"
+```
+
+Filed as a `measure()` in arm G so the day it's fixed the probe reports the new shape rather
+than going quiet — the arm F mistake, not repeated.
+
+## 15:55 — Suites, verified independently rather than taken from the memo
+
+- server **116 files · 1821 passed · 1 skipped**
+- client **37 files · 315 passed · 13 skipped**
+- `npm run typecheck` clean ×3 workspaces
+
+Both match Daedalus's §4 figures exactly. My round is scripts-only and the numbers confirm it.
