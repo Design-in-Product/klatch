@@ -263,3 +263,90 @@ question, now **eight rounds** open.
 HTTP endpoint by me this fire. Argus verified it at source and the suite covers it. Named
 explicitly so no later reader takes Round 209 as having closed it — that is the obvious next
 unit for this seat.
+
+---
+
+## 19:47 PT — STOP fire. Round 211: arms A–C retired by re-aiming, and the sheet had one observer.
+
+**Briefing.** Pulled by the wrapper to `f41d66a4`. Read `COORDINATION.md` and `ls docs/mail/`.
+Three memos dated today address or cc this seat: Daedalus's retire ruling (19:47), his 14:47
+correction, and Iris's `sameNameEntityIds` disclosure memo (19:47, cc). Read the retire memo and
+Iris's in full in the same turn. The retire memo asks for an action, not an answer; took it this
+fire.
+
+**Baseline before touching anything.** Ran `probe-round205` unmodified:
+`23 checks · 8 failed · 5 open · 2 measurements`, failures `A1 A2 A4 A5 B1 B2 B3 C1`, `A6`
+passing — Daedalus's Round 210 cells and my own Round 209 cells to the check. Verified the
+condition his ruling attached: `round210-what-retiring-the-round205-probe-arms-would-have-thrown-away.test.ts`
+exists, 8 tests, green here, A5/B2/C1 each with a named block.
+
+**The call inside the call.** His ruling was "retire." I retired by **re-aiming rather than
+deleting**, on his own §6: C1's counterpart is pinned at `plan.summary.apply === 0` (the
+condition, not the CLI branch) and B2's at `ambiguousNameNote()` (the function, not the sheet).
+Nothing in `packages/server` spawns the script. Deletion would have removed the pre-206
+expectations *and* the only process-level view of the tool an operator runs.
+
+**Mutation controls — 27/27 green on first run is not evidence.**
+
+| mutation | result |
+|---|---|
+| refusal disabled (`entity-backfill.ts:593`, `:600`) | 9 re-aimed checks fail + Z2 correctly catching my dirty tree |
+| `ambiguousNote` print deleted (`backfill-entity-bindings.mts:1207`) | **suite 112 files / 1785 passed, ALL GREEN**; probe fails **B2 and nothing else** |
+| detail strings (A5, B3) | failed while printing `3 rows, unchanged` — the detail could not contradict its own check |
+
+Both code mutations reverted; verified with `git diff --stat` (probe file the only modification)
+rather than by grepping my own `MUTATION` marker.
+
+**A6 and the sweep that missed it.** Daedalus caught A6 passing vacuously — `undefined !==
+'default-entity'`. My Round 209 sweep found E4 and B2 in the same file and missed it because I
+swept for `?? ''`. The rule generalises past that token: a subject that can be absent measures its
+own default unless established. Also closed his §4 flag on `probe-round162:227` (guarded by its
+neighbour at `:225`, now self-guarded).
+
+**Final state.** Probe `27 checks · 0 failed · 1 open · 2 measurements`; two runs diffed identical
+but for a node PID. Server suite `112 files / 1785 passed / 1 skipped`. `tsc --noEmit` on
+`packages/server` clean; `tsc --noEmit --strict` over both edited probes clean. No product code
+changed.
+
+**Mail handling.** Wrote the reply memo, committed it **separately** and pushed to `main` per the
+worktree mail discipline. Closed the retire thread: `git mv`'d Daedalus's inbound and my own
+Round 209 memo to `docs/mail/read/`. Left in `docs/mail/`: my new memo (it raises an item for
+Iris/Daedalus) and Iris's memo (open — the reassign endpoint does not exist yet).
+
+**The corpus question is closed and I am not carrying its caveat forward.** Verified
+`53f51fa6` exists and reads *"no DB newer than March"* — xian's answer, via Janus. Nine rounds.
+
+## Wrap verification.
+
+**Step 1 — commits landed:**
+
+```
+d5d9e8f9 Round 211: arms A-C retired by re-aiming, and the sheet had exactly one observer
+602e6361 mail: Theseus -> Daedalus, arms A-C retired by re-aiming; one check in the repo watches the sheet
+f41d66a4 Round 208 follow-through: sameNameEntityIds disclosure built, reassign routed back
+```
+
+`origin/main` at the time of writing is at `602e6361` — the **mail commit is on `main`**, pushed
+during the fire per the worktree mail discipline. The round commit `d5d9e8f9` and this log are
+committed locally; **the wrapper owns delivery** and I am not claiming them as delivered.
+
+**Step 2 — each deliverable exists:**
+
+```
+docs/research/round211-...-2026-09-14.md                                  9086 B   (new)
+docs/mail/theseus-to-daedalus-...-watches-the-sheet-2026-09-14.md         6729 B   (new, pushed to main)
+docs/mail/read/daedalus-to-theseus-...-retire-them-...-2026-09-14.md      8217 B   (moved, thread closed)
+scripts/probe-round205-...mts                                            29351 B   (modified — arms A–C)
+scripts/probe-round162-preamble-drop-and-roster-live.mts                 28541 B   (modified — :227 self-guarded)
+docs/COORDINATION.md                                                              (Theseus Prime section)
+docs/logs/2026-09-14-1047-theseus-opus-log.md                                     (this file)
+```
+
+All seven verified present by `ls` after the round commit. **Step 3** — this log is committed
+last, after Steps 1 and 2.
+
+**Left open for the next fire on this seat:** driving `sameNameEntityIds` through the live HTTP
+endpoint. It has now been named as the next unit in two consecutive logs and did not happen in
+either, because both fires had an inbound memo asking for something else. It is blocked in part by
+real absence — per Iris's memo the reassign surface needs a server endpoint that does not exist —
+but arm A2's plan-level assertion is not a substitute and I am not letting it read as one.
