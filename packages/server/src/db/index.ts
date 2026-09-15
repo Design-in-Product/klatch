@@ -3,7 +3,7 @@ import path from 'path';
 import fs from 'fs';
 import { randomUUID } from 'crypto';
 import { fileURLToPath } from 'url';
-import { DEFAULT_MODEL, DEFAULT_ENTITY_ID, ENTITY_COLORS, MODEL_ALIASES, DEFAULT_INTERACTION_MODE } from '@klatch/shared';
+import { DEFAULT_MODEL, DEFAULT_ENTITY_ID, ENTITY_COLORS, MODEL_ALIASES, DEFAULT_INTERACTION_MODE, DEFAULT_CHANNEL_PREAMBLE } from '@klatch/shared';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -77,11 +77,17 @@ function initSchema() {
       PRIMARY KEY (channel_id, entity_id)
     );
 
+    -- Both prompts below are the shared constant, not a copy of its text.
+    -- The channel one is load-bearing: assembly drops layer 4 only when
+    -- isDefaultChannelPreamble() finds this exact string (claude/client.ts
+    -- layer 4). A literal here that drifted from the constant would make the
+    -- seeded channel resume carrying boilerplate at char 0 — the Round 161
+    -- defect, re-created by a one-line edit, with every test still green.
     INSERT OR IGNORE INTO channels (id, name, system_prompt)
-    VALUES ('default', 'general', 'You are a helpful assistant.');
+    VALUES ('default', 'general', '${DEFAULT_CHANNEL_PREAMBLE}');
 
     INSERT OR IGNORE INTO entities (id, name, model, system_prompt, color)
-    VALUES ('${DEFAULT_ENTITY_ID}', 'Claude', '${DEFAULT_MODEL}', 'You are a helpful assistant.', '${ENTITY_COLORS[0]}');
+    VALUES ('${DEFAULT_ENTITY_ID}', 'Claude', '${DEFAULT_MODEL}', '${DEFAULT_CHANNEL_PREAMBLE}', '${ENTITY_COLORS[0]}');
   `);
 }
 
@@ -348,7 +354,7 @@ function runMigrations() {
   if (!defaultEntity) {
     db.prepare(
       'INSERT INTO entities (id, name, model, system_prompt, color) VALUES (?, ?, ?, ?, ?)'
-    ).run(DEFAULT_ENTITY_ID, 'Claude', DEFAULT_MODEL, 'You are a helpful assistant.', ENTITY_COLORS[0]);
+    ).run(DEFAULT_ENTITY_ID, 'Claude', DEFAULT_MODEL, DEFAULT_CHANNEL_PREAMBLE, ENTITY_COLORS[0]);
   }
 
   // Auto-assign default entity to any channels that have no entities assigned

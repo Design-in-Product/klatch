@@ -16,6 +16,7 @@ import {
   getMessageArtifacts,
 } from '../db/queries.js';
 import type { Message } from '@klatch/shared';
+import { DEFAULT_CHANNEL_PREAMBLE } from '@klatch/shared';
 import { readFile } from '../files/storage.js';
 import { adaptToClaudeCode, resolveTemplates } from '../export/transport-claude-code.js';
 import { adaptToClaudeAi } from '../export/transport-claude-ai.js';
@@ -246,7 +247,9 @@ app.post('/channels/:id/reflect', async (c) => {
       const response = await getClient().messages.create({
         model: entity.model,
         max_tokens: 256,
-        system: entity.systemPrompt || 'You are a helpful assistant.',
+        // Same constant entities.ts:89/159 writes for a blank entity prompt,
+        // so a blank-prompt agent and this fallback cannot disagree.
+        system: entity.systemPrompt || DEFAULT_CHANNEL_PREAMBLE,
         messages: [{
           role: 'user',
           content: `Here is a recent conversation you've been part of:\n\n${history}\n\n---\n\nBefore this session closes, note 1-3 things you learned about how to work effectively with this user that a future session of yours should know. Be specific. If nothing new was learned this session, say "Nothing new to note."`,
