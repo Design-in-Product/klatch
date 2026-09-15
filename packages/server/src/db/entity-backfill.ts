@@ -176,6 +176,65 @@ export function candidatesLine(plan: BackfillPlan): string {
     : `Candidates: ${candidates} — ${apply} would move, ${skipped} skipped.`;
 }
 
+/**
+ * The per-row notes the sheet prints under a channel, as strings rather than as
+ * `console.log` calls inside the CLI.
+ *
+ * Extracted Round 210 for the same reason `candidatesLine` was: these two lines
+ * are the *entire* operator-visible difference between "the plan bound one of
+ * several agents and did not say so" and "the plan refused and named them all",
+ * and until now nothing in the test suite could see them. The CLI's rendering
+ * was reachable only by spawning it from a probe — which is how Theseus's Round
+ * 205 arm B came to be the only check on the sheet, and why, when Round 206
+ * changed the sheet, that check went green instead of red (Round 209 §3: a
+ * check whose subject can default to empty is measuring its own default).
+ *
+ * `null` means "print nothing for this row", which is a third outcome distinct
+ * from either note and has to stay distinguishable from an empty string.
+ *
+ * The leading spaces are part of the contract: the sheet's readers anchor on the
+ * `↳` continuation being indented past the per-channel column (`candidatesLine`
+ * carries the same rule for `Candidates:` at column 0).
+ */
+const NOTE_PREFIX = '              ↳ ';
+
+/**
+ * "An agent of this name already exists and this plan is minting another."
+ *
+ * Only for rows that are *not* skipped: the basis does not reuse by name, so the
+ * plan mints alongside. The count is load-bearing, not decoration — "merge by
+ * hand afterwards" is a different job against four than against one, and on
+ * xian's March corpus four entities normalize to `chief of staff` (Theseus,
+ * Round 205 §4).
+ */
+export function mintAlongsideNote(row: BackfillPlanRow): string | null {
+  if (row.action === 'skipped') return null;
+  if (!row.sameNameEntityIds?.length) return null;
+  const ids = row.sameNameEntityIds.map((id) => id.slice(0, 8)).join(', ');
+  const n = row.sameNameEntityIds.length;
+  return (
+    `${NOTE_PREFIX}note: ${n === 1 ? 'an agent' : `${n} agents`} named "${row.guessName}"` +
+    ` already ${n === 1 ? 'exists' : 'exist'} (${ids}).` +
+    ` A ${row.guessBasis} guess does not reuse ${n === 1 ? 'it' : 'them'} — this mints another.`
+  );
+}
+
+/**
+ * The refusal an operator can act on: which agents collided, and the two ways
+ * forward. Printed on a *skipped* row precisely because the skip is the finding.
+ */
+export function ambiguousNameNote(row: BackfillPlanRow): string | null {
+  if (row.skipReason !== 'ambiguous-name') return null;
+  if (!row.sameNameEntityIds?.length) return null;
+  const ids = row.sameNameEntityIds.map((id) => id.slice(0, 8)).join(', ');
+  return (
+    `${NOTE_PREFIX}${row.sameNameEntityIds.length} agents are named "${row.guessName}" (${ids}), so` +
+    ` reusing "the" one of that name would mean picking one. Not picking: every\n` +
+    `                available rule is arbitrary and the sheet cannot show which it chose.` +
+    ` Merge or rename\n                them, or bind this channel by hand, then re-run.`
+  );
+}
+
 export type BackfillAction =
   /** An entity with this name already exists; the channel re-points to it. */
   | 'matched-by-name'

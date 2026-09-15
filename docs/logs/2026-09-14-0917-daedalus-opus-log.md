@@ -297,3 +297,128 @@ fix has to be mechanical rather than a matter of care — I intended to be caref
 and intending it did nothing. The transferable rule: **two passes is not evidence a test is
 deterministic.** A test that depends on a timestamp, an id, or an ordering it did not itself
 establish is measuring the clock.
+
+---
+
+## 17:17 PT — STOP fire. Round 210: the ruling Theseus asked for, and the same shape in my own tests.
+
+**Briefing.** Worktree synced by the wrapper at `4d41f065`. Read `docs/COORDINATION.md`,
+`docs/briefs/cross-pollination/current.md` (today's brief leads with Round 205's plan/apply
+divergence — the thread this fire continues), and `docs/mail/`. One memo addressed to me:
+`theseus-to-daedalus-argus-...-two-checks-went-green-when-you-fixed-the-defect-2026-09-14.md`.
+Actioned in this fire.
+
+### 17:18 — what he asked, and why I did not answer it straight away
+
+§4 asks one thing of me: **retire arms A–C of `probe-round205`, or not.** Eight checks fail and
+every one encodes the pre-206 behaviour, so his recommendation is to retire them in favour of
+Round 206's own tests. He explicitly declined to make the call unilaterally because it is a call
+about a behaviour change of mine.
+
+The answer looked obvious and I did not give it for twenty minutes, because **"retire" and
+"delete" are the same operation on a probe**, and a probe is the only artifact in this repo that
+watches the CLI's *rendered output*.
+
+### 17:19 — ran the probe rather than taking his numbers
+
+`npx tsx scripts/probe-round205-...mts` → **23 checks · 8 failed · 5 open · 2 measurements.**
+His figures exactly. Failures: **A1 A2 A4 A5 B1 B2 B3 C1**. Then walked the eight against what
+the suite covers. **Five have a Round 206 unit test behind them. Three did not:**
+
+- **A5** — a refused row leaves the *message stamps* alone. Round 206's refusal test checks
+  `channel_entities` and never reads `messages.entity_id`.
+- **C1** — an all-refused run writes no undo record.
+- **B2** — the sheet names every colliding id.
+
+### 17:20 — B2's gap is structural, and it is the mechanism behind his own finding
+
+Both operator-facing notes were formatted **inline as `console.log` arguments** inside
+`backfill-entity-bindings.mts`. Nothing in the suite could see them; the only way to observe that
+text was to spawn the script. **That is why his arm E was their sole check, and why — when Round
+206 rewrote the note — the check had nowhere to fail from.** His §3 names the proximate cause
+(`notes[0] ?? ''`); the sole observer being a spawned process is why nothing else caught it.
+
+Extracted `mintAlongsideNote()` / `ambiguousNameNote()` into `entity-backfill.ts`, on the
+precedent `candidatesLine` / `restoreInstructions` already set in that file. `null` for "print
+nothing", deliberately distinct from `''`. **Sheet bytes unchanged** — probe re-run against the
+real corpus, arm E still 4/4, E3 still naming all four ids.
+
+### 17:21 — built: `round210-...test.ts`, 8 tests
+
+One per gap plus the controls the gaps need. Every test **establishes its subject before
+asserting about it** — A5 asserts `p2 === 2` first, so "the stamps did not move" cannot pass on a
+channel with nothing to move, and carries a control where an unambiguous row *does* move them.
+
+**A test failed and was right to, again, and smaller this time:** I asserted the note would read
+`4 agents named "Chief of Staff"`. The name in the note is the *guess*, lowercase as the opener
+said it — `chief of staff` — which is exactly what Theseus quoted from the real corpus. My
+assertion came from my memory of the memo's prose rather than from the tool. Corrected to the
+measured string and the reason recorded in the test.
+
+**Mutation-verified, both reverted, `grep MUTATION` → 0:**
+- refusal disabled (`nameMatches.length > 1` → `> 99`) → **4 fail**, including A5's, whose stamps
+  land on `ent-old` — *precisely what the probe's A5 pinned.*
+- `ambiguousNameNote` names only the first id → **1 fails**, the right one.
+
+### 17:22 — ran his generalisation as a grep, and it hit my own tests
+
+His §3 — *a check whose subject can default to empty, asserting a negative, flips green when the
+thing it inspects disappears* — is mechanical, so I swept `scripts/probe-*.mts` and both
+`__tests__` trees for negative assertions over `?? ''` / `?.` / `exec()`-can-be-null subjects.
+
+- **Probes: no unguarded instance left** beyond the two he fixed. Three near-misses are guarded in
+  the same expression and are correct. One (`probe-round162:227`) is guarded only by its
+  *neighbour* — flagged to him, not changed, his file and a live-server probe.
+- **A third instance in his own file that his sweep missed: `A6`.** It **passes**:
+  `undefined !== 'default-entity'`. Same shape, reaching it through `undefined` rather than
+  `?? ''`. Raised so he widens the pattern he sweeps for.
+- **Suite: five instances, all mine, all the same line** —
+  `expect(body.error ?? '').not.toMatch(/too large/i)`, ×4 in `round151`, ×1 in `round154`.
+  Round 151's entire subject is a guard that must **not** fire, so every check in it is a negative.
+
+**Demonstrated rather than argued:** mutating `routes/import.ts:179` from `{ error: … }` to
+`{ message: … }` — a route that has stopped reporting its error — **fails three of the
+retrofitted checks**, and would have passed all three in the old form. Three green checks over a
+broken route. Reverted.
+
+### 17:24 — the corpus question closed mid-fire, and I scanned anyway
+
+`git push` was rejected: `53f51fa6` had landed on main while I worked — Janus relaying xian's
+answer, verbatim: *"I am not aware of one newer than March, no."* **March is the corpus. Nine
+rounds, closed.** My memo and research doc, written twenty minutes earlier, both said "nine rounds
+open"; corrected in place before pushing rather than left to stand.
+
+Janus asked whether anyone thought the fit was expensive enough to warrant a real filesystem scan
+rather than a statement about xian's knowledge, and said he'd rather we make that call than
+manufacture certainty. **Nobody needed to ask xian to go looking — the scan is mine to run**, so I
+ran it: `/Users/xian/Development`, depth 6, **41,530 dirs in 9s**, 893 `klatch*.db*` files, 14
+candidates ≥200 KB, each opened read-only.
+
+**It agrees with him.** The largest klatch database on disk — `klatch-worktrees/iris/klatch.db`,
+**7.1 MB, bigger than March** — is 3 channels / 523 messages / 2 entities, every row created
+inside a **157 ms window** on 2026-09-03. A probe run; the size is page bloat. Theseus's 635 KB
+file is 2,002 channels and **zero messages** (the Round 201 scale fixture). Only the March backup
+holds a corpus: 139 channels, 2,652 messages, 68 entities, three sources, 03-11 → 03-14.
+
+**Limit stated, not glossed:** `Documents`, `Desktop`, `Downloads`, `Library` are *not* covered —
+scanning them non-interactively hangs on macOS TCC rather than erroring, and two attempts were
+killed after producing nothing. Development tree, not the disk. Enough to retire "is there a live
+database we have been ignoring"; not a whole-disk proof and not claimed as one.
+
+### Verification
+
+- Server **1785 / 112 files** (was 1777 / 111; +8 = my new file), client **311 / 13 skipped**,
+  `npm run typecheck` clean across all three workspaces.
+- `grep MUTATION` → 0 across `packages/server/src`, `packages/client/src`, `scripts/`.
+- Probe **Z2 failed while my tree was dirty** — it reads `git status` under `packages/`. The
+  hygiene check working, not a regression.
+
+### Open, carried forward
+
+1. **Retiring arms A–C is Theseus's edit.** The call is given; I did not touch his probe. The
+   three gaps are covered whether he acts tomorrow or never.
+2. **The confirm-step picker** — still unbuilt client work, Iris's surface. Server complete since
+   `f1aebb05`.
+3. **`probe-round162:227`** — neighbour-guarded negative assertion, flagged to Theseus.
+4. **xian's corpus question — CLOSED this fire** (was item 2 for nine rounds). Shape 4 can now be
+   fitted to the March numbers without the risk I named in Round 200.

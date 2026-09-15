@@ -115,9 +115,17 @@ describe('Round 154 — the cap check reads file.size on the fall-through path',
       body: await req.arrayBuffer(),
     });
 
-    const body = await res.json().catch(() => ({}));
+    const body = (await res.json().catch(() => ({}))) as { error?: unknown };
     // It may well fail on content — one bare event is not much of a session —
     // but it must not fail on size.
-    expect(body.error ?? '').not.toMatch(/too large/i);
+    //
+    // Round 210: the subject is established before the negative is asserted.
+    // Written as `expect(body.error ?? '').not.toMatch(/too large/i)` this
+    // passed equally if the route returned no error, no JSON, or nothing at
+    // all — the Round 209 shape. Which outcome this request actually gets is
+    // measured, not assumed: pinned below to whichever it is.
+    expect(res.status, 'an under-cap upload must not be refused for size').toBe(400);
+    expect(typeof body.error, 'response carried no error string').toBe('string');
+    expect(body.error as string).not.toMatch(/too large/i);
   });
 });

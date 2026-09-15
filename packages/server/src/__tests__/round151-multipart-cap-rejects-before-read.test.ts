@@ -56,6 +56,26 @@ function declaredLengthReq(declared: number) {
   };
 }
 
+/**
+ * "This request got PAST the size guard" — asserted so that it cannot pass by
+ * the subject going missing.
+ *
+ * Every check below is a negative over `body.error`, and the form they were
+ * first written in was `expect(body.error ?? '').not.toMatch(/too large/i)`.
+ * That reads as "the guard did not fire" and means "the guard did not fire, OR
+ * there is no error field, OR the response was not JSON at all" — the last two
+ * indistinguishable from the first. A route that started 500ing with an empty
+ * body would turn every one of these green.
+ *
+ * Retrofitted Round 210 from Theseus's Round 209 §3: a check that does not
+ * establish that its subject exists is measuring its own default. So establish
+ * it — there IS an error, it IS a string, and it is some *other* refusal.
+ */
+function pastTheSizeGuard(body: { error?: unknown }, label?: string) {
+  expect(typeof body.error, `${label ?? 'response'} carried no error string`).toBe('string');
+  expect(body.error as string, label).not.toMatch(/too large/i);
+}
+
 describe('Round 151 — multipart uploads are refused before the body is read', () => {
   for (const route of MULTIPART_ROUTES) {
     it(`${route} rejects an over-cap upload on content-length alone`, async () => {
@@ -84,7 +104,7 @@ describe('Round 151 — multipart uploads are refused before the body is read', 
     // only the guard emits it, and the fall-through error ("No file uploaded")
     // does not.
     const body = await res.json().catch(() => ({}));
-    expect(body.error ?? '').not.toMatch(/too large/i);
+    pastTheSizeGuard(body, 'declared length inside the envelope allowance');
   });
 
   it('falls through when content-length is absent rather than guessing', async () => {
@@ -96,7 +116,7 @@ describe('Round 151 — multipart uploads are refused before the body is read', 
     });
 
     const body = await res.json().catch(() => ({}));
-    expect(body.error ?? '').not.toMatch(/too large/i);
+    pastTheSizeGuard(body, 'no content-length header');
   });
 
   it('ignores a malformed content-length rather than refusing on it', async () => {
@@ -111,7 +131,7 @@ describe('Round 151 — multipart uploads are refused before the body is read', 
         body: '------probe--\r\n',
       });
       const body = await res.json().catch(() => ({}));
-      expect(body.error ?? '', `content-length: ${bogus}`).not.toMatch(/too large/i);
+      pastTheSizeGuard(body, `content-length: ${bogus}`);
     }
   });
 
@@ -129,6 +149,6 @@ describe('Round 151 — multipart uploads are refused before the body is read', 
     });
 
     const body = await res.json().catch(() => ({}));
-    expect(body.error ?? '').not.toMatch(/too large/i);
+    pastTheSizeGuard(body, 'JSON path-based route');
   });
 });

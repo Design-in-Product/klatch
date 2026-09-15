@@ -682,6 +682,8 @@ const {
   restoreInstructions,
   shellQuote,
   candidatesLine,
+  mintAlongsideNote,
+  ambiguousNameNote,
   BACKFILL_SOURCES,
   DEFAULT_APPLY_BASES,
 } = await import('../packages/server/src/db/entity-backfill.js');
@@ -1194,30 +1196,15 @@ for (const r of plan.rows) {
   // and it is also wrong whenever the two really are one agent continuing, so
   // the choice is shown rather than made silently.
   //
-  // The count is load-bearing, not decoration. This note named one id and read
-  // as though that were the whole story; on xian's real corpus four entities
-  // normalize to "chief of staff", and "merge by hand afterwards" is a very
-  // different job against four than against one (Theseus, Round 205 §4).
-  if (r.action !== 'skipped' && r.sameNameEntityIds?.length) {
-    const ids = r.sameNameEntityIds.map((id) => id.slice(0, 8)).join(', ');
-    const n = r.sameNameEntityIds.length;
-    console.log(
-      `              ↳ note: ${n === 1 ? 'an agent' : `${n} agents`} named "${r.guessName}"` +
-        ` already ${n === 1 ? 'exists' : 'exist'} (${ids}).` +
-        ` A ${r.guessBasis} guess does not reuse ${n === 1 ? 'it' : 'them'} — this mints another.`
-    );
-  }
-  // A refusal the operator can act on: which agents collided, and the two ways
-  // forward. Printed on a skipped row precisely because the skip is the finding.
-  if (r.skipReason === 'ambiguous-name' && r.sameNameEntityIds?.length) {
-    const ids = r.sameNameEntityIds.map((id) => id.slice(0, 8)).join(', ');
-    console.log(
-      `              ↳ ${r.sameNameEntityIds.length} agents are named "${r.guessName}" (${ids}), so` +
-        ` reusing "the" one of that name would mean picking one. Not picking: every\n` +
-        `                available rule is arbitrary and the sheet cannot show which it chose.` +
-        ` Merge or rename\n                them, or bind this channel by hand, then re-run.`
-    );
-  }
+  // Both notes moved into `entity-backfill.ts` in Round 210 (`mintAlongsideNote`
+  // / `ambiguousNameNote`), so the suite can assert on the text an operator
+  // reads. Formatted inline here since Round 205, they were reachable only by
+  // spawning this script — which left a probe as their only check, and that
+  // check went green when Round 206 changed them (Round 209 §3).
+  const mintNote = mintAlongsideNote(r);
+  if (mintNote) console.log(mintNote);
+  const ambiguousNote = ambiguousNameNote(r);
+  if (ambiguousNote) console.log(ambiguousNote);
 }
 
 if (!apply) {
