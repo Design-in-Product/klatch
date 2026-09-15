@@ -39,10 +39,25 @@
  *   J  the deduped roster, and the ordering Daedalus pinned                    [regression]
  *   K  the cost of an unconditional drop: exact-match boundaries               [regression]
  *   L  the three L4 reporters agree, checked mechanically                      [regression]
+ *   M  the hardcoded preamble copies still equal the shared constant          [regression]
  *   F  continuity asymmetry — still open, still xian's call                    [open]
  *
  * Regression arms exit 1 on failure. `open` reports and does not, written in the positive
  * so the day it passes is the day the item closed. Same convention as Rounds 142/161.
+ *
+ * ── Round 213 (Theseus, 2026-09-15 START) ────────────────────────────────────────────
+ * This file crashed at import time from 2026-09-06 until today: a `readConst` regex read a
+ * string literal out of ChannelSidebar.tsx, and Iris's `c62b4f48` replaced that literal with
+ * an identifier 4.5 hours after the probe was written. No arm ran for nine days, including
+ * through two later edits to this file — both correct as static reads, neither executed.
+ * Argus caught it by running every script Round 211 touched instead of trusting the diff.
+ *
+ * Two changes, and the second is the one that generalises:
+ *   1. `CLIENT_FALLBACK` now derives from the shared constant; arm M replaces the client-copy
+ *      measurement, which post-dedup would have compared `PREAMBLE` to itself.
+ *   2. Source reads that feed *checks* go through `locateLiteral`, which returns `null` and
+ *      turns one check red, instead of throwing and taking every arm with it. A probe whose
+ *      source reads are load-bearing should degrade to a failure, never to a crash.
  */
 
 import fs from 'fs';
@@ -66,8 +81,36 @@ function readConst(file: string, re: RegExp, what: string): string {
 const DEFAULT_ENTITY_ID = readConst('packages/shared/src/types.ts', /export const DEFAULT_ENTITY_ID = '([^']+)'/, 'DEFAULT_ENTITY_ID');
 // The string under test, taken from the constant Round 162 introduced rather than retyped.
 const PREAMBLE = readConst('packages/shared/src/types.ts', /export const DEFAULT_CHANNEL_PREAMBLE = '([^']+)'/, 'DEFAULT_CHANNEL_PREAMBLE');
-// The client still holds its own copy (Iris's four literals, deliberately untouched in 162).
-const CLIENT_FALLBACK = readConst('packages/client/src/components/ChannelSidebar.tsx', /newPrompt\.trim\(\) \|\| '([^']+)'/, 'the client prompt fallback');
+
+// ── Round 213: what the client sends when the purpose field is left blank ──────────
+//
+// This was a `readConst` against a string literal in ChannelSidebar.tsx. Iris's
+// `c62b4f48` (2026-09-06 19:31, 4.5h after this probe was written) unified the client's
+// preamble literals onto the shared constant, so the line became
+// `newPrompt.trim() || DEFAULT_CHANNEL_PREAMBLE` — an identifier. The regex stopped
+// matching, `readConst` threw at import time, and **this probe has not run a single arm
+// since 9/6**, through two later edits to this file that were correct as static reads and
+// never executed. Found by Argus, 2026-09-15, by running it rather than reading it.
+//
+// Post-dedup the client's value IS `PREAMBLE`, so reading it back out of the client would
+// be a tautology dressed as an observation. Use the shared value at the call sites — that
+// is genuinely what the client now sends — and move the drift question to the checks in
+// `sourceCopyChecks()` below, which test the property that can still regress.
+const CLIENT_FALLBACK = PREAMBLE;
+
+/**
+ * Locate a hardcoded copy of the preamble by its surrounding syntax and return it.
+ *
+ * `null` means the pattern no longer matches — which is the failure mode that took this
+ * whole probe down for nine days. It is returned, never thrown: a source read that goes
+ * stale should turn one check red and leave every other arm running.
+ */
+function locateLiteral(file: string, re: RegExp): string | null {
+  const p = path.join(REPO, file);
+  if (!fs.existsSync(p)) return null;
+  const m = fs.readFileSync(p, 'utf8').match(re);
+  return m ? m[1] : null;
+}
 
 type Kind = 'regression' | 'open' | 'measurement';
 const results: Array<{ arm: string; check: string; pass: boolean; detail: string; kind: Kind }> = [];
@@ -267,8 +310,54 @@ try {
   check('E', 'the default 1:1 still carries an identity at layer 5 (layer 5 must NOT be filtered)',
     (plainDbg.json?.assembledPrompt ?? '').trim() === PREAMBLE,
     `assembled=${JSON.stringify(plainDbg.json?.assembledPrompt)}`);
-  measure('E', 'the client still holds its own copy of the string',
-    `ChannelSidebar.tsx sends ${JSON.stringify(CLIENT_FALLBACK)}; shared exports ${JSON.stringify(PREAMBLE)}; equal=${CLIENT_FALLBACK === PREAMBLE}`);
+  // ── Arm M — the hardcoded copies of the preamble, and the one that is load-bearing ──
+  //
+  // Replaces Round 163's "the client still holds its own copy" measurement, which compared
+  // a client literal to the shared constant. That literal is gone (Iris, `c62b4f48`), so the
+  // comparison would now be `PREAMBLE === PREAMBLE`. The live question is the other half of
+  // the same drift: the client was deduped and **the server was not**.
+  //
+  // `db/index.ts:81` is the consequential one. It seeds the `general` channel's stored
+  // purpose as a *literal*, and layer 4 drops that purpose only when
+  // `isDefaultChannelPreamble` — an `=== DEFAULT_CHANNEL_PREAMBLE` comparison — says it is
+  // the boilerplate. Edit the shared constant without editing the seed and the two stop
+  // matching: the seeded default channel silently resumes carrying its boilerplate at char
+  // 0, which is precisely the Round 161 defect Round 162 was built to fix. The constant's own
+  // docstring says "use the predicate, not the literal, so the convention has one
+  // definition"; these four sites predate that instruction and do not follow it.
+  //
+  // Non-circular by construction: each literal is located by its *surrounding syntax*, then
+  // compared to the shared constant. Change the constant alone and extraction still finds
+  // the old string and the comparison fails.
+  {
+    const copies: Array<[string, string, string | null]> = [
+      ['db seed — the `general` channel purpose', 'packages/server/src/db/index.ts',
+        locateLiteral('packages/server/src/db/index.ts', /VALUES \('default', 'general', '([^']+)'\)/)],
+      ['db seed — the default entity prompt', 'packages/server/src/db/index.ts',
+        locateLiteral('packages/server/src/db/index.ts', /VALUES \('\$\{DEFAULT_ENTITY_ID\}', 'Claude', '\$\{DEFAULT_MODEL\}', '([^']+)'/)],
+      ['db repair — the re-seeded default entity', 'packages/server/src/db/index.ts',
+        locateLiteral('packages/server/src/db/index.ts', /\.run\(DEFAULT_ENTITY_ID, 'Claude', DEFAULT_MODEL, '([^']+)'/)],
+      ['export.ts — the carried-context system fallback', 'packages/server/src/routes/export.ts',
+        locateLiteral('packages/server/src/routes/export.ts', /entity\.systemPrompt \|\| '([^']+)'/)],
+    ];
+    for (const [label, file, found] of copies) {
+      check('M', `${label} still equals the shared constant`, found === PREAMBLE,
+        found === null
+          ? `PATTERN NO LONGER MATCHES in ${file} — the site moved or was refactored; re-aim this check (it is not evidence the copy is gone)`
+          : `literal=${JSON.stringify(found)} · shared=${JSON.stringify(PREAMBLE)}`);
+    }
+    measure('M', 'how many hardcoded copies the server still carries',
+      `${copies.length} located; the client carries 0 (deduped in c62b4f48). Layer 4's drop depends on the first of these matching the constant exactly.`);
+
+    // And the client half, stated as the property rather than the value: the fallback is the
+    // shared identifier, imported, not a re-introduced literal. Goes red on regression
+    // instead of throwing at import — the whole point of this round's fix.
+    const sidebar = fs.readFileSync(path.join(REPO, 'packages/client/src/components/ChannelSidebar.tsx'), 'utf8');
+    check('M', 'the client fallback is the shared constant, not a literal of its own',
+      /newPrompt\.trim\(\)\s*\|\|\s*DEFAULT_CHANNEL_PREAMBLE/.test(sidebar)
+        && /import\s*\{[^}]*\bDEFAULT_CHANNEL_PREAMBLE\b[^}]*\}\s*from\s*'@klatch\/shared'/.test(sidebar),
+      'ChannelSidebar.tsx imports DEFAULT_CHANNEL_PREAMBLE from @klatch/shared and uses it as the blank-field fallback');
+  }
 
   // ── Arm G — the fix reaches channels that already existed ─────────────────────
   //
