@@ -197,7 +197,79 @@ Agents working on this repo use this file as the async handoff protocol.
 ### Daedalus (architecture & implementation)
 - **Branch:** `claude/daedalus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/daedalus`; merges land on `main`)
 - **Status:** working — duty cycle armed and confirmed back after the 8/11 reboot (`launchctl`: `daedalus-{START,WORK,STOP}` loaded).
-- **Updated:** 2026-09-16 ~09:36 PT (START fire)
+- **Updated:** 2026-09-16 ~13:55 PT (WORK/MID fire)
+- **2026-09-16 (WORK/MID fire) — Round 220 (`21db36a0`, `98473e91`, `26116a80`, `213f1b97`, pushed to `main`): Theseus's §6(a) had a third site, §7's three-fire corpus item is closed, and three of my own controls this fire were tautologies.**
+  - **§6(a) was two sites in his memo and three in the tree.** He named `storage.ts:52`
+    (hardcoded `Maximum is 10 MB.`) vs `files.ts:67` (derived). Grepped the whole tree
+    rather than the two files named: `client/src/components/MessageInput.tsx:117` held
+    **both** halves as literals — `file.size > 10 * 1024 * 1024` and the sentence. **That
+    one is worse in kind:** a disagreeing sentence is a bad error message; a disagreeing
+    threshold in the browser produces *no* message, because the request is never sent.
+    Raise the server cap and the attach button silently refuses files the server accepts.
+  - **Fix:** `MAX_FILE_SIZE_BYTES` + `formatFileSizeLimit(maxBytes)` moved to
+    `@klatch/shared`; `storage.ts` re-exports the constant so the six test files mocking
+    `../files/storage.js` keep resolving. All three sites derive the number and keep their
+    own wording (`size-cap.ts`'s rule — the header check still says "uploaded").
+    `ProjectSettings.tsx` has **no** client gate; checked and left alone — since Round 218
+    the server refuses in 0–3 ms with a correct sentence, so it is an asymmetry in
+    politeness, not policy.
+  - **The helper written to fix the bug reintroduced it, and failed its own test on the
+    first run.** `formatFileSizeLimit(maxBytes = MAX_FILE_SIZE_BYTES)` — a default binds
+    the *declaring* module's constant, which `vi.mock` does not replace, so the defaulted
+    call said `10 MB` while every production call said `2.5 MB`. Default removed at both
+    helpers; the cap is a required argument, pinned by `expect(fn.length).toBe(1)`.
+  - **My mocked cap was too weak and only mutation 2 showed it.** At 2.5 MB,
+    `${max / (1024 * 1024)} MB` and `formatFileSizeLimit` return the *same string*, so
+    reverting `files.ts` to its own arithmetic left the file entirely green. Re-aimed at
+    **2.25 MB**, where the formatter rounds to `2.3 MB` and raw division prints `2.25 MB`.
+    **Transferable: a control that mocks a constant is only as strong as the value it
+    mocks it to** — a "clean" test value re-creates the coincidence being tested for.
+  - **§7's corpus item closed after three fires of being named:**
+    `scripts/probe-round220-reassign-on-the-march-corpus.mts`, **32/32, 0 failed, no
+    defect.** Copy only; `march14.db` md5-identical before and after, `packages/`
+    untouched, both asserted at exit. Zero model calls. The corpus is **139 channels / 68
+    entities / 170 seats / 2652 messages (1270 stamped), 138 of 139 seated on
+    `default-entity` alone** — single-seat channels with ~100 real rows each, where every
+    unit-suite case is a two-seat channel the test wrote. Heaviest seat (174 rows) moves
+    whole with `added_at` preserved; blast radius measured **cell by cell** (exactly 174
+    cells changed, all `entity_id`, none outside the channel); at scale all 137 remaining
+    `default-entity` seats + 1081 further rows, 0 refused, no channel emptied.
+  - **Limit measured, not argued:** `fromEntityOrphaned` is hardcoded false for
+    `DEFAULT_ENTITY_ID` (`queries.ts:651`), which is the source for 138 of 139 possible
+    reassigns here — **the orphan report is structurally silent on the only corpus we
+    have.** Arm F drives a non-default source separately to show the flag does work.
+  - **Three tautological controls found in my own work this fire, and the third is the
+    finding.** (1) `formatFileSizeLimit()`'s default, above. (2) `reassigned + refused ===
+    total` — true by loop construction. (3) **`count(EMPTY_CHANNELS) === count(EMPTY_CHANNELS)`**,
+    the same subquery compared against itself: aimed at the worst thing a reassign can do
+    and **true of a database in which all 139 channels have just been emptied**. Caught by
+    *reading the output*, not by mutation — no mutation could have. Rewritten against arm
+    A's baseline; mutation 9 (suppress the seat INSERT) then reads `empty now=117
+    before=0`. **Working rule adopted: every check must have two sides that came from
+    different places, and I must be able to say which two.** This is a third face of
+    Theseus's §5 (source-text assertions) and §6(a) (self-derived inputs) — the cheapest to
+    write and the hardest to see, because there is no literal to be suspicious of.
+  - **9 mutations driven, 9/9 red as predicted.** M1 storage re-hardcodes → 2; M2 files.ts
+    re-derives → 2 (the one that was green at 2.5 MB); M3 formatter always `.toFixed(1)` →
+    4 across 2 files, incl. Round 218's shipped-value literals; M4 storage re-declares the
+    constant → 5; M5 client threshold → 2; M6 client sentence → 3; M7 drop "uploaded" → 6
+    across 2 files; M8 message move scoped to the whole channel → 4 (**355 rows instead of
+    174 on real data — 181 user messages claimed by an agent**); M9 suppress the seat
+    INSERT → 6.
+  - Server **119 files / 1884 passed / 1 skipped** (+1 file, +10 from 118/1874/1). Client
+    **324 / 13 skipped** (+7 from 317/13). Typecheck ×3 and `npm run build` clean; full
+    suites re-run after every revert.
+  - **§6(b) verified and routed to xian, not built.** `entities.ts:230` enforces the
+    last-entity floor; `queries.ts:483` (`deleteEntity`) has none, so deleting an agent
+    empties every channel seated only on it. Theseus's read is exact. The premise question
+    (what a channel with no entity *is*) is xian's — **but the second half is separable and
+    needs no premise answered: `DELETE /entities/:id` returns 200 and says nothing about
+    the N channels it just emptied.** Thread left **open** in `docs/mail/` for that.
+  - **Named, not implied — not done:** (1) no wire drive of the cap change; the sentence
+    Theseus's Round 219 arm A asserts is unchanged, so his probe should stay green and if
+    it doesn't that is the news — offered to him. (2) six test files still carry
+    `MAX_FILE_SIZE_BYTES: 10 * 1024 * 1024` in their `storage.js` mock, harmless and not
+    chased. (3) `round14`/`15`/`16` private harnesses, unchanged again.
 - **2026-09-16 (START fire) — Round 218 (`dd4bba07`, `27889176`): both of Theseus's Round 217 items closed, and a correction to my own 9/15 entry below.**
   - **§3 was never a sizing decision, and I am the one who made it look like one.** My 9/15 entry
     (below) says `files.ts`'s missing cap "is a sizing decision, not a body-guard question," and

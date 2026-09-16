@@ -182,3 +182,166 @@ before repeating: four test files mount `fileRoutes` on their own local apps, an
 `round14-file-domain-model.test.ts:243` drives `GET /api/channels/default/files`. The accurate claim
 is the narrower one Theseus actually wrote — the two **multipart POST upload handlers** were driven
 by no test. Carried to Calliope in the memo, since the brief is what travels to other projects.
+
+---
+
+## 13:17 PT — WORK/MID fire · Round 220
+
+**Briefing.** Pulled clean at `5b69b315`. Read `docs/COORDINATION.md` (my section) and
+`docs/mail/`. One memo addressed to me by name and unread:
+`theseus-to-daedalus-…-driven-at-the-wire-and-my-own-tripwire-was-the-vacuous-one-2026-09-16.md`
+(Round 219, 27/27 at the wire). Read in full at the top of the fire. It closes my Round 218
+items and leaves three things: **§6(a)** a hardcoded cap sentence, **§6(b)** a last-entity
+floor asymmetry, **§7** reassign on the March corpus, undriven for a third fire. Took §6(a)
+and §7; verified §6(b) and routed it rather than building it.
+
+### §6(a) — three enforcers, not two
+
+Before fixing, grepped the whole tree for the literal rather than the two files Theseus
+named:
+
+```
+$ grep -rn --include="*.ts" --include="*.tsx" -e "10 MB" -e "10MB" -e "MAX_FILE_SIZE" packages/*/src
+packages/client/src/components/MessageInput.tsx:118:  alert('File too large. Maximum size is 10 MB.');
+packages/server/src/files/storage.ts:52: ... Maximum is 10 MB.`
+packages/server/src/routes/files.ts:67:  ... Maximum is ${max / (1024 * 1024)} MB.`
+```
+
+`MessageInput.tsx:117-118` held **both** the threshold and the sentence as literals. That
+gate is the one a user meets first, and its failure mode is worse than a wrong sentence:
+raise the server cap and the attach button keeps refusing files the server would take, with
+no error anywhere, because the request is never sent.
+
+`ProjectSettings.tsx:28` (`handleFileUpload`) has **no** client gate at all — checked, and
+left alone: since Round 218 the server refuses that path in 0–3 ms with a correct sentence.
+
+**Fix:** `MAX_FILE_SIZE_BYTES` + `formatFileSizeLimit(maxBytes)` → `@klatch/shared`;
+`storage.ts` re-exports the constant so the six test files that mock `../files/storage.js`
+keep resolving. Three sites, one number, three voices.
+
+### Two things my own tests caught in the fix
+
+1. **`formatFileSizeLimit(maxBytes = MAX_FILE_SIZE_BYTES)` failed its own test on the first
+   run** — `expected '10 MB' to be '2.5 MB'`. A default parameter binds the *declaring*
+   module's constant, which `vi.mock` does not replace. The helper written to stop two sites
+   disagreeing about the cap was itself answering about two caps. Default removed at both
+   helpers; pinned by `expect(fn.length).toBe(1)`.
+2. **The `limitClause` regex in my own test was `/Maximum is ([^.]+\.)/` and returned `2.`**
+   — the fractional cap's decimal point ends the match. Only visible at a fractional cap; at
+   10 or 20 MB it reads correctly. Same shape as the thing under test.
+
+### 9 mutations, 9/9 red as predicted
+
+| # | mutation | red |
+|---|---|---|
+| 1 | `storage.ts` re-hardcodes `Maximum is 10 MB.` | 2 |
+| 2 | `files.ts` re-derives the cap with `max / (1024*1024)` | 2 |
+| 3 | formatter always `.toFixed(1)` | 4 across 2 files (incl. round218's shipped literals) |
+| 4 | `storage.ts` re-declares its own constant | 5 |
+| 5 | client threshold back to `10 * 1024 * 1024` | 2 |
+| 6 | client sentence back to a literal | 3 |
+| 7 | drop the "uploaded" distinction | 6 across 2 files |
+| 8 | message move scoped to the whole channel | 4 — **355 rows instead of 174 on real data** |
+| 9 | suppress the seat INSERT | 6 — **`empty now=117 before=0`** |
+
+**Mutation 2 is the finding about my own control.** It was **green** on the first version of
+the test, which mocked the cap to 2.5 MB. `${max / (1024 * 1024)} MB` and
+`formatFileSizeLimit` return the *identical string* for any cap with at most one decimal, so
+reverting `files.ts` to its own arithmetic changed nothing the test could see — the two
+sentences still agreed, by coincidence again, one decimal further out than the coincidence
+Theseus found. Re-aimed at **2.25 MB** (`2.3 MB` through the formatter, `2.25 MB` through raw
+division) and committed separately (`98473e91`) so the weakening is in the history.
+
+**Transferable:** *a control that mocks a constant is only as strong as the value it mocks it
+to.* Choosing a clean test number is the same instinct that lets literals agree by accident.
+
+### §7 — reassign on the March corpus, driven
+
+`scripts/probe-round220-reassign-on-the-march-corpus.mts` — **32/32 checks, 0 failed, no
+defect found.** Query layer direct, not HTTP (the wire is what Theseus's Round 213 covered;
+the data is what nobody had). Works on a copy under `.testdata/r220/`; `march14.db` md5
+identical before and after and `packages/` untouched, both asserted by the probe at exit.
+Zero model calls.
+
+```
+139 channels · 68 entities · 170 seats · 2652 messages (1270 stamped)
+138 of 139 channels seated on default-entity ALONE
+heaviest: "VA exec asst" — one seat, 174 stamped messages
+```
+
+Every case in the Round 212 unit suite is a two-seat channel with a handful of rows the test
+wrote. The corpus is single-seat channels with ~100 real rows. Heaviest seat moves whole,
+`added_at` preserved (`2026-03-14 12:25:14` both sides); blast radius compared **cell by
+cell** against a pre-image — exactly 174 cells changed, all `entity_id`, none outside the
+channel, exactly two seat rows differ. At scale: all 137 remaining `default-entity` seats,
+1081 further rows, 137 reassigned / 0 refused, no channel emptied, message total unchanged.
+Five refusals driven against real ids.
+
+**Limit measured, not argued:** `fromEntityOrphaned` is hardcoded false for
+`DEFAULT_ENTITY_ID` (`queries.ts:651`), and `default-entity` is the source for 138 of 139
+possible reassigns here — so **the orphan report is structurally silent on the only corpus we
+have.** It reported false on all 137 moves, including the last, after which `default-entity`
+held nothing. Arm F drives a non-default source separately to show the flag does work.
+
+### The finding of the fire, and it is against my own probe
+
+Two of that probe's checks were tautologies in the first draft, caught by **reading the
+output** — no mutation would have caught either:
+
+```js
+check(..., reassigned + others === defaultSeats.length);          // true by loop construction
+check('no channel lost its last seat',
+      count(EMPTY_CHANNELS) === count(EMPTY_CHANNELS));           // the same subquery, twice
+```
+
+The second is aimed at the worst thing this operation can do and is **true of a database in
+which all 139 channels have just been emptied**. Rewritten against arm A's baseline; mutation
+9 then reads `FAIL no channel lost its last seat — empty now=117 before=0`. The original
+would have said `ok` while 117 of xian's channels sat empty.
+
+That is three vacuous controls of mine in one fire (the default parameter, and these two),
+two of them written *after* reading Theseus's §5 memo about exactly this. Theseus's §5 named
+source-text assertions; his §6(a) named self-derived inputs; this is a third face —
+**a control whose two sides are the same expression** — and it is the hardest to see, because
+there is no literal and no grep to be suspicious of.
+
+**Working rule adopted for this seat:** every check must have two sides that came from
+different places, and I must be able to say which two.
+
+### §6(b) — verified, not built
+
+```
+entities.ts:230   'Cannot remove the last entity from a channel'  → 400
+queries.ts:483    DELETE FROM channel_entities WHERE entity_id = ?   (deleteEntity, no floor)
+```
+
+Theseus's read is exact. The premise question — what a channel with no entity *is* — is
+xian's, so nothing built. Routed with two shapes, the second separable from the premise call:
+**`DELETE /entities/:id` returns 200 and says nothing about the N channels it just emptied**,
+which is wrong whichever way the floor question goes. Thread left **open** in `docs/mail/`.
+
+### Verification (Session Wrap Protocol)
+
+```
+$ git log origin/main --oneline -5
+213f1b97 mail: Daedalus -> Theseus, your 6(a) had a third site and the corpus item is closed
+26116a80 Round 220: reassign driven on the March corpus, 32/32 -- Theseus's three-fire item
+98473e91 Round 220: retarget the mocked cap to 2.25 MB so a second derivation is visible
+21db36a0 Round 220: one file-size cap for three enforcers, and the client had the third
+5b69b315 coordination+rollup+log: Calliope 9/16 MID fire ...
+```
+
+Server **119 files / 1884 passed / 1 skipped** (+1 file, +10 from 118/1874/1). Client
+**324 passed / 13 skipped** (+7 from 317/13). Typecheck ×3 and `npm run build` clean; full
+suites re-run after every mutation was reverted, working tree clean between each.
+
+**Not claiming:**
+
+1. **No wire drive of the cap change.** All `app.request()` and jsdom. The sentence Theseus's
+   Round 219 arm A asserts is unchanged by this work, so his probe should stay green — and if
+   it does not, that is the news. Offered to him, not assumed.
+2. **Six test files still carry `MAX_FILE_SIZE_BYTES: 10 * 1024 * 1024`** in their
+   `storage.js` mock. Mocks of a module that no longer declares it; harmless, not chased.
+3. **`round14`/`15`/`16` still build private harnesses.** Unchanged for a third fire.
+4. **`Models API fetch failed` ×55 per suite run.** Theseus's §4 note taken — his 0 was a
+   keyed live server, my 55 is the keyless suite. Both true, not merged. Still nobody's item.
