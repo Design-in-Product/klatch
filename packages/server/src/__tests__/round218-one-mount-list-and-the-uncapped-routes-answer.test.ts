@@ -46,7 +46,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { createTestApp } from './app.js';
 import { mountApiRoutes } from '../routes/mount.js';
-import { MAX_FILE_SIZE_BYTES } from '../files/storage.js';
+import { MAX_FILE_SIZE_BYTES, validateFile } from '../files/storage.js';
 import { MULTIPART_ENVELOPE_ALLOWANCE } from '../routes/size-cap.js';
 import { createProject } from '../db/queries.js';
 
@@ -236,15 +236,32 @@ describe('Round 218 — the uncapped upload routes now refuse from the header', 
     expect(await sentence(withoutHeader)).toBe(GUARD_SENTENCE);
   });
 
-  it('the two sentences differ, and the cap’s says "uploaded"', () => {
-    // Round 217 §1's check, applied to this pair: if anyone ever makes the cap
-    // and the exact check share one string, both of the assertions above stay
-    // green and this one goes red. "uploaded" is the word carrying "this is the
-    // envelope you declared, not a file we measured."
-    expect(CAP_SENTENCE).toContain('uploaded');
-    expect(CAP_SENTENCE).not.toBe(GUARD_SENTENCE);
-    expect(read('files/storage.ts')).toContain('Maximum is 10 MB.');
-    expect(read('files/storage.ts')).not.toContain('uploaded');
+  it('the pre-read sentence and the exact check’s sentence are distinguishable', async () => {
+    // Round 217 §1's check, applied to this pair. Both sides are read out of
+    // the product — the cap's from a real response, the exact check's from
+    // `validateFile` itself — because an earlier version of this compared a
+    // string literal in this file against itself and stayed green through
+    // mutation 5, which rewrote the server's sentence entirely.
+    const capped = await sentence(
+      await createTestApp().request('/api/channels/any/files', OVERSIZE)
+    );
+
+    const oversizeFile = validateFile(
+      Buffer.alloc(MAX_FILE_SIZE_BYTES + 1),
+      'text/plain',
+      'big.txt'
+    );
+
+    expect(oversizeFile.valid).toBe(false);
+    const exact = oversizeFile.valid === false ? oversizeFile.reason : null;
+
+    // Same family, same units, same cap — and still tellable apart, by the one
+    // word that says which check answered.
+    expect(capped).toContain('uploaded');
+    expect(exact).not.toContain('uploaded');
+    expect(capped).not.toBe(exact);
+    expect(capped).toContain('Maximum is 10 MB.');
+    expect(exact).toContain('Maximum is 10 MB.');
   });
 });
 
@@ -273,11 +290,20 @@ describe('Round 218 — controls: nothing previously accepted is now refused', (
     expect(await sentence(res)).toBe(GUARD_SENTENCE);
   });
 
-  it('a declared size over the cap but inside the envelope allowance falls through', async () => {
-    // The boundary case the allowance exists for: a file of exactly 10 MB
-    // arrives declaring 10 MB *plus* boundaries and part headers. `validateFile`
-    // would accept that file, so this guard must not refuse its envelope.
-    const declared = MAX_FILE_SIZE_BYTES + MULTIPART_ENVELOPE_ALLOWANCE;
+  it('a file of exactly the cap, wrapped in a real envelope, is not refused', async () => {
+    // The boundary case the allowance exists for: a 10 MB file — which
+    // `validateFile` accepts — arrives declaring 10 MB *plus* boundaries and
+    // part headers, so this guard must not refuse its envelope.
+    //
+    // MEASURED_ENVELOPE is a literal on purpose. The first version of this
+    // check computed its input as `MAX_FILE_SIZE_BYTES +
+    // MULTIPART_ENVELOPE_ALLOWANCE`, which made it self-referential: shrinking
+    // the allowance shrank the request in lockstep and the check stayed green.
+    // Mutation 4 (allowance → 0) reddened nothing and that is how it was
+    // caught. A control that reads its expectation out of the thing it is
+    // controlling is not a control.
+    const MEASURED_ENVELOPE = 187; // probe-import-multipart-cap.mts, arm B
+    const declared = MAX_FILE_SIZE_BYTES + MEASURED_ENVELOPE;
     const res = await createTestApp().request('/api/channels/any/files', {
       method: 'POST',
       headers: { 'Content-Type': MULTIPART_CT, 'Content-Length': String(declared) },
@@ -285,6 +311,27 @@ describe('Round 218 — controls: nothing previously accepted is now refused', (
     });
 
     expect(await sentence(res)).toBe(GUARD_SENTENCE);
+  });
+
+  it('the allowance is at least the largest envelope anyone has measured', () => {
+    // States the requirement the check above depends on, in one place, so
+    // shrinking the constant fails with a reason rather than with a confusing
+    // 400 somewhere else.
+    expect(MULTIPART_ENVELOPE_ALLOWANCE).toBeGreaterThanOrEqual(187);
+  });
+
+  it('and one byte past cap + allowance IS refused — the other side of the boundary', async () => {
+    // Without this, "falls through" could be satisfied by a guard that never
+    // refuses anything. Pins that the threshold is where it claims to be.
+    const declared = MAX_FILE_SIZE_BYTES + MULTIPART_ENVELOPE_ALLOWANCE + 1;
+    const res = await createTestApp().request('/api/channels/any/files', {
+      method: 'POST',
+      headers: { 'Content-Type': MULTIPART_CT, 'Content-Length': String(declared) },
+      body: UNPARSEABLE,
+    });
+
+    expect(await sentence(res)).toContain('uploaded');
+    expect(await sentence(res)).not.toBe(GUARD_SENTENCE);
   });
 
   it('an oversized upload at a nonexistent project still gets the 404', async () => {
