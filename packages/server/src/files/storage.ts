@@ -1,11 +1,17 @@
 import fs from 'fs';
 import path from 'path';
 import { randomUUID } from 'crypto';
+import { MAX_FILE_SIZE_BYTES, formatFileSizeLimit } from '@klatch/shared';
 
 // ── Configuration ────────────────────────────────────────────
 
-/** Max file size: 10 MB (conservative start, bump later) */
-export const MAX_FILE_SIZE_BYTES = 10 * 1024 * 1024;
+/**
+ * Re-exported, not declared. The cap moved to `@klatch/shared` in Round 220
+ * because the client enforces it too and had its own copy; see the doc comment
+ * there. Kept exported from this module so the server modules and test mocks
+ * that already import it from here keep resolving.
+ */
+export { MAX_FILE_SIZE_BYTES };
 
 /** Allowed MIME type prefixes (permissive — we can tighten later) */
 const ALLOWED_MIME_PREFIXES = [
@@ -49,7 +55,14 @@ export function validateFile(
 ): { valid: true } | { valid: false; reason: string } {
   if (buffer.length > MAX_FILE_SIZE_BYTES) {
     const sizeMB = (buffer.length / (1024 * 1024)).toFixed(1);
-    return { valid: false, reason: `File too large (${sizeMB} MB). Maximum is 10 MB.` };
+    // No "uploaded": this is the measured size of the bytes we hold, which is
+    // what distinguishes this refusal from the pre-read header check in
+    // `routes/files.ts`. The *cap* is formatted centrally so the two sentences
+    // cannot name different numbers.
+    return {
+      valid: false,
+      reason: `File too large (${sizeMB} MB). Maximum is ${formatFileSizeLimit(MAX_FILE_SIZE_BYTES)}.`,
+    };
   }
 
   if (buffer.length === 0) {

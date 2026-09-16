@@ -1,5 +1,26 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import type { Entity, InteractionMode } from '@klatch/shared';
+import { MAX_FILE_SIZE_BYTES, formatFileSizeLimit } from '@klatch/shared';
+
+/**
+ * The message the attach button shows when it refuses a file locally.
+ *
+ * Exported, and the cap is a required argument, so a test can drive it at a
+ * value the constant does not hold — see `formatFileSizeLimit` in
+ * `@klatch/shared` for why a default would defeat that.
+ *
+ * Until Round 220 both the threshold and the `10 MB` in this sentence were
+ * literals here, independent of the server's — so raising the server cap would
+ * have left this gate refusing files the server was willing to accept, with no
+ * error anywhere, because the request is never sent.
+ *
+ * Its own voice, deliberately: no measured size, because the browser refusing a
+ * file it can see is a different event from the server refusing one it read.
+ * The *number* is shared.
+ */
+export function attachmentTooLargeMessage(maxBytes: number): string {
+  return `File too large. Maximum size is ${formatFileSizeLimit(maxBytes)}.`;
+}
 
 interface Props {
   onSend: (content: string) => void;
@@ -114,8 +135,8 @@ export function MessageInput({ onSend, onSendWithFile, onStop, disabled, isStrea
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      if (file.size > 10 * 1024 * 1024) {
-        alert('File too large. Maximum size is 10 MB.');
+      if (file.size > MAX_FILE_SIZE_BYTES) {
+        alert(attachmentTooLargeMessage(MAX_FILE_SIZE_BYTES));
         return;
       }
       setAttachedFile(file);

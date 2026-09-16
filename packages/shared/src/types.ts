@@ -180,6 +180,59 @@ export function fallbackEffortLevels(modelId: string): EffortLevel[] {
 export const FALLBACK_MAX_OUTPUT_TOKENS = 16384;
 
 /**
+ * Max size of a single uploaded file: 10 MB (conservative start, bump later).
+ *
+ * **Declared here, in shared, because three layers enforce it and the user can
+ * meet any of them.** Before Round 220 the number lived in
+ * `server/src/files/storage.ts` and the client carried its own copy, so the
+ * browser gate and the server gate were two independent policies that happened
+ * to agree. Raising the server cap alone would have left the attach button
+ * silently refusing files the server was willing to take — a divergence with no
+ * error message anywhere, because the request is never sent.
+ *
+ * The three enforcement points, in the order a file meets them:
+ *
+ * 1. `client/src/components/MessageInput.tsx` — refuses before upload.
+ * 2. `server/src/routes/files.ts` — `rejectOversizeBeforeRead`, on the declared
+ *    `Content-Length`, before the body is buffered (Round 218).
+ * 3. `server/src/files/storage.ts` — `validateFile`, on the bytes actually
+ *    received. The authority; the other two only refuse earlier.
+ *
+ * All three word their sentence differently and should keep doing so — see
+ * `routes/size-cap.ts` for why. What must not differ is the number, and the
+ * label for it: use {@link formatFileSizeLimit}, never a literal.
+ */
+export const MAX_FILE_SIZE_BYTES = 10 * 1024 * 1024;
+
+/**
+ * Render a byte cap the way every file-size refusal says it: `10 MB`.
+ *
+ * **The cap is a required argument, and deliberately has no default.** Taking
+ * it as an argument is what lets a test drive the formatter at a value the
+ * constant does not hold; a control that only ever asks for the label of the
+ * current cap passes whether the sentence derives the number or hardcodes it —
+ * Theseus's Round 219 §6(a): the `files.ts` and `storage.ts` sentences agreed
+ * *only because the constant was 10 MB*.
+ *
+ * A default of `MAX_FILE_SIZE_BYTES` was written first and removed after it
+ * failed its own test in the same fire. The default binds this module's own
+ * constant, so under `vi.mock('@klatch/shared', …)` a caller passing nothing
+ * gets `10 MB` while a caller passing the mocked cap gets `2.5 MB` — the same
+ * function answering about two different limits, which is the exact defect
+ * being fixed here, reintroduced one layer down. Every caller names the cap it
+ * is enforcing.
+ *
+ * Whole megabytes print without a decimal (`10 MB`, not `10.0 MB`); a fractional
+ * cap keeps one (`10.5 MB`). This is the cap's label only — the *measured* size
+ * in those same sentences keeps each site's own formatting, which is what tells
+ * a reader which of the three checks spoke.
+ */
+export function formatFileSizeLimit(maxBytes: number): string {
+  const mb = maxBytes / (1024 * 1024);
+  return `${Number.isInteger(mb) ? mb : mb.toFixed(1)} MB`;
+}
+
+/**
  * A model as published by `GET /api/models`. Declared here because both the
  * server (which builds it) and the client (which consumes it, and rebuilds it
  * offline) need the same shape.

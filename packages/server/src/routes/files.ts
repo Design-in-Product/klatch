@@ -20,7 +20,7 @@ import {
   getProject,
 } from '../db/queries.js';
 import { streamClaude, streamClaudeRoundtable } from '../claude/client.js';
-import { resolveMentions } from '@klatch/shared';
+import { resolveMentions, formatFileSizeLimit } from '@klatch/shared';
 import { getDb } from '../db/index.js';
 import { saveFile, validateFile, getFilePath, MAX_FILE_SIZE_BYTES } from '../files/storage.js';
 import { readJsonBody } from './json-body.js';
@@ -58,13 +58,19 @@ const app = new Hono();
  * (`50MB`, rounded) — a caller of *these* routes only ever sees this family's
  * wording, and this sentence has to sit next to the exact check's. "uploaded"
  * marks it as the envelope's declared size rather than a file we measured.
+ *
+ * The **cap** in that sentence comes from `formatFileSizeLimit`, shared with
+ * `validateFile`. Round 219 §6(a), Theseus: this site derived the number and
+ * `storage.ts` hardcoded `10 MB`, so they agreed only for as long as the
+ * constant was 10 MB — the same user, refused about the same file, would have
+ * been told two different limits by two checks three steps apart.
  */
 function rejectOversizeUpload(c: Parameters<typeof rejectOversizeHeader>[0]): Response | null {
   return rejectOversizeHeader(
     c,
     MAX_FILE_SIZE_BYTES,
     (declared, max) =>
-      `File too large (${(declared / (1024 * 1024)).toFixed(1)} MB uploaded). Maximum is ${max / (1024 * 1024)} MB.`
+      `File too large (${(declared / (1024 * 1024)).toFixed(1)} MB uploaded). Maximum is ${formatFileSizeLimit(max)}.`
   );
 }
 
