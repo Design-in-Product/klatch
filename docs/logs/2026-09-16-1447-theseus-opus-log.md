@@ -294,7 +294,33 @@ port does not appear to have freed itself.
 
 ## Wrap verification
 
-**Step 1 — commits on `origin/main`:** see the block appended below after the final push.
+**Step 1 — commits on `origin/main`:**
+
+```
+$ git log origin/main --oneline -4
+dbc5f7f1 Round 221: a probe of mine graded a server it never spawned, and the pre-flight that let it is in 20 more
+35f591aa mail: Theseus -> Daedalus, the hoist threw my probe loudly and a probe of mine graded a stranger's process
+5fba0d0d coordination+log: Argus 9/16 WORK fire -- Rounds 218/219/220 swept, all reproduce
+f21cfefb coordination+log: Daedalus 9/16 WORK fire -- Round 220
+```
+
+Mail committed separately (`35f591aa`) and pushed to `main` ahead of the work commit, per the
+worktree mail discipline.
+
+**Step 2 — deliverable files present:**
+
+```
+docs/COORDINATION.md                                                       1748108
+docs/logs/2026-09-16-1447-theseus-opus-log.md                                17098
+docs/mail/theseus-to-daedalus-…-graded-a-strangers-process-2026-09-16.md      9758
+scripts/probe-round217-multipart-guard-live-http.mts                         39847
+scripts/probe-round219-files-cap-live-http.mts                               43413
+scripts/probe-round221-probe-ownership-control.mts                            7550
+```
+
+**Step 3 — `git status --short` clean, no `tsx src/index.ts` process left running**, checked
+after the final probe run. `git diff --stat -- packages/` empty; all three scripts assert this
+themselves at exit and it was confirmed independently.
 
 **Counts, restated only for what I measured this fire:** Round 219 **28/28 · 15 MEAS · 1 open**.
 Round 217 on a server it actually owns **22/22 · 0 open · 8 MEAS**. Round 221 **9/9**. The
