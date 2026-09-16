@@ -14,53 +14,31 @@ import { MODEL_ALIASES, AVAILABLE_MODELS } from '@klatch/shared';
 import type { ModelId } from '@klatch/shared';
 import { readJsonBody } from './json-body.js';
 import { readFormBody } from './form-body.js';
+import { rejectOversizeBeforeRead as rejectOversizeHeader } from './size-cap.js';
 
 // Max file size for imports (50 MB)
 const MAX_IMPORT_SIZE = 50 * 1024 * 1024;
 
 /**
- * Slack for the multipart envelope — boundary lines, part headers, trailing
- * CRLFs — when comparing Content-Length against a cap that is about the FILE.
- * Measured at 187 bytes for a single-part 2 MB upload from Node's fetch
- * (`scripts/probe-import-multipart-cap.mts`, arm B); 1 MB is far more than any
- * realistic envelope and keeps this guard from ever refusing a file that the
- * exact check downstream would have allowed.
- */
-const MULTIPART_ENVELOPE_ALLOWANCE = 1024 * 1024;
-
-/**
  * Refuse an oversized multipart upload BEFORE `c.req.formData()` reads it.
  *
- * Why this exists: every multipart site below checks `arrayBuffer.byteLength`
- * against MAX_IMPORT_SIZE, which reads as if the cap prevents the allocation.
- * It does not. `c.req.formData()` buffers the whole body first, so by the time
- * any handler check runs — the size cap, or even the `.jsonl` extension check
- * that sits above it — the memory is already spent. Measured on 2026-09-04
- * (Round 151): a 70.3 MB upload refused by the cap peaked at 169.6 MB over
- * baseline; the same bytes refused one check EARLIER, by the extension check,
- * peaked at 170.5 MB. Identical, because neither check is what does the
- * reading. The path-based routes have no such problem — they `stat()` and
- * refuse for free (0.0 MB, 107 ms).
+ * The fall-through rules and the Round 151 measurement behind them now live in
+ * `size-cap.ts`, shared with `files.ts`, which got the same guard in Round 218.
+ * This wrapper exists to hold the *import* family's sentence and cap; read
+ * `size-cap.ts` for why the message is a callback rather than a shared string.
  *
- * Content-Length is the only size signal available before the body is read,
- * and it is present on these requests (arm B). When it is absent we fall
- * through to the existing behaviour rather than guessing — this guard can only
- * ever reject earlier, never accept something that was previously refused.
- *
- * This does NOT change what size is allowed. The exact per-file check stays
- * where it is and remains the authority; this only stops us buffering bodies
- * that are already, unambiguously, too big.
+ * The message reports the envelope size and says "uploaded", deliberately —
+ * `rejectOversizeFile` below reports the file's own size and does not. Keeping
+ * the two sentences distinguishable is how anyone reading a support report can
+ * tell which check answered.
  */
 function rejectOversizeBeforeRead(c: any): Response | null {
-  const raw = c.req.header('content-length');
-  if (!raw) return null;
-  const declared = Number(raw);
-  if (!Number.isFinite(declared) || declared <= 0) return null;
-  if (declared <= MAX_IMPORT_SIZE + MULTIPART_ENVELOPE_ALLOWANCE) return null;
-  // Report the envelope size honestly rather than implying we measured the file.
-  return c.json({
-    error: `File too large (${Math.round(declared / 1024 / 1024)}MB uploaded). Maximum is ${MAX_IMPORT_SIZE / 1024 / 1024}MB.`,
-  }, 400);
+  return rejectOversizeHeader(
+    c,
+    MAX_IMPORT_SIZE,
+    (declared, max) =>
+      `File too large (${Math.round(declared / 1024 / 1024)}MB uploaded). Maximum is ${max / 1024 / 1024}MB.`
+  );
 }
 
 /**

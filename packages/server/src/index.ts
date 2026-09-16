@@ -18,29 +18,15 @@ dotenv.config({ path: findEnv(__dirname), override: true });
 import { Hono } from 'hono';
 import { cors } from 'hono/cors';
 import { serve } from '@hono/node-server';
-import { messageRoutes } from './routes/messages.js';
-import { channelRoutes } from './routes/channels.js';
-import { entityRoutes } from './routes/entities.js';
-import { importRoutes } from './routes/import.js';
-import { projectRoutes } from './routes/projects.js';
-import { modelRoutes } from './routes/models.js';
-import { fileRoutes } from './routes/files.js';
-import { aaxtRoutes } from './routes/aaxt.js';
-import { exportRoutes } from './routes/export.js';
+import { mountApiRoutes } from './routes/mount.js';
 import { getDb } from './db/index.js';
 
 const app = new Hono();
 
 app.use('/*', cors());
-app.route('/api', channelRoutes);
-app.route('/api', messageRoutes);
-app.route('/api', entityRoutes);
-app.route('/api', importRoutes);
-app.route('/api/projects', projectRoutes);
-app.route('/api', modelRoutes);
-app.route('/api', fileRoutes);
-app.route('/api', aaxtRoutes);
-app.route('/api', exportRoutes);
+// The mount list lives in `routes/mount.ts` so the test harness uses this exact
+// list, in this exact order, rather than a second copy of it. See that file.
+mountApiRoutes(app);
 
 // Initialize database on startup
 getDb();

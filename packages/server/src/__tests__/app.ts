@@ -1,17 +1,18 @@
 import { Hono } from 'hono';
-import { channelRoutes } from '../routes/channels.js';
-import { messageRoutes } from '../routes/messages.js';
-import { entityRoutes } from '../routes/entities.js';
-import { importRoutes } from '../routes/import.js';
-import { projectRoutes } from '../routes/projects.js';
+import { mountApiRoutes } from '../routes/mount.js';
 
-/** Build a Hono app for testing (no server.listen, no dotenv) */
+/**
+ * Build a Hono app for testing (no server.listen, no dotenv, no cors).
+ *
+ * The router list is **not** maintained here. `mountApiRoutes` is the same
+ * function `index.ts` calls, so this app mounts the same nine routers in the
+ * same order as the running server — read that file's docstring for why there
+ * is only one list now.
+ *
+ * Before Round 218 this function kept its own list of five, and the four it
+ * omitted were unreachable from every test. If you are adding a router, add it
+ * in `routes/mount.ts`; there is nothing to add here.
+ */
 export function createTestApp(): Hono {
-  const app = new Hono();
-  app.route('/api', channelRoutes);
-  app.route('/api', messageRoutes);
-  app.route('/api', entityRoutes);
-  app.route('/api', importRoutes);
-  app.route('/api/projects', projectRoutes);
-  return app;
+  return mountApiRoutes(new Hono());
 }

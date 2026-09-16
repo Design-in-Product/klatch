@@ -122,11 +122,18 @@ async function clientVisibleSentence(res: Response): Promise<string | null> {
   return detail?.error ?? null;
 }
 
-/** `files.ts` is not mounted by `createTestApp()`; mount it the way its own tests do. */
+/**
+ * `createTestApp()` now mounts `fileRoutes` — Round 218 closed the harness gap
+ * this helper existed to work around, and the comment that used to sit here
+ * ("`files.ts` is not mounted by `createTestApp()`") is no longer true.
+ *
+ * Kept as a thin alias rather than inlined at ~20 call sites, and kept pointing
+ * at the canonical app rather than at a private `new Hono()`, so these checks
+ * are driving the same assembly the server runs. `fileRoutes` stays imported
+ * only for the structural assertion below it.
+ */
 function fileApp(): Hono {
-  const app = new Hono();
-  app.route('/api', fileRoutes);
-  return app;
+  return createTestApp();
 }
 
 describe('Round 216 — malformed multipart bodies refuse with a sentence', () => {

@@ -25,8 +25,48 @@ import { getDb } from '../db/index.js';
 import { saveFile, validateFile, getFilePath, MAX_FILE_SIZE_BYTES } from '../files/storage.js';
 import { readJsonBody } from './json-body.js';
 import { readFormBody } from './form-body.js';
+import { rejectOversizeBeforeRead as rejectOversizeHeader } from './size-cap.js';
 
 const app = new Hono();
+
+/**
+ * Refuse an oversized upload BEFORE the multipart body is read.
+ *
+ * ## This is not a new size limit
+ *
+ * `MAX_FILE_SIZE_BYTES` (10 MB, `files/storage.ts`) has been the limit on these
+ * routes since they shipped, and `validateFile()` still enforces it and is
+ * still the authority. Until Round 218 that constant was *imported into this
+ * file and never used* — the cap was real, it was simply only ever applied
+ * after `formData()` had already buffered the entire body. This guard refuses
+ * at the header exactly what `validateFile` refuses three steps later.
+ *
+ * ## What its absence was doing, measured
+ *
+ * Theseus, Round 217 (`probe-round217-multipart-guard-live-http.mts`, arm L),
+ * over a raw socket: a request declaring `Content-Length: 209715200` and then
+ * sending ~45 bytes got **no response in 4004 ms** at both upload sites here,
+ * while all four capped `import.ts` sites refused the identical request
+ * immediately. An uncapped route does not merely spend the memory — it stops
+ * answering, because it is still waiting for bytes the client promised and
+ * never sent. That is the defect this closes; the limit itself was never in
+ * question and did not need one.
+ *
+ * ## Sentence
+ *
+ * Matches `validateFile`'s formatting (`10 MB`, one decimal), not `import.ts`'s
+ * (`50MB`, rounded) — a caller of *these* routes only ever sees this family's
+ * wording, and this sentence has to sit next to the exact check's. "uploaded"
+ * marks it as the envelope's declared size rather than a file we measured.
+ */
+function rejectOversizeUpload(c: Parameters<typeof rejectOversizeHeader>[0]): Response | null {
+  return rejectOversizeHeader(
+    c,
+    MAX_FILE_SIZE_BYTES,
+    (declared, max) =>
+      `File too large (${(declared / (1024 * 1024)).toFixed(1)} MB uploaded). Maximum is ${max / (1024 * 1024)} MB.`
+  );
+}
 
 /**
  * POST /channels/:id/files — Send a message with a file attachment
@@ -40,6 +80,10 @@ const app = new Hono();
  */
 app.post('/channels/:channelId/files', async (c) => {
   const channelId = c.req.param('channelId');
+
+  // Refuse an unambiguously oversized body before `readFormBody` buffers it.
+  const early = rejectOversizeUpload(c);
+  if (early) return early;
 
   // Parse multipart
   const formData = await readFormBody(c);
@@ -367,6 +411,14 @@ app.post('/projects/:id/files', async (c) => {
   if (!project) {
     return c.json({ error: 'Project not found' }, 404);
   }
+
+  // Below the 404 on purpose: `getProject` is a DB lookup, not a body read, so
+  // putting the cap above it would buy no memory and would silently change an
+  // answer that is already correct (and already pinned — Theseus's Round 217
+  // arm M drives a malformed upload at a nonexistent project expecting the 404).
+  // This guard adds a refusal; it does not move one.
+  const early = rejectOversizeUpload(c);
+  if (early) return early;
 
   const formData = await readFormBody(c);
   const file = formData.get('file');
