@@ -66,8 +66,11 @@ type Kind = 'regression' | 'measurement' | 'open' | 'note';
 function readSrc(rel: string): string {
   return fs.readFileSync(path.join(REPO, 'packages/server/src', rel), 'utf8');
 }
-function readNumberConst(rel: string, name: string): number {
-  const src = readSrc(rel);
+/** Repo-relative, for constants that do not live under `packages/server/src`. */
+function readRepoSrc(rel: string): string {
+  return fs.readFileSync(path.join(REPO, rel), 'utf8');
+}
+function readNumberConstFrom(src: string, rel: string, name: string): number {
   const m = src.match(new RegExp(`export const ${name}\\s*=\\s*([^;]+);`));
   if (!m) throw new Error(`could not read ${name} from ${rel}`);
   // Only arithmetic on numeric literals — deliberately not a general evaluator.
@@ -76,8 +79,18 @@ function readNumberConst(rel: string, name: string): number {
   // eslint-disable-next-line no-new-func
   return Number(new Function(`return (${expr});`)());
 }
+function readNumberConst(rel: string, name: string): number {
+  return readNumberConstFrom(readSrc(rel), rel, name);
+}
 
-const MAX_FILE_SIZE_BYTES = readNumberConst('files/storage.ts', 'MAX_FILE_SIZE_BYTES');
+// Round 220 hoisted the cap out of `files/storage.ts` into `@klatch/shared` so that the
+// server's two sites and the browser's gate read one value. `storage.ts` now only
+// re-exports it. This probe follows the declaration rather than the re-export: reading
+// the re-export site would have thrown (it did, on the first run this fire), and reading
+// it *loosely* would have been worse — a probe that silently kept answering `10 * 1024 * 1024`
+// from a `vi.mock` copy in a test file is the Round 219 arm-L failure with a new face.
+const CAP_DECL_FILE = 'packages/shared/src/types.ts';
+const MAX_FILE_SIZE_BYTES = readNumberConstFrom(readRepoSrc(CAP_DECL_FILE), CAP_DECL_FILE, 'MAX_FILE_SIZE_BYTES');
 const MULTIPART_ENVELOPE_ALLOWANCE = readNumberConst('routes/size-cap.ts', 'MULTIPART_ENVELOPE_ALLOWANCE');
 /** The declared size arm L used on 9/15. Kept verbatim so arm A re-drives the same request. */
 const R217_DECLARED = 209_715_200;
@@ -101,13 +114,28 @@ function measure(arm: string, name: string, detail: string) {
   console.log(`MEAS [${arm}] ${name} — ${detail}`);
 }
 
-async function portIsFree(port: number): Promise<boolean> {
-  return new Promise((resolve) => {
-    const s = net.createServer();
-    s.once('error', () => resolve(false));
-    s.once('listening', () => s.close(() => resolve(true)));
-    s.listen(port, HOST);
-  });
+/**
+ * A bind test is not a pre-flight, and this is not a theory.
+ *
+ * Measured 2026-09-16 in this worktree: a server leaked by an earlier truncated run of this
+ * very probe was listening on port 3001 and answering `GET /api/channels`, and
+ * `net.createServer().listen(3001, '127.0.0.1')` **succeeded** anyway — node sets
+ * `SO_REUSEADDR`, and BSD/macOS permits a specific-address bind alongside a wildcard one.
+ * `portIsFree` returned `true` while a stranger held the port. The Round 217 probe then ran
+ * its whole suite against that stranger's process, on a different database, and reported
+ * `22/22`.
+ *
+ * The property this guard exists to establish is "nobody is answering here". A bind asks a
+ * different question and was accepted as a proxy for this one — the same substitution that
+ * made Round 217 arm L vacuous, one layer below the checks.
+ */
+async function somethingIsAlreadyAnswering(): Promise<string | null> {
+  try {
+    const res = await fetch(`${BASE}/channels`, { signal: AbortSignal.timeout(3000) });
+    return `HTTP ${res.status}`;
+  } catch {
+    return null;
+  }
 }
 
 function packagesDiff(): string {
@@ -120,9 +148,15 @@ const diffBefore = packagesDiff();
 fs.rmSync(SCRATCH, { recursive: true, force: true });
 fs.mkdirSync(FILES_DIR, { recursive: true });
 
-if (!(await portIsFree(PORT))) {
-  console.error(`port ${PORT} is occupied — this probe needs to own the server. Stop the dev server and re-run.`);
-  process.exit(2);
+{
+  const occupant = await somethingIsAlreadyAnswering();
+  if (occupant !== null) {
+    console.error(
+      `port ${PORT} already ANSWERS (${occupant}) — this probe needs to own the server, and a bind test ` +
+      `will not tell you this (see somethingIsAlreadyAnswering). Stop the dev server or the leaked ` +
+      `probe server and re-run.`);
+    process.exit(2);
+  }
 }
 
 const serverLog = path.join(SCRATCH, 'server.log');
@@ -140,6 +174,14 @@ async function shutdown(code: number): Promise<never> {
   process.exit(code);
 }
 
+// The leak that produced the finding above: this probe's output was piped to `head`, the pipe
+// closed, node took SIGPIPE, and `shutdown` never ran — leaving a server holding port 3001
+// and the scratch DB. Reaping the child on every exit path, not just the happy one.
+for (const sig of ['SIGINT', 'SIGTERM', 'SIGHUP', 'SIGPIPE'] as const) {
+  process.on(sig, () => { server.kill('SIGKILL'); process.exit(130); });
+}
+process.on('exit', () => { if (server.exitCode === null) server.kill('SIGKILL'); });
+
 {
   const deadline = Date.now() + 45_000;
   let up = false;
@@ -154,6 +196,16 @@ async function shutdown(code: number): Promise<never> {
   if (!up) {
     console.error(`server did not come up. Log:\n${fs.readFileSync(serverLog, 'utf8')}`);
     await shutdown(1);
+  }
+  // Readiness says "something answered", not "my server answered". The server we spawned was
+  // given KLATCH_DB pointing inside a directory this probe deleted moments ago, and it runs
+  // migrations at boot — so the file existing at all is evidence produced by the process under
+  // test, at a path chosen here. On the run that found this, it did not exist.
+  if (!fs.existsSync(DB)) {
+    console.error(
+      `the server that answered is NOT the one this probe spawned: ${DB} does not exist after ` +
+      `readiness. Aborting rather than reporting checks about a stranger's process.`);
+    await shutdown(3);
   }
 }
 
@@ -415,7 +467,7 @@ try {
     sites.every((s) => (sentenceOf(answers[s.key].raw) ?? '').includes(`${declaredMB} MB uploaded`)),
     sites.map((s) => `${s.key}=${JSON.stringify(sentenceOf(answers[s.key].raw))}`).join(' · '));
 
-  check('A', 'the sentence names the cap read out of storage.ts, not a number typed into this probe',
+  check('A', `the sentence names the cap read out of ${CAP_DECL_FILE}, not a number typed into this probe`,
     sites.every((s) => (sentenceOf(answers[s.key].raw) ?? '').includes(`Maximum is ${MAX_FILE_SIZE_BYTES / (1024 * 1024)} MB.`)),
     `MAX_FILE_SIZE_BYTES=${MAX_FILE_SIZE_BYTES} → "Maximum is ${MAX_FILE_SIZE_BYTES / (1024 * 1024)} MB."`);
 }
@@ -480,19 +532,32 @@ let importSentence: string | null = null;
     capSentence.endsWith(`Maximum is ${MAX_FILE_SIZE_BYTES / (1024 * 1024)} MB.`),
     `exact=${JSON.stringify(exactSentence)} · cap=${JSON.stringify(capSentence)}`);
 
-  // …and the reason they agree is worth naming, because it is not the reason it looks like.
-  // The cap DERIVES its number from MAX_FILE_SIZE_BYTES; validateFile HARDCODES "10 MB" in a
-  // template literal. They agree today because the constant happens to be 10 MB. Re-size the
-  // constant and only one of the two sentences follows it.
-  const literalIsDerived = VALIDATE_FILE_SENTENCE_LITERAL !== null &&
-    /Maximum is \$\{/.test(VALIDATE_FILE_SENTENCE_LITERAL);
-  check('C',
-    'FINDING: validateFile() hardcodes the limit in its sentence while the cap derives it — they agree only while the constant is unchanged',
-    literalIsDerived,
-    `storage.ts reason template = ${JSON.stringify(VALIDATE_FILE_SENTENCE_LITERAL)} · ` +
-    `size-cap caller derives "${MAX_FILE_SIZE_BYTES / (1024 * 1024)} MB" from MAX_FILE_SIZE_BYTES. ` +
-    `Change the constant to 20 MB and validateFile still says "10 MB".`,
-    'open');
+  // Round 219 filed an OPEN finding here: `validateFile` hardcoded "10 MB" in its sentence
+  // while the cap derived its number, so the two agreed only while the constant was 10 MB.
+  // Round 220 closed it by hoisting the cap to `@klatch/shared`. The check that reported it
+  // was a source-grep on `storage.ts`'s template literal — the same shape that went vacuous
+  // in Round 217 arm L when a correct refactor moved the text. Replaced with the strongest
+  // form this instrument can honestly carry: both cap clauses extracted from two live
+  // responses produced by two different functions, compared to each other. No source text on
+  // either side, and the two sides came from different places.
+  const capClause = (s: string | null) => s?.match(/Maximum is ([^.]+)\./)?.[1] ?? null;
+  const exactClause = capClause(exactSentence);
+  const headerClause = capClause(capSentence);
+
+  check('C', 'the two live sentences carry a byte-identical cap clause — compared response-to-response, no source text on either side',
+    exactClause !== null && headerClause !== null && exactClause === headerClause,
+    `validateFile→${JSON.stringify(exactClause)} · pre-read cap→${JSON.stringify(headerClause)}`);
+
+  // What this arm structurally CANNOT answer, stated rather than asserted: whether the two
+  // sentences would still agree at a DIFFERENT cap. That needs the constant re-sized, which
+  // needs a mutated tree; this probe asserts `packages/` is untouched at exit and so is the
+  // wrong instrument. Daedalus's Round 220 unit control is the right one, and his §2(b) is
+  // the reason it had to be re-aimed at 2.25 MB: at 2.5 MB the formatter and raw division
+  // printed the same string and the mutation stayed green.
+  measure('C', 'residual not observable from the wire',
+    `both sentences agree at MAX_FILE_SIZE_BYTES=${MAX_FILE_SIZE_BYTES}. Divergence at another cap is a ` +
+    `mutation question, covered by Daedalus's mocked-cap control at 2.25 MB, not re-measured here. ` +
+    `storage.ts template now = ${JSON.stringify(VALIDATE_FILE_SENTENCE_LITERAL)}`);
 }
 
 // ── Arm D — placement, which is only observable from outside ─────────────────

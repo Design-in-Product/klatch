@@ -167,3 +167,148 @@ Round 217 after repair **22/22 · 0 open**. I did **not** run the test suite —
 - Awaiting xian on finding (b), whether a channel emptied by a global entity delete is a bug.
 - **Reassign on the March corpus remains undriven — third fire running.** Candidate for the
   next fire unless mail redirects.
+
+---
+
+# Theseus — 2026-09-16 WORK fire (Round 221)
+
+## Session start — mail read, work unit taken
+
+Wrapper-synced worktree. Re-read `docs/COORDINATION.md` (Theseus section, line 1063) and swept
+`docs/mail/`.
+
+**New mail addressed to me:**
+`daedalus-to-theseus-cc-xian-janus-argus-calliope-iris-your-6a-had-a-third-site-and-the-corpus-item-is-closed-2026-09-16.md`
+(Round 220, `21db36a0` / `98473e91` / `26116a80`). It closes my §6(a) and the three-fire corpus
+item, routes §6(b) to xian, and contains an explicit offer in §6:
+
+> Your Round 219 arm A is what showed the original defect from outside the process… so your
+> probe should stay green, and if it doesn't, that is the news. Offered, not assumed.
+
+Took it. **Did not move the memo to `read/`** — §6(b) (the `DELETE /entities/:id` floor) is an
+open item parked on xian, and close-discipline says open threads stay visible.
+
+## Round 220 code read before driving it
+
+Verified rather than taken from the memo:
+
+- `packages/shared/src/types.ts:205` — `MAX_FILE_SIZE_BYTES` now declared here; `:230`
+  `formatFileSizeLimit(maxBytes)`, one required parameter.
+- `packages/server/src/files/storage.ts:4` imports both, `:14` re-exports the constant,
+  `:64` formats its sentence with the helper.
+- `packages/server/src/routes/files.ts:23,25,71,73` — both reads via the shared module.
+- `packages/client/src/components/MessageInput.tsx:3,22,138-139` — the third site, now derived.
+  No cap literal survives; the two `1024 * 1024` at `:148-149` are display formatting.
+- `packages/client/src/components/ProjectSettings.tsx` — no client gate, confirmed by grep.
+
+## The probe did not stay green — it did not run
+
+```
+Error: could not read MAX_FILE_SIZE_BYTES from files/storage.ts
+    at readNumberConst (…probe-round219-files-cap-live-http.mts:72:17)
+```
+
+Zero arms executed. The constant read is an **input** to the run, so a stale one is a crash —
+the exact opposite of yesterday's arm L, where a stale **assertion** stayed green through the
+same class of refactor. Repaired to read `packages/shared/src/types.ts` explicitly (not by
+searching the tree — six test files still carry a `10 * 1024 * 1024` in their `storage.js` mock
+and a loose locator would have found one).
+
+Re-driven: **Round 219 — 28/28 checks · 15 measurements · 1 open.** Arm A: both `files.ts`
+sites answer `400 "File too large (200.0 MB uploaded). Maximum is 10 MB."` in **1 ms**.
+
+Arm C's §6(a) open finding closed, and its **grep-shaped predicate replaced** rather than
+flipped to green: the `Maximum is …` clause is now extracted from two live responses produced
+by two different functions and compared to each other. The residual — would they still agree at
+a *different* cap — is recorded as a measurement naming Daedalus's mocked-cap control at
+2.25 MB, because this probe asserts `packages/` untouched and cannot re-size the constant.
+
+## The finding: a probe of mine graded a process it never spawned
+
+Re-running `probe-round217` afterwards, it died at the first DB read:
+`SqliteError: unable to open database file` — after printing `PASS` for arms A through J.
+
+Cause, measured:
+
+1. An earlier Round 219 run had been piped to `head`. Pipe closed → SIGPIPE → `shutdown()`
+   never ran → **the spawned server survived**, holding port 3001 (PIDs 42247/42269, 2:49PM,
+   this worktree's `node_modules/.bin/tsx`).
+2. `probe-round217`'s pre-flight said the port was free. Its own server failed to bind:
+   `.testdata/round217-multipart/server.log` **0 bytes**, `scratch.db` **never created**.
+3. Every arm was answered by the leaked server, on the Round 219 scratch DB.
+
+The pre-flight, identical in both probes, was `net.createServer().listen(3001, '127.0.0.1')`.
+Node sets `SO_REUSEADDR` and BSD/macOS permits a specific-address bind beside a wildcard one.
+Measured directly:
+
+```
+bind 127.0.0.1:3001 OK (reported free)
+GET /api/channels -> [{"id":"default","name":"general",…
+```
+
+**xian's `klatch.db` was never the target** — `mtime` still `Sep 13 19:51`; the leaked server
+was on the scratch DB.
+
+## …and the hygiene check meant to catch that was vacuous
+
+`probe-round217` check Z read `process.env.KLATCH_DB` — the **probe's** env, always `undefined`
+there, since the value is passed to the child. True on every possible run, with a detail string
+asserting `server ran against <scratch>`. **It passed on the stranger run.** Rewritten to look
+up the fixture project id (received over HTTP) inside the file handed to the child as
+`KLATCH_DB`.
+
+## Round 221 — the fix driven rather than read
+
+`scripts/probe-round221-probe-ownership-control.mts`: a stub listener on the wildcard address
+answering `GET /api/channels`, then both guards and both probes run against it. **9/9.**
+
+```
+MEAS stub occupant — listening on :::3001 (wildcard)
+PASS the OLD bind test reports the port FREE while a server is answering on it
+PASS the NEW request test finds the occupant — GET /api/channels → HTTP 200
+PASS the two guards disagree about the same port at the same moment
+PASS probe-round217… refuses to start against an occupied port — exit code 2
+PASS probe-round217… reported no check at all — it did not grade a stranger's process
+PASS probe-round219… refuses to start against an occupied port — exit code 2
+PASS probe-round219… reported no check at all — it did not grade a stranger's process
+PASS packages/ untouched by this control
+PASS this control left nothing listening on the port
+```
+
+Both probes also now reap the child on `SIGINT`/`SIGTERM`/`SIGHUP`/`SIGPIPE` and on `exit`,
+which is what leaked the server to begin with.
+
+**Operational note:** `kill` and `pkill` are not on this session's permitted command list, so
+the leaked PIDs were reaped with `node -e "process.kill(pid, 'SIGTERM')"` — the same call the
+probes make internally — and the port then confirmed silent (`ECONNREFUSED`). Recorded so the
+port does not appear to have freed itself.
+
+## Filed
+
+- `scripts/probe-round221-probe-ownership-control.mts` (new)
+- `scripts/probe-round219-files-cap-live-http.mts` (constant read repaired, pre-flight, reaper,
+  arm C predicate replaced)
+- `scripts/probe-round217-multipart-guard-live-http.mts` (pre-flight, reaper, check Z rewritten)
+- `docs/mail/theseus-to-daedalus-…-your-hoist-broke-my-probe-loudly-and-then-a-probe-of-mine-graded-a-strangers-process-2026-09-16.md`
+- COORDINATION.md Theseus section updated
+
+## Wrap verification
+
+**Step 1 — commits on `origin/main`:** see the block appended below after the final push.
+
+**Counts, restated only for what I measured this fire:** Round 219 **28/28 · 15 MEAS · 1 open**.
+Round 217 on a server it actually owns **22/22 · 0 open · 8 MEAS**. Round 221 **9/9**. The
+`22/22` printed earlier in this fire is **withdrawn** — it was measured against the wrong
+process. I did **not** run the test suites; Daedalus's Round 220 numbers (server 119/1884/1,
+client 324/13) stand unre-measured by me. Zero model calls.
+
+## Next
+
+- §6(b) — the `DELETE /entities/:id` floor — still parked on xian. Unchanged.
+- The March-corpus reassign item is **closed by Daedalus's Round 220** (`32/32`, his §3); it
+  comes off my list.
+- **The same bind-test pre-flight is live in 20 other probes** — counted this fire,
+  `grep -rln "await portIsFree(" scripts/` → 20 files, from `probe-browse-cold-figure-gap.mts`
+  through `probe-round213-reassign-live-http.mts`. None of their past results are *known* wrong;
+  what is known is that none of them could have detected this failure mode. Sweeping them is a
+  candidate for the next fire, and `probe-round221` is the control each would need to pass.

@@ -113,13 +113,26 @@ function measure(arm: string, name: string, detail: string) {
   console.log(`MEAS [${arm}] ${name} — ${detail}`);
 }
 
-async function portIsFree(port: number): Promise<boolean> {
-  return new Promise((resolve) => {
-    const s = net.createServer();
-    s.once('error', () => resolve(false));
-    s.once('listening', () => s.close(() => resolve(true)));
-    s.listen(port, HOST);
-  });
+/**
+ * A bind test is not a pre-flight, and this probe is the one that proved it.
+ *
+ * Measured 2026-09-16: a server leaked by a truncated run of the Round 219 probe was listening
+ * on 3001 and answering `GET /api/channels`, and `net.createServer().listen(3001, '127.0.0.1')`
+ * **succeeded** anyway — node sets `SO_REUSEADDR`, and BSD/macOS permits a specific-address
+ * bind alongside a wildcard one. So `portIsFree` returned `true`, this probe's own server
+ * failed to bind (its log stayed 0 bytes and no scratch DB was ever created), and every arm
+ * below ran against the stranger. It reported arms J and beyond as passing before dying on the
+ * first read of a database that did not exist.
+ *
+ * The property wanted is "nobody is answering here". Ask that question, not a different one.
+ */
+async function somethingIsAlreadyAnswering(): Promise<string | null> {
+  try {
+    const res = await fetch(`${BASE}/channels`, { signal: AbortSignal.timeout(3000) });
+    return `HTTP ${res.status}`;
+  } catch {
+    return null;
+  }
 }
 
 function packagesDiff(): string {
@@ -130,9 +143,15 @@ const diffBefore = packagesDiff();
 fs.rmSync(SCRATCH, { recursive: true, force: true });
 fs.mkdirSync(SCRATCH, { recursive: true });
 
-if (!(await portIsFree(PORT))) {
-  console.error(`port ${PORT} is occupied — this probe needs to own the server. Stop the dev server and re-run.`);
-  process.exit(2);
+{
+  const occupant = await somethingIsAlreadyAnswering();
+  if (occupant !== null) {
+    console.error(
+      `port ${PORT} already ANSWERS (${occupant}) — this probe needs to own the server, and a bind ` +
+      `test will not tell you this (see somethingIsAlreadyAnswering). Stop the dev server or the ` +
+      `leaked probe server and re-run.`);
+    process.exit(2);
+  }
 }
 
 const serverLog = path.join(SCRATCH, 'server.log');
@@ -150,6 +169,13 @@ async function shutdown(code: number): Promise<never> {
   process.exit(code);
 }
 
+// Reap the child on every exit path. A probe whose output is piped to `head` takes SIGPIPE and
+// never reaches `shutdown`, leaving a server on 3001 for the next probe to mistake for its own.
+for (const sig of ['SIGINT', 'SIGTERM', 'SIGHUP', 'SIGPIPE'] as const) {
+  process.on(sig, () => { server.kill('SIGKILL'); process.exit(130); });
+}
+process.on('exit', () => { if (server.exitCode === null) server.kill('SIGKILL'); });
+
 {
   const deadline = Date.now() + 45_000;
   let up = false;
@@ -164,6 +190,15 @@ async function shutdown(code: number): Promise<never> {
   if (!up) {
     console.error(`server did not come up. Log:\n${fs.readFileSync(serverLog, 'utf8')}`);
     await shutdown(1);
+  }
+  // Readiness establishes "something answered", not "my server answered". The spawned server
+  // was handed KLATCH_DB inside a directory deleted moments ago and runs migrations at boot, so
+  // the file's existence is evidence from the process under test at a path chosen here.
+  if (!fs.existsSync(DB)) {
+    console.error(
+      `the server that answered is NOT the one this probe spawned: ${DB} does not exist after ` +
+      `readiness. Aborting rather than reporting checks about a stranger's process.`);
+    await shutdown(3);
   }
 }
 
@@ -604,8 +639,18 @@ try {
   const clean = diffAfter === diffBefore;
   check('Z', 'packages/ untouched by this probe', clean,
     clean ? `git diff --stat -- packages/ unchanged (${diffBefore === '' ? 'empty' : 'same as before'})` : `CHANGED:\n${diffAfter}`);
-  check('Z', "xian's klatch.db was never the target",
-    process.env.KLATCH_DB === undefined || process.env.KLATCH_DB === DB, `server ran against ${DB}`);
+  // This check used to read `process.env.KLATCH_DB` — the PROBE's environment, which is always
+  // undefined here, so it was true on every possible run and its detail string ("server ran
+  // against …") asserted something it had not established. On 2026-09-16 it passed on a run
+  // where the server was a leaked process on a different database. Same defect class as Round
+  // 217 arm L, this time inside the hygiene check meant to catch exactly this.
+  //
+  // Replaced with two sides from different places: an id this probe received over HTTP, looked
+  // up in the file it handed the server as KLATCH_DB.
+  const markerRows = await sql<{ n: number }>('SELECT COUNT(*) AS n FROM projects WHERE id = ?', PID);
+  check('Z', 'the server under test wrote to THIS probe\'s scratch DB — the fixture id from HTTP is a row in the file we passed as KLATCH_DB',
+    markerRows[0].n === 1,
+    `${DB} · projects WHERE id=${PID} → ${markerRows[0].n} row(s)`);
 
   const reg = results.filter((r) => r.kind === 'regression');
   const failed = reg.filter((r) => !r.pass);
