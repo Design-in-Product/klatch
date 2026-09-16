@@ -50,6 +50,17 @@
  *     route was behaving identically. It never read that side of the comparison. Detail in
  *     the arm. Re-aimed from "is the 500 systemic?" (closed) to "is the guard universal?"
  *     (live, and the thing a new route can regress).
+ *
+ * ── Round 217 (Theseus, 2026-09-15 STOP) ─────────────────────────────────────────────
+ * Argus re-ran this probe unmodified against Round 216 and got 42/42 — green, with a MEAS
+ * line inside arm G that had gone false underneath it. Same failure mode as arm F one round
+ * earlier, one level up: arm F was a measurement that could not notice its subject got fixed;
+ * this was a measurement whose LABEL asserted "the unfixed sibling" over an output showing it
+ * fixed. The count in the same line was wrong too, from a grep with no exclusion for the
+ * helper's own file, so it counted a docstring as a call site. Both closed in arm G below,
+ * and the general lesson is written there rather than here: **a MEAS whose label makes a
+ * claim is a check with no assertion behind it.** The full six-site sweep the fix earns is a
+ * separate probe — `probe-round217-multipart-guard-live-http.mts`.
  */
 
 import fs from 'fs';
@@ -569,24 +580,58 @@ try {
       bare === '' ? 'swept packages/server/src/routes/; the only occurrence is inside readJsonBody itself'
                   : `re-introduced at:\n${bare}`);
 
-    // ── The defect class that is NOT fixed, measured rather than repeated ────────
+    // ── The sibling, no longer unfixed ──────────────────────────────────────────
     //
-    // Daedalus's §5 names `c.req.formData()` as the same class, unfixed, and puts it at
-    // "4 multipart sites under routes/". Counted directly this fire: **six** call sites.
-    // Not a correction that matters to the design, but the number will be quoted, and it
-    // is the kind of number that goes into a doc and outlives its check. Driven, so the
-    // status is observed rather than predicted from the shape of the code.
-    const formSites = execFileSync('bash', ['-c',
-      "grep -rn 'await c.req.formData()' packages/server/src/routes/ | wc -l"],
-      { cwd: REPO, encoding: 'utf8' }).trim();
+    // ── Round 217 re-aim (Theseus, 2026-09-15 STOP), on Argus's catch ───────────
+    // This was a `measure()` labelled "the unfixed sibling", and by the time Argus re-ran it
+    // the label was false on two counts at once — Round 216 (`c46b14a1`) had landed between
+    // this probe's last edit and his sweep:
+    //
+    //   1. The MEAS printed `400 application/json` with the guard's own sentence while the
+    //      label around it still said "unfixed". The numbers were right; the editorial
+    //      sentence wrapped around them was not. **Third instance of the same class in one
+    //      day, and the first one that was mine twice** — this is exactly the rule Round 215
+    //      wrote here two checks above: *a check may print what it read, it may not print
+    //      what that implies.* Writing the rule did not stop me breaking it in the same file.
+    //      A MEAS whose label makes a claim is a check with no assertion behind it; the fix
+    //      is to make it a check, not to reword the label.
+    //   2. The count grep was `grep 'await c.req.formData()' | wc -l` with **no exclusion for
+    //      the helper's own file**, unlike the `readJsonBody` sweep directly above it, which
+    //      correctly does `grep -v json-body.ts`. So it counted 2: one real call (inside
+    //      `readFormBody`) and one line of PROSE — `form-body.ts`'s docstring, which says
+    //      "Use this, not a bare `await c.req.formData()`". A naive grep reddening on the
+    //      comment that documents the fix is the precise trap Daedalus's Round 216 §6 built a
+    //      line-shape guard against; arm G fell into it in the sibling probe, the same fire.
+    //
+    // Re-aimed from a stale measurement into the assertion the fix earns. The six-site x
+    // five-shape sweep lives in `probe-round217-multipart-guard-live-http.mts`; this stays
+    // as the one site arm F drove pre-fix, so this probe's own before/after is self-contained.
+    const GUARD_SENTENCE = readConst(
+      'packages/server/src/routes/form-body.ts',
+      /throw new HTTPException\(400, \{\s*res: c\.json\(\{ error: '([^']+)'/,
+      'readFormBody sentence'
+    );
     const mp = await fetch(`${BASE}/import/klatch`, {
       method: 'POST',
       headers: { 'Content-Type': 'multipart/form-data; boundary=----probe215' },
       body: 'not a multipart body at all',
     });
-    measure('G', 'the unfixed sibling: malformed multipart',
-      `POST /import/klatch with a broken multipart body → ${mp.status} ${mp.headers.get('content-type')} ${
-        JSON.stringify((await mp.text()).slice(0, 120))} · ${formSites} await c.req.formData() call sites under routes/ (Daedalus's §5 says 4; counted ${formSites} this fire)`);
+    const mpText = (await mp.text()).slice(0, 200);
+    let mpErr: string | null = null;
+    try { mpErr = JSON.parse(mpText)?.error ?? null; } catch { /* null IS the failure */ }
+    check('G', 'the multipart sibling is guarded too — same site arm F drove at 500 before Round 216',
+      mp.status === 400 && (mp.headers.get('content-type') ?? '').includes('application/json') && mpErr === GUARD_SENTENCE,
+      `POST /import/klatch, broken multipart body → ${mp.status} ${mp.headers.get('content-type')} error=${
+        JSON.stringify(mpErr)} (expected ${JSON.stringify(GUARD_SENTENCE)}, read from form-body.ts)`);
+    // Same line-shape discipline as the `readJsonBody` sweep above: the CALL form, and the
+    // helper's own file excluded. Counting the docstring is what made the old label wrong.
+    const bareForm = execFileSync('bash', ['-c',
+      "grep -rn 'await c\\.req\\.formData()' packages/server/src/routes/ | grep -v 'form-body.ts' || true"],
+      { cwd: REPO, encoding: 'utf8' }).trim();
+    check('G', 'no bare c.req.formData() survives outside form-body.ts either',
+      bareForm === '',
+      bareForm === '' ? 'swept packages/server/src/routes/; the only call is inside readFormBody itself'
+                      : `re-introduced at:\n${bareForm}`);
   }
 
   // ── Report ────────────────────────────────────────────────────────────────────
