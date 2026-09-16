@@ -508,27 +508,44 @@ try {
     // anyone has agreed to — there is no cap to violate. The label says what was observed and
     // stops there; the decision is xian's and the sizing is Daedalus's.
     const uncapped = SITES.filter((s) => s.file === 'files.ts');
+    const answers: Array<{ key: string; raw: string | null; ms: number }> = [];
     for (const site of uncapped) {
       const t0 = Date.now();
       const raw = await lyingContentLength(
         site.pathname, declared, `multipart/form-data; boundary=${B}`, 'garbage, and far fewer bytes than promised');
       const ms = Date.now() - t0;
-      measure('L', `uncapped: ${site.key} on a ${Math.round(declared / 1024 / 1024)}MB declared body`,
+      answers.push({ key: site.key, raw, ms });
+      measure('L', `files.ts: ${site.key} on a ${Math.round(declared / 1024 / 1024)}MB declared body`,
         raw === null
           ? `no response in ${ms}ms — it is waiting for bytes a client promised and did not send; the four import.ts sites answered this same request immediately from the header`
           : `${statusOf(raw)} ${JSON.stringify(sentenceOf(raw))} after ${ms}ms`);
     }
-    // Check, not measurement: the absence of a cap at these two sites is a source fact and it
-    // is the thing that would change if someone acts on the flag. Green today means "still
-    // absent" — this is the line that flips when the open item is closed.
-    const filesSrc = fs.readFileSync(path.join(REPO, 'packages/server/src/routes/files.ts'), 'utf8');
-    const stillUncapped = !filesSrc.includes('content-length');
-    check('L', 'OPEN (Daedalus §7): files.ts still has no Content-Length cap — this flips when that is fixed',
-      stillUncapped,
-      stillUncapped
-        ? "grep 'content-length' packages/server/src/routes/files.ts → no match; the two upload sites there buffer whatever arrives"
-        : 'files.ts now references content-length — the open item may be closed; re-read the route and re-aim this arm',
-      'open');
+
+    // ── Repaired 2026-09-16 (Round 219). This line used to be a source grep and it was
+    // vacuous. Recording why, because the failure is more instructive than the fix.
+    //
+    // It read `!filesSrc.includes('content-length')` and asserted "files.ts still has no
+    // Content-Length cap — this flips when that is fixed". Daedalus closed the gap in Round
+    // 218 and told me in his memo that this check would now be red. It was not. It passed,
+    // still claiming the cap was absent, on a server that had just refused the request in 0ms.
+    //
+    // Two independent reasons, either alone enough:
+    //   1. The guard was extracted to `routes/size-cap.ts`, so `files.ts` holds an import and
+    //      not the header read. A CORRECT refactor defeated the grep.
+    //   2. `files.ts` does contain `Content-Length` — in a docstring and in a response header
+    //      — but never the lowercase spelling, so the predicate was one capital letter from
+    //      answering differently for reasons having nothing to do with the cap.
+    //
+    // The pair of `measure()` lines directly above reported the change correctly on the same
+    // run (9/15: "no response in 4004ms"; today: 400 in 0ms). The measurement could not go
+    // stale because it does not claim anything; the check went stale because it asserted a
+    // source fact as a proxy for a behaviour. **A tripwire aimed at source text is disarmed by
+    // any refactor that keeps the behaviour** — which is the refactor you actually want people
+    // to make. So this now asserts the behaviour the arm already drives.
+    const refusedAtHeader = answers.filter((a) => statusOf(a.raw) === 400 && (sentenceOf(a.raw) ?? '').includes('uploaded'));
+    check('L', 'files.ts refuses a lying oversize Content-Length at BOTH upload sites (closed Round 218; was the open item)',
+      refusedAtHeader.length === answers.length,
+      answers.map((a) => `${a.key}=${a.raw === null ? `NO ANSWER in ${a.ms}ms` : `${statusOf(a.raw)} in ${a.ms}ms ${JSON.stringify(sentenceOf(a.raw))}`}`).join(' · '));
   }
 
   // ── Arm M — 404 before 400, at the wire ───────────────────────────────────────
