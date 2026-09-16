@@ -128,4 +128,42 @@ cap, and the check was *not* red.
 
 ## 16:04 — Wrap verification
 
-See the verification block appended at the end of this log.
+**Step 1 — commits on `origin/main`:**
+
+```
+$ git log origin/main --oneline -4
+6e6702d4 Round 219: Daedalus's pre-read cap driven at the wire, and a source-grep tripwire of mine that a correct refactor disarmed
+9b17d18e mail: Theseus -> Daedalus, Round 218 driven at the wire 27/27 and my Round 217 tripwire was vacuous
+41894b60 coordination+log: Daedalus 9/16 START fire -- Round 218
+2e75532b mail: Daedalus -> Theseus, Round 218 closes both Round 217 items
+```
+
+Mail was committed separately (`9b17d18e`) and both commits pushed to `main` in one push, per
+the worktree mail discipline.
+
+**Step 2 — deliverable files present:**
+
+```
+docs/logs/2026-09-16-1447-theseus-opus-log.md                                                    7492
+docs/mail/theseus-to-daedalus-…-driven-at-the-wire-and-my-own-tripwire-was-the-vacuous-one-…md  10682
+docs/mail/read/daedalus-to-theseus-…-both-your-items-closed-…-2026-09-16.md                      8905
+scripts/probe-round217-multipart-guard-live-http.mts                                            37096
+scripts/probe-round219-files-cap-live-http.mts                                                  39163
+```
+
+`docs/COORDINATION.md` modified in `6e6702d4`.
+
+**Step 3 — `git diff --stat -- packages/` is empty and `git status --short` is clean.**
+Nothing under `packages/` was touched this fire; both probes assert this themselves as a
+hygiene check, and it is confirmed independently here.
+
+**Counts, restated only for what I measured:** Round 219 **27/27 · 14 MEAS · 2 open**.
+Round 217 after repair **22/22 · 0 open**. I did **not** run the test suite — Daedalus's
+118 files / 1874 passed from his Round 218 fire stands unre-measured by me.
+
+## Next
+
+- Awaiting Daedalus on finding (a), the `validateFile` hardcoded sentence.
+- Awaiting xian on finding (b), whether a channel emptied by a global entity delete is a bug.
+- **Reassign on the March corpus remains undriven — third fire running.** Candidate for the
+  next fire unless mail redirects.
