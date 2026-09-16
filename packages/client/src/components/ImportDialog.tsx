@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { importClaudeCodeSession, uploadClaudeCodeSession, importClaudeAiExport, previewClaudeAiExport, deleteChannelApi, fetchClaudeCodeSessions } from '../api/client';
+import { importClaudeCodeSession, uploadClaudeCodeSession, importClaudeAiExport, previewClaudeAiExport, deleteChannelApi, fetchClaudeCodeSessions, fetchEntities, reassignChannelEntity } from '../api/client';
 import type { ImportResponse, ImportConflict, ClaudeAiImportResponse, ZipPreviewResponse, SessionBrowseResponse, ResolveDisposition } from '../api/client';
+import type { Entity } from '@klatch/shared';
 
 type ImportMode = 'claude-code' | 'claude-ai';
 
@@ -65,6 +66,27 @@ export function ImportDialog({ isOpen, onClose, onImported, onBulkImported, onCh
   // Confirmed (or edited) entity name per session path — prefilled from each
   // session's entityGuess, editable, sent as entityName on import.
   const [sessionEntityNames, setSessionEntityNames] = useState<Record<string, string>>({});
+
+  // "Not right? Pick an existing agent" — the safety net for a `sameNameEntityIds`
+  // disclosure (see docs/ux/import-confirm-step-scope-2026-08-09.md's 2026-09-14
+  // section). `reassignOpen` holds the channelId of the row whose picker is expanded
+  // (single at a time is enough — there is one disclosure per import). `reassignedTo`
+  // overrides that row's displayed binding after a successful call, keyed by channelId,
+  // so the ambiguity note doesn't keep claiming the bind was arbitrary once a human
+  // has deliberately picked one.
+  const [reassignOpen, setReassignOpen] = useState<string | null>(null);
+  const [entitiesCache, setEntitiesCache] = useState<Entity[] | null>(null);
+  const [entitiesLoadError, setEntitiesLoadError] = useState<string | null>(null);
+  const [reassignedTo, setReassignedTo] = useState<Record<string, { id: string; name: string }>>({});
+
+  const openReassign = (channelId: string) => {
+    setReassignOpen(channelId);
+    if (entitiesCache === null && !entitiesLoadError) {
+      fetchEntities()
+        .then(setEntitiesCache)
+        .catch((err) => setEntitiesLoadError(err instanceof Error ? err.message : 'Failed to load agents'));
+    }
+  };
 
   if (!isOpen) return null;
 
@@ -588,16 +610,47 @@ export function ImportDialog({ isOpen, onClose, onImported, onBulkImported, onCh
                     bulk row list below — this panel never carried the disposition copy the
                     2026-08-09 scope doc specified for it (only the multi-import list got it
                     when built 9/2). */}
-                {result.entityDisposition === 'minted' && result.entityName && (
-                  <p><span className="text-muted">Agent:</span> <span className="text-accent">Created new agent {result.entityName}</span></p>
-                )}
-                {(result.entityDisposition === 'matched-by-name' || result.entityDisposition === 'bound-existing') && result.entityName && (
-                  <p><span className="text-muted">Agent:</span> Added to existing agent {result.entityName}</p>
-                )}
-                {result.sameNameEntityIds && result.sameNameEntityIds.length > 1 && (
-                  <p className="text-amber-600 dark:text-amber-400">
-                    {result.sameNameEntityIds.length} agents share this name — this session was bound to one of them, not necessarily the one you meant.
-                  </p>
+                {reassignedTo[result.channelId] ? (
+                  <p><span className="text-muted">Agent:</span> Reassigned to {reassignedTo[result.channelId].name}</p>
+                ) : (
+                  <>
+                    {result.entityDisposition === 'minted' && result.entityName && (
+                      <p><span className="text-muted">Agent:</span> <span className="text-accent">Created new agent {result.entityName}</span></p>
+                    )}
+                    {(result.entityDisposition === 'matched-by-name' || result.entityDisposition === 'bound-existing') && result.entityName && (
+                      <p><span className="text-muted">Agent:</span> Added to existing agent {result.entityName}</p>
+                    )}
+                    {result.sameNameEntityIds && result.sameNameEntityIds.length > 1 && (
+                      <p className="text-amber-600 dark:text-amber-400">
+                        {result.sameNameEntityIds.length} agents share this name — this session was bound to one of them, not necessarily the one you meant.
+                        {result.entityId && (
+                          <>
+                            {' '}
+                            <button
+                              type="button"
+                              onClick={() => openReassign(result.channelId)}
+                              className="underline hover:no-underline"
+                            >
+                              Not right? Pick an existing agent
+                            </button>
+                          </>
+                        )}
+                      </p>
+                    )}
+                    {reassignOpen === result.channelId && result.entityId && (
+                      <ReassignPicker
+                        channelId={result.channelId}
+                        fromEntityId={result.entityId}
+                        entities={entitiesCache}
+                        loadError={entitiesLoadError}
+                        onCancel={() => setReassignOpen(null)}
+                        onReassigned={(id, name) => {
+                          setReassignedTo((prev) => ({ ...prev, [result.channelId]: { id, name } }));
+                          setReassignOpen(null);
+                        }}
+                      />
+                    )}
+                  </>
                 )}
               </div>
               <LayerFidelityReadout channelId={result.channelId} />
@@ -639,28 +692,68 @@ export function ImportDialog({ isOpen, onClose, onImported, onBulkImported, onCh
               {bulkResult.imported.length > 0 && (
                 <div className="max-h-48 overflow-y-auto space-y-1">
                   {bulkResult.imported.map((conv) => (
-                    <button
+                    // A `<div>`, not a `<button>` — the row used to be one button, but the
+                    // "Not right?" reassign affordance below needs its own interactive
+                    // elements (a link, then a search input) and those can't nest inside
+                    // another button.
+                    <div
                       key={conv.channelId}
-                      onClick={() => handleGoToBulkChannel(conv)}
-                      className="w-full text-left rounded px-2.5 py-1.5 text-sm hover:bg-hover transition-colors"
+                      className="rounded px-2.5 py-1.5 text-sm hover:bg-hover transition-colors"
                     >
-                      <span className="text-primary">{conv.channelName}</span>
-                      <span className="text-muted ml-2">({conv.messageCount} messages)</span>
-                      {/* Mint vs. merge reads very differently on purpose — the asymmetry
-                          (wrongly-separate is fixable later, wrongly-merged mostly isn't)
-                          is exactly what a user should be able to tell apart at a glance. */}
-                      {conv.entityDisposition === 'minted' && conv.entityName && (
-                        <span className="text-accent ml-2">→ new agent: {conv.entityName}</span>
-                      )}
-                      {(conv.entityDisposition === 'matched-by-name' || conv.entityDisposition === 'bound-existing') && conv.entityName && (
-                        <span className="text-muted ml-2">→ added to {conv.entityName}</span>
-                      )}
-                      {conv.sameNameEntityIds && conv.sameNameEntityIds.length > 1 && (
+                      <button
+                        type="button"
+                        onClick={() => handleGoToBulkChannel(conv)}
+                        className="w-full text-left"
+                      >
+                        <span className="text-primary">{conv.channelName}</span>
+                        <span className="text-muted ml-2">({conv.messageCount} messages)</span>
+                        {/* Mint vs. merge reads very differently on purpose — the asymmetry
+                            (wrongly-separate is fixable later, wrongly-merged mostly isn't)
+                            is exactly what a user should be able to tell apart at a glance. */}
+                        {reassignedTo[conv.channelId] ? (
+                          <span className="text-muted ml-2">→ reassigned to {reassignedTo[conv.channelId].name}</span>
+                        ) : (
+                          <>
+                            {conv.entityDisposition === 'minted' && conv.entityName && (
+                              <span className="text-accent ml-2">→ new agent: {conv.entityName}</span>
+                            )}
+                            {(conv.entityDisposition === 'matched-by-name' || conv.entityDisposition === 'bound-existing') && conv.entityName && (
+                              <span className="text-muted ml-2">→ added to {conv.entityName}</span>
+                            )}
+                          </>
+                        )}
+                      </button>
+                      {!reassignedTo[conv.channelId] && conv.sameNameEntityIds && conv.sameNameEntityIds.length > 1 && (
                         <div className="text-amber-600 dark:text-amber-400 text-xs mt-0.5">
-                          {conv.sameNameEntityIds.length} agents share this name — bound to one of them, not necessarily the one you meant
+                          {conv.sameNameEntityIds.length} agents share this name — bound to one of them, not necessarily the one you meant.
+                          {conv.entityId && (
+                            <>
+                              {' '}
+                              <button
+                                type="button"
+                                onClick={() => openReassign(conv.channelId)}
+                                className="underline hover:no-underline"
+                              >
+                                Not right? Pick an existing agent
+                              </button>
+                            </>
+                          )}
                         </div>
                       )}
-                    </button>
+                      {reassignOpen === conv.channelId && conv.entityId && (
+                        <ReassignPicker
+                          channelId={conv.channelId}
+                          fromEntityId={conv.entityId}
+                          entities={entitiesCache}
+                          loadError={entitiesLoadError}
+                          onCancel={() => setReassignOpen(null)}
+                          onReassigned={(id, name) => {
+                            setReassignedTo((prev) => ({ ...prev, [conv.channelId]: { id, name } }));
+                            setReassignOpen(null);
+                          }}
+                        />
+                      )}
+                    </div>
                   ))}
                 </div>
               )}
@@ -1305,6 +1398,100 @@ function LayerFidelityReadout({ channelId }: { channelId: string }) {
           );
         })}
       </div>
+    </div>
+  );
+}
+
+/**
+ * The safety net for a `sameNameEntityIds` disclosure — lets the operator move a
+ * just-imported channel's binding off the arbitrary pick and onto the agent they
+ * actually meant. Calls `reassignChannelEntity`, which is the atomic endpoint
+ * (Daedalus, Round 212) built specifically so this doesn't have to reimplement the
+ * "join row and every message's `entity_id` stamp move together" guarantee client-side.
+ * Same typeahead-filter idiom as the composition surface's agent picker
+ * (`ChannelSidebar.tsx`), reduced to single-select and self-contained rather than
+ * extracted into a shared component for one caller.
+ */
+function ReassignPicker({
+  channelId,
+  fromEntityId,
+  entities,
+  loadError,
+  onCancel,
+  onReassigned,
+}: {
+  channelId: string;
+  fromEntityId: string;
+  entities: Entity[] | null;
+  loadError: string | null;
+  onCancel: () => void;
+  onReassigned: (entityId: string, entityName: string) => void;
+}) {
+  const [search, setSearch] = useState('');
+  const [busy, setBusy] = useState(false);
+  const [err, setErr] = useState<string | null>(null);
+
+  const pick = async (entity: Entity) => {
+    setBusy(true);
+    setErr(null);
+    try {
+      await reassignChannelEntity(channelId, fromEntityId, entity.id);
+      onReassigned(entity.id, entity.name);
+    } catch (e) {
+      setErr(e instanceof Error ? e.message : 'Failed to reassign');
+      setBusy(false);
+    }
+  };
+
+  const q = search.trim().toLowerCase();
+  const candidates = (entities ?? []).filter(
+    (e) => e.id !== fromEntityId && (!q || e.name.toLowerCase().includes(q) || (e.handle?.toLowerCase().includes(q) ?? false))
+  );
+
+  return (
+    <div className="mt-1.5 space-y-1.5 rounded border border-line bg-card p-2">
+      <div className="flex items-center justify-between">
+        <span className="text-[9px] font-medium text-muted uppercase tracking-wider">Reassign to</span>
+        <button type="button" onClick={onCancel} className="text-[11px] text-muted hover:text-primary">
+          Cancel
+        </button>
+      </div>
+      {loadError ? (
+        <div className="text-[11px] text-red-600 dark:text-red-400">{loadError}</div>
+      ) : entities === null ? (
+        <div className="text-[11px] text-muted">Loading agents…</div>
+      ) : (
+        <>
+          <input
+            type="text"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder="Search agents by name or @handle"
+            autoFocus
+            disabled={busy}
+            className="w-full rounded bg-input border border-line px-2 py-1 text-xs text-primary placeholder-muted focus:outline-none focus:border-accent"
+          />
+          {err && <div className="text-[11px] text-red-600 dark:text-red-400">{err}</div>}
+          <div className="max-h-32 overflow-y-auto space-y-0.5">
+            {candidates.length === 0 && (
+              <div className="text-[11px] text-muted px-1 py-0.5">No matching agents</div>
+            )}
+            {candidates.map((ent) => (
+              <button
+                key={ent.id}
+                type="button"
+                disabled={busy}
+                onClick={() => pick(ent)}
+                className="flex w-full items-center gap-1.5 rounded px-1.5 py-1 text-left text-xs hover:bg-hover disabled:opacity-50"
+              >
+                <span className="w-2 h-2 rounded-full flex-shrink-0" style={{ backgroundColor: ent.color }} />
+                <span className="truncate text-primary">{ent.name || '(unnamed)'}</span>
+                {ent.handle && <span className="text-muted">@{ent.handle}</span>}
+              </button>
+            ))}
+          </div>
+        </>
+      )}
     </div>
   );
 }

@@ -10,9 +10,11 @@ vi.mock('../api/client', () => ({
   previewClaudeAiExport: vi.fn(),
   deleteChannelApi: vi.fn(),
   fetchClaudeCodeSessions: vi.fn(),
+  fetchEntities: vi.fn(),
+  reassignChannelEntity: vi.fn(),
 }));
 
-import { importClaudeCodeSession, importClaudeAiExport, previewClaudeAiExport, deleteChannelApi, fetchClaudeCodeSessions } from '../api/client';
+import { importClaudeCodeSession, importClaudeAiExport, previewClaudeAiExport, deleteChannelApi, fetchClaudeCodeSessions, fetchEntities, reassignChannelEntity } from '../api/client';
 import type { ZipPreviewResponse, SessionBrowseResponse, SessionInfo } from '../api/client';
 
 const defaultProps = {
@@ -40,6 +42,8 @@ beforeEach(() => {
   vi.mocked(deleteChannelApi).mockReset();
   vi.mocked(previewClaudeAiExport).mockReset();
   vi.mocked(fetchClaudeCodeSessions).mockReset();
+  vi.mocked(fetchEntities).mockReset();
+  vi.mocked(reassignChannelEntity).mockReset();
   defaultProps.onClose = vi.fn();
   defaultProps.onImported = vi.fn();
 });
@@ -185,6 +189,103 @@ describe('ImportDialog', () => {
       expect(screen.getByText('Added to existing agent Daedalus')).toBeInTheDocument();
     });
     expect(screen.getByText(/2 agents share this name/)).toBeInTheDocument();
+    // No `entityId` on this fixture — nothing to reassign *from*, so the action
+    // that needs one must not render, even though the disclosure text does.
+    expect(screen.queryByRole('button', { name: /Not right\?/ })).not.toBeInTheDocument();
+  });
+
+  it('lets the operator reassign off an ambiguous single-import bind, and the disclosure clears', async () => {
+    const user = userEvent.setup();
+    vi.mocked(importClaudeCodeSession).mockResolvedValue({
+      status: 'success',
+      data: {
+        channelId: 'ch1',
+        channelName: 'test-session',
+        messageCount: 10,
+        artifactCount: 0,
+        source: 'claude-code',
+        duplicate: false,
+        entityDisposition: 'matched-by-name',
+        entityName: 'Daedalus',
+        entityId: 'ent-1',
+        sameNameEntityIds: ['ent-1', 'ent-2'],
+      },
+    });
+    vi.mocked(fetchEntities).mockResolvedValue([
+      { id: 'ent-1', name: 'Daedalus', model: 'claude-opus-4-6', color: '#8B5CF6', systemPrompt: '', createdAt: '' } as any,
+      { id: 'ent-2', name: 'Daedalus', model: 'claude-opus-4-6', color: '#8B5CF6', systemPrompt: '', createdAt: '' } as any,
+      { id: 'ent-3', name: 'Argus', model: 'claude-sonnet-4-6', color: '#10B981', systemPrompt: '', createdAt: '' } as any,
+    ]);
+    vi.mocked(reassignChannelEntity).mockResolvedValue({
+      channelId: 'ch1',
+      fromEntityId: 'ent-1',
+      toEntityId: 'ent-3',
+      messagesReassigned: 10,
+      fromEntityOrphaned: false,
+      entities: [],
+    });
+
+    render(<ImportDialog {...defaultProps} />);
+    await user.type(screen.getByPlaceholderText(/\.jsonl/), '/path/to/session.jsonl');
+    await user.click(screen.getByRole('button', { name: 'Import' }));
+
+    await waitFor(() => {
+      expect(screen.getByRole('button', { name: /Not right\?/ })).toBeInTheDocument();
+    });
+    await user.click(screen.getByRole('button', { name: /Not right\?/ }));
+
+    await waitFor(() => {
+      expect(screen.getByPlaceholderText(/Search agents/)).toBeInTheDocument();
+    });
+    // The candidate list excludes the current binding (ent-1) — picking among
+    // indistinguishable same-named rows isn't the fix this offers — so exactly
+    // one "Daedalus" row remains (ent-2), plus Argus.
+    expect(screen.getAllByText('Daedalus')).toHaveLength(1);
+    await user.click(screen.getByText('Argus'));
+
+    expect(reassignChannelEntity).toHaveBeenCalledWith('ch1', 'ent-1', 'ent-3');
+    await waitFor(() => {
+      expect(screen.getByText('Reassigned to Argus')).toBeInTheDocument();
+    });
+    expect(screen.queryByText(/agents share this name/)).not.toBeInTheDocument();
+    expect(screen.queryByPlaceholderText(/Search agents/)).not.toBeInTheDocument();
+  });
+
+  it('shows the server refusal when a reassign fails, and leaves the picker open', async () => {
+    const user = userEvent.setup();
+    vi.mocked(importClaudeCodeSession).mockResolvedValue({
+      status: 'success',
+      data: {
+        channelId: 'ch1',
+        channelName: 'test-session',
+        messageCount: 10,
+        artifactCount: 0,
+        source: 'claude-code',
+        duplicate: false,
+        entityDisposition: 'matched-by-name',
+        entityName: 'Daedalus',
+        entityId: 'ent-1',
+        sameNameEntityIds: ['ent-1', 'ent-2'],
+      },
+    });
+    vi.mocked(fetchEntities).mockResolvedValue([
+      { id: 'ent-1', name: 'Daedalus', model: 'claude-opus-4-6', color: '#8B5CF6', systemPrompt: '', createdAt: '' } as any,
+      { id: 'ent-3', name: 'Argus', model: 'claude-sonnet-4-6', color: '#10B981', systemPrompt: '', createdAt: '' } as any,
+    ]);
+    vi.mocked(reassignChannelEntity).mockRejectedValue(new Error('Target entity is already on this channel’s roster'));
+
+    render(<ImportDialog {...defaultProps} />);
+    await user.type(screen.getByPlaceholderText(/\.jsonl/), '/path/to/session.jsonl');
+    await user.click(screen.getByRole('button', { name: 'Import' }));
+    await user.click(await screen.findByRole('button', { name: /Not right\?/ }));
+    await user.click(await screen.findByText('Argus'));
+
+    await waitFor(() => {
+      expect(screen.getByText(/already on this channel/)).toBeInTheDocument();
+    });
+    // Refused, not silently dropped — the picker stays open on the same binding.
+    expect(screen.getByPlaceholderText(/Search agents/)).toBeInTheDocument();
+    expect(screen.queryByText('Reassigned to Argus')).not.toBeInTheDocument();
   });
 
   it('shows no ambiguity note in the single-import success panel when the name is unique', async () => {
