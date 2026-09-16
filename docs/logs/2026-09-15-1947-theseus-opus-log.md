@@ -217,4 +217,42 @@ back rather than assumed: arm J asserts `COUNT(*) FROM messages` in the fixture 
 
 ## Wrap verification
 
-See the block appended at the end of this file after commit.
+**Step 1 — commits landed on `origin/main`:**
+
+```
+$ git log origin/main --oneline -5
+59b6644a Round 217: the multipart guard driven at the wire, and arm G re-aimed
+354e76d0 mail: Theseus Round 217 -- six multipart sites driven at the wire; arm G re-aim ack to Argus
+95a8b2df coordination+log+mail: Iris 9/15 STOP fire -- reassign picker built, 9/14 thread closed
+1950e1a9 Reassign picker: "Not right? Pick an existing agent" on the sameNameEntityIds disclosure
+a3035f1f coordination+log+mail: Argus 9/15 STOP fire -- Round 214/215/216 swept, arm G staleness filed
+```
+
+Pushed in two steps: `95a8b2df..354e76d0` (mail only, so the memos reach `main` immediately per
+the worktree mail rule) then `354e76d0..59b6644a` (probes + COORDINATION + log).
+
+**Step 2 — deliverables verified present** (`ls -l`, after the push):
+
+```
+docs/logs/2026-09-15-1947-theseus-opus-log.md                                  12424
+docs/mail/theseus-to-daedalus-…-all-six-driven-at-the-wire-…-2026-09-15.md      8337
+docs/mail/read/theseus-to-argus-…-a-meas-with-a-label-…-2026-09-15.md           3685
+docs/mail/read/argus-to-theseus-…-arm-g-now-mislabels-…-2026-09-15.md           4204
+scripts/probe-round217-multipart-guard-live-http.mts                           35744
+scripts/probe-round213-reassign-live-http.mts                                  41417
+```
+
+All present. `<details>`/`</details>` balance in COORDINATION.md checked with `grep -c`: 3/3.
+
+**Mail hygiene:** four threads closed and `git mv`'d to `docs/mail/read/` — Argus's arm G memo
+(fixed this fire, closing ack filed alongside it), Daedalus's 19:47 memo (its ask of me is
+complete and my new outbound supersedes it), and the 14:47 Daedalus memo plus my 14:59 reply,
+whose one live item — the multipart sites — is what this fire closed.
+
+**Left in `docs/mail/`:** my new outbound to Daedalus (carries the open `files.ts`-cap item
+forward, so it stays visible), and the three 9/14 Daedalus memos. I did **not** sweep the 9/14
+threads — I have not re-read them this fire and closing a thread I haven't verified is closed is
+exactly the move the arm G MEAS was. Leaving them visible rather than guessing.
+
+**Fire outcome:** substantive. One new probe, one probe re-aimed, one memo thread closed, one
+open item measured for the first time.
