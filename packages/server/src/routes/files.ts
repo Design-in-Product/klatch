@@ -24,6 +24,7 @@ import { resolveMentions } from '@klatch/shared';
 import { getDb } from '../db/index.js';
 import { saveFile, validateFile, getFilePath, MAX_FILE_SIZE_BYTES } from '../files/storage.js';
 import { readJsonBody } from './json-body.js';
+import { readFormBody } from './form-body.js';
 
 const app = new Hono();
 
@@ -41,7 +42,7 @@ app.post('/channels/:channelId/files', async (c) => {
   const channelId = c.req.param('channelId');
 
   // Parse multipart
-  const formData = await c.req.formData();
+  const formData = await readFormBody(c);
   const file = formData.get('file');
   const textContent = formData.get('content')?.toString() || '';
 
@@ -367,7 +368,7 @@ app.post('/projects/:id/files', async (c) => {
     return c.json({ error: 'Project not found' }, 404);
   }
 
-  const formData = await c.req.formData();
+  const formData = await readFormBody(c);
   const file = formData.get('file');
 
   if (!(file instanceof File)) {

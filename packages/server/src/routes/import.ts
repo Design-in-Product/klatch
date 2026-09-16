@@ -13,6 +13,7 @@ import { importSession, findChannelByOriginalSessionId, createChannelBySessionId
 import { MODEL_ALIASES, AVAILABLE_MODELS } from '@klatch/shared';
 import type { ModelId } from '@klatch/shared';
 import { readJsonBody } from './json-body.js';
+import { readFormBody } from './form-body.js';
 
 // Max file size for imports (50 MB)
 const MAX_IMPORT_SIZE = 50 * 1024 * 1024;
@@ -174,7 +175,7 @@ app.post('/import/claude-code', async (c) => {
     // ── File upload path (cloud agent sessions) ──
     const early = rejectOversizeBeforeRead(c);
     if (early) return early;
-    const formData = await c.req.formData();
+    const formData = await readFormBody(c);
     const file = formData.get('file');
     if (!file || !(file instanceof File)) {
       return c.json({ error: 'No file uploaded. Please choose a session file (.jsonl).' }, 400);
@@ -488,7 +489,7 @@ app.post('/import/claude-ai/preview', async (c) => {
   if (contentType.includes('multipart/form-data')) {
     const early = rejectOversizeBeforeRead(c);
     if (early) return early;
-    const formData = await c.req.formData();
+    const formData = await readFormBody(c);
     const file = formData.get('file');
     if (!file || !(file instanceof File)) {
       return c.json({ error: 'No file uploaded. Send a ZIP file as "file" in multipart form data.' }, 400);
@@ -605,7 +606,7 @@ app.post('/import/claude-ai', async (c) => {
     // For multipart, selectedConversationIds comes as a form field
     const early = rejectOversizeBeforeRead(c);
     if (early) return early;
-    const formData = await c.req.formData();
+    const formData = await readFormBody(c);
     const file = formData.get('file');
     if (!file || !(file instanceof File)) {
       return c.json({ error: 'No file uploaded. Send a ZIP file as "file" in multipart form data.' }, 400);
@@ -913,7 +914,7 @@ app.post('/import/klatch', async (c) => {
   if (contentType.includes('multipart/form-data')) {
     const early = rejectOversizeBeforeRead(c);
     if (early) return early;
-    const formData = await c.req.formData();
+    const formData = await readFormBody(c);
     const file = formData.get('file');
     if (!file || !(file instanceof File)) {
       return c.json({ error: 'No file uploaded. Send a zip as "file" in multipart form data.' }, 400);
