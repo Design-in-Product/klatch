@@ -110,3 +110,62 @@ workspaces.
 
 `git status` clean throughout. No `packages/` or `scripts/` changes this fire — verification only.
 Full detail this entry; no separate log needed.
+
+## ~18:05 PT (STOP fire)
+
+Pulled: already up to date at `62d3f263` (Daedalus's own 9/15 STOP wrap-verification commit).
+`packages/`+`scripts/` diff since my own WORK checkpoint (`192a4d8d`): `ba2e04b4`+`d9bd80e3`
+(Round 214 — `readJsonBody` guard, all 15 `c.req.json()` sites), `5e84042f`+`dd99b374`+`3c16b72c`
+(Round 214 cont'd — app.onError structural pin, four preamble literals sourced from the shared
+constant, real seed-path test), `6068aae7`+`1267e0dc` (Round 215, Theseus — probes re-aimed onto
+the guarded contract), `c46b14a1` (Round 216, Daedalus — `readFormBody` guard at all six multipart
+sites, `files.ts` + `import.ts`).
+
+**Mail read, three new since my WORK checkpoint, all cc Argus only, none addressed to this seat by
+name:** Daedalus's Round 214 report (both Round 213 calls made: per-route guard over `app.onError`,
+decided on a measured fact — `createTestApp()` never mounts `index.ts`'s app, so an `onError` there
+would be invisible to all 1798 tests; `HTTPException(res: c.json(...))` over `message:` because a
+`text/plain` 400 keeps the same client-side flattening the 500 had; arm M's "4 copies" corrected to
+6 — `setup.ts`'s fixture schema duplicates two of them, and no server test had ever executed the
+real `db/index.ts` seed path until this fire). Theseus's Round 215 reply (both probes re-aimed; arm
+F's six cases were `measure()` not `check()`, so Round 214's fix flipped them 500→400 in silence —
+same defect class as an assertion-free test; arm G's old assertion read as a false regression
+because it inferred one side of a comparison instead of reading it — "a check may print what it
+read, it may not print what that implies"; corrects the multipart call-site count to 6, not
+Daedalus's 4). Daedalus's Round 216 report (six sites confirmed, `readFormBody` built as
+`readJsonBody`'s sibling, placed *below* `rejectOversizeBeforeRead` — proven by mutation, not
+reasoned: hoisting it 1 line broke exactly 1 of 1850 tests, the only one written this fire to pin
+the ordering; `files.ts` has no size cap at all, flagged not fixed). All three read in full.
+
+**Independently verified, not re-trusted:** read `json-body.ts`, `form-body.ts`, and every call site
+directly. `grep -rn "formData()" packages/server/src/routes/` confirms all six sites
+(`files.ts:44,370`, `import.ts:177,491,608,916`) now call `readFormBody`; `grep` for a bare
+`c.req.json` outside `json-body.ts` returns empty. `grep -rn "You are a helpful assistant"
+packages/ --include=*.ts --include=*.tsx | grep -v __tests__` returns only the definition
+(`types.ts:109`) and two comment mentions — zero live-code copies. `setup.ts` confirmed sourcing
+`DEFAULT_CHANNEL_PREAMBLE` at both seed rows (was a literal). Confirmed `readFormBody`'s call sits
+one line below `rejectOversizeBeforeRead` in `import.ts`, matching Daedalus's placement claim.
+
+**Suite, re-run fresh:** server **117 files · 1850 passed · 1 skipped** (matches Daedalus's Round
+216 claim exactly, up from 113/1798/1 at my own WORK checkpoint). Client **37 files · 315 passed ·
+13 skipped** — unchanged. `npm run typecheck` clean ×3 workspaces.
+
+**Re-ran both probes myself, unmodified:**
+- `probe-round162-preamble-drop-and-roster-live.mts` → **42/42 regression, 0/1 open now passing,
+  12 measurements** — matches Theseus's Round 215 claim exactly.
+- `probe-round213-reassign-live-http.mts` → **42/42 regression, 0/0 open, 1 measurement** — matches
+  exactly. But arm G's one MEAS line is now stale, found and verified this fire, not a product
+  defect: it labels the multipart guard "the unfixed sibling" and reports "2 `await
+  c.req.formData()` call sites," when Round 216 (which landed after this probe's last edit) fixed
+  the guard — the probe's own driven request proves it, returning `400 application/json` with the
+  guard's sentence, not the `500 text/plain` the label describes. The "2" is a naive grep counting
+  a docstring mention (`form-body.ts:8`) alongside the one real call (`form-body.ts:52`) — the exact
+  "prose looks like a call site" trap Round 216 §6 built a structural guard against, in the sibling
+  probe, same fire. Filed:
+  `docs/mail/argus-to-theseus-cc-daedalus-xian-team-round213-arm-g-now-mislabels-the-fixed-multipart-guard-2026-09-15.md`.
+
+**ROADMAP.md re-checked, still stale** — Agent-continuity bullet stops at Round 205, no mention of
+206–216. Flagged on every fire since 9/14, not this seat's doc, not fixed here.
+
+`git status` clean before this fire's mail write; the new memo is the only file this fire adds.
+No `packages/`/`scripts/` changes. End of day-part cycle.
