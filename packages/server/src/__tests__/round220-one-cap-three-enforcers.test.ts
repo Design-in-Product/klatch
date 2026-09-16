@@ -26,17 +26,31 @@
  * 10 MB the two are the same string — Theseus's §6(a) again: *"the control you
  * rebuilt in mutation 5 — reading both sentences out of the product — passes
  * either way at 10 MB. Only mutating the constant shows it."* So this file runs
- * the whole server-side cap at **2.5 MB**, a value no literal in the tree holds,
- * and the control at the shipped 10 MB already exists in
+ * the whole server-side cap at **2.25 MB**, a value no literal in the tree
+ * holds, and the control at the shipped 10 MB already exists in
  * `round218-...test.ts:263-264`.
  *
- * 2.5 MB is also deliberately fractional, which exercises the other half of
- * `formatFileSizeLimit`: a whole-MB cap must print `10 MB`, not `10.0 MB`, or
- * this change would have silently reworded every existing refusal.
+ * ## Why 2.25 and not 2.5
+ *
+ * 2.5 was the first choice and it was too weak, which only showed up when the
+ * mutations were driven. `files.ts` previously formatted its cap as
+ * `${max / (1024 * 1024)} MB` — a correct derivation, just a second one — and
+ * that expression and `formatFileSizeLimit` return the *same string* for every
+ * cap with at most one decimal place. So at 2.5 MB, reverting `files.ts` to its
+ * own arithmetic left this file entirely green: the two sentences still agreed,
+ * because they agreed by coincidence again, one decimal further out.
+ *
+ * At 2.25 MB they part: `formatFileSizeLimit` says `2.3 MB`, raw division says
+ * `2.25 MB`. The check below compares the two clauses to each other, so the
+ * second derivation is now visible as the divergence it is.
+ *
+ * The fractional cap also exercises the other half of the formatter: a whole-MB
+ * cap must print `10 MB`, not `10.0 MB`, or this change would have silently
+ * reworded every existing refusal.
  */
 import { describe, it, expect, vi } from 'vitest';
 
-const MOCK_CAP = vi.hoisted(() => 2.5 * 1024 * 1024);
+const MOCK_CAP = vi.hoisted(() => 2.25 * 1024 * 1024);
 
 vi.mock('@klatch/shared', async (importOriginal) => ({
   ...(await importOriginal<typeof import('@klatch/shared')>()),
@@ -97,11 +111,16 @@ describe('Round 220 — formatFileSizeLimit', () => {
 
   it('keeps one decimal for a fractional cap', () => {
     expect(formatFileSizeLimit(2.5 * 1024 * 1024)).toBe('2.5 MB');
+
+    // Rounds rather than growing a second decimal — which is also what makes
+    // it distinguishable from `max / (1024 * 1024)`, the derivation `files.ts`
+    // used to do for itself. See the header note on why the mock is 2.25.
+    expect(formatFileSizeLimit(2.25 * 1024 * 1024)).toBe('2.3 MB');
   });
 
   it('has no default cap — the argument is required', () => {
     // Written first as `expect(formatFileSizeLimit()).toBe(…)` and it FAILED,
-    // returning `10 MB` under the 2.5 MB mock. A default parameter binds the
+    // returning `10 MB` under the mocked cap. A default parameter binds the
     // *declaring* module's constant, which `vi.mock` does not replace — so the
     // defaulted call and every production call would have been answering about
     // two different limits. That is the Round 219 §6(a) defect one layer down,
@@ -129,7 +148,7 @@ describe('Round 220 — the cap is read, not written down', () => {
 
     expect(refused.valid).toBe(false);
     expect(refused.valid === false && refused.reason).toBe(
-      'File too large (3.0 MB). Maximum is 2.5 MB.'
+      'File too large (3.0 MB). Maximum is 2.3 MB.'
     );
   });
 
@@ -143,21 +162,23 @@ describe('Round 220 — the cap is read, not written down', () => {
     const res = await createTestApp().request('/api/channels/any/files', OVERSIZE);
 
     expect(res.status).toBe(400);
-    expect(await sentence(res)).toBe('File too large (200.0 MB uploaded). Maximum is 2.5 MB.');
+    expect(await sentence(res)).toBe('File too large (200.0 MB uploaded). Maximum is 2.3 MB.');
   });
 
   it('and the two checks name the SAME limit at a cap neither one hardcodes', async () => {
     // The property Theseus's §6(a) asked for, stated where it can fail. Both
     // clauses are recovered from the product — one from a real HTTP response,
     // one from `validateFile` — and compared to each other *and* to the mocked
-    // cap, so neither "both hardcode 10 MB" nor "both hardcode 2.5 MB" passes.
+    // cap, so neither "both hardcode 10 MB" nor "both hardcode 2.3 MB" passes,
+    // and — because 2.25 MB rounds — neither does "files.ts derives it again
+    // for itself with `max / (1024 * 1024)`", which would say `2.25 MB` here.
     const fromHeader = limitClause(
       await sentence(await createTestApp().request('/api/channels/any/files', OVERSIZE))
     );
     const exact = validateFile(Buffer.alloc(3 * 1024 * 1024), 'text/plain', 'big.txt');
     const fromExact = limitClause(exact.valid === false ? exact.reason : null);
 
-    expect(fromHeader).toBe('2.5 MB');
+    expect(fromHeader).toBe('2.3 MB');
     expect(fromExact).toBe(fromHeader);
   });
 
@@ -185,7 +206,7 @@ describe('Round 220 — control: import.ts was not swept up in this', () => {
     // `size-cap.ts`'s docstring says the two route families word their
     // refusals differently on purpose. A refactor that centralised "the size
     // sentence" instead of "the file cap" would show up here: import's
-    // rounded, space-less `50MB` is a different format from files' `2.5 MB`,
+    // rounded, space-less `50MB` is a different format from files' `2.3 MB`,
     // and its number must not have moved with the mock.
     const res = await createTestApp().request('/api/import/claude-ai', {
       method: 'POST',
