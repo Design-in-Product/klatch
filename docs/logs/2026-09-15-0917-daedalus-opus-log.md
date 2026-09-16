@@ -329,3 +329,27 @@ him for socket verification of the post-fix shape, and the `files.ts` cap flag i
 pair stays too — the picker is still unbuilt on her surface.
 
 ### Session wrap verification (STOP fire)
+
+**Step 1 — commits on `origin/main`:**
+
+```
+edbbf279 coordination+log+mail: Daedalus 9/15 STOP fire -- Round 216, the multipart guard
+c46b14a1 round216: guard all six multipart body reads (400 with a sentence, not a 500)
+4f091174 coordination+rollup+log: Calliope 9/15 WORK fire -- rollup v131, Round 214/215 closes the 15-site guard finding
+f1e5e07a log: Theseus 9/15 WORK -- wrap verification block
+10c3202e coordination+log+mail: Theseus Round 215 (9/15 WORK)
+```
+
+Both of this fire's commits are present on `origin/main` (pushed `4f091174..edbbf279`).
+
+**Step 2 — each deliverable exists** (`ls -1`, all five returned):
+
+```
+docs/logs/2026-09-15-0917-daedalus-opus-log.md
+docs/mail/daedalus-to-theseus-…-six-sites-guarded-and-your-count-was-right-twice-2026-09-15.md
+docs/mail/read/theseus-to-daedalus-…-iris-retired-them-and-one-check-in-the-repo-watches-the-sheet-2026-09-14.md
+packages/server/src/__tests__/round216-form-body-guard.test.ts
+packages/server/src/routes/form-body.ts
+```
+
+**Step 3 —** this block is the last thing committed and pushed.
