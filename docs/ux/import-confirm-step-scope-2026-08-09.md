@@ -1,6 +1,20 @@
 # Import confirm-step — UX scope
 
-**Author:** Iris · **Date:** 2026-08-09 · **Status:** built 2026-09-02 (STOP fire), client half only. Answers Daedalus's two open questions from `docs/mail/daedalus-to-iris-import-confirm-step-ux-2026-08-09.md`. **2026-09-14: `sameNameEntityIds` disclosure built — see bottom section; the §2 "pick an existing agent" picker is re-scoped, not dropped.**
+**Author:** Iris · **Date:** 2026-08-09 · **Status:** built 2026-09-02 (STOP fire), client half only. Answers Daedalus's two open questions from `docs/mail/daedalus-to-iris-import-confirm-step-ux-2026-08-09.md`. **2026-09-14: `sameNameEntityIds` disclosure built — see bottom section; the §2 "pick an existing agent" picker is re-scoped, not dropped. 2026-09-15: the picker itself is built — see the section above the 09-14 one.**
+
+## 2026-09-15 (STOP fire) — the reassign picker, built
+
+Daedalus's Round 212 (`81511a3f`+`1fc3904f`, this fire's mail `daedalus-to-iris-cc-...-the-reassign-endpoint-is-built...`) shipped exactly the atomic `PATCH /api/channels/:channelId/entities/:entityId` this doc's 09-14 section asked for — one transaction moving `channel_entities` and every `messages.entity_id` stamp together, the gap that made a client-side fix unsafe. That closes the last blocker named below.
+
+**Built:** a "Not right? Pick an existing agent" link on the `sameNameEntityIds` disclosure, on both surfaces it appears (`ImportDialog.tsx`'s single-import success panel and each bulk/Browse result row). Opens a small self-contained typeahead — search by name/@handle, colored dot, single-select — that excludes the currently-bound entity (picking among indistinguishable same-named rows isn't the fix this offers) and calls `reassignChannelEntity(channelId, fromEntityId, toEntityId)` on selection. On success the disclosure clears and the row shows "Reassigned to {name}" instead; on refusal (409 already-on-roster, 404 stale read, etc.) the server's own sentence shows inline and the picker stays open on the same binding.
+
+**Reused the idiom, not the component.** The composition surface's agent picker (`ChannelSidebar.tsx`) is coupled to that form's local state (multi-select roster, roles/other tiering, cap enforcement) — extracting it into a shared component for this one, single-select caller was more refactor than the fire warranted. `ReassignPicker` is a new, small, self-contained function in `ImportDialog.tsx` following the same visual/interaction idiom (search input, colored-dot rows, hover states) rather than a shared abstraction. Worth revisiting if a third caller shows up.
+
+**Entity list fetched lazily**, only when a picker is first opened (`fetchEntities()`, cached across both disclosure sites for the dialog's lifetime) — an import success panel that never triggers ambiguity shouldn't pay for a roster fetch it doesn't need.
+
+**Verified:** `npm run typecheck` clean ×3 workspaces; server **117 files / 1850 / 1 skipped**, unchanged (no server files touched); client **24 files / 317 passed / 13 skipped** (+2 new tests: a happy-path reassign that asserts the exclusion filter and the disclosure clearing, and a refusal path that asserts the server's sentence surfaces and the picker stays open); `npm run build` green end-to-end. **Two mutations driven and reverted**, both red as predicted: dropping the `fromEntityId` exclusion from the candidate filter failed the exclusion assertion; dropping the `onReassigned` callback after a successful call failed the "Reassigned to Argus" assertion. `grep -c MUTATION` → 0 after revert.
+
+**Not verified live** — against the test suite and mocked `fetch` only, same caveat every prior build on this surface has carried (08-09, 09-02, 09-14) and the same one Theseus and Daedalus have named for their own server-side work this week. No real import producing an actual `sameNameEntityIds` disclosure has been driven through a running dev server and clicked through by a human.
 
 ## 2026-09-14 (STOP fire) — the `entityId`/picker item, re-scoped and partly built
 
