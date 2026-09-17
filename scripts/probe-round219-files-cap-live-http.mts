@@ -50,6 +50,7 @@ import { spawn, execFileSync } from 'child_process';
 import fs from 'fs';
 import net from 'net';
 import path from 'path';
+import { requireAnUnoccupiedPort, reapOnExit, waitUntilOurServerIsUp } from './lib/probe-server-ownership.mts';
 
 const REPO = path.resolve(import.meta.dirname, '..');
 const SCRATCH = path.join(REPO, '.testdata', 'round219-files-cap');
@@ -114,30 +115,6 @@ function measure(arm: string, name: string, detail: string) {
   console.log(`MEAS [${arm}] ${name} — ${detail}`);
 }
 
-/**
- * A bind test is not a pre-flight, and this is not a theory.
- *
- * Measured 2026-09-16 in this worktree: a server leaked by an earlier truncated run of this
- * very probe was listening on port 3001 and answering `GET /api/channels`, and
- * `net.createServer().listen(3001, '127.0.0.1')` **succeeded** anyway — node sets
- * `SO_REUSEADDR`, and BSD/macOS permits a specific-address bind alongside a wildcard one.
- * `portIsFree` returned `true` while a stranger held the port. The Round 217 probe then ran
- * its whole suite against that stranger's process, on a different database, and reported
- * `22/22`.
- *
- * The property this guard exists to establish is "nobody is answering here". A bind asks a
- * different question and was accepted as a proxy for this one — the same substitution that
- * made Round 217 arm L vacuous, one layer below the checks.
- */
-async function somethingIsAlreadyAnswering(): Promise<string | null> {
-  try {
-    const res = await fetch(`${BASE}/channels`, { signal: AbortSignal.timeout(3000) });
-    return `HTTP ${res.status}`;
-  } catch {
-    return null;
-  }
-}
-
 function packagesDiff(): string {
   return execFileSync('git', ['diff', '--stat', '--', 'packages/'], { cwd: REPO, encoding: 'utf8' }).trim();
 }
@@ -148,16 +125,15 @@ const diffBefore = packagesDiff();
 fs.rmSync(SCRATCH, { recursive: true, force: true });
 fs.mkdirSync(FILES_DIR, { recursive: true });
 
-{
-  const occupant = await somethingIsAlreadyAnswering();
-  if (occupant !== null) {
-    console.error(
-      `port ${PORT} already ANSWERS (${occupant}) — this probe needs to own the server, and a bind test ` +
-      `will not tell you this (see somethingIsAlreadyAnswering). Stop the dev server or the leaked ` +
-      `probe server and re-run.`);
-    process.exit(2);
-  }
-}
+/**
+ * Round 223: this was a local HTTP-only guard, written in Round 221 after this probe's own leaked
+ * server was graded by Round 217. It is now the shared one, and the upgrade is not cosmetic — an
+ * HTTP-only decision is precisely the mutation Daedalus's Round 222 control catches (M2, 23/24,
+ * arm B): a process that accepts the connection and never writes a response is invisible to
+ * `fetch`, and that is what a server looks like between `listen` and its first response.
+ * The shared guard decides on a TCP connect and uses HTTP only to describe what it found.
+ */
+await requireAnUnoccupiedPort(PORT, 'probe-round219-files-cap-live-http');
 
 const serverLog = path.join(SCRATCH, 'server.log');
 const logFd = fs.openSync(serverLog, 'a');
@@ -174,40 +150,35 @@ async function shutdown(code: number): Promise<never> {
   process.exit(code);
 }
 
-// The leak that produced the finding above: this probe's output was piped to `head`, the pipe
-// closed, node took SIGPIPE, and `shutdown` never ran — leaving a server holding port 3001
-// and the scratch DB. Reaping the child on every exit path, not just the happy one.
-for (const sig of ['SIGINT', 'SIGTERM', 'SIGHUP', 'SIGPIPE'] as const) {
-  process.on(sig, () => { server.kill('SIGKILL'); process.exit(130); });
-}
-process.on('exit', () => { if (server.exitCode === null) server.kill('SIGKILL'); });
+// The leak that produced the Round 221 finding: this probe's output was piped to `head`, the pipe
+// closed, node took SIGPIPE, and `shutdown` never ran — leaving a server holding port 3001 and the
+// scratch DB. Reaping the child on every exit path, not just the happy one.
+reapOnExit(() => server);
 
-{
-  const deadline = Date.now() + 45_000;
-  let up = false;
-  while (Date.now() < deadline) {
-    if (server.exitCode !== null) {
-      console.error(`server exited early (code ${server.exitCode}). Log:\n${fs.readFileSync(serverLog, 'utf8')}`);
-      process.exit(1);
-    }
-    try { if ((await fetch(`${BASE}/channels`)).ok) { up = true; break; } } catch { /* not yet */ }
-    await new Promise((r) => setTimeout(r, 250));
-  }
-  if (!up) {
-    console.error(`server did not come up. Log:\n${fs.readFileSync(serverLog, 'utf8')}`);
-    await shutdown(1);
-  }
-  // Readiness says "something answered", not "my server answered". The server we spawned was
-  // given KLATCH_DB pointing inside a directory this probe deleted moments ago, and it runs
-  // migrations at boot — so the file existing at all is evidence produced by the process under
-  // test, at a path chosen here. On the run that found this, it did not exist.
-  if (!fs.existsSync(DB)) {
-    console.error(
-      `the server that answered is NOT the one this probe spawned: ${DB} does not exist after ` +
-      `readiness. Aborting rather than reporting checks about a stranger's process.`);
-    await shutdown(3);
-  }
-}
+/**
+ * Round 223: readiness is now the shared two-sided one, and the check it replaces was retired on a
+ * measurement rather than on taste.
+ *
+ * Round 221 added a second side here: `if (!fs.existsSync(DB))`, reasoning that the scratch DB is
+ * "evidence produced by the process under test, at a path chosen here". Round 222 §3 then corrected
+ * a different claim of mine with the fact that defeats it — `db/index.ts` opens the DB *before*
+ * `index.ts` reaches `serve()`, so a child that loses the bind creates the file anyway. Neither memo
+ * joined those two up.
+ *
+ * Driven, `probe-round223b-db-existence-is-not-identity.mts`, this worktree, 2026-09-17:
+ *
+ *     HTTP says up at +14 ms · scratch DB exists at +493 ms · child exit readable at +493 ms
+ *     · banner never
+ *
+ * So the DB check did hold on that run — by 479 ms of a race nothing in this file orders. Slow the
+ * stranger's first answer past half a second (a leaked server still booting is exactly that) and it
+ * passes while the corpse supplies the evidence. The banner cannot be supplied by a stranger at any
+ * speed: it is absent exactly when the bind failed.
+ */
+await waitUntilOurServerIsUp(server, serverLog, PORT, 45_000).catch(async (e: Error) => {
+  console.error(String(e.message));
+  await shutdown(3);
+});
 
 // ── Wire helpers ─────────────────────────────────────────────────────────────
 

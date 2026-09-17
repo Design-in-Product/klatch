@@ -51,6 +51,7 @@ import fs from 'fs';
 import path from 'path';
 import { spawn, execFileSync } from 'child_process';
 import net from 'net';
+import { requireAnUnoccupiedPort, reapOnExit, waitUntilOurServerIsUp } from './lib/probe-server-ownership.mts';
 
 const REPO = path.resolve(import.meta.dirname, '..');
 const SCRATCH = path.join(REPO, '.testdata', 'round217-multipart');
@@ -113,28 +114,6 @@ function measure(arm: string, name: string, detail: string) {
   console.log(`MEAS [${arm}] ${name} — ${detail}`);
 }
 
-/**
- * A bind test is not a pre-flight, and this probe is the one that proved it.
- *
- * Measured 2026-09-16: a server leaked by a truncated run of the Round 219 probe was listening
- * on 3001 and answering `GET /api/channels`, and `net.createServer().listen(3001, '127.0.0.1')`
- * **succeeded** anyway — node sets `SO_REUSEADDR`, and BSD/macOS permits a specific-address
- * bind alongside a wildcard one. So `portIsFree` returned `true`, this probe's own server
- * failed to bind (its log stayed 0 bytes and no scratch DB was ever created), and every arm
- * below ran against the stranger. It reported arms J and beyond as passing before dying on the
- * first read of a database that did not exist.
- *
- * The property wanted is "nobody is answering here". Ask that question, not a different one.
- */
-async function somethingIsAlreadyAnswering(): Promise<string | null> {
-  try {
-    const res = await fetch(`${BASE}/channels`, { signal: AbortSignal.timeout(3000) });
-    return `HTTP ${res.status}`;
-  } catch {
-    return null;
-  }
-}
-
 function packagesDiff(): string {
   return execFileSync('git', ['diff', '--stat', '--', 'packages/'], { cwd: REPO, encoding: 'utf8' }).trim();
 }
@@ -143,16 +122,14 @@ const diffBefore = packagesDiff();
 fs.rmSync(SCRATCH, { recursive: true, force: true });
 fs.mkdirSync(SCRATCH, { recursive: true });
 
-{
-  const occupant = await somethingIsAlreadyAnswering();
-  if (occupant !== null) {
-    console.error(
-      `port ${PORT} already ANSWERS (${occupant}) — this probe needs to own the server, and a bind ` +
-      `test will not tell you this (see somethingIsAlreadyAnswering). Stop the dev server or the ` +
-      `leaked probe server and re-run.`);
-    process.exit(2);
-  }
-}
+/**
+ * Round 223: the shared guard, not the local Round 221 one. This is the probe that reported 22/22
+ * against a stranger, so it is the right one to hold to the strongest available version — and the
+ * local repair was the weaker half: deciding on an HTTP round trip is Round 222's M2 mutation,
+ * which its control catches (23/24, arm B), because a process that accepts a connection and never
+ * answers is invisible to `fetch`.
+ */
+await requireAnUnoccupiedPort(PORT, 'probe-round217-multipart-guard-live-http');
 
 const serverLog = path.join(SCRATCH, 'server.log');
 const logFd = fs.openSync(serverLog, 'a');
@@ -171,36 +148,20 @@ async function shutdown(code: number): Promise<never> {
 
 // Reap the child on every exit path. A probe whose output is piped to `head` takes SIGPIPE and
 // never reaches `shutdown`, leaving a server on 3001 for the next probe to mistake for its own.
-for (const sig of ['SIGINT', 'SIGTERM', 'SIGHUP', 'SIGPIPE'] as const) {
-  process.on(sig, () => { server.kill('SIGKILL'); process.exit(130); });
-}
-process.on('exit', () => { if (server.exitCode === null) server.kill('SIGKILL'); });
+reapOnExit(() => server);
 
-{
-  const deadline = Date.now() + 45_000;
-  let up = false;
-  while (Date.now() < deadline) {
-    if (server.exitCode !== null) {
-      console.error(`server exited early (code ${server.exitCode}). Log:\n${fs.readFileSync(serverLog, 'utf8')}`);
-      process.exit(1);
-    }
-    try { if ((await fetch(`${BASE}/channels`)).ok) { up = true; break; } } catch { /* not yet */ }
-    await new Promise((r) => setTimeout(r, 250));
-  }
-  if (!up) {
-    console.error(`server did not come up. Log:\n${fs.readFileSync(serverLog, 'utf8')}`);
-    await shutdown(1);
-  }
-  // Readiness establishes "something answered", not "my server answered". The spawned server
-  // was handed KLATCH_DB inside a directory deleted moments ago and runs migrations at boot, so
-  // the file's existence is evidence from the process under test at a path chosen here.
-  if (!fs.existsSync(DB)) {
-    console.error(
-      `the server that answered is NOT the one this probe spawned: ${DB} does not exist after ` +
-      `readiness. Aborting rather than reporting checks about a stranger's process.`);
-    await shutdown(3);
-  }
-}
+/**
+ * Round 223: two-sided readiness. The Round 221 second side here was `fs.existsSync(DB)`, retired
+ * on a measurement rather than on taste — `probe-round223b-db-existence-is-not-identity.mts` timed
+ * the two events on this machine and got `HTTP up at +14 ms · scratch DB at +493 ms`, i.e. the
+ * check held by 479 ms of a race nothing in this file orders, and a child that loses the bind
+ * creates that DB anyway (Round 222 §3). The banner in *this child's own log* cannot be supplied
+ * by a stranger at any speed.
+ */
+await waitUntilOurServerIsUp(server, serverLog, PORT, 45_000).catch(async (e: Error) => {
+  console.error(String(e.message));
+  await shutdown(3);
+});
 
 type Wire = { status: number; contentType: string | null; text: string; error: string | null; parsed: boolean };
 
@@ -577,7 +538,12 @@ try {
     // source fact as a proxy for a behaviour. **A tripwire aimed at source text is disarmed by
     // any refactor that keeps the behaviour** — which is the refactor you actually want people
     // to make. So this now asserts the behaviour the arm already drives.
-    const refusedAtHeader = answers.filter((a) => statusOf(a.raw) === 400 && (sentenceOf(a.raw) ?? '').includes('uploaded'));
+    // `a.raw` is `string | null` — null is the "no answer within the timeout" case, which was the
+    // 9/15 observation here and is the outcome this arm exists to watch for. Narrowed explicitly
+    // rather than asserted: `statusOf(null)` would throw on `.match`, so the two typecheck errors
+    // Daedalus flagged in his Round 222 §6 were a live crash waiting for the defect to return.
+    const refusedAtHeader = answers.filter((a) =>
+      a.raw !== null && statusOf(a.raw) === 400 && (sentenceOf(a.raw) ?? '').includes('uploaded'));
     check('L', 'files.ts refuses a lying oversize Content-Length at BOTH upload sites (closed Round 218; was the open item)',
       refusedAtHeader.length === answers.length,
       answers.map((a) => `${a.key}=${a.raw === null ? `NO ANSWER in ${a.ms}ms` : `${statusOf(a.raw)} in ${a.ms}ms ${JSON.stringify(sentenceOf(a.raw))}`}`).join(' · '));
