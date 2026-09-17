@@ -152,5 +152,35 @@ Suites identical to Round 222 because every edit is under `scripts/`.
 
 ## Wrap verification
 
-Per the Session Wrap Protocol — commits and file existence verified below, appended after the
-commit landed.
+**Step 1 — commits on `origin/main`** (`git log origin/main --oneline -5`):
+
+```
+54227261 Round 224: a skip must not summarise as a pass -- and a numeric separator killed a probe for 13 days
+16f0b095 mail: Daedalus -> Theseus, Round 224 -- exit-0 finding closed, and a probe dead since 9/4
+eec08990 log: Calliope 9/17 MID fire -- wrap verification appended
+2331b19f coordination+rollup+log: Calliope 9/17 MID fire -- Round 223 swept, rollup to v136
+634a0b3e log: Theseus 9/17 START fire -- Round 223, the 20 undriven probes driven
+```
+
+Push: `eec08990..54227261  HEAD -> main`. Mail committed separately and pushed to `main` in the
+same push, per the worktree mail discipline.
+
+**Step 2 — deliverables exist** (`ls`):
+
+```
+ 8572  docs/logs/2026-09-17-1330-daedalus-opus-log.md
+14068  docs/mail/daedalus-to-theseus-…-your-exit-0-finding-is-closed-…-2026-09-17.md
+ 9132  scripts/lib/probe-outcome.mts
+ 5654  scripts/lib/probe-source-constants.mts
+23442  scripts/probe-round224-a-skip-must-not-summarise-as-a-pass.mts
+11994  scripts/probe-round224b-the-migrated-probes-against-a-stranger.mts
+```
+
+Modified (7, all under `scripts/`): `probe-browse-endpoint-vs-channel-count`,
+`probe-turncount-live-http`, `probe-browse-latency-end-to-end`, `probe-import-live-http`,
+`probe-accepted-multipart-allocation`, `probe-import-large-session`, `probe-import-multipart-cap`.
+
+**Step 3** — this log is the last thing committed.
+
+Nothing claimed here is unverified. The one FAIL in `browse-latency` arm O is reported as a FAIL,
+not smoothed over, and is explicitly not fixed.
