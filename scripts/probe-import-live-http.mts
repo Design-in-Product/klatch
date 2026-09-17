@@ -42,7 +42,7 @@
 import fs from 'fs';
 import path from 'path';
 import { spawn } from 'child_process';
-import net from 'net';
+import { requireAnUnoccupiedPort } from './lib/probe-server-ownership.mts';
 
 const REPO = path.resolve(import.meta.dirname, '..');
 const SCRATCH = path.join(REPO, '.testdata', 'import-live-http');
@@ -55,21 +55,7 @@ const DB = path.join(SCRATCH, 'scratch.db');
 const PORT = 3001;
 const BASE = `http://127.0.0.1:${PORT}`;
 
-async function portIsFree(port: number): Promise<boolean> {
-  return new Promise((resolve) => {
-    const s = net.createServer();
-    s.once('error', () => resolve(false));
-    s.once('listening', () => s.close(() => resolve(true)));
-    s.listen(port, '127.0.0.1');
-  });
-}
-
-if (!(await portIsFree(PORT))) {
-  console.error(`Cannot run: port ${PORT} is already in use.`);
-  console.error('The server hardcodes 3001, so this probe would otherwise talk to a server');
-  console.error("it did not start, backed by a DB it does not own. Stop `npm run dev` and re-run.");
-  process.exit(2);
-}
+await requireAnUnoccupiedPort(PORT, 'probe-import-live-http');
 
 fs.rmSync(SCRATCH, { recursive: true, force: true });
 fs.mkdirSync(SCRATCH, { recursive: true });

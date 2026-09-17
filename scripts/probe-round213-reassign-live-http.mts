@@ -66,7 +66,7 @@
 import fs from 'fs';
 import path from 'path';
 import { spawn, execFileSync } from 'child_process';
-import net from 'net';
+import { requireAnUnoccupiedPort } from './lib/probe-server-ownership.mts';
 
 const REPO = path.resolve(import.meta.dirname, '..');
 const SCRATCH = path.join(REPO, '.testdata', 'round213-reassign');
@@ -98,15 +98,6 @@ function measure(arm: string, name: string, detail: string) {
   console.log(`MEAS [${arm}] ${name} — ${detail}`);
 }
 
-async function portIsFree(port: number): Promise<boolean> {
-  return new Promise((resolve) => {
-    const s = net.createServer();
-    s.once('error', () => resolve(false));
-    s.once('listening', () => s.close(() => resolve(true)));
-    s.listen(port, '127.0.0.1');
-  });
-}
-
 function packagesDiff(): string {
   return execFileSync('git', ['diff', '--stat', '--', 'packages/'], { cwd: REPO, encoding: 'utf8' }).trim();
 }
@@ -115,10 +106,7 @@ const diffBefore = packagesDiff();
 fs.rmSync(SCRATCH, { recursive: true, force: true });
 fs.mkdirSync(SCRATCH, { recursive: true });
 
-if (!(await portIsFree(PORT))) {
-  console.error(`port ${PORT} is occupied — this probe needs to own the server. Stop the dev server and re-run.`);
-  process.exit(2);
-}
+await requireAnUnoccupiedPort(PORT, 'probe-round213-reassign-live-http');
 
 const serverLog = path.join(SCRATCH, 'server.log');
 const logFd = fs.openSync(serverLog, 'a');

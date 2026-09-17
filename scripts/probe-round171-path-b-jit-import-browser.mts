@@ -44,9 +44,9 @@
 import fs from 'fs';
 import path from 'path';
 import { spawn, execFileSync, type ChildProcess } from 'child_process';
-import net from 'net';
 import { randomUUID as uuid } from 'crypto';
 import { chromium, type Browser, type Page } from 'playwright';
+import { requireAnUnoccupiedPort } from './lib/probe-server-ownership.mts';
 
 const REPO = path.resolve(import.meta.dirname, '..');
 const SCRATCH = path.join(REPO, '.testdata', 'round171-path-b');
@@ -85,15 +85,6 @@ function packagesDiff(): string {
   return execFileSync('git', ['diff', '--stat', '--', 'packages/'], { cwd: REPO, encoding: 'utf8' }).trim();
 }
 const diffBefore = packagesDiff();
-
-async function portIsFree(port: number): Promise<boolean> {
-  return new Promise((resolve) => {
-    const s = net.createServer();
-    s.once('error', () => resolve(false));
-    s.once('listening', () => s.close(() => resolve(true)));
-    s.listen(port, '127.0.0.1');
-  });
-}
 
 // ── Fixture sessions ────────────────────────────────────────────────────────────
 //
@@ -160,10 +151,7 @@ const FIXTURE_COUNT_AT_START = 1;
 // ── Process lifecycle ───────────────────────────────────────────────────────────
 
 for (const [port, what] of [[API_PORT, 'the API server'], [UI_PORT, 'the Vite dev server']] as const) {
-  if (!(await portIsFree(port))) {
-    console.error(`port ${port} is occupied — this probe must own ${what}. Stop the dev server and re-run.`);
-    process.exit(2);
-  }
+  await requireAnUnoccupiedPort(port, `probe-round171-path-b-jit-import-browser (${what})`);
 }
 
 const serverLog = path.join(SCRATCH, 'server.log');

@@ -54,7 +54,7 @@ import path from 'path';
 import os from 'os';
 import readline from 'readline';
 import { spawn } from 'child_process';
-import net from 'net';
+import { somethingIsAlreadyAnswering } from './lib/probe-server-ownership.mts';
 
 const REPO = path.resolve(import.meta.dirname, '..');
 const SCRATCH = path.join(REPO, '.testdata', 'turncount-live-http');
@@ -91,15 +91,6 @@ const skipped: string[] = [];
 function skip(arm: string, why: string) {
   skipped.push(`[${arm}] ${why}`);
   console.log(`SKIP [${arm}] ${why}`);
-}
-
-async function portIsFree(port: number): Promise<boolean> {
-  return new Promise((resolve) => {
-    const s = net.createServer();
-    s.once('error', () => resolve(false));
-    s.once('listening', () => s.close(() => resolve(true)));
-    s.listen(port, '127.0.0.1');
-  });
 }
 
 fs.rmSync(SCRATCH, { recursive: true, force: true });
@@ -166,7 +157,7 @@ process.on('exit', shutdown);
 process.on('SIGINT', () => { shutdown(); process.exit(130); });
 
 const serverLog = path.join(SCRATCH, 'server.log');
-const haveServer = await portIsFree(PORT);
+const haveServer = (await somethingIsAlreadyAnswering(PORT)) === null;
 
 if (haveServer) {
   const logFd = fs.openSync(serverLog, 'a');

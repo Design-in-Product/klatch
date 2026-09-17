@@ -57,9 +57,9 @@
 import fs from 'fs';
 import path from 'path';
 import os from 'os';
-import net from 'net';
 import crypto from 'crypto';
 import { spawn, type ChildProcess } from 'child_process';
+import { requireAnUnoccupiedPort, waitUntilPortIsQuiet } from './lib/probe-server-ownership.mts';
 
 const REPO = path.resolve(import.meta.dirname, '..');
 const SCRATCH = path.join(REPO, '.testdata', 'multi-root-browse');
@@ -138,25 +138,11 @@ const SCANNER_SHA = crypto.createHash('sha256').update(fs.readFileSync(SCANNER))
 
 let server: ChildProcess | null = null;
 
-function portIsFree(port: number): Promise<boolean> {
-  return new Promise((resolve) => {
-    const s = net.createServer();
-    s.once('error', () => resolve(false));
-    s.once('listening', () => s.close(() => resolve(true)));
-    s.listen(port, '127.0.0.1');
-  });
-}
-
 async function stopServer(): Promise<void> {
   if (!server) return;
   server.kill('SIGTERM');
   server = null;
-  const deadline = Date.now() + 30_000;
-  while (Date.now() < deadline) {
-    if (await portIsFree(PORT)) return;
-    await new Promise((r) => setTimeout(r, 100));
-  }
-  throw new Error(`port ${PORT} still occupied 30 s after SIGTERM`);
+  await waitUntilPortIsQuiet(PORT);
 }
 
 /**
@@ -167,6 +153,9 @@ async function stopServer(): Promise<void> {
  */
 async function startServer(tag: string, extraEnv: Record<string, string>): Promise<void> {
   await stopServer();
+  // `stopServer` returns immediately when there is no previous generation, so on the FIRST
+  // start nothing had checked the port at all — this probe shipped with no pre-flight.
+  await requireAnUnoccupiedPort(PORT, 'probe-multi-root-browse');
   const logPath = path.join(SCRATCH, `server-${tag}.log`);
   const logFd = fs.openSync(logPath, 'a');
   // Both variables are cleared first: the fire's own environment may carry a

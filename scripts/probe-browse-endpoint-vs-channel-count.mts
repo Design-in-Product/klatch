@@ -80,9 +80,9 @@
 import fs from 'fs';
 import path from 'path';
 import os from 'os';
-import net from 'net';
 import crypto from 'crypto';
 import { spawn, execFileSync } from 'child_process';
+import { somethingIsAlreadyAnswering, waitUntilPortIsQuiet } from './lib/probe-server-ownership.mts';
 
 const REPO = path.resolve(import.meta.dirname, '..');
 const SCRATCH = path.join(REPO, '.testdata', 'browse-endpoint-vs-channels');
@@ -116,15 +116,6 @@ const median = (xs: number[]) => {
   return s.length % 2 ? s[(s.length - 1) / 2] : (s[s.length / 2 - 1] + s[s.length / 2]) / 2;
 };
 const ms = (n: number) => `${n.toFixed(0)} ms`;
-
-async function portIsFree(port: number): Promise<boolean> {
-  return new Promise((resolve) => {
-    const s = net.createServer();
-    s.once('error', () => resolve(false));
-    s.once('listening', () => s.close(() => resolve(true)));
-    s.listen(port, '127.0.0.1');
-  });
-}
 
 fs.rmSync(SCRATCH, { recursive: true, force: true });
 fs.mkdirSync(SCRATCH, { recursive: true });
@@ -320,12 +311,7 @@ process.on('exit', killServer);
  * first.
  */
 async function waitForPortFree(): Promise<void> {
-  const deadline = Date.now() + 30_000;
-  while (Date.now() < deadline) {
-    if (await portIsFree(PORT)) return;
-    await new Promise((r) => setTimeout(r, 100));
-  }
-  throw new Error(`port ${PORT} still occupied 30 s after SIGTERM`);
+  await waitUntilPortIsQuiet(PORT);
 }
 
 async function startServer(db: string, tag: string): Promise<void> {
@@ -501,7 +487,7 @@ function seedMatching(dbPath: string, ids: string[]): number {
 
 // ── The sweep ────────────────────────────────────────────────────────────────
 
-const haveServer = await portIsFree(PORT);
+const haveServer = (await somethingIsAlreadyAnswering(PORT)) === null;
 const canRun = haveServer && files.length > 0;
 if (!haveServer) console.log(`port ${PORT} is occupied — stop \`npm run dev\` and re-run.\n`);
 if (files.length === 0) console.log(`no readable corpus under ~/.claude/projects.\n`);

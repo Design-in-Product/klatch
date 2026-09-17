@@ -73,9 +73,9 @@
 import fs from 'fs';
 import path from 'path';
 import os from 'os';
-import net from 'net';
 import crypto from 'crypto';
 import { spawn } from 'child_process';
+import { somethingIsAlreadyAnswering } from './lib/probe-server-ownership.mts';
 
 const REPO = path.resolve(import.meta.dirname, '..');
 const SCRATCH = path.join(REPO, '.testdata', 'browse-latency-e2e');
@@ -97,15 +97,6 @@ const skipped: string[] = [];
 function skip(arm: string, why: string) {
   skipped.push(`[${arm}] ${why}`);
   console.log(`SKIP [${arm}] ${why}`);
-}
-
-async function portIsFree(port: number): Promise<boolean> {
-  return new Promise((resolve) => {
-    const s = net.createServer();
-    s.once('error', () => resolve(false));
-    s.once('listening', () => s.close(() => resolve(true)));
-    s.listen(port, '127.0.0.1');
-  });
 }
 
 const median = (xs: number[]) => {
@@ -184,7 +175,7 @@ async function timeBrowse(n: number): Promise<{ samples: number[]; bytes: number
   return { samples, bytes, sessions, projects, capped };
 }
 
-const haveServer = await portIsFree(PORT);
+const haveServer = (await somethingIsAlreadyAnswering(PORT)) === null;
 if (!haveServer) {
   console.log(`port ${PORT} is occupied — arms L, N and O cannot run (the server hardcodes 3001). Arm M still runs.\n`);
 }

@@ -57,9 +57,9 @@
 import fs from 'fs';
 import path from 'path';
 import os from 'os';
-import net from 'net';
 import readline from 'readline';
 import { spawn, execFileSync } from 'child_process';
+import { waitUntilPortIsQuiet } from './lib/probe-server-ownership.mts';
 
 const REPO = path.resolve(import.meta.dirname, '..');
 const SCRATCH = path.join(REPO, '.testdata', 'import-large-session');
@@ -109,15 +109,6 @@ function killServer() {
 process.on('exit', killServer);
 process.on('SIGINT', () => { killServer(); process.exit(130); });
 
-async function portIsFree(port: number): Promise<boolean> {
-  return new Promise((resolve) => {
-    const s = net.createServer();
-    s.once('error', () => resolve(false));
-    s.once('listening', () => s.close(() => resolve(true)));
-    s.listen(port, '127.0.0.1');
-  });
-}
-
 /**
  * SIGTERM is asynchronous: the previous generation can still be holding 3001 and
  * still answering when the next readiness probe runs, which would silently
@@ -125,12 +116,7 @@ async function portIsFree(port: number): Promise<boolean> {
  * THIS child to print its own banner.
  */
 async function waitForPortFree(): Promise<void> {
-  const deadline = Date.now() + 30_000;
-  while (Date.now() < deadline) {
-    if (await portIsFree(PORT)) return;
-    await new Promise((r) => setTimeout(r, 100));
-  }
-  throw new Error(`port ${PORT} still occupied 30 s after SIGTERM`);
+  await waitUntilPortIsQuiet(PORT);
 }
 
 async function startServer(tag: string, extraEnv: Record<string, string> = {}): Promise<void> {

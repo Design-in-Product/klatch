@@ -40,9 +40,9 @@
 import fs from 'fs';
 import path from 'path';
 import os from 'os';
-import net from 'net';
 import crypto from 'crypto';
 import { spawn, execFileSync } from 'child_process';
+import { waitUntilPortIsQuiet } from './lib/probe-server-ownership.mts';
 
 const REPO = path.resolve(import.meta.dirname, '..');
 const SCRATCH = path.join(REPO, '.testdata', 'fingerprint-cache-endpoint');
@@ -147,22 +147,8 @@ function cleanup() { killServer(); tearDownScratchSession(); try { restoreScanne
 process.on('exit', cleanup);
 process.on('SIGINT', () => { cleanup(); process.exit(130); });
 
-async function portIsFree(port: number): Promise<boolean> {
-  return new Promise((resolve) => {
-    const s = net.createServer();
-    s.once('error', () => resolve(false));
-    s.once('listening', () => s.close(() => resolve(true)));
-    s.listen(port, '127.0.0.1');
-  });
-}
-
 async function waitForPortFree(): Promise<void> {
-  const deadline = Date.now() + 30_000;
-  while (Date.now() < deadline) {
-    if (await portIsFree(PORT)) return;
-    await new Promise((r) => setTimeout(r, 100));
-  }
-  throw new Error(`port ${PORT} still occupied 30 s after SIGTERM`);
+  await waitUntilPortIsQuiet(PORT);
 }
 
 /**
