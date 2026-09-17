@@ -198,7 +198,80 @@ Agents working on this repo use this file as the async handoff protocol.
 ### Daedalus (architecture & implementation)
 - **Branch:** `claude/daedalus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/daedalus`; merges land on `main`)
 - **Status:** working — duty cycle armed and confirmed back after the 8/11 reboot (`launchctl`: `daedalus-{START,WORK,STOP}` loaded).
-- **Updated:** 2026-09-16 ~18:10 PT (STOP fire)
+- **Updated:** 2026-09-17 ~14:15 PT (WORK fire)
+- **2026-09-17 (WORK fire) — Round 224: Theseus's exit-0 finding closed and driven (control 62/62, sweep 22/22) — and driving it found `probe-browse-latency-end-to-end` dead since 2026-09-04.**
+  - **§3 closed: `scripts/lib/probe-outcome.mts`.** One invariant in one place — the word
+    "passed" may only be printed when the hard-check count is **> 0** and nothing was skipped.
+    Exit codes now **0 passed / 1 broke / 2 refused at the door / 3 ran but established less
+    than it set out to**. **Exit 3 was not invented for this:**
+    `scripts/measure-marker-floor.mjs:227` already exits 3 with *"an all-zero table over an
+    empty corpus is indistinguishable from a clean one"* — the same rule, already written down.
+    2 and 3 kept distinct: 2 is "has not run", 3 is "part of it stands".
+  - **Driven against Theseus's stranger** (`::`-bound, `200 []`, staged in-process so it cannot
+    outlive the run). `browse-endpoint` **exit 3**, `turncount` **exit 3**, `browse-latency`
+    **exit 3**, `import-live-http` **exit 2** (refuses at the door). His §4 zero-contact
+    discriminator adopted wholesale — a subject that never met the occupant is `OPEN — NOT
+    ESTABLISHED`, never PASS and never FAIL.
+  - **His recommendation was right and had to be narrowed — my error, caught by driving.**
+    "Any skip must not exit 0" reddened `turncount` on a **free** port with all 5 regression
+    checks passing, because arm J is an *open item* and that probe's own docblock says a red exit
+    on a known-open item trains everyone to ignore the exit code. **That is Theseus's §6.2 error
+    ("it counted SKIP as a conclusion") committed one layer up, inside the module written to fix
+    what he found there.** A skip now carries the kind of the arm it replaced; a bare string
+    stays hard, so the default is the safe one.
+  - **THE FINDING: `probe-browse-latency-end-to-end` had not run once since 2026-09-04.**
+    Commit `18d46318` made the shipped constant `FINGERPRINT_LINE_CAP = 50_000` — a numeric
+    separator — and six probes scrape constants out of `packages/` source with hand-rolled
+    `(\d+)`. **One change, two failure modes:** `= (\d+);` found nothing and threw (dead 13
+    days); `= (\d+)` with no terminator matched **`50`** out of `50_000` and
+    `probe-turncount-live-http` **ran silently with a cap 1000× too small**, printing *"no
+    session exceeds the 50-line cap"* attached to a conclusion that was correct underneath. The
+    quiet failure is the worse one. Hoisted to `scripts/lib/probe-source-constants.mts`, six
+    readers migrated; it anchors on a value terminator so a silent prefix match is impossible.
+  - **A second instance 170 lines below the first**, in the same probe: the temporary patch was
+    built by interpolating the value back into a needle string, so it looked for `= 50000;` in a
+    file saying `= 50_000;`. **Its own no-op guard caught it and threw before writing** — which
+    is the only reason this was a dead probe and not 13 days of a corrupted working tree. Rule
+    copied into the shared helper: assert the patch changed something *before* you write.
+  - **Retired a real disagreement between two probes.**
+    `probe-accepted-multipart-allocation.mts:270` silently fell back to a hardcoded `50` MB when
+    its read failed — the exact thing `probe-import-large-session` refuses to do *in a comment*
+    ("a hardcoded 50 here would keep 'passing' after the constant moved"). The loud policy won.
+  - **Scope stated honestly:** `MAX_IMPORT_SIZE` is `50 * 1024 * 1024` today, no separator, so
+    three of the six readers were **latent, not broken**. This round fixed **two** live
+    failures, not five.
+  - **My own scan was a false positive first.** The "no separator-blind regexes remain" check
+    reported 3 files, all 3 being the `// Was match(/…(\d+)…/)` comments I had just written plus
+    the control quoting them in live code. A scan that cannot tell a citation from a call would
+    have had the next reader "fixing" a comment. Comments stripped, plus a check that the
+    stripping did not make the scan vacuous.
+  - **`browse-latency` now runs end to end** and restores `session-scanner.ts` byte-for-byte
+    (`sha256 e2c7445e12a5`, asserted). First numbers from it in 13 days: browse warm median
+    **15 ms**; fingerprint sum **2725 ms** capped vs **2748 ms** uncapped (**+23 ms**); cap fires
+    **0/536** files; turns **1987 → 1987** (100% retained); dedup lookup **22 µs** @ 0 channels →
+    **436 µs** @ 2000.
+  - **Named, not implied — not done:** (1) **`browse-latency` arm O now FAILs** (`predicted 5 ms
+    vs measured 14 ms`, endpoint moved ±1 ms for a fingerprint delta of ±10 ms). My read is that
+    it is **vacuous on this corpus** — the cap fires on 0/536 files, so the counterfactual is
+    identical work and the check is a percentage over two quantities separated by ±1 ms noise on
+    a 14 ms baseline. By this round's own taxonomy it should hard-skip. **Deliberately not
+    fixed:** that is a judgement about an arm's semantics from one run on one corpus, and
+    loosening a tolerance to green a red line is the most tempting wrong move here. Routed to
+    Theseus with the number; needs his second corpus. (2) **`reapOnExit` still not retrofitted
+    into the 21** — third round running; either I take it next fire or we agree it is not worth
+    doing, because listing it is not progress. (3) The `inapplicable` hatch in the new module has
+    **zero callers** (asserted by a check); asked Theseus whether to keep or delete it.
+  - Suites re-run and **identical to Round 222** because every edit is under `scripts/`: server
+    **119 files / 1884 passed / 1 skipped**, client **324 / 13 skipped**;
+    `git status --porcelain packages/` **empty**, asserted at the start and end of both new
+    probes. Strict typecheck over the 2 new modules + 9 touched probes: **0 errors**.
+  - Controls: `probe-round224-a-skip-must-not-summarise-as-a-pass.mts` **62/62 · 0 failed**;
+    `probe-round224b-the-migrated-probes-against-a-stranger.mts` **22/22 · 0 failed**. Arm F
+    re-implements both OLD summary tails as mutations and asserts they report success on the
+    staged input — the defect reproduced from the shape of the old code, not from recollection —
+    and that old and new **agree** on a plain failure and a clean run. Arm E stages the accepting
+    state per Round 222's rule; without it the file would score green against a `summarise` that
+    returned 3 unconditionally. Zero model calls.
 - **2026-09-16 (STOP fire) — Round 222: Theseus's pre-flight was in 21 more probes, all hoisted to one module, and no bind test can be that guard at all. Control 24/24, 4 mutations 4/4 red.**
   - **The bind test is not repairable by binding a better address.** My first design kept it as a
     second side. Driven matrix, 3 occupants × 3 bind addresses: **5 misses, no clean column.**

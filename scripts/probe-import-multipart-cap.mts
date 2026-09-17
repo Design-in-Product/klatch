@@ -37,6 +37,7 @@ import path from 'path';
 import net from 'net';
 import { spawn, execFileSync } from 'child_process';
 import { waitUntilPortIsQuiet } from './lib/probe-server-ownership.mts';
+import { readNumericConstant } from './lib/probe-source-constants.mts';
 
 const REPO = path.resolve(import.meta.dirname, '..');
 const SCRATCH = path.join(REPO, '.testdata', 'import-multipart-cap');
@@ -233,12 +234,7 @@ console.log('── arm A: cap position in the source, per multipart site ──
 const IMPORT_TS = path.join(REPO, 'packages/server/src/routes/import.ts');
 const importSrc = fs.readFileSync(IMPORT_TS, 'utf8');
 
-const capMatch = importSrc.match(/const MAX_IMPORT_SIZE = (\d+) \* 1024 \* 1024;/);
-if (!capMatch) {
-  console.error('FATAL: could not read MAX_IMPORT_SIZE out of routes/import.ts — refusing to assume 50 MB');
-  process.exit(1);
-}
-const MAX_IMPORT_SIZE = Number(capMatch[1]) * 1024 * 1024;
+const MAX_IMPORT_SIZE = readNumericConstant(importSrc, 'MAX_IMPORT_SIZE', 'probe-import-multipart-cap') * 1024 * 1024;
 check('A', 'MAX_IMPORT_SIZE read from source', true,
   `${mb(MAX_IMPORT_SIZE)} (routes/import.ts, not hardcoded in this probe)`);
 

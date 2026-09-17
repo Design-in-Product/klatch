@@ -43,6 +43,7 @@ import fs from 'fs';
 import path from 'path';
 import { spawn } from 'child_process';
 import { requireAnUnoccupiedPort } from './lib/probe-server-ownership.mts';
+import { summariseAndExit } from './lib/probe-outcome.mts';
 
 const REPO = path.resolve(import.meta.dirname, '..');
 const SCRATCH = path.join(REPO, '.testdata', 'import-live-http');
@@ -148,6 +149,11 @@ const results: Array<{ arm: string; check: string; pass: boolean; detail: string
 function check(arm: string, name: string, pass: boolean, detail: string) {
   results.push({ arm, check: name, pass, detail });
   console.log(`${pass ? 'PASS' : 'FAIL'} [${arm}] ${name} — ${detail}`);
+}
+const skipped: string[] = [];
+function skip(arm: string, why: string) {
+  skipped.push(`[${arm}] ${why}`);
+  console.log(`SKIP [${arm}] ${why}`);
 }
 
 async function postJson(url: string, body: unknown) {
@@ -346,7 +352,11 @@ const assistantEntityIds = (channelId: string): Array<string | null> =>
     .sort((a, b2) => (b2.messageCount ?? 0) - (a.messageCount ?? 0));
 
   if (deep.length === 0) {
-    console.log('\n  [G] no session >=300 messages in reach — depth arm SKIPPED, not passed.\n');
+    // Was a bare console.log: honest in prose, but it did not reach the count or the exit
+    // code, so a corpus with no deep session still printed "N/N checks passed" and exited 0.
+    // Round 223 §3. This is a skip rather than an inapplicability — a different reachable
+    // corpus makes the arm run, so it is an environment shortfall, not an N/A.
+    skip('G', 'no session >=300 messages in reach — depth NOT established on this corpus');
   } else {
     const target = deep[0];
     const name = target.entityGuess.name;
@@ -380,16 +390,9 @@ const assistantEntityIds = (channelId: string): Array<string | null> =>
 
 // ── Report ────────────────────────────────────────────────────
 
-const failed = results.filter((r) => !r.pass);
-console.log(`\n${results.length - failed.length}/${results.length} checks passed`);
 const names = (sql.prepare('SELECT name FROM entities ORDER BY name').all() as any[]).map((r) => r.name);
 console.log(`entities in scratch DB: ${names.length} (${names.join(', ')})`);
 sql.close();
 shutdown();
 
-if (failed.length) {
-  console.log('\nFAILURES:');
-  for (const f of failed) console.log(`  [${f.arm}] ${f.check} — ${f.detail}`);
-  process.exit(1);
-}
-process.exit(0);
+summariseAndExit({ probeName: 'probe-import-live-http', results, skipped });

@@ -76,6 +76,8 @@ import os from 'os';
 import crypto from 'crypto';
 import { spawn } from 'child_process';
 import { somethingIsAlreadyAnswering } from './lib/probe-server-ownership.mts';
+import { summariseAndExit } from './lib/probe-outcome.mts';
+import { readNumericConstant, replaceNumericConstant } from './lib/probe-source-constants.mts';
 
 const REPO = path.resolve(import.meta.dirname, '..');
 const SCRATCH = path.join(REPO, '.testdata', 'browse-latency-e2e');
@@ -111,9 +113,11 @@ fs.mkdirSync(SCRATCH, { recursive: true });
 // ── Source guard: capture the scanner's exact bytes before anything runs ──────
 const SCANNER_ORIGINAL = fs.readFileSync(SCANNER);
 const SCANNER_SHA = crypto.createHash('sha256').update(SCANNER_ORIGINAL).digest('hex');
-const capMatch = SCANNER_ORIGINAL.toString('utf8').match(/const FINGERPRINT_LINE_CAP = (\d+);/);
-if (!capMatch) throw new Error('could not read FINGERPRINT_LINE_CAP from session-scanner.ts — probe cannot proceed safely');
-const SHIPPED_CAP = Number(capMatch[1]);
+// Was `match(/const FINGERPRINT_LINE_CAP = (\d+);/)`, which stopped matching on 2026-09-04 when
+// the shipped constant became `50_000` — this probe has thrown at startup ever since. See
+// scripts/lib/probe-source-constants.mts.
+const SHIPPED_CAP = readNumericConstant(
+  SCANNER_ORIGINAL.toString('utf8'), 'FINGERPRINT_LINE_CAP', 'probe-browse-latency-end-to-end');
 console.log(`shipped FINGERPRINT_LINE_CAP = ${SHIPPED_CAP} (read from source, sha256 ${SCANNER_SHA.slice(0, 12)})\n`);
 
 function restoreScanner(): boolean {
@@ -175,15 +179,18 @@ async function timeBrowse(n: number): Promise<{ samples: number[]; bytes: number
   return { samples, bytes, sessions, projects, capped };
 }
 
-const haveServer = (await somethingIsAlreadyAnswering(PORT)) === null;
-if (!haveServer) {
+// `haveServer` until 2026-09-17 — the opposite of what it holds. Same inverted name as
+// probe-turncount-live-http, where it produced the backwards skip copy Theseus caught in
+// Round 223 §3. This probe's copy happened to be right; the name was still the hazard.
+const canStartOurOwnServer = (await somethingIsAlreadyAnswering(PORT)) === null;
+if (!canStartOurOwnServer) {
   console.log(`port ${PORT} is occupied — arms L, N and O cannot run (the server hardcodes 3001). Arm M still runs.\n`);
 }
 
 // ── Arm L — real HTTP browse latency at the shipped cap ──────────────────────
 
 let L: Awaited<ReturnType<typeof timeBrowse>> | undefined;
-if (!haveServer) {
+if (!canStartOurOwnServer) {
   skip('L', 'needs a free port 3001; stop `npm run dev` and re-run');
 } else {
   await startServer('capped');
@@ -268,15 +275,17 @@ if (files.length === 0) {
 
 let N: Awaited<ReturnType<typeof timeBrowse>> | undefined;
 let patchApplied = false;
-if (!haveServer) {
+if (!canStartOurOwnServer) {
   skip('N', 'needs a free port 3001');
 } else {
   try {
-    const patched = SCANNER_ORIGINAL.toString('utf8').replace(
-      `const FINGERPRINT_LINE_CAP = ${SHIPPED_CAP};`,
-      `const FINGERPRINT_LINE_CAP = Number.MAX_SAFE_INTEGER;`,
-    );
-    if (patched === SCANNER_ORIGINAL.toString('utf8')) throw new Error('patch was a no-op — constant not found in expected form');
+    // Was built by interpolating SHIPPED_CAP back into a needle string, so it looked for
+    // `= 50000;` in a file that says `= 50_000;` and no-opped. The second victim of the same
+    // 2026-09-04 reformatting, 170 lines below the first. The no-op guard here did its job and
+    // threw before writing — that is why this was a dead probe and not a dirty working tree.
+    const patched = replaceNumericConstant(
+      SCANNER_ORIGINAL.toString('utf8'), 'FINGERPRINT_LINE_CAP', 'Number.MAX_SAFE_INTEGER',
+      'probe-browse-latency-end-to-end');
     fs.writeFileSync(SCANNER, patched);
     patchApplied = true;
     await startServer('uncapped');
@@ -391,7 +400,6 @@ if (files.length === 0) {
 // ── Summary ──────────────────────────────────────────────────────────────────
 
 console.log('\n─── summary ───');
-const failed = results.filter((r) => !r.pass && r.kind === 'regression');
 for (const r of results) {
   console.log(`  ${r.pass ? 'PASS' : r.kind === 'measurement' ? 'NOTE' : 'FAIL'} [${r.arm}] ${r.check}`);
 }
@@ -405,8 +413,5 @@ if (finalSha !== SCANNER_SHA) {
 }
 console.log(`\nsession-scanner.ts verified unmodified (sha256 ${SCANNER_SHA.slice(0, 12)}).`);
 
-if (failed.length) {
-  console.log(`\n${failed.length} regression check(s) failed.`);
-  process.exit(1);
-}
-console.log(`\nAll regression checks passed; ${results.filter((r) => r.kind === 'measurement').length} measurements recorded.`);
+console.log(`${results.filter((r) => r.kind === 'measurement').length} measurements recorded.`);
+summariseAndExit({ probeName: 'probe-browse-latency-end-to-end', results, skipped });

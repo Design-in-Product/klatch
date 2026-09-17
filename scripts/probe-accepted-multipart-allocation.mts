@@ -41,6 +41,7 @@
 import fs from 'fs';
 import path from 'path';
 import { execFileSync } from 'child_process';
+import { readNumericConstant } from './lib/probe-source-constants.mts';
 
 const REPO = path.resolve(import.meta.dirname, '..');
 const SCRATCH = path.join(REPO, '.testdata', 'accepted-multipart-allocation');
@@ -265,10 +266,14 @@ check('A', 'cap check is present in exactly one of the two known shapes',
     : capViaByteLength ? 'arrayBuffer.byteLength, after the copy (pre-Round-154 shape)'
       : 'NEITHER — the per-file cap check is missing from the multipart branch');
 
-const capMatch = importSrcBefore.match(/const MAX_IMPORT_SIZE = (\d+) \* 1024 \* 1024;/);
-check('A', 'cap read from source, not assumed', !!capMatch,
-  capMatch ? `MAX_IMPORT_SIZE = ${capMatch[1]} MB` : 'could not read MAX_IMPORT_SIZE');
-const capBytes = capMatch ? Number(capMatch[1]) * 1024 * 1024 : 50 * 1024 * 1024;
+// Was `match(/… = (\d+) \* 1024 \* 1024;/)` with `: 50 * 1024 * 1024` as a fallback — i.e. it
+// silently assumed 50 MB when the read failed, which is exactly what its sibling
+// probe-import-large-session refuses to do in a comment ("a hardcoded 50 here would keep
+// 'passing' after the constant moved, and report a boundary that is no longer the boundary").
+// Two probes, one question, opposite policies. The helper throws; the loud policy wins.
+const capMb = readNumericConstant(importSrcBefore, 'MAX_IMPORT_SIZE', 'probe-accepted-multipart-allocation');
+check('A', 'cap read from source, not assumed', true, `MAX_IMPORT_SIZE = ${capMb} MB`);
+const capBytes = capMb * 1024 * 1024;
 check('A', 'payload is under the cap, so the accepted path is what runs',
   PAYLOAD_BYTES < capBytes, `${mb(PAYLOAD_BYTES)} payload vs ${mb(capBytes)} cap`);
 

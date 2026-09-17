@@ -60,6 +60,7 @@ import os from 'os';
 import readline from 'readline';
 import { spawn, execFileSync } from 'child_process';
 import { waitUntilPortIsQuiet } from './lib/probe-server-ownership.mts';
+import { readNumericConstant } from './lib/probe-source-constants.mts';
 
 const REPO = path.resolve(import.meta.dirname, '..');
 const SCRATCH = path.join(REPO, '.testdata', 'import-large-session');
@@ -241,14 +242,11 @@ console.log('── arm A: import size cap vs. the corpora ───────
 
 const IMPORT_TS = path.join(REPO, 'packages/server/src/routes/import.ts');
 const importSrc = fs.readFileSync(IMPORT_TS, 'utf8');
-const capMatch = importSrc.match(/const MAX_IMPORT_SIZE = (\d+) \* 1024 \* 1024;/);
-if (!capMatch) {
-  // Refusing beats guessing: a hardcoded 50 here would keep "passing" after the
-  // constant moved, and report a boundary that is no longer the boundary.
-  console.error('FATAL: could not read MAX_IMPORT_SIZE out of routes/import.ts — refusing to assume 50 MB');
-  process.exit(1);
-}
-const MAX_IMPORT_SIZE = Number(capMatch[1]) * 1024 * 1024;
+// Refusing beats guessing: a hardcoded 50 here would keep "passing" after the constant moved,
+// and report a boundary that is no longer the boundary. That policy is now in the shared reader,
+// which also tolerates a numeric separator — the reformatting that killed
+// probe-browse-latency-end-to-end outright on 2026-09-04.
+const MAX_IMPORT_SIZE = readNumericConstant(importSrc, 'MAX_IMPORT_SIZE', 'probe-import-large-session') * 1024 * 1024;
 check('A', 'MAX_IMPORT_SIZE read from source', true,
   `${mb(MAX_IMPORT_SIZE)} (routes/import.ts, not hardcoded in this probe)`);
 

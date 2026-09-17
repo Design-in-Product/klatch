@@ -34,9 +34,11 @@
  * Run:  npx tsx scripts/probe-turncount-live-http.mts
  *
  * Zero model calls. Scratch DB via KLATCH_DB; xian's `klatch.db` is untouched.
- * Arms H and I need a listening server on 3001 and are SKIPPED WITH A NOTE (not
- * silently passed) when the port is occupied. Arm J is a scanner-level
- * measurement over the real corpus and runs regardless.
+ * Arms H and I need port 3001 FREE, so this probe can start and own the server it
+ * grades. When the port is occupied they are SKIPPED, and per Round 223 the run
+ * then exits 3 (INCONCLUSIVE) rather than 0 — skipping to zero checks used to
+ * print `0/0 checks passed` and exit 0. Arm J is a scanner-level measurement over
+ * the real corpus and runs regardless.
  *
  * Arms:
  *   H  live browse response carries turnCount for every real session   [regression]
@@ -55,6 +57,8 @@ import os from 'os';
 import readline from 'readline';
 import { spawn } from 'child_process';
 import { somethingIsAlreadyAnswering } from './lib/probe-server-ownership.mts';
+import { summariseAndExit } from './lib/probe-outcome.mts';
+import { readNumericConstantFromFile } from './lib/probe-source-constants.mts';
 
 const REPO = path.resolve(import.meta.dirname, '..');
 const SCRATCH = path.join(REPO, '.testdata', 'turncount-live-http');
@@ -62,13 +66,16 @@ const DB = path.join(SCRATCH, 'scratch.db');
 const PORT = 3001;
 const BASE = `http://127.0.0.1:${PORT}`;
 
-/** Mirrors session-scanner.ts:119. Read from source so a bump can't stale this probe. */
-const FINGERPRINT_LINE_CAP = (() => {
-  const src = fs.readFileSync(path.join(REPO, 'packages/server/src/import/session-scanner.ts'), 'utf8');
-  const m = src.match(/const FINGERPRINT_LINE_CAP = (\d+)/);
-  if (!m) throw new Error('could not read FINGERPRINT_LINE_CAP from session-scanner.ts');
-  return Number(m[1]);
-})();
+/**
+ * Read from source so a bump can't stale this probe. The regex here was `= (\d+)` with no
+ * terminator, so from 2026-09-04 (when the shipped value became `50_000`) it matched the `50`
+ * and this probe ran with a cap 1000× too small — reporting "the 50-line cap" in arm J and
+ * splitting pre/post density at line 50. See scripts/lib/probe-source-constants.mts.
+ */
+const FINGERPRINT_LINE_CAP = readNumericConstantFromFile(
+  path.join(REPO, 'packages/server/src/import/session-scanner.ts'),
+  'FINGERPRINT_LINE_CAP',
+  'probe-turncount-live-http');
 
 // Two kinds of check, and conflating them would make this instrument lie later.
 //
@@ -87,9 +94,13 @@ function check(arm: string, name: string, pass: boolean, detail: string, kind: K
   const tag = pass ? 'PASS' : kind === 'open' ? 'OPEN' : 'FAIL';
   console.log(`${tag} [${arm}] ${name} — ${detail}`);
 }
-const skipped: string[] = [];
-function skip(arm: string, why: string) {
-  skipped.push(`[${arm}] ${why}`);
+// A skipped arm carries the kind of the arm it replaced, so the exit code can tell "a promised
+// regression check did not run" (weakens the run → exit 3) from "a known-open item was not
+// evaluated" (its normal state → does not redden the exit). Arms J and K are open items, and
+// this probe's own convention above is that an open item must not redden an exit code.
+const skipped: Array<{ label: string; kind: Kind }> = [];
+function skip(arm: string, why: string, kind: Kind = 'regression') {
+  skipped.push({ label: `[${arm}] ${why}`, kind });
   console.log(`SKIP [${arm}] ${why}`);
 }
 
@@ -157,9 +168,14 @@ process.on('exit', shutdown);
 process.on('SIGINT', () => { shutdown(); process.exit(130); });
 
 const serverLog = path.join(SCRATCH, 'server.log');
-const haveServer = (await somethingIsAlreadyAnswering(PORT)) === null;
+// Named for what it holds. It was `haveServer` until 2026-09-17, which is the opposite of the
+// condition — the value is true when NOTHING is answering, i.e. when this probe can start and
+// own its own server. That inverted name is what produced the skip copy Theseus caught in
+// Round 223 §3: "needs a listening server on 3001" attached to the case where the port is busy,
+// alongside the correct instruction to stop `npm run dev`.
+const canStartOurOwnServer = (await somethingIsAlreadyAnswering(PORT)) === null;
 
-if (haveServer) {
+if (canStartOurOwnServer) {
   const logFd = fs.openSync(serverLog, 'a');
   server = spawn('npx', ['tsx', 'src/index.ts'], {
     cwd: path.join(REPO, 'packages/server'),
@@ -185,8 +201,8 @@ type Sess = { path: string; projectName?: string; messageCount?: number; turnCou
 let browsed: Sess[] = [];
 
 // ── Arm H — does turnCount survive the wire? ──────────────────
-if (!haveServer) {
-  skip('H', 'needs a listening server on 3001; stop `npm run dev` and re-run');
+if (!canStartOurOwnServer) {
+  skip('H', 'needs a FREE port 3001 so this probe can own the server it grades; stop `npm run dev` or the leaked probe server and re-run');
 } else {
   const res = await fetch(`${BASE}/api/import/claude-code/sessions`);
   const body = await res.json().catch(() => ({})) as any;
@@ -223,8 +239,8 @@ if (!haveServer) {
 // been checked on one file in-process. This drives it over real HTTP across a
 // spread of real sessions, and only on UNCAPPED ones — on a capped session
 // turnCount is a lower bound by construction and the upper bound cannot hold.
-if (!haveServer) {
-  skip('I', 'needs a listening server on 3001');
+if (!canStartOurOwnServer) {
+  skip('I', 'needs a FREE port 3001 so this probe can own the server it grades');
 } else if (browsed.length === 0) {
   skip('I', 'no corpus reachable');
 } else {
@@ -312,7 +328,7 @@ if (!haveServer) {
     .map((x) => x.f);
 
   if (long.length === 0) {
-    skip('J', 'no readable ~/.claude/projects corpus — cap claim NOT measured');
+    skip('J', 'no readable ~/.claude/projects corpus — cap claim NOT measured', 'open');
   } else {
     const { extractSessionFingerprint } = await import(path.join(REPO, 'packages/server/src/import/session-scanner.ts'));
     const measured: Array<{
@@ -336,7 +352,7 @@ if (!haveServer) {
     }
 
     if (measured.length === 0) {
-      skip('J', `no session in the corpus exceeds the ${FINGERPRINT_LINE_CAP}-line cap — the claim is untestable here and, on this corpus, moot`);
+      skip('J', `no session in the corpus exceeds the ${FINGERPRINT_LINE_CAP}-line cap — the claim is untestable here and, on this corpus, moot`, 'open');
     } else {
       console.log(`\n  [J] ${measured.length} real sessions actually hit the ${FINGERPRINT_LINE_CAP}-line cap. Retention = capped/true:\n`);
       console.log(`      ${'session'.padEnd(24)} ${'lines'.padStart(6)} ${'true evt'.padStart(9)} ${'true trn'.padStart(9)} ${'evt ret'.padStart(8)} ${'trn ret'.padStart(8)}  ${'evt/turn pre'.padStart(12)} ${'evt/turn post'.padStart(13)}`);
@@ -360,8 +376,10 @@ if (!haveServer) {
       // So import all 11 capped sessions for real and count. Direction matters
       // as much as magnitude: a `+` that overshoots is a broken promise, one
       // that undershoots is merely useless.
-      if (!haveServer) {
-        skip('K', 'needs a listening server; rows-that-land for capped sessions NOT measured');
+      if (!canStartOurOwnServer) {
+        // 'open' per this probe's convention, not because the port does not matter: on an
+        // occupied port arms H and I skip too, and those are hard — the run still exits 3.
+        skip('K', 'needs a FREE port 3001 to own its server; rows-that-land for capped sessions NOT measured', 'open');
       } else {
         const { default: Database2 } = await import('better-sqlite3');
         const sql2 = new Database2(DB, { readonly: false });
@@ -410,23 +428,13 @@ if (!haveServer) {
 
 // ── Report ────────────────────────────────────────────────────
 
-const regressions = results.filter((r) => !r.pass && r.kind === 'regression');
 const stillOpen = results.filter((r) => !r.pass && r.kind === 'open');
 const passed = results.filter((r) => r.pass);
-console.log(`\n${passed.length}/${results.length} checks passed`);
-if (skipped.length) {
-  console.log(`${skipped.length} arm(s) SKIPPED (not passed):`);
-  for (const s of skipped) console.log(`  ${s}`);
-}
+console.log(`\n${passed.length}/${results.length} verdicts recorded as PASS (of every kind)`);
 if (stillOpen.length) {
   console.log(`\nSTILL OPEN (expected — these are the findings, not breakage):`);
   for (const f of stillOpen) console.log(`  [${f.arm}] ${f.check}\n        ${f.detail}`);
 }
 shutdown();
 
-if (regressions.length) {
-  console.log('\nREGRESSIONS:');
-  for (const f of regressions) console.log(`  [${f.arm}] ${f.check} — ${f.detail}`);
-  process.exit(1);
-}
-process.exit(0);
+summariseAndExit({ probeName: 'probe-turncount-live-http', results, skipped });

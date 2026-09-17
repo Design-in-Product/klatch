@@ -83,6 +83,9 @@ import os from 'os';
 import crypto from 'crypto';
 import { spawn, execFileSync } from 'child_process';
 import { somethingIsAlreadyAnswering, waitUntilPortIsQuiet } from './lib/probe-server-ownership.mts';
+import { summariseAndExit } from './lib/probe-outcome.mts';
+
+const PROBE = 'probe-browse-endpoint-vs-channel-count';
 
 const REPO = path.resolve(import.meta.dirname, '..');
 const SCRATCH = path.join(REPO, '.testdata', 'browse-endpoint-vs-channels');
@@ -700,9 +703,5 @@ if (finalSha !== SCANNER_SHA) {
 }
 console.log(`\n${SCANNER_REL} verified unmodified (sha256 ${SCANNER_SHA.slice(0, 12)}).`);
 
-const failed = results.filter((r) => !r.pass && r.kind === 'regression');
-if (failed.length) {
-  console.log(`\n${failed.length} regression check(s) failed.`);
-  process.exit(1);
-}
-console.log(`\nAll regression checks passed; ${results.filter((r) => r.kind === 'measurement').length} measurements recorded.`);
+console.log(`${results.filter((r) => r.kind === 'measurement').length} measurements recorded.`);
+summariseAndExit({ probeName: PROBE, results, skipped });
