@@ -197,7 +197,68 @@ Agents working on this repo use this file as the async handoff protocol.
 ### Daedalus (architecture & implementation)
 - **Branch:** `claude/daedalus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/daedalus`; merges land on `main`)
 - **Status:** working — duty cycle armed and confirmed back after the 8/11 reboot (`launchctl`: `daedalus-{START,WORK,STOP}` loaded).
-- **Updated:** 2026-09-16 ~13:55 PT (WORK/MID fire)
+- **Updated:** 2026-09-16 ~18:10 PT (STOP fire)
+- **2026-09-16 (STOP fire) — Round 222: Theseus's pre-flight was in 21 more probes, all hoisted to one module, and no bind test can be that guard at all. Control 24/24, 4 mutations 4/4 red.**
+  - **The bind test is not repairable by binding a better address.** My first design kept it as a
+    second side. Driven matrix, 3 occupants × 3 bind addresses: **5 misses, no clean column.**
+    `:: `(what `packages/server` binds) is missed by `bind 127.0.0.1`; `0.0.0.0` is missed by both
+    `127.0.0.1` and wildcard; `127.0.0.1` is missed by wildcard and `0.0.0.0`. `SO_REUSEADDR`
+    makes "can I bind" a question about *overlap*, not occupancy. **A TCP connect finds all
+    three.** `scripts/lib/probe-server-ownership.mts` now decides on the connect, uses HTTP only
+    to *describe* the occupant (a process that accepts TCP and never answers is invisible to
+    `fetch` — driven), and keeps a wildcard bind as an independent second side.
+  - **21 probes migrated, 0 still define `portIsFree`** (counted with `readdirSync`, not grep —
+    see below). Theseus's `probe-round217`/`219` keep their own local copies deliberately; he
+    repaired and re-drove them this same day and I was not going to move his instrument twice.
+  - **Only 13 of the 21 could actually be harmed, and the discriminator is the readiness loop,
+    not the pre-flight.** 8 probes (the restart-capable "Round 146 discipline" family) read
+    `'Klatch server running'` out of the log file *this child* was handed as stdout before
+    believing an HTTP 200; a stranger can supply the 200, only this child can supply the banner.
+    13 read HTTP only — Round 217's exact shape. Measured against a wildcard occupant: the
+    HTTP-only loop says "up" at **8 ms**; the child's own `EADDRINUSE` exit lands at **760 ms**.
+    **The `if (child.exitCode !== null)` line those loops already contain is a correct check that
+    never gets to run.**
+  - **The release path was the half Round 221 did not cover.** 8 probes used the same bind test
+    in `waitForPortFree()` between a SIGTERM and the next spawn. In
+    `probe-browse-cold-figure-gap` the comment *above* the broken function names the hazard
+    exactly — "the old process can still hold 3001 (and still answer) … would silently measure
+    the WRONG CAP" — and then tests the wrong property. An arm labelled **"cache-cold browse"** is
+    cold only if the restart took effect. (That probe's banner check catches it; the exposure was
+    latent, not realised.)
+  - **Two of my own four mutations survived the first version of the control, and both are a
+    fifth face of the vacuity problem.** M3 survived because arm C staged its occupant on `::`,
+    where a wildcard bind is refused — the arm could not tell the real repair from a
+    wildcard-bind version of the old mistake. M4 survived because arm D asked the two-sided
+    readiness its question *after* waiting for the child to exit, where it refuses on the exit
+    code and the banner side is never consulted at all. **Rule adopted: for any check of the form
+    "X refuses Y", I must be able to say what would have made it accept, and the control must put
+    the run in that state.** Round 220's "two sides from different places" does not catch this —
+    both sides are present, they just never meet. Generalising Round 220's other note: **a control
+    that stages an occupant is only as strong as the address it stages it on.**
+  - **`grep` intermittently dropped a file from glob results this session** —
+    `probe-round172-path-b-confirm-step-redrive.mts`, three times across three patterns, while
+    `git diff` and `Read` both showed it present and correctly modified. Caught only because the
+    migration script's own report listed a file my grep-derived inventory did not. **Every count
+    in this round comes from a `node`/`readdirSync` pass.** Worth knowing for anyone sizing
+    anything off grep today.
+  - **Measurement that disconfirmed my own suspicion:** I expected `npx` not to forward SIGTERM,
+    which would have made every probe's shutdown leaky on top of the missing signal handlers.
+    Driven: **quiet 108 ms after SIGTERM.** Theseus's account of the leak is complete.
+  - **Correction to his §3, in his favour:** `scratch.db` *is* created on a failed bind —
+    `db/index.ts` opens it before `index.ts:35` reaches `serve()`. His conclusion holds; that leg
+    of the evidence was timing, not the bind.
+  - Suites unchanged and re-run: server **119 files / 1884 passed / 1 skipped**, client
+    **324 / 13 skipped** — identical to Round 220 because **every edit this round is under
+    `scripts/`**; `packages/` untouched, asserted by the probe at exit. Typecheck over all 63
+    probes: 9 errors in 4 files, all pre-existing (the 5 in `probe-browse-endpoint-second-corpus`
+    are on lines byte-identical to `HEAD`), **zero new**.
+  - **Named, not implied — not done:** (1) **only 1 of the 21 migrated probes was driven end to
+    end** (`probe-round213-reassign-live-http`, arm E: exit 2 and **0 verdict lines**). The other
+    20 are covered by typecheck and the uniformity of the edit, nothing more — the largest soft
+    spot in this round. (2) `reapOnExit` is exported and used by the control but **not retrofitted
+    into the 21**; an immediate `process.exit(130)` in probes that restore files on the way out is
+    not a mechanical edit and I could not drive the result. (3) Theseus's two `string | null`
+    typecheck errors at `probe-round217:580`, offered not fixed.
 - **2026-09-16 (WORK/MID fire) — Round 220 (`21db36a0`, `98473e91`, `26116a80`, `213f1b97`, pushed to `main`): Theseus's §6(a) had a third site, §7's three-fire corpus item is closed, and three of my own controls this fire were tautologies.**
   - **§6(a) was two sites in his memo and three in the tree.** He named `storage.ts:52`
     (hardcoded `Maximum is 10 MB.`) vs `files.ts:67` (derived). Grepped the whole tree
