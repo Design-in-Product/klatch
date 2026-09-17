@@ -37,6 +37,17 @@
  * Either answer retires it in favour of the banner, so the probe reports the number rather than
  * hanging a verdict on which way the race fell on one machine on one afternoon.
  *
+ * ## Round 225 — arm A was repaired, and the memo's §7 table was wrong
+ *
+ * The 13/13 published in the Round 223 memo was taken *before* the fold that this probe argued
+ * for landed, in the same commit. Argus re-ran this file unmodified and got 11/13 · 2 failed, and
+ * was right. Arm A had been written as "the defect is still here", which goes red the moment the
+ * defect is fixed — so it is now "the repair is still here", and reads comment-stripped source,
+ * because its one surviving green check was matching a citation in prose rather than a call.
+ *
+ * Arms B and C — the race itself, which is what this file is for — were unaffected and reproduce
+ * on Argus's runs as well as mine. See `scripts/probe-round225-a-citation-is-not-a-call.mts`.
+ *
  * Run: `npx tsx scripts/probe-round223b-db-existence-is-not-identity.mts`  (needs 3001 free)
  */
 
@@ -87,25 +98,45 @@ function messageRows(): number {
   return out === 'NOTABLE' ? 0 : Number(out.split('\n').pop());
 }
 
-// ── Arm A — the subject exists and has the shape this probe is about ─────────
+// ── Arm A — the repair this probe argued for is still in place ───────────────
 //
-// Read out of the file rather than quoted from the memo. If Round 223's own repair lands first,
-// these go red and say so, instead of this probe quietly measuring a world that moved.
+// ROUND 225 REPAIR. This arm was written the other way round: it asserted that the *defect* was
+// still present in `probe-round219`, as a precondition for measuring it. The fold that removed
+// the defect landed in the same commit as this file, so Argus — re-running it unmodified on
+// 2026-09-17 — got 11/13 where my §7 table published 13/13. His diagnosis was exactly right.
+//
+// Two things follow, and the second is the one worth keeping.
+//
+// 1. A precondition of the form "the defect is still here" **dies of its own success**. It goes
+//    red the moment the thing it exists to justify gets fixed, and it goes red at whoever fixed
+//    it. Inverted — "the repair is still here" — it is a regression check: green until someone
+//    puts the defect back, which is the only occasion anyone wants to hear from it.
+//
+// 2. Of arm A's three checks, two went red honestly and **one stayed green off a comment**.
+//    `probe-round219:162` is prose *recording that the DB check was removed*; the unanchored
+//    regex matched the citation and reported the call as present. A citation is not a call, so
+//    the source is stripped of comments before any of this is decided. Round 225 drives both.
 
 const R219 = path.join(REPO, 'scripts', 'probe-round219-files-cap-live-http.mts');
 const r219src = fs.readFileSync(R219, 'utf8');
-const r219lines = r219src.split('\n');
-const existsLine = r219lines.findIndex((l) => /if\s*\(!fs\.existsSync\(DB\)\)/.test(l));
-const httpOnlyReadiness = r219lines.findIndex((l) => /try\s*\{\s*if\s*\(\(await fetch\(`\$\{BASE\}\/channels`\)\)\.ok\)/.test(l));
+/** Comments blanked, line numbers preserved — so a mention in prose cannot satisfy a check. */
+const r219code = r219src
+  .replace(/\/\*[\s\S]*?\*\//g, (m) => m.replace(/[^\n]/g, ' '))
+  .replace(/\/\/[^\n]*/g, (m) => m.replace(/[^\n]/g, ' '));
+const r219lines = r219code.split('\n');
+const readyLine = r219lines.findIndex((l) => /await waitUntilOurServerIsUp\(/.test(l));
 
-check('A', 'probe-round219 still identifies its own server by the scratch DB existing',
-  existsLine >= 0, existsLine >= 0 ? `probe-round219:${existsLine + 1}` : 'not found — already repaired? re-aim this probe');
-check('A', 'and its readiness loop is HTTP-only, with no banner side',
-  httpOnlyReadiness >= 0 && !r219src.includes('Klatch server running'),
-  `fetch-only readiness at probe-round219:${httpOnlyReadiness + 1}; "Klatch server running" appears ${r219src.split('Klatch server running').length - 1} times in the file`);
-check('A', 'that is the file the Round 221 memo describes, not a namesake',
-  r219src.includes('somethingIsAlreadyAnswering'),
-  'local Round 221 repair present — this is pre-Round-223 probe-round219');
+check('A', 'probe-round219 no longer identifies its own server by the scratch DB existing',
+  !/if\s*\(!fs\.existsSync\(DB\)\)/.test(r219code),
+  'no `if (!fs.existsSync(DB))` call site in comment-stripped source ' +
+  `(it still appears in prose at :${r219src.split('\n').findIndex((l) => /if\s*\(!fs\.existsSync\(DB\)\)/.test(l)) + 1}, which is why this reads code only)`);
+check('A', 'its readiness now has the banner side a stranger cannot supply',
+  readyLine >= 0, readyLine >= 0
+    ? `waitUntilOurServerIsUp at probe-round219:${readyLine + 1}`
+    : 'not found — the fold was reverted, and arms B/C below are why that is wrong');
+check('A', 'and the local HTTP-only readiness is gone, folded onto the shared module',
+  !/somethingIsAlreadyAnswering/.test(r219code) && /probe-server-ownership/.test(r219code),
+  'no local somethingIsAlreadyAnswering call; imports lib/probe-server-ownership');
 
 // ── The stranger ─────────────────────────────────────────────────────────────
 
