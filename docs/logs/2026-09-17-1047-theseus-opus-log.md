@@ -419,4 +419,51 @@ question (**keep the hatch**). Threads left **open** in `docs/mail/` deliberatel
 handoff (`browse-latency` arm O) is mine and undone, so the thread has an open action and must stay
 visible. Nothing moved to `read/` this fire.
 
-### Step 1 — commits landed
+### Step 1 — commits landed (WORK fire)
+
+```
+$ git log origin/main --oneline -4
+69e993b5 Round 225: a citation is not a call, and a factor is not a value
+703f8495 mail: Theseus -> Daedalus + Argus, Round 225 -- arm A repaired, and a reader that returns a prefix
+94f24d5b mail+coordination+log: Argus 9/17 WORK fire -- Round 223 swept, arm A staleness found
+4fa7e421 log: Daedalus 9/17 WORK fire -- Round 224, wrap verification appended
+```
+
+Pushed to `origin/main` (`94f24d5b..69e993b5`), verified after a `git fetch`. Mail went in its own
+commit **and was pushed to `main` before the round commit**, per the worktree mail discipline — Argus
+and Daedalus can see it without hunting through a worktree branch.
+
+### Step 2 — deliverables present (WORK fire)
+
+```
+scripts/probe-round225-a-citation-is-not-a-call.mts          21452 bytes  (new)
+scripts/probe-round223b-db-existence-is-not-identity.mts     15095 bytes  (arm A repaired)
+docs/research/round225-a-citation-is-not-a-call-…-2026-09-17.md  14241 bytes  (new)
+docs/mail/theseus-to-daedalus-argus-…-2026-09-17.md          12170 bytes  (new)
+docs/COORDINATION.md                                         (Theseus section updated; Round 221
+                                                              folded into <details>, tags balanced 6/6)
+```
+
+### Open, handed over, not guessed at
+
+1. **`readNumericConstant` returns a prefix on a product spelling** — reported, **not fixed**. The fix
+   is a contract decision on a shared primitive (probably `units: 'value' | 'factor'`, or two
+   functions), which is Daedalus's sizing. Latent today.
+2. **`replaceNumericConstant` writes a partial substitution on a product spelling** and its no-op guard
+   passes it — same seam, on a write path into `packages/`. Same owner.
+3. **The docstring rule is broader than the code** (`5e4` throws) — the cheap half, caveatable alone.
+4. **`browse-latency` arm O on a corpus where the cap fires** — Daedalus's §4 handoff, explicitly mine,
+   **not taken this fire**; I took the two inbound memos instead. Named in the memo as next.
+5. **Round 219 arm C at a different cap** — third fire running, undone. Needs a mutated
+   `packages/shared` and the port to itself.
+6. **`reapOnExit`** — his; he has said he'll take it next fire or we drop it.
+7. **§6(b), the `DELETE /entities/:id` floor** — still parked on xian, unchanged since Round 219.
+8. **Reassign on the March corpus** — still undriven. Unchanged, still the largest untested surface.
+
+**Not claimed:** test suites not run this fire (every edit under `scripts/`); Daedalus's Round 224
+figures — server 119/1884/1, client 324/13 — stand unre-measured by me. `probe-round219` and
+`probe-round217` were **not** re-driven; their Round 223 baselines stand as last measured. No model
+calls; `packages/` asserted clean at entry and at exit of the probe, and `git status --porcelain
+packages/` is empty now.
+
+Session log committed last, after Steps 1 and 2.
