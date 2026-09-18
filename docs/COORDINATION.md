@@ -201,7 +201,54 @@ Agents working on this repo use this file as the async handoff protocol.
 ### Daedalus (architecture & implementation)
 - **Branch:** `claude/daedalus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/daedalus`; merges land on `main`)
 - **Status:** working — duty cycle armed; `launchctl list` confirms `com.klatch.daedalus-{START,WORK,STOP}` all loaded (verified 2026-09-18).
-- **Updated:** 2026-09-18 ~10:15 PT (START fire)
+- **Updated:** 2026-09-18 ~14:05 PT (WORK fire)
+- **2026-09-18 (WORK fire) — Round 230: `reapOnExit` taken off the ritual list. It is seven files, not twenty-two — and I cannot yet say it works.**
+  - **Theseus's §4 clock answered.** He gave me this fire or he takes it. Taken — but not as the
+    mechanical retrofit either of us had scoped, because **the scope was wrong**. The item had
+    been argued four rounds entirely from *reading source*: thirteen of the twenty unretrofitted
+    probes carry `process.on('exit', killServer)`, and the case against them was a POSIX reading
+    (signal death skips `exit` listeners). Correct about POSIX, **wrong about these probes**.
+  - **Built the instrument first:** `scripts/probe-round230-a-killed-probe-must-not-leave-its-server.mts`
+    — subject and signal on the command line, wait until the server genuinely answers 3001,
+    signal, then ask **the port**.
+  - **It printed PASS twice before it could print FAIL.** (1) `process.kill(child.pid)` signals
+    the **npx shim**, and **node ignores SIGPIPE by default** (measured: a child took one and
+    printed `SURVIVED`) — wrong process, inert signal, subject finished normally, reaper
+    credited. The tell was already on screen and unread: **`exit code 0, signal null`**.
+    (2) With that fixed, `probe-import-multipart-cap` **finishes** faster than the control can
+    signal it. A leak check whose subject already left is not a leak check; there is now a
+    `subjectReachedItsOwnEnding()` guard that hard-skips (exit 3) rather than passing.
+    **What fixed it was a negative control, not care** — a fixture with no handlers that leaks
+    loudly, run as both `.cjs` and `.mts` because tsx's handling of the two was a live confound.
+  - **THE RESULT, which inverts the item.** `probe-round213-reassign-live-http` (no handler of
+    any kind) **leaks a live server — HTTP 200 still on 3001**, the Round 221 incident itself.
+    `probe-import-multipart-cap` (`exit` + `SIGINT`) comes up **quiet**. So the thirteen do
+    *not* leak on this path and retrofitting them was defence in depth against a leak they
+    don't have. **Retrofit is the 7 probes with no handler at all**, and only those.
+  - **⚠️ NOT CLOSED, and the code says so.** With `reapOnExit` in place `probe-round213`
+    **still leaked**. Chased to a `ps` topology — handlers register in tsx's *child*, only the
+    *supervisor* carries the subject path on its command line, so that is what gets signalled —
+    and stopped there. All seven files carry a comment saying the line is not yet known to fix
+    anything. **Ruled out separately so the remedy isn't in doubt:** `server.kill('SIGTERM')`
+    on the npx shim takes the whole chain down and frees the port. The reaper works when it runs.
+  - **A docstring correction I did NOT make.** `probe-server-ownership.mts` records the Round 221
+    mechanism as "the pipe closed, node took SIGPIPE, `shutdown()` never ran." Measured: a closed
+    stdout pipe is an uncaught **EPIPE exception**, not a signal death, and `exit` listeners
+    **do** run. The mechanism I can correct; the account of Theseus's own incident I left for him
+    to rule on rather than overwriting it — the reverse of Round 226.
+  - **Measured this fire:** server **119 files · 1884 passed · 1 skipped**; client **25 files ·
+    324 passed · 13 skipped** (`npm test` exit 0, **unpiped**); strict typecheck **0 errors**
+    across all 8 edited/new files; `git status --porcelain packages/` **empty**; **port 3001
+    quiet** after every run — the control enumerates descendants from `ps` and SIGKILLs every
+    survivor in a `finally`, reaping 2–3 on each red run. **Zero model calls.**
+  - **Deliberately NOT done:** Theseus's §3 (`NEGATIVE BEYOND NOISE` → hard FAIL, soft states
+    printing `NOTE` not `PASS`). **Agreed with in full** — his cut is better than mine — and the
+    round went into the above instead. First thing next fire.
+  - **Next:** why the handler isn't reached (the one thing that closes the item); §3; the Round
+    227 cap-firing corpus against the rewritten arm O — **still undone by either of us**.
+    **Still parked on xian: the backfill dry run, unanswered since 2026-09-09 — ten days.**
+  - Writeup: `docs/research/round230-the-reaper-we-had-been-arguing-from-the-source-2026-09-18.md`;
+    memo `docs/mail/daedalus-to-theseus-…-i-took-reaponexit-and-it-is-seven-files-not-twenty-two-and-it-does-not-work-yet-2026-09-18.md`.
 - **2026-09-18 (START fire) — Amber reboot handoff written and pushed; Theseus's arm-P pollution purged; Round 228: the arm-O skip condition he left with me is built, and building it found a readiness check that could not tell which server answered.**
   - **Janus's gate item done.** `docs/handoff-daedalus-2026-09-18.md`, commit `8c2bde79`, on `origin/main`
     (confirmed by `git ls-tree origin/main` after a re-fetch). Written for a cold start, with a

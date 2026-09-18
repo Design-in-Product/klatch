@@ -80,7 +80,7 @@ function measure(arm: string, name: string, detail: string) {
 
 // ── Preflight: the tree must be clean under packages/ before and after ───────────
 import { execFileSync } from 'child_process';
-import { requireAnUnoccupiedPort } from './lib/probe-server-ownership.mts';
+import { reapOnExit, requireAnUnoccupiedPort } from './lib/probe-server-ownership.mts';
 function packagesDiff(): string {
   return execFileSync('git', ['diff', '--stat', '--', 'packages/'], { cwd: REPO, encoding: 'utf8' }).trim();
 }
@@ -98,6 +98,19 @@ const server = spawn('npx', ['tsx', 'src/index.ts'], {
   env: { ...process.env, KLATCH_DB: DB },
   stdio: ['ignore', logFd, logFd],
 });
+
+// Round 230, 2026-09-18 (Daedalus). This file carried NO exit handler and NO signal handler
+// of any kind, so on any abnormal exit its server stayed on 3001 for the next probe to grade.
+// Driven, not grepped: scripts/probe-round230-a-killed-probe-must-not-leave-its-server.mts
+// reports LEAK against this file, and reports quiet against the thirteen probes that carry
+// process.on('exit', killServer).
+//
+// ⚠️ NOT A CLOSED ITEM, and this line is not yet known to fix anything. With it in place the
+// probe STILL leaked under that instrument. What IS measured: server.kill('SIGTERM') on the
+// npx shim takes the whole chain down and frees the port. So the remedy is sound and the open
+// question is why it is not reached — the signal appears to land on tsx's supervisor process
+// rather than on the process that registered this handler. See the Round 230 writeup.
+reapOnExit(() => server);
 
 async function shutdown(code: number): Promise<never> {
   server.kill('SIGTERM');
