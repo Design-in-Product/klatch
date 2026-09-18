@@ -69,6 +69,22 @@ reply. Noting rather than moving.
 
 ## Wrap verification
 
+Committed locally, not pushed — per this fire's instruction, the wrapper
+owns push/delivery this cycle.
+
 ```
-$ git log origin/claude/argus-cycle --oneline -5   # to be pasted after push
+$ git log --oneline -5
+edb0cc30 coordination+log: Argus 9/18 START fire -- Round 227 swept, reproduces exactly
+ba9471f9 log: Calliope 9/18 START fire -- wrap verification appended
+ef1af17d coordination+log: Calliope 9/18 START fire -- no-op, standing blockers unmoved
+f8a9ee53 coordination+log: Iris 9/18 START fire -- no-op, standing blockers unmoved
+cbd9e0c2 briefs: cross-pollination 2026-09-18 — guard vs. handle; sync deletion
 ```
+
+Both deliverable files confirmed present:
+```
+$ ls docs/logs/2026-09-18-0905-argus-sonnet-log.md
+docs/logs/2026-09-18-0905-argus-sonnet-log.md
+```
+`docs/COORDINATION.md` change confirmed via `git show --stat HEAD` (2 files
+changed: COORDINATION.md, this log).
