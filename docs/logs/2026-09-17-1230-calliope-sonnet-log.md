@@ -4,6 +4,56 @@ Worktree `/Users/xian/Development/klatch-worktrees/calliope`, branch `claude/cal
 
 ---
 
+## 21:3x PT — STOP fire opens. Briefing done.
+
+- Worktree synced by the wrapper before the fire; `git status` clean, branch `claude/calliope-cycle`.
+- `docs/COORDINATION.md` read; my last entry is the 9/17 SWEEP fire (rollup v137, checkpoint commits
+  `d22a8f61`/`5016d395`). `git log --oneline 5016d395..HEAD` (my own true checkpoint) showed 8 new commits,
+  none mine: Daedalus's Round 226 (`5dbc2e33`/`334d06ad`/`14bddba6`), Argus's own STOP-fire sweep
+  (`894e2892`), Iris's STOP-fire no-op (`9907f489`), Theseus's Round 227 (`5ac9dc04`/`8946cae3`/`c6490018`).
+  `git diff --stat 5016d395..HEAD -- packages/` empty; `-- scripts/` shows 8 files — scripts-only round
+  confirmed before reading anything.
+- **Mail:** two files newer than my checkpoint, both cc-only to this seat, no reply owed:
+  - `daedalus-to-theseus-argus-...-your-red-is-green-and-i-took-the-throw-over-the-evaluation-2026-09-17.md`
+    (Round 226) — read in full.
+  - `theseus-to-daedalus-argus-...-the-corpus-was-never-the-cause-and-arm-p-was-writing-to-your-real-db-2026-09-17.md`
+    (Round 227) — read in full.
+  Neither addressed to Calliope by name. No `xian-to-*` mail (checked, empty).
+- **Round 226 (Daedalus):** resolved Round 225's latent `50 * 1000` ambiguity with two throwing functions
+  rather than an evaluating one (reasoning: evaluation fixes today's caller and leaves tomorrow's caller
+  silently wrong by a unit factor). Repaired two of Theseus's own Round 225 probe arms that would have
+  crashed on the fix — an explicit, flagged application of Theseus's own same-day rule to Theseus's own
+  instrument. Found a `dist/`-inclusion double-count in the population-scan arm, routed to Argus.
+- **Round 227 (Theseus):** built the real corpus Round 224 asked for and found arm O was mis-measuring the
+  warm (cache-hit) sample, which structurally cannot contain fingerprint work — not a corpus-size problem.
+  Repaired to read the cold sample; now reproduces the original Round 144 finding. Separately, off-assignment,
+  found `browse-latency` arm P had been writing 2000 synthetic channels per run into the real `klatch.db`
+  since 2026-09-03, behind a guard that tested an import-time string literal rather than the connection
+  actually opened. Cleaned up in the affected worktree; this seat's own worktree confirmed unaffected — see
+  verification below.
+- **Independently verified, not re-trusted:** `npm test` run fresh from this worktree (via
+  `npm test > docs/logs/.tmp-test-run.log 2>&1`, file deleted after reading — avoiding a piped-tail citation
+  per this seat's own standing discipline) — server **1884/1885 (119 files, 1 skipped)**, client
+  **324/337 (13 skipped, 38 files)** — matches both memos' own figures exactly, unchanged from v137.
+  `npm run typecheck` clean across all three workspaces, no `error TS` lines. `git status --porcelain
+  packages/` empty, confirmed before and after.
+- **Theseus's arm-P claim checked directly rather than taken on his word:** his memo states this worktree
+  ("main checkout, argus, calliope") has no database present. Ran `find . -name "klatch.db*" -not -path
+  "*/node_modules/*"` myself — two dated backup files under `backups/`, no live `klatch.db`. Confirms his
+  claim; this seat was never exposed to the bug.
+- **Standing blockers re-checked directly, not from memory:** Janus's logbook-shape thread — `ls docs/mail |
+  grep -i xian-to` still empty, thread still open, 20 days since 8/28. Rollup HTML mirror — still last
+  committed 2026-08-23, `.md` now at 2026-09-17; not regenerated this fire either.
+- **Rollup refreshed to v138** (`docs/operations/attention-rollup.md`): new banner summarizing both memos
+  (Daedalus's Round 226 unit-ambiguity fix + `dist/` find, Argus's independent STOP-sweep confirmation,
+  Iris's no-op, Theseus's Round 227 arm-O repair + arm-P live-database finding), new changelog entry (v138),
+  v137 preserved verbatim under "superseded." Needs-you count unchanged at 3 — all testing-infrastructure
+  work, nothing product-facing, nothing new routed to xian.
+- Updating `docs/COORDINATION.md` and closing this log entry next; commits stay local per this fire's
+  instructions — the wrapper owns delivery to `origin/main` and logs the outcome. Not claiming delivered.
+
+---
+
 ## 17:00 PT — SWEEP fire opens. Briefing done.
 
 - Worktree synced by the wrapper before the fire; `git log -1` → `7833e79a` (Theseus's 9/17 WORK-fire wrap,
