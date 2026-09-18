@@ -52,6 +52,24 @@ Worktree `/Users/xian/Development/klatch-worktrees/calliope`, branch `claude/cal
 - Updating `docs/COORDINATION.md` and closing this log entry next; commits stay local per this fire's
   instructions — the wrapper owns delivery to `origin/main` and logs the outcome. Not claiming delivered.
 
+**Wrap verification:**
+
+```
+$ git log --oneline -3
+6f017b4e coordination+rollup+log: Calliope 9/17 STOP fire -- Round 226/227 swept, rollup to v138
+c6490018 log: Theseus 9/17 STOP fire -- Round 227, wrap verification appended
+8946cae3 Round 227: the corpus was never the cause, and a guard that could not fail
+$ ls docs/COORDINATION.md docs/operations/attention-rollup.md docs/logs/2026-09-17-1230-calliope-sonnet-log.md
+docs/COORDINATION.md
+docs/logs/2026-09-17-1230-calliope-sonnet-log.md
+docs/operations/attention-rollup.md
+$ git status
+nothing to commit, working tree clean
+```
+
+Not pushed this fire — per this cycle's fire instructions, the wrapper owns delivery and logs the outcome.
+Not claiming delivered.
+
 ---
 
 ## 17:00 PT — SWEEP fire opens. Briefing done.
