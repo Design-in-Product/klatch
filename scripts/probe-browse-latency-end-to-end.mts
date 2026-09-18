@@ -141,6 +141,7 @@ const SAMPLES = 5; // per configuration; first sample reported separately as col
  */
 const COLD_GENERATIONS = 4; // 1 discarded warmup + 3 measured
 const COLD_BAND_SIGMAS = 2; // ≈95% under normality; the band arm O must clear
+const LADDER_PASSES = 3;    // repeats per arm-P rung, so each rung carries its own σ
 
 type Kind = 'regression' | 'measurement';
 const results: Array<{ arm: string; check: string; pass: boolean; detail: string; kind: Kind }> = [];
@@ -662,8 +663,17 @@ if (files.length === 0) {
     "INSERT INTO channels (id, name, system_prompt, model, mode, type, created_at, source, source_metadata) VALUES (?, ?, '', 'claude-opus-5', 'chat', 'chat', ?, 'claude-code', ?)",
   );
   const baseline = db.prepare('SELECT COUNT(*) c FROM channels').get() as any;
+  // Rows present BEFORE this arm seeds anything, that the server's own bootstrap
+  // did not create. A fresh scratch DB legitimately holds exactly one channel —
+  // `default`/`general`, source `native`, written by the migration when arms L/N
+  // booted the server against it. Anything else at this point is either an
+  // unwiped scratch DB or a database this arm did not think it was opening.
+  const baselineForeign = db.prepare(
+    "SELECT id, name FROM channels WHERE NOT (id = 'default' AND source = 'native')",
+  ).all() as Array<{ id: string; name: string }>;
 
   const rows: string[] = [];
+  const rungs: Array<{ K: number; count: number; per: number[] }> = [];
   let seeded = baseline.c as number;
   for (const K of [0, 100, 500, 2000]) {
     const insert = db.transaction((n: number) => {
@@ -678,16 +688,101 @@ if (files.length === 0) {
     const want = K - (seeded - (baseline.c as number));
     if (want > 0) { insert(want); seeded += want; }
 
-    const t0 = performance.now();
-    for (const id of ids) findChannelByOriginalSessionId(id);
-    const dt = performance.now() - t0;
-    rows.push(`${K} channels → ${ms(dt)} for ${ids.length} lookups (${(dt / ids.length * 1000).toFixed(0)} µs each)`);
+    // LADDER_PASSES per rung so each rung carries its own σ. One pass per rung
+    // is a point estimate with no noise estimate, which is what let the arm
+    // report a ladder starting at 782 µs as though that were a floor.
+    const per: number[] = [];
+    let dt = 0;
+    for (let p = 0; p < LADDER_PASSES; p++) {
+      const t0 = performance.now();
+      for (const id of ids) findChannelByOriginalSessionId(id);
+      dt = performance.now() - t0;
+      per.push((dt / ids.length) * 1000); // µs per lookup
+    }
+    const actual = (db.prepare('SELECT COUNT(*) c FROM channels').get() as any).c as number;
+    rungs.push({ K, count: actual, per });
+    rows.push(`${K} channels → ${ms(dt)} for ${ids.length} lookups (${mean(per).toFixed(0)} µs each, ±${stdev(per).toFixed(0)})`);
   }
 
   // Leave the scratch DB seeded — it lives under .testdata and is wiped on the
   // next run. xian's klatch.db is a different file and was never opened here.
   check('P', 'per-file dedup lookup cost scales with imported channel count', true,
     rows.join('; '), 'measurement');
+
+  // ── The ladder assertions, added 2026-09-18 (Round 229, Theseus) ───────────
+  //
+  // Round 227 §5, raised to Argus and confirmed by Daedalus in Round 228 §5 as
+  // "the clean case": arm P is a MEASUREMENT, so for fourteen days nothing it
+  // printed could go red. The x-axis read "0 channels → 782 µs" while the table
+  // actually held 2002 rows, and the only reason anyone noticed was that I
+  // happened to run the probe twice and compare two runs by eye.
+  //
+  // The transferable form:
+  //
+  //   A quantity seeded along a known-ordered parameter is checkable WITHOUT
+  //   knowing the right answer — the ORDER is the assertion. A ladder that
+  //   starts in the wrong place is detectable even when no rung's absolute
+  //   value is predictable.
+  //
+  // Two assertions, because the ladder can fail in two independent ways.
+
+  // (1) The labels have to be true: the ladder must start from a table holding
+  //     nothing but what the server's own bootstrap put there. This tests the
+  //     DATA rather than the path, which is why it is independent of the
+  //     `db.name` guard below and would have caught Round 227's no-opped
+  //     KLATCH_DB assignment ON ITS FIRST RUN — on 2026-09-03 the repo
+  //     klatch.db already held xian's own channels, so the rung labelled
+  //     "0 channels" was false before this arm had seeded a single row.
+  //
+  //     ⚠ Written first as `baseline.c === 0` and that was WRONG — it asserted
+  //     something false by design and went red on a healthy run. A fresh
+  //     scratch DB holds exactly one channel (`default`/`general`, source
+  //     `native`) because arms L/N boot a real server against it and the
+  //     migration creates it. Asserting identity rather than a count keeps the
+  //     check strict where it matters — a foreign row of ANY kind fails — and
+  //     silent where it does not.
+  check('P', 'the ladder starts from a bootstrap-only table — the x-axis labels are true',
+    baselineForeign.length === 0,
+    baselineForeign.length === 0
+      ? `${baseline.c} baseline row(s), all server-bootstrap; rung "0 channels" means 0 imported channels`
+      : `rung "0 channels" was measured against a table already holding ${baselineForeign.length} non-bootstrap row(s) ` +
+        `(e.g. ${baselineForeign.slice(0, 3).map((r) => r.id).join(', ')}) — every rung label is off by that much, ` +
+        `and the first rung is not a floor`);
+
+  // (2) The order has to hold. Non-decreasing in K, each step tested against
+  //     the two rungs' combined standard error rather than a percentage — a
+  //     percentage here would be Round 228's mistake one arm over, since it
+  //     would test noise against a threshold picked for a different question.
+  const stepLines: string[] = [];
+  let ordered = true;
+  for (let i = 1; i < rungs.length; i++) {
+    const a = rungs[i - 1], b = rungs[i];
+    const se = Math.sqrt((stdev(a.per) / Math.sqrt(a.per.length)) ** 2 + (stdev(b.per) / Math.sqrt(b.per.length)) ** 2);
+    const bandStep = COLD_BAND_SIGMAS * se;
+    const rose = mean(b.per) - mean(a.per);
+    const ok = rose >= -bandStep;
+    if (!ok) ordered = false;
+    stepLines.push(`${a.K}→${b.K}: ${rose >= 0 ? '+' : ''}${rose.toFixed(0)} µs (±${bandStep.toFixed(0)})${ok ? '' : ' ✗'}`);
+  }
+  check('P', 'per-lookup cost is non-decreasing in seeded channel count', ordered, stepLines.join('; '));
+
+  // (3) And the ladder has to actually rise, or the arm's headline claim —
+  //     "cost scales with imported channel count" — is not established by it.
+  //     Same band construction, first rung against last.
+  const first = rungs[0], last = rungs[rungs.length - 1];
+  const seSpan = Math.sqrt((stdev(first.per) / Math.sqrt(first.per.length)) ** 2 + (stdev(last.per) / Math.sqrt(last.per.length)) ** 2);
+  const bandSpan = COLD_BAND_SIGMAS * seSpan;
+  const span = mean(last.per) - mean(first.per);
+  check('P', 'the scan cost is distinguishable from noise across the ladder', span > bandSpan,
+    `${first.K}→${last.K} channels: ${mean(first.per).toFixed(0)} → ${mean(last.per).toFixed(0)} µs, rise ${span.toFixed(0)} µs vs band ±${bandSpan.toFixed(0)}`);
+
+  // NOT CLAIMED: the rungs are measured in seeding order and cannot be
+  // alternated the way Round 228's arm M alternates its capped/uncapped passes,
+  // because seeding is cumulative — there is no way back down the ladder. So
+  // machine drift across the ~seconds of the sweep is inside these steps and is
+  // not controlled for. The σ above is WITHIN-rung, not between-rung. It is
+  // sufficient for the order assertion (drift would have to exceed a 20× signal
+  // to invert it) and it is NOT a confidence interval for any single rung.
 
   // ── The guard, rewritten 2026-09-17 (Round 227) ────────────────────────────
   //
