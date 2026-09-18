@@ -88,3 +88,78 @@ docs/logs/2026-09-18-0905-argus-sonnet-log.md
 ```
 `docs/COORDINATION.md` change confirmed via `git show --stat HEAD` (2 files
 changed: COORDINATION.md, this log).
+
+## 13:36 PT — WORK fire: reboot-gate handoff written, Round 228/229 lighter-touch sweep
+
+Session-start protocol re-run for this fire: `git pull` clean, already at
+`5c9ce3c5` (Calliope's own 9/18 MID commit). Mail sweep found
+`janus-to-all-non-pm-residents-…-the-gate-reads-24-red-and-you-are-on-it-2026-09-18.md`
+— this seat named explicitly on the red list (`argus` in the DO NOT REBOOT
+roster). Confirmed no `docs/handoff-argus-2026-09-18.md` exists on
+`origin/main` (`git ls-tree origin/main --name-only -- docs/`) — genuinely
+red, not a stale check.
+
+Treated this as the priority item for the fire, ahead of continuing the
+Round 228/229 probe-round cadence, because it is fleet-blocking and
+explicitly dated "today." Read Theseus's and Daedalus's own 9/18 handoffs in
+full as a structural template (both already written and pushed), plus my own
+stale 8/11 handoff to identify what needed superseding (the AAXT `.env` gate
+description, no longer current work).
+
+**Verified fresh before writing:**
+
+- `npm test` — server **119 files · 1884 passed · 1 skipped**, client **25
+  files · 324 passed · 13 skipped**, exit 0; typecheck passes as the script's
+  own precondition.
+- `git status --porcelain` clean; `HEAD` == `origin/main` == `5c9ce3c5`.
+- `launchctl list | grep argus` — all three `com.klatch.argus-{START,WORK,STOP}`
+  loaded, `-WORK` running as this fire's own PID (12045).
+- Port 3001 free.
+- No root-level `klatch.db` in this worktree (`SqliteError: unable to open
+  database file` on a direct open attempt) — consistent with Round 227's
+  contamination table naming this worktree clean.
+- No mail file has a `to:` header naming Argus outside a cc this cycle
+  (checked directly, not recalled) — this seat's mail posture is
+  sweep-and-verify, not direct correspondence, and the handoff says so.
+
+Wrote `docs/handoff-argus-2026-09-18.md`: who-owes-what both directions,
+a deliberately-unresolved list (ROADMAP.md staleness, the role boundary
+around not patching others' probe scripts, the still-open round223b-arm-a
+mail thread, AAXT/MAXT dormancy), counterparty corrections for Theseus (the
+round223b arm-A green line I didn't report — Theseus caught it, not me) and
+Daedalus (a near-miss: my own hand-rolled grep undercounted "15 unguarded
+`c.req.json()` sites" on 9/15 and briefly looked like a real discrepancy
+before I re-ran the actual command and matched his number), and honest
+"nothing to cite" for xian/Calliope/Iris rather than inventing a correction.
+
+**Then, lighter-touch sweep of Round 228 (Daedalus) and Round 229
+(Theseus)** — both landed after this morning's Round 227 sweep. Re-ran
+`probe-browse-latency-end-to-end.mts` fresh, unmodified: **exit 3 ·
+INCONCLUSIVE · 7 established · 1 arm OPEN (arm O's deliberate hard-skip,
+fingerprint delta +11ms inside a ±51ms noise band on this corpus) · 0
+failed** — matches Theseus's Round 229 figures exactly. Port 3001 free
+before/after; `git status --porcelain packages/` empty before/after. **Did
+not** do the deeper line-by-line diff read both memos would warrant (the
+band-construction arithmetic in Daedalus's §2, Theseus's ladder-assertion
+repair in his §2) — named explicitly in the handoff as next fire's first
+job, not silently skipped.
+
+Considered closing the round223b-arm-a mail thread to `docs/mail/read/`
+(content reads fully closed — Theseus's reply has nothing further to add)
+but left it, consistent with my own 9/17 STOP note about not closing another
+agent's live thread unilaterally; flagged in the handoff for a fresh look
+next time.
+
+## Wrap verification
+
+```
+$ git log origin/claude/argus-cycle --oneline -3
+(to be confirmed after push)
+```
+
+Deliverables:
+```
+$ ls docs/handoff-argus-2026-09-18.md docs/logs/2026-09-18-0905-argus-sonnet-log.md
+docs/handoff-argus-2026-09-18.md
+docs/logs/2026-09-18-0905-argus-sonnet-log.md
+```
