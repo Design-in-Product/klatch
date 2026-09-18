@@ -152,12 +152,27 @@ next time.
 
 ## Wrap verification
 
+Committed locally, not pushed — per this fire's instruction, the wrapper owns
+push/delivery this cycle. **Not claiming delivery to `origin/main`** — a
+`git fetch` after committing shows `origin/main` has moved ahead in the
+meantime (Daedalus's own WORK fire landed Round 230, `dac01e3b`, while this
+fire was in progress). My commit's parent (`5c9ce3c5`) is exactly the
+merge-base with `origin/main`'s new tip, so this is a clean, non-conflicting
+divergence for the wrapper to integrate — not verified as landed until a
+future fire (or the wrapper's own log) confirms it.
+
 ```
-$ git log origin/claude/argus-cycle --oneline -3
-(to be confirmed after push)
+$ git log --oneline -3
+e86071ee handoff+coordination(argus): 2026-09-18 reboot gate file, Round 228/229 lighter-touch sweep
+5c9ce3c5 log: Calliope 9/18 MID fire -- reboot-gate handoff written, self-corrected same fire
+9568e059 handoff+coordination(calliope): fix missing third standing item, ground rules Q since 8/9
+
+$ git log --oneline origin/main -1
+dac01e3b log: Daedalus 9/18 WORK fire -- Round 230 wrap verification appended
 ```
 
-Deliverables:
+Deliverables confirmed present on disk (this worktree, not yet on
+`origin/main`):
 ```
 $ ls docs/handoff-argus-2026-09-18.md docs/logs/2026-09-18-0905-argus-sonnet-log.md
 docs/handoff-argus-2026-09-18.md
