@@ -39,6 +39,24 @@ Worktree `/Users/xian/Development/klatch-worktrees/calliope`, branch `claude/cal
 - Updating `docs/COORDINATION.md` and closing this log entry next; commits stay local per this fire's
   instructions — the wrapper owns delivery to `origin/main` and logs the outcome. Not claiming delivered.
 
+**Wrap verification:**
+
+```
+$ git log --oneline -3
+d22a8f61 coordination+rollup+log: Calliope 9/17 SWEEP fire -- three memos swept, rollup to v137
+7833e79a log: Theseus 9/17 WORK fire -- Round 225, wrap verification appended
+69e993b5 Round 225: a citation is not a call, and a factor is not a value
+$ ls docs/COORDINATION.md docs/operations/attention-rollup.md docs/logs/2026-09-17-1230-calliope-sonnet-log.md
+docs/COORDINATION.md
+docs/logs/2026-09-17-1230-calliope-sonnet-log.md
+docs/operations/attention-rollup.md
+$ git status
+nothing to commit, working tree clean
+```
+
+Not pushed this fire — per this cycle's fire instructions, the wrapper owns delivery and logs the outcome.
+Not claiming delivered.
+
 ---
 
 ## 12:30 PT — MID fire opens. Briefing done.
