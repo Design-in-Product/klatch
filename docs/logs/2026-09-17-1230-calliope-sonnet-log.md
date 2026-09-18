@@ -4,6 +4,43 @@ Worktree `/Users/xian/Development/klatch-worktrees/calliope`, branch `claude/cal
 
 ---
 
+## 17:00 PT — SWEEP fire opens. Briefing done.
+
+- Worktree synced by the wrapper before the fire; `git log -1` → `7833e79a` (Theseus's 9/17 WORK-fire wrap,
+  Round 225).
+- `docs/COORDINATION.md` read; my last entry is the 9/17 MID fire (rollup v136, checkpoint commits
+  `2331b19f`/`eec08990`). `git log --oneline eec08990..HEAD` (my own true checkpoint — the MID-fire entry's
+  cited `634a0b3e` was the state *before* that fire's own two commits) showed 7 new commits, none mine:
+  Daedalus's Round 224 (`16f0b095`/`54227261`/`4fa7e421`), Argus's own WORK-fire sweep (`94f24d5b`), and
+  Theseus's Round 225 (`703f8495`/`69e993b5`/`7833e79a`). `git diff --stat eec08990..HEAD -- packages/`
+  empty; `-- scripts/` shows 13 files, all probe/lib code — scripts-only round confirmed before reading
+  anything.
+- **Mail:** three files newer than my checkpoint, all cc-only to this seat, no reply owed:
+  - `argus-to-theseus-...-round223b-arm-a-goes-red-against-its-own-commit-2026-09-17.md` — read at the
+    12:3x MID fire already (v136 banner cites it); re-read here since its thread closed this fire (Round 225).
+  - `daedalus-to-theseus-...-your-exit-0-finding-is-closed-...-2026-09-17.md` (Round 224) — read in full.
+  - `theseus-to-daedalus-argus-...-argus-is-right-...-2026-09-17.md` (Round 225) — read in full.
+  None addressed to Calliope by name. No `xian-to-*` mail (checked, empty).
+- **Independently verified, not re-trusted:** `npm test` (typecheck + server + client) run fresh from this
+  worktree — server **1884/1885 (119 files, 1 skipped)**, client **324/337 (13 skipped, 38 files)** —
+  matches Daedalus's Round 224 citation exactly (Theseus's Round 225 memo correctly declined
+  to re-run suites, noting every edit is under `scripts/`); `npm run typecheck` clean, no `error TS` lines.
+  `git status --porcelain packages/` empty, confirmed before and after the run.
+- **Standing blockers re-checked directly, not from memory:** Janus's logbook-shape thread — `ls docs/mail |
+  grep -i xian-to` still empty, thread still open, unmoved, 20 days since 8/28. Rollup HTML mirror —
+  `docs/operations/attention-rollup.html` last committed 2026-08-23 (`git log -1 --format=%cd`), `.md`
+  now at 2026-09-17; still not regenerated, not this fire either. `docs/ROADMAP.md`'s Agent-continuity
+  bullet re-checked (`grep -n "Round 20"`) — still stops at Round 205, no mention of 206–225.
+- **Rollup refreshed to v137** (`docs/operations/attention-rollup.md`): new banner summarizing all three
+  memos (Argus's arm-A staleness find, Daedalus's Round 224 shared-outcome-module + dead-probe-since-9/4
+  finding, Theseus's Round 225 arm-A repair + third undetected check + latent unit-conversion red),
+  new changelog entry (v137), v136 preserved verbatim under "superseded." Needs-you count unchanged at 3 —
+  all three memos are testing-infrastructure repair, nothing product-facing, nothing routed to xian.
+- Updating `docs/COORDINATION.md` and closing this log entry next; commits stay local per this fire's
+  instructions — the wrapper owns delivery to `origin/main` and logs the outcome. Not claiming delivered.
+
+---
+
 ## 12:30 PT — MID fire opens. Briefing done.
 
 - Synced by the wrapper; `git log -1` → `634a0b3e` (Theseus's 9/17 START-fire wrap, Round 223).
