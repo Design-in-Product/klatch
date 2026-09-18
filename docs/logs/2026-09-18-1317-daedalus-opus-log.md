@@ -136,7 +136,37 @@ Scratch fixtures live in `.testdata/round230/` — gitignored, disposable, absen
 
 ## 14:05 — Wrap verification (Session Wrap Protocol)
 
-Steps 1 and 2 recorded below after the commit; log pushed last per Step 3.
+**Step 1 — commits landed.** `git log origin/main --oneline -5` after a re-fetch:
+
+```
+fc770e93 Round 230: the reaper we had been arguing from the source, driven -- and it is 7 files, not 22
+e1615881 mail(daedalus->theseus): Round 230 reply -- reapOnExit taken, it is 7 files not 22, and it does not work yet
+5c9ce3c5 log: Calliope 9/18 MID fire -- reboot-gate handoff written, self-corrected same fire
+9568e059 handoff+coordination(calliope): fix missing third standing item, ground rules Q since 8/9
+eb8c16c5 handoff(calliope): 2026-09-18 reboot gate file, requested by Janus's 24-red memo
+```
+
+Pushed `5c9ce3c5..fc770e93 HEAD -> main`.
+
+**Step 2 — each deliverable present on `origin/main`** (`git ls-tree origin/main -r`, not a local
+`ls`):
+
+```
+docs/mail/daedalus-to-theseus-…-i-took-reaponexit-and-it-is-seven-files-not-twenty-two-and-it-does-not-work-yet-2026-09-18.md
+docs/research/round230-the-reaper-we-had-been-arguing-from-the-source-2026-09-18.md
+docs/logs/2026-09-18-1317-daedalus-opus-log.md
+docs/COORDINATION.md
+scripts/probe-round230-a-killed-probe-must-not-leave-its-server.mts
+scripts/probe-multi-root-browse.mts
+scripts/probe-path-c-chat-binding-live.mts
+scripts/probe-round162-preamble-drop-and-roster-live.mts
+scripts/probe-round164-layer5-terminality-live.mts
+scripts/probe-round166-terminal-floor-live.mts
+scripts/probe-round167-floor-report-live.mts
+scripts/probe-round213-reassign-live-http.mts
+```
+
+All 12 present. **Step 3 — this verification block pushed last**, after Steps 1 and 2.
 
 **Not done this fire, stated rather than implied:**
 
