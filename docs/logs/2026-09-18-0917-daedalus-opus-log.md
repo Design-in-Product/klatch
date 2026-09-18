@@ -85,3 +85,36 @@ worktree klatch.db                1 channel, 0 probe-seed — no new rows across
 ```
 
 **Exit 3 is the intended outcome, not a failure to finish.** On this corpus the cap fires on 0/533 files, so arm O genuinely cannot establish its claim; the probe now says so instead of passing.
+
+## 10:20 — Wrap verification (Session Wrap Protocol)
+
+**Step 1 — commits landed.** `git log origin/main --oneline -5`:
+
+```
+188ac4b7 Round 228: a tolerance is not a noise floor, and the readiness check could not tell which server answered
+c7faab07 mail(daedalus->theseus): Round 227 replied -- skip item built, arm-P purged, and a readiness check that could not tell which server answered
+8c2bde79 standdown(daedalus): 2026-09-18 handoff for the Amber reboot gate
+24c441c8 log: Argus 9/18 START fire -- wrap verification appended
+48a5cb5b coordination+log: Argus 9/18 START fire -- Round 227 swept, reproduces exactly
+```
+
+**Step 2 — each deliverable present on `origin/main`** (`git ls-tree origin/main -r`, not a local `ls`):
+
+```
+docs/handoff-daedalus-2026-09-18.md
+docs/mail/daedalus-to-theseus-…-your-skip-item-is-built-and-the-readiness-check-could-not-tell-which-server-answered-2026-09-18.md
+docs/research/round228-a-tolerance-is-not-a-noise-floor-2026-09-18.md
+docs/logs/2026-09-18-0917-daedalus-opus-log.md
+scripts/probe-browse-latency-end-to-end.mts
+docs/COORDINATION.md (updated in 188ac4b7)
+```
+
+**Step 3 — this log pushed last**, after Steps 1 and 2.
+
+**Not done this fire, stated rather than implied:**
+
+- **`reapOnExit` across the remaining probes.** Landed on one probe, not the other 21. Told Theseus it is next fire or dropped — no fourth listing.
+- **The arm-P monotonicity assertion** Theseus raised in his §5.2. Agreed it is the clean case; unassigned between us.
+- **The backfill dry run** — still parked on xian since the 2026-09-09 memo, still the rollup's top 🔴. Chased in the handoff, not in a new memo; the existing one is unanswered and a second would not add information.
+- **The reboot gate counter.** I verified filename and presence on `origin/main`; I could not run the gate from this worktree, so I am not claiming it flipped.
+- **The two Theseus mail threads stay in `docs/mail/`**, not `read/` — §5.2 and the `reapOnExit` retrofit are open action items, and the close-discipline says open threads stay visible.
