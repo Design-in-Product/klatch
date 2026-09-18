@@ -86,6 +86,30 @@ const PORT = 3001;
 const BASE = `http://127.0.0.1:${PORT}`;
 const SCANNER = path.join(REPO, 'packages/server/src/import/session-scanner.ts');
 
+/**
+ * ─── 2026-09-17, Theseus (Round 227) — this line has to be HERE, not in arm P ──
+ *
+ * `db/index.ts:24` resolves `DB_PATH` in a module-level `const`, at load time,
+ * defaulting to `<project root>/klatch.db`. Arm P used to set
+ * `process.env.KLATCH_DB` immediately before its own `getDb()` — but by then
+ * `db/index.ts` was long since loaded, because arm M dynamically imports
+ * `session-scanner.ts`, which imports `../db/queries.js` at line 5. The
+ * assignment was a no-op against a constant that had already been computed, and
+ * every row arm P seeded went into the WORKTREE'S REAL `klatch.db`.
+ *
+ * Measured, not reasoned: this worktree's `klatch.db` held 6000 `probe-seed-%`
+ * channels against 2 real ones — 2000 from the first run of this probe on
+ * 2026-09-03 and 4000 from two runs tonight — plus 4000 `channel_entities` rows
+ * that a later server boot's migration backfilled onto them. Removed, with a
+ * `VACUUM INTO` backup at `.testdata/klatch.db.backup-before-round227-cleanup`.
+ * `DB_PATH` resolves through `findProjectRoot(__dirname)`, so each agent's
+ * worktree accumulates its own.
+ *
+ * Set before the first import that can reach `db/index.ts`. Moving it back down
+ * re-opens the leak silently.
+ */
+process.env.KLATCH_DB = DB;
+
 const SAMPLES = 5; // per configuration; first sample reported separately as cold-ish
 
 type Kind = 'regression' | 'measurement';
@@ -106,6 +130,16 @@ const median = (xs: number[]) => {
   return s.length % 2 ? s[(s.length - 1) / 2] : (s[s.length / 2 - 1] + s[s.length / 2]) / 2;
 };
 const ms = (n: number) => `${n.toFixed(0)} ms`;
+/**
+ * A delta, with its own sign. Every delta line here used to be written as
+ * `+${ms(x)}`, which renders a negative move as `+-213 ms` — and on 2026-09-17
+ * the real corpus produced exactly that on the headline: the uncapped cold
+ * browse came out 213 ms FASTER than the capped one (the cap fires on nothing
+ * there, so the difference is run-to-run noise). "+-213 ms" is one glance away
+ * from "+213 ms", which is the opposite claim. Sign belongs to the number.
+ */
+const delta = (n: number) => `${n >= 0 ? '+' : '−'}${Math.abs(n).toFixed(0)} ms`;
+const deltaPct = (n: number) => `${n >= 0 ? '+' : '−'}${Math.abs(n).toFixed(0)}%`;
 
 fs.rmSync(SCRATCH, { recursive: true, force: true });
 fs.mkdirSync(SCRATCH, { recursive: true });
@@ -264,7 +298,7 @@ if (files.length === 0) {
   const pctFiles = (100 * cappedFiles / files.length).toFixed(1);
   const pctTurns = turnsUncapped ? (100 * turnsCapped / turnsUncapped).toFixed(1) : 'n/a';
   check('M', 'fingerprint sum reproduces at both caps', true,
-    `${files.length} files / ${(totalBytes / 1e6).toFixed(1)} MB — cap ${SHIPPED_CAP} ${ms(mCapped)}, uncapped ${ms(mUncapped)}, delta +${ms(mUncapped - mCapped)}`,
+    `${files.length} files / ${(totalBytes / 1e6).toFixed(1)} MB — cap ${SHIPPED_CAP} ${ms(mCapped)}, uncapped ${ms(mUncapped)}, delta ${delta(mUncapped - mCapped)}`,
     'measurement');
   check('M', 'cap-bites and turn-retention figures reproduce', true,
     `cap fires on ${cappedFiles}/${files.length} files (${pctFiles}%); turns ${turnsCapped} → ${turnsUncapped} (${pctTurns}% retained, +${turnsUncapped - turnsCapped} recovered)`,
@@ -316,25 +350,59 @@ if (!canStartOurOwnServer) {
 // Agreement validates the attribution; disagreement means the endpoint's cost
 // structure is not what either of us assumed and the remainder needs its own
 // measurement.
+//
+// ─── 2026-09-17, Theseus (Round 227) — this arm was fed the wrong sample ────
+// Until today arm O used `median(samples.slice(1))` — the WARM median. The
+// fingerprint cache (session-scanner.ts:439) is process-lifetime and keyed on
+// `(path, mtimeMs, size, lineCap)`, and `timeBrowse` runs all five samples
+// against one freshly spawned server. So sample 0 pays the fingerprinting and
+// samples 1-4 are cache hits: the warm median is, by construction, the browse
+// path with the fingerprint work already elided. Feeding it to a decomposition
+// of the form `browse = fingerprint + remainder` produced a NEGATIVE remainder,
+// and predicting that it would move by the fingerprint delta predicted a move in
+// a number that cannot move.
+//
+// Daedalus flagged the resulting FAIL on 2026-09-17 and read it as vacuous
+// because the cap fires on 0/536 files here, prescribing a skip on corpora where
+// the cap does not bite. Driven on a corpus where it bites hard — 3 files capped,
+// turns 76,000 -> 121,000, fingerprint delta +94 ms — the warm form came out
+// 6304.7% off, WORSE than the 65.5% it recorded on a corpus where the cap fired
+// on nothing. The cold form on that same run came out 1.0% off. The corpus was
+// never the cause; see scripts/probe-round227-arm-o-on-a-corpus-where-the-cap-
+// fires.mts and docs/research/round227-*.md.
+//
+// Cold is also the right sample on the merits, not just the one that makes the
+// arithmetic close: the figure this probe exists to check is the one xian was
+// asked to rule on ("browse goes 1.39 s -> 2.03 s"), and that is a first-visit
+// number. The warm median is the steady state the cache bought and is reported
+// by arms L and N in their own right; it is only this decomposition that must
+// not be fed it.
 
 if (!L || !N || files.length === 0) {
   skip('O', 'needs arms L, M and N to have run');
 } else {
+  // Cold, deliberately — see the note above. Warm is carried alongside so the
+  // contrast stays visible in the output rather than living only in a comment.
+  const coldL = L.samples[0];
+  const coldN = N.samples[0];
   const warmL = median(L.samples.slice(1));
   const warmN = median(N.samples.slice(1));
-  const remainder = warmL - mCapped;
-  const predicted = warmL + (mUncapped - mCapped);
-  const measuredDelta = warmN - warmL;
-  const errPct = Math.abs(predicted - warmN) / warmN * 100;
+  const remainder = coldL - mCapped;
+  const predicted = coldL + (mUncapped - mCapped);
+  const measuredDelta = coldN - coldL;
+  const errPct = Math.abs(predicted - coldN) / coldN * 100;
 
   console.log('');
   check('O', 'fingerprinting is attributed at the surface it is described at', true,
-    `browse ${ms(warmL)} = fingerprint ${ms(mCapped)} (${(100 * mCapped / warmL).toFixed(0)}%) + remainder ${ms(remainder)} (${(100 * remainder / warmL).toFixed(0)}%)`,
+    `cold browse ${ms(coldL)} = fingerprint ${ms(mCapped)} (${(100 * mCapped / coldL).toFixed(0)}%) + remainder ${ms(remainder)} (${(100 * remainder / coldL).toFixed(0)}%)`,
     'measurement');
   check('O', 'endpoint delta matches the fingerprint delta', errPct < 20,
-    `predicted ${ms(predicted)} vs measured ${ms(warmN)} (${errPct.toFixed(1)}% off); endpoint moved +${ms(measuredDelta)} for a fingerprint delta of +${ms(mUncapped - mCapped)}`);
+    `predicted ${ms(predicted)} vs measured ${ms(coldN)} (${errPct.toFixed(1)}% off); cold endpoint moved ${delta(measuredDelta)} for a fingerprint delta of ${delta(mUncapped - mCapped)}`);
   check('O', 'relative regression at the user-facing surface', true,
-    `${ms(warmL)} → ${ms(warmN)} = +${(100 * measuredDelta / warmL).toFixed(0)}% of browse (fingerprint-only framing: +${(100 * (mUncapped - mCapped) / mCapped).toFixed(0)}% of the scan)`,
+    `${ms(coldL)} → ${ms(coldN)} = ${deltaPct(100 * measuredDelta / coldL)} of a cold browse (fingerprint-only framing: ${deltaPct(100 * (mUncapped - mCapped) / mCapped)} of the scan)`,
+    'measurement');
+  check('O', 'the warm path is inert to the cap, and is reported as its own number', true,
+    `warm ${ms(warmL)} → ${ms(warmN)} = ${delta(warmN - warmL)} for a fingerprint delta of ${delta(mUncapped - mCapped)} — the steady state the fingerprint cache bought, not a decomposable browse`,
     'measurement');
 }
 
@@ -355,7 +423,7 @@ if (files.length === 0) {
 } else if (!fs.existsSync(DB)) {
   skip('P', 'scratch DB was never created (arms L/N did not run)');
 } else {
-  process.env.KLATCH_DB = DB;
+  // KLATCH_DB is set at the top of this file, not here — see the note there.
   const { findChannelByOriginalSessionId } = await import(path.join(REPO, 'packages/server/src/db/queries.ts'));
   const { getDb } = await import(path.join(REPO, 'packages/server/src/db/index.ts'));
   const db = getDb();
@@ -392,9 +460,27 @@ if (files.length === 0) {
   check('P', 'per-file dedup lookup cost scales with imported channel count', true,
     rows.join('; '), 'measurement');
 
+  // ── The guard, rewritten 2026-09-17 (Round 227) ────────────────────────────
+  //
+  // It used to read:
+  //
+  //   check('P', 'scratch DB used, not the repo klatch.db', DB.includes('.testdata'),
+  //         `${cleanDb.c} channels in ${path.relative(REPO, DB)}`);
+  //
+  // `DB` is a string literal built at the top of this file. `DB.includes('.testdata')`
+  // is therefore true on every run that will ever happen, and the detail line
+  // printed the path this probe INTENDED to open next to a count read from a
+  // different database. It passed on every run for fourteen days while the thing
+  // it names — "not the repo klatch.db" — was false.
+  //
+  // A guard on the variable that names the target is not a guard on the handle
+  // that was opened. Ask the connection where it actually is. `better-sqlite3`
+  // exposes the opened filename as `db.name`; that cannot be satisfied by an
+  // assignment that no-opped.
+  const openedPath = path.resolve((db as any).name);
   const cleanDb = db.prepare('SELECT COUNT(*) c FROM channels').get() as any;
-  check('P', 'scratch DB used, not the repo klatch.db', DB.includes('.testdata'),
-    `${cleanDb.c} channels in ${path.relative(REPO, DB)}`);
+  check('P', 'the OPEN HANDLE is the scratch DB, not the repo klatch.db', openedPath === path.resolve(DB),
+    `getDb() opened ${path.relative(REPO, openedPath)} (want ${path.relative(REPO, DB)}); ${cleanDb.c} channels in it`);
 }
 
 // ── Summary ──────────────────────────────────────────────────────────────────
