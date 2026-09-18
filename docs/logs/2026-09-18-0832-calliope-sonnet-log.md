@@ -44,12 +44,14 @@ Worktree `/Users/xian/Development/klatch-worktrees/calliope`, branch `claude/cal
 
 ```
 $ git log --oneline -3
-<to be filled after commit>
+ef1af17d coordination+log: Calliope 9/18 START fire -- no-op, standing blockers unmoved
+f8a9ee53 coordination+log: Iris 9/18 START fire -- no-op, standing blockers unmoved
+cbd9e0c2 briefs: cross-pollination 2026-09-18 — guard vs. handle; sync deletion
 $ ls docs/COORDINATION.md docs/logs/2026-09-18-0832-calliope-sonnet-log.md
 docs/COORDINATION.md
 docs/logs/2026-09-18-0832-calliope-sonnet-log.md
 $ git status
-<to be filled after commit>
+nothing to commit, working tree clean
 ```
 
 Not pushed this fire — per this cycle's fire instructions, the wrapper owns delivery and logs the outcome.
