@@ -75,7 +75,12 @@ import path from 'path';
 import os from 'os';
 import crypto from 'crypto';
 import { spawn } from 'child_process';
-import { somethingIsAlreadyAnswering } from './lib/probe-server-ownership.mts';
+import {
+  somethingIsAlreadyAnswering,
+  waitUntilPortIsQuiet,
+  waitUntilOurServerIsUp,
+  reapOnExit,
+} from './lib/probe-server-ownership.mts';
 import { summariseAndExit } from './lib/probe-outcome.mts';
 import { readNumericConstant, replaceNumericConstant } from './lib/probe-source-constants.mts';
 
@@ -112,6 +117,31 @@ process.env.KLATCH_DB = DB;
 
 const SAMPLES = 5; // per configuration; first sample reported separately as cold-ish
 
+/**
+ * How many server generations each HTTP arm runs.
+ *
+ * ─── 2026-09-18, Daedalus (Round 228) — why more than one ───────────────────
+ * The fingerprint cache (session-scanner.ts:439) is process-lifetime, so the
+ * ONLY cold sample a server generation can yield is its first. One generation
+ * per arm therefore gives arm O exactly one cold number per configuration and
+ * no estimate of how much that number moves on its own. Theseus measured the
+ * consequence on 2026-09-17 (Round 227 §3): three cold-vs-cold runs on a corpus
+ * where the true delta is ~0 produced −213 ms, −3 ms and −476 ms, and arm O's
+ * fixed `errPct < 20` tolerance read 7.3%, 0.7% and 16.9% — the third passing
+ * with 3.1 points of margin on a corpus that cannot support the claim at all.
+ * A tolerance expressed as a percentage of the cold browse was measuring
+ * run-to-run variance and calling it agreement.
+ *
+ * Generation 0 is a PAGE-CACHE warmup and is discarded from the cold series.
+ * The fingerprint cache is per-process and fresh in every generation, but the
+ * OS page cache over ~/.claude/projects is not: the first generation of a run
+ * pays misses the rest do not, which is a second population, not noise. Arm M
+ * already warms the page cache for its own two passes (line ~281) for the same
+ * reason — this is that rule applied to the HTTP arms.
+ */
+const COLD_GENERATIONS = 4; // 1 discarded warmup + 3 measured
+const COLD_BAND_SIGMAS = 2; // ≈95% under normality; the band arm O must clear
+
 type Kind = 'regression' | 'measurement';
 const results: Array<{ arm: string; check: string; pass: boolean; detail: string; kind: Kind }> = [];
 function check(arm: string, name: string, pass: boolean, detail: string, kind: Kind = 'regression') {
@@ -128,6 +158,13 @@ function skip(arm: string, why: string) {
 const median = (xs: number[]) => {
   const s = [...xs].sort((a, b) => a - b);
   return s.length % 2 ? s[(s.length - 1) / 2] : (s[s.length / 2 - 1] + s[s.length / 2]) / 2;
+};
+const mean = (xs: number[]) => xs.reduce((a, b) => a + b, 0) / xs.length;
+/** Sample standard deviation (n−1). Returns 0 for fewer than two points — callers must not read that as "no noise". */
+const stdev = (xs: number[]) => {
+  if (xs.length < 2) return 0;
+  const m = mean(xs);
+  return Math.sqrt(xs.reduce((a, x) => a + (x - m) ** 2, 0) / (xs.length - 1));
 };
 const ms = (n: number) => `${n.toFixed(0)} ms`;
 /**
@@ -165,29 +202,72 @@ process.on('SIGINT', () => { try { restoreScanner(); } finally { process.exit(13
 // ── Server lifecycle ─────────────────────────────────────────────────────────
 
 let server: ReturnType<typeof spawn> | undefined;
+
+/** Best-effort, synchronous — for `process.on('exit')`, which cannot await. */
 function killServer() {
   if (!server) return;
   try { server.kill('SIGTERM'); } catch { /* already gone */ }
   server = undefined;
 }
-process.on('exit', killServer);
+/**
+ * The `reapOnExit` retrofit, on the probe that most needed it: this one now
+ * replaces `server` up to eight times per run, and the Round 221 leak it guards
+ * against (SIGPIPE from a closed stdout pipe, own shutdown never runs, the next
+ * probe grades the survivor) gets eight chances instead of two. A getter, not a
+ * child, for exactly that reason.
+ */
+reapOnExit(() => server);
+
+/**
+ * Stop the server AND wait until it is actually gone.
+ *
+ * ─── 2026-09-18, Daedalus (Round 228) — why the sync version is not enough ───
+ * `killServer` sends SIGTERM and returns immediately. With one generation per
+ * arm that was invisible: nothing started a server straight afterwards. The
+ * moment arms L and N began looping generations, the first run died with an
+ * uncaught `fetch failed / ECONNRESET` — because `startServer`'s readiness probe
+ * is a GET that anything listening can satisfy, and what satisfied it was the
+ * PREVIOUS generation, still winding down. `timeBrowse` then fetched against a
+ * socket being torn down.
+ *
+ * That is the same defect this project has now found in three different
+ * costumes: Round 222's bind test (no address a test binds proves who else is
+ * listening), Round 227's arm-P guard (a guard on the variable that names the
+ * target is not a guard on the handle that was opened), and now a readiness
+ * check that cannot tell WHICH server answered. The general form: an existence
+ * question asked of a shared resource does not answer an identity question.
+ *
+ * The fix makes the question unambiguous rather than cleverer — wait for the
+ * child to exit, then wait for the port to go quiet, so the only thing that can
+ * answer the next readiness probe is the process we just spawned.
+ */
+async function stopServerAndWait(): Promise<void> {
+  killServer();
+  // `waitUntilPortIsQuiet`, not a bind test: the library's own docstring records
+  // that a bind succeeds while the dying server is still answering, which is
+  // precisely how the previous generation gets to serve the next one's samples.
+  await waitUntilPortIsQuiet(PORT);
+}
 
 async function startServer(tag: string): Promise<void> {
-  const logFd = fs.openSync(path.join(SCRATCH, `server-${tag}.log`), 'a');
-  server = spawn('npx', ['tsx', 'src/index.ts'], {
+  // One log file per generation, opened with 'w'. The readiness check below
+  // greps this file for the boot banner, and `banner in the file` is only an
+  // identity signal if the file cannot hold a PREVIOUS generation's banner.
+  // Appending across generations would make generation 1 ready the instant it
+  // spawned, on generation 0's evidence.
+  const logPath = path.join(SCRATCH, `server-${tag}.log`);
+  const logFd = fs.openSync(logPath, 'w');
+  const child = spawn('npx', ['tsx', 'src/index.ts'], {
     cwd: path.join(REPO, 'packages/server'),
     env: { ...process.env, KLATCH_DB: DB },
     stdio: ['ignore', logFd, logFd],
   });
-  const deadline = Date.now() + 60_000;
-  while (Date.now() < deadline) {
-    if (server.exitCode !== null) {
-      throw new Error(`server exited early (code ${server.exitCode}) — see ${path.join(SCRATCH, `server-${tag}.log`)}`);
-    }
-    try { if ((await fetch(`${BASE}/api/channels`)).ok) return; } catch { /* not yet */ }
-    await new Promise((r) => setTimeout(r, 250));
-  }
-  throw new Error(`server did not listen on ${PORT} in 60 s — see ${path.join(SCRATCH, `server-${tag}.log`)}`);
+  server = child;
+  // Two sides from different places — the banner in the file THIS child was
+  // handed as stdout, plus an HTTP 200. A stranger can supply the second; only
+  // this child can supply the first. The bare GET this used to do is what let a
+  // dying predecessor answer for its successor (Round 228).
+  await waitUntilOurServerIsUp(child, logPath, PORT);
 }
 
 /**
@@ -213,6 +293,47 @@ async function timeBrowse(n: number): Promise<{ samples: number[]; bytes: number
   return { samples, bytes, sessions, projects, capped };
 }
 
+type BrowseRun = Awaited<ReturnType<typeof timeBrowse>>;
+type ColdSeries = {
+  /** The last generation's run, used for corpus-shape checks (sessions, bytes, capped). */
+  last: BrowseRun;
+  /** Every generation, in order. `[0]` is the discarded page-cache warmup. */
+  generations: BrowseRun[];
+  /** The measured cold samples — `samples[0]` of each generation after the warmup. */
+  colds: number[];
+  /** The warmup generation's cold sample, reported but not measured against. */
+  warmupCold: number;
+  /** Warm medians, pooled across the measured generations. */
+  warms: number[];
+};
+
+/**
+ * Run the browse arm across several fresh server generations, one cold sample
+ * each. See COLD_GENERATIONS for why more than one, and why generation 0 is
+ * thrown away.
+ */
+async function coldSeries(tag: string): Promise<ColdSeries> {
+  const generations: BrowseRun[] = [];
+  for (let g = 0; g < COLD_GENERATIONS; g++) {
+    await startServer(`${tag}-g${g}`);
+    try {
+      generations.push(await timeBrowse(SAMPLES));
+    } finally {
+      // Awaited, not fire-and-forget — see stopServerAndWait. A generation that
+      // overlaps its predecessor measures neither.
+      await stopServerAndWait();
+    }
+  }
+  const measured = generations.slice(1);
+  return {
+    last: generations[generations.length - 1],
+    generations,
+    colds: measured.map((r) => r.samples[0]),
+    warmupCold: generations[0].samples[0],
+    warms: measured.map((r) => median(r.samples.slice(1))),
+  };
+}
+
 // `haveServer` until 2026-09-17 — the opposite of what it holds. Same inverted name as
 // probe-turncount-live-http, where it produced the backwards skip copy Theseus caught in
 // Round 223 §3. This probe's copy happened to be right; the name was still the hazard.
@@ -223,19 +344,17 @@ if (!canStartOurOwnServer) {
 
 // ── Arm L — real HTTP browse latency at the shipped cap ──────────────────────
 
-let L: Awaited<ReturnType<typeof timeBrowse>> | undefined;
+let LS: ColdSeries | undefined;
+let L: BrowseRun | undefined;
 if (!canStartOurOwnServer) {
   skip('L', 'needs a free port 3001; stop `npm run dev` and re-run');
 } else {
-  await startServer('capped');
-  L = await timeBrowse(SAMPLES);
-  killServer();
-  const cold = L.samples[0];
-  const warm = median(L.samples.slice(1));
+  LS = await coldSeries('capped');
+  L = LS.last;
   check('L', 'browse endpoint returns a non-empty corpus', L.sessions > 0,
     `${L.sessions} sessions across ${L.projects} projects, ${(L.bytes / 1e6).toFixed(2)} MB payload, ${L.capped} capped`);
   check('L', 'shipped-cap browse latency measured over real HTTP', true,
-    `first ${ms(cold)}, warm median ${ms(warm)} over ${SAMPLES - 1} samples [${L.samples.map((s) => s.toFixed(0)).join(', ')}]`,
+    `cold ${ms(mean(LS.colds))} ± ${ms(stdev(LS.colds))} over ${LS.colds.length} server generations [${LS.colds.map((s) => s.toFixed(0)).join(', ')}] (warmup generation ${ms(LS.warmupCold)}, discarded); warm median ${ms(median(LS.warms))}`,
     'measurement');
 }
 
@@ -269,7 +388,25 @@ function corpusFiles(): string[] {
 
 const files = corpusFiles();
 let mCapped = 0, mUncapped = 0, turnsCapped = 0, turnsUncapped = 0, cappedFiles = 0;
+let mCappedSamples: number[] = [], mUncappedSamples: number[] = [];
 let totalBytes = 0;
+
+/**
+ * ─── 2026-09-18, Daedalus (Round 228) — arm M needed the same repair as arm O ─
+ * Arm O's discriminator compares the FINGERPRINT delta against a noise band. I
+ * built that band out of the browse side's variance and left this side with a
+ * single pass per cap — so the round's first run compared a quantity with a
+ * measured σ against a quantity with an assumed one. Run 2 made the omission
+ * concrete: on a corpus where the cap fires on 0/538 files the true fingerprint
+ * delta is exactly zero (identical work at both caps, 2030 → 2030 turns), and
+ * arm M reported +44 ms. All of that 44 ms was this arm's own noise, unlabelled.
+ *
+ * Passes ALTERNATE capped/uncapped rather than running AAA then BBB: if the
+ * machine drifts during the arm — and over ~18 s of full-corpus scanning it
+ * does — a blocked design puts the whole drift into the difference, which is the
+ * one number the arm exists to report.
+ */
+const M_PASSES = 3;
 
 if (files.length === 0) {
   skip('M', 'no readable corpus under ~/.claude/projects');
@@ -280,25 +417,33 @@ if (files.length === 0) {
   // the same order the scanner uses.
   for (const f of files) { await extractSessionFingerprint(f, SHIPPED_CAP); }
 
-  let t0 = performance.now();
-  for (const f of files) {
-    const fp = await extractSessionFingerprint(f, SHIPPED_CAP);
-    turnsCapped += fp.turnCount;
-    if (fp.capped) cappedFiles++;
-  }
-  mCapped = performance.now() - t0;
+  for (let p = 0; p < M_PASSES; p++) {
+    let t0 = performance.now();
+    let turns = 0, capped = 0;
+    for (const f of files) {
+      const fp = await extractSessionFingerprint(f, SHIPPED_CAP);
+      turns += fp.turnCount;
+      if (fp.capped) capped++;
+    }
+    mCappedSamples.push(performance.now() - t0);
+    turnsCapped = turns; cappedFiles = capped;
 
-  t0 = performance.now();
-  for (const f of files) {
-    const fp = await extractSessionFingerprint(f, Number.MAX_SAFE_INTEGER);
-    turnsUncapped += fp.turnCount;
+    t0 = performance.now();
+    turns = 0;
+    for (const f of files) {
+      const fp = await extractSessionFingerprint(f, Number.MAX_SAFE_INTEGER);
+      turns += fp.turnCount;
+    }
+    mUncappedSamples.push(performance.now() - t0);
+    turnsUncapped = turns;
   }
-  mUncapped = performance.now() - t0;
+  mCapped = mean(mCappedSamples);
+  mUncapped = mean(mUncappedSamples);
 
   const pctFiles = (100 * cappedFiles / files.length).toFixed(1);
   const pctTurns = turnsUncapped ? (100 * turnsCapped / turnsUncapped).toFixed(1) : 'n/a';
   check('M', 'fingerprint sum reproduces at both caps', true,
-    `${files.length} files / ${(totalBytes / 1e6).toFixed(1)} MB — cap ${SHIPPED_CAP} ${ms(mCapped)}, uncapped ${ms(mUncapped)}, delta ${delta(mUncapped - mCapped)}`,
+    `${files.length} files / ${(totalBytes / 1e6).toFixed(1)} MB over ${M_PASSES} alternating passes — cap ${SHIPPED_CAP} ${ms(mCapped)} ± ${ms(stdev(mCappedSamples))} [${mCappedSamples.map((s) => s.toFixed(0)).join(', ')}], uncapped ${ms(mUncapped)} ± ${ms(stdev(mUncappedSamples))} [${mUncappedSamples.map((s) => s.toFixed(0)).join(', ')}], delta ${delta(mUncapped - mCapped)}`,
     'measurement');
   check('M', 'cap-bites and turn-retention figures reproduce', true,
     `cap fires on ${cappedFiles}/${files.length} files (${pctFiles}%); turns ${turnsCapped} → ${turnsUncapped} (${pctTurns}% retained, +${turnsUncapped - turnsCapped} recovered)`,
@@ -307,7 +452,8 @@ if (files.length === 0) {
 
 // ── Arm N — real HTTP browse latency with the cap removed ────────────────────
 
-let N: Awaited<ReturnType<typeof timeBrowse>> | undefined;
+let NS: ColdSeries | undefined;
+let N: BrowseRun | undefined;
 let patchApplied = false;
 if (!canStartOurOwnServer) {
   skip('N', 'needs a free port 3001');
@@ -322,8 +468,8 @@ if (!canStartOurOwnServer) {
       'probe-browse-latency-end-to-end');
     fs.writeFileSync(SCANNER, patched);
     patchApplied = true;
-    await startServer('uncapped');
-    N = await timeBrowse(SAMPLES);
+    NS = await coldSeries('uncapped');
+    N = NS.last;
   } finally {
     killServer();
     if (patchApplied) {
@@ -332,13 +478,11 @@ if (!canStartOurOwnServer) {
         ok ? `sha256 ${SCANNER_SHA.slice(0, 12)} matches` : 'RESTORE FAILED — run `git checkout packages/server/src/import/session-scanner.ts`');
     }
   }
-  if (N) {
-    const cold = N.samples[0];
-    const warm = median(N.samples.slice(1));
+  if (N && NS) {
     check('N', 'uncapped browse still returns the same corpus', L ? N.sessions === L.sessions : N.sessions > 0,
       `${N.sessions} sessions, ${(N.bytes / 1e6).toFixed(2)} MB payload, ${N.capped} capped (expect 0)`);
     check('N', 'uncapped browse latency measured over real HTTP', true,
-      `first ${ms(cold)}, warm median ${ms(warm)} over ${SAMPLES - 1} samples [${N.samples.map((s) => s.toFixed(0)).join(', ')}]`,
+      `cold ${ms(mean(NS.colds))} ± ${ms(stdev(NS.colds))} over ${NS.colds.length} server generations [${NS.colds.map((s) => s.toFixed(0)).join(', ')}] (warmup generation ${ms(NS.warmupCold)}, discarded); warm median ${ms(median(NS.warms))}`,
       'measurement');
   }
 }
@@ -378,31 +522,116 @@ if (!canStartOurOwnServer) {
 // by arms L and N in their own right; it is only this decomposition that must
 // not be fed it.
 
-if (!L || !N || files.length === 0) {
+// ─── 2026-09-18, Daedalus (Round 228) — the tolerance was the wrong yardstick ─
+// Theseus left this call here (Round 227 §3) and he framed it exactly right: the
+// condition belongs on whether the fingerprint delta is DISTINGUISHABLE FROM
+// COLD-RUN VARIANCE, not on `capped === 0`. Two things follow, and the second is
+// the one that mattered.
+//
+// 1. `capped === 0` — my own Round 226 proposal — is the wrong VARIABLE, not
+//    just a coarse one. It is a proxy for "the fingerprint delta is small", and
+//    a corpus can cap a handful of files and still produce a delta under the
+//    noise floor. Condition on the quantity you mean.
+//
+// 2. `errPct < 20` was not a tolerance at all on a corpus where the cap does not
+//    bite. Rearranged, `predicted − coldN` is exactly `fingerprintDelta −
+//    measuredDelta`, so with a fingerprint delta of ~0 the check reduces to
+//    "cold-run noise is under 20% of a cold browse" — a statement about this
+//    machine's disk, tested against a threshold picked for a different question.
+//    It passed 7.3% and 0.7% and very nearly failed at 16.9% on three runs that
+//    all said the same thing.
+//
+// So: one unit for everything. The probe now takes COLD_GENERATIONS − 1 cold
+// samples per configuration, which buys a standard error; the band is
+// COLD_BAND_SIGMAS × SE(difference of the two means). If the fingerprint delta
+// does not clear that band, the experiment CANNOT DISCRIMINATE and the arm is
+// hard-skipped — OPEN, NOT ESTABLISHED, never PASS. That is Round 224's own
+// taxonomy applied without a special case: arm O's discriminating check is a
+// regression check, a skip standing in for a regression check stays hard, and a
+// probe that ran but established less than it set out to exits 3, not 0.
+//
+// Deliberately NOT done: widening the tolerance, and skipping on `capped === 0`.
+// The first greens a red by loosening it, which is the most tempting wrong move
+// on this arm. The second conditions on a proxy.
+//
+// The honest limit, stated rather than smoothed: three samples is a poor σ. It
+// is poor in the SAFE direction — a noisy corpus widens the band and pushes the
+// arm toward NOT ESTABLISHED rather than toward a false PASS — but it is not a
+// confidence interval anyone should quote. Raise COLD_GENERATIONS if a run needs
+// to defend a close call; each one costs a server spawn plus one cold browse.
+
+if (!L || !N || !LS || !NS || files.length === 0) {
   skip('O', 'needs arms L, M and N to have run');
 } else {
   // Cold, deliberately — see the note above. Warm is carried alongside so the
   // contrast stays visible in the output rather than living only in a comment.
-  const coldL = L.samples[0];
-  const coldN = N.samples[0];
-  const warmL = median(L.samples.slice(1));
-  const warmN = median(N.samples.slice(1));
+  const coldL = mean(LS.colds);
+  const coldN = mean(NS.colds);
+  const warmL = median(LS.warms);
+  const warmN = median(NS.warms);
   const remainder = coldL - mCapped;
-  const predicted = coldL + (mUncapped - mCapped);
+  const fingerprintDelta = mUncapped - mCapped;
   const measuredDelta = coldN - coldL;
-  const errPct = Math.abs(predicted - coldN) / coldN * 100;
+
+  // Pooled σ over both configurations — they are the same measurement under two
+  // caps, so their run-to-run noise is one population. SE of the DIFFERENCE of
+  // two means of k samples each is σ·sqrt(2/k).
+  const k = Math.min(LS.colds.length, NS.colds.length);
+  const sigmaBrowse = Math.sqrt((stdev(LS.colds) ** 2 + stdev(NS.colds) ** 2) / 2);
+  const seBrowse = sigmaBrowse * Math.sqrt(2 / k);
+
+  // …and the same for arm M. Arm O compares TWO deltas, each measured on its own
+  // instrument; a band built from one of them is not a band for their
+  // difference. See the M_PASSES note.
+  const kM = Math.min(mCappedSamples.length, mUncappedSamples.length);
+  const sigmaFp = Math.sqrt((stdev(mCappedSamples) ** 2 + stdev(mUncappedSamples) ** 2) / 2);
+  const seFp = kM >= 2 ? sigmaFp * Math.sqrt(2 / kM) : 0;
+
+  const se = Math.sqrt(seBrowse ** 2 + seFp ** 2);
+  const band = COLD_BAND_SIGMAS * se;
 
   console.log('');
-  check('O', 'fingerprinting is attributed at the surface it is described at', true,
-    `cold browse ${ms(coldL)} = fingerprint ${ms(mCapped)} (${(100 * mCapped / coldL).toFixed(0)}%) + remainder ${ms(remainder)} (${(100 * remainder / coldL).toFixed(0)}%)`,
+  check('O', 'noise floor measured on both instruments, not assumed', true,
+    `browse σ ${ms(sigmaBrowse)} over ${k} generations → SE ${ms(seBrowse)}; fingerprint σ ${ms(sigmaFp)} over ${kM} passes → SE ${ms(seFp)}; combined SE(Δ−Δ) ${ms(se)}, band ±${ms(band)} at ${COLD_BAND_SIGMAS}σ`,
     'measurement');
-  check('O', 'endpoint delta matches the fingerprint delta', errPct < 20,
-    `predicted ${ms(predicted)} vs measured ${ms(coldN)} (${errPct.toFixed(1)}% off); cold endpoint moved ${delta(measuredDelta)} for a fingerprint delta of ${delta(mUncapped - mCapped)}`);
+
+  // ─── 2026-09-18, Daedalus (Round 228) — the hardcoded `pass: true` Theseus
+  // named and did not remove. He wrote it down in Round 227: "a remainder below
+  // zero is the decomposition reporting that it does not hold — printed as a
+  // PASS, because that line is hardcoded pass: true." He repaired the SAMPLE the
+  // line was fed and left the line's verdict alone, and run 2 of this round
+  // printed `remainder −89 ms (−3%)` as a PASS on the repaired cold sample.
+  //
+  // It is still not a hard check, and the reason is the whole point of this
+  // round rather than an exception to it: `remainder` is a difference between
+  // two DIFFERENT instruments — an HTTP endpoint and this file's own in-process
+  // loop over the same corpus — so a small negative is within their combined
+  // noise and reddening on it would be the arm-O mistake one line up. What the
+  // line owes the reader is the band, so a −89 ms remainder can be read as
+  // "indistinguishable from zero" or "the decomposition is false" on evidence
+  // instead of on the sign alone.
+  const remainderBand = COLD_BAND_SIGMAS * Math.sqrt(seBrowse ** 2 + (kM >= 2 ? (sigmaFp / Math.sqrt(kM)) ** 2 : 0));
+  const remainderVerdict = remainder >= 0 ? 'positive'
+    : Math.abs(remainder) <= remainderBand ? 'negative but within the two instruments\' combined noise — indistinguishable from zero'
+    : 'NEGATIVE BEYOND NOISE — the decomposition does not hold as stated; the endpoint is measurably faster than this file\'s own fingerprint sum over the same corpus';
+  check('O', 'fingerprinting is attributed at the surface it is described at', true,
+    `cold browse ${ms(coldL)} = fingerprint ${ms(mCapped)} (${(100 * mCapped / coldL).toFixed(0)}%) + remainder ${ms(remainder)} (${(100 * remainder / coldL).toFixed(0)}%) — ${remainderVerdict} (±${ms(remainderBand)} at ${COLD_BAND_SIGMAS}σ)`,
+    'measurement');
+
+  if (Math.abs(fingerprintDelta) <= band) {
+    // NOT a pass, and not a soft skip. See the note above.
+    skip('O', `endpoint delta vs fingerprint delta — OPEN, NOT ESTABLISHED: the fingerprint delta ${delta(fingerprintDelta)} does not clear this corpus's cold-run noise band of ±${ms(band)}, so agreement and disagreement are indistinguishable here. Needs a corpus where the cap bites (cap fires on ${cappedFiles}/${files.length} files) or more generations (COLD_GENERATIONS=${COLD_GENERATIONS}).`);
+  } else {
+    const residual = Math.abs(fingerprintDelta - measuredDelta);
+    check('O', 'endpoint delta matches the fingerprint delta', residual <= band,
+      `cold endpoint moved ${delta(measuredDelta)} for a fingerprint delta of ${delta(fingerprintDelta)} — residual ${ms(residual)} against a ${COLD_BAND_SIGMAS}σ band of ±${ms(band)} (predicted ${ms(coldL + fingerprintDelta)} vs measured ${ms(coldN)})`);
+  }
+
   check('O', 'relative regression at the user-facing surface', true,
-    `${ms(coldL)} → ${ms(coldN)} = ${deltaPct(100 * measuredDelta / coldL)} of a cold browse (fingerprint-only framing: ${deltaPct(100 * (mUncapped - mCapped) / mCapped)} of the scan)`,
+    `${ms(coldL)} → ${ms(coldN)} = ${deltaPct(100 * measuredDelta / coldL)} of a cold browse (fingerprint-only framing: ${deltaPct(100 * fingerprintDelta / mCapped)} of the scan)`,
     'measurement');
   check('O', 'the warm path is inert to the cap, and is reported as its own number', true,
-    `warm ${ms(warmL)} → ${ms(warmN)} = ${delta(warmN - warmL)} for a fingerprint delta of ${delta(mUncapped - mCapped)} — the steady state the fingerprint cache bought, not a decomposable browse`,
+    `warm ${ms(warmL)} → ${ms(warmN)} = ${delta(warmN - warmL)} for a fingerprint delta of ${delta(fingerprintDelta)} — the steady state the fingerprint cache bought, not a decomposable browse`,
     'measurement');
 }
 

@@ -200,8 +200,61 @@ Agents working on this repo use this file as the async handoff protocol.
 
 ### Daedalus (architecture & implementation)
 - **Branch:** `claude/daedalus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/daedalus`; merges land on `main`)
-- **Status:** working — duty cycle armed and confirmed back after the 8/11 reboot (`launchctl`: `daedalus-{START,WORK,STOP}` loaded).
-- **Updated:** 2026-09-17 ~17:45 PT (STOP fire)
+- **Status:** working — duty cycle armed; `launchctl list` confirms `com.klatch.daedalus-{START,WORK,STOP}` all loaded (verified 2026-09-18).
+- **Updated:** 2026-09-18 ~10:15 PT (START fire)
+- **2026-09-18 (START fire) — Amber reboot handoff written and pushed; Theseus's arm-P pollution purged; Round 228: the arm-O skip condition he left with me is built, and building it found a readiness check that could not tell which server answered.**
+  - **Janus's gate item done.** `docs/handoff-daedalus-2026-09-18.md`, commit `8c2bde79`, on `origin/main`
+    (confirmed by `git ls-tree origin/main` after a re-fetch). Written for a cold start, with a
+    who-owes-what table both directions, a 6-item "deliberately unresolved — do not fix these" list
+    (each with the reason the friendlier option was *rejected*), a counterparty section recording
+    what I most recently got **wrong** with each of six counterparties, and what is in flight.
+    **Verification limit stated rather than glossed:** filename matches Janus's documented matcher
+    and the file is on `origin/main`; **I could not run the gate itself** (it lives outside this
+    worktree), so the counter flipping is not verified by me.
+  - **Theseus's Round 227 arm-P cleanup, my side.** His table was exact: 2001 channels / 2000
+    `probe-seed-%` here. `VACUUM INTO` backup, deletes in FK order in one transaction,
+    `wal_checkpoint(TRUNCATE)`. After: **1 channel, 0 seed, integrity ok**, and **zero new rows
+    across four probe runs** — I verified his `db.name` fix was actually in the file first.
+  - **Round 228 — the tolerance was not a tolerance.** `predicted − coldN` is identically
+    `fingerprintDelta − measuredDelta`, so on a corpus where the cap does not bite `errPct < 20`
+    reduces to *"cold-run noise is under 20% of a cold browse"* — a statement about the disk,
+    tested against a threshold picked for a different question. **Built:** `COLD_GENERATIONS = 4`
+    per HTTP arm (generation 0 a discarded page-cache warmup), band `2·√(SE_browse² + SE_fp²)`,
+    and **arm O hard-skips `OPEN, NOT ESTABLISHED` when `|fingerprintDelta| ≤ band`**. Percentage
+    gone; same unit both sides. **Rejected `capped === 0`** — my own Round 226 proposal — as the
+    wrong *variable*, a proxy for "the delta is small" that a lightly-capping corpus defeats.
+  - **My own second-order gap, found by running it.** The first complete run built the band from
+    the browse side alone and left arm M at one pass per cap. The corpus made it impossible to
+    miss — cap fires 0/538, turns 2030 → 2030, so the true delta is *exactly* zero — and arm M
+    read **+44 ms against a ±45 ms band, failing to clear by 1 ms.** Three *alternating* passes
+    now: run 3 **−2 ms**, run 4 **+7 ms** against the same true zero.
+  - **THE OTHER FINDING: the readiness check could not tell which server answered.** The first
+    multi-generation run died on an uncaught `ECONNRESET` — `killServer()` sent SIGTERM and
+    returned, and `startServer`'s bare `GET /api/channels` was satisfied by the **previous
+    generation still winding down**. Third costume of one defect: Round 222's bind test (which
+    process is listening), Round 227's `DB.includes('.testdata')` (which database was opened),
+    now this. **An existence question asked of a shared resource does not answer an identity
+    question.** The repair already existed — `waitUntilPortIsQuiet` + `waitUntilOurServerIsUp`,
+    Theseus's own Round 222 module — and this probe had never been retrofitted. It is now.
+  - **`reapOnExit` landed** on the probe that most needed it (eight server generations a run, not
+    two). **Not** retrofitted across the other 21 — said so to Theseus plainly rather than listing
+    it a fourth time as a plan: next fire or dropped.
+  - **Deliberately NOT done:** made the negative-remainder line hard. Theseus named that hardcoded
+    `pass: true` and repaired only the sample feeding it; run 2 printed `remainder −89 ms` as a
+    PASS. Reddening on the sign would be the arm-O mistake one line up — it differences two
+    *different instruments*. It carries the band and an explicit verdict string instead; offered
+    back to him if he wants it hard.
+  - **Measured this fire:** probe **exit 3 · INCONCLUSIVE · 4 established · 1 arm OPEN** ×2 runs
+    (the intended outcome — the cap fires on 0/533 files here); strict typecheck **0 errors**;
+    server **119 files · 1884 passed · 1 skipped**; client **25 files · 324 passed · 13 skipped**;
+    `git status --porcelain packages/` **empty before and after all four runs including the two
+    that crashed**; `session-scanner.ts` sha `e2c7445e12a5` unchanged; port 3001 free after every
+    run. **One file changed under `scripts/`, zero under `packages/`.** Zero model calls.
+  - **Next:** `reapOnExit` across the remaining probes (or drop it); the arm-P monotonicity
+    assertion Theseus raised in his §5.2, unassigned. **Still parked on xian: the backfill dry
+    run** (memo of 2026-09-09, unanswered; rollup's top 🔴).
+  - Writeup: `docs/research/round228-a-tolerance-is-not-a-noise-floor-2026-09-18.md`; memo
+    `docs/mail/daedalus-to-theseus-cc-xian-janus-argus-calliope-iris-your-skip-item-is-built-and-the-readiness-check-could-not-tell-which-server-answered-2026-09-18.md`.
 - **2026-09-17 (STOP fire) — Round 226: Theseus's Round 225 red closed. The constant reader now refuses to guess the unit, and his probe is 22/22.**
   - **The defect, reproduced before touching anything:** `readNumericConstant` returned `50` from
     `const FINGERPRINT_LINE_CAP = 50 * 1000` — a silent prefix, 1000× small, the 2026-09-04
