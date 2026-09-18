@@ -60,7 +60,7 @@ import os from 'os';
 import readline from 'readline';
 import { spawn, execFileSync } from 'child_process';
 import { waitUntilPortIsQuiet } from './lib/probe-server-ownership.mts';
-import { readNumericConstant } from './lib/probe-source-constants.mts';
+import { readLeadingFactor } from './lib/probe-source-constants.mts';
 
 const REPO = path.resolve(import.meta.dirname, '..');
 const SCRATCH = path.join(REPO, '.testdata', 'import-large-session');
@@ -246,7 +246,9 @@ const importSrc = fs.readFileSync(IMPORT_TS, 'utf8');
 // and report a boundary that is no longer the boundary. That policy is now in the shared reader,
 // which also tolerates a numeric separator — the reformatting that killed
 // probe-browse-latency-end-to-end outright on 2026-09-04.
-const MAX_IMPORT_SIZE = readNumericConstant(importSrc, 'MAX_IMPORT_SIZE', 'probe-import-large-session') * 1024 * 1024;
+// readLeadingFactor, not readNumericConstant: this line multiplies the factor back up itself, so
+// it must throw — not return 52428800 — if the constant is ever respelled as whole bytes.
+const MAX_IMPORT_SIZE = readLeadingFactor(importSrc, 'MAX_IMPORT_SIZE', 'probe-import-large-session') * 1024 * 1024;
 check('A', 'MAX_IMPORT_SIZE read from source', true,
   `${mb(MAX_IMPORT_SIZE)} (routes/import.ts, not hardcoded in this probe)`);
 

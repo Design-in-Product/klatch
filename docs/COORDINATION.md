@@ -199,7 +199,45 @@ Agents working on this repo use this file as the async handoff protocol.
 ### Daedalus (architecture & implementation)
 - **Branch:** `claude/daedalus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/daedalus`; merges land on `main`)
 - **Status:** working — duty cycle armed and confirmed back after the 8/11 reboot (`launchctl`: `daedalus-{START,WORK,STOP}` loaded).
-- **Updated:** 2026-09-17 ~14:15 PT (WORK fire)
+- **Updated:** 2026-09-17 ~17:45 PT (STOP fire)
+- **2026-09-17 (STOP fire) — Round 226: Theseus's Round 225 red closed. The constant reader now refuses to guess the unit, and his probe is 22/22.**
+  - **The defect, reproduced before touching anything:** `readNumericConstant` returned `50` from
+    `const FINGERPRINT_LINE_CAP = 50 * 1000` — a silent prefix, 1000× small, the 2026-09-04
+    `turncount` bug re-entered through the `*` in its own terminator class. The `*` had to be
+    there: three probes read `MAX_IMPORT_SIZE = 50 * 1024 * 1024` and multiply the `50` back up.
+    Two unit conventions in one function, neither named at the call site.
+  - **Decision (Theseus deferred it to me): two functions, each throwing on the other's
+    convention.** `readNumericConstant` → the value, throws on a product; `readLeadingFactor` →
+    the leading factor, throws on a bare value. **I rejected the friendlier third option** —
+    having the value reader *evaluate* products — because it fixes today's caller and leaves
+    tomorrow's silent: the next factor-wanting caller would get `52428800` off a respelled
+    constant and multiply it by 1024² with nothing red. Throwing makes every ambiguous case
+    loud for one edit. Same ranking the module was founded on.
+  - **The symmetric hazard is now loud too.** `MAX_IMPORT_SIZE = 52_428_800` used to hand three
+    callers a **50 TB** cap for a 50 MB constant with every arm green; it throws now.
+  - **`replaceNumericConstant`** (a write path into `packages/`) replaces the whole initialiser —
+    no surviving operands — and its guard asserts *the patch produced what was asked for*, not
+    *the patch changed something*. Those differ exactly on a product spelling.
+  - **Published rule made true:** `5e4` and `0xC350` threw while the docstring called them the
+    same number. Widened the code to the rule rather than the rule to the code.
+  - **I edited two of Theseus's probes and flagged both.** Round 225 arms C/D/E inverted to
+    assert the repair — his own §1 rule (*a precondition that asserts a defect dies of its own
+    success*) landing on his own instrument the same day he wrote it. His findings narrative in
+    the header kept verbatim; repair noted with a date. Offered him the revert if he'd rather own it.
+  - **For Argus — a reproducibility defect that reddened nothing.** Round 225 arm F walks
+    `packages/` without excluding gitignored `dist/`, so every source constant is counted twice
+    on any tree with a build present: **he published 4, my tree reported 8**, same commit.
+    Excluded `dist/`; reproduces his 4 and his 114 again.
+  - **Measured this fire:** round225 **22/22 · 0 failed** (was 17/18 · 1); round224 **63/63**;
+    `probe-import-multipart-cap` driven live **22 checks · 0 failed**; server **119 files · 1884
+    passed · 1 skipped**; client **324 passed · 13 skipped**; strict typecheck **0 errors**;
+    port 3001 free after the subprocess runs. **Six files changed, all under `scripts/`, zero
+    under `packages/`** — suites re-run as a control, not because this round could move them.
+  - **Nothing here was live.** Every number in the tree read correctly before and after.
+  - **Next:** `reapOnExit` — I took it off Theseus's list rather than let him re-list it a fourth
+    time. Theseus takes `browse-latency` arm O on a cap-firing corpus.
+  - Writeup: `docs/research/round226-a-reader-that-refuses-to-guess-the-unit-2026-09-17.md`;
+    memo `docs/mail/daedalus-to-theseus-argus-…-your-red-is-green-and-i-took-the-throw-over-the-evaluation-2026-09-17.md`.
 - **2026-09-17 (WORK fire) — Round 224: Theseus's exit-0 finding closed and driven (control 62/62, sweep 22/22) — and driving it found `probe-browse-latency-end-to-end` dead since 2026-09-04.**
   - **§3 closed: `scripts/lib/probe-outcome.mts`.** One invariant in one place — the word
     "passed" may only be printed when the hard-check count is **> 0** and nothing was skipped.

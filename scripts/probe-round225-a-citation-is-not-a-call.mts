@@ -66,6 +66,14 @@
  * and reads correctly. The claim is about what the next reformatting does, which is exactly the
  * claim Round 224 made and was right about.
  *
+ * **Repaired in Round 226 (Daedalus, same day).** The table above is the record of what this
+ * round found, kept as written. What it describes no longer holds: `readNumericConstant` now
+ * throws on both product spellings instead of returning `50`, `5e4` and `0xC350` read as `50000`,
+ * and the factor convention moved to a second function, `readLeadingFactor`, which throws on a
+ * bare value so the symmetric reformatting is loud too. Arms D and E below were inverted to
+ * assert the repair rather than the defect — per this round's own §1 rule, a precondition that
+ * asserts a defect still exists dies of its own success.
+ *
  * ## What this probe does not do
  *
  * No server, no port, no network, no model call. Every spelling is spliced into an in-memory copy
@@ -77,7 +85,7 @@
 import fs from 'fs';
 import path from 'path';
 import { execFileSync } from 'child_process';
-import { readNumericConstant, replaceNumericConstant } from './lib/probe-source-constants.mts';
+import { readNumericConstant, readLeadingFactor, replaceNumericConstant } from './lib/probe-source-constants.mts';
 import { summariseAndExit, type ProbeVerdict } from './lib/probe-outcome.mts';
 
 const REPO = path.resolve(import.meta.dirname, '..');
@@ -258,44 +266,59 @@ check('C', 'the reader never returns a prefix — its own stated property, uncon
       silentlyWrong.map(([s, , g]) => `${s} -> ${g} (true value ${TRUE_VALUE})`).join(', ') +
       ' — latent today, since the shipped spelling is 50_000; the property is stated without a caveat');
 
-open('C', 'the published rule is broader than the code that implements it',
-  `docstring: "50000, 50_000 and 5e4 are the same number" — 5e4 throws. ` +
-  `Loud, so not dangerous; but the rule is what the other agents will build the next reader from.`);
+// Was: open('C', 'the published rule is broader than the code that implements it') — the
+// docstring said "50000, 50_000 and 5e4 are the same number" and 5e4 threw. Round 226 made the
+// code match the rule rather than narrowing the rule, so this is now a check.
+check('C', 'the published rule and the code that implements it agree',
+  read('5e4') === TRUE_VALUE && read('0xC350') === TRUE_VALUE,
+  `5e4 -> ${read('5e4')}, 0xC350 -> ${read('0xC350')}, both ${TRUE_VALUE} — ` +
+  `the rule is what the other agents will build the next reader from`);
 
 // ── Arm D — a factor is not a value ──────────────────────────────────────────
 
 console.log('\n── arm D: the unit convention lives in the callers, not the reader ──');
 
+// Round 226 (Daedalus) split this function in two. These arms were written to assert the defect
+// was present; per this round's own §1 rule — a precondition that asserts a defect still exists
+// dies of its own success — they are inverted here to assert the repair instead. Green until
+// someone merges the two conventions back into one function.
 const importSrc = fs.readFileSync(IMPORT_TS, 'utf8');
 const maxImportDecl = importSrc.match(/const MAX_IMPORT_SIZE\s*=\s*[^;]+;/)?.[0] ?? '';
-const maxImportFactor = readNumericConstant(importSrc, 'MAX_IMPORT_SIZE', 'probe-round225');
+const maxImportFactor = readLeadingFactor(importSrc, 'MAX_IMPORT_SIZE', 'probe-round225');
 
 measure('D', 'the shipped MAX_IMPORT_SIZE declaration', JSON.stringify(maxImportDecl));
-check('D', 'the reader returns the leading factor, and the callers multiply it back up',
+check('D', 'the factor reader returns the leading factor, and the callers multiply it back up',
   maxImportFactor === 50 && maxImportFactor * 1024 * 1024 === 50 * 1024 * 1024,
-  `readNumericConstant -> ${maxImportFactor}; caller computes ${maxImportFactor * 1024 * 1024} bytes — correct`);
+  `readLeadingFactor -> ${maxImportFactor}; caller computes ${maxImportFactor * 1024 * 1024} bytes — correct`);
 
 const capAsProduct = read('50 * 1000');
-check('D', 'the same call on a whole-value constant spelled as a product is silently wrong',
-  capAsProduct === 50,
-  `FINGERPRINT_LINE_CAP = 50 * 1000 -> ${capAsProduct}, not ${TRUE_VALUE} — ` +
-  `no throw, no warning; this is the 2026-09-04 turncount failure exactly`);
+check('D', 'the value reader no longer returns a prefix from a product — it throws',
+  capAsProduct === 'THROW',
+  `FINGERPRINT_LINE_CAP = 50 * 1000 -> ${capAsProduct}; before Round 226 this returned 50, ` +
+  `not ${TRUE_VALUE} — no throw, no warning, the 2026-09-04 turncount failure exactly`);
 
-open('D', 'one function, two unit conventions, and the call site records neither',
-  `readNumericConstant(src,'MAX_IMPORT_SIZE') -> 50 is right and ` +
-  `readNumericConstant(src,'FINGERPRINT_LINE_CAP') -> 50 would be 1000x wrong. ` +
-  `The "*" terminator that makes the first work is what lets the second through.`);
+check('D', 'the two unit conventions are now named at the call site, not guessed by the reader',
+  (() => {
+    try { readNumericConstant(importSrc, 'MAX_IMPORT_SIZE', 'probe-round225'); return false; } catch { return true; }
+  })(),
+  `readNumericConstant on a product throws and names readLeadingFactor; ` +
+  `readLeadingFactor on a bare value throws and names readNumericConstant`);
 
-// If the MB constant were ever spelled as a whole number, the three callers' own arithmetic
-// is what goes wrong — so compute it the way they do rather than describing it.
-const asWholeBytes = readNumericConstant(
-  importSrc.replace(/const MAX_IMPORT_SIZE\s*=\s*[^;]+;/, 'const MAX_IMPORT_SIZE = 52_428_800;'),
-  'MAX_IMPORT_SIZE', 'probe-round225');
-const callersWouldCompute = asWholeBytes * 1024 * 1024;
-open('D', 'and the failure is symmetric — a whole-number MB spelling breaks the other three',
-  `MAX_IMPORT_SIZE = 52_428_800 reads as ${asWholeBytes}; the three callers compute ` +
-  `${callersWouldCompute} bytes (${Math.round(callersWouldCompute / 1024 / 1024 / 1024 / 1024)} TB) ` +
-  `for a 50 MB cap, and arm A of each still passes`);
+// The symmetric direction: if the MB constant were ever spelled as a whole number, the three
+// callers' own arithmetic is what went wrong. Computed the way they do, not described.
+const wholeBytesSrc = importSrc.replace(/const MAX_IMPORT_SIZE\s*=\s*[^;]+;/, 'const MAX_IMPORT_SIZE = 52_428_800;');
+let symmetricOutcome: string;
+try {
+  const f = readLeadingFactor(wholeBytesSrc, 'MAX_IMPORT_SIZE', 'probe-round225');
+  symmetricOutcome = `returned ${f}, so the callers would compute ${f * 1024 * 1024} bytes`;
+} catch {
+  symmetricOutcome = 'THROW';
+}
+check('D', 'and the symmetric reformatting is loud too — a whole-number MB spelling throws',
+  symmetricOutcome === 'THROW',
+  `MAX_IMPORT_SIZE = 52_428_800 through readLeadingFactor -> ${symmetricOutcome}; ` +
+  `before Round 226 it read as 52428800 and the three callers computed a 50 TB cap ` +
+  `for a 50 MB constant, with arm A of each still passing`);
 
 // ── Arm E — the patcher writes a partial substitution and calls it a change ──
 
@@ -317,12 +340,21 @@ check('E', 'the patcher handles the shipped separator spelling — Round 224\'s 
 
 const patchedProduct = patch('50 * 1000');
 const partial = typeof patchedProduct === 'string' && /\* 1000/.test(patchedProduct);
-open('E', 'on a product spelling the patch is partial and the no-op guard passes it',
-  `${patchedProduct} — the multipliers survive. The guard asserts the patch changed something, ` +
-  `not that it produced what was asked for, and this is a write path into packages/.`);
-check('E', 'the partial patch is at least still syntactically a declaration',
-  !partial || /^const FINGERPRINT_LINE_CAP = Number\.MAX_SAFE_INTEGER \* 1000;$/.test(patchedProduct as string),
-  String(patchedProduct));
+check('E', 'on a product spelling the patch is no longer partial — no operands survive',
+  !partial && patchedProduct === 'const FINGERPRINT_LINE_CAP = Number.MAX_SAFE_INTEGER;',
+  `${patchedProduct} — before Round 226 this wrote ` +
+  `"const FINGERPRINT_LINE_CAP = Number.MAX_SAFE_INTEGER * 1000;" and the no-op guard passed it, ` +
+  `because that guard asserted the patch changed something rather than that it produced what ` +
+  `was asked for. This is a write path into packages/.`);
+check('E', 'and the guard now verifies the result against the request, not merely against the input',
+  (() => {
+    // A substitution that cannot come out as asked must throw rather than write.
+    try {
+      replaceNumericConstant('const K = not_a_number;', 'K', 'Number.MAX_SAFE_INTEGER', 'probe-round225');
+      return false;
+    } catch { return true; }
+  })(),
+  'an unparseable initialiser is refused before any write, not rewritten');
 
 // ── Arm F — the population of source-scraping readers ────────────────────────
 
@@ -350,7 +382,12 @@ measure('F', `probes reading constants through the shared module — ${importers
   importers.map((f) => path.basename(f, '.mts')).sort().join(', '));
 
 // Which shipped constants are spelled with a separator today — the live surface of the rule.
-const pkgFiles = walk(PACKAGES).filter((f) => !/__tests__/.test(f));
+// `dist/` excluded (Round 226): it is gitignored build output, so every source constant also
+// appears there as a compiled duplicate. This arm published 4 on a tree with no build present and
+// reports 8 on one where someone has run `npm run build` — a count that moves with the machine
+// rather than with the code. Source is the shipped surface; the compiled copy is not a second
+// place a reader could go wrong.
+const pkgFiles = walk(PACKAGES).filter((f) => !/__tests__/.test(f) && !/[/\\]dist[/\\]/.test(f));
 const separatorConsts: string[] = [];
 for (const f of pkgFiles) {
   for (const m of fs.readFileSync(f, 'utf8').matchAll(/const\s+([A-Z][A-Z0-9_]*)\s*=\s*(\d[\d_]*\d)\s*[;,)]/g)) {

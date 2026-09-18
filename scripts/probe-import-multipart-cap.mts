@@ -37,7 +37,7 @@ import path from 'path';
 import net from 'net';
 import { spawn, execFileSync } from 'child_process';
 import { waitUntilPortIsQuiet } from './lib/probe-server-ownership.mts';
-import { readNumericConstant } from './lib/probe-source-constants.mts';
+import { readLeadingFactor } from './lib/probe-source-constants.mts';
 
 const REPO = path.resolve(import.meta.dirname, '..');
 const SCRATCH = path.join(REPO, '.testdata', 'import-multipart-cap');
@@ -234,7 +234,9 @@ console.log('── arm A: cap position in the source, per multipart site ──
 const IMPORT_TS = path.join(REPO, 'packages/server/src/routes/import.ts');
 const importSrc = fs.readFileSync(IMPORT_TS, 'utf8');
 
-const MAX_IMPORT_SIZE = readNumericConstant(importSrc, 'MAX_IMPORT_SIZE', 'probe-import-multipart-cap') * 1024 * 1024;
+// readLeadingFactor, not readNumericConstant: this line multiplies the factor back up itself, so
+// it must throw — not return 52428800 — if the constant is ever respelled as whole bytes.
+const MAX_IMPORT_SIZE = readLeadingFactor(importSrc, 'MAX_IMPORT_SIZE', 'probe-import-multipart-cap') * 1024 * 1024;
 check('A', 'MAX_IMPORT_SIZE read from source', true,
   `${mb(MAX_IMPORT_SIZE)} (routes/import.ts, not hardcoded in this probe)`);
 

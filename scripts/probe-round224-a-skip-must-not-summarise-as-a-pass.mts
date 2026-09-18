@@ -56,7 +56,7 @@ import fs from 'fs';
 import path from 'path';
 import { execFileSync } from 'child_process';
 import { summarise, summariseAndExit, type ProbeVerdict } from './lib/probe-outcome.mts';
-import { readNumericConstant } from './lib/probe-source-constants.mts';
+import { readNumericConstant, readLeadingFactor } from './lib/probe-source-constants.mts';
 
 const REPO = path.resolve(import.meta.dirname, '..');
 const PROBE = 'probe-round224-a-skip-must-not-summarise-as-a-pass';
@@ -340,17 +340,25 @@ function oldTurncountTail(rs: ProbeVerdict[]): { code: number; line: string } {
       try { return readNumericConstant('const X = 50_000;', 'X', 't') === 50_000; } catch { return false; }
     })(), 'const X = 50_000; -> 50000, never 50');
   for (const [src, want] of [['const X = 50000;', 50_000], ['const X = 50_000;', 50_000],
-    ['const X = 50 * 1024 * 1024;', 50], ['const X=7,', 7], ['const X = 12 )', 12]] as const) {
+    ['const X=7,', 7], ['const X = 12 )', 12]] as const) {
     check('I', `reader handles ${JSON.stringify(src)}`, readNumericConstant(src, 'X', 't') === want,
       `-> ${readNumericConstant(src, 'X', 't')}, want ${want}`);
   }
+  // Round 226 split the product case out: `const X = 50 * 1024 * 1024;` used to read as 50 through
+  // this same function, which is what let `FINGERPRINT_LINE_CAP = 50 * 1000` read as 50 as well.
+  // The value reader now throws on a product and the factor reader answers it.
+  check('I', 'a product declaration no longer reads as its leading factor through the value reader',
+    (() => { try { readNumericConstant('const X = 50 * 1024 * 1024;', 'X', 't'); return false; } catch { return true; } })(),
+    'readNumericConstant throws on `50 * 1024 * 1024` — Round 225 arm D/226');
+  check('I', 'and the factor reader answers it', readLeadingFactor('const X = 50 * 1024 * 1024;', 'X', 't') === 50,
+    `readLeadingFactor -> ${readLeadingFactor('const X = 50 * 1024 * 1024;', 'X', 't')}, want 50`);
   check('I', 'and it throws rather than guessing when the constant is gone',
     (() => { try { readNumericConstant('const Y = 1;', 'X', 't'); return false; } catch { return true; } })(),
     'a missing constant is a throw, not a fallback — probe-accepted-multipart-allocation used to ' +
     'fall back to a hardcoded 50 MB, which its own sibling refuses to do in a comment');
 
   check('I', 'MAX_IMPORT_SIZE still reads correctly through the shared reader',
-    readNumericConstant(importSrc, 'MAX_IMPORT_SIZE', 'arm I') === 50, 'routes/import.ts -> 50 (MB)');
+    readLeadingFactor(importSrc, 'MAX_IMPORT_SIZE', 'arm I') === 50, 'routes/import.ts -> 50 (MB)');
   check('I', 'MAX_IMPORT_SIZE is NOT separator-written today — those three probes were latent, not broken',
     /const MAX_IMPORT_SIZE = 50 \* 1024 \* 1024;/.test(importSrc),
     'stated so nobody reads this round as having fixed three live failures; it fixed two', 'measurement');

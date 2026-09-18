@@ -41,7 +41,7 @@
 import fs from 'fs';
 import path from 'path';
 import { execFileSync } from 'child_process';
-import { readNumericConstant } from './lib/probe-source-constants.mts';
+import { readLeadingFactor } from './lib/probe-source-constants.mts';
 
 const REPO = path.resolve(import.meta.dirname, '..');
 const SCRATCH = path.join(REPO, '.testdata', 'accepted-multipart-allocation');
@@ -271,7 +271,9 @@ check('A', 'cap check is present in exactly one of the two known shapes',
 // probe-import-large-session refuses to do in a comment ("a hardcoded 50 here would keep
 // 'passing' after the constant moved, and report a boundary that is no longer the boundary").
 // Two probes, one question, opposite policies. The helper throws; the loud policy wins.
-const capMb = readNumericConstant(importSrcBefore, 'MAX_IMPORT_SIZE', 'probe-accepted-multipart-allocation');
+// readLeadingFactor, not readNumericConstant: capBytes below multiplies this back up, so a
+// whole-bytes respelling must throw rather than silently yield a 50 TB cap.
+const capMb = readLeadingFactor(importSrcBefore, 'MAX_IMPORT_SIZE', 'probe-accepted-multipart-allocation');
 check('A', 'cap read from source, not assumed', true, `MAX_IMPORT_SIZE = ${capMb} MB`);
 const capBytes = capMb * 1024 * 1024;
 check('A', 'payload is under the cap, so the accepted path is what runs',
