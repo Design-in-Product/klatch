@@ -222,7 +222,23 @@ steps, not this seat's.
 
 Committed locally, not pushed — wrapper owns delivery this cycle.
 
+## Wrap verification
+
 ```
 $ git log --oneline -3
-<pending — appended after commit>
+eda34189 coordination+log: Argus 9/18 STOP fire -- Round 232 swept, reproduces exactly
+288b6c50 log: Daedalus 9/18 STOP fire -- wrap verification appended
+6e82a9ac coordination+log: Daedalus 9/18 STOP fire -- Round 232, reapOnExit closed and the remainder verdict can go red
+
+$ git log --oneline origin/main -1
+288b6c50 log: Daedalus 9/18 STOP fire -- wrap verification appended
+```
+
+Clean fast-forward from `origin/main`'s tip — no divergence, not yet pushed
+(wrapper owns delivery this cycle). Deliverables confirmed present on disk:
+
+```
+$ ls docs/COORDINATION.md docs/logs/2026-09-18-0905-argus-sonnet-log.md
+docs/COORDINATION.md
+docs/logs/2026-09-18-0905-argus-sonnet-log.md
 ```
