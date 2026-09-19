@@ -23,7 +23,8 @@
  *   N2  Browse, one session, name left blank       → seats nothing, says so [regression]
  *   N3  Browse, one session, name typed "Claude"   → seats Claude           [regression]
  *   X   N2 and N3 bind the same channel entity — the row is the only evidence [measurement]
- *   M2  Browse, one session, finished via "Done"   → what the form gets     [open]
+ *   M2  Browse, one session, finished via the completion button (which reads
+ *       "Use this agent" at N=1 since 2026-09-09) → what the form gets        [open]
  *   M1  Browse, two sessions, finished via "Done"  → Daedalus's open question [open]
  *
  * N3 is arm B3 from Round 172 on the sibling route — the case Daedalus named as the one
@@ -59,6 +60,26 @@ const REPO = path.resolve(import.meta.dirname, '..');
 const SCRATCH = path.join(REPO, '.testdata', 'round174-browse-route');
 const DB = path.join(SCRATCH, 'scratch.db');
 const CLAUDE_HOME = path.join(SCRATCH, 'fake-claude');
+/**
+ * Round 236, and this probe is the one the export corpus did the most damage to —
+ * it did not merely go red, it DIED mid-run.
+ *
+ * `CLAUDE_CONFIG_DIR` cannot reach the repo's `exports/sessions/`, which Round
+ * 234 made the endpoint scan correctly. So the browse panel offered two rows
+ * (the fixture, plus a 3.86 MB export guessed as an agent literally named
+ * "Exported sessions"), and `ImportDialog.tsx:775` labels the completion button
+ * on the COUNT: `imported.length === 1` renders "Use this agent", anything else
+ * renders "Done". Arm N1 imported two and got "Done"; by N2 the export was
+ * already imported, so one landed and the button silently became "Use this
+ * agent" — and `resultRows()`, which waits for "Done", burned its 60 s timeout
+ * and threw. Arms after N2 never ran and reported nothing at all.
+ *
+ * Worth keeping in view: this is a probe about seating an imported agent, on a
+ * fixture tree, and the thing that killed it was a button caption changing
+ * because a corpus in another directory gained a row. "This arm looks unrelated"
+ * is not evidence.
+ */
+const NO_EXPORTS = path.join(SCRATCH, 'no-exports');
 const SHOTS = path.join(SCRATCH, 'shots');
 const API_PORT = 3001;
 const UI_PORT = 5173;
@@ -107,6 +128,7 @@ const diffBefore = packagesDiff();
 // ── Fixture sessions ────────────────────────────────────────────────────────────
 fs.rmSync(SCRATCH, { recursive: true, force: true });
 fs.mkdirSync(SHOTS, { recursive: true });
+fs.mkdirSync(NO_EXPORTS, { recursive: true });
 
 /**
  * One session file in its own project directory. The project directory is per-arm on
@@ -162,7 +184,7 @@ const viteFd = fs.openSync(viteLog, 'a');
 
 const server: ChildProcess = spawn('npx', ['tsx', 'src/index.ts'], {
   cwd: path.join(REPO, 'packages/server'),
-  env: { ...process.env, KLATCH_DB: DB, CLAUDE_CONFIG_DIR: CLAUDE_HOME },
+  env: { ...process.env, KLATCH_DB: DB, CLAUDE_CONFIG_DIR: CLAUDE_HOME, KLATCH_EXPORT_ROOT: NO_EXPORTS },
   stdio: ['ignore', serverFd, serverFd],
 });
 const vite: ChildProcess = spawn('npx', ['vite', '--port', String(UI_PORT), '--strictPort'], {
@@ -280,9 +302,30 @@ async function browseImport(page: Page, names: string[]): Promise<{ prefilled: s
   return { prefilled };
 }
 
-/** Read the result list's rows as text, once the bulk success state is on screen. */
+/**
+ * Read the result list's rows as text, once the bulk success state is on screen.
+ *
+ * Round 236: this waited on the literal caption "Done" for 60 s and then THREW,
+ * killing the run. But the caption is not a property of the success state — it is
+ * a function of how many sessions imported (`ImportDialog.tsx:775`: one imports
+ * renders "Use this agent", otherwise "Done"). A probe that hangs on a caption is
+ * asserting something it did not mean to assert, and it fails in the worst
+ * available way: no red, no diagnosis, and every later arm unrun.
+ *
+ * Waits for either caption, and on timeout reports what IS on screen instead of
+ * throwing a bare Playwright timeout.
+ */
 async function resultRows(page: Page): Promise<string[]> {
-  await page.getByRole('button', { name: 'Done' }).waitFor({ state: 'visible', timeout: 60_000 });
+  const done = page.getByRole('button', { name: 'Done' });
+  const useThis = page.getByRole('button', { name: 'Use this agent' });
+  try {
+    await done.or(useThis).first().waitFor({ state: 'visible', timeout: 60_000 });
+  } catch {
+    const captions = await page.locator('button').allTextContents();
+    throw new Error(
+      'neither "Done" nor "Use this agent" appeared — the bulk success state was never reached. ' +
+      `Buttons on screen: ${JSON.stringify(captions.slice(0, 12))}`);
+  }
   return page.locator('button', { hasText: /\(\d+ messages?\)/ }).allTextContents();
 }
 
@@ -436,28 +479,52 @@ try {
     !!n2Bound && n2Bound === n3Bound && n2Bound === DEFAULT_ENTITY_ID,
     `blank=${n2Bound} typed=${n3Bound} default=${DEFAULT_ENTITY_ID} — the row's entityId is the whole difference`);
 
-  // ── Arm M2 — the same single-session import, finished via "Done" ─────────────
+  // ── Arm M2 — the same single-session import, finished via the completion button ──
   //
   // The affordance question, and the one I think has to be answered before the multi-select
-  // product call. In compose mode the result list's rows are the seating gesture, and the
-  // full-width accent primary underneath them reads "Done". Nothing on the row says it is
-  // the thing to click. What does a user who presses the obvious button get?
+  // product call. In compose mode the result list's rows are the seating gesture, and there
+  // is a full-width accent primary underneath them. Nothing on the row says it is the thing
+  // to click. What does a user who presses the obvious button get?
+  //
+  // ── Round 236: this arm was targeting a button that its own finding deleted. ──
+  //
+  //   62321b2c  2026-09-08  this probe — "the fix holds, 'Done' throws it away"
+  //   6742eab6  2026-09-09  Round 174: Browse-route "Done" seats the single agent it
+  //                         resolved, not silence
+  //
+  // The 9/9 fix included renaming the caption in exactly the N=1 case this arm builds:
+  // `ImportDialog.tsx:775` renders "Use this agent" when `imported.length === 1` and
+  // "Done" otherwise. So from the day the defect was fixed, this arm was waiting on a
+  // caption that no longer occurs in the state it constructs — and it did not throw
+  // immediately only because the Round 234 export corpus later pushed the count back to
+  // two, which is a leak masking a defect rather than a probe working.
+  //
+  // The arm's QUESTION is caption-independent: whatever the obvious completion control
+  // says, what does pressing it do to the seat? So it is now located by role among the
+  // captions the component can render, and the caption itself is demoted to a measurement
+  // — which is where a fact that changes when a product decision changes belongs.
   writeSession('r174-m2', 'You are Tarn, the archivist of record.', 'Tarn, ready.');
   await page.goto(UI, { waitUntil: 'networkidle' });
   await openBrowseInForm(page);
   await browseImport(page, ['Tarn']);
   measure('M2', 'the result list rows', JSON.stringify(await resultRows(page)));
-  const doneBtn = page.getByRole('button', { name: 'Done' });
+  const doneBtn = page.getByRole('button', { name: 'Done' })
+    .or(page.getByRole('button', { name: 'Use this agent' })).first();
   measure('M2', 'screenshot of the compose-mode result list, before choosing', await shot(page, 'M2-result-list-before-done'));
+  const m2Caption = ((await doneBtn.textContent()) ?? '').trim();
   measure('M2', 'the completion button on this route reads',
-    JSON.stringify((await doneBtn.textContent() ?? '').trim()) +
-    ' — the manual path\'s equivalent reads "Use this agent" in compose mode (ImportDialog.tsx:582)');
+    `${JSON.stringify(m2Caption)} — chosen on the imported COUNT at ImportDialog.tsx:775, ` +
+    `not on the route: one session renders "Use this agent", more renders "Done"`);
+  check('M2', 'the completion caption is one the component can actually render',
+    m2Caption === 'Done' || m2Caption === 'Use this agent',
+    `read ${JSON.stringify(m2Caption)} — if this is neither, ImportDialog.tsx:775 has moved ` +
+    `and this arm is aimed at a control that no longer exists (it was, from 2026-09-09)`);
   await doneBtn.click();
   const m2Form = await readForm(page);
-  measure('M2', 'what the form got when the import was finished via "Done"',
+  measure('M2', `what the form got when the import was finished via ${JSON.stringify(m2Caption)}`,
     `chips=${JSON.stringify(m2Form.chips)} · notice=${JSON.stringify(m2Form.notice)}`);
   measure('M2', 'screenshot of the form after "Done"', await shot(page, 'M2-form-after-done'));
-  check('M2', 'finishing a single-session Browse import via "Done" seats the imported agent',
+  check('M2', 'finishing a single-session Browse import via the completion button seats the imported agent',
     m2Form.chips.includes('Tarn'), `chips=${JSON.stringify(m2Form.chips)}`, 'open');
   check('M2', 'or, failing that, says something about what happened',
     m2Form.notice !== null, `notice=${JSON.stringify(m2Form.notice)}`, 'open');
@@ -485,6 +552,10 @@ try {
   measure('M1', 'the result list rows', JSON.stringify(m1Rows));
   check('M1', 'both sessions imported', m1Rows.length === 2, `rows=${m1Rows.length}`);
   measure('M1', 'screenshot of the two-row result list', await shot(page, 'M1-two-row-result-list'));
+  // "Done" is right HERE and wrong in M2, for the same reason: the caption is chosen on the
+  // imported count (ImportDialog.tsx:775) and this arm imports two. The check above — rows
+  // === 2 — is what licenses the literal, so if the count ever changes the assertion goes red
+  // before this click hangs. Left literal deliberately rather than widened like M2's.
   await page.getByRole('button', { name: 'Done' }).click();
   const m1Form = await readForm(page);
   measure('M1', 'what the form got after a two-session Browse import finished via "Done"',

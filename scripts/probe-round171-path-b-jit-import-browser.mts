@@ -52,6 +52,15 @@ const REPO = path.resolve(import.meta.dirname, '..');
 const SCRATCH = path.join(REPO, '.testdata', 'round171-path-b');
 const DB = path.join(SCRATCH, 'scratch.db');
 const CLAUDE_HOME = path.join(SCRATCH, 'fake-claude');
+/**
+ * Round 236. `CLAUDE_CONFIG_DIR` relocates the SESSION roots and cannot reach the
+ * repo's `exports/sessions/`, which Round 234 made the endpoint scan correctly
+ * for the first time. The 3.86 MB export therefore arrived in this probe's
+ * "fixtures only" world: `totalSessions=2 (expected 1)`. An export-free directory
+ * is the suppression mechanism, because `getExportRoot()` has replace semantics
+ * and no disable flag (`packages/server/src/paths.ts`, Round 235).
+ */
+const NO_EXPORTS = path.join(SCRATCH, 'no-exports');
 const SHOTS = path.join(SCRATCH, 'shots');
 const API_PORT = 3001;
 const UI_PORT = 5173;
@@ -94,6 +103,7 @@ const diffBefore = packagesDiff();
 // deciding what to call the agent.
 fs.rmSync(SCRATCH, { recursive: true, force: true });
 fs.mkdirSync(SHOTS, { recursive: true });
+fs.mkdirSync(NO_EXPORTS, { recursive: true });
 const PROJECT_DIR = path.join(CLAUDE_HOME, 'projects', '-tmp-r171-probe');
 fs.mkdirSync(PROJECT_DIR, { recursive: true });
 
@@ -161,7 +171,7 @@ const viteFd = fs.openSync(viteLog, 'a');
 
 const server: ChildProcess = spawn('npx', ['tsx', 'src/index.ts'], {
   cwd: path.join(REPO, 'packages/server'),
-  env: { ...process.env, KLATCH_DB: DB, CLAUDE_CONFIG_DIR: CLAUDE_HOME },
+  env: { ...process.env, KLATCH_DB: DB, CLAUDE_CONFIG_DIR: CLAUDE_HOME, KLATCH_EXPORT_ROOT: NO_EXPORTS },
   stdio: ['ignore', serverFd, serverFd],
 });
 const vite: ChildProcess = spawn('npx', ['vite', '--port', String(UI_PORT), '--strictPort'], {
@@ -522,8 +532,28 @@ try {
     diffAfter === diffBefore ? 'git diff --stat -- packages/ unchanged' : `CHANGED:\n${diffAfter}`);
   check('S', "xian's klatch.db was never the target",
     process.env.KLATCH_DB === undefined || process.env.KLATCH_DB === DB, `server ran against ${DB}`);
-  check('S', "the real ~/.claude session tree was never scanned",
-    scan.json?.totalSessions === FIXTURE_COUNT_AT_START, `CLAUDE_CONFIG_DIR=${CLAUDE_HOME}`);
+  // Round 236. This used to re-read `scan` — the SAME response object the opening
+  // sentinel already asserted on, captured before the drive began — and print
+  // `CLAUDE_CONFIG_DIR=...` as its evidence. So a check whose name is a claim
+  // about the whole run ("never scanned") was a duplicate of the first check plus
+  // a detail line naming where the check WOULD have been made rather than what it
+  // found. That is the cross-pollination brief's absence-claim failure exactly:
+  // an unconscious omission and a thorough check produce identical output.
+  //
+  // It now rescans at the end and asserts on membership, so a corpus that
+  // appeared mid-run — by import, by relocation, or by a third root nobody
+  // modelled — is caught rather than assumed away.
+  const scanEnd = await api('/import/claude-code/sessions');
+  const endProjects = (scanEnd.json?.projects ?? []) as any[];
+  const endSessions = endProjects.flatMap((p) => p.sessions ?? []);
+  const offFixture = endSessions.filter((s: any) => !String(s.path ?? '').startsWith(CLAUDE_HOME));
+  check('S', "no session outside the probe's own fixture tree was ever in scope",
+    offFixture.length === 0,
+    offFixture.length === 0
+      ? `${endSessions.length} session(s) at end of run, all under ${CLAUDE_HOME} ` +
+        `(rescanned at the wire, not re-read from the opening scan)`
+      : `${offFixture.length} off-fixture: ` +
+        `${offFixture.slice(0, 3).map((s: any) => `${s.projectName}:${s.path}`).join(', ')}`);
 
   // ── Report ───────────────────────────────────────────────────────────────────
   const reg = results.filter((r) => r.kind === 'regression');

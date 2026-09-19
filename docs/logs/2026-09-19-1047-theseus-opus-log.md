@@ -213,3 +213,241 @@ filed 11:02, in `docs/mail/`, not yet moved to `read/` — thread still open, Da
 **Nothing else to do this arrival.** No new work discovered, no correction to file. Next actual
 probe work is my next scheduled fire (WORK, 14:47) or whenever Daedalus replies to the open Round 234
 thread. Committing and pushing this arrival block now, per protocol.
+
+---
+
+# Theseus — 2026-09-19 WORK fire (14:47 PT)
+
+Same worktree, branch `claude/theseus-cycle`, synced to `origin/main` by the wrapper.
+
+## 14:47 — briefing
+
+- `git log --oneline -3`: head `918283ef` (Argus 9/19 WORK, Round 234 sweep). Daedalus's Round 235
+  commits `21579f81` / `bd0da90c` beneath it.
+- `docs/mail/` — **one new memo addressed to me**, filed 14:47:
+  `daedalus-to-theseus-…-your-section-3-is-built-and-the-first-probe-it-broke-was-mine-2026-09-19.md`.
+  Read in full this fire. He took my §3 option 1 and built `KLATCH_EXPORT_ROOT`; his own
+  `probe-multi-root-browse` was the first casualty of the isolation Round 234 removed.
+- `docs/briefs/cross-pollination/current.md` — 2026-09-19 brief, re-read. Insight #1 is my own
+  Round 233 finding; #2 (a write-deletion is invisible to an import sweep) and #3 (an absence
+  claim must name where the check was made) both bear directly on this fire's shape.
+- My COORDINATION section: last updated 9/19 START, status **available**.
+
+**The assignment, as I read it:** Daedalus's §5 routes five probes to my seat — all hitting the
+browse endpoint, none mentioning the export corpus, none driven by him. He was explicit that he was
+*not* claiming they are red, because his own red surfaced three layers from its cause. That is the
+right posture and it is why the first thing here is driving, not repairing.
+
+**Verified the lever exists before testing against it** (not from his memo):
+`paths.ts:81 getExportRoot()` reads `process.env.KLATCH_EXPORT_ROOT` per call; `routes/import.ts:113`
+calls `scanExportedSessions(getExportRoot())`. Live source, this fire.
+
+## 14:48 — probe 1 of 5 driven unmodified: `probe-browse-endpoint-second-corpus`
+
+**3 FAIL, 2 SKIP, exit 1** (`.testdata/r236-pre-second-corpus.txt`). Three reds, and they do not
+share a cause — which is the whole reason for driving before repairing:
+
+| arm | red | cause |
+|---|---|---|
+| B, F | `endpoint sees the whole corpus — endpoint 540 vs 539 files` | **export corpus leak** — Round 234 fallout, mine |
+| A | `guard at 50000 clears both corpora — largest 53635 lines, headroom -7%` | **live-corpus drift** — Daedalus's §3 item, xian's call |
+| **C, E** | `SKIP — getClaudeProjectsDir() body did not match the expected shape (0 occurrences of the literal, expected 1)` | **the probe's subject arms have not run since 2026-09-04** |
+
+The 540 vs 539 is one file, and `ls exports/sessions/` shows exactly one: `theseus-2026-03-22.jsonl`,
+3.86 MB. Consistent with the leak, not yet asserted — an assertion goes in with the repair.
+
+## 14:52 — THE FINDING, and it is mine: the probe's headline arms died 2h34m after it was written
+
+Arms C and E are the *entire point* of this probe — C prices browse against the PM corpus, E is the
+delta between the two corpora. Both have been skipping, silently, in a probe that still exits 1 for
+other reasons so the skip never looked like the story.
+
+The mechanism: the probe reaches the second root by **patching the scanner's source literal**
+(`ROOT_FN_ORIGINAL`, line 117) — `return path.join(os.homedir(), '.claude', 'projects');` — because
+when it was written there was no environment lever. Its own header says so:
+
+> *"Daedalus routed CLAUDE_CONFIG_DIR support to his own seat and did not build it."*
+
+Dated from git, not from the memo:
+
+```
+432c2ada 2026-09-04 10:56:59 -0700  round148: price browse against the second corpus at the endpoint
+4602561d 2026-09-04 13:30:22 -0700  round149: the session scanner walks more than one Claude config root
+```
+
+`git merge-base --is-ancestor` confirms the probe commit precedes the scanner change. So the
+sentence in the header became false **2 hours 34 minutes** after it was committed, and the same
+commit that falsified it also rewrote `getClaudeProjectsDir` to read `CLAUDE_CONFIG_DIR` — which
+deleted the literal the probe patches. **The fix the probe was working around is what disabled the
+workaround.** Fifteen days, and the arms that carried the probe's only original measurement have
+not run once.
+
+Not the same mechanism as the probe Daedalus found dead (that one threw at startup on a numeric
+separator); same date, which is coincidence — 2026-09-04 was a busy day — and the same *shape*: a
+probe rendered inert by an unrelated landing, staying green-ish enough that nobody looked.
+
+## 14:58 — probes 2–5 driven unmodified. The answer to Daedalus's §5 is all five.
+
+He declined to guess whether the five were red. They are — **5 of 5**, and one of them does
+something worse than go red.
+
+| probe | unmodified | reds, by cause |
+|---|---|---|
+| `probe-browse-endpoint-second-corpus` | 3 FAIL, 2 SKIP | export leak ×2 · live drift ×1 · **arms C/E dead 15 days** |
+| `probe-pm-corpus-cap-delta` | 5 FAIL | export leak ×3 (`90 sessions … 1 IDs not on the PM root`) · live drift ×2 |
+| `probe-round171-path-b-jit-import-browser` | 2 FAIL | export leak ×2 (both isolation sentinels) |
+| `probe-round174-browse-route-seating-in-a-browser` | 2 FAIL **+ threw mid-run** | export leak — killed the run at arm N2 |
+| `probe-round177-browse-done-seating-in-a-browser` | 1 FAIL (24/25) | export leak (sentinel) |
+
+**Round 174 is the one worth the paragraph.** It did not report a red and continue; it hung for
+60 s and died, with every arm after N2 unrun and nothing said about them. Mechanism, read out of
+the client source rather than guessed:
+
+- `ImportDialog.tsx:775` picks the completion caption from the **count**:
+  `composeMode && bulkResult.imported.length === 1 ? 'Use this agent' : 'Done'`.
+- The leaked export appears in the browse panel as an importable row, guessed as an agent named
+  *"Exported sessions"* (`MEAS [N1] → new agent: Exported sessions`).
+- Arm N1 therefore imported **two**, got "Done", and passed.
+- By N2 the export was already imported, so one landed — caption flips to "Use this agent" — and
+  `resultRows()`, which waits for the literal string "Done", timed out and threw.
+
+So a probe about seating an imported agent, running against a synthetic fixture tree, was killed
+by a button caption changing because a corpus in a different directory gained a row. Daedalus's
+"this arm looks unrelated to the export corpus is not evidence" was right, and understated.
+
+**Second-order, and the part I'd have missed if I only counted reds:** in both round171 and
+round174 the leak also entered sets that *passing* arms assert over. Round 171's arm D passed
+"the browse+confirm path can mint an identified agent" on the evidence
+`names=["Claude","Piper Morgan","Wren","Exported sessions"]`. Green check, contaminated witness.
+
+## 15:05 — repairs
+
+Common repair, five probes: `KLATCH_EXPORT_ROOT` → an export-free scratch dir per server
+generation (`getExportRoot`, replace semantics, no disable flag, so suppression *is* relocation).
+Probe 1 also clears all three root variables out of the inherited fire environment first, matching
+what `probe-multi-root-browse` already does.
+
+Four things beyond the one-liner:
+
+1. **`probe-browse-endpoint-second-corpus` arm C now uses the lever instead of patching source.**
+   Deleted the `ROOT_FN_ORIGINAL` patch machinery rather than re-matching it to the new body —
+   keeping a source patch beside a supported env var is how the arm died quietly the first time.
+   The scanner's exit handler used to *write* the original bytes back; it now only verifies, since
+   nothing patches it and a restoring handler would silently revert someone else's concurrent edit.
+   Added a check that the root **actually moved** (89 at the wire ≠ 539), because a lever that
+   silently does nothing gives you the shipped corpus under the label "second".
+2. **A second stale clause in the same probe, from the same commit.** Arm E's projection was
+   labelled *"no build exists that does this"* — false since `4602561d` taught the scanner to walk
+   several roots. Corrected in place, and the now-possible union arm named as follow-up rather than
+   built.
+3. **`probe-pm-corpus-cap-delta`: unaccounted IDs are named, not counted.** Its red said "1 IDs not
+   on the PM root" and left the next reader to go find out which.
+4. **`probe-round171`'s closing sentinel was asserting nothing.** `the real ~/.claude session tree
+   was never scanned` re-read the *same* response captured before the drive began, and printed
+   `CLAUDE_CONFIG_DIR=…` as its evidence — a claim about the whole run, evidenced by naming where
+   the check would have been made. That is cross-pollination insight #3 exactly. It now rescans at
+   the wire at end of run and asserts on path membership.
+5. **`probe-round174`'s `resultRows()` no longer hangs on a caption.** It waits for either caption
+   and, on timeout, reports the buttons actually on screen instead of throwing a bare Playwright
+   error. A probe that hangs fails in the worst available way: no red, no diagnosis, later arms
+   unrun.
+
+Strict typecheck on each edited probe: **no new errors**. Verified against baseline rather than
+assumed — `probe-browse-endpoint-second-corpus` carries 6 pre-existing strict errors (5 × `armF`
+possibly null, 1 × `.mts` import extension); I extracted `HEAD`'s copy to `.testdata/` and
+typechecked it to confirm the same 6, then confirmed my edit produces the same 6 and no more.
+
+## 15:20 — the export leak was masking a probe defect
+
+Repaired round174 got much further and **threw again**, at a second hardcoded caption, in arm M2.
+That arm turns out to have been aimed at a control its own finding's fix deleted:
+
+```
+62321b2c  2026-09-08  Round 174: the Browse route driven in a browser — "Done" throws it away
+6742eab6  2026-09-09  Round 174: Browse-route "Done" seats the single agent it resolved, not silence
+```
+
+M2 found on 9/8 that "Done" threw the seat away at N=1. The 9/9 fix included renaming that button
+to **"Use this agent"** in exactly the N=1 case the arm constructs. From the day the defect was
+fixed, the arm was waiting on a caption that no longer occurs — and it did not throw immediately
+only because Round 234's export leak later pushed the count back to two.
+
+**The contaminated run was the one that looked like it worked.** Suppressing the leak is what made
+the arm's real condition visible. Inverse of the usual reasoning about contamination, and worth the
+rule: *a fix retires the probe arm that found it* — unless the arm is re-aimed at the **question**
+rather than the **symptom**, and it typically fails by **hanging**, not by failing, because what it
+waits for is simply absent.
+
+Re-aimed: control located among the captions the component can render; caption demoted to a
+measurement. M1's literal `'Done'` left alone and annotated — it imports two, which is the branch
+where `Done` is correct, and its `rows === 2` check is what licenses the literal.
+
+**The arm now answers its own question for the first time since 9/9:** `chips=["Tarn"]` — the
+single-session import seats the agent. Daedalus's 9/9 fix works and had been unverifiable since it
+landed.
+
+## 15:30 — after repair
+
+| probe | before | after |
+|---|---|---|
+| `probe-browse-endpoint-second-corpus` | 22 checks · 3 FAIL · 2 SKIP | **35 checks · 2 FAIL · 0 SKIP** |
+| `probe-pm-corpus-cap-delta` | 39 · 5 FAIL | **39 · 2 FAIL** |
+| `probe-round171` | 15/17 · exit 1 | **17/17 · exit 0** |
+| `probe-round174` | 6/8 · threw at N2 | **18/18 · exit 0** |
+| `probe-round177` | 24/25 · exit 1 | **25/25 · exit 0** |
+
+Every remaining red is the live-corpus drift, left deliberately. It is now named from two
+directions by two probes: from disk (`largest file across both roots is 53635 lines — headroom
+-7%`) and, for the first time on this corpus, at the wire (`1 CAPPED:
+440fe16b-46f8-4fbb-9b0d-3285c425aa37`) — the same file Daedalus named. Independent confirmation of
+his §3 from a different probe and a different method.
+
+Arms C and E, running for the first time since 9/4, give the PM corpus its first endpoint-level
+numbers: 89 sessions / 78 projects, cold 2751 ms, steady 4 ms, **4.37 ms/MB cold vs the shipped
+root's 4.35 — 1.00×** across corpora whose mean file size differs by 5.7×. Deliberately *not*
+claimed as settling `probe-pm-corpus-cap-delta` arm H's bracketing question: arm H measures the
+**cap delta**, a different quantity. The two do not conflict and the second does not resolve the
+first.
+
+### Process correction against myself, same fire
+
+I wrote round177's post-repair figure (`25/25 · exit 0`) into the memo table **before** the run
+finished, then verified it after. It was right, which is luck, not method — the probe could as
+easily have come back 24/25 and the memo would have carried a fabricated number into a deliverable.
+Verified figures only, and verify *before* the sentence exists, not after. Recording it because a
+process error that happens to produce a true statement is the kind that survives.
+
+## 15:40 — controls
+
+| | |
+|---|---|
+| server suite | **121 files · 1900 passed · 1 skipped** — matches Daedalus's Round 235 figure exactly |
+| client suite | **38 files (25 passed · 13 skipped) · 324 passed · 13 skipped** |
+| `npm test` | **exit 0, unpiped to a file**, both summary lines read directly from the file (not tailed) |
+| `npm run typecheck` | **0 errors** — `grep -c error` on the captured output = 0 |
+| strict typecheck, 5 edited probes | **no new errors**; probe 1's 6 pre-existing errors confirmed identical against `HEAD`'s extracted copy |
+| production code | **untouched** — `git diff --stat -- packages/` empty; 5 probe scripts only |
+| `session-scanner.ts` sha | `e2c7445e12a5` before and after (and the probe no longer writes it at all) |
+| ports 3001 / 5173 | **both quiet** — bind-tested via node after the last run |
+| stray processes | **0** — enumerated from `ps` via node, not `pkill` |
+| repo `klatch.db` | **2 channels / 0 `probe-seed%`** |
+| model calls | **0** |
+
+Raw probe output, all ten runs: `.testdata/r236-{pre,post,post2,final}-*.txt`.
+
+### Open at end of fire
+
+- **For xian — the capped PM session.** `440fe16b-46f8-4fbb-9b0d-3285c425aa37`, 53,635 lines / 99 MB.
+  Four arms across two probes stay red until answered. Corroboration of Daedalus's ask, not a second
+  one. **Worth knowing when weighing it:** the *endpoint-level* evidence for this monitoring trigger
+  did not exist until this round — the arm that produces it is one of the two dead since 9/4. The
+  disk-level evidence did exist.
+- **Mine, named not built:** the union arm (`KLATCH_EXTRA_SESSION_ROOTS` over both roots) turning arm
+  E's combined-browse projection into a measurement. `round149` made it possible; nothing has used it.
+- **Mine, unmoved this fire:** arm O's band (Round 234 §5); why `tsx` runs `exit` listeners on a
+  signal death plain node doesn't.
+- **Parked on xian:** `files/storage.ts:38`, the backfill dry run (eleven days), `DELETE /entities/:id`.
+- **Gate:** `amber-fleet.sh gate` not attempted this fire; refused from this seat for four fires now,
+  and Daedalus reports the same position today.
+- **Mail:** Round 234 thread — Daedalus replied this fire, I replied back; thread stays **open** in
+  `docs/mail/` (his §5 is answered but the cap question is live with xian). Nothing moved to `read/`.

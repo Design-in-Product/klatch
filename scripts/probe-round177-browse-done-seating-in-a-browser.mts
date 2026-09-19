@@ -86,6 +86,18 @@ const REPO = path.resolve(import.meta.dirname, '..');
 const SCRATCH = path.join(REPO, '.testdata', 'round177-browse-done-seating');
 const DB = path.join(SCRATCH, 'scratch.db');
 const CLAUDE_HOME = path.join(SCRATCH, 'fake-claude');
+/**
+ * Round 236. `CLAUDE_CONFIG_DIR` relocates the SESSION roots and has no reach
+ * over the repo's `exports/sessions/` (Round 234 made that scan work; Round 235
+ * gave it `KLATCH_EXPORT_ROOT` with replace semantics and no disable flag). The
+ * export arrived inside this probe's fixture-only world — `totalSessions=2
+ * (expected 1)` — so the suppression is an export-free directory.
+ *
+ * This probe is about the "Done" seating path, and "Done" vs "Use this agent" is
+ * chosen on the imported COUNT at `ImportDialog.tsx:775`. An extra corpus is
+ * therefore not cosmetic here: it changes which branch the subject takes.
+ */
+const NO_EXPORTS = path.join(SCRATCH, 'no-exports');
 const SHOTS = path.join(SCRATCH, 'shots');
 const API_PORT = 3001;
 const UI_PORT = 5173;
@@ -147,6 +159,7 @@ const diffBefore = packagesDiff();
 // ── Fixture sessions ────────────────────────────────────────────────────────────
 fs.rmSync(SCRATCH, { recursive: true, force: true });
 fs.mkdirSync(SHOTS, { recursive: true });
+fs.mkdirSync(NO_EXPORTS, { recursive: true });
 
 /**
  * One session file in its own project directory. The project directory is per-arm on
@@ -202,7 +215,7 @@ const viteFd = fs.openSync(viteLog, 'a');
 
 const server: ChildProcess = spawn('npx', ['tsx', 'src/index.ts'], {
   cwd: path.join(REPO, 'packages/server'),
-  env: { ...process.env, KLATCH_DB: DB, CLAUDE_CONFIG_DIR: CLAUDE_HOME },
+  env: { ...process.env, KLATCH_DB: DB, CLAUDE_CONFIG_DIR: CLAUDE_HOME, KLATCH_EXPORT_ROOT: NO_EXPORTS },
   stdio: ['ignore', serverFd, serverFd],
 });
 const vite: ChildProcess = spawn('npx', ['vite', '--port', String(UI_PORT), '--strictPort'], {

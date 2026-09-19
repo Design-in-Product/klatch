@@ -21,6 +21,36 @@
  * it; the two consequences he named (latency on 2.6x-longer files, and the
  * scanner not seeing the directory at all) are both unpriced.
  *
+ * ── CORRECTION, Round 236 (2026-09-19). The sentence above was true for two
+ * hours and thirty-four minutes. ────────────────────────────────────────────
+ *
+ *   432c2ada  2026-09-04 10:56  round148: this probe
+ *   4602561d  2026-09-04 13:30  round149: the session scanner walks more than
+ *                               one Claude config root
+ *
+ * `round149` built exactly the lever this probe was written to work around, and
+ * in doing so rewrote `getClaudeProjectsDir()` to read `CLAUDE_CONFIG_DIR` —
+ * which DELETED the source literal (`ROOT_FN_ORIGINAL`) that arm C patched to
+ * reach the second root. So from 2026-09-04 13:30 until Round 236 found it on
+ * 2026-09-19, **arms C and E — the two arms this probe exists for — skipped on
+ * every run**, while the probe still exited 1 for unrelated reasons and so never
+ * looked like it had stopped measuring anything.
+ *
+ * The fix the workaround was waiting for is what disabled the workaround. Arm C
+ * now reaches the second root the supported way, by handing the server
+ * `CLAUDE_CONFIG_DIR`; the scanner's source is no longer patched at all, and the
+ * sha guard below stays only to prove that nothing else moved it.
+ *
+ * ── Export-corpus isolation, Round 235/236 ──────────────────────────────────
+ *
+ * `CLAUDE_CONFIG_DIR` moves the SESSION roots. It cannot move the repo's
+ * `exports/sessions/`, which since Round 234 is scanned correctly and therefore
+ * arrives in every arm's payload as a third corpus no arm here is about — it put
+ * arms B and F one session over their own inventory (`endpoint 540 vs 539
+ * files`). Every generation now sets `KLATCH_EXPORT_ROOT` to an export-free
+ * scratch dir (`packages/server/src/paths.ts:getExportRoot`, Round 235), and the
+ * suppression is ASSERTED at the end of the run rather than assumed.
+ *
  * This probe prices them, at the HTTP endpoint, on both corpora.
  *
  * Run:  npx tsx scripts/probe-browse-endpoint-second-corpus.mts
@@ -109,25 +139,51 @@ const SCANNER_ORIGINAL = fs.readFileSync(SCANNER);
 const SCANNER_SHA = crypto.createHash('sha256').update(SCANNER_ORIGINAL).digest('hex');
 
 /**
- * The exact text the patch expects. Matched literally and required to occur
- * exactly once. If the scanner is refactored so this no longer matches, arm C
- * skips rather than guessing — measuring the wrong directory would produce a
- * number that looks fine and means nothing.
+ * Round 236: the scanner is no longer patched. What remains is the guard —
+ * nothing in this run may modify it, and the closing check proves it didn't.
+ *
+ * The patch machinery that used to live here (`ROOT_FN_ORIGINAL` / a literal
+ * `return path.join(os.homedir(), '.claude', 'projects');` matched exactly once)
+ * is deleted rather than repaired, because the thing it worked around exists:
+ * `getClaudeProjectsDir()` reads `CLAUDE_CONFIG_DIR`. Keeping a source patch
+ * alongside a supported lever is how arm C died quietly the first time.
  */
-const ROOT_FN_ORIGINAL = `  return path.join(os.homedir(), '.claude', 'projects');`;
-const ROOT_FN_PATCHED = `  return path.join(os.homedir(), '.claude-pm', 'projects');`;
 
-const originalText = SCANNER_ORIGINAL.toString('utf8');
-const rootFnOccurrences = originalText.split(ROOT_FN_ORIGINAL).length - 1;
+/**
+ * The config directory whose `projects/` subdir is the second root. The scanner
+ * derives `<CLAUDE_CONFIG_DIR>/projects`, so the variable takes the parent.
+ */
+const SECOND_CONFIG_DIR = path.dirname(ROOT_SECOND);
 
-function restoreScanner(): boolean {
-  fs.writeFileSync(SCANNER, SCANNER_ORIGINAL);
-  return crypto.createHash('sha256').update(fs.readFileSync(SCANNER)).digest('hex') === SCANNER_SHA;
+/**
+ * An export-free directory. Suppression of the export corpus IS relocation —
+ * `getExportRoot()` has replace semantics and there is no separate disable flag
+ * — so a directory with no `exports/sessions/` under it is the mechanism.
+ */
+const NO_EXPORTS = path.join(SCRATCH, 'no-exports');
+fs.mkdirSync(NO_EXPORTS, { recursive: true });
+
+/**
+ * Round 236: this used to WRITE the original bytes back, because arm C patched
+ * the file. Nothing patches it now, so the handler verifies instead — a probe
+ * that never modifies production source should not hold an exit handler that
+ * writes to it. Restoring and checking look the same in a green run and differ
+ * exactly when something else has edited the scanner mid-run: the old handler
+ * would have silently reverted that edit.
+ */
+function scannerIsUnmodified(): boolean {
+  try {
+    return crypto.createHash('sha256').update(fs.readFileSync(SCANNER)).digest('hex') === SCANNER_SHA;
+  } catch { return false; }
 }
-process.on('exit', () => { try { restoreScanner(); } catch { /* best effort */ } });
-process.on('SIGINT', () => { try { restoreScanner(); } finally { process.exit(130); } });
+process.on('exit', () => {
+  if (!scannerIsUnmodified()) {
+    console.log(`\n!! ${SCANNER_REL} CHANGED during this run — this probe does not write it. ` +
+      `Run \`git diff ${SCANNER_REL}\`.`);
+  }
+});
 
-console.log(`${SCANNER_REL} captured at sha256 ${SCANNER_SHA.slice(0, 12)} (restored before exit)\n`);
+console.log(`${SCANNER_REL} captured at sha256 ${SCANNER_SHA.slice(0, 12)} (never written by this probe)\n`);
 
 // ── Server lifecycle (same discipline as Round 146) ───────────────────────────
 
@@ -149,13 +205,22 @@ async function waitForPortFree(): Promise<void> {
   await waitUntilPortIsQuiet(PORT);
 }
 
-async function startServer(tag: string): Promise<void> {
+async function startServer(tag: string, extraEnv: Record<string, string> = {}): Promise<void> {
   await waitForPortFree();
   const logPath = path.join(SCRATCH, `server-${tag}.log`);
   const logFd = fs.openSync(logPath, 'a');
+  // All three root variables are cleared before anything is set: this probe runs
+  // inside an agent fire, the fire's own environment can carry any of them, and
+  // an inherited value would make an arm measure something other than its name.
+  // Same reasoning as the two `probe-multi-root-browse` already cleared.
+  const env: Record<string, string | undefined> = { ...process.env, KLATCH_DB: DB };
+  delete env.CLAUDE_CONFIG_DIR;
+  delete env.KLATCH_EXTRA_SESSION_ROOTS;
+  delete env.KLATCH_EXPORT_ROOT;
+  env.KLATCH_EXPORT_ROOT = NO_EXPORTS;
   server = spawn('npx', ['tsx', 'src/index.ts'], {
     cwd: path.join(REPO, 'packages/server'),
-    env: { ...process.env, KLATCH_DB: DB },
+    env: { ...env, ...extraEnv } as NodeJS.ProcessEnv,
     stdio: ['ignore', logFd, logFd],
   });
   const deadline = Date.now() + 90_000;
@@ -180,11 +245,15 @@ interface Browse {
   projects: number;
   capped: string[];
   maxTurnCount: number;
+  /** Round 236 — see the export-corpus note in the header. */
+  exportedSessions: number;
+  exportedGroups: number;
 }
 
 async function timeBrowse(n: number): Promise<Browse> {
   const samples: number[] = [];
   let bytes = 0, sessions = 0, projects = 0, maxTurnCount = 0;
+  let exportedSessions = 0, exportedGroups = 0;
   let capped: string[] = [];
   let retries = 0;
   for (let i = 0; i < n; i++) {
@@ -210,8 +279,14 @@ async function timeBrowse(n: number): Promise<Browse> {
     sessions = all.length;
     capped = all.filter((s: any) => s.fingerprintCapped).map((s: any) => s.sessionId).sort();
     maxTurnCount = all.reduce((m: number, s: any) => Math.max(m, s.turnCount ?? 0), 0);
+    // `isExported` is the structural flag the scanner stamps
+    // (session-scanner.ts:667); the group name is the human-readable half of the
+    // same fact. Counting both means a rename of the label cannot quietly turn
+    // this check vacuous.
+    exportedSessions = all.filter((s: any) => s.isExported === true).length;
+    exportedGroups = ps.filter((p) => p.projectName === 'Exported sessions').length;
   }
-  return { samples, bytes, sessions, projects, capped, maxTurnCount };
+  return { samples, bytes, sessions, projects, capped, maxTurnCount, exportedSessions, exportedGroups };
 }
 
 // ── Arm A — inventory, and the line-count claims ─────────────────────────────
@@ -364,8 +439,10 @@ getDb(); // creates the scratch DB with the full schema
 
 interface ArmResult { cold: number; warm: number; browse: Browse }
 
-async function measureRoot(arm: string, tag: string, root: string, inv: Inventory): Promise<ArmResult | null> {
-  await startServer(tag);
+async function measureRoot(
+  arm: string, tag: string, root: string, inv: Inventory, extraEnv: Record<string, string> = {},
+): Promise<ArmResult | null> {
+  await startServer(tag, extraEnv);
   try {
     const coldRun = await timeBrowse(1);
     const cold = coldRun.samples[0];
@@ -402,23 +479,22 @@ const armB = await measureRoot('B', 'shipped', ROOT_SHIPPED, invShipped);
 
 console.log('\n── arm C: browse against the second root ────────────────────────');
 let armC: ArmResult | null = null;
-if (rootFnOccurrences !== 1) {
-  skip('C', `getClaudeProjectsDir() body did not match the expected shape ` +
-    `(${rootFnOccurrences} occurrences of the literal, expected 1) — refusing to guess at the patch`);
-} else if (invSecond.files.length === 0) {
+if (invSecond.files.length === 0) {
   skip('C', `${ROOT_SECOND} is absent or empty on this machine`);
 } else {
-  try {
-    fs.writeFileSync(SCANNER, originalText.replace(ROOT_FN_ORIGINAL, ROOT_FN_PATCHED));
-    const patched = fs.readFileSync(SCANNER, 'utf8');
-    if (!patched.includes(ROOT_FN_PATCHED) || patched.includes(ROOT_FN_ORIGINAL)) {
-      throw new Error('patch did not apply cleanly — refusing to measure');
-    }
-    armC = await measureRoot('C', 'second', ROOT_SECOND, invSecond);
-  } finally {
-    const ok = restoreScanner();
-    check('C', 'scanner restored', ok,
-      ok ? `sha256 ${SCANNER_SHA.slice(0, 12)} matches` : `RESTORE FAILED — run \`git checkout ${SCANNER_REL}\``);
+  armC = await measureRoot('C', 'second', ROOT_SECOND, invSecond,
+    { CLAUDE_CONFIG_DIR: SECOND_CONFIG_DIR });
+  // The lever is verified by EFFECT, not by the variable having been set. A
+  // `CLAUDE_CONFIG_DIR` that silently did nothing would leave this arm reporting
+  // the shipped root's 539 sessions under the label "second" — a number that
+  // looks fine and means nothing, which is what the old source patch was
+  // guarding against and what its skip was protecting. Same property, asserted
+  // on the payload instead of on the source text.
+  if (armC) {
+    check('C', 'second: the root actually moved — this is not the shipped corpus again',
+      armC.browse.sessions === invSecond.files.length && armC.browse.sessions !== invShipped.files.length,
+      `${armC.browse.sessions} sessions at the wire vs ${invSecond.files.length} PM files ` +
+        `(${invShipped.files.length} would mean CLAUDE_CONFIG_DIR did nothing)`);
   }
 }
 
@@ -483,9 +559,17 @@ if (armB && armC) {
   // The number nobody has: what a combined browse would cost once the scanner
   // can see both roots. Additive because the walk is sequential over roots;
   // labelled as a projection, not a measurement, because no build does this yet.
+  // Round 236 correction, same stale-clause family as the header: "no build
+  // exists that does this" was true on 2026-09-04 at 10:56 and false by 13:30,
+  // when round149 (`4602561d`) taught the scanner to walk several roots. A union
+  // browse is now reachable — `KLATCH_EXTRA_SESSION_ROOTS` with both roots — so
+  // this projection is CHECKABLE rather than unfalsifiable. Not measured here
+  // (it wants its own arm and its own page-cache discipline); named as the
+  // follow-up so the next reader does not re-derive that it is possible.
   check('E', 'projected combined cache-cold browse (NOT measured)', true,
     `${ms(armB.cold + armC.cold)} if the walk is additive over both roots — ` +
-      `projection from two measured arms, no build exists that does this`,
+      `projection from two measured arms; a union arm via KLATCH_EXTRA_SESSION_ROOTS ` +
+      `could now test it and no arm here does`,
     'measurement');
 
   check('E', 'steady state stays flat with corpus size', armC.warm < 100,
@@ -493,6 +577,29 @@ if (armB && armC) {
       `independent of corpus size, which is the property that survives the merge`);
 } else {
   skip('E', 'needs both arm B and arm C');
+}
+
+// ── Export-corpus suppression, asserted rather than assumed (Round 236) ──────
+//
+// Every arm above compares an endpoint session count against a SESSION-root
+// inventory. The repo's `exports/sessions/` is neither root, cannot be moved by
+// `CLAUDE_CONFIG_DIR`, and since Round 234 is scanned correctly — so before this
+// assertion existed it put arms B and F exactly one session over their own
+// inventory and the reds named the corpus, not the cause.
+{
+  const candidates: [string, ArmResult | null][] = [['B', armB], ['C', armC], ['F', armF]];
+  const ran: [string, Browse][] = candidates
+    .filter((a): a is [string, ArmResult] => a[1] !== null)
+    .map(([n, a]) => [n, a.browse]);
+  const leaked = ran.filter(([, b]) => b.exportedSessions > 0 || b.exportedGroups > 0);
+  check('*', 'the export corpus is suppressed in every arm — KLATCH_EXPORT_ROOT held',
+    ran.length > 0 && leaked.length === 0,
+    ran.length === 0
+      ? 'no arm ran — nothing to assert, and that is not a pass'
+      : leaked.length === 0
+        ? `${ran.length} server generations, 0 exported sessions and 0 'Exported sessions' groups in any payload`
+        : `LEAKED in ${leaked.map(([n, b]) => `${n} (${b.exportedSessions} sessions / ${b.exportedGroups} groups)`).join(', ')}` +
+          ` — every session count and cold-browse figure in this run includes a corpus no arm is about`);
 }
 
 // ── Summary ──────────────────────────────────────────────────────────────────

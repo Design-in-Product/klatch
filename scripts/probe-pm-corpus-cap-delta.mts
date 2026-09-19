@@ -98,6 +98,9 @@ const PM_CONFIG_DIR = path.join(HOME, '.claude-pm');
 const ROOT_PM = path.join(PM_CONFIG_DIR, 'projects');
 const ROOT_SHIPPED = path.join(HOME, '.claude', 'projects');
 
+/** An export-free root — see the `KLATCH_EXPORT_ROOT` note in `startServer`. */
+const NO_EXPORTS = path.join(SCRATCH, 'no-exports');
+
 const WARM_SAMPLES = 5;
 
 /** Round 153's figures for the SHIPPED root, the thing this fire is comparing against. */
@@ -128,6 +131,7 @@ const kb = (n: number) => `${(n / 1024).toFixed(0)} KB`;
 
 fs.rmSync(SCRATCH, { recursive: true, force: true });
 fs.mkdirSync(SCRATCH, { recursive: true });
+fs.mkdirSync(NO_EXPORTS, { recursive: true });
 
 // ── Source guard ─────────────────────────────────────────────────────────────
 
@@ -185,6 +189,16 @@ async function startServer(tag: string): Promise<void> {
       // variable, the union would silently come back and the session-count check
       // in arm B would be the only thing standing between us and a wrong figure.
       KLATCH_EXTRA_SESSION_ROOTS: '',
+      // Round 236. `CLAUDE_CONFIG_DIR` moves the SESSION roots; it has no reach
+      // over the repo's `exports/sessions/`, which Round 234 made the endpoint
+      // scan correctly for the first time. The 3.86 MB export therefore arrived
+      // in all three arms and put every session-ID check one over the PM file
+      // count — `90 sessions … 1 IDs not on the PM root`, in a probe whose
+      // subject is the cap and not the corpus membership. The check was right;
+      // "PM root ONLY" had simply stopped being true. Suppression is relocation
+      // (`getExportRoot`, Round 235, replace semantics, no disable flag), so the
+      // mechanism is a directory with no `exports/sessions/` beneath it.
+      KLATCH_EXPORT_ROOT: NO_EXPORTS,
     },
     stdio: ['ignore', logFd, logFd],
   });
@@ -389,7 +403,12 @@ async function measureCap(arm: string, tag: string, capValue: number): Promise<A
       foreign.length === 0 && missing.length === 0,
       `${warmRun.sessions} sessions across ${warmRun.projects} projects vs ${pmFiles.length} PM files ` +
         `(${shippedFiles.length + pmFiles.length} would mean the union); ` +
-        `${foreign.length} IDs not on the PM root, ${missing.length} PM files unreported; ` +
+        // Round 236: NAMED, not counted. When this went red on the export corpus
+        // the detail line said "1 IDs not on the PM root" and the next reader had
+        // to go find out which — an unaccounted-membership claim that does not say
+        // what it failed to account for costs a whole diagnosis cycle.
+        `${foreign.length} IDs not on the PM root${foreign.length ? ` [${foreign.slice(0, 5).join(', ')}]` : ''}, ` +
+        `${missing.length} PM files unreported${missing.length ? ` [${missing.slice(0, 5).join(', ')}]` : ''}; ` +
         `${kb(warmRun.bytes)} response`);
     check(arm, `${tag}: sourceRoot suppressed, as single-root scanning requires`,
       warmRun.withSourceRoot === 0,
