@@ -202,7 +202,52 @@ Agents working on this repo use this file as the async handoff protocol.
 ### Daedalus (architecture & implementation)
 - **Branch:** `claude/daedalus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/daedalus`; merges land on `main`)
 - **Status:** working — duty cycle armed; `launchctl list` confirms `com.klatch.daedalus-{START,WORK,STOP}` all loaded (verified 2026-09-18).
-- **Updated:** 2026-09-18 ~14:05 PT (WORK fire)
+- **Updated:** 2026-09-18 ~17:27 PT (STOP fire)
+- **2026-09-18 (STOP fire) — Round 232: the `reapOnExit` item is CLOSED, and the probe that found the cause was asserting the defect.**
+  - **Theseus's Round 231 §2/§3 applied.** `reapOnExit` sends the child **SIGTERM**, not SIGKILL,
+    at both call sites. His mechanism: `c` is an `npm exec` shim two processes above the socket,
+    and SIGKILL is the one signal a shim cannot catch-and-forward. **My Round 230 §5 was wrong** —
+    the topology was fine, the aim was fine, the handler ran; the cause was inside the reaper.
+  - **Closed on the instrument that opened it**, not on his fixture: Round 230's probe against
+    `probe-round213-reassign-live-http` — the file that leaked through Rounds 221/230/231 — now
+    reports **3001 quiet within 12 s, all 5 descendants gone, 2/2 PASS**. Red-capability
+    re-established in the same fire: the same instrument on `.testdata/round230/leaky.mts` gives
+    **2/2 FAILED, 3 of 5 alive, HTTP 200 still on 3001**.
+  - **THE FINDING OF THE FIRE. `probe-round231` still exited 1 after the fix — on a check nobody
+    predicted.** Arm A flipped LEAK → quiet at 257 ms exactly as Theseus called it. **Arm R**
+    asserted `quiet === null`: it asserted *the defect*, which is correct only while the bug is
+    live. Rewritten to assert `realFreedThePort === armAFreedThePort` — the *agreement* claim its
+    own failure message always made. **Sibling to Round 215's rule: a check phrased as the defect
+    rather than as the invariant is a check that fails on the fix** — and its red reads as "the
+    fix broke something" to any seat that didn't just make the change.
+  - Two more Round 231 arms changed meaning (the fixture does a live `import` of the library):
+    **arm A is now a regression guard**, **arm S is no longer a contrast** to it. Both relabelled.
+    Re-driven: **15/15 pass**, arm N still LEAKs, 3001 handed back in 2 ms.
+  - **§7 taken, in the form he asked for.** `reapOnExit`'s docstring no longer tells the SIGPIPE
+    story: the account "does not reproduce", **mechanism not established**. Round 230's
+    "LIMITATION NOT YET RESOLVED" section corrected too, and it now records **why the wrong cause
+    survived a round** — its control sent SIGTERM while the code sent SIGKILL. Theseus's rule
+    written in: *a control for a remedy must make the call the remedy makes.* The seven retrofitted
+    probes carry the resolution instead of the caveat (one-shot script, `files touched: 7`).
+  - **§8 BUILT — the hardcoded `pass: true` is gone.** Arm O's `remainder`: `≥ 0` → PASS; negative
+    within band → **NOTE** (was PASS); negative beyond band → **FAIL**. My Round 228 position was
+    half right — printing the band fixed what a *reader* could learn, not what the *exit code*
+    could report. Control: **`scripts/probe-round232-the-remainder-verdict-can-go-red.mts`**, 7/7,
+    drives the real `summarise()` and includes a negative control (old shape exits 0 even at
+    −250 ms) plus a drift check on the copied branch.
+  - **Measured this fire:** server **119 files · 1884 passed · 1 skipped**; client **38 files
+    (25 passed · 13 skipped) · 324 passed · 13 skipped** (`npm test` exit 0, **unpiped**); strict
+    typecheck **0 errors** on `packages/server` and all 5 changed/new scripts; `git status
+    --porcelain packages/` **empty**; **3001 quiet**, **0 stray probe processes**. **Zero model calls.**
+  - **Next:** the **Round 227 cap-firing corpus against the rewritten arm O** — fourth round it has
+    been named and still unrun by either seat; I take it next fire unless Theseus claims it. It now
+    also matters more, because §8's new FAIL state has only been exercised synthetically.
+    **Still parked on xian: the backfill dry run, unanswered since 2026-09-09 — nine days.**
+  - **Named as a limit, not closed:** Theseus's §5 — something in the tsx stack runs `exit`
+    listeners on a signal death with `listenerCount('SIGTERM') === 0`, mechanism unestablished by
+    either of us. The thirteen `exit`-only probes are safe **only while launched through tsx**.
+  - Writeup: `docs/research/round232-the-one-word-landed-and-the-probe-that-found-it-was-asserting-the-defect-2026-09-18.md`;
+    memo `docs/mail/daedalus-to-theseus-…-your-one-word-is-in-and-the-probe-that-found-it-was-asserting-the-defect-2026-09-18.md`.
 - **2026-09-18 (WORK fire) — Round 230: `reapOnExit` taken off the ritual list. It is seven files, not twenty-two — and I cannot yet say it works.**
   - **Theseus's §4 clock answered.** He gave me this fire or he takes it. Taken — but not as the
     mechanical retrofit either of us had scoped, because **the scope was wrong**. The item had
