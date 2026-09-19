@@ -72,7 +72,9 @@
 
 import fs from 'fs';
 import path from 'path';
-import os from 'os';
+// `os` was imported for arm M's hardcoded ~/.claude/projects literal, removed in
+// Round 233 — the corpus comes from the shipped resolver now. Nothing else here
+// needed the home directory.
 import crypto from 'crypto';
 import { spawn } from 'child_process';
 import {
@@ -114,6 +116,47 @@ const SCANNER = path.join(REPO, 'packages/server/src/import/session-scanner.ts')
  * re-opens the leak silently.
  */
 process.env.KLATCH_DB = DB;
+
+/**
+ * ─── 2026-09-18, Theseus (Round 233) — the corpus is an ARGUMENT now ─────────
+ *
+ * `npx tsx scripts/probe-browse-latency-end-to-end.mts [configDir]`
+ *
+ * With no argument, nothing changes: the default `~/.claude` root, which is what
+ * every previous round measured. With one, it relocates the session root the way
+ * `CLAUDE_CONFIG_DIR` does — because that is exactly what it sets, here, before
+ * the first import that can read it and before any server is spawned (the child
+ * inherits it).
+ *
+ * **Why an argument and not just the environment variable.** Two reasons, and the
+ * second is the load-bearing one:
+ *
+ * 1. `CLAUDE_CONFIG_DIR=… npx tsx …` as a shell prefix is refused from the duty-
+ *    cycle seat (measured 2026-09-18: `npx tsx --version` runs, the same command
+ *    with an env prefix does not). The assignment below is the same mechanism one
+ *    process earlier.
+ * 2. Four rounds of "run arm O against a corpus where the cap fires" went
+ *    unstarted partly because the probe had no way to be handed a corpus. A
+ *    documented argument makes the corpus an input of the instrument rather than
+ *    ambient state of whoever invoked it.
+ *
+ * A typo'd path must not silently become an empty corpus — an empty root makes
+ * arm M skip and arm L return nothing, which reads as "nothing to measure"
+ * rather than "you pointed me at nowhere." So it is checked here and refused.
+ */
+const CORPUS_ARG = process.argv[2];
+if (CORPUS_ARG) {
+  const abs = path.resolve(CORPUS_ARG);
+  const projectsDir = path.basename(abs) === 'projects' ? abs : path.join(abs, 'projects');
+  if (!fs.existsSync(projectsDir)) {
+    console.error(
+      `refusing: ${process.argv[2]} has no readable projects directory (looked for ${projectsDir}).\n` +
+      `Pass a Claude config dir (the one containing \`projects/\`), or no argument at all to use ~/.claude.`);
+    process.exit(2);
+  }
+  process.env.CLAUDE_CONFIG_DIR = abs;
+  console.log(`corpus relocated by argument: CLAUDE_CONFIG_DIR = ${abs}`);
+}
 
 const SAMPLES = 5; // per configuration; first sample reported separately as cold-ish
 
@@ -276,9 +319,14 @@ async function startServer(tag: string): Promise<void> {
  * JSON-parsed. Parsing is included deliberately — the client does it before it
  * can render a single row, so it is part of what a person waits for.
  */
-async function timeBrowse(n: number): Promise<{ samples: number[]; bytes: number; sessions: number; projects: number; capped: number }> {
+async function timeBrowse(n: number): Promise<{ samples: number[]; bytes: number; sessions: number; projects: number; capped: number; paths: string[] }> {
   const samples: number[] = [];
   let bytes = 0, sessions = 0, projects = 0, capped = 0;
+  // Round 233: the payload's own record of WHICH files the endpoint walked. Arm Q
+  // compares this against the set arm M fingerprinted; without it the two arms
+  // share only numbers, and two numbers from two corpora look exactly like two
+  // numbers from one.
+  let paths: string[] = [];
   for (let i = 0; i < n; i++) {
     const t0 = performance.now();
     const res = await fetch(`${BASE}/api/import/claude-code/sessions`);
@@ -290,8 +338,9 @@ async function timeBrowse(n: number): Promise<{ samples: number[]; bytes: number
     sessions = all.length;
     projects = (body.projects ?? []).length;
     capped = all.filter((s: any) => s.fingerprintCapped).length;
+    paths = all.map((s: any) => s.path).filter(Boolean);
   }
-  return { samples, bytes, sessions, projects, capped };
+  return { samples, bytes, sessions, projects, capped, paths };
 }
 
 type BrowseRun = Awaited<ReturnType<typeof timeBrowse>>;
@@ -366,22 +415,54 @@ if (!canStartOurOwnServer) {
 // rather than a re-run of Daedalus's: the point is whether the numbers replicate
 // on a second instrument, not whether his script is deterministic.
 
-const { extractSessionFingerprint } = await import(path.join(REPO, 'packages/server/src/import/session-scanner.ts'));
+const { extractSessionFingerprint, getSessionRoots } = await import(path.join(REPO, 'packages/server/src/import/session-scanner.ts'));
 
+/**
+ * ─── 2026-09-18, Theseus (Round 233) — this used to be a hardcoded literal ───
+ *
+ * It read:
+ *
+ *   const projectsDir = path.join(os.homedir(), '.claude', 'projects');
+ *
+ * which ignores both `CLAUDE_CONFIG_DIR` and `KLATCH_EXTRA_SESSION_ROOTS`, while
+ * the server honors both (session-scanner.ts:150, :184). So on any run with a
+ * relocated or extended root — which is *exactly* the run the four-round-old
+ * "arm O on a corpus where the cap fires" assignment needs — arms L and N timed
+ * a browse of one corpus and arm M summed the fingerprints of another, and arm O
+ * subtracted the second from the first.
+ *
+ * Driven, not reasoned (`probe-round233-…`, this fire, against the relocated
+ * Round 227 cap-firing corpus):
+ *
+ *   shipped getSessionRoots() → …/.testdata/round227/config/projects   (8 files)
+ *   arm M's literal          → /Users/xian/.claude/projects           (536 files)
+ *   cold browse 207 ms − fingerprint sum 2669 ms = remainder −2462 ms
+ *
+ * −2462 ms is beyond-noise negative against even a deliberately generous ±267 ms
+ * band, and since Round 232 that state is a hard FAIL. The first seat to attempt
+ * the assignment the obvious way would have been handed a red whose plain reading
+ * is "the decomposition is broken."
+ *
+ * Fixed by resolution, not by a second literal: arm M now walks the roots the
+ * server walks, whatever they are. Arm Q asserts the outcome at the file-set
+ * level, so this cannot silently come apart again if either side's resolution
+ * changes.
+ */
 function corpusFiles(): string[] {
-  const projectsDir = path.join(os.homedir(), '.claude', 'projects');
-  if (!fs.existsSync(projectsDir)) return [];
   const out: string[] = [];
-  for (const entry of fs.readdirSync(projectsDir, { withFileTypes: true })) {
-    if (!entry.isDirectory()) continue;
-    const dir = path.join(projectsDir, entry.name);
-    let files: fs.Dirent[];
-    try { files = fs.readdirSync(dir, { withFileTypes: true }); } catch { continue; }
-    for (const f of files) {
-      if (!f.isFile() || !f.name.endsWith('.jsonl')) continue;
-      const p = path.join(dir, f.name);
-      try { if (fs.statSync(p).size < 100) continue; } catch { continue; } // mirrors session-scanner.ts:267
-      out.push(p);
+  for (const projectsDir of getSessionRoots() as string[]) {
+    if (!fs.existsSync(projectsDir)) continue; // a typo'd extra root is skipped by the scanner too
+    for (const entry of fs.readdirSync(projectsDir, { withFileTypes: true })) {
+      if (!entry.isDirectory()) continue;
+      const dir = path.join(projectsDir, entry.name);
+      let files: fs.Dirent[];
+      try { files = fs.readdirSync(dir, { withFileTypes: true }); } catch { continue; }
+      for (const f of files) {
+        if (!f.isFile() || !f.name.endsWith('.jsonl')) continue;
+        const p = path.join(dir, f.name);
+        try { if (fs.statSync(p).size < 100) continue; } catch { continue; } // mirrors session-scanner.ts:267
+        out.push(p);
+      }
     }
   }
   return out;
@@ -410,7 +491,7 @@ let totalBytes = 0;
 const M_PASSES = 3;
 
 if (files.length === 0) {
-  skip('M', 'no readable corpus under ~/.claude/projects');
+  skip('M', `no readable corpus under any resolved session root [${(getSessionRoots() as string[]).join(', ')}]`);
 } else {
   for (const f of files) { try { totalBytes += fs.statSync(f).size; } catch { /* ignore */ } }
 
@@ -449,6 +530,46 @@ if (files.length === 0) {
   check('M', 'cap-bites and turn-retention figures reproduce', true,
     `cap fires on ${cappedFiles}/${files.length} files (${pctFiles}%); turns ${turnsCapped} → ${turnsUncapped} (${pctTurns}% retained, +${turnsUncapped - turnsCapped} recovered)`,
     'measurement');
+}
+
+// ── Arm Q — arm M and the endpoint must have walked the SAME corpus ──────────
+//
+// ─── 2026-09-18, Theseus (Round 233) — arm O's unstated precondition ─────────
+//
+// Arm O computes `remainder = coldBrowse - mCapped`. That subtraction is only a
+// decomposition if the fingerprint sum covers the files the browse paid for.
+// Nothing asserted it: arm M resolved its own corpus from a literal, the
+// endpoint resolved its own from `getSessionRoots()`, and by the time arm O saw
+// them they were two numbers. Two numbers from two corpora look exactly like
+// two numbers from one.
+//
+// This is the guard the Round 227 rule demands — *a guard on the variable that
+// names the target is not a guard on the handle that was opened* — applied to
+// the corpus rather than to the database. It compares FILE SETS, not counts:
+// two different directories can hold the same number of files, and a count
+// comparison would call that agreement.
+//
+// It admits one legitimate asymmetry and no others. `scanClaudeCodeSessions`
+// de-duplicates by session id (session-scanner.ts:539), so the endpoint may
+// return FEWER sessions than arm M fingerprinted. It may never return one arm M
+// did not fingerprint — that is the direction that breaks arm O.
+if (!L) {
+  skip('Q', 'arm L did not run, so there is no endpoint corpus to compare arm M against');
+} else if (files.length === 0) {
+  skip('Q', 'arm M skipped — nothing to compare');
+} else {
+  const fingerprinted = new Set(files.map((f) => path.resolve(f)));
+  const walkedButNotSummed = L.paths.filter((p) => !fingerprinted.has(path.resolve(p)));
+  const roots = (getSessionRoots() as string[]).map((r) => path.resolve(r));
+  check('Q', 'arm M fingerprinted every file the browse endpoint walked',
+    L.paths.length > 0 && walkedButNotSummed.length === 0,
+    `endpoint returned ${L.paths.length} session path(s); arm M fingerprinted ${files.length} file(s) ` +
+    `over roots [${roots.join(', ')}]; ${walkedButNotSummed.length} walked-but-not-summed` +
+    (walkedButNotSummed.length
+      ? ` — e.g. ${walkedButNotSummed.slice(0, 3).join(', ')}. Arm O's remainder is not a ` +
+        `decomposition on this run: the two sides are different corpora.`
+      : `. Arm O's inputs are the same corpus, which is the precondition its ` +
+        `subtraction has always assumed and never checked.`));
 }
 
 // ── Arm N — real HTTP browse latency with the cap removed ────────────────────
