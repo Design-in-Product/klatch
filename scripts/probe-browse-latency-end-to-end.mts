@@ -416,6 +416,12 @@ if (!canStartOurOwnServer) {
 // on a second instrument, not whether his script is deterministic.
 
 const { extractSessionFingerprint, getSessionRoots } = await import(path.join(REPO, 'packages/server/src/import/session-scanner.ts'));
+// Round 234: the endpoint's SECOND corpus. `routes/import.ts:106` calls
+// `scanExportedSessions(getProjectRoot())`, so the repo's exports/sessions is
+// part of the population the browse walks. Resolved through the shipped
+// function for the same reason arm M's session roots are — a second literal is
+// how the first mismatch happened.
+const { getProjectRoot } = await import(path.join(REPO, 'packages/server/src/paths.ts'));
 
 /**
  * ─── 2026-09-18, Theseus (Round 233) — this used to be a hardcoded literal ───
@@ -447,6 +453,28 @@ const { extractSessionFingerprint, getSessionRoots } = await import(path.join(RE
  * server walks, whatever they are. Arm Q asserts the outcome at the file-set
  * level, so this cannot silently come apart again if either side's resolution
  * changes.
+ *
+ * ─── 2026-09-19, Theseus (Round 234) — the endpoint grew a SECOND corpus ─────
+ *
+ * Arm Q then did exactly the job it was built for, one fire later and against my
+ * own closed-world premise. Daedalus's Round 234 repair of `routes/import.ts:106`
+ * made the browse walk `getSessionRoots()` **and** the repo's `exports/sessions`.
+ * My Round 233 note above said the dedup "may never return one arm M did not
+ * fingerprint"; the fix in the very next fire added one. Driven, before this
+ * repair: `endpoint returned 9 session path(s); arm M fingerprinted 8 file(s)` —
+ * the 9th is `exports/sessions/theseus-2026-03-22.jsonl`, 3.86 MB, a real
+ * fingerprint cost that landed in arm O's remainder unattributed.
+ *
+ * So arm M resolves BOTH corpora the same way the endpoint does. Note what is
+ * NOT done here: arm Q is not loosened. Daedalus offered that framing and I am
+ * declining it in the same terms he did — the guard was right to fire, and an
+ * arm that is widened to stop reporting a population change is not a guard.
+ *
+ * The export scan's filter is mirrored from `session-scanner.ts:639-650`: flat
+ * directory (no project subdirectories, unlike the session roots), `.jsonl`,
+ * `size >= 100`. Mirroring rather than calling is deliberate — arm M needs the
+ * FILE LIST to fingerprint file by file, and `scanExportedSessions` returns
+ * assembled `SessionInfo`s with the fingerprints already taken.
  */
 function corpusFiles(): string[] {
   const out: string[] = [];
@@ -464,6 +492,45 @@ function corpusFiles(): string[] {
         out.push(p);
       }
     }
+  }
+  out.push(...exportedCorpusFiles());
+  return out;
+}
+
+/**
+ * The endpoint's second corpus — `<repo root>/exports/sessions`, resolved the
+ * way `routes/import.ts:106` resolves it.
+ *
+ * Deliberately NOT gated on `CLAUDE_CONFIG_DIR`: the shipped code isn't. A probe
+ * that relocated the session root and then hid the exports from arm M would be
+ * summing a corpus the server does not walk — the Round 233 defect with the sign
+ * flipped. Whether the server *should* isolate this under relocation is a real
+ * open question (Daedalus's Round 234 §2, parked); arm M's job is to match what
+ * it does today, and arm Q will report the day that changes.
+ */
+/**
+ * Every directory arm M resolved, in the order it walked them. Reported by arm M's
+ * skip and by arm Q so a reader can see which corpora were in scope for a given
+ * run — under Round 234 there is more than one, and which ones were live is the
+ * first thing a mismatch makes you want to know.
+ */
+function corpusRoots(): string[] {
+  const roots = (getSessionRoots() as string[]).map((r) => path.resolve(r));
+  const exportDir = path.join(getProjectRoot() as string, 'exports', 'sessions');
+  return fs.existsSync(exportDir) ? [...roots, path.resolve(exportDir)] : roots;
+}
+
+function exportedCorpusFiles(): string[] {
+  const exportDir = path.join(getProjectRoot() as string, 'exports', 'sessions');
+  if (!fs.existsSync(exportDir)) return [];
+  let entries: fs.Dirent[];
+  try { entries = fs.readdirSync(exportDir, { withFileTypes: true }); } catch { return []; }
+  const out: string[] = [];
+  for (const f of entries) {
+    if (!f.isFile() || !f.name.endsWith('.jsonl')) continue;
+    const p = path.join(exportDir, f.name);
+    try { if (fs.statSync(p).size < 100) continue; } catch { continue; } // mirrors session-scanner.ts:650
+    out.push(p);
   }
   return out;
 }
@@ -491,7 +558,9 @@ let totalBytes = 0;
 const M_PASSES = 3;
 
 if (files.length === 0) {
-  skip('M', `no readable corpus under any resolved session root [${(getSessionRoots() as string[]).join(', ')}]`);
+  // Names BOTH resolved corpora, not just the session roots. An emptiness claim
+  // that doesn't say where it looked is the failure mode this fire is about.
+  skip('M', `no readable corpus under any resolved root [${corpusRoots().join(', ')}]`);
 } else {
   for (const f of files) { try { totalBytes += fs.statSync(f).size; } catch { /* ignore */ } }
 
@@ -553,6 +622,25 @@ if (files.length === 0) {
 // de-duplicates by session id (session-scanner.ts:539), so the endpoint may
 // return FEWER sessions than arm M fingerprinted. It may never return one arm M
 // did not fingerprint — that is the direction that breaks arm O.
+//
+// ─── 2026-09-19, Theseus (Round 234) — that clause had an unstated premise ───
+//
+// "It may never return one arm M did not fingerprint" was a claim about the
+// endpoint's BEHAVIOUR. It was actually a claim about the endpoint's CORPUS
+// COUNT: true while the browse walked one corpus, false the moment it walked
+// two. Daedalus's export-scan repair added the second corpus 130 lines and one
+// fire away from where I wrote the clause, and this arm went red — correctly.
+//
+// Kept strict, and the repair went to arm M's resolution instead. The rule I
+// take from it, sibling to the same-population rule this arm already encodes:
+//
+//   **An asymmetry clause is a closed-world claim. "The endpoint can only ever
+//   return a SUBSET" silently asserts how many populations feed it, and a bug
+//   fix is one of the ordinary things that changes that number.**
+//
+// Which is why this arm compares FILE SETS and reports the offenders by path.
+// A count-based version would have read "9 vs 8" and told you nothing about
+// which corpus grew.
 if (!L) {
   skip('Q', 'arm L did not run, so there is no endpoint corpus to compare arm M against');
 } else if (files.length === 0) {
@@ -560,7 +648,7 @@ if (!L) {
 } else {
   const fingerprinted = new Set(files.map((f) => path.resolve(f)));
   const walkedButNotSummed = L.paths.filter((p) => !fingerprinted.has(path.resolve(p)));
-  const roots = (getSessionRoots() as string[]).map((r) => path.resolve(r));
+  const roots = corpusRoots();
   check('Q', 'arm M fingerprinted every file the browse endpoint walked',
     L.paths.length > 0 && walkedButNotSummed.length === 0,
     `endpoint returned ${L.paths.length} session path(s); arm M fingerprinted ${files.length} file(s) ` +

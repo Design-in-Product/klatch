@@ -193,6 +193,11 @@ async function startServer(tag: string): Promise<void> {
 async function timeBrowse(n: number) {
   const samples: number[] = [];
   let bytes = 0, sessions = 0, projects = 0, capped = 0, turns = 0;
+  // Round 234: WHICH files, not just how many. Arm C used to compare
+  // `sessions === files.length`, and a count cannot tell "the corpus I built"
+  // from "a corpus of the same size" — my own Round 233 lesson, applied here
+  // one round late.
+  let paths: string[] = [];
   for (let i = 0; i < n; i++) {
     const t0 = performance.now();
     const res = await fetch(`${BASE}/api/import/claude-code/sessions`, { headers: { connection: 'close' } });
@@ -205,8 +210,45 @@ async function timeBrowse(n: number) {
     projects = (body.projects ?? []).length;
     capped = all.filter((s: any) => s.fingerprintCapped).length;
     turns = all.reduce((acc: number, s: any) => acc + (s.turnCount ?? 0), 0);
+    paths = all.map((s: any) => s.path).filter(Boolean);
   }
-  return { samples, bytes, sessions, projects, capped, turns, cold: samples[0], warm: median(samples.slice(1)) };
+  return { samples, bytes, sessions, projects, capped, turns, paths, cold: samples[0], warm: median(samples.slice(1)) };
+}
+
+/**
+ * ─── 2026-09-19, Theseus (Round 234) — the endpoint walks a SECOND corpus ────
+ *
+ * This probe relocates `CLAUDE_CONFIG_DIR` onto a synthetic corpus it builds
+ * itself, and every arm from B down was written on the premise that the
+ * relocation is total. It is not, since Daedalus's Round 234 repair of
+ * `routes/import.ts:106`: the browse also returns `<repo>/exports/sessions`,
+ * resolved from the module's own location, reading no environment variable.
+ *
+ * Verified, not assumed — `paths.ts` reads no `process.env` at all, and the
+ * export path has exactly one call site. **There is no lever a probe can pull to
+ * relocate or suppress this corpus.** Relocation was a complete isolation
+ * mechanism only for as long as the export scan was broken; the fix took that
+ * property away as a side effect, and this is the first probe to pay for it.
+ *
+ * So the synthetic corpus stays the FIXTURE (arm A's inventory and cap claims
+ * are about the files this probe wrote, and must not drift), while the
+ * arithmetic arms — B, E, F, G — sum over the population the endpoint actually
+ * walks. Arm O's remainder is only a decomposition if its two terms cover the
+ * same files, which is the whole finding of Round 233 arriving in a second probe.
+ */
+function exportedCorpusFiles(): string[] {
+  const exportDir = path.join(REPO, 'exports', 'sessions');
+  if (!fs.existsSync(exportDir)) return [];
+  let entries: fs.Dirent[];
+  try { entries = fs.readdirSync(exportDir, { withFileTypes: true }); } catch { return []; }
+  const out: string[] = [];
+  for (const f of entries) {
+    if (!f.isFile() || !f.name.endsWith('.jsonl')) continue;
+    const p = path.join(exportDir, f.name);
+    try { if (fs.statSync(p).size < 100) continue; } catch { continue; } // mirrors session-scanner.ts:650
+    out.push(p);
+  }
+  return out;
 }
 
 await requireAnUnoccupiedPort(PORT, PROBE);
@@ -251,6 +293,15 @@ for (let i = 0; i < SMALL_FILES; i++) {
 const files = [...bigFiles, ...smallFiles];
 const corpusBytes = files.reduce((a, f) => a + fs.statSync(f).size, 0);
 
+/**
+ * The population the ENDPOINT walks: the synthetic fixture plus the repo's
+ * exported sessions, which the relocation cannot exclude (see above). Arm A
+ * keeps using `files` — its claims are about the fixture as constructed. Arms
+ * B/E/F/G use this, because they are compared against endpoint measurements.
+ */
+const exportedFiles = exportedCorpusFiles();
+const walkedFiles = [...files, ...exportedFiles];
+
 const { extractSessionFingerprint } = await import(path.join(REPO, 'packages/server/src/import/session-scanner.ts'));
 
 const UNCAPPED = Number.MAX_SAFE_INTEGER;
@@ -283,20 +334,24 @@ check('A', 'corpus inventory', true,
 // Same shape as probe-browse-latency-end-to-end arm M: warm the page cache for
 // both passes equally, then time a capped pass and an uncapped pass.
 
-for (const f of files) await extractSessionFingerprint(f, SHIPPED_CAP);
+// Round 234: over `walkedFiles`, not `files` — these sums are subtracted from
+// endpoint timings in E and F, and a sum over 8 files minus a browse over 9 is
+// not a decomposition.
+for (const f of walkedFiles) await extractSessionFingerprint(f, SHIPPED_CAP);
 
 let t0 = performance.now();
-for (const f of files) await extractSessionFingerprint(f, SHIPPED_CAP);
+for (const f of walkedFiles) await extractSessionFingerprint(f, SHIPPED_CAP);
 const mCapped = performance.now() - t0;
 
 t0 = performance.now();
-for (const f of files) await extractSessionFingerprint(f, UNCAPPED);
+for (const f of walkedFiles) await extractSessionFingerprint(f, UNCAPPED);
 const mUncapped = performance.now() - t0;
 
 const fingerprintDelta = mUncapped - mCapped;
 check('B', 'fingerprint sum at cap vs uncapped, this corpus', true,
   `cap ${SHIPPED_CAP} ${ms(mCapped)}, uncapped ${ms(mUncapped)}, delta +${ms(fingerprintDelta)} ` +
-  `(+${pct(100 * fingerprintDelta / mCapped)} of the scan)`,
+  `(+${pct(100 * fingerprintDelta / mCapped)} of the scan) — over ${walkedFiles.length} file(s): ` +
+  `${files.length} synthetic + ${exportedFiles.length} exported`,
   'measurement');
 check('B', 'the fingerprint delta is large enough to be measurable at the endpoint', fingerprintDelta > 50,
   `+${ms(fingerprintDelta)}; arm O on ~/.claude/projects had +10 ms, which is why its 20% band ran over noise`);
@@ -311,8 +366,30 @@ try {
   killServer();
 }
 
-check('C', 'the endpoint returns the synthetic corpus, and nothing else', L!.sessions === files.length,
-  `${L!.sessions} sessions across ${L!.projects} projects (expect ${files.length} / 1), ${(L!.bytes / 1e3).toFixed(0)} kB payload`);
+// ─── 2026-09-19, Theseus (Round 234) — "and nothing else" was the premise ────
+//
+// This read `L!.sessions === files.length` and went red on Daedalus's export-scan
+// repair: `9 sessions across 2 projects (expect 8 / 1)`. The arm was not wrong
+// about the endpoint — the endpoint was right and the arm's world had one corpus
+// in it.
+//
+// Restated as the invariant it was always for: the endpoint returns exactly the
+// population this probe accounted for, no more and no less. Compared as a SET,
+// so an unexpected file is named rather than summarised into a count, and so a
+// swap of equal size cannot pass. "Nothing else" survives — it now means
+// "nothing this probe has not accounted for" rather than "nothing but the
+// fixture."
+const returned = new Set(L!.paths.map((p) => path.resolve(p)));
+const accounted = new Set(walkedFiles.map((f) => path.resolve(f)));
+const unexpected = [...returned].filter((p) => !accounted.has(p));
+const missing = [...accounted].filter((p) => !returned.has(p));
+check('C', 'the endpoint returns exactly the corpus this probe accounted for, and nothing else',
+  L!.paths.length > 0 && unexpected.length === 0 && missing.length === 0,
+  `${L!.sessions} sessions across ${L!.projects} projects ` +
+  `(accounted: ${files.length} synthetic + ${exportedFiles.length} exported = ${walkedFiles.length}), ` +
+  `${(L!.bytes / 1e3).toFixed(0)} kB payload` +
+  (unexpected.length ? `; UNEXPECTED: ${unexpected.slice(0, 3).join(', ')}` : '') +
+  (missing.length ? `; NOT RETURNED: ${missing.slice(0, 3).join(', ')}` : ''));
 check('C', 'the cap fires AT THE WIRE, not only in a unit call', L!.capped === BIG_FILES,
   `fingerprintCapped on ${L!.capped}/${L!.sessions} sessions (expect ${BIG_FILES})`);
 check('C', 'capped browse, per sample', true,

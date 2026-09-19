@@ -330,24 +330,53 @@ try {
   sessionsAtWire = all.length;
   cappedAtWire = all.filter((s: any) => s.fingerprintCapped).length;
 
-  const underShipped = endpointPaths.filter((p) => shippedRoots.some((r) => path.resolve(p).startsWith(path.resolve(r))));
+  // ─── 2026-09-19, Theseus (Round 234) — this arm counted roots, not origins ──
+  //
+  // It read `underShipped.length === endpointPaths.length` against
+  // `getSessionRoots()` alone, and went red on Daedalus's export-scan repair:
+  // `9 session(s) at the wire; 8/9 under getSessionRoots()`. The 9th is the
+  // repo's exported session, which no session root was ever going to contain.
+  //
+  // The arm's CLAIM was never "the endpoint walks exactly one corpus" — that was
+  // an accident of the day it was written. The claim is that everything the
+  // endpoint returns came from somewhere the SERVER resolves, and nothing from
+  // the literal arm M used to use. So the admissible set is enumerated from the
+  // server's own resolution — both halves of it — rather than from the half that
+  // happened to exist in Round 233.
+  //
+  // Phrased as the invariant, per Daedalus's Round 232 rule: an arm phrased as
+  // the defect fails on the fix. This one now survives a third corpus being
+  // added, provided whoever adds it adds it here too — and if they don't, the
+  // detail line names the unaccounted path instead of just a count.
+  const serverRoots = [...shippedRoots, path.join(REPO, 'exports', 'sessions')];
+  const fromAServerRoot = endpointPaths.filter((p) => serverRoots.some((r) => path.resolve(p).startsWith(path.resolve(r))));
+  const unaccounted = endpointPaths.filter((p) => !serverRoots.some((r) => path.resolve(p).startsWith(path.resolve(r))));
   const underArmM = endpointPaths.filter((p) => path.resolve(p).startsWith(path.resolve(oldArmMRoots[0])));
 
-  check('B', 'every session the endpoint returned lives under the shipped resolver’s roots, and none under the old literal’s',
-    endpointPaths.length > 0 && underShipped.length === endpointPaths.length && underArmM.length === 0,
-    `${sessionsAtWire} session(s) at the wire; ${underShipped.length}/${endpointPaths.length} under ` +
-    `getSessionRoots(), ${underArmM.length}/${endpointPaths.length} under ~/.claude/projects. ` +
-    `The endpoint is the authoritative side: arm M is the arm that is wrong, not the server.`);
+  check('B', 'every session the endpoint returned came from a root the server resolves, and none from the old literal’s',
+    endpointPaths.length > 0 && unaccounted.length === 0 && underArmM.length === 0,
+    `${sessionsAtWire} session(s) at the wire; ${fromAServerRoot.length}/${endpointPaths.length} under a ` +
+    `server-resolved root (getSessionRoots() ∪ <repo>/exports/sessions), ` +
+    `${underArmM.length}/${endpointPaths.length} under ~/.claude/projects` +
+    (unaccounted.length ? ` — UNACCOUNTED: ${unaccounted.slice(0, 3).join(', ')}` : '') +
+    `. The endpoint is the authoritative side: arm M is the arm that is wrong, not the server.`);
 
   // ── Arm X — a second corpus the endpoint is supposed to walk and doesn't ───
   //
   // Found while writing arm Q's admissible-asymmetry clause, not looked for.
-  // `routes/import.ts:105` calls `scanExportedSessions(process.cwd())`, and the
+  // `routes/import.ts:105` called `scanExportedSessions(process.cwd())`, and the
   // parameter is named `repoRoot` (session-scanner.ts:622) — it appends
   // `exports/sessions`. But the server is launched with cwd
   // `packages/server` (root package.json: `npm run dev -w packages/server`, and
-  // every probe here spawns it the same way), so the lookup resolves to
+  // every probe here spawns it the same way), so the lookup resolved to
   // `packages/server/exports/sessions`, not to the repo root's.
+  //
+  // ─── 2026-09-19, Round 234 — REPAIRED, and this arm is now a regression test ─
+  // Daedalus moved the call to `scanExportedSessions(getProjectRoot())`
+  // (`paths.ts`, resolved from the module's own location). Arm X is green: 1 of
+  // 1, under the same cwd that gave 0 of 1. It stays, and stays phrased as the
+  // invariant, because the arm that proves the fix is the arm that catches the
+  // regression.
   //
   // Stated as the invariant: exported sessions present in the repo are reachable
   // through browse. Both sides are read from the filesystem here rather than
@@ -362,14 +391,16 @@ try {
     repoExportFiles.length === 0 || exportedAtWire.length > 0,
     `${repoExportFiles.length} .jsonl under ${repoExports} ` +
     `(${repoExportFiles.slice(0, 3).join(', ') || 'none'}); ` +
-    `server cwd is packages/server, so scanExportedSessions(process.cwd()) looks at ` +
+    `server cwd is packages/server, where a cwd-resolved scan would look at ` +
     `${serverExports} — exists = ${fs.existsSync(serverExports)}; ` +
     `${exportedAtWire.length} exported session(s) in the payload. ` +
     (repoExportFiles.length > 0 && exportedAtWire.length === 0
       ? `So a session file committed to the repo does not appear in Browse under the shipped ` +
-        `launch layout. Independent of the relocation this probe sets — the export scan does not ` +
-        `read CLAUDE_CONFIG_DIR.`
-      : `Nothing to reach, or reached.`));
+        `launch layout — the Round 233 defect, back. Independent of the relocation this probe ` +
+        `sets: the export scan does not read CLAUDE_CONFIG_DIR.`
+      : `Reached under the shipped cwd, which is the Round 234 repair holding. Note it is reached ` +
+        `DESPITE the relocation — the export scan reads no env var, so this corpus cannot be ` +
+        `relocated or suppressed by a probe.`));
 
   check('C', 'the cap fires on this corpus at the wire',
     cappedAtWire > 0 && cappedAtWire < sessionsAtWire,
