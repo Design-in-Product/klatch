@@ -165,3 +165,67 @@ $ git status --porcelain
 
 Commits stay local per this cycle's fire instructions — the wrapper owns delivery to `origin/main` and
 logs the outcome. Not claiming delivered.
+
+---
+
+## STOP fire — rollup refreshed to v140: `reapOnExit` closed, cap-firing corpus item retired after four fires named
+
+- Read `docs/COORDINATION.md` and `docs/mail/` at fire start per standing protocol. Pulled: already up to
+  date at `f94d2d5c`. My own SWEEP-fire checkpoint (`e114df9e`) plus `git log --oneline e114df9e..HEAD`
+  showed 9 new commits, none mine: Daedalus's Round 232, Argus's own STOP sweep, Theseus's Round 233,
+  Iris's own STOP handoff. `git diff --stat e114df9e..HEAD -- packages/` empty; `-- scripts/` 13 files (2
+  new, 11 edited).
+- Two new mail files since my last checkpoint (`find docs/mail -maxdepth 1 -newer
+  docs/logs/2026-09-18-0832-calliope-sonnet-log.md`), both read in full, neither addressed to this seat by
+  name, no reply owed:
+  - **Round 232 (Daedalus):** applied Theseus's Round 231 one-word fix — `reapOnExit` now sends `SIGTERM`
+    at both call sites — driven against the real leaking probe, not trusted on the diagnosis alone (2/2
+    failing before, quiet within 12s and all 5 descendants gone after). Found his own Round 230 arm R had
+    been asserting the defect (`quiet === null`) rather than the invariant it claimed to check — a check
+    phrased as the defect is a check that fails on the fix. Built the `remainder` verdict's hard-FAIL state
+    Round 230 proposed, with a control proving the *mapping* (not the arithmetic) was the three-round miss.
+  - **Round 233 (Theseus):** took the cap-firing-corpus item — named as the clearest next probe for four
+    fires running — in the same fire Daedalus offered it, rather than deferring. Found arm O green on the
+    real corpus for the first time (residual 10ms vs. a ±24ms band), but the obvious way to run it
+    (relocate the session root) would have produced a false FAIL: the probe's own corpus-summing arm read a
+    hardcoded literal instead of honoring `CLAUDE_CONFIG_DIR` the way the server does, silently summing a
+    different, much larger population than the endpoint walked. Repaired to follow the server's own root
+    resolution; guarded with a new arm asserting file-set (not count) agreement between the two sides.
+  - **Found in passing, routed to Daedalus, not built:** exported cloud-agent sessions are unreachable
+    under the shipped launch layout — `scanExportedSessions(process.cwd())` resolves relative to wherever
+    the server process starts (`packages/server` under `npm run dev`, not the repo root its own parameter
+    name `repoRoot` assumes). Driven both ways (0-of-1 vs. 1-of-1 exported sessions in the payload, same
+    corpus, only cwd differs), live since v0.8.7, invisible to the suite because both tests touching the
+    function either mock it out or pass an absolute temp dir. Product-facing, distinct from the three
+    testing-infrastructure items the rollup's needs-you count carries — not added to that count since it's
+    a build owed to Daedalus, not a decision owed to xian.
+  - Both memos have their own open items not addressed to this seat (Daedalus's "Arm X," Theseus's tsx
+    exit-listener limit) — correctly left in `docs/mail/`, not moved to `read/`, not mine to close.
+- **Independently verified, not re-trusted:** `npm run typecheck` run fresh, redirected to a worktree-local
+  scratch file (`.scratch-typecheck.txt`, deleted after reading) — 0 `error TS` lines across all three
+  workspaces. `npm test` run fresh, same pattern (`.scratch-test.txt`, deleted after reading, not piped to
+  `tail`) — server **1884/1885 (119 files, 1 skipped)**, client **324/337 (13 skipped, 38 files)** — matches
+  both memos' own figures exactly, unchanged from the SWEEP fire's own confirmation. `git status
+  --porcelain` clean before and after both runs.
+- Standing blockers re-checked directly, all three unchanged: Janus's logbook-shape thread (`ls docs/mail |
+  grep -i xian-to` empty, both files confirmed still present via direct `ls`, not moved to `read/` — 21
+  days since 8/28), rollup-html-mirror-drift (`git log -1 --format=%cd -- docs/operations/attention-rollup.html`
+  → 2026-08-23, `.md` now 9/18, 11 days since flagged 9/7), ground-rules standing/per-klatch question (40
+  days since 8/9, confirmed present via direct `ls`).
+- Refreshed `docs/operations/attention-rollup.md` to v140: new banner covering Rounds 232/233, prior banner
+  (v139) preserved verbatim under "superseded," new changelog entry. Needs-you count unchanged at 3.
+- Updated `docs/COORDINATION.md`'s Calliope section with this fire's entry.
+
+**Wrap verification:**
+
+```
+$ git status --porcelain
+(clean)
+$ ls docs/operations/attention-rollup.md docs/COORDINATION.md docs/logs/2026-09-18-0832-calliope-sonnet-log.md
+docs/operations/attention-rollup.md
+docs/COORDINATION.md
+docs/logs/2026-09-18-0832-calliope-sonnet-log.md
+```
+
+Commits stay local per this cycle's fire instructions — the wrapper owns delivery to `origin/main` and
+logs the outcome. Not claiming delivered. End of day-part cycle.
