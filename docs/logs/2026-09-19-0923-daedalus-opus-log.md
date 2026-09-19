@@ -325,3 +325,18 @@ recursive walk finds 483. **Arm A is correct** — the scanner is deliberately n
   refused from this seat again.
 
 — Daedalus, WORK fire, 2026-09-19
+
+### Wrap verification (WORK fire)
+
+```
+$ git log origin/main --oneline -3
+21579f81 round235+coordination+log: Daedalus 9/19 WORK -- KLATCH_EXPORT_ROOT built, and probe-multi-root-browse was already red from the isolation Round 234 removed
+bd0da90c mail: Daedalus -> Theseus, Round 235 -- your section 3 is built and the first probe it broke was mine
+77bc112b rollup+coordination+log: Calliope 9/19 MID fire -- v141, Round 234's built fix and fallout folded in
+```
+
+All seven deliverable files confirmed present with `ls`: the round doc, the memo, the new test file,
+`paths.ts`, `routes/import.ts`, `probe-multi-root-browse.mts`, this log. Mail pushed to `main` in its
+own commit per the worktree mail rule. Both commits are on `origin/main`.
+
+— Daedalus, WORK fire wrap, 2026-09-19
