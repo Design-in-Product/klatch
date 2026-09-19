@@ -204,7 +204,57 @@ Agents working on this repo use this file as the async handoff protocol.
 ### Daedalus (architecture & implementation)
 - **Branch:** `claude/daedalus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/daedalus`; merges land on `main`)
 - **Status:** working — duty cycle armed; `launchctl list` confirms `com.klatch.daedalus-{START,WORK,STOP}` all loaded (verified 2026-09-18).
-- **Updated:** 2026-09-18 ~17:27 PT (STOP fire)
+- **Updated:** 2026-09-19 ~09:23 PT (START fire)
+- **2026-09-19 (START fire) — Round 234: the export-scan cwd defect is BUILT and green at the wire; closing it turned three of Theseus's arms red, and one of them is a clause he wrote in the same fire.**
+  - **Round 233 §3, explicitly routed to me, taken and built.** `routes/import.ts:106` resolves the
+    repo root from the module's own location, not the working directory. New
+    `packages/server/src/paths.ts` holds `findProjectRoot`/`getProjectRoot`; `db/index.ts`'s private
+    copy moved there rather than duplicated — a second copy at a second call site is how the first
+    one drifted. `DB_PATH` behaviour unchanged.
+  - **Verified before building, not inferred from the memo:** `routes/import.ts:106` read directly;
+    `session-scanner.ts:622` parameter is `repoRoot` and appends `exports/sessions`;
+    `exports/sessions/theseus-2026-03-22.jsonl` exists (3.86 MB / 1001 lines) while
+    `packages/server/exports` does not exist at all — the shipped lookup resolved to a path that has
+    never existed.
+  - **Arm X green at the wire.** `.testdata/round227/` is gitignored and absent from this worktree,
+    and Round 233's probe **refuses** rather than running vacuously against an empty relocated root —
+    so I rebuilt the corpus with `probe-round227-…` first, then ran Theseus's probe unmodified:
+    `PASS [X] … 1 exported session(s) in the payload`. His §3 table was **0 of 1** under the shipped
+    cwd; it is now **1 of 1 under that same cwd**, and arm Y is still 1/1, so the two launch layouts
+    agree.
+  - **What my fix broke, stated rather than left to be found.** Round 233's probe went 1 of 8 FAIL →
+    **2 of 8** (arm X green; arms **B** and **A/Q** red), and Round 227's went 0 FAIL → **1** (arm C,
+    "the endpoint returns the synthetic corpus, and nothing else" — 9 sessions / 2 projects, expect
+    8/1). **One cause: the browse endpoint now walks two corpora and all three arms were written when
+    it walked one.** Notably arm Q's admissible-asymmetry clause — *"it can never return one arm M did
+    not sum"* — is violated by arm X's own repair; the clause and the finding were written in the same
+    fire, 130 lines apart. **The guard fires correctly, not pedantically:** the extra file is 3.86 MB,
+    so arm O's remainder is inflated by real fingerprint cost. **I did not touch his probes**
+    (`git status --porcelain` shows only my four files); proposed repair is in the memo, his call.
+  - **His §3 "the suite cannot see it" closed, driven red first.** New
+    `__tests__/round234-export-scan-resolves-repo-root-not-cwd.test.ts`, 8 tests. Defect restored →
+    **2 failed / 6 passed**; both route tests go red against `process.cwd()` and green against the
+    fix. The cwd test **`chdir`s and re-requests** rather than asserting against the ambient cwd (a
+    bare `not.toBe(process.cwd())` would be vacuously true for a run started from the repo root), and
+    the repo root is found by an independent walk inside the test, not imported from `paths.ts`.
+  - **Second site of the same shape, found and deliberately NOT fixed.** `files/storage.ts:38` —
+    `path.join(process.cwd(), 'klatch-files')`, whose own docstring says *"sibling to `klatch.db`
+    (project root)."* Measured: `klatch-files/` 177 entries, `packages/server/klatch-files/` **4968**,
+    repo `klatch.db` `files`/`file_refs` rows **0 / 0** — so a fix orphans nothing and is *safe*, but
+    "redirect where every attachment is written and leave 5145 files in two directories" is a
+    migration decision with other agents' instruments downstream. **Parked on xian.**
+  - **Suites:** server **120 files · 1892 passed · 1 skipped** (was 119/1884 — +1 file, +8 tests, both
+    mine); client **unchanged** at 38 files (25 passed · 13 skipped) · 324 passed · 13 skipped;
+    `npm run typecheck` **0 errors**; `npm test` run **unpiped** from the repo root through the client
+    suite. **Containment:** port 3001 quiet before and after (arm F agrees), repo `klatch.db` 1
+    channel / 0 `probe-seed-%` either side, `session-scanner.ts` sha `e2c7445e12a5` unchanged,
+    `git status --porcelain` only my four intended files whole-tree, **0 model calls**.
+  - **Open:** arms B/A/Q (R233) and C (R227) red from my change — Theseus's, diagnosis + proposed
+    repair in the memo. `files/storage.ts:38` needs xian's call. Backfill dry run still parked on xian
+    (ten days); `DELETE /entities/:id` likewise. Gate refused from this seat again — predicates
+    verified, counter never observed.
+  - Memo: `docs/mail/daedalus-to-theseus-cc-xian-janus-argus-calliope-iris-arm-x-is-green-and-it-violates-the-clause-you-wrote-the-same-fire-2026-09-19.md`.
+    Full detail: `docs/logs/2026-09-19-0923-daedalus-opus-log.md`.
 - **2026-09-18 (STOP fire) — Round 232: the `reapOnExit` item is CLOSED, and the probe that found the cause was asserting the defect.**
   - **Theseus's Round 231 §2/§3 applied.** `reapOnExit` sends the child **SIGTERM**, not SIGKILL,
     at both call sites. His mechanism: `c` is an `npm exec` shim two processes above the socket,
