@@ -149,3 +149,83 @@ in a commit about import. **Left alone deliberately. Needs xian's call.**
 - `session-scanner.ts` sha: `e2c7445e12a5` before and after — unchanged
 - `git status --porcelain`: only my four intended files, whole tree
 - model calls: 0
+
+---
+
+## Arrival — Wave 2, Amber fleet renewal (cold start, context cleared)
+
+**Seat:** Daedalus — architecture & implementation.
+**Model I observe myself running:** Opus 5 (`claude-opus-5`), read from this session's environment,
+not recalled.
+**Context:** predecessor session cleared deliberately — Wave 2 of the Amber fleet renewal (Pard
+conducting, Janus certifying, xian overseeing). Nothing carried over but the repo and the handoff.
+
+**Handoff read in full:** `docs/handoff-daedalus-2026-09-18.md`. Because it is dated yesterday I also
+read, before trusting its open-items list: my own 9/19 START log (Round 234), Theseus's 9/18 STOP
+memo (Round 233), and my 9/19 reply to it.
+
+### Verified claim — the one my next fire depends on
+
+Handoff §2 ("Owed BY this seat") and §8 ("What I would do next, in order", item **1**) both say:
+
+> **The arm O skip-condition design call** … the probe currently takes one cold sample per server
+> generation, so it has **no variance estimate to test against**. … **Not started. Named, undone, mine.**
+
+**That is false, and it was false within the hour it was written.** Verified against the code and git,
+not against any memo:
+
+- `scripts/probe-browse-latency-end-to-end.mts:185` — `const COLD_GENERATIONS = 4; // 1 discarded
+  warmup + 3 measured`. The variance estimate the handoff says does not exist is taken over the three
+  measured generations (`coldSeries()`, `:366`).
+- `:702–713` — `sigmaBrowse`, `seBrowse = σ·√(2/k)`, a second σ for the fingerprint instrument, a
+  combined `se`, and `band = COLD_BAND_SIGMAS · se` at 2σ.
+- `:767` — the skip condition itself, and it keys on **exactly** the criterion Theseus asked for:
+  *"the fingerprint delta … does not clear this corpus's cold-run noise band of ±N ms, so agreement
+  and disagreement are indistinguishable here"* — the fingerprint delta against measured variance,
+  **not** `capped === false`.
+
+Provenance, so the staleness is characterised rather than guessed at:
+
+```
+git log -S "does not clear this corpus's cold-run noise band"
+  → 188ac4b7  2026-09-18 09:32:30 -0700  Round 228: a tolerance is not a noise floor …
+git log -1 -- docs/handoff-daedalus-2026-09-18.md
+  → 8c2bde79  2026-09-18 09:20:44 -0700
+```
+
+**The handoff was committed at 09:20:44 and the item it lists as undone was closed at 09:32:30 — 12
+minutes later, in the same START fire, by the same session. The handoff was never amended.** It is
+an accurate snapshot of the top of that fire and a misleading one of its end. Theseus has since run
+the arm green on the cap-firing corpus (9/18 STOP: residual 10 ms against a ±24 ms band).
+
+Second item, same shape, verified the same way and recorded so it is not re-taken either: §2 lists
+the **`reapOnExit` retrofit** as "Not started, and overdue by my own rule." `grep -rln reapOnExit
+scripts/` returns **16 files** — the definition in `lib/probe-server-ownership.mts:189` (landed
+Round 222, `bf76fb45`) plus **15 probe call sites**. My own 9/18 memo to Theseus reports taking it
+that day. Not "not started."
+
+**Conclusion I am carrying forward:** the handoff's §2/§8 open-items list describes the state at the
+*top* of the 9/18 START fire, and both items it assigns to this seat were closed during or after that
+same fire. Its §0–§6 — the product state, the backfill detail, the deliberately-unresolved list, the
+counterparty patterns — are the parts I have not contradicted and the parts worth keeping. **The
+genuinely open item at the top of this seat remains §3: the entity backfill needs one dry run against
+xian's real DB and per-channel approval.** Unverified this session beyond the memo still sitting
+unanswered in `docs/mail/`; I have not re-read the backfill code.
+
+### Duty cycle re-verified (handoff §7 asked for this explicitly post-reboot)
+
+```
+launchctl list | grep -i daedalus
+  -  0  com.klatch.daedalus-STOP
+  -  0  com.klatch.daedalus-WORK
+  -  0  com.klatch.daedalus-START
+```
+
+All three loaded, last exit 0. Nothing to re-arm; the next scheduled fire is the verification.
+
+**Working tree:** clean; synced to `origin/main` at `bd03f8ab` (Calliope's Wave 2 arrival). No code
+work in flight from me. **Suites not re-run this arrival** — no edit under `packages/` or `scripts/`
+was made, so this seat's re-run-as-control rule was not triggered; the last asserted figures are
+Round 234's (server 120 files · 1892 passed · 1 skipped; client unchanged).
+
+— Daedalus, arrival, 2026-09-19
