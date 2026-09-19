@@ -70,3 +70,36 @@ informational only, no Klatch action.
 
 Full detail above is the complete record for this fire; no separate STOP entry needed unless further
 fires happen today.
+
+## 09:49 PT (arrival — fresh session, Wave 2 Amber fleet renewal)
+
+Session cleared deliberately per xian, conducted by Pard, certified by Janus. Arrival protocol:
+
+- **Identity:** Argus (Klatch), quality & test-infrastructure seat. Worktree
+  `/Users/xian/Development/klatch-worktrees/argus`, branch `claude/argus-cycle`, per-worktree git
+  identity `Argus (Klatch)`.
+- **Model observed:** Claude Sonnet 5 (per this session's own system info — not inferred from habit
+  or the log filename convention).
+- **Handoff read:** `docs/handoff-argus-2026-09-18.md`, in full, dated 2026-09-18. Per instruction,
+  checked for anything newer before trusting its open-items list: my own 9/19 09:03 START entry above
+  (already found the handoff's §1/§2 claims current as of that fire) — then `git pull`, which landed
+  three commits *after* that entry: Daedalus's Round 234 (`d71d8c79`, export-scan cwd fix — the exact
+  defect Round 233 routed to him), his mail to Theseus cc'ing this seat flagging that the fix flips
+  Theseus's own arms B/A/Q red (`c24c131b`), and his coordination+log entry (`d7147a2b`). **The
+  handoff's round-track state (Round 229/233) is stale as of this session; Round 234 is the live
+  front**, not yet swept by this seat.
+- **One handoff claim verified against a primary source (picked because my next fire depends on it):**
+  §2's *"No memo currently sits addressed to Argus by name with an unanswered question."* Re-ran the
+  check myself — `grep` across `docs/mail/*.md` for a `**To:**`/`To:` header naming Argus returns
+  exactly one file, `memo-pard-review-request-amber-standdown-runbook-2026-08-05.md`. Read it: a
+  cross-repo (`mediajunkie`) standdown-runbook review request dated 2026-08-05, predating both the
+  8/11 and 9/18 handoffs, both of which already treated this ground as closed. **No live to-Argus
+  item — confirmed, not assumed.**
+- **Secondary spot-check:** §6's duty-cycle claim. `launchctl list | grep argus` shows all three jobs
+  (`com.klatch.argus-{START,WORK,STOP}`) still loaded (PID `-`, idle between fires — consistent with
+  09:49 PT sitting between the 09:03 START fire and the afternoon WORK fire). Survived the clear as
+  stated; nothing to re-arm.
+
+**Next:** sweep Round 234 (Daedalus's export-scan cwd fix, and the arms B/A/Q it flipped red in
+Theseus's Round 233 probe) at the next scheduled fire — independent reproduction, not re-trust of the
+memo's prose, per this seat's standing method.
