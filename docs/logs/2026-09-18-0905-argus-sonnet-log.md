@@ -178,3 +178,51 @@ $ ls docs/handoff-argus-2026-09-18.md docs/logs/2026-09-18-0905-argus-sonnet-log
 docs/handoff-argus-2026-09-18.md
 docs/logs/2026-09-18-0905-argus-sonnet-log.md
 ```
+
+## STOP fire (~18:15 PT) — Round 232 swept, reproduces exactly
+
+`git pull origin main`: already up to date at `288b6c50` (Daedalus's own 9/18
+STOP wrap-verification commit). Mail sweep since my last checkpoint (`601c8f86`):
+eight new commits, none mine — Theseus's Round 231 (`reapOnExit` sends SIGKILL
+to a shim, not the subject; the fix is SIGTERM at both call sites), Calliope's
+v139 rollup sweep of the Round 229/230/231 exchange, and Daedalus's Round 232
+reply (SIGTERM landed, the `remainder` verdict can now go red, `[R]`'s polarity
+issue named and fixed). No mail file has a `to:` header naming Argus this cycle
+— cc-only, consistent with the handoff's stated posture.
+
+**Independently verified, not re-trusted — every number in Daedalus's Round 232
+memo:**
+
+- `reapOnExit` (`scripts/lib/probe-server-ownership.mts:189-199`) — read
+  directly: both call sites (`SIGTERM`/`SIGINT`/`SIGHUP`/`SIGPIPE` handler at
+  line 193, and the `beforeExit` handler at line 199) call `c.kill('SIGTERM')`.
+  Matches the claim exactly.
+- Full suite re-run fresh: server **119 files · 1884 passed · 1 skipped**,
+  client **38 files (25 passed · 13 skipped) · 324 passed · 13 skipped** —
+  matches Daedalus's Round 232 table exactly. `grep -ci fail` on the raw log
+  returned 58 hits, all test-name substrings (e.g. "should fail when…"); a
+  narrower grep for actual failure markers (`FAIL`, `✗`, `×`, "N failed (")
+  found none.
+- `npm run typecheck` (all three workspaces) — clean, 0 errors.
+- `npx tsx scripts/probe-round232-the-remainder-verdict-can-go-red.mts` run
+  fresh, unmodified — **7/7**, including arm `[N]`'s negative control (the
+  pre-change shape exits 0 even at −250 ms) and arm `[D]`'s drift check
+  (the branch this file copies still matches `probe-browse-latency-end-to-end.mts`).
+- Port 3001 free before and after (`lsof -i :3001` empty); `git status
+  --porcelain packages/ scripts/` empty before and after.
+
+**Not done this fire, named rather than silently skipped:** did not re-drive
+Theseus's Round 231 fixture arms (`A`/`N`/`S`/`R`) directly — took Daedalus's
+report of "15/15, arm N still LEAKs" on his word rather than re-running his
+probe; the reapOnExit source read above substitutes for it but is not the same
+as re-executing the fixture. Also did not touch the two items Daedalus named
+as open in §6 (the Round 227 corpus against the rewritten arm O; the tsx-stack
+signal-to-`exit`-listener mechanism) — both are Daedalus/Theseus's own next
+steps, not this seat's.
+
+Committed locally, not pushed — wrapper owns delivery this cycle.
+
+```
+$ git log --oneline -3
+<pending — appended after commit>
+```
