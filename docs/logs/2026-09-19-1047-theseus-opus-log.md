@@ -166,3 +166,50 @@ scripts/probe-round233-…-different-corpora.mts                       29970 B  
 - **Parked on xian:** backfill dry run (ten days), `DELETE /entities/:id` floor.
 - **Gate:** `amber-fleet.sh gate` not attempted this fire; last three fires refused from this seat and
   Daedalus reports the same position today.
+
+## 11:09 — arrival (Wave 2 clear, not a launchd fire)
+
+Deliberate `/clear` per Pard/Janus/xian, Wave 2 of the Amber fleet renewal. Same worktree
+(`/Users/xian/Development/klatch-worktrees/theseus`, branch `claude/theseus-cycle`), no reboot —
+this session inherits nothing from before the clear except the repo and this log.
+
+**Identity:** Theseus (Klatch), manual testing & exploration. **Model I observe myself running:**
+`claude-sonnet-5` (system prompt), not `claude-opus-5` — the `KLATCH_MODEL` env var read empty this
+session (`echo $KLATCH_MODEL` → blank), unlike the launchd plists which set it per-fire. This is a
+manual arrival, not a scheduled fire, so the wrapper that sets it never ran; not a discrepancy to
+chase.
+
+**Handoff read:** `docs/handoff-theseus-2026-09-18.md`, in full. But it predates this log by a full
+day and 14 commits — `git log --oneline` from `dc24ab18`/`43d7c5c6` (Round 234, this morning's START
+fire, filed 11:02–11:03) back past the handoff's own head. **The handoff's open-items list (§5, §7)
+is stale where this log's "Open at end of fire" section (above) supersedes it** — e.g. the handoff's
+item 4 (arm O never run on the cap-firing corpus) is done and closed (Round 233, 9/18 STOP), and its
+own successor-item, arm O's band being wrong, is what Round 234 (this morning) found. Treating this
+log as current and the handoff as background, per the prompt that started this session.
+
+**One handoff claim verified against a primary source — the one my next fire depends on:**
+§0's "Duty cycle: ARMED — all three plists present and loaded." Ran `launchctl list | grep -i
+theseus` this fire: all three jobs present —
+
+```
+-	0	com.klatch.theseus-STOP
+-	0	com.klatch.theseus-WORK
+-	0	com.klatch.theseus-START
+```
+
+`-` in the PID column means each is loaded and idle (not currently running), exit status `0` from
+its last run — consistent with ARMED, not with a job removed or crash-looping. This is the claim my
+existence as a launchd-driven seat depends on: if this had come back empty, there would be no next
+fire to make this arrival block meaningful. **Confirmed live, not inherited from the handoff's prose.**
+
+Also checked in the same pass (cheap, same tool call, worth recording): `git status --porcelain`
+empty, `origin/main` and local `HEAD` identical at `deec178e`, `ANTHROPIC_API_KEY` still unset
+(consistent with §0's "absent, not blocked"). `docs/COORDINATION.md` Theseus Prime section (line
+1438) matches this log's own Round 234 entry verbatim — no drift between board and log to reconcile.
+`docs/mail/` has no memo addressed to theseus newer than the one this morning's fire already answered
+(`theseus-to-daedalus-…-all-three-arms-are-repaired-and-arm-o-fails-two-runs-in-five-2026-09-19.md`,
+filed 11:02, in `docs/mail/`, not yet moved to `read/` — thread still open, Daedalus hasn't replied).
+
+**Nothing else to do this arrival.** No new work discovered, no correction to file. Next actual
+probe work is my next scheduled fire (WORK, 14:47) or whenever Daedalus replies to the open Round 234
+thread. Committing and pushing this arrival block now, per protocol.
