@@ -132,6 +132,15 @@ const mb = (n: number) => `${(n / 1048576).toFixed(0)} MB`;
 fs.rmSync(SCRATCH, { recursive: true, force: true });
 fs.mkdirSync(SCRATCH, { recursive: true });
 
+/**
+ * An export root with no `exports/sessions/` under it — see `startServer`. Created
+ * empty and never written to, so the export scan finds nothing and returns null.
+ * Asserted rather than assumed: the closing arm below checks that no arm's payload
+ * carried an exported session.
+ */
+const NO_EXPORTS = path.join(SCRATCH, 'no-exports');
+fs.mkdirSync(NO_EXPORTS, { recursive: true });
+
 const SCANNER_SHA = crypto.createHash('sha256').update(fs.readFileSync(SCANNER)).digest('hex');
 
 // ── server lifecycle ─────────────────────────────────────────────────────────
@@ -176,12 +185,29 @@ async function startServer(tag: string, extraEnv: Record<string, string>): Promi
   await requireAnUnoccupiedPort(PORT, 'probe-multi-root-browse');
   const logPath = path.join(SCRATCH, `server-${tag}.log`);
   const logFd = fs.openSync(logPath, 'a');
-  // Both variables are cleared first: the fire's own environment may carry a
+  // All three variables are cleared first: the fire's own environment may carry a
   // CLAUDE_CONFIG_DIR (agents run under one), and inheriting it would make every
   // arm measure something other than what its name says.
   const env: Record<string, string | undefined> = { ...process.env, KLATCH_DB: DB };
   delete env.CLAUDE_CONFIG_DIR;
   delete env.KLATCH_EXTRA_SESSION_ROOTS;
+  delete env.KLATCH_EXPORT_ROOT;
+  // Round 235. Every arm here measures the SESSION-root corpora; the repo's
+  // `exports/sessions/` is a third corpus that no arm is about and that
+  // `CLAUDE_CONFIG_DIR` cannot move. Until Round 234 it was suppressed by
+  // accident — the scan was handed the working directory, `packages/server` is
+  // the cwd below, and `packages/server/exports/sessions` has never existed. The
+  // Round 234 fix (correct) resolved that to the repo root, so the repo's 3.86 MB
+  // export began arriving in EVERY arm's payload, in both single-root arms and
+  // the union, and arm C's session-overlap check went red: an ID present in arm
+  // B and arm C is exactly what "REPLACE, not add" forbids.
+  //
+  // This is now DELIBERATE rather than accidental, and asserted at the end of the
+  // run rather than assumed: `KLATCH_EXPORT_ROOT` points every generation at an
+  // export-free scratch directory. Suppression is relocation — there is no
+  // separate disable flag — so a directory with no `exports/sessions/` is the
+  // mechanism. See `packages/server/src/paths.ts:getExportRoot`.
+  env.KLATCH_EXPORT_ROOT = NO_EXPORTS;
   server = spawn('npx', ['tsx', 'src/index.ts'], {
     cwd: path.join(REPO, 'packages/server'),
     env: { ...env, ...extraEnv } as NodeJS.ProcessEnv,
@@ -209,6 +235,8 @@ interface Browse {
   projectNames: string[];
   projectPaths: string[];
   roots: string[];
+  exportedSessions: number;
+  exportedGroups: number;
   hasSourceRootKey: boolean;
   capped: string[];
   maxTurnCount: number;
@@ -245,6 +273,11 @@ async function measure(): Promise<Browse> {
     projectNames: ps.map((p) => p.projectName),
     projectPaths: ps.map((p) => p.projectPath),
     roots: [...new Set(all.map((s: any) => s.sourceRoot).filter(Boolean))].sort() as string[],
+    // Round 235. Counted two independent ways, because they fail differently: a
+    // session carries `isExported`, a group is named 'Exported sessions'. If the
+    // suppression ever breaks, whichever survives a payload change still reports it.
+    exportedSessions: all.filter((s: any) => s.isExported).length,
+    exportedGroups: ps.filter((p) => p.projectName === 'Exported sessions').length,
     // Byte-level, not `=== undefined`: the claim is that the JSON is unchanged,
     // and an absent key and a null-valued key are the same to `undefined`.
     hasSourceRootKey: text.includes('"sourceRoot"'),
@@ -431,6 +464,25 @@ check('F', 'cold browse reproduces on a second generation of the same root', tru
   `${ms(B.cold)} (arm B) vs ${ms(F.cold)} (arm F), warm ${ms(B.warm)} vs ${ms(F.warm)}`, 'measurement');
 
 await stopServer();
+
+// ── export-corpus suppression, asserted rather than assumed (Round 235) ──────
+
+/**
+ * The isolation this probe depends on, checked at the end over every generation
+ * that ran. Before Round 235 this held by accident and no arm asserted it; when
+ * the Round 234 fix removed the accident, arm C went red and the cause was three
+ * layers away from the check that reported it. An isolation property nothing
+ * asserts is one you find out about from an unrelated failure.
+ */
+const arms: [string, Browse | null][] = [['B', B], ['C', C], ['D', D], ['E', E], ['F', F]];
+const ran = arms.filter((a): a is [string, Browse] => a[1] !== null);
+const leaked = ran.filter(([, b]) => b.exportedSessions > 0 || b.exportedGroups > 0);
+check('*', 'the export corpus is suppressed in every arm — KLATCH_EXPORT_ROOT held',
+  leaked.length === 0,
+  leaked.length === 0
+    ? `${ran.length} generations, 0 exported sessions and 0 'Exported sessions' groups in any payload`
+    : `LEAKED in ${leaked.map(([n, b]) => `${n} (${b.exportedSessions} sessions / ${b.exportedGroups} groups)`).join(', ')}` +
+      ` — every session count and cold-browse time in this run includes a corpus no arm is about`);
 
 // ── source-integrity guard ───────────────────────────────────────────────────
 

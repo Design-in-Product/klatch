@@ -205,7 +205,59 @@ Agents working on this repo use this file as the async handoff protocol.
 ### Daedalus (architecture & implementation)
 - **Branch:** `claude/daedalus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/daedalus`; merges land on `main`)
 - **Status:** working — duty cycle armed; `launchctl list` confirms `com.klatch.daedalus-{START,WORK,STOP}` all loaded (verified 2026-09-18).
-- **Updated:** 2026-09-19 ~09:23 PT (START fire)
+- **Updated:** 2026-09-19 ~13:17 PT (WORK fire)
+- **2026-09-19 (WORK fire) — Round 235: `KLATCH_EXPORT_ROOT` is BUILT, and the first probe the lost isolation broke was my own.**
+  - **Theseus's Round 234 §3, routed to this seat because it is server code, taken and built.**
+    `packages/server/src/paths.ts` gains `getExportRoot()`; `routes/import.ts:110` calls it instead
+    of `getProjectRoot()`. **Replace semantics** matching `CLAUDE_CONFIG_DIR`; **no separate disable
+    flag** — suppression *is* relocation, so a directory with no `exports/sessions/` is the
+    mechanism; **read per call**, not captured at module load, because a probe sets the variable
+    after importing the server and a cached read would make the lever silently inert; a **relative
+    value resolves against the project root, never the working directory**, so the override cannot
+    re-admit Round 233's defect. Unset/empty/whitespace: byte-identical to before.
+  - **Verified his §3 from source, not from the memo.** `paths.ts` reads no `process.env`;
+    `scanExportedSessions` has one call site (`routes/import.ts:110`); the scanner's env vars are
+    all session-root-side. All three hold.
+  - **8 tests**, `round235-the-export-scan-takes-a-root-override.test.ts`, including one at the wire.
+    **Red capability established:** no-lever body restored → **6 of 8 fail**, and the 2 that pass are
+    exactly the default-unchanged pair. Restored and re-verified.
+  - **THE FINDING — nine probes relocate `CLAUDE_CONFIG_DIR`, Theseus repaired three, and one of the
+    six left is mine.** `probe-multi-root-browse.mts` (git: added by Daedalus 2026-09-04), driven
+    **unmodified first: 3 failed**, including `FAIL [C] REPLACE, not add — arm B's session set is
+    gone`. Both arms contained `theseus-2026-03-22`: the export corpus does not move when
+    `CLAUDE_CONFIG_DIR` moves. Arm A measures the only legitimate cross-root name collision as **1**;
+    the check reported **2**, and the second was `Exported sessions`. **Repaired and green** — every
+    generation sets `KLATCH_EXPORT_ROOT` to an export-free scratch dir, shared-name count fell 2 → 1,
+    and a **new closing arm asserts the suppression** two independent ways: *5 generations, 0
+    exported sessions and 0 'Exported sessions' groups in any payload*. **Rule:** *an isolation
+    property that nothing asserts is one you will learn about from an unrelated failure* — mine was
+    free for five months and its red surfaced three layers from the cause.
+  - **A wrong reading caught before it was written down.** The two remaining reds (`nothing capped`,
+    arms C/D) looked like the 3.86 MB export hitting the fingerprint cap. **Wrong** —
+    `FINGERPRINT_LINE_CAP` is **50,000 lines** and the export is **1,001**. Walked the PM corpus:
+    exactly one file over the cap, **53,635 lines / 99 MB** under
+    `~/.claude-pm/projects/-Users-xian-Development-piper-morgan-worktrees-docs/`. **Live-corpus
+    drift, not a code regression and not caused by Round 234.** Left red deliberately — silencing it
+    would launder a live fact into a NOTE, and widening a guard because it went red is the move
+    Theseus declined for arm Q. Also checked and dropped: arm A's 89-file count is **correct** (the
+    scanner is deliberately non-recursive); my recursive walk over-counted. No finding.
+  - **Suites:** server **121 files · 1900 passed · 1 skipped** (was 120 · 1892 · 1 — +1 file, +8
+    tests, both mine); client **unchanged** at 38 files (25 passed · 13 skipped) · 324 passed · 13
+    skipped; `npm run typecheck` **0 errors**; `npm test` run **unpiped** from the repo root, both
+    summaries read in full; strict typecheck on the edited probe **0 errors**. **Containment:** port
+    3001 quiet and **0** stray processes after every run, repo `klatch.db` 1 channel either side,
+    `session-scanner.ts` sha `e2c7445e12a5` unchanged, `git status --porcelain` **4 intended files**
+    whole-tree, **0 model calls**.
+  - **Open:** **xian** — is the 53,635-line PM session expected, and does it move the Round 143 cap
+    decision? (two probe arms stay red until answered); and `KLATCH_EXPORT_ROOT` is removable in one
+    commit if he'd rather have a standing requirement on probes than a server lever. **Theseus** —
+    five relocating probes unaccounted for (`probe-browse-endpoint-second-corpus`,
+    `probe-pm-corpus-cap-delta`, `probe-round171/174/177-…`); **not driven by me, not claimed red**,
+    but mine was red on a check three layers from the cause. Unchanged: `files/storage.ts:38`,
+    backfill dry run (ten days), `DELETE /entities/:id`. Gate refused from this seat again.
+  - Memo: `docs/mail/daedalus-to-theseus-cc-xian-janus-argus-calliope-iris-your-section-3-is-built-and-the-first-probe-it-broke-was-mine-2026-09-19.md`.
+    Full detail: `docs/research/round235-the-export-corpus-gets-a-lever-and-my-own-probe-was-the-first-casualty-2026-09-19.md`,
+    `docs/logs/2026-09-19-0923-daedalus-opus-log.md`.
 - **2026-09-19 (START fire) — Round 234: the export-scan cwd defect is BUILT and green at the wire; closing it turned three of Theseus's arms red, and one of them is a clause he wrote in the same fire.**
   - **Round 233 §3, explicitly routed to me, taken and built.** `routes/import.ts:106` resolves the
     repo root from the module's own location, not the working directory. New

@@ -229,3 +229,99 @@ was made, so this seat's re-run-as-control rule was not triggered; the last asse
 Round 234's (server 120 files · 1892 passed · 1 skipped; client unchanged).
 
 — Daedalus, arrival, 2026-09-19
+
+---
+
+## 13:17 PT — WORK fire. Round 235: `KLATCH_EXPORT_ROOT` built, and my own probe was the first casualty of the isolation my Round 234 fix removed.
+
+**Briefing.** Pulled state read: `docs/COORDINATION.md` (my section current as of 09:23),
+`docs/briefs/cross-pollination/current.md`, `ls docs/mail/`. One new memo to me:
+`theseus-to-daedalus-…-all-three-arms-are-repaired-and-arm-o-fails-two-runs-in-five-2026-09-19.md`
+(13:17). Read in full, acted on in this same fire.
+
+**Work unit taken:** Theseus's §3, which he routed explicitly — *"Either the export scan takes a root
+override, or every relocating probe accounts for the export corpus explicitly. Your call and xian's,
+not mine to take unilaterally — the first option is server code."* Server code is this seat.
+
+### Verified his §3 from source before building on it
+
+| claim | how | result |
+|---|---|---|
+| `paths.ts` reads no `process.env` | read the file | confirmed — `process.cwd()` appears only as a walk fallback |
+| `scanExportedSessions` has one call site | grep across `packages/`, `scripts/` | one — `routes/import.ts:110`, handed `getProjectRoot()` |
+| the scanner's env vars are session-root-side only | read `session-scanner.ts` | confirmed |
+
+### Built
+
+- `packages/server/src/paths.ts` — `getExportRoot()`. Replace semantics (matching
+  `CLAUDE_CONFIG_DIR`); no separate disable flag (suppression *is* relocation); **read per call**, not
+  captured at module load, because a probe sets the variable after importing the server; a **relative
+  value resolves against the project root, never the working directory**, so the override cannot
+  re-admit Round 233's defect. Unset/empty/whitespace → byte-identical to before.
+- `packages/server/src/routes/import.ts:110` — `scanExportedSessions(getExportRoot())`.
+- `packages/server/src/__tests__/round235-the-export-scan-takes-a-root-override.test.ts` — 8 tests.
+
+**Red capability established, not assumed.** No-lever body restored (`return PROJECT_ROOT`):
+**6 failed / 2 passed**, and the 2 passing are exactly the default-unchanged pair. Restored from
+backup and re-verified (`DEFECT MARKER PRESENT: false`, `REAL BODY PRESENT: true`).
+
+### The finding: `probe-multi-root-browse.mts` is mine and was already red
+
+Nine probes relocate `CLAUDE_CONFIG_DIR`; Theseus repaired three; of the six left, all six hit the
+browse endpoint and none mentions the export corpus. `git log --diff-filter=A` says
+`probe-multi-root-browse.mts` was added by **Daedalus, 2026-09-04**.
+
+Driven unmodified first — **3 failed**, including
+`FAIL [C] REPLACE, not add — arm B's session set is gone — 2 project names shared with arm B`.
+Arm A measures the only legitimate cross-root name collision as **1**; the second was
+`Exported sessions`. Repaired (every generation sets `KLATCH_EXPORT_ROOT` to an export-free scratch
+dir; `KLATCH_EXPORT_ROOT` added to the inherited-env deletions alongside the existing two) and
+re-driven: arm C **green**, shared-name count fell 2 → 1, and a new closing arm asserts the
+suppression two independent ways — *5 generations, 0 exported sessions and 0 'Exported sessions'
+groups in any payload*.
+
+### A wrong reading I caught before writing it down as a finding
+
+The two remaining reds (`nothing capped`, arms C and D) looked like the 3.86 MB export hitting the
+fingerprint cap. **Wrong.** `FINGERPRINT_LINE_CAP` is **50,000 lines**;
+`exports/sessions/theseus-2026-03-22.jsonl` is **1,001 lines** — it cannot cap. Walked the PM corpus:
+exactly one file over the cap, **53,635 lines / 99 MB**,
+`~/.claude-pm/projects/-Users-xian-Development-piper-morgan-worktrees-docs/440fe16b-….jsonl`. So those
+two reds are **live-corpus drift, not a code regression and not caused by Round 234**. Left red
+deliberately and routed to xian — converting them to NOTEs would silence a red carrying true
+information, and widening a guard because it went red is the move Theseus declined for arm Q.
+
+Also checked and dropped rather than reported: arm A counts 89 files in the second root where a
+recursive walk finds 483. **Arm A is correct** — the scanner is deliberately non-recursive
+(`session-scanner.ts:530`). My walk over-counted. No finding.
+
+### Controls (this fire)
+
+| | |
+|---|---|
+| server suite | **121 files · 1900 passed · 1 skipped** (was 120 · 1892 · 1 — +1 file, +8 tests, both mine) |
+| client suite | **38 files (25 passed · 13 skipped) · 324 passed · 13 skipped** — unchanged |
+| `npm run typecheck` | **0 errors**; `npm test` **unpiped** from the repo root, both summaries read in full |
+| strict typecheck, edited probe | **0 errors** |
+| probe before → after | **3 failed → 2 failed** |
+| `git status --porcelain` | **4 files**, whole tree — 2 server, 1 test, 1 probe |
+| port 3001 / stray processes | **quiet / 0** after every run (enumerated from `ps` via node; the only matches were this fire's own wrapper) |
+| repo `klatch.db` (this worktree) | **1 channel** either side |
+| `session-scanner.ts` sha | `e2c7445e12a5` before and after |
+| model calls | **0** |
+
+### Filed
+
+- `docs/research/round235-the-export-corpus-gets-a-lever-and-my-own-probe-was-the-first-casualty-2026-09-19.md`
+- `docs/mail/daedalus-to-theseus-cc-xian-janus-argus-calliope-iris-your-section-3-is-built-and-the-first-probe-it-broke-was-mine-2026-09-19.md`
+
+### Open after this fire
+
+- **For xian:** the capped PM session (53,635 lines) — expected? does it move the Round 143 cap
+  decision? Two probe arms stay red until answered. Also: `KLATCH_EXPORT_ROOT` itself is removable in
+  one commit if he'd rather have a standing requirement on probes than a server lever.
+- **For Theseus:** five relocating probes unaccounted for. Not driven by me, not claimed red.
+- **Unchanged:** `files/storage.ts:38`, backfill dry run (ten days), `DELETE /entities/:id`. Gate
+  refused from this seat again.
+
+— Daedalus, WORK fire, 2026-09-19

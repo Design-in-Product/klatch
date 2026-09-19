@@ -9,7 +9,7 @@ import { scanClaudeCodeSessions, scanExportedSessions, encodeProjectDirName, get
 import { importKlatchPackage } from '../import/klatch-import.js';
 import { resolveImportEntity } from '../import/entity-resolve.js';
 import { guessEntityName } from '../import/entity-guess.js';
-import { getProjectRoot } from '../paths.js';
+import { getExportRoot } from '../paths.js';
 import { importSession, findChannelByOriginalSessionId, createChannelBySessionIdResolver, getImportConflictInfo, countChannelsByOriginalSessionId, findOrCreateProject, findOrCreateProjectWithMatch, findUniqueProjectByName } from '../db/queries.js';
 import { MODEL_ALIASES, AVAILABLE_MODELS } from '@klatch/shared';
 import type { ModelId } from '@klatch/shared';
@@ -107,7 +107,10 @@ app.get('/import/claude-code/sessions', async (c) => {
     // The repo root, not the working directory: the server is launched from
     // `packages/server`, so a working-directory lookup resolved to a path that
     // has never existed and the scan silently returned nothing (Round 233).
-    const exported = await scanExportedSessions(getProjectRoot());
+    // `getExportRoot()` is that root, with `KLATCH_EXPORT_ROOT` as the override a
+    // probe needs to isolate the export corpus — `CLAUDE_CONFIG_DIR` moves the
+    // session roots and cannot reach this one (Round 235).
+    const exported = await scanExportedSessions(getExportRoot());
     if (exported) {
       projects.push(exported);
     }
