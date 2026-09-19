@@ -1,29 +1,12 @@
 import Database from 'better-sqlite3';
 import path from 'path';
-import fs from 'fs';
 import { randomUUID } from 'crypto';
-import { fileURLToPath } from 'url';
+import { getProjectRoot } from '../paths.js';
 import { DEFAULT_MODEL, DEFAULT_ENTITY_ID, ENTITY_COLORS, MODEL_ALIASES, DEFAULT_INTERACTION_MODE, DEFAULT_CHANNEL_PREAMBLE } from '@klatch/shared';
-
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-
-// Walk up to find the monorepo root (contains package.json with workspaces)
-function findProjectRoot(dir: string): string {
-  const pkg = path.join(dir, 'package.json');
-  if (fs.existsSync(pkg)) {
-    try {
-      const json = JSON.parse(fs.readFileSync(pkg, 'utf8'));
-      if (json.workspaces) return dir;
-    } catch { /* keep walking */ }
-  }
-  const parent = path.dirname(dir);
-  if (parent === dir) return process.cwd(); // fallback
-  return findProjectRoot(parent);
-}
 
 const DB_PATH = process.env.KLATCH_DB
   ? path.resolve(process.env.KLATCH_DB)
-  : path.join(findProjectRoot(__dirname), 'klatch.db');
+  : path.join(getProjectRoot(), 'klatch.db');
 
 let db: Database.Database;
 
