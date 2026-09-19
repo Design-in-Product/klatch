@@ -103,3 +103,76 @@ Session cleared deliberately per xian, conducted by Pard, certified by Janus. Ar
 **Next:** sweep Round 234 (Daedalus's export-scan cwd fix, and the arms B/A/Q it flipped red in
 Theseus's Round 233 probe) at the next scheduled fire — independent reproduction, not re-trust of the
 memo's prose, per this seat's standing method.
+
+## 13:35 PT (WORK fire) — Round 234 swept: repairs reproduce, arm O's flakiness confirmed with fresh samples
+
+Pulled: already up to date at `77bc112b` (Calliope's own 9/19 MID rollup, v141 — Round 234's fix and
+fallout folded in, `files/storage.ts:38` filed as a new lower-urgency item). Six commits since my own
+09:49 arrival checkpoint (`1b5eb246`), none mine: Daedalus's Round 234 build + memo, Theseus's Round
+234 reply (`docs/mail/theseus-…-all-three-arms-are-repaired-and-arm-o-fails-two-runs-in-five-2026-09-19.md`,
+research doc `docs/research/round234-…-2026-09-19.md`), three Wave-2 arrival logs (Theseus/Iris), and
+Calliope's rollup.
+
+**What Round 234 claims:** Daedalus's export-scan cwd fix (routed by me from Round 233) made the
+browse endpoint walk two corpora instead of one, which flipped three of Theseus's arms red (B and A/Q
+in `probe-round233-…`, C in `probe-round227-…`). Theseus repaired all three by widening the *measured
+side* to match the endpoint's two-corpus resolution (not loosening the guard), found the same
+one-corpus assumption silently passing in Round 227's arms B/E/F/G, and then — sampling arm O five
+times because a first re-drive passed with zero margin — found arm O's noise band is a within-run
+standard error being used as a reproducibility band: it collapsed on this small corpus, 2 of 5 runs
+failed, and the grading inverted (a run that agreed *better* failed; a run that agreed *worse* passed).
+
+**Independently verified, not re-trusted — everything below is a fresh run in this fire, not a
+re-read of the memo's own numbers:**
+
+- Read `packages/server/src/paths.ts` and `routes/import.ts:106` directly — matches Daedalus's Round
+  234 description (`getProjectRoot()`, resolved from the module's own location, one call site).
+- `probe-round233-arm-m-and-the-endpoint-can-walk-different-corpora.mts`, re-run fresh, unmodified:
+  **all 8 regression checks passed** — arm B, arm A carrying arm Q, arm X, arm Y, arm C, arm E/G/D/F
+  all PASS. Matches Theseus's claimed table exactly.
+- `probe-round227-arm-o-on-a-corpus-where-the-cap-fires.mts`, re-run fresh, unmodified: **all 14
+  regression checks passed**, including arm C's file-set comparison (9 sessions accounted, 8 synthetic
+  + 1 exported) and the `KLATCH_DB`-ordering arm H. Matches exactly.
+- **Arm O's flakiness — reproduced with three fresh samples of my own, not Theseus's five:**
+  `probe-browse-latency-end-to-end.mts .testdata/round227/config`, run three times back to back against
+  the identical corpus:
+
+  | my run | residual | 2σ band | verdict |
+  |---|---|---|---|
+  | 1 | 11 ms | ±18 ms | PASS |
+  | 2 | 15 ms | ±7 ms | **FAIL** |
+  | 3 | 5 ms | ±11 ms | PASS |
+
+  **1 of 3 fresh runs fails, and the inversion reproduces independently**: run 2's residual (15 ms) is
+  *larger* than run 1's (11 ms) yet run 2 failed and run 1 passed — driven by band width (±7 vs ±18),
+  not by which run agreed better. This is new evidence, not a re-run of Theseus's own five samples, and
+  it lands on the same side: the band is measuring within-run precision, not run-to-run reproducibility.
+  Confirms §5 of the research doc rather than just re-citing it.
+- Suite, re-run fresh: server **120 files · 1892 passed · 1 skipped**, client **38 files (25 passed ·
+  13 skipped) · 324 passed · 13 skipped** — matches Round 234's controls table exactly (the +1
+  file/+8 tests over Round 233 is Daedalus's new `round234-export-scan-…test.ts`). `npm run typecheck`
+  clean, 0 `error TS` across all three workspaces.
+- Containment: `git status --porcelain` empty throughout, whole tree; port 3001 quiet before and after
+  every run; `session-scanner.ts`'s last-modifying commit (`d223364…`, via `git log -1`) unchanged
+  before and after — used this instead of a `shasum` re-hash, which the sandbox declined to run
+  standalone this fire; equivalent evidence, source untouched either way.
+- `files/storage.ts:38` (Calliope's rollup item, Daedalus's Round 234 §4 find) spot-checked by direct
+  read: `path.join(process.cwd(), 'klatch-files')` at exactly line 38, docstring above it still
+  claiming "project root" — confirmed real, read-only, not touched. Parked on xian per both Daedalus's
+  and Theseus's memos; agree it isn't a drive-by.
+
+**Nothing owed back this fire.** Round 234's three open items (arm O's band needing its own
+redesign-round; export-corpus isolation having no server-side lever; `files/storage.ts:38`) are each
+explicitly routed elsewhere in Theseus's own memo (his own next round; Daedalus+xian; xian) — none is
+this seat's to build. My own standing items (Round 233's exported-session-cwd defect: now closed by
+Daedalus's fix, verified above) have nothing new to add.
+
+**Mail hygiene:** `theseus-to-daedalus-…-all-three-arms-are-repaired-and-arm-o-fails-two-runs-in-five-2026-09-19.md`
+stays in `docs/mail/`, not `read/` — Daedalus hasn't replied yet (confirmed: no file postdating it
+addressed from Daedalus on this thread). Correctly left open, not closed unilaterally.
+
+**Cross-pollination brief:** unchanged since this morning's read (still `docs/briefs/cross-pollination/current.md`,
+dated 2026-09-19); no new brief filed since. Nothing new to action.
+
+Scratch cleaned (`.testdata/argus-r234-*` removed after use); `git status --porcelain` empty before
+committing this log.
