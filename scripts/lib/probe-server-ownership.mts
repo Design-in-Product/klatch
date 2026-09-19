@@ -167,9 +167,22 @@ export async function waitUntilPortIsQuiet(port: number, timeoutMs = 30_000): Pr
 }
 
 /**
- * Reap the child on every exit path, not just the happy one. The Round 221 leak happened
- * because a probe's stdout was piped to `head`, the pipe closed, node took SIGPIPE, and the
- * probe's own `shutdown()` never ran — leaving the server that the next probe then graded.
+ * Reap the child on every exit path, not just the happy one — a probe that dies without
+ * reaping leaves a server that the next probe then grades.
+ *
+ * The Round 221 incident was recorded here as "the pipe closed, node took SIGPIPE, and the
+ * probe's own `shutdown()` never ran." **That account does not reproduce** (measured Round 230,
+ * confirmed Round 231): on this node a closed stdout pipe raises an uncaught `EPIPE`, not a
+ * signal death, and `exit` listeners *do* run. Mechanism not established; the likeliest
+ * candidate is that the leaking probe was one of the seven that had no handler at all.
+ *
+ * The signal is SIGTERM, not SIGKILL, and that is the whole remedy (Round 231, Theseus).
+ * `getChild()` returns what `spawn('npx', ['tsx', …])` handed back — an `npm exec` shim, two
+ * processes above the socket. A shim forwards a signal by catching it and re-sending it, and
+ * SIGKILL is the one signal that cannot be caught: the shim died instantly and the listener
+ * below it was orphaned holding the port. Measured, same code otherwise: SIGKILL → still
+ * answering after 8000 ms; SIGTERM → quiet after ~256 ms. If SIGKILL's guarantee is ever
+ * wanted here, the target has to be the descendant set or the process group, never the handle.
  *
  * Takes a getter, not a child: restart-based probes replace `server` several times per run.
  */
@@ -177,13 +190,13 @@ export function reapOnExit(getChild: () => ChildProcess | undefined): void {
   for (const sig of ['SIGINT', 'SIGTERM', 'SIGHUP', 'SIGPIPE'] as const) {
     process.on(sig, () => {
       const c = getChild();
-      if (c && c.exitCode === null) c.kill('SIGKILL');
+      if (c && c.exitCode === null) c.kill('SIGTERM');
       process.exit(130);
     });
   }
   process.on('exit', () => {
     const c = getChild();
-    if (c && c.exitCode === null) c.kill('SIGKILL');
+    if (c && c.exitCode === null) c.kill('SIGTERM');
   });
 }
 

@@ -143,11 +143,17 @@ let server: ChildProcess | null = null;
 // reports LEAK against this file, and reports quiet against the thirteen probes that carry
 // process.on('exit', killServer).
 //
-// ⚠️ NOT A CLOSED ITEM, and this line is not yet known to fix anything. With it in place the
-// probe STILL leaked under that instrument. What IS measured: server.kill('SIGTERM') on the
-// npx shim takes the whole chain down and frees the port. So the remedy is sound and the open
-// question is why it is not reached — the signal appears to land on tsx's supervisor process
-// rather than on the process that registered this handler. See the Round 230 writeup.
+// ✅ CLOSED 2026-09-18 (Round 231 — Theseus found it, Daedalus drove and applied it). This
+// line does reap now; it did not when it was written, and the reason was inside reapOnExit
+// rather than in the topology Round 230 suspected. Round 230's aim was correct all along.
+// The reaper sent the child SIGKILL, the child is an `npm exec tsx` shim two processes above
+// the listener, and SIGKILL is the one signal a shim cannot forward: the shim died instantly
+// and orphaned the listener holding the port. It now sends SIGTERM.
+// Driven, not reasoned: with SIGKILL, probe-round213-reassign-live-http held 3001 past
+// 8000 ms after a SIGTERM known to have been delivered; with SIGTERM it hands 3001 back in
+// ~259 ms, and a no-handler control still leaks under the identical aim. See
+// scripts/probe-round231-the-handler-and-the-signal-are-in-different-processes.mts (arms A,
+// N, R) and the Round 231 writeup.
 reapOnExit(() => server ?? undefined);
 
 async function stopServer(): Promise<void> {

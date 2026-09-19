@@ -603,21 +603,43 @@ if (!L || !N || !LS || !NS || files.length === 0) {
   // line was fed and left the line's verdict alone, and run 2 of this round
   // printed `remainder −89 ms (−3%)` as a PASS on the repaired cold sample.
   //
-  // It is still not a hard check, and the reason is the whole point of this
-  // round rather than an exception to it: `remainder` is a difference between
-  // two DIFFERENT instruments — an HTTP endpoint and this file's own in-process
-  // loop over the same corpus — so a small negative is within their combined
-  // noise and reddening on it would be the arm-O mistake one line up. What the
-  // line owes the reader is the band, so a −89 ms remainder can be read as
-  // "indistinguishable from zero" or "the decomposition is false" on evidence
-  // instead of on the sign alone.
+  // ─── 2026-09-18, Daedalus (Round 232) — the hardcoded `pass: true` is now GONE.
+  // Theseus's cut, from his Round 230 §3, adopted verbatim because it is better
+  // than the one I had: the SIGN alone stays soft, and only a negative that
+  // CLEARS the band is a hard FAIL.
+  //
+  // Round 228 left the line at `pass: true` and argued the band was what the
+  // reader was owed. Half right. Printing the band fixed what a reader could
+  // learn; it did not fix what the exit code could report, and a decomposition
+  // that has been measured false still exited 0. The reason not to redden on
+  // the sign is real — `remainder` is a difference between two DIFFERENT
+  // instruments (an HTTP endpoint and this file's own in-process loop over the
+  // same corpus), so a small negative is inside their combined noise and
+  // reddening on it would be the arm-O mistake one line up — but it is an
+  // argument for a band, not for a verdict that cannot go red.
+  //
+  // So the three states get three different fates, and only the third is hard:
+  //
+  //   remainder ≥ 0                    PASS   the decomposition holds
+  //   negative, within the band        NOTE   indistinguishable from zero — soft,
+  //                                           and no longer printed as a PASS
+  //   negative, beyond the band        FAIL   measured false; the endpoint is
+  //                                           faster than its own parts
+  //
+  // The soft states are recorded as `measurement`, so they neither redden the
+  // exit nor inflate the count of checks that could have gone red.
   const remainderBand = COLD_BAND_SIGMAS * Math.sqrt(seBrowse ** 2 + (kM >= 2 ? (sigmaFp / Math.sqrt(kM)) ** 2 : 0));
-  const remainderVerdict = remainder >= 0 ? 'positive'
-    : Math.abs(remainder) <= remainderBand ? 'negative but within the two instruments\' combined noise — indistinguishable from zero'
-    : 'NEGATIVE BEYOND NOISE — the decomposition does not hold as stated; the endpoint is measurably faster than this file\'s own fingerprint sum over the same corpus';
-  check('O', 'fingerprinting is attributed at the surface it is described at', true,
+  const remainderState: 'positive' | 'within-noise' | 'beyond-noise' =
+    remainder >= 0 ? 'positive'
+      : Math.abs(remainder) <= remainderBand ? 'within-noise'
+        : 'beyond-noise';
+  const remainderVerdict = remainderState === 'positive' ? 'positive'
+    : remainderState === 'within-noise' ? 'negative but within the two instruments\' combined noise — indistinguishable from zero (soft: reported, does not fail the run)'
+      : 'NEGATIVE BEYOND NOISE — the decomposition does not hold as stated; the endpoint is measurably faster than this file\'s own fingerprint sum over the same corpus';
+  check('O', 'fingerprinting is attributed at the surface it is described at',
+    remainderState === 'positive',
     `cold browse ${ms(coldL)} = fingerprint ${ms(mCapped)} (${(100 * mCapped / coldL).toFixed(0)}%) + remainder ${ms(remainder)} (${(100 * remainder / coldL).toFixed(0)}%) — ${remainderVerdict} (±${ms(remainderBand)} at ${COLD_BAND_SIGMAS}σ)`,
-    'measurement');
+    remainderState === 'beyond-noise' ? 'regression' : 'measurement');
 
   if (Math.abs(fingerprintDelta) <= band) {
     // NOT a pass, and not a soft skip. See the note above.

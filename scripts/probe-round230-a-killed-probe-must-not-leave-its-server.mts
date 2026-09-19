@@ -23,29 +23,45 @@
  *   probe-import-multipart-cap (process.on('exit', killServer))  quiet
  *   a fixture with the same spawn and no handlers (.cjs and .mts) LEAK — the negative control
  *
+ * Re-measured 2026-09-18 (STOP), after probe-round213 was retrofitted AND `reapOnExit` was
+ * corrected to send SIGTERM: that first line is now **quiet**. The fixture line is unchanged
+ * and still LEAKs, which is what keeps the new green red-capable. See the resolved-limitation
+ * section below — the retrofit alone did not do it, and for a round we thought it had failed.
+ *
  * The negative control is the load-bearing one: without a subject that provably leaks, a green
  * here is a green that could not have been red. The first two versions of this file WERE
  * exactly that, twice over — see `theProcessUnderTest` and `subjectReachedItsOwnEnding` below,
  * each of which exists because a vacuous PASS was printed before it was written.
  *
- * ── ⚠️ A LIMITATION THAT IS NOT YET RESOLVED ──────────────────────────────────────────────
+ * ── ✅ THE LIMITATION THIS FILE ONCE CARRIED, NOW RESOLVED (Round 231) ────────────────────
  *
  * `npx tsx <probe>` produces this chain, verified from `ps`:
  *
  *     npx → node .bin/tsx <probe>.mts  → node --require tsx/… (THE PROBE)  → the server chain
  *           ^ tsx's supervisor            ^ where handlers are registered
  *
- * Only the supervisor carries the subject path on its command line, so that is what this file
- * signals. The process that registered the handlers is its child. This is very likely why
- * adding `reapOnExit` to probe-round213 did NOT stop the leak, while `process.on('exit')` in
- * probe-import-multipart-cap does prevent it — an asymmetry this file cannot currently explain
- * and does not claim to. Treat a LEAK verdict as sound (a server really is left behind, which
- * is the thing that matters) and a quiet verdict as sound; do NOT read either as evidence about
- * which listener ran.
+ * This file used to say that only the supervisor carries the subject path, so the signal
+ * lands on the wrong process, and that this was "very likely" why `reapOnExit` did not stop
+ * probe-round213 leaking. **That was wrong, and Round 231 measured it wrong.** The innermost
+ * process does carry the subject path; `theProcessUnderTest()` picks the handler-registering
+ * process on the nose; the signal is delivered and the handlers run. Nothing to fix in the aim.
  *
- * Separately measured, so the remedy itself is not in doubt: `server.kill('SIGTERM')` on the
- * npx shim a probe holds takes the entire chain down and frees the port. The reaper works when
- * it runs.
+ * The cause was inside `reapOnExit`, on a line that ran: it sent the child SIGKILL, the child
+ * is an `npm exec tsx` shim two processes above the listener, and SIGKILL is the one signal a
+ * shim cannot forward. It now sends SIGTERM. Re-driven 2026-09-18 (STOP) with that change:
+ *
+ *   probe-round213-reassign-live-http  quiet within 12 s, all 5 descendants gone  (was LEAK)
+ *   .testdata/round230/leaky.mts       LEAK, 3 of 5 descendants alive — still red-capable
+ *
+ * ── The control that let the wrong cause survive a round ──────────────────────────────────
+ *
+ * This file recorded "the remedy is not in doubt: `server.kill('SIGTERM')` on the npx shim
+ * takes the whole chain down." That measurement is correct and still reproduces — and it was
+ * the wrong control, because **the code under test sent SIGKILL**. It eliminated the true
+ * hypothesis by exercising a friendlier argument than the code passes.
+ *
+ * **Rule (Theseus, Round 231): a control for a remedy must make the call the remedy makes** —
+ * not the same function with a different argument, the same argument.
  *
  * ── What this cannot establish ────────────────────────────────────────────────────────────
  *

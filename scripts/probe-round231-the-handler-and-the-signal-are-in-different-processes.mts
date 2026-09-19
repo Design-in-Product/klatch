@@ -30,6 +30,28 @@
  *   self        the pid the fixture reports as its own
  *   group       the whole process group (`kill(-pid)`, subject spawned detached)
  *
+ * ── WHAT IT FOUND, AND WHAT CHANGED UNDER IT (Daedalus, 2026-09-18 STOP) ──────────────────
+ *
+ * This probe's finding was taken and the remedy is in the tree: `reapOnExit` now sends the
+ * child **SIGTERM**, not SIGKILL (`scripts/lib/probe-server-ownership.mts`). Re-driven after
+ * that one-word change: arm A flipped from LEAK to **quiet after 257 ms**, and arm R's real
+ * subject handed back 3001 after **259 ms** instead of holding it past 8000 ms.
+ *
+ * Two consequences for reading the arms below, both of which changed the file:
+ *
+ *   - **Arm A now tracks the shipped library** (the `reaper` fixture does a live `import` of
+ *     `reapOnExit`, so it is never a stale copy). Its job is now a **regression guard**: put
+ *     SIGKILL back and arm A goes red. Arm N is what keeps it red-capable.
+ *   - **Arm S is no longer a contrast.** It was "the same reaper with SIGTERM instead"; the
+ *     shipped reaper now *is* that, so A and S are the same condition and stand as
+ *     independent replications. The output says so rather than implying a difference — the
+ *     same call Theseus made for arms D and A, which also resolve alike on this platform.
+ *
+ * Arm R was rewritten for the same reason: it asserted `quiet === null`, i.e. it asserted the
+ * **defect**, which is correct only while the defect is live. Its stated purpose is the
+ * fixture's *warrant*, so it now asserts that the real subject and arm A **agree**, which is
+ * the claim it was always making and survives the polarity flip.
+ *
  * ── Fidelity, stated rather than assumed ──────────────────────────────────────────────────
  *
  * The fixture reproduces the spawn shape under test — `spawn('npx', ['tsx', …])`, the same
@@ -393,7 +415,13 @@ function describe(o: RunOutcome): string {
 
 const REAL_SUBJECT = 'scripts/probe-round213-reassign-live-http.mts';
 
-async function realSubjectArm(): Promise<void> {
+/**
+ * `armAFreedThePort` is arm A's outcome, or `null` if arm A did not run. The fidelity claim is
+ * *agreement* between the fixture and the real subject — not a fixed polarity. Asserting the
+ * leak directly (the original `quiet === null`) made this check correct only for as long as
+ * the bug was unfixed, and it went red the moment the remedy landed.
+ */
+async function realSubjectArm(armAFreedThePort: boolean | null): Promise<void> {
   const child = spawn('npx', ['tsx', REAL_SUBJECT], {
     cwd: REPO,
     // The key is stripped: this arm kills the subject as soon as its server answers, long
@@ -439,15 +467,23 @@ async function realSubjectArm(): Promise<void> {
     const sentAt = Date.now();
     process.kill(subjectPid, 'SIGTERM');
     const quiet = await msUntilQuiet(REAL_PORT, SETTLE_MS);
-    note('R', 'the real leak, reproduced with the signal known to have been delivered',
+    note('R', 'the real subject, driven with the signal known to have been delivered',
       `SIGTERM to ${subjectPid} (the process that ran \`reapOnExit\`) · port ${REAL_PORT} ` +
       `${quiet === null ? `STILL ANSWERING after ${SETTLE_MS} ms — LEAK, matching Round 230 §5` : `quiet after ${quiet} ms`} · ` +
       `subject ${alive(subjectPid) ? 'alive' : 'gone'} at +${Date.now() - sentAt} ms`);
-    check('R', 'the real subject leaks exactly as the fixture predicts, for the same reason',
-      quiet === null,
-      'this check is the fixture\'s warrant. If the real probe stopped leaking while the ' +
-      'fixture still did, the fixture would not be a model of it and arms A/S would say ' +
-      'nothing about the tree.');
+    const realFreedThePort = quiet !== null;
+    if (armAFreedThePort === null) {
+      skipped.push('arm R: fidelity check needs arm A, which did not run');
+    } else {
+      check('R', 'the real subject behaves exactly as the fixture predicts, for the same reason',
+        realFreedThePort === armAFreedThePort,
+        `fixture (arm A) ${armAFreedThePort ? 'freed' : 'held'} its port and the real subject ` +
+        `${realFreedThePort ? 'freed' : 'held'} ${REAL_PORT} — they agree. This check is the ` +
+        `fixture's warrant, and it asserts AGREEMENT, not a fixed outcome: if the real probe ` +
+        `behaved one way while the fixture behaved the other, the fixture would not be a model ` +
+        `of it and arms A/S would say nothing about the tree. Both leaked when this round was ` +
+        `written; both free the port now that reapOnExit sends SIGTERM.`);
+    }
   } finally {
     const survivors = new Set<number>([child.pid!, ...treeBefore, ...descendants(child.pid!)]);
     let reaped = 0;
@@ -515,19 +551,25 @@ async function main() {
       `${describe(selfAimed)}\n         provenance: ${selfAimed.markerProvenance.join('; ') || 'no markers'}`);
     check('A', 'and the port `reapOnExit` was holding goes quiet',
       selfAimed.quietAfterMs !== null,
-      `${describe(selfAimed)} — reapOnExit sends the child SIGKILL, and the child is an ` +
-      `\`npm exec tsx\` shim two levels above the listener. SIGKILL is the one signal a shim ` +
-      `cannot forward.`);
+      `${describe(selfAimed)} — REGRESSION GUARD on the remedy. The child is an \`npm exec tsx\` ` +
+      `shim two levels above the listener, and SIGKILL is the one signal a shim cannot forward: ` +
+      `while reapOnExit sent SIGKILL this check was RED and the port stayed past ${SETTLE_MS} ms. ` +
+      `It reads the shipped library through a live import, so putting SIGKILL back turns it red again.`);
   }
 
-  // ── Arm S — the same reaper with one thing changed: SIGTERM instead of SIGKILL. ───────
+  // ── Arm S — a hand-written SIGTERM reaper. Was the contrast to arm A; is now its twin. ─
+  //
+  // Written when the library sent SIGKILL, so that A-vs-S isolated the signal as the single
+  // difference. The library now sends SIGTERM, so this is the SAME condition as arm A, kept
+  // as an independent replication that does not go through `import` — if A and S ever
+  // disagree, the library has drifted from the shape this round measured.
   const sigtermReaper = await run('reapersigterm', 'self');
   if (sigtermReaper.failedToStart) skipped.push(`arm S: ${sigtermReaper.failedToStart}`);
   else {
-    check('S', 'a reaper that sends SIGTERM instead of SIGKILL does free the port',
+    check('S', 'a hand-written SIGTERM reaper frees the port, replicating arm A',
       sigtermReaper.markers.includes('SIGTERM') && sigtermReaper.quietAfterMs !== null,
-      `${describe(sigtermReaper)} — identical to arm A in when it fires, what it holds and its ` +
-      `process.exit(130); the only difference is the signal it sends the shim.`);
+      `${describe(sigtermReaper)} — NOT a contrast to arm A any more: since the remedy landed, ` +
+      `the shipped reaper sends the same signal this arm does. Replication, not condition.`);
   }
 
   // ── Arm N — negative control. Without a handler, the same aim must leak. ──────────────
@@ -602,7 +644,7 @@ async function main() {
   if ((await somethingIsAlreadyAnswering(REAL_PORT)) !== null) {
     skipped.push(`arm R: port ${REAL_PORT} is occupied — the real subject cannot own its server`);
   } else {
-    await realSubjectArm();
+    await realSubjectArm(selfAimed.failedToStart ? null : selfAimed.quietAfterMs !== null);
   }
 
   const finalQuiet = await portQuiet(PORT);
