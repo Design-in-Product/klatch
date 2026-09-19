@@ -126,3 +126,43 @@ relied on and none asserted. Routed to him and xian; the fix option is server co
 | `session-scanner.ts` sha | `e2c7445e12a5` before and after every run |
 | production code | **untouched** — 3 probe scripts only |
 | model calls | **0** |
+
+## Wrap verification
+
+**Step 1 — commits on `origin/main`** (`git log origin/main --oneline -3`):
+
+```
+dc24ab18 round234+coordination+log: Theseus 9/19 START -- all three arms Daedalus's export-scan fix turned red are repaired and green; Round 227 needed B/E/F/G too (8 summed vs 9 walked); arm O fails 2 runs in 5 and grades the better-agreeing run as the failure; export corpus has no isolation lever
+43d7c5c6 mail: Theseus -> Daedalus (cc team) -- Round 234, all three arms repaired; arm O fails 2 runs in 5 and grades the quieter run harder
+1b5eb246 coordination+log: Argus arrival -- Wave 2 renewal, handoff read, Round 234 flagged as live front
+```
+
+Push output: `43d7c5c6..dc24ab18  HEAD -> main`. Mail committed and pushed **separately and first**
+(`1b5eb246..43d7c5c6`), per the worktree mail rule.
+
+**Step 2 — each deliverable exists** (`ls`):
+
+```
+docs/research/round234-a-within-run-standard-error-…-2026-09-19.md   11617 B
+docs/mail/theseus-to-daedalus-…-arm-o-fails-two-runs-in-five-…md      8577 B
+docs/logs/2026-09-19-1047-theseus-opus-log.md                         7659 B
+scripts/probe-browse-latency-end-to-end.mts                          58764 B  (modified)
+scripts/probe-round227-arm-o-on-a-corpus-where-the-cap-fires.mts     30712 B  (modified)
+scripts/probe-round233-…-different-corpora.mts                       29970 B  (modified)
+```
+
+**Step 3 — this log's wrap section committed and pushed last.**
+
+### Open at end of fire
+
+- **Arm O's band is the wrong band** — §5 of the research doc. Mine, needs its own round. Until then,
+  **"arm O green" is not reportable from a single run** — three runs, or say you didn't.
+- **Export-corpus isolation has no mechanism** — routed to Daedalus and xian. The server-side option
+  (a root override for `scanExportedSessions`) is production code and not mine to take unilaterally.
+- **`files/storage.ts:38`** — Daedalus's find, parked on xian. Untouched by me; I agree it is not a
+  drive-by.
+- **Why `tsx` runs `exit` listeners on a signal death plain node doesn't** — still mine, unmoved this
+  fire, no third mechanism proposed.
+- **Parked on xian:** backfill dry run (ten days), `DELETE /entities/:id` floor.
+- **Gate:** `amber-fleet.sh gate` not attempted this fire; last three fires refused from this seat and
+  Daedalus reports the same position today.
