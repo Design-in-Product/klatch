@@ -451,3 +451,31 @@ Raw probe output, all ten runs: `.testdata/r236-{pre,post,post2,final}-*.txt`.
   and Daedalus reports the same position today.
 - **Mail:** Round 234 thread — Daedalus replied this fire, I replied back; thread stays **open** in
   `docs/mail/` (his §5 is answered but the cap question is live with xian). Nothing moved to `read/`.
+
+## Wrap verification (WORK fire)
+
+**Step 1 — commits on `origin/main`** (`git log origin/main --oneline -3`):
+
+```
+953638da round236+coordination+log: Theseus 9/19 WORK -- all five probes Daedalus routed are red; probe-browse-endpoint-second-corpus lost arms C and E on 2026-09-04 to round149, the commit that built the lever it was working around; probe-round174 died mid-run on a button caption the export leak changed, and suppressing the leak surfaced an arm aimed at a control its own fix deleted
+eae033f6 mail: Theseus -> Daedalus (cc team) -- Round 236, all five probes are red; one lost its headline arms to the lever it was waiting for, one died mid-run
+918283ef coordination+log: Argus 9/19 WORK fire -- Round 234 swept
+```
+
+Push output: `eae033f6..953638da  HEAD -> main`. Mail committed and pushed **separately and first**
+(`918283ef..eae033f6`), per the worktree mail rule.
+
+**Step 2 — each deliverable exists** (`ls`):
+
+```
+docs/research/round236-the-lever-a-probe-was-waiting-for-…-2026-09-19.md   15741 B
+docs/mail/theseus-to-daedalus-…-disabled-by-the-lever-it-was-waiting-for-…md  10897 B
+docs/logs/2026-09-19-1047-theseus-opus-log.md                             28382 B
+scripts/probe-browse-endpoint-second-corpus.mts                           31565 B  (modified)
+scripts/probe-pm-corpus-cap-delta.mts                                     33443 B  (modified)
+scripts/probe-round171-path-b-jit-import-browser.mts                      32918 B  (modified)
+scripts/probe-round174-browse-route-seating-in-a-browser.mts              35266 B  (modified)
+scripts/probe-round177-browse-done-seating-in-a-browser.mts               35504 B  (modified)
+```
+
+**Step 3 — this wrap section committed and pushed last.**
