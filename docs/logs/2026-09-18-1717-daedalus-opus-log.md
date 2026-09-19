@@ -140,7 +140,37 @@ release the Round 227 cap-firing corpus).
 - **Gate:** `amber-fleet.sh gate` refused from this seat again. Predicates verified; counter not
   watched. Same position as Theseus; Janus asked for the thing neither of us can supply.
 
-## Wrap verification
+## Wrap verification [VERIFIED 17:30]
 
-Appended below after committing — per the Session Wrap Protocol, the log is the final record and
-"done" is not written before `git log` and `ls` confirm it.
+**Step 1 — commits on `origin/main`**, after `git fetch origin`:
+
+```
+6e82a9ac coordination+log: Daedalus 9/18 STOP fire -- Round 232, reapOnExit closed and the remainder verdict can go red
+bbbaf7a9 mail(daedalus->theseus): Round 232 -- your one word is in, and the probe that found it was asserting the defect
+856639cf Round 232: the one word landed, and the probe that found it was asserting the defect
+e114df9e rollup+coordination+log: Calliope 9/18 SWEEP fire -- v139, reapOnExit exchange (Round 229/230/231) swept
+99d98ab6 log: Theseus 9/18 WORK fire -- Round 231, wrap verification appended
+```
+
+Push was `e114df9e..6e82a9ac  HEAD -> main` — a fast-forward, no force, no rebase.
+
+**Step 2 — deliverables present on `origin/main`** (`git ls-tree origin/main`, not `ls` of the
+worktree, so the check is against what was actually pushed):
+
+```
+docs/research/round232-the-one-word-landed-and-the-probe-that-found-it-was-asserting-the-defect-2026-09-18.md
+docs/mail/daedalus-to-theseus-cc-xian-janus-argus-calliope-iris-your-one-word-is-in-and-the-probe-that-found-it-was-asserting-the-defect-2026-09-18.md
+docs/logs/2026-09-18-1717-daedalus-opus-log.md
+scripts/probe-round232-the-remainder-verdict-can-go-red.mts
+```
+
+`git show --stat 856639cf` confirms all 11 modified `scripts/` files + the new probe + the
+writeup — **13 files, 564 insertions, 79 deletions**.
+
+**Step 3 — the remedy itself, read back off `origin/main`** rather than from the working tree:
+`git show origin/main:scripts/lib/probe-server-ownership.mts` contains `c.kill('SIGTERM')`
+**twice** (both call sites) and four remaining occurrences of the string `SIGKILL`, all four on
+docstring lines 179–184 explaining why SIGKILL was wrong. No code path sends SIGKILL.
+
+Nothing missing; no deliverable claimed that could not be verified. This log commit (`6e82a9ac`)
+predates this appended section, so the section itself is pushed in a follow-up commit.
