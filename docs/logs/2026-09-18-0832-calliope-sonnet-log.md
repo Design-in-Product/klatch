@@ -118,3 +118,50 @@ $ git status --short
 Both commits pushed and confirmed present on `origin/main` this fire, by this session directly — not the
 wrapper's backstop. The gate-file requirement (Janus's memo) is the one thing this fire could not leave
 half-done; everything else followed the normal not-claiming-delivered discipline.
+
+---
+
+## SWEEP fire — rollup refreshed to v139: the `reapOnExit` exchange (Round 229/230/231) swept in one fire
+
+- Read `docs/COORDINATION.md` and `docs/mail/` at fire start. `git pull origin main`: already up to date at
+  `99d98ab6`. My own MID-fire checkpoint (`9568e059`) had explicitly deferred Round 229 (monotonicity
+  instrument) pending Daedalus's reply — that reply (Round 230) and a further reply (Round 231) had both
+  landed since. `git log --oneline 9568e059..HEAD` showed 9 new commits, none mine: Daedalus's Round 230,
+  Argus's own gate-handoff fire (unrelated to this technical thread), Theseus's Round 231. `git diff --stat
+  9568e059..HEAD -- packages/` empty, `-- scripts/` 9 files (2 new probes, 7 edited) — confirmed before
+  citing anything.
+- Read all three new mail memos in full (Round 229, 230, 231 — none addressed to this seat by name, no
+  reply owed): Theseus built a monotonicity-ladder instrument and caught his own false-by-design assertion
+  in the same hour he wrote a handoff describing exactly that discipline, then put a floor under the
+  standing `reapOnExit` item ("four listings without a landing is a ritual"). Daedalus took it, found the
+  real shape is 7 files not 22, but the retrofit doesn't yet work — traced to a topology hypothesis and
+  left unresolved. Theseus took the open question, found the hypothesis wrong, and diagnosed the actual
+  cause: the shared reaper sends `SIGKILL` to an `npm exec` shim, which can't forward a signal it can't
+  catch. Fix is one word, driven, not yet applied — left for Daedalus.
+- `npm test` re-run fresh, redirected to a worktree-local scratch file (`/tmp` was blocked by the sandbox
+  this fire — first time seeing that) and deleted after reading, not piped to `tail`: server **1884/1885
+  (119 files, 1 skipped)**, client **324/337 (13 skipped, 38 files)** — matches all three memos' figures
+  exactly, unchanged from the MID fire's own third independent confirmation. `git status --porcelain`
+  clean before and after.
+- Standing blockers re-checked directly, all three unchanged: Janus's logbook-shape thread (21 days since
+  8/28), rollup-html-mirror-drift (11 days since flagged 9/7, `.html` still 8/23), ground-rules
+  standing/per-klatch question (40 days since 8/9, the item this fire's own MID-fire handoff caught
+  missing and added to the who-owes-what table).
+- Refreshed `docs/operations/attention-rollup.md` to v139: new banner covering the three rounds, prior
+  banner (v138) preserved verbatim under "superseded," new changelog entry. Needs-you count unchanged at
+  3 — this exchange is scripts-only, no `packages/` code moved, and the live defect it found (SIGKILL vs.
+  SIGTERM in the shared reaper) is routed to Daedalus, not a needs-you item. Noted separately, not as a
+  needs-you item: Theseus flagged a live Amber-gate filename-matcher hazard for any seat whose board title
+  differs from its roster name (his own case — "Theseus Prime" vs. roster `theseus`), already routed to
+  Janus in his own memo.
+- Updated `docs/COORDINATION.md`'s Calliope section with this fire's entry.
+
+**Wrap verification:**
+
+```
+$ git status --porcelain
+(clean)
+```
+
+Commits stay local per this cycle's fire instructions — the wrapper owns delivery to `origin/main` and
+logs the outcome. Not claiming delivered.
