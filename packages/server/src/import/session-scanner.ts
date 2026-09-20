@@ -288,6 +288,66 @@ const FINGERPRINT_LINE_CAP = 50_000;
 const FINGERPRINT_MAX_CHARS = 80;
 
 /**
+ * The line cap in force for this call, `KLATCH_FINGERPRINT_LINE_CAP` if it is set.
+ *
+ * **Why this override exists (Round 237).** The cap's cost can only be measured
+ * against the shipped code path, and the `lineCap` parameter below is how a *test*
+ * does that — it imports the function and passes a number. A probe driving the
+ * **endpoint** has no such seam: nothing between `fetch` and `getSessionFingerprint`
+ * carries a cap. So four probes did the only thing available and **wrote a patched
+ * `packages/server/src/import/session-scanner.ts` to disk**, ran a server against it,
+ * and restored it in a `finally`.
+ *
+ * That workaround has three costs, and the third is the one Theseus named in Round
+ * 236. (1) It is a write into shipped source from a measurement script; a crash
+ * between patch and restore leaves the repo modified. (2) It matches a *spelling* of
+ * the declaration, so reformatting the constant breaks it —
+ * `scripts/lib/probe-source-constants.mts` exists because `50_000` did exactly that
+ * on 2026-09-04, killing one probe and silently giving another a cap 1000x too small.
+ * (3) Every one of those patches is guarded by a skip on "the literal is not what I
+ * expect", and **a skip renders "this feature shipped" and "this arm is missing"
+ * indistinguishable in the output** — which is how arms C and E of
+ * `probe-browse-endpoint-second-corpus` stayed silent for fifteen days after the
+ * commit that retired their workaround.
+ *
+ * **The retirement condition, named here so the next reader does not have to infer
+ * it:** any probe that patches `FINGERPRINT_LINE_CAP` in source is working around
+ * the absence of this function. It exists now. Set the variable on the server's
+ * environment instead, and delete the patch, the restore, and the skip guard.
+ *
+ * **Read per call, not captured at module load**, for the same reason as
+ * `getExportRoot()` — a probe sets the variable when it spawns the server, which may
+ * be after this module is imported in-process, and a cached read would make the lever
+ * silently inert. The cost is one `process.env` lookup per session file.
+ *
+ * **Invalid values throw; they never fall back to the default.** A lever that
+ * quietly ignores what it was set to is worse than no lever: the probe measures the
+ * shipped cap and reports it as the patched one. The throw reaches
+ * `GET /import/claude-code/sessions` as a 500 whose `detail` names this variable,
+ * which is the loudest place it can surface.
+ *
+ * Unset, empty, or whitespace: `FINGERPRINT_LINE_CAP`, byte-identical to before.
+ */
+export function resolveFingerprintLineCap(): number {
+  const configured = process.env.KLATCH_FINGERPRINT_LINE_CAP?.trim();
+  if (!configured) return FINGERPRINT_LINE_CAP;
+
+  // `_` stripped so the variable can be spelled the way the constant is. `Number`
+  // then accepts `1500`, `1_500`, `1.5e3` and `0x5DC` — all the same number, which
+  // is the property `probe-source-constants.mts` was built to defend. It also
+  // accepts `1.5` and `abc`, which the guard below rejects rather than rounds.
+  const parsed = Number(configured.replace(/_/g, ''));
+  if (!Number.isSafeInteger(parsed) || parsed < 1) {
+    throw new Error(
+      `KLATCH_FINGERPRINT_LINE_CAP is set to ${JSON.stringify(configured)}, which is not a ` +
+      `positive whole number of lines. Refusing to fall back to the shipped cap ` +
+      `(${FINGERPRINT_LINE_CAP}): a caller that set this variable is measuring the cap, and ` +
+      `silently measuring a different one is the failure this override exists to prevent.`);
+  }
+  return parsed;
+}
+
+/**
  * Pull a content fingerprint from a JSONL session — first real human-typed
  * user message + approximate turn count. Streams up to FINGERPRINT_LINE_CAP
  * lines and reports whether the guard was reached (messageCount and turnCount
@@ -298,6 +358,10 @@ const FINGERPRINT_MAX_CHARS = 80;
  * `lineCap` is overridable so the cap's latency cost can be measured against
  * the shipped code path rather than a copy of it (see
  * scripts/probe-scan-latency-vs-cap.mts). Callers in the product don't pass it.
+ * It defaults to `resolveFingerprintLineCap()` — the shipped cap unless
+ * `KLATCH_FINGERPRINT_LINE_CAP` is set — so a probe driving the *endpoint* can
+ * move the cap without patching this file. An explicit argument still wins: the
+ * variable moves the default, it does not override a caller who named a cap.
  *
  * "Real human" filter mirrors parser.ts isConversationEvent + the injection-
  * metadata flags: skip events that are isMeta / isCompactSummary / tool
@@ -311,7 +375,7 @@ export interface SessionFingerprint {
   capped: boolean;
 }
 
-export async function extractSessionFingerprint(filePath: string, lineCap: number = FINGERPRINT_LINE_CAP): Promise<SessionFingerprint> {
+export async function extractSessionFingerprint(filePath: string, lineCap: number = resolveFingerprintLineCap()): Promise<SessionFingerprint> {
   return new Promise((resolve) => {
     const stream = fs.createReadStream(filePath, { encoding: 'utf-8' });
     const rl = readline.createInterface({ input: stream, crlfDelay: Infinity });
@@ -446,7 +510,7 @@ const fingerprintCache = new Map<string, FingerprintCacheEntry>();
 export async function getSessionFingerprint(
   filePath: string,
   stat: fs.Stats,
-  lineCap: number = FINGERPRINT_LINE_CAP,
+  lineCap: number = resolveFingerprintLineCap(),
 ): Promise<SessionFingerprint> {
   const hit = fingerprintCache.get(filePath);
   if (hit && hit.mtimeMs === stat.mtimeMs && hit.sizeBytes === stat.size && hit.lineCap === lineCap) {

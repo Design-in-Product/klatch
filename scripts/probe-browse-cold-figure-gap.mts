@@ -47,21 +47,30 @@
  * Zero model calls. One scratch DB under `.testdata/`; xian's `klatch.db` is
  * never opened. The corpus is read-only throughout.
  *
- * ─── On source mutation ─────────────────────────────────────────────────────
- * Arm C needs a cap the shipped code does not offer at the endpoint —
- * `extractSessionFingerprint` takes `lineCap` as a parameter, but the route
- * calls it with the default, so the only way to measure the cap AT THE ENDPOINT
- * is to change the constant for one server generation. The original bytes are
- * captured at start and re-asserted by sha256 before exit; the replacement is
- * an exact-match single-occurrence rewrite that refuses to proceed if the
- * constant is not the shape it expects. Nothing is committed in the patched
- * state.
+ * ─── On source mutation: there is none any more (Round 237) ────────────────
+ * Arm C needs a cap the shipped code did not offer at the endpoint.
+ * `extractSessionFingerprint` has always taken `lineCap` as a parameter, but the
+ * route called it with the default, so from Round 153 until 2026-09-19 this probe
+ * **wrote a patched `session-scanner.ts` to disk**, booted a server against it,
+ * and restored the bytes in a `finally`, guarded by a skip on "the constant is
+ * not the shape I expect".
  *
- * The patch is also verified by its EFFECT, not just by text: Round 143 found
- * the 1500 cap bit 11 of 506 files. So arm C must come back with
- * `fingerprintCapped` TRUE on some sessions and arm B with none. A text match
- * proves the file changed; the capped count proves the server we measured was
- * actually running the changed cap.
+ * That guard is the one Theseus's Round 236 finding is about. A skip renders
+ * "the feature shipped" and "this arm is missing" indistinguishable, and the
+ * constant's spelling had already moved once — `50000` → `50_000` on 2026-09-04,
+ * which killed one probe outright and gave another a cap 1000x too small.
+ *
+ * `resolveFingerprintLineCap()` is the lever that retires it. Arm C now sets
+ * `KLATCH_FINGERPRINT_LINE_CAP` on the environment of the server it spawns. This
+ * probe reads `session-scanner.ts` (for the shipped cap, spelling-tolerantly) and
+ * never writes it; a `*` check asserts the file is byte-identical at exit, which
+ * is now a statement about a file nothing in this process opens for writing.
+ *
+ * The cap is still verified by its EFFECT, not by the apparatus: Round 143 found
+ * the 1500 cap bit 11 of 506 files, so arm C must come back with
+ * `fingerprintCapped` TRUE on some sessions and arm B with none. "The variable
+ * was set" is exactly as weak a claim as "the file was patched" — arm E is what
+ * proves the server we measured was actually running the cap we asked for.
  */
 
 import fs from 'fs';
@@ -71,6 +80,7 @@ import crypto from 'crypto';
 import readline from 'readline';
 import { spawn } from 'child_process';
 import { waitUntilPortIsQuiet } from './lib/probe-server-ownership.mts';
+import { readNumericConstant } from './lib/probe-source-constants.mts';
 
 const REPO = path.resolve(import.meta.dirname, '..');
 const SCRATCH = path.join(REPO, '.testdata', 'browse-cold-figure-gap');
@@ -79,6 +89,18 @@ const PORT = 3001;
 const BASE = `http://127.0.0.1:${PORT}`;
 const SCANNER_REL = 'packages/server/src/import/session-scanner.ts';
 const SCANNER = path.join(REPO, SCANNER_REL);
+
+/**
+ * An export-free root, so the repo's own `exports/sessions/` is not in the corpus
+ * being priced. Round 234 fixed the export scan to resolve the repo root from the
+ * module's location; correct, and it put a 3.86 MB export into the payload of
+ * every probe that measures `~/.claude/projects` — including this one, whose arm
+ * A counts files on disk under the shipped root and then asserts the endpoint
+ * returns that many. `KLATCH_EXPORT_ROOT` (Round 235) is replace-semantics, so
+ * pointing it at a directory with no `exports/sessions/` is how a probe gets an
+ * empty export corpus. Asserted by effect in every arm, not assumed.
+ */
+const EXPORT_FREE_ROOT = path.join(SCRATCH, 'no-exports');
 
 const HOME = os.homedir();
 const ROOT_SHIPPED = path.join(HOME, '.claude', 'projects');
@@ -97,11 +119,11 @@ function check(arm: string, name: string, pass: boolean, detail: string, kind: K
   const tag = pass ? 'PASS' : kind === 'measurement' ? 'NOTE' : 'FAIL';
   console.log(`${tag} [${arm}] ${name} — ${detail}`);
 }
-const skipped: string[] = [];
-function skip(arm: string, why: string) {
-  skipped.push(`[${arm}] ${why}`);
-  console.log(`SKIP [${arm}] ${why}`);
-}
+// This probe has no skip path. It had two — both downstream of arm C's source
+// patch, which could fail to match the literal it expected — and Round 237
+// removed the patch, so neither condition can arise. A skip helper kept for a
+// case that can no longer occur is the same stale guard in miniature: the next
+// reader would take "0 skipped" as evidence that something was checked.
 
 const median = (xs: number[]) => {
   const s = [...xs].sort((a, b) => a - b);
@@ -118,22 +140,32 @@ fs.mkdirSync(SCRATCH, { recursive: true });
 
 const SCANNER_ORIGINAL = fs.readFileSync(SCANNER);
 const SCANNER_SHA = crypto.createHash('sha256').update(SCANNER_ORIGINAL).digest('hex');
-const originalText = SCANNER_ORIGINAL.toString('utf8');
 
-const CAP_SHIPPED_LITERAL = 'const FINGERPRINT_LINE_CAP = 50_000;';
-const CAP_PATCHED_LITERAL = 'const FINGERPRINT_LINE_CAP = 1_500;';
-const CAP_SHIPPED_VALUE = 50_000;
+/**
+ * The shipped cap, READ FROM SOURCE rather than hardcoded — spelling-tolerantly,
+ * via the reader that exists because `50000` became `50_000` on 2026-09-04 and
+ * broke two probes in two different ways. Arm B's label and arm E's "does not
+ * bite" assertion are both about this number; a stale copy of it would make both
+ * of them describe a cap the server is not running.
+ */
+const CAP_SHIPPED_VALUE = readNumericConstant(
+  SCANNER_ORIGINAL.toString('utf8'), 'FINGERPRINT_LINE_CAP', 'probe-browse-cold-figure-gap');
 const CAP_PATCHED_VALUE = 1_500;
-const capOccurrences = originalText.split(CAP_SHIPPED_LITERAL).length - 1;
 
-function restoreScanner(): boolean {
-  fs.writeFileSync(SCANNER, SCANNER_ORIGINAL);
+/**
+ * Read-only, and that is the point. Since Round 237 this probe sets
+ * `KLATCH_FINGERPRINT_LINE_CAP` on the server it spawns instead of rewriting the
+ * scanner, so there is nothing to restore — this function now exists to *witness*
+ * that, by proving the file on disk is byte-identical to the one captured at
+ * start. It never writes.
+ */
+function scannerUnchanged(): boolean {
   return crypto.createHash('sha256').update(fs.readFileSync(SCANNER)).digest('hex') === SCANNER_SHA;
 }
-process.on('exit', () => { try { restoreScanner(); } catch { /* best effort */ } });
-process.on('SIGINT', () => { try { restoreScanner(); } finally { process.exit(130); } });
 
-console.log(`${SCANNER_REL} captured at sha256 ${SCANNER_SHA.slice(0, 12)} (restored before exit)\n`);
+console.log(
+  `${SCANNER_REL} captured at sha256 ${SCANNER_SHA.slice(0, 12)} — read only, never written ` +
+    `(shipped FINGERPRINT_LINE_CAP = ${CAP_SHIPPED_VALUE})\n`);
 
 // ── Server lifecycle (Round 146 discipline, unchanged) ───────────────────────
 
@@ -155,13 +187,13 @@ async function waitForPortFree(): Promise<void> {
   await waitUntilPortIsQuiet(PORT);
 }
 
-async function startServer(tag: string): Promise<void> {
+async function startServer(tag: string, extraEnv: Record<string, string> = {}): Promise<void> {
   await waitForPortFree();
   const logPath = path.join(SCRATCH, `server-${tag}.log`);
   const logFd = fs.openSync(logPath, 'a');
   server = spawn('npx', ['tsx', 'src/index.ts'], {
     cwd: path.join(REPO, 'packages/server'),
-    env: { ...process.env, KLATCH_DB: DB },
+    env: { ...process.env, KLATCH_DB: DB, KLATCH_EXPORT_ROOT: EXPORT_FREE_ROOT, ...extraEnv },
     stdio: ['ignore', logFd, logFd],
   });
   const deadline = Date.now() + 90_000;
@@ -187,11 +219,16 @@ interface Browse {
   capped: string[];
   maxTurnCount: number;
   turnTotal: number;
+  /** Sessions the server flagged `isExported` — must be 0, see EXPORT_FREE_ROOT. */
+  exported: number;
+  /** Projects named 'Exported sessions' — the same fact read a second way. */
+  exportGroups: number;
 }
 
 async function timeBrowse(n: number): Promise<Browse> {
   const samples: number[] = [];
   let bytes = 0, sessions = 0, projects = 0, maxTurnCount = 0, turnTotal = 0;
+  let exported = 0, exportGroups = 0;
   let capped: string[] = [];
   let retries = 0;
   for (let i = 0; i < n; i++) {
@@ -218,8 +255,13 @@ async function timeBrowse(n: number): Promise<Browse> {
     capped = all.filter((s: any) => s.fingerprintCapped).map((s: any) => s.sessionId).sort();
     maxTurnCount = all.reduce((m: number, s: any) => Math.max(m, s.turnCount ?? 0), 0);
     turnTotal = all.reduce((t: number, s: any) => t + (s.turnCount ?? 0), 0);
+    // Two independent readings of the same isolation claim: the per-session flag
+    // the scanner sets, and the project group the export scan creates. Round 235
+    // asserted both because either one alone can be true for the wrong reason.
+    exported = all.filter((s: any) => s.isExported).length;
+    exportGroups = ps.filter((p: any) => p.projectName === 'Exported sessions').length;
   }
-  return { samples, bytes, sessions, projects, capped, maxTurnCount, turnTotal };
+  return { samples, bytes, sessions, projects, capped, maxTurnCount, turnTotal, exported, exportGroups };
 }
 
 // ── Arm A — inventory of the SHIPPED ROOT ONLY, and the page-cache warm ──────
@@ -322,7 +364,10 @@ getDb(); // creates the scratch DB with the full schema
 interface ArmResult { cold: number; warm: number; browse: Browse }
 
 async function measureCap(arm: string, tag: string, capValue: number): Promise<ArmResult> {
-  await startServer(tag);
+  // Round 237: the cap arrives on the server's environment. Before that this
+  // function measured whatever `session-scanner.ts` said on disk at the moment
+  // the server booted, and the caller's `capValue` was a label for it.
+  await startServer(tag, capValue === CAP_SHIPPED_VALUE ? {} : { KLATCH_FINGERPRINT_LINE_CAP: String(capValue) });
   try {
     const coldRun = await timeBrowse(1);
     const cold = coldRun.samples[0];
@@ -332,6 +377,14 @@ async function measureCap(arm: string, tag: string, capValue: number): Promise<A
     check(arm, `${tag}: sessions returned`, warmRun.sessions === files.length,
       `${warmRun.sessions} sessions across ${warmRun.projects} projects vs ${files.length} files on disk, ` +
         `${kb(warmRun.bytes)} response`);
+    // The isolation this probe's file counts depend on, asserted rather than
+    // assumed. Before Round 235 there was no lever for this and the repo's
+    // 3.86 MB export would have ridden along in every arm above, priced as if it
+    // were part of the corpus arm A walked.
+    check(arm, `${tag}: no exported sessions in the payload`,
+      warmRun.exported === 0 && warmRun.exportGroups === 0,
+      `${warmRun.exported} isExported sessions, ${warmRun.exportGroups} 'Exported sessions' groups ` +
+        `(KLATCH_EXPORT_ROOT=${path.relative(REPO, EXPORT_FREE_ROOT)})`);
     check(arm, `${tag}: cache-cold browse @ cap ${capValue}`, true, ms(cold), 'measurement');
     check(arm, `${tag}: steady-state browse`, true,
       `${ms(warm)} (median of ${WARM_SAMPLES}; ${warmRun.samples.map((s) => s.toFixed(0)).join(', ')})`,
@@ -356,25 +409,26 @@ check('B', "Round 148's 2164 ms reproduces under a single-corpus page-cache warm
     `if these agree, warming two corpora was NOT what moved the figure`,
   'measurement');
 
-console.log('\n── arm C: pre-ruling cap (1_500), patched for one server ────────');
-let armC: ArmResult | null = null;
-if (capOccurrences !== 1) {
-  skip('C', `FINGERPRINT_LINE_CAP is not the literal this probe expects ` +
-    `(${capOccurrences} occurrences of \`${CAP_SHIPPED_LITERAL}\`, expected 1) — refusing to guess at the patch`);
-} else {
-  try {
-    fs.writeFileSync(SCANNER, originalText.replace(CAP_SHIPPED_LITERAL, CAP_PATCHED_LITERAL));
-    const patched = fs.readFileSync(SCANNER, 'utf8');
-    if (!patched.includes(CAP_PATCHED_LITERAL) || patched.includes(CAP_SHIPPED_LITERAL)) {
-      throw new Error('patch did not apply cleanly — refusing to measure');
-    }
-    armC = await measureCap('C', 'cap-1500', CAP_PATCHED_VALUE);
-  } finally {
-    const ok = restoreScanner();
-    check('C', 'scanner restored', ok,
-      ok ? `sha256 ${SCANNER_SHA.slice(0, 12)} matches` : `RESTORE FAILED — run \`git checkout ${SCANNER_REL}\``);
-  }
-}
+console.log('\n── arm C: pre-ruling cap (1_500), set on the server’s environment ──');
+//
+// RETIRED WORKAROUND (Round 237). This arm used to write a patched
+// `session-scanner.ts` to disk, boot a server against it, and restore the file in
+// a `finally`. It was guarded by a skip on "`FINGERPRINT_LINE_CAP` is not the
+// literal I expect", which is the guard shape Theseus's Round 236 finding is
+// about: a skip makes "the feature shipped" and "this arm is missing"
+// indistinguishable, and `50000` → `50_000` on 2026-09-04 had already proved the
+// literal moves. The condition that retired it is `resolveFingerprintLineCap()`
+// in `session-scanner.ts` — `KLATCH_FINGERPRINT_LINE_CAP` on the server's
+// environment is the supported way to move this cap, so there is nothing left to
+// patch, nothing to restore, and no spelling to match.
+//
+// The arm still cannot be trusted on the strength of the variable being set —
+// that is arm E's job below, and arm E is unchanged, because "did the cap reach
+// the server" is the same question whether the cap arrived by patch or by env.
+const armC: ArmResult = await measureCap('C', 'cap-1500', CAP_PATCHED_VALUE);
+
+check('C', 'the scanner was never written to', scannerUnchanged(),
+  `sha256 ${SCANNER_SHA.slice(0, 12)} unchanged — this probe no longer patches ${SCANNER_REL}`);
 
 console.log('\n── arm D: shipped cap again, control ────────────────────────────');
 const armD = await measureCap('D', 'cap-50k-control', CAP_SHIPPED_VALUE);
@@ -383,41 +437,44 @@ check('D', 'arm B is not drift', Math.abs(armD.cold - armB.cold) / armB.cold < 0
   `${ms(armB.cold)} then ${ms(armD.cold)} on a second fresh server ` +
     `(${((armD.cold / armB.cold - 1) * 100).toFixed(0)}%)`);
 
-// ── Arm E — did the patch actually reach the server we measured? ─────────────
+// ── Arm E — did the cap actually reach the server we measured? ───────────────
 //
-// Text-matching the file proves the FILE changed. What proves the SERVER ran the
-// changed cap is behaviour only the changed cap produces: sessions coming back
-// capped, and a lower total turn count because capped files stop being counted
-// past line 1500.
+// Unchanged by Round 237, and deliberately so: "the variable was set" is exactly
+// as weak a claim as "the file was patched". Both are statements about the
+// apparatus. What proves the SERVER ran the cap is behaviour only that cap
+// produces — sessions coming back capped, and a lower total turn count because
+// capped files stop being counted past line 1500.
 
-console.log('\n── arm E: patch verified by effect, not by text ──────────────────');
+console.log('\n── arm E: the cap verified by effect, not by apparatus ───────────');
 
 check('E', 'shipped cap does not bite this corpus', armB.browse.capped.length === 0,
   `${armB.browse.capped.length} of ${armB.browse.sessions} sessions capped at ${CAP_SHIPPED_VALUE}; ` +
     `max turnCount ${armB.browse.maxTurnCount}`);
 
-if (armC) {
-  check('E', `patched cap DOES bite — proves the server ran cap ${CAP_PATCHED_VALUE}`,
-    armC.browse.capped.length > 0,
-    `${armC.browse.capped.length} of ${armC.browse.sessions} sessions capped at ${CAP_PATCHED_VALUE} ` +
-      `(arm A predicted ${overPatched} files over that line count)`);
+check('E', `overridden cap DOES bite — proves the server ran cap ${CAP_PATCHED_VALUE}`,
+  armC.browse.capped.length > 0,
+  `${armC.browse.capped.length} of ${armC.browse.sessions} sessions capped at ${CAP_PATCHED_VALUE} ` +
+    `(arm A predicted ${overPatched} files over that line count)`);
 
-  check('E', 'capped count matches the files that exceed the cap',
-    armC.browse.capped.length === overPatched,
-    `endpoint reported ${armC.browse.capped.length} capped vs ${overPatched} files over ${CAP_PATCHED_VALUE} lines on disk`);
+check('E', 'capped count matches the files that exceed the cap',
+  armC.browse.capped.length === overPatched,
+  `endpoint reported ${armC.browse.capped.length} capped vs ${overPatched} files over ${CAP_PATCHED_VALUE} lines on disk`);
 
-  check('E', 'turn signal lost to the 1500 cap', true,
-    `${armC.browse.turnTotal} turns at cap ${CAP_PATCHED_VALUE} vs ${armB.browse.turnTotal} at ${CAP_SHIPPED_VALUE} — ` +
-      `the cap hid ${armB.browse.turnTotal - armC.browse.turnTotal} turns ` +
-      `(${armB.browse.turnTotal > 0 ? ((1 - armC.browse.turnTotal / armB.browse.turnTotal) * 100).toFixed(1) : '0'}% of the corpus signal)`,
-    'measurement');
-}
+check('E', 'turn signal lost to the 1500 cap', true,
+  `${armC.browse.turnTotal} turns at cap ${CAP_PATCHED_VALUE} vs ${armB.browse.turnTotal} at ${CAP_SHIPPED_VALUE} — ` +
+    `the cap hid ${armB.browse.turnTotal - armC.browse.turnTotal} turns ` +
+    `(${armB.browse.turnTotal > 0 ? ((1 - armC.browse.turnTotal / armB.browse.turnTotal) * 100).toFixed(1) : '0'}% of the corpus signal)`,
+  'measurement');
 
 // ── Arm F — the reconciliation ───────────────────────────────────────────────
 
 console.log('\n── arm F: does the cap explain the gap? ─────────────────────────');
 
-if (armC) {
+{
+  // A block, not a condition. Arm C used to be skippable — it needed a source
+  // patch that could fail to match — so everything downstream of it was guarded.
+  // Since Round 237 it runs unconditionally, and a `skip('F', 'arm C did not
+  // run')` that can no longer fire is the stale-guard shape this round is about.
   const delta = armB.cold - armC.cold;
   const shippedMean = (armB.cold + armD.cold) / 2;
   const deltaMean = shippedMean - armC.cold;
@@ -446,8 +503,6 @@ if (armC) {
       `and is paid once per server start — steady state is ${ms(armB.warm)} either way ` +
       `(${ms(armC.warm)} at the old cap)`,
     'measurement');
-} else {
-  skip('F', 'arm C did not run — no reconciliation possible');
 }
 
 // ── Summary ──────────────────────────────────────────────────────────────────
@@ -461,8 +516,7 @@ const regressions = results.filter((r) => r.kind === 'regression');
 const failed = regressions.filter((r) => !r.pass);
 console.log(
   `${results.length} checks (${regressions.length} regression, ${results.length - regressions.length} measurement), ` +
-    `${failed.length} failed, ${skipped.length} skipped`,
+    `${failed.length} failed, 0 skipped (this probe has no skip path — see the note by check())`,
 );
 for (const f of failed) console.log(`  FAIL [${f.arm}] ${f.check} — ${f.detail}`);
-for (const s of skipped) console.log(`  SKIP ${s}`);
 process.exit(failed.length > 0 ? 1 : 0);
