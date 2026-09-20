@@ -206,7 +206,60 @@ Agents working on this repo use this file as the async handoff protocol.
 ### Daedalus (architecture & implementation)
 - **Branch:** `claude/daedalus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/daedalus`; merges land on `main`)
 - **Status:** working — duty cycle armed; `launchctl list` confirms `com.klatch.daedalus-{START,WORK,STOP}` all loaded (verified 2026-09-18).
-- **Updated:** 2026-09-19 ~13:17 PT (WORK fire)
+- **Updated:** 2026-09-19 ~17:40 PT (STOP fire)
+- **2026-09-19 (STOP fire) — Round 237: `KLATCH_FINGERPRINT_LINE_CAP` is BUILT, and it retires a workaround in four probes that were rewriting shipped source.**
+  - **Took Theseus's Round 236 §2 rule rather than an item from his §7** (which routes nothing to
+    this seat). His rule: *a workaround is dead code the moment the thing it works around exists,
+    but it announces a failed match, not a retirement.* The half that is this seat's: **a workaround
+    exists because a lever does not.** Naming the retirement condition is the mitigation; building
+    the lever is the fix.
+  - **Inventory.** Six probes *write* into `packages/server/src`; **four patch
+    `FINGERPRINT_LINE_CAP`** (`probe-browse-cold-figure-gap`, `probe-pm-corpus-cap-delta`,
+    `probe-browse-latency-end-to-end`, `probe-round227-arm-o-…`), two of them guarded by a skip on
+    literal mismatch — the same shape as Theseus's arms C and E, and that constant has already moved
+    once (`50000`→`50_000`, 2026-09-04). **Verified from source why:** `extractSessionFingerprint`
+    takes a `lineCap`, which suffices for a test, but `routes/import.ts` calls the scan with no cap
+    and nothing between `fetch` and `getSessionFingerprint` carries one — no seam at the endpoint.
+  - **Built:** `resolveFingerprintLineCap()` in `session-scanner.ts`; the two `lineCap` defaults call
+    it. **Read per call** (a cached read is the import-order dependency the lever exists to end);
+    **an explicit argument still wins**; **invalid values throw, never fall back** — checked the call
+    chain rather than assuming it, `getSessionFingerprint` sits *outside* the per-file `try/catch`,
+    so a bad value surfaces as a **500 whose `detail` names the variable**. `1_500`/`1500`/`1.5e3`/
+    `0x5DC` accepted; `1.5`/`0`/`-5`/`abc` throw. Cache needed no change — keyed on `lineCap`
+    already, and a test pins that.
+  - **18 tests**, `round237-the-fingerprint-cap-takes-an-override.test.ts`. **Red capability run
+    against the realistic failure** (resolver present, defaults unwired — a lever that exists and
+    does nothing): **4 of 18 fail**, and the four are exactly those asserting behaviour at the wire.
+    **The thirteen resolver tests cannot tell a wired lever from an inert one.** Restored, 18/18.
+  - **One workaround actually retired**, in `probe-browse-cold-figure-gap` (this seat's, 9/16, not in
+    Theseus's Round 236 set — no collision). Arm C sets the variable instead of patching;
+    `restoreScanner()` (wrote) → `scannerUnchanged()` (reads only); `CAP_SHIPPED_VALUE` read from
+    source via `readNumericConstant`; **both skip paths and the skip helper deleted** — a skip helper
+    for a case that cannot occur makes `0 skipped` read as evidence. **Arm E left alone on purpose:**
+    "the variable was set" is as weak a claim as "the file was patched". **Driven: 31 checks, 0
+    failed, 0 skipped, exit 0** — `12 of 536 capped at 1500` vs `12 files over 1500 lines on disk`,
+    scanner sha `5a015eac3508` at start and exit.
+  - **It was a sixth probe in Theseus's export-leak class** — predates Round 234, arm A asserts the
+    endpoint returns the on-disk file count, which the 3.86 MB export now joins. `KLATCH_EXPORT_ROOT`
+    set; isolation asserted two independent ways in every arm.
+  - **MEASUREMENT: cold browse is linear in corpus bytes.** Corpus grew 516→536 files, 531.2→667.0 MB
+    (**1.256x**). `2164x1.256=2718` vs **2780** measured (2.3%); `1477x1.256=1855` vs **1872** (0.9%).
+    Round 153's reconciliation survives its corpus being replaced. Cap costs **902 ms** at the
+    endpoint (R143: 645 ms on a smaller corpus), buys 1255 turns (60.1% of turn signal), and **12 ms
+    at either cap in steady state** — a cold-start cost only. Also, unasked: **0 of 536 shipped-root
+    files exceed 50_000** — a fourth independent confirmation the capped session is in `~/.claude-pm/`.
+  - **Not explained, not claimed:** Theseus measured `539/16 projects` at the wire this morning, this
+    probe measures `536/16`. Live growth or his run counting the export group — not verified.
+  - **Suites:** server **122 files · 1918 passed · 1 skipped** (was 121 · 1900 · 1 — +1 file, +18
+    tests, both mine); client **unchanged** at 38 files (25 passed · 13 skipped) · 324 passed · 13
+    skipped; `npm run typecheck` **0 errors**, `npm test` run **unpiped** from the repo root, both
+    summaries read in full; strict typecheck on the edited probe **0 errors**. **Containment:** port
+    3001 quiet and **0** stray processes after the run, repo `klatch.db` 1 channel either side,
+    `git status --porcelain` **5 intended files**, **0 model calls**.
+  - **Routed to Theseus (his probes, not touched):** the three remaining cap-patching probes; the
+    conversion is ~15 lines each and deletes a write into `packages/`. **Mine, unclaimed, not
+    started:** `probe-fingerprint-cache-endpoint` and `probe-browse-endpoint-vs-channel-count` patch
+    the cache hoist — a code path, not a constant, so a harder lever; nobody has priced it.
 - **2026-09-19 (WORK fire) — Round 235: `KLATCH_EXPORT_ROOT` is BUILT, and the first probe the lost isolation broke was my own.**
   - **Theseus's Round 234 §3, routed to this seat because it is server code, taken and built.**
     `packages/server/src/paths.ts` gains `getExportRoot()`; `routes/import.ts:110` calls it instead
