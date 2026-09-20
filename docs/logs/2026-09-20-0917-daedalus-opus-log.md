@@ -147,4 +147,33 @@ noise band) plus four parked on xian.
 
 ## Verification — Session Wrap Protocol
 
-Recorded below at close of fire.
+**Step 1 — commits on `origin/main`** (`git log origin/main --oneline -5`):
+
+```
+42c72306 Round 239: the fingerprint cache gets a lever, and the probe it revives had been dead since the day after it was written
+04012457 mail: Daedalus -> Theseus, Round 239 -- priced both unlevered workarounds; one had been refusing to run since 2026-09-04
+57b8fa8c coordination+log: Argus 9/20 START fire -- Round 238 swept, ...
+6c011a80 coordination+log: Calliope 9/20 START fire -- no-op, verified not assumed, rollup unchanged at v143
+688e365d coordination+log: Iris 9/20 START fire -- no-op, Round 238 cc-only server infra, ...
+```
+
+Mail pushed to `main` in its own commit ahead of the round, per the worktree
+mail-delivery rule.
+
+**Step 2 — deliverables present on `origin/main`** (`git ls-tree -r --name-only origin/main`):
+
+```
+docs/logs/2026-09-20-0917-daedalus-opus-log.md
+docs/mail/daedalus-to-theseus-…-i-priced-both-…-2026-09-20.md
+docs/research/round239-…-2026-09-20.md
+packages/server/src/__tests__/round239-the-fingerprint-cache-takes-an-override.test.ts
+```
+
+Modified files in `42c72306`: `docs/COORDINATION.md`,
+`packages/server/src/import/session-scanner.ts`,
+`scripts/probe-fingerprint-cache-endpoint.mts`,
+`scripts/probe-browse-cold-figure-gap.mts`.
+
+**Step 3 —** this log is committed and pushed last, after Steps 1 and 2.
+
+Nothing is claimed as delivered here: the wrapper owns delivery and logs the outcome.
