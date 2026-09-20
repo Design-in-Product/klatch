@@ -160,3 +160,91 @@ docs/operations/attention-rollup.md
 
 Commits stay local per this cycle's fire instructions — the wrapper owns delivery to `origin/main` and logs
 the outcome. Not claiming delivered. End of entry.
+
+## ~17:15 PT (WORK/SWEEP fire) — rollup refreshed to v142, two new 🟡 filed, needs-you unchanged at 3
+
+- `git pull origin main`: already up to date, matching the gitStatus snapshot this fire opened with
+  (`edbfe4c8`).
+- `git log --oneline 77bc112b..HEAD` (my own MID-fire checkpoint) showed 7 new commits, none mine:
+  Daedalus's Round 235 (mail `bd0da90c`, round work `21579f81`, wrap `757d559f`), Argus's WORK-fire sweep
+  (`918283ef`), Theseus's Round 236 (mail `eae033f6`, round work `953638da`, wrap `edbfe4c8`).
+- `git diff --stat 77bc112b..HEAD -- packages/ scripts/ docs/mail/`: `packages/server/src/paths.ts` (new),
+  `packages/server/src/routes/import.ts`, one new test file (all Daedalus's `KLATCH_EXPORT_ROOT` build);
+  5 files under `scripts/` (Daedalus's and Theseus's probe repairs); 2 new files in `docs/mail/`.
+- Read both new memos in full — Daedalus's Round 235
+  (`daedalus-to-theseus-…-your-section-3-is-built-and-the-first-probe-it-broke-was-mine-2026-09-19.md`) and
+  Theseus's Round 236
+  (`theseus-to-daedalus-…-all-five-are-red-and-one-of-them-was-disabled-by-the-lever-it-was-waiting-for-2026-09-19.md`)
+  — both cc'd to this seat, neither addressed by name, no reply owed.
+- **Round 235:** Daedalus built `KLATCH_EXPORT_ROOT`, the lever v141's banner had filed as a design
+  question — `paths.ts` gains `getExportRoot()`, read fresh per call (not cached at module load — a probe
+  that sets the var after importing the server still gets a working lever) and resolved against the project
+  root rather than the working directory if relative, closing the reopening Round 233's cwd defect would
+  otherwise leave available through the override itself. Default-unchanged; 8 new tests, 6-of-8 fail with
+  the guard removed. Re-verified his own three §3 legs from source, not from Theseus's memo. Driving the
+  five probes he'd routed to Theseus rather than guess at them, found his own — `probe-multi-root-browse` —
+  was among the five and came back 3 failed unmodified: an arm asserting exactly 1 legitimate cross-corpus
+  session-name collision was counting 2, because the export corpus doesn't relocate when `CLAUDE_CONFIG_DIR`
+  does, so it sat in both the single-root and relocated arms simultaneously. Repaired (shared-name count
+  2→1, corroborating the diagnosis independent of his own reading of it) and closed with a new arm asserting
+  export-corpus suppression two independent ways across every generation, rather than continuing to assume
+  it. **Rule:** "an isolation property that nothing asserts is one you will learn about from an unrelated
+  failure." Separately walked the real PM corpus chasing two live reds and found the true cause: one
+  session, 53,635 lines / 99 MB, over the 50,000-line fingerprint cap — live-corpus drift, not a Round 234
+  regression (the check was true on 9/4 and became false only as the corpus grew). Left red deliberately
+  rather than launder it into a NOTE or widen the guard unilaterally; routed to xian.
+- **Round 236:** Theseus drove all five probes Daedalus had explicitly declined to call red, unmodified: all
+  five were, unevenly. `probe-round174` didn't report a red and continue — it hung 60s and died mid-run,
+  every arm after N2 unexecuted. Traced from client source: the export appears in the browse panel as a
+  guessed-agent row named "Exported sessions"; a completion caption keys off import count; by the second
+  generation the export's presence flipped the caption a helper was waiting on. Two other probes had
+  *passing* arms whose assertions ran over sets the leak had contaminated — a green check on witness data
+  quietly including the export's ghost row, nothing in the output flagging it. Suppressing the leak let
+  round174 run far enough to hit a second, unrelated hang: an arm still waiting on a button caption ("Done")
+  a 9/9 fix had renamed in exactly the N=1 case the arm constructs — unverifiable since the day its own
+  target defect was fixed, and it had only avoided throwing immediately because the export's presence
+  happened to push the import count back to two. Re-aimed at the control's location rather than the literal
+  caption; the original 9/9 fix is now confirmed working for the first time (`chips=["Tarn"]`). **Rule,
+  sibling to Daedalus's:** "a fix retires the probe arm that found it" unless re-aimed at the question rather
+  than the symptom — such arms usually fail by hanging, not failing, because what they wait for is simply
+  absent. Separately found and repaired a 15-day-stale skip: `probe-browse-endpoint-second-corpus`'s two
+  headline arms (pricing the PM corpus at the endpoint; the delta between corpora) had been silently
+  skipping since 2026-09-04 — the commit that built the `CLAUDE_CONFIG_DIR` lever the probe's own workaround
+  patched around also deleted the literal that workaround matched, so the skip guard correctly refused to
+  guess for fifteen days rather than report anything false. Repaired; both arms now run and produce the
+  first-ever endpoint-level PM-corpus measurement (cold cost per MB agrees with the shipped corpus to 1.00×
+  despite a 5.7× difference in mean file size) and independently corroborate Daedalus's capped-session
+  finding from a second angle (disk and wire both, for the first time on this corpus).
+- **Verified myself, not trusted:** `npm test` run fresh (full output read, not piped to `tail` — see
+  [[feedback_pipeline_tail_hides_head_and_exit_code]]) — server **1900/1901 passed (121 files, 1 skipped)**,
+  up from 1892/1893 (120 files) by exactly Daedalus's 8 new tests; client **324/337 (13 skipped, 38
+  files)**, unchanged — matches both memos' own figures exactly. `npm run typecheck` clean across all three
+  workspaces (same invocation). `git status --porcelain` clean before and after.
+- **Rollup refreshed to v142** (`docs/operations/attention-rollup.md`): new top banner synthesizing Round
+  235 (Daedalus's lever, his own probe's repair, the capped-session finding) and Round 236 (Theseus's
+  five-probe drive, the round174 hang and the leak-contaminated passing arms, the 15-day-stale skip repair
+  and the corroborating PM-corpus measurement); v141's banner preserved verbatim under "Prior banner (v141,
+  superseded)". Two new 🟡 entries added under "Lower-urgency decisions": whether the capped 99 MB PM
+  session changes the Round 143 cap policy, and whether to keep `KLATCH_EXPORT_ROOT` or require explicit
+  per-probe accounting — both filed 🟡 rather than 🔴 on the same test v141 used (nothing broken, nothing
+  blocked today). Metrics strip: Lower-urgency 6→8, with an update-history bullet. Needs-you unchanged at 3.
+  Added a v142 changelog entry; noted in it, but did not attempt to backfill, that v140 and v141 changelog
+  entries were never written — the banner-history text above carries their content, and reconstructing full
+  changelog entries for them now risked inventing verification detail not actually re-derived this fire.
+- Standing blockers re-checked, all three unchanged: Janus's logbook-shape thread (parked on xian, **22
+  days** since 8/28), rollup-html-mirror-drift (flagged 9/7, **12 days**), ground-rules standing/per-klatch
+  question (parked on xian since 8/9, **41 days**). `ls docs/mail | grep '^xian-to'` empty — no new mail
+  from xian.
+- Updated `docs/COORDINATION.md`'s Calliope section with this fire's entry.
+
+**Wrap verification:**
+
+```
+$ git status --porcelain
+docs/COORDINATION.md
+docs/logs/2026-09-19-0832-calliope-sonnet-log.md
+docs/operations/attention-rollup.md
+```
+
+Commits stay local per this cycle's fire instructions — the wrapper owns delivery to `origin/main` and logs
+the outcome. Not claiming delivered. End of entry.
