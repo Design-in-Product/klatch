@@ -503,6 +503,61 @@ interface FingerprintCacheEntry {
 const fingerprintCache = new Map<string, FingerprintCacheEntry>();
 
 /**
+ * Whether the fingerprint cache above is consulted, overridable from the environment.
+ *
+ * **Why this exists.** `probe-fingerprint-cache-endpoint.mts` asks what the cache is
+ * worth at the endpoint, and its arm C answers by A/B-ing against the build that
+ * predates the cache — restoring `git show dba7699^` over this file for the duration
+ * of one server generation. That workaround has the three costs Round 237 named for
+ * the cap patch, plus a fourth that is specific to restoring a *commit*: a wholesale
+ * historical restore un-ships everything else that landed in the same file since, so
+ * it measures cache+cap+multi-root+export-root and reports it as the cache. Round 159
+ * made exactly this argument about the hoist probe's arm S and replaced the restore
+ * with a validated inverse transform.
+ *
+ * The fourth cost is also what killed the probe. To keep the A/B clean it refuses
+ * unless this file is byte-identical to `dba7699`, so **every subsequent commit to
+ * this file disarms it** — it has exited 1 at that guard since `18d46318`
+ * (2026-09-04), the day after it was written, and the refusal is indistinguishable in
+ * a sweep from a probe that has not been run. A pin to a commit, in a file expected to
+ * move, is a dead man's switch.
+ *
+ * **The retirement condition:** any probe that restores or patches this file to turn
+ * the fingerprint cache off is working around the absence of this function. It exists
+ * now. Set the variable on the server's environment instead, assert
+ * `sessionFingerprintCacheSize()` is 0 rather than that the variable was set, and
+ * delete the restore, the sha guard and the commit pin.
+ *
+ * **Off means neither read nor write.** The pre-cache build had no `get` and no `set`;
+ * an "off" that still populated the map would pay the insert the A/B is trying to
+ * remove, and would leave entries that a later on-run would serve. The *only*
+ * difference between on and off is reuse — the result is frozen either way, so no
+ * caller can tell the modes apart except by timing and by cache size.
+ *
+ * **Read per call, not captured at module load** — same reason as
+ * `resolveFingerprintLineCap()` and `getExportRoot()`: a probe sets the variable when
+ * it spawns the server, which may be after this module is imported, and a cached read
+ * would make the lever silently inert.
+ *
+ * **Unrecognised values throw; they never fall back to enabled.** A caller that set
+ * this variable is measuring the cache; silently measuring the other configuration is
+ * the failure the lever exists to prevent.
+ *
+ * Unset, empty, or whitespace: enabled, byte-identical to before.
+ */
+export function resolveFingerprintCacheEnabled(): boolean {
+  const configured = process.env.KLATCH_FINGERPRINT_CACHE?.trim().toLowerCase();
+  if (!configured) return true;
+  if (configured === 'off' || configured === '0' || configured === 'false' || configured === 'no') return false;
+  if (configured === 'on' || configured === '1' || configured === 'true' || configured === 'yes') return true;
+  throw new Error(
+    `KLATCH_FINGERPRINT_CACHE is set to ${JSON.stringify(configured)}, which is not one of ` +
+    `on/off (also 1/0, true/false, yes/no). Refusing to fall back to enabled: a caller that set ` +
+    `this variable is measuring the cache, and silently measuring the other configuration is the ` +
+    `failure this override exists to prevent.`);
+}
+
+/**
  * Fingerprint a session file, reusing a previous result when the file is provably
  * unchanged. `stat` is passed in rather than re-`stat`ing because every caller
  * already holds one.
@@ -511,17 +566,23 @@ export async function getSessionFingerprint(
   filePath: string,
   stat: fs.Stats,
   lineCap: number = resolveFingerprintLineCap(),
+  cacheEnabled: boolean = resolveFingerprintCacheEnabled(),
 ): Promise<SessionFingerprint> {
-  const hit = fingerprintCache.get(filePath);
-  if (hit && hit.mtimeMs === stat.mtimeMs && hit.sizeBytes === stat.size && hit.lineCap === lineCap) {
-    return hit.fp;
+  if (cacheEnabled) {
+    const hit = fingerprintCache.get(filePath);
+    if (hit && hit.mtimeMs === stat.mtimeMs && hit.sizeBytes === stat.size && hit.lineCap === lineCap) {
+      return hit.fp;
+    }
   }
 
   const fp = await extractSessionFingerprint(filePath, lineCap);
   // Frozen because the same object is handed to every future caller — a caller that
-  // mutated it would corrupt the cache for everyone after it.
+  // mutated it would corrupt the cache for everyone after it. Frozen in the disabled
+  // case too, so that on/off differ only in reuse.
   const frozen = Object.freeze(fp);
-  fingerprintCache.set(filePath, { mtimeMs: stat.mtimeMs, sizeBytes: stat.size, lineCap, fp: frozen });
+  if (cacheEnabled) {
+    fingerprintCache.set(filePath, { mtimeMs: stat.mtimeMs, sizeBytes: stat.size, lineCap, fp: frozen });
+  }
   return frozen;
 }
 

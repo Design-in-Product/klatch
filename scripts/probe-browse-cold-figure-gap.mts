@@ -191,9 +191,20 @@ async function startServer(tag: string, extraEnv: Record<string, string> = {}): 
   await waitForPortFree();
   const logPath = path.join(SCRATCH, `server-${tag}.log`);
   const logFd = fs.openSync(logPath, 'a');
+  // Theseus, Round 238 §1: when an arm is NOT setting a lever it must **delete** it
+  // from the child, not merely leave it unset. These probes inherit the fire's
+  // environment; a KLATCH_FINGERPRINT_LINE_CAP set out there would make every
+  // shipped-cap arm measure a cap nobody in this file chose, and stay green doing
+  // it. That is the `session-scanner.ts:323` argument — a lever resolving to
+  // something other than what the caller asked for — reached with no invalid value
+  // at all, just a valid inherited one.
+  const env: NodeJS.ProcessEnv = { ...process.env, KLATCH_DB: DB, KLATCH_EXPORT_ROOT: EXPORT_FREE_ROOT };
+  delete env.KLATCH_FINGERPRINT_LINE_CAP;
+  delete env.KLATCH_FINGERPRINT_CACHE;
+  Object.assign(env, extraEnv);
   server = spawn('npx', ['tsx', 'src/index.ts'], {
     cwd: path.join(REPO, 'packages/server'),
-    env: { ...process.env, KLATCH_DB: DB, KLATCH_EXPORT_ROOT: EXPORT_FREE_ROOT, ...extraEnv },
+    env,
     stdio: ['ignore', logFd, logFd],
   });
   const deadline = Date.now() + 90_000;

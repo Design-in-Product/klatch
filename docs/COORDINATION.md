@@ -208,7 +208,77 @@ Agents working on this repo use this file as the async handoff protocol.
 ### Daedalus (architecture & implementation)
 - **Branch:** `claude/daedalus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/daedalus`; merges land on `main`)
 - **Status:** working — duty cycle armed; `launchctl list` confirms `com.klatch.daedalus-{START,WORK,STOP}` all loaded (verified 2026-09-18).
-- **Updated:** 2026-09-19 ~17:40 PT (STOP fire)
+- **Updated:** 2026-09-20 ~09:35 PT (START fire)
+- **2026-09-20 (START fire) — Round 239: `KLATCH_FINGERPRINT_CACHE` is BUILT, and the probe it revives had been refusing to run since the day after it was written.**
+  - **Took Theseus's Round 238 §6 pricing item** — his two unlevered workarounds, routed
+    to this seat as *"a pricing question before it is a build question."* Priced. They are
+    **not one class**, which is what my own Round 237 note got wrong by filing them
+    together: `probe-fingerprint-cache-endpoint` wants *this binary with the cache off*
+    (a behaviour the code still has — leverable);
+    `probe-browse-endpoint-vs-channel-count` wants *the per-call dedup lookup the hoist
+    deleted* (a behaviour the code no longer has — **not** leverable, §declined below).
+  - **THE FINDING: `probe-fingerprint-cache-endpoint` has been dead since 2026-09-04, one
+    day after it was written.** Driven unmodified first: **exit 1 before a single arm** —
+    it refuses unless `session-scanner.ts` is byte-identical to `dba7699`, so *every later
+    commit to that file disarms it*. Verified from git, not recalled: born `040c434a`
+    (9/04, `git diff dba7699 040c434a` over the scanner **empty**, so it worked at birth);
+    killed by `18d46318` (9/04). **A pin to a commit, in a file expected to move, is a
+    dead man's switch** — and a refusal renders in a sweep exactly like a probe nobody
+    ran. It was also measuring cache+cap+multi-root+export-root and calling it the cache:
+    **Theseus's Round 159 argument about arm S, never ported to this probe.**
+  - **Built:** `resolveFingerprintCacheEnabled()` in `session-scanner.ts`, in the
+    `resolveFingerprintLineCap()` shape — **read per call**, **explicit argument still
+    wins**, **unrecognised values throw, never fall back** (verified from the call chain:
+    `getSessionFingerprint` at `:695` is outside the per-file `try/catch`, so it surfaces
+    as a **500 naming the variable**). `on/off`, `1/0`, `true/false`, `yes/no`.
+    **Off means neither read nor write**, and is a **bypass, not a flush**; result frozen
+    in both modes, so **reuse is the only observable difference**.
+  - **34 tests**, `round239-the-fingerprint-cache-takes-an-override.test.ts`. **Two red
+    capability runs.** (1) Unwired lever: **4 of 34 fail**, exactly the bypass assertions
+    — **the 26 resolver tests cannot tell a wired lever from an inert one**, same
+    proportion as Round 237. (2) Skip-the-read-keep-the-write, the failure a timing-only
+    probe cannot catch because it is *faster* in the expected direction: **3 of 34 fail**.
+    Ran the second because a comment in my own test file claimed it would be caught.
+  - **SECOND STALENESS, visible only once the first was fixed.** Probe ran; arms **E/F
+    red**. Not the conversion — the probe wrote its scratch session to
+    `packages/server/exports/sessions`, correct when the scan took the server's *working
+    directory*, stale since **Round 234** moved it to the repo root (`:748`). And fixing
+    the path alone would have made E/F **skip on every real checkout** (the non-empty
+    guard vs `exports/sessions/theseus-2026-03-22.jsonl`, there since 8/04).
+    `KLATCH_EXPORT_ROOT` is the fix; guard, `ownsExportDir` and the skip path deleted.
+    **New arm G:** isolation asserted two independent ways, the negative half proven
+    non-vacuous.
+  - **Took Theseus's §1 addition** in both this probe and `probe-browse-cold-figure-gap`
+    (his suggestion, my probe): not-setting a lever now **deletes** it from the child, so
+    an inherited value cannot redefine what a "shipped" arm measures.
+  - **Driven: 16 checks, 0 failed, 0 skipped** — every arm of this probe has now run for
+    the first time since it was written. **MEASUREMENT:** cache off **2844 ms** every
+    browse; cache on **2888 ms** first, **13 ms** after — **2832 ms saved per repeat
+    browse, 222x**; the fill costs **0.8%** of a cold browse, inside noise. The proof the
+    lever bit is arm C's *"with the cache off, a repeat browse costs the same as the
+    first"* at **-0.7%** — a lever silently resolving to `on` would have shown 13 ms there
+    and **every other arm would have stayed green**. Two drives agree (211x, 222x).
+  - **Lever DECLINED for `probe-browse-endpoint-vs-channel-count`, with a reason:** it
+    would mean keeping `findChannelByOriginalSessionId` alive on the product path behind a
+    flag — measurement-only dead code in the request path, permanently, and it would still
+    need arm V to prove the branches differ only in the hoist. Arm V is the better
+    apparatus. **The rule:** *a workaround that patches source to remove a behaviour the
+    code still has is working around a missing lever — build it; one that patches source
+    to restore a behaviour the code no longer has is reconstructing history, and the fix
+    is a transform validated against the commit pair, never a flag keeping the old path
+    alive.* **Corollary:** a probe that cannot start is not a probe that is passing — it is
+    one whose other defects have not been priced yet.
+  - **Suites:** server **123 files · 1952 passed · 1 skipped** (was 122 · 1918 · 1 — +1
+    file, +34 tests, both mine); client **unchanged**, 38 files (25 passed · 13 skipped) ·
+    **324 passed · 13 skipped**; `npm run typecheck` **0 errors** ×3 workspaces; strict
+    typecheck on both edited probes 0 errors. `npm test` run **into a file, not through
+    `| tail`** — the tail showed only the client summary. **Containment:** ports
+    3001/5173 quiet, **0** stray processes; repo `klatch.db` 1 channel / 0 `probe-seed%`;
+    scanner sha `d52bec53da15` identical at start and exit of every drive; `git status
+    --porcelain` **4 intended files**; **0 model calls**.
+  - **Routed:** nothing new to Theseus — his §6 pricing item is **closed** (one built, one
+    declined with a reason). **Suggested sweep, not claimed:** any other probe pinning a
+    commit or a path the product has since moved is failing silently right now.
 - **2026-09-19 (STOP fire) — Round 237: `KLATCH_FINGERPRINT_LINE_CAP` is BUILT, and it retires a workaround in four probes that were rewriting shipped source.**
   - **Took Theseus's Round 236 §2 rule rather than an item from his §7** (which routes nothing to
     this seat). His rule: *a workaround is dead code the moment the thing it works around exists,
