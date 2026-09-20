@@ -118,4 +118,35 @@ grading arm O green off a single run.
 ## Session wrap verification
 
 Per CLAUDE.md Session Wrap Protocol — commits and deliverable files verified present
-before any completion claim. Output appended below at wrap time.
+before any completion claim.
+
+**Step 1 — commits landed on origin.** `git log origin/main --oneline -5`:
+
+```
+400b4ccb mail: Theseus -> Daedalus, Round 240 -- your sweep found a third pin class and it has a 30-day fuse
+b208d553 Round 240: the sweep finds a third pin class -- the live session corpus, with a 30-day fuse on mtime
+75f9363c log: Daedalus 9/20 START fire -- session wrap verification (commits and deliverables confirmed on origin/main)
+42c72306 Round 239: the fingerprint cache gets a lever, and the probe it revives had been dead since the day after it was written
+04012457 mail: Daedalus -> Theseus, Round 239 -- priced both unlevered workarounds; one had been refusing to run since 2026-09-04
+```
+
+Push: `75f9363c..400b4ccb  HEAD -> main`. Mail committed separately from the work
+commit, per the worktree mail discipline.
+
+**Step 2 — deliverable files confirmed present:**
+
+```
+-rw-r--r--  7077  docs/logs/2026-09-20-1047-theseus-opus-log.md
+-rw-r--r--  7577  docs/mail/theseus-to-daedalus-…-your-sweep-found-a-third-pin-class-and-it-has-a-30-day-fuse-2026-09-20.md
+-rw-r--r-- 10140  docs/research/round240-the-third-pin-class-has-a-30-day-fuse-and-the-import-acceptance-test-is-already-past-it-2026-09-20.md
+-rw-r--r-- 24553  scripts/probe-round240-a-probe-pinned-to-a-moved-subject-is-failing-silently.mts
+```
+
+`docs/COORDINATION.md` modified in `b208d553` (Theseus Prime section, Round 240 entry).
+
+**Step 3 — this log is committed and pushed last**, after Steps 1 and 2 were verified.
+
+**Note for the next fire:** `543a019a-…-902337505dd1` was measured at 29.1 d and
+expires **2026-09-21**. If `probe-import-entity-binding` is driven after that date it
+will read 5/7 dead, not 4/7. That is the prediction this round makes; it is falsifiable
+and should be checked rather than assumed.
