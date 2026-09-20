@@ -30,3 +30,22 @@ Port 3001/5173 quiet before/after every run. `git status --porcelain` empty befo
 **ROADMAP.md** not checked this fire — no new claim about it to verify.
 
 End of START fire.
+
+## ~13:33 PT (WORK fire)
+
+Pulled: already up to date at `9204005c` (Daedalus's own Round 241 wrap). Ten commits since my own START-fire checkpoint (`57b8fa8c`), none mine: Round 239 (Daedalus, fingerprint-cache lever), Round 240 (Theseus, third pin-class sweep), Calliope's MID-fire rollup v144 sweeping 239/240, Round 241 (Daedalus, corpus-pin remedy). Calliope's rollup already independently re-ran and matched the 239/240 suite figures, so this fire's independent-verification budget went to **Round 241**, the one round nobody has swept yet.
+
+**Round 241 (Daedalus: `scripts/lib/probe-corpus-sessions.mts` built — resolves a real-session cast by property at run time instead of pinning UUIDs; `probe-import-entity-binding.mts` repaired to use it, first green run since it went dark; new 19-arm control `probe-round241-a-corpus-cast-is-resolved-not-pinned.mts`; swept all 112 top-level `scripts/` files and found the pin class is exactly one probe) verified, not re-trusted:**
+
+- Read `scripts/lib/probe-corpus-sessions.mts`, the repaired `scripts/probe-import-entity-binding.mts`, and the new control probe directly, in full — the `no-corpus`/`insufficient-corpus` two-valued refusal, the count-desc/name-asc → size-desc/file-asc selection rule, and the label-widening-then-index-fallback logic all match the memo's description exactly.
+- `probe-import-entity-binding.mts` re-run fresh (real corpus): resolved to **Argus/Iris/Calliope/Cova/Janus** — matches memo exactly. Corpus size read **536** this run vs. the memo's 538 three hours earlier — consistent with the now-established head-growth/tail-truncation churn (Round 240 §5), not a discrepancy. **behavior (A/B) 26/26 pass, gaps (C/D/E) 5/5 still open** — matches memo exactly.
+- `probe-round241-a-corpus-cast-is-resolved-not-pinned.mts` re-run fresh: **all 19 checks passed** — matches memo exactly.
+- **Reproduced one of the memo's two claimed red capability runs myself** rather than taking both on faith: edited the label-widening loop (`width <= cap` → `width <= 1`) to disable widening, re-ran the control — **exactly 1/19 failed, arm E2**, output `UsersXKlatchWorktreesArgus1 UsersXOtherWorktreesArgus2` (the numeric-fallback collision the memo describes). Reverted with `git checkout --`; `git diff --stat` confirmed a clean single-line revert before moving on.
+- Suite, re-run fresh into a file (not piped to `tail`): server **123 files · 1952 passed · 1 skipped**, client **38 files (25 passed · 13 skipped) · 324 passed · 13 skipped** — matches the memo's §8 figures exactly. `npm run typecheck` clean, 0 errors × 3 workspaces.
+- Ports 3001/5173 quiet before/after. `git status --porcelain` empty before/after (scratch dir `.argus-scratch/` created and removed within the fire). This worktree carries no `klatch.db` at all (Daedalus's "1 channel" figure is his own worktree's separate file) — not queried by hand, consistent with `sqlite3` needing approval this session; the probes' own printed/asserted state was adequate corroborating evidence and was itself independently re-run.
+
+**Mail:** three new memos since my START-fire log (Round 239, 240, 241), all cc-only to this seat, none addressed to Argus by name (`grep -rl '**To:** Argus' docs/mail/*.md` empty) — read in full above, no reply owed. Threads stay in `docs/mail/` (not `read/`) — still open between Daedalus and Theseus.
+
+**Nothing owed back this fire** — Round 241's open items (the `.mts`-in-`npm test` infrastructure gap, arm A's one-row/byte-size-band measurement question, the 29 stale-in-code probes, arm O's items, the parked xian items, the gate) are all explicitly routed to Theseus, Daedalus's own future seat, or xian in the memo's §9, none newly assigned to this seat.
+
+End of WORK fire.
