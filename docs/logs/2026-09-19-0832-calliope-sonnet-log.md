@@ -248,3 +248,78 @@ docs/operations/attention-rollup.md
 
 Commits stay local per this cycle's fire instructions — the wrapper owns delivery to `origin/main` and logs
 the outcome. Not claiming delivered. End of entry.
+
+---
+
+## ~21:40 PT (STOP fire) — rollup refreshed to v143, Round 237/238 folded in, no new decision items, needs-you unchanged at 3
+
+Session-start protocol run in full: `git pull` (already up to date), read `docs/COORDINATION.md`'s tail and
+`docs/mail/` for anything new addressed to this seat.
+
+**Checkpoint:** last commit of mine was `f8f271af` (WORK/SWEEP fire, rollup v142). `git log --oneline
+f8f271af..HEAD` showed 8 new commits, none mine: Daedalus's Round 237 (mail `b6bffa22` + round work
+`4f5cebae` + wraps `9a33d95c`/`b118afe8`), Argus's STOP-fire sweep (`6724bb22`), Iris's STOP-fire no-op
+(`ea9c0caa`), Theseus's Round 238 (mail `e89dc2ed` + round work `e151af19`/`0742a3df`).
+
+**Round 237 in short (Daedalus):** built `KLATCH_FINGERPRINT_LINE_CAP` — the endpoint-reachable lever four
+probes had been faking by patching `FINGERPRINT_LINE_CAP` directly in shipped source, because
+`extractSessionFingerprint` has taken a `lineCap` parameter since Round 143 but `routes/import.ts` calls the
+scan with none. `resolveFingerprintLineCap()` in `session-scanner.ts`: read per call, explicit argument
+wins, invalid values throw (verified the call chain — `getSessionFingerprint` sits outside the per-file
+`try/catch`, so a bad value is a 500 naming the variable, not a silent fallback). 18 new tests; a
+red-capability run against the realistic failure (resolver present, defaults unwired) failed exactly the
+four wire-level tests. Retired one workaround himself, in his own `probe-browse-cold-figure-gap` — both skip
+paths and the skip helper deleted with it. Left three cap-patching probes for Theseus (his current work) and
+flagged two harder, unpriced, code-path-not-constant workarounds as his own unclaimed backlog — not routed
+to xian.
+
+**Round 238 in short (Theseus):** converted all three remaining probes, verified the lever from live source
+first rather than the memo, and drove his own rule to a third iteration: retiring a workaround changes how a
+measurement is produced, so it's a change to the instrument — re-run it on the corpus the old number came
+from and compare the *numbers*, not the exit codes. One conversion (`probe-browse-latency-end-to-end`)
+returned exit 3 immediately after his edit — fingerprint delta +3 ms against a ±86 ms band, a 30-fold drop
+from Round 234's +102 ms on the same probe. Rather than accept "designed refusal, not my edit" from the seat
+that had just made the edit, he re-ran the converted binary on Round 234's own fixture and reproduced its
+exact figures (+102 ms delta, 3/9 cap bites, +96 ms endpoint delta landing on the patch era's own five-sample
+mean of +96.2) — the refusal was the corpus (540 real sessions, none over the cap), not the edit. Also
+resolved Daedalus's unexplained 536-vs-539 file-count discrepancy as live corpus growth, monotonic across
+three same-day observers, because the corpus is this project's own Claude Code session transcripts and every
+agent session — including the measuring one — appends to it while running; the separate 16-vs-17 project
+count was real too, `exports/sessions/` forming its own group.
+
+**Independently verified, not trusted:**
+- `git diff --stat f8f271af..HEAD` shows exactly `packages/server/src/import/session-scanner.ts` + 1 new
+  test file under `packages/` (Daedalus's Round 237), 4 files under `scripts/` (Daedalus's own probe
+  conversion plus Theseus's three), 2 new files under `docs/mail/` — both cc'd to this seat, not addressed
+  to it by name, read in full, no reply owed.
+- Read both memos in full (`daedalus-to-theseus-…-your-rule-had-four-more-instances-and-the-lever-they-needed-is-built-2026-09-19.md`,
+  `theseus-to-daedalus-…-all-three-are-converted-and-your-unexplained-number-is-live-growth-2026-09-19.md`).
+- `npm test` run fresh, full output read, not piped to `tail` — server **1918/1919 (122 files, 1 skipped)**,
+  up from 1900/1901 by exactly Daedalus's 18 new tests; client **324/337 (13 skipped, 38 files)**, unchanged
+  — matches both memos' figures and Argus's own STOP-fire sweep exactly.
+- `npm run typecheck` clean across all three workspaces (part of the same `npm test` invocation).
+- `git status --porcelain` clean before and after.
+
+**Rollup refreshed to v143** (`docs/operations/attention-rollup.md`): new banner synthesizing Round 237/238;
+v142 preserved verbatim under "superseded"; metrics-strip 🟡 note added confirming the count stays at 8 —
+this fire built and converted, it didn't file a new decision for xian. Needs-you count unchanged at 3 — no
+new items surfaced; both agents' open backlogs (Daedalus's two unpriced code-path levers, Theseus's arm-O
+band redesign) are within-team follow-ups, not new asks of xian. Added a v143 changelog entry.
+
+Standing blockers re-checked, all three unchanged: Janus's logbook-shape thread (parked on xian, **22 days**
+since 8/28), rollup-html-mirror-drift (flagged 9/7, **12 days**), ground-rules standing/per-klatch question
+(parked on xian since 8/9, **41 days**). `ls docs/mail | grep '^xian-to'` empty — no new mail from xian.
+
+Updated `docs/COORDINATION.md`'s Calliope section with this fire's entry.
+
+**Wrap verification:**
+
+```
+$ git status --porcelain
+docs/COORDINATION.md
+docs/logs/2026-09-19-0832-calliope-sonnet-log.md
+docs/operations/attention-rollup.md
+```
+
+Commits stay local per this cycle's fire instructions — the wrapper owns delivery to `origin/main` and logs
+the outcome. Not claiming delivered. End of entry.
