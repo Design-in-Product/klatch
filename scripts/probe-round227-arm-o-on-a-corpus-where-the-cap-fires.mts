@@ -96,7 +96,7 @@ import crypto from 'crypto';
 import { spawn, type ChildProcess } from 'child_process';
 import { requireAnUnoccupiedPort, waitUntilOurServerIsUp, reapOnExit } from './lib/probe-server-ownership.mts';
 import { summariseAndExit } from './lib/probe-outcome.mts';
-import { readNumericConstant, replaceNumericConstant } from './lib/probe-source-constants.mts';
+import { readNumericConstant } from './lib/probe-source-constants.mts';
 
 const PROBE = 'probe-round227-arm-o-on-a-corpus-where-the-cap-fires';
 
@@ -151,11 +151,19 @@ const SCANNER_ORIGINAL = fs.readFileSync(SCANNER);
 const SCANNER_SHA = crypto.createHash('sha256').update(SCANNER_ORIGINAL).digest('hex');
 const SHIPPED_CAP = readNumericConstant(SCANNER_ORIGINAL.toString('utf8'), 'FINGERPRINT_LINE_CAP', PROBE);
 
-function restoreScanner(): boolean {
-  fs.writeFileSync(SCANNER, SCANNER_ORIGINAL);
+// Round 238: this used to WRITE `SCANNER_ORIGINAL` back, because arm D patched
+// `FINGERPRINT_LINE_CAP` in source to get an uncapped server. `KLATCH_FINGERPRINT_LINE_CAP`
+// (Round 237) replaced the patch, so nothing here writes into `packages/` any more and
+// the function only reads.
+//
+// The restoring *exit hook* was deleted rather than converted, and that is the part worth
+// a sentence: with no patch to undo, a hook that writes `SCANNER_ORIGINAL` back can only
+// do harm — it would silently revert an edit another agent made to the scanner while this
+// probe was running, and report success doing it. Verification stays (the final sha check
+// at the bottom of the run); the write is gone.
+function scannerUnchanged(): boolean {
   return crypto.createHash('sha256').update(fs.readFileSync(SCANNER)).digest('hex') === SCANNER_SHA;
 }
-process.on('exit', () => { try { restoreScanner(); } catch { /* best effort */ } });
 
 console.log(`${PROBE}`);
 console.log(`shipped FINGERPRINT_LINE_CAP = ${SHIPPED_CAP} (read from source, sha256 ${SCANNER_SHA.slice(0, 12)})`);
@@ -177,14 +185,44 @@ function killServer() {
   server = undefined;
 }
 
-async function startServer(tag: string): Promise<void> {
+/**
+ * The child's environment, with the cap lever set for exactly one generation.
+ *
+ * `lineCap` undefined **deletes** `KLATCH_FINGERPRINT_LINE_CAP` rather than merely not
+ * setting it. The probe inherits the fire's environment, so if the variable were already
+ * set out there, the "shipped cap" generation would quietly run at that value instead —
+ * and every arm would still be green, measuring a cap nobody in this file chose. That is
+ * the same failure the lever was built to end (`session-scanner.ts:323`), arriving from
+ * the other direction. The same reasoning covers `KLATCH_EXPORT_ROOT` in Round 236.
+ */
+function childEnv(lineCap?: number): NodeJS.ProcessEnv {
+  const env: NodeJS.ProcessEnv = {
+    ...process.env,
+    KLATCH_DB: DB,
+    CLAUDE_CONFIG_DIR: CONFIG,
+    ANTHROPIC_API_KEY: '',
+  };
+  if (lineCap === undefined) delete env.KLATCH_FINGERPRINT_LINE_CAP;
+  else env.KLATCH_FINGERPRINT_LINE_CAP = String(lineCap);
+  return env;
+}
+
+/**
+ * `lineCap` undefined spawns the shipped cap. Passing a number sets
+ * `KLATCH_FINGERPRINT_LINE_CAP` for that generation only.
+ *
+ * Note that this does NOT verify the lever took effect, and deliberately so: "the
+ * variable was set" describes the apparatus, not the server. Arm D's `capped === 0`
+ * check is what proves the server actually ran the cap it was handed.
+ */
+async function startServer(tag: string, lineCap?: number): Promise<void> {
   const logPath = path.join(SCRATCH, `server-${tag}.log`);
   const logFd = fs.openSync(logPath, 'a');
   server = spawn('npx', ['tsx', 'src/index.ts'], {
     cwd: path.join(REPO, 'packages/server'),
     // ANTHROPIC_API_KEY stripped: nothing here should be able to reach the model,
     // and a probe that *could* is one edit away from one that does.
-    env: { ...process.env, KLATCH_DB: DB, CLAUDE_CONFIG_DIR: CONFIG, ANTHROPIC_API_KEY: '' },
+    env: childEnv(lineCap),
     stdio: ['ignore', logFd, logFd],
   });
   await waitUntilOurServerIsUp(server, logPath, PORT);
@@ -398,23 +436,27 @@ check('C', 'capped browse, per sample', true,
 
 // ── Arm D — the endpoint, uncapped ───────────────────────────────────────────
 
+// Round 238: this generation used to be produced by writing a patched
+// `session-scanner.ts` to disk and restoring it in the `finally`. It now sets
+// `KLATCH_FINGERPRINT_LINE_CAP` on the child instead (Round 237). `MAX_SAFE_INTEGER`
+// is what the patch substituted and is what the resolver accepts as its largest legal
+// value, so "uncapped" means the same number it always did.
 let N: Awaited<ReturnType<typeof timeBrowse>> | undefined;
-let patchApplied = false;
 try {
-  fs.writeFileSync(SCANNER, replaceNumericConstant(
-    SCANNER_ORIGINAL.toString('utf8'), 'FINGERPRINT_LINE_CAP', 'Number.MAX_SAFE_INTEGER', PROBE));
-  patchApplied = true;
-  await startServer('uncapped');
+  await startServer('uncapped', Number.MAX_SAFE_INTEGER);
   N = await timeBrowse(SAMPLES);
 } finally {
   killServer();
-  if (patchApplied) {
-    const ok = restoreScanner();
-    check('D', 'scanner source restored byte-for-byte after the temporary patch', ok,
-      ok ? `sha256 ${SCANNER_SHA.slice(0, 12)} matches`
-         : 'RESTORE FAILED — run `git checkout packages/server/src/import/session-scanner.ts`');
-  }
 }
+
+// The claim is about the scanner, so it is checked against the scanner — not against a
+// flag recording that this probe chose not to write. It would catch a stray write from
+// anywhere in the run, including one this file does not know about.
+const scannerIntact = scannerUnchanged();
+check('D', 'the uncapped generation was obtained without writing into packages/', scannerIntact,
+  scannerIntact
+    ? `session-scanner.ts still sha256 ${SCANNER_SHA.slice(0, 12)}; cap set via KLATCH_FINGERPRINT_LINE_CAP on the child`
+    : `session-scanner.ts CHANGED during the run — run \`git diff ${path.relative(REPO, SCANNER)}\``);
 
 check('D', 'the uncapped generation really was uncapped', N!.capped === 0 && N!.sessions === L!.sessions,
   `fingerprintCapped on ${N!.capped}/${N!.sessions} sessions (expect 0/${L!.sessions}); ` +
@@ -562,8 +604,12 @@ for (const s of skipped) console.log(`  SKIP ${s}`);
 
 const finalSha = crypto.createHash('sha256').update(fs.readFileSync(SCANNER)).digest('hex');
 if (finalSha !== SCANNER_SHA) {
-  console.log(`\n!! session-scanner.ts is NOT in its original state (sha ${finalSha.slice(0, 12)} vs ${SCANNER_SHA.slice(0, 12)}).`);
-  console.log(`   Run: git checkout packages/server/src/import/session-scanner.ts`);
+  console.log(`\n!! session-scanner.ts changed during this run (sha ${finalSha.slice(0, 12)} vs ${SCANNER_SHA.slice(0, 12)}).`);
+  // Round 238: this used to say "run git checkout". Since this probe stopped patching
+  // source, it is no longer the likely author of such a change — another agent editing
+  // the scanner concurrently is — and `git checkout` would silently destroy their work.
+  // Inspect before reverting.
+  console.log(`   This probe no longer writes to it. Inspect with \`git diff ${path.relative(REPO, SCANNER)}\` before reverting anything.`);
   process.exit(1);
 }
 console.log(`\nsession-scanner.ts verified unmodified (sha256 ${SCANNER_SHA.slice(0, 12)}).`);

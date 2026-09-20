@@ -84,7 +84,7 @@ import {
   reapOnExit,
 } from './lib/probe-server-ownership.mts';
 import { summariseAndExit } from './lib/probe-outcome.mts';
-import { readNumericConstant, replaceNumericConstant } from './lib/probe-source-constants.mts';
+import { readNumericConstant } from './lib/probe-source-constants.mts';
 
 const REPO = path.resolve(import.meta.dirname, '..');
 const SCRATCH = path.join(REPO, '.testdata', 'browse-latency-e2e');
@@ -235,13 +235,17 @@ const SHIPPED_CAP = readNumericConstant(
   SCANNER_ORIGINAL.toString('utf8'), 'FINGERPRINT_LINE_CAP', 'probe-browse-latency-end-to-end');
 console.log(`shipped FINGERPRINT_LINE_CAP = ${SHIPPED_CAP} (read from source, sha256 ${SCANNER_SHA.slice(0, 12)})\n`);
 
-function restoreScanner(): boolean {
-  fs.writeFileSync(SCANNER, SCANNER_ORIGINAL);
+// Round 238: reads only. Arm N used to patch `FINGERPRINT_LINE_CAP` in shipped source to
+// get an uncapped server; it sets `KLATCH_FINGERPRINT_LINE_CAP` on the child now (Round
+// 237), so nothing in this file writes into `packages/`.
+//
+// The restoring `exit`/`SIGINT` hooks were deleted, not converted. With no patch
+// outstanding they could only write `SCANNER_ORIGINAL` over a change this probe did not
+// make — i.e. silently revert another agent's concurrent edit — and report success.
+function scannerUnchanged(): boolean {
   const now = crypto.createHash('sha256').update(fs.readFileSync(SCANNER)).digest('hex');
   return now === SCANNER_SHA;
 }
-process.on('exit', () => { try { restoreScanner(); } catch { /* best effort */ } });
-process.on('SIGINT', () => { try { restoreScanner(); } finally { process.exit(130); } });
 
 // ── Server lifecycle ─────────────────────────────────────────────────────────
 
@@ -293,7 +297,14 @@ async function stopServerAndWait(): Promise<void> {
   await waitUntilPortIsQuiet(PORT);
 }
 
-async function startServer(tag: string): Promise<void> {
+/**
+ * `lineCap` undefined **deletes** `KLATCH_FINGERPRINT_LINE_CAP` from the child rather
+ * than leaving it inherited, so the capped generations measure the shipped cap and not
+ * whatever the surrounding fire environment happened to set. A number sets it for that
+ * generation only. See `session-scanner.ts:323` for why a lever that silently resolves
+ * to something other than what the caller chose is worse than no lever at all.
+ */
+async function startServer(tag: string, lineCap?: number): Promise<void> {
   // One log file per generation, opened with 'w'. The readiness check below
   // greps this file for the boot banner, and `banner in the file` is only an
   // identity signal if the file cannot hold a PREVIOUS generation's banner.
@@ -301,9 +312,12 @@ async function startServer(tag: string): Promise<void> {
   // spawned, on generation 0's evidence.
   const logPath = path.join(SCRATCH, `server-${tag}.log`);
   const logFd = fs.openSync(logPath, 'w');
+  const childEnv: NodeJS.ProcessEnv = { ...process.env, KLATCH_DB: DB };
+  if (lineCap === undefined) delete childEnv.KLATCH_FINGERPRINT_LINE_CAP;
+  else childEnv.KLATCH_FINGERPRINT_LINE_CAP = String(lineCap);
   const child = spawn('npx', ['tsx', 'src/index.ts'], {
     cwd: path.join(REPO, 'packages/server'),
-    env: { ...process.env, KLATCH_DB: DB },
+    env: childEnv,
     stdio: ['ignore', logFd, logFd],
   });
   server = child;
@@ -362,10 +376,12 @@ type ColdSeries = {
  * each. See COLD_GENERATIONS for why more than one, and why generation 0 is
  * thrown away.
  */
-async function coldSeries(tag: string): Promise<ColdSeries> {
+async function coldSeries(tag: string, lineCap?: number): Promise<ColdSeries> {
   const generations: BrowseRun[] = [];
   for (let g = 0; g < COLD_GENERATIONS; g++) {
-    await startServer(`${tag}-g${g}`);
+    // Every generation in the series gets the same cap. Passing it here rather than
+    // once outside the loop is what makes that true of generations 1..n as well as 0.
+    await startServer(`${tag}-g${g}`, lineCap);
     try {
       generations.push(await timeBrowse(SAMPLES));
     } finally {
@@ -664,30 +680,31 @@ if (!L) {
 
 let NS: ColdSeries | undefined;
 let N: BrowseRun | undefined;
-let patchApplied = false;
 if (!canStartOurOwnServer) {
   skip('N', 'needs a free port 3001');
 } else {
+  // Round 238. This arm used to write a patched `session-scanner.ts` to disk. Its old
+  // comment recorded why that was fragile, and the history is worth keeping because it
+  // is the argument for the lever: the patch was originally built by interpolating
+  // SHIPPED_CAP into a needle string, so it looked for `= 50000;` in a file that says
+  // `= 50_000;` and no-opped — the second victim of the same 2026-09-04 reformatting,
+  // 170 lines below the first. `KLATCH_FINGERPRINT_LINE_CAP` (Round 237) removes the
+  // class: there is no spelling to match, so no reformatting can silently disarm it.
+  //
+  // `MAX_SAFE_INTEGER` is the value the patch substituted and the largest the resolver
+  // accepts, so "uncapped" denotes exactly what it denoted before.
   try {
-    // Was built by interpolating SHIPPED_CAP back into a needle string, so it looked for
-    // `= 50000;` in a file that says `= 50_000;` and no-opped. The second victim of the same
-    // 2026-09-04 reformatting, 170 lines below the first. The no-op guard here did its job and
-    // threw before writing — that is why this was a dead probe and not a dirty working tree.
-    const patched = replaceNumericConstant(
-      SCANNER_ORIGINAL.toString('utf8'), 'FINGERPRINT_LINE_CAP', 'Number.MAX_SAFE_INTEGER',
-      'probe-browse-latency-end-to-end');
-    fs.writeFileSync(SCANNER, patched);
-    patchApplied = true;
-    NS = await coldSeries('uncapped');
+    NS = await coldSeries('uncapped', Number.MAX_SAFE_INTEGER);
     N = NS.last;
   } finally {
     killServer();
-    if (patchApplied) {
-      const ok = restoreScanner();
-      check('N', 'scanner source restored byte-for-byte after the temporary patch', ok,
-        ok ? `sha256 ${SCANNER_SHA.slice(0, 12)} matches` : 'RESTORE FAILED — run `git checkout packages/server/src/import/session-scanner.ts`');
-    }
   }
+  const scannerIntact = scannerUnchanged();
+  check('N', 'the uncapped series was obtained without writing into packages/', scannerIntact,
+    scannerIntact
+      ? `session-scanner.ts still sha256 ${SCANNER_SHA.slice(0, 12)}; cap set via KLATCH_FINGERPRINT_LINE_CAP`
+      : 'session-scanner.ts CHANGED during the run — this probe does not write here; ' +
+        'inspect `git diff packages/server/src/import/session-scanner.ts` before reverting');
   if (N && NS) {
     check('N', 'uncapped browse still returns the same corpus', L ? N.sessions === L.sessions : N.sessions > 0,
       `${N.sessions} sessions, ${(N.bytes / 1e6).toFixed(2)} MB payload, ${N.capped} capped (expect 0)`);
@@ -1048,8 +1065,11 @@ for (const s of skipped) console.log(`  SKIP ${s}`);
 
 const finalSha = crypto.createHash('sha256').update(fs.readFileSync(SCANNER)).digest('hex');
 if (finalSha !== SCANNER_SHA) {
-  console.log(`\n!! session-scanner.ts is NOT in its original state (sha ${finalSha.slice(0, 12)} vs ${SCANNER_SHA.slice(0, 12)}).`);
-  console.log(`   Run: git checkout packages/server/src/import/session-scanner.ts`);
+  console.log(`\n!! session-scanner.ts changed during this run (sha ${finalSha.slice(0, 12)} vs ${SCANNER_SHA.slice(0, 12)}).`);
+  // Round 238: was "run git checkout". This probe stopped writing to the scanner, so a
+  // mismatch now most likely means another agent edited it concurrently — and a blind
+  // checkout would destroy that work.
+  console.log(`   This probe no longer writes to it. Inspect \`git diff packages/server/src/import/session-scanner.ts\` before reverting.`);
   process.exit(1);
 }
 console.log(`\nsession-scanner.ts verified unmodified (sha256 ${SCANNER_SHA.slice(0, 12)}).`);

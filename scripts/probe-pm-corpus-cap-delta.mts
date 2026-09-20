@@ -84,6 +84,7 @@ import crypto from 'crypto';
 import readline from 'readline';
 import { spawn } from 'child_process';
 import { waitUntilPortIsQuiet } from './lib/probe-server-ownership.mts';
+import { readNumericConstant } from './lib/probe-source-constants.mts';
 
 const REPO = path.resolve(import.meta.dirname, '..');
 const SCRATCH = path.join(REPO, '.testdata', 'pm-corpus-cap-delta');
@@ -115,11 +116,11 @@ function check(arm: string, name: string, pass: boolean, detail: string, kind: K
   const tag = pass ? 'PASS' : kind === 'measurement' ? 'NOTE' : 'FAIL';
   console.log(`${tag} [${arm}] ${name} — ${detail}`);
 }
-const skipped: string[] = [];
-function skip(arm: string, why: string) {
-  skipped.push(`[${arm}] ${why}`);
-  console.log(`SKIP [${arm}] ${why}`);
-}
+// Round 238: the `skip` helper and its `skipped` array were deleted with the last
+// reachable skip path (see arm C). Reporting "0 skipped" from a probe that has no way
+// to skip is not a neutral zero — it reads as evidence that arms were checked and
+// cleared, which is the misreading that let two dead arms hide for fifteen days. If a
+// future arm genuinely needs to skip, reintroduce both along with it.
 
 const median = (xs: number[]) => {
   const s = [...xs].sort((a, b) => a - b);
@@ -139,20 +140,32 @@ const SCANNER_ORIGINAL = fs.readFileSync(SCANNER);
 const SCANNER_SHA = crypto.createHash('sha256').update(SCANNER_ORIGINAL).digest('hex');
 const originalText = SCANNER_ORIGINAL.toString('utf8');
 
-const CAP_SHIPPED_LITERAL = 'const FINGERPRINT_LINE_CAP = 50_000;';
-const CAP_PATCHED_LITERAL = 'const FINGERPRINT_LINE_CAP = 1_500;';
-const CAP_SHIPPED_VALUE = 50_000;
+// Round 238. This block used to hold two *spellings* of the declaration —
+// `const FINGERPRINT_LINE_CAP = 50_000;` and its 1_500 counterpart — because arm C
+// reached the pre-ruling cap by string-replacing one with the other in shipped source.
+// `KLATCH_FINGERPRINT_LINE_CAP` (Round 237) replaced that, so the spellings are gone
+// and only the values remain.
+//
+// The shipped value is now READ from source rather than hardcoded. It is not a
+// cosmetic change: this constant has already moved once (`50000` → `50_000`,
+// 2026-09-04), which killed one probe at startup and silently gave another a cap
+// 1000x too small that it then reported as a finding. A hardcoded 50_000 here would
+// go stale the same way, and arm A's "files the cap would bite" arithmetic would be
+// wrong without any arm going red.
+const CAP_SHIPPED_VALUE = readNumericConstant(
+  originalText, 'FINGERPRINT_LINE_CAP', 'probe-pm-corpus-cap-delta');
+/** The pre-ruling cap arm C measures. A probe input, not a fact about shipped source. */
 const CAP_PATCHED_VALUE = 1_500;
-const capOccurrences = originalText.split(CAP_SHIPPED_LITERAL).length - 1;
 
-function restoreScanner(): boolean {
-  fs.writeFileSync(SCANNER, SCANNER_ORIGINAL);
+// Reads only. The restoring `exit`/`SIGINT` hooks were deleted rather than converted:
+// with no patch to undo, a hook that writes `SCANNER_ORIGINAL` back could only revert
+// a concurrent edit by another agent, and would report success doing it.
+function scannerUnchanged(): boolean {
   return crypto.createHash('sha256').update(fs.readFileSync(SCANNER)).digest('hex') === SCANNER_SHA;
 }
-process.on('exit', () => { try { restoreScanner(); } catch { /* best effort */ } });
-process.on('SIGINT', () => { try { restoreScanner(); } finally { process.exit(130); } });
 
-console.log(`${SCANNER_REL} captured at sha256 ${SCANNER_SHA.slice(0, 12)} (restored before exit)\n`);
+console.log(`${SCANNER_REL} captured at sha256 ${SCANNER_SHA.slice(0, 12)} ` +
+  `(shipped cap ${CAP_SHIPPED_VALUE}, read from source; this probe does not write to it)\n`);
 
 // ── Server lifecycle (Round 146/153 discipline, unchanged except the root) ───
 
@@ -174,13 +187,22 @@ async function waitForPortFree(): Promise<void> {
   await waitUntilPortIsQuiet(PORT);
 }
 
-async function startServer(tag: string): Promise<void> {
+/**
+ * `lineCap` undefined leaves `KLATCH_FINGERPRINT_LINE_CAP` **deleted**, so the arm runs
+ * the shipped default down the same path a user gets. A number sets it for this
+ * generation only.
+ *
+ * Deleting rather than simply not setting matters for the same reason the three
+ * variables below are pinned: this probe inherits the fire's environment, and a cap set
+ * out there would otherwise make arms B and D silently measure something other than the
+ * shipped cap — with every arm still green, because nothing else in the file would
+ * disagree. Setting a lever and checking nothing is how a measurement becomes fiction.
+ */
+async function startServer(tag: string, lineCap?: number): Promise<void> {
   await waitForPortFree();
   const logPath = path.join(SCRATCH, `server-${tag}.log`);
   const logFd = fs.openSync(logPath, 'a');
-  server = spawn('npx', ['tsx', 'src/index.ts'], {
-    cwd: path.join(REPO, 'packages/server'),
-    env: {
+  const childEnv: NodeJS.ProcessEnv = {
       ...process.env,
       KLATCH_DB: DB,
       // Replace semantics — this server walks the PM root and nothing else.
@@ -199,7 +221,13 @@ async function startServer(tag: string): Promise<void> {
       // (`getExportRoot`, Round 235, replace semantics, no disable flag), so the
       // mechanism is a directory with no `exports/sessions/` beneath it.
       KLATCH_EXPORT_ROOT: NO_EXPORTS,
-    },
+  };
+  if (lineCap === undefined) delete childEnv.KLATCH_FINGERPRINT_LINE_CAP;
+  else childEnv.KLATCH_FINGERPRINT_LINE_CAP = String(lineCap);
+
+  server = spawn('npx', ['tsx', 'src/index.ts'], {
+    cwd: path.join(REPO, 'packages/server'),
+    env: childEnv,
     stdio: ['ignore', logFd, logFd],
   });
   const deadline = Date.now() + 90_000;
@@ -387,8 +415,14 @@ getDb(); // creates the scratch DB with the full schema
 
 interface ArmResult { cold: number; warm: number; browse: Browse }
 
-async function measureCap(arm: string, tag: string, capValue: number): Promise<ArmResult> {
-  await startServer(tag);
+/**
+ * `capValue` is what the arm claims to be measuring; `lineCap` is what is actually
+ * handed to the server. They are separate parameters on purpose — an arm at the shipped
+ * cap passes `capValue` for its labels and no `lineCap` at all, so the label can never
+ * drift into asserting that a variable was set when it wasn't.
+ */
+async function measureCap(arm: string, tag: string, capValue: number, lineCap?: number): Promise<ArmResult> {
+  await startServer(tag, lineCap);
   try {
     const coldRun = await timeBrowse(1);
     const cold = coldRun.samples[0];
@@ -430,25 +464,25 @@ async function measureCap(arm: string, tag: string, capValue: number): Promise<A
 console.log('\n── arm B: shipped cap (50_000) on the PM root ───────────────────');
 const armB = await measureCap('B', 'pm-cap-50k', CAP_SHIPPED_VALUE);
 
-console.log('\n── arm C: pre-ruling cap (1_500), patched for one server ────────');
-let armC: ArmResult | null = null;
-if (capOccurrences !== 1) {
-  skip('C', `FINGERPRINT_LINE_CAP is not the literal this probe expects ` +
-    `(${capOccurrences} occurrences of \`${CAP_SHIPPED_LITERAL}\`, expected 1) — refusing to guess at the patch`);
-} else {
-  try {
-    fs.writeFileSync(SCANNER, originalText.replace(CAP_SHIPPED_LITERAL, CAP_PATCHED_LITERAL));
-    const patched = fs.readFileSync(SCANNER, 'utf8');
-    if (!patched.includes(CAP_PATCHED_LITERAL) || patched.includes(CAP_SHIPPED_LITERAL)) {
-      throw new Error('patch did not apply cleanly — refusing to measure');
-    }
-    armC = await measureCap('C', 'pm-cap-1500', CAP_PATCHED_VALUE);
-  } finally {
-    const ok = restoreScanner();
-    check('C', 'scanner restored', ok,
-      ok ? `sha256 ${SCANNER_SHA.slice(0, 12)} matches` : `RESTORE FAILED — run \`git checkout ${SCANNER_REL}\``);
-  }
-}
+console.log('\n── arm C: pre-ruling cap (1_500), via KLATCH_FINGERPRINT_LINE_CAP ──');
+// Round 238. This arm used to write `const FINGERPRINT_LINE_CAP = 1_500;` into shipped
+// source, measure, and restore in a `finally`. It now sets the variable on the child.
+//
+// **The skip is gone, and that is the substantive change, not the patch.** The old guard
+// was "the literal is not the one I expect → skip C", with arms F and H then guarded on
+// "did C run". A skip renders *this arm was checked and passed* and *this arm has not run
+// since some unrelated commit reformatted a constant* indistinguishable in the output —
+// which is exactly how arms C and E of `probe-browse-endpoint-second-corpus` sat silent
+// for fifteen days (Round 236). There is no longer a literal to mismatch, so the
+// condition cannot arise, and a guard retained for an impossible case teaches the next
+// reader that `0 skipped` means something was verified.
+const armC = await measureCap('C', 'pm-cap-1500', CAP_PATCHED_VALUE, CAP_PATCHED_VALUE);
+
+const scannerIntactAfterC = scannerUnchanged();
+check('C', 'the cap was moved without writing into packages/', scannerIntactAfterC,
+  scannerIntactAfterC
+    ? `${SCANNER_REL} still sha256 ${SCANNER_SHA.slice(0, 12)}`
+    : `${SCANNER_REL} CHANGED during the run — inspect with \`git diff ${SCANNER_REL}\` before reverting`);
 
 console.log('\n── arm D: shipped cap again, control ────────────────────────────');
 const armD = await measureCap('D', 'pm-cap-50k-control', CAP_SHIPPED_VALUE);
@@ -471,8 +505,12 @@ check('E', 'shipped cap does not bite the PM corpus', armB.browse.capped.length 
       ? ' — THIS IS THE SIGNAL session-scanner.ts:255-263 asks to be watched for, not a probe bug'
       : ''));
 
-if (armC) {
-  check('E', `patched cap DOES bite — proves the server ran cap ${CAP_PATCHED_VALUE}`,
+// Round 238: `if (armC)` removed — arm C can no longer fail to run. Arm E is left
+// otherwise untouched, and deliberately: "the variable was set" describes the
+// apparatus. The capped count below is what proves the server actually ran cap 1500,
+// and it is exactly as necessary against a lever as it was against a patch.
+{
+  check('E', `the 1500 cap DOES bite — proves the server ran cap ${CAP_PATCHED_VALUE}`,
     armC.browse.capped.length > 0,
     `${armC.browse.capped.length} of ${armC.browse.sessions} sessions capped at ${CAP_PATCHED_VALUE} ` +
       `(arm A counted ${overPatched} files over that line count on disk)`);
@@ -528,8 +566,6 @@ if (armC) {
       `the fingerprint cache absorbs the ruling entirely after the first browse; ` +
       `the ${ms(deltaMean)} is paid once per server start`,
     'measurement');
-} else {
-  skip('F', 'arm C did not run — no delta to report');
 }
 
 // ── Arm G — guard headroom, the early warning the scanner comment asks for ───
@@ -574,7 +610,7 @@ check('G', 'guard still has headroom on every PM session', overShipped === 0,
 
 console.log('\n── arm H: does the per-line cost travel between corpora? ────────');
 
-if (armC) {
+{
   const shippedLines: number[] = [];
   for (const f of shippedFiles) shippedLines.push(await lineCount(f));
   const shippedTotalLines = shippedLines.reduce((a, b) => a + b, 0);
@@ -621,23 +657,26 @@ if (armC) {
       `${Math.min(pmPerKLine, shPerKLine).toFixed(0)}-${Math.max(pmPerKLine, shPerKLine).toFixed(0)} ms ` +
       `per 1k above-cap lines and treat the range as the honest precision`,
     'measurement');
-} else {
-  skip('H', 'arm C did not run — no PM delta to compare against');
 }
 
 // ── Summary ──────────────────────────────────────────────────────────────────
 
 const finalSha = crypto.createHash('sha256').update(fs.readFileSync(SCANNER)).digest('hex');
 check('*', 'scanner byte-identical to how it was found', finalSha === SCANNER_SHA,
-  finalSha === SCANNER_SHA ? `sha256 ${SCANNER_SHA.slice(0, 12)}` : `MISMATCH — run \`git checkout ${SCANNER_REL}\``);
+  finalSha === SCANNER_SHA
+    ? `sha256 ${SCANNER_SHA.slice(0, 12)}`
+    // Round 238: was "run `git checkout`". This probe no longer writes to the scanner,
+    // so it is not the likely author of a mismatch — a concurrent edit by another agent
+    // is, and `git checkout` would destroy it without asking.
+    : `MISMATCH (${finalSha.slice(0, 12)}) — this probe does not write here; ` +
+      `inspect \`git diff ${SCANNER_REL}\` before reverting anything`);
 
 console.log('\n════════════════════════════════════════════════════════════════');
 const regressions = results.filter((r) => r.kind === 'regression');
 const failed = regressions.filter((r) => !r.pass);
 console.log(
   `${results.length} checks (${regressions.length} regression, ${results.length - regressions.length} measurement), ` +
-    `${failed.length} failed, ${skipped.length} skipped`,
+    `${failed.length} failed`,
 );
 for (const f of failed) console.log(`  FAIL [${f.arm}] ${f.check} — ${f.detail}`);
-for (const s of skipped) console.log(`  SKIP ${s}`);
 process.exit(failed.length > 0 ? 1 : 0);

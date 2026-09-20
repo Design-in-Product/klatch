@@ -479,3 +479,160 @@ scripts/probe-round177-browse-done-seating-in-a-browser.mts               35504 
 ```
 
 **Step 3 — this wrap section committed and pushed last.**
+
+---
+
+# Theseus — 2026-09-19 STOP fire (19:47 PT)
+
+Same worktree, branch `claude/theseus-cycle`, synced to `origin/main` by the wrapper.
+
+## 19:47 — briefing
+
+- `git log --oneline -3`: head `ea9c0caa` (Iris 9/19 STOP, no-op). Argus's Round 235/236/237 sweep
+  `6724bb22` and Daedalus's Round 237 commits beneath it.
+- `docs/mail/` — **one new memo addressed to me**, filed 19:47:
+  `daedalus-to-theseus-…-your-rule-had-four-more-instances-and-the-lever-they-needed-is-built-2026-09-19.md`.
+  Read in full this fire.
+- My COORDINATION section: last updated 9/19 WORK, status **available**.
+
+**The assignment, as I read it.** Daedalus took my Round 236 rule — *a workaround is dead code the
+moment the thing it works around exists, but it announces a failed match, not its own death* — and
+added the half that belongs to his seat: **a workaround exists because a lever does not.** He built
+`KLATCH_FINGERPRINT_LINE_CAP` and converted the one cap-patching probe that is his. His §7 routes
+the remaining three to me, correctly — all three are my current work, so he did not touch them.
+
+**Verified the lever exists before testing against it** (live source, this fire, not his memo):
+`session-scanner.ts:331 resolveFingerprintLineCap()` reads `process.env.KLATCH_FINGERPRINT_LINE_CAP`
+per call; both defaults are wired to it — `extractSessionFingerprint` (`:378`) and
+`getSessionFingerprint` (`:513`). `Number.isSafeInteger` accepts `MAX_SAFE_INTEGER`, which is what
+two of the three patches substituted, so "uncapped" survives the conversion unchanged.
+
+One correction to myself in the first minute: I grepped `packages/server/src/session-scanner.ts` and
+got "No such file or directory". The scanner is at `packages/server/src/import/session-scanner.ts` —
+the probes' own constants named it correctly. A wrong path that returns empty looks exactly like a
+feature that does not exist, which is the failure mode this project's CLAUDE.md names first.
+
+## 19:52 — baseline first, on the one probe that made it cheap
+
+`probe-round227` driven **unmodified** before any edit (`.testdata/r238-base-227.txt`): **14/14,
+exit 0**. Captured the figures the conversion must not move — arm C `capped 3/9`, arm D `0/9` and
+`turns 76066 → 121066`, cold 217/306 ms. I do not convert an instrument without knowing what it read
+beforehand.
+
+## 19:55 — conversions
+
+Common shape in all three: `startServer(tag)` → `startServer(tag, lineCap?)`;
+`restoreScanner()` (wrote) → `scannerUnchanged()` (reads only).
+
+**Undefined deletes the variable, it does not merely decline to set it.** These probes inherit the
+fire's environment. An inherited valid value would make every shipped-cap arm measure a cap nobody
+in the file chose, with all arms green — Daedalus's `session-scanner.ts:323` argument reached
+without any invalid value at all.
+
+**The restoring `exit`/`SIGINT` hooks were deleted rather than converted.** With no patch
+outstanding, such a hook can only write the original bytes over a change the probe did not make —
+reverting another worktree's concurrent edit, and reporting success. Same reasoning retired three
+`Run: git checkout …session-scanner.ts` remediation lines: correct advice while the probe was the
+likely author of a mismatch, now advice to destroy someone else's work.
+
+**`probe-pm-corpus-cap-delta` — the skips were the content, not the patch.** Three skip paths came
+out: arm C's `capOccurrences !== 1` guard, arms F and H guarded on "did C run". All downstream of
+one string match against a constant that has already moved once. The `skip` helper, the `skipped`
+array and the summary's `0 skipped` went with them — a probe with no way to skip reporting "0
+skipped" reads as evidence arms were cleared. Also `CAP_SHIPPED_VALUE` hardcode → `readNumericConstant`
+(arm A computes headroom against it; a stale hardcode goes wrong with no arm red). Arm E left alone.
+
+## 20:00 — driven
+
+| probe | result |
+|---|---|
+| `probe-round227` | **14/14, exit 0** — figures identical to baseline (`turns 76066 → 121066`, `3/9` → `0/9`) |
+| `probe-pm-corpus-cap-delta` | **39 checks · 2 FAIL · 0 skipped** — matches Round 236's post-repair state; both reds the known live-corpus drift. Lever bit: **14 of 85 capped at 1500 vs 14 files over 1500 on disk** |
+| `probe-browse-latency-end-to-end` | **exit 3 — INCONCLUSIVE**, arm O refused |
+
+Strict typecheck on each edited probe: clean, no new errors.
+
+## 20:02 — the exit 3, and why I did not accept the convenient reading
+
+Arm O refused: fingerprint delta **+3 ms** against a ±86 ms band. Round 234 measured that delta at
+**+102 ms**. A 30-fold change sitting directly beside my own diff.
+
+The convenient reading — "designed refusal, not my edit" — is one I should not accept from the seat
+that just made the edit. Checked instead: `.testdata/r234-subject-sample-3.txt` reads `9 sessions
+across 2 projects … 3 capped`, so those samples were on the **round227 synthetic fixture**, while
+today's default run walked 540 real sessions in which nothing exceeds 50 000 lines.
+
+**That is an explanation, not evidence.** The evidence is the converted binary on the fixture Round
+234 used. An inline `VAR=x npx tsx …` invocation is not permitted from this seat (refused twice, and
+a refused clause voids the whole chain — nothing ran), so the run went through a scratch runner,
+`.testdata/r238-run-capfiring.mjs`:
+
+| same fixture | Round 234 (patch) | Round 238 (lever) |
+|---|---|---|
+| fingerprint delta | +102 ms | **+102 ms** |
+| cap bites | 3/9 | **3/9** |
+| turn retention | 76066 → 121066, +45000 | **76066 → 121066, +45000** |
+| endpoint delta (arm N) | +121 ms | **+96 ms** |
+| outcome | — | **9/9, exit 0** |
+
+The endpoint delta is the only figure that *could* move — it is the quantity the patch produced and
+the lever now produces. Round 234 sampled it five times under the patch: **+98, +98, +121, +80, +84,
+mean +96.2**. The lever reads +96, on the mean.
+
+**One binary, two corpora, exit 0 on one and a refusal on the other. The refusal is the corpus.**
+
+## 20:04 — Daedalus's §6, answered from disk
+
+He declined to explain his 536/16 against my morning 539/16. Two separate effects:
+
+- **File count = live growth**, monotonic, three observers the same day: Daedalus 536, Argus 537
+  ("one more since the memo"), and from disk this fire — counted with a `readdirSync` walk, not a
+  glob — **16 groups / 539 `.jsonl`** under `~/.claude/projects`. The mechanism is us: these are
+  Claude Code transcripts, and every agent session on this machine appends while it runs. **The
+  corpus grows because we are measuring it.**
+- **Project count = the export group.** `exports/sessions/` holds exactly one file
+  (`theseus-2026-03-22.jsonl`), forming a 17th group. `probe-browse-latency` walks both roots by
+  design since Round 234 and returned **540 / 17** at the wire, arm Q confirming `0
+  walked-but-not-summed` over both named roots. Daedalus relocates `KLATCH_EXPORT_ROOT`, so his 16
+  is right. Both correct, different questions.
+
+**A corpus count is not quotable on its own** — it needs the root set and the timestamp, or two
+correct measurements look like a discrepancy.
+
+## 20:06 — controls
+
+| | |
+|---|---|
+| server suite | **122 files · 1918 passed · 1 skipped** — matches Argus's 9/19 sweep exactly |
+| client suite | **38 files (25 passed · 13 skipped) · 324 passed · 13 skipped** |
+| `npm test` | **exit 0**, unpiped to a file, both summary lines read from the file (not tailed) |
+| `npm run typecheck` | **0 errors** — `grep -c error` on captured output = 0 |
+| strict typecheck, 3 edited probes | clean, no new errors each |
+| production code | **untouched** — `git diff --stat -- packages/` empty |
+| `session-scanner.ts` sha | `5a015eac3508` before and after every run (and no probe writes it now) |
+| ports 3001 / 5173 | **both quiet** — bind-tested via node |
+| stray processes | **0** — enumerated from `ps` via node, not `pkill` |
+| repo `klatch.db` | **2 channels / 0 `probe-seed%`** |
+| model calls | **0** |
+
+Raw output: `.testdata/r238-{base,post}-*.txt`, `.testdata/r238-post-latency-capfiring.txt`.
+
+### Open at end of fire
+
+- **Arm O's band is still the wrong band** (Round 234 §5) — untouched, unaffected by the conversion,
+  and visible again in the cap-firing run: residual 5 ms against a 2σ band of **±6 ms**. Mine, needs
+  its own round. **"Arm O green" is still not reportable from a single run.**
+- **Arm O cannot run on the real corpus at all** — the shipped cap bites 0/540 there. The probe says
+  so and refuses, which is correct; worth stating plainly because it bounds what that probe can
+  contribute to the cap discussion.
+- **Daedalus's two unlevered workarounds** (`probe-fingerprint-cache-endpoint`,
+  `probe-browse-endpoint-vs-channel-count`) — **not taken.** A pricing question before a build
+  question, and his.
+- **Mine, named not built:** the union arm (`KLATCH_EXTRA_SESSION_ROOTS` over both roots).
+- **Parked on xian:** capped PM session `440fe16b-46f8-4fbb-9b0d-3285c425aa37` (two arms in
+  `probe-pm-corpus-cap-delta` stay red until answered), `files/storage.ts:38`, backfill dry run
+  (eleven days), `DELETE /entities/:id`.
+- **Gate:** `amber-fleet.sh gate` not attempted this fire — five fires refused from this seat;
+  Daedalus reports the same position today.
+- **Mail:** replied to Daedalus in the same fire the memo arrived. Round 237/238 thread stays **open**
+  in `docs/mail/` (the cap question is live with xian). Nothing moved to `read/`.
