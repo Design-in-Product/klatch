@@ -176,3 +176,79 @@ dated 2026-09-19); no new brief filed since. Nothing new to action.
 
 Scratch cleaned (`.testdata/argus-r234-*` removed after use); `git status --porcelain` empty before
 committing this log.
+
+## 18:06 PT — STOP fire — Round 235 (Daedalus), Round 236 (Theseus), Round 237 (Daedalus) all swept
+
+Three rounds landed since my own 13:35 checkpoint (`918283ef`), none mine. Pulled: already at
+`b118afe8` (Daedalus's own STOP wrap-verification commit) — no new pull needed, worktree was synced
+by the wrapper before this fire. Mail check: no memo addressed to Argus by name; the three new
+memos below all cc Argus only, read in full. No mail moved to `read/` — Round 237's memo (Daedalus
+→ Theseus) is the live end of the thread and Theseus hasn't replied yet, correctly left open.
+
+**Round 235 (`21579f81`/`bd0da90c`) — `KLATCH_EXPORT_ROOT` built; Daedalus's own probe was the first
+casualty of the isolation Round 234 removed.** `getExportRoot()` in `paths.ts`, replace semantics
+matching `CLAUDE_CONFIG_DIR`, read per call. `probe-multi-root-browse.mts` (his own) went 3 FAIL → repaired
+→ 2 FAIL, the 2 being deliberate live-corpus drift (a 53,635-line PM session over the 50,000-line cap,
+routed to xian).
+
+**Round 236 (`953638da`) — all five probes Daedalus routed came back red, for three different
+reasons.** `probe-browse-endpoint-second-corpus` had been silently skipping its two headline arms
+(C, E) since 2026-09-04 — `round149` built the very lever the workaround was patching around, and
+the same commit deleted the literal the patch matched, so the skip guard degraded cleanly and
+nobody noticed for 15 days. `probe-round174` didn't just fail, it **hung and died mid-run**: the
+export-leak's extra row flipped an import count from 1→2, which flipped a completion button's
+caption from "Use this agent" to "Done", and a helper waiting on the literal string `Done` timed
+out. Repairing the leak then exposed a second, unrelated dead arm — M2 was waiting on the pre-fix
+"Done" behavior from a defect Round 174's own 9/9 fix had already retired eleven days earlier.
+
+**Round 237 (`4f5cebae`/`b6bffa22`/`9a33d95c`) — the fingerprint cap gets the same class of lever.**
+`resolveFingerprintLineCap()` in `session-scanner.ts`, `KLATCH_FINGERPRINT_LINE_CAP` read per call,
+invalid values throw (verified directly: `getSessionFingerprint` calls sit at lines 634 and 720,
+outside the per-file `try/catch` blocks which wrap only `statSync` — matches the memo's claim
+exactly, so a bad value surfaces as a 500 naming the variable rather than silently falling back).
+Red capability run against the realistic failure (resolver present, defaults unwired): 4 of 18 new
+tests fail, exactly the four that assert the override reaches behaviour — the other 13 can't tell a
+wired lever from an inert one. `probe-browse-cold-figure-gap` converted off the source-patching
+pattern entirely (no more `packages/server/src` writes, no restore, no skip path) and turned out to
+be a sixth probe in Theseus's export-leak class, unclaimed until this round.
+
+**Independently verified, not re-trusted:**
+- Read `paths.ts` (`getExportRoot`) and `routes/import.ts:113` directly — matches Round 235's memo
+  on every point: no `process.env` elsewhere in the file, one call site, relative-override resolves
+  against `PROJECT_ROOT` not cwd.
+- Read `session-scanner.ts:286-345` (`resolveFingerprintLineCap`) and the two call sites at 634/720
+  directly — matches Round 237's memo exactly, including the try/catch boundary claim.
+- **Suite, re-run fresh:** server **122 files · 1918 passed · 1 skipped** (1900 + 18 = 1918, the
+  exact count of Round 237's new test file), client **38 files (25 passed · 13 skipped) · 324 passed
+  · 13 skipped** — unchanged. `npm run typecheck`: 0 `error TS` across all three workspaces.
+- **All seven probes named across the three rounds, re-run fresh and unmodified:**
+  - `probe-multi-root-browse.mts` — **28 checks, 2 failed, 0 skipped** (both the named live-drift
+    checks) — matches Round 235's post-repair claim exactly.
+  - `probe-browse-cold-figure-gap.mts` — **31 checks, 0 failed, 0 skipped** — matches Round 237
+    exactly (corpus count read 537 vs. the memo's 536 — one more session file since the memo was
+    written a few hours ago, consistent live-corpus growth, not a discrepancy).
+  - `probe-browse-endpoint-second-corpus.mts` — **35 checks, 2 failed, 0 skipped** — matches Round
+    236's after-table exactly, both failures the same named live-corpus drift.
+  - `probe-pm-corpus-cap-delta.mts` — **39 checks, 2 failed, 0 skipped** — matches exactly.
+  - `probe-round171-path-b-jit-import-browser.mts` (Playwright) — **17/17 regression** — matches.
+  - `probe-round174-browse-route-seating-in-a-browser.mts` (Playwright) — **18/18 regression** —
+    matches, including the M2 arm's re-aim (now reads the caption instead of assuming it).
+  - `probe-round177-browse-done-seating-in-a-browser.mts` (Playwright) — **25/25 regression** —
+    matches.
+- Port 3001 quiet before and after every run (checked via `lsof`); `git status --porcelain` empty
+  throughout; all `.testdata/` scratch (npm-test log, typecheck log, seven probe logs) removed after
+  use.
+
+**Nothing owed back this fire.** Round 237's §7 routes its open items to Theseus (three
+cap-patching probes to convert) and Daedalus's own unclaimed backlog (two harder, code-path-shaped
+levers) — none is this seat's to build. The two open findings parked on xian (the 53,635-line PM
+session, `KLATCH_EXPORT_ROOT`'s keep-or-drop question) are unchanged since Round 235, not new this
+fire.
+
+**ROADMAP.md** — Agent-continuity bullet still stops at Round 205, unchanged since every prior
+flag; not this seat's doc, not fixed here.
+
+**Cross-pollination brief** — file unchanged since this morning's read (`current.md`, still dated
+2026-09-19 09:00); nothing new to action.
+
+End of day-part cycle.
