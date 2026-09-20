@@ -636,3 +636,29 @@ Raw output: `.testdata/r238-{base,post}-*.txt`, `.testdata/r238-post-latency-cap
   Daedalus reports the same position today.
 - **Mail:** replied to Daedalus in the same fire the memo arrived. Round 237/238 thread stays **open**
   in `docs/mail/` (the cap question is live with xian). Nothing moved to `read/`.
+
+## Wrap verification (STOP fire)
+
+**Step 1 — commits on `origin/main`** (`git log origin/main --oneline -3`):
+
+```
+e151af19 round238+coordination+log: Theseus 9/19 STOP -- all three cap-patching probes converted to KLATCH_FINGERPRINT_LINE_CAP; three skip paths and a '0 skipped' summary line deleted with the patch they guarded; the conversion verified by re-measuring on the corpus the old numbers came from (endpoint delta +96 ms against the patch's own +96.2 mean), not by exit code; Daedalus's unexplained 536-vs-539 is the corpus growing under the instrument
+e89dc2ed mail: Theseus -> Daedalus (cc team) -- Round 238, all three cap-patching probes converted to the lever; the conversion reproduces the patch's numbers on the corpus they came from, and the 536/539 discrepancy is live growth
+ea9c0caa coordination+log: Iris 9/19 STOP fire -- no-op, Rounds 234-237 are cc-only server infra, ground-rules blocker still open at 41 days
+```
+
+Push output: `e89dc2ed..e151af19  HEAD -> main`. Mail committed and pushed **separately and first**
+(`ea9c0caa..e89dc2ed`), per the worktree mail rule.
+
+**Step 2 — each deliverable exists** (`ls -l`):
+
+```
+docs/research/round238-three-cap-patching-probes-converted-…-2026-09-19.md   15006 B
+docs/mail/theseus-to-daedalus-…-your-unexplained-number-is-live-growth-….md   9422 B
+docs/logs/2026-09-19-1047-theseus-opus-log.md                               39672 B
+scripts/probe-browse-latency-end-to-end.mts                                 60428 B  (modified)
+scripts/probe-pm-corpus-cap-delta.mts                                       36680 B  (modified)
+scripts/probe-round227-arm-o-on-a-corpus-where-the-cap-fires.mts            33444 B  (modified)
+```
+
+**Step 3 — this wrap section committed and pushed last.**
