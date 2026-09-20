@@ -13,8 +13,29 @@
  * Read-only against the repo: it writes a scratch SQLite DB under the
  * gitignored `.testdata/` and touches nothing else. Zero model calls — import
  * is entirely local. It reads real sessions out of `~/.claude/projects`, so it
- * only runs on a machine with a live Claude Code install (see CAST below);
- * it exits 2 with a clear message where that corpus is absent.
+ * only runs on a machine with a live Claude Code install; it exits 2 with a
+ * diagnosis that distinguishes "no corpus here" from "corpus here, but it does
+ * not meet the stated properties".
+ *
+ * ## 2026-09-20, Daedalus (Round 241) — the cast is resolved, not pinned
+ *
+ * Until this change the cast was **seven session UUIDs, written into this file**.
+ * Theseus drove it in Round 240 and it exited 2: four of the seven were already
+ * deleted, and it blamed the machine. The machine had 538 sessions.
+ *
+ * `~/.claude/projects` is not under version control and is on a retention fuse:
+ * a session file is swept roughly 30 days after its **last append** (measured
+ * two-sided — see `scripts/lib/probe-corpus-sessions.mts`). One of the three
+ * surviving pins had under a day left. So this file's cast was not at risk of
+ * rotting; it was scheduled to, and the acceptance test for the import confirm
+ * step was scheduled to go dark with it.
+ *
+ * The cast is now **resolved by property at run time** — N distinct project
+ * directories, each holding at least two real transcripts in a size band — and
+ * **printed**, because a resolution that is not reported reads exactly like a
+ * pin that happens to still resolve. Agent names are derived from the directory
+ * they came from, so they are still distinct per source, which is the only
+ * property arms A and B ever needed from them.
  *
  * **This is the acceptance test for the import confirm step.** Arms A and B
  * already pass — the server half shipped 8/09. Arm C is expected to FLIP to
@@ -33,9 +54,12 @@
 import { Hono } from 'hono';
 import fs from 'fs';
 import path from 'path';
-import os from 'os';
+import {
+  resolveSessionCast,
+  describeResolution,
+  refuseWithCorpusDiagnosis,
+} from './lib/probe-corpus-sessions.mts';
 
-const PROJECTS = path.join(os.homedir(), '.claude', 'projects');
 const REPO = path.resolve(import.meta.dirname, '..');
 
 // Fresh scratch DB per run, under the gitignored .testdata/. Set before any
@@ -45,30 +69,47 @@ fs.rmSync(SCRATCH, { recursive: true, force: true });
 fs.mkdirSync(SCRATCH, { recursive: true });
 process.env.KLATCH_DB = path.join(SCRATCH, 'scratch.db');
 
-// Sessions chosen by size (150–600KB) from five distinct agent worktrees. These
-// stand in for the Piper Morgan cast: five named agents with real, long,
-// independently-authored transcripts.
-const CAST: Array<{ agent: string; dir: string; file: string }> = [
-  { agent: 'Argus',    dir: '-Users-xian-Development-klatch-worktrees-argus',    file: '7907f86d-da81-4090-a002-14db3e780812.jsonl' },
-  { agent: 'Calliope', dir: '-Users-xian-Development-klatch-worktrees-calliope', file: 'fb175963-278a-473b-8222-966c36d703dc.jsonl' },
-  { agent: 'Daedalus', dir: '-Users-xian-Development-klatch-worktrees-daedalus', file: '543a019a-6ae9-47ae-89f5-902337505dd1.jsonl' },
-  { agent: 'Iris',     dir: '-Users-xian-Development-klatch-worktrees-iris',     file: 'dc7151a8-7eea-4b01-9dfa-d2c9d5e14a5b.jsonl' },
-  { agent: 'Theseus',  dir: '-Users-xian-Development-klatch-worktrees-theseus',  file: '6e0073c1-2d2b-4e50-a427-3d1be1a9764b.jsonl' },
-];
+// The cast: five distinct project directories, each with two real, long,
+// independently-authored transcripts (150–600 KB). These stand in for the Piper
+// Morgan cast. Two sessions per source because arm B needs a *second* session
+// from one source and arm C needs a session nobody has imported yet.
+//
+// Resolution, not pinning — and the refusal below distinguishes the two causes
+// that used to be conflated into one misleading sentence.
+const resolution = (() => {
+  try {
+    return resolveSessionCast({ count: 5, sessionsPerDir: 2 });
+  } catch (e) {
+    refuseWithCorpusDiagnosis(e);
+  }
+})();
 
-const ARGUS_SECOND = { dir: CAST[0].dir, file: '82fbcc87-a329-423e-b836-f2ac708ac9e2.jsonl' };
-const UNNAMED      = { dir: CAST[1].dir, file: '4f45d6e3-dafd-48a4-aae5-46413452c4a9.jsonl' };
+console.log(describeResolution(resolution));
 
-const sessionPathOf = (s: { dir: string; file: string }) => path.join(PROJECTS, s.dir, s.file);
+const CAST = resolution.sources.map((s) => ({
+  agent: s.label,
+  dir: s.dir,
+  file: s.sessions[0].file,
+  path: s.sessions[0].path,
+}));
 
-// Precondition: the live corpus. Absent it, this probe reports nothing rather
-// than reporting a fleet of failures that only mean "wrong machine".
-const missing = [...CAST.map(sessionPathOf), sessionPathOf(ARGUS_SECOND), sessionPathOf(UNNAMED)].filter((p) => !fs.existsSync(p));
-if (missing.length) {
-  console.error(`Cannot run: ${missing.length} of the named sessions are absent under ${PROJECTS}.`);
-  console.error('This probe needs a machine with the live Claude Code corpus it was written against.');
-  console.error('First missing: ' + missing[0]);
-  process.exit(2);
+// A second session from the *same* source as CAST[0] — reuse-by-name (arm B).
+const SECOND = { ...CAST[0], path: resolution.sources[0].sessions[1].path };
+// A session from a different source, not yet imported — the no-entity shape (arm C).
+const UNNAMED = { path: resolution.sources[1].sessions[1].path };
+
+const sessionPathOf = (s: { path: string }) => s.path;
+
+// Control on the resolution itself: the three roles must be three distinct
+// files. A resolver that handed back the same path twice would make arm B's
+// "matched-by-name" and arm C's "lands on default-entity" both trivially true.
+{
+  const paths = [...CAST.map((c) => c.path), SECOND.path, UNNAMED.path];
+  if (new Set(paths).size !== paths.length) {
+    console.error('Cannot run [resolution-degenerate]: the resolved cast contains a duplicate path.');
+    console.error(paths.join('\n'));
+    process.exit(2);
+  }
 }
 
 /**
@@ -123,12 +164,15 @@ for (const c of CAST) {
     `entityId=${body.entityId ?? 'NONE'} disposition=${body.entityDisposition ?? 'NONE'}`);
 }
 
+// Cast size is now resolved, so these counts are derived from it. A literal 5
+// here would silently stop tracking the resolver the moment either moved.
 const afterA = q.getAllEntities();
-check('A', 'five distinct new entities exist', afterA.length === baselineEntities.length + 5,
+check('A', `${CAST.length} distinct new entities exist`, afterA.length === baselineEntities.length + CAST.length,
   `${baselineEntities.length} -> ${afterA.length}: ${afterA.map((e: any) => e.name).join(', ')}`);
 
 const distinctIds = new Set(Object.values(armA).map((b: any) => b.entityId));
-check('A', 'no two agents share an entity', distinctIds.size === 5, `${distinctIds.size} distinct entityIds across 5 imports`);
+check('A', 'no two agents share an entity', distinctIds.size === CAST.length,
+  `${distinctIds.size} distinct entityIds across ${CAST.length} imports`);
 
 // Every channel is bound to exactly its own agent's entity, and assistant
 // messages carry that entity_id (the thing carried context reads).
@@ -148,17 +192,18 @@ for (const c of CAST) {
 
 // ── Arm B: a second session for the same confirmed name ───────────────
 {
-  const p = sessionPath(ARGUS_SECOND);
-  const res = await post('/api/import/claude-code', { sessionPath: p, entityName: 'Argus' });
+  const first = CAST[0].agent;
+  const p = sessionPath(SECOND);
+  const res = await post('/api/import/claude-code', { sessionPath: p, entityName: first });
   const body = await res.json();
-  check('B', 'second Argus session matched by name (not a look-alike)',
-    body.entityDisposition === 'matched-by-name' && body.entityId === armA['Argus']?.entityId,
-    `disposition=${body.entityDisposition} entityId=${body.entityId} firstArgus=${armA['Argus']?.entityId}`);
+  check('B', `second ${first} session matched by name (not a look-alike)`,
+    body.entityDisposition === 'matched-by-name' && body.entityId === armA[first]?.entityId,
+    `disposition=${body.entityDisposition} entityId=${body.entityId} first${first}=${armA[first]?.entityId}`);
   const afterB = q.getAllEntities();
   check('B', 'entity count unchanged by the second import', afterB.length === afterA.length,
     `${afterA.length} -> ${afterB.length}`);
-  const chans = db.prepare('SELECT COUNT(*) n FROM channel_entities WHERE entity_id = ?').get(armA['Argus']?.entityId) as { n: number };
-  check('B', 'Argus now owns two channels', chans.n === 2, `channels bound to Argus=${chans.n}`);
+  const chans = db.prepare('SELECT COUNT(*) n FROM channel_entities WHERE entity_id = ?').get(armA[first]?.entityId) as { n: number };
+  check('B', `${first} now owns two channels`, chans.n === 2, `channels bound to ${first}=${chans.n}`);
 }
 
 // ── Arm C: no entity fields — the shape the shipped client actually sends ──

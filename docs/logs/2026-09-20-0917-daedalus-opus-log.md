@@ -177,3 +177,92 @@ Modified files in `42c72306`: `docs/COORDINATION.md`,
 **Step 3 —** this log is committed and pushed last, after Steps 1 and 2.
 
 Nothing is claimed as delivered here: the wrapper owns delivery and logs the outcome.
+
+---
+
+## 13:17 PT — WORK fire, Round 241: took Theseus's corpus-pin remedy; the class is one probe
+
+**Briefing.** Pulled state as synced by the wrapper at `10316f68`. Read
+`docs/COORDINATION.md` (Daedalus section) and swept `docs/mail/`. One memo
+addressed to me since the START fire:
+`theseus-to-daedalus-…-your-sweep-found-a-third-pin-class-and-it-has-a-30-day-fuse-2026-09-20.md`.
+Acted on it in this same fire (§7 open item: *"the corpus-pin remedy — mine
+unless you want it"*). **Taken.**
+
+**13:18 — measured the class before building.** All 112 top-level files under
+`scripts/` via `readdirSync`, every UUID-shaped token resolved against the live
+corpus by basename. 8 scripts carry a UUID; **exactly 1** names a real session
+file (`probe-import-entity-binding.mts`); the other 7 mint their own
+(`00000000-…`, `aaaaaaaa-…-0001`, `c0111111-…`). The class is bounded at one, so
+this is a repair, not a migration.
+
+**13:19 — re-measured the fuse independently** (not copied from Theseus's
+figures): 538 files, oldest mtime **30.10 d**, 2 files above 30 d, 16 files with
+birthtime > 30 d (oldest birth 59.10 d). His mechanism holds. One refinement:
+the 2 files at 30.10 d mean the cliff is a **periodic sweep**, not an
+instantaneous delete, so a computed expiry is a lower bound, never a date.
+
+**13:20–13:22 — built `scripts/lib/probe-corpus-sessions.mts`.** Resolution by
+property at run time (`resolveSessionCast`), a printed report
+(`describeResolution`), and a **two-valued refusal** (`no-corpus` vs
+`insufficient-corpus`) — Theseus's §3 rule encoded rather than left to callers.
+
+**13:21 — first control run went red and the failure was mine, not the module's.**
+`describeResolution` printed `last append -0.0 d ago`: a file written
+microseconds earlier carries an mtime fractionally ahead of `Date.now()`.
+Clamped at zero, with an arm.
+
+**13:22 — the control that failed to fail.** Capability run with label widening
+disabled: the collision check **passed anyway**, because the index fallback emits
+`Argus1`/`Argus2` — distinct, both mention argus, which is all the first version
+of the check asserted. Rewrote it to assert the distinguishing segment and forbid
+the numeric fallback; re-ran the same capability patch and it goes red, 1 of 19.
+Recorded because a check a deliberately broken build satisfies is not a check.
+
+**13:24 — the vitest route is closed for `.mts` helpers.** Wrote the controls as
+`packages/server/src/__tests__/round241-….test.ts` first, on the
+`round85-marker-floor.test.ts` precedent. `npm run typecheck` rejected it:
+`TS5097` (`.mts` import without `allowImportingTsExtensions`) and `TS6059`
+(outside `rootDir`). The precedent holds for `.mjs` helpers tsc does not own.
+Deleted that file (never committed) and rewrote the controls as
+`scripts/probe-round241-a-corpus-cast-is-resolved-not-pinned.mts`, on the same
+line as `probe-outcome.mts`, using `summariseAndExit`. **Cost stated, not
+hidden: these 19 checks do not run in `npm test`.** A root-level vitest project
+over `scripts/` would fix it for every `.mts` helper — priced, not taken.
+
+**13:23 — repaired probe driven, exit 0.** `probe-import-entity-binding.mts`,
+first green run since it went dark: `behavior (A/B) 26/26 pass`, `gaps (C/D/E)
+5/5 still open`. Cast resolved to Argus / Iris / Calliope / Cova / Janus. Also
+replaced two literal `5`s in arm A with `CAST.length`.
+
+**13:24 — checked a number before reporting it.** Every import printed `msgs=2`
+from a ~592 KiB transcript. Read the raw jsonl rather than assume: 47 user lines
+of which **46 are `tool_result` envelopes and 1 is a genuine user turn**, 82
+assistant entries. `msgs=2` is correct for a duty-cycle session. It also means
+arm A's per-message check runs over **one row** — true and nearly vacuous.
+Logged as an open item; not fixed, because it changes what the acceptance test
+measures.
+
+**Controls.** Server **123 files · 1952 passed · 1 skipped**; client **38 files ·
+324 passed · 13 skipped** — matches Theseus's Round 240 §6 exactly. `npm test`
+into a file, not through `| tail`. `npm run typecheck` 0 errors ×3 workspaces;
+strict typecheck on all three new/changed `.mts` files 0 errors.
+`git status --porcelain packages/` empty. Repo `klatch.db` (this worktree) 1
+channel / 0 `probe-seed%`. Ports 3001/5173 quiet by connect-probe; no server
+spawned. **0 model calls.**
+
+**Filed.**
+`docs/research/round241-the-corpus-pin-class-is-one-probe-and-the-cast-is-now-resolved-2026-09-20.md`
+and a reply memo to Theseus, cc xian/Janus/Argus/Calliope/Iris. The inbound
+thread stays in `docs/mail/` — it has open items routed back to Theseus (the 28
+unexamined stale-in-code probes, and a proposed clause on the Round 238
+re-measure rule), so it is not closed and is not moved to `read/`.
+
+**Open, carried:** the missing `npm test` coverage for `scripts/lib/*.mts`; arm
+A's one-row check and the byte-size band; Theseus's 29 stale-in-code probes
+(untouched — a different axis from my UUID sweep). Parked on xian, unchanged:
+`440fe16b-46f8-4fbb-9b0d-3285c425aa37`; `files/storage.ts:38`; the backfill dry
+run; `DELETE /entities/:id`.
+
+Nothing is claimed as delivered here: the wrapper owns delivery and logs the
+outcome. Session-wrap verification follows below.
