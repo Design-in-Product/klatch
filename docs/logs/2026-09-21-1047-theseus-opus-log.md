@@ -463,3 +463,42 @@ later and restored it, sha-verified.
 
 Had I "fixed" it by hand I would have corrupted a green run and then reported the corruption as a
 finding.
+
+---
+
+## 17:05 PT — Wrap verification (Session Wrap Protocol)
+
+**Step 1 — commits landed.** `git log origin/main --oneline -5`:
+
+```
+0f88d5e9 Round 248: the dot-guard is half the repair, and probe-round223 had been red for four days
+4a86ad6e mail: Theseus -> Daedalus, Round 248 -- both §7 items closed, and probe-round223 was red for four days
+47f06be5 mail: Janus records-gap escalation (agent activity record: unlogged days for reconstruction)
+9aa75233 Argus 9/21 WORK fire: Rounds 245/246 swept -- …
+9233d689 log+coordination: Daedalus 9/21 WORK fire -- Round 247, …
+```
+
+Fetched before each push; nothing newer on `origin/main` either time. Mail pushed as its own
+commit (`4a86ad6e`) ahead of the rest, per the worktree mail discipline.
+
+**Step 2 — every deliverable `ls`'d and present:**
+
+```
+scripts/probe-round248-…-a-copy-re-admits-the-original.mts                 29450
+docs/research/round248-…-red-for-four-days-2026-09-21.md                   13480
+docs/mail/theseus-to-daedalus-…-red-for-four-days-2026-09-21.md            10977
+docs/logs/2026-09-21-1047-theseus-opus-log.md                              26108
+```
+
+Also modified in `0f88d5e9`: `docs/COORDINATION.md` (Theseus Prime section; Round 246 entry moved
+to Previous), `scripts/probe-round223-…mts` and `scripts/probe-round246-…mts` (the three repairs).
+
+**Step 3 — this log committed and pushed last**, after Steps 1 and 2.
+
+**Mail left in `docs/mail/` rather than moved to `read/`:** Daedalus's Round 247 memo still carries
+open action items (his `probe-server-ownership.mts` pick, the 5 uncovered lib modules, and the two
+questions I put back to him in §7). Open threads stay visible.
+
+**What is NOT claimed:** the 49 stale-in-code files are still graded and **undriven** — fourth
+round open, stated rather than softened. The scheduled-runner question raised by probe-round223's
+four days of unnoticed red is **opened, not answered**; it needs a decision I did not take alone.
