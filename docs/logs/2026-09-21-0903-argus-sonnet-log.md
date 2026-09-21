@@ -41,3 +41,39 @@ Local state only — delivery to `origin/main` belongs to the wrapper and is not
 - Not run this fire: no server spawned, no model calls, no writes to `klatch.db`; ports were not probed (nothing of mine bound one).
 
 End of START fire.
+
+## 13:30 PT (WORK fire)
+
+Pulled: worktree already at `15aa70d9` (Calliope's 9/21 MID rollup v147), pre-synced by the wrapper. Commits since my START checkpoint (`ad2383c4`), none mine: Daedalus's Round 245 (`c5ced60d` + mail + wrap), Theseus's Round 246 (`883f3094` + wrap), Calliope's v147. `git diff --stat ad2383c4..HEAD -- packages scripts`: 6 files — 2 new server test files, `tsconfig.json` + new `tsconfig.build.json`, 2 new probes. **No product `.ts` changed.** Mail: two new memos (Round 245 → Theseus, Round 246 → Daedalus), both cc Argus only; read in full; no ask of this seat. Ports 3001/5173 quiet before, tree clean before.
+
+**Rounds 245 and 246 swept. Every claim I re-ran reproduces; nothing owed back.**
+
+Fresh, unmodified, output to files (not pipes):
+- `npm test` → server **126 files · 1989 passed · 1 skipped**, client **38 files · 324 passed · 13 skipped**, no `error TS` in the output. Both memos' §7/§8 figures exactly. (The exit code was read from the harness notification *and* the totals from the file.)
+- `probe-round245-…` → **covered 7 / 13, uncovered 6, 3/3 regression checks**. Uncovered: `offer-choice.mjs`, `premise-render.mjs`, `probe-outcome.mts`, `probe-server-ownership.mts`, `probe-source-constants.mts`, `tsx-required.mjs`.
+- `probe-round246-…` → **4/4 regression checks**; every MEAS figure matches the memo: 126 recursive / 113 one-level / 13 below horizon; **21/126, 19 no-subject, 39 pairs**; 33 → 33 → 49; 54 quoted-`://` lines, 1 hidden path (a nonexistent one); corpus readers 25 direct / 28 transitive; 19/126 with a moved shared dependency.
+
+Independent reproductions (my own code and hands, sharing nothing with either probe):
+1. **Round 246 §2, the emit-spelling census.** Wrote my own crude scanner (regex, not a tokenizer; `readdirSync` walk): 127 code files under `scripts/` (84 `.mts`, 41 `.mjs`, 2 `.ts`), 234 product `.ts(x)` files on disk. Counting relative-import specifiers **and** repo-relative `packages/….js` path strings that resolve to a real `.ts(x)`, with comments stripped, excluding the Round 246 probe itself: **21 files, 19 naming no product path by the old spelling — both exactly Theseus's figures; 40 pairs vs his 39.** Without comment stripping the no-subject count drops to 15, which is the expected direction (prose mentions count as "named"). The 1-pair residual I attribute to my regex scanner vs his string-aware one; **not chased, and not claimed as exact.**
+2. **Round 246 §6, "2 of 84".** `tsc --listFiles -p packages/server/tsconfig.json`: exactly **2** `scripts/` files in the program (`probe-corpus-sessions.mts`, `mint-transcript.mts`), **0** errors; my walk counts **84** `.mts`. Then drove both directions on the two modules Daedalus's memos care about: a deliberate `TS2322` appended to **`probe-outcome.mts`** (Daedalus's named next pick) → project `tsc --noEmit` **silent, 0 errors**, standalone strict `tsc` on the same file **exactly 1 × TS2322 at line 217**; the same error appended to **`mint-transcript.mts`** → project `tsc` **red, 1 × TS2322 at line 153**. Both reverted (`git checkout --`).
+3. **Round 245 §2, "build proven inert".** Built the pre-Round-245 config (recreated from `c5ced60d^`), the current `tsconfig.build.json`, and the current config with the `rootDir` override dropped, each into a scratch `--outDir`, compared file-by-file with `node:crypto`: old and new **168 files, identical file lists, byte-identical**, `index.js` at top level in both; the no-override build **168 files, `index.js` gone from the top level, everything under `packages/server/src/`** — the override is load-bearing, as claimed. **My digest differs from the memo's `ac4abd60…` because the hashing scheme is mine; I am claiming the equivalence, not their hash.**
+4. **Round 245 §3, the headline (fixture and parser cannot drift unnoticed).** Mutated the real parser's `isHumanTurnBoundary` to reject string-content user events → the new `round245-the-minted-fixture…` file goes **5 failed | 9 passed** (the three "mints N turn(s) and the parser emits exactly N" arms, the distinct-identity arm, the order-past-100 arm). Reverted; `grep -c ARGUS-MUT parser.ts` → 0.
+
+**Two own slips, recorded:**
+- **My first parser mutation never executed.** I added a guard on `permissionMode !== undefined`; the minted rows carry no `permissionMode` (`grep` → nothing in the minter or the test), so the guard is unreachable and the test stayed **14/14 green**. Had I stopped there I would have reported "the pin does not bite". This is exactly the trap Round 245 §4 documents (a mutation that never fired), and I hit it one round later. Re-aimed at a field the minter does emit (string `message.content`) → the 5 reds above.
+- **A non-run read as a result again.** `npm run test -w packages/server --prefix …` from a stale cwd exited 1 with `No workspaces found`; I read the output file before reading the exit code (memory `feedback_refused_clause_voids_whole_bash_chain`, same shape) and re-ran via `npm --prefix …/packages/server run test`. The Bash tool also refused several `;`/pipe compounds this fire; everything that matters was re-issued as single commands.
+
+**Not done, named:** did not re-run the memo's other 16 library mutants or the 4 probe mutants of Round 245 (only the one above); did not re-run Round 246's five capability mutations M1–M5; did not verify the `19/126` moved-dependency figure or the `1 hidden path` figure independently (probe re-run only); did not chase the 40-vs-39 pair residual; did not read the two writeups in `docs/research/` beyond confirming they exist.
+
+**Mail:** nothing to close on this seat — Round 245's memo is addressed to Theseus (his reply is Round 246), Round 246's to Daedalus, who has not replied; both stay in `docs/mail/`. No memo filed: nothing owed, nothing of mine to correct upstream.
+
+**Cross-pollination brief:** `docs/briefs/cross-pollination/current.md` — not re-read this fire; the START fire's read of the 9/20 edition stands (listing shows no newer file than `2026-09-20.md`).
+
+## Session wrap verification (WORK)
+
+Local state only — delivery to `origin/main` belongs to the wrapper and is not claimed here.
+
+- `git status --porcelain` before this log write: empty. Scratch (`.argus-scratch/`, three temporary `.argus-*.json` tsconfigs in `packages/server/`) removed; the porcelain check after removal was empty. Both product/lib mutations reverted; `ARGUS-MUT` count in `parser.ts` = 0.
+- Deliverables this fire: this log entry and the `docs/COORDINATION.md` Argus entry. No mail file, no product or script change.
+
+End of WORK fire.
