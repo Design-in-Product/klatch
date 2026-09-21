@@ -101,3 +101,71 @@ unchanged at 3.
 
 Commits stay local per this cycle's fire instructions — the wrapper owns delivery to `origin/main` and logs
 the outcome. Not claiming delivered. End of entry.
+
+## SWEEP fire, ~17:00 PT
+
+Wrapper pre-synced; `git fetch` then `git rev-parse HEAD origin/main` both `c80469f9`, `git status --porcelain`
+empty. `git log --oneline 10316f68..HEAD` (my own MID-fire commit) showed Daedalus's Round 241 (mail `424112b1`
++ round `2920d6bc`), Argus's 9/20 WORK-fire sweep (`a96df5ba`), Theseus's Round 242 (mail `da07f185` + round
+`9d7b26f6`), and **Janus's mail addressed to this seat** (`72ff8db3`, priority high). `git diff --stat
+10316f68..HEAD -- packages scripts` -> 4 files, all under `scripts/`; nothing under `packages/`.
+
+**Janus's memo (roadmap klatch GO, read in full, acted on this fire):** xian's words, verbatim, "Roadmap klatch
+today if possible, tomorrow if not today, asap if not tomorrow." Plus: my 42-day ground-rules question is now in
+front of xian verbatim; the rollup-html-mirror call is handed to this seat.
+
+**What I did about the GO, and what I could not do.** The meeting is xian in his own running Klatch with his API
+key. A scheduled fire cannot hold it, so "schedule it" became "make it runnable today":
+`docs/operations/roadmap-klatch-runbook-2026-09-20.md` (steps, verified vs. not, failure modes). Read from code
+this fire: entity cap 5 (`entities.ts:30`); new channels default to Broadcast not Roundtable (`types.ts:127-132`);
+mode selectable at `ChannelSidebar.tsx:791` and `ChannelSettings.tsx:352`; `MAX_IMPORT_SIZE` 50 MB
+(`import.ts:21`); same-name disclosure + reassign picker present in `ImportDialog.tsx` (grep only, not driven).
+
+**A finding that changes my own earlier answer.** A plain `ls ~/.claude/projects` from a fire is refused (checked),
+so on 9/12 and 9/14 I said "ready now" on the mechanisms without ever looking at what each seat has to import. I
+ran Theseus's Round 242 probe myself (`npx tsx scripts/probe-round242-...mts`, exit 0, 10/10 instrument arms +
+2/2 world arms; output read from a file): 537 sessions, 24 multi-turn; each seat's worktree directory holds one
+session with depth (Daedalus 21 turns, Calliope 20, Argus 18, Iris 13, Theseus 12; 1.7-4.3 MB; last append 1.3 d
+ago) and otherwise single-turn duty-cycle fires. Mechanisms ready; content is one working session per seat, not a
+history. Did not read any transcripts. Told Janus and xian in the reply memo.
+
+**A mistake in the relay chain, and mine to own.** Janus wrote that my rollup had flagged the ground-rules
+question every fire. I nearly repeated that in my reply. Before I did, I grepped the rollup: the question appears
+only in two historical "answered 8/08" entries. It was never a live item on the board xian reads; it lived in my
+session logs as a label ("parked on xian, N days"), which is exactly how it lost. Fixed at the source: both it and
+the logbook-shape thread are now full-text 🟡 items (first two under Lower-urgency; 🟡 8->10, counted by
+`grep "^## \|^### "`, 10 headings between the 🟡 and 🔵 sections). Re-verified the logbook dates rather than carry
+8/27's: `git log -1 -- docs/STATE.md` -> 2026-06-22; newest date string in `log.html` -> 2026-06-23.
+Checking the code for the ground-rules item found the question has drifted from what I asked in August:
+`DISCLOSURE_NORM` (`carried-context.ts:120`) is one fixed string, there is no per-klatch surface, and "nothing not
+already known to the group" appears nowhere under `packages/{server,client,shared}/src` (grep). The live question
+is now "should one exist?" -- the roadmap klatch gives it a live case.
+
+**html mirror: decided, not passed to xian.** `attention-rollup.html` is a 406 KB hand-built render frozen at v67
+(2026-08-23); the `.md` is 890 KB at v145. A partial resync would look current and mix versions -- worse than
+plainly old. Added a "FROZEN MIRROR" banner at the top of the `.html`; did not delete it (retirement is a separate
+call). Iris can overrule and resync if she disagrees; the file is hers to render.
+
+**Rounds 241-242 swept (scripts-only).** Round 241 (Daedalus): corpus-pin class measured before building -- 8 of
+112 top-level scripts hold a UUID-shaped token, 1 names a real session; built `resolveSessionCast`, repaired
+`probe-import-entity-binding` (26/26 + 5/5); reported his own control E2 failing to fail. Round 242 (Theseus):
+518 of 535 sessions one turn; no byte band or turn threshold fixes arm A; remedy is minting; census arm found 124
+nested subagent transcripts (83 in-band), all refused by the product's three layers. Reproduced Round 242 myself
+(above; live corpus moved 535 -> 537, multi-turn 17 -> 24 in hours). Did not independently re-run Round 241's
+probes.
+
+**Verified myself, not trusted:** `npm test` fresh, output written to a worktree file and read directly (not
+piped) -- server **1952/1953 (123 files, 1 skipped)**, client **324/337 (13 skipped, 38 files)**, unchanged from
+MID; `npm run typecheck` clean across all three workspaces (0 "error" lines in the output).
+
+**Rollup refreshed to v145** (banner + prior-banner demotion + metrics strip + 🟡 note + changelog). Needs-you
+count unchanged at 3. Files touched: `docs/operations/roadmap-klatch-runbook-2026-09-20.md` (new),
+`docs/mail/calliope-to-janus-xian-cc-...-2026-09-20.md` (new), `docs/operations/attention-rollup.md`,
+`docs/operations/attention-rollup.html` (banner only), `docs/COORDINATION.md`, this log.
+
+**Routing.** Reply is to Janus (DinP), whose repo I cannot write into from this worktree (same accommodation as
+9/12-9/14); filed in Klatch `docs/mail/` and to be relayed by `SendMessage` to the live DinP peer if one is found
+by `ListAgents`. Mail thread not moved to `read/` -- roadmap klatch is still open on xian.
+
+Commits stay local per this cycle's fire instructions -- the wrapper owns delivery to `origin/main`. Not claiming
+delivered. End of entry.
