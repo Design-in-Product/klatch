@@ -250,8 +250,9 @@ function describeEmptySession(session: import('../import/parser.js').ParsedSessi
     // direction that gets a reader to stop trusting the number.
     return `This is a subagent transcript, not a session — ${i.sidechainEvents} of its ` +
       `${events} events are subagent sidechain, and none of the remainder is a conversation ` +
-      `message. Klatch imports subagent work as part of its parent session; import the session ` +
-      `file one directory up instead.`;
+      `message. Klatch imports subagent work as part of its parent session; import that instead — ` +
+      `it is the <session-id>.jsonl file, where <session-id> is the name of the folder that holds ` +
+      `this file's "subagents" folder, and it sits beside that folder rather than inside it.`;
   }
 
   if (i && i.conversationEvents === 0) {

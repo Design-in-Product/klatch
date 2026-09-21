@@ -84,6 +84,20 @@ describe('the empty-session 400 names its cause', () => {
     expect(error).toMatch(/parent session/i);
   });
 
+  it('points at where the parent session file actually is, not one level short of it', async () => {
+    // Layout, from the scanner (non-recursive over <project>/*.jsonl) and the parser docstring:
+    //   <project>/<session-id>.jsonl                        <- the importable parent
+    //   <project>/<session-id>/subagents/agent-<id>.jsonl   <- the file the reader picked
+    // "One directory up" from the picked file is <session-id>/, which holds no session file —
+    // the parent sits BESIDE that folder, two levels above the file. Iris, 2026-09-20 STOP fire:
+    // the first wording of this remedy sent the reader one level short, which is the same
+    // misdirection the round exists to remove.
+    const { error } = await importIt(app, write('subagent-pointer.jsonl', sidechainLines(2)));
+    expect(error).not.toMatch(/one directory up/i);
+    expect(error).toMatch(/<session-id>\.jsonl/);
+    expect(error).toMatch(/beside that folder/i);
+  });
+
   it('counts the sidechain events rather than asserting "all of them"', async () => {
     // 3 turns -> 6 sidechain events, plus one system event that is NOT sidechain. A message
     // claiming all 7 events were sidechain would be wrong, and wrong in the direction that
