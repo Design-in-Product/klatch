@@ -109,6 +109,19 @@ export interface ParsedTurn {
 export interface ImportIntegrity {
   eventCount: number;                          // raw JSONL events read
   conversationEvents: number;                  // survived isConversationEvent()
+  /**
+   * User/assistant events dropped solely because `isSidechain` was set — i.e. subagent
+   * conversation. Counted separately from {@link skippedContentBearing} because it is the one
+   * skip reason that accounts for an ENTIRE file: a
+   * `<project>/<session-uuid>/subagents/agent-<id>.jsonl` transcript is sidechain end to end.
+   *
+   * Theseus, Round 242 §4, walking `~/.claude/projects` recursively: 124 such files, 52.7 MB,
+   * 83 of them inside the size band probes select on, every one of them yielding zero
+   * conversation events. Importing one returned `400 Session is empty — no conversation events
+   * found` for a 583 KiB file that is visibly not empty. True, and it sent the reader nowhere.
+   * This count is what lets the 400 name the cause instead.
+   */
+  sidechainEvents: number;
   turnsEmitted: number;
   skippedLines: number;                        // malformed JSONL lines
   injectedUserEventsFiltered: number;          // user events rejected as non-human
@@ -669,6 +682,13 @@ export function parseEvents(events: unknown[]): ParsedSession {
   }
   const skippedContentBearingTotal = Object.values(skippedByType).reduce((a, b) => a + b, 0);
 
+  // Conversation-shaped events dropped only because they are subagent sidechain — see
+  // ImportIntegrity.sidechainEvents. `isSidechain` is the last test in isConversationEvent,
+  // so this is exactly "would have been a conversation event but for the sidechain flag".
+  const sidechainEvents = rawEvents.filter(
+    e => (e.type === 'user' || e.type === 'assistant') && !!e.message && e.isSidechain,
+  ).length;
+
   const artifactsByType: Record<string, number> = {};
   for (const turn of turns) {
     for (const a of turn.artifacts || []) {
@@ -709,6 +729,7 @@ export function parseEvents(events: unknown[]): ParsedSession {
     integrity: {
       eventCount: rawEvents.length,
       conversationEvents: conversationEvents.length,
+      sidechainEvents,
       turnsEmitted: turns.length,
       skippedLines: 0, // filled in by the file-reading layer, which owns the count
       injectedUserEventsFiltered,

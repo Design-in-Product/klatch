@@ -652,7 +652,14 @@ export async function scanClaudeCodeSessions(): Promise<ProjectSessions[]> {
       const projectPath = decodeProjectPath(entry.name);
       const projectName = path.basename(projectPath);
 
-      // Find all .jsonl files in this project directory (non-recursive — subagent dirs have their own)
+      // Find all .jsonl files in this project directory. Non-recursive, and the reason is not
+      // the one this comment used to give ("subagent dirs have their own"): they do not have
+      // their own sessions to offer. Measured 2026-09-20 (Theseus, Round 242 §4; re-derived
+      // independently in Round 243) — 124 nested `<session-uuid>/subagents/agent-*.jsonl` files,
+      // 52.7 MB, 83 of them large enough to look like real transcripts, and **all 124 yield zero
+      // conversation events** under the product's own parser, because every event in them carries
+      // `isSidechain`. Walking recursively would therefore put 124 unimportable rows in the
+      // browse list, each of which 400s on import. See describeEmptySession in routes/import.ts.
       let files: fs.Dirent[];
       try {
         files = fs.readdirSync(projectDir, { withFileTypes: true });

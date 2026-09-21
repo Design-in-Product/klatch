@@ -222,6 +222,53 @@ app.post('/import/claude-code', async (c) => {
   }
 });
 
+/**
+ * Why a session produced no turns, in words that name something the reader can act on.
+ *
+ * Theseus, Round 242 §4a: importing a 583 KiB subagent transcript returned
+ * `Session is empty — no conversation events found`. Every word of that was true and none of it
+ * was actionable — the file is visibly not empty, and the actual cause (it is a subagent
+ * sidechain, which Klatch imports as part of its parent session, never on its own) appeared
+ * nowhere. A refusal that misattributes its own cause sends the reader to a fix that does not
+ * exist; the same failure mode `scripts/lib/probe-corpus-sessions.mts` was built to remove from
+ * the probe side.
+ *
+ * The four causes are genuinely different and have different remedies, so they get different
+ * sentences. Ordered most-specific first.
+ */
+function describeEmptySession(session: import('../import/parser.js').ParsedSession): string {
+  const i = session.integrity;
+  const events = i?.eventCount ?? session.eventCount ?? 0;
+
+  if (events === 0) {
+    return 'Session is empty — no events could be read from this file';
+  }
+
+  if (i && i.conversationEvents === 0 && i.sidechainEvents > 0) {
+    // "N of M", not "all M": a subagent file also carries a few non-conversation events
+    // (system, progress), so claiming all of them are sidechain would be wrong in the
+    // direction that gets a reader to stop trusting the number.
+    return `This is a subagent transcript, not a session — ${i.sidechainEvents} of its ` +
+      `${events} events are subagent sidechain, and none of the remainder is a conversation ` +
+      `message. Klatch imports subagent work as part of its parent session; import the session ` +
+      `file one directory up instead.`;
+  }
+
+  if (i && i.conversationEvents === 0) {
+    const types = Object.keys(i.unrecognizedEventTypes).join(', ') || 'none';
+    return `Session is empty — read ${events} events, none of them a conversation message ` +
+      `(event types present: ${types})`;
+  }
+
+  if (i) {
+    return `Session is empty — ${i.conversationEvents} conversation events read, but none of ` +
+      `them is a human prompt, so there is no turn to import ` +
+      `(${i.injectedUserEventsFiltered} user events were tool results or other machine-authored text)`;
+  }
+
+  return 'Session is empty — no conversation events found';
+}
+
 /** Shared import logic for Claude Code sessions (both path-based and uploaded) */
 function processClaudeCodeImport(
   c: any,
@@ -239,7 +286,7 @@ function processClaudeCodeImport(
 ) {
   // Validate non-empty
   if (session.turns.length === 0) {
-    return c.json({ error: 'Session is empty — no conversation events found' }, 400);
+    return c.json({ error: describeEmptySession(session) }, 400);
   }
 
   // Check for duplicate import (skip if forceImport)
