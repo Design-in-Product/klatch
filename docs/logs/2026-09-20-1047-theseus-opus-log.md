@@ -297,3 +297,78 @@ transcript format and the import route's refusal, not about this repo. If either
 CHANGED on a later run, that is news about the subject — subagent transcripts carrying
 main-conversation events, or the route accepting an empty session — and the right response
 is to revisit `session-scanner.ts`'s deliberate non-recursive walk, not to repair the probe.
+
+---
+
+# STOP fire — Round 244 (2026-09-20, ~19:47–20:35 PT)
+
+**19:47 — Briefing.** Worktree synced by the wrapper. `docs/COORDINATION.md` Theseus Prime
+section read; `docs/mail/` swept. One new memo addressed to me since the WORK fire: Daedalus's
+`…-i-took-your-split-and-the-defect-is-unrepresentable-not-just-invisible-…` (Round 243). Read in
+full. His §8 leaves me three items; the one I have now carried open for two rounds running is
+**the 28 unexamined stale-in-code probes**. Took that as the fire's unit.
+
+**19:52 — Re-drove Round 240's sweep before quoting its population.** A stale number about stale
+probes is a specific kind of embarrassing. It came back **exit 1**, one red arm:
+
+```
+[I] FAIL  corpus-pin classifier separates found-ids from minted-ids (two-sided, on known cases)
+      probe-import-entity-binding … classified a corpus reader: false (want TRUE)
+```
+
+Round 240's own closing note says a world arm reading CHANGED is news about the subject. Followed
+that rather than repairing the probe.
+
+**19:58 — Cause established mechanically, not inferred.** `probe-import-entity-binding.mts` has
+**0 UUIDs** today (`git log` shows Daedalus's `2920d6bc`, Round 241, replaced the pins with
+resolution) and names `~/.claude/projects` only in prose — its corpus access is now in
+`./lib/probe-corpus-sessions.mts`, imported at line 99. My sweep enumerates `scripts/` with a
+**one-level** `readdirSync`; `scripts/lib/` is a directory and is never descended into.
+
+**20:05 — Built `scripts/probe-round244-…-the-libs-are-outside-it.mts`.** 7 arms. Two genuine
+defects in it, both found by driving, neither by reading: an unterminated template literal
+(esbuild, line 359 — opened a backtick, closed with a single quote) and a `TS2345` on a `never[]`
+inference. Both fixed; strict standalone typecheck then 0 errors.
+
+**20:12 — First run green on 4 hard checks, and its GONE list was wrong.** Arm E reported **9
+GONE product paths**. Verified before reporting: `git log --all` gives **0 commits ever** for all
+nine — minted sentinels from `verify-tsx-guard.mjs` and Round 240's own arm B negative fixture.
+Third instance of the "expects to find vs mints" shape, and I wrote this one after writing the
+rule. Rebuilt arm E on `everCommitted && !exists`, added arm E2 (two-sided discriminator control)
+and arm E3 (the class's size in all of history).
+
+**20:20 — Second run: 5 hard checks green, 5 measurements.** Headline figures:
+`one-level 112, recursive 125, below horizon 13`; `0 GONE + 9 FIXTURE`; deletions of
+`packages/**/*.ts(x)` in all history **0**, renames **0**; corpus readers `24/112 → 25/125 →
+28/125`; pins `0 non-synthetic, 0 below horizon, 0 dead`.
+
+**20:26 — Capability runs.** Four mutants, dot-prefixed so they fall outside both denominators.
+Each produced **exactly one red arm, the right one**: flat `walkRecursive` → [A]; imports not
+followed → [B]; `everCommitted` always true → [E2]; always false → [E2]. **The finding is in the
+last two: arm E passes under both while its headline swings 9↔0.** My own arm asserts the split
+was performed, not that it is right. Left standing and labelled. All 4 mutants deleted; 0
+remaining verified by `readdirSync`.
+
+**20:31 — Controls.** Server **124 files · 1964 passed · 1 skipped**; client **38 files · 324
+passed · 13 skipped**; `npm test` into a file, not a pipe. Daedalus's Round 243 §7 read 1963 —
+**verified the +1 rather than waving it off**: `git diff --stat 6d078cec..HEAD` shows Iris's
+`c94f370a` adding 14 lines to `round243-the-empty-session-400-names-its-cause.test.ts`. Typecheck
+0 errors ×3 workspaces. `git status --porcelain packages/` empty. Ports 3001/5173 quiet by
+connect-probe, no server spawned. Repo `klatch.db` 2 channels / 0 `probe-seed%` / 2 entities /
+0 `Minted%`. Corpus 539 sessions. **0 model calls.**
+
+**Decisions taken, both declining an edit for the same reason:**
+
+- **Did not repair Round 240's sweep.** Its arm I is red and stays red. It is a filed round
+  artifact whose figures are cited in COORDINATION; editing what it measures trips my own Round
+  238 rule. Round 244 re-derives in a new instrument so both sets still reproduce. The red is
+  expected and explained; the repair is designed, evidenced and routed.
+- **Declined Daedalus's §8 offer** to hoist `mint-transcript.mts` into my Round 242 probe, using
+  his own argument back.
+
+**Open at close:** the 33 stale-in-code files still need **driving** — this fire graded the
+population and ruled out the gone-subject class, it drove none of them (third round open, stated
+plainly). Round 240's sweep red until its repair is routed. Mine, unchanged: arm O's noise band;
+arm O cannot run on the real corpus (cap bites 0/540). Parked on xian, unchanged:
+`440fe16b-46f8-4fbb-9b0d-3285c425aa37`; `files/storage.ts:38`; the backfill dry run;
+`DELETE /entities/:id`. Gate: refused from this seat again.
