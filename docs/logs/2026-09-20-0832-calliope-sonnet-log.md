@@ -169,3 +169,51 @@ by `ListAgents`. Mail thread not moved to `read/` -- roadmap klatch is still ope
 
 Commits stay local per this cycle's fire instructions -- the wrapper owns delivery to `origin/main`. Not claiming
 delivered. End of entry.
+
+## STOP fire, ~21:30 PT
+
+Wrapper pre-synced; `git fetch` then `git rev-parse HEAD origin/main` both `4ae73df8`, tree clean.
+`git log --oneline 2fd64b64..HEAD` (my own SWEEP commit) -> 11 commits, none mine: Daedalus's Round 243
+(`43c1c0f2`/`a6545363`/`b3d20c2a`/mail `8c0301de`/`6d078cec`/wrap `9f3217ff`), Argus's STOP sweep
+(`c2ccdac6`), Iris's STOP fire (`c94f370a`), Theseus's Round 244 (mail `fd3259fc`, round `7c7dfdc0`, wrap
+`4ae73df8`). `git diff --stat` shows 18 files; **`packages/server/src` changed this time** (parser.ts,
+session-scanner.ts, routes/import.ts + a new test) — read the diff itself: `describeEmptySession` and an
+`integrity.sidechainEvents` count, i.e. one error string, not a behaviour change.
+
+Mail: three new memos, none addressed to this seat (all cc'd), read in full — Daedalus R243, Iris's
+subagent-400 memo, Theseus R244. Nothing `xian-to-*`; the two `janus-to-calliope` memos are the roadmap-klatch
+GO (answered in the SWEEP fire, thread open on xian holding the meeting) and logbook-shape (parked on xian).
+No action owed by this seat from any of the three; no reply memo filed — a cc'd ack would be noise.
+
+**Independent checks (each from a tool call this fire):**
+- Iris's reworded 400 claims the parent `<session-id>.jsonl` sits *beside* the `<session-id>` folder; her memo
+  says she did not look at a real pair. `node` directory walk of `~/.claude/projects`, existence only, no
+  contents: 108 `<uuid>/subagents/*.jsonl` files, 108 with the parent beside, 0 inside. Her sentence is right
+  on this corpus. (Theseus's count was 124 hours earlier; the corpus churns and our walks may differ — labelled,
+  not reconciled.)
+- Theseus's 112/125/13: `node` walk of `scripts/` -> 125 total, 112 top level, 13 below, all in `scripts/lib`.
+  Matches.
+- `npm test` to a file (not piped): server **1964 passed / 1 skipped (124 files)**, client **324 passed / 13
+  skipped (38 files)**; `npm run typecheck` clean across three workspaces. Matches Iris's and Theseus's figures.
+  Temp output files were inside the worktree (a redirect to `/tmp` is refused here); deleted after reading,
+  `git status --porcelain` clean before editing docs.
+
+**A mistake of my own, caught by checking before I wrote it.** My first draft of the v146 header said this was
+the "first round since v141 to touch `packages/`". Before keeping it I ran `git log -- packages/server/src`:
+Rounds 237 and 239 both changed product code (`4f5cebae`, `42c72306` — `session-scanner.ts` +71). So my own v144
+changelog line calling Round 239 "scripts-only" was wrong, and the draft repeated the error. Fixed in the
+rollup (header note + v146 change-log line) and in COORDINATION; dropped the "first since" claim entirely
+rather than re-deriving it.
+
+**Rollup v146 written** (`docs/operations/attention-rollup.md`): header, v146 banner, v145 demoted to prior,
+metrics-strip 🟡 note (still 10), change-log line. Needs-you 3, unchanged — none of R243/R244/Iris asks anything
+of xian; Theseus's Round 240 sweep repair is routed Daedalus-or-Theseus.
+
+**Question-box check (STOP procedure item 4), considered:** one candidate, not filed — with the roadmap klatch
+GO'd, "when the five seats sit in one room, what are you hoping a conversation can carry that a memo can't?"
+Curiosity, not task-unblocking, so it has the right shape. The canonical location is `dispatch/mail/`, which is
+outside this worktree, so I could not file it from this fire and am not claiming I did. Noted here for a fire or
+seat that can reach it.
+
+Commits stay local per this fire's instructions — the wrapper owns delivery. Wrap verification (CLAUDE.md
+Session Wrap Protocol) follows after commit.
