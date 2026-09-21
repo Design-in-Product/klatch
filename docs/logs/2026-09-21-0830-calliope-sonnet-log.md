@@ -47,3 +47,37 @@ fileable from here — canonical location `dispatch/mail/` is outside this workt
 
 Commits stay local per this fire's instructions — the wrapper owns delivery. Not claiming delivered. Wrap
 verification (CLAUDE.md Session Wrap Protocol) follows after commit.
+
+## MID fire
+
+Rollup v146 -> v147 (`docs/operations/attention-rollup.md`), needs-you 3 and 🟡 10 unchanged. Pre-synced by the wrapper:
+`HEAD == origin/main == 9dc3a22a`, tree clean. `git log ad2383c4..HEAD` (my START commit) = Argus's START sweep, Daedalus's
+Round 245 (`c5ced60d`, `38e7e1fc`, `88844c54`, `edd84e07`), Theseus's Round 246 (`883f3094`, `9dc3a22a`); none mine.
+
+**Mail:** `ls docs/mail | grep '^xian-to'` empty. Nothing new addressed to this seat. Read in full: Daedalus's Round 245
+memo and Theseus's Round 246 memo (both cc'd, no reply owed). **Not read:** Argus's memo to Iris (my read of it failed on a
+shell error and I did not retry) — the 12/12 and 124 figures in the rollup come from the opening of Argus's own
+COORDINATION entry, which I did read, and are labelled as hers. `git diff --name-status ad2383c4..HEAD -- docs/briefs` empty, no new brief.
+
+**Verified this fire, output to scratch files in the worktree (not `/tmp`, not piped), removed after reading:** server
+126 files · 1989 passed · 1 skipped; client 38 files (25 passed · 13 skipped) · 324 passed · 13 skipped; 0 lines starting
+`FAIL`/`×`; typecheck 0 `error TS` and no npm error lines (I did not read the exit code directly — the command was refused
+when I chained an `echo $?`, so I inferred it from the output; labelled that way in the rollup). Round 245: `node` walk of
+`scripts/lib` = 13 files; ran `npx tsx scripts/probe-round245-the-shared-lib-coverage-floor.mts` -> covered 7 / 13, uncovered
+6, "All 3 regression checks passed". Round 246: `tsc --listFiles -p packages/server/tsconfig.json` lists exactly two
+`scripts/` files (`probe-corpus-sessions.mts`, `mint-transcript.mts`); `scripts/` walk = 127 code files, 84 `.mts`. Both match
+the memos. `git diff --name-only ad2383c4..HEAD -- packages/` non-test files: the two tsconfigs only, diff read.
+
+**Not re-run, stated so in the rollup:** Daedalus's byte-identical-build sha256 and 17+4 mutation tables; Theseus's
+33/33/49 and 21/126 instrument; Argus's 12/12 corpus walk.
+
+**A slip of mine, caught before commit:** my first draft of the rollup said Argus's sweep "moved Iris's subagent-400 memo to
+`read/`". `git log --name-status ad2383c4..HEAD -- docs/mail/read` shows Daedalus's `38e7e1fc` added it there, and Argus's own
+memo was filed directly into `read/`. Corrected in the rollup and the COORDINATION entry. Also checked, rather than assert,
+that the four parked-on-xian items I list each have their own rollup entry (grep hits at 510, 525, and the needs-you section).
+
+**Standing, day counts unchanged from START:** ground rules 43 days (no `xian-to-*` reply), logbook shape 24 days (Janus's),
+html mirror frozen-banner in place, roadmap klatch — no evidence in the repo either way whether it has been held; not asserted.
+
+Files touched: `docs/operations/attention-rollup.md`, `docs/COORDINATION.md`, this log. Commit local; the wrapper owns
+delivery — not claiming delivered.
