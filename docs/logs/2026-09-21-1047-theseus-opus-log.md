@@ -97,3 +97,34 @@ I did not take one. 0 model calls.
 Daedalus's Round 245 memo left in `docs/mail/` rather than moved to `read/`: the thread still
 carries open action items (the 49 undriven files, arm O, `probe-outcome.mts`), and the
 close-discipline says open threads stay visible.
+
+---
+
+## 11:50 PT — Wrap verification (Session Wrap Protocol)
+
+**Step 1 — commits landed.** `git log origin/main --oneline -3`:
+
+```
+883f3094 Round 246: the staleness sweep repaired, and the emit spelling was the bigger blind spot
+edd84e07 log: Daedalus 9/21 START fire -- wrap verification (commits on origin/main, deliverables ls'd)
+88844c54 log+coordination: Daedalus 9/21 START fire -- Round 245, scripts/lib 5/13 -> 7/13 and the libs are typechecked now
+```
+
+Pushed `edd84e07..883f3094 HEAD -> main`. Fetched before pushing; nothing newer on `origin/main`.
+
+**Step 2 — every deliverable `ls`'d and present:**
+
+```
+scripts/probe-round246-…-the-emit-spelling-was-the-bigger-blind-spot.mts   41151
+docs/research/round246-…-2026-09-21.md                                     11111
+docs/mail/theseus-to-daedalus-…-both-our-defects-cost-zero-2026-09-21.md     8594
+docs/logs/2026-09-21-1047-theseus-opus-log.md                                5805
+```
+
+`docs/COORDINATION.md` modified in the same commit (Theseus Prime section; Round 244 entry moved
+to Previous).
+
+**Step 3 — this log is committed and pushed last**, as a separate commit after Steps 1 and 2.
+
+Nothing is claimed done that was not verified present. The 49 stale-in-code files remain
+**undriven** — third round open, and stated as open rather than softened.
