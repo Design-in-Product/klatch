@@ -43,12 +43,50 @@
  * (`docs/ux/import-confirm-step-scope-2026-08-09.md`). Arms D/E stay failing
  * until the claude.ai ZIP path gets entity plumbing it does not currently have.
  *
+ * ## 2026-09-20, Daedalus (Round 243) — rows are minted, identity is resolved
+ *
+ * Theseus drove the repaired version in Round 242 and measured the thing the
+ * repair did not touch: **518 of 535 real sessions on this machine are exactly
+ * one turn**, so arm A's per-message fanout check was running over **one
+ * assistant row**. He then injected the defect arm A is worded to catch —
+ * `entity_id` set on the first assistant row and dropped on every later one —
+ * and arm A **passed on the broken data**. At seven turns the same SQL fails
+ * correctly.
+ *
+ * Measured again here, on this file's own real cast rather than on minted
+ * stand-ins (Round 243 capability run 2): the injection nulls **zero rows** on
+ * all five resolved channels, because there is no second row to null. On the
+ * real cast the defect is not merely invisible — it is unrepresentable.
+ *
+ * No size band fixes that, and the reason is a counting result rather than a
+ * tuning one: 17 multi-turn sessions across 14 directories, only 3 of which
+ * hold two — a turns-aware resolver needing five directories refuses forever on
+ * the one machine this probe runs on. His rule, which belongs here:
+ *
+ * > A resolver with zero headroom is a pin with extra steps. Selection-by-property
+ * > only buys something when more candidates qualify than the cast needs.
+ *
+ * So the split he proposed, taken here:
+ *
+ * - claims about **identity** — independent authorship, distinct real names, one
+ *   entity per source — stay on the resolved real cast, where one turn is plenty;
+ * - claims about **rows** move to **minted N-turn fixtures**
+ *   (`scripts/lib/mint-transcript.mts`), where the population is chosen, printed,
+ *   and large enough for a fanout defect to be visible.
+ *
+ * Arm A's real-cast row check is kept — it is the only one that runs over the
+ * real import path — but it now **prints the row count it inspected**, because a
+ * check whose power is invisible reads exactly like one that has power.
+ *
  * Arms:
  *   A  five real sessions, one per named agent, each POSTed WITH entityName
  *   B  a second Argus session POSTed with the same entityName (reuse-by-name)
  *   C  a session POSTed with NO entity fields — this is the shape the shipped
  *      client actually sends (`importClaudeCodeSession` in client/src/api/client.ts)
  *   D  claude.ai ZIP import — the other real import path
+ *   E  does the claude.ai route accept an entity at all
+ *   F  minted 1-turn and N-turn transcripts — the row-level claims, at a
+ *      population where a fanout defect is not invisible
  */
 
 import { Hono } from 'hono';
@@ -59,6 +97,7 @@ import {
   describeResolution,
   refuseWithCorpusDiagnosis,
 } from './lib/probe-corpus-sessions.mts';
+import { mintTranscript } from './lib/mint-transcript.mts';
 
 const REPO = path.resolve(import.meta.dirname, '..');
 
@@ -187,7 +226,15 @@ for (const c of CAST) {
   const wrong = db.prepare(
     "SELECT COUNT(*) n FROM messages WHERE channel_id = ? AND role = 'assistant' AND (entity_id IS NULL OR entity_id != ?)"
   ).get(b.channelId, b.entityId) as { n: number };
-  check('A', `${c.agent} assistant messages carry its entity_id`, wrong.n === 0, `mismatched assistant rows=${wrong.n}`);
+  // The row count is printed, not just the mismatch count. Round 242 measured this
+  // population at one row for 518 of 535 real sessions, which makes "0 mismatched"
+  // nearly content-free here; arm F supplies the power, and this line is what tells
+  // a reader which of the two they are looking at.
+  const rows = db.prepare(
+    "SELECT COUNT(*) n FROM messages WHERE channel_id = ? AND role = 'assistant'"
+  ).get(b.channelId) as { n: number };
+  check('A', `${c.agent} assistant messages carry its entity_id`, wrong.n === 0,
+    `mismatched assistant rows=${wrong.n} of ${rows.n} inspected${rows.n < 2 ? ' — one row: a fanout defect is invisible here, see arm F' : ''}`);
 }
 
 // ── Arm B: a second session for the same confirmed name ───────────────
@@ -253,6 +300,55 @@ for (const c of CAST) {
   check('E', 'claude.ai route SILENTLY IGNORES entityName (no error, no binding)',
     res.status === 201 && !minted && bindings.every((b) => b === DEFAULT_ENTITY_ID),
     `status=${res.status} mintedPiperCXO=${minted} bindings=[${[...new Set(bindings)].join(',')}] entityCount ${before} -> ${q.getAllEntities().length}`);
+}
+
+// ── Arm F: the row-level claims, at a population that can fail ────────
+//
+// Minted, not resolved. Arm A's cast is real because it must be — independent authorship
+// and distinct real names are properties of the world. Row counts are not: they are
+// properties of a file, and a file with 7 turns in it costs 6 KiB. Round 242 arm F showed
+// arm A's fanout SQL passing on injected-broken data at one turn and failing correctly at
+// seven, so this arm runs the same SQL at both and asserts the population itself.
+{
+  const MINTED = [
+    { name: 'MintedSolo', turns: 1 },
+    { name: 'MintedFanout', turns: 7 },
+  ] as const;
+
+  const got: Record<string, { channelId: string; entityId: string; rows: number; mismatched: number }> = {};
+
+  for (const m of MINTED) {
+    // Minted under SCRATCH (.testdata/, gitignored). mintTranscript throws rather than
+    // writes if a caller ever aims this at ~/.claude/projects.
+    const t = mintTranscript({ id: `r243-${m.name.toLowerCase()}`, turns: m.turns, dir: SCRATCH, project: m.name });
+    const res = await post('/api/import/claude-code', { sessionPath: t.path, entityName: m.name });
+    const body = await res.json();
+    check('F', `${m.name} (${m.turns}-turn, ${(t.sizeBytes / 1024).toFixed(1)} KiB) imported and minted its entity`,
+      res.status === 201 && body.entityDisposition === 'minted' && !!body.entityId && body.entityId !== DEFAULT_ENTITY_ID,
+      `status=${res.status} msgs=${body.messageCount ?? '-'} disposition=${body.entityDisposition ?? 'NONE'}`);
+    if (!body.channelId || !body.entityId) continue;
+    const rows = (db.prepare("SELECT COUNT(*) n FROM messages WHERE channel_id = ? AND role = 'assistant'")
+      .get(body.channelId) as { n: number }).n;
+    const mismatched = (db.prepare(
+      "SELECT COUNT(*) n FROM messages WHERE channel_id = ? AND role = 'assistant' AND (entity_id IS NULL OR entity_id != ?)"
+    ).get(body.channelId, body.entityId) as { n: number }).n;
+    got[m.name] = { channelId: body.channelId, entityId: body.entityId, rows, mismatched };
+    check('F', `${m.name} assistant rows scale with turns, not bytes`, rows === m.turns,
+      `${m.turns}-turn transcript -> ${rows} assistant rows`);
+    check('F', `${m.name} every assistant row carries its entity_id`, mismatched === 0,
+      `mismatched=${mismatched} of ${rows}`);
+  }
+
+  // The vacuity guard, stated as an arm rather than left to the reader of the numbers
+  // above. If the fanout channel ever collapses to one row — a parser change, a mint
+  // regression, an import that drops rows — the checks above would all still pass while
+  // measuring nothing, which is precisely the state Round 242 found this probe in.
+  const fanoutRows = got.MintedFanout?.rows ?? 0;
+  const armARows = (db.prepare("SELECT COUNT(*) n FROM messages WHERE channel_id = ? AND role = 'assistant'")
+    .get(armA[CAST[0].agent]?.channelId) as { n: number } | undefined)?.n ?? '?';
+  check('F', 'the fanout arm is non-vacuous (more than one assistant row to disagree)',
+    fanoutRows > 1,
+    `MintedFanout assistant rows=${fanoutRows} (need >1; arm A's real cast runs at ${armARows} for ${CAST[0].agent})`);
 }
 
 // ── Summary ───────────────────────────────────────────────────────────
