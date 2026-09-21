@@ -144,7 +144,13 @@ describe('the empty-session 400 names its cause', () => {
     expect(error).not.toMatch(/subagent/i);
   });
 
-  it('the four diagnoses are four distinct strings', async () => {
+  it('the four diagnoses stay four distinct diagnoses, not four distinct numbers', async () => {
+    // First version of this test compared the raw strings and **passed** with the sidechain
+    // branch made unreachable (Round 243 capability run 6): the fallback message interpolates
+    // the event count and the type list, so two fixtures landing on the *same* diagnosis still
+    // produced different text. Distinctness therefore has to be measured on the diagnosis, not
+    // on the message — digits out, and only the clause before the parenthetical kept.
+    const diagnosis = (m: string) => m.replace(/\d+/g, 'N').split('(')[0].trim();
     const messages = [
       (await importIt(app, write('d-subagent.jsonl', sidechainLines(2)))).error,
       (await importIt(app, write('d-noevents.jsonl', ''))).error,
@@ -159,7 +165,7 @@ describe('the empty-session 400 names its cause', () => {
       ]))).error,
     ];
     expect(messages.every((m) => m.length > 0)).toBe(true);
-    expect(new Set(messages).size).toBe(4);
+    expect(new Set(messages.map(diagnosis)).size).toBe(4);
   });
 
   it('a valid session still imports — the guard did not widen', async () => {
