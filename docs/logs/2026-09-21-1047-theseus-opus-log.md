@@ -235,15 +235,15 @@ The clean baseline finished **exit 1**. `Round 223 — 110/111 checks · 35 meas
 ```
 
 The arm asserts `migrated.length === DAEDALUS_ROUND_222_COUNT + R223_FOLDED_IN.length` — that is,
-`=== 23`. There are 28. **It is a hardcoded total, and eight lines below it the same file has
+`=== 23`. There are 28. **It is a hardcoded total, and eighteen lines ABOVE it (:141 vs :159) the same file has
 always carried the comment saying why hardcoded totals are wrong:**
 
 > *"A hardcoded total would have to be edited every round, which is how a check becomes a thing
 > people update to match rather than a thing that tells them something."*
 
 Daedalus's Round 247 §4 rule — *a lesson learned in one arm is not learned in the file* — with the
-sharpest instance yet: it was not learned in **the comment block that states it**, eight lines
-away.
+sharpest instance yet: it was not learned in **the comment block that states it**, eighteen lines
+above.
 
 **Dated from git rather than inferred.** Listed every importer with its adding commit, sorted:
 the 24th is `probe-round227-arm-o-on-a-corpus-where-the-cap-fires.mts`, added **2026-09-17** at
@@ -326,3 +326,140 @@ copy.
 **Confirmed working after the fixes:** truncation fires on all three conditions, 3001 stays free
 throughout (asserted, and separately spot-checked by hand), and the routed defect reproduces
 cleanly — **guard ON: 28 members · guard OFF: 29**.
+
+## 16:10 PT — Round 248 probe green
+
+`npx tsx scripts/probe-round248-…mts` → **All 17 regression checks passed**, exit 0.
+
+Headline results, quoted from the run:
+
+```
+[A] guard ON: 28 members · guard OFF: 29 members            <- routed defect, driven
+[A] guard ON + non-dot copy: 29 (vs 28 dot-prefixed)        <- filters the PREFIX, not the file
+[A] every condition truly truncated at the marker: true/true/true
+[B] canonical SELF — original: 128 · verbatim dot-copy: 128  <- the repair
+[B] runtime SELF — verbatim dot-copy: 129 vs 128             <- THE FINDING, driven
+[C] 12 self-excluding enumerators; 0 still on import.meta.url (after both repairs)
+[D] original: All 4 passed · verbatim copy: All 4 passed · verdicts identical
+[E] 28 migrated on disk vs the pinned 23
+[E] the 24th importer is probe-round227-… (2026-09-17, 8946cae3) — red since then
+[Z] sha256 31fbf3911874 → 31fbf3911874 · 0e02ceaad977 → 0e02ceaad977  (restores verified)
+[Z] 0 files matching r248- remain · packages/ unchanged · 3001 refused at exit
+```
+
+Arm B's absolute figures read 128/129 rather than 127/128 because `probe-round248` itself now
+exists in `scripts/` — the population it measures legitimately includes it. The **delta** is the
+claim, and the delta is +1 either way.
+
+Mail committed and pushed to `main` as its own commit (`4a86ad6e`), per the worktree mail
+discipline — not held for the rest of the branch.
+
+## 16:15 PT — The decisive control is running
+
+`probe-round223` full re-run after the repair, to establish that it is actually **green** now
+rather than merely "repaired". This is the claim I refuse to make from the diff: the pre-repair
+baseline was exit 1, so "the pin is fixed" is only worth what a full green run says.
+
+Process tree captured while it runs, which incidentally confirms the §5(1) diagnosis:
+
+```
+/bin/zsh -c … npx tsx scripts/probe-round223-…
+  npm exec tsx scripts/probe-round223-…
+    node …/node_modules/.bin/tsx scripts/probe-round223-…
+      node --require …/tsx/dist/preflight.cjs … scripts/probe-round223-…
+```
+
+**Four processes deep.** `child.kill()` on the `npx` handle could never have reached the probe.
+
+## 16:35 PT — A claim of mine was wrong in three documents; corrected
+
+I wrote that `probe-round223`'s hardcoded pin sat **"eight lines below"** the comment condemning
+hardcoded totals, and repeated it in the research doc, the memo (already pushed), COORDINATION.md,
+two probe comments and this log — without ever checking it.
+
+Checked it with `git show HEAD:scripts/probe-round223-…`:
+
+```
+COMMENT  line 141: // … A hardcoded total would have to be edited every round,
+PIN DECL line 159: const DAEDALUS_ROUND_222_COUNT = 21;
+PIN ARM  line 161: check('A', 'the population is every importer on disk, …')
+```
+
+**Eighteen lines ABOVE, not eight below** — wrong distance and wrong direction. Corrected in all
+six places, and called out explicitly in the memo rather than quietly patched, since the memo was
+already on `main`.
+
+The substance is untouched: the comment and the pin are in the same file, in the same arm, and the
+arm contradicts the comment. But the figure was decoration I never verified, in a round whose whole
+subject is unverified numbers. Exactly the trap CLAUDE.md names — *"a fact you're sure of, a
+question that seems too small to check."*
+
+Also removed a line-count reference from inside `probe-round223`'s own new comment ("written
+eighteen lines above" → "further up this same arm"). A line number embedded in a comment is a pin
+that goes stale on the next edit, which is the defect this round repaired.
+
+## 16:40 PT — Controls, all taken this fire
+
+**The decisive one — `probe-round223` re-run in full after the repair:**
+
+```
+Round 223 — 111/111 checks · 36 measurements · 5 open · 0 failed        exit 0
+PASS [A] the population never shrinks below the set already established — a floor, not a pin
+         — 28 subjects on disk · floor 23 · 31 importers including 3 controls
+MEAS [A] 5 probe(s) have adopted the shared module since Round 223 (23 → 28)
+PASS [A] the readdirSync walk and git agree — 81 walked · 81 known to git · walk-only [] · git-only []
+```
+
+Baseline was **exit 1**; repaired is **exit 0**. I ran the full 15 minutes rather than inferring
+green from the diff. The walk-vs-git line is a free bonus control: `probe-round248` is on disk and
+is **not** in the population it measures, so the concatenation fix holds in the live run.
+
+**Suite,** `npm test` into a file, not a pipe:
+
+```
+server   127 files · 2004 passed · 1 skipped
+client    38 files (25 passed, 13 skipped) · 324 passed · 13 skipped
+```
+
+**Identical to Daedalus's Round 247 §6.** Expected — this round adds a probe, not a test — and
+checked rather than assumed.
+
+**Other controls:** `npm run typecheck` **0 `error TS`**; standalone strict `tsc` over all three
+touched files **0 errors** (output file 0 bytes, `wc -c`'d rather than eyeballed). Both
+in-place-mutated files sha256-identical to where the probe found them. `packages/` untouched. 3001
+quiet at every checkpoint and at exit. All staged copies counted out by `readdirSync`. **0 model
+calls**; no read of `~/.claude/projects`.
+
+## 16:55 PT — Confirming re-run after the comment edits
+
+The green `probe-round223` run and the 17/17 probe run both predated my comment corrections, so
+I verified rather than assumed that nothing executable moved. Mechanical check first — strip
+comment lines from both repaired files and diff against `HEAD`:
+
+```
+probe-round223:  -const SELF = path.basename(fileURLToPath(import.meta.url));
+                 +const SELF = 'probe-round223-twenty-one-probes-against-a-stranger.mts';
+                 -…filter((f) => f.endsWith('.mts')).sort();
+                 +…filter((f) => f.endsWith('.mts') && !f.startsWith('.')).sort();
+                 -migrated.length === DAEDALUS_ROUND_222_COUNT + R223_FOLDED_IN.length,
+                 +migrated.length >= R223_ESTABLISHED_FLOOR,   (+ the new MEAS)
+probe-round246:  -const SELF = path.basename(fileURLToPath(import.meta.url));
+                 +const SELF = 'probe-round246-…-blind-spot.mts';
+```
+
+Exactly the three intended repairs and nothing else. Then re-ran the probe anyway:
+**All 17 regression checks passed**, exit 0; `probe-round223` sha `cdf900f5e15a → cdf900f5e15a`,
+`probe-round246` `0e02ceaad977 → 0e02ceaad977`, 0 staged copies remaining, 3001 refused at exit.
+
+**A false alarm worth recording, because it is this round's own subject pointed at me.** Polling
+`git status` while the run was in arm B3, I saw `probe-round246` in state `MM` with a staged copy
+on disk, and read it as a **failed restore** — I was one step from hand-reverting a file that was
+mid-experiment. It was the in-place mutation working exactly as designed; the run finished seconds
+later and restored it, sha-verified.
+
+> **Rule: a worktree observed mid-run is not evidence about a harness's cleanup. An applied
+> mutation and a failed restore are byte-identical from outside; only the run's own exit and its
+> sha comparison can tell them apart — so read the result, not the tree.**
+
+Had I "fixed" it by hand I would have corrupted a green run and then reported the corruption as a
+finding.

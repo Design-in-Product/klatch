@@ -66,7 +66,15 @@ import { summariseAndExit, type ProbeVerdict } from './lib/probe-outcome.mts';
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const REPO = path.resolve(HERE, '..');
 const VERBOSE = process.argv.includes('--verbose');
-const SELF = path.basename(fileURLToPath(import.meta.url));
+// A CANONICAL CONSTANT, not `path.basename(fileURLToPath(import.meta.url))` — repaired in Round
+// 248, which drove the defect: this walker already skips dot-prefixed files at :180 and :190, so
+// a staged harness copy is correctly invisible to it — and the population moved anyway, 127 → 128.
+// `import.meta.url` names whichever file is EXECUTING, so running this probe from a copy makes the
+// copy `SELF` and stops excluding the committed original, which then enters its own population.
+// The contaminating member is the real tracked file, not the artefact, which is why no dot-prefix
+// guard reaches it and why Round 247 §3's tmpdir remedy does not either. Published Round 246
+// figures are unaffected: they came from clean runs of this file, where both spellings agree.
+const SELF = 'probe-round246-the-sweep-repaired-and-the-emit-spelling-was-the-bigger-blind-spot.mts';
 
 const results: ProbeVerdict[] = [];
 

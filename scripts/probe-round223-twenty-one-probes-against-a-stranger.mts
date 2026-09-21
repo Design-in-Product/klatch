@@ -129,11 +129,22 @@ function classify(file: string): Probe | null {
 // sweep's "graded nothing" check for that entry was correct to go red. An instrument that counts
 // itself is not a small tidiness problem: it inflates the population being verified by one, and
 // the extra member is the one member that cannot be a finding.
-const SELF = path.basename(fileURLToPath(import.meta.url));
+// A CANONICAL CONSTANT, not `path.basename(fileURLToPath(import.meta.url))` — repaired in Round
+// 248, whose arm B drove the reason. `import.meta.url` names whichever file is EXECUTING, so
+// running this probe from a copy makes the copy `SELF` and silently re-admits the committed
+// original to its own population. The contaminating member is then the real, tracked file, which
+// no dot-prefix guard can exclude. The mechanism for the fix was already in this file: the line
+// below has been excluding its two sibling controls by hardcoded name since it was written.
+const SELF = 'probe-round223-twenty-one-probes-against-a-stranger.mts';
 // The round controls — this file and Round 222's — are instruments, not subjects. Excluded by name
 // before classification rather than filtered out of the results afterwards.
 const CONTROLS = new Set([SELF, 'probe-round222-port-ownership-hoist.mts', 'probe-round223b-db-existence-is-not-identity.mts']);
-const allMts = fs.readdirSync(SCRIPTS).filter((f) => f.endsWith('.mts')).sort();
+// `!f.startsWith('.')` — the spelling `probe-round240:123` has used since it was written, and the
+// site Daedalus's Round 247 §3 sweep found unguarded and routed here rather than editing. Without
+// it, a mutation harness staging a dot-prefixed working copy inside `scripts/` enrols that copy in
+// this population and this probe DRIVES it against the stranger: a 29th subject that is not a
+// probe, whose red would be attributed to a file nobody wrote.
+const allMts = fs.readdirSync(SCRIPTS).filter((f) => f.endsWith('.mts') && !f.startsWith('.')).sort();
 const importers = allMts.map(classify).filter((p): p is Probe => p !== null);
 const migrated = importers.filter((p) => !CONTROLS.has(p.file));
 
@@ -158,10 +169,27 @@ check('A', 'the sweep is not in its own population',
 
 const DAEDALUS_ROUND_222_COUNT = 21;
 const R223_FOLDED_IN = ['probe-round217-multipart-guard-live-http.mts', 'probe-round219-files-cap-live-http.mts'];
-check('A', 'the population is every importer on disk, not a number carried from a memo',
-  migrated.length === DAEDALUS_ROUND_222_COUNT + R223_FOLDED_IN.length,
-  `${migrated.length} subjects = Daedalus's ${DAEDALUS_ROUND_222_COUNT} (reproduced) + ${R223_FOLDED_IN.length} folded in this round ` +
+const R223_ESTABLISHED_FLOOR = DAEDALUS_ROUND_222_COUNT + R223_FOLDED_IN.length;
+// A FLOOR, not an equality — repaired in Round 248. The reason is written further up this same
+// arm, in the comment this file has carried since it was written: *"A hardcoded total would
+// have to be edited every round, which is how a check becomes a thing people update to match
+// rather than a thing that tells them something."* The original of this arm was that hardcoded
+// total. It asserted `=== 23`, went red the moment the 24th probe adopted the shared module
+// (`probe-round227`, 2026-09-17, 8946cae3), and stayed red for four days unnoticed, because this
+// probe is not in `npm test` and costs ~15 minutes to run.
+//
+// The property worth asserting is not "how many" — that number must grow every time a probe is
+// migrated, and an arm that has to be edited to stay green is not telling anyone anything. It is
+// that the population NEVER SHRINKS below what has been established, which is the thing a silent
+// regression in the hoist would actually break. The count itself is demoted to the measurement it
+// always was.
+check('A', 'the population never shrinks below the set already established — a floor, not a pin',
+  migrated.length >= R223_ESTABLISHED_FLOOR,
+  `${migrated.length} subjects on disk · floor ${R223_ESTABLISHED_FLOOR} = Daedalus's ${DAEDALUS_ROUND_222_COUNT} (reproduced) + ${R223_FOLDED_IN.length} folded in at Round 223 ` +
   `· ${importers.length} importers on disk including ${CONTROLS.size} controls`);
+measure('A', 'how far the population has grown past the Round 223 floor',
+  `${migrated.length - R223_ESTABLISHED_FLOOR} probe(s) have adopted the shared module since Round 223 was written ` +
+  `(${R223_ESTABLISHED_FLOOR} → ${migrated.length}). Every one of them is driven below, so growth costs run time, not coverage.`);
 check('A', 'the two this round folded in are in the population being driven',
   R223_FOLDED_IN.every((f) => migrated.some((p) => p.file === f)),
   R223_FOLDED_IN.map((f) => `${f.replace(/^probe-|\.mts$/g, '')}: ${migrated.find((p) => p.file === f)?.category ?? 'ABSENT'}`).join(' · '));
