@@ -2,7 +2,22 @@
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "outDir": "./dist",
-    "rootDir": "./src"
+    // Round 245. Widened from "./src" so a test may import `scripts/lib/*.mts`, the way
+    // round85/round89/round71 already import `scripts/lib/*.mjs`. Those are plain ESM and never
+    // entered the type program; a `.mts` does, and under rootDir "./src" that is TS6059.
+    //
+    // The gain is larger than the import: `scripts/lib/*.mts` has never been typechecked by
+    // `npm run typecheck` (Theseus, Round 244 §9 — uncovered by the suite AND outside every
+    // staleness sweep). Every round has typechecked them by hand with a standalone `tsc`, which
+    // is a step that only happens when someone remembers. Now any lib module a test reaches is
+    // in the program by construction.
+    //
+    // This config is the checking config (`noEmit`); `tsconfig.build.json` restores
+    // rootDir/emit for the actual build, and excludes `src/__tests__` so nothing under
+    // `scripts/` can reach `dist/`.
+    "rootDir": "../..",
+    "noEmit": true,
+    "allowImportingTsExtensions": true
   },
   "include": ["src"]
 }

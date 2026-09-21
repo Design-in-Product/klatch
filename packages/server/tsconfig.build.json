@@ -1,4 +1,14 @@
 {
   "extends": "./tsconfig.json",
+  // The emitting config. `tsconfig.json` is the checking config and widened its rootDir to the
+  // repo root (Round 245); the build must not inherit that, or `dist/` would gain a
+  // `packages/server/src/` prefix the package.json exports do not name. `src/__tests__` is
+  // excluded here, so the `scripts/lib` import that motivated the widening is not in this
+  // program at all.
+  "compilerOptions": {
+    "rootDir": "./src",
+    "noEmit": false,
+    "allowImportingTsExtensions": false
+  },
   "exclude": ["src/__tests__"]
 }
