@@ -300,3 +300,135 @@ Modified files in `2920d6bc`: `docs/COORDINATION.md`,
 **Step 3 —** this log entry is committed and pushed last, after Steps 1 and 2.
 
 Nothing is claimed as delivered here: the wrapper owns delivery and logs the outcome.
+
+---
+
+## STOP fire (17:17 PT) — Round 243
+
+**17:17 — Briefing.** Worktree synced to `origin/main` at `2fd64b64`, `git status`
+clean, branch `claude/daedalus-cycle` level with `origin/main`. `ls docs/mail/`:
+one new memo addressed to me,
+`theseus-to-daedalus-…-no-band-fixes-arm-a-and-my-census-arm-found-124-invisible-transcripts-2026-09-20.md`
+(Round 242). Read in full. It routes three things to this seat: §3's arm A remedy
+(*"yours if you want it, mine next fire otherwise"*) and both §4a product-side
+items (*"product code is your seat"*). Took all three. Also read Calliope's and
+Janus's 17:17 memos — cc'd, not addressed to me, no action owed.
+
+**17:19 — Priced by reading his probe, not his memo.** Read
+`probe-round242-…mts` arms C/E/F and the `mintSession` helper in it. The reusable
+half is ~45 lines and wants to be a lib, since `probe-corpus-sessions.mts` already
+established that shape in Round 241.
+
+**17:20 — Built `scripts/lib/mint-transcript.mts`.** `mintTranscript({ id, turns,
+dir })`. Two things it does that his inline version did not: the corpus **write
+guard throws** (his arm G checked afterwards, which is too late for an instrument
+that mutates its subject), and timestamps are zero-padded to 3 so a 100+ turn
+mint cannot silently reorder under the parser's flat timestamp sort.
+
+**17:21 — Arm F, and arm A's population printed.** Drove unmodified first:
+behaviour **33/33**, gaps **5/5 still open**. 1-turn → 1 assistant row, 7-turn →
+7, at 0.8 / 5.9 KiB.
+
+**17:22 — CORRECTION TO MYSELF, procedural.** Ran `git checkout --` on the probe
+to revert a capability mutation and took my *uncommitted Round 243 edits* with it.
+Rebuilt them from context and re-drove to the identical 33/33 before continuing.
+The rule I should have been following, and did for the rest of the fire: **commit
+the clean state before mutating it**, then revert. A shared stash stack makes
+`git stash` the wrong tool here, and `checkout --` cannot distinguish my mutation
+from my work.
+
+**17:24 — THE FINDING: on the real cast the defect is unrepresentable.** Theseus
+demonstrated his injection on minted stand-ins. Ran it on this probe's own
+resolved five instead: `nulling 0` on every one of them, all five [A] checks pass.
+There is no assistant row after the first, so the fanout defect cannot be
+expressed against the real cast at all — stronger than "underpowered". Arm A's
+check now prints `mismatched assistant rows=0 of 1 inspected`.
+
+**17:25 — Capability runs on arm F.** (1) fanout injection on the minted channels:
+`MintedFanout mismatched=6 of 7` red, `MintedSolo` green on the same injection.
+(2) `MintedFanout` 7 turns → 1: **only** the non-vacuity arm goes red, every other
+arm F check green on nothing — exactly the state the guard exists to name.
+(3) The write guard, five evasion shapes including `..` traversal and trailing
+slash: all five threw, corpus root entries 18 → 18, allowed `.testdata/` case
+still mints 1674 bytes.
+
+**17:28 — Verified his census before acting on it.** `readdirSync` walk (not a
+glob): **124 nested, 52.7 MB, 83 in the 150–600 KiB band** — his figures exactly.
+Then all 124 through the product's own parser:
+`zeroConversationEvents=124 withConversationEvents=0 zeroTurns=124
+sidechainEventsSummed=7484`. His arm H holds at full population.
+
+**17:30 — Product, §4a.** Added `integrity.sidechainEvents` (conversation-shaped
+events dropped *solely* for `isSidechain`) and `describeEmptySession`: four causes,
+four remedies, four sentences. Rewrote `session-scanner.ts:655`'s comment, whose
+stated reason does not survive checking, with the measured one. Both driven at the
+wire against his actual 583 KiB in-band file before I believed the text.
+
+**17:32 — A defect driving found in my own test.** Capability run: sidechain branch
+made unreachable → 3 of 11 red, and `the four diagnoses are four distinct strings`
+**passed**. The fallback message interpolates the event count and type list, so two
+fixtures landing on the *same* diagnosis still rendered different text; the test
+was measuring four distinct **numbers**. Normalized (digits out, parenthetical
+dropped), re-driven on the same mutation: 4 of 11 red. Committed as its own commit
+with that reasoning, because the repair is the interesting part.
+Also ran the blunt mutation — old single string restored: **7 of 11 red**, and the
+4 survivors are the three parser counters plus the "valid session still imports"
+control, which correctly do not depend on the message.
+
+**Controls.** Server **124 files · 1963 passed · 1 skipped**; client **38 files ·
+324 passed · 13 skipped**. `npm test` into a file, never piped — the server delta
+from Theseus's 123/1952/1 is exactly this round's new file and its 11 tests.
+`npm run typecheck` 0 errors ×3 workspaces; strict standalone typecheck of
+`scripts/lib/mint-transcript.mts` 0 errors. `git status --porcelain packages/`
+empty. Repo `klatch.db` (this worktree): 1 channel, 0 `probe-seed%` channels, 0
+`Minted%` entities. Ports 3001/5173 quiet by connect-probe; no server spawned.
+**0 model calls.** Corpus read **538 at ~17:20 and 535 at ~17:34 within this one
+fire** — the head-growth/tail-sweep churn; labelled by run, not reconciled.
+
+**Filed.** `docs/research/round243-the-fanout-defect-is-unrepresentable-on-the-real-cast-2026-09-20.md`
+and a reply memo to Theseus, cc xian/Janus/Argus/Calliope/Iris. The inbound thread
+stays in `docs/mail/` — it has open items routed back to Theseus (the lib-adoption
+offer, his 28 stale-in-code probes, arm O) — so it is not closed and not moved to
+`read/`.
+
+**Open, carried:** `scripts/lib/*.mts` is now **two** modules with no `npm test`
+coverage, both driven only by probes — mine, growing, not done. Theseus's 28
+stale-in-code probes and arm O items untouched by me. Parked on xian, unchanged:
+`440fe16b-46f8-4fbb-9b0d-3285c425aa37`; `files/storage.ts:38`; the backfill dry
+run; `DELETE /entities/:id`.
+
+Nothing is claimed as delivered here: the wrapper owns delivery and logs the
+outcome. Session-wrap verification follows below.
+
+### STOP fire — session wrap verification (Round 243)
+
+**Step 1 — commits on `origin/main`** (`git fetch origin && git log origin/main --oneline -6`):
+
+```
+6d078cec Round 243: coordination + writeup -- the fanout defect is unrepresentable on the real cast
+8c0301de mail: Daedalus -> Theseus, Round 243 -- I took your split and the defect is unrepresentable, not just invisible
+b3d20c2a Round 243: the distinctness test measured distinct numbers, not distinct diagnoses
+a6545363 Round 243: the empty-session 400 names its cause, and the scanner comment gives the real reason
+43c1c0f2 Round 243: arm A's row claims are minted, its identity claims stay resolved
+2fd64b64 runbook+mail+rollup+coordination+log: Calliope 9/20 SWEEP fire (rollup v145)
+```
+
+Mail pushed to `main` in its own commit (`8c0301de`), per the worktree mail-delivery rule.
+
+**Step 2 — deliverables present on `origin/main`** (`git ls-tree -r --name-only origin/main`):
+
+```
+scripts/lib/mint-transcript.mts
+packages/server/src/__tests__/round243-the-empty-session-400-names-its-cause.test.ts
+docs/research/round243-the-fanout-defect-is-unrepresentable-on-the-real-cast-2026-09-20.md
+docs/mail/daedalus-to-theseus-…-i-took-your-split-and-the-defect-is-unrepresentable-not-just-invisible-2026-09-20.md
+```
+
+Modified across the round (`git diff --stat 2fd64b64 origin/main`): `docs/COORDINATION.md`,
+`packages/server/src/import/parser.ts`, `packages/server/src/import/session-scanner.ts`,
+`packages/server/src/routes/import.ts`, `scripts/probe-import-entity-binding.mts` —
+602 insertions, 4 deletions across 7 files plus this log.
+
+**Step 3 —** this log entry is committed and pushed last, after Steps 1 and 2.
+
+Nothing is claimed as delivered here: the wrapper owns delivery and logs the outcome.
