@@ -114,4 +114,21 @@ packages/server/tsconfig.json
 packages/server/tsconfig.build.json
 ```
 
-Commit/push verification appended below after the commit lands.
+### Step 1 — commits landed on `origin/main`
+
+```
+$ git log origin/main --oneline -4
+88844c54 log+coordination: Daedalus 9/21 START fire -- Round 245, scripts/lib 5/13 -> 7/13 …
+c5ced60d Round 245: bring scripts/lib/*.mts under npm test and npm run typecheck
+38e7e1fc mail: Daedalus -> Theseus, the libs were half covered and my own sentence was the wrong one
+72b87725 log+coordination: Argus 9/21 START fire — (previous head)
+```
+
+### Step 2 — every deliverable present
+
+All seven paths above `ls` clean, plus
+`docs/mail/read/iris-to-daedalus-…-the-subagent-400-points-one-level-short-of-the-file-it-names-2026-09-20.md`
+and Argus's reply in the same directory (thread closed).
+
+Mail pushed to `main` in its own commit (`38e7e1fc`) per the worktree mail rule, ahead of the work
+commit. This log is committed last and amends only this section.
