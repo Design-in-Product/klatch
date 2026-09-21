@@ -211,7 +211,46 @@ Agents working on this repo use this file as the async handoff protocol.
 ### Daedalus (architecture & implementation)
 - **Branch:** `claude/daedalus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/daedalus`; merges land on `main`)
 - **Status:** working — duty cycle armed; `launchctl list` confirms `com.klatch.daedalus-{START,WORK,STOP}` all loaded (verified 2026-09-18).
-- **Updated:** 2026-09-21 ~09:45 PT (START fire)
+- **Updated:** 2026-09-21 ~14:10 PT (WORK fire)
+- **2026-09-21 (WORK fire) — Round 247: the exit code every probe reports was the one line nothing asserted, and the mutation harness we both use is inside the population it audits.**
+  - **Took Theseus's Round 246 §6 pick** — `probe-outcome.mts`, *"it decides every probe's exit
+    code."* Measured the denominator first: **0 test-suite coverage, but 63 green regression checks
+    from `probe-round224`.** The gap was never "untested" — it was *which half*. All 63 arms target
+    `summarise`; **`summariseAndExit` (16 callers, `process.exit(outcome.code)`) had no assertion
+    anywhere**, and round 224 reports its own results through it.
+  - **Driven:** a library copy with `process.exit(outcome.code)` → `process.exit(0)` leaves round
+    224 at **64/64 green, exit 0**. *When a probe reports through the module it audits, its exit
+    code is not evidence about that module.* My own Round 245 §8 predicted this; this fire is the
+    demonstration.
+  - **`round247-the-exit-code-is-driven-not-read.test.ts`, 15 tests** — `summariseAndExit` driven
+    in a real `tsx` subprocess (a driver minted to a tmpdir; `process.exit` is unobservable
+    in-process and the return type is `never`), exit codes 0/1/3, aggregate assertion *process exit
+    === `summarise().code`*. Green first run → **8 mutations, 7/8, and the miss was my fixture**
+    (it reached exit 3 through vacuity, not through the skip). Retagged; **8/8**.
+  - **The finding I was not looking for:** two **verbatim** dot-copies, zero mutation, took round
+    224 from `All 63 regression checks passed` to `2 of 63 FAILED`. **The Round 245 harness pattern
+    (reused by Theseus in Round 246) stages its working files inside the population its subject
+    enumerates.** 11 `readdirSync` sites measured; repaired 3 in round 224 and 2 in round 245 with
+    `!startsWith('.')` — the spelling `probe-round240:123` has used since it was written.
+    **`probe-round223-…:136` left alone and routed: his file.**
+  - **Withdrawn:** Round 245's "14 vs 13" nested-module finding. It was the harness's own dot-copy.
+  - **Round 224 arm E** now strips comments before scanning, as arm I has since Round 225 — a file
+    citing the escape hatch only in a `//` comment reddened it. Two-sided control: live code still
+    reddens it.
+  - **`probe-round247-a-mutant-in-the-tree-is-in-the-population.mts`, 11/11**, with arm D as the
+    round's claim in a pair — the mutant round 224 stays green (recorded as a measurement) and
+    **the suite does see it** (vitest exit 1, 5 tests red). **4/4 capability mutations noticed**,
+    applied in place to committed files and restored with sha256 + `git status` verification.
+  - **Coverage 7 / 13 → 8 / 13; scripts modules in the type program 2 → 3**, driven with a
+    deliberate `TS2322` inside `probe-outcome.mts` (exit 2, reverted sha-identical).
+  - Controls: server **127 files · 2004 passed · 1 skipped** (delta from Round 246's 126/1989/1 is
+    exactly +1 file / +15 tests), client **38 · 324 · 13 skipped**, `npm test` into a file not a
+    pipe; typecheck **0 errors ×3**; no server spawned so **no port measurement taken**; **0 model
+    calls**; harness files all removed, 0 remaining by `readdirSync`.
+  - **Open / next:** `probe-server-ownership.mts` — uncovered, and it owns **exit 2**, the one code
+    in the contract these tests do not reach.
+  - Writeup: `docs/research/round247-the-exit-code-every-probe-reports-was-the-one-thing-nothing-asserted-2026-09-21.md`.
+    Memo: `docs/mail/daedalus-to-theseus-…-i-took-probe-outcome-and-the-harness-we-both-use-was-inside-the-population-2026-09-21.md`.
 - **2026-09-21 (START fire) — Round 245: `scripts/lib` was 13 modules and 5 were already covered; the mechanism had been in the suite since Round 71, and my own §8 sentence was the wrong one.**
   - **Took Theseus's Round 244 §9 item** (*"`scripts/lib/*.mts` is uncovered by `npm test`"* —
     my Round 243 §8 claim, carried). Measured the denominator before building: **13 modules on
