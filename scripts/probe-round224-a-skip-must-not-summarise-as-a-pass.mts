@@ -153,15 +153,32 @@ const meas = (arm: string): ProbeVerdict => ({ arm, check: 'a measurement', pass
     inapplicable: ['[G] no instance in this corpus'],
   });
   check('E', 'one real skip alongside an inapplicable still forces 3', both.code === 3, `code ${both.code}`);
+  // Round 247: two repairs to this scan, both found by driving it rather than reading it.
+  //
+  //   1. `!n.startsWith('.')` — a dot-prefixed mutant copy is a mutation harness's working file,
+  //      not a caller. Without this, every harness that stages a copy under `scripts/` perturbs
+  //      the population this arm measures, and the arm reddens on file presence alone. Prior art
+  //      and the same spelling: `probe-round240-…:123`.
+  //   2. comment-stripping — arm I below learned in Round 225 that a citation is not a call, and
+  //      this arm, in the same file, never got the lesson. Driven 2026-09-21: a file whose only
+  //      occurrence of the hatch is inside a `//` comment reddened this check. Any memo-adjacent
+  //      probe that merely NAMES the hatch would have been reported as using it.
+  const namesTheHatch = (src: string) => src
+    .split('\n')
+    .filter((l) => !/^\s*(\/\/|\*|\/\*)/.test(l))
+    .some((l) => /inapplicable:/.test(l));
   check('E', 'and no current caller uses inapplicable — asserted, not assumed',
     (() => {
       const callers = fs.readdirSync(path.join(REPO, 'scripts'))
-        .filter((n) => n.endsWith('.mts') || n.endsWith('.mjs'))
+        .filter((n) => (n.endsWith('.mts') || n.endsWith('.mjs')) && !n.startsWith('.'))
         .filter((n) => n !== `${PROBE}.mts`)
-        .filter((n) => /inapplicable:/.test(fs.readFileSync(path.join(REPO, 'scripts', n), 'utf8')));
+        .filter((n) => namesTheHatch(fs.readFileSync(path.join(REPO, 'scripts', n), 'utf8')));
       return callers.length === 0;
     })(),
     'zero probes pass inapplicable; the hatch is documented and unused (2026-09-17)');
+  check('E', 'and that scan is not vacuous — it still sees the live call in this file',
+    namesTheHatch(fs.readFileSync(path.join(REPO, 'scripts', `${PROBE}.mts`), 'utf8')),
+    'this probe passes the hatch on line ~153 in live code, and the comment-stripped scan finds it');
 }
 
 // ── Arm H — a skipped OPEN-ITEM arm must not redden the exit ──────────────────
@@ -285,8 +302,10 @@ function oldTurncountTail(rs: ProbeVerdict[]): { code: number; line: string } {
       `import present: ${/probe-outcome\.mts/.test(src)}`);
   }
 
-  // The population statement, from readdirSync — never a glob.
-  const all = fs.readdirSync(path.join(REPO, 'scripts')).filter((n) => n.endsWith('.mts') || n.endsWith('.mjs'));
+  // The population statement, from readdirSync — never a glob. Dot-prefixed files are excluded
+  // (Round 247): they are mutation-harness working copies, not members of the population.
+  const all = fs.readdirSync(path.join(REPO, 'scripts'))
+    .filter((n) => (n.endsWith('.mts') || n.endsWith('.mjs')) && !n.startsWith('.'));
   const stillHandRolled = all
     .filter((n) => n !== `${PROBE}.mts`)
     .filter((n) => {
@@ -370,8 +389,12 @@ function oldTurncountTail(rs: ProbeVerdict[]): { code: number; line: string } {
   // purpose. A scan that cannot tell a citation from a call would have had the next reader
   // "fixing" a comment. Comment lines are stripped, and this file is named as the one place
   // the old patterns legitimately appear as code.
+  // Round 247 adds the other half of the same lesson: a dot-prefixed copy of THIS file is a
+  // harness artefact, and the name-based exemption below cannot see it. Driven 2026-09-21 — two
+  // verbatim dot-copies, zero mutation, and this arm plus arm E went red on file presence alone.
   const isComment = (l: string) => /^\s*(\/\/|\*|\/\*)/.test(l);
-  const all = fs.readdirSync(path.join(REPO, 'scripts')).filter((n) => n.endsWith('.mts') || n.endsWith('.mjs'));
+  const all = fs.readdirSync(path.join(REPO, 'scripts'))
+    .filter((n) => (n.endsWith('.mts') || n.endsWith('.mjs')) && !n.startsWith('.'));
   const blindIn = (n: string) => fs.readFileSync(path.join(REPO, 'scripts', n), 'utf8')
     .split('\n').filter((l) => !isComment(l)).filter((l) => /match\(\/.*=\s*\(\\d\+\)/.test(l));
   const stillBlind = all.filter((n) => n !== `${PROBE}.mts`).filter((n) => blindIn(n).length > 0);

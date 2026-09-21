@@ -49,12 +49,15 @@ const LIB_DIR = join(ROOT, 'scripts', 'lib');
 /**
  * Modules reachable from `npm test` as of Round 245 (2026-09-21), measured by this probe.
  * Add to this list when you add coverage; never remove from it to make a run go green.
+ *
+ * Round 247 added `probe-outcome.mts` — 8 / 13.
  */
 const COVERED_FLOOR = [
   'marker-floor.mjs',
   'mint-transcript.mts',
   'opaque-container.mjs',
   'probe-corpus-sessions.mts',
+  'probe-outcome.mts',
   'recall-call-kind.mjs',
   'recall-recogniser.mjs',
   'recall-tap.mjs',
@@ -63,6 +66,10 @@ const COVERED_FLOOR = [
 function walk(dir: string, out: string[] = []): string[] {
   for (const e of readdirSync(dir, { withFileTypes: true })) {
     if (e.name === 'node_modules' || e.name === 'dist' || e.name === '.git') continue;
+    // Round 247: a dot-prefixed file under `scripts/lib` is a mutation harness's working copy,
+    // not a module. This probe's own Round 245 capability run reddened arm B at "14 vs 13"
+    // against exactly such a file, and read it as a nested-module finding.
+    if (e.name.startsWith('.')) continue;
     const p = join(dir, e.name);
     if (e.isDirectory()) walk(p, out);
     else out.push(p);
@@ -167,7 +174,8 @@ if (lost.length) console.log(`[A] LOST coverage: ${lost.join(', ')}`);
 // [B] The walk's own depth. A one-level walk of scripts/lib would still find every module today —
 // the directory is flat — so this arm states the flatness rather than assuming it, and will notice
 // the day someone nests one. Without it, arm A's denominator is "whatever the walk reached".
-const oneLevel = readdirSync(LIB_DIR, { withFileTypes: true }).filter((e) => e.isFile()).length;
+const oneLevel = readdirSync(LIB_DIR, { withFileTypes: true })
+  .filter((e) => e.isFile() && !e.name.startsWith('.')).length;
 results.push({
   arm: 'B',
   check: `the recursive walk and a one-level read agree (${libFiles.length} vs ${oneLevel}) — scripts/lib is flat today`,
