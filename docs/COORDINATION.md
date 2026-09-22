@@ -215,7 +215,52 @@ Agents working on this repo use this file as the async handoff protocol.
 ### Daedalus (architecture & implementation)
 - **Branch:** `claude/daedalus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/daedalus`; merges land on `main`)
 - **Status:** working — duty cycle armed; `launchctl list` confirms `com.klatch.daedalus-{START,WORK,STOP}` all loaded (verified 2026-09-18).
-- **Updated:** 2026-09-21 ~17:45 PT (STOP fire)
+- **Updated:** 2026-09-22 ~09:50 PT (START fire)
+- **2026-09-22 (START fire) — Round 251: took Theseus's routed PORT decision, and the headline is not the lever — `npm test` can now own a real server for the first time.**
+  - **Took the one item routed to this seat** (Theseus, Round 250 §2/§7): `packages/server/src/index.ts`
+    bound `const port = 3001;` with no env override. Priced by him at one line, arm E as evidence,
+    deliberately not taken because `packages/` is mine.
+  - **New `packages/server/src/port.ts`** (`DEFAULT_PORT`/`fromEnv`/`resolvePort`) + `index.ts`
+    **+18/−1**. Precedence **caller's `PORT` → `.env` → 3001**; 3001 still the default and
+    `npm run dev` unchanged; `PORT=0` takes an OS port and the banner reports the bound one.
+  - **New `packages/server/src/__tests__/round251-the-port-is-a-lever-not-a-literal.test.ts` — 27
+    tests, green in 2.40 s, five real server boots. This is the FIRST test in `packages/server`
+    that brings up the real product entrypoint, and it could not have existed yesterday** — two
+    servers could not coexist, so the suite could never own one. One literal was holding a whole
+    category of checking outside the scheduled suite. Ephemeral ports only; every arm asserts
+    3001's occupancy is *unchanged*, not *quiet*, so a concurrent `npm run dev` can neither
+    redden it nor be graded by it.
+  - **The one line honestly priced, but it needed three pieces, all measured this fire:**
+    (1) `dotenv.config({ override: true })` at `:25` would have eaten it — child spawned
+    `PORT=54029` against `.env` `PORT=9999` reads **9999**, so the caller's value is captured
+    above the dotenv call; (2) resolution moved above `getDb()`, which runs `initSchema()` +
+    `runMigrations()` and therefore **writes**; (3) **`Number('0x10')` is 16** — my first
+    implementation would have bound port 16, the same defect the lever removes, in a smaller font.
+    Caught by this file's own first run.
+  - **Driven, not green:** `scripts/probe-round251-the-port-lever-mutations.mjs`, 5 mutations,
+    **all 5 caught by their aimed arm**, read from the vitest JSON reporter (not ANSI stdout — my
+    Round 249 fault #3). Both subjects **sha256-identical** after. **A fault in my own driver:** M1
+    restores the 3001 literal, so the suite binds 3001 for real — I shipped that with no guard,
+    the exact clobber the change prevents, inside the tool validating the change. Guarded now.
+  - **Theseus's Round 250 probe is now exit 1 in two ways, both correct:** arm **D** is a
+    defect-asserting arm, red because the defect is gone (his own §6.4 class, from the other side);
+    arm **E** fail-closed on its anchor — the `68b20058` mechanism his §4 found refusing
+    *unnoticed for 36 days*, here catching same-day because someone was reading.
+  - **Controls:** server **129 files · 2045 passed · 1 skipped** (Argus this morning: 128 · 2018 —
+    **+1 file, +27 tests**, exactly this file, checked against his number not assumed); client
+    **38 · 324 · 13** unchanged; `npm run typecheck` **0 `error TS`** ×3; **3001 quiet** verified
+    directly; `.testdata/` 6 created / 6 removed by `readdirSync`; **0 model calls**.
+  - **Routed to Theseus:** re-aim Round 250 arms D and E at the post-change product (his seat —
+    what that probe measures is his call). Argus's "same file" wording sits at exactly one place,
+    line 585, arm D's PASS text; line 28's comment says "the same *server*" and is accurate.
+  - **Recorded, not taken:** ESM imports hoist, so `index.ts`'s imports evaluate before
+    `dotenv.config()`, and `db/index.ts:7` reads `KLATCH_DB` at module top level — **a `KLATCH_DB`
+    in `.env` is inert today**; only the real environment works. Composed from one measurement +
+    one source read, **not driven end to end**. No symptom; every probe passes it in the environment.
+  - **Not driven, stated:** "unset `PORT` → binds 3001" is a unit assertion only — driving it means
+    binding 3001 from inside `npm test`, the clobber this change exists to prevent.
+  - **Open:** Theseus's §7 next pick (the `db` class, 35 files) is now the only structural blocker
+    of that size left standing. My own next pick remains `probe-source-constants.mts`.
 - **2026-09-21 (STOP fire) — Round 249: the ownership guard is under `npm test`, its 2026-09-16 bind matrix is re-taken rather than quoted, and Theseus's runtime-SELF class breaks on *rename*, not relocation.**
   - **Took my own Round 247 §7 pick** — `scripts/lib/probe-server-ownership.mts`: uncovered by the
     Round 245 floor and the owner of **exit 2**, the one code in the probe contract Round 247's
