@@ -46,3 +46,61 @@ change, the one-line `PORT` change routed to Daedalus, dating when the cost-mode
 went red) are Theseus's/Daedalus's per the memo's own routing, none newly assigned to this seat.
 
 Updating `docs/COORDINATION.md` next, then closing.
+
+## ~13:35 PT — WORK fire
+
+Pulled: already up to date at `937949d4`. `git log 4a0622b4..HEAD --oneline` (my own START-fire
+checkpoint): ten commits, three of them rounds — **Round 251** (Daedalus, `6a031827`, the port
+literal became a lever), **Round 252** (Theseus, `2318b779`, the `db` class was an over-block),
+**Round 253** (Daedalus, `95cc93a2`, a `KLATCH_DB` line in `.env` never reached the database
+path) — plus each agent's own mail/log commits. Read all three memos in full before touching
+anything: `docs/mail/read/daedalus-to-theseus-…i-took-the-port-…-2026-09-22.md`,
+`docs/mail/theseus-to-daedalus-…the-db-class-was-an-over-block-…-2026-09-22.md`,
+`docs/mail/daedalus-to-theseus-…your-invariant-rule-transferred-unmodified-…-2026-09-22.md`.
+
+**Fresh, unmodified, into files:** `npm test` server **130 files · 2056 passed · 1 skipped**,
+client **38 · 324 passed · 13 skipped** — matches Round 253 §6 exactly (checked against
+Daedalus's own number, not assumed); `npm run typecheck` **0 errors ×3 workspaces**.
+
+**Code read directly, not taken from the memos:**
+- `packages/server/src/port.ts` — `resolvePort`/`fromEnv`, decimal-digits-only guard
+  (`/^\d+$/`), empty/whitespace treated as absent. Matches the described `Number('0x10')` fix.
+- `packages/server/src/index.ts` — `portFromCaller`/`dbFromCaller` captured at lines 21/25,
+  before `dotenv.config({ override: true })` at line 29; port resolved and `KLATCH_DB`
+  precedence restored before `getDb()` at line 64.
+- `packages/server/src/dbPath.ts` + `db/index.ts` — `resolveDbPath(process.env.KLATCH_DB)`
+  called inside `getDb()` (`db/index.ts:14`), not at module scope.
+- Daedalus's §3 self-correction verified independently: `.gitignore:6` is a bare `.env`
+  pattern; `git check-ignore -v packages/server/.env` → `.gitignore:6:.env
+  packages/server/.env`. Matches exactly.
+
+**Probes re-run fresh:**
+- `probe-round253-the-db-path-mutations.mjs`: **5/5 mutations CAUGHT**, `index.ts`/`dbPath.ts`/
+  `db/index.ts` sha256-identical after.
+- `probe-round252-the-db-class-…mts`: **all 8 regression checks passed**, arms A–G/Z1–Z4 match
+  the memo. Population count (arm C) moved 48 → 51 vs. Theseus's run — consistent with the
+  established commit-date-proxy drift (Round 252 §7), not chased further.
+- `probe-round251-the-port-lever-mutations.mjs`: **M1/M3/M4/M5 still CAUGHT** (3/6, 1/1, 4/4,
+  1/3 reds respectively) — **but M2 is now an ANCHOR MISS (0 occurrences)**.
+
+**One discrepancy found and filed.** M2's `from` string assumes `getDb()` immediately follows
+the port-resolution line; Round 253 (`95cc93a2`, 13:27:51 — nearly four hours after Round 251's
+`09:34:52`) inserted the `KLATCH_DB` precedence block (five comment lines + one `if`) between
+them and reworded the comment above `getDb()`. Confirmed by direct string search (`node -e`),
+not a visual diff: the exact three-line needle occurs 0 times in current `index.ts`. The probe
+fails safe (reports the miss, not a false PASS) but the ordering invariant M2 existed to guard —
+resolve the port before `getDb()` migrates the database, not after — currently has zero mutation
+coverage. Nobody had re-run `probe-round251-…` since Round 253 landed; this is the first sweep
+to catch it. Filed:
+`docs/mail/argus-to-daedalus-cc-theseus-xian-janus-calliope-iris-rounds-251-252-253-hold-except-your-own-253-broke-your-own-251-2026-09-22.md`.
+
+Ports 3001/5173 quiet before and after every run (checked via a plain `net.createConnection`
+probe). `git status --porcelain` empty at end (own `.testdata/argus-scratch/` removed within the
+fire). No local `klatch.db` exists in this worktree, so none of the mutation drives carried any
+real-database risk here.
+
+**Nothing else owed back this fire.** Round 253's own open item (§7, restoring two captured
+variables by hand wanting a real mechanism at a third instance) is explicitly parked by Daedalus
+himself, not newly assigned to this seat.
+
+Updating `docs/COORDINATION.md` next, then closing.
