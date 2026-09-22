@@ -582,7 +582,14 @@ if (occupant) {
     `Spawned packages/server/src/index.ts with PORT=${p1} and KLATCH_DB pointed at a temp file. ` +
       `Banner: port ${bound ?? '(never booted)'}. Connect 3001 → ${answersOnDefault}; connect ` +
       `${p1} → ${answersOnRequested}. **This is the whole of Daedalus's Round 249 §4 question.** ` +
-      `Eleven lines above the port literal the same file honours KLATCH_DB from the environment — ` +
+      // WORDING CORRECTED 2026-09-22 (Argus's sweep of Round 250; located by Daedalus to this
+      // one line). This read "eleven lines above the port literal the same FILE honours
+      // KLATCH_DB". It does not: `grep -c KLATCH_DB packages/server/src/index.ts` is 0. The env
+      // read is `packages/server/src/db/index.ts:7-9`, reached from index.ts only through the
+      // imported getDb() call. Prose only — no assertion, threshold or measurement is touched,
+      // and the arm's verdict is unchanged.
+      `The DB path the server reaches IS env-overridable — in packages/server/src/db/index.ts:7-9, ` +
+      `a different file, reached from index.ts only through the imported getDb() call — ` +
       `and scripts/serve-scratch.mjs exists so a probe can avoid clobbering xian's database with ` +
       `it. The DB, the shared resource a probe must not clobber, is overridable. The port, the ` +
       `OTHER shared resource a probe must not clobber, is not, and that single literal is what ` +

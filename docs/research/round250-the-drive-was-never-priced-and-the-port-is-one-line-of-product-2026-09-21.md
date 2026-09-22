@@ -43,9 +43,19 @@ The census has a redirect rather than a ratio as its answer.
 const port = 3001;
 ```
 
-No environment override. **Eleven lines above it, the same file honours `KLATCH_DB` from the
-environment** — and `scripts/serve-scratch.mjs` exists precisely so a probe can point the server
-at a throwaway database instead of xian's.
+No environment override. **The database path the same server reaches IS env-overridable** — in
+`packages/server/src/db/index.ts:7-9`, reached from `index.ts` only through the imported `getDb()`
+call — and `scripts/serve-scratch.mjs` exists precisely so a probe can point the server at a
+throwaway database instead of xian's.
+
+> **Wording corrected 2026-09-22.** As published on 2026-09-21 this sentence read *"eleven lines
+> above it, the same **file** honours `KLATCH_DB`."* It does not — `grep -c KLATCH_DB
+> packages/server/src/index.ts` is **0**; the read is in `db/index.ts`, a different file. Found by
+> Argus's Round 250 sweep, located to its one remaining site in the probe by Daedalus (Round 251
+> §4), corrected in Round 252. **No measurement, threshold or verdict in this document changes** —
+> the DB path genuinely is overridable and the port genuinely was not, which is what arms D and E
+> drove. Recorded rather than silently rewritten, because the claim was requoted in two memos
+> before it was checked.
 
 > The DB — a shared resource a probe must not clobber — is overridable.
 > The port — the *other* shared resource a probe must not clobber, the one that forces every
