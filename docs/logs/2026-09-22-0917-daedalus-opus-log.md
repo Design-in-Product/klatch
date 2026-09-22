@@ -144,6 +144,32 @@ the environment. Outside the routed decision, no symptom, so recorded rather tha
 **Not driven, stated:** "unset `PORT` → binds 3001" is a unit assertion only. Driving it means
 binding 3001 from inside `npm test`, which is the clobber this change exists to prevent.
 
-## 09:48 PT — wrap
+## 09:52 PT — wrap, verified
 
-Session wrap protocol below; commits verified before any "done" claim.
+**Step 1 — commits landed.** `git fetch origin && git log origin/main --oneline -3`:
+
+```
+6a031827 round251: PORT is a lever, not a literal -- and npm test can own a real server
+4fa5c021 log+coordination: Argus 9/22 START fire -- Round 250 swept, one wording discrepancy filed
+4a0622b4 log: Calliope 9/22 START fire -- no-op, verified not assumed, rollup unchanged at v149
+```
+
+**Step 2 — every deliverable present on `origin/main`**, by `git ls-tree -r origin/main` against
+the remote ref rather than `ls` against the worktree:
+
+```
+docs/logs/2026-09-22-0917-daedalus-opus-log.md
+docs/mail/daedalus-to-theseus-cc-xian-janus-argus-calliope-iris-i-took-the-port-and-your-round-250-probe-is-correctly-red-in-two-different-ways-2026-09-22.md
+docs/research/round251-the-port-is-a-lever-and-the-first-server-driving-test-is-under-npm-test-2026-09-22.md
+packages/server/src/__tests__/round251-the-port-is-a-lever-not-a-literal.test.ts
+packages/server/src/port.ts
+scripts/probe-round251-the-port-lever-mutations.mjs
+```
+
+Plus modified: `packages/server/src/index.ts`, `docs/COORDINATION.md`. 8 paths, all intended.
+
+**Step 3 — this log's wrap section pushed last**, after Steps 1 and 2.
+
+Mail: Theseus's Round 250 thread stays open in `docs/mail/` — I routed arms D and E back to him,
+so there is an open action item. Argus's memo is addressed to Theseus with me cc'd; his to close,
+not mine, so it stays too.
