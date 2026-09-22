@@ -13,3 +13,23 @@ Worktree pre-synced by wrapper; `git status` clean at `b59adde3` (Iris's 9/22 ST
 **Standing blockers re-checked, day counts recomputed with `node` (not recalled):** ground-rules discretion question — **44 days** from 8/9, still parked on xian (`ls docs/mail | grep '^xian-to'` empty). Logbook-shape — **26 days** from my 8/27 memo, **25** from Janus's 8/28 restatement, still parked on xian. Both are the rollup's two full-text 🟡 items (v145 onward), unchanged. **Corrected my own prior framing:** I nearly logged `attention-rollup.html` as an open drift item again; re-read the rollup body (line 257, v145 banner) and confirmed it was decided, not left open — Janus routed it back as a rendering call for the file's owner, and it was resolved 2026-09-20 with a "FROZEN MIRROR — last synced 2026-08-23 (v67)" banner rather than a resync or deletion; explicitly excluded from the 🟡 count ("neither the html-mirror question (decided this fire) nor the roadmap klatch... is counted"). It is not a standing blocker — it's a closed decision I almost mis-cited as still-open. No rollup re-render needed this fire — nothing has moved since my STOP-fire checkpoint besides the cross-poll brief and Iris's own no-op entry, neither of which changes any figure on the board.
 
 **No `packages/` changes this fire.** Nothing to route, nothing new to ask of xian. Log commit only; wrapper owns delivery, not claiming delivered.
+
+## ~11:20 PT (MID fire) — rollup refreshed to v150, Rounds 251–252 swept
+
+Worktree pre-synced by wrapper; `git fetch` → `HEAD == origin/main == a4883f8c`, tree clean before starting. `git log b59adde3..HEAD` (my own START-fire checkpoint) showed 5 new commits, none mine: Argus's Round 250 START-fire sweep (filed one wording discrepancy to Theseus), Daedalus's Round 251 + wrap log, Theseus's Round 252 + wrap log.
+
+**Mail:** `ls docs/mail | grep '^xian-to'` empty. Theseus's Round 252 memo (cc'd, no reply owed) was the only new file addressed anywhere near this seat; Argus's wording-discrepancy memo to Theseus was already closed and moved to `docs/mail/read/` before this fire started (Theseus fixed it in Round 252 and the thread was closed same-day).
+
+**Round 251 (Daedalus):** first product-code change since Round 243 — new `packages/server/src/port.ts`, `index.ts` +18/−1. `PORT` env override, precedence spawner-env → `.env` → 3001 default; resolved above `dotenv`'s override and above `getDb()`'s writes (three pieces, all measured, per his commit). Headline: `round251-…test.ts` is the first test in `packages/server` to bring up the real product entrypoint — 27 tests, five real server boots.
+
+**Round 252 (Theseus):** (1) fixed the `KLATCH_DB`-location wording Argus filed — the claim that `index.ts` itself "honours `KLATCH_DB`" was imprecise; the read is in `db/index.ts`, reached only via `getDb()`. Two live sites corrected, five historical ones (memos/logs) left as the record. (2) Took the `db` class (35 files, called "the only structural blocker of that size left" by Daedalus's own §7) and found it's an over-block: 13/48 stale-in-code probes blocked only by `db`, all driven with `KLATCH_DB` in a tmpdir, zero opened it, 8 already mint their own fixtures. Second sighting of the shape Round 250 found in the `server` marker. Also found the new `PORT` lever doesn't unblock its own class (16/19 blocked files spell `3001`/`5173` themselves). Left two Round 250 arms red on purpose (his own Round 244 pin rule, fifth instance). Nothing routed to xian in either round.
+
+**Verified fresh, into files not pipes:** server **129 files · 2045 passed · 1 skipped** (+1 file/+27 tests over v149, exactly Round 251's test file), client **38 files · 324 passed · 13 skipped** (unchanged), `npm run typecheck` **0 `error TS`** ×3 — matches Theseus's own Round 252 §8 figures exactly. `git status --porcelain` clean before and after (edits below are the only changes).
+
+**Standing blockers, day counts via `node`, not recalled:** ground-rules question **44 days** (from 8/9), logbook-shape **26 days** (from my 8/27 memo; Janus's restatement 8/28 is 25) — both unchanged in substance, day counts moved.
+
+**Rollup updated to v150** (`docs/operations/attention-rollup.md`): Last-refreshed banner, this-fire paragraph, 🟡-count note (superseded the STOP-fire one, count still 11), new changelog entry. Needs-you unchanged at 3, 🟡 unchanged at 11 — neither round asks xian anything new.
+
+**COORDINATION.md** updated with this fire's entry under Calliope's section.
+
+Committing rollup + coordination + this log entry; wrapper owns delivery, not claiming delivered.
