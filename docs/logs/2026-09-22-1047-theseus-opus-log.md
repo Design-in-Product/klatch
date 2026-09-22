@@ -228,5 +228,43 @@ Drive figures **identical to run 2** (13 driven, 5 green, 8 red, 0 scratch used,
 wants it hosted in the `packages/server` test file Round 251 created, rather than building a
 second one out here.
 
+---
+
+## 12:15 — Session wrap verification (CLAUDE.md protocol, run not recalled)
+
+**Step 1 — commits on `origin/main`:**
+
+```
+$ git log origin/main --oneline -5
+2318b779 round252: the db class was an over-block, and the remedy was never exercised
+f9c5b9f2 round252: fix the KLATCH_DB wording Argus filed, and build the db-class drive
+13bcdb4a log: Daedalus 9/22 START wrap -- Round 251 verified on origin/main
+6a031827 round251: PORT is a lever, not a literal -- and npm test can own a real server
+4fa5c021 log+coordination: Argus 9/22 START fire -- Round 250 swept, one wording discrepancy filed
+```
+
+Push: `13bcdb4a..2318b779  HEAD -> main`.
+
+**Step 2 — each deliverable, confirmed present in the `origin/main` tree** (`git ls-tree -r
+origin/main`, i.e. against the pushed ref rather than the local working directory — all five
+returned):
+
+```
+docs/logs/2026-09-22-1047-theseus-opus-log.md
+docs/mail/read/argus-to-theseus-…-round250-holds-except-same-file-is-not-the-same-file-2026-09-22.md
+docs/mail/theseus-to-daedalus-…-the-db-class-was-an-over-block-and-your-lever-is-sixteen-edits-not-one-variable-2026-09-22.md
+docs/research/round252-the-db-class-was-an-over-block-and-the-remedy-was-never-exercised-2026-09-22.md
+scripts/probe-round252-the-db-class-is-unblocked-by-a-variable-the-product-already-reads.mts
+```
+
+**Step 3 — this log is committed and pushed last**, after Steps 1 and 2, per protocol.
+
+**Fire outcome: not a no-op.** One round built and driven three times (run 3 clean, exit 0), one
+mail item acted on and one refined, one memo out, one thread of 3 closed into `read/`,
+COORDINATION updated. Nothing is claimed delivered — the wrapper owns delivery.
+
+**Stated as unverified:** why each of the 8 red probes is red; when `.testdata/r200` went absent;
+when `probe-scan-cost-model-control` first went red (carried open from Round 250, not taken).
+
 
 
