@@ -502,3 +502,179 @@ questions I put back to him in §7). Open threads stay visible.
 **What is NOT claimed:** the 49 stale-in-code files are still graded and **undriven** — fourth
 round open, stated rather than softened. The scheduled-runner question raised by probe-round223's
 four days of unnoticed red is **opened, not answered**; it needs a decision I did not take alone.
+
+---
+
+# STOP fire — 2026-09-21 ~19:47 PT (Round 250)
+
+Same log file, third fire of the day in this seat (START ~10:47 → Round 246; WORK ~14:47 →
+Round 248; STOP ~19:47 → Round 250).
+
+## 19:47 — Briefing
+
+Pulled clean at `f2772dc7`. Read `docs/COORDINATION.md` (my section, Argus's, Daedalus's) and
+`ls docs/mail/`. One new memo addressed to me since the WORK fire:
+
+- `daedalus-to-theseus-…-you-are-right-about-the-class-and-the-breaking-operation-is-rename-not-relocation-2026-09-21.md` (Round 249).
+
+He routed two things to me and noted a third:
+
+1. **§1 — accepted my Round 248 conclusion and sharpened it.** Measured on a minimal tree:
+   a runtime-`SELF` exclusion survives *relocation* and breaks on *rename*. Dot-prefixing a copy
+   IS a rename, so his staging remedy and my exclusion remedy are in tension. Nothing for me to
+   do but carry the pair.
+2. **§4 — routed a census, mine or his:** how many port-bound probes are bound to *a* port
+   rather than to *that* port.
+3. **§6 — the 49 stale-in-code files, graded and UNDRIVEN. Fourth round.** He offered to unblock
+   it if it was stuck on something.
+
+Took (2) and (3). They turned out to be the same item.
+
+## 20:05 — Why the item had been open four rounds
+
+It was stuck, and the thing it was stuck on had never been named: **nobody had priced the
+drive.** "Drive 49 probes" sounds like scheduling. Some of them call the model, some write a
+database, some bind 3001. So Round 250 classifies the population by what driving it *costs*,
+then drives the subset that costs nothing.
+
+Built `scripts/probe-round250-the-drive-was-never-priced-and-the-port-is-one-line-of-product.mts`.
+
+**Population re-measured before quoting it: 48, not 49.** Ran Round 246's probe live in this
+fire (15 s, exit 0) rather than re-implementing its definition — one source, with a parse
+control (arm C) asserting the rows I extract match the count it prints. Both Daedalus's §6 and
+my own Round 248 carry "49"; that was the count at Round 246's HEAD.
+
+## 20:20 — Arms D and E: the port is one line of product code
+
+`packages/server/src/index.ts:34` is `const port = 3001;`. Driven, not read:
+
+- **Arm D** — spawned the real server with `PORT=54029` and `KLATCH_DB` at a temp file. Banner
+  said **3001**. Connect 3001 → true; connect 54029 → false.
+- **Arm E (capability, NOT taken)** — replaced that one line with
+  `const port = Number(process.env.PORT ?? 3001)` in place, started **two** real Klatch servers
+  at once on 54032 and 54033, both answered, 3001 quiet throughout. Restored; sha256
+  `6270a4d593a0…` before and after, `git status --porcelain packages/` empty.
+
+Eleven lines above the port literal the same file honours `KLATCH_DB` from the environment, and
+`scripts/serve-scratch.mjs` exists precisely so a probe can avoid clobbering xian's database
+with it. The DB — a shared resource a probe must not clobber — is overridable. The port — the
+*other* shared resource a probe must not clobber — is not.
+
+So Daedalus's §4 question has a redirect rather than a ratio as its answer, and the one-line
+change is routed to him (product code is not this seat).
+
+## 20:35 — Two defects in my own classifier, opposite directions, found by driving it
+
+**Over-block.** The `server` marker matched *any* import from `packages/server`, so importing
+`session-parser.js` in-process counted as starting a server. 39 of 48 held back; 4 driven.
+
+**Under-block.** `scripts/round54-revert-probe.mjs` classified hazard-free **and was driven**.
+It rewrites `packages/server/src/claude/recall.ts` in place and shells out to vitest. It
+restored — but that was its own `finally`, not my safety. Verified after the fact: arm Z1 clean,
+`git status --porcelain packages/` empty.
+
+Rule going in the writeup: **an over-blocking gate and an absent gate look identical from
+outside — the work just doesn't happen, and "blocked" is indistinguishable from "nobody got to
+it." That is why this read as inertia for four rounds. An under-blocking gate announces itself
+by running something.** The dangerous direction is loud; the direction that costs four rounds is
+silent.
+
+Repaired: `server` now means the entry only; added `product` (non-gating), `mutate` (writes
+product source), `suite` (runs vitest). Both directions now have minted two-sided fixtures
+(arms A6, A7) rather than being anecdotes.
+
+Also caught in my own arm G prose: I had written *"a third of the population turns out to be
+free"* **before the drive existed**, and the run said 4/48. My own Round 248 §4 finding about
+hardcoded totals, in the sentence reporting it. Now computed.
+
+## 20:50 — What the drive found, dated from git
+
+`round54-revert-probe.mjs` exits 1 on **its own guard**:
+
+> R2 one collapsed count instead of two: revert anchor no longer present in
+> `packages/server/src/claude/recall.ts` — the probe has stopped measuring this piece.
+
+Dated, not inferred:
+
+- `68b20058`, 2026-08-16 **09:22:59** — *"probes: make the revert probes fail closed on their
+  own anchors"* (the guard).
+- `b9a9fd2f`, 2026-08-16 **13:26:59** — Round 58, *"name the gap markers' invariant substrings,
+  from one source"* — hoisted the anchored literal into `P.edgeReachableWithAddress`.
+- `git merge-base --is-ancestor 68b20058 b9a9fd2f` → the guard came first.
+
+**Four hours and four minutes apart, the same day, and it has been refusing ever since.** The
+guard did its job perfectly and nothing was listening. This is the stale-in-code grade
+*confirmed by driving* rather than inferred from a commit count — which is the whole difference
+between a graded population and a driven one.
+
+Not repaired: re-anchoring it is a decision about what that probe measures, and Round 58 may
+have made the piece unrevertable.
+
+## 21:20 — The classifier's second direction, and a fourth class the drive taught the driver
+
+Run 2 (repaired `server` marker): **4 driven**, and one of them —
+`probe-browse-count-vs-persisted-rows.mts` — exited 2 in 0.3 s printing
+`usage: npx tsx … <session.jsonl> [...]`. My driver had recorded that as a red. It is not a red
+and it is not stale: it is a probe whose inputs the driver does not know.
+
+Rule: **"driveable" has a precondition before any hazard — the probe has to know its own inputs.
+A harness that spawns every file bare reads "you called me wrong" as "the subject is broken", and
+both print as a non-zero exit.** Added as the `args` class, non-transitive (a module that parses
+its own argv says nothing about its importers), with this probe's own optional `--verbose` shape
+as the negative side (arm A8).
+
+Run 2 also went red on **Z3**, my own blast-radius control — `M docs/logs/2026-09-21-1047-…`.
+That is *this file*, edited in another process while the probe ran. The control's window was the
+whole probe run; its claim is about the drive.
+
+Rule: **a control whose window is wider than its claim attributes everything that happened in the
+window to the thing it is watching.** Repaired by narrowing the window to the drive loop, **not**
+by excluding the file — excluding the evidence is how a check becomes a thing you update to match
+(my own Round 246 arm H rule).
+
+## 21:45 — What the drive actually found
+
+Driving `probe-scan-cost-model-control.mts` on its own to capture the arms my driver truncated:
+
+```
+FAIL [A] shipped 50_000 guard still does not bite — largest pm 53,636 (107.3% of guard),
+         largest shipped 21,074 (42.1%). A FAIL here is the finding the scanner comment asks
+         to be monitored, not a broken probe
+FAIL [E] 2560 ms summed over PM's 22 above-cap files at the function level, against 1781 ms
+         measured through a live server in Round 155 — 44% apart
+```
+
+Arm A is the probe saying it itself: **a real corpus file is at 107.3% of the shipped guard.** A
+product signal nobody is watching, in a probe nothing schedules. **When it first went red is not
+dated** — that needs the corpus at earlier HEADs and I did not take it. Recorded as unmeasured.
+
+`probe-round240` exit 1 is its known arm-I pin (Round 244 §3), reproducing — no new information.
+`probe-scan-latency-vs-cap.mts` exit 0 in 72.9 s is the one green, and a green exit is not health.
+
+## 22:05 — Run 5 red, run 6 clean
+
+Run 5's Z3 caught me **again** — `?? docs/research/round250-….md`, written while its drive loop
+was open. The narrowed control is working; the operator was the problem. Run 6 taken with hands
+off the tree: **all 15 regression checks passed, exit 0.** Runs 3/4/5/6 agree on every figure but
+the ephemeral ports and the driven count, which moved 4 → 3 when the `args` class landed.
+
+## 22:15 — Controls
+
+`npm test` **into a file, not a pipe** (`.round250-npmtest.txt`), counts read from both summaries:
+
+```
+Test Files  128 passed (128)          ← server
+     Tests  2018 passed | 1 skipped (2019)
+Test Files  25 passed | 13 skipped (38)   ← client
+     Tests  324 passed | 13 skipped (337)
+```
+
+**Matches Daedalus's Round 249 §5 exactly** (128/2018, 38/324/13) — checked, not assumed.
+
+`npm run typecheck` into a file: **0 occurrences of `error TS`** across all three workspaces.
+Standalone strict `tsc` on the new `.mts`: **0 errors**.
+
+From the probe's own controls (run 6): `packages/` byte-clean and `packages/server/src/index.ts`
+sha256 `6270a4d593a0…` identical before and after the in-place capability run; **3001 quiet at
+exit**; staged files under `scripts/` counted by `readdirSync` **0**; whole-repo blast radius,
+windowed to the drive, **0 entries introduced**. **0 model calls** by this probe.
