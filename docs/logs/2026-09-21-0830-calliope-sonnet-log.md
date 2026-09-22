@@ -131,3 +131,64 @@ latter was also off by its own date); corrected. No `xian-to-*` mail. Roadmap kl
 
 Files touched: rollup, COORDINATION.md, the new memo, this log. Commit local; wrapper owns delivery — not claiming delivered.
 Wrap verification follows the commit.
+
+## STOP fire, ~21:40 PT
+
+Wrapper pre-synced. `git fetch origin main`; `git rev-parse HEAD origin/main` both `e81f4513`, tree clean apart from
+this fire's own mail moves. `git log --oneline 667bcde0..HEAD` (my own SWEEP-fire checkpoint, rollup v148) showed 9 new
+commits, none mine: Iris's own STOP-fire entry (`f2772dc7`), Janus's split-accepted memo landing on main (`84acd39f`),
+the cross-pollination brief update (`b7534097`), a re-committed 9/16 brief (`55226dda`), Argus's own STOP-fire sweep
+(`6d95a74a`), Daedalus's Round 249 work + wrap (`d331b7d6`/`eaf0c023`), his mail (`f83f7488`), Theseus's Round 250
+work + mail + wrap (`1799772d`/`2affc4d6`/`e81f4513`).
+
+**Mail:** Janus's `split-accepted` memo (addressed to this seat, cc xian) confirms the CSV-rebuild split from my SWEEP-fire
+reply and says nothing further is needed now. Read in full. Closed the whole records-gap thread: `git mv` all three files
+(his escalation, my reply, his close) to `docs/mail/read/`. No new `xian-to-*` mail (`ls docs/mail | grep '^xian-to'`
+empty). Cross-pollination `current.md` re-read in full after the `b7534097` update — same two insights as this morning's
+read (docstring-vocabulary security near-miss at Piper Morgan, the digit-embedding distinctness-test defect from our own
+Round 243); nothing new for this seat.
+
+**Round 249 (Daedalus, cc'd, no reply owed):** measured Theseus's Round 248 claim rather than taking it on agreement — a
+four-row table (in place / dot-prefixed copy in-tree / copy in a tmpdir under the original's basename / copy renamed)
+found the contaminating operation is rename, not relocation: a tmpdir copy under the *same* basename stays clean (row C,
+neither agent predicted it), but the dot-prefix that hides a copy from the enumeration walk **is itself a rename** — so
+his own tmpdir remedy and Theseus's fixed-identity remedy are in tension, not redundant; applying only the first makes
+the second silently worse. Took his own §7 offer, `probe-server-ownership.mts`, under `npm test`:
+`packages/server/src/__tests__/round249-the-ownership-guard-drives-its-own-matrix.test.ts`, 14 tests, floor 8/13 → 9/13.
+Re-took a 3×3 bind matrix from a 2026-09-16 measurement that had rested on a since-deleted `.testdata` file — all nine
+cells reproduce. Drove exit-2 and the readiness function's negative arm for the first time, and `reapOnExit`'s exit path
+against a direct child. Four mutations, subject sha256 unchanged after. Caught three faults in his own instrument, the
+sharpest: his mutation driver printed "ALL GREEN — mutation survived" for all four mutations while every one exited 1 —
+an ANSI-coloured-output regex match found nothing and fell through to its green branch, same family as his own Round 247
+finding, in the tool built to measure it.
+
+**Round 250 (Theseus, cc'd, no reply owed):** took both of Daedalus's routed §4/§6 items and found they were one. The
+49-file undriven-probe population, standing four rounds as "graded, not scheduled," was never a scheduling problem —
+nobody had priced what driving costs. Re-derived the population live (ran Round 246's own probe as a subprocess with a
+parse control): **48, not 49** — both agents had been quoting 49 since Round 246 without re-taking it. Answered
+Daedalus's port-census question directly: `packages/server/src/index.ts:34` is `const port = 3001`, no env override,
+eleven lines below a `KLATCH_DB` the same file honours. Driven two ways — a real server with `PORT` set still banners
+3001 and refuses the new port; the same server with the literal replaced runs two real instances on ephemeral ports
+simultaneously, 3001 quiet throughout. Priced (one line), not taken — `packages/` is Daedalus's seat, routed back.
+Drove 3 of 48 blocked probes (103s total); found his own hazard classifier failed in both directions (39/48 over-blocked
+on a too-broad `server` marker; one probe under-blocked and driven — it rewrote `recall.ts` in place, restored by its
+own `finally`, not by his safety net). Found `round54-revert-probe.mjs` has refused for 36 days, starting **four hours**
+after its own fail-closed guard was written (dated from git: guard at 09:22, the piece it anchors to hoisted at 13:26,
+same day) — the guard worked exactly as designed and nothing was listening. Found `probe-scan-cost-model-control.mts`
+red on a live product signal: a real corpus file at 107.3% of the 50,000-line fingerprint guard — **this corroborates
+the standing 🟡 item already on this board** (the 53,635-line, 99 MB PM session), not a new finding; I did not add a
+duplicate item.
+
+**Verified independently, into files not pipes:** `npm test` — server **128 files · 2018 passed · 1 skipped**, client
+**38 files (25 passed · 13 skipped) · 324 passed · 13 skipped**; `npm run typecheck` exit 0, 0 `error TS` across three
+workspaces — matches Round 249's own figures exactly (Round 250 is scripts-only, no product-suite delta expected and
+none found). `git status --porcelain` clean before and after, apart from this fire's own mail moves.
+
+**Rollup refreshed to v149** (needs-you unchanged at 3; 🟡 unchanged at 11 — Round 249 is within-team, Round 250's
+port item is priced-and-routed not decided, its corpus-cap finding corroborates rather than adds). v148 preserved
+verbatim in the changelog. Standing blockers re-checked: same calendar date as this morning's fires, so day counts
+are unchanged from the SWEEP-fire render — ground-rules 43 days, logbook-shape 25 (24 from Janus's restatement); html
+mirror frozen-banner still in place. Roadmap klatch: still no evidence in the repo either way whether it has been held.
+
+Files touched: three mail moves, rollup, COORDINATION.md, this log. Commit local; wrapper owns delivery — not claiming
+delivered. Wrap verification follows the commit.
