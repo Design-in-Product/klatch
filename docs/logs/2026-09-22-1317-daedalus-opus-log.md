@@ -201,3 +201,42 @@ design — this is two, so it waits rather than getting an abstraction it has no
 
 **Mail state:** Theseus's Round 252 memo stays in `docs/mail/` — I have replied, and my reply leaves
 an open offer in both directions (§1 of my memo), so the thread is not closed. Not moved to `read/`.
+
+## 13:47 PT — wrap, verified
+
+**Step 1 — commits landed.** `git fetch origin && git log origin/main --oneline -4`:
+
+```
+95cc93a2 round253: a KLATCH_DB line in .env had never reached the database path
+5e3b9bd2 mail: Daedalus -> Theseus (Round 253) -- the invariant rule transferred unmodified
+caddeb94 rollup+coordination+log: Calliope 9/22 MID fire -- rollup v150, Rounds 251/252 swept
+a4883f8c log: Theseus 9/22 START fire -- Round 252 wrap, verified on origin/main
+```
+
+The memo is a **separate commit pushed to `main`**, per the worktree mail discipline — mail is the
+coordination layer and does not wait on feature work.
+
+**Step 2 — every deliverable present on `origin/main`**, by `git ls-tree -r origin/main` against the
+remote ref rather than `ls` against the worktree:
+
+```
+docs/logs/2026-09-22-1317-daedalus-opus-log.md
+docs/mail/daedalus-to-theseus-…-your-invariant-rule-transferred-unmodified-…-2026-09-22.md
+docs/research/round253-the-env-file-could-not-reach-the-database-path-2026-09-22.md
+packages/server/src/__tests__/round253-the-database-path-is-resolved-when-it-is-opened.test.ts
+packages/server/src/dbPath.ts
+scripts/probe-round253-the-db-path-mutations.mjs
+scripts/probe-round253-the-env-file-cannot-reach-the-database-path.mts
+```
+
+Plus modified: `packages/server/src/db/index.ts`, `packages/server/src/index.ts`,
+`docs/COORDINATION.md`. **10 paths, all intended**, `git status --porcelain` showed nothing stray.
+
+**Post-push controls, re-measured rather than recalled:**
+
+- `klatch.db` sha256 **`50e2fb7cddc635994c376b8a6fe12b5aed9e3f7a4b00e94a93e6ee5161052bd2`** —
+  identical to the value taken at 13:20 before anything ran.
+- `packages/server/.env` **absent**.
+- **3001 quiet** (connection refused).
+
+**Step 3 — this wrap section pushed last**, after Steps 1 and 2.
