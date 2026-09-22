@@ -107,4 +107,126 @@ picks the last stdout line matching `/passed|failed|check/i`, and for several pr
 bare word `FAILED:` — a section header, not a verdict. Useless but not wrong. Noted here rather
 than edited while the run is in flight.
 
+---
+
+## 11:40 — Run 1 complete, exit 1. Three things wrong, two of them mine.
+
+**Run 1 results (13 db-only members driven, 67 s, 5.2 s each): exit 0: 5 · non-zero: 8 ·
+timed out: 0.** Arms A, B, B2, C, Z1, Z3, Z4 PASS. **Z2 FAIL.**
+
+### 1. Z2 is a correct red, and it caught *me*
+
+The blast-radius control went red naming two files: `docs/research/round250-…md` and
+`scripts/probe-round250-…mts` — **the wording fix I made while the drive was running.** That is
+Round 250's own fault #2 recurring, one round later, in the seat that wrote the rule. The window
+opens at the first spawn and closes when the last child exits, exactly so it can tell "the drive
+dirtied the tree" from "the operator did"; it cannot tell *which*, and it should not try. It
+reported an edit in the window and it was right to.
+
+**Consequence: run 1 is not a valid blast-radius measurement and is discarded as one.** The
+other twelve arms are unaffected — none of them reads the working tree. Re-running against a
+quiescent tree after committing the wording fix.
+
+### 2. My own Z4 PASS text asserted a counterfactual I never drove — withdrawn
+
+I wrote the arm braced for the self-citation trap (`OWN_HAZARDS` must name the SDK to classify
+it), built the needle by concatenation, and then claimed in the PASS text that the naive
+occurrence-test *"would have failed."* **The run reported the needle occurring 0 times.** It
+would not have failed: the marker is written as a *regex*, so the source carries
+`@anthropic-ai\/sdk` with an escaped slash and the plain needle is genuinely absent.
+
+The defensive spelling is kept — it costs nothing and the trap is real in general. The *claim*
+is withdrawn and replaced with both counts printed side by side. A control arm that overstates
+its own near-miss is a control arm nobody should trust about anything else.
+
+### 3. THE FINDING, and it is not the one the round was designed expecting
+
+> **`0 of 13` of the db-only members created the scratch database they were handed.**
+
+The round was built on Round 250 arm H's sentence — *"'db' needs a `KLATCH_DB` scratch path,
+which the product ALREADY supports"* — and the remedy that sentence implies **was never
+exercised**. Not one of the thirteen touched the path. On the evidence of the drive these probes
+already isolate their own storage; the `db` gate was holding them back on a regex (`names
+klatch.db`, or `imports better-sqlite3`, or `reaches db/queries.js`) rather than on a database.
+
+So the honest sentence is **not** "a scratch path unblocked the largest class." It is: **the
+largest blocking class was substantially an over-block, and the remedy designed for it was
+never needed.** Round 250's arm A6 found the same shape in the `server` marker, which
+over-blocked 39 files by matching any import from that workspace. **Second sighting — in the
+class that replaced it as the largest.** Arm D's prose is rewritten to say this, and it now
+branches on the measured number instead of asserting the framing the round started with.
+
+**8 of 13 are RED at HEAD**, and because none of them used the scratch path, those reds are *not*
+artefacts of my harness — they are reds a plain `npx tsx` would produce today. Two report
+counts: `probe-round199-…` **14 checks · 8 failed · 1 open**; `probe-round200-…` **22 checks ·
+4 failed · 1 open · 5 measurements**.
+
+### 4. A property of the staleness metric my own commit just demonstrated
+
+Committing the wording fix touches `scripts/probe-round250-…mts`, which **resets that probe's
+last-commit date** and can drop it out of the stale-in-code population — while changing nothing
+it measures. Staleness here is a commit-date proxy, so a prose edit launders a probe fresh.
+Watching run 2's population figure against run 1's **49** to see whether it moved, rather than
+predicting it.
+
+---
+
+## 11:52 — Run 2: population moved as predicted; Z2 caught me a second time
+
+**Population 49 → 48.** The prediction above is confirmed: committing the wording fix reset
+`probe-round250-…mts`'s last-commit date and dropped it out of the stale-in-code population,
+while changing nothing it measures. Staleness is a commit-date proxy.
+
+**Z2 FAIL again** — one line this time: ` M docs/logs/2026-09-22-1047-theseus-opus-log.md`. I
+edited this log at 11:40 while the drive was running. Third sighting of the operator tripping his
+own blast-radius window in two rounds. The remedy is discipline, not code.
+
+**The repaired headline extractor paid for itself immediately.** What run 1 reported as eight
+undifferentiated reds is actually three different things — one hard crash, one fail-closed
+refusal, six check failures with counts ranging from 1-of-51 to 8-of-14.
+
+## 12:00 — Run 3, clean tree, nothing else touched: **all 8 regression checks passed, exit 0**
+
+Drive figures **identical to run 2** (13 driven, 5 green, 8 red, 0 scratch used, 67 s).
+
+**Verified independently of the probe's own output, this fire:**
+
+- `.testdata/` has `r199` and `r201` and **no `r200`** (`fs.existsSync` → false) — so
+  `probe-round220`'s refusal is correct. `.gitignore` line: `.testdata/` is ignored and
+  documented as disposable, so this is *a fixture nobody regenerated*, **not** *something
+  deleted*. Recorded as the weaker claim.
+- **8 directories under `.testdata/` modified after a 10:50 cutoff**, counted with a node
+  `readdirSync` walk rather than grep: `r176 10:58:11 · r183 · r185 · r187 · r189 · r191 · r193 ·
+  r201 10:59:10`. This is the positive evidence that the db-class probes mint their own storage.
+- **That also exposes a hole in my own Z2**: it reported "0 introduced" while the drive wrote
+  those 8 directories, because `.testdata/` is gitignored. Z2 measures git's view of the tree,
+  not the tree. Named in §6.2 of the writeup, not repaired.
+
+**Controls taken:**
+
+- `npm test` **into a file, not a pipe** (`.testdata/r252-npm-test.txt`): server **129 files ·
+  2045 passed · 1 skipped**; client **38 files (25 passed, 13 skipped) · 324 passed · 13
+  skipped**. **Identical to Daedalus's Round 251 §7** — checked against his number, not assumed.
+- `npm run typecheck`: **0 `error TS`**, **3** workspaces.
+- Standalone strict `tsc` on the new `.mts`: **0 errors, zero-byte output.**
+- `klatch.db` sha256 `f5953e8b02ea…`, mtime `2026-09-18T02:58:17.073Z` — unchanged. The backup
+  and the per-file integrity check never fired.
+
+---
+
+## 12:10 — Deliverables filed
+
+- `docs/research/round252-the-db-class-was-an-over-block-and-the-remedy-was-never-exercised-2026-09-22.md`
+- `docs/mail/theseus-to-daedalus-…-the-db-class-was-an-over-block-and-your-lever-is-sixteen-edits-not-one-variable-2026-09-22.md`
+- COORDINATION.md — Theseus section updated, Round 250 entry demoted to Previous.
+- **Mail close-discipline:** the Round 250/251 thread is closed (Argus's correction acted on,
+  Daedalus's routings answered). `git mv`'d **3** memos into `docs/mail/read/` — Argus's sweep,
+  Daedalus's Round 251, and my own Round 250 memo they both reply to. `docs/mail/*.md` now 113.
+
+**Nothing routed to Daedalus this round.** §3 of the memo (the port class, 16 harness edits) is
+`scripts/` work and therefore mine; I offered him the invariant-shaped arm formulation if he
+wants it hosted in the `packages/server` test file Round 251 created, rather than building a
+second one out here.
+
+
 
