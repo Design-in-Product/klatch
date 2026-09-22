@@ -32,10 +32,29 @@ const MUTATIONS = [
     expect: 'the real entrypoint honours PORT',
   },
   {
+    // RE-AIMED by Theseus, Round 254, 2026-09-22. Argus's WORK-fire sweep found this mutation
+    // reporting `ANCHOR MISS (0 occurrences)` — Daedalus's Round 253 (95cc93a2, 13:27:51)
+    // inserted the KLATCH_DB precedence block between the port line and `getDb()`, and reworded
+    // the comment above it, ~4 h after Round 251 (09:34:52) anchored on that adjacency.
+    //
+    // The old anchor was a single multi-line block containing COMMENT TEXT. It therefore
+    // encoded two things at once: the ordering it meant to guard, and the prose that happened
+    // to sit between the two statements. Only the prose changed, and the mutation died of it.
+    //
+    // Now expressed as TWO statement-only edits, neither containing a comment and neither
+    // assuming the two statements are adjacent: delete the port line where it is, re-insert it
+    // after `getDb();`. That is the ordering defect and nothing else. Any future edit to the
+    // comments in this region — or any further code inserted between them — leaves both anchors
+    // intact. Argus's observation, taken: anchor on `getDb();` alone rather than on a block.
     name: 'M2 resolve the port AFTER getDb(), as it was ordered before',
     file: ENTRY,
-    from: 'const port = resolvePort(fromEnv(portFromCaller) ?? fromEnv(process.env.PORT));\n\n// Initialize database on startup\ngetDb();',
-    to: '// Initialize database on startup\ngetDb();\n\nconst port = resolvePort(fromEnv(portFromCaller) ?? fromEnv(process.env.PORT));',
+    edits: [
+      { from: 'const port = resolvePort(fromEnv(portFromCaller) ?? fromEnv(process.env.PORT));\n', to: '' },
+      {
+        from: 'getDb();',
+        to: 'getDb();\n\nconst port = resolvePort(fromEnv(portFromCaller) ?? fromEnv(process.env.PORT));',
+      },
+    ],
     expect: 'refuses, names PORT, and does NOT create the database',
   },
   {
@@ -95,9 +114,23 @@ if (!baseline.ok) { console.log('  baseline is not green — aborting'); process
 for (const m of MUTATIONS) {
   if (occupied && m.name.startsWith('M1')) { console.log(`${m.name}\n  SKIPPED — 3001 is occupied`); continue; }
   const original = fs.readFileSync(m.file, 'utf8');
-  const hits = original.split(m.from).length - 1;
-  if (hits !== 1) { console.log(`${m.name}\n  ANCHOR MISS (${hits} occurrences) — this mutation has stopped measuring`); continue; }
-  fs.writeFileSync(m.file, original.replace(m.from, m.to));
+  // A mutation is a SEQUENCE of anchored edits (Round 254). One-edit mutations write their
+  // single {from,to} directly; M2 needs two, because restoring an ordering means removing a
+  // statement from one place and putting it in another, and a single anchor spanning both
+  // places necessarily swallows whatever prose lies between them. Every anchor is still
+  // required to match EXACTLY ONCE, checked against the text as it stands when that edit is
+  // applied — so a partially-applied mutation reports a miss rather than a silent half-edit.
+  const edits = m.edits ?? [{ from: m.from, to: m.to }];
+  let mutated = original;
+  let missAt = -1;
+  for (let i = 0; i < edits.length; i++) {
+    const hits = mutated.split(edits[i].from).length - 1;
+    if (hits !== 1) { missAt = i; console.log(`${m.name}\n  ANCHOR MISS (edit ${i + 1}/${edits.length}, ${hits} occurrences) — this mutation has stopped measuring`); break; }
+    mutated = mutated.replace(edits[i].from, edits[i].to);
+  }
+  if (missAt >= 0) continue;
+  if (mutated === original) { console.log(`${m.name}\n  NO-OP MUTATION — every anchor matched but the file is unchanged; this mutation cannot measure`); continue; }
+  fs.writeFileSync(m.file, mutated);
   let res;
   try { res = runSuite(); } finally { fs.writeFileSync(m.file, original); }
   const aimed = res.failed.filter((n) => n.includes(m.expect));
