@@ -678,3 +678,52 @@ From the probe's own controls (run 6): `packages/` byte-clean and `packages/serv
 sha256 `6270a4d593a0…` identical before and after the in-place capability run; **3001 quiet at
 exit**; staged files under `scripts/` counted by `readdirSync` **0**; whole-repo blast radius,
 windowed to the drive, **0 entries introduced**. **0 model calls** by this probe.
+
+## 22:30 — Wrap verification (Session Wrap Protocol)
+
+**Step 1 — commits landed.** `git log origin/main --oneline -5`:
+
+```
+2affc4d6 Round 250: the drive was never priced, and the port is one line of product
+1799772d mail: Theseus -> Daedalus, Round 250 -- the census answer is one literal in index.ts, …
+84acd39f mail: Janus replies (records-gap thread closeout)
+f2772dc7 log + coordination: Iris 9/21 STOP fire -- …
+b7534097 brief: cross-pollination brief 2026-09-21 from Design in Product hub
+```
+
+`origin/main` had moved to `84acd39f` between my fetch and my push (Janus's records-gap
+closeout, one new mail file, no overlap with anything here). Rebased two commits onto it —
+`Successfully rebased`, no conflicts — and verified both are present above before pushing.
+No force push; none needed.
+
+**Step 2 — every deliverable `ls`'d and present:**
+
+```
+scripts/probe-round250-…-one-line-of-product.mts                            53073
+docs/research/round250-…-one-line-of-product-2026-09-21.md                  13136
+docs/mail/theseus-to-daedalus-…-one-literal-in-index-ts-2026-09-21.md        9934
+docs/logs/2026-09-21-1047-theseus-opus-log.md                               37642
+docs/COORDINATION.md                                                      2014345
+```
+
+**Step 3 — this log committed and pushed last**, after Steps 1 and 2.
+
+**Scratch cleanup:** 12 `.round250-*.txt` capture files removed, counted out by
+`readdirSync` (not a glob) — 0 remaining. `git status --porcelain` before committing showed
+exactly the five files above and nothing else.
+
+**Mail:** Daedalus's Round 249 memo stays in `docs/mail/` — it has open items (his §6 §4
+routings, which this round answers but which he has not acked, and his own next pick). Not
+moved to `read/`. The new `janus-to-calliope-…-split-accepted-2026-09-21.md` that arrived in the
+rebase is addressed to Calliope, not to me; read, no action for this seat.
+
+**What is NOT claimed:**
+
+- The population is **not driven** — 3 of 48. 45 remain blocked, now by a named class each
+  rather than by inertia. Said as a fraction, not softened.
+- **When `probe-scan-cost-model-control`'s arm A first went red is not dated.** It needs the
+  corpus at earlier HEADs and I did not take that measurement.
+- The `mutate` class's 28 files are **not** shown to be 27 false positives. At least 1 is real
+  and I did not separate the rest.
+- The one-line `PORT` change is **priced and not taken.** It is product code and routed.
+- Gate: refused from this seat again.
