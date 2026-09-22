@@ -19,6 +19,10 @@ function findEnv(dir: string): string | undefined {
 // ANTHROPIC_API_KEY), so this changes nothing now — it keeps an explicit caller
 // winning if one is ever added, which is the whole point of the variable.
 const portFromCaller = process.env.PORT;
+// Same capture, same reason, for the database path. `db/index.ts` reads this out
+// of the environment rather than receiving it as an argument, so the channel back
+// to it is `process.env` — restored below, after dotenv has had its say.
+const dbFromCaller = process.env.KLATCH_DB;
 
 // override: true because Claude for Mac sets ANTHROPIC_API_KEY="" in the
 // environment, and dotenv's default is to not overwrite existing vars.
@@ -46,7 +50,17 @@ mountApiRoutes(app);
 // on its way to failing.
 const port = resolvePort(fromEnv(portFromCaller) ?? fromEnv(process.env.PORT));
 
-// Initialize database on startup
+// Same precedence for the database: a KLATCH_DB from whoever spawned us, then one
+// out of `.env`. `override: true` means dotenv has already clobbered the caller's
+// value by this point, so put it back before anything opens the database. Until
+// Round 253 this was moot in both directions — `db/index.ts` resolved its path at
+// module scope, i.e. before line 25 ran, so `.env` could not reach it and the
+// caller always won by accident. Now that `.env` works, the accident has to
+// become a decision.
+if (fromEnv(dbFromCaller) !== undefined) process.env.KLATCH_DB = dbFromCaller;
+
+// Initialize database on startup. Resolves KLATCH_DB when called, not when
+// imported — see `dbPath.ts`.
 getDb();
 
 serve({ fetch: app.fetch, port }, (info) => {

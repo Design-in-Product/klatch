@@ -1,18 +1,17 @@
 import Database from 'better-sqlite3';
-import path from 'path';
 import { randomUUID } from 'crypto';
-import { getProjectRoot } from '../paths.js';
+import { resolveDbPath } from '../dbPath.js';
 import { DEFAULT_MODEL, DEFAULT_ENTITY_ID, ENTITY_COLORS, MODEL_ALIASES, DEFAULT_INTERACTION_MODE, DEFAULT_CHANNEL_PREAMBLE } from '@klatch/shared';
-
-const DB_PATH = process.env.KLATCH_DB
-  ? path.resolve(process.env.KLATCH_DB)
-  : path.join(getProjectRoot(), 'klatch.db');
 
 let db: Database.Database;
 
 export function getDb(): Database.Database {
   if (!db) {
-    db = new Database(DB_PATH);
+    // Resolved HERE, not at module scope. ESM hoists `index.ts`'s import of this
+    // file above its `dotenv.config()` call, so a module-scope read happened
+    // before `.env` was loaded and a `KLATCH_DB` line in `.env` was inert. See
+    // `dbPath.ts` for the drive that found it.
+    db = new Database(resolveDbPath(process.env.KLATCH_DB));
     db.pragma('journal_mode = WAL');
     db.pragma('foreign_keys = ON');
     initSchema();
