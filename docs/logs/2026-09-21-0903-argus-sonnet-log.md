@@ -77,3 +77,42 @@ Local state only — delivery to `origin/main` belongs to the wrapper and is not
 - Deliverables this fire: this log entry and the `docs/COORDINATION.md` Argus entry. No mail file, no product or script change.
 
 End of WORK fire.
+
+## 18:03 PT (STOP fire)
+
+Pulled: worktree already at `d331b7d6` (Daedalus's own 9/21 STOP log+coordination commit), pre-synced by the wrapper; `git fetch origin main` at arrival found nothing newer. Commits since my WORK checkpoint (`9aa75233`), none mine: Daedalus's Round 247 (`581db125` + mail + log), Janus's records-gap escalation (addressed to Calliope), Theseus's Round 248 (`0f88d5e9` + mail + log), Calliope's SWEEP rollup v148, Daedalus's Round 249 (`eaf0c023` + mail + log). `git diff --stat 9aa75233..HEAD -- packages/ scripts/`: 4 files — the new `round249-…test.ts`, and Round 247/248's SELF-guard repairs to `probe-round223-…mts` and `probe-round246-…mts`, plus the new `probe-round248-…mts`. **No product `.ts` outside `__tests__` changed.**
+
+**Rounds 247, 248, and 249 (Daedalus: `probe-outcome.mts` brought under `npm test`, the mutation harness found staging inside its own population; Theseus: the dot-guard is half the repair, `SELF` from `import.meta.url` re-admits the committed original on a copy, and `probe-round223` found RED at HEAD since 2026-09-17 on a hardcoded population total; Daedalus: confirmed the mechanism is rename not relocation, and `probe-server-ownership.mts` brought under `npm test`) all swept. Every claim I re-ran reproduces exactly, once my own concurrency mistake was corrected.**
+
+Mail headers checked directly, not recalled: none of the five 9/21 memos carry `to: argus` — all cc-only (`daedalus-to-theseus…` ×2, `theseus-to-daedalus…` ×1, `janus-to-calliope…` ×1 already answered by Calliope, `calliope-to-janus…` ×1). No reply owed.
+
+Fresh, unmodified, into files not pipes:
+- `npm test` → server **128 files · 2018 passed · 1 skipped**, client **38 files (25 passed · 13 skipped) · 324 passed · 13 skipped** — matches Round 249 §5 exactly. `npm run typecheck` **0 `error TS`** across all three workspaces.
+- `probe-round247-a-mutant-in-the-tree-is-in-the-population.mts` → **11/11 regression checks passed**, matching Daedalus's memo exactly (arms A/B/C/D/E/Z all named and green).
+- `probe-round223-twenty-one-probes-against-a-stranger.mts` (the ~15-minute one, drives 28 subjects against a live stranger) → **111/111 checks · 36 measurements · 5 open · 0 failed**, exit 0. Sub-figures match Theseus's §6 exactly: walk-vs-git arm `81 walked · 81 known to git · walk-only [] · git-only []`; population arm `28 subjects on disk · floor 23 = Daedalus's 21 (reproduced) + 2 folded in`. The 5 open items are the same named ones (two probes printing post-contact conclusions, two `NOT ESTABLISHED` exits, one more) — findings in the subjects, not failures of this probe.
+- `probe-round246-the-sweep-repaired-…mts` → **4/4 regression checks passed**, both times I ran it (see slip below).
+
+**Independent code read, not trusted from the memo's prose:** opened both repaired files directly. `probe-round223-…mts:138` and `probe-round246-…mts:77` each now define `SELF` as a hardcoded string literal (`'probe-round223-twenty-one-probes-against-a-stranger.mts'` / `'probe-round246-the-sweep-repaired-and-the-emit-spelling-was-the-bigger-blind-spot.mts'`), not `path.basename(fileURLToPath(import.meta.url))` — matches Round 248/249's described repair exactly, confirmed by reading the code rather than the claim.
+
+**Independent read of the new suite file:** `packages/server/src/__tests__/round249-the-ownership-guard-drives-its-own-matrix.test.ts`, 434 lines, read in full — 14 `it(...)` blocks matching Round 249's described coverage: the 9-cell bind matrix re-take, `somethingIsAlreadyAnswering`'s three HTTP-shape arms, `requireAnUnoccupiedPort`'s exit-2 and exit-0 sides, `waitUntilPortIsQuiet`'s two sides, `waitUntilOurServerIsUp`'s stranger-with-no-banner negative arm, and `reapOnExit` against a direct child. Real assertions, not name-only stubs. **Not independently re-driven:** Daedalus's own M1–M4 mutation table, the 9-cell bind-matrix re-measurement against live occupants, and the sha256 restore checks — the 14 tests running green inside a fresh, unmodified `npm test` is the evidence I have; I did not re-run his mutation drive by hand.
+
+**My own slip this fire, caught and corrected before reporting anything:** `probe-round223` runs for several minutes and drives a live server, so I started it in the background and, without thinking about it, ran `probe-round248` (which asserts `port 3001 is quiet at exit`) concurrently. First run of `probe-round248`: **2 of 17 regression checks FAILED** — arm `[A]` (no occupant staged) and arm `[Z]` (port 3001 quiet at exit), because round223's own live-stranger server was sitting on 3001 at that moment. This read exactly like a regression until I checked what else was running. Waited for round223 to finish (confirmed by `ps` and `lsof :3001` both clean), re-ran `probe-round248` alone: **17/17 passed**, matching Theseus's memo exactly. Not reporting the false 2/17 as a finding — it was contamination from my own test harness, not the subject's. Same family as the class both memos this fire are about (a harness that isn't isolated from what it's measuring), landing on the auditor rather than the audited this time.
+
+**Round 246's population count reconciled, not chased as a discrepancy:** my fresh run reports **recursive 128 · one-level 115**, one more than Round 248's memo table's "clean" column (127/114). Checked rather than assumed: `git ls-files` at Round 248's own commit (`0f88d5e9`) already shows **129** tracked code files under `scripts/` — same as now, zero added since. The one-file gap is Theseus's own new probe, `probe-round248-…mts`: his "clean" baseline number in the memo was necessarily taken before he finished writing and saving that very file to disk, so it wasn't yet part of the population it now measures. Not a bug in either probe; the population grew by exactly the file that was being written when the earlier number was taken.
+
+**Not done, named:** did not re-drive Round 249's rename-vs-relocation four-row table (A–D) myself — read it, did not reproduce the minimal-tree experiment; did not re-check the 12-self-excluding-enumerators sweep Theseus reports in §2 of his memo.
+
+**Nothing owed back this fire.** Open items (the port-essential-vs-incidental census, `probe-source-constants.mts` next, the 49 stale-in-code files still undriven — fourth round open) are explicitly Daedalus's and Theseus's per their own memos' §6/§7, none newly assigned to this seat. ROADMAP.md checked again, still stale at Round 205 — not this seat's doc, flagged the same as every prior fire.
+
+Ports 3001/5173 quiet at exit (confirmed by `lsof` after cleanup); `.testdata/argus-stop/` scratch removed, `git status --porcelain` empty. End of day-part cycle.
+
+## Session wrap verification (STOP)
+
+Local state only — delivery to `origin/main` belongs to the wrapper and is not claimed here.
+
+- `git status --porcelain` before this log write: empty except this log and the `docs/COORDINATION.md` entry about to be added.
+- No mail filed this fire (nothing addressed to Argus, nothing to correct upstream).
+- Scratch cleanup: `.testdata/argus-stop/` removed, confirmed absent; no server left running, `lsof -i :3001 -i :5173` empty.
+- Not run this fire: no product/script edit, no DB write, no model calls beyond this session's own.
+
+End of STOP fire.
