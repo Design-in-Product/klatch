@@ -75,6 +75,13 @@
  */
 
 import fs from 'fs';
+// @ts-expect-error — plain ESM helper shared with `verify-tsx-guard.mjs`, no types by design. It
+// stays `.mjs` so a verifier that must run under PLAIN node can import it; a `.mts` could not be.
+// One line, because `@ts-expect-error` suppresses the next LINE (Round 257's note on the same
+// pattern). A sibling `.d.mts` was the alternative and was declined: `probe-round245`'s census
+// counts every file under `scripts/lib` as a module, so the declaration would arrive as a
+// fifteenth module needing coverage it cannot have.
+import { stripSource } from './strip-source.mjs';
 
 /** Longest initialiser we will look at; a declaration is one line by convention here. */
 const INITIALISER = (name: string, flags = '') =>
@@ -111,43 +118,38 @@ const INITIALISER = (name: string, flags = '') =>
  * therefore still a second site — caught loudly by the multiplicity guard in
  * {@link declarationSite} rather than silently preferred.
  *
- * **Known limit, bounded deliberately:** a regex literal ending `//` (`/https:\/\//`) reads as a
- * line comment to this scanner, masking the rest of that line. It can only ever mask *more*, never
- * less, so its worst outcome is a declaration going unseen — which is a throw, not a wrong number.
- * Loud over partial, the same trade the rest of this module makes. Arm C of
- * `probe-round255-…` drives both live product files to show neither trips it.
- *
  * Newlines survive masking so line numbers reported in errors stay true.
+ *
+ * ## Round 259: this is now a two-line delegation, and the limit it used to carry is closed
+ *
+ * Round 255 shipped its own scanner here and named one **known limit, bounded deliberately**: a
+ * regex literal ending `//` (`/https:\/\//`) read as a line comment, masking the rest of that line.
+ * The bound was that it can only ever mask *more*, so its worst outcome is a throw rather than a
+ * wrong number — loud over partial, the trade the rest of this module makes.
+ *
+ * Theseus's Round 258 arm C2 found the **sharper** form of that same gap and it does not have the
+ * same bound: `/\bhere(?:'s)\b/i` — a shape live in `verify-filler-constraints.mjs` today — has an
+ * apostrophe in its body, which opens a *string* to a scanner with no model of regex literals. A
+ * line comment after it then survives into the 'code' reading, so the reader masks **less**, not
+ * more, and the direction of the error flips from throw to shadow. That is the defect this whole
+ * module exists to refuse, in the mechanism meant to prevent it.
+ *
+ * So the scan is delegated to {@link stripSource}, which models regex literals and template
+ * interpolation and was measured in Round 258 arm C3 as the one reader of the three in this tree
+ * not fooled by that input. Both limits close together; the contract above is unchanged.
+ *
+ * **One narrowing, named rather than hidden.** `stripSource` blanks a backslash escape *pair*
+ * inside a string, and blanks regex-literal bodies in both readings. A declaration cannot contain a
+ * backslash in `const <name> =`, and a declaration inside a regex body is not a declaration, so
+ * neither can suppress a real site; {@link declarationSite} slices `init` out of the **original**,
+ * so the masked text is never the text a caller receives. Asserted rather than argued — see
+ * `round259-the-shared-source-reader.test.ts`.
  */
 export function maskComments(src: string): string {
-  const out = src.split('');
-  const n = src.length;
-  let mode: 'code' | 'line' | 'block' | "'" | '"' | '`' = 'code';
-  let i = 0;
-  while (i < n) {
-    const c = src[i];
-    const d = src[i + 1];
-    if (mode === 'code') {
-      if (c === '/' && d === '/') { out[i] = out[i + 1] = ' '; mode = 'line'; i += 2; continue; }
-      if (c === '/' && d === '*') { out[i] = out[i + 1] = ' '; mode = 'block'; i += 2; continue; }
-      if (c === "'" || c === '"' || c === '`') { mode = c; i += 1; continue; }
-      i += 1; continue;
-    }
-    if (mode === 'line') {
-      if (c === '\n') { mode = 'code'; i += 1; continue; }
-      out[i] = ' '; i += 1; continue;
-    }
-    if (mode === 'block') {
-      if (c === '*' && d === '/') { out[i] = out[i + 1] = ' '; mode = 'code'; i += 2; continue; }
-      if (c !== '\n') out[i] = ' ';
-      i += 1; continue;
-    }
-    // Inside a string or template: left as written, escapes skipped so `\'` does not close it.
-    if (c === '\\') { i += 2; continue; }
-    if (c === mode) { mode = 'code'; i += 1; continue; }
-    i += 1;
-  }
-  return out.join('');
+  // `false` is the strings-KEPT reading: string and template bodies stand, because `${…}` can hold
+  // code and a masker that guessed at it would hide declarations. That is the same contract the
+  // hand-written scanner here carried; only the reader underneath it changed.
+  return stripSource(src, false);
 }
 
 /** 1-based line number of a byte offset, for error messages a reader can act on. */
@@ -185,12 +187,35 @@ type Site = {
 function declarationSite(src: string, name: string): Site | null {
   const masked = maskComments(src);
   const sites: Site[] = [];
-  const re = INITIALISER(name, 'g');
+  const re = new RegExp(`const ${name}\\s*=`, 'g');
   for (let m = re.exec(masked); m !== null; m = re.exec(masked)) {
     // The initialiser text is taken from the ORIGINAL source at the same offset — masking exists
     // to decide *where* the declaration is, never to change what it says.
-    const initStart = m.index + m[0].length - m[1].length;
-    sites.push({ index: m.index, initStart, init: src.slice(initStart, initStart + m[1].length) });
+    //
+    // Round 259: that sentence was true, and the code under it did not implement it. `initStart`
+    // was derived from the LENGTH of the masked capture, which only points at the same text while
+    // the masker blanks nothing that has extent. It held for two rounds because Round 255's masker
+    // blanked comments only, and a comment cannot sit inside `const X = …` before the `;`. The
+    // moment the shared reader started blanking regex-literal bodies, a masked capture of
+    // `const P = /[\w.]+/;` came out as one space — `\s*` swallowed the rest — so the slice back
+    // into the original was one character long and `readNumericConstant` reported the file as
+    // saying `"/"`. Length-preserving is not the same guarantee as structure-preserving, and it is
+    // the second that an offset arithmetic like the one below was quietly relying on.
+    //
+    // So the two halves are now taken from the two texts that actually own them: the MASKED text
+    // says where the declaration is (that is the whole reason for masking), and both the offset and
+    // the extent of the initialiser are read off the ORIGINAL.
+    //
+    // The match is now the HEAD only — `const <name> =` — so the offset comes from where the match
+    // ENDS rather than from subtracting a capture's length off it. Deriving it from the tail is
+    // what broke: `\s*` is greedy, so against a blanked span it hands the capture the LAST space
+    // and puts `initStart` on the final character of the thing it was meant to point at the start
+    // of. A head has no such freedom.
+    let k = m.index + m[0].length;
+    while (k < src.length && /\s/.test(src[k])) k += 1;
+    const init = src.slice(k).match(/^[^;\n]+/)?.[0] ?? '';
+    if (init.trim() === '') continue;
+    sites.push({ index: m.index, initStart: k, init });
   }
 
   if (sites.length > 1) {

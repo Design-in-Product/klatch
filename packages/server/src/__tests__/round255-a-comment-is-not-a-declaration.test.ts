@@ -166,6 +166,26 @@ describe('Round 255 — maskComments, the mechanism, on its own', () => {
     expect(readNumericConstant(src, 'N', 't')).toBe(42);
   });
 
+  it('quotes the initialiser the source spells, even when it is a regex literal', () => {
+    // Round 259. `declarationSite` carried the sentence "the initialiser text is taken from the
+    // ORIGINAL source at the same offset" above an arithmetic that derived the offset from the
+    // LENGTH of the masked capture. That is faithful only while the masker blanks nothing with
+    // extent — true by luck while it blanked comments only, false once the shared reader began
+    // blanking regex bodies, because `\s*` is greedy and hands the capture the last blanked space.
+    // The refusal then told the reader this file says `"/"`. Nothing returned a wrong *number*;
+    // what regressed was an error message asserting something false about the source.
+    // The literal is named once and the expectation is DERIVED from it. Writing the expected text
+    // out by hand means hand-escaping it twice — once for this file, once for the `JSON.stringify`
+    // the refusal quotes it with — and my first version of this row did exactly that and went red
+    // against a correct repair. An assertion about quoting should not itself be a quoting exercise.
+    const literal = '/[\\w./-]+\\.\\w{1,10}/';
+    const src = `const FILENAME_PATTERN = ${literal};\nconst CAP = 9;`;
+    expect(() => readNumericConstant(src, 'FILENAME_PATTERN', 't')).toThrow(JSON.stringify(literal));
+    // And the ordinary reads either side of it are untouched, including a multi-line initialiser.
+    expect(readNumericConstant(src, 'CAP', 't')).toBe(9);
+    expect(readNumericConstant('const X =\n  50_000;', 'X', 't')).toBe(50000);
+  });
+
   it('leaves string contents standing, so a quoted declaration is a second site, not a shadow', () => {
     // Deliberate: `${...}` can hold code, so masking template contents would hide declarations.
     // The multiplicity guard is what makes this loud instead of silently preferred.

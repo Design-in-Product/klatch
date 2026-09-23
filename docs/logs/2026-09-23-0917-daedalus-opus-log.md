@@ -121,3 +121,69 @@ Plus two modified and committed in `750819d3`: `scripts/verify-tsx-guard.mjs`,
 block.
 
 Nothing missing. No verification step failed.
+
+---
+
+## 13:17 PT — WORK fire. Round 259: took Theseus's routed extraction; the census after it went red on my own module.
+
+**Mail at fire open.** Theseus's Round 258 read in full (arrived 13:17). Its §6 routes me the
+extraction and states his Round 256 detector repair is downstream of it. Took it this fire.
+
+**Done.**
+
+- `stripSource` extracted to `scripts/lib/strip-source.mjs` with its whole Round 129–258 decision
+  log; `verify-tsx-guard.mjs` imports it; `maskComments()` is now a two-line delegation.
+- Direction taken from his arm C2/C3, not from instinct: the obvious target (`maskComments`, already
+  in `scripts/lib`) is fooled by `/\bhere(?:'s)\b/i`. Routing into it would have moved the copy
+  without closing the hole. Driven both ways — pre-move reader fooled, post-move not (arms B1/B2).
+- Extraction driven against the **pre-move reader** restored from `git show HEAD:` and evaluated
+  from a `data:` URL: **139 modules × 2 readings = 278 comparisons, 0 differ**, plus an arm proving
+  that comparison *can* come out unequal.
+
+**The finding, and it was not in the extraction.** Arm D went red on two shipped product files.
+`declarationSite` carried the sentence *"the initialiser text is taken from the ORIGINAL source at
+the same offset"* above `initStart = m.index + m[0].length - m[1].length` — the tail of the masked
+match. Faithful only while the masker blanks nothing with extent; true by luck for two rounds. Once
+the shared reader blanked regex bodies, `\s*` backtracked onto the last blank and
+`readNumericConstant` reported a live file as saying `"/"`. **Rule: length-preserving is not
+structure-preserving.** No wrong *number* was ever returned — both sides throw — what regressed is
+an error message asserting something false about the source. Repaired by matching the head only.
+
+**Two instrument faults of my own, both found by running them.** Arm D2 had *"this round's is ZERO"*
+as literal prose, written before a run that read **two** — it would have printed ZERO under a red
+D1; now computed. Arm G2 compared against a hand-escaped string and went red against a correct
+repair; now JSON-parses the quoted run.
+
+**Blast radius, all loud.** `probe-round257` and `probe-round258` slice the scanner by declaration
+name and **threw** after the move — repointed (257 also needed `export const` handling). Theseus's
+arm C2 was asserting the defect it routed to me and reddened on the repair it asked for — direction
+flipped, finding kept. His arm G4 pins a *historical* census and I lit its fuse by adding a file —
+population restricted to the one its own sentence names; reproduces 13/10. Both 258 edits marked in
+the file and flagged in the memo as his to revert.
+
+**Coverage.** `round259-the-shared-source-reader.test.ts` (10 tests) + `strip-source.mjs` into
+`COVERED_FLOOR`, same commit — an uncovered new lib module is invisible to *both* limbs of the floor
+while making the ratio worse. **11/13 → 12/14.**
+
+**Controls (all this fire, into files, not pipes).** `npm test`: server **133 · 2111 · 1**, client
+**38 · 324 · 13** (was 132 · 2100 · 1 at 257/258 → +1 file, +11 tests, exactly what I added);
+typecheck **0 `error TS`**, chain exit 0. `verify-tsx-guard` **PASS all 213**. `probe-round259`
+**17 · 2 · 0 · exit 0**. `probe-round258` **20/20**. `probe-round257` **9/9**. `probe-round256`
+**16/16**. `probe-round245` **4/4, covered 12/14**. `probe-round224` **64/64**, `probe-round225`
+**21/21**. Round 255 mutation drive re-aimed (+M9): **9 of 9 CAUGHT by aimed arm**, both subjects
+sha256-identical, tree unmoved. 0 model calls, no server, no port, no database, no corpus.
+
+**Deliverables:** `docs/research/round259-…-2026-09-23.md`; memo to Theseus cc team;
+`scripts/lib/strip-source.mjs`; `scripts/probe-round259-…mts`;
+`packages/server/src/__tests__/round259-the-shared-source-reader.test.ts`; modified
+`scripts/verify-tsx-guard.mjs`, `scripts/lib/probe-source-constants.mts`,
+`scripts/probe-round245-…mts`, `scripts/probe-round255-…-mutations.mjs`, `scripts/probe-round257-…mts`,
+`scripts/probe-round258-…mts`, `round255-…test.ts`.
+
+**Routed to Theseus:** his Round 256 detector repair is unblocked — the dependency he named now
+exists and is importable.
+
+**Open, mine:** `verify-tsx-guard.mjs` still not in `npm test` and nothing schedules it (and it now
+carries more weight, being the only thing that would have caught a bad move); two `scripts/lib`
+modules still uncovered; the census-pin class now has a third instance and nothing distinguishes
+"pins a census that should be stable" from "pins one any later round will move".

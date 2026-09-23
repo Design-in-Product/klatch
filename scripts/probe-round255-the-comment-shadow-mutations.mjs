@@ -35,11 +35,20 @@ import { fileURLToPath } from 'url';
 
 const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const LIB = path.join(REPO, 'scripts/lib/probe-source-constants.mts');
-const TEST = 'src/__tests__/round255-a-comment-is-not-a-declaration.test.ts';
+// Round 259: the scan `maskComments` used to carry in its own body moved to `lib/strip-source.mjs`,
+// so four of the mutations below (M1, M4, M5, M8) now have to be aimed at the shared reader instead.
+// They are the same mutations pointed at the same behaviours; only the file holding the code moved.
+// Re-aiming them was not optional housekeeping — an anchor that no longer matches reports
+// `ANCHOR MISS` and stops measuring, which is the loud failure this driver was built to have.
+const STRIP = path.join(REPO, 'scripts/lib/strip-source.mjs');
+const TESTS = [
+  'src/__tests__/round255-a-comment-is-not-a-declaration.test.ts',
+  'src/__tests__/round259-the-shared-source-reader.test.ts',
+];
 const OUT = path.join(REPO, '.testdata/round255-mutate-result.json');
 
 const sha = (p) => crypto.createHash('sha256').update(fs.readFileSync(p)).digest('hex');
-const TARGETS = { 'probe-source-constants.mts': LIB };
+const TARGETS = { 'probe-source-constants.mts': LIB, 'strip-source.mjs': STRIP };
 const before = Object.fromEntries(Object.entries(TARGETS).map(([k, p]) => [k, sha(p)]));
 
 /**
@@ -58,10 +67,10 @@ const treeBefore = porcelain();
 
 const MUTATIONS = [
   {
-    name: 'M1 make maskComments the identity — the pre-255 reader, restored verbatim',
-    file: LIB,
-    from: 'export function maskComments(src: string): string {\n  const out = src.split(\'\');',
-    to: 'export function maskComments(src: string): string {\n  if (src) return src;\n  const out = src.split(\'\');',
+    name: 'M1 make the shared reader the identity — the pre-255 reader, restored verbatim',
+    file: STRIP,
+    from: "export const stripSource = (src, blankStrings) => {\n  let out = '';",
+    to: "export const stripSource = (src, blankStrings) => {\n  if (src) return src;\n  let out = '';",
     expect: 'reads the code declaration, not the comment above it',
   },
   {
@@ -80,16 +89,16 @@ const MUTATIONS = [
   },
   {
     name: 'M4 drop the escape skip in the string scanner — an escaped quote closes the string',
-    file: LIB,
-    from: "    if (c === '\\\\') { i += 2; continue; }",
-    to: '    // escape skip removed by M4',
+    file: STRIP,
+    from: "      if (c === '\\\\') { out += '  '; i += 2; continue; }",
+    to: '      // escape skip removed by M4',
     expect: 'does not let an escaped quote close a string early',
   },
   {
     name: 'M5 blank string contents too — masking more than comments hides declarations',
-    file: LIB,
-    from: "    if (c === mode) { mode = 'code'; i += 1; continue; }",
-    to: "    if (c === mode) { mode = 'code'; i += 1; continue; }\n    out[i] = ' ';",
+    file: STRIP,
+    from: "      out += c === '\\n' ? '\\n' : (blankStrings ? ' ' : c);",
+    to: "      out += c === '\\n' ? '\\n' : ' ';",
     // First aimed at 'does not treat // inside a string as a comment'; the drive reported
     // CAUGHT-but-not-by-the-aimed-arm and named this one instead, which is the arm that
     // actually covers it. The aim was corrected to what the run measured, not the other way.
@@ -97,10 +106,22 @@ const MUTATIONS = [
   },
   {
     name: 'M8 never enter string mode — // inside a URL literal starts a comment',
-    file: LIB,
-    from: "      if (c === \"'\" || c === '\"' || c === '`') { mode = c; i += 1; continue; }",
-    to: '      // string entry removed by M8',
+    file: STRIP,
+    from: "    if (c === \"'\" || c === '\"' || c === '`') { quote = c; out += c; prev = c; word = ''; i += 1; continue; }",
+    to: '    // string entry removed by M8',
     expect: 'does not treat // inside a string as a comment',
+  },
+  {
+    // Round 259. The census in `probe-round259-…` went RED on two shipped files and the cause was
+    // not the extraction: `declarationSite` computed `initStart` by subtracting the masked
+    // capture's length off the END of the match. That is faithful only while the masker blanks
+    // nothing with extent — true of Round 255's comments-only masker by luck, false the moment the
+    // shared reader began blanking regex bodies. This restores the tail-derived offset.
+    name: 'M9 derive the initialiser offset from the tail of the masked match again — Round 259',
+    file: LIB,
+    from: '    let k = m.index + m[0].length;\n    while (k < src.length && /\\s/.test(src[k])) k += 1;',
+    to: '    const t = INITIALISER(name).exec(masked.slice(m.index));\n    let k = m.index + (t ? t[0].length - t[1].length : m[0].length);',
+    expect: 'quotes the initialiser the source spells, even when it is a regex literal',
   },
   {
     name: 'M6 splice at the first raw match again — the write path that patched the comment',
@@ -122,7 +143,7 @@ function runSuite() {
   try {
     execFileSync(
       'npx',
-      ['vitest', 'run', TEST, '--root', 'packages/server', '--reporter=json', '--outputFile', OUT],
+      ['vitest', 'run', ...TESTS, '--root', 'packages/server', '--reporter=json', '--outputFile', OUT],
       { cwd: REPO, stdio: 'ignore', env: { ...process.env, NO_COLOR: '1' } },
     );
   } catch {

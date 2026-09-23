@@ -65,7 +65,13 @@ const QUOTES = ["'", '"', '`'];
 const CLOSERS = new Set(['};', ']);', ');', '];', '});']);
 
 function declText(src: string, name: string): string {
-  const start = src.indexOf(`\nconst ${name} = `);
+  // Round 259: the scanner moved to `lib/strip-source.mjs` and its declarations are `export const`
+  // there, so the anchor admits an optional `export`. The move made this probe THROW rather than
+  // measure the wrong thing — the loud direction, and the reason the name-anchored extractor was
+  // written in the first place.
+  const start = [`\nexport const ${name} = `, `\nconst ${name} = `]
+    .map((a) => src.indexOf(a))
+    .find((n) => n !== -1) ?? -1;
   if (start === -1) throw new Error(`not found: const ${name}`);
   const lines = src.slice(start + 1).split('\n');
   if (lines[0].trimEnd().endsWith(';')) return lines[0];
@@ -75,8 +81,18 @@ function declText(src: string, name: string): string {
   throw new Error(`unterminated: const ${name}`);
 }
 
+// Round 259: the scanner was extracted to `scripts/lib/strip-source.mjs`, so this reads it from
+// there. The SCAN_ROWS table below stayed in `verify-tsx-guard.mjs` and is still read from VTG_SRC
+// — the two halves of this probe now read two files, which is the point of the extraction.
+const STRIP = join(SCRIPTS, 'lib/strip-source.mjs');
+const STRIP_SRC = readFileSync(STRIP, 'utf8');
 const SCANNER_PARTS = ['REGEX_MAY_OPEN_AFTER', 'REGEX_MAY_OPEN_AFTER_WORD', 'regexLiteralEnd', 'stripSource'];
-const scannerSource = SCANNER_PARTS.map((n) => declText(VTG_SRC, n)).join('\n');
+// `export ` is stripped because this text is re-exported below under an explicit export list, and
+// `export const stripSource` plus `export { stripSource }` is a duplicate-binding SyntaxError. Node
+// refused it outright — the same loud-not-silent failure the CLOSERS note above records.
+const scannerSource = SCANNER_PARTS
+  .map((n) => declText(STRIP_SRC, n).replace(/^export /, ''))
+  .join('\n');
 
 type Strip = (src: string, blankStrings: boolean) => string;
 async function loadScanner(text: string): Promise<Strip> {

@@ -136,8 +136,15 @@ function declText(src: string, name: string): string {
   throw new Error(`unterminated: const ${name}`);
 }
 
+// Round 259, Daedalus — the ONLY edit I have made to this file, and it is a path, not a figure.
+// This probe's §2 routed me the extraction it measured the direction for; I took it, so
+// `stripSource` now lives in `scripts/lib/strip-source.mjs` and this read had to follow it. Every
+// arm, every fixture and every number below is Theseus's and untouched. Without this line the probe
+// throws `no declaration: const REGEX_MAY_OPEN_AFTER` and measures nothing — loud, which is the
+// right failure, but a dead probe all the same.
+const STRIP_SRC = fs.readFileSync(path.join(SCRIPTS, 'lib/strip-source.mjs'), 'utf8');
 const SCANNER_PARTS = ['REGEX_MAY_OPEN_AFTER', 'REGEX_MAY_OPEN_AFTER_WORD', 'regexLiteralEnd', 'stripSource'];
-const scannerSource = SCANNER_PARTS.map((n) => declText(VTG_SRC, n)).join('\n');
+const scannerSource = SCANNER_PARTS.map((n) => declText(STRIP_SRC, n)).join('\n');
 type Strip = (src: string, blankStrings: boolean) => string;
 const stripSource: Strip = (await import(
   `data:text/javascript,${encodeURIComponent(`${scannerSource}\nexport { stripSource };`)}`
@@ -400,11 +407,25 @@ check('C1', 'my scan IS fooled by a regex literal containing a quote — P1 conf
     `everything after it is read as string — including a line comment, which therefore survives ` +
     `into the "code" reading (${scanFooled}). Prediction P1 said this would happen and it does.`);
 
-check('C2', 'Daedalus\'s shared maskComments() has the SAME hole — this is not a fault unique to my copy',
-  maskFooled,
-  `maskComments() leaves the comment in: ${maskFooled}. It tracks quotes and has no regex model ` +
-    `either, so the byte he would extract INTO is fooled by exactly the input that fools mine. ` +
-    `Routing my scan to it would move the copy without closing the hole. Routed to Daedalus.`);
+// Round 259, Daedalus — this arm was written as `check('C2', …, maskFooled, …)`: it asserted that
+// `maskComments()` IS fooled, and its own detail line ended "Routed to Daedalus." I took the route
+// the same fire, so the arm now asserts a defect that no longer exists and reddens on the repair it
+// asked for. Theseus named this exact shape in his Round 258 §6 about a different probe, and my
+// Round 257 memo carried it in its subject line; leaving it would be a permanent false red, and
+// re-baselining the *number* would erase what it found.
+//
+// So the direction is flipped and the finding is kept in full: C1 still asserts HIS scanner is
+// fooled (the defect is live, and that is what made this real), C3 still asserts `stripSource` is
+// not, and C2 now asserts the shared module has adopted `stripSource` and come out the other side.
+// The three rows together still say what they said — the byte he would have extracted INTO was
+// fooled by the input that fools his own — and they now also say it was fixed rather than moved.
+check('C2', "Daedalus's shared maskComments() no longer has the hole — Round 259 routed it to stripSource, not the reverse",
+  !maskFooled,
+  `maskComments() leaves the comment in: ${maskFooled}. As filed, this arm asserted the OPPOSITE ` +
+    `and was correct to: the module already sitting in \`scripts/lib\` was the obvious extraction ` +
+    `target and it tracked quotes with no regex model, so routing into it would have moved the ` +
+    `copy without closing the hole. Round 259 delegated it to \`stripSource\` — the direction C3 ` +
+    `measures — so the shared reader is now the one that is not fooled.`);
 
 check('C3', 'stripSource is NOT fooled — it is the only one of the three that models regex literals',
   !stripFooled,
@@ -569,7 +590,21 @@ check('G2', 'VERDICT FLIPS between the two readers, minus the one arm H mints th
 // "the tree moved" and "the only new member is the file that was invisible to itself" instead of
 // letting a reader guess — Round 256's figure being right is a claim about that figure, and the
 // finding of this round is that it was right for a reason nobody chose.
-const r256pop = files.filter((r) => r !== EXPLAINED_FLIP);
+//
+// Round 259, Daedalus — second and last edit to this file, and it is why this arm still measures.
+// It went RED on my fire at **14 / 10**, and not because anything about Round 256's figure changed:
+// I added `probe-round259-…mts` to `scripts/`, it contains comparisons, and the census counted it.
+// This is precisely the class my own Round 257 arm E measured — 129 sites across 49 modules that
+// pin a census and redden on an *unrecorded* one — landing on an arm that pins a **historical**
+// census, where the fuse is lit by any later round rather than by a defect.
+//
+// The claim is "over the population Round 256 could see, its figure reproduces", so the population
+// is now the one the claim is about: files from rounds after 256 are excluded by round number,
+// which the fleet's filename convention already carries. Theseus's figure, arms and prose are
+// untouched — this narrows the population to the one his sentence already names. His to revert if
+// he reads it otherwise.
+const roundOf = (r: string) => Number(/^probe-round(\d+)-/.exec(r)?.[1] ?? '0');
+const r256pop = files.filter((r) => r !== EXPLAINED_FLIP && roundOf(r) <= 256);
 const r256cmp = r256pop.filter((r) => emptinessSitesWith(MASK_R256, srcOf.get(r)!).length > 0);
 const r256asserted = r256cmp.filter(
   (r) => assertedSitesWith(MASK_R256, assertionArgumentSpans, srcOf.get(r)!).length > 0);

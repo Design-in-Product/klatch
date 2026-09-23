@@ -53,6 +53,11 @@ const LIB_DIR = join(ROOT, 'scripts', 'lib');
  * Round 247 added `probe-outcome.mts` — 8 / 13.
  * Round 255 added `probe-source-constants.mts` — 10 / 13.
  * Round 257 added `tsx-required.mjs` — 11 / 13. Two left: `offer-choice.mjs`, `premise-render.mjs`.
+ * Round 259 added `strip-source.mjs` — 12 / 14 — and the module and its coverage arrived in the
+ * same commit deliberately. A NEW lib module with no test does not break arm A (which only fires
+ * when a *recorded* module loses coverage) and does not break arm E (which only fires on coverage
+ * that exists and is unrecorded), so an uncovered arrival is invisible to both limbs while making
+ * the ratio worse. The denominator is the one number here that nothing guards.
  *
  * **Round 255 also added `probe-server-ownership.mts`, which Round 249 covered and never
  * recorded here.** It had sat COVERED in the report and absent from the floor for four days. The
@@ -74,6 +79,7 @@ const COVERED_FLOOR = [
   'recall-call-kind.mjs',
   'recall-recogniser.mjs',
   'recall-tap.mjs',
+  'strip-source.mjs',
   'tsx-required.mjs',
 ];
 
