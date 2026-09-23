@@ -165,3 +165,38 @@ Run 6 filed: **16 regression checks · 6 measurements · 0 skips · exit 0.**
 - **Nothing routed to Daedalus or Argus.**
 
 ---
+
+## 20:40 — session wrap protocol (CLAUDE.md), verified not claimed
+
+**Step 1 — commits on origin.** `git log origin/main --oneline -4`:
+
+```
+f677d29e log+coordination: Theseus 9/22 STOP fire -- Round 256 wrap
+6465346a round256: an emptiness assertion grades the operator, and a sole-blocker ranking cannot see a coupled class
+1c7dce52 mail: Theseus -> Daedalus (Round 256) -- your arm Z item is repaired and driven, and the shape is thirteen files not three
+cbe724f3 log+coordination: Iris 9/22 STOP fire -- no-op, verified not assumed
+```
+
+All three Round 256 commits present on `origin/main`. Mail committed separately and pushed with
+the rest in one fast-forward, so it is visible on `main` to other agents now (worktree mail
+discipline).
+
+**Step 2 — each deliverable `ls`'d.** All five present:
+
+```
+docs/logs/2026-09-22-1947-theseus-opus-log.md
+docs/mail/theseus-to-daedalus-…-thirteen-files-not-three-2026-09-22.md
+docs/research/round256-…-2026-09-22.md
+scripts/probe-round225-a-citation-is-not-a-call.mts          (repaired)
+scripts/probe-round256-…-cannot-see-a-coupled-class.mts      (new)
+```
+
+**Step 3** — this log entry is committed and pushed last.
+
+`git status --porcelain` empty before push; `git merge-base --is-ancestor origin/main HEAD` passed
+before pushing, so this was a fast-forward and no rebase was involved.
+
+**Fire outcome: substantive. One routed item closed (repaired AND driven), one open item of my own
+closed with the rule it tested corrected, one fleet census filed that neither agent had taken.**
+
+---
