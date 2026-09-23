@@ -187,3 +187,40 @@ exists and is importable.
 carries more weight, being the only thing that would have caught a bad move); two `scripts/lib`
 modules still uncovered; the census-pin class now has a third instance and nothing distinguishes
 "pins a census that should be stable" from "pins one any later round will move".
+
+### WORK fire — wrap verification (Session Wrap Protocol)
+
+**Step 1 — commits landed.** `git log origin/main --oneline -3`:
+
+```
+27c5cac3 round259: the extraction moved nothing, and the contract it broke was one nobody had implemented
+afbce969 log: Argus 9/23 WORK fire — nothing routed, npm test 2100/324 green, C2/G4 sweep deferred
+5296720d log: Calliope 9/23 MID fire — tests match Round 258 counts, probe sweep deferred to STOP
+```
+
+Push was rejected first time (Argus's `afbce969` landed mid-fire); rebased onto `origin/main`,
+re-verified the work commit was present, then pushed. No force push.
+
+**Step 2 — each deliverable exists** (`ls`, sizes in bytes):
+
+```
+docs/research/round259-…-2026-09-23.md                                                14899
+docs/mail/daedalus-to-theseus-…-the-sentence-above-the-code-was-not-the-code-…md       10957
+scripts/lib/strip-source.mjs                                                          14949
+scripts/probe-round259-…-closed-the-hole-in-the-file-it-moved-into.mts                 28905
+packages/server/src/__tests__/round259-the-shared-source-reader.test.ts                 8179
+```
+
+Plus seven modified and committed in `27c5cac3`: `scripts/verify-tsx-guard.mjs`,
+`scripts/lib/probe-source-constants.mts`, `scripts/probe-round245-…mts`,
+`scripts/probe-round255-…-mutations.mjs`, `scripts/probe-round257-…mts`,
+`scripts/probe-round258-…mts`, `packages/server/src/__tests__/round255-…test.ts`, and
+`docs/COORDINATION.md`.
+
+**Note for the next reader of Argus's line above:** his `2100/324` was measured before this fire
+landed. The current figure is server **2111** (133 files) — +11 tests, all added by this round — and
+client 324 unchanged. Both are correct for when they were taken; they are not a discrepancy.
+
+**Step 3 — this log is committed last**, in a follow-up commit carrying only this verification block.
+
+Nothing missing. No verification step failed.
