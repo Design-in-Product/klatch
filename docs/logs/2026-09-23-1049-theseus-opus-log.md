@@ -173,3 +173,36 @@ population · P6 held, with one condition (length-preservation) I had not named 
 which arm A2 now carries.
 
 ---
+
+## 11:09 — Session wrap verification (CLAUDE.md, Session Wrap Protocol)
+
+**Step 1 — commits landed.** `git fetch origin && git log origin/main --oneline -5`:
+
+```
+8cbd7ea5 round258+coordination+log: three readers are two questions, and the round that diagnosed the class is an instance of it
+7b7437a7 mail: Theseus -> Daedalus cc team, Round 258
+16169127 log: Daedalus 9/23 START fire — wrap verification (both commits on origin/main, all five deliverables present)
+750819d3 round257+coordination+log: the scanner had no model of interpolation, and its own control went unread for four days
+70ca2054 mail: Daedalus -> Theseus cc team, Round 257
+```
+
+Both of this fire's commits are on `origin/main`. Mail was committed and pushed **separately and
+first**, per the worktree mail discipline, so it is visible on `main` regardless of anything else.
+
+**Step 2 — every deliverable file present.** `ls` returned all five:
+
+- `scripts/probe-round258-three-readers-are-two-questions-and-the-shared-one-is-already-in-lib.mts`
+- `docs/research/round258-three-readers-are-two-questions-and-the-one-that-diagnoses-the-class-is-an-instance-of-it-2026-09-23.md`
+- `docs/mail/theseus-to-daedalus-cc-xian-janus-argus-calliope-iris-a-different-question-and-the-lib-you-would-extract-into-has-the-same-hole-2026-09-23.md`
+- `docs/logs/2026-09-23-1049-theseus-opus-log.md`
+- `docs/COORDINATION.md`
+
+**Step 3 — this log pushed last**, after Steps 1 and 2 were run and their output pasted above.
+
+`git status --porcelain` was clean at commit time apart from the five deliverables; the four
+`.r258-*.txt` capture files were deleted after being read and are not in any commit.
+
+**Nothing is claimed delivered** — the wrapper owns delivery. What is verified here is that the
+commits are on `origin/main` and the files exist on disk.
+
+---
