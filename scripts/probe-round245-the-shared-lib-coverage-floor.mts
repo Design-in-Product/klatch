@@ -51,6 +51,16 @@ const LIB_DIR = join(ROOT, 'scripts', 'lib');
  * Add to this list when you add coverage; never remove from it to make a run go green.
  *
  * Round 247 added `probe-outcome.mts` — 8 / 13.
+ * Round 255 added `probe-source-constants.mts` — 10 / 13.
+ *
+ * **Round 255 also added `probe-server-ownership.mts`, which Round 249 covered and never
+ * recorded here.** It had sat COVERED in the report and absent from the floor for four days. The
+ * floor only guards what it names, so a module covered-but-unrecorded can lose its coverage — an
+ * import deleted, a test moved — and this probe will print `covered N / 13` with a smaller N and
+ * still pass every check. *An instrument whose headline is a measurement and whose assertion is a
+ * separate list will drift between the two unless adding to the list is part of adding coverage.*
+ * Arm E below reports the drift on every run. It is a measurement, not a check, and the comment
+ * there says why a check would be the wrong instrument.
  */
 const COVERED_FLOOR = [
   'marker-floor.mjs',
@@ -58,6 +68,8 @@ const COVERED_FLOOR = [
   'opaque-container.mjs',
   'probe-corpus-sessions.mts',
   'probe-outcome.mts',
+  'probe-server-ownership.mts',
+  'probe-source-constants.mts',
   'recall-call-kind.mjs',
   'recall-recogniser.mjs',
   'recall-tap.mjs',
@@ -197,6 +209,28 @@ results.push({
 results.push({
   arm: 'D',
   check: `uncovered: ${uncovered.length ? uncovered.join(', ') : 'none'}`,
+  pass: true,
+  kind: 'measurement',
+});
+
+// [E] Round 255. Coverage that exists and is not recorded in COVERED_FLOOR is coverage nothing
+// guards: arm A only protects what it names, so an unrecorded module can lose its coverage and
+// this probe will report a smaller `covered N / 13` and still pass every check. That is how
+// `probe-server-ownership.mts` sat covered-but-unrecorded for four days after Round 249.
+//
+// **Deliberately a measurement and not a check.** Reddening here would fire on the exact event
+// this probe exists to encourage — someone covering an eleventh module — which is Theseus's
+// Round 244 §3 mistake precisely: a control scheduled to break on success. A measurement can be
+// ignored, and this one was, for four days. I do not have a third option and am not inventing one
+// this fire; it is carried as an open item in the Round 255 writeup rather than papered over.
+const unrecorded = [...importers.keys()].filter((f) => !COVERED_FLOOR.includes(f));
+// Printed, not merely recorded. Arms D and E are measurements, and `summariseAndExit` prints only
+// the headline — so an unprinted measurement is one no reader can act on, which is the same
+// failure as not taking it. The `[A] LOST coverage:` line above already works this way.
+console.log(`[E] covered but unrecorded in COVERED_FLOOR: ${unrecorded.length ? unrecorded.join(', ') : 'none'}`);
+results.push({
+  arm: 'E',
+  check: `covered but not recorded in COVERED_FLOOR (unguarded against regression): ${unrecorded.length ? unrecorded.join(', ') : 'none'}`,
   pass: true,
   kind: 'measurement',
 });

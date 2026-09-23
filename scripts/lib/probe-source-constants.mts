@@ -77,7 +77,141 @@
 import fs from 'fs';
 
 /** Longest initialiser we will look at; a declaration is one line by convention here. */
-const INITIALISER = (name: string) => new RegExp(`const ${name}\\s*=\\s*([^;\\n]+)`);
+const INITIALISER = (name: string, flags = '') =>
+  new RegExp(`const ${name}\\s*=\\s*([^;\\n]+)`, flags);
+
+/**
+ * Return a copy of `src` the same length, with every comment byte replaced by a space.
+ *
+ * ## Why a reader of source has to know what a comment is
+ *
+ * Round 255. The first version scanned the raw file, so the **first** `const <name> = …` in
+ * byte order won — comment or code. Every failure that follows is from one shape: a doc comment
+ * above the declaration that quotes a declaration, which is ordinary house style here and appears
+ * in this module's own class comment four times.
+ *
+ * On a file whose comment says `const FINGERPRINT_LINE_CAP = 50 * 1000;` above a shipped
+ * `const FINGERPRINT_LINE_CAP = 50_000;`:
+ *
+ * | call | before | why it is the worst possible answer |
+ * |---|---|---|
+ * | `readNumericConstant` | **throws "declared as a product"** | the shipped declaration is a bare value; the throw names `readLeadingFactor()` as the remedy |
+ * | `readLeadingFactor` | **returns `50`** | which is the remedy the throw just recommended — a cap 1000× small, silently |
+ * | `replaceNumericConstant` | **returns success, comment patched, code untouched** | both guards pass; this is a write path into `packages/` |
+ *
+ * The first two rows compose. A reader who meets the throw does exactly what it tells them to do
+ * and lands on **the 2026-09-04 turncount bug this module was built to prevent** — reached through
+ * the module's own advice. *An error message is part of the interface, and one that recommends a
+ * call is asserting something about what that call will return.*
+ *
+ * ## What is masked and what is not
+ *
+ * Comments only. String and template contents are left standing, because `${…}` can hold code and
+ * a masker that guessed at it would hide declarations. A declaration quoted inside a string is
+ * therefore still a second site — caught loudly by the multiplicity guard in
+ * {@link declarationSite} rather than silently preferred.
+ *
+ * **Known limit, bounded deliberately:** a regex literal ending `//` (`/https:\/\//`) reads as a
+ * line comment to this scanner, masking the rest of that line. It can only ever mask *more*, never
+ * less, so its worst outcome is a declaration going unseen — which is a throw, not a wrong number.
+ * Loud over partial, the same trade the rest of this module makes. Arm C of
+ * `probe-round255-…` drives both live product files to show neither trips it.
+ *
+ * Newlines survive masking so line numbers reported in errors stay true.
+ */
+export function maskComments(src: string): string {
+  const out = src.split('');
+  const n = src.length;
+  let mode: 'code' | 'line' | 'block' | "'" | '"' | '`' = 'code';
+  let i = 0;
+  while (i < n) {
+    const c = src[i];
+    const d = src[i + 1];
+    if (mode === 'code') {
+      if (c === '/' && d === '/') { out[i] = out[i + 1] = ' '; mode = 'line'; i += 2; continue; }
+      if (c === '/' && d === '*') { out[i] = out[i + 1] = ' '; mode = 'block'; i += 2; continue; }
+      if (c === "'" || c === '"' || c === '`') { mode = c; i += 1; continue; }
+      i += 1; continue;
+    }
+    if (mode === 'line') {
+      if (c === '\n') { mode = 'code'; i += 1; continue; }
+      out[i] = ' '; i += 1; continue;
+    }
+    if (mode === 'block') {
+      if (c === '*' && d === '/') { out[i] = out[i + 1] = ' '; mode = 'code'; i += 2; continue; }
+      if (c !== '\n') out[i] = ' ';
+      i += 1; continue;
+    }
+    // Inside a string or template: left as written, escapes skipped so `\'` does not close it.
+    if (c === '\\') { i += 2; continue; }
+    if (c === mode) { mode = 'code'; i += 1; continue; }
+    i += 1;
+  }
+  return out.join('');
+}
+
+/** 1-based line number of a byte offset, for error messages a reader can act on. */
+function lineOf(src: string, index: number): number {
+  let line = 1;
+  for (let i = 0; i < index; i += 1) if (src[i] === '\n') line += 1;
+  return line;
+}
+
+/** The single code declaration of `const <name> = …`, or a refusal saying which case it hit. */
+type Site = {
+  /** Offset of `const` — used for the line number in refusals. */
+  index: number;
+  /** Offset of the initialiser text itself, so a patch can be spliced exactly there. */
+  initStart: number;
+  /** The initialiser as the original source spells it. */
+  init: string;
+};
+
+/**
+ * Locate the one declaration of `name` outside comments, and **refuse when there is not exactly
+ * one**.
+ *
+ * Three outcomes, each loud, in the spirit of the class comment's "fail loudly, never partially":
+ *
+ * - **no match anywhere** — `null`, which the callers turn into {@link notFound}.
+ * - **matches, but all inside comments** — throws. Returning the comment's value is exactly the
+ *   Round 255 defect; guessing that the comment *is* the declaration is not the reader's call.
+ * - **two or more code matches** — throws, naming every line. Two declarations of the same name
+ *   means the reader cannot know which one ships, and picking the first is how the old version
+ *   got this wrong in the first place. Measured before shipping: both constants any caller reads
+ *   today (`FINGERPRINT_LINE_CAP`, `MAX_IMPORT_SIZE`) have exactly one declaration, so nothing in
+ *   the tree regresses on this.
+ */
+function declarationSite(src: string, name: string): Site | null {
+  const masked = maskComments(src);
+  const sites: Site[] = [];
+  const re = INITIALISER(name, 'g');
+  for (let m = re.exec(masked); m !== null; m = re.exec(masked)) {
+    // The initialiser text is taken from the ORIGINAL source at the same offset — masking exists
+    // to decide *where* the declaration is, never to change what it says.
+    const initStart = m.index + m[0].length - m[1].length;
+    sites.push({ index: m.index, initStart, init: src.slice(initStart, initStart + m[1].length) });
+  }
+
+  if (sites.length > 1) {
+    const lines = sites.map((s) => lineOf(src, s.index)).join(', ');
+    throw new Error(
+      `${name} is declared ${sites.length} times outside comments (lines ${lines}). This reader ` +
+      `will not pick one for you: the caller scrapes this constant so a bump in packages/ cannot ` +
+      `stale it, and two declarations mean "the shipped value" is not a single fact. Read the ` +
+      `file and either remove the duplicate or read the one you mean by a distinct name.`);
+  }
+  if (sites.length === 1) return sites[0];
+
+  if (INITIALISER(name).test(src)) {
+    throw new Error(
+      `${name} appears in ${JSON.stringify('const ' + name + ' = …')} form only inside comments ` +
+      `in this file — there is no such declaration in the code. Reading the comment's value is ` +
+      `the Round 255 defect: a doc comment quoting an old spelling would be reported as the ` +
+      `shipped one. Refusing to guess that the comment is the declaration.`);
+  }
+  return null;
+}
 
 /**
  * Pull the raw initialiser text for `const <name> = …`, trimmed of trailing punctuation and of a
@@ -87,9 +221,9 @@ const INITIALISER = (name: string) => new RegExp(`const ${name}\\s*=\\s*([^;\\n]
  * because the two callers below mean different things by the same bytes.
  */
 function initialiserOf(src: string, name: string): string | null {
-  const m = src.match(INITIALISER(name));
-  if (!m) return null;
-  return m[1]
+  const site = declarationSite(src, name);
+  if (site === null) return null;
+  return site.init
     .replace(/\bas\s+const\b/, '')   // `50_000 as const`
     .replace(/[,)\]}]+\s*$/, '')     // `const X=7,` / `const X = 12 )`
     .trim();
@@ -228,6 +362,9 @@ export function readLeadingFactorFromFile(file: string, name: string, what: stri
  *
  * Throws on a no-op, on an unparseable initialiser, and on a substitution that did not come out
  * as asked — for the same reason.
+ *
+ * Round 255: the substitution is spliced at the one **code** declaration site, so a doc comment
+ * quoting the declaration can no longer absorb the patch. See {@link maskComments}.
  */
 export function replaceNumericConstant(src: string, name: string, newExpr: string, what: string): string {
   const text = initialiserOf(src, name);
@@ -242,12 +379,14 @@ export function replaceNumericConstant(src: string, name: string, newExpr: strin
       `literal or a product of them. Refusing to rewrite an expression this probe cannot parse.`);
   }
 
-  // Replace the initialiser entire, so a product leaves no operands behind.
-  const pattern = new RegExp(`(const ${name}\\s*=\\s*)([^;\\n]+)`);
-  const out = src.replace(pattern, (_all, lead: string, init: string) => {
-    const trailing = init.match(/[,)\]}]+\s*$/)?.[0] ?? '';
-    return `${lead}${newExpr}${trailing}`;
-  });
+  // Replace the initialiser entire, so a product leaves no operands behind — and splice it at the
+  // offset `declarationSite` proved is code. `String.replace` would take the first match in byte
+  // order, which is how a doc comment quoting the declaration used to absorb the whole patch and
+  // still pass both guards below. Round 255.
+  const site = declarationSite(src, name)!;
+  const trailing = site.init.match(/[,)\]}]+\s*$/)?.[0] ?? '';
+  const out =
+    src.slice(0, site.initStart) + newExpr + trailing + src.slice(site.initStart + site.init.length);
 
   if (out === src) throw new Error(`${what}: patching ${name} to ${newExpr} was a no-op.`);
 
