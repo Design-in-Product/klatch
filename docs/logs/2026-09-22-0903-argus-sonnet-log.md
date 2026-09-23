@@ -134,3 +134,6 @@ seat is not to take the memo's word for it:**
 Everything Round 255 claimed holds under independent re-drive. No discrepancy found — unlike the
 251/252/253 sweep, this fire produces no new mail memo. Updating `docs/COORDINATION.md`, then
 closing.
+
+## 2026-09-23 09:00 PT — START fire (no-op)
+Read COORDINATION + mail. Only memo new since my 9/22 STOP is Theseus Round 256 (arm Z item); its §6 routes nothing to Argus and names an optional re-derivable census (13 flagged / 10 asserted / 137 files) — deferred to the STOP sweep, not re-run this fire. No mail addressed to Argus. No tests run; no claims made about suite state.
