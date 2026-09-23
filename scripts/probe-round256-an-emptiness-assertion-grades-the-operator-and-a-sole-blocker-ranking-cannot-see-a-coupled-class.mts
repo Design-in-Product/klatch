@@ -66,6 +66,17 @@ import { execFileSync } from 'child_process';
 import { fileURLToPath } from 'url';
 import { summariseAndExit, type ProbeVerdict } from './lib/probe-outcome.mts';
 
+/**
+ * Round 260: question A — "which bytes are code?" — is delegated to the shared reader Round 259
+ * extracted, rather than answered a fourth time in this file. See the docblock on
+ * {@link emptinessSites} for what this replaced and what it deliberately does NOT replace.
+ */
+type StripSource = (src: string, blankStrings: boolean) => string;
+const { stripSource } = (await import(
+  path.join(path.dirname(fileURLToPath(import.meta.url)), 'lib/strip-source.mjs')
+)) as { stripSource: StripSource };
+const MASK = (s: string) => stripSource(s, false);
+
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const REPO = path.resolve(HERE, '..');
 const SCRIPTS = path.join(REPO, 'scripts');
@@ -627,13 +638,32 @@ if (!population.length) {
 console.log('\n── arm E: how many probes assert EMPTINESS over a shared window? ────────');
 
 /**
+ * ## Round 260 — question A is delegated, and the reason it took four rounds to get here
+ *
+ * Everything below used to read source through `scan()`, this file's private quote-only masker.
+ * Round 258 measured what that costs: `scan` has no model of regex literals, so a body containing
+ * an apostrophe — `/\bhere(?:'s)\b/i`, live in `verify-filler-constraints.mjs` — flips it into
+ * false string state, and a probe that MINTS a `check()` fixture as a string has its own test data
+ * read as real code. That produced exactly one wrong verdict, on `probe-round258` itself.
+ *
+ * The fix is not a better scanner here. It is to stop having a scanner here: `stripSource` models
+ * regex literals and template interpolation, and Round 259 extracted it to `scripts/lib` precisely
+ * so this call site could reach it. Round 258 §6 declined to make this change while that module was
+ * private to `verify-tsx-guard.mjs`, because the alternative was inlining a fourth copy of the same
+ * question. Round 260 arms E1–E3 drove the swap over the live tree BEFORE it was applied: 0 sites
+ * gained, 1 lost, and the one lost is the fixture-text false positive.
+ *
+ * **Scope: the emptiness detector only.** `scan()` still backs the hazard model, whose figures
+ * Rounds 252 and 254 publish; swapping that is a different measurement and has not been taken. The
+ * `porcelainUsers` tally below also still reads through `scan` for the same reason.
+ *
  * Detect the shape in source: a binding whose value comes from `git status --porcelain`, later
  * compared against the empty string. Deliberately syntactic and deliberately loose — this reports
  * a LIST for a human to adjudicate, not a verdict. An over-report here is cheap; a missed file is
  * the thing that costs another agent a red fire.
  */
 function emptinessSites(src: string): string[] {
-  const code = scan(src).code;
+  const code = MASK(src);
   const hits: string[] = [];
   const PORCELAIN = /status['"`]\s*,\s*['"`]--porcelain|status\s+--porcelain/;
   if (!PORCELAIN.test(code)) return hits;
@@ -685,24 +715,26 @@ function emptinessSites(src: string): string[] {
  *
  * **Rule: when two settings of a tuning parameter fail in opposite directions, the parameter is
  * not mis-tuned — it is the wrong parameter.**
+ *
+ * **Round 260:** the quote tracking that used to live inline in this loop was the third copy of
+ * question A in this tree — the one a census of maskers could not see, because it was a `quote`
+ * variable rather than a function (Round 258 §2). It is gone. Depth is counted over
+ * `stripSource`-masked text at the same offsets and the span is sliced from the ORIGINAL, which is
+ * sound exactly because the mask never INVENTS a bracket — Round 260 arm A2 measures that property
+ * over 143 files (0 violations) and arm A2b mints a length-preserving masker that breaks it, so
+ * the zero is a measurement rather than a restatement.
  */
 function assertionArgumentSpans(code: string): string[] {
+  const masked = stripSource(code, true);
   const spans: string[] = [];
   const OPEN = /\b(?:check|assert|expect|ok)\s*\(/g;
-  for (const m of code.matchAll(OPEN)) {
+  for (const m of masked.matchAll(OPEN)) {
     let i = m.index! + m[0].length;
     let depth = 1;
-    let quote: string | null = null;
     const start = i;
-    while (i < code.length && depth > 0) {
-      const c = code[i];
-      if (quote) {
-        if (c === '\\') { i += 2; continue; }
-        if (c === quote) quote = null;
-      } else if (c === '"' || c === "'" || c === '`') {
-        quote = c;
-      } else if (c === '(') depth += 1;
-      else if (c === ')') depth -= 1;
+    while (i < masked.length && depth > 0) {
+      if (masked[i] === '(') depth += 1;
+      else if (masked[i] === ')') depth -= 1;
       i += 1;
     }
     if (depth === 0) spans.push(code.slice(start, i - 1));
@@ -711,7 +743,7 @@ function assertionArgumentSpans(code: string): string[] {
 }
 
 function assertedEmptinessSites(src: string): string[] {
-  const code = scan(src).code;
+  const code = MASK(src);
   const spans = assertionArgumentSpans(code);
   return emptinessSites(src).filter((n) => {
     const cmp = new RegExp(`\\b${n}\\b\\s*(?:\\(\\s*\\))?\\s*(?:\\.trim\\(\\))?\\s*===\\s*(['"\`])\\1`);

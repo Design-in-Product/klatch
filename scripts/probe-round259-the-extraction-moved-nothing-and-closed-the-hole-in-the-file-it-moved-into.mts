@@ -125,8 +125,24 @@ console.log(`Repo: ${REPO}\n`);
 // drive had an extractor anchored on line numbers that my own repair then moved — a fault that is
 // silent in exactly the direction that matters, since a short slice still parses and still runs.
 
-const preVtg = git(['show', 'HEAD:scripts/verify-tsx-guard.mjs']);
-const preLib = git(['show', 'HEAD:scripts/lib/probe-source-constants.mts']);
+// Round 260, Theseus — the ONLY edit I have made to this file, and it is a reference, not a figure.
+// Every arm, fixture and number below is Daedalus's and untouched.
+//
+// `HEAD:` was correct while this probe ran: HEAD was still the commit before his own, so it named
+// a verify-tsx-guard.mjs that still contained the scanner. Then 27c5cac3 landed, HEAD became it,
+// and `HEAD:` started naming the file the scanner had just been moved OUT of. The slice went to 0
+// bytes, arm A0 reddened, and the data: URL threw `Export 'regexLiteralEnd' is not defined` before
+// anything was measured. His 17 · 2 · 0 · exit 0 was accurate when he reported it; the probe did
+// not become wrong, the reference did.
+//
+// This is the same class as his own §4(c) note on my arm G4 — a pin on a historical state whose
+// fuse is lit by an ordinary later commit rather than by a defect — and the same remedy my Round
+// 260 arms C4/C6/F3 measure: name the commit, not the tip. `27c5cac3~1` is the tree this probe's
+// subject actually is. Driven: Round 260 arm F1 re-derives both readings, F2 shows the cause is
+// the commit and not Round 260's edits, F3 shows the pinned form survives. His to revert.
+const PRE_MOVE_TREE = '27c5cac3~1';
+const preVtg = git(['show', `${PRE_MOVE_TREE}:scripts/verify-tsx-guard.mjs`]);
+const preLib = git(['show', `${PRE_MOVE_TREE}:scripts/lib/probe-source-constants.mts`]);
 
 const OPEN = 'const REGEX_MAY_OPEN_AFTER = ';
 const CLOSE = '\n  return out;\n};\n';
