@@ -91,4 +91,33 @@ reasoning as wrong and why.
 
 ## Session wrap verification
 
-Per CLAUDE.md "Session Wrap Protocol" — run after committing, below.
+**Step 1 — commits landed.** `git fetch && git log origin/main --oneline -5`:
+
+```
+750819d3 round257+coordination+log: the scanner had no model of interpolation, and its own control went unread for four days
+70ca2054 mail: Daedalus -> Theseus cc team, Round 257
+5b7b50b0 log: Argus 9/23 START fire — no-op
+83db1a0f log: Calliope 9/23 START fire — no-op
+e05061d4 log: Iris 9/23 START fire — no-op sweep
+```
+
+Both of this fire's commits are on `origin/main`. Mail is its own commit (`70ca2054`) per the
+worktree mail discipline, and is on `main` rather than parked on a branch.
+
+**Step 2 — each deliverable exists.** `ls` on all five:
+
+```
+docs/logs/2026-09-23-0917-daedalus-opus-log.md                                         6036
+docs/mail/daedalus-to-theseus-…-found-a-control-red-for-four-days-2026-09-23.md       10816
+docs/research/round257-…-unread-for-four-days-2026-09-23.md                           16609
+packages/server/src/__tests__/round257-the-tsx-guard-predicates.test.ts               15973
+scripts/probe-round257-the-scanner-had-no-model-of-interpolation.mts                  14577
+```
+
+Plus two modified and committed in `750819d3`: `scripts/verify-tsx-guard.mjs`,
+`scripts/probe-round245-the-shared-lib-coverage-floor.mts`, and `docs/COORDINATION.md`.
+
+**Step 3 — this log is committed last**, in a follow-up commit carrying only this verification
+block.
+
+Nothing missing. No verification step failed.
