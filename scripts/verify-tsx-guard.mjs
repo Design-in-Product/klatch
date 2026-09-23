@@ -869,6 +869,40 @@ ok('PRECONDITION — the run population is a strict subset of the read populatio
 // because it went red on the clean tree — it went red on the three files this repair fixes. It is
 // green now, and it costs nothing, so the repair is what made it shippable.
 //
+// ── Round 257, Daedalus: the argument above was false, and the measurement caught it ───────────
+//
+// **`which valid JS does not contain` is wrong.** `${a.c}/${a.s}` is ordinary, common JS and puts a
+// `}` immediately before a `/`; `}` is a member of `REGEX_MAY_OPEN_AFTER`. The sentence was written
+// about *division*, and the counterexample is not a division at all — it is a `/` in template
+// **text**, which the scanner should never have been reading as code in the first place.
+//
+// That is the actual defect, and it is upstream of the heuristic: **this scanner had no model of
+// `${ … }` interpolation.** A template literal was treated as a plain quoted span, so the *opening*
+// backtick of a NESTED template closed the outer one, and everything after it was read as code
+// until the next backtick. The regex misfire is what that spurious code mode then bought:
+//
+//   1. the nested `` ` `` flips the scan from string into code mid-template;
+//   2. a `/` between two substitutions (`${x.c}/${x.s}`) now looks like a regex opener, because the
+//      character before it is `}`;
+//   3. `regexLiteralEnd` finds a later `/` on the same line and blanks the span between them,
+//      swallowing the template's closing backtick and any quotes in between.
+//
+// Step 3 needs a second `/` later on the same line — which is why the first minimal reproduction of
+// this failed, and why the fixture rows below carry that negative case alongside the positive one.
+//
+// **Found by the parity precondition, exactly as designed, and four days late.** It went red on
+// `probe-round233-arm-m-and-the-endpoint-can-walk-different-corpora.mts` — a correct file, which is
+// item 1 of this header — the day that file landed (2026-09-19), and nothing noticed, because this
+// verifier is not in `npm test` and nothing schedules it. The control was right; no one read it.
+//
+// Rule: *an argument that a heuristic is safe is a claim about the inputs it will see, and the
+// inputs are a moving population. The control that outlives the argument is the one that reads the
+// population on every run — and it is worth only as much as its chance of being run.*
+//
+// Repaired in `stripSource` below by tracking interpolation depth, so template text is string and
+// `${ … }` is code. The heuristic is untouched: with the thread no longer lost, step 2 never
+// arises, and the prev-token argument is back inside the domain it was actually true for.
+//
 // A stepped-over span is **blanked in both readings**, not emitted verbatim, for two reasons that
 // point the same way. It makes the parity precondition exact — every quote surviving the
 // strings-blanked reading is then a real delimiter, with none leaking out of a regex body like the
@@ -911,15 +945,42 @@ const stripSource = (src, blankStrings) => {
   // keyword list reads `return /x/` as a regex and `obj.in / 2` as division.
   let word = '';
   let wordDotted = false;
+  // Round 257: template-literal interpolation. One entry per `${ … }` currently open, holding the
+  // brace depth of the code inside it, so `${ {a: 1} }` returns to template text at the right `}`
+  // and a template nested inside an interpolation pushes again. Non-empty means "we are in code
+  // that must go back to being a string when its braces balance" — the state this scanner did not
+  // have, and whose absence let a nested template's opening backtick close the outer one.
+  const interp = [];
   while (i < src.length) {
     const c = src[i];
     if (quote) {
       if (c === '\\') { out += '  '; i += 2; continue; }
+      // `${` opens CODE inside a template. The escape branch above runs first, so `\${` is text.
+      // Emitted verbatim rather than blanked: these two characters are code structure, and the
+      // parity precondition downstream counts delimiters, not template text.
+      if (quote === '`' && c === '$' && src[i + 1] === '{') {
+        interp.push(0);
+        quote = null;
+        out += '${';
+        // `{` is in REGEX_MAY_OPEN_AFTER, which is correct here — `${/re/.test(s)}` opens a regex.
+        prev = '{'; word = ''; wordDotted = false; i += 2;
+        continue;
+      }
       if (c === quote) { quote = null; out += c; prev = c; word = ''; i += 1; continue; }
       out += c === '\n' ? '\n' : (blankStrings ? ' ' : c);
       i += 1;
       continue;
     }
+    // The `}` that closes an interpolation puts us back inside the template it belongs to. Checked
+    // before the depth bookkeeping below, because at depth 0 this `}` is the closer, not a nesting.
+    if (interp.length && c === '}' && interp[interp.length - 1] === 0) {
+      interp.pop();
+      quote = '`';
+      out += '}'; prev = '}'; word = ''; wordDotted = false; i += 1;
+      continue;
+    }
+    if (interp.length && c === '{') interp[interp.length - 1] += 1;
+    else if (interp.length && c === '}') interp[interp.length - 1] -= 1;
     if (c === "'" || c === '"' || c === '`') { quote = c; out += c; prev = c; word = ''; i += 1; continue; }
     // Comments first, and not by accident: `//` is a comment and never an empty regex, and a regex
     // may not open with the quantifier `*`, so `/*` is never one either. Testing the regex branch
@@ -1003,13 +1064,35 @@ const SCAN_ROWS = [
   // desynchronises exactly as it did before this round. Valid JS cannot write one — a literal may
   // not contain a newline — so this row asserts the fall-through is *safe*, not that it is absent.
   ['an unterminated `/` on the line falls through to division (residual)', "const re = /a'b\nconst MARK = 1;", false],
+  // ── Round 257: template-literal interpolation. See the header note above `REGEX_MAY_OPEN_AFTER`.
+  // The scanner had no model of `${ … }`, so a nested template's opening backtick closed the outer
+  // one and the rest of the line was read as code. These rows fix the boundary in both directions:
+  // interpolation is code, template text is not.
+  ['interpolation is code, not template text', 'const m = `a ${MARK} b`;', true],
+  // The live shape, reduced. `MARK` sits exactly where the misfiring scanner's regex step-over
+  // landed on `probe-round233…mts:543` — inside a nested template's substitution, with a second
+  // `/` later on the line for the step-over to end at. Before this round this row read blanked.
+  ['a substitution inside a NESTED template is code', "const m = `a ${x ? `${p.c}/${MARK}` : 'z'} (c / d); `;", true],
+  // `MARK` sits AFTER an inner `}` and before the closing one, so a scanner that pops the
+  // interpolation on any `}` rather than on the matching one drops back into template text early
+  // and blanks it. The obvious fixture — `${ f({b: 1}) } ${MARK}` — does not discriminate: popping
+  // early still lands back in a template, and the later `${` re-opens code, so `MARK` survives
+  // either way. Round 257's mutation drive is what found that; the row was written before it.
+  ['interpolation braces balance, so the template resumes only at the MATCHING `}`', 'const m = `a ${ f({b: 1}, MARK) } c`;', true],
+  ['template text is not code', 'const m = `a MARK b`;', false],
+  ['`${` in a single-quoted string opens nothing', "const s = '${MARK}';", false],
+  ['an escaped `\\${` is template text, not an interpolation', 'const m = `a \\${MARK} b`;', false],
 ];
 for (const [label, src, wantCode] of SCAN_ROWS) {
   ok(`SCANNER — ${label}`, { wantCode }, stripSource(src, true).includes('MARK') === wantCode);
 }
+// Round 257: 11/4 → 14/7. These literals are a pin on a live artifact, which is the shape Theseus's
+// Round 244 §3 warns about — but the artifact here is this table, the only way to move it is to add
+// a row in this file, and the count is what stops a row being *deleted* to make a run go green. It
+// breaks on edit, not on success, which is the distinction that rule turns on.
 ok('PRECONDITION — the scanner table exercises both outcomes',
   { code: SCAN_ROWS.filter((r) => r[2]).length, blanked: SCAN_ROWS.filter((r) => !r[2]).length },
-  SCAN_ROWS.filter((r) => r[2]).length === 11 && SCAN_ROWS.filter((r) => !r[2]).length === 4);
+  SCAN_ROWS.filter((r) => r[2]).length === 14 && SCAN_ROWS.filter((r) => !r[2]).length === 7);
 
 const ANCHOR_SOURCE = "['\"`](?:\\.\\./)+packages/[^'\"`\\n]*"
   + `(?:${TS_EXTENSIONS.map((e) => e.replace('.', '\\.')).join('|')})`

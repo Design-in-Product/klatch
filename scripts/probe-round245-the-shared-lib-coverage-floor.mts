@@ -52,6 +52,7 @@ const LIB_DIR = join(ROOT, 'scripts', 'lib');
  *
  * Round 247 added `probe-outcome.mts` — 8 / 13.
  * Round 255 added `probe-source-constants.mts` — 10 / 13.
+ * Round 257 added `tsx-required.mjs` — 11 / 13. Two left: `offer-choice.mjs`, `premise-render.mjs`.
  *
  * **Round 255 also added `probe-server-ownership.mts`, which Round 249 covered and never
  * recorded here.** It had sat COVERED in the report and absent from the floor for four days. The
@@ -73,6 +74,7 @@ const COVERED_FLOOR = [
   'recall-call-kind.mjs',
   'recall-recogniser.mjs',
   'recall-tap.mjs',
+  'tsx-required.mjs',
 ];
 
 function walk(dir: string, out: string[] = []): string[] {
@@ -218,21 +220,51 @@ results.push({
 // this probe will report a smaller `covered N / 13` and still pass every check. That is how
 // `probe-server-ownership.mts` sat covered-but-unrecorded for four days after Round 249.
 //
-// **Deliberately a measurement and not a check.** Reddening here would fire on the exact event
-// this probe exists to encourage — someone covering an eleventh module — which is Theseus's
-// Round 244 §3 mistake precisely: a control scheduled to break on success. A measurement can be
-// ignored, and this one was, for four days. I do not have a third option and am not inventing one
-// this fire; it is carried as an open item in the Round 255 writeup rather than papered over.
+// ── Round 257: this is now a CHECK, and Round 255's reason for it not being one was wrong ───────
+//
+// Round 255 made it a measurement, arguing a red here would fire on the exact event the probe
+// exists to encourage — someone covering an eleventh module — and so would be Theseus's Round 244
+// §3 mistake, a control scheduled to break on success. It left the question open with a named way
+// to settle it: *whether any existing probe reddens on an UNRECORDED fact rather than a WRONG one
+// — not looked.*
+//
+// Looked, Round 257. Across the 137 modules under `scripts/`, assertions of the form
+// `<measured population>.length === <literal>` number **368**; **239** compare against `0` — a
+// defect set asserted empty, which reddens on a wrong fact — and **129, spread over 49 modules,
+// pin a census against a hand-written number and redden precisely when the population legitimately
+// changes and nobody updated the literal.** `verify-tsx-guard.mjs` alone holds three
+// (`swept.length === 1`, `readable.length === 1`, and its scanner-table count, which this same
+// fire made me update after adding six correct rows). The shape is not novel and not disfavoured;
+// it is how most of this directory already works.
+//
+// And the argument was wrong on its own terms. **Adding coverage is not the success condition —
+// adding GUARDED coverage is.** Covered-but-unrecorded is the half-done state, and the only way to
+// green this arm honestly is to add one line to COVERED_FLOOR, which strengthens arm A and can
+// weaken nothing. A control that breaks until a job is finished is not a control that breaks on
+// success. Round 244 §3 is about a control you must *weaken* to reflect the win; this is one you
+// can only *extend*.
+//
+// > **Rule: "it fires when something good happens" and "it fires when the goal is reached" are not
+// > the same test. Ask what the cheapest honest way to green it is — if that edit strengthens the
+// > assertion, the red was a prompt to finish, not a penalty for succeeding.**
+//
+// The residual, named rather than hidden: this arm *can* also be greened by deleting the new
+// coverage instead of recording it. That is strictly worse for the tree and visible in the diff,
+// and arm A has the identical hole (a name can be removed from the floor). Both rely on the diff
+// being read; neither is made worse by this change.
 const unrecorded = [...importers.keys()].filter((f) => !COVERED_FLOOR.includes(f));
-// Printed, not merely recorded. Arms D and E are measurements, and `summariseAndExit` prints only
-// the headline — so an unprinted measurement is one no reader can act on, which is the same
-// failure as not taking it. The `[A] LOST coverage:` line above already works this way.
-console.log(`[E] covered but unrecorded in COVERED_FLOOR: ${unrecorded.length ? unrecorded.join(', ') : 'none'}`);
+// Printed, not merely recorded. `summariseAndExit` prints only the headline, so an unprinted
+// finding is one no reader can act on — the same failure as not taking it. The `[A] LOST coverage:`
+// line above already works this way.
+if (unrecorded.length) {
+  console.log(`[E] covered but UNRECORDED in COVERED_FLOOR: ${unrecorded.join(', ')}`);
+  console.log(`[E] nothing guards these against losing their coverage. Add them to COVERED_FLOOR.`);
+}
 results.push({
   arm: 'E',
   check: `covered but not recorded in COVERED_FLOOR (unguarded against regression): ${unrecorded.length ? unrecorded.join(', ') : 'none'}`,
-  pass: true,
-  kind: 'measurement',
+  pass: unrecorded.length === 0,
+  kind: 'regression',
 });
 
 summariseAndExit({ probeName: 'probe-round245-the-shared-lib-coverage-floor', results });
