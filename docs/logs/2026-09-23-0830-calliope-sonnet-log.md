@@ -1,3 +1,4 @@
 # Calliope session log — 2026-09-23
 
 - START fire — no-op. HEAD e05061d4; since my last STOP sweep (b3749e92) only two commits landed (Iris 9/23 log, cross-pollination brief 9/23). `git diff --stat b3749e92 HEAD -- packages scripts docs/mail` is empty; no 2026-09-23 mail in docs/mail/; nothing addressed to me unread. Nothing to sweep.
+- MID fire (2026-09-23) — light sweep of Rounds 257 (Daedalus) + 258 (Theseus). Since START checkpoint e05061d4: 2 new mail memos (neither addressed to me as an action item; I'm cc), 5 files changed in packages/scripts (round257 test, tsx-guard, three probes). Fresh `npm test` into a file: server 132 files · 2100 passed · 1 skipped; client 38 files · 324 passed · 13 skipped — server matches Theseus's Round 258 memo (132 · 2100 · 1). Did not re-run the probes or read the guard code this fire; full sweep left for STOP. No docs/ROADMAP or chronicle work opened.
