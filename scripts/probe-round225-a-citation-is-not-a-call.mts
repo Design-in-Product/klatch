@@ -84,6 +84,7 @@
 
 import fs from 'fs';
 import path from 'path';
+import crypto from 'crypto';
 import { execFileSync } from 'child_process';
 import { readNumericConstant, readLeadingFactor, replaceNumericConstant } from './lib/probe-source-constants.mts';
 import { summariseAndExit, type ProbeVerdict } from './lib/probe-outcome.mts';
@@ -117,6 +118,47 @@ function packagesDirty(): string {
 }
 
 /**
+ * Arm Z's window, as content rather than as a status listing.
+ *
+ * **Why this is not `packagesDirty() === ''`** (repaired 2026-09-22, Round 256). On 2026-09-22
+ * this probe reported 2 of 22 FAILED, both arm Z, listing an untracked file that belonged to
+ * Daedalus and had nothing to do with this run. Daedalus's Round 255 §4: *an emptiness assertion
+ * over a shared window grades everyone who touched it, not the run that made it.* The invariant
+ * this probe is entitled to is "I left the tree as I found it".
+ *
+ * **Why it is not a before/after comparison of `packagesDirty()` either.** Porcelain emits status
+ * letters and paths, not content. For a file that was ALREADY dirty at window open, a run that
+ * then rewrites it produces the identical porcelain string at both ends — and "already dirty at
+ * open" is precisely the condition that motivated this repair. Driven two-sided on minted git
+ * repositories in `probe-round256-…mts` arms B1–B4: porcelain alone misses it, this does not.
+ *
+ * `-uall` expands untracked directories into files so every listed path can be hashed; `git diff
+ * HEAD` carries the content of tracked modifications. Known limit: a rename under `-z` emits the
+ * old path as a bare second record, which lands in the porcelain hash but is not content-hashed.
+ */
+function packagesFingerprint(): string {
+  const g = (args: string[]) =>
+    execFileSync('git', args, { cwd: REPO, encoding: 'utf8', maxBuffer: 64 * 1024 * 1024 });
+  const entries = g(['status', '--porcelain', '-z', '-uall', '--', 'packages/'])
+    .split('\0').filter((s) => s.length > 0);
+  const parts = [
+    `P:${crypto.createHash('sha256').update(entries.join('\n')).digest('hex')}`,
+    `D:${crypto.createHash('sha256').update(g(['diff', 'HEAD', '--', 'packages/'])).digest('hex')}`,
+  ];
+  for (const u of entries.filter((e) => e.startsWith('?? ')).map((e) => e.slice(3)).sort()) {
+    const abs = path.join(REPO, u);
+    let h = 'ABSENT';
+    try {
+      if (fs.statSync(abs).isFile()) {
+        h = crypto.createHash('sha256').update(fs.readFileSync(abs)).digest('hex');
+      }
+    } catch { /* ABSENT */ }
+    parts.push(`U:${u}:${h}`);
+  }
+  return parts.join('|');
+}
+
+/**
  * Strip block comments and line comments, replacing each with blank space so that line numbers
  * are preserved. Used to tell a citation from a call — the distinction this whole round is about.
  */
@@ -126,11 +168,21 @@ function codeOnly(src: string): string {
     .replace(/(^|[^:])\/\/[^\n]*/g, (m, p1) => p1 + m.slice(p1.length).replace(/[^\n]/g, ' '));
 }
 
-// ── Arm Z (open) — nothing here may touch shipped source ─────────────────────
+// ── Arm Z (open) — nothing HERE may touch shipped source ─────────────────────
+//
+// Round 256: this used to be `check('Z', 'packages/ clean before this probe reads anything',
+// packagesBefore === '')`. It is a measurement now, not a check, on purpose: the state of the tree
+// when this run opens is not this run's doing, and grading it is what reddened the probe on
+// another agent's uncommitted file. What is recorded here is the baseline the close compares
+// against.
 
 const packagesBefore = packagesDirty();
-check('Z', 'packages/ clean before this probe reads anything', packagesBefore === '',
-  packagesBefore === '' ? 'git status --porcelain packages/ is empty' : packagesBefore);
+const fingerprintBefore = packagesFingerprint();
+measure('Z', 'window baseline at open — recorded, NOT graded',
+  packagesBefore === ''
+    ? 'git status --porcelain packages/ was empty at open'
+    : `git status --porcelain packages/ was NOT empty at open, and that is somebody else's ` +
+      `business, not this probe's:\n${packagesBefore}`);
 
 // ── Arm A — the state Argus found, and the check he did not report ───────────
 
@@ -419,9 +471,14 @@ check('F', 'this probe counted its population by walking the tree, not by greppi
 
 // ── Arm Z (close) ────────────────────────────────────────────────────────────
 
-const packagesAfter = packagesDirty();
-check('Z', 'packages/ still clean at exit — every spelling was spliced in memory',
-  packagesAfter === '' && packagesAfter === packagesBefore,
-  packagesAfter === '' ? 'git status --porcelain packages/ is empty' : packagesAfter);
+const fingerprintAfter = packagesFingerprint();
+check('Z', 'packages/ is as this run found it — every spelling was spliced in memory',
+  fingerprintAfter === fingerprintBefore,
+  fingerprintAfter === fingerprintBefore
+    ? `content fingerprint identical across the run (porcelain + git-diff content + sha256 of ` +
+      `each untracked file). This probe reads and splices in memory; it writes nothing under ` +
+      `packages/. Pre-existing dirt, if any, is reported by the MEAS at window open and is not ` +
+      `graded here — Round 255 §4, repaired Round 256.`
+    : `MOVED during this run.\n        before: ${fingerprintBefore}\n        after:  ${fingerprintAfter}`);
 
 summariseAndExit({ probeName: 'probe-round225', results });
