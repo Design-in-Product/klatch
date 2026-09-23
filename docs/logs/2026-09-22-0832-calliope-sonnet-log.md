@@ -33,3 +33,25 @@ Worktree pre-synced by wrapper; `git fetch` → `HEAD == origin/main == a4883f8c
 **COORDINATION.md** updated with this fire's entry under Calliope's section.
 
 Committing rollup + coordination + this log entry; wrapper owns delivery, not claiming delivered.
+
+## ~17:10 PT (WORK fire) — rollup refreshed to v151, Rounds 253/254 swept, Argus's sweep of 251–253 closed same-day
+
+Worktree pre-synced by wrapper; `git pull origin main` reported already up to date at fire start. `git log caddeb94..HEAD` (my own MID-fire checkpoint) showed 8 new commits, none mine: Daedalus's Round 253 mail + round commit + wrap log, Argus's WORK-fire sweep mail + coordination/log commit, Theseus's Round 254 mail + round commit + wrap log.
+
+**Mail:** `ls docs/mail | grep '^xian-to'` empty. No new mail addressed to this seat by name — the two standing `janus-to-calliope` threads (roadmap-klatch GO 9/20, logbook-shape restatement 8/28) are unchanged, re-read in full to confirm nothing shifted. Argus's sweep memo to Daedalus was already moved to `docs/mail/read/` by Theseus (mail close-discipline, his own §"Mail close-discipline" note) before this fire started — verified via `ls docs/mail/read/`, not assumed from his log.
+
+**Round 253 (Daedalus):** the first real product defect found this track in a while — `.env`'s `KLATCH_DB` spelling was inert since `db/index.ts` resolved its path into a module-scope `const`, and ESM hoists the `import { getDb }` above `index.ts`'s own `dotenv.config()` call. New `packages/server/src/dbPath.ts`, deliberate sibling to Round 251's `port.ts`; the fix pattern (capture above dotenv, resolve inside the function that needs it) now applies twice. Driven three arms at HEAD~/after, guarded by Theseus's Round 252 byte-copy-and-restore control (never fired, sha256 identical).
+
+**Round 254 (Theseus), two parts.** Part one: `mutate` (28 members, largest remaining blocking class) is a third over-block — read the classifier fresh rather than trusting his own morning summary, found it's a *conjunction* of two independently-evaluated regexes (a write call, a product path), so nothing ties the write to the path; 3 of 51 population members blocked by `mutate` alone, all three driven, zero contact with any of 254 product files (sha256 + mtime both checked, closing the exact gap that would have mistaken "wrote and restored" for "never touched" — his own instrument nearly manufactured that wrong conclusion, caught before publishing). Part two, the one he flagged as unpredicted and the more important of the two: **the class-ranking itself counts the wrong thing.** 31 of 51 carry `mutate`, but 28 of those are already blocked by another hazard too — so the true marginal unblock from removing the gate is 3, not 31 or 28. Round 250's arm H ranked all seven blocking classes by membership and every round since has read that ranking as a queue, Theseus's own Round 252 included — he names his own prior round as a casualty of the bug he just found. New rule filed: rank a blocking class by the members it is the *sole* blocker for.
+
+**Argus's sweep (251–253), closed same-fire:** independent re-verification — suite, typecheck, direct code reads (not taken from either memo), fresh probe re-runs — holds on all three rounds. One same-day regression caught: Daedalus's own Round 253 commit (13:27:51) inserted five lines between the port-resolution line and `getDb()` in `index.ts`, which broke Round 251's M2 mutation anchor (a multi-line needle that embedded the surrounding comment text — the mutation died of a prose edit, not a logic change). The probe failed safe (`ANCHOR MISS`, not a false PASS). Left unassigned by Argus; Theseus picked it up in the same fire as Round 254 and re-aimed it as a sequence of two comment-free statement-only edits, redriven 5/5 CAUGHT, M1/M3/M4/M5 unchanged from Argus's own numbers.
+
+**Verified fresh myself, into files not pipes:** `npm test` — server **130 files · 2056 passed · 1 skipped**, client **38 files · 324 passed · 13 skipped** — matches Argus's, Daedalus's, and Theseus's own stated figures exactly. `npm run typecheck` — 0 `error TS` across three workspaces (`grep -c "error TS"` on the raw output, not eyeballed). `git status --porcelain` clean apart from this seat's own gitignored `.scratch/`.
+
+**Standing blockers re-checked, day counts recomputed with `node`, not recalled:** ground-rules discretion question **44 days** (from 8/9, unchanged from this morning — same calendar day). Logbook-shape **26 days** (from my 8/27 memo), **25** from Janus's 8/28 restatement. Both still parked on xian, unchanged in substance. Roadmap klatch: still no evidence in the repo either way whether it has been held.
+
+**Rollup updated to v151** (`docs/operations/attention-rollup.md`): Last-refreshed banner, new this-fire paragraph, prior v150 content relabeled "superseded." Needs-you unchanged at 3, 🟡 unchanged at 11 — none of this fire's rounds ask xian anything new.
+
+**COORDINATION.md** updated with this fire's entry under Calliope's section.
+
+Committing rollup + coordination + this log entry; wrapper owns delivery, not claiming delivered.
