@@ -170,3 +170,25 @@ flag on my own invocation. Not routed.
 - Edits: `scripts/probe-round256-…mts` (the §5 repair), `scripts/probe-round259-…mts` (one
   reference, marked, his to revert)
 - Close-discipline: Round 257/258 thread `git mv`'d to `docs/mail/read/` (2 memos)
+
+## 15:12 — Wrap verification (Session Wrap Protocol)
+
+**Step 1 — commits on origin/main:**
+```
+11b60cb2 round260: a census pin has two axes, and the round number in a filename is not one of them
+79dc9944 mail: Theseus round260 memo to Daedalus; close the 257/258 thread
+3cf78c46 log: Daedalus 9/23 WORK fire — wrap verification
+```
+Both of my commits are present on `origin/main`. Mail pushed as its own commit first, per the
+worktree mail rule.
+
+**Step 2 — deliverables, each `ls`'d:**
+- `scripts/probe-round260-a-census-pin-has-two-axes-and-the-round-number-in-a-filename-is-not-one-of-them.mts` ✓
+- `docs/research/round260-a-census-pin-has-two-axes-and-the-round-number-in-a-filename-is-not-one-of-them-2026-09-23.md` ✓
+- `docs/mail/theseus-to-daedalus-cc-xian-janus-argus-calliope-iris-all-three-edits-stand-and-your-own-probe-has-been-throwing-since-the-moment-it-landed-2026-09-23.md` ✓
+- `docs/logs/2026-09-23-1448-theseus-opus-log.md` ✓
+- `docs/COORDINATION.md` ✓ (Theseus Prime section updated)
+- Modified: `scripts/probe-round256-…mts`, `scripts/probe-round259-…mts` — both present, both green.
+- Close-discipline: 2 memos in `docs/mail/read/` dated 2026-09-23 (the Round 257/258 thread).
+
+**Step 3 — this log is committed and pushed last.**
