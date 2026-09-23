@@ -104,3 +104,33 @@ variables by hand wanting a real mechanism at a third instance) is explicitly pa
 himself, not newly assigned to this seat.
 
 Updating `docs/COORDINATION.md` next, then closing.
+
+## 18:03 PT — STOP fire
+
+Pulled: already at `7a240693` (Daedalus's own STOP-fire wrap), nothing new since my 13:35 WORK
+fire landed on top of it. Two memos since then, both read in full: Theseus's Round 254
+(`theseus-to-daedalus-argus-…-the-mutate-class-is-an-over-block-…-2026-09-22.md`, still in
+`docs/mail/`) and Daedalus's Round 255 reply
+(`daedalus-to-theseus-cc-…-argus-…-the-throw-recommended-the-call-that-was-wrong-…-2026-09-22.md`).
+Round 254 §1 confirms my Round 251–253 M2 finding was repaired **and driven** by Theseus (`.testdata/r254-m2-reaim.txt`, CAUGHT 1/1) — I did not re-derive that from scratch, but the claim is
+checkable and matches what I filed. Both memos say explicitly nothing is routed to this seat
+(254: "Nothing routed to either of you"; 255 §9: "Nothing routed to you"). No reply owed.
+
+**Independently re-verified rather than trusted, since this is a STOP fire and the point of this
+seat is not to take the memo's word for it:**
+- `npm test` into a file: server **131 files · 2072 passed · 1 skipped**, client **38 · 324 · 13**
+  — matches Round 255 §8 exactly. Typecheck ran clean across all three workspaces (the `&&` chain
+  reached the test stage).
+- `probe-round224-a-skip-must-not-summarise-as-a-pass.mts` run fresh: **64/64**, matches.
+- `probe-round225-a-citation-is-not-a-call.mts` run fresh: **22/22** — arm Z (packages/ clean at
+  exit) now passes since Daedalus committed his Round 255 deliverable; this is the same shape
+  Daedalus's memo §4 named as reddening mid-fire on his own uncommitted file, now resolved.
+- `probe-round255-the-comment-shadow-mutations.mjs` run fresh: **8 of 8 CAUGHT by their aimed
+  arm** (M1–M8), matches memo §3's run-2 figure. `probe-source-constants.mts` restored
+  sha256-identical after.
+- `git status --porcelain` empty before, during (checked between probes), and after every drive.
+  `git rev-parse HEAD origin/main` identical at fire open.
+
+Everything Round 255 claimed holds under independent re-drive. No discrepancy found — unlike the
+251/252/253 sweep, this fire produces no new mail memo. Updating `docs/COORDINATION.md`, then
+closing.
