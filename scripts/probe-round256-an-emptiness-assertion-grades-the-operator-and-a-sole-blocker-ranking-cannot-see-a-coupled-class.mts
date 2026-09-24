@@ -751,6 +751,139 @@ function assertedEmptinessSites(src: string): string[] {
   });
 }
 
+/**
+ * ## Round 266 — the census axis is wired to the resolver this file already had
+ *
+ * Round 264 arm C1 found the hole: a probe that calls `windowState()` from `scripts/lib/` and
+ * asserts `w === ''` has the defect in full, and its own source contains no `--porcelain` string at
+ * all — so {@link emptinessSites} exits at its first guard and scores it 0. The fleet is migrating
+ * onto that shared lib, so instances leave the census's reach for a reason unrelated to how many
+ * exist. I framed that as a choice: teach the census to follow imports, or stop quoting the figure
+ * as a fleet count.
+ *
+ * Daedalus's Round 265 §2 declined both horns and gave the reason: **this file already follows
+ * imports.** `resolveScriptSpecifier` (:367), `edges` (:397), `reachable` (:404) and `hazardsOf`
+ * (:416) are a transitive import graph, built, tested, and load-bearing — on the HAZARD axis.
+ * `emptinessSites` takes a `src: string`, so it has no key to look that graph up by. **Two
+ * reachability regimes, two axes, one file.** The census was never reasoned into being single-file;
+ * it was written against a string and never handed a path. So the cost here is wiring, not building.
+ *
+ * The argument that makes the hazard axis transitive transfers verbatim: a probe that imports a
+ * server-starting module *is* a server-starting probe, and a probe that imports a porcelain-calling
+ * module *is* a porcelain-calling probe.
+ *
+ * **What the widening is for, stated so it can be checked:** not a bigger number. The test of a
+ * fleet census is not whether today's figure is right, it is whether the figure is INVARIANT under
+ * the refactor its own fleet is undergoing. Arm E4 measures both directions on minted source; arm
+ * E5 measures the live delta, and the live delta today is small on purpose.
+ *
+ * **The registry derives itself.** The obvious objection is that someone now maintains a list of
+ * porcelain-providing exports, and a stale hand-kept list is the same blind spot one level up. It
+ * is not hand-kept: {@link providerExports} applies Round 256's OWN unmodified seeding rule — *"a
+ * function whose body spells porcelain contributes its name"* — to the exports of every reachable
+ * module. A new export in `scripts/lib/` enrols its importers with no edit here; a lib module that
+ * touches no tree state contributes nothing, because the key is spelling porcelain, not living in
+ * `lib/`.
+ */
+const PORCELAIN_SPELLING = /status['"`]\s*,\s*['"`]--porcelain|status\s+--porcelain/;
+
+/**
+ * ### The two masks, and why this function needs both
+ *
+ * `MASK` is `stripSource(src, false)` — comments blanked, **string contents kept**. It has to keep
+ * them: the porcelain SPELLING lives inside a string literal (`['status', '--porcelain']`), so a
+ * detector that blanked strings could not see the thing it is looking for.
+ *
+ * That is also why a probe which MINTS source as a string has its fixtures read as real code — the
+ * class Round 258 found once, on itself. Round 266 found it again and this time it was load-bearing:
+ * the first live hit of the import-aware widening was `probe-round265`, seeded by
+ * `const w = windowState(REPO, 'scripts/')` inside a minted fixture at :314 and matched by the prose
+ * `` `w === ''` appears `` inside a detail string at :371. That file's real arm Z1 brackets
+ * correctly. **A false positive, on a brand-new file, in the only row the widening added.**
+ *
+ * The fix is not a better single mask, because no single mask can be right for both jobs. It is to
+ * use each mask for the question it answers: **the spelling is read from the soft mask, the
+ * STRUCTURE is located in the hard mask** (`stripSource(src, true)`, string contents blanked). Both
+ * are length-preserving — measured here over all 150 files under `scripts/`, 0 mismatches in either
+ * mode — so an offset found in one indexes the other.
+ *
+ * **Rule: read the spelling with strings kept, locate the structure with strings blanked. A
+ * detector that does both jobs with one mask cannot tell source from a fixture that quotes it.**
+ *
+ * ### And the body window is brace-matched, not capped
+ *
+ * The first draft of this function copied Round 265's `[\s\S]{0,600}?` body window. Over the LIVE
+ * `scripts/lib/tree-fingerprint.mts` that cap silently dropped `fingerprint`, whose body is **829
+ * characters**, leaving a one-entry registry. Round 256's own text already says it: *"when two
+ * settings of a tuning parameter fail in opposite directions, the parameter is not mis-tuned — it is
+ * the wrong parameter."* A function body is a brace-matching question, exactly as an argument list
+ * was, so it is brace-matched here — over the hard mask, which is sound for the same reason
+ * {@link assertionArgumentSpans} is: a mask may delete a bracket, never invent one.
+ */
+function providerExports(src: string): string[] {
+  const soft = MASK(src);
+  const hard = stripSource(src, true);
+  const out: string[] = [];
+  for (const m of hard.matchAll(/export\s+function\s+([A-Za-z_$][\w$]*)\s*\(/g)) {
+    let i = hard.indexOf('{', m.index! + m[0].length);
+    if (i === -1) continue;
+    let depth = 1;
+    i += 1;
+    const start = i;
+    while (i < hard.length && depth > 0) {
+      if (hard[i] === '{') depth += 1;
+      else if (hard[i] === '}') depth -= 1;
+      i += 1;
+    }
+    if (depth !== 0) continue;
+    if (PORCELAIN_SPELLING.test(soft.slice(start, i - 1))) out.push(m[1]);
+  }
+  return out;
+}
+
+/** The two moving parts of the fleet an import-aware census needs, so the same code can be driven
+ *  over the real tree AND over minted source. `reach` is the transitive closure; `read` is bytes. */
+type FleetView = { read: (rel: string) => string; reach: (rel: string) => Set<string> };
+
+/**
+ * Asserted-emptiness sites in `rel`, seeded from its own text AND from the porcelain-providing
+ * exports of everything it transitively reaches.
+ *
+ * `useProviders = false` reproduces {@link assertedEmptinessSites} exactly — that is not a
+ * convenience, it is the arm that makes every delta below interpretable. Round 264's non-vacuity
+ * arm went red because I had moved two variables and quoted the difference as one; the identity
+ * setting is how a single-variable claim is kept honest.
+ */
+function importAwareAssertedSites(rel: string, fleet: FleetView, useProviders = true): string[] {
+  const src = fleet.read(rel);
+  const own = assertedEmptinessSites(src);
+  if (!useProviders) return own;
+
+  const providers = new Set<string>();
+  for (const dep of fleet.reach(rel)) for (const n of providerExports(fleet.read(dep))) providers.add(n);
+  if (providers.size === 0) return own;
+
+  // A binding initialised by a call to a provider carries tree state, exactly as a binding
+  // initialised by an inline porcelain call does. Same derivation rule as `emptinessSites`' third
+  // loop — the input scope is what changed, not the mechanism.
+  //
+  // Both the seeding and the span search run over the HARD mask, so a declaration or a comparison
+  // that exists only inside a minted fixture or a prose detail string is not source. See
+  // {@link providerExports} for the measurement that forced this.
+  const hard = stripSource(src, true);
+  const bound = new Set<string>();
+  for (const m of hard.matchAll(/(?:const|let|var)\s+([A-Za-z_$][\w$]*)\s*=\s*([A-Za-z_$][\w$]*)\s*\(/g)) {
+    if (providers.has(m[2])) bound.add(m[1]);
+  }
+  const spans = assertionArgumentSpans(hard);
+  const seeded = new Set<string>(own);
+  for (const n of bound) {
+    const cmp = new RegExp(`\\b${n}\\b\\s*(?:\\(\\s*\\))?\\s*(?:\\.trim\\(\\))?\\s*===\\s*(['"\`])\\1`);
+    if (spans.some((s) => cmp.test(s))) seeded.add(n);
+  }
+  return [...seeded];
+}
+
 // Two-sided on minted source FIRST, so the census figure rests on a detector that has been shown
 // to work in both directions rather than on one that merely produced a number.
 const POS = `const before = execFileSync('git', ['status', '--porcelain', '--', 'packages/']);\n` +
@@ -810,6 +943,161 @@ check('E1c', 'CONTROL — bracket matching catches the IIFE case AND rejects the
     `windows failed one of these two; balancing parentheses passes both, because "inside this ` +
     `call" was never a question about distance.`);
 
+// ─────────────────────────────────────────────────────────────────────────────
+// Round 266 — the import-aware axis, minted first
+// ─────────────────────────────────────────────────────────────────────────────
+
+/** A FleetView over source I control, so the two-sided arms do not rest on the live tree. */
+function mintFleet(files: Record<string, string>): FleetView {
+  const names = Object.keys(files);
+  const read = (rel: string) => files[rel] ?? '';
+  const edge = new Map<string, string[]>();
+  for (const rel of names) {
+    edge.set(rel, (scan(files[rel]).specifiers ?? [])
+      .map((s) => {
+        if (!s.startsWith('.')) return null;
+        const base = path.posix.normalize(path.posix.join(path.posix.dirname(rel), s));
+        for (const c of [base, base.replace(/\.js$/, '.mts'), `${base}.mts`]) if (names.includes(c)) return c;
+        return null;
+      })
+      .filter((x): x is string => x !== null));
+  }
+  const reach = (rel: string) => {
+    const seen = new Set<string>();
+    const stack = [...(edge.get(rel) ?? [])];
+    while (stack.length) {
+      const n = stack.pop()!;
+      if (seen.has(n)) continue;
+      seen.add(n);
+      stack.push(...(edge.get(n) ?? []));
+    }
+    return seen;
+  };
+  return { read, reach };
+}
+
+const M_LIB = `export function fingerprint(repo, pathspec) {\n` +
+  `  return execFileSync('git', ['status', '--porcelain', '-z', '--', pathspec]).toString();\n}\n` +
+  `export function windowState(repo, pathspec) {\n` +
+  `  return execFileSync('git', ['status', '--porcelain', '--', pathspec]).trim();\n}\n`;
+/** Round 264 arm C1, verbatim: the defect spelled through the shared lib. */
+const M_POST = `import { windowState } from './lib/tree-fingerprint.mts';\n` +
+  `const w = windowState(REPO, 'scripts/');\ncheck('Z', 'clean', w === '', w);\n`;
+/** The same file BEFORE the migration. Same defect, inline spelling. */
+const M_PRE = `const w = execFileSync('git', ['status', '--porcelain', '--', 'scripts/']).trim();\n` +
+  `check('Z', 'clean', w === '', w);\n`;
+/** The REMEDY, spelled through the lib. A widening that flags the fix is worse than the blind spot. */
+const M_FIXED = `import { fingerprint } from './lib/tree-fingerprint.mts';\n` +
+  `const before = fingerprint(REPO, 'scripts/');\nconst after = fingerprint(REPO, 'scripts/');\n` +
+  `check('Z', 'unmoved', after === before, after);\n`;
+/** Imports a provider, compares to '' OUTSIDE any assertion span — Round 256's own rule, one edge over. */
+const M_DIAG = `import { windowState } from './lib/tree-fingerprint.mts';\n` +
+  `const w = windowState(REPO, 'scripts/');\nconsole.log(w === '' ? '(empty)' : w);\n` +
+  `check('Z', 'no .env leak', !/\\.env/.test(w), w);\n`;
+/** A lib module that touches no tree state. Its exports must NOT become providers. */
+const M_INERT = `export function joinLines(a) { return a.join('\\n'); }\n`;
+const M_INERT_USER = `import { joinLines } from './lib/inert.mts';\n` +
+  `const w = joinLines(['a']);\ncheck('Z', 'clean', w === '', w);\n`;
+
+const mf = mintFleet({
+  'lib/tree-fingerprint.mts': M_LIB,
+  'lib/inert.mts': M_INERT,
+  'post.mts': M_POST,
+  'pre.mts': M_PRE,
+  'fixed.mts': M_FIXED,
+  'diag.mts': M_DIAG,
+  'inert-user.mts': M_INERT_USER,
+});
+const ia = (rel: string) => importAwareAssertedSites(rel, mf).length;
+const sf = (rel: string) => importAwareAssertedSites(rel, mf, false).length;
+
+check('E4', 'CONTROL — the census is INVARIANT under the migration, and the single-file census is not',
+  sf('pre.mts') === 1 && sf('post.mts') === 0 && ia('pre.mts') === 1 && ia('post.mts') === 1,
+  `Same defect, unrepaired throughout; only the SPELLING migrates from an inline porcelain call to ` +
+    `an import of scripts/lib. Single-file: ${sf('pre.mts')} → ${sf('post.mts')} — the instance did ` +
+    `not go away, the instrument stopped reaching it, which is Round 264 arm C1 measured rather ` +
+    `than argued. Import-aware: ${ia('pre.mts')} → ${ia('post.mts')} — a migrating file stays ` +
+    `counted, it moves from arm 1 to arm 2. THAT is the property that makes a figure quotable as a ` +
+    `fleet count: not that today's number is right, but that it does not move when the fleet ` +
+    `refactors underneath it.`);
+
+check('E4b', 'CONTROL — the widening must not flag the remedy, nor a diagnostic, nor an inert helper',
+  ia('fixed.mts') === 0 && ia('diag.mts') === 0 && ia('inert-user.mts') === 0,
+  `A file importing fingerprint() and BRACKETING before/after — the repaired shape this whole ` +
+    `class is migrating toward — scores ${ia('fixed.mts')}. A file importing windowState() and ` +
+    `comparing to '' outside any assertion span scores ${ia('diag.mts')}, so Round 256's rule ` +
+    `("the defect is ASSERTING on emptiness, not the syntax") crosses the import edge intact, ` +
+    `through the real assertionArgumentSpans. A file importing an export that touches no tree ` +
+    `state scores ${ia('inert-user.mts')} — the registry is keyed on spelling porcelain, not on ` +
+    `living in lib/, or every future helper would enrol its importers. A widening that buys reach ` +
+    `with an over-report is worse than the blind spot it closes.`);
+
+check('E4c', 'CONTROL — the provider registry DERIVES itself, and a new export enrols its importers',
+  providerExports(M_LIB).join(',') === 'fingerprint,windowState' &&
+    providerExports(M_INERT).length === 0 &&
+    importAwareAssertedSites('post.mts', mintFleet({
+      'lib/tree-fingerprint.mts': M_LIB +
+        `export function treeLines(repo) {\n  return execFileSync('git', ['status', '--porcelain']).split('\\n');\n}\n`,
+      'post.mts': `import { treeLines } from './lib/tree-fingerprint.mts';\n` +
+        `const w = treeLines(REPO);\ncheck('Z', 'clean', w === '', w);\n`,
+    })).length === 1,
+  `Derived from the module text, not from a hand-written list: [${providerExports(M_LIB).join(', ')}] ` +
+    `from the lib, [] from the inert module (${providerExports(M_INERT).length} entries). A newly ` +
+    `minted third export, treeLines, is picked up with NO edit to this detector and its importer ` +
+    `scores 1. A hand-kept provider list would be the same defect one level up — a blind spot that ` +
+    `goes stale in silence — which is why the seeding rule here is Round 256's own, applied to ` +
+    `exports instead of to local declarations.`);
+
+// The two properties the mask split rests on, measured rather than assumed.
+const LIVE_LIB = fs.readFileSync(path.join(SCRIPTS, 'lib', 'tree-fingerprint.mts'), 'utf8');
+const cappedProviders = ((): string[] => {
+  const out: string[] = [];
+  for (const m of MASK(LIVE_LIB).matchAll(
+    /export\s+function\s+([A-Za-z_$][\w$]*)\s*\([^)]*\)[^{]*\{([\s\S]{0,600}?)\n\}/g)) {
+    if (PORCELAIN_SPELLING.test(m[2])) out.push(m[1]);
+  }
+  return out;
+})();
+const fingerprintBodyLen = ((): number => {
+  const m = /export\s+function\s+fingerprint\s*\([^)]*\)[^{]*\{([\s\S]*?)\n\}/.exec(MASK(LIVE_LIB));
+  return m ? m[1].length : -1;
+})();
+
+check('E4d', 'a CHARACTER CAP on the body window already drops a provider from the live lib',
+  fingerprintBodyLen > 600 && !cappedProviders.includes('fingerprint') &&
+    providerExports(LIVE_LIB).includes('fingerprint') && providerExports(LIVE_LIB).includes('windowState'),
+  `Over the real scripts/lib/tree-fingerprint.mts, not a mint: fingerprint's body is ` +
+    `${fingerprintBodyLen} characters. Round 265's \`[\\s\\S]{0,600}?\` window therefore derives ` +
+    `${JSON.stringify(cappedProviders)} — a ONE-entry registry — while brace-matching the body ` +
+    `derives ${JSON.stringify(providerExports(LIVE_LIB))}. Round 265 arm C1 asserts the two-name ` +
+    `set and passes, because it runs on a MINTED lib whose bodies are short: the fixture is smaller ` +
+    `than the thing it stands for, so it cannot exercise the limit. **Rule: a mint that cannot ` +
+    `straddle a detector's size cap cannot test it.** This file's own §"two settings of a tuning ` +
+    `parameter" note applies to itself — a body is a brace-matching question, not a distance one.`);
+
+const MINT_CARRIER = `const FIXTURE = \`import { windowState } from './lib/tree-fingerprint.mts';\\n\` +\n` +
+  `  \`const w = windowState(REPO, 'scripts/');\\n\` +\n` +
+  `  \`check('Z', 'clean', w === '', w);\\n\`;\n` +
+  `check('A', 'the minted defect is detected', detect(FIXTURE).length === 1, 'x');\n`;
+const mfMint = mintFleet({ 'lib/tree-fingerprint.mts': M_LIB, 'carrier.mts': MINT_CARRIER, 'post.mts': M_POST });
+
+check('E4e', 'source that only QUOTES the defect is not source — the mask split, both directions',
+  importAwareAssertedSites('carrier.mts', mfMint).length === 0 &&
+    importAwareAssertedSites('post.mts', mfMint).length === 1 &&
+    files.every((rel) => {
+      const s = fs.readFileSync(path.join(SCRIPTS, rel), 'utf8');
+      return MASK(s).length === s.length && stripSource(s, true).length === s.length;
+    }),
+  `A file whose ONLY occurrence of the shape is inside a minted fixture string scores ` +
+    `${importAwareAssertedSites('carrier.mts', mfMint).length}, while the file that really carries ` +
+    `it scores ${importAwareAssertedSites('post.mts', mfMint).length} — the negative direction is ` +
+    `the point, since without it this widening reports probes that are testing the defect as having ` +
+    `it. Both masks are length-preserving over all ${files.length} files under scripts/ (0 ` +
+    `mismatches, either mode), which is what licenses locating structure in one and reading the ` +
+    `spelling from the other at the same offsets. **This arm exists because the widening's FIRST ` +
+    `live hit was exactly this false positive**, on probe-round265, caught by hand-reading the one ` +
+    `row the census added rather than by any arm that was written before it.`);
+
 const fleet: Array<{ rel: string; names: string[]; asserted: string[] }> = [];
 let porcelainUsers = 0;
 for (const rel of files) {
@@ -833,6 +1121,167 @@ meas('E2', 'CENSUS — the shape is NOT three files, and neither of us counted i
     `only a defect where the window is SHARED — a probe asserting its own mkdtemp scratch is ` +
     `empty is right — so this is a list to adjudicate. The "diagnostic" rows are the detector ` +
     `being honest about its own limit, not a backlog.`);
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Round 266 — the same census, over the live fleet, following imports
+// ─────────────────────────────────────────────────────────────────────────────
+
+const liveFleet: FleetView = {
+  read: (rel) => fs.readFileSync(path.join(SCRIPTS, rel), 'utf8'),
+  reach: reachable,
+};
+const singleFile = new Map<string, string[]>();
+const importAware = new Map<string, string[]>();
+for (const rel of files) {
+  const a = importAwareAssertedSites(rel, liveFleet, false);
+  const b = importAwareAssertedSites(rel, liveFleet, true);
+  if (a.length) singleFile.set(rel, a);
+  if (b.length) importAware.set(rel, b);
+}
+const gained = [...importAware.keys()].filter((r) => !singleFile.has(r));
+const lost = [...singleFile.keys()].filter((r) => !importAware.has(r));
+
+check('E5', 'the import-aware census SUBSUMES the single-file one — it may only ever ADD a file',
+  lost.length === 0 && [...singleFile.keys()].every((r) => singleFile.get(r)!
+    .every((n) => importAware.get(r)!.includes(n))),
+  lost.length === 0
+    ? `${singleFile.size} files under the single-file seeding, ${importAware.size} following ` +
+      `imports, 0 lost. This is a DIRECTION, not a count, and it is the arm that would catch a ` +
+      `widening that silently traded one kind of reach for another: providers are an additional ` +
+      `seed, so a file the old detector flagged must still be flagged. A site appearing only under ` +
+      `the old reader would mean the widening lost coverage.`
+    : `LOST ${lost.length} file(s) that the single-file census saw: ${lost.join(', ')}. The ` +
+      `widening is not a superset and the figures below are not comparable.`);
+
+// The registry over the live tree, derived not declared.
+const liveProviders = new Map<string, string[]>();
+for (const rel of files) {
+  const p = providerExports(liveFleet.read(rel));
+  if (p.length) liveProviders.set(rel, p);
+}
+
+meas('E6', 'CENSUS, IMPORT-AWARE — the second axis, and it sits BESIDE the first rather than replacing it',
+  `${files.length} files walked. Provider registry, derived from module text by Round 256's own ` +
+    `seeding rule applied to exports:\n          ` +
+    ([...liveProviders].map(([r, p]) => `${r} → ${p.join(', ')}`).join('\n          ') || '(none)') +
+    `\n        ASSERTED sites: ${singleFile.size} file(s) single-file, ${importAware.size} ` +
+    `following imports. Newly reached: ${gained.length ? gained.join(', ') : '(none)'}.\n` +
+    `        **The live delta is ZERO, and that is the honest headline.** The wiring does not buy a ` +
+    `bigger number today — the files that have already moved onto the shared lib bracket correctly, ` +
+    `which is the point of the migration. It buys INVARIANCE: arm E4 shows the single-file figure ` +
+    `falling 1 → 0 on a file whose defect never changed, and the import-aware figure holding at 1. ` +
+    `A census that deflates as its own fleet refactors reads as progress and is not.\n` +
+    `        **The one row it did add was a FALSE POSITIVE, and hand-reading is what caught it.** ` +
+    `Before arms E4d/E4e existed this measurement read 11 → 12, gaining probe-round265 — whose real ` +
+    `arm Z1 brackets correctly, and whose flag came entirely from a minted fixture at :314 plus ` +
+    `prose in a detail string at :371. Third fire running that reading the census OUTPUT, rather ` +
+    `than trusting the instrument that produced it, is what found the defect in the instrument.\n` +
+    `        **Both figures are published, both labelled.** The single-file number is not retired ` +
+    `and not superseded: it is now the REACH measurement, and the delta between the two is the size ` +
+    `of the blind spot on the day it is taken. One number replacing the other would have thrown ` +
+    `away the only thing that makes either interpretable.`);
+
+/**
+ * The published single-file detector, with the Round 266 mask split applied — structure located in
+ * the hard mask, spelling read from the soft mask at the same offsets. **Measured, NOT applied.**
+ * `emptinessSites` is the reader every published figure in this arc rests on, including Round 264's
+ * pinned 13/13; moving it in the same fire that adds a second axis would make both uninterpretable.
+ */
+function assertedEmptinessSitesStrict(src: string): string[] {
+  const soft = MASK(src);
+  const hard = stripSource(src, true);
+  if (!PORCELAIN_SPELLING.test(soft)) return [];
+  const names = new Set<string>();
+  for (const m of hard.matchAll(/(?:const|let|var)\s+([A-Za-z_$][\w$]*)\s*=\s*([^\n;]*)/g)) {
+    // Located in the hard mask so a declaration inside a fixture string is not a declaration;
+    // the initialiser is read back out of the SOFT mask at the same offsets, because that is
+    // where the porcelain spelling lives.
+    const at = m.index! + m[0].length - m[2].length;
+    if (PORCELAIN_SPELLING.test(soft.slice(at, at + m[2].length))) names.add(m[1]);
+  }
+  for (const m of hard.matchAll(/function\s+([A-Za-z_$][\w$]*)\s*\([^)]*\)[^{]*\{([\s\S]{0,400}?)\}/g)) {
+    const at = m.index! + m[0].length - m[2].length - 1;
+    if (PORCELAIN_SPELLING.test(soft.slice(at, at + m[2].length))) names.add(m[1]);
+  }
+  for (const m of hard.matchAll(/(?:const|let|var)\s+([A-Za-z_$][\w$]*)\s*=\s*([A-Za-z_$][\w$]*)\s*\(\s*\)/g)) {
+    if (names.has(m[2])) names.add(m[1]);
+  }
+  const spans = assertionArgumentSpans(hard);
+  const out: string[] = [];
+  for (const n of names) {
+    const cmp = new RegExp(`\\b${n}\\b\\s*(?:\\(\\s*\\))?\\s*(?:\\.trim\\(\\))?\\s*===\\s*(['"\`])\\1`);
+    if (spans.some((s) => cmp.test(s))) out.push(n);
+  }
+  return out;
+}
+
+const strict = new Map<string, string[]>();
+for (const rel of files) {
+  const s = assertedEmptinessSitesStrict(liveFleet.read(rel));
+  if (s.length) strict.set(rel, s);
+}
+const strictDrops = [...singleFile.keys()].filter((r) => !strict.has(r));
+const strictAdds = [...strict.keys()].filter((r) => !singleFile.has(r));
+
+/**
+ * A zero delta is only a measurement if the two readers CAN come apart, and **two drafts of this
+ * fixture failed to separate them before one worked.** Both failures were informative, and both
+ * were caught on the arm's output rather than in review:
+ *
+ *  1. `const FIXTURE = ` immediately followed by the fixture text scored 0 under BOTH readers.
+ *     `emptinessSites`' declaration regex captures `[^\n;]*` from the outer `const FIXTURE =`,
+ *     `matchAll` advances past the whole match, and the inner `const d = …` sits inside the
+ *     consumed region and is never matched. **That is precisely the accident that kept
+ *     `probe-round265` out of the published single-file census** while the import-aware axis, whose
+ *     seeding regex has no such enclosure, walked straight into it.
+ *  2. Putting the minted `check('Z', …, d === '', d)` inside the fixture string also scored 0 under
+ *     both — because {@link assertionArgumentSpans} ALREADY hard-masks before locating a `check(`,
+ *     so a call that exists only inside a template is not a call. The published reader was half
+ *     protected all along, and I had not read it closely enough to know which half.
+ *
+ * So the separating fixture is the real shape, mirrored: **the seed minted in a string, and the
+ * comparison in genuine prose inside a genuine assertion's detail argument.** That is
+ * `probe-round265` at :314 and :371, reduced to five lines. The published reader's spans are sliced
+ * from the SOFT mask, so prose inside a detail string is inside a real span; the strict reader
+ * slices the same spans from the hard mask, and prose is not code.
+ */
+const QUOTED_INLINE = `const FIXTURE = [\n` +
+  `  \`const d = execFileSync('git', ['status', '--porcelain']).trim();\`,\n` +
+  `].join('');\n` +
+  `check('A', 'the detector sees the minted defect', detect(FIXTURE).length === 1,\n` +
+  `  \`the minted fixture spells d === '' and this sentence is describing it\`);\n`;
+
+check('E7b', 'NON-VACUITY — the two readers do come apart, so E7\'s delta is a measurement',
+  assertedEmptinessSites(QUOTED_INLINE).length === 1 &&
+    assertedEmptinessSitesStrict(QUOTED_INLINE).length === 0 &&
+    assertedEmptinessSites(POS).length === 1 && assertedEmptinessSitesStrict(POS).length === 1,
+  `On a probe that MINTS an inline porcelain defect as a string in order to test a detector — ` +
+    `source that only QUOTES the shape — the published reader scores ` +
+    `${assertedEmptinessSites(QUOTED_INLINE).length} and the hard-mask reader scores ` +
+    `${assertedEmptinessSitesStrict(QUOTED_INLINE).length}. On real source carrying the real defect ` +
+    `they agree (${assertedEmptinessSites(POS).length} vs ` +
+    `${assertedEmptinessSitesStrict(POS).length}), so the strict reader is not simply stricter ` +
+    `about everything. Without this arm, E7's "0 drops" could not be told from a reader that never ` +
+    `drops anything — Round 262's lesson, where a perturbation the subject re-did was no ` +
+    `perturbation at all.`);
+
+meas('E7', 'ROUTED, NOT APPLIED — what the mask split would do to the PUBLISHED single-file figure',
+  `The published reader scores ${singleFile.size} asserted files. The same reader with structure ` +
+    `located in the hard mask scores ${strict.size}. Drops (${strictDrops.length}): ` +
+    `${strictDrops.length ? strictDrops.join(', ') : '(none)'}. Adds (${strictAdds.length}): ` +
+    `${strictAdds.length ? strictAdds.join(', ') : '(none)'}.\n` +
+    `        **The delta is zero, and E7b is what makes that a measurement rather than a tautology** ` +
+    `— on a fixture that only QUOTES the defect the two readers score 1 and 0, and on real source ` +
+    `they agree. So the published figure carries no false positive of this class today. That is a ` +
+    `better result than I expected when the arm was written, and it is a narrower claim than it ` +
+    `looks: it says the class has not yet reached the published census, not that the reader is ` +
+    `immune. The reader is vulnerable exactly where probe-round265 was — a minted seed plus a ` +
+    `comparison in prose — and the fleet mints more fixtures every round.\n` +
+    `        Still NOT applied, and the reason is the instrument, not the result: emptinessSites is ` +
+    `the reader under Round 264's pinned 13/13 and under every figure this arc has published, and a ` +
+    `fire that moves it AND adds an axis leaves neither number interpretable. Applying it is a ` +
+    `one-line change whose delta is currently zero; the right fire for it is one that changes ` +
+    `nothing else.`);
 
 // ─────────────────────────────────────────────────────────────────────────────
 // ARM Z — this round's own window, bracketed by this round's own remedy

@@ -462,13 +462,34 @@ function censusOver(pop: string[], srcFor: (r: string) => string) {
 // Axis 1 pinned (tree), axis 2 live (today's bytes) — the state of Daedalus's repair, done right.
 const livePresent = treePop.filter((r) => liveSrc.has(r));
 const treeLive = censusOver(livePresent, (r) => liveSrc.get(r)!);
-check('C4', 'the git-tree pin reproduces 13 / 10 — the instrument the sentence named, with no filename parsing',
-  treeLive.cmp.length === 13 && treeLive.asserted.length === 10,
+const heurPop = allFiles.filter((r) => r !== SELF && !r.startsWith('probe-round256-') && roundOf(r) <= 256);
+const heur = censusOver(heurPop, (r) => liveSrc.get(r)!);
+/**
+ * **Round 266 — this arm asserted a literal over a half-pinned population, and C5 below is the
+ * sentence that predicted it would break.** It read `cmp === 13 && asserted === 10` while reading
+ * TODAY's bytes, and it went red on 2026-09-24 when `probe-round197`'s arm Z was repaired: the old
+ * spelling was a `.split().filter().join()` chain this census cannot recognise, the first draft of
+ * the repair was a plain `porcelain === ''`, and a hidden instance became a visible one. **The
+ * figure moved because the fleet moved, which is the only thing C5 ever said would happen.**
+ *
+ * The claim this arm is for is not the number. Its own detail said so from the day it was written —
+ * *"Agrees with the roundOf heuristic today, so this is an argument about the instrument"* — and
+ * the claim is a RELATION between two instruments over the same bytes. So that is what it asserts
+ * now. The literal figure stays in the detail, as an observation of the day, and C6 keeps the
+ * literal where a literal is sound: over a population whose bytes are pinned too.
+ *
+ * **Rule: assert the relation you are arguing about; a literal read off today's tree is a fact with
+ * an expiry date, and pinning half its axes does not extend it.**
+ */
+check('C4', 'the git-tree pin AGREES WITH the roundOf heuristic over the same bytes — a relation, not a literal',
+  treeLive.cmp.length === heur.cmp.length && treeLive.asserted.length === heur.asserted.length,
   `Population = git ls-tree at ${R256_COMMIT} (the commit that ADDED probe-round256), minus that ` +
     `probe itself — ${treePop.length} files, ${livePresent.length} still present today. Reading ` +
-    `today's bytes: ${treeLive.cmp.length} comparing, ${treeLive.asserted.length} asserting. ` +
-    `Agrees with the roundOf heuristic today, so this is an argument about the instrument and ` +
-    `NOT a correction to the number.`);
+    `today's bytes: tree pin ${treeLive.cmp.length} comparing / ${treeLive.asserted.length} ` +
+    `asserting, heuristic ${heur.cmp.length} / ${heur.asserted.length}. The two instruments agree, ` +
+    `which is the argument; the figure itself is today's and is NOT pinned — C5 says why, and C6 ` +
+    `holds the literal over the population where a literal survives. This arm read "13 / 10" until ` +
+    `2026-09-24, when the fleet moved underneath it exactly as C5 predicted.`);
 
 // Axis 2: did the bytes move?
 const changed = treePop.filter((r) => liveSrc.get(r) !== blobAt.get(r));
@@ -488,8 +509,6 @@ check('C6', 'pinning BOTH axes also reproduces 13 / 10 — so half a pin is curr
     `is the honest headline: Daedalus's repair is not wrong today, it is UNGUARDED. Nothing in ` +
     `the fleet would notice when those ${changed.length} drifting files start to disagree.`);
 
-const heurPop = allFiles.filter((r) => r !== SELF && !r.startsWith('probe-round256-') && roundOf(r) <= 256);
-const heur = censusOver(heurPop, (r) => liveSrc.get(r)!);
 const onlyHeur = heurPop.filter((r) => !livePresent.includes(r));
 const onlyTree = livePresent.filter((r) => !heurPop.includes(r));
 meas('C7', 'the two populations are not the same set, even though the figures match',

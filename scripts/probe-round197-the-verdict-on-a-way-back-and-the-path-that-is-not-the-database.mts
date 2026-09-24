@@ -43,12 +43,27 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import Database from 'better-sqlite3';
+import { fingerprint, windowState } from './lib/tree-fingerprint.mts';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(HERE, '..');
 const DATA = path.join(ROOT, '.testdata', 'r197');
 const CLI = path.join(ROOT, 'scripts', 'backfill-entity-bindings.mts');
 const R176 = path.join(ROOT, 'scripts', 'probe-round176-backfill-cli-end-to-end.mts');
+
+/**
+ * The files this round's verdicts actually rest on. `CLI` is the subject — every P/Q/R verdict is a
+ * reading of what it prints. `R176` is executed to BUILD the fixtures those verdicts are taken over
+ * (see {@link build}), so a modified R176 changes the fixture and therefore the verdict, exactly as
+ * a modified CLI does. Neither reaches `packages/`: both import only node builtins and
+ * `better-sqlite3`, checked before this list was written, which is why `packages/` is not in it.
+ */
+const SUBJECTS = ['scripts/backfill-entity-bindings.mts', 'scripts/probe-round176-backfill-cli-end-to-end.mts'];
+
+// Round 266: the bracket is taken at open, before anything in this file runs, so arm Z grades the
+// whole run rather than the tail of it.
+const zBefore = fingerprint(ROOT, 'packages/');
+const zBeforeScripts = fingerprint(ROOT, 'scripts/');
 
 type Result = { arm: string; name: string; ok: boolean | 'open'; detail: string };
 const checks: Result[] = [];
@@ -536,22 +551,100 @@ console.log("\nArm S — Round 196's F4, measured at size: quick_check is O(db),
   );
 }
 
-// ── Arm Z — files changed ────────────────────────────────────────────────────
-console.log('\nArm Z — files changed');
+// ── Arm Z — what this run did, and what its verdicts rest on ─────────────────
+/**
+ * ## Round 266 — one assertion was two questions, and the allowlist that fixed the false red
+ * dropped a real dependency
+ *
+ * The arm that stood here read the whole of `packages` + `scripts`, filtered out every
+ * `scripts/probe-round\d+-` path, and asserted the remainder was empty. Three things are wrong with
+ * that, and they are separable:
+ *
+ *  1. **It is two questions in one assertion.** *"Did this run move the tree?"* is about the RUN and
+ *     is this seat's responsibility. *"Was the tree valid to measure against?"* is a PRECONDITION on
+ *     the verdicts and is not this seat's doing at all. An emptiness claim answers neither cleanly:
+ *     it reddens for a third party's in-flight work, and it is blind to a write this run makes into
+ *     a file that was already modified (`scripts/lib/tree-fingerprint.mts` header, false-green half).
+ *
+ *  2. **The window admitted 347 files, and this round's verdicts depend on none of them.** Measured
+ *     before the rewrite, from `git ls-files packages scripts`: 422 tracked, 75 allowlisted away as
+ *     `probe-round*`, **347 admitted** — 270 under `packages/` and 77 more under `scripts/`. The CLI
+ *     imports `node:fs`, `node:os`, `node:path` and `better-sqlite3` and nothing from `packages/`;
+ *     so does R176. Not one of the 347 can change a verdict here.
+ *
+ *  3. **And the allowlist excluded a file that CAN.** `R176` is not an instrument sitting beside the
+ *     subject — it is `execFileSync`'d to build every fixture the P/Q/R verdicts are taken over. It
+ *     matches `probe-round\d+-`, so the patch that fixed the false red filtered the one real
+ *     dependency in the tree out of the validity window. That is the false-green half of the class
+ *     with a name and a line number, in my own file, found by the census that counted it.
+ *
+ * **Rule: narrow the window to the subject before you weaken the assertion.** An emptiness claim
+ * over a shared window is not repaired by deleting it and it is not repaired by allowlisting the
+ * noise — it is repaired by naming what the measurement actually depends on. Here that is two
+ * files, and the right instruments are a bracket for question 1 and a named-file diff for question 2.
+ */
+console.log('\nArm Z — what this run did, and what its verdicts rest on');
 {
-  const changed = spawnSync('git', ['status', '--porcelain', 'packages', 'scripts'], {
-    cwd: ROOT,
-    encoding: 'utf8',
-  }).stdout.trim();
-  // Probes are this round's own instruments, not the thing under test — this
-  // fire re-vehicles Round 195's as well. What Z is for is the CLI and
-  // `packages/`: a measurement taken against edited product is not a
-  // measurement of what is on `main`.
-  const offenders = changed
+  const zAfter = fingerprint(ROOT, 'packages/');
+  const zAfterScripts = fingerprint(ROOT, 'scripts/');
+  check(
+    'Z',
+    'this run left packages/ and scripts/ as it found them — a bracket, not an emptiness claim',
+    zAfter === zBefore && zAfterScripts === zBeforeScripts,
+    zAfter === zBefore && zAfterScripts === zBeforeScripts
+      ? `both fingerprints identical across the run. Every write is under .testdata/r197 (gitignored), ` +
+        `and a third party's in-flight work under either pathspec is invisible to this arm by design.`
+      : `MOVED.\n    packages/ before: ${zBefore}\n    packages/ after:  ${zAfter}\n` +
+        `    scripts/ before: ${zBeforeScripts}\n    scripts/ after:  ${zAfterScripts}`
+  );
+
+  // Question 2, scoped to the two files named in SUBJECTS — and spelled as a CONTENT COMPARISON,
+  // not as an emptiness claim over a window.
+  //
+  // The first draft of this arm asked `git status --porcelain -- <subjects>` and asserted the
+  // result was `''`. Round 256's census flagged it the same fire, and correctly: a narrower window
+  // is still a window, and `dirtySubjects === ''` is the same shape the whole class is about. Worse,
+  // it was a REGRESSION — the old `offenders` spelling was invisible to that census (a
+  // `.split().filter().join()` chain it cannot recognise), so "repairing" it in that form moved a
+  // hidden instance into a plain detectable one instead of removing it.
+  //
+  // What this precondition actually means is "the bytes I am about to measure are the bytes on
+  // main", which is a comparison between two contents and needs no window at all. Comparing blobs
+  // is also strictly more precise than porcelain: it is a statement about each named file rather
+  // than about whatever the pathspec happened to match.
+  const drifted = SUBJECTS.filter((rel) => {
+    const head = spawnSync('git', ['show', `HEAD:${rel}`], { cwd: ROOT, maxBuffer: 64 * 1024 * 1024 });
+    if (head.status !== 0) return true;
+    return !head.stdout.equals(fs.readFileSync(path.join(ROOT, rel)));
+  });
+  check(
+    'Z2',
+    'the two files these verdicts rest on are byte-identical to HEAD',
+    drifted.length === 0,
+    drifted.length === 0
+      ? `${SUBJECTS.join(' and ')} both match HEAD blob-for-blob, so the P/Q/R verdicts are ` +
+        `readings of the CLI that is on main, over fixtures built by the R176 that is on main. ` +
+        `R176 is named here because it BUILDS the fixtures; the old arm's probe-round* allowlist ` +
+        `excluded it. A comparison, not an emptiness claim — and per-file, not per-pathspec.`
+      : `${drifted.length} subject(s) differ from HEAD, so the verdicts below are about edited ` +
+        `code: ${drifted.join(', ')}`
+  );
+
+  // The rest of the window: reported, never graded. This is the half that is not this run's doing.
+  const rest = windowState(ROOT, 'packages/')
     .split('\n')
-    .filter((l) => l.trim() && !/scripts\/probe-round\d+-/.test(l))
-    .join('; ');
-  check('Z', 'no product or CLI file differs from HEAD', offenders === '', offenders || 'clean');
+    .concat(windowState(ROOT, 'scripts/').split('\n'))
+    .filter((l) => l.trim() && !SUBJECTS.some((s) => l.includes(s)));
+  meas(
+    'Z3',
+    rest.length === 0
+      ? `packages/ and scripts/ carried no other modification at close. Recorded so a later reader ` +
+        `knows arm Z's comparison was taken over a quiet tree this time — which is luck, not an ` +
+        `invariant, and is exactly what the old arm mistook for one.`
+      : `${rest.length} other path(s) under packages/ or scripts/ differ from HEAD. Not this run's ` +
+        `doing, not graded, and not capable of changing a verdict above (SUBJECTS is the dependency ` +
+        `set): ${rest.slice(0, 6).join('; ')}${rest.length > 6 ? ` …+${rest.length - 6}` : ''}`
+  );
 }
 
 const passed = checks.filter((c) => c.ok === true).length;

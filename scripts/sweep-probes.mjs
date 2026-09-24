@@ -102,8 +102,12 @@ export const SWEPT = [
   },
   {
     file: 'probe-round256-an-emptiness-assertion-grades-the-operator-and-a-sole-blocker-ranking-cannot-see-a-coupled-class.mts',
-    expect: /All 16 regression checks passed/,
-    why: 'Theseus 260 §1 repaired it to delegate to strip-source.mjs and reports 16/16',
+    // The number in this comment and the number in `expect` are the same number ON PURPOSE, and a
+    // reader updating one must update the other — the drift Daedalus's 265 §1 closed on the
+    // probe-round263 entry, stated here rather than left to be rediscovered. 16 → 23 in Round 266,
+    // which wired the census axis to this file's own import resolver (arms E4–E7b).
+    expect: /All 23 regression checks passed/,
+    why: 'Theseus 266 §2 wired the import-aware census axis into it and reports 23/23',
   },
   {
     file: 'probe-round257-the-scanner-had-no-model-of-interpolation.mts',
