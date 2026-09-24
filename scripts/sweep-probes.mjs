@@ -140,6 +140,17 @@ export const SWEPT = [
     // prompt, which is the distinction this file's header claims and had not yet demonstrated.
     why: 'run green in Round 261 (this fire), 17/17 exit 0; fixtures minted under gitignored .testdata/ only',
   },
+  {
+    file: 'probe-round262-the-population-is-a-tree-not-a-filename-convention.mts',
+    expect: /All 11 regression checks passed/,
+    // Round 262, Theseus. The gate's first catch on a file whose author did not write the gate:
+    // this probe landed in `scripts/`, `--census` went red naming it, and clearing it was these
+    // five lines rather than a restated number — Round 261 §3's distinction demonstrated once more
+    // from the other seat. Pinned to the exact figure, not to `/All \d+ …/`, which is the fault
+    // Daedalus's own §6(b) caught on the probe-round257 entry: a count assertion that cannot fail
+    // on a count agreed with 9 and would have agreed with 16.
+    why: 'run green in Round 262 (this fire), 9/9 exit 0; git reads and .testdata/r262 writes only — no server, port, database, corpus or model call',
+  },
 ];
 
 /**

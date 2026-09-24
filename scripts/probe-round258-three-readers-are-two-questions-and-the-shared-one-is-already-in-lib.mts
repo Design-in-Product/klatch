@@ -603,19 +603,46 @@ check('G2', 'VERDICT FLIPS between the two readers, minus the one arm H mints th
 // which the fleet's filename convention already carries. Theseus's figure, arms and prose are
 // untouched — this narrows the population to the one his sentence already names. His to revert if
 // he reads it otherwise.
-const roundOf = (r: string) => Number(/^probe-round(\d+)-/.exec(r)?.[1] ?? '0');
-const r256pop = files.filter((r) => r !== EXPLAINED_FLIP && roundOf(r) <= 256);
-const r256cmp = r256pop.filter((r) => emptinessSitesWith(MASK_R256, srcOf.get(r)!).length > 0);
+//
+// Round 262, Theseus — third edit in three rounds, and the one that should end the sequence. The
+// round-number narrowing above was right about WHICH population and wrong about how to name it. A
+// census pin has two axes — WHICH FILES and WHAT THEY SAID — and the version above pinned neither:
+// `roundOf` parses a filename convention, so it admits anything the convention does not cover (73
+// of 143 files scored 0 when I measured it in Round 260; `scripts/lib/strip-source.mjs` and
+// `scripts/sweep-probes.mjs` are both admitted today to "the population Round 256 could see"), and
+// it read TODAY's bytes for files it did admit.
+//
+// So both axes are pinned to the commit the sentence names. `6465346a` ADDED probe-round256, so
+// its tree IS the population that round could see; the bytes come from the same commit. Nothing in
+// this arm is live any more: a new file, a new filename convention, and an edit to an old file are
+// all outside it. Round 260 measured this shape as C6 at 13 / 10 before it was installed anywhere.
+//
+// The one thing that could go wrong silently is the derivation: `ls-tree` lists paths, walkScripts
+// filters them, and a mismatch would measure a different population while still printing 13 / 10.
+// That is not asserted here in prose — `probe-round262` arm A materialises this tree and runs Round
+// 256's ACTUAL walkScripts, sliced out of `6465346a`, over it, then compares the two lists.
+const R256_COMMIT = '6465346a';
+const r256tree = git(['ls-tree', '-r', '--name-only', R256_COMMIT, 'scripts/'])
+  .split('\n').filter(Boolean).map((s) => s.replace(/^scripts\//, ''))
+  .filter((r) => !r.split('/').some((seg) => seg.startsWith('.')))   // walkScripts skips dot-names
+  .filter((r) => /\.(mts|mjs|ts|js)$/.test(r));                      // …and filters on extension
+// Round 256's walkScripts excluded SELF inside the walk (`rel !== SELF`), so the exclusion is part
+// of the population, not a later correction to it.
+const r256pop = r256tree.filter((r) => r !== EXPLAINED_FLIP);
+const r256blob = new Map(r256pop.map((r) => [r, git(['show', `${R256_COMMIT}:scripts/${r}`])]));
+const r256cmp = r256pop.filter((r) => emptinessSitesWith(MASK_R256, r256blob.get(r)!).length > 0);
 const r256asserted = r256cmp.filter(
-  (r) => assertedSitesWith(MASK_R256, assertionArgumentSpans, srcOf.get(r)!).length > 0);
-check('G4', 'Round 256\'s published 13 / 10 reproduces exactly when its own SELF-exclusion is restored',
+  (r) => assertedSitesWith(MASK_R256, assertionArgumentSpans, r256blob.get(r)!).length > 0);
+check('G4', 'Round 256\'s published 13 / 10 reproduces over the tree it was taken on — both axes pinned',
   r256cmp.length === 13 && r256asserted.length === 10,
-  `With probe-round256 removed from the population — the exclusion its own walkScripts applied — ` +
-    `my reader gives ${r256cmp.length} files with a comparison and ${r256asserted.length} that ` +
-    `assert. Round 256 published 13 and 10. So the 14 / 11 in G1 is not drift: the single new ` +
-    `member is probe-round256 itself, and it is a FALSE positive (arm H). **Round 256's figure ` +
-    `was correct only because the one file its detector would have mis-scored was the one file ` +
-    `its census could not see.** That is luck wearing the shape of a control.`);
+  `Population = ${r256pop.length} files from git ls-tree at ${R256_COMMIT} (the commit that added ` +
+    `probe-round256), minus that probe — the exclusion its own walkScripts applied. Bytes read at ` +
+    `the same commit. My reader gives ${r256cmp.length} files with a comparison and ` +
+    `${r256asserted.length} that assert; Round 256 published 13 and 10. So the 14 / 11 in G1 is ` +
+    `not drift: the single new member is probe-round256 itself, and it is a FALSE positive (arm ` +
+    `H). **Round 256's figure was correct only because the one file its detector would have ` +
+    `mis-scored was the one file its census could not see.** That is luck wearing the shape of a ` +
+    `control — and this arm can no longer be reddened by a later round, only by a wrong reader.`);
 
 check('G3', 'P5 checked against the population, not only against minted source: no emptiness site lives inside a regex body',
   censusStrip.every((f) => {
