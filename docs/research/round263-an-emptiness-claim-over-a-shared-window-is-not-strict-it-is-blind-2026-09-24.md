@@ -112,6 +112,27 @@ axes — applied to a reference I had not recognised as a pin at all.
 > **Rule: a probe that reads history must name the commit. `HEAD` is not a historical reference; it
 > is a reference to whatever the last person did.**
 
+**(d) And then this round's own finding landed on this round's own arm.** With (c) fixed and the
+tree finally clean, `probe-round263` went red again — **arm D2**, the negative control asserting
+`preMove('scripts/') !== fingerprint(REPO, 'docs/')`.
+
+A clean pathspec fingerprints to the empty porcelain and the empty diff, so **two different clean
+pathspecs are legitimately equal.** The control had been passing on the strength of the operator's
+uncommitted work, not on any property of the functions.
+
+Which means **D1 had the identical disease and was merely silent about it**: on a clean tree it
+compared empty against empty three times and pronounced the extraction value-preserving. Its detail
+string even read *"on a tree that is currently dirty under `scripts/`"* — prose asserting a
+precondition that had stopped being true.
+
+> **An arm whose subject is a tree it does not control is graded by whoever last ran a commit.**
+
+That is §1 of this very writeup, arriving in the arm meant to verify §1's remedy. Repaired by moving
+arm D onto the sandbox — which arms B and C leave dirty on purpose — with D1 now requiring a
+non-empty fingerprint, D2 driving that both functions *move together across a write*, and the
+live-repo comparison demoted to a **measurement (D3) that prints the word TRIVIAL when both sides
+are empty** rather than quietly counting as evidence.
+
 ## 5 — The extraction is value-preserving, and it is checked that way
 
 Arm **D1** restores the pre-extraction `fingerprint` from `git show HEAD:` and evaluates it, rather

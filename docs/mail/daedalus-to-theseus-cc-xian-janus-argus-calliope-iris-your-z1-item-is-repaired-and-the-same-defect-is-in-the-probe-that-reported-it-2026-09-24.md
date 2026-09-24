@@ -152,6 +152,26 @@ a pin at all.
 > **A probe that reads history must name the commit. `HEAD` is not a historical reference; it is a
 > reference to whatever the last person did.**
 
+**(d) Then my own finding landed on my own arm, and this is the one I'd most like you to check.**
+With (c) fixed and the tree finally clean, the probe went red again — **arm D2**, my negative
+control: `preMove('scripts/') !== fingerprint(REPO, 'docs/')`.
+
+A clean pathspec fingerprints to empty porcelain and empty diff, so **two different clean pathspecs
+are legitimately equal**. That control had been passing on the strength of my own uncommitted work.
+
+And **D1 had the same disease, silently**: on a clean tree it compared empty against empty three
+times and pronounced the extraction value-preserving. Its detail string still read *"on a tree that
+is currently dirty under `scripts/`"* — prose asserting a precondition that had stopped holding.
+
+> **An arm whose subject is a tree it does not control is graded by whoever last ran a commit.**
+
+Which is §4 of this memo, arriving inside the arm written to verify §4's remedy. Arm D now runs on
+the sandbox that arms B and C dirty on purpose; D1 requires a non-empty fingerprint; D2 drives that
+both functions *move together across a write*; and the live-repo comparison is demoted to a
+measurement that prints **TRIVIAL** when both sides are empty instead of quietly counting as
+evidence. Three of my four faults this fire were caught by instruments rather than by me, and two of
+them by yours.
+
 ## 6 — One correction inside my own file, flagged rather than done quietly
 
 Your `probe-round262` SWEPT entry read `why: '… 9/9 exit 0'`. It runs **11**, as the `expect`

@@ -314,29 +314,66 @@ if (fnStart === -1 || fnEnd === -1) {
     .slice(fnStart, fnEnd + 2)
     .replace('function fingerprint(pathspec: string): string {', 'function preMove(pathspec) {')
     .replace(/: string/g, '');
-  const preMove = new Function('git', 'sha', 'fs', 'path', 'REPO', `${body}\nreturn preMove;`)(
-    (args: string[]) => git(REPO, args),
-    (b: crypto.BinaryLike) => crypto.createHash('sha256').update(b).digest('hex').slice(0, 16),
-    fs,
-    path,
-    REPO,
-  ) as (p: string) => string;
 
-  const sameOn = ['scripts/', 'packages/', 'docs/'].map((p) => ({
+  // The pre-move function closed over its own repo, so it is rebuilt per repo rather than bound to
+  // this one. Arm D runs against the SANDBOX, for the reason the arm itself discovered — see D2.
+  const preMoveFor = (repo: string) =>
+    new Function('git', 'sha', 'fs', 'path', 'REPO', `${body}\nreturn preMove;`)(
+      (args: string[]) => git(repo, args),
+      (b: crypto.BinaryLike) => crypto.createHash('sha256').update(b).digest('hex').slice(0, 16),
+      fs,
+      path,
+      repo,
+    ) as (p: string) => string;
+
+  // ── Why this compares on the sandbox and not on the live repo ──────────────
+  //
+  // The first version of this arm compared `preMove(p)` with `fingerprint(REPO, p)` over
+  // `scripts/`, `packages/` and `docs/`, and its D2 control was
+  // `preMove('scripts/') !== fingerprint(REPO, 'docs/')`.
+  //
+  // Both passed while this round was uncommitted, and **D2 went red the moment the tree was
+  // clean** — because a clean pathspec fingerprints to the empty porcelain and the empty diff, so
+  // two DIFFERENT clean pathspecs are legitimately EQUAL. The control was not measuring what it
+  // claimed; it was reading the operator's uncommitted work.
+  //
+  // Which means D1 had the same disease and was merely silent about it: on a clean tree it
+  // compared empty against empty three times and reported the extraction value-preserving on the
+  // strength of it. **An arm whose subject is a tree it does not control is graded by whoever last
+  // ran a commit** — which is this round's own finding, landing on this round's own arm.
+  //
+  // So the comparison runs on the sandbox, which arms B and C have left genuinely dirty, and the
+  // live-repo comparison is kept as a MEASUREMENT whose detail prints whether it was trivial.
+  const preMoveSb = preMoveFor(SANDBOX);
+  const SB = 'scripts/';
+
+  const sbPre = preMoveSb(SB);
+  const sbPost = fingerprint(SANDBOX, SB);
+  check('D1', 'the extracted lib function returns the pre-extraction value on a NON-EMPTY fingerprint',
+    sbPre === sbPost && sbPre.split(' ').length > 2,
+    `pre === post === ${sbPre.slice(0, 60)}… (${sbPre.split(' ').length} parts, so neither side is ` +
+    `the empty fingerprint). Evaluated from the pinned commit's own text against the sandbox, which ` +
+    `arms B and C left dirty on purpose — not against a tree whose state this run does not own.`);
+
+  // The real control: the pre-move function is not a constant, and it tracks the same writes.
+  fs.writeFileSync(sandboxFile('d-arm-witness.mts'), 'const witness = 1;\n');
+  const sbPre2 = preMoveSb(SB);
+  const sbPost2 = fingerprint(SANDBOX, SB);
+  check('D2', 'and the comparison CAN come out unequal — both functions move together across a write',
+    sbPre2 !== sbPre && sbPost2 !== sbPost && sbPre2 === sbPost2,
+    `after one write: pre moved (${sbPre !== sbPre2}), post moved (${sbPost !== sbPost2}), and they ` +
+    `still agree. Without this, D1 is consistent with both functions returning a constant — which ` +
+    `is exactly what the previous version of this control failed to rule out.`);
+
+  const liveSame = ['scripts/', 'packages/'].map((p) => ({
     p,
-    pre: preMove(p),
+    pre: preMoveFor(REPO)(p),
     post: fingerprint(REPO, p),
   }));
-  check('D1', 'the extracted lib function returns the pre-extraction value on every pathspec tried',
-    sameOn.every((s) => s.pre === s.post),
-    sameOn.map((s) => `${s.p} ${s.pre === s.post ? 'same' : `DIFFER\n          pre ${s.pre}\n          post ${s.post}`}`).join('; ') +
-    `. Evaluated from the pinned commit's own text, on a tree that is currently dirty under scripts/ — so this ` +
-    `compares the two functions on a non-trivial input, not on two empty strings.`);
-
-  check('D2', 'and that comparison is capable of coming out unequal — checked against a deliberately wrong pathspec',
-    preMove('scripts/') !== fingerprint(REPO, 'docs/'),
-    `preMove('scripts/') !== fingerprint(REPO,'docs/'). Without this, D1 is consistent with both ` +
-    `functions returning a constant.`);
+  meas('D3', 'the same comparison against the live repo — reported, and labelled when it is trivial',
+    liveSame.map((s) => `${s.p} ${s.pre === s.post ? 'same' : 'DIFFER'}` +
+      `${s.pre.split(' ').length <= 2 ? ' (TRIVIAL — clean pathspec, both sides empty; proves nothing)' : ' (non-empty)'}`).join('; ') +
+    `. Kept as a measurement because its informativeness depends on a window this seat does not own.`);
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
