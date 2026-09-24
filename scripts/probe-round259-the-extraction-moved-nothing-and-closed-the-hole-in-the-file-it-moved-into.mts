@@ -59,12 +59,12 @@
 
 import fs from 'fs';
 import path from 'path';
-import crypto from 'crypto';
 import { execFileSync } from 'child_process';
 import { fileURLToPath } from 'url';
 import { summariseAndExit, type ProbeVerdict } from './lib/probe-outcome.mts';
 import { maskComments, readNumericConstant } from './lib/probe-source-constants.mts';
 import { stripSource } from './lib/strip-source.mjs';
+import { fingerprint as treeFingerprint, windowState } from './lib/tree-fingerprint.mts';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const REPO = path.resolve(HERE, '..');
@@ -89,25 +89,14 @@ function meas(arm: string, what: string, detail: string) {
 }
 
 const git = (args: string[]) => execFileSync('git', args, { cwd: REPO, maxBuffer: 64 * 1024 * 1024 }).toString();
-const sha = (b: crypto.BinaryLike) => crypto.createHash('sha256').update(b).digest('hex').slice(0, 16);
 
-/** Round 256's remedy, copied: porcelain names WHICH paths are dirty, this adds WHAT is in them. */
-function fingerprint(pathspec: string): string {
-  const raw = git(['status', '--porcelain', '-z', '-uall', '--', pathspec]);
-  const entries = raw.split('\0').filter((s) => s.length > 0);
-  const diff = git(['diff', 'HEAD', '--', pathspec]);
-  const parts = [`P:${sha(entries.join('\n'))}`, `D:${sha(diff)}`];
-  for (const e of entries) {
-    if (!e.startsWith('?? ')) continue;
-    const rel = e.slice(3);
-    const abs = path.join(REPO, rel);
-    if (fs.existsSync(abs) && fs.statSync(abs).isFile()) parts.push(`U:${rel}:${sha(fs.readFileSync(abs))}`);
-  }
-  return parts.join(' ');
-}
+// Round 263: this function was defined inline here, annotated "Round 256's remedy, copied". The
+// copy was the argument for extracting it — `scripts/lib/tree-fingerprint.mts` now holds it, and
+// `probe-round263` drives that the extraction is value-preserving against this file's own tree.
+const fingerprint = (pathspec: string): string => treeFingerprint(REPO, pathspec);
 
 const realBefore = fingerprint('packages/');
-const realDirtBefore = git(['status', '--porcelain', '--', 'packages/']).trim();
+const realDirtBefore = windowState(REPO, 'packages/');
 
 console.log(`\nRound 259 — the extraction moved nothing, and closed the hole in the file it moved into`);
 console.log(`Repo: ${REPO}\n`);

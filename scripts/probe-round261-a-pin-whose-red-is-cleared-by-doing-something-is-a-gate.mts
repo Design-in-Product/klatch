@@ -26,8 +26,18 @@
 
 import { mkdirSync, writeFileSync, rmSync, existsSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
-import { join } from 'node:path';
+import { join, resolve, dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { census, partition, verdict, SWEPT, DEFERRED } from './sweep-probes.mjs';
+import { fingerprint, windowState } from './lib/tree-fingerprint.mts';
+
+const REPO = resolve(dirname(fileURLToPath(import.meta.url)), '..');
+
+// Round 263: arm Z is bracketed, so the "before" has to be taken before any arm runs. See the
+// note on arm Z at the foot of this file for why this replaced an emptiness claim.
+const Z_PATHSPECS = ['scripts/', 'packages/'];
+const zBefore = Z_PATHSPECS.map((p) => fingerprint(REPO, p));
+const zWindowAtOpen = Z_PATHSPECS.map((p) => `${p} → ${windowState(REPO, p) || '(clean)'}`);
 
 let pass = 0;
 let fail = 0;
@@ -175,11 +185,36 @@ check('G1', 'node scripts/sweep-probes.mjs --census exits 0 on the live tree and
 console.log('');
 console.log('── arm Z — I left the tree as I found it ────────────────────────────────');
 
-const porcelain = execFileSync('git', ['status', '--porcelain', '--', 'scripts/', 'packages/'], { encoding: 'utf8' });
-const dirty = porcelain.split('\n').filter((l) => l.trim() && !/sweep-probes\.mjs|probe-round261/.test(l));
-check('Z1', 'no file under scripts/ or packages/ is modified by this run beyond this round\'s own two deliverables',
-  dirty.length === 0,
-  dirty.length ? dirty.join(' | ') : 'clean — fixtures are minted under gitignored .testdata/r261/ only');
+// ── Round 263 repair, on Theseus's Round 262 §3 finding ──────────────────────
+//
+// This arm shipped in Round 261 as an EMPTINESS claim over the working-tree window, with an
+// allowlist filtering out this round's own two deliverables. It went red on Theseus's tree on
+// 2026-09-23 — not on anything this probe did, but on HIS uncommitted Round 262 files, while its
+// subject (the sweep) was fine. His table names the shape exactly: a fuse misleads its author, a
+// gate prompts its author, and this reddened for a third party who had done nothing wrong, during
+// exactly the window in which the sweep is most worth running.
+//
+// The allowlist was the wrong patch twice over: it must name every future round's deliverables to
+// stay green (the staleness this file's own DEFERRED design exists to avoid), and it is not even
+// STRICT — an emptiness claim cannot see a write into a file that was already modified when the
+// run opened, because the status letter does not move.
+//
+// So the claim is now bracketed: fingerprint at open, fingerprint at close, compare. That grades
+// what this RUN did rather than what the WINDOW contained. Shared with `probe-round259` via
+// `scripts/lib/tree-fingerprint.mts`; driven, red and green both, by `probe-round263`.
+const zAfter = Z_PATHSPECS.map((p) => fingerprint(REPO, p));
+const zMoved = Z_PATHSPECS.filter((_, i) => zAfter[i] !== zBefore[i]);
+check('Z1', 'no file under scripts/ or packages/ was changed BY THIS RUN — a before/after content fingerprint, not an emptiness claim',
+  zMoved.length === 0,
+  zMoved.length === 0
+    ? `fingerprints identical across the whole run for ${Z_PATHSPECS.join(' and ')}. Fixtures are ` +
+      `minted under gitignored .testdata/r261/ only. Another seat's in-flight work under these ` +
+      `paths is invisible to this arm by construction — that is the repair.`
+    : `MOVED: ${zMoved.join(', ')}\n        before: ${zBefore.join(' || ')}\n        after:  ${zAfter.join(' || ')}`);
+
+measure('Z3', 'state of the window when this run opened — reported, NOT graded, because this seat does not own it',
+  zWindowAtOpen.join('\n        ') +
+  '\n        Whatever is here is not this run\'s doing and arm Z1 does not grade it.');
 check('Z2', 'the fixture directory is under .testdata/ and exists there, not in scripts/',
   existsSync(SCRATCH) && SCRATCH.includes('.testdata') && !existsSync(join(process.cwd(), 'scripts', 'probe-round900-alpha.mts')),
   `fixtures at ${SCRATCH.replace(process.cwd(), '.')}; scripts/probe-round900-alpha.mts does not exist`);

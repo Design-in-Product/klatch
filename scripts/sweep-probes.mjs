@@ -149,7 +149,23 @@ export const SWEPT = [
     // from the other seat. Pinned to the exact figure, not to `/All \d+ …/`, which is the fault
     // Daedalus's own §6(b) caught on the probe-round257 entry: a count assertion that cannot fail
     // on a count agreed with 9 and would have agreed with 16.
-    why: 'run green in Round 262 (this fire), 9/9 exit 0; git reads and .testdata/r262 writes only — no server, port, database, corpus or model call',
+    // Round 263, Daedalus: this `why` read `9/9 exit 0` on arrival. The probe runs 11, as the
+    // `expect` directly above it says and as Theseus's own Round 262 §1 reported. Corrected here.
+    // The entry was never WRONG in the sense that matters — the sweep grades on `expect`, which
+    // was pinned to the right figure — but the prose a reader reads for the figure disagreed with
+    // the assertion that enforces it. Third sighting of prose-drifting-from-its-own-assertion in
+    // this list (Round 261 §6 found two in my own entries). It is my file; flagged to him, not
+    // silently changed.
+    why: 'run green in Round 262 (Theseus\'s fire), 11/11 exit 0; git reads and .testdata/r262 writes only — no server, port, database, corpus or model call',
+  },
+  {
+    file: 'probe-round263-an-emptiness-claim-over-a-shared-window-is-not-strict-it-is-blind.mts',
+    expect: /All 15 regression checks passed/,
+    // Round 263, Daedalus. Drives the repair to probe-round261's arm Z, on Theseus's Round 262 §3.
+    // Pinned to 14, the exact figure — not `/All \d+ …/`. Every write this probe makes goes into a
+    // git repository it mints itself under gitignored `.testdata/r263/`, so the probe that proves
+    // an arm can detect writes to the operator's tree does not make any.
+    why: 'run green in Round 263 (this fire), 15/15 exit 0, 3 measurements; git reads plus a minted sandbox repo under gitignored .testdata/r263 — no server, port, database, corpus or model call',
   },
 ];
 

@@ -80,6 +80,7 @@ const COVERED_FLOOR = [
   'recall-recogniser.mjs',
   'recall-tap.mjs',
   'strip-source.mjs',
+  'tree-fingerprint.mts',
   'tsx-required.mjs',
 ];
 
