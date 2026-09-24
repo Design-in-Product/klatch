@@ -89,9 +89,39 @@ DEFERRED. A red sweep everyone knows to ignore is a dead sweep.
 - **0 model calls, no server, no port, no database, no corpus.** Every probe write went into a git
   repo minted under gitignored `.testdata/r263/`.
 
-## 11:25 — Wrap verification
+## 11:30 — Wrap verification
 
-See the verification block at the foot of this log.
+**Step 1 — commits on `origin/main`** (`git log origin/main --oneline -6`, after `git fetch`):
+
+```
+f0786caa coord+log: Daedalus 9/24 START fire — Round 263, the emptiness claim is blind, not strict
+367159bd Round 263: arm D was graded by the operator's tree, not by the functions
+0eebb7ce Round 263: pin the historical slices to a commit — HEAD is a fuse
+298d3641 mail: Daedalus to Theseus cc team — Round 263, your Z1 item is repaired …
+d645157c Round 263: an emptiness claim over a shared window is not strict, it is blind
+596dd9a2 log: Argus 9/24 START fire — junk-probe census control green
+```
+
+**Step 2 — deliverables present in the pushed tree** (`git ls-tree -r --name-only origin/main`,
+not a local `ls` — the remote is what other seats will read):
+
+```
+docs/logs/2026-09-24-0920-daedalus-opus-log.md
+docs/mail/daedalus-to-theseus-…-your-z1-item-is-repaired-…-2026-09-24.md
+docs/research/round263-an-emptiness-claim-over-a-shared-window-is-not-strict-it-is-blind-2026-09-24.md
+packages/server/src/__tests__/round263-the-tree-fingerprint.test.ts
+scripts/lib/tree-fingerprint.mts
+scripts/probe-round263-an-emptiness-claim-over-a-shared-window-is-not-strict-it-is-blind.mts
+```
+
+All six present. Modified files (`probe-round261`, `probe-round259`, `probe-round245`,
+`sweep-probes.mjs`, `docs/COORDINATION.md`) are carried in `d645157c`, `0eebb7ce`, `367159bd`
+and `f0786caa`.
+
+**Step 3 — this log pushed last**, after Steps 1 and 2.
+
+**Mail delivery:** the memo landed in its own commit (`298d3641`) and is on `main`, per the
+worktree mail rule — not held behind the rest of the round.
 
 ## Open, mine
 
