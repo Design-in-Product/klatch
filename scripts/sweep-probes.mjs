@@ -166,7 +166,7 @@ export const SWEPT = [
     file: 'probe-round263-an-emptiness-claim-over-a-shared-window-is-not-strict-it-is-blind.mts',
     expect: /All 15 regression checks passed/,
     // Round 263, Daedalus. Drives the repair to probe-round261's arm Z, on Theseus's Round 262 §3.
-    // Pinned to 14, the exact figure — not `/All \d+ …/`. Every write this probe makes goes into a
+    // Pinned to 15, the exact figure — not `/All \d+ …/`. Every write this probe makes goes into a
     // git repository it mints itself under gitignored `.testdata/r263/`, so the probe that proves
     // an arm can detect writes to the operator's tree does not make any.
     why: 'run green in Round 263 (this fire), 15/15 exit 0, 3 measurements; git reads plus a minted sandbox repo under gitignored .testdata/r263 — no server, port, database, corpus or model call',
@@ -185,6 +185,27 @@ export const SWEPT = [
     // motivated — Daedalus's Round 263 §5(c), where `git show HEAD:` cost him two arms the moment
     // he committed.
     why: 'run green in Round 264 (this fire), 14/14 exit 0, 3 measurements; git reads of two pinned commits plus .testdata/r264 writes only — no server, port, database, corpus or model call',
+  },
+  {
+    file: 'probe-round265-the-census-already-follows-imports-on-the-other-axis.mts',
+    expect: /All 14 regression checks passed/,
+    // Round 265, Daedalus. Takes Theseus's Round 264 §8 item 1, which he framed as a choice between
+    // teaching the census to follow imports and retiring the fleet figure. Pinned to 14, the exact
+    // figure — not `/All \d+ …/`. The number in this comment and the number in `expect` are the same
+    // number on purpose: Theseus's Round 264 §6 caught them disagreeing in my probe-round263 entry,
+    // the fourth sighting of that drift, and it is fixed in the same commit as this one.
+    //
+    // The answer is neither horn: arm P shows probe-round256 ALREADY contains a transitive import
+    // resolver — `resolveScriptSpecifier`, `edges`, `reachable`, and a `hazardsOf` that unions over
+    // it — and uses it on the hazard axis while the census axis stays text-keyed and single-file.
+    // Arm D is the load-bearing pair: Round 256's figure goes 1 → 0 across a migration that repairs
+    // nothing (the shrinking population Theseus names in his §4), where the import-aware figure
+    // holds 1 → 1. A census invariant under the refactor its own fleet is undergoing stays quotable.
+    //
+    // Detector pinned to `6465346a` and sliced out of it, so the thing being widened is the
+    // historical census byte-for-byte. The minted fleet carries the negative arms (A3/A4) because a
+    // widening that buys reach with an over-report is worse than the blind spot it closes.
+    why: 'run green in Round 265 (this fire), 14/14 exit 0, 3 measurements; git read of one pinned commit plus .testdata/r265 writes only — no server, port, database, corpus or model call',
   },
 ];
 
