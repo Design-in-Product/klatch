@@ -29,7 +29,7 @@
  *
  * ── How this is driven ───────────────────────────────────────────────────────
  *
- * The historical predicate is **sliced out of `git show HEAD:`** and evaluated, never re-typed
+ * The historical predicate is **sliced out of `git show <pinned commit>:`** and evaluated, never re-typed
  * from my reading of it — Theseus's Round 262 §1 discipline, where a one-file disagreement between
  * a derivation and the real function would still print the expected number. Likewise the
  * pre-extraction `fingerprint` (arm E).
@@ -72,6 +72,32 @@ function meas(arm: string, what: string, detail: string) {
 const git = (repo: string, args: string[]) =>
   execFileSync('git', args, { cwd: repo, maxBuffer: 64 * 1024 * 1024 }).toString();
 
+/**
+ * The last commit BEFORE this round's repair — the tree in which `probe-round261` still held the
+ * emptiness claim and `probe-round259` still held its inline `fingerprint`.
+ *
+ * ## This was `HEAD`, and `HEAD` is a fuse
+ *
+ * Arms A and D slice historical source out of git. Written against `HEAD`, they were correct for
+ * exactly as long as this round was uncommitted: the moment the repair landed, `HEAD` became the
+ * REPAIRED tree, both slices failed to find their text, both arms refused, and the probe dropped
+ * from 15 checks to 10.
+ *
+ * It was caught by the sweep — `RED exit 0`, the summary limb rather than the exit-code limb, which
+ * is the round224 defect shape that `verdict()`'s two-limb conjunction exists for and that
+ * `probe-round261` arm D3 drives directly. The instrument caught its own author. Again.
+ *
+ * The refusal itself was RIGHT: both arms declined to test a paraphrase rather than quietly pass.
+ * The defect is the pin, not the refusal.
+ *
+ * Theseus's Round 262 C6, applied: a historical pin needs BOTH axes — the commit AND the path.
+ * `HEAD:<path>` pins one and lets the other drift under it.
+ *
+ * **Rule: a probe that reads history must name the commit. `HEAD` is not a historical reference;
+ * it is a reference to whatever the last person did.**
+ */
+const PRE_REPAIR = '596dd9a2a2';
+
 // Bracket this run with the very instrument it is driving. Taken before anything else happens.
 const Z_PATHS = ['scripts/', 'packages/'];
 const zBefore = Z_PATHS.map((p) => fingerprint(REPO, p));
@@ -100,12 +126,12 @@ const sandboxFile = (rel: string) => path.join(SANDBOX, 'scripts', rel);
 const porcelain = (repo: string) => git(repo, ['status', '--porcelain', '--', 'scripts/']);
 
 // ─────────────────────────────────────────────────────────────────────────────
-console.log('── arm A — the historical predicate, sliced from HEAD, reddens for a third party');
+console.log('── arm A — the historical predicate, sliced from the pinned commit, reddens for a third party');
 // ─────────────────────────────────────────────────────────────────────────────
 
 const r261AtHead = git(REPO, [
   'show',
-  'HEAD:scripts/probe-round261-a-pin-whose-red-is-cleared-by-doing-something-is-a-gate.mts',
+  `${PRE_REPAIR}:scripts/probe-round261-a-pin-whose-red-is-cleared-by-doing-something-is-a-gate.mts`,
 ]);
 
 // Slice the two lines that ARE the historical predicate. Not re-typed: if this slice fails to find
@@ -115,16 +141,16 @@ const assertLine = r261AtHead.split('\n').find((l) => l.includes('dirty.length =
 
 if (!dirtyLine || !assertLine) {
   skipped.push({
-    label: 'arm A — could not slice the Round 261 predicate out of HEAD; refusing to test a paraphrase',
+    label: 'arm A — could not slice the Round 261 predicate out of the pinned commit; refusing to test a paraphrase',
     kind: 'hard',
   });
-  console.log('  [A] REFUSED — the predicate was not found at HEAD by its own text.');
+  console.log('  [A] REFUSED — the predicate was not found at the pinned commit by its own text.');
 } else {
   // Rebuild the historical predicate from its own source text, as a function of the porcelain.
   const oldPredicate = new Function('porcelain', `${dirtyLine.trim()}\nreturn dirty.length === 0;`) as
     (p: string) => boolean;
 
-  meas('A0', 'the historical predicate, verbatim from HEAD — not my re-telling of it',
+  meas('A0', 'the historical predicate, verbatim from the pinned pre-repair commit — not my re-telling of it',
     dirtyLine.trim());
 
   // Theseus's actual situation on 2026-09-23: HIS files dirty, none of them this round's.
@@ -268,21 +294,21 @@ console.log('');
 console.log('── arm D — the extraction is value-preserving, against the PRE-move function');
 // ─────────────────────────────────────────────────────────────────────────────
 
-// Same discipline as Round 259 itself: restore the pre-extraction function from `git show HEAD:`
+// Same discipline as Round 259 itself: restore the pre-extraction function from `git show <pinned commit>:`
 // and evaluate it, rather than trusting that a copy-paste was faithful.
 const r259AtHead = git(REPO, [
   'show',
-  'HEAD:scripts/probe-round259-the-extraction-moved-nothing-and-closed-the-hole-in-the-file-it-moved-into.mts',
+  `${PRE_REPAIR}:scripts/probe-round259-the-extraction-moved-nothing-and-closed-the-hole-in-the-file-it-moved-into.mts`,
 ]);
 const fnStart = r259AtHead.indexOf('function fingerprint(pathspec: string): string {');
 const fnEnd = r259AtHead.indexOf('\n}', fnStart);
 
 if (fnStart === -1 || fnEnd === -1) {
   skipped.push({
-    label: 'arm D — the pre-extraction fingerprint was not found at HEAD by its own text',
+    label: 'arm D — the pre-extraction fingerprint was not found at the pinned commit by its own text',
     kind: 'hard',
   });
-  console.log('  [D] REFUSED — could not slice the pre-move function out of HEAD.');
+  console.log('  [D] REFUSED — could not slice the pre-move function out of the pinned commit.');
 } else {
   const body = r259AtHead
     .slice(fnStart, fnEnd + 2)
@@ -304,7 +330,7 @@ if (fnStart === -1 || fnEnd === -1) {
   check('D1', 'the extracted lib function returns the pre-extraction value on every pathspec tried',
     sameOn.every((s) => s.pre === s.post),
     sameOn.map((s) => `${s.p} ${s.pre === s.post ? 'same' : `DIFFER\n          pre ${s.pre}\n          post ${s.post}`}`).join('; ') +
-    `. Evaluated from HEAD's own text, on a tree that is currently dirty under scripts/ — so this ` +
+    `. Evaluated from the pinned commit's own text, on a tree that is currently dirty under scripts/ — so this ` +
     `compares the two functions on a non-trivial input, not on two empty strings.`);
 
   check('D2', 'and that comparison is capable of coming out unequal — checked against a deliberately wrong pathspec',

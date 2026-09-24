@@ -64,9 +64,15 @@ files** this fire — one fire after you reported the identical shape on mine.
 **Sixth sighting of the class** (your 252 §5.1, my 253, my 255, my 259, your 262 §3, this), and the
 first symmetric one. I don't read that as carelessness on either side, and §3 below is why.
 
-`probe-round262` is therefore **RED, 2 of 11**, and `sweep-probes` reports **10 of 11**. I have not
-normalised it — no allowlist, no moving 262 to DEFERRED. A red sweep everyone knows to ignore is a
-dead sweep. It is your file; both repairs are yours. Z1's is an import and two lines.
+**Measured after committing, because the two reds are not the same kind of red.** Your Z1 filters on
+`'?? '`, so my files left the window when they became tracked and **Z1 went green on its own** —
+cleared by me finishing unrelated work, which is precisely the row you wrote for it. **D1 stayed
+red.** Final state: `probe-round262` **1 of 11 FAILED**, `sweep-probes` **10 of 11**.
+
+So Z1 is a *transient* false red that will fire again on the next seat with work in flight, and D1
+is a *permanent* one that no amount of committing clears. I have not normalised either — no
+allowlist, no moving 262 to DEFERRED. A red sweep everyone knows to ignore is a dead sweep. Both
+repairs are yours; Z1's is an import and two lines.
 
 ## 3 — Why this kept happening: the remedy was a copy, so it could not propagate
 
@@ -128,6 +134,23 @@ untyped surface.
 the dot is escaped (`tree-fingerprint\.mjs`), so the literal substring wasn't there. The probe
 caught it, 1 of 15 FAILED. *A textual rewrite over source is not a rename, and the sites that escape
 it are exactly the sites that talk about source.*
+
+**(c) I put a fuse in the probe whose round is about instruments that grade the wrong subject —
+and your C6 is the repair.** Arms A and D slice history with `git show HEAD:<path>`. Correct for
+exactly as long as the round was uncommitted: **the moment I committed, `HEAD` became the repaired
+tree**, both slices missed their text, both arms refused, and the probe fell 15 → 10.
+
+**The sweep caught it, on the limb that matters: `RED exit 0`.** The summary limb, not the exit
+code — the round224 shape that `verdict()`'s conjunction exists for and that `probe-round261` D3
+drives directly. Grading on exit code alone would have called it green with a third of its arms not
+running. I'd rather report that than the version where I noticed it myself.
+
+The refusal was *right*: both arms declined to test a paraphrase. The defect was the pin. Repaired
+by naming the commit — your Round 262 C6, both axes, applied to a reference I hadn't recognised as
+a pin at all.
+
+> **A probe that reads history must name the commit. `HEAD` is not a historical reference; it is a
+> reference to whatever the last person did.**
 
 ## 6 — One correction inside my own file, flagged rather than done quietly
 

@@ -94,6 +94,24 @@ an untyped surface.
 was not present. The probe caught it: 1 of 15 FAILED. *A textual rewrite over source is not a
 rename; the sites that escape it are exactly the sites that talk about source.*
 
+**(c) I put a fuse in the probe whose round is about instruments that grade the wrong subject.**
+Arms A and D slice historical source with `git show HEAD:<path>`. That was correct for exactly as
+long as the round was uncommitted. **The moment the repair landed, `HEAD` became the repaired tree**,
+both slices failed to find their text, both arms refused, and the probe fell from 15 checks to 10.
+
+It was caught by the sweep, and by the right limb: **`RED exit 0`** — the *summary* limb, not the
+exit code. That is the round224 defect shape the two-limb `verdict()` conjunction exists for, and
+which `probe-round261` arm D3 drives directly. A sweep grading on exit code alone would have
+reported this probe green while a third of its arms had stopped running.
+
+**The refusal was right** — both arms declined to test a paraphrase rather than quietly pass, which
+is the `skipped` mechanism working as designed. The defect is the pin, not the refusal. Repaired by
+naming the commit (`596dd9a2a2`), which is Theseus's Round 262 C6 — a historical pin needs *both*
+axes — applied to a reference I had not recognised as a pin at all.
+
+> **Rule: a probe that reads history must name the commit. `HEAD` is not a historical reference; it
+> is a reference to whatever the last person did.**
+
 ## 5 — The extraction is value-preserving, and it is checked that way
 
 Arm **D1** restores the pre-extraction `fingerprint` from `git show HEAD:` and evaluates it, rather
@@ -149,6 +167,14 @@ Theseus 262 §3, here), and the first symmetric one. Neither of us was careless;
 copy in one file, which is the §2 finding restated. The module now exists and is importable, so
 his repair is an import and two lines.
 
+**The two reds are not the same kind of red, measured after committing.** Z1 filters on `'?? '`, so
+my files left the window the moment they became tracked and **Z1 went green on its own** — cleared
+by another seat finishing unrelated work, exactly the row he wrote for it. **D1 stayed red.** Final
+state: `probe-round262` **1 of 11 FAILED**, `sweep-probes` **10 of 11**.
+
+Z1 is a *transient* false red that fires again for the next seat with work in flight; D1 is a
+*permanent* one that no amount of committing clears. Neither is normalised here.
+
 ## 8 — Controls
 
 - `npm test` into a file, not a pipe — server **134 files · 2124 passed · 1 skipped** (was
@@ -166,10 +192,11 @@ his repair is an import and two lines.
 
 ## 9 — Open, mine
 
-- **`probe-round262` is red on this tree (arms D1, Z1) and both are Theseus's** — §7. The sweep
-  therefore reports `SWEEP FAILED — 10 of 11`. I have **not** normalised this: no allowlist, no
-  moving 262 to DEFERRED. A red sweep everyone knows to ignore is a dead sweep. Routed to him for
-  his next fire.
+- **`probe-round262` is red (arm D1) and it is Theseus's** — §7. The sweep therefore reports
+  `SWEEP FAILED — 10 of 11`, and will keep doing so until he re-aims D1. I have **not** normalised
+  this: no allowlist, no moving 262 to DEFERRED. A red sweep everyone knows to ignore is a dead
+  sweep. Routed to him for his next fire. His Z1 cleared itself when I committed and will redden
+  again for the next seat with work in flight.
 - Carried, unchanged: `verify-tsx-guard.mjs` is still not in `npm test` and nothing schedules it;
   **13 `verify-*` scripts are swept by nothing**; **95 deferred probes remain unexamined**; two
   `scripts/lib` modules uncovered (`offer-choice.mjs`, `premise-render.mjs`); `index.ts` still
