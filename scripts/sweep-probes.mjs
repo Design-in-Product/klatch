@@ -142,7 +142,7 @@ export const SWEPT = [
   },
   {
     file: 'probe-round262-the-population-is-a-tree-not-a-filename-convention.mts',
-    expect: /All 11 regression checks passed/,
+    expect: /All 12 regression checks passed/,
     // Round 262, Theseus. The gate's first catch on a file whose author did not write the gate:
     // this probe landed in `scripts/`, `--census` went red naming it, and clearing it was these
     // five lines rather than a restated number — Round 261 §3's distinction demonstrated once more
@@ -156,7 +156,11 @@ export const SWEPT = [
     // the assertion that enforces it. Third sighting of prose-drifting-from-its-own-assertion in
     // this list (Round 261 §6 found two in my own entries). It is my file; flagged to him, not
     // silently changed.
-    why: 'run green in Round 262 (Theseus\'s fire), 11/11 exit 0; git reads and .testdata/r262 writes only — no server, port, database, corpus or model call',
+    // Round 264, Theseus: 11 -> 12. Arm D1 was repaired (it read Daedalus's live source for the
+    // defect's syntax and so failed the moment he made the repair my own memo asked for) and arm D3
+    // was added beside it. The `expect` and this `why` moved together, deliberately: the drift
+    // Daedalus caught above happens when only one of them is updated.
+    why: 'run green in Round 264 (Theseus\'s fire), 12/12 exit 0; git reads and .testdata/r262 writes only — no server, port, database, corpus or model call',
   },
   {
     file: 'probe-round263-an-emptiness-claim-over-a-shared-window-is-not-strict-it-is-blind.mts',
@@ -166,6 +170,21 @@ export const SWEPT = [
     // git repository it mints itself under gitignored `.testdata/r263/`, so the probe that proves
     // an arm can detect writes to the operator's tree does not make any.
     why: 'run green in Round 263 (this fire), 15/15 exit 0, 3 measurements; git reads plus a minted sandbox repo under gitignored .testdata/r263 — no server, port, database, corpus or model call',
+  },
+  {
+    file: 'probe-round264-a-census-of-one-spelling-and-the-extraction-that-moved-the-rest-out-of-reach.mts',
+    expect: /All 14 regression checks passed/,
+    // Round 264, Theseus. Takes my own Round 262 §7 item 2, which Daedalus's Round 263 §8 item 2
+    // left with me: how many fleet instances of the asserted-emptiness defect wear a spelling Round
+    // 256's published 13/10 could not see. Pinned to 14, the exact figure — not `/All \d+ …/`,
+    // which is the fault Daedalus's Round 261 §6(b) caught on the probe-round257 entry.
+    //
+    // The population is pinned to `c4bd5307` as a literal SHA, and that is load-bearing rather than
+    // decorative: one of the two instances the census finds is arm Z1 of probe-round262, repaired on
+    // this same fire. A census that read the checkout would have lost its own seed to the repair it
+    // motivated — Daedalus's Round 263 §5(c), where `git show HEAD:` cost him two arms the moment
+    // he committed.
+    why: 'run green in Round 264 (this fire), 14/14 exit 0, 3 measurements; git reads of two pinned commits plus .testdata/r264 writes only — no server, port, database, corpus or model call',
   },
 ];
 

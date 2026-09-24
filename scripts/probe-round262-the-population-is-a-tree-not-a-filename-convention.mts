@@ -59,6 +59,10 @@ import crypto from 'crypto';
 import { execFileSync } from 'child_process';
 import { fileURLToPath, pathToFileURL } from 'url';
 import { summariseAndExit, type ProbeVerdict } from './lib/probe-outcome.mts';
+// Round 263 (Daedalus) extracted the remedy this file had inline as a copy. Round 264 imports it:
+// the point of §3 of his memo is that a remedy living as a copy cannot reach the next file, and a
+// second file keeping its own copy is the same defect with one more instance.
+import { fingerprint, windowState } from './lib/tree-fingerprint.mts';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const REPO = path.resolve(HERE, '..');
@@ -84,22 +88,12 @@ const sha = (b: Buffer | string) => crypto.createHash('sha256').update(b).digest
 const git = (args: string[]) =>
   execFileSync('git', args, { cwd: REPO, encoding: 'utf8', maxBuffer: 64 * 1024 * 1024 });
 
-/** Round 256's remedy, copied: porcelain names WHICH paths are dirty, this adds WHAT is in them. */
-function fingerprint(pathspec: string): string {
-  const raw = git(['status', '--porcelain', '-z', '-uall', '--', pathspec]);
-  const entries = raw.split('\0').filter((s) => s.length > 0);
-  const diff = git(['diff', 'HEAD', '--', pathspec]);
-  const parts = [`P:${sha(entries.join('\n'))}`, `D:${sha(diff)}`];
-  for (const e of entries) {
-    if (!e.startsWith('?? ')) continue;
-    const rel = e.slice(3);
-    const abs = path.join(REPO, rel);
-    if (fs.existsSync(abs) && fs.statSync(abs).isFile()) parts.push(`U:${rel}:${sha(fs.readFileSync(abs))}`);
-  }
-  return parts.join(' ');
-}
-
-const realBefore = fingerprint('packages/');
+// Round 264: the inline copy of Round 256's remedy that stood here is gone, replaced by the import
+// above. Both windows this probe brackets — `packages/` (product) and `scripts/` (where arm Z1 used
+// to make an emptiness claim) — now go through the same function.
+const realBefore = fingerprint(REPO, 'packages/');
+const scriptsBefore = fingerprint(REPO, 'scripts/');
+const scriptsWindowAtOpen = windowState(REPO, 'scripts/');
 
 console.log(`\nRound 262 — the population is a tree, not a filename convention`);
 console.log(`Repo: ${REPO}\n`);
@@ -364,15 +358,45 @@ meas('C2', 'the figure did not move, which is the point',
 console.log('\n── arm D: the same defect in a spelling the census cannot see ────────────');
 
 const R261 = 'probe-round261-a-pin-whose-red-is-cleared-by-doing-something-is-a-gate.mts';
-const r261Src = fs.readFileSync(path.join(REPO, 'scripts', R261), 'utf8');
-check('D1', 'Round 256\'s detector scores Round 261\'s probe CLEAN, and it is not clean',
+
+// ── REPAIRED Round 264. This arm read `probe-round261` FROM DISK and tested it for the defect's
+// syntax (`/--porcelain/` and `/dirty\.length === 0/`). Both conjuncts flipped true → false the
+// moment Daedalus made the repair my own §3 asked him for, so D1 failed BECAUSE the fix landed.
+// A fourth row for my §3 table and the sharpest one: an arm pinned to a live artifact in another
+// seat's lane is scheduled to break on success. D2 below survived untouched because it mints its
+// own witness — which is the difference, and my own Round 244 §3.
+//
+// The finding is historical, so the witness is pinned to the commit where it was true, per
+// Daedalus's Round 263 §5(c): a probe that reads history must name the commit, because HEAD is not
+// a historical reference, it is a reference to whatever the last person did.
+const R261_DEFECTIVE_AT = '92f780da';   // the commit that shipped probe-round261 with the defect
+const R261_REPAIRED_AT = 'd645157c';    // Round 263, which repaired it to a bracketed fingerprint
+const r261Src = git(['show', `${R261_DEFECTIVE_AT}:scripts/${R261}`]);
+check('D1', 'Round 256\'s detector scored Round 261\'s probe CLEAN at 92f780da, and it was not clean',
   emptinessSitesR256(r261Src).length === 0 && assertedSitesR256(r261Src).length === 0
     && /--porcelain/.test(r261Src) && /dirty\.length === 0/.test(r261Src),
-  `The detector finds ${emptinessSitesR256(r261Src).length} emptiness comparisons and ` +
-    `${assertedSitesR256(r261Src).length} asserted ones in ${R261}. The file calls ` +
-    `git status --porcelain over scripts/ and packages/ — a window it shares with every other ` +
-    `seat — and asserts the result is empty, via \`dirty.length === 0\`. It exited 1 on this ` +
-    `fire's tree for exactly that reason, on my uncommitted files, while its own subject was fine.`);
+  `At ${R261_DEFECTIVE_AT} the detector finds ${emptinessSitesR256(r261Src).length} emptiness ` +
+    `comparisons and ${assertedSitesR256(r261Src).length} asserted ones in ${R261}. That slice ` +
+    `calls git status --porcelain over scripts/ and packages/ — a window it shares with every ` +
+    `other seat — and asserts the result is empty, via \`dirty.length === 0\`. It exited 1 on my ` +
+    `Round 262 fire for exactly that reason, on my uncommitted files, while its own subject was ` +
+    `fine. Repaired at ${R261_REPAIRED_AT}; this arm grades the slice, not the lane.`);
+
+// The consequence of D1 that only becomes visible once the repair exists: the detector's verdict is
+// UNCHANGED across it. Same file, same score, defective before and clean after — so the zero was
+// never carrying information about this file in either direction.
+const r261Fixed = git(['show', `${R261_REPAIRED_AT}:scripts/${R261}`]);
+check('D3', 'the detector returns the SAME score across the repair — so the score is not evidence',
+  assertedSitesR256(r261Src).length === assertedSitesR256(r261Fixed).length
+    && assertedSitesR256(r261Fixed).length === 0
+    && !/dirty\.length === 0/.test(r261Fixed) && /fingerprint\(/.test(r261Fixed),
+  `${R261} scores ${assertedSitesR256(r261Src).length} asserted emptiness sites at ` +
+    `${R261_DEFECTIVE_AT} (defective) and ${assertedSitesR256(r261Fixed).length} at ` +
+    `${R261_REPAIRED_AT} (repaired, \`dirty.length === 0\` gone, bracketed by \`fingerprint(\`). ` +
+    `A detector whose output is identical either side of the very repair it exists to motivate ` +
+    `cannot be read as a clean bill of health — a zero from it means "no instance of the one ` +
+    `spelling I know", never "no instance". D2 shows WHY it is blind; this shows what that ` +
+    `blindness costs a reader who trusts the figure.`);
 
 // The blindness is a property of the detector, not of that one file: two minted sources, the same
 // defect, one spelling detected and one not.
@@ -397,23 +421,59 @@ check('D2', 'the miss is the DETECTOR\'s, not that one file\'s — same defect, 
 
 console.log('\n── arm Z: I left the tree as I found it ──────────────────────────────────');
 
-// This arm's first run went red at 1 untracked entry, and the entry was THIS FILE, still
-// uncommitted on the fire that wrote it. The claim is "this run wrote nothing into scripts/", and
-// a probe's own source is not something the run wrote — so SELF is excluded by name, which is also
-// the only exclusion that cannot hide a fixture: any other path still reddens it.
-const scriptsDirt = git(['status', '--porcelain', '--', 'scripts/']).trim();
-const scriptsUntracked = scriptsDirt.split('\n')
-  .filter((l) => l.startsWith('?? ') && !l.endsWith(`/${SELF}`));
-check('Z1', 'this run added nothing to scripts/ — the fixtures live under gitignored .testdata/',
-  scriptsUntracked.length === 0,
-  `git status --porcelain scripts/ reports ${scriptsUntracked.length} untracked entries other ` +
-    `than this probe's own uncommitted source (${JSON.stringify(scriptsUntracked)}). The ` +
-    `${allTreePaths.length} materialised blobs went to .testdata/r262/tree/. Writing a fixture ` +
-    `into the directory under census would make this probe a member of its own population — the ` +
-    `operator-tree write ruled out since Round 254, and the reason Daedalus's Round 261 census() ` +
-    `takes a directory argument.`);
+// ── REPAIRED Round 264. What stood here was:
+//
+//     const scriptsUntracked = scriptsDirt.split('\n')
+//       .filter((l) => l.startsWith('?? ') && !l.endsWith(`/${SELF}`));
+//     check('Z1', '…', scriptsUntracked.length === 0, …)
+//
+// — an EMPTINESS claim over a window this seat does not own, with a SELF allowlist. Which is the
+// exact shape I reported on Daedalus's `probe-round261` one round earlier, in arm D of this same
+// file. It went red on his two untracked files on his Round 263 fire, and then went green on its
+// own when he committed them: cleared by another seat finishing unrelated work, which is the row I
+// wrote for it in my own §3 table. Sixth sighting of the class and the first symmetric one.
+//
+// It is not merely too strict. Round 263 arm C2 drove the other half: if a file under the pathspec
+// is ALREADY modified when the run opens, a write the run makes into that same file leaves the
+// porcelain window byte-identical. The window in which it cries wolf is the window in which it has
+// gone blind, and they are the same window.
+//
+// So the claim is now bracketed rather than asserted-empty: fingerprint at open vs. fingerprint at
+// close grades WHAT THIS RUN DID; the pre-existing state of the window is printed as a measurement
+// and graded by nobody. No allowlist — SELF needs no exclusion, because this file is present and
+// unchanged at both ends and therefore invisible to a difference.
+const scriptsAfter = fingerprint(REPO, 'scripts/');
+check('Z1', 'this run wrote nothing under scripts/ — bracketed, not asserted-empty',
+  scriptsBefore === scriptsAfter,
+  `Content fingerprint of scripts/ identical at open and close. The ${allTreePaths.length} ` +
+    `materialised blobs went to .testdata/r262/tree/. Writing a fixture into the directory under ` +
+    `census would make this probe a member of its own population — the operator-tree write ruled ` +
+    `out since Round 254, and the reason Daedalus's Round 261 census() takes a directory argument.`);
 
-const realAfter = fingerprint('packages/');
+// What the OLD spelling would have said on the SAME window — computed from the recorded porcelain
+// with the exact filter that stood above, rather than asserted. The first draft of this arm claimed
+// "the old spelling would have been red on this exact line", which was false the one time it was
+// cheapest to check: the old filter tested `startsWith('?? ')`, and a tracked-modified entry never
+// reaches it. That is the third sighting this round of prose disagreeing with the assertion beside
+// it, and it was mine — so it is computed now.
+const openEntries = scriptsWindowAtOpen === '' ? [] : scriptsWindowAtOpen.split('\n');
+const oldSpellingWouldFlag = openEntries.filter((l) => l.startsWith('?? ') && !l.endsWith(`/${SELF}`));
+meas('Z2', 'the window I do not own, reported and not graded — with the old spelling scored beside it',
+  `scripts/ held ${openEntries.length} dirty ${openEntries.length === 1 ? 'entry' : 'entries'} at ` +
+    `open: ${JSON.stringify(openEntries)}. None of that is this run's doing and Z1 no longer reads ` +
+    `it. Scoring the retired filter over the same window: it would have flagged ` +
+    `${oldSpellingWouldFlag.length} (${JSON.stringify(oldSpellingWouldFlag)}), i.e. it would have ` +
+    `been ${oldSpellingWouldFlag.length === 0 ? 'GREEN' : 'RED'} here. ` +
+    `${oldSpellingWouldFlag.length === 0
+      ? 'Green, not because the run was clean but because every entry is tracked-modified and the ' +
+        'filter only ever looked at untracked ones — the blind half of Round 263 §4, in my own arm: ' +
+        'a write this run made into any of those files would have moved nothing it could see. ' +
+        'The false-red half is not exercised by this window; Round 263 arms C1–C6 drive both in a ' +
+        'minted repo, and I am not going to claim a demonstration this tree did not give me.'
+      : 'Red on another seat\'s in-flight work, with this run blameless — the false-red half, ' +
+        'exercised live, and the repair is that Z1 above is green across the same entries.'}`);
+
+const realAfter = fingerprint(REPO, 'packages/');
 check('Z', 'packages/ is byte-identical across this run',
   realBefore === realAfter,
   `Content fingerprint (Round 256's remedy: porcelain names paths, sha256 names contents) ` +
