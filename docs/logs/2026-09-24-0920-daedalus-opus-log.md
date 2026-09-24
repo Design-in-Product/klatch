@@ -130,3 +130,111 @@ worktree mail rule — not held behind the rest of the round.
   `verify-*` scripts swept by nothing; 95 deferred probes unexamined; `offer-choice.mjs` and
   `premise-render.mjs` uncovered; `index.ts` still hand-captures two variables above
   `dotenv.config()`.
+
+---
+
+## 13:17 PDT — WORK fire. Round 265 built; xian's branch question answered with a measured verdict.
+
+Two inbound at fire open, both read immediately and both actioned in this fire.
+
+### 1 — Calliope's branch ask (open since March, routed Janus → Calliope → me + Argus)
+
+xian wanted the Klatch team's own recommendation on `origin/claude/audit-and-planning-xn2w7`:
+merge / cherry-pick / leave, plus "does anything on it still matter to the codebase."
+
+**Answered by running it, not by reasoning about its age.** Materialized the branch's three test
+files into the worktree and ran `vitest`: **23 of 24 pass against today's `main`.** The single red
+is a stale `claude-opus-4-6` constant (`main` moved `DEFAULT_MODEL` to `claude-opus-5` in
+`851e10c6`). Trial files removed; tree left clean.
+
+**Verdict — superseded, but not the way the question assumed.** `8c93b277` on `main` (4/01) is a
+one-to-one redo of the branch (3/28) under different filenames: same three test-file edits with
+identical line counts, same `vitest.config.ts`, `compaction-api-eval.md` → `compaction-evaluation.md`,
+`effort-parameter-eval.md` → `effort-parameter-evaluation.md`, three test files consolidated into
+`round13-features.test.ts`. Verified `8c93b277` is an ancestor of `origin/main` and **not** on the
+branch — a parallel redo, not an already-completed merge.
+
+**The supersession was lossy:** 24 tests → 11. Recommended **cherry-pick, not merge, not log-only** —
+the three test files (with the one-line fix, de-duped against `round13-features.test.ts`), plus
+`docs/intel/2026-03-28-sweep.md` and `docs/logs/2026-03-28-1334-argus-opus-log.md`, neither on `main`
+(`main` jumps 3/24 → 4/01). **Do not merge:** would regress `auditbench-methodology-review.md` to a
+version 121 lines shorter than `main`'s. No code-side objection to Calliope's own branch.
+
+Memo: `daedalus-to-calliope-argus-…-the-audit-branch-was-superseded-by-a-redo-on-main-…`, own commit
+`e00be48b`, pushed to `main` immediately per the worktree mail rule.
+
+### 2 — Theseus's Round 264 §8, both items
+
+**Item 2 (one word, mine):** `sweep-probes.mjs` `probe-round263` comment said "Pinned to 14" where
+`expect` and `why` both said 15. Fixed. Fourth sighting of that drift, second on my file — so the
+new `probe-round265` entry states the comment/`expect` coupling explicitly rather than just being
+correct once.
+
+**Item 1 (the design question) — I took neither horn, and the reason was in the instrument.**
+Theseus framed it as: either the census learns to follow imports into `scripts/lib/`, or the figure
+stops being quotable. **`probe-round256` already contains a transitive import resolver** —
+`walkScripts`, `resolveScriptSpecifier`, `edges`, `reachable`, and a `hazardsOf` that unions across
+it — verified by reading the pinned commit `6465346a`, not the checkout. Meanwhile
+`emptinessSites(src: string)` takes a string, has no key to look the graph up by, and mentions
+`reachable` 0 times and `edges` 0 times. **Two reachability regimes, two axes, one file; the census
+is on the narrow one.** The cost is wiring, not building.
+
+Built `scripts/probe-round265-the-census-already-follows-imports-on-the-other-axis.mts` —
+**14 regression, 3 measurements, 0 skips, exit 0.** Arm D is the load-bearing pair: across a
+migration that repairs nothing, Round 256 scores **1 → 0** (Theseus's shrinking population, measured
+rather than argued) where the import-aware detector holds **1 → 1**. Registry derives itself (C1–C3)
+so it can't go stale. Negative arms A3/A4 confirm the widening doesn't flag the repaired bracket
+shape or unasserted diagnostics. B1/B2 non-vacuity written before the figure, borrowing the lesson
+Theseus's own §3 paid for.
+
+**Live blind spot measured at 1 of 149 files** (`probe-round261`) and reported as small rather than
+inflated — the argument for wiring it now is the migration schedule, not the current count.
+
+### Controls (run, not assumed)
+
+`npm test` into a file, not a pipe — server **134 files · 2124 passed · 1 skipped**; client
+**38 · 324 passed · 13 skipped**. Both identical to Theseus's §7 figures, checked against them.
+`typecheck` **0 `error TS`**. `sweep-probes` **13 of 13 green, 0 census problems, 95 deferred**.
+0 model calls, no server, port, database or corpus; every write under gitignored `.testdata/r265/`.
+
+### Session wrap verification
+
+**Step 1 — commits on `origin/main`** (`git log origin/main --oneline -5`):
+
+```
+e500e74b Round 265: the census already follows imports, on the other axis
+e35dffb9 mail: Daedalus to Theseus cc team — Round 265, both horns are priced wrong …
+e00be48b mail: Daedalus to Calliope, Argus cc team — audit branch superseded by a redo on main …
+71da99e4 docs: duty-cycle mechanism briefing for Pard/Janus, at xian's request
+5a44e9d8 rollup: v153 -- ground-rules question ruled by xian …
+```
+
+**Step 2 — deliverables in the pushed tree** (`git ls-tree -r --name-only origin/main`, not a local
+`ls`):
+
+```
+docs/mail/daedalus-to-calliope-argus-…-the-audit-branch-was-superseded-by-a-redo-on-main-…-2026-09-24.md
+docs/mail/daedalus-to-theseus-…-both-your-horns-are-priced-wrong-…-2026-09-24.md
+docs/research/round265-the-census-already-follows-imports-on-the-other-axis-2026-09-24.md
+scripts/probe-round265-the-census-already-follows-imports-on-the-other-axis.mts
+```
+
+All four present. `scripts/sweep-probes.mjs` (+23/−1) is carried in `e500e74b`.
+
+**Step 3 — this log pushed last.** **Mail delivery:** both memos landed in their own commits
+(`e00be48b`, `e35dffb9`) and went to `main` before the round commit, per the worktree mail rule.
+
+### Open, mine
+
+- **Round 265 §8 item 1 routed to Theseus:** the wiring lands inside `probe-round256`, which is his
+  census — I deliberately did not edit the instrument whose published figures the argument is about.
+  Offered to take it if he'd rather.
+- **The republished figure is his call:** 13/13 was measured single-file; import-aware over the same
+  pinned population gives a different number. My read is "beside it, both labelled," not "supersedes."
+- **`docs/COORDINATION.md` not updated this fire** — the file is 2MB / 3442 lines and my last section
+  edit is stale, but a fire that ends with two memos on `main` is not silent. Flagged rather than
+  skipped quietly.
+- Carried, unchanged: `verify-tsx-guard.mjs` still not in `npm test`, nothing schedules it; 13
+  `verify-*` scripts swept by nothing; 95 deferred probes unexamined; `offer-choice.mjs` and
+  `premise-render.mjs` uncovered; `index.ts` still hand-captures two variables above
+  `dotenv.config()`.
