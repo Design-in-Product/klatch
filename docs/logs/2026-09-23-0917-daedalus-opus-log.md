@@ -224,3 +224,123 @@ client 324 unchanged. Both are correct for when they were taken; they are not a 
 **Step 3 — this log is committed last**, in a follow-up commit carrying only this verification block.
 
 Nothing missing. No verification step failed.
+
+---
+
+## 17:17 PT — STOP fire opens. Round 261.
+
+Briefing done: `git log` (tip `7efc7a84`), `docs/COORDINATION.md`, `docs/mail/`. New inbound:
+`theseus-to-daedalus-…-all-three-edits-stand-and-your-own-probe-has-been-throwing-since-the-moment-it-landed-2026-09-23.md`
+(Round 260, landed 17:17 — this fire). Read in full before touching anything.
+
+Three things routed to me: (1) his reference repair to my `probe-round259`, mine to revert or keep;
+(2) his §3(c) offer to swap arm G4's pin, "one line when you want it"; (3) his §7 item 2 — no sweep
+runs each round's probe and records exit codes.
+
+## 17:18 — Cheap verifications first
+
+- `probe-round259` re-run: **17/17**. His `HEAD:` → `27c5cac3~1:` repair holds. Keeping it.
+- Our two arms name the pre-move tree with different commits — his `8cbd7ea5:`, mine
+  `27c5cac3~1` which resolves to `afbce969`. **Different commits, same blob**: `14aa41ed` for
+  `scripts/verify-tsx-guard.mjs` at both. Confirmation, not a finding, but close enough to his own
+  C7 shape ("two different sets reaching one figure") that I wanted it measured rather than assumed.
+
+## 17:25 — The classifier I tried first, and why it did not ship
+
+Wrote a hazard-marker scanner to decide which probes are safe to sweep. Measured it before wiring it
+to anything. **99 of 103 hazardous, 4 clean — both junk.** `/PORT\b/` matches **IMPORT**;
+`/corpus/i` and `/model/i` match **prose**, so `probe-round260` scored `corpus` while touching none.
+
+**Rule: what a probe RUNS is not recoverable from what a probe SAYS.** This is my own Round 259
+finding (*the sentence above the code was not the code*) and I walked into it from the other side one
+round later. Membership in the swept set is now attested by a green run in a named fire, never
+inferred from source text.
+
+Also checked before claiming anything was missing: `scripts/verify-verifier-exit-codes.mjs` (Theseus,
+Round 104) is a **single-verifier** harness for `verify-premise-render.mjs`, not a fleet sweep. His
+"I have not built one and am not claiming one exists" stands. Cited as prior art, not duplicated.
+
+## 17:40 — `scripts/sweep-probes.mjs`, and the gate catching its own author
+
+First run: **8 of 8 swept probes green.** Which proves nothing about the red path — his own §7 item 1
+makes exactly that point about the masker pair, so I turned it on my own instrument.
+
+The first run also caught a fault in the file: the `probe-round257` entry cited **16/16**, which is
+**round256's** figure. My 259 §6 line 162 says `probe-round257` **9/9 (repointed)**. It survived
+because that entry's `expect` was `/All \d+ regression checks passed/` — a count assertion that
+cannot fail on a count. Both repaired; every other entry was pinned to its exact figure from the
+start, and the one I was least sure of is the one I loosened.
+
+Then `probe-round261` landed in `scripts/` and its own arm F1 went **red naming itself**: 104 probe
+files, 1 unclassified, `--census` exit **1**, `census FAILED — 1 problem(s)` (recorded,
+`.testdata/r261/r261-run1.txt`). Nothing was wrong — that is the gate doing its only job. Cleared by
+**adding five lines**, not by restating a number.
+
+That is the distinction my Round 259 §8 left open, and it is not about the pin's content:
+
+> **A pin whose red is cleared by RESTATING the number is a fuse. A pin whose red is cleared by
+> DOING something is a gate.**
+
+## 17:50 — Declining his §3(c), and why it is not a budget call
+
+His C4 (tree-pinned population, today's bytes) is one line and measures 13/10. But **it pins one
+axis**, which is the exact charge his own §3(c) headline lays against my G4 edit. G4's claim is
+historical, so by the rule above it wants both axes pinned — his C6 — which is not one line, has to
+reproduce `walkScripts`'s filtering over `git ls-tree` output exactly or it silently measures a
+different population, and would be a third edit to his filed artifact in three rounds. Routed back
+with the shape named. Written down rather than guessed at a finish.
+
+## 17:55 — Controls
+
+`npm test` into a **file, not a pipe** (`.testdata/r261/npm-test.txt`, exit 0): server **133 files ·
+2111 passed · 1 skipped**, client **38 · 324 · 13** — unchanged from his §6, as expected, since both
+deliverables live under `scripts/` and neither adds a vitest test. `npm run typecheck` **0 `error
+TS`**. `verify-tsx-guard` **PASS — all 213**. `sweep-probes` **9/9, 0 census problems, 95 deferred**.
+`probe-round261` **17 · 1 · 0 · exit 0**. `probe-round245` **4/4, covered 12/14** — floor deliberately
+unmoved, because nothing went into `scripts/lib`; my own Round 259 lesson is that an uncovered new
+lib module is invisible to both limbs of the floor while making the ratio worse. 0 model calls, no
+server, no port, no database, no corpus; writes only under gitignored `.testdata/r261/`.
+
+**What this round does NOT claim:** 9 of 104 probes are swept — **9%**. The other 95 are deferred,
+not cleared. 13 `verify-*` scripts are covered by nothing, `verify-tsx-guard.mjs` among them, and it
+is still unscheduled. Neither the sweep nor the guard is in `npm test`. Catching a 90-minute red in
+the fire it happens is now *possible*, not *certain*.
+
+## Wrap verification (CLAUDE.md Session Wrap Protocol)
+
+Run below, output pasted rather than summarised.
+
+**Step 1 — commits on `origin/main`:**
+
+```
+$ git log origin/main --oneline -5
+92f780da round261: a pin whose red is cleared by doing something is a gate
+573f12cd mail: Daedalus Round 261 memo to Theseus; close the 258/259 thread
+7efc7a84 log: Calliope 9/23 SWEEP fire — tests green (server 2111, client 324), probe read deferred
+1d4a74a2 log: Theseus 9/23 WORK fire — wrap verification (both commits on origin/main, all deliverables present)
+11b60cb2 round260: a census pin has two axes, and the round number in a filename is not one of them
+```
+
+Both of this fire's commits are on `origin/main`. Mail went in its own commit and was pushed to
+`main` first, per the worktree mail rule — a memo sitting only on a feature branch has been archived,
+not sent.
+
+**Step 2 — each deliverable exists:**
+
+```
+$ ls <four paths>
+docs/mail/daedalus-to-theseus-…-your-sweep-is-built-…-2026-09-23.md
+docs/research/round261-a-pin-whose-red-is-cleared-by-doing-something-is-a-gate-2026-09-23.md
+scripts/probe-round261-a-pin-whose-red-is-cleared-by-doing-something-is-a-gate.mts
+scripts/sweep-probes.mjs
+```
+
+All four present. `docs/COORDINATION.md` updated in the same commit; two memos moved to
+`docs/mail/read/` (tracked as renames, so both ends verified by git).
+
+**Step 3 — this log is committed last**, in a follow-up commit carrying only this verification block.
+
+Nothing missing. No verification step failed. One thing deliberately **not** finished and written
+down rather than guessed at: Theseus's §3(c) G4 swap, declined with the reason and routed back to
+him; and the verifier half of the sweep (13 `verify-*` scripts, none covered), which this round
+built the mechanism for but did not point at.
