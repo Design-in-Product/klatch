@@ -238,3 +238,89 @@ All four present. `scripts/sweep-probes.mjs` (+23/−1) is carried in `e500e74b`
   `verify-*` scripts swept by nothing; 95 deferred probes unexamined; `offer-choice.mjs` and
   `premise-render.mjs` uncovered; `index.ts` still hand-captures two variables above
   `dotenv.config()`.
+
+---
+
+## 17:28 PDT — STOP fire, Round 267. Theseus's §9 item 1 taken; his consequence corrected
+
+**Briefing.** `docs/COORDINATION.md` checked (2MB — grepped, not read whole). `docs/mail/` swept: one
+new memo to me, Theseus Round 266
+(`theseus-to-daedalus-…-i-took-the-wiring-and-its-first-live-hit-was-your-own-new-probe-2026-09-24.md`),
+read in full. `origin/main` advanced one commit mid-fire (`a794ba10`, Pard→Calliope cc Janus, xian, on
+fire cadence) — **not addressed to me and nothing in it routes to this seat** (grepped `daedalus` /
+`code seat`: no hits). Calliope's two-unmerged-branches thread needed nothing further: my `e00be48b`
+memo answered the code-side call at 13:20, and Theseus's §9 item 4 says a second voice would only slow
+the recommendation Janus is holding.
+
+**Work unit: his §9 item 1 — my `probe-round265` arm C1.** Verified before repairing, and the
+verification changed the finding.
+
+- **Confirmed:** C1 runs `providerExports(LIB, …)` where `LIB` is the mint at `:306`; my Round 265 §4
+  prose said "from the live lib" and was wrong about which bytes it read. `fingerprint`'s body on disk
+  is **830** chars against a cap of **600**.
+- **Does NOT reproduce:** the stated consequence, that the live registry silently loses `fingerprint`.
+  `providerExports` reads `scan(src).code`, and Round 256's `scan` **deletes** comment bytes (where
+  `stripSource` blanks them, length-preserving). Live lib **6633 → 1173** post-`scan`, 5460 chars of
+  comment gone; `fingerprint` body **830 → 559** — **41 characters under the cap**. E1 read
+  `2: ["fingerprint","windowState"]` before the repair and `2` after. Nothing retracted.
+
+Took the repair anyway: a cap on post-comment-deletion body size is wrong in a worse way than "too
+low" — it **rewards comments and punishes code, invisibly**. Body is now brace-balanced, structure
+located over strings-blanked text and spelling read over strings-kept text (his §3 rule);
+`providerExportsWindowed` + `OLD_BODY_CAP = 600` retained so the new arms compare two live readers
+rather than one reader against my memory of another.
+
+**Unexpected finding.** Swept all 150 files under `scripts/`: **18 exported functions have post-`scan`
+bodies over 600**, exactly one of which spells porcelain — **`fingerprintShape`, 639 chars, in
+`probe-round256` itself at the pinned `6465346a`**. The pre-repair registry could not see it. It never
+touched a published figure (E1 walks `lib/` only), but the class had a live instance all along, in the
+file that *defines* the census. Arm **C6b** drives it.
+
+**Arms 14 → 18, measurements 4 → 5.** C4 (live lib), C5 (99 mint / 559 post-scan / 830 raw / cap 600),
+C6 (two-sided on an over-cap mint: windowed `[]`, braced `["fingerprintWide"]`), C7 (length-
+preservation 149/149 **and** strict widening 149/149 — the repair cannot have shrunk a population).
+C1 relabelled "OVER THE MINT" with the correction in its detail.
+
+**The sweep pin earned its keep.** `sweep-probes.mjs` pins this probe to the literal count, not
+`/All \d+ …/`. Adding four arms turned the sweep **red on the first run after the edit** — first time
+that pin has fired on a real change. Updated 14 → 18 with its paired comment number. Separately, the
+entry's `why` field read *"3 measurements"* while the probe already emitted **4** at Round 265;
+nothing enforces `why`, only `expect`. Now 5, counted off the run rather than incremented. **A pin
+protects only the field it is compared against.**
+
+**Controls** (`npm test` into a file, not a pipe — per the rule that cost me a suite once):
+
+- `probe-round265` **18/18 exit 0**, 5 measurements.
+- server **134 files · 2124 passed · 1 skipped**; client **38 · 324 passed · 13 skipped** —
+  **identical to Theseus's R266 §8**, checked against it, correct since no test file was added.
+- `npm run typecheck` **0 `error TS`** (`grep -c`).
+- `sweep-probes` **13 of 13 green, 0 census problems, 95 deferred**.
+- **0 model calls, no server, no port, no database, no corpus.** Scratch under gitignored `.testdata/`;
+  `git status --porcelain` showed exactly the two intended source files.
+
+### Wrap verification — this fire
+
+**Step 1 — commits.** `git log --oneline -2`: `9bc9b77b` (Round 267 work), `71e97faa` (memo, separate
+commit per the worktree mail rule). Push outcome is the wrapper's to log; **not claiming delivery.**
+
+**Step 2 — deliverables, `ls`-verified this fire:**
+
+- `scripts/probe-round265-the-census-already-follows-imports-on-the-other-axis.mts` (modified)
+- `scripts/sweep-probes.mjs` (modified)
+- `docs/research/round267-the-fixture-was-smaller-than-the-thing-it-stood-for-and-the-cap-was-on-a-quantity-nobody-can-read-2026-09-24.md` (new)
+- `docs/mail/daedalus-to-theseus-cc-xian-janus-argus-calliope-iris-i-took-your-c1-item-and-the-live-registry-never-dropped-a-provider-2026-09-24.md` (new)
+
+### Open, mine
+
+- **`docs/COORDINATION.md` still not updated by this seat.** 2MB / 3400+ lines, my section stale, read
+  by `grep` again. Third consecutive fire flagging rather than fixing: it wants a decision about
+  splitting the file, not another quietly skipped update. **Escalating to xian** rather than logging it
+  a fourth time.
+- **Theseus's §9 item 2 remains his and untouched:** the mask split applied to the published
+  `emptinessSites` reader wants a fire that changes nothing else; this one changed four arms and a pin.
+- **Sweep entry schema:** `why` is unenforced prose that has now drifted once. Worth a mechanism for
+  whoever next touches that schema; not worth a round of its own.
+- Carried, unchanged: R264 C2/C3 (figure stays a lower bound); the `HEAD:`-vs-pinned-hash class; the
+  not-mine files carrying an asserted emptiness check; `verify-tsx-guard.mjs` in no schedule; 13
+  `verify-*` scripts swept by nothing; 95 deferred probes unexamined; `offer-choice.mjs` and
+  `premise-render.mjs` uncovered; `index.ts` hand-captures two variables above `dotenv.config()`.
