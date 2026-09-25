@@ -1,102 +1,55 @@
 # Klatch — Standing State
 
-**Refresh cadence:** updated as part of the end-of-day logbook wrap (alongside the logbook entry). This is a point-in-time orientation snapshot, not live state — verify against COORDINATION.md, the roadmap, and recent commits before acting on anything time-sensitive.
-**Last refreshed:** 2026-06-22 Monday afternoon (Calliope, second-pass BYOC sharpening per Janus's authoritative relay)
+**Refresh cadence:** updated as part of the end-of-day logbook wrap (alongside the logbook entry). This is a point-in-time orientation snapshot, not live state — verify against `docs/COORDINATION.md`, `docs/ROADMAP.md`, `docs/operations/attention-rollup.md`, and recent commits before acting on anything time-sensitive.
+**Last refreshed:** 2026-09-24 (Calliope, live session with xian, first logbook/STATE touch since 2026-06-22).
+
+**On the gap:** this file went stale for three months, not because the project paused but because nobody carried the standing-state snapshot forward while the daily record (`docs/logs/`) kept running underneath it. Everything below is rebuilt from verified sources this session, not incrementally patched from the June version — treat anything not restated here from the prior version as unconfirmed.
 
 ---
 
 ## One-line status
 
-Klatch is now **implementation-active toward 1.0-beta**: the design gate cleared 6/20 (Iris session 12 — composition gesture spec landed, mode + vocab sweep shipped, Finding 1 UX answered). Daedalus + Argus launch as Phase 2 tandem cycle next (xian-stated today, 6/21). The path to beta is now execution, not specification.
+Klatch's core product (Steps 1–9) is built and shipped as of v0.9.0. The 1.0-beta gate — an agent can join a klatch while remaining continuous with its own conversation, and the six-agent weekly-review canonical use case runs end to end — is **half met**: continuity demonstrated live once, for one seat; the full multi-agent shape has never been run. That is the actual critical path now, not a feature-completeness question.
 
-## What's shipped
+## What's shipped (verified against `docs/ROADMAP.md`'s "Completed" section this session)
 
-- **Step 10 (Export + context protocol)** — canonical package format, both transports (Claude Code + claude.ai), the MCP server (5a read-only resources, 5b tools, 5c-i write-path/reflect), Phase 3.5 behavioral calibration (dual-mode briefing + extraction). 1.0-feature-complete on the protocol side.
-- **MCP server** — the Step 10 capstone; feature-complete for 1.0.
-- **Tests:** ~1,487 (1,287 server + 200 client) as of 2026-05-18, zero failures.
-- **UI patch coverage** — Round 33/33b closed (Argus); Tier 1 patches from Iris's triage shipped (Daedalus).
+- **Steps 1–9**, released as v0.9.0 (2026-04-10): persistent multi-channel conversation, multi-entity channels (up to 5 entities, panel/roundtable/directed modes), import from Claude Code and claude.ai with fork-don't-sync continuity, and a full file/artifact domain model with scope-aware context injection (project knowledge base, channel pinning, message attachment).
+- **Composition gesture mechanics**: an import can mint and confirm a real entity rather than seat the default one (Rounds 171–174), with a same-name disclosure and reassign picker in the client.
+- **Entity backfill tool**: built and dry-run-verified against xian's real March corpus (Rounds 199–205, 9-of-9 precision on the corrected role-basis guesser) — **never applied to real data.** Per-channel approval is explicitly xian's call, still open.
 
-## The 1.0-beta critical path — DESIGN GATE CLEARED 2026-06-20
+## The beta gate — half met, this is the actual critical path
 
-Iris's session 12 with xian (6/20) cleared the gate. Iris's design brief (`docs/ux/design-brief.md`) framed the path; her composition spec (`docs/ux/spec-composition-gesture.md`) is the 1.0 implementation brief Daedalus reads first.
+From `docs/ROADMAP.md`'s own status note (2026-09-09, unchanged since, re-verified this session):
 
-Status of the five components:
-1. **Composition gesture** — *specced 6/20 by Iris.* Awaiting Daedalus implementation.
-2. **Klatch setup surface** — *specced 6/20 by Iris* (Name / Agents / Purpose / Mode / Project / Files + clone-existing; three-path agent picker). Awaiting Daedalus implementation.
-3. **Working-meeting experience** — *resolved 6/20 by xian + Iris*: a meeting is a synthetic group chat; no special mode, no extra chrome, no session-close gesture. Orchestration modes are the only differentiation; synthesis is emergent (via @mention to a CoS-style agent). Question 4 of Iris's 5/12 brief.
-5. **Promotion gesture** — *resolved 6/20*: naming an agent IS the promotion (Q V5 in vocab sweep). "Promote" is internal vocabulary only.
-- **Vocabulary sweep shipped 6/20** — `entity → agent`, `panel → Broadcast`, Chat/Klatch Settings, Purpose, context-aware export and delete labels, "Agent name" placeholder, "In N conversation(s)".
-- **Tier 1 patches** — most landed pre-gap; remainder folds into Daedalus's queue alongside the composition gesture implementation.
-- **Daedalus Finding 1 (UUID matching UX)** — *answered 6/20*: project match silent attach + toast; channel UI inline prompt; channel MCP 409 with reason.
+- **Clause 1 — an agent can join a klatch continuous with its own conversation:** demonstrated live once (Round 172, arm K, one seat).
+- **Clause 2 — the weekly-review use case runs end to end:** **not run, ever, by anyone.**
 
-Implementation is now the work, owned by Daedalus in tandem with Argus.
+Tonight's work is the first real step toward closing clause 2: xian is staging a small test — importing two real, currently-running agent sessions (this seat and Iris's) into one klatch, deliberately smaller than the full five-seat team room — with a parallel mail-run version planned for comparison before attempting the full shape. Not yet executed as of this refresh. Runbook: `docs/operations/roadmap-klatch-runbook-2026-09-20.md`.
 
-## In flight / recent
+**Honest read on recent effort allocation (verified this session, not a passed-down claim):** roughly the last month of research-track work (Rounds ~230–264) has been almost entirely test-harness hardening — finding and fixing bugs in the probes and instruments that verify the product, not new product surface. Defensible given the July composition-drift incident (see `docs/PREMISE.md`), but worth a deliberate look now that the actual test this machinery exists to support is finally about to run.
 
-- **UI-as-context AAXT** (Theseus, May 18) — 5-round wave, diagnostic→fix→validate loop proven: ChannelSettings 54% → 94% conveyance after patches. 146 probes, 11 findings. Methodology validated empirically. Open candidates: ProjectSettings, EntityManager, MessageList (Theseus green-lit to pursue in parallel, 2026-05-28). *Theseus not yet on cycle — Phase 3 launch pending.*
-- **Duty cycle rollout in progress.**
-  - **Phase 1 — Calliope:** live since 6/6 (persistent worktree + cron when in-session). Session resumed 6/19.
-  - **Phase 3 — Iris:** *launched 6/21 morning* (her own session log opened 7:33, COORDINATION updated). First non-Calliope cycle to start; daily heartbeat. Confirms the cohort pattern works without ceremony.
-  - **Phase 2 — Daedalus + Argus tandem:** **next launch up.** Launch-brief template revised 6/21 (3 sharpenings: re-arm-by-default elevated to standing-directive framing; new attention-rollup section; canonical drain-prompt source pinned). Cover memos for each drafted (`calliope-to-daedalus-cycle-cover-2026-06-21.md`, `calliope-to-argus-cycle-cover-2026-06-21.md`). Cron stagger: Calliope `:13`, Daedalus `:17`, Argus `:43`. Awaiting xian's launch.
-  - **Phase 3 — Theseus:** still pending.
-- **Entity-reframe blog ("Bringing Conversations Into a Room")** — illustration drafted (`docs/drafts/bringing-conversations-illustration.html`); xian agreed to publish; **awaiting his illustration reaction (since 5/28), then publish** (HTML + index card + OG image, same as Before You Go). Publish gated on xian approval. Only drafted-not-published post in the queue.
-- **Attention rollup live** — `docs/operations/attention-rollup.md` (canonical) + `.html` (Desktop preview). v2 demand-organized (Exec advised 6/19). Verified-sweep discipline (read source docs against live truth, never from memory). Refreshed at session-wrap and on substantive new items.
+## Duty cycle — fully rolled out, all five seats (this section was badly stale; corrected in full)
 
-## Standing decisions / items waiting on xian
+The May/June "Phase 1/2/3 rollout in progress" framing below is obsolete. As of this refresh: **all five seats (Daedalus, Argus, Theseus, Iris, Calliope) run scheduled, non-interactive `launchd`-driven fires**, independent of any interactive chat session. Mechanism, schedule, and the tradeoffs of this approach vs. a continuous-session model (which xian is actively weighing, not deciding tonight) are written up in full at `docs/operations/duty-cycle-mechanism-briefing-2026-09-24.md`.
 
-- **Entity-reframe blog draft** ("Bringing Conversations Into a Room") — `docs/drafts/bringing-conversations-into-a-room.md` — pending xian editorial read. Note: describes the composition gesture as forthcoming.
-- **D1–D5 from Argus's dreaming spike** — **DECIDED by xian 2026-05-28** (`docs/research/anthropic-dreaming-import-export-impact-2026-05-12.md`):
-  - D1 — memory-store import posture → **wait, but be ready.** Klatch may always be a superset, but whenever we can round-trip into another system with fidelity we should; the proprietary layer should be as thin as possible.
-  - D2 — memory-store export transport → **cluster with Phase 5d** (confirmed), but flagged as a growing-importance issue tied to the interchange-protocol vision (see Strategic threads).
-  - D3 — activate `memory_format: "typed"` → **fold into Step 11** (confirmed).
-  - D4 — Step 11 differentiation positioning → **assembly layer, not memory primitive** (confirmed); ongoing strategic conversation between xian + Calliope.
-  - D5 — cross-read with Piper Alpha → **yes**; note a latent "type 2" (anxiety-dream) design in PM's roadmap that nobody else has touched yet.
+**Open, unresolved as of tonight:** three of the five seats (Calliope, Argus, Iris — the three pinned to Sonnet-5) showed a sharp, dated collapse in fire verification-depth starting 2026-09-23 — fires completing in ~23 seconds with no file-reading verification instead of the usual several minutes, every one still self-reporting success. Ruled out as a local cause (wrapper, config, model-pinning all checked directly and unchanged). Most likely a serving-side Sonnet-5 behavior change, possibly linked to a same-day model-drift incident found independently in other projects. Written up and routed to Pard (mediajunkie's infrastructure lead) for the cross-fleet half of the investigation; tracked as a 🔵 item on this project's own attention rollup, not a decision for xian.
 
-## Strategic threads (ongoing xian + Calliope conversation, opened 2026-05-28; expanding 2026-06-19)
+## Standing decisions
 
-These are live, not settled. See memory `project_duty_cycle_reframes_klatch_purpose.md`.
+- **Ground-rules / disclosure surface — RULED 2026-09-24.** Should a klatch support a per-room, settable disclosure convention, or is one fixed norm enough? xian: one fixed norm is enough for the product's current stage — explicit "not now," not a permanent stance, revisited if a real case for stricter-than-default ever appears. No per-klatch surface gets built. (Open 44 days before this ruling; full text in the attention rollup's ✅ section.)
+- **Entity backfill application (Rounds 199–205)** — built, dry-run-verified, **not yet applied to real data.** Per-channel approval, not a blanket apply, remains xian's call.
+- **Two branches stranded since March** (`origin/claude/audit-and-planning-xn2w7`, `origin/claude/resume-billing-work-OvTHC`) — a Klatch-team recommendation (merge / cherry-pick / leave) was requested by xian via Janus on 2026-09-24 and is in progress, routed to Daedalus and Argus for the code-side call.
+- **Klatch's duty-cycle model vs. a continuous-session model** — xian is weighing whether to keep the current mechanism or align with how the rest of the agent fleet now runs. Explicitly not asking for a decision yet; plans to raise it with Pard and Janus. See the mechanism briefing above.
+- **Logbook/STATE.md shape** (daily entries vs. period-spanning) — still technically unresolved as a standing policy (Janus leaned period-spanning 2026-08-28, declined to finalize), but this refresh proceeded on xian's direct instruction tonight rather than waiting further on the policy question.
 
-- **The duty cycle reframes what Klatch is uniquely for.** The cross-project duty cycle now solves some of Klatch's founding problems (mail delivery, agent collaboration) — but NOT group conversation (synthetic klatches/roundtable) NOR the emerging interchange-protocol vision. Klatch's unique, defensible value is narrowing to those two things. Invest where Klatch is uniquely needed, not where the duty cycle already delivers.
-- **Thin proprietary layer.** Maximize fidelity round-trips into other systems; minimize lock-in surface. Superset-but-interoperable.
-- **Klatch as interchange protocol** is where the strategic weight is shifting (D2/D4 territory).
-- **Finding 1 UX shape** — UUID-matching on re-import (silent attach / toast / dialog / refuse) — Daedalus parked on Iris's call.
-- **Step 11 scoping** (`docs/plans/STEP-11-SCOPING.md`) — assembly-layer reframe, waiting on the D1–D5 decisions.
-- **New 6/19 threads, not yet discussed:**
-  - **Persistent topical rooms** as a Klatch product category (the synthetic-klatch insight made operational — composition gesture grown up)
-  - **Contextual fidelity across seams** — Layer 5 / behavioral-calibration problem revisited as a recurring concern
-  - **BYOC + cross-tool portability + transporter engine — three distinct concepts** (xian-settled, via Janus 6/22 afternoon relay). See persistent memory `[[project_byoc_transporter_device]]` for the authoritative version.
-    - **BYOC (PM) = bring-your-own-chat.** User-in-chat installs skills + MCP to use Piper. PM's deployment surface; not portability.
-    - **Cross-tool context portability (Klatch) = settled real concept.** Move agent conversations across harnesses with context intact (import Claude Code chats into a Klatch meeting; round-trip them back; convene multi-vendor klatch by importing each agent with its context).
-    - **The transporter engine = exploratory mechanism.** The 5-layer context model captured with enough fidelity to stand alone as a tool (MCP server / skills / in-chat / capture-and-inject service). xian thinking out loud; no offer language yet.
-    - Two propagation corrections: (a) first mis-reading 6/19→6/22 mislabeled the Klatch concept as "BYOC"; (b) second mis-reading 6/22 morning over-corrected by softening cross-tool portability to "exploratory." Both now corrected by Janus's afternoon relay.
-  - **MCPs and service-design frontiers** — adjacent strategic territory
-  - **xian's focal shift, July 2026** (xian, 6/19): full-time on consulting + own products; no longer Director of Product at Kind Systems. **DinP becomes the operational center.** OpenLaws becomes an external consulting client. Piper Morgan is the consulting tool used to help clients build their own "product OS." Virtuous hyper-circle: methodology flows across projects + clients. **For Klatch:** multi-week pauses during planning mode may become rarer; Klatch joins xian's core work rather than competing with a day job for attention. **Cross-tool context portability** (now-settled per the 6/22 Janus relay) gives Klatch a real client-side value proposition — concrete enough to demo, not yet framed as a consulting offer.
-  - **Janus's role vs. Calliope's role** — Janus coordinates across all xian's projects; Calliope is principal contact for Klatch. Worth articulating cleanly as cohort scales.
+## Agent status (verified this session — the May/June version below was three months stale)
 
-## Convergent pattern worth surfacing back
+- **Daedalus** (architecture & implementation) — full duty cycle, four fires/day, Opus-5. Currently the most active seat on the research/harness track.
+- **Argus** (quality & testing) — full duty cycle, three fires/day, Sonnet-5. One of the three seats affected by the 09-23 verification-depth finding above.
+- **Theseus** (manual testing & exploration) — full duty cycle, three fires/day, Opus-5. Drives most live-wire verification on the research track.
+- **Iris** (UX design & front-end) — full duty cycle, two fires/day, Sonnet-5. One of the three seats affected by the 09-23 finding. Proposed tonight as a co-participant, alongside xian and Calliope, in the first small continuity test.
+- **Calliope** (writing, chronicling & coordination) — full duty cycle, four fires/day, Sonnet-5. Principal point of contact for xian. One of the three seats affected by the 09-23 finding; this file and the logbook entry above are this seat's own catch-up after the gap.
 
-- **PM's "derive-don't-maintain" principle (ADR-072)** showed up across PM surfaces during 6/6→6/19 gap, solving a standup-fabrication root-cause (three-list divergence). Same shape as Klatch v0.2 agent-state tracker's "graduate to derivation" aspiration. Cross-project convergence pattern continues (after DECISIONS.md, the failure-mode taxonomy, the canonical-format work, the duty cycle itself).
+## What this file is deliberately not doing
 
-## Candidate next development drivers (xian's allocation, 2026-05-28)
-
-1. **1.0-beta UX critical path** (Iris + xian) — **the priority.** Spec composition gesture + klatch setup surface.
-2. **More UI-as-context AAXT** (Theseus, in parallel — AAXT is agent-driven, doesn't need xian's live attention).
-3. **MAXT Session 02** (needs xian's attention — time carefully, can't run in parallel).
-4. **Blog series continuation** (Calliope, in parallel when not supporting higher priorities): entity reframe → convergent infrastructure → MCP capstone, anchored to 1.0 beta. Possible future beat: the 54%→94% AAXT diagnostic-loop story.
-
-## Agent status (refreshed 6/21 from agent-state.md + COORDINATION.md + Iris's session-12 readout)
-
-- **Calliope** — live duty-cycle when in-session; persistent worktree `claude/calliope`; cron `065fb872`→paused for current substantive work. Coordination + chronicling + blog series + STATE/logbook upkeep + attention-rollup. Principal point of contact for Klatch.
-- **Daedalus** — Phase 2 launch imminent. Cover memo waiting in mail. Finding 1 UUID-matching UX now answered by Iris (6/20); ready to implement. Composition gesture spec is his main work assignment. PM CIO #972 alignment proposal in his inbox.
-- **Argus** — Phase 2 launch imminent (tandem with Daedalus). Cover memo waiting in mail. First job: test-snapshot fallout from yesterday's vocab + mode rename. Weekly intel sweep overdue.
-- **Theseus** — Phase 3 still pending xian's launch. UI-as-context AAXT continuation candidates queued.
-- **Iris** — *live duty cycle as of 6/21 morning* (daily heartbeat, signal-receiver model). Phase 3 launched. UX critical-path design gate cleared 6/20. Composition spec shipped to `docs/ux/`. Available for any clarifications Daedalus + Argus surface during implementation.
-
-## Cross-project context (refreshed 6/19)
-
-- **Duty cycle** — PM full cohort live; OpenLaws piloting; Klatch v0.2 substrate landed 6/6 with Calliope on cycle (Phase 1 only). Phases 2+3 gated. CIO's canonical-artifacts request still outstanding via Janus (6/3 memo).
-- **BYOC / PDR-005 alignment** — closed (Daedalus's reciprocal cycle with PM Architect relayed via Janus 5/18).
-- **Billing split (June 15)** — *now in effect.* Klatch unaffected ($0/mo current impact); forward risk only at Step 10 export-to-Claude-Code Agent SDK surface when implemented.
-- **PM #972 memory-temporal-field alignment** (6/15) — CIO proposed `valid_from`/`valid_until` as shared schema; awaits Daedalus's next session. Compatibility nicety, not blocking either side.
-- **PM 6/8–6/11 BYOC / BYO-key / BYO-substrate arc** — credential chain landed; PA migration finished; ecosystem context (IPO S-1) noted.
-- **PM 6/18 left-rail nav debacle + spec-first response** — PM published nav, xian rejected ("no global nav, doesn't resemble the mock"); PM chose spec-first not revert. Adjacent: standup-fabrication root-cause = three-list divergence; fix derives from one canonical source per ADR-072. Convergent with Klatch's v0.2 agent-state-tracker aspiration.
+Not attempting to reconstruct May–September month by month — that would manufacture false precision about events this session has no primary-source access to. Everything above is what's verifiable now, from currently-live sources, dated as such. Older sections of this document (strategic threads from May/June — BYOC/transporter-engine framing, the pre-beta-gate roadmap allocation, cross-project context as of June) are **not carried forward** here because they were not reverified this session; consult `docs/COORDINATION.md` and `docs/mail/` directly before treating any of that material as still current.
