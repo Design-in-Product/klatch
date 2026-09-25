@@ -70,4 +70,74 @@ informative rather than regressions, and are the subject of the rest of this fir
 
 The second one is worth naming: **the rule caught its author's own merge, one commit after landing.**
 
+## 13:4x — Round 271: the widening, and the state firing
+
+Took Theseus's §9 item 2 (both halves) since items 0 and 1 were closed.
+
+**`classify` widened** to `(exit 2 AND declared refusal) OR (exit 3 AND declared skip on the run's
+own `did not run:` line)`. Both conditions required on the **same line**, so a declared label cannot
+borrow an unrelated `did not run:` elsewhere in the output. Used `search` rather than `test` so a
+caller's `g`-flagged pattern cannot make the classifier stateful across entries.
+
+**`diagnosisLine()` added** for his §5 residue.
+
+**Arm J added to the probe (8 checks, 43 → 51).** The fixture calls the *real* `summariseAndExit`
+rather than printing a plausible exit-3 transcript.
+
+**My fixture was wrong on the first run and the instrument caught it.** I wrote `ok: true`;
+`ProbeVerdict`'s field is `pass`. An absent `pass` reads falsy, so it exited 1 as a failed check
+instead of 3. J1 asserts the fixture's own exit code separately from the limb under test, so the
+red said *your fixture is broken*, not *`classify` is broken*. Fixed; all 51 green.
+
+**Arm G3 inverted.** It was a tripwire asserting the defect, and it fired when Theseus repaired arm
+B — which is what it was for. Left as-is it would have become a permanent false red. Now asserts the
+repaired state.
+
+**Arm E1** went red on the entry I had merged minutes earlier — my own Round 269 vacuity rule
+catching my own merge. Fixed by stating the figure in the checkable `N regression` spelling with
+Theseus's provenance caveat intact.
+
+## 13:5x — The result the arc was for
+
+```
+BLOCKED exit   3  probe-round225-a-citation-is-not-a-call.mts
+        INCONCLUSIVE — probe-round225 established 32 of its checks and skipped 1 arm(s).
+SWEEP BLOCKED — 13 of 14 swept probes green, 0 red, 1 blocked (did not conclude)   [exit 2]
+```
+
+**The same condition was RED one commit earlier.** Theseus's Round 268 §3 — a red cleared by the
+operator quitting his own dev server being indistinguishable from a regression — is closed.
+
+**Controls, every `npm` run into a file and not a pipe:**
+
+| control | result |
+|---|---|
+| `probe-round269` | **51/51 exit 0**, 3 measurements, 0 skips |
+| `sweep-probes.mjs` | 13 of 14 green, 0 red, 1 blocked, **exit 2** |
+| `sweep-probes.mjs --census` | census **PASSED**, **exit 0** |
+| `npm run typecheck` | **exit 0**, 0 `error TS` |
+| `npm test` | **exit 0** — server **137 · 2148 · 1 skipped**; client **38 · 324 · 13** |
+
+Server and client figures match Theseus's Round 270 §8 exactly.
+
+## Wrap — verification
+
+`git log origin/main --oneline`:
+
+```
+6f23464c sweep(round271): BLOCKED admits exit 3 with a declared skip, and the diagnosis line…
+bf5135ea log: Daedalus 9/25 WORK fire — Round 269 recovered from the SIGTERM and landed
+f634f1c6 Merge remote-tracking branch 'origin/main' into claude/daedalus-cycle
+7b7655cf wip(round269): recover five files stranded by the 09:17 SIGTERM, unreconciled
+```
+
+Deliverable files confirmed present on `origin/main` via `git ls-tree`, not from push output.
+
+**Three pushes this fire, deliberately.** The failure mode being repaired is a fire that does good
+work and dies holding it, so the mitigation is to land early and repeatedly rather than at the end.
+That is mine to fix, not the wrapper's.
+
+**Mail sent:** reply to Theseus (Round 271), reply to Pard (recovery closed + one gentle suggestion
+about a scratch branch for stranded trees). Pard's thread moved to `docs/mail/read/`.
+
 </content>
