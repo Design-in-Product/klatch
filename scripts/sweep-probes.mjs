@@ -67,10 +67,19 @@
  * and the resulting red is indistinguishable from a regression to the next agent. A third kind of
  * pin, after Round 261's fuses and gates: **cleared by someone stopping something legitimate.**
  *
- * So there are now three states, and the rule for the new one has TWO limbs for the same reason
- * `verdict` has two:
+ * So there are now three states, and the rule for the new one is a disjunction of two DECLARED
+ * conditions — each with two limbs, for the same reason `verdict` has two:
  *
- *   BLOCKED  ⟺  exit code 2  AND  the entry's own declared `refusal` pattern appears in the output.
+ *   BLOCKED  ⟺  (exit 2  AND  the entry's declared `refusal` appears in the output)
+ *             OR (exit 3  AND  the entry's declared `skip` appears on the run's own
+ *                 `did not run: <label>` line)                          ← added in Round 271
+ *
+ * The second disjunct is Theseus's Round 270 §4. Round 269 shipped only the first and priced it
+ * honestly as unreachable; he then repaired `probe-round225`'s arm B and found that the honest exit
+ * code is **3, not 2** — `probe-outcome.mts` reserves 2 for "nothing ran and there is a clear
+ * operator action", and that probe establishes 32 of its checks before one arm hard-skips. So the
+ * distinction Round 269 chased was no longer being destroyed one level down; it was arriving
+ * wearing a code the `exit === 2` limb did not admit. **A widening was the remedy, not a rewrite.**
  *
  * Why not a fleet-wide refusal regex? Because it was measured, and there is no fleet refusal
  * vocabulary to match. **13** `process.exit(2)` sites across 109 probe files spell the same intent
@@ -80,11 +89,17 @@
  * target. An entry with no `refusal` gets no benefit of the doubt: its exit 2 stays RED.
  *
  * That 13 was **15** in the first draft of this paragraph, and the correction is the same lesson one
- * level in. A strings-KEPT reading of the fleet finds 15; a strings-BLANKED reading finds 13. Two
- * files only ever mention `process.exit(2)` inside a string literal — `probe-round250`, which nobody
- * had noticed, and `probe-round269`, which mints a refusing fixture and so libelled itself as a
- * refuser while measuring refusers. `probe-round269` arm G4 names both and arm G5 drives the mask
- * difference on a minted pair. **A citation inside a string is not a call either.**
+ * level in. A strings-KEPT reading of the fleet finds 16 (15 when that draft was written); a
+ * strings-BLANKED reading finds 13. Three files only ever mention `process.exit(2)` inside a string
+ * literal — `probe-round250`, which nobody had noticed; `probe-round269`, which mints a refusing
+ * fixture and so libelled itself as a refuser while measuring refusers; and, since Round 270,
+ * `probe-round225`, whose new arm B2 mints five fixtures the same way. `probe-round269` arm G4 names
+ * them and arm G5 drives the mask difference on a minted pair. **A citation inside a string is not a
+ * call either.**
+ *
+ * The blanked figure stayed at 13 while the kept figure moved 15 → 16, which is the cheapest
+ * possible demonstration that the mask is the part that matters: the fleet gained no new refuser,
+ * only a new file that talks about refusing.
  *
  * **BLOCKED is not green, and the exit code says which.** 0 = everything ran and passed, 1 = a
  * check failed or the census is red, 2 = nothing failed but something could not run. That is the
@@ -92,15 +107,22 @@
  * `scripts/verify-verifier-exit-codes.mjs`. Collapsing BLOCKED into PASS would reproduce the
  * finding of `probe-round224`, which is IN the swept set.
  *
- * **What this does NOT fix, measured this fire and stated rather than implied:** 0 of the 13 swept
- * probes contains an `exit(2)` site, so BLOCKED cannot fire on today's swept set. Tonight's red is
- * `probe-round225` exiting **1**, because its arm B drives `probe-round223b`, reads the child's
- * exit 2, and grades it as a failed regression check — its own FAIL line says `exit 2 after 368 ms
- * — 3 PASS, 0 FAIL`. **The distinction is destroyed one level below this file, in the arm that has
- * the evidence in hand.** Routed to Theseus (arm B is his); the mechanism here is built, driven
- * against a minted fixture, and ready for the exit code when it arrives. Until then a RED whose
- * declared `refusal` text is present is annotated as such — a hint for the reader, never a verdict,
- * and it moves no count and no exit code.
+ * **The state is now reachable, and this is the first run in which it fired.** Round 269 recorded
+ * here that 0 of the swept probes could exit 2, so BLOCKED could not fire on the swept set — true
+ * when written, and still true of the exit-2 limb. The exit-3 limb is what reaches it. Live, with
+ * 3001 held by the operator's dev server:
+ *
+ *     BLOCKED exit   3  probe-round225-a-citation-is-not-a-call.mts
+ *             INCONCLUSIVE — probe-round225 established 32 of its checks and skipped 1 arm(s).
+ *     SWEEP BLOCKED — 13 of 14 swept probes green, 0 red, 1 blocked, 0 census problem(s)
+ *
+ * and the sweep exits **2**. That same condition was a RED on this file's previous commit. **The
+ * red a legitimate `npm run dev` used to produce is no longer indistinguishable from a
+ * regression** — which was the whole of Theseus's Round 268 §3, closed across three rounds and two
+ * seats, with the decisive repair in his file rather than this one.
+ *
+ * The exit-2 annotation is retained for the case that motivated it: a RED whose declared `refusal`
+ * text is present is annotated as a HINT — never a verdict, moving no count and no exit code.
  *
  * ── The entry schema is checked now, not proofread (Round 269) ───────────────
  *
@@ -173,11 +195,19 @@ export const SWEPT = [
     // is destroyed, but because it now arrives wearing a code the `exit === 2` limb does not
     // admit. That is Round 271 §2 below, and it is why this comment names an exit code at all.
     refusal: /probe-round223b: something already holds 3001/,
+    // Round 271, Daedalus. The declared skip label, which is what lets this entry reach BLOCKED on
+    // an exit 3. Taken from `probe-round225-…mts:344` verbatim, not paraphrased — the label is the
+    // contract, and a pattern written from memory of it would be the prose-matching error again.
+    skip: /arm B: the drive of probe-round223b/,
     why: 'run every fire as a control by both seats; Theseus 270 §2 reports 32 established + 1 ' +
-      'skipped arm on a HELD port, so 33 is DERIVED (32 + the skipped drive), not observed — ' +
-      'port 3001 was held by xian\'s dev server for the whole of Round 270 and the green branch ' +
-      'could not be driven. The first free-port fire confirms or refutes it loudly; the prior ' +
-      'pin of 21 re-derives exactly from this run, which is what licenses the arithmetic.',
+      'skipped arm on a HELD port, so 33 regression checks is DERIVED (32 + the skipped drive), ' +
+      'not observed — port 3001 was held by xian\'s dev server for the whole of Round 270 and the ' +
+      'green branch could not be driven. The first free-port fire confirms or refutes it loudly; ' +
+      'the prior pin of 21 re-derives exactly from this run, which is what licenses the ' +
+      'arithmetic. The figure is stated in the checkable `N regression` spelling on purpose: as ' +
+      'merged in Round 271 this entry stated no self-equal figure at all, and arm E1 went red ' +
+      'because the agreement rule was vacuous on it — the rule catching its own author\'s merge ' +
+      'one commit after landing.',
   },
   {
     file: 'probe-round245-the-shared-lib-coverage-floor.mts',
@@ -323,17 +353,23 @@ export const SWEPT = [
   },
   {
     file: 'probe-round269-blocked-is-a-third-outcome-and-the-exit-code-that-carries-it-dies-one-level-down.mts',
-    expect: /All 43 regression checks passed/,
-    // Round 269, Daedalus. Drives this fire's own changes: `classify`'s three states on every
-    // corner, `sweepExit`'s propagation, `entryProblems` two-sided, `measurementCheck`'s three
-    // outcomes, and arm H where all three states arise from processes that really exit 0, 1 and 2
-    // rather than from integers chosen by hand. Arm G is the honest price of the new state: 0 of
-    // the swept probes can exit 2, so BLOCKED cannot fire on this set yet.
+    expect: /All 51 regression checks passed/,
+    // Round 269, Daedalus; extended in Round 271. Drives this fire's own changes: `classify`'s
+    // three states on every corner, `sweepExit`'s propagation, `entryProblems` two-sided,
+    // `measurementCheck`'s three outcomes, and arm H where all three states arise from processes
+    // that really exit 0, 1 and 2 rather than from integers chosen by hand.
+    //
+    // Round 271 added arm J (8 checks, 43 → 51): the exit-3 limb and `diagnosisLine`, driven
+    // through a fixture that calls the REAL `summariseAndExit` rather than one that prints a
+    // plausible exit-3 transcript. J1 asserts the fixture's exit code separately from the limb
+    // under test, and earned that separation immediately — the first version used `ok` where
+    // `ProbeVerdict` has `pass`, so it exited 1 and would otherwise have reddened J2 for a reason
+    // that had nothing to do with `classify`.
     //
     // The first entry whose measurement claim is ENFORCED rather than noted — this probe prints
     // `[id] MEAS` lines, so `measurementCheck` grades the 3 below against the run. Every other
     // entry claiming a count emits nothing countable and is annotated as unenforceable prose.
-    why: 'run green in Round 269 (this fire), 43/43 exit 0, 3 measurements; spawns three minted node scripts under gitignored .testdata/r269 — no server, port, database, corpus or model call',
+    why: 'run green in Round 271, 51/51 exit 0, 3 measurements; spawns minted node scripts under gitignored .testdata/r269 — no server, port, database, corpus or model call',
   },
 ];
 
@@ -474,11 +510,70 @@ export const partition = (files, swept, deferred) => {
  *     code alone would be reproducing the defect its own subject was written about;
  *   - the summary line alone misses a probe that prints its tail and then throws on the way out.
  */
-export const classify = (code, out, expect, refusal) => {
+export const classify = (code, out, expect, refusal, skip) => {
   const matched = expect.test(out);
   const refused = Boolean(refusal && refusal.test(out));
-  const state = code === 0 && matched ? 'PASS' : code === 2 && refused ? 'BLOCKED' : 'RED';
-  return { state, matched, refused, code };
+  // Round 271. The exit-3 limb, and why it is a SECOND declared pattern rather than a widening of
+  // the first. Theseus's Round 270 §4: `probe-round225` cannot honestly exit 2, because exit 2
+  // claims nothing ran and 32 of its checks really do establish. `probe-outcome.mts` documents 3
+  // for exactly that state — "ran and established less than it set out to" — and reaches it by a
+  // hard skip. So the distinction the whole of Round 269 was about is no longer destroyed one
+  // level down; it arrives wearing a code the `exit === 2` limb did not admit.
+  //
+  // `skipped` keeps arm A6's discipline rather than inheriting its result: the label must be
+  // DECLARED by the entry and must appear in the run's own `did not run: <label>` line, which
+  // `summariseAndExit` emits structurally. A bare exit 3 with no declared skip stays RED, for the
+  // same reason a bare exit 2 with no declared refusal does — an undeclared not-green is not
+  // evidence about its own cause.
+  // Both conditions must hold ON THE SAME LINE, so a declared label that happens to appear
+  // elsewhere in the output cannot borrow an unrelated `did not run:` elsewhere. `search` rather
+  // than `test` because it ignores `lastIndex`, so a caller's `g`-flagged pattern cannot make this
+  // stateful across entries — the kind of defect this file exists to catch.
+  const skipped = Boolean(
+    skip && out.split('\n').some((l) => l.includes('did not run:') && l.search(skip) >= 0),
+  );
+  const state = code === 0 && matched
+    ? 'PASS'
+    : (code === 2 && refused) || (code === 3 && skipped)
+      ? 'BLOCKED'
+      : 'RED';
+  return { state, matched, refused, skipped, code };
+};
+
+/**
+ * Lines that are structurally the tail of a run but are never its conclusion. Today this is
+ * `probe-outcome.mts`'s exit-3 legend, which `summariseAndExit` prints AFTER the headline — which
+ * is precisely why "the last line" was the wrong line for every probe that exits 3.
+ */
+const NOT_A_CONCLUSION = [/^\(exit 3 —/];
+
+/** The shapes `probe-outcome.mts` gives a conclusion. Searched for from the END of the output. */
+const CONCLUSION = [/^INCONCLUSIVE — /, /^FAILED — /, /^All \d+ regression checks passed/];
+
+/**
+ * The line to quote as a probe's diagnosis when its pinned summary was not found.
+ *
+ * Round 271, repairing Theseus's Round 270 §5 residue. The old form was
+ * `out.trim().split('\n').pop()`, and it was wrong in a way that got worse as probes got better:
+ * `summariseAndExit` prints the exit-3 legend after the headline, so for every probe exiting 3 the
+ * informative line (`INCONCLUSIVE — … established 32 … skipped 1`) is SECOND-to-last and the sweep
+ * quoted the legend instead. A reader then goes hunting a diagnosis that was one line up.
+ *
+ * Prefers a real conclusion found from the end; falls back to the last line that is not a known
+ * non-conclusion; falls back to the last line. The fallbacks matter because not every probe on this
+ * fleet routes through `probe-outcome.mts`, and a heuristic that returned nothing for those would
+ * be a regression against the plain-tail behaviour it replaces.
+ */
+export const diagnosisLine = (out) => {
+  const lines = out.trim().split('\n').map((l) => l.trim()).filter(Boolean);
+  if (!lines.length) return '(no output)';
+  for (let i = lines.length - 1; i >= 0; i -= 1) {
+    if (CONCLUSION.some((re) => re.test(lines[i]))) return lines[i];
+  }
+  for (let i = lines.length - 1; i >= 0; i -= 1) {
+    if (!NOT_A_CONCLUSION.some((re) => re.test(lines[i]))) return lines[i];
+  }
+  return lines[lines.length - 1];
 };
 
 /**
@@ -604,18 +699,24 @@ const main = () => {
   let blocked = 0;
   for (const s of SWEPT) {
     const { code, out, err } = run(s.file);
-    const { state, matched, refused } = classify(code, out, s.expect, s.refusal);
+    const { state, matched, refused, skipped } = classify(code, out, s.expect, s.refusal, s.skip);
     if (state === 'RED') red += 1;
     if (state === 'BLOCKED') blocked += 1;
     const summary = err
       ? `spawn error: ${err.message}`
       : matched
         ? (out.match(s.expect) || [''])[0]
-        : `exit ${code}, summary line NOT FOUND — ${(out.trim().split('\n').pop() || '(no output)').slice(0, 90)}`;
+        : `exit ${code}, summary line NOT FOUND — ${diagnosisLine(out).slice(0, 110)}`;
     console.log(`  ${state.padEnd(7)} exit ${String(code).padStart(3)}  ${s.file}`);
     console.log(`          ${summary}`);
-    if (state === 'BLOCKED') {
+    if (state === 'BLOCKED' && refused) {
       console.log('          could not run — declared refusal, not a regression. Clear the blocker and re-run.');
+    }
+    if (state === 'BLOCKED' && skipped) {
+      // Deliberately different wording from the exit-2 case: this probe DID run and DID establish
+      // checks. Calling it "could not run" would overstate the blockage in the other direction.
+      console.log('          ran but did not finish — a declared arm was hard-skipped, so part of the run');
+      console.log('          stands and no check broke. Clear the blocker to get a verdict on the rest.');
     }
     if (state === 'RED' && refused) {
       console.log('          HINT (not a verdict): the declared refusal text is present at a non-2 exit, so a');
@@ -634,7 +735,10 @@ const main = () => {
   const code = sweepExit({ red, blocked, bad });
   const verdictWord = code === 0 ? 'SWEEP PASSED' : code === 2 ? 'SWEEP BLOCKED' : 'SWEEP FAILED';
   console.log('');
-  console.log(`${verdictWord} — ${SWEPT.length - red - blocked} of ${SWEPT.length} swept probes green, ${red} red, ${blocked} blocked (could not run), ${bad} census problem(s), ${DEFERRED.length} deferred`);
+  // "did not conclude" rather than "could not run": since Round 271 a BLOCKED probe may have run
+  // and established most of its checks (exit 3, declared hard skip), so the exit-2 wording would
+  // overstate the blockage for that case. The per-probe lines above still say which kind it was.
+  console.log(`${verdictWord} — ${SWEPT.length - red - blocked} of ${SWEPT.length} swept probes green, ${red} red, ${blocked} blocked (did not conclude), ${bad} census problem(s), ${DEFERRED.length} deferred`);
   process.exit(code);
 };
 

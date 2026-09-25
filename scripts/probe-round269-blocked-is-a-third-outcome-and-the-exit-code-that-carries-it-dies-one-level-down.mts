@@ -59,6 +59,7 @@ import { join, resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import {
   classify,
+  diagnosisLine,
   verdict,
   sweepExit,
   entryProblems,
@@ -324,15 +325,31 @@ check('G5', 'driven two-sided on one minted pair: string-only citation scores 0,
   'would both be asserting a mask behaviour neither one demonstrates.');
 
 const r225 = stripSource(readFileSync(join(REPO, 'scripts', 'probe-round225-a-citation-is-not-a-call.mts'), 'utf8'), false);
-check('G3', 'probe-round225 arm B still grades its child\'s exit as a boolean — the conversion routed to Theseus',
-  /r223bExit === 0/.test(r225),
-  /r223bExit === 0/.test(r225)
-    ? 'arm B decides on `r223bExit === 0`, which maps exit 2 and exit 1 to the same FAIL. Its own ' +
-      'detail line prints `exit 2`, so the information reaches the page and not the exit code. ' +
-      'Theseus\'s file; measured here, not changed here. This arm goes red when he repairs it, ' +
-      'which is the signal to widen G1.'
-    : 'the `r223bExit === 0` conjunction is gone — arm B may already distinguish the two codes. ' +
-      'Re-measure before quoting this round\'s consequence.');
+/**
+ * Round 271: this arm has changed polarity, and the change is the point.
+ *
+ * In Round 269 G3 was a TRIPWIRE. It asserted the defect — `r223bExit === 0`, mapping exit 2 and
+ * exit 1 onto one FAIL — and its stated purpose was to go red when Theseus repaired arm B, because
+ * that red is the signal to widen this file's BLOCKED limb. In Round 270 he repaired it. The arm
+ * fired. It was doing its job, and a fired tripwire that is left asserting the old world becomes a
+ * permanent false red that the next reader learns to ignore.
+ *
+ * So it is now an ASSERTION OF THE REPAIRED STATE: the three-valued `classifyDrive` is present and
+ * the boolean conjunction is gone. A revert on Theseus's side reddens this again, which is the
+ * property the tripwire had and which is worth keeping; what it no longer does is redden on
+ * success.
+ */
+const armBRepaired = /classifyDrive/.test(r225) && !/r223bExit === 0 &&/.test(r225);
+check('G3', 'probe-round225 arm B distinguishes its child\'s exit 2 from exit 1 — the conversion routed in 269, repaired in 270',
+  armBRepaired,
+  armBRepaired
+    ? '`classifyDrive` is present and the `r223bExit === 0 &&` conjunction is gone: arm B now ' +
+      'returns green | red | could-not-run and records a HARD SKIP for the third, which is what ' +
+      'makes the probe exit 3. This arm was a tripwire in 269 asserting the defect; it fired when ' +
+      'Theseus repaired it, and it is now the assertion of the repair so that a revert still reds.'
+    : 'arm B has returned to grading its child\'s exit as a boolean, or `classifyDrive` is gone. ' +
+      'That re-destroys the exit-2/exit-1 distinction one level below this file and makes the ' +
+      'BLOCKED limbs unreachable again.');
 
 // ── arm H: the states arise from real processes, not from hand-passed integers ──
 
@@ -378,6 +395,92 @@ check('H4', 'and the sweep-level exit code over that mixed set is 2, not 1 and n
   'one PASS and one BLOCKED with the RED excluded → 2. With the RED included it is 1, which arm ' +
   'C already drove; this arm is about the three states arising from processes rather than from ' +
   'integers I chose.');
+
+// ── arm J: the exit-3 limb and the diagnosis line (Round 271) ────────────────
+
+/**
+ * Round 271. Theseus's Round 270 §4 and §5, driven rather than accepted.
+ *
+ * The fixture mints a script that calls the REAL `summariseAndExit` from `probe-outcome.mts` with
+ * a real hard skip, rather than one that prints a plausible-looking exit-3 transcript and exits 3.
+ * That distinction is this file's founding rule aimed at its own newest arm: what a probe RUNS is
+ * not recoverable from what a probe SAYS, so a fixture that only says `did not run:` would prove
+ * nothing about the code path the sweep actually meets. It also means the legend line under J3 is
+ * emitted by the library, so if the library stops emitting it this arm notices.
+ */
+console.log('\n── arm J: exit 3 with a declared skip, driven through the real probe-outcome ──');
+
+const SKIP_LABEL = 'arm Q: the drive of some-child — it refused at its own door';
+const SKIP = /arm Q: the drive of some-child/;
+const outcomeMod = JSON.stringify(join(REPO, 'scripts', 'lib', 'probe-outcome.mts'));
+const skipFixture = mint('inconclusive.mts',
+  `import { summariseAndExit } from ${outcomeMod};\n` +
+  'summariseAndExit({\n' +
+  '  probeName: "fixture-probe",\n' +
+  // `pass`, not `ok`: ProbeVerdict's field is `pass`, and the first version of this fixture used
+  // `ok`, which is not merely ignored — an absent `pass` reads as falsy, so the fixture exited 1
+  // as a FAILED check instead of 3. J1 caught it, which is the reason J1 asserts the exit code
+  // separately from J2 rather than letting a wrong fixture quietly redden the limb under test.
+  '  results: [{ arm: "A", check: "a check that really ran", pass: true }],\n' +
+  `  skipped: [${JSON.stringify(SKIP_LABEL)}],\n` +
+  '});\n');
+const tsxBin = join(REPO, 'node_modules', '.bin', 'tsx');
+const jr = spawnSync(tsxBin, [skipFixture], { encoding: 'utf8', timeout: 60_000, cwd: REPO });
+const jOut = `${jr.stdout || ''}${jr.stderr || ''}`;
+
+check('J1', 'the fixture really exits 3 through probe-outcome — not a transcript that says 3',
+  jr.status === 3,
+  `exit ${jr.status} from a real run of summariseAndExit with one hard skip. A fixture that ` +
+  'printed this transcript and exited 3 by hand would demonstrate nothing about the path the ' +
+  'sweep meets.');
+
+check('J2', 'exit 3 carrying the entry\'s DECLARED skip label classifies BLOCKED',
+  classify(jr.status, jOut, EXPECT, REFUSAL, SKIP).state === 'BLOCKED',
+  `state = ${classify(jr.status, jOut, EXPECT, REFUSAL, SKIP).state}. This is the state Round 269 ` +
+  'built and could not reach: the run established a check and broke none, so neither PASS nor RED ' +
+  'is honest.');
+
+check('J3', 'and a bare exit 3 with NO declared skip stays RED — arm A6\'s discipline on the new limb',
+  classify(jr.status, jOut, EXPECT, REFUSAL, undefined).state === 'RED',
+  `state = ${classify(jr.status, jOut, EXPECT, REFUSAL, undefined).state}. Same output, same exit ` +
+  'code, no declared label — an undeclared not-green is not evidence about its own cause. This is ' +
+  'the limb a plausible version of this change would omit, and it is omitted the same way twice.');
+
+check('J4', 'a declared label that does NOT appear in the run does not buy BLOCKED either',
+  classify(jr.status, jOut, EXPECT, REFUSAL, /arm Z: a skip that never happened/).state === 'RED',
+  `state = ${classify(jr.status, jOut, EXPECT, REFUSAL, /arm Z: a skip that never happened/).state}` +
+  '. Declaring a skip is not the same as the run reporting one, so the pattern must match the ' +
+  'run\'s own `did not run:` line rather than merely be present in the entry.');
+
+const jLast = jOut.trim().split('\n').map((l) => l.trim()).filter(Boolean).pop() || '';
+check('J5', 'the OLD last-line heuristic quotes the legend, not the conclusion — the defect, demonstrated',
+  /^\(exit 3 —/.test(jLast),
+  `last line was: "${jLast.slice(0, 80)}". This is why the repair is needed rather than asserted: ` +
+  'summariseAndExit prints the legend AFTER the headline, so the informative line is ' +
+  'second-to-last for every probe that exits 3.');
+
+check('J6', 'and diagnosisLine recovers the conclusion instead',
+  /^INCONCLUSIVE — /.test(diagnosisLine(jOut)),
+  `diagnosisLine → "${diagnosisLine(jOut).slice(0, 80)}". Driven two-sided against J5 on ONE ` +
+  'output: the pair is what shows the repair changed the reader, rather than prose claiming it did.');
+
+check('J7', 'diagnosisLine still returns the plain tail for output that never routes through probe-outcome',
+  diagnosisLine('some probe that rolls its own tail\nFINAL: 3 of 3 ok') === 'FINAL: 3 of 3 ok' &&
+  diagnosisLine('') === '(no output)',
+  `bespoke tail → "${diagnosisLine('some probe that rolls its own tail\nFINAL: 3 of 3 ok')}", ` +
+  `empty → "${diagnosisLine('')}". 95 deferred probes are not all on the shared library, so a ` +
+  'heuristic that returned nothing for them would be a regression against the behaviour it replaces.');
+
+check('J8', 'the live probe-round225 entry declares a skip label that matches its own source',
+  (() => {
+    const e = SWEPT.find((s) => s.file.startsWith('probe-round225'));
+    if (!e || !e.skip) return false;
+    const src = readFileSync(join(REPO, 'scripts', 'probe-round225-a-citation-is-not-a-call.mts'), 'utf8');
+    return src.search(e.skip) >= 0;
+  })(),
+  'the declared `skip` pattern is found in probe-round225\'s own source, so the label is a ' +
+  'contract with the file rather than a guess about it. This is the check that would have caught ' +
+  'a paraphrase of the label — the failure mode of every prose-matching rule on this fleet.');
 
 // ── arm Z ───────────────────────────────────────────────────────────────────
 
