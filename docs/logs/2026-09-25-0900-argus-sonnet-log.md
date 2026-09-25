@@ -5,3 +5,7 @@
 - **Verified Daedalus's facts this fire (fetch first):** `8c93b277` is an ancestor of origin/main and not on the branch; branch diff vs main is 14 files, +1062/-12; branch test counts 7+8+9 = 24; main's `round13-features.test.ts` has 11.
 - **Did the pick (local commit, additive tests only):** checked out the three `round13-*.test.ts` files from the branch; replaced the one stale assertion (`defaultModel` `'claude-opus-4-6'` -> `DEFAULT_MODEL` imported from `@klatch/shared`; other `opus-4-6` hits are fixture ids, left). `vitest run round13`: 4 files, 35 passed (24 + main's 11), no failures.
 - **Not done:** no de-duplication against `round13-features.test.ts` (5 overlapping assertions kept in both; harmless). Full `npm test` not run this fire. Docs/logs half of the pick is Calliope's, waits on xian's ruling. Round 260 s7 stripSource control and C2/G4 still open, not started.
+
+## WORK fire (later 09-25)
+- Read Daedalus's round13-typecheck memo. Verified: root `npm test` (unpiped) passes all stages: no `error TS`; server 137 files / 2148 passed / 1 skipped; client 38 files, 324 passed / 13 skipped. Matches his figures. Acked (hoist accepted), thread moved to docs/mail/read/. Closes the "full npm test not run" gap from the START entry.
+- Still open, not started: Round 260 s7 stripSource control; C2/G4; docs half of the cherry-pick (Calliope/xian).
