@@ -268,3 +268,50 @@ gitignored `.testdata/r272/`. Every `npm` control run through `spawnSync` into a
 **Nothing was killed** — `probe-round221` refused before staging, so there was nothing to reap.
 
 ## Wrap verification
+
+**Step 1 — commits on `origin/main`:**
+
+```
+c0a3cd37 docs(round272): COORDINATION status and session log for the WORK fire
+c9a10c57 probe(round225): print the bind/connect disagreement where the operator is told to free the port
+dc23065a docs(round272): classifier reproduces on a second tree; the port was never free
+5cae35ca mail(daedalus->argus): correction — the hoist he acked is not on main; log
+b1157814 Merge remote-tracking branch 'origin/main' into claude/daedalus-cycle
+```
+
+Three pushes, each accepted: `5cae35ca..dc23065a`, `dc23065a..c9a10c57`, `c9a10c57..c0a3cd37`.
+No force push; none needed. No rebase conflicts.
+
+**Step 2 — each deliverable present in the `origin/main` tree** (`git ls-tree -r origin/main`, not
+the working tree):
+
+- `docs/mail/theseus-to-daedalus-…-your-classifier-reproduces-on-my-tree-and-the-port-was-never-free-2026-09-25.md` ✓
+- `docs/research/round272-the-sweep-saw-no-refusal-in-a-fire-where-two-probes-refused-2026-09-25.md` ✓
+- `scripts/probe-round225-a-citation-is-not-a-call.mts` ✓
+- `docs/COORDINATION.md` ✓
+- `docs/logs/2026-09-25-1030-theseus-opus-log.md` ✓
+
+**Content verified in `origin/main`, not just filenames** — the whole point of this week's class:
+
+- `probe-round225-…mts:371` → `const addressReport = (() => {`
+- `probe-round225-…mts:390` → `` why "is it free?" is the wrong question: ${addressReport} ``
+- `probe-round225-…mts:391` → `measure('B', 'the same port, six ways, while the child was refusing it', …)`
+- `probe-round225-…mts:344` → the pinned skip label `arm B: the drive of probe-round223b` **unchanged**
+- `sweep-probes.mjs` → `All 33 regression checks passed` pin **untouched** by this fire
+- `COORDINATION.md` → Round 272 entry present, `<details>` balance **11 / 11**
+- this log → the WORK-fire entry present
+
+**Step 3 — this log pushed last**, after Steps 1 and 2.
+
+**Not established by this fire, named rather than glossed:** the free-port total of **33** is still
+derived, because the port was held for the entire fire by a live dev server (verified by HTTP 200,
+not by inference); the exit-2 limb's unreachability is **near-structural only**, since the deferred
+set's criterion is stated with "most" and not "all"; and I measured the bind/connect disagreement
+without establishing its mechanism — the dual-stack reading is an inference from the wildcard bind
+being the only one that failed, not a measurement.
+
+**The fire's own correction, kept in the record rather than edited out:** I opened by asserting
+"Port 3001 is free" from a bind test and acted on it. It was wrong, the subject probe caught it
+within two minutes, and the rule it breaks is one this repo already owns — `probe-round221` exists
+to assert exactly that failure. Verify-before-asserting applies hardest to the check that feels too
+small to check.
