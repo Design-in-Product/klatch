@@ -88,6 +88,7 @@ import { execFileSync } from 'child_process';
 import { fileURLToPath, pathToFileURL } from 'url';
 import { summariseAndExit, type ProbeVerdict } from './lib/probe-outcome.mts';
 import { fingerprint, windowState } from './lib/tree-fingerprint.mts';
+import { stripSource } from './lib/strip-source.mjs';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const REPO = path.resolve(HERE, '..');
@@ -111,6 +112,24 @@ function meas(arm: string, what: string, detail: string) {
 
 const git = (args: string[]) =>
   execFileSync('git', args, { cwd: REPO, encoding: 'utf8', maxBuffer: 64 * 1024 * 1024 });
+
+const SCRIPTS = path.join(REPO, 'scripts');
+
+/** Every script source under `dir`, relative. Hoisted above arm C in Round 266 so the live-source
+ *  arms can run before any figure is quoted, rather than only inside arm E. */
+function walk(dir: string, prefix = ''): string[] {
+  const out: string[] = [];
+  for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
+    if (e.name.startsWith('.')) continue;
+    const rel = prefix ? `${prefix}/${e.name}` : e.name;
+    if (e.isDirectory()) out.push(...walk(path.join(dir, e.name), rel));
+    else if (/\.(mts|mjs|ts|js)$/.test(e.name)) out.push(rel);
+  }
+  return out;
+}
+
+const liveFiles = walk(SCRIPTS).filter((f) => f !== SELF);
+const liveSrc = new Map(liveFiles.map((f) => [f, fs.readFileSync(path.join(SCRIPTS, f), 'utf8')]));
 
 const zBefore = fingerprint(REPO, 'scripts/');
 const pkgBefore = fingerprint(REPO, 'packages/');
@@ -215,16 +234,63 @@ const r256Scan = r256.scan as (src: string) => { code: string; specifiers: strin
 
 const PORCELAIN = /status['"`]\s*,\s*['"`]--porcelain|status\s+--porcelain/;
 
+/** The body size cap this function used before the Round 266 repair. Kept so arm C6 can drive it. */
+const OLD_BODY_CAP = 600;
+
+/** The pre-repair form, retained verbatim as arm C6's control. Never called by the census. */
+function providerExportsWindowed(src: string, scan: (s: string) => { code: string }): string[] {
+  const code = scan(src).code;
+  const out: string[] = [];
+  const re = new RegExp(
+    `export\\s+function\\s+([A-Za-z_$][\\w$]*)\\s*\\([^)]*\\)[^{]*\\{([\\s\\S]{0,${OLD_BODY_CAP}}?)\\n\\}`, 'g');
+  for (const m of code.matchAll(re)) {
+    if (PORCELAIN.test(m[2])) out.push(m[1]);
+  }
+  return out;
+}
+
 /**
  * Names EXPORTED by `src` whose bodies spell porcelain. This is Round 256's own rule
  * ("a function whose body contains porcelain contributes its name"), applied to exports so it can
  * cross an import edge. Deliberately the same shape, so a delta cannot come from a second idea.
+ *
+ * ## Round 266 repair — the body is brace-balanced, and the two readings are split
+ *
+ * The body used to be `[\s\S]{0,600}?` up to a column-0 `}`. Theseus's Round 266 §4 named the class:
+ * a size cap on a body is the wrong parameter, and — the part that matters more — the mint arm C1
+ * asserts over is SMALLER than the live module it stands for, so the arm could not see the cap at
+ * all. *A fixture smaller than the thing it stands for will pass the arm and hide the limit.*
+ *
+ * Two changes, and the second is the one the repair would be wrong without:
+ *
+ *  1. **Brace-balance instead of a window.** Round 256 already made this exact move once, under its
+ *     own note that when two settings of a tuning parameter fail in opposite directions the
+ *     parameter is not mis-tuned, it is the wrong parameter.
+ *  2. **Locate the structure with strings BLANKED, read the spelling with strings KEPT** — Theseus's
+ *     Round 266 §3 rule. A `}` inside a string literal must not close a body, and the porcelain
+ *     spelling lives *inside* a string literal, so one mask cannot do both jobs. Indexing one view
+ *     at an offset found in the other is licensed only because `stripSource` is length-preserving;
+ *     arm C7 asserts that over every live file rather than assuming it.
+ *
+ * Note that the cap was never applied to raw source: `scan` DELETES comment bytes, so the quantity
+ * it capped was post-comment-stripping body size — which is why the live `fingerprint` body arrived
+ * at 559 characters rather than the 830 it measures on disk. Arm C5 reports both, because a cap on a
+ * quantity no reader can compute by looking at the file is the harder half of the defect.
  */
 function providerExports(src: string, scan: (s: string) => { code: string }): string[] {
-  const code = scan(src).code;
+  const code = scan(src).code;              // comments deleted, string contents KEPT
+  const hard = stripSource(code, true);     // same length, string contents BLANKED
   const out: string[] = [];
-  for (const m of code.matchAll(/export\s+function\s+([A-Za-z_$][\w$]*)\s*\([^)]*\)[^{]*\{([\s\S]{0,600}?)\n\}/g)) {
-    if (PORCELAIN.test(m[2])) out.push(m[1]);
+  for (const d of hard.matchAll(/export\s+function\s+([A-Za-z_$][\w$]*)\s*\([^)]*\)[^{]*\{/g)) {
+    const open = d.index! + d[0].length - 1;
+    let depth = 0;
+    let i = open;
+    for (; i < hard.length; i += 1) {
+      if (hard[i] === '{') depth += 1;
+      else if (hard[i] === '}') { depth -= 1; if (depth === 0) break; }
+    }
+    if (depth !== 0) continue;              // unbalanced to end of file — make no claim
+    if (PORCELAIN.test(code.slice(open + 1, i))) out.push(d[1]);
   }
   return out;
 }
@@ -403,11 +469,14 @@ console.log('\n── arm C: the registry is derived, not maintained ───�
 
 const derived = providerExports(LIB, r256Scan).sort();
 
-check('C1', 'the provider set is derived by applying the single-file rule to reachable modules',
+check('C1', 'the provider set is derived by applying the single-file rule to reachable modules — OVER THE MINT',
   derived.length === 2 && derived[0] === 'fingerprint' && derived[1] === 'windowState',
-  `Derived from the lib source with no hand-written list: ${JSON.stringify(derived)}. A ` +
+  `Derived from the MINTED lib source with no hand-written list: ${JSON.stringify(derived)}. A ` +
     `hand-maintained registry would be the same silent-blind-spot defect one level up; this one ` +
-    `cannot go stale because it is recomputed from the same text the census already reads.`);
+    `cannot go stale because it is recomputed from the same text the census already reads. ` +
+    `**Round 266: the arm label now says "over the mint", because it always was.** My Round 265 memo ` +
+    `§4 reported this as "from the live lib" and that was wrong about which bytes it read — Theseus ` +
+    `Round 266 §4 caught it. C4 below is the live-source arm the prose was describing.`);
 
 const LIB2 = `${LIB}export function treeLines(repo, pathspec) {\n` +
   `  return execFileSync('git', ['status', '--porcelain', '--', pathspec]).split('\\n');\n}\n`;
@@ -431,6 +500,126 @@ check('C3', 'a lib module that touches no tree state contributes no providers',
     `${JSON.stringify(providerExports(LIB_CLEAN, r256Scan))}. The registry is keyed on reading ` +
     `tree state, not on living in \`scripts/lib/\` — otherwise every future helper would enrol the ` +
     `files that import it.`);
+
+// ─────────────────────────────────────────────────────────────────────────────
+// ARM C4–C7 — Round 266. The live lib, the size cap, and the fixture that was too small.
+//
+// Theseus's Round 266 §4 routes one item to this file: C1 asserts over a mint, the memo prose said
+// "live lib", and a `[\s\S]{0,600}?` body window drops a provider whose body exceeds the cap.
+//
+// Taken, with one correction to the consequence he stated. His measurement is of the body ON DISK —
+// 830 characters, against a cap of 600. The cap was never applied to disk bytes: `providerExports`
+// reads `scan(src).code`, and Round 256's `scan` DELETES comment bytes, so `fingerprint`'s body
+// arrives at 559 characters and the live registry was returning both names. The repair is still the
+// right one and the class is still real — the margin was 41 characters, one added line — but the
+// figure E1 published was correct rather than lucky, and saying so is the difference between
+// repairing an instrument and retracting a number that never moved.
+// ─────────────────────────────────────────────────────────────────────────────
+
+console.log('\n── arm C4–C7: the live lib, and the cap the mint was too small to test ───');
+
+const LIVE_LIB_REL = 'lib/tree-fingerprint.mts';
+const LIVE_LIB = liveSrc.get(LIVE_LIB_REL)!;
+const liveDerived = providerExports(LIVE_LIB, r256Scan).sort();
+
+check('C4', 'the registry derives BOTH providers from the LIVE lib, not only from the mint',
+  liveDerived.length === 2 && liveDerived[0] === 'fingerprint' && liveDerived[1] === 'windowState',
+  `Over \`scripts/${LIVE_LIB_REL}\` as it exists on disk: ${JSON.stringify(liveDerived)}. This is ` +
+    `the arm my Round 265 §4 prose claimed and C1 did not carry. It reads the real module, so a ` +
+    `future edit to that module that defeats the derivation reddens here instead of silently ` +
+    `shrinking a fleet figure — which is the failure mode this whole track exists to close.`);
+
+/** Post-`scan` body length of an exported function, brace-balanced. The quantity the cap capped. */
+function scannedBodyLength(src: string, name: string): number {
+  const code = r256Scan(src).code;
+  const hard = stripSource(code, true);
+  const d = new RegExp(`export\\s+function\\s+${name}\\s*\\([^)]*\\)[^{]*\\{`).exec(hard);
+  if (!d) return -1;
+  const open = d.index + d[0].length - 1;
+  let depth = 0;
+  let i = open;
+  for (; i < hard.length; i += 1) {
+    if (hard[i] === '{') depth += 1;
+    else if (hard[i] === '}') { depth -= 1; if (depth === 0) break; }
+  }
+  return i - open - 1;
+}
+
+const mintFpBody = scannedBodyLength(LIB, 'fingerprint');
+const liveFpBody = scannedBodyLength(LIVE_LIB, 'fingerprint');
+const liveFpRaw = (() => {
+  const hard = stripSource(LIVE_LIB, true);
+  const d = /export\s+function\s+fingerprint\s*\([^)]*\)[^{]*\{/.exec(hard)!;
+  const open = d.index + d[0].length - 1;
+  let depth = 0;
+  let i = open;
+  for (; i < hard.length; i += 1) {
+    if (hard[i] === '{') depth += 1;
+    else if (hard[i] === '}') { depth -= 1; if (depth === 0) break; }
+  }
+  return i - open - 1;
+})();
+
+meas('C5', 'the fixture was smaller than the thing it stood for, and by how much',
+  `\`fingerprint\` body: **${mintFpBody} chars in the mint**, **${liveFpBody} post-\`scan\` in the ` +
+    `live module**, **${liveFpRaw} raw on disk** — against a cap of ${OLD_BODY_CAP}. Theseus quoted ` +
+    `the raw figure (${liveFpRaw}); the cap applied to the post-\`scan\` one (${liveFpBody}), because ` +
+    `\`scan\` deletes comment bytes. So the live margin was ${OLD_BODY_CAP - liveFpBody} characters, ` +
+    `not −${liveFpRaw - OLD_BODY_CAP}. **Both readings indict the parameter.** A cap on a quantity no ` +
+    `reader can compute by looking at the file — body size AFTER comment deletion — is worse than a ` +
+    `cap that is merely too low: adding a comment moves a function further under it, and adding one ` +
+    `line of code silently removes a provider. The mint's body (${mintFpBody}) could not straddle ` +
+    `${OLD_BODY_CAP} in either direction, so arm C1 could not see any of this.`);
+
+const OVER_CAP_LIB = `export function fingerprintWide(repo, pathspec) {\n` +
+  `  const raw = execFileSync('git', ['status', '--porcelain', '-z', '-uall', '--', pathspec]);\n` +
+  `${'  const pad = 0;\n'.repeat(40)}` +
+  `  return raw;\n}\n`;
+
+check('C6', 'the pre-repair window DROPS an over-cap provider and the brace-balanced form keeps it',
+  providerExportsWindowed(OVER_CAP_LIB, r256Scan).length === 0 &&
+    providerExports(OVER_CAP_LIB, r256Scan).length === 1 &&
+    providerExports(OVER_CAP_LIB, r256Scan)[0] === 'fingerprintWide' &&
+    scannedBodyLength(OVER_CAP_LIB, 'fingerprintWide') > OLD_BODY_CAP,
+  `Body ${scannedBodyLength(OVER_CAP_LIB, 'fingerprintWide')} chars > cap ${OLD_BODY_CAP}. Windowed: ` +
+    `${JSON.stringify(providerExportsWindowed(OVER_CAP_LIB, r256Scan))}; brace-balanced: ` +
+    `${JSON.stringify(providerExports(OVER_CAP_LIB, r256Scan))}. Two-sided, so the repair is not ` +
+    `vacuous: there is a shape the old form could not see and the new one can. This is the fixture ` +
+    `C1 should have had — one that straddles the cap instead of sitting far below it.`);
+
+const r256Over = providerExports(R256_SRC, r256Scan).sort();
+const r256OverWindowed = providerExportsWindowed(R256_SRC, r256Scan).sort();
+
+check('C6b', 'the dropped provider was not hypothetical — Round 256\'s OWN pinned source carries one',
+  r256Over.includes('fingerprintShape') && !r256OverWindowed.includes('fingerprintShape'),
+  `Over \`${R256_COMMIT}:scripts/${R256_SELF}\` — the file that DEFINES the census — brace-balanced ` +
+    `derives ${JSON.stringify(r256Over)}, the pre-repair window derives ` +
+    `${JSON.stringify(r256OverWindowed)}. \`fingerprintShape\` has a ` +
+    `${scannedBodyLength(R256_SRC, 'fingerprintShape')}-character post-\`scan\` body and was ` +
+    `invisible to the registry. It never affected E1 (which walks \`lib/\` only) or any figure I ` +
+    `published, so nothing is retracted — but it means the class had a live instance at the pinned ` +
+    `commit all along, in the census's own definition file, and the mint is why no arm reported it.`);
+
+const preserved = liveFiles.filter((f) => {
+  const s = liveSrc.get(f)!;
+  return stripSource(s, true).length === s.length && stripSource(s, false).length === s.length;
+});
+const agree = liveFiles.filter((f) => {
+  const s = liveSrc.get(f)!;
+  const w = providerExportsWindowed(s, r256Scan);
+  const b = providerExports(s, r256Scan);
+  return w.every((n) => b.includes(n));
+});
+
+check('C7', 'strings-blanked indexing is licensed, and the repair only ever ADDS to the old registry',
+  preserved.length === liveFiles.length && agree.length === liveFiles.length,
+  `\`stripSource\` length-preserving in both modes over **${preserved.length} of ` +
+    `${liveFiles.length}** walked files — which is what licenses locating a brace in the blanked ` +
+    `view and slicing the body out of the kept view. And on **${agree.length} of ${liveFiles.length}** ` +
+    `files every name the old window found is still found, so the repair is a strict widening: it ` +
+    `cannot have removed a provider and so cannot have shrunk a population. Theseus's Round 266 §3 ` +
+    `rule — read the spelling with strings kept, locate the structure with strings blanked — asserted ` +
+    `here rather than quoted.`);
 
 // ─────────────────────────────────────────────────────────────────────────────
 // ARM D — the invariance that makes the figure quotable. Theseus's §4, answered.
@@ -468,20 +657,6 @@ meas('D3', 'what the two horns actually cost, now that both are priced',
 
 console.log('\n── arm E: what the live tree looks like under each regime ────────────────');
 
-function walk(dir: string, prefix = ''): string[] {
-  const out: string[] = [];
-  for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
-    if (e.name.startsWith('.')) continue;
-    const rel = prefix ? `${prefix}/${e.name}` : e.name;
-    if (e.isDirectory()) out.push(...walk(path.join(dir, e.name), rel));
-    else if (/\.(mts|mjs|ts|js)$/.test(e.name)) out.push(rel);
-  }
-  return out;
-}
-
-const SCRIPTS = path.join(REPO, 'scripts');
-const liveFiles = walk(SCRIPTS).filter((f) => f !== SELF);
-const liveSrc = new Map(liveFiles.map((f) => [f, fs.readFileSync(path.join(SCRIPTS, f), 'utf8')]));
 const libProviders = new Set<string>();
 for (const f of liveFiles) {
   if (f.startsWith('lib/')) for (const n of providerExports(liveSrc.get(f)!, r256Scan)) libProviders.add(n);

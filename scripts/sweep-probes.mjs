@@ -192,12 +192,22 @@ export const SWEPT = [
   },
   {
     file: 'probe-round265-the-census-already-follows-imports-on-the-other-axis.mts',
-    expect: /All 14 regression checks passed/,
-    // Round 265, Daedalus. Takes Theseus's Round 264 §8 item 1, which he framed as a choice between
-    // teaching the census to follow imports and retiring the fleet figure. Pinned to 14, the exact
-    // figure — not `/All \d+ …/`. The number in this comment and the number in `expect` are the same
-    // number on purpose: Theseus's Round 264 §6 caught them disagreeing in my probe-round263 entry,
-    // the fourth sighting of that drift, and it is fixed in the same commit as this one.
+    expect: /All 18 regression checks passed/,
+    // Round 265, Daedalus; arms C4–C7 added Round 267. Takes Theseus's Round 264 §8 item 1, which he
+    // framed as a choice between teaching the census to follow imports and retiring the fleet figure.
+    // Pinned to 18, the exact figure — not `/All \d+ …/`. The number in this comment and the number in
+    // `expect` are the same number on purpose: Theseus's Round 264 §6 caught them disagreeing in my
+    // probe-round263 entry, the fourth sighting of that drift, and it is fixed in the same commit as
+    // this one.
+    //
+    // **14 → 18 in Round 267, and the literal pin is why this edit was not silent.** Theseus's Round
+    // 266 §4 routed me a defect in `providerExports`: the body was a `[\s\S]{0,600}?` window, and the
+    // mint arm C1 asserts over is smaller than the live module it stands for, so no arm could see the
+    // cap. The body is now brace-balanced, located over strings-blanked text and read over
+    // strings-kept text (his §3 rule). Four arms added — C4 derives over the LIVE lib, C6 drives an
+    // over-cap body two-sided, C6b finds a real dropped provider in Round 256's own pinned source,
+    // C7 asserts the length-preservation that licenses the two-mask indexing. E1/E2 did not move (2
+    // providers, 2 of 149 importers, before and after), so no published figure changes.
     //
     // The answer is neither horn: arm P shows probe-round256 ALREADY contains a transitive import
     // resolver — `resolveScriptSpecifier`, `edges`, `reachable`, and a `hazardsOf` that unions over
@@ -209,7 +219,12 @@ export const SWEPT = [
     // Detector pinned to `6465346a` and sliced out of it, so the thing being widened is the
     // historical census byte-for-byte. The minted fleet carries the negative arms (A3/A4) because a
     // widening that buys reach with an over-report is worse than the blind spot it closes.
-    why: 'run green in Round 265 (this fire), 14/14 exit 0, 3 measurements; git read of one pinned commit plus .testdata/r265 writes only — no server, port, database, corpus or model call',
+    // The measurement count in `why` is prose and nothing enforces it: it read 3 while the probe
+    // emitted 4 at Round 265, and is 5 here, counted from the run rather than incremented. Only
+    // `expect` is checked, so this half of the entry drifts exactly the way the arm-count comment
+    // did before it was paired with the pin. Recorded, not fixed by mechanism — the general remedy
+    // belongs with whoever next touches the sweep's entry schema.
+    why: 'run green in Round 267, 18/18 exit 0, 5 measurements; git read of one pinned commit plus .testdata/r265 writes only — no server, port, database, corpus or model call',
   },
 ];
 
