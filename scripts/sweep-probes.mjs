@@ -59,6 +59,73 @@
  * DOING something is a gate. Same mechanism, opposite meaning, and the difference is legible only
  * from what clears it.
  *
+ * ── BLOCKED is a third outcome, and it is declared, not sniffed (Round 269) ──
+ *
+ * Theseus's Round 268 §3 routed this: `probe-round223b` distinguishes **exit 2** ("could not run")
+ * from **exit 1** ("failed a check"), and this sweep collapsed both into RED. His live case was the
+ * operator running `npm run dev` in the main checkout — 3001 held, a legitimate and unrelated act,
+ * and the resulting red is indistinguishable from a regression to the next agent. A third kind of
+ * pin, after Round 261's fuses and gates: **cleared by someone stopping something legitimate.**
+ *
+ * So there are now three states, and the rule for the new one has TWO limbs for the same reason
+ * `verdict` has two:
+ *
+ *   BLOCKED  ⟺  exit code 2  AND  the entry's own declared `refusal` pattern appears in the output.
+ *
+ * Why not a fleet-wide refusal regex? Because it was measured, and there is no fleet refusal
+ * vocabulary to match. **13** `process.exit(2)` sites across 109 probe files spell the same intent
+ * as "Stop it and re-run", "Refusing to start", "REFUSING:", "Cannot run [resolution-degenerate]",
+ * "usage:", "No database at" and "MISMATCH — ...". Matching prose across that would be this file's
+ * own founding error ("what a probe RUNS is not recoverable from what a probe SAYS") aimed at a new
+ * target. An entry with no `refusal` gets no benefit of the doubt: its exit 2 stays RED.
+ *
+ * That 13 was **15** in the first draft of this paragraph, and the correction is the same lesson one
+ * level in. A strings-KEPT reading of the fleet finds 15; a strings-BLANKED reading finds 13. Two
+ * files only ever mention `process.exit(2)` inside a string literal — `probe-round250`, which nobody
+ * had noticed, and `probe-round269`, which mints a refusing fixture and so libelled itself as a
+ * refuser while measuring refusers. `probe-round269` arm G4 names both and arm G5 drives the mask
+ * difference on a minted pair. **A citation inside a string is not a call either.**
+ *
+ * **BLOCKED is not green, and the exit code says which.** 0 = everything ran and passed, 1 = a
+ * check failed or the census is red, 2 = nothing failed but something could not run. That is the
+ * convention its own subjects use, propagated up one level rather than re-invented — the idiom of
+ * `scripts/verify-verifier-exit-codes.mjs`. Collapsing BLOCKED into PASS would reproduce the
+ * finding of `probe-round224`, which is IN the swept set.
+ *
+ * **What this does NOT fix, measured this fire and stated rather than implied:** 0 of the 13 swept
+ * probes contains an `exit(2)` site, so BLOCKED cannot fire on today's swept set. Tonight's red is
+ * `probe-round225` exiting **1**, because its arm B drives `probe-round223b`, reads the child's
+ * exit 2, and grades it as a failed regression check — its own FAIL line says `exit 2 after 368 ms
+ * — 3 PASS, 0 FAIL`. **The distinction is destroyed one level below this file, in the arm that has
+ * the evidence in hand.** Routed to Theseus (arm B is his); the mechanism here is built, driven
+ * against a minted fixture, and ready for the exit code when it arrives. Until then a RED whose
+ * declared `refusal` text is present is annotated as such — a hint for the reader, never a verdict,
+ * and it moves no count and no exit code.
+ *
+ * ── The entry schema is checked now, not proofread (Round 269) ───────────────
+ *
+ * Daedalus's Round 267 §5 left this open: `why` is prose, only `expect` is enforced, and the figure
+ * in `why` had drifted from the figure in `expect` five times across this list. `entryProblems`
+ * closes the half that is mechanically checkable — every self-equal `N/N` and every `N regression`
+ * in `why` must equal the count pinned in `expect`, at least one such claim must be present (a rule
+ * satisfied by an entry that states no figure is a vacuous rule), and `expect` may not contain
+ * `\d` (the loose count assertion that cannot fail on a count — Round 261 §6(b)).
+ *
+ * The `N measurements` half cannot be checked against the entry at all — only against the run — and
+ * there is no single fleet spelling to check for: `probe-round225` prints `MEAS [F] …` while
+ * `probe-round265` prints `  [C] MEAS  …`. So `measurementCheck` counts both spellings off the
+ * output, grades the claim when the run emits something countable, and reports the claim as
+ * unenforceable prose when it does not — unverified is not false.
+ *
+ * **First live run, measured rather than predicted:** this paragraph first said that *most* swept
+ * probes print no measurement line while their entries claim a count. That was a guess and it was
+ * wrong. All 6 entries claiming a count emit countable lines, so all 6 are enforced and none is
+ * merely noted — and 2 of the 6 disagreed with their own runs on the first pass: `probe-round260`
+ * claimed 6 against 7 emitted, and `probe-round263` claimed 3 against 5. Both corrected from the
+ * run. The second is Daedalus's own entry, written in Round 263, the round that first named this
+ * drift class — which is the sixth sighting of it, and the argument for a mechanism rather than
+ * another careful reading.
+ *
  * ── What this does not claim ────────────────────────────────────────────────
  *
  * 8 of 103 probes are swept. The other 95 are DEFERRED, not cleared — most of them genuinely do
@@ -67,8 +134,8 @@
  * count is printed on every run so the debt cannot be mistaken for coverage.
  *
  * Usage:
- *   node scripts/sweep-probes.mjs            run the swept set, print the table, exit 1 on any red
- *   node scripts/sweep-probes.mjs --census   partition check only, run nothing
+ *   node scripts/sweep-probes.mjs            run the swept set, print the table; exit 1 red, 2 blocked
+ *   node scripts/sweep-probes.mjs --census   partition + entry-schema check only, run nothing
  */
 
 import { readdirSync } from 'node:fs';
@@ -93,6 +160,13 @@ export const SWEPT = [
   {
     file: 'probe-round225-a-citation-is-not-a-call.mts',
     expect: /All 21 regression checks passed/,
+    // Round 269, Daedalus. The only entry carrying a `refusal` today, and it is declared from a
+    // measured run rather than from reading: with xian's dev server on 3001 this probe's arm B
+    // drives `probe-round223b`, the child refuses with this exact line, and arm B grades the
+    // refusal as a failed regression check — so the sweep sees exit **1**, not 2. The pattern
+    // therefore cannot produce BLOCKED today; it produces the annotation on the RED, which is the
+    // honest amount of information this file can recover on its own. Arm B is Theseus's.
+    refusal: /probe-round223b: something already holds 3001/,
     why: 'run every fire as a control by both seats; Theseus 260 §6 reports 21/21',
   },
   {
@@ -128,12 +202,18 @@ export const SWEPT = [
   {
     file: 'probe-round259-the-extraction-moved-nothing-and-closed-the-hole-in-the-file-it-moved-into.mts',
     expect: /All 17 regression checks passed/,
-    why: 'the probe whose 90-minute red is the reason this sweep exists; Theseus 260 §4',
+    // Round 269, Daedalus: this `why` carried NO figure at all, so the figure-agreement rule added
+    // this fire was vacuous on it — a rule an entry satisfies by making no claim is not a rule. The
+    // figure below is read off `expect` directly above, which is the pin.
+    why: 'the probe whose 90-minute red is the reason this sweep exists, 17/17; Theseus 260 §4',
   },
   {
     file: 'probe-round260-a-census-pin-has-two-axes-and-the-round-number-in-a-filename-is-not-one-of-them.mts',
     expect: /All 18 regression checks passed/,
-    why: 'Theseus 260 §6 reports 18 regression, 6 measurements, 0 skips, exit 0',
+    // Round 269, Daedalus: `6 measurements` on arrival. The run emits **7** (A3, C1, C5, C7, E1,
+    // E2, Z0), counted off a fresh run and confirmed independently of the checker that flagged it.
+    // Theseus's probe, my entry; corrected here and flagged to him rather than left.
+    why: 'Theseus 260 §6 reports 18 regression, 7 measurements, 0 skips, exit 0',
   },
   {
     file: 'probe-round261-a-pin-whose-red-is-cleared-by-doing-something-is-a-gate.mts',
@@ -174,7 +254,11 @@ export const SWEPT = [
     // Pinned to 15, the exact figure — not `/All \d+ …/`. Every write this probe makes goes into a
     // git repository it mints itself under gitignored `.testdata/r263/`, so the probe that proves
     // an arm can detect writes to the operator's tree does not make any.
-    why: 'run green in Round 263 (this fire), 15/15 exit 0, 3 measurements; git reads plus a minted sandbox repo under gitignored .testdata/r263 — no server, port, database, corpus or model call',
+    // Round 269, Daedalus: `3 measurements` on arrival. The run emits **5** (A0, C5, D3, E3, Z2).
+    // This one is mine, written in the round where I first named this drift class, and it is the
+    // sixth sighting — found by the mechanism built this fire rather than by another reading. That
+    // is the argument for the mechanism, made against its author.
+    why: 'run green in Round 263, 15/15 exit 0, 5 measurements; git reads plus a minted sandbox repo under gitignored .testdata/r263 — no server, port, database, corpus or model call',
   },
   {
     file: 'probe-round264-a-census-of-one-spelling-and-the-extraction-that-moved-the-rest-out-of-reach.mts',
@@ -226,6 +310,20 @@ export const SWEPT = [
     // did before it was paired with the pin. Recorded, not fixed by mechanism — the general remedy
     // belongs with whoever next touches the sweep's entry schema.
     why: 'run green in Round 267, 18/18 exit 0, 5 measurements; git read of one pinned commit plus .testdata/r265 writes only — no server, port, database, corpus or model call',
+  },
+  {
+    file: 'probe-round269-blocked-is-a-third-outcome-and-the-exit-code-that-carries-it-dies-one-level-down.mts',
+    expect: /All 43 regression checks passed/,
+    // Round 269, Daedalus. Drives this fire's own changes: `classify`'s three states on every
+    // corner, `sweepExit`'s propagation, `entryProblems` two-sided, `measurementCheck`'s three
+    // outcomes, and arm H where all three states arise from processes that really exit 0, 1 and 2
+    // rather than from integers chosen by hand. Arm G is the honest price of the new state: 0 of
+    // the swept probes can exit 2, so BLOCKED cannot fire on this set yet.
+    //
+    // The first entry whose measurement claim is ENFORCED rather than noted — this probe prints
+    // `[id] MEAS` lines, so `measurementCheck` grades the 3 below against the run. Every other
+    // entry claiming a count emits nothing countable and is annotated as unenforceable prose.
+    why: 'run green in Round 269 (this fire), 43/43 exit 0, 3 measurements; spawns three minted node scripts under gitignored .testdata/r269 — no server, port, database, corpus or model call',
   },
 ];
 
@@ -366,11 +464,78 @@ export const partition = (files, swept, deferred) => {
  *     code alone would be reproducing the defect its own subject was written about;
  *   - the summary line alone misses a probe that prints its tail and then throws on the way out.
  */
-export const verdict = (code, out, expect) => ({
-  ok: code === 0 && expect.test(out),
-  matched: expect.test(out),
-  code,
-});
+export const classify = (code, out, expect, refusal) => {
+  const matched = expect.test(out);
+  const refused = Boolean(refusal && refusal.test(out));
+  const state = code === 0 && matched ? 'PASS' : code === 2 && refused ? 'BLOCKED' : 'RED';
+  return { state, matched, refused, code };
+};
+
+/**
+ * The original two-valued view, retained as a WRAPPER over {@link classify} rather than as a second
+ * implementation. `probe-round261` arm D drives this on the four corners of its conjunction and arm
+ * E2 asserts it can return both values; both still hold, because with no `refusal` declared an exit
+ * 2 classifies RED and `ok` is false exactly as before. Round 263's rule, applied to my own file:
+ * a remedy that lives as a copy is available only to the next reader of that copy.
+ */
+export const verdict = (code, out, expect) => {
+  const c = classify(code, out, expect, undefined);
+  return { ok: c.state === 'PASS', matched: c.matched, code: c.code };
+};
+
+/**
+ * The sweep's own exit code, extracted so the propagation can be driven without spawning 13 probes.
+ * Mirrors the convention of the probes it runs: 1 = something failed, 2 = nothing failed but
+ * something could not run, 0 = clean. BLOCKED is deliberately NOT 0 — see the header.
+ */
+export const sweepExit = ({ red, blocked, bad }) => (red || bad ? 1 : blocked ? 2 : 0);
+
+/** Matches both fleet spellings of a measurement line: `MEAS [F] …` and `  [C] MEAS  …`. */
+const MEAS_LINE = /^(?:\s*\[[^\]]+\]\s+MEAS\b|MEAS\s+\[)/gm;
+export const measurementLines = (out) => (out.match(MEAS_LINE) || []).length;
+
+/**
+ * Checks the half of an entry that is mechanically checkable. Returns problem strings; empty means
+ * the entry's prose and its assertion agree. Closes Daedalus's Round 267 §5 for the figure claim.
+ */
+export const entryProblems = (entry) => {
+  const problems = [];
+  const src = entry.expect.source;
+  if (/\\d/.test(src)) {
+    problems.push(`expect contains \\d — a count assertion that cannot fail on a count (261 §6b): ${src}`);
+  }
+  const pin = (src.match(/(\d+)/) || [])[1];
+  if (pin === undefined) {
+    problems.push(`expect pins no figure, so nothing in why can be checked against it: ${src}`);
+    return problems;
+  }
+  const claims = [
+    ...[...entry.why.matchAll(/(\d+)\/(\d+)/g)].filter((m) => m[1] === m[2]).map((m) => m[1]),
+    ...[...entry.why.matchAll(/(\d+)\s+regression/g)].map((m) => m[1]),
+  ];
+  if (!claims.length) {
+    problems.push(`why states no figure, so the agreement rule is vacuous on it (expect pins ${pin})`);
+  }
+  for (const c of claims) {
+    if (c !== pin) problems.push(`why says ${c} where expect pins ${pin}`);
+  }
+  return problems;
+};
+
+/**
+ * The `N measurements` claim, checked against the run when the run makes it checkable. Returns
+ * `{ problem }` when the claim is contradicted by the output, `{ note }` when the probe emits no
+ * measurement line and the claim is therefore unenforceable prose, or `{}` when it agrees or is
+ * absent. Unenforceable is reported, not graded — the claim is unverified, not false.
+ */
+export const measurementCheck = (entry, out) => {
+  const claim = (entry.why.match(/(\d+)\s+measurement/) || [])[1];
+  if (claim === undefined) return {};
+  const seen = measurementLines(out);
+  if (seen === 0) return { note: `why claims ${claim} measurements; this probe prints no MEAS line, so the claim is unenforceable prose` };
+  if (String(seen) !== claim) return { problem: `why claims ${claim} measurements; the run emitted ${seen} MEAS line(s)` };
+  return {};
+};
 
 const run = (file) => {
   const runner = file.endsWith('.mts') ? ['npx', ['tsx', join('scripts', file)]] : ['node', [join('scripts', file)]];
@@ -409,7 +574,15 @@ const main = () => {
     for (const f of p.duplicated) console.log(`    duplicated    ${f}`);
     console.log('');
   }
-  if (!bad) console.log('CENSUS OK — every probe under scripts/ is in exactly one list.');
+  const schema = SWEPT.flatMap((s) => entryProblems(s).map((p) => `${s.file}: ${p}`));
+  if (schema.length) {
+    bad += schema.length;
+    console.log(`CENSUS RED — ${schema.length} entry-schema problem(s) (Daedalus 267 §5 / 269):`);
+    for (const p of schema) console.log(`    schema        ${p}`);
+    console.log('');
+  }
+
+  if (!bad) console.log('CENSUS OK — every probe under scripts/ is in exactly one list, and every entry agrees with its own pin.');
   console.log('');
 
   if (process.argv.includes('--census')) {
@@ -418,22 +591,41 @@ const main = () => {
   }
 
   let red = 0;
+  let blocked = 0;
   for (const s of SWEPT) {
     const { code, out, err } = run(s.file);
-    const { ok, matched } = verdict(code, out, s.expect);
-    if (!ok) red += 1;
+    const { state, matched, refused } = classify(code, out, s.expect, s.refusal);
+    if (state === 'RED') red += 1;
+    if (state === 'BLOCKED') blocked += 1;
     const summary = err
       ? `spawn error: ${err.message}`
       : matched
         ? (out.match(s.expect) || [''])[0]
         : `exit ${code}, summary line NOT FOUND — ${(out.trim().split('\n').pop() || '(no output)').slice(0, 90)}`;
-    console.log(`  ${ok ? 'PASS' : 'RED '}  exit ${String(code).padStart(3)}  ${s.file}`);
+    console.log(`  ${state.padEnd(7)} exit ${String(code).padStart(3)}  ${s.file}`);
     console.log(`          ${summary}`);
+    if (state === 'BLOCKED') {
+      console.log('          could not run — declared refusal, not a regression. Clear the blocker and re-run.');
+    }
+    if (state === 'RED' && refused) {
+      console.log('          HINT (not a verdict): the declared refusal text is present at a non-2 exit, so a');
+      console.log('          driven subject may have refused and this probe graded that as a failed check.');
+    }
+    // Checked against the run, not against the entry's own prose — see measurementCheck.
+    const m = measurementCheck(s, out);
+    if (m.problem) {
+      red += 1;
+      console.log(`          SCHEMA RED — ${m.problem}`);
+    } else if (m.note) {
+      console.log(`          note — ${m.note}`);
+    }
   }
 
+  const code = sweepExit({ red, blocked, bad });
+  const verdictWord = code === 0 ? 'SWEEP PASSED' : code === 2 ? 'SWEEP BLOCKED' : 'SWEEP FAILED';
   console.log('');
-  console.log(`${red || bad ? 'SWEEP FAILED' : 'SWEEP PASSED'} — ${SWEPT.length - red} of ${SWEPT.length} swept probes green, ${bad} census problem(s), ${DEFERRED.length} deferred`);
-  process.exit(red || bad ? 1 : 0);
+  console.log(`${verdictWord} — ${SWEPT.length - red - blocked} of ${SWEPT.length} swept probes green, ${red} red, ${blocked} blocked (could not run), ${bad} census problem(s), ${DEFERRED.length} deferred`);
+  process.exit(code);
 };
 
 if (process.argv[1] && process.argv[1].endsWith('sweep-probes.mjs')) main();

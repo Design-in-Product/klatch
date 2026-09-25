@@ -3,6 +3,24 @@ import './setup.js';
 import { insertMessage, assignEntityToChannel } from '../db/queries.js';
 import { getDb } from '../db/index.js';
 import { DEFAULT_MODEL, DEFAULT_ENTITY_ID } from '@klatch/shared';
+import type { Entity } from '@klatch/shared';
+
+/**
+ * Round 269, Daedalus. This literal was inline at eight call sites, byte-identical at each, and
+ * missing `effort` and `createdAt` — both required on `Entity` — so `tsc --noEmit` reported TS2345
+ * eight times and `npm test` never reached a suite. Hoisted rather than patched eight times: an
+ * annotated single source cannot drift from itself, and the next required field on `Entity` breaks
+ * one line instead of eight. Values match the fixture idiom in `mentions.test.ts`.
+ */
+const ENTITY: Entity = {
+  id: DEFAULT_ENTITY_ID,
+  name: 'Claude',
+  model: DEFAULT_MODEL,
+  effort: 'high',
+  systemPrompt: '',
+  color: '#6B7280',
+  createdAt: '2026-01-01T00:00:00.000Z',
+};
 
 // ── Mock Anthropic SDK to capture call parameters ───────────
 
@@ -75,7 +93,7 @@ describe('streamClaudeCore — API parameters (Round 13 B3)', () => {
     insertMessage(channelId, 'user', 'Hello');
     const asst = insertMessage(channelId, 'assistant', '', 'streaming', DEFAULT_MODEL, DEFAULT_ENTITY_ID);
 
-    const entity = { id: DEFAULT_ENTITY_ID, name: 'Claude', model: DEFAULT_MODEL, systemPrompt: '', color: '#6B7280' };
+    const entity = ENTITY;
     await streamClaude(channelId, asst.id, entity);
 
     expect(mockStream).toHaveBeenCalledTimes(1);
@@ -88,7 +106,7 @@ describe('streamClaudeCore — API parameters (Round 13 B3)', () => {
     insertMessage(channelId, 'user', 'Hello');
     const asst = insertMessage(channelId, 'assistant', '', 'streaming', DEFAULT_MODEL, DEFAULT_ENTITY_ID);
 
-    const entity = { id: DEFAULT_ENTITY_ID, name: 'Claude', model: DEFAULT_MODEL, systemPrompt: '', color: '#6B7280' };
+    const entity = ENTITY;
     await streamClaude(channelId, asst.id, entity);
 
     const params = mockStream.mock.calls[0][0];
@@ -101,7 +119,7 @@ describe('streamClaudeCore — API parameters (Round 13 B3)', () => {
     insertMessage(channelId, 'user', 'Hello');
     const asst = insertMessage(channelId, 'assistant', '', 'streaming', DEFAULT_MODEL, DEFAULT_ENTITY_ID);
 
-    const entity = { id: DEFAULT_ENTITY_ID, name: 'Claude', model: DEFAULT_MODEL, systemPrompt: '', color: '#6B7280' };
+    const entity = ENTITY;
     await streamClaude(channelId, asst.id, entity);
 
     expect(mockBetaStream).toHaveBeenCalledTimes(1);
@@ -115,7 +133,7 @@ describe('streamClaudeCore — API parameters (Round 13 B3)', () => {
     insertMessage(channelId, 'user', 'Hello');
     const asst = insertMessage(channelId, 'assistant', '', 'streaming', DEFAULT_MODEL, DEFAULT_ENTITY_ID);
 
-    const entity = { id: DEFAULT_ENTITY_ID, name: 'Claude', model: DEFAULT_MODEL, systemPrompt: '', color: '#6B7280' };
+    const entity = ENTITY;
     await streamClaude(channelId, asst.id, entity);
 
     const params = mockBetaStream.mock.calls[0][0];
@@ -128,7 +146,7 @@ describe('streamClaudeCore — API parameters (Round 13 B3)', () => {
     insertMessage(channelId, 'user', 'Hello');
     const asst = insertMessage(channelId, 'assistant', '', 'streaming', DEFAULT_MODEL, DEFAULT_ENTITY_ID);
 
-    const entity = { id: DEFAULT_ENTITY_ID, name: 'Claude', model: DEFAULT_MODEL, systemPrompt: '', color: '#6B7280' };
+    const entity = ENTITY;
     await streamClaude(channelId, asst.id, entity);
 
     const params = mockBetaStream.mock.calls[0][0];
@@ -143,7 +161,7 @@ describe('streamClaudeCore — API parameters (Round 13 B3)', () => {
     insertMessage(channelId, 'user', 'Hello');
     const asst = insertMessage(channelId, 'assistant', '', 'streaming', DEFAULT_MODEL, DEFAULT_ENTITY_ID);
 
-    const entity = { id: DEFAULT_ENTITY_ID, name: 'Claude', model: DEFAULT_MODEL, systemPrompt: '', color: '#6B7280' };
+    const entity = ENTITY;
     await streamClaude(channelId, asst.id, entity);
 
     expect(mockStream).toHaveBeenCalledTimes(1);
@@ -156,7 +174,7 @@ describe('streamClaudeCore — API parameters (Round 13 B3)', () => {
     insertMessage(channelId, 'user', 'Hello');
     const asst = insertMessage(channelId, 'assistant', '', 'streaming', DEFAULT_MODEL, DEFAULT_ENTITY_ID);
 
-    const entity = { id: DEFAULT_ENTITY_ID, name: 'Claude', model: DEFAULT_MODEL, systemPrompt: '', color: '#6B7280' };
+    const entity = ENTITY;
     await streamClaude(channelId, asst.id, entity);
 
     expect(mockBetaStream).toHaveBeenCalledTimes(1);
@@ -169,7 +187,7 @@ describe('streamClaudeCore — API parameters (Round 13 B3)', () => {
     insertMessage(channelId, 'user', 'Hello');
     const asst = insertMessage(channelId, 'assistant', '', 'streaming', DEFAULT_MODEL, DEFAULT_ENTITY_ID);
 
-    const entity = { id: DEFAULT_ENTITY_ID, name: 'Claude', model: DEFAULT_MODEL, systemPrompt: '', color: '#6B7280' };
+    const entity = ENTITY;
     await streamClaude(channelId, asst.id, entity);
 
     expect(mockBetaStream).toHaveBeenCalledTimes(1);
