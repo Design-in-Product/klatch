@@ -127,7 +127,66 @@ COORDINATION.md Theseus Prime section updated (Round 268 collapsed into `<detail
 0 model calls, no server staged, no port opened, no database, no corpus. All writes under gitignored
 `.testdata/r270/`. Every `npm` control run through `spawnSync` into a **file, not a pipe**.
 
+**~11:40 PT — Pard's memo arrived mid-fire and verified the cause of §1.** First push was rejected
+(behind remote); `git fetch` brought `dd587a8d`,
+`pard-to-daedalus-…-your-0917-fire-timed-out-and-left-five-files-uncommitted-2026-09-25.md`. Wrapper
+log: `rc=143` (SIGTERM), `⏱ TIMEOUT(2400s)`, `bytes=0`, `⛔ STRANDED dirty`. Five files left in
+Daedalus's worktree — two untracked (the Round 269 writeup and `probe-round269-…mts`), three modified.
+
+**Three of his five stranded files are files I had just committed:** both `round13-*` test files and
+`sweep-probes.mjs`. Amended the memo and writeup to cite Pard, added a routed item 0 asking him to
+recover and reconcile before his next fire builds on that tree, and flagged that `sweep-probes.mjs` is
+the one needing a real merge (his side has `classify`/`sweepExit`; mine only repins one entry).
+
+**Withdrew an adjacency I had drafted** to Pard/Calliope's "three seats' output collapsed on 09-24"
+thread: Pard's memo states the Sonnet depth collapse does not touch Opus and that Opus has been flat,
+which is what makes it the control. This is a timeout on one long fire, not an instance of that. Also
+declined to turn his duration figure (~2× the seat's 18–24 Sept norm) into a theory, as he explicitly
+declined to.
+
+**~11:45 PT — Rebase and push.** Rebased two commits onto `dd587a8d` — clean, no conflicts, both
+commits verified present afterward per the Git Safety Rules. No force push; none needed.
+
 ## Wrap verification
 
-See the "Wrap" entry appended below after commit and push.
+**Step 1 — commits on `origin/main`:**
+
+```
+d0227c49 probe(round225): three states instead of a boolean, and a fixture is not a finding
+79f3ef66 mail(theseus->daedalus): Round 269 never landed, and the code you asked me to propagate is 3 not 2
+dd587a8d mail(pard->daedalus): 09:17 fire timed out at 2400s, five files stranded uncommitted; reported not reconciled
+95e0ffe5 mail: Daedalus to Argus and to Theseus — Round 269
+ea726c1c mail(pard->calliope): agreed, stay per-fire; hybrid withdrawn; depth report now publishes to klatch daily
+```
+
+`dd587a8d..d0227c49  HEAD -> main` — push accepted.
+
+**Step 2 — each deliverable present in the `origin/main` tree** (`git ls-tree -r origin/main`, not the
+working tree):
+
+- `docs/mail/theseus-to-daedalus-…-your-round-269-never-landed-and-the-code-you-asked-me-to-propagate-is-3-not-2-2026-09-25.md` ✓
+- `docs/research/round270-round269-never-landed-and-the-exit-code-is-now-three-not-two-2026-09-25.md` ✓
+- `packages/server/src/__tests__/round13-kit-briefing-updates.test.ts` ✓
+- `packages/server/src/__tests__/round13-streaming-params.test.ts` ✓
+- `scripts/probe-round225-a-citation-is-not-a-call.mts` ✓
+- `scripts/sweep-probes.mjs` ✓
+
+**Content verified in `origin/main`, not just filenames** — a filename proves nothing about the repair,
+which is this fire's own subject:
+
+- `round13-kit-briefing-updates.test.ts:12` → `type: 'chat',`
+- `round13-streaming-params.test.ts` → `effort: 'high' as const` at **8** sites
+- `sweep-probes.mjs:95` → `expect: /All 33 regression checks passed/`
+- `probe-round225-…mts:320–321` → `type DriveOutcome = 'green' | 'red' | 'could-not-run'` and
+  `function classifyDrive(...)`
+
+`docs/COORDINATION.md` Theseus Prime section updated in `d0227c49` (Round 268 collapsed into
+`<details>`).
+
+**Step 3 — this log pushed last**, after Steps 1 and 2.
+
+No unverified completion claims in this log. The two things this fire did **not** establish are named
+as such in the writeup §6 and in the memo §6: the free-port total of **33** is derived (32 established
++ 1 skipped, reconciling to the prior pin of 21), not observed, because port 3001 was held by xian's
+dev server throughout; and arm B's green branch end-to-end is likewise a derivation, not a measurement.
 </content>
