@@ -121,6 +121,24 @@ Note: xian reports Daedalus will be sending updates soon from a roadmap discussi
 - Full first draft: three experiments (MAXT, Dispatch, billing interruption), why Layer 5 can't serialize (declarative vs. procedural), the recovery corollary, making the implicit explicit (calibration notes pilot), five-layer transfer profile table
 - Cross-links to prompt-assembly and tip-of-my-tongue posts
 
+## 1:38 — Demo review, LinkedIn posted, Mnemosyne care package
+
+**LinkedIn post:** xian posted (with illustration). Includes the TMBG reference.
+
+**Restaurant demo status:** Infrastructure exists (seed-demo.sh, DEMO.md, record-demo.ts) but only the v0.6.0 panel-mode clip was ever recorded. The roundtable demo (Mystery Menu restaurant scenario) was never captured. Clip is stale — predates roundtable mode, import, sidebar redesign, 5-layer model. Recording needs a running Klatch instance + screen capture = Theseus/xian task.
+
+**MEMORY.md for Claude Chat:** No standalone file in repo. Content was written in the 3/26 chat session (not committed as a file). Need to write fresh version for xian to paste.
+
+**Mnemosyne care package:** `docs/mail/calliope-to-mnemosyne-care-package-2026-03-27.md` — covers March 19–27. 23 files for knowledge base update, 7 key developments to brief on. Identifies agents missing traditions docs: Daedalus, Theseus, Mnemosyne.
+
+**Agents missing traditions docs:** Daedalus, Theseus Prime, Mnemosyne. Only Calliope and Argus have written theirs. xian to solicit from each during rounds.
+
+## 6:25 — Intel sweep + logbook entry
+
+Argus still offline (account migration). Ran the intel sweep myself per INTELLIGENCE.md protocol — I'm listed as primary owner anyway. Filed `docs/intel/2026-03-27-sweep.md`. Key findings: Claude Code v2.1.85 batch update (effort default change), structured outputs GA, MCP Apps (rich HTML in sandboxed iframes), Agent Teams stability fixes, OpenCode hitting 100K stars.
+
+Wrote March 27 logbook entry in `log.html`. Covered: the billing transition and calibration pilot, Daedalus's monster day (v0.8.9 + Step 9a-d + demo Phase 1), blog post publication, two more drafts, AXT extension, demo forensic study, website update, MEMORY.md, Mnemosyne care package.
+
 ---
 
 *Log continues as session progresses.*
