@@ -661,19 +661,49 @@ console.log('\n── arm E: how many probes assert EMPTINESS over a shared wind
  * compared against the empty string. Deliberately syntactic and deliberately loose — this reports
  * a LIST for a human to adjudicate, not a verdict. An over-report here is cheap; a missed file is
  * the thing that costs another agent a red fire.
+ *
+ * ## Round 268 — the mask split is APPLIED here, and this is the fire that changes nothing else
+ *
+ * Round 266 measured this change and deliberately declined to install it (arm E7, "ROUTED, NOT
+ * APPLIED"), because a fire that moves the published reader AND adds a second census axis leaves
+ * neither figure interpretable. This fire installs it and does nothing else to the census.
+ *
+ * **`locate` is the whole change.** `'soft'` is Round 266's published behaviour, byte-for-byte: the
+ * structure is located in `MASK(src)` (comments blanked, string contents KEPT) and the spelling is
+ * read at those same offsets, which is the identity. `'hard'` — the new default — locates structure
+ * in `stripSource(src, true)` (string contents blanked too) and reads the spelling back out of the
+ * soft mask at the same offsets, which is sound because both modes are length-preserving over every
+ * file under `scripts/` (measured, arm E4e).
+ *
+ * > **Read the spelling with strings kept; locate the structure with strings blanked.** A detector
+ * > that does both jobs with one mask cannot tell source from a fixture that quotes it — and this
+ * > fleet mints fixtures every round.
+ *
+ * The soft form is not deleted. {@link assertedEmptinessSitesSoft} retains it as a live reader, so
+ * arm E7's delta and arm E7b's non-vacuity compare two functions that both run today rather than
+ * one function against last fire's memory of another — Daedalus's Round 267 §4 pattern
+ * (`providerExportsWindowed`), which is Round 262's lesson wearing a different hat.
+ *
+ * **What this does NOT do:** it does not move any pinned figure. Every other probe that consumes
+ * this reader slices it out of `6465346a` with `git show` and never reads this file from disk —
+ * asserted, not assumed, in arm **E8**.
  */
-function emptinessSites(src: string): string[] {
-  const code = MASK(src);
+function emptinessSites(src: string, locate: 'hard' | 'soft' = 'hard'): string[] {
+  const soft = MASK(src);
+  const code = locate === 'hard' ? stripSource(src, true) : soft;
   const hits: string[] = [];
   const PORCELAIN = /status['"`]\s*,\s*['"`]--porcelain|status\s+--porcelain/;
-  if (!PORCELAIN.test(code)) return hits;
+  // The guard is on the SOFT mask in both modes: the porcelain spelling lives inside a string
+  // literal, so a hard-masked file never spells it and the guard would reject every real instance.
+  if (!PORCELAIN.test(soft)) return hits;
+  const spells = (at: number, len: number) => PORCELAIN.test(soft.slice(at, at + len));
   // Names bound to a porcelain result, either as a const or as a function returning one.
   const names = new Set<string>();
   for (const m of code.matchAll(/(?:const|let|var)\s+([A-Za-z_$][\w$]*)\s*=\s*([^\n;]*)/g)) {
-    if (PORCELAIN.test(m[2])) names.add(m[1]);
+    if (spells(m.index! + m[0].length - m[2].length, m[2].length)) names.add(m[1]);
   }
   for (const m of code.matchAll(/function\s+([A-Za-z_$][\w$]*)\s*\([^)]*\)[^{]*\{([\s\S]{0,400}?)\}/g)) {
-    if (PORCELAIN.test(m[2])) names.add(m[1]);
+    if (spells(m.index! + m[0].length - m[2].length - 1, m[2].length)) names.add(m[1]);
   }
   // Plus any binding assigned FROM one of those names (the `const after = dirty()` pattern).
   for (const m of code.matchAll(/(?:const|let|var)\s+([A-Za-z_$][\w$]*)\s*=\s*([A-Za-z_$][\w$]*)\s*\(\s*\)/g)) {
@@ -742,14 +772,25 @@ function assertionArgumentSpans(code: string): string[] {
   return spans;
 }
 
-function assertedEmptinessSites(src: string): string[] {
-  const code = MASK(src);
+function assertedEmptinessSites(src: string, locate: 'hard' | 'soft' = 'hard'): string[] {
+  const code = locate === 'hard' ? stripSource(src, true) : MASK(src);
   const spans = assertionArgumentSpans(code);
-  return emptinessSites(src).filter((n) => {
+  return emptinessSites(src, locate).filter((n) => {
     const cmp = new RegExp(`\\b${n}\\b\\s*(?:\\(\\s*\\))?\\s*(?:\\.trim\\(\\))?\\s*===\\s*(['"\`])\\1`);
     return spans.some((s) => cmp.test(s));
   });
 }
+
+/**
+ * Round 266's published reader, retained as a LIVE function rather than as a description of one.
+ * Nothing in the census calls it; arms E7 and E7b do, and they are the reason it stays.
+ *
+ * `assertionArgumentSpans` already hard-masks internally before locating a `check(`, then slices the
+ * span out of the text it was handed — so passing it the SOFT mask is what makes prose inside a
+ * detail string part of a real span. That is the half of the old reader that was already protected,
+ * and the half that was not; Round 266 arm E7b found out which was which by two fixtures failing.
+ */
+const assertedEmptinessSitesSoft = (src: string): string[] => assertedEmptinessSites(src, 'soft');
 
 /**
  * ## Round 266 — the census axis is wired to the resolver this file already had
@@ -1182,10 +1223,14 @@ meas('E6', 'CENSUS, IMPORT-AWARE — the second axis, and it sits BESIDE the fir
     `away the only thing that makes either interpretable.`);
 
 /**
- * The published single-file detector, with the Round 266 mask split applied — structure located in
- * the hard mask, spelling read from the soft mask at the same offsets. **Measured, NOT applied.**
- * `emptinessSites` is the reader every published figure in this arc rests on, including Round 264's
- * pinned 13/13; moving it in the same fire that adds a second axis would make both uninterpretable.
+ * Round 266's separately-written strict reader, kept BYTE-FOR-BYTE as the equivalence control for
+ * the Round 268 application. It was the thing measured last fire; `emptinessSites(src, 'hard')` is
+ * the thing installed this fire. Arm **E7c** asserts they agree file-by-file over the live tree.
+ *
+ * Without that arm "the delta is zero" would be a claim about a function nobody ran again: the
+ * applied form is a REFACTOR of this one (it reuses the shared seeding loops and inherits
+ * `emptinessSites`' requirement that the comparison also appear in the located text), and a refactor
+ * that changes behaviour while reproducing a summary count is the failure this arc keeps finding.
  */
 function assertedEmptinessSitesStrict(src: string): string[] {
   const soft = MASK(src);
@@ -1216,12 +1261,24 @@ function assertedEmptinessSitesStrict(src: string): string[] {
 }
 
 const strict = new Map<string, string[]>();
+const softRead = new Map<string, string[]>();
+const appliedRead = new Map<string, string[]>();
 for (const rel of files) {
-  const s = assertedEmptinessSitesStrict(liveFleet.read(rel));
+  const src = liveFleet.read(rel);
+  const s = assertedEmptinessSitesStrict(src);
   if (s.length) strict.set(rel, s);
+  const so = assertedEmptinessSitesSoft(src);
+  if (so.length) softRead.set(rel, so);
+  const ap = assertedEmptinessSites(src);
+  if (ap.length) appliedRead.set(rel, ap);
 }
-const strictDrops = [...singleFile.keys()].filter((r) => !strict.has(r));
-const strictAdds = [...strict.keys()].filter((r) => !singleFile.has(r));
+const strictDrops = [...softRead.keys()].filter((r) => !strict.has(r));
+const strictAdds = [...strict.keys()].filter((r) => !softRead.has(r));
+const refactorDisagreements = files.filter((rel) => {
+  const a = (appliedRead.get(rel) ?? []).slice().sort().join(',');
+  const b = (strict.get(rel) ?? []).slice().sort().join(',');
+  return a !== b;
+});
 
 /**
  * A zero delta is only a measurement if the two readers CAN come apart, and **two drafts of this
@@ -1251,37 +1308,179 @@ const QUOTED_INLINE = `const FIXTURE = [\n` +
   `check('A', 'the detector sees the minted defect', detect(FIXTURE).length === 1,\n` +
   `  \`the minted fixture spells d === '' and this sentence is describing it\`);\n`;
 
-check('E7b', 'NON-VACUITY — the two readers do come apart, so E7\'s delta is a measurement',
-  assertedEmptinessSites(QUOTED_INLINE).length === 1 &&
-    assertedEmptinessSitesStrict(QUOTED_INLINE).length === 0 &&
-    assertedEmptinessSites(POS).length === 1 && assertedEmptinessSitesStrict(POS).length === 1,
+check('E7b', 'NON-VACUITY — the retired reader and the installed one do come apart, so E7\'s delta is a measurement',
+  assertedEmptinessSitesSoft(QUOTED_INLINE).length === 1 &&
+    assertedEmptinessSites(QUOTED_INLINE).length === 0 &&
+    assertedEmptinessSitesSoft(POS).length === 1 && assertedEmptinessSites(POS).length === 1,
   `On a probe that MINTS an inline porcelain defect as a string in order to test a detector — ` +
-    `source that only QUOTES the shape — the published reader scores ` +
-    `${assertedEmptinessSites(QUOTED_INLINE).length} and the hard-mask reader scores ` +
-    `${assertedEmptinessSitesStrict(QUOTED_INLINE).length}. On real source carrying the real defect ` +
-    `they agree (${assertedEmptinessSites(POS).length} vs ` +
-    `${assertedEmptinessSitesStrict(POS).length}), so the strict reader is not simply stricter ` +
+    `source that only QUOTES the shape — the RETIRED soft-locating reader scores ` +
+    `${assertedEmptinessSitesSoft(QUOTED_INLINE).length} and the INSTALLED reader scores ` +
+    `${assertedEmptinessSites(QUOTED_INLINE).length}. On real source carrying the real defect ` +
+    `they agree (${assertedEmptinessSitesSoft(POS).length} vs ` +
+    `${assertedEmptinessSites(POS).length}), so the installed reader is not simply stricter ` +
     `about everything. Without this arm, E7's "0 drops" could not be told from a reader that never ` +
     `drops anything — Round 262's lesson, where a perturbation the subject re-did was no ` +
-    `perturbation at all.`);
+    `perturbation at all. Both sides of this comparison are functions that run in THIS process; the ` +
+    `soft form is retained, not described.`);
 
-meas('E7', 'ROUTED, NOT APPLIED — what the mask split would do to the PUBLISHED single-file figure',
-  `The published reader scores ${singleFile.size} asserted files. The same reader with structure ` +
-    `located in the hard mask scores ${strict.size}. Drops (${strictDrops.length}): ` +
+check('E7c', 'the APPLICATION is the change Round 266 measured — refactored reader ≡ that fire\'s strict reader',
+  refactorDisagreements.length === 0,
+  refactorDisagreements.length === 0
+    ? `Over all ${files.length} walked files, \`assertedEmptinessSites(src)\` (installed: the shared ` +
+      `seeding loops with \`locate = 'hard'\`) returns the same name list as Round 266's separately ` +
+      `written \`assertedEmptinessSitesStrict\`, file by file and name by name — ` +
+      `${appliedRead.size} files each. The installed form reuses \`emptinessSites\`, so it ALSO ` +
+      `requires the comparison to appear in the located text, a condition the strict draft did not ` +
+      `carry; this arm is what says that extra condition changes no verdict on today's fleet rather ` +
+      `than leaving a refactor to be trusted on a matching summary count.`
+    : `DISAGREE on ${refactorDisagreements.length} file(s): ${refactorDisagreements.join(', ')}. The ` +
+      `installed reader is NOT the function Round 266 measured, so E7's delta is about something ` +
+      `else and this application must be backed out.`);
+
+meas('E7', 'APPLIED (Round 268) — the mask split is installed in the published reader, and the delta is zero',
+  `Installed reader: ${appliedRead.size} asserted files. Retired soft-locating reader, still live ` +
+    `beside it: ${softRead.size}. Drops (${strictDrops.length}): ` +
     `${strictDrops.length ? strictDrops.join(', ') : '(none)'}. Adds (${strictAdds.length}): ` +
     `${strictAdds.length ? strictAdds.join(', ') : '(none)'}.\n` +
     `        **The delta is zero, and E7b is what makes that a measurement rather than a tautology** ` +
     `— on a fixture that only QUOTES the defect the two readers score 1 and 0, and on real source ` +
-    `they agree. So the published figure carries no false positive of this class today. That is a ` +
-    `better result than I expected when the arm was written, and it is a narrower claim than it ` +
-    `looks: it says the class has not yet reached the published census, not that the reader is ` +
-    `immune. The reader is vulnerable exactly where probe-round265 was — a minted seed plus a ` +
-    `comparison in prose — and the fleet mints more fixtures every round.\n` +
-    `        Still NOT applied, and the reason is the instrument, not the result: emptinessSites is ` +
-    `the reader under Round 264's pinned 13/13 and under every figure this arc has published, and a ` +
-    `fire that moves it AND adds an axis leaves neither number interpretable. Applying it is a ` +
-    `one-line change whose delta is currently zero; the right fire for it is one that changes ` +
-    `nothing else.`);
+    `they agree. So the published figure carried no false positive of this class on the day it was ` +
+    `installed. That is a narrower claim than it looks: it says the class had not yet reached the ` +
+    `published census, not that the old reader was immune. It was vulnerable exactly where ` +
+    `probe-round265 was — a minted seed plus a comparison in prose — and the fleet mints more ` +
+    `fixtures every round, which is why applying it at zero delta is the cheapest moment there ` +
+    `will ever be.\n` +
+    `        **This fire changes nothing else.** Round 266 declined to install it because a fire ` +
+    `that moves the reader AND adds an axis leaves neither figure interpretable; the axis landed ` +
+    `then, the reader moves now, and arm E7c pins the installed form to the one that fire measured.`);
+
+// ─────────────────────────────────────────────────────────────────────────────
+// ARM E8 — the application cannot move a pinned figure, and that is asserted not assumed
+// ─────────────────────────────────────────────────────────────────────────────
+
+const R256_PIN = '6465346a';
+const consumers = files.filter((rel) => rel !== SELF && MASK(liveFleet.read(rel)).includes('probe-round256-'));
+const consumerReads = consumers.map((rel) => {
+  const src = MASK(liveFleet.read(rel));
+  // A consumer that only NAMES this probe in prose is not a reader of it. One that slices its
+  // functions must do so from the pin; reading it from disk would make its figure track my edits.
+  const slices = /sliceFn\(|R256_SRC|r256blob|blobAt/.test(src);
+  return { rel, slices, pinned: src.includes(R256_PIN), fromDisk: /readFileSync\([^)]*[Rr]256/.test(src) };
+});
+const unpinnedReaders = consumerReads.filter((c) => c.slices && (!c.pinned || c.fromDisk));
+
+check('E8', 'no other probe reads THIS file from disk — every consumer slices it out of the pinned commit',
+  unpinnedReaders.length === 0,
+  unpinnedReaders.length === 0
+    ? `${consumers.length} file(s) under scripts/ mention this probe by filename; ` +
+      `${consumerReads.filter((c) => c.slices).length} of them actually slice its machinery ` +
+      `(${consumerReads.filter((c) => c.slices).map((c) => /^probe-round\d+/.exec(c.rel)?.[0] ?? c.rel)
+        .join(', ')}), and ` +
+      `every one of those names ${R256_PIN} and reads bytes through \`git show\`, not through the ` +
+      `filesystem. So today's application moves no figure they publish: their detector is the ` +
+      `historical one, byte-for-byte. The DRIVEN version of this claim is the sweep, which runs ` +
+      `them; this arm is the structural one, and it is the one that keeps holding after a probe ` +
+      `stops being run every fire.`
+    : `${unpinnedReaders.length} consumer(s) read this file unpinned: ` +
+      `${unpinnedReaders.map((c) => c.rel).join(', ')}. Their figures track edits to this file, so ` +
+      `the application below is NOT figure-neutral for them.`);
+
+// ─────────────────────────────────────────────────────────────────────────────
+// ARM E9 — which tree did the number come from? (the Round 266 figure was 11 and the fleet had 10)
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * The shape `probe-round197`'s comment at :604–609 says its first Z2 draft had, minted here because
+ * those bytes were never committed and cannot be recovered. This is a reconstruction FROM A WRITTEN
+ * DESCRIPTION, and arm E9b says so in its own detail rather than letting the number imply otherwise.
+ */
+const R197_DRAFT = `const dirtySubjects = execFileSync('git', ['status', '--porcelain', '--', ...SUBJECTS]).trim();\n` +
+  `check('Z2', 'the two files these verdicts rest on are unmodified',\n` +
+  `  dirtySubjects === '', 'a narrower window is still a window');\n`;
+
+/**
+ * The same defect with the declaration WRAPPED across two lines — and the first draft of arm E9b was
+ * spelled this way, went red, and found a fifth known miss in the process.
+ *
+ * `emptinessSites`' declaration regex captures the initialiser as `[^\n;]*`, which stops at the end
+ * of the line. A porcelain call whose argument array sits on a continuation line is therefore not a
+ * porcelain binding as far as this census is concerned, and nothing about that is visible in the
+ * figure it prints.
+ *
+ * **Named, measured, and deliberately NOT repaired here.** Widening the seeding is exactly the kind
+ * of change this fire exists to keep separate from the mask split: it would move the published
+ * figure in the same fire that installs a reader, which is the confound Round 266 declined for.
+ * Round 264 arms C2/C3 named two misses of the reader itself (an inline chain with no binding; an
+ * assertion spelled as `throw`). This is a third of that kind, and unlike C1 it has nothing to do
+ * with reach into other files — it is one line break.
+ */
+const R197_DRAFT_WRAPPED = `const dirtySubjects = execFileSync('git',\n` +
+  `  ['status', '--porcelain', '--', ...SUBJECTS]).trim();\n` +
+  `check('Z2', 'the two files these verdicts rest on are unmodified',\n` +
+  `  dirtySubjects === '', 'a narrower window is still a window');\n`;
+
+const headPop = gitIn(REPO, ['ls-tree', '-r', '--name-only', 'HEAD', 'scripts/'])
+  .trim().split('\n')
+  .map((s) => s.replace(/^scripts\//, ''))
+  .filter((r) => /\.(mts|mjs|ts|js)$/.test(r) && !r.split('/').some((p) => p.startsWith('.')) && r !== SELF);
+const headAsserted = headPop.filter(
+  (rel) => assertedEmptinessSites(gitIn(REPO, ['show', `HEAD:scripts/${rel}`])).length > 0);
+const treeOnly = [...appliedRead.keys()].filter((r) => !headAsserted.includes(r));
+const headOnly = headAsserted.filter((r) => !appliedRead.has(r));
+
+meas('E9', 'PROVENANCE — the census population is the WORKING TREE, so it counts the running fire\'s own drafts',
+  `Working tree: ${files.length} files walked, ${appliedRead.size} asserting. HEAD ` +
+    `(${gitIn(REPO, ['rev-parse', '--short', 'HEAD']).trim()}): ${headPop.length} files, ` +
+    `${headAsserted.length} asserting. In the tree but not at HEAD: ` +
+    `${treeOnly.length ? treeOnly.join(', ') : '(none)'}. At HEAD but not in the tree: ` +
+    `${headOnly.length ? headOnly.join(', ') : '(none)'}.\n` +
+    `        **This arm exists because Round 266 published 11 and the fleet had 10.** That memo and ` +
+    `writeup report "11 asserted files single-file, 11 following imports"; re-run today, and ` +
+    `re-derived over the git trees at e500e74b (before Round 266), 5225e3b0 (Round 266) and ` +
+    `d55d9ebe (Round 267), the figure is 10 at every one of them, over the same 149 files with the ` +
+    `same 14 comparing. **The discrepancy is verified; the identity of the 11th row is not ` +
+    `recoverable** — no record of that run's file list survives. The available mechanism is ` +
+    `\`probe-round197\` in an INTERMEDIATE state: that fire's first Z2 draft asserted ` +
+    `\`dirtySubjects === ''\` over a porcelain call, the census ran while it was on disk, and the ` +
+    `same fire then re-spelled Z2 as a blob comparison. Arm E9b scores that shape and finds it ` +
+    `sufficient; arm E9c shows one spelling of it that would NOT have been counted. Either way the ` +
+    `number was true of a tree that was never committed.\n` +
+    `        **Rule: a fleet figure has a population, and "whatever was on disk when I ran it" is ` +
+    `not one.** The reach measurement counts the author's own unfinished edits, and it does so most ` +
+    `strongly in exactly the fire that is repairing an instance — which is when the figure is most ` +
+    `likely to be quoted. Both figures are printed above so the difference is visible at the moment ` +
+    `the number is read, rather than being recoverable only by someone re-deriving it a fire later.\n` +
+    `        The two agree TODAY for a reason that is not a property of the instrument: the only ` +
+    `file this fire edits is this one, and the census excludes SELF. Round 266 is the existence ` +
+    `proof that they come apart, and arm E9b mints the shape that did it.`);
+
+check('E9b', 'ATTRIBUTION — the draft shape my own log describes is SUFFICIENT to produce the figure that was published',
+  assertedEmptinessSites(R197_DRAFT).length === 1 && assertedEmptinessSitesSoft(R197_DRAFT).length === 1,
+  `The Round 266 log (15:40) and \`probe-round197\`'s own comment at :604 record that fire's first ` +
+    `Z2 draft as asserting \`dirtySubjects === ''\` over a porcelain call. Those bytes were never ` +
+    `committed and cannot be recovered, so this arm mints the shape AS THOSE TWO RECORDS DESCRIBE ` +
+    `IT and scores it: installed reader ${assertedEmptinessSites(R197_DRAFT).length}, retired ` +
+    `reader ${assertedEmptinessSitesSoft(R197_DRAFT).length}. **This is sufficiency, not ` +
+    `identification:** it says such a draft in that file would have made the count 11, which is the ` +
+    `number that was published. It does NOT establish that the draft was spelled this way — arm E9c ` +
+    `shows the same defect wrapped over two lines scoring 0, so a wrapped draft would leave the 11th ` +
+    `row unexplained. Both readers agree here, which is the part that matters for this fire: the ` +
+    `discrepancy is about the POPULATION, not about the mask split being installed.`);
+
+check('E9c', 'ANOTHER KNOWN MISS, found by E9b\'s own first draft — a wrapped declaration is not a declaration',
+  assertedEmptinessSites(R197_DRAFT_WRAPPED).length === 0 &&
+    assertedEmptinessSitesSoft(R197_DRAFT_WRAPPED).length === 0 &&
+    assertedEmptinessSites(R197_DRAFT).length === 1,
+  `Identical defect, identical assertion, one newline moved: single-line ` +
+    `${assertedEmptinessSites(R197_DRAFT).length}, wrapped ` +
+    `${assertedEmptinessSites(R197_DRAFT_WRAPPED).length} (retired reader ` +
+    `${assertedEmptinessSitesSoft(R197_DRAFT_WRAPPED).length} — the gap is in the SEEDING, not the ` +
+    `masking, so both readers have it). The declaration regex captures its initialiser as ` +
+    `\`[^\\n;]*\`, which cannot cross a line break. **This arm exists because E9b's first draft was ` +
+    `wrapped and went red**, and the red was a defect in the instrument, not in the hypothesis — ` +
+    `fourth fire running that a red arm of mine was right about the reader it was pointed at. ` +
+    `Reported and NOT repaired: widening the seeding would move the published figure in the same ` +
+    `fire that installs a reader, which is the confound Round 266 declined this application for.`);
 
 // ─────────────────────────────────────────────────────────────────────────────
 // ARM Z — this round's own window, bracketed by this round's own remedy

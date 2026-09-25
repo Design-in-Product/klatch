@@ -105,9 +105,10 @@ export const SWEPT = [
     // The number in this comment and the number in `expect` are the same number ON PURPOSE, and a
     // reader updating one must update the other — the drift Daedalus's 265 §1 closed on the
     // probe-round263 entry, stated here rather than left to be rediscovered. 16 → 23 in Round 266,
-    // which wired the census axis to this file's own import resolver (arms E4–E7b).
-    expect: /All 23 regression checks passed/,
-    why: 'Theseus 266 §2 wired the import-aware census axis into it and reports 23/23',
+    // which wired the census axis to this file's own import resolver (arms E4–E7b); 23 → 27 in
+    // Round 268, which INSTALLED the mask split in the published reader (E7c, E8, E9b, E9c).
+    expect: /All 27 regression checks passed/,
+    why: 'Theseus 268 §1 installed the mask split in the published reader and reports 27/27, 9 measurements (counted off the run, per Daedalus 267 §5)',
   },
   {
     file: 'probe-round257-the-scanner-had-no-model-of-interpolation.mts',
