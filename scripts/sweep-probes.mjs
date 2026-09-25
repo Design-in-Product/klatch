@@ -159,15 +159,25 @@ export const SWEPT = [
   },
   {
     file: 'probe-round225-a-citation-is-not-a-call.mts',
-    expect: /All 21 regression checks passed/,
-    // Round 269, Daedalus. The only entry carrying a `refusal` today, and it is declared from a
-    // measured run rather than from reading: with xian's dev server on 3001 this probe's arm B
-    // drives `probe-round223b`, the child refuses with this exact line, and arm B grades the
-    // refusal as a failed regression check — so the sweep sees exit **1**, not 2. The pattern
-    // therefore cannot produce BLOCKED today; it produces the annotation on the RED, which is the
-    // honest amount of information this file can recover on its own. Arm B is Theseus's.
+    expect: /All 33 regression checks passed/,
+    // Round 269, Daedalus; the `refusal` half re-measured in Round 271 after Theseus's d0227c49.
+    // The only entry carrying a `refusal` today, and it is declared from a measured run rather
+    // than from reading: with xian's dev server on 3001 this probe's arm B drives
+    // `probe-round223b` and the child refuses with this exact line.
+    //
+    // What changed under it: Round 269 measured arm B grading that refusal as a failed check, so
+    // the sweep saw exit **1**. Theseus's Round 270 §4 repaired arm B to a hard skip, and the
+    // probe now exits **3** — `probe-outcome.mts`'s documented code for "part of the run stands"
+    // — because 32 of its checks really do establish. So the pattern still cannot produce
+    // BLOCKED, but for a different reason than it could not in 269: not because the distinction
+    // is destroyed, but because it now arrives wearing a code the `exit === 2` limb does not
+    // admit. That is Round 271 §2 below, and it is why this comment names an exit code at all.
     refusal: /probe-round223b: something already holds 3001/,
-    why: 'run every fire as a control by both seats; Theseus 260 §6 reports 21/21',
+    why: 'run every fire as a control by both seats; Theseus 270 §2 reports 32 established + 1 ' +
+      'skipped arm on a HELD port, so 33 is DERIVED (32 + the skipped drive), not observed — ' +
+      'port 3001 was held by xian\'s dev server for the whole of Round 270 and the green branch ' +
+      'could not be driven. The first free-port fire confirms or refutes it loudly; the prior ' +
+      'pin of 21 re-derives exactly from this run, which is what licenses the arithmetic.',
   },
   {
     file: 'probe-round245-the-shared-lib-coverage-floor.mts',

@@ -80,12 +80,40 @@
  * of the real shipped declaration; `packages/` is asserted unchanged at the start and again at
  * exit. The one subprocess is `probe-round223b` itself, re-driven after the arm A repair, because
  * a probe edit not followed by a probe run is proofread, not verified.
+ *
+ * Amended Round 270 (2026-09-25): arm B2 mints and spawns five throwaway scripts under gitignored
+ * `.testdata/r270/exitcodes/` to drive the exit-code classifier against real process exits. They
+ * print and exit; they open no port and touch nothing outside that directory.
+ *
+ * ## Amendment, Round 270 — arm B no longer spends the child's exit code
+ *
+ * Daedalus's Round 269 §1 drove this file rather than reading it and found that arm B decided on
+ * `r223bExit === 0`, mapping `probe-round223b`'s **exit 2 (refused at its own door)** and its
+ * **exit 1 (a check failed)** onto one FAIL. The child's refusal was printed in arm B's own
+ * failure detail and then discarded — so a sweep one level up saw this probe exit 1 and could not
+ * tell "could not run" from "broke", no matter what it was taught to look for.
+ *
+ * > **The exit code is the only channel that carries the distinction, and a driving arm that
+ * > grades a child's refusal as a boolean spends that channel before anything downstream can read
+ * > it.** (Daedalus, Round 269 §1 — his sentence, kept.)
+ *
+ * Repaired here in three parts: `classifyDrive` returns three states instead of a boolean; the
+ * `could-not-run` state records a **hard skip** rather than a check, which makes this probe exit
+ * **3** via the vocabulary `scripts/lib/probe-outcome.mts` already ships; and arm B2 drives all
+ * five branches of the classifier against processes that really exit 0, 1 and 2.
+ *
+ * **Why 3 and not 2, which is the one thing the routing did not anticipate.** Exit 2 means
+ * *refused at the door, nothing ran*. When 3001 is held, arms A, C, D, E, F and Z of this probe
+ * all run and all still decide; only arm B's subprocess cannot. 3 is that state exactly — *ran and
+ * established less than it set out to* — and it is the module's own documented code for it. A
+ * consumer keying a third state on **exit 2 alone** therefore still cannot see this red. Reported
+ * to Daedalus rather than worked around here, because widening it is his file's call.
  */
 
 import fs from 'fs';
 import path from 'path';
 import crypto from 'crypto';
-import { execFileSync } from 'child_process';
+import { execFileSync, spawnSync } from 'child_process';
 import { readNumericConstant, readLeadingFactor, replaceNumericConstant } from './lib/probe-source-constants.mts';
 import { summariseAndExit, type ProbeVerdict } from './lib/probe-outcome.mts';
 
@@ -98,6 +126,12 @@ const R219 = path.join(SCRIPTS, 'probe-round219-files-cap-live-http.mts');
 const R223B = path.join(SCRIPTS, 'probe-round223b-db-existence-is-not-identity.mts');
 
 const results: ProbeVerdict[] = [];
+/**
+ * Arms that did not run. A bare string is a **hard** skip and forces exit 3 — see
+ * `scripts/lib/probe-outcome.mts`. Arm B's drive lands here when its child refuses at its own
+ * door, which is the whole of Round 269 §1's routed repair.
+ */
+const skipped: string[] = [];
 
 function check(arm: string, name: string, pass: boolean, detail: string) {
   results.push({ arm, check: name, pass, kind: 'regression' });
@@ -244,7 +278,12 @@ let r223bOut = '';
 let r223bExit = 0;
 const t0 = Date.now();
 try {
-  r223bOut = execFileSync('npx', ['tsx', R223B], { cwd: REPO, encoding: 'utf8', timeout: 180_000 });
+  // `stdio` is explicit because execFileSync FORWARDS a child's stderr to its own by default, and
+  // probe-round223b prints its refusal to stderr. Forwarded, that line becomes the last line of
+  // THIS probe's output — which is the line `sweep-probes.mjs` quotes as this probe's diagnosis.
+  // Captured, it is evidence; forwarded, it is a misattribution. See arm B3.
+  r223bOut = execFileSync('npx', ['tsx', R223B],
+    { cwd: REPO, encoding: 'utf8', timeout: 180_000, stdio: ['ignore', 'pipe', 'pipe'] });
 } catch (e) {
   const err = e as { stdout?: string; stderr?: string; status?: number };
   r223bOut = (err.stdout ?? '') + (err.stderr ?? '');
@@ -254,13 +293,214 @@ const r223bMs = Date.now() - t0;
 const r223bFails = (r223bOut.match(/^FAIL \[/gm) ?? []).length;
 const r223bPasses = (r223bOut.match(/^PASS \[/gm) ?? []).length;
 
-check('B', 'the repaired round223b runs green against the tree it now describes',
-  r223bExit === 0 && r223bFails === 0,
-  `exit ${r223bExit} after ${r223bMs} ms — ${r223bPasses} PASS, ${r223bFails} FAIL`);
+/**
+ * The child's refusal, **declared here from its own `exit(2)` site** rather than sniffed with a
+ * fleet-wide pattern. `probe-round223b:144` prints this string and exits 2 when 3001 is held.
+ *
+ * Daedalus's Round 269 §2 measured what a fleet-wide refusal regex would have to cover — seven
+ * spellings of one intent across the `exit(2)` sites — and concluded against it. His **arm A6** is
+ * the limb a plausible version of this omits, and it is adopted verbatim below: **an exit 2 whose
+ * declared refusal text is absent gets no benefit of the doubt and stays red.** Without A6,
+ * "could not run" becomes a blanket amnesty for every exit 2, including the ones that mean a
+ * probe crashed on its way to the door.
+ */
+const R223B_REFUSAL = /something already holds 3001/;
+
+/**
+ * Round 269 §1, routed to this file: **a conversion from "could not run" to "failed" is lossless
+ * nowhere and invisible everywhere.** The old form of the check below decided on
+ * `r223bExit === 0 && r223bFails === 0`, which maps the child's exit 2 and its exit 1 onto the
+ * same FAIL. The child's refusal was printed in the failure detail — legible to a human, and then
+ * discarded before anything downstream could read it. **The exit code is the only channel that
+ * carries the distinction, and a driving arm that grades a child's refusal as a boolean spends
+ * that channel one level below every consumer of it.**
+ *
+ * Three states, not two. `red` is the default, so a code this function has never seen is a red.
+ */
+type DriveOutcome = 'green' | 'red' | 'could-not-run';
+function classifyDrive(code: number, out: string, fails: number): DriveOutcome {
+  if (code === 2 && R223B_REFUSAL.test(out)) return 'could-not-run';
+  return code === 0 && fails === 0 ? 'green' : 'red';
+}
+
+const r223bDrive = classifyDrive(r223bExit, r223bOut, r223bFails);
+const r223bDetail = `exit ${r223bExit} after ${r223bMs} ms — ${r223bPasses} PASS, ${r223bFails} FAIL`;
+
+if (r223bDrive === 'could-not-run') {
+  /**
+   * **Why this is a skip and not a red, and why this probe then exits 3 rather than 2.**
+   *
+   * `scripts/lib/probe-outcome.mts` already carries the vocabulary: 2 is *refused at the door,
+   * nothing ran*, set by the refusing probe itself; 3 is *ran and established less than it set out
+   * to*. Arms A, C, D, E, F and Z of this probe all ran and all still decide. Only arm B's
+   * subprocess could not. **Exit 2 from here would claim nothing ran, which is false; a FAIL would
+   * claim something broke, which is also false.** The honest code is 3, and the module reaches it
+   * from a hard skip — so the skip is the propagation, not a softening of it.
+   *
+   * The consequence for the mechanism this was routed into, reported rather than assumed: a
+   * third state keyed on **exit 2 alone** cannot see this red, because the honest code here is 3.
+   * See §1 of this round's memo to Daedalus.
+   */
+  skipped.push('arm B: the drive of probe-round223b — it refused at its own door, exit 2, with its ' +
+    'declared refusal text present. Port 3001 is held by another process; free it and re-run.');
+  console.log(`SKIP [B] the drive of probe-round223b — COULD NOT RUN, not failed — ${r223bDetail}`);
+  console.log(`         operator action: free port 3001 (this is usually a live "npm run dev").`);
+} else {
+  check('B', 'the repaired round223b runs green against the tree it now describes',
+    r223bDrive === 'green', r223bDetail);
+}
+measure('B', 'the drive of probe-round223b, as three states', `${r223bDrive} — ${r223bDetail}`);
 measure('B', 'round223b summary line after the repair',
   (r223bOut.split('\n').filter((l) => /checks|passed|INCONCLUSIVE/.test(l)).pop() ?? '(none)').trim());
 measure('B', "the race arms B/C, unchanged by this repair — this is Argus's 'the core finding is unaffected'",
   (r223bOut.match(/^MEAS \[[BC]\][^\n]*/gm) ?? []).map((l) => l.trim()).join(' · ') || '(none)');
+
+// ── Arm B2 — the classifier driven against processes that really exit 0, 1 and 2 ──
+//
+// This file's own rule, from its §"What this probe does not do": a probe edit not followed by a
+// probe run is proofread, not verified. `classifyDrive` is a function over a number, so it is
+// trivially callable with a literal — and a literal 2 is not an exit 2. Three scripts are minted
+// and really spawned, so the codes this arm grades are codes a process actually produced.
+
+console.log('\n── arm B2: the three states, driven against real child exits ────');
+
+const B2DIR = path.join(REPO, '.testdata/r270/exitcodes');
+fs.rmSync(B2DIR, { recursive: true, force: true });
+fs.mkdirSync(B2DIR, { recursive: true });
+
+/** Spawn a minted script and report what it really did. Nothing is simulated. */
+function driveMinted(name: string, body: string): { code: number; out: string; fails: number } {
+  const p = path.join(B2DIR, `${name}.mjs`);
+  fs.writeFileSync(p, body);
+  let out = '';
+  let code = 0;
+  try {
+    out = execFileSync('node', [p], { encoding: 'utf8', timeout: 30_000, stdio: ['ignore', 'pipe', 'pipe'] });
+  } catch (e) {
+    const err = e as { stdout?: string; stderr?: string; status?: number };
+    out = (err.stdout ?? '') + (err.stderr ?? '');
+    code = err.status ?? -1;
+  }
+  return { code, out, fails: (out.match(/^FAIL \[/gm) ?? []).length };
+}
+
+const mintGreen = driveMinted('green', `console.log('PASS [X] fine');\nprocess.exit(0);\n`);
+const mintRed = driveMinted('red', `console.log('FAIL [X] broke');\nprocess.exit(1);\n`);
+const mintRefused = driveMinted('refused',
+  `console.error('minted: something already holds 3001. Stop it and re-run.');\nprocess.exit(2);\n`);
+// The A6 limb: a real exit 2 that does NOT carry the declared refusal text. A probe that dies on
+// its way to the door exits 2 too, and it is a red.
+const mintBareTwo = driveMinted('bare-two', `console.error('minted: TypeError somewhere');\nprocess.exit(2);\n`);
+// A child that exits 0 while printing failures. Its exit code and its own output disagree; the
+// output is the harder evidence, so this is a red. Arm B's old boolean got this one right and it
+// is pinned so the three-state rewrite cannot lose it.
+const mintLiar = driveMinted('liar', `console.log('FAIL [X] broke');\nprocess.exit(0);\n`);
+
+measure('B2', 'the exit codes the minted children really produced',
+  `green ${mintGreen.code} · red ${mintRed.code} · refused ${mintRefused.code} · ` +
+  `bare-two ${mintBareTwo.code} · liar ${mintLiar.code}`);
+check('B2', 'the mint produced real, distinct exit codes — otherwise this arm grades nothing',
+  mintGreen.code === 0 && mintRed.code === 1 && mintRefused.code === 2 && mintBareTwo.code === 2,
+  `0/1/2/2 required; got ${mintGreen.code}/${mintRed.code}/${mintRefused.code}/${mintBareTwo.code}`);
+
+const cls = (m: { code: number; out: string; fails: number }) => classifyDrive(m.code, m.out, m.fails);
+check('B2', 'exit 0 with no FAIL classifies green', cls(mintGreen) === 'green', cls(mintGreen));
+check('B2', 'exit 1 classifies red', cls(mintRed) === 'red', cls(mintRed));
+check('B2', 'exit 2 carrying the declared refusal classifies could-not-run',
+  cls(mintRefused) === 'could-not-run', cls(mintRefused));
+check('B2', "exit 2 WITHOUT the declared refusal stays red — Daedalus's A6, the limb a plausible " +
+  'version of this omits', cls(mintBareTwo) === 'red', cls(mintBareTwo));
+check('B2', 'exit 0 printing FAIL lines is still red — the boolean form got this right and the ' +
+  'rewrite does not lose it', cls(mintLiar) === 'red', cls(mintLiar));
+
+// Two-sided on the one thing that separates the new state from the old behaviour: the refusal
+// text, holding the exit code fixed at 2. Same code, opposite verdicts, one substring apart.
+check('B2', 'the refusal text is load-bearing two-sided — same exit 2, opposite verdicts',
+  cls(mintRefused) === 'could-not-run' && cls(mintBareTwo) === 'red',
+  `refused → ${cls(mintRefused)}; bare exit 2 → ${cls(mintBareTwo)}`);
+
+// And the regression the old form actually had, stated as a difference between the two readers
+// rather than as prose about one of them.
+const oldForm = (m: { code: number; fails: number }) =>
+  m.code === 0 && m.fails === 0 ? 'green' : 'red';
+check('B2', 'the old boolean form maps the refusal and a genuine red onto the same verdict; ' +
+  'this one does not', oldForm(mintRefused) === oldForm(mintRed) && cls(mintRefused) !== cls(mintRed),
+  `old: refusal=${oldForm(mintRefused)} red=${oldForm(mintRed)} (identical) · ` +
+  `new: refusal=${cls(mintRefused)} red=${cls(mintRed)}`);
+
+// ── Arm B3 — a child's stderr is not this probe's diagnosis ───────────────────
+//
+// **Found by the first sweep run of arm B2, not by writing it.** With arm B2 in and its `stdio`
+// left default, `sweep-probes.mjs` reported:
+//
+//     RED   exit   3  probe-round225-a-citation-is-not-a-call.mts
+//             exit 3, summary line NOT FOUND — minted: TypeError somewhere
+//
+// `minted: TypeError somewhere` is arm B2's own throwaway fixture, written to prove that a bare
+// exit 2 stays red. `execFileSync` forwards a child's stderr to its parent unless told otherwise,
+// and the sweep quotes **the last line of stdout+stderr** as the probe's diagnosis — so a fixture
+// minted to exercise a classifier ended up standing in for this probe's conclusion. A reader of
+// that sweep line would have gone looking for a TypeError this probe never had.
+//
+// > **A citation is not a call; a fixture's output is not a finding.** This file's own title,
+// > one level further out — Round 225 was about a regex reading a comment as a call site, and this
+// > is a sweep reading a mint's stderr as a verdict. Daedalus's Round 269 §4 is the static twin (a
+// > `process.exit(2)` inside a string literal counted as a refusal site); this is the runtime one.
+//
+// Driven two-sided below, because "I passed the right option" is a claim about behaviour and the
+// option is one word.
+
+console.log('\n── arm B3: a child stderr does not become this probe stderr ──────');
+
+/** A wrapper that runs a stderr-writing grandchild, with `stdio` as the single variable. */
+function wrapperSource(withStdio: boolean): string {
+  const opts = withStdio
+    ? `{ encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] }`
+    : `{ encoding: 'utf8' }`;
+  return `import { execFileSync } from 'child_process';\n` +
+    `try { execFileSync(process.execPath, ['-e', "console.error('GRANDCHILD NOISE')"], ${opts}); }\n` +
+    `catch { /* the grandchild's code is not this fixture's subject */ }\n` +
+    `console.log('WRAPPER TAIL');\n`;
+}
+
+/** Run a wrapper and keep its two streams APART — the whole point is which one the noise lands in. */
+function driveWrapper(name: string, withStdio: boolean): { out: string; err: string } {
+  const p = path.join(B2DIR, `${name}.mjs`);
+  fs.writeFileSync(p, wrapperSource(withStdio));
+  const r = spawnSync('node', [p], { encoding: 'utf8', timeout: 30_000 });
+  return { out: r.stdout ?? '', err: r.stderr ?? '' };
+}
+
+const leaky = driveWrapper('wrapper-default', false);
+const tight = driveWrapper('wrapper-captured', true);
+
+measure('B3', 'the grandchild noise, by stream, with stdio as the only variable',
+  `default → stderr ${JSON.stringify(leaky.err.trim())} · captured → stderr ${JSON.stringify(tight.err.trim())}`);
+
+check('B3', 'with default stdio a grandchild stderr LEAKS into the wrapper own stderr — this is ' +
+  'the defect, reproduced rather than described',
+  /GRANDCHILD NOISE/.test(leaky.err), JSON.stringify(leaky.err.trim()));
+check('B3', 'with stderr piped it does not leak, and the wrapper own tail is intact',
+  !/GRANDCHILD NOISE/.test(tight.err) && /WRAPPER TAIL/.test(tight.out),
+  `stderr ${JSON.stringify(tight.err.trim())}; stdout tail ${JSON.stringify(tight.out.trim())}`);
+check('B3', 'and the last line of stdout+stderr — the field sweep-probes quotes — is the wrapper ' +
+  'own only when stderr is captured',
+  ((leaky.out + leaky.err).trim().split('\n').pop() ?? '') === 'GRANDCHILD NOISE' &&
+  ((tight.out + tight.err).trim().split('\n').pop() ?? '') === 'WRAPPER TAIL',
+  `default → ${JSON.stringify((leaky.out + leaky.err).trim().split('\n').pop())}; ` +
+  `captured → ${JSON.stringify((tight.out + tight.err).trim().split('\n').pop())}`);
+
+// The property, asserted on this file rather than trusted: every subprocess drive here captures
+// stderr. A future arm added without the option reopens the misattribution silently.
+const selfCode = codeOnly(fs.readFileSync(import.meta.filename, 'utf8'));
+const execCalls = (selfCode.match(/execFileSync\(/g) ?? []).length;
+const execWithCapture = (selfCode.match(/execFileSync\([^;]*?stdio:\s*\['ignore',\s*'pipe',\s*'pipe'\]/gs) ?? []).length;
+measure('B3', 'execFileSync call sites in this file, and how many capture stderr',
+  `${execCalls} call sites · ${execWithCapture} pass stdio ['ignore','pipe','pipe']`);
+check('B3', 'every execFileSync in this file that drives a PROBE or a MINT captures stderr',
+  execWithCapture >= 2,
+  `${execWithCapture} of ${execCalls} call sites capture; the remainder are git plumbing, whose ` +
+  `stderr on failure is a real diagnosis of this run and is meant to surface`);
 
 // ── Arm C — the reader against the spellings its own docstring names ─────────
 
@@ -481,4 +721,4 @@ check('Z', 'packages/ is as this run found it — every spelling was spliced in 
       `graded here — Round 255 §4, repaired Round 256.`
     : `MOVED during this run.\n        before: ${fingerprintBefore}\n        after:  ${fingerprintAfter}`);
 
-summariseAndExit({ probeName: 'probe-round225', results });
+summariseAndExit({ probeName: 'probe-round225', results, skipped });

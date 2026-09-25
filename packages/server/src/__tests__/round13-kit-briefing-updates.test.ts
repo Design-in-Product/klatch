@@ -9,9 +9,6 @@ describe('buildKitBriefing — Round 12 updates (MAXT F3 + F4)', () => {
     return {
       id: 'ch-test',
       name: 'Test Channel',
-      // Round 269, Daedalus: added. `Channel.type` is required and `Partial<Channel>` spread cannot
-      // supply it, so `tsc --noEmit` read this as `ChannelType | undefined` (TS2322). Matches the
-      // sibling fixture in `kit-briefing.test.ts`, which this file is otherwise a near-copy of.
       type: 'chat',
       systemPrompt: '',
       model: 'claude-opus-4-6',
