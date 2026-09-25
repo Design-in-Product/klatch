@@ -190,3 +190,81 @@ as such in the writeup §6 and in the memo §6: the free-port total of **33** is
 + 1 skipped, reconciling to the prior pin of 21), not observed, because port 3001 was held by xian's
 dev server throughout; and arm B's green branch end-to-end is likewise a derivation, not a measurement.
 </content>
+
+---
+
+# WORK fire — 2026-09-25 ~14:47–15:05 PT — Round 272
+
+**Second fire of the day in this seat.** Session-start protocol run: fetched, `HEAD` ==
+`origin/main` == `5cae35ca`, `git status --porcelain` empty, `docs/mail/` listed, `docs/COORDINATION.md`
+read. New mail since the 10:30 fire: Daedalus's Round 271 (`…round-269-is-landed-and-your-exit-3-made-the-third-state-fire-for-the-first-time-2026-09-25.md`),
+addressed to me with three routed items. Acted on it this fire, not queued.
+
+**~14:48 — The mistake, recorded first because it shaped the round.** My first tool call asked
+whether 3001 was free. I wrote it as a bind to `127.0.0.1`. It said **FREE**. I stated "Port 3001 is
+free — exactly the condition items 1 and 2 were waiting on" and drove `probe-round225` expecting
+arm B's green branch at last.
+
+It skipped again, identically: child exit 2, declared refusal present, 369 ms. **The port was never
+free.** Asked the occupant directly: `GET 127.0.0.1:3001/api/channels` → **200**, 240 bytes,
+`"createdAt":"2026-09-25 02:28:04"` — xian's live dev server, twelve hours up.
+
+Six answers about the same port at the same moment: `connect` to `127.0.0.1`, `::1` and `localhost`
+all **ACCEPTED**; `bind` to `127.0.0.1` and `::1` both **FREE**; `bind` wildcard **EADDRINUSE**.
+`probe-round221:119` is a control that asserts precisely this, against a wildcard stub it stages
+itself. What today adds is an occupant nobody staged — the first sighting in the field.
+
+**~14:55 — Item 1 discharged.** Sweep on my tree: `BLOCKED exit 3 probe-round225`, `SWEEP BLOCKED —
+13 of 14 swept probes green, 0 red, 1 blocked, 0 census problem(s), 95 deferred`, exit **2**, 49.6 s.
+Exit-for-exit identical to Daedalus's §2 transcript. The classification is not an artifact of his tree.
+
+**~14:57 — Item 2 NOT discharged, recorded as such.** The derived **33** is unchanged: 32 established
++ 1 skipped, still derived, port held all fire. Flagged rather than allowed to read as moved.
+
+**~15:00 — Census before claiming.** 399 files walked by `readdirSync` recursion (not a glob — the
+rule from the grep-drops-files finding). Every freeness *decision* in the fleet is connect-shaped;
+all 28 bind-shaped `listen` sites either stage an occupant or assert the old test wrong. **The fleet
+is not exposed. I was.**
+
+**~15:01 — Caught myself over-claiming, before writing it.** I had a section drafted reporting the
+exit-2 limb as unreachable by the sweep. Read `sweep-probes.mjs` first and found Daedalus had
+**already recorded it** at `:110–112`. Rewrote the section as re-verification and said so explicitly
+in both the writeup and the memo. Re-verified two ways (0 of 14 swept probes with a reachable
+`process.exit(2)` once strings *and* comments are blanked; 0 of the 18 `requireAnUnoccupiedPort`
+callers swept). **One thing genuinely new and stronger:** `summarise()` in `probe-outcome.mts`
+cannot return 2 at all — 1, 3 or 0 only — so the limb is unreachable by the criterion that defines
+the swept set, not by population accident. Labelled **near-structural, not structural**, since
+`:153` says "most" and not "all".
+
+**~15:03 — The field consequence.** The sweep reported `0 red` in the same fire in which two probes
+really refused at the door (`probe-round221` and `probe-round223b`, exit 2, both declared, both
+deferred, neither seen). Not a defect — the design's own consequence. Routed the pricing question
+back to Daedalus: the exit-2 limb may be unnecessary, not merely unreachable. Did **not** ask for
+its removal; I have not established the case can't be produced.
+
+**Mail pushed to `main` in its own commit before any code work** (`dc23065a`), per the worktree mail
+rule. Code change second (`c9a10c57`).
+
+**Change made:** `probe-round225` arm B's skip branch now prints the bind/connect disagreement,
+measured by a **real child process** doing a real bind and a real connect, at the moment the operator
+is told to go free the port. Measurements only, on purpose — a hard check would move the count off
+the pinned free-port `33` and a diagnostic firing only on a held port would make the pin unreachable
+from either branch.
+
+## Controls
+
+| control | result |
+|---|---|
+| `npm run typecheck` | **0 `error TS`**, exit 0 |
+| server suite | **137 files · 2148 passed · 1 skipped** |
+| client suite | **38 files · 324 passed · 13 skipped** |
+| `probe-round225` (before and after the edit) | **exit 3** — 32 established, 1 hard skip, unchanged |
+| `sweep-probes.mjs` (before and after) | **13 of 14, CENSUS OK, 0 red, 1 blocked, 95 deferred**, exit 2, unchanged |
+| `probe-round221` | **exit 2**, declared refusal, staged nothing |
+| census walk | **399 files** by `readdirSync`, not a glob |
+
+0 model calls, no server staged, no port opened and held, no database, no corpus. All writes under
+gitignored `.testdata/r272/`. Every `npm` control run through `spawnSync` into a **file, not a pipe**.
+**Nothing was killed** — `probe-round221` refused before staging, so there was nothing to reap.
+
+## Wrap verification
