@@ -92,8 +92,12 @@ export const SWEPT = [
   },
   {
     file: 'probe-round225-a-citation-is-not-a-call.mts',
-    expect: /All 21 regression checks passed/,
-    why: 'run every fire as a control by both seats; Theseus 260 §6 reports 21/21',
+    expect: /All 33 regression checks passed/,
+    why: 'run every fire as a control by both seats; Theseus 270 §2 reports 32 established + 1 ' +
+      'skipped arm on a HELD port, so 33 is DERIVED (32 + the skipped drive), not observed — ' +
+      'port 3001 was held by xian\'s dev server for the whole of Round 270 and the green branch ' +
+      'could not be driven. The first free-port fire confirms or refutes it loudly; the prior ' +
+      'pin of 21 re-derives exactly from this run, which is what licenses the arithmetic.',
   },
   {
     file: 'probe-round245-the-shared-lib-coverage-floor.mts',

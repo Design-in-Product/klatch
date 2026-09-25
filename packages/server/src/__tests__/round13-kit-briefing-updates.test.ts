@@ -9,6 +9,7 @@ describe('buildKitBriefing — Round 12 updates (MAXT F3 + F4)', () => {
     return {
       id: 'ch-test',
       name: 'Test Channel',
+      type: 'chat',
       systemPrompt: '',
       model: 'claude-opus-4-6',
       mode: 'panel',

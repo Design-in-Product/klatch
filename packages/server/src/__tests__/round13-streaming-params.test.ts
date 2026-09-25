@@ -75,7 +75,7 @@ describe('streamClaudeCore — API parameters (Round 13 B3)', () => {
     insertMessage(channelId, 'user', 'Hello');
     const asst = insertMessage(channelId, 'assistant', '', 'streaming', DEFAULT_MODEL, DEFAULT_ENTITY_ID);
 
-    const entity = { id: DEFAULT_ENTITY_ID, name: 'Claude', model: DEFAULT_MODEL, systemPrompt: '', color: '#6B7280' };
+    const entity = { id: DEFAULT_ENTITY_ID, name: 'Claude', model: DEFAULT_MODEL, systemPrompt: '', color: '#6B7280', effort: 'high' as const, createdAt: '2026-01-01T00:00:00.000Z' };
     await streamClaude(channelId, asst.id, entity);
 
     expect(mockStream).toHaveBeenCalledTimes(1);
@@ -88,7 +88,7 @@ describe('streamClaudeCore — API parameters (Round 13 B3)', () => {
     insertMessage(channelId, 'user', 'Hello');
     const asst = insertMessage(channelId, 'assistant', '', 'streaming', DEFAULT_MODEL, DEFAULT_ENTITY_ID);
 
-    const entity = { id: DEFAULT_ENTITY_ID, name: 'Claude', model: DEFAULT_MODEL, systemPrompt: '', color: '#6B7280' };
+    const entity = { id: DEFAULT_ENTITY_ID, name: 'Claude', model: DEFAULT_MODEL, systemPrompt: '', color: '#6B7280', effort: 'high' as const, createdAt: '2026-01-01T00:00:00.000Z' };
     await streamClaude(channelId, asst.id, entity);
 
     const params = mockStream.mock.calls[0][0];
@@ -101,7 +101,7 @@ describe('streamClaudeCore — API parameters (Round 13 B3)', () => {
     insertMessage(channelId, 'user', 'Hello');
     const asst = insertMessage(channelId, 'assistant', '', 'streaming', DEFAULT_MODEL, DEFAULT_ENTITY_ID);
 
-    const entity = { id: DEFAULT_ENTITY_ID, name: 'Claude', model: DEFAULT_MODEL, systemPrompt: '', color: '#6B7280' };
+    const entity = { id: DEFAULT_ENTITY_ID, name: 'Claude', model: DEFAULT_MODEL, systemPrompt: '', color: '#6B7280', effort: 'high' as const, createdAt: '2026-01-01T00:00:00.000Z' };
     await streamClaude(channelId, asst.id, entity);
 
     expect(mockBetaStream).toHaveBeenCalledTimes(1);
@@ -115,7 +115,7 @@ describe('streamClaudeCore — API parameters (Round 13 B3)', () => {
     insertMessage(channelId, 'user', 'Hello');
     const asst = insertMessage(channelId, 'assistant', '', 'streaming', DEFAULT_MODEL, DEFAULT_ENTITY_ID);
 
-    const entity = { id: DEFAULT_ENTITY_ID, name: 'Claude', model: DEFAULT_MODEL, systemPrompt: '', color: '#6B7280' };
+    const entity = { id: DEFAULT_ENTITY_ID, name: 'Claude', model: DEFAULT_MODEL, systemPrompt: '', color: '#6B7280', effort: 'high' as const, createdAt: '2026-01-01T00:00:00.000Z' };
     await streamClaude(channelId, asst.id, entity);
 
     const params = mockBetaStream.mock.calls[0][0];
@@ -128,7 +128,7 @@ describe('streamClaudeCore — API parameters (Round 13 B3)', () => {
     insertMessage(channelId, 'user', 'Hello');
     const asst = insertMessage(channelId, 'assistant', '', 'streaming', DEFAULT_MODEL, DEFAULT_ENTITY_ID);
 
-    const entity = { id: DEFAULT_ENTITY_ID, name: 'Claude', model: DEFAULT_MODEL, systemPrompt: '', color: '#6B7280' };
+    const entity = { id: DEFAULT_ENTITY_ID, name: 'Claude', model: DEFAULT_MODEL, systemPrompt: '', color: '#6B7280', effort: 'high' as const, createdAt: '2026-01-01T00:00:00.000Z' };
     await streamClaude(channelId, asst.id, entity);
 
     const params = mockBetaStream.mock.calls[0][0];
@@ -143,7 +143,7 @@ describe('streamClaudeCore — API parameters (Round 13 B3)', () => {
     insertMessage(channelId, 'user', 'Hello');
     const asst = insertMessage(channelId, 'assistant', '', 'streaming', DEFAULT_MODEL, DEFAULT_ENTITY_ID);
 
-    const entity = { id: DEFAULT_ENTITY_ID, name: 'Claude', model: DEFAULT_MODEL, systemPrompt: '', color: '#6B7280' };
+    const entity = { id: DEFAULT_ENTITY_ID, name: 'Claude', model: DEFAULT_MODEL, systemPrompt: '', color: '#6B7280', effort: 'high' as const, createdAt: '2026-01-01T00:00:00.000Z' };
     await streamClaude(channelId, asst.id, entity);
 
     expect(mockStream).toHaveBeenCalledTimes(1);
@@ -156,7 +156,7 @@ describe('streamClaudeCore — API parameters (Round 13 B3)', () => {
     insertMessage(channelId, 'user', 'Hello');
     const asst = insertMessage(channelId, 'assistant', '', 'streaming', DEFAULT_MODEL, DEFAULT_ENTITY_ID);
 
-    const entity = { id: DEFAULT_ENTITY_ID, name: 'Claude', model: DEFAULT_MODEL, systemPrompt: '', color: '#6B7280' };
+    const entity = { id: DEFAULT_ENTITY_ID, name: 'Claude', model: DEFAULT_MODEL, systemPrompt: '', color: '#6B7280', effort: 'high' as const, createdAt: '2026-01-01T00:00:00.000Z' };
     await streamClaude(channelId, asst.id, entity);
 
     expect(mockBetaStream).toHaveBeenCalledTimes(1);
@@ -169,7 +169,7 @@ describe('streamClaudeCore — API parameters (Round 13 B3)', () => {
     insertMessage(channelId, 'user', 'Hello');
     const asst = insertMessage(channelId, 'assistant', '', 'streaming', DEFAULT_MODEL, DEFAULT_ENTITY_ID);
 
-    const entity = { id: DEFAULT_ENTITY_ID, name: 'Claude', model: DEFAULT_MODEL, systemPrompt: '', color: '#6B7280' };
+    const entity = { id: DEFAULT_ENTITY_ID, name: 'Claude', model: DEFAULT_MODEL, systemPrompt: '', color: '#6B7280', effort: 'high' as const, createdAt: '2026-01-01T00:00:00.000Z' };
     await streamClaude(channelId, asst.id, entity);
 
     expect(mockBetaStream).toHaveBeenCalledTimes(1);
