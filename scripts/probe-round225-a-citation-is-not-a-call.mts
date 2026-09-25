@@ -345,6 +345,56 @@ if (r223bDrive === 'could-not-run') {
     'declared refusal text present. Port 3001 is held by another process; free it and re-run.');
   console.log(`SKIP [B] the drive of probe-round223b — COULD NOT RUN, not failed — ${r223bDetail}`);
   console.log(`         operator action: free port 3001 (this is usually a live "npm run dev").`);
+
+  /**
+   * **Round 272 — why the operator action above must not be read as "check whether 3001 is free".**
+   *
+   * The check an operator reaches for is a bind, and **a bind to a specific loopback address
+   * succeeds while a server is answering on that same address.** I did this to myself in the first
+   * tool call of Round 272: bound `127.0.0.1:3001`, got FREE, wrote "the port is free", and drove
+   * this probe expecting arm B to run. It skipped again, and the occupant turned out to be a live
+   * dev server twelve hours old — `GET /api/channels` → 200.
+   *
+   * `probe-round221` is the control that asserts this, and it stages its own wildcard stub to do
+   * it. What was missing was the sighting against an occupant nobody staged. This block prints that
+   * sighting **at the moment an operator is being told to go free the port**, which is the one
+   * moment they are about to make the mistake.
+   *
+   * Measured by a **real child process** doing a real bind and a real connect, not by reasoning
+   * about what the addresses ought to do — arm B2's rule, one arm down: a literal is not an exit
+   * code, and an inference about a socket is not a socket.
+   *
+   * Measurements only, deliberately. These lines must not move this probe's regression count: the
+   * count on a free port is the pinned `33`, and a diagnostic that fires only when the port is held
+   * would make the pin unreachable from either branch.
+   */
+  const addressReport = (() => {
+    const src = `const net=require('net');
+const connect=(host)=>new Promise(r=>{const s=net.connect({host,port:3001});const done=v=>{try{s.destroy()}catch{};r(v)};
+s.setTimeout(1000);s.once('connect',()=>done('accepted'));s.once('timeout',()=>done('timeout'));s.once('error',e=>done(e.code));});
+const bind=(host)=>new Promise(r=>{const s=net.createServer();s.once('error',e=>r(e.code));
+s.once('listening',()=>{s.close();r('free')});host?s.listen(3001,host):s.listen(3001);});
+(async()=>{const out=[];
+for(const h of ['127.0.0.1','::1'])out.push('connect '+h+' -> '+await connect(h));
+for(const h of ['127.0.0.1','::1'])out.push('bind '+h+' -> '+await bind(h));
+out.push('bind (wildcard) -> '+await bind(null));
+console.log(out.join(' · '));})();`;
+    try {
+      return execFileSync('node', ['-e', src],
+        { encoding: 'utf8', timeout: 20_000, stdio: ['ignore', 'pipe', 'ignore'] }).trim();
+    } catch {
+      return '(the address probe did not complete)';
+    }
+  })();
+
+  console.log(`         why "is it free?" is the wrong question: ${addressReport}`);
+  measure('B', 'the same port, six ways, while the child was refusing it', addressReport);
+  measure('B', 'the guard that answers correctly',
+    'portAcceptsAConnection (scripts/lib/probe-server-ownership.mts:85) — a connect, not a bind. ' +
+    'Every freeness decision in the fleet already routes through it or through ' +
+    'requireAnUnoccupiedPort (:141); the 28 bind-shaped listen sites all either stage an occupant ' +
+    'or assert the old test is wrong. An ad-hoc freeness check typed into a fire is a pre-flight ' +
+    'and is subject to the same rule.');
 } else {
   check('B', 'the repaired round223b runs green against the tree it now describes',
     r223bDrive === 'green', r223bDetail);
