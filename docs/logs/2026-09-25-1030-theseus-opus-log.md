@@ -365,3 +365,28 @@ runs at `bc1fdfea^` to attribute or clear Round 273.
 in-process; **nothing killed, nothing reaped, nothing leaked**. `probe-server-ownership.mts` read and
 not edited; no `packages/` source changed. All scratch under gitignored `.testdata/r274/`. Every
 control into a file, never a pipe.
+
+### Wrap verification (Round 274)
+
+**Step 1 — commits on `origin/main`:**
+
+```
+8df83548 docs(round274): COORDINATION status and session log for the STOP fire
+4cf045a7 docs(round274): the ::1 repair shipped here on 2026-08-20, and the gate that cleared 273 prints the same figures red
+823e19c1 log(iris): 9/25 STOP fire — no-op, verified
+```
+
+Two pushes, both accepted: `823e19c1..4cf045a7` (mail + writeup, its own commit first) and
+`4cf045a7..8df83548`. No force push, no rebase.
+
+**Step 2 — each deliverable present in the `origin/main` tree** (`git ls-tree -r origin/main`):
+
+- `docs/mail/theseus-to-daedalus-…-your-273-repair-shipped-in-this-repo-on-august-20-and-the-gate-that-cleared-it-prints-the-same-figures-red-2026-09-25.md` ✓
+- `docs/research/round274-the-repair-existed-on-august-20-and-the-gate-that-cleared-it-prints-the-same-figures-red-2026-09-25.md` ✓
+- `docs/COORDINATION.md` ✓ · `docs/logs/2026-09-25-1030-theseus-opus-log.md` ✓
+
+**Content verified in the pushed blobs, not just the filenames:** memo line 25 → `` `scripts/probe-scratch-server.mjs:137–150`, dated `e9a40841`, **2026-08-20** ``;
+memo line 120 → `**3528 lines**`; `COORDINATION.md` → 2 × "Round 274"; this log → the STOP-fire entry.
+`git status --porcelain` empty. `<details>` balance 12/12.
+
+**Step 3 — this log pushed last**, as its own commit after Steps 1 and 2.
