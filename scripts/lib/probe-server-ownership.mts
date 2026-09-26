@@ -44,8 +44,36 @@
  * ## So ask the question directly: does a connection succeed?
  *
  * A TCP connect to `127.0.0.1:<port>` reaches whichever socket claims that address — the
- * dual-stack `::` listener, the `0.0.0.0` listener, and the loopback-only listener alike. One
- * test, no misses in the matrix above, and it does not care whether the occupant ever answers.
+ * dual-stack `::` listener, the `0.0.0.0` listener, and the IPv4 loopback-only listener alike.
+ * It does not care whether the occupant ever answers.
+ *
+ * ## The matrix above has a fourth occupant, and it defeated BOTH sides (Round 273)
+ *
+ * Until Round 273 this section read *"one test, no misses in the matrix above"* — and that was
+ * true of the matrix above, which is the problem: it enumerates three occupants and the fourth
+ * is the miss. Measured this worktree, 2026-09-25, `darwin`, node v26.5.0:
+ *
+ * ```
+ * occupant        connect 127.0.0.1   connect ::1   bind 127.0.0.1   bind wildcard
+ * ::1 only        ECONNREFUSED ✗      ACCEPTED      FREE ✗           FREE ✗
+ * ```
+ *
+ * A listener on IPv6 loopback alone is invisible to a connect aimed at `127.0.0.1`, and — the
+ * part that made this more than a docstring bug — it is **also invisible to the wildcard bind**,
+ * because a wildcard `::` bind does not collide with a bound `::1`. So both sides of
+ * {@link somethingIsAlreadyAnswering} read clear, it returned `null`, and
+ * {@link requireAnUnoccupiedPort} let the probe through to bind a server beside a stranger's.
+ * The independent-second-side design did not save this case; nothing did.
+ *
+ * `portAcceptsAConnection` now tries **both loopback families in parallel** and accepts either.
+ * `localhost` alone would also have worked (it resolved to an ACCEPTED connect against all four
+ * occupants) but it makes the guard depend on `/etc/hosts` and on node's happy-eyeballs default,
+ * so the two addresses are named explicitly instead.
+ *
+ * **Not established:** whether any process on this fleet actually binds `::1` alone. Klatch's
+ * own server binds `::` via `serve({ fetch, port })` and every leaked probe server inherits that,
+ * so the hole was latent rather than live. It is closed on the strength of the measurement, not
+ * of a sighting.
  *
  * {@link somethingIsAlreadyAnswering} therefore decides on the connect, keeps a **wildcard**
  * bind as an independent second side (it asks the exact question `packages/server` will ask a
@@ -77,14 +105,10 @@ export function channelsUrl(port: number): string {
   return `http://127.0.0.1:${port}/api/channels`;
 }
 
-/**
- * "does a connection succeed here?" — the primary test. Reaches any listener on the port
- * regardless of the address it bound; see the matrix in the module comment for why that is
- * the property a bind test cannot supply.
- */
-export function portAcceptsAConnection(port: number, timeoutMs = 1500): Promise<boolean> {
+/** One family's worth of {@link portAcceptsAConnection}. */
+function connectSucceeds(port: number, host: string, timeoutMs: number): Promise<boolean> {
   return new Promise((resolve) => {
-    const sock = net.connect({ port, host: '127.0.0.1' });
+    const sock = net.connect({ port, host });
     const done = (answer: boolean) => { sock.destroy(); resolve(answer); };
     sock.setTimeout(timeoutMs, () => done(false));
     sock.once('connect', () => done(true));
@@ -93,9 +117,33 @@ export function portAcceptsAConnection(port: number, timeoutMs = 1500): Promise<
 }
 
 /**
+ * "does a connection succeed here?" — the primary test. Reaches any listener on the port
+ * regardless of the address it bound; see the matrix in the module comment for why that is
+ * the property a bind test cannot supply.
+ *
+ * Round 273: **both** loopback families, in parallel. Aimed at `127.0.0.1` alone this returned
+ * `false` against a listener bound to `::1`, and the wildcard second side missed that occupant
+ * too, so `requireAnUnoccupiedPort` let a probe through onto an occupied port. Parallel rather
+ * than sequential so the worst case stays one `timeoutMs` rather than two; a genuinely clear port
+ * costs nothing either way, because it refuses immediately instead of timing out.
+ */
+export function portAcceptsAConnection(port: number, timeoutMs = 1500): Promise<boolean> {
+  return Promise.all([
+    connectSucceeds(port, '127.0.0.1', timeoutMs),
+    // A machine with no IPv6 loopback errors immediately here, which is a correct `false`.
+    connectSucceeds(port, '::1', timeoutMs),
+  ]).then((answers) => answers.some(Boolean));
+}
+
+/**
  * "can `packages/server` bind here?" — the independent second side. Binds the **wildcard**,
  * which is what `serve({ fetch, port })` does, so this asks the child's own question. Kept
  * for the case a connect cannot see: a socket bound but not listening.
+ *
+ * Round 273, on how much this second side actually buys: it is narrower than "whatever the
+ * connect misses." A wildcard bind does NOT collide with a listener on `::1`, so before the
+ * connect was widened to both families this function agreed with the wrong answer rather than
+ * correcting it. Two sides that can go blind to the same occupant are one side.
  */
 export function aWildcardBindWouldSucceed(port: number): Promise<boolean> {
   return new Promise((resolve) => {

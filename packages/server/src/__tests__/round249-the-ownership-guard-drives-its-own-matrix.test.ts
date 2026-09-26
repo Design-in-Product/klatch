@@ -148,8 +148,20 @@ function aBindWouldSucceed(port: number, host?: string): Promise<boolean> {
 
 describe('the bind matrix the module decided on is re-taken here, not quoted', () => {
   // `::` is what a real Klatch server binds — the occupant the shipped guard used to miss.
-  it('reproduces all nine cells, and every bind column still has a miss', async () => {
-    const OCCUPANTS = ['::', '0.0.0.0', '127.0.0.1'] as const;
+  //
+  // Round 273, Daedalus: `::1` was added to OCCUPANTS and it is the reason this test changed at
+  // all. The list was `['::', '0.0.0.0', '127.0.0.1']`, and the final assertion below —
+  // "the primary test has no misses at all" — was a UNIVERSAL claim quantified over a list that
+  // omitted the only occupant that falsifies it. Adding the row turned that line red against the
+  // shipped `portAcceptsAConnection`, which aimed at `127.0.0.1` alone: ECONNREFUSED against a
+  // listener on IPv6 loopback. The same occupant also passed the wildcard bind column, so
+  // `somethingIsAlreadyAnswering` returned null and the guard waved the probe through.
+  //
+  // This is Round 249's own §1 rule turned on Round 249: a matrix in a comment is a measurement
+  // nothing re-takes, and a matrix in a test is a measurement nothing re-takes OVER NEW ROWS. The
+  // enumeration is the assumption, and it was the part no one was checking.
+  it('reproduces all cells, and every bind column still has a miss', async () => {
+    const OCCUPANTS = ['::', '0.0.0.0', '127.0.0.1', '::1'] as const;
     const BINDS = ['127.0.0.1', undefined /* wildcard */, '0.0.0.0'] as const;
 
     // [occupant] -> { connect, binds: [loopback, wildcard, 0.0.0.0] }
@@ -174,20 +186,50 @@ describe('the bind matrix the module decided on is re-taken here, not quoted', (
     //   ::             BOUND ✗          REFUSED         REFUSED
     //   0.0.0.0        BOUND ✗          BOUND ✗         REFUSED
     //   127.0.0.1      REFUSED          BOUND ✗         BOUND ✗
+    //   ::1            BOUND ✗          BOUND ✗         BOUND ✗   ← Round 273; misses EVERY column
     expect(matrix['::'].binds).toEqual([true, false, false]);
     expect(matrix['0.0.0.0'].binds).toEqual([true, true, false]);
     expect(matrix['127.0.0.1'].binds).toEqual([false, true, true]);
+    expect(matrix['::1'].binds).toEqual([true, true, true]);
 
     // The claim the whole module rests on, stated as a property rather than a table: there is
-    // no address you can bind that detects all three occupants.
+    // no address you can bind that detects all of the occupants.
     for (let col = 0; col < BINDS.length; col++) {
       const misses = OCCUPANTS.filter((h) => matrix[h].binds[col]);
       expect(misses.length).toBeGreaterThan(0);
     }
 
-    // And the primary test has no misses at all: every occupant is detected by a connect.
-    expect(OCCUPANTS.map((h) => matrix[h].connect)).toEqual([true, true, true]);
+    // `::1` makes that claim strictly stronger than a column-wise one: it is missed by every bind
+    // column at once, so no CONJUNCTION of bind tests detects it either. Before Round 273 the
+    // module's second side was a wildcard bind, and this row is why that side could not be the
+    // thing that caught the hole in the first side.
+    expect(matrix['::1'].binds.every(Boolean)).toBe(true);
+
+    // And the primary test has no misses: every occupant is detected by a connect. This is the
+    // line Round 273 turned red by adding `::1`, and it passes now because the connect asks both
+    // loopback families instead of one.
+    expect(OCCUPANTS.map((h) => matrix[h].connect)).toEqual([true, true, true, true]);
   }, 30_000);
+
+  // The regression guard at the level a probe actually calls. The matrix test above asserts the
+  // primitive; this asserts the DECISION, which is the thing that was wrong: with a `::1`-only
+  // occupant, `somethingIsAlreadyAnswering` returned null ("genuinely clear") and
+  // `requireAnUnoccupiedPort` therefore returned instead of exiting 2.
+  it('a ::1-only occupant is not a clear port — the Round 273 hole, at the decision', async () => {
+    const port = await anEphemeralPort();
+    const occupant = await occupyRaw(port, '::1');
+    strays.push(occupant);
+    try {
+      expect(await portAcceptsAConnection(port, 1000)).toBe(true);
+      // The second side genuinely does NOT see this occupant. Asserted rather than glossed: it is
+      // why widening the connect was the only available repair.
+      expect(await aWildcardBindWouldSucceed(port)).toBe(true);
+      expect(await somethingIsAlreadyAnswering(port, 1000)).toMatch(/accepts connections|answers HTTP/);
+    } finally {
+      await close(occupant);
+      strays.pop();
+    }
+  }, 15_000);
 
   it('a genuinely clear port reads clear on both sides', async () => {
     const port = await anEphemeralPort();
