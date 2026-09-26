@@ -503,6 +503,26 @@ if (!R246) {
 const SERVER_ENTRY = path.join(REPO, 'packages/server/src/index.ts');
 const entrySha = sha256(SERVER_ENTRY);
 
+/**
+ * 3001's state BEFORE this probe touches it — the anchor arm Z2 was missing.
+ *
+ * Round 278: `Z2` used to read *"3001 is quiet at exit, **and** no staged copy remains under
+ * `scripts/`"* as one conjunction. A conjunction cannot say which half failed, and the two halves
+ * are not even the same kind of claim: the staged-copy half is this probe's own hygiene, which it
+ * fully controls, while the quiet-at-exit half is unanswerable whenever something else on the
+ * machine already holds 3001 — xian's dev server, most days. On those days Z2 went red for a reason
+ * that is an **environmental block, not a leak**, in exactly the colour it would use for a probe
+ * that had stranded a server on the port. That is the Rounds 269/271 third-state conflation, in a
+ * file that predates the remedy (reported by Daedalus, Round 277 §6(b)).
+ *
+ * The repair is to make the leak claim *comparative* rather than absolute. "Did I leave 3001 the way
+ * I found it" is answerable on a busy machine and a quiet one alike; "is 3001 quiet" is not.
+ *
+ * Anchored here rather than at the top of the file because this is the last point before the probe
+ * contacts 3001 at all — arms A–C are static analysis of file contents and never touch the port.
+ */
+const port3001AnsweredAtEntry = await portAcceptsAConnection(3001, 1500);
+
 // Blast radius over the WHOLE repo, not just packages/. Driving other people's probes is the
 // one thing this round does that can touch anything; the control has to be as wide as the risk.
 //
@@ -873,10 +893,34 @@ if (repoDirtyAfterDrive === null) {
       `drive's blast radius.`);
 }
 
-check('Z2', '3001 is quiet at exit, and no staged copy remains under scripts/',
-  portQuiet && stray.length === 0,
-  `connect 3001 → ${!portQuiet}; staged files under scripts/ counted by readdirSync: ${stray.length}. ` +
-    `Counted, not grepped — a glob has silently dropped a file three times in this seat.`);
+// Z2 was one conjunction over two different kinds of claim, and its red could not say which half
+// failed — see the note on `port3001AnsweredAtEntry`. Split, Round 278.
+
+check('Z2a', 'no staged copy remains under scripts/ — this probe\'s own hygiene',
+  stray.length === 0,
+  `staged files under scripts/ matching .round250*/.probe-round250*, counted by readdirSync: ` +
+    `${stray.length}${stray.length ? ` (${stray.join(', ')})` : ''}. Counted, not grepped — grep ` +
+    `emits no row at all for a file containing a NUL byte, which is how a glob "silently dropped a ` +
+    `file" three times in this seat before Round 276 found the mechanism.`);
+
+check('Z2b', '3001 is in the same state at exit as at entry — this probe leaked nothing onto it',
+  !portQuiet === port3001AnsweredAtEntry,
+  `connect 3001 → answered ${port3001AnsweredAtEntry} at entry, ${!portQuiet} at exit. ` +
+    `Comparative on purpose: "is 3001 quiet" is unanswerable on a machine where something else ` +
+    `holds the port, and answering it anyway reported an environmental block as a leak. ` +
+    `"Did I leave it as I found it" is answerable either way.`);
+
+// The third state, said out loud rather than folded into a red. A probe that cannot reach a claim
+// must report that it could not, in a channel that is not the failure channel (Rounds 269/271).
+if (port3001AnsweredAtEntry) {
+  skipped.push({
+    label:
+      'Z2c: 3001 was ALREADY answering before this probe started, so "3001 is quiet at exit" is ' +
+      'not this probe\'s claim to make — it is blocked by the machine, not failed by the code. ' +
+      'Arms D/E skipped for the same reason. Z2b still holds the leak claim, comparatively.',
+    kind: 'regression',
+  });
+}
 
 try { fs.rmSync(tmp, { recursive: true, force: true }); } catch { /* best effort */ }
 
