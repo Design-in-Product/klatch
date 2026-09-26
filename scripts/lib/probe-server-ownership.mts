@@ -97,6 +97,7 @@
  */
 
 import net from 'net';
+import http from 'http';
 import fs from 'fs';
 import type { ChildProcess } from 'child_process';
 
@@ -154,14 +155,43 @@ export function aWildcardBindWouldSucceed(port: number): Promise<boolean> {
   });
 }
 
-/** "is anyone answering here?" — used to describe an occupant, never to decide there isn't one. */
-export async function portAnswersHttp(port: number, timeoutMs = 3000): Promise<string | null> {
-  try {
-    const res = await fetch(channelsUrl(port), { signal: AbortSignal.timeout(timeoutMs) });
-    return `HTTP ${res.status}`;
-  } catch {
-    return null;
-  }
+/**
+ * "is anyone answering here?" — used to describe an occupant, never to decide there isn't one.
+ *
+ * Round 275: `http.request`, NOT `fetch`. This function's whole contract is "never throws, says
+ * `null` when it cannot tell", and on `fetch` that contract was **false**. Node's bundled undici
+ * calls `socket.setTypeOfService(request.typeOfService)` unconditionally in `writeH1`
+ * (`internal/deps/undici/undici:7972–7974`; the default is `0`, line 2876), and node's
+ * `Socket.prototype.setTypeOfService` **throws** on any non-zero libuv return outside Windows.
+ * undici does not wrap that call, so the throw leaves the write path as an **uncaughtException**
+ * — not a rejected promise. Driven: with that call forced to fail, the `await` here does not
+ * reject with the cause at all; it hangs until the abort budget and this function returns
+ * **`null`**, i.e. reports "nothing is answering" about a port that answers `200`, while the
+ * process dies through a completely different channel. A `try/catch` cannot reach it, because
+ * the throw was never on this stack.
+ *
+ * `http.request` does not touch that option. Same three outcomes, same budget, measured:
+ * live server `HTTP 200` in 6 ms · silent occupant `null` at the budget · empty port `null` in
+ * 4 ms. The describing half of an ownership guard must not be able to kill the process it is
+ * describing from.
+ */
+export function portAnswersHttp(port: number, timeoutMs = 3000): Promise<string | null> {
+  return new Promise((resolve) => {
+    let settled = false;
+    const done = (answer: string | null) => { if (!settled) { settled = true; resolve(answer); } };
+    // Built FROM `channelsUrl`, not beside it: the address this asks about must stay the address
+    // the rest of the module names, or the two drift and only one of them is under test.
+    const url = new URL(channelsUrl(port));
+    const req = http.request(
+      { host: url.hostname, port: Number(url.port), path: url.pathname, method: 'GET', timeout: timeoutMs },
+      (res) => { res.resume(); done(`HTTP ${res.statusCode}`); },
+    );
+    // Both arms resolve rather than reject: absence of an answer is this function's `null`, and
+    // an occupant that accepts and never speaks is the case the budget exists for.
+    req.once('timeout', () => { req.destroy(); done(null); });
+    req.once('error', () => done(null));
+    req.end();
+  });
 }
 
 /**
@@ -273,8 +303,15 @@ export async function waitUntilOurServerIsUp(
     }
     let booted = false;
     try { booted = fs.readFileSync(logPath, 'utf8').includes('Klatch server running'); } catch { /* not yet */ }
+    // Round 275: `portAnswersHttp`, not a second `fetch` of its own. This poll ran the undici
+    // write path once every 250 ms for as long as a server took to boot — far more first-writes
+    // than the describer ever made, and with the same `catch { }` that cannot catch a throw
+    // raised off this stack. Sharing the one implementation is also the Round 222 lesson applied
+    // inside the module that Round 222 produced: a second copy of an HTTP call in the same file
+    // is still a second copy.
     if (booted) {
-      try { if ((await fetch(channelsUrl(port), { headers: { connection: 'close' } })).ok) return; } catch { /* not yet */ }
+      const answer = await portAnswersHttp(port, 2000);
+      if (answer !== null && /^HTTP 2\d\d$/.test(answer)) return;
     }
     await new Promise((r) => setTimeout(r, 250));
   }
