@@ -161,4 +161,114 @@ described a tree that did not exist, and the next reader acked the memo rather t
 
 Final state pushed: `b1157814`. Three commits of substance this fire plus two merges.
 
-</content>
+<!-- A stray literal `</content>` closed this file at line 164, left by the 13:17 fire's write.
+     Removed by the 17:17 STOP fire; noted rather than silently deleted. -->
+
+---
+
+# Daedalus — 2026-09-25 STOP fire (17:17 PT), same day, Round 273
+
+## 17:17 — Fire open, briefing
+
+Pulled: `HEAD` == `origin/main` == `879e6ec5` (Calliope's rollup v155, 17:01). Clean tree.
+`docs/COORDINATION.md` read; `docs/mail/` listed.
+
+**One memo addressed to me and unanswered:** Theseus's Round 272
+(`theseus-to-daedalus-…-your-classifier-reproduces-on-my-tree-and-the-port-was-never-free-2026-09-25.md`),
+committed 14:53–14:58, after my 13:17 WORK fire closed. It routes one pricing question (§6) and
+leaves one mechanism unestablished (§8).
+
+## 17:20 — §6 priced against the code, not the memo
+
+Read `scripts/lib/probe-outcome.mts` and `scripts/sweep-probes.mjs` in full rather than trusting the
+summary. Re-measured his two counts independently, strings-and-comments blanked, over the 14 swept
+entries parsed out of the sweep source:
+
+```
+swept files with REACHABLE process.exit(2):                0
+swept files mentioning exit(2) ONLY in string/comment:     2
+swept files calling requireAnUnoccupiedPort:               0
+```
+
+Both reproduce. `ProbeOutcome.code` is declared `0 | 1 | 3` at `probe-outcome.mts:75` — his "cannot
+return 2" holds at the **type** level, stronger than he put it.
+
+**Decision: keep the exit-2 limb.** Two grounds he did not have: (a) `probe-round269` arm H3 already
+drives the limb with a fixture that *really* exits 2, so removing it deletes the only assertion about
+what the sweep does with an exit 2; (b) his premise "the swept set is the set that needs no resource"
+is false — `sweep-probes.mjs:32–34` defines membership observationally, and `probe-round225` is
+swept while depending on 3001. Full argument in the writeup §5.
+
+## 17:22 — §8 mechanism established, and it exposed a live hole
+
+Staged three occupants on port 47317 (not 3001) and took the full connect × bind matrix →
+`.testdata/r273/matrix.txt`. Dual-stack confirmed: wildcard `listen` binds `::`, and on darwin its
+IPv4-mapped coverage does not reserve `127.0.0.1` against a separate `AF_INET` bind.
+
+**The unplanned finding:** a fourth occupant — `::1` only — is invisible to `connect 127.0.0.1`
+(ECONNREFUSED) **and** passes the wildcard bind (FREE). So both sides of
+`somethingIsAlreadyAnswering` read clear, it returns `null`, and `requireAnUnoccupiedPort` returns
+instead of exiting 2. Round 221's failure arriving through the module written to prevent it.
+
+Root cause of the miss: `round249`'s `OCCUPANTS` was `['::','0.0.0.0','127.0.0.1']` and asserted "the
+primary test has no misses at all" — a universal claim over a list omitting the falsifying case.
+
+## 17:24 — Repair, driven red-then-green
+
+`portAcceptsAConnection` now asks both loopback families in parallel. Verified the new assertions
+actually catch it by temporarily restoring the single-family connect:
+
+| run | result |
+|---|---|
+| new test vs. **old** connect (`.testdata/r273/r249-before.txt`) | **2 failed**, 13 passed — connect column `[true,true,true,false]` |
+| new test vs. **new** connect (`.testdata/r273/r249-after.txt`) | **15 passed** |
+
+Declined the cheaper `connect localhost` fix (ACCEPTED against all four occupants) because it makes
+the pre-flight depend on `/etc/hosts` and node's happy-eyeballs default. Recorded in the module.
+
+## 17:26 — Gate
+
+| control | result |
+|---|---|
+| `npm test` | server **137 files · 2149 passed · 1 skipped**; client **38 · 324 · 13** |
+| server typecheck | **0** occurrences of `error TS` |
+| `sweep-probes.mjs` | 13 of 14 green, 0 red, **1 blocked**, 0 census problems, 95 deferred |
+| sweep real exit code | **2** |
+
+Server went 2148 → 2149: exactly the one decision-level test added this fire. Client unchanged from
+Theseus's Round 272 figures.
+
+**One process note against myself.** My first sweep run was `> file 2>&1; true`, and the harness duly
+reported "exit code 0" — `true`'s code, not the sweep's. I did not cite it. Re-ran under `spawnSync`
+to read `r.status` directly: **2**. That is the same class as the pipe-hides-the-exit-code rule, via
+a different mask, and the reason the table above says "real exit code" rather than "exit code".
+
+Sweep BLOCKED because `probe-round225` skips arm B — 3001 is *still* held by xian's dev server, as
+Theseus found at 14:53. My change does not move the gate; it was BLOCKED before and after, for the
+same declared reason.
+
+## 17:28 — Deliverables
+
+- `scripts/lib/probe-server-ownership.mts` — both-family connect; three docstrings corrected, one of
+  which stated a property the function did not have
+- `packages/server/src/__tests__/round249-…test.ts` — `::1` occupant row + a decision-level test
+- `docs/research/round273-a-colon-colon-one-occupant-defeated-both-sides-of-the-ownership-guard-2026-09-25.md`
+- `docs/mail/daedalus-to-theseus-…-keep-the-exit-2-limb-and-your-bind-finding-has-a-fourth-occupant-that-defeats-both-guards-2026-09-25.md`
+
+Landed incrementally rather than at the end (`bc1fdfea` pushed at 17:25, before the gate finished) —
+the 09:17 timeout that stranded five files is the failure mode being avoided.
+
+## Not established by this fire
+
+- That the `::1` hole was ever hit in the field. Klatch's `serve()` binds `::`, so the triggering
+  occupant class is not produced by this project. **Latent, not live** — closed on the measurement.
+- That the matrix generalises off `darwin` / node `v26.5.0`.
+- Whether the other 9 direct callers of `portAcceptsAConnection` ever decided freeness on it alone in
+  a way that mattered. They inherit the repair; their histories are unaudited.
+
+## Seventh flag — COORDINATION.md
+
+**3519 lines** measured this fire, up 16 from Theseus's 3503 at 14:53. Seventh from me, third from
+him. Not restructuring a doc every seat reads at session start without a ruling; concrete one-decision
+proposal is in the writeup §6 and the memo §9, addressed to xian.
+
