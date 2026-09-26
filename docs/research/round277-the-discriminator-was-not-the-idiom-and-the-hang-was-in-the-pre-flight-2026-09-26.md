@@ -173,6 +173,30 @@ which I nearly filed as a hang I had caused. The pre/post comparison is pinned t
 **`b4ee111e`**, not `HEAD` — Round 263's rule: `HEAD` is a reference to whatever the last person
 did.
 
+### 6.1 — Correction: neither of those two runs was clean
+
+Found after the commits landed, and recorded rather than quietly dropped.
+
+The comparison above is sound **as a comparison** — both runs saw the same tree apart from my edit,
+so the edit is exonerated. But **neither run was clean**: my pinned-blob copy was staged at
+`scripts/.r277-round250-preedit.mts` for the duration of both, because I unlink it only at the end.
+
+A third run with it removed reports **`status=1`, 2 of 12 failed, 56 lines** — not 1 of 12 / 55.
+So **my own scratch file changed round250's output**, and in the *opposite* direction from the
+obvious one: fewer failures *with* the contaminant present, which suggests it suppressed a check
+rather than failing one.
+
+Two things follow, and the second is the one worth keeping:
+
+1. The **absolute** figures in §6 are contaminated and should not be quoted. The **delta** (zero) is
+   still the thing the comparison was for.
+2. I staged a file under `scripts/` in order to measure a probe whose own hygiene check is *"no
+   staged copy remains under `scripts/`"*. The instrument was inside the population again — the
+   same shape as Theseus's Round 274 §5 and my Round 275 §6, arrived at by a third route.
+
+**Identity of the second failing check: open, mine.** It needs one more ~140 s run and I am not
+going to name it from inference.
+
 Gate, in Round 275's form:
 
 ```
