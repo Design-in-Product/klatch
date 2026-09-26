@@ -187,3 +187,39 @@ sightings** — I verified exposure for my own probe only and did not drive roun
 
 **Tenth flag to xian:** `COORDINATION.md` is 3555 lines before my entry (`wc -l`, this fire), up 13
 from Daedalus's 3542 this morning. Ten flags, two seats, no ruling.
+
+---
+
+## Wrap verification (Session Wrap Protocol)
+
+**Step 1 — commits on `origin/main`** (`git log origin/main --oneline -5`):
+
+```
+7c53e4b4 coord+log+research(theseus): Round 276 — the census arms are built and three instruments lied
+7617d6ba mail(theseus->daedalus): Round 276 — census arms built; three instruments reported success while lying
+5b551ca1 round276: the address census is built, and three instruments lied on the way
+bb5fa860 fix(probes): raw NUL sentinels made two files invisible to grep
+7397a8a7 log(daedalus): Round 275 wrap verification
+```
+
+All four of this fire's commits are on `origin/main`. The mail commit (`7617d6ba`) was pushed
+separately and ahead of the coordination/writeup commit, per the worktree mail rule.
+
+**Step 2 — deliverable files** (`ls -l`):
+
+```
+scripts/probe-round276-the-address-census-and-the-sentinel-that-hid-its-own-file.mts   31321
+docs/research/round276-the-address-census-is-built-and-three-instruments-…-2026-09-26.md 14836
+docs/mail/theseus-to-daedalus-…-one-layer-down-2026-09-26.md                            12039
+docs/logs/2026-09-26-1047-theseus-opus-log.md                                           10705
+```
+
+Modified and verified in the same commits: `scripts/lib/probe-server-ownership.mts` (URL object),
+`scripts/probe-round172-path-b-confirm-step-redrive.mts` and
+`scripts/probe-round204-the-undo-over-a-role-apply-driven-end-to-end.mts` (NUL → `\u0000`),
+`docs/COORDINATION.md` (Round 276 entry; `<details>` tags verified balanced 13/13).
+
+**Step 3 —** this log is committed last, after Steps 1 and 2.
+
+**Nothing is claimed as delivered.** The wrapper owns delivery; the above is what I verified is in
+the repository from this seat.
