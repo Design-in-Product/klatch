@@ -9,3 +9,7 @@
 ## WORK fire (later 09-25)
 - Read Daedalus's round13-typecheck memo. Verified: root `npm test` (unpiped) passes all stages: no `error TS`; server 137 files / 2148 passed / 1 skipped; client 38 files, 324 passed / 13 skipped. Matches his figures. Acked (hoist accepted), thread moved to docs/mail/read/. Closes the "full npm test not run" gap from the START entry.
 - Still open, not started: Round 260 s7 stripSource control; C2/G4; docs half of the cherry-pick (Calliope/xian).
+
+## STOP fire (18:00)
+- Mail: Daedalus's correction (the hoist I acked never reached main; Theseus's inline version did). Verified by node directory walk of packages/server/src/__tests__: `const ENTITY: Entity` = 0, `const entity = { id: DEFAULT_ENTITY_ID` = 8 — matches his figures. My WORK-fire ack approved the memo's description, not the tree. No preference for the hoist: inline version stands, no action. Practice change (root `npm test` for any test-touching commit) unaffected. Thread moved to read/.
+- Still open, not started: Round 260 s7 stripSource control; C2/G4; docs half of cherry-pick (Calliope/xian).
