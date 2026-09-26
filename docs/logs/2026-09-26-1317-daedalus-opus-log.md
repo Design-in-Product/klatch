@@ -93,14 +93,65 @@ force).
 `COORDINATION.md` **3569 lines** by `wc -l` this fire — eleventh flag, unchanged proposal.
 
 **Correction, found after the commits landed:** neither round250 run was clean. My pinned-blob copy
-sat at `scripts/.r277-round250-preedit.mts` for the duration of both. A third run with it removed
-reports **2 of 12 failed / 56 lines**, not 1 of 12 / 55 — so **my scratch file changed round250's
-output**, and in the *opposite* direction from the obvious one (fewer failures with the contaminant,
-so it suppressed a check rather than failing one).
+sat at `scripts/.r277-round250-preedit.mts` for the duration of both. **I staged a file under
+`scripts/` to measure a probe whose own hygiene check is "no staged copy remains under
+`scripts/`."** Instrument inside the population again, third route to the same shape. A third run
+with it removed reported **2 of 12 failed / 56 lines**, not 1 of 12 / 55, and I wrote that up as "my
+scratch file changed round250's output."
 
-The comparison still exonerates the edit — both runs saw the same tree apart from it — but the
-absolute figures are contaminated and I have struck them in the writeup rather than leave them
-quotable. **I staged a file under `scripts/` to measure a probe whose own hygiene check is "no
-staged copy remains under `scripts/`."** The instrument was inside the population again, by a third
-route. Identity of the second failing check is **open and mine**; it needs one more ~140 s run and I
-am not naming it from inference.
+## 13:42 — that correction was wrong, and the fourth run says so
+
+A **fourth** run, also clean: `status=1`, **1 of 12**, exactly one `FAIL` line (`Z2`).
+
+```
+run  temp file  tree        status  failed
+1    present    pre-edit    1       1 of 12   (55 lines)
+2    present    post-edit   1       1 of 12   (55 lines)
+3    absent     post-edit   1       2 of 12   (56 lines)
+4    absent     post-edit   1       1 of 12   (one FAIL line: Z2)
+```
+
+**round250 is flaky at 1-vs-2 of 12, and the contaminant correlates with neither value.** My
+"opposite direction from the obvious one" reasoning was a story fitted to two data points — the
+same move this project keeps catching in other forms, and I made it in the sentence right after
+congratulating myself for recording a correction.
+
+Standing: the edit is exonerated (runs 1 and 2 differ only by it, identical). The §6 absolute
+figures are from a contaminated tree and are marked not-quotable. round250 has an **unidentified
+intermittent 12th-check failure, seen once in four runs** — open, mine, and it wants a loop of runs
+rather than another single one. Run 3's extra failure was not captured because that run's filter
+matched only `Z2`-ish lines; run 4's matched every `FAIL` line.
+
+## Session wrap verification (CLAUDE.md, required)
+
+**Step 1 — commits on `origin/main`:**
+
+```
+39df3c81 coord+log(daedalus): Round 277 — and a correction to my own control
+49dbc8df round277: writeup + memo to Theseus — the discriminator was one axis off
+0d5fe960 Merge remote-tracking branch 'origin/main' into claude/daedalus-cycle
+cdad0cbd fix(probes): the three bind controls could hang their own run
+1afcc954 log(argus): WORK fire 2026-09-26 — suite green after probe-lib/gate changes
+b4ee111e fix(probe-lib): a cleanup that can hang must not withhold the answer
+```
+
+`git rev-parse HEAD origin/main` — identical (`39df3c81…`); `git status --porcelain` empty.
+**Four pushes this fire**, the first before any further work (2400 s mitigation). One push was
+rejected non-fast-forward (Argus's `1afcc954`); **merged, did not rebase, did not force.**
+
+**Step 2 — every deliverable `ls`-ed and present:** `scripts/lib/probe-server-ownership.mts` ·
+`packages/server/src/__tests__/round277-a-cleanup-that-can-hang-withholds-the-answer.test.ts` ·
+`scripts/probe-round221-probe-ownership-control.mts` ·
+`scripts/probe-round223-twenty-one-probes-against-a-stranger.mts` ·
+`scripts/probe-round250-…mts` · `docs/research/round277-…-2026-09-26.md` · the memo to Theseus ·
+this log. All eight confirmed by `ls -l`.
+
+**Mail:** Theseus's Round 276 memo replied to in the same fire. **Left in `docs/mail/`, not moved to
+`read/`** — the thread has open action on both sides (his round251 test and his own probe; my two
+handed-back items), and the close-discipline says open threads stay visible.
+
+**Open at fire close, written down rather than guessed at:** why his `c.end()` row hangs for him and
+not for me (needs a shared harness) · whether a connect has ever landed in the bind window in the
+field (latent only; a 1 ms hammer landed 0) · round250's intermittent 12th-check failure ·
+**`scripts/*.mts` are in no tsconfig, so 99 probes are typechecked by nobody** — the real gap this
+fire surfaced, and the reason a TS7016 slip has happened twice, both mine.

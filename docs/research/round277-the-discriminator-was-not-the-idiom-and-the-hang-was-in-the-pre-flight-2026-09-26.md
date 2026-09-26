@@ -173,29 +173,41 @@ which I nearly filed as a hang I had caused. The pre/post comparison is pinned t
 **`b4ee111e`**, not `HEAD` — Round 263's rule: `HEAD` is a reference to whatever the last person
 did.
 
-### 6.1 — Correction: neither of those two runs was clean
+### 6.1 — round250 is non-deterministic, and my first explanation for it was wrong
 
-Found after the commits landed, and recorded rather than quietly dropped.
+Two corrections, in the order I made them, because the second one retracts the first.
 
-The comparison above is sound **as a comparison** — both runs saw the same tree apart from my edit,
-so the edit is exonerated. But **neither run was clean**: my pinned-blob copy was staged at
-`scripts/.r277-round250-preedit.mts` for the duration of both, because I unlink it only at the end.
+**Neither of the two runs in §6 was clean.** My pinned-blob copy sat at
+`scripts/.r277-round250-preedit.mts` for the duration of both — I unlink it only at the end. That is
+a real process fault and worth stating on its own: **I staged a file under `scripts/` in order to
+measure a probe whose own hygiene check is "no staged copy remains under `scripts/`."** The
+instrument inside the population again, the same shape as Theseus's Round 274 §5 and my Round
+275 §6, arrived at by a third route.
 
-A third run with it removed reports **`status=1`, 2 of 12 failed, 56 lines** — not 1 of 12 / 55.
-So **my own scratch file changed round250's output**, and in the *opposite* direction from the
-obvious one: fewer failures *with* the contaminant present, which suggests it suppressed a check
-rather than failing one.
+**But the contaminant was not the cause, and I said it was before checking.** A third run with the
+file removed reported `status=1`, **2 of 12** failed, 56 lines, and I wrote that up as "my scratch
+file changed round250's output." A **fourth** run, also clean, reports `status=1`, **1 of 12**, with
+exactly one `FAIL` line (`Z2`). Four runs on this tree:
 
-Two things follow, and the second is the one worth keeping:
+```
+run  temp file  tree        status  failed
+1    present    pre-edit    1       1 of 12   (55 lines)
+2    present    post-edit   1       1 of 12   (55 lines)
+3    absent     post-edit   1       2 of 12   (56 lines)
+4    absent     post-edit   1       1 of 12   (one FAIL line: Z2)
+```
 
-1. The **absolute** figures in §6 are contaminated and should not be quoted. The **delta** (zero) is
-   still the thing the comparison was for.
-2. I staged a file under `scripts/` in order to measure a probe whose own hygiene check is *"no
-   staged copy remains under `scripts/`"*. The instrument was inside the population again — the
-   same shape as Theseus's Round 274 §5 and my Round 275 §6, arrived at by a third route.
+So **round250 is flaky at 1-vs-2 of 12**, and the contaminant correlates with neither value. My
+"opposite direction from the obvious one" reasoning was a story fitted to two data points, which is
+exactly the move this project keeps catching in other forms. The run-3 extra failure did not recur
+and its identity was **not captured** — run 3's output filter matched only `Z2`-ish lines, so
+another check's `FAIL` line would not have printed. Run 4's filter matched every `FAIL` line and
+found only `Z2`.
 
-**Identity of the second failing check: open, mine.** It needs one more ~140 s run and I am not
-going to name it from inference.
+**Standing after both corrections:** the edit is exonerated (runs 1 and 2 differ only by it and are
+identical). The §6 absolute figures are from a contaminated tree and should not be quoted. And
+round250 has an **unidentified intermittent 12th-check failure**, seen once in four runs — open,
+mine, and it needs a loop of runs rather than another single one.
 
 Gate, in Round 275's form:
 
