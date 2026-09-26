@@ -246,3 +246,116 @@ and a `?? path` porcelain line is byte-identical no matter how the file's conten
 appending to this log is safe; **creating any new tracked-visible file during a run is not.** So
 round250 cannot be run in the background while an agent works on the tree — a real constraint that
 is nowhere written down. Held my writeup and memo until the loop finished for exactly this reason.
+
+## 15:26 — round250, 3 clean runs. The split works and his §7 "1 of 12" is identified.
+
+```
+run1 status=3 140857ms lines=64 nFails=0 []
+run2 status=3 140689ms lines=64 nFails=0 []
+run3 status=3 139674ms lines=64 nFails=0 []
+```
+
+Tail of each: `[Z2a] PASS` · `[Z2b] PASS — connect 3001 → answered true at entry, true at exit` ·
+`did not run: Z2c: 3001 was ALREADY answering before this probe started … blocked by the machine,
+not failed by the code` · `INCONCLUSIVE — established 13 of its checks and skipped 2 arm(s). exit 3`.
+
+**status 1 → 3, 0 failures, 3/3, stable to ±1.2 s.** His §7 *"1 of 12"* was `Z2`, environmental, every
+time. **His *"2 of 12"* I do not reproduce in 3 post-split runs** — open and his, and I am not claiming
+the split killed it. Note for whoever takes it: the `exit 1` lines in the transcript are *driven child
+probes* reporting their own codes (`probe-scan-cost-model-control`, `probe-round240`) — MEAS content,
+not round250 failures, and easy for a line-filter to miscount as one.
+
+## 15:30 — Made §1 reproducible without xian's server, and found the mirror half was already known.
+
+My §1 rested on one sighting against a holder I did not control. Staged the holder myself on an
+**ephemeral** port (`.testdata/r278/platform.mjs`):
+
+```
+holder = http.Server on WILDCARD, port 60311     holder = http.Server on 127.0.0.1, port 60313
+   bind 127.0.0.1    -> OK        <- WRONG          bind 127.0.0.1    -> EADDRINUSE
+   bind ::1          -> OK        <- WRONG          bind ::1          -> OK
+   bind 0.0.0.0      -> EADDRINUSE                  bind 0.0.0.0      -> OK          <- WRONG
+   bind (no host)    -> EADDRINUSE                  bind (no host)    -> OK          <- WRONG
+   connect 127.0.0.1 -> ACCEPTED                    connect 127.0.0.1 -> ACCEPTED
+```
+
+The asymmetry runs **both ways** — a wildcard bind test is blind to a host-specific holder. **And that
+half is Round 273's**, recorded in `probe-server-ownership.mts:144–147`: *"Two sides that can go blind
+to the same occupant are one side."* `portAcceptsAConnection` ORs both families, which is why the
+composition is sound.
+
+**So: nothing I measured this fire is new about the library.** Round 221 has one half, Round 273 the
+other, the library is correct, its comments say so. My contribution is one reproducible table over both
+halves and four bind forms. Said plainly in the writeup and the memo, because the alternative is
+letting a consolidation read as a discovery. `SO_REUSEADDR` is my **explanation**; I cannot toggle it
+through node's API, so the table is the measurement and the attribution is not.
+
+## 15:34 — Gate green, byte-identical to Round 277 §5.
+
+```
+GATE ok exit=0 typecheck · errors: 0
+GATE ok exit=0 server · files: 140 passed (140) · tests: 2174 passed | 1 skipped (2175) · errors: 0
+GATE ok exit=0 client · files: 25 passed | 13 skipped (38) · tests: 324 passed | 13 skipped (337) · errors: 0
+GATE ok exit=0 gate(typecheck+server+client)
+```
+
+Identical is the *expected* result here, not a reassuring one: my only code change is a probe under
+`scripts/`, which the gate does not cover (his §6(a)). The probe was typechecked by hand, 0 errors.
+
+**Hygiene:** never bound 3001 myself after 15:04 — the only 3001 contact was read-only `connect`.
+Ephemeral ports throughout. One scratch process leaked (`row1-why.mts` printed `reached end` but a
+half-open socket kept the loop alive — the very defect it was measuring); reaped via `TaskStop`, not
+`kill`. 0 model calls, no server from `packages/`, no database, no corpus. All controls into gitignored
+`.testdata/r278/`, **files not pipes**, `spawnSync().status` never a pipe.
+
+## 15:36 — A sixth instrument, in the check verifying my own coordination entry.
+
+My balance check over `COORDINATION.md` reported **15 open / 14 close — UNBALANCED**. It was a false
+alarm: line 2034 is my own twelfth-flag sentence, which *mentions* the tag in backticks, and the
+regex counted the mention as a tag. Re-counted line-anchored: **14/14 BALANCED.**
+
+This is the Round 276 unit error — counting comments and prose as code — reappearing **inside the
+instrument I wrote to verify the fix for it**, in the same fire in which I reintroduced a defect
+Round 221 retired. Two recurrences of my own prior lessons in one fire is the honest headline of this
+session, more than anything I measured.
+
+---
+
+## Wrap verification (Session Wrap Protocol)
+
+**Step 1 — commits on `origin/main`** (`git log origin/main --oneline -5`):
+
+```
+4196341e round278: a host-specific bind is not a freeness test, and round250's Z2 is split
+da7fd462 mail(theseus->daedalus): Round 278 — your §5 stands; the instrument that said 3001 was free was mine
+19753f9a correction(round277): round250 is flaky, and my contamination story was wrong
+39df3c81 coord+log(daedalus): Round 277 — and a correction to my own control
+49dbc8df round277: writeup + memo to Theseus — the discriminator was one axis off
+```
+
+Both of this fire's commits are on `origin/main`. The mail commit (`da7fd462`) was pushed separately
+and ahead of the writeup/coordination commit, per the worktree mail rule.
+
+**Step 2 — deliverable files** (`ls -l`, all confirmed present):
+
+```
+docs/research/round278-a-host-specific-bind-is-not-a-freeness-test-…-2026-09-26.md   15508
+docs/mail/theseus-to-daedalus-…-the-instrument-that-said-3001-was-free-was-mine-….md 13241
+docs/logs/2026-09-26-1447-theseus-opus-log.md                                        (this file)
+scripts/probe-round250-…-the-port-is-one-line-of-product.mts                          56988
+docs/COORDINATION.md                                                               2193871
+```
+
+Content spot-checked in the committed copies rather than the drafts: the platform table, the Round 273
+attribution, the 3-run loop figures, the `allowHalfOpen` proof line, and `Z2c` are all present in the
+writeup on disk. Collapse tags in `COORDINATION.md` verified **14/14** with a line-anchored count.
+
+**Step 3 —** this log is committed last, after Steps 1 and 2.
+
+**Nothing is claimed as delivered.** The wrapper owns delivery; the above is what I verified is in the
+repository from this seat.
+
+**Open at close, mine:** round251's `anEphemeralPort()` (Round 277 §3 shape, one line from
+`trackedNetServer()`); `Z2a`'s filter narrower than its claim (flagged to Daedalus, not landed).
+**Open, his:** §6(a) the `scripts/tsconfig.json` gate change; §7's unreproduced second failure.
+**Open, xian's:** the twelfth `COORDINATION.md` archive flag.
