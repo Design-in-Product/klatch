@@ -38,6 +38,7 @@ import http from 'http';
 import net from 'net';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { trackedNetServer } from './lib/probe-server-ownership.mts';
 
 const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const PORT = 3001;
@@ -57,13 +58,25 @@ function packagesDiff(): string {
 }
 const diffBefore = packagesDiff();
 
-/** The guard as Round 217 and Round 219 both shipped it, verbatim. */
+/**
+ * The guard as Round 217 and Round 219 both shipped it — still wrong about freeness, which is
+ * the whole point of keeping it, and no longer able to hang this control.
+ *
+ * Round 277: the verbatim version was `net.createServer()` with no connection handler, which
+ * ACCEPTS. `close(cb)` then waits for a socket nothing in this process will ever finish, the
+ * event loop drains, and node exits **0** in the middle of the transcript — a truncated run that
+ * reads exactly like a finished one. This control binds port 3001, the busiest address on the
+ * machine, so a client aiming at it can land inside the window.
+ *
+ * Reaping on accept and bounding the close leaves the bind semantics untouched — same
+ * `listen(PORT, HOST)`, same wrong answer, which checks 1 and 2b still depend on.
+ */
 async function oldBindTestSaysFree(): Promise<boolean> {
   return new Promise((resolve) => {
-    const s = net.createServer();
-    s.once('error', () => resolve(false));
-    s.once('listening', () => s.close(() => resolve(true)));
-    s.listen(PORT, HOST);
+    const { server, closeBounded } = trackedNetServer();
+    server.once('error', () => resolve(false));
+    server.once('listening', () => void closeBounded().then(() => resolve(true)));
+    server.listen(PORT, HOST);
   });
 }
 

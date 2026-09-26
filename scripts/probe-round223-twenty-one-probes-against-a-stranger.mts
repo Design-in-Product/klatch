@@ -46,7 +46,7 @@ import http from 'http';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { spawn, execFileSync, type ChildProcess } from 'child_process';
-import { portAcceptsAConnection, portAnswersHttp, waitUntilPortIsQuiet } from './lib/probe-server-ownership.mts';
+import { portAcceptsAConnection, portAnswersHttp, trackedNetServer, waitUntilPortIsQuiet } from './lib/probe-server-ownership.mts';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const REPO = path.resolve(HERE, '..');
@@ -268,11 +268,16 @@ check('B', 'a TCP connect reaches it', await portAcceptsAConnection(PORT, 1500),
 const strangerHttp = await portAnswersHttp(PORT, 2000);
 check('B', 'it answers GET /api/channels with a 200 — what every readiness loop polls for',
   strangerHttp === 'HTTP 200', `portAnswersHttp -> ${strangerHttp}`);
+// Round 277: still the RETIRED guard — it must stay wrong about freeness, that is the fixture —
+// but it no longer stages a server that can hang the probe. `net.createServer()` with no
+// connection handler ACCEPTS, and `close(cb)` then waits for a socket nothing will finish; the
+// loop drains and node exits 0 mid-transcript. `trackedNetServer` reaps on accept and bounds the
+// close. Bind semantics unchanged: same `listen(PORT, '127.0.0.1')`, same answer.
 const bindWouldWork = await new Promise<boolean>((resolve) => {
-  const s = net.createServer();
-  s.once('error', () => resolve(false));
-  s.once('listening', () => s.close(() => resolve(true)));
-  s.listen(PORT, '127.0.0.1');
+  const { server, closeBounded } = trackedNetServer();
+  server.once('error', () => resolve(false));
+  server.once('listening', () => void closeBounded().then(() => resolve(true)));
+  server.listen(PORT, '127.0.0.1');
 });
 check('B', 'the RETIRED bind test reads this occupied port as free — the defect, staged live',
   bindWouldWork === true, `net.createServer().listen(3001,'127.0.0.1') -> ${bindWouldWork ? 'BOUND (would have said "free")' : 'refused'}`);

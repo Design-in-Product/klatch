@@ -74,7 +74,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { summariseAndExit, type ProbeVerdict } from './lib/probe-outcome.mts';
-import { somethingIsAlreadyAnswering, portAcceptsAConnection } from './lib/probe-server-ownership.mts';
+import { somethingIsAlreadyAnswering, portAcceptsAConnection, trackedNetServer } from './lib/probe-server-ownership.mts';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const REPO = path.resolve(HERE, '..');
@@ -519,13 +519,18 @@ const entrySha = sha256(SERVER_ENTRY);
 let repoDirtyBefore = new Set<string>();
 let repoDirtyAfterDrive: string[] | null = null;
 
+// Round 277: the narrowest of the three sites with this shape, and repaired anyway so the idiom
+// does not survive in the repo as a template. `net.createServer()` with no connection handler
+// ACCEPTS, and `close(cb)` then never fires while a socket is outstanding — the loop drains and
+// node exits 0 mid-transcript. Here the port is ephemeral and unannounced, so a connect landing
+// inside the window needs a scanner rather than a client; the other two sites bind 3001.
 function freePort(): Promise<number> {
   return new Promise((resolve, reject) => {
-    const s = net.createServer();
-    s.once('error', reject);
-    s.listen(0, '127.0.0.1', () => {
-      const p = (s.address() as net.AddressInfo).port;
-      s.close(() => resolve(p));
+    const { server, closeBounded } = trackedNetServer();
+    server.once('error', reject);
+    server.listen(0, '127.0.0.1', () => {
+      const p = (server.address() as net.AddressInfo).port;
+      void closeBounded().then(() => resolve(p));
     });
   });
 }
