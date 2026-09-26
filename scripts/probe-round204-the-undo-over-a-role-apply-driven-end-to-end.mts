@@ -215,7 +215,7 @@ if (!corpusReachable) {
     'exactly one name is carried by two of them (the Comms Chiefs)',
     dupNames.join(', ') || '(none)'
   );
-  const dupPair = names.filter((n) => norm(n) === norm(dupNames[0] ?? ' '));
+  const dupPair = names.filter((n) => norm(n) === norm(dupNames[0] ?? '\u0000'));
   check(
     'B2b',
     dupPair.length === 2 && dupPair[0] !== dupPair[1],

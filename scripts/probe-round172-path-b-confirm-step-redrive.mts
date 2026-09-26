@@ -357,7 +357,7 @@ try {
     b1.chips.length === 1 && b1.chips[0] === 'Piper Morgan',
     `chips=${JSON.stringify(b1.chips)} (Round 171 got ${JSON.stringify([defaultEntityName])} here)`);
   check('B1', 'it is not the shared default entity',
-    !b1.chips.includes(defaultEntityName ?? ' '),
+    !b1.chips.includes(defaultEntityName ?? '\u0000'),
     `default entity is ${JSON.stringify(defaultEntityName)}`);
 
   const c1 = await createAndInspect(page, 'r172-b1-composed');
@@ -399,7 +399,7 @@ try {
   check('B2', 'a blank confirm step seats no agent at all',
     b2.chips.length === 0, `chips=${JSON.stringify(b2.chips)}`);
   check('B2', 'it does NOT seat the shared default entity (the Round 171 defect)',
-    !b2.chips.includes(defaultEntityName ?? ' '),
+    !b2.chips.includes(defaultEntityName ?? '\u0000'),
     `chips=${JSON.stringify(b2.chips)} vs default ${JSON.stringify(defaultEntityName)}`);
   check('B2', 'the form says out loud that nothing was identified',
     b2.notice === NOTICE_UNIDENTIFIED,
@@ -518,7 +518,7 @@ try {
       `chips=${JSON.stringify(chipsF2)} · notice=${JSON.stringify(noticeF2)}`);
     measure('F2', 'screenshot of the unnamed duplicate recovery', await shot(page, 'F2-duplicate-unnamed'));
     check('F2', 'the duplicate path no longer seats the placeholder as if it were an agent',
-      !chipsF2.includes(defaultEntityName ?? ' '),
+      !chipsF2.includes(defaultEntityName ?? '\u0000'),
       `chips=${JSON.stringify(chipsF2)} vs default ${JSON.stringify(defaultEntityName)} (Round 171 arm F: seated it)`);
     check('F2', 'and it says why it could not seat anything',
       noticeF2 === NOTICE_UNIDENTIFIED,
