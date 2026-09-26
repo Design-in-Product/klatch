@@ -146,13 +146,96 @@ export function portAcceptsAConnection(port: number, timeoutMs = 1500): Promise<
  * connect was widened to both families this function agreed with the wrong answer rather than
  * correcting it. Two sides that can go blind to the same occupant are one side.
  */
-export function aWildcardBindWouldSucceed(port: number): Promise<boolean> {
+export function aWildcardBindWouldSucceed(port: number, closeBudgetMs = 3000): Promise<boolean> {
+  const { server, closeBounded } = trackedNetServer();
   return new Promise((resolve) => {
-    const s = net.createServer();
-    s.once('error', () => resolve(false));
-    s.once('listening', () => s.close(() => resolve(true)));
-    s.listen(port);
+    let settled = false;
+    const done = (answer: boolean) => { if (!settled) { settled = true; resolve(answer); } };
+    server.once('error', () => done(false));
+    server.once('listening', () => {
+      // The answer is already known here — the bind succeeded. Cleanup follows, bounded, and
+      // cannot withhold it: see `trackedNetServer` for the measurement that made this necessary.
+      void closeBounded(closeBudgetMs).then(() => done(true));
+    });
+    server.listen(port);
   });
+}
+
+/**
+ * A `net.Server` whose accepted sockets are tracked, and a teardown that cannot hang.
+ *
+ * ## Round 277: `net.createServer()` with no connection handler still ACCEPTS
+ *
+ * Theseus, Round 276 §5, found that `await new Promise((r) => server.close(() => r()))` never
+ * settles while a connection is outstanding — the event loop drains and node exits **0**, which
+ * is the one failure a probe cannot see, because a truncated transcript reads exactly like a
+ * finished one. He flagged 7 candidate sites and did not drive 6 of them.
+ *
+ * Driven here (`.testdata/r277/measure2.mjs`, `measure3.mjs`, node v26.5.0, darwin; the first
+ * replica needed a server-side `connection` barrier — without it `close()` reads `_connections`
+ * as 0 because the client's `connect` fires a loop turn before the server accepts, and every row
+ * came back FIRED):
+ *
+ * ```
+ * occupant                                          live  close(cb)
+ * net.Server  c.end()  (half-close)                  1    FIRED  0ms   <- disagrees with his table
+ * net.Server  c.destroy()                            0    FIRED  0ms
+ * net.Server  silent (no reply)                      1    HUNG   (his row, reproduced)
+ * net.createServer() with NO handler                 1    HUNG   <- this function's own shape
+ * http.Server answering 200, contacted by fetch      1    FIRED  1ms
+ * http.Server answering 200, via http.request        1    FIRED  0ms
+ * http.Server + raw connect, client left open        1    FIRED  0ms
+ * http.Server whose handler NEVER responds           1    HUNG
+ * DEFAULTS: keepAliveTimeout=5000 headersTimeout=60000 requestTimeout=300000
+ * ```
+ *
+ * Two corrections to the class fall out of that table, and both matter more than the fix:
+ *
+ * 1. **The discriminator is not "awaits `close(cb)` without tracking sockets."** Every
+ *    `http.Server` row FIRED, including with a live connection, because node ≥19's
+ *    `Server.close()` reaps *idle* keep-alive sockets. The exposing property is "can hold a
+ *    connection it will never finish": any `net.Server` (nothing reaps its sockets), or an
+ *    `http.Server` with a handler that can fail to respond. An `http.Server` that always
+ *    responds is safe.
+ * 2. **`net.createServer()` with no `connection` listener is not inert.** It accepts, and the
+ *    socket then has no owner and no reaper. That is the shape of the *old, deliberately broken*
+ *    bind guard this module exists to replace — and it was still the shape of this module's own
+ *    second side.
+ *
+ * Why this placement is the worst one in the repo: `aWildcardBindWouldSucceed` is awaited by
+ * `somethingIsAlreadyAnswering` → `requireAnUnoccupiedPort`, which is the pre-flight of every
+ * probe on this library. It is reached **only** on the branch where nothing accepts a connection
+ * — the port-looks-clear case — so a connect landing inside its bind window would hang the
+ * pre-flight and the probe would exit 0 having graded nothing.
+ *
+ * **Latent, not sighted.** A hammer firing a connect every 1 ms landed **0** connects inside the
+ * live window (`measure3.mjs` row X2, which resolved `true` in 1 ms). The bind window is shorter
+ * than the interval I could drive it at; that is a failure to catch it, not evidence it cannot
+ * happen.
+ */
+export function trackedNetServer(
+  onConnection: (socket: net.Socket) => void = (socket) => socket.destroy(),
+): { server: net.Server; closeBounded: (budgetMs?: number) => Promise<'closed' | 'hung'> } {
+  const sockets = new Set<net.Socket>();
+  const server = net.createServer((socket) => {
+    sockets.add(socket);
+    socket.once('close', () => sockets.delete(socket));
+    onConnection(socket);
+  });
+  const closeBounded = async (budgetMs = 3000): Promise<'closed' | 'hung'> => {
+    for (const socket of sockets) socket.destroy();
+    let timer: NodeJS.Timeout | undefined;
+    const outcome = await Promise.race([
+      new Promise<'closed'>((r) => server.close(() => r('closed'))),
+      new Promise<'hung'>((r) => { timer = setTimeout(() => r('hung'), budgetMs); }),
+    ]);
+    if (timer !== undefined) clearTimeout(timer);
+    // `unref` rather than throw: this is a cleanup primitive, and a cleanup that throws replaces
+    // one unreadable outcome with another. The caller gets the word `hung` and decides.
+    if (outcome === 'hung') server.unref();
+    return outcome;
+  };
+  return { server, closeBounded };
 }
 
 /**
