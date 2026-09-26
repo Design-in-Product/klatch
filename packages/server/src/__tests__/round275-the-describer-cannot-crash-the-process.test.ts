@@ -48,7 +48,9 @@ import os from 'os';
 import path from 'path';
 import { spawnSync } from 'child_process';
 import { fileURLToPath } from 'url';
-import { portAnswersHttp, somethingIsAlreadyAnswering, channelsUrl } from '../../../../scripts/lib/probe-server-ownership.mts';
+import {
+  portAnswersHttp, somethingIsAlreadyAnswering, channelsUrl, waitUntilOurServerIsUp,
+} from '../../../../scripts/lib/probe-server-ownership.mts';
 
 const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../../..');
 const LIB = path.join(REPO, 'scripts/lib/probe-server-ownership.mts');
@@ -213,7 +215,43 @@ describe('portAnswersHttp still gives the same three answers', () => {
   }, 15_000);
 });
 
-// ── 3 · the property that made the repair available at all ───────────────────
+// ── 3 · the second caller, which is the one that actually ran the write path ─
+
+/**
+ * `waitUntilOurServerIsUp` had its own `fetch`, polling every 250 ms for up to 90 s while a
+ * server booted — far more first-writes than the describer ever made, and the same unreachable
+ * `catch`. It now shares `portAnswersHttp`. Driven here rather than left to a live probe,
+ * because a live probe needs port 3001 and 3001 is held by the dev server on this machine.
+ */
+describe('waitUntilOurServerIsUp still resolves on a banner plus a 200', () => {
+  it('returns once both sides agree, and does not reach undici to do it', async () => {
+    const { port } = await anAnsweringServer();
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'klatch-round275-log-'));
+    const logPath = path.join(dir, 'server.log');
+    fs.writeFileSync(logPath, 'Klatch server running\n');
+    // A child that is alive as far as the function can tell: `exitCode === null` is the only
+    // thing it reads off the handle, so a bare stand-in is honest here rather than a mock of
+    // something richer than the function uses.
+    const child = { exitCode: null } as unknown as import('child_process').ChildProcess;
+
+    await expect(waitUntilOurServerIsUp(child, logPath, port, 8_000)).resolves.toBeUndefined();
+    fs.rmSync(dir, { recursive: true, force: true });
+  }, 20_000);
+
+  it('still fails loudly when the banner is there but nothing answers', async () => {
+    const port = await anEphemeralPort();
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'klatch-round275-log2-'));
+    const logPath = path.join(dir, 'server.log');
+    fs.writeFileSync(logPath, 'Klatch server running\n');
+    const child = { exitCode: null } as unknown as import('child_process').ChildProcess;
+
+    await expect(waitUntilOurServerIsUp(child, logPath, port, 1_200))
+      .rejects.toThrow(/did not come up on/);
+    fs.rmSync(dir, { recursive: true, force: true });
+  }, 20_000);
+});
+
+// ── 4 · the property that made the repair available at all ───────────────────
 
 describe('the repair is not a wrapper around the same call', () => {
   it('the module no longer reaches undici for the describing half', () => {
