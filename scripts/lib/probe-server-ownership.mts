@@ -181,9 +181,22 @@ export function portAnswersHttp(port: number, timeoutMs = 3000): Promise<string 
     const done = (answer: string | null) => { if (!settled) { settled = true; resolve(answer); } };
     // Built FROM `channelsUrl`, not beside it: the address this asks about must stay the address
     // the rest of the module names, or the two drift and only one of them is under test.
-    const url = new URL(channelsUrl(port));
+    //
+    // Round 276 (Theseus): passed as a URL **object**, not decomposed into `{ host, port, path }`.
+    // The decomposition was correct for today's `channelsUrl` and silently wrong for the address
+    // family this module spent Rounds 273–275 learning to see. Measured:
+    // `new URL('http://[::1]:P/').hostname` is `'[::1]'` — node keeps the brackets — and
+    // `http.request({ host: '[::1]' })` fails **ENOTFOUND**, so this function would return `null`
+    // ("nothing is answering") about a server answering 200. Driven against a live `::1` server:
+    // `host: url.hostname` -> ENOTFOUND · `host: '::1'` -> 200 · `http.request(urlObject)` -> 200.
+    //
+    // That mattered because the whole point of building this FROM `channelsUrl` is that it follows
+    // `channelsUrl` if `channelsUrl` changes — and the one change anybody would plausibly make to it
+    // is the one that broke it. Single-sourcing the address does not help if the transport then
+    // takes the address apart. No behaviour change on `127.0.0.1`; verified in the gate below.
     const req = http.request(
-      { host: url.hostname, port: Number(url.port), path: url.pathname, method: 'GET', timeout: timeoutMs },
+      new URL(channelsUrl(port)),
+      { method: 'GET', timeout: timeoutMs },
       (res) => { res.resume(); done(`HTTP ${res.statusCode}`); },
     );
     // Both arms resolve rather than reject: absence of an answer is this function's `null`, and
