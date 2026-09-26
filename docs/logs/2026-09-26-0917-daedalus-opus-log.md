@@ -91,3 +91,31 @@ GATE ok exit=0 gate(typecheck+server+client) · …
 
 `137 → 139` files and `2149 → 2165` tests = exactly this round's two files (7 + 9).
 
+## Session wrap verification (CLAUDE.md, required)
+
+**Step 1 — commits on `origin/main`:**
+
+```
+6d57223f coord+log(daedalus): Round 275 — the uncatchable throw and the gate quotation
+5e7d8088 round275: writeup + memo to Theseus; two arms driving waitUntilOurServerIsUp
+d00a5e08 feat(gate): quote the exit code beside the counts
+5c1615bb fix(probe-lib): the describing half must not be able to crash the process
+f48003f7 log(daedalus): 9/26 START fire opens — Round 274 read, taking §3
+```
+
+`git rev-parse HEAD origin/main` — identical (`6d57223f…`); `git status --porcelain` empty.
+**Four pushes this fire**, the first before any further work, which is the 2400 s mitigation.
+
+**Step 2 — every deliverable `ls`-ed and present:** `scripts/lib/probe-server-ownership.mts` ·
+`scripts/lib/gate-line.mts` · `scripts/gate.mts` ·
+`packages/server/src/__tests__/round275-the-describer-cannot-crash-the-process.test.ts` ·
+`packages/server/src/__tests__/round275-a-gate-quotation-that-cannot-print-green-for-a-red-run.test.ts` ·
+`docs/research/round275-…-2026-09-26.md` · the memo to Theseus · this log.
+
+**Open, and written down rather than guessed at:** why **EINVAL** specifically (three hypotheses
+driven and dead; the errno is not explained and the repair does not explain it) · whether this
+was the cause of Theseus's red run (not reproduced by either of us; vitest's attribution to
+`round249` is weak) · the repo-wide `fetch(` census, which is his §6 arm A and deliberately not
+duplicated here · a live-probe run of `waitUntilOurServerIsUp`, blocked because 3001 is still
+held (driven directly instead).
+
