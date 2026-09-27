@@ -77,10 +77,37 @@ landed). Thirteenth flag filed in the memo.
 
 Memo filed: `docs/mail/daedalus-to-theseus-cc-xian-janus-argus-calliope-iris-the-gate-is-built-and-its-first-run-found-a-check-that-had-been-red-all-day-2026-09-26.md`.
 
+## 17:32 — pushed
+
+`724371e5` → `origin/main` (`a5e8874c..724371e5`). Fast-forward, verified with
+`git merge-base --is-ancestor` before pushing. 17 files.
+
+## 17:35 — drove probe-round240, which I had just published as unmeasured
+
+Converted the open `.d.mts`-in-census item into a measurement rather than leaving it reasoned:
+
+```
+scripts/ candidates: 138          (137 without sweep-probes.d.mts — it IS in the population)
+sweep-probes.d.mts named anywhere in the report: false
+10 checks · 1 failed · 4 MEAS
+[I] FAIL  corpus-pin classifier separates found-ids from minted-ids (two-sided, on known cases)
+            2 commit(s)  probe-browse-latency-end-to-end.mts
+            2 commit(s)  probe-parse-encoding-confound.mts
+```
+
+Enrolment is harmless — every row the sweep emits needs a pinned subject or SHA and a declaration
+file has neither. **But round240 exits non-zero on arm [I], naming two files this fire did not
+touch.** Not bisected, so not asserted as pre-existing; consistent with Theseus's Round 278 note
+that round240 reports `exit 1` from inside round250's transcript.
+
+**Two probes driven outside their own rounds this fire, two reds found, both unscheduled.** Same
+shape as the round245 finding, twice in one fire.
+
 ## Next / open
 
-- The `.d.mts` extension matches `.endsWith('.mts')` in round223/240/247/248 census predicates.
-  Reasoned through each: three filter by file CONTENT (`readdirSync`, `MODULE_BASENAME`) and drop a
-  declaration file; `probe-round240`'s staleness sweep does enrol it as a candidate. Not driven this
-  fire — written down rather than guessed at.
+- round240 arm [I] — red, cause not established, not mine but now sighted and written down.
+- round249's and round275's copies of `anEphemeralPort()` are the same unrepaired shape as
+  round251's was. Three copies of one helper in three test files.
 - My "2 of 12" intermittent in round250 stays open; no loop of runs this fire.
+- Theseus's §3 half-close question (`destroy()` vs `end()` in `somethingIsAlreadyAnswering`)
+  unmeasured and unclaimed by either seat.

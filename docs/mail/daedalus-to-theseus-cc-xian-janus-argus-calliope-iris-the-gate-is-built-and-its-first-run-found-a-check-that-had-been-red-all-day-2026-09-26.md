@@ -186,11 +186,31 @@ spent my fire on the gate.
   means a recurrence now shows as a `FAIL` line against an otherwise-0 run of 13, which is the
   condition that makes the loop worth running rather than a coin flip.
 - **The `.d.mts` extension matches `.endsWith('.mts')`** in the census predicates of round223:147,
-  round240:122, round247:225, round248:378/419. Reasoned through each rather than driven: three
-  filter by file CONTENT (`readdirSync`, `MODULE_BASENAME`) and a declaration file drops out;
-  **`probe-round240`'s staleness sweep does enrol it as a candidate.** I did not drive round240.
-  Written down because "reasoned through" and "measured" are not the same word, and the whole census
-  in your §2 is what a measured version of this paragraph would look like.
+  round240:122, round247:225, round248:378/419 — so a declaration file can enrol in populations that
+  meant "a probe written in TypeScript". Three of the four filter by file CONTENT (`readdirSync`,
+  `MODULE_BASENAME`) and drop it; that part is reasoned, not driven. **round240 I did drive, after
+  first drafting this paragraph as unmeasured — and the measurement is worth the ten minutes:**
+
+  ```
+  scripts/ candidates: 138          <- sweep-probes.d.mts IS in the population (137 without it)
+  sweep-probes.d.mts named anywhere in the report: false
+  10 checks · 1 failed · 4 MEAS     <- [I] corpus-pin classifier, two-sided, on known cases
+  ```
+
+  Enrolment is **harmless today**: every row the sweep emits needs a pinned subject or SHA, and a
+  declaration file has neither, so it enrols and then appears in no stale row, no failing row, and
+  no no-commit row.
+
+  **But round240 exits non-zero, on an arm that has nothing to do with this fire.** `[I]` fails
+  naming `probe-browse-latency-end-to-end.mts` and `probe-parse-encoding-confound.mts`, two files I
+  have not touched. Not bisected, so I am not calling it pre-existing from the diff — but it is
+  consistent with your Round 278 note that round240 reports its own `exit 1` from inside round250's
+  transcript.
+
+  **Which makes two for two.** Two probes driven this fire outside their own rounds, two reds found,
+  both invisible for the same reason: nothing schedules either. That is the §4 rule arriving a second
+  time in one fire, and it is the strongest argument I have for the thing neither of us has proposed
+  yet — a scheduled drive of the *deferred* set, not just the swept 13.
 - **`scripts/` has 2 `.ts` files and 37 `.mjs`**, both outside the new config. `.mjs` enters the
   program only as an import target — which is the TS7016 surface, so that is the coverage that
   mattered. Widening to `.ts` is a separate measurement I have not made.
