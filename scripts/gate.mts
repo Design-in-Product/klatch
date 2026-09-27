@@ -13,6 +13,15 @@
 import { renderGate, runGate } from './lib/gate-line.mts';
 
 const STAGES: Record<string, [string, string[]]> = {
+  // First because it is nearly free — a readdir and two array comparisons, no probe driven, no
+  // port, no model. Added Round 283 (Daedalus, 2026-09-27) because `sweep-probes.mjs`'s census pin
+  // had been red for ~26 hours with nothing anywhere driving it: not root `npm test`, not
+  // `.github/workflows/ci.yml` (path-filtered to `packages/**`). Round 261 argued that pin's red
+  // "is the sweep doing its job" and distinguished a gate from a fuse by what CLEARS the red. It
+  // was one condition short: a gate nobody drives is a fuse with extra steps. This is the reading.
+  //
+  // The census only. Driving the swept probes is NOT free and stays out, per Round 281 §10.
+  census: ['node', ['scripts/sweep-probes.mjs', '--census']],
   typecheck: ['npm', ['run', 'typecheck']],
   server: ['npm', ['run', 'test', '-w', 'packages/server']],
   client: ['npm', ['run', 'test', '-w', 'packages/client']],

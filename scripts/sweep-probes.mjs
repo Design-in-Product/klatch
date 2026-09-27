@@ -175,6 +175,21 @@ const REPO = join(HERE, '..');
  */
 export const SWEPT = [
   {
+    // Round 283, Daedalus, 2026-09-27. The whole measured yield of Theseus's Round 282 §9 design
+    // ("four booleans, drive the all-false set") over the classification already in this file:
+    // ONE probe. `probe-round283` filters the 114-file population to an 8-probe scanner-clean
+    // residue, drives each twice — real HOME and an empty HOME, one variable — and finds 3 that
+    // run unattended and report a verdict, of which 2 were already swept. This is the third.
+    //
+    // Promoted by the rule this list has always used: run green in a named fire, with the fire
+    // named. Driven this fire at 15:0x PT, `All 7 regression checks passed`, status 0, in both
+    // the real-HOME and empty-HOME arms — so the count below is observed twice, not derived.
+    file: 'probe-round232-the-remainder-verdict-can-go-red.mts',
+    expect: /All 7 regression checks passed/,
+    why: 'Round 283 drove it twice (real HOME and an empty HOME) and it is insensitive to both: ' +
+      '7/7 green, status 0, no write to scripts/ or packages/ under a tree-fingerprint bracket',
+  },
+  {
     file: 'probe-round224-a-skip-must-not-summarise-as-a-pass.mts',
     expect: /All 64 regression checks passed/,
     why: 'run every fire as a control by both seats; Theseus 260 §6 reports 64/64',
@@ -453,7 +468,6 @@ export const DEFERRED = [
   'probe-round227-arm-o-on-a-corpus-where-the-cap-fires.mts',
   'probe-round230-a-killed-probe-must-not-leave-its-server.mts',
   'probe-round231-the-handler-and-the-signal-are-in-different-processes.mts',
-  'probe-round232-the-remainder-verdict-can-go-red.mts',
   'probe-round233-arm-m-and-the-endpoint-can-walk-different-corpora.mts',
   'probe-round240-a-probe-pinned-to-a-moved-subject-is-failing-silently.mts',
   'probe-round241-a-corpus-cast-is-resolved-not-pinned.mts',
@@ -470,6 +484,26 @@ export const DEFERRED = [
   'probe-round254-the-mutate-class-is-an-unanchored-conjunction-and-most-of-it-never-writes-the-product.mts',
   'probe-round255-the-comment-shadow-census.mts',
   'probe-round255-the-comment-shadow-mutations.mjs',
+  // ── Round 283, Daedalus, 2026-09-27 ──────────────────────────────────────────
+  // The census had been RED since `probe-round276` landed at 2026-09-26 11:12:32 -0700
+  // (`5b551ca1`) — four probes in neither list, ~26 hours, and nothing anywhere drove the check
+  // that would have said so. Cleared here, all four into DEFERRED, which is the no-claim bucket:
+  // "nothing else to do yet", asserting only that they are unexamined by the sweep.
+  //
+  // round280 and round282 are Theseus's. Classifying another seat's probe as UNEXAMINED is the
+  // conservative half of the exception he stated in his Round 282 §1 (one-line, provably
+  // measurement-preserving, unblocks another seat) — it takes nothing away from him, and either
+  // author may promote theirs to SWEPT with the fire that ran it clean. Promoting them myself
+  // would be the half that is not mine to do.
+  'probe-round276-the-address-census-and-the-sentinel-that-hid-its-own-file.mts',
+  'probe-round280-the-client-half-of-the-pair-and-what-it-leaves-behind.mts',
+  'probe-round281-a-probe-that-only-runs-where-it-was-written-and-how-big-that-class-actually-is.mts',
+  'probe-round282-which-socket-actually-strands-the-raw-net-server-cell.mts',
+  // Mine, and DEFERRED on its own terms: round283 drives eight other probes, so sweeping it would
+  // nest the sweep inside itself. Self-classifying at the moment of writing, because the gate
+  // reddens on my file exactly as it did on the other four — which is the cheapest demonstration
+  // available that it still works.
+  'probe-round283-the-classification-theseus-asked-for-exists-and-it-has-been-red-since-yesterday.mts',
   'probe-scan-cost-model-control.mts',
   'probe-scan-latency-vs-cap.mts',
   'probe-scratch-server.mjs',
