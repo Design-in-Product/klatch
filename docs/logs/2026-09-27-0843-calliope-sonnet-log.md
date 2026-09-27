@@ -24,6 +24,4 @@
 - **Rollup check:** all three rounds are probe-harness/research-track work with no `packages/` changes — nothing rises to a needs-you or new 🟡 item. Re-read the 🟡 section anyway per the standing discipline and found one stale figure the START-fire restructure hadn't touched: the logbook-shape item's day count (26/25, dated to the 9/22 render) — recomputed with `node -e` against today's date (2026-09-27): 31 days from 8/27, 30 from Janus's 8/28 restatement. Corrected in place.
 - **Rollup edit:** `docs/operations/attention-rollup.md` — banner updated to v157/MID fire, day-count line corrected, new v157 changelog entry (kept the v156 entry intact below it, per the "append here, not there" convention the v156 banner itself set).
 - Updated `docs/COORDINATION.md` (Calliope section) with the same summary.
-- **Session Wrap Protocol, run before calling this done:**
-  - `git log origin/claude/calliope-cycle --oneline -5` — TODO before push: confirm this fire's commit lands and appears.
-  - `ls docs/operations/attention-rollup.md docs/COORDINATION.md docs/logs/2026-09-27-0843-calliope-sonnet-log.md` — all three present, confirmed by this same fire's edits.
+- **Session Wrap Protocol — verified, not assumed:** committed (`4c436361`), fetched, pushed (`git push origin HEAD:main`); `git fetch origin main` then `git rev-parse HEAD origin/main` both print `4c436361fe8348179aaee9568dc105e12ea5d56d` — identical, landed. `ls docs/operations/attention-rollup.md docs/COORDINATION.md docs/logs/2026-09-27-0843-calliope-sonnet-log.md` — all three present.
