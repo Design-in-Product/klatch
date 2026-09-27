@@ -220,6 +220,24 @@ export function trackedNetServer(
   const server = net.createServer((socket) => {
     sockets.add(socket);
     socket.once('close', () => sockets.delete(socket));
+    // Round 280 (Theseus): this `'error'` handler is load-bearing, and its absence killed a probe
+    // outright before it printed a row. `portAcceptsAConnection` above closes its probe socket with
+    // `sock.destroy()` — an abortive close. Against a server that has already *written* bytes, that
+    // arrives server-side as ECONNRESET on the accepted socket; an accepted socket with no `'error'`
+    // listener turns that into an unhandled `'error'` event, which is fatal to the process.
+    //
+    // So this is the property at `portAnswersHttp`'s doc comment — "the describing half of an
+    // ownership guard must not be able to kill the process it is describing from" — failing by a
+    // second mechanism. Round 275 established it for a throw out of `fetch`; this is an unhandled
+    // event on the described server's own socket. Reproduced in a child process both ways
+    // (`probe-round280` arm I): without the handler, status 1 and the table never finishes; with it,
+    // status 0 and the same guard returns the same verdict.
+    //
+    // **Latent, not live, at the time of writing:** 0 of this function's callers pass an
+    // `onConnection` that writes bytes, and the default (`socket.destroy()`) writes nothing — which
+    // is why nothing has hit it. Fixed in the primitive rather than in the callers, because the
+    // first caller that answers a request is the one that would find out.
+    socket.on('error', () => { /* an occupant's socket erroring is not this primitive's failure */ });
     onConnection(socket);
   });
   const closeBounded = async (budgetMs = 3000): Promise<'closed' | 'hung'> => {
@@ -277,9 +295,32 @@ export function portAnswersHttp(port: number, timeoutMs = 3000): Promise<string 
     // `channelsUrl` if `channelsUrl` changes — and the one change anybody would plausibly make to it
     // is the one that broke it. Single-sourcing the address does not help if the transport then
     // takes the address apart. No behaviour change on `127.0.0.1`; verified in the gate below.
+    //
+    // Round 280 (Theseus): `agent: false`. Daedalus's Round 279 §7 asked whether this request
+    // should `destroy()` its socket rather than `end()` it. It cannot — `req.end()` is what *sends*
+    // the request, and a GET with no body still needs it; without it the guard asks nothing and
+    // every port reads as silent. The real hazard is one line later and it is the same one: on this
+    // node `http.globalAgent.keepAlive` is `true` with a 5 s timeout, so after a successful answer
+    // this request **pooled** its socket and left it open to the server it had just described.
+    // Measured, `probe-round280`:
+    //
+    //   live server-side sockets, immediately after the guard resolves   1
+    //   unattended lifetime of that socket                               ~4002 ms
+    //   with `agent: false`                                              0
+    //   with `req.destroy()` once the response has ended                 1   <- §7's instinct, and it does not work
+    //
+    // `destroy-on-end` fails because by then the socket has been released to the agent's free pool
+    // and the request object no longer owns it. Only declining to pool leaves nothing behind.
+    //
+    // It mattered: a bare `net.Server` occupant that has written bytes, torn down with a bare
+    // `close(cb)`, **hung** (3002 ms budget, exhausted) purely because of the socket this guard left
+    // behind. An `http.Server` is NOT exposed — it reaps its own idle keep-alive sockets, closing in
+    // 0–1 ms — so the blast radius was the `net.Server` family, which is why `trackedNetServer`
+    // exists. Cost of the fix: none measurable. The answer is still `HTTP 200`; a one-shot guard has
+    // no reuse to lose.
     const req = http.request(
       new URL(channelsUrl(port)),
-      { method: 'GET', timeout: timeoutMs },
+      { method: 'GET', timeout: timeoutMs, agent: false },
       (res) => { res.resume(); done(`HTTP ${res.statusCode}`); },
     );
     // Both arms resolve rather than reject: absence of an answer is this function's `null`, and
