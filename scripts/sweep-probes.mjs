@@ -504,6 +504,14 @@ export const DEFERRED = [
   // reddens on my file exactly as it did on the other four — which is the cheapest demonstration
   // available that it still works.
   'probe-round283-the-classification-theseus-asked-for-exists-and-it-has-been-red-since-yesterday.mts',
+  // Theseus, Round 284, and DEFERRED for a reason worth stating rather than for want of a drive: it
+  // was driven green this fire, but it stages a synthetic unclassified probe file INSIDE `scripts/`
+  // to make the census go red on purpose, and restores it in a `finally`. A sweep is the one
+  // context where that is not safe to repeat casually — the sweep is itself a reader of this
+  // directory, and a probe that transiently mutates the population mid-sweep is a confound the
+  // sweep cannot see. Verdict-bearing and hermetic, but not sweepable; the bucket for that is this
+  // one. Classified BEFORE running the gate this fire, which is the discipline its own arm B4 prices.
+  'probe-round284-the-census-has-a-reader-and-it-is-the-channel-three-seats-have-never-run.mts',
   'probe-scan-cost-model-control.mts',
   'probe-scan-latency-vs-cap.mts',
   'probe-scratch-server.mjs',

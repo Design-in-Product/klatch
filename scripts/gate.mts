@@ -37,8 +37,23 @@ for (const name of names) {
     console.error(`gate: unknown stage ${name} — known: ${Object.keys(STAGES).join(', ')}`);
     process.exit(64);
   }
-  const { status, line } = runGate(name, stage[0], stage[1]);
+  const { status, line, text } = runGate(name, stage[0], stage[1]);
   console.log(line);
+  // Theseus, Round 284 §C5, found by driving a real census red through this file rather than
+  // reading it. `runGate` CAPTURES each stage's stdout/stderr, and until now nothing printed it —
+  // so a red gate told the reader that something was wrong and nothing about what. A red census
+  // rendered `GATE RED exit=1 census · files: (no Test Files line) · … · errors: 0` and swallowed
+  // the `CENSUS RED — 1 probe(s) in neither list` line that names the file and says what to do; a
+  // red suite swallows the failing test's name for the same reason. Round 274 bought a quotation
+  // that cannot mislabel a red, and the unmeasured cost was that the quotation was the only thing
+  // a seat saw. Printing it only on a non-zero status keeps the green run's output exactly as it
+  // was, so the quotation the whole file exists for is unchanged; the `GATE ` lines stay greppable
+  // with `grep '^GATE '` because nothing else in this file starts with that token.
+  if (status !== 0) {
+    console.log(`--- ${name} output (RED) — reproduce with: ${stage[0]} ${stage[1].join(' ')}`);
+    console.log(text.trimEnd());
+    console.log(`--- end ${name} output`);
+  }
   // `status ?? 1`: a signal-killed stage reports `null`, and `null` must not read as "fine".
   if (status !== 0) worst = status ?? 1;
 }
