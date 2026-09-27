@@ -301,9 +301,21 @@ async function main(): Promise<void> {
       // arriving again: this is a property of the pair, and the client can only fix the half that is
       // the client's. Pinned as a MEASUREMENT of a known-open hazard, not as a failing check, so an
       // honest red stays available for the day it changes.
+      //
+      // ROUND 282 CORRECTION — the paragraph above gets the cause wrong, and the "untested fourth
+      // variant" it points at below has now been tested and is dead. It is not that the server
+      // "ignores headers"; it is that the server never **reads**. Its accepted socket's read side is
+      // paused (no `'data'` listener, no `resume()`), so the FIN this client has *already* sent by
+      // response end is never consumed, `'end'` never fires, and `allowHalfOpen: false` never
+      // half-closes it. One `socket.resume()` in the staged server above closes this cell in 1–2 ms
+      // against the unchanged library. Also: arm F's own claim that "the only variable is the client
+      // half" was untrue as written — F2 opens a second connection (the accept probe's) that F1 does
+      // not. `probe-round282` arm B supplies the missing controls and, as it happens, the
+      // attribution survives them: the HTTP half alone hangs, the accept half alone closes in 1 ms.
+      // Full detail in `probe-round282-which-socket-actually-strands-the-raw-net-server-cell.mts`.
       record('F2a', 'MEAS',
         outcome === 'hung'
-          ? 'as expected and still OPEN: `agent: false` does not close the raw-net.Server cell — only an abortive close would, and that is the untested fourth variant (see §OPEN in the writeup)'
+          ? 'as expected, and NO LONGER OPEN as a client-half question: Round 282 attributes this cell to the server\'s paused read side, not to anything the client leaves behind. The fourth variant (abortive close) was tested there and is dead twice over — unsendable by response end, and blinding when sent'
           : 'CHANGED: the raw-net.Server cell now closes; something other than this repair has moved, and it should be explained before it is trusted');
     }
     // Always clean up, whatever the outcome: this probe must not be the thing that leaks.

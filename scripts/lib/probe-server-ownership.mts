@@ -197,6 +197,15 @@ export function aWildcardBindWouldSucceed(port: number, closeBudgetMs = 3000): P
  *    connection it will never finish": any `net.Server` (nothing reaps its sockets), or an
  *    `http.Server` with a handler that can fail to respond. An `http.Server` that always
  *    responds is safe.
+ *
+ *    **Round 282 sharpens the parenthetical, which was the mechanism stated too loosely.** It is
+ *    not that nothing reaps a `net.Server`'s sockets — node reaps them fine when the client
+ *    closes, via `allowHalfOpen: false`. It is that a socket whose read side is **paused** never
+ *    consumes the client's FIN, so `'end'` never fires and the automatic half-close never runs.
+ *    That unifies rows 3 and 4 of the table above (`silent (no reply)` and `NO handler`, both
+ *    HUNG) under one cause rather than two observations: neither ever reads. A connection handler
+ *    that calls `socket.resume()` is not exposed at all — measured as a paired control in
+ *    `probe-round282` arm H (paused -> hung 3003 ms, one added `resume()` -> closed 1 ms).
  * 2. **`net.createServer()` with no `connection` listener is not inert.** It accepts, and the
  *    socket then has no owner and no reaper. That is the shape of the *old, deliberately broken*
  *    bind guard this module exists to replace — and it was still the shape of this module's own
@@ -318,6 +327,35 @@ export function portAnswersHttp(port: number, timeoutMs = 3000): Promise<string 
     // 0–1 ms — so the blast radius was the `net.Server` family, which is why `trackedNetServer`
     // exists. Cost of the fix: none measurable. The answer is still `HTTP 200`; a one-shot guard has
     // no reuse to lose.
+    //
+    // Round 282 (Theseus) — **correcting Round 280's own explanation of the cell it left open.**
+    // Round 280 §5 recorded that `agent: false` does not close the raw-`net.Server` cell and
+    // explained it as *"a raw `net.Server` that writes a response and ignores headers keeps its side
+    // open whatever the client does short of an abortive close."* **That explanation is wrong, and
+    // the remedy it implied is dead.** Measured (`probe-round282`, 12 checks · 0 failed):
+    //
+    //   - By the time `res` emits `'end'` with `agent: false`, this client's socket is **already
+    //     half-closed** (`writable=false`): node put a FIN on the wire when the `Connection: close`
+    //     response completed. There was never a client-side close left to add — the fourth variant
+    //     was going to perform an action node had already performed.
+    //   - The reason the server's accepted socket does not notice that FIN is that it is **never
+    //     read**. A `net.Server` connection handler that writes and does not `resume()` (or attach a
+    //     `'data'` listener) leaves its read stream paused, so the FIN is never consumed, `'end'`
+    //     never fires, `allowHalfOpen: false`'s automatic half-close never triggers, and
+    //     `close(cb)` waits forever. One added `socket.resume()` on the SERVER closes the same cell
+    //     in 1–2 ms against this unchanged guard (arm H, paired control: paused -> hung 3003 ms,
+    //     resumed -> closed 1 ms, trace `[end]`).
+    //   - So the Round 278 pair is **not** (server that never finishes) x (client that will not FIN
+    //     back). The client FINs before the guard resolves. It is (server that never READS) x
+    //     (nothing) — a one-factor hazard, and the factor is the occupant's, not this module's.
+    //
+    // **Do not add an abortive close here.** Measured: `res.socket.resetAndDestroy()` at response end
+    // reaches the wire not at all (the socket's write side is already shut) and makes this function
+    // return `null` — "nothing is answering" — about a server that answered 200, on both the raw and
+    // the `http.Server` family. That is the Round 276 ENOTFOUND defect class again: a remedy that
+    // blinds the describing half. A RST *would* close the cell if one could be sent (arm I1: from a
+    // still-writable socket it kills the paused server socket, EPIPE + close); the guard simply has
+    // no writable socket left by the time it has an answer.
     const req = http.request(
       new URL(channelsUrl(port)),
       { method: 'GET', timeout: timeoutMs, agent: false },
