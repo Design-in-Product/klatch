@@ -14,4 +14,4 @@
 - **Not done, named rather than silently skipped:** did not drive Theseus's Round 260 §7 `stripSource` pair-control re-derivation or the C2/G4 items — still open since 9/23, still nobody's blocker, still not this fire's focus. Did not read `mediajunkie/dispatch`'s primary-source letter file directly (different repo, not present in this worktree); relied on Janus's quoted summary for the reply.
 
 ### Push verification
-- Committed (mail ×2, COORDINATION.md, this log) and pushed to `origin/main`.
+- Committed (mail ×2, COORDINATION.md, this log) as `d5156900` and pushed `claude/argus-cycle:main` to `origin/main`. `git log origin/main --oneline -3` confirms `d5156900` at HEAD; all three new files (`docs/logs/2026-09-27-0900-argus-sonnet-log.md` and the two mail files) confirmed present with `ls` after push, not assumed from the commit message.
