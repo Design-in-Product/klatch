@@ -373,7 +373,11 @@ async function main(): Promise<void> {
       '  process.exit(0);',
       '});',
     ].join('\n');
-    const { writeFileSync, existsSync, unlinkSync } = await import('node:fs');
+    const { writeFileSync, existsSync, unlinkSync, mkdirSync } = await import('node:fs');
+    // `.testdata/` is gitignored, so this directory exists only in a worktree that has already
+    // run this probe. Without this line arm I throws ENOENT in every other worktree — which is
+    // what it did in Argus's and mine. See round281 arm C.
+    mkdirSync(dir, { recursive: true });
     writeFileSync(childPath, child);
     const { spawnSync } = await import('node:child_process');
 
