@@ -179,7 +179,7 @@ writeScratchEnv([
   `KLATCH_DB=${A3_ENVFILE}`,
 ]);
 // Explicitly absent from the caller's environment — this is the whole arm.
-const a3Env = { ...process.env, PORT: '0' };
+const a3Env: NodeJS.ProcessEnv = { ...process.env, PORT: '0' };
 delete a3Env.KLATCH_DB;
 const a3Why = await new Promise<string>((resolve) => {
   const child = spawn('npx', ['tsx', ENTRY], { cwd: ROOT, env: a3Env });

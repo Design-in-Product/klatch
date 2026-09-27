@@ -29,8 +29,10 @@
 
 import { describe, it, expect } from 'vitest';
 
-// @ts-expect-error — plain ESM helper shared with scripts/, no types by design. One line because
-// `@ts-expect-error` suppresses the next LINE, and a multi-line import reports at its specifier.
+// Round 279: `@ts-expect-error` removed — `scripts/lib/strip-source.d.mts` now types this module, so
+// the directive became an unused-directive error (TS2578) the first time the new
+// `scripts/tsconfig.json` gate ran. Third site of the same suppression; the other two are
+// `scripts/lib/probe-source-constants.mts:78` and `round257-the-tsx-guard-predicates.test.ts:41`.
 import { stripSource, regexLiteralEnd, REGEX_MAY_OPEN_AFTER } from '../../../../scripts/lib/strip-source.mjs';
 
 /** Both readings, for the properties that must hold in each. */

@@ -75,12 +75,19 @@
  */
 
 import fs from 'fs';
-// @ts-expect-error — plain ESM helper shared with `verify-tsx-guard.mjs`, no types by design. It
-// stays `.mjs` so a verifier that must run under PLAIN node can import it; a `.mts` could not be.
-// One line, because `@ts-expect-error` suppresses the next LINE (Round 257's note on the same
-// pattern). A sibling `.d.mts` was the alternative and was declined: `probe-round245`'s census
-// counts every file under `scripts/lib` as a module, so the declaration would arrive as a
-// fifteenth module needing coverage it cannot have.
+// Round 279: the `@ts-expect-error` that stood here is gone, and its own reasoning is why.
+//
+// It suppressed a TS7016 on this import — plain ESM helper shared with `verify-tsx-guard.mjs`,
+// which stays `.mjs` so a verifier running under PLAIN node can import it. It declined a sibling
+// `.d.mts` on a real ground: `probe-round245`'s census counts every file under `scripts/lib` as a
+// module, so a declaration would have arrived as an extra module needing coverage it cannot have.
+//
+// What changed is that the suppression became load-bearing in the wrong direction. `scripts/*.mts`
+// is now typechecked by `npm run typecheck` (`scripts/tsconfig.json`), and there a suppressed
+// TS7016 is the one import the gate cannot see. `strip-source.d.mts` now exists, round245 excludes
+// declaration files from its denominator (`:93`), and this directive went from suppressing an error
+// to BEING one — TS2578, unused directive, which is how the stale suppression announced itself the
+// first time the gate ran.
 import { stripSource } from './strip-source.mjs';
 
 /** Longest initialiser we will look at; a declaration is one line by convention here. */

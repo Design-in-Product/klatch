@@ -50,6 +50,7 @@ import {
   channelsUrl,
   portAcceptsAConnection,
   somethingIsAlreadyAnswering,
+  trackedNetServer,
 } from '../../../../scripts/lib/probe-server-ownership.mts';
 
 const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../../..');
@@ -65,14 +66,29 @@ beforeAll(() => {
   scratchRoot = fs.mkdtempSync(path.join(REPO, '.testdata', 'round251-'));
 });
 
-/** Ports handed out here are ephemeral, never 3001 — see the header. */
+/**
+ * Ports handed out here are ephemeral, never 3001 — see the header.
+ *
+ * Round 279, on Theseus's Round 278 §6: this was `net.createServer()` with no connection handler
+ * and a bare `s.close(cb)`, which is the shape Round 277 measured as `live 1 / close HUNG` — an
+ * accepted-but-unanswered socket makes `close()`'s callback never fire, the event loop drains, and
+ * node exits **0** with the transcript truncated. It is the unrepaired twin of `freePort()` in
+ * `probe-round250:547`, repaired there as the narrowest version of the same fix. The window is one
+ * loop turn on a just-minted ephemeral port, so nothing here has hung; the reason to close it
+ * anyway is that "narrow window" is how the other six sites were described too.
+ *
+ * `trackedNetServer()`'s default handler destroys accepted sockets and `closeBounded()` resolves
+ * `'closed' | 'hung'` under a budget instead of waiting forever. The outcome is deliberately not
+ * asserted on: a mint that came back `'hung'` would still have a valid port, and turning cleanup
+ * into a failure is how a teardown starts reporting something other than what it measured.
+ */
 function anEphemeralPort(): Promise<number> {
   return new Promise((resolve, reject) => {
-    const s = net.createServer();
-    s.once('error', reject);
-    s.listen(0, '127.0.0.1', () => {
-      const port = (s.address() as net.AddressInfo).port;
-      s.close(() => resolve(port));
+    const { server, closeBounded } = trackedNetServer();
+    server.once('error', reject);
+    server.listen(0, '127.0.0.1', () => {
+      const port = (server.address() as net.AddressInfo).port;
+      void closeBounded().then(() => resolve(port));
     });
   });
 }

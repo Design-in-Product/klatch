@@ -1,0 +1,48 @@
+{
+  // Round 279, Daedalus, 2026-09-26. Puts `scripts/**/*.mts` — 99 probes plus 8 library modules —
+  // into a type program that `npm run typecheck` actually runs.
+  //
+  // ── Why this file exists ────────────────────────────────────────────────────
+  //
+  // Before it, `npm run typecheck` was the three workspace packages only, and there was no root
+  // `tsconfig.json`. `scripts/lib/*.mts` was covered *incidentally* from Round 245 onward (the
+  // server's checking config widened `rootDir` so a test may import one), but the probes themselves
+  // were covered by nothing. Every round typechecked them with a standalone `tsc` invocation typed
+  // out by hand — a step that only happens when someone remembers, and the same TS7016 slip landed
+  // twice because of it (Rounds 263 and 275, both mine). An instrument that runs only when
+  // remembered is the thing this rules thread keeps finding; the remedy is the same every time,
+  // which is to make it structural.
+  //
+  // Prior art, so this is not presented as new: Round 222 wrote this config as scratch at
+  // `.testdata/r222-scratch/tsconfig.probes.json` and never landed it. The compiler options below
+  // are that file's, deliberately unchanged, so the figure a hand-run `tsc` printed in any round
+  // since 222 is comparable with what the gate prints now.
+  //
+  // ── Why NodeNext rather than extending tsconfig.base.json ───────────────────
+  //
+  // The base config is `moduleResolution: "bundler"`, which is right for the packages and wrong
+  // here: these files run under `npx tsx`/`node`, resolve real `.mts`/`.mjs` specifiers, and import
+  // `.mjs` siblings whose types live in hand-written `.d.mts` files beside them. `bundler` does not
+  // apply Node's ESM extension rules, so it would both miss real resolution errors and reject
+  // specifiers that work at runtime.
+  //
+  // ── Scope ──────────────────────────────────────────────────────────────────
+  //
+  // `.mts` only. The 37 `.mjs` probes are plain ESM and are not typechecked — they enter this
+  // program only as the *targets* of imports, which is exactly the TS7016 surface the slips were
+  // on. The 2 `.ts` files under `scripts/` are out of scope this round; widening the glob to them
+  // is a separate measurement, not a free extension of this one.
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "allowImportingTsExtensions": true,
+    "rewriteRelativeImportExtensions": true,
+    "noEmit": true,
+    "strict": true,
+    "skipLibCheck": true,
+    "types": ["node"],
+    "lib": ["ES2023", "DOM"]
+  },
+  "include": ["**/*.mts"]
+}

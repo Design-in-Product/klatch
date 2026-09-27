@@ -869,7 +869,19 @@ await new Promise((r) => setTimeout(r, 1500));
 
 const portQuiet = !(await portAcceptsAConnection(3001, 1500));
 const pkgDirty = git(['status', '--porcelain', 'packages/']).trim();
-const stray = fs.readdirSync(SCRIPTS).filter((n) => n.startsWith('.round250') || n.startsWith('.probe-round250'));
+// Round 279, on Theseus's Round 278 §5. The predicate was `.round250*`/`.probe-round250*`, and the
+// file that provoked the check was `scripts/.r277-round250-preedit.mts` — my own Round 277 staging
+// copy, which matched neither prefix. So the check whose subject is "did this probe leave a staged
+// copy under scripts/" could not see the staged copy that existed, in principle and not by accident.
+//
+// Widened to ANY dot-entry under `scripts/`, on two grounds rather than convenience. (1) This
+// probe's own `walk()` excludes dot-files, as does every census in this directory since Round 247 —
+// so a dot-entry here is BY CONSTRUCTION invisible to every other instrument, which makes it
+// exactly what a hygiene check should be looking at. (2) Measured before widening, not after: 0
+// dot-entries under `scripts/` today, so the wider predicate is green on the current tree and its
+// first red will be a real one. The narrower prefixes are kept nowhere — a two-clause predicate one
+// of whose clauses is now redundant is the shape that hides the other.
+const stray = fs.readdirSync(SCRIPTS).filter((n) => n.startsWith('.'));
 
 check('Z1', 'packages/ is byte-clean at exit — the capability run left nothing behind',
   pkgDirty === '' && sha256(SERVER_ENTRY) === entrySha,
@@ -898,7 +910,7 @@ if (repoDirtyAfterDrive === null) {
 
 check('Z2a', 'no staged copy remains under scripts/ — this probe\'s own hygiene',
   stray.length === 0,
-  `staged files under scripts/ matching .round250*/.probe-round250*, counted by readdirSync: ` +
+  `dot-entries under scripts/ (any name — Round 279, Theseus's 278 §5), counted by readdirSync: ` +
     `${stray.length}${stray.length ? ` (${stray.join(', ')})` : ''}. Counted, not grepped — grep ` +
     `emits no row at all for a file containing a NUL byte, which is how a glob "silently dropped a ` +
     `file" three times in this seat before Round 276 found the mechanism.`);

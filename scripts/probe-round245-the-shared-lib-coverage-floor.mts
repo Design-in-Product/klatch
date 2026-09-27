@@ -69,6 +69,13 @@ const LIB_DIR = join(ROOT, 'scripts', 'lib');
  * there says why a check would be the wrong instrument.
  */
 const COVERED_FLOOR = [
+  // Round 279. `gate-line.mts` and its test both arrived this morning in d00a5e08 (mine, 09:29),
+  // covered from the first commit and recorded in no list — so arm E has been red all day and
+  // nothing said so, because nothing schedules this probe. Recorded here rather than argued with:
+  // the arm's own note says the cheapest honest way to green it is one line that strengthens arm A,
+  // and that is this line. What the day demonstrates is the gap the arm cannot close — a check that
+  // fires correctly and is never run is a check nobody has.
+  'gate-line.mts',
   'marker-floor.mjs',
   'mint-transcript.mts',
   'opaque-container.mjs',
@@ -91,6 +98,18 @@ function walk(dir: string, out: string[] = []): string[] {
     // not a module. This probe's own Round 245 capability run reddened arm B at "14 vs 13"
     // against exactly such a file, and read it as a nested-module finding.
     if (e.name.startsWith('.')) continue;
+    // Round 279: a `.d.mts` is a declaration, not a module. It has no runtime, so it cannot be
+    // reached from the suite by construction, and counting one would put a permanently-uncovered
+    // entry in the denominator — worsening `covered N / M` for a file that is not coverable.
+    //
+    // This is the objection `probe-source-constants.mts:78` recorded when it DECLINED a sibling
+    // `.d.mts` and took a `@ts-expect-error` instead ("the declaration would arrive as a fifteenth
+    // module needing coverage it cannot have"). The objection was right about this probe and the
+    // remedy it chose was the expensive one: a suppressed TS7016 is invisible to the new
+    // `scripts/tsconfig.json` gate, where a declaration file is exactly what makes the import
+    // checked. Excluded here instead, which costs one predicate and buys real types at three call
+    // sites. Both arm B limbs exclude it, so the flatness check still compares like with like.
+    if (e.name.endsWith('.d.mts') || e.name.endsWith('.d.ts')) continue;
     const p = join(dir, e.name);
     if (e.isDirectory()) walk(p, out);
     else out.push(p);
@@ -196,7 +215,8 @@ if (lost.length) console.log(`[A] LOST coverage: ${lost.join(', ')}`);
 // the directory is flat — so this arm states the flatness rather than assuming it, and will notice
 // the day someone nests one. Without it, arm A's denominator is "whatever the walk reached".
 const oneLevel = readdirSync(LIB_DIR, { withFileTypes: true })
-  .filter((e) => e.isFile() && !e.name.startsWith('.')).length;
+  .filter((e) => e.isFile() && !e.name.startsWith('.')
+    && !e.name.endsWith('.d.mts') && !e.name.endsWith('.d.ts')).length;
 results.push({
   arm: 'B',
   check: `the recursive walk and a one-level read agree (${libFiles.length} vs ${oneLevel}) — scripts/lib is flat today`,

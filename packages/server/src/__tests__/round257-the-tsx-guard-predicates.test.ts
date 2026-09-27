@@ -38,8 +38,11 @@ import { tmpdir } from 'node:os';
 import { join, sep } from 'node:path';
 import { pathToFileURL } from 'node:url';
 
-// @ts-expect-error — plain ESM helper shared with scripts/, no types by design. One line because
-// `@ts-expect-error` suppresses the next LINE, and a multi-line import reports at its specifier.
+// Round 279: the `@ts-expect-error` here is removed, not moved. It suppressed a TS7016 on this
+// import ("plain ESM helper shared with scripts/, no types by design"); `scripts/lib/tsx-required.
+// d.mts` now types the module, so the directive was itself an error (TS2578, unused directive) on
+// the first `npm run typecheck` after the declaration landed. The import is now CHECKED here — the
+// seven names below are verified against the declaration rather than arriving as `any`.
 import { TS_EXTENSIONS, TSX_JS_SPECIFIER_EXTENSIONS, TSX_LOADABLE_EXTENSIONS, TS_DIR_INDEX_EXTENSIONS, isTsResolutionFailure, isTsExtensionFailure, isTsDirImportFailure } from '../../../../scripts/lib/tsx-required.mjs';
 
 /** A directory whose path contains a `packages` segment, which `isTsResolutionFailure` requires. */

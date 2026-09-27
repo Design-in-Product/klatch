@@ -515,8 +515,21 @@ if (invSecond.files.length === 0) {
 
 console.log('\n── arm F: control — repeat the shipped-root cache-cold browse ───');
 let armF: ArmResult | null = null;
-if (armB) {
+if (!armB) {
+  skip('F', 'needs arm B');
+} else {
   armF = await measureRoot('F', 'shipped-again', ROOT_SHIPPED, invShipped);
+}
+// Round 279: the inner guard is the one arm C has had at `:490` since this probe was written and
+// arm F did not. `measureRoot` declares `Promise<ArmResult | null>`, so `armF.cold` below was an
+// unguarded deref of a nullable — latent rather than live: every path through the current body
+// either returns an object or throws, so no run can have taken it. Fixed on the declared type
+// rather than by narrowing the declaration, because arm C already treats the null as reachable, and
+// two arms disagreeing about the same return type is the drift worth closing. The "needs arm B"
+// skip moved ahead of the measurement so it keeps saying what it means — an `else` on a conjunction
+// would have reported a null arm F as a missing arm B. Caught by `scripts/tsconfig.json` on the
+// gate's first run.
+if (armB && armF) {
   const spread = Math.abs(armF.cold - armB.cold) / armB.cold;
   check('F', 'cache-cold figure is repeatable', spread < 0.15,
     `${ms(armB.cold)} then ${ms(armF.cold)} — ${(spread * 100).toFixed(0)}% apart`);
@@ -525,8 +538,6 @@ if (armB) {
     `measured ${ms(armB.cold)} / ${ms(armF.cold)} against ${R147_COLD} ms reported in dba7699 — ` +
       `${(Math.min(armB.cold, armF.cold) / R147_COLD).toFixed(2)}-${(Math.max(armB.cold, armF.cold) / R147_COLD).toFixed(2)}x`,
     'measurement');
-} else {
-  skip('F', 'needs arm B');
 }
 
 // ── Arm E — the comparison ───────────────────────────────────────────────────

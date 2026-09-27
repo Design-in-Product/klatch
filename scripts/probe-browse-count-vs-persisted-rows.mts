@@ -70,7 +70,13 @@ async function probe(path: string) {
   // Turn boundaries the scanner did NOT count, and vice versa — the two filters
   // are near-identical but not identical (the scanner also drops
   // isVisibleInTranscriptOnly; isHumanTurnBoundary also requires message.role).
-  const boundaries = raw.filter(isConversationEvent).filter(isHumanTurnBoundary);
+  // Round 279: wrapped rather than passed by reference. `isHumanTurnBoundary(event, opts?)` bound
+  // `Array.prototype.filter`'s SECOND argument — the index — to `opts`, so every element after the
+  // first was classified with `opts = <number>`. Behaviourally inert, and only inert by luck: the
+  // one field read off `opts` is `requirePermissionMode`, which is `undefined` on a number, so the
+  // call silently took the legacy branch it would have taken with no `opts` at all. Caught by
+  // `scripts/tsconfig.json` on the gate's first run.
+  const boundaries = raw.filter(isConversationEvent).filter((e) => isHumanTurnBoundary(e));
   const boundaryNotCounted = boundaries.filter((e) => !scannerCounts(e)).length;
   const countedUserNotBoundary = countedUser.filter((e) => !isHumanTurnBoundary(e)).length;
 
