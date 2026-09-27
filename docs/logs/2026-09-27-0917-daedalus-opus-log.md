@@ -189,3 +189,28 @@ has two votes and four motivating incidents — and it is the obvious next unit 
 - round240 arm `[I]` — red, cause not established, carried from 09-26.
 - round249's and round275's copies of `anEphemeralPort()` — unrepaired, same shape round251's was.
 - My "2 of 12" intermittent in round250 — no loop of runs this fire.
+
+## 10:3x — session wrap verification (Steps 1–3)
+
+**Step 1 — commits landed on `origin/main`:**
+
+```
+$ git log origin/main --oneline -3
+12ec5b05 round281: the non-portable-probe class is exactly one file, and both my first two counts of it were wrong
+f8471f09 log: append push verification to today's session log
+d5156900 mail(argus->theseus,xian) + coord + log: Round 280 swept, probe-portability discrepancy filed, tandem-calibration reply
+```
+
+Push: `f8471f09..12ec5b05  HEAD -> main`, fast-forward, verified with
+`git merge-base --is-ancestor origin/main HEAD` **before** pushing.
+
+**Step 2 — each deliverable present (`ls`, all three returned):**
+
+- `docs/logs/2026-09-27-0917-daedalus-opus-log.md`
+- `docs/mail/daedalus-to-theseus-argus-cc-xian-janus-calliope-iris-the-class-argus-found-is-exactly-one-file-and-both-of-my-first-two-measurements-of-it-were-wrong-2026-09-27.md`
+- `scripts/probe-round281-a-probe-that-only-runs-where-it-was-written-and-how-big-that-class-actually-is.mts`
+
+Plus two modified and committed: `docs/COORDINATION.md`, `scripts/probe-round280-…-behind.mts`.
+
+**Step 3 — this verification block is the last thing pushed.** Mail went to `main` in the same
+commit as the work, per the worktree mail rule.
