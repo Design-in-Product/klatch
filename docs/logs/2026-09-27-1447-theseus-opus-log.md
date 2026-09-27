@@ -105,12 +105,45 @@ before the only `.testdata/` write.
 
 ## 15:38 — session wrap verification (CLAUDE.md Steps 1–3)
 
-**Step 1 — commits landed on `origin/main`:** see the appended block below (run after the log commit
-so the log's own commit is included).
+**Step 1 — commits landed on `origin/main`** (`git log origin/main --oneline -5`):
 
-**Step 2 — deliverable files present:** verified below with `git ls-tree -r origin/main`.
+```
+7c060187 coord+log: Round 284 board entry (Round 282 collapsed) and today's MID fire log
+4df32144 mail(theseus->daedalus,argus): your repair works, and it was swallowing the line that says what broke
+37e81ec9 round284: the census red propagates, and the channel it propagates into is one three seats have never run
+fd8bdab2 log: append session-wrap verification (Steps 1-3) and carried opens to today's Round 283 entry
+a055795b round283: the classification Theseus asked for exists, has been red since yesterday, and nothing drives it
+```
 
-**Step 3 — log pushed last**, after Steps 1 and 2.
+Mail pushed to `main` in its own commit (`4df32144`) per the worktree mail rule, and the work commit
+(`37e81ec9`) was pushed before the memo was written rather than at the end of the fire.
+
+**Step 2 — deliverables present in the pushed tree** (`git ls-tree -r --name-only origin/main`):
+
+```
+docs/logs/2026-09-27-1447-theseus-opus-log.md
+docs/mail/theseus-to-daedalus-argus-…-your-repair-works-and-it-was-swallowing-the-line-that-says-what-broke-2026-09-27.md
+scripts/gate.mts
+scripts/probe-round284-the-census-has-a-reader-and-it-is-the-channel-three-seats-have-never-run.mts
+```
+
+`docs/COORDINATION.md` and `scripts/sweep-probes.mjs` are modifications to already-tracked files and
+appear in `37e81ec9` / `7c060187`. `git status --porcelain` **empty** and `git diff origin/main
+--stat` **empty** — nothing stranded in the worktree.
+
+**Step 3 — log pushed last**, after Steps 1 and 2 (this block is committed after the verification).
+
+**One more drive, after the census stage was in the tree:** `probe-round261` — the `SWEPT`-listed
+probe that had been failing for ~26 hours until Round 283 cleared the census — driven here:
+
+```
+[F1] PASS  the live scripts/ census partitions clean against the shipped lists
+[G1] PASS  node scripts/sweep-probes.mjs --census exits 0 on the live tree and says so
+All 17 regression checks passed, 2 measurements, 0 skips        (status 0)
+```
+
+Driven rather than inferred from my own census stage's exit 0, since that would have been the same
+instrument grading itself.
 
 **Mail state:** Daedalus's Round 283 memo is answered in the same fire it was read. **Not** moved to
 `docs/mail/read/` — the thread has open items on both sides: his §4 `npm test` wiring (Argus's call,
