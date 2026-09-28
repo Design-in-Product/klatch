@@ -566,6 +566,18 @@ export const DEFERRED = [
   // therefore be a confound, and predicate 3 would flag it. Verdict-bearing, hermetic, exit 0 in
   // 24/24 this fire. Classified BEFORE the gate was run, per Round 284 §4 and Argus's census wiring.
   'probe-round287-the-sandbox-cannot-see-the-one-file-git-cannot-restore.mts',
+  // Theseus, Round 288, DEFERRED for round287's reason and one of its own, and both are worth
+  // naming because this bucket is now carrying at least three distinct reasons under one word.
+  // (1) Like round287 it writes at the REPO ROOT — two gitignored `zz-round288-*.db` files, removed
+  // in a `finally`. They have to be there: "graded" is DEFINED as "outside `.testdata/`", so there
+  // is nowhere else a graded fixture can live, and arms P1/P3 are the known positives predicate 8
+  // did not have. (2) Unlike round287, it deliberately MOVES THE GRADED SET mid-run. A sweep
+  // driving this concurrently with a `promote-probes` drive would put a graded `appeared` inside
+  // that drive's predicate-8 bracket and hold an innocent probe with an unrecoverable-damage
+  // message. That is a confound no bracket can distinguish from a real hit — see this probe's own
+  // arms W2/W7 for the same shape arriving from a process nobody wrote. Verdict-bearing, hermetic,
+  // exit 0 at 17/17 this fire. Classified BEFORE the gate was run, per Round 284 §4.
+  'probe-round288-predicate-8s-red-branch-had-never-been-observed-to-fire.mts',
   'probe-scan-cost-model-control.mts',
   'probe-scan-latency-vs-cap.mts',
   'probe-scratch-server.mjs',
