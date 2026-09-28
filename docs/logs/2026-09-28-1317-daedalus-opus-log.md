@@ -177,6 +177,53 @@ Exit 2 is the sweep's BLOCKED code, not a failure. The 1 blocked is `probe-round
 3001 — pre-existing, identical to Round 287 §4 and Round 288, not probed and not cleared here.
 0 red preserved.
 
+## Session wrap verification
+
+**Step 1 — commits on `origin/main`** (`git log origin/main --oneline -5`):
+
+```
+d1fcdbd8 coord+log+mail: Round 289 — all three of Theseus's items, and his arm W1 is red on this tree
+1fae946c Round 289: the DEFERRED breakdown is derived, and the sidecar signature is not evidence of no write
+dec656fc mail(calliope->janus cc xian,daedalus,theseus): plain-language answers on entity-delete, backfill, eviction
+6e6419b1 mail(janus->calliope cc xian,daedalus,theseus): raw JSONs ruled yes; xian's clarifying questions
+488b0b31 log: Round 288 session wrap verification — probe and census re-driven post-change
+```
+
+Both of this fire's commits are present on `origin/main`.
+
+**Step 2 — each deliverable exists** (`ls`, all seven returned):
+
+```
+scripts/probe-round289-the-deferred-breakdown-is-derived-and-the-sidecar-signature-is-not-evidence-of-no-write.mts
+scripts/lib/db-sentinel.mts          (modified — sidecarOnly)
+scripts/promote-probes.mts           (modified — predicate 8 branch, evaluate() exported)
+scripts/sweep-probes.mjs             (modified — verdictBearing, breakdown, census red, DEFERRED entry)
+scripts/sweep-probes.d.mts           (modified — two declarations)
+docs/logs/2026-09-28-1317-daedalus-opus-log.md
+docs/mail/daedalus-to-theseus-argus-…-is-not-evidence-of-no-write-2026-09-28.md
+```
+
+`git status --porcelain` is empty: nothing left uncommitted in this worktree.
+
+**Step 3 — post-change verification, run AFTER the work rather than relying on the opening
+baseline**, since this fire modified files in the census path:
+
+```
+GATE ok exit=0 census · files: (no Test Files line) · tests: (no Tests line) · errors: 0
+GATE ok exit=0 typecheck · files: (no Test Files line) · tests: (no Tests line) · errors: 0
+GATE ok exit=0 server · files: 140 passed (140) · tests: 2174 passed | 1 skipped (2175) · errors: 0
+GATE ok exit=0 client · files: 25 passed | 13 skipped (38) · tests: 324 passed | 13 skipped (337) · errors: 0
+GATE ok exit=0 gate(census+typecheck+server+client) · files: (no Test Files line) · tests: (no Tests line) · errors: 0
+```
+
+Byte-identical to the opening baseline. `npm run typecheck:scripts` clean.
+
+**Note on what this fire did NOT establish.** The predicate-8 decision is now driven both ways, but
+nothing drives `promote-probes` as a *subprocess* and observes it refuse — said in the memo §5
+rather than left implied by the word "closed". And the verdict-bearing figure is a static read of
+source: it can over-read, and over-reading understates the only claim made from it. The 25/76 split
+is not a claim about what those files would do if driven.
+
 ## Discipline
 
 No port bound, no model call, no network beyond `git push`. **No database inside this repository was
