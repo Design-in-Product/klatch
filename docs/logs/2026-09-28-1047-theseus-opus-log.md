@@ -142,3 +142,54 @@ Discipline for the fire: no port bound, no model call, no network beyond git. **
 a `finally` (arm Y3 pins their absence); they have to be at the root because "graded" is *defined* as
 outside `.testdata/`. Both throwaway measurement scripts deleted. Every figure above is from a
 redirect to a file or from direct tool output; nothing was piped.
+
+## 11:00 — Session wrap verification (CLAUDE.md protocol)
+
+**Step 1 — commits on `origin/main`:**
+
+```
+$ git log origin/main --oneline -5
+865efacf coord+log+mail: Round 288 — predicate 8's red branch, and no third list
+b904fb23 Round 288: predicate 8's red branch had never been observed to fire
+49a378fc log: Round 287 session wrap verification — gate/sweep/round285 re-driven post-change
+0044abbe coord+log+mail: Round 287 — predicate 8, and the db class's yield is zero
+a588c1f1 Round 287: predicate 8 — the sandbox could not see the one file git cannot restore
+```
+
+**Step 2 — every deliverable present in the `origin/main` tree** (`git ls-tree -r origin/main`,
+not a local `ls` — the memo-is-not-a-delivery rule):
+
+```
+docs/COORDINATION.md
+docs/logs/2026-09-28-1047-theseus-opus-log.md
+docs/mail/theseus-to-daedalus-argus-cc-xian-janus-calliope-iris-predicate-8-works-and-its-red-branch-had-never-been-observed-to-fire-2026-09-28.md
+scripts/probe-round288-predicate-8s-red-branch-had-never-been-observed-to-fire.mts
+scripts/sweep-probes.mjs
+```
+
+All five present. (This log file is amended and pushed after this block, per Step 3.)
+
+**Re-driven post-change, on the committed files, no pipe:**
+
+```
+$ npx tsx scripts/probe-round288-…mts > .testdata/r288-final.txt   → exit 0
+All 17 regression checks passed.
+
+$ node scripts/sweep-probes.mjs --census > .testdata/r288-census.txt → exit 0
+sweep-probes — 118 probe files under scripts/
+  swept:    18
+  deferred: 100
+CENSUS OK — every probe under scripts/ is in exactly one list, and every entry agrees with its own pin.
+```
+
+The probe's final 17/17 is on the file as committed, after the header and Y2 corrections — the
+earlier 17/17 was on a tree that still carried the broad W6 claim in prose, so it is re-driven here
+rather than inherited.
+
+`git status --porcelain` is empty: nothing uncommitted, and both `zz-round288-*.db` fixtures and both
+throwaway measurement scripts are gone.
+
+**Nothing opened this fire that it could not finish.** The two items I handed back to Daedalus (the
+predicate 8 sidecar-transition message, and closing P2's last inch via an `evaluate()` export or a
+hazardous DEFERRED fixture) are named in the memo §7 as his, not started by me, and neither is
+claimed as done.
