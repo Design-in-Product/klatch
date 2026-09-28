@@ -174,6 +174,43 @@ const REPO = join(HERE, '..');
  * exits 0 while printing nothing recognisable is still caught.
  */
 export const SWEPT = [
+  // ── Round 285, Daedalus, 2026-09-27 (STOP fire). The first three promotions this list has ever
+  // received from an instrument rather than from an agent's hand-drive. `scripts/promote-probes.mts`
+  // drove each of these twice — real `HOME` and an empty `HOME`, one variable — under a
+  // tree-fingerprint bracket AND a population sampler, and printed the entry below; this seat
+  // pasted it and is the attestation. The rule the list has always used is unchanged: run green in
+  // a named fire, with the fire named. What changed is who did the running.
+  //
+  // Verbatim from the drive (`.testdata/r285/drive-fixed.txt` and `drive-round244-forced.txt`),
+  // figures not retyped:
+  //   round241  All 19 regression checks passed · exit 0 both arms · 365/370 ms · 16 samples
+  //   round244  All 5 regression checks passed  · exit 0 both arms · 14846/14770 ms · 706 samples
+  //   round255  All 3 regression checks passed  · exit 0 both arms · 486/466 ms · 22 samples
+  //
+  // round244 was reached with `--only round244 --force`. The corrected `homedir` detector flags it,
+  // and the flag is a false exclusion: the drive had already observed it green under both HOME arms
+  // twice. That is what `--force` is for, and the entry records that it was used rather than hiding
+  // it — a reading list that can veto a measurement is a comment with a veto.
+  {
+    file: 'probe-round241-a-corpus-cast-is-resolved-not-pinned.mts',
+    expect: /All 19 regression checks passed/,
+    why: 'Round 285 drove it twice via promote-probes.mts (real HOME and an empty HOME, one variable): ' +
+      '19/19 green, exit 0 both arms, 365 ms; scripts/ and packages/ fingerprints unchanged and the ' +
+      'probe-* population unmoved across 16 samples',
+  },
+  {
+    file: 'probe-round244-the-staleness-sweep-walks-one-level-and-the-libs-are-outside-it.mts',
+    expect: /All 5 regression checks passed/,
+    why: 'Round 285 drove it twice via promote-probes.mts --force (real HOME and an empty HOME): ' +
+      '5/5 green, exit 0 both arms, 14846 ms — the slowest member of this list, and hermetic by ' +
+      'observation despite the homedir detector flagging it; population unmoved across 706 samples',
+  },
+  {
+    file: 'probe-round255-the-comment-shadow-census.mts',
+    expect: /All 3 regression checks passed/,
+    why: 'Round 285 drove it twice via promote-probes.mts (real HOME and an empty HOME, one variable): ' +
+      '3/3 green, exit 0 both arms, 486 ms; population and tree unmoved across 22 samples',
+  },
   {
     // Round 283, Daedalus, 2026-09-27. The whole measured yield of Theseus's Round 282 §9 design
     // ("four booleans, drive the all-false set") over the classification already in this file:
@@ -470,9 +507,9 @@ export const DEFERRED = [
   'probe-round231-the-handler-and-the-signal-are-in-different-processes.mts',
   'probe-round233-arm-m-and-the-endpoint-can-walk-different-corpora.mts',
   'probe-round240-a-probe-pinned-to-a-moved-subject-is-failing-silently.mts',
-  'probe-round241-a-corpus-cast-is-resolved-not-pinned.mts',
+  // round241 promoted to SWEPT in Round 285 (driven by promote-probes.mts).
   'probe-round242-the-band-selects-bytes-and-arm-a-is-one-row.mts',
-  'probe-round244-the-staleness-sweep-walks-one-level-and-the-libs-are-outside-it.mts',
+  // round244 promoted to SWEPT in Round 285 (driven by promote-probes.mts --force).
   'probe-round246-the-sweep-repaired-and-the-emit-spelling-was-the-bigger-blind-spot.mts',
   'probe-round247-a-mutant-in-the-tree-is-in-the-population.mts',
   'probe-round248-the-dot-guard-is-half-the-repair-and-a-copy-re-admits-the-original.mts',
@@ -482,7 +519,8 @@ export const DEFERRED = [
   'probe-round253-the-db-path-mutations.mjs',
   'probe-round253-the-env-file-cannot-reach-the-database-path.mts',
   'probe-round254-the-mutate-class-is-an-unanchored-conjunction-and-most-of-it-never-writes-the-product.mts',
-  'probe-round255-the-comment-shadow-census.mts',
+  // round255-census promoted to SWEPT in Round 285 (driven by promote-probes.mts). The `-mutations`
+  // file beside it stays DEFERRED: it is the mutation fixture the census probe drives, not a probe.
   'probe-round255-the-comment-shadow-mutations.mjs',
   // ── Round 283, Daedalus, 2026-09-27 ──────────────────────────────────────────
   // The census had been RED since `probe-round276` landed at 2026-09-26 11:12:32 -0700
@@ -512,6 +550,13 @@ export const DEFERRED = [
   // sweep cannot see. Verdict-bearing and hermetic, but not sweepable; the bucket for that is this
   // one. Classified BEFORE running the gate this fire, which is the discipline its own arm B4 prices.
   'probe-round284-the-census-has-a-reader-and-it-is-the-channel-three-seats-have-never-run.mts',
+  // Mine, Round 285, and DEFERRED for the SAME reason as round284 above — which is the point worth
+  // recording. Its arm A mints a synthetic `probe-*` file inside `scripts/`, holds it 600 ms to
+  // prove the sampler catches it, and removes it in a `finally`. So this probe is the second member
+  // of the class Theseus opened, and the class now has an instrument: predicate 7 of
+  // `promote-probes.mts` would flag this file if it were ever driven in a sweep, which is exactly
+  // what should happen. Classified BEFORE the gate was run this fire, per Round 284 §4.
+  'probe-round285-the-promotion-path-and-the-two-detectors-that-were-returning-a-smaller-number.mts',
   'probe-scan-cost-model-control.mts',
   'probe-scan-latency-vs-cap.mts',
   'probe-scratch-server.mjs',

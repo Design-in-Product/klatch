@@ -87,7 +87,10 @@ import { fileURLToPath } from 'node:url';
 
 import { fingerprint } from './lib/tree-fingerprint.mts';
 import { stripSource } from './lib/strip-source.mjs';
-// @ts-expect-error — sweep-probes.d.mts declares the runtime exports; census() is not among them.
+// Typed by `sweep-probes.d.mts` (Round 279). `SWEPT` and `DEFERRED` arrive `readonly`, which is
+// why nothing below casts them — the first version of this import carried a `@ts-expect-error` for
+// an untyped module, and `typecheck:scripts` reported it as TS2578, an unused directive. Exactly
+// the rule Round 279 added: a suppressed error is invisible to the gate that would have caught it.
 import { SWEPT, DEFERRED, diagnosisLine } from './sweep-probes.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
@@ -150,7 +153,13 @@ const DETECTORS: Record<string, RegExp> = {
   net: /\b(createServer|listen|net\.connect|createConnection|http\.request|http\.get|fetch|request)\s*\(/,
   model: /\b(Anthropic|ANTHROPIC_API_KEY|messages\s*\.\s*create)\b/,
   db: /\b(better-sqlite3|Database|getDb|KLATCH_DB)\b/,
-  suite: /\b(npm\s+(run\s+)?(test|typecheck)|vitest)\b/,
+  // `npm` and its subcommand are separated by whatever the CALL SHAPE puts between them, which for
+  // the dominant spelling in this repo is not whitespace: `spawnSync('npm', ['test'])` has `', ['`
+  // there. The first version required `\s+` and therefore matched only the shell-string spelling.
+  // It still reported 9 live hits, which is why it looked fine — `round285` arm B1 failed on a
+  // known positive built from the real call shape, and that is the only reason it was found.
+  // **A detector with a plausible non-zero count is harder to doubt than one reading zero.**
+  suite: /\bnpm['"\s,[\]]+(run['"\s,[\]]+)?(test|typecheck)|\bvitest\b/,
   // Each branch carries its OWN right boundary; there is deliberately no trailing `\b` on the
   // group. The first version of this line was `/\b(homedir\s*\(|\.claude\/projects|process\.env\.HOME)\b/`
   // and its first branch was **unmatchable**: after `homedir(` the next character is `)`, and a
@@ -266,7 +275,7 @@ export const drive = (file: string, home: string): Promise<DriveResult> =>
 
 /** The conclusion line a probe reached, or null if it reached none. Predicate 5's observable. */
 export const conclusion = (out: string): string | null => {
-  const line = diagnosisLine(out) as string;
+  const line = diagnosisLine(out);
   return /^(All \d+ regression checks passed|FAILED — |INCONCLUSIVE — )/.test(line) ? line : null;
 };
 
@@ -330,7 +339,7 @@ const evaluate = (file: string, real: DriveResult, empty: DriveResult): Verdict 
 
 const main = async (): Promise<void> => {
   const files = population();
-  const swept = new Set((SWEPT as { file: string }[]).map((s) => s.file));
+  const swept = new Set(SWEPT.map((s) => s.file));
 
   // Selection. DEFERRED, hazard-clean, and — if `--only` is given — matching. Deliberately not
   // random: stable order means two fires drive disjoint prefixes only if someone promotes in
@@ -340,7 +349,7 @@ const main = async (): Promise<void> => {
   const candidates: string[] = [];
   for (const f of files) {
     if (swept.has(f)) continue;
-    if (!(DEFERRED as string[]).includes(f)) continue; // unclassified — the census owns that red
+    if (!DEFERRED.includes(f)) continue; // unclassified — the census owns that red
     if (ONLY && !f.includes(ONLY)) continue;
     const h = hazards(readFileSync(join(SCRIPTS, f), 'utf8'));
     if (h.length) {
@@ -363,7 +372,7 @@ const main = async (): Promise<void> => {
   const budget = ONLY ? candidates.length : Math.min(N, candidates.length);
   const drivable = candidates.slice(0, budget);
 
-  console.log(`promote-probes — ${files.length} probe files · ${swept.size} SWEPT · ${(DEFERRED as string[]).length} DEFERRED`);
+  console.log(`promote-probes — ${files.length} probe files · ${swept.size} SWEPT · ${DEFERRED.length} DEFERRED`);
   console.log(`  hazard-clean DEFERRED candidates: ${candidates.length}`);
   for (const [k, v] of Object.entries(skipped).sort((a, b) => b[1].length - a[1].length)) {
     console.log(`  not driven (${k}): ${v.length}`);
