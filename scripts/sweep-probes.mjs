@@ -160,10 +160,12 @@
  *   node scripts/sweep-probes.mjs --census   partition + entry-schema check only, run nothing
  */
 
-import { readdirSync } from 'node:fs';
+import { readdirSync, readFileSync } from 'node:fs';
 import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
+
+import { stripSource } from './lib/strip-source.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const REPO = join(HERE, '..');
@@ -578,6 +580,18 @@ export const DEFERRED = [
   // arms W2/W7 for the same shape arriving from a process nobody wrote. Verdict-bearing, hermetic,
   // exit 0 at 17/17 this fire. Classified BEFORE the gate was run, per Round 284 §4.
   'probe-round288-predicate-8s-red-branch-had-never-been-observed-to-fire.mts',
+  // Mine, Round 289, and DEFERRED for a reason that is neither round284/285's nor round287/288's —
+  // which is now four distinct reasons in one bucket and is the standing argument for the derived
+  // breakdown this same round added rather than for a hand-maintained fifth column. This probe
+  // opens LIVE SQLite connections (arms W2–W6), and a probe that holds a database open is the one
+  // thing predicate 8 cannot be asked to grade innocently. Every one of them is on a `mkdtemp`
+  // database under the OS temp dir, NOT at the repo root: `snapshot()` takes its root as a
+  // parameter, so unlike round287 arm B and round288 arm P this probe mints nothing inside the
+  // repository and moves no graded file here (arm Y2 asserts it). It is deferred anyway, because
+  // "safe on the tree" is not the bar — a sweep that drove it would be driving a probe whose
+  // subject matter is concurrent database holders. Verdict-bearing, hermetic, exit 0 this fire.
+  // Classified BEFORE the gate was run, per Round 284 §4 and Argus's census wiring.
+  'probe-round289-the-deferred-breakdown-is-derived-and-the-sidecar-signature-is-not-evidence-of-no-write.mts',
   'probe-scan-cost-model-control.mts',
   'probe-scan-latency-vs-cap.mts',
   'probe-scratch-server.mjs',
@@ -591,6 +605,79 @@ export const DEFERRED = [
  * Counted with readdirSync, not a glob: a glob has dropped a file from a count on this project.
  */
 export const census = (dir) => readdirSync(dir).filter((f) => /^probe-/.test(f)).sort();
+
+/**
+ * Can this file emit a conclusion line at all? Read from SOURCE, at census time.
+ *
+ * ── Why this is a derivation and not a third list ────────────────────────────
+ *
+ * Round 287 §8 named a real problem: DEFERRED carries two populations under one name — *probes not
+ * yet examined* and *investigations that were never probes* — so "100 deferred" reads as 100 units
+ * of pending work when a large part of it is not work at all. Round 287 stopped short of proposing
+ * a third list and asked. Theseus's Round 288 §4 answered: **no third list, derive it**, on three
+ * grounds, the load-bearing one being that a hand-maintained reason drifts silently because nothing
+ * reddens when it goes stale, and the census's whole value is that it is a strict partition of one
+ * directory into exactly two lists. This is that answer, built.
+ *
+ * ── What it reads, and the one that nearly returned a smaller number ─────────
+ *
+ * Predicate 5's observable is the conclusion line — `All N regression checks passed`, `FAILED — `,
+ * `INCONCLUSIVE — ` — however produced, including by a bare `console.log`. Statically that is:
+ * a call to `summariseAndExit`, or the text of one of the three lines present as a literal.
+ *
+ * `stripSource(src, false)` — comments blanked so prose cannot vote, **strings kept** — and the
+ * second half of that is not a style choice. Measured on today's 118 files, both readings:
+ *
+ *       reading                SWEPT known positives   DEFERRED verdict-bearing
+ *       strings kept                  18 / 18                   24
+ *       strings blanked               16 / 18                   21
+ *
+ * Blanking strings loses `probe-round261` and `probe-round269` — both hand-roll their summary as a
+ * string literal instead of calling the helper. Fourth instance in eleven days of one mechanism
+ * (Round 281's `[^)]*`, Round 285's `homedir` and `suite`, Round 288 §3's un-normalised copy): **a
+ * detector fails by returning a smaller number, and a smaller number reads like good news.** This
+ * one was caught before it shipped, by the population below rather than by care.
+ *
+ * ── The known positives are checked on every run, which is the point ─────────
+ *
+ * Every SWEPT entry carries an `expect` pin that the sweep matches against real output, so each
+ * SWEPT file is a known positive **by construction**. {@link verdictBearingProblems} asserts all of
+ * them and the census grades the result. A derived figure with no known positives is a number
+ * nobody can doubt; this one goes red the moment it starts under-reading.
+ *
+ * Over-reads are possible and are the safe direction: a file that merely mentions the line without
+ * reaching it is counted as verdict-bearing, which *understates* how much of DEFERRED is not work.
+ *
+ * NOT claimed: that a verdict-bearing file is drivable, promotable, or safe. And per Theseus's own
+ * caveat — this separates *investigations that were never probes* from *probes not yet examined*;
+ * it does not separate *examined and held* from *never driven*. That axis has no observable yet.
+ */
+export const verdictBearing = (src) => {
+  const s = stripSource(src, false);
+  return /\bsummariseAndExit\s*\(/.test(s)
+    || /regression checks passed/.test(s)
+    || /\bFAILED\s+—/.test(s)
+    || /\bINCONCLUSIVE\s+—/.test(s);
+};
+
+/**
+ * The known-positive check for {@link verdictBearing}: every SWEPT file must read true. Returns
+ * problem strings, empty when the detector agrees with the list that cannot be wrong about this.
+ * Parameterised on the reader so it can be driven against fixtures rather than only against
+ * `scripts/` — same reason {@link census} takes a directory.
+ */
+export const verdictBearingProblems = (sweptFiles, read) =>
+  sweptFiles
+    .filter((f) => {
+      let src;
+      try {
+        src = read(f);
+      } catch {
+        return false; // a missing file is the `missing` census red's business, not this one's
+      }
+      return !verdictBearing(src);
+    })
+    .map((f) => `${f}: SWEPT (its expect pin matches real output) but the verdict-bearing detector reads it false`);
 
 /**
  * Partitions a census against the two declared lists. Returns the two ways it can be wrong:
@@ -761,9 +848,24 @@ const main = () => {
   const files = census(join(REPO, 'scripts'));
   const p = partition(files, sweptFiles, DEFERRED);
 
+  const readProbe = (f) => readFileSync(join(REPO, 'scripts', f), 'utf8');
+  // Derived every run, never recorded: the DEFERRED count decomposed by whether the file can emit a
+  // conclusion line at all. Round 289, answering Theseus's Round 288 §4 — the undecomposed number
+  // read as N units of pending work when a large part of it is investigations that were never
+  // probes. Files named by DEFERRED but absent are the `missing` red's business, so they are not
+  // read here.
+  const present = new Set(files);
+  const deferredPresent = DEFERRED.filter((f) => present.has(f));
+  const bearing = deferredPresent.filter((f) => verdictBearing(readProbe(f))).length;
+
   console.log(`sweep-probes — ${files.length} probe files under scripts/`);
   console.log(`  swept:    ${sweptFiles.length}`);
   console.log(`  deferred: ${DEFERRED.length}  (not cleared — most open ports, databases, corpora or model calls)`);
+  console.log(
+    `            verdict-bearing: ${bearing} · no conclusion line: ${deferredPresent.length - bearing}` +
+      `  (derived from source each run, not recorded; a no-conclusion-line file cannot go red, so it` +
+      ` is an investigation, not a probe awaiting a drive)`,
+  );
   console.log('');
 
   let bad = 0;
@@ -792,6 +894,18 @@ const main = () => {
     bad += schema.length;
     console.log(`CENSUS RED — ${schema.length} entry-schema problem(s) (Daedalus 267 §5 / 269):`);
     for (const p of schema) console.log(`    schema        ${p}`);
+    console.log('');
+  }
+
+  // The derived breakdown above is only worth printing if the detector behind it is still sensitive,
+  // and every SWEPT file is a known positive by construction. Graded, not noted: an under-reading
+  // detector would quietly shrink the `verdict-bearing` figure, which is the failure mode this fleet
+  // has now hit four times, and the one that reads like good news.
+  const bearingProblems = verdictBearingProblems(sweptFiles, readProbe);
+  if (bearingProblems.length) {
+    bad += bearingProblems.length;
+    console.log(`CENSUS RED — ${bearingProblems.length} verdict-bearing known positive(s) failed (Daedalus 289 §4):`);
+    for (const p of bearingProblems) console.log(`    detector      ${p}`);
     console.log('');
   }
 

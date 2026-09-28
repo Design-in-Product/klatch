@@ -186,6 +186,33 @@ export function compare(before: DbSnapshot[], after: DbSnapshot[]): DbDelta {
   return { changed: changed.sort(), appeared: appeared.sort(), vanished: vanished.sort() };
 }
 
+/** A WAL sidecar rather than a main database file. */
+const isSidecar = (p: string): boolean => /\.db-(wal|shm)$/.test(p);
+
+/**
+ * True when a delta moved *something*, and every path it moved is a WAL sidecar.
+ *
+ * Round 289, after Theseus's Round 288 §2. He drove the thing that makes this worth distinguishing:
+ * `-shm` is SQLite's WAL index, and it is a file whose **existence** tracks whether any connection
+ * holds the database open. His W2/W7 show the pair appearing on a *read-only* open and vanishing
+ * when the last connection closes. So `npm run dev` starting on :3001, or a sibling worktree's fire
+ * ending, moves files in the graded set with nobody having written a row.
+ *
+ * What this predicate is NOT, and the distinction matters more than the one above:
+ *
+ *   **It does not mean the movement was harmless.** A committed write that was never checkpointed
+ *   lands entirely in `-wal` and leaves the main `.db` bytes untouched — the SAME signature. The
+ *   two are not separable from a before/after bracket, which is why the caller's job here is to
+ *   change the *wording* to predicate 7's ("could be this probe or a concurrent holder; not
+ *   promotable either way") and **not** to change the grading. `probe-round289` drives both
+ *   generators of the signature — a foreign holder and an uncheckpointed write — and shows the
+ *   sentinel reporting them identically.
+ */
+export const sidecarOnly = (d: DbDelta): boolean => {
+  const moved = [...d.changed, ...d.appeared, ...d.vanished];
+  return moved.length > 0 && moved.every(isSidecar);
+};
+
 /** A one-line human summary of a delta, for a probe or driver to print. */
 export const describe = (d: DbDelta): string =>
   unchanged(d)

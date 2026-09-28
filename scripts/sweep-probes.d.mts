@@ -72,6 +72,19 @@ export declare const measurementLines: (out: string) => number;
 /** Problem strings; empty means the entry's prose and its assertion agree. */
 export declare const entryProblems: (entry: { expect: RegExp; why: string }) => string[];
 
+/**
+ * Can this source emit a conclusion line (predicate 5's observable) at all? Round 289. Read over
+ * `stripSource(src, false)` — comments blanked, strings KEPT, because two SWEPT probes hand-roll
+ * their summary as a string literal and a strings-blanked reading loses both.
+ */
+export declare const verdictBearing: (src: string) => boolean;
+
+/** Problem strings; empty means every SWEPT file — a known positive by construction — reads true. */
+export declare const verdictBearingProblems: (
+  sweptFiles: readonly string[],
+  read: (file: string) => string,
+) => string[];
+
 export declare const measurementCheck: (
   entry: { why: string },
   out: string,

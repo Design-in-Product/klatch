@@ -96,7 +96,7 @@ import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 import { fingerprint } from './lib/tree-fingerprint.mts';
-import { snapshot, compare, unchanged, describe, type DbDelta } from './lib/db-sentinel.mts';
+import { snapshot, compare, unchanged, describe, sidecarOnly, type DbDelta } from './lib/db-sentinel.mts';
 import { stripSource } from './lib/strip-source.mjs';
 // Typed by `sweep-probes.d.mts` (Round 279). `SWEPT` and `DEFERRED` arrive `readonly`, which is
 // why nothing below casts them — the first version of this import carried a `@ts-expect-error` for
@@ -318,9 +318,19 @@ export const conclusion = (out: string): string | null => {
 export const passPin = (out: string): string | null =>
   (out.match(/^All (\d+) regression checks passed/m) || [])[0] ?? null;
 
-type Verdict = { file: string; promotable: boolean; reason: string; entry?: string };
+export type Verdict = { file: string; promotable: boolean; reason: string; entry?: string };
 
-const evaluate = (file: string, real: DriveResult, empty: DriveResult): Verdict => {
+/**
+ * The seven-predicate decision, on two `DriveResult`s. **Exported since Round 289**, at Theseus's
+ * Round 288 §1 request: his P arms could show `drive()` *reporting* a moved graded database and
+ * could not show this function *branching* on it, because it was module-private — so predicate 8's
+ * red limb had never been observed to fire, which is one inch short of the green-forever family
+ * Round 287 was built to close. A pure function of two records is the cheapest thing in this file
+ * to drive both ways, and the alternative he named (minting a hazardous DEFERRED fixture for
+ * `--only` to point at) would have put a database-writing probe in the population to test the check
+ * that guards against database-writing probes.
+ */
+export const evaluate = (file: string, real: DriveResult, empty: DriveResult): Verdict => {
   const no = (reason: string): Verdict => ({ file, promotable: false, reason });
 
   if (real.timedOut || empty.timedOut) {
@@ -330,10 +340,29 @@ const evaluate = (file: string, real: DriveResult, empty: DriveResult): Verdict 
   // exits 0 with a green conclusion line is the worst case this path has, and grading the outcome
   // first would promote it. The damage is not a property of the verdict.
   if (!unchanged(real.db) || !unchanged(empty.db)) {
+    // Two wordings, one grade. Theseus's Round 288 §2 drove the fact behind the split: the `-shm`
+    // WAL index EXISTS only while some connection holds the database, so a sidecar-only movement is
+    // what a holder arriving or leaving looks like — `npm run dev` on :3001, a sibling worktree's
+    // fire ending — and on a tree where the sidecars are live right now there is always an occupant
+    // available to make the transition. Calling that "the probe moved the database" is wrong in the
+    // same way predicate 7 would be wrong if it claimed the probe moved the population.
+    //
+    // It is NOT downgraded to a pass, and the reason is one his memo does not have: an
+    // uncheckpointed committed write produces the identical signature (`-wal` appeared, main `.db`
+    // untouched). Sidecar-only means *indistinguishable*, not *benign* — `probe-round289` arm W
+    // generates the signature both ways and shows the bracket reporting them the same. So the
+    // change here is the message and only the message.
+    const side = sidecarOnly(real.db) && (unchanged(empty.db) || sidecarOnly(empty.db));
     return no(
-      `predicate 8 (db-preserving): a database OUTSIDE .testdata/ moved across the drive — ` +
-        `realHOME: ${describe(real.db)} · emptyHOME: ${describe(empty.db)}. ` +
-        `These files are gitignored and untracked: there is no git copy to restore from`,
+      side
+        ? `predicate 8 (db-preserving): only WAL SIDECARS moved outside .testdata/, no main .db file — ` +
+            `realHOME: ${describe(real.db)} · emptyHOME: ${describe(empty.db)}. ` +
+            `That is what a connection being acquired or released looks like (a dev server, a sibling ` +
+            `fire) AND what an uncheckpointed committed write looks like; the bracket cannot tell them ` +
+            `apart. Could be this probe or a concurrent holder; not promotable either way`
+        : `predicate 8 (db-preserving): a database OUTSIDE .testdata/ moved across the drive — ` +
+            `realHOME: ${describe(real.db)} · emptyHOME: ${describe(empty.db)}. ` +
+            `These files are gitignored and untracked: there is no git copy to restore from`,
     );
   }
   const moved = [...real.appeared, ...real.vanished, ...empty.appeared, ...empty.vanished];
