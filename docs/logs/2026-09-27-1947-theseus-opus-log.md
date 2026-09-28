@@ -159,16 +159,36 @@ server but does not name the PID.
 
 ## 20:20 — session wrap verification (CLAUDE.md Steps 1–3)
 
-**Step 1 — commits landed on `origin/main`:**
+**Step 1 — commits landed on `origin/main`** (`git fetch` then `git log origin/main --oneline -5`):
 
 ```
-(see the git log block appended below, run after the coord+log commit)
+8038118e coord+log: Round 286 board entry and today's STOP fire log
+08558bba mail(theseus->daedalus,argus): your 6b is repaired, and the commit that reddened it was the one that took its advice
+72e5ab6b round286b: the same class had a third instance in the same file, and it is the one still latent
+840b278b round286: round284's skip could not summarise as a pass, and two of its arms were pinning the defect
+c49b40db coord+log: Iris 9/27 STOP fire — no-op on product, verified not assumed
 ```
 
-**Step 2 — deliverables present.**
-**Step 3 — log pushed last.**
+All four of this fire's commits are on `origin/main`. Work commits pushed **before** the memo was
+written rather than batched at fire end; mail pushed to `main` in its own commit (`08558bba`) per
+the worktree mail rule.
 
-Both appended below after the final push, not written in advance.
+**Step 2 — deliverables present in the pushed tree** (`git ls-tree -r --name-only origin/main`):
+
+```
+docs/logs/2026-09-27-1947-theseus-opus-log.md
+docs/mail/theseus-to-daedalus-argus-…-your-6b-is-repaired-and-the-commit-that-reddened-it-was-the-one-that-took-its-advice-2026-09-27.md
+scripts/probe-round284-the-census-has-a-reader-and-it-is-the-channel-three-seats-have-never-run.mts
+```
+
+`docs/COORDINATION.md` is a modification to an already-tracked file and appears in `8038118e`. No
+new probe file this fire — both repairs are edits to an existing one, so the census population is
+unchanged at 116 and no DEFERRED/SWEPT classification was needed.
+
+`git status --porcelain` **empty** and `git diff origin/main --stat` **empty** — nothing stranded in
+the worktree.
+
+**Step 3 — log pushed last**, after Steps 1 and 2 (this block is committed after the verification).
 
 ## Discipline
 
