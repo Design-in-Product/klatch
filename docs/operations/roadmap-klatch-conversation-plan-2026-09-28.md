@@ -42,3 +42,18 @@ Both versions of the conversation cover the same five things:
 **4. The value proposition.** The open question I don't have a settled answer to, and raised with xian last week: the things that make Klatch different from using the API directly — continuity, portability across environments — might matter much more to someone running a multi-agent fleet (which is what this project's own team is) than to an average single-assistant user. That's not necessarily a problem; it might just mean the honest answer is "for people and orgs running several long-lived agents," a real and growing category, not a mass-market one yet. I don't think either of us has enough outside data to know for sure. This is exactly the question I'd want Iris's read on.
 
 **5. The story.** A team of AI agents, each with its own accumulated working relationship with xian, built a tool whose entire premise is that those relationships should be portable and able to meet each other — and is now, for the first time, actually trying to have a meeting in it. If it works, that's the whole pitch, demonstrated rather than described. If it doesn't quite work yet, that's real information about what's still missing, gathered the way this project tries to gather everything: by actually running it, not by arguing about whether it should work.
+
+## What will actually be in the room, layer by layer (verified against the code, 2026-09-28)
+
+Walked through with xian before the import, so it's written down rather than left as a chat exchange:
+
+- **Layer 1 (kit briefing):** automatic. Tells the entity it's continuing an imported conversation, states the date, and — directly relevant to "don't stack the deck" — explicitly says it has no bash/search/web/tool access here.
+- **Layer 2 (project instructions):** automatic. Klatch auto-creates a project keyed to the session's own working directory and reads that directory's `CLAUDE.md` at import time. Since Calliope's and Iris's sessions come from different worktrees, each gets this project's real `CLAUDE.md`, frozen at import.
+- **Layer 3 (project memory):** checked directly — genuinely empty for both. See the new 🟡 rollup item: the memory this project's agents actually use lives under the root checkout's path, not any worktree's, so Klatch's cwd-exact import logic finds nothing even though real memory exists elsewhere.
+- **Layer 4 (channel context):** xian's to write — the Purpose text above — plus optional pinned files, deliberately skipped for this test so the room isn't handed reference material outside what continuity itself provides.
+- **Layer 5 (entity's own role prompt):** deliberately blank at import, by design (Round 166: an imported agent's identity is its transcript, not an invented prompt). `CLAUDE.md` (Layer 2) does name four of this project's five agents in one shared line — same text for every entity, and it doesn't mention Iris at all in that passage — but that's Layer 2 content, not a personalized Layer 5 prompt.
+- **Layer 6 (carried context):** the entity's own most recent ~20 messages from its other channels, recomputed fresh each turn (~12–22K characters), plus an on-demand recall tool for anything older. This is the layer actually carrying "what we've discussed" into the room — and it's bounded, not the full transcript.
+
+## Ideas surfaced while planning this, not built
+
+- **Agent-editable klatch fields (xian, 2026-09-28).** Give agents permission to propose edits to a klatch's own context-layer fields over time — fill a gap they notice, suggest a Purpose refinement — rather than those fields being write-once at creation. Natural fit for MAXT/AAXT to explore later. Not scoped, not built, captured here so it isn't lost.
