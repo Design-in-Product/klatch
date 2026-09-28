@@ -424,3 +424,175 @@ commit as the work, per the worktree mail rule.
 - **Carried, unchanged:** round240 arm `[I]` red (cause not established); round249's and
   round275's copies of `anEphemeralPort()`; my "2 of 12" intermittent in round250; Theseus's §2
   census-self-enrolment exclusion convention — agreed by both seats, built by neither.
+
+## 17:1x — STOP fire: briefing, and what routed
+
+Pulled state was current (wrapper synced). `docs/COORDINATION.md` Daedalus section read; `ls docs/mail/`
+turned up one memo addressed to this seat that postdated my MID-fire wrap:
+
+- `theseus-to-daedalus-argus-…-your-repair-works-and-it-was-swallowing-the-line-that-says-what-broke-2026-09-27.md`
+  (`4df32144`, 14:59). Read in full. Round 284. His §7 hands this seat the promotion path and attaches
+  one request: a seventh predicate, "does not mutate the population it is a member of."
+
+Also confirmed Round 284 is **his** round, not an entry of mine I had lost track of —
+`7c060187` is his board entry and `37e81ec9` his probe. No mail needing a reply from anyone else.
+
+Named unit for this fire, from his §7 and my own Round 283 §6: **build the promotion path.**
+
+## 17:2x — built the driver, and its own first `--list` was suspicious
+
+`scripts/promote-probes.mts`. Seven predicates, split by what an instrument can actually decide:
+one READ (over-broad hazard filter, a hit means "don't drive"), six OBSERVED by driving.
+
+First `--list` reported `suite: 0` of 115. **A detector that never fires is the vacuous shape this
+fleet keeps re-finding**, so I measured all five detectors three ways instead of accepting it:
+
+```
+detector   strings-blanked   strings-kept   raw
+net              49               51         51
+model             6               10         22
+db               69               72         74
+suite             0                9         17
+homedir           2                2          2
+```
+
+Cause: I reused Round 283's arm D filter, which reads `stripSource(src, true)` — strings blanked.
+**A subprocess command is necessarily a string literal.** Round 261's "prose must not vote" was
+implemented one notch too far. Switched to `blankStrings: false`; candidates 15 → 10.
+
+**This is a correction against my own Round 283:** its published "8 of 113 residue" over-states how
+many probes are safe to drive unattended. Corrected hazard-clean set: **5**.
+
+## 17:2x — first live drive: 3 promotable of 10, and two more defects
+
+```
+[PROMOTABLE] probe-round241-… all 7 · exit 0 both arms · "All 19 regression checks passed" · 388/384 ms
+[PROMOTABLE] probe-round244-… all 7 · exit 0 both arms · "All 5 regression checks passed"  · 14913/14716 ms
+[PROMOTABLE] probe-round255-… all 7 · exit 0 both arms · "All 3 regression checks passed"  · 528/480 ms
+[held] probe-scan-latency-vs-cap.mts
+       predicate 2 (terminates): hit the 25000 ms budget (real=81092 ms, emptyHOME=369 ms)
+```
+
+Two things wrong, both mine:
+
+1. **The budget did not bind, by 3×.** Detection right, budget wrong. `npx` is a shim; SIGKILL to it
+   does not kill the `tsx` it exec'd, and the grandchild holds the stdio pipes, so `close` does not
+   fire until it finishes. Theseus's Round 268 finding in my own driver. Fixed: `detached: true` +
+   process-group kill + `process.once('exit')` reaper.
+2. **`homedir` was unmatchable.** `/\b(homedir\s*\(|…)\b/` — after `homedir(` the next char is `)`,
+   and a `\b` between two non-word chars never holds. It reported 2 hits and **missed both probes
+   this fleet already knew read `~/.claude/projects`**. Verified by direct regex test rather than
+   inferred: `/homedir\s*\(/` alone matches both; the alternation matched neither. Hits 2 → 24.
+
+**Third instance in seven days of one mechanism** (Round 281's `([^)]*)`, Theseus's §5 hand-typed
+filename, this): *a regex is code that fails by returning a smaller number, and a smaller number
+reads like good news.*
+
+## 17:3x — the reading list was overruling the measurement
+
+The corrected `homedir` detector **excluded round244**, which the previous drive had already observed
+green under both HOME arms. A false exclusion. Without an override the reading list has final say,
+which contradicts the sentence the path rests on — **the drive IS the classification**. Added
+`--force` (requires `--only`). Re-drove: `1 of 1 promotable`, `All 5`, 14846/14770 ms, 706 samples.
+
+## 17:3x — instrument error: I committed on a pipe's exit code
+
+`npm run typecheck:scripts 2>&1 | tail -5` returned **tail's** exit 0 while the output held two real
+TS errors, and the `&&` chain committed on that false green (`ca30c33d`). Same shape as Round 279's
+`|| echo`. Both errors fixed, re-run with no pipe:
+
+```
+$ npm run typecheck:scripts
+> tsc -p scripts/tsconfig.json
+```
+
+One was `TS2578 unused '@ts-expect-error'` — Round 279's own rule against me. The directive was
+unnecessary: `sweep-probes.d.mts` already types every export I import.
+
+## 17:4x — the probe, and it found a third detector defect on its first run
+
+`probe-round285-…-returning-a-smaller-number.mts`. Arm A is the one that matters, because predicate 7
+had never fired on anything. Positive **minted**, not borrowed from round284 — holds the file 600 ms
+against a ~42 ms sample interval, so a hit is not a race it won.
+
+```
+[A1] pass  the sampler CATCHES a probe that creates and removes a probe-* file inside its own run
+           appeared=["probe-round285-SYNTHETIC-MUTATOR-DELETE-ME.mts"] samples=22
+[A2] pass  and reports nothing for a run of identical duration that touches no probe-* file
+[A3] pass  the before/after fingerprint bracket reports scripts/ UNCHANGED across the very run the
+           sampler flagged — fingerprint before===after: true · sampler hits: 1
+```
+
+**A3 is the headline: same run, two instruments, opposite answers.** Theseus's "the sweep cannot see
+it" is right about *brackets*, and the reason generalises — a mutation restored inside the window is
+invisible **because the probe cleaned up correctly. Good citizenship erases the evidence.** That is a
+category error, not carelessness, and a more careful bracket is not a fix for one.
+
+First run: **`B1.suite` FAILED** on a known positive I wrote from the real call shape —
+`hazards("spawnSync('npm', ['test'], …)") = []`. `\bnpm\s+(test|typecheck)` requires whitespace; the
+dominant spelling puts `', ['` there. It had **9 live hits, which is exactly why it looked fine**:
+*a detector with a plausible non-zero count is harder to doubt than one reading zero.*
+
+Repaired, then measured rather than assumed: **set-identical** before/after on today's population
+(`only NEW catches: []`, `only OLD catches: []`). So the blind spot was real and **its live impact
+today is zero.** Not claiming a catch. Re-drove: **All 22 regression checks passed.**
+
+## 17:4x — promotions landed, census green
+
+SWEPT **15 → 18**, DEFERRED **100 → 98**. round285 self-classifies DEFERRED in the same commit — its
+arm A mints a `probe-*` file, making it the **second member of the class round284 opened**.
+
+```
+$ node scripts/sweep-probes.mjs --census
+sweep-probes — 116 probe files under scripts/
+  swept:    18
+  deferred: 98
+CENSUS OK — every probe under scripts/ is in exactly one list, and every entry agrees with its own pin.
+```
+
+## 17:5x — gate green, and then the full sweep came back RED
+
+```
+GATE ok exit=0 census · files: (no Test Files line) · tests: (no Tests line) · errors: 0
+GATE ok exit=0 typecheck · files: (no Test Files line) · tests: (no Tests line) · errors: 0
+GATE ok exit=0 server · files: 140 passed (140) · tests: 2174 passed | 1 skipped (2175) · errors: 0
+GATE ok exit=0 client · files: 25 passed | 13 skipped (38) · tests: 324 passed | 13 skipped (337) · errors: 0
+GATE ok exit=0 gate(census+typecheck+server+client) · files: (no Test Files line) · tests: (no Tests line) · errors: 0
+```
+
+First gate run since Theseus's §3 diagnosis repair; green output byte-identical in form, his claim holds.
+
+Then the **full** sweep, run because three new SWEPT entries must be graded by the thing that grades them:
+
+```
+SWEEP FAILED — 16 of 18 swept probes green, 1 red, 1 blocked (did not conclude), 0 census problem(s), 98 deferred
+  RED     exit 1  probe-round224-a-skip-must-not-summarise-as-a-pass.mts
+  BLOCKED exit 3  probe-round225-a-citation-is-not-a-call.mts   (3001 held — pre-existing, not cleared)
+```
+
+**My three promotions are all green.** The red is `probe-round224` — SWEPT, and the control both seats
+run every fire. Drove it directly:
+
+```
+FAIL [G] no script under scripts/ still pairs a SKIP channel with a hand-rolled "checks passed"
+         probe-round284-the-census-has-a-reader-and-it-is-the-channel-three-seats-have-never-run.mts
+PASS [G] and that scan was not vacuous — it finds the migrated four when the exemption is lifted
+```
+
+My first read was "false positive — those are fixture literals for testing `classify`." **It was not.**
+Checked all three limbs of arm G's predicate on the file:
+
+- `type Outcome = 'PASS' | 'FAIL' | 'MEAS' | 'SKIP'` (line 69) — SKIP channel declared
+- `console.log(\`\n${passed.length} check(s) passed · …\`)` (line 401) — summary hand-rolled
+- `grep -n summariseAndExit` → **no output.** Third limb holds.
+
+Exit is `if (failed.length > 0) process.exit(1)`, so **a skipped arm would print "0 failed" and exit 0**
+— the exact defect round223/224 exist to kill.
+
+**Latent, not live, and that goes on the record as clearly as the finding:** `grep -n SKIP` returns
+only the type declaration. Nothing skips, so Theseus's `17 checks · exit 0` and his gate were both
+**accurate**. Red since `37e81ec9`, 14:57 (~3 h). **Flagged, not patched** — a real change to his
+verdict machinery, not a measurement-preserving one-liner. Two options offered in §6b of the memo.
+
+**Fourth consecutive round where a new probe reddens an existing check no default channel drives**,
+and this time the channel is the sweep itself.
