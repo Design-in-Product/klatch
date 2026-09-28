@@ -596,3 +596,56 @@ verdict machinery, not a measurement-preserving one-liner. Two options offered i
 
 **Fourth consecutive round where a new probe reddens an existing check no default channel drives**,
 and this time the channel is the sweep itself.
+
+## 17:5x — session wrap verification (Steps 1–3)
+
+**Step 1 — commits landed on `origin/main`:**
+
+```
+$ git log origin/main --oneline -5
+2fb38165 coord+log: Round 285 board entry and today's STOP fire log
+bb6223bc mail(daedalus->theseus,argus): the promotion path is built, and the full sweep is red on round284
+7b9de349 round285: the promotion path's first three promotions, and a third detector its own probe caught
+ca30c33d round285: the promotion path, and two of its own detectors were returning a smaller number
+7d0c2621 coord+log: SWEEP fire no-op — nothing new since MID-fire push
+```
+
+Three pushes this fire, each `git merge-base --is-ancestor origin/main HEAD`-verified **before**
+pushing: `7d0c2621..7b9de349`, `7b9de349..bb6223bc`, `bb6223bc..2fb38165`, all fast-forward. No force
+push. Mail went to `main` in its own commit (`bb6223bc`) ahead of the coord/log commit, per the
+worktree mail rule.
+
+**Step 2 — each deliverable present (`ls`, all six returned):**
+
+- `scripts/promote-probes.mts` (new, 22783 b)
+- `scripts/probe-round285-the-promotion-path-and-the-two-detectors-that-were-returning-a-smaller-number.mts` (new, 16589 b)
+- `docs/mail/daedalus-to-theseus-argus-…-the-promotion-path-is-built-and-three-of-its-own-detectors-were-returning-a-smaller-number-2026-09-27.md` (new, 20876 b)
+- `scripts/sweep-probes.mjs` (modified — 3 promotions into SWEPT, 3 removed from DEFERRED, round285 added)
+- `docs/COORDINATION.md` (modified — Round 285 entry)
+- `docs/logs/2026-09-27-0917-daedalus-opus-log.md` (modified — this entry)
+
+`git status --porcelain` empty at fire end.
+
+**Step 3 — this verification block is the last thing pushed.**
+
+**What is NOT green, stated rather than glossed:** `node scripts/sweep-probes.mjs` exits 1 —
+`SWEEP FAILED — 16 of 18 swept probes green, 1 red, 1 blocked`. The red (`probe-round224`) is caused
+by Theseus's `probe-round284` and is **his to fix**; I flagged rather than patched. The blocked
+(`probe-round225`, 3001 held) is pre-existing and legitimate. `npx tsx scripts/gate.mts` is exit 0
+because the gate has no sweep stage — which is the finding, not an excuse.
+
+**Open for the next fire, written down rather than guessed at:**
+
+- **Waiting on Theseus:** round284's `SKIP`-without-`summariseAndExit`. Two options offered in memo
+  §6b (drop `SKIP` from the union, or route through `summariseAndExit` for exit 3). If he hasn't taken
+  it by my next fire, I'll ask before patching his verdict machinery.
+- **Named next unit (mine, not started):** the hazard-clean DEFERRED set is **driven to exhaustion**
+  at 5 members, so further promotions must come from `--force`d drives of flagged probes — a per-probe
+  judgement, not a sweep. 72 of 98 DEFERRED are flagged `db`; that is the bucket to attack, and the
+  question is whether a redirected `KLATCH_DB` makes them hermetic the way a redirected `HOME` did.
+- **Routed to Argus, still his call:** whether `census` belongs in root `npm test`. He now has
+  Theseus's 3/10-vs-7/10 channel number, and a correction from me — I priced that call with Round
+  283's 8-file residue and the real figure is 5.
+- **Carried, unchanged:** round240 arm `[I]` red (cause not established); round249's and round275's
+  copies of `anEphemeralPort()`; my "2 of 12" intermittent in round250; Theseus's §2
+  census-self-enrolment convention — agreed by both seats, built by neither, two rounds old.
