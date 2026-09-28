@@ -57,6 +57,7 @@ import path from 'path';
 import { execFileSync } from 'child_process';
 import { summarise, summariseAndExit, type ProbeVerdict } from './lib/probe-outcome.mts';
 import { readNumericConstant, readLeadingFactor } from './lib/probe-source-constants.mts';
+import { stripSource } from './lib/strip-source.mjs';
 
 const REPO = path.resolve(import.meta.dirname, '..');
 const PROBE = 'probe-round224-a-skip-must-not-summarise-as-a-pass';
@@ -306,17 +307,55 @@ function oldTurncountTail(rs: ProbeVerdict[]): { code: number; line: string } {
   // (Round 247): they are mutation-harness working copies, not members of the population.
   const all = fs.readdirSync(path.join(REPO, 'scripts'))
     .filter((n) => (n.endsWith('.mts') || n.endsWith('.mjs')) && !n.startsWith('.'));
+  // NORMALISED in Round 290, and the repair was forced by this arm going red on a COMMENT.
+  //
+  // This predicate used to run over raw source. Measured on `sweep-probes.mjs` at the commit before
+  // the repair: `checks passed` was present ONLY in comments and `summariseAndExit(` was absent, so
+  // two of its three terms were already satisfied by prose — the file sat ONE WORD away from a red
+  // that had nothing to do with its behaviour. Adding a census comment containing the word "SKIP"
+  // supplied that word and turned the arm red.
+  //
+  // Comments blanked, STRINGS KEPT (`stripSource(src, false)`): a hand-rolled summary line is a
+  // string literal, so blanking strings would be the smaller-number failure in the other direction —
+  // the detector would stop finding real offenders. Round 289 §4 measured that exact cost at two
+  // files on a sibling detector.
+  //
+  // Third instance of one mechanism (Round 288 §3, Round 289 §4): not a regex written wrong, but a
+  // correct regex applied to un-normalised input, where prose gets a vote.
+  const normalised = (n: string): string =>
+    stripSource(fs.readFileSync(path.join(REPO, 'scripts', n), 'utf8'), false);
+  const isHandRolled = (src: string): boolean =>
+    /SKIP/.test(src) && /checks passed/.test(src) && !/summariseAndExit\(/.test(src);
+
   const stillHandRolled = all
     .filter((n) => n !== `${PROBE}.mts`)
-    .filter((n) => {
-      const src = fs.readFileSync(path.join(REPO, 'scripts', n), 'utf8');
-      return /SKIP/.test(src) && /checks passed/.test(src) && !/summariseAndExit\(/.test(src);
-    });
+    .filter((n) => isHandRolled(normalised(n)));
   check('G', 'no script under scripts/ still pairs a SKIP channel with a hand-rolled "checks passed"',
     stillHandRolled.length === 0, stillHandRolled.length ? stillHandRolled.join(', ') : `${all.length} scripts scanned`);
+
+  // The detector's own known positive and known negative, driven on synthetic source rather than on
+  // the population — so the normalisation above is shown to preserve the catch it exists for, and
+  // not merely to have silenced a red.
+  const OFFENDER = [
+    'const skips = [];',
+    'if (!port) skips.push("SKIP [R] needs a port");',
+    'console.log(`${n}/${m} checks passed`);',
+    'process.exit(0);',
+  ].join('\n');
+  const COMMENT_ONLY = [
+    '// A note about how a SKIP used to summarise as "checks passed" before the migration.',
+    'summarise({ probeName: "x", results });',
+  ].join('\n');
+  check('G', 'KNOWN POSITIVE: the normalised predicate still flags a real hand-rolled SKIP summary',
+    isHandRolled(stripSource(OFFENDER, false)),
+    'a synthetic offender whose SKIP and "checks passed" are both in CODE');
+  check('G', 'KNOWN NEGATIVE: and no longer flags a file whose only hits are in a comment',
+    !isHandRolled(stripSource(COMMENT_ONLY, false)),
+    'the shape that reddened this arm in Round 290');
+
   check('G', 'and that scan was not vacuous — it finds the migrated four when the exemption is lifted',
     all.filter((n) => {
-      const src = fs.readFileSync(path.join(REPO, 'scripts', n), 'utf8');
+      const src = normalised(n);
       return /SKIP/.test(src) && /summariseAndExit\(/.test(src);
     }).length >= 4,
     'the SKIP+summary population is reachable by this scan', 'measurement');

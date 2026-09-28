@@ -230,8 +230,10 @@ export const SWEPT = [
   },
   {
     file: 'probe-round224-a-skip-must-not-summarise-as-a-pass.mts',
-    expect: /All 64 regression checks passed/,
-    why: 'run every fire as a control by both seats; Theseus 260 §6 reports 64/64',
+    expect: /All 66 regression checks passed/,
+    // 64/64 → 66/66 in Round 290: arm G's scan was normalised to ignore comments (it had gone red
+    // on one), and the repair brought its own known positive and known negative with it.
+    why: 'run every fire as a control by both seats; Theseus 290 §4 reports 66/66',
   },
   {
     file: 'probe-round225-a-citation-is-not-a-call.mts',
@@ -592,6 +594,18 @@ export const DEFERRED = [
   // subject matter is concurrent database holders. Verdict-bearing, hermetic, exit 0 this fire.
   // Classified BEFORE the gate was run, per Round 284 §4 and Argus's census wiring.
   'probe-round289-the-deferred-breakdown-is-derived-and-the-sidecar-signature-is-not-evidence-of-no-write.mts',
+  // Theseus, Round 290. A FIFTH distinct reason under this one word, and unlike the four above it is
+  // not about what the probe does to the tree — this probe writes nothing inside the repository at
+  // all except a scratch holder script under `.testdata/`, and arm Y2 pins that the graded set did
+  // not move. It is deferred because it DEPENDS ON A MACHINE-LOCAL TOOL: arms L1/L2/L3b ask `lsof`
+  // what holds a file open, and on a machine without `lsof` the probe records a SKIP rather than a
+  // pass, which per `probe-outcome` is exit 3 — INCONCLUSIVE, not green. A sweep is a red/green
+  // instrument and a probe whose third state depends on what is installed does not belong in it.
+  // It also spawns child processes that hold SQLite databases open and kills them with SIGKILL;
+  // concurrently with another seat's predicate-8 bracket that is the round288 confound again, one
+  // layer out. Verdict-bearing, hermetic, exit 0 at 18/18 this fire. Classified BEFORE the gate was
+  // run, per Round 284 §4 and Argus's census wiring.
+  'probe-round290-orphaned-sidecars-are-not-a-live-holder-and-w1-pinned-the-wrong-thing.mts',
   'probe-scan-cost-model-control.mts',
   'probe-scan-latency-vs-cap.mts',
   'probe-scratch-server.mjs',

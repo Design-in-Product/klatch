@@ -45,7 +45,18 @@
  *     wording that says the damage is unrecoverable ("there is no git copy to restore from").
  *
  * That is narrower than "any reader" and it is not rare: on this tree `klatch.db-shm` and
- * `klatch.db-wal` exist right now, so the transition has a live occupant to make.
+ * `klatch.db-wal` exist right now, so the transition has an occupant to make.
+ *
+ * ── Round 290 corrections to this header ────────────────────────────────────
+ *
+ *   - Arm W1 asserted this MACHINE's ambient sidecars and so failed on Daedalus's tree (his Round
+ *     289 §3). Repaired to pin the portable premise — the sentinel grades sidecars outside
+ *     `.testdata/` — against a `mkdtemp` fixture; the ambient reading survives as measurement W1m.
+ *   - Those sidecars are **not** evidence that anything holds `klatch.db` open. `lsof` reports no
+ *     holder on this tree while the pair has sat there for eight days: they are the residue of a
+ *     process that went away without closing cleanly. `probe-round290` arms L drive it.
+ *   - W7's `vanished` needs the last holder to be WRITABLE (Daedalus's Round 289 §2). A read-only
+ *     last close leaves them behind, which is one of the ways the orphan pair above is made.
  *
  * Arms W drive that mechanism on a scratch canary. **No arm of this probe opens, reads or writes
  * `klatch.db`** — it is hashed and nothing else, exactly as in Round 287.
@@ -76,8 +87,9 @@
  */
 
 import Database from 'better-sqlite3';
-import { readdirSync, mkdirSync, writeFileSync, appendFileSync, rmSync, existsSync, statSync } from 'node:fs';
+import { readdirSync, mkdirSync, mkdtempSync, writeFileSync, appendFileSync, rmSync, existsSync, statSync } from 'node:fs';
 import { join, dirname, resolve, relative, sep } from 'node:path';
+import { tmpdir } from 'node:os';
 import { fileURLToPath } from 'node:url';
 
 import { summariseAndExit, type ProbeVerdict } from './lib/probe-outcome.mts';
@@ -263,11 +275,43 @@ try {
   // this predicate brackets is mutated by any reader, including a read-only one.
   console.log('\n[W] opening a WAL database moves the sidecars predicate 8 grades');
 
-  check(
-    'W1',
-    'klatch.db\'s WAL sidecars are themselves in the graded set on this tree',
-    gradedPaths.includes('klatch.db-shm') || gradedPaths.includes('klatch.db-wal'),
-    `graded: ${JSON.stringify(gradedPaths)} — membership read from the snapshot; klatch.db is never opened here`,
+  // REPAIRED in Round 290, after Daedalus's Round 289 §3 drove this arm RED on his tree.
+  //
+  // The original read `gradedPaths.includes('klatch.db-shm')` — a property of THIS MACHINE at THIS
+  // MOMENT, asserted as a regression check. It passed here and failed there, and neither outcome
+  // was about the code. Round 281's portability class, arriving as "a probe that only passes while
+  // the machine is in a particular state".
+  //
+  // The claim §2 actually needs is not "this tree has sidecars". It is **the sentinel grades
+  // sidecars that sit outside `.testdata/`** — a property of `snapshot()`'s path rule, true on
+  // every tree. `snapshot()` takes its root as a parameter, so that is checkable against a
+  // `mkdtemp` fixture with no dependence on ambient state and no graded litter at this repo's root.
+  // `probe-round290` arms G drive both limbs, including the negative that keeps it non-vacuous.
+  const w1Root = mkdtempSync(join(tmpdir(), 'klatch-r288-w1-'));
+  try {
+    writeFileSync(join(w1Root, 'ambient.db'), 'x');
+    writeFileSync(join(w1Root, 'ambient.db-shm'), 'x');
+    writeFileSync(join(w1Root, 'ambient.db-wal'), 'x');
+    const w1Graded = snapshot(w1Root).graded.map((d) => d.path);
+    check(
+      'W1',
+      'WAL sidecars outside .testdata/ are in the GRADED set — the premise the rest of section W ' +
+        'rests on, read from the sentinel\'s path rule rather than from this machine\'s state',
+      w1Graded.includes('ambient.db-shm') && w1Graded.includes('ambient.db-wal'),
+      `graded under a mkdtemp root: ${JSON.stringify(w1Graded)}`,
+    );
+  } finally {
+    rmSync(w1Root, { recursive: true, force: true });
+  }
+
+  // The ambient fact the old W1 was really recording, in the category it belongs to: a property of
+  // this machine that decays, and that Round 290 arm M2 showed is NOT evidence of a live holder —
+  // `lsof` reports nothing holding klatch.db here while the pair sits on disk.
+  measure(
+    'W1m',
+    `this tree's graded set is ${JSON.stringify(gradedPaths)} — ` +
+      `${gradedPaths.filter((p) => /-(wal|shm)$/.test(p)).length} WAL sidecar(s). Daedalus's tree ` +
+      `(Round 289 §3) has the same COUNT and different MEMBERS, which is why this is a measurement`,
   );
 
   // Driven on a scratch canary. Same pragma the server uses, so this is the live mechanism.
@@ -314,11 +358,17 @@ try {
       `sidecar(s) of the live database`,
   );
 
-  // W2 observed the sidecars being CREATED, because SQLite deletes them when the last connection
-  // closes. That is not quite the live case: `klatch.db-shm` and `klatch.db-wal` exist right now on
-  // this tree, which means something is holding the real database open. The arm that matters is
-  // therefore the one where the sidecars are ALREADY there — a long-lived holder (the dev server on
-  // :3001 is exactly this) plus one more reader arriving.
+  // W2 observed the sidecars being CREATED, because SQLite deletes them when the last WRITABLE
+  // connection closes cleanly (narrowed by Daedalus's Round 289 §2: a read-only last close cannot
+  // checkpoint, so it cannot clean up). That is not quite the live case: `klatch.db-shm` and
+  // `klatch.db-wal` exist right now on this tree, so the arm that matters is the one where the
+  // sidecars are ALREADY there, plus one more reader arriving.
+  //
+  // CORRECTED in Round 290. This comment used to read "which means something is holding the real
+  // database open". It does not mean that, and `lsof` says nothing holds `klatch.db` here — the
+  // pair is eight-day-old residue of a process that went away without closing cleanly. Round 289 §3
+  // read the same files the same wrong way from the other side, diagnosing my green as a dev server
+  // on my machine. Sidecar presence is a fact about a FILE, not about a PROCESS.
   const holder = new Database(WAL_CANARY);
   holder.pragma('journal_mode = WAL');
   holder.prepare('SELECT COUNT(*) AS n FROM t').get();
