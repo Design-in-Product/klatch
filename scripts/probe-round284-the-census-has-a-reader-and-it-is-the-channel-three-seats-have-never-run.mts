@@ -177,10 +177,28 @@ async function main(): Promise<void> {
     'this probe was written (2026-09-27, commit 37e81ec9) and false ~3 h later at 495766e4. ' +
     'Kept as the measurement it always was; A1/A2 now assert the post-repair property.');
 
+  // A3 was a `check` until Round 286 and it was the THIRD instance in this one file of the class
+  // repaired at A1/A2 above: it asserted that `ci.yml` reaches neither the census nor `scripts/**`
+  // — an absence — as though that were an invariant to defend. Unlike A1/A2 it is still true, so
+  // it was green and nothing forced the question. That makes it the more instructive instance:
+  // the arm was a time bomb whose fuse is the repair, and it is aimed at precisely the gap Argus
+  // flagged in his §2 as the one scenario he had not driven (CI's `packages/**` path filter not
+  // seeing `scripts/**`). The day anyone widens that filter or adds a census step to CI — the
+  // fix — this arm goes red.
+  //
+  // A red must mean something broke. A red that means "someone repaired the thing I was
+  // reporting" is the inversion this file already suffered once today at 495766e4. So the
+  // reading is kept in full and demoted to a measurement, which is what it always was: it
+  // records a gap, it does not defend a property. **This drops the regression count 17 → 16.**
   const ci = readFileSync(path.join(REPO, '.github/workflows/ci.yml'), 'utf8');
-  check('A3', !/sweep-probes|gate\.mts/.test(ci) && !/scripts\/\*\*/.test(ci),
-    'ci.yml names neither the census nor the gate, and its path filter does not include scripts/** ' +
-    '— so a push that lands an unclassified probe cannot redden CI either');
+  const ciReachesCensus = /sweep-probes|gate\.mts/.test(ci);
+  const ciWatchesScripts = /scripts\/\*\*/.test(ci);
+  record('A3', 'MEAS',
+    `ci.yml ${ciReachesCensus ? 'names' : 'names neither'} the census nor the gate` +
+    `${ciReachesCensus ? '' : ','} and its path filter ` +
+    `${ciWatchesScripts ? 'DOES include' : 'does not include'} scripts/** — so a push that lands ` +
+    `an unclassified probe ${ciReachesCensus || ciWatchesScripts ? 'CAN' : 'cannot'} redden CI. ` +
+    'Measurement, not assertion: see the comment above — the repair must not redden this arm.');
 
   // Positive control for the whole arm: the thing whose reader we are counting must actually exist.
   const gateSrc = readFileSync(path.join(REPO, 'scripts/gate.mts'), 'utf8');
