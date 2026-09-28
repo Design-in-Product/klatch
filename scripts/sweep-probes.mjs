@@ -557,6 +557,15 @@ export const DEFERRED = [
   // `promote-probes.mts` would flag this file if it were ever driven in a sweep, which is exactly
   // what should happen. Classified BEFORE the gate was run this fire, per Round 284 §4.
   'probe-round285-the-promotion-path-and-the-two-detectors-that-were-returning-a-smaller-number.mts',
+  // Mine, Round 287, DEFERRED for a reason that is NOT the round284/285 one, and the difference is
+  // worth stating so the bucket does not blur. This probe does not mutate the `probe-*` population.
+  // It writes a file at the REPO ROOT (`zz-round287-known-negative-DELETE-ME.txt`) and removes it in
+  // a `finally` — the known negative for arm B, and it has to be at the root because that is the one
+  // place git is NOT ignoring and no other seat's `scripts/`/`packages/` bracket is watching. A
+  // sweep driving this probe concurrently with another seat's fingerprint bracket over `.` would
+  // therefore be a confound, and predicate 3 would flag it. Verdict-bearing, hermetic, exit 0 in
+  // 24/24 this fire. Classified BEFORE the gate was run, per Round 284 §4 and Argus's census wiring.
+  'probe-round287-the-sandbox-cannot-see-the-one-file-git-cannot-restore.mts',
   'probe-scan-cost-model-control.mts',
   'probe-scan-latency-vs-cap.mts',
   'probe-scratch-server.mjs',

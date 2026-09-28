@@ -31,7 +31,17 @@
  *     5. verdict-bearing     emits a conclusion line that is capable of going red
  *     6. green               that conclusion is a pass, and the exit code is 0
  *     7. population-preserving  does not add or remove a `probe-*` file WHILE it runs
+ *     8. db-preserving       leaves every database OUTSIDE `.testdata/` byte-identical
  *
+ * Predicate 8 is Round 287's, added when Theseus's Round 286 §6 routed the `db`-flagged DEFERRED
+ * probes here as a judgement call. The judgement could not be made, because **the sandbox had no
+ * instrument that could see the thing the `db` flag guards.** `drive()` set `HOME` and not
+ * `KLATCH_DB`; `resolveDbPath(undefined)` is repo-root `klatch.db`; and the only write-detector
+ * was a git-shaped fingerprint over `scripts/` and `packages/` — a pathspec that excludes the file
+ * and an instrument that is blind to it anyway, since `*.db` is gitignored. See
+ * `lib/db-sentinel.mts` for the full argument and `probe-round287` for both halves driven.
+ *
+
  * Predicate 7 is Theseus's, and his DEFERRED entry for `probe-round284` says the sweep "cannot
  * see" it. That was true of every instrument on this fleet when he wrote it, and the reason is
  * worth stating exactly, because it generalises: **a before/after bracket cannot see a mutation
@@ -86,6 +96,7 @@ import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 import { fingerprint } from './lib/tree-fingerprint.mts';
+import { snapshot, compare, unchanged, describe, type DbDelta } from './lib/db-sentinel.mts';
 import { stripSource } from './lib/strip-source.mjs';
 // Typed by `sweep-probes.d.mts` (Round 279). `SWEPT` and `DEFERRED` arrive `readonly`, which is
 // why nothing below casts them — the first version of this import carried a `@ts-expect-error` for
@@ -191,6 +202,10 @@ export type DriveResult = {
   appeared: string[];
   vanished: string[];
   samples: number;
+  /** Predicate 8's observable: what the drive did to the databases it must not touch. */
+  db: DbDelta;
+  /** Reported, never graded — probes are supposed to write under `.testdata/`. */
+  dbScratch: DbDelta;
 };
 
 /**
@@ -198,12 +213,23 @@ export type DriveResult = {
  * blocks the event loop, so no timer can fire while the child runs, so predicate 7 is unmeasurable
  * from a synchronous driver. The instrument dictates the concurrency model here, not taste.
  */
-export const drive = (file: string, home: string): Promise<DriveResult> =>
+// `dbSandbox` is optional so that Round 285's existing call sites keep compiling, but its DEFAULT is
+// a fresh temp path rather than "leave KLATCH_DB alone". Defaulting to the ambient environment would
+// mean the safe behaviour had to be remembered at every call site, and the whole point of predicate
+// 8 is that the unsafe default was invisible.
+export const drive = (
+  file: string,
+  home: string,
+  dbSandbox: string = join(mkdtempSync(join(tmpdir(), 'promote-db-')), 'scratch.db'),
+): Promise<DriveResult> =>
   new Promise((resolve) => {
     const baseline = new Set(population());
     const appeared = new Set<string>();
     const vanished = new Set<string>();
     let samples = 0;
+    // Predicate 8's "before". Taken inside `drive` rather than around the whole run so a hit names
+    // the probe that caused it; a bracket around all N drives would only say that one of them did.
+    const dbBefore = snapshot(REPO);
 
     const started = Date.now();
     // `detached: true` puts the child in its OWN process group so the timeout can kill the group.
@@ -213,9 +239,15 @@ export const drive = (file: string, home: string): Promise<DriveResult> =>
     // killing a shim does not kill the `tsx` it exec'd, which keeps the stdio pipes open, so
     // `close` does not fire until the grandchild finishes on its own. Theseus's Round 268 finding
     // ("the reaper sends the one signal a shim cannot forward") arriving in my own driver.
+    // `KLATCH_DB` is set for the same reason `HOME` is: the default is the thing being protected.
+    // `resolveDbPath(undefined)` returns repo-root `klatch.db` (`packages/server/src/dbPath.ts`),
+    // so a probe that calls `getDb()` without setting the variable itself opens the REAL database —
+    // and, per `db-sentinel.mts`, that file is ignored and untracked, so there is no `git checkout`
+    // behind it. The redirect is prevention; the sentinel below is detection. Both, because a probe
+    // is free to pass an explicit path and ignore this entirely.
     const child = spawn('npx', ['tsx', join('scripts', file)], {
       cwd: REPO,
-      env: { ...process.env, HOME: home },
+      env: { ...process.env, HOME: home, KLATCH_DB: dbSandbox },
       stdio: ['ignore', 'pipe', 'pipe'],
       detached: true,
     });
@@ -261,6 +293,7 @@ export const drive = (file: string, home: string): Promise<DriveResult> =>
       clearInterval(sampler);
       clearTimeout(killer);
       process.removeListener('exit', killGroup);
+      const dbAfter = snapshot(REPO);
       resolve({
         code,
         out,
@@ -269,6 +302,8 @@ export const drive = (file: string, home: string): Promise<DriveResult> =>
         appeared: [...appeared].sort(),
         vanished: [...vanished].sort(),
         samples,
+        db: compare(dbBefore.graded, dbAfter.graded),
+        dbScratch: compare(dbBefore.scratch, dbAfter.scratch),
       });
     });
   });
@@ -290,6 +325,16 @@ const evaluate = (file: string, real: DriveResult, empty: DriveResult): Verdict 
 
   if (real.timedOut || empty.timedOut) {
     return no(`predicate 2 (terminates): hit the ${TIMEOUT_MS} ms budget (real=${real.ms} ms, emptyHOME=${empty.ms} ms)`);
+  }
+  // Predicate 8 is checked BEFORE 5/6, deliberately. A probe that writes the real database and then
+  // exits 0 with a green conclusion line is the worst case this path has, and grading the outcome
+  // first would promote it. The damage is not a property of the verdict.
+  if (!unchanged(real.db) || !unchanged(empty.db)) {
+    return no(
+      `predicate 8 (db-preserving): a database OUTSIDE .testdata/ moved across the drive — ` +
+        `realHOME: ${describe(real.db)} · emptyHOME: ${describe(empty.db)}. ` +
+        `These files are gitignored and untracked: there is no git copy to restore from`,
+    );
   }
   const moved = [...real.appeared, ...real.vanished, ...empty.appeared, ...empty.vanished];
   if (moved.length) {
@@ -392,24 +437,39 @@ const main = async (): Promise<void> => {
 
   const before = { scripts: fingerprint(REPO, 'scripts/'), packages: fingerprint(REPO, 'packages/') };
   const emptyHome = mkdtempSync(join(tmpdir(), 'promote-home-'));
+  const sandboxDir = mkdtempSync(join(tmpdir(), 'promote-db-'));
+
+  // Reported before any drive so the graded set is visible rather than implicit. If this reads 0,
+  // predicate 8 is vacuous and should be distrusted — the same two-sided discipline `probe-round285`
+  // arm B applied to the hazard detectors.
+  const dbOpen = snapshot(REPO);
+  console.log(
+    `\ndatabases in scope: ${dbOpen.graded.length} graded (outside .testdata/) · ` +
+      `${dbOpen.scratch.length} scratch (under .testdata/, reported not graded)`,
+  );
+  for (const d of dbOpen.graded) console.log(`  graded · ${d.path} (${d.bytes} bytes, sha ${d.sha})`);
 
   const verdicts: Verdict[] = [];
-  console.log('\ndriving (real HOME, then an empty HOME — one variable):');
+  console.log('\ndriving (real HOME, then an empty HOME — one variable; KLATCH_DB redirected in both):');
   for (const f of drivable) {
-    const real = await drive(f, process.env.HOME ?? '');
-    const empty = await drive(f, emptyHome);
+    const real = await drive(f, process.env.HOME ?? '', join(sandboxDir, `${f}.real.db`));
+    const empty = await drive(f, emptyHome, join(sandboxDir, `${f}.empty.db`));
     const v = evaluate(f, real, empty);
     verdicts.push(v);
     console.log(`  [${v.promotable ? 'PROMOTABLE' : 'held     '}] ${f}`);
     console.log(`               ${v.reason}`);
+    const scratch = [describe(real.dbScratch), describe(empty.dbScratch)].filter((s) => s !== 'unchanged');
+    if (scratch.length) console.log(`               scratch dbs (measurement, not graded): ${scratch.join(' | ')}`);
   }
 
   const after = { scripts: fingerprint(REPO, 'scripts/'), packages: fingerprint(REPO, 'packages/') };
   const treeMoved = after.scripts !== before.scripts || after.packages !== before.packages;
+  const dbClose = compare(dbOpen.graded, snapshot(REPO).graded);
 
   const promotable = verdicts.filter((v) => v.promotable);
   console.log(`\n${promotable.length} of ${verdicts.length} driven probes are promotable.`);
   console.log(`tree across the whole drive: scripts/ ${treeMoved ? 'MOVED' : 'unchanged'} · packages/ ${after.packages === before.packages ? 'unchanged' : 'MOVED'}`);
+  console.log(`graded databases across the whole drive: ${describe(dbClose)}`);
 
   if (promotable.length) {
     console.log('\n── paste into SWEPT in scripts/sweep-probes.mjs, with your round named ──\n');
@@ -417,9 +477,14 @@ const main = async (): Promise<void> => {
     console.log('\nand delete each promoted name from DEFERRED — the census requires an exact partition.');
   }
 
-  if (treeMoved) {
-    console.log('\nPROMOTE RED — the tree moved across this drive and did not come back. That is this');
+  if (treeMoved || !unchanged(dbClose)) {
+    console.log('\nPROMOTE RED — the repo moved across this drive and did not come back. That is this');
     console.log('tool\'s fault, not a probe\'s finding. `git status` before trusting anything above.');
+    if (!unchanged(dbClose)) {
+      console.log(`A GRADED DATABASE MOVED: ${describe(dbClose)}`);
+      console.log('These files are gitignored and untracked — git cannot restore them. Check for a');
+      console.log('backup under .testdata/ before doing anything else.');
+    }
     process.exit(1);
   }
   console.log('\nPROMOTE OK — drive complete, tree where it was found.');
