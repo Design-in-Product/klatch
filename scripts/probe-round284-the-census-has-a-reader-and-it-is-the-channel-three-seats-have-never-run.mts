@@ -49,6 +49,19 @@
  *   E  the new `probe-round232` SWEPT entry discriminates green from red on all three corners
  *   F  is 3001 held right now — the live half of his §7 BLOCKED report
  *
+ * **Round 286 (2026-09-27 EVE), two repairs to this file, both found by other seats' work:**
+ *
+ * 1. *The verdict machinery.* This file declared a `SKIP` outcome and then summarised with a
+ *    hand-rolled `N check(s) passed · M failed`, in which a SKIP row is neither term — so a
+ *    skipped arm would have printed a pass line and exited 0. `probe-round224` arm G found it
+ *    (Daedalus, Round 285 §6b). Latent, never live: no arm emits SKIP, so every figure this file
+ *    published was accurate. Now routed through `summariseAndExit`.
+ *
+ * 2. *Arms A1/A2 were asserting the defect.* They pinned "nothing reaches the census" as an
+ *    invariant, so they went red when Argus wired the census into root `npm test` at `495766e4`
+ *    — **the commit that adopted this probe's own §4 recommendation.** Flipped to assert the
+ *    property. See the comment at arm A1; the original reading survives as measurement `A2m`.
+ *
  * Discipline: binds no port (arm F connects, never listens; nothing near 3001 is started). No
  * model call, no database, no corpus. The one write under `scripts/` is a synthetic probe file
  * removed in a `finally` and at `process.on('exit')`, with before/after fingerprints printed and
@@ -62,14 +75,38 @@ import { fileURLToPath } from 'node:url';
 import * as net from 'node:net';
 import * as path from 'node:path';
 import { fingerprint, windowState } from './lib/tree-fingerprint.mts';
+import { summariseAndExit, type ProbeVerdict } from './lib/probe-outcome.mts';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const REPO = path.join(HERE, '..');
 
 type Outcome = 'PASS' | 'FAIL' | 'MEAS' | 'SKIP';
-const rows: { id: string; outcome: Outcome; text: string }[] = [];
+const results: ProbeVerdict[] = [];
+/**
+ * Arms that did not run. Routed to `summariseAndExit`'s `skipped` input rather than being left
+ * out of the arithmetic: **a skip must not summarise as a pass.** This file's first version
+ * declared the SKIP channel and then summarised with a hand-rolled
+ * `${passed.length} check(s) passed · ${failed.length} failed`, in which a SKIP row is neither
+ * term — so a skipped arm would have printed a pass line and exited 0 over a shrunken
+ * denominator. That is the exact defect round223/224 exist to kill, found back in this file by
+ * round224 arm G (Daedalus, Round 285 §6b, 2026-09-27) and repaired here in Round 286.
+ *
+ * It was **latent, not live** — no arm below emits SKIP, so nothing was ever mis-summarised and
+ * the `17 checks · 0 failed · exit 0` this file published on 2026-09-27 was accurate. The
+ * channel is kept rather than deleted so the first arm that ever needs it gets exit 3 from the
+ * shared module, instead of the deletion silently removing the way to say "did not run".
+ */
+const skips: string[] = [];
 const record = (id: string, outcome: Outcome, text: string): void => {
-  rows.push({ id, outcome, text });
+  if (outcome === 'SKIP') skips.push(`${id}  ${text}`);
+  else {
+    results.push({
+      arm: id,
+      check: text,
+      pass: outcome !== 'FAIL',
+      kind: outcome === 'MEAS' ? 'measurement' : 'regression',
+    });
+  }
   console.log(`[${outcome === 'PASS' ? 'ok' : outcome === 'FAIL' ? 'FAIL' : outcome}] ${id}  ${text}`);
 };
 const check = (id: string, cond: boolean, text: string): void =>
@@ -107,17 +144,38 @@ async function main(): Promise<void> {
   const pkg = JSON.parse(readFileSync(path.join(REPO, 'package.json'), 'utf8')) as
     { scripts: Record<string, string> };
   const testChain = [pkg.scripts.test, pkg.scripts.typecheck, pkg.scripts['typecheck:scripts']].join(' ');
-  check('A1', !/sweep-probes|gate\.mts/.test(testChain),
-    `root \`npm test\` chain reaches neither sweep-probes nor gate.mts — chain: ${pkg.scripts.test}`);
+  // ── Round 286 repair: A1/A2 were asserting the DEFECT, and the fix is what exposed them ──────
+  //
+  // As written on 2026-09-27 these two arms read `!/sweep-probes|gate\.mts/.test(testChain)` and
+  // `scriptRefs.length === 0` — they pinned *the absence of wiring* as though it were an
+  // invariant. That is a legitimate finding and an illegitimate regression check, and the two
+  // come apart the moment the finding is acted on: Argus wired the census into root `npm test`
+  // at `495766e4` — adopting the recommendation **this very probe** made in its §4 — and the
+  // arms went red on the commit that FIXED what they were reporting.
+  //
+  // Measured, not inferred: driven at HEAD before this repair, the unmodified file gives
+  // `15 check(s) passed · 2 failed`, exit 1, failing exactly A1 and A2. So the red predates the
+  // summary-machinery repair below it and is not caused by it.
+  //
+  // This is the class I named to Daedalus on 2026-09-18 ("the probe that found it was asserting
+  // the defect"), now with my own name on an instance. Flipped to assert the property, so the
+  // arms guard Argus's repair instead of the hole it filled. The original reading is kept as a
+  // measurement rather than deleted — the historical fact is the reason the wiring exists.
+  check('A1', /sweep-probes|gate\.mts/.test(testChain),
+    `root \`npm test\` chain reaches the census — chain: ${pkg.scripts.test}`);
 
   const pkgFiles = ['package.json', ...readdirSync(path.join(REPO, 'packages'))
     .map((w) => path.join('packages', w, 'package.json'))].filter((p) => existsSync(path.join(REPO, p)));
   const scriptRefs = pkgFiles.filter((p) => /sweep-probes|gate\.mts/
     .test(JSON.stringify((JSON.parse(readFileSync(path.join(REPO, p), 'utf8')) as
       { scripts?: Record<string, string> }).scripts ?? {})));
-  check('A2', scriptRefs.length === 0,
-    `no npm script in any of the ${pkgFiles.length} package.json files invokes the census or the gate ` +
-    `(so \`npm run <anything>\` cannot reach it): refs=${JSON.stringify(scriptRefs)}`);
+  check('A2', scriptRefs.length > 0,
+    `at least one of the ${pkgFiles.length} package.json files invokes the census or the gate ` +
+    `(so \`npm run <anything>\` reaches it): refs=${JSON.stringify(scriptRefs)}`);
+  record('A2m', 'MEAS',
+    'the reading these arms were born with — "no npm script reaches the census" — was true when ' +
+    'this probe was written (2026-09-27, commit 37e81ec9) and false ~3 h later at 495766e4. ' +
+    'Kept as the measurement it always was; A1/A2 now assert the post-repair property.');
 
   const ci = readFileSync(path.join(REPO, '.github/workflows/ci.yml'), 'utf8');
   check('A3', !/sweep-probes|gate\.mts/.test(ci) && !/scripts\/\*\*/.test(ci),
@@ -395,18 +453,20 @@ async function main(): Promise<void> {
     "If HELD and it is xian's dev server, probe-round225's BLOCKED is legitimate and the third " +
     'state is working as Round 269/271 designed it.');
 
-  const failed = rows.filter((r) => r.outcome === 'FAIL');
-  const passed = rows.filter((r) => r.outcome === 'PASS');
-  const meas = rows.filter((r) => r.outcome === 'MEAS');
-  console.log(`\n${passed.length} check(s) passed · ${failed.length} failed · ${meas.length} measurement(s)`);
-  for (const r of meas) console.log(`[MEAS] ${r.id}  ${r.text}`);
-  if (failed.length > 0) {
-    for (const r of failed) console.log(`[FAIL] ${r.id}  ${r.text}`);
-    process.exit(1);
+  const meas = results.filter((r) => r.kind === 'measurement');
+  if (meas.length) {
+    console.log('');
+    for (const r of meas) console.log(`[MEAS] ${r.arm}  ${r.check}`);
   }
+
+  // The verdict is the shared module's, not this file's. It names the skips instead of
+  // aggregating over what remains, and it owns the exit code — 0 established, 1 broke,
+  // 3 ran and established less than it set out to.
+  summariseAndExit({
+    probeName: 'probe-round284-the-census-has-a-reader-and-it-is-the-channel-three-seats-have-never-run',
+    results,
+    skipped: skips,
+  });
 }
 
-main().then(
-  () => process.exit(0),
-  (err: unknown) => { console.error('THREW —', err); process.exit(2); },
-);
+main().catch((err: unknown) => { console.error('THREW —', err); process.exit(2); });
