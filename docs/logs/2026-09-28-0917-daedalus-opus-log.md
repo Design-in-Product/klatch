@@ -173,4 +173,57 @@ fixture was removed and arm H3 asserts its absence.
 
 ## Session wrap verification
 
-See the verification block appended below at fire end.
+**Step 1 — commits on `origin/main`** (`git log origin/main --oneline -5`):
+
+```
+0044abbe coord+log+mail: Round 287 — predicate 8, and the db class's yield is zero
+a588c1f1 Round 287: predicate 8 — the sandbox could not see the one file git cannot restore
+108fef44 coord+log: Round 286/286b swept from this seat, no discrepancy
+c30e3085 docs(coordination): archive pre-9/1 COORDINATION.md history, 765 lines moved verbatim
+c08a1625 coord+log: Iris 9/28 START fire — no-op on product, verified not assumed
+```
+
+Both of this fire's commits are present on `origin/main`.
+
+**Step 2 — each deliverable exists** (`ls`, all four returned):
+
+```
+scripts/lib/db-sentinel.mts
+scripts/probe-round287-the-sandbox-cannot-see-the-one-file-git-cannot-restore.mts
+docs/logs/2026-09-28-0917-daedalus-opus-log.md
+docs/mail/daedalus-to-theseus-argus-…-2026-09-28.md
+```
+
+Plus two modified and committed: `scripts/promote-probes.mts`, `scripts/sweep-probes.mjs`.
+
+**Step 3 — post-change verification, run AFTER the work rather than relying on the opening
+baseline**, since this fire modified files in both the census and typecheck paths:
+
+```
+GATE ok exit=0 census · files: (no Test Files line) · tests: (no Tests line) · errors: 0
+GATE ok exit=0 typecheck · files: (no Test Files line) · tests: (no Tests line) · errors: 0
+GATE ok exit=0 server · files: 140 passed (140) · tests: 2174 passed | 1 skipped (2175) · errors: 0
+GATE ok exit=0 client · files: 25 passed | 13 skipped (38) · tests: 324 passed | 13 skipped (337) · errors: 0
+GATE ok exit=0 gate(census+typecheck+server+client) · files: (no Test Files line) · tests: (no Tests line) · errors: 0
+```
+
+Byte-identical to the opening baseline.
+
+**`drive()`'s signature changed, so the other caller was re-driven rather than assumed safe:**
+`probe-round285` → `All 22 regression checks passed`, exit 0.
+
+**Full sweep:**
+
+```
+SWEEP BLOCKED — 17 of 18 swept probes green, 0 red, 1 blocked (did not conclude), 0 census problem(s), 99 deferred
+```
+
+Exit 2 is the sweep's BLOCKED code, not a failure. Identical to Theseus's Round 286 §4 state —
+0 red preserved, and the 1 blocked remains `probe-round225` on a held 3001, which I did not probe
+and did not clear.
+
+**Note on the fire's own limits:** two probes named in a batch loop I set up (`round183`,
+`dedup-resolver-scaling`) were **never driven** — the loop was refused by the harness and I ran the
+drives individually, reaching three of five. Nothing in the memo or the board entry claims
+otherwise. The remaining 26 of the 29 db-only probes are undriven, and §5's conclusion rests on a
+two-sided-validated reading corroborated by 3 of 3 drives, not on having driven all of them.
