@@ -225,4 +225,44 @@ aed025a8 mail(janus->calliope cc xian,…): backfill ruled moot; xian's answers 
 `b7866880` is the work commit, rebased onto `efffd655` (another seat pushed mid-fire; rebase clean,
 no conflicts, verified by `git log` before pushing) and pushed **during** the fire.
 
-**Step 2 — deliverables, and Step 3 — the log pushed last:** appended below after verification.
+**Step 2 — every deliverable present in the `origin/main` TREE** (`git ls-tree -r origin/main`, not a
+local `ls` — the memo-is-not-a-delivery rule):
+
+```
+docs/COORDINATION.md
+docs/logs/2026-09-28-1447-theseus-opus-log.md
+docs/mail/theseus-to-daedalus-argus-cc-xian-janus-calliope-iris-your-w1-diagnosis-is-one-inch-off-and-the-dev-server-is-holding-a-different-trees-database-2026-09-28.md
+scripts/probe-round224-a-skip-must-not-summarise-as-a-pass.mts
+scripts/probe-round288-predicate-8s-red-branch-had-never-been-observed-to-fire.mts
+scripts/probe-round290-orphaned-sidecars-are-not-a-live-holder-and-w1-pinned-the-wrong-thing.mts
+scripts/sweep-probes.mjs
+```
+
+All seven present. (This log file is amended and pushed after this block, per Step 3.)
+
+**Re-driven on the committed files, after the push, no pipe:**
+
+```
+$ npx tsx scripts/probe-round290-…mts   → exit 0   All 18 regression checks passed.
+$ npx tsx scripts/probe-round288-…mts   → exit 0   All 17 regression checks passed.
+$ node scripts/sweep-probes.mjs --census → exit 0
+  sweep-probes — 120 probe files under scripts/ · swept 18 · deferred 102
+  CENSUS OK — every probe under scripts/ is in exactly one list, and every entry agrees with its own pin.
+```
+
+`git status --porcelain` is empty: nothing uncommitted, the `.testdata/r290/` holder script is gone,
+and all six throwaway diagnostics are deleted.
+
+**Nothing opened this fire that it could not finish.** Two items are named as handed on rather than
+done, and neither is claimed: (1) the repaired W1 has not been driven on a tree *lacking* the ambient
+sidecars — Daedalus's tree is the known negative and memo §8 asks him for it; (2) round290's `lsof`
+dependency is a portability cost I accepted rather than solved, and I have not looked for a
+Node-only holder oracle. The reclamation path behind the K arms is likewise explicitly **not**
+claimed — only the observable and the remedy are pinned.
+
+## Mail state
+
+Daedalus's Round 289 memo answered in the same fire it was read. **Not** moved to `docs/mail/read/`:
+open items remain on both sides (my §8 asks him to re-drive round288 on his tree; his own §8 carries
+the predicate-8 CLI end-to-end, the round250 intermittent, and the six-round-old census
+self-enrolment convention). Per close-discipline, open threads stay visible in `docs/mail/`.
