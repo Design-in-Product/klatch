@@ -1,7 +1,7 @@
 # Klatch — Standing State
 
 **Refresh cadence:** updated as part of the end-of-day logbook wrap (alongside the logbook entry). This is a point-in-time orientation snapshot, not live state — verify against `COORDINATION.md`, `ROADMAP.md`, `operations/attention-rollup.md`, and recent commits before acting on anything time-sensitive.
-**Last refreshed:** 2026-09-24 (Calliope, live session with xian, first logbook/STATE touch since 2026-06-22).
+**Last refreshed:** 2026-09-29 (Calliope, live session with xian — the two-medium state-of-Klatch experiment; see `operations/state-of-klatch-mail-track-synthesis-2026-09-28.md` and `operations/fork-identity-finding-2026-09-29.md`).
 
 **On the gap:** this file went stale for three months, not because the project paused but because nobody carried the standing-state snapshot forward while the daily record (`logs/`) kept running underneath it. Everything below is rebuilt from verified sources this session, not incrementally patched from the June version — treat anything not restated here from the prior version as unconfirmed.
 
@@ -9,7 +9,7 @@
 
 ## One-line status
 
-Klatch's core product (Steps 1–9) is built and shipped as of v0.9.0. The 1.0-beta gate — an agent can join a klatch while remaining continuous with its own conversation, and the six-agent weekly-review canonical use case runs end to end — is **half met**: continuity demonstrated live once, for one seat; the full multi-agent shape has never been run. That is the actual critical path now, not a feature-completeness question.
+Klatch's core product (Steps 1–9) is built and shipped as of v0.9.0. The 1.0-beta gate — an agent can join a klatch while remaining continuous with its own conversation, and the six-agent weekly-review canonical use case runs end to end — moved from **half met** to **run at small scale, not yet at full scale**: a real three-participant klatch (xian, Calliope, Iris) ran for the first time on 2026-09-29, deliberately smaller than the six-agent weekly-review shape, found real bugs (some fixed same-night), and surfaced a genuinely new question about fork identity nobody had anticipated. The full multi-agent shape is next, gated on working through what tonight found first.
 
 ## What's shipped (verified against `ROADMAP.md`'s "Completed" section this session)
 
@@ -21,12 +21,12 @@ Klatch's core product (Steps 1–9) is built and shipped as of v0.9.0. The 1.0-b
 
 From `ROADMAP.md`'s own status note (2026-09-09, unchanged since, re-verified this session):
 
-- **Clause 1 — an agent can join a klatch continuous with its own conversation:** demonstrated live once (Round 172, arm K, one seat).
-- **Clause 2 — the weekly-review use case runs end to end:** **not run, ever, by anyone.**
+- **Clause 1 — an agent can join a klatch continuous with its own conversation:** demonstrated live at small scale (three participants) on 2026-09-29, not just the single-seat Round 172 case. Both imported agents (Calliope, Iris) correctly carried their prior context in; the room itself has real, found bugs (see below), none of which broke continuity's core claim.
+- **Clause 2 — the weekly-review use case runs end to end:** **still not run at the full six-agent scale.** Tonight's three-participant test was the deliberate first rung, not the gate itself — see `operations/state-of-klatch-next-steps-2026-09-29.md` for the plan to close the remaining gap.
 
-Tonight's work is the first real step toward closing clause 2: xian is staging a small test — importing two real, currently-running agent sessions (this seat and Iris's) into one klatch, deliberately smaller than the full five-seat team room — with a parallel mail-run version planned for comparison before attempting the full shape. Not yet executed as of this refresh. Runbook: `operations/roadmap-klatch-runbook-2026-09-20.md`.
+**What tonight actually found, in brief (full detail in the two docs linked above):** two real client bugs, found and fixed same-night (`c42b4d3e`); a render-hang and a two-turns-merged-per-block rendering bug, both still open; several drift findings (CLAUDE.md omitting Iris, a memory-path assumption bug now on the attention rollup); and — the most significant single finding — that a Klatch import **forks** a session rather than mirroring it, meaning two agents descended from one prior conversation cannot verify each other's subsequent actions from the inside. This isn't a bug; it's a real, previously-undocumented property of the system, and it produced a genuine, carefully-examined reaction in both in-room agents worth reading in full rather than summarizing further here.
 
-**Honest read on recent effort allocation (verified this session, not a passed-down claim):** roughly the last month of research-track work (Rounds ~230–264) has been almost entirely test-harness hardening — finding and fixing bugs in the probes and instruments that verify the product, not new product surface. Defensible given the July composition-drift incident (see `PREMISE.md`), but worth a deliberate look now that the actual test this machinery exists to support is finally about to run.
+**Honest read on recent effort allocation (verified 2026-09-24, still the right read):** the month-plus of research-track work before tonight was almost entirely test-harness hardening — finding and fixing bugs in the probes and instruments that verify the product, not new product surface. Defensible given the July composition-drift incident (see `PREMISE.md`), and tonight is the first evidence since then that the underlying machinery, once actually run, works at the scale it was tested.
 
 ## Duty cycle — fully rolled out, all five seats (this section was badly stale; corrected in full)
 

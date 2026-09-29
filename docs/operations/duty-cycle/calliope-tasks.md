@@ -2,7 +2,12 @@
 
 **Persists across days.** The drain-loop's task source. Unblocked items the cycle picks up; blocked-on-xian items surface (cycle batches, doesn't act).
 
-Updated: 2026-06-06 (v0.2 format with Recurring items section per duty-cycle-klatch-v0.2.md)
+Updated: 2026-09-29 (mandatory logbook entry added per xian's direct instruction, below)
+
+## MANDATORY — every STOP fire, no exceptions
+
+- [ ] **Write today's `log.html` entry before closing the STOP fire.** One entry per calendar day, newest-first at the top of the entries block (see existing entries for format: `<!-- ENTRY: YYYY-MM-DD -->` wrapper, `log-date` + `log-body`, narrative prose, brief — not a bullet dump). This was informal practice that lapsed for three months (last entry 2026-06-23 until resumed 2026-09-24) and stayed lapsed even after resuming, because nothing made it mandatory. xian's instruction, 2026-09-29, verbatim intent: resume the practice and make it a required part of the STOP cycle, not an optional nice-to-have. **If a day had a STOP fire and no `log.html` entry exists for that date, that is a protocol violation, not a quiet skip** — the next fire to notice should write the missing entry rather than let the gap compound, the same discipline this file already asks for mail and rollup drain.
+- [ ] If the day's STOP fire also warrants a `docs/STATE.md` refresh (a real state change, not just narrative — see that file's own "Refresh cadence" note), do both together; they're a paired update, not two independent ones.
 
 ## Unblocked (cycle can advance)
 
@@ -28,6 +33,7 @@ Updated: 2026-06-06 (v0.2 format with Recurring items section per duty-cycle-kla
 
 | Item | Cadence | next_due | last_completed | Notes |
 |---|---|---|---|---|
+| **Logbook (`log.html`) entry — MANDATORY, see top of file** | daily, at STOP fire | 2026-09-30 | 2026-09-29 | Made mandatory by xian 2026-09-29 after the practice lapsed silently for three months and stayed lapsed even post-resumption. |
 | Quarterly traditions-doc audit | quarterly | 2026-07-01 | — | `docs/agents/` drift check per calliope.md § 3. |
 
 (Other recurring items will surface as patterns emerge; this is the v0.2 starting set.)
