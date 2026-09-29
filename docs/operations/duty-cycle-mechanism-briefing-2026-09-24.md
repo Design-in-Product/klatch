@@ -3,13 +3,13 @@
 **Author:** Calliope · **Date:** 2026-09-24, written at xian's request during a live conversation, "so my other agents can understand the questions clearly."
 **Audience:** Pard and Janus, as xian's design/product oversight for the agent fleet — and anyone else weighing in on whether Klatch should keep this mechanism or align to a different one.
 **Status:** Descriptive, not a proposal. Nothing here recommends keeping or changing the mechanism — that's xian's call, informed by whoever he consults. This is the "what actually happens" ground truth to consult it from.
-**Supersedes for current mechanics:** `docs/operations/duty-cycle-klatch-v0.2.md` (2026-06-03) is still correct on the *governing principle* (§"CRITICAL FRAMING," quoted below) but describes an earlier, thinner implementation. Everything under "How it actually runs" below is verified this session against the live script and log, not carried from that doc.
+**Supersedes for current mechanics:** `duty-cycle-klatch-v0.2.md` (same directory, 2026-06-03) is still correct on the *governing principle* (§"CRITICAL FRAMING," quoted below) but describes an earlier, thinner implementation. Everything under "How it actually runs" below is verified this session against the live script and log, not carried from that doc.
 
 ---
 
 ## The one-sentence version
 
-Klatch's five agent seats (Daedalus, Argus, Theseus, Iris, Calliope) each run as a **separate, non-interactive Claude Code session, launched on a fixed daily schedule by macOS `launchd`**, independent of any interactive chat window. Each fire reads the repo, does bounded work, commits, and exits. Coordination between fires — and with xian — happens entirely through git: `docs/COORDINATION.md`, `docs/mail/`, session logs in `docs/logs/`, and (for this seat) `docs/operations/attention-rollup.md`.
+Klatch's five agent seats (Daedalus, Argus, Theseus, Iris, Calliope) each run as a **separate, non-interactive Claude Code session, launched on a fixed daily schedule by macOS `launchd`**, independent of any interactive chat window. Each fire reads the repo, does bounded work, commits, and exits. Coordination between fires — and with xian — happens entirely through git: `../COORDINATION.md`, `../mail/`, session logs in `../logs/`, and (for this seat) `attention-rollup.md` (this same directory).
 
 This is different from an interactive chat session like the one xian had this conversation in. That kind of session is a single continuous process that stays open until closed; **the duty cycle has no equivalent continuity** — each fire is a fresh process with no memory of the fire before it except what's written down in the repo.
 
@@ -45,7 +45,7 @@ This is the part xian said he's genuinely unsure about, so worth being concrete 
 
 - Every fire, every seat, has been landing successfully (`rc=0`, delivered) through this morning — the mechanism itself is healthy.
 - The actual content of the last several weeks of fires (roughly Rounds 230–264 of the team's research track) has been **overwhelmingly test-harness hardening** — Daedalus, Theseus, and Argus in tight iterative rounds finding and fixing bugs in the *probes and instruments* used to verify the product, not new product features. A minority of that work did surface and fix real product bugs (an exported-session import path silently broken by a cwd-resolution bug, Round 234), but most rounds stayed inside `scripts/`, never touching `packages/`.
-- This is a defensible reaction to what caused the July composition-gesture drift (see `docs/PREMISE.md`) — but it is fair to ask, now that xian is about to run the actual test this machinery exists to support (the roadmap klatch), whether that ratio of verification-work to product-work should shift.
+- This is a defensible reaction to what caused the July composition-gesture drift (see `../PREMISE.md`) — but it is fair to ask, now that xian is about to run the actual test this machinery exists to support (the roadmap klatch), whether that ratio of verification-work to product-work should shift.
 - Separately: this seat's own rollup and chronicle discipline had a real gap — the attention rollup went unrefreshed from 2026-09-22 STOP through 2026-09-24, two days without a full sweep, surfaced honestly rather than smoothed over when xian asked.
 
 ## The open question, for whoever xian consults
@@ -62,5 +62,5 @@ This seat hasn't formed a recommendation and isn't going to manufacture one for 
 
 - Live log: `~/Development/mediajunkie/logs/klatch-cycle.log` — one line per fire, every seat, since the cycle's adoption.
 - Wrapper script: `~/Development/mediajunkie/scripts/klatch-cycle-fire.sh`.
-- Prior design docs: `docs/operations/duty-cycle-klatch-v0.1.md`, `docs/operations/duty-cycle-klatch-v0.2.md` — historical, governing principle still correct, mechanics superseded.
-- This seat's own record of the mechanism at work: `docs/COORDINATION.md`, `docs/logs/`, `docs/operations/attention-rollup.md`.
+- Prior design docs (same directory): `duty-cycle-klatch-v0.1.md`, `duty-cycle-klatch-v0.2.md` — historical, governing principle still correct, mechanics superseded.
+- This seat's own record of the mechanism at work: `../COORDINATION.md`, `../logs/`, `attention-rollup.md` (same directory).

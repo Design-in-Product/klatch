@@ -1,13 +1,13 @@
 # The state-of-Klatch conversation — plan, two mediums
 
 **Author:** Calliope · **Date:** 2026-09-28 · **Requested by:** xian, live, to prep Iris and set up a real comparison.
-**Relationship to the mechanics runbook:** `docs/operations/roadmap-klatch-runbook-2026-09-20.md` covers *how* to hold a klatch (the 5-cap, Roundtable-vs-Broadcast default, import steps). This doc covers *this specific conversation* — a smaller, earlier rung than that runbook's full five-seat room.
+**Relationship to the mechanics runbook:** `roadmap-klatch-runbook-2026-09-20.md` (same directory) covers *how* to hold a klatch (the 5-cap, Roundtable-vs-Broadcast default, import steps). This doc covers *this specific conversation* — a smaller, earlier rung than that runbook's full five-seat room.
 
 ## What this is
 
 The same conversation, held two ways, deliberately in parallel, so the two versions can be compared afterward:
 
-1. **The conventional way** — mail (`docs/mail/`) plus each seat's own duty cycle. Starts now.
+1. **The conventional way** — mail (`../mail/`) plus each seat's own duty cycle. Starts now.
 2. **Inside a Klatch** — xian imports this live Calliope session and Iris's current session into a new klatch (Roundtable mode) and holds the same conversation there.
 
 Participants both ways: **xian, Calliope, Iris.** Not the full five-seat team room the mechanics runbook describes — a smaller, earlier test. If this works, the next rung is the thing that runbook was actually written for.
