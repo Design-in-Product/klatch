@@ -620,6 +620,20 @@ export const DEFERRED = [
   // census caught it unclassified first, which is the seventh fire in a row that the self-enrolment
   // convention would have made unnecessary. Six rounds open, agreed by both seats, built by neither.
   'probe-round291-the-sentinel-did-not-grade-the-backups-that-are-the-recovery-path.mts',
+  // Theseus, Round 292. A SEVENTH distinct reason, and the bluntest one yet: **this probe binds two
+  // ports and launches a browser.** It spawns the real Hono server on 3199 and the real Vite client
+  // on 5199, then drives Chromium against them — which is the only way to close what Iris routed
+  // here (a client component verified against mocked `fetch` for two weeks). Three things follow,
+  // any one of which disqualifies it from a red/green sweep. It cannot run concurrently with another
+  // seat that happens to want those ports — arms A0/A0b refuse to start rather than assume, which is
+  // a SKIP, which is exit 3. It depends on a machine-local asset the repo does not vendor (a
+  // Playwright chromium download; arm A1 checks and would SKIP without it). And it costs ~40 s of
+  // wall clock for two server boots and a browser launch, against a sweep budget measured in
+  // milliseconds per probe. Hermetic where it matters: `KLATCH_DB` points at a scratch database
+  // under `.testdata/`, the generated Vite config lives there too, and arms Y1/Y2 pin `scripts/`,
+  // `packages/` and the graded database set unmoved. Verdict-bearing, exit 0 at 24/24 this fire.
+  // Classified BEFORE the gate was run, per Round 284 §4 and Argus's census wiring.
+  'probe-round292-the-reassign-picker-driven-live-in-a-real-browser.mts',
   'probe-scan-cost-model-control.mts',
   'probe-scan-latency-vs-cap.mts',
   'probe-scratch-server.mjs',
