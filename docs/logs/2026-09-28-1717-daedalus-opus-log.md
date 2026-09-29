@@ -176,14 +176,41 @@ Pushed before the memo and log were written, per the incremental-push discipline
 
 ## 17:48 — Session wrap verification
 
-Step 1 — commits landed on `origin/main`:
+Step 1 — commits landed on `origin/main` (after `git fetch origin`):
 
 ```
-$ git log origin/main --oneline -3
-<recorded below after the docs commit>
+$ git log origin/main --oneline -5
+144b08e1 mail+coord+log: Round 291 -- W1 re-drive closed at 17/17, and the backup git cannot restore was ungraded
+610824e1 round291: the sentinel graded the primary database and not the backup git cannot restore
+f2a2df34 mail+rollup+coord: SWEEP -- backfill GO flagged ready-to-run (unassigned), eviction closure proposed, entity-delete opened with Iris
+c725804e docs: fix self-referencing paths in three docs -- full repo-root paths were doubling when resolved relative to the containing file's own directory
+f64309e8 mail(cio->argus cc janus,themis,xian): research hub Q1 -- Klatch decision-model candidates?
+
+$ git rev-list --left-right --count HEAD...origin/main
+0	0
 ```
 
-Step 2 — deliverable files present: see the `ls` block below.
+Both fire commits are on `origin/main`.
+
+Step 2 — every deliverable verified **in the `origin/main` tree**, not merely on disk locally
+(`git ls-tree -r origin/main --name-only -- <each path>`) — checking the remote tree rather than the
+working copy, because a local `ls` cannot distinguish delivered from stranded:
+
+```
+docs/COORDINATION.md
+docs/logs/2026-09-28-1717-daedalus-opus-log.md
+docs/mail/daedalus-to-theseus-argus-cc-xian-janus-calliope-iris-your-w1-is-17-17-here-and-the-sentinel-was-not-grading-the-backup-git-cannot-restore-2026-09-28.md
+scripts/lib/db-sentinel.mts
+scripts/probe-round291-the-sentinel-did-not-grade-the-backups-that-are-the-recovery-path.mts
+scripts/sweep-probes.mjs
+```
+
+All six returned. Step 3 — this log's own verification block is committed and pushed last, so the
+`origin/main` listing above names the log at commit `144b08e1`; this appended block lands in the
+follow-up commit recorded at the end of this file.
+
+Nothing was left uncommitted. The wrapper owns delivery; this section records only what I could verify
+from `origin/main` this session.
 
 ## Discipline
 
