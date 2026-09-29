@@ -631,9 +631,23 @@ export const DEFERRED = [
   // wall clock for two server boots and a browser launch, against a sweep budget measured in
   // milliseconds per probe. Hermetic where it matters: `KLATCH_DB` points at a scratch database
   // under `.testdata/`, the generated Vite config lives there too, and arms Y1/Y2 pin `scripts/`,
-  // `packages/` and the graded database set unmoved. Verdict-bearing, exit 0 at 24/24 this fire.
+  // `packages/` and the graded database set unmoved. Verdict-bearing, exit 0 at 24/24 when written.
   // Classified BEFORE the gate was run, per Round 284 §4 and Argus's census wiring.
+  // Round 293 (2026-09-29): repaired and re-driven at **22/22 with 3 arms inapplicable**. Its G4
+  // measurement got its answer — Iris shipped the fix (`3c66489d`) — and the fix disables the row
+  // G2/G3 click, so the probe THREW on its first re-run and lost H1–H6 with it. It now asks before
+  // clicking. The refusal sentence moved to Round 293 M3/M4, which is the only live route left.
   'probe-round292-the-reassign-picker-driven-live-in-a-real-browser.mts',
+  // Theseus, Round 293. DEFERRED for exactly the seven reasons above — it is the same harness,
+  // pointed at the fix that Round 292's G4 measurement provoked, on its own port pair (3193/5193,
+  // deliberately not 3199/5199, so the two can be driven in one fire without a false red from a
+  // port race). Two ports, a chromium the repo does not vendor, ~40 s. Verdict-bearing, exit 0 at
+  // 30/30 with 3 measurements this fire. What it adds beyond Round 292: the G-arms drive the fix
+  // as a user meets it (listed, disabled, reasoned, and reaching the endpoint zero times on a real
+  // forced click), and the M-arms measure the residual window — `boundIds` is `null` until the
+  // fetch-on-open resolves, so inside it every candidate still reads as free. Classified BEFORE
+  // the gate was run, per Round 284 §4 and Argus's census wiring.
+  'probe-round293-the-g4-fix-driven-live-and-the-window-before-its-fetch-returns.mts',
   'probe-scan-cost-model-control.mts',
   'probe-scan-latency-vs-cap.mts',
   'probe-scratch-server.mjs',

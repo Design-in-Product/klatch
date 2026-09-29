@@ -47,6 +47,26 @@
  * never opened: arm Y2 brackets the run with the Round 287/291 sentinel to prove the graded set did
  * not move. The Vite config is generated under `.testdata/` too — nothing is written inside
  * `packages/`, which arm Y1 fingerprints.
+ *
+ * ── Round 293 (2026-09-29): what the fix did to this probe ──────────────────
+ *
+ * G4 above was a measurement, deliberately: it recorded that the refused candidate stayed listed
+ * and enabled, and left the judgement to Iris. She ruled it (disable with a reason, don't hide)
+ * and shipped it in `3c66489d`. That fix disables the very row arms G2/G3 click to provoke the
+ * refusal — so the first re-run of this probe against the fix did not report two red arms, it
+ * **threw**: Playwright's click auto-waits for `enabled`, timed out at 30s, and aborted the run
+ * with 18 of 24 arms recorded. H1–H6 — the happy path, the database binding, Round 212's
+ * per-message stamps — never ran at all, though nothing about them had changed.
+ *
+ * The repair is in section G: ask whether the row is disabled before clicking it, and if it is,
+ * record G2/G3/G4 as **inapplicable** rather than driving into a wall. Inapplicable and not a
+ * skip, per `probe-outcome.mts`'s own test — no operator can change anything about this machine
+ * to make the arm run; the path is closed by design.
+ *
+ * The refusal sentence itself is not left uncovered. It is re-established live in
+ * `probe-round293-the-g4-fix-driven-live-and-the-window-before-its-fetch-returns.mts` (M3/M4),
+ * which reaches it inside the picker's open-fetch window — the one place a refusal survives the
+ * fix, and, not coincidentally, a residual gap that probe measures.
  */
 import { spawn, type ChildProcess } from 'child_process';
 import Database from 'better-sqlite3';
@@ -88,6 +108,17 @@ const skipped: string[] = [];
 const skip = (arm: string, why: string): void => {
   skipped.push(`${arm}: ${why}`);
   console.log(`  [${arm}] SKIP  ${why}`);
+};
+/**
+ * An arm that did not run because the thing it drives is no longer reachable BY DESIGN — not an
+ * environment an operator could change. See the Round 293 note in the header: G2/G3 provoke the
+ * refusal by clicking a candidate the fix now disables. Recorded rather than dropped, and it does
+ * not weaken the exit (`probe-outcome.mts`, `inapplicable`).
+ */
+const inapplicable: string[] = [];
+const notApplicable = (arm: string, why: string): void => {
+  inapplicable.push(`${arm}: ${why}`);
+  console.log(`  [${arm}] N/A   ${why}`);
 };
 
 const bracketBefore = { scripts: fingerprint(REPO, 'scripts/'), packages: fingerprint(REPO, 'packages/') };
@@ -277,24 +308,52 @@ export default defineConfig({
       `same-name buttons offered: ${offered.length} (of 2 entities with that name) · ${JSON.stringify(offered)}`);
 
     await page.getByPlaceholder('Search agents by name or @handle').fill(BYSTANDER);
-    await page.getByRole('button', { name: new RegExp(BYSTANDER) }).first().click();
+    const bystanderRow = page.getByRole('button', { name: new RegExp(BYSTANDER) }).first();
 
-    const refusal = page.getByText('Target entity is already assigned to this channel');
-    const refusalShown = await refusal.waitFor({ timeout: 10_000 }).then(() => true).catch(() => false);
-    check('G2', "the server's own refusal sentence reaches the user verbatim", refusalShown,
-      refusalShown ? await refusal.innerText() : 'no refusal text appeared');
-    const stillOpen = await page.getByPlaceholder('Search agents by name or @handle').isVisible().catch(() => false);
-    check('G3', 'and the picker stays open, so the user can correct the pick in place', stillOpen);
-    await page.screenshot({ path: join(SHOT_DIR, '2-refusal.png') });
+    // ── Round 293 repair (Theseus, 2026-09-29) ──────────────────────────────
+    // Iris's G4 fix (`3c66489d`) disables this exact row, which is the outcome this probe's own
+    // G4 measurement asked for. Clicking it unconditionally is what the probe used to do, and on
+    // the first re-run after the fix Playwright's click auto-waited 30s for `enabled` and THREW —
+    // aborting at G1 with 18 of 24 arms recorded and the entire happy path (H1–H6, including the
+    // Round 212 stamp guarantee) never driven. An arm going red when the code is fixed is the
+    // time-bomb shape Round 286 named; a probe that THROWS at the fix is worse, because it
+    // discards every arm downstream of the change, including ones unrelated to it.
+    //
+    // So: ask first. If the row is disabled, the refusal is unreachable through this path BY
+    // DESIGN, which is `inapplicable` and not a skip — no operator can change a machine to make
+    // it run. G2/G3 are re-established live in
+    // `probe-round293-the-g4-fix-driven-live-and-the-window-before-its-fetch-returns.mts` (M3/M4),
+    // which reaches the refusal inside the picker's open-fetch window, the one place it survives.
+    const rowDisabled = await bystanderRow.isDisabled().catch(() => false);
+    if (rowDisabled) {
+      notApplicable('G2', "the refusal is no longer reachable by clicking an already-bound candidate — "
+        + 'the G4 fix disables that row. The verbatim-sentence check lives in Round 293 M3');
+      notApplicable('G3', 'same: no refusal can be provoked here to leave the picker open after. Round 293 M4');
+      notApplicable('G4', 'ruled and fixed by Iris (`3c66489d`): disable with a reason, do not hide. '
+        + 'This measurement asked a question that now has an answer in the code');
+      measure('G4b', 'the candidate this probe used to click is now rendered disabled — the fix is '
+        + 'present on this tree, observed live rather than inferred from the commit');
+      await page.screenshot({ path: join(SHOT_DIR, '2-disabled-not-refused.png') });
+    } else {
+      await bystanderRow.click();
 
-    // A MEASUREMENT, not a check, and deliberately so. What it records is a defect-shaped
-    // observation — the refused candidate is still listed, still enabled, and reads no differently
-    // from a candidate that would succeed, because `ReassignPicker`'s filter excludes `fromEntityId`
-    // and nothing else. An arm asserting that would go RED the day someone fixes it (Round 286's
-    // "a red must mean something broke"). This prints the live state either way and leaves the
-    // judgement to Iris, whose surface it is.
-    const stillListed = await page.getByRole('button', { name: new RegExp(BYSTANDER) }).first().isEnabled().catch(() => false);
-    measure('G4', `after the refusal the refused candidate is still listed and still enabled: ${stillListed} — the picker's exclusion is \`fromEntityId\` only, so every OTHER entity already bound to the channel is offered and can only be refused`);
+      const refusal = page.getByText('Target entity is already assigned to this channel');
+      const refusalShown = await refusal.waitFor({ timeout: 10_000 }).then(() => true).catch(() => false);
+      check('G2', "the server's own refusal sentence reaches the user verbatim", refusalShown,
+        refusalShown ? await refusal.innerText() : 'no refusal text appeared');
+      const stillOpen = await page.getByPlaceholder('Search agents by name or @handle').isVisible().catch(() => false);
+      check('G3', 'and the picker stays open, so the user can correct the pick in place', stillOpen);
+      await page.screenshot({ path: join(SHOT_DIR, '2-refusal.png') });
+
+      // A MEASUREMENT, not a check, and deliberately so. What it records is a defect-shaped
+      // observation — the refused candidate is still listed, still enabled, and reads no differently
+      // from a candidate that would succeed, because `ReassignPicker`'s filter excludes `fromEntityId`
+      // and nothing else. An arm asserting that would go RED the day someone fixes it (Round 286's
+      // "a red must mean something broke"). This prints the live state either way and leaves the
+      // judgement to Iris, whose surface it is.
+      const stillListed = await bystanderRow.isEnabled().catch(() => false);
+      measure('G4', `after the refusal the refused candidate is still listed and still enabled: ${stillListed} — the picker's exclusion is \`fromEntityId\` only, so every OTHER entity already bound to the channel is offered and can only be refused`);
+    }
 
     // ─── H · the happy path, from inside the refusal ──────────────────────────
     console.log('\n[H] the happy path: correct the pick to the other same-name agent');
@@ -357,4 +416,5 @@ summariseAndExit({
   probeName: 'probe-round292-the-reassign-picker-driven-live-in-a-real-browser',
   results,
   skipped,
+  inapplicable,
 });
