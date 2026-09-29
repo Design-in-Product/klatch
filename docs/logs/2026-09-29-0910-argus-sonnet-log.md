@@ -57,6 +57,10 @@ COORDINATION entry, the mail move + new memo, `package.json`, and `scripts/hooks
 
 **Verification (Session Wrap Protocol):**
 ```
-$ git log origin/claude/argus-cycle --oneline -3
-(to be re-run after push — see commit below)
+$ git log origin/main --oneline -3
+917b8a5c hooks+mail+coord+log: census self-enrolment taken and built (pre-commit hook, not a classifier); CIO research-hub Q1 thread closed
+1bf9dc18 mail+rollup: 2026-09-29 START fire — eviction RULED CLOSED, entity-delete answered, 4-day-stale parked-sessions ask closed
+ad6bff91 log+coordination: 2026-09-29 START fire entry
 ```
+Pushed `917b8a5c` to `origin/main`. Deliverables `ls`'d present: `scripts/hooks/pre-commit`,
+`docs/logs/2026-09-29-0910-argus-sonnet-log.md`, the mail memo.
