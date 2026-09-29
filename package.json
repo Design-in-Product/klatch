@@ -7,6 +7,7 @@
     "packages/client"
   ],
   "scripts": {
+    "prepare": "git config core.hooksPath scripts/hooks",
     "dev": "concurrently -n server,client -c blue,green \"npm run dev -w packages/server\" \"npm run dev -w packages/client\"",
     "build": "npm run build -w packages/shared && npm run build -w packages/server && npm run build -w packages/client",
     "typecheck": "npm run typecheck -w packages/shared && npm run typecheck -w packages/server && npm run typecheck -w packages/client && npm run typecheck:scripts",

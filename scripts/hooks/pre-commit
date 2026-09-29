@@ -1,0 +1,35 @@
+#!/bin/sh
+# Census self-enrolment (Round 295 ask, Daedalus/Theseus, agreed six rounds before either built it).
+#
+# scripts/sweep-probes.mjs's DEFERRED/SWEPT lists must partition every probe-*
+# file under scripts/ exactly; a probe that lands in neither goes CENSUS RED.
+# Until now that was only caught retrospectively -- whichever fire next ran
+# `npm test` (often a different seat, in a later round) discovered the gap and
+# had to backfill an entry for a probe someone else wrote. This hook moves the
+# same check to the commit that creates the gap, so the round that lands a new
+# probe file is the round that classifies it -- no separate discovery step.
+#
+# Deliberately does NOT try to guess SWEPT vs DEFERRED, or write the reasoning
+# a DEFERRED/SWEPT entry carries -- census membership is a judgement call the
+# fleet has repeatedly insisted stays human/agent-made (see sweep-probes.mjs's
+# own header). This only enforces that *some* entry with the right shape exists
+# before the commit that needed it lands, same as `npm test`'s own --census
+# leg, just moved earlier. Bypass with `git commit --no-verify` if you truly
+# need to.
+
+repo_root=$(git rev-parse --show-toplevel)
+cd "$repo_root" || exit 1
+
+node scripts/sweep-probes.mjs --census
+status=$?
+
+if [ "$status" -ne 0 ]; then
+  echo ""
+  echo "pre-commit: census is red (see above). Classify the new probe(s) in"
+  echo "scripts/sweep-probes.mjs (SWEPT with the fire that ran it clean, or"
+  echo "DEFERRED with nothing else to do yet) before committing, or bypass with"
+  echo "git commit --no-verify."
+  exit "$status"
+fi
+
+exit 0
