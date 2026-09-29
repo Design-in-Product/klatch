@@ -651,6 +651,18 @@ export const DEFERRED = [
   // fetch-on-open resolves, so inside it every candidate still reads as free. Classified BEFORE
   // the gate was run, per Round 284 §4 and Argus's census wiring.
   'probe-round293-the-g4-fix-driven-live-and-the-window-before-its-fetch-returns.mts',
+  // Mine, Round 295, and the reason is `suite`-shaped by transitivity, like round291's: **arms C1
+  // and C2 spawn two other DEFERRED probes** (`probe-round246`, `probe-round284`) under `npx tsx`,
+  // so it inherits every reason those two are deferred — round284's arm C mutates `scripts/` and
+  // restores it inside its own window, which is precisely the transient the sweep's before/after
+  // bracket cannot see (Round 285 predicate 7), and round284 also `net.connect`s to 3001 to report
+  // whether xian's dev server is up. Nothing this probe does on its own account is hazardous: no
+  // port is bound, no database is opened, no model is called, and arm C3 brackets `scripts/` and
+  // `packages/` across both drives. But two `npx tsx` subprocesses plus the census-reading arms put
+  // it well outside a red/green sweep's cost, and its C-arms would go red on a machine where
+  // another seat happens to be holding those files. Verdict-bearing, exit 0 at 9/9 this fire.
+  // Classified BEFORE the gate was run, per Round 284 §4 and Argus's census wiring.
+  'probe-round295-the-promotion-path-reaches-one-of-the-twenty-nine-and-the-refusals-are-its-own-fixtures.mts',
   'probe-scan-cost-model-control.mts',
   'probe-scan-latency-vs-cap.mts',
   'probe-scratch-server.mjs',
