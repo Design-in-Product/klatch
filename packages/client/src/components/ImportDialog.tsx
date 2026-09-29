@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { importClaudeCodeSession, uploadClaudeCodeSession, importClaudeAiExport, previewClaudeAiExport, deleteChannelApi, fetchClaudeCodeSessions, fetchEntities, reassignChannelEntity } from '../api/client';
+import { importClaudeCodeSession, uploadClaudeCodeSession, importClaudeAiExport, previewClaudeAiExport, deleteChannelApi, fetchClaudeCodeSessions, fetchEntities, fetchChannelEntities, reassignChannelEntity } from '../api/client';
 import type { ImportResponse, ImportConflict, ClaudeAiImportResponse, ZipPreviewResponse, SessionBrowseResponse, ResolveDisposition } from '../api/client';
 import type { Entity } from '@klatch/shared';
 
@@ -1438,6 +1438,26 @@ function ReassignPicker({
   const [search, setSearch] = useState('');
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState<string | null>(null);
+  // Round 292 (Theseus) drove this picker live and found it offers candidates already
+  // bound to the channel — the server can only refuse those (`target-already-bound`),
+  // but the picker doesn't know that and lists them identically to ones that would
+  // work. After a refusal the row stays enabled, reading like a candidate that just
+  // needs a second click. Disabling with a reason (not hiding) keeps the information
+  // that the agent is already present while removing the dead-end click.
+  const [boundIds, setBoundIds] = useState<Set<string> | null>(null);
+  useEffect(() => {
+    let cancelled = false;
+    fetchChannelEntities(channelId)
+      .then((bound) => {
+        if (!cancelled) setBoundIds(new Set(bound.map((e) => e.id)));
+      })
+      .catch(() => {
+        if (!cancelled) setBoundIds(new Set());
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [channelId]);
 
   const pick = async (entity: Entity) => {
     setBusy(true);
@@ -1484,19 +1504,24 @@ function ReassignPicker({
             {candidates.length === 0 && (
               <div className="text-[11px] text-muted px-1 py-0.5">No matching agents</div>
             )}
-            {candidates.map((ent) => (
-              <button
-                key={ent.id}
-                type="button"
-                disabled={busy}
-                onClick={() => pick(ent)}
-                className="flex w-full items-center gap-1.5 rounded px-1.5 py-1 text-left text-xs hover:bg-hover disabled:opacity-50"
-              >
-                <span className="w-2 h-2 rounded-full flex-shrink-0" style={{ backgroundColor: ent.color }} />
-                <span className="truncate text-primary">{ent.name || '(unnamed)'}</span>
-                {ent.handle && <span className="text-muted">@{ent.handle}</span>}
-              </button>
-            ))}
+            {candidates.map((ent) => {
+              const alreadyBound = boundIds?.has(ent.id) ?? false;
+              return (
+                <button
+                  key={ent.id}
+                  type="button"
+                  disabled={busy || alreadyBound}
+                  onClick={() => pick(ent)}
+                  title={alreadyBound ? 'Already on this channel' : undefined}
+                  className="flex w-full items-center gap-1.5 rounded px-1.5 py-1 text-left text-xs hover:bg-hover disabled:opacity-50 disabled:hover:bg-transparent"
+                >
+                  <span className="w-2 h-2 rounded-full flex-shrink-0" style={{ backgroundColor: ent.color }} />
+                  <span className="truncate text-primary">{ent.name || '(unnamed)'}</span>
+                  {ent.handle && <span className="text-muted">@{ent.handle}</span>}
+                  {alreadyBound && <span className="text-muted ml-auto flex-shrink-0">already on channel</span>}
+                </button>
+              );
+            })}
           </div>
         </>
       )}

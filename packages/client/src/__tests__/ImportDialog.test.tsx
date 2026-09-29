@@ -11,10 +11,11 @@ vi.mock('../api/client', () => ({
   deleteChannelApi: vi.fn(),
   fetchClaudeCodeSessions: vi.fn(),
   fetchEntities: vi.fn(),
+  fetchChannelEntities: vi.fn(),
   reassignChannelEntity: vi.fn(),
 }));
 
-import { importClaudeCodeSession, importClaudeAiExport, previewClaudeAiExport, deleteChannelApi, fetchClaudeCodeSessions, fetchEntities, reassignChannelEntity } from '../api/client';
+import { importClaudeCodeSession, importClaudeAiExport, previewClaudeAiExport, deleteChannelApi, fetchClaudeCodeSessions, fetchEntities, fetchChannelEntities, reassignChannelEntity } from '../api/client';
 import type { ZipPreviewResponse, SessionBrowseResponse, SessionInfo } from '../api/client';
 
 const defaultProps = {
@@ -43,6 +44,8 @@ beforeEach(() => {
   vi.mocked(previewClaudeAiExport).mockReset();
   vi.mocked(fetchClaudeCodeSessions).mockReset();
   vi.mocked(fetchEntities).mockReset();
+  vi.mocked(fetchChannelEntities).mockReset();
+  vi.mocked(fetchChannelEntities).mockResolvedValue([]);
   vi.mocked(reassignChannelEntity).mockReset();
   defaultProps.onClose = vi.fn();
   defaultProps.onImported = vi.fn();
@@ -286,6 +289,49 @@ describe('ImportDialog', () => {
     // Refused, not silently dropped — the picker stays open on the same binding.
     expect(screen.getByPlaceholderText(/Search agents/)).toBeInTheDocument();
     expect(screen.queryByText('Reassigned to Argus')).not.toBeInTheDocument();
+  });
+
+  it('disables a candidate already bound to the channel instead of offering a click that can only be refused (Round 292 G4)', async () => {
+    const user = userEvent.setup();
+    vi.mocked(importClaudeCodeSession).mockResolvedValue({
+      status: 'success',
+      data: {
+        channelId: 'ch1',
+        channelName: 'test-session',
+        messageCount: 10,
+        artifactCount: 0,
+        source: 'claude-code',
+        duplicate: false,
+        entityDisposition: 'matched-by-name',
+        entityName: 'Daedalus',
+        entityId: 'ent-1',
+        sameNameEntityIds: ['ent-1', 'ent-2'],
+      },
+    });
+    vi.mocked(fetchEntities).mockResolvedValue([
+      { id: 'ent-1', name: 'Daedalus', model: 'claude-opus-4-6', color: '#8B5CF6', systemPrompt: '', createdAt: '' } as any,
+      { id: 'ent-3', name: 'Argus', model: 'claude-sonnet-4-6', color: '#10B981', systemPrompt: '', createdAt: '' } as any,
+    ]);
+    // Argus (ent-3) is already on this channel alongside the entity being reassigned
+    // away from — the bystander from Theseus's live drive.
+    vi.mocked(fetchChannelEntities).mockResolvedValue([
+      { id: 'ent-1', name: 'Daedalus', model: 'claude-opus-4-6', color: '#8B5CF6', systemPrompt: '', createdAt: '' } as any,
+      { id: 'ent-3', name: 'Argus', model: 'claude-sonnet-4-6', color: '#10B981', systemPrompt: '', createdAt: '' } as any,
+    ]);
+
+    render(<ImportDialog {...defaultProps} />);
+    await user.type(screen.getByPlaceholderText(/\.jsonl/), '/path/to/session.jsonl');
+    await user.click(screen.getByRole('button', { name: 'Import' }));
+    await user.click(await screen.findByRole('button', { name: /Not right\?/ }));
+    await user.click(await screen.findByPlaceholderText(/Search agents/));
+
+    const argusRow = await screen.findByRole('button', { name: /Argus/ });
+    await waitFor(() => expect(argusRow).toBeDisabled());
+    expect(within(argusRow).getByText('already on channel')).toBeInTheDocument();
+
+    await user.click(argusRow);
+    // Disabled means no click fires — the endpoint that can only refuse is never called.
+    expect(reassignChannelEntity).not.toHaveBeenCalled();
   });
 
   it('shows no ambiguity note in the single-import success panel when the name is unique', async () => {
