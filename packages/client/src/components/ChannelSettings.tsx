@@ -509,7 +509,7 @@ export function ChannelSettings({
             <div className="space-y-1">
               {Object.entries(promptLayers).map(([key, status]) => {
                 const isActive = status.startsWith('ACTIVE');
-                const layerLabel = key.replace(/^\d+_/, '').replace(/([A-Z])/g, ' $1').trim();
+                const layerLabel = key.replace(/^\d+_/, '').replace(/([A-Z])/g, ' $1').replace(/^./, (c) => c.toUpperCase()).trim();
                 const statusLabel = isActive ? 'active' : 'empty';
                 return (
                   <div key={key} className="flex items-center gap-2 text-xs">

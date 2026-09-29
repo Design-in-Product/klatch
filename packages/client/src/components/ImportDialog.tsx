@@ -653,7 +653,7 @@ export function ImportDialog({ isOpen, onClose, onImported, onBulkImported, onCh
                   </>
                 )}
               </div>
-              <LayerFidelityReadout channelId={result.channelId} />
+              <LayerFidelityReadout channelId={result.channelId} entityId={result.entityId} />
               <button
                 onClick={handleGoToChannel}
                 className="w-full rounded bg-accent px-3 py-2 text-sm font-medium text-white hover:bg-accent-hover transition-colors"
@@ -1357,26 +1357,34 @@ export function ImportDialog({ isOpen, onClose, onImported, onBulkImported, onCh
   );
 }
 
-/** Shows which context layers were populated after an import */
-function LayerFidelityReadout({ channelId }: { channelId: string }) {
+/**
+ * Shows which context layers were populated after an import.
+ *
+ * `entityId` must be threaded through to `/prompt-debug` — the route defaults to
+ * `entities[0]` (insertion order) when omitted, which is not guaranteed to be the
+ * entity this import just resolved (2026-09-28, found live: a fresh import's readout
+ * showed the seeded default entity's prompt, not the real one, because this
+ * component asked prompt-debug for "the channel's prompt" instead of "this entity's").
+ */
+function LayerFidelityReadout({ channelId, entityId }: { channelId: string; entityId?: string }) {
   const [layers, setLayers] = useState<Record<string, string> | null>(null);
 
   useEffect(() => {
-    fetch(`/api/channels/${channelId}/prompt-debug`)
+    const query = entityId ? `?entityId=${encodeURIComponent(entityId)}` : '';
+    fetch(`/api/channels/${channelId}/prompt-debug${query}`)
       .then((r) => r.ok ? r.json() : null)
       .then((data) => { if (data?.layers) setLayers(data.layers); })
       .catch(() => {});
-  }, [channelId]);
+  }, [channelId, entityId]);
 
   if (!layers) return null;
 
-  const LAYER_LABELS: Record<string, string> = {
-    '1_kitBriefing': 'Kit briefing',
-    '2_projectInstructions': 'Project instructions',
-    '3_projectMemory': 'Project memory',
-    '4_channelAddendum': 'Channel context',
-    '5_entityPrompt': 'Entity prompt',
-  };
+  // Same formatter as ChannelSettings.tsx's "Prompt layers" section — a hardcoded
+  // label map silently leaked raw keys `6_carriedContext`/`7_floor` here (found live,
+  // same session) because layers 6/7 were added after the map and never backfilled.
+  // A derived label can't go stale the same way.
+  const formatLabel = (key: string) =>
+    key.replace(/^\d+_/, '').replace(/([A-Z])/g, ' $1').replace(/^./, (c) => c.toUpperCase()).trim();
 
   return (
     <div className="rounded-lg border border-line bg-card p-3">
@@ -1384,7 +1392,7 @@ function LayerFidelityReadout({ channelId }: { channelId: string }) {
       <div className="space-y-1">
         {Object.entries(layers).map(([key, status]) => {
           const isActive = status.startsWith('ACTIVE');
-          const label = LAYER_LABELS[key] || key;
+          const label = formatLabel(key);
           return (
             <div key={key} className="flex items-center gap-2 text-xs">
               <span className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${
