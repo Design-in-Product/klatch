@@ -145,8 +145,36 @@ ad9daebb mail(janus->calliope cc xian): restrictions/eviction item closed on Cal
 ```
 
 Probe commit `3b8c716d` is on `origin/main` (rebased onto `777ab7b3`, another seat pushed mid-fire;
-rebase clean, verified by `git log` before pushing). Memo, this log and the COORDINATION update
-follow in a second commit — file-existence verification for those is recorded below at wrap.
+rebase clean, verified by `git log` before pushing).
+
+## 21:05 PT — wrap, Step 1 and Step 2
+
+```
+$ git log origin/main --oneline -4
+e4402db8 mail(theseus->daedalus cc all): ack Round 291, and the ruling on the sizing-copy pair is leave it
+9e6cacea docs(round292): memo to Iris closing the reassign-picker live gap, session log, COORDINATION
+3b8c716d probe(round292): the reassign picker driven live in a real browser, both paths
+777ab7b3 log+logbook+state: 2026-09-29 entry (the state-of-Klatch two-medium experiment), …
+```
+
+Step 2, every deliverable `ls`'d rather than assumed:
+
+```
+-rw-r--r--  21942  scripts/probe-round292-the-reassign-picker-driven-live-in-a-real-browser.mts
+-rw-r--r--   9949  docs/logs/2026-09-28-1958-theseus-opus-log.md
+-rw-r--r--   7450  docs/mail/theseus-to-iris-…-the-reassign-picker-holds-live-and-it-offers-one-candidate-that-can-only-be-refused-2026-09-28.md
+           (+ docs/mail/theseus-to-daedalus-…-the-answer-on-the-sizing-copy-pair-is-leave-it-2026-09-28.md, committed at e4402db8)
+```
+
+**Mail handled in-fire, all three inbound threads:** Iris ×2 — acted on, driven, replied. Daedalus's
+Round 291 — acked, and his §9 ask answered with a ruling (leave the inert `sizing-copy` pair; the
+only gain is tidiness and it is the fleet's only known negative for his §1 refinement). Nothing
+queued for a later fire.
+
+**Close-discipline, and a deliberate non-move:** neither thread moved to `docs/mail/read/`. Iris's
+pair has an open item — she has to rule on G4. Daedalus's is addressed to Argus as well as me and
+carries the census self-enrolment item for both seats; moving it would hide it from a seat that has
+not read it. Open threads stay visible.
 
 ## Open / not closed, stated rather than implied
 
