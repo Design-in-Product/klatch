@@ -35,8 +35,11 @@
  * The split matches `tree-fingerprint`'s own "the window is a measurement, what the run did is a
  * check":
  *
- *   **graded**  — every database file OUTSIDE `.testdata/`. Today that set is exactly one file,
- *                 repo-root `klatch.db`. A probe moving one of these is a finding.
+ *   **graded**  — every database file OUTSIDE `.testdata/`. A probe moving one of these is a finding.
+ *                 This note said "exactly one file, repo-root `klatch.db`" from Round 287 until
+ *                 Round 291 measured it: on Daedalus's tree it is **six**, and three of the six are
+ *                 gitignored backup copies the old name predicate did not match. See {@link isDbFile}.
+ *                 The count is machine-local and decays — treat it as a measurement, never a claim.
  *   **scratch** — every database file UNDER `.testdata/`, the sanctioned scratch area (`.gitignore`
  *                 calls it "by definition disposable"). Probes are *supposed* to write here, so
  *                 movement is reported as a measurement and never graded.
@@ -81,8 +84,63 @@ export type DbState = {
 /** Directories never descended into. `.testdata` IS descended — its contents are the scratch set. */
 const PRUNE = new Set(['node_modules', '.git', 'dist', '.claude']);
 
-/** A SQLite database or one of its WAL sidecars. See the module note on why the sidecars count. */
-const isDbFile = (name: string): boolean => /\.db(-wal|-shm)?$/.test(name);
+/**
+ * Suffixes that sit after a `.db` stem but name a *report about* a database rather than a database.
+ *
+ * Measured on this tree, Round 291: of the 330 files carrying a `.db.`/`.db-` infix, 66 are
+ * `klatch.db.backfill-<timestamp>.json` — the backfill tool's own record of what it changed. Pulling
+ * those into the set would be the mirror of the miss below: a wider rule that grades the wrong
+ * files. They are excluded by extension, and `probe-round291` arm B drives them as known negatives.
+ */
+const NON_DB_SUFFIX = /\.(json|log|txt|md|csv)$/i;
+
+/**
+ * A SQLite database or one of its WAL sidecars. See the module note on why the sidecars count.
+ *
+ * ── Round 291, Daedalus, 2026-09-28 (STOP fire): why this is not just `/\.db$/` ──
+ *
+ * The rule shipped in Round 287 was `/\.db(-wal|-shm)?$/`, and it had a hole of exactly the kind
+ * this module was written to close. Three files on this tree are byte-for-byte copies of the real
+ * database and matched none of those alternatives, because their names do not *end* at `.db`:
+ *
+ *   klatch.db.backup-pre-round227-cleanup-20260918      425,984 bytes
+ *   backups/klatch.db.backup-2026-03-14                5,230,592 bytes
+ *   backups/klatch.db.backup-2026-03-15-pre-fresh        335,872 bytes
+ *
+ * They do **not** all sit in the same recovery class, and the first draft of this note said they did.
+ * I read `.gitignore` — `*.db.backup*` on line 11, `backups/` on its own line — and wrote "all three
+ * are gitignored". `probe-round291` arm C asked git instead, and the partition is:
+ *
+ *   - `klatch.db.backup-pre-round227-cleanup-20260918` — ignored **and untracked**. 0.42 MB that git
+ *     genuinely cannot restore. This is the module note's own criterion, verbatim: *"the one asset
+ *     the sandbox cannot see is also the one asset git cannot restore."* It is comparable in size to
+ *     the 0.45 MB of `klatch.db` the rule did grade — so the unrecoverable bytes inside the bracket
+ *     and outside it were roughly **equal**, and half of them were unwatched.
+ *   - `backups/klatch.db.backup-2026-03-14` and `…-03-15-pre-fresh` — **tracked**, 5.44 MB. A tracked
+ *     file is never ignored, which is why `check-ignore` disagreed with my reading of the file.
+ *     `git checkout --` restores both, so destroying them is recoverable.
+ *
+ * The tracked pair is still worth grading, for a reason that is not about restorability: `fingerprint()`
+ * is called only as `fingerprint(repo, 'scripts/')` and `fingerprint(repo, 'packages/')`, so `backups/`
+ * is outside every pathspec the promotion bracket looks at. Git could undo the damage; nothing in the
+ * promotion path would tell anyone it happened. Arm C2b drives that.
+ *
+ * The walk was never the problem: `backups/` is not in {@link PRUNE}, so `readdirSync` visited every
+ * one of these files and the *name predicate* rejected them. A directory walk answers "what is on
+ * disk" (see {@link snapshot}); it cannot help when the filter downstream of it is narrow.
+ *
+ * **Cost, measured on the shipped predicate rather than asserted**, same method as
+ * {@link SCRATCH_HASH_LIMIT}: a full snapshot goes from **68 ms to 119–136 ms** on this tree
+ * (graded 3 files/0.45 MB → 6 files/6.16 MB; scratch 273 → 534). Four snapshots per probe puts the
+ * added overhead at roughly **0.24 s**, well under the ~1 s per-probe bar that note set as the point
+ * where someone turns the sentinel off. An earlier draft of this comment said 179 ms and 0.44 s; that
+ * was timed against the draft predicate {@link NON_DB_SUFFIX} exists to correct, which was also
+ * hashing 66 JSON reports.
+ */
+export const isDbFile = (name: string): boolean => {
+  if (NON_DB_SUFFIX.test(name)) return false;
+  return /\.db(-wal|-shm)?$/.test(name) || /\.db\.[^/]+$/.test(name) || /\.bak$/.test(name);
+};
 
 const sha256 = (b: Buffer): string => createHash('sha256').update(b).digest('hex').slice(0, 16);
 

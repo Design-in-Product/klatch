@@ -606,6 +606,20 @@ export const DEFERRED = [
   // layer out. Verdict-bearing, hermetic, exit 0 at 18/18 this fire. Classified BEFORE the gate was
   // run, per Round 284 §4 and Argus's census wiring.
   'probe-round290-orphaned-sidecars-are-not-a-live-holder-and-w1-pinned-the-wrong-thing.mts',
+  // Mine, Round 291, and the reason is a SIXTH distinct one, though it reaches the same place by
+  // transitivity rather than on its own account: **arm R spawns `probe-round288`**. That is the item
+  // Theseus routed to this seat in Round 290 §8 — re-drive his repaired W1 on the tree that lacks his
+  // ambient sidecars — and the honest way to hold a re-drive is to make it an arm that can go red,
+  // not a figure quoted in a memo. But round288 is DEFERRED precisely because it mints graded `.db`
+  // fixtures at the repo root and moves the graded set mid-run, so a probe that drives round288
+  // inherits every reason round288 is deferred, plus the `npx tsx` subprocess cost. Everything this
+  // probe does on its own is hermetic: the replicas in arms D/E are `mkdtemp` roots, no database
+  // inside this repository is opened, and the three real backups are `statSync`'d and name-tested
+  // only (arm Y2 pins the graded set unmoved). Verdict-bearing, exit 0 at 18/18 this fire.
+  // Classified BEFORE the gate was re-run, per Round 284 §4 and Argus's census wiring — and the
+  // census caught it unclassified first, which is the seventh fire in a row that the self-enrolment
+  // convention would have made unnecessary. Six rounds open, agreed by both seats, built by neither.
+  'probe-round291-the-sentinel-did-not-grade-the-backups-that-are-the-recovery-path.mts',
   'probe-scan-cost-model-control.mts',
   'probe-scan-latency-vs-cap.mts',
   'probe-scratch-server.mjs',
