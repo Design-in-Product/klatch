@@ -87,6 +87,13 @@ const HERE = dirname(fileURLToPath(import.meta.url));
 const REPO = resolve(HERE, '..');
 
 const results: ProbeVerdict[] = [];
+/**
+ * Arms that genuinely do not apply on the tree this run happens to be on. Reported by
+ * `summariseAndExit`, and — per `probe-outcome.mts`'s own test — deliberately NOT a skip: an
+ * operator cannot make arm C1 run by fixing something about their machine, because the thing it
+ * asserts about is a file whose *absence* is the clean state. See the C-section comment below.
+ */
+const inapplicable: string[] = [];
 const check = (arm: string, what: string, pass: boolean, detail = ''): void => {
   results.push({ arm, check: what, pass, kind: 'regression' });
   console.log(`  [${arm}] ${pass ? 'pass' : 'FAIL'}  ${what}${detail ? `\n        ${detail}` : ''}`);
@@ -120,6 +127,65 @@ const REAL_BACKUPS = [
  * both. Arms C1/C1b now drive the partition rather than assuming it.
  */
 const UNRECOVERABLE = 'klatch.db.backup-pre-round227-cleanup-20260918';
+
+/**
+ * ── Argus's finding, Round 292: this arm crashed on a tree that was not mine ──
+ *
+ * `check()`'s 4th argument was a template literal containing `statSync(join(REPO, UNRECOVERABLE))`.
+ * The 3rd argument — the boolean — handled absence correctly (`present.includes(…)` is `false`), so
+ * the arm *would* have reported a clean verdict. It never got the chance: JS evaluates every
+ * argument before the call, so the `statSync` fired unconditionally and threw ENOENT on Argus's
+ * worktree, taking arms C1b, C2, C2b, C3, D, E, F, R, M and Y down with it.
+ *
+ * That is the same family as this round's own finding, one layer up: **a guard that is correct and
+ * never reached.** Round 291's `isDbFile` walk reached every backup and the filter rejected them;
+ * here the boolean knew the file was absent and the argument list threw first. In both, the wrong
+ * thing sat one step away from the right thing.
+ *
+ * The repair is to make the arm a pure function of what git reports, with the size taken as a
+ * **thunk rather than a value** so it cannot be evaluated on a path that does not need it. Arm G
+ * then drives this function on input shapes this tree cannot produce — including a `sizeMb` that
+ * throws, which is the known positive for the crash itself.
+ *
+ * ## Why absence is `inapplicable` and not a skip
+ *
+ * `probe-outcome.mts`'s stated test is "could an operator make the arm run by changing something
+ * about the machine?" No: C1 asserts a property *of* an untracked, gitignored repo-root backup. On
+ * a tree with none, the class git cannot restore is empty — which is the state this round would
+ * want, not a promised property left unverified. Arm C1b keeps asserting over whatever `backups/`
+ * members are present, so the correction it records does not evaporate with C1.
+ */
+type ArmCVerdict = { pass: boolean; detail: string } | null;
+
+const gradeArmC = (
+  present: string[],
+  tracked: string[],
+  ignored: string[],
+  /** A thunk on purpose. Never call it on a path where the file may be absent. */
+  sizeMb: (p: string) => string,
+): { c1: ArmCVerdict; c1b: ArmCVerdict } => {
+  const hasUnrecoverable = present.includes(UNRECOVERABLE);
+  const backupsPresent = present.filter((p) => p.startsWith('backups/'));
+
+  const c1: ArmCVerdict = hasUnrecoverable
+    ? {
+        pass: ignored.includes(UNRECOVERABLE) && !tracked.includes(UNRECOVERABLE),
+        detail: `${UNRECOVERABLE}: ignored=${ignored.includes(UNRECOVERABLE)} tracked=${tracked.includes(UNRECOVERABLE)} · ${sizeMb(UNRECOVERABLE)} MB`,
+      }
+    : null;
+
+  const c1b: ArmCVerdict = backupsPresent.length
+    ? {
+        pass:
+          backupsPresent.every((p) => tracked.includes(p)) &&
+          ignored.length === (hasUnrecoverable ? 1 : 0) &&
+          !backupsPresent.some((p) => ignored.includes(p)),
+        detail: `tracked: ${tracked.length} (${tracked.join(', ')}) · ignored: ${ignored.length} · backups/ present: ${backupsPresent.length}, all tracked: ${backupsPresent.every((p) => tracked.includes(p))} · a tracked file is never ignored, which is why reading .gitignore gave the wrong answer`,
+      }
+    : null;
+
+  return { c1, c1b };
+};
 
 const TMP = mkdtempSync(join(tmpdir(), 'r291-'));
 
@@ -203,19 +269,35 @@ try {
   );
   const ignored = present.filter((p) => spawnSync('git', ['check-ignore', '-q', p], { cwd: REPO }).status === 0);
 
-  check(
-    'C1',
-    'the repo-root backup is gitignored AND untracked — the one file here that git genuinely cannot restore',
-    present.includes(UNRECOVERABLE) && ignored.includes(UNRECOVERABLE) && !tracked.includes(UNRECOVERABLE),
-    `${UNRECOVERABLE}: ignored=${ignored.includes(UNRECOVERABLE)} tracked=${tracked.includes(UNRECOVERABLE)} · ${(statSync(join(REPO, UNRECOVERABLE)).size / 1048576).toFixed(2)} MB`,
+  const liveArmC = gradeArmC(present, tracked, ignored, (p) =>
+    (statSync(join(REPO, p)).size / 1048576).toFixed(2),
   );
 
-  check(
-    'C1b',
-    'CORRECTION this probe forced on itself: the `backups/` pair is TRACKED, so git CAN restore it — the unrecoverable class is 1 file, not 3',
-    tracked.length === 2 && tracked.every((p) => p.startsWith('backups/')) && ignored.length === 1,
-    `tracked: ${tracked.length} (${tracked.join(', ')}) · ignored: ${ignored.length} · a tracked file is never ignored, which is why reading .gitignore gave the wrong answer`,
-  );
+  if (liveArmC.c1) {
+    check(
+      'C1',
+      'the repo-root backup is gitignored AND untracked — the one file here that git genuinely cannot restore',
+      liveArmC.c1.pass,
+      liveArmC.c1.detail,
+    );
+  } else {
+    inapplicable.push(
+      `C1 — no untracked, gitignored repo-root backup is present on this tree (${UNRECOVERABLE} is absent), so the class git cannot restore is empty here. That is the clean state, not an unverified property; arm G drives C1's logic on the shape this tree cannot produce.`,
+    );
+    console.log(`  [C1] N/A   ${UNRECOVERABLE} is not on this tree — see arm G`);
+  }
+
+  if (liveArmC.c1b) {
+    check(
+      'C1b',
+      'CORRECTION this probe forced on itself: the `backups/` pair is TRACKED, so git CAN restore it — the unrecoverable class is 1 file, not 3',
+      liveArmC.c1b.pass,
+      liveArmC.c1b.detail,
+    );
+  } else {
+    inapplicable.push('C1b — no `backups/` member is present on this tree, so there is no tracked pair to partition');
+    console.log('  [C1b] N/A  no backups/ member on this tree — see arm G');
+  }
 
   const status = spawnSync('git', ['status', '--porcelain', '-uall'], { cwd: REPO, encoding: 'utf8' }).stdout ?? '';
   const listedByStatus = present.filter((p) => status.includes(p));
@@ -338,6 +420,83 @@ try {
     `walked ${seenByWalk.length} files · reached ${walkReached.length}/${present.length} backups`,
   );
 
+  // ─── G · arm C on the tree shapes THIS tree cannot produce ─────────────────
+  console.log("\n[G] Argus's Round 292 crash: arm C driven on input shapes this worktree cannot produce");
+
+  /** A `sizeMb` that throws the way `statSync` does on an absent file. If arm C touches it on a path that should not need it, G1 fails loudly instead of the probe dying. */
+  const throwingSize = (p: string): string => {
+    throw new Error(`ENOENT: no such file or directory, stat '${p}'`);
+  };
+
+  /** Argus's worktree, measured by him 2026-09-28: the `backups/` pair tracked, no repo-root backup. */
+  let g1: ReturnType<typeof gradeArmC> | null = null;
+  let g1Threw = '';
+  try {
+    g1 = gradeArmC(
+      ['backups/klatch.db.backup-2026-03-14', 'backups/klatch.db.backup-2026-03-15-pre-fresh'],
+      ['backups/klatch.db.backup-2026-03-14', 'backups/klatch.db.backup-2026-03-15-pre-fresh'],
+      [],
+      throwingSize,
+    );
+  } catch (e) {
+    g1Threw = e instanceof Error ? e.message : String(e);
+  }
+  check(
+    'G1',
+    "THE FIX: on Argus's tree shape the size thunk is never called, C1 reports inapplicable, and C1b still asserts the tracked pair — no crash",
+    g1Threw === '' && g1?.c1 === null && g1?.c1b?.pass === true,
+    g1Threw ? `threw: ${g1Threw}` : `c1=${g1?.c1 === null ? 'inapplicable' : 'ran'} · c1b pass=${g1?.c1b?.pass}`,
+  );
+
+  /** The shape that crashed: the pre-fix code path, reproduced exactly, to show G1 is a repair and not a tautology. */
+  let preFixThrew = '';
+  try {
+    const absent = ['backups/klatch.db.backup-2026-03-14'];
+    // The pre-fix line 210, verbatim in shape: the boolean is correct, the 4th argument is not.
+    check(
+      'G-never',
+      'unreachable',
+      absent.includes(UNRECOVERABLE),
+      `${UNRECOVERABLE}: ${throwingSize(UNRECOVERABLE)} MB`,
+    );
+  } catch (e) {
+    preFixThrew = e instanceof Error ? e.message : String(e);
+    results.pop(); // the arm never ran; do not leave a phantom verdict behind
+  }
+  check(
+    'G2',
+    'NON-VACUITY for G1: the pre-fix argument shape DOES throw on the same input — a correct boolean does not save an eagerly-evaluated 4th argument',
+    /ENOENT/.test(preFixThrew),
+    preFixThrew ? `pre-fix shape threw: ${preFixThrew}` : 'pre-fix shape did NOT throw — G1 proves nothing',
+  );
+
+  /** This tree's own shape, driven through the same function the live arms used. */
+  const g3 = gradeArmC(REAL_BACKUPS, REAL_BACKUPS.slice(1), [UNRECOVERABLE], () => '0.41');
+  check(
+    'G3',
+    "this tree's shape still partitions the same way through the extracted function — 1 unrecoverable, 2 recoverable",
+    g3.c1?.pass === true && g3.c1b?.pass === true,
+    `c1 pass=${g3.c1?.pass} · c1b pass=${g3.c1b?.pass}`,
+  );
+
+  /** The regression C1 exists to catch must still be catchable: if the repo-root backup became tracked, C1 goes red. */
+  const g4 = gradeArmC(REAL_BACKUPS, REAL_BACKUPS, [], () => '0.41');
+  check(
+    'G4',
+    'NON-VACUITY for C1: if the repo-root backup were tracked (or not ignored), C1 still reports FAIL rather than inapplicable — the arm can go red where it matters',
+    g4.c1 !== null && g4.c1.pass === false,
+    `c1 ran=${g4.c1 !== null} pass=${g4.c1?.pass}`,
+  );
+
+  /** A fully cleaned tree: both arms inapplicable, nothing thrown. */
+  const g5 = gradeArmC([], [], [], throwingSize);
+  check(
+    'G5',
+    'and on a tree cleaned of all three, both C arms are inapplicable and nothing is stat-ed — the case the file header always claimed arm E covered, now covered in arm C too',
+    g5.c1 === null && g5.c1b === null,
+    `c1=${g5.c1 === null ? 'inapplicable' : 'ran'} · c1b=${g5.c1b === null ? 'inapplicable' : 'ran'}`,
+  );
+
   // ─── R · Theseus's Round 290 §8 item, driven on the tree he could not run ───
   console.log('\n[R] Round 290 §8: probe-round288 re-driven here, the known negative');
 
@@ -391,4 +550,5 @@ try {
 summariseAndExit({
   probeName: 'probe-round291-the-sentinel-did-not-grade-the-backups-that-are-the-recovery-path',
   results,
+  inapplicable,
 });
