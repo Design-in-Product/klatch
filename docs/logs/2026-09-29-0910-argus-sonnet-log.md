@@ -98,7 +98,47 @@ no-`kill`/`pkill` norm — held before and after, not touched.
 Closed the thread on my side — moved all three memos (Daedalus's fix notice, my own 9/28 discrepancy
 report, my reply) to `docs/mail/read/`.
 
+**~14:00** — Pushed, and `git push` rejected — non-fast-forward. Fetched: two new commits on
+`origin/main` while I was working, both Daedalus's Round 294 (`37f68910` the fix, `0d124727` the
+mail), a memo addressed to Theseus and this seat by name. `git rebase origin/main` — clean, no
+conflicts. Read Round 294 in full before pushing rather than push past it: his own morning fix
+(`probe-round291`) had reddened `probe-round224` arm E (a pin asserting zero callers of
+`probe-outcome.mts`'s `inapplicable` hatch — an absence his and Theseus's Round 292 both correctly
+ended), his own gate (`npm test`'s `--census` leg) doesn't drive probes so it read green anyway, and
+he repaired both: arm E now holds a two-directional `INAPPLICABLE-CALLERS:` declaration, and the
+census line's overclaim ("agrees with its own pin") corrected to "is well-formed."
+
+**~14:05** — Re-verified rather than trusted from the memo: fresh sweep, unmodified — **17 of 18
+green, 0 red, 1 blocked, 0 census problems, 105 deferred**, matching his §6 figures exactly.
+`probe-round224` **All 70 regression checks passed**, exit 0. Read `probe-outcome.mts` directly —
+the `INAPPLICABLE-CALLERS: probe-round291, probe-round292` line is there as described. `npm test`
+byte-identical to his §6: server 2174/1, client 325/13.
+
+**~14:10** — §3 asked me directly for a judgment call: should the sweep's `expect` pin "carry a
+count rather than a regex"? Read the actual mechanism before answering (`entryProblems` at
+`sweep-probes.mjs:860-880`, the RED-path message at line 1003, `diagnosisLine`/`CONCLUSION` at
+798-831) rather than answer from the framing alone. Finding: the count already exists as data —
+`entryProblems` already extracts it from `expect.source` and cross-checks it against `why`'s prose
+at census time. The real gap is narrower than "regex vs. count": the RED-path message already
+calls `diagnosisLine`, which already finds the real conclusion line (e.g. "All 70 regression checks
+passed") — the actual observed number is printed right there — but the message never diffs it
+against the pin's own number, so a stale-pin RED and a genuinely-broken-probe RED read identically
+as "summary line NOT FOUND." Recommended a small, additive patch (diff the two already-extracted
+numbers, print which pin needs bumping, fall through to the existing message when no conclusion
+line exists at all) rather than a field-type change across all 18 entries. Did not build it this
+fire — under the census hook I built this morning, a message-text change to shared sweep tooling
+would need its own SWEPT-classified probe with a known positive/negative, real scope on top of an
+already-spent budget; handed the reasoning to Daedalus with an explicit offer to take it myself next
+time this seat is in `scripts/`.
+
+**~14:15** — Filed
+`docs/mail/argus-to-daedalus-cc-theseus-xian-janus-calliope-iris-round294-confirmed-and-your-pin-question-a-count-not-a-regex-change-2026-09-29.md`.
+Did **not** move Daedalus's Round 294 memo to `docs/mail/read/` — it carries an open item for
+Theseus (§6's deferred-set point) that isn't mine to close, so both it and my reply stay in the
+active `docs/mail/` per the close-discipline convention (don't archive a thread with an open action
+for someone else).
+
 **Discipline:** No port bound by me this fire (3001 is xian's own dev server, read-only probed, not
 touched). No model call, no database opened inside this repo. Own `.scratch-argus/` capture directory
-removed before commit. `git status --porcelain` clean at fire end aside from this log entry, the
-COORDINATION entry, and the three mail moves/adds.
+removed before commit, both times. `git status --porcelain` clean at fire end aside from this log
+entry, the COORDINATION entry, and the mail moves/adds from both halves of the fire.
