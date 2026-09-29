@@ -230,10 +230,13 @@ export const SWEPT = [
   },
   {
     file: 'probe-round224-a-skip-must-not-summarise-as-a-pass.mts',
-    expect: /All 66 regression checks passed/,
+    expect: /All 70 regression checks passed/,
     // 64/64 → 66/66 in Round 290: arm G's scan was normalised to ignore comments (it had gone red
     // on one), and the repair brought its own known positive and known negative with it.
-    why: 'run every fire as a control by both seats; Theseus 290 §4 reports 66/66',
+    // 66/66 → 70/70 in Round 294: arm E stopped pinning the ABSENCE of `inapplicable` callers —
+    // an absence two correct changes ended on 2026-09-29 — and now holds probe-outcome.mts's
+    // declared caller list to the measured one in both directions, with three known positives.
+    why: 'run every fire as a control by both seats; Daedalus 294 measured 70/70, exit 0',
   },
   {
     file: 'probe-round225-a-citation-is-not-a-call.mts',
@@ -965,11 +968,24 @@ const main = () => {
     console.log('');
   }
 
-  if (!bad) console.log('CENSUS OK — every probe under scripts/ is in exactly one list, and every entry agrees with its own pin.');
+  // Round 294: this line used to end "and every entry agrees with its own pin", which is an
+  // overclaim the census cannot support — nothing above runs a probe. It grades the BOOKKEEPING:
+  // that each entry is well-formed and classified once. Whether a probe still REACHES its pinned
+  // conclusion line is only answerable by driving it, which is the sweep, not the census.
+  //
+  // The distinction is not academic. On 2026-09-29 `probe-round224` went red at 09:19 and this
+  // line printed OK at 09:26 in the same fire that broke it, because `npm test` calls `--census`.
+  // The fire closed on a green gate. Saying what was NOT checked is the cheap half of the fix.
+  if (!bad) console.log('CENSUS OK — every probe under scripts/ is in exactly one list, and every entry is well-formed.');
   console.log('');
 
   if (process.argv.includes('--census')) {
     console.log(bad ? `census FAILED — ${bad} problem(s)` : 'census PASSED');
+    console.log(
+      `  NOT CHECKED: none of the ${sweptFiles.length} swept probes was driven. The census reads` +
+        ' source and bookkeeping only, so a probe that has started failing still reports OK here.',
+    );
+    console.log('  To drive them: `node scripts/sweep-probes.mjs` (no flag).');
     process.exit(bad ? 1 : 0);
   }
 

@@ -27,7 +27,9 @@
  *   - **D — a failure dominates a skip.** A failed check plus a skip → exit 1, not 3. A
  *     partial run that also broke something must show the louder code.
  *   - **E — the escape hatch does not leak.** `inapplicable` entries are reported and do NOT
- *     force 3, and are not silently counted as skips.
+ *     force 3, and are not silently counted as skips. Since Round 294 arm E also holds the
+ *     module's declared caller list to the one that actually exists, in both directions —
+ *     see the comment at the check itself for why it no longer pins an absence.
  *
  * ## Arm F — the mutation arms, and why they are here
  *
@@ -168,15 +170,52 @@ const meas = (arm: string): ProbeVerdict => ({ arm, check: 'a measurement', pass
     .split('\n')
     .filter((l) => !/^\s*(\/\/|\*|\/\*)/.test(l))
     .some((l) => /inapplicable:/.test(l));
-  check('E', 'and no current caller uses inapplicable — asserted, not assumed',
-    (() => {
-      const callers = fs.readdirSync(path.join(REPO, 'scripts'))
-        .filter((n) => (n.endsWith('.mts') || n.endsWith('.mjs')) && !n.startsWith('.'))
-        .filter((n) => n !== `${PROBE}.mts`)
-        .filter((n) => namesTheHatch(fs.readFileSync(path.join(REPO, 'scripts', n), 'utf8')));
-      return callers.length === 0;
-    })(),
-    'zero probes pass inapplicable; the hatch is documented and unused (2026-09-17)');
+  // Round 294: this arm used to assert `callers.length === 0`, pinning probe-outcome.mts's
+  // "No caller uses this yet (2026-09-17)". That is a pin on an ABSENCE, and the absence was
+  // never the property worth protecting — it ended, correctly, the first time two probes used
+  // the hatch for exactly what it was built for (round291 2026-09-29, round292 the same day).
+  // The pin's real job was keeping the module's docstring honest, so it now does that directly:
+  // the declared caller list and the measured one must agree, in BOTH directions. A new caller
+  // reddens it (the doc is behind); a deleted one reddens it too (the doc is ahead). Neither
+  // red can be cleared by waiting, and both name the file.
+  const OUTCOME_LIB = path.join(REPO, 'scripts', 'lib', 'probe-outcome.mts');
+  const measuredCallers = fs.readdirSync(path.join(REPO, 'scripts'))
+    .filter((n) => (n.endsWith('.mts') || n.endsWith('.mjs')) && !n.startsWith('.'))
+    .filter((n) => n !== `${PROBE}.mts`)
+    .filter((n) => namesTheHatch(fs.readFileSync(path.join(REPO, 'scripts', n), 'utf8')))
+    .map((n) => n.replace(/\.(mts|mjs)$/, '').replace(/^(probe-round\d+[a-z]?)-.*$/, '$1'))
+    .sort();
+  const declaredLine = fs.readFileSync(OUTCOME_LIB, 'utf8')
+    .split('\n').find((l) => /INAPPLICABLE-CALLERS:/.test(l));
+  const declaredCallers = (declaredLine ?? '')
+    .replace(/^.*INAPPLICABLE-CALLERS:\s*/, '')
+    .split(',').map((s) => s.trim()).filter(Boolean).sort();
+  const listsAgree = (declared: string[] | undefined, measured: string[]) =>
+    declared !== undefined
+    && declared.length === measured.length
+    && declared.every((c, i) => c === measured[i]);
+
+  check('E', 'the hatch\'s declared caller list matches the callers that actually exist',
+    listsAgree(declaredLine === undefined ? undefined : declaredCallers, measuredCallers),
+    declaredLine === undefined
+      ? `no INAPPLICABLE-CALLERS: line in ${path.relative(REPO, OUTCOME_LIB)} — the doc side of this arm was deleted`
+      : `declared [${declaredCallers.join(', ')}] · measured [${measuredCallers.join(', ')}]`);
+
+  // The comparison above is only worth having if it can go red. Driven on shapes this tree
+  // does not currently produce, so that the green above is a result and not a tautology —
+  // the same reason arm F re-implements the old summary tails rather than trusting them.
+  check('E', 'KNOWN POSITIVE: a doc that is BEHIND the code reddens it',
+    !listsAgree(['probe-round291'], ['probe-round291', 'probe-round292']),
+    'a caller added without a doc edit is caught');
+  check('E', 'KNOWN POSITIVE: a doc that is AHEAD of the code reddens it',
+    !listsAgree(['probe-round291', 'probe-round292'], ['probe-round291']),
+    'a caller deleted without a doc edit is caught — the direction the old emptiness pin could not see');
+  check('E', 'KNOWN POSITIVE: a deleted doc line reddens it',
+    !listsAgree(undefined, []),
+    'the arm cannot be cleared by removing the thing it reads');
+  check('E', 'and it is green on agreement, including on the empty population it used to assert',
+    listsAgree([], []) && listsAgree(['a', 'b'], ['a', 'b']),
+    'agreement passes at both the empty and the populated shape');
   check('E', 'and that scan is not vacuous — it still sees the live call in this file',
     namesTheHatch(fs.readFileSync(path.join(REPO, 'scripts', `${PROBE}.mts`), 'utf8')),
     'this probe passes the hatch on line ~153 in live code, and the comment-stripped scan finds it');

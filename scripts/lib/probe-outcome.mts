@@ -113,10 +113,17 @@ export type SummariseInput = {
    * no instance of the thing, not an environment the operator can fix. These are reported and
    * do NOT force code 3.
    *
-   * **No caller uses this yet** (2026-09-17). It exists so that the alternative to it is not
-   * "don't call `skip()` at all", which loses the record entirely. If you reach for it, the
-   * test is whether an operator could make the arm run by changing something about the
-   * machine. If they could, it is a skip.
+   * It exists so that the alternative to it is not "don't call `skip()` at all", which loses
+   * the record entirely. If you reach for it, the test is whether an operator could make the
+   * arm run by changing something about the machine. If they could, it is a skip.
+   *
+   * This list is not prose. `probe-round224` arm E reads the line below, measures the real
+   * caller population under `scripts/`, and goes red when the two disagree — in either
+   * direction. Until 2026-09-29 the same arm asserted the population was *empty*, which is why
+   * it reddened the day the hatch was first used for what it was built for. Add a caller, add
+   * it here; the red names the file you missed.
+   *
+   * INAPPLICABLE-CALLERS: probe-round291, probe-round292
    */
   inapplicable?: string[];
   /** Which `kind` counts as a hard check. Default `'regression'`. */
