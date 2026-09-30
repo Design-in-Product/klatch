@@ -378,3 +378,148 @@ scripts/sweep-probes.mjs       (DEFERRED entry added)
 ```
 
 Nothing missing.
+
+---
+
+## 20:12 PT — STOP fire, Round 297: the predicted red fired, an unpredicted one fired beside it, and the refusal was never a barrier
+
+**Briefing.** Pulled state was current (wrapper synced). `docs/COORDINATION.md` read. `docs/mail/`
+had one memo new since my 14:55 fire and addressed to me: Daedalus's Round 296,
+`daedalus-to-theseus-argus-…-your-net-split-is-priced-at-zero-…-2026-09-29.md` (19:47). The two later
+commits on `main` (`67f2a0f2`, `6ea7f353`) were Argus's and Iris's fires, not mine. Read the memo
+immediately per the mail rule; it carried two items for this seat (§6 an edit on ownership, §8 an
+attestation question) and both are actioned in this fire.
+
+**Verified before acting, not assumed.** His §4 correction of my Round 295 memo is right: I called
+`probe-round246` "your sweep-repair probe" and it is mine — `883f3094`, Theseus. Checked the marker
+he placed in my file quotes my §2 sentence accurately (it does, `docs/mail/theseus-to-daedalus-…-2026-09-29.md:68`),
+and that round246 is genuinely in `SWEPT` now (`scripts/sweep-probes.mjs:441`).
+
+### What the drive found that the prediction did not
+
+Ran round295 rather than taking §6's prediction. **Two arms red:**
+
+```
+FAIL C1  probe-round246 is present in DEFERRED and drivable
+FAIL D1  REFUSED-BUT-DRIVABLE … declared [probe-round246, probe-round284] · measured [probe-round284]
+```
+
+D1 was the designed expiry. **C1 was a defect in my own file.** `fileFor` searched `DEFERRED` only,
+so a promotion returned `undefined` and the arm reported it with the text and the red of a deleted
+file — and a red C1 *skipped the drive*, so clearing D1 alone would have shipped a probe claiming two
+drives and making one. Repaired in `101adfbb`; round295 back to **9/9, exit 0**.
+
+Line worth keeping: *an arm that reads one classification bucket cannot tell "left the bucket" from
+"never existed", and the good news and the bad news arrive at it in the same shape.*
+
+### The §8 attestation question — refused, and measuring why found the real finding
+
+Measured before writing the marker: `hazards(probe-round295)` is `[db, homedir]`, `literalOnly` true
+for both, so the attestation **would** be honoured. Both hits genuinely are scanned-corpus false
+positives. **But they are not why the file is deferred** — arm C2 spawns `probe-round284`, which is
+`[net, suite]`, and `hazards()` does not read spawn targets. Declined to sign.
+
+Then the live instance, found by asking whether the class was hypothetical:
+
+```
+probe-round256:440   execFileSync('npx', ['tsx', path.join(SCRIPTS, R246)], …)     ← SWEPT since 92f780da, 2026-09-23
+probe-round291:503   spawnSync('npx', ['tsx', 'scripts/probe-round288-….mts'], …)  ← hazard-clean, DEFERRED, a current --list candidate
+```
+
+round246 was `hazards()`-refused until Round 296, so **the sweep had been running it on every
+invocation for six days.** The refusal governed the direct drive only — Round 296 changed the
+bookkeeping, not the exposure.
+
+### Two measurement corrections, one of them to myself
+
+- **29 unreachable, not 28.** His §8 said 28 of 30. Measured: 30 verdict-bearing DEFERRED, 1
+  hazard-clean → **29**. Promotion removes a file from the population rather than making it reachable
+  within it. My own Round 295 total of 29 was also wrong — it predated this file's entry into
+  `DEFERRED`. New `[MEAS] A5` prints the subtraction so neither of us does the arithmetic again.
+- **The db column reads 80, not the 79 his §7 told Argus.** Not a contradiction: 79 was true at
+  `d263f38e`; `probe-round296` entered `DEFERRED` db-flagged in `8e392dd5`, one commit later inside
+  his own fire.
+
+### My own instrument caught me making the error it was built to detect
+
+Labelled `probe-round225` a known NEGATIVE for the spawn detector — from its **title**, "a citation
+is not a call" — and its opaque limb returned 3. Checked the code instead of the title: its line 285
+really does drive `probe-round223b` through a variable. The fixture was mislabelled, not the limb.
+Kept as arm A4. *A fixture labelled from a filename is not a measured fixture* — and I had written the
+known-positive-per-direction rule into the same file.
+
+Also, `tsx` ran a `readonly SweptEntry[]` cast green that `typecheck:scripts` caught — Daedalus's
+Round 296 §5 warning, live, within an hour of his writing it.
+
+### Delivered
+
+- `101adfbb` — round295 repaired (C1, D1, D2, the docblock's stale "arm R6", round295's DEFERRED annotation).
+- `fcd9d4ce` — `probe-round297-…-the-sweep-drives-a-closure.mts`, 10/10, **PROMOTED by `promote-probes`
+  in the same fire it was written** (hazard-clean, no exemption, no `--force`): `all 7 · exit 0 both
+  arms · 932 ms per arm · 38 samples · tree and all 9 graded databases unchanged`. **SWEPT 19 → 20.**
+  Classified DEFERRED first and let the path drive it in rather than hand-adding the entry.
+- `d7b8ba37` — reply memo to Daedalus and Argus.
+
+Bookkeeping find while pasting the SWEPT entry: `entryProblems` requires every self-equal `N/N` in
+`why` to equal the count in `expect` and **cannot tell a self-equal duration from a self-equal
+count** — `932/932 ms` went CENSUS RED against a 10-check pin. round246's entry passes only because
+its arms differed (27258/27620). Reworded to `932 ms per arm`, annotated at the entry, did not patch
+Argus's rule.
+
+### Session Wrap Protocol
+
+**Step 1 — commits on `origin/main`:**
+
+```
+$ git log origin/main --oneline -4
+d7b8ba37 mail(theseus->daedalus,argus cc xian,janus,calliope,iris): your prediction fired and so did a second red neither of us predicted, and the refusal was never a barrier
+fcd9d4ce Round 297 probe: the hazard filter reads a FILE, the sweep drives a CLOSURE — and one refused probe had been running on every sweep for six days
+101adfbb Round 297: the designed expiry fired, and so did a defect that read a promotion as a missing file
+6ea7f353 mail+coord+log: STOP fire — rule no-change on G4's pre-fetch window, thread closed
+```
+
+All three pushed and confirmed by the remote (`6ea7f353..101adfbb`, `101adfbb..fcd9d4ce`,
+`fcd9d4ce..d7b8ba37`).
+
+**Step 2 — deliverable files present (`ls`, all five returned):**
+
+```
+scripts/probe-round297-the-hazard-filter-reads-a-file-and-the-sweep-drives-a-closure.mts
+scripts/probe-round295-the-promotion-path-reaches-one-of-the-twenty-nine-and-the-refusals-are-its-own-fixtures.mts
+scripts/sweep-probes.mjs
+docs/mail/theseus-to-daedalus-argus-…-and-the-refusal-was-never-a-barrier-2026-09-29.md
+docs/logs/2026-09-29-1047-theseus-opus-log.md
+```
+
+**Step 3 —** this entry and the COORDINATION update commit last.
+
+**Verification run this fire, each with its own command:**
+
+- `npm run typecheck:scripts` — clean (3×, including the run that caught the cast).
+- `npx tsx scripts/probe-round295-….mts` — **9/9, exit 0.**
+- `npx tsx scripts/probe-round297-….mts` — **10/10, exit 0.**
+- `node scripts/sweep-probes.mjs --census` — **CENSUS OK**, 126 files, 20 swept, 106 deferred, 30 verdict-bearing.
+- `node scripts/sweep-probes.mjs` (full sweep) — **19 of 20 green, 0 red, 1 blocked** (round225, the
+  standing blocker Argus also reported), 0 census problems.
+- `npm test` — **exit 0.** Server 140 files / **2174 passed** / 1 skipped; client 25 files /
+  **325 passed** / 13 skipped; census OK. Byte-identical to Argus's 18:20 baseline. (My Round 297
+  memo says I had not run this — true when written, run after. The memo stands as sent.)
+
+Discipline: no port bound, no database opened, no model called. The promotion drive's own sentinel
+reported all 9 graded databases unchanged across 38 samples. Four scratch measurement scripts written
+under `.testdata/` and deleted before the commits (`r297-measure.mts`, `r297-transitive.mts`,
+`r297-spawn-targets.mts`, `r297-selfclass.mts`).
+
+**Carried into the next fire:**
+
+- **The spawn-target repair is Daedalus's to price, not mine to assume.** Teaching `hazards()` to
+  follow literal spawn targets moves round291 out of the candidate set — a yield of **−1 on a
+  population of 4**. Same shape as the narrowing he priced at zero, opposite direction.
+- **Argus's §3 pin-vs-count diagnostic has now been passed over by both of us, for the same stated
+  reason.** That is the shape of an item that never gets built; it wants to be someone's *first* unit.
+- The two SWEPT opaque-spawn sites (round256, round261) are resolved by hand, **not by the detector**.
+- Unchanged and still mine: `probe-round247` deliberately undriven (writes into `packages/` and
+  restores — wants a fire that can watch it); the bulk/Browse row disclosure site not driven live;
+  `target-not-found` staleness in the reassign picker.
+- **Mail:** the Round 296/297 thread stays in `docs/mail/` — open items on both sides, so not moved to
+  `read/`.
