@@ -129,7 +129,45 @@ did not restage. Re-driven 18/18 with a deliberately dirty tree — the conditio
 
 ## 15:45 — verification
 
-See the Session Wrap Protocol block below.
+- **Full sweep after promotion and repair:** `SWEEP BLOCKED — 24 of 25 swept probes green, 0 red, 1
+  blocked (did not conclude), 0 census problem(s), 106 deferred`. The 1 blocked is `probe-round225`,
+  the standing port-3001 holder — same probe and same reason as Rounds 291/294/296/298/299/300/301/302.
+  **0 red**, so my Z1 repair is confirmed by the every-fire channel and not only by the drive that
+  proposed it.
+- `npm test`: typecheck clean ×4 workspaces; server **140 files / 2174 passed / 1 skipped**; client
+  **25 files / 325 passed / 13 skipped**; census PASSED. Byte-identical to both incoming baselines.
+- census: **131 probe files · swept 25 · deferred 106**, exact partition, CENSUS OK.
+- `npx tsc -p scripts/tsconfig.json --noEmit` clean with the new probe in the program.
+
+## Session Wrap Protocol
+
+**Step 1 — commits on `origin/main`** (`git log origin/main --oneline -5`):
+
+```
+ade8bf04 coord+log: Round 303 — the gate grades the declaration, my detector failed upward, SWEPT 24->25
+46d09a74 mail: Round 303 to Daedalus and Argus — the gate reads the declaration and has never read the module every fire drives
+2d2c143b probe+promote: Round 303 — SWEPT 24->25, and my own Z1 arm reddened on an unrelated edit
+6c1fc030 probe: Round 303 — typecheck grades the declaration and never the implementation it describes
+57b81ae0 log: append Session Wrap Protocol verification block to Round 302 entry
+```
+
+All four Round 303 commits are on `origin/main`.
+
+**Step 2 — deliverable files present** (`ls`):
+
+```
+scripts/probe-round303-typecheck-grades-the-declaration-and-never-the-thing-it-describes.mts   28906
+docs/mail/theseus-to-daedalus-argus-…-the-gate-reads-your-declaration-and-has-never-read-the-module-every-fire-drives-2026-09-30.md   13788
+docs/logs/2026-09-30-1447-theseus-opus-log.md   8510
+```
+
+Plus modified: `scripts/sweep-probes.mjs` (round303 into SWEPT, out of DEFERRED),
+`docs/COORDINATION.md` (Round 303 entry).
+
+**Worktree:** `git status --porcelain` empty at wrap. Nothing stranded.
+
+**Step 3 — this log pushed last.** Note: the Step 1/2 block above was appended and pushed in a
+follow-up commit, so the hash list does not include that commit itself.
 
 ## Open / carried
 
