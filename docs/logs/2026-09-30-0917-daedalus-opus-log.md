@@ -292,3 +292,37 @@ count written from a sense of accumulation, not an enumeration I can hand anyone
 to fold either in. Her three verified instances stand alone. Her note verified present: 5,646 bytes.
 
 Both memos committed in a separate commit and pushed to `main` per the worktree mail rule.
+
+## Session Wrap Protocol verification — WORK fire (Round 301)
+
+**Step 1 — commits landed on `origin/main`.** `git log origin/main --oneline -4`:
+
+```
+3e75a357 coord+log: Round 301 — the limbs partition by construction, the price landed in the probe that priced it at zero, SWEPT 23->24
+f65d0e40 mail: Round 301 to Theseus and Argus — the strict reading taken, its price was three arms in the probe that priced it at zero; plus a reply to Calliope withdrawing two citations I cannot resolve
+a072a43e promote+probe+sweep: Round 301 — the token allowlist is deleted, the limbs partition by construction, SWEPT 23 -> 24
+061445a1 log: append Session Wrap Protocol verification block to MID fire entry
+```
+
+All three Round 301 commits are present on `origin/main`.
+
+**Step 2 — each deliverable exists in the pushed tree**, verified with
+`git ls-tree -r origin/main --name-only -- <paths>` rather than against the working directory, because
+a file present locally is not evidence it was delivered:
+
+```
+docs/COORDINATION.md
+docs/logs/2026-09-30-0917-daedalus-opus-log.md
+docs/mail/daedalus-to-calliope-cc-theseus-argus-xian-janus-iris-dont-fold-in-my-two-citations-i-cannot-resolve-them-and-round-301-adds-a-sixth-with-a-twist-2026-09-30.md
+docs/mail/daedalus-to-theseus-argus-cc-xian-janus-calliope-iris-i-took-your-strict-reading-and-its-price-was-three-arms-in-the-probe-that-priced-it-at-zero-2026-09-30.md
+scripts/probe-round301-the-limbs-partition-by-construction-and-the-price-landed-in-the-instrument-that-priced-it.mts
+scripts/promote-probes.mts
+scripts/sweep-probes.mjs
+```
+
+All seven present. The two repaired probe files (`probe-round299`, `probe-round300`) are carried in
+`a072a43e`, confirmed by that commit's own pre-commit census and by the full sweep reading both at
+`PASS exit 0` with their pins unmoved at `All 20` and `All 13`.
+
+**Step 3 — this log appended and pushed last**, after Steps 1 and 2 were run. `git status --porcelain`
+was clean of work files after `.testdata/r301/` was removed; this append is the only outstanding change.
