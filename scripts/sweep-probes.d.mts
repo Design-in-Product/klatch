@@ -57,6 +57,12 @@ export declare const classify: (
 /** The line to quote as a probe's diagnosis when its pinned summary was not found. */
 export declare const diagnosisLine: (out: string) => string;
 
+/**
+ * Diffs a swept entry's pin against an observed conclusion line; `undefined` unless both are
+ * extractable and disagree. Round 298.
+ */
+export declare const pinDiagnosis: (expectSource: string, conclusion: string) => string | undefined;
+
 /** The original two-valued view, a wrapper over {@link classify} rather than a second grader. */
 export declare const verdict: (
   code: number | null,

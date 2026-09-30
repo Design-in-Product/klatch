@@ -455,7 +455,24 @@ export const SWEPT = [
     // count. Round 246's entry above passes only because its two arms differed (27258/27620). An
     // entry whose arms happen to take the same time has to be reworded to state the truth — noted
     // for whoever takes Argus's pin-vs-count diagnostic, not patched here.
+    // Patched in Round 298 (Argus) — see the entry immediately below. `entryProblems` now excludes a
+    // self-equal `N/N` immediately followed by a unit, so this wording stays true rather than being
+    // load-bearing; left as-is rather than rewritten, since it still reads correctly either way.
     why: 'driven twice by the promotion path (real HOME and an empty HOME, one variable, KLATCH_DB redirected in both): 10/10 green, exit 0 both arms, 932 ms per arm; scripts/ and packages/ fingerprints and all 9 graded databases unchanged across 38 population samples',
+  },
+  {
+    // PROMOTED BY: Round 298, Argus, 2026-09-30 START fire — driven by `promote-probes.mts`, which
+    // observed predicates 2-7 rather than reading them. Written and promoted in the same fire, with
+    // no exemption and no --force: it was hazard-clean on arrival. Closes the item Daedalus 296 §7
+    // and Theseus 297 §6 both endorsed and both declined to build, and Theseus's own adjacent find
+    // (a self-equal duration reading as a self-equal count in `entryProblems`) in the same commit —
+    // one function's diagnostic text and its sibling function's scanner, the same class of confusion.
+    // Re-driven once, after a typecheck-only refactor (a ternary TS could not narrow was rewritten as
+    // an early return — same 20 checks, same behaviour): this entry's figures are from the second,
+    // post-fix drive, not the first.
+    file: 'probe-round298-a-stale-pin-and-a-genuine-break-used-to-read-identically.mts',
+    expect: /All 20 regression checks passed/,
+    why: 'driven twice by the promotion path (real HOME and an empty HOME, one variable): 20/20 green, exit 0 both arms, 670/745 ms; population and tree fingerprints for scripts/ and packages/ unchanged across 30 samples',
   },
 ];
 
@@ -886,6 +903,29 @@ export const diagnosisLine = (out) => {
 };
 
 /**
+ * Distinguishes a STALE PIN from a GENUINE BREAK when a swept probe's output does not match its
+ * `expect` regex. Argus's WORK-fire §3 (2026-09-29), endorsed unclaimed-but-agreed by Daedalus 296
+ * §7 and Theseus 297 §6: the RED-path message already calls {@link diagnosisLine} to find the real
+ * conclusion line, but never diffed it against the pin's own figure — so a probe that still
+ * concludes cleanly with a different count ("All 12 regression checks passed" against a pin of 10)
+ * printed the identical "summary line NOT FOUND" as a probe that threw and produced no conclusion
+ * line at all. A reader could not tell "bump the pin" from "the probe is actually broken" without
+ * re-driving it by hand.
+ *
+ * Returns a short diagnostic string when both a pin and an observed count are extractable and they
+ * disagree; returns `undefined` in every other case (no pin, no conclusion line, or they agree —
+ * which would mean `matched` was true and this is not called), so the caller's existing fallback
+ * message is exactly what prints for a genuine break. Diagnostic text only: does not touch
+ * `classify`, so no probe's PASS/RED/BLOCKED verdict moves.
+ */
+export const pinDiagnosis = (expectSource, conclusion) => {
+  const pin = (expectSource.match(/(\d+)/) || [])[1];
+  const observed = (conclusion.match(/^All (\d+) regression checks passed/) || [])[1];
+  if (pin === undefined || observed === undefined || pin === observed) return undefined;
+  return `pin says ${pin}, observed says ${observed} — the pin needs bumping`;
+};
+
+/**
  * The original two-valued view, retained as a WRAPPER over {@link classify} rather than as a second
  * implementation. `probe-round261` arm D drives this on the four corners of its conjunction and arm
  * E2 asserts it can return both values; both still hold, because with no `refusal` declared an exit
@@ -923,8 +963,23 @@ export const entryProblems = (entry) => {
     problems.push(`expect pins no figure, so nothing in why can be checked against it: ${src}`);
     return problems;
   }
+  // Theseus 297 §6, found pasting his own SWEPT entry. `N/N` is this fleet's spelling for a
+  // self-equal PASS COUNT ("4/4 green") — but round246's entry above only avoids a false claim here
+  // because its two timing arms happened to differ (27258/27620 ms). An entry whose arms take the
+  // same time (round297's real "932 ms per arm", written that way to dodge this exact defect) would
+  // otherwise have to be worded around a bug rather than stating the truth. Filtered out below: the
+  // one shape `N/N` takes when it is a DURATION rather than a count, immediately followed by a unit
+  // rather than a comma-joined qualifier like "green" or "exit". Checked as a plain string slice
+  // AFTER the match, not as a lookahead on the digits themselves — round298 arm B2 found that a
+  // lookahead there makes the engine backtrack `(\d+)` down to a short match to satisfy it, which
+  // corrupts the second capture group (`10/10 ms` would match as `10/1`) even though the corrupted
+  // match happens to be harmless here (it fails the `m[1] === m[2]` filter next).
+  const numPairs = [...entry.why.matchAll(/(\d+)\/(\d+)/g)];
   const claims = [
-    ...[...entry.why.matchAll(/(\d+)\/(\d+)/g)].filter((m) => m[1] === m[2]).map((m) => m[1]),
+    ...numPairs
+      .filter((m) => m[1] === m[2])
+      .filter((m) => !/^\s*ms\b/.test(entry.why.slice(m.index + m[0].length)))
+      .map((m) => m[1]),
     ...[...entry.why.matchAll(/(\d+)\s+regression/g)].map((m) => m[1]),
   ];
   if (!claims.length) {
@@ -1051,11 +1106,15 @@ const main = () => {
     const { state, matched, refused, skipped } = classify(code, out, s.expect, s.refusal, s.skip);
     if (state === 'RED') red += 1;
     if (state === 'BLOCKED') blocked += 1;
+    const conclusion = matched ? undefined : diagnosisLine(out);
+    const diag = conclusion === undefined ? undefined : pinDiagnosis(s.expect.source, conclusion);
     const summary = err
       ? `spawn error: ${err.message}`
       : matched
         ? (out.match(s.expect) || [''])[0]
-        : `exit ${code}, summary line NOT FOUND — ${diagnosisLine(out).slice(0, 110)}`;
+        : diag
+          ? `exit ${code}, ${diag} — ${conclusion.slice(0, 110)}`
+          : `exit ${code}, summary line NOT FOUND — ${conclusion.slice(0, 110)}`;
     console.log(`  ${state.padEnd(7)} exit ${String(code).padStart(3)}  ${s.file}`);
     console.log(`          ${summary}`);
     if (state === 'BLOCKED' && refused) {
