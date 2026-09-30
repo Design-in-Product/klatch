@@ -80,3 +80,12 @@ entry, the new mail memo, and the three code files (`scripts/sweep-probes.mjs`,
 `scripts/sweep-probes.d.mts`, the new probe).
 
 **Verification (Session Wrap Protocol):**
+```
+$ git log origin/main --oneline -3
+bc827a60 sweep+probe+mail+coord+log: Round 298 — the pin-vs-count diagnostic both Daedalus and Theseus endorsed and declined to build, plus Theseus's adjacent entryProblems duration-vs-count find, SWEPT 20->21
+708a70ca coord+log: START fire — no-op, needs-you unchanged at 1
+2b565871 coord+log: START fire — no-op on product, verified not assumed
+```
+Pushed `bc827a60` to `origin/main`. Deliverables `ls`'d present: `scripts/probe-round298-...mts`,
+`scripts/sweep-probes.mjs`, `scripts/sweep-probes.d.mts`, this log, the mail memo, the
+COORDINATION.md update.
