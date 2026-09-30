@@ -532,6 +532,10 @@ export const DEFERRED = [
   // round246 promoted to SWEPT in Round 296 — the first promotion the hazard filter had refused,
   // reached via a `PROMOTE-HAZARD-EXEMPT` declaration over two literal-only hits.
   'probe-round247-a-mutant-in-the-tree-is-in-the-population.mts',
+  // round296 is DEFERRED for `promote-probes`'s own reason: it imports `hazards` and therefore
+  // carries every hazardous spelling as a fixture. It would be a `db` candidate for the exemption it
+  // implements, which is a circularity to refuse rather than indulge.
+  'probe-round296-the-net-split-is-priced-at-zero-and-literal-only-cannot-tell-a-corpus-from-an-argv.mts',
   'probe-round248-the-dot-guard-is-half-the-repair-and-a-copy-re-admits-the-original.mts',
   'probe-round250-the-drive-was-never-priced-and-the-port-is-one-line-of-product.mts',
   'probe-round251-the-port-lever-mutations.mjs',

@@ -226,7 +226,16 @@ export const EXEMPTIBLE = new Set(['db', 'homedir']);
  * reads only the class names.
  */
 export const declaredExemptions = (src: string): string[] => {
-  const m = /PROMOTE-HAZARD-EXEMPT:[ \t]*([a-z \t,]+)/.exec(src);
+  // Read from the LEADING docblock only, and this is a repair, not a preference. The first version
+  // scanned the whole file, and `probe-round296` — whose subject matter is this marker — carries
+  // `PROMOTE-HAZARD-EXEMPT: suite` as a *launder-attempt fixture* in its arm B3. The reader read the
+  // fixture and reported the probe as declaring `suite`. **That is precisely the round246 defect this
+  // whole mechanism exists to fix, one level up: a scanner whose corpus is its own notation.** Its
+  // own arm D1 caught it on the first run. An attestation belongs in a fixed structural position —
+  // "anywhere in the file" is not a location, it is a search.
+  const doc = /^\s*\/\*\*([\s\S]*?)\*\//.exec(src);
+  if (!doc) return [];
+  const m = /PROMOTE-HAZARD-EXEMPT:[ \t]*([a-z \t,]+)/.exec(doc[1]);
   if (!m) return [];
   return m[1]
     .split(/[\s,]+/)
