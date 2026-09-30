@@ -519,6 +519,20 @@ export const SWEPT = [
     expect: /All 13 regression checks passed/,
     why: 'driven twice by the promotion path (real HOME and an empty HOME, one variable): 13/13 green, exit 0 both arms, 2184/2124 ms; population and tree fingerprints for scripts/ and packages/ unchanged across 96 samples',
   },
+  {
+    // PROMOTED BY: Round 303, Theseus, 2026-09-30 (WORK fire) — driven by `promote-probes.mts`,
+    // which observed predicates 2-7 rather than reading them. Hazard-clean on arrival (`hazards()`
+    // returns `[]`), no exemption, no `--force`.
+    //
+    // The subject: `npm run typecheck` reads all 3 hand-written `.d.mts` declarations under
+    // `scripts/` and none of the 3 `.mjs` implementations they describe — so it grades the
+    // description and has never read the thing described. `sweep-probes.mjs` is the sharp case: this
+    // very module, 12 `.mts` importers, its whole type surface unchecked against it. No drift today
+    // (26 names, 14 signatures, 0 problems), which is why the arms are a gate rather than a repair.
+    file: 'probe-round303-typecheck-grades-the-declaration-and-never-the-thing-it-describes.mts',
+    expect: /All 18 regression checks passed/,
+    why: 'driven twice by the promotion path (real HOME and an empty HOME, one variable): 18/18 green, exit 0 both arms, 7916/8205 ms; population and tree fingerprints for scripts/ and packages/ unchanged across 377 samples',
+  },
 ];
 
 /**
@@ -775,11 +789,11 @@ export const DEFERRED = [
   // round297 promoted to SWEPT in Round 297 (mine) — driven by promote-probes.mts in the same fire
   // it was written, with no exemption and no --force. It never needed deferring: reads source and
   // the census, spawns nothing, binds nothing, opens nothing, ~1 s.
-  // ── Round 303, Theseus, 2026-09-30 ──────────────────────────────────────────
-  // Classified DEFERRED on arrival, before the census gate ran, so `promote-probes.mts` can drive it
-  // in rather than this seat hand-adding a SWEPT entry — my own Round 295 objection, that hand-adding
-  // writes the verdict the tool exists to observe.
-  'probe-round303-typecheck-grades-the-declaration-and-never-the-thing-it-describes.mts',
+  // round303 promoted to SWEPT in Round 303 (mine) — classified DEFERRED here on arrival, before the
+  // census gate ran, so `promote-probes.mts` could drive it in rather than this seat hand-adding the
+  // entry (my own Round 295 objection: hand-adding writes the verdict the tool exists to observe),
+  // then promoted out of this list by that drive in the same fire. Hazard-clean on arrival, no
+  // exemption, no --force.
   'probe-scan-cost-model-control.mts',
   'probe-scan-latency-vs-cap.mts',
   'probe-scratch-server.mjs',

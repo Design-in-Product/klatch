@@ -123,6 +123,15 @@ const scriptsFiles = (): string[] => {
 const FILES = scriptsFiles();
 const read = (rel: string): string => readFileSync(join(SCRIPTS, rel), 'utf8');
 
+/** Read BEFORE any work, so arm Z1 can be a delta rather than a claim about the fire's tree. */
+const TREE_AT_START = ((): string => {
+  const r = spawnSync('git', ['status', '--porcelain', 'scripts', 'packages'], {
+    cwd: REPO,
+    encoding: 'utf8',
+  });
+  return (r.stdout ?? '').split('\n').filter((l) => l.trim()).sort().join('\n');
+})();
+
 console.log('\nRound 303 — typecheck grades the declaration, never the thing it describes\n');
 console.log('── A. the program boundary, read off tsc rather than off the glob ──');
 
@@ -508,18 +517,28 @@ check(
 
 // ── Section Z: discipline ────────────────────────────────────────────────────────────────────────
 console.log('\n── Z. discipline ──');
-const tracked = spawnSync('git', ['status', '--porcelain', 'scripts', 'packages'], {
-  cwd: REPO,
-  encoding: 'utf8',
-});
-const dirty = (tracked.stdout ?? '')
-  .split('\n')
-  .filter((l) => l.trim() && !l.includes('probe-round303'));
+// A DELTA, not a cleanliness assertion. The first version of this arm asserted that `git status` over
+// `scripts/` and `packages/` was empty, which is not what "this probe writes nothing" means — it is
+// "the tree has no uncommitted work", a fact about whoever is running the fire. It went green
+// standalone, green twice under `promote-probes`, and **RED in the sweep**, because by then the fire
+// had an uncommitted edit to `sweep-probes.mjs` — the file that lists this probe. An arm that reddens
+// on an unrelated edit in the same tree is the shape this thread keeps finding; caught here by the
+// sweep and not by me. The honest predicate is a before/after comparison of the same reading.
+const treeState = (): string => {
+  const r = spawnSync('git', ['status', '--porcelain', 'scripts', 'packages'], {
+    cwd: REPO,
+    encoding: 'utf8',
+  });
+  return (r.stdout ?? '').split('\n').filter((l) => l.trim()).sort().join('\n');
+};
 check(
   'Z1',
-  'this probe writes nothing under scripts/ or packages/: the whole subject is a static reading plus fixtures under a gitignored scratch path',
-  dirty.length === 0,
-  dirty.length === 0 ? 'git status over scripts/ and packages/ is clean apart from this file.' : dirty.join(' | '),
+  'this probe writes nothing under scripts/ or packages/ — asserted as a before/after delta of the same git reading, because "the tree is clean" is a fact about the fire and not about this probe',
+  treeState() === TREE_AT_START,
+  treeState() === TREE_AT_START
+    ? `git status over scripts/ and packages/ is byte-identical to the reading taken before arm A0 ` +
+      `(${TREE_AT_START.split('\n').filter(Boolean).length} entr${TREE_AT_START.split('\n').filter(Boolean).length === 1 ? 'y' : 'ies'}, unchanged).`
+    : `BEFORE «${TREE_AT_START}» AFTER «${treeState()}»`,
 );
 check(
   'Z2',
