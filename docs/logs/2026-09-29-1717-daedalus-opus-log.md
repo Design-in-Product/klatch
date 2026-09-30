@@ -93,25 +93,58 @@ After the three repairs: **All 15 regression checks passed**, exit 0. Classified
 exemption it implements). Census OK: 125 files · swept 19 · deferred 106 · verdict-bearing 30.
 `typecheck:scripts` clean.
 
+## 17:33 — Sweep run after all, and the promotion is validated by the standing channel
+
+The memo and the first version of this log both said the sweep was not run and was not being
+claimed. Budget turned out to allow it, so it was run rather than left as a stated limit:
+
+```
+SWEEP BLOCKED — 18 of 19 swept probes green, 0 red, 1 blocked (did not conclude), 0 census problem(s), 106 deferred
+  BLOCKED exit   3  probe-round225-a-citation-is-not-a-call.mts
+```
+
+- **0 red.** Promoting round246 and adding round296 reddened nothing.
+- **`probe-round246` passes as a SWEPT entry: `All 4 regression checks passed`**, matching the pin I
+  wrote from the promotion drive's own output. So the promotion is now validated by the standing
+  channel and not only by the one-off drive that proposed it.
+- The 1 blocked is **`probe-round225`**, the documented legitimate BLOCKED (`sweep-probes.mjs:243`) —
+  it refuses while anything holds 3001, and xian's dev server has held it for several fires. Same
+  blocked probe, same reason, as Rounds 291/294.
+- 19 swept ← 18, as expected. `npm test` was **not** run this fire and is not claimed.
+
+**Correction to the memo (`1c1ccc2d`) and to this log's own earlier section:** both say the sweep was
+not run. It was, after they were written, and the result is above. The memo's §8 statement is stale
+in that one respect; nothing else in it changes.
+
 ## Session Wrap Protocol
 
 **Step 1 — commits on `origin/main`:**
 
 ```
 $ git log origin/main --oneline -5
-<filled in below, after the final push>
+139fe66c coord+log: Round 296 — both narrowings refused on measurements, an attested exemption reached round246 (SWEPT 18->19), and my own probe caught a defect I had already pushed
+1c1ccc2d mail(daedalus->theseus,argus cc xian,janus,calliope,iris): your net split is priced at zero, and my own probe caught me shipping the defect it was about
+8e392dd5 Round 296 probe: 15/15 — and its own first run corrected a shipped defect and a published reason
+d263f38e Round 296: the net split is priced at zero, and an attested exemption reaches the probe its own fixtures had refused
+f31d6afc mail+coord+log: SWEEP fire -- close two Pard threads (parked-panes staleness test landed in code; cross-repo-mail capability ack'd)
 ```
 
-**Step 2 — deliverable files:** verified by `ls` below.
+**Step 2 — deliverable files, each `ls`-verified:**
+
+```
+scripts/probe-round296-…-cannot-tell-a-corpus-from-an-argv.mts   15374 bytes
+docs/mail/daedalus-to-theseus-argus-…-2026-09-29.md              10255 bytes
+docs/logs/2026-09-29-1717-daedalus-opus-log.md                    7460 bytes (this file, before this edit)
+```
+
+Scratch confirmed removed: `ls .testdata/r296-price*.mts` → no matches.
 
 **Step 3 —** this log pushed last.
 
 ## Stated limits, not papered over
 
-- **I did NOT run the full sweep or `npm test` this fire.** The budget went on the 27 s × 2 drive and
-  the three repairs. What I am claiming is `typecheck:scripts` clean and `census OK`; the sweep is
-  **not** claimed, and "census OK" must not stand in for it — the census reads source and bookkeeping
-  and drives no probe, which is the disclosure I added to it in Round 294.
+- **`npm test` was NOT run this fire.** Claimed: `typecheck:scripts` clean, `census OK`, and the full
+  sweep above. Not claimed: the server/client suites.
 - **Theseus's round295 D1 will go red** (his own prediction, his own design). Flagged, not patched:
   the edit touches his docblock, his constant and D2's regex. Declining on ownership, not effort.
 - **Argus's §3 pin-vs-count patch is not built.** Agreed with, unclaimed, named in the memo.
