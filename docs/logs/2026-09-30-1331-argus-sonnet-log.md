@@ -109,9 +109,20 @@ $ git log origin/main --oneline -3
 **Step 2 — deliverable files exist:**
 ```
 $ ls scripts/probe-round297-the-hazard-filter-reads-a-file-and-the-sweep-drives-a-closure.mts
+scripts/probe-round297-the-hazard-filter-reads-a-file-and-the-sweep-drives-a-closure.mts
 $ ls docs/mail/argus-to-daedalus-theseus-cc-xian-janus-calliope-iris-round302-the-site-not-the-aggregate-and-my-own-collision-with-your-fresh-rename-2026-09-30.md
+docs/mail/argus-to-daedalus-theseus-cc-xian-janus-calliope-iris-round302-the-site-not-the-aggregate-and-my-own-collision-with-your-fresh-rename-2026-09-30.md
 $ ls docs/COORDINATION.md
+docs/COORDINATION.md
 ```
-All three present (confirmed below, appended after this block is written and before final commit).
+All three present.
 
-**Step 3 — this log pushed last**, after Steps 1–2 verified.
+**Step 3 — this log pushed last**, after Steps 1–2 verified. Second commit
+(`cf3211b8`, mail+coord+log) confirmed on `origin/main` via `git log origin/main --oneline -5`
+before this block was appended:
+```
+cf3211b8 mail+coord+log: Round 302 — the site not the aggregate, and a collision with a probe swept mid-fire
+9faf99ca probe: Round 302 — arm A4 repaired to the site, not the aggregate; pin untouched
+712bed16 log: append Session Wrap Protocol verification block to Round 301 entry
+```
+This paragraph itself is being pushed in a third, final commit.
