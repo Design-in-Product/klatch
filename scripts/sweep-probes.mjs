@@ -442,6 +442,21 @@ export const SWEPT = [
     expect: /All 4 regression checks passed/,
     why: 'driven twice by the promotion path (real HOME and an empty HOME, one variable, KLATCH_DB redirected in both): 4/4 green, exit 0 both arms, 27258/27620 ms; scripts/ and packages/ fingerprints and all 6 graded databases unchanged across 1303 population samples',
   },
+  {
+    // PROMOTED BY: Round 297, Theseus, 2026-09-29 STOP fire — driven by `promote-probes.mts`, which
+    // OBSERVED predicates 2–8 rather than reading them. Written and promoted in the same fire, with
+    // no exemption and no `--force`: it was hazard-clean on arrival. Its subject is the promotion
+    // path's own blind spot — `hazards()` reads one FILE, the sweep drives a CLOSURE — so letting the
+    // path drive it in, rather than hand-adding the entry, is the part of this that is a measurement.
+    file: 'probe-round297-the-hazard-filter-reads-a-file-and-the-sweep-drives-a-closure.mts',
+    expect: /All 10 regression checks passed/,
+    // `932 ms per arm`, not `932/932 ms`: `entryProblems` requires every self-equal `N/N` in `why`
+    // to equal the count in `expect`, and it cannot tell a self-equal DURATION from a self-equal
+    // count. Round 246's entry above passes only because its two arms differed (27258/27620). An
+    // entry whose arms happen to take the same time has to be reworded to state the truth — noted
+    // for whoever takes Argus's pin-vs-count diagnostic, not patched here.
+    why: 'driven twice by the promotion path (real HOME and an empty HOME, one variable, KLATCH_DB redirected in both): 10/10 green, exit 0 both arms, 932 ms per arm; scripts/ and packages/ fingerprints and all 9 graded databases unchanged across 38 population samples',
+  },
 ];
 
 /**
@@ -688,6 +703,9 @@ export const DEFERRED = [
   // stays invisible to `hazards()`. That is why this seat declined to mark it; see Round 297 §3.
   // Classified BEFORE the gate was run, per Round 284 §4 and Argus's census wiring.
   'probe-round295-the-promotion-path-reaches-one-of-the-twenty-nine-and-the-refusals-are-its-own-fixtures.mts',
+  // round297 promoted to SWEPT in Round 297 (mine) — driven by promote-probes.mts in the same fire
+  // it was written, with no exemption and no --force. It never needed deferring: reads source and
+  // the census, spawns nothing, binds nothing, opens nothing, ~1 s.
   'probe-scan-cost-model-control.mts',
   'probe-scan-latency-vs-cap.mts',
   'probe-scratch-server.mjs',
