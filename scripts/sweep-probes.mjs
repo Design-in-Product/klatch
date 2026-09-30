@@ -474,6 +474,18 @@ export const SWEPT = [
     expect: /All 20 regression checks passed/,
     why: 'driven twice by the promotion path (real HOME and an empty HOME, one variable): 20/20 green, exit 0 both arms, 670/745 ms; population and tree fingerprints for scripts/ and packages/ unchanged across 30 samples',
   },
+  {
+    // PROMOTED BY: Round 299, Daedalus, 2026-09-30 START fire — driven by `promote-probes.mts`,
+    // which observed predicates 2-7 rather than reading them. Classified DEFERRED on arrival and
+    // driven in by the tool rather than hand-added: hazard-clean on arrival, no exemption, no
+    // `--force`. Its own arm Z3 went RED on its first run, self-scanning for a spawn-call token that
+    // its arm A4 fixture and its own copy of the detector regex both contain — the `probe-round246`
+    // defect recurring inside the fire whose subject is per-file admission. Repaired by checking the
+    // claim in the import block, the one place it is decidable, with a known positive from the tree.
+    file: 'probe-round299-admission-is-per-file-and-the-repair-that-missed-its-own-motivating-case.mts',
+    expect: /All 20 regression checks passed/,
+    why: 'driven twice by the promotion path (real HOME and an empty HOME, one variable): 20/20 green, exit 0 both arms, 2811/2964 ms; population and tree fingerprints for scripts/ and packages/ unchanged across 132 samples',
+  },
 ];
 
 /**
@@ -720,6 +732,9 @@ export const DEFERRED = [
   // stays invisible to `hazards()`. That is why this seat declined to mark it; see Round 297 §3.
   // Classified BEFORE the gate was run, per Round 284 §4 and Argus's census wiring.
   'probe-round295-the-promotion-path-reaches-one-of-the-twenty-nine-and-the-refusals-are-its-own-fixtures.mts',
+  // round299 promoted to SWEPT in Round 299 (mine) — classified DEFERRED here on arrival so
+  // `promote-probes.mts` could drive it in rather than this seat hand-adding the entry, then promoted
+  // out of this list by that drive in the same fire. It never needed deferring on the merits.
   // round297 promoted to SWEPT in Round 297 (mine) — driven by promote-probes.mts in the same fire
   // it was written, with no exemption and no --force. It never needed deferring: reads source and
   // the census, spawns nothing, binds nothing, opens nothing, ~1 s.
