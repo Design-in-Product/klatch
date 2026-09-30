@@ -56,13 +56,35 @@
  * repaired in `probe-round224` arm E ("a pin on an absence is not an invariant"). So the
  * population figures here are MEASUREMENTS, recorded and not asserted.
  *
- * The one load-bearing assertion is arm R6, built on the Round 294 two-sided shape: this file
- * declares the probes it has driven green but the hazard filter refuses, and R6 holds the
+ * The one load-bearing assertion is arm D1, built on the Round 294 two-sided shape: this file
+ * declares the probes it has driven green but the hazard filter refuses, and D1 holds the
  * declaration against the measurement in BOTH directions. Widen the filter so `round246` becomes
- * drivable and R6 goes red naming it — which is correct, because the list below is then stale and
+ * drivable and D1 goes red naming it — which is correct, because the list below is then stale and
  * the finding has been addressed. It cannot be cleared by deleting what it reads.
  *
- *   REFUSED-BUT-DRIVABLE: probe-round246, probe-round284
+ *   REFUSED-BUT-DRIVABLE: probe-round284
+ *
+ * ── Round 297 (Theseus, 2026-09-29 STOP fire): that expiry fired, and it fired twice ──
+ *
+ * Round 296 (Daedalus, `d263f38e`) gave `promote-probes` an attested exemption and used it to drive
+ * `probe-round246` — SWEPT 18→19. His §6 predicted D1 would go red and left the edit to this seat.
+ * It did. **Two arms went red, not one,** and the second was not predicted by either of us:
+ *
+ *   FAIL C1  probe-round246 is present in DEFERRED and drivable
+ *   FAIL D1  declared [probe-round246, probe-round284] · measured [probe-round284]
+ *
+ * D1 is the designed expiry. **C1 was a defect in this file.** Its lookup was `fileFor`, which
+ * searched `DEFERRED` only, so the arm could not distinguish *promoted out of the deferred set*
+ * from *missing from the corpus* — and it reported the best possible outcome, a probe this file had
+ * argued for being promoted, as a hard regression whose text says the file is absent. It also
+ * stopped driving round246 silently: a red C1 skips the drive, so a reader who cleared D1 alone
+ * would have a probe claiming two drives and making one. The lookup now spans the whole census and
+ * C1 asserts the promotion instead of re-driving it, because the sweep drives round246 every run
+ * now and a second 27-second drive from here buys nothing.
+ *
+ * The generalisable line, which is this file's own version of the mistake it was written about:
+ * **an arm that reads one classification bucket cannot tell "left the bucket" from "never existed",
+ * and the good news and the bad news arrive at it in the same shape.**
  *
  * NOT claimed: that the other 27 are drivable. They are unexamined, which is the whole point —
  * this fire drove 2 and found 2 green. A sample of the two cheapest members is the most
@@ -75,18 +97,30 @@ import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 import { summariseAndExit, type ProbeVerdict } from './lib/probe-outcome.mts';
-import { hazards } from './promote-probes.mts';
-import { DEFERRED, verdictBearing } from './sweep-probes.mjs';
+import { exemptionsApplied, hazards } from './promote-probes.mts';
+import { DEFERRED, SWEPT, census, verdictBearing } from './sweep-probes.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const REPO = join(HERE, '..');
 const SCRIPTS = join(REPO, 'scripts');
 
 /**
- * The declaration arm R6 grades. Each entry is a DEFERRED probe this seat has driven green, with
+ * The declaration arm D1 grades. Each entry is a DEFERRED probe this seat has driven green, with
  * a tree-preserving run, and which `hazards()` nevertheless refuses. Add one, add it here.
+ *
+ * `probe-round246` was here until Round 297 and left by being PROMOTED, not by being edited away:
+ * Round 296 (`d263f38e`) gave it a `PROMOTE-HAZARD-EXEMPT: db homedir` attestation, `hazards()`
+ * now returns `[]` for it, and it is SWEPT. That is the arm expiring as designed.
  */
-const REFUSED_BUT_DRIVABLE = ['probe-round246', 'probe-round284'];
+const REFUSED_BUT_DRIVABLE = ['probe-round284'];
+
+/**
+ * Every probe this seat has hand-driven green for this finding, promoted or not. Deliberately a
+ * SEPARATE list from the declaration above and deliberately never shrinking: D1's second direction
+ * is only non-vacuous because this list remembers a stem after the declaration forgets it, so
+ * deleting an entry from `REFUSED_BUT_DRIVABLE` cannot clear the arm.
+ */
+const DRIVEN_GREEN_BY_THIS_SEAT = ['probe-round246', 'probe-round284'] as const;
 
 const results: ProbeVerdict[] = [];
 const measurements: string[] = [];
@@ -101,8 +135,22 @@ const meas = (arm: string, line: string) => {
 };
 
 const readProbe = (f: string): string => readFileSync(join(SCRIPTS, f), 'utf8');
+
+/**
+ * Resolve a stem over the WHOLE census, not over `DEFERRED`.
+ *
+ * Round 297 repair. The first version searched `DEFERRED` alone, so when Round 296 promoted
+ * `probe-round246` into `SWEPT` the lookup returned `undefined` and arm C1 reported "not present in
+ * DEFERRED and drivable" — the wording, and the red, of a deleted file. A bucket-scoped lookup
+ * cannot tell a promotion from a disappearance. `classifyOf` keeps the bucket available to the arms
+ * that actually want it, so the two questions stay separate.
+ */
 const fileFor = (stem: string): string | undefined =>
-  DEFERRED.find((f: string) => f.startsWith(stem));
+  census(SCRIPTS).find((f: string) => f.startsWith(stem));
+
+const SWEPT_FILES = new Set(SWEPT.map((s: { file: string }) => s.file));
+const classifyOf = (file: string): 'SWEPT' | 'DEFERRED' | 'UNCLASSIFIED' =>
+  SWEPT_FILES.has(file) ? 'SWEPT' : DEFERRED.includes(file) ? 'DEFERRED' : 'UNCLASSIFIED';
 
 // ── Section A — the population, using each instrument's own detector ──────────
 // Nothing here re-implements a classifier. `verdictBearing` is sweep-probes'; `hazards` is
@@ -145,6 +193,17 @@ check(
   'A4',
   'every verdict-bearing DEFERRED probe is classified by both instruments without throwing',
   hazardOf.size === vbDeferred.length && vbDeferred.length > 0,
+);
+
+// A5 prints the SUBTRACTION, not just its two operands. Round 297: both this seat and Daedalus's
+// Round 296 §8 stated this figure from arithmetic on a remembered total and both got it wrong —
+// his by subtracting the newly-promoted round246 from a population it had already left, mine by
+// publishing a total that predated this file's own entry into DEFERRED. A derived number that a
+// reader has to compute is a number two readers will compute differently.
+meas(
+  'A5',
+  `UNREACHABLE among the verdict-bearing DEFERRED: ${vbDeferred.length - reachable.length} ` +
+    `of ${vbDeferred.length} (promotion removes a file from this population, it does not make it reachable within it)`,
 );
 
 // ── Section B — known positives for `hazards`, copied from the real call shapes ─
@@ -200,28 +259,52 @@ const treeState = (): string =>
 
 const treeBefore = treeState();
 
-for (const [arm, stem] of [
-  ['C1', 'probe-round246'],
-  ['C2', 'probe-round284'],
-] as const) {
+// C1 — round246 was the finding's first subject and has since been promoted. The arm asserts the
+// promotion rather than re-driving it: the sweep drives round246 on every run now, so a second
+// 27-second drive from here would only duplicate it. Round 297 repair — this arm used to drive, and
+// used to report the promotion as a missing file.
+{
+  const file = fileFor('probe-round246');
+  if (!file) {
+    check('C1', 'probe-round246 exists in the census at all', false);
+  } else {
+    const where = classifyOf(file);
+    const hz = hazards(readProbe(file));
+    check(
+      'C1',
+      `probe-round246 — the refusal this file argued was self-inflicted — has been PROMOTED: ` +
+        `classification ${where}, hazards [${hz.join(', ') || 'none'}]`,
+      where === 'SWEPT' && hz.length === 0,
+    );
+    meas(
+      'C1m',
+      `probe-round246 exemptions honoured by promote-probes: ` +
+        `[${exemptionsApplied(readProbe(file)).join(', ') || 'none'}] — Round 296 d263f38e`,
+    );
+  }
+}
+
+// C2 — round284 is still DEFERRED and nothing else drives it, so only a run establishes this.
+{
+  const stem = 'probe-round284';
   const file = fileFor(stem);
   if (!file) {
-    check(arm, `${stem} is present in DEFERRED and drivable`, false);
-    continue;
+    check('C2', `${stem} exists in the census at all`, false);
+  } else {
+    const d = drive(file);
+    check(
+      'C2',
+      `${stem} drives green unattended: exit 0 and a conclusion line — got exit ${d.code}, ` +
+        `conclusion ${d.conclusion ? `"${d.conclusion}"` : 'NOT FOUND'}`,
+      d.code === 0 && d.conclusion !== null,
+    );
+    meas('C2m', `${stem} classification ${classifyOf(file)}, hazards: [${(hazardOf.get(file) ?? []).join(', ') || 'none'}]`);
   }
-  const d = drive(file);
-  check(
-    arm,
-    `${stem} drives green unattended: exit 0 and a conclusion line — got exit ${d.code}, ` +
-      `conclusion ${d.conclusion ? `"${d.conclusion}"` : 'NOT FOUND'}`,
-    d.code === 0 && d.conclusion !== null,
-  );
-  meas(`${arm}m`, `${stem} hazards: [${(hazardOf.get(file) ?? []).join(', ') || 'none'}]`);
 }
 
 check(
   'C3',
-  `the two drives left scripts/ and packages/ where they were found — ` +
+  `the drive left scripts/ and packages/ where they were found — ` +
     `before ${JSON.stringify(treeBefore)} after ${JSON.stringify(treeState())}`,
   treeBefore === treeState(),
 );
@@ -230,13 +313,15 @@ check(
 // Round 294 §2's shape. The declared list above is graded against what was measured, in both
 // directions, so neither a widened filter nor a deleted entry can clear it by waiting.
 
-const measuredRefusedButDrivable = (['probe-round246', 'probe-round284'] as const)
-  .filter((stem) => {
-    const file = fileFor(stem);
-    if (!file) return false;
-    return (hazardOf.get(file) ?? []).length > 0;
-  })
-  .map(String);
+const measuredRefusedButDrivable = DRIVEN_GREEN_BY_THIS_SEAT.filter((stem) => {
+  const file = fileFor(stem);
+  if (!file) return false;
+  // `hazardOf` is keyed on the verdict-bearing DEFERRED set, so a promoted file is absent from it.
+  // Ask `hazards()` directly: the question is "does the filter still refuse this", and a file that
+  // left DEFERRED is not refused, it is driven. Reading the absence as a refusal would have made
+  // this arm claim round246 was STILL refused after it was promoted.
+  return hazards(readProbe(file)).length > 0;
+}).map(String);
 
 const declared = [...REFUSED_BUT_DRIVABLE].sort();
 const measured = [...measuredRefusedButDrivable].sort();
@@ -249,10 +334,16 @@ check(
 );
 
 const docSource = readFileSync(fileURLToPath(import.meta.url), 'utf8');
+// Read from the LEADING docblock only, per Round 296 §5: this file's subject matter includes the
+// notation it grades, so "anywhere in the file" is a search, not a location. The Round 297 prose
+// below quotes the marker while describing the expiry, and a whole-file scan would read the quote.
+const leadingDoc = /^\s*\/\*\*([\s\S]*?)\*\//.exec(docSource)?.[1] ?? '';
+const declaredInDoc = /REFUSED-BUT-DRIVABLE:[ \t]*(.+)/.exec(leadingDoc)?.[1]?.trim() ?? null;
 check(
   'D2',
-  'the REFUSED-BUT-DRIVABLE line is present in this file — the arm cannot be cleared by deleting what it reads',
-  /REFUSED-BUT-DRIVABLE:\s*probe-round246,\s*probe-round284/.test(docSource),
+  `the REFUSED-BUT-DRIVABLE line in the leading docblock names exactly what the constant does — ` +
+    `doc says ${declaredInDoc === null ? 'NOTHING' : `"${declaredInDoc}"`}, constant says "${declared.join(', ')}"`,
+  declaredInDoc === declared.join(', '),
 );
 
 console.log('');
