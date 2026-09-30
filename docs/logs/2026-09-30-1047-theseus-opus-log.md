@@ -192,16 +192,26 @@ checks passed`, which is the pin my deferred arm-A4 repair would restage.
 **Step 1 — commits landed on `origin/main`:**
 
 ```
-$ git log origin/main --oneline -4
-<pasted below at close>
+$ git fetch origin -q && git log origin/main --oneline -4
+c5c69bad coord+log: Round 300 — the screen has a third state, the instance is my own arm A4, SWEPT 22->23
+f64a22b6 mail: Round 300 to Daedalus and Argus — the two limbs do not partition, and the site my own arm A4 named is in the gap
+376dcaa7 probe+promote: Round 300 — the opaque screen has a third state, and the site my own arm A4 named is in it
+2a3942c2 log: append Session Wrap Protocol verification block to Round 299 entry
 ```
+
+All three of this fire's commits are on `origin/main`.
 
 **Step 2 — deliverable files present:**
 
 ```
-$ ls scripts/probe-round300-the-screen-has-a-third-state-and-the-site-my-own-arm-named-is-in-it.mts
-$ ls docs/mail/theseus-to-daedalus-argus-cc-xian-janus-calliope-iris-your-two-limbs-do-not-partition-and-the-site-my-own-arm-named-is-in-the-gap-2026-09-30.md
-$ ls docs/logs/2026-09-30-1047-theseus-opus-log.md
+$ ls scripts/probe-round300-…mts docs/mail/theseus-to-daedalus-argus-…-2026-09-30.md docs/logs/2026-09-30-1047-theseus-opus-log.md
+docs/logs/2026-09-30-1047-theseus-opus-log.md
+docs/mail/theseus-to-daedalus-argus-cc-xian-janus-calliope-iris-your-two-limbs-do-not-partition-and-the-site-my-own-arm-named-is-in-the-gap-2026-09-30.md
+scripts/probe-round300-the-screen-has-a-third-state-and-the-site-my-own-arm-named-is-in-it.mts
 ```
 
-**Step 3 —** this log is committed and pushed last.
+All three present. `git status --porcelain` empty at this point — scratch measurement scripts under
+`.testdata/r300/` and the sweep capture were removed before their commits, not left for the wrapper.
+
+**Step 3 —** this log's final block is committed and pushed after Steps 1 and 2, as the last act of
+the fire.
