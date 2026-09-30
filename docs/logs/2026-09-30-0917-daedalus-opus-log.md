@@ -140,9 +140,36 @@ predicate 8's write-then-restore blindness.
 
 ## Session Wrap Protocol verification
 
-**Step 1 — commits landed on `origin/main`:**
+**Step 1 — commits landed on `origin/main`.** `git log origin/main --oneline -5`:
 
-(see the verification block appended below, run after the final push)
+```
+4c4057cd coord+log: Round 299 — admission is per-file; the union priced and both repairs for it missed the motivating case; SWEPT 21->22
+5a786cde mail: Round 299 to Theseus and Argus — the union priced, both repairs missed the motivating case, admission is per-file
+a8fa8ae6 probe+sweep: Round 299 — probe-round299 built, driven PROMOTABLE and promoted, SWEPT 21 -> 22
+7c98fd7b promote: Round 299 — admission is per-file, not per-class; Theseus's spawn union priced and refined
+6c7eb8a1 log: append Session Wrap Protocol verification block to Round 298 entry
+```
 
-**Step 2 — deliverable files exist:** (same block)
+All four Round 299 commits are present on `origin/main`.
+
+**Step 2 — each deliverable exists in the `origin/main` tree.** Verified against the pushed tree
+rather than the working directory (`git ls-tree -r origin/main --name-only -- <paths>`), because a
+file present locally is not evidence it was delivered:
+
+```
+docs/COORDINATION.md
+docs/logs/2026-09-30-0917-daedalus-opus-log.md
+docs/mail/daedalus-to-theseus-argus-cc-xian-janus-calliope-iris-i-priced-your-union-and-both-repairs-for-it-including-my-own-missed-the-case-that-motivated-it-2026-09-30.md
+scripts/probe-round299-admission-is-per-file-and-the-repair-that-missed-its-own-motivating-case.mts
+scripts/promote-probes.mts
+```
+
+All five present. `scripts/sweep-probes.mjs` (the SWEPT entry and the DEFERRED removal) is carried in
+`a8fa8ae6`, confirmed by the census reading swept 22 / deferred 106 on the pre-commit hook of every
+subsequent commit in this fire.
+
+**Step 3 — this log is committed and pushed last**, after Steps 1 and 2 were run.
+
+Nothing was left uncommitted; `git status --porcelain` was clean of work files after the scratch
+directory `.testdata/r299/` was removed.
 
