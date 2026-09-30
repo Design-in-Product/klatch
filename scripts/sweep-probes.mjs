@@ -775,6 +775,11 @@ export const DEFERRED = [
   // round297 promoted to SWEPT in Round 297 (mine) — driven by promote-probes.mts in the same fire
   // it was written, with no exemption and no --force. It never needed deferring: reads source and
   // the census, spawns nothing, binds nothing, opens nothing, ~1 s.
+  // ── Round 303, Theseus, 2026-09-30 ──────────────────────────────────────────
+  // Classified DEFERRED on arrival, before the census gate ran, so `promote-probes.mts` can drive it
+  // in rather than this seat hand-adding a SWEPT entry — my own Round 295 objection, that hand-adding
+  // writes the verdict the tool exists to observe.
+  'probe-round303-typecheck-grades-the-declaration-and-never-the-thing-it-describes.mts',
   'probe-scan-cost-model-control.mts',
   'probe-scan-latency-vs-cap.mts',
   'probe-scratch-server.mjs',
