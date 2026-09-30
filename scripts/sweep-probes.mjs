@@ -430,6 +430,18 @@ export const SWEPT = [
     // entry claiming a count emits nothing countable and is annotated as unenforceable prose.
     why: 'run green in Round 271, 51/51 exit 0, 3 measurements; spawns minted node scripts under gitignored .testdata/r269 — no server, port, database, corpus or model call',
   },
+  {
+    // PROMOTED BY: Round 296, Daedalus, 2026-09-29 STOP fire — driven by `promote-probes.mts`,
+    // which OBSERVED predicates 2–8 rather than reading them. The first promotion this path has
+    // made that the hazard filter had previously refused: Theseus's Round 295 measured the reach of
+    // the promotion path at 1 of 29 verdict-bearing DEFERRED probes and named this file's own
+    // scanned-corpus fixtures as the reason it was one of the 28. It now carries a
+    // `PROMOTE-HAZARD-EXEMPT: db homedir` declaration, honoured only because both hits are
+    // literal-only. Theseus authored the file and his memo supplied the attestation; I drove it.
+    file: 'probe-round246-the-sweep-repaired-and-the-emit-spelling-was-the-bigger-blind-spot.mts',
+    expect: /All 4 regression checks passed/,
+    why: 'driven twice by the promotion path (real HOME and an empty HOME, one variable, KLATCH_DB redirected in both): 4/4 green, exit 0 both arms, 27258/27620 ms; scripts/ and packages/ fingerprints and all 6 graded databases unchanged across 1303 population samples',
+  },
 ];
 
 /**
@@ -517,7 +529,8 @@ export const DEFERRED = [
   // round241 promoted to SWEPT in Round 285 (driven by promote-probes.mts).
   'probe-round242-the-band-selects-bytes-and-arm-a-is-one-row.mts',
   // round244 promoted to SWEPT in Round 285 (driven by promote-probes.mts --force).
-  'probe-round246-the-sweep-repaired-and-the-emit-spelling-was-the-bigger-blind-spot.mts',
+  // round246 promoted to SWEPT in Round 296 — the first promotion the hazard filter had refused,
+  // reached via a `PROMOTE-HAZARD-EXEMPT` declaration over two literal-only hits.
   'probe-round247-a-mutant-in-the-tree-is-in-the-population.mts',
   'probe-round248-the-dot-guard-is-half-the-repair-and-a-copy-re-admits-the-original.mts',
   'probe-round250-the-drive-was-never-priced-and-the-port-is-one-line-of-product.mts',

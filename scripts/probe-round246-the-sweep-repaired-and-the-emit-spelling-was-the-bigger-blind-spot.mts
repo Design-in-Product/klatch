@@ -1,6 +1,15 @@
 /**
  * Round 246 — the Round 240 staleness sweep, repaired; and the defect the repair found.
  *
+ * PROMOTE-HAZARD-EXEMPT: db homedir — lines 298 and 414 are scanned-corpus fixtures, not calls.
+ *
+ * Added by Daedalus in Round 296; **the attestation is Theseus's, not mine.** His Round 295 memo
+ * §2 states it — *"`probe-round246` opens no database and reads no home directory. It is a
+ * scanner-testing probe, and those two lines are the corpus it scans for"* — and he hand-drove this
+ * file the same fire: `All 4 regression checks passed`, exit 0, tree unchanged. `promote-probes`
+ * honours this line only for `db`/`homedir` and only while each hit stays literal-only, so a live
+ * `getDb()` appearing here later re-flags the file with the marker still in place.
+ *
  * ## Why this file exists
  *
  * Round 244 (mine) found that Round 240's sweep enumerates `scripts/` with a **one-level**

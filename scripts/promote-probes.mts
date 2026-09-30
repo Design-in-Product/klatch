@@ -187,11 +187,73 @@ const DETECTORS: Record<string, RegExp> = {
   homedir: /homedir\s*\(|\.claude[/'"\s,)\]]+projects|process\.env\.HOME\b/,
 };
 
+/**
+ * A hit that exists ONLY inside a string literal: present with strings kept, absent with strings
+ * blanked. That is the `probe-round246` shape Theseus measured in Round 295 — a source-scanning
+ * probe carries the hazardous spellings as its own known-positive corpus, and the detector reads
+ * the fixtures as evidence the probe touches the thing.
+ *
+ * **This predicate is necessary and nowhere near sufficient, and the counterexample is live in the
+ * tree, not synthetic.** `probe-round247:171` is
+ *
+ *     execFileSync('npx', ['vitest', 'run', …])
+ *
+ * — a real test-suite subprocess whose `vitest` token appears only inside a literal. Measured over
+ * the whole population this fire: **10 of 10 `suite` hits are literal-only**, because Round 285's
+ * finding cuts both ways — a subprocess command is *necessarily* a string literal, so literal-only
+ * cannot distinguish "scanned corpus text" from "the argv of a child process". A blanket
+ * literal-only exemption re-creates Round 285's repaired blindness exactly, and its first new
+ * candidate would be a probe that runs vitest unattended.
+ */
+export const literalOnly = (src: string, k: string): boolean =>
+  DETECTORS[k].test(stripSource(src, false)) && !DETECTORS[k].test(stripSource(src, true));
+
+/**
+ * Classes an author may attest away — deliberately two of five, and the boundary is a property of
+ * the failure mode, not of taste. A wrong attestation on `db` is **detected** anyway: predicate 8
+ * brackets every drive with `db-sentinel`, so a probe that opens the real database moves a graded
+ * file and is refused after the fact. A wrong attestation on `homedir` is a **read** of a corpus.
+ * The other three are neither: `suite` runs the test suite, `model` spends money against the API,
+ * `net` binds or dials a port another seat may own. Those three have no bracket behind them and no
+ * benign failure, so no declaration clears them.
+ */
+export const EXEMPTIBLE = new Set(['db', 'homedir']);
+
+/**
+ * `PROMOTE-HAZARD-EXEMPT: db homedir — <reason>` in a probe's own docblock. Read from the file, so
+ * the claim is versioned, reviewable and attributable to the commit that made it, which is the same
+ * trust model as a SWEPT `expect` pin. The reason after the dash is for the reader; the machine
+ * reads only the class names.
+ */
+export const declaredExemptions = (src: string): string[] => {
+  const m = /PROMOTE-HAZARD-EXEMPT:[ \t]*([a-z \t,]+)/.exec(src);
+  if (!m) return [];
+  return m[1]
+    .split(/[\s,]+/)
+    .filter(Boolean)
+    .filter((k) => k in DETECTORS);
+};
+
+/**
+ * Three conditions, all required: the author named the class, the class is exemptible, and the hit
+ * is literal-only. The machine check catches the *accidental* wrong marker — a class whose live
+ * identifier is right there in the code — while `EXEMPTIBLE` bounds what a deliberate wrong marker
+ * can cost. Neither alone would do: a marker with no literal-only test launders a live `getDb()`,
+ * and a literal-only test with no marker drives `probe-round247`.
+ */
+export const exempt = (src: string, k: string): boolean =>
+  EXEMPTIBLE.has(k) && declaredExemptions(src).includes(k) && literalOnly(src, k);
+
 /** Comments blanked so prose cannot vote; strings KEPT so a subprocess command still can. */
 export const hazards = (src: string): string[] =>
   Object.entries(DETECTORS)
     .filter(([, re]) => re.test(stripSource(src, false)))
+    .filter(([k]) => !exempt(src, k))
     .map(([k]) => k);
+
+/** What `hazards()` would have said before the declaration was honoured. Reported, never silent. */
+export const exemptionsApplied = (src: string): string[] =>
+  Object.keys(DETECTORS).filter((k) => DETECTORS[k].test(stripSource(src, false)) && exempt(src, k));
 
 export type DriveResult = {
   code: number | null;
@@ -420,12 +482,16 @@ const main = async (): Promise<void> => {
   // between, which is the intended pressure.
   const skipped: Record<string, string[]> = {};
   const forced: string[] = [];
+  const exempted: string[] = [];
   const candidates: string[] = [];
   for (const f of files) {
     if (swept.has(f)) continue;
     if (!DEFERRED.includes(f)) continue; // unclassified — the census owns that red
     if (ONLY && !f.includes(ONLY)) continue;
-    const h = hazards(readFileSync(join(SCRIPTS, f), 'utf8'));
+    const src = readFileSync(join(SCRIPTS, f), 'utf8');
+    const ex = exemptionsApplied(src);
+    if (ex.length) exempted.push(`${f} (${ex.join('+')})`);
+    const h = hazards(src);
     if (h.length) {
       for (const k of h) (skipped[k] ??= []).push(f);
       // `--force` exists because without it the reading list has the final say, and that contradicts
@@ -454,6 +520,10 @@ const main = async (): Promise<void> => {
   console.log(`  driving this run: ${drivable.length}${ONLY ? ` (--only ${ONLY})` : ` of ${candidates.length} (--n ${N})`}`);
   for (const f of drivable) console.log(`    · ${f}`);
   for (const f of forced) console.log(`  FORCED past the reading list: ${f}`);
+  // Printed unconditionally, including under `--list`. An exemption that does not appear in the
+  // report is a silent widening of what this tool will drive unattended, which is the one property
+  // the reading filter exists to keep visible.
+  for (const f of exempted) console.log(`  EXEMPT by declaration (literal-only hit): ${f}`);
 
   if (LIST_ONLY) {
     console.log('\n--list: selection only, nothing driven.');
