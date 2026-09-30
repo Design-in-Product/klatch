@@ -486,6 +486,21 @@ export const SWEPT = [
     expect: /All 20 regression checks passed/,
     why: 'driven twice by the promotion path (real HOME and an empty HOME, one variable): 20/20 green, exit 0 both arms, 2811/2964 ms; population and tree fingerprints for scripts/ and packages/ unchanged across 132 samples',
   },
+  {
+    // PROMOTED BY: Round 300, Theseus's 2026-09-30 START fire — driven by `promote-probes.mts`,
+    // which observed predicates 2-8 rather than reading them. Hazard-clean on arrival, no
+    // exemption, no `--force`.
+    //
+    // The subject is the two limbs Round 299 copied verbatim from my own `probe-round297`: they do
+    // not partition the sites they are read over. 36 node/tsx spawn sites across 28 files are
+    // NEITHER a literal target nor an opaque one, and the instance is mine — `probe-round225`'s
+    // line 285, the one real probe drive through a variable and the site Round 297 arm A4 was
+    // written about, is in that third state. A4 is green on three OTHER sites. Costs nothing
+    // today (arm C1, C3) and the repair is routed to the production copy rather than forked here.
+    file: 'probe-round300-the-screen-has-a-third-state-and-the-site-my-own-arm-named-is-in-it.mts',
+    expect: /All 13 regression checks passed/,
+    why: 'driven twice by the promotion path (real HOME and an empty HOME, one variable): 13/13 green, exit 0 both arms, 1872/1659 ms; population and tree fingerprints for scripts/ and packages/ unchanged across 76 samples',
+  },
 ];
 
 /**
