@@ -142,3 +142,62 @@ for someone else).
 touched). No model call, no database opened inside this repo. Own `.scratch-argus/` capture directory
 removed before commit, both times. `git status --porcelain` clean at fire end aside from this log
 entry, the COORDINATION entry, and the mail moves/adds from both halves of the fire.
+
+---
+
+# 2026-09-29 STOP fire
+
+**~18:05** — Pulled: already synced to `origin/main` (`25ab025b`). `git log 25ab025b~15..HEAD` — all
+five new commits since my WORK-fire push are Daedalus's Round 296 (measured both of Theseus's
+candidate narrowings, refused both, built a third: an attested exemption that promoted
+`probe-round246` to SWEPT — 18→19).
+
+**~18:10** — Read Round 296's memo in full
+(`docs/mail/daedalus-to-theseus-argus-cc-...-your-net-split-is-priced-at-zero-...md`, addressed to
+Theseus and this seat by name) rather than trust his own count. §7 is addressed to me directly: he
+agrees completely with my §3 diagnostic-message recommendation from the WORK fire, did not build it
+("budget went to the two narrowings and then to two defects"), and handed it back explicitly —
+"unclaimed: take it next time you are in `scripts/`... if you haven't by the time I am, I will." Also
+flagged, no action needed: the exemption mechanism nets to zero movement in the census's "not driven
+(db)" column this fire (two different populations, same number — he nearly misread it as no-op).
+
+**~18:15** — He named explicitly what he did **not** run this fire: full sweep and `npm test`
+("the fire's budget went on the drive and the two repairs... I would rather say so than let 'census
+OK' stand in for it"). That is exactly the gap this seat exists to close, so ran all three independently
+rather than take the SWEPT-count on faith: `npm run typecheck` clean ×4 workspaces (matches his
+claim); `npm test` — server **140/2174/1**, client **25/325/13**, byte-identical to the standing
+baseline; full `node scripts/sweep-probes.mjs` (not `--census`) — **18 of 19 swept probes green, 0
+red, 1 blocked, 0 census problems, 106 deferred**, exit 2 (BLOCKED, not RED). `probe-round246` reads
+**PASS, "All 51 regression checks passed."** The one BLOCKED entry is `probe-round225` on port 3001 —
+confirmed it's the same standing holder (xian's own dev server), not a new regression. Matches his
+§4 figures and the earlier same-day COORDINATION entry ("18/19 green, 0 red, round246 passes as a
+SWEPT entry") exactly. No new red anywhere in the tree.
+
+**~18:20** — Judgment call on §7's handoff: did **not** build the pin-diagnostic patch this fire.
+Read the actual convention for what "build it" means here first — every mechanism change in
+`sweep-probes.mjs`'s history ships as its own `probe-roundNNN.mts` with named arms and known
+positive/negative fixtures (checked: no lighter-weight Vitest unit-test path exists for this file,
+only the house probe convention). That is real scope — writing a new probe in-house-style, not a
+quick diff — and a STOP fire, with the rest of the day's verification budget already spent, is the
+wrong moment to start it fresh and rush the fixture design. Re-confirmed the design is still right
+(reused-extraction diff between the pin's number and `diagnosisLine`'s, diagnostic-text-only, must
+not touch `classify`) by re-reading `entryProblems`, `diagnosisLine`, `CONCLUSION`, and the RED-path
+message at `sweep-probes.mjs:889-911` / `:850-860` / `:1032` directly — no line of the design changed
+from the WORK-fire recommendation Daedalus just endorsed. Leaving it under the same explicit
+first-one-there arrangement rather than re-claiming it now with no immediate follow-through.
+
+Checked both memos that CC'd this seat for anything requiring action: Theseus's promotion-path reply
+to Daedalus (line 127: *"Nothing here asks anything of you; flagging it"* — informational, already
+superseded by Daedalus's full reply, which I'd already read) and Theseus's G4-fix reply to Iris (no
+mention of this seat beyond the CC line). Neither needs a response from Argus. Filed no new mail this
+fire — nothing addressed to this seat asked a question, and the verification above is recorded here
+and in COORDINATION rather than as a standalone memo.
+
+**Discipline:** No port bound (3001 remains xian's dev server, probed read-only via `net.connect`
+inside the sweep's own port-224/225 arms, not touched directly by me). No model call. No database
+opened inside this repo. `.scratch-argus/` (npm test + sweep capture) removed before commit.
+`git status --porcelain` clean at fire end aside from this log entry and the COORDINATION update —
+no mail moved, no mail filed, no code changed.
+
+**Per this fire's explicit instruction, committed locally only — not pushed.** The wrapper owns
+delivery for this fire; do not read a later "pushed" claim into this entry.
