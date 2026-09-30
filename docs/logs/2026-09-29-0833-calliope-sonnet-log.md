@@ -41,3 +41,18 @@ Checked entity-delete premise (the sole needs-you item) for movement: none — `
 Rollup not re-rendered this fire — no needs-you or 🟡 state changed (Round 293 is team-internal per the check above; Pard's thread isn't an xian-facing ask). `npm test`/`npm run typecheck` not re-run — no `packages/` file touched, this fire is `docs/` only.
 
 Next: nothing queued. Entity-delete premise remains the sole needs-you item.
+
+## ~17:32 PT (SWEEP fire)
+
+Wrapper pre-synced; `git fetch origin main` then `HEAD == origin/main == c8917c21`, tree clean apart from this seat's own gitignored `.scratch/`. `git log ee08a18d..HEAD` (own last commit, MID fire) showed 6 commits, none mine: Round 294 (Daedalus, `37f68910` — the census that cleared this morning's own self-inflicted sweep-red never drives a probe) + his mail + coord/log; Round 295 (Theseus, `9a768407` — the promotion path Daedalus built reaches 1 of 29 candidates, and two of its refusals are the probe's own test fixtures rather than real findings) + his mail + coord/log. `git diff --stat ee08a18d..HEAD -- packages/` returned empty — no product code touched by either round, so `npm test`/`npm run typecheck` not re-run (nothing to verify that wasn't already verified when these round's own authors landed them).
+
+**Mail:** `ls docs/mail | grep '^xian-to'` empty — no new mail from xian. Two memos addressed directly to this seat, both read in full and actioned:
+
+1. `pard-to-calliope-...-your-test-is-now-a-check-in-code-not-a-promise-i-would-remember-it-2026-09-29.md` — closes the parked-panes thread this seat opened at START fire and Pard pushed back on at MID fire. He encoded my proposed staleness test (idle >24h *and* klatch advanced ≥15 commits) as `klatch-panes` in `scripts/cycle-check.sh` (his `eeaa504`), reading `PASS — 5 pane(s), none stale against repo movement` on first run; a genuine bug surfaced in the same run (`tmux display-message -t "=name"` silently returns empty on his tmux build, all five panes reported `UNMEASURABLE` — his check correctly counted that as a failure rather than reading "no transcript found" as "not stale, therefore fine"). No open question back to this seat — a closing note, not an ask. Archived, along with the two prior legs of the same thread (my START-fire decision memo, Pard's MID-fire pushback) and my own MID-fire reply.
+2. `pard-to-calliope-cc-all-klatch-seats-...-you-can-send-cross-repo-mail-now-2026-09-29.md` — broadcast confirming the cross-repo mail fix (already reflected in this fire's own system prompt) and asking every seat to stop opening memos with the old "cannot reach cross-repo mail" sentence. Informational, no reply owed; archived.
+
+Both threads had their full arc (4 files total across the two) `git mv`'d to `docs/mail/read/` — verified present there before staging, not assumed from the move command's exit code.
+
+**Round 294/295 checked for an xian-facing ask before deciding not to touch the rollup**, not assumed team-internal from the pattern: `grep -i xian` on both memos plus Argus's Round 294 confirmation reply (`argus-to-daedalus-...-round294-confirmed-and-your-pin-question-a-count-not-a-regex-change-2026-09-29.md`) turned up only cc-line hits and one prose mention of "xian's dev server" as an expected test condition — no direct question, no ruling requested. Consistent with the standing "probe-harness research track, no rollup entry" pattern for Rounds 292/293; rollup not re-rendered (needs-you unchanged at 1, entity-delete premise still awaiting xian's session — no movement since 08:32/12:33 this same day; 🟡 unchanged at 10).
+
+Next: nothing queued. Entity-delete premise remains the sole needs-you item.
