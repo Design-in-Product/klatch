@@ -180,9 +180,15 @@ const inv225 = s225.filter((s) => s.kind === 'invisible');
 const opq225 = s225.filter((s) => s.kind === 'opaque');
 check(
   'B1',
-  "probe-round225's opaque count is exactly what Round 297 arm A4 reported — the arm is green",
-  spawnScan(read(R225), R225, ALL).opaque === 3 && opq225.length === 3,
-  `spawnScan reports opaque 3, and the three sites are lines ${opq225.map((s) => s.line).join(', ')}`,
+  "the opaque count Round 297 arm A4 reported is 3 under the TOKEN rule this file still carries a " +
+    'copy of — and 5 under the rule now in production',
+  opq225.length === 3 && spawnScan(read(R225), R225, ALL).unresolved === 5,
+  `the token limb (the local copy above, now the superseded rule) reports 3, at lines ` +
+    `${opq225.map((s) => s.line).join(', ')}. Production \`spawnScan\` reports unresolved ` +
+    `${spawnScan(read(R225), R225, ALL).unresolved} — those 3 plus the ${inv225.length} sites this ` +
+    `file classifies INVISIBLE, line 285 among them. Repaired by Daedalus in Round 301 when the ` +
+    `strict reading of §4 landed in promote-probes.mts: the arm's subject is unchanged and its ` +
+    `instrument is now named, which is the whole point of §3.`,
 );
 check(
   'B2',
@@ -217,15 +223,21 @@ const attestable = deferred.filter((f) => {
   const h = hazards(read(f));
   return h.length > 0 && h.every((k) => EXEMPTIBLE.has(k));
 });
+// Measured against the TOKEN rule — this file's local copy, not production. Round 301 deleted the
+// token allowlist from production, so asking production for an `unresolved === 0` here would be
+// asking a rule that has no third state whether its third state is masked: green by construction,
+// which is the vacuous shape this file's own §3 is about.
 const blind = attestable.filter(
-  (f) => sitesIn(f).some((s) => s.kind === 'invisible') && spawnScan(read(f), f, ALL).opaque === 0,
+  (f) => sitesIn(f).some((s) => s.kind === 'invisible') && !sitesIn(f).some((s) => s.kind === 'opaque'),
 );
 check(
   'C1',
-  'no attestable file is blind: every file with an invisible site also has a visible opaque one, so the void fires where it must',
+  'under the token rule no attestable file was blind: every file with an invisible site also had a visible opaque one, so the void fired where it had to',
   blind.length === 0,
   `${attestable.length} attestable (DEFERRED, all hazards EXEMPTIBLE) · ${blind.length} with an ` +
-    `invisible site and no opaque one${blind.length ? `: ${blind.join(', ')}` : ''}`,
+    `invisible site and no opaque one${blind.length ? `: ${blind.join(', ')}` : ''}. Containment by ` +
+    `luck, which is why it was routed as a finding; under the Round 301 production rule the class ` +
+    `cannot exist, because an invisible site IS an unresolved one.`,
 );
 measure(
   'C2',
@@ -235,20 +247,26 @@ measure(
     `masked by a sibling opaque site, not free of the defect`,
 );
 
-// The strict reading: no token allowlist at all. Any non-literal node/tsx site is unresolvable.
-const strictOpaque = (f: string): number => sitesIn(f).filter((s) => s.kind !== 'literal').length;
+// Both rules reconstructed from this file's own site classification, so the comparison is between
+// two named rules rather than between production and itself. Round 301 took the strict reading, so
+// `spawnScan().unresolved` IS `strictUnresolved` now — and the arm asserts that too, because a
+// before/after check whose "after" is not the shipped rule is a check about nothing.
+const tokenOpaque = (f: string): number => sitesIn(f).filter((s) => s.kind === 'opaque').length;
+const strictUnresolved = (f: string): number => sitesIn(f).filter((s) => s.kind !== 'literal').length;
 const moved = deferred.filter((f) => {
   const ex = exemptionsApplied(read(f)).length > 0;
-  return (spawnScan(read(f), f, ALL).opaque > 0 && ex) !== (strictOpaque(f) > 0 && ex);
+  return (tokenOpaque(f) > 0 && ex) !== (strictUnresolved(f) > 0 && ex);
 });
+const shipped = deferred.filter((f) => spawnScan(read(f), f, ALL).unresolved !== strictUnresolved(f));
 check(
   'C3',
-  'the strict reading — every non-literal node/tsx site counts as unresolvable — moves no verdict, so the correction is free',
-  moved.length === 0,
-  `0 of ${deferred.length} DEFERRED files change their admission verdict${
-    moved.length ? `: ${moved.join(', ')}` : ''
-  }. Not applied here — the production copy is in promote-probes.mts and a second drifting copy is ` +
-    'worse than the defect. Routed with the price attached.',
+  'the strict reading — every non-literal node/tsx site counts as unresolvable — moves no verdict, and it is the rule production now runs',
+  moved.length === 0 && shipped.length === 0,
+  `0 of ${deferred.length} DEFERRED files change their admission verdict between the token rule and ` +
+    `the strict one${moved.length ? `: ${moved.join(', ')}` : ''}, and production agrees with the ` +
+    `strict rule on all ${deferred.length}${shipped.length ? ` except ${shipped.join(', ')}` : ''}. ` +
+    'Routed with the price attached in Round 300 and taken by Daedalus in Round 301; the price was ' +
+    'zero in the verdicts and three arms in this file, which is where it actually landed.',
 );
 measure(
   'C4',

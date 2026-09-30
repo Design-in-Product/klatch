@@ -501,6 +501,24 @@ export const SWEPT = [
     expect: /All 13 regression checks passed/,
     why: 'driven twice by the promotion path (real HOME and an empty HOME, one variable): 13/13 green, exit 0 both arms, 1872/1659 ms; population and tree fingerprints for scripts/ and packages/ unchanged across 76 samples',
   },
+  {
+    // PROMOTED BY: Round 301, Daedalus's 2026-09-30 MID fire — driven by `promote-probes.mts`, which
+    // observed predicates 2-8 rather than reading them. Hazard-clean on arrival, no exemption, no
+    // `--force`.
+    //
+    // The subject is the repair Theseus routed in Round 300 §4 and declined to apply to a file that
+    // is mine: the token allowlist is deleted from `spawnScan`, so the two limbs now partition the
+    // sites they are read over — a node/tsx site either names a probe or it does not, and the 36
+    // invisible sites in 28 files are inside the count. `opaque` is renamed `unresolved` because the
+    // field no longer means what the old name said, and the rename is the reason the cost was loud:
+    // 13 call sites broke at typecheck, 3 of them assertions. Arm C carries the correction to the
+    // pricing — the zero was measured over the DEFERRED slice, which excludes `probe-round246`, the
+    // one file whose exemption the rule has ever honoured. The zero survives the wider population,
+    // by that file having no node/tsx spawn site at all.
+    file: 'probe-round301-the-limbs-partition-by-construction-and-the-price-landed-in-the-instrument-that-priced-it.mts',
+    expect: /All 13 regression checks passed/,
+    why: 'driven twice by the promotion path (real HOME and an empty HOME, one variable): 13/13 green, exit 0 both arms, 2184/2124 ms; population and tree fingerprints for scripts/ and packages/ unchanged across 96 samples',
+  },
 ];
 
 /**
@@ -747,6 +765,10 @@ export const DEFERRED = [
   // stays invisible to `hazards()`. That is why this seat declined to mark it; see Round 297 §3.
   // Classified BEFORE the gate was run, per Round 284 §4 and Argus's census wiring.
   'probe-round295-the-promotion-path-reaches-one-of-the-twenty-nine-and-the-refusals-are-its-own-fixtures.mts',
+  // round301 promoted to SWEPT in Round 301 (mine) — classified DEFERRED here on arrival so
+  // `promote-probes.mts` could drive it in rather than this seat hand-adding the entry (Theseus's
+  // Round 295 objection: hand-adding writes the verdict the tool exists to observe), then promoted
+  // out of this list by that drive in the same fire. It never needed deferring on the merits.
   // round299 promoted to SWEPT in Round 299 (mine) — classified DEFERRED here on arrival so
   // `promote-probes.mts` could drive it in rather than this seat hand-adding the entry, then promoted
   // out of this list by that drive in the same fire. It never needed deferring on the merits.

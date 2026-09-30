@@ -118,16 +118,16 @@ check(
   'A1',
   `LITERAL limb, known positive: ${R291.slice(0, 22)}… drives ${R288.slice(0, 22)}… at a literal filename (its line 503)`,
   s291.literal.includes(R288),
-  `literal targets: [${s291.literal.join(', ') || 'none'}] · opaque sites ${s291.opaque}`,
+  `literal targets: [${s291.literal.join(', ') || 'none'}] · unresolved sites ${s291.unresolved}`,
 );
 
 const s295 = spawnScan(read(R295), R295, ALL);
 check(
   'A2',
-  `OPAQUE limb, known positive, AND the literal limb misses it: ${R295.slice(0, 22)}… drives ` +
+  `UNRESOLVED limb, known positive, AND the literal limb misses it: ${R295.slice(0, 22)}… drives ` +
     `${R284.slice(0, 22)}… through a COMPUTED target (its line 236)`,
-  s295.opaque > 0 && !s295.literal.includes(R284),
-  `opaque sites ${s295.opaque} · literal targets [${s295.literal.join(', ') || 'none'}]. ` +
+  s295.unresolved > 0 && !s295.literal.includes(R284),
+  `unresolved sites ${s295.unresolved} · literal targets [${s295.literal.join(', ') || 'none'}]. ` +
     'This is the arm my scratch measurement REFUSED TO REPORT on: I had copied Theseus\'s §3 ' +
     'sentence "its arm C2 still spawns probe-round284" and assumed the literal limb would see it. ' +
     'It does not, and both of the first two repairs proposed for this gap were therefore aimed past ' +
@@ -139,7 +139,7 @@ check(
   'known negative, the citation direction: a source that NAMES a probe only in prose is not reported as spawning it',
   (() => {
     const s = spawnScan(`// see ${R288} for the red branch\nconst n = 1;\n`, 'synthetic', ALL);
-    return s.literal.length === 0 && s.opaque === 0;
+    return s.literal.length === 0 && s.unresolved === 0;
   })(),
   'Round 297 arm A4 is the standing correction here — a fixture labelled from a filename is not a measured fixture.',
 );
@@ -154,7 +154,7 @@ check(
       'synthetic',
       ALL,
     );
-    return s.literal.length === 0 && s.opaque === 0;
+    return s.literal.length === 0 && s.unresolved === 0;
   })(),
   `a 'git' argv naming ${R288.slice(0, 20)}… is a path argument, not a drive. Without this the ` +
     'detector would read this repo\'s many git subprocesses as probe drives.',
@@ -243,12 +243,14 @@ check(
   'C3',
   `known negative: ${R246.slice(0, 22)}… holds an honoured marker and has NO unresolvable spawn site, so it is not voided`,
   exemptionsApplied(read(R246)).length > 0 &&
-    spawnScan(read(R246), R246, ALL).opaque === 0 &&
+    spawnScan(read(R246), R246, ALL).unresolved === 0 &&
     admission(R246, ALL, read).length === 0,
-  `honoured [${exemptionsApplied(read(R246)).join(', ')}] · opaque sites ` +
-    `${spawnScan(read(R246), R246, ALL).opaque} · admission ` +
+  `honoured [${exemptionsApplied(read(R246)).join(', ')}] · unresolved sites ` +
+    `${spawnScan(read(R246), R246, ALL).unresolved} · admission ` +
     `[${admission(R246, ALL, read).join(' ; ') || 'silent'}]. The one exemption already live in this ` +
-    'tree is undisturbed, and that is a measurement rather than an intention.',
+    'tree is undisturbed, and that is a measurement rather than an intention. Round 301 note: this ' +
+    'arm survived the removal of the token allowlist because this file has ZERO node/tsx spawn ' +
+    'sites of any kind — not because the strict reading agreed with the token reading here.',
 );
 
 check(
@@ -256,13 +258,15 @@ check(
   'known negative, the conjunction is real: a file with unresolvable spawn sites and NO marker is not refused by admission',
   (() => {
     const bare = ALL.filter(
-      (f) => spawnScan(read(f), f, ALL).opaque > 0 && exemptionsApplied(read(f)).length === 0,
+      (f) => spawnScan(read(f), f, ALL).unresolved > 0 && exemptionsApplied(read(f)).length === 0,
     );
     return bare.length > 0 && bare.every((f) => !admission(f, ALL, read).some((w) => w.includes('VOID')));
   })(),
-  `${ALL.filter((f) => spawnScan(read(f), f, ALL).opaque > 0 && exemptionsApplied(read(f)).length === 0).length} ` +
-    'files have an unresolvable spawn site and no marker; none is voided. A blanket opaque-site ' +
-    'refusal would have priced at 75 of 127 files to govern a class whose only live instance is attested.',
+  `${ALL.filter((f) => spawnScan(read(f), f, ALL).unresolved > 0 && exemptionsApplied(read(f)).length === 0).length} ` +
+    'files have an unresolvable spawn site and no marker; none is voided. A blanket unresolved-site ' +
+    'refusal would price at that figure to govern a class whose only live instance is attested. ' +
+    '(At Round 299 the same count read 75 of 127 under the token rule; it is larger now because ' +
+    "Round 301 deleted the token allowlist — the count is computed live, the 75 is dated.)",
 );
 
 // ── arm D: the yield, measured — and D1 is a gate, not a pin on a figure ────────────────────────
@@ -297,7 +301,7 @@ measure(
   'D2',
   'the population figures this repair was priced on — measured, never pinned',
   `probe files ${ALL.length} · hazard-clean DEFERRED candidates ${hazardClean.length} · ` +
-    `files with an unresolvable node/tsx spawn site ${ALL.filter((f) => spawnScan(read(f), f, ALL).opaque > 0).length} · ` +
+    `files with an unresolvable node/tsx spawn site ${ALL.filter((f) => spawnScan(read(f), f, ALL).unresolved > 0).length} · ` +
     `files with a literal probe spawn ${ALL.filter((f) => spawnScan(read(f), f, ALL).literal.length > 0).length} · ` +
     `files inheriting a non-exemptible class ${ALL.filter((f) => inherited(f, ALL, read).classes.length > 0).length}`,
 );

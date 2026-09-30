@@ -306,7 +306,8 @@ export const exemptionsApplied = (src: string): string[] =>
  * spawn site voids the file's exemptions.** Not its hazards — a file with no marker is refused or
  * admitted on its own source as before. What it voids is the *clearance*: a declaration cannot buy
  * admission for a file the machine has just admitted it cannot finish reading. Measured cost: **0 of
- * 4 candidates have an opaque site**, and of the 15 attestable files exactly one — `round295` — would
+ * 4 candidates have an unresolved site**, and of the 15 attestable files exactly one — `round295` —
+ * would
  * otherwise have gone fully drivable on a marker. So this converts Theseus's hand-reasoned refusal
  * into a property the machine holds, on the one file where it is live, for no reach.
  *
@@ -324,27 +325,50 @@ const SPAWN_CALL = /\b(?:execFileSync|execSync|spawnSync|spawn|execFile|fork)\s*
 const SPAWN_WINDOW = 600;
 
 /**
- * Two limbs of deliberately unequal strength, Theseus's Round 297 §5 distinction kept intact.
+ * Two limbs of deliberately unequal strength, Theseus's Round 297 §5 distinction kept intact — but
+ * they now **partition by construction**, which they did not until Round 301.
  *
  * `literal` is a **classifier**: a probe filename present inside a node/tsx subprocess's argv
- * window. `opaque` is only a **screen**: a node/tsx subprocess whose target is computed. It cannot
- * say the target is a probe, and the count is a count of *sites*, not of probe drives. Round 297's
- * arm A4 is the standing correction on that — `probe-round225` names probes it never spawns AND
- * spawns one through a variable, so a fixture labelled from a filename is not a measured fixture.
+ * window. `unresolved` is only a **screen**: a count of node/tsx subprocess sites whose target this
+ * tool could not resolve to a probe file. It cannot say the target IS a probe, and it counts
+ * *sites*, not probe drives. Round 297's arm A4 is the standing correction on that —
+ * `probe-round225` names probes it never spawns AND spawns one through a variable, so a fixture
+ * labelled from a filename is not a measured fixture.
+ *
+ * **Why there is no token allowlist here.** Until Round 301 the screen fired only on a window
+ * matching `join(`, `\bR\d{3}\b`, `file`, `stem` or `${`. Theseus's Round 300 §2 measured what that
+ * left out: on a 129-file population, 8 sites are literal and 117 match a token, and **36 sites
+ * across 28 files match neither** — the plainest spawn shape in the repo,
+ * `spawnSync('npx', ['tsx', CLI, ...args])`, with an uppercase module constant in the target slot
+ * and its `join(` hundreds of lines up at the constant's definition. Such a site was neither
+ * classified nor screened: it was invisible, and two limbs that do not cover their domain cannot be
+ * reasoned about together. His §3 instance is the sharpest available — `\bR\d{3}\b` matches `R246`
+ * and misses `R223B`, because the trailing letter defeats the closing boundary, so the ONE real
+ * probe drive in `probe-round225` (its line 285) was invisible to the very limb his Round 297 arm A4
+ * was measured with. The arm was green on three other sites, two of which spawn no probe at all.
+ *
+ * The repair is to delete the heuristic rather than extend it. Any non-literal node/tsx site is
+ * unresolved, which is the honest claim: `node -e <minted source>` genuinely is a subprocess this
+ * tool cannot resolve, and so is `['tsx', CLI]`. Priced before taking it (Round 300 §4, re-measured
+ * in Round 301): **no file's admission verdict moves**, and `probe-round246` — the only file in the
+ * population with an honoured exemption — has zero node/tsx spawn sites of any kind, so it could not
+ * move. The cost that WAS non-zero landed in the instrument that priced the change, not in the
+ * verdicts: see `probe-round301`.
  */
 export const spawnScan = (
   src: string,
   self: string,
   pop: readonly string[],
-): { literal: string[]; opaque: number } => {
+): { literal: string[]; unresolved: number } => {
   const literal = new Set<string>();
-  let opaque = 0;
+  let unresolved = 0;
   SPAWN_CALL.lastIndex = 0;
   let m: RegExpExecArray | null;
   while ((m = SPAWN_CALL.exec(src))) {
     const w = src.slice(m.index, m.index + SPAWN_WINDOW);
-    // Only a node/tsx runner can execute a probe FILE. `git`, the census, and `node -e` on minted
-    // source are all subprocesses that cannot.
+    // Only a node/tsx runner can execute a probe FILE. `git`, the census, and a non-node runner are
+    // all subprocesses that cannot. This guard stays: it is a claim about the RUNNER, which is in
+    // the window by necessity, not a guess about the target.
     if (!/['"`](?:npx|tsx|node)['"`]/.test(w)) continue;
     let named = false;
     for (const f of pop) {
@@ -353,9 +377,9 @@ export const spawnScan = (
         named = true;
       }
     }
-    if (!named && /\bjoin\s*\(|\bR\d{3}\b|\bfile\b|\bstem\b|\$\{/.test(w)) opaque += 1;
+    if (!named) unresolved += 1;
   }
-  return { literal: [...literal], opaque };
+  return { literal: [...literal], unresolved };
 };
 
 /**
@@ -369,14 +393,14 @@ export const inherited = (
   self: string,
   pop: readonly string[],
   read: (f: string) => string,
-): { from: string[]; classes: string[]; opaque: number } => {
+): { from: string[]; classes: string[]; unresolved: number } => {
   let src: string;
   try {
     src = read(self);
   } catch {
-    return { from: [], classes: [], opaque: 0 };
+    return { from: [], classes: [], unresolved: 0 };
   }
-  const { literal, opaque } = spawnScan(src, self, pop);
+  const { literal, unresolved } = spawnScan(src, self, pop);
   const classes = new Set<string>();
   const from: string[] = [];
   for (const t of literal) {
@@ -395,7 +419,7 @@ export const inherited = (
       for (const h of carried) classes.add(h);
     }
   }
-  return { from, classes: [...classes], opaque };
+  return { from, classes: [...classes], unresolved };
 };
 
 /**
@@ -415,18 +439,19 @@ export const admission = (
   }
   // Voids the CLEARANCE, not the file. With no marker there is nothing to void and the file is
   // refused or admitted on its own source exactly as before — which is why this is `&&` and not a
-  // blanket opaque-site refusal. A blanket one would price at 75 of 127 files for a class whose only
-  // live instance is an attested one.
+  // blanket unresolved-site refusal. A blanket one would price at most of the population for a class
+  // whose only live instance is an attested one.
   let ex: string[] = [];
   try {
     ex = exemptionsApplied(read(self));
   } catch {
     /* unreadable is the census's red */
   }
-  if (inh.opaque > 0 && ex.length) {
+  if (inh.unresolved > 0 && ex.length) {
     why.push(
-      `exemption [${ex.join('+')}] VOID — ${inh.opaque} node/tsx spawn site(s) with a computed ` +
-        `target, so the classes the marker clears are not the classes this drive would run`,
+      `exemption [${ex.join('+')}] VOID — ${inh.unresolved} node/tsx spawn site(s) whose target ` +
+        `this tool cannot resolve to a probe file, so the classes the marker clears are not the ` +
+        `classes this drive would run`,
     );
   }
   return why;
