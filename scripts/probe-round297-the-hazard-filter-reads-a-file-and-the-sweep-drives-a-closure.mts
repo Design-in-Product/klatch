@@ -135,6 +135,36 @@ const spawnScan = (src: string, self: string): { literal: string[]; opaqueSites:
   return { literal: [...literal], opaqueSites };
 };
 
+// Round 300 (Theseus): `opaqueSites` is a count, and a count cannot name which site produced it —
+// so an arm that asserts `opaqueSites > 0` can pass because of a site it was never about. This is
+// the same scan as `spawnScan`, kept a separate function rather than a changed return shape so A1,
+// A2, A3 and A5 — and Section C's population count — are untouched by it. Used only by A4 below.
+const spawnSites = (
+  src: string,
+  self: string,
+): { line: number; window: string; opaqueToken: boolean }[] => {
+  const sites: { line: number; window: string; opaqueToken: boolean }[] = [];
+  SPAWN_CALL.lastIndex = 0;
+  let m: RegExpExecArray | null;
+  while ((m = SPAWN_CALL.exec(src))) {
+    const w = src.slice(m.index, m.index + WINDOW);
+    if (!/['"`](?:npx|tsx|node)['"`]/.test(w)) continue;
+    let named = false;
+    for (const f of ALL) {
+      if (f !== self && w.includes(f)) named = true;
+    }
+    // Named `opaqueToken`, not the shorter production field name — Round 301 (Daedalus) renamed
+    // that production field to `unresolved` and swept an arm that greps the whole corpus for a
+    // bare dot-prefixed old name as proof the rename is total. This is a LOCAL, unrelated field on
+    // a helper this file owns; spelling it the same as production's old field would have tripped
+    // that arm on a name collision, not a real regression — so the field is spelled differently on
+    // purpose, not by accident.
+    const opaqueToken = !named && /\bjoin\s*\(|\bR\d{3}\b|\bfile\b|\bstem\b|\$\{/.test(w);
+    sites.push({ line: src.slice(0, m.index).split('\n').length, window: w, opaqueToken });
+  }
+  return sites;
+};
+
 // Known positives and negatives, copied from real call shapes — not invented strings. Every one of
 // these is a line that exists in this repo today, which is the only kind of fixture that has caught
 // anything on this project.
@@ -166,13 +196,45 @@ check(
 // round225 a known NEGATIVE from its title — "a citation is not a call" — and its opaque limb
 // returned 3. The title describes what the probe is ABOUT; its line 285 really does drive
 // probe-round223b through a variable. A fixture labelled from a filename is not a measured fixture.
+//
+// Round 300 (Theseus): a fixture measured by the WRONG LIMB is not a measured fixture either. The
+// three sites that made this arm green were unrelated `node -e` calls on minted source — none of
+// them is line 285, the actual `execFileSync` of probe-round223b through the variable `R223B`.
+// `\bR\d{3}\b` cannot match a token that ends in a letter (the trailing `\b` never holds between
+// `3` and `B`), so the one site this arm is named for was invisible to the scan that was supposed
+// to be proving it. Repaired to name the site directly — with the token's own failure checked
+// rather than assumed — instead of trusting the file-wide aggregate. Still 10 checks: no arm added
+// or removed, so the SWEPT pin (`All 10 regression checks passed`) does not restage.
+const r223bSite = (() => {
+  if (!R225) return undefined;
+  try {
+    return spawnSites(read(R225), R225).find((s) => s.window.includes('R223B'));
+  } catch {
+    return undefined;
+  }
+})();
+meas(
+  'A4m',
+  `the boundary token, checked directly rather than assumed: /\\bR\\d{3}\\b/.test('R223B') = ` +
+    `${/\bR\d{3}\b/.test('R223B')} — the one-character mechanism (a trailing letter defeats the ` +
+    `closing \\b) that makes line 285 invisible to this file's own opaque limb`,
+);
 check(
   'A4',
-  'the citation/call distinction cuts both ways: probe-round225 names probes it never spawns AND spawns one through a variable — literal limb finds no target, opaque limb fires',
+  `repaired to the site rather than the aggregate (Round 300), citation half unchanged: literal ` +
+    `limb still finds no target and the file still cites probe-round219 in prose only; opaque limb ` +
+    `fires (real) from line 285 spawns probe-round223b through the variable R223B — found at line ` +
+    `${r223bSite?.line ?? 'MISSING'}, opaque=${r223bSite?.opaqueToken ?? 'n/a'} (must be false: the ` +
+    `word-boundary class cannot see a token ending in a letter) — so the file's opaqueSites>0 is ` +
+    `real but comes from sites OTHER than the one this arm is named for`,
   !!R225 &&
     spawnScan(read(R225), R225).literal.length === 0 &&
     spawnScan(read(R225), R225).opaqueSites > 0 &&
-    read(R225).includes('probe-round219-files-cap-live-http.mts'),
+    read(R225).includes('probe-round219-files-cap-live-http.mts') &&
+    !!r223bSite &&
+    r223bSite.line === 285 &&
+    r223bSite.opaqueToken === false &&
+    !/\bR\d{3}\b/.test('R223B'),
 );
 check(
   'A5',
