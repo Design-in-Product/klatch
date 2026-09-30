@@ -264,6 +264,174 @@ export const hazards = (src: string): string[] =>
 export const exemptionsApplied = (src: string): string[] =>
   Object.keys(DETECTORS).filter((k) => DETECTORS[k].test(stripSource(src, false)) && exempt(src, k));
 
+/**
+ * ─────────────────────────── Admission, which is not the same as `hazards()` ───────────────────────────
+ *
+ * Theseus's Round 297 §3 named the gap exactly: **"an attestation that names every class the machine
+ * can see is not an attestation that the file is safe to drive."** `hazards()` reads ONE file's
+ * source. It does not read spawn targets. So `probe-round295` — whose arm C2 drives `probe-round284`
+ * (`[net, suite]`) — can clear every class the machine can see with a `db homedir` marker and arrive
+ * at the reader as fully clear. His `EXEMPTIBLE` objection is right and it is not an objection to the
+ * exemption mechanism: **the boundary is argued per CLASS and admission is per FILE.**
+ *
+ * His §7 proposed the repair as "teach `hazards()` to follow literal spawn targets and union the
+ * hazards", priced at a yield of −1 on a population of 4, and asked me to price it rather than take
+ * his word. Priced (Round 299, figures in the memo). **Three results changed the shape:**
+ *
+ * 1. **The −1 is real and it buys nothing.** The one file it drops, `probe-round291`, inherits
+ *    `[db, homedir]` — both `EXEMPTIBLE`, i.e. both already argued absorbable, and the argument holds
+ *    for a child process for the same reason it holds for the file: predicate 8's sentinel brackets
+ *    the WHOLE drive, subprocesses included, so a child that writes the database is caught after the
+ *    fact; a child that reads `~/.claude/projects` has performed a read. Inheriting the exemptible
+ *    classes costs the only candidate it touches and reduces no risk.
+ *
+ * 2. **So inherit the NON-EXEMPTIBLE classes only.** Yield measured 4 → 4: **cost zero.** And the
+ *    benefit is retained precisely where it matters — a probe that drives a `net`/`suite`/`model`
+ *    probe at a literal filename is refused. That is not hypothetical: six probes drive
+ *    `probe-round230` (`[model]`) at a literal filename and `probe-round281` drives `probe-round280`
+ *    (`[net]`). All of those parents already carry their own hazards, so the yield is unchanged today
+ *    — but they are live known positives rather than invented ones.
+ *
+ * 3. **Neither his proposal nor my own first counter-proposal would have caught round295, the
+ *    instance that motivated the question.** `round295:236` is
+ *    `execFileSync('npx', ['tsx', join('scripts', file)])` with `file = fileFor('probe-round284')` —
+ *    a **computed** target. The literal limb cannot see it, by construction. My scratch measurement
+ *    refused to report when that known positive failed, which is the only reason I found this before
+ *    shipping a repair aimed past its own motivating case. Measured: **0 of the 15 attestable files
+ *    have a literal spawn carrying a non-exemptible class; 10 of 15 have an unresolvable one.** A
+ *    rule written on the literal limb alone would have had population zero — the vacuous-check shape
+ *    this fleet keeps re-finding, one inch from being mine.
+ *
+ * Hence the second condition, which is where the class actually lives: **an unresolvable node/tsx
+ * spawn site voids the file's exemptions.** Not its hazards — a file with no marker is refused or
+ * admitted on its own source as before. What it voids is the *clearance*: a declaration cannot buy
+ * admission for a file the machine has just admitted it cannot finish reading. Measured cost: **0 of
+ * 4 candidates have an opaque site**, and of the 15 attestable files exactly one — `round295` — would
+ * otherwise have gone fully drivable on a marker. So this converts Theseus's hand-reasoned refusal
+ * into a property the machine holds, on the one file where it is live, for no reach.
+ *
+ * **`hazards()` is deliberately NOT changed.** It remains file-local, so every existing caller's
+ * assertion about it stays true — including `probe-round297`'s arm B1, which asserts that a source
+ * whose only content is a literal drive of a flagged probe reads hazard-CLEAN. That arm is SWEPT and
+ * it documents a fact that is still a fact. Folding inheritance into `hazards()` would have reddened
+ * another seat's swept arm to say something a separate function says without lying about what
+ * `hazards()` reads.
+ */
+
+/** Every call shape in this repo that can start a child process. Copied from `probe-round297`. */
+const SPAWN_CALL = /\b(?:execFileSync|execSync|spawnSync|spawn|execFile|fork)\s*\(/g;
+/** Characters after the call token that still belong to its argument list, in practice. */
+const SPAWN_WINDOW = 600;
+
+/**
+ * Two limbs of deliberately unequal strength, Theseus's Round 297 §5 distinction kept intact.
+ *
+ * `literal` is a **classifier**: a probe filename present inside a node/tsx subprocess's argv
+ * window. `opaque` is only a **screen**: a node/tsx subprocess whose target is computed. It cannot
+ * say the target is a probe, and the count is a count of *sites*, not of probe drives. Round 297's
+ * arm A4 is the standing correction on that — `probe-round225` names probes it never spawns AND
+ * spawns one through a variable, so a fixture labelled from a filename is not a measured fixture.
+ */
+export const spawnScan = (
+  src: string,
+  self: string,
+  pop: readonly string[],
+): { literal: string[]; opaque: number } => {
+  const literal = new Set<string>();
+  let opaque = 0;
+  SPAWN_CALL.lastIndex = 0;
+  let m: RegExpExecArray | null;
+  while ((m = SPAWN_CALL.exec(src))) {
+    const w = src.slice(m.index, m.index + SPAWN_WINDOW);
+    // Only a node/tsx runner can execute a probe FILE. `git`, the census, and `node -e` on minted
+    // source are all subprocesses that cannot.
+    if (!/['"`](?:npx|tsx|node)['"`]/.test(w)) continue;
+    let named = false;
+    for (const f of pop) {
+      if (f !== self && w.includes(f)) {
+        literal.add(f);
+        named = true;
+      }
+    }
+    if (!named && /\bjoin\s*\(|\bR\d{3}\b|\bfile\b|\bstem\b|\$\{/.test(w)) opaque += 1;
+  }
+  return { literal: [...literal], opaque };
+};
+
+/**
+ * What a file's literal spawn targets contribute to its admission, and what it hides.
+ *
+ * `read` is a parameter rather than a closure over the filesystem so a probe can drive this over a
+ * synthetic population. A missing target is ignored here on purpose: an unresolvable *name* is the
+ * census's red, not this filter's.
+ */
+export const inherited = (
+  self: string,
+  pop: readonly string[],
+  read: (f: string) => string,
+): { from: string[]; classes: string[]; opaque: number } => {
+  let src: string;
+  try {
+    src = read(self);
+  } catch {
+    return { from: [], classes: [], opaque: 0 };
+  }
+  const { literal, opaque } = spawnScan(src, self, pop);
+  const classes = new Set<string>();
+  const from: string[] = [];
+  for (const t of literal) {
+    let th: string[];
+    try {
+      th = hazards(read(t));
+    } catch {
+      continue;
+    }
+    // NON-EXEMPTIBLE only, and the reason is result 1 above: the exemptible boundary is a
+    // failure-mode argument, and the failure mode of a child process is the same as the failure mode
+    // of the file. Unioning `db`/`homedir` costs the only candidate it reaches and reduces no risk.
+    const carried = th.filter((h) => !EXEMPTIBLE.has(h));
+    if (carried.length) {
+      from.push(t);
+      for (const h of carried) classes.add(h);
+    }
+  }
+  return { from, classes: [...classes], opaque };
+};
+
+/**
+ * Per-file admission, the layer `hazards()` is not. Returns the reasons to refuse, empty to admit.
+ * Every reason is printed by `--list`, because a refusal a reader cannot see is indistinguishable
+ * from a file nobody got to.
+ */
+export const admission = (
+  self: string,
+  pop: readonly string[],
+  read: (f: string) => string,
+): string[] => {
+  const why: string[] = [];
+  const inh = inherited(self, pop, read);
+  if (inh.classes.length) {
+    why.push(`inherits [${inh.classes.join('+')}] from a literal drive of ${inh.from.join(', ')}`);
+  }
+  // Voids the CLEARANCE, not the file. With no marker there is nothing to void and the file is
+  // refused or admitted on its own source exactly as before — which is why this is `&&` and not a
+  // blanket opaque-site refusal. A blanket one would price at 75 of 127 files for a class whose only
+  // live instance is an attested one.
+  let ex: string[] = [];
+  try {
+    ex = exemptionsApplied(read(self));
+  } catch {
+    /* unreadable is the census's red */
+  }
+  if (inh.opaque > 0 && ex.length) {
+    why.push(
+      `exemption [${ex.join('+')}] VOID — ${inh.opaque} node/tsx spawn site(s) with a computed ` +
+        `target, so the classes the marker clears are not the classes this drive would run`,
+    );
+  }
+  return why;
+};
+
 export type DriveResult = {
   code: number | null;
   out: string;
@@ -492,17 +660,36 @@ const main = async (): Promise<void> => {
   const skipped: Record<string, string[]> = {};
   const forced: string[] = [];
   const exempted: string[] = [];
+  const inadmissible: string[] = [];
   const candidates: string[] = [];
+  const readProbe = (f: string): string => readFileSync(join(SCRIPTS, f), 'utf8');
   for (const f of files) {
     if (swept.has(f)) continue;
     if (!DEFERRED.includes(f)) continue; // unclassified — the census owns that red
     if (ONLY && !f.includes(ONLY)) continue;
-    const src = readFileSync(join(SCRIPTS, f), 'utf8');
+    const src = readProbe(f);
     const ex = exemptionsApplied(src);
     if (ex.length) exempted.push(`${f} (${ex.join('+')})`);
     const h = hazards(src);
+    // Bucketed for the report BEFORE admission can `continue` past it, and that ordering is a
+    // repair. The first version checked admission first, and the `not driven (db)` column went
+    // 80 → 74 on a change that moved no file's hazards at all — seven files simply stopped reaching
+    // the bucketing. **That is Round 296 §8's own warning inverted: there I nearly read an unchanged
+    // number as evidence nothing happened; here a changed number would have been evidence of
+    // something that did not happen.** A per-class column and a per-file refusal are different
+    // questions and both answers are printed.
+    if (h.length) for (const k of h) (skipped[k] ??= []).push(f);
+    // Admission runs before `--force` can reach it, and THAT ordering is the design. `--force` exists
+    // to let a measurement overrule the reading list about **this file's own source**. It was never an
+    // argument about a child process: an inherited `net`/`suite`/`model`, or an exemption voided by an
+    // unresolvable spawn target, is not a claim about this file that driving this file could refute.
+    const bad = admission(f, files, readProbe);
+    if (bad.length) {
+      inadmissible.push(`${f} — ${bad.join('; ')}`);
+      continue;
+    }
     if (h.length) {
-      for (const k of h) (skipped[k] ??= []).push(f);
+      // (the `skipped` bucketing for this file happened above, before admission could skip past it)
       // `--force` exists because without it the reading list has the final say, and that contradicts
       // the one sentence this whole path rests on: the drive IS the classification. The filter is
       // over-broad on purpose, and over-breadth costs yield in exactly one observable way —
@@ -533,6 +720,10 @@ const main = async (): Promise<void> => {
   // report is a silent widening of what this tool will drive unattended, which is the one property
   // the reading filter exists to keep visible.
   for (const f of exempted) console.log(`  EXEMPT by declaration (literal-only hit): ${f}`);
+  // Printed for the same reason exemptions are: this is the one refusal that is NOT a statement about
+  // the file's own source, so a reader who checks the file and finds it clean would otherwise have no
+  // way to learn why the tool declined it.
+  for (const f of inadmissible) console.log(`  INADMISSIBLE (spawn closure, not own source): ${f}`);
 
   if (LIST_ONLY) {
     console.log('\n--list: selection only, nothing driven.');
