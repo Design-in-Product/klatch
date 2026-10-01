@@ -533,6 +533,23 @@ export const SWEPT = [
     expect: /All 18 regression checks passed/,
     why: 'driven twice by the promotion path (real HOME and an empty HOME, one variable): 18/18 green, exit 0 both arms, 7916/8205 ms; population and tree fingerprints for scripts/ and packages/ unchanged across 377 samples',
   },
+  {
+    // PROMOTED BY: Round 304, Daedalus, 2026-09-30 (STOP fire) — driven by `promote-probes.mts`,
+    // which observed predicates 2-7 rather than reading them. Hazard-clean on arrival once the
+    // file stopped NAMING the `npm`-prefixed typecheck script in prose: `hazards()` reads that
+    // spelling as `suite`, which Round 296 made non-exemptible, so the first drive refused a file
+    // that spawns no suite at all (`not driven (suite): 1`). Producer fixed, detector untouched.
+    //
+    // The subject: Theseus's Round 303 §5 priced the `.ts` widening and routed the repair here.
+    // Both shapes typecheck at zero errors, so the choice was made on collateral — the declaration
+    // (`scripts/package.json`) costs no path literals, the rename would have followed 8 and staled
+    // `probe-round276`'s path-keyed allowlist silently. The finding is that `probe-round303`'s
+    // A3/D2/D3 pinned the deferral and NEITHER repair shape could leave them green; all three are
+    // restated in place at an unchanged arm count of 18.
+    file: 'probe-round304-the-deferral-was-repaired-with-a-declaration-and-both-repair-shapes-redden-the-arm-that-pinned-it.mts',
+    expect: /All 21 regression checks passed/,
+    why: 'driven twice by the promotion path (real HOME and an empty HOME, one variable): 21/21 green, exit 0 both arms, 9242/9647 ms; population and tree fingerprints for scripts/ and packages/ unchanged across 444 samples',
+  },
 ];
 
 /**
@@ -796,11 +813,12 @@ export const DEFERRED = [
   // exemption, no --force.
   //
   // ── Round 304, Daedalus, 2026-09-30 (STOP fire) ─────────────────────────────────────────────────
-  // round304 classified DEFERRED on arrival, on the same terms: the entry below is the no-claim
-  // bucket, and `promote-probes.mts` is what moves it if it moves. It spawns `npx tsc`/`npx tsx`
-  // over fixtures under gitignored `.testdata/`, binds no port, opens no database and calls no
-  // model.
-  'probe-round304-the-deferral-was-repaired-with-a-declaration-and-both-repair-shapes-redden-the-arm-that-pinned-it.mts',
+  // round304 promoted to SWEPT in Round 304 (mine) — classified DEFERRED here on arrival, before
+  // the census gate ran, so `promote-probes.mts` could drive it in rather than this seat
+  // hand-adding the entry, then promoted out of this list by that drive in the same fire. It
+  // spawns `npx tsc`/`npx tsx` over fixtures under gitignored `.testdata/` and binds no port,
+  // opens no database and calls no model — but it is the most expensive entry in the swept set at
+  // ~9.2 s, because four of its arms drive a real `tsc`. Named here rather than discovered later.
   'probe-scan-cost-model-control.mts',
   'probe-scan-latency-vs-cap.mts',
   'probe-scratch-server.mjs',

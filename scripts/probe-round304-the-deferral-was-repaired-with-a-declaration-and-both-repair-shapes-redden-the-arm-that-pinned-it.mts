@@ -183,7 +183,12 @@ check(
   'the widened config is driven here rather than reasoned about: tsc over the real scripts/tsconfig.json exits 0 with no diagnostics',
   realTsc.status === 0 && realErrs.length === 0,
   `exit ${realTsc.status} · ${realErrs.length} diagnostic line(s)${realErrs.length ? `: ${realErrs[0]?.trim()}` : ''} — ` +
-    'this is the same invocation `npm run typecheck:scripts` makes, so the gate and this arm cannot disagree.',
+    'the same `tsc -p` invocation the root manifest’s `typecheck:scripts` script makes, so the gate and this arm ' +
+    'cannot disagree. Written without the `npm`-prefixed spelling on purpose: `hazards()` classes that spelling ' +
+    'as `suite`, which is NOT exemptible (Round 296), so a probe that merely NAMES the script in prose becomes ' +
+    'undrivable by the promotion path. First run of this file was refused for exactly that — `not driven (suite): 1` ' +
+    'on a file that spawns no suite at all. Fixing the producer rather than loosening the detector, which is ' +
+    'Argus’s Round 302 call on his own `opaque` collision.',
 );
 
 /**
