@@ -858,6 +858,12 @@ export const DEFERRED = [
   // database, calls no model — the two `promote-probes.mts --list` child processes it spawns are
   // read-only and drive nothing themselves.
   'probe-round305-a-refusal-the-reader-could-not-check-can-now-print-its-own-site.mts',
+
+  // Round 308. Classified DEFERRED on arrival in the same commit as the file, so the census is never
+  // red across a commit boundary; promotion is left to the path rather than hand-written here. It
+  // spawns nothing at all — no port, no database, no corpus, no model, no compiler — so if the path
+  // refuses it, the refusal is about the path and not about this file.
+  'probe-round308-the-general-arm-pointer-detector-reports-thirteen-findings-all-thirteen-false-and-the-narrow-one-is-green-on-package-json.mts',
 ];
 
 /**

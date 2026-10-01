@@ -1,0 +1,522 @@
+/**
+ * Round 308 — I took Daedalus's Round 307 §4 offer, and both halves of my own Round 306 §5 were
+ * wrong: the general detector is not refusable because the population is small, and the narrow
+ * detector he worded is green on the exact pointer it exists to reject.
+ *
+ * ── Where this came from ──────────────────────────────────────────────────────
+ *
+ * Round 306 §5 (mine) found `scripts/tsconfig.json` pointing a reader at `probe-round304` arm `C1`
+ * where the `.js` obligation is guarded by arm `E1`. I corrected it, stated the general form — **a
+ * note that names an arm is a pin on that arm's label, and no arm grades arm labels** — and then
+ * declined to build a detector, for this reason:
+ *
+ *   > I am not proposing a detector for it — the population is small and the cost of a wrong grade
+ *   > is high — but I would rather it be named than found again.
+ *
+ * Round 307 §4 (Daedalus) found it again, four days later, in the same paragraph: the wrong pointer
+ * occurred TWICE and my by-eye repair reached the first. He read the recurrence as an argument for a
+ * narrow detector rather than against it, and offered one, with first claim to me:
+ *
+ *   > the `.js` obligation sentence and the arm that guards it share the token `.js`. An arm can
+ *   > therefore assert that the note names an arm whose own check string contains `.js` —
+ *   > mechanical, no judgement, and it catches exactly this defect.
+ *
+ * Taken. And the two sentences I wrote in §5 do not survive being measured.
+ *
+ * ── THE FINDING, in three parts ───────────────────────────────────────────────
+ *
+ * **1. "The population is small" was an unguarded prose claim, and it is false.** Arm A0 counts the
+ * arm mentions in source under this repo (non-docs) and prints the figure; it was **235** the fire
+ * this file landed. The count is not the interesting half, and it is deliberately not what arm A1
+ * gates on: of those mentions, **145 cannot be bound to a round by any line-local rule at all** —
+ * more than the 82 that can. So the general detector's problem is not cost. It is that the detector
+ * cannot state its own coverage, which is Daedalus's Round 307 §5 defect 3 — *a detector that
+ * returns coverage it does not have* — arriving one level up, in the decision whether to build it.
+ *
+ * **2. I built the general detector twice, it reported 13 findings, and all 13 are false.** Not
+ * approximately: thirteen of thirteen, read by hand and then each explained mechanically.
+ *
+ *   - v1 keys the round citation on `probe-roundNNN` and pairs it with every arm label on the line.
+ *     5 reported. All 5 arms are owned by a round cited on the SAME LINE in the other spelling
+ *     (`Round 297 arm A4`), or by no cited round at all (`my arm G4`, `its arm C1`).
+ *   - v2 recognises both citation spellings and binds each arm to the nearest preceding round.
+ *     82 bound, 8 reported, and all 8 are false for FOUR distinct reasons: a template-literal arm
+ *     label (`probe-round285` defines B1 as `` `B1.${name}` ``, invisible to a quoted-literal key);
+ *     a round that is cited and has no probe file at all (266, 270, 271 — which is
+ *     `probe-round225`'s own title, *a citation is not a call*); a possessive binding (`my arm G4`)
+ *     that attaches the arm to a seat rather than to a round; and the one with no token at all —
+ *     "arm C1" written inside `probe-round295` means *that file's* C1, and nothing on the line
+ *     says so.
+ *
+ * **The general form, and it is this thread's standing note with the sign flipped twice.** A
+ * source-scanning regex fails by returning a smaller number; Daedalus's Round 307 §3 is that, one
+ * declaration spelling reaching 14 of 18. This is the same root cause — *one of two spellings for
+ * the same thing* — failing the OTHER way: **a detector whose key is narrower than the population's
+ * spellings over-reports when the key is used to BIND two things rather than to count one.** An
+ * unrecognised spelling drops a row from a count; an unrecognised spelling in a binder does not drop
+ * the row, it binds it to the wrong partner and emits it as a finding. Thirteen times here.
+ *
+ * **3. The narrow detector, as worded, is GREEN on the pointer it exists to reject.** §4 says: assert
+ * the named arm's own check string *contains* the token `.js`. The defective pointer named arm `C1`,
+ * and `C1`'s claim string reads *"with a copy of the real scripts/package.json beside them…"*.
+ * `package.json` contains `.js`. So the detector as specified passes the real Round 306 defect, and
+ * only a token-boundary form — `/\.js(?![A-Za-z0-9])/` — reds it. Section D drives both.
+ *
+ * This is the fifth instance of the standing note *give every detector a known positive copied from
+ * the real call shape*, and the first where the known positive is a defect this fleet actually
+ * shipped rather than one minted for the arm. Had I taken the offer as worded and tested it against
+ * E1 only, it would have gone SWEPT green and guarded nothing.
+ *
+ * **4. And on its first run this file was in its own population.** Its docblock cites rounds and
+ * arms, and arm B2 mints a `probe-round304 arm Q9` pointer as a STRING — so the detector read its own
+ * prose and its own fixture and reported them: 7 instead of 5, 11 instead of 8, 18 instead of 13.
+ * That is `probe-round225`'s title arriving inside the fire whose subject is false pointers, and the
+ * third time this thread has found the harness inside the population it measures. Arm A2 drives the
+ * delta in both directions rather than letting the exclusion be a silent line in a file walk.
+ *
+ * ── What this file does NOT claim ─────────────────────────────────────────────
+ *
+ * It does not build the general detector as a gate. Sections B and C exist to measure that it cannot
+ * be one, and they assert the false-positive count rather than cleaning it up. The deliverable is
+ * section D: the narrow detector, at the one site, in the token-boundary form, with the real defect
+ * as its known positive. My Round 306 §5 refusal of the general form stands — for the reason
+ * measured here, not the reason I gave.
+ *
+ * Discipline: no subprocess, no port bound, no database opened, no corpus read, no model called,
+ * nothing under `packages/` executed. Every fixture lives under gitignored `.testdata/`. The three
+ * real files this probe reasons about are read, never written; arm Z1 is a before/after delta of the
+ * `scripts/` fingerprint rather than a cleanliness claim about the tree.
+ */
+
+import { readdirSync, readFileSync, writeFileSync, mkdirSync, rmSync, existsSync } from 'node:fs';
+import { dirname, join, relative } from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { fingerprint } from './lib/tree-fingerprint.mts';
+
+const SELF = fileURLToPath(import.meta.url);
+const SCRIPTS = dirname(SELF);
+const REPO = dirname(SCRIPTS);
+const SCRATCH = join(REPO, '.testdata', 'r308-probe');
+
+let pass = 0;
+let fail = 0;
+let meas = 0;
+const check = (id: string, claim: string, ok: boolean, detail: string): void => {
+  if (ok) pass += 1;
+  else fail += 1;
+  console.log(`  [${id}] ${ok ? 'PASS' : 'FAIL'}  ${claim}`);
+  console.log(`        ${detail}`);
+};
+const measure = (id: string, line: string): void => {
+  meas += 1;
+  console.log(`  [${id}] MEAS  ${line}`);
+};
+
+const TREE_AT_START = fingerprint(REPO, 'scripts');
+rmSync(SCRATCH, { recursive: true, force: true });
+
+/**
+ * Every text source file in the repo outside node_modules/.git/.testdata/docs.
+ *
+ * `excludeSelf` is not a convenience. This file's own docblock cites rounds and arms, and arm B2
+ * mints a `probe-round304 arm Q9` pointer as a STRING inside this file — so on its first run the
+ * detector read its own prose and its own fixture as real pointers and every figure in B, C and D
+ * moved. Arm A2 drives the delta in both directions rather than letting the exclusion be silent.
+ */
+const SKIP = new Set(['node_modules', '.git', '.testdata', 'dist', 'build', 'docs']);
+const sourceFiles = (excludeSelf: boolean): string[] => {
+  const out: string[] = [];
+  const walk = (dir: string): void => {
+    for (const e of readdirSync(dir, { withFileTypes: true })) {
+      if (SKIP.has(e.name)) continue;
+      const p = join(dir, e.name);
+      if (e.isDirectory()) walk(p);
+      else if (/\.(mts|ts|tsx|mjs|js|json)$/.test(e.name) && !(excludeSelf && p === SELF)) out.push(p);
+    }
+  };
+  walk(REPO);
+  return out.sort();
+};
+const SOURCES = sourceFiles(true);
+const SOURCES_WITH_SELF = sourceFiles(false);
+
+/** `probe-roundNNN` → its file, resolved from disk. */
+const probeByRound = (): Map<string, string> => {
+  const m = new Map<string, string>();
+  for (const f of readdirSync(SCRIPTS)) {
+    const r = /^probe-round(\d+)/.exec(f);
+    if (r && f.endsWith('.mts')) m.set(r[1], join(SCRIPTS, f));
+  }
+  return m;
+};
+const PROBES = probeByRound();
+
+/**
+ * The two arm-label keys, the distinction section C turns on. `quoted` is the spelling every probe
+ * in this tree uses for a literal label; `computed` also reaches a label built in a template
+ * literal, which is how `probe-round285` spells its B1 family.
+ */
+const definesArmQuoted = (src: string, arm: string): boolean =>
+  new RegExp(`["']${arm}["']\\s*,`).test(src);
+const definesArmAny = (src: string, arm: string): boolean =>
+  definesArmQuoted(src, arm) || new RegExp('[`\'"]' + arm + '[.`\'"]').test(src);
+
+// ── Section A: the population my Round 306 §5 called small ───────────────────────────────────────
+console.log('\n── A. the population: 227 arm mentions, and more are unbindable than bindable ──');
+
+const ARM = /\barm(?:s)?\s+([A-Z]\d+)\b|\[([A-Z]\d+)\]/g;
+const ROUND_LONG = /probe-round(\d+)/g;
+/** Both citation spellings, interleaved with arm labels in source order — v2's token stream. */
+const STREAM = /probe-round(\d+)|[Rr]ound\s+(\d{3})|\barm(?:s)?\s+([A-Z]\d+)\b/g;
+
+let mentions = 0;
+let bindable = 0;
+let unbindable = 0;
+for (const f of SOURCES) {
+  const src = readFileSync(f, 'utf8');
+  if (src.includes('\0')) continue;
+  for (const line of src.split('\n')) {
+    mentions += [...line.matchAll(ARM)].length;
+    let cur: string | null = null;
+    for (const m of line.matchAll(STREAM)) {
+      const r = m[1] ?? m[2];
+      if (r) {
+        cur = r;
+        continue;
+      }
+      if (cur) bindable += 1;
+      else unbindable += 1;
+    }
+  }
+}
+
+measure(
+  'A0',
+  `arm mentions in source under ${relative(REPO, REPO) || '.'} (non-docs, ${SOURCES.length} files): ` +
+    `${mentions} · bindable to a round by the nearest-preceding rule: ${bindable} · ` +
+    `not bindable by any line-local rule: ${unbindable}`,
+);
+
+check(
+  'A1',
+  'THE GATE on my own Round 306 §5 reason: MORE arm mentions in source are unbindable to a round by any line-local rule than are bindable — so a general arm-pointer detector cannot state its own coverage, which is the reason to refuse it, and "the population is small" is not',
+  unbindable > bindable && mentions > 100,
+  `${unbindable} unbindable > ${bindable} bindable, out of ${mentions} mentions. Two-sided in the sense that matters: ` +
+    'if the population ever becomes mostly bindable, this arm reds and the refusal in Round 306 §5 should be revisited on the merits rather than inherited. ' +
+    'A pin on a ratio, deliberately, and not on 227 — the count moves every fire and the ratio is the load-bearing half.',
+);
+
+interface Hit {
+  file: string;
+  line: number;
+  round: string;
+  arm: string;
+  text: string;
+}
+
+/** v1: every round named on the line × every arm named on the line. */
+const v1 = (files: string[]): Hit[] => {
+  const hits: Hit[] = [];
+  for (const f of files) {
+    const src = readFileSync(f, 'utf8');
+    if (src.includes('\0')) continue;
+    const lines = src.split('\n');
+    for (let i = 0; i < lines.length; i += 1) {
+      const rounds = [...new Set([...lines[i].matchAll(ROUND_LONG)].map((m) => m[1]))];
+      const arms = [...new Set([...lines[i].matchAll(ARM)].map((m) => m[1] ?? m[2]))];
+      for (const round of rounds)
+        for (const arm of arms) {
+          const p = PROBES.get(round);
+          if (!p || !definesArmQuoted(readFileSync(p, 'utf8'), arm))
+            hits.push({ file: relative(REPO, f), line: i + 1, round, arm, text: lines[i].trim() });
+        }
+    }
+  }
+  return hits;
+};
+const V1 = v1(SOURCES);
+const V1_SELF = v1(SOURCES_WITH_SELF);
+
+check(
+  'A2',
+  'and the detector reads THIS FILE: on its first run the population included probe-round308, whose docblock cites rounds and arms and whose arm B2 mints a `probe-round304 arm Q9` pointer as a STRING — so the instrument reported its own prose and its own fixture as real pointers. Driven in both directions rather than excluded silently',
+  V1_SELF.length > V1.length && V1_SELF.some((h) => h.file.includes('probe-round308') && h.arm === 'Q9'),
+  `with this file in the population v1 reports ${V1_SELF.length}, without it ${V1.length}; the extra rows include its own minted Q9 fixture at ` +
+    `${V1_SELF.filter((h) => h.arm === 'Q9').map((h) => h.line).join(',')}. ` +
+    'This is `probe-round225`\'s title — *a citation inside a string is not a call* — recurring inside the fire whose subject is false pointers, and it is the third time this thread has found the harness inside its own population. ' +
+    'Every figure in B, C and D excludes this file; A0/A1 above are measured the same way.',
+);
+
+// ── Section B: detector v1 — 5 reported, 5 false ─────────────────────────────────────────────────
+console.log('\n── B. the general detector, v1: one citation spelling, line cross-product ──');
+
+measure(
+  'B0',
+  `v1 reports ${V1.length} pointer(s) whose named arm is not a quoted label in the named probe: ` +
+    V1.map((h) => `${h.file.replace(/^scripts\//, '').slice(0, 26)}:${h.line} → r${h.round}/${h.arm}`).join(' · '),
+);
+
+/**
+ * Each v1 hit, re-asked with the OTHER citation spelling recognised. If the arm is owned by a round
+ * cited on the same line as `Round NNN`, or the line carries a possessive (`my`/`its`/`our` arm),
+ * then v1's row is an artifact of its key and not a defect in the note.
+ */
+const explainedByOtherSpelling = (h: Hit): boolean => {
+  const others = [...h.text.matchAll(/probe-round(\d+)|[Rr]ound\s+(\d{3})/g)]
+    .map((m) => m[1] ?? m[2])
+    .filter((r) => r !== h.round);
+  for (const r of others) {
+    const p = PROBES.get(r);
+    if (p && definesArmAny(readFileSync(p, 'utf8'), h.arm)) return true;
+  }
+  if (/\b(my|its|his|her|their|our|own)\s+(?:new\s+)?arm/.test(h.text)) return true;
+  // The enclosing probe defines the arm: "arm C1" inside probe-round295 means round 295's C1.
+  const abs = join(REPO, h.file);
+  return /probe-round\d+/.test(h.file) && definesArmAny(readFileSync(abs, 'utf8'), h.arm);
+};
+const V1_EXPLAINED = V1.filter(explainedByOtherSpelling);
+
+check(
+  'B1',
+  'THE FINDING, first half: v1 reports a non-zero number of pointer defects and EVERY ONE of them is an artifact of v1\'s own key — the arm is owned by another round cited on the same line, or bound to a seat by a possessive, or owned by the enclosing file and bound to no cited round at all',
+  V1.length > 0 && V1_EXPLAINED.length === V1.length,
+  `${V1_EXPLAINED.length} of ${V1.length} explained, 0 real. ` +
+    V1.map((h) => `${h.file.replace(/^scripts\//, '').slice(0, 22)}:${h.line} r${h.round}/${h.arm}`).join(' · ') +
+    '. A detector that binds two things with a key narrower than the population\'s spellings does not under-count — it mis-pairs and emits the mis-pairing as a finding.',
+);
+
+check(
+  'B2',
+  'and B1 is not the green of a detector that reports nothing real because it reports nothing: a minted note naming an arm that genuinely does not exist IS reported by the same v1 code path',
+  ((): boolean => {
+    mkdirSync(SCRATCH, { recursive: true });
+    const f = join(SCRATCH, 'minted-note.mts');
+    // A pointer to a round that exists, naming an arm label no probe in the tree defines.
+    writeFileSync(f, '// guarded by `probe-round304` arm Q9 rather than left as a comment\n');
+    const src = readFileSync(f, 'utf8');
+    const rounds = [...new Set([...src.matchAll(ROUND_LONG)].map((m) => m[1]))];
+    const arms = [...new Set([...src.matchAll(ARM)].map((m) => m[1] ?? m[2]))];
+    const p = PROBES.get(rounds[0]);
+    return (
+      rounds.length === 1 &&
+      arms.length === 1 &&
+      arms[0] === 'Q9' &&
+      p !== undefined &&
+      !definesArmQuoted(readFileSync(p, 'utf8'), 'Q9')
+    );
+  })(),
+  'minted `probe-round304` arm Q9 under .testdata/ — reached by the same regex pair and reported. ' +
+    'Without this arm, B1 could be green on a detector whose reach is zero, which is the failure shape Round 307 §5 defect 2 caught in a cell→red reader.',
+);
+
+// ── Section C: detector v2 — 8 reported, 8 false, for three distinct reasons ──────────────────────
+console.log('\n── C. the general detector, v2: both spellings, nearest-preceding binding ──');
+
+const v2 = (files: string[]): Hit[] => {
+  const hits: Hit[] = [];
+  for (const f of files) {
+    const src = readFileSync(f, 'utf8');
+    if (src.includes('\0')) continue;
+    const lines = src.split('\n');
+    for (let i = 0; i < lines.length; i += 1) {
+      let cur: string | null = null;
+      for (const m of lines[i].matchAll(STREAM)) {
+        const r = m[1] ?? m[2];
+        if (r) {
+          cur = r;
+          continue;
+        }
+        if (!cur) continue;
+        const p = PROBES.get(cur);
+        if (!p || !definesArmQuoted(readFileSync(p, 'utf8'), m[3]))
+          hits.push({ file: relative(REPO, f), line: i + 1, round: cur, arm: m[3], text: lines[i].trim() });
+      }
+    }
+  }
+  return hits;
+};
+const V2 = v2(SOURCES);
+
+const NO_PROBE = V2.filter((h) => !PROBES.has(h.round));
+const TEMPLATE_LABEL = V2.filter((h) => {
+  const p = PROBES.get(h.round);
+  return p !== undefined && !definesArmQuoted(readFileSync(p, 'utf8'), h.arm) && definesArmAny(readFileSync(p, 'utf8'), h.arm);
+});
+const POSSESSIVE = V2.filter(
+  (h) => PROBES.has(h.round) && /\b(my|its|his|her|their|our|own)\s+(?:new\s+)?arm/.test(h.text),
+);
+/**
+ * The fourth reason, and the one no possessive marks: a note inside `probe-roundNNN` that says
+ * "arm C1" means THIS file's C1. The enclosing file is the owner, the cited round is whatever the
+ * sentence happens to be about, and there is no token anywhere on the line that says so.
+ */
+const SELF_OWNED = V2.filter((h) => {
+  const abs = join(REPO, h.file);
+  return abs.startsWith(SCRIPTS) && /probe-round\d+/.test(h.file) && definesArmAny(readFileSync(abs, 'utf8'), h.arm);
+});
+const V2_EXPLAINED = new Set([...NO_PROBE, ...TEMPLATE_LABEL, ...POSSESSIVE, ...SELF_OWNED]);
+
+measure(
+  'C0',
+  `v2 binds ${bindable} pointer(s) and reports ${V2.length}: ` +
+    V2.map((h) => `${h.file.replace(/^scripts\//, '').slice(0, 24)}:${h.line} → r${h.round}/${h.arm}`).join(' · '),
+);
+
+check(
+  'C1',
+  'THE FINDING, second half: recognising both citation spellings does not make the general detector sound — it reports MORE, and every one is still false, now for FOUR distinct reasons rather than one',
+  V2.length > 0 && V2_EXPLAINED.size === V2.length && V1.length + V2.length === 13,
+  `${V2_EXPLAINED.size} of ${V2.length} explained, 0 real · no-probe ${NO_PROBE.length} · template-literal label ${TEMPLATE_LABEL.length} · ` +
+    `possessive binding ${POSSESSIVE.length} · owned by the enclosing file ${SELF_OWNED.length}. ` +
+    `Across both versions: ${V1.length} + ${V2.length} = ${V1.length + V2.length} reported, 0 real. ` +
+    'The 13 is pinned on purpose: it is the figure the memo states, and a repair to either version that changes it should redden this arm rather than quietly restate the headline.',
+);
+
+check(
+  'C2',
+  'reason one, driven by REACHING rather than described: `probe-round285` defines its B1 family in a TEMPLATE literal, so a key on the quoted-literal spelling reaches 0 of them and the any-spelling key reaches it — the same one-of-two-spellings root cause as Round 307 §3, in the arm label instead of the declaration',
+  ((): boolean => {
+    const p = PROBES.get('285');
+    if (!p) return false;
+    const src = readFileSync(p, 'utf8');
+    return !definesArmQuoted(src, 'B1') && definesArmAny(src, 'B1') && /`B1\.\$\{/.test(src);
+  })(),
+  'probe-round285: quoted-literal key reaches B1 → false; any-spelling key → true; the file spells it `B1.${name}`. ' +
+    'The pointer in probe-round289 that v2 reported as naming a non-existent arm names an arm that exists.',
+);
+
+check(
+  'C3',
+  'reason two: a round citation is not a probe file. Rounds are cited in source that produced no probe at all, and v2 reports every such pointer as a defect — which is `probe-round225`\'s own title, *a citation is not a call*, arriving as a false positive in a detector written three months later',
+  NO_PROBE.length > 0 && NO_PROBE.every((h) => !PROBES.has(h.round)),
+  `cited rounds with no probe file: ${[...new Set(NO_PROBE.map((h) => h.round))].sort().join(', ')} ` +
+    `(${NO_PROBE.length} pointer(s)). Resolved against the live scripts/ listing, not a table: ${PROBES.size} probe files present.`,
+);
+
+check(
+  'C4',
+  'reason three: the binding is not a token relation. `my arm G4` and `its arm C1` attach an arm to a SEAT, and the nearest cited round on the line is the round being discussed rather than the arm\'s owner — no line-local rule can resolve these, and they are why A1\'s unbindable half is the load-bearing figure',
+  POSSESSIVE.length > 0,
+  POSSESSIVE.map((h) => `${h.file.replace(/^scripts\//, '').slice(0, 30)}:${h.line} r${h.round}/${h.arm}`).join(' · ') +
+    '. Reported by v2 as a wrong pointer; in each case the note is correct and the detector is reading an English possessive as a token adjacency.',
+);
+
+check(
+  'C5',
+  'reason four, and it is the one with no token at all: a note inside `probe-roundNNN` that says "arm C1" means THIS FILE\'s C1. The enclosing file is the owner, the cited round is only what the sentence is about, and nothing on the line distinguishes the two — which is why the general detector needs a reader and the narrow one in section D does not',
+  SELF_OWNED.length > 0 && SELF_OWNED.every((h) => definesArmAny(readFileSync(join(REPO, h.file), 'utf8'), h.arm)),
+  SELF_OWNED.map((h) => `${h.file.replace(/^scripts\//, '').slice(0, 30)}:${h.line} cited r${h.round}, arm ${h.arm} defined in the enclosing file`).join(' · ') +
+    '. Confirmed by reaching for the label in the enclosing file rather than by reading the English.',
+);
+
+// ── Section D: the §4 offer, taken — and green on the pointer it exists to reject ─────────────────
+console.log('\n── D. the narrow detector, and the defect in the offer as worded ──');
+
+const TSCONFIG = join(SCRIPTS, 'tsconfig.json');
+const TSCONFIG_SRC = readFileSync(TSCONFIG, 'utf8');
+
+/** The claim string of a named arm in a named probe, read from the `check(` call itself. */
+const claimOf = (probeSrc: string, arm: string): string | null => {
+  const m = new RegExp(`check\\(\\s*'${arm}',\\s*\\n\\s*('|")([\\s\\S]*?)\\1,`, 'm').exec(probeSrc);
+  return m ? m[2] : null;
+};
+
+/**
+ * The narrow detector. Narrow in exactly the dimension sections B and C fail in: the site, the
+ * round, the arm and the token are all fixed by the note itself, so there is no binding to infer.
+ * `strict` is the token-boundary form; the loose form is the offer as it was worded in Round 307 §4.
+ */
+const jsPointersOk = (configSrc: string, strict: boolean): { ok: boolean; detail: string } => {
+  const found: string[] = [];
+  for (const m of configSrc.matchAll(/`probe-round(\d+)`\s+arm\s+`?([A-Z]\d+)`?/g)) {
+    const [, round, arm] = m;
+    // Only pointers in a sentence that is itself about `.js` are in scope.
+    const window = configSrc.slice(Math.max(0, m.index - 400), m.index + 400);
+    if (!/\.js(?![A-Za-z0-9])/.test(window)) continue;
+    const p = PROBES.get(round);
+    const claim = p ? claimOf(readFileSync(p, 'utf8'), arm) : null;
+    const hit = claim === null ? false : strict ? /\.js(?![A-Za-z0-9])/.test(claim) : claim.includes('.js');
+    found.push(`r${round}/${arm}=${hit ? 'ok' : 'MISMATCH'}`);
+    if (!hit) return { ok: false, detail: found.join(' · ') };
+  }
+  return { ok: found.length > 0, detail: found.join(' · ') };
+};
+
+const LIVE_STRICT = jsPointersOk(TSCONFIG_SRC, true);
+/** The real Round 306 defect, replayed: both occurrences of the pointer back to `C1`. */
+const REVERTED = TSCONFIG_SRC.replace(/(`probe-round304`\s+arm\s+)E1/g, '$1C1').replace(
+  /\band E1 reddens when one appears/g,
+  'and C1 reddens when one appears',
+);
+const REVERTED_STRICT = jsPointersOk(REVERTED, true);
+const REVERTED_LOOSE = jsPointersOk(REVERTED, false);
+
+measure(
+  'D0',
+  `scripts/tsconfig.json carries ${[...TSCONFIG_SRC.matchAll(/`probe-round(\d+)`\s+arm\s+`?([A-Z]\d+)`?/g)].length} ` +
+    'backticked probe/arm pointer(s); the `.js`-sentence filter admits ' +
+    `${LIVE_STRICT.detail.split(' · ').filter(Boolean).length} of them`,
+);
+
+check(
+  'D1',
+  'the offer, taken: the live `.js` obligation note in scripts/tsconfig.json names an arm whose own check string is about `.js` — so the pointer Daedalus repaired this fire is guarded by an arm from now on instead of by a reader',
+  LIVE_STRICT.ok,
+  `${LIVE_STRICT.detail} — probe-round304 arm E1's claim reads "there is no .js file under scripts/…". ` +
+    'The note and the arm share the token by construction, which is what makes this mechanical and the general form in B/C not.',
+);
+
+check(
+  'D2',
+  'THE KNOWN POSITIVE, and it is the defect this fleet actually shipped rather than one minted for the arm: with both occurrences of the pointer reverted to `C1` — the state of the file from Round 304 until Theseus repaired half of it and Daedalus the other half — the detector REDS',
+  !REVERTED_STRICT.ok,
+  `reverted → ${REVERTED_STRICT.detail}. The revert is applied to a string in memory; scripts/tsconfig.json is never written (arm Z1). ` +
+    'Round 306 §5 found this by reading; Round 307 §4 found the second occurrence by reading; from here an arm finds it.',
+);
+
+check(
+  'D3',
+  'THE FINDING, third part: the detector AS WORDED in Round 307 §4 — "the arm\'s own check string CONTAINS `.js`" — is GREEN on the reverted pointer, because arm C1\'s claim string reads "a copy of the real scripts/package.json" and `package.json` contains `.js`. Only the token-boundary form reds. Both drivens in one arm',
+  REVERTED_LOOSE.ok && !REVERTED_STRICT.ok,
+  `same reverted file: loose \`.includes('.js')\` → ${REVERTED_LOOSE.ok ? 'GREEN (wrong)' : 'red'} · ` +
+    `strict /\\.js(?![A-Za-z0-9])/ → ${REVERTED_STRICT.ok ? 'green' : 'RED (correct)'}. ` +
+    'Fifth instance of the standing note: give every detector a known positive copied from the real call shape. ' +
+    'Had I taken the offer as written and checked it against E1 alone, it would have gone SWEPT green and guarded nothing.',
+);
+
+check(
+  'D4',
+  'and this is the whole argument for narrow over general, as a measured comparison rather than a preference: on this repo, this fire, the narrow detector reports 0 false positives and the two general ones report 13 between them',
+  V1.length + V2.length === 13 && LIVE_STRICT.ok,
+  `narrow: 0 false · general v1+v2: ${V1.length + V2.length} false. ` +
+    'The difference is not care taken. The narrow form fixes the site, the round, the arm and the token in advance, so it never infers a binding; B and C exist only because every line-local approximation of that binding manufactures findings.',
+);
+
+// ── Section Z: discipline ────────────────────────────────────────────────────────────────────────
+console.log('\n── Z. discipline ──');
+
+rmSync(SCRATCH, { recursive: true, force: true });
+
+check(
+  'Z1',
+  'the population under scripts/ is byte-identical across this run — every real file this probe reasons about was read, and the reverted tsconfig in D2/D3 is a string in memory',
+  fingerprint(REPO, 'scripts') === TREE_AT_START,
+  'fingerprint of scripts/ taken before arm A0 and after the last arm, compared as a delta rather than as a cleanliness claim about the fire\'s tree.',
+);
+
+check(
+  'Z2',
+  'the one fixture this probe mints lived under .testdata/, which is gitignored, and the tree is removed before this arm runs',
+  !existsSync(SCRATCH) && /(^|\n)\.testdata\//.test(readFileSync(join(REPO, '.gitignore'), 'utf8')),
+  `${relative(REPO, SCRATCH)} absent at exit · .gitignore names .testdata/`,
+);
+
+measure(
+  'Z3',
+  'subprocesses: none. No port bound, no database opened, no corpus read, no model called, nothing under packages/ executed, and no compiler spawned — this probe is file reads and regexes over a tree it does not write.',
+);
+
+console.log(
+  `\n${fail === 0 ? `All ${pass} regression checks passed` : `${fail} of ${pass + fail} FAILED`}, ${meas} measurements, 0 skips`,
+);
+process.exit(fail === 0 ? 0 : 1);
