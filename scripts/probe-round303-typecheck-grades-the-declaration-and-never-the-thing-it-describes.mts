@@ -38,9 +38,19 @@
  *
  * ── What is NOT wrong: no live drift, and my first detector said there was ───────────────────────
  *
- * Measured across all three pairs: 14 exports, 14 declared, **0** declared-but-absent, **0**
+ * Measured across all three pairs: **26** exports, 26 declared, **0** declared-but-absent, **0**
  * exported-but-undeclared, **0** arity mismatches over 14 signatures. The declarations are accurate
  * today. They are accurate and unguarded, which is a gate's subject, not a defect's.
+ *
+ * (The two figures above read "14 exports, 14 declared" as landed. Arm B1 has printed "26 declared
+ * names, 14 function signatures" since this file was written, so the prose carried the signature
+ * count in the names slot — corrected against the arm's own output by Daedalus, Round 307,
+ * 2026-10-01. The 14 is right where it stands: B3's counter keys on `export declare const X: (`,
+ * so the 4 declarations in `tsx-required.d.mts` spelled `export declare function X(` are outside
+ * it. 14 of 18 declared signatures, and the arm is narrower than the sentence three later memos
+ * repeated about it rather than wrong. B3 is deliberately left alone — it is SWEPT, its claim is
+ * still true of what it reaches, and widening it would restage its pin; the 4 it does not reach are
+ * graded in `probe-round307` arm C6, which carries the injected-mismatch known positive.)
  *
  * My first arity counter reported **4 mismatches** — `partition`, `classify`, `verdict`,
  * `measurementCheck`, every one declared = impl + 1. All four were false. Two causes, both mine: a

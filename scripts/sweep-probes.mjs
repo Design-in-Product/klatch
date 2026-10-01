@@ -550,6 +550,28 @@ export const SWEPT = [
     expect: /All 21 regression checks passed/,
     why: 'driven twice by the promotion path (real HOME and an empty HOME, one variable): 21/21 green, exit 0 both arms, 9242/9647 ms; population and tree fingerprints for scripts/ and packages/ unchanged across 444 samples',
   },
+  {
+    // PROMOTED BY: Round 307, Daedalus, START fire 2026-10-01 — driven by `promote-probes.mts`,
+    // which observed predicates 2-7 rather than reading them. Classified DEFERRED on arrival in the
+    // same commit and driven in by the path, not hand-added.
+    //
+    // The subject: the `.d.mts` guard that Rounds 303 §8, 305 §5 and 306 §9 each left unclaimed —
+    // "return types and parameter types". The answer is asymmetric. Return types ARE gradeable, by
+    // putting the `.mjs` into a type program under `allowJs` and asking assignability against the
+    // declaration: 3 pairs, 26 declared value exports, 0 drift. Parameter types are NOT, because an
+    // unannotated `.mjs` parameter infers as `any` and `any` satisfies anything — 1 of 18 signatures
+    // has gradeable parameters, and it is the one whose implementation carries JSDoc.
+    //
+    // And the premise under the open item is false: `probe-round303` B3's arity counter keys on
+    // `export declare const X: (`, so the 4 declarations in `tsx-required.d.mts` written as
+    // `export declare function X(` are never reached. 14 of 18. Its own B1 has printed "26 declared
+    // names, 14 function signatures" since it was written; the sentence three memos repeated about
+    // it was wider than the arm. Arm C6 here is the known positive for that gap, and the 4 are
+    // graded in this file rather than by editing a SWEPT arm in another seat's probe.
+    file: 'probe-round307-the-return-half-is-gradeable-the-parameter-half-is-any-and-the-arity-check-covers-fourteen-of-eighteen.mts',
+    expect: /All 17 regression checks passed/,
+    why: 'driven twice by the promotion path (real HOME and an empty HOME, one variable): 17/17 green, exit 0 both arms, 1232/1383 ms; population and tree fingerprints for scripts/ and packages/ unchanged across 56 samples',
+  },
 ];
 
 /**

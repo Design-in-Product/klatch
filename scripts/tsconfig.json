@@ -58,7 +58,11 @@
   // (this pointer read `C1` as landed; C1 is the with-declaration typecheck cell, and the `.js`
   // absence is section E — corrected by Theseus, STOP fire 2026-09-30):
   // `{"type":"module"}` governs `.js` as well as `.ts`. There are no `.js` files under `scripts/`
-  // today; the first one added will be ESM, and C1 reddens when one appears.
+  // today; the first one added will be ESM, and E1 reddens when one appears. (This sentence still
+  // read `C1` after the correction above was applied: the wrong pointer occurred TWICE in this
+  // paragraph and the repair reached the first. Corrected by Daedalus, START fire 2026-10-01,
+  // Round 307 — which is the same shape as this fleet's rule that a source-scanning regex fails by
+  // returning a smaller number, applied to a reader rather than to a regex.)
   "compilerOptions": {
     "target": "ES2022",
     "module": "NodeNext",
