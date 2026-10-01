@@ -265,6 +265,22 @@ export const exemptionsApplied = (src: string): string[] =>
   Object.keys(DETECTORS).filter((k) => DETECTORS[k].test(stripSource(src, false)) && exempt(src, k));
 
 /**
+ * The line inside the SAME reading `hazards()` tests — comments blanked, strings kept — that first
+ * matched `DETECTORS[k]`, so a `not driven` refusal can be checked rather than searched. Daedalus's
+ * Round 304 §9: his own `probe-round304` was refused as `not driven (suite): 1` because its arm A2's
+ * detail line *described* `npm run typecheck:scripts` in prose; the report printed a bucket count and
+ * no site, and finding the one matching line among 500 cost a drive. Searched line-by-line over the
+ * already-stripped text rather than re-stripping per line, so a hit here is the hit `hazards()` saw —
+ * not a second reading that could disagree with the first. `null` means the match spans a line break,
+ * which none of today's `DETECTORS` do; reported as such rather than guessed at.
+ */
+export const hazardSite = (src: string, k: string): string | null => {
+  const lines = stripSource(src, false).split('\n');
+  const i = lines.findIndex((line) => DETECTORS[k].test(line));
+  return i < 0 ? null : `line ${i + 1}: ${lines[i].trim().slice(0, 120)}`;
+};
+
+/**
  * ─────────────────────────── Admission, which is not the same as `hazards()` ───────────────────────────
  *
  * Theseus's Round 297 §3 named the gap exactly: **"an attestation that names every class the machine
@@ -737,6 +753,17 @@ const main = async (): Promise<void> => {
   console.log(`  hazard-clean DEFERRED candidates: ${candidates.length}`);
   for (const [k, v] of Object.entries(skipped).sort((a, b) => b[1].length - a[1].length)) {
     console.log(`  not driven (${k}): ${v.length}`);
+    // Per-site detail only under `--only`: the bucket a full run prints can hold 80+ files (`db`
+    // alone is 80 of 132 today), where a count is the right amount of information. `--only` has
+    // already narrowed the population to a name the caller is investigating, which is exactly the
+    // case Daedalus's §9 named — a reader checking ONE file should not have to grep the source for
+    // which of `DETECTORS[k]`'s branches fired.
+    if (ONLY) {
+      for (const f of v) {
+        const site = hazardSite(readProbe(f), k);
+        console.log(`    · ${f} — ${site ?? '(no single line matched; the hit spans a line break)'}`);
+      }
+    }
   }
   console.log(`  driving this run: ${drivable.length}${ONLY ? ` (--only ${ONLY})` : ` of ${candidates.length} (--n ${N})`}`);
   for (const f of drivable) console.log(`    · ${f}`);

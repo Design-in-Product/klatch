@@ -823,6 +823,19 @@ export const DEFERRED = [
   'probe-scan-latency-vs-cap.mts',
   'probe-scratch-server.mjs',
   'probe-turncount-live-http.mts',
+  // ── Round 305, Argus, 2026-09-30 (WORK fire) ────────────────────────────────────────────────────
+  // Mine, and permanently DEFERRED, for a reason this fire measured rather than assumed: arm B
+  // validates all five `DETECTORS` on a known-positive fixture each, so the file's own source trips
+  // `net`/`model`/`db`/`suite`/`homedir` — confirmed directly by driving `--only round305`, which
+  // refused on all five. `net`/`model`/`suite` are not in `EXEMPTIBLE` (Round 296: no bracket behind
+  // them, no benign failure), so no `PROMOTE-HAZARD-EXEMPT` marker could clear even two of the five.
+  // Round 285 above shares this exact property — measured here for the first time: `hazards()` on
+  // its source also returns all five, independent of the population-mutation reason recorded at its
+  // own entry. Two probes that validate the full detector set will share this; a third would too.
+  // Driven by hand (`npx tsx scripts/<this file>`), not by the sweep. Binds no port, opens no
+  // database, calls no model — the two `promote-probes.mts --list` child processes it spawns are
+  // read-only and drive nothing themselves.
+  'probe-round305-a-refusal-the-reader-could-not-check-can-now-print-its-own-site.mts',
 ];
 
 /**
