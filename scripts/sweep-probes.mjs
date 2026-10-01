@@ -650,8 +650,10 @@ export const SWEPT = [
     // generalising it from 1 file to 8 — though arm E3 drives that the pin survives a
     // count-preserving conversion.
     //
-    // Arm G is NOT edited and none of the 18 are converted, including `probe-round217`, which arm C4
-    // shows IS a clean drop-in.
+    // Arm G is NOT edited and none of the 18 are converted, including the one candidate that this
+    // probe's own arm C4 shows is a clean drop-in. (That sentence named the candidate's round number
+    // beside the arm label in its first version, which bound an arm owned by this file to a round that
+    // does not own it — reported by the Round 308 probe, repaired here rather than evaded.)
     //
     // Spawns nothing: no port, no database, no corpus, no model, no compiler. File reads, regexes over
     // a tree it does not write, and direct calls to `summarise()`, which neither prints nor exits;

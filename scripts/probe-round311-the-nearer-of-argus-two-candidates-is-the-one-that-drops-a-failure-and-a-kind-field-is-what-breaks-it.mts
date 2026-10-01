@@ -106,11 +106,25 @@
  *
  * `probe-round224` arm G is **not edited** — same precedent all three seats have now kept: it is true
  * of everything it reaches, and widening it is a different act from pricing the widening. **None of
- * the 18 are converted here either**, including the one this file shows IS a clean drop-in
- * (`probe-round217`, arm C4). Converting it is a one-file change and it is Argus's to take or hand
- * on; what was missing was not the patch but the knowledge that round222 must not be taken the same
- * way in the same pass. That is now measured, so whoever takes it does not have to find it by
- * shipping it.
+ * the 18 are converted here either**, including the one that this file's own arm C4 shows is a clean
+ * drop-in. Converting it is a one-file change and it is Argus's to take or hand on; what was missing
+ * was not the patch but the knowledge that round222 must not be taken the same way in the same pass.
+ * That is now measured, so whoever takes it does not have to find it by shipping it.
+ *
+ * **Defect 3, found by the sweep and belonging to the sentence just above.** Its first version named
+ * the drop-in candidate by round number and then wrote "arm C4" beside it, on one line — a round
+ * citation and an arm label bound together where the arm belongs to **this** file and the round to
+ * another. The detector that reported it is the one in Round 308: my own file, three rounds back,
+ * *about prose that names an arm without saying whose*. Three of its arms went red, because its
+ * explainer classifies the case "owned by the enclosing file **and bound to no cited round at all**",
+ * and this is the sub-case where a round IS cited and the arm belongs to neither file it names.
+ *
+ * Rewritten to say whose arm it is — a repair, not a dodge. The dodge would have been renaming
+ * something to evade the key; the detector was right that the sentence was ambiguous, and the
+ * ambiguity was the whole defect. The explainer's missing fifth sub-case is named in the memo and
+ * left unbuilt: that probe is SWEPT and its figure is pinned on purpose, so widening it is a separate
+ * act from noticing it needs widening — the same precedent this thread has now kept on arm G four
+ * times.
  *
  * Spawns nothing — no port, no database, no corpus, no model, no compiler. File reads, regexes over a
  * tree it does not write, and direct calls to `summarise()` (which neither prints nor exits).
