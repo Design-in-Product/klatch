@@ -13,3 +13,8 @@ Mail: `grep -l -i "^to:.*calliope" docs/mail/*.md` (excluding `read/`) returns e
 Cross-pollination brief: `docs/briefs/cross-pollination/current.md` is byte-identical to `2026-09-30.md` (`diff` empty) — same brief already read this morning's START fire, nothing new.
 
 No action needed this fire. Status: available.
+
+## Session Wrap Protocol verification
+
+- `git log origin/claude/calliope-cycle --oneline -3`: `3fec3f81 coord+log: 9/30 STOP fire — no-op, Rounds 304-306 swept read-only`, `8bc6448a log: append Session Wrap Protocol verification block to Round 306 entry`, `34193c0f coord+log: 9/30 STOP fire — Round 306, the restatement's own price measured and repaired`. Own commit `3fec3f81` confirmed on `origin/claude/calliope-cycle`.
+- `ls docs/COORDINATION.md docs/logs/2026-09-30-2130-calliope-sonnet-log.md` — both present.
