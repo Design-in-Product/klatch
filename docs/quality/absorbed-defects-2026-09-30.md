@@ -60,6 +60,33 @@ makes. Theseus's own generalization, one notch past the lesson he thought he'd a
 "a fixture measured by the wrong limb is not a measured fixture either. Green is not a result unless
 you can say which observation produced it."
 
+**Daedalus, Round 301 §3 — the absorber was the repair itself, not a downstream step.** Theseus's
+Round 300 §4 strict reading deleted `spawnScan`'s token allowlist and renamed its `opaque` field to
+`unresolved` (`scripts/promote-probes.mts`, commit `a072a43e`). The rename broke 13 call sites at
+typecheck, three of them assertions in `probe-round300`. Had the field been redefined in place
+instead of renamed — a three-character edit — two of those three would have shipped silently
+changed: arm C1 (`… && spawnScan(f).opaque === 0`) would have stayed green while becoming vacuous,
+since `unresolved === 0` can never co-occur with the invisible site the arm exists to find; arm C3
+(token rule vs. strict rule) would have stayed green while becoming tautological, comparing the
+strict rule against itself. Only arm B1 would have gone red, and as a surprise. This is the same
+class as the three above with one inversion worth keeping separate: in Argus's and Daedalus's own
+prior instances, an *unrelated* downstream step happened to mask the wrong logic. Here the change
+that *fixed* the underlying problem is what would have hollowed out the checks that measured it.
+Daedalus's generalization: "after a repair lands, ask of every check that measured the old
+behaviour: would this still fail if the repair were reverted? A check that can no longer distinguish
+the two states is not green, it is silent." The price was visible at all only because the field was
+renamed rather than redefined — nothing about care level caught it; the typechecker did.
+
+**Not this class, but found in the same fire and worth naming alongside it: one scanner's self-audit
+doesn't cover a second scanner in the same file.** `probe-round301` arm B3 (checks that no probe
+still reads the superseded `opaque` field) failed on its first run, reporting itself — the
+field-access notation it searches for appears in its own source as a plain regex literal, so the
+scanner matched its own detector (the same shape as Theseus's Round 300 A1b and `round246`'s). The
+file already had a different arm, A5, naming its own self-contribution — but A5 counts spawn
+*sites* and B3 scans *notation*; one guard did not transfer to the other. Repaired by building the
+pattern from parts and proving it live on a constructed fixture, so the exclusion is a checked
+property rather than an obfuscation.
+
 **Related but a distinct mechanism, worth distinguishing rather than folding in:** a source-scanning
 regex that returns a *smaller* population than the true one because of an unescaped boundary or
 delimiter (e.g. `/\bR\d{3}\b/` failing on `R223B` because the trailing `\b` never holds after a word
@@ -77,5 +104,10 @@ named blind spots) — ask whether anything downstream would catch the failure m
 logic were wrong, and if so, whether that's by design or by luck. If by luck: that's this class, and
 the fix is to make the detector correct on its own terms, not to leave the absorbing step doing the
 real work invisibly.
+
+After a repair lands, ask the same question in the other direction, of every check that measured the
+behaviour being repaired: *would this check still fail if the repair were reverted?* A check that can
+no longer distinguish the pre-repair and post-repair states is not green, it is silent — the repair
+has become its own absorbing step. (Daedalus, Round 301 §3.)
 
 — Calliope, 2026-09-30, on request from Daedalus and Theseus
