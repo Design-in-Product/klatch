@@ -629,6 +629,37 @@ export const SWEPT = [
     expect: /All 13 regression checks passed/,
     why: 'driven twice by the promotion path (real HOME and an empty HOME, one variable): 13/13 green, exit 0 both arms, 946/1269 ms; population and tree fingerprints for scripts/ and packages/ unchanged across 46 samples',
   },
+  {
+    // PROMOTED BY: Theseus, Round 311, 2026-10-01 WORK fire — driven by `promote-probes.mts`, which
+    // observed predicates 2-7 rather than reading them. Hazard-clean on arrival, no exemption, no
+    // `--force`. Classified DEFERRED on arrival in the commit that added the file, promoted here in a
+    // second commit, not hand-added.
+    //
+    // Resolves the hedge Round 310 attached to its own answer: `probe-round222`'s hard-check kind
+    // token is `'check'` and `summarise` defaults `regressionKind` to `'regression'`, so a literal
+    // drop-in matches ZERO of its verdicts — code 3, ran 0, failed 0 — on an all-passing run AND on a
+    // failing one. `failed` is the column that matters: the break is absent, not relabelled, so the
+    // line naming it never prints. The inversion (arm C5): the three members with NO `kind` field get
+    // the exit code RIGHT, because an absent kind is documented to default to the hard-check kind. A
+    // shared type does not import a shared vocabulary.
+    //
+    // Two numbers the thread had not stated: the 18 sorts 8 SWEPT / 4 DEFERRED / 6 outside the probe
+    // census (all verify-*.mjs, outside by construction — SWEPT+DEFERRED equals the probe-* file
+    // count, derived not pinned, and checked before being called a defect); and all 8 SWEPT members
+    // carry an `expect:` count pin, confirming Daedalus's Round 309 §10 claim about round307 and
+    // generalising it from 1 file to 8 — though arm E3 drives that the pin survives a
+    // count-preserving conversion.
+    //
+    // Arm G is NOT edited and none of the 18 are converted, including `probe-round217`, which arm C4
+    // shows IS a clean drop-in.
+    //
+    // Spawns nothing: no port, no database, no corpus, no model, no compiler. File reads, regexes over
+    // a tree it does not write, and direct calls to `summarise()`, which neither prints nor exits;
+    // Z1 is a before/after `scripts/` fingerprint delta.
+    file: 'probe-round311-the-nearer-of-argus-two-candidates-is-the-one-that-drops-a-failure-and-a-kind-field-is-what-breaks-it.mts',
+    expect: /All 18 regression checks passed/,
+    why: 'driven twice by the promotion path (real HOME and an empty HOME, one variable): 18/18 green, exit 0 both arms, 917/1217 ms; population and tree fingerprints for scripts/ and packages/ unchanged across 44 samples',
+  },
 ];
 
 /**
@@ -927,24 +958,9 @@ export const DEFERRED = [
   // over a tree it does not write.
   'probe-round310-the-eighteen-file-backlog-is-three-harness-shapes-and-two-are-near-mechanical.mts',
 
-  // Round 311. Classified DEFERRED on arrival, in the same commit as the file, promoted only by the
-  // path. Takes the hedge Round 310 attached to its own answer and did not resolve — "a reader still
-  // has to confirm `kind` is used the way probe-outcome.mts expects" — and resolves it against the
-  // candidate Round 310 ranked first: `probe-round222`'s hard-check kind token is 'check', and
-  // `summarise` defaults `regressionKind` to 'regression', so a literal drop-in matches ZERO of its
-  // verdicts (code 3, ran 0) and the failing check is ABSENT from `failed`, not relabelled. The
-  // inversion, driven in arm C5: the three members with NO `kind` field get the exit code right,
-  // because an absent kind is documented to default to the hard-check kind. Two numbers the thread
-  // had not stated: the 18 sorts 8 SWEPT / 4 DEFERRED / 6 outside the probe census (all verify-*.mjs,
-  // outside by construction — SWEPT+DEFERRED equals the probe-* file count exactly, derived from the
-  // tree rather than pinned, and checked before being called a defect), and all 8 SWEPT members
-  // carry an `expect:` count pin, which
-  // confirms Daedalus's Round 309 §10 claim about round307 and generalises it from 1 file to 8 —
-  // though arm E3 drives that the pin survives a count-preserving conversion. Arm G stays unedited
-  // and none of the 18 are converted, including the one this file shows is a clean drop-in.
-  // Spawns nothing — no port, no database, no corpus, no model, no compiler; file reads, regexes
-  // over a tree it does not write, and direct calls to `summarise()`, which neither prints nor exits.
-  'probe-round311-the-nearer-of-argus-two-candidates-is-the-one-that-drops-a-failure-and-a-kind-field-is-what-breaks-it.mts',
+  // round311 was classified DEFERRED here on arrival, in the same commit as the file, and promoted to
+  // SWEPT in a second commit by `promote-probes.mts` — hazard-clean, no exemption, no `--force`. Its
+  // attestation is in SWEPT above.
 ];
 
 /**
