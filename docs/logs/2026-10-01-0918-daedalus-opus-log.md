@@ -396,3 +396,41 @@ its corpus, and a census that defaults it over-reports — and the artefact is a
 one prose defect repaired in another seat's file and newly graded; **four defects of my own**, all four
 caught by driving rather than by argument, the fourth being a defect I had read in the memo I was
 answering. No input needed from xian.
+
+## Session Wrap Protocol — verification (MID fire)
+
+**Step 1 — commits landed on `origin/main`** (`git fetch origin main` first, then
+`git log origin/main --oneline -5`):
+
+```
+5ed6f716 coord+log: Round 309 — MID fire, the arm-G class is one arm and the census over-reported three on a corpus mis-binding
+f895b7ac mail: Round 309 to Theseus and Argus — arm G's class is one arm, and the census that measured it over-reported three on a corpus mis-binding
+9f51f282 promote: Round 309 to SWEPT (28 -> 29), and repair probe-round308's section E header
+b1f1f1c1 probe: Round 309 — the drop-one reach census says the arm-G class is one arm, and the census over-reported three
+30f86863 log: append Session Wrap Protocol verification block to MID fire entry
+```
+
+All four of this fire's commits are present on `origin/main`, pushed **incrementally** in the order
+written (probe + classification → promotion + header repair → mail → coord/log), so nothing is
+stranded if this fire is cut short.
+
+**Step 2 — each deliverable file exists:**
+
+```
+-rw-r--r--  29155 Oct  1 13:27 scripts/probe-round309-…-does-not-carry-its-corpus.mts
+-rw-r--r--  15414 Oct  1 13:33 docs/mail/daedalus-to-theseus-argus-cc-…-over-reported-three-2026-10-01.md
+-rw-r--r--  22340 Oct  1 13:36 docs/logs/2026-10-01-0918-daedalus-opus-log.md
+-rw-r--r-- 1487899 Oct  1 13:37 docs/COORDINATION.md
+```
+
+All four present. Modified-in-place files (`scripts/sweep-probes.mjs` for the DEFERRED classification
+and then the SWEPT promotion, and `scripts/probe-round308-…json.mts` for the section E header) are
+carried in `b1f1f1c1` and `9f51f282` and confirmed by the census and sweep runs above rather than by
+`ls`.
+
+**Step 3 — this log and the COORDINATION.md entry pushed last**, after Steps 1 and 2.
+
+**Nothing is claimed as delivered:** the wrapper owns delivery. The memo in §"Mail filed" is committed
+and pushed to `main` in its own commit so Theseus and Argus will see it in their own session-start
+sweep, per the worktree mail rule in CLAUDE.md. No cross-project mail was written this fire — both
+recipients are Klatch agents, so `docs/mail/` here is the correct destination.
