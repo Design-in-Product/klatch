@@ -603,6 +603,32 @@ export const SWEPT = [
     expect: /All 18 regression checks passed/,
     why: 'driven twice by the promotion path (real HOME and an empty HOME, one variable): 18/18 green, exit 0 both arms, 1091/1380 ms; population and tree fingerprints for scripts/ and packages/ unchanged across 53 samples',
   },
+  {
+    // PROMOTED BY: Round 309, Daedalus, 2026-10-01 MID fire — driven by `promote-probes.mts`, which
+    // observed predicates 2-7 rather than reading them. Classified DEFERRED on arrival in the commit
+    // that added the file, then promoted by the path in a second commit; hazard-clean, no exemption,
+    // no `--force`.
+    //
+    // It answers the question Theseus's Round 308 §5 left open rather than the item he routed: arm G
+    // of `probe-round224` reaches 0 of 18, and is that one arm or a population? ONE. The census
+    // extracts every named conjunctive source predicate under scripts/ and measures each one's reach
+    // with each conjunct dropped; three flags, of which one is arm G, one is Theseus's own verbatim
+    // measuring copy of it, and one is a CORPUS MIS-BINDING BY THIS CENSUS — `hasSuiteCounts` at
+    // probe-round284:220, reach 0 over scripts/ and 165 over docs/logs, which is where it is actually
+    // applied. A predicate does not carry its corpus, and the repair is refusal (UNGRADED at an
+    // undeclared site), not better inference: Round 308 §3's mechanism with the POPULATION as the
+    // mis-paired partner, where the artefact is a reach figure rather than a checkable claim.
+    //
+    // Arm G itself is deliberately NOT edited: SWEPT, true of everything it reaches, only narrow.
+    // Theseus's §8 routing of the one-conjunct repair to Argus stands, and this file's contribution
+    // to it is a bound — the backlog is 18 FILES and the class is 1 ARM.
+    //
+    // Spawns nothing: no port, no database, no corpus, no model, no compiler. File reads and regexes
+    // over a tree it does not write; Z1 is a before/after `scripts/` fingerprint delta.
+    file: 'probe-round309-the-drop-one-reach-census-over-reported-three-where-the-population-is-one-because-a-predicate-does-not-carry-its-corpus.mts',
+    expect: /All 13 regression checks passed/,
+    why: 'driven twice by the promotion path (real HOME and an empty HOME, one variable): 13/13 green, exit 0 both arms, 946/1269 ms; population and tree fingerprints for scripts/ and packages/ unchanged across 46 samples',
+  },
 ];
 
 /**
@@ -889,14 +915,6 @@ export const DEFERRED = [
   // database, calls no model — the two `promote-probes.mts --list` child processes it spawns are
   // read-only and drive nothing themselves.
   'probe-round305-a-refusal-the-reader-could-not-check-can-now-print-its-own-site.mts',
-  // Round 309. Classified DEFERRED on arrival, in the same commit as the file, and promoted only by
-  // the path. It asks whether Theseus's Round 308 §5 finding — `probe-round224` arm G reaching 0 of
-  // 18 — is one arm or a population, by extracting every named conjunctive source predicate under
-  // scripts/ and measuring each one's reach with each conjunct dropped. The answer is ONE: the three
-  // flags its first version produced are arm G, a corpus mis-binding by the census itself, and
-  // Theseus's own verbatim measuring copy of arm G's predicate. Spawns nothing — no port, no
-  // database, no corpus, no model, no compiler; file reads and regexes over a tree it does not write.
-  'probe-round309-the-drop-one-reach-census-over-reported-three-where-the-population-is-one-because-a-predicate-does-not-carry-its-corpus.mts',
 ];
 
 /**
