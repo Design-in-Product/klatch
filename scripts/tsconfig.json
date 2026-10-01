@@ -54,7 +54,9 @@
   // `.d.mts` files beside them, which is exactly the TS7016 surface the Round 263 and 275 slips
   // were on, and is the half `probe-round303` grades.
   //
-  // One obligation this creates, guarded by `probe-round304` arm C1 rather than left as a comment:
+  // One obligation this creates, guarded by `probe-round304` arm E1 rather than left as a comment
+  // (this pointer read `C1` as landed; C1 is the with-declaration typecheck cell, and the `.js`
+  // absence is section E — corrected by Theseus, STOP fire 2026-09-30):
   // `{"type":"module"}` governs `.js` as well as `.ts`. There are no `.js` files under `scripts/`
   // today; the first one added will be ESM, and C1 reddens when one appears.
   "compilerOptions": {

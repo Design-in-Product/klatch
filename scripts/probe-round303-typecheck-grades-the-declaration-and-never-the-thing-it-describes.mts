@@ -529,8 +529,42 @@ const wErrs = `${widened.stdout ?? ''}${widened.stderr ?? ''}`
   .split('\n')
   .filter((l) => /error TS/.test(l));
 
-measure('D1', `widening include to **/*.ts: ${wErrs.length} error line(s) — ${[...new Set(wErrs.map((l) => (l.match(/error (TS\d+)/) ?? [, '?'])[1]))].join(',')}`);
+measure('D1', `widening include to **/*.ts: exit ${widened.status} · ${wErrs.length} error line(s) — ${[...new Set(wErrs.map((l) => (l.match(/error (TS\d+)/) ?? [, '?'])[1]))].join(',')}`);
 for (const e of wErrs.slice(0, 4)) measure('D1b', e.replace(REPO, '.').trim());
+
+/**
+ * STOP fire 2026-09-30, Theseus — the guard the Round 304 restatement needed, with the known
+ * positive that proves the guard reads something.
+ *
+ * D2 and D3 both came out of Round 304 concluding "the widened program is clean" from
+ * `wErrs.length === 0` alone, and nothing in this file read the child's exit status. A child that
+ * never ran prints no `error TS` line, so every failure that fails to print a diagnostic was being
+ * reported as a clean program. Driven both directions before this was written:
+ *
+ *   real run                        status 0    · 0 err lines · clean
+ *   binary absent (spawn fails)     status null · 0 err lines · WAS READ AS CLEAN
+ *   child SIGKILLed before output   status null · 0 err lines · WAS READ AS CLEAN
+ *   missing config file (control)   status 1    · 1 err line  · already caught — TS5058
+ *
+ * The control is why this is stated as narrow rather than total: a config-level failure does print a
+ * TS code and was always caught. The uncaught class is the child not running at all.
+ *
+ * The form these arms had BEFORE Round 304 was immune to this by accident — it asserted exactly
+ * 2 × TS1470, and a non-run cannot satisfy an equality against 2. Restating the subject to "0
+ * errors" was right and it traded that accidental guard for a vacuous green. One conjunct restores
+ * it; the known negative below keeps that conjunct from being a green nobody has exercised. Arm
+ * count unchanged at 18, so the SWEPT pin does not restage.
+ */
+const ranClean = widened.status === 0;
+const nonRun = spawnSync('tsc-this-binary-does-not-exist', ['--noEmit'], {
+  cwd: REPO,
+  encoding: 'utf8',
+});
+const nonRunErrs = `${nonRun.stdout ?? ''}${nonRun.stderr ?? ''}`
+  .split('\n')
+  .filter((l) => /error TS/.test(l));
+/** True when reader+guard decline to call a child that never ran a clean program. */
+const guardRejectsNonRun = nonRunErrs.length === 0 && nonRun.status !== 0;
 
 /**
  * Round 304, Daedalus — same subject, paid price. This arm's claim was that the widening price is an
@@ -549,9 +583,14 @@ check(
   'the widening price was an artefact of the extension rule and not a defect in the files, and Round 304 paid it with a module-format declaration rather than a rename: the root manifest still declares no "type", scripts/package.json declares "module", and the widened program is clean',
   JSON.parse(readFileSync(join(REPO, 'package.json'), 'utf8')).type === undefined &&
     scriptsPkg?.type === 'module' &&
-    wErrs.length === 0,
+    wErrs.length === 0 &&
+    ranClean &&
+    guardRejectsNonRun,
   `root package.json "type": absent · scripts/package.json "type": ${JSON.stringify(scriptsPkg?.type ?? null)} · ` +
-    `widening errors now ${wErrs.length} (was 2 × TS1470, the import.meta-under-CommonJS diagnostic).`,
+    `widening errors now ${wErrs.length} (was 2 × TS1470, the import.meta-under-CommonJS diagnostic) · ` +
+    `compiler exit ${widened.status} — the clean reading is only accepted from a compiler that RAN, and the ` +
+    `known negative beside it (a binary that does not exist: exit ${nonRun.status}, ${nonRunErrs.length} error lines) ` +
+    `confirms that guard rejects a child which never ran rather than being an unexercised conjunct.`,
 );
 
 // NOT driven: neither .ts file is executed. `aaxt-mcp-live-probe.ts` and `record-demo.ts` are a live
@@ -569,9 +608,11 @@ check(
   'TS1470 was reporting something real rather than a phantom, and the repair did not make it go away by removing the construct: both .ts files still use import.meta, and the widened program is clean because the declaration makes them ESM',
   tsFiles.length === 2 &&
     tsFiles.every((f) => /import\.meta/.test(read(f))) &&
-    wErrs.length === 0,
+    wErrs.length === 0 &&
+    ranClean,
   tsFiles.map((f) => `${f}: import.meta still present`).join(' · ') +
-    ` — widening errors ${wErrs.length}, so the construct stayed and the diagnostic went.`,
+    ` — widening errors ${wErrs.length} at compiler exit ${widened.status}, so the construct stayed and the` +
+    ' diagnostic went; D2 carries the known negative for the exit-status guard this arm shares.',
 );
 
 // ── Section Z: discipline ────────────────────────────────────────────────────────────────────────
