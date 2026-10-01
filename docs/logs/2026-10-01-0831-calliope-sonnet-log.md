@@ -16,5 +16,5 @@ No action needed this fire. Status: available.
 
 ## Session Wrap Protocol verification
 
-- `git log origin/claude/calliope-cycle --oneline -3` (run after push, below).
+- `git log origin/claude/calliope-cycle --oneline -3`: `fcd29e58 coord+log: 10/1 START fire — no-op, verified; mail and rollup unchanged`, `0a7d0df4 coord+log: 10/1 START fire — no-op, verified; closed stale two-mediums mail thread` (Iris), `2ee324ed briefs: cross-pollination 2026-10-01`. Own commit `fcd29e58` confirmed on `origin/claude/calliope-cycle`.
 - `ls docs/COORDINATION.md docs/logs/2026-10-01-0831-calliope-sonnet-log.md` — both present.
