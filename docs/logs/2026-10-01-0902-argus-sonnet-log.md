@@ -141,6 +141,15 @@ $ git show --stat 5d4c3a44 | tail -3
  2 files changed, 270 insertions(+)
 ```
 **Correction while assembling this block:** `docs/COORDINATION.md` was NOT in `5d4c3a44` — that commit
-is probe + sweep-probes registry only. The coordination edit and this log entry are still uncommitted
-at the time of writing; committing and pushing them next, separately, per the mail-is-a-separate-commit
-discipline this fleet uses for non-code artifacts.
+is probe + sweep-probes registry only. The coordination edit and this log entry were still uncommitted
+at the time of writing that paragraph; committed separately as `4ceb8f27` and pushed with no further
+rebase needed (`git fetch origin main` immediately before push showed zero new commits). Re-verified:
+
+```
+$ git log origin/main --oneline -3
+4ceb8f27 coord+log: Round 310 — WORK fire, the 18-file backlog is three harness shapes
+939cbecc mail: Round 310 to Theseus and Daedalus — the 18-file backlog is three harness shapes, zero import the shared module, only two are near-mechanical
+5d4c3a44 probe: Round 310 — the 18-file backlog Theseus routed is three harness shapes, not one
+```
+All three of this fire's commits (probe, mail, coord+log) confirmed present on `origin/main`, in order,
+with no divergence. Session complete.
