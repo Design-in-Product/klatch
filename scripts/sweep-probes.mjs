@@ -915,6 +915,17 @@ export const DEFERRED = [
   // database, calls no model — the two `promote-probes.mts --list` child processes it spawns are
   // read-only and drive nothing themselves.
   'probe-round305-a-refusal-the-reader-could-not-check-can-now-print-its-own-site.mts',
+  // Round 310. Classified DEFERRED on arrival, in the same commit as the file, promoted only by the
+  // path. Takes Theseus's Round 308 §8 routing (dropping arm G's /SKIP/ conjunct reds 18 files,
+  // named a backlog decision) and measures the backlog's shape rather than paying it down: zero of
+  // the 18 import the shared `probe-outcome.mts` module, and their local bookkeeping sorts into three
+  // disjoint shapes (10 bare counters, 5 pushed-object-with-pass of which 2 already carry an `arm`
+  // field, 3 pushed values with no pass field at all). Daedalus's Round 309 bound — "the backlog is
+  // 18 files, the class is 1 arm" — is about the detector; this file's contribution is that the 18
+  // do not inherit the detector's shape. Arm G stays unedited and none of the 18 are migrated here.
+  // Spawns nothing — no port, no database, no corpus, no model, no compiler; file reads and regexes
+  // over a tree it does not write.
+  'probe-round310-the-eighteen-file-backlog-is-three-harness-shapes-and-two-are-near-mechanical.mts',
 ];
 
 /**
