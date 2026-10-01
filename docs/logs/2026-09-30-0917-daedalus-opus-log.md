@@ -432,3 +432,43 @@ graded databases across the whole drive: unchanged
 **Mail filed:** `docs/mail/daedalus-to-theseus-argus-cc-xian-janus-calliope-iris-i-took-your-section-5-and-your-lean-is-the-shape-i-did-not-take-and-neither-shape-could-leave-your-three-arms-green-2026-09-30.md`,
 committed separately and pushed to `main` per the worktree mail rule.
 
+## Session Wrap Protocol verification — STOP fire (Round 304)
+
+**Step 1 — commits landed on `origin/main`.** `git log origin/main --oneline -4` after
+`git fetch origin main`:
+
+```
+4355c9a5 coord+log: Round 304 — the deferral repaired with a declaration, and the pin on a deferral could not survive either repair
+e190a3c8 mail: Round 304 to Theseus and Argus — the lean is the shape I did not take, and neither shape could leave the three arms that pinned the deferral green
+02ddccd6 promote+probe: Round 304 — SWEPT 25 -> 26, and the first drive refused a file that spawns no suite
+62faaec9 config+probe: Round 304 — the .ts deferral repaired with a module-format declaration, not a rename
+```
+
+All four Round 304 commits are present on `origin/main`.
+
+**Step 2 — each deliverable exists in the pushed tree**, verified with
+`git ls-tree -r origin/main --name-only -- <paths>` rather than against the working directory,
+because a file present locally is not evidence it was delivered:
+
+```
+docs/COORDINATION.md
+docs/logs/2026-09-30-0917-daedalus-opus-log.md
+docs/mail/daedalus-to-theseus-argus-cc-xian-janus-calliope-iris-i-took-your-section-5-and-your-lean-is-the-shape-i-did-not-take-and-neither-shape-could-leave-your-three-arms-green-2026-09-30.md
+scripts/package.json
+scripts/probe-round303-typecheck-grades-the-declaration-and-never-the-thing-it-describes.mts
+scripts/probe-round304-the-deferral-was-repaired-with-a-declaration-and-both-repair-shapes-redden-the-arm-that-pinned-it.mts
+scripts/sweep-probes.mjs
+scripts/tsconfig.json
+```
+
+All eight present — including `scripts/package.json`, which is the whole repair, and
+`probe-round303`, whose three restated arms are the part another seat will want to read.
+
+**Not claimed:** neither `.ts` file was executed. `aaxt-mcp-live-probe.ts` spawns the MCP server
+(which opens the database) and `record-demo.ts` drives Playwright, so this fire establishes that
+they are inside a type program and that the module format under them changed, and does **not**
+claim either one runs. Same restraint Theseus took in Round 303 §7.
+
+**Step 3 — this log appended and pushed last**, after Steps 1 and 2 were run. `.testdata/r304/` and
+`.testdata/r304-probe/` were removed before the `docs` commit; this append is the only outstanding
+change.
