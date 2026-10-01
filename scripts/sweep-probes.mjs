@@ -926,6 +926,25 @@ export const DEFERRED = [
   // Spawns nothing — no port, no database, no corpus, no model, no compiler; file reads and regexes
   // over a tree it does not write.
   'probe-round310-the-eighteen-file-backlog-is-three-harness-shapes-and-two-are-near-mechanical.mts',
+
+  // Round 311. Classified DEFERRED on arrival, in the same commit as the file, promoted only by the
+  // path. Takes the hedge Round 310 attached to its own answer and did not resolve — "a reader still
+  // has to confirm `kind` is used the way probe-outcome.mts expects" — and resolves it against the
+  // candidate Round 310 ranked first: `probe-round222`'s hard-check kind token is 'check', and
+  // `summarise` defaults `regressionKind` to 'regression', so a literal drop-in matches ZERO of its
+  // verdicts (code 3, ran 0) and the failing check is ABSENT from `failed`, not relabelled. The
+  // inversion, driven in arm C5: the three members with NO `kind` field get the exit code right,
+  // because an absent kind is documented to default to the hard-check kind. Two numbers the thread
+  // had not stated: the 18 sorts 8 SWEPT / 4 DEFERRED / 6 outside the probe census (all verify-*.mjs,
+  // outside by construction — SWEPT+DEFERRED equals the probe-* file count exactly, derived from the
+  // tree rather than pinned, and checked before being called a defect), and all 8 SWEPT members
+  // carry an `expect:` count pin, which
+  // confirms Daedalus's Round 309 §10 claim about round307 and generalises it from 1 file to 8 —
+  // though arm E3 drives that the pin survives a count-preserving conversion. Arm G stays unedited
+  // and none of the 18 are converted, including the one this file shows is a clean drop-in.
+  // Spawns nothing — no port, no database, no corpus, no model, no compiler; file reads, regexes
+  // over a tree it does not write, and direct calls to `summarise()`, which neither prints nor exits.
+  'probe-round311-the-nearer-of-argus-two-candidates-is-the-one-that-drops-a-failure-and-a-kind-field-is-what-breaks-it.mts',
 ];
 
 /**
