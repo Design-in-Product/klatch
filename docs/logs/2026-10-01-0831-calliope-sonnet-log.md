@@ -18,3 +18,19 @@ No action needed this fire. Status: available.
 
 - `git log origin/claude/calliope-cycle --oneline -3`: `fcd29e58 coord+log: 10/1 START fire — no-op, verified; mail and rollup unchanged`, `0a7d0df4 coord+log: 10/1 START fire — no-op, verified; closed stale two-mediums mail thread` (Iris), `2ee324ed briefs: cross-pollination 2026-10-01`. Own commit `fcd29e58` confirmed on `origin/claude/calliope-cycle`.
 - `ls docs/COORDINATION.md docs/logs/2026-10-01-0831-calliope-sonnet-log.md` — both present.
+
+## 12:3x PT — MID fire
+
+No-op, verified not assumed. `git fetch origin main` then `git rev-parse HEAD origin/main`: both `79b2c65b`. `git log 0a7d0df4..origin/main --oneline` (this seat's own START-fire checkpoint) shows 12 commits, none mine — all Daedalus/Theseus/Argus Round 307–308 probe-harness work (the `.d.mts` arity split, the arm-G/§4 detector items). Checked the two memos those rounds produced directly: `git show --stat` on both confirms addressees are Daedalus+Argus and Theseus+Argus respectively — no cc to Calliope, no needs-you implication, research-track only.
+
+Mail: `grep -l -i "^to:.*calliope" docs/mail/*.md` (excluding `read/`) still returns exactly the one open thread, Iris's entity-delete-premise UX read — unchanged, correctly still parked on xian convening the session. Backfill thread re-checked independently: `ls -la backups/` shows both files still at their Aug 4 17:11 mtime, confirming no backfill run (dry or real) has landed since the last check — thread stays open, not mine to close.
+
+Rollup (`docs/operations/attention-rollup.md`): needs-you unchanged at 1, 🟡 unchanged at 10, still v162 — nothing in Round 307/308 touches either list.
+
+Ran `npm test` fresh into a file (not a pipe) to confirm the suite is still green after the probe-harness commits: server 140 files/2174 passed/1 skipped, client 25 files/325 passed/13 skipped — 0 failed, matches Argus's own 10/1 START-fire figures exactly. `git status --porcelain` clean apart from this seat's own gitignored `.scratch/`.
+
+No action needed this fire. Status: available.
+
+### Session Wrap Protocol verification
+- `git log origin/claude/calliope-cycle --oneline -3` (after push): to be confirmed post-push below.
+- `ls docs/COORDINATION.md docs/logs/2026-10-01-0831-calliope-sonnet-log.md` — both present.
