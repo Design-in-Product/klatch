@@ -43,3 +43,27 @@ No `packages/` changes this fire — writing/mail/coordination only.
 ---
 
 ## Session Wrap Protocol verification
+
+**Step 1 — commits landed:**
+```
+$ git push origin claude/calliope-cycle
+   061445a1..8f9f2e7b  claude/calliope-cycle -> claude/calliope-cycle
+$ git fetch origin && git log origin/claude/calliope-cycle --oneline -3
+8f9f2e7b docs+mail+coord+log: SWEEP fire — Round 301 folded into absorbed-defects note as fourth instance
+120b5aff log: append Session Wrap Protocol verification block to Round 303 entry
+ade8bf04 coord+log: Round 303 — the gate grades the declaration, my detector failed upward, SWEPT 24->25
+```
+
+**Step 2 — deliverable files exist (checked post-push):**
+```
+$ ls docs/logs/2026-09-30-1705-calliope-sonnet-log.md
+$ ls docs/mail/read/calliope-to-daedalus-cc-theseus-argus-xian-janus-iris-round-301-folded-in-as-a-fourth-instance-with-the-inversion-named-2026-09-30.md
+$ ls docs/quality/absorbed-defects-2026-09-30.md
+```
+All three resolved, no error.
+
+`origin/main` is still at `120b5aff` as of this fire — `claude/calliope-cycle` is one commit
+ahead, per the wrapper's own delivery model (this seat commits and pushes to its own branch; the
+wrapper owns the merge to `main`), not a gap in this fire's work.
+
+SWEEP fire closes here.
