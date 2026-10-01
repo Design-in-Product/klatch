@@ -572,6 +572,37 @@ export const SWEPT = [
     expect: /All 17 regression checks passed/,
     why: 'driven twice by the promotion path (real HOME and an empty HOME, one variable): 17/17 green, exit 0 both arms, 1232/1383 ms; population and tree fingerprints for scripts/ and packages/ unchanged across 56 samples',
   },
+  {
+    // PROMOTED BY: Round 308, Theseus, START fire 2026-10-01 — driven by `promote-probes.mts`, which
+    // observed predicates 2-7 rather than reading them: [PROMOTABLE] all 7, exit 0 both arms. Driven
+    // TWICE through the path: once at 15 arms, and again after section E was added, because the
+    // attestation has to describe the file that is in the tree and not the one that earned it.
+    //
+    // Round 307 §4 offered a narrow detector over the one note in `scripts/tsconfig.json` that names
+    // an arm, after the wrong pointer in it was found twice in the same paragraph on two different
+    // days. Taken here, and the offer as WORDED does not work: it asks whether the named arm's check
+    // string contains `.js`, and the defective pointer named arm C1, whose claim reads "a copy of the
+    // real scripts/package.json" — `package.json` contains `.js`. Arm D3 drives both forms against
+    // the reverted file; only `/\.js(?![A-Za-z0-9])/` reds it. The known positive here is the defect
+    // this fleet actually shipped rather than one minted for the arm.
+    //
+    // Sections B and C are not gates and are not meant to become any: they measure that the GENERAL
+    // form of the same detector cannot be one. 13 reported across two versions, 0 real. That also
+    // corrects my own Round 306 §5, which refused the general form because "the population is small"
+    // — it is 235 mentions, 145 of them unbindable to a round by any line-local rule. The refusal
+    // stands; the reason in it did not.
+    //
+    // Section E is the finding this file made by breaking something: its first version reddened
+    // `probe-round224` arm G, and the measurement that followed is that arm G reaches 0 of the 18
+    // hand-rolled summary lines under scripts/ — its `/SKIP/` conjunct is not about the property, and
+    // this file's directory-walk exclusion constant was the only thing it had ever reached. Repaired
+    // by converting to `summariseAndExit`, which is the convention arm G exists to enforce, rather
+    // than by renaming the constant. Arm G itself is left alone: SWEPT, true of what it reaches, only
+    // narrow — the precedent Daedalus set with `probe-round303` B3 this same round.
+    file: 'probe-round308-the-general-arm-pointer-detector-reports-thirteen-findings-all-thirteen-false-and-the-narrow-one-is-green-on-package-json.mts',
+    expect: /All 18 regression checks passed/,
+    why: 'driven twice by the promotion path (real HOME and an empty HOME, one variable): 18/18 green, exit 0 both arms, 1091/1380 ms; population and tree fingerprints for scripts/ and packages/ unchanged across 53 samples',
+  },
 ];
 
 /**
@@ -858,12 +889,6 @@ export const DEFERRED = [
   // database, calls no model — the two `promote-probes.mts --list` child processes it spawns are
   // read-only and drive nothing themselves.
   'probe-round305-a-refusal-the-reader-could-not-check-can-now-print-its-own-site.mts',
-
-  // Round 308. Classified DEFERRED on arrival in the same commit as the file, so the census is never
-  // red across a commit boundary; promotion is left to the path rather than hand-written here. It
-  // spawns nothing at all — no port, no database, no corpus, no model, no compiler — so if the path
-  // refuses it, the refusal is about the path and not about this file.
-  'probe-round308-the-general-arm-pointer-detector-reports-thirteen-findings-all-thirteen-false-and-the-narrow-one-is-green-on-package-json.mts',
 ];
 
 /**

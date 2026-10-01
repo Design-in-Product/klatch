@@ -67,7 +67,23 @@
  * shipped rather than one minted for the arm. Had I taken the offer as worded and tested it against
  * E1 only, it would have gone SWEPT green and guarded nothing.
  *
- * **4. And on its first run this file was in its own population.** Its docblock cites rounds and
+ * **4. THE SECOND FINDING, and this file found it by breaking it: `probe-round224` arm G reaches
+ * zero of the 18 hand-rolled summary lines under `scripts/`.** Arm G forbids a probe printing its own
+ * `checks passed` instead of calling `summariseAndExit`. Its predicate is a three-term conjunction,
+ * and one term is `/SKIP/` — a token that has nothing to do with the property. The first version of
+ * this file printed a hand-rolled summary AND declared a directory-walk exclusion list called `SKIP`,
+ * so it became the only file arm G had ever reached, and arm G went red. Repaired by converting to
+ * `summariseAndExit` — the convention the arm exists to enforce — rather than by renaming the
+ * variable, which would have cleared the red while leaving the property untouched.
+ *
+ * The figure: **1 of 19 at the moment of the red, 0 of 18 now.** `probe-round307`, `probe-round304`,
+ * `probe-round303` and 15 others print hand-rolled summaries and are invisible to the arm. It is
+ * SWEPT, it is green, and it has been guarding an empty set. Section E measures this on arm G's own
+ * predicate and own normaliser, copied from `probe-round224:366`. **Arm G is not edited** — the
+ * precedent is the one Daedalus set with my `probe-round303` B3 this same round: SWEPT, true of
+ * everything it reaches, and only narrow. The offer to widen it is in the memo.
+ *
+ * **5. And on its first run this file was in its own population.** Its docblock cites rounds and
  * arms, and arm B2 mints a `probe-round304 arm Q9` pointer as a STRING — so the detector read its own
  * prose and its own fixture and reported them: 7 instead of 5, 11 instead of 8, 18 instead of 13.
  * That is `probe-round225`'s title arriving inside the fire whose subject is false pointers, and the
@@ -92,21 +108,27 @@ import { readdirSync, readFileSync, writeFileSync, mkdirSync, rmSync, existsSync
 import { dirname, join, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { fingerprint } from './lib/tree-fingerprint.mts';
+import { stripSource } from './lib/strip-source.mjs';
+import { summariseAndExit, type ProbeVerdict } from './lib/probe-outcome.mts';
 
 const SELF = fileURLToPath(import.meta.url);
 const SCRIPTS = dirname(SELF);
 const REPO = dirname(SCRIPTS);
 const SCRATCH = join(REPO, '.testdata', 'r308-probe');
 
-let pass = 0;
-let fail = 0;
-let meas = 0;
+/**
+ * `summariseAndExit` rather than a hand-rolled summary line, and section E is why: the first version
+ * of this file printed its own `All N regression checks passed` the way 20 other probes under
+ * `scripts/` still do, and that is the property `probe-round224` arm G exists to forbid. Converting
+ * was the repair; renaming the variable the arm actually keyed on would have been the dodge.
+ */
+const results: ProbeVerdict[] = [];
 const check = (id: string, claim: string, ok: boolean, detail: string): void => {
-  if (ok) pass += 1;
-  else fail += 1;
+  results.push({ arm: id, check: claim, pass: ok, kind: 'regression' });
   console.log(`  [${id}] ${ok ? 'PASS' : 'FAIL'}  ${claim}`);
   console.log(`        ${detail}`);
 };
+let meas = 0;
 const measure = (id: string, line: string): void => {
   meas += 1;
   console.log(`  [${id}] MEAS  ${line}`);
@@ -492,6 +514,64 @@ check(
     'The difference is not care taken. The narrow form fixes the site, the round, the arm and the token in advance, so it never infers a binding; B and C exist only because every line-local approximation of that binding manufactures findings.',
 );
 
+// ── Section E: the arm this file reddened on arrival, and what its reach actually is ──────────────
+console.log('\n── E. probe-round224 arm G: 1 of 21 reached, and the 1 it reached was mine, falsely ──');
+
+/**
+ * `probe-round224` arm G, copied verbatim from `:366` so the measurement grades the real predicate
+ * rather than a description of it. Normalisation is the arm's own: comments blanked, STRINGS KEPT.
+ */
+const isHandRolledG = (src: string): boolean =>
+  /SKIP/.test(src) && /checks passed/.test(src) && !/summariseAndExit\(/.test(src);
+/** The same property with the `SKIP` conjunct dropped — i.e. "hand-rolled" without the channel term. */
+const isHandRolled = (src: string): boolean =>
+  /checks passed/.test(src) && !/summariseAndExit\(/.test(src);
+
+const scriptNames = readdirSync(SCRIPTS).filter(
+  (n) => (n.endsWith('.mts') || n.endsWith('.mjs')) && !n.startsWith('.'),
+);
+const normalised = (n: string): string => stripSource(readFileSync(join(SCRIPTS, n), 'utf8'), false);
+const HAND_ROLLED = scriptNames.filter((n) => isHandRolled(normalised(n)));
+const REACHED_BY_G = HAND_ROLLED.filter((n) => isHandRolledG(normalised(n)));
+
+measure(
+  'E0',
+  `scripts/ scanned ${scriptNames.length} · hand-rolled summary (prints "checks passed", no summariseAndExit): ` +
+    `${HAND_ROLLED.length} · of those, reached by probe-round224 arm G's three-term conjunction: ${REACHED_BY_G.length}`,
+);
+
+check(
+  'E1',
+  'THE SECOND FINDING: `probe-round224` arm G is SWEPT and green and its reach over the property it names is ZERO — the limiting conjunct is `/SKIP/`, which is not about hand-rolled summaries at all, so every hand-rolled probe under scripts/ is invisible to it unless it happens to contain that token. It was green before this fire and it is green again, and in between the only file it could see was this one',
+  HAND_ROLLED.length > 5 && REACHED_BY_G.length === 0,
+  `${REACHED_BY_G.length} of ${HAND_ROLLED.length} reached — and 1 of 19 at the moment this file reddened it, which was the whole of its live reach. Not reached, among others: ` +
+    `${HAND_ROLLED.filter((n) => !REACHED_BY_G.includes(n)).slice(0, 4).map((n) => n.replace(/^probe-/, '').slice(0, 28)).join(', ')}. ` +
+    'Same root cause as Round 307 §3 one layer out: the arm\'s own scope is narrower than the sentence its label states, and no arm grades an arm\'s scope. ' +
+    'Measured on the arm\'s own predicate and the arm\'s own normalisation (`stripSource(src, false)`), copied from probe-round224:366, not on a paraphrase. ' +
+    'This arm is a pin on zero, deliberately: the moment arm G reaches a real hand-rolled probe, it reds here too, and the figure above stops being a statement about an empty set.',
+);
+
+check(
+  'E2',
+  'and the one file arm G DID reach, it reached falsely — this file, on its first run, because its directory-walk exclusion list is a constant named SKIP. A file-walk exclusion is not a skip channel, so the arm\'s only live hit in its entire history of reach was a false positive, while the 18 genuinely hand-rolled probes beside it were out of reach',
+  ((): boolean => {
+    // The pre-repair shape, replayed as a string rather than by reverting the file (arm Z1).
+    const preRepair = 'const SKIP = new Set([]);\nconsole.log(`All ${pass} regression checks passed`);\n';
+    const postRepair = 'const SKIP = new Set([]);\nsummariseAndExit({ probeName: "x", results });\n';
+    return isHandRolledG(preRepair) && !isHandRolledG(postRepair) && !isHandRolledG(normalised(relative(SCRIPTS, SELF)));
+  })(),
+  'pre-repair shape → arm G reports hand-rolled (the red this file caused); post-repair shape → green. ' +
+    'The repair was converting to summariseAndExit, which is the convention the arm exists to enforce — renaming SKIP would have cleared the red while leaving the property the arm is about unchanged, and that is the dodge, not the fix.',
+);
+
+check(
+  'E3',
+  'arm G is deliberately NOT edited here, on the precedent Daedalus set with my own probe-round303 B3 this round: it is SWEPT, its claim is true of everything it reaches, and widening another seat\'s SWEPT arm restages its pin. The gap is reported and the offer is in the memo',
+  isHandRolledG('SKIP checks passed') && !isHandRolledG('checks passed'),
+  'the conjunct demonstrated in two literals rather than argued: with the token present the predicate fires, without it the identical hand-rolled property does not. ' +
+    'Round 304 is the precedent for when editing another seat\'s arm is right — there the arm had been made false. Here it is only narrow.',
+);
+
 // ── Section Z: discipline ────────────────────────────────────────────────────────────────────────
 console.log('\n── Z. discipline ──');
 
@@ -516,7 +596,5 @@ measure(
   'subprocesses: none. No port bound, no database opened, no corpus read, no model called, nothing under packages/ executed, and no compiler spawned — this probe is file reads and regexes over a tree it does not write.',
 );
 
-console.log(
-  `\n${fail === 0 ? `All ${pass} regression checks passed` : `${fail} of ${pass + fail} FAILED`}, ${meas} measurements, 0 skips`,
-);
-process.exit(fail === 0 ? 0 : 1);
+console.log(`\n${meas} measurements, 0 skips`);
+summariseAndExit({ probeName: 'probe-round308', results });
