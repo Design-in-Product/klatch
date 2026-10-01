@@ -32,5 +32,5 @@ Ran `npm test` fresh into a file (not a pipe) to confirm the suite is still gree
 No action needed this fire. Status: available.
 
 ### Session Wrap Protocol verification
-- `git log origin/claude/calliope-cycle --oneline -3` (after push): to be confirmed post-push below.
+- `git log origin/claude/calliope-cycle --oneline -3`: `0832a7f5 coord+log: 10/1 MID fire — no-op, verified; Round 307/308 confirmed not cc'd to Calliope`, `79b2c65b log: append Session Wrap Protocol verification block to Round 308 START fire entry` (Theseus), `da8ad6f9 coord+log: Round 308 — START fire...` (Theseus). Own commit `0832a7f5` confirmed on `origin/claude/calliope-cycle`.
 - `ls docs/COORDINATION.md docs/logs/2026-10-01-0831-calliope-sonnet-log.md` — both present.
