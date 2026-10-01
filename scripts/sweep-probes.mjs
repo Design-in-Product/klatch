@@ -889,6 +889,14 @@ export const DEFERRED = [
   // database, calls no model — the two `promote-probes.mts --list` child processes it spawns are
   // read-only and drive nothing themselves.
   'probe-round305-a-refusal-the-reader-could-not-check-can-now-print-its-own-site.mts',
+  // Round 309. Classified DEFERRED on arrival, in the same commit as the file, and promoted only by
+  // the path. It asks whether Theseus's Round 308 §5 finding — `probe-round224` arm G reaching 0 of
+  // 18 — is one arm or a population, by extracting every named conjunctive source predicate under
+  // scripts/ and measuring each one's reach with each conjunct dropped. The answer is ONE: the three
+  // flags its first version produced are arm G, a corpus mis-binding by the census itself, and
+  // Theseus's own verbatim measuring copy of arm G's predicate. Spawns nothing — no port, no
+  // database, no corpus, no model, no compiler; file reads and regexes over a tree it does not write.
+  'probe-round309-the-drop-one-reach-census-over-reported-three-where-the-population-is-one-because-a-predicate-does-not-carry-its-corpus.mts',
 ];
 
 /**

@@ -1,0 +1,478 @@
+/**
+ * Round 309 — the drop-one reach census, built to answer whether Theseus's Round 308 §5 finding is
+ * one arm or a population. The answer is **one**. Getting there cost this file two defects of its
+ * own, one in each failure direction, inside a single fire.
+ *
+ * ── Where the item came from ──────────────────────────────────────────────────
+ *
+ * Theseus's Round 308 §5 found that `probe-round224` arm G — SWEPT, green, a convention gate —
+ * grades its population with `/SKIP/ && /checks passed/ && !/summariseAndExit\(/`, and that the
+ * first conjunct is a token with nothing to do with the property the arm's label names. Measured
+ * reach: **0 of 18**. He routed the one-conjunct repair to Argus (dropping `/SKIP/` reds 18 files,
+ * which is a backlog decision) and pinned the zero in his own arm E1.
+ *
+ * What he did not ask, and what is Daedalus-shaped: **is arm G alone?** A conjunct that guards an
+ * empty set is a syntactic property of a predicate, so it is measurable over the whole corpus
+ * without binding anything to a round or a seat — which matters, because binding is exactly what
+ * his §3 showed over-reports.
+ *
+ * ── THE FINDING, in two parts ─────────────────────────────────────────────────
+ *
+ * **1. The population of the arm-G shape under `scripts/` is 1 — arm G.** The census flags three
+ * predicates whose full reach is 0 while some drop-one reach is positive. One is arm G. The second
+ * is a **corpus mis-binding by this census** (below). The third is Theseus's own verbatim measuring
+ * copy of arm G's predicate inside `probe-round308`, whose reach-0 is by construction. So the class
+ * is not a backlog; the one-conjunct repair Theseus routed is the whole of it.
+ *
+ * **2. A predicate does not carry its corpus, and a census that supplies a default one
+ * over-reports.** `hasSuiteCounts` at `probe-round284:220` is a two-conjunct source predicate, so
+ * the census found it; its full reach over `scripts/` is **0**, so the census flagged it. But it is
+ * never applied to `scripts/`. It is applied to **session logs**, where its reach is **165 of 554**.
+ * The flag was entirely an artefact of the corpus the census chose for it.
+ *
+ * This is Round 308 §3's general form arriving in the instrument built one fire after reading it.
+ * His version: a binder that mis-pairs an arm with a round emits the mis-pairing as a finding, so
+ * *an unrecognised spelling under-reports in a counter and over-reports in a binder.* This is the
+ * same mechanism with the mis-paired partner being the **corpus** rather than the round, and it is
+ * worse in one specific way: a round mis-binding produces a claim a reader can check against the
+ * file, while a corpus mis-binding produces a **reach figure**, which looks like a measurement.
+ *
+ * The repair is not a better inference. It is to refuse: a predicate whose corpus is not stated at
+ * a fixed site is reported **UNGRADED**, and arm C3 drives the flag count down 3 → 1 by that route.
+ * Fixing the site in advance is what §3 concluded reports 0 false, and it is what sections B and C
+ * of this file do.
+ *
+ * ── Three defects of my own, and the first two are the same instrument failing both ways ─────────
+ *
+ * **Defect 1 — the first version read normalised source and found 0 predicates, including arm G's
+ * own.** Cause: `stripSource` blanks regex literal **bodies** in both of its readings, by documented
+ * design (`lib/strip-source.mjs:40-50` — "a regex body is not code"). A detector hunting regex
+ * literals in normalised source therefore reaches 0 by construction, and the instrument was sound
+ * while the reading was wrong. Fifth instance of my own standing note, and the known positive that
+ * caught it was arm G's real declaration rather than a minted one. Arm A2 drives both readings.
+ *
+ * The repair uses the existing instrument rather than hand-rolling a comment scanner: read **raw**
+ * source for content, and use the normalised source — which is offset-preserving — as an
+ * **offset-aligned mask** for the in-code membership test. Known negative in arm A3: the copy of
+ * `mutatesProduct` inside `probe-round254`'s docblock, which the mask rejects.
+ *
+ * **Defect 2 — the same extractor under-reports, and I measured the cost rather than asserting it
+ * was zero.** It recognises regex **literals** only, so `mutatesProduct` at `probe-round254:149` —
+ * whose terms are named constants `WRITE_RE` / `PRODUCT_PATH_RE` — is invisible to it. One missed
+ * predicate on this tree. Its full reach, resolved by hand, is **49**, so the miss cost **0
+ * findings** — but that is a measurement in arm A4, not an assumption. Both failure directions of
+ * one instrument, in one fire: under-reporting the population and over-reporting a flag.
+ *
+ * **Defect 3, which is the defect of asserting what would have been defect 3.** I wrote the arm for
+ * "the harness is inside its own population" — third occurrence of that shape in this thread, so the
+ * obvious thing to claim — and it is **not true of this file**. The extractor finds zero predicates
+ * here, because the census's known positive is arm G's real declaration read from disk (arm A1)
+ * rather than a copy pasted in. The self-exclusion's delta is **0**, not 1. The only reason I know is
+ * that arm D2 was written to drive the delta instead of announcing it, which is the same instrument
+ * that found the real instance in Round 308 §4 — pointed the other way round.
+ *
+ * **Defect 4 — the first version of arm B2 pinned the script count, and FAILED on its first run**
+ * because this file is the 164th script. That is Round 308 §4 defect 3 verbatim — *"the pin I nearly
+ * wrote was on the count"* — recurring in the file that answers the memo that says it, one section
+ * away from quoting it. Reading a defect is not the same as not committing it. The count is a
+ * measurement now (B1, Z2); the pin is on 18 and 0, which this file's arrival does not move.
+ *
+ * ── A fourth find, in another seat's file, and it is prose not predicate ──────
+ *
+ * `probe-round308`'s section E header prints **"arm G: 1 of 21 reached"**. Its own `[E0]` reads
+ * `18 · … reached … 0`, and its own `[E1]` reads `0 of 18 … and 1 of 19 at the moment this file
+ * reddened it`. Neither half of `1 of 21` is among the figures the section measures, and `21`
+ * appears nowhere in the run. This is the §5 finding of that very file — *the arm's own label is an
+ * unguarded restatement of its measured scope* — recurring one level out, in the header above the
+ * measurement that would have corrected it. Arm E1 grades the header against the file's own
+ * figures. The header is repaired in this commit; the predicate was never wrong.
+ *
+ * ── What this file does not do ────────────────────────────────────────────────
+ *
+ * It does not edit `probe-round224` arm G. That arm is SWEPT, its claim is true of everything it
+ * reaches, and widening another seat's SWEPT arm restages its pin — the precedent Theseus set with
+ * my `probe-round303` B3 and I set with his. The routing in his §8 stands, and this file's
+ * contribution to it is a measured bound: the backlog is 18 files and the class is 1 arm.
+ *
+ * It spawns nothing: no port, no database, no corpus, no model, no compiler. File reads and regexes
+ * over a tree it does not write.
+ */
+
+import { readdirSync, readFileSync } from 'node:fs';
+import { dirname, join, relative } from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { stripSource } from './lib/strip-source.mjs';
+import { fingerprint } from './lib/tree-fingerprint.mts';
+import { summariseAndExit, type ProbeVerdict } from './lib/probe-outcome.mts';
+
+const SELF = fileURLToPath(import.meta.url);
+const SCRIPTS = dirname(SELF);
+const REPO = dirname(SCRIPTS);
+const LOGS = join(REPO, 'docs/logs');
+const SELF_NAME = relative(SCRIPTS, SELF);
+
+const results: ProbeVerdict[] = [];
+const check = (id: string, claim: string, ok: boolean, detail: string): void => {
+  results.push({ arm: id, check: claim, pass: ok, kind: 'regression' });
+  console.log(`  [${id}] ${ok ? 'PASS' : 'FAIL'}  ${claim}`);
+  console.log(`        ${detail}`);
+};
+let meas = 0;
+const measure = (id: string, line: string): void => {
+  meas += 1;
+  console.log(`  [${id}] MEAS  ${line}`);
+};
+
+const TREE_AT_START = fingerprint(REPO, 'scripts');
+
+// `readdirSync`, never a glob and never grep: on this project a glob has dropped a file from a
+// count, and grep has emitted no row at all for a file containing a NUL byte.
+const scriptNames = readdirSync(SCRIPTS)
+  .filter((n) => (n.endsWith('.mts') || n.endsWith('.mjs')) && !n.startsWith('.'));
+const rawOf = new Map(scriptNames.map((n) => [n, readFileSync(join(SCRIPTS, n), 'utf8')]));
+// The arm-G normalisation, which is the one every predicate in this population was written against:
+// comments blanked, STRINGS KEPT. Blanking strings would stop the detectors finding real offenders.
+const normOf = new Map(scriptNames.map((n) => [n, stripSource(rawOf.get(n) as string, false)]));
+
+// ── The extractor ────────────────────────────────────────────────────────────────────────────────
+
+type Term = { neg: boolean; re: string; arg: string };
+type Pred = { file: string; name: string; line: number; terms: Term[] };
+
+const DECL =
+  /const\s+([A-Za-z_$][\w$]*)\s*=\s*\(\s*([A-Za-z_$][\w$]*)\s*(?::\s*string\s*)?\)\s*(?::\s*boolean\s*)?=>\s*([^;]*);/g;
+const TERM =
+  /^(!?)\s*(\/(?:\\.|\[(?:\\.|[^\]])*\]|[^/])+\/[gimsuy]*)\s*\.test\(\s*([A-Za-z_$][\w$]*)\s*\)$/;
+
+/**
+ * `reading: 'raw'` is the repair; `'normalised'` is defect 1, kept drivable so arm A2 can state the
+ * cost of the wrong reading as a number rather than as prose. `mask` is what makes the raw reading
+ * sound: `stripSource` preserves offsets, so a declaration whose `const NAME =` head is blank in the
+ * normalised text is a declaration inside a comment.
+ */
+const extract = (reading: 'raw' | 'normalised'): { preds: Pred[]; inComment: number } => {
+  const preds: Pred[] = [];
+  let inComment = 0;
+  for (const n of scriptNames) {
+    const src = (reading === 'raw' ? rawOf : normOf).get(n) as string;
+    const mask = normOf.get(n) as string;
+    for (const m of src.matchAll(DECL)) {
+      const [whole, name, param, body] = m;
+      if (body === undefined || !body.includes('.test(')) continue;
+      const headLen = whole.indexOf('=') + 1;
+      if (reading === 'raw' && mask.slice(m.index, m.index + headLen).trim() === '') {
+        inComment += 1;
+        continue;
+      }
+      // Top-level `&&` only; any top-level `||` and this is not a conjunction, so it is not ours.
+      const terms: string[] = [];
+      let depth = 0;
+      let cur = '';
+      let conj = true;
+      for (let i = 0; i < body.length; i++) {
+        const c = body[i];
+        if (c === '(' || c === '[') depth++;
+        else if (c === ')' || c === ']') depth--;
+        if (depth === 0 && c === '&' && body[i + 1] === '&') { terms.push(cur); cur = ''; i++; continue; }
+        if (depth === 0 && c === '|' && body[i + 1] === '|') { conj = false; break; }
+        cur += c;
+      }
+      terms.push(cur);
+      if (!conj) continue;
+      const parsed = terms.map((t): Term | null => {
+        const tm = TERM.exec(t.trim());
+        return tm === null ? null : { neg: tm[1] === '!', re: tm[2] as string, arg: tm[3] as string };
+      });
+      if (parsed.some((p) => p === null)) continue;
+      const ts = parsed as Term[];
+      if (ts.length < 2 || ts.some((t) => t.arg !== param)) continue;
+      preds.push({ file: n, name: name as string, line: src.slice(0, m.index).split('\n').length, terms: ts });
+    }
+  }
+  return { preds, inComment };
+};
+
+const fires = (terms: Term[], src: string): boolean =>
+  terms.every((t) => {
+    const m = /^\/(.*)\/([gimsuy]*)$/s.exec(t.re) as RegExpExecArray;
+    const hit = new RegExp(m[1] as string, (m[2] as string).replace(/g/g, '')).test(src);
+    return t.neg ? !hit : hit;
+  });
+
+const RAW = extract('raw');
+const NORMALISED = extract('normalised');
+
+console.log('\n── A. the extractor, and the reading that made it return zero ──');
+
+const armG = RAW.preds.find(
+  (p) => p.file.startsWith('probe-round224-a-skip') && p.name === 'isHandRolled',
+);
+check(
+  'A1',
+  'KNOWN POSITIVE, copied from the real shipped shape rather than minted: the extractor finds `probe-round224` arm G\'s own declaration, with its three conjuncts',
+  armG !== undefined && armG.terms.length === 3
+    && armG.terms[0]?.re === '/SKIP/' && armG.terms[1]?.re === '/checks passed/'
+    && armG.terms[2]?.neg === true,
+  armG === undefined
+    ? 'NOT FOUND — the extractor cannot see the one declaration this file exists to measure'
+    : `${armG.file}:${armG.line} ${armG.name} · ${armG.terms.map((t) => `${t.neg ? '!' : ''}${t.re}`).join(' && ')}`,
+);
+
+check(
+  'A2',
+  'DEFECT 1, driven in both directions: the same extractor over NORMALISED source finds zero predicates — `stripSource` blanks regex literal bodies in both readings by documented design, so the reading was wrong and the regex was not',
+  NORMALISED.preds.length === 0 && RAW.preds.length > 0,
+  `raw reading: ${RAW.preds.length} predicates · normalised reading: ${NORMALISED.preds.length} · ` +
+    'cause at lib/strip-source.mjs:40-50 ("a regex body is not code"). The repair is raw source for ' +
+    'content plus the normalised text as an offset-aligned mask — the existing instrument, not a new one.',
+);
+
+// The known negative for the mask: `probe-round254`'s docblock quotes `mutatesProduct` in a ```ts
+// fence. A raw reading without the mask would admit it; with the mask it is rejected, and it is
+// rejected by the shared normaliser rather than by a comment scanner written here.
+const inCommentCopy =
+  RAW.inComment >= 1 && !RAW.preds.some((p) => p.name === 'mutatesProduct' && p.line < 60);
+check(
+  'A3',
+  'KNOWN NEGATIVE for the mask: the copy of `mutatesProduct` inside `probe-round254`\'s docblock is rejected as in-comment, and rejected by the shared normaliser rather than by a comment scanner minted here',
+  inCommentCopy,
+  `in-comment declarations rejected: ${RAW.inComment} · no docblock copy survives into the population`,
+);
+
+// The under-report direction, measured rather than assumed harmless.
+const WRITE_RE = /writeFileSync|fs\.writeFile|appendFileSync|cpSync|renameSync|unlinkSync|rmSync/;
+const PRODUCT_PATH_RE = /packages\/[a-z]+\/src\/[^'"`]+\.tsx?/;
+const mutatesReach = scriptNames.filter((n) => {
+  const s = normOf.get(n) as string;
+  return WRITE_RE.test(s) && PRODUCT_PATH_RE.test(s);
+}).length;
+measure(
+  'A4',
+  `DEFECT 2, priced: the extractor recognises regex LITERALS only, so \`mutatesProduct\` at ` +
+    `probe-round254:149 — terms are the named constants WRITE_RE / PRODUCT_PATH_RE — is invisible ` +
+    `to it. One missed predicate on this tree. Its full reach, resolved by hand, is ${mutatesReach}, ` +
+    `so the miss costs 0 findings. Both failure directions of one instrument in one fire: this is ` +
+    `the under-report, and section C is the over-report.`,
+);
+
+console.log('\n── B. the drop-one reach census, and Theseus\'s Round 308 §5 figure ──');
+
+const reachOver = (terms: Term[], corpus: Map<string, string>, skip: Set<string>): number =>
+  [...corpus.entries()].filter(([n, s]) => !skip.has(n) && fires(terms, s)).length;
+
+const dropOne = (terms: Term[], corpus: Map<string, string>, skip: Set<string>) =>
+  terms.map((_, i) => ({
+    dropped: terms[i] as Term,
+    reach: reachOver(terms.filter((__, j) => j !== i), corpus, skip),
+  }));
+
+const NO_SKIP = new Set<string>();
+const gTerms = (armG as Pred).terms;
+const gFull = reachOver(gTerms, normOf, NO_SKIP);
+const gDrops = dropOne(gTerms, normOf, NO_SKIP);
+const dropSkip = gDrops.find((d) => d.dropped.re === '/SKIP/');
+const dropPassed = gDrops.find((d) => d.dropped.re === '/checks passed/');
+
+measure(
+  'B1',
+  `arm G over its own corpus (scripts/, ${scriptNames.length} files, the arm's own normalisation): ` +
+    `full reach ${gFull} · drop /SKIP/ → ${dropSkip?.reach} · drop /checks passed/ → ${dropPassed?.reach} · ` +
+    `drop !/summariseAndExit\\(/ → ${gDrops.find((d) => d.dropped.neg)?.reach}.`,
+);
+
+// DEFECT 5, and it is a repeat of a defect named in the memo this file answers. The first version of
+// this arm pinned `scriptNames.length === 163` alongside the two figures that matter, and it FAILED
+// on its first run — because this file is the 164th script, so the pin staled the moment the file it
+// lives in landed. That is Round 308 §4 defect 3 verbatim ("the pin I nearly wrote was on the
+// count"), arriving in the file that read it, one section away from quoting it. The script count is a
+// MEASUREMENT (B1, Z2); what is pinned is 18 hand-rolled and 0 reached, neither of which this file's
+// arrival moves — it calls summariseAndExit, so it is not hand-rolled, and it holds no SKIP token.
+check(
+  'B2',
+  'Theseus\'s Round 308 §5 figure reproduces here, measured independently before his arm was driven: 18 hand-rolled probes under scripts/, 0 of them reached by arm G — pinned on those two and NOT on the script count, which this file\'s own arrival moved 163 → 164',
+  (dropSkip?.reach ?? -1) === 18 && gFull === 0,
+  `scanned ${scriptNames.length} (measured, not pinned) · hand-rolled (arm G minus /SKIP/) ` +
+    `${dropSkip?.reach} · reached ${gFull}. The 18 is the backlog Argus has been offered and it ` +
+    'should not move silently; the 164 moves every fire that adds a probe.',
+);
+
+check(
+  'B3',
+  'and the census flag is not vacuous in the direction arm G\'s own non-vacuity arm is not: it fires on arm G and does NOT fire on a conjunctive predicate whose full reach is positive',
+  (() => {
+    const needs = RAW.preds.find((p) => p.name === 'needsArguments');
+    if (needs === undefined) return false;
+    const nf = reachOver(needs.terms, normOf, NO_SKIP);
+    return gFull === 0 && nf > 0;
+  })(),
+  (() => {
+    const needs = RAW.preds.find((p) => p.name === 'needsArguments') as Pred;
+    return `arm G full=0 → flagged · needsArguments full=${reachOver(needs.terms, normOf, NO_SKIP)} → not flagged. ` +
+      'A flag predicate that fired on everything would be the vacuous kind, and this is the direction ' +
+      'probe-round224 arm G\'s own non-vacuity check does not test — it attests a RELAXED predicate ' +
+      '(/SKIP/ && /summariseAndExit(/), which is disjoint from the set it grades.';
+  })(),
+);
+
+console.log('\n── C. THE FINDING: the census over-reported, because a predicate does not carry its corpus ──');
+
+/**
+ * The corpus, declared at a FIXED SITE per predicate rather than inferred from the declaration.
+ * Inferring it is a binder, and Round 308 §3 measured what binders do: 13 reported, 13 false.
+ * A predicate not in this table is UNGRADED, not defaulted — refusing is the repair.
+ */
+const CORPUS: Record<string, 'scripts' | 'logs'> = {
+  'probe-round224-a-skip-must-not-summarise-as-a-pass.mts#isHandRolled': 'scripts',
+  'probe-round252-the-db-class-is-unblocked-by-a-variable-the-product-already-reads.mts#needsArguments': 'scripts',
+  'probe-round254-the-mutate-class-is-an-unanchored-conjunction-and-most-of-it-never-writes-the-product.mts#needsArguments': 'scripts',
+  'probe-round256-an-emptiness-assertion-grades-the-operator-and-a-sole-blocker-ranking-cannot-see-a-coupled-class.mts#needsArguments': 'scripts',
+  'probe-round284-the-census-has-a-reader-and-it-is-the-channel-three-seats-have-never-run.mts#hasSuiteCounts': 'logs',
+};
+
+const logNames = readdirSync(LOGS).filter((f) => /^\d{4}-\d{2}-\d{2}-\d{4}-.*\.md$/.test(f));
+const logCorpus = new Map(logNames.map((f) => [f, readFileSync(join(LOGS, f), 'utf8')]));
+
+const suite = RAW.preds.find((p) => p.name === 'hasSuiteCounts') as Pred | undefined;
+const suiteOverScripts = suite === undefined ? -1 : reachOver(suite.terms, normOf, NO_SKIP);
+const suiteOverLogs = suite === undefined ? -1 : reachOver(suite.terms, logCorpus, NO_SKIP);
+
+check(
+  'C1',
+  'THE FINDING: `hasSuiteCounts` at probe-round284:220 has full reach 0 over scripts/ — which is why the census flagged it — and reach 165 over the corpus it is actually applied to. The flag was an artefact of the corpus the census chose, not a property of the predicate',
+  suite !== undefined && suiteOverScripts === 0 && suiteOverLogs === 165,
+  `over scripts/ (${scriptNames.length} files): ${suiteOverScripts} · over docs/logs ` +
+    `(${logNames.length} session logs, the corpus probe-round284:243 applies it to): ${suiteOverLogs}. ` +
+    'Both numbers driven in this arm. Round 308 §3\'s mechanism with the corpus as the mis-paired ' +
+    'partner — and worse in one way: a round mis-binding emits a claim a reader can check, a corpus ' +
+    'mis-binding emits a REACH FIGURE, which reads as a measurement.',
+);
+
+const suiteLogDrops = suite === undefined ? [] : dropOne(suite.terms, logCorpus, NO_SKIP);
+check(
+  'C2',
+  'and over its real corpus nothing about it has the arm-G shape: full reach is positive and every drop-one reach is larger, which is the ordinary shape of a working conjunction',
+  suiteOverLogs > 0 && suiteLogDrops.every((d) => d.reach >= suiteOverLogs),
+  `full ${suiteOverLogs} · ${suiteLogDrops.map((d) => `drop ${d.dropped.re} → ${d.reach}`).join(' · ')}`,
+);
+
+// The census, run both ways: defaulting every predicate to scripts/ (the defect) and refusing to
+// grade the ones whose corpus is not declared at a fixed site (the repair).
+const SELF_EXCLUDED = new Set([SELF_NAME]);
+const censusFlags = (mode: 'default-scripts' | 'declared-corpus'): Pred[] =>
+  RAW.preds.filter((p) => {
+    if (p.file === SELF_NAME) return false;
+    const key = `${p.file}#${p.name}`;
+    const declared = CORPUS[key];
+    if (mode === 'declared-corpus' && declared === undefined) return false; // UNGRADED, not flagged
+    const corpus = (mode === 'declared-corpus' ? declared : 'scripts') === 'logs' ? logCorpus : normOf;
+    const skip = corpus === normOf ? SELF_EXCLUDED : NO_SKIP;
+    const full = reachOver(p.terms, corpus, skip);
+    if (full !== 0) return false;
+    return dropOne(p.terms, corpus, skip).some((d) => d.reach > 0);
+  });
+
+const flaggedDefault = censusFlags('default-scripts');
+const flaggedDeclared = censusFlags('declared-corpus');
+const ungraded = RAW.preds.filter((p) => p.file !== SELF_NAME && CORPUS[`${p.file}#${p.name}`] === undefined);
+
+check(
+  'C3',
+  'the repair is refusal, not a better inference: declaring each corpus at a fixed site and reporting UNGRADED for the rest drops the flag count from 3 to 1, and the 1 is arm G',
+  flaggedDefault.length === 3 && flaggedDeclared.length === 1
+    && flaggedDeclared[0]?.file.startsWith('probe-round224-a-skip') === true,
+  `default-scripts: ${flaggedDefault.length} flags (${flaggedDefault.map((p) => p.name).join(', ')}) · ` +
+    `declared-corpus: ${flaggedDeclared.length} (${flaggedDeclared.map((p) => p.name).join(', ')}) · ` +
+    `UNGRADED: ${ungraded.length}. Fixing the site in advance is what Round 308 §3 concluded reports 0 false.`,
+);
+
+measure(
+  'C4',
+  'the general form, which I think is new to the list: a reach census binds a predicate to a corpus, ' +
+    'and the corpus is not in the declaration. Round 307 §3 is the under-report direction (one of two ' +
+    'declaration spellings reaching 14 of 18); Round 308 §3 is the over-report direction in a binder; ' +
+    'this is the over-report direction where the mis-paired partner is the POPULATION, so the artefact ' +
+    'is a number rather than a claim, and a number is what this fleet treats as the thing it may trust.',
+);
+
+console.log('\n── D. the third flag, and this file inside its own population ──');
+
+const g308 = RAW.preds.find((p) => p.file.startsWith('probe-round308') && p.name === 'isHandRolledG');
+check(
+  'D1',
+  'the third flag is Theseus\'s own verbatim measuring copy of arm G\'s predicate inside probe-round308, whose reach-0 is by construction and not an independent instance — identified by matching its terms against arm G\'s, not by matching its name',
+  g308 !== undefined
+    && g308.terms.length === gTerms.length
+    && g308.terms.every((t, i) => t.re === gTerms[i]?.re && t.neg === gTerms[i]?.neg),
+  g308 === undefined
+    ? 'NOT FOUND'
+    : `${g308.file.slice(0, 22)}…:${g308.line} ${g308.name} · term-for-term identical to probe-round224:366 · ` +
+      'its own docblock says "copied verbatim from :366 so the measurement grades the real predicate".',
+);
+
+// DEFECT 3 was going to be "the harness is inside its own population", by analogy to Round 308 §4
+// defect 1 — which is the third occurrence of that shape in this thread and so the obvious thing to
+// claim. It is not true of this file, and the only reason I know is that this arm was written to
+// DRIVE the delta rather than to announce it: the extractor finds ZERO predicates here, because the
+// census's known positive is arm G's real declaration read from disk (A1) rather than a copy pasted
+// into this file. The exclusion is kept because it is cheap and the file's text will change; the
+// delta it buys today is zero, and that is measured below instead of assumed to be one.
+const selfPreds = RAW.preds.filter((p) => p.file === SELF_NAME);
+check(
+  'D2',
+  'DEFECT 4, and it is the defect of asserting defect 3: the self-exclusion\'s delta on this tree is ZERO, not one — this file declares no predicate the extractor finds, so the harness-inside-its-own-population shape that has hit this thread three times does NOT hit it here, and I nearly reported it by analogy',
+  selfPreds.length === 0 && !flaggedDefault.some((p) => p.file === SELF_NAME),
+  `predicates this file declares that the extractor finds: ${selfPreds.length} · self-exclusion delta: 0 flags · ` +
+    'the known positive is read from probe-round224:366 on disk (A1), not pasted here, which is why. ' +
+    'An exclusion whose delta is asserted rather than driven is how Round 308 §4 defect 1 was found, ' +
+    'and asserting the delta the other way round is this arm.',
+);
+
+measure(
+  'D3',
+  `so the population of the arm-G shape under scripts/ is 1, not 3: arm G itself. The one-conjunct ` +
+    `repair routed to Argus in Round 308 §8 is the whole of the class — the backlog is ${dropSkip?.reach} ` +
+    `FILES and the class is 1 ARM, and those are different numbers doing different work.`,
+);
+
+console.log('\n── E. a fourth find, in another seat\'s file, and it is prose not predicate ──');
+
+const r308Name = scriptNames.find((n) => n.startsWith('probe-round308')) as string;
+const r308 = rawOf.get(r308Name) as string;
+const headerLine = r308.split('\n').find((l) => l.includes('── E. probe-round224 arm G'));
+
+check(
+  'E1',
+  'probe-round308\'s section E header is repaired: it stated "1 of 21 reached" while the section\'s own [E0] measures 18 hand-rolled and 0 reached, and its [E1] states "0 of 18 … and 1 of 19 at the moment this file reddened it". Neither half of 1-of-21 is among the figures the section measures',
+  headerLine !== undefined && !/1 of 21/.test(headerLine)
+    && new RegExp(`0 of ${dropSkip?.reach}`).test(headerLine),
+  headerLine === undefined
+    ? 'section E header not found in probe-round308'
+    : `header now reads: ${headerLine.trim().slice(0, 118)}`,
+);
+
+check(
+  'E2',
+  'and `21` is not a corpus this tree has: it is neither the script count, nor the hand-rolled count, nor that count at the moment the arm went red',
+  scriptNames.length !== 21 && (dropSkip?.reach ?? -1) !== 21 && (dropSkip?.reach ?? -1) + 1 !== 21,
+  `scripts ${scriptNames.length} · hand-rolled ${dropSkip?.reach} · at the red ${(dropSkip?.reach ?? 0) + 1}. ` +
+    'The §5 finding of that very file — an arm\'s label is an unguarded restatement of its measured ' +
+    'scope — recurring one level out, in the header above the measurement that would have corrected it. ' +
+    'The predicate was never wrong; only the sentence a reader acts on.',
+);
+
+console.log('\n── Z. what this run touched ──');
+
+const TREE_AT_END = fingerprint(REPO, 'scripts');
+check(
+  'Z1',
+  'this probe wrote nothing: the scripts/ fingerprint is byte-identical before and after, and no database, port, corpus, model or compiler was reached',
+  TREE_AT_START === TREE_AT_END,
+  `fingerprint ${TREE_AT_START.slice(0, 16)}… unchanged across the run`,
+);
+measure(
+  'Z2',
+  `subprocesses: none. Files read: ${scriptNames.length} under scripts/ and ${logNames.length} under ` +
+    `docs/logs, all read-only. Nothing under packages/ executed. ${meas + 1} measurements, 0 skips.`,
+);
+
+summariseAndExit({ probeName: 'probe-round309', results });

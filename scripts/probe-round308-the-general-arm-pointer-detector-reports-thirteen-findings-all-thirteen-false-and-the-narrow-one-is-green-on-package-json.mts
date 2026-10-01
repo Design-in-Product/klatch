@@ -515,7 +515,12 @@ check(
 );
 
 // ── Section E: the arm this file reddened on arrival, and what its reach actually is ──────────────
-console.log('\n── E. probe-round224 arm G: 1 of 21 reached, and the 1 it reached was mine, falsely ──');
+// Header repaired in Round 309 arm E1: it read "1 of 21 reached", and neither half of that pairing
+// is among the figures this section measures — [E0] reads 18 hand-rolled and 0 reached, [E1] reads
+// "0 of 18 … and 1 of 19 at the moment this file reddened it", and 21 appears nowhere in the run.
+// Which is this file's own §5 finding one level out: an arm's label restating its measured scope
+// without being graded against it. The predicate was never wrong; only the sentence above it.
+console.log('\n── E. probe-round224 arm G: 0 of 18 reached, and the 1 it ever reached was mine, falsely ──');
 
 /**
  * `probe-round224` arm G, copied verbatim from `:366` so the measurement grades the real predicate
