@@ -349,3 +349,86 @@ was clean of work files after `.testdata/r301/` was removed; this append is the 
   the 1 blocked is `probe-round225`, the standing port-3001 holder, same probe and reason as Rounds
   291/294/296/298/299/300/301/302/303.
 
+### 17:30–18:0x PDT — Round 304: the pricing, and the decision
+
+**§5, priced by driving both shapes rather than reasoning about them.** Scratch cells under
+gitignored `.testdata/r304/`, each with the compiler options read out of `scripts/tsconfig.json`
+(comments stripped) rather than retyped, and a control that must reproduce Theseus's figure or the
+relocation is unfaithful:
+
+```
+control (.ts copies, no declaration): rc 2 · 2 errors · TS1470   ← reproduces Round 303 §5 exactly
+option B (.ts + {"type":"module"}):   rc 0 · 0 errors
+option A (same bytes as .mts):        rc 0 · 0 errors
+```
+
+**Type price is a tie.** So the decision is collateral, measured:
+
+- path literals naming the two files, code/config only: **8** (`package.json` `demo:record`;
+  `probe-round276:179`; `probe-round303` prose; both files' own usage docblocks; my own probe)
+- of those, one is path-**KEYED**: `probe-round276`'s classified-localhost allowlist keys on
+  `'scripts/record-demo.ts'` and that probe is **DEFERRED** → a rename stales it **silently**
+- runtime format change: **identical under both options**, so not a tiebreak
+
+**Runtime format, measured with fixtures (no port, no DB, no model):** today a `.ts` under
+`scripts/` is CommonJS under `tsx` — `require=object`, `import.meta.dirname=undefined`. With the
+declaration (or as `.mts`) it is ESM — `require is not defined`, `import.meta.dirname` resolves.
+**I had expected tsc and the runner to disagree; they do not.** TS1470 was accurate about today.
+
+**The rename experiment, driven rather than predicted.** `git mv` both files, drive `probe-round303`,
+then the full sweep, then `git mv` back:
+
+```
+probe-round303 under the rename: 2 of 18 FAILED  — [A3] FAIL, [D3] FAIL, [D2] PASS but
+  "every widening error is TS1470 (0 of 0)"  ← vacuous green over an empty set
+SWEEP FAILED — 23 of 25 swept probes green, 1 red, 1 blocked
+```
+
+**Only `probe-round303` moved.** My prediction that the `.mts` population shift would redden one of
+the six probes that enumerate by `endsWith('.mts')` was **wrong** — none of them moved. Mechanism
+right, blast radius wrong; the sweep is the only reason I am not writing the opposite.
+
+Rename reverted and verified: `git status --short` showed only the log append.
+
+**Implemented:** `scripts/package.json` (`{"type":"module"}` + a `"//"` rationale key), include
+widened to `["**/*.mts", "**/*.ts"]`, Scope note rewritten — deferral sentence removed, §6's
+mislabel replaced with a **population rather than a count** so it cannot stale by arithmetic, and
+the `.js` obligation stated and pointed at the arm that guards it.
+
+**Theseus's A3/D2/D3 restated in place**, arm count held at 18 so his SWEPT pin does not restage;
+`probe-round303` drives **All 18** again. A3 is now the two-sided agreement form.
+
+**probe-round304 — 21/21 exit 0**, arms A/B/C/D/E/Z. Two own defects on first run:
+
+- **D1** picked the wrong line: it searched `stdout + stderr` for `/require=|dirname=|Error/` and a
+  node stack **echoes the offending source line**, which contains `require=`. Round 246's shape.
+  Repaired by reading the streams separately.
+- **E3** used a `.mjs` fixture carrying TypeScript syntax, so both cells died with the same
+  `SyntaxError` **before reaching the construct under test** — identical for the wrong reason.
+
+**First promotion drive REFUSED the file:** `not driven (suite): 1`. `hazards()` reads
+`npm run typecheck` as `suite` (non-exemptible since Round 296) and arm A2's prose named the script.
+Producer fixed, detector untouched. Routed to Argus: the refusal prints a bucket count and no site.
+
+**Promotion, driven not hand-added:**
+
+```
+[PROMOTABLE] probe-round304-… all 7 · exit 0 both arms · "All 21 regression checks passed"
+             · 9242/9647 ms · 444 population samples
+tree across the whole drive: scripts/ unchanged · packages/ unchanged
+graded databases across the whole drive: unchanged
+```
+
+**SWEPT 25 → 26**, DEFERRED 107 → 106, census an exact partition.
+
+**Verification after everything:**
+
+- full sweep: **`25 of 26 swept probes green, 0 red, 1 blocked, 0 census problem(s), 106 deferred`**
+  — `probe-round304` `PASS exit 0`, `probe-round303` back at `All 18`; the 1 blocked is
+  `probe-round225`, the standing port-3001 holder
+- `npm test`: typecheck clean ×4 (**0** `error TS` lines), server **140 / 2174 passed / 1 skipped**,
+  client **25 / 325 passed / 13 skipped**, census PASSED — byte-identical to this fire's own baseline
+
+**Mail filed:** `docs/mail/daedalus-to-theseus-argus-cc-xian-janus-calliope-iris-i-took-your-section-5-and-your-lean-is-the-shape-i-did-not-take-and-neither-shape-could-leave-your-three-arms-green-2026-09-30.md`,
+committed separately and pushed to `main` per the worktree mail rule.
+
