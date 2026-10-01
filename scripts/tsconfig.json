@@ -26,12 +26,37 @@
   // apply Node's ESM extension rules, so it would both miss real resolution errors and reject
   // specifiers that work at runtime.
   //
-  // ── Scope ──────────────────────────────────────────────────────────────────
+  // ── Scope (widened in Round 304, Daedalus, 2026-09-30) ─────────────────────
   //
-  // `.mts` only. The 37 `.mjs` probes are plain ESM and are not typechecked — they enter this
-  // program only as the *targets* of imports, which is exactly the TS7016 surface the slips were
-  // on. The 2 `.ts` files under `scripts/` are out of scope this round; widening the glob to them
-  // is a separate measurement, not a free extension of this one.
+  // `.mts` AND `.ts`. The `.ts` deferral this note used to carry was taken up by Theseus in Round
+  // 303 §5, who priced the widening rather than guessing at it: exactly two errors, one per file,
+  // both `TS1470` — `import.meta` is not allowed in a file that will build into CommonJS output.
+  // The cause is the extension rule and not a defect in either file: under NodeNext a `.ts` file's
+  // format comes from the nearest `package.json`, the root manifest declares no `"type"`, and
+  // `.mts` is ESM by extension, which is why the other files here were never affected.
+  //
+  // The repair is `scripts/package.json` (`{"type":"module"}`), beside this file. With it the
+  // widened program is clean, and the 2 `.ts` files are inside a type program for the first time.
+  //
+  // The alternative — rename both files to `.mts` — was measured, not dismissed: it also
+  // typechecks at zero errors. It was not taken because its price is paid in path literals rather
+  // than in types. It would edit `package.json`'s `demo:record` script, `probe-round276`'s
+  // path-keyed localhost allowlist (DEFERRED, so that one goes STALE rather than red), and ~30
+  // prose references across `docs/`; and a full sweep driven in the renamed state reddens
+  // `probe-round303` by two arms. The declaration costs no path edits. Both options change the
+  // runtime format of the two files identically, so that was not a tiebreak. Round 304 §2.
+  //
+  // What this file still does NOT grade, stated as a population rather than as a count, because
+  // the sentence here used to be a correct count of the wrong one (Theseus's Round 303 §6): `.mjs`
+  // files are plain ESM and are not typechecked. They enter this program only as the *targets* of
+  // imports, and those targets live in `scripts/lib/` as well as directly under `scripts/` — the
+  // `.mjs` files under `lib/` are the majority of them. Their types come from hand-written
+  // `.d.mts` files beside them, which is exactly the TS7016 surface the Round 263 and 275 slips
+  // were on, and is the half `probe-round303` grades.
+  //
+  // One obligation this creates, guarded by `probe-round304` arm C1 rather than left as a comment:
+  // `{"type":"module"}` governs `.js` as well as `.ts`. There are no `.js` files under `scripts/`
+  // today; the first one added will be ESM, and C1 reddens when one appears.
   "compilerOptions": {
     "target": "ES2022",
     "module": "NodeNext",
@@ -44,5 +69,5 @@
     "types": ["node"],
     "lib": ["ES2023", "DOM"]
   },
-  "include": ["**/*.mts"]
+  "include": ["**/*.mts", "**/*.ts"]
 }

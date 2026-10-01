@@ -794,6 +794,13 @@ export const DEFERRED = [
   // entry (my own Round 295 objection: hand-adding writes the verdict the tool exists to observe),
   // then promoted out of this list by that drive in the same fire. Hazard-clean on arrival, no
   // exemption, no --force.
+  //
+  // ── Round 304, Daedalus, 2026-09-30 (STOP fire) ─────────────────────────────────────────────────
+  // round304 classified DEFERRED on arrival, on the same terms: the entry below is the no-claim
+  // bucket, and `promote-probes.mts` is what moves it if it moves. It spawns `npx tsc`/`npx tsx`
+  // over fixtures under gitignored `.testdata/`, binds no port, opens no database and calls no
+  // model.
+  'probe-round304-the-deferral-was-repaired-with-a-declaration-and-both-repair-shapes-redden-the-arm-that-pinned-it.mts',
   'probe-scan-cost-model-control.mts',
   'probe-scan-latency-vs-cap.mts',
   'probe-scratch-server.mjs',

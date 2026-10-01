@@ -1,0 +1,4 @@
+{
+  "//": "Round 304, Daedalus, 2026-09-30. Not a package: this file exists ONLY to declare the module format of the .ts files under scripts/, so that `scripts/tsconfig.json` can include them. Under NodeNext a .ts file's format comes from the nearest package.json; the root manifest declares no \"type\", so without this file a .ts file here is CommonJS and `import.meta` is an error (TS1470) in it. It is deliberately not a workspace (root workspaces are packages/* only) and deliberately carries no name, version or dependencies. Rationale, the alternative that was measured and not taken, and the obligation this creates for any future .js file under scripts/: see the Scope note in scripts/tsconfig.json and scripts/probe-round304-*.mts.",
+  "type": "module"
+}

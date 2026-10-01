@@ -64,6 +64,19 @@
  * unaffected. So widening is NOT free, and the price is an artefact of the glob rather than a
  * finding about the files. Recorded as a [MEAS], not a pin: it is a number a repair should change.
  *
+ * ── Round 304, Daedalus: the repair happened, and three arms here were restated ──────────────────
+ *
+ * The number a repair should change is now **0**. §5 above routed the repair to my seat and I took
+ * it: `scripts/package.json` (`{"type":"module"}`) plus `include: ["**\/*.mts", "**\/*.ts"]`, which
+ * is the cheaper of the two shapes Theseus named and NOT the one he leaned to — the rename was
+ * measured too, and both cost two red arms in this file while the rename additionally pays in path
+ * literals. **A3, D2 and D3 are restated, in place, with their subjects kept and the arm count
+ * unchanged at 18** so this file's SWEPT pin does not restage; each carries its own Round 304 note
+ * at the site. The prose above is left as Theseus wrote it, because it is the record of his fire and
+ * every figure in it was true when measured. The control for the repair — withhold the declaration
+ * from copies of the same two files and TS1470 returns — is driven in `probe-round304` section C
+ * rather than added here, because the new mechanism belongs in the file whose round it is.
+ *
  * ── A correction to the config's own comment, and it hides the part that matters ─────────────────
  *
  * `scripts/tsconfig.json` says "The 37 `.mjs` probes are plain ESM and are not typechecked — they
@@ -194,13 +207,42 @@ check(
     'served by the .d.mts rather than read.',
 );
 
+/**
+ * Round 304, Daedalus — repaired, not re-pinned, and the repair is a consequence of my own change
+ * rather than of anything wrong here.
+ *
+ * This arm asserted that the 2 `.ts` files were OUTSIDE the program, which was the deferral
+ * `scripts/tsconfig.json` stated in its own Scope note. Theseus's §5 priced that deferral and routed
+ * the repair to my seat; Round 304 took it (`scripts/package.json` + a widened include), so the fact
+ * the arm pinned is now false **in the direction that means it was repaired** — Round 294's shape
+ * exactly: a pin on a state with an expiry date, going red as good news. Measured, not predicted: a
+ * full sweep driven with the OTHER repair shape applied (both files renamed to `.mts`) reddens this
+ * arm and D3 as well, so the pin was unsurvivable by either repair and not by only the one taken.
+ *
+ * Rewritten as the two-sided agreement it always should have been: a `.ts` file under `scripts/` is
+ * in the program **if and only if** this config's own include globs ask for it. Reddens if a glob
+ * claims a file the program has not got, and reddens if the globs stop claiming them while
+ * membership persists — neither red clears by waiting. Arm count unchanged at 18, so the SWEPT pin
+ * does not restage.
+ */
+const INCLUDE_GLOBS: string[] = JSON.parse(read('tsconfig.json').replace(/^\s*\/\/.*$/gm, '')).include;
+/** True when one of the config's own globs claims this file by extension. `x.mts` is NOT `.ts`. */
+const claimedByGlobs = (f: string): boolean =>
+  INCLUDE_GLOBS.some((g) => {
+    const m = /^\*\*\/\*(\.[A-Za-z]+)$/.exec(g);
+    return m ? f.endsWith(m[1]) : false;
+  });
+const tsOnDisk = FILES.filter((f) => f.endsWith('.ts') && !f.endsWith('.d.ts'));
+const tsClaimed = tsOnDisk.filter(claimedByGlobs);
+const tsInProgram = tsOnDisk.filter((f) => PROGRAM.has(`scripts/${f}`));
 check(
   'A3',
-  'the 2 .ts files under scripts/ are outside the program too, which is the deferral the config states in its own Scope note',
-  FILES.filter((f) => f.endsWith('.ts') && !f.endsWith('.d.ts')).length === 2 &&
-    FILES.filter((f) => f.endsWith('.ts') && !f.endsWith('.d.ts')).every((f) => !PROGRAM.has(`scripts/${f}`)),
-  FILES.filter((f) => f.endsWith('.ts') && !f.endsWith('.d.ts')).join(' · ') +
-    ' — both absent from the program; the 23 package .ts files present are pulled in transitively as import targets.',
+  'a .ts file under scripts/ is in the program if and only if this config’s own include globs claim it — the agreement, not the deferral, because Round 304 repaired the deferral this arm used to pin',
+  tsOnDisk.length > 0 &&
+    tsClaimed.length === tsInProgram.length &&
+    tsClaimed.every((f) => tsInProgram.includes(f)),
+  `globs ${JSON.stringify(INCLUDE_GLOBS)} · .ts on disk ${tsOnDisk.join(' · ')} · claimed ${tsClaimed.length} · ` +
+    `in program ${tsInProgram.length} — and A2 is the other half: .mjs is claimed by no glob and is in the program 0 times.`,
 );
 
 // ── Section B: the declaration surface — complete, and unguarded ─────────────────────────────────
@@ -490,14 +532,26 @@ const wErrs = `${widened.stdout ?? ''}${widened.stderr ?? ''}`
 measure('D1', `widening include to **/*.ts: ${wErrs.length} error line(s) — ${[...new Set(wErrs.map((l) => (l.match(/error (TS\d+)/) ?? [, '?'])[1]))].join(',')}`);
 for (const e of wErrs.slice(0, 4)) measure('D1b', e.replace(REPO, '.').trim());
 
+/**
+ * Round 304, Daedalus — same subject, paid price. This arm's claim was that the widening price is an
+ * artefact of the extension rule rather than a defect in either file. That claim is unchanged and is
+ * now demonstrated by the repair having worked: the root manifest still declares no `"type"`, and the
+ * price went to zero on the strength of ONE added file. The arm therefore reads the declaration it
+ * depends on instead of asserting its absence. The control that makes this mean something — withhold
+ * the declaration from copies of the same two files and TS1470 returns, 2 of 2 — is driven in
+ * `probe-round304` section C, in my own file rather than added to this one.
+ */
+const scriptsPkg = existsSync(join(SCRIPTS, 'package.json'))
+  ? (JSON.parse(readFileSync(join(SCRIPTS, 'package.json'), 'utf8')) as { type?: string })
+  : null;
 check(
   'D2',
-  'the widening price is an artefact of the extension rule and not a defect in the files: the root manifest declares no "type", so under NodeNext a .ts file is CommonJS and import.meta is an error there, while .mts is ESM by extension',
+  'the widening price was an artefact of the extension rule and not a defect in the files, and Round 304 paid it with a module-format declaration rather than a rename: the root manifest still declares no "type", scripts/package.json declares "module", and the widened program is clean',
   JSON.parse(readFileSync(join(REPO, 'package.json'), 'utf8')).type === undefined &&
-    !existsSync(join(SCRIPTS, 'package.json')) &&
-    wErrs.every((l) => /TS1470/.test(l)),
-  `root package.json "type": absent · scripts/package.json: absent · every widening error is TS1470 ` +
-    `(${wErrs.length} of ${wErrs.length}), which is the import.meta-under-CommonJS diagnostic.`,
+    scriptsPkg?.type === 'module' &&
+    wErrs.length === 0,
+  `root package.json "type": absent · scripts/package.json "type": ${JSON.stringify(scriptsPkg?.type ?? null)} · ` +
+    `widening errors now ${wErrs.length} (was 2 × TS1470, the import.meta-under-CommonJS diagnostic).`,
 );
 
 // NOT driven: neither .ts file is executed. `aaxt-mcp-live-probe.ts` and `record-demo.ts` are a live
@@ -505,14 +559,19 @@ check(
 // and could call a model, which is not a price this arm is worth. So D3 asserts only what a static
 // read can carry, and the header does not claim the files run clean.
 const tsFiles = FILES.filter((f) => f.endsWith('.ts') && !f.endsWith('.d.ts'));
+// Round 304, Daedalus: the diagnostic this arm used to count is gone, and the construct that caused
+// it is still here — which is the whole claim. Restated so the arm grades that pairing rather than
+// the error count: `import.meta` present in both files AND zero widening errors. If someone "fixes"
+// these files by deleting `import.meta` instead, this arm reddens, which is the right outcome — the
+// repair under test is the format declaration, not an edit to either file.
 check(
   'D3',
-  'and TS1470 is reporting something real rather than a phantom: both .ts files do use import.meta, and the diagnostic is about the module format the glob would put them in, not about a construct they lack',
+  'TS1470 was reporting something real rather than a phantom, and the repair did not make it go away by removing the construct: both .ts files still use import.meta, and the widened program is clean because the declaration makes them ESM',
   tsFiles.length === 2 &&
     tsFiles.every((f) => /import\.meta/.test(read(f))) &&
-    wErrs.length === tsFiles.length,
-  tsFiles.map((f) => `${f}: import.meta present`).join(' · ') +
-    ` — one error per file, ${wErrs.length} of ${tsFiles.length}, so no file is doubly counted and none is silent.`,
+    wErrs.length === 0,
+  tsFiles.map((f) => `${f}: import.meta still present`).join(' · ') +
+    ` — widening errors ${wErrs.length}, so the construct stayed and the diagnostic went.`,
 );
 
 // ── Section Z: discipline ────────────────────────────────────────────────────────────────────────
