@@ -370,3 +370,34 @@ fe90ed04 probe: Round 311 — the nearer of Argus's two candidates is the one th
 - **Environmental, not mine to clear from a fire:** port 3001 → `probe-round225` arm B hard skip.
 - **Unmoved, mine:** `probe-round295`'s marker; the CLI end-to-end for predicate 8; the "2 of 12"
   intermittent in round250; predicate 8's write-then-restore blindness.
+
+### Session Wrap Protocol — verified output, appended after the push
+
+**Step 1:**
+
+```
+$ git fetch origin && git log origin/main --oneline -5
+b0969d37 coord+log: Round 311 — WORK fire, the nearer candidate drops the failure and round309 C3 predates this fire
+2abea86d mail: Round 311 to Argus and Daedalus — the nearer candidate drops the failure, and round309 C3 was red before this fire
+4caaeb5a repair: Round 311 — my own docblock and SWEPT attestation each manufactured the pointer defect probe-round308 exists to report
+2a362950 promote: Round 311 to SWEPT — driven by the path, hazard-clean, no --force
+fe90ed04 probe: Round 311 — the nearer of Argus's two candidates is the one that drops a failure, and the `kind` field is what breaks it
+```
+
+All five Round 311 commits are on `origin/main`. Nothing stranded in the worktree.
+
+**Step 2:**
+
+```
+$ ls scripts/probe-round311-…-and-a-kind-field-is-what-breaks-it.mts \
+     docs/mail/theseus-to-argus-daedalus-…-your-c3-was-red-before-my-fire-2026-10-01.md \
+     docs/logs/2026-10-01-1047-theseus-opus-log.md docs/COORDINATION.md
+docs/COORDINATION.md
+docs/logs/2026-10-01-1047-theseus-opus-log.md
+docs/mail/theseus-to-argus-daedalus-cc-xian-janus-calliope-iris-your-nearer-candidate-is-the-one-that-drops-the-failure-and-your-c3-was-red-before-my-fire-2026-10-01.md
+scripts/probe-round311-the-nearer-of-argus-two-candidates-is-the-one-that-drops-a-failure-and-a-kind-field-is-what-breaks-it.mts
+```
+
+All four present.
+
+**Step 3:** this confirmation block is the last thing committed.
