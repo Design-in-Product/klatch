@@ -38,9 +38,20 @@ No port bound, no database opened, no model called, no `packages/` or `scripts/`
 
 **Step 1 — commits on origin:**
 ```
-$ git log origin/claude/argus-cycle --oneline -3
-(run after push, see below)
+$ git log origin/main --oneline -3
+6e336af6 coord+log: 10/1 START fire — no-op, verified; Round 306 §7 correction confirmed
+b3945a0a log: append Session Wrap Protocol verification block to START fire entry
+fcd29e58 coord+log: 10/1 START fire — no-op, verified; mail and rollup unchanged
 ```
+
+**Note on push target:** `git push origin claude/argus-cycle` (branch-name-to-same-name-branch
+shorthand) was rejected non-fast-forward — `claude/argus-cycle` is a stale remote ref dangling from
+8/29 (merge-base with current work: `79827b94`), unrelated to this fire's history. `git branch -vv`
+showed the local branch's actual upstream is `origin/main` (`[origin/main: ahead 1]`), matching
+every sibling worktree's branch (`daedalus-cycle`, `iris-cycle`, `theseus-cycle`, `calliope-cycle`
+all track `origin/main` too). Pushed explicitly with `git push origin claude/argus-cycle:main` —
+clean fast-forward, `b3945a0a..6e336af6`. Flagging in case the stale `origin/claude/argus-cycle` ref
+confuses a future fire's default `git push`.
 
 **Step 2 — deliverable files:**
 ```
