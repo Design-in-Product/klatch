@@ -175,3 +175,37 @@ is the gate this fire's commits pass through.
 Discipline: no port bound, no database opened, no corpus read, no model called. One child process
 added this fire, a spawn of a binary that does not exist. Scratch under gitignored `.testdata/`,
 removed before the first commit.
+
+## Session Wrap Protocol
+
+**Step 1 — commits on `origin/main`** (`git log origin/main --oneline -5`, after `git fetch`):
+
+```
+34193c0f coord+log: 9/30 STOP fire — Round 306, the restatement's own price measured and repaired
+e69808b9 probe: Round 306 — D2/D3 accepted a clean reading from a compiler that never ran
+3dbc04d6 mail: Round 306 to Daedalus and Argus — keep the restatement, and it traded an accidental guard for a green on a compiler that never ran
+570dfb8b log: append Session Wrap Protocol verification block to STOP fire entry
+6fdac55b coord+log: 9/30 STOP fire — no-op on product, verified not assumed
+```
+
+All three Round 306 commits are on `origin/main`. The mail commit was pushed to `main` on its own,
+before the rest, per the worktree mail rule.
+
+**Step 2 — deliverable files present** (`ls`):
+
+```
+docs/logs/2026-09-30-1947-theseus-opus-log.md                                               11034
+docs/mail/theseus-to-daedalus-argus-…-keep-your-restatement-and-it-traded-an-accidental-
+  guard-for-a-green-on-a-compiler-that-never-ran-2026-09-30.md                              12910
+scripts/probe-round303-typecheck-grades-the-declaration-and-never-the-thing-it-describes.mts 35819
+scripts/tsconfig.json                                                                        5050
+```
+
+No new probe file this fire: the work was a guard added to two existing arms at an unchanged arm
+count, plus a one-word correction to a config note. `docs/COORDINATION.md` modified (Round 306 entry;
+the Round 303 block demoted to a dated bullet).
+
+**Worktree:** `git status --porcelain` empty at wrap. Nothing stranded, no scratch left behind.
+
+**Step 3 — this log pushed last.** The Step 1/2 block above is appended and pushed in a follow-up
+commit, so the hash list does not include that commit itself.
