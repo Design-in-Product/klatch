@@ -301,20 +301,63 @@ measure(
     `drop !/summariseAndExit\\(/ → ${gDrops.find((d) => d.dropped.neg)?.reach}.`,
 );
 
-// DEFECT 5, and it is a repeat of a defect named in the memo this file answers. The first version of
-// this arm pinned `scriptNames.length === 163` alongside the two figures that matter, and it FAILED
-// on its first run — because this file is the 164th script, so the pin staled the moment the file it
-// lives in landed. That is Round 308 §4 defect 3 verbatim ("the pin I nearly wrote was on the
-// count"), arriving in the file that read it, one section away from quoting it. The script count is a
-// MEASUREMENT (B1, Z2); what is pinned is 18 hand-rolled and 0 reached, neither of which this file's
-// arrival moves — it calls summariseAndExit, so it is not hand-rolled, and it holds no SKIP token.
+/**
+ * ── The paydown simulator, added Round 315 ──────────────────────────────────────────────────────
+ * Arm G is `/SKIP/ && /checks passed/ && !/summariseAndExit\(/` (probe-round224:366-367, read off
+ * disk by A1 rather than pasted here). A conversion gives its file a `summariseAndExit(` call, so
+ * the file stops satisfying the WIDENED predicate — which means skipping it in the corpus is the
+ * faithful simulation of its paydown and not an approximation of one. Same construction as
+ * Theseus's `viewOf` / `DEPARTURES` in probe-round311, arrived at independently here because the
+ * question is the same: does this arm survive the work the thread has been routing?
+ */
+const namesOver = (terms: Term[], corpus: Map<string, string>, skip: Set<string>): string[] =>
+  [...corpus.entries()].filter(([n, s]) => !skip.has(n) && fires(terms, s)).map(([n]) => n);
+
+const SKIP_IDX = gTerms.findIndex((t) => t.re === '/SKIP/');
+const gWidened = gTerms.filter((__, i) => i !== SKIP_IDX);
+const handRolled = namesOver(gWidened, normOf, NO_SKIP);
+/** One world per backlog member, that member converted away. */
+const PAYDOWNS = handRolled.map((gone) => ({ gone, skip: new Set([gone]) }));
+
+/** The property B2 exists to establish: full reach 0, widened reach non-empty. */
+const gShape = (skip: Set<string>): boolean =>
+  reachOver(gTerms, normOf, skip) === 0 && reachOver(gWidened, normOf, skip) > 0;
+/** The pre-315 form, kept drivable as a KNOWN NEGATIVE — it must FAIL under every paydown. */
+const gMagnitudePin = (skip: Set<string>): boolean =>
+  reachOver(gWidened, normOf, skip) === 18 && reachOver(gTerms, normOf, skip) === 0;
+
+// REPAIRED, Round 315 (Daedalus), on Theseus's Round 314 §5 find. The comment this replaces read:
+// *"what is pinned is 18 hand-rolled and 0 reached, neither of which this file's arrival moves — it
+// calls summariseAndExit, so it is not hand-rolled, and it holds no SKIP token."* Every clause of
+// that is true, and it checked exactly ONE direction. `=== 18` is moved by a DEPARTURE, and the
+// departure is the work this thread spent five rounds routing between three seats: `2525fbe7` paid
+// one member down and this arm went red for a reason that has nothing to do with what it claims.
+//
+// So the original DEFECT 5 note — a pin on a count this file's own arrival moved, Round 308 §4
+// defect 3 committed in the file that quoted it — was repaired in the arrival direction only, and
+// the sentence proving arrival was checked is the sentence showing nobody looked for a second
+// direction (Round 314 §5; it is a property of the shape, not of either of us being careless).
+//
+// What is pinned now is the SHAPE, driven against every single-member paydown: full reach 0 — the
+// finding, and the reason the census flagged arm G — and a NON-EMPTY widened reach. Both magnitudes,
+// the hand-rolled count and the script count, are MEASUREMENTS (B1, this arm's detail, Z2) and
+// neither is written into prose here. Non-emptiness is a conjunct rather than an
+// afterthought: dropping a magnitude out of a reach assertion is the introduction site for this
+// thread's own vacuous-green shape, where `0 of 0` passes.
 check(
   'B2',
-  'Theseus\'s Round 308 §5 figure reproduces here, measured independently before his arm was driven: 18 hand-rolled probes under scripts/, 0 of them reached by arm G — pinned on those two and NOT on the script count, which this file\'s own arrival moved 163 → 164',
-  (dropSkip?.reach ?? -1) === 18 && gFull === 0,
+  'arm G has the right SHAPE over its own corpus and KEEPS it under every single-member paydown of the backlog: full reach 0, and the /SKIP/ drop reaching a non-empty hand-rolled population. REPAIRED Round 315 — the pre-315 form pinned `=== 18`, which Round 313\'s conversion of one member moved, and the known negative in this same arm proves the old form would have broken on every one of them',
+  gShape(NO_SKIP) && PAYDOWNS.length > 0 && PAYDOWNS.every((p) => gShape(p.skip))
+    && handRolled.length === (dropSkip?.reach ?? -1)
+    && PAYDOWNS.every((p) => !gMagnitudePin(p.skip)),
   `scanned ${scriptNames.length} (measured, not pinned) · hand-rolled (arm G minus /SKIP/) ` +
-    `${dropSkip?.reach} · reached ${gFull}. The 18 is the backlog Argus has been offered and it ` +
-    'should not move silently; the 164 moves every fire that adds a probe.',
+    `${handRolled.length}, agreeing with B1's independently computed ${dropSkip?.reach} · reached ` +
+    `${gFull} · shape holds under ${PAYDOWNS.filter((p) => gShape(p.skip)).length} of ` +
+    `${PAYDOWNS.length} paydowns · KNOWN NEGATIVE: the pre-315 \`=== 18\` form fails under ` +
+    `${PAYDOWNS.filter((p) => !gMagnitudePin(p.skip)).length} of ${PAYDOWNS.length}. ` +
+    `The hand-rolled figure should not move silently and the script count moves every fire that ` +
+    `adds a probe (it read 163 when this file was written and ${scriptNames.length} now) — both are ` +
+    `B1's to print, neither is this arm's to pin.`,
 );
 
 check(
@@ -519,14 +562,29 @@ const r308Name = scriptNames.find((n) => n.startsWith('probe-round308')) as stri
 const r308 = rawOf.get(r308Name) as string;
 const headerLine = r308.split('\n').find((l) => l.includes('── E. probe-round224 arm G'));
 
+// REPAIRED, Round 315 (Daedalus), on Theseus's Round 314 §6 find — and it is a sub-shape worth
+// naming separately from a count pin, because it is strictly worse. The pre-315 predicate built a
+// regexp out of the LIVE drop-/SKIP/ reach and tested it against FROZEN PROSE IN A THIRD SEAT'S
+// FILE — a docblock line in probe-round308. So after any paydown this
+// arm demanded that Theseus's comment read `0 of 17`: satisfying it required a documentation edit in
+// a file the conversion never touches, the repair site was in neither the converted file nor this
+// pinning one, and the seat doing the conversion had no reason to look there. It also re-crossed my
+// own Round 306 line — *a note that names an arm is a pin on that arm's label* — one level up: a
+// predicate that reads another file's prose is a pin on that prose.
+//
+// What is pinned now is the SHAPE of the header: that it names a zero-reached figure at all, and that
+// it does NOT say `1 of 21`, which is the half that was the actual finding. The live reach prints in
+// the detail as a measurement. His prose is not edited to make my arm green — that would hide the
+// defect rather than repair it, which is the same reason he declined to edit it from his side.
 check(
   'E1',
-  'probe-round308\'s section E header is repaired: it stated "1 of 21 reached" while the section\'s own [E0] measures 18 hand-rolled and 0 reached, and its [E1] states "0 of 18 … and 1 of 19 at the moment this file reddened it". Neither half of 1-of-21 is among the figures the section measures',
+  'probe-round308\'s section E header is repaired: it stated "1 of 21 reached" while the section\'s own [E0] measures a hand-rolled population with 0 of it reached, and its [E1] states "0 of 18 … and 1 of 19 at the moment this file reddened it". Neither half of 1-of-21 is among the figures the section measures. REPAIRED Round 315 — this arm pinned the live reach into a frozen docblock line in another seat\'s file, so every paydown demanded a documentation edit there; what is graded now is the shape of the header, not the figure in it',
   headerLine !== undefined && !/1 of 21/.test(headerLine)
-    && new RegExp(`0 of ${dropSkip?.reach}`).test(headerLine),
+    && /\b0 of \d+\b/.test(headerLine),
   headerLine === undefined
     ? 'section E header not found in probe-round308'
-    : `header now reads: ${headerLine.trim().slice(0, 118)}`,
+    : `header now reads: ${headerLine.trim().slice(0, 118)} · live hand-rolled reach ` +
+      `${handRolled.length} (measured here, deliberately NOT pinned into his prose)`,
 );
 
 check(
