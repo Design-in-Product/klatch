@@ -142,11 +142,24 @@ check(
   reachWithSkip.length === 0,
   `${scriptNames.length} scripts scanned · reached with /SKIP/ present: ${reachWithSkip.length}`,
 );
+// REPAIRED by Daedalus, Round 313, because Round 313 made it false rather than because it was
+// written wrong. This arm pinned `=== 18`, and 18 is a figure that paying the backlog DOWN moves:
+// converting `probe-round307` to `summariseAndExit` (8 lines, one file) took the reach to 17 and
+// reddened this arm on work that is the opposite of a regression. That is Round 312 §2's rule
+// arriving from the other side — *a pin is safe when the file holding it also owns the membership
+// rule of what it counts* — and this file does not own it: membership is "whatever is still
+// hand-rolled under scripts/", which every conversion shrinks and every new hand-rolled probe grows.
+//
+// What is pinned instead is the DIRECTION, which is the finding and is not a function of the
+// backlog's size: arm G as shipped reaches 0, and dropping its /SKIP/ conjunct reaches a positive
+// number. If the paydown ever completes, A3 goes red for the right reason — the arm is not
+// weakened into vacuity, it just stops being pinned to a number the thread is actively changing.
+// The live figure prints as MEASURED. 18 at Round 310 (Argus), 17 at Round 313 (Daedalus).
 check(
   'A3',
-  'and dropping /SKIP/ reds exactly 18 — the backlog figure both memos named',
-  reachNoSkip.length === 18,
-  reachNoSkip.length === 18 ? `18 files: ${reachNoSkip.join(', ')}` : `got ${reachNoSkip.length}, expected 18`,
+  'and dropping /SKIP/ strictly widens the reach — the conjunct, not the count, is what arm G gets wrong',
+  reachWithSkip.length === 0 && reachNoSkip.length > 0,
+  `reach with /SKIP/: ${reachWithSkip.length} · dropped: ${reachNoSkip.length} (MEASURED, not pinned — 18 at Round 310, and paydown moves it) · ${reachNoSkip.join(', ')}`,
 );
 
 console.log('\n── B. the 18, sorted by what their local bookkeeping actually is ──');
@@ -196,13 +209,20 @@ const objectWithPass = sorted.filter((s) => s.bucket === 'object-with-pass');
 const opaqueValue = sorted.filter((s) => s.bucket === 'opaque-value');
 const nearDropIn = objectWithPass.filter((s) => s.hasArm);
 
+// REPAIRED by Daedalus, Round 313, same cause and same shape as A3 above: the pin was on 18, and
+// the paydown moved it to 17. The exhaustiveness PROPERTY is what this arm was written to establish
+// — every member lands in exactly one bucket and no member is counted twice — and that property is
+// independent of how many members there are. Pinned against the live population instead, so the
+// arm survives both directions of change (a conversion that shrinks it, a new hand-rolled probe
+// that grows it) and still reds if the classifier ever drops or duplicates a file.
 check(
   'B3',
-  'the partition is exhaustive and the three buckets sum to 18 without double-counting — driven over the real 18, not asserted',
-  counterOnly.length + objectWithPass.length + opaqueValue.length === 18
-    && new Set(sorted.map((s) => s.n)).size === 18,
+  'the partition is exhaustive — the three buckets sum to the live member count without double-counting, at whatever size the backlog currently is',
+  counterOnly.length + objectWithPass.length + opaqueValue.length === reachNoSkip.length
+    && new Set(sorted.map((s) => s.n)).size === reachNoSkip.length,
   `counter-only ${counterOnly.length} · object-with-pass ${objectWithPass.length} ` +
-    `(of which arm-labelled already: ${nearDropIn.length}) · opaque-value ${opaqueValue.length}`,
+    `(of which arm-labelled already: ${nearDropIn.length}) · opaque-value ${opaqueValue.length} ` +
+    `= ${counterOnly.length + objectWithPass.length + opaqueValue.length} of ${reachNoSkip.length} members`,
 );
 
 measure(

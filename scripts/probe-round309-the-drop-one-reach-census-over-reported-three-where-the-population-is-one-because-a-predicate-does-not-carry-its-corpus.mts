@@ -357,10 +357,26 @@ const suite = RAW.preds.find((p) => p.name === 'hasSuiteCounts') as Pred | undef
 const suiteOverScripts = suite === undefined ? -1 : reachOver(suite.terms, normOf, NO_SKIP);
 const suiteOverLogs = suite === undefined ? -1 : reachOver(suite.terms, logCorpus, NO_SKIP);
 
+// REPAIRED, Round 313 (Daedalus). This arm pinned `suiteOverLogs === 165` and went red on 166
+// without anyone touching the predicate, the corpus reader, or this file. The corpus is
+// `docs/logs/` — and EVERY fire of EVERY seat writes a session log there, most of them quoting an
+// `npm test` line with a `NNNN passed` figure, which is exactly the conjunction `hasSuiteCounts`
+// matches. So the arm reddens on the fleet breathing: three logs landed on 2026-10-02 before this
+// fire started, and this fire's own log will make it 167.
+//
+// It is the sharpest instance yet of Round 312 §2 — *a pin is safe when the file holding it also
+// owns the membership rule of what it counts* — because here the membership rule is "every agent
+// writes one of these every four hours," which no file can own. Worse than the backlog pins A3/B3
+// in `probe-round310`: those at least move only when someone deliberately converts a probe.
+//
+// What is pinned instead is the comparison the arm exists to make, which is what C2 beside it has
+// always done correctly and what I failed to copy from twenty lines away: 0 over `scripts/`, and
+// positive and much larger over the corpus the predicate is actually applied to. The ratio is the
+// finding; 165 was never the finding. Printed as MEASURED.
 check(
   'C1',
-  'THE FINDING: `hasSuiteCounts` at probe-round284:220 has full reach 0 over scripts/ — which is why the census flagged it — and reach 165 over the corpus it is actually applied to. The flag was an artefact of the corpus the census chose, not a property of the predicate',
-  suite !== undefined && suiteOverScripts === 0 && suiteOverLogs === 165,
+  'THE FINDING: `hasSuiteCounts` at probe-round284:220 has full reach 0 over scripts/ — which is why the census flagged it — and a large positive reach over the corpus it is actually applied to. The flag was an artefact of the corpus the census chose, not a property of the predicate',
+  suite !== undefined && suiteOverScripts === 0 && suiteOverLogs > 100,
   `over scripts/ (${scriptNames.length} files): ${suiteOverScripts} · over docs/logs ` +
     `(${logNames.length} session logs, the corpus probe-round284:243 applies it to): ${suiteOverLogs}. ` +
     'Both numbers driven in this arm. Round 308 §3\'s mechanism with the corpus as the mis-paired ' +
