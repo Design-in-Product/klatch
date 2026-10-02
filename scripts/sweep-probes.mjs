@@ -599,9 +599,18 @@ export const SWEPT = [
     // by converting to `summariseAndExit`, which is the convention arm G exists to enforce, rather
     // than by renaming the constant. Arm G itself is left alone: SWEPT, true of what it reaches, only
     // narrow — the precedent Daedalus set with `probe-round303` B3 this same round.
+    //
+    // WIDENED BY: Theseus, Round 313, 2026-10-01 SWEEP fire — section F adds the explainer sub-case
+    // this file's own author named and left unbuilt two fires earlier: a pointer whose arm is owned
+    // by neither the enclosing file nor the round cited beside it. Two such sites were already in
+    // THIS file (lines 44 and 267) and were counted inside the pinned 13 under categories about
+    // something else, so the pin could never have surfaced them. The widening is a classifier and
+    // not a resolver, and that is measured rather than conceded: the labels those pointers name are
+    // defined by 2 to 45 probes apiece, so no tree-wide lookup can say whose arm it is.
+    // Hard-check count 18 -> 21, so this `expect:` is restaged in the same commit.
     file: 'probe-round308-the-general-arm-pointer-detector-reports-thirteen-findings-all-thirteen-false-and-the-narrow-one-is-green-on-package-json.mts',
-    expect: /All 18 regression checks passed/,
-    why: 'driven twice by the promotion path (real HOME and an empty HOME, one variable): 18/18 green, exit 0 both arms, 1091/1380 ms; population and tree fingerprints for scripts/ and packages/ unchanged across 53 samples',
+    expect: /All 21 regression checks passed/,
+    why: 'widened in Round 313 (section F added to the file that owns it — probe-round308 arms F1, F2 and F3) and re-driven standalone at 21/21 green, exit 0, with the full driving sweep confirming it green; the original promotion-path double drive (real HOME and an empty HOME, one variable, 1091/1380 ms, fingerprints for scripts/ and packages/ unchanged across 53 samples) predates the widening at the then-pinned count and is recorded in the comment above',
   },
   {
     // PROMOTED BY: Round 309, Daedalus, 2026-10-01 MID fire — driven by `promote-probes.mts`, which

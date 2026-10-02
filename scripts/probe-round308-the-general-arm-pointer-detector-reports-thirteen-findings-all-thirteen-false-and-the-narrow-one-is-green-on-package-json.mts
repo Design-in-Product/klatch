@@ -577,6 +577,105 @@ check(
     'Round 304 is the precedent for when editing another seat\'s arm is right — there the arm had been made false. Here it is only narrow.',
 );
 
+// ── Section F: the fifth explainer sub-case, taken — and the widening cannot resolve ownership ───
+console.log('\n── F. the fifth sub-case: live in the tree, and the label namespace is per-file ──');
+
+/**
+ * Section C's four reasons each answer "who owns this arm?" with a file named ON THE LINE: the
+ * cited round, or the enclosing probe. The sub-case neither one covers is the one where the owner
+ * is a THIRD file — the enclosing file does not define the label and the cited round does not
+ * either. Added in Round 313; the two live sites below were already in the tree when C1 was
+ * written, counted inside its pinned total and attributed to categories that are about something
+ * else, which is why the figure never moved and the gap was invisible to the pin.
+ */
+const ownersOf = (arm: string): string[] => {
+  const out: string[] = [];
+  for (const [round, p] of PROBES) {
+    // Self-exclusion again, and it was NOT free: arm F3's control went red on its first run because
+    // this file now writes `ownersOf('Q9')`, and the any-spelling key reads a quoted label anywhere
+    // in a file as a definition — so the probe became the sole "owner" of the label it mints to
+    // prove nobody owns it. Section A excludes this file from the HITS; the owner side needed it
+    // too, and the control is what reported that rather than a silently larger count.
+    if (p === SELF) continue;
+    if (definesArmAny(readFileSync(p, 'utf8'), arm)) out.push(round);
+  }
+  return out.sort();
+};
+
+/** The sub-case as a predicate over a hit: neither file named on the line defines the label. */
+const foreignOwned = (h: Hit): boolean => {
+  const abs = join(REPO, h.file);
+  const enclosingDefines =
+    /probe-round\d+/.test(h.file) && definesArmAny(readFileSync(abs, 'utf8'), h.arm);
+  const cited = PROBES.get(h.round);
+  const citedDefines = cited !== undefined && definesArmAny(readFileSync(cited, 'utf8'), h.arm);
+  return !enclosingDefines && !citedDefines;
+};
+const FOREIGN = V2.filter(foreignOwned);
+const OWNER_COUNTS = V2.map((h) => ownersOf(h.arm).length);
+
+measure(
+  'F0',
+  `of the ${V2.length} pointers v2 reports, ${FOREIGN.length} are owned by neither file named on the line: ` +
+    (FOREIGN.map((h) => `${h.file.replace(/^scripts\//, '').slice(0, 24)}:${h.line} r${h.round}/${h.arm} (${ownersOf(h.arm).length} file(s) define it)`).join(' · ') ||
+      'none') +
+    `. Owner counts across all ${V2.length}: ${OWNER_COUNTS.join(', ')} — min ${Math.min(...OWNER_COUNTS)}, max ${Math.max(...OWNER_COUNTS)}.`,
+);
+
+check(
+  'F1',
+  'the fifth sub-case is LIVE, not hypothetical: at least one pointer v2 reports names an arm that neither the enclosing file nor the cited round defines in either spelling — and the known positive is minted from the exact shape that reddened this probe in the next fire after the sub-case was named',
+  ((): boolean => {
+    mkdirSync(SCRATCH, { recursive: true });
+    // The pre-repair shape as its author states it: a round citation and an arm token on one line,
+    // in a file that declares no arms of its own. Reconstructed from the Round 312 memo's section 3,
+    // NOT lifted from commit 4ebeb929 — see arm F3.
+    const f = join(SCRATCH, 'foreign-owned.mjs');
+    writeFileSync(f, "  why: 'repaired in Round 312 (C3 pin relocated, arm C5 added)',\n");
+    const minted = v2([f]);
+    return (
+      FOREIGN.length > 0 &&
+      minted.length === 1 &&
+      minted[0].arm === 'C5' &&
+      minted[0].round === '312' &&
+      foreignOwned(minted[0]) &&
+      // and the owner it is really about is reachable, just not from the line
+      ownersOf('C5').includes('309')
+    );
+  })(),
+  `${FOREIGN.length} live instance(s) in the tree; the minted positive classifies the same way. ` +
+    'Both live sites are in `sweep-probes.mjs`, which declares no arms at all, so the enclosing-file ' +
+    'explanation could never have reached them — the category they currently sit in is named for the ' +
+    'cited round having produced no probe, which is true of the citation and silent about the arm.',
+);
+
+check(
+  'F2',
+  'and the widening cannot do what its name implies: resolving the owner by looking the label up across the tree is not available, because arm labels are per-file and not a namespace — every label v2 reports is defined by MANY probes, so "search for who owns C5" returns a crowd and the only repair that works is the prose one both seats reached by hand',
+  OWNER_COUNTS.every((n) => n >= 2) && Math.max(...OWNER_COUNTS) >= 20,
+  `owner counts ${OWNER_COUNTS.join(', ')}; median ${[...OWNER_COUNTS].sort((a, b) => a - b)[Math.floor(OWNER_COUNTS.length / 2)]}. ` +
+    'A detector can say THAT a pointer is owned off-line; it cannot say BY WHOM. So the fifth sub-case is ' +
+    'classifiable and not resolvable, and this arm is the measured reason — not a preference — that the ' +
+    'repair discipline is "say whose arm it is" rather than "look it up".',
+);
+
+check(
+  'F3',
+  'the widening does not swallow the one class that would be a REAL finding: a label no probe in the tree defines is separated from the ambiguous class rather than absorbed into it — without this discriminator the new category would explain away exactly the defect the detector exists to catch',
+  ((): boolean => {
+    mkdirSync(SCRATCH, { recursive: true });
+    const f = join(SCRATCH, 'unowned.mjs');
+    // Round 304 exists and defines no Q9; no probe anywhere defines Q9. Same fixture family as B2.
+    writeFileSync(f, '// guarded by `probe-round304` arm Q9 rather than left as a comment\n');
+    const minted = v2([f]);
+    return minted.length === 1 && foreignOwned(minted[0]) && ownersOf('Q9').length === 0;
+  })(),
+  'a label defined by 0 probes is reported and IS foreign-owned by the predicate, so the predicate alone ' +
+    'is not the classifier — the owner count is: 0 owners = the pointer names nothing and is a real defect; ' +
+    '>= 1 owner = the pointer names something the line cannot bind. F1 and this arm are the two sides, and ' +
+    'the pair is why the widening is safe to add to an explainer whose whole claim is that nothing it reports is real.',
+);
+
 // ── Section Z: discipline ────────────────────────────────────────────────────────────────────────
 console.log('\n── Z. discipline ──');
 
@@ -591,7 +690,7 @@ check(
 
 check(
   'Z2',
-  'the one fixture this probe mints lived under .testdata/, which is gitignored, and the tree is removed before this arm runs',
+  'every fixture this probe mints — one in section B, two in section F — lived under .testdata/, which is gitignored, and the tree is removed before this arm runs',
   !existsSync(SCRATCH) && /(^|\n)\.testdata\//.test(readFileSync(join(REPO, '.gitignore'), 'utf8')),
   `${relative(REPO, SCRATCH)} absent at exit · .gitignore names .testdata/`,
 );
