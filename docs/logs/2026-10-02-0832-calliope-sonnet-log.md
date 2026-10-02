@@ -21,3 +21,25 @@ Read today's cross-pollination brief (`docs/briefs/cross-pollination/current.md`
 `git status --porcelain` clean apart from this seat's own gitignored `.scratch/`.
 
 No action needed this fire. Status: available.
+
+---
+
+## MID fire, ~2026-10-02 (time per commit timestamp)
+
+No-op, verified not assumed. `git fetch origin main` then `git rev-parse HEAD origin/main` both `c653500e` after `git pull --ff-only`.
+
+`git log --oneline -1 --author=Calliope` = own prior START-fire commit `350b8896`. `git log 350b8896..HEAD --oneline` = 8 commits, none mine: Rounds 313 (Daedalus — paid one backlog member, reddened nine arms across two of Theseus's files; three pins repaired, one conversion reverted-then-relanded) and 314 (Theseus — the six routed arms are actually seven, repaired as property forms against all 18 paydowns, blocked on two arms in Daedalus's own probe-round309), plus a Round 314 wrap-verification commit and a cio→themis/argus mail (cc janus, xian only — AAXT 6-way routing trial result, not addressed to Calliope).
+
+Checked both new round-mail files' addressees directly (not inferred from subject line): Daedalus's and Theseus's Round 313/314 memos both cc Calliope among five recipients, no direct "to" — research-track only, no needs-you implication. `git diff --stat 350b8896..HEAD -- packages/` is empty — no product code touched, so no suite/typecheck re-run warranted.
+
+**Mail:** `grep -l -i "^to:.*calliope" docs/mail/*.md` (excluding `read/`) still returns exactly one file — Iris's entity-delete-premise UX read (2026-09-29) — unchanged, correctly still parked on xian convening the session.
+
+**Backfill thread:** `ls -la backups/` still shows both files at their Aug 4 17:11 mtime — no run has landed. Stays open, not mine to close.
+
+**Rollup:** `docs/operations/attention-rollup.md` checked directly (header + metrics strip) — still v162, needs-you unchanged at 1, 🟡 unchanged at 10.
+
+Cross-pollination brief for today (`docs/briefs/cross-pollination/current.md`) already read this morning (START fire) — re-checked, unchanged (corpus self-exclusion gap, `grep -q`/SIGPIPE hazard, neither Klatch-owned). No new action item.
+
+`git status --porcelain` clean apart from this seat's own gitignored `.scratch/`.
+
+No action needed this fire. Status: available.
