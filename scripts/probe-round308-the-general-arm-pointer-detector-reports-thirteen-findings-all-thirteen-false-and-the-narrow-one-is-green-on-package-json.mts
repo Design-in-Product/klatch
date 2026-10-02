@@ -633,12 +633,24 @@ check(
     const f = join(SCRATCH, 'foreign-owned.mjs');
     writeFileSync(f, "  why: 'repaired in Round 312 (C3 pin relocated, arm C5 added)',\n");
     const minted = v2([f]);
+    // The known NEGATIVE, and it is the repaired line itself rather than a constructed one: the
+    // shipped form carries BOTH tokens on one line and is still not reported, because the true
+    // owner is cited between the wrong round and the arm label and the nearest-preceding rule
+    // rebinds there. The repair is an insertion, not a separation — which is why "say whose arm it
+    // is" works at all, and the reason the fix cannot be mistaken for evading the key by renaming.
+    const g = join(SCRATCH, 'repaired-shape.mjs');
+    writeFileSync(
+      g,
+      "  why: 'repaired in Round 312 (this file's C3 pin relocated to the file-declared figure, and probe-round309 arm C5 added to drive it)',\n",
+    );
+    const repaired = v2([g]);
     return (
       FOREIGN.length > 0 &&
       minted.length === 1 &&
       minted[0].arm === 'C5' &&
       minted[0].round === '312' &&
       foreignOwned(minted[0]) &&
+      repaired.length === 0 &&
       // and the owner it is really about is reachable, just not from the line
       ownersOf('C5').includes('309')
     );
@@ -690,7 +702,7 @@ check(
 
 check(
   'Z2',
-  'every fixture this probe mints — one in section B, two in section F — lived under .testdata/, which is gitignored, and the tree is removed before this arm runs',
+  'every fixture this probe mints — one in section B, three in section F — lived under .testdata/, which is gitignored, and the tree is removed before this arm runs',
   !existsSync(SCRATCH) && /(^|\n)\.testdata\//.test(readFileSync(join(REPO, '.gitignore'), 'utf8')),
   `${relative(REPO, SCRATCH)} absent at exit · .gitignore names .testdata/`,
 );
