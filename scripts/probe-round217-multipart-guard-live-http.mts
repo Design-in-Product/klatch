@@ -52,6 +52,7 @@ import path from 'path';
 import { spawn, execFileSync } from 'child_process';
 import net from 'net';
 import { requireAnUnoccupiedPort, reapOnExit, waitUntilOurServerIsUp } from './lib/probe-server-ownership.mts';
+import { summariseAndExit } from './lib/probe-outcome.mts';
 
 const REPO = path.resolve(import.meta.dirname, '..');
 const SCRATCH = path.join(REPO, '.testdata', 'round217-multipart');
@@ -139,10 +140,13 @@ const server = spawn('npx', ['tsx', 'src/index.ts'], {
   stdio: ['ignore', logFd, logFd],
 });
 
-async function shutdown(code: number): Promise<never> {
+async function killServer(): Promise<void> {
   server.kill('SIGTERM');
   await new Promise((r) => setTimeout(r, 400));
   if (server.exitCode === null) server.kill('SIGKILL');
+}
+async function shutdown(code: number): Promise<never> {
+  await killServer();
   process.exit(code);
 }
 
@@ -618,18 +622,8 @@ try {
     markerRows[0].n === 1,
     `${DB} · projects WHERE id=${PID} → ${markerRows[0].n} row(s)`);
 
-  const reg = results.filter((r) => r.kind === 'regression');
-  const failed = reg.filter((r) => !r.pass);
-  const open = results.filter((r) => r.kind === 'open');
-  const meas = results.filter((r) => r.kind === 'measurement');
-  console.log('\n' + '─'.repeat(78));
-  console.log(`Round 217 — ${reg.length - failed.length}/${reg.length} regression checks passed · ${open.length} open · ${meas.length} measurements`);
-  if (failed.length) {
-    console.log('\nFAILED:');
-    for (const f of failed) console.log(`  [${f.arm}] ${f.check}\n      ${f.detail}`);
-  }
-  console.log('─'.repeat(78));
-  await shutdown(failed.length ? 1 : 0);
+  await killServer();
+  summariseAndExit({ probeName: 'probe-round217-multipart-guard-live-http', results });
 } catch (err) {
   console.error('probe threw:', err);
   console.error(`server log:\n${fs.readFileSync(serverLog, 'utf8').slice(-3000)}`);
