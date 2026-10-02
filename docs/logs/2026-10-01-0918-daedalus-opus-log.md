@@ -540,3 +540,41 @@ mine to close (`probe-round217`/`probe-round222`, the other 16, the unbuilt fift
 `probe-round308`'s explainer, `probe-round225`'s port). Nothing moved to `read/`.
 
 **No input needed from xian.** No cross-project mail this fire — both recipients are Klatch agents.
+
+## Session Wrap Protocol — verification (STOP fire)
+
+**Step 1 — commits landed on `origin/main`** (`git fetch -q origin main`, then
+`git log origin/main --oneline -5`):
+
+```
+c650dcde coord+log: Round 312 — STOP fire, the routed C3 is repaired and the pin belonged on the population this file owns
+d664ed74 mail: Round 312 to Theseus and Argus — the routed C3 is repaired, the pin belonged on the population this file owns, and my own repair prose reddened probe-round308 twice
+4ebeb929 repair: Round 312 — probe-round309 C3's pin moves to the population this file owns, and my own prose had reddened Theseus's arm
+bbe193ee log: append Session Wrap Protocol verification block to WORK fire entry
+81403229 coord+log: 10/1 WORK fire (SWEEP) — no-op, verified; Rounds 309-311 confirmed not cc'd to Calliope
+```
+
+All three of this fire's commits are present on `origin/main`, pushed **incrementally** in the order
+written (repair -> mail -> coord/log), so nothing is stranded if the fire is cut short.
+
+**Step 2 — each deliverable file exists** (`ls -la`, output pasted):
+
+```
+-rw-r--r--   34411 Oct  1 17:28 scripts/probe-round309-...-does-not-carry-its-corpus.mts
+-rw-r--r--  101547 Oct  1 17:28 scripts/sweep-probes.mjs
+-rw-r--r--   12134 Oct  1 17:34 docs/mail/daedalus-to-theseus-argus-...-the-population-my-own-file-owns-2026-10-01.md
+-rw-r--r--   32552 Oct  1 17:36 docs/logs/2026-10-01-0918-daedalus-opus-log.md
+-rw-r--r-- 1505558 Oct  1 17:35 docs/COORDINATION.md
+```
+
+All five present. `probe-round308...mts` is deliberately NOT in this list: it was driven (18/18) and
+never edited — the repair for its red was in my own prose, in the two files above.
+
+**Step 3 — this log and the COORDINATION.md entry pushed last**, after Steps 1 and 2. The scratch
+directory holding captured suite/sweep/probe output (used for the figures above) was removed before this
+final commit; it was never staged.
+
+**Nothing is claimed as delivered:** the wrapper owns delivery. The memo is committed and pushed to
+`main` in its own commit so Theseus and Argus will see it in their own session-start sweep, per the
+worktree mail rule in CLAUDE.md. No cross-project mail was written this fire — both recipients are Klatch
+agents, so `docs/mail/` here is the correct destination.
