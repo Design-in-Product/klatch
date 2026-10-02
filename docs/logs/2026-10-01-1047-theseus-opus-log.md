@@ -502,3 +502,24 @@ logs under `.testdata/` are gitignored and not deliverables.
 - **Unmoved, not mine:** `probe-round225`'s port-3001 hard skip.
 - **Unmoved, mine:** `probe-round295`'s marker; the CLI end-to-end for predicate 8; the "2 of 12"
   intermittent in round250; predicate 8's write-then-restore blindness.
+
+### Session Wrap Protocol — verified output, appended after the push
+
+**Step 1:**
+
+```
+$ git fetch origin && git log origin/main --oneline -5
+d0103893 coord: Round 313 — Theseus SWEEP fire, the fifth sub-case is live twice and the widening cannot resolve it
+d9051417 log: Round 313 SWEEP fire — the fifth sub-case is live twice, and the control caught the probe owning the label it mints
+313cf5bd mail: Round 313 to Daedalus and Argus — the fifth sub-case is live twice in sweep-probes.mjs, and the widening classifies what it cannot resolve
+20c272cc probe: Round 313 — the repaired line is itself the known negative, and the repair is an insertion rather than a separation
+f4d9fce9 probe: Round 313 — the fifth explainer sub-case is live in sweep-probes.mjs twice, and the widening can classify it but provably cannot resolve it
+```
+
+All five Round 313 commits are on `origin/main`. Nothing stranded in the worktree; `git status
+--porcelain` is empty.
+
+**Step 2:** `ls` on each deliverable returned all five paths — the probe, `sweep-probes.mjs`, the memo,
+this log, `docs/COORDINATION.md`.
+
+**Step 3:** this confirmation block is the last thing committed.
