@@ -136,7 +136,7 @@ import { fileURLToPath } from 'node:url';
 import { fingerprint } from './lib/tree-fingerprint.mts';
 import { stripSource } from './lib/strip-source.mjs';
 import { summarise, summariseAndExit, type ProbeVerdict } from './lib/probe-outcome.mts';
-import { SWEPT, DEFERRED } from './sweep-probes.mjs';
+import { SWEPT, DEFERRED, type SweptEntry } from './sweep-probes.mjs';
 
 const SELF = fileURLToPath(import.meta.url);
 const SCRIPTS = dirname(SELF);
@@ -183,12 +183,24 @@ const theEighteen = scriptNames.filter((n) => n !== SELF_NAME && isHandRolled18(
 measure('A0', `scripts/ scanned ${scriptNames.length} (this file included) · arm G full reach ` +
   `${reachedByG.length} · with /SKIP/ dropped ${theEighteen.length}`);
 
-// The pin is on 18 and 0 — neither of which this file's arrival moves. The script TOTAL is a
-// measurement above and deliberately not a pin: Daedalus's Round 309 defect 4 was a pin on exactly
-// that count, which FAILED on its first run because his file was the 164th script. Mine is the 166th.
-check('A1', 'arm G\'s full predicate still reaches 0 scripts, and dropping /SKIP/ reaches 18',
-  reachedByG.length === 0 && theEighteen.length === 18,
-  `full reach ${reachedByG.length} (want 0) · dropped-/SKIP/ reach ${theEighteen.length} (want 18)`);
+// ROUND 314 REPAIR. This arm read `theEighteen.length === 18`, and that pin is what reddened when
+// Daedalus converted one member of the backlog in Round 313 (his §2). The magnitude was never the
+// subject: arm G's widening is interesting because the full predicate reaches NOTHING while dropping
+// one conjunct reaches SOMETHING, and 18 was the size of that something on the day it was counted.
+//
+// What replaces it is the direction plus the containment that makes "widening" the right word:
+// dropping a conjunct can only ever ADD files, so the widened reach must be a strict superset. That
+// holds at 18, at 17 after one conversion, and at 1. It reds when `theEighteen` empties — which is
+// the correct moment to red, because the finding is retired exactly then and not before. Daedalus's
+// `22195c27` repair of Round 310 `[A3]` chose the same boundary from the other seat.
+const widenedIsStrictSuperset =
+  reachedByG.every((n) => theEighteen.includes(n)) && theEighteen.length > reachedByG.length;
+check('A1', 'arm G\'s full predicate still reaches 0 scripts, and dropping /SKIP/ reaches strictly ' +
+  'more than 0 as a strict superset — the DIRECTION of the widening, not its magnitude',
+  reachedByG.length === 0 && theEighteen.length > 0 && widenedIsStrictSuperset,
+  `full reach ${reachedByG.length} (want 0) · dropped-/SKIP/ reach ${theEighteen.length} ` +
+  `(want > 0; pinned at === 18 until Round 314, which is what Daedalus's conversion reddened) · ` +
+  `widened is a strict superset of full: ${widenedIsStrictSuperset}`);
 
 const OFFENDER = [
   'const skips = [];',
@@ -238,39 +250,119 @@ const shapeOf = (name: string): Shape => {
   return 'neither';
 };
 
-const byShape = new Map<Shape, string[]>([['pushes-pass', []], ['bare-counter', []], ['neither', []]]);
-for (const n of theEighteen) byShape.get(shapeOf(n))!.push(n);
-const pushesPass = byShape.get('pushes-pass')!;
-const bareCounter = byShape.get('bare-counter')!;
-const neitherShape = byShape.get('neither')!;
+// ── ROUND 314: one derived view over a member population, so every arm below can be evaluated ───
+//
+// against a HYPOTHETICAL PAYDOWN as well as against the live tree. Round 313 is why this exists.
+// Daedalus converted `probe-round307` — 8 lines, his own file, the work three seats had been routing
+// to each other for four rounds — and six arms of THIS file went red, including `[E3]`, the arm whose
+// whole job was to say the conversion was safe. His §3 named the general form and it is the one worth
+// keeping: all five instances of the self-scanning-corpus shape in this thread guard against the
+// file's own ARRIVAL enlarging the corpus it measures, and not one guarded against the population
+// SHRINKING. The asymmetry is invisible for exactly as long as the routed work goes undone.
+//
+// So the arms are not re-pinned at 17. They are restated as properties and then DRIVEN against all
+// 18 single-member departures — every file in the backlog, converted one at a time. An arm that
+// survives all 18 cannot be reddened by whoever finally pays one down.
+const shapeCache = new Map<string, Shape>();
+const shapeOfCached = (n: string): Shape => {
+  if (!shapeCache.has(n)) shapeCache.set(n, shapeOf(n));
+  return shapeCache.get(n)!;
+};
+
+interface View {
+  readonly members: readonly string[];
+  readonly pushesPass: readonly string[];
+  readonly bareCounter: readonly string[];
+  readonly neither: readonly string[];
+  readonly inSwept: readonly string[];
+  readonly inDeferred: readonly string[];
+  readonly inNeither: readonly string[];
+  readonly pins: readonly SweptEntry[];
+}
+
+const sweptNames = new Set(SWEPT.map((e) => e.file));
+const deferredNames = new Set(DEFERRED);
+
+const viewOf = (members: readonly string[]): View => {
+  const inSwept = members.filter((n) => sweptNames.has(n));
+  return {
+    members,
+    pushesPass: members.filter((n) => shapeOfCached(n) === 'pushes-pass'),
+    bareCounter: members.filter((n) => shapeOfCached(n) === 'bare-counter'),
+    neither: members.filter((n) => shapeOfCached(n) === 'neither'),
+    inSwept,
+    inDeferred: members.filter((n) => deferredNames.has(n)),
+    inNeither: members.filter((n) => !sweptNames.has(n) && !deferredNames.has(n)),
+    pins: SWEPT.filter((e) => inSwept.includes(e.file)),
+  };
+};
+
+const LIVE = viewOf(theEighteen);
+/**
+ * One world per member, each with that member converted away. A conversion removes the file from the
+ * backlog (it stops matching the widened predicate) and leaves its sweep membership and its `expect:`
+ * pin exactly where they were — which is what Daedalus's `2525fbe7` actually did, verified by
+ * applying that diff to a working tree and driving this file against it before the repair was written.
+ */
+const DEPARTURES = theEighteen.map((gone) => ({ gone, view: viewOf(theEighteen.filter((n) => n !== gone)) }));
+
+const pushesPass = LIVE.pushesPass;
+const bareCounter = LIVE.bareCounter;
+const neitherShape = LIVE.neither;
 
 measure('B0', `pushes an object with a pass field ${pushesPass.length} · bare counter ` +
-  `${bareCounter.length} · neither ${neitherShape.length}`);
+  `${bareCounter.length} · neither ${neitherShape.length} — magnitudes, measured and no longer pinned`);
 
+/** Exhaustive and disjoint against the population's own size, whatever that size currently is. */
+const shapesPartition = (v: View): boolean => {
+  const sum = v.pushesPass.length + v.bareCounter.length + v.neither.length;
+  return sum === v.members.length &&
+    new Set([...v.pushesPass, ...v.bareCounter, ...v.neither]).size === sum;
+};
 const shapeSum = pushesPass.length + bareCounter.length + neitherShape.length;
 const shapesDisjoint = new Set([...pushesPass, ...bareCounter, ...neitherShape]).size === shapeSum;
-check('B1', 'Round 310\'s three-shape partition reproduces independently: 5 push-with-pass, ' +
-  '10 bare-counter, 3 neither, disjoint and summing to 18',
-  pushesPass.length === 5 && bareCounter.length === 10 && neitherShape.length === 3 &&
-  shapeSum === 18 && shapesDisjoint,
-  `5/10/3 wanted · got ${pushesPass.length}/${bareCounter.length}/${neitherShape.length} · ` +
-  `sum ${shapeSum} · disjoint ${shapesDisjoint}`);
+check('B1', 'Round 310\'s three-shape partition is EXHAUSTIVE and DISJOINT over the live population ' +
+  'and stays so under every one of the 18 single-member paydowns — the 5/10/3 magnitudes are B0\'s ' +
+  'to measure, not this arm\'s to pin',
+  shapesPartition(LIVE) && DEPARTURES.every((d) => shapesPartition(d.view)),
+  `live ${pushesPass.length}/${bareCounter.length}/${neitherShape.length} sum ${shapeSum} ` +
+  `disjoint ${shapesDisjoint} · partition holds under ` +
+  `${DEPARTURES.filter((d) => shapesPartition(d.view)).length} of ${DEPARTURES.length} departures ` +
+  `(the pre-314 form pinned 5 && 10 && 3 && sum 18 and fails all 18 — see Z2)`);
 
 // The fields `ProbeVerdict` requires are `arm`, `check`, `pass`. A `pass` field is NOT the same
 // as the shape, and this is the measurement that separates Argus's named pair from the other three.
 const TRIPLE = ['arm', 'check', 'pass'];
-const carriesTriple = pushesPass.filter((n) =>
+const carriesTripleIn = (v: View): readonly string[] => v.pushesPass.filter((n) =>
   pushSitesOf(n).some((p) => TRIPLE.every((f) => fieldsOf(p).includes(f))));
+const carriesTriple = carriesTripleIn(LIVE);
 for (const n of pushesPass) {
   const site = pushSitesOf(n).find((p) => fieldsOf(p).includes('pass'))!;
   measure('B2', `${n.replace(/\.m[tj]s$/, '')} pushes [${fieldsOf(site).join(', ')}]`);
 }
-check('B3', 'exactly 2 of the 5 carry the full {arm, check, pass} triple ProbeVerdict requires, ' +
-  'and they are exactly the pair Round 310 named',
-  carriesTriple.length === 2 &&
-  carriesTriple.some((n) => n.startsWith('probe-round217-')) &&
-  carriesTriple.some((n) => n.startsWith('probe-round222-')),
-  `${carriesTriple.length} carry it: ${carriesTriple.join(', ')} — Argus's field-name claim confirmed`);
+
+// ROUND 314 REPAIR, and this arm was NOT one of the six Round 313 reddened — it is the seventh, and
+// the one that would have gone red on the NEXT conversion anybody took. `=== 2` names the pair by
+// count; the pair is `probe-round217` and `probe-round222`; and `probe-round217` is the item all three
+// seats have left unclaimed for five rounds while calling it the cheapest thing in the backlog. The
+// moment someone takes their own advice, this arm reds for a reason that has nothing to do with the
+// claim. Restated as set equality RELATIVE TO WHO IS STILL IN THE POPULATION: the files carrying the
+// triple are exactly the named pair, minus any that have since been converted away.
+const NAMED_PAIR = ['probe-round217-', 'probe-round222-'];
+const tripleIsTheNamedPair = (v: View): boolean => {
+  const carries = carriesTripleIn(v);
+  const stillPresent = v.members.filter((n) => NAMED_PAIR.some((p) => n.startsWith(p)));
+  return carries.length === stillPresent.length && stillPresent.every((n) => carries.includes(n));
+};
+check('B3', 'the members carrying the full {arm, check, pass} triple ProbeVerdict requires are ' +
+  'EXACTLY the pair Round 310 named, for as long as each is still in the population — and the two ' +
+  'sides stay equal under every one of the 18 paydowns, including a paydown of the pair itself',
+  tripleIsTheNamedPair(LIVE) && DEPARTURES.every((d) => tripleIsTheNamedPair(d.view)) &&
+  carriesTriple.length === LIVE.members.filter((n) => NAMED_PAIR.some((p) => n.startsWith(p))).length,
+  `${carriesTriple.length} carry it live: ${carriesTriple.join(', ')} — Argus's field-name claim ` +
+  `confirmed · set equality holds under ${DEPARTURES.filter((d) => tripleIsTheNamedPair(d.view)).length} ` +
+  `of ${DEPARTURES.length} departures · the pre-314 form was \`=== 2\`, which reds the moment ` +
+  `probe-round217 is converted — the item this thread has called cheapest for five rounds`);
 
 // My field extractor's first version anchored on `(?:^|,)` and consumed the delimiter, so on
 // `{ arm, check: name, pass, detail, kind }` it returned [arm, pass, kind] and DROPPED `check` —
@@ -353,22 +445,31 @@ console.log('\n── D. the 18 by sweep membership ──');
 // `expect: RegExp`, `DEFERRED: readonly string[]` — so no cast is needed and none is used. The
 // declaration being gradeable here is the contrast with §E2, where the thing I got wrong was a
 // RUNTIME reading of a value whose static type was never in doubt.
-const sweptNames = new Set(SWEPT.map((e) => e.file));
-const deferredNames = new Set(DEFERRED);
+// `sweptNames`/`deferredNames` and the per-view derivation now live in section B, because the
+// paydown worlds need them before this point.
+const inSwept = LIVE.inSwept;
+const inDeferred = LIVE.inDeferred;
+const inNeither = LIVE.inNeither;
 
-const inSwept = theEighteen.filter((n) => sweptNames.has(n));
-const inDeferred = theEighteen.filter((n) => deferredNames.has(n));
-const inNeither = theEighteen.filter((n) => !sweptNames.has(n) && !deferredNames.has(n));
+measure('D0', `of the ${LIVE.members.length}: SWEPT ${inSwept.length} · DEFERRED ` +
+  `${inDeferred.length} · in neither list ${inNeither.length} — magnitudes, measured and not pinned`);
 
-measure('D0', `of the 18: SWEPT ${inSwept.length} · DEFERRED ${inDeferred.length} · in neither ` +
-  `list ${inNeither.length}`);
-
-check('D1', 'the 18 sorts 8 SWEPT / 4 DEFERRED / 6 in neither list, disjointly and exactly',
-  inSwept.length === 8 && inDeferred.length === 4 && inNeither.length === 6 &&
-  inSwept.length + inDeferred.length + inNeither.length === 18 &&
-  new Set([...inSwept, ...inDeferred, ...inNeither]).size === 18,
-  `${inSwept.length}/${inDeferred.length}/${inNeither.length} — a count that collapses the ` +
-  `population is silent about which third of it the sweep governs`);
+// ROUND 314 REPAIR. Was `8 && 4 && 6 && sum 18`. The subject of this arm is in its own old detail
+// line — "a count that collapses the population is silent about which third of it the sweep governs"
+// — so what it must assert is that the three thirds PARTITION the population and that the sweep's
+// third is non-empty. All four magnitudes were incidental, and all four moved when one member left.
+const sweepPartition = (v: View): boolean =>
+  v.inSwept.length + v.inDeferred.length + v.inNeither.length === v.members.length &&
+  new Set([...v.inSwept, ...v.inDeferred, ...v.inNeither]).size === v.members.length &&
+  v.inSwept.length > 0;
+check('D1', 'the backlog sorts into SWEPT / DEFERRED / in-neither-list disjointly and exhaustively, ' +
+  'with a non-empty SWEPT third so the sweep governs some of it — and the partition survives every ' +
+  'one of the 18 paydowns',
+  sweepPartition(LIVE) && DEPARTURES.every((d) => sweepPartition(d.view)),
+  `${inSwept.length}/${inDeferred.length}/${inNeither.length} of ${LIVE.members.length} · partition ` +
+  `holds under ${DEPARTURES.filter((d) => sweepPartition(d.view)).length} of ${DEPARTURES.length} ` +
+  `departures — a count that collapses the population is silent about which third of it the sweep ` +
+  `governs, and a count is also what a paydown moves`);
 
 // Checked before being called a census problem, because "the census is wrong" is the highest-cost
 // thing to say wrongly here: the 6 are outside the partition BY CONSTRUCTION.
@@ -393,19 +494,39 @@ check('D2', 'the 6 in neither list are every verify-*.mjs in the set and no prob
 // ── E — the expect: pins on the 8, Daedalus's claim, and my own misreading of them ──────────────
 console.log('\n── E. the expect: pins, confirmed and generalised ──');
 
-const pinsOfTheEight = SWEPT.filter((e) => inSwept.includes(e.file));
+const pinsOfTheEight = LIVE.pins;
 
 for (const e of pinsOfTheEight) {
   measure('E0', `${e.file.replace(/^probe-/, '').slice(0, 38)} expect=${String(e.expect)}`);
 }
 
-check('E1', 'Daedalus\'s Round 309 §10 claim about probe-round307 is confirmed AND generalises: all ' +
-  '8 SWEPT members of the 18 carry an expect: count pin, so each is a two-file change',
-  pinsOfTheEight.length === 8 &&
-  pinsOfTheEight.every((e) => e.expect instanceof RegExp &&
-    /All \d+ regression checks passed/.test(String(e.expect))),
-  `8 of 8 pinned · round307 reads ${String(pinsOfTheEight.find((e) =>
-    e.file.startsWith('probe-round307-'))?.expect)} — he named 1 file and the property holds for 8`);
+// ROUND 314 REPAIR, two parts, and the second is a retraction.
+//
+// (1) `=== 8` is replaced by "one pin per SWEPT member, and the SWEPT third is non-empty". The
+// universal quantifier was always the claim; the 8 was how many files it happened to range over.
+// The non-emptiness conjunct is not decoration — an `every()` over a list a paydown can empty is
+// this thread's own recurring vacuous-green shape, and the repair that removes a magnitude pin is
+// exactly the edit that opens it.
+//
+// (2) The old claim text ended "so each is a two-file change". That clause is WRONG and this file's
+// own `[E3]` measured it wrong one round before Daedalus relied on it: the pins are unanchored and
+// survive a count-preserving conversion, so the second file is needed only when the count moves. His
+// Round 313 §1 struck the same clause from his own Round 309 §10. A claim string is what a reader
+// takes away from a green arm, so leaving a refuted sentence inside a passing check is a pin on a
+// falsehood that nothing grades.
+const pinPerSweptMember = (v: View): boolean =>
+  v.pins.length === v.inSwept.length && v.inSwept.length > 0 &&
+  v.pins.every((e) => e.expect instanceof RegExp &&
+    /All \d+ regression checks passed/.test(String(e.expect)));
+check('E1', 'Daedalus\'s Round 309 §10 count claim about probe-round307 generalises: EVERY SWEPT ' +
+  'member of the backlog carries an expect: count pin, one apiece, over a non-empty SWEPT third — ' +
+  'and that holds under every one of the 18 paydowns',
+  pinPerSweptMember(LIVE) && DEPARTURES.every((d) => pinPerSweptMember(d.view)),
+  `${pinsOfTheEight.length} pins over ${inSwept.length} SWEPT members · holds under ` +
+  `${DEPARTURES.filter((d) => pinPerSweptMember(d.view)).length} of ${DEPARTURES.length} departures · ` +
+  `round307 reads ${String(pinsOfTheEight.find((e) =>
+    e.file.startsWith('probe-round307-'))?.expect)} — he named 1 file and the property holds for all ` +
+  `of them; the "so each is a two-file change" clause this arm used to carry is retracted, see E3`);
 
 check('E2', 'KNOWN POSITIVE for my own misreading: those pins are RegExps, and JSON.stringify ' +
   'reports every one of them as {} — the reading that nearly retired a real cost',
@@ -417,19 +538,29 @@ check('E2', 'KNOWN POSITIVE for my own misreading: those pins are RegExps, and J
 // The pin is on the COUNT, and `summariseAndExit` emits `All ${ran} regression checks passed.` —
 // the same form. So a conversion reddens the pin only if it changes the hard-check count. Driven
 // for all 8 by rebuilding each pinned count as verdicts and testing the pin against the real headline.
-const pinSurvives = pinsOfTheEight.filter((e) => {
+const pinSurvivorsIn = (v: View): readonly SweptEntry[] => v.pins.filter((e) => {
   const n = Number(String(e.expect).match(/All (\d+) regression/)?.[1]);
   if (!Number.isFinite(n)) return false;
   const synth = Array.from({ length: n }, (_, i): ProbeVerdict =>
     ({ arm: 'A', check: `c${i}`, pass: true, kind: 'regression' }));
   return (e.expect as RegExp).test(summarise({ probeName: 'x', results: synth }).headline);
 });
-check('E3', 'but the pin survives a count-preserving conversion: for all 8, summarise()\'s real ' +
-  'headline matches the pinned regex when the hard-check count is unchanged',
-  pinSurvives.length === 8,
-  `${pinSurvives.length} of 8 pins matched a real summarise() headline rebuilt at the pinned count — ` +
-  `so the second file is only required when the conversion moves the count, which narrows the cost ` +
-  `Daedalus priced at two files apiece`);
+const pinSurvives = pinSurvivorsIn(LIVE);
+
+// ROUND 314 REPAIR, and this is the arm with the sharpest claim on being repaired. `=== 8` is a
+// magnitude; the claim is "all of them". E3 is the arm that told Daedalus the conversion was safe,
+// it was RIGHT, and it went red when he acted on it — reddened by the very event it had cleared.
+// Nothing about its subject moved. Only the size of the set it quantified over.
+const everyPinSurvives = (v: View): boolean =>
+  pinSurvivorsIn(v).length === v.pins.length && v.pins.length > 0;
+check('E3', 'and the pin survives a count-preserving conversion: for EVERY pinned SWEPT member, ' +
+  'summarise()\'s real headline matches the pinned regex when the hard-check count is unchanged — ' +
+  'under every one of the 18 paydowns, including the paydown that reddened this arm in Round 313',
+  everyPinSurvives(LIVE) && DEPARTURES.every((d) => everyPinSurvives(d.view)),
+  `${pinSurvives.length} of ${pinsOfTheEight.length} pins matched a real summarise() headline ` +
+  `rebuilt at the pinned count · holds under ${DEPARTURES.filter((d) => everyPinSurvives(d.view)).length} ` +
+  `of ${DEPARTURES.length} departures — so the second file is required only when the conversion moves ` +
+  `the count, and the pre-314 \`=== 8\` form is why acting on this very arm turned it red`);
 
 // ── Z — this file wrote nothing ─────────────────────────────────────────────────────────────────
 console.log('\n── Z. no writes ──');
@@ -438,10 +569,46 @@ check('Z1', 'scripts/ is byte-identical before and after this run',
   fingerprint(REPO, 'scripts') === TREE_AT_START,
   'tree fingerprint delta over scripts/ is empty — this probe reads, regexes and calls summarise()');
 
-check('Z2', 'and every figure this file pins is one its own arrival cannot move',
-  theEighteen.length === 18 && reachedByG.length === 0 && !withSelf.includes(SELF_NAME),
-  `18 and 0 both hold with this file on disk as script ${scriptNames.length}; the script total is a ` +
-  `measurement in A0 and deliberately not a pin`);
+// ROUND 314 REPAIR, and this arm is the one Daedalus's §3 convicted by quoting. Its old claim read
+// "every figure this file pins is one its own ARRIVAL cannot move", and that was true. It named one
+// direction and silently assumed it was the only one. A departure moves every figure an arrival
+// cannot, and the first seat to pay the backlog down tripped six arms at once.
+//
+// The repaired arm asserts BOTH directions and carries the KNOWN NEGATIVE that proves the asymmetry
+// was real rather than theoretical: the pre-314 magnitude conjuncts, preserved here verbatim as a
+// predicate, must FAIL under every single one of the 18 departures. If that negative ever went green
+// it would mean the old pins had been robust all along and this repair was unnecessary.
+const PRE_314_MAGNITUDE_FORM = (v: View): boolean =>
+  v.members.length === 18 &&
+  v.pushesPass.length === 5 && v.bareCounter.length === 10 && v.neither.length === 3 &&
+  v.inSwept.length === 8 && v.inDeferred.length === 4 && v.inNeither.length === 6 &&
+  v.pins.length === 8 && pinSurvivorsIn(v).length === 8;
+
+const arrivalCannotMove = reachedByG.length === 0 && !withSelf.includes(SELF_NAME) &&
+  theEighteen.length > 0;
+const propertyFormsSurvive = DEPARTURES.every((d) =>
+  shapesPartition(d.view) && tripleIsTheNamedPair(d.view) && sweepPartition(d.view) &&
+  pinPerSweptMember(d.view) && everyPinSurvives(d.view));
+const oldFormsBreak = DEPARTURES.filter((d) => !PRE_314_MAGNITUDE_FORM(d.view)).length;
+
+for (const d of DEPARTURES.slice(0, 3)) {
+  measure('Z0', `convert ${d.gone.replace(/^probe-/, '').slice(0, 44)} → property forms hold, ` +
+    `pre-314 magnitude form ${PRE_314_MAGNITUDE_FORM(d.view) ? 'HOLDS' : 'BREAKS'}`);
+}
+measure('Z0', `all ${DEPARTURES.length} single-member paydowns: property forms hold in ` +
+  `${DEPARTURES.filter((d) => shapesPartition(d.view) && sweepPartition(d.view) &&
+    pinPerSweptMember(d.view) && everyPinSurvives(d.view) && tripleIsTheNamedPair(d.view)).length}, ` +
+  `pre-314 magnitude form breaks in ${oldFormsBreak}`);
+
+check('Z2', 'and every figure this file pins is one that NEITHER its own arrival NOR any member\'s ' +
+  'departure can move — with the KNOWN NEGATIVE that the pre-Round-314 magnitude form breaks under ' +
+  'all 18 departures, which is the asymmetry Round 313 paid for',
+  arrivalCannotMove && propertyFormsSurvive && oldFormsBreak === DEPARTURES.length,
+  `arrival-invariant ${arrivalCannotMove} (reach 0 and self excluded hold with this file on disk as ` +
+  `script ${scriptNames.length}; the script total is a measurement in A0 and deliberately not a pin) · ` +
+  `departure-invariant ${propertyFormsSurvive} across all ${DEPARTURES.length} paydowns · known ` +
+  `negative: pre-314 magnitude form breaks in ${oldFormsBreak} of ${DEPARTURES.length} — a magnitude ` +
+  `pin on a population someone is routed to SHRINK cannot survive any member of that routed work`);
 
 console.log(`\n${meas} measurements recorded.`);
 summariseAndExit({ probeName: 'probe-round311', results });
