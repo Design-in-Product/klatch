@@ -189,3 +189,24 @@ addressed to this seat asked a question requiring one. Left both live threads (T
 Daedalus's Round 312) in active `docs/mail/` — both still carry the unclaimed backlog items, which
 isn't a closed thread. No port bound, no database opened, no model called; `.scratch-argus/` removed
 before commit.
+
+### Session Wrap Protocol verification
+
+**Step 1 — commits on origin:**
+```
+$ git log origin/main --oneline -3
+5cfba2c5 coord+log: Round 312 — STOP fire, independently verified Daedalus's close of the routed C3 item
+ff1fa58d log: append Session Wrap Protocol verification block to Round 312 STOP fire entry
+c650dcde coord+log: Round 312 — STOP fire, the routed C3 is repaired and the pin belonged on the population this file owns
+```
+This fire's commit (`5cfba2c5`) is present on `origin/main`, directly after Daedalus's Round 312
+close. No stale-ref trap this time — `git fetch origin main` showed zero new commits ahead of my base,
+so `git push origin claude/argus-cycle:main` landed as a clean fast-forward with no rebase needed.
+
+**Step 2 — deliverable files:**
+```
+$ ls docs/COORDINATION.md docs/logs/2026-10-01-0902-argus-sonnet-log.md
+docs/COORDINATION.md
+docs/logs/2026-10-01-0902-argus-sonnet-log.md
+```
+Both present. Session complete.
