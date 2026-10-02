@@ -434,3 +434,109 @@ carried in `b1f1f1c1` and `9f51f282` and confirmed by the census and sweep runs 
 and pushed to `main` in its own commit so Theseus and Argus will see it in their own session-start
 sweep, per the worktree mail rule in CLAUDE.md. No cross-project mail was written this fire — both
 recipients are Klatch agents, so `docs/mail/` here is the correct destination.
+
+---
+
+## 17:1x–17:4x PT — STOP fire — Round 312: the routed C3 is repaired, and my repair prose reddened another seat's arm twice
+
+**Briefing.** Pulled by the wrapper; `git log --oneline -3` at open: `bbe193ee`, `81403229`,
+`38bbddbc`. Read `docs/COORDINATION.md` (Daedalus section) and `ls -la docs/mail/`. **Two memos landed
+at 17:17, both addressed to me**, and I read both in full before touching anything:
+
+- `argus-to-theseus-daedalus-…-i-took-your-routed-item-and-the-18-file-backlog-is-three-harness-shapes-only-two-near-mechanical-2026-10-01.md` (Round 310)
+- `theseus-to-argus-daedalus-…-your-nearer-candidate-is-the-one-that-drops-the-failure-and-your-c3-was-red-before-my-fire-2026-10-01.md` (Round 311)
+
+Round 311 §4 routes one concrete item to me by name: **`probe-round309` C3 is RED**, it is my SWEPT arm,
+and he deliberately did not repair it (the four-times-kept precedent that another seat's SWEPT arm is not
+his to widen). That is this fire's work unit. Round 310 carries nothing for me to close — its two named
+candidates (`probe-round217`, `probe-round222`) are offered, not assigned, and Theseus's §2 resolved the
+hedge on them this same round.
+
+**17:1x — the red reproduced before I edited anything.** Drove `probe-round309` standalone, unpiped:
+`1 of 13 FAILED`, C3 reading `default-scripts: 5 flags (isHandRolled, hasSuiteCounts, isHandRolledG,
+isHandRolledWithSkip, isHandRolledG) · declared-corpus: 1 (isHandRolled) · UNGRADED: 6` against a pin of
+3. Read both arrivals off disk rather than taking the attribution from the memo: `isHandRolledWithSkip`
+at `probe-round310:114`, a second `isHandRolledG` at `probe-round311:175`, plus `probe-round308:529` —
+all three **measuring copies of arm G**, which is the category D1 already names. So three of the five
+flags are instruments pointed at the subject under study.
+
+*Not verified this session:* Theseus's detached-worktree measurement at `5d4c3a44` showing the arm was
+already red at 4 before his fire. Believed, from his §4, not re-measured here — labelled that way in the
+memo too.
+
+**17:2x — the repair, and why the recommendation's stated reason wasn't the right one.** His §4 argued
+for pinning the declared figure because it had been 1 across 3 → 4 → 5. I took the recommendation but
+not the reason: the default figure *also* sat still across every fire that happened not to add a
+measuring copy, so watching a number not move is not evidence it cannot. The property that licenses the
+pin is structural — **the declared population is closed under additions to the tree**, because
+membership is the `CORPUS` table inside the probe, while the default mode borrows the tree's membership.
+
+Changes: C3 now pins `declared === 1 && that one is probe-round224#isHandRolled && default > declared`,
+with the default figure printed as `MEASURED, not pinned`. New **arm C5** drives the closure by
+injection — arm G's own terms, taken from the extracted population that A1 pins against the real
+declaration on disk, under a name absent from `CORPUS`: `default 5 → 6, declared 1 → 1`. Docblock gained
+a "defect 5" section stating the general form: a pin on a file COUNT (Round 309 §5 defect 4) vs. a pin
+on a POPULATION whose growth is the thread's subject matter. **Rule: a pin is safe when the file holding
+it also owns the membership rule of what it counts.**
+
+Count 13 → 14, so the `expect:` pin was restaged. **The census caught my stale `why` before I looked:**
+`CENSUS RED — why says 13 where expect pins 14`. Every `N/N` pair in `why` must equal the pin, so the
+13/13 promotion history moved into the comment above the entry. Recording that an instrument worked.
+
+**17:2x–17:3x — THE FINDING, against me, three times over.** First full driving sweep after the repair:
+`SWEEP FAILED` — `probe-round309` green, **`probe-round308` RED, 2 of 18**, his file, untouched by me and
+green in his own fire an hour earlier.
+
+1. His C0 named it: `sweep-probes.mjs:643 → r312/C5`. My new `why:` put a `Round 312` citation and an arm
+   token on one line; round 312 has no probe file, so v2's nearest-preceding rule bound an arm to a
+   round that cannot own it → v2 8→9, total 13→14, C1's pin red. **This is the fifth sub-case his Round
+   311 §5 named and left unbuilt** — a round IS cited and the arm belongs to neither the cited round nor
+   the enclosing file — and worse than his instance, because `sweep-probes.mjs` declares no arms at all,
+   so `SELF_OWNED` could not have explained it. Repaired his way: say whose arm it is
+   (`probe-round309 arm C5`), not rename to evade the key.
+2. **Re-drove rather than assuming one edit cleared it** — and the comment I had written to EXPLAIN the
+   defect quoted both tokens and re-created it one line below the repair (`:641`, v2 still 9). Prose is
+   the one medium where describing a thing and doing it are the same act.
+3. With v2 back to 8, v1 reported **6** against its pinned 5: `probe-round309:429 → r224/A1` — my new C5
+   docblock's "arm A1" beside a `probe-round224` citation. Same repair: *THIS FILE's own A1*.
+
+`probe-round308` ended at **18/18, v1=5 / v2=8 / total 13** — its pinned figures exactly, **his file not
+edited**. What moved was his population; the repair belonged in my prose.
+
+**A fourth, found by looking for it.** `D3` read "the population … is 1, **not 3**" — accurate when
+written, stale by Round 310. That is section E of that same file recurring inside it. Derived from the
+live figure now. **Did not rename the probe file** (`…over-reported-three…`): it records what Round 309
+measured. Also verified `probe-round308`'s detector walks only `.mts/.ts/.tsx/.mjs/.js/.json`, so this
+log and the memo cannot move its population — checked rather than assumed, because the memo quotes the
+offending token pairs on purpose.
+
+**Verification (17:3x).**
+
+- `probe-round309` standalone: **All 14 regression checks passed**, exit 0.
+- `probe-round308` standalone: **All 18**, v1 5 / v2 8 / 13.
+- `npx tsc -p scripts/tsconfig.json`: clean, 0 bytes. No cast — `censusFlags` took an optional
+  population parameter rather than being duplicated.
+- `npm test`: typecheck clean ×4 (0 `error TS`), server **140 / 2174 / 1 skipped**, client
+  **25 / 325 / 13 skipped**, `CENSUS OK`, swept **30**, deferred **108** — identical to the baseline all
+  three seats published this round. Run **unpiped into a file and read from the file**, never piped to
+  `tail`: a pipe would have reported the pager's exit code.
+- `git diff --stat -- packages/`: **empty**.
+- Full driving sweep: **`SWEEP BLOCKED` — 29 of 30 green, 0 RED, 1 blocked, 0 census problem(s), 108
+  deferred.** The 1 blocked is `probe-round225`, cause read off its own output: `exit 3 … established 32
+  of its checks and skipped 1 arm(s). This is not a pass.` Port 3001, held outside this worktree,
+  unchanged since Round 291; freeing it is not mine to do from a fire.
+
+**The routed item is closed: 0 red.** Spawns nothing — no port, database, corpus, model, or compiler
+beyond `tsc`.
+
+**Mail filed.** `docs/mail/daedalus-to-theseus-argus-cc-xian-janus-calliope-iris-your-routed-c3-is-repaired-and-the-pin-belonged-on-the-population-my-own-file-owns-2026-10-01.md`
+— committed separately and pushed straight to `main` per the worktree mail rule. It also carries a small
+correction for Calliope: her 17:17 log entry records "Rounds 309–311 … None cc Calliope", but my Round
+309 memo's filename and frontmatter both name her in `cc` (verified by reading the frontmatter). Her
+operative conclusion — none carry a needs-you implication — stands, and this one doesn't either.
+
+**Mail hygiene.** Left Rounds 310 and 311 in active `docs/mail/`: both carry open items that are not
+mine to close (`probe-round217`/`probe-round222`, the other 16, the unbuilt fifth sub-case of
+`probe-round308`'s explainer, `probe-round225`'s port). Nothing moved to `read/`.
+
+**No input needed from xian.** No cross-project mail this fire — both recipients are Klatch agents.
