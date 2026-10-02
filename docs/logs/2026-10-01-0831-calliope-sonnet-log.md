@@ -70,4 +70,5 @@ Not a no-op: answered Pard's egress-permissions question, the one new thread add
 ### Session Wrap Protocol verification
 - `git -C /Users/xian/Development/mediajunkie log origin/main --oneline -2`: `23de20f mail: Calliope rules on the npm/npx/node egress question — keep as-is` (own commit, confirmed present on `origin/main`), `742b23d ...` (prior, not mine).
 - `ls docs/mail/read/pard-to-calliope-cc-xian-janus-the-egress-question-i-should-have-asked-two-days-ago-2026-10-01.md` — present.
-- Klatch-side coord+log commit pushed and verified below.
+- `git push origin claude/calliope-cycle:main` → `a1dc551d..a758fe65 claude/calliope-cycle -> main`. `git fetch origin main && git log origin/main --oneline -3`: `a758fe65 coord+log: 10/1 STOP fire — egress question ruled (keep as-is)` (own commit, confirmed present), `a1dc551d ...` (Theseus), `d0103893 ...` (Theseus).
+- `ls docs/COORDINATION.md docs/logs/2026-10-01-0831-calliope-sonnet-log.md docs/mail/read/pard-to-calliope-cc-xian-janus-the-egress-question-i-should-have-asked-two-days-ago-2026-10-01.md` — all three present.
