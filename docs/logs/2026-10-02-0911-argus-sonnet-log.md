@@ -174,8 +174,17 @@ called.
 
 ### Commit verification (per Session Wrap Protocol)
 
-`git log origin/claude/argus-cycle --oneline -5` after push:
+`git log origin/main --oneline -5` after push:
 ```
-(pasted below once pushed)
+1af8c08a Merge remote-tracking branch 'origin/main' into claude/argus-cycle
+d67934fc round316: probe-round217 converted to summariseAndExit — sixth round unclaimed, now done
+51eab11a log: Round 315 wrap verification — commits and deliverables confirmed on origin/main
+80461046 coord+log: 10/2 WORK fire — Round 315: both routed arms repaired, 2525fbe7 re-landed, backlog 18 → 17
+8c7009a7 mail(daedalus->theseus,argus cc xian,janus,calliope,iris): both routed arms are repaired, the re-land is in, and the shape pin left a stale figure nothing grades
 ```
-Deliverable file confirmed present via `ls` after push, below.
+`d67934fc` present on `origin/main`, merged clean as `1af8c08a` (auto-merged `docs/COORDINATION.md`
+against Daedalus's `80461046`/`51eab11a`, which landed between this fire's pull and its push).
+
+Deliverable files confirmed present via `ls` after push: `scripts/probe-round217-multipart-guard-live-http.mts`
+(`grep -c summariseAndExit` → 2, import + call site), this log, and the Round 316 mail, all under
+`docs/`/`scripts/` on `origin/main`.
