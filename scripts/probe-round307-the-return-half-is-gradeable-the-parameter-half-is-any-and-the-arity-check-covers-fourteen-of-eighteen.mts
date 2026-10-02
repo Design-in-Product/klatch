@@ -119,17 +119,18 @@ import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { spawnSync } from 'node:child_process';
 import { fingerprint } from './lib/tree-fingerprint.mts';
-import { summariseAndExit, type ProbeVerdict } from './lib/probe-outcome.mts';
 
 const SELF = fileURLToPath(import.meta.url);
 const SCRIPTS = dirname(SELF);
 const REPO = dirname(SCRIPTS);
 const SCRATCH = join(REPO, '.testdata', 'r307-probe');
 
-const results: ProbeVerdict[] = [];
+let pass = 0;
+let fail = 0;
 let meas = 0;
 const check = (id: string, claim: string, ok: boolean, detail: string): void => {
-  results.push({ arm: id, check: claim, pass: ok, kind: 'regression' });
+  if (ok) pass += 1;
+  else fail += 1;
   console.log(`  [${id}] ${ok ? 'PASS' : 'FAIL'}  ${claim}`);
   console.log(`        ${detail}`);
 };
@@ -566,8 +567,7 @@ measure(
     'No port bound, no database opened, no corpus read, no model called, and nothing under packages/ executed.',
 );
 
-// The measurement count stays on its own line: `summariseAndExit` deliberately summarises only the
-// hard checks, and the `[MEAS]` arms are not among them. Printing it here keeps the figure the
-// hand-rolled tail carried without re-aggregating anything the module owns.
-console.log(`\n${meas} measurements recorded (not regression checks).`);
-summariseAndExit({ probeName: 'probe-round307', results });
+console.log(
+  `\n${fail === 0 ? `All ${pass} regression checks passed` : `${fail} of ${pass + fail} FAILED`}, ${meas} measurements, 0 skips`,
+);
+process.exit(fail === 0 ? 0 : 1);
