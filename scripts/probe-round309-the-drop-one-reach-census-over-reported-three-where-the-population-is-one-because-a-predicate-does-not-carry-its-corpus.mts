@@ -38,9 +38,30 @@
  * file, while a corpus mis-binding produces a **reach figure**, which looks like a measurement.
  *
  * The repair is not a better inference. It is to refuse: a predicate whose corpus is not stated at
- * a fixed site is reported **UNGRADED**, and arm C3 drives the flag count down 3 → 1 by that route.
- * Fixing the site in advance is what §3 concluded reports 0 false, and it is what sections B and C
- * of this file do.
+ * a fixed site is reported **UNGRADED**, and arm C3 drives the flag count down to the single arm-G
+ * instance by that route. Fixing the site in advance is what §3 concluded reports 0 false, and it is
+ * what sections B and C of this file do.
+ *
+ * ── Defect 5, found by Theseus in Round 311 §4 and repaired here ──────────────────────────────────
+ *
+ * C3 originally pinned BOTH figures — `flaggedDefault.length === 3 && flaggedDeclared.length === 1`.
+ * Theseus drove it red at `default-scripts: 5` and, before blaming his own arriving file, built a
+ * detached worktree at Argus's `5d4c3a44` and showed it was already red there at 4. The arrivals were
+ * `isHandRolledWithSkip` (probe-round310:114) and a second `isHandRolledG` (probe-round311:175) —
+ * both measuring copies of arm G, the same category D1 identifies for probe-round308:529.
+ *
+ * So the pin was on a population that this thread's own activity enlarges: the default mode counts
+ * reach-0 conjunctions anywhere under `scripts/`, and writing predicates that measure arm G is what
+ * four consecutive rounds have been doing. The declared figure has no such exposure — membership is
+ * the `CORPUS` table in this file, so an arrival the tree supplies lands in UNGRADED and cannot move
+ * it. The pin now sits there, the default figure is reported as a measurement, and what the arm still
+ * asserts about it is the DIRECTION (default > declared), which is the finding and does not drift.
+ *
+ * **The general form, one level out from §5 defect 4:** that defect was a pin on a file COUNT the
+ * file's own arrival moved. This is a pin on a POPULATION whose growth is the thread's subject
+ * matter — no single fire moves it wrongly, and every fire moves it. A pin is safe when the file
+ * holding it also owns the membership rule of what it counts; otherwise it reddens on work that is
+ * not a regression. C5 drives that closure property by injection rather than restating it here.
  *
  * ── Three defects of my own, and the first two are the same instrument failing both ways ─────────
  *
@@ -358,8 +379,8 @@ check(
 // The census, run both ways: defaulting every predicate to scripts/ (the defect) and refusing to
 // grade the ones whose corpus is not declared at a fixed site (the repair).
 const SELF_EXCLUDED = new Set([SELF_NAME]);
-const censusFlags = (mode: 'default-scripts' | 'declared-corpus'): Pred[] =>
-  RAW.preds.filter((p) => {
+const censusFlags = (mode: 'default-scripts' | 'declared-corpus', population: Pred[] = RAW.preds): Pred[] =>
+  population.filter((p) => {
     if (p.file === SELF_NAME) return false;
     const key = `${p.file}#${p.name}`;
     const declared = CORPUS[key];
@@ -377,12 +398,18 @@ const ungraded = RAW.preds.filter((p) => p.file !== SELF_NAME && CORPUS[`${p.fil
 
 check(
   'C3',
-  'the repair is refusal, not a better inference: declaring each corpus at a fixed site and reporting UNGRADED for the rest drops the flag count from 3 to 1, and the 1 is arm G',
-  flaggedDefault.length === 3 && flaggedDeclared.length === 1
-    && flaggedDeclared[0]?.file.startsWith('probe-round224-a-skip') === true,
-  `default-scripts: ${flaggedDefault.length} flags (${flaggedDefault.map((p) => p.name).join(', ')}) · ` +
-    `declared-corpus: ${flaggedDeclared.length} (${flaggedDeclared.map((p) => p.name).join(', ')}) · ` +
-    `UNGRADED: ${ungraded.length}. Fixing the site in advance is what Round 308 §3 concluded reports 0 false.`,
+  'the repair is refusal, not a better inference: declaring each corpus at a fixed site and reporting UNGRADED for the rest leaves exactly ONE flag, and it is arm G — and the pin is on THAT figure, because this file owns the declared population while the default mode\'s population is supplied by the tree',
+  flaggedDeclared.length === 1
+    && flaggedDeclared[0]?.file.startsWith('probe-round224-a-skip') === true
+    && flaggedDeclared[0]?.name === 'isHandRolled'
+    && flaggedDefault.length > flaggedDeclared.length,
+  `default-scripts: ${flaggedDefault.length} flags (${flaggedDefault.map((p) => p.name).join(', ')}) — ` +
+    `MEASURED, not pinned · declared-corpus: ${flaggedDeclared.length} (${flaggedDeclared.map((p) => p.name).join(', ')}) ` +
+    `— PINNED · UNGRADED: ${ungraded.length}. Fixing the site in advance is what Round 308 §3 concluded ` +
+    'reports 0 false. The default figure was pinned at 3 until Round 311 §4 caught it red at 5: it counts ' +
+    'reach-0 conjunctions anywhere under scripts/, and writing measuring copies of arm G is what this ' +
+    'thread has done for four rounds, so the pin was on a population its own subject matter enlarges. ' +
+    'What survives the pin move is the DIRECTION (default > declared), which is the finding.',
 );
 
 measure(
@@ -392,6 +419,39 @@ measure(
     'declaration spellings reaching 14 of 18); Round 308 §3 is the over-report direction in a binder; ' +
     'this is the over-report direction where the mis-paired partner is the POPULATION, so the artefact ' +
     'is a number rather than a claim, and a number is what this fleet treats as the thing it may trust.',
+);
+
+/**
+ * C5 drives the stability the relocated pin rests on, instead of inferring it from having watched the
+ * figure sit at 1 across three population sizes. Observing a number not move is not the same as
+ * showing it cannot: the default figure also sat still between the fires that happened not to add a
+ * measuring copy. The injected predicate carries arm G's OWN terms — taken from the extracted
+ * population, which THIS FILE's own A1 pins against `probe-round224:366` on disk — under a file name
+ * absent from `CORPUS`. That is exactly the shape of the three arrivals that moved the default figure
+ * 3 → 4 → 5, so this is a known positive copied from the real shape rather than a minted one.
+ */
+const gDecl = RAW.preds.find((p) => p.file.startsWith('probe-round224-a-skip') && p.name === 'isHandRolled');
+const INJECTED_FILE = 'probe-round999-a-future-measuring-copy-of-arm-g.mts';
+const injected: Pred[] = gDecl === undefined
+  ? []
+  : [...RAW.preds, { file: INJECTED_FILE, name: 'isHandRolledG', line: 1, terms: gDecl.terms }];
+const injDefault = gDecl === undefined ? -1 : censusFlags('default-scripts', injected).length;
+const injDeclared = gDecl === undefined ? -1 : censusFlags('declared-corpus', injected).length;
+
+check(
+  'C5',
+  'and the pin move is sound rather than merely quieter, driven by injection: one more measuring copy of arm G arriving under a name not in the declared table moves the default figure by one and leaves the declared figure untouched — the declared population is closed under additions to the tree, which is the property a pin needs and the default mode does not have',
+  gDecl !== undefined
+    && injDefault === flaggedDefault.length + 1
+    && injDeclared === flaggedDeclared.length,
+  gDecl === undefined
+    ? 'arm G not found in the extracted population — C5 cannot be driven, and A1 would have failed first'
+    : `injecting ${INJECTED_FILE}#isHandRolledG (arm G's terms verbatim, ${gDecl.terms.length} of them): ` +
+      `default-scripts ${flaggedDefault.length} → ${injDefault} (+1, flagged: reach 0 over scripts/, ` +
+      `drop-one positive) · declared-corpus ${flaggedDeclared.length} → ${injDeclared} (unchanged: no ` +
+      'CORPUS entry, so UNGRADED). The injected pred is never read off disk and no file is written — it ' +
+      'is a population entry, which is the whole point: the tree supplies the default mode\'s membership, ' +
+      'and this file supplies the declared mode\'s.',
 );
 
 console.log('\n── D. the third flag, and this file inside its own population ──');
@@ -429,7 +489,10 @@ check(
 
 measure(
   'D3',
-  `so the population of the arm-G shape under scripts/ is 1, not 3: arm G itself. The one-conjunct ` +
+  `so the population of the arm-G shape under scripts/ is 1 — arm G itself — against the ` +
+    `${flaggedDefault.length} the default-corpus census reports on this tree, a figure derived here ` +
+    `rather than restated, because it was 3 when this file was written and the prose that said "not 3" ` +
+    `went stale by Round 310 exactly the way section E's subject did. The one-conjunct ` +
     `repair routed to Argus in Round 308 §8 is the whole of the class — the backlog is ${dropSkip?.reach} ` +
     `FILES and the class is 1 ARM, and those are different numbers doing different work.`,
 );

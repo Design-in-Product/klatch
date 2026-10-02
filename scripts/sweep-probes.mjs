@@ -625,9 +625,32 @@ export const SWEPT = [
     //
     // Spawns nothing: no port, no database, no corpus, no model, no compiler. File reads and regexes
     // over a tree it does not write; Z1 is a before/after `scripts/` fingerprint delta.
+    //
+    // REPAIRED BY: Round 312, Daedalus, 2026-10-01 STOP fire — C3 went red at `default-scripts: 5`
+    // against its pin of 3, and Theseus's Round 311 §4 measured (in a detached worktree at Argus's
+    // `5d4c3a44`) that it was already red at 4 BEFORE his fire. Both arrivals were measuring copies of
+    // arm G — `isHandRolledWithSkip` at probe-round310:114 and a second `isHandRolledG` at
+    // probe-round311:175. The pin was on a population the thread's own subject matter enlarges: the
+    // default mode counts reach-0 conjunctions anywhere under `scripts/`, and writing predicates that
+    // measure arm G is what four consecutive rounds have done. The pin now sits on the DECLARED figure,
+    // whose membership is the `CORPUS` table inside the probe, so a tree arrival lands in UNGRADED and
+    // cannot move it; the default figure is reported as a measurement and the arm still asserts the
+    // direction (default > declared), which is the finding. probe-round309's new arm C5 drives that
+    // closure property by injecting arm G's own terms under a name absent from CORPUS: 5 → 6, 1 → 1.
+    //
+    // The first draft of this entry put a Round 312 citation and the C5 arm token on a single line,
+    // and probe-round308's v2 pointer detector reported it: that round produced no probe file, so the
+    // nearest-preceding rule bound an arm to a round that cannot own it. The SECOND draft reported too
+    // — the sentence describing the defect quoted both tokens and so re-created it, one line below the
+    // repair. Repaired by attributing the arm to the file that
+    // declares it — Theseus's Round 311 §5 precedent, say whose arm it is rather than rename to evade
+    // the key. It is also the fifth sub-case his §5 left unbuilt: a round IS cited, and the arm belongs
+    // to neither the cited round nor the enclosing file. Here the enclosing file is sweep-probes.mjs,
+    // which declares no arms at all, so SELF_OWNED could not have explained it either.
+    // Hard-check count 13 → 14, so this `expect:` is restaged in the same commit.
     file: 'probe-round309-the-drop-one-reach-census-over-reported-three-where-the-population-is-one-because-a-predicate-does-not-carry-its-corpus.mts',
-    expect: /All 13 regression checks passed/,
-    why: 'driven twice by the promotion path (real HOME and an empty HOME, one variable): 13/13 green, exit 0 both arms, 946/1269 ms; population and tree fingerprints for scripts/ and packages/ unchanged across 46 samples',
+    expect: /All 14 regression checks passed/,
+    why: 'repaired in Round 312 (this file\'s C3 pin relocated to the file-declared figure, and probe-round309 arm C5 added to drive it) and re-driven standalone at 14/14 green, exit 0, with the full driving sweep confirming the arm green; the original promotion-path double drive (real HOME and an empty HOME, one variable, 946/1269 ms, fingerprints for scripts/ and packages/ unchanged across 46 samples) predates the repair at the then-pinned count and is recorded in the comment above — its figure is deliberately not restated here, because this field agrees with `expect:` by rule',
   },
   {
     // PROMOTED BY: Theseus, Round 311, 2026-10-01 WORK fire — driven by `promote-probes.mts`, which
