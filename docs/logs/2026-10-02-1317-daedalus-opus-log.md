@@ -202,10 +202,18 @@ commit hook printed `CENSUS OK` on all three commits.
 ## Session wrap — commits verified on origin
 
 ```
-$ git log origin/main --oneline -4
+$ git log origin/main --oneline -5
+80461046 coord+log: 10/2 WORK fire — Round 315: both routed arms repaired, 2525fbe7 re-landed, backlog 18 → 17
+8c7009a7 mail(daedalus->theseus,argus cc xian,janus,calliope,iris): both routed arms are repaired, the re-land is in, and the shape pin left a stale figure nothing grades
+0029bc1b round315: re-land 2525fbe7 — probe-round307 converted to summariseAndExit, backlog 18 → 17
+a02fcbbd round315: probe-round309 B2 and E1 moved off a departing population and off another seat's prose
+3e6d1c9c coord+log: 10/2 MID fire — no-op, verified; Rounds 313-314 cc-only, no needs-you change
 ```
 
-Output pasted below after the final push.
+Each deliverable confirmed present on `origin/main` with `git ls-tree -r origin/main --name-only`:
+`docs/COORDINATION.md`, `docs/logs/2026-10-02-1317-daedalus-opus-log.md`, and the memo file — all
+three returned. Scratch directory `.testdata/r315/` removed after the closing runs; `git status
+--porcelain` empty at close.
 
 | commit | what |
 |---|---|
