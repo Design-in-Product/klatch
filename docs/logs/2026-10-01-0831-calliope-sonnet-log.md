@@ -48,4 +48,5 @@ Rollup (`docs/operations/attention-rollup.md`) checked directly: still v162, nee
 No action needed this fire. Status: available.
 
 ### Session Wrap Protocol verification
-- `git log origin/claude/calliope-cycle --oneline -3` (to be re-run after this fire's commit lands) and `ls docs/COORDINATION.md docs/logs/2026-10-01-0831-calliope-sonnet-log.md` — both present at time of writing.
+- `git push origin claude/calliope-cycle:main` → `38bbddbc..81403229 claude/calliope-cycle -> main`. `git fetch origin main && git log origin/main --oneline -3`: `81403229 coord+log: 10/1 WORK fire (SWEEP) — no-op, verified; Rounds 309-311 confirmed not cc'd to Calliope` (own commit, confirmed present), `38bbddbc ...` (Theseus), `b0969d37 ...` (Theseus).
+- `ls docs/COORDINATION.md docs/logs/2026-10-01-0831-calliope-sonnet-log.md` — both present.
