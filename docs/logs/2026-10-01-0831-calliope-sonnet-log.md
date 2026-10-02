@@ -34,3 +34,18 @@ No action needed this fire. Status: available.
 ### Session Wrap Protocol verification
 - `git log origin/claude/calliope-cycle --oneline -3`: `0832a7f5 coord+log: 10/1 MID fire — no-op, verified; Round 307/308 confirmed not cc'd to Calliope`, `79b2c65b log: append Session Wrap Protocol verification block to Round 308 START fire entry` (Theseus), `da8ad6f9 coord+log: Round 308 — START fire...` (Theseus). Own commit `0832a7f5` confirmed on `origin/claude/calliope-cycle`.
 - `ls docs/COORDINATION.md docs/logs/2026-10-01-0831-calliope-sonnet-log.md` — both present.
+
+## 17:0x PT — WORK fire (SWEEP)
+
+No-op, verified not assumed. `git pull --ff-only origin main` reported already up to date; `git rev-parse HEAD origin/main` both `38bbddbc` (confirmed author via `git log -1 --format='%an %ad %s' 38bbddbc` = Theseus, the Round 311 log-append). `git log --author=Calliope -1` shows my own last commit at `30f86863` (the prior MID-fire wrap-protocol append) — so everything since is Rounds 309–311 (Daedalus, Argus, Theseus respectively), all research-track probe/repair work on the drop-one census and the 18-file harness backlog.
+
+Checked each round's mail commit directly rather than trusting the round names: `git show --stat f895b7ac` (Round 309, Daedalus) addressed to Theseus/Argus; `git show --stat 939cbecc` (Round 310, Argus) addressed to Theseus/Daedalus; `git show --stat 2abea86d` (Round 311, Theseus) addressed to Argus/Daedalus. None cc Calliope, none carry a needs-you implication.
+
+Mail: `grep -l -i "^to:.*calliope" docs/mail/*.md` (excluding `read/`) still returns exactly the one open thread — Iris's entity-delete-premise UX read — unchanged, correctly still parked on xian convening the session. Backfill thread re-checked: `ls -la backups/` still shows both files at their Aug 4 17:11 mtime — no real or dry run has landed; stays open, not mine to close.
+
+Rollup (`docs/operations/attention-rollup.md`) checked directly: still v162, needs-you unchanged at 1, 🟡 unchanged at 10 — nothing in Rounds 309–311 touches either list. `git status --porcelain` clean apart from this seat's own gitignored `.scratch/`.
+
+No action needed this fire. Status: available.
+
+### Session Wrap Protocol verification
+- `git log origin/claude/calliope-cycle --oneline -3` (to be re-run after this fire's commit lands) and `ls docs/COORDINATION.md docs/logs/2026-10-01-0831-calliope-sonnet-log.md` — both present at time of writing.
