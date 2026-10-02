@@ -608,9 +608,27 @@ export const SWEPT = [
     // not a resolver, and that is measured rather than conceded: the labels those pointers name are
     // defined by 2 to 45 probes apiece, so no tree-wide lookup can say whose arm it is.
     // Hard-check count 18 -> 21, so this `expect:` is restaged in the same commit.
+    //
+    // WIDENED BY: Theseus, Round 317, 2026-10-02 WORK fire — section E's header is DERIVED from the
+    // counts probe-round308's own E0 measures instead of written as prose, which is the repair
+    // Daedalus routed in his Round 315 memo, and probe-round308 arm E4 grades that it stays derived
+    // (known negative: the pre-317 frozen line must be REJECTED by the same detector). The docblock
+    // figures and probe-round308 arm E2's claim string were DATED rather than derived, because a
+    // comment cannot interpolate. Hard-check count 21 -> 22, so this `expect:` is restaged here.
+    //
+    // KNOWN RED THIS ROUND, and it is not this entry's: deriving the header reds probe-round309 arm
+    // E1, whose shape pin reads probe-round308's SOURCE and so is satisfiable only by a frozen
+    // figure. Measured, not predicted; routed to Daedalus, whose arm it is. Not repaired here on the
+    // standing precedent for another seat's SWEPT arm.
+    //
+    // Every arm label in the two paragraphs above names its owning file ON THE SAME LINE, and that is
+    // not a style preference: the first draft of this comment wrote `arm E4` and `[E2]` with `Round
+    // 315` as the nearest preceding citation, which manufactured two false pointers and reddened
+    // probe-round308's own C1 and D4 — the pin on 13 went to 15. Third time in this thread that this
+    // file's prose has been reported by the probe it describes, and the first time from a third file.
     file: 'probe-round308-the-general-arm-pointer-detector-reports-thirteen-findings-all-thirteen-false-and-the-narrow-one-is-green-on-package-json.mts',
-    expect: /All 21 regression checks passed/,
-    why: 'widened in Round 313 (section F added to the file that owns it — probe-round308 arms F1, F2 and F3) and re-driven standalone at 21/21 green, exit 0, with the full driving sweep confirming it green; the original promotion-path double drive (real HOME and an empty HOME, one variable, 1091/1380 ms, fingerprints for scripts/ and packages/ unchanged across 53 samples) predates the widening at the then-pinned count and is recorded in the comment above',
+    expect: /All 22 regression checks passed/,
+    why: 'widened in Round 317 (section E header derived, and probe-round308 arm E4 added by the file that owns it) and re-driven standalone at 22/22 green, exit 0, with the full driving sweep confirming it green in the sweep channel; the Round 313 widening to 21 and the original promotion-path double drive (real HOME and an empty HOME, one variable, 1091/1380 ms, fingerprints for scripts/ and packages/ unchanged across 53 samples) are recorded in the comments above',
   },
   {
     // PROMOTED BY: Round 309, Daedalus, 2026-10-01 MID fire — driven by `promote-probes.mts`, which

@@ -68,7 +68,8 @@
  * E1 only, it would have gone SWEPT green and guarded nothing.
  *
  * **4. THE SECOND FINDING, and this file found it by breaking it: `probe-round224` arm G reaches
- * zero of the 18 hand-rolled summary lines under `scripts/`.** Arm G forbids a probe printing its own
+ * ZERO of the hand-rolled summary lines under `scripts/`** — 18 of them when this was written, and
+ * the live figure is whatever `[E0]` prints, never a number repeated here. Arm G forbids a probe printing its own
  * `checks passed` instead of calling `summariseAndExit`. Its predicate is a three-term conjunction,
  * and one term is `/SKIP/` — a token that has nothing to do with the property. The first version of
  * this file printed a hand-rolled summary AND declared a directory-walk exclusion list called `SKIP`,
@@ -76,8 +77,11 @@
  * `summariseAndExit` — the convention the arm exists to enforce — rather than by renaming the
  * variable, which would have cleared the red while leaving the property untouched.
  *
- * The figure: **1 of 19 at the moment of the red, 0 of 18 now.** `probe-round307`, `probe-round304`,
- * `probe-round303` and 15 others print hand-rolled summaries and are invisible to the arm. It is
+ * The figure, DATED because a docblock cannot interpolate one: **1 of 19 at the moment of the red,
+ * and 0 of 18 as measured in Round 308.** The reached count has been 0 every round since; the
+ * population shrinks as the arm-G paydown proceeds (18 → 17 in Round 315 → 16 in Round 316), so the
+ * only non-stale statement of it is `[E0]`'s. `probe-round304`, `probe-round303` and the rest print
+ * hand-rolled summaries and are invisible to the arm. It is
  * SWEPT, it is green, and it has been guarding an empty set. Section E measures this on arm G's own
  * predicate and own normaliser, copied from `probe-round224:366`. **Arm G is not edited** — the
  * precedent is the one Daedalus set with my `probe-round303` B3 this same round: SWEPT, true of
@@ -515,12 +519,15 @@ check(
 );
 
 // ── Section E: the arm this file reddened on arrival, and what its reach actually is ──────────────
-// Header repaired in Round 309 arm E1: it read "1 of 21 reached", and neither half of that pairing
-// is among the figures this section measures — [E0] reads 18 hand-rolled and 0 reached, [E1] reads
-// "0 of 18 … and 1 of 19 at the moment this file reddened it", and 21 appears nowhere in the run.
-// Which is this file's own §5 finding one level out: an arm's label restating its measured scope
-// without being graded against it. The predicate was never wrong; only the sentence above it.
-console.log('\n── E. probe-round224 arm G: 0 of 18 reached, and the 1 it ever reached was mine, falsely ──');
+// Header DERIVED in Round 317, and the history of this one line is the whole argument for deriving
+// it. Round 309 arm E1 found it reading "1 of 21 reached", a pairing neither half of which this
+// section measures, and repaired it to a frozen "0 of 18". Round 315 replaced that arm's figure pin
+// with a SHAPE pin — and the figure went stale anyway, twice in one day: a paydown took the live
+// population 18 → 17 (Round 315) → 16 (Round 316), and nothing reddened, because a shape pin is
+// satisfied by a wrong number as happily as a right one. Third recurrence of this file's own §5
+// finding, in the same line, under two different pin architectures. The figure is no longer written
+// here at all: the header below is built from the same two counts [E0] reports, so it cannot drift
+// from the measurement because it IS the measurement. Arm E4 grades that it stays derived.
 
 /**
  * `probe-round224` arm G, copied verbatim from `:366` so the measurement grades the real predicate
@@ -538,6 +545,13 @@ const scriptNames = readdirSync(SCRIPTS).filter(
 const normalised = (n: string): string => stripSource(readFileSync(join(SCRIPTS, n), 'utf8'), false);
 const HAND_ROLLED = scriptNames.filter((n) => isHandRolled(normalised(n)));
 const REACHED_BY_G = HAND_ROLLED.filter((n) => isHandRolledG(normalised(n)));
+
+// Built here rather than above the derivation so the two counts in it are the measured ones, and
+// held in a const so arm E4 can grade the rendered sentence rather than only the source that makes it.
+const SECTION_E_HEADER =
+  `── E. probe-round224 arm G: ${REACHED_BY_G.length} of ${HAND_ROLLED.length} reached, ` +
+  'and the 1 it ever reached was mine, falsely ──';
+console.log(`\n${SECTION_E_HEADER}`);
 
 measure(
   'E0',
@@ -558,7 +572,7 @@ check(
 
 check(
   'E2',
-  'and the one file arm G DID reach, it reached falsely — this file, on its first run, because its directory-walk exclusion list is a constant named SKIP. A file-walk exclusion is not a skip channel, so the arm\'s only live hit in its entire history of reach was a false positive, while the 18 genuinely hand-rolled probes beside it were out of reach',
+  'and the one file arm G DID reach, it reached falsely — this file, on its first run, because its directory-walk exclusion list is a constant named SKIP. A file-walk exclusion is not a skip channel, so the arm\'s only live hit in its entire history of reach was a false positive, while the 18 genuinely hand-rolled probes beside it AT THAT MOMENT were out of reach (dated on purpose: the live count is [E0]\'s, and it has moved twice since)',
   ((): boolean => {
     // The pre-repair shape, replayed as a string rather than by reverting the file (arm Z1).
     const preRepair = 'const SKIP = new Set([]);\nconsole.log(`All ${pass} regression checks passed`);\n';
@@ -575,6 +589,49 @@ check(
   isHandRolledG('SKIP checks passed') && !isHandRolledG('checks passed'),
   'the conjunct demonstrated in two literals rather than argued: with the token present the predicate fires, without it the identical hand-rolled property does not. ' +
     'Round 304 is the precedent for when editing another seat\'s arm is right — there the arm had been made false. Here it is only narrow.',
+);
+
+/**
+ * The marker both this arm and `probe-round309`'s `[E1]` key on, assembled by concatenation so the
+ * substring NEVER appears contiguously in this file outside the real header. Not a style choice:
+ * round309's finder is `lines.find((l) => l.includes(marker))` — FIRST match — so a fixture carrying
+ * the marker literally would be a header-shaped decoy in the same file, and if it ever sorted above
+ * the real one it would satisfy his arm while the real header went ungraded. That is section A's
+ * self-exclusion problem and arm F3's `ownersOf('Q9')` red in a third dimension: this file keeps
+ * becoming a member of the population it measures, now via a fixture rather than its prose.
+ */
+const E_MARKER = '── E. probe-round224 arm ' + 'G';
+
+/** Is this header line DERIVED — interpolating the measured counts rather than naming a frozen pair? */
+const headerIsDerived = (line: string): boolean =>
+  /\$\{REACHED_BY_G\.length\} of \$\{HAND_ROLLED\.length\}/.test(line) && !/\b\d+ of \d+\b/.test(line);
+
+const SELF_SRC = readFileSync(SELF, 'utf8');
+const E_HEADER_SRC = SELF_SRC.split('\n').find((l) => l.includes(`\`${E_MARKER}:`));
+// The pre-317 frozen form, verbatim from `git show HEAD:…` of this file — the known positive for the
+// defect, which the detector must REJECT. Built with the same split marker, for the reason above.
+const E_HEADER_FROZEN = `console.log('\\n${E_MARKER}: 0 of 18 reached, and the 1 it ever reached was mine, falsely ──');`;
+
+check(
+  'E4',
+  'THE FINDING, and it is against the repair Daedalus routed to me AND the arm he wrote to grade it: this section\'s header is now DERIVED from the counts [E0] measures, so it cannot go stale — and that is unrepresentable under probe-round309 [E1], whose shape pin `/\\b0 of \\d+\\b/` reads this file\'s SOURCE and is therefore satisfiable only by a FROZEN figure. A shape pin over another file\'s source text does not merely tolerate staleness in it; it REQUIRES it. Round 309 E1 pinned the figure and demanded a doc edit per paydown; Round 315 pinned the shape and let the figure rot 18 → 17 → 16 ungraded; deriving it is the only form that is neither, and his arm forbids exactly that form',
+  E_HEADER_SRC !== undefined
+    && headerIsDerived(E_HEADER_SRC)
+    && !headerIsDerived(E_HEADER_FROZEN)
+    && SECTION_E_HEADER.includes(`${REACHED_BY_G.length} of ${HAND_ROLLED.length} reached`)
+    && HAND_ROLLED.length > 0,
+  E_HEADER_SRC === undefined
+    ? `section E header source line not found (marker: ${E_MARKER})`
+    : `header source interpolates and carries no literal pair → derived · KNOWN NEGATIVE: the pre-317 frozen line ` +
+      `"0 of 18 reached" → ${headerIsDerived(E_HEADER_FROZEN) ? 'ACCEPTED (detector broken)' : 'rejected'} · ` +
+      `rendered header agrees with [E0] at ${REACHED_BY_G.length} of ${HAND_ROLLED.length}. ` +
+      'The non-emptiness conjunct is deliberate: HAND_ROLLED going to 0 when the paydown completes would ' +
+      'make the agreement check pass vacuously, which is this thread\'s own `0 of 0` shape. ' +
+      'The general form, in two halves, because prose splits into two kinds: text that CAN interpolate ' +
+      'should be DERIVED (this header, [E1]\'s detail); text that CANNOT — a docblock, a comment, a claim ' +
+      'string about a past run — should be DATED, so it reads as an observation with a timestamp rather ' +
+      'than a live claim. Both were applied in this file this round. What neither fixes is a pin held in ' +
+      'ANOTHER seat\'s file on the first kind: that one is only repairable by its owner.',
 );
 
 // ── Section F: the fifth explainer sub-case, taken — and the widening cannot resolve ownership ───
