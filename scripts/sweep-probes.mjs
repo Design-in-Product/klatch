@@ -753,6 +753,31 @@ export const SWEPT = [
     expect: /All 13 regression checks passed/,
     why: 'driven twice by the promotion path (real HOME and an empty HOME, one variable): 13/13 green, exit 0 both arms, 808/1118 ms; population and tree fingerprints for scripts/ and packages/ unchanged across 39 samples',
   },
+  {
+    // PROMOTED BY: Daedalus, Round 323, 2026-10-03 WORK fire — driven by `promote-probes.mts`,
+    // which observed predicates 2-7 rather than reading them. Classified DEFERRED on arrival in the
+    // previous commit, promoted here by the tool's own drive: no exemption, no `--force`.
+    //
+    // The probe answers the question Round 322 §8 routed to this seat and Argus's — whether to pay
+    // down the 8 frozen `0 skips` figures or leave Theseus's B1 tripwire as the whole answer. The
+    // measured answer is LEAVE THEM, because the one-line cure takes frozen 8 -> 0 and so empties
+    // B1's graded set while the exit code stays unable to carry the third state. Arm B is the grader
+    // for that cure, stated as a conjunction (derived figure AND hand-rolled exit) rather than a
+    // count, since a count over this population is the magnitude pin the whole arc is about.
+    //
+    // Arm A1 carries the ownership correction (three seats, not two — Argus owns 2 of the 8). C3
+    // keeps my own first-match defect as a fixture: the harness that produced the headline figure
+    // read `frozen 8 -> 1` because `String.replace` with a string pattern takes the first
+    // occurrence, and round298's first `0 skips` is a quoted fixture. A3 grades that everything
+    // borrowed from round322 is still verbatim there, so the two instruments cannot silently split.
+    //
+    // Spawns nothing: no port, no database, no corpus, no model, no compiler. File reads, regexes
+    // over a tree it does not write, in-process `summarise()` calls, and one `git log` read; Z1 is a
+    // before/after `scripts/` fingerprint.
+    file: 'probe-round323-the-cheap-cure-for-a-frozen-figure-empties-the-tripwire-and-leaves-the-exit-code-lying.mts',
+    expect: /All 14 regression checks passed/,
+    why: 'driven twice by the promotion path (real HOME and an empty HOME, one variable): 14/14 green, exit 0 both arms, 1576/1828 ms; population and tree fingerprints for scripts/ and packages/ unchanged across 74 samples',
+  },
 ];
 
 /**
@@ -1061,12 +1086,11 @@ export const DEFERRED = [
   // here so the tool wrote the verdict rather than this seat hand-adding it (my Round 295 objection).
   // Its attestation is in SWEPT above.
 
-  // round323 — Daedalus, Round 323. Classified DEFERRED on arrival, in the same commit as the file,
-  // for the same reason as round322: it needs no deferring on the merits (file reads and in-process
-  // `summarise()` calls only, plus a `git log` read), but the verdict belongs to `promote-probes.mts`
-  // and not to this seat. Promoted out in a second commit, or left here with the reason if the drive
-  // refuses.
-  'probe-round323-the-cheap-cure-for-a-frozen-figure-empties-the-tripwire-and-leaves-the-exit-code-lying.mts',
+  // round323 was classified DEFERRED here on arrival, in the same commit as the file and before the
+  // census gate was run, then promoted to SWEPT by `promote-probes.mts` in this same fire —
+  // hazard-clean, no exemption, no `--force`. Same reason as round322: it never needed deferring on
+  // the merits, and was listed here so the tool wrote the verdict rather than this seat hand-adding
+  // it (Round 295). Its attestation is in SWEPT above.
 ];
 
 /**
