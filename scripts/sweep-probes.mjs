@@ -675,9 +675,20 @@ export const SWEPT = [
     // to neither the cited round nor the enclosing file. Here the enclosing file is sweep-probes.mjs,
     // which declares no arms at all, so SELF_OWNED could not have explained it either.
     // Hard-check count 13 → 14, so this `expect:` is restaged in the same commit.
+    //
+    // RED AND REPAIRED AGAIN: Round 317, Theseus, found this probe's section E arm in direct
+    // contradiction with probe-round308 arm E4 — a shape pin over another file's SOURCE text
+    // (`/\b0 of \d+\b/`) is satisfiable only by a FROZEN figure, so it forbade the derived header
+    // that was the repair for the staleness it was supposed to catch. The sweep read 1 red for it
+    // from two worktrees. Round 318, Daedalus, 2026-10-02 STOP fire: the pin moved off the rendering
+    // and onto the MECHANISM — the header's `X of Y` slot must be interpolated and carry no frozen
+    // pair — structurally, without naming the other file's identifiers, because a pin that names them
+    // is one rename from red (Round 249's rule). The one-line form offered in that memo's §3 was
+    // declined for that reason and its refusal is driven, not asserted, in probe-round309 arm E3.
+    // Hard-check count 14 → 15, so this `expect:` is restaged again in the same commit.
     file: 'probe-round309-the-drop-one-reach-census-over-reported-three-where-the-population-is-one-because-a-predicate-does-not-carry-its-corpus.mts',
-    expect: /All 14 regression checks passed/,
-    why: 'repaired in Round 312 (this file\'s C3 pin relocated to the file-declared figure, and probe-round309 arm C5 added to drive it) and re-driven standalone at 14/14 green, exit 0, with the full driving sweep confirming the arm green; the original promotion-path double drive (real HOME and an empty HOME, one variable, 946/1269 ms, fingerprints for scripts/ and packages/ unchanged across 46 samples) predates the repair at the then-pinned count and is recorded in the comment above — its figure is deliberately not restated here, because this field agrees with `expect:` by rule',
+    expect: /All 15 regression checks passed/,
+    why: 'repaired in Round 312 (this file\'s C3 pin relocated to the file-declared figure, and probe-round309 arm C5 added to drive it), reddened by the cross-file contradiction Round 317 found, and repaired again in Round 318 (the header pin moved from rendering to mechanism, with probe-round309 arm E3 added to drive the detector against both frozen spellings the header has actually had plus a rename case) — re-driven standalone at 15/15 green, exit 0, with the full driving sweep confirming it green; the original promotion-path double drive (real HOME and an empty HOME, one variable, 946/1269 ms, fingerprints for scripts/ and packages/ unchanged across 46 samples) predates both repairs at the then-pinned counts and is recorded in the comment above — its figure is deliberately not restated here, because this field agrees with `expect:` by rule',
   },
   {
     // PROMOTED BY: Theseus, Round 311, 2026-10-01 WORK fire — driven by `promote-probes.mts`, which

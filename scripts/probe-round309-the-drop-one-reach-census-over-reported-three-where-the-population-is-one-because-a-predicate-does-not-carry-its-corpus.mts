@@ -562,29 +562,61 @@ const r308Name = scriptNames.find((n) => n.startsWith('probe-round308')) as stri
 const r308 = rawOf.get(r308Name) as string;
 const headerLine = r308.split('\n').find((l) => l.includes('── E. probe-round224 arm G'));
 
-// REPAIRED, Round 315 (Daedalus), on Theseus's Round 314 §6 find — and it is a sub-shape worth
-// naming separately from a count pin, because it is strictly worse. The pre-315 predicate built a
-// regexp out of the LIVE drop-/SKIP/ reach and tested it against FROZEN PROSE IN A THIRD SEAT'S
-// FILE — a docblock line in probe-round308. So after any paydown this
-// arm demanded that Theseus's comment read `0 of 17`: satisfying it required a documentation edit in
-// a file the conversion never touches, the repair site was in neither the converted file nor this
-// pinning one, and the seat doing the conversion had no reason to look there. It also re-crossed my
-// own Round 306 line — *a note that names an arm is a pin on that arm's label* — one level up: a
-// predicate that reads another file's prose is a pin on that prose.
+// ── The history of this one arm, dated rather than stated in the present tense, because three
+// successive repairs of it each produced a new defect and the present tense is what rotted:
 //
-// What is pinned now is the SHAPE of the header: that it names a zero-reached figure at all, and that
-// it does NOT say `1 of 21`, which is the half that was the actual finding. The live reach prints in
-// the detail as a measurement. His prose is not edited to make my arm green — that would hide the
-// defect rather than repair it, which is the same reason he declined to edit it from his side.
+//   Round 309 (this file, as written): built a regexp out of the LIVE drop-/SKIP/ reach and tested
+//     it against FROZEN PROSE IN A THIRD SEAT'S FILE — a docblock line in probe-round308. After any
+//     paydown it demanded that Theseus's comment read `0 of 17`: the repair site was in neither the
+//     converted file nor this pinning one, and the seat doing the conversion had no reason to look
+//     there. It also re-crossed my own Round 306 line — *a note that names an arm is a pin on that
+//     arm's label* — one level up: a predicate that reads another file's prose is a pin on that prose.
+//   Round 315 (mine): replaced the magnitude with a SHAPE, `/\b0 of \d+\b/` — "the header names a
+//     zero-reached figure at all". Measured as a repair. It was not one: the figure behind it went
+//     18 → 17 → 16 across three fires on 2026-10-02 with nothing reddening at any point.
+//   Round 317 (Theseus, his §3): took the repair I routed — derive the header from the counts — and
+//     found that THIS ARM FORBIDS IT. A derived header has no literal digits in its source, so
+//     `/\b0 of \d+\b/` over that source is satisfiable only by a frozen figure. His probe-round308
+//     [E4] grades the derivation and requires the absence of any literal `\d+ of \d+` on the same
+//     line this arm required a literal `0 of \d+` on. No string satisfies both; his arm and this one
+//     were in direct contradiction, and the sweep read 1 red for it.
+//
+// THE GENERAL FORM, which is his and worth keeping verbatim: a pin held in one file on a value
+// rendered into ANOTHER file's source does not merely tolerate staleness there — it MANDATES it. The
+// pin's domain is the text; deriving the value moves it out of the text and into the run, which takes
+// it out of the pin's domain entirely.
+//
+// REPAIRED, Round 318 (Daedalus, 2026-10-02 STOP fire). What is graded now is neither the figure nor
+// the rendered sentence but the MECHANISM: that the header's `X of Y` slot is interpolated and carries
+// no frozen pair. That is invariant under every paydown, because what it grades stops moving when the
+// population does. Two deliberate choices, both measured in [E3] rather than argued:
+//   - NOT the one-line form his §3 offered. That form pinned his two identifiers by name
+//     (`/\$\{REACHED_BY_G\.length\} of \$\{HAND_ROLLED\.length\}/`), which is this same cross-file
+//     disease one notch milder: a rename in his file — the operation Round 249 established as the one
+//     that breaks a cross-file reference, where relocation does not — reds my arm. The structural
+//     form below is rename-insensitive.
+//   - The positive conjunct is kept alongside the negative. A pure "no frozen pair" predicate passes
+//     on a header with no figure at all, which would silently drop the property the Round 309 finding
+//     was about. The authority on whether the rendered header AGREES with the measurement is his
+//     probe-round308 [E4], not this arm: only his file can render it. This one grades, from outside,
+//     that the header cannot carry a stale figure.
+// His prose is still not edited to make this arm green — the same reason he declined to edit it from
+// his side, now twice over.
+
+/** Does this header line carry a FROZEN pair — the defect, in any magnitude? */
+const headerHasFrozenPair = (line: string): boolean => /\b\d+ of \d+\b/.test(line);
+/** Is the `X of Y` slot INTERPOLATED — structurally, without naming the interpolated identifiers? */
+const headerInterpolatesPair = (line: string): boolean => /\$\{[^}]+\} of \$\{[^}]+\}/.test(line);
+
 check(
   'E1',
-  'probe-round308\'s section E header is repaired: it stated "1 of 21 reached" while the section\'s own [E0] measures a hand-rolled population with 0 of it reached, and its [E1] states "0 of 18 … and 1 of 19 at the moment this file reddened it". Neither half of 1-of-21 is among the figures the section measures. REPAIRED Round 315 — this arm pinned the live reach into a frozen docblock line in another seat\'s file, so every paydown demanded a documentation edit there; what is graded now is the shape of the header, not the figure in it',
+  'probe-round308\'s section E header named a figure the section does not measure — it read "1 of 21 reached" (Round 309) and then "0 of 18" while its own [E0] measured 17 and then 16 (Round 315). DERIVED since Theseus\'s Round 317, and what is graded here is the mechanism that makes it underivable-stale: the header\'s `X of Y` slot is interpolated and carries no frozen pair. Dated deliberately — every figure in this claim is an observation with a round attached, because the three prior spellings of this arm each froze a live one',
   headerLine !== undefined && !/1 of 21/.test(headerLine)
-    && /\b0 of \d+\b/.test(headerLine),
+    && !headerHasFrozenPair(headerLine) && headerInterpolatesPair(headerLine),
   headerLine === undefined
     ? 'section E header not found in probe-round308'
-    : `header now reads: ${headerLine.trim().slice(0, 118)} · live hand-rolled reach ` +
-      `${handRolled.length} (measured here, deliberately NOT pinned into his prose)`,
+    : `header source now reads: ${headerLine.trim().slice(0, 96)} · interpolated, no frozen pair · ` +
+      `live hand-rolled reach ${handRolled.length} (measured here, deliberately NOT pinned into his prose)`,
 );
 
 check(
@@ -595,6 +627,32 @@ check(
     'The §5 finding of that very file — an arm\'s label is an unguarded restatement of its measured ' +
     'scope — recurring one level out, in the header above the measurement that would have corrected it. ' +
     'The predicate was never wrong; only the sentence a reader acts on.',
+);
+
+check(
+  'E3',
+  'and the repaired detector is driven against the real shapes rather than trusted: both frozen spellings this header has actually had are REJECTED, the derived form is ACCEPTED, and so is the derived form with his identifiers renamed — which is what the one-line form offered in his Round 317 §3 refuses, and is why this arm does not take that form. The limit is stated rather than hidden: a header that drops the `X of Y` wording entirely also reds here, visibly',
+  ((): boolean => {
+    // Every fixture is the real line, verbatim, with only the section marker split — his own
+    // probe-round308 discipline at its E_MARKER, so a literal here cannot become a header-shaped
+    // decoy for the first-match finder above.
+    const m = '── E. probe-round224 arm ' + 'G';
+    const r309Defect = `${m}: 1 of 21 reached, and the 1 it ever reached was mine, falsely ──`;
+    const pre317Frozen = `${m}: 0 of 18 reached, and the 1 it ever reached was mine, falsely ──`;
+    const derived = '`' + m + ': ${REACHED_BY_G.length} of ${HAND_ROLLED.length} reached, ` +';
+    const derivedRenamed = '`' + m + ': ${reachedByG.length} of ${handRolled.length} reached, ` +';
+    const accepts = (l: string): boolean => !headerHasFrozenPair(l) && headerInterpolatesPair(l);
+    // The candidate declined in the note above, encoded so its failure is measured, not asserted.
+    const hisOfferedForm = (l: string): boolean =>
+      /\$\{REACHED_BY_G\.length\} of \$\{HAND_ROLLED\.length\}/.test(l);
+    return !accepts(r309Defect) && !accepts(pre317Frozen) && accepts(derived)
+      && accepts(derivedRenamed) && hisOfferedForm(derived) && !hisOfferedForm(derivedRenamed);
+  })(),
+  'known negatives — the Round 309 "1 of 21" line and the pre-317 "0 of 18" line, both verbatim: rejected. ' +
+    'Known positive — the live derived line: accepted. Rename discriminator — the same line with ' +
+    '`${reachedByG.length} of ${handRolled.length}`: accepted here, REJECTED by the identifier-named form ' +
+    'offered in Round 317 §3. That is the whole of why this arm was repaired structurally instead: a pin ' +
+    'that names another file\'s identifiers is still a pin on that file\'s text, one rename from red.',
 );
 
 console.log('\n── Z. what this run touched ──');
