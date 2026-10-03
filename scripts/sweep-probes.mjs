@@ -230,13 +230,20 @@ export const SWEPT = [
   },
   {
     file: 'probe-round224-a-skip-must-not-summarise-as-a-pass.mts',
-    expect: /All 70 regression checks passed/,
+    expect: /All 72 regression checks passed/,
     // 64/64 → 66/66 in Round 290: arm G's scan was normalised to ignore comments (it had gone red
     // on one), and the repair brought its own known positive and known negative with it.
     // 66/66 → 70/70 in Round 294: arm E stopped pinning the ABSENCE of `inapplicable` callers —
     // an absence two correct changes ended on 2026-09-29 — and now holds probe-outcome.mts's
     // declared caller list to the measured one in both directions, with three known positives.
-    why: 'run every fire as a control by both seats; Daedalus 294 measured 70/70, exit 0',
+    // 70/70 → 72/72 in Round 321: arm G's population label said "under scripts/" while its
+    // readdirSync reads ONE LEVEL, so the 19 files in scripts/lib/ were asserted and not measured
+    // (Theseus named this for six rounds). The label is narrowed to the measured scope and the
+    // BOUNDARY is now graded — one arm that no probe lives in a subdirectory, plus its known
+    // positive/negative. Recursion was measured and declined: the delta is 0 of 19 today, and it
+    // would put lib/probe-outcome.mts, whose job is printing "checks passed", inside a detector
+    // hunting that print.
+    why: 'run every fire as a control by both seats; Daedalus 321 measured 72/72, exit 0',
   },
   {
     file: 'probe-round225-a-citation-is-not-a-call.mts',
@@ -686,9 +693,14 @@ export const SWEPT = [
     // is one rename from red (Round 249's rule). The one-line form offered in that memo's §3 was
     // declined for that reason and its refusal is driven, not asserted, in probe-round309 arm E3.
     // Hard-check count 14 → 15, so this `expect:` is restaged again in the same commit.
+    // 15 → 17 in Round 321: Theseus's Round 320 §2 found the Round 318 repair graded the FIRST line
+    // matching the section-E marker (`find`, not `filter`) with nothing grading that the match was
+    // unique — so a decoy line quoting the marker made the arm silently GREEN over a live return of
+    // the Round 309 defect. Cured by counting (arm E1a) and driven by his matched pair kept in the
+    // tree (arm E4), which grades BOTH spellings so the silent mode cannot return unobserved.
     file: 'probe-round309-the-drop-one-reach-census-over-reported-three-where-the-population-is-one-because-a-predicate-does-not-carry-its-corpus.mts',
-    expect: /All 15 regression checks passed/,
-    why: 'repaired in Round 312 (this file\'s C3 pin relocated to the file-declared figure, and probe-round309 arm C5 added to drive it), reddened by the cross-file contradiction Round 317 found, and repaired again in Round 318 (the header pin moved from rendering to mechanism, with probe-round309 arm E3 added to drive the detector against both frozen spellings the header has actually had plus a rename case) — re-driven standalone at 15/15 green, exit 0, with the full driving sweep confirming it green; the original promotion-path double drive (real HOME and an empty HOME, one variable, 946/1269 ms, fingerprints for scripts/ and packages/ unchanged across 46 samples) predates both repairs at the then-pinned counts and is recorded in the comment above — its figure is deliberately not restated here, because this field agrees with `expect:` by rule',
+    expect: /All 17 regression checks passed/,
+    why: 'repaired in Round 312 (this file\'s C3 pin relocated to the file-declared figure, and probe-round309 arm C5 added to drive it), reddened by the cross-file contradiction Round 317 found, repaired again in Round 318 (the header pin moved from rendering to mechanism, with probe-round309 arm E3 added to drive the detector against both frozen spellings the header has actually had plus a rename case), and repaired a third time in Round 321 (the first-match finder replaced by a counted one, arms E1a and E4) — re-driven standalone at 17/17 green, exit 0, with the full driving sweep confirming it green; the original promotion-path double drive (real HOME and an empty HOME, one variable, 946/1269 ms, fingerprints for scripts/ and packages/ unchanged across 46 samples) predates both repairs at the then-pinned counts and is recorded in the comment above — its figure is deliberately not restated here, because this field agrees with `expect:` by rule',
   },
   {
     // PROMOTED BY: Theseus, Round 311, 2026-10-01 WORK fire — driven by `promote-probes.mts`, which

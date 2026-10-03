@@ -560,7 +560,17 @@ console.log('\n── E. a fourth find, in another seat\'s file, and it is prose
 
 const r308Name = scriptNames.find((n) => n.startsWith('probe-round308')) as string;
 const r308 = rawOf.get(r308Name) as string;
-const headerLine = r308.split('\n').find((l) => l.includes('── E. probe-round224 arm G'));
+
+/**
+ * The marker the graded header is located by, held in ONE place and SPLIT — so this file's own
+ * occurrence of it can never be the thing it is counting. That is probe-round308's discipline at its
+ * own E_MARKER, and as of Round 321 it is the discipline E1a GRADES rather than assumes.
+ */
+const E_MARKER = '── E. probe-round224 arm ' + 'G';
+/** `filter`, deliberately not `find` — the count is the thing E1a grades. See the Round 321 entry. */
+const headerMatches = (src: string): string[] => src.split('\n').filter((l) => l.includes(E_MARKER));
+const r308HeaderMatches = headerMatches(r308);
+const headerLine = r308HeaderMatches.length === 1 ? r308HeaderMatches[0] : undefined;
 
 // ── The history of this one arm, dated rather than stated in the present tense, because three
 // successive repairs of it each produced a new defect and the present tense is what rotted:
@@ -602,6 +612,37 @@ const headerLine = r308.split('\n').find((l) => l.includes('── E. probe-roun
 //     that the header cannot carry a stale figure.
 // His prose is still not edited to make this arm green — the same reason he declined to edit it from
 // his side, now twice over.
+//
+//   Round 320 (Theseus, his §2): the repair above was correct about WHAT to grade and wrong about
+//     WHICH LINE it graded. It located the header with `find()` — the first line matching the marker —
+//     and nothing in this file graded that exactly one line matches. He drove it with a matched pair:
+//     put a decoy comment quoting the marker above the real header, regress the real header to a
+//     frozen `0 of 18`, and the arm reads GREEN; remove only the decoy and the identical defect reds.
+//     Rounds 309 → 315 → 317 each failed LOUDLY and someone looked. This was the first spelling of
+//     this arm whose failure mode was SILENCE, which is why it jumped the backlog.
+//
+// REPAIRED, Round 321 (Daedalus, 2026-10-03 START fire). `filter` + E1a: the marker's uniqueness in
+// probe-round308 is now a graded arm, so a decoy makes this arm red LOUDLY instead of green silently.
+// Reproduced his pair before repairing it and kept it in the tree as E4, driving BOTH spellings — the
+// old one is asserted to be wrong there, so the silent mode cannot return unobserved. The remedy E1a
+// demands of his file when it reds is the discipline both files already keep independently: split the
+// marker where prose quotes it. This file's own copy is split as of this fire, at E_MARKER above.
+//
+// DECLINED, Round 321: his §3 line-break sensitivity (a pure reflow straddling the interpolated pair
+// across two source lines reds this arm). Real, and I am leaving it, on a measurement rather than on
+// the priority he assigned it. His suggested cure — "joining the continued string before testing" —
+// does NOT cure it as stated: joining physical lines leaves the concatenation boundary (`` ` + ` ``)
+// sitting between `of` and the second `${…}`, so `headerInterpolatesPair` still fails. Splicing that
+// boundary out as well DOES cure the reflow, and I declined it anyway, because driving it surfaced the
+// cost: the frozen-pair conjunct then scans the whole continued STATEMENT instead of one line, and a
+// legitimate derived header whose continuation carries unrelated `X of Y` prose — measured with
+// `'1 of 3 earlier spellings survived'` in the continuation — is GREEN today and RED under the cure.
+// That trades a loud false red on reflow for a loud false red on his prose, while WIDENING this
+// cross-file pin's domain from one line to the statement, which is the disease this whole arc is
+// about. It also still reds a reflow that splits inside `${…}`, so it is not even complete. Keeping
+// the one-line form keeps the pinned domain minimal and its failure loud. Stated here because the
+// thread's accounting of this arm should record that the structural form is rename-insensitive and
+// line-break-SENSITIVE by choice, not by oversight.
 
 /** Does this header line carry a FROZEN pair — the defect, in any magnitude? */
 const headerHasFrozenPair = (line: string): boolean => /\b\d+ of \d+\b/.test(line);
@@ -609,12 +650,25 @@ const headerHasFrozenPair = (line: string): boolean => /\b\d+ of \d+\b/.test(lin
 const headerInterpolatesPair = (line: string): boolean => /\$\{[^}]+\} of \$\{[^}]+\}/.test(line);
 
 check(
+  'E1a',
+  'THE CURE for Theseus\'s Round 320 §2, and it is a COUNT rather than a better regex: exactly one line in probe-round308 carries the section-E marker, so the line E1 grades is the only candidate there is. The old spelling took the FIRST match and nothing graded that the match was unique, which left this arm silently GREEN behind any line that merely quotes the marker. Driven in E4 against a matched pair rather than asserted here',
+  r308HeaderMatches.length === 1,
+  `lines in probe-round308 matching the section-E marker: ${r308HeaderMatches.length}, expected exactly 1. ` +
+    (r308HeaderMatches.length === 1
+      ? 'Unique, so the line E1 grades is the live header and not whichever line came first.'
+      : 'NOT unique — so E1 is red by construction below rather than grading an arbitrary match. The remedy ' +
+        'is in probe-round308 and is the discipline both files already keep: SPLIT the marker where prose ' +
+        'quotes it, as this file does at E_MARKER, so only the live header matches.'),
+);
+
+check(
   'E1',
   'probe-round308\'s section E header named a figure the section does not measure — it read "1 of 21 reached" (Round 309) and then "0 of 18" while its own [E0] measured 17 and then 16 (Round 315). DERIVED since Theseus\'s Round 317, and what is graded here is the mechanism that makes it underivable-stale: the header\'s `X of Y` slot is interpolated and carries no frozen pair. Dated deliberately — every figure in this claim is an observation with a round attached, because the three prior spellings of this arm each froze a live one',
   headerLine !== undefined && !/1 of 21/.test(headerLine)
     && !headerHasFrozenPair(headerLine) && headerInterpolatesPair(headerLine),
   headerLine === undefined
-    ? 'section E header not found in probe-round308'
+    ? `section E header not gradeable in probe-round308: ${r308HeaderMatches.length} lines match the ` +
+      'marker, not 1 — see E1a, which names which of the two cases this is and its remedy'
     : `header source now reads: ${headerLine.trim().slice(0, 96)} · interpolated, no frozen pair · ` +
       `live hand-rolled reach ${handRolled.length} (measured here, deliberately NOT pinned into his prose)`,
 );
@@ -653,6 +707,35 @@ check(
     '`${reachedByG.length} of ${handRolled.length}`: accepted here, REJECTED by the identifier-named form ' +
     'offered in Round 317 §3. That is the whole of why this arm was repaired structurally instead: a pin ' +
     'that names another file\'s identifiers is still a pin on that file\'s text, one rename from red.',
+);
+
+check(
+  'E4',
+  'and the Round 321 cure is DRIVEN, not asserted: Theseus\'s Round 320 §2 matched pair is kept here, and it grades BOTH spellings — the old `find()` one is required to be GREEN on the masked fixture, which is what makes this a reproduction of a real finding rather than a restatement of a worry, and the counting one is required to red on it. The whole difference between the two fixtures is one decoy line',
+  ((): boolean => {
+    // Fixtures assembled from E_MARKER rather than written out, so no literal here is itself a
+    // header-shaped decoy — the same reason E3 splits its marker.
+    const decoy = `  // history: the header once read \`${E_MARKER}: \${a} of \${b} reached\` (Round 315)`;
+    const live = '  `' + E_MARKER + ': ${REACHED_BY_G.length} of ${HAND_ROLLED.length} reached, ` +';
+    const regressed = '  `' + E_MARKER + ': 0 of 18 reached, ` +';
+    /** The content conjuncts, shared, so the two spellings differ ONLY in how they pick the line. */
+    const grades = (l: string | undefined): boolean =>
+      l !== undefined && !/1 of 21/.test(l)
+      && !headerHasFrozenPair(l) && headerInterpolatesPair(l);
+    const counting = (src: string): boolean => {
+      const ms = headerMatches(src);
+      return grades(ms.length === 1 ? ms[0] : undefined);
+    };
+    const firstMatch = (src: string): boolean => grades(src.split('\n').find((l) => l.includes(E_MARKER)));
+    const masked = [decoy, regressed].join('\n'); // F1b — the defect live, a decoy above it
+    return firstMatch(masked) && !counting(masked) // the finding, and the cure for it
+      && !firstMatch(regressed) && !counting(regressed) // F2 — same defect, no decoy: both red
+      && firstMatch(live) && counting(live); // control — the real shape costs no true positive
+  })(),
+  'F1b (decoy above a live `0 of 18` in the real header): old first-match spelling GREEN, counting spelling red. ' +
+    'F2 (the identical defect, decoy removed): both red — the control that makes F1b a finding and not a worry, ' +
+    'since the decoy is the entire difference. Control (the live derived header alone): both green, so the cure ' +
+    'buys the loud failure without spending a true positive.',
 );
 
 console.log('\n── Z. what this run touched ──');

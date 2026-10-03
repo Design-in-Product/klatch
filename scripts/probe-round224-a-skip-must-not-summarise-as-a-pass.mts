@@ -369,8 +369,70 @@ function oldTurncountTail(rs: ProbeVerdict[]): { code: number; line: string } {
   const stillHandRolled = all
     .filter((n) => n !== `${PROBE}.mts`)
     .filter((n) => isHandRolled(normalised(n)));
-  check('G', 'no script under scripts/ still pairs a SKIP channel with a hand-rolled "checks passed"',
+  check('G', 'no script DIRECTLY under scripts/ — the probe population, one level, stated to match what is '
+    + 'measured since Round 321 — still pairs a SKIP channel with a hand-rolled "checks passed"',
     stillHandRolled.length === 0, stillHandRolled.length ? stillHandRolled.join(', ') : `${all.length} scripts scanned`);
+
+  // ── Round 321 (Daedalus, 2026-10-03). Theseus named this for six rounds: the population above is
+  // ONE LEVEL, and until this fire the arm's claim said "under scripts/", which is the wider set.
+  // Measured: scripts/ holds 166 files at the top level and 185 recursively, so 19 — the whole of
+  // scripts/lib/ — were invisible to arm G while its own label asserted them. That is Round 309 §5's
+  // finding (an arm's label is an unguarded restatement of its measured scope) sitting in this arm.
+  //
+  // The repair is NOT to walk recursively, and that was MEASURED rather than assumed. All 19 are
+  // modules, not probes: isHandRolled flags 0 of 19 today and every one sits at 1 of 3 terms, so the
+  // delta recursion would buy is zero. Against that, recursion would place scripts/lib/probe-outcome.mts
+  // — the canonical summariser, the file whose JOB is to print "All N regression checks passed" —
+  // inside the population of a detector looking for exactly that print without a summariseAndExit
+  // call. It would escape only because its own DECLARATION line satisfies a regex written to detect
+  // CALLS. That is an accident, not a reason, and it is two plausible edits from a false red on the
+  // one file that must contain the text.
+  //
+  // So the label is narrowed to what is measured, and the BOUNDARY is now graded instead of assumed:
+  // a real probe placed in a subdirectory reds loudly here, rather than arm G quietly not seeing it.
+  // Same shape as the Round 321 repair in probe-round309 — a population nothing counted.
+  const SCRIPTS_DIR = path.join(REPO, 'scripts');
+  const walkScripts = (dir: string, acc: string[] = []): string[] => {
+    for (const e of fs.readdirSync(dir)) {
+      if (e.startsWith('.')) continue;
+      const p = path.join(dir, e);
+      if (fs.statSync(p).isDirectory()) walkScripts(p, acc);
+      else if (e.endsWith('.mts') || e.endsWith('.mjs')) acc.push(path.relative(SCRIPTS_DIR, p));
+    }
+    return acc;
+  };
+  /**
+   * Is this source a PROBE rather than a module? A probe CALLS the summariser without DECLARING it,
+   * or hand-rolls its own summary — which is the thing arm G exists to catch. The declaration
+   * exclusion is what keeps lib/probe-outcome.mts, which defines summariseAndExit, out of the class.
+   */
+  const isProbeShaped = (src: string): boolean => {
+    const declaresSummariser = /(?:function|const)\s+summariseAndExit\b/.test(src);
+    return (/summariseAndExit\(/.test(src) && !declaresSummariser) || isHandRolled(src);
+  };
+  const subdirFiles = walkScripts(SCRIPTS_DIR).filter((r) => r.includes(path.sep));
+  const subdirProbes = subdirFiles.filter((r) =>
+    isProbeShaped(stripSource(fs.readFileSync(path.join(SCRIPTS_DIR, r), 'utf8'), false)));
+  check('G', 'and the boundary of that population is graded, not assumed: no PROBE lives in a scripts/ '
+    + 'subdirectory, where arm G\'s one-level readdirSync could not see it',
+    subdirProbes.length === 0,
+    subdirProbes.length
+      ? `probe-shaped files outside the graded population: ${subdirProbes.join(', ')} — move them to `
+        + 'scripts/ or widen `all` deliberately, but do not leave them invisible to this arm'
+      : `${subdirFiles.length} files under scripts/ subdirectories, 0 probe-shaped — all modules. `
+        + `top-level population ${all.length}, recursive ${all.length + subdirFiles.length}.`);
+
+  // The boundary detector's own known positive and negative, driven on synthetic source — because a
+  // source-scanning predicate fails by returning a SMALLER number, and an arm that only ever sees
+  // zero is indistinguishable from one that cannot see.
+  check('G', 'KNOWN POSITIVE/NEGATIVE: the subdirectory detector classifies a probe that CALLS the '
+    + 'summariser as probe-shaped, and the module that DECLARES it as not',
+    isProbeShaped(stripSource(['import { summariseAndExit } from \'./probe-outcome.mjs\';',
+      'summariseAndExit({ probeName: \'x\', results });'].join('\n'), false))
+    && !isProbeShaped(stripSource(['export function summariseAndExit(input) {',
+      '  console.log(`All ${n} regression checks passed.`);', '}'].join('\n'), false)),
+    'a call-site is flagged; a declaration site carrying the very summary string arm G hunts is not — '
+      + 'which is the discriminator that lets this boundary arm exist without false-reddening lib/probe-outcome.mts');
 
   // The detector's own known positive and known negative, driven on synthetic source rather than on
   // the population — so the normalisation above is shown to preserve the catch it exists for, and
