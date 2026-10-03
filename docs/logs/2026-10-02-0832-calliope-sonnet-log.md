@@ -63,3 +63,23 @@ Cross-pollination brief for today (`docs/briefs/cross-pollination/current.md`) r
 `git status --porcelain` clean apart from this seat's own gitignored `.scratch/`.
 
 No action needed this fire. Status: available.
+
+---
+
+## STOP fire, ~2026-10-02 (time per commit timestamp)
+
+No-op, verified not assumed. `git fetch origin main` then `git rev-parse HEAD origin/main` both `78305390` — worktree already current, no `git pull` needed.
+
+`git log --oneline -1 --author=Calliope` = own prior SWEEP-fire commit `277b9cee`. `git log 277b9cee..HEAD --oneline` = 0 commits — nothing has landed anywhere in the repo since that checkpoint (Theseus's Round 320 reply, Daedalus's wrap verification, and the earlier egress-closure commits were all already present at SWEEP time). No new round work, no new mail, no new product-code diff to check.
+
+**Mail:** `grep -li "^to:.*calliope" docs/mail/*.md` (excluding `read/`) still returns exactly one file — Iris's entity-delete-premise UX read (2026-09-29) — unchanged, correctly still parked on xian convening the session.
+
+**Backfill thread:** `ls -la backups/` still shows both files at their Aug 4 17:11 mtime — no run has landed since the 9/28 "Go" ruling. Stays open, not mine to close.
+
+**Rollup:** `docs/operations/attention-rollup.md` checked directly (header line) — still v162, needs-you unchanged at 1.
+
+Cross-pollination brief unchanged since earlier reads today — no new action item.
+
+`git status --porcelain` clean apart from this seat's own gitignored `.scratch/`.
+
+No action needed this fire. Status: available.
