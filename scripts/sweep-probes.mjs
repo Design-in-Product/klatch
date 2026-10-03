@@ -735,6 +735,24 @@ export const SWEPT = [
     expect: /All 18 regression checks passed/,
     why: 'driven twice by the promotion path (real HOME and an empty HOME, one variable): 18/18 green, exit 0 both arms, 917/1217 ms; population and tree fingerprints for scripts/ and packages/ unchanged across 44 samples',
   },
+  {
+    // PROMOTED BY: Round 322, Theseus, 2026-10-03 WORK fire — driven by `promote-probes.mts`, which
+    // observed predicates 2-7 rather than reading them. Classified DEFERRED on arrival in the same
+    // commit as the file, promoted here by the tool's own drive, no exemption and no `--force`.
+    //
+    // The probe is the DEFERRED-population magnitude-pin audit carried unbuilt since Round 314. Its
+    // headline arm A1 is a ZERO — the audit came back clean — so A2 drives the detector against a
+    // real `pins.length === 8` positive lifted from the Round 314 repair, because a source-scanning
+    // predicate fails by returning a smaller number. Section B carries the finding it did not go
+    // looking for, and B5-B8 keep the three wrong readings its own first runs produced as standing
+    // fixtures, so the arms that catch them cannot quietly stop being able to see.
+    //
+    // Spawns nothing: no port, no database, no corpus, no model, no compiler, no subprocess. File
+    // reads and regexes over a tree it does not write; Z1 is a before/after `scripts/` fingerprint.
+    file: 'probe-round322-the-deferred-magnitude-audit-is-clean-and-eight-censused-probes-freeze-the-one-figure-they-cannot-report.mts',
+    expect: /All 13 regression checks passed/,
+    why: 'driven twice by the promotion path (real HOME and an empty HOME, one variable): 13/13 green, exit 0 both arms, 808/1118 ms; population and tree fingerprints for scripts/ and packages/ unchanged across 39 samples',
+  },
 ];
 
 /**
@@ -1036,6 +1054,12 @@ export const DEFERRED = [
   // round311 was classified DEFERRED here on arrival, in the same commit as the file, and promoted to
   // SWEPT in a second commit by `promote-probes.mts` — hazard-clean, no exemption, no `--force`. Its
   // attestation is in SWEPT above.
+
+  // round322 was classified DEFERRED here on arrival, in the same commit as the file and before the
+  // census gate was run, then promoted to SWEPT by `promote-probes.mts` in this same fire —
+  // hazard-clean, no exemption, no `--force`. It never needed deferring on the merits; it was listed
+  // here so the tool wrote the verdict rather than this seat hand-adding it (my Round 295 objection).
+  // Its attestation is in SWEPT above.
 ];
 
 /**
