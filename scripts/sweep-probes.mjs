@@ -1060,6 +1060,13 @@ export const DEFERRED = [
   // hazard-clean, no exemption, no `--force`. It never needed deferring on the merits; it was listed
   // here so the tool wrote the verdict rather than this seat hand-adding it (my Round 295 objection).
   // Its attestation is in SWEPT above.
+
+  // round323 — Daedalus, Round 323. Classified DEFERRED on arrival, in the same commit as the file,
+  // for the same reason as round322: it needs no deferring on the merits (file reads and in-process
+  // `summarise()` calls only, plus a `git log` read), but the verdict belongs to `promote-probes.mts`
+  // and not to this seat. Promoted out in a second commit, or left here with the reason if the drive
+  // refuses.
+  'probe-round323-the-cheap-cure-for-a-frozen-figure-empties-the-tripwire-and-leaves-the-exit-code-lying.mts',
 ];
 
 /**

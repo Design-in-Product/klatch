@@ -30,6 +30,7 @@ import { join, resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { census, partition, verdict, SWEPT, DEFERRED } from './sweep-probes.mjs';
 import { fingerprint, windowState } from './lib/tree-fingerprint.mts';
+import { summariseAndExit, type ProbeVerdict } from './lib/probe-outcome.mts';
 
 const REPO = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 
@@ -39,18 +40,38 @@ const Z_PATHSPECS = ['scripts/', 'packages/'];
 const zBefore = Z_PATHSPECS.map((p) => fingerprint(REPO, p));
 const zWindowAtOpen = Z_PATHSPECS.map((p) => `${p} → ${windowState(REPO, p) || '(clean)'}`);
 
-let pass = 0;
-let fail = 0;
+/**
+ * Round 323, Daedalus: migrated off a hand-rolled summary onto `lib/probe-outcome.mts`.
+ *
+ * What this file printed until today was
+ * `All ${pass} regression checks passed, ${meas.length} measurements, 0 skips` — the `0` a LITERAL
+ * sitting one token from a derived count, which is Round 317's two-kinds rule violated at the
+ * shortest possible distance. Theseus's Round 322 §4 found this file among 8 doing it, and the
+ * consequence he named is the one that matters: a literal `0` cannot disagree with the run, so the
+ * file was structurally incapable of reporting the `blocked`/INCONCLUSIVE third state that
+ * Round 269 established and that `summariseAndExit` derives (`allSkips`, hard vs soft, exit 3).
+ *
+ * It was LATENT, not live — this file has no skip channel, which is exactly why the literal was
+ * true. The migration is here as a PRICE rather than a cleanup: Round 322 §8 asked whether the 8
+ * should be paid down or left to a tripwire, and one of them had to be converted before anyone
+ * could answer with a number. See the Round 323 memo §3.
+ *
+ * The one thing NOT done is the cheap version of it — `0 skips` → `${skips.length} skips` over an
+ * array nothing pushes to. That makes the figure derived and the exit code no more honest, and it
+ * empties the population of Theseus's B1 tripwire (measured: frozen 8 → 0). `probe-round323` arm
+ * B grades against exactly that cure.
+ */
+const results: ProbeVerdict[] = [];
 const meas: string[] = [];
 
 const check = (id: string, claim: string, ok: boolean, detail: string) => {
-  if (ok) pass += 1;
-  else fail += 1;
+  results.push({ arm: id, check: claim, pass: ok, kind: 'regression' });
   console.log(`  [${id}] ${ok ? 'PASS' : 'FAIL'}  ${claim}`);
   console.log(`        ${detail}`);
 };
 const measure = (id: string, claim: string, detail: string) => {
   meas.push(id);
+  results.push({ arm: id, check: claim, pass: true, kind: 'measurement' });
   console.log(`  [${id}] MEAS  ${claim}`);
   console.log(`        ${detail}`);
 };
@@ -219,6 +240,7 @@ check('Z2', 'the fixture directory is under .testdata/ and exists there, not in 
   existsSync(SCRATCH) && SCRATCH.includes('.testdata') && !existsSync(join(process.cwd(), 'scripts', 'probe-round900-alpha.mts')),
   `fixtures at ${SCRATCH.replace(process.cwd(), '.')}; scripts/probe-round900-alpha.mts does not exist`);
 
-console.log('');
-console.log(`${fail === 0 ? `All ${pass} regression checks passed` : `FAILED — ${fail} of ${pass + fail}`}, ${meas.length} measurements, 0 skips`);
-process.exit(fail === 0 ? 0 : 1);
+// The measurement count is kept as its own line rather than smuggled into the headline: the
+// headline is the summariser's to write, and `${meas.length}` is derived either way.
+console.log(`\n${meas.length} measurements: ${meas.join(', ')}`);
+summariseAndExit({ probeName: 'probe-round261', results });
