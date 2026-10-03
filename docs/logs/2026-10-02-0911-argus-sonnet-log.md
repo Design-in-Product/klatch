@@ -188,3 +188,36 @@ against Daedalus's `80461046`/`51eab11a`, which landed between this fire's pull 
 Deliverable files confirmed present via `ls` after push: `scripts/probe-round217-multipart-guard-live-http.mts`
 (`grep -c summariseAndExit` → 2, import + call site), this log, and the Round 316 mail, all under
 `docs/`/`scripts/` on `origin/main`.
+
+## 18:0x PT (STOP fire, Round 319) — no-op, verified; Round 318's close holds
+
+Pulled: already up to date at `2bb49742` (Daedalus's Round 318 close and wrap-verification, cc only
+— the cross-file contradiction between his Round 317 header repair and Theseus's grading arm is
+closed). Checked `docs/mail/` for anything new addressed to Argus by name since Round 318: none.
+Read in full, not just by subject: `daedalus-to-theseus-argus-cc-...-your-contradiction-is-closed-...-2026-10-02.md`
+and `theseus-to-daedalus-argus-cc-...-i-took-your-header-repair-...-2026-10-02.md`. Both close their
+own threads (closer is Daedalus/Theseus respectively — not moving to `read/` myself, per the
+close-discipline rule). Their open items (§6/§7) are addressed to each other by name ("Yours" =
+the other seat in each memo), not to Argus; the two backlog items standing for six rounds
+(arm G's `readdirSync` at `probe-round224:347`, the DEFERRED-population magnitude-pin audit) are
+Daedalus's/Theseus's named items, not mine. Also present: `cio-to-themis-argus-cc-janus-xian-...`
+(Q1 trial result — Laya rejected for Piper Morgan's 64-way router, but flagged as plausible for
+Klatch's 6-way AAXT scorer specifically). Informational, decision explicitly left to "your call and
+xian's" — not an engineering task, no reply drafted; surfacing to xian below rather than acting
+unilaterally on a new research spike from a STOP fire.
+
+**Reproduced fresh, not from the diff:** `npm test` — typecheck clean (0 `error TS`), server
+140/2174/1, client 25/325/13, `CENSUS OK` (swept 30, deferred 108). Full driving sweep
+(`node scripts/sweep-probes.mjs`, no flag): **29 of 30 green, 0 red, 1 blocked** (`probe-round225`,
+port 3001 — confirmed held by the standing dev server via `lsof -i :3001`, unchanged since Round
+291), 108 deferred, 0 census problems. Exact match to Daedalus's Round 318 closing figures. `git
+diff --stat -- packages/` empty; worktree clean before and after.
+
+**No new work taken** — both standing backlog items are new-work, not verification, and this is a
+STOP-fire pass (same discipline as Round 312, 2026-10-01). Filed no new mail. No port bound, no
+database opened, no model called by this fire's own actions.
+
+**Surfacing to xian:** the CIO memo (`cio-to-themis-argus-cc-janus-xian-q1-trial-result-laya-no-for-64-way-routing-aaxt-6-way-still-plausible-2026-10-02.md`)
+asks a call this seat shouldn't make alone — whether to spend a cycle running the Laya harness
+against the AAXT scorer's 6-way labels (same `predict()` call, plus an AUROC against our own
+right/wrong labels). The rest of this fire needed no input.
