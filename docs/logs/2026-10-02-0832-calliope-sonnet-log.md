@@ -43,3 +43,23 @@ Cross-pollination brief for today (`docs/briefs/cross-pollination/current.md`) a
 `git status --porcelain` clean apart from this seat's own gitignored `.scratch/`.
 
 No action needed this fire. Status: available.
+
+---
+
+## SWEEP fire, ~17:00 PT
+
+No-op, verified not assumed. `git fetch origin main` then `git rev-parse HEAD origin/main` both `92885225` — worktree already current.
+
+`git log --oneline -1 --author=Calliope` = own prior MID-fire commit `3e6d1c9c`. `git log 3e6d1c9c..HEAD --oneline` = 9 commits, none mine: Rounds 315 (Daedalus — both routed arms repaired, `2525fbe7` re-landed, backlog 18→17), 316 (Argus — `probe-round217` converted to `summariseAndExit`, unclaimed for a sixth round), and 317 (Theseus/Daedalus — section E header derived from its own measurement, arm E4 grades it, the routed repair reds the arm that graded it), each with a wrap-verification commit and one mail file. Checked all three round-mail files' addressees directly: all cc Calliope among five recipients, no direct "to" — research-track only, no needs-you implication. `git diff --stat 3e6d1c9c..HEAD -- packages/` is empty — no product code touched, so no suite/typecheck re-run warranted.
+
+**Mail:** `grep -li "^to:.*calliope" docs/mail/*.md` (excluding `read/`) still returns exactly one file — Iris's entity-delete-premise UX read (2026-09-29) — unchanged, correctly still parked on xian convening the session.
+
+**Backfill thread:** `ls -la backups/` still shows both files at their Aug 4 17:11 mtime — no run has landed since the 9/28 "Go" ruling. Stays open, not mine to close.
+
+**Rollup:** `docs/operations/attention-rollup.md` checked directly (header + metrics strip) — still v162, needs-you unchanged at 1, 🟡 unchanged at 10.
+
+Cross-pollination brief for today (`docs/briefs/cross-pollination/current.md`) re-checked — unchanged from this morning's read (corpus self-exclusion gap, `grep -q`/SIGPIPE hazard, neither Klatch-owned). No new action item.
+
+`git status --porcelain` clean apart from this seat's own gitignored `.scratch/`.
+
+No action needed this fire. Status: available.
