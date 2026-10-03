@@ -1091,6 +1091,34 @@ export const DEFERRED = [
   // hazard-clean, no exemption, no `--force`. Same reason as round322: it never needed deferring on
   // the merits, and was listed here so the tool wrote the verdict rather than this seat hand-adding
   // it (Round 295). Its attestation is in SWEPT above.
+
+  // Round 324: `skipsFigure` — the discriminator both the round322 and round323 tripwires key on —
+  // returns FOUR values, and `absent` and `ambiguous` were claimed by no arm, so Round 323 §2's
+  // three-state table read as a partition and was not one. `absent` is the live figure of 2 of the 9
+  // censused backlog members (round221, round222): both print a verdict line with no skips field and
+  // hand-roll a tail that returns 0 on a skip. The gap is narrow and B5 grades the narrowness — arm
+  // G never reads the figure, so the uppercase house spelling is still caught; what escapes
+  // everything is an absent/ambiguous figure plus a channel in a spelling arm G cannot read, which
+  // is exactly the lowercase half my own round322 B1 was built for and only covers when frozen.
+  //
+  // Its own first run was RED on B3 and Z2: the offence predicate omitted `handRollsSummary` on the
+  // reasoning that the conjunct is vacuous over the population, and without it the arm flagged every
+  // DELEGATING file — including itself — because `absent` names both "verdict line with no skips
+  // field" and "no verdict line at all". Vacuous for the live measurement is not removable from the
+  // predicate. Both reds are kept as standing fixtures.
+  //
+  // Second finding, in section C: Round 323 §3's "migration is pin-neutral by construction" is
+  // pin-neutral CONDITIONALLY. Driven in-process — a migration that tags measurements with a
+  // non-regression kind preserves the pinned integer; one that pushes them untagged turns All 3 into
+  // All 5 and breaks the sweep's expect. The untagged shape is the one probe-outcome.mts:63-65 calls
+  // "the safe reading" for the exit code, so safe-for-verdict and safe-for-pin point opposite ways.
+  //
+  // Classified DEFERRED here on arrival, in the same commit as the file and before the census gate
+  // was run, so the promotion tool writes the verdict rather than this seat hand-adding it
+  // (Round 295). Spawns nothing: no port, no database, no corpus, no model, no compiler — file
+  // reads, regexes over a tree it does not write, and in-process `summarise()` calls. Z1 is a
+  // before/after `scripts/` fingerprint.
+  'probe-round324-the-skips-figure-has-four-states-and-the-two-no-arm-claims-are-where-a-lowercase-channel-lands.mts',
 ];
 
 /**
