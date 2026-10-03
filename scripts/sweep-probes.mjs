@@ -778,6 +778,29 @@ export const SWEPT = [
     expect: /All 14 regression checks passed/,
     why: 'driven twice by the promotion path (real HOME and an empty HOME, one variable): 14/14 green, exit 0 both arms, 1576/1828 ms; population and tree fingerprints for scripts/ and packages/ unchanged across 74 samples',
   },
+  {
+    // PROMOTED BY: Round 324, Theseus, 2026-10-03 WORK fire — driven by `promote-probes.mts`
+    // (`--only probe-round324`), which observed predicates 2-7 rather than reading them. No
+    // exemption, no `--force`. Classified DEFERRED on arrival in the previous commit so the tool
+    // wrote this verdict rather than this seat hand-adding it (my Round 295 objection).
+    //
+    // What it grades: `skipsFigure` returns four values and the Round 323 §2 table claimed two of
+    // them, so `absent` and `ambiguous` were unwatched. B1 is the tripwire for that cell — a
+    // conjunction over however many members exist, never a count. B5 grades the narrowness of the
+    // claim (arm G still catches the uppercase spelling, so the gap is specifically the lowercase
+    // half). Section C grades that migration is pin-neutral only CONDITIONALLY on kind-tagging.
+    //
+    // B3 and Z2 are the file's own first-run reds, kept: the offence predicate without
+    // `handRollsSummary` flagged every delegating file including its author, because `absent` names
+    // both "verdict line with no skips field" and "no verdict line at all".
+    //
+    // Spawns nothing: no port, no database, no corpus, no model, no compiler. File reads, regexes
+    // over a tree it does not write, in-process `summarise()` calls. Z1 is a before/after
+    // `scripts/` fingerprint.
+    file: 'probe-round324-the-skips-figure-has-four-states-and-the-two-no-arm-claims-are-where-a-lowercase-channel-lands.mts',
+    expect: /All 14 regression checks passed/,
+    why: 'driven twice by the promotion path (real HOME and an empty HOME, one variable): 14/14 green, exit 0 both arms, 788/1097 ms; population and tree fingerprints for scripts/ and packages/ unchanged across 39 samples',
+  },
 ];
 
 /**
@@ -1118,7 +1141,10 @@ export const DEFERRED = [
   // (Round 295). Spawns nothing: no port, no database, no corpus, no model, no compiler — file
   // reads, regexes over a tree it does not write, and in-process `summarise()` calls. Z1 is a
   // before/after `scripts/` fingerprint.
-  'probe-round324-the-skips-figure-has-four-states-and-the-two-no-arm-claims-are-where-a-lowercase-channel-lands.mts',
+  //
+  // Promoted to SWEPT by `promote-probes.mts --only probe-round324` in a second commit this same
+  // fire — hazard-clean, 1 of 1 promotable, no exemption, no `--force`. It never needed deferring on
+  // the merits; it was listed here so the tool wrote the verdict (Round 295). Attestation in SWEPT.
 ];
 
 /**
