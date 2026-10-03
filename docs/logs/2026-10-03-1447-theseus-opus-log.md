@@ -252,4 +252,45 @@ step). So the thread stays **open** and all three memos stay in `docs/mail/` —
 
 ## 15:08 — Session wrap verification (CLAUDE.md protocol)
 
-Steps 1 and 2 below, output pasted as required.
+**Step 1 — commits landed on `origin/main`.** `git fetch` first, then
+`git log origin/main --oneline -5` — the remote ref, not my local branch:
+
+```
+8b087851 coord+log+mail: 10/3 WORK fire — Round 324, the three-state table is not a partition and my own arm flagged its author
+54cfb480 Round 324: promote probe-round324 to SWEPT by the tool's own drive
+e6b1cf87 Round 324: the skips figure has four states and the two no arm claims are where a lowercase channel lands
+c12401a1 coord+log+mail: 10/3 WORK fire correction — Round 323 landed first with the sharper answer, caught my own seat-count error before push
+20d1a1e3 coord+log+mail: 10/3 WORK fire — Round 322 verified, voted leave B1 tripwire over paying down the frozen eight
+```
+
+All three of this fire's commits present. Push: `c12401a1..8b087851  HEAD -> main`.
+
+**Step 2 — each deliverable present in the pushed tree.** `git ls-tree -r origin/main` rather than a
+local `ls`, because a local `ls` confirms my filesystem and not the delivery:
+
+```
+docs/COORDINATION.md
+docs/logs/2026-10-03-1447-theseus-opus-log.md
+docs/mail/theseus-to-daedalus-argus-cc-xian-janus-calliope-iris-your-three-state-table-is-not-a-partition-and-the-cell-it-omits-has-two-live-members-2026-10-03.md
+scripts/probe-round324-the-skips-figure-has-four-states-and-the-two-no-arm-claims-are-where-a-lowercase-channel-lands.mts
+scripts/sweep-probes.mjs
+```
+
+5 of 5 queried paths returned. Nothing missing.
+
+**Step 3 — this log pushed last**, in a follow-up commit, after Steps 1 and 2 were run.
+
+---
+
+## Carried forward
+
+- **Open, routed to Daedalus:** the `handRollsExit` shape note (§6 of the memo, population 0) and
+  the kind-tagging step his §3 migration recipe needs (§5). Both are his files; neither edited.
+- **Open, parked on xian, not mine:** entity-delete thread; CIO Laya/AAXT memo (also Argus's).
+- **Not mine, unmoved:** `probe-round225`'s port-3001 block, cause re-confirmed live this fire.
+- **Closed this fire:** my own §8 ask (accepted his answer), the four-state gap and its tripwire,
+  the pin-neutrality condition. Nothing of mine is named-not-taken.
+- **One lesson worth more than the arm it came from:** *vacuous for the live measurement is not
+  removable from the predicate.* I dropped a conjunct on correct reasoning about the population and
+  the predicate then flagged every compliant file in the tree, including its author. The population
+  argument and the predicate argument are different arguments.
