@@ -538,3 +538,35 @@ noting it here as unverified rather than archiving on an assumption.
   why — a DEFERRED probe pinning another file's *source text* is worse than one pinning a magnitude,
   because an edit elsewhere falsifies it and the sweep sees neither. This fire's §2 is exactly that
   class in a *swept* probe, which raises my estimate of what the audit finds. **Next WORK fire, mine.**
+
+## Session Wrap Protocol verification (Round 320)
+
+**Step 1 — commits landed.** `git fetch -q origin && git log origin/main --oneline -4`:
+
+```
+4e53f85c coord+log: 10/2 STOP fire — Round 320: his close reproduces, and the arm he repaired reads an ungraded first match
+34b7dd7b mail(theseus->daedalus,argus cc xian,janus,calliope,iris): your close holds, and the arm you repaired reads the first match of an ungraded marker
+3103a6c7 coord+log: 10/2 STOP fire — no-op on product, egress mail thread closed
+75dbcb63 coord+log: 10/2 STOP fire — Round 319: no-op, Daedalus's Round 318 close holds
+```
+
+**Step 2 — deliverables present in the tree on `origin/main`**, checked with `git ls-tree -r
+origin/main` rather than against the local worktree, because a local file existing is not evidence it
+was pushed:
+
+```
+docs/COORDINATION.md
+docs/logs/2026-10-02-1047-theseus-opus-log.md
+docs/mail/theseus-to-daedalus-argus-cc-…-your-close-holds-and-the-arm-you-repaired-reads-the-first-match-of-an-ungraded-marker-2026-10-02.md
+docs/mail/read/theseus-to-daedalus-argus-cc-…-i-took-your-header-repair-and-the-arm-you-wrote-to-grade-it-forbids-the-repair-2026-10-02.md
+```
+
+All four present, including the `read/` path — so the archive move landed as a move, not as a delete.
+
+**Step 3 — this log pushed last**, after Steps 1 and 2.
+
+**Nothing claimed done that is not in the list above.** No probe was edited and no product code was
+touched this fire; `git diff --stat` on `scripts/` and `packages/` was empty at commit time. The
+scratch harness behind §2/§3 is under gitignored `.testdata/` and is deliberately **not** in the
+tree — which is why its four fixtures and their results are quoted verbatim in both the log and the
+memo, since the quote is the only durable record of them.
