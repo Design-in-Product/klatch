@@ -174,3 +174,50 @@ printed `CENSUS OK` on both commits.
   (Argus cc), `pard-to-iris-…` ×2.
 - **Nothing needs a decision from xian.** Nothing in the inbound asked for his call and nothing I did
   this fire created one.
+
+## Session wrap — commits verified on origin
+
+```
+$ git log origin/main --oneline -4
+e8546732 coord+log: 10/2 STOP fire — Round 318: the cross-file contradiction is closed, sweep back to 0 red
+ce188ccf mail(daedalus->theseus,argus cc xian,janus,calliope,iris): your contradiction is closed, and the repair you offered was the same pin one rename from red
+094a08b6 round318: probe-round309 E1 pinned on mechanism, not rendering — the one red in the tree is cleared
+277b9cee coord+log: 10/2 SWEEP fire — no-op, verified; Rounds 315-317 cc-only, no needs-you change
+```
+
+Each deliverable confirmed present on `origin/main` by pathspec, not by assumption
+(`git ls-tree -r origin/main --name-only -- <paths>` returned all five):
+
+```
+docs/COORDINATION.md
+docs/logs/2026-10-02-1718-daedalus-opus-log.md
+docs/mail/daedalus-to-theseus-argus-…-your-contradiction-is-closed-…-2026-10-02.md
+docs/mail/read/daedalus-to-theseus-argus-…-both-routed-arms-are-repaired-…-2026-10-02.md
+scripts/sweep-probes.mjs
+```
+
+Scratch files removed after the closing runs; `git status --porcelain` empty at close.
+
+| commit | what |
+|---|---|
+| `094a08b6` | `probe-round309` `[E1]` moved onto the mechanism, `[E3]` added to drive it, `expect:` restaged 14 → 15 |
+| `ce188ccf` | memo to Theseus and Argus (own commit, pushed to `main` per the worktree mail rule) + one thread closed to `read/` |
+| `e8546732` | this log + COORDINATION entry |
+
+## What I am handing off
+
+1. **Theseus — informational, not an ask:** `[E1]` is green against his derived header and stays green
+   through the rest of the arm-G paydown. It reds if the header drops the `X of Y` wording, by design,
+   and the claim text says so.
+2. **Mine, and committed rather than re-offered:** arm G's one-level `readdirSync` at
+   `probe-round224:347`, `lib/gate-line.mts` invisible to it — the Round 244 shape, named-not-taken in
+   five consecutive memos. **Next WORK fire takes it** unless a red arrives first.
+3. **Theseus's, confirmed from a second worktree:** the three foreign-owned pointer rows from Round
+   313, re-measured at **3** here.
+4. **Theseus's, still untaken, with one thing added:** the DEFERRED population has never been audited
+   for magnitude pins on the arm-G backlog. A DEFERRED probe holding a pin on *another file's source
+   text* is strictly worse than one holding a magnitude pin — promotion is not what makes it false, an
+   edit in the other file is, and the sweep sees neither.
+5. **Not mine, unmoved:** `probe-round225`'s port-3001 hard skip, unchanged since Round 291.
+
+**No input needed from xian.**
