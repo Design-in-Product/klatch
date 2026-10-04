@@ -57,7 +57,7 @@ PROSE citations, not pins** (`probe-round261:61` is a docblock sentence) — so 
 holds. `sweep-probes.mjs` also names both my files, but as `expect:` **output** pins, a different
 mechanism from a source-line pin and outside the population he scoped.
 
-## 09:25 — the routed item taken, and what it turned into
+## 09:24 — the routed item taken, and what it turned into
 
 Labels added to both pin arrays this seat owns. Codomain `drift | load-bearing`, **not** his
 `drift-detection | known-negative`, for a measured reason: `probe-round325` B2 requires round322's
@@ -92,7 +92,7 @@ written as a property arm rather than a count so it does not rot as rounds are a
 either line — the first-match class this seat cured in Round 321 `E1a`, one level up, inside the pin
 mechanism itself. Carried as a `[MEAS]`.
 
-## 09:33 — THREE of my own arms failed on their first drive; all three are kept as fixtures
+## 09:27 — THREE of my own arms failed on their first drive; all three are kept as fixtures
 
 1. **A2's known negative could not discriminate.** I built it from round323's real second entry,
    whose regex carries `seg\[1\]` — an escaped bracket pair that is **balanced**, so a depth counter
@@ -110,7 +110,7 @@ mechanism itself. Carried as a `[MEAS]`.
 
 All three are the same shape: an instrument whose negative half was never observed to fire.
 
-## 09:40 — first commit landed and pushed
+## 09:29 — first commit landed and pushed
 
 - `5d236d37` — probe + both label edits + DEFERRED classification, one commit. Pre-commit census
   **passed on the first attempt**, deferred 108 → 109. Pushed to `origin/main`, verified by
@@ -121,8 +121,93 @@ All three are the same shape: an instrument whose negative half was never observ
   documented habit and Round 325 C2 is about what it silently buys.
 - `npx tsc -p scripts/tsconfig.json` clean.
 
-## 09:42 — promotion path driven (Round 295 objection kept)
+## 09:31 — promotion path driven (Round 295 objection kept)
 
 Classified DEFERRED on arrival in the same commit as the file; `promote-probes.mts --only
 probe-round327` driven in a second commit so the tool writes the SWEPT verdict rather than this seat
 hand-adding it.
+
+```
+[PROMOTABLE] probe-round327-…
+  all 7 · exit 0 both arms · "All 12 regression checks passed" · 548/903 ms · 28 population samples
+1 of 1 driven probes are promotable.
+tree across the whole drive: scripts/ unchanged · packages/ unchanged
+graded databases across the whole drive: unchanged
+PROMOTE OK — drive complete, tree where it was found.
+```
+
+No exemption, no `--force`. The SWEPT entry is the tool's own text with the round named, per the
+Round 295 objection ("an attestation with no agent behind it is a comment wearing a warrant's
+clothes").
+
+Commit `738900dc` — promotion + this log. Pre-commit census passed, `swept 35 · deferred 108`.
+
+## 09:33 — closing gate, against the settled tree
+
+Full driving sweep, **verdict line read rather than the exit code** (exit 2 = blocked):
+
+```
+SWEEP BLOCKED — 34 of 35 swept probes green, 0 red, 1 blocked (did not conclude),
+0 census problem(s), 108 deferred
+  PASS exit 0  probe-round327-… → All 12 regression checks passed
+```
+
+Identical to baseline except `swept 34 → 35`, by design. The 1 blocked is `probe-round225` on port
+3001, unchanged since Round 291 and not mine.
+
+## Session Wrap Protocol
+
+**Step 1 — commits on `origin/main`:**
+
+```
+$ git log origin/main --oneline -2
+738900dc promote+log: Round 327 — probe-round327 SWEPT (12/12, both HOME arms), session log
+5d236d37 probe: Round 327 — the pin-purpose label is a property of the EDGE and retirability is a property of the TARGET LINE
+```
+
+(The third commit — mail + COORDINATION + this section — is pushed after this line is written; its
+verification is appended below.)
+
+**Step 2 — deliverable files, `ls`-verified:** see the closing block at the end of this log.
+
+**Step 3 — log pushed last.**
+
+## 09:36 — closing `npm test`, unpiped, each figure grepped from the file
+
+```
+grep -c "error TS"   → 0
+server               → 140 files / 2174 passed / 1 skipped
+client               → 25 files / 325 passed / 13 skipped
+CENSUS OK · swept 35 · deferred 108
+```
+
+Identical to baseline on every figure except `swept 34 → 35`, by design.
+`npx tsc -p scripts/tsconfig.json` clean. `git diff --stat -- packages/` **empty** — no product code
+touched this fire.
+
+## Deliverables, `ls`-verified
+
+```
+scripts/probe-round327-the-pin-purpose-label-is-a-property-of-the-edge-and-retirability-is-a-property-of-the-target-line.mts
+docs/mail/daedalus-to-theseus-argus-cc-xian-janus-calliope-iris-your-pin-purpose-label-is-built-and-it-cannot-answer-the-question-it-was-asked-because-purpose-is-per-edge-2026-10-04.md
+docs/logs/2026-10-04-0917-daedalus-opus-log.md
+docs/COORDINATION.md
+scripts/sweep-probes.mjs
+scripts/probe-round323-…  (A3_BORROWED labelled)
+scripts/probe-round325-…  (BORROWED labelled)
+```
+
+## Routed onward, and what is NOT finished
+
+- **To both Theseus and me, needing both seats:** the `handRollsSummary` pin matches **two** lines of
+  `probe-round322`, from his round324 and from my round325. Neither of us pins what we think we pin.
+  By his own ratified `additive, never in-place`, the repair is a coordinated operation across both
+  files, so I measured it and did **not** start it. Named in the memo §8 as an open item.
+- **Offered, not built:** a uniqueness conjunct on the `A3`/`A1` verbatim arms, so a pin matching two
+  lines reds instead of passing. One line per array, in both our files.
+- **His round324's eight entries carry no purpose label.** That is his file; D1 holds either way, and
+  three of the split lines include one of his. Not edited from this seat (Round 295 objection).
+- **Unchanged, not mine:** `probe-round225`'s port-3001 block, live again at both baseline and close.
+- **Parked on xian, unchanged and not mine:** the entity-delete thread; the CIO Laya/AAXT memo.
+
+**Nothing in this fire needs a decision from xian.**
