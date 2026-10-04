@@ -237,18 +237,27 @@ const R322 = nameOf('probe-round322-');
 const R323 = nameOf('probe-round323-');
 const R324 = nameOf('probe-round324-');
 
-const BORROWED: Array<[string, string | undefined, RegExp]> = [
-  ['round322 skipsFigure: the absent branch', R322, /if \(summaries\.length === 0\) return 'absent';/],
-  ['round322 skipsFigure: the four-value signature', R322, /'frozen' \| 'derived' \| 'absent' \| 'ambiguous'/],
-  ['round322 handRollsSummary', R322, /\/checks passed\/\.test\(src\) && !\/summariseAndExit\\\(\/\.test\(src\)/],
-  ['round323 handRollsExit, THE NARROW FORM B3 needs to read false', R323,
+/**
+ * PIN PURPOSE, added in Round 327 on Theseus's Round 326 §4 request — see the longer note in
+ * `probe-round323`'s `A3_BORROWED`. `drift` is retirable when the borrowing stops; `load-bearing`
+ * means an arm HERE needs the borrowed predicate to compute a specific value on a fixture, and the
+ * label names that arm. Round 327 D1 is why the label cannot be read on its own: purpose is a
+ * property of the (pinner, line) EDGE, and the `handRollsExit` line below is pinned by
+ * `probe-round324` as `drift` and here as `load-bearing` — the same line, two lifetimes, and the
+ * line's retirability is the MAX over them.
+ */
+const BORROWED: Array<[string, 'drift' | 'load-bearing', string | undefined, RegExp]> = [
+  ['round322 skipsFigure: the absent branch — arm=B2 needs it to return derived on CHEAP_CURED', 'load-bearing', R322, /if \(summaries\.length === 0\) return 'absent';/],
+  ['round322 skipsFigure: the four-value signature', 'drift', R322, /'frozen' \| 'derived' \| 'absent' \| 'ambiguous'/],
+  ['round322 handRollsSummary — arm=Z2 needs it FALSE on this file', 'load-bearing', R322, /\/checks passed\/\.test\(src\) && !\/summariseAndExit\\\(\/\.test\(src\)/],
+  ['round323 handRollsExit, THE NARROW FORM arm=B3 needs to read false', 'load-bearing', R323,
     /\/process\\\.exit\\s\*\\\(\/\.test\(c\) && !\/summariseAndExit\\s\*\\\(\/\.test\(c\)/],
-  ['round324 B1 offence: the absent-or-ambiguous cell', R324,
+  ['round324 offence cell: his absent-or-ambiguous conjunction, graded verbatim only', 'drift', R324,
     /\(fig === 'absent' \|\| fig === 'ambiguous'\) && hasSkipChannel\(code_\)/],
-  ['the shared population filter', R322,
+  ['the shared population filter', 'drift', R322,
     /readdirSync\(SCRIPTS\)\.filter\(\(n\) => \/\\\.\(mts\|mjs\)\$\/\.test\(n\) && !n\.startsWith\('\.'\)\)/],
 ];
-const missing = BORROWED.filter(([, f, re]) => f === undefined || !re.test(raw(f))).map(([label]) => label);
+const missing = BORROWED.filter(([, , f, re]) => f === undefined || !re.test(raw(f))).map(([label]) => label);
 check('A1', 'every predicate this file borrows — from probe-round322, probe-round323 and '
   + 'probe-round324 — is still VERBATIM at its source, so an edit to any of the three reddens this '
   + 'file instead of letting four seats\' instruments silently split',

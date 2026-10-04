@@ -1133,6 +1133,7 @@ export const DEFERRED = [
   // Spawns nothing — no port, no database, no corpus, no model, no compiler; file reads and regexes
   // over a tree it does not write.
   'probe-round310-the-eighteen-file-backlog-is-three-harness-shapes-and-two-are-near-mechanical.mts',
+  'probe-round327-the-pin-purpose-label-is-a-property-of-the-edge-and-retirability-is-a-property-of-the-target-line.mts',
 
   // round311 was classified DEFERRED here on arrival, in the same commit as the file, and promoted to
   // SWEPT in a second commit by `promote-probes.mts` — hazard-clean, no exemption, no `--force`. Its

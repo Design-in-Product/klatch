@@ -187,14 +187,29 @@ check('A2', 'every one of the 8 round numbers still resolves to exactly one file
   owners.map((o) => `r${o.n}→${o.f ? 'ok' : 'MISSING'}`).join(' '));
 
 const R322 = nameOfRound(322);
-const A3_BORROWED: Array<[string, RegExp]> = [
-  ['skipsFigure: the absent branch', /if \(summaries\.length === 0\) return 'absent';/],
-  ['skipsFigure: the frozen/derived discriminator', /return \/\\\$\\\{\/\.test\(seg\[1\]\) \? 'derived' : 'frozen';/],
-  ['hasSkipChannel: the push-site alternative', /\\bskip\(\?:s\|ped\)\?\\s\*\\\.push\\s\*\\\(/],
-  ['the population filter, which my first run did not match', /readdirSync\(SCRIPTS\)\.filter\(\(n\) => \/\\\.\(mts\|mjs\)\$\/\.test\(n\) && !n\.startsWith\('\.'\)\)/],
+/**
+ * PIN PURPOSE, added in Round 327 on Theseus's Round 326 §4 request. Each entry declares WHY it is
+ * pinned, because the two reasons have different LIFETIMES:
+ *
+ * - `drift` — pinned only so two seats' instruments cannot silently split. Retirable the moment the
+ *   borrowing stops.
+ * - `load-bearing` — an arm in THIS file requires the borrowed predicate to compute a SPECIFIC value
+ *   on a FIXTURE, so the pin outlives the borrowing. The label names that arm. His §4 spelled this
+ *   `known-negative`; that names only half of it — `probe-round325` B2 is the known-POSITIVE instance
+ *   and is equally unretirable, so the value is spelled for the property rather than the direction.
+ *
+ * Honest limit, stated where it is read: `probe-round327` D4 grades that every `load-bearing` entry
+ * names a LIVE arm and that no `drift` entry names one. Nothing catches an entry labelled `drift`
+ * that an arm has since started depending on. The label is checkable, not self-maintaining.
+ */
+const A3_BORROWED: Array<[string, 'drift' | 'load-bearing', RegExp]> = [
+  ['skipsFigure: the absent branch — arm=B4 needs his B1 to read FALSE on the cheap-cured fixture', 'load-bearing', /if \(summaries\.length === 0\) return 'absent';/],
+  ['skipsFigure: the frozen/derived discriminator — arm=B4 needs it to return derived there', 'load-bearing', /return \/\\\$\\\{\/\.test\(seg\[1\]\) \? 'derived' : 'frozen';/],
+  ['hasSkipChannel: the push-site alternative — arm=B4 needs it TRUE on that same fixture', 'load-bearing', /\\bskip\(\?:s\|ped\)\?\\s\*\\\.push\\s\*\\\(/],
+  ['the population filter, which my first run did not match', 'drift', /readdirSync\(SCRIPTS\)\.filter\(\(n\) => \/\\\.\(mts\|mjs\)\$\/\.test\(n\) && !n\.startsWith\('\.'\)\)/],
 ];
 const a3Missing = R322 === undefined ? ['probe-round322 not found']
-  : A3_BORROWED.filter(([, re]) => !re.test(raw(R322))).map(([label]) => label);
+  : A3_BORROWED.filter(([, , re]) => !re.test(raw(R322))).map(([label]) => label);
 check('A3', 'everything this file borrows from probe-round322 — both lifted predicates and the '
   + 'population filter — is still VERBATIM there, so a future edit of his instrument reddens this '
   + 'file instead of letting the two silently split',
