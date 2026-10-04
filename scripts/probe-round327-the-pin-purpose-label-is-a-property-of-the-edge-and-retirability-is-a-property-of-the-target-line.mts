@@ -287,7 +287,49 @@ check('A2', 'KNOWN POSITIVE and a known negative THAT ACTUALLY DISCRIMINATES: th
     + `${unbalNaive === 2 ? 'ALSO correct, so this fixture discriminates nothing either' : 'wrong, as required'}`);
 
 const resolvedEdges = edges.filter((e) => e.target !== undefined);
-const lineKey = (e: Edge): string => `r${e.target}:${e.re}`;
+
+/**
+ * THE LINE A PIN NAMES — RE-KEYED IN ROUND 329, AND THE FIRST VERSION OF THIS WAS WRONG.
+ *
+ * It read `` `r${e.target}:${e.re}` `` — the target round and the pin's REGEX SOURCE. Not a line. So
+ * every figure below printed "distinct target lines" and measured distinct pin PATTERNS, and D2
+ * confirmed its line's identity by text-testing that key, which only worked because the key WAS the
+ * pin text. Theseus's Round 328 B1 found it the only way it could be found: by reproducing all four
+ * published figures under this file's own key and getting different numbers under a key on the line.
+ *
+ * The part worth keeping is his §2(ii) — why the wrong key read plausibly. The two errors run in
+ * OPPOSITE directions and nearly cancel: a line pinned in two SPELLINGS is counted twice, a pattern
+ * matching two LINES is counted once, so the total landed ONE above the right answer instead of
+ * diverging visibly. Eyeballing the magnitude is the only check a reader of a published figure can
+ * apply, and it cannot catch a key that inflates and deflates at the same time.
+ *
+ * A pin matching NO line names no line: it is keyed on its own text behind a `NO-MATCH` marker
+ * rather than folded onto a shared `undefined`, so an unresolvable pin stays one member of the
+ * population instead of merging with every other unresolvable one.
+ */
+const hitsOf = (e: Edge): number[] => {
+  const f = nameOfRound(e.target as number);
+  if (f === undefined) return [];
+  let re: RegExp;
+  try { re = new RegExp(e.re); } catch { return []; }
+  return raw(f).split('\n')
+    .map((l, i): [number, string] => [i + 1, l])
+    .filter(([, l]) => re.test(l))
+    .map(([i]) => i);
+};
+const HITS = new Map<Edge, number[]>(resolvedEdges.map((e) => [e, hitsOf(e)]));
+const hits = (e: Edge): number[] => HITS.get(e) ?? [];
+const lineKey = (e: Edge): string =>
+  hits(e).length === 0 ? `r${e.target}:NO-MATCH:${e.re}` : `r${e.target}:${hits(e)[0]}`;
+/** The key this file used BEFORE Round 329, kept so the correction can state its own size. */
+const patKeyOf = (e: Edge): string => `r${e.target}:${e.re}`;
+/** The TEXT of the line a key names, read out of the TARGET FILE rather than out of the key. */
+const textOfKey = (k: string): string => {
+  const m = k.match(/^r(\d{3}):(\d+)$/);
+  if (m === null) return '';
+  const f = nameOfRound(Number(m[1]));
+  return f === undefined ? '' : (raw(f).split('\n')[Number(m[2]) - 1] ?? '');
+};
 const distinctLines = [...new Set(resolvedEdges.map(lineKey))];
 const edgesOnLine = (k: string): Edge[] => resolvedEdges.filter((e) => lineKey(e) === k);
 const maxMult = Math.max(...distinctLines.map((k) => edgesOnLine(k).length));
@@ -297,9 +339,16 @@ measure('A0', `the class, re-derived from the live tree: ${scriptNames.filter((n
   + `${edges.length} edges · ${distinctLines.length} DISTINCT TARGET LINES · most-pinned line carries `
   + `${maxMult} edges · targets ${[...new Set(resolvedEdges.map((e) => `r${e.target}`))].sort().join(' ')}`);
 
-measure('A3', `the two figures his §3 table could not show, because it aggregates per FILE: `
-  + `${edges.length} edges is the coordination cost, ${distinctLines.length} distinct lines is the `
-  + `prunable surface. Lines carrying more than one edge: `
+// Three figures, not one, and they are genuinely different questions — his Round 328 A3, adopted
+// here rather than admired. Collapsing them is what let the key error hide: the pattern count and
+// the line count differ by one, so either reads as "about eleven".
+const patternCount = new Set(resolvedEdges.map(patKeyOf)).size;
+const touchedLines = new Set(resolvedEdges.flatMap((e) => hits(e).map((h) => `r${e.target}:${h}`)));
+measure('A3', `the prunable surface, three ways over ONE edge set — ${edges.length} edges is the `
+  + `coordination cost: ${patternCount} distinct pin PATTERNS (what this file's first key counted) · `
+  + `${distinctLines.length} distinct NAMED target lines (the figure the retirability join needs) · `
+  + `${touchedLines.size} distinct lines TOUCHED, the union, which includes a line two pins match and `
+  + `neither pin names. Named lines carrying more than one edge: `
   + `${distinctLines.filter((k) => edgesOnLine(k).length > 1).length}`);
 
 console.log('\n── B. the pin GRAPH: the arm his §7 offered and deliberately did not build ──');
@@ -314,12 +363,15 @@ check('B2', 'EVERY edge is newer-pins-older. A backwards edge — an older file 
     ? `${resolvedEdges.length} of ${resolvedEdges.length} edges newer-pins-older; 0 backwards`
     : `BACKWARDS: ${backwards.map((e) => `r${e.pinner}→r${e.target} (${e.label})`).join('; ')}`);
 
+// Kept as a function of the SAME line resolution the key now uses, so the uniqueness measure and
+// the key can never disagree about how many lines a pin matches. The two sentinels are preserved:
+// -1 is a target file that is gone, -2 a regex that no longer compiles, and both are holes in the
+// population rather than a count of zero.
 const matchCount = (e: Edge): number => {
   const f = nameOfRound(e.target as number);
   if (f === undefined) return -1;
-  let re: RegExp;
-  try { re = new RegExp(e.re); } catch { return -2; }
-  return raw(f).split('\n').filter((l) => re.test(l)).length;
+  try { new RegExp(e.re); } catch { return -2; }
+  return hits(e).length;
 };
 const counted = resolvedEdges.map((e) => ({ e, n: matchCount(e) }));
 const nonUnique = counted.filter((x) => x.n !== 1);
@@ -373,6 +425,10 @@ const labelled = resolvedEdges.filter((e) => e.purpose !== undefined);
 const readsAs = (e: Edge): Purpose => e.purpose ?? 'drift';
 const splitLines = distinctLines.filter((k) => new Set(edgesOnLine(k).map(readsAs)).size > 1);
 const unretirable = distinctLines.filter((k) => edgesOnLine(k).some((e) => e.purpose === 'load-bearing'));
+// The same join under the key this file used BEFORE Round 329, carried so the correction states its
+// own size instead of asking a reader to take it on trust. Re-derived from the live edges every run.
+const patSplit = [...new Set(resolvedEdges.map(patKeyOf))]
+  .filter((k) => new Set(resolvedEdges.filter((e) => patKeyOf(e) === k).map(readsAs)).size > 1).length;
 
 /**
  * The twice-pinned line D2 is about, located STRUCTURALLY rather than by a hand-transcribed regex.
@@ -385,8 +441,19 @@ const sharedBy324And325 = distinctLines.filter((k) => {
   const es = edgesOnLine(k);
   return es.some((e) => e.pinner === 324) && es.some((e) => e.pinner === 325);
 });
-const isTheExitLine = (k: string): boolean =>
-  /process/.test(k) && /exit/.test(k) && /summariseAndExit/.test(k) && k.startsWith('r323:');
+/**
+ * RE-BASED IN ROUND 329 ONTO THE LINE'S OWN TEXT, and the old version is the second half of the key
+ * finding. It read `/process/.test(k) && /exit/.test(k) && /summariseAndExit/.test(k)` — three text
+ * tests against the KEY, which answered a question about the PIN's spelling and passed only because
+ * the key happened to be the pin text. The docblock above claimed the line was located structurally
+ * and its identity confirmed by "what its pinned text is ABOUT"; the location was structural, but
+ * the confirmation was reading the pointer instead of the thing pointed at. Now it reads the target
+ * file at the matched line number, which is the only text that can confirm a line's identity.
+ */
+const isTheExitLine = (k: string): boolean => {
+  const t = textOfKey(k);
+  return k.startsWith('r323:') && /process/.test(t) && /exit/.test(t) && /summariseAndExit/.test(t);
+};
 
 check('D1', 'THE FINDING: a per-entry purpose label CANNOT report whether a target line is retirable, '
   + 'because purpose is a property of the (pinner, line) EDGE and retirability is a property of the '
@@ -396,8 +463,12 @@ check('D1', 'THE FINDING: a per-entry purpose label CANNOT report whether a targ
   splitLines.length > 0,
   splitLines.length > 0
     ? `${splitLines.length} target line(s) carry edges of DIFFERING purpose: ${splitLines
-      .map((k) => `${k.slice(0, 22)}… [${edgesOnLine(k).map((e) => `r${e.pinner}=${e.purpose ?? 'unlabelled→reads as drift'}`).join(', ')}]`)
+      .map((k) => `${k} [${edgesOnLine(k).map((e) => `r${e.pinner}=${e.purpose ?? 'unlabelled→reads as drift'}`).join(', ')}]`)
       .join(' | ')}`
+      + `. Under the pin-TEXT key this file used before Round 329, re-derived here rather than `
+      + `recalled: ${patSplit} — a split is invisible to a pattern key unless both pinners spelled `
+      + `the pin identically, and two seats with different reasons are exactly the two likely to have `
+      + `spelled it differently`
     : 'no target line carries edges of differing purpose — D1\'s premise is gone, re-derive before trusting the label');
 
 const theExitLine = sharedBy324And325.filter(isTheExitLine);
@@ -460,11 +531,14 @@ check('D4', 'the label is CHECKABLE from the registry, which was his §4\'s actu
   mine.map((e) => `r${e.pinner} ${e.purpose}: arm ${armNamedBy(e) ?? '(none named)'}`
     + (e.purpose === 'load-bearing' ? ` ${armIsLive(e) ? 'LIVE' : 'NOT FOUND'}` : '')).join(' | '));
 
-measure('D5', `the retirability join, which is the figure the label exists to produce: `
-  + `${unretirable.length} of ${distinctLines.length} distinct target lines carry at least one `
-  + `LOAD-BEARING edge and are therefore PERMANENT; the rest are retirable the moment their `
-  + `borrowing stops. ${labelled.length} of ${resolvedEdges.length} edges are labelled today — the `
-  + `unlabelled ones are all in probe-round324, which is Theseus's file and not edited from this seat`);
+measure('D5', `the retirability join, NOW KEYED ON A LINE, which is the figure the label exists to `
+  + `produce: ${unretirable.length} of ${distinctLines.length} distinct NAMED target lines carry at `
+  + `least one LOAD-BEARING edge and are therefore PERMANENT; `
+  + `${distinctLines.length - unretirable.length} are retirable the moment their borrowing stops. `
+  + `Before the Round 329 re-key this read 5 of 11 permanent and 6 retirable, over PATTERNS — the `
+  + `join was never keyed on the thing whose retirability it reports. `
+  + `${labelled.length} of ${resolvedEdges.length} edges are labelled today — the unlabelled ones are `
+  + `all in probe-round324, which is Theseus's file and not edited from this seat`);
 
 console.log('\n── Z. this file\'s own footprint ──');
 
