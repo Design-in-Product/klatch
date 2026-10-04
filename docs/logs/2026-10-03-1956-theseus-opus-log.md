@@ -144,6 +144,64 @@ proposal is a live "your call" item routed to him, so the thread is **open** and
 Older threads (10-01, 10-02 and earlier) left untouched — out of this fire's scope and I did not
 verify them closed.
 
-## 19:56 — Session wrap verification (CLAUDE.md protocol)
+## 19:58 — Session wrap verification (CLAUDE.md protocol)
 
-Steps 1-3 run and pasted below, after the commit and push.
+**Step 1 — commits landed on `origin/main`.** `git fetch origin` first, then `git log origin/main`
+— the remote ref, not my local branch:
+
+```
+8e9af70a coord+log+mail: 10/3 STOP fire — Round 326, the pin class is 18 lines and 72% of it points at one file of mine
+4cb58a64 coord+log: 10/3 STOP fire — no-op, verified; Rounds 321-325 swept, needs-you unchanged at 1
+26194796 coord+log: 10/3 STOP fire — Round 325 re-verified, no discrepancy, no-op
+8cc62b18 coord+log+mail: 10/3 STOP fire — Round 325 closing figures, and a false red I manufactured by editing under a running sweep
+9858706c Round 325: promote probe-round325 to SWEPT by the tool's own drive, re-driven after the fixture correction
+```
+
+This fire's one commit present. Push: `4cb58a64..8e9af70a  HEAD -> main`.
+
+**Step 2 — each deliverable present in the pushed tree.** Checked against
+`git ls-tree -r origin/main` rather than a local `ls`, because a local `ls` confirms my filesystem
+and not the delivery. The four moved memos are checked in **both** directions — present in
+`read/` *and* absent from `docs/mail/` — since a half-applied `git mv` would leave a duplicate:
+
+```
+PRESENT  docs/COORDINATION.md
+PRESENT  docs/logs/2026-10-03-1956-theseus-opus-log.md
+PRESENT  docs/mail/theseus-to-…-your-two-seat-framing-is-right-on-seats-…-2026-10-03.md
+PRESENT  docs/mail/read/  × 4 (argus r322/323, daedalus r323, theseus r322, theseus r324)
+moved out of docs/mail  × 4
+7 of 7 queried paths present; move verified both directions: YES
+```
+
+**Step 3 — this log pushed last**, in a follow-up commit, after Steps 1 and 2 were run.
+
+**One figure worth not glossing:** the pre-commit census prints `142 probe files under scripts/`
+while my census reports `111 probe-round* of 170 scripts`. **Not a contradiction and not a
+discrepancy I am smoothing** — the two count different populations: the census's 142 includes the
+`verify-*.mjs` shapes and other non-`probe-round*` probes, mine is scoped to `probe-round*`
+deliberately because that is the population the pin class lives in. Both figures are stated with
+their scope attached in the memo, so neither can be quoted as the other.
+
+---
+
+## Carried forward
+
+- **Open, routed to Daedalus:** the pin-purpose label (drift-detection vs. known-negative), §4 of
+  my memo. His files as much as mine; I have not touched either.
+- **Open, offered and deliberately not built:** an arm over the pin-graph properties. On the record
+  as a choice, not an oversight.
+- **Open, parked on xian, not mine:** entity-delete thread; CIO Laya/AAXT memo (also Argus's).
+- **Not mine, unmoved:** `probe-round225`'s port-3001 block, confirmed live again this fire.
+- **Closed this fire:** Daedalus's §3 convention question (answered with a census, nothing owed
+  back); both of my own detector failures; the Round 322→324 mail chain, moved to `read/`.
+- **Mail hygiene noted, not acted on:** threads from 10-01, 10-02 and earlier are still in
+  `docs/mail/`. I did not verify them closed and did not move them. A future fire with slack should
+  sweep them rather than let `docs/mail/` stop meaning "active."
+- **Two lessons, and the second is the one I'd keep.** (1) *Check the author field before assuming
+  a commit is yours* — three commits in my own subject shape were Iris's, Argus's and Daedalus's,
+  and reading them as mine would have left this fire's mail unread. (2) *For a small population the
+  hand reading is the primary instrument and the detector is what watches for growth.* I built the
+  detector twice wrong and both times it failed low; the thing that caught it was reading three
+  arrays in full. The usual arrangement here — detector primary, hand reading as spot-check — is
+  backwards when the population is three, and the tell is that my first detector reproduced two
+  published figures exactly while silently zeroing the third.
