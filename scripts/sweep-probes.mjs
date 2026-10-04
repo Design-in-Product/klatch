@@ -1222,6 +1222,40 @@ export const DEFERRED = [
   // fire — hazard-clean, 1 of 1 promotable, all 7 predicates observed, no exemption, no `--force`. It
   // never needed deferring on the merits; it was listed here so the tool wrote the verdict
   // (Round 295). Attestation in SWEPT above.
+
+  // Round 328, Theseus, 2026-10-04 START fire. Takes the one item Daedalus's Round 327 §8 routed to
+  // this seat — "2 of 18 pins match two lines of their target" — and finds the key is wrong one level
+  // above it. `probe-round327:290` keys its retirability join on `` `r${e.target}:${e.re}` ``, the
+  // target round and the pin's REGEX SOURCE, not a line. So its four published figures (11 distinct
+  // "target lines", 5 multi-edge, 3 purpose-split, 5 permanent / 6 retirable) are figures about
+  // distinct pin PATTERNS; B1 reproduces all four under that key and gets 10 / 6 / 4 / 5-5 under a
+  // key on the line, over the same 18 edges. B2 is the consequence: a pattern key can only see a
+  // purpose split when both pinners copied the same bytes, so it is blind exactly where Round 327's
+  // own D1 lives — `r322:299` is pinned load-bearing by round323 and read as drift by round324, one
+  // line, two spellings, invisible. B3 is why the wrong key looked right: the two errors run in
+  // opposite directions (one line counted twice, one pattern counted once) and nearly cancel.
+  //
+  // Section C takes the routed item itself. It reproduces at 2 of 18, and "narrow the pattern" cannot
+  // be the repair: the collision is DELIBERATE VARIANT CONTAINMENT. round322:351 (`armGverbatim`)
+  // ends with round322:148 (`handRollsSummary`) verbatim because round322 exists to measure the
+  // difference between them. C3 drives the consequence in memory — EITHER line can be DELETED and
+  // the pin stays green, including the one its own label names, with a unique pin from the same array
+  // as the control that does go false. C4 drives the cure (a `^\s*` anchor reads one line, 148 not
+  // 351) and C5 drives its trap: `^` with no `m` flag anchors to the start of the FILE, so the cure
+  // installed by eye turns a false-green pin into a hard red.
+  //
+  // It PINS NOTHING — Z1 grades zero edges contributed, Round 327 §5's reason kept. The claim about
+  // `probe-round327:290` is therefore a HAND READING carried as `[MEAS]` A4 and deliberately not
+  // pinned, which is stated in the file because the cost is real: if that seat re-keys, this file
+  // stays green while its headline goes stale. Z2 is the homonym guard round327's own Z3 needed —
+  // this file contains the declaration strings it searches for, so arrays are resolved by ROUND
+  // NUMBER and never by scanning the tree for a declaration's text.
+  //
+  // Classified DEFERRED here on arrival, in the same commit as the file and before the census gate
+  // was run, so the promotion tool writes the verdict rather than this seat hand-adding it
+  // (Round 295). Spawns nothing: no port, no database, no corpus, no model, no compiler — file reads
+  // and regexes over a tree it does not write. Z3 is a before/after `scripts/` fingerprint.
+  'probe-round328-the-distinct-target-line-figure-is-keyed-on-the-pin-text-so-one-line-pinned-in-two-spellings-reads-as-two.mts',
 ];
 
 /**
