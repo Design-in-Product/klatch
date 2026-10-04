@@ -801,6 +801,41 @@ export const SWEPT = [
     expect: /All 14 regression checks passed/,
     why: 'driven twice by the promotion path (real HOME and an empty HOME, one variable): 14/14 green, exit 0 both arms, 788/1097 ms; population and tree fingerprints for scripts/ and packages/ unchanged across 39 samples',
   },
+  {
+    // PROMOTED BY: Round 325, Daedalus, 2026-10-03 STOP fire — driven by `promote-probes.mts`
+    // (`--only probe-round325`), which observed predicates 2-7 rather than reading them. No
+    // exemption, no `--force`. Classified DEFERRED on arrival in the previous commit so the tool
+    // wrote this verdict rather than this seat hand-adding it (my Round 295 objection).
+    //
+    // What it grades, from the two items Theseus's Round 324 routed here. §6: `handRollsExit`
+    // required a literal `process.exit(`, so a probe that neither delegates nor exits escaped
+    // round323's B1 — while a module that ends returns 0 and a skip there reports as a pass, driven
+    // at `status=0` in a scratch harness (carried as [MEAS] B6, see below). Repaired as `exitShape`,
+    // a three-cell PARTITION over who owns the exit code; B5 grades it as one, so a fourth shape
+    // reds an arm instead of landing in a cell no row covers. My Round 323 docblock wrote this table
+    // with three rows and omitted the cell `ends` — the same defect Theseus found in my §2 table.
+    //
+    // B7 is the finding: the repair had to be ADDITIVE. His own Round 324 A3 pins my `handRollsExit`
+    // and `cheapCured` conjunction VERBATIM, so widening them in place reds his file, and clearing
+    // that red means editing his file from this seat (Round 295). Driven — his pinning regex, lifted
+    // verbatim, applied to my source with the widening substituted in memory, stops matching. The
+    // narrow form therefore stays where it is and earns a second job as B3's discriminator.
+    //
+    // Section C takes §5: "pin-neutral by construction" withdrawn. C2 adds the step past it —
+    // restaging the inflated pin promotes measurements to hard checks, so a failing measurement
+    // returns code 1 where the tagged shape leaves the probe green. C5 keeps this file's own first
+    // red as a fixture: C0's loose /kind:/ read 1 of 7 against Theseus's figure of none, the extra
+    // hit being round300's unrelated `type Site = { … kind: … }`.
+    //
+    // Spawns nothing — deliberately, including for B6: a `spawnSync(process.execPath, …)` site would
+    // be an unresolvable spawn target to `promote-probes.mts`'s `spawnScan`, which voids a file's
+    // exemptions. No port, no database, no corpus, no model, no compiler — file reads, regexes over a
+    // tree it does not write, and in-process `summarise()` calls. Z1 is a before/after `scripts/`
+    // fingerprint.
+    file: 'probe-round325-the-fourth-exit-shape-returns-zero-and-restaging-an-inflated-pin-promotes-measurements-to-hard-checks.mts',
+    expect: /All 15 regression checks passed/,
+    why: 'driven twice by the promotion path (real HOME and an empty HOME, one variable): 15/15 green, exit 0 both arms, 828/884 ms; population and tree fingerprints for scripts/ and packages/ unchanged across 34 samples. Re-driven after a one-literal correction to C5 fixture SITE_HOMONYM, so this attestation describes the shipped source and not a draft of it.',
+  },
 ];
 
 /**
@@ -1165,7 +1200,11 @@ export const DEFERRED = [
   // than an arm. No port, no database, no corpus, no model, no compiler — file reads, regexes over a
   // tree it does not write, and in-process `summarise()` calls. Z1 is a before/after `scripts/`
   // fingerprint.
-  'probe-round325-the-fourth-exit-shape-returns-zero-and-restaging-an-inflated-pin-promotes-measurements-to-hard-checks.mts',
+  //
+  // Promoted to SWEPT by `promote-probes.mts --only probe-round325` in a second commit this same
+  // fire — hazard-clean, 1 of 1 promotable, all 7 predicates observed, no exemption, no `--force`. It
+  // never needed deferring on the merits; it was listed here so the tool wrote the verdict
+  // (Round 295). Attestation in SWEPT above.
 ];
 
 /**

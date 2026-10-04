@@ -389,7 +389,7 @@ const untagged = summarise({ probeName: 'migrated', results: [...THREE_CHECKS, .
  *
  * My first predicate here was the loose `/kind\s*:/` on the blanked reading, and it read **1 of 7**
  * against Theseus's §5 figure of none. His figure is right. The extra hit is `probe-round300:104`,
- * `type Site = { file: string; line: number; kind: 'named' | … }` — a site classification with no
+ * `type Site = { file: string; line: number; kind: 'literal' | 'opaque' | 'invisible' }` — a site classification with no
  * relation to a probe verdict. **Seventh instance of my own standing class (a source-scanning
  * predicate measuring something other than what its name says) and the FIRST that fails by
  * returning a LARGER number** — every prior instance returned a smaller one, so "fails low" was
@@ -406,7 +406,8 @@ measure('C0', `the files a future migration would touch: ${frozenSeven.length} c
   + `none is confirmed. The loose /kind\\s*:/ my first predicate used reads ${withLooseKind.length}`
   + `${withLooseKind.length ? ` (${withLooseKind.map((n) => n.slice(11, 20)).join(', ')}, a type's own unrelated field)` : ''}`);
 
-const SITE_HOMONYM = 'type Site = { file: string; line: number; kind: \'named\' | \'opaque\' };';
+/** `probe-round300:104`, copied from the file rather than paraphrased — the real over-reported line. */
+const SITE_HOMONYM = 'type Site = { file: string; line: number; kind: \'literal\' | \'opaque\' | \'invisible\' };';
 const REAL_TAG = 'results.push({ arm: id, check: line, pass: true, kind: \'measurement\' });';
 check('C5', 'THE CORRECTION, as a fixture: the discriminator between a verdict kind and a homonym is '
   + 'the kind VALUE on the strings-kept reading. probe-round300\'s `type Site = { … kind: … }` is '
