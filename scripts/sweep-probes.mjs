@@ -853,6 +853,44 @@ export const SWEPT = [
     expect: /All 12 regression checks passed/,
     why: 'driven twice by the promotion path (real HOME and an empty HOME, one variable): 12/12 green, exit 0 both arms, 548/903 ms; population and tree fingerprints for scripts/ and packages/ unchanged across 28 samples',
   },
+
+  {
+    // PROMOTED BY: Round 328, Theseus, 2026-10-04 START fire — driven by `promote-probes.mts`,
+    // which observed predicates 2-7 rather than reading them. Classified DEFERRED on arrival in the
+    // previous commit so the tool wrote this verdict rather than this seat hand-adding it (Round
+    // 295). No exemption, no `--force`.
+    //
+    // What it grades: Round 327 §8 routed one item here — 2 of 18 pins match two lines of their
+    // target — and the key is wrong one level above it. `probe-round327:290` keys the retirability
+    // join on the target round and the pin's REGEX SOURCE, so "11 distinct target lines" is 11
+    // distinct pin PATTERNS. B1 reproduces all four of that file's published figures under its own
+    // key and gets 10 / 6 / 4 / 5-5 under a key on the line, over the same 18 edges — four figures
+    // agreeing at once is what makes this a reading of that instrument rather than a rival
+    // measurement. B2 is the consequence: a pattern key can only see a purpose SPLIT when both
+    // pinners copied the same bytes, so it is blind exactly where Round 327's D1 lives. `r322:299`
+    // is the live instance — load-bearing to round323, drift to round324, one line, two spellings.
+    //
+    // Section C: the routed item reproduces at 2 of 18, and "narrow the pattern" cannot be the
+    // repair. round322:351 (`armGverbatim`) ends with round322:148 (`handRollsSummary`) verbatim
+    // because round322 exists to measure the difference between them, so the pin most likely to
+    // collide is the one aimed at what its target file is ABOUT. C3 drives the consequence in
+    // memory: EITHER line can be DELETED with the pin green, including the one its own label names,
+    // against a unique pin from the same array as the control that does go false. C4 drives the
+    // anchor cure and C5 drives its trap — `^` with no `m` flag anchors to the start of the FILE,
+    // so the cure applied by eye turns a false-green pin into a hard red.
+    //
+    // It PINS NOTHING and Z1 grades zero edges contributed, keeping Round 327 §5's reason. The price
+    // is stated rather than buried: the claim about round327:290 is a HAND READING carried as
+    // [MEAS] A4, so a re-key there leaves this file green and its headline stale. Z2 is the homonym
+    // guard round327's own Z3 needed on its first drive — this file contains the declaration strings
+    // it searches for, so arrays resolve by ROUND NUMBER, never by scanning for a declaration's text.
+    //
+    // Spawns nothing: no port, no database, no corpus, no model, no compiler — file reads and
+    // regexes over a tree it does not write. Z3 is a before/after `scripts/` fingerprint.
+    file: 'probe-round328-the-distinct-target-line-figure-is-keyed-on-the-pin-text-so-one-line-pinned-in-two-spellings-reads-as-two.mts',
+    expect: /All 14 regression checks passed/,
+    why: 'driven twice by the promotion path (real HOME and an empty HOME, one variable): 14/14 green, exit 0 both arms, 555/641 ms; population and tree fingerprints for scripts/ and packages/ unchanged across 22 samples',
+  },
 ];
 
 /**
@@ -1255,7 +1293,11 @@ export const DEFERRED = [
   // was run, so the promotion tool writes the verdict rather than this seat hand-adding it
   // (Round 295). Spawns nothing: no port, no database, no corpus, no model, no compiler — file reads
   // and regexes over a tree it does not write. Z3 is a before/after `scripts/` fingerprint.
-  'probe-round328-the-distinct-target-line-figure-is-keyed-on-the-pin-text-so-one-line-pinned-in-two-spellings-reads-as-two.mts',
+  //
+  // Promoted to SWEPT by `promote-probes.mts --only probe-round328` in a second commit this same
+  // fire — hazard-clean, 1 of 1 promotable, all 7 predicates observed, no exemption, no `--force`.
+  // It never needed deferring on the merits; it was listed here so the tool wrote the verdict
+  // (Round 295). Attestation in SWEPT above.
 ];
 
 /**
