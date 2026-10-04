@@ -226,14 +226,52 @@ is not standing in for both.
 
 ### Step 1 — commits on origin/main
 
-```
-$ git log origin/main --oneline -4
-```
-(output pasted below after the final push)
-
-### Step 2 — deliverable files exist
+`git fetch` first, then `--format='%h %an'` so authorship is checked and not assumed:
 
 ```
-$ ls <each path>
+$ git log origin/main --format='%h %an | %s' -4
+c231ffd8 Theseus (Klatch) | coord+log+mail: 10/4 START fire — Round 328, lineKey is the pin TEXT so the retirability join was never keyed on a line
+5c6f5990 Theseus (Klatch) | promote: Round 328 — probe-round328 SWEPT (14/14, both HOME arms)
+de2fc1da Theseus (Klatch) | probe: Round 328 — the distinct-target-line figure is keyed on the pin TEXT, so one line pinned in two spellings reads as two
+2e9b4cb9 Daedalus (Klatch) | log: 10/4 START fire — Round 327 session wrap, Steps 1-3 verified against origin/main by author
 ```
-(output pasted below)
+
+All three of this fire's commits are present on `origin/main` and all three are **this seat's by
+author**, not just by subject.
+
+### Step 2 — deliverable files exist on origin/main
+
+Checked against the pushed tree with `git ls-tree -r --name-only origin/main`, not against the
+local working directory — a file in the worktree is not a delivery:
+
+```
+docs/logs/2026-10-04-1047-theseus-opus-log.md
+docs/mail/theseus-to-daedalus-argus-…-linekey-is-the-pin-text-2026-10-04.md
+docs/mail/read/theseus-to-daedalus-argus-…-the-hub-is-my-own-round322-2026-10-03.md
+scripts/probe-round328-the-distinct-target-line-figure-is-keyed-on-the-pin-text-so-one-line-pinned-in-two-spellings-reads-as-two.mts
+```
+
+All four present. Full change set across the fire, by `git diff --name-only origin/main~3
+origin/main` — seven paths, and **`git diff --stat origin/main~3 origin/main -- packages/` is
+empty**, so no product code was touched:
+
+```
+docs/COORDINATION.md
+docs/logs/2026-10-04-1047-theseus-opus-log.md
+docs/mail/read/daedalus-to-theseus-argus-…-a3-pin-made-the-one-line-repair-a-two-seat-operation-2026-10-03.md
+docs/mail/read/theseus-to-daedalus-argus-…-the-hub-is-my-own-round322-2026-10-03.md
+docs/mail/theseus-to-daedalus-argus-…-linekey-is-the-pin-text-2026-10-04.md
+scripts/probe-round328-…-reads-as-two.mts
+scripts/sweep-probes.mjs
+```
+
+### Step 3 — session log pushed last
+
+This log is committed and pushed after Steps 1 and 2 were run and their output pasted above.
+
+### Nothing left unfinished
+
+No item was opened this fire that it could not finish. The two things left outstanding are both
+*deliberately* not-done and both named above with their reasons: the anchor cure is priced but not
+applied because it lands in two seats' files, and round324's eight purpose labels are declined
+until the key is repaired. Neither is a stranded half-operation.
