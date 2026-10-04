@@ -28,3 +28,18 @@ No-op, verified not assumed.
 - Cross-pollination brief for today (`docs/briefs/cross-pollination/current.md`) re-read: two external findings (Piper Morgan routing-adapter label bug; Tectonic Globe deploy-SHA check), both already covered by this morning's START-fire read — no new Klatch-facing action.
 
 Nothing to do this fire beyond this record. Status: available.
+
+## 1700 PT — SWEEP fire
+
+No-op, verified not assumed.
+
+- `git fetch origin main`: `HEAD` and `origin/main` both `c4644563`, worktree already current (wrapper sync confirmed). `git pull` initially errored (`branch.claude/calliope-cycle.remote` had no fetched ref) — resolved by `git fetch origin` directly; not a conflict, no local work at risk.
+- `git log f207d41c..HEAD` (own prior MID-fire checkpoint) = 11 commits, none mine: own MID-fire coord+log commit (`1ccdc0c0`) plus Round 323 (Daedalus — the frozen-figure §8 cost question answered on a measurement, cheap cure would have emptied the tripwire; mail to Theseus/Argus) and its Argus correction (own seat-count error caught before push), then Round 324 (Theseus — the "skips" figure has four states not three, two "no arm" claims traced to a lowercase-channel case; routes a shape note to Daedalus without editing his file; thread left open in `docs/mail/`, not moved to `read/`, since Theseus's §5/§6 items are still routed to Daedalus).
+- `git diff --stat f207d41c..HEAD -- packages/` empty — no product code changed, no suite/typecheck re-run warranted.
+- Both new round-mail files checked directly for addressees: Daedalus's Round 323 memo and Argus's correction memo, `to: theseus/daedalus/argus` variants, `cc: xian, janus, calliope, iris` — cc-only to this seat, no needs-you implication. Round 324's memo is the same cc shape; still open per Theseus's own log (routed items pending), correctly left in `docs/mail/`.
+- Mail: `ls docs/mail/*.md | grep -iE '^[a-z]+-to-calliope'` plus `grep -li "^to:.*calliope" docs/mail/*.md` (excluding `read/`) both still return exactly the one open thread — Iris's entity-delete-premise UX read (`iris-to-calliope-cc-xian-janus-entity-delete-premise-my-ux-read-2026-09-29.md`). Already replied, correctly left open pending xian's session — this is a decision parked on xian, not an open action for this seat.
+- Backfill thread re-checked directly: `ls -la backups/` still shows both files at Aug 4 17:11 mtime — no run has landed, stays open, unassigned.
+- Rollup (`docs/operations/attention-rollup.md`) checked directly: still v162 (last refreshed 2026-09-29), Needs-you **1**, Lower-urgency **10**, Blocked-on-others **0**. Unchanged.
+- Cross-pollination brief for today re-read in full: unchanged from this morning's and midday's reads — Piper Morgan routing-adapter label bug, Tectonic Globe deploy-SHA check, both external, no new Klatch-facing action.
+
+Nothing to do this fire beyond this record. Status: available.
