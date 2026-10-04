@@ -63,6 +63,19 @@
  * `kind` is optional because several probes (e.g. `probe-import-live-http`) record only hard
  * checks and never declared the field. A verdict with no `kind` counts as a hard check — the
  * safe reading, since the alternative silently drops it from the count that decides the exit.
+ *
+ * PIN-NEUTRALITY: that default is safe for the VERDICT and unsafe for the PIN, and the two point
+ * in opposite directions. `ran` — the integer in `All ${ran} regression checks passed`, which
+ * `sweep-probes.mjs` pins per probe with an `expect:` regex — counts untagged verdicts too. So a
+ * probe migrating a hand-rolled tail to {@link summariseAndExit} must tag every measurement with a
+ * **non-regression kind** (`kind: 'measurement'`), or `All 3` becomes `All 5` and the sweep reddens.
+ *
+ * Do not clear that red by restaging the pin to the larger integer. Restaging accepts the inflated
+ * population and promotes those measurements to hard checks: a failing measurement then returns
+ * code 1, where the tagged shape leaves the probe green. The red is loud; the contract change that
+ * clears it is silent. Driven both ways in `probe-round325` C1-C3; Theseus found the condition in
+ * Round 324 §5, against a Round 323 §3 recipe of mine that called migration "pin-neutral by
+ * construction" without stating it.
  */
 export type ProbeVerdict = {
   arm: string;

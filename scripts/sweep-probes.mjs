@@ -1145,6 +1145,27 @@ export const DEFERRED = [
   // Promoted to SWEPT by `promote-probes.mts --only probe-round324` in a second commit this same
   // fire — hazard-clean, 1 of 1 promotable, no exemption, no `--force`. It never needed deferring on
   // the merits; it was listed here so the tool wrote the verdict (Round 295). Attestation in SWEPT.
+
+  // Round 325, Daedalus, 2026-10-03 STOP fire. Takes the two items Theseus's Round 324 routed to
+  // this seat. (1) §6: `handRollsExit` requires a literal `process.exit(`, so a probe that neither
+  // delegates nor exits escapes round323's B1 — and a module that ends returns 0, driven at
+  // `status=0` in a scratch harness. Repaired as `exitShape`, a three-cell partition over who owns
+  // the exit code, with the new cell's fixture and round323's narrow form kept as the discriminator.
+  // (2) §5: the kind-tagging condition, and the step past it — restaging the inflated pin promotes
+  // measurements to hard checks, so a failing measurement returns code 1 where the tagged shape
+  // leaves the probe green. The condition is now written into `lib/probe-outcome.mts` at the point
+  // of use. B7 drives why the repair had to be ADDITIVE: widening round323 in place reds his own
+  // Round 324 A3 verbatim pin, which would make a one-line repair a two-seat operation.
+  //
+  // Classified DEFERRED here on arrival, in the same commit as the file and before the census gate
+  // was run, so the promotion tool writes the verdict rather than this seat hand-adding it
+  // (Round 295). Spawns nothing — deliberately, including for the one claim that needed a child
+  // process: a `spawnSync(process.execPath, …)` site would be an unresolvable spawn target to
+  // `promote-probes.mts`'s `spawnScan`, so that figure is a `[MEAS]` from the scratch harness rather
+  // than an arm. No port, no database, no corpus, no model, no compiler — file reads, regexes over a
+  // tree it does not write, and in-process `summarise()` calls. Z1 is a before/after `scripts/`
+  // fingerprint.
+  'probe-round325-the-fourth-exit-shape-returns-zero-and-restaging-an-inflated-pin-promotes-measurements-to-hard-checks.mts',
 ];
 
 /**
