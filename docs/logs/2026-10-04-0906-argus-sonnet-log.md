@@ -13,3 +13,20 @@ Re-derived fresh, not taken from any pin: `npm test` unpiped to a gitignored scr
 Cross-pollination brief for today read in full: the UTC-cloud-dating trap, the pytest `addopts` CI leak, and the acknowledgment-ledger pattern are all process-lane findings from other projects. Calliope's own 08:32 entry already checked this repo directly against the UTC-dating finding (`grep -rn "date +%Y-%m-%d"` across `scripts/` and the repo, zero hits) rather than taking the brief's "8 in Klatch" figure on faith — re-confirmed this fire, not re-run. None of the three findings point at a live defect in this codebase.
 
 `git diff --stat -- packages/ scripts/` empty — verification only, no code touched. No port bound by this fire's own actions (3001 probed read-only), no database opened, no model called; `.scratch-argus/` (created for the unpiped `npm test`/sweep redirect) removed before commit. Nothing in this fire needs a decision from xian beyond the two standing items, both unchanged: the CIO Laya/AAXT routing memo, and Calliope's entity-delete-premise thread (🔒 blocked on xian since 2026-09-28).
+
+## 14:0x PT (WORK fire) — Round 327–329 verified, no discrepancy, no-op
+
+Pulled: already up to date at `fafad2d4` (Daedalus's Round 329, MID fire). `git log 9b95d0ea..HEAD` (own 09:0x START checkpoint) = 8 commits, none mine: Theseus's Round 327 pin-purpose-label probe (promote + mail/coord/log), Calliope's 12:34 MID no-op, Daedalus's Round 329 anchor-cure repair and mail/coord/log.
+
+Three new memos name Argus in `to:`, all cc-only in substance, checked rather than assumed:
+- Daedalus's Round 327 (`...your-pin-purpose-label-is-built-and-it-cannot-answer-the-question-it-was-asked-because-purpose-is-per-edge...`) — `to: theseus, argus`, every section addresses Theseus by name ("your §4," "your §7," "your framing"); §8 routes its open items to Theseus or keeps them as Daedalus's own.
+- Theseus's Round 328 (`...your-d1-is-right-and-your-own-instrument-cannot-report-it-because-linekey-is-the-pin-text...`) — `to: daedalus, argus`, same shape, every section addresses Daedalus.
+- Daedalus's Round 329 (`...your-re-key-is-landed-and-the-anchor-cure-reds-six-of-your-own-arms...`) — `to: theseus, argus`, same shape.
+
+Read all three in full rather than skimmed from the subject line. Each closes with the same standing cross-reference ("Parked on xian, not mine, unchanged: the entity-delete thread; the CIO Laya/AAXT memo (also Argus's)") — a pointer to an already-tracked item, not a new ask, matching the pattern from Round 326. No reply filed; nothing owed.
+
+**Re-derived fresh, not taken from any pin:** `npm test` unpiped to `.testdata/argus-r329/`, figures grepped directly — 0 `error TS`, server **140 files / 2174 passed / 1 skipped**, client **25 files / 325 passed / 13 skipped**, `CENSUS OK`, swept **36**, deferred **108** — byte-identical to Daedalus's Round 329 §7. Full driving sweep: closing verdict **SWEEP BLOCKED — 35 of 36 swept probes green, 0 red, 1 blocked (did not conclude), 0 census problem(s), 108 deferred** — exact match, verdict line read rather than exit code (exit 2 is BLOCKED). `probe-round225`'s block confirmed live via direct `net.connect` to port 3001: held, same standing occupant since Round 291.
+
+Cross-pollination brief re-checked: `git log` shows it was re-touched at 13:06 today (`c36da692`), but content is identical to what this seat already read at 09:0x (UTC-cloud-dating trap, pytest `addopts` CI leak, acknowledgment-ledger pattern) — all process-lane, none Node/TypeScript-specific, none pointing at a live Klatch defect. Not re-actioned.
+
+`git diff --stat -- packages/ scripts/` empty; `git status --short` empty — verification only, no code touched. No port bound by this fire's own actions (3001 probed read-only), no database opened, no model called; `.testdata/argus-r329/` removed before commit. Nothing in this fire needs a decision from xian beyond the two standing items, both unchanged.
