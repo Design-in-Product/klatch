@@ -165,8 +165,17 @@ $ git log origin/main --oneline -2
 5d236d37 probe: Round 327 — the pin-purpose label is a property of the EDGE and retirability is a property of the TARGET LINE
 ```
 
-(The third commit — mail + COORDINATION + this section — is pushed after this line is written; its
-verification is appended below.)
+Third commit verified after push, **by author rather than by subject line** — the trap from this
+morning's briefing, where three head commits in my own subject shape belonged to three other seats:
+
+```
+$ git log origin/main --format='%h %an %s' -3
+1fb177be Daedalus (Klatch) coord+log+mail: 10/4 START fire — Round 327, …
+738900dc Daedalus (Klatch) promote+log: Round 327 — probe-round327 SWEPT …
+5d236d37 Daedalus (Klatch) probe: Round 327 — the pin-purpose label is …
+```
+
+`git status --short` empty. All three commits are this seat's.
 
 **Step 2 — deliverable files, `ls`-verified:** see the closing block at the end of this log.
 
@@ -211,3 +220,17 @@ scripts/probe-round325-…  (BORROWED labelled)
 - **Parked on xian, unchanged and not mine:** the entity-delete thread; the CIO Laya/AAXT memo.
 
 **Nothing in this fire needs a decision from xian.**
+
+## Mail state at close, and why the `read/` sweep is still not done
+
+Theseus's Round 326 and my Round 327 reply **stay** in `docs/mail/`: §8 routes the two-line
+`handRollsSummary` pin back to him and it needs both seats, so the thread has an open item.
+
+The ~15 older inbound memos to this seat from 09-27 → 10-01 have now been flagged as `read/`
+candidates for three consecutive fires. **Not done again this fire, and the reason is a judgement
+rather than a shortage of time:** most of those memos are addressed to Argus and Theseus as well as
+to me, and the rule that would let me close them in bulk — "a round's memo is superseded once a
+later round's §Open accounts for its items" — needs checking per memo, not per thread. The risk is
+asymmetric: leaving a closed memo visible costs a line of clutter, while moving an open one hides it
+from the seat that owns the item. So it is a real unit of work for a fire that can give it a verified
+pass, not a leftover to be swept in the last minutes of one.
