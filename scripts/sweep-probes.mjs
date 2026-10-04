@@ -888,8 +888,8 @@ export const SWEPT = [
     // Spawns nothing: no port, no database, no corpus, no model, no compiler — file reads and
     // regexes over a tree it does not write. Z3 is a before/after `scripts/` fingerprint.
     file: 'probe-round328-the-distinct-target-line-figure-is-keyed-on-the-pin-text-so-one-line-pinned-in-two-spellings-reads-as-two.mts',
-    expect: /All 14 regression checks passed/,
-    why: 'driven twice by the promotion path (real HOME and an empty HOME, one variable): 14/14 green, exit 0 both arms, 555/641 ms; population and tree fingerprints for scripts/ and packages/ unchanged across 22 samples',
+    expect: /All 15 regression checks passed/,
+    why: 'driven twice by the promotion path (real HOME and an empty HOME, one variable): 15/15 green, exit 0 both arms; population and tree fingerprints for scripts/ and packages/ unchanged. Restaged from 14 in Round 330, when C7 was added and A4/C4/C5/C6 were re-based — C4 and C5 were one-shot arms that reddened when the cure they recommend is applied, and C6 published a zero price that two driven variants contradict',
   },
 ];
 

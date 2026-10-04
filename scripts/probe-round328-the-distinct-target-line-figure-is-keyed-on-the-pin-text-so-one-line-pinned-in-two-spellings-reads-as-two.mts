@@ -332,11 +332,28 @@ measure('A3', `the prunable surface, three ways over ONE edge set: ${byPattern.k
   + `PATTERNS · ${byLine.keys.length} distinct NAMED target lines · ${unionLines.size} distinct lines `
   + `TOUCHED (the union, which includes r322:351 — a line two pins match and neither pin names)`);
 
-measure('A4', 'HAND READING, carried as data and deliberately NOT pinned: probe-round327:290 reads '
-  + '`const lineKey = (e: Edge): string => \\`r${e.target}:${e.re}\\`;` — target round and regex '
-  + 'SOURCE, no line number. Read off that file this fire. Pinning it would catch a re-key and would '
-  + 'also make this a fourth pinning file; zero edges was chosen instead, so this arm cannot notice '
-  + 'if that seat re-keys. B1 supports the reading by reproducing all four of its published figures');
+/**
+ * A4: RE-BASED IN ROUND 330, and the old version is the reason why. It carried the key expression as
+ * a FROZEN STRING — hand-read once in Round 328 and reprinted every run under the words "Read off
+ * that file this fire", which stopped being true the moment Daedalus re-keyed in Round 329. A hand
+ * reading that reprints itself is a memory impersonating a measurement: the same shape his own
+ * Round 329 §8 caught in his file, one arm away from mine. The arm said outright that it "cannot
+ * notice if that seat re-keys", which was honest and is not a reason to keep it — it reads the
+ * declaration live now, so it CAN. Reporting what a line says is not borrowing it, so this still
+ * contributes zero edges (Z1) and does not make this a fourth pinning file.
+ */
+const r327 = nameOfRound(327);
+const keyDecl = r327 === undefined ? undefined
+  : linesOf(r327).map((l, i): [number, string] => [i + 1, l])
+    .find(([, l]) => /\bconst lineKey\b/.test(l));
+const keyText = keyDecl === undefined || r327 === undefined ? ''
+  : `${keyDecl[1].trim()} ${(linesOf(r327)[keyDecl[0]] ?? '').trim()}`;
+const keysOnPinText = keyText.includes('${e.re}') && !keyText.includes('NO-MATCH');
+measure('A4', `LIVE READ, replacing Round 328's frozen hand reading of this same line: `
+  + `${keyDecl === undefined ? 'probe-round327 has no `const lineKey` declaration — the shape this arm reads is gone'
+    : `probe-round327:${keyDecl[0]} reads \`${keyText.slice(0, 150)}\``} → keys on `
+  + `${keysOnPinText ? 'the PIN TEXT, the Round 328 finding, still live'
+    : 'a LINE — re-keyed, which was this arm\'s whole ask, so B1\'s published figures are now historical rather than current'}`);
 
 console.log('\n── B. THE FINDING: the retirability join is keyed on the pin TEXT, not on a line ──');
 
@@ -466,16 +483,43 @@ check('C3', 'EITHER LINE CAN BE DELETED OUTRIGHT AND THE PIN STAYS GREEN — inc
     + `line 351 deleted: ${survivesOther ? 'still TRUE' : 'false'} · control, the unique pin on `
     + `r322:${uniqueOn322?.hits[0]} with its line deleted: ${uniqueDies ? 'FALSE, as required' : 'still true — this arm proves nothing'}`);
 
-const anchoredBody = collision === undefined ? undefined : `^\\s*${collision.re}`;
-const anchoredHits = anchoredBody === undefined ? []
-  : t322.map((l, i): [number, string] => [i + 1, l])
-    .filter(([, l]) => new RegExp(anchoredBody).test(l)).map(([i]) => i);
+/**
+ * C4/C5: RE-BASED IN ROUND 330, because as written they were ONE-SHOT — they recommend anchoring and
+ * go red the moment anchoring is applied, in the most misleading available shape (C5's two branches
+ * INVERT, so the applied cure reads exactly like the `m`-flag trap C5 exists to warn about).
+ *
+ * Daedalus routed this in Round 329 §5 with a stated mechanism: the arms prepend `^\s*` to the LIVE
+ * pin, so post-cure they compute `^\s*^\s*…`, which matches nothing. Driven here on disk, both
+ * halves applied and reverted: the SIX-arm cost reproduces exactly, and the mechanism does not.
+ * Post-cure NEITHER pin matches two lines, so `underCounted` is EMPTY, `collision` is `undefined`,
+ * and the double-anchored body is never constructed at all — the arms fail through their
+ * `=== undefined` fallbacks, which were written to assert false. His own pasted C5 detail is the
+ * proof: `true (must be false) · false (must be true)` is exactly that fallback pair.
+ *
+ * It matters because the routed cure — "detect the already-anchored case" — would not have cured it:
+ * there is no already-anchored collision edge to detect, because a cured pin stops being a
+ * collision. The subject has to be defined so it survives its own cure. So: strip any leading
+ * `^\s*` back off, and find the pin whose BARE body is non-unique. That edge exists in both states.
+ */
+const bare = (s: string): string => s.replace(/^\^\\s\*/, '');
+const hitsOfBody = (body: string): number[] => {
+  let rx: RegExp;
+  try { rx = new RegExp(body); } catch { return []; }
+  return t322.map((l, i): [number, string] => [i + 1, l]).filter(([, l]) => rx.test(l)).map(([i]) => i);
+};
+const subject = edges.find((e) => e.target === 322 && hitsOfBody(bare(e.re)).length > 1);
+const cureLanded = subject !== undefined && bare(subject.re) !== subject.re;
+const anchoredBody = subject === undefined ? undefined : `^\\s*${bare(subject.re)}`;
+const anchoredHits = anchoredBody === undefined ? [] : hitsOfBody(anchoredBody);
 check('C4', 'THE CURE IS ANCHORING, NOT NARROWING, and it is driven rather than proposed: `^\\s*` '
   + 'prepended to the SAME pattern body reads exactly one line of probe-round322 — 148, not 351 — '
   + 'because the two differ only by a leading conjunct, so a start-of-line anchor separates them and '
-  + 'no edit to the pattern body can. Priced here, applied nowhere: the pin lives in two files',
+  + 'no edit to the pattern body can. Re-based in Round 330 onto the subject pin\'s BARE body, so '
+  + 'this arm gives the same verdict before and after the cure it recommends',
   anchoredHits.length === 1 && anchoredHits[0] === 148,
-  `anchored pattern hits: [${anchoredHits.join(',')}] (was [${collision?.hits.join(',')}])`);
+  `anchored pattern hits: [${anchoredHits.join(',')}] · bare body hits: `
+    + `[${subject === undefined ? '(no subject pin found)' : hitsOfBody(bare(subject.re)).join(',')}] · `
+    + `cure landed on disk: ${cureLanded ? 'YES — this arm is reporting the post-cure world' : 'no, pin still bare'}`);
 
 /**
  * C5: the trap, and this seat would have walked into it. The live predicate tests the whole file as
@@ -485,20 +529,69 @@ check('C4', 'THE CURE IS ANCHORING, NOT NARROWING, and it is driven rather than 
 const wholeText = r322 === undefined ? '' : raw(r322);
 const noFlag = anchoredBody === undefined ? true : new RegExp(anchoredBody).test(wholeText);
 const withM = anchoredBody === undefined ? false : new RegExp(anchoredBody, 'm').test(wholeText);
+const bareWhole = subject === undefined ? false : new RegExp(bare(subject.re)).test(wholeText);
 check('C5', 'AND THE CURE CARRIES A TRAP, BOTH BRANCHES DRIVEN: the live predicate is '
   + 're.test(whole file), so `^` with NO `m` flag anchors to the start of the FILE and the anchored '
   + 'pattern matches NOTHING — turning a false-green pin into a hard red. With `m` it matches. A seat '
   + 'applying C4 by eye would get the anchor right and the flag wrong, and the failure would look '
   + 'like the pinned line having moved',
-  noFlag === false && withM === true,
-  `anchored, no flag, against the whole file: ${noFlag} (must be false) · with the m flag: ${withM} `
-    + `(must be true) · per-line, no flag: ${anchoredHits.length} hit(s)`);
+  noFlag === false && withM === true && bareWhole === true && subject !== undefined,
+  `${subject === undefined ? 'NO SUBJECT PIN RESOLVED — this arm is reporting its own fallback, not a measurement · ' : ''}`
+    + `anchored, no flag, against the whole file: ${noFlag} (must be false) · with the m flag: ${withM} `
+    + `(must be true) · per-line, no flag: ${anchoredHits.length} hit(s) · control, the BARE body `
+    + `against the whole file: ${bareWhole} (must be true, else the false above means "pin resolved to nothing")`);
 
-measure('C6', `the coordinated operation this routes back, priced: the repair is one pattern in each `
-  + `of two files — probe-round324 entry ${(edges.filter((e) => e.pinner === 324).findIndex((e) => e.hits.length > 1)) + 1} `
-  + `and probe-round325's handRollsSummary entry — each gaining \`^\\s*\` and the \`m\` flag. Neither `
-  + `edit touches a pinned line (0 of 18 edges target a pin-array body, his Round 327 C1), so neither `
-  + `reds the other seat's file, and neither changes a check count, so no expect: pin restages`);
+/**
+ * C7: the property Round 329 §5 named and no arm anywhere held — added here because the arms it is
+ * about are this file's. A cure-pricing arm is measured against a tree in which the cure has NOT
+ * landed; its green is evidence about a counterfactual and it expires on application. That is only
+ * acceptable if the arm is IDEMPOTENT under its own recommendation, and idempotence is checkable
+ * without touching disk: run C4's and C5's predicates against both spellings of the subject pin and
+ * require the same verdict from each. Pre-cure the "cured" side is the hypothetical; post-cure the
+ * bare side is. Either way the arm is being graded against the state it is not in.
+ */
+const verdictFor = (body: string): { c4: boolean; c5: boolean } => {
+  const anch = `^\\s*${bare(body)}`;
+  const h = hitsOfBody(anch);
+  let no = true;
+  let wm = false;
+  try { no = new RegExp(anch).test(wholeText); wm = new RegExp(anch, 'm').test(wholeText); } catch { /* reported as a red below */ }
+  return { c4: h.length === 1 && h[0] === 148, c5: no === false && wm === true };
+};
+const vBare = subject === undefined ? undefined : verdictFor(bare(subject.re));
+const vCured = subject === undefined ? undefined : verdictFor(`^\\s*${bare(subject.re)}`);
+check('C7', 'AND THESE TWO ARMS ARE NO LONGER ONE-SHOT, which is the property Round 329 §5 named '
+  + 'and no arm held: C4 and C5 recommend anchoring the subject pin, so an arm that reds when that '
+  + 'recommendation is TAKEN is worse than useless — C5\'s branches invert, and its post-cure '
+  + 'failure looks exactly like the m-flag trap it was written to warn about. Both predicates are '
+  + 're-run here against BOTH spellings of the pin, bare and already-cured, and must agree. Driven '
+  + 'in memory off the live pin text; nothing on disk is edited and the cure is still unapplied',
+  vBare !== undefined && vCured !== undefined
+  && vBare.c4 === vCured.c4 && vBare.c5 === vCured.c5 && vBare.c4 && vBare.c5,
+  `${subject === undefined ? 'no subject pin — nothing graded' : `C4 verdict bare=${vBare?.c4} cured=${vCured?.c4} · `
+    + `C5 verdict bare=${vBare?.c5} cured=${vCured?.c5} · idempotent: `
+    + `${vBare?.c4 === vCured?.c4 && vBare?.c5 === vCured?.c5}`}`);
+
+/**
+ * C6: CORRECTED IN ROUND 330 — the Round 328 version of this measurement was WRONG, and wrong in the
+ * direction that invites the edit. It priced the coordinated repair at zero reds to the other seat's
+ * file, reasoning that neither edit touches a pinned line. That test — "did I edit a pinned line?" —
+ * is right for a verbatim-borrow pin and WRONG for an arm that takes the pin ARRAYS AS ITS INPUT: a
+ * pin's own text is invisible to the first and total to the second. Daedalus drove it in Round 329
+ * §4 and this seat re-drove both variants on disk and reverted them: his half alone reds 2 of this
+ * file's arms, both halves red 6. The pin registry is the one region that is both unpinned and
+ * load-bearing — free of the verbatim coupling, not free of this one.
+ */
+const r324Entries = edges.filter((e) => e.pinner === 324);
+const subjectIdx = subject === undefined ? -1 : r324Entries.findIndex((e) => e.re === subject.re);
+measure('C6', `the coordinated operation this routes back, RE-PRICED against a driven measurement and `
+  + `not a rule of thumb: the repair is one pattern in each of two files — probe-round324 entry `
+  + `${subjectIdx === -1 ? '(not resolved)' : subjectIdx + 1} and probe-round325's handRollsSummary `
+  + `entry — each gaining \`^\\s*\` and the \`m\` flag. Round 328 priced that at ZERO reds here and `
+  + `that was wrong: driven on disk and reverted, his half alone reds 2 arms of this file (B1, C1) `
+  + `and both halves red 6 (A2, B3, C1, C3, C4, C5). B1 RECOVERS in the both-halves state, so the `
+  + `variants are not ordered by severity and no sequencing keeps this file green. C4/C5 are out of `
+  + `that list as of this round (C7); the rest red because their subject is the defect itself`);
 
 console.log('\n── Z. this file\'s own footprint ──');
 
