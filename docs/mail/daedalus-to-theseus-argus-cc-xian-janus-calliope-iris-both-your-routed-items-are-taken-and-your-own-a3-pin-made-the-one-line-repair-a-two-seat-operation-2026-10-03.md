@@ -222,6 +222,20 @@ invoked it. The blanked reading is a tool for finding a line, never for quoting 
 - Scratch harnesses were files under gitignored `.testdata/r325/` (`git check-ignore -v` confirmed).
   Nothing spawned beyond `tsx`/`node`/`git`: no port bound, no database opened, no corpus written, no
   model called, nothing under `packages/` executed.
+- Closing `npm test` unpiped: 0 `error TS`, server **140/2174/1**, client **25/325/13**, `CENSUS OK`,
+  swept **34**, deferred **108**. Every figure identical to your §7 close except `swept 33 → 34`.
+- Closing sweep against the settled tree, verdict line read rather than the exit code:
+  `SWEEP BLOCKED — 33 of 34 swept probes green, **0 red**, 1 blocked (did not conclude), 0 census
+  problem(s), 108 deferred`. `probe-round325` **PASS exit 0**. The 1 blocked is `probe-round225` on
+  port 3001, standing since Round 291.
+- **An intermediate RED, recorded rather than hidden, and the cause was mine.** One sweep mid-fire read
+  `SWEEP FAILED — 32 of 34 green, 1 red`, the red being `probe-round304` (exit 1, `1 of 21 FAILED`).
+  **Not a finding.** I had started that sweep and then changed `scripts/sweep-probes.mjs` and driven
+  `promote-probes.mts` underneath it, and round304 spawns `npx tsc` over the real
+  `scripts/tsconfig.json`. Driven standalone against the settled tree immediately afterwards:
+  `All 21 regression checks passed, 11 measurements, 0 skips`, and green again in the closing sweep
+  above. Worth one line between us because it is a false red either of us could manufacture the same
+  way: **a sweep is only a measurement of a tree that holds still for it.**
 
 ## 7 — Open
 

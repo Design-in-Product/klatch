@@ -130,3 +130,71 @@ My error, stated plainly: I started a sweep and then changed the tree under it, 
 for it. The authoritative figures below come from runs against the final tree.
 
 ## 18:0x — closing verification
+
+Closing `npm test`, unpiped, each figure `grep`ped separately:
+
+```
+grep -c "error TS"   → 0
+server               → 140 files / 2174 passed / 1 skipped
+client               → 25 files / 325 passed / 13 skipped
+CENSUS OK · swept 34 · deferred 108
+```
+
+Every figure identical to the baseline except `swept 33 → 34` by design.
+
+Closing full driving sweep against the settled tree, verdict line read rather than the exit code:
+
+```
+SWEEP BLOCKED — 33 of 34 swept probes green, 0 red, 1 blocked (did not conclude), 0 census problem(s), 108 deferred
+  PASS    exit   0  probe-round325-the-fourth-exit-shape-returns-zero-…
+  BLOCKED exit   3  probe-round225-a-citation-is-not-a-call.mts
+```
+
+`probe-round304` is green in this run — confirming the earlier red was the concurrency artefact
+recorded above and not a finding. The 1 blocked is `probe-round225` on port 3001, standing since
+Round 291, not mine to free from a fire.
+
+- `npx tsc -p scripts/tsconfig.json` clean (0 bytes) — run four times across this fire, including
+  after the C5 fixture correction.
+- `probe-round325` standalone **All 15**, 4 measurements, `[Z1]` fingerprint unchanged.
+- `git diff --stat -- packages/` **empty**.
+
+## 18:0x — Session Wrap Protocol
+
+**Step 1 — commits on `origin/main`:**
+
+```
+$ git log origin/main --oneline -5
+9858706c Round 325: promote probe-round325 to SWEPT by the tool's own drive, re-driven after the fixture correction
+cfa76247 Round 325: the fourth exit shape returns zero and restaging an inflated pin promotes measurements to hard checks
+492d811c coord+log: 10/3 SWEEP fire — no-op, verified; Rounds 323-324 swept, needs-you unchanged at 1
+c4644563 log: 10/3 WORK fire — Round 324 wrap verification, Steps 1-3 pasted
+8b087851 coord+log+mail: 10/3 WORK fire — Round 324, the three-state table is not a partition and my own arm flagged its author
+```
+
+**Step 2 — each deliverable present:**
+
+```
+$ ls <each>
+docs/COORDINATION.md
+docs/logs/2026-10-03-1717-daedalus-opus-log.md
+docs/mail/daedalus-to-theseus-argus-cc-xian-janus-calliope-iris-both-your-routed-items-are-taken-and-your-own-a3-pin-made-the-one-line-repair-a-two-seat-operation-2026-10-03.md
+scripts/lib/probe-outcome.mts
+scripts/probe-round325-the-fourth-exit-shape-returns-zero-and-restaging-an-inflated-pin-promotes-measurements-to-hard-checks.mts
+```
+
+**Step 3 —** this log is pushed last, in a third commit carrying the closing figures above.
+
+## 18:0x — mail state at close
+
+- **Theseus's Round 324** and **my Round 325 reply** stay in `docs/mail/` — the thread has an open
+  item (§3's general property about verbatim cross-file pins is routed back to him). Not moved.
+- **Argus's Round 322 verification memo** stays in `docs/mail/` too, deliberately: it is addressed to
+  Theseus first and me second, and Theseus's seat has not read it yet (it arrived after his 14:47
+  fire). Moving it would hide it from a co-recipient. His close, not mine.
+- **Noted, not done this fire:** older inbound memos to this seat from 2026-09-29 → 2026-10-01
+  (Argus's round294/round298/round305 memos, Theseus's round-301 reply) look closed and are candidates
+  for `docs/mail/read/`. Not swept here — that is a bounded hygiene unit of its own and I did not want
+  to start it at the end of a fire where a sweep had already eaten the clock.
+
+## Nothing in this fire needs a decision from xian.
