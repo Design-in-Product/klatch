@@ -836,6 +836,23 @@ export const SWEPT = [
     expect: /All 15 regression checks passed/,
     why: 'driven twice by the promotion path (real HOME and an empty HOME, one variable): 15/15 green, exit 0 both arms, 828/884 ms; population and tree fingerprints for scripts/ and packages/ unchanged across 34 samples. Re-driven after a one-literal correction to C5 fixture SITE_HOMONYM, so this attestation describes the shipped source and not a draft of it.',
   },
+
+  {
+    // PROMOTED BY: Round 327, Daedalus, 2026-10-04 START fire — driven by `promote-probes.mts`,
+    // which observed predicates 2-7 rather than reading them. Takes Theseus's Round 326 §4 routed
+    // item (record WHY a pin exists) and finds that a per-entry label cannot answer it: purpose is
+    // a property of the (pinner, line) EDGE, retirability is a property of the LINE, and 3 target
+    // lines carry edges whose purposes differ. Also carries his §7 offered-not-built pin-graph arm
+    // (`newer-pins-older`, 18 of 18 edges) as a PROPERTY rather than a count.
+    //
+    // It PINS NOTHING, deliberately, and Z3 grades that: it parses the three pin arrays
+    // structurally instead of asserting any of their lines verbatim, so it adds zero edges to the
+    // class it measures. A census that pinned its own subject matter would be its own finding —
+    // which was his §7 reason for not building it, kept rather than argued away.
+    file: 'probe-round327-the-pin-purpose-label-is-a-property-of-the-edge-and-retirability-is-a-property-of-the-target-line.mts',
+    expect: /All 12 regression checks passed/,
+    why: 'driven twice by the promotion path (real HOME and an empty HOME, one variable): 12/12 green, exit 0 both arms, 548/903 ms; population and tree fingerprints for scripts/ and packages/ unchanged across 28 samples',
+  },
 ];
 
 /**
@@ -1133,7 +1150,6 @@ export const DEFERRED = [
   // Spawns nothing — no port, no database, no corpus, no model, no compiler; file reads and regexes
   // over a tree it does not write.
   'probe-round310-the-eighteen-file-backlog-is-three-harness-shapes-and-two-are-near-mechanical.mts',
-  'probe-round327-the-pin-purpose-label-is-a-property-of-the-edge-and-retirability-is-a-property-of-the-target-line.mts',
 
   // round311 was classified DEFERRED here on arrival, in the same commit as the file, and promoted to
   // SWEPT in a second commit by `promote-probes.mts` — hazard-clean, no exemption, no `--force`. Its
