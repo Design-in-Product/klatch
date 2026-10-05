@@ -151,12 +151,66 @@ priority, not routed as work.
 
 ### Step 1 — commits on origin/main
 
-`git fetch` first, `--format='%h %an'` so authorship is checked and not assumed. Filled in below
-after the final push.
+`git fetch` first, `--format='%h %an'` so authorship is checked and not assumed:
+
+```
+$ git log origin/main --format='%h %an | %s' -3
+65f4217f Theseus (Klatch) | coord+log: 10/4 STOP fire — Round 332, his §6 defect is a crash with no
+                            verdict line and the anchor remedy breaks five of eight sibling pins
+97075cd8 Theseus (Klatch) | mail: Round 332 reply to Daedalus — your own one-shot defect is a crash
+                            with no verdict line, and the anchor remedy breaks five of the eight
+                            sibling pins
+a038c860 Iris (Klatch)    | coord+log: 10/4 STOP fire — Rounds 327-331 verified, no-op
+```
+
+Both of this fire's commits are on `origin/main` and both are **this seat's by author**, not merely
+by subject shape. The third is Iris's, correctly attributed. The mail commit was pushed to `main`
+**before** the coord/log commit, per the worktree mail rule.
 
 ### Step 2 — deliverable files on origin/main
 
-Checked with `git ls-tree -r --name-only origin/main`, not against the working directory. Filled in
-below.
+Checked against the pushed tree with `git ls-tree -r --name-only origin/main`, not against the
+local working directory — a file in the worktree is not a delivery:
 
-### Step 3 — this log pushed last.
+```
+docs/mail/theseus-to-daedalus-argus-…-the-anchor-remedy-breaks-five-of-the-eight-sibling-pins-2026-10-04.md
+docs/logs/2026-10-04-1947-theseus-opus-log.md
+```
+
+`docs/COORDINATION.md` does not match a filename filter, so it was checked **by content** instead:
+
+```
+$ git show origin/main:docs/COORDINATION.md | grep -c "Round 332 (STOP fire)"   → 1
+$ git show origin/main:docs/COORDINATION.md | grep -c "2026-10-04 ~20:0x PT"    → 1
+$ git status --short                                                            → (empty)
+```
+
+All three present. `.testdata/r332/` is gitignored and invisible to `git status`, which is the
+intended containment — none of this fire's drive scripts or captures are in the tree.
+
+### Step 3 — this log pushed last
+
+This verification block is committed and pushed after Steps 1 and 2 were run.
+
+### Mail state at close
+
+Daedalus's Round 331 inbound and my Round 332 reply **stay in `docs/mail/`**, not moved to `read/`:
+his §6 repair is designed and unapplied, the round324 labels are still open on my side, and my §5
+precondition is a new open item. Open threads stay visible. This matches his own Round 331 close,
+which kept the pair open for the same reason.
+
+The ~15 older inbound memos from 09-27 → 10-01 that he has flagged as `read/` candidates across
+five fires remain unswept from this seat too. Same reason he gave, and it is a judgement rather than
+a shortage of minutes: most are addressed to two or three seats, and closing them needs a per-memo
+check that a later round's §Open accounts for each item. Named, not silently carried.
+
+### No-op? No.
+
+Two commits. His §6 prediction converted from designed to driven, with a failure mode sharper than
+he stated (silence, not red, and invisible to CI because the file is DEFERRED). His step-1 repair
+verified to work and his step 2 downgraded from necessary to strictly better. His C1 reproduced
+from a separate instrument. One new finding with its precondition named: the anchor remedy breaks 5
+of 8 sibling pins. His §3 equivalence settled at 9330 comparisons, with my own Round 330 reason
+retracted. One presentation note on his Z1, correctly scoped as not-a-defect.
+
+**Nothing in this fire needs a decision from xian.**
