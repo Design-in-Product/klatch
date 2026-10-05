@@ -30,3 +30,21 @@ Read all three in full rather than skimmed from the subject line. Each closes wi
 Cross-pollination brief re-checked: `git log` shows it was re-touched at 13:06 today (`c36da692`), but content is identical to what this seat already read at 09:0x (UTC-cloud-dating trap, pytest `addopts` CI leak, acknowledgment-ledger pattern) — all process-lane, none Node/TypeScript-specific, none pointing at a live Klatch defect. Not re-actioned.
 
 `git diff --stat -- packages/ scripts/` empty; `git status --short` empty — verification only, no code touched. No port bound by this fire's own actions (3001 probed read-only), no database opened, no model called; `.testdata/argus-r329/` removed before commit. Nothing in this fire needs a decision from xian beyond the two standing items, both unchanged.
+
+## ~19:0x PT (STOP fire) — Rounds 330–331 verified, no discrepancy, no-op
+
+Pulled: already up to date, no fetch needed (`git ls-remote` + local HEAD match). `git log ec3b4c77..HEAD` (own 14:0x WORK-fire checkpoint) = 8 commits, authorship checked with `%an` before crediting any of them, none mine: Theseus's Round 330 (repair + mail + coord/log) and Daedalus's Round 331 (probe + mail + coord/log), plus Calliope's 10/4 SWEEP-fire no-op in between.
+
+Two new memos name Argus in `to:`, both read in full rather than taken as cc-only from the subject line:
+- Theseus's Round 330 (`...your-six-reproduces-exactly-and-the-mechanism-you-named-is-not-the-one-that-fires...`) — `to: daedalus, argus`, every substantive section addresses Daedalus by name ("your §4/§5," "your routed cure," "your §6 ask"); all ten open items in §10 are Theseus's own or routed to Daedalus.
+- Daedalus's Round 331 (`...your-mechanism-is-right-and-the-reason-you-gave-for-it-is-wrong...`) — `to: theseus, argus`, same shape, every section addresses Theseus; §8's open items are Daedalus's own (`probe-round329`'s one-shot driver) or Theseus's (the round324 labels, explicitly deferred until Theseus says go).
+
+Both close with the same standing cross-reference ("Parked on xian, not mine, unchanged: the entity-delete thread; the CIO Laya/AAXT memo") — a pointer to already-tracked items, not a new ask. No reply filed; nothing owed.
+
+**Re-derived fresh, not taken from either pin:** `npm test` unpiped to `.testdata/argus-stop331/`, figures read directly from the file rather than a pipe — 0 `error TS`, server **140 files / 2174 passed / 1 skipped**, client **25 files / 325 passed / 13 skipped**, `CENSUS OK`, swept **36**, deferred **109** — byte-identical to Daedalus's Round 331 §1. Full driving sweep (`node scripts/sweep-probes.mjs`, no flag, verdict line read, not the exit code — exit 2 is BLOCKED, not a failure): **SWEEP BLOCKED — 35 of 36 swept probes green, 0 red, 1 blocked (did not conclude), 0 census problem(s), 109 deferred** — exact match. `probe-round225`'s block confirmed live via a direct `net.connect` probe to port 3001: held, the standing dev-server occupant unchanged since Round 291.
+
+Cross-pollination brief unchanged since this morning's 09:00 read (`stat` confirms same mtime, no new render today) — not re-actioned.
+
+One standing item re-examined rather than just carried forward: the CIO Laya/AAXT memo (`cio-to-themis-argus-cc-janus-xian-...-2026-10-02.md`) explicitly invites a judgment call from this seat ("your call and xian's," whether to run the Laya harness against the AAXT 6-way scorer) and has been open two days without this seat ever substantively answering it — only re-flagged as "parked, unchanged" in verification passes. Deliberately not answered this fire either: evaluating that call is new work (reading the AAXT scorer, scoping a harness run), not verification, and this is a STOP fire — same discipline as Round 312/319 (verification passes don't take up new-work backlog items). Named here explicitly so the gap is visible rather than silently repeated a fifth time.
+
+`git diff --stat -- packages/ scripts/` empty; `git status --short` empty before and after — verification only, no code touched. No port bound by this fire's own actions (3001 probed read-only), no database opened, no model called; `.testdata/argus-stop331/` removed before commit. Nothing in this fire needs a decision from xian beyond the two standing items, both unchanged. Committed locally only, per this fire's explicit instruction — the wrapper owns delivery.
