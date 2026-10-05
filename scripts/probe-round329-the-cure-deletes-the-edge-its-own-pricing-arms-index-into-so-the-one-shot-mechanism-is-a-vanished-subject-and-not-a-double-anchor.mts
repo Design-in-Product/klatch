@@ -44,13 +44,47 @@
  * Deferred, not swept: it spawns `npx tsx` child processes (three of them), which is the hazard
  * class this thread defers on. Hand-driven; registered in `sweep-probes.mjs`'s DEFERRED list in the
  * same commit as the file, per Round 295.
+ *
+ * ── Round 333: this file was itself one-shot, and it failed SILENTLY ─────────
+ *
+ * Round 331 §6 (mine) predicted that this file would break under the very cure it prices, because
+ * `PIN_HEAD` is the BARE spelling: post-cure the pinning files carry the anchored spelling, the
+ * head occurs zero times, A1 reds, and `drive()` throws at "changed nothing". Theseus's Round 332
+ * §2 drove the prediction from a scratch git repo — this file unmodified, the cure applied only to
+ * copies — and sharpened it: pre-cure `All 9 regression checks passed` exit 0; post-cure **exit 1
+ * with NO verdict line at all**, because the throw escapes before `summariseAndExit` and nine arms
+ * go unreported. An earlier round of this arc produced *exit 0* with no summary line. Neither is a
+ * measurement. Two repairs land here, in that order of importance:
+ *
+ *   1. **Normalise, then build the lattice.** Every read of a pinning file now goes through
+ *      {@link unanchor}, which rewrites the anchored head back to the bare head. The normalised
+ *      base is byte-identical in both worlds (Theseus drove it: `e76abf1a382b5a0c` and
+ *      `8a8c612ab2f28d32`, pre and post), so the edit stays one-shot, the control still reads
+ *      `All 15`, and the transform is idempotent by construction — a second strip finds nothing
+ *      left to strip. Arm A3 grades the invariant; A4 MEASURES which world the tree is in, because
+ *      "the normalisation was a no-op" is true pre-cure and false post-cure and an arm that
+ *      asserts it would be the same one-shot defect one layer up.
+ *   2. **No drive may fail silently.** {@link driveOrBail} routes any throw out of `drive()`
+ *      through the normal verdict path as a FAILing arm, so the file cannot again exit non-zero
+ *      with nothing to read. Being DEFERRED, nothing in CI would have reported the silence.
+ *
+ * Theseus's Round 332 §3 also retired step 2 of that repair as optional: with step 1 in place the
+ * normalised base is the bare tree in both worlds, so A2's remembered `All 15` still holds and
+ * comparing against a live run is a strictly better arm rather than a necessary one. Not taken here.
+ *
+ * NOT done here, deliberately: generalising the anchor. Theseus's Round 332 §5 measured the eight
+ * entries of the `BORROWED` pin table and five of them go from 1 hit to 0 under anchoring, because
+ * they match MID-LINE — a false red naming an edit nobody made. The precondition is **anchor a pin
+ * only if the anchored pattern still has at least one hit**: 3 of 8 are anchor-safe, exactly 1 of 8
+ * needs it, and that one is already the chosen instance. The arm for that precondition is his, and
+ * it belongs next to the cure.
  */
 import { readFileSync, readdirSync, writeFileSync, rmSync, mkdirSync, cpSync } from 'node:fs';
 import { spawnSync } from 'node:child_process';
 import { join, resolve, dirname, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { summariseAndExit, type ProbeVerdict } from './lib/probe-outcome.mts';
-import { fingerprint } from './lib/tree-fingerprint.mts';
+import { fingerprint, windowState } from './lib/tree-fingerprint.mts';
 
 const SELF = fileURLToPath(import.meta.url);
 const SCRIPTS = dirname(SELF);
@@ -87,6 +121,17 @@ const PIN_HEAD = '/\\/checks passed\\/\\.test\\(src\\)';
 const ANCHORED_HEAD = '/^\\s*\\/checks passed\\/\\.test\\(src\\)';
 const BARE_BODY = '\\/checks passed\\/\\.test\\(src\\) && !\\/summariseAndExit\\\\\\(\\/\\.test\\(src\\)';
 
+/**
+ * Round 333 step 1. Rewrite the ANCHORED spelling of the pin head back to the BARE spelling, so
+ * every lattice below is built from one base regardless of whether the cure has landed. Pre-cure
+ * this is a no-op on both pinning files; post-cure it un-anchors them and lands on the same bytes.
+ * Idempotent for free: after one pass no anchored head remains for a second pass to find.
+ */
+const unanchor = (text: string): string => text.split(ANCHORED_HEAD).join(PIN_HEAD);
+
+/** The normalised base of a pinning file: what every variant below is an edit to. */
+const base = (n: string): string => unanchor(raw(n));
+
 const r322 = nameOfRound(322);
 const r324 = nameOfRound(324);
 const r325 = nameOfRound(325);
@@ -108,23 +153,63 @@ const copyFaithful = sandNames.length === scriptNames.length
 
 /** Occurrences counted before any write — a variant that cannot be applied exactly once is not a variant. */
 const occurrences = (text: string, needle: string): number => text.split(needle).length - 1;
+// Counted on the NORMALISED base, not on `raw`. Counting on `raw` is what made this file one-shot:
+// post-cure the raw text carries the anchored head, the bare head occurs zero times, and the
+// variant that "cannot be applied exactly once" is the variant this file exists to apply.
 const liveOccur = r324 === undefined || r325 === undefined ? [-1, -1]
-  : [occurrences(raw(r324), PIN_HEAD), occurrences(raw(r325), PIN_HEAD)];
+  : [occurrences(base(r324), PIN_HEAD), occurrences(base(r325), PIN_HEAD)];
 
 check('A1', 'THE EDIT IS A ONE-SHOT SUBSTRING IN BOTH PINNING FILES, asserted before anything is '
-  + 'written: the escaped-slash spelling of the handRollsSummary pin occurs exactly once per file, so '
-  + 'anchoring it cannot silently hit a second site — and the sandbox is a faithful copy of scripts/ '
-  + 'by name list and by the bytes of both files about to be edited',
+  + 'written and asserted of the NORMALISED base so it holds whether or not the cure has landed: the '
+  + 'escaped-slash spelling of the handRollsSummary pin occurs exactly once per file, so anchoring it '
+  + 'cannot silently hit a second site — and the sandbox is a faithful copy of scripts/ by name list '
+  + 'and by the bytes of both files about to be edited',
   liveOccur[0] === 1 && liveOccur[1] === 1 && copyFaithful,
-  `occurrences of the pin head: r324 ${liveOccur[0]}, r325 ${liveOccur[1]} (each must be 1) · `
-    + `sandbox ${sandNames.length} of ${scriptNames.length} script files, edited-file bytes identical: ${copyFaithful}`);
+  `occurrences of the pin head in the normalised base: r324 ${liveOccur[0]}, r325 ${liveOccur[1]} `
+    + `(each must be 1) · sandbox ${sandNames.length} of ${scriptNames.length} script files, `
+    + `edited-file bytes identical: ${copyFaithful}`);
+
+const anchoredOccur = r324 === undefined || r325 === undefined ? [-1, -1]
+  : [occurrences(raw(r324), ANCHORED_HEAD), occurrences(raw(r325), ANCHORED_HEAD)];
+const normIsNoOp = r324 !== undefined && r325 !== undefined
+  && base(r324) === raw(r324) && base(r325) === raw(r325);
+const idempotent = r324 !== undefined && r325 !== undefined
+  && unanchor(base(r324)) === base(r324) && unanchor(base(r325)) === base(r325);
+const noAnchorSurvives = liveOccur[0] === 1 && liveOccur[1] === 1
+  && r324 !== undefined && r325 !== undefined
+  && occurrences(base(r324), ANCHORED_HEAD) === 0 && occurrences(base(r325), ANCHORED_HEAD) === 0;
+
+check('A3', 'AND THE NORMALISER HOLDS ITS INVARIANT IN BOTH WORLDS, which is the property that makes '
+  + 'A1 safe under the cure rather than one-shot like its predecessor: normalising leaves no anchored '
+  + 'spelling behind and is idempotent, so the base is the bare tree whether the cure has landed or '
+  + 'not. Deliberately NOT asserted: that normalisation was a no-op. That is true pre-cure and false '
+  + 'post-cure, and an arm claiming it would be exactly the defect Round 331 §6 found here',
+  idempotent && noAnchorSurvives,
+  `idempotent: ${idempotent} · anchored heads surviving normalisation: `
+    + `r324 ${r324 === undefined ? -1 : occurrences(base(r324), ANCHORED_HEAD)}, `
+    + `r325 ${r325 === undefined ? -1 : occurrences(base(r325), ANCHORED_HEAD)} (each must be 0)`);
+
+// Three-way, not two-way. Driven in Round 333 against a scratch tree carrying a THIRD pin spelling
+// (matched by neither constant): the two-way version of this line read "PRE-cure" there, which is
+// false in a way an unattended reader would believe. A reading that cannot say "neither" will say
+// the wrong one of two.
+const world = !normIsNoOp ? 'POST-cure (the anchor cure is landed, and this run normalises past it)'
+  : liveOccur[0] === 1 && liveOccur[1] === 1 ? 'PRE-cure (the anchor cure is not landed)'
+  : 'NEITHER — the pin carries a spelling this file does not know, which is what A0 and A1 are for';
+
+measure('A4', `which world the live tree is in, REPORTED and not graded: anchored head occurrences `
+  + `r324 ${anchoredOccur[0]}, r325 ${anchoredOccur[1]} · bare head in the normalised base r324 `
+  + `${liveOccur[0]}, r325 ${liveOccur[1]} · normalisation a no-op: ${normIsNoOp} · so the tree is ${world}`);
 
 type Run = { passed: boolean; total: number; failedCount: number; fails: string[]; status: number | null };
 
 const drive = (label: string, edits: string[]): Run => {
-  // Restore every copy to pristine, then apply only this variant's edits.
+  // Restore every copy to the NORMALISED base, then apply only this variant's edits. Restoring to
+  // `raw` is the other half of the Round 331 §6 defect: post-cure the "pristine" state would carry
+  // the anchored head, so variant 0 would not be the uncured control it is named for and the
+  // anchoring edit below would find nothing to change.
   for (const f of [r324, r325]) {
-    if (f !== undefined) writeFileSync(join(sandScripts, f), raw(f), 'utf8');
+    if (f !== undefined) writeFileSync(join(sandScripts, f), base(f), 'utf8');
   }
   for (const f of edits) {
     const at = join(sandScripts, f);
@@ -156,9 +241,28 @@ const drive = (label: string, edits: string[]): Run => {
   };
 };
 
-const v0 = drive('0', []);
-const vA = drive('A', r325 === undefined ? [] : [r325]);
-const vC = drive('C', r324 === undefined || r325 === undefined ? [] : [r324, r325]);
+/**
+ * Round 333 step 2. `drive()` throws on any state it cannot drive, and until this fire that throw
+ * escaped the module: no verdict line, nine arms unreported, exit 1 — which Theseus's Round 332 §2
+ * drove in a scratch repo. Exit 1 with no summary line is not a measurement, for the same reason
+ * `exit 0` with no summary line is not one. Route it through the verdict path instead.
+ */
+const driveOrBail = (label: string, edits: string[]): Run => {
+  try {
+    return drive(label, edits);
+  } catch (e) {
+    check('A0', 'EVERY VARIANT DRIVE COMPLETED — reported through the verdict line rather than as an '
+      + 'unhandled throw. A drive that cannot be applied is a finding about this file\'s pins, and a '
+      + 'finding has to be readable: before Round 333 this exited 1 with no summary line at all',
+      false, `variant ${label} could not be driven: ${e instanceof Error ? e.message : String(e)}`);
+    console.log(`\n${meas} measurements`);
+    summariseAndExit({ probeName: 'probe-round329', results });
+  }
+};
+
+const v0 = driveOrBail('0', []);
+const vA = driveOrBail('A', r325 === undefined ? [] : [r325]);
+const vC = driveOrBail('C', r324 === undefined || r325 === undefined ? [] : [r324, r325]);
 
 check('A2', 'THE CONTROL: the sandbox reproduces the in-repo verdict of probe-round328 unmodified — '
   + 'all regression checks green, exit 0. A variant figure measured in a sandbox that cannot '
@@ -293,15 +397,25 @@ measure('C3', `the retraction, recorded where the claim is rather than only in a
 
 console.log('\n── Z. this probe\'s own containment ──');
 
+const TREE_AT_END = fingerprint(REPO, 'scripts');
+const windowNow = windowState(REPO, 'scripts');
+const windowEntries = windowNow === '' ? 0 : windowNow.split('\n').length;
 const sandboxInsideTestdata = relative(REPO, SANDBOX).startsWith('.testdata');
 const gitignored = readFileSync(join(REPO, '.gitignore'), 'utf8').split('\n').some((l) => l.trim() === '.testdata/');
 check('Z1', 'this probe wrote nothing under scripts/: the three variants are applied to a COPY in a '
   + 'gitignored sandbox, never to tracked source, and the scripts/ fingerprint is byte-identical '
   + 'before and after. The two earlier drivers of these figures edited the live tree and restored it '
   + 'in a `finally`, which is right for a one-off and wrong for a file that runs unattended',
-  fingerprint(REPO, 'scripts') === TREE_AT_START && sandboxInsideTestdata && gitignored,
-  `fingerprint ${TREE_AT_START.slice(0, 14)}… unchanged · sandbox at ${relative(REPO, SANDBOX)} · `
-    + `.testdata/ gitignored: ${gitignored}`);
+  TREE_AT_END === TREE_AT_START && sandboxInsideTestdata && gitignored,
+  // Theseus's Round 332 §7: the old detail line printed `TREE_AT_START.slice(0, 14)`, which on a
+  // clean window is `P:` + the first 12 hex of sha256("") — a constant, so the printed evidence
+  // could not distinguish "fingerprinted scripts/ and it did not move" from "fingerprinted
+  // nothing." The check was always sound; the EVIDENCE was not diagnostic. Print both halves, the
+  // component count, and the porcelain entry count, which is free. The window state is REPORTED
+  // and never graded: this seat is not its only writer.
+  `fingerprint ${TREE_AT_START} → ${TREE_AT_END} · equal: ${TREE_AT_END === TREE_AT_START} · `
+    + `components ${TREE_AT_START.split(' ').length} · porcelain entries under scripts/: ${windowEntries}`
+    + ` · sandbox at ${relative(REPO, SANDBOX)} · .testdata/ gitignored: ${gitignored}`);
 
 check('Z2', 'and this file delegates its exit code, so it is outside the arm-G hand-rolled-summary '
   + 'backlog this thread\'s other instruments measure — by behaviour rather than by name',

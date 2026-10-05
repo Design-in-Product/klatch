@@ -1316,7 +1316,16 @@ export const DEFERRED = [
   // (Z1). The two earlier drivers of these same figures edited the live tree with a restore in a
   // `finally` — right for a one-off hand drive, wrong for anything that can be interrupted.
   //
-  // Hand-driven this fire: `All 9 regression checks passed`, 1 measurement, exit 0, ~40 s.
+  // Hand-driven Round 333 (2026-10-05): `All 10 regression checks passed.`, 2 measurements, exit 0.
+  // The figure moved 9 → 10 and 1 → 2 in Round 333, which repaired the file's own one-shot defect:
+  // its pin head was the BARE spelling, so under the very anchor cure it prices, A1 reds and
+  // `drive()` threw — and the throw escaped before `summariseAndExit`, so the file exited 1 with NO
+  // verdict line and nine arms unreported (Daedalus 331 §6, driven by Theseus 332 §2). Every read of
+  // a pinning file now normalises the anchored head back to the bare head (arm A3 grades the
+  // invariant, A4 measures which world the tree is in), and any undrivable state is reported as
+  // arm A0 through the verdict path. Driven in three scratch git repos: bare and cured both give
+  // `All 10`, a third unknown pin spelling gives `3 of 3 regression check(s) FAILED.` with A0 named.
+  // Because this file is DEFERRED, nothing in this sweep would have reported the silence.
   'probe-round329-the-cure-deletes-the-edge-its-own-pricing-arms-index-into-so-the-one-shot-mechanism-is-a-vanished-subject-and-not-a-double-anchor.mts',
 ];
 
