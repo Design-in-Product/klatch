@@ -815,18 +815,35 @@ export const SWEPT = [
     // 1097 ms, with population and tree fingerprints for `scripts/` and `packages/` unchanged
     // across 39 samples. That history belongs in prose; the pinned figure belongs to today's file.
     //
-    // DO NOT PUT A ROUND NUMBER AND AN ARM LABEL ON THE SAME LINE IN THE `why` BELOW, and do not
-    // reflow this comment so that they land together. `probe-round308`'s general arm-pointer
-    // detector v2 binds line-locally: a round citation and an arm token on ONE line become a
-    // reported pointer, every such report is a false positive by its own C1 (0 of 9 real), and C1
-    // pins the TOTAL at 13 — so the pointer this entry's prose accidentally formed reddened C1 and
-    // D4 in a file this fire never touched. Driven as a one-variable counterfactual: at
-    // `d8b002a1` the probe reads `All 22 regression checks passed.`, 8 reported; with a `why` line
-    // carrying both tokens it reads `2 of 22 regression check(s) FAILED.`, 9 reported; rewording
-    // that ONE line and nothing else restores `All 22` and 8. The real cure is the frozen-figure
-    // cure this thread has applied before — grade the invariant (every reported pointer explained,
-    // none real) and REPORT the count — and it belongs to that file's owner, not here. This comment
-    // is the workaround, labelled as one.
+    // A TRAP IN THE PROSE BELOW, and the rule is narrower than it first looks, so it is stated as
+    // the mechanism rather than as a slogan. `probe-round308`'s general arm-pointer detector v2
+    // runs one token stream per line and resets its binding at each newline:
+    //
+    //     /probe-round(\d+)|[Rr]ound\s+(\d{3})|\barm(?:s)?\s+([A-Z]\d+)\b/g
+    //
+    // so a pointer is formed only when, ON ONE LINE and IN THIS ORDER, a round citation is followed
+    // by the literal word `arm` or `arms`, whitespace, and a label. Driven against the regex rather
+    // than reasoned about, and the three cases are written BROKEN ACROSS LINES on purpose —
+    // spelling any of them on a single line here forms a real pointer and reds that file, which is
+    // the finding demonstrating itself:
+    //
+    //     "Round 334 … adding       → binds 334/A4. The citation leads, `arms` + label follows.
+    //      arms A4/A5"                 This was this entry's first wording, and it went red.
+    //     "Round 332 … in its       → binds NOTHING. No `arm` token precedes the label, so the
+    //      own file: A4 grades"        stream never emits an arm at all.
+    //     "arm A4 was added in      → binds NOTHING. The citation arrives after the label, and
+    //      Round 334"                  `cur` is still null when the arm token is emitted.
+    //
+    // Every pointer v2 reports is a false
+    // positive by that file's own C1 (0 of 9 real), and C1 pins the TOTAL at 13 — so the accidental
+    // pointer in this entry's first wording reddened C1 and D4 in a file this fire never touched.
+    // One-variable counterfactual, three scratch copies of scripts/: at `d8b002a1` the probe reads
+    // `All 22 regression checks passed.` with 8 reported; with that one `why` line it reads
+    // `2 of 22 regression check(s) FAILED.` with 9; rewording that ONE line and nothing else
+    // restores `All 22` and 8. The real cure is the frozen-figure cure this thread has applied
+    // before — grade the invariants that would actually regress (every reported pointer explained,
+    // none real) and REPORT the count — and it belongs to that file's owner, not here. What is
+    // below is the workaround, labelled as one.
     file: 'probe-round324-the-skips-figure-has-four-states-and-the-two-no-arm-claims-are-where-a-lowercase-channel-lands.mts',
     expect: /All 15 regression checks passed/,
     why: 'Re-driven in-repo by Theseus on 2026-10-05 after two arms were added (attribution in the note above, deliberately not on this line): 15/15 green, 4 measurements, exit 0. Spawns nothing — file reads and in-process summarise() calls — so the figure is deterministic and the entry-schema check cross-reads it against this pin',
