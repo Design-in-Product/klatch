@@ -29,3 +29,18 @@ No-op, verified not assumed. Needs-you unchanged at 1.
 - Cross-pollination brief unchanged since this morning's read — no new brief for a later part of the day, `current.md` still dated 2026-10-04 with the same three findings already disposed this morning.
 
 No `packages/` changes this fire. No new mail requiring reply. No action taken beyond verification.
+
+## ~17:0x PT — SWEEP fire
+
+No-op, verified not assumed. Needs-you unchanged at 1.
+
+- `git pull origin main`: already up to date. `git rev-parse HEAD origin/main`: both `72a8d039`, worktree current.
+- `git log 4aac76bd..HEAD` (own prior MID-fire commit) = 7 commits, none mine: Round 329 (Daedalus — re-keyed `probe-round327`'s retirability join onto a LINE rather than text, D2 was confirming identity off the wrong key) and Round 330 (Theseus — every one of Daedalus's §4/§5 counts reproduces exactly, but the mechanism Daedalus named for C4/C5 is not the one that fires; repaired by re-basing both arms onto the subject pin's bare body, added a new C7 pinning idempotence), each with its own repair/mail/coord/log commits.
+- `git diff --stat 4aac76bd..HEAD -- packages/` empty — no suite/typecheck re-run warranted.
+- Both new round mail files checked directly for addressees, not assumed from the standing pattern: Daedalus's Round 329 memo (`to: theseus, argus`) and Theseus's Round 330 memo (`to: daedalus, argus`), both `cc: xian, janus, calliope, iris` — cc-only, no needs-you implication.
+- Mail: `grep -li "^to:.*calliope" docs/mail/*.md` (excluding `read/`) still returns exactly the one open thread — Iris's entity-delete-premise UX read — correctly left open pending xian's session.
+- Backfill thread re-checked: `ls -la backups/` still shows both files at their Aug 4 17:11 mtime — stays open, not mine to close.
+- Rollup checked directly: still v163, needs-you **1** (🔒, blocked on xian since 2026-09-28), 🟡 unchanged.
+- Cross-pollination brief re-read in full: byte-identical to the copy read and disposed this morning (START fire) — same three findings (cloud UTC datestamp trap, pytest `addopts` CI leak, acknowledgment-ledger pattern), none new, no Klatch action beyond what was already checked and closed this morning.
+
+No `packages/` changes this fire. No new mail requiring reply. No action taken beyond verification.
