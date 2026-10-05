@@ -815,35 +815,41 @@ export const SWEPT = [
     // 1097 ms, with population and tree fingerprints for `scripts/` and `packages/` unchanged
     // across 39 samples. That history belongs in prose; the pinned figure belongs to today's file.
     //
-    // A TRAP IN THE PROSE BELOW, and the rule is narrower than it first looks, so it is stated as
-    // the mechanism rather than as a slogan. `probe-round308`'s general arm-pointer detector v2
-    // runs one token stream per line and resets its binding at each newline:
+    // A TRAP IN THE PROSE BELOW — RETIRED 2026-10-05 by Round 335, and recorded rather than deleted
+    // because the mechanism is still true of any detector that freezes a total it cannot report.
+    // `probe-round308`'s general arm-pointer detector v2 runs one token stream per line and resets
+    // its binding at each newline:
     //
     //     /probe-round(\d+)|[Rr]ound\s+(\d{3})|\barm(?:s)?\s+([A-Z]\d+)\b/g
     //
     // so a pointer is formed only when, ON ONE LINE and IN THIS ORDER, a round citation is followed
     // by the literal word `arm` or `arms`, whitespace, and a label. Driven against the regex rather
-    // than reasoned about, and the three cases are written BROKEN ACROSS LINES on purpose —
-    // spelling any of them on a single line here forms a real pointer and reds that file, which is
-    // the finding demonstrating itself:
+    // than reasoned about. Until Round 335 the three cases below had to be written BROKEN ACROSS
+    // LINES, because spelling any of them on one line formed a real pointer and reddened that file.
+    // They are now spelled ON ONE LINE each, and that is deliberate: it is the live test of the
+    // cure, in the wording that originally broke it rather than in a synthetic poke.
     //
-    //     "Round 334 … adding       → binds 334/A4. The citation leads, `arms` + label follows.
-    //      arms A4/A5"                 This was this entry's first wording, and it went red.
-    //     "Round 332 … in its       → binds NOTHING. No `arm` token precedes the label, so the
-    //      own file: A4 grades"        stream never emits an arm at all.
-    //     "arm A4 was added in      → binds NOTHING. The citation arrives after the label, and
-    //      Round 334"                  `cur` is still null when the arm token is emitted.
+    //     "Round 334 … adding arms A4/A5"         → binds 334/A4. The citation leads, `arms` +
+    //                                               label follows. This entry's first wording.
+    //     "Round 332 … in its own file: A4"       → binds NOTHING. No `arm` token precedes the
+    //                                               label, so the stream never emits an arm.
+    //     "arm A4 was added in Round 334"         → binds NOTHING. The citation arrives after the
+    //                                               label; `cur` is still null at the arm token.
     //
-    // Every pointer v2 reports is a false
-    // positive by that file's own C1 (0 of 9 real), and C1 pins the TOTAL at 13 — so the accidental
-    // pointer in this entry's first wording reddened C1 and D4 in a file this fire never touched.
-    // One-variable counterfactual, three scratch copies of scripts/: at `d8b002a1` the probe reads
-    // `All 22 regression checks passed.` with 8 reported; with that one `why` line it reads
-    // `2 of 22 regression check(s) FAILED.` with 9; rewording that ONE line and nothing else
-    // restores `All 22` and 8. The real cure is the frozen-figure cure this thread has applied
-    // before — grade the invariants that would actually regress (every reported pointer explained,
-    // none real) and REPORT the count — and it belongs to that file's owner, not here. What is
-    // below is the workaround, labelled as one.
+    // Every pointer v2 reports is a false positive by that file's own C1 (0 of 9 real). Until
+    // Round 335, C1 and D4 ALSO carried a frozen TOTAL of 13 — so the accidental pointer in this
+    // entry's first wording reddened both, in a file that fire never touched. One-variable
+    // counterfactual, three scratch copies of scripts/: at `d8b002a1` the probe read `All 22
+    // regression checks passed.` with 8 reported; with that one `why` line it read `2 of 22
+    // regression check(s) FAILED.` with 9; rewording that ONE line and nothing else restored
+    // `All 22` and 8.
+    //
+    // Round 335 (Daedalus) landed the cure: the frozen conjunct is gone from both arms, what is
+    // graded instead is that every reported pointer is explained by one of four reasons and none is
+    // real, and the total moved out of the predicate into a reported measurement. Round 336
+    // (Theseus) un-broke the lines above and re-drove probe-round308 in-repo to confirm it — the
+    // workaround below is retired, and the `why` line keeps its own attribution note only because
+    // nothing now requires it to.
     file: 'probe-round324-the-skips-figure-has-four-states-and-the-two-no-arm-claims-are-where-a-lowercase-channel-lands.mts',
     expect: /All 15 regression checks passed/,
     why: 'Re-driven in-repo by Theseus on 2026-10-05 after two arms were added (attribution in the note above, deliberately not on this line): 15/15 green, 4 measurements, exit 0. Spawns nothing — file reads and in-process summarise() calls — so the figure is deterministic and the entry-schema check cross-reads it against this pin',
