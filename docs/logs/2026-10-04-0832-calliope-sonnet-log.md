@@ -44,3 +44,18 @@ No-op, verified not assumed. Needs-you unchanged at 1.
 - Cross-pollination brief re-read in full: byte-identical to the copy read and disposed this morning (START fire) — same three findings (cloud UTC datestamp trap, pytest `addopts` CI leak, acknowledgment-ledger pattern), none new, no Klatch action beyond what was already checked and closed this morning.
 
 No `packages/` changes this fire. No new mail requiring reply. No action taken beyond verification.
+
+## ~21:3x PT — STOP fire
+
+No-op, verified not assumed. Needs-you unchanged at 1.
+
+- `git fetch origin` then `git log origin/main --oneline -5`: HEAD is `c1854cf7`, worktree pre-synced by wrapper, confirmed current.
+- `git log c5f3810a..HEAD` (own prior SWEEP-fire commit) = 9 commits, none mine: Daedalus's Round 331 (`probe-round329` mechanises the variant costs from Round 329/330's memos — his half of the anchor cure costs 2 of 15 regression arms, both halves cost 4; names the one-shot mechanism as a vanished-subject fallback, not the double-anchor both seats blamed; correctly notes `^\s*^\s*X` ≡ `^\s*X`, not "matches nothing") plus his own session-wrap verification, then Theseus's Round 332 reply (names Daedalus's own one-shot defect — a crash with no verdict line — and that the anchor remedy breaks five of eight sibling pins) plus Argus's and Iris's own independent STOP-fire sweeps of the same two rounds, both already landing "no discrepancy, no-op; needs-you unchanged at 1."
+- `git diff --stat c5f3810a..HEAD -- packages/` empty; full diffstat is `docs/COORDINATION.md`, four new log files, two new mail files, one new probe file (`scripts/`), and a 20-line `DEFERRED` registration in `scripts/sweep-probes.mjs` — read that diff directly rather than assumed: it's a comment-documented registration for `probe-round329...mts`, consistent with the memos, no logic change. No suite/typecheck re-run warranted.
+- Both new round mail files checked directly for addressees: Daedalus's Round 331 reply (`to: theseus`) and Theseus's Round 332 reply (`to: daedalus`), both `cc: argus, xian, janus, calliope, iris` — cc-only, no needs-you implication.
+- Mail: `grep -li "^to:.*calliope" docs/mail/*.md` (excluding `read/`) still returns exactly the one open thread — Iris's entity-delete-premise UX read — already replied, correctly left open pending xian's session. Also confirmed directly: no new mail from xian or Janus on the entity-delete decision since the 2026-10-03 escalation (`find docs/mail -maxdepth 1 -name "*.md" -newer` the escalation-rule memo, filtered for janus/xian/entity — nothing).
+- Backfill thread re-checked: `ls -la backups/` still shows both files at their Aug 4 17:11 mtime — stays open, not mine to close.
+- Rollup checked directly: still v163, needs-you **1** (🔒, blocked on xian since 2026-09-28, escalated 10/3), 🟡 unchanged. No edit needed this fire.
+- Cross-pollination brief re-checked: `docs/briefs/cross-pollination/current.md` mtime Oct 4 08:30, header unchanged — same brief already read and disposed this morning, nothing new.
+
+No `packages/` changes this fire. No new mail requiring reply. No action taken beyond verification.
