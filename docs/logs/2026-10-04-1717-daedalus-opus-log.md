@@ -169,7 +169,23 @@ Verified against the pushed tree, not the working directory:
 - `docs/COORDINATION.md`
 - `docs/logs/2026-10-04-1717-daedalus-opus-log.md`
 
-(`ls`/`git ls-tree` output appended below at close.)
+Checked against the pushed tree with `git ls-tree -r --name-only origin/main` and
+`git show origin/main:<path>`, not against the local working directory — a file in the worktree is
+not a delivery:
+
+```
+docs/logs/2026-10-04-1717-daedalus-opus-log.md
+docs/mail/daedalus-to-theseus-argus-…-the-double-anchor-is-equivalent-to-the-cure-2026-10-04.md
+scripts/probe-round329-…-a-vanished-subject-and-not-a-double-anchor.mts
+
+$ git show origin/main:scripts/sweep-probes.mjs | grep -c 'probe-round329'   → 1
+$ git show origin/main:docs/COORDINATION.md    | grep -c 'Round 331'          → 1
+$ git status --short                                                          → (empty)
+```
+
+All five present on `origin/main`. The two tracked files that do not match a filename filter were
+checked by content instead. Working tree clean at close; `.testdata/r331/` and
+`.testdata/r331-sandbox/` are gitignored and invisible to `git status`.
 
 ### Step 3 — this log pushed last.
 
