@@ -33,7 +33,7 @@ import fs from 'fs';
 import os from 'os';
 import path from 'path';
 import { execFileSync } from 'child_process';
-import { fingerprint, windowState } from '../../../../scripts/lib/tree-fingerprint.mts';
+import { fingerprint, windowState, trackedCount } from '../../../../scripts/lib/tree-fingerprint.mts';
 
 const TMP = fs.mkdtempSync(path.join(os.tmpdir(), 'klatch-round263-'));
 
@@ -201,5 +201,66 @@ describe('windowState — reported, never graded', () => {
 
     expect(windowState(repo, 'scripts/')).not.toBe('');
     expect(after).toBe(before);
+  });
+});
+
+describe('trackedCount — the figure that separates a clean window from a wrong pathspec', () => {
+  /**
+   * Round 335, driving Theseus's Round 334 §4. The three cases below are the ones he measured on
+   * the live repo, reproduced here at size instead of transcribed: on a CLEAN window the whole
+   * fingerprint detail line is byte-identical for a pathspec that names files and one that names
+   * none, so a typo'd pathspec reads as a clean pass. The first test states the DEFECT so that a
+   * future change which makes those columns diverge fails here rather than silently retiring the
+   * reason this function exists.
+   */
+  it('is the ONLY one of the reported columns that moves: on a clean window the others do not', () => {
+    const repo = mintRepo('clean-window-blindspec');
+    fs.mkdirSync(path.join(repo, 'packages', 'shared', 'src'), { recursive: true });
+    fs.writeFileSync(path.join(repo, 'packages', 'shared', 'src', 'one.ts'), 'export const x = 1;\n');
+    git(repo, ['add', '-A']);
+    git(repo, ['commit', '-qm', 'a second tracked file, elsewhere']);
+
+    const real = fingerprint(repo, 'scripts');
+    const typo = fingerprint(repo, 'scriptz-does-not-exist');
+    const other = fingerprint(repo, 'packages/shared/src');
+
+    // The defect, asserted: fingerprint, its component count and the porcelain entry count are all
+    // identical across a pathspec naming 1 file, one naming 0, and one naming a different 1.
+    expect(typo).toBe(real);
+    expect(other).toBe(real);
+    expect(windowState(repo, 'scripts')).toBe('');
+    expect(windowState(repo, 'scriptz-does-not-exist')).toBe('');
+
+    // And the figure that separates them, in the same clean window.
+    expect(trackedCount(repo, 'scripts')).toBe(1);
+    expect(trackedCount(repo, 'scriptz-does-not-exist')).toBe(0);
+    expect(trackedCount(repo, 'packages/shared/src')).toBe(1);
+  });
+
+  it('is diagnostic in the DIRTY window too — it does not depend on anything being dirty', () => {
+    const repo = mintRepo('dirty-window');
+    write(repo, 'tracked.mts', 'const a = 2;\n');
+    write(repo, 'untracked.mts', 'const u = 1;\n');
+    expect(windowState(repo, 'scripts')).not.toBe('');
+    // One tracked file; the untracked one is deliberately NOT counted — this is a tracked-file
+    // count, and an untracked file is already visible in the porcelain entries.
+    expect(trackedCount(repo, 'scripts')).toBe(1);
+  });
+
+  it('counts a file whose path contains a newline as ONE entry', () => {
+    // `-z` is load-bearing: without it a newline in a path forges an entry boundary and inflates
+    // the count, which is the same hazard `fingerprint` uses `-z` for. Known positive rather than a
+    // comment claiming the flag matters.
+    const repo = mintRepo('newline-path');
+    const weird = path.join(repo, 'scripts', 'two\nlines.mts');
+    fs.writeFileSync(weird, 'const w = 1;\n');
+    git(repo, ['add', '-A']);
+    git(repo, ['commit', '-qm', 'a path with a newline in it']);
+    expect(trackedCount(repo, 'scripts')).toBe(2);
+  });
+
+  it('is 0 for a pathspec outside the repo rather than throwing', () => {
+    const repo = mintRepo('outside');
+    expect(trackedCount(repo, 'no/such/dir')).toBe(0);
   });
 });

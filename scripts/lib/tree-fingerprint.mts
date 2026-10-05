@@ -118,3 +118,43 @@ export function fingerprint(repo: string, pathspec: string): string {
 export function windowState(repo: string, pathspec: string): string {
   return git(repo, ['status', '--porcelain', '--', pathspec]).trim();
 }
+
+/**
+ * How many TRACKED files the pathspec actually names. Also reported, never graded.
+ *
+ * ── Why this exists ─────────────────────────────────────────────────────────
+ *
+ * Theseus's Round 334 §4 drove the blind spot that {@link windowState} and the fingerprint detail
+ * line share, and the figure below is the one that closes it. A probe's Z-arm detail typically
+ * prints the fingerprint, whether it moved, its component count and the porcelain entry count.
+ * On a CLEAN window — the state an unattended fire is normally in — all four of those are
+ * byte-identical for a pathspec that names 200 files, a pathspec that names 1, and a MISSPELLED
+ * pathspec that names none:
+ *
+ *     pathspec "scripts"                → P:e69de29b… D:e69de29b… · components 2 · porcelain 0
+ *     pathspec "scriptz-does-not-exist" → P:e69de29b… D:e69de29b… · components 2 · porcelain 0
+ *     pathspec "packages/shared/src"    → P:e69de29b… D:e69de29b… · components 2 · porcelain 0
+ *
+ * Both halves are `sha256("")`, because an empty entry list and an empty diff hash to the same
+ * constant no matter how much the pathspec covers. So the evidence line cannot distinguish
+ * *fingerprinted the tree and it did not move* from *fingerprinted nothing at all* — and a
+ * typo'd pathspec reads as a clean pass. The CHECK was never affected: before/after equality still
+ * grades what the run did. This is about whether a reader can tell which of those two a green run
+ * was, and on the common window state they could not.
+ *
+ * `git ls-files` separates them — 200 / 0 / 1 on the rows above — and it does so in BOTH window
+ * states, because it does not depend on anything being dirty. That is the property that makes it
+ * the right figure rather than a second emptiness proxy.
+ *
+ * Deliberately a separate function rather than folded into {@link windowState}'s return: that
+ * returns porcelain text and ~40 probe files read it as text today.
+ *
+ * @param repo absolute path to the repository root
+ * @param pathspec a git pathspec
+ * @returns the number of tracked files the pathspec names; 0 for a pathspec that matches nothing
+ */
+export function trackedCount(repo: string, pathspec: string): number {
+  // `-z` for the same reason `fingerprint` uses it: a path containing a newline must not be able to
+  // forge an entry boundary and inflate the count.
+  return git(repo, ['ls-files', '-z', '--', pathspec]).split('\0').filter((s) => s.length > 0).length;
+}

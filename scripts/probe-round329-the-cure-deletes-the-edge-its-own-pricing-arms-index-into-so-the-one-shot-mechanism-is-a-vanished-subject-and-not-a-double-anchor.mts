@@ -84,7 +84,7 @@ import { spawnSync } from 'node:child_process';
 import { join, resolve, dirname, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { summariseAndExit, type ProbeVerdict } from './lib/probe-outcome.mts';
-import { fingerprint, windowState } from './lib/tree-fingerprint.mts';
+import { fingerprint, windowState, trackedCount } from './lib/tree-fingerprint.mts';
 
 const SELF = fileURLToPath(import.meta.url);
 const SCRIPTS = dirname(SELF);
@@ -401,7 +401,21 @@ const TREE_AT_END = fingerprint(REPO, 'scripts');
 const windowNow = windowState(REPO, 'scripts');
 const windowEntries = windowNow === '' ? 0 : windowNow.split('\n').length;
 const sandboxInsideTestdata = relative(REPO, SANDBOX).startsWith('.testdata');
-const gitignored = readFileSync(join(REPO, '.gitignore'), 'utf8').split('\n').some((l) => l.trim() === '.testdata/');
+// GUARDED, for the reason the same read was guarded in `probe-round308` this fire: a bare
+// readFileSync here throws ENOENT in a scratch root that has no `.gitignore`, and the throw lands
+// after every arm has printed and before the verdict, so the file exits 1 with nothing to conclude
+// from. That hazard was routed about another file and is the identical line in this one — found by
+// looking rather than by being told. An unreadable `.gitignore` now reds Z1 with a readable detail.
+const IGNORE_AT = join(REPO, '.gitignore');
+const ignoreSrc: string | null = (() => {
+  try {
+    return readFileSync(IGNORE_AT, 'utf8');
+  } catch {
+    return null;
+  }
+})();
+const gitignored = ignoreSrc !== null && ignoreSrc.split('\n').some((l) => l.trim() === '.testdata/');
+const tracked = trackedCount(REPO, 'scripts');
 check('Z1', 'this probe wrote nothing under scripts/: the three variants are applied to a COPY in a '
   + 'gitignored sandbox, never to tracked source, and the scripts/ fingerprint is byte-identical '
   + 'before and after. The two earlier drivers of these figures edited the live tree and restored it '
@@ -413,9 +427,20 @@ check('Z1', 'this probe wrote nothing under scripts/: the three variants are app
   // nothing." The check was always sound; the EVIDENCE was not diagnostic. Print both halves, the
   // component count, and the porcelain entry count, which is free. The window state is REPORTED
   // and never graded: this seat is not its only writer.
+  //
+  // His Round 334 §4 then drove what was LEFT of that: on a clean window — the state an unattended
+  // fire is normally in — every column above is byte-identical for a pathspec naming 200 files, one
+  // naming 1, and a MISSPELLED one naming none, because both fingerprint halves are sha256("") and
+  // the porcelain count is 0 in all three. So a typo'd pathspec still read as a clean pass. The
+  // tracked-file count is the figure he measured as the separator (200 / 0 / 1) and the reason it is
+  // the right one is that it is diagnostic in BOTH window states — it does not depend on anything
+  // being dirty. It lives in the shared lib rather than here, with the three cases as tests, because
+  // ~40 probe files print this same line and the blind spot was the lib's.
   `fingerprint ${TREE_AT_START} → ${TREE_AT_END} · equal: ${TREE_AT_END === TREE_AT_START} · `
-    + `components ${TREE_AT_START.split(' ').length} · porcelain entries under scripts/: ${windowEntries}`
-    + ` · sandbox at ${relative(REPO, SANDBOX)} · .testdata/ gitignored: ${gitignored}`);
+    + `components ${TREE_AT_START.split(' ').length} · tracked files named by the pathspec: ${tracked}`
+    + ` · porcelain entries under scripts/: ${windowEntries}`
+    + ` · sandbox at ${relative(REPO, SANDBOX)} · .testdata/ gitignored: ${gitignored}`
+    + (ignoreSrc === null ? ` · .gitignore NOT READABLE at ${relative(REPO, IGNORE_AT)}` : ''));
 
 check('Z2', 'and this file delegates its exit code, so it is outside the arm-G hand-rolled-summary '
   + 'backlog this thread\'s other instruments measure — by behaviour rather than by name',
