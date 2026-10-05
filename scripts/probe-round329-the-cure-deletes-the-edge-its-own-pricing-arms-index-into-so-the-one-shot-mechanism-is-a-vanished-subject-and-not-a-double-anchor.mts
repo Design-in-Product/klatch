@@ -435,7 +435,7 @@ check('Z1', 'this probe wrote nothing under scripts/: the three variants are app
   // tracked-file count is the figure he measured as the separator (200 / 0 / 1) and the reason it is
   // the right one is that it is diagnostic in BOTH window states — it does not depend on anything
   // being dirty. It lives in the shared lib rather than here, with the three cases as tests, because
-  // ~40 probe files print this same line and the blind spot was the lib's.
+  // 37 probe files print this same line and the blind spot was the lib's, not this caller's.
   `fingerprint ${TREE_AT_START} → ${TREE_AT_END} · equal: ${TREE_AT_END === TREE_AT_START} · `
     + `components ${TREE_AT_START.split(' ').length} · tracked files named by the pathspec: ${tracked}`
     + ` · porcelain entries under scripts/: ${windowEntries}`

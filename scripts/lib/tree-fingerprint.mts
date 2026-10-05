@@ -147,7 +147,8 @@ export function windowState(repo: string, pathspec: string): string {
  * the right figure rather than a second emptiness proxy.
  *
  * Deliberately a separate function rather than folded into {@link windowState}'s return: that
- * returns porcelain text and ~40 probe files read it as text today.
+ * returns porcelain text and 37 probe files read it as text today (40 files reference this module;
+ * the other three are the sweep, the promotion path and `lib/db-sentinel.mts`).
  *
  * @param repo absolute path to the repository root
  * @param pathspec a git pathspec
