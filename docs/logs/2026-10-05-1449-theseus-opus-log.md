@@ -219,3 +219,52 @@ measurement's labelling**, which is the actual reason his `C5` was invisible to 
 human reading the run output. That is a lib-shaped observation about `probe-outcome.mts`, one layer
 below where I worked this fire, and I am not claiming it in a file I do not own without saying so
 first — the same courtesy he extended on the item I took.
+
+## 15:58 — Session wrap verification
+
+**Step 1 — commits on `origin/main`** (`git log origin/main --oneline -5` after `git fetch`):
+
+```
+abfbec1f coord+log+research: 10/5 WORK fire — Round 336, the arm-label class is not statically detectable and five of five survivors are deliberate
+f088755c mail: Round 336 to Daedalus/Argus — do not build the arm-label arm, and your cure holds in the real wording
+8dcade72 docs(sweep): round336 — retire the wording-around workaround, in the wording that originally broke it
+328b5401 log: round336 — the arm-label class is not statically detectable, and the cure is per-file opt-in
+e71152e5 log: 10/5 WORK fire opener — taking the unowned arm-label namespace item
+```
+
+All five are mine this fire. Mail (`f088755c`) was committed alone and pushed to `main` ahead of
+the work commits, per the worktree mail rule.
+
+**Step 2 — each deliverable present in the `origin/main` TREE**, checked with `git cat-file` against
+`origin/main:<path>` rather than `ls` against this worktree, because a file in my own tree is not
+evidence it was delivered:
+
+```
+PRESENT    15162 bytes  docs/logs/2026-10-05-1449-theseus-opus-log.md
+PRESENT    16581 bytes  docs/mail/theseus-to-daedalus-argus-cc-…-your-arm-label-item-should-not-be-built-as-an-arm-…-2026-10-05.md
+PRESENT    11044 bytes  docs/research/round336-the-arm-label-collision-class-is-not-statically-detectable-…-2026-10-05.md
+PRESENT  1706460 bytes  docs/COORDINATION.md
+PRESENT   135260 bytes  scripts/sweep-probes.mjs
+OK       docs/probe-findings absent from main (invented dir not shipped)
+```
+
+(The log's byte count above is from before this final section; this entry is the last commit.)
+
+**Step 3** — this log is committed and pushed last.
+
+### State of the fire's items, for the next session
+
+- **Closed by me:** the arm-label namespace item (answered: do not build the arm — §15:05/15:14);
+  my wording-around workaround and one stale present-tense sentence of my own prose (§15:46).
+- **Open, routed to Daedalus as an offer, not a request:** the per-file opt-in arm for
+  `probe-round308`. Driven against three controls; not landed because the file is his.
+- **Open, surfaced and deliberately unclaimed:** `measure` records nothing, so no instrument can
+  grade a measurement's labelling. Lib-shaped, `probe-outcome.mts`.
+- **Mine, unchanged and still held:** the round324 labels item.
+- **Not mine, unmoved:** `probe-round225`'s port-3001 block — the 1 blocked in every sweep today.
+- **Parked on xian, unchanged:** the entity-delete thread; the CIO Laya/AAXT memo (`to: themis,
+  argus`, not this seat). **Nothing in this fire needs a decision from xian.**
+
+Mail close-discipline: Daedalus's Round 335 memo is left in `docs/mail/` rather than moved to
+`read/`, deliberately — my reply closes the four items it addressed to me but opens the
+`probe-round308` arm offer back to him, so the thread has an open action item.
