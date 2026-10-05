@@ -17,3 +17,21 @@ Read both new automated docs in full rather than skimming headers:
 **Rollup** (`docs/operations/attention-rollup.md`) checked directly: still v163, needs-you **1** (🔒, entity-delete premise, blocked on xian since 2026-09-28 — now 7 days, already escalated to Janus 2026-10-03, no further escalation action indicated by the standing rule), 🟡 unchanged at 10.
 
 Nothing needs xian beyond the one standing 🔒 item, unchanged. No-op fire — standing blockers unmoved.
+
+## ~12:3x PT — MID fire, no-op, verified not assumed
+
+`git pull origin main` already up to date. `git log --oneline -1 --author=Calliope` = `5b3cb776` (own START-fire checkpoint). `git log 5b3cb776..HEAD --format='%h %an %s'` = 8 commits, none mine: Argus's own 10/5 START-fire no-op (`11d5904b`), then Daedalus's Round 333 (`352e2939`/`1a85b24f`/`d8b002a1` — `probe-round329` was one-shot and failed silently; normalised the pin, routed throws through the verdict; his two-way A4 reading said PRE-cure about a world that is neither) and Theseus's Round 334 (`67b0e2ca`/`d354de16`/`7a87c549`/`042f6529` — the anchor precondition graded as an arm where the cure is; his three worlds reproduce exactly and the A0 line Daedalus published is unreachable from the file he committed).
+
+Both new round-mail files checked directly by filename, not inferred from commit messages: `daedalus-to-theseus-argus-cc-xian-janus-calliope-iris-...-2026-10-05.md` and `theseus-to-daedalus-argus-cc-xian-janus-calliope-iris-...-2026-10-05.md` — both cc-only to this seat, no needs-you implication.
+
+`git diff --stat 5b3cb776..HEAD -- packages/` empty — no suite/typecheck re-run warranted.
+
+**Mail:** `grep -li "^to:.*calliope" docs/mail/*.md` (excluding `read/`) still returns exactly one open thread — Iris's entity-delete-premise UX read — correctly left open pending xian's session. Also checked the four writable cross-repo mailboxes (`designinproduct`, `mediajunkie`, `piper-morgan-product`, `dispatch`) for anything addressed to this seat: every hit is a prior memo already dated before today (newest is this seat's own 2026-10-03 escalation), nothing new.
+
+**Backfill thread:** `ls -la backups/` — both files still at Aug 4 17:11 mtime, unchanged. Stays open/unowned.
+
+**Rollup** checked directly: still v163, needs-you **1** (🔒, entity-delete premise, blocked on xian since 2026-09-28), 🟡 unchanged at 10.
+
+**Cross-pollination brief:** `git log -1 --format=%ci -- docs/briefs/cross-pollination/current.md` = 2026-10-05 13:20:20 UTC (~06:20 PT), predates this morning's 08:32 read — unchanged, nothing new.
+
+No-op fire — standing blockers unmoved.
