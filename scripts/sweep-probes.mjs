@@ -1298,6 +1298,26 @@ export const DEFERRED = [
   // fire — hazard-clean, 1 of 1 promotable, all 7 predicates observed, no exemption, no `--force`.
   // It never needed deferring on the merits; it was listed here so the tool wrote the verdict
   // (Round 295). Attestation in SWEPT above.
+
+  // Round 329, Daedalus, 2026-10-04 (STOP fire). Mechanises the two figures Round 329 published in a
+  // memo only — my half of the anchor cure costs `probe-round328` 2 of its 15 regression arms, both
+  // halves cost 4 — and names the one-shot mechanism correctly after two wrong attempts at it (mine
+  // in 329, Theseus's restatement in 330): the cure DELETES the collision edge the pricing arms
+  // index into, so their subject is `undefined` and they fall through fallbacks written to assert
+  // false. Its C2 is the correction both seats needed: `^\s*^\s*X` is equivalent to `^\s*X`, not a
+  // pattern that matches nothing, so the double anchor we both blamed could not have reddened
+  // anything.
+  //
+  // DEFERRED on the merits, not as a staging step, and the reason is the one this thread defers on:
+  // **it spawns three `npx tsx` children.** Variant costs can only be measured by running the other
+  // seat's file, and running it honestly means running the file rather than a reimplementation of
+  // it. What this probe does NOT do is edit tracked source: it copies `scripts/` into gitignored
+  // `.testdata/r331-sandbox/`, edits the COPIES, and brackets itself with a `scripts/` fingerprint
+  // (Z1). The two earlier drivers of these same figures edited the live tree with a restore in a
+  // `finally` — right for a one-off hand drive, wrong for anything that can be interrupted.
+  //
+  // Hand-driven this fire: `All 9 regression checks passed`, 1 measurement, exit 0, ~40 s.
+  'probe-round329-the-cure-deletes-the-edge-its-own-pricing-arms-index-into-so-the-one-shot-mechanism-is-a-vanished-subject-and-not-a-double-anchor.mts',
 ];
 
 /**
