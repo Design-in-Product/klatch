@@ -797,9 +797,39 @@ export const SWEPT = [
     // Spawns nothing: no port, no database, no corpus, no model, no compiler. File reads, regexes
     // over a tree it does not write, in-process `summarise()` calls. Z1 is a before/after
     // `scripts/` fingerprint.
+    // Round 334 (Theseus, 2026-10-05) moved the figure 14 → 15 and 3 → 4 measurements, by adding
+    // the arm Round 332 §5 routed and Round 333 §6 declined to half-land in its own file: A4 grades
+    // the PRECONDITION on anchoring a pin — an already-anchored entry of the `BORROWED` table must
+    // still have at least one hit at its source — and A5 reports the per-entry anchor-safety census
+    // (3 of 8 anchor-safe; 1 of 8, `round322 handRollsSummary`, actually needs the anchor). A4's
+    // graded population is EMPTY today, so its detector is graded alongside it by two fixtures
+    // located in the live table by property rather than position: one anchor-safe entry it must see
+    // surviving and one anchor-breaking entry it must see vanishing. Without those the arm would be
+    // the vacuous tripwire this thread has caught itself shipping before.
+    //
+    // The promotion record, moved up here out of `why` because the entry-schema check reads every
+    // `N/N` pair in `why` and requires it to agree with `expect` — and it caught this edit on its
+    // first run, reporting `why says 14 where expect pins 15` while the arm itself was green. The
+    // original promotion (Round 324, Daedalus) drove the file twice through `promote-probes.mts`,
+    // real HOME and an empty HOME as the one variable: 14/14 green, exit 0 on both arms, 788 and
+    // 1097 ms, with population and tree fingerprints for `scripts/` and `packages/` unchanged
+    // across 39 samples. That history belongs in prose; the pinned figure belongs to today's file.
+    //
+    // DO NOT PUT A ROUND NUMBER AND AN ARM LABEL ON THE SAME LINE IN THE `why` BELOW, and do not
+    // reflow this comment so that they land together. `probe-round308`'s general arm-pointer
+    // detector v2 binds line-locally: a round citation and an arm token on ONE line become a
+    // reported pointer, every such report is a false positive by its own C1 (0 of 9 real), and C1
+    // pins the TOTAL at 13 — so the pointer this entry's prose accidentally formed reddened C1 and
+    // D4 in a file this fire never touched. Driven as a one-variable counterfactual: at
+    // `d8b002a1` the probe reads `All 22 regression checks passed.`, 8 reported; with a `why` line
+    // carrying both tokens it reads `2 of 22 regression check(s) FAILED.`, 9 reported; rewording
+    // that ONE line and nothing else restores `All 22` and 8. The real cure is the frozen-figure
+    // cure this thread has applied before — grade the invariant (every reported pointer explained,
+    // none real) and REPORT the count — and it belongs to that file's owner, not here. This comment
+    // is the workaround, labelled as one.
     file: 'probe-round324-the-skips-figure-has-four-states-and-the-two-no-arm-claims-are-where-a-lowercase-channel-lands.mts',
-    expect: /All 14 regression checks passed/,
-    why: 'driven twice by the promotion path (real HOME and an empty HOME, one variable): 14/14 green, exit 0 both arms, 788/1097 ms; population and tree fingerprints for scripts/ and packages/ unchanged across 39 samples',
+    expect: /All 15 regression checks passed/,
+    why: 'Re-driven in-repo by Theseus on 2026-10-05 after two arms were added (attribution in the note above, deliberately not on this line): 15/15 green, 4 measurements, exit 0. Spawns nothing — file reads and in-process summarise() calls — so the figure is deterministic and the entry-schema check cross-reads it against this pin',
   },
   {
     // PROMOTED BY: Round 325, Daedalus, 2026-10-03 STOP fire — driven by `promote-probes.mts`

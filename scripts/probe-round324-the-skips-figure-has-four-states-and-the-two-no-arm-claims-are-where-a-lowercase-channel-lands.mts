@@ -326,6 +326,86 @@ check('A3', 'every predicate this file borrows — from probe-round322, probe-ro
     ? `all ${BORROWED.length} borrowed source lines present in round322/round323/round224`
     : `no longer verbatim: ${missing.join('; ')}`);
 
+/**
+ * A4 — THE PRECONDITION ON ANCHORING A PIN, graded here because this is where the cure is.
+ *
+ * Round 329 found that one entry of the table above — `round322 handRollsSummary` — matches TWO
+ * lines of its target, because the arm-G predicate two entries down contains its body as a
+ * substring. The cure under discussion is to anchor that one pattern with `^\s*` so it matches the
+ * declaration and not the quotation. Round 332 §5 then measured what happens if anyone reads that
+ * as a policy for the table: **five of the eight entries go from 1 hit to 0 under anchoring**,
+ * because they match MID-LINE at their source — a type inside a union, a flag inside a larger
+ * regex, a conjunct inside a predicate. A3 would then report `no longer verbatim` about source
+ * nobody edited: a false red that names an edit which did not happen, in a file the reader will go
+ * and diff. Round 333 recorded the precondition in `probe-round329`'s header, next to the cure it
+ * constrains; this is the arm, and it is deliberately here rather than in a new file, because the
+ * next fire's mistake is made HERE, in this table, one entry at a time.
+ *
+ * The precondition: **anchor a pin only if the anchored pattern still has at least one hit.**
+ *
+ * Today no entry is anchored, so the population this arm grades is EMPTY and the check is vacuous —
+ * which is the shape of tripwire this thread has caught itself shipping before (Round 231: "my own
+ * tripwire was the vacuous one"). So the detector is graded too, by two fixtures built from the
+ * live table's own patterns rather than hand-typed: one entry Round 332 §5 measured as anchor-SAFE
+ * and one it measured as anchor-BREAKING. An always-true detector fails the second; a detector that
+ * cannot see a surviving hit fails the first. The arm is therefore non-vacuous while the population
+ * is empty, and becomes load-bearing the moment somebody anchors an entry.
+ */
+const anchorOf = (re: RegExp): RegExp => new RegExp(`^\\s*${re.source}`, re.flags.replace('m', ''));
+const isAnchored = (re: RegExp): boolean => re.source.startsWith('^');
+/** Hits counted in LINES of the target — the unit Round 332 §4 published, so the figures compare. */
+const hitLines = (f: string | undefined, re: RegExp): number =>
+  f === undefined ? -1 : raw(f).split('\n').filter((l) => re.test(l)).length;
+
+const anchoredEntries = BORROWED.filter(([, , re]) => isAnchored(re));
+const anchoredWithNoHit = anchoredEntries
+  .filter(([, f, re]) => hitLines(f, re) < 1).map(([label]) => label);
+
+// The two fixtures, located by the property rather than by position, so reordering the table
+// cannot silently empty them. `safeFixture` is an entry whose anchored form still hits;
+// `breakFixture` is one whose anchored form hits nothing. Round 332 §5: 3 of 8 and 5 of 8.
+const safeFixture = BORROWED.find(([, f, re]) => !isAnchored(re) && hitLines(f, anchorOf(re)) >= 1);
+const breakFixture = BORROWED.find(([, f, re]) => !isAnchored(re) && hitLines(f, re) >= 1
+  && hitLines(f, anchorOf(re)) === 0);
+const detectorSeesSafe = safeFixture !== undefined
+  && hitLines(safeFixture[1], anchorOf(safeFixture[2])) >= 1;
+const detectorSeesBreak = breakFixture !== undefined
+  && hitLines(breakFixture[1], breakFixture[2]) >= 1
+  && hitLines(breakFixture[1], anchorOf(breakFixture[2])) === 0;
+
+check('A4', 'THE PRECONDITION ON THE ANCHOR CURE, graded where the cure is: every entry in the table '
+  + 'above whose pattern is ALREADY anchored still has at least one hit at its source — so anchoring '
+  + 'a pin that matches mid-line reddens THIS arm, at the entry, instead of reddening A3 with '
+  + '`no longer verbatim` about a file nobody edited. The population is empty today, so the detector '
+  + 'is graded alongside it by two fixtures drawn from the live table: one anchor-safe entry it must '
+  + 'see surviving and one anchor-breaking entry it must see vanishing',
+  anchoredWithNoHit.length === 0 && detectorSeesSafe && detectorSeesBreak,
+  `already-anchored entries: ${anchoredEntries.length} of ${BORROWED.length}`
+    + `${anchoredEntries.length ? ` [${anchoredEntries.map(([l]) => l).join('; ')}]` : ''}`
+    + ` · anchored-but-hitless: ${anchoredWithNoHit.join('; ') || 'none'}`
+    + ` · detector known POSITIVE "${safeFixture?.[0] ?? '(none found)'}" anchored hits `
+    + `${safeFixture === undefined ? -1 : hitLines(safeFixture[1], anchorOf(safeFixture[2]))} (needs ≥1): ${detectorSeesSafe}`
+    + ` · detector known NEGATIVE "${breakFixture?.[0] ?? '(none found)'}" bare `
+    + `${breakFixture === undefined ? -1 : hitLines(breakFixture[1], breakFixture[2])} → anchored `
+    + `${breakFixture === undefined ? -1 : hitLines(breakFixture[1], anchorOf(breakFixture[2]))} (needs 0): ${detectorSeesBreak}`);
+
+/**
+ * A5 — and the census behind the precondition, REPORTED and not graded, so the next fire reads the
+ * figure instead of rediscovering it. Round 332 §5's published numbers were 3 of 8 anchor-safe and
+ * exactly 1 of 8 in need of the anchor (`round322 handRollsSummary`, bare 2 → anchored 1). A count
+ * is not an arm here on purpose: the table is expected to grow, and a pinned 3-of-8 would be a
+ * frozen figure of exactly the kind round322/round323 are about.
+ */
+measure('A5', `anchor-safety of the pin table, per entry: `
+  + BORROWED.map(([label, f, re]) => {
+    const b = hitLines(f, re);
+    const a = hitLines(f, anchorOf(re));
+    return `${label.slice(0, 30)} ${b}->${a}${a >= 1 ? '' : ' (anchor breaks it)'}`;
+  }).join(' · ')
+  + ` — anchor-safe ${BORROWED.filter(([, f, re]) => hitLines(f, anchorOf(re)) >= 1).length} of ${BORROWED.length}`
+  + `, needs the anchor (bare > 1 hit) `
+  + `${BORROWED.filter(([, f, re]) => hitLines(f, re) > 1).length} of ${BORROWED.length}`);
+
 console.log('\n── B. the tripwire for the cell, and the narrow scope of the claim ──');
 
 const absentMembers = liveFigures.filter((x) => x.fig === 'absent' || x.fig === 'ambiguous');
