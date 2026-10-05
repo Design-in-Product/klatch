@@ -388,14 +388,60 @@ measure(
     V2.map((h) => `${h.file.replace(/^scripts\//, '').slice(0, 24)}:${h.line} → r${h.round}/${h.arm}`).join(' · '),
 );
 
+/**
+ * THE FROZEN FIGURE IS GONE FROM C1 AND D4, and this is the cure for a tripwire on the repo's own
+ * prose rather than on the detector the arms name.
+ *
+ * Until this fire both predicates carried `V1.length + V2.length === 13`, and the stated reason was
+ * right: a repair to either detector version that moves the total should redden an arm rather than
+ * quietly restate the headline. What the conjunct could not do is tell a repair to the detector from
+ * ANYBODY WRITING A SENTENCE that cites a round and an arm label on one source line — which is the
+ * most ordinary act in this repository. Both general detectors scan `scripts/` SOURCE, comments
+ * included, so the pinned total is a count of false positives in this repo's own comments and it
+ * moves whenever the comments do.
+ *
+ * It had already fired three times on prose before this fire (see the WIDENED-BY block for this
+ * file's sweep entry, which records the pin going 13 -> 15 off a comment in a third file). The
+ * fourth was Theseus's, in the fire that routed this cure: one `why` string in `sweep-probes.mjs`
+ * made v2 report a ninth pointer, C1 and D4 both went red, and nothing about either detector had
+ * changed. He then found that the trap fires on its own documentation — an inline example
+ * DEMONSTRATING the triggering shape IS the triggering shape — so the instrument could not be
+ * warned about at the site of its own false positive without producing another one. A tripwire you
+ * cannot write a warning about is past the point of being worth wording around.
+ *
+ * WHAT IS GRADED INSTEAD is the invariant that would actually regress under a detector repair, and
+ * it was already here: every reported pointer is explained by one of the four reasons, and none is
+ * real. A repair that reports something no reason covers reds C1 at `V2_EXPLAINED.size`; the
+ * falseness of v1's reports is graded the same way at its own arm above. So the soundness claim is
+ * unchanged and only the FIGURE moved — out of the predicate and into C5, which reports the live
+ * total against the recorded baseline every run. That is this file's section-E discipline applied
+ * one section up: a figure that is reported cannot go stale, and a figure that is pinned goes stale
+ * without reddening anything or reddens without anything having gone wrong.
+ *
+ * One hazard this leaves, recorded because it is not obvious: a pointer citing a round WITH no
+ * probe file is explained by `NO_PROBE`, so a fire's own prose is normally free. Minting a probe
+ * file for the round a comment cites removes that explanation and the pointer must then be covered
+ * by one of the other three, or C1 reds for a real reason.
+ */
 check(
   'C1',
   'THE FINDING, second half: recognising both citation spellings does not make the general detector sound — it reports MORE, and every one is still false, now for FOUR distinct reasons rather than one',
-  V2.length > 0 && V2_EXPLAINED.size === V2.length && V1.length + V2.length === 13,
+  V2.length > 0 && V2_EXPLAINED.size === V2.length,
   `${V2_EXPLAINED.size} of ${V2.length} explained, 0 real · no-probe ${NO_PROBE.length} · template-literal label ${TEMPLATE_LABEL.length} · ` +
     `possessive binding ${POSSESSIVE.length} · owned by the enclosing file ${SELF_OWNED.length}. ` +
     `Across both versions: ${V1.length} + ${V2.length} = ${V1.length + V2.length} reported, 0 real. ` +
-    'The 13 is pinned on purpose: it is the figure the memo states, and a repair to either version that changes it should redden this arm rather than quietly restate the headline.',
+    'What is graded is that EVERY report is explained and none is real; the total is reported by C6 and ' +
+    'deliberately not pinned here, because both detectors scan this repo\'s comments and a pinned total ' +
+    'reds when the prose moves rather than when the detector does.',
+);
+
+measure(
+  'C6',
+  `the total this file's headline states, REPORTED and not graded: v1 ${V1.length} + v2 ${V2.length} = ` +
+    `${V1.length + V2.length} reported, 0 real. Recorded baseline: 13, measured at promotion and stated ` +
+    `in the filename and docblock. Live total ${V1.length + V2.length === 13 ? 'matches' : 'DIFFERS FROM'} ` +
+    'that baseline — a difference is expected whenever the repo\'s comments change and is only a finding ' +
+    'if C1 or the v1 arm also went red, which is where unexplained reports land.',
 );
 
 check(
@@ -512,9 +558,9 @@ check(
 
 check(
   'D4',
-  'and this is the whole argument for narrow over general, as a measured comparison rather than a preference: on this repo, this fire, the narrow detector reports 0 false positives and the two general ones report 13 between them',
-  V1.length + V2.length === 13 && LIVE_STRICT.ok,
-  `narrow: 0 false · general v1+v2: ${V1.length + V2.length} false. ` +
+  'and this is the whole argument for narrow over general, as a measured comparison rather than a preference: on this repo, this fire, the narrow detector reports 0 false positives and the two general ones report a nonzero number of them, every one false. The comparison is the claim; the particular total is not, and pinning it made this arm red when the repo\'s prose moved rather than when a detector did',
+  V1.length + V2.length > 0 && LIVE_STRICT.ok,
+  `narrow: 0 false · general v1+v2: ${V1.length + V2.length} false (reported, not pinned — see C6). ` +
     'The difference is not care taken. The narrow form fixes the site, the round, the arm and the token in advance, so it never infers a binding; B and C exist only because every line-local approximation of that binding manufactures findings.',
 );
 
@@ -757,11 +803,46 @@ check(
   'fingerprint of scripts/ taken before arm A0 and after the last arm, compared as a delta rather than as a cleanliness claim about the fire\'s tree.',
 );
 
+/**
+ * THE `.gitignore` READ IS GUARDED, and the reason is a crash with no verdict line.
+ *
+ * This read used to be inline in Z2's predicate, as a bare `readFileSync(join(REPO, '.gitignore'))`.
+ * In this repo the file exists, so the hazard was latent — but a probe in this thread is routinely
+ * driven from a SCRATCH COPY of `scripts/` in a git repo stood up for the run, and a scratch root
+ * without a `.gitignore` makes that read throw ENOENT. The throw lands AFTER every arm above has
+ * printed and BEFORE `summariseAndExit`, so the file exits 1 with no summary line at all: nine
+ * arms' worth of output and nothing to conclude from. Theseus found it that way in the fire that
+ * routed it here — his first counterfactual came back exit 1 with no verdict and an empty FAIL set
+ * in all three worlds, which reads as "the worlds do not differ" and is instead "the instrument
+ * died." Exit 1 with no summary line is not a measurement, for the same reason exit 0 with no
+ * summary line is not one, and this file is SWEPT, so the sweep channel would have reported it as a
+ * blocked probe rather than as a crash.
+ *
+ * Same class as the repair this seat made to `probe-round329` earlier in the week, and the response
+ * is the same: a state the probe cannot read is a FINDING about the tree it was pointed at, so it
+ * goes through the verdict path as a red arm with a readable detail, never out of the module as a
+ * throw.
+ */
+const IGNORE_AT = join(REPO, '.gitignore');
+const ignoreSrc: string | null = existsSync(IGNORE_AT)
+  ? ((): string | null => {
+    try {
+      return readFileSync(IGNORE_AT, 'utf8');
+    } catch (e) {
+      console.log(`  (.gitignore present but unreadable: ${e instanceof Error ? e.message : String(e)})`);
+      return null;
+    }
+  })()
+  : null;
+
 check(
   'Z2',
-  'every fixture this probe mints — one in section B, three in section F — lived under .testdata/, which is gitignored, and the tree is removed before this arm runs',
-  !existsSync(SCRATCH) && /(^|\n)\.testdata\//.test(readFileSync(join(REPO, '.gitignore'), 'utf8')),
-  `${relative(REPO, SCRATCH)} absent at exit · .gitignore names .testdata/`,
+  'every fixture this probe mints — one in section B, three in section F — lived under .testdata/, which is gitignored, and the tree is removed before this arm runs. The .gitignore read is GUARDED: an absent or unreadable file reds this arm with a readable detail instead of throwing out of the module after every arm has printed',
+  !existsSync(SCRATCH) && ignoreSrc !== null && /(^|\n)\.testdata\//.test(ignoreSrc),
+  `${relative(REPO, SCRATCH)} absent at exit · ` +
+    (ignoreSrc === null
+      ? `.gitignore NOT READABLE at ${relative(REPO, IGNORE_AT)} — this arm is red and the probe still concludes`
+      : '.gitignore names .testdata/'),
 );
 
 measure(
