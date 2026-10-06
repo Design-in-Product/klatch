@@ -125,3 +125,86 @@ origin/main`) and on disk (`ls`):
 `git status --porcelain` empty apart from the gitignored `.testdata/r339-daedalus/` scratch.
 
 **Step 3** — this log pushed last, after Steps 1 and 2.
+
+---
+
+## ~13:2x–13:5x PT (WORK fire) — Round 341: the class one level up is empty of holes, and the item Theseus declined reds my own F6 arm on a false defect
+
+**Baseline.** Worktree clean on arrival, wrapper pre-synced. `HEAD == origin/main == 46828cc5`
+confirmed by `git fetch` and two `rev-parse`s. The three head commits above my last checkpoint are
+**Calliope's (`46828cc5`), Janus's (`bebe5d83`) and Theseus's (`1c3cb11c`)** — `%an`-checked before
+reading any as mine.
+
+**Mail.** Theseus's Round 340 memo (`to: daedalus, argus`) read in full, the reply to my Round 339.
+Replied in the same fire. Nothing else addressed to this seat; the CIO Laya/AAXT memo is still
+`to: themis, argus`.
+
+### Verification of Round 340
+
+All four §1 figures exact under a `node` walk: **200** files under `scripts/`, **194** with a code
+extension, **33** `const measure`, **28** `function measure(`. His 18 checked **member by member**
+rather than by count — the 11 all enclosed by `measure`, `probe-round221` MEAS-present,
+**`probe-round220` tokenless**, the five new ones all enclosed by `meas`. His "50 measurement
+helpers" **not verified and labelled so**: my key counts emission *sites*, a different unit.
+
+### The finding I went looking for, and the answer is a negative one
+
+The surviving shared assumption after his repair was not the helper's name — it was the
+**DECLARATION**. Both his emission key and my name key require the measurement to pass through one.
+Keyed on the emission SITE instead: **99 sites in 94 files — 90 enclosed by a named declaration, 9
+at MODULE SCOPE, 0 anonymous.** **7 of the 9 module-scope sites are summary loops draining a
+container** — the gradeable shape, not a hole; the other 2 are not measurements at all.
+**Zero holes. The population stays 18.** Structural, not lucky: bypassing the helper means printing
+*from* the container, which is what makes it gradeable. Control: his F6 renderer and my key return
+the same **99 in 94**, symmetric difference **0** — worth exactly what they do not share, and they
+share the token.
+
+### The live finding, landed — in my own Round 339 arm
+
+F6 selected its population by token **PRESENCE**, so a line that merely mentions MEAS had to be
+countable. Two live lines mention it and are no measurement: `probe-round240:474` (a summary line)
+and `geometry-distance-arm.mjs:102` (an identifier). F6 reads SWEPT and `promote-probes.mts` moves
+DEFERRED into SWEPT: **of the 109 DEFERRED files, 3 red F6 on promotion and one is a FALSE defect.**
+Theseus's §4 priced the miss direction correctly; neither of us priced this one.
+
+Landed: a **label-position** selector, deliberately NOT equivalent to `MEAS_LINE` (an equivalent one
+makes F6 vacuous — his own lesson), plus **arm F7** asserting both directions, d1 derived from the
+swept set and d2 fixtured because no clean population can show non-equivalence. Priced first:
+**0 countable-but-dropped, 2 admitted-but-uncountable, price 0** on the swept 32. **Nine
+counterfactual limbs driven**, the pre-341 renderer read out of `git show` and asserted not to
+contain the new filter: promoting `240` reds F6 before and is green after; promoting `196` or `221`
+**still** reds it. 52 → 53 checks, pin and `why` updated together.
+
+### My own mistake, and the fixture that was missing
+
+**82 of 99** sites were attributed to `check` by v1 — a greedy parameter-list match resolved to the
+**earliest** declaration in the window, not the nearest. **All 13 fixtures passed**, because each
+held exactly one declaration. Rule: *a known positive copied from one real site grades the
+classifier; only a fixture copied from a real NEIGHBOURHOOD grades the resolver.* Now 16/16 with
+`probe-round194:44-56` copied verbatim. Also mine: a substring token test selected
+`${MEASURED.length}`, caught only because the module-scope-only class came out at 4 and a 4-member
+population gets hand-read.
+
+### Gate (final tree, nothing piped, each figure read from a captured file)
+
+- `npm test` — **0** `error TS`, server **140 files / 2178 passed / 1 skipped**, client **25 passed /
+  13 skipped** (325 passed / 13 skipped), `CENSUS OK`, swept **36**.
+- `npx tsc -p scripts/tsconfig.json --noEmit` — clean, **0 lines**.
+- `node scripts/sweep-probes.mjs --drive`, **verdict line read, not the exit code**:
+  **`SWEEP BLOCKED — 35 of 36 swept probes green, 0 red, 1 blocked (did not conclude), 0 census
+  problem(s), 109 deferred`** — identical to Rounds 339 and 340. `probe-round269` PASS exit 0.
+- `probe-round269` standalone: **`All 53 regression checks passed, 3 measurements, 0 skips`**,
+  F6 and F7 both PASS. `probe-round308`: **`All 23 regression checks passed.`**, B1 PASS.
+- Blocked probe is `probe-round225`, exit 3, port 3001 — xian's standing occupant, not this fire's.
+- No server started, no port bound, no database opened, no model called. Scratch under
+  `.testdata/r341-daedalus/` (`.gitignore:33`), uncommitted.
+
+### Standing blockers — one has CLOSED
+
+The entity-delete thread is **no longer parked on xian**. Janus ruled "allow" (`bebe5d83`) and
+Calliope closed the thread in the 10/6 MID fire (`46828cc5`), filing a closing memo and moving all
+six memos into `docs/mail/read/`. Verified by `git show --stat` and by listing `docs/mail/read/`,
+not from the commit subject alone — I had this queued to report as "parked, unchanged," which it is
+not. The CIO Laya/AAXT memo is still open and still `to: themis, argus`.
+
+**Nothing in this fire needs a decision from xian.**
