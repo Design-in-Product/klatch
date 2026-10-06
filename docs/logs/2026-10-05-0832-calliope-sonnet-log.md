@@ -35,3 +35,21 @@ Both new round-mail files checked directly by filename, not inferred from commit
 **Cross-pollination brief:** `git log -1 --format=%ci -- docs/briefs/cross-pollination/current.md` = 2026-10-05 13:20:20 UTC (~06:20 PT), predates this morning's 08:32 read — unchanged, nothing new.
 
 No-op fire — standing blockers unmoved.
+
+## ~17:0x PT — SWEEP fire, no-op, verified not assumed
+
+`git fetch origin` then `git log origin/main --oneline -5`: HEAD `6684442e` — worktree already current. `git log 6ac39431..HEAD --format='%h %an %s'` (own prior MID-fire checkpoint) = 11 commits, none mine: Daedalus's Round 335 (`1633cbda`/`1832bc50`/`496aa63a`/`aff1b4d8`/`a5d1c2e6` — unfroze `probe-round308`'s C1/D4 total and guarded its `.gitignore` read; the tracked-file count closes Z1's clean-window blind spot, landed in the lib the blind spot belonged to, new `trackedCount` export with 4 tests, one of which pins the defect directly; his own A0-line finding — no file printed it, it was reconstructed from code shape while a capture was in flight — and the repair: every world now writes its full output to `<label>.out.txt`), Argus's own Rounds 333–335 sweep (`86a3210a`, no discrepancy, no-op), and Theseus's Round 336 (`e71152e5`/`328b5401`/`8dcade72`/`f088755c`/`abfbec1f`/`6684442e` — took the unclaimed arm-label item, found the class is **not statically detectable**: identical text is a defect in one file and the intended convention in another, with no file-independent discriminator; ruled against building it as an arm; retired the §3 workaround, re-driven in the wording that originally broke it, nothing reds).
+
+Both new round-mail files (Round 335, Round 336) checked directly by filename and header: `daedalus-to-theseus-argus-cc-xian-janus-calliope-iris-...-2026-10-05.md` and `theseus-to-daedalus-argus-cc-xian-janus-calliope-iris-...-2026-10-05.md` — both cc-only to this seat, both close with "Nothing here needs a decision from xian," no needs-you implication.
+
+**`git diff --stat 6ac39431..HEAD -- packages/` was NOT empty this fire** (first time today) — one file, `packages/server/src/__tests__/round263-the-tree-fingerprint.test.ts`, +62/-1 (Round 335's `trackedCount` tests). Re-verified fresh rather than trusting the memos' self-reported figures: `npm run typecheck` clean (0 `error TS` across all four workspaces, output read from `.scratch/calliope-typecheck.txt`, not piped); `npm test` run to completion into a file — server 140 files/2178 passed/1 skipped, client 25 files/325 passed/13 skipped — matches both Round 335 and Round 336 memos' own figures exactly. Ran the actual sweep drive (not just `--census`, per the standing "`npm test` is not the sweep gate" lesson): `node scripts/sweep-probes.mjs` into a file, tail read directly — `SWEEP BLOCKED — 35 of 36 swept probes green, 0 red, 1 blocked (did not conclude), 0 census problem(s), 109 deferred`, the one blocked probe being the known `probe-round225` port-held case — byte-identical to both memos' "35 of 36 green, 0 red, 1 blocked" gate line.
+
+**Mail:** `grep -li "^to:.*calliope" docs/mail/*.md` (excluding `read/`) still returns exactly one open thread — Iris's entity-delete-premise UX read — correctly left open pending xian's session. Re-checked all four writable cross-repo mailboxes (`designinproduct`, `mediajunkie`, `piper-morgan-product`, `dispatch`) for anything addressed to this seat: every hit still predates today (newest is this seat's own 2026-10-03 escalation) — nothing new.
+
+**Backfill thread:** `ls -la backups/` — both files still at Aug 4 17:11 mtime, unchanged. Stays open/unowned.
+
+**Rollup** checked directly: still v163, needs-you **1** (🔒, entity-delete premise, blocked on xian since 2026-09-28 — 7 days), 🟡 unchanged at 10.
+
+**Cross-pollination brief:** `git log -1 -- docs/briefs/cross-pollination/current.md` still `b709a964`, 2026-10-05 13:20:20 UTC — unchanged since this morning's read.
+
+No-op fire on coordination/mail/rollup; the one non-empty `packages/` diff was independently re-verified (typecheck, full suite, full sweep drive) and matches the authoring agents' self-reported figures exactly. Standing blockers unmoved.
