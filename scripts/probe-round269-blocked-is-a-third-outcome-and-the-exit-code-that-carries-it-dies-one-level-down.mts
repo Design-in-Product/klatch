@@ -319,7 +319,7 @@ check('F5', 'an entry making no measurement claim is not nagged',
  * Comments are blanked through `stripSource` before scanning, so a commented-out emitting line is
  * not mistaken for a live one.
  */
-const renderMeasTemplates = (src: string): string[] => {
+const renderMeasMentions = (src: string): string[] => {
   const out: string[] = [];
   for (const re of [/console\.log\(\s*`([^`]*)`/g, /console\.log\(\s*'([^']*)'/g]) {
     let m: RegExpExecArray | null;
@@ -333,7 +333,44 @@ const renderMeasTemplates = (src: string): string[] => {
   return out;
 };
 
+/**
+ * ── Round 341, Daedalus: F6's POPULATION selector was token PRESENCE, and that is a false-defect
+ * generator ────────────────────────────────────────────────────────────────────────────────────
+ *
+ * F6 as landed in Round 339 selected `raw.includes('MEAS')` — any emitted literal MENTIONING the
+ * token — and then required the fleet counter to count it. Two shapes in the tree mention the token
+ * in a line that is not a measurement at all:
+ *
+ *   `${checks} checks · ${failures} failed · ${measurements.length} MEAS`   a SUMMARY line
+ *                     ..................................... probe-round240:474
+ *   `formulas reproduce ${MEASURED.length} measured arms exactly:`          an identifier, lowercased
+ *                     ..................................... geometry-distance-arm.mjs:102
+ *
+ * Neither is a measurement line and neither should be countable, so requiring them to be countable
+ * reds this arm on a defect that does not exist. That is not hypothetical: F6 reads SWEPT, and the
+ * promotion path moves DEFERRED files into SWEPT. Measured over the 109 DEFERRED files, 3 of them
+ * red F6 on promotion — and ONE of the three is this false class.
+ *
+ * The repair is a selector, and the hazard in writing it is the one Round 339 §2 recorded one round
+ * earlier: a selector that admits exactly what the counter counts makes this arm VACUOUS. So the
+ * selector is keyed on where the token stands IN THE LINE, which is not what `MEAS_LINE` keys on,
+ * and both directions are asserted in F7 rather than argued here:
+ *
+ *   1. every line the counter CAN count is admitted — so the arm can never red on a countable line;
+ *   2. a line in label position that the counter CANNOT count is still admitted — so it can red.
+ *
+ * Both measured on the live tree before landing: of 99 MEAS-mentioning renderings across all 194
+ * files under `scripts/`, 0 are countable-but-not-admitted and 2 are admitted-but-not-countable.
+ * The 2 are real uncountable measurement spellings in DEFERRED probes, and they are what this arm
+ * exists to catch at the moment either file is promoted.
+ */
+const MEAS_IN_LABEL_POSITION = /^\s*(?:\[[^\]]*\]\s*)?MEAS\b|^\s*\[MEAS\]/;
+
+const renderMeasTemplates = (src: string): string[] =>
+  renderMeasMentions(src).filter((rendered) => MEAS_IN_LABEL_POSITION.test(rendered));
+
 const sweptEmitters: Array<{ file: string; rendered: string }> = [];
+const sweptMentions: Array<{ file: string; rendered: string }> = [];
 const sweptMissing: string[] = [];
 for (const entry of SWEPT) {
   const abs = join(REPO, 'scripts', entry.file);
@@ -341,8 +378,13 @@ for (const entry of SWEPT) {
     sweptMissing.push(entry.file);
     continue;
   }
-  for (const rendered of renderMeasTemplates(stripSource(readFileSync(abs, 'utf8'), false))) {
+  const src = stripSource(readFileSync(abs, 'utf8'), false);
+  for (const rendered of renderMeasTemplates(src)) {
     sweptEmitters.push({ file: entry.file, rendered });
+  }
+  // The UNFILTERED set, kept so F7 can assert the selector drops nothing the counter can count.
+  for (const rendered of renderMeasMentions(src)) {
+    sweptMentions.push({ file: entry.file, rendered });
   }
 }
 const uncountable = sweptEmitters.filter((e) => measurementLines(e.rendered) === 0);
@@ -355,6 +397,50 @@ check('F6', 'every MEAS-bearing line any SWEPT probe emits is countable by the f
       'were uncounted — 1 in probe-round224 and 2 in probe-round297.'
     : `UNCOUNTABLE: ${uncountable.map((e) => `${e.file.slice(0, 28)} → ${JSON.stringify(e.rendered.slice(0, 40))}`).join(' | ')}` +
       `${sweptMissing.length > 0 ? ` · missing from disk: ${sweptMissing.join(', ')}` : ''}`);
+
+/**
+ * F7 — the two directions of F6's own population selector, because a selector that is wrong in
+ * either direction makes F6 report a defect that is not there, or miss one that is.
+ *
+ * Direction 1 is DERIVED from the swept population, not from a fixture: every rendering the real
+ * counter counts must survive the selector. A future tightening that quietly excluded a countable
+ * shape would leave F6 green by shrinking its population rather than by the fleet being clean, and
+ * that is the failure this fleet has shipped most often.
+ *
+ * Direction 2 is a FIXTURE, and it has to be, because it asserts the selector is NOT equivalent to
+ * the counter — a property of the two regexes, which no reading of a clean population can show. The
+ * line is copied from the real rendering of a live uncountable emitter.
+ *
+ * Direction 3 is the false class this arm was added for, copied from the two real non-measurement
+ * lines that mention the token.
+ *
+ * Attributions sit on their own lines here for the reason F1's comment records.
+ */
+const countableDropped = sweptMentions.filter(
+  (e) => measurementLines(e.rendered) > 0 && !MEAS_IN_LABEL_POSITION.test(e.rendered));
+
+// probe-round221:53 renders `MEAS ${name} — ${detail}`: in label position, and uncountable
+const LABELLED_UNCOUNTABLE = 'MEAS A1 — a real spelling the counter cannot count';
+// probe-round240:474, a summary line
+const SUMMARY_MENTION = '21 checks · 0 failed · 3 MEAS';
+// geometry-distance-arm.mjs:102, an identifier
+const IDENTIFIER_MENTION = 'formulas reproduce 7 measured arms exactly:';
+
+const selectorAdmitsAllCountable = countableDropped.length === 0
+  && FLEET_SPELLINGS.every((s) => MEAS_IN_LABEL_POSITION.test(s));
+const selectorIsNotTheCounter = MEAS_IN_LABEL_POSITION.test(LABELLED_UNCOUNTABLE)
+  && measurementLines(LABELLED_UNCOUNTABLE) === 0;
+const selectorRejectsMentions = !MEAS_IN_LABEL_POSITION.test(SUMMARY_MENTION)
+  && !MEAS_IN_LABEL_POSITION.test(IDENTIFIER_MENTION);
+
+check('F7', "F6's population selector admits every countable line, rejects a line that merely MENTIONS the token, and is not equivalent to the counter",
+  selectorAdmitsAllCountable && selectorIsNotTheCounter && selectorRejectsMentions,
+  `derived: ${sweptMentions.length} MEAS-mentioning rendering(s) across ${SWEPT.length} swept probes, ` +
+  `${sweptEmitters.length} in label position, ${countableDropped.length} countable-but-dropped (must be 0). ` +
+  `Fixtures: a labelled uncountable line is admitted=${selectorIsNotTheCounter} (so F6 can still red), ` +
+  `a summary line and an identifier mention are rejected=${selectorRejectsMentions}. ` +
+  'Before Round 341 the selector was token PRESENCE, and one DEFERRED file reddened F6 on promotion ' +
+  'for a line that is not a measurement.');
 
 // ── arm G: the census that prices the new state honestly ─────────────────────
 

@@ -436,7 +436,7 @@ export const SWEPT = [
   },
   {
     file: 'probe-round269-blocked-is-a-third-outcome-and-the-exit-code-that-carries-it-dies-one-level-down.mts',
-    expect: /All 52 regression checks passed/,
+    expect: /All 53 regression checks passed/,
     // Round 269, Daedalus; extended in Round 271. Drives this fire's own changes: `classify`'s
     // three states on every corner, `sweepExit`'s propagation, `entryProblems` two-sided,
     // `measurementCheck`'s three outcomes, and arm H where all three states arise from processes
@@ -464,7 +464,20 @@ export const SWEPT = [
     // Round 339, Daedalus: 51 → 52. Arm F6 added — the fleet-spelling set DERIVED from the swept
     // files rather than hand-written into F1's fixture, which is what let two live spellings sit
     // uncounted. Measurement count unchanged at 3; F6 is a check, not a measurement.
-    why: 'run green in Round 339, 52/52 exit 0, 3 measurements; spawns minted node scripts under gitignored .testdata/r269 — no server, port, database, corpus or model call',
+    //
+    // Round 341, Daedalus: 52 → 53. Arm F7 added, and F6's POPULATION selector corrected. F6 chose
+    // its population by token PRESENCE — any emitted literal mentioning MEAS — and then required
+    // the counter to count it. Two live shapes mention the token in a line that is no measurement
+    // at all: a summary line counting measurements, and a lowercased identifier. Measured over the
+    // 109 DEFERRED files, 3 red F6 the moment they are promoted into SWEPT, and ONE of those three
+    // is this false class. The selector now keys on where the token stands in the line, which is
+    // deliberately NOT what MEAS_LINE keys on — a selector equivalent to the counter would make F6
+    // vacuous, which is Round 339's own lesson one round later. F7 asserts both directions: every
+    // countable rendering survives the selector (derived from the swept set, 0 dropped), and a
+    // labelled line the counter cannot count is still admitted (fixture, so F6 can still red).
+    // Price on the swept set: 0 — all 32 renderings are in label position. Measurement count
+    // unchanged at 3; F7 is a check.
+    why: 'run green in Round 341, 53/53 exit 0, 3 measurements; spawns minted node scripts under gitignored .testdata/r269 — no server, port, database, corpus or model call',
   },
   {
     // PROMOTED BY: Round 296, Daedalus, 2026-09-29 STOP fire — driven by `promote-probes.mts`,
