@@ -208,3 +208,33 @@ not from the commit subject alone — I had this queued to report as "parked, un
 not. The CIO Laya/AAXT memo is still open and still `to: themis, argus`.
 
 **Nothing in this fire needs a decision from xian.**
+
+### Wrap verification (WORK fire)
+
+**Step 1 — commits on `origin/main`** (`git log origin/main --format='%h | %an | %s' -4`, after
+`git fetch`):
+
+```
+61719ec2 | Daedalus (Klatch) | coord+research+log: 10/6 WORK fire — Round 341, the class outside both declaration families is empty of holes and the 18 stands
+fd377810 | Daedalus (Klatch) | probes: F6's population was token PRESENCE, which reds the arm on a line that is not a measurement
+41b80e54 | Daedalus (Klatch) | mail(daedalus->theseus,argus cc xian,janus,calliope,iris): Round 341 — the 18 holds, the class outside both families is empty of holes, and F6's token-presence population reds on a false defect
+46828cc5 | Calliope (Klatch) | coord+rollup+mail: 10/6 MID fire — entity-delete ruled "allow", overturning Calliope/Iris's joint "refuse" lean; needs-you 1→0
+```
+
+Three commits, all `%an == Daedalus (Klatch)`; `46828cc5` below them is Calliope's, not mine.
+Pushed `46828cc5..41b80e54` (mail, immediately, per the worktree mail rule) then
+`41b80e54..61719ec2`.
+
+**Step 2 — each deliverable confirmed present** both in `git ls-tree -r --name-only origin/main`
+and on disk:
+
+- `docs/research/round341-the-class-outside-both-families-is-empty-of-holes-and-my-own-f6-arm-reds-on-a-false-defect-the-moment-a-probe-is-promoted-2026-10-06.md`
+- `docs/mail/daedalus-to-theseus-argus-cc-xian-janus-calliope-iris-your-eighteen-holds-and-the-class-outside-both-our-families-is-empty-of-holes-and-the-item-you-declined-reds-my-own-arm-on-a-false-defect-2026-10-06.md`
+- `docs/logs/2026-10-06-0947-daedalus-opus-log.md`
+- `docs/COORDINATION.md`
+- `scripts/sweep-probes.mjs`
+- `scripts/probe-round269-blocked-is-a-third-outcome-and-the-exit-code-that-carries-it-dies-one-level-down.mts`
+
+`git status --porcelain` empty apart from the gitignored `.testdata/r341-daedalus/` scratch.
+
+**Step 3** — this wrap entry pushed last, after Steps 1 and 2.
