@@ -321,3 +321,168 @@ All six present. `.testdata/r335/` is gitignored by design and is correctly **no
 two unclaimed items back, so the thread is not closed and the closer should be whoever closes it.
 
 Nothing in this fire needs a decision from xian.
+
+---
+
+# 17:3x PT — STOP fire, Round 337: the routed arm is landed, and both reds were in my own patch
+
+Second fire of the day for this seat. `origin/main` at `ba4c8fff` on arrival, worktree clean, in
+sync. **Authorship checked with `%an` before assuming any of the head was mine** — the three commits
+below the head are Theseus's (including `abfbec1f`, whose subject sits in exactly my own `coord+log`
+shape) and the head itself is Calliope's. `--oneline` would have shown four plausible subjects and no
+owner. Fourth fire running that this check earned its keep.
+
+Mail read at open, in full. One new memo since my 13:44 outbound: Theseus's Round 336,
+`to: daedalus, argus`. It routes this seat exactly one accept-or-decline — the per-file opt-in
+label-collision arm for `probe-round308`, driven there against three controls and **not landed
+because the file is mine**.
+
+## 17:3x — the decision, verified before accepting
+
+His §3 conclusion is *do not build it as a population-wide arm*, resting on a single decisive row.
+Verified in source rather than taken from his table:
+
+```
+probe-round289-…-the-sidecar-signature-is-not-evidence-of-no-write.mts:172   'V5',          (check)
+probe-round289-…-the-sidecar-signature-is-not-evidence-of-no-write.mts:179   measure('V5', …)
+```
+
+plus `:368`/`:373` for `W6`. That is the exact check×measure shape of the `C5` collision I surfaced in
+Round 335, deliberate and written twice. Same text, defect in my file, convention in that one.
+
+Also confirmed his §3a independently, since it decides whether the class is correctness or
+diagnostic: `summarise` in `scripts/lib/probe-outcome.mts:150-210` is pure `.filter`/`.length` over
+`input.results` — no `Map`, no `Set`, no dedupe. Diagnostic only.
+
+Checked the two dependencies a 22 → 23 move would touch, before editing:
+- `scripts/sweep-probes.mjs:637` pinned `expect: /All 22 regression checks passed/` — must be restaged.
+- `probe-round309` arm `E1` reads `probe-round308`'s SOURCE as a shape pin — but keys on the section E
+  header only, which this change does not touch. Drove it anyway at the end.
+- `probe-round308` arm `A2` is an **inequality** (`V1_SELF.length > V1.length`), not a pin, so added
+  self-prose cannot red it. That is why it was written that way.
+
+## 17:3x — RED #1, mine: the arm's own label was the one site its own detector could not see
+
+First version: `const Z4_ID = 'Z4'; check(Z4_ID, …)`. Reddened **`[B1]` in all four worlds** at
+`5 of 7 explained`, naming `sweep-probes.mjs:636 r308/Z4` and `:657 r308/Z4` — my own new comment.
+
+Mechanism read out of source, not guessed:
+
+```ts
+const definesArmQuoted = (src, arm) => new RegExp(`["']${arm}["']\\s*,`).test(src);
+```
+
+`= 'Z4';` ends in a semicolon, so v1 concludes the named probe does not define the label, and the two
+pointers to it become unexplained. **`[C1]` stayed green** — `definesArmAny` also tests
+`` /[`'"]Z4[.`'"]/ ``, which the constant matches. One red and one green over the same text is what
+located it.
+
+Three repairs I did **not** make, each tempting and each worse: rewording the comment (the workaround
+Theseus had just retired in his §5, and the detector was not wrong here); widening v1 (its key encodes
+the house spelling every other arm uses — my constant was the deviation); inventing a guard for the
+one residual cost. Repaired to a quoted literal and **stated** the cost instead: the label is now
+spelled twice, and renaming one would leave the arm grading a label the file never prints. A guard
+would have to read this file's own source, which is the trap section A2 documents.
+
+## 17:3x — RED #2, mine: a control red for a reason unrelated to what it controls for
+
+First driver reverted **only the probe**, so the pre-arm worlds ran HEAD's probe against my *edited*
+`sweep-probes.mjs` — prose naming an arm absent from them:
+
+```
+bare            exit 1   2 of 22 regression check(s) FAILED.   FAIL [B1 C1]
+collision-bare  exit 1   2 of 22 regression check(s) FAILED.   FAIL [B1 C1]
+```
+
+I nearly wrote this up as "two reds, expected, atomicity requirement." It is not reportable as
+anything: showing the defect was *invisible* is `collision-bare`'s entire job, and a world red for an
+unrelated reason cannot show it. Re-scoped the variable to the whole change, both files — which is
+also the honest counterfactual, because the halves are mutually dependent in **both** directions (the
+`expect:` needs the arm to reach 23; the new prose needs the arm to exist before `[B1]` can explain
+pointers to it). That is a better reason for one commit than the convention I started from.
+
+## 17:3x — the four worlds, after both repairs
+
+Each world a scratch copy of `scripts/` in a git-init'd repo. Every world's FULL output written to
+`<label>.out.txt` **before any figure was read back out of it**.
+
+```
+bare            exit 0  All 22 regression checks passed.     meas 8  FAIL []    [C5] lines: 1
+collision-bare  exit 0  All 22 regression checks passed.     meas 9  FAIL []    [C5] lines: 2   ← THE DEFECT
+clean-arm       exit 0  All 23 regression checks passed.     meas 8  FAIL []    31 labels, all distinct
+collision-arm   exit 1  1 of 23 regression check(s) FAILED.  meas 9  FAIL [Z4]  REUSED: C5×2 — of 32
+```
+
+`collision-bare` reproduces Theseus's §4 row byte-for-byte from a driver that is not his: exit 0, the
+green verdict line, two `[C5]` lines, nothing graded.
+
+One deliberate divergence — **31/32 where his were 30/31** — because the arm's own label is IN its
+candidate list rather than asserted outside it by the driver, which is exactly what went wrong in
+RED #1. His external check is right for a driver; graded inside the arm it survives the driver being
+discarded.
+
+The driver refuses rather than reports if its own premises fail: identical HEAD and working tree, a
+baseline already carrying the arm, a working tree lacking it, an unchanged `sweep-probes.mjs`, or an
+injection that does not move the `measure('C5'` count 0 → 1.
+
+## Gate, every figure read from a captured file
+
+- `npm run typecheck` → **0** `error TS` (`.testdata/r336-daedalus/typecheck.txt`)
+- `npm test` **unpiped** to a file → server **140 files / 2178 passed / 1 skipped**; client
+  **25 / 325 / 13**. Byte-identical to Theseus's §7 and my own §7 this morning — expected, the arm is
+  in a probe and adds no tests.
+- `probe-round308` in repo → **`All 23 regression checks passed.`**, 8 measurements, exit 0.
+- `probe-round309` in repo → **`All 17 regression checks passed.`** Driven deliberately as the
+  likeliest collateral red.
+- full driving sweep, run **separately and with no flag** because `--census` prints `NOT CHECKED: none
+  of the 36 swept probes was driven` → **`SWEEP BLOCKED — 35 of 36 swept probes green, 0 red, 1
+  blocked (did not conclude), 0 census problem(s), 109 deferred`**. `probe-round308` reads
+  **`PASS exit 0`** in the sweep channel at line 64 of the capture, against the restaged
+  `expect: /All 23 regression checks passed/`.
+- the one blocked is `probe-round225` — `exit 3, summary line NOT FOUND — INCONCLUSIVE`. Standing
+  port-3001 block, not mine, unmoved.
+- the pre-commit census ran on both commits and printed `CENSUS OK` both times.
+- scratch under `.testdata/r336-daedalus/`, `git check-ignore -v` → `.gitignore:33`. One driver, six
+  captures. Not committed, not probes, not in the population or the census.
+- Standing blockers re-checked, both unmoved: the entity-delete thread
+  (`calliope-to-iris-…-2026-09-29.md`); the CIO Laya/AAXT memo
+  (`cio-to-themis-argus-…-2026-10-02.md`, `to: themis, argus` — not this seat).
+
+## Session wrap verification
+
+**Step 1 — commits confirmed on `origin/main`:**
+
+```
+$ git log origin/main --format='%h %an %s' -3
+5512abff Daedalus (Klatch) mail+research: Round 337 to Theseus/Argus — your arm is landed file-local, and its own label was the site its own detector could not see
+f089c671 Daedalus (Klatch) feat(probe): round337 — probe-round308 grades its own label namespace, and `measure` records its id
+ba4c8fff Calliope (Klatch) coord+log: 10/5 SWEEP fire — no-op on coordination/mail, one packages/ diff independently re-verified
+```
+
+Authorship checked with `%an`: both new commits are this seat's; `ba4c8fff` is Calliope's and is not
+claimed here.
+
+**Step 2 — deliverable files `ls`-confirmed present:** see the verification block appended below this
+entry after the final push.
+
+**Step 3 — this log and the COORDINATION update are committed and pushed last.**
+
+**Mail state at close:** Theseus's Round 336 memo and my Round 337 reply both **stay** in active
+`docs/mail/`. His §8 keeps the round324 labels item as his own, and my §7 leaves the lib-shaped
+`probe-outcome.mts` item surfaced and unclaimed by either seat — so the thread has open items and is
+not mine to close.
+
+Nothing in this fire needs a decision from xian.
+
+### Step 2 — every deliverable `ls`-confirmed present (run at close)
+
+```
+docs/COORDINATION.md
+docs/logs/2026-10-05-0917-daedalus-opus-log.md
+docs/mail/daedalus-to-theseus-argus-cc-xian-janus-calliope-iris-i-took-your-routed-arm-and-landed-it-and-its-own-label-was-the-one-site-its-own-detector-could-not-see-2026-10-05.md
+docs/research/round337-the-label-arm-is-landed-file-local-and-its-own-label-was-the-one-site-its-own-detector-could-not-see-2026-10-05.md
+scripts/probe-round308-the-general-arm-pointer-detector-reports-thirteen-findings-all-thirteen-false-and-the-narrow-one-is-green-on-package-json.mts
+scripts/sweep-probes.mjs
+```
+
+All six present. `.testdata/r336-daedalus/` is gitignored by design and correctly **not** in the tree.
