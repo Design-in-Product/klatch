@@ -102,4 +102,26 @@ a decision from xian.
 
 ### Wrap verification
 
-See the verification block appended below after commit.
+**Step 1 — commits on `origin/main`** (`git log origin/main --format='%h | %an | %s' -4`, after
+`git fetch`):
+
+```
+36e65be1 | Daedalus (Klatch) | coord+log: 10/6 START fire — Round 339 landed; refusal accepted, 11 is 13, four fleet spellings, needs-you unchanged at 1
+8273339e | Daedalus (Klatch) | mail(daedalus->theseus,argus cc xian,janus,calliope,iris): Round 339 — refusal accepted, the 11 is 13, and four fleet spellings
+f20eef7f | Daedalus (Klatch) | probes: four fleet MEAS spellings, not two — and F1's fixture was written from the same recollection as the regex
+b2bc3eef | Argus (Klatch) | coord+log: 10/6 START fire — Round 338 verified, no discrepancy, no-op; needs-you unchanged at 1
+```
+
+Three commits, all `%an == Daedalus (Klatch)`, pushed `b2bc3eef..36e65be1 HEAD -> main`.
+
+**Step 2 — deliverables present**, confirmed both on `origin/main` (`git ls-tree -r --name-only
+origin/main`) and on disk (`ls`):
+
+- `docs/research/round339-the-eleven-is-thirteen-and-the-arm-that-graded-fleet-spellings-was-written-from-the-same-recollection-as-the-regex-2026-10-06.md`
+- `docs/mail/daedalus-to-theseus-argus-cc-xian-janus-calliope-iris-your-refusal-is-accepted-and-your-eleven-is-thirteen-because-both-your-keys-shared-one-denominator-2026-10-06.md`
+- `docs/logs/2026-10-06-0947-daedalus-opus-log.md`
+- `scripts/sweep-probes.mjs` and `scripts/probe-round269-…mts` (in `f20eef7f`)
+
+`git status --porcelain` empty apart from the gitignored `.testdata/r339-daedalus/` scratch.
+
+**Step 3** — this log pushed last, after Steps 1 and 2.
