@@ -135,14 +135,31 @@
  *
  * The `N measurements` half cannot be checked against the entry at all — only against the run — and
  * there is no single fleet spelling to check for: `probe-round225` prints `MEAS [F] …` while
- * `probe-round265` prints `  [C] MEAS  …`. So `measurementCheck` counts both spellings off the
+ * `probe-round265` prints `  [C] MEAS  …`. So `measurementCheck` counts the fleet spellings off the
  * output, grades the claim when the run emits something countable, and reports the claim as
  * unenforceable prose when it does not — unverified is not false.
+ *
+ * **Round 339, Daedalus, 2026-10-06: "both spellings" was wrong by two, and the arm that was
+ * supposed to catch that could not.** The sentence above said *both*, `MEAS_LINE` encoded two, and
+ * `probe-round269` arm F1 asserted "counts BOTH fleet spellings" against a fixture it hand-wrote
+ * from the same two — so the pair agreed with itself and no third spelling was reachable by any of
+ * them. Enumerated from the 36 swept files instead of reasoned about: **four spellings are live**,
+ * and two were uncounted. `probe-round224:561` renders the token-first spelling INDENTED, and the
+ * `MEAS\s+\[` alternative had no leading `\s*`, so the same spelling counted at column 0 and was
+ * invisible two spaces in. `probe-round297:95`/`:375` render `[MEAS] …`, with the token INSIDE the
+ * bracket, which neither alternative could reach. Neither entry claims a count, so nothing was
+ * misgraded — latent, not live, and found only because the spelling set was derived rather than
+ * recalled. The price of widening measured 0: all 7 count-claiming entries emit exactly one
+ * countable shape each, unchanged by the two new alternatives. Arm F1 is now built from all four
+ * real emitting sites, and arm F6 derives the set from `SWEPT` source so a FIFTH spelling reddens
+ * the fleet counter instead of hiding behind a fixture that already agrees with it.
  *
  * **First live run, measured rather than predicted:** this paragraph first said that *most* swept
  * probes print no measurement line while their entries claim a count. That was a guess and it was
  * wrong. All 6 entries claiming a count emit countable lines, so all 6 are enforced and none is
  * merely noted — and 2 of the 6 disagreed with their own runs on the first pass: `probe-round260`
+ * (the 6 was true when written; Round 324's entry made it **7**, re-counted off `SWEPT` in Round 339
+ * rather than carried forward — and all 7 are still enforced, none merely noted)
  * claimed 6 against 7 emitted, and `probe-round263` claimed 3 against 5. Both corrected from the
  * run. The second is Daedalus's own entry, written in Round 263, the round that first named this
  * drift class — which is the sixth sighting of it, and the argument for a mechanism rather than
@@ -419,7 +436,7 @@ export const SWEPT = [
   },
   {
     file: 'probe-round269-blocked-is-a-third-outcome-and-the-exit-code-that-carries-it-dies-one-level-down.mts',
-    expect: /All 51 regression checks passed/,
+    expect: /All 52 regression checks passed/,
     // Round 269, Daedalus; extended in Round 271. Drives this fire's own changes: `classify`'s
     // three states on every corner, `sweepExit`'s propagation, `entryProblems` two-sided,
     // `measurementCheck`'s three outcomes, and arm H where all three states arise from processes
@@ -433,9 +450,21 @@ export const SWEPT = [
     // that had nothing to do with `classify`.
     //
     // The first entry whose measurement claim is ENFORCED rather than noted — this probe prints
-    // `[id] MEAS` lines, so `measurementCheck` grades the 3 below against the run. Every other
-    // entry claiming a count emits nothing countable and is annotated as unenforceable prose.
-    why: 'run green in Round 271, 51/51 exit 0, 3 measurements; spawns minted node scripts under gitignored .testdata/r269 — no server, port, database, corpus or model call',
+    // `[id] MEAS` lines, so `measurementCheck` grades the 3 below against the run.
+    //
+    // Round 339, Daedalus: the sentence that used to end this paragraph — "every other entry
+    // claiming a count emits nothing countable and is annotated as unenforceable prose" — was
+    // FALSE, and false in a way worth naming: it is the residue of the guess the header paragraph
+    // already retracted ("this paragraph first said that *most* swept probes print no measurement
+    // line … That was a guess and it was wrong"). The correction landed in the header and not here,
+    // so one file carried both the claim and its refutation, 300 lines apart, for 70 rounds.
+    // Re-measured off the driving run rather than from either comment: all 7 count-claiming entries
+    // emit countable lines and every one is graded, because the sweep prints `note — …` for an
+    // unenforceable claim and the run emitted no such line.
+    // Round 339, Daedalus: 51 → 52. Arm F6 added — the fleet-spelling set DERIVED from the swept
+    // files rather than hand-written into F1's fixture, which is what let two live spellings sit
+    // uncounted. Measurement count unchanged at 3; F6 is a check, not a measurement.
+    why: 'run green in Round 339, 52/52 exit 0, 3 measurements; spawns minted node scripts under gitignored .testdata/r269 — no server, port, database, corpus or model call',
   },
   {
     // PROMOTED BY: Round 296, Daedalus, 2026-09-29 STOP fire — driven by `promote-probes.mts`,
@@ -1616,8 +1645,28 @@ export const verdict = (code, out, expect) => {
  */
 export const sweepExit = ({ red, blocked, bad }) => (red || bad ? 1 : blocked ? 2 : 0);
 
-/** Matches both fleet spellings of a measurement line: `MEAS [F] …` and `  [C] MEAS  …`. */
-const MEAS_LINE = /^(?:\s*\[[^\]]+\]\s+MEAS\b|MEAS\s+\[)/gm;
+/**
+ * Matches all FOUR fleet spellings of a measurement line, each copied from a real emitting site
+ * rather than imagined (Round 339 — the previous two were a recollection, and `probe-round269`
+ * arm F1 could not catch the gap because its fixture was written from the same recollection):
+ *
+ * Each citation sits on its own line, deliberately: `probe-round308`'s pointer detector pairs every
+ * `probe-roundNNN` on a line with every `[A-Z]\d+` on the same line and asks the named probe to own
+ * that arm. A rendered sample like `[A1]` beside a citation of the file it came from reads as an
+ * unexplained pointer to that file's arm A1, and reddened B1 when this comment was first written.
+ *
+ *   `MEAS [F] …`     token first, at column 0 ....... probe-round225
+ *   `  [C] MEAS  …`  arm tag first, indented ........ probe-round265:91
+ *   `  MEAS [A1] …`  token first, INDENTED — the `\s*` alternative this one lacked
+ *                    ................................ probe-round224:561
+ *   `[MEAS] A4  …`   token INSIDE the bracket
+ *                    ................................ probe-round297:95
+ *
+ * The leading `\s*` on the second alternative is the whole repair for `probe-round224`: the same
+ * spelling counted at column 0 and vanished two spaces in. Widening is append-only — both
+ * originally-matched spellings still count, asserted in `probe-round269` F1.
+ */
+const MEAS_LINE = /^(?:\s*\[[^\]]+\]\s+MEAS\b|\s*MEAS\s+\[|\s*\[MEAS\])/gm;
 export const measurementLines = (out) => (out.match(MEAS_LINE) || []).length;
 
 /**

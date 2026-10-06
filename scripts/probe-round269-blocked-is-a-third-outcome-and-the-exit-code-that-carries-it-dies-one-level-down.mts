@@ -245,11 +245,42 @@ measure('E2', 'how many swept entries declare a refusal pattern',
 
 console.log('\n── arm F: measurementCheck — enforced where the run permits, reported where it does not ──');
 
-const TWO_SPELLINGS = 'MEAS [F] first fleet spelling\n  [C] MEAS  second fleet spelling\n';
-check('F1', 'measurementLines counts BOTH fleet spellings of a measurement line',
-  measurementLines(TWO_SPELLINGS) === 2,
-  `counted ${measurementLines(TWO_SPELLINGS)} in a fixture holding probe-round225's spelling ` +
-  '(`MEAS [F] …`) and probe-round265\'s (`  [C] MEAS  …`). Both are live in the swept set.');
+/**
+ * Round 339, Daedalus: this fixture used to hold TWO lines and the arm used to say "BOTH fleet
+ * spellings". It was green, and it was green for the wrong reason — the fixture was hand-written
+ * from the same two spellings `MEAS_LINE` encoded, so the arm restated the regex's own assumption
+ * instead of testing it. An arm whose fixture is its own hypothesis cannot fail on a case nobody
+ * thought of, and two such cases were live in the swept set the whole time: `probe-round224:561`
+ * renders the token-first spelling INDENTED (the same shape as probe-round225's, two spaces in,
+ * which the `MEAS\s+\[` alternative could not reach for want of a leading `\s*`), and
+ * `probe-round297:95` renders the token INSIDE the bracket, which neither alternative could reach.
+ *
+ * Every line below is copied from the rendering of a real emitting site, not invented. F6 is the
+ * arm that makes this one honest going forward: it DERIVES the spelling set from the swept files.
+ *
+ * The attributions are on their own lines, and this is not a style choice: `probe-round308`'s
+ * pointer detector pairs every `probe-roundNNN` on a line with every `[A-Z]\d+` on the same line,
+ * so `'  MEAS [A1] …'` beside `// probe-round224:561` reads as an unexplained pointer to that
+ * file's arm A1. It reddened B1 on the first drive of this very repair.
+ */
+const FLEET_SPELLINGS = [
+  // probe-round225 — token first, at column 0
+  'MEAS [F] first fleet spelling',
+  // probe-round265:91 — arm tag first, indented
+  '  [C] MEAS  second fleet spelling',
+  // probe-round224:561 — token first, INDENTED; the alternative that lacked a leading \s*
+  '  MEAS [A1] third fleet spelling',
+  // probe-round297:95 — token INSIDE the bracket
+  '[MEAS] A4  fourth fleet spelling',
+];
+const FOUR_SPELLINGS = `${FLEET_SPELLINGS.join('\n')}\n`;
+const TWO_SPELLINGS = `${FLEET_SPELLINGS.slice(0, 2).join('\n')}\n`;
+
+check('F1', 'measurementLines counts all FOUR fleet spellings, including the two it could not see before Round 339',
+  measurementLines(FOUR_SPELLINGS) === 4 && measurementLines(TWO_SPELLINGS) === 2,
+  `counted ${measurementLines(FOUR_SPELLINGS)} of 4 in a fixture holding one rendered line from each ` +
+  'real emitting site (probe-round225, probe-round265, probe-round224, probe-round297), and still ' +
+  `${measurementLines(TWO_SPELLINGS)} of 2 on the original pair — the widening is append-only.`);
 
 check('F2', 'a claim that agrees with the run produces neither problem nor note',
   Object.keys(measurementCheck({ why: 'reports 27/27, 2 measurements' }, TWO_SPELLINGS)).length === 0,
@@ -268,6 +299,62 @@ check('F4', 'a claim the run cannot check is a NOTE, not a problem — unverifie
 check('F5', 'an entry making no measurement claim is not nagged',
   Object.keys(measurementCheck({ why: 'reports 27/27' }, TWO_SPELLINGS)).length === 0,
   'no claim, no output');
+
+/**
+ * F6 — the spelling set DERIVED from the swept files, which is the arm F1 should always have been.
+ *
+ * F1 can only ever grade the spellings someone remembered to put in it. This one reads all 36 swept
+ * probes, renders every `console.log` template that carries a MEAS token, and asserts the fleet
+ * counter can count each one. A fifth spelling arriving in any swept probe reddens this instead of
+ * sitting undetected behind a fixture that already agrees with the regex.
+ *
+ * This is a POPULATION-wide arm on purpose, and the distinction matters because Round 338 refused a
+ * population-wide measurement-label channel for the opposite reason. Test the general form rather
+ * than reasoning by analogy: `measurementLines` is ONE shared counter that every swept entry's
+ * measurement claim is graded against, so "is every emitted shape countable" is a property OF THE
+ * POPULATION. The label-collision rule Round 336 measured belongs to each FILE — probe-round289's
+ * `[V5]` deliberately shares one label across a check and a measurement — which is why that arm
+ * stayed file-local and this one does not.
+ *
+ * Comments are blanked through `stripSource` before scanning, so a commented-out emitting line is
+ * not mistaken for a live one.
+ */
+const renderMeasTemplates = (src: string): string[] => {
+  const out: string[] = [];
+  for (const re of [/console\.log\(\s*`([^`]*)`/g, /console\.log\(\s*'([^']*)'/g]) {
+    let m: RegExpExecArray | null;
+    while ((m = re.exec(src)) !== null) {
+      const raw = m[1];
+      if (!raw.includes('MEAS')) continue;
+      // a ternary that can yield 'MEAS' renders as MEAS; every other interpolation as a token
+      out.push(raw.replace(/\$\{[^{}]*'MEAS'[^{}]*\}/g, 'MEAS').replace(/\$\{[^{}]*\}/g, 'X'));
+    }
+  }
+  return out;
+};
+
+const sweptEmitters: Array<{ file: string; rendered: string }> = [];
+const sweptMissing: string[] = [];
+for (const entry of SWEPT) {
+  const abs = join(REPO, 'scripts', entry.file);
+  if (!existsSync(abs)) {
+    sweptMissing.push(entry.file);
+    continue;
+  }
+  for (const rendered of renderMeasTemplates(stripSource(readFileSync(abs, 'utf8'), false))) {
+    sweptEmitters.push({ file: entry.file, rendered });
+  }
+}
+const uncountable = sweptEmitters.filter((e) => measurementLines(e.rendered) === 0);
+
+check('F6', 'every MEAS-bearing line any SWEPT probe emits is countable by the fleet counter — the spelling set derived, not recalled',
+  uncountable.length === 0 && sweptMissing.length === 0 && sweptEmitters.length > 0,
+  uncountable.length === 0
+    ? `${sweptEmitters.length} MEAS-emitting template(s) across ${SWEPT.length} swept probes, all counted; ` +
+      `${sweptMissing.length} swept file(s) missing from disk. Before Round 339 widened MEAS_LINE, 3 of these ` +
+      'were uncounted — 1 in probe-round224 and 2 in probe-round297.'
+    : `UNCOUNTABLE: ${uncountable.map((e) => `${e.file.slice(0, 28)} → ${JSON.stringify(e.rendered.slice(0, 40))}`).join(' | ')}` +
+      `${sweptMissing.length > 0 ? ` · missing from disk: ${sweptMissing.join(', ')}` : ''}`);
 
 // ── arm G: the census that prices the new state honestly ─────────────────────
 
