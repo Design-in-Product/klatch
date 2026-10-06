@@ -367,3 +367,54 @@ of the population already has it.** The motivating file lacking it is not eviden
   to the one Round 337's gate graded three hours ago, and an unrun gate reported green is worse than
   one not claimed. The pre-commit hook's census ran on the mail commit: `CENSUS OK`,
   `census PASSED`, 145 probe files, swept 36, deferred 109.
+
+## 20:00 — STOP fire wrap verification
+
+**Step 1 — commits on `origin/main`** (`git log origin/main --format='%h %an %s' -4` after `git fetch`):
+
+```
+5fe59eef Theseus  coord: 10/5 STOP fire — Round 338, the routed lib item is measured and refused; needs-you unchanged at 1
+7e3e46a0 Theseus  log+research: 10/5 STOP fire — Round 338, the routed lib item is measured and refused, and 78 of 89 files already carry the label
+319188c6 Theseus  mail: Round 338 to Daedalus/Argus — the routed lib item should not be built, and my own §8 sentence was false when I wrote it
+111555c6 Iris     coord+log: 10/5 STOP fire — no-op, verified not assumed; needs-you unchanged at 1
+```
+
+Three commits, all mine this fire, `%an` checked. `319188c6` (mail) was committed **alone** and
+pushed to `main` ahead of the work commits.
+
+**Step 2 — each deliverable present in the `origin/main` TREE**, checked with `git cat-file -s`
+against `origin/main:<path>` rather than `ls` against this worktree, because a file in my own tree
+is not evidence it was delivered:
+
+```
+PRESENT    14228 bytes  docs/mail/theseus-to-daedalus-argus-cc-…-i-took-your-routed-lib-item-…-2026-10-05.md
+PRESENT     8458 bytes  docs/research/round338-the-measurement-label-hole-is-eleven-files-of-one-shape-…-2026-10-05.md
+PRESENT    24531 bytes  docs/logs/2026-10-05-1449-theseus-opus-log.md
+PRESENT  1727152 bytes  docs/COORDINATION.md
+git diff --stat origin/main -- scripts/ packages/   →   EMPTY (no code written this fire)
+git status --porcelain                              →   empty
+```
+
+(The log byte count is from before this final section; this entry is the last commit.)
+
+**Step 3** — this log entry is committed and pushed last.
+
+### State of the fire's items, for the next session
+
+- **Closed by me, with a measured refusal:** the lib measurement-channel item Daedalus routed here.
+  Do not build it — 78 of 89 files already carry the label, the lib cannot grade what it would
+  carry, and the 11-file gap is latent.
+- **Closed by me, against myself:** my Round 336 §8 sentence, retracted in terms. The narrow version
+  — `measure` in *his* file recorded nothing — is what was true.
+- **Yours (Daedalus), confirmed and closed from my side:** `f089c671`'s file-local scope, the
+  `probe-round289` reading, the `Z4` literal, both probe figures.
+- **New, small, NOT taken:** `probe-round240:63`'s string-embedded measurement label.
+- **Mine, unchanged and still held:** the round324 labels item.
+- **Not mine, unmoved:** `probe-round225`'s port-3001 block — the 1 blocked in every sweep today.
+- **Parked on xian, unchanged:** the entity-delete thread; the CIO Laya/AAXT memo (`to: themis,
+  argus`, not this seat). **Nothing in this fire needs a decision from xian.**
+
+Mail close-discipline: Daedalus's Round 337 memo stays in `docs/mail/` rather than moving to
+`read/`. My reply closes the item it routed to me, but it closes it with a refusal he may want to
+contest, and it names a new unclaimed observation back to him — so the thread has an open action
+item until he acknowledges or disputes the refusal.
