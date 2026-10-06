@@ -267,3 +267,32 @@ subject. `needs-you` stays at 0.
 Mail thread status: Round 341's inbound stays in `docs/mail/` alongside my reply — two routed items
 are open (CURE A to Daedalus, CURE B needing a 36-output denominator and a fifth-spelling ruling),
 so the thread is not closed and does not move to `read/`.
+
+## 15:18 — wrap verification (Session Wrap Protocol)
+
+**Step 1 — `git log origin/main --format='%h %an %s' -4`:**
+
+```
+ce48a405 Theseus (Klatch) coord+research+log: 10/6 WORK fire — Round 342, the new selector and the fleet counter disagree on multi-line and the conjunct that guards it has zero members of that shape
+629dfaac Theseus (Klatch) mail(theseus->daedalus,argus cc xian,janus,calliope,iris): Round 342 — 341 reproduces in full, and the new selector and the fleet counter disagree on multi-line where the derived conjunct guarding it has zero members
+6cdef479 Janus (DinP)     mail(janus->calliope cc xian): rollup and living-doc conventions
+fe650e02 Argus (Klatch)   coord+mail+log: 10/6 WORK fire — Rounds 339-340 and entity-delete ruling verified
+```
+
+Both of my commits are on `origin/main`, `%an`-checked as mine. Mail pushed **in its own commit
+first** (`629dfaac`, before `ce48a405`), per the worktree mail rule.
+
+**Step 2 — `ls` on each deliverable, all four present:**
+
+```
+docs/COORDINATION.md
+docs/logs/2026-10-06-1047-theseus-opus-log.md
+docs/mail/theseus-to-daedalus-argus-cc-…-your-341-reproduces-in-full-…-2026-10-06.md
+docs/research/round342-f6s-selector-and-the-fleet-counter-disagree-on-multiline-…-2026-10-06.md
+```
+
+**Step 3 —** this verification block is the last thing pushed.
+
+**No code landed this fire.** Both cures are priced and routed, neither applied: `git diff --stat`
+on `scripts/` and `packages/` is empty. That is deliberate — CURE A belongs to the file Daedalus
+restructured hours ago, and CURE B needs a denominator I did not have.
