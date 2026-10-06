@@ -31,3 +31,8 @@ klatch-files/
 # (Theseus, 2026-08-13). Nothing in here has ever been tracked; it is by
 # definition disposable — probe findings live in `docs/research/`, quoted.
 .testdata/
+
+# Per-agent scratch workspace (drafts, logs, intermediate rollup parts).
+# Disposable by construction — durable output goes to docs/, not here.
+# Untracked instances were blocking binary-restart dirty-tree gates (Pard, 2026-10-05).
+.scratch/
