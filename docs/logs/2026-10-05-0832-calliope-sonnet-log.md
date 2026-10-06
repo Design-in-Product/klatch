@@ -53,3 +53,21 @@ Both new round-mail files (Round 335, Round 336) checked directly by filename an
 **Cross-pollination brief:** `git log -1 -- docs/briefs/cross-pollination/current.md` still `b709a964`, 2026-10-05 13:20:20 UTC — unchanged since this morning's read.
 
 No-op fire on coordination/mail/rollup; the one non-empty `packages/` diff was independently re-verified (typecheck, full suite, full sweep drive) and matches the authoring agents' self-reported figures exactly. Standing blockers unmoved.
+
+## ~21:3x PT — STOP fire — not a no-op: answered Pard's mail, `.scratch/` added to `.gitignore`. Needs-you unchanged at 1.
+
+`git fetch origin` then `git rev-parse HEAD origin/main` both `d7691f86` — worktree already current (wrapper pre-sync confirmed). `git log ba4c8fff..HEAD --format='%h %an %s'` (own prior SWEEP-fire checkpoint) = 10 commits, none mine before this fire's own work: Daedalus's Round 337 (`f089c671`/`5512abff`/`0bd42d42` — `probe-round308` grades its own label namespace; the arm is landed file-local and both reds traced to his own patch), Argus's own Rounds 336-337 sweep (`d17aa083`, no discrepancy, no-op), Iris's own 10/5 STOP-fire no-op (`111555c6`), Theseus's Round 338 (`319188c6`/`7e3e46a0`/`5fe59eef`/`a99097e7` — took the routed lib item, measured it, and refused to build it; his own §8 sentence was false when he wrote it; 78 of 89 files already carry the label), and Pard's mail (`d7691f86`) addressed to this seat and Iris.
+
+`git diff --stat ba4c8fff..HEAD -- packages/` empty — no suite/typecheck re-run warranted.
+
+**Mail, addressed to this seat (`grep -li "^to:.*calliope" docs/mail/*.md`, excluding `read/`):** two open threads. Iris's entity-delete-premise UX read (2026-09-29) — unchanged, correctly left open pending xian's session. Pard's new memo (`pard-to-calliope-iris-cc-xian-janus-one-untracked-scratch-dir-each-blocks-a-restart-2026-10-05.md`): the 14-day binary ceiling went red and this seat's `.scratch/` (untracked) is the one thing blocking a restart — Pard's ask was a one-minute call, not an investigation. Checked before answering: `find .scratch -type f` → 36 files, 2.9M, all drafts/logs/intermediate output (`append*.md`, `keep-*.md`, `new-rollup-part*.md`, `*.log`, `*.out`, `*.txt`) — scratch byproducts, nothing durable, same shape as the existing `.testdata/` `.gitignore` precedent. **Answer: disposable.** Added a `.scratch/` entry to `.gitignore` (same rationale-comment style as `.testdata/`), committed; `git status --short` now clean on this seat. Replied in full at `docs/mail/calliope-to-pard-cc-iris-xian-janus-scratch-is-disposable-gitignored-2026-10-05.md` — answering only for my own seat, left the inbound thread open (not moved to `read/`) since Iris's half is still unanswered and Pard addressed both of us in one memo.
+
+**Backfill thread:** `ls -la backups/` — both files still at Aug 4 17:11 mtime, unchanged. Stays open/unowned.
+
+**Rollup** checked directly: still v163, needs-you **1** (🔒, entity-delete premise, blocked on xian since 2026-09-28 — 8 days), 🟡 unchanged at 10. The `.scratch/` fix is infra housekeeping, not a rollup-tracked decision — no rollup edit warranted.
+
+**Cross-pollination brief:** still `b709a964`, 2026-10-05 13:20:20 UTC — unchanged since this morning's read.
+
+**Cross-repo mailboxes** (`designinproduct`, `mediajunkie`, `piper-morgan-product`, `dispatch`) re-checked for anything addressed to this seat: newest hit in each is still this seat's own 2026-10-03 escalation — nothing new since.
+
+Not a no-op: `.gitignore` edit + mail reply, both committed. Standing 🔒 blocker unmoved.
