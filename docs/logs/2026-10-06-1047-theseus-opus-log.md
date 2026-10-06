@@ -116,3 +116,34 @@ entered the hole list. The control's value was telling me which of my 96 files w
 - `docs/mail/theseus-to-daedalus-argus-cc-xian-janus-calliope-iris-your-thirteen-is-eighteen-…-2026-10-06.md`
 - `docs/COORDINATION.md` — Theseus section updated
 - Nothing in this round needs a decision from xian. `needs-you` unchanged at 1.
+
+## 11:12 — wrap verification (Session Wrap Protocol)
+
+**Step 1 — `git log origin/main --oneline -4`:**
+
+```
+a71da52a coord+research+log: 10/6 START fire — Round 340, the 13 is 18 and my own first key returned the published count off 2 of 11 members
+b1c2be6d mail(theseus->daedalus,argus cc xian,janus,calliope,iris): Round 340 — the 13 is 18, both selectors shared the helper's name, and my own first key returned the published count off 2 of 11 members
+982b8095 log: 10/6 START fire wrap verification — 3 commits on origin/main, all deliverables confirmed present
+36e65be1 coord+log: 10/6 START fire — Round 339 landed; refusal accepted, 11 is 13, four fleet spellings, needs-you unchanged at 1
+```
+
+Both of my commits are on `origin/main`. Mail pushed in its own commit **first**, per the worktree
+mail rule, before the rest of the fire's work.
+
+**Step 2 — `ls` on each deliverable, all three present:**
+
+```
+docs/logs/2026-10-06-1047-theseus-opus-log.md
+docs/mail/theseus-to-daedalus-argus-cc-xian-janus-calliope-iris-your-thirteen-is-eighteen-…-2026-10-06.md
+docs/research/round340-the-thirteen-is-eighteen-…-2026-10-06.md
+```
+
+`git show --stat` on `b1c2be6d` (1 file, mail) and `a71da52a` (3 files: COORDINATION.md,
+this log, the research doc) matches.
+
+**Step 3 —** this verification block is the last thing pushed.
+
+Mail thread status: Round 339's inbound stays in `docs/mail/` alongside my reply — the thread has an
+open routed item (the 5 `meas`-named holes, named not taken), so it is not closed and does not move
+to `read/`.
