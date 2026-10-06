@@ -147,3 +147,123 @@ this log, the research doc) matches.
 Mail thread status: Round 339's inbound stays in `docs/mail/` alongside my reply — the thread has an
 open routed item (the 5 `meas`-named holes, named not taken), so it is not closed and does not move
 to `read/`.
+
+---
+
+# 10/6 WORK fire (~14:48 PT) — Round 342
+
+## 14:48 — briefing
+
+Wrapper synced the worktree to `origin/main`; `HEAD == origin/main` at `6cdef479`, tree clean. Read
+`docs/COORDINATION.md` and listed `docs/mail/`. New inbound addressed to me since the 10:47 fire:
+**Daedalus's Round 341** (`41b80e54`). `%an`-checked the three head commits before reading any as
+mine — **Janus's, Argus's and Daedalus's**, per the Round 326 lesson.
+
+One housekeeping note recorded because the earlier fire prompts were wrong about it: network is
+live. `git fetch origin main` succeeded on the default route; no port-443 workaround needed.
+
+## 14:50 — Round 341's figures, re-keyed independently
+
+Wrote `.scratch/r342-census.mjs`: population from a `readdirSync` walk (not grep, not a glob — a
+NUL-bearing file emits no grep row), `renderMeasMentions` copied verbatim from `probe-round269`,
+and the **live** `measurementLines` imported from `sweep-probes.mjs` rather than retyped.
+
+- **99 MEAS-mentioning emission sites in 94 files** — exact match to Daedalus's §2.
+- **countable-but-dropped: 0**; **admitted-but-uncountable: 2**, and the two are the same two
+  **by name**: `probe-round196…:457` (`"  MEAS X"`) and `probe-round221:53` (`"MEAS X — X"`).
+  Member list, not count (Round 340's lesson).
+- Both false-mention line numbers exact: `probe-round240:474`, `geometry-distance-arm.mjs:102`.
+- Census regex `/^probe-/` at **`sweep-probes.mjs:1452`** — `grep -n`, exact.
+
+## 14:54 — his §1 unit, settled rather than left as a discrepancy
+
+My own Round 340 §1 counted **200 files / 194 code** recursively; the top level of `scripts/` is
+**183 / 175**. His 99-in-94 is stated over "all 194 files," so I ran both populations and compared
+**member lists**: `175 → 99 in 94`, `194 → 99 in 94`, **symmetric difference 0**. The 19 code files
+below the top level hold zero emission sites. Unit-independent; nothing to chase.
+
+## 14:58 — the finding, and my first mechanism for it was wrong
+
+`MEAS_LINE` (`:1682`) is **`/gm`**. The new `MEAS_IN_LABEL_POSITION` is **unflagged**. I predicted
+the selector would therefore only test line 1 — and driving it rather than reasoning about it
+corrected me: **`\s` includes `\n`**, so `^\s*` crosses leading newlines and `"\n[A1] MEAS 7ms"`
+*is* admitted. The shape where the two actually part is **text on line 1, the MEAS label on a later
+line** — 2 of 4 driven cases countable-but-dropped.
+
+Then the reachability question, because a hand-typed string proves nothing about the live path
+(Round 334). `.scratch/r342-reachability.mjs` writes a **real-shaped source fixture** and pushes it
+through the live `stripSource` and the live renderer:
+
+```
+1 rendering ("measurements:\n[A1] MEAS Xms\n[A2] MEAS Xms")
+  counter counts        : 2
+  live selector admits  : false
+```
+
+`[^`]*` crosses newlines, so one `console.log` emitting a header plus a measurement block is **one**
+rendering, and F6 grades neither of its two countable lines.
+
+**Why F7's `d1` cannot detect it** — both halves are blind to the dimension: `countableDropped`
+derives over a population in which **0 of 99** renderings carry a newline at all (re-stated from the
+recursive population so it isn't inherited from the narrower one), and `FLEET_SPELLINGS`
+(`:266-275`) is **four single-line entries**. d1 is green and cannot go red however the anchoring
+drifts. That is Daedalus's own stated criterion for d2 arriving at the conjunct he graded derived.
+
+## 15:02 — both cures priced
+
+`.scratch/r342-price-cures.mjs`.
+
+- **CURE A** `/^[ \t]*(?:\[[^\]]*\][ \t]*)?MEAS\b|^[ \t]*\[MEAS\]/m` — **0** disagreements with the
+  live selector over 99 live renderings; all **3** multi-line fixtures admitted (live selector drops
+  all 3); **0** superset violations over 99 renderings + 3 fixtures + the 4 fleet spellings.
+  **Price 0.** Not landed: `probe-round269` is Daedalus's file and he restructured F7 in it today.
+- **CURE B** (`MEAS\s+\[` → `MEAS\s+\S`) for his routed 196/221 item — **exactly 2 of 99** source
+  renderings change, both `0 → 1`, and they are the two real ones; **0** new false counts over the
+  four known non-measurement shapes, including `"MEASURED arms follow"` (the `\s+` rejects it, not
+  the `\b`).
+
+## 15:06 — a vacuous measurement, recorded not dropped
+
+CURE B changes a counter applied at `:1737` to live **stdout**, so a source-only price is the wrong
+denominator. First attempt: ran both counters over the captured `sweep-probes.mjs --drive` log →
+**`live 0 / CURE B 0`**. Only then read that the file is **84 lines** of summary framing and carries
+no probe stdout at all. **Two counters agreeing on an empty population agree about nothing** — the
+Round 339 lesson, my turn to nearly publish it. Discarded and re-ran over the three real probe
+stdouts I had captured: **291 lines, 32 MEAS lines, 0 extra, 0 lost**. Honest denominator **3 of
+36**; the 36-output figure needs a re-drive that saves per-probe stdout, and I said so rather than
+rounding it up.
+
+## 15:10 — gate, each half read from a captured file
+
+- `npx tsc -p scripts/tsconfig.json --noEmit` — **0 lines of output**.
+- `npm test` (unpiped, to a file) — **0** `error TS`; server **140 files / 2178 passed / 1 skipped**;
+  client **25 passed / 13 skipped (38)**, 325 / 13; `CENSUS OK — every probe under scripts/ is in
+  exactly one list, and every entry is well-formed.`; swept **36**. Identical to Round 341.
+- `node scripts/sweep-probes.mjs --drive` — **verdict line read, not the exit code**: `SWEEP BLOCKED
+  — 35 of 36 swept probes green, 0 red, 1 blocked (did not conclude), 0 census problem(s), 109
+  deferred`. The exit 2 is the BLOCKED propagation `probe-round269` exists to grade.
+- `probe-round269` standalone — `All 53 regression checks passed, 3 measurements, 0 skips`;
+  `[F6] PASS`, `[F7] PASS`. F7's own derived line: `32 MEAS-mentioning rendering(s) across 36 swept
+  probes, 32 in label position, 0 countable-but-dropped`.
+- `probe-round308` standalone — `All 23 regression checks passed.`, `31 labels … all distinct.`,
+  `[B1] PASS`.
+- `probe-round225` standalone — exit 3, arm B hard-skipped, its own line reads `operator action:
+  free port 3001 (this is usually a live "npm run dev")`. xian's standing occupant; not mine.
+- No server, port, database or model call of my own.
+
+## 15:12 — his housekeeping claims, verified not inherited
+
+Entity-delete thread **closed**: six memos listed **by name** via `ls docs/mail/read/` (Calliope ×3,
+Iris ×1, Janus's ruling, Calliope's closing memo) — read from the listing, not off the commit
+subject. `needs-you` stays at 0.
+
+## 15:14 — deliverables
+
+- `docs/research/round342-f6s-selector-and-the-fleet-counter-disagree-on-multiline-and-the-derived-arm-that-guards-it-has-zero-members-of-that-shape-2026-10-06.md`
+- `docs/mail/theseus-to-daedalus-argus-cc-…-your-341-reproduces-in-full-…-2026-10-06.md`
+- `docs/COORDINATION.md` — Theseus section updated
+- Nothing in this round needs a decision from xian.
+
+Mail thread status: Round 341's inbound stays in `docs/mail/` alongside my reply — two routed items
+are open (CURE A to Daedalus, CURE B needing a 36-output denominator and a fifth-spelling ruling),
+so the thread is not closed and does not move to `read/`.
