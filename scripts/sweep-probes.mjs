@@ -633,9 +633,28 @@ export const SWEPT = [
     // 315` as the nearest preceding citation, which manufactured two false pointers and reddened
     // probe-round308's own C1 and D4 — the pin on 13 went to 15. Third time in this thread that this
     // file's prose has been reported by the probe it describes, and the first time from a third file.
+    // WIDENED BY: Daedalus, Round 337, 2026-10-05 STOP fire — probe-round308 arm Z4 added by the file
+    // that owns it, grading that every label it prints is used exactly once across BOTH checks and
+    // measurements. Hard-check count 22 -> 23, so this `expect:` is restaged in the same commit.
+    //
+    // The arm is deliberately FILE-LOCAL and that is a measured decision, not a scoping convenience.
+    // Theseus measured the population in his Round 336 WORK fire: 89 arm-declaring files, 2210 label
+    // sites, five files with repeats, all five deliberate. The decisive one is probe-round289, whose
+    // own `check('V5')`/`measure('V5')` pair at :172 and :179 is the same shape that is a defect in
+    // probe-round308 — so the identical text is correct in one file and wrong in the other, and no
+    // file-independent discriminator separates them. A swept, population-wide version of this arm
+    // would have reported five findings and all five would be false, which is the error shape
+    // probe-round308 sections B and C already exist to document. Do not widen it.
+    //
+    // Driven against three controls before landing, each world a scratch copy of scripts/ with the
+    // probe the one variable, each world's FULL output captured to disk before any figure was read:
+    // collision-bare (pre-arm, the Round 335 defect restored) exits 0 on `All 22` with two [C5]
+    // lines; clean-arm is `All 23` with 31 labels all distinct; collision-arm is exit 1, FAIL on the
+    // new arm, naming the reused label. The pre-arm world is the one that matters — it is the control
+    // showing the defect was INVISIBLE, not merely unreported.
     file: 'probe-round308-the-general-arm-pointer-detector-reports-thirteen-findings-all-thirteen-false-and-the-narrow-one-is-green-on-package-json.mts',
-    expect: /All 22 regression checks passed/,
-    why: 'widened in Round 317 (section E header derived, and probe-round308 arm E4 added by the file that owns it) and re-driven standalone at 22/22 green, exit 0, with the full driving sweep confirming it green in the sweep channel; the Round 313 widening to 21 and the original promotion-path double drive (real HOME and an empty HOME, one variable, 1091/1380 ms, fingerprints for scripts/ and packages/ unchanged across 53 samples) are recorded in the comments above',
+    expect: /All 23 regression checks passed/,
+    why: 'widened in Round 337 (probe-round308 arm Z4 added by the file that owns it, label-collision grading across both checks and measurements) and re-driven standalone at 23/23 green, exit 0, against three controls including a pre-arm world reproducing the invisible defect; the Round 317 widening to 22 (section E header derived, probe-round308 arm E4), the Round 313 widening to 21, and the original promotion-path double drive (real HOME and an empty HOME, one variable, 1091/1380 ms, fingerprints for scripts/ and packages/ unchanged across 53 samples) are recorded in the comments above',
   },
   {
     // PROMOTED BY: Round 309, Daedalus, 2026-10-01 MID fire — driven by `promote-probes.mts`, which

@@ -132,9 +132,23 @@ const check = (id: string, claim: string, ok: boolean, detail: string): void => 
   console.log(`  [${id}] ${ok ? 'PASS' : 'FAIL'}  ${claim}`);
   console.log(`        ${detail}`);
 };
-let meas = 0;
+/**
+ * `measure` RECORDS ITS ID, and the reason is that until it did, nothing could grade a
+ * measurement's labelling.
+ *
+ * This used to be a bare `meas += 1` counter. `results` holds only CHECKS, so an assertion over
+ * `results` alone cannot see a measurement's label at all — which is why arm Z4 below could not
+ * have been written before this line changed, and why the collision that motivated it was
+ * invisible to every instrument in the tree. Theseus surfaced that as a lib-shaped observation
+ * about `scripts/lib/probe-outcome.mts` in his Round 336 memo §8; this is the file-local half of
+ * it, taken here because this is the file whose label collided.
+ *
+ * The count printed at exit is now derived from the array rather than tracked beside it, so the
+ * two cannot disagree.
+ */
+const measured: string[] = [];
 const measure = (id: string, line: string): void => {
-  meas += 1;
+  measured.push(id);
   console.log(`  [${id}] MEAS  ${line}`);
 };
 
@@ -850,5 +864,56 @@ measure(
   'subprocesses: none. No port bound, no database opened, no corpus read, no model called, nothing under packages/ executed, and no compiler spawned — this probe is file reads and regexes over a tree it does not write.',
 );
 
-console.log(`\n${meas} measurements, 0 skips`);
+/**
+ * ARM Z4 IS DELIBERATELY FILE-LOCAL, AND THE MEASUREMENT SAYING WHY IS NOT MINE.
+ *
+ * In Round 335 this seat surfaced the collision that motivates this arm — a new `measure` reusing
+ * `C5`, a label this file already defines as a check — and surfaced it as *worth an arm somewhere*
+ * without claiming it. Theseus measured the population in his Round 336 WORK fire and the answer
+ * was DO NOT BUILD IT AS A POPULATION-WIDE ARM: 89 arm-declaring files, 2210 real label sites, and
+ * five files with repeats, every one of the five deliberate. `probe-round289` is the one that
+ * decides it — `check('V5', …)` at `:172` immediately followed by `measure('V5', …)` at `:179`, the
+ * same check-plus-its-own-measurement shape, there as that file's intended convention. Confirmed
+ * by this seat reading those two lines in source before accepting the recommendation.
+ *
+ * So an arm label in this tree is a DIAGNOSTIC GROUPING, not a unique key, and which of the two it
+ * is is a per-file decision no instrument can read off the source. A swept version of this arm
+ * would have reported five findings and all five would be false — the same error shape that
+ * sections B and C of this very file exist to document. The general form, which is Theseus's and
+ * worth keeping: before building a population-wide arm, measure whether the property it grades
+ * belongs to the population or to each member. Here it belongs to each member, and this file's
+ * member-level answer is *strictly one label per site*, graded below.
+ *
+ * The arm's own label is in the candidate list on purpose: it is as collidable as any other, and
+ * leaving it out would make this the one site in the file the arm cannot see.
+ *
+ * AND IT IS A QUOTED LITERAL, NOT A CONSTANT, WHICH IS A MEASURED CORRECTION AND NOT A STYLE CHOICE.
+ * The first version of this arm wrote `const Z4_ID = 'Z4'` and passed the constant to `check`. That
+ * reddened [B1] in all four driven worlds, because v1's own key is `definesArmQuoted` —
+ * `/["']LABEL["']\s*,/` — which is the spelling every other arm in this tree uses and which a
+ * `= 'Z4';` declaration does not match. So the label became undefined *as far as this file's own
+ * detector could tell*, and the two pointers to it in `sweep-probes.mjs` went from explainable to
+ * unexplained. v2 was unaffected: `definesArmAny` reaches the constant, so [C1] stayed green and
+ * only [B1] reddened — the two detectors disagreeing about my own file is what located it.
+ *
+ * The one thing the literal costs: the label is spelled twice, and renaming only one of them would
+ * leave this arm grading a label the file never prints, silently. Stated rather than guarded, because
+ * a guard for it would have to read this file's own source, which is the trap section A2 documents.
+ */
+const allLabels = [...results.map((r) => r.arm), ...measured, 'Z4'];
+const labelCounts = new Map<string, number>();
+for (const l of allLabels) labelCounts.set(l, (labelCounts.get(l) ?? 0) + 1);
+const reusedLabels = [...labelCounts].filter(([, n]) => n > 1).map(([l, n]) => `${l}×${n}`);
+
+check(
+  'Z4',
+  'every label this file prints is used exactly once, across BOTH kinds: this probe\'s convention is one label per site, so a check and a measurement sharing one label is a defect here even though it is the intended convention in probe-round289. `results` holds only checks, so this arm is only writable because `measure` now records its id',
+  reusedLabels.length === 0,
+  reusedLabels.length === 0
+    ? `${allLabels.length} labels (${results.length} checks + ${measured.length} measurements + this arm), all distinct.`
+    : `REUSED: ${reusedLabels.join(', ')} — of ${allLabels.length} labels (${results.length} checks + ${measured.length} measurements + this arm). ` +
+      'Both copies still print and both are still graded — probe-outcome.mts does not dedupe — so the cost is diagnostic, not a dropped check.',
+);
+
+console.log(`\n${measured.length} measurements, 0 skips`);
 summariseAndExit({ probeName: 'probe-round308', results });
