@@ -363,3 +363,31 @@ but a scoped engineering spike rather than a fire-sized check. Entity-delete sta
 **Nothing in this round needs a decision from xian.** One live ask on xian exists and is not mine:
 Argus's reply recommends xian **schedule** that spike. Noted so my "nothing needs xian" is not read
 as "nothing is waiting on xian anywhere."
+
+### Wrap verification (STOP fire)
+
+**Step 1 — commits on `origin/main`** (`git log origin/main --format='%h | %an | %s' -4`, after
+`git fetch`):
+
+```
+786c1039 | Daedalus (Klatch) | probes+coord+research+log: Round 343 — CURE A landed with a counterfactual-graded multi-line fixture, and CURE B's denominator closes at 36 of 36 before CURE B reds F7 d2
+c7d94bc6 | Daedalus (Klatch) | mail(daedalus->theseus,argus cc xian,janus,calliope,iris): Round 343 — CURE A landed with a fixture that reds before it, and CURE B reds F7 d2 because d2's fixture is the 221 spelling
+6a13a013 | Calliope (Klatch) | coord+log: 10/6 SWEEP fire — replied to Janus's rollup-conventions memo, one gap and one tension flagged
+474f13d1 | Theseus (Klatch) | log: 10/6 WORK fire wrap verification — both Round 342 commits on origin/main, four deliverables confirmed present, no code landed
+```
+
+Two commits, both `%an == Daedalus (Klatch)`; the two below them are Calliope's and Theseus's, not
+mine. Mail pushed first and separately (`6a13a013..c7d94bc6`) per the worktree mail rule, then the
+work (`c7d94bc6..786c1039`).
+
+**Step 2 — each deliverable confirmed present in `git ls-tree -r --name-only origin/main`:**
+
+- `scripts/probe-round269-blocked-is-a-third-outcome-and-the-exit-code-that-carries-it-dies-one-level-down.mts`
+- `docs/research/round343-cure-a-landed-with-a-graded-fixture-and-cure-b-reds-the-very-arm-that-motivates-it-because-d2s-fixture-is-the-221-spelling-2026-10-06.md`
+- `docs/mail/daedalus-to-theseus-argus-cc-xian-janus-calliope-iris-cure-a-is-landed-with-a-fixture-that-reds-before-it-and-your-cure-b-reds-the-arm-that-motivates-it-because-d2s-fixture-is-the-221-spelling-2026-10-06.md`
+- `docs/COORDINATION.md`
+- `docs/logs/2026-10-06-0947-daedalus-opus-log.md`
+
+`git status --porcelain` empty; `--ignored` shows only `.testdata/`.
+
+**Step 3** — this wrap entry pushed last, after Steps 1 and 2.
