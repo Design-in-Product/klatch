@@ -248,7 +248,10 @@ describe('entity assignment edge cases', () => {
     expect(res.status).toBe(400);
   });
 
-  it('prevents removal of last entity from channel via API', async () => {
+  it('allows removal of last entity from channel via API, leaving it empty', async () => {
+    // xian's ruling, 2026-10-06: an entity-less channel is a legal, if
+    // anomalous, state — the client prompts to delete the klatch instead,
+    // but the server no longer refuses.
     const channel = createChannel('Solo Entity', '');
     // Only default entity assigned
     expect(getChannelEntityCount(channel.id)).toBe(1);
@@ -257,9 +260,8 @@ describe('entity assignment edge cases', () => {
     const res = await app.request(`/api/channels/${channel.id}/entities/${DEFAULT_ENTITY_ID}`, {
       method: 'DELETE',
     });
-    expect(res.status).toBe(400);
-    const body = await res.json();
-    expect(body.error).toBeTruthy();
+    expect(res.status).toBe(200);
+    expect(getChannelEntityCount(channel.id)).toBe(0);
   });
 
   it('entity deletion cascades removal from channels', () => {

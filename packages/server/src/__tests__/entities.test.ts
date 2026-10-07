@@ -285,15 +285,20 @@ describe('DELETE /api/channels/:id/entities/:entityId', () => {
     expect(data.every((e: any) => e.id !== entity.id)).toBe(true);
   });
 
-  it('cannot remove the last entity from a channel (400)', async () => {
+  it('allows removing the last entity from a channel, leaving it empty', async () => {
+    // xian's ruling, 2026-10-06: an entity-less channel is a legal, if
+    // anomalous, state — the client prompts to delete the klatch instead,
+    // but the server no longer refuses.
     const res = await req('DELETE', `/channels/default/entities/${DEFAULT_ENTITY_ID}`);
-    expect(res.status).toBe(400);
+    expect(res.status).toBe(200);
     const data = await res.json();
-    expect(data.error).toContain('last');
+    expect(data).toEqual([]);
+
+    const entitiesRes = await req('GET', '/channels/default/entities');
+    expect(await entitiesRes.json()).toEqual([]);
   });
 
-  it('returns 404 if entity not assigned (when channel has >1 entity)', async () => {
-    // Need >1 entity so the "can't remove last" check doesn't fire first
+  it('returns 404 if entity not assigned', async () => {
     const e1 = await req('POST', '/entities', { name: 'Extra' });
     const extra = await e1.json();
     await req('POST', '/channels/default/entities', { entityId: extra.id });

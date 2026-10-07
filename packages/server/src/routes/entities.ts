@@ -225,11 +225,10 @@ app.delete('/channels/:channelId/entities/:entityId', (c) => {
   const channelId = c.req.param('channelId');
   const entityId = c.req.param('entityId');
 
-  const count = getChannelEntityCount(channelId);
-  if (count <= 1) {
-    return c.json({ error: 'Cannot remove the last entity from a channel' }, 400);
-  }
-
+  // Removing the last entity is allowed — an entity-less channel is a legal,
+  // if anomalous, state (xian's ruling, 2026-10-06: creating and populating a
+  // klatch are separate steps). The client prompts to delete the klatch
+  // instead when this would be the last one; it isn't enforced here.
   const removed = removeEntityFromChannel(channelId, entityId);
   if (!removed) {
     return c.json({ error: 'Entity not assigned to this channel' }, 404);

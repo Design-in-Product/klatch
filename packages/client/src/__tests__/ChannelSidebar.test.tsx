@@ -138,6 +138,57 @@ describe('ChannelSidebar', () => {
     expect(screen.getByText('Klatches')).toBeInTheDocument();
   });
 
+  // ── Entity-less klatches — legal but anomalous (xian's ruling, 2026-10-06) ──
+
+  it('flags an entity-less klatch with an "empty" badge instead of the agent-count badge', () => {
+    const channels = [
+      makeChannel({ id: 'default', name: 'general' }),
+      makeChannel({ id: 'klatch1', name: 'standup', type: 'klatch', entityCount: 0 }),
+    ];
+    render(<ChannelSidebar {...defaultProps} channels={channels} />);
+
+    expect(screen.getByText('empty')).toBeInTheDocument();
+  });
+
+  it('does not flag a populated klatch as empty', () => {
+    const channels = [
+      makeChannel({ id: 'default', name: 'general' }),
+      makeChannel({ id: 'klatch1', name: 'standup', type: 'klatch', entityCount: 2 }),
+    ];
+    render(<ChannelSidebar {...defaultProps} channels={channels} />);
+
+    expect(screen.queryByText('empty')).not.toBeInTheDocument();
+    expect(screen.getByText('2')).toBeInTheDocument();
+  });
+
+  it('deprioritizes an entity-less klatch to the bottom regardless of recency', () => {
+    const channels = [
+      makeChannel({
+        id: 'empty1',
+        name: 'abandoned',
+        type: 'klatch',
+        entityCount: 0,
+        createdAt: '2026-09-01T00:00:00Z',
+        lastMessageAt: '2026-10-05T00:00:00Z', // most recently active
+      }),
+      makeChannel({
+        id: 'populated1',
+        name: 'active standup',
+        type: 'klatch',
+        entityCount: 2,
+        createdAt: '2026-01-01T00:00:00Z',
+        lastMessageAt: '2026-01-02T00:00:00Z', // oldest activity, but not empty
+      }),
+    ];
+    render(<ChannelSidebar {...defaultProps} channels={channels} />);
+
+    const klatchButtons = screen.getAllByRole('button').filter(
+      (btn) => btn.textContent?.includes('abandoned') || btn.textContent?.includes('active standup')
+    );
+    expect(klatchButtons[0].textContent).toContain('active standup');
+    expect(klatchButtons[1].textContent).toContain('abandoned');
+  });
+
   // ── Section collapse ────────────────────────────────────────
 
   it('collapses and expands the First project section on click', { timeout: 15000 }, async () => {

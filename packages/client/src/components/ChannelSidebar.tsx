@@ -298,8 +298,14 @@ export function ChannelSidebar({
       }
     }
 
-    // Sort by most recent activity (last message timestamp), newest first
+    // Sort by most recent activity (last message timestamp), newest first.
+    // Entity-less klatches are a legal but anomalous state (xian's ruling,
+    // 2026-10-06) — deprioritized to the bottom of their section regardless
+    // of activity, rather than competing on recency with populated ones.
     const byLastActivity = (a: Channel, b: Channel) => {
+      const aEmpty = (a.entityCount ?? 1) === 0 ? 1 : 0;
+      const bEmpty = (b.entityCount ?? 1) === 0 ? 1 : 0;
+      if (aEmpty !== bEmpty) return aEmpty - bEmpty;
       const aTime = a.lastMessageAt || a.createdAt;
       const bTime = b.lastMessageAt || b.createdAt;
       return bTime.localeCompare(aTime);
@@ -348,19 +354,33 @@ export function ChannelSidebar({
     return null;
   }, [expandedProject, projectGroups, activeChannelId]);
 
-  const renderChannelItem = (ch: Channel, prefix: string) => (
+  const renderChannelItem = (ch: Channel, prefix: string) => {
+    // Entity-less klatch: legal but anomalous (xian's ruling, 2026-10-06) —
+    // greyed and visibly flagged rather than looking like a normal klatch.
+    const isEmpty = (ch.entityCount ?? 1) === 0;
+    return (
     <button
       key={ch.id}
       onClick={() => handleChannelClick(ch.id)}
       className={`w-full text-left px-4 py-1.5 text-sm transition-colors flex items-center ${
         ch.id === activeChannelId
           ? 'bg-active-channel text-primary font-medium'
-          : 'text-secondary hover:text-primary hover:bg-hover'
+          : isEmpty
+            ? 'text-muted hover:text-secondary hover:bg-hover italic'
+            : 'text-secondary hover:text-primary hover:bg-hover'
       }`}
     >
       <span className="text-muted mr-1">{prefix}</span>
-      <span className="truncate" title={ch.name}>{ch.name}</span>
-      {(ch.entityCount ?? 0) >= 2 && (
+      <span className="truncate" title={isEmpty ? `${ch.name} (no agents)` : ch.name}>{ch.name}</span>
+      {isEmpty && (
+        <span
+          className="ml-1 flex-shrink-0 text-[9px] font-medium px-1 py-0.5 rounded-full bg-badge text-muted leading-none"
+          title="No agents assigned"
+        >
+          empty
+        </span>
+      )}
+      {!isEmpty && (ch.entityCount ?? 0) >= 2 && (
         <span
           className="ml-1 flex-shrink-0 text-[9px] font-medium px-1 py-0.5 rounded-full bg-badge text-muted leading-none"
           title={`${ch.entityCount} agents`}
@@ -377,7 +397,8 @@ export function ChannelSidebar({
         </span>
       )}
     </button>
-  );
+    );
+  };
 
   // Chats subsection over klatches subsection (shared by project groups + the default project).
   // Section labels appear only when both types are present (matches SIDEBAR.md within-project ordering).

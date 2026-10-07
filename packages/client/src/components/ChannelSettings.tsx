@@ -36,6 +36,7 @@ export function ChannelSettings({
   const [contextError, setContextError] = useState<string | null>(null);
   const [stats, setStats] = useState<ChannelStats | null>(null);
   const [confirmDelete, setConfirmDelete] = useState(false);
+  const [lastEntityPromptId, setLastEntityPromptId] = useState<string | null>(null);
   const [projects, setProjects] = useState<Project[]>([]);
   const [promptLayers, setPromptLayers] = useState<Record<string, string> | null>(null);
   const [channelFiles, setChannelFiles] = useState<FileWithRef[]>([]);
@@ -50,6 +51,7 @@ export function ChannelSettings({
     setContextLoading(false);
     setContextError(null);
     setStats(null);
+    setLastEntityPromptId(null);
   }, [channel.id]);
 
   // Load projects for the assignment dropdown
@@ -443,25 +445,32 @@ export function ChannelSettings({
             <div className="space-y-1.5 mb-3">
               {channelEntities.map((entity) => {
                 const modelLabel = getModelLabel(entity.model);
-                const canRemove = channelEntities.length > 1;
+                const isLastEntity = channelEntities.length === 1;
+                const promptingThisOne = lastEntityPromptId === entity.id;
                 return (
                   <div
                     key={entity.id}
-                    className="flex items-center gap-2.5 rounded-lg border border-line bg-card px-3 py-2 group"
+                    className="flex flex-col gap-1.5 rounded-lg border border-line bg-card px-3 py-2 group"
                   >
-                    <span
-                      className="inline-flex items-center justify-center w-6 h-6 rounded-full text-xs font-bold text-white flex-shrink-0"
-                      style={{ backgroundColor: entity.color }}
-                    >
-                      {entity.name.charAt(0).toUpperCase()}
-                    </span>
-                    <span className="text-sm text-primary flex-1 truncate">{entity.name}</span>
-                    <span className="text-xs px-1.5 py-0.5 rounded bg-badge text-muted font-medium">
-                      {modelLabel}
-                    </span>
-                    {canRemove && (
+                    <div className="flex items-center gap-2.5">
+                      <span
+                        className="inline-flex items-center justify-center w-6 h-6 rounded-full text-xs font-bold text-white flex-shrink-0"
+                        style={{ backgroundColor: entity.color }}
+                      >
+                        {entity.name.charAt(0).toUpperCase()}
+                      </span>
+                      <span className="text-sm text-primary flex-1 truncate">{entity.name}</span>
+                      <span className="text-xs px-1.5 py-0.5 rounded bg-badge text-muted font-medium">
+                        {modelLabel}
+                      </span>
                       <button
-                        onClick={() => onRemoveEntity(entity.id)}
+                        onClick={() => {
+                          if (isLastEntity) {
+                            setLastEntityPromptId(entity.id);
+                          } else {
+                            onRemoveEntity(entity.id);
+                          }
+                        }}
                         title="Remove from klatch"
                         className="p-1 rounded text-muted hover:text-danger hover:bg-hover transition-colors opacity-100 md:opacity-0 md:group-hover:opacity-100 md:focus-within:opacity-100"
                       >
@@ -469,6 +478,33 @@ export function ChannelSettings({
                           <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
                         </svg>
                       </button>
+                    </div>
+                    {promptingThisOne && (
+                      <div className="pl-1 pt-1 border-t border-line">
+                        <p className="text-xs text-secondary mb-1.5">
+                          {entity.name} is the last agent in this klatch. Also delete the klatch, or leave it empty?
+                        </p>
+                        <div className="flex items-center gap-2">
+                          <button
+                            onClick={() => { setLastEntityPromptId(null); onDeleteChannel(); }}
+                            className="text-xs px-2.5 py-1 rounded bg-danger text-white hover:bg-danger/80 transition-colors"
+                          >
+                            Delete klatch
+                          </button>
+                          <button
+                            onClick={() => { setLastEntityPromptId(null); onRemoveEntity(entity.id); }}
+                            className="text-xs px-2.5 py-1 rounded bg-card border border-line text-secondary hover:text-primary transition-colors"
+                          >
+                            Leave empty
+                          </button>
+                          <button
+                            onClick={() => setLastEntityPromptId(null)}
+                            className="text-xs text-muted hover:text-secondary transition-colors"
+                          >
+                            Cancel
+                          </button>
+                        </div>
+                      </div>
                     )}
                   </div>
                 );
