@@ -129,3 +129,46 @@ item pending Janus's reconciliation, per close-discipline (open threads stay vis
 ones). Standing items re-checked and unchanged: Backfill (`ls -la backups/`, both files still Aug 4 17:11
 mtime), cross-pollination brief (`1f86f765`, unchanged since this morning's read, already confirmed
 inapplicable). No `packages/` changes this fire — docs+mail only.
+
+## 21:3x PT (STOP fire) — not a no-op: rollup updated to reflect Iris's shipped entity-delete UX half. Needs-you unchanged at 0.
+
+`git fetch origin` then HEAD `d9154596`, worktree already synced by the wrapper. `git log 6a13a013..HEAD
+--format='%h %an %s'` (own prior SWEEP-fire checkpoint) = 9 commits: Daedalus's Round 343 (CURE A/B, test-infra),
+Argus's own sweep of 341-343 (no-op), **Iris's `6344eed2`/`4142a441` — built and landed the entity-delete
+ruling's UX half, same fire it unblocked** — and Theseus's Round 344. Checked authorship on each rather than
+inferring from subject shape.
+
+`git diff --stat 6a13a013..HEAD -- packages/` was NOT empty this fire (first non-empty packages/ diff since my
+last checkpoint): Iris's commit touches `ChannelSettings.tsx`/`.test.tsx`, `ChannelSidebar.tsx`/`.test.tsx`,
+`entities.ts`, two server test files. Verified fresh rather than trusted from her memo: `npm run typecheck`
+clean across all 4 workspaces; `npm test` run to completion (not piped) — server 140 files/2178 passed/1
+skipped, client 26 files/333 passed/13 skipped, `node scripts/sweep-probes.mjs --census` → CENSUS OK, 36
+swept/109 deferred. All figures match Iris's own build-report memo
+(`docs/mail/read/iris-to-calliope-cc-janus-xian-entity-delete-ux-half-built-2026-10-06.md`, already self-closed
+to `read/`, no reply needed) exactly.
+
+**Action taken:** the rollup's entity-delete section (v164) still read "two items buildable, neither built
+yet," which was now stale — Iris's commit removed the channel-entity route's last-entity 400 (for UX
+testability) and built the delete-klatch prompt / anomalous-empty-state treatment. Updated
+`docs/operations/attention-rollup.md` to v165: both items marked built-and-landed with the commit hash and
+fresh verification figures; only Daedalus's "name the channels it empties" response half remains open.
+Needs-you count unchanged (this was never a needs-you item post-ruling) — a documentation-accuracy fix, not a
+decision change.
+
+**Mail:** re-checked Janus's rollup-conventions memo (`docs/mail/janus-to-calliope-cc-xian-rollup-and-living-
+doc-conventions-2026-10-06.md`) — still correctly open, no reply from Janus yet on the gap/tension flagged last
+SWEEP fire. Attempted again, this fire, to fetch the canonical `mediajunkie/designinproduct` conventions doc
+directly (the fire prompt states this session has full network access) via both `WebFetch` and `curl` against
+the raw GitHub URL — both require a permission grant that this non-interactive session doesn't have and
+neither request was approved. Recording the attempt plainly rather than re-asserting the same "couldn't fetch"
+line without having tried again: the git-specific network carve-out in the fire prompt does not extend to
+general HTTP tools in this session's permission configuration. No other new mail addressed to this seat.
+
+Cross-pollination brief (2026-10-06) re-checked: unchanged since this morning's read, both items (BSD
+`sed -i -E` backup-suffix trap, CI-health hardcoded-workflow-name gap) already confirmed inapplicable to this
+repo (no `sed -i` calls; single `ci.yml` workflow). Backfill thread re-checked: `ls -la backups/` unchanged,
+both files Aug 4 17:11 mtime. `git status --short` shows only `docs/operations/attention-rollup.md` modified
+(this fire's own edit) — clean otherwise, `.scratch/` still gitignored.
+
+Committing and pushing the rollup update plus this log entry; updating `docs/COORDINATION.md` in the same
+commit.
