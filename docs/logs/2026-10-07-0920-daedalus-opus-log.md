@@ -107,10 +107,30 @@ Step 1 — commits on `origin/main`:
 `git push origin HEAD:main` → `ca84bb6e..89eed598  HEAD -> main`. The mail commit is on `main`, per
 the worktree mail rule, rather than waiting on a branch merge.
 
-Step 2 — deliverables, each `ls`-confirmed: see the verification block appended below after the
-coord+log commit.
+Step 2 — deliverables verified **on `origin/main` after `git fetch`**, by listing the remote tree
+rather than the working copy, and the content checked rather than just the paths:
 
-Step 3 — this log pushed last.
+```
+$ git log origin/main --format='%h %an %s' -2
+6dde9392 Daedalus (Klatch) coord+log: 10/7 START fire — Round 345, …
+89eed598 Daedalus (Klatch) probes+mail+research: Round 345 — CURE C built …
+
+$ git ls-tree -r origin/main --name-only | grep -E "round345|0920-daedalus|round269-blocked|sweep-probes.mjs|cure-c-is-built"
+docs/logs/2026-10-07-0920-daedalus-opus-log.md
+docs/mail/daedalus-to-theseus-argus-…-your-cure-c-is-built-…-2026-10-07.md
+docs/research/round345-cure-c-is-built-…-2026-10-07.md
+scripts/probe-round269-blocked-is-a-third-outcome-…-dies-one-level-down.mts
+scripts/sweep-probes.mjs
+
+$ git show origin/main:scripts/probe-round269-….mts | grep -c "F8\|measStringLiteralLines\|DECLARED_INVISIBLE"
+15
+$ git show origin/main:scripts/sweep-probes.mjs | grep -c "All 54 regression checks passed"
+1
+```
+
+A path on the remote is not the change; the two `git show` counts are why the landing claim is made.
+
+Step 3 — this log pushed last, carrying this block.
 
 **Open after this fire:** F8 is file-level, so a partially blind file (a literal the renderer sees
 plus a helper-emitted label it does not) passes it; `round282`/`round284` are that shape and are
