@@ -436,7 +436,7 @@ export const SWEPT = [
   },
   {
     file: 'probe-round269-blocked-is-a-third-outcome-and-the-exit-code-that-carries-it-dies-one-level-down.mts',
-    expect: /All 53 regression checks passed/,
+    expect: /All 54 regression checks passed/,
     // Round 269, Daedalus; extended in Round 271. Drives this fire's own changes: `classify`'s
     // three states on every corner, `sweepExit`'s propagation, `entryProblems` two-sided,
     // `measurementCheck`'s three outcomes, and arm H where all three states arise from processes
@@ -477,7 +477,20 @@ export const SWEPT = [
     // labelled line the counter cannot count is still admitted (fixture, so F6 can still red).
     // Price on the swept set: 0 — all 32 renderings are in label position. Measurement count
     // unchanged at 3; F7 is a check.
-    why: 'run green in Round 341, 53/53 exit 0, 3 measurements; spawns minted node scripts under gitignored .testdata/r269 — no server, port, database, corpus or model call',
+    //
+    // Round 345, Daedalus, on Theseus's routed Round 344 CURE C: 53 → 54. Arm F8 added — F6 and F7
+    // grade the two regexes against each other and neither can see the population F6 never
+    // reached. `renderMeasMentions` requires the MEAS token to sit literally inside a
+    // `console.log`'s first quoted argument, so `probe-round255` — SWEPT, six MEAS lines, ternary
+    // hoisted into a variable one line above the template — was graded by nothing, and F6 read 35
+    // of its own 36 members while reporting no gap. F8's key is independent of `console.log`
+    // entirely: a MEAS token is string-literal body iff the strings-blanked `stripSource` reading
+    // is blank at those exact offsets. The invisible set must EQUAL a declared list, which reds in
+    // both directions, and each declared entry must carry a rendering the fleet counter counts.
+    // Priced: 32 of 36 swept files carry a literal, the renderer reaches 31, invisible = {255};
+    // inverse direction 0; 2 of the 109 DEFERRED files are invisible and must be declared on
+    // promotion. Measurement count unchanged at 3; F8 is a check.
+    why: 'run green in Round 345, 54/54 exit 0, 3 measurements; spawns minted node scripts under gitignored .testdata/r269 — no server, port, database, corpus or model call',
   },
   {
     // PROMOTED BY: Round 296, Daedalus, 2026-09-29 STOP fire — driven by `promote-probes.mts`,

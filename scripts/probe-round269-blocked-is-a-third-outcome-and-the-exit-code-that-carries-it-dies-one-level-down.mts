@@ -66,6 +66,7 @@ import {
   measurementCheck,
   measurementLines,
   SWEPT,
+  DEFERRED,
 } from './sweep-probes.mjs';
 import { stripSource } from './lib/strip-source.mjs';
 import { fingerprint, windowState } from './lib/tree-fingerprint.mts';
@@ -408,22 +409,57 @@ const MEAS_IN_LABEL_POSITION = /^[ \t]*(?:\[[^\]]*\][ \t]*)?MEAS\b|^[ \t]*\[MEAS
 const renderMeasTemplates = (src: string): string[] =>
   renderMeasMentions(src).filter((rendered) => MEAS_IN_LABEL_POSITION.test(rendered));
 
+/**
+ * Does this file put a MEAS token in a STRING-LITERAL body? The independent key F8 grades the
+ * renderer against — independent because it does not look at `console.log` at all. See F8.
+ *
+ * Both `stripSource` readings preserve every offset, so the four bytes of an occurrence are
+ * string-literal body iff the strings-BLANKED reading has blanks at exactly those offsets. The
+ * offsets do the work and no span is ever extracted: Round 344 lost a detector to the span route
+ * (`stripSource` emits `${` verbatim, so a span scan halts there, and a space inside a string
+ * blanks to a space, so a diff cannot find the edges either). Offset-wise there is nothing to find
+ * the edges of. `offsetsPreserved` asserts the premise rather than trusting it.
+ */
+const measStringLiteralLines = (raw: string): number[] => {
+  const kept = stripSource(raw, false);
+  const blanked = stripSource(raw, true);
+  if (kept.length !== raw.length || blanked.length !== raw.length) return [];
+  const out: number[] = [];
+  for (let i = kept.indexOf('MEAS'); i !== -1; i = kept.indexOf('MEAS', i + 1)) {
+    if (/^ {4}$/.test(blanked.slice(i, i + 4))) out.push(raw.slice(0, i).split('\n').length);
+  }
+  return out;
+};
+
 const sweptEmitters: Array<{ file: string; rendered: string }> = [];
 const sweptMentions: Array<{ file: string; rendered: string }> = [];
 const sweptMissing: string[] = [];
+const sweptWithMeasLiteral: string[] = [];
+const sweptInvisible: Array<{ file: string; lines: number[] }> = [];
+let offsetsPreserved = true;
 for (const entry of SWEPT) {
   const abs = join(REPO, 'scripts', entry.file);
   if (!existsSync(abs)) {
     sweptMissing.push(entry.file);
     continue;
   }
-  const src = stripSource(readFileSync(abs, 'utf8'), false);
+  const raw = readFileSync(abs, 'utf8');
+  if (stripSource(raw, false).length !== raw.length || stripSource(raw, true).length !== raw.length) {
+    offsetsPreserved = false;
+  }
+  const src = stripSource(raw, false);
   for (const rendered of renderMeasTemplates(src)) {
     sweptEmitters.push({ file: entry.file, rendered });
   }
   // The UNFILTERED set, kept so F7 can assert the selector drops nothing the counter can count.
   for (const rendered of renderMeasMentions(src)) {
     sweptMentions.push({ file: entry.file, rendered });
+  }
+  // F8's two populations: what the independent key sees, and what the renderer cannot.
+  const literalLines = measStringLiteralLines(raw);
+  if (literalLines.length > 0) {
+    sweptWithMeasLiteral.push(entry.file);
+    if (renderMeasMentions(src).length === 0) sweptInvisible.push({ file: entry.file, lines: literalLines });
   }
 }
 const uncountable = sweptEmitters.filter((e) => measurementLines(e.rendered) === 0);
@@ -510,6 +546,116 @@ check('F7', "F6's population selector admits every countable line, including a m
   'Before Round 341 the selector was token PRESENCE, and one DEFERRED file reddened F6 on promotion ' +
   'for a line that is not a measurement. Before Round 343 it was anchored at string start, and d1 had ' +
   'zero members of the one dimension that can break.');
+
+/**
+ * F8 — F6's own SELECTOR COVERAGE, declared and graded in both directions.
+ *
+ * ── Round 345, Daedalus, building Theseus's routed Round 344 CURE C ────────────────────────────
+ *
+ * F6 and F7 grade the two regexes against each other. Neither can see the population F6 never
+ * reached: `renderMeasMentions` keys on the MEAS token sitting literally inside a `console.log`'s
+ * FIRST backtick-or-quote argument, which is narrower than "this file emits a MEAS label". Theseus
+ * found the consequence and it is inside F6's own swept set: **`probe-round255` is SWEPT, emits six
+ * MEAS lines, and `renderMeasMentions` returns 0 for it, so F6 grades 35 of its 36 members.**
+ *
+ *   const tag = r.kind === 'measurement' ? 'MEAS' : r.pass ? 'PASS' : 'FAIL';
+ *   console.log(`${tag} [${r.arm}] ${r.check}`);
+ *                     ..................................... probe-round255:171-172
+ *
+ * F6's inline-ternary special case rescues `round224`/`224b`; 255 hoists the same ternary one line
+ * earlier and `${tag}` carries no literal. **F6 exists because an arm whose fixture is its own
+ * hypothesis cannot fail on a case nobody thought of; a SELECTOR that silently drops a member of
+ * its own population is that same defect one level up**, which is the whole argument for this arm.
+ *
+ * **The key is independent, and that is the only reason this arm can see anything.** It does not
+ * look at `console.log`: it asks whether a MEAS token's bytes are string-literal body, by offset,
+ * through the two `stripSource` readings. Graded before any figure was read off it, on shapes
+ * copied out of the tree rather than typed: the hoisted-ternary site is seen by the key and NOT by
+ * the renderer (the known positive, below), a commented-out emitting line is not a literal, and
+ * `${MEASURED.length}` — `geometry-distance-arm.mjs:102`, the false mention Round 342 named — is
+ * code in BOTH readings and so is correctly not a literal.
+ *
+ * **Why DECLARED rather than complete.** The honest cure is not "the renderer must see everything":
+ * `probe-round280`'s emitter renders its label from a `record(id, 'MEAS', text)` helper whose MEAS
+ * branch arrives as a FUNCTION PARAMETER, which no regex renderer resolves. So the arm asserts the
+ * invisible set EQUALS a declared list, which reds in both directions — a new blind file reds it,
+ * and so does a declared one becoming visible, so the list cannot go stale. Each declared entry
+ * carries the line it really renders, and the arm asserts the fleet counter COUNTS that line: what
+ * F6 would have concluded about the member it cannot see is stated and checked, not left blank.
+ *
+ * **Priced on the live tree before landing, swept and deferred both.** Of the 36 swept files, 32
+ * carry a MEAS string literal, the renderer sees 31, and the invisible set is exactly `{round255}`;
+ * the inverse direction is 0 (no file the renderer sees lacks a literal), so the key is a superset
+ * of the renderer here and the arm cannot red for the key being narrow. Of the 109 DEFERRED files,
+ * 64 carry a literal and **2** are invisible — `round280` and `round281`. That figure is computed
+ * live below rather than written here, because a promotion number in a comment is the thing this
+ * file has already been wrong about twice.
+ *
+ * **One correction to the routed finding, measured.** Round 344 named FOUR files in the
+ * helper-emitter class — `round280/281/282/284`. All four are genuinely in it at SITE level, but
+ * `round282:619` and `round284:477` each ALSO emit `console.log(`[MEAS] …`)`, a literal the
+ * renderer does see, so at FILE level — which is the level CURE C specifies and this arm
+ * implements — only two of the four are invisible. A file-count premise cannot see a partially
+ * blind file, and saying so is cheaper than discovering it at promotion.
+ *
+ * **And one to its stated consequence.** Round 344 called 255's hole "vacuously harmless today"
+ * because the line is countable. The countability is real, but it is not the reason: 255's SWEPT
+ * entry makes NO measurement claim, so `measurementCheck` grades nothing against those six lines.
+ * Both legs are now asserted — the entry's claim is F6's business, the rendering's countability is
+ * this arm's.
+ */
+const DECLARED_INVISIBLE: Array<{ file: string; rendered: string }> = [
+  // probe-round255:171-172 — the ternary is hoisted into `tag`, so the template carries no literal
+  { file: 'probe-round255-the-comment-shadow-census.mts', rendered: 'MEAS [A] files walked: 194' },
+];
+
+/**
+ * The known positive, copied verbatim from the two real lines at probe-round255:171-172 — a
+ * detector with no known positive is not graded, and this fleet has shipped four detectors that
+ * failed by returning a smaller number. It fixes both halves of the arm independently of today's
+ * population: the key MUST see this, and the renderer MUST NOT. The known negatives are the two
+ * real shapes that mention the token without being a literal measurement label.
+ *
+ * Attributions stay off the labelled lines for the reason F1's comment records.
+ */
+const HOISTED_TERNARY_SITE = [
+  "const tag = r.kind === 'measurement' ? 'MEAS' : r.pass ? 'PASS' : 'FAIL';",
+  'console.log(`${tag} [${r.arm}] ${r.check}`);',
+].join('\n');
+// geometry-distance-arm.mjs:102 — MEAS is an identifier inside `${ … }`, code in both readings
+const INTERPOLATED_IDENTIFIER = 'console.log(`formulas reproduce ${MEASURED.length} measured arms exactly:`);';
+const COMMENTED_OUT_EMITTER = '// MEAS [A1] a commented-out emitting line\nconst live = 1;\n';
+
+const deferredInvisible = DEFERRED.filter((file: string) => {
+  const abs = join(REPO, 'scripts', file);
+  if (!existsSync(abs)) return false;
+  const raw = readFileSync(abs, 'utf8');
+  return measStringLiteralLines(raw).length > 0
+    && renderMeasMentions(stripSource(raw, false)).length === 0;
+});
+
+const invisibleDeclared = [...sweptInvisible.map((e) => e.file)].sort().join('|')
+  === [...DECLARED_INVISIBLE.map((e) => e.file)].sort().join('|');
+const declaredRenderingsCountable = DECLARED_INVISIBLE.every((e) => measurementLines(e.rendered) === 1);
+const keySeesWhatRendererCannot = measStringLiteralLines(HOISTED_TERNARY_SITE).length === 1
+  && renderMeasMentions(stripSource(HOISTED_TERNARY_SITE, false)).length === 0;
+const keyRejectsNonLiterals = measStringLiteralLines(INTERPOLATED_IDENTIFIER).length === 0
+  && measStringLiteralLines(COMMENTED_OUT_EMITTER).length === 0;
+
+check('F8', "F6's own selector reaches every swept file that writes a MEAS label, and the files it cannot reach are declared, rendered and countable",
+  offsetsPreserved && invisibleDeclared && declaredRenderingsCountable
+  && keySeesWhatRendererCannot && keyRejectsNonLiterals,
+  `derived: ${sweptWithMeasLiteral.length} of ${SWEPT.length} swept files carry a MEAS string literal, ` +
+  `F6's renderer reaches ${sweptWithMeasLiteral.length - sweptInvisible.length}, invisible=` +
+  `${sweptInvisible.map((e) => `${e.file.slice(0, 28)}:${e.lines.join(',')}`).join(' | ') || '(none)'} ` +
+  `against ${DECLARED_INVISIBLE.length} declared${invisibleDeclared ? '' : ' — SET MISMATCH, read this arm\'s comment'}. ` +
+  `Each declared rendering is counted by the fleet counter=${declaredRenderingsCountable}. ` +
+  `Fixtures: the real hoisted-ternary site is seen by the key and missed by the renderer=` +
+  `${keySeesWhatRendererCannot}, an interpolated identifier and a commented-out emitter are not ` +
+  `literals=${keyRejectsNonLiterals}, offsets preserved on every swept file=${offsetsPreserved}. ` +
+  `At promotion: ${deferredInvisible.length} of the 109 DEFERRED files are invisible to the renderer ` +
+  `(${deferredInvisible.map((f: string) => f.slice(6, 20)).join(', ') || 'none'}) — they emit through a ` +
+  'helper whose MEAS branch is a function parameter, so they must be declared when promoted.');
 
 // ── arm G: the census that prices the new state honestly ─────────────────────
 
