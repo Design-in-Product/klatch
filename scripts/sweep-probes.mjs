@@ -436,7 +436,7 @@ export const SWEPT = [
   },
   {
     file: 'probe-round269-blocked-is-a-third-outcome-and-the-exit-code-that-carries-it-dies-one-level-down.mts',
-    expect: /All 54 regression checks passed/,
+    expect: /All 55 regression checks passed/,
     // Round 269, Daedalus; extended in Round 271. Drives this fire's own changes: `classify`'s
     // three states on every corner, `sweepExit`'s propagation, `entryProblems` two-sided,
     // `measurementCheck`'s three outcomes, and arm H where all three states arise from processes
@@ -490,7 +490,27 @@ export const SWEPT = [
     // Priced: 32 of 36 swept files carry a literal, the renderer reaches 31, invisible = {255};
     // inverse direction 0; 2 of the 109 DEFERRED files are invisible and must be declared on
     // promotion. Measurement count unchanged at 3; F8 is a check.
-    why: 'run green in Round 345, 54/54 exit 0, 3 measurements; spawns minted node scripts under gitignored .testdata/r269 — no server, port, database, corpus or model call',
+    //
+    // Round 347, Daedalus, on Theseus's routed Round 346 CURE D: 54 → 55. Arm F9 added — F8 is
+    // keyed on FILES, so a file with two emitters passes it while one of them is invisible.
+    // `probe-round224` is SWEPT and is exactly that: it hoists the same ternary at :71-72 AND
+    // emits a visible inline one at :561, so F8 reaches the file through the sibling and cannot
+    // declare the site either (declaring the file would red F8's `declared-but-not-invisible`
+    // leg). F9 keys on the SHAPE — a MEAS literal assigned to a name, that name interpolated into
+    // a `console.log` template — and asserts the flagged SITE set equals a declared list of four:
+    // `224:71→72`, `224b:57→58`, `247:67→68`, `255:171→172`. Two of the four are DEFERRED and
+    // pass F8 today and at promotion.
+    //
+    // The routed detector reproduced exactly (7/7 on its grading set, 4 files of 194) and carried
+    // one defect found by driving rather than reading: it passes `false` to `stripSource`, which
+    // blanks comments and KEEPS strings, so it reads string bodies as code — and a known positive
+    // for this shape can only be written AS a string. Reverting the two `isCode` guards in the
+    // landed file yields 40 sites, 36 of them F9's own fixtures: a false defect in the arm's own
+    // file, arm G4's lesson ("a citation inside a string is not a call either") one level up.
+    // Graded 12/12 — 2 known positives from the real sites, 10 negatives of which five are the
+    // fixture SPELLINGS. Six counterfactuals red F9 independently against a stated baseline.
+    // Measurement count unchanged at 3; F9 is a check.
+    why: 'run green in Round 347, 55/55 exit 0, 3 measurements; spawns minted node scripts under gitignored .testdata/r269 — no server, port, database, corpus or model call',
   },
   {
     // PROMOTED BY: Round 296, Daedalus, 2026-09-29 STOP fire — driven by `promote-probes.mts`,
