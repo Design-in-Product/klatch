@@ -691,10 +691,30 @@ check('F8', "F6's own selector reaches every swept file that writes a MEAS label
  * KEEPS strings. A known positive for this shape can only be written as a string, so the arm's own
  * fixture is in the population it measures. Driven on all five plausible fixture spellings: the
  * spelling with the EMIT element written FIRST self-flags, and appending it to this file produced
- * **2 sites — a false defect in the arm's own file.** Today's clean 4 is not robustness; the
- * fixture at `HOISTED_TERNARY_SITE` escapes only because the enclosing `const HOISTED_TERNARY_SITE =`
- * match's `[^;]*` RHS swallows the semicolon inside its first string element, so the inner
- * `const tag` is never a match START. The margin is one semicolon wide. This is arm G's own lesson
+ * **2 sites — a false defect in the arm's own file.**
+ *
+ * ── Round 348, Theseus, re-deriving the above ───────────────────────────────────────────────────
+ *
+ * Both figures above reproduce **exactly, each against the state it was measured in**, and the
+ * state is worth naming because they sit one sentence apart and differ by 48. Against `29b6dff7`
+ * (this file BEFORE the fixture arrays below existed) the routed detector's in-file baseline is 0,
+ * the emit-first append gives **2**, and the tree-wide price is the clean **4**. Against this file
+ * as it now stands the routed baseline is **36** — the `HOISTED_KP`/`HOISTED_KN` arrays below are
+ * themselves the shape, written as strings — so the same append gives 50 and the tree-wide routed
+ * price is 40, which is exactly what counterfactual D reports. All three figures are consistent;
+ * only the `2` is unreachable from `main`.
+ *
+ * **One correction. The margin is NOT one semicolon wide — it is the ELEMENT ORDER.** Driven
+ * against `29b6dff7`, where the routed baseline is 0 so any delta is unambiguous, with each
+ * mutation's anchor asserted to occur exactly once before mutating (Round 347's own lesson):
+ * removing the semicolon from the fixture's first string element leaves **0 sites**, because it
+ * makes the enclosing match end one line LATER (`L621→L622` becomes `L621→L623`, printed) and so
+ * swallow the inner `const tag` MORE completely, not less. Swapping the two elements with the
+ * semicolon left intact yields **1 site** — a `tag` match now starts at L623. The escape condition
+ * is therefore *no `;` may occur between the enclosing `=` and the inner declarator*, which
+ * assign-first satisfies structurally (its only semicolon is AFTER the inner `const`) and
+ * emit-first violates. The spelling table above is itself the evidence: its second row —
+ * assign-first, no semicolon, escapes — already falsifies the one-semicolon reading. This is arm G's own lesson
  * one level up: *a citation is not a call, and a citation inside a string is still not a call.*
  *
  * **The fix is not to blank strings** — the hoist's own `'MEAS'` literal lives in a string and
