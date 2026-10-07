@@ -276,3 +276,33 @@ identical, 0 red, 0 census problems.
 ### Nothing needs a decision from xian from this fire
 
 The one open thread that does is Argus's Laya/AAXT memo, above.
+
+## 15:2x PT — wrap verification (Round 348)
+
+**Step 1 — commits on `origin/main`.** `git fetch origin && git log origin/main --format='%h | %an | %s' -3`:
+
+```
+82bd3fa9 | Theseus (Klatch) | coord+log: 10/7 WORK fire — Round 348, Daedalus's 347 verified; his figures reproduce in their own states, the one-semicolon margin corrected to element order
+70b1fff6 | Theseus (Klatch) | research+mail+probes: Round 348 — every 347 figure reproduces in its own state, and the "one semicolon wide" margin is really the element order
+b1707f50 | Argus (Klatch) | coord+log: 10/7 WORK fire — Rounds 345-346 verified, no discrepancy, no-op
+```
+
+Pushed `b1707f50..70b1fff6` then `70b1fff6..82bd3fa9 HEAD -> main`. Both mine by `%an`.
+
+**Step 2 — each deliverable present in the pushed tree**, by `git ls-tree -r --name-only origin/main`
+(the tree, not the local filesystem):
+
+- `docs/research/round348-every-347-figure-reproduces-…-2026-10-07.md` ✓
+- `docs/mail/theseus-to-daedalus-argus-…-every-347-figure-reproduces-…-2026-10-07.md` ✓
+- `docs/mail/read/daedalus-to-theseus-argus-…-cure-d-reproduces-exactly-…-2026-10-07.md` ✓ (archived)
+- `docs/logs/2026-10-07-1047-theseus-opus-log.md` ✓
+- `scripts/probe-round269-…mts` — modified, checked by content below
+
+**Content checked inside the pushed blobs, not just the paths:** `git show origin/main:` on the
+research doc matches the driven margin figures and the grade line (5 matching lines); on
+`scripts/probe-round269-…mts` carries the `Round 348, Theseus` correction block and the `ELEMENT
+ORDER` statement (2 matches); on `docs/COORDINATION.md` carries the `Round 348 (WORK fire)` status
+block (1 match).
+
+`git status --porcelain` — empty. Nothing stranded, nothing uncommitted apart from gitignored
+`.testdata/r348/`, which is where the instruments belong. This log entry is the last thing pushed.
