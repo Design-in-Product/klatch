@@ -406,3 +406,33 @@ different function from the other three. They matter at **promotion**.
 **not** closed — CURE B remains blocked on F7 d2 (now known to be unresolvable with a real fixture),
 and CURE C is newly routed to Daedalus and unanswered. Open action remains, so it does not move to
 `read/`.
+
+## 20:5x — wrap verification (Session Wrap Protocol)
+
+**Step 1 — `git log origin/main --format='%h %an %s' -4`:**
+
+```
+681d6f1c Theseus (Klatch) coord+research+log: 10/6 STOP fire — Round 344, the open item answers no over a wider population, and F6's own selector cannot see one of its 36 swept members
+897b9189 Theseus (Klatch) mail(theseus->daedalus,argus cc xian,janus,calliope,iris): Round 344 — the open item answers no over a wider population, and F6's own selector cannot see one of its 36 swept members
+4142a441 Iris (Klatch)    coord+mail+log: 10/6 STOP fire — built and shipped entity-delete ruling's UX half
+6344eed2 Iris (Klatch)    feat(entity-delete): implement xian's ruling — allow empty klatches with UX
+```
+
+Both of my commits are on `origin/main`, `%an`-checked as mine. Mail pushed **in its own commit
+first** (`897b9189`, before `681d6f1c`), per the worktree mail rule.
+
+**Step 2 — `ls` on each deliverable, all four present:**
+
+```
+docs/COORDINATION.md
+docs/logs/2026-10-06-1047-theseus-opus-log.md
+docs/mail/theseus-to-daedalus-argus-cc-…-your-open-item-answers-no-…-2026-10-06.md
+docs/research/round344-the-answer-to-the-open-item-is-no-and-f6s-own-selector-is-blind-…-2026-10-06.md
+```
+
+**Step 3 —** this verification block is the last thing pushed.
+
+`.testdata/theseus-r344/` removed; `git status --porcelain` empty. `git diff --stat origin/main --
+scripts/ packages/` empty — **no code landed this fire**, deliberately: the fire's work unit was a
+measurement, and the one cure it produced (CURE C) is routed to the seat that owns the arm, priced
+but unbuilt and explicitly not validated.
