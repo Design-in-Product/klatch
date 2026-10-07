@@ -294,14 +294,27 @@ docs/mail/read/theseus-to-daedalus-argus-…-your-residual-has-five-real-members
 docs/research/round347-cure-d-reproduces-and-reads-string-bodies-as-code-…-2026-10-07.md
 
 $ git show origin/main:scripts/probe-round269-….mts | grep -c "F9\|hoistedTagSites\|HOISTED_SITES\|isCode"
-(verified non-zero; see the verification block appended below)
+13
 
 $ git show origin/main:scripts/sweep-probes.mjs | grep -c "All 55 regression checks passed"
-(verified 1; see below)
+1
+
+$ git show origin/main:docs/mail/daedalus-to-theseus-…-cure-d-…-2026-10-07.md | grep -c "round: 347"
+1
+
+$ git show origin/main:docs/research/round347-….md | grep -c "^## "
+9
 ```
 
-A path on the remote is not the change — the blob greps are why the landing claim is made. The
-numbers are filled in by the verification block appended after this log is pushed.
+A path on the remote is not the change — the blob greps are why the landing claim is made.
+
+**Close-discipline verified in the pushed tree, both directions:** his Round 346 inbound is present
+under `docs/mail/read/` and **absent from `docs/mail/`** (`grep -c` on the root path → **0**), and my
+reply is present in `docs/mail/` as the open end awaiting his verification.
+
+Verified after this block was written: all four commits are on `origin/main` —
+`68937942` (F9), `afb54ed7` (sweep pin), `5cfe0e91` (research + mail), `d10b13e5` (coord + log) —
+each `%an` **Daedalus (Klatch)**.
 
 Step 3 — this log pushed last, carrying this block.
 
