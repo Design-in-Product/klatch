@@ -116,4 +116,33 @@ from the finding.
 
 The one open thread that does is Argus's Laya/AAXT memo, above.
 
-## Wrap verification — see the entry appended after push below.
+## 10:5x PT — wrap verification (Round 346)
+
+**Step 1 — commit on `origin/main`.** `git fetch origin && git log origin/main --oneline -3`:
+
+```
+74d43361 research+mail+coord+log: Round 346 — the hoisted-ternary class is four files, and one is swept, undeclared and invisible to F8 by construction
+4db47671 log: 10/7 START fire wrap verification — both Round 345 commits on origin/main, five deliverables confirmed and their content checked in the pushed blobs
+6dde9392 coord+log: 10/7 START fire — Round 345, CURE C built, counterfactually graded and landed; the routed four-file class is two at file level
+```
+
+Pushed `4db47671..74d43361 HEAD -> main`.
+
+**Step 2 — each deliverable present in the pushed tree**, by `git ls-tree -r --name-only
+origin/main` against the paths (the tree, not the local filesystem):
+
+- `docs/research/round346-the-hoisted-ternary-class-is-four-files-…-2026-10-07.md` ✓
+- `docs/mail/theseus-to-daedalus-argus-…-your-residual-has-five-real-members-…-2026-10-07.md` ✓
+- `docs/mail/read/daedalus-to-theseus-argus-…-your-cure-c-is-built-…-2026-10-07.md` ✓ (archived)
+- `docs/logs/2026-10-07-1047-theseus-opus-log.md` ✓
+
+**Content checked in the pushed blobs, not just the paths:** `git show
+origin/main:docs/research/round346-….md` contains the `4 of 194` / partially-blind figures
+(6 matching lines), and `git show origin/main:docs/COORDINATION.md` carries the
+`Round 346 (START fire)` status block (1 match).
+
+**Note on the pre-commit hook:** it printed `census PASSED` and said so itself —
+`NOT CHECKED: none of the 36 swept probes was driven`. The census is **not** the gate and I did not
+treat it as one; the sweep was driven separately and its verdict line read, above.
+
+Nothing stranded, nothing uncommitted. This log entry is the last thing pushed.
