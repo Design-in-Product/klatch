@@ -657,6 +657,211 @@ check('F8', "F6's own selector reaches every swept file that writes a MEAS label
   `(${deferredInvisible.map((f: string) => f.slice(6, 20)).join(', ') || 'none'}) — they emit through a ` +
   'helper whose MEAS branch is a function parameter, so they must be declared when promoted.');
 
+/**
+ * F9 — the hoisted-tag SITE, which F8 cannot reach because F8 is keyed on FILES.
+ *
+ * ── Round 347, Daedalus, building Theseus's routed Round 346 CURE D ────────────────────────────
+ *
+ * F8's comment above says F6's inline-ternary special case "rescues `round224`/`224b`". That is
+ * true OF THE FILE, and it is exactly the mechanism by which a site hides. `probe-round224` hoists
+ * the same ternary as well, so it has TWO emitters:
+ *
+ *   const tag = pass ? 'PASS' : kind === 'measurement' ? 'MEAS' : 'FAIL';
+ *   console.log(`${tag} [${arm}] ${name} — ${detail}`);
+ *                     ..................................... probe-round224:71-72   (invisible)
+ *   for (const r of results) console.log(`  ${r.pass ? 'PASS' : …} …`);
+ *                     ..................................... probe-round224:561     (F6 grades this)
+ *
+ * **`round224` is SWEPT**, and F8 passes it: the file is reached at file level by the visible
+ * sibling. F8 cannot declare it either — `DECLARED_INVISIBLE` is file-keyed, so adding `round224`
+ * would red F8's own `declared-but-not-invisible` conjunct. A file-keyed arm cannot express this
+ * defect in either direction, which is the whole argument for a second arm one level down.
+ *
+ * **Keyed on the SHAPE, not on site-count equality.** Round 345 declined site-count equality and
+ * Round 346's census priced that refusal: 8 of the 13 partially-blind files carry only the FALSE
+ * class — prose, a type union, this file's own fixtures, and four files where the hit is the WORD
+ * `MEASURED`/`MEASURES`, because the independent key is `indexOf` and MEAS is a substring. A
+ * count-equality premise reds on every one of those 8. This arm instead keys on the shape that
+ * actually hides: a MEAS *literal* assigned to a name, that name interpolated into a `console.log`
+ * template. The false class is then excluded by construction rather than by a count, which is why
+ * it prices at 4 sites of 194 files with zero false defects.
+ *
+ * **One correction to the routed cure, found by driving it rather than reading it.** CURE D as
+ * routed reads STRING BODIES AS CODE: it passes `false` to `stripSource`, which blanks comments and
+ * KEEPS strings. A known positive for this shape can only be written as a string, so the arm's own
+ * fixture is in the population it measures. Driven on all five plausible fixture spellings: the
+ * spelling with the EMIT element written FIRST self-flags, and appending it to this file produced
+ * **2 sites — a false defect in the arm's own file.** Today's clean 4 is not robustness; the
+ * fixture at `HOISTED_TERNARY_SITE` escapes only because the enclosing `const HOISTED_TERNARY_SITE =`
+ * match's `[^;]*` RHS swallows the semicolon inside its first string element, so the inner
+ * `const tag` is never a match START. The margin is one semicolon wide. This is arm G's own lesson
+ * one level up: *a citation is not a call, and a citation inside a string is still not a call.*
+ *
+ * **The fix is not to blank strings** — the hoist's own `'MEAS'` literal lives in a string and
+ * would blank with it. It uses the instrument already in this file: both `stripSource` readings
+ * preserve every offset (F8 asserts that), so a token's bytes are CODE iff the strings-BLANKED
+ * reading still holds them. The declarator keyword and `console.log` must each be code; the literal
+ * is still read from the KEPT reading, so the detector keeps its only positive signal. All five
+ * fixture spellings are carried below as known NEGATIVES and all five are clean after the fix.
+ *
+ * **Graded before any tree figure was read off it, on 2 known positives and 10 known negatives,
+ * every one copied from a real tree shape** — the `round224`/`255` sites must flag; a type union,
+ * prose `MEASURES`, the word `MEASURED` in a template, a commented-out hoist, a literal assigned
+ * but never emitted, and all five fixture spellings must not. 12 of 12 as wanted, and the price is
+ * then identical to the routed cure's: the same 4 files, the same 4 line pairs, the same renderings.
+ *
+ * **Five further blind dimensions, each MEASURED against the tree rather than left as a worry:** a
+ * bracketed `'[MEAS]'` hoist (the quote-delimited key cannot match it), a non-declarator
+ * reassignment, a `process.stdout.write` emitter, a template in a later `console.log` argument, and
+ * an object-field tag assignment. **All five have ZERO members in the live tree**, so each is a
+ * documented limit rather than a live hole. My own first key for the fifth dimension returned 8 and
+ * was wrong in the FALSE-POSITIVE direction — `[\w$]+\.[\w$]+\s*=` matches `r.kind === 'measurement'`
+ * because `===` contains `=`. Re-keyed with a known positive AND a known negative copied from the
+ * line it got wrong, it returns 0.
+ *
+ * **Nothing is at stake today, on both legs, same as F8's member.** All four renderings are counted
+ * by the fleet counter, and `measurementCheck` returns 0 keys for `round224`'s SWEPT entry as well
+ * as `round255`'s, so no claim is graded against either file's invisible lines. That vacuity is why
+ * this is worth building at a fire where it is free rather than at the first one where it is not.
+ *
+ * **Promotion exposure, in this arm's unit.** F8's live DEFERRED figure is the count of WHOLLY blind
+ * files. `round224b` and `round247` are DEFERRED (checked against `sweep-probes.mjs`: a `file:` key
+ * is a SWEPT entry, a bare string is DEFERRED) and both carry an invisible site while being
+ * fully visible at file level, so both pass F8 today and will pass it at promotion. This arm is the
+ * only one that sees them.
+ *
+ * Declared rather than complete, for F8's reason: the `record(id, 'MEAS', text)` class reaches its
+ * template through a FUNCTION PARAMETER, which no regex resolves and this detector does not either.
+ * That class stays in F8's `DECLARED_INVISIBLE`.
+ */
+const hoistedTagSites = (raw: string):
+Array<{ assign: number; emit: number; name: string; template: string }> | null => {
+  const src = stripSource(raw, false);
+  const blanked = stripSource(raw, true);
+  // The premise is asserted, not trusted — offset-keyed code/string discrimination needs it.
+  if (src.length !== raw.length || blanked.length !== raw.length) return null;
+  const isCode = (off: number, text: string) => blanked.slice(off, off + text.length) === text;
+  const out: Array<{ assign: number; emit: number; name: string; template: string }> = [];
+  const assign = /\b(?:const|let|var)\s+([A-Za-z_$][\w$]*)\s*=\s*([^;]*)/g;
+  let m: RegExpExecArray | null;
+  while ((m = assign.exec(src)) !== null) {
+    const name = m[1];
+    const rhs = m[2];
+    const kw = /^(?:const|let|var)/.exec(m[0])![0];
+    if (!isCode(m.index, kw)) continue;              // a declarator inside a string is a citation
+    if (!/['"`]MEAS['"`]/.test(rhs)) continue;       // quote-delimited: MEASURED cannot match
+    const emit = new RegExp(`console\\.log\\(\\s*\`([^\`]*\\$\\{\\s*${name}\\s*\\}[^\`]*)\``, 'g');
+    let e: RegExpExecArray | null;
+    while ((e = emit.exec(src)) !== null) {
+      if (!isCode(e.index, 'console.log')) continue; // ditto for the emitter
+      out.push({ assign: m.index, emit: e.index, name, template: e[1] });
+    }
+  }
+  return out;
+};
+
+const lineAt = (raw: string, off: number): number => raw.slice(0, off).split('\n').length;
+
+/**
+ * The declared site set. Each entry carries the line it really renders, so what F6 would have
+ * concluded about a site it cannot see is stated and checked rather than left blank. The arm
+ * asserts the flagged set EQUALS this list, which reds in both directions: a new hoisted site reds
+ * it, and so does one of these going away or moving, so the list cannot go stale.
+ *
+ * The `rendered` strings are template-derived, not captured from a run — these four probes were not
+ * driven in this fire (two are DEFERRED, one mutates the tree). The derived leg below re-renders
+ * each site from its LIVE template and asserts countability again, so a template edited at source
+ * cannot leave a hand-typed rendering standing alone.
+ */
+const HOISTED_SITES: Array<{ file: string; assign: number; emit: number; rendered: string }> = [
+  // probe-round224:71-72 — SWEPT, and visible at FILE level through its own sibling at :561
+  { file: 'probe-round224-a-skip-must-not-summarise-as-a-pass.mts',
+    assign: 71, emit: 72, rendered: 'MEAS [A1] a measurement — 19 of 19' },
+  // probe-round224b:57-58 — DEFERRED, passes F8 today and at promotion
+  { file: 'probe-round224b-the-migrated-probes-against-a-stranger.mts',
+    assign: 57, emit: 58, rendered: 'MEAS [A1] a measurement — 19 of 19' },
+  // probe-round247:67-68 — DEFERRED, same shape
+  { file: 'probe-round247-a-mutant-in-the-tree-is-in-the-population.mts',
+    assign: 67, emit: 68, rendered: 'MEAS [A] files walked        194' },
+  // probe-round255:171-172 — SWEPT, and the one F8 already declares at FILE level
+  { file: 'probe-round255-the-comment-shadow-census.mts',
+    assign: 171, emit: 172, rendered: 'MEAS [A] files walked: 194' },
+];
+
+/**
+ * The grading set. Two known positives copied verbatim from the two real sites; ten known negatives,
+ * five of them the fixture spellings that exposed the routed cure's string/code confusion. The
+ * EMIT-FIRST spelling is the one that false-defected before the fix — it stays here as the arm's
+ * own regression, because the defect it caught was in the arm's own file.
+ */
+const HOISTED_KP = [
+  "const tag = r.kind === 'measurement' ? 'MEAS' : r.pass ? 'PASS' : 'FAIL';\nconsole.log(`${tag} [${r.arm}] ${r.check}`);",
+  "const tag = pass ? 'PASS' : kind === 'measurement' ? 'MEAS' : 'FAIL';\nconsole.log(`${tag} [${arm}] ${name} — ${detail}`);",
+];
+const HOISTED_KN = [
+  "type Kind = 'regression' | 'measurement';",
+  '// this arm MEASURES the thing rather than asserting it\nconst x = 1;',
+  'console.log(`formulas reproduce ${MEASURED.length} measured arms exactly:`);',
+  "// const tag = pass ? 'PASS' : 'MEAS';\n// console.log(`${tag} x`);\nconst live = 1;",
+  "const tag = pass ? 'PASS' : 'MEAS';\nconst unused = tag.length;",
+  // the five fixture spellings — a known positive for this shape can only be written as a string
+  "const H = [\n  \"const tag = pass ? 'MEAS' : 'PASS';\",\n  'console.log(`${tag} x`);',\n].join('\\n');",
+  "const H = [\n  \"const tag = pass ? 'MEAS' : 'PASS'\",\n  'console.log(`${tag} x`);',\n].join('\\n');",
+  "const H = [\n  'console.log(`${tag} x`);',\n  \"const tag = pass ? 'MEAS' : 'PASS';\",\n].join('\\n');",
+  "const H = `const tag = pass ? 'MEAS' : 'PASS';\\nconsole.log(\\\\`\\\\${tag} x\\\\`);`;",
+  "const A = \"const tag = pass ? 'MEAS' : 'PASS';\";\nconst B = 'console.log(`${tag} x`);';",
+];
+
+const codeFilesUnder = (dir: string): string[] => readdirSync(dir, { withFileTypes: true })
+  .flatMap((d) => (d.isDirectory()
+    ? codeFilesUnder(join(dir, d.name))
+    : (/\.(mts|mjs|ts|js)$/.test(d.name) ? [join(dir, d.name)] : [])));
+
+const POPULATION = codeFilesUnder(join(REPO, 'scripts'));
+const flaggedSites: Array<{ file: string; assign: number; emit: number; template: string }> = [];
+let hoistedOffsetsPreserved = true;
+for (const abs of POPULATION) {
+  const raw = readFileSync(abs, 'utf8');
+  const sites = hoistedTagSites(raw);
+  if (sites === null) {
+    hoistedOffsetsPreserved = false;
+    continue;
+  }
+  for (const s of sites) {
+    flaggedSites.push({
+      file: abs.slice(join(REPO, 'scripts').length + 1),
+      assign: lineAt(raw, s.assign),
+      emit: lineAt(raw, s.emit),
+      template: s.template.replace(`\${${s.name}}`, 'MEAS').replace(/\$\{[^}]*\}/g, 'X'),
+    });
+  }
+}
+
+const siteKey = (s: { file: string; assign: number; emit: number }) => `${s.file}:${s.assign}→${s.emit}`;
+const sitesDeclared = flaggedSites.map(siteKey).sort().join('|')
+  === HOISTED_SITES.map(siteKey).sort().join('|');
+const declaredSitesCountable = HOISTED_SITES.every((s) => measurementLines(s.rendered) === 1);
+const liveSitesCountable = flaggedSites.length > 0
+  && flaggedSites.every((s) => measurementLines(s.template) === 1);
+const hoistedKpFlags = HOISTED_KP.every((src) => (hoistedTagSites(src) ?? []).length > 0);
+const hoistedKnClean = HOISTED_KN.every((src) => (hoistedTagSites(src) ?? [{}]).length === 0);
+
+check('F9', 'every hoisted-tag SITE in the scripts tree is declared, rendered and countable — the level F8 cannot reach, because F8 is keyed on files',
+  hoistedOffsetsPreserved && sitesDeclared && declaredSitesCountable && liveSitesCountable
+  && hoistedKpFlags && hoistedKnClean,
+  `derived: ${flaggedSites.length} hoisted-tag site(s) across ${POPULATION.length} code files under ` +
+  `scripts/ — ${flaggedSites.map((s) => `${s.file.slice(6, 16)}:${s.assign}→${s.emit}`).join(', ') || '(none)'} ` +
+  `against ${HOISTED_SITES.length} declared` +
+  `${sitesDeclared ? '' : ' — SET MISMATCH, read this arm\'s comment'}. Each declared rendering is ` +
+  `counted by the fleet counter=${declaredSitesCountable}, and each site re-rendered from its LIVE ` +
+  `template is counted too=${liveSitesCountable}. Fixtures: ${HOISTED_KP.length} known positives ` +
+  `copied from the real sites all flag=${hoistedKpFlags}, ${HOISTED_KN.length} known negatives are ` +
+  `clean=${hoistedKnClean} — five of them are fixture SPELLINGS, and the emit-first spelling ` +
+  'false-defected this file before the declarator/emitter were required to be CODE in the ' +
+  `strings-blanked reading. Offsets preserved on every file=${hoistedOffsetsPreserved}. ` +
+  'round224 is SWEPT and passes F8 through its visible sibling at :561; 224b and 247 are DEFERRED ' +
+  'and will pass F8 at promotion while carrying a site F6 never grades.');
+
 // ── arm G: the census that prices the new state honestly ─────────────────────
 
 console.log('\n── arm G: can BLOCKED fire on today\'s swept set? ──');
