@@ -296,3 +296,113 @@ docs/research/round342-f6s-selector-and-the-fleet-counter-disagree-on-multiline-
 **No code landed this fire.** Both cures are priced and routed, neither applied: `git diff --stat`
 on `scripts/` and `packages/` is empty. That is deliberate — CURE A belongs to the file Daedalus
 restructured hours ago, and CURE B needs a denominator I did not have.
+
+---
+
+## 19:5x — STOP fire, Round 344: I took the open item Daedalus routed to Argus
+
+**Briefing.** `git fetch` then `rev-parse`: `HEAD == origin/main == 4142a441`, `git status
+--porcelain` empty. The three head commits are **Iris's, Iris's and Argus's** — `%an`-checked
+before reading any as mine, and the first of them (`4142a441`, "coord+mail+log: 10/6 STOP fire")
+reads exactly like a subject of mine. My own last commit is `474f13d1`, four back.
+
+**Mail.** One new memo names me in `to:`: Daedalus's Round 343
+(`daedalus-to-theseus-argus-cc-…-cure-a-is-landed-…-2026-10-06.md`), read in full. Its §3 closes
+with one open measurement routed to **Argus**: *does any probe in the 145-file fleet write a MEAS
+label the widened counter still cannot read?* I read Argus's own 19:3x log entry rather than
+inferring from their commit subject — that fire was a verification no-op and did not take it. Still
+open, so I took it.
+
+## 19:5x — Round 343's figures, reproduced before anything new was read
+
+Counts by **node directory walk**, not grep. 145 probe files top-level (the "fleet"), 194 code
+files recursive / 175 top-level, `SWEPT` **36** / `DEFERRED` **109** — all exact. His detector
+`renderMeasMentions`, copied verbatim from `probe-round269:322-334` over `stripSource(src,false)`
+for all 194 files: **99 renderings in 94 files**, exact. Harness graded against a known positive
+copied from the real `probe-round225` call shape first. Both counters graded against all nine rows
+he published — all nine reproduce.
+
+## 20:0x — the re-key, and the member-list diff
+
+His key selects the MEAS token *inside a `console.log`'s first backtick-or-quote argument*, which is
+narrower than "the fleet writes a MEAS label". Re-keyed on **every MEAS token inside a
+string-literal body**, bodies located via `scripts/lib/strip-source.mjs` rather than a hand-rolled
+scanner (checked lib before building one). Graded on six fixtures including the three shapes his key
+structurally cannot see. **One of my own fixtures was wrong** — I asserted
+`console.log('head:', 'MEAS [F] a')` yields 2; it yields 1, because the detector counts tokens not
+arguments. The grade caught my spec.
+
+**180 occurrences in 97 files.** File **member lists** diffed, not counts: **4 files in mine and not
+his** (`round255`, `round280`, `round281`, `sweep-probes.mjs`, later joined by `round282`/`round284`
+from the full occurrence list), **1 in his and not mine** (`geometry-distance-arm.mjs`, whose MEAS is
+`MEASURED.length` *inside* `${…}` — the false mention Round 342 already named at `:102`; his span
+swallows interpolation source, mine correctly excludes it).
+
+## 20:1x — a detector of mine failed toward a FALSE defect
+
+My first span extractor walked outward while `blank[i] !== keep[i]`. `stripSource` emits `${` and
+its closer **verbatim**, so the walk halted at the first interpolation and returned the bare string
+`"MEAS"` for every interpolated rendering. Classified on that, **146 of 180** came back as "label
+position, uncountable even after CURE B" — a 146-member answer set to a question whose true answer
+is **0**. Caught only because the fixtures are real call shapes from the tree:
+`console.log(`MEAS [${arm}] …`)` is the most common emitting line here at 16 sites. The diff-based
+span route is unusable regardless (a space inside a string blanks to a space), so the 180 collapse
+to **96 distinct source-line shapes, every one hand-read**, with the driven table grading the hand
+reading rather than replacing it.
+
+## 20:2x — the two results, both driven
+
+**CLAIM 2 — the answer to his open item is `no`.** Sixteen distinct rendered label shapes in the
+fleet; **shapes still uncountable after CURE B: 0**. Fourteen already count live; `round196:457`
+(`  MEAS X`) and `round221:53` (`MEAS X — X`) go 0 → 1 exactly as priced in 342. No colon-form, no
+abutted-bracket, no bare-MEAS label anywhere in 194 code files. His decline to re-fixture d2 is
+therefore right on a *measurement*, not an inference — the shape has zero members, not merely no
+reachability figure. **Limit stated:** source-population answer, not driven; 109 DEFERRED probes
+were not run (binding ports in a STOP fire is not proportionate), and a label assembled from
+non-literal pieces is invisible to both keys — I found none and cannot rule one out.
+
+**CLAIM 1 — F6's selector is blind to one of its own 36 SWEPT members.** Resolved 36 of 36;
+`probe-round255-the-comment-shadow-census.mts` is SWEPT, emits a measurement label, and
+`renderMeasMentions` returns **0** for it. **F6 grades 35 of 36.** His inline-ternary special case
+rescues `round224`/`224b`; 255 hoists the same ternary into a `tag` variable one line earlier so
+`${tag}` carries no literal. **Not a red today** — it renders `MEAS [A] …` and the live counter
+reads **1**, driven. Four more in the same class, all DEFERRED, all countable:
+`round280/281/282/284`, emitting via `record(id, 'MEAS', text)` whose MEAS branch is a bare
+variable. I read 284's helper separately rather than assuming the family — it is genuinely a
+different function from the other three. They matter at **promotion**.
+
+## 20:3x — gate, and one published figure MOVED
+
+- `npm test` **unpiped, to a file** — **0** `error TS`; server **140 files / 2178 passed /
+  1 skipped**; client **26 files / 333 passed / 13 skipped (346)**.
+- **The client figure is not the 25 / 325 / 13 (338) that Rounds 339–343 and both of today's other
+  fires published.** Cause verified, not guessed: Iris's `6344eed2` (19:28, after Daedalus's and
+  Argus's fires) **added** `packages/client/src/__tests__/ChannelSettings.test.tsx` —
+  `--diff-filter=A` confirms it is the one new file. +1 file, +8 tests. Server unchanged.
+- `CENSUS OK — every probe under scripts/ is in exactly one list, and every entry is well-formed.`;
+  swept **36**, deferred **109** (verdict-bearing 33, no-conclusion-line 76). The census prints its
+  own disclaimer that it drove nothing, so it is not the sweep gate.
+- A pre-commit hook runs the census on every commit; it passed on the mail commit.
+- No server, port, database or model call of my own. No code landed: `git diff --stat` on `scripts/`
+  and `packages/` is empty.
+- `node scripts/sweep-probes.mjs --drive` — **verdict line read, not the exit code**: `SWEEP BLOCKED
+  — 35 of 36 swept probes green, 0 red, 1 blocked (did not conclude), 0 census problem(s), 109
+  deferred`. Identical to Rounds 339–343. Exit 2 is the BLOCKED propagation `probe-round269` exists
+  to grade, not a failure.
+- Blocked probe confirmed **by name and from its own line**: `probe-round225-a-citation-is-not-a-
+  call.mts`, `exit 3, summary line NOT FOUND — INCONCLUSIVE — established 32 of its checks and
+  skipped 1 arm(s)`. xian's standing port-3001 dev-server occupant; not this fire's.
+- `probe-round269` inside the sweep — `All 53 regression checks passed`, matching Daedalus's
+  post-CURE-A figure exactly.
+
+## 20:4x — deliverables
+
+- `docs/research/round344-the-answer-to-the-open-item-is-no-and-f6s-own-selector-is-blind-to-one-of-its-thirty-six-swept-members-2026-10-06.md`
+- `docs/mail/theseus-to-daedalus-argus-cc-…-your-open-item-answers-no-…-2026-10-06.md`
+- `docs/COORDINATION.md` — Theseus section updated, Round 342's entry demoted to "Previous"
+- Nothing in this round needs a decision from xian.
+
+**Mail thread status:** Round 343's inbound stays in `docs/mail/` alongside my reply. The thread is
+**not** closed — CURE B remains blocked on F7 d2 (now known to be unresolvable with a real fixture),
+and CURE C is newly routed to Daedalus and unanswered. Open action remains, so it does not move to
+`read/`.
