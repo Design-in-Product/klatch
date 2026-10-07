@@ -238,3 +238,128 @@ and on disk:
 `git status --porcelain` empty apart from the gitignored `.testdata/r341-daedalus/` scratch.
 
 **Step 3** — this wrap entry pushed last, after Steps 1 and 2.
+
+---
+
+## 17:17 PT — STOP fire opens. Round 343.
+
+Briefing done: worktree pre-synced by the wrapper, `HEAD == origin/main` at `6a13a013`, clean.
+Three head commits `%an`-checked **before** reading any as mine — `6a13a013` Calliope,
+`474f13d1` and `ce48a405` **Theseus**. The Round 342 work in those commit subjects is *his*, not a
+previous fire of mine; my own log carried no 342 entry, which is consistent.
+
+`docs/mail/` has one memo addressed to this seat and unanswered: Theseus's Round 342. Read in full.
+It routes two items here — **CURE A plus the multi-line fixture d1 is missing** (priced 0), and
+**CURE B** (priced, with its denominator gap named). Work unit for this fire: verify, then land what
+is mine to land.
+
+## 17:2x PT — Every 342 figure reproduces; two more I measured myself
+
+Driver `.testdata/r343-daedalus/drive.mjs`: live `measurementLines`, live `stripSource`, live
+`SWEPT`/`DEFERRED`; `renderMeasMentions` copied verbatim from `probe-round269:322-334` and **graded
+by reproducing his published figures first** — only after `99 in 94`, `countable-dropped 0`,
+`admitted-uncountable 2` came back exact did I read any new figure off that replica.
+
+- 99 renderings in 94 files · 0 countable-but-dropped · 2 admitted-but-uncountable, same two by name
+- **0 of 99** renderings carry a newline
+- the finding: 1 rendering, counter **2**, live selector **false**, CURE A **true**
+- CURE A: 0 disagreements of 99 · 0 superset violations over 106 strings · all 4 fleet spellings
+  admitted · both non-measurement mentions rejected
+- leading-newline known positive `"\n[A1] MEAS 7ms"`: **live=true** — his corrected mechanism holds,
+  `\s` includes `\n`
+
+**Two figures he did not publish.** `/m` and *not* `/g`: driven, `/gm` returns `true, false, true`
+on three identical `.test()` calls and `true, true, false, true` on the multi-line fixture, and this
+selector is `.test()`ed in six places — so the flag choice is load-bearing, not incidental. And the
+one that decided landing vs. routing: of **66** MEAS-mentioning renderings in the 109 DEFERRED files,
+live admits 65 and CURE A admits 65, **0** newly-admitted-and-uncountable.
+
+## 17:3x PT — CURE A landed, and the fixture graded by counterfactual with a control
+
+Landed in `scripts/probe-round269-…mts`: selector re-anchored to `[ \t]*` with `/m`, plus
+`MULTI_LINE_COUNTABLE` as a new conjunct of d1 with its own premise asserted first.
+
+Graded in the **real harness**, not in my driver:
+
+| run | failing arms | summary |
+|---|---|---|
+| real tree, post-edit | — | `All 53 regression checks passed, 3 measurements, 0 skips` |
+| scratch **control** (unmodified copy) | `J1 J2 J5 J6` | `FAILED — 4 of 53` |
+| scratch, selector reverted to Round 341 | `J1 J2 J5 J6` **+ F7** | `FAILED — 5 of 53` |
+
+The control is the part I would have skipped a few rounds ago: four arms red in the scratch location
+for reasons having nothing to do with the selector, so without it I could not have attributed F7's
+red. **F7 is the only delta.** Check count unchanged at 53.
+
+**Reachability, and a hand reading that overturned my own detector.** 13 of 2362 `console.log`
+renderings under `scripts/` are multi-line across 8 files. My detector called **1 of those 13**
+already header-then-label; I hand-read that single member — `verify-design-assertions-gated.mjs` —
+and it is **prose** whose later line merely begins with capitals. Honest count of the shape in the
+tree is **0**. One-member population, hand reading primary; recorded because the detector was mine
+and it was wrong in the direction that would have let me call the fixture derived.
+
+## 17:4x PT — CURE B: denominator closed, then CURE B reds the arm that motivates it
+
+Theseus priced CURE B on 3 of 36 captured outputs and named the gap honestly. Closed it:
+`.testdata/r343-daedalus/driveB.mjs` drives **all 36** swept probes with per-probe stdout saved
+(spawn harness copied from `sweep-probes.mjs:1743-1747`; counter imported live and cross-checked
+against exported `measurementLines` on every single probe).
+
+- **36 of 36 driven**, **2254 lines** of real stdout
+- live **202** MEAS lines · CURE B **202** · **0 probes disagree**
+- four known non-measurement shapes read 0 under both, `MEASURED arms follow` flush and indented
+- **the hazard neither seat had measured:** `MEAS\s+\S` can match across a newline where
+  `MEAS\s+\[` cannot — **0 occurrences over 2254 lines**
+
+**Then the blocker, which I went looking for because d2's fixture looked familiar.**
+`LABELLED_UNCOUNTABLE` *is* the 221 spelling, and `selectorIsNotTheCounter` asserts the counter
+reads it **0**. CURE B makes it **1**. Driven — CURE B applied to a scratch `sweep-probes.mjs`,
+probe re-run against the same control: **`J1 J2 J5 J6` + F7**, detail line reading
+`a labelled uncountable line is admitted=false`. So CURE B is a paired change, not a one-token edit.
+
+Witness search: `MEAS: 7ms`, `MEAS:`, bare `MEAS`, `[A1]MEAS 7ms` all stay in label position and
+uncountable after the widening; `  MEAS\t7ms` does not. But **0 of 99** real renderings are members,
+so re-fixturing d2 means inventing it.
+
+**Asymmetry stated against my own landing**, since I just landed CURE A with an invented fixture:
+MULTI_LINE_COUNTABLE has a reachability figure (13 of 2362) and reds pre-cure. A `MEAS:`-form d2
+replacement has none. Routed back with one small open measurement — does any probe in the 145-file
+fleet write a MEAS label the widened counter still cannot read? I checked the 99 in label position;
+I did not check the fleet for colon-form or abutted-bracket spellings as a population.
+
+**Substance of CURE B accepted.** A counter whose job is counting measurement lines should count the
+lines measurements are written on; F6 going green on promotion of 196/221 is not a loss, and my
+"guarded, not open" was a claim about the *selector*, which dissolves correctly.
+
+## Gate (final tree, nothing piped, every figure read from a captured file)
+
+- `npm test` — **0** `error TS`; server **140 files / 2178 passed / 1 skipped**; client
+  **25 passed / 13 skipped (325 passed / 13 skipped)**; `CENSUS OK`; swept **36**; deferred **109**.
+- `npx tsc -p scripts/tsconfig.json --noEmit` — clean, **0 lines** by `wc -l`.
+- `node scripts/sweep-probes.mjs --drive`, **verdict line read, not the exit code** (it was 2):
+  **`SWEEP BLOCKED — 35 of 36 swept probes green, 0 red, 1 blocked (did not conclude), 0 census
+  problem(s), 109 deferred`** — identical to Rounds 339–342. `probe-round269` **PASS exit 0**.
+- `probe-round269` standalone: **`All 53 regression checks passed, 3 measurements, 0 skips`**, F6 and
+  F7 both PASS.
+- `probe-round308` standalone: **`All 23 regression checks passed.`**, **B1 PASS** — run on purpose,
+  because this edit adds `[A1]`/`[A2]` lines and that is the shape that reddened B1 before;
+  attributions kept off the labelled lines for that reason.
+- `probe-round225` blocked, exit 3, **read from its own output**:
+  `operator action: free port 3001 (this is usually a live "npm run dev")`.
+- **No port left bound.** Checked with the lib's connect-based `portAcceptsAConnection` rather than a
+  hand-rolled bind: 3001 **true**, 5173 **true** (xian's standing dev pair), 3002 **false**,
+  3100 **false**. No server started, no database opened, no model call.
+- Scratch under `.testdata/r343-daedalus/` (`.gitignore:33`), uncommitted; both scratch `scripts/`
+  copies and the saved per-probe stdout deleted after use.
+
+## Standing blockers — one MOVED, and I had it queued to report as unchanged
+
+The CIO Laya/AAXT thread is **no longer unanswered**. Argus replied today in
+`argus-to-cio-cc-themis-janus-xian-laya-trial-answered-good-fit-not-proportionate-to-slot-into-a-duty-cycle-fire-2026-10-06.md`
+— read in full, not off the filename — concluding the trial is a good fit on the vendor's own terms
+but a scoped engineering spike rather than a fire-sized check. Entity-delete stays closed
+(Calliope's `46828cc5`).
+
+**Nothing in this round needs a decision from xian.** One live ask on xian exists and is not mine:
+Argus's reply recommends xian **schedule** that spike. Noted so my "nothing needs xian" is not read
+as "nothing is waiting on xian anywhere."

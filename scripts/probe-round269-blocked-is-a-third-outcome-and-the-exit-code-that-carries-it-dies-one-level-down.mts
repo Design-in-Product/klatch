@@ -363,8 +363,47 @@ const renderMeasMentions = (src: string): string[] => {
  * files under `scripts/`, 0 are countable-but-not-admitted and 2 are admitted-but-not-countable.
  * The 2 are real uncountable measurement spellings in DEFERRED probes, and they are what this arm
  * exists to catch at the moment either file is promoted.
+ *
+ * ── Round 343, Daedalus, on Theseus's Round 342 finding: d1's derived half had ZERO members of the
+ * one dimension this selector's anchoring can break ────────────────────────────────────────────
+ *
+ * `MEAS_LINE` carries `/gm`. This selector as landed in Round 341 carried NO flags, so its `^`
+ * matched only at string start. `\s` includes `\n`, so `^\s*` crossed leading newlines and the
+ * obvious known positive `"\n[A1] MEAS 7ms"` was admitted — which is why the gap survived review.
+ * The shape that parts the two regexes is a rendering whose FIRST line carries text and whose MEAS
+ * label sits on a LATER line. Driven through this probe's own `renderMeasMentions` from a
+ * real-shaped source, not a typed string: ONE rendering, the counter counts 2, the Round 341
+ * selector admitted 0, and F6 graded neither of the two countable lines.
+ *
+ * d1 could not see it, and the reason is d2's own argument arriving at d1. `countableDropped`
+ * derives over a population in which **0 of 99** MEAS-mentioning renderings carry a newline at all
+ * — measured over both population units, since 175 top-level code files and 194 recursively return
+ * the identical member list, symmetric difference 0 — and `FLEET_SPELLINGS` is four SINGLE-LINE
+ * entries. d1 was green and could not go red however the anchoring drifted. Derived was the right
+ * grade for stopping a tightening from buying a false green; it is the wrong instrument for a
+ * dimension the population is empty of. So the repair is both halves, regex and fixture.
+ *
+ * **`/m` and deliberately NOT `/g`.** A `/g` regex advances `lastIndex` on `.test()`, and this
+ * selector is `.test()`ed in six places on the same strings: driven, `/gm` returns
+ * `true, false, true` on three identical calls and `true, true, false, true` on the multi-line
+ * fixture, so `/g` here would make F7 report a different verdict depending on call order.
+ *
+ * Priced on the live tree before landing: **0** disagreements with the Round 341 selector over all
+ * 99 renderings, **0** superset violations over 99 renderings + 3 multi-line fixtures + the 4 fleet
+ * spellings, all 4 fleet spellings still admitted, both non-measurement mentions still rejected.
+ * The figure that decides whether it is safe to land is the promotion one: of the **66**
+ * MEAS-mentioning renderings in the 109 DEFERRED files, **0** become newly-admitted-and-uncountable,
+ * so this widening reds F6 on promotion of nothing it did not already red on.
+ *
+ * The shape is REACHABLE but unwritten, and that is the honest case for a fixture: **13 of 2362**
+ * `console.log` renderings under `scripts/` are multi-line across 8 files, so the fleet writes
+ * multi-line templates freely; none carries a MEAS label today. A detector of mine counted 1 of
+ * those 13 as already header-then-label, and hand-reading that one member —
+ * `verify-design-assertions-gated.mjs` — shows it is prose whose later line merely begins with
+ * capitals. The honest count of this shape in the tree is **0**, which is precisely why no clean
+ * population can grade the property and the second half has to be MULTI_LINE_COUNTABLE below.
  */
-const MEAS_IN_LABEL_POSITION = /^\s*(?:\[[^\]]*\]\s*)?MEAS\b|^\s*\[MEAS\]/;
+const MEAS_IN_LABEL_POSITION = /^[ \t]*(?:\[[^\]]*\][ \t]*)?MEAS\b|^[ \t]*\[MEAS\]/m;
 
 const renderMeasTemplates = (src: string): string[] =>
   renderMeasMentions(src).filter((rendered) => MEAS_IN_LABEL_POSITION.test(rendered));
@@ -402,10 +441,16 @@ check('F6', 'every MEAS-bearing line any SWEPT probe emits is countable by the f
  * F7 — the two directions of F6's own population selector, because a selector that is wrong in
  * either direction makes F6 report a defect that is not there, or miss one that is.
  *
- * Direction 1 is DERIVED from the swept population, not from a fixture: every rendering the real
- * counter counts must survive the selector. A future tightening that quietly excluded a countable
- * shape would leave F6 green by shrinking its population rather than by the fleet being clean, and
- * that is the failure this fleet has shipped most often.
+ * Direction 1 is DERIVED from the swept population AND carries one fixture, and the split is the
+ * whole lesson of Round 342. Derived: every rendering the real counter counts must survive the
+ * selector. A future tightening that quietly excluded a countable shape would leave F6 green by
+ * shrinking its population rather than by the fleet being clean, and that is the failure this fleet
+ * has shipped most often. But the derived half can only grade dimensions the population HAS
+ * members of, and it has zero multi-line members — so a selector anchored at string start rather
+ * than per-line was green here for twenty-four hours. MULTI_LINE_COUNTABLE closes that by fixture,
+ * which makes d1 derived-plus-fixture rather than purely derived. It is graded the way Round 341
+ * asked: under the Round 341 selector this fixture REDS d1 (countable, dropped) and under the
+ * current one it passes. A fixture that cannot fail before the cure is not a test.
  *
  * Direction 2 is a FIXTURE, and it has to be, because it asserts the selector is NOT equivalent to
  * the counter — a property of the two regexes, which no reading of a clean population can show. The
@@ -426,21 +471,45 @@ const SUMMARY_MENTION = '21 checks · 0 failed · 3 MEAS';
 // geometry-distance-arm.mjs:102, an identifier
 const IDENTIFIER_MENTION = 'formulas reproduce 7 measured arms exactly:';
 
+/**
+ * The dimension the derived half of d1 has zero members of: one `console.log` emitting a header
+ * line plus a measurement block. The counter's `/gm` counts both labelled lines; a selector
+ * anchored only at string start admits neither. Multi-line is a shape the fleet writes — 13 of
+ * 2362 `console.log` renderings under `scripts/` are multi-line — but no MEAS emitter is one yet,
+ * so this cannot be derived and will not become derivable by widening the population.
+ *
+ * The attribution stays off the labelled lines for F1's reason: probe-round308's pointer detector
+ * pairs every `probe-roundNNN` on a line with every `[A-Z]\d+` on the same line.
+ */
+const MULTI_LINE_COUNTABLE = [
+  'measurements:',
+  '[A1] MEAS 7ms',
+  '[A2] MEAS 9ms',
+].join('\n');
+
 const selectorAdmitsAllCountable = countableDropped.length === 0
-  && FLEET_SPELLINGS.every((s) => MEAS_IN_LABEL_POSITION.test(s));
+  && FLEET_SPELLINGS.every((s) => MEAS_IN_LABEL_POSITION.test(s))
+  // the fixture's own premise first — a line the counter CANNOT count is not evidence of dropping
+  && measurementLines(MULTI_LINE_COUNTABLE) === 2
+  && MEAS_IN_LABEL_POSITION.test(MULTI_LINE_COUNTABLE);
 const selectorIsNotTheCounter = MEAS_IN_LABEL_POSITION.test(LABELLED_UNCOUNTABLE)
   && measurementLines(LABELLED_UNCOUNTABLE) === 0;
 const selectorRejectsMentions = !MEAS_IN_LABEL_POSITION.test(SUMMARY_MENTION)
   && !MEAS_IN_LABEL_POSITION.test(IDENTIFIER_MENTION);
 
-check('F7', "F6's population selector admits every countable line, rejects a line that merely MENTIONS the token, and is not equivalent to the counter",
+check('F7', "F6's population selector admits every countable line, including a multi-line one the population has no member of, rejects a line that merely MENTIONS the token, and is not equivalent to the counter",
   selectorAdmitsAllCountable && selectorIsNotTheCounter && selectorRejectsMentions,
   `derived: ${sweptMentions.length} MEAS-mentioning rendering(s) across ${SWEPT.length} swept probes, ` +
-  `${sweptEmitters.length} in label position, ${countableDropped.length} countable-but-dropped (must be 0). ` +
-  `Fixtures: a labelled uncountable line is admitted=${selectorIsNotTheCounter} (so F6 can still red), ` +
-  `a summary line and an identifier mention are rejected=${selectorRejectsMentions}. ` +
+  `${sweptEmitters.length} in label position, ${countableDropped.length} countable-but-dropped (must be 0) — ` +
+  `of which ${sweptMentions.filter((e) => e.rendered.includes('\n')).length} carry a newline, which is why d1 ` +
+  'needs the fixture. Fixtures: a header-plus-measurement-block rendering counts ' +
+  `${measurementLines(MULTI_LINE_COUNTABLE)} and is admitted=${MEAS_IN_LABEL_POSITION.test(MULTI_LINE_COUNTABLE)} ` +
+  `(the Round 341 selector admitted it at string start only, and dropped it); a labelled uncountable ` +
+  `line is admitted=${selectorIsNotTheCounter} (so F6 can still red); a summary line and an identifier ` +
+  `mention are rejected=${selectorRejectsMentions}. ` +
   'Before Round 341 the selector was token PRESENCE, and one DEFERRED file reddened F6 on promotion ' +
-  'for a line that is not a measurement.');
+  'for a line that is not a measurement. Before Round 343 it was anchored at string start, and d1 had ' +
+  'zero members of the one dimension that can break.');
 
 // ── arm G: the census that prices the new state honestly ─────────────────────
 
