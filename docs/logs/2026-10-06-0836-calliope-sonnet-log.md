@@ -71,3 +71,61 @@ a brand-new klatch is first made). Neither of us had put that distinction in fro
 **Verified before committing:** `git diff --stat e8a80d6b..HEAD -- packages/` empty — no product code changed
 since this seat's last checkpoint, so no suite/typecheck re-run warranted this fire. This is a docs+mail-only
 change set.
+
+## 17:0x PT (SWEEP fire) — not a no-op: replied to Janus's rollup-conventions memo. Needs-you unchanged at 0.
+
+`git fetch origin` then HEAD `474f13d1`, worktree already synced by the wrapper. `git log bebe5d83..HEAD
+--format='%h %an %s'` (own prior MID-fire checkpoint) = 9 commits, none mine — checked author on every one,
+not inferred from subject shape (per the standing "check the commit author" lesson): all nine are Theseus,
+Daedalus, or Argus doing Round 341/342 research-track work. Both new round-mail files (Daedalus's Round 341,
+Theseus's Round 342) checked directly for addressees — `to: daedalus/theseus, argus`, `cc: xian, janus,
+calliope, iris` — cc-only, no needs-you implication. `git diff --stat bebe5d83..HEAD -- packages/` empty, no
+suite/typecheck re-run warranted.
+
+**Mail:** `grep -li "^to:.*calliope" docs/mail/*.md` (excluding `read/`) returned exactly one thread — Janus's
+`janus-to-calliope-cc-xian-rollup-and-living-doc-conventions-2026-10-06.md`, new since the MID-fire checkpoint,
+addressed directly to this seat. It relays xian's ask (via Exec/Pard) to adopt a canonical set of rollup/
+living-doc conventions, summarized as eight points, with "no reply needed unless something conflicts with how
+your project already works."
+
+Read the eight points against the live `docs/operations/attention-rollup.md`, point by point, not from memory
+or from the summary's framing alone:
+1. Plain-English-first banner — match (`**Last refreshed:** ... **New this render:** ...`, no shorthand).
+2. 🔒 for xian-only decisions — match, already adopted 2026-10-03.
+3. Actionable-on-the-surface (exact link/command, not a bare board link) — mostly match: ruled/open items cite
+   exact mail files, and the Backfill section cites the exact command. Not machine-checked against all 10
+   lower-urgency items individually.
+4. Name the version every time — match, v156 through v164.
+5. **Remove superseded/done items rather than keep them in place — does not match, and this is the real
+   finding.** Klatch's practice across v158–v164 does the opposite for ruled items specifically: the
+   pre-ruling argument stays live under an "everything below predates the ruling, kept for the mechanism it
+   documents" banner. The entity-delete section (this morning's MID-fire ruling) is the sharpest instance —
+   the board states in place that xian's ruling overturned the "refuse" lean Calliope and Iris jointly argued,
+   kept deliberately visible. **This already sits in tension with xian's own 2026-09-27 rule** (relayed by
+   Janus: stale info removed, board = current asks only, narrative preserved elsewhere first) — by that rule
+   this content belongs in `attention-rollup-archive-2026-09-27.md` with a pointer left behind, not in the live
+   doc. It's accumulated across four rulings since because each felt worth keeping visible in the moment, not
+   because the 9/27 rule was deliberately set aside.
+6. **"Verified how" footer (method/layer/denominator) — does not match, a plain gap.** The rollup's items don't
+   carry this footer shape; verification detail lives in `COORDINATION.md` checkpoints and session logs,
+   referenced by date/fire, not inlined per-item.
+7. Lean (only current items needing xian) — match, needs-you 0, lower-urgency 10, both stated in a metrics
+   strip, no stale asks carried.
+8. Living-doc convention (superseded wording to changelog/archive, never primary) — match, the 2026-09-27
+   restructure already did this at scale and it's held since.
+
+**Decision: flag both the gap (6) and the tension (5) to Janus rather than resolve unilaterally** — the
+rollup also feeds his federated cross-project rollup, so a structural change to what it keeps live isn't this
+seat's call alone to make. Replied, committed, and pushed from the recipient's own repo per the cross-repo mail
+convention: `designinproduct/docs/mail/calliope-to-janus-cc-xian-rollup-conventions-mostly-adopted-one-tension-
+flagged-2026-10-06.md`, commit `9a5d1f8`, pushed to `origin/main` same fire. **Noted explicitly in the reply:**
+attempted to fetch the full canonical conventions doc (`mediajunkie/designinproduct` blob URL Janus cited) via
+`gh api` and via `curl` against the raw GitHub URL and via `WebFetch` — all three require a permission grant
+this non-interactive session doesn't have, so the check above is scoped against Janus's eight-point summary
+only, flagged as unverified against his actual source file rather than silently treated as equivalent to it.
+
+Inbound memo left open in `docs/mail/` (not moved to `read/`) — the convention-5 question is an open action
+item pending Janus's reconciliation, per close-discipline (open threads stay visible, even partial-answer
+ones). Standing items re-checked and unchanged: Backfill (`ls -la backups/`, both files still Aug 4 17:11
+mtime), cross-pollination brief (`1f86f765`, unchanged since this morning's read, already confirmed
+inapplicable). No `packages/` changes this fire — docs+mail only.
