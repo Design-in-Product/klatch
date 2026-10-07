@@ -146,3 +146,133 @@ origin/main:docs/research/round346-….md` contains the `4 of 194` / partially-b
 treat it as one; the sweep was driven separately and its verdict line read, above.
 
 Nothing stranded, nothing uncommitted. This log entry is the last thing pushed.
+
+## 15:0x PT — WORK fire, Round 348
+
+Verifying Daedalus's Round 347 — his grading of the CURE D I routed in Round 346, landed as arm
+**F9**. Baseline `origin/main` at `b1707f50`, clean.
+
+**Authorship checked before assuming anything was mine.** `git log --format='%an'`: the three
+commits above my last (`9f37a96e`) are **Daedalus's** (`5cfe0e91`, `d10b13e5`, `356ddb78`) and
+`b1707f50` is **Argus's**. All four carry a subject shape I would have read as my own — this is the
+Round 326 trap and `--oneline` hides it.
+
+### His figures, re-derived
+
+- **F9 driven directly:** `PASS`, `4 hoisted-tag site(s) across 194 code files`, line pairs
+  `round224-a:71→72, round224b-:57→58, round247-a:67→68, round255-t:171→172`. Byte-identical to the
+  memo's.
+- **An independent key, sharing neither his regex nor his `stripSource`** —
+  `.testdata/r348/ast-key.mjs`, string-vs-code decided by the TypeScript parser, so a shape spelled
+  inside a string literal is that literal's `.text` and never a node. **Graded 12 of 12 before any
+  tree figure was read off it**, then run: **his exact member list, 4 of 4, compared as members not
+  counts.** Population independently derived at **194** by a `readdirSync` walk, not grep.
+- **SWEPT/DEFERRED re-derived** from `sweep-probes.mjs` under his stated rule: 224 SWEPT (L249),
+  224b DEFERRED (L1119), 247 DEFERRED (L1130), 255 SWEPT (L228) — exactly as published. A fifth
+  substring hit at L1144 was a *different* file (`round255-…-mutations.mjs`); printing the matched
+  line instead of counting matches is what kept it out of the figure.
+- **His five blind dimensions: all five zero members.** Two more I added are also zero — a name
+  containing `$` (his `${name}` reaches `new RegExp` unescaped, so `$` acts as an end-anchor and the
+  emitter can never match; it fails toward a *smaller* number) and a label interpolated inside a
+  larger span rather than bare. Seven documented limits, no live holes.
+
+### My own first key was wrong, in the false-positive direction
+
+It returned **7**, not 4. The three extras — round280:476→478, round281:221→222, round282:617→618 —
+read from source rather than believed:
+
+```
+476|   const meas = rows.filter((r) => r.outcome === 'MEAS');
+478|   console.log(`${passes.length} check(s) passed · … · ${meas.length} measurement(s)`);
+```
+
+Comparand, not label; array, not tag; count, not rendering. **His key excludes them correctly and
+for a principled reason** — he requires the *bare* name interpolated, so `${meas.length}` cannot
+match. Re-keyed with a bare/inner span split, a label-valued/call-valued split, and both real lines
+as known negatives: **4**.
+
+Second slip, caught only because the key prints its own grade: the corrected run printed
+`GRADE 10 of 12 — KEY IS NOT GRADED, FIGURES BELOW ARE VOID` **beside a correct 4**, because the
+grade ran on the raw pair list and the figure on the filtered predicate. A figure and the grade that
+licenses it must be read off one predicate, or the grade licenses a different question.
+
+### Correction 1 — the `2` and the `4` are two states, and the mis-read was mine
+
+```
+arm file at 29b6dff7 (his baseline, pre-F9): routed baseline=0   +emit-first=2   (delta=2)
+arm file on main today (post-F9):            routed baseline=36  +emit-first=50
+routed tree-wide, arm at 29b6dff7:  4 sites  (the same four line pairs)
+routed tree-wide, arm as on main:  40 sites
+```
+
+His `2`, his clean `4`, and counterfactual D's `40 / 36 its own` **all reproduce exactly, each in its
+own state**, and 36 + 4 = 40. The 36 are F9's own `HOISTED_KP`/`HOISTED_KN` arrays, which are the
+shape written as strings. My first reading — that the `2` was unreproducible — was a **state** error
+of mine. Round 328's lesson held.
+
+### Correction 2 — the margin is the element order, not a semicolon
+
+His committed comment: "escapes only because the enclosing match's `[^;]*` RHS swallows the
+semicolon inside its first string element … **the margin is one semicolon wide**." That predicts a
+mutation. Driven against his own blob where the routed baseline is 0, each anchor asserted to occur
+exactly once before mutating (his own counterfactual-C lesson):
+
+```
+mutation 1  semicolon removed  → 0 site(s)            ← the claim predicts ≥1
+mutation 2  order swapped      → 1 site(s)  623→622   ← this is what exposes it
+
+enclosing-declarator match span, by state:
+  original      : HOISTED_TERNARY_SITE L621→L622
+  no semicolon  : HOISTED_TERNARY_SITE L621→L623            ← swallows MORE, not less
+  order swapped : HOISTED_TERNARY_SITE L621→L622 | tag L623→L623
+```
+
+Removing the semicolon sends `[^;]*` on to the next one at `].join('\n');`, so the enclosing match
+consumes the inner `const tag` *more* completely. The escape condition is *no `;` between the
+enclosing `=` and the inner declarator* — assign-first satisfies it structurally, emit-first
+violates it. **His own spelling table's second row (assign-first, no semicolon, escapes) is already
+the counterexample**, and that table reproduces 5 of 5.
+
+His finding and his fix are both right; only the stated mechanism is wrong. **Corrected in F9's own
+comment block — comment-only.** F9 re-driven after the edit: still `PASS`, derived line
+byte-for-byte identical, same 4 sites, same 194 files.
+
+### Gate, each off its own instrument
+
+- `tsc --noEmit` server and client, each to its own file: **both 0 bytes.** Not a `grep -c` of zero,
+  which would also print 0 if the compiler had crashed.
+- `npm test` **unpiped** to a file, summary lines read: server **140 files / 2178 passed / 1
+  skipped**, client **26 passed / 13 skipped files, 333 passed / 13 skipped (346)**. Exact to his.
+- Sweep driven separately, **verdict line** read rather than its exit code (exit 2 is BLOCKED by
+  design — that is what this probe is *about*):
+  `SWEEP BLOCKED — 35 of 36 swept probes green, 0 red, 1 blocked (did not conclude), 0 census problem(s), 109 deferred`
+- The pre-commit hook's census printed `census PASSED` and said of itself
+  `NOT CHECKED: none of the 36 swept probes was driven`. It is not the gate and was not treated as
+  one.
+
+**A methodological limit I am stating rather than burying:** I made the comment edit while my *first*
+sweep run was still in flight, so that run read a mixed tree and **is not cited as a baseline**. The
+verdict above is from a clean post-edit run (`.testdata/r348/sweep-postedit.txt`); its line is
+identical, 0 red, 0 census problems.
+
+### Mail handled
+
+- **Daedalus's Round 347 → read, verified, answered in this fire**, and `git mv`'d to
+  `docs/mail/read/`: its routed item is landed and verified, and the one correction I found I
+  applied myself, so nothing is left for him to action. My Round 348 reply stays visible in
+  `docs/mail/` for his verification pass.
+- **Argus's 10/06 Laya/AAXT memo to the CIO** — re-read in `docs/mail/` this fire. Still open, still
+  parked on **xian's scheduling call**; not mine to close, left visible.
+- Nothing else in `docs/mail/` is addressed to me and unanswered.
+
+### Deliverables
+
+- `docs/research/round348-every-347-figure-reproduces-in-its-own-state-and-the-one-semicolon-margin-is-the-element-order-2026-10-07.md`
+- `docs/mail/theseus-to-daedalus-argus-cc-xian-janus-calliope-iris-every-347-figure-reproduces-…-2026-10-07.md`
+- `scripts/probe-round269-…mts` — F9 comment block corrected (comment-only)
+- `git mv` of Daedalus's Round 347 memo into `docs/mail/read/`
+- COORDINATION.md Theseus section updated
+
+### Nothing needs a decision from xian from this fire
+
+The one open thread that does is Argus's Laya/AAXT memo, above.
