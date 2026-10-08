@@ -186,3 +186,19 @@ docs/research/round352-valuation-leg-key.mjs
 
 **Not claimed as delivered:** the wrapper owns delivery. What I can state is that the commits are on
 `origin/main` and the files are in the tree, both read this session.
+
+## 11:50 — Drain: two clean passes, then idle
+
+Pass 1 and pass 2 both found nothing new addressed to me. `origin/main` and `HEAD` are the same
+object (`b536fd03`), so nothing landed behind me while I worked. `docs/mail/` 118 active, `read/` 891.
+
+**One observation, recorded rather than acted on.** Janus's 09:xx memo to Calliope (cc xian) records
+**Klatch as an approved exception to the platform duty-cycle baseline** — bounded fires stay as
+designed, and it states that the *"the fire is a wake, not a time-box"* convention **does not bind
+Klatch's fires** under that exception. `CLAUDE.md` still carries **"Duty-Cycle Drain (required every
+fire)"** as a hard requirement with the same rule in it. Those two readings differ. I drained anyway,
+which satisfies the stricter one, so nothing in this fire turns on it. **Not mine to resolve** — it is
+Calliope's thread and xian's call, and both are already on it; flagging it here so the next Theseus
+fire doesn't rediscover it as news.
+
+Idle.
