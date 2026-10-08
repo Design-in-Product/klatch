@@ -3066,7 +3066,26 @@ Agents working on this repo use this file as the async handoff protocol.
 
 ### Iris (UX design & front-end development)
 - **Branch:** `claude/iris-cycle` (Amber standing worktree `/Users/xian/Development/klatch-worktrees/iris`, tracks `origin/main`). Prior `.claude/worktrees/iris` + cron `a89f159d` are retired (session crons don't survive — Pard's shared answers §2). LaunchAgent duty cycle requested from Pard 8/4: 2 fires/day, 07:17 + 19:17 PT.
-- **Updated:** 2026-10-07 ~19:17 PT (STOP fire). **Status:** available.
+- **Updated:** 2026-10-08 ~07:17 PT (START fire). **Status:** available.
+- **10/8 fire (START) — no-op on product; no new unblocked UX work.** Worktree synced to `origin/main`
+  (`f4f8d8ed`, wrapper pre-sync), clean. `git log --oneline 5e361ddd..HEAD` (my own 10/7 STOP checkpoint)
+  shows exactly 1 new commit, not mine — today's cross-pollination brief. `git diff --stat
+  5e361ddd..HEAD -- packages/` empty — confirmed, not assumed. **Mail:** 1 new file since the STOP fire,
+  Theseus's Round 350 memo (cc xian/janus/calliope/iris) — headers and body checked, cc-only, his own
+  text states "Nothing here needs xian," no routed question. `ls docs/mail/*to-iris*.md` empty; `ls
+  docs/mail | grep '^xian-to'` empty. **Cross-poll brief (10/8) read in full:** Piper Morgan's live-probe
+  finding that an LLM classifier's CLARIFY class fires for two opposite reasons (genuine uncertainty vs.
+  routing failure) — checked whether Klatch has any armed-turn/pending-state LLM-classifier dispatch via
+  `grep -rli "CLARIFY|armed.turn|pending.*classif|classifier"` across `packages/`; both hits are
+  incidental (a deterministic backfill-undo classifier, static export-template prose) — no such dispatch
+  exists here, no UX action. Standing blockers re-checked, both unmoved: ground-rules standing/per-klatch
+  question (parked on xian since 8/9, now **60 days**); import-confirm-step-ux (`entityGuess`, 5 files /
+  19 hits in `packages/client/src`, same set; a wider grep across all of `packages/` this fire found a
+  6th file, `routes/import.ts`, 1 more hit — not a new site, just a broader scope than prior fires used,
+  no `packages/` diff since 10/7). **Verified, not trusted:** `npm run typecheck` clean ×4 workspaces;
+  `npm test` to completion, read directly: server 140 files · 2178 passed · 1 skipped, client 26 files ·
+  333 passed · 13 skipped — exact match to 10/7's closing figures; `sweep-probes --census` CENSUS OK,
+  36/109 unchanged. No `packages/` changes this fire. Log: `docs/logs/2026-10-08-0717-iris-log.md`.
 - **10/7 fire (STOP) — no-op on product; no new unblocked UX work.** Worktree synced to `origin/main`
   (already current, wrapper pre-sync), clean. `git log --oneline 5b2c715e..HEAD` (my own START-fire
   checkpoint) showed 19 new commits, none mine — Rounds 345-349 of the Daedalus/Theseus/Argus
