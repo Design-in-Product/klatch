@@ -882,6 +882,122 @@ check('F9', 'every hoisted-tag SITE in the scripts tree is declared, rendered an
   'round224 is SWEPT and passes F8 through its visible sibling at :561; 224b and 247 are DEFERRED ' +
   'and will pass F8 at promotion while carrying a site F6 never grades.');
 
+/**
+ * F10 — the hole that Theseus's Round 348 correction implies, turned from a measured zero into a
+ * standing guard.
+ *
+ * His correction to F9's comment above established the escape condition as *no `;` between the
+ * enclosing `=` and the inner declarator*. **That is a property of this DETECTOR, not of the
+ * fixture.** `hoistedTagSites`'s assign pattern has a greedy `[^;]*` RHS and scans with `/g`, so
+ * `lastIndex` lands past the whole match — and a declarator sitting inside an earlier
+ * semicolon-free RHS is therefore never a match START. The `isCode` guards do not help: they
+ * decide code-vs-string at an offset and do not touch `lastIndex`, so **F9 as landed carries this
+ * hole exactly as CURE D as routed did.**
+ *
+ * Driven over the live tree at Round 349: **zero swallowed members**, member lists identical, 4 and
+ * 4 with the same four members. A documented limit, not a live hole — which is exactly why it is
+ * worth pinning at a fire where it is free. F9's declared set is complete only while this stays 0,
+ * and nothing in F9 would notice if it stopped being 0: a swallowed site is invisible to the
+ * flagged set *and* to the declared one, so the set-equality conjunct reads true over a smaller
+ * world. This arm is the only thing that would go red.
+ *
+ * The comparison varies **exactly one thing** — the declarator pattern is tested independently at
+ * every keyword occurrence, so no match can hide a later one. Same literal key, both the same
+ * `isCode` guards, same emitter regex. Two keys that shared the selector would agree vacuously
+ * (Round 339); the whole point here is to vary what SELECTS.
+ *
+ * Fixtures, because a zero-member live population cannot grade anything (Round 343's d1 lesson):
+ * one known positive — a real site copied from `round255`'s shape, placed behind a semicolon-free
+ * declarator — and one known negative that is the *same site with the swallower terminated*. The
+ * pair differs only in the swallow, so a red here is attributable to the swallow and not to the
+ * site. Compared as **member lists, not counts** (Round 340).
+ *
+ * **Also recorded here, from Round 349's correction back to Theseus:** his dimension 7 — the tag
+ * interpolated NON-BARE, `${tag.padEnd(4)}` rather than `${tag}` — is **3 members, not the 0 his
+ * Round 348 reports**: `round280:476→478`, `round281:221→222`, `round282:617→618`. All three are
+ * benign *by hand reading of the source*, for his own stated reasons (the literal is a comparand in
+ * a filter predicate, the variable holds an array of rows, `${meas.length}` is a count) — but the
+ * class is populated-and-benign, not empty, and the row is consulted by whoever next writes a
+ * non-bare emitter. Dimension 8, `console.error`/`console.warn` as the emitter, is 0 and graded.
+ */
+const unswallowedTagSites = (raw: string):
+Array<{ assign: number; emit: number; name: string }> | null => {
+  const src = stripSource(raw, false);
+  const blanked = stripSource(raw, true);
+  if (src.length !== raw.length || blanked.length !== raw.length) return null;
+  const isCode = (off: number, text: string) => blanked.slice(off, off + text.length) === text;
+  const out: Array<{ assign: number; emit: number; name: string }> = [];
+  const kwScan = /\b(?:const|let|var)(?=\s)/g;
+  let k: RegExpExecArray | null;
+  while ((k = kwScan.exec(src)) !== null) {
+    const at = /^(?:const|let|var)\s+([A-Za-z_$][\w$]*)\s*=\s*([^;]*)/.exec(src.slice(k.index));
+    if (!at) continue;
+    const name = at[1];
+    const kw = /^(?:const|let|var)/.exec(at[0])![0];
+    if (!isCode(k.index, kw)) continue;
+    if (!/['"`]MEAS['"`]/.test(at[2])) continue;
+    const emit = new RegExp(`console\\.log\\(\\s*\`([^\`]*\\$\\{\\s*${name}\\s*\\}[^\`]*)\``, 'g');
+    let e: RegExpExecArray | null;
+    while ((e = emit.exec(src)) !== null) {
+      if (!isCode(e.index, 'console.log')) continue;
+      out.push({ assign: k.index, emit: e.index, name });
+    }
+  }
+  return out;
+};
+
+// A real site behind a semicolon-free declarator, and the same site with the swallower terminated.
+// The two differ only in that one character, so a red is attributable to the swallow.
+const SWALLOW_KP = [
+  'const swallower = [',
+  "  'a', 'b',",
+  "].join('\\n')", // deliberately unterminated: the greedy RHS runs on past the site below
+  "const tag = pass ? 'MEAS' : 'PASS';",
+  'console.log(`${tag} [A] files walked 194`);',
+].join('\n');
+const SWALLOW_KN = SWALLOW_KP.replace("].join('\\n')\n", "].join('\\n');\n");
+
+const swallowKey = (raw: string, s: { assign: number; emit: number; name: string }) =>
+  `${s.name}@${lineAt(raw, s.assign)}→${lineAt(raw, s.emit)}`;
+const kpLanded = (hoistedTagSites(SWALLOW_KP) ?? []).map((s) => swallowKey(SWALLOW_KP, s));
+const kpUnswallowed = (unswallowedTagSites(SWALLOW_KP) ?? []).map((s) => swallowKey(SWALLOW_KP, s));
+const knLanded = (hoistedTagSites(SWALLOW_KN) ?? []).map((s) => swallowKey(SWALLOW_KN, s));
+const knUnswallowed = (unswallowedTagSites(SWALLOW_KN) ?? []).map((s) => swallowKey(SWALLOW_KN, s));
+// The fixture pair must DISCRIMINATE, or the live figure below licenses nothing.
+const swallowFixtureGrades = kpLanded.length === 0 && kpUnswallowed.length === 1
+  && knLanded.length === 1 && knUnswallowed.length === 1 && knLanded[0] === knUnswallowed[0];
+
+const unswallowedMembers: string[] = [];
+let unswallowedOffsetsPreserved = true;
+for (const abs of POPULATION) {
+  const raw = readFileSync(abs, 'utf8');
+  const sites = unswallowedTagSites(raw);
+  if (sites === null) {
+    unswallowedOffsetsPreserved = false;
+    continue;
+  }
+  const rel = abs.slice(join(REPO, 'scripts').length + 1);
+  for (const s of sites) unswallowedMembers.push(`${rel}:${lineAt(raw, s.assign)}→${lineAt(raw, s.emit)}`);
+}
+const landedMembers = flaggedSites.map((s) => `${s.file}:${s.assign}→${s.emit}`);
+const swallowed = unswallowedMembers.filter((k) => !landedMembers.includes(k));
+const landedOnly = landedMembers.filter((k) => !unswallowedMembers.includes(k));
+
+check('F10', 'no hoisted-tag SITE is hidden from F9 by an earlier semicolon-free declarator — the hole F9\'s own escape condition implies, and the one F9 could not notice losing',
+  swallowFixtureGrades && unswallowedOffsetsPreserved
+  && swallowed.length === 0 && landedOnly.length === 0,
+  `the landed greedy scan and a scan that cannot hide a declarator agree as MEMBER LISTS: ` +
+  `${landedMembers.length} vs ${unswallowedMembers.length}, ${swallowed.length} site(s) swallowed ` +
+  `(must be 0)${swallowed.length ? ` — ${swallowed.join(', ')}` : ''}, ${landedOnly.length} seen ` +
+  `only by the greedy scan (must be 0)${landedOnly.length ? ` — ${landedOnly.join(', ')}` : ''}. ` +
+  `Offsets preserved on every file=${unswallowedOffsetsPreserved}. Fixture pair discriminates the ` +
+  `swallow and nothing else=${swallowFixtureGrades} — a real site behind an unterminated ` +
+  `declarator is invisible to F9 (${kpLanded.length} vs ${kpUnswallowed.length}) and visible to ` +
+  `both once that declarator is terminated (${knLanded.length} vs ${knUnswallowed.length}). ` +
+  'The live population has ZERO members, so the fixtures are what grade this arm, not the tree: ' +
+  'F9\'s set-equality conjunct would read true over a smaller world if a swallowed site appeared, ' +
+  'because such a site is invisible to the flagged set and the declared set alike.');
+
 // ── arm G: the census that prices the new state honestly ─────────────────────
 
 console.log('\n── arm G: can BLOCKED fire on today\'s swept set? ──');

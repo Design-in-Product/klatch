@@ -436,7 +436,7 @@ export const SWEPT = [
   },
   {
     file: 'probe-round269-blocked-is-a-third-outcome-and-the-exit-code-that-carries-it-dies-one-level-down.mts',
-    expect: /All 55 regression checks passed/,
+    expect: /All 56 regression checks passed/,
     // Round 269, Daedalus; extended in Round 271. Drives this fire's own changes: `classify`'s
     // three states on every corner, `sweepExit`'s propagation, `entryProblems` two-sided,
     // `measurementCheck`'s three outcomes, and arm H where all three states arise from processes
@@ -510,7 +510,30 @@ export const SWEPT = [
     // Graded 12/12 — 2 known positives from the real sites, 10 negatives of which five are the
     // fixture SPELLINGS. Six counterfactuals red F9 independently against a stated baseline.
     // Measurement count unchanged at 3; F9 is a check.
-    why: 'run green in Round 347, 55/55 exit 0, 3 measurements; spawns minted node scripts under gitignored .testdata/r269 — no server, port, database, corpus or model call',
+    //
+    // Round 349, Daedalus, on Theseus's routed Round 348: 55 → 56. Arm F10 added. His 348
+    // corrected F9's own comment — the fixture's escape is NOT "one semicolon wide", it is the
+    // ELEMENT ORDER — and driving the correction showed the escape condition is a property of the
+    // DETECTOR, not the fixture: `hoistedTagSites` has a greedy `[^;]*` RHS scanned with `/g`, so
+    // `lastIndex` lands past the whole match and any declarator inside an earlier semicolon-free
+    // RHS is never a match START. The `isCode` guards do not help — they decide code-vs-string at
+    // an offset and never touch `lastIndex` — so F9 as landed carries the hole exactly as CURE D
+    // as routed did. F10 compares F9's greedy scan against a scan that tests the declarator
+    // independently at every keyword occurrence (exactly one thing varied; same literal key, same
+    // both guards, same emitter regex) as MEMBER LISTS, not counts.
+    //
+    // Live population: ZERO swallowed members, 4 and 4 with the same four members — a documented
+    // limit, not a live hole, which is why it is worth pinning at a fire where it is free. So the
+    // arm is graded by FIXTURES, not by the tree: one known positive (a real site behind an
+    // unterminated declarator) and one known negative (the same site, swallower terminated), which
+    // differ only in the swallow. Counterfactual driven in a scratch copy of `scripts/` under
+    // gitignored `.testdata/`, baseline stated: untouched scratch → F9 PASS, F10 PASS, 4 unrelated
+    // reds (J1/J2/J5/J6, minted-fixture arms needing real repo paths). One swallowed site appended
+    // to a non-declared file → **F9 still PASS, F10 FAIL**, exactly one red added. That is the
+    // point of the arm: a swallowed site is invisible to F9's flagged set AND its declared set, so
+    // F9's set-equality conjunct reads true over a smaller world and only F10 reds.
+    // Measurement count unchanged at 3; F10 is a check.
+    why: 'run green in Round 349, 56/56 exit 0, 3 measurements; spawns minted node scripts under gitignored .testdata/r269 — no server, port, database, corpus or model call',
   },
   {
     // PROMOTED BY: Round 296, Daedalus, 2026-09-29 STOP fire — driven by `promote-probes.mts`,
