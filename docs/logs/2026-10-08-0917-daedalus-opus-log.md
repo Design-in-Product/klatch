@@ -137,3 +137,74 @@ doing it unilaterally.
 
 Pushing the landed work now rather than at fire end: fires die at 2400s and nobody reconciles a
 stranded worktree. CURE B's census goes in a second commit.
+
+Commit `8ccbfcde`, pushed to `origin/main` (verified: `git log --oneline origin/main -1` returned
+`8ccbfcde` after the push, `ee395388` before it). Pre-commit census hook passed — and it printed the
+fleet size, **145 probe files**, which is the figure CURE B's question is posed in.
+
+## 09:35 — Drain item: CURE B's remaining measurement
+
+The question, from my own 10-06 memo, routed to Argus and not taken in Argus's 10-08 no-op fire:
+*does any probe in the fleet write a MEAS label the widened counter still cannot read?*
+
+**Checked `scripts/lib` and the probe before hand-rolling anything** — the instruments already
+existed, so all three are copied **byte-identically** rather than paraphrased: `MEAS_LINE`
+(`sweep-probes.mjs:1738`), `renderMeasMentions` (`probe-round269:323-335`),
+`MEAS_IN_LABEL_POSITION` (`probe-round269:407`). CURE B is the one documented widening of alternative
+2, `\s*MEAS\s+\[` → `\s*MEAS\s+\S`.
+
+Graded **9 of 9** before reading a figure, with both named shapes (`'MEAS: 7ms'`, `'[A1]MEAS 7ms'`)
+as known positives that must be **admitted and uncountable**, `'MEAS\t7ms'` as the one the widening
+rescues, and `round240:474`'s summary as a known negative that must not be admitted. The script exits
+1 without printing a figure if the grade is short.
+
+**Population reconciled in the project's unit before use.** My recursive walk said 149; `census`
+(`sweep-probes.mjs:1508`) says 145 and is **non-recursive with no extension filter**. Diffed as
+**member lists**, not arithmetic: the difference is exactly `lib/probe-corpus-sessions.mts`,
+`lib/probe-outcome.mts`, `lib/probe-server-ownership.mts`, `lib/probe-source-constants.mts` — shared
+modules, not probes — with nothing in the census missing from my walk. Re-driven on the census's own
+145 by importing `census` live.
+
+```
+label-position renderings: 97
+uncountable under the LANDED counter: 2
+    DEFERRED probe-round196-…                           "  MEAS X"
+    DEFERRED probe-round221-probe-ownership-control.mts  "MEAS X — X"
+uncountable under CURE B's WIDENED counter: 0
+named shape COLON-FORM (MEAS:) members: 0
+named shape ABUTTED-BRACKET ([tag]MEAS) members: 0
+```
+
+**Answer: NO** — and it **confirms the 10-06 decline rather than unblocking the landing**. d2's only
+instrument *is* the 221 spelling CURE B makes countable, so after the widening there is no real
+uncountable spelling left to re-fixture d2 from; CURE B could land only with an invented fixture
+asserting a property nothing in the tree exhibits (the Round 339 failure F6 exists to escape). Both
+rescued spellings are DEFERRED, so the benefit is at promotion time. **The open item is now a
+decision, not a measurement.**
+
+## 09:38 — A figure that moved against the record, chased rather than published past
+
+My census printed **101** MEAS-mentioning renderings; the probe's own comment — **which I wrote** —
+records **99**. Docs go stale, including mine, so I listed all four non-label-position mentions
+instead of explaining the delta away:
+
+- `geometry-distance-arm.mjs` — recorded at Round 341
+- `probe-round240` — recorded at Round 341
+- `probe-round269` ×2 — **new**, and both are the arm's **own known-negative fixture strings**
+
+That is F9's recorded Round 347 lesson again: a known positive for this shape can only be written as a
+string, so the arm's own fixture lands in the population it measures. Both are correctly **rejected**
+by the selector, which is why **label-position stayed at 97 while mentions went 99 → 101**, and why
+the answer above is untouched. Had I not reconciled it, I would have published a figure contradicting
+my own comment with no account of which was right.
+
+## 09:40 — Session wrap
+
+Deliverables filed: §7/§8 appended to the Round 351 research doc, memo to Argus + Theseus, Drain line
+in `COORDINATION.md` updated with the result. Second commit below.
+
+**Drain status:** two consecutive checks of `docs/mail/` found nothing new beyond what is handled
+above. Deferrals, each with a named blocker, are in the `Drain:` line — the pre-10-04 mail backlog
+(proposed, needs a one-line OK, not deferred to a date), the 109 DEFERRED probes (promotion is a
+deliberate per-probe path), `probe-round225`'s BLOCKED (xian's dev server holds :3001), and rows 1–6
+of the dimension table (attributed to Theseus rather than re-keyed, on my own false-zero record).

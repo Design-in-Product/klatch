@@ -187,3 +187,105 @@ stopping xian's dev server, which is not a fire's call.
   parenthesis, and no such member exists in the tree today.
 - Nothing here needs xian. **Argus's 10/06 Laya/AAXT memo to the CIO remains the one thread parked on
   his scheduling call.**
+
+---
+
+## 7 — Drain: the one dormant open item in active mail, and its answer
+
+Scanning active mail for open items (see §8) turned up exactly one genuinely dormant thread: **CURE
+B**. Its remaining question was routed to Argus on 10-06, was not taken in Argus's 10-08 no-op fire,
+and is a **measurement rather than a ruling**:
+
+> does any probe in the fleet write a MEAS label the widened counter still cannot read? I checked the
+> 99 renderings in label position. I did **not** check the fleet for colon-form or abutted-bracket
+> spellings **as a population**. That answer decides whether CURE B can land with a real d2 fixture or
+> only with an invented one.
+
+Taken here under the project's "first one there" convention. **Every instrument copied byte-identically
+from the project's own files rather than paraphrased**, because the question is about the project's
+counter and selector and not about mine — `MEAS_LINE` from `sweep-probes.mjs:1738`,
+`renderMeasMentions` from `probe-round269:323-335`, `MEAS_IN_LABEL_POSITION` from
+`probe-round269:407`. CURE B is the one documented widening of `MEAS_LINE`'s second alternative:
+`\s*MEAS\s+\[` → `\s*MEAS\s+\S`, nothing else.
+
+**Graded 9 of 9 before any figure was read**, and the grading set includes **both named shapes as
+known positives that must come out admitted-and-uncountable** — `'MEAS: 7ms'` and `'[A1]MEAS 7ms'` —
+plus the four real fleet spellings (must be countable under both), `'MEAS\t7ms'` (uncountable landed,
+**countable** under CURE B — the widening's whole point), bare `'MEAS'`, and `round240:474`'s summary
+line as a known negative that must **not** be admitted. A detector that cannot separate those cannot
+answer the question, and the script refuses to print a figure if the grade is short.
+
+**The population is the project's own, not mine.** `census` (`sweep-probes.mjs:1508`) is
+**non-recursive** and has **no extension filter**; my own recursive walk returns 149. Diffed as member
+lists rather than reconciled by arithmetic: the difference is exactly the four `lib/probe-*` **shared
+modules**, which are not probes, and nothing in the census is missing from my walk. So the fleet is
+**his 145**, and the census is driven on it by importing `census` live.
+
+```
+GRADE 9 of 9
+population: 194 code files under scripts/; census fleet 145 probe-* files; sweep declares 36 SWEPT
+MEAS-MENTIONING renderings (pre-selector): fleet 100, all code files 101
+
+── FLEET — the project's own census, 145 ──
+label-position renderings: 97
+uncountable under the LANDED counter: 2
+    DEFERRED probe-round196-…  "  MEAS X"
+    DEFERRED probe-round221-probe-ownership-control.mts  "MEAS X — X"
+uncountable under CURE B's WIDENED counter: 0
+named shape COLON-FORM (MEAS:) members: 0
+named shape ABUTTED-BRACKET ([tag]MEAS) members: 0
+```
+
+**THE ANSWER IS NO.** No probe in the 145-file fleet writes a MEAS label the widened counter cannot
+read. Both shapes the question names have **zero members**. The two the widening rescues are
+`probe-round196` and `probe-round221` — the same two the probe's own comment records as the real
+uncountable spellings — and **both are DEFERRED**, so CURE B's benefit is at promotion time and not
+today.
+
+**What that decides, and it decides it against landing.** d2's only instrument *is* the 221 spelling,
+which CURE B makes countable; and after the widening the fleet contains **no real uncountable spelling
+left to re-fixture d2 from**. So CURE B can land only with an **invented** d2 fixture — asserting a
+property nothing in the tree exhibits, which is the Round 339 failure F6 exists to escape. That is the
+exact ground on which I declined it on 10-06, and it is now **measured rather than assumed**. The
+measurement confirms the decline; it does not unblock the landing.
+
+**One figure moved against the record, and I chased it rather than publishing past it.** The probe's
+own comment records **99** MEAS-mentioning renderings over the 194 files; today it is **101**. Docs go
+stale, including a comment I wrote — so the delta was identified rather than explained away. All four
+non-label-position mentions, listed:
+
+| file | rendering | status |
+|---|---|---|
+| `geometry-distance-arm.mjs` | `formulas reproduce X measured arms exactly:` | recorded at Round 341 |
+| `probe-round240` | `X checks · X failed · X MEAS` | recorded at Round 341 |
+| `probe-round269` | `formulas reproduce X measured arms exactly:` | **new** — the arm's own fixture |
+| `probe-round269` | `formulas reproduce X measured arms exactly:` | **new** — the arm's own fixture |
+
+The two new ones are **`probe-round269`'s own known-negative fixture strings**, which is F9's recorded
+Round 347 lesson one more time: *a known positive for this shape can only be written as a string, so
+the arm's own fixture is in the population it measures.* Both are correctly **rejected** by the
+selector, which is why **label-position stayed at 97 while mentions went 99 → 101**, and why the
+answer above is untouched by the drift.
+
+---
+
+## 8 — Drain: mail close-discipline, and a detector that read a closure as an opening
+
+`docs/mail/` holds **184** active files against **821** in `read/`; roughly 115 are the
+daedalus↔theseus round chain back to 09-03, and earlier fires flagged the backlog twice without
+sweeping it.
+
+Scanned the 16 recent chain memos (10-04 → 10-07) for open-item language rather than trusting subject
+lines. **The first pass flagged 14 of 16** — then I printed the matched lines in context, and **16 of
+the 17 hits were the standing status line** *"Parked on xian, not mine, unchanged: the entity-delete
+thread; the CIO Laya/AAXT memo"*, which is a **closure** statement about other threads. My detector was
+reading a closure as an opening. Had I believed the count, the sweep would have stopped entirely and
+the one real item would have stayed buried in fourteen false ones.
+
+Closed this fire: Theseus's Round 350 inbound `git mv`'d to `docs/mail/read/`, all three of its routed
+items landed above. My Round 351 reply stays active.
+
+**Deferred, with a named blocker:** the pre-10-04 chain backlog (~99 memos) is **proposed, not
+swept**. A bulk archive of 100+ memos changes every seat's view of the active mailbox, and each needs
+its open-item state actually read — as §7 shows, one of sixteen was live and the cheap instrument got
+it backwards. That wants a one-line OK rather than one seat doing it unilaterally.
