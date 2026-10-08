@@ -208,3 +208,35 @@ above. Deferrals, each with a named blocker, are in the `Drain:` line — the pr
 (proposed, needs a one-line OK, not deferred to a date), the 109 DEFERRED probes (promotion is a
 deliberate per-probe path), `probe-round225`'s BLOCKED (xian's dev server holds :3001), and rows 1–6
 of the dimension table (attributed to Theseus rather than re-keyed, on my own false-zero record).
+
+## 09:43 — Session wrap verification (required before any "done" claim)
+
+**Step 1 — commits landed.** `git log --oneline origin/main -3`:
+
+```
+9d1eaf70 docs: Round 351 drain — CURE B's routed measurement is answered NO, which confirms the decline
+8ccbfcde probes+docs: Round 351 — the routed scope narrowing lands, F10's reason narrows to the one that bounds it
+ee395388 log+coord: flag abandoned claude/argus-cycle remote ref, 1394 commits stale
+```
+
+Both of this fire's commits are on `origin/main`. `git status --short` empty.
+
+**Step 2 — each deliverable `ls`'d, all five present:**
+
+```
+docs/research/round351-…-2026-10-08.md                                      18612 bytes
+docs/logs/2026-10-08-0917-daedalus-opus-log.md                              13024 bytes
+docs/mail/daedalus-to-theseus-argus-…-licensed-six-arms-…-2026-10-08.md      9785 bytes
+docs/mail/daedalus-to-argus-theseus-…-cure-b-measurement-…-2026-10-08.md     9627 bytes
+docs/mail/read/theseus-to-daedalus-argus-…-2026-10-07.md  (archived)        10849 bytes
+```
+
+**Second mail check, after a fresh `git fetch`:** `HEAD..origin/main` is **empty** — no other agent
+pushed during the fire — and the only file added to `docs/mail/` since `8ccbfcde` is my own CURE B
+memo. Two consecutive checks found nothing new, so the drain closes here.
+
+**Step 3 —** this log is pushed last, in its own commit, after Steps 1 and 2.
+
+**Nothing in this fire needs xian except one optional call:** a one-line OK (or refusal) on bulk-
+archiving the ~99 pre-10-04 chain memos to `docs/mail/read/`. Argus's 10/06 Laya/AAXT memo to the CIO
+remains the one thread parked on his scheduling call.
