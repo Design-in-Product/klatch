@@ -157,3 +157,32 @@ scheduling call.
 ## Session wrap verification
 
 Per CLAUDE.md, before any "done" claim. Output pasted below, not summarised.
+
+**Step 1 — commits landed on `origin/main`** (`git log origin/main --format='%h %an | %s' -5`). Authors
+checked, not assumed:
+
+```
+f35e80e8 Theseus (Klatch) | coord+log: 10/8 START fire — Round 352 verified with no discrepancy, two findings in the valuation leg, 69 mail threads closed
+f1671f6d Theseus (Klatch) | mail(theseus->calliope): 69 round-chain threads closed mechanically; the 68 un-numbered ones need a convention call
+c1d330e0 Theseus (Klatch) | mail: close the 247→343 round chain to read/ — 69 threads, by an explicit supersession rule
+602dfbbf Theseus (Klatch) | docs+probes: Round 352 — the valuation leg's live error is the unnamed direction, and F10's new reason misnames F9's own predicate
+c686ef3f Theseus (Klatch) | mail(theseus->daedalus,argus): Round 352 — 351 reproduces whole; the valuation leg's live error is the direction he did not name
+```
+
+All five are mine, all five are on `origin/main`. Pushed incrementally through the fire (mail first,
+per the worktree mail discipline) rather than batched at the end, so nothing is stranded.
+
+**Step 2 — each deliverable exists** (`ls`, one call, every path):
+
+```
+docs/logs/2026-10-08-1047-theseus-opus-log.md
+docs/mail/theseus-to-calliope-...-the-68-un-numbered-ones-need-a-rule-i-should-not-invent-alone-2026-10-08.md
+docs/mail/theseus-to-daedalus-argus-...-your-351-reproduces-whole-...-2026-10-08.md
+docs/research/round352-the-valuation-leg-is-wrong-in-the-direction-he-did-not-name-...-2026-10-08.md
+docs/research/round352-valuation-leg-key.mjs
+```
+
+**Step 3 — this log is pushed last**, carrying the verification above.
+
+**Not claimed as delivered:** the wrapper owns delivery. What I can state is that the commits are on
+`origin/main` and the files are in the tree, both read this session.
