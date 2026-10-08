@@ -750,6 +750,14 @@ check('F8', "F6's own selector reaches every swept file that writes a MEAS label
  * fully visible at file level, so both pass F8 today and will pass it at promotion. This arm is the
  * only one that sees them.
  *
+ * **The check STRING is narrower than it was, routed by Theseus at Round 350 §4 and landed here.** It
+ * used to claim *every hoisted-tag SITE in the scripts tree*, and that overclaims by exactly the
+ * amount F10's comment below now measures: three lines in the tree already pass this detector's
+ * ASSIGN leg and are kept out only by the bare-span emitter. The honest scope is the one the detector
+ * actually enforces — *every hoisted-tag site whose name is interpolated BARE into a `console.log`
+ * template*. The limit was already in this comment; the check string is what a reader sees in a sweep
+ * transcript, so it is the thing that had to say it.
+ *
  * Declared rather than complete, for F8's reason: the `record(id, 'MEAS', text)` class reaches its
  * template through a FUNCTION PARAMETER, which no regex resolves and this detector does not either.
  * That class stays in F8's `DECLARED_INVISIBLE`.
@@ -866,7 +874,7 @@ const liveSitesCountable = flaggedSites.length > 0
 const hoistedKpFlags = HOISTED_KP.every((src) => (hoistedTagSites(src) ?? []).length > 0);
 const hoistedKnClean = HOISTED_KN.every((src) => (hoistedTagSites(src) ?? [{}]).length === 0);
 
-check('F9', 'every hoisted-tag SITE in the scripts tree is declared, rendered and countable — the level F8 cannot reach, because F8 is keyed on files',
+check('F9', 'every hoisted-tag SITE whose name is interpolated BARE into a `console.log` template is declared, rendered and countable — the level F8 cannot reach, because F8 is keyed on files',
   hoistedOffsetsPreserved && sitesDeclared && declaredSitesCountable && liveSitesCountable
   && hoistedKpFlags && hoistedKnClean,
   `derived: ${flaggedSites.length} hoisted-tag site(s) across ${POPULATION.length} code files under ` +
@@ -896,10 +904,25 @@ check('F9', 'every hoisted-tag SITE in the scripts tree is declared, rendered an
  *
  * Driven over the live tree at Round 349: **zero swallowed members**, member lists identical, 4 and
  * 4 with the same four members. A documented limit, not a live hole — which is exactly why it is
- * worth pinning at a fire where it is free. F9's declared set is complete only while this stays 0,
- * and nothing in F9 would notice if it stopped being 0: a swallowed site is invisible to the
- * flagged set *and* to the declared one, so the set-equality conjunct reads true over a smaller
- * world. This arm is the only thing that would go red.
+ * worth pinning at a fire where it is free.
+ *
+ * **This arm's REASON is narrower than the one first written here, and the broad version was
+ * falsified by driving it (Theseus, Round 350 §3).** What stood here was: *"F9's declared set is
+ * complete only while this stays 0, and nothing in F9 would notice if it stopped being 0 — a
+ * swallowed site is invisible to the flagged set and to the declared one, so the set-equality
+ * conjunct reads true over a smaller world."* Every clause of that is true of DIMENSION 7 verbatim,
+ * and he drove it rather than arguing it: one dimension-7 site appended to the same non-declared file
+ * the same way gives **F9 PASS, F10 PASS, no new red.** F9 passes over a smaller world, the
+ * set-equality conjunct reads true, and this arm does not cover it. So that clause cannot be what
+ * distinguishes F10 — taken literally it licenses one arm per blind dimension, seven of them, each
+ * with an empty live population.
+ *
+ * **What does distinguish a swallow is one level in: it hides a site F9's OWN PREDICATE MATCHES** —
+ * label-valued, bare, `console.log`, inside the keyed shape — so F9's stated claim is falsified by
+ * the thing it cannot see. A dimension-7 site is OUTSIDE that predicate, and a comment is the honest
+ * instrument there. F10 stays on the narrower and stronger reason: not *"a blind spot exists"* but
+ * **"the detector loses members of its own declared class without saying so"** — which is also the
+ * version that stays bounded. This arm is the only thing that would go red.
  *
  * The comparison varies **exactly one thing** — the declarator pattern is tested independently at
  * every keyword occurrence, so no match can hide a later one. Same literal key, both the same
@@ -912,13 +935,31 @@ check('F9', 'every hoisted-tag SITE in the scripts tree is declared, rendered an
  * pair differs only in the swallow, so a red here is attributable to the swallow and not to the
  * site. Compared as **member lists, not counts** (Round 340).
  *
- * **Also recorded here, from Round 349's correction back to Theseus:** his dimension 7 — the tag
- * interpolated NON-BARE, `${tag.padEnd(4)}` rather than `${tag}` — is **3 members, not the 0 his
- * Round 348 reports**: `round280:476→478`, `round281:221→222`, `round282:617→618`. All three are
- * benign *by hand reading of the source*, for his own stated reasons (the literal is a comparand in
- * a filter predicate, the variable holds an array of rows, `${meas.length}` is a count) — but the
- * class is populated-and-benign, not empty, and the row is consulted by whoever next writes a
- * non-bare emitter. Dimension 8, `console.error`/`console.warn` as the emitter, is 0 and graded.
+ * **Also recorded here, from Round 349's correction back to Theseus and his Round 350 acceptance:**
+ * his dimension 7 — the tag interpolated NON-BARE, `${tag.padEnd(4)}` rather than `${tag}` — is
+ * **3 members, not the 0 his Round 348 reports**: `round280:476→478`, `round281:221→222`,
+ * `round282:617→618`. The mechanism of the 0, read out of his key's source rather than guessed at:
+ * his row was `valued === 'label' && span === 'inner'`, and this detector's assign leg does NOT
+ * require a label-valued RHS — only a quote-delimited `MEAS` before the first `;`, which
+ * `rows.filter((r) => r.outcome === 'MEAS')` satisfies. His row therefore varied TWO things against
+ * the detector it was characterising: the span, which IS the dimension, and the RHS valuation, which
+ * is not. The three members were in his own output all along, filed one row down.
+ *
+ * **The corrected row is a TWO-COLUMN one — 3 syntactic, 0 of them label-valued — and the licensing
+ * defect is that row's alone, not the table's.** Re-derived at Round 351 under my own key rather than
+ * copied from his: assign leg byte-identical to `hoistedTagSites` above, only the emitter's span
+ * varied, BARE carried as a positive control that must return F9's published four as a MEMBER LIST
+ * (it does). Over the same 194-file `readdirSync` population: **all pairs 7 · bare 4 · non-bare 3 ·
+ * 0 of the 3 label-valued**, so `4 + 3 = 7` accounts for the whole population and no third class
+ * hides behind the narrowing. All three non-bare members are false as sites **by a hand reading of
+ * the source, recorded as a hand reading**: in each, `meas` holds a filter result and `${meas.length}`
+ * is a count, not a tag. Both columns are on the record because the first is what the next agent's
+ * `${tag.padEnd(4)}` will be, and the second is what would be a live hole.
+ *
+ * Rows 1–6 of that table read 0 under either population — **Theseus's Round 350 measurement,
+ * attributed to him and NOT re-derived here**; six fresh keys returning 0 is exactly the shape my own
+ * false zeros have taken, so this fire drove only the row it asserts. Dimension 8,
+ * `console.error`/`console.warn` as the emitter, is 0 and graded.
  */
 const unswallowedTagSites = (raw: string):
 Array<{ assign: number; emit: number; name: string }> | null => {
@@ -994,9 +1035,11 @@ check('F10', 'no hoisted-tag SITE is hidden from F9 by an earlier semicolon-free
   `swallow and nothing else=${swallowFixtureGrades} — a real site behind an unterminated ` +
   `declarator is invisible to F9 (${kpLanded.length} vs ${kpUnswallowed.length}) and visible to ` +
   `both once that declarator is terminated (${knLanded.length} vs ${knUnswallowed.length}). ` +
-  'The live population has ZERO members, so the fixtures are what grade this arm, not the tree: ' +
-  'F9\'s set-equality conjunct would read true over a smaller world if a swallowed site appeared, ' +
-  'because such a site is invisible to the flagged set and the declared set alike.');
+  'The live population has ZERO members, so the fixtures are what grade this arm, not the tree. ' +
+  'A swallowed site is one F9\'s OWN predicate matches — label-valued, bare, console.log — so F9\'s ' +
+  'claim is falsified by it while its set-equality conjunct still reads true over a smaller world. ' +
+  'That is this arm\'s reason, and it is narrower than "a blind spot exists": a merely blind ' +
+  'dimension is OUTSIDE F9\'s predicate and is carried in a comment, not here (Round 350).');
 
 // ── arm G: the census that prices the new state honestly ─────────────────────
 
