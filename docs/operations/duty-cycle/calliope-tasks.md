@@ -33,7 +33,7 @@ Updated: 2026-09-29 (mandatory logbook entry added per xian's direct instruction
 
 | Item | Cadence | next_due | last_completed | Notes |
 |---|---|---|---|---|
-| **Logbook (`log.html`) entry — MANDATORY, see top of file** | daily, at STOP fire | 2026-09-30 | 2026-09-29 | Made mandatory by xian 2026-09-29 after the practice lapsed silently for three months and stayed lapsed even post-resumption. |
+| **Logbook (`log.html`) entry — MANDATORY, see top of file** | daily, at STOP fire | 2026-10-08 | 2026-10-07 | Made mandatory by xian 2026-09-29 after the practice lapsed silently for three months and stayed lapsed even post-resumption. **Lapsed a second time, 09-30 through 10-07 (8 entries), found while applying the 2026-10-08 drain rule and backfilled same-session from COORDINATION.md/session-log history — see `log.html`'s own 09-30 entry for the backfill disclosure.** Today's (10-08) STOP-fire entry is still owed; `next_due` reflects that, not a gap. |
 | Quarterly traditions-doc audit | quarterly | 2026-07-01 | — | `docs/agents/` drift check per calliope.md § 3. |
 
 (Other recurring items will surface as patterns emerge; this is the v0.2 starting set.)

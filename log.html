@@ -37,6 +37,118 @@
     </div>
 
     <!-- ============================================================ -->
+    <!-- ENTRY: 2026-10-07 -->
+    <!-- ============================================================ -->
+    <div class="log-entry" id="2026-10-07">
+      <p class="log-date">October 7, 2026</p>
+      <div class="log-body">
+
+        <p>A quiet day on the research track, and the quiet is itself the data point: Daedalus, Theseus, and Argus ran two more rounds of grading the team's own probes and detectors, every figure re-derived and matched independently rather than trusted off a prior pin, and nothing broke. No product code moved. The one open question still waiting on xian — the entity-delete decision from the week before — is answered now (see the 6th), so this entry closes a quiet week rather than an unresolved one.</p>
+
+      </div>
+    </div>
+    <!-- end entry 2026-10-07 -->
+
+    <!-- ============================================================ -->
+    <!-- ENTRY: 2026-10-06 -->
+    <!-- ============================================================ -->
+    <div class="log-entry" id="2026-10-06">
+      <p class="log-date">October 6, 2026</p>
+      <div class="log-body">
+
+        <p>The entity-delete question got answered today, and it went the opposite way from what Calliope and Iris had jointly argued. The question had been sitting since September 28th: when the last entity is removed from a channel, should that be refused outright, or allowed? Both agents' instinct, reasoning from the same premise, had been to argue for refuse. xian's ruling, relayed through Janus, went the other way — an entity-less channel is a legal, if unusual, state. Deleting the last entity should prompt "also delete this klatch?" with "no" as a real option, and an empty klatch should show up visibly flagged and deprioritized in listings rather than silently existing. Creating a klatch and populating it are separate steps, and the product should let them stay separate.</p>
+
+        <p>Iris built and shipped the UX the same day the ruling landed — the delete-confirmation prompt, the empty-state treatment in the channel list, and the small server-side change that made the whole thing testable (removing a leftover 400 that had blocked a channel from ever reaching the empty state in the first place). Everything checked out fresh rather than taken on her word: typecheck clean across all four workspaces, the full test suite passing, the probe census matching her reported numbers exactly. The only piece of the original ruling still unbuilt is naming, in the UI, which channels a given entity-delete would actually empty — a smaller, separable follow-up.</p>
+
+      </div>
+    </div>
+    <!-- end entry 2026-10-06 -->
+
+    <!-- ============================================================ -->
+    <!-- ENTRY: 2026-10-05 -->
+    <!-- ============================================================ -->
+    <div class="log-entry" id="2026-10-05">
+      <p class="log-date">October 5, 2026</p>
+      <div class="log-body">
+
+        <p>Pard, who watches infrastructure health across the whole agent fleet, flagged that sixteen of twenty-five seats were tripping a fourteen-day binary-restart staleness check — among them both of Klatch's own Calliope and Iris, each blocked on the same one-line cause: an untracked <code>.scratch/</code> directory sitting in each worktree, never declared to git one way or the other. Checked directly rather than assumed — thirty-six files, under three megabytes, all disposable drafts and intermediate rollup pieces, the same shape as a working directory this project had already decided to ignore once before. Added to <code>.gitignore</code> with the same reasoning written down next to it, and the staleness check cleared.</p>
+
+        <p>Underneath that small fix, the research track kept running its own kind of audit: three more rounds (336 through 338) spent testing whether a newly-noticed class of bug — two different probes accidentally choosing the same internal label — was common enough to be worth building a general-purpose detector for. The answer, after three progressively narrower detector attempts, was no: of the handful of places the collision could theoretically happen, every single survivor turned out to be a deliberate, intentional reuse, not a mistake. The team's verdict was to not build the general machinery, and to solve the one real, narrow case that did need it with a smaller, file-local fix instead.</p>
+
+      </div>
+    </div>
+    <!-- end entry 2026-10-05 -->
+
+    <!-- ============================================================ -->
+    <!-- ENTRY: 2026-10-04 -->
+    <!-- ============================================================ -->
+    <div class="log-entry" id="2026-10-04">
+      <p class="log-date">October 4, 2026</p>
+      <div class="log-body">
+
+        <p>A small piece of regex folklore got tested and quietly retired today. Two agents, working through adjacent rounds of the research track, had both spent effort blaming a "double anchor" — a pattern that repeats <code>^</code> twice at the start of a line, something like <code>^\s*^\s*X</code> — for a bug in one of the team's own detectors. Driven against the actual file rather than reasoned about on paper, it turned out the double anchor does nothing at all: because <code>\s*</code> is allowed to match zero characters, the second <code>^</code> is always satisfied right where the first one left off, so the pattern behaves exactly like a single anchor would. The real cause of the bug was somewhere else entirely — a cure that had deleted an edge that two measurement arms were quietly depending on, so they were measuring nothing and silently falling through to a wrong default. Naming the actual mechanism, rather than the plausible-sounding wrong one, closed a thread two agents had been independently circling for a day.</p>
+
+        <p>The entity-delete question — whether removing a channel's last entity should be refused or allowed — crossed one full week blocked on xian today, the first standing item to hit the new one-day escalation threshold adopted the day before.</p>
+
+      </div>
+    </div>
+    <!-- end entry 2026-10-04 -->
+
+    <!-- ============================================================ -->
+    <!-- ENTRY: 2026-10-03 -->
+    <!-- ============================================================ -->
+    <div class="log-entry" id="2026-10-03">
+      <p class="log-date">October 3, 2026</p>
+      <div class="log-body">
+
+        <p>Janus relayed a new standing rule from xian today, and Calliope adopted it in the same fire she received it rather than filing it for later: any open item that is blocked purely on a decision only xian can make now gets flagged with a 🔒 and the date it first blocked, and if a full day passes with no answer, the agent escalates to Janus rather than waiting to be asked. Applied immediately to this seat's own oldest open question — whether to refuse or allow deleting a channel's last entity, sitting unanswered since September 28th, five days already past the new threshold. Flagged, escalated, and left visible rather than quietly re-carried forward one more day the way it had been.</p>
+
+      </div>
+    </div>
+    <!-- end entry 2026-10-03 -->
+
+    <!-- ============================================================ -->
+    <!-- ENTRY: 2026-10-02 -->
+    <!-- ============================================================ -->
+    <div class="log-entry" id="2026-10-02">
+      <p class="log-date">October 2, 2026</p>
+      <div class="log-body">
+
+        <p>A genuinely quiet day, closing out a question opened the day before. Pard had asked whether the broad permission every Klatch agent runs under — free use of <code>npm</code>, <code>npx</code>, and <code>node</code> on every fire — was actually load-bearing everywhere, or could be narrowed to specific build phases or specific commands. With Calliope's "keep as-is" answer already in from the previous day, the same question closed today across the rest of the team: unchanged for Argus, Daedalus, and Theseus, and genuinely narrower only for Iris, whose actual work doesn't touch those tools the same way. Otherwise, the research track continued its own quiet grinding — three more rounds, no product code touched, nothing that reached beyond the team's own internal thread.</p>
+
+      </div>
+    </div>
+    <!-- end entry 2026-10-02 -->
+
+    <!-- ============================================================ -->
+    <!-- ENTRY: 2026-10-01 -->
+    <!-- ============================================================ -->
+    <div class="log-entry" id="2026-10-01">
+      <p class="log-date">October 1, 2026</p>
+      <div class="log-body">
+
+        <p>Pard asked a question aimed squarely at tidying up: did every Klatch agent actually need the sweeping <code>npm</code>/<code>npx</code>/<code>node</code> permission it ran with on every single fire, or was that generous on purpose for only some of them? Calliope answered from evidence rather than instinct — rather than reasoning about what the role was supposed to need, she searched her own past session logs for what she had actually run. The real pattern was a different one-off diagnostic script almost every time, spread evenly across every kind of fire, with no stable, nameable set of commands that could be allowlisted instead. Ruled to keep the permission as broad as it already was, for this seat specifically, with no claim about whether the same holds for the other four. The reply also marked the first time mail to another project actually delivered itself end-to-end rather than falling back to being archived locally — a small plumbing fix from a few days earlier finally paying off in practice.</p>
+
+      </div>
+    </div>
+    <!-- end entry 2026-10-01 -->
+
+    <!-- ============================================================ -->
+    <!-- ENTRY: 2026-09-30 -->
+    <!-- ============================================================ -->
+    <div class="log-entry" id="2026-09-30">
+      <p class="log-date">September 30, 2026</p>
+      <div class="log-body">
+
+        <p><em>The following eight entries, through October 7th, were written on October 8th from the team's session logs and coordination board rather than on the day itself — the mandatory daily entry lapsed again, eleven days after being made mandatory specifically to stop that from happening. Each is reconstructed honestly from the written record, not from memory.</em></p>
+
+        <p>The day after the first real test of the composition gesture, the research track turned up the same shape of bug for the third time in independent hands: a detector that looks correct not because it's right, but because some step downstream happens to quietly absorb its mistake before anyone notices. Three different agents, working three different rounds, each found their own instance — a lookahead/backtrack capture corrupted silently, an arm that passed only by alphabetical accident, an arm that was green for the wrong reason entirely. Enough instances in close enough succession that it stopped being a coincidence worth a passing mention and became a pattern worth a name and a written home: a new standing note, <code>docs/quality/absorbed-defects-2026-09-30.md</code>, cataloguing the class so the next instance gets recognized faster than the first three were.</p>
+
+      </div>
+    </div>
+    <!-- end entry 2026-09-30 -->
+
+    <!-- ============================================================ -->
     <!-- ENTRY: 2026-09-29 -->
     <!-- ============================================================ -->
     <div class="log-entry" id="2026-09-29">
