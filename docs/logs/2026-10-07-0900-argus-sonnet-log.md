@@ -117,3 +117,44 @@ not this seat's lane either way.
 `git status --porcelain` clean apart from gitignored `.testdata/`, removed before commit. No port
 bound by this fire's own actions (3001 probed read-only via `lsof`), no database opened, no model
 called. Nothing new needs xian beyond the one standing item (CIO Laya/AAXT), unchanged.
+
+## ~18:0x PT (STOP fire) — Rounds 348–349 verified, no discrepancy, no-op
+
+`git pull`: already up to date. `git log b1707f50..HEAD` (own prior WORK-fire checkpoint) = 5
+commits, authorship checked with `%an` before crediting any: Theseus's Round 348 (research+mail
++probes+coord/log+wrap-log — every one of Daedalus's Round 347 figures reproduces in its own state
+under an independent AST-based key; the "margin is one semicolon wide" reading corrected to "the
+margin is the element order," comment-only fix in F9's own block), Daedalus's Round 349 main memo
+and addendum (research+mail+probes+coord/log+wrap-log — accepted the correction, drove the fourth
+cell of the 2×2 neither had driven, found the semicolon column dead in both rows; generalised the
+correction into a sixth detector-level blind spot and built it as new arm F10 in `probe-round269`,
+55→56; corrected Theseus's own dimension-7 count from 0 to 3 members, all three benign on hand
+reading), Calliope's SWEEP-fire no-op in between. Three new memos name Argus in `to:` alongside
+Daedalus/Theseus — read all three in full, not assumed cc-only: Round 348 and Round 349's main memo
+are substantively Theseus-and-Daedalus-only, every section addressing the other named seat; the
+addendum (`daedalus-to-theseus-argus-...-addendum-the-swallow-limit-is-now-arm-f10...md`) does name
+Argus directly for one operational fact — `probe-round269`'s sweep pin text moved from `/All 55
+regression checks passed/` to `/All 56 .../` as of `dd1f746b`, so a tree older than that commit
+would show `round269` red on the pin rather than on an arm. No action routed beyond that fact; not
+a new ask.
+
+**Re-derived fresh, not taken from any of the three memos:** `npm run typecheck` 0 `error TS`
+(checked file size, not just `grep -c`, to rule out a crashed compiler printing nothing); `npm test`
+unpiped — server **140/2178/1**, client **26/333/13 (346)** — byte-identical to both memos' §348/§349
+gates. Full driving sweep, verdict line read not exit code: **SWEEP BLOCKED — 35 of 36 swept probes
+green, 0 red, 1 blocked (did not conclude), 0 census problem(s), 109 deferred** — exact match.
+`probe-round269` driven standalone, not trusted from the sweep aggregate: **All 56 regression checks
+passed, 3 measurements, 0 skips** — confirms F10 landed and the pin bump holds under an independent
+drive, arms F9/F10 both present and PASS by name in the per-arm output. `probe-round225` confirmed
+BLOCKED by name (exit 3, declared refusal); `lsof -i :3001` — same standing `xian`-owned PID (47533),
+unchanged lineage since Round 291.
+
+Cross-pollination brief re-checked: same 10/7 brief already read this morning (PM's ADR-080,
+Haiku's 4096-token cache floor), no new date, no new content — not re-actioned. Standing blockers
+re-checked, both unmoved: entity-delete thread closed and shipped; CIO Laya/AAXT memo still sitting
+unanswered by xian in `docs/mail/` (not `read/`), still correctly parked on his scheduling call, no
+new information since this morning's entries.
+
+`git status --porcelain` clean apart from gitignored `.testdata/`, removed before commit. No port
+bound by this fire's own actions (3001 probed read-only via `lsof`), no database opened, no model
+called. Nothing new needs xian beyond the one standing item (CIO Laya/AAXT), unchanged.
