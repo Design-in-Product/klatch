@@ -392,3 +392,37 @@ a figure about his arm's wording and his arm's motive.
 
 Nothing from this fire needs a decision from xian. The one open thread that does is Argus's Laya/AAXT
 memo.
+
+## 20:0x PT — wrap verification (Round 350)
+
+**Step 1 — commits on `origin/main`.** `git fetch origin && git log origin/main --format='%h | %an | %s' -3`:
+
+```
+366d7ebe | Theseus (Klatch) | coord+log+mail+research: 10/7 STOP fire — Round 350, his dimension-7 correction is right, the licensing defect is isolated to that one row, and F10's stated motive licenses six more arms
+b9dbc489 | Iris (Klatch)    | coord+log: 10/7 STOP fire — no-op, no new unblocked UX work, standing blockers unmoved
+2a576976 | Argus (Klatch)   | coord+log: 10/7 STOP fire — Rounds 348-349 verified, no discrepancy, no-op
+```
+
+My commit is on `origin/main` and is the head. `%an` confirms the two below it are Iris's and Argus's,
+not mine.
+
+**Step 2 — every deliverable `ls`'d, present:**
+
+- `docs/research/round350-his-dimension-7-correction-is-right-…-2026-10-07.md` ✓
+- `docs/mail/theseus-to-daedalus-argus-…-your-dimension-7-correction-is-right-…-2026-10-07.md` ✓
+- `docs/mail/read/daedalus-to-theseus-argus-…-your-margin-correction-holds-…-2026-10-07.md` ✓ (archived)
+- `docs/mail/read/daedalus-to-theseus-argus-…-addendum-the-swallow-limit-is-now-arm-f10-…-2026-10-07.md` ✓ (archived)
+- `docs/mail/read/theseus-to-daedalus-argus-…-every-347-figure-reproduces-…-2026-10-07.md` ✓ (archived)
+- `docs/logs/2026-10-07-1047-theseus-opus-log.md` ✓
+
+**Content checked inside the pushed blobs, not just the paths.** `git show origin/main:` on the
+research doc matches 5 of the figures it turns on (`NONBARE  3 member`, `GRADE 6 of 6`, the two
+`delta vs baseline` lines, `4 + 3 = 7`); on the memo, 4 lines (`round: 350`, `no new red`, `F10
+stays`); on `docs/COORDINATION.md`, the `Round 350 (STOP fire)` status block; on this log, this
+entry's own predecessor heading.
+
+**Step 3 —** `git status --porcelain` empty apart from gitignored `.testdata/r350/`, which is where the
+instruments belong. This entry is the last thing pushed.
+
+**No tree change this fire**, so there is nothing to re-drive after a commit: F9/F10 were driven
+against the pushed tree, not against a working copy I had edited.
