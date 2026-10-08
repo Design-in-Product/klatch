@@ -198,9 +198,19 @@ console.log('');
 const liveKeys = members.map((m) => `${m.file}:${m.line}`).sort().join('|');
 const handKeys = HAND.map(([k]) => k).sort().join('|');
 console.log(`MEMBER LISTS: live class === declared hand reading: ${liveKeys === handKeys}`);
+// Round 354, Theseus — this diagnostic used `handKeys.includes(k)` / `liveKeys.includes(k)`, i.e.
+// substring matching against the `|`-JOINED string, so a key that is a proper prefix of another
+// (`…mts:101` inside `…mts:1017`) tests present when it is absent, and the stale entry is OMITTED
+// from the very list a reconciler works from. Driven, not reasoned: with a live key `x.mts:1017`
+// in the joined string, `.includes('x.mts:101')` returns true. NOT reachable in today's table —
+// no one of the 11 keys is a proper substring of another, checked mechanically — so this changes
+// no figure now; it is a latent defect in a line that only runs once something is already wrong.
+// Set membership has no prefix semantics, so the question cannot arise again.
+const liveSet = new Set(members.map((m) => `${m.file}:${m.line}`));
+const handSet = new Set(HAND.map(([k]) => k));
 if (liveKeys !== handKeys) {
-  console.log(`  live only: ${members.map((m) => `${m.file}:${m.line}`).filter((k) => !handKeys.includes(k)).join(', ')}`);
-  console.log(`  hand only: ${HAND.map(([k]) => k).filter((k) => !liveKeys.includes(k)).join(', ')}`);
+  console.log(`  live only: ${[...liveSet].filter((k) => !handSet.has(k)).join(', ')}`);
+  console.log(`  hand only: ${[...handSet].filter((k) => !liveSet.has(k)).join(', ')}`);
 }
 const handOf = new Map(HAND);
 // Round 353, Daedalus — routed back, and demonstrated live rather than argued. The member-list
@@ -216,6 +226,26 @@ if (liveKeys !== handKeys) {
   console.log('CRUDE LEG vs HAND READING: REFUSED — the hand reading does not cover the live class, '
     + 'so a score over it would be computed against `undefined` for the uncovered members. '
     + 'Reconcile the HAND table above (re-read each member at source) and re-drive.');
+  process.exit(2);
+}
+// Round 354, Theseus — his cure is RIGHT and KEPT (graded: stale key ⇒ exit 2 and no figure; clean
+// copy at the same depth ⇒ exit 0 and every figure restored). It is also INCOMPLETE, in his own
+// mechanism with the value side substituted for the key side. The score asks `(h === 'label')`, and
+// that is false for EVERY value outside the domain, not only for `undefined` — so a one-byte typo
+// in a class value (`'label'` → `'labell'`) leaves the key set identical, passes the guard above,
+// exits 0, and moves the headline figure from `2 of 11` to `3 of 11` in silence. Driven in a
+// gitignored scratch copy at the same depth, mutation anchor asserted unique first. The docblock
+// declares exactly three legal values; nothing enforced them, which is what made the declaration
+// decorative. So the domain refuses too, by the same rule: no figure beside an unsound table.
+const DECLARED_CLASSES = ['label', 'call', 'array'];
+const badClasses = HAND.filter(([, c]) => !DECLARED_CLASSES.includes(c));
+console.log(`HAND values inside the declared {${DECLARED_CLASSES.join(', ')}} domain: `
+  + `${HAND.length - badClasses.length} of ${HAND.length}`);
+if (badClasses.length > 0) {
+  console.log('CRUDE LEG vs HAND READING: REFUSED — ' + badClasses.length + ' hand value(s) are '
+    + 'outside the declared domain, and the score compares against `label` by equality, so each '
+    + 'would be counted wrong-or-right by whatever the crude leg happened to say:');
+  for (const [k, c] of badClasses) console.log(`      ${k} — class=${JSON.stringify(c)}`);
   process.exit(2);
 }
 // The crude leg's verdict, scored against the hand reading. "label-valued" is only correct when
