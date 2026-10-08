@@ -817,14 +817,24 @@ const HOISTED_SITES: Array<{ file: string; assign: number; emit: number; rendere
 ];
 
 /**
- * The grading set. Two known positives copied verbatim from the two real sites; ten known negatives,
- * five of them the fixture spellings that exposed the routed cure's string/code confusion. The
- * EMIT-FIRST spelling is the one that false-defected before the fix — it stays here as the arm's
- * own regression, because the defect it caught was in the arm's own file.
+ * The grading set. Three known positives — two copied verbatim from the real sites, and one
+ * NON-LABEL-VALUED, added at Round 353; ten known negatives, five of them the fixture spellings that
+ * exposed the routed cure's string/code confusion. The EMIT-FIRST spelling is the one that
+ * false-defected before the fix — it stays here as the arm's own regression, because the defect it
+ * caught was in the arm's own file.
+ *
+ * **The third known positive exists because this detector's predicate was MISDESCRIBED in prose for
+ * two rounds and nothing went red** (Theseus, Round 352 §2; F10's docblock below carries the
+ * correction). The assign leg requires a quote-delimited `MEAS` before the first `;` and nothing
+ * about valuation, so a CALL-valued RHS is inside the class. This entry is `round280:476`'s live
+ * neighbourhood with **only the emitter's span varied** — `${meas.length}` to bare — which is
+ * precisely the three dimension-7 lines F9's own check string now excludes by span rather than by
+ * valuation. It must flag. A predicate narrowed back to label-valued reds F9 here.
  */
 const HOISTED_KP = [
   "const tag = r.kind === 'measurement' ? 'MEAS' : r.pass ? 'PASS' : 'FAIL';\nconsole.log(`${tag} [${r.arm}] ${r.check}`);",
   "const tag = pass ? 'PASS' : kind === 'measurement' ? 'MEAS' : 'FAIL';\nconsole.log(`${tag} [${arm}] ${name} — ${detail}`);",
+  "const meas = rows.filter((r) => r.outcome === 'MEAS');\nconsole.log(`${meas} [A] measured arms`);",
 ];
 const HOISTED_KN = [
   "type Kind = 'regression' | 'measurement';",
@@ -883,7 +893,9 @@ check('F9', 'every hoisted-tag SITE whose name is interpolated BARE into a `cons
   `${sitesDeclared ? '' : ' — SET MISMATCH, read this arm\'s comment'}. Each declared rendering is ` +
   `counted by the fleet counter=${declaredSitesCountable}, and each site re-rendered from its LIVE ` +
   `template is counted too=${liveSitesCountable}. Fixtures: ${HOISTED_KP.length} known positives ` +
-  `copied from the real sites all flag=${hoistedKpFlags}, ${HOISTED_KN.length} known negatives are ` +
+  `copied from the real sites — two verbatim and one CALL-valued, non-label, copied from ` +
+  `round280:476 with only the emitter's span varied, because this predicate asserts nothing about ` +
+  `valuation (Round 352) — all flag=${hoistedKpFlags}, ${HOISTED_KN.length} known negatives are ` +
   `clean=${hoistedKnClean} — five of them are fixture SPELLINGS, and the emit-first spelling ` +
   'false-defected this file before the declarator/emitter were required to be CODE in the ' +
   `strings-blanked reading. Offsets preserved on every file=${hoistedOffsetsPreserved}. ` +
@@ -918,9 +930,22 @@ check('F9', 'every hoisted-tag SITE whose name is interpolated BARE into a `cons
  * with an empty live population.
  *
  * **What does distinguish a swallow is one level in: it hides a site F9's OWN PREDICATE MATCHES** —
- * label-valued, bare, `console.log`, inside the keyed shape — so F9's stated claim is falsified by
- * the thing it cannot see. A dimension-7 site is OUTSIDE that predicate, and a comment is the honest
- * instrument there. F10 stays on the narrower and stronger reason: not *"a blind spot exists"* but
+ * an RHS carrying a quote-delimited `MEAS` before the first `;`, interpolated BARE into a code
+ * `console.log` — so F9's stated claim is falsified by the thing it cannot see. A dimension-7 site
+ * is OUTSIDE that predicate, and a comment is the honest instrument there.
+ *
+ * **That phrase read *label-valued*, bare, `console.log` until Round 353, and label-valued was never
+ * part of F9's predicate** (routed by Theseus, Round 352 §2). The assign leg requires a
+ * quote-delimited `MEAS` before the first `;` and asserts nothing about what the RHS evaluates to —
+ * which is recorded TWENTY LINES BELOW as the mechanism of his Round 348 zero, and did not travel
+ * back up to the description of F9 when it landed. Measured under his key and re-driven under mine:
+ * the assign-leg class is **11 members, 4 label-valued by hand reading and 7 not**, so the old phrase
+ * named 4 of the 11 F9 actually admits. It failed SAFE — a reason claiming a SMALLER protected class
+ * cannot license an arm — but it was in the detail string a reader sees in a sweep transcript, which
+ * is this file's own Round 351 argument for why the check STRING had to narrow. The correction is now
+ * **driven rather than stated**: `HOISTED_KP`'s third entry is a call-valued, non-label RHS, so a
+ * future narrowing of this predicate back to label-valued reds F9 instead of being merely wrong in
+ * prose. F10 stays on the narrower and stronger reason: not *"a blind spot exists"* but
  * **"the detector loses members of its own declared class without saying so"** — which is also the
  * version that stays bounded. This arm is the only thing that would go red.
  *
@@ -1036,7 +1061,9 @@ check('F10', 'no hoisted-tag SITE is hidden from F9 by an earlier semicolon-free
   `declarator is invisible to F9 (${kpLanded.length} vs ${kpUnswallowed.length}) and visible to ` +
   `both once that declarator is terminated (${knLanded.length} vs ${knUnswallowed.length}). ` +
   'The live population has ZERO members, so the fixtures are what grade this arm, not the tree. ' +
-  'A swallowed site is one F9\'s OWN predicate matches — label-valued, bare, console.log — so F9\'s ' +
+  'A swallowed site is one F9\'s OWN predicate matches — a quote-delimited MEAS before the first ";", ' +
+  'interpolated BARE into a code console.log, NOT label-valued, which F9 has never required ' +
+  '(Round 352) — so F9\'s ' +
   'claim is falsified by it while its set-equality conjunct still reads true over a smaller world. ' +
   'That is this arm\'s reason, and it is narrower than "a blind spot exists": a merely blind ' +
   'dimension is OUTSIDE F9\'s predicate and is carried in a comment, not here (Round 350).');

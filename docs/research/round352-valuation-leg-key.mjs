@@ -172,8 +172,13 @@ const HAND = [
   ['probe-round255-the-comment-shadow-census.mts:171', 'label'],
   ['probe-round269-blocked-is-a-third-outcome-and-the-exit-code-that-carries-it-dies-one-level-down.mts:428', 'call'],
   ['probe-round269-blocked-is-a-third-outcome-and-the-exit-code-that-carries-it-dies-one-level-down.mts:621', 'array'],
-  ['probe-round269-blocked-is-a-third-outcome-and-the-exit-code-that-carries-it-dies-one-level-down.mts:825', 'array'],
-  ['probe-round269-blocked-is-a-third-outcome-and-the-exit-code-that-carries-it-dies-one-level-down.mts:992', 'array'],
+  // Round 353, Daedalus: 825 → 834 and 992 → 1017. Theseus's F10 wording fix landed in this file
+  // and added a third HOISTED_KP entry, which moved both array-literal members down. Hand classes
+  // unchanged and re-read at source (`const HOISTED_KP = [`, `const SWALLOW_KP = [`); the member
+  // count is still 11, because the new KP entry sits after the first `;` of HOISTED_KP's RHS and so
+  // does not mint a member. The table reddened on the member-list guard exactly as designed.
+  ['probe-round269-blocked-is-a-third-outcome-and-the-exit-code-that-carries-it-dies-one-level-down.mts:834', 'array'],
+  ['probe-round269-blocked-is-a-third-outcome-and-the-exit-code-that-carries-it-dies-one-level-down.mts:1017', 'array'],
   ['probe-round280-the-client-half-of-the-pair-and-what-it-leaves-behind.mts:476', 'call'],
   ['probe-round281-a-probe-that-only-runs-where-it-was-written-and-how-big-that-class-actually-is.mts:221', 'call'],
   ['probe-round282-which-socket-actually-strands-the-raw-net-server-cell.mts:617', 'call'],
@@ -198,6 +203,21 @@ if (liveKeys !== handKeys) {
   console.log(`  hand only: ${HAND.map(([k]) => k).filter((k) => !liveKeys.includes(k)).join(', ')}`);
 }
 const handOf = new Map(HAND);
+// Round 353, Daedalus — routed back, and demonstrated live rather than argued. The member-list
+// guard above FIRED when my tree edit moved two members (825 → 834, 992 → 1017), and the score
+// below still printed `wrong on 2 of 11` — the same figure as the clean run, by coincidence. The
+// mechanism: `handOf.get()` returns `undefined` for a moved member, `(undefined === 'label')` is
+// `false`, so an UNSCORED member is counted as wrong whenever the crude leg says label-valued and
+// as right whenever it does not. A stale table therefore moves this figure in both directions
+// silently, and the only thing that says so is a separate printed line. So the figure REFUSES
+// rather than being read beside a mismatch: this is my own Round 352 lesson about a detail string
+// being what a reader sees, applied to the key that carried it.
+if (liveKeys !== handKeys) {
+  console.log('CRUDE LEG vs HAND READING: REFUSED — the hand reading does not cover the live class, '
+    + 'so a score over it would be computed against `undefined` for the uncovered members. '
+    + 'Reconcile the HAND table above (re-read each member at source) and re-drive.');
+  process.exit(2);
+}
 // The crude leg's verdict, scored against the hand reading. "label-valued" is only correct when
 // the hand class is `label`; `array` is neither label nor call, and the leg has no column for it.
 const wrong = members.filter((m) => {
