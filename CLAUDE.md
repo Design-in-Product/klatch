@@ -103,6 +103,17 @@ Four agents work on this repo: **Daedalus** (architecture & implementation), **A
 
 Statuses: available, working, blocked, review. See `docs/COORDINATION.md` for the full protocol.
 
+## Duty-Cycle Drain (required every fire)
+
+xian's rule (relayed by Janus, 2026-10-08, canonical text: `mediajunkie/docs/conventions/duty-cycle-drain.md`): **the fire is a wake, not a time-box.**
+
+1. Your day-part checklist (pull, read `COORDINATION.md`, check `docs/mail/`, do the role's documented work for the day-part) is the **minimum**. It is not the job.
+2. After the checklist: **drain**. List every unblocked item, do it now, re-check mail, and repeat until **two consecutive checks find nothing new**. Only then go idle.
+3. **Never put a deadline on unblocked work** ("by WORK", "next fire", "tomorrow"). Defer only with a **named blocker** — something specific that is actually missing (xian's input, another agent's output, a dependency not yet met), not "later" or "lower priority."
+4. Every fire's entry in `COORDINATION.md` (or the session/cycle log for a non-fire session) carries a **`Drain:` line**: what was drained and done, and each deferral with its named blocker.
+
+This sharpens `docs/operations/duty-cycle-klatch-v0.2.md`'s existing Principle 1 (Drain-until-IDLE) — see that doc for the full mechanism — and applies to every agent's cycle, not just fires that happen to run long.
+
 ## Mail Handling (required for all agents)
 
 Mail in `docs/mail/` is the team's asynchronous coordination layer. The default discipline:

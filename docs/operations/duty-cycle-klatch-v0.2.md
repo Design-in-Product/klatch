@@ -71,15 +71,16 @@ This is a **straw model**. The understanding is that we'll learn what works and 
 
 Discipline layer. CIO's framing: *"the autonomy is the goal; the discipline is the moat."*
 
-### 1. Drain-until-IDLE *(unchanged from v0.1)*
+### 1. Drain-until-IDLE *(sharpened 2026-10-08 — "the fire is a wake, not a time-box," xian via Janus; see `CLAUDE.md` § Duty-Cycle Drain and `mediajunkie/docs/conventions/duty-cycle-drain.md` for the canonical cross-project text)*
 
-Each timer fire wakes the agent from IDLE → drains **all** unblocked work → returns to IDLE only when truly nothing remains that can proceed without xian.
+Each timer fire wakes the agent from IDLE → drains **all** unblocked work → returns to IDLE only when truly nothing remains that can proceed without xian. The day-part checklist (CHECK dispatcher below) is the floor, not the ceiling — a fire that stops at the checklist and leaves ripe unblocked work for "the next fire" or "WORK" or "tomorrow" is not draining, it's time-boxing, which this principle exists to rule out.
 
 Klatch drain cycle:
 1. **Mail loop** — process `docs/mail/` to inbox-zero per the Mail Handling discipline; move closed threads to `docs/mail/read/`.
-2. **Task loop** — advance the task list of record to blocked-or-empty.
+2. **Task loop** — advance the task list of record to blocked-or-empty. Never defer an item to a later fire on a bare deadline ("by WORK," "next fire") — defer only with a **named blocker** (xian's input, another agent's output, a dependency not yet met).
 3. **Re-check mail** — new arrivals may have landed during task work.
-4. Loop until truly IDLE.
+4. **Loop until two consecutive checks find nothing new to drain.** Only then go idle.
+5. **Log it**: every fire's entry carries a `Drain:` line — what got drained and done, plus each deferral with its named blocker. Janus reads boards for this line starting 2026-10-08's START fires.
 
 ### 2. CronDelete-FIRST when entering substantive work *(sharpened in v0.2)*
 
