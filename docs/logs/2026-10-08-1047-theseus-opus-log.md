@@ -202,3 +202,100 @@ Calliope's thread and xian's call, and both are already on it; flagging it here 
 fire doesn't rediscover it as news.
 
 Idle.
+
+
+---
+
+## 14:47 — WORK fire (Round 354): Daedalus's 353 reproduces whole, his refusal is kept and extended, and Calliope's ruling ran on 17 rather than 68
+
+**`%an` first, and it earned itself a fourth time in nine days.** The three head commits above my
+last were subjected *Round 353* and one was *"log: session-wrap verification for the 10-08 WORK
+fire"* — my own wrap shape, my own fire's shape, today's date. All three are **Daedalus's**
+(`431b4c20`, `927f5e67`, `d50f6c51`); `15f93abd` is **Argus's**. On `--oneline` I would have opened
+this fire believing my WORK fire was already filed and done nothing.
+
+### Unit A — Round 354: verifying Daedalus's Round 353
+
+Writeup: `docs/research/round354-his-refusal-cure-is-right-and-incomplete-because-a-typod-class-value-scores-exactly-like-undefined-2026-10-08.md`.
+Memo: `docs/mail/theseus-to-daedalus-argus-...-your-cure-is-kept-and-your-own-mechanism-reaches-the-value-side-it-does-not-guard-2026-10-08.md`.
+
+**No discrepancy anywhere in 353.** Re-driven at source: 6 grades true, 194 population, 11 members,
+member lists live === hand true, wrong on 2 of 11, (A) 1, (B) 6, `'MEAS (inner)'` outside the class,
+`:780` one line with no valuation test, F9's live detail string says `3 known positives … all
+flag=true` verbatim, class still 11, `:825 → :834` / `:992 → :1017` re-read at source.
+
+**His load-bearing claim driven, not accepted** — *a predicate narrowed back to label-valued reds
+F9*. `git init`'d scratch repo with a copy of `scripts/` (R332), anchor asserted unique first (R347),
+graded by red **SET** not count (R340): `KN F9=PASS RED SET (4) J1,J2,J5,J6` then `KP F9=FAIL RED SET (5)
+F9,J1,J2,J5,J6`. Added exactly F9, removed nothing. **CONFIRMED.**
+
+**Two near-misses in my own harness, both caught by grading the KN first.** (1) The first KN exited 1
+with **no summary line and no F9 line at all** — `fatal: bad revision 'HEAD'`, because
+`tree-fingerprint` shells `git diff HEAD` and a fresh `git init` has no HEAD. Driving the KP first
+and reading its red as the discrimination would have published a confirmation from a harness that
+could not print a PASS. (2) The repaired KN is still **not green** — four J arms red on missing git
+history — so the discrimination is scoped to the F9 member with the four J reds shown on both sides.
+
+**THE FINDING: his cure guards the key side of his own mechanism and leaves the value side open.**
+The score asks `(h === 'label')`, which is false for *every* value outside the declared domain, not
+only for `undefined`; his guard keys on member **identity**. So a one-byte typo in a hand class value
+(`'label'` to `'labell'`) leaves the key set byte-identical: guard says true, exit 0, and the
+headline figure moves **2 of 11 to 3 of 11** in silence. Driven, not argued. Cured the same way he
+cured his — the domain refuses too (exit 2, offending entry named, no score). **His refusal is KEPT**
+(graded: stale key gives exit 2 and no figure; clean copy gives exit 0 and all figures restored).
+
+**A second defect, mine, from R352:** the guard's diagnostic used `includes()` against the
+`|`-**joined** key string, so a key that is a proper prefix of another tests present when absent
+(driven: `.includes('x.mts:101')` true against a joined string holding `x.mts:1017`), omitting a
+stale entry from the very list a reconciler works from. **NOT reachable in today's table** — 0 of 11
+keys is a proper substring of another, checked mechanically. Set membership now.
+
+**`:8080` re-measured independently** with the **lib** instrument (not a hand-rolled bind test):
+before === after my own sweep on all six ports, identical to his readings. Not a leak, two fires.
+
+**Gate:** `tsc` server + client **both 0 bytes**; `npm test` unpiped, **140 files / 2178 passed / 1
+skipped**, client **26 passed | 13 skipped / 333 passed | 13 skipped**, `CENSUS OK`; `round269` alone
+via `spawnSync` **EXIT 0**, `All 56 regression checks passed, 3 measurements, 0 skips`, F9/F10 PASS,
+derived line byte-identical (4 sites / 194 files); sweep **exit 2** (taken from `spawnSync`, not a
+pipe), `SWEEP BLOCKED — 35 of 36 swept probes green, 0 red, 1 blocked, 0 census problem(s), 109
+deferred`, the blocked one `probe-round225-a-citation-is-not-a-call.mts`.
+
+### Unit B — Calliope's convention ruling, applied
+
+Writeup: `docs/research/round354-calliope-ruling-applied-the-member-list-and-its-evidence-column-2026-10-08.md`.
+Memo: `docs/mail/theseus-to-calliope-...-ruling-applied-14-of-17-closed-on-cited-evidence-and-your-scope-selects-17-not-68-2026-10-08.md`.
+
+**Her scope selects 17, not 68.** Keyed on filenames (frontmatter is the selector that was blind last
+time): 119 active, 76 name Theseus, 71 un-numbered, **17** pre-09-01 and **54** on/after. My "68" was
+the un-numbered body regardless of date; her bound is the pre-round-numbering body. Intersection 17.
+
+**14 closed, each with one artifact cited from outside the memo's own text before anything moved** —
+`COORDINATION.md:3077`'s struck-through resolutions (cadence armed and firing; allowlist moot; `.env`
+ruled 8/12 option 3), `COORDINATION.md:2208` (Amber worktree is my live branch location), the two
+08-12 research docs closing the seven-memo test-data chain, and this fire's own existence. All
+`git mv`, 14 of 14 rc=0, membership and uniqueness asserted first. `docs/mail/` **119 to 105**,
+`read/` **894 to 908**.
+
+**3 left visible — the rule refusing, as designed.** The porous-boundary pair reads closed ("All
+three adopted", "thank you for it") and both proxies Calliope rejected would have archived them; the
+same `COORDINATION.md:3077` line that closed four other threads records `Open: xian — the route
+decision (subprocess bypass of the path scope)`, which is these memos' own finding. Checked: 4 files
+mention it, the newest are my own 08-12 logs, one of which records the previous Theseus leaving this
+same thread visible for this same reason. **Still parked on xian.** The third is Calliope's 07-05
+MAXT observer brief — no record its session ran (`docs/axt/` holds one file and it isn't that one) —
+stays visible, routed back to her.
+
+**Drain:** done and landed — Round 354 verification (key cure, writeup, memo), Calliope's ruling
+executed with its member list and evidence column, both memos filed. Deferred with named blockers:
+(a) the **54** un-numbered 09-01+ threads — blocker: outside the ruling's date bound, a scope call
+belonging to the convention owner, referred back to Calliope; (b) **rows 1-6** of the dimension table
+— deliberately not re-derived, they stand as my R350 measurement attributed; (c) the **four declared
+sites and 109 DEFERRED** probes — unchanged scope, not driven; (d) the **scratch-repo J1/J2/J5/J6
+reds** — not diagnosed, by choice: artifacts of a fresh `git init`, present on both sides of the
+discrimination, no figure rests on them; (e) `:3001`/`:8080` **owning PIDs** — blocker: `lsof` not
+permitted in this session; (f) my **R352 section 3 limit** — still recorded, still not cured, to be
+re-keyed before the leg is pointed wider, no arm because the leg is never applied to a member it gets
+wrong.
+
+**Nothing needs xian** except the route decision, which was already his and is not new. Argus's
+10/06 Laya/AAXT memo to the CIO remains the one thread parked on his scheduling call.
