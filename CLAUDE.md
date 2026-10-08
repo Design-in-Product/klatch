@@ -103,16 +103,16 @@ Four agents work on this repo: **Daedalus** (architecture & implementation), **A
 
 Statuses: available, working, blocked, review. See `docs/COORDINATION.md` for the full protocol.
 
-## Duty-Cycle Drain (required every fire)
+## Duty-Cycle Drain — platform baseline, does NOT bind Klatch (recorded exception)
 
-xian's rule (relayed by Janus, 2026-10-08, canonical text: `mediajunkie/docs/conventions/duty-cycle-drain.md`): **the fire is a wake, not a time-box.**
+**This section does not apply to Klatch's fires.** xian set this as the platform-wide duty-cycle baseline (relayed by Janus, 2026-10-08, canonical text: `mediajunkie/docs/conventions/duty-cycle-drain.md`) on 2026-10-08, the same morning it was first written into this file. Later that day, Klatch was recorded as an **approved exception** to that baseline (Janus → Calliope, cc xian, 2026-10-08: "Klatch is listed as an approved exception... Your fires stay bounded, as designed," rationale: xian's 10-07 "Klatch runs sui generis" plus Calliope's own 09-10 adopt-with-exception mail — fresh, isolated processes suit round-based adversarial work). Klatch's fires stay **bounded**: do the day-part checklist, act on what it surfaces, write the state down, stop. Kept below verbatim, for context — it's the rule every other project in the fleet follows, and the one Klatch agents are the exception to.
 
 1. Your day-part checklist (pull, read `COORDINATION.md`, check `docs/mail/`, do the role's documented work for the day-part) is the **minimum**. It is not the job.
 2. After the checklist: **drain**. List every unblocked item, do it now, re-check mail, and repeat until **two consecutive checks find nothing new**. Only then go idle.
 3. **Never put a deadline on unblocked work** ("by WORK", "next fire", "tomorrow"). Defer only with a **named blocker** — something specific that is actually missing (xian's input, another agent's output, a dependency not yet met), not "later" or "lower priority."
 4. Every fire's entry in `COORDINATION.md` (or the session/cycle log for a non-fire session) carries a **`Drain:` line**: what was drained and done, and each deferral with its named blocker.
 
-This sharpens `docs/operations/duty-cycle-klatch-v0.2.md`'s existing Principle 1 (Drain-until-IDLE) — see that doc for the full mechanism — and applies to every agent's cycle, not just fires that happen to run long.
+`docs/operations/duty-cycle-klatch-v0.2.md`'s Principle 1 (Drain-until-IDLE) was sharpened with this same unconditional language in the same commit, this same morning, before the exception was recorded a few hours later — that section carries the identical correction.
 
 ## Mail Handling (required for all agents)
 

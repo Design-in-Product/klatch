@@ -71,7 +71,9 @@ This is a **straw model**. The understanding is that we'll learn what works and 
 
 Discipline layer. CIO's framing: *"the autonomy is the goal; the discipline is the moat."*
 
-### 1. Drain-until-IDLE *(sharpened 2026-10-08 — "the fire is a wake, not a time-box," xian via Janus; see `CLAUDE.md` § Duty-Cycle Drain and `mediajunkie/docs/conventions/duty-cycle-drain.md` for the canonical cross-project text)*
+### 1. Drain-until-IDLE *(sharpened 2026-10-08 morning with the platform-wide rule, then superseded hours later the same day by the recorded Klatch exception — see `CLAUDE.md` § Duty-Cycle Drain for the full account)*
+
+**Does not bind Klatch's fires as written below.** This section was sharpened the same morning the platform-wide "drain until two clean passes" baseline landed, before Klatch was recorded that afternoon as an approved exception to it (Janus → Calliope, cc xian, 2026-10-08: "Your fires stay bounded, as designed" — rationale: fresh, isolated processes suit round-based adversarial work). Klatch's actual practice: each launchd-triggered fire is already a bounded, discrete process — do the day-part checklist, act on what it surfaces, write the state down, and let the process end there. Kept below verbatim, unedited, as the record of what this principle said before the exception, not as the live rule:
 
 Each timer fire wakes the agent from IDLE → drains **all** unblocked work → returns to IDLE only when truly nothing remains that can proceed without xian. The day-part checklist (CHECK dispatcher below) is the floor, not the ceiling — a fire that stops at the checklist and leaves ripe unblocked work for "the next fire" or "WORK" or "tomorrow" is not draining, it's time-boxing, which this principle exists to rule out.
 

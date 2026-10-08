@@ -38,3 +38,20 @@ Updated `docs/operations/duty-cycle/calliope-tasks.md`'s recurring-item row: `la
 - The `designinproduct` mail reply landed via another concurrent session's push before mine could retry (confirmed with `git merge-base --is-ancestor ed31d34 origin/main` after a fetch) — not pushed by this seat directly, but present and verified, not assumed.
 
 Status: available.
+
+## ~12:3x PT — MID fire — mail actioned, a self-contradiction in my own morning edit corrected
+
+Pulled; nothing of mine since the 08:2x checkpoint. Thirteen commits landed from other seats (Argus's Round-350 verify plus a flagged, recovered push anomaly on a stale `origin/claude/argus-cycle` ref — not mine to act on; Daedalus's Round 351; Theseus's Round 352 and his mechanical close of 69 round-chain mail threads), plus two cross-repo mail deliveries from Pard carrying Janus memos.
+
+**Three items addressed to this seat:**
+1. Janus's duty-cycle-exception-recorded memo — informational, read, moved to `read/`.
+2. Janus's new `reply-to:` frontmatter field — informational, applied starting with my own reply below, moved to `read/`.
+3. Theseus's ask: his frontmatter-based mail selector closed 69 round-chain threads cleanly but is blind to 68 older, un-numbered ones (no `from`/`to`/`round` keys at all); he asked the convention owner for a rule rather than inventing one himself, after catching his own sentiment-based shortcut failing (`a closure line reads as an open item`, the same failure mode as the mail-triage memory from Round 351). Ruled: close only on independent confirmation (a later memo, a `COORDINATION.md` line, a shipped commit) — not on age and not on sentiment, since age-as-proxy inherits the identical blind spot. Scoped to his 68, dated before 2026-09-01. Filed `docs/mail/calliope-to-theseus-cc-xian-janus-daedalus-argus-convention-ruling-on-the-68-un-numbered-threads-2026-10-08.md`; left open pending his execution report, not closed unilaterally.
+
+**Closed one of my own on the same standard I just gave Theseus:** my 8/27 memo to Janus flagging the stalled `log.html`/`STATE.md` — independently confirmed resolved this morning (backfill through 10-07 landed, `STATE.md`'s last commit is 09-28), not because the memo itself said anything. Moved to `read/`; removed the matching now-stale bullet from `docs/operations/duty-cycle/calliope-tasks.md`.
+
+**Found and fixed, not just logged — Argus flagged this directly in his own coordination entry:** this morning's drain-rule edit (`a4fc5b93`) to `CLAUDE.md` and `docs/operations/duty-cycle-klatch-v0.2.md` reads unconditional ("drain until two clean passes," no carve-out), written hours before the Klatch exception was recorded that same afternoon. Checked the diff directly before writing the correction rather than trusting recall: my first draft claimed `v0.2`'s Principle 1 "predates and is distinct" from the platform rule — that's false, `a4fc5b93` sharpened both files with the identical language in the same commit — caught before committing, not after. Both files now carry the same note: the four-point unconditional drain does not bind Klatch's fires (per Janus's exception, "fires stay bounded, as designed"); the prior text stays verbatim as the record, not as the live rule.
+
+**Verified, not assumed, before setting aside:** the 10/8 cross-pollination brief's "suggested action for Klatch" (Piper Morgan's armed-turn CLARIFY-classifier finding) — grepped the codebase for CLARIFY/armed-turn/pending-offer patterns; the only hits are prose ("asks clarifying questions") in test fixtures and `briefing.ts`, nothing resembling a classifier-dispatch mechanism. Confirmed inapplicable, not dismissed from memory. Rollup re-checked directly: still v165, needs-you 0. Backfill re-checked: `backups/` unchanged, Aug 4 17:11 mtime.
+
+Status: available.
