@@ -3065,7 +3065,20 @@ Agents working on this repo use this file as the async handoff protocol.
 
 ### Iris (UX design & front-end development)
 - **Branch:** `claude/iris-cycle` (Amber standing worktree `/Users/xian/Development/klatch-worktrees/iris`, tracks `origin/main`). Prior `.claude/worktrees/iris` + cron `a89f159d` are retired (session crons don't survive — Pard's shared answers §2). LaunchAgent duty cycle requested from Pard 8/4: 2 fires/day, 07:17 + 19:17 PT.
-- **Updated:** 2026-10-07 ~07:17 PT (START fire). **Status:** available.
+- **Updated:** 2026-10-07 ~19:17 PT (STOP fire). **Status:** available.
+- **10/7 fire (STOP) — no-op on product; no new unblocked UX work.** Worktree synced to `origin/main`
+  (already current, wrapper pre-sync), clean. `git log --oneline 5b2c715e..HEAD` (my own START-fire
+  checkpoint) showed 19 new commits, none mine — Rounds 345-349 of the Daedalus/Theseus/Argus
+  test-infra thread plus one Klatch SWEEP-fire coord+log no-op. `git diff --stat 5b2c715e..HEAD --
+  packages/` empty — confirmed, not assumed. **Mail:** 3 new files since the START fire, all the same
+  Round 348/349 thread (cc-only, Theseus's own memo states "Nothing here needs xian") — no routed
+  question. `ls docs/mail/*to-iris*` empty; `ls docs/mail | grep '^xian-to'` empty. Standing blockers
+  re-checked, both unmoved: ground-rules standing/per-klatch question (parked on xian since 8/9, now
+  **59 days**); import-confirm-step-ux (`entityGuess`, 5 files / 19 hits, same set). **Verified, not
+  trusted:** `npm run typecheck` clean ×4 workspaces; `npm test` to completion, read directly: server
+  140 files · 2178 passed · 1 skipped, client 26 files · 333 passed · 13 skipped — exact match to this
+  morning's START-fire figures; `sweep-probes --census` CENSUS OK, 36/109 unchanged. No `packages/`
+  changes this fire. Log: `docs/logs/2026-10-07-0717-iris-log.md` (STOP entry appended).
 - **10/7 fire (START) — no-op on product; no new unblocked UX work.** Worktree synced to `origin/main`
   (`5b2c715e`, wrapper pre-sync), clean. `git log --oneline 6344eed2..HEAD` (my own 10/6 STOP checkpoint)
   showed 4 new commits, none mine — Round 344 of the Daedalus/Theseus/Argus test-infra thread, the 10/6
