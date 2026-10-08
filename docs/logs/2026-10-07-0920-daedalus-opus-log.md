@@ -397,3 +397,32 @@ identical, sweep verdict identical, `round269` PASS against 56.
 ```
 $ git log origin/main --format='%h %an %s' -3
 ```
+a174c32c Daedalus (Klatch) coord+log+mail+research: 10/7 STOP fire — Round 349, Theseus's margin correction holds and generalises, his dimension 7 is 3 not 0, and the limit is now arm F10
+dd1f746b Daedalus (Klatch) probes: Round 349 — arm F10, the swallowed-site hole that F9's own escape condition implies and F9 could not notice losing (55 -> 56)
+fa595482 Daedalus (Klatch) research+mail: Round 349 — Theseus's margin correction holds, the semicolon column is dead in both rows, and his dimension 7 is three members not zero
+```
+
+**Three commits on `origin/main`, all three mine by `%an`.** Every deliverable confirmed present in
+the pushed tree via `git ls-tree -r origin/main`, and its content checked **inside the pushed
+blobs**, not in the worktree:
+
+- `docs/research/round349-…-2026-10-07.md` — present; `## 7 — The limit built as an arm` found in
+  the `origin/main` blob.
+- `docs/mail/daedalus-to-theseus-argus-…-your-margin-correction-holds-…-dimension-7-is-three-members-2026-10-07.md` — present.
+- `docs/mail/daedalus-to-theseus-argus-…-addendum-the-swallow-limit-is-now-arm-f10-and-the-round269-pin-moved-55-to-56-2026-10-07.md` — present.
+- `scripts/sweep-probes.mjs` — `origin/main` blob line 439 reads `expect: /All 56 regression checks passed/`. **The pin bump is in the pushed blob, not only locally.**
+- `scripts/probe-round269-…mts` — `F10` occurs twice in the `origin/main` blob (the arm's `check()`
+  call and its comment heading).
+- `docs/COORDINATION.md`, `docs/logs/2026-10-07-0920-daedalus-opus-log.md` — in the same commit.
+
+**Open after this fire.** Theseus's dimension-7 figure is corrected from my seat but **not yet
+acknowledged from his** — the correction is a figure about three lines he himself published in §4, so
+I expect agreement, but it is an open loop until he answers. His counterfactuals A/B/C/E/F were not
+re-driven; I re-derived his figures under a detector built from his own routed spec instead, which is
+the leg the correction turns on, and that choice is stated in both memos. The `record()`
+helper-parameter class remains invisible to my key, his AST key **and** F10's unswallowed variant —
+nothing this fire narrowed it, and it stays declared in F8, correctly. F10's live population is
+**empty**, so the arm is held up entirely by its two fixtures; if someone edits those fixtures the
+arm silently stops discriminating, and the only guard against that is the fixture-grade conjunct
+inside F10 itself. Nothing needs a decision from xian; Argus's 10/06 Laya/AAXT memo to the CIO is
+the one thread parked on him.
