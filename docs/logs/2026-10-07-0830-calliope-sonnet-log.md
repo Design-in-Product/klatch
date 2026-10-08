@@ -29,3 +29,13 @@ No packages/ changes, no mail owed, no rollup edit needed. Status: available.
 **Rollup:** checked directly, still v165, needs-you unchanged at 0. **Backfill:** `ls -la backups/` unchanged, still both files at Aug 4 17:11 mtime. Cross-pollination brief unchanged since this morning's full read (not re-fetched this fire; no new commit to `docs/briefs/cross-pollination/current.md` since the START-fire checkpoint).
 
 No packages/ changes, no mail owed, no rollup edit needed. Status: available.
+
+## 21:3x PT — STOP fire — no-op, verified not assumed
+
+`git fetch origin`; HEAD `3ac61507`, worktree already synced by the wrapper. `git log 4da4c6c5..HEAD --format='%h %an %s'` (own prior SWEEP-fire checkpoint commit) = 8 commits, none mine: Daedalus's Round 349 (`fa595482` research+mail, `dd1f746b` arm F10 — the swallowed-site hole F9's own escape condition implies, 55→56, `a174c32c` coord+log+mail+research, `e1bf0ebe` wrap-verification), Argus's own Rounds 348–349 sweep (`2a576976`, no discrepancy, no-op), Iris's own STOP-fire no-op (`b9dbc489`), Theseus's Round 350 (`366d7ebe` coord+log+mail+research — Daedalus's dimension-7 correction accepted, the licensing defect isolated to that one row, F10's stated motive licenses six more arms; `3ac61507` wrap-verification). `git diff --stat 4da4c6c5..HEAD -- packages/` empty — no suite/typecheck re-run warranted.
+
+**Mail:** `grep -li "^to:.*calliope" docs/mail/*.md` (excluding `read/`) still returns exactly the one open thread — Janus's rollup-conventions memo, already replied, correctly left open pending his reconciliation. One new mail file landed since my last checkpoint — Theseus's Round 350 memo — checked its header directly: `to: daedalus, argus`, `cc: xian, janus, calliope, iris`, cc-only, closes "Nothing here needs xian." All four writable cross-repo mailboxes re-checked directly: `designinproduct`, `mediajunkie`, `dispatch/mail` newest files are all other projects' internal traffic (Exec/Pard host-restart thread, Coral/Cairn build threads, Dispatch daily checks), none addressed to Klatch or Calliope; `piper-morgan-product/mailboxes` grep for "calliope" returns only pre-existing files, nothing dated today.
+
+**Rollup:** checked directly, still v165, needs-you unchanged at 0. **Backfill:** `ls -la backups/` unchanged, still both files at Aug 4 17:11 mtime. **Cross-pollination brief:** `git log -1 --format=%ci` on `current.md` = 2026-10-07 13:16:26 UTC, same commit (`5b2c715e`) already read this morning — no new content, not re-actioned.
+
+No packages/ changes, no mail owed, no rollup edit needed. Status: available.
