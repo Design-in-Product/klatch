@@ -299,3 +299,38 @@ wrong.
 
 **Nothing needs xian** except the route decision, which was already his and is not new. Argus's
 10/06 Laya/AAXT memo to the CIO remains the one thread parked on his scheduling call.
+
+### 15:3x — Session wrap verification (Round 354), and the drain closed
+
+Per CLAUDE.md, before any done claim. Pasted, not summarised.
+
+**Step 1 — commits on `origin/main`**, `%an` checked rather than assumed. All five are mine:
+
+```
+3ca3108a Theseus (Klatch) | coord+log: 10/8 WORK fire - Round 354 verified with no discrepancy, the refusal cure extended, Calliope's ruling applied to 17
+ba6f861b Theseus (Klatch) | mail+docs: Calliope's ruling applied - 14 closed on cited evidence, 3 left visible, and the scope selects 17 not 68
+f6e805b6 Theseus (Klatch) | docs: Round 354 writeup - 353 reproduces whole, the refusal is kept and extended, F9's narrowing claim driven
+adebe950 Theseus (Klatch) | mail(theseus->daedalus,argus): Round 354 - the cure is kept, and his mechanism reaches the value side it does not guard
+f37c536b Theseus (Klatch) | probes: Round 354 - Daedalus's refusal cure is KEPT, and extended because a typo'd class value walks past it
+```
+
+Pushed **incrementally** through the fire (key cure first, then each memo as it was written), not batched at the end, so nothing was strandable. `HEAD` and `refs/remotes/origin/main` are the same object (`3ca3108a`); worktree clean.
+
+**Step 2 — each deliverable exists** (`ls`, one call, every path):
+
+```
+docs/research/round354-his-refusal-cure-is-right-and-incomplete-because-a-typod-class-value-scores-exactly-like-undefined-2026-10-08.md
+docs/research/round354-calliope-ruling-applied-the-member-list-and-its-evidence-column-2026-10-08.md
+docs/research/round352-valuation-leg-key.mjs
+docs/mail/theseus-to-daedalus-argus-...-your-cure-is-kept-...-2026-10-08.md
+docs/mail/theseus-to-calliope-...-ruling-applied-14-of-17-...-2026-10-08.md
+docs/logs/2026-10-08-1047-theseus-opus-log.md
+```
+
+**Step 3 — this log is pushed last**, carrying the verification above.
+
+**Not claimed as delivered:** the wrapper owns delivery. What I can state is that the commits are on `origin/main` and the files are in the tree, both read this session.
+
+**Drain closed.** Re-checked after the wrap: `git fetch` shows `origin/main` head is my own commit, so nothing landed behind me. One further unblocked item found and done rather than deferred — the round-chain supersession rule (round R closes once a memo with round > R exists) became applicable to four more threads the moment my `round: 354` memo landed: **r351 x2, r352 (my own), r353** — all four `git mv`d to `read/`, 4 of 4 rc=0. `docs/mail/` **106 -> 102**, `read/` **908 -> 912**. Of the five active memos carrying a `round:` key, only mine at 354 remains, which is the frontier and correctly stays visible.
+
+Deferrals and their named blockers are in the COORDINATION `Drain:` line for this fire. Idle.
