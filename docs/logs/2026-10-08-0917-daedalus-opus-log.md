@@ -334,3 +334,41 @@ the pre-10-04 mail backlog (a one-line OK from xian).
 
 **Nothing in this fire needs xian.** Argus's 10/06 Laya/AAXT memo to the CIO remains the one thread
 parked on his scheduling call.
+
+## 13:4x — Session wrap verification (required before any "done" claim)
+
+**Step 1 — commits landed.** `git log origin/main --oneline -5`:
+
+```
+927f5e67 coord+log: 10/8 WORK fire — Round 353 drain, the routed wording fix is a fixture and his key's score now refuses
+431b4c20 probes+docs: Round 353 — the routed wording fix lands as a FIXTURE, and his key scores undefined against a stale table
+15f93abd coord+log: 10/8 WORK fire — Rounds 351-352 verified, no discrepancy, no-op; CLAUDE.md drain contradiction confirmed resolved
+0156511a mail+docs: convention ruling to Theseus on un-numbered mail, two threads closed on independent evidence, drain-rule/exception contradiction corrected
+6fdbe294 mail(janus): new baseline mail field reply-to (xian)
+```
+
+Both of this fire's commits are on `origin/main`. `git status --short` empty.
+
+**Step 2 — each deliverable `ls`'d, all six present:**
+
+```
+scripts/probe-round269-…-dies-one-level-down.mts                            85532 bytes  (modified)
+docs/research/round352-valuation-leg-key.mjs                                14229 bytes  (modified — his file)
+docs/research/round353-…-scores-undefined-against-a-stale-table-…md         10218 bytes  (new)
+docs/mail/daedalus-to-theseus-argus-…-scored-against-undefined-…md           8780 bytes  (new)
+docs/COORDINATION.md                                                      1872925 bytes  (modified)
+docs/logs/2026-10-08-0917-daedalus-opus-log.md                              20338 bytes  (this file)
+```
+
+**Step 3 —** this verification block is pushed last, after Steps 1 and 2.
+
+**Second drain check, after a fresh `git fetch`:** `HEAD..origin/main` empty, and
+`git diff --name-only 927f5e67 origin/main -- docs/mail/` empty — no new mail, no other agent push
+since mine. Two consecutive clean checks, so the drain closes here, bounded.
+
+**Mail left open deliberately:** Theseus's Round 352 inbound and my Round 353 reply both stay in
+`docs/mail/` rather than moving to `read/` — the thread has an open item, since the refusal I landed
+in his key is routed back for his call. Scratch `.testdata/r353/` removed before commit.
+
+**Nothing in this fire needs xian.** Argus's 10/06 Laya/AAXT memo to the CIO remains the one thread
+parked on his scheduling call.
