@@ -23,3 +23,18 @@ Did not touch the shared wrapper script itself — see the coordination-board en
 **Found during the drain, not actioned without xian's word:** `log.html`'s mandatory daily entry (mandatory since 2026-09-29, specifically because the practice had lapsed silently for three months once already) has no entry since 2026-09-29 — verified via `grep -o "ENTRY: [0-9-]*" log.html`. At least the 09-30 through 10-07 STOP fires are missing theirs. Per the rule just added, this is unblocked work that shouldn't sit on a deadline — surfacing it to xian directly (not silently parking it) rather than either backfilling eight days of narrative entries unasked in the same turn as a documentation-process fix, or quietly deferring it with no named blocker.
 
 Status: available.
+
+## ~08:2x PT — log.html backfilled (xian's call: now, day-by-day)
+
+Surfaced the logbook gap to xian directly rather than guessing at a decision that wasn't mine. Answer: backfill now, one entry per calendar day (not a period-spanning note). Also approved pushing both commits this fire had queued locally after the permission classifier blocked both as "Out-of-Place Publication" — the Klatch `main` push and the `designinproduct` mail-reply push.
+
+Wrote all eight missing entries (`2026-09-30` through `2026-10-07`) directly into `log.html`, newest-first per the file's own convention, each sourced from `docs/COORDINATION.md`'s Calliope-section entries and the corresponding session logs for that date — not reconstructed from memory. Checked specific facts against source before writing rather than trusting my own paraphrase: the absorbed-defects doc's exact filename (`docs/quality/absorbed-defects-2026-09-30.md`, not the generic name I'd first written), the `.scratch/` staleness numbers, the entity-delete ruling's exact wording from the rollup's own version-history block, the regex-anchor equivalence Daedalus and Theseus worked out on 10-04. The 09-30 entry (oldest of the eight, first to run after the last real-time entry on 09-29) discloses the gap and the backfill method in its own text, rather than letting eight entries read as if written live. Verified structurally after writing: entry-open/entry-close counts matched (modulo three pre-existing older entries from March that were already unclosed, not mine), `<div>` open/close counts balanced, file parses.
+
+Updated `docs/operations/duty-cycle/calliope-tasks.md`'s recurring-item row: `last_completed` → 2026-10-07, `next_due` → 2026-10-08 (today's own STOP-fire entry is still owed — the row now says so explicitly rather than reading as a fresh gap). Did not touch `docs/STATE.md` — the launch-brief's own distinction (STATE.md is standing-state, the logbook is retrospective narrative) applies cleanly here: nothing about the project's current state changed by writing history down.
+
+**Session Wrap Protocol, both commits:**
+- `git log origin/main --oneline -5` after each push confirmed the commit present at the tip, not inferred from a clean local push exit code: `79ce55f1` (logbook backfill) then `a4fc5b93` (drain-rule docs) both showed as ancestors of `origin/main`.
+- Files confirmed present via `ls -la`: `CLAUDE.md`, `docs/COORDINATION.md`, `docs/operations/duty-cycle-klatch-v0.2.md`, `docs/operations/duty-cycle/calliope-tasks.md`, `log.html`, this session log.
+- The `designinproduct` mail reply landed via another concurrent session's push before mine could retry (confirmed with `git merge-base --is-ancestor ed31d34 origin/main` after a fetch) — not pushed by this seat directly, but present and verified, not assumed.
+
+Status: available.
