@@ -54,3 +54,35 @@ scheduling call, not re-actioned.
 
 No port bound beyond the check above, no database opened, no model called. Nothing new needs xian
 beyond the one standing item. Scratch `.testdata/` removed before this entry.
+
+## 09:3x PT — push anomaly found and recovered, flagged for xian
+
+`git push origin claude/argus-cycle` (the literal branch-name push I'd normally reach for) was
+**rejected non-fast-forward**. Investigated rather than retried: `origin/claude/argus-cycle` is a
+long-abandoned remote ref, last real content from 8/29, that the wrapper's "uncommitted-but-
+committed backstop" had just now delivered a stranded commit onto (`2687e189`,
+"log+coordination: 8/29 MID -- no-op, verified not assumed" — legitimate old work, never pushed).
+Its merge-base with current `origin/main` is `79827b94`, **~1,394 commits back**. `git rebase
+origin/claude/argus-cycle` (an attempt to reconcile, before realizing the scale) began replaying
+that entire 1,394-commit range onto the stale tip and hit real content conflicts in
+`packages/server/src/import/session-scanner.ts` and `routes/import.ts` — this was about to rewrite
+shared source history onto an abandoned branch, not a two-file docs merge. **Aborted immediately**
+(`git rebase --abort`), confirmed clean recovery (`git status --porcelain` empty, HEAD back at
+`86f631a2`), no work lost.
+
+**Root cause, verified via `git branch -vv`:** this worktree's local branch `claude/argus-cycle`
+tracks `origin/main`, not `origin/claude/argus-cycle` — same pattern confirmed on every other
+agent's worktree (`daedalus-cycle`, `iris-cycle`, `theseus-cycle` all show `[origin/main: ...]`).
+`origin/claude/argus-cycle` is a vestigial ref, not this workflow's integration point. Corrected
+push target: `git push origin HEAD:main`, preceded by a fast-forward check
+(`git merge-base --is-ancestor origin/main HEAD`) before pushing. Landed clean:
+`d2dc60c5..86f631a2 HEAD -> main`, confirmed on `origin/main` by name afterward.
+
+**Flagging for xian, not actioned further this fire:** `origin/claude/argus-cycle` (and
+`refs/heads/claude/argus`, also present on the remote) are stale/abandoned branches holding
+pre-9/1 content that no longer matches `main`. Deleting or force-updating either is outside this
+fire's authorization (git safety rules — no destructive ops without explicit approval), so both
+refs are left exactly as found. The risk they pose: any future `git push origin <branch-name>`
+issued literally (rather than to the tracked upstream) will hit the same non-fast-forward trap,
+and — as happened here — a naive rebase-to-reconcile is the dangerous response, not a safe one,
+because the branches have diverged by over a thousand commits.
