@@ -240,3 +240,97 @@ memo. Two consecutive checks found nothing new, so the drain closes here.
 **Nothing in this fire needs xian except one optional call:** a one-line OK (or refusal) on bulk-
 archiving the ~99 pre-10-04 chain memos to `docs/mail/read/`. Argus's 10/06 Laya/AAXT memo to the CIO
 remains the one thread parked on his scheduling call.
+
+---
+
+# WORK fire — 2026-10-08 13:2x–13:4x PT (Round 353)
+
+Same day, second fire. Appended rather than a new file, per the day's-log convention.
+
+## 13:2x — Briefing
+
+`git fetch`: worktree at `0156511a`, clean, nothing ahead of `origin/main`. `docs/mail/` read.
+One memo addressed to this seat: Theseus's Round 352 (`to: daedalus, argus`). Calliope's convention
+ruling to Theseus on the 68 un-numbered threads is cc-only and informational — no action here.
+
+Round 352 routes **one** item to this seat (§2): F10's narrowed reason misnames F9's own predicate.
+§3 and §4 are a measured limit he explicitly does not want an arm for.
+
+## 13:2x — Baseline, before touching anything
+
+Drove his committed key (`docs/research/round352-valuation-leg-key.mjs`) from its committed path.
+**Every figure reproduces:** 6 grades true, population 194, offsets preserved, class 11, member
+lists equal, crude leg wrong on 2 of 11 (`:621`, `:825`), (A) 1 (`:992`), (B) 6, `'MEAS (inner)'`
+outside the class. Also drove `probe-round269` alone: **EXIT 0**, `All 56 regression checks passed,
+3 measurements, 0 skips`, F9/F10 PASS. No discrepancy.
+
+## 13:3x — §2 landed, then made unable to un-land
+
+Read the assign leg at source (`:780` post-edit): `if (!/['"`]MEAS['"`]/.test(rhs)) continue;` — the
+whole RHS requirement, with no valuation test anywhere. So his reading is right at the line and the
+old phrase named 4 of the 11 members F9 admits.
+
+Corrected both sites (docblock `:921`, detail string `:1039`, pre-edit numbers). **But a wording fix
+cannot fail**, so `HOISTED_KP` gained a CALL-valued known positive — `round280:476`'s neighbourhood
+with only the span varied to bare — driven through the **landed** detector, not a copy of its leg.
+F9 now reports `3 known positives … all flag=true`. A predicate narrowed back to label-valued reds F9.
+
+No 12th member minted; class still 11 after the edit, as predicted from where the RHS is cut.
+
+## 13:3x — The thing I did not expect to find: his key scores `undefined`
+
+The fixture moved two members. His member-list guard **fired correctly** — and the score below it
+**still printed `wrong on 2 of 11`, the same figure as the clean run.** `handOf.get()` returns
+`undefined` for a moved member; `(undefined === 'label')` is `false`; so an unscored member is
+counted as wrong-or-right by whatever the crude leg happened to say. It read 2 by coincidence — one
+true miss plus one `undefined` mismatch. Had `:621` moved too, it would have read 2 with both
+entries unscored.
+
+That is my own Round 352 §2 argument turned on the instrument that carried it. Reconciled the two
+line numbers (re-read at source) and made the score **refuse** on a mismatch, graded with a
+stale-table KP (exit 2, REFUSED, no score) and a clean same-depth KN (exit 0, every figure restored)
+in a gitignored scratch copy, anchor asserted unique before mutating. **Routed back** — the refusal
+is a design change to his file.
+
+## 13:3x — Gate
+
+`tsc` server/client each to its own file, **both 0 bytes**. `npm test` unpiped to a file,
+ANSI-stripped, rc 0 — server **140 files / 2178 passed / 1 skipped (2179)**, client **26 passed |
+13 skipped (39) / 333 passed | 13 skipped (346)**, `CENSUS OK`. `probe-round269` alone via
+`spawnSync` — **EXIT 0**, 56 checks, F9/F10 PASS, derived line byte-identical. Sweep by **verdict
+line** — **exit 2**, `SWEEP BLOCKED — 35 of 36 swept probes green, 0 red, 1 blocked (did not
+conclude), 0 census problem(s), 109 deferred`.
+
+Ports read **before and after** the sweep with the `probe-server-ownership` lib (`lsof` not
+permitted here): identical on all six. Nothing leaked, and Theseus's unattributed `:8080` occupant
+**predates** the sweep — his open item, settled in the direction his own fire could not reach.
+
+## 13:4x — A claim I got wrong in my own first draft, caught by the rule that exists for it
+
+My first draft of the research doc's §1 attributed `6fdbe294` and two others to the wrong seats from
+memory. `git log --format='%h %an'` says `0156511a` **Calliope**, `6fdbe294` **Pard (Mediajunkie)**,
+`41a37f79`/`b536fd03`/`f35e80e8` **Theseus** — **none of the five are mine**, and three are in a
+shape I write. Corrected in the doc with the slip recorded rather than quietly fixed; this is
+Round 326's lesson firing on its author.
+
+## 13:4x — Push contention, handled without force
+
+`git push origin HEAD:main` rejected non-fast-forward: Argus had pushed `15f93abd` (his own 13:3x
+WORK fire) between my fetch and my push. Inspected it first (`docs/COORDINATION.md` + his log, no
+overlap with my four files), rebased the single commit, verified the log and a clean tree, pushed.
+No force push. Round 353 is `431b4c20` on `origin/main`.
+
+**A side benefit from reading his commit:** Argus re-derived `lsof -i :3001` in his own fire today
+and got the same `xian`-owned PID 47533. The `:3001` occupancy no longer rests on my Round 351 PID
+reading alone — it is independently confirmed the same day by a seat where `lsof` is permitted.
+
+## 13:4x — Drain
+
+Mail: one routed item, landed in-fire. Two consecutive checks of `docs/mail/` and `HEAD..origin/main`
+found nothing new unblocked (the second found Argus's commit, read, no action). Deferrals each carry
+a named blocker, in the `Drain:` line in `COORDINATION.md`: rows 1–6 (my own false-zero record), the
+109 DEFERRED probes (per-probe promotion path), `probe-round225` (xian's dev server on `:3001`), and
+the pre-10-04 mail backlog (a one-line OK from xian).
+
+**Nothing in this fire needs xian.** Argus's 10/06 Laya/AAXT memo to the CIO remains the one thread
+parked on his scheduling call.
