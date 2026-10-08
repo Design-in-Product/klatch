@@ -306,3 +306,89 @@ block (1 match).
 
 `git status --porcelain` — empty. Nothing stranded, nothing uncommitted apart from gitignored
 `.testdata/r348/`, which is where the instruments belong. This log entry is the last thing pushed.
+
+## 19:5x PT — STOP fire, Round 350
+
+Fourth fire of the day for me. Daedalus's Round 349 (main memo + addendum) landed at 17:39, after my
+last fire closed at 15:07, so this fire is the verification turn. Baseline `origin/main` at
+`b9dbc489`, worktree clean at start. `%an`-checked before crediting anything (Round 326): of the five
+head commits above my last, `b9dbc489` is **Iris's**, `2a576976` is **Argus's**, `e1bf0ebe` /
+`a174c32c` / `dd1f746b` / `fa595482` are **Daedalus's**, `4da4c6c5` is **Calliope's**.
+
+### His figures, every one re-derived
+
+| claim | mine |
+|---|---|
+| arm total after F10 | `All 56 regression checks passed, 3 measurements, 0 skips` |
+| F9 | **PASS**, derived line byte-identical — 4 sites / 194 code files / `224:71→72`, `224b:57→58`, `247:67→68`, `255:171→172` |
+| F10 | **PASS**, detail line `4 vs 4, 0 swallowed, 0 greedy-only`, fixture pair `0 vs 1` / `1 vs 1` |
+| pin bump 55 → 56 | present, `scripts/sweep-probes.mjs:439` |
+| dim 7 non-bare | **3** — `round280:476→478`, `round281:221→222`, `round282:617→618` |
+| dim 8 alt emitter | **0** |
+| population | **194** by an independent `readdirSync` walk |
+
+My key (`.testdata/r350/dim7-key.mjs`): assign leg copied **byte-identically** from F9's, only the
+emitter leg varied; all three modes off **one** predicate; **BARE carried as a positive control that
+had to return his published four as a MEMBER LIST** before any other figure was read. `GRADE 6 of 6`.
+
+### His correction accepted, with the mechanism out of my own key
+
+My Round 348 row was `s.valued === 'label' && s.span === 'inner'` (`.testdata/r348/ast-key.mjs:218`),
+and F9's assign leg never required a label-valued RHS — only a quote-delimited `MEAS` before the first
+`;`. So my row varied **two** things against the detector it was characterising. Re-ran my own 348 key
+this fire: it still prints `dim 7: 0` and `dim x call-valued: 3` with the same three lines. The
+members were in my output all along, filed one row down.
+
+### The part neither of us had driven
+
+Dropped exactly that one conjunct and re-measured all seven rows
+(`.testdata/r350/ast-key-nolabel.mjs`): dims 1–6 are 0 under both populations, row 7 goes 0 → 3.
+Controls alongside: site class still **4**, every pair the key saw **7**. `4 + 3 = 7` accounts for the
+whole population, so the licensing defect is **row 7's alone**, not the table's.
+
+### Correction back, driven not reasoned
+
+Scratch harness `.testdata/r350/scratch-cf.mjs` — `fs.cpSync` copy of `scripts/` into gitignored
+`.testdata/`, three states one variable each, verdict lines **not** grepped (his own honesty note),
+per-arm lines read, scratch deleted:
+
+```
+baseline   F9: PASS   F10: PASS   reds: [J1] [J2] [J5] [J6]
+dim7       F9: PASS   F10: PASS   reds: [J1] [J2] [J5] [J6]      ← no new red
+swallowed  F9: PASS   F10: FAIL   reds: [F10] [J1] [J2] [J5] [J6]
+```
+
+His addendum reproduces exactly (swallow delta = `[F10]` alone). And the middle row is the finding:
+"F9 cannot notice it stopping" is true of dimension 7 verbatim, so it cannot be what distinguishes
+F10 — literally applied it licenses an arm per blind dimension. The distinguishing criterion is one
+level in: the swallow hides a site **F9's own predicate matches**. F10 stays on the narrower reason.
+
+### Gate, each leg off its own instrument
+
+- `npx tsc --noEmit -p packages/server` → `.testdata/r350/tsc-server.txt`, **0 bytes**
+- `npx tsc --noEmit -p packages/client` → `.testdata/r350/tsc-client.txt`, **0 bytes**
+- `npm test` unpiped → server **140 files / 2178 passed / 1 skipped**, client **26+13 files / 333 passed + 13 skipped (346)**
+- `node scripts/sweep-probes.mjs` read by its **verdict line**, exit code 2 not treated as the result:
+  `SWEEP BLOCKED — 35 of 36 swept probes green, 0 red, 1 blocked (did not conclude), 0 census problem(s), 109 deferred`;
+  blocked = `probe-round225` (exit 3, the standing 3001 holder); `probe-round269` **PASS exit 0** against the bumped 56
+
+### Mail handled
+
+- Daedalus's two Round 349 memos — read, verified, answered in this fire, both `git mv`'d to
+  `docs/mail/read/`. My own Round 348 reply moved with them (his verification pass is complete).
+- My Round 350 reply stays visible in `docs/mail/` — it routes two items back to him.
+- Argus's 10/06 Laya/AAXT memo to the CIO re-read, still parked on **xian's scheduling call**, left
+  visible. Nothing else in `docs/mail/` is addressed to me and unanswered.
+
+### Deliverables
+
+- `docs/research/round350-his-dimension-7-correction-is-right-…-2026-10-07.md`
+- `docs/mail/theseus-to-daedalus-argus-…-your-dimension-7-correction-is-right-…-2026-10-07.md`
+- three memos `git mv`'d into `docs/mail/read/`
+- COORDINATION.md Theseus section updated
+
+**No tree change this fire** — both corrections are routed, not landed, which is the honest shape for
+a figure about his arm's wording and his arm's motive.
+
+Nothing from this fire needs a decision from xian. The one open thread that does is Argus's Laya/AAXT
+memo.
