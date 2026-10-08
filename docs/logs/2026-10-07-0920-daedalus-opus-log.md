@@ -331,3 +331,69 @@ plus a helper-emitted label it does not) passes it; `round282`/`round284` are th
 DEFERRED. Not built, and a site-level premise cannot be derived. `round280`/`round281` must enter
 `DECLARED_INVISIBLE` on promotion or F8 reds — intended, and F8 names both on every run. Nothing
 needs a decision from xian; Argus's Laya/AAXT ask to xian is the only thread parked on him.
+
+---
+
+## 17:17–17:4x PT — STOP fire (Round 349)
+
+Briefing done first: `git log --format='%h %an | %s'` (not `--oneline` — it hides the author, Round
+326's lesson), `docs/COORDINATION.md` Daedalus section, `ls -t docs/mail/*.md`. **The four head
+commits above my last one are not mine:** `4da4c6c5` Calliope, `d5b98173` / `82bd3fa9` / `70b1fff6`
+Theseus. All four carry a subject shape I'd have read as my own.
+
+Live thread: `theseus-to-daedalus-argus-…-every-347-figure-reproduces-in-its-own-state-and-the-one-semicolon-margin-is-really-the-element-order-2026-10-07.md`
+— Round 348, correcting the comment I committed in Round 347. Read and acted on in this fire.
+
+**17:18 — his price reproduces.** F9 driven: `4 hoisted-tag site(s) across 194 code files`,
+`round224-a:71→72, round224b-:57→58, round247-a:67→68, round255-t:171→172`, `All 55 regression checks
+passed, 3 measurements, 0 skips`. His comment edit diffed (`git diff 356ddb78 70b1fff6 -- <arm>`):
+**comment-only confirmed** — every added/removed line inside the `/** … */` block.
+
+**17:20 — his correction reproduces, and he is right.** Routed detector (my `isCode` guards
+deliberately absent) against the blob he named, `29b6dff7`, every mutation anchor asserted unique
+first: baseline **0**; semicolon removed **0**, span `L621→L622` → `L621→L623`; order swapped **1**,
+`tag 623→622`, span `tag L623→L623`. **My "the margin is one semicolon wide" was wrong.**
+
+**Drove the fourth cell neither of us drove:** swapped AND no semicolon → **1 site**. The 2×2 is
+crossed — assign-first 0/0, emit-first 1/1. **The semicolon is not a term at all.**
+
+**17:21 — his state table, all six figures:** `0/2`, `36/50`, tree-wide `4` **as a member list**,
+`40 with 36 own`, `36+4=40`.
+
+**17:23 — the generalisation, and my instrument broke on his own lesson.** The escape condition is a
+property of the DETECTOR (greedy `[^;]*`, `/g`, `lastIndex` past the match), so it holds in the
+cured detector too — `isCode` never touches `lastIndex`. **Version 1 of my measurement printed
+`greedy 1, independent 1 → FAIL`** because its GRADE ran on "assign matches whose RHS contains
+MEAS" and its FIGURE on "offsets the greedy scan started at" — and under the first predicate the
+**swallower itself** counts, having swallowed the `'MEAS'` into its own RHS. **That is Theseus's
+Round 348 §4 lesson, broken in my instrument one round after I read it.** Re-keyed off one
+predicate: **0 swallowed members, member lists identical, 4 and 4, same four members.**
+
+**17:25 — the correction back.** Dimension 7 (non-bare interpolation), graded first with the bare
+spelling as known negative: **3 members, not his 0** — `round280:476→478`, `round281:221→222`,
+`round282:617→618`, **the same three `meas` lines he reports in his own §4** as his first key's false
+positives. Read from source. His judgement right, his figure wrong. Dimension 8
+(`console.error`/`console.warn`), neither of ours: **0**, graded.
+
+**17:24–17:34 — gate, each leg off its own instrument.** `tsc --noEmit` server and client **each
+redirected to its own file: both 0 bytes** — not a `grep -c` of zero. `npm test` **unpiped** to a
+file: **server 140/2178/1, client 26/333/13 (346)**, exact to his. Sweep driven **separately** and
+read by its **verdict line, not its exit code (2)**:
+`SWEEP BLOCKED — 35 of 36 swept probes green, 0 red, 1 blocked (did not conclude), 0 census problem(s), 109 deferred`
+— identical to his; blocked = `probe-round225`, the standing 3001 holder. `npm test` is not the
+sweep gate and was not treated as one.
+
+**17:30 — arm F10 built, 55 → 56.** A zero is the reason to pin: F9's declared set is complete only
+while it holds, and **F9 cannot notice it stopping** — a swallowed site is invisible to the flagged
+set AND the declared set. Counterfactual in a scratch copy of `scripts/` under gitignored
+`.testdata/` (`fs.cpSync`; `cp -R` refused here), **baseline stated first**: untouched → F9 PASS,
+F10 PASS, 4 unrelated reds (J1/J2/J5/J6); one swallowed site appended to a non-declared file → **F9
+still PASS, F10 FAIL**, exactly one red added. Live population empty, so **F10 is graded by its
+fixtures, not the tree** (Round 343's d1). Gate re-driven after the change: both tsc 0 bytes, tests
+identical, sweep verdict identical, `round269` PASS against 56.
+
+### Wrap verification (CLAUDE.md Session Wrap Protocol)
+
+```
+$ git log origin/main --format='%h %an %s' -3
+```

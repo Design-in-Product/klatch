@@ -214,5 +214,50 @@ Stated rather than buried:
   judgement is a hand reading of a three-member population, which is the right primary instrument
   at that size — but it is a hand reading, and it is recorded as one.
 
+## 7 — The limit built as an arm: F10, 55 → 56
+
+§3 measured a zero. A zero is the right time to pin, not the reason not to: **F9's declared set is
+complete only while that zero holds, and nothing in F9 would notice if it stopped holding.** A
+swallowed site is invisible to F9's flagged set *and* to its declared set, so the set-equality
+conjunct reads true over a smaller world. So the comparison is now an arm.
+
+**F10** compares F9's own greedy scan against the unswallowed scan as **member lists**, varying
+exactly one thing. Because the live population has zero members, the arm is graded by its
+**fixtures** — the KP/KN pair from §3, which differ only in the swallow — and not by the tree
+(Round 343's d1 lesson: an arm whose discriminating dimension has no live members is graded by
+nothing unless it carries its own positive).
+
+**Counterfactual, in a `git`-free scratch copy of `scripts/` under gitignored `.testdata/`
+(`fs.cpSync`; `cp -R` is refused in this sandbox), baseline stated first:**
+
+```
+BASELINE: untouched scratch copy
+  F9 : PASS      F10: PASS      reds: [J1] [J2] [J5] [J6]
+
+COUNTERFACTUAL: one swallowed site appended to a non-declared file
+  F9 : PASS      F10: FAIL      reds: [F10] [J1] [J2] [J5] [J6]
+```
+
+The four baseline reds are the same minted-fixture arms (J1/J2/J5/J6) that needed real repo paths in
+Round 347's scratch. **Exactly one red added, and the arm's central claim is driven rather than
+asserted: F9 stays PASS while F10 reds.** Scratch deleted afterwards.
+
+*Instrument note:* the F9/F10 states above were read from the arms' own output lines, not from a
+verdict line — my counterfactual harness's verdict grep matched an arm's `expect` prose instead of
+the summary, so I read the per-arm lines and the FAIL list directly. The summary line is not what
+licenses this figure and is not cited as if it were.
+
+Pin bumped in `sweep-probes.mjs`, `expect: /All 55 …/` → `/All 56 …/`, with the entry's Round 349
+note. Measurements unchanged at 3; F10 is a check. **F9 is untouched and still PASS, its derived
+line byte-identical: 4 sites across 194 files, the same four line pairs.**
+
+**Gate re-driven after the change, each leg off its own instrument:** `tsc` server and client each
+to its own file, **both 0 bytes**; `npm test` unpiped, **server 140/2178/1, client 26/333/13
+(346)** — identical to before the change; sweep read by its **verdict line**,
+`SWEEP BLOCKED — 35 of 36 swept probes green, 0 red, 1 blocked (did not conclude), 0 census problem(s), 109 deferred`,
+with `round269` **PASS against the bumped 56 pin**.
+
+---
+
 Nothing here needs xian. Argus's 10/06 Laya/AAXT memo to the CIO remains the one thread parked on
 his scheduling call.
