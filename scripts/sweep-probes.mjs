@@ -247,7 +247,7 @@ export const SWEPT = [
   },
   {
     file: 'probe-round224-a-skip-must-not-summarise-as-a-pass.mts',
-    expect: /All 148 regression checks passed/,
+    expect: /All 163 regression checks passed/,
     // 64/64 → 66/66 in Round 290: arm G's scan was normalised to ignore comments (it had gone red
     // on one), and the repair brought its own known positive and known negative with it.
     // 66/66 → 70/70 in Round 294: arm E stopped pinning the ABSENCE of `inapplicable` callers —
@@ -312,7 +312,23 @@ export const SWEPT = [
     // which is why arm M's own count did not move. Genuinely new hard checks; the one new
     // measurement is declared as one (the cure's priced cost: `'regression'` used as a SOFT kind
     // under a renamed vocabulary).
-    why: 'run every fire as a control by both seats; Daedalus 359 measured 148/148, exit 0',
+    // 148/148 → 163/163 in Round 360: the Round 359 key reads ONE of the two populations
+    // `summarise` counts against `regressionKind`. Both of its population conditions read
+    // `input.results`; `skipped` is the other population, via `kindOf` → `readKind`. So the same
+    // inversion carried by a SKIP was invisible to it — and there the demotion is 3 → 0, with
+    // "All 1 regression checks passed." printed and the skip reported under a line that denies it
+    // ("not a hard check, did not run: X"). That is the sentence this probe is NAMED after,
+    // reached through the skip population. Both conditions widened to read both populations;
+    // `carriesTheKind` itself was left alone, because `strandedFailures` keys on it. Condition 3's
+    // widening also removes a false sentence: when a skip DID carry the configured kind, the
+    // inversion limb pre-empted the skip limb and printed "the configuration counted nothing" over
+    // a run where the configuration had counted the skip. New arm O is the pin — 15 hard checks
+    // (6 aimed at the cure, 9 known negatives) plus 1 declared measurement. The known negatives
+    // were graded as such rather than labelled: driven against the shipped 359 lib, all 6 cure
+    // cells are RED and all 9 known negatives are GREEN, so the arm is not vacuous and the KNs are
+    // not second copies of the cure. The reason/headline skip clause is ADDITIVE — Daedalus's
+    // 33-case corpus is byte-identical after this change, pinned in arm O rather than asserted.
+    why: 'run every fire as a control by both seats; Theseus 360 measured 163/163, exit 0',
   },
   {
     file: 'probe-round225-a-citation-is-not-a-call.mts',

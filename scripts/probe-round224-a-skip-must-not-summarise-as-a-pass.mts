@@ -833,6 +833,167 @@ const meas = (arm: string): ProbeVerdict => ({ arm, check: 'a measurement', pass
     true, 'priced and accepted: the escape is to tag one row with the configured kind', 'measurement');
 }
 
+// ── Arm O — the Round 359 key read ONE of the two populations it is keyed over ────────────────
+//
+// Round 360, Theseus. `summarise` counts two populations against `regressionKind`: `results`, via
+// `readKind`, and `skipped`, via `kindOf` — which is `readKind` on the record's own `kind`. Both
+// population conditions of the Round 359 key (`!carriesTheKind`, and "some row carries
+// MODULE_DEFAULT_KIND") read `input.results` only. Three of the four other `kind`-reading guards in
+// that function already read both: `unreadableKinds` does, `nearMisses` does, `kindOf` is the other
+// population. This key and `strandedFailures` read one.
+//
+// Driven on the shipped 358 and 359 libs side by side, so the reading is not confounded with the
+// cure that was being verified:
+//
+//   skip {kind:'regression'}, DEFAULT rk              ->  code 3   hard skip        (correct)
+//   skip {kind:'regression'}, rk 'check', no row      ->  code 0   "All 1 regression checks passed."
+//                                                          + "not a hard check, did not run: X"
+//   the same, plus a results row tagged 'regression'  ->  code 3   REFUSED (condition 4 held)
+//
+// The demotion in the skip population is **3 → 0** — strictly worse than the results-row case the
+// key was built for, because a skip that declared itself a hard check in this module's own
+// vocabulary is reported on the green limb under a line that denies it, beside the one headline
+// this file is NAMED after. Live instances 0; `probe-round250` is the near miss, and it is
+// protected by condition 4 via its `check()` helper's rows rather than by anything reading its Z3.
+//
+// Mostly known negatives, for Round 359's own reason: the claim is about what the widening does
+// NOT touch, and the cells that redden first if a later round widens further are the blessed
+// shapes. Daedalus's 33-case corpus is byte-identical after this change — cell 11 pins that the
+// skip clause is ADDITIVE rather than a re-aim of his published headline.
+{
+  const S = (rk: unknown, results_: ProbeVerdict[], skipped_: unknown[]) =>
+    summarise({ probeName: 'subject', results: results_, skipped: skipped_, regressionKind: rk } as unknown as Parameters<typeof summarise>[0]);
+  const D = (results_: ProbeVerdict[], skipped_: unknown[]) =>
+    summarise({ probeName: 'subject', results: results_, skipped: skipped_ } as unknown as Parameters<typeof summarise>[0]);
+  const V = (arm: string, pass: unknown, kind?: unknown): ProbeVerdict =>
+    ({ arm, check: `row ${arm}`, pass, ...(kind === undefined ? {} : { kind }) } as unknown as ProbeVerdict);
+  const HARD_SKIP = { label: 'env missing', kind: 'regression' };
+
+  // O/360 — the cure. A skip carrying the module's own default name, beside a renamed vocabulary
+  // that nothing carries, is the same inversion one population over.
+  const skipInv = S('check', [V('B', true)], [HARD_SKIP]);
+  check('O', 'a skip tagged with the module default, under a renamed vocabulary no row carries, '
+    + 'refuses at 3 instead of printing "All 1 regression checks passed"',
+    skipInv.code === 3 && !/passed/.test(skipInv.headline),
+    `code ${skipInv.code} :: ${JSON.stringify(skipInv.headline.slice(0, 80))}`);
+  check('O', 'and the headline counts the SKIP as a carrier — an operator reading "0 row(s)" alone '
+    + 'would go looking for a verdict row that is not there',
+    /0 row\(s\) and 1 skip\(s\) carry/.test(skipInv.headline) && /"check"/.test(skipInv.headline),
+    JSON.stringify(skipInv.headline.slice(0, 130)));
+  check('O', 'and the skip is named as a skip, not under the line that denies it was a hard check',
+    skipInv.reasons.some((r) => /counted nothing and excluded/.test(r))
+    && !skipInv.reasons.some((r) => /not a hard check, did not run/.test(r)),
+    JSON.stringify(skipInv.reasons.map((r) => r.slice(0, 44))));
+
+  // O/360 — KNOWN NEGATIVE 1: the control that makes the cell above non-vacuous. The same skip
+  // under the DEFAULT vocabulary is a hard skip and always was; if this reddens, the widening has
+  // started eating the ordinary case.
+  const skipDefault = D([V('B', true)], [HARD_SKIP]);
+  check('O', 'KN (control): the same skip under the DEFAULT vocabulary is unmoved — a hard skip at '
+    + 'code 3 with the skip headline, not the inversion headline',
+    skipDefault.code === 3 && /skipped 1 arm/.test(skipDefault.headline)
+    && !/no row carries/.test(skipDefault.headline),
+    `code ${skipDefault.code} :: ${JSON.stringify(skipDefault.headline.slice(0, 80))}`);
+
+  // O/360 — KNOWN NEGATIVE 2: a bare-string skip takes `regressionKind` itself from `kindOf`, so
+  // it is a hard check under every configuration and the widening must not reach it.
+  const bareSkip = S('check', [V('B', true)], ['env missing']);
+  check('O', 'KN: a bare-string skip is hard under any configuration (`kindOf` hands it '
+    + '`regressionKind`), so it is unmoved at the skip limb and never the inversion limb',
+    bareSkip.code === 3 && /skipped 1 arm/.test(bareSkip.headline),
+    `code ${bareSkip.code} :: ${JSON.stringify(bareSkip.headline.slice(0, 70))}`);
+
+  // O/360 — KNOWN NEGATIVE 3: the blessed shape in the skip population, which is the analogue of
+  // Round 358's blocker 2. A soft skip stays soft under a renamed vocabulary.
+  const softRenamed = S('check', [V('B', true)], [{ label: 'x', kind: 'open-item' }]);
+  check('O', 'KN: an open-item skip under a renamed vocabulary is still SOFT at code 0 — the key is '
+    + "the identity of the stranded token, and 'open-item' is not this module's",
+    softRenamed.code === 0 && softRenamed.reasons.some((r) => /not a hard check, did not run: x/.test(r)),
+    `code ${softRenamed.code} :: ${JSON.stringify(softRenamed.reasons)}`);
+
+  // O/360 — KNOWN NEGATIVE 4: precedence, Round 356's rule. The widening may turn a 0 into a 3 and
+  // never a 1 into a 3. Driven over the whole moved set, not one pair: exactly ONE of the five
+  // movements this change produces alters a code, and it is the cure.
+  const skipInvBesideFailure = S('check', [V('B', false)], [HARD_SKIP]);
+  check('O', 'KN: a FAILING row beside the skip inversion is code 1, not demoted to 3 — a failure '
+    + 'still dominates (Round 356)',
+    skipInvBesideFailure.code === 1 && skipInvBesideFailure.failed.length === 1,
+    `code ${skipInvBesideFailure.code} failed ${skipInvBesideFailure.failed.length}`);
+  // Not a known negative, despite sitting beside one: driven against the 359 lib this cell is RED,
+  // because the reason line is one of the five things the widening adds. Labelled as what it is.
+  check('O', 'and that code 1 carries the inversion in its reasons — the louder code does not '
+    + 'cost the operator the diagnosis',
+    skipInvBesideFailure.reasons.some((r) => /counted nothing and excluded/.test(r)),
+    JSON.stringify(skipInvBesideFailure.reasons[0]?.slice(0, 70) ?? ''));
+
+  // O/360 — KNOWN NEGATIVE 5: limb order. Both of the limbs ABOVE the inversion one must still win
+  // over it when the skip population is what triggers the key.
+  const skipInvNearMiss = S('regresion', [V('B', true)], [HARD_SKIP]);
+  check('O', 'KN: a near-miss `regressionKind` beside the skip inversion keeps the near-miss '
+    + 'diagnosis — the Round 355 limb is still above the Round 359 one',
+    skipInvNearMiss.code === 3 && /one edit from/.test(skipInvNearMiss.headline)
+    && !/no row carries/.test(skipInvNearMiss.headline),
+    JSON.stringify(skipInvNearMiss.headline.slice(0, 80)));
+  const skipInvBadType = S(['x'], [V('B', true)], [HARD_SKIP]);
+  check('O', 'KN: a non-string `regressionKind` beside the skip inversion still refuses on the TYPE '
+    + '— the Round 358 limb is above this one too',
+    skipInvBadType.code === 3 && skipInvBadType.reasons.some((r) => /regressionKind is object/.test(r)),
+    `code ${skipInvBadType.code} :: ${JSON.stringify(skipInvBadType.reasons[0]?.slice(0, 60) ?? '')}`);
+  const skipBadKind = S('check', [V('B', true)], [{ label: 'env missing', kind: 123 }]);
+  check('O', 'KN: a non-string SKIP kind is the unreadable-kind limb, not the inversion limb — it '
+    + 'is defaulted IN by `readKind` and so it carries the configured kind, not the default',
+    skipBadKind.code === 3 && skipBadKind.reasons.some((r) => /skip env missing — kind is number/.test(r))
+    && !skipBadKind.reasons.some((r) => /counted nothing and excluded/.test(r)),
+    `code ${skipBadKind.code} :: ${JSON.stringify(skipBadKind.reasons[0]?.slice(0, 70) ?? '')}`);
+
+  // O/360 — KNOWN NEGATIVE 6: Daedalus's published Round 359 headline, byte-pinned as a PROPERTY
+  // rather than as a string — the skip clause must be ADDITIVE, so a run whose carriers are all
+  // rows reads exactly as it did before this change. His whole 33-case corpus is byte-identical on
+  // the strength of this; if it reddens, his table was re-aimed around rather than reproduced.
+  const hisCure = S('check', [V('A', false, 'regression'), V('B', true)], []);
+  check('O', 'KN (his Round 359 table): with no skip carrying the default, the headline still reads '
+    + '"1 row(s) carry" and gains no skip clause — the widening is additive, not a re-aim',
+    hisCure.code === 3 && /1 row\(s\) carry/.test(hisCure.headline) && !/skip\(s\)/.test(hisCure.headline),
+    JSON.stringify(hisCure.headline.slice(0, 120)));
+
+  // O/360 — KNOWN NEGATIVE 7: `carriesTheKind` was deliberately NOT widened, because
+  // `strandedFailures` keys on it and that line is about rows. Asserted by behaviour: a failing
+  // stranded row still gets its Round 358 line when a skip carries the configured kind.
+  const stranded = S('check', [V('A', false, 'open-item'), V('B', true)], [{ label: 'x', kind: 'check' }]);
+  check('O', 'KN: `strandedFailures` is unmoved — it keys on `carriesTheKind`, which was left alone, '
+    + 'so a failing stranded row still gets its Round 358 line',
+    stranded.reasons.some((r) => /NOT COUNTED, and it is a failure/.test(r) && /row A/.test(r)),
+    JSON.stringify(stranded.reasons.map((r) => r.slice(0, 40))));
+
+  // O/360 — condition 3, the other half of the same blindness, and the sentence it made false.
+  // A skip carrying the CONFIGURED kind is selected by the configuration — `kindOf` makes it a hard
+  // skip and it forces code 3 — so the configuration is NOT inert. Before this change the inversion
+  // limb pre-empted the skip limb on exactly that run and printed "the configuration counted
+  // nothing", which was false of it.
+  const configLive = S('check', [V('B', true), V('A', true, 'regression')], [{ label: 'env missing', kind: 'check' }]);
+  check('O', 'condition 3 reads the skips too: a skip carrying the CONFIGURED kind means the '
+    + 'configuration counted something, so the run lands on the skip limb and not the inversion one',
+    configLive.code === 3 && /skipped 1 arm/.test(configLive.headline)
+    && !/no row carries/.test(configLive.headline),
+    `code ${configLive.code} :: ${JSON.stringify(configLive.headline.slice(0, 80))}`);
+  check('O', 'and the false sentence is gone with it — nothing in that run now claims the '
+    + 'configuration counted nothing',
+    !configLive.reasons.some((r) => /counted nothing/.test(r))
+    && configLive.reasons.some((r) => /did not run: env missing/.test(r)),
+    JSON.stringify(configLive.reasons.map((r) => r.slice(0, 40))));
+
+  // O/360 — MEASUREMENT: live reachability, derived from a directory walk rather than a grep (a
+  // grep-derived count fails by returning a SMALLER number — grep emits no row for a file holding
+  // a NUL byte). Finding 1 needs three things in one file: a renamed vocabulary supplied to its own
+  // `summariseAndExit`, a skip tagged `'regression'`, and NO results row tagged `'regression'`.
+  check('O', 'MEASUREMENT: live instances of the three-part precondition = 0 across 194 .mts/.mjs/.ts '
+    + 'files under scripts/; 3 self-configuring callers (round246/248/250), all supplying '
+    + "'regression'; round250 is the near miss — it tags its Z3 skip 'regression' and is protected "
+    + 'by condition 4 via its `check()` helper rows, so one rename is the whole distance',
+    true, 'census in the Round 360 writeup; a rename of round250 is the shape that reaches this',
+    'measurement');
+}
+
 // ── Arm F — the OLD tails, re-implemented, report success on arm B's input ────
 //
 // Verbatim shape of what stood at HEAD~, not a paraphrase:

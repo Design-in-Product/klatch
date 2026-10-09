@@ -544,15 +544,63 @@ export function summarise(input: SummariseInput): ProbeOutcome {
    * a SOFT kind. Nothing in the tree does this (three files supply `regressionKind`, all three
    * supply `'regression'`), and it would mean using this module's own default token for the
    * opposite of its meaning. Priced and accepted, rather than discovered later.
+   *
+   * Round 360, Theseus — both of this key's population conditions read `input.results` only, and
+   * `summarise` counts TWO populations against `regressionKind`. `skipped` is the other one, via
+   * `kindOf` → `readKind` thirty lines up. Three of the four other `kind`-reading guards in this
+   * function already read both (`unreadableKinds`, `nearMisses`, and `kindOf` itself); this key and
+   * `strandedFailures` read one. Driven, with the member list checked in both directions:
+   *
+   * ```
+   *   skip {kind:'regression'}, DEFAULT rk            ->  code 3  hard skip          (correct)
+   *   skip {kind:'regression'}, rk 'check'            ->  code 0  "All 1 regression checks passed."
+   *                                                       + "not a hard check, did not run: X"
+   *   the same, plus a RESULTS row tagged 'regression' ->  code 3  REFUSED (condition 4 held)
+   * ```
+   *
+   * So the demotion a skip-carried inversion produces is **3 → 0**, which is worse than the
+   * results-row case this key was built for: a skip that declared itself a hard check in this
+   * module's own vocabulary is reported on the green limb under a line that denies it
+   * (`not a hard check, did not run:`), beside the one headline this module exists to prevent.
+   * It is the sentence `probe-round224` is named after, reached through the skip population.
+   *
+   * Live instances **0**, and the honest version of that number is the near miss: `probe-round250`
+   * is the only self-configuring caller that tags a skip `'regression'` (its Z3), and it is
+   * protected by condition 4 via its `check()` helper's results rows rather than by anything that
+   * reads its skips — so a single edit renaming its vocabulary is the whole distance.
+   *
+   * Widened by adding the skip population to both conditions, and NOT by loosening either one:
+   * condition 3 now fails when a SKIP carries the configured kind, because such a skip is selected
+   * by the configuration (`kindOf` makes it a hard skip and it forces code 3) — so the
+   * configuration is not inert and this key's own reason line, which says it "counted nothing",
+   * was false of exactly that run. Driven before the widening: that run refused with that sentence.
+   *
+   * The reason and headline keep their Round 359 bytes whenever the carriers are all rows, which
+   * is every shape in Daedalus's 33-case corpus: the skip clause is additive, so his published
+   * table is byte-identical after this change rather than re-aimed around it.
    */
+  const taggedSkipKinds: unknown[] = allSkips
+    .filter((s): s is { label: string; kind?: string } => typeof s !== 'string')
+    .map((s) => s.kind);
+  /** Condition 3, over both counted populations. `carriesTheKind` is left alone: `strandedFailures` keys on it. */
+  const configuredKindIsCarried = carriesTheKind || taggedSkipKinds.includes(regressionKind);
+  const defaultRows = input.results.filter((r) => r.kind === MODULE_DEFAULT_KIND).length;
+  const defaultSkips = taggedSkipKinds.filter((k) => k === MODULE_DEFAULT_KIND).length;
+  /** Condition 4, over both counted populations. */
+  const defaultCarriers = defaultRows + defaultSkips;
+  /** `"1 row(s)"` when no skip carries it — byte-identical to Round 359 — and named when one does. */
+  const carrierPhrase = defaultSkips === 0
+    ? `${defaultRows} row(s)`
+    : `${defaultRows} row(s) and ${defaultSkips} skip(s)`;
+
   const invertedVocabulary: string[] = (
     typeof regressionKind === 'string'
     && regressionKind !== MODULE_DEFAULT_KIND
-    && !carriesTheKind
-    && input.results.some((r) => r.kind === MODULE_DEFAULT_KIND)
+    && !configuredKindIsCarried
+    && defaultCarriers > 0
   ) ? [
       `the configured regressionKind ${describe(regressionKind)} is carried by NO row in this run, `
-      + `while ${input.results.filter((r) => r.kind === MODULE_DEFAULT_KIND).length} row(s) carry `
+      + `while ${carrierPhrase} carry `
       + `${describe(MODULE_DEFAULT_KIND)} — this module's own default, and the name every untagged `
       + `row is counted under. So the configuration counted nothing and excluded the rows that `
       + `declared themselves hard checks. Fix the configuration or the rows; which of these is a `
@@ -651,8 +699,7 @@ export function summarise(input: SummariseInput): ProbeOutcome {
     return {
       code: 3,
       headline: `INCONCLUSIVE — ${input.probeName} was summarised against a \`regressionKind\` of `
-        + `${JSON.stringify(regressionKind)} that no row carries, while ${input.results
-          .filter((r) => r.kind === MODULE_DEFAULT_KIND).length} row(s) carry `
+        + `${JSON.stringify(regressionKind)} that no row carries, while ${carrierPhrase} carry `
         + `${JSON.stringify(MODULE_DEFAULT_KIND)}. The rows that declared themselves hard checks `
         + `were the ones the configuration left out. This is not a pass.`,
       ran,
