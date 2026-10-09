@@ -555,10 +555,22 @@ const meas = (arm: string): ProbeVerdict => ({ arm, check: 'a measurement', pass
     JSON.stringify(badTypeWithFailure.reasons.slice(0, 1)));
 
   // M/358 — the STRING half: not refused, and reported. Both halves of that are deliberate.
+  //
+  // Round 359, Daedalus — RE-AIMED, not loosened, and this is the arm the next reader should
+  // compare against the memo. Round 358 pinned `code === 0 && ran === 1` here as a DECISION, with
+  // the two legitimate shapes below it as the known negatives a later cure would have to argue
+  // with. Round 359 wrote that cure: the stranding is refused when the stranded token is
+  // `MODULE_DEFAULT_KIND` and the configured kind is a string no row carries. This fixture is
+  // exactly that case (`mixed`'s failing row is tagged `'regression'`), so it is now a code 3 —
+  // and the pin asserts the NEW behaviour at the same specificity, plus the thing that did NOT
+  // change: `ran` is still 1, so the refusal did not launder the row count. Both known negatives
+  // below are untouched and still green, which is the whole evidence that the cure is narrow.
+  // Arm N grades the cure's boundary; this cell only records that this fixture moved.
   const strandedCase = RK('check', mixed);
-  check('M', 'a string regressionKind no row carries is NOT refused — this is a decision, not an oversight',
-    strandedCase.code === 0 && strandedCase.ran === 1,
-    `code ${strandedCase.code} ran ${strandedCase.ran} :: ${JSON.stringify(strandedCase.headline)}`);
+  check('M', 'a string regressionKind no row carries, beside a row carrying the module default, is '
+    + 'now REFUSED at 3 (Round 359) — and the row count is unchanged, not laundered',
+    strandedCase.code === 3 && strandedCase.ran === 1 && !/passed/.test(strandedCase.headline),
+    `code ${strandedCase.code} ran ${strandedCase.ran} :: ${JSON.stringify(strandedCase.headline.slice(0, 72))}`);
   check('M', 'but the failing row it stranded is NAMED, so the knowledge is in the run (Round 223)',
     strandedCase.reasons.some((r) => /NOT COUNTED, and it is a failure/.test(r)
       && /THE REAL BREAK/.test(r) && /"regression"/.test(r) && /"check"/.test(r)),
@@ -650,9 +662,175 @@ const meas = (arm: string): ProbeVerdict => ({ arm, check: 'a measurement', pass
       inapplicable: 'probe-x' as unknown as string[] }).code}`;
   } catch (e) { inapRed = `THREW ${(e as Error).constructor.name}`; }
   check('M', `MEASUREMENT: a non-array \`inapplicable\` on a clean run → ${inapGreen}; on a red run → ${inapRed}`,
-    true, 'the throw is reachable only from the limb that prints "passed"', 'measurement');
-  check('M', 'the asymmetry itself is the check: the clean limb throws and the failure limb does not',
-    inapGreen.startsWith('THREW') && inapRed === 'code 1', `${inapGreen} / ${inapRed}`);
+    true, 'the asymmetric limb is the one that prints "passed"', 'measurement');
+  // Round 359, Daedalus — RE-AIMED. Round 358 asserted `inapGreen.startsWith('THREW')`, which was
+  // the correct pin for a characterised-not-cured finding: it would have reddened if the crash had
+  // been papered over quietly. Round 359 cured it, so the cell is re-aimed at the property that
+  // outlives the cure — the ASYMMETRY, which is the whole of the finding: the all-green limb is
+  // still the only one that treats this field differently from every other limb. Arm N holds the
+  // cure itself, including the known negative that a failure is not demoted.
+  check('M', 'the asymmetry itself is the check: the clean limb refuses on this field (it used to '
+    + 'throw) and the failure limb never reaches it',
+    inapGreen === 'code 3' && inapRed === 'code 1', `${inapGreen} / ${inapRed}`);
+}
+
+// ── Arm N — the narrow refusal, and its boundary (Round 359) ──────────────────
+//
+// Round 358 handed over one question: the string half of the `regressionKind` finding was reported
+// and not refused, because every refusal Theseus tried false-reds a shape this module's own
+// docblocks bless. Round 359 answers it with a key on the stranded TOKEN rather than on the shape
+// of the run — refuse only when the configured kind is a string, is not `MODULE_DEFAULT_KIND`, is
+// carried by no row, and some row carries `MODULE_DEFAULT_KIND`.
+//
+// An arm that showed only the refusal firing would be worth very little here, because the whole
+// claim is about what the refusal does NOT touch. So this arm is mostly known negatives, and they
+// are the same ones Round 358 wrote down as blockers: its two legitimate shapes, Round 311's three
+// drive shapes, the failure-dominates precedence from Round 356, and the near-miss limb keeping
+// the better diagnosis. Each is one cell. If a later round widens the key, the cell that reddens
+// names which legitimate shape it just started refusing.
+//
+// Driven 2026-10-09, member list checked in both directions against a 33-case corpus (the full
+// table is in the Round 359 writeup): 11 of 33 inputs moved, and the moved set was exactly the
+// predicted set — no surprise movements, and no predicted movement that failed to happen.
+//
+// Also here: the `inapplicable` hatch, which Round 358 characterised and left. The throw was
+// reachable only from the all-green limb; it is now a code 3 from that limb and nothing else.
+
+{
+  const RK = (rk: unknown, results_: ProbeVerdict[], extra: Record<string, unknown> = {}) =>
+    summarise({ probeName: 'subject', results: results_, regressionKind: rk, ...extra } as unknown as Parameters<typeof summarise>[0]);
+  const V = (arm: string, pass: unknown, kind?: unknown): ProbeVerdict =>
+    ({ arm, check: `row ${arm}`, pass, ...(kind === undefined ? {} : { kind }) } as unknown as ProbeVerdict);
+  const HATCH = (inap: unknown, results_: ProbeVerdict[]) =>
+    summarise({ probeName: 'subject', results: results_, inapplicable: inap } as unknown as Parameters<typeof summarise>[0]);
+
+  // N/359 — the cure fires, on both halves of the `pass` axis. The PASSING case is the deliberate
+  // widening past `strandedFailures`'s key: the defect is in the configuration, not in the row, and
+  // a guard whose reachability depends on the subject's health cannot be exercised on demand.
+  const invFail = RK('check', [V('A', false, 'regression'), V('B', true)]);
+  const invPass = RK('check', [V('A', true, 'regression'), V('B', true)]);
+  check('N', 'a configured kind no row carries, beside a row carrying the module default, refuses '
+    + 'at 3 instead of printing "All 1 regression checks passed"',
+    invFail.code === 3 && !/passed/.test(invFail.headline),
+    `code ${invFail.code} :: ${JSON.stringify(invFail.headline.slice(0, 70))}`);
+  check('N', 'and the headline names BOTH tokens and how many rows carry the default, so the '
+    + 'operator can tell which of the two is wrong without reading the source',
+    /"check"/.test(invFail.headline) && /"regression"/.test(invFail.headline)
+    && /1 row\(s\) carry/.test(invFail.headline),
+    JSON.stringify(invFail.headline.slice(0, 120)));
+  check('N', 'it refuses on a PASSING stranded row too — the defect is the configuration, not the row',
+    invPass.code === 3 && invPass.reasons.some((r) => /counted nothing and excluded/.test(r)),
+    `code ${invPass.code} :: ${JSON.stringify(invPass.reasons[0]?.slice(0, 70) ?? '')}`);
+  check('N', 'and the stranded FAILING row is still named in the reasons as well — the refusal did '
+    + 'not replace the Round 358 line that says which row left the population',
+    invFail.reasons.some((r) => /NOT COUNTED, and it is a failure/.test(r) && /row A/.test(r)),
+    JSON.stringify(invFail.reasons.map((r) => r.slice(0, 40))));
+
+  // N/359 — KNOWN NEGATIVE 1 and 2: Round 358's two blocking shapes, verbatim. These are the cells
+  // a widened key reddens first, and they are the reason this cure is narrow rather than the
+  // obvious "no row carries the configured kind".
+  const tagsNothing = RK('check', [V('A', true), V('B', true)]);
+  check('N', 'KN (Round 358 blocker 1): a probe that tags NOTHING is unmoved at exit 0 — no row '
+    + 'carries the module default either, so the key cannot see it',
+    tagsNothing.code === 0 && tagsNothing.ran === 2,
+    `code ${tagsNothing.code} ran ${tagsNothing.ran} :: ${JSON.stringify(tagsNothing.headline)}`);
+  const openItemDefault = summarise({ probeName: 'subject', results: [V('A', true), V('B', false, 'open-item')] });
+  const openItemRenamed = RK('check', [V('A', true), V('B', false, 'open-item')]);
+  check('N', 'KN (Round 358 blocker 2): a deliberately-FAILING open-item row beside untagged hard '
+    + 'checks is unmoved at exit 0 under the default vocabulary',
+    openItemDefault.code === 0, `code ${openItemDefault.code} :: ${JSON.stringify(openItemDefault.headline)}`);
+  check('N', 'KN: and unmoved under a RENAMED vocabulary too, which is the harder half — the key is '
+    + 'the identity of the stranded token, so an open-item stranding is still only reported',
+    openItemRenamed.code === 0
+    && openItemRenamed.reasons.some((r) => /NOT COUNTED, and it is a failure/.test(r)),
+    `code ${openItemRenamed.code} :: ${JSON.stringify(openItemRenamed.reasons[0]?.slice(0, 60) ?? '')}`);
+  const measRenamed = RK('check', [V('A', true), V('B', true, 'measurement')]);
+  check('N', 'KN: a conventional measurement row under a renamed vocabulary stays exit 0 with no '
+    + 'refusal and no stranded line',
+    measRenamed.code === 0 && !measRenamed.reasons.some((r) => /NOT COUNTED/.test(r)),
+    `code ${measRenamed.code} :: ${JSON.stringify(measRenamed.reasons)}`);
+
+  // N/359 — KNOWN NEGATIVE 3: precedence. Round 356's lesson, which is the one this module has
+  // now broken once and must not break again: a refusal may turn a 0 into a 3 and never a 1.
+  const invBesideFailure = RK('check', [V('A', false), V('B', true, 'regression')]);
+  check('N', 'KN: an untagged FAILING row beside the inverted configuration is code 1, not demoted '
+    + 'to 3 — a failure still dominates (Round 356)',
+    invBesideFailure.code === 1 && invBesideFailure.failed.length === 1,
+    `code ${invBesideFailure.code} failed ${invBesideFailure.failed.length}`);
+  check('N', 'KN: and that code 1 still carries the inverted configuration in its reasons, so the '
+    + 'louder code does not cost the operator the diagnosis',
+    invBesideFailure.reasons.some((r) => /counted nothing and excluded/.test(r)),
+    JSON.stringify(invBesideFailure.reasons[0]?.slice(0, 70) ?? ''));
+
+  // N/359 — KNOWN NEGATIVE 4: the configured vocabulary is IN USE. This is Round 311's C3 shape —
+  // `regressionKind: 'check'` over rows that carry `'check'` — and it must be invisible to the key.
+  const configInUse = RK('check', [V('A', false, 'check'), V('B', true, 'regression')]);
+  check('N', 'KN (Round 311 C3): when a row DOES carry the configured kind, there is no refusal '
+    + 'even with a module-default row beside it — the configuration counted something',
+    configInUse.code === 1 && configInUse.failed.length === 1
+    && !configInUse.reasons.some((r) => /counted nothing and excluded/.test(r)),
+    `code ${configInUse.code} failed ${configInUse.failed.length}`);
+  const r222Default = summarise({ probeName: 'p222', results: [V('A', false, 'check'), V('B', true, 'measurement')] });
+  check('N', 'KN (Round 311 C1/C2): round222\'s shape under the DEFAULT vocabulary is unmoved — '
+    + 'ran 0, code 3, "established nothing", which is what that probe pins',
+    r222Default.code === 3 && r222Default.ran === 0 && /established nothing/.test(r222Default.headline),
+    `code ${r222Default.code} ran ${r222Default.ran} :: ${JSON.stringify(r222Default.headline)}`);
+
+  // N/359 — KNOWN NEGATIVE 5: the near-miss limb keeps the better diagnosis. A `regressionKind`
+  // one edit from the default meets every condition of the new key, and a reader needs to be told
+  // it is a TYPO, not an inversion — so the new limb sits below the near-miss one.
+  const oneEditRk = RK('regressio', [V('A', false, 'regression'), V('B', true)]);
+  check('N', 'KN: a regressionKind one edit from the default is still diagnosed as a near-miss, '
+    + 'not as an inversion — the new limb is below the Round 355 one',
+    oneEditRk.code === 3 && /one edit from/.test(oneEditRk.headline)
+    && !/that no row carries/.test(oneEditRk.headline),
+    JSON.stringify(oneEditRk.headline.slice(0, 80)));
+
+  // N/359 — the key's own target, asserted by BEHAVIOUR rather than by reading the constant: an
+  // untagged row and a row tagged `'regression'` must both be counted under the default config.
+  // If `MODULE_DEFAULT_KIND` were ever retargeted, this cell goes first and the refusal's key
+  // cannot drift silently behind a green run.
+  const defaultIsRegression = summarise({ probeName: 'subject', results: [V('A', false, 'regression'), V('B', true)] });
+  check('N', "KN: the module default is still the token 'regression' — a row tagged with it and an "
+    + 'untagged row are both counted, so the new key is aimed at the live default',
+    defaultIsRegression.code === 1 && defaultIsRegression.ran === 2,
+    `code ${defaultIsRegression.code} ran ${defaultIsRegression.ran}`);
+
+  // N/359 — the hatch. Round 358 §5: the throw was reachable ONLY from the all-green limb, which
+  // is the one limb that prints "passed". Now a code 3 from that limb, and unchanged everywhere
+  // else. The four cells are the finding's own asymmetry, turned into pins.
+  const hatchGreen = HATCH('probe-x', [V('A', true, 'regression')]);
+  const hatchRed = HATCH('probe-x', [V('A', false, 'regression')]);
+  const hatchNull = HATCH(null, [V('A', true, 'regression')]);
+  const hatchArray = HATCH(['probe-x'], [V('A', true, 'regression')]);
+  check('N', 'a non-array `inapplicable` on an all-green run is a code 3 naming the field, where it '
+    + 'used to throw `inapplicable.map is not a function` with no headline at all',
+    hatchGreen.code === 3 && /not an array/.test(hatchGreen.headline) && !/passed/.test(hatchGreen.headline),
+    `code ${hatchGreen.code} :: ${JSON.stringify(hatchGreen.headline.slice(0, 76))}`);
+  check('N', 'and the unreadable value is quoted in the reasons, so a slipped label is not lost — '
+    + 'the hatch is not salvaged into the list, it is printed',
+    hatchGreen.reasons.some((r) => /inapplicable is string "probe-x"/.test(r)),
+    JSON.stringify(hatchGreen.reasons[0]?.slice(0, 80) ?? ''));
+  check('N', 'KN: the same input beside a FAILURE is still code 1 — the hatch is unreachable there, '
+    + 'so this cure cannot be the demotion Round 356 caught',
+    hatchRed.code === 1 && hatchRed.failed.length === 1,
+    `code ${hatchRed.code} failed ${hatchRed.failed.length}`);
+  check('N', 'KN: `null` and a proper array are both unmoved — `?? []` still means "no hatch", and '
+    + 'a real list still prints its "not applicable" line',
+    hatchNull.code === 0 && hatchArray.code === 0
+    && hatchArray.reasons.some((r) => /not applicable: probe-x/.test(r)),
+    `null → code ${hatchNull.code}; array → code ${hatchArray.code} :: ${JSON.stringify(hatchArray.reasons)}`);
+
+  // N/359 — MEASUREMENT: the declared cost of the key, recorded rather than argued. The one shape
+  // this refuses that a sufficiently contrary caller could have meant is renaming the hard-check
+  // vocabulary while keeping `'regression'` as the name of a SOFT kind. Nothing in the tree does
+  // it; if someone ever does, this line is where the price was written down.
+  const contrary = RK('check', [V('A', true, 'check'), V('B', true, 'regression')]);
+  const contraryNoUse = RK('check', [V('A', true), V('B', true, 'regression')]);
+  check('N', `MEASUREMENT: the declared cost — 'regression' used as a SOFT kind under a renamed `
+    + `vocabulary is code ${contraryNoUse.code} when nothing carries the configured kind, and code `
+    + `${contrary.code} as soon as one row does`,
+    true, 'priced and accepted: the escape is to tag one row with the configured kind', 'measurement');
 }
 
 // ── Arm F — the OLD tails, re-implemented, report success on arm B's input ────

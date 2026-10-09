@@ -143,6 +143,10 @@ export type SummariseInput = {
    * it here; the red names the file you missed.
    *
    * INAPPLICABLE-CALLERS: probe-round291, probe-round292
+   *
+   * Round 359: read by TYPE. A present, non-nullish non-array here refuses the run at code 3
+   * instead of throwing `inapplicable.map is not a function` out of the all-green limb — which,
+   * driven, was the ONLY limb that could reach it. `null`/`undefined` still mean "no hatch".
    */
   inapplicable?: string[];
   /**
@@ -152,9 +156,11 @@ export type SummariseInput = {
    * whole run at code 3 rather than defaulting, because every count in {@link summarise} is an
    * equality against this value and an unreadable one makes `readKind`'s safe default the unsafe
    * one — driven, a failing row tagged `'regression'` came out as `All 1 regression checks
-   * passed`. A string that no row carries is NOT refused (it is legitimate for a probe that tags
-   * nothing) but a failing row stranded by it is named in `reasons`; see the note beside
-   * `strandedFailures`.
+   * passed`. A string that no row carries is NOT refused in general — that is legitimate for a
+   * probe that tags nothing — but a failing row stranded by it is named in `reasons` (see the note
+   * beside `strandedFailures`), and Round 359 refuses the ONE stranding that cannot have been
+   * meant: a configured kind that no row carries, beside a row carrying `MODULE_DEFAULT_KIND`.
+   * See the note beside `invertedVocabulary` for the four conditions and the declared cost.
    */
   regressionKind?: string;
 };
@@ -219,12 +225,21 @@ const withinOneEdit = (a: string, b: string): boolean => {
 };
 
 /**
+ * The kind this module counts as a hard check when the caller configures nothing — and the name
+ * every untagged row is read as, via `readKind`. Named rather than spelled twice because Round 359
+ * keys a refusal on it: a row carrying THIS token while the configured vocabulary is some other
+ * string that no row carries is the one stranding that cannot have been meant. The literal is also
+ * the most-used `kind` under `scripts/` by a factor of ~8 over the next hard-check spelling
+ * (census in the {@link withinOneEdit} docblock: `regression` 72, `check` 9, `hard` 3).
+ */
+const MODULE_DEFAULT_KIND = 'regression';
+
+/**
  * Decide the outcome without printing or exiting — so a control can drive this function
  * directly and assert on the result rather than scraping a subprocess's stdout.
  */
 export function summarise(input: SummariseInput): ProbeOutcome {
-  const regressionKind = input.regressionKind ?? 'regression';
-  const inapplicable = input.inapplicable ?? [];
+  const regressionKind = input.regressionKind ?? MODULE_DEFAULT_KIND;
 
   // Round 357 — `kind` is read by TYPE, not just by equality. The missing case was already
   // defaulted IN (see {@link ProbeVerdict}); an unreadable case now defaults in the same
@@ -263,6 +278,48 @@ export function summarise(input: SummariseInput): ProbeOutcome {
     } catch { /* BigInt and circular structures: JSON.stringify throws rather than returns */ }
     try { return String(value); } catch { return `[un-printable ${typeof value}]`; }
   };
+
+  /**
+   * Round 359, Daedalus — the escape hatch, type-read. Theseus drove this in Round 358 §5 and
+   * handed the call over rather than taking it ("turning a crash into a code 3 is the demotion
+   * Round 356 caught, and the hatch is yours").
+   *
+   * Driven again here, with every return site of this function enumerated from source rather than
+   * reasoned about, because the asymmetry IS the finding and it is easy to state one limb too
+   * narrowly:
+   *
+   * ```
+   *   inapplicable: 'probe-x' | 123 | {}   green run  ->  THREW TypeError: inapplicable.map …
+   *                                        red run    ->  code 1   (never reaches the hatch)
+   *                                        skip / near-miss / unreadable-kind / config  ->  code 3
+   *   inapplicable: null                   green run  ->  code 0   (the `?? []` default, intact)
+   * ```
+   *
+   * So the one limb that prints "passed" was the only one that could crash, and the throwing class
+   * is **present, non-nullish, non-array** — narrower than "non-array", since `null` and
+   * `undefined` both mean "no hatch" by this field's own documented default and still do.
+   *
+   * **Why code 3 and not Theseus's demotion worry.** His concern is Round 356's: a refusal must
+   * not swallow a genuine red. It cannot here, and that is driven rather than argued — beside a
+   * failure the hatch is unreachable, so there is no input on which this moves a 1 to a 3. What it
+   * moves is a crash with NO headline, no `REGRESSIONS:` block and no named field into a verdict
+   * that names the field, its type and its value. **Why not code 0 with a reason line**, which was
+   * the other candidate: nothing gates on `reasons`, so the type defect would become invisible to
+   * every instrument in the fleet — curing a crash must not make the defect quieter, and a printed
+   * line that gates nothing is this project's own standing failure shape.
+   *
+   * Limit, declared: the labels in an unreadable hatch are not salvaged into the list. A string is
+   * the plausible slip (`inapplicable: 'probe-x'`) and wrapping it would be guessing at intent, so
+   * the value is printed in the reason instead — the label survives, in a channel that names it as
+   * unreadable rather than as a declared inapplicable arm.
+   */
+  const hatch: unknown = input.inapplicable;
+  const inapplicable: string[] = Array.isArray(hatch) ? hatch : [];
+  const hatchProblems: string[] = (hatch === undefined || hatch === null || Array.isArray(hatch))
+    ? []
+    : [`inapplicable is ${typeof hatch} ${describe(hatch)}, not an array of labels. Every arm this `
+      + `run meant to declare inapplicable is unread, so what this run set out to do is not `
+      + `knowable from it. The value is quoted here in case it WAS the label.`];
 
   const labelOf = (s: SkipRecord) => (typeof s === 'string' ? s : s.label);
   const kindOf = (s: SkipRecord) => (typeof s === 'string' ? regressionKind : readKind(s.kind));
@@ -436,6 +493,72 @@ export function summarise(input: SummariseInput): ProbeOutcome {
       + `this run carries that kind. Every row that WAS counted carries no \`kind\` of its own. `
       + `If this row was meant to be a hard check, the exit code above does not include it.`);
 
+  /**
+   * Round 359, Daedalus — the string half of Round 358 §4, refused on the one key that does not
+   * false-red a shape this module's own docblocks defend. Theseus handed the call over explicitly
+   * ("if the answer is that a row tagged with the module's own default name can only ever have
+   * meant hard check, that is a narrower cure than anything I could grade, and it's yours").
+   *
+   * His blocking argument is correct as stated and both of the refusals he tried do false-red:
+   *
+   * ```
+   *   "no row carries the configured kind"  ->  false-reds a probe that tags NOTHING    (blessed)
+   *   "a stranded row is failing"           ->  false-reds a failing `kind: 'open-item'`
+   *                                             row beside untagged hard checks         (blessed)
+   * ```
+   *
+   * The key that dodges both is the identity of the stranded token, not the shape of the run.
+   * Refuse only when ALL FOUR hold: the configured kind is a string, it is NOT
+   * `MODULE_DEFAULT_KIND`, NO row carries it, and some row carries `MODULE_DEFAULT_KIND`. Then the
+   * configuration is inert — every counted row was counted by `readKind`'s default rather than by
+   * the configuration — and the one row that declared itself a hard check in this module's own
+   * vocabulary is the one the configuration excluded. **The safe default and the configuration
+   * disagree, and the row lost.**
+   *
+   * Driven against both of his known negatives, which is the condition this cure had to meet:
+   *
+   * ```
+   *   tags nothing,        rk 'check'      ->  code 0   no row carries 'regression'  (unmoved)
+   *   failing 'open-item', rk default      ->  code 0   rk IS the default            (unmoved)
+   *   failing 'open-item', rk 'check'      ->  code 0   stranded token is not ours   (unmoved)
+   *   failing 'regression',rk 'check'      ->  code 3   REFUSED                      (the cure)
+   *   passing 'regression',rk 'check'      ->  code 3   REFUSED                      (see below)
+   *   failing untagged beside either       ->  code 1   a failure still dominates    (Round 356)
+   * ```
+   *
+   * Round 311's three arms are also in this population and all three are unmoved: C1/C2 drive the
+   * default `regressionKind` (so the second condition fails), and C3 supplies `regressionKind:
+   * 'check'` over a row that CARRIES `'check'` (so the third fails). That probe is the near-miss in
+   * the literature — it drove this mismatch over a homogeneous population, got `ran 0 → code 3`,
+   * and recorded it as "a trap rather than a defect"; its C1/C2 pin the homogeneous case, which is
+   * why nothing in the tree noticed the mixed one arriving. Left where it is, re-read not re-pinned.
+   *
+   * **Refused regardless of the stranded row's `pass`,** which is wider than the `reasons` line
+   * below it and deliberately so: the defect is in the configuration, not in the row. A passing
+   * stranded row means `ran` is counting a population that a declared hard check has left, and the
+   * exit code is right by luck. A `pass`-keyed refusal would also have made the cure's reachability
+   * depend on the subject's health, which is the property that makes a guard untestable.
+   *
+   * Declared cost, the one shape this refuses that a sufficiently contrary caller could have meant:
+   * renaming the hard-check vocabulary to something else while using `'regression'` as the name of
+   * a SOFT kind. Nothing in the tree does this (three files supply `regressionKind`, all three
+   * supply `'regression'`), and it would mean using this module's own default token for the
+   * opposite of its meaning. Priced and accepted, rather than discovered later.
+   */
+  const invertedVocabulary: string[] = (
+    typeof regressionKind === 'string'
+    && regressionKind !== MODULE_DEFAULT_KIND
+    && !carriesTheKind
+    && input.results.some((r) => r.kind === MODULE_DEFAULT_KIND)
+  ) ? [
+      `the configured regressionKind ${describe(regressionKind)} is carried by NO row in this run, `
+      + `while ${input.results.filter((r) => r.kind === MODULE_DEFAULT_KIND).length} row(s) carry `
+      + `${describe(MODULE_DEFAULT_KIND)} — this module's own default, and the name every untagged `
+      + `row is counted under. So the configuration counted nothing and excluded the rows that `
+      + `declared themselves hard checks. Fix the configuration or the rows; which of these is a `
+      + `hard check is not knowable from this run.`,
+    ] : [];
+
   // A failure dominates. If something broke, that is the headline even on a partial run —
   // exit 1 is the louder code and the operator's next action is the same either way.
   //
@@ -471,10 +594,14 @@ export function summarise(input: SummariseInput): ProbeOutcome {
       failed,
       // Unreadable rows first: they explain which of the names printed above is a type defect
       // rather than a broken subject.
+      // Round 359 — `invertedVocabulary` and `hatchProblems` are carried here too, because a run
+      // can hold a failure AND a configuration this unreadable, and the failure limb returning
+      // first must not be the reason the configuration goes unnamed. Same reason Round 356 added
+      // the skips to the near-miss limb and 357 the unreadable kinds.
       reasons: [
-        ...configProblems, ...strandedFailures,
+        ...configProblems, ...invertedVocabulary, ...strandedFailures,
         ...unreadableReasons, ...unreadableKinds, ...nearMissReasons,
-        ...skipped.map((s) => `did not run: ${s}`),
+        ...hatchProblems, ...skipped.map((s) => `did not run: ${s}`),
       ],
     };
   }
@@ -490,7 +617,10 @@ export function summarise(input: SummariseInput): ProbeOutcome {
         + `This is not a pass.`,
       ran,
       failed: [],
-      reasons: [...configProblems, ...unreadableKinds, ...skipped.map((s) => `did not run: ${s}`)],
+      reasons: [
+        ...configProblems, ...unreadableKinds, ...hatchProblems,
+        ...skipped.map((s) => `did not run: ${s}`),
+      ],
     };
   }
 
@@ -506,7 +636,29 @@ export function summarise(input: SummariseInput): ProbeOutcome {
       // Round 356 — the skips too. The early return dropped them, and a run can carry both.
       // Round 357 — and the unreadable kinds, for the same reason: a run can carry both.
       reasons: [
-        ...strandedFailures, ...unreadableKinds, ...nearMissReasons,
+        ...invertedVocabulary, ...strandedFailures, ...unreadableKinds, ...nearMissReasons,
+        ...hatchProblems, ...skipped.map((s) => `did not run: ${s}`),
+      ],
+    };
+  }
+
+  // Round 359 — the configured vocabulary counted nothing and excluded the rows that named
+  // themselves hard checks. Below the failure limb AND below the near-miss limb: a failure still
+  // dominates (Round 356), and a `regressionKind` one edit from the default is better diagnosed as
+  // the typo it is than as an inversion. See the note beside `invertedVocabulary` for the four
+  // conditions and for both of the Round 358 known negatives this is keyed to clear.
+  if (invertedVocabulary.length > 0) {
+    return {
+      code: 3,
+      headline: `INCONCLUSIVE — ${input.probeName} was summarised against a \`regressionKind\` of `
+        + `${JSON.stringify(regressionKind)} that no row carries, while ${input.results
+          .filter((r) => r.kind === MODULE_DEFAULT_KIND).length} row(s) carry `
+        + `${JSON.stringify(MODULE_DEFAULT_KIND)}. The rows that declared themselves hard checks `
+        + `were the ones the configuration left out. This is not a pass.`,
+      ran,
+      failed: [],
+      reasons: [
+        ...invertedVocabulary, ...strandedFailures, ...unreadableKinds, ...hatchProblems,
         ...skipped.map((s) => `did not run: ${s}`),
       ],
     };
@@ -530,7 +682,10 @@ export function summarise(input: SummariseInput): ProbeOutcome {
         + `This is not a pass.`,
       ran,
       failed: [],
-      reasons: [...strandedFailures, ...unreadableKinds, ...skipped.map((s) => `did not run: ${s}`)],
+      reasons: [
+        ...strandedFailures, ...unreadableKinds, ...hatchProblems,
+        ...skipped.map((s) => `did not run: ${s}`),
+      ],
     };
   }
 
@@ -554,7 +709,29 @@ export function summarise(input: SummariseInput): ProbeOutcome {
       headline: `INCONCLUSIVE — ${input.probeName} ${what}. This is not a pass.`,
       ran,
       failed: [],
-      reasons: [...strandedFailures, ...reasons],
+      reasons: [...strandedFailures, ...hatchProblems, ...reasons],
+    };
+  }
+
+  // Round 359 — the escape hatch is not a list. Last of the code-3 limbs, because every one above
+  // it is a stronger statement about the run, and `inapplicable` decides no population: it is the
+  // only field here whose unreadability costs the run its own account of its SCOPE rather than its
+  // verdicts. See the note beside `hatchProblems` for why this is a refusal and not a reason line,
+  // and for the driven reason it cannot demote a failure.
+  if (hatchProblems.length > 0) {
+    return {
+      code: 3,
+      headline: `INCONCLUSIVE — ${input.probeName} declared its inapplicable arms as `
+        // No "passed" in this string, deliberately: this module's own invariant is that exactly
+        // one limb may print that word. The first draft of this headline read "Every hard check
+        // passed; …" and arm N of `probe-round224` reddened on it in the same minute — which is
+        // the arm doing its job, so the sentence is written the long way round instead.
+        + `${typeof hatch}, not an array, so the arms it meant to exclude are unreadable. Every `
+        + `hard check was established and none failed; what this run set out to COVER is not `
+        + `knowable from it. This is not a pass.`,
+      ran,
+      failed: [],
+      reasons: [...hatchProblems, ...strandedFailures],
     };
   }
 

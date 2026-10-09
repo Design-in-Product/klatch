@@ -247,7 +247,7 @@ export const SWEPT = [
   },
   {
     file: 'probe-round224-a-skip-must-not-summarise-as-a-pass.mts',
-    expect: /All 130 regression checks passed/,
+    expect: /All 148 regression checks passed/,
     // 64/64 → 66/66 in Round 290: arm G's scan was normalised to ignore comments (it had gone red
     // on one), and the repair brought its own known positive and known negative with it.
     // 66/66 → 70/70 in Round 294: arm E stopped pinning the ABSENCE of `inapplicable` callers —
@@ -294,7 +294,25 @@ export const SWEPT = [
     // Round 357 limb built to refuse instead of throwing. Genuinely new hard checks; the one
     // measurement is declared as one (`inapplicable` is not type-read, and its throw is reachable
     // only from the all-green limb).
-    why: 'run every fire as a control by both seats; Theseus 358 measured 130/130, exit 0',
+    // 130/130 → 148/148 in Round 359: Round 358 cured the TYPE half of the `regressionKind`
+    // finding and handed the STRING half over as a question — every refusal Theseus tried
+    // false-reds a shape probe-outcome's own docblocks bless (a probe that tags nothing; a
+    // deliberately-failing `kind: 'open-item'` row beside untagged hard checks). The answer keys
+    // the refusal on the stranded TOKEN instead of the shape of the run: refuse only when the
+    // configured kind is a string, is not the module default, is carried by no row, and some row
+    // carries the module default. New arm N is the pin — 18 hard checks, mostly KNOWN NEGATIVES,
+    // because the claim is about what the cure does NOT touch: both of Round 358's blocking
+    // shapes, Round 311's C1/C2/C3 drive shapes, Round 356's failure-dominates precedence, and the
+    // near-miss limb keeping the better diagnosis for a one-edit vocabulary. Graded by a 33-case
+    // corpus whose moved set was checked against the prediction in BOTH directions — 11 of 33, no
+    // surprises either way. Also in arm N: the `inapplicable` hatch Round 358 characterised and
+    // left, whose throw was reachable only from the all-green limb and is now a code 3 from that
+    // limb alone. Two Round 358 cells in arm M were RE-AIMED rather than loosened (the string half
+    // is now refused; the hatch asymmetry is now refuse-vs-unreachable rather than throw-vs-not),
+    // which is why arm M's own count did not move. Genuinely new hard checks; the one new
+    // measurement is declared as one (the cure's priced cost: `'regression'` used as a SOFT kind
+    // under a renamed vocabulary).
+    why: 'run every fire as a control by both seats; Daedalus 359 measured 148/148, exit 0',
   },
   {
     file: 'probe-round225-a-citation-is-not-a-call.mts',
