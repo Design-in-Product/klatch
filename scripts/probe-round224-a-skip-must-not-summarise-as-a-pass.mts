@@ -269,6 +269,101 @@ const meas = (arm: string): ProbeVerdict => ({ arm, check: 'a measurement', pass
     'zero hard checks is still inconclusive whatever the skips were');
 }
 
+// ── Arm K — a near-miss `kind`, and which of it dominates (Rounds 355, 356) ───
+//
+// Daedalus, Round 355: `kind` is a free-form string whose legal values live in this module's
+// prose and nowhere else, and every count in `summarise` is `=== regressionKind`. So a FAILING
+// hard check tagged `'regresion'` left the population that decides the exit code and the run
+// printed `All 2 regression checks passed` at code 0 — Theseus's Round 354 mechanism (a guard on
+// identity does not guard value) one layer down, inverting an exit code instead of moving a
+// figure. Cured by refusing any kind within edit distance 1 of `regressionKind`.
+//
+// Theseus, Round 356: that cure was graded in a scratch drive and pinned by nothing — this arm
+// is the pin, and writing it found the precedence defect it also now holds. The refusal returned
+// EARLY, above this module's own stated rule that a failure dominates, so a GENUINELY failing
+// hard check sitting beside a typo'd row was demoted from code 1 to code 3 with `failed` emptied:
+// no REGRESSIONS block, no channel naming the row that broke. Both directions are graded here
+// because a refusal that swallows a red is the same shape as the report that swallowed it.
+//
+// The LIMIT is graded too, as a known negative rather than a sentence: two edits out is NOT
+// caught. An arm that only showed the cure firing could not tell a narrow cure from a wide one.
+
+{
+  const nm = (arm: string, kind: string): ProbeVerdict =>
+    ({ arm, check: 'a row one edit off', pass: true, kind });
+
+  // K/355 — the refusal, and that it is a refusal and not a quieter pass.
+  const miss = summarise({ probeName: 'subject', results: [ok('A', 'fine'), nm('C', 'regresion')] });
+  check('K', 'a kind one edit from the regression kind does NOT exit 0', miss.code !== 0, `code ${miss.code}`);
+  check('K', 'it refuses at 3 — the counts are an equality against a string it is not',
+    miss.code === 3, `code ${miss.code}`);
+  check('K', 'and the refusal does not print the word the pre-cure run printed',
+    !/passed/.test(miss.headline), JSON.stringify(miss.headline.slice(0, 60)));
+  check('K', 'the offending row is NAMED with its kind value, so the operator can fix it',
+    miss.reasons.some((r) => /one edit from/.test(r) && /regresion/.test(r)), JSON.stringify(miss.reasons));
+  const missSkip = summarise({
+    probeName: 'subject',
+    results: [ok('A', 'fine')],
+    skipped: [{ label: '[B] needs a free port', kind: 'regresion' }],
+  });
+  check('K', 'the SKIP side refuses too — a hard skip one edit off stopped forcing 3',
+    missSkip.code === 3, `code ${missSkip.code}`);
+
+  // K/355 known negatives — every `kind` value the live tree actually uses, and the omitted case.
+  const liveKinds = ['measurement', 'open', 'open-item', 'hard', 'check'];
+  const tripped = liveKinds.filter((k) =>
+    summarise({ probeName: 'subject', results: [ok('A', 'fine'), nm('C', k)] }).code !== 0);
+  check('K', 'none of the kind values the live tree uses trips the refusal',
+    tripped.length === 0, tripped.length ? `tripped: ${tripped.join(', ')}` : `${liveKinds.length} live kinds clean`);
+  check('K', 'an OMITTED kind is untouched by the refusal and still counts as a hard check',
+    summarise({ probeName: 'subject', results: [{ arm: 'A', check: 'untagged', pass: false }] }).code === 1,
+    'the ?? default still points the safe way');
+  check('K', 'a correctly-spelled run is untouched — the refusal is not reflexive',
+    summarise({ probeName: 'subject', results: [ok('A', 'one'), ok('B', 'two')] }).code === 0,
+    'identical is not a near-miss');
+
+  // K/355 — the one shape plain Levenshtein scores as 2 and a typist produces constantly.
+  check('K', 'an adjacent transposition is caught, which Levenshtein alone would miss',
+    summarise({ probeName: 'subject', results: [ok('A', 'fine'), nm('C', 'rgeression')] }).code === 3,
+    'Damerau, per the note on withinOneEdit');
+
+  // K/355 — the declared LIMIT, graded. This arm goes red if the cure is ever widened silently.
+  const twoEdits = summarise({ probeName: 'subject', results: [ok('A', 'fine'), nm('C', 'rgerssion')] });
+  check('K', 'and the DECLARED limit is real: two edits out is not caught, and this says so',
+    twoEdits.code === 0, `code ${twoEdits.code} — the cure narrows the hole, it does not close it`);
+
+  // K/356 — precedence. The failure must dominate the refusal, as it dominates a skip in arm D.
+  const both = summarise({
+    probeName: 'subject',
+    results: [bad('A', 'THE REAL BREAK'), ok('B', 'fine'), nm('C', 'regresion')],
+  });
+  check('K', 'a genuine failure beside a near-miss stays code 1 — the refusal does not demote it',
+    both.code === 1, `code ${both.code}`);
+  check('K', 'and the row that BROKE is named, which the first version of the cure emptied',
+    both.failed.length === 1 && both.failed[0].check === 'THE REAL BREAK',
+    `${both.failed.length} failed: ${both.failed.map((f) => f.check).join(',')}`);
+  check('K', 'the near-miss is not traded away for the failure — both are reported',
+    both.reasons.some((r) => /one edit from/.test(r)), JSON.stringify(both.reasons));
+  check('K', 'the headline declares the denominator a FLOOR, since a near-miss can only remove rows',
+    /is a floor, not the total/.test(both.headline), JSON.stringify(both.headline.slice(0, 70)));
+  const bothSkip = summarise({
+    probeName: 'subject',
+    results: [bad('A', 'THE REAL BREAK'), ok('B', 'fine')],
+    skipped: [{ label: '[C] needs a free port', kind: 'regresion' }],
+  });
+  check('K', 'precedence holds when the near-miss is on a SKIP rather than a verdict',
+    bothSkip.code === 1 && bothSkip.failed.length === 1, `code ${bothSkip.code}, failed ${bothSkip.failed.length}`);
+
+  // K/356 — the early return also dropped the skips. A run can carry both.
+  const missAndSkip = summarise({
+    probeName: 'subject',
+    results: [ok('A', 'fine'), nm('C', 'regresion')],
+    skipped: ['[D] needs a free port 3001'],
+  });
+  check('K', 'a refusal still names the hard skips it also carries',
+    missAndSkip.reasons.some((r) => /did not run: \[D\]/.test(r)), JSON.stringify(missAndSkip.reasons));
+}
+
 // ── Arm F — the OLD tails, re-implemented, report success on arm B's input ────
 //
 // Verbatim shape of what stood at HEAD~, not a paraphrase:

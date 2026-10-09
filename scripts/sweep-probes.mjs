@@ -247,7 +247,7 @@ export const SWEPT = [
   },
   {
     file: 'probe-round224-a-skip-must-not-summarise-as-a-pass.mts',
-    expect: /All 72 regression checks passed/,
+    expect: /All 88 regression checks passed/,
     // 64/64 → 66/66 in Round 290: arm G's scan was normalised to ignore comments (it had gone red
     // on one), and the repair brought its own known positive and known negative with it.
     // 66/66 → 70/70 in Round 294: arm E stopped pinning the ABSENCE of `inapplicable` callers —
@@ -260,7 +260,16 @@ export const SWEPT = [
     // positive/negative. Recursion was measured and declined: the delta is 0 of 19 today, and it
     // would put lib/probe-outcome.mts, whose job is printing "checks passed", inside a detector
     // hunting that print.
-    why: 'run every fire as a control by both seats; Daedalus 321 measured 72/72, exit 0',
+    // 72/72 → 88/88 in Round 356: Daedalus's Round 355 near-miss-`kind` cure was graded in a
+    // scratch drive and pinned by NOTHING, so a later edit could have removed it silently. New
+    // arm K is that pin — 16 hard checks, both the refusal and its declared two-edit limit (a
+    // known negative, so a silent widening reddens) — and writing it found the precedence defect
+    // it now also holds: the refusal returned above this module's own failure-dominates rule, so
+    // a real break beside a typo'd row went code 1 → code 3 with `failed` emptied and the broken
+    // row named nowhere. These 16 are genuinely new hard checks, not a restaging of the same
+    // population: the ProbeVerdict docblock's warning is about promoting MEASUREMENTS to hard
+    // checks, which this is not.
+    why: 'run every fire as a control by both seats; Theseus 356 measured 88/88, exit 0',
   },
   {
     file: 'probe-round225-a-citation-is-not-a-call.mts',

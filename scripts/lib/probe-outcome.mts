@@ -180,6 +180,10 @@ export type SummariseInput = {
  * transposition — and not equal to it is refused: code 3, naming the row, printing no "passed".
  * Limit, stated: a typo two or more edits out (`rgerssion`) is NOT caught, and a kind that is a
  * legitimately different word remains unexamined. This narrows the hole; it does not close it.
+ *
+ * Round 356, Theseus: that refusal is code 3 only when nothing failed. A genuine failure still
+ * dominates it — see the precedence note in {@link summarise} for why, and for what the first
+ * version of this cure swallowed.
  */
 const withinOneEdit = (a: string, b: string): boolean => {
   if (a === b) return false;
@@ -206,31 +210,6 @@ export function summarise(input: SummariseInput): ProbeOutcome {
   const regressionKind = input.regressionKind ?? 'regression';
   const inapplicable = input.inapplicable ?? [];
 
-  // Round 355 — refuse rather than report, per the note on `withinOneEdit` above. This runs
-  // before any count is taken, because every count below is computed by equality against
-  // `regressionKind` and a near-miss silently leaves the population that decides the exit code.
-  const nearMisses: string[] = [
-    ...input.results
-      .filter((r) => r.kind !== undefined && withinOneEdit(r.kind, regressionKind))
-      .map((r) => `verdict [${r.arm}] ${r.check} — kind=${JSON.stringify(r.kind)}`),
-    ...(input.skipped ?? [])
-      .filter((s): s is { label: string; kind?: string } => typeof s !== 'string')
-      .filter((s) => s.kind !== undefined && withinOneEdit(s.kind, regressionKind))
-      .map((s) => `skip ${s.label} — kind=${JSON.stringify(s.kind)}`),
-  ];
-  if (nearMisses.length > 0) {
-    return {
-      code: 3,
-      headline: `INCONCLUSIVE — ${input.probeName} carries ${nearMisses.length} kind value(s) one `
-        + `edit from ${JSON.stringify(regressionKind)} without being it. Every count here is an `
-        + `equality against that string, so these rows have silently left the population that `
-        + `decides the exit code. This is not a pass.`,
-      ran: 0,
-      failed: [],
-      reasons: nearMisses.map((m) => `kind is one edit from ${JSON.stringify(regressionKind)}: ${m}`),
-    };
-  }
-
   const labelOf = (s: SkipRecord) => (typeof s === 'string' ? s : s.label);
   const kindOf = (s: SkipRecord) => (typeof s === 'string' ? regressionKind : s.kind ?? regressionKind);
   const allSkips = input.skipped ?? [];
@@ -243,15 +222,70 @@ export function summarise(input: SummariseInput): ProbeOutcome {
   const failed = regressions.filter((r) => !r.pass);
   const ran = regressions.length;
 
+  // Round 355 — refuse rather than report, per the note on `withinOneEdit` above. Computed
+  // before any outcome is returned, because every count above is an equality against
+  // `regressionKind` and a near-miss silently leaves the population that decides the exit code.
+  const nearMisses: string[] = [
+    ...input.results
+      .filter((r) => r.kind !== undefined && withinOneEdit(r.kind, regressionKind))
+      .map((r) => `verdict [${r.arm}] ${r.check} — kind=${JSON.stringify(r.kind)}`),
+    ...(input.skipped ?? [])
+      .filter((s): s is { label: string; kind?: string } => typeof s !== 'string')
+      .filter((s) => s.kind !== undefined && withinOneEdit(s.kind, regressionKind))
+      .map((s) => `skip ${s.label} — kind=${JSON.stringify(s.kind)}`),
+  ];
+  const nearMissReasons = nearMisses.map(
+    (m) => `kind is one edit from ${JSON.stringify(regressionKind)}: ${m}`,
+  );
+
   // A failure dominates. If something broke, that is the headline even on a partial run —
   // exit 1 is the louder code and the operator's next action is the same either way.
+  //
+  // Round 356, Theseus — and it dominates a near-miss too, which is why this limb is here and
+  // not below the refusal. Round 355's refusal was correct about an untrustworthy COUNT and
+  // wrong about precedence: returning early, it demoted a GENUINELY failing hard check from
+  // code 1 to code 3 and emptied `failed`, so {@link summariseAndExit} printed no REGRESSIONS
+  // block and no channel of the run named the row that broke. Driven against both functions on
+  // one input (`{ regression/false, regression/true, regresion/true }`):
+  //
+  // ```
+  //   pre-355   code 1  failed 1  names [A] THE REAL BREAK
+  //   355       code 3  failed 0  names nothing — only the typo
+  //   356       code 1  failed 1  names the break AND the typo, denominator declared a floor
+  // ```
+  //
+  // That is this module's own Round 223 shape one more turn in: the knowledge was in the input
+  // and absent from every channel a reader reads. The reachability is exactly the refusal's own
+  // — a typo'd kind — and the two coincide more often than they look, because the agent most
+  // likely to mistype a `kind` is the one mid-edit on the probe, who is also the one most likely
+  // to have just broken something. So: stay red, name the rows, and refuse the DENOMINATOR
+  // rather than the verdict — `ran` is reported as a floor, since a near-miss can only have
+  // removed rows from the counted population, never added them.
   if (failed.length) {
     return {
       code: 1,
-      headline: `${failed.length} of ${ran} regression check(s) FAILED.`,
+      headline: nearMisses.length === 0
+        ? `${failed.length} of ${ran} regression check(s) FAILED.`
+        : `${failed.length} of ${ran} regression check(s) FAILED — and ${ran} is a floor, not the `
+          + `total: ${nearMisses.length} kind value(s) one edit from ${JSON.stringify(regressionKind)} `
+          + `left the counted population. Fix the kind and re-run; the failure above stands either way.`,
       ran,
       failed,
-      reasons: skipped.map((s) => `did not run: ${s}`),
+      reasons: [...nearMissReasons, ...skipped.map((s) => `did not run: ${s}`)],
+    };
+  }
+
+  if (nearMisses.length > 0) {
+    return {
+      code: 3,
+      headline: `INCONCLUSIVE — ${input.probeName} carries ${nearMisses.length} kind value(s) one `
+        + `edit from ${JSON.stringify(regressionKind)} without being it. Every count here is an `
+        + `equality against that string, so these rows have silently left the population that `
+        + `decides the exit code. This is not a pass.`,
+      ran: 0,
+      failed: [],
+      // Round 356 — the skips too. The early return dropped them, and a run can carry both.
+      reasons: [...nearMissReasons, ...skipped.map((s) => `did not run: ${s}`)],
     };
   }
 
