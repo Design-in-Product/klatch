@@ -80,6 +80,12 @@
 export type ProbeVerdict = {
   arm: string;
   check: string;
+  /**
+   * Only the boolean `true` is a pass. Round 357: this is checked by VALUE and not merely
+   * believed from the declaration, because an `any` reaches here with no diagnostic and a truthy
+   * non-boolean (`-1`, `'false'`, `[]`) read as a pass. See the note above `failed` in
+   * {@link summarise}.
+   */
   pass: boolean;
   kind?: string;
 };
@@ -210,28 +216,106 @@ export function summarise(input: SummariseInput): ProbeOutcome {
   const regressionKind = input.regressionKind ?? 'regression';
   const inapplicable = input.inapplicable ?? [];
 
+  // Round 357 — `kind` is read by TYPE, not just by equality. The missing case was already
+  // defaulted IN (see {@link ProbeVerdict}); an unreadable case now defaults in the same
+  // direction, which is what keeps a failing row in the population. Found by driving the limit
+  // the note above `failed` records, which is why that note no longer claims a throw: four of
+  // five non-string shapes DO throw inside `withinOneEdit` (`123`, `null`, `{}`, `true`), but
+  // `kind: ['regression']` does not. Its length is 1 against the string's 10, so the near-miss
+  // refusal's own length pre-test returns false, the equality against `regressionKind` is false,
+  // and the row leaves the counted population silently: a failing hard check summarised as
+  // `code 0, All 1 regression checks passed`. Same inversion as Round 355, reached by type
+  // instead of by typo. I had reasoned "loud throw" and written it down; one drive found the
+  // counterexample in the same minute.
+  const readKind = (k: unknown): string => (typeof k === 'string' ? k : regressionKind);
+
   const labelOf = (s: SkipRecord) => (typeof s === 'string' ? s : s.label);
-  const kindOf = (s: SkipRecord) => (typeof s === 'string' ? regressionKind : s.kind ?? regressionKind);
+  const kindOf = (s: SkipRecord) => (typeof s === 'string' ? regressionKind : readKind(s.kind));
   const allSkips = input.skipped ?? [];
   /** Skips of arms that would have contributed a hard check. Only these force code 3. */
   const skipped = allSkips.filter((s) => kindOf(s) === regressionKind).map(labelOf);
   /** Skips of open-item or measurement arms: reported, but they do not weaken the run. */
   const softSkips = allSkips.filter((s) => kindOf(s) !== regressionKind).map(labelOf);
 
-  const regressions = input.results.filter((r) => (r.kind ?? regressionKind) === regressionKind);
-  const failed = regressions.filter((r) => !r.pass);
+  const regressions = input.results.filter((r) => readKind(r.kind) === regressionKind);
+
+  /** Rows and skips whose `kind` is present but not a string. Defaulted IN above; named here. */
+  const unreadableKinds: string[] = [
+    ...input.results
+      .filter((r) => r.kind !== undefined && typeof r.kind !== 'string')
+      .map((r) => `verdict [${r.arm}] ${r.check} — kind is ${typeof r.kind} `
+        + `${JSON.stringify(r.kind)}, not a string. Counted as a ${JSON.stringify(regressionKind)} `
+        + `check, which is the safe direction; fix the field.`),
+    ...allSkips
+      .filter((s): s is { label: string; kind?: string } => typeof s !== 'string')
+      .filter((s) => s.kind !== undefined && typeof s.kind !== 'string')
+      .map((s) => `skip ${s.label} — kind is ${typeof s.kind} ${JSON.stringify(s.kind)}, not a `
+        + `string. Counted as a ${JSON.stringify(regressionKind)} skip, which is the safe `
+        + `direction; fix the field.`),
+  ];
+
+  // Round 357, Daedalus — Theseus handed this over undriven in Round 356 ("`pass` is not
+  // value-guarded (`!r.pass`, so a truthy non-boolean reads as a pass)"), and driven it inverts
+  // an exit code the same way the Round 355 `kind` typo did. `pass` is declared `boolean` and
+  // every one of the 62 callers is a `.mts` file inside `scripts/tsconfig.json`, so this is only
+  // reachable where something defeats the checker — which `any` does silently, being assignable
+  // to `boolean` with no diagnostic under `strict`.
+  //
+  // Measured with the CHECKER rather than a regex (a regex over `pass:` returns 243 sites, mostly
+  // prose and parameter declarations): **9** `any`-typed values reach a boolean verdict position
+  // in the live tree, and all 9 hand-read as `typeof … === 'string' && ….includes(…)`, `.some(…)`,
+  // `.every(…)`, `!…` or `… && … === false` — runtime-boolean-or-throw. So the live count of
+  // actual non-booleans is **zero**; what is missing is anything HOLDING it at zero. The shape one
+  // edit away is `pass: anyValue.indexOf(x)`, where `-1` is truthy.
+  //
+  // Driven against this function before the cure:
+  //
+  // ```
+  //   pass: false      ->  code 1,  1 of 2 regression check(s) FAILED.     (correct)
+  //   pass: 'FAIL'     ->  code 0,  All 2 regression checks passed.
+  //   pass: -1         ->  code 0,  All 2 regression checks passed.
+  //   pass: []         ->  code 0,  All 2 regression checks passed.
+  //   pass: 'false'    ->  code 0,  All 2 regression checks passed.
+  //   pass: undefined  ->  code 1   (falsy — already a loud red, and must stay one)
+  // ```
+  //
+  // **Why this counts as a failure and is not refused.** Round 356 is the reason. My Round 355
+  // cure refused a near-miss with code 3 and thereby demoted a genuinely failing check from 1 to
+  // 3; Theseus found it. A falsy non-boolean is a loud `code 1` TODAY, so refusing here would
+  // repeat that mistake in the other half of the same function. `r.pass !== true` instead of
+  // `!r.pass` is monotone louder in both directions: every all-boolean run is byte-identical, a
+  // truthy non-boolean moves from a silent pass to a named red, and a falsy one does not move at
+  // all. The denominator needs no floor language either — an unreadable row is still a
+  // regression-kinded row, so it is counted in `ran`; only a near-miss removes rows.
+  //
+  // The rows are named in `reasons` as well as in `failed`, because `failed` alone prints
+  // `[A] the thing holds` and sends the operator to look for a product defect that is not there.
+  // That is this module's Round 223 shape again: the knowledge was in the run.
+  //
+  // Limit, driven not assumed: a non-string `kind` is NOT guarded here and throws inside
+  // `withinOneEdit` instead — loud, but a stack trace rather than a verdict. Recorded, not cured.
+  const failed = regressions.filter((r) => r.pass !== true);
+  const unreadable = regressions.filter((r) => typeof r.pass !== 'boolean');
+  const unreadableReasons = unreadable.map(
+    (r) => `pass is not a boolean — verdict [${r.arm}] ${r.check} carries `
+      + `${typeof r.pass} ${JSON.stringify(r.pass)}. Counted as a FAILURE: an unreadable verdict `
+      + `is not a pass. Fix the verdict's type; this row says nothing about the subject either way.`,
+  );
   const ran = regressions.length;
 
   // Round 355 — refuse rather than report, per the note on `withinOneEdit` above. Computed
   // before any outcome is returned, because every count above is an equality against
   // `regressionKind` and a near-miss silently leaves the population that decides the exit code.
   const nearMisses: string[] = [
+    // Round 357 — `typeof === 'string'` rather than `!== undefined`: `withinOneEdit` indexes and
+    // slices its arguments, so a non-string `kind` threw here (driven: `123`, `null`, `{}`,
+    // `true`). The unreadable case is reported through `unreadableKinds` instead.
     ...input.results
-      .filter((r) => r.kind !== undefined && withinOneEdit(r.kind, regressionKind))
+      .filter((r) => typeof r.kind === 'string' && withinOneEdit(r.kind, regressionKind))
       .map((r) => `verdict [${r.arm}] ${r.check} — kind=${JSON.stringify(r.kind)}`),
     ...(input.skipped ?? [])
       .filter((s): s is { label: string; kind?: string } => typeof s !== 'string')
-      .filter((s) => s.kind !== undefined && withinOneEdit(s.kind, regressionKind))
+      .filter((s) => typeof s.kind === 'string' && withinOneEdit(s.kind, regressionKind))
       .map((s) => `skip ${s.label} — kind=${JSON.stringify(s.kind)}`),
   ];
   const nearMissReasons = nearMisses.map(
@@ -271,7 +355,12 @@ export function summarise(input: SummariseInput): ProbeOutcome {
           + `left the counted population. Fix the kind and re-run; the failure above stands either way.`,
       ran,
       failed,
-      reasons: [...nearMissReasons, ...skipped.map((s) => `did not run: ${s}`)],
+      // Unreadable rows first: they explain which of the names printed above is a type defect
+      // rather than a broken subject.
+      reasons: [
+        ...unreadableReasons, ...unreadableKinds, ...nearMissReasons,
+        ...skipped.map((s) => `did not run: ${s}`),
+      ],
     };
   }
 
@@ -285,7 +374,30 @@ export function summarise(input: SummariseInput): ProbeOutcome {
       ran: 0,
       failed: [],
       // Round 356 — the skips too. The early return dropped them, and a run can carry both.
-      reasons: [...nearMissReasons, ...skipped.map((s) => `did not run: ${s}`)],
+      // Round 357 — and the unreadable kinds, for the same reason: a run can carry both.
+      reasons: [...unreadableKinds, ...nearMissReasons, ...skipped.map((s) => `did not run: ${s}`)],
+    };
+  }
+
+  // Round 357 — an unreadable `kind` on an otherwise-clean run gets its own limb rather than
+  // being folded into either neighbour, because both neighbours would describe it wrongly. The
+  // near-miss headline says the rows "have silently left the population", which is the opposite
+  // of what happens here (they are defaulted IN); the skip headline below would read
+  // `established 2 of its checks and skipped 0 arm(s)`. Code 3 rather than 0: the field that
+  // decides the population is of a type nobody intended, so this run has not established what it
+  // set out to, and this module's standing rule is to refuse rather than print "passed" beside a
+  // defect. Live cost measured, not assumed: zero non-string `kind` values under `scripts/`.
+  if (unreadableKinds.length > 0) {
+    return {
+      code: 3,
+      headline: `INCONCLUSIVE — ${input.probeName} carries ${unreadableKinds.length} \`kind\` `
+        + `value(s) that are not strings. Each was counted as a `
+        + `${JSON.stringify(regressionKind)} check, which is the safe direction, so no verdict `
+        + `below is understated — but the field that decides the population is the wrong type. `
+        + `This is not a pass.`,
+      ran,
+      failed: [],
+      reasons: [...unreadableKinds, ...skipped.map((s) => `did not run: ${s}`)],
     };
   }
 
