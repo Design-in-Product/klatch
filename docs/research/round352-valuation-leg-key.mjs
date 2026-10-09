@@ -74,6 +74,31 @@ const refinedLabelValued = (s) => codeParenCount(s) === 0;
 /** A paren that exists in the bytes but is not code — direction (A) made mechanical. */
 const hasStringOnlyParen = (s) => s.rhs.includes('(') && codeParenCount(s) === 0;
 
+/**
+ * Round 355, Daedalus — an INDEPENDENT witness for one of the three hand classes.
+ *
+ * Theseus's Round 354 §7 declared the residual limit precisely: the domain check catches a value
+ * OUTSIDE {label, call, array}, and cannot catch a value that is inside the domain and simply
+ * wrong at source. Driven here rather than taken on word, and it is wider than the one case —
+ * THREE distinct one-token in-domain edits each move the headline figure `2 of 11` → `3 of 11`
+ * at exit 0 with both guards reporting clean (`:1017` array→label, `:171` label→array,
+ * `:428` call→label). Each moves it by +1 in the same direction, so the figure stays plausible.
+ *
+ * One of the three classes has a mechanical witness that is NOT either valuation leg: an array
+ * literal is the only one of the three whose RHS begins with `[`. The crude leg reads whether a
+ * byte `(` occurs anywhere; the refined leg reads whether a CODE `(` occurs anywhere; neither
+ * looks at the first code character. So this adds a signal rather than restating one, and the
+ * score below stays a crude-vs-hand comparison.
+ *
+ * Deliberately NOT extended to `call` (`codeParens >= 1` holds on today's table): that IS the
+ * refined leg, and enforcing the hand table with it would quietly turn `wrong on N of 11` from
+ * crude-vs-hand into crude-vs-refined. The residual limit is therefore a label<->call swap on one
+ * of the 8 non-array members, which still moves the figure — graded as such below.
+ *
+ * Read on the strings-BLANKED RHS, so a `[` that opens a string literal cannot be the witness.
+ */
+const arrayShaped = (s) => s.rhsBlanked.trimStart().startsWith('[');
+
 // ── Grading, before any tree figure is read ──────────────────────────────────────────────────
 // Known positives/negatives for the ASSIGN LEG are copied from the landed arm's own fixture
 // arrays, so the class I enumerate is the class it enumerates.
@@ -126,12 +151,28 @@ const bkp = (assignLegSites(BEE_KP) ?? [])[0];
 const bkn = (assignLegSites(BEE_KN) ?? [])[0];
 const gradeBee = !!bkp && !!bkn && crudeLabelValued(bkp) === true && crudeLabelValued(bkn) === true;
 
+// Round 355, Daedalus — known positives / known negatives for the ARRAY WITNESS. Every fixture is
+// pushed through `assignLegSites` so the witness is graded on sites the class actually admits, not
+// on hand-held strings (Round 341: a fixture that is not a real neighbourhood cannot grade).
+//   WKP  a fixture array of source-as-strings — the live shape of all three `array` members
+//   WKN1 a ternary over string literals — the live shape of all four `label` members
+//   WKN2 an INDEX expression, whose `[` is present but not leading — the trap this must not take
+const W_KP = "const H = [\n  \"const tag = pass ? 'MEAS' : 'PASS';\",\n].join('\\n');";
+const W_KN1 = "const tag = pass ? 'MEAS' : 'FAIL';";
+const W_KN2 = "const tag = r.counts['MEAS'];";
+const wkp = (assignLegSites(W_KP) ?? [])[0];
+const wkn1 = (assignLegSites(W_KN1) ?? [])[0];
+const wkn2 = (assignLegSites(W_KN2) ?? [])[0];
+const gradeArrayWitness = !!wkp && !!wkn1 && !!wkn2
+  && arrayShaped(wkp) === true && arrayShaped(wkn1) === false && arrayShaped(wkn2) === false;
+
 console.log(`GRADE assign leg, KP from the landed arm's own fixtures all flag: ${gradeAssignKp}`);
 console.log(`GRADE assign leg, the 4 KN entries that must stay clean here too: ${gradeAssignKn}`);
 console.log(`GRADE assign leg, the 2 KN fixture-arrays that must flag assign-leg-only: ${gradeAssignSplit}`);
 console.log(`GRADE string-only-paren detector (KP paren in a sibling label, KN real filter call): ${gradeParen}`);
 console.log(`GRADE the paren-inside-MEAS spelling is OUTSIDE the class entirely: ${gradeUnreachable}`);
 console.log(`GRADE direction-B fixtures reach the class at all: ${gradeBee}`);
+console.log(`GRADE array witness (KP fixture array, KN ternary, KN non-leading "[" index): ${gradeArrayWitness}`);
 console.log('');
 
 // ── The tree ─────────────────────────────────────────────────────────────────────────────────
@@ -152,6 +193,7 @@ for (const abs of POPULATION) {
       refined: refinedLabelValued(s),
       stringOnlyParen: hasStringOnlyParen(s),
       codeParens: codeParenCount(s),
+      arrayShaped: arrayShaped(s),
     });
   }
 }
@@ -191,7 +233,8 @@ console.log('');
 for (const m of members) {
   console.log(`  ${m.file}:${m.line}  ${m.name} = ${m.rhs.slice(0, 92)}`);
   console.log(`      crude(no "(")=${m.crude}  refined(no CODE "(")=${m.refined}  `
-    + `string-only-paren=${m.stringOnlyParen}  codeParens=${m.codeParens}`);
+    + `string-only-paren=${m.stringOnlyParen}  codeParens=${m.codeParens}  `
+    + `array-shaped(leading CODE "[")=${m.arrayShaped}`);
 }
 console.log('');
 // The key is graded against the hand reading as MEMBER LISTS, not counts (Round 340).
@@ -246,6 +289,27 @@ if (badClasses.length > 0) {
     + 'outside the declared domain, and the score compares against `label` by equality, so each '
     + 'would be counted wrong-or-right by whatever the crude leg happened to say:');
   for (const [k, c] of badClasses) console.log(`      ${k} — class=${JSON.stringify(c)}`);
+  process.exit(2);
+}
+// Round 355, Daedalus — ROUTED BACK FOR THESEUS'S CALL, revert invited, exactly as he treated mine.
+// His §7 limit, driven rather than accepted: an IN-domain wrong value passes both guards at exit 0
+// and moves `2 of 11` → `3 of 11` (three separate one-token edits do it; see the `arrayShaped`
+// docblock). `array` is the one class with a witness independent of BOTH valuation legs — it is the
+// only one of the three whose RHS begins with a code `[` — so the hand value and the witness must
+// agree, in both directions, and the score refuses if they do not. This catches every in-domain
+// typo that involves `array`, which is the highest-risk one: the two members the headline figure is
+// ABOUT are both `array`, and the reconciliation a moved member demands is what retypes the value.
+const witnessConflicts = members.filter((m) => m.arrayShaped !== (handOf.get(`${m.file}:${m.line}`) === 'array'));
+console.log(`ARRAY WITNESS (leading code "[") agrees with the hand value on: `
+  + `${members.length - witnessConflicts.length} of ${members.length}`);
+if (witnessConflicts.length > 0) {
+  console.log('CRUDE LEG vs HAND READING: REFUSED — ' + witnessConflicts.length + ' hand value(s) '
+    + 'contradict the array witness, which is independent of both valuation legs, so the hand '
+    + 'reading is wrong at source for at least these members:');
+  for (const m of witnessConflicts) {
+    console.log(`      ${m.file}:${m.line} ${m.name} — hand=${handOf.get(`${m.file}:${m.line}`)}, `
+      + `RHS begins with a code "["=${m.arrayShaped}`);
+  }
   process.exit(2);
 }
 // The crude leg's verdict, scored against the hand reading. "label-valued" is only correct when
