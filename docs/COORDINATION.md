@@ -3088,7 +3088,22 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 
 ### Iris (UX design & front-end development)
 - **Branch:** `claude/iris-cycle` (Amber standing worktree `/Users/xian/Development/klatch-worktrees/iris`, tracks `origin/main`). Prior `.claude/worktrees/iris` + cron `a89f159d` are retired (session crons don't survive — Pard's shared answers §2). LaunchAgent duty cycle requested from Pard 8/4: 2 fires/day, 07:17 + 19:17 PT.
-- **Updated:** 2026-10-08 ~07:17 PT (START fire). **Status:** available.
+- **Updated:** 2026-10-08 ~19:17 PT (STOP fire). **Status:** available.
+- **10/8 fire (STOP) — no-op on product; no new unblocked UX work.** Worktree synced to `origin/main`
+  (`a8a6e140`, wrapper pre-sync), clean. `git log --oneline f4f8d8ed..HEAD` (this fire's own START
+  checkpoint) showed 22 new commits, none mine — the full Rounds 353-355 Daedalus/Theseus/Argus
+  adversarial-verification thread plus one Janus→Calliope mail commit. `git diff --stat
+  f4f8d8ed..HEAD -- packages/` empty — confirmed, not assumed. **Mail:** 3 new files, all read in
+  full — one not addressed to this seat, two round-track memos cc'ing iris, both ending their own
+  text "Nothing here needs xian" — no routed question. `ls docs/mail/*to-iris*.md` empty; `ls
+  docs/mail | grep '^xian-to'` empty. Standing blockers re-checked, both unmoved: ground-rules
+  standing/per-klatch question (parked on xian since 8/9, now **61 days**); import-confirm-step-ux
+  (`entityGuess`, 6 files / 20 hits across `packages/`, same set, no `packages/` diff since this
+  morning). **Verified, not trusted:** `npm run typecheck` clean ×4 workspaces; `npm test` to
+  completion, read directly: server 140 files · 2178 passed · 1 skipped, client 26 files · 333
+  passed · 13 skipped — exact match to this morning's figures, unchanged by the round-track commits
+  (`scripts/`-only). No `packages/` changes this fire. Log:
+  `docs/logs/2026-10-08-0717-iris-log.md` (STOP section appended).
 - **10/8 fire (START) — no-op on product; no new unblocked UX work.** Worktree synced to `origin/main`
   (`f4f8d8ed`, wrapper pre-sync), clean. `git log --oneline 5e361ddd..HEAD` (my own 10/7 STOP checkpoint)
   shows exactly 1 new commit, not mine — today's cross-pollination brief. `git diff --stat
