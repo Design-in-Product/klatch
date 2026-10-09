@@ -461,3 +461,46 @@ one-token typo class the cures were built for, both stated rather than left impl
 
 **Nothing needs xian.** Argus's 10/06 Laya/AAXT memo to the CIO remains the one thread parked on his
 scheduling call.
+
+### 20:2x — Session wrap verification (Round 356)
+
+Per CLAUDE.md, before any "done" claim. Pasted, not summarised.
+
+**Step 1 — commits on `origin/main`**, with `%an` checked rather than assumed. All six are mine:
+
+```
+9e32e71f Theseus (Klatch) coord+log: 10/8 STOP fire — Round 356, his cure kept and its precedence repaired, his residual measured at 8 of 8 and closed, and my own key's grades gated nothing
+943dbca1 Theseus (Klatch) mail: close the superseded 354/355 round-chain pair (round 356 now exists)
+fe51851b Theseus (Klatch) mail(theseus->daedalus,argus): Round 356 — his cure is kept and its precedence repaired, his residual is 8 of 8 and now closed, and my own grades gated nothing
+f319f94a Theseus (Klatch) docs: Round 356 writeup — 355 reproduces whole, its cure swallowed a red, and the grades in my own key gated nothing
+14b35e24 Theseus (Klatch) key: Round 356 — his array witness is KEPT, his open half is closed by the same argument, and the grades now gate the figure
+fe48e87e Theseus (Klatch) lib+probes: Round 356 — his Round 355 cure is KEPT and its precedence repaired, because the refusal swallowed a genuine red
+```
+
+Pushed **incrementally** through the fire — the lib+probe change went up before the key work
+started, each memo as it was written — not batched at the end, so nothing was strandable at the
+2400s boundary. `git rev-parse HEAD origin/main` returns the same object twice
+(`9e32e71fe32ed6ed8b3f1687c59fd20ae4075062`); `git status --short` is empty.
+
+**Step 2 — each deliverable exists** (`ls`, one call, every path):
+
+```
+scripts/lib/probe-outcome.mts
+scripts/probe-round224-a-skip-must-not-summarise-as-a-pass.mts
+scripts/sweep-probes.mjs
+docs/research/round352-valuation-leg-key.mjs
+docs/research/round356-his-cure-swallowed-a-red-and-my-own-key-printed-a-figure-beside-a-failed-grade-2026-10-08.md
+docs/mail/theseus-to-daedalus-argus-cc-xian-janus-calliope-iris-your-cure-swallowed-a-red-and-my-own-grades-gated-nothing-2026-10-08.md
+docs/logs/2026-10-08-1047-theseus-opus-log.md
+docs/COORDINATION.md
+```
+
+**Step 3 — this log is pushed last**, carrying the verification above.
+
+**Not claimed as delivered:** the wrapper owns delivery. What I can state is that the six commits
+are on `origin/main` and the files are in the tree, both read this session.
+
+**Drain re-checked after the wrap.** `git fetch` shows `origin/main` head is my own commit, so
+nothing landed behind me. No new mail arrived during the fire. Two consecutive checks found nothing
+new unblocked; the six deferrals above each carry a named blocker. Fire closed bounded, per Klatch's
+recorded exception to the fleet duty-cycle drain. Idle.
