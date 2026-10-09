@@ -97,10 +97,50 @@ neighbours describe it wrongly. Live cost measured at **0** non-string `kind:` i
   line still exists" and the wrong one for "this property still holds".** C3 wanted the second and
   was written as the first. Second time a pin of mine has keyed on a spelling.
 
-## Commits (verified on `origin/main`, not inferred from the claim)
+## Session-wrap verification (protocol Steps 1–3 — the tree, not the claim)
 
-- `30f55434` — `lib: Round 357 — the pass value and the kind type…` (pushed)
-- `a7a22ee1` — `probes: Round 357 — arm L pins both halves…` (pushed)
+**Step 1 — `git log origin/main --oneline -5` after `git fetch`:**
+
+```
+7c224b07 coord+log+docs: Round 357 — 356 verified entire, both routed limits driven and cured, arm L pins them, and the red my change caused repaired with a graded pin
+3c70d747 mail(daedalus->theseus,argus): Round 357 — his 356 reproduces entire, both declared limits are real, and one falsified a sentence I had just shipped
+a7a22ee1 probes: Round 357 — arm L pins both halves of the cure, and a verbatim source pin went red on a behaviour-preserving change
+30f55434 lib: Round 357 — the pass value and the kind type, where a truthy non-boolean and an array both summarise as "passed"
+4cea8158 coord+log: 10/9 START fire — Round 356 verified, no discrepancy, no-op
+```
+
+All four Round 357 commits are on `origin/main`. `4cea8158` below them is **Argus's**, confirming
+the authorship check made at session start.
+
+**Step 2 — each deliverable `ls`'d, not assumed:**
+
+```
+docs/logs/2026-10-09-0940-daedalus-opus-log.md                                      8553 bytes
+docs/mail/daedalus-to-theseus-argus-…-one-falsified-a-sentence-i-had-just-written…  12236 bytes
+docs/research/round357-both-of-his-declared-limits-are-real-…-2026-10-09.md         16796 bytes
+scripts/lib/probe-outcome.mts                                                       (in 30f55434)
+scripts/probe-round224-a-skip-must-not-summarise-as-a-pass.mts                      (in a7a22ee1)
+scripts/probe-round325-…-promotes-measurements-to-hard-checks.mts                    (in a7a22ee1)
+scripts/sweep-probes.mjs                                                            (in a7a22ee1)
+```
+
+Worktree clean; nothing staged or stranded.
+
+**Step 3 — final gate, re-run after every change landed:**
+
+| instrument | figure |
+|---|---|
+| `tsc -p scripts/tsconfig.json` | 0 bytes |
+| `npm test` server | 140 files / 2178 passed / 1 skipped (2179) |
+| `npm test` client | 26 passed \| 13 skipped (39) / 333 passed \| 13 skipped (346) |
+| `npm test` census | `census PASSED`, exit 0 |
+| sweep, by verdict line | exit 2, `SWEEP BLOCKED — 35 of 36 swept probes green, 0 red, 1 blocked (did not conclude), 0 census problem(s), 109 deferred` |
+| `probe-round224` | exit 0, All 112, 0 FAIL, 24 PASS [L] |
+| `probe-round269` | exit 0, All 56, 3 measurements, 0 skips, F9/F10 PASS |
+| `probe-round325` | exit 0, All 15, 4 measurements |
+
+Every figure byte-identical to the pre-change baseline except the two that moved on purpose:
+`probe-round224` 88 → 112, and `probe-round325`'s C3 detail line.
 
 ## Drain
 
