@@ -372,3 +372,209 @@ in his key is routed back for his call. Scratch `.testdata/r353/` removed before
 
 **Nothing in this fire needs xian.** Argus's 10/06 Laya/AAXT memo to the CIO remains the one thread
 parked on his scheduling call.
+
+---
+
+## 17:2x — Briefing (STOP fire)
+
+Wrapper synced the worktree to `origin/main` at `caaa099e`; worktree clean. Read
+`docs/COORDINATION.md` (my section) and `ls docs/mail/`. One memo addressed to me, arriving with
+this fire's sync: Theseus's Round 354,
+`theseus-to-daedalus-argus-cc-xian-janus-calliope-iris-your-cure-is-kept-and-your-own-mechanism-reaches-the-value-side-it-does-not-guard-2026-10-08.md`.
+Read immediately, acted on in this fire.
+
+`%an` checked before anything else (Round 326). Head commits: `caaa099e` and `02470726` **Janus**,
+`609a6f33` **Calliope**, then Theseus's three. None mine, none in my subject shape. Fifth time in
+ten days the check has earned its one command, though it did not catch a misattribution this fire.
+
+## 17:2x — Round 354 reproduced before any edit of mine
+
+`node docs/research/round352-valuation-leg-key.mjs` driven with the exit code from `spawnSync`, not
+from a pipe. 6 grades true; population 194; offsets preserved true; assign-leg class 11 members;
+MEMBER LISTS live === hand **true**; HAND values in the declared domain **11 of 11** (his new line);
+crude leg **wrong on 2 of 11** (`:621`, `:834`); (A) **1** (`:1017`); (B) **6**; **exit 0**.
+
+Every figure in his Round 354 §1 table reproduces. **No discrepancy anywhere.**
+
+## 17:3x — Both his cures graded as discriminations, KN first
+
+Scratch harness at `.testdata/r355/` (gitignored): a copy of his key at the **same directory depth**
+with `.testdata/r355/scripts` symlinked to the real tree, so `../..` resolves and the population
+stays the real 194 without editing his committed file (Round 332). Known negative graded **first**
+— his own Round 354 §1 lesson, which exists because his first harness exited 1 with no summary line
+at all. Anchor asserted to occur **exactly once** before each mutation (Round 347).
+
+```
+KN   clean committed key      exit 0   MEMBER LISTS true   11 of 11   wrong on 2 of 11
+KP1  'label' -> 'labell'      exit 2   MEMBER LISTS true   10 of 11   REFUSED   (his cure)
+KP2  hand key :71 -> :72      exit 2   MEMBER LISTS false  (no line)  REFUSED   (mine, 353)
+```
+
+Both hold. Nothing of his needed correcting.
+
+## 17:3x — My own substring detector published a false zero, and its known positive caught it
+
+Verifying his §4. The mechanism first, driven rather than reasoned (Round 331):
+`'x.mts:1017|y.mts:7'.includes('x.mts:101')` returns **true** against a key that is absent; set
+membership on the same pair returns **false**. His diagnosis is exact.
+
+His reachability claim — 0 of the 11 keys is a proper substring of another — then came back **0 live
+pairs and 0 on my detector's own known positive**. The detector was not blind; my fixture was. I had
+built the KP by replacing a key's line number (`:71` -> `:10`), which is a prefix of nothing. Dropping
+the last digit instead (`:71` -> `:7`) is a real prefix: **1 KP pair, 0 live**. Same reading, but it
+was not evidence until the second attempt. Fourth time a known positive has caught a false zero of
+mine.
+
+## 17:3x — His §7 limit, driven, and it is three edits wide
+
+He declared the residual limit precisely and I drove it rather than reading it. Three separate
+one-token IN-domain edits, each `exit 0` with **both** guards reporting clean:
+
+```
+KP3  :1017  array -> label    exit 0   wrong on 3 of 11
+KP4  :171   label -> array    exit 0   wrong on 3 of 11
+KP5  :428   call  -> label    exit 0   wrong on 3 of 11
+```
+
+Each moves the headline by **+1 in the same direction**, so the corrupted figure stays plausible.
+
+## 17:3x — The array witness: half the limit closes without contaminating his headline
+
+`array` is the only one of the three classes with a witness independent of **both** valuation legs:
+an array literal is the only one whose RHS *begins* with a code `[`, and neither the crude leg (any
+byte `(`) nor the refined leg (any code `(`) reads the first code character. Read on the
+strings-**blanked** RHS so a `[` that opens a string literal cannot be the witness.
+
+Graded through `assignLegSites` so every fixture is a site the class actually admits (Round 341):
+KP a fixture array of source-as-strings, KN1 a ternary over string literals, KN2 an index expression
+whose `[` is present but **not leading**. `GRADE array witness: true`.
+
+KP3 and KP4 now `exit 2, REFUSED` with the member named. KN exits 0, witness **11 of 11**, every
+figure restored. KP5 still `exit 0 / 3 of 11` — **left open deliberately**: the only witness for
+`call` is `codeParens >= 1`, which **is** the refined leg, and using it would quietly turn
+`wrong on N of 11` from crude-vs-hand into crude-vs-refined. Landed in his file and routed back for
+his call, revert invited, exactly as he treated mine. Commit `0dbcee3a`, pushed.
+
+## 17:4x — THE FINDING: his mechanism is in my shared lib, and there it inverts an exit code
+
+Censused the general shape rather than stopping at his file. First pass (2-tuple hand tables with a
+bare quoted class value, >= 3 entries) found exactly **one** instance tree-wide — his key, already
+cured — with the detector's own known positive confirming it can see the shape. Widened to
+object-literal class fields plus an equality test: **8 files**, which pointed at `kind`.
+
+`scripts/lib/probe-outcome.mts`. `ProbeVerdict.kind` is a free-form `string`; its legal values are
+declared in that module's prose and enforced nowhere; every count in `summarise()` is an equality
+against `regressionKind`. Driven **directly against the function** — which its own docblock invites
+— with the KN first:
+
+```
+a FAILING hard check, kind: 'regression'   ->  code 1   ran 3   1 of 3 regression check(s) FAILED.
+the same row,         kind: 'regresion'    ->  code 0   ran 2   All 2 regression checks passed.
+the same row,         kind omitted          ->  code 1   ran 3   (unchanged — the safe default)
+a HARD skip,          kind: 'regression'   ->  code 3   INCONCLUSIVE — ... This is not a pass.
+a HARD skip,          kind: 'regresion'    ->  code 0   All 1 regression checks passed.
+```
+
+One byte, **two exit-code inversions**. A real regression leaves the population that decides the
+exit code and the probe prints "passed"; a hard skip stops forcing code 3 — the **Round 223 defect
+this module was written to fix**, reachable again through the field it added to classify.
+
+The asymmetry is visible in prose I wrote: the `ProbeVerdict` docblock reasons about the MISSING
+case and defaults it **in**, in two paragraphs; nothing reasons about the WRONG case, and the wrong
+case defaults **out**.
+
+## 17:4x — Why the cure is a near-miss test and not a domain list
+
+Censused every literal `kind:` under `scripts/` (194 files, `readdirSync` walk, detector carrying a
+known positive): `regression` 72 sites / 46 files, `measurement` 62 / 54, `open` 6 / 4, `check` 9 / 4,
+`hard` 3 / 2, `open-item` 2 / 1, plus `search`/`expand`/`unknown`/`Chat`/`zip`/`gzip`/`literal`/`plain`
+which are unrelated `kind` fields on other objects entirely.
+
+So a fixed `{regression, measurement, open}` list would be **wrong**: `regressionKind` is
+caller-configurable by design (round222, 223, 223b use `check`) and soft kinds are open-ended. An
+**optional** opt-in list would be worse — decorative for every probe that never opts in, which is my
+own Round 352 lesson.
+
+The invariant that does hold: only a *misspelling of `regressionKind`* can change the exit code. So
+a kind within **edit distance 1** — substitution, insertion, deletion, or **transposition** (Damerau;
+plain Levenshtein scores transposition as 2) — and not equal to it now refuses: code 3, row named,
+no "passed".
+
+Graded with the live tree's own kind values as the known negatives:
+
+```
+KN  measurement / open / open-item / hard            refusal not tripped
+KN  kind='regression'                                code 1, unchanged
+KN  kind omitted                                     code 1, unchanged
+KN  regressionKind='check', kind='measurement'       refusal not tripped
+KN VERDICT: clean — nothing legitimate is reddened
+
+KP  'regresion' 'regresssion' 'regressiom' 'rgeression' 'Regression'   all code 3, refused
+KP  SKIP kind='regresion'                                              code 3, refused
+
+LIMIT, driven: 'rgerssion' (two edits) -> code 0, All 2 regression checks passed.  NOT caught.
+```
+
+## 17:4x — Gate, each leg off its own instrument
+
+- `tsc` server and client, each to its own file: **both 0 bytes**, exit 0.
+- `npm test` **unpiped** and ANSI-stripped, exit 0 from `spawnSync`: server **140 files / 2178
+  passed / 1 skipped (2179)**; client **26 passed | 13 skipped (39) / 333 passed | 13 skipped
+  (346)**; `CENSUS OK` with its own `NOT CHECKED` line.
+- `round269` alone via `spawnSync`: **EXIT 0**, `All 56 regression checks passed, 3 measurements,
+  0 skips`, **F9 PASS**, **F10 PASS**, derived line byte-identical (4 sites / 194 files, same four
+  pairs `round224-a:71->72, round224b-:57->58, round247-a:67->68, round255-t:171->172`).
+- Sweep by **verdict line**, exit code from `spawnSync`: **exit 2**, `SWEEP BLOCKED — 35 of 36 swept
+  probes green, 0 red, 1 blocked (did not conclude), 0 census problem(s), 109 deferred`; the one
+  blocked is `probe-round225-a-citation-is-not-a-call.mts` (`BLOCKED exit 3`, established 32 of its
+  checks and skipped 1 arm).
+
+**Every line byte-identical to Theseus's Round 354 gate.** For a change to the function 46 files
+summarise through, the **0 red across 36 swept probes** is the load-bearing reading, not the suite
+counts.
+
+## 17:4x — Drain
+
+- Inbound mail: Theseus's Round 354 was the only memo addressed to me. Read at briefing, verified,
+  answered, and the reply filed in the same fire.
+- Done this fire, nothing deferred: 354 verification, both cure gradings, the §4 check (twice, once
+  because my fixture was wrong), the §7 limit driven, the array witness built and graded and landed,
+  the two-variant census of the general shape, the lib defect driven, the lib cure built and graded,
+  the full four-leg gate, the research writeup, the reply memo, this log.
+- Theseus's 354 thread stays **open** in `docs/mail/` — my reply routes the array witness back for
+  his call, so it carries an open action item and must stay visible. Not moved to `read/`.
+- **Deferred with a named blocker: none.**
+- Still parked on xian: Argus's 10/06 Laya/AAXT memo to the CIO, on his scheduling call. Not mine.
+
+## 17:4x — Session wrap verification (required before any "done" claim)
+
+**Step 1 — commits on `origin/main`,** after `git fetch -q origin`:
+
+```
+b477ffea mail(daedalus->theseus,argus): Round 355 — 354 reproduces whole, both cures hold, his declared limit is three edits wide and half cured, and his mechanism inverts an exit code in probe-outcome.mts
+77fe69cb lib+docs: Round 355 — his Round 354 mechanism is in probe-outcome.mts, where one byte turns a failing check into exit 0
+0dbcee3a probes: Round 355 — his two cures confirmed, and the in-domain limit he declared is cured for the one class with an independent witness
+caaa099e mail(janus->calliope): public brief copies replaced
+02470726 briefs: replace confidential April brief copies with pointers (xian approved 2026-10-08; public repo)
+```
+
+All three of this fire's commits are on `origin/main`, and `caaa099e` below them is the baseline the
+wrapper synced to at fire start.
+
+**Step 2 — each deliverable, `ls`'d:**
+
+```
+docs/research/round355-his-mechanism-is-in-my-shared-lib-and-there-a-one-byte-typo-turns-a-red-into-exit-0-2026-10-08.md   13659 bytes
+docs/mail/daedalus-to-theseus-argus-cc-xian-janus-calliope-iris-your-mechanism-is-in-my-shared-lib-and-there-one-byte-turns-a-red-into-exit-0-2026-10-08.md   11239 bytes
+scripts/lib/probe-outcome.mts                                      15286 bytes  (the cure)
+docs/research/round352-valuation-leg-key.mjs                       21172 bytes  (the array witness, routed to Theseus)
+docs/logs/2026-10-08-0917-daedalus-opus-log.md                     32999 bytes  (this log)
+```
+
+**Step 3 — `docs/COORDINATION.md` and this log are committed and pushed last,** after Steps 1 and 2.
+
+Nothing claimed done in this entry is unverified. The one thing this fire opened and did not finish
+is stated as such in both the writeup and the memo: the `label` <-> `call` half of Theseus's §7 limit
+is **open**, driven open (KP5, `exit 0`, `3 of 11`), and deliberately not cured, because the only
+witness available for `call` is the refined leg and using it would change what his headline figure
+measures. That is a declared limit of the instrument, not deferred work, and it carries no blocker.
