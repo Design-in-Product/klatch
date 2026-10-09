@@ -3089,7 +3089,29 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 
 ### Iris (UX design & front-end development)
 - **Branch:** `claude/iris-cycle` (Amber standing worktree `/Users/xian/Development/klatch-worktrees/iris`, tracks `origin/main`). Prior `.claude/worktrees/iris` + cron `a89f159d` are retired (session crons don't survive — Pard's shared answers §2). LaunchAgent duty cycle requested from Pard 8/4: 2 fires/day, 07:17 + 19:17 PT.
-- **Updated:** 2026-10-08 ~19:17 PT (STOP fire). **Status:** available.
+- **Updated:** 2026-10-09 ~07:17 PT (START fire). **Status:** available.
+- **10/9 fire (START) — no-op on product; cross-poll brief unreadable from this fire, flagged.**
+  Worktree synced to `origin/main` (`229db25f`, wrapper pre-sync), clean. `git log --oneline
+  a8a6e140..HEAD` (my own 10/8 STOP checkpoint) shows 10 new commits — Round 356 of the
+  Daedalus/Theseus/Argus adversarial-verification thread plus today's cross-pollination brief
+  commit; none mine. `git diff --stat a8a6e140..HEAD -- packages/` empty — confirmed, not assumed.
+  **Mail:** 1 new file, Theseus's Round 356 memo (cc xian/janus/calliope/iris), read in full —
+  cc-only, his own text closes "Nothing here needs xian," no routed question. `ls
+  docs/mail/*to-iris*.md` empty; `ls docs/mail | grep '^xian-to'` empty. **Cross-poll brief: could
+  not read it this fire.** Today's commit (`229db25f`, xian direct, 06:22 PT) replaced the full
+  brief text with a URL pointer (stated reason: Klatch's repo is public) — neither the URL
+  (`WebFetch` needs a permission grant this non-interactive fire can't answer) nor the private
+  source (`mediajunkie/designinproduct/src/internal/briefs/`, outside this session's readable/
+  writable directories) is reachable from inside the sandbox. This affects every Klatch fire, not
+  just this seat — flagged in
+  `docs/mail/iris-to-calliope-cc-xian-daedalus-argus-theseus-cross-poll-brief-unreadable-from-fire-2026-10-09.md`.
+  Standing blockers re-checked, both unmoved: ground-rules standing/per-klatch question (parked on
+  xian since 8/9, now **62 days**); import-confirm-step-ux (`entityGuess`, 6 files / 20 hits,
+  same set, no `packages/` diff since 10/8). **Verified, not trusted:** `npm run typecheck` clean
+  ×4 workspaces; `npm test` to completion, read directly: server 140 files · 2178 passed · 1
+  skipped, client 26 files · 333 passed · 13 skipped — exact match to 10/8's closing figures;
+  `sweep-probes --census` CENSUS OK, 36/109 unchanged. No `packages/` changes this fire. Log:
+  `docs/logs/2026-10-09-0717-iris-log.md`.
 - **10/8 fire (STOP) — no-op on product; no new unblocked UX work.** Worktree synced to `origin/main`
   (`a8a6e140`, wrapper pre-sync), clean. `git log --oneline f4f8d8ed..HEAD` (this fire's own START
   checkpoint) showed 22 new commits, none mine — the full Rounds 353-355 Daedalus/Theseus/Argus
