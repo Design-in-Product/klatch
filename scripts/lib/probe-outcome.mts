@@ -144,12 +144,92 @@ export type SummariseInput = {
 };
 
 /**
+ * Round 355, Daedalus — Theseus's Round 354 mechanism, found in this module.
+ *
+ * He found it in a research key: a guard that watches member **identity** cannot see a corrupted
+ * member **value**, because `(h === 'label')` is false for every value outside the declared domain
+ * and not only for a missing one. The same shape is here, in the shared lib every probe in the
+ * fleet summarises through, and the consequence is one grade worse than a moved figure.
+ *
+ * `kind` is a free-form `string` whose legal values are declared in prose above and enforced
+ * nowhere. Every comparison in `summarise` is `=== regressionKind`. So:
+ *
+ * ```
+ *   a FAILING hard check, kind: 'regression'   ->  code 1,  1 of 3 regression check(s) FAILED.
+ *   the same row,         kind: 'regresion'    ->  code 0,  All 2 regression checks passed.
+ *   the same row,         kind omitted          ->  code 1  (the `?? regressionKind` default)
+ *   a HARD skip,          kind: 'regresion'    ->  code 0  (vs code 3 INCONCLUSIVE tagged)
+ * ```
+ *
+ * Driven directly against this function, known negative graded first. One byte, two separate
+ * exit-code inversions: a red becomes `exit 0` with the word "passed" in it, and a hard skip
+ * stops forcing 3. The docblock on {@link ProbeVerdict} reasons carefully about the MISSING case
+ * and defaults it IN, which is the safe direction; nothing reasons about the WRONG case, and the
+ * wrong case defaults OUT. That asymmetry is the whole defect.
+ *
+ * **Why this is not cured with a fixed domain.** A census of every literal `kind:` under
+ * `scripts/` (194 files) finds `regression` 72, `measurement` 62, `open` 6, `check` 9, `hard` 3,
+ * `open-item` 2 — plus unrelated `kind` fields on other objects entirely. `regressionKind` is
+ * caller-configurable by design and the soft kinds are deliberately open-ended, so a fixed list
+ * here would redden legitimate probes, and an optional opt-in list would be decorative for every
+ * probe that never opts in (Round 352: a selector on optional metadata fails silently).
+ *
+ * **The invariant that does hold:** only a misspelling of `regressionKind` can change the exit
+ * code, and no legitimate soft kind has any reason to be one typo away from the hard kind. So a
+ * kind within edit distance 1 of `regressionKind` — substitution, insertion, deletion, or
+ * transposition — and not equal to it is refused: code 3, naming the row, printing no "passed".
+ * Limit, stated: a typo two or more edits out (`rgerssion`) is NOT caught, and a kind that is a
+ * legitimately different word remains unexamined. This narrows the hole; it does not close it.
+ */
+const withinOneEdit = (a: string, b: string): boolean => {
+  if (a === b) return false;
+  if (Math.abs(a.length - b.length) > 1) return false;
+  // Transposition of two adjacent characters (Damerau), which Levenshtein scores as 2.
+  if (a.length === b.length) {
+    const d: number[] = [];
+    for (let i = 0; i < a.length; i += 1) if (a[i] !== b[i]) d.push(i);
+    if (d.length === 1) return true;
+    return d.length === 2 && d[1] === d[0] + 1 && a[d[0]] === b[d[1]] && a[d[1]] === b[d[0]];
+  }
+  const [short, long] = a.length < b.length ? [a, b] : [b, a];
+  for (let i = 0; i <= short.length; i += 1) {
+    if (long.slice(0, i) + long.slice(i + 1) === short) return true;
+  }
+  return false;
+};
+
+/**
  * Decide the outcome without printing or exiting — so a control can drive this function
  * directly and assert on the result rather than scraping a subprocess's stdout.
  */
 export function summarise(input: SummariseInput): ProbeOutcome {
   const regressionKind = input.regressionKind ?? 'regression';
   const inapplicable = input.inapplicable ?? [];
+
+  // Round 355 — refuse rather than report, per the note on `withinOneEdit` above. This runs
+  // before any count is taken, because every count below is computed by equality against
+  // `regressionKind` and a near-miss silently leaves the population that decides the exit code.
+  const nearMisses: string[] = [
+    ...input.results
+      .filter((r) => r.kind !== undefined && withinOneEdit(r.kind, regressionKind))
+      .map((r) => `verdict [${r.arm}] ${r.check} — kind=${JSON.stringify(r.kind)}`),
+    ...(input.skipped ?? [])
+      .filter((s): s is { label: string; kind?: string } => typeof s !== 'string')
+      .filter((s) => s.kind !== undefined && withinOneEdit(s.kind, regressionKind))
+      .map((s) => `skip ${s.label} — kind=${JSON.stringify(s.kind)}`),
+  ];
+  if (nearMisses.length > 0) {
+    return {
+      code: 3,
+      headline: `INCONCLUSIVE — ${input.probeName} carries ${nearMisses.length} kind value(s) one `
+        + `edit from ${JSON.stringify(regressionKind)} without being it. Every count here is an `
+        + `equality against that string, so these rows have silently left the population that `
+        + `decides the exit code. This is not a pass.`,
+      ran: 0,
+      failed: [],
+      reasons: nearMisses.map((m) => `kind is one edit from ${JSON.stringify(regressionKind)}: ${m}`),
+    };
+  }
 
   const labelOf = (s: SkipRecord) => (typeof s === 'string' ? s : s.label);
   const kindOf = (s: SkipRecord) => (typeof s === 'string' ? regressionKind : s.kind ?? regressionKind);
