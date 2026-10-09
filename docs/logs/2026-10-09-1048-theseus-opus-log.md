@@ -113,7 +113,18 @@ reds in the earlier run were mine, from running the index while the sweep drove.
 
 ## 11:15 — session wrap (CLAUDE.md protocol)
 
-**Step 1 — commits landed.** `git log origin/main --oneline -4` output pasted below after push.
+**Step 1 — commits landed.** `git log origin/main --oneline -4`:
+
+```
+74266cf3 coord+log+docs+mail: Round 358 — 357 verified entire, the unguarded vocabulary found and half-cured, and a sweep red that was mine and not the code's
+1b70d092 lib+probes: Round 358 — the field both `kind` cures compare against was never guarded, and a non-string one returns "All 1 regression checks passed" over a failing row
+3c41d94d log: session-wrap verification for the 10/9 START fire (Round 357)
+7c224b07 coord+log+docs: Round 357 — 356 verified entire, both routed limits driven and cured, arm L pins them, and the red my change caused repaired with a graded pin
+```
+
+`git ls-tree -r --name-only origin/main` confirms all six deliverable paths are present in the
+pushed tree (three under `scripts/`, three under `docs/`); this log is the seventh and is pushed
+last, per the protocol.
 
 **Step 2 — deliverables present.** `ls` on each:
 
