@@ -364,6 +364,138 @@ const meas = (arm: string): ProbeVerdict => ({ arm, check: 'a measurement', pass
     missAndSkip.reasons.some((r) => /did not run: \[D\]/.test(r)), JSON.stringify(missAndSkip.reasons));
 }
 
+// ── Arm L — the VALUE of `pass` and the TYPE of `kind` (Round 357) ────────────
+//
+// Arm K holds a `kind` value that is one typo from the hard kind. This arm holds the other two
+// ways the same inversion is reached: a `pass` that is not a boolean, and a `kind` that is not a
+// string. Both were Theseus's Round 356 limits, handed over explicitly undriven — "`pass` is not
+// value-guarded (`!r.pass`, so a truthy non-boolean reads as a pass)… recorded as the next place
+// to look rather than reported as a defect."
+//
+// Driven, both are real, and both invert an exit code rather than move a figure:
+//
+//   pass: 'FAIL' | -1 | [] | 'false'   ->  code 0, All 2 regression checks passed   (pre-357)
+//   kind: ['regression'] on a FAILING row -> code 0, All 1 regression checks passed (pre-357)
+//
+// The second one is the sharper of the two and it falsified a sentence written one minute
+// earlier: the Round 357 note recording the first limit claimed a non-string `kind` "throws
+// inside withinOneEdit — loud". Four of five shapes do. `['regression']` does not, because its
+// `.length` is 1 against the string's 10 and the near-miss refusal's own length pre-test returns
+// false before any indexing happens. Reasoned loud, driven silent.
+//
+// Three things are graded here that an arm showing only the cures firing could not tell apart:
+//   (1) the SAFE DIRECTION is unchanged. A falsy non-boolean was already a loud code 1 and must
+//       stay one — refusing it with code 3 is exactly the demotion Theseus caught in Round 355's
+//       cure, and this arm would redden if Round 357 repeated it in the other half of the
+//       function.
+//   (2) an all-boolean, all-string run is BYTE-IDENTICAL. The cure is monotone louder or nothing.
+//   (3) the unreadable `kind` is defaulted IN, not out — the direction that keeps a failing row
+//       in the population rather than the one that loses it.
+//
+// `as unknown as ProbeVerdict` is load-bearing here and is the point: the declared type is
+// `boolean`, every caller is a `.mts` file inside `scripts/tsconfig.json`, and the only way in is
+// something that defeats the checker. `any` does that silently — measured with the checker rather
+// than a regex, 9 `any`-typed values reach a boolean verdict position across 145 files (all 9
+// hand-read runtime-boolean-or-throw), and 0 non-string `kind` initializers exist. The live count
+// of actual instances is zero in both populations; what was missing was anything holding it there.
+
+{
+  const V = (arm: string, pass: unknown, kind: unknown = 'regression'): ProbeVerdict =>
+    ({ arm, check: 'a row with an unreadable field', pass, kind } as unknown as ProbeVerdict);
+
+  // L/357 — KNOWN NEGATIVES FIRST. A broken harness cannot print a meaningful PASS (Round 354).
+  const cleanRun = summarise({ probeName: 'subject', results: [ok('A', 'one'), ok('B', 'two')] });
+  check('L', 'KN: an all-boolean all-string run is still exit 0 with the same headline',
+    cleanRun.code === 0 && cleanRun.headline === 'All 2 regression checks passed.',
+    `code ${cleanRun.code} :: ${JSON.stringify(cleanRun.headline)}`);
+  const realFalse = summarise({ probeName: 'subject', results: [bad('A', 'a real break'), ok('B', 'two')] });
+  check('L', 'KN: a genuine boolean false is a code 1 naming the row, byte-identical to pre-357',
+    realFalse.code === 1 && realFalse.headline === '1 of 2 regression check(s) FAILED.'
+      && realFalse.failed.length === 1,
+    `code ${realFalse.code} :: ${JSON.stringify(realFalse.headline)}`);
+  check('L', 'KN: and a clean run carries no unreadable-field reason it has no cause to carry',
+    !cleanRun.reasons.some((r) => /not a boolean|not a string/.test(r)), JSON.stringify(cleanRun.reasons));
+
+  // L/357 — the four truthy non-boolean shapes that returned exit 0 with "passed" in the line.
+  const truthyShapes: [string, unknown][] = [
+    ["the string 'FAIL'", 'FAIL'], ['-1, the indexOf shape', -1],
+    ['[], an empty array', []], ["the string 'false'", 'false'],
+  ];
+  for (const [label, value] of truthyShapes) {
+    const o = summarise({ probeName: 'subject', results: [V('A', value), ok('B', 'two')] });
+    check('L', `a pass of ${label} is a FAILURE, not a pass`,
+      o.code === 1 && o.failed.length === 1 && o.failed[0].arm === 'A',
+      `code ${o.code}, failed ${o.failed.length}`);
+    check('L', `and the row is named as a TYPE defect, not left looking like a broken subject (${label})`,
+      o.reasons.some((r) => /pass is not a boolean/.test(r) && /\[A\]/.test(r)),
+      JSON.stringify(o.reasons));
+  }
+
+  // L/357 — the safe direction must not have become quieter. This is the Round 356 lesson,
+  // applied to Round 357's own cure before it could be found from outside.
+  for (const [label, value] of [['undefined', undefined], ['0', 0]] as [string, unknown][]) {
+    const o = summarise({ probeName: 'subject', results: [V('A', value), ok('B', 'two')] });
+    check('L', `KN: a falsy non-boolean (${label}) was already code 1 and is STILL code 1`,
+      o.code === 1 && o.failed.length === 1, `code ${o.code}, failed ${o.failed.length}`);
+  }
+
+  // L/357 — an unreadable `pass` beside a real break. Pre-357 the unreadable row was invisible:
+  // code 1 naming only the genuine failure, with the other row silently counted as a pass.
+  const mixed = summarise({
+    probeName: 'subject',
+    results: [bad('A', 'THE REAL BREAK'), V('B', 'FAIL'), ok('C', 'fine')],
+  });
+  check('L', 'an unreadable pass beside a real break names BOTH rows, not just the break',
+    mixed.code === 1 && mixed.failed.length === 2,
+    `code ${mixed.code}, failed ${mixed.failed.map((f) => f.arm).join(',')}`);
+
+  // L/357 — composition with arm K's refusal. A failure dominates, per Round 356.
+  const withNearMiss = summarise({
+    probeName: 'subject',
+    results: [V('A', 'FAIL'), ok('B', 'two'), ({ arm: 'C', check: 'c', pass: true, kind: 'regresion' } as ProbeVerdict)],
+  });
+  check('L', 'an unreadable pass dominates a near-miss kind, and the floor language still applies',
+    withNearMiss.code === 1 && /is a floor, not the total/.test(withNearMiss.headline),
+    `code ${withNearMiss.code} :: ${JSON.stringify(withNearMiss.headline.slice(0, 60))}`);
+
+  // L/357 — the `kind` TYPE half. The array shape is the one that drove silently to exit 0.
+  const arrayKind = summarise({ probeName: 'subject', results: [ok('A', 'fine'), V('B', false, ['regression'])] });
+  check('L', "a FAILING row tagged kind: ['regression'] no longer summarises as exit 0",
+    arrayKind.code === 1 && arrayKind.failed.length === 1,
+    `code ${arrayKind.code}, failed ${arrayKind.failed.length}`);
+  check('L', 'the unreadable kind is defaulted IN — the direction that keeps the failing row counted',
+    arrayKind.ran === 2, `ran=${arrayKind.ran}`);
+
+  // L/357 — and the four shapes that DID throw must not throw any more either.
+  const throwShapes: [string, unknown][] = [['123', 123], ['null', null], ['{}', {}], ['true', true]];
+  for (const [label, value] of throwShapes) {
+    let code: number | string;
+    try {
+      code = summarise({ probeName: 'subject', results: [ok('A', 'fine'), V('B', false, value)] }).code;
+    } catch (e) { code = `THREW ${(e as Error).message}`; }
+    check('L', `a kind of ${label} is summarised rather than thrown out of withinOneEdit`,
+      code === 1, `${code}`);
+  }
+
+  // L/357 — the dedicated limb: an unreadable kind with nothing failing. Neither neighbour's
+  // prose describes this case, which is why it is not folded into either.
+  const kindOnly = summarise({ probeName: 'subject', results: [ok('A', 'fine'), V('B', true, ['regression'])] });
+  check('L', 'an unreadable kind on an otherwise-clean run refuses at 3 rather than printing "passed"',
+    kindOnly.code === 3 && !/passed/.test(kindOnly.headline),
+    `code ${kindOnly.code} :: ${JSON.stringify(kindOnly.headline.slice(0, 50))}`);
+  check('L', 'and it does not borrow the near-miss prose, which says the rows LEFT the population',
+    !/silently left the population/.test(kindOnly.headline), JSON.stringify(kindOnly.headline.slice(0, 80)));
+  const skipKind = summarise({
+    probeName: 'subject',
+    results: [ok('A', 'fine')],
+    skipped: [{ label: '[Z] needs a free port', kind: 7 } as unknown as { label: string; kind?: string }],
+  });
+  check('L', 'the SKIP side is read by type too, and names both the bad field and the skip',
+    skipKind.code === 3 && skipKind.reasons.some((r) => /not a string/.test(r))
+      && skipKind.reasons.some((r) => /did not run: \[Z\]/.test(r)),
+    `code ${skipKind.code} :: ${JSON.stringify(skipKind.reasons)}`);
+}
+
 // ── Arm F — the OLD tails, re-implemented, report success on arm B's input ────
 //
 // Verbatim shape of what stood at HEAD~, not a paraphrase:

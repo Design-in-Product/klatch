@@ -457,14 +457,29 @@ check('C2', 'THE STEP HIS §5 ROUTES TO, and it is where the damage lands: the o
     + `"${taggedFail.headline}"; untagged → code ${restagedFail.code} ran=${restagedFail.ran} `
     + `"${restagedFail.headline}"`);
 
+// Round 357, Daedalus — this arm's source conjunct went RED on a change that preserved every
+// behaviour it asserts, which is worth recording rather than just clearing. It pinned the default
+// by its SPELLING, `(r.kind ?? regressionKind)`. Round 357 moved that default into a named helper,
+// `readKind`, so that `kind` is read by TYPE and not only by presence: driven, `kind:
+// ['regression']` on a FAILING row passed through the Round 355 near-miss refusal (an array's
+// `.length` is 1 against the string's 10, so the refusal's own length pre-test returns false) and
+// out the other side as `code 0, All 1 regression checks passed`. The default itself is unchanged
+// and still points the safe way — the three behavioural conjuncts below were green throughout, and
+// the probe's own detail line printed `code 1, 1 failed, not dropped` and `ran 3 → 5` on the red
+// run. So the pin is re-aimed at the current spelling rather than loosened, and it now holds the
+// STRONGER property: that the default exists AND that it is reached through a type read.
+const OUTCOME_SRC = readFileSync(join(SCRIPTS, 'lib', 'probe-outcome.mts'), 'utf8');
 check('C3', 'and the asymmetry comes from ONE default, which is why the recipe cannot be derived '
-  + 'from the module\'s own rationale: `(r.kind ?? regressionKind)` is SAFE for the verdict — a '
+  + 'from the module\'s own rationale: the `kind` default is SAFE for the verdict — a '
   + 'no-kind failure is counted rather than silently dropped, exactly as probe-outcome.mts\'s '
   + 'docblock claims — and UNSAFE for the pin, because the same default inflates `ran`. The two '
-  + 'defaults point in opposite directions and both effects fall out of one expression',
+  + 'defaults point in opposite directions and both effects fall out of one expression. Since '
+  + 'Round 357 the default is reached by TYPE (`readKind`), not by presence alone, and both halves '
+  + 'are pinned at source',
   restagedFail.code === 1 && restagedFail.failed.length === 1
   && untagged.ran > tagged.ran && untagged.code === 0
-  && /r\.kind \?\? regressionKind/.test(readFileSync(join(SCRIPTS, 'lib', 'probe-outcome.mts'), 'utf8')),
+  && /typeof k === 'string' \? k : regressionKind/.test(OUTCOME_SRC)
+  && /readKind\(r\.kind\)/.test(OUTCOME_SRC),
   `safe for the verdict: the untagged failure is reported (code ${restagedFail.code}, `
     + `${restagedFail.failed.length} failed, not dropped). Unsafe for the pin: ran ${tagged.ran} → `
     + `${untagged.ran} on the same five verdicts, headline still "passed" (code ${untagged.code})`);

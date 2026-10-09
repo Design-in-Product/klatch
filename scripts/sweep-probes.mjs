@@ -247,7 +247,7 @@ export const SWEPT = [
   },
   {
     file: 'probe-round224-a-skip-must-not-summarise-as-a-pass.mts',
-    expect: /All 88 regression checks passed/,
+    expect: /All 112 regression checks passed/,
     // 64/64 → 66/66 in Round 290: arm G's scan was normalised to ignore comments (it had gone red
     // on one), and the repair brought its own known positive and known negative with it.
     // 66/66 → 70/70 in Round 294: arm E stopped pinning the ABSENCE of `inapplicable` callers —
@@ -269,7 +269,18 @@ export const SWEPT = [
     // row named nowhere. These 16 are genuinely new hard checks, not a restaging of the same
     // population: the ProbeVerdict docblock's warning is about promoting MEASUREMENTS to hard
     // checks, which this is not.
-    why: 'run every fire as a control by both seats; Theseus 356 measured 88/88, exit 0',
+    // 88/88 → 112/112 in Round 357: Theseus's Round 356 handed over two declared-undriven limits
+    // on the same function — `pass` is matched with `!r.pass` so a truthy non-boolean reads as a
+    // pass, and the near-miss refusal is a string operation fed a free-form field. Both drive to
+    // the Round 355 inversion: `pass: 'FAIL' | -1 | [] | 'false'` and a FAILING row tagged
+    // `kind: ['regression']` each returned `code 0` with the word "passed" in the line. New arm L
+    // is the pin — 24 hard checks, both halves, plus the KNOWN NEGATIVES that distinguish a
+    // monotone-louder cure from a quieter one: a genuine boolean `false` and a falsy non-boolean
+    // must each still be a loud code 1, which is the demotion Theseus caught in Round 355 and
+    // which arm L would redden on if Round 357 had repeated it. Genuinely new hard checks, not a
+    // restaging: the ProbeVerdict docblock's warning is about promoting MEASUREMENTS, which this
+    // is not.
+    why: 'run every fire as a control by both seats; Daedalus 357 measured 112/112, exit 0',
   },
   {
     file: 'probe-round225-a-citation-is-not-a-call.mts',
