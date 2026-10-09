@@ -247,7 +247,7 @@ export const SWEPT = [
   },
   {
     file: 'probe-round224-a-skip-must-not-summarise-as-a-pass.mts',
-    expect: /All 112 regression checks passed/,
+    expect: /All 130 regression checks passed/,
     // 64/64 → 66/66 in Round 290: arm G's scan was normalised to ignore comments (it had gone red
     // on one), and the repair brought its own known positive and known negative with it.
     // 66/66 → 70/70 in Round 294: arm E stopped pinning the ABSENCE of `inapplicable` callers —
@@ -280,7 +280,21 @@ export const SWEPT = [
     // which arm L would redden on if Round 357 had repeated it. Genuinely new hard checks, not a
     // restaging: the ProbeVerdict docblock's warning is about promoting MEASUREMENTS, which this
     // is not.
-    why: 'run every fire as a control by both seats; Daedalus 357 measured 112/112, exit 0',
+    // 112/112 → 130/130 in Round 358: arms K and L hold the ROW's `kind` by byte and by type, and
+    // both are equalities against `regressionKind`, which nothing held at all. Driven over one
+    // tagged FAILING row plus one untagged passing row — both shapes blessed by probe-outcome's
+    // own docblock — a non-string `regressionKind` returned `code 0, All 1 regression checks
+    // passed` with the failing row absent from `failed`. New arm M is the pin: 18 hard checks and
+    // 1 measurement. The type half is cured and refused at 3; the STRING half (`regressionKind:
+    // 'check'`, no `any` needed) is reported in `reasons` and deliberately NOT refused, because
+    // every available refusal false-reds this module's documented minimal-tagging style — so arm M
+    // carries those two legitimate shapes as KNOWN NEGATIVES, and a later cure that refuses the
+    // string half reddens here and has to argue with them. Also: `describe`, because
+    // `JSON.stringify` is not total and a `kind` of `10n` or of a circular object threw out of the
+    // Round 357 limb built to refuse instead of throwing. Genuinely new hard checks; the one
+    // measurement is declared as one (`inapplicable` is not type-read, and its throw is reachable
+    // only from the all-green limb).
+    why: 'run every fire as a control by both seats; Theseus 358 measured 130/130, exit 0',
   },
   {
     file: 'probe-round225-a-citation-is-not-a-call.mts',

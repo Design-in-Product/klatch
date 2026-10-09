@@ -496,6 +496,165 @@ const meas = (arm: string): ProbeVerdict => ({ arm, check: 'a measurement', pass
     `code ${skipKind.code} :: ${JSON.stringify(skipKind.reasons)}`);
 }
 
+// ── Arm M — the field everything else is compared AGAINST (Round 358) ─────────
+//
+// Arms K and L hold the ROW's `kind`: one byte wrong is refused (355), one type wrong is
+// defaulted IN and named (357). Both are equalities against `regressionKind`, and nothing held
+// `regressionKind` itself. Driven over the population that makes the difference — one row tagged
+// `'regression'` and FAILING, one untagged row passing, both shapes blessed by this module's own
+// docblock:
+//
+//   regressionKind: ['regression']  ->  code 0, ran 1, All 1 regression checks passed   (pre-358)
+//   regressionKind: 'check'         ->  code 0, ran 1, All 1 regression checks passed   (STILL)
+//
+// The failing row is absent from `failed`, so no REGRESSIONS block prints. Round 311 drove the
+// string half of this over a HOMOGENEOUS population, where it lands on `ran 0 → code 3` and is
+// loud about the wrong thing; ONE untagged row in the same run is the whole distance between
+// code 3 and code 0, and the near-miss refusal cannot see either, since its own first act is a
+// length pre-test against the operand in question.
+//
+// Round 358 cures the TYPE half and deliberately does NOT cure the string half. The three things
+// this arm grades, which an arm showing only the new refusal firing could not tell apart:
+//   (1) the string half is still code 0 and is NOW REPORTED in `reasons`. Pinned as a decision,
+//       not an oversight: every refusal available for it false-reds a legitimate shape, and (2)
+//       is the shape in question.
+//   (2) the minimal-tagging KNOWN NEGATIVES — untagged hard checks beside a `kind: 'measurement'`
+//       row, and a deliberately-failing `kind: 'open-item'` row — stay exit 0 with no refusal.
+//       A later cure that refuses the string half reddens HERE and has to argue with these two.
+//   (3) a failure still DOMINATES the new refusal (Round 356), and `describe` left every
+//       serialisable reason byte-identical — the JSON spelling of a value is asserted, not just
+//       its presence, because a helper that rewrote those bytes would move pins the sweep reads.
+
+{
+  const RK = (rk: unknown, results: ProbeVerdict[]) =>
+    summarise({ probeName: 'subject', results, regressionKind: rk } as unknown as Parameters<typeof summarise>[0]);
+  const V = (arm: string, pass: unknown, kind?: unknown): ProbeVerdict =>
+    ({ arm, check: 'a row', pass, ...(kind === undefined ? {} : { kind }) } as unknown as ProbeVerdict);
+  /** One tagged FAILING row, one untagged passing row. The population that moves 3 to 0. */
+  const mixed = [bad('A', 'THE REAL BREAK'), V('B', true)];
+
+  // M/358 — the TYPE half, cured. Code 3, and the row count is not laundered into a pass.
+  const badType = RK(['regression'], mixed);
+  check('M', 'a non-string regressionKind refuses at 3 instead of printing "All 1 regression checks passed"',
+    badType.code === 3 && !/passed/.test(badType.headline),
+    `code ${badType.code} :: ${JSON.stringify(badType.headline.slice(0, 64))}`);
+  check('M', 'and the reason names the field, its type, and what it did to the population',
+    badType.reasons.some((r) => /regressionKind is object/.test(r) && /left the population/.test(r)),
+    JSON.stringify(badType.reasons.slice(0, 1)));
+  check('M', 'the near-miss legs do not run against a non-string operand — no throw, no refusal text',
+    !/one edit from/.test(badType.headline), JSON.stringify(badType.headline.slice(0, 48)));
+
+  // M/358 — KNOWN NEGATIVE: a failure still dominates the new refusal. Round 356's lesson, and
+  // the direction this arm exists to protect: the cure may only turn a 0 into a 3, never a 1.
+  const badTypeWithFailure = RK(['regression'], [V('A', false), V('B', true)]);
+  check('M', 'KN: an untagged FAILING row beside a non-string regressionKind is code 1, not demoted to 3',
+    badTypeWithFailure.code === 1 && badTypeWithFailure.failed.length === 1,
+    `code ${badTypeWithFailure.code}, failed ${badTypeWithFailure.failed.length}`);
+  check('M', 'KN: and that code 1 still carries the configuration problem in its reasons',
+    badTypeWithFailure.reasons.some((r) => /regressionKind is object/.test(r)),
+    JSON.stringify(badTypeWithFailure.reasons.slice(0, 1)));
+
+  // M/358 — the STRING half: not refused, and reported. Both halves of that are deliberate.
+  const strandedCase = RK('check', mixed);
+  check('M', 'a string regressionKind no row carries is NOT refused — this is a decision, not an oversight',
+    strandedCase.code === 0 && strandedCase.ran === 1,
+    `code ${strandedCase.code} ran ${strandedCase.ran} :: ${JSON.stringify(strandedCase.headline)}`);
+  check('M', 'but the failing row it stranded is NAMED, so the knowledge is in the run (Round 223)',
+    strandedCase.reasons.some((r) => /NOT COUNTED, and it is a failure/.test(r)
+      && /THE REAL BREAK/.test(r) && /"regression"/.test(r) && /"check"/.test(r)),
+    JSON.stringify(strandedCase.reasons));
+  check('M', 'and it says, in the run, that the counted rows carry no kind of their own',
+    strandedCase.reasons.some((r) => /carries no `kind` of its own/.test(r)),
+    JSON.stringify(strandedCase.reasons.slice(0, 1)));
+
+  // M/358 — the two KNOWN NEGATIVES that stand in the way of refusing the string half. Both are
+  // this module's documented minimal-tagging style, and both must stay exit 0.
+  const legitMeasurement = summarise({ probeName: 'subject', results: [V('A', true), meas('B')] });
+  check('M', 'KN: untagged hard checks beside a measurement row stay exit 0 with no stranded reason',
+    legitMeasurement.code === 0 && !legitMeasurement.reasons.some((r) => /NOT COUNTED/.test(r)),
+    `code ${legitMeasurement.code} :: ${JSON.stringify(legitMeasurement.reasons)}`);
+  const legitOpenItem = summarise({
+    probeName: 'subject',
+    results: [V('A', true), V('B', false, 'open-item')],
+  });
+  check('M', 'KN: a deliberately-FAILING open-item row beside untagged hard checks is still exit 0',
+    legitOpenItem.code === 0, `code ${legitOpenItem.code} :: ${JSON.stringify(legitOpenItem.headline)}`);
+  check('M', 'and it is reported rather than refused — the line is there, the exit code is not moved',
+    legitOpenItem.reasons.some((r) => /NOT COUNTED, and it is a failure/.test(r)),
+    JSON.stringify(legitOpenItem.reasons.slice(0, 1)));
+
+  // M/358 — `describe`: the reason builders are the only place an unintended type gets printed,
+  // and `JSON.stringify` is not total. A BigInt and a circular object each threw out of the
+  // Round 357 limb that exists to refuse instead of throwing.
+  const circular: Record<string, unknown> = {}; circular.self = circular;
+  for (const [label, kind, expectIn] of [
+    ['a BigInt', 10n, 'bigint 10'],
+    ['a circular object', circular, 'object [object Object]'],
+  ] as [string, unknown, string][]) {
+    let got: string;
+    try {
+      const o = summarise({ probeName: 'subject', results: [V('A', true, kind)] });
+      got = `code ${o.code} :: ${o.reasons.join(' | ')}`;
+    } catch (e) { got = `THREW ${(e as Error).message}`; }
+    check('M', `a kind of ${label} is summarised and PRINTED rather than thrown out of the reason builder`,
+      got.startsWith('code 3') && got.includes(expectIn), got.slice(0, 120));
+  }
+  let bigintPass: string;
+  try {
+    const o = summarise({ probeName: 'subject', results: [V('A', 10n), ok('B', 'fine')] });
+    bigintPass = `code ${o.code} failed ${o.failed.length} :: ${o.reasons.join(' | ')}`;
+  } catch (e) { bigintPass = `THREW ${(e as Error).message}`; }
+  check('M', 'a pass of a BigInt reaches its REGRESSIONS block instead of crashing the print of a correct code 1',
+    bigintPass.startsWith('code 1 failed 1') && bigintPass.includes('bigint 10'), bigintPass.slice(0, 120));
+
+  // M/358 — KNOWN NEGATIVE for `describe`: the JSON spelling of every serialisable value is
+  // asserted, not merely its presence. A helper that printed `[object Object]` where the sweep's
+  // pins read `{}`, or dropped the quotes around a string, would redden here.
+  const serialisableReasons = summarise({
+    probeName: 'subject',
+    results: [V('A', 'FAIL'), V('B', true, {}), ok('C', 'fine')],
+  }).reasons.join(' | ');
+  check('M', 'KN: describe leaves serialisable values in their JSON spelling — string quoted, {} as {}',
+    /carries string "FAIL"/.test(serialisableReasons) && /kind is object \{\}/.test(serialisableReasons),
+    JSON.stringify(serialisableReasons.slice(0, 150)));
+
+  // M/358 — the two fields Round 357 declared undriven and left, driven. Neither moves an exit
+  // code; `arm` reaches the REGRESSIONS block as `[object Object]`. Characterised, not cured.
+  const armObj = summarise({
+    probeName: 'subject',
+    results: [V('A', false, 'regression'), ok('B', 'fine')]
+      .map((r, i) => (i === 0 ? ({ ...r, arm: { a: 1 } } as unknown as ProbeVerdict) : r)),
+  });
+  check('M', "a non-string `arm` does NOT move the exit code — it reaches the named row as [object Object]",
+    armObj.code === 1 && armObj.failed.length === 1 && `${armObj.failed[0].arm}` === '[object Object]',
+    `code ${armObj.code} :: ${armObj.failed.map((f) => `${f.arm}`).join(',')}`);
+  const checkObj = summarise({
+    probeName: 'subject',
+    results: [({ arm: 'A', check: { c: 1 }, pass: false, kind: 'regression' } as unknown as ProbeVerdict)],
+  });
+  check('M', 'and a non-string `check` does not move it either', checkObj.code === 1,
+    `code ${checkObj.code}`);
+
+  // M/358 — `inapplicable` is not type-read, and the asymmetry is the whole of the finding: the
+  // throw is reachable ONLY from the all-green limb, which is the one limb that prints "passed".
+  // Recorded as a measurement rather than cured: today it is a crash, and turning a crash into a
+  // code 3 is the demotion Round 356 caught. The call belongs to the seat that owns the hatch.
+  let inapGreen: string;
+  try {
+    inapGreen = `code ${summarise({ probeName: 'subject', results: [ok('A', 'fine')],
+      inapplicable: 'probe-x' as unknown as string[] }).code}`;
+  } catch (e) { inapGreen = `THREW ${(e as Error).constructor.name}`; }
+  let inapRed: string;
+  try {
+    inapRed = `code ${summarise({ probeName: 'subject', results: [bad('A', 'broke')],
+      inapplicable: 'probe-x' as unknown as string[] }).code}`;
+  } catch (e) { inapRed = `THREW ${(e as Error).constructor.name}`; }
+  check('M', `MEASUREMENT: a non-array \`inapplicable\` on a clean run → ${inapGreen}; on a red run → ${inapRed}`,
+    true, 'the throw is reachable only from the limb that prints "passed"', 'measurement');
+  check('M', 'the asymmetry itself is the check: the clean limb throws and the failure limb does not',
+    inapGreen.startsWith('THREW') && inapRed === 'code 1', `${inapGreen} / ${inapRed}`);
+}
+
 // ── Arm F — the OLD tails, re-implemented, report success on arm B's input ────
 //
 // Verbatim shape of what stood at HEAD~, not a paraphrase:
