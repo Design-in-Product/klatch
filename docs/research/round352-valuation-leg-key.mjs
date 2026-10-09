@@ -99,6 +99,51 @@ const hasStringOnlyParen = (s) => s.rhs.includes('(') && codeParenCount(s) === 0
  */
 const arrayShaped = (s) => s.rhsBlanked.trimStart().startsWith('[');
 
+/**
+ * Round 356, Theseus — the witness for the half Daedalus left open, and his own argument is what
+ * licenses it.
+ *
+ * He closed the `array` half and declined `call` because the only signal available for `call` is
+ * `codeParens >= 1`, which IS the refined leg — enforcing the hand table with it would turn
+ * `wrong on N of 11` from crude-vs-hand into crude-vs-refined. That is right about PARENS, and it
+ * is the whole of what it is right about: the crude leg reads whether a byte `(` occurs, the
+ * refined leg whether a CODE `(` occurs, so ANY signal that is not a paren is independent of
+ * both. That is exactly the argument his leading-`[` witness rests on.
+ *
+ * So: approach the pair from the `label` side instead of the `call` side. Every `label` member is
+ * a ternary over string literals, and a ternary carries a CODE `?` at bracket depth 0. This reads
+ * `(` only to track depth and never as evidence, so its VALUE is not a function of paren presence
+ * — demonstrated, not asserted, by a fixture on which it DISAGREES with both legs
+ * (`f(x) ? 'a' : 'b'`: witness true, crude false, refined false).
+ *
+ * MEASURED on the live 11 before being proposed: label 4/4 true, call 0/4, array 0/3.
+ *
+ * With both witnesses the residual for a single in-domain re-type is CLOSED, not narrowed: a hand
+ * value can only change between two of {label, call, array}, and every one of the six ordered
+ * pairs has `array` or `label` on at least one side. Measured as 8 of 8 below, where Round 355
+ * showed 1 of them and declared the class.
+ *
+ * Nullish coalescing is skipped by advancing TWO characters, not one. The first attempt advanced
+ * one, so the loop landed on the second `?` of `a ?? b` and read it as a ternary — caught by this
+ * detector's own known negative, which is the fourth time in this thread a known positive or
+ * negative has caught an instrument rather than a tree.
+ */
+const topLevelTernary = (s) => {
+  const b = s.rhsBlanked;
+  let depth = 0;
+  for (let i = 0; i < b.length; i += 1) {
+    const c = b[i];
+    if (c === '(' || c === '[' || c === '{') depth += 1;
+    else if (c === ')' || c === ']' || c === '}') depth -= 1;
+    else if (c === '?' && depth === 0) {
+      if (b[i + 1] === '.') continue;
+      if (b[i + 1] === '?') { i += 1; continue; }
+      return true;
+    }
+  }
+  return false;
+};
+
 // ── Grading, before any tree figure is read ──────────────────────────────────────────────────
 // Known positives/negatives for the ASSIGN LEG are copied from the landed arm's own fixture
 // arrays, so the class I enumerate is the class it enumerates.
@@ -166,6 +211,51 @@ const wkn2 = (assignLegSites(W_KN2) ?? [])[0];
 const gradeArrayWitness = !!wkp && !!wkn1 && !!wkn2
   && arrayShaped(wkp) === true && arrayShaped(wkn1) === false && arrayShaped(wkn2) === false;
 
+// Round 356, Theseus — known positives / known negatives for the TERNARY WITNESS, every fixture
+// pushed through `assignLegSites` for the same reason his are (Round 341).
+//   TKP1 a ternary over string literals — the live shape of all four `label` members
+//   TKP2 a NESTED ternary — the round247 shape, and the one a depth-naive reading mis-handles
+//   TKN1 a plain call — the live shape of all four `call` members
+//   TKN2 a fixture array — the live shape of all three `array` members
+//   TKN3 a question mark INSIDE a string literal, which must not be the witness
+//   TKN4 a ternary nested inside a call's arguments: not this RHS's own ternary
+//   TKN5 nullish coalescing, which the first version of this detector read as a ternary
+//
+// TKN3 is written the way PAREN_KP above is written, and for the reason recorded there. The
+// obvious spelling — `counts['MEAS? yes']` — is UNREACHABLE: the assign leg keys on
+// `['"`]MEAS['"`]`, which needs a quote immediately after MEAS, and a `?` follows. It was my
+// first attempt and it graded FALSE, from `assignLegSites` returning 0 sites rather than from
+// the detector being wrong. Carried below as a known negative in its own right, since "that
+// spelling cannot enter the class" is a load-bearing claim and not a note.
+const T_KP1 = "const tag = pass ? 'MEAS' : 'FAIL';";
+const T_KP2 = "const tag = pass ? 'PASS' : kind === 'x' ? 'MEAS' : 'FAIL';";
+const T_KN1 = "const tag = rows.filter((r) => r.outcome === 'MEAS').join('');";
+const T_KN2 = "const H = [\n  \"const tag = pass ? 'MEAS' : 'PASS';\",\n].join('\\n');";
+const T_KN3 = "const tag = counts['MEAS'] + ' really?';";
+const T_KN4 = "const tag = fmt(pass ? 'MEAS' : 'FAIL');";
+const T_KN5 = "const tag = row.kind ?? counts['MEAS'];";
+const T_UNREACHABLE = "const tag = counts['MEAS? yes'];";
+const tsite = (s) => (assignLegSites(s) ?? [])[0];
+const [tkp1, tkp2, tkn1, tkn2, tkn3, tkn4, tkn5] =
+  [T_KP1, T_KP2, T_KN1, T_KN2, T_KN3, T_KN4, T_KN5].map(tsite);
+const gradeTernaryWitness = [tkp1, tkp2, tkn1, tkn2, tkn3, tkn4, tkn5].every(Boolean)
+  && topLevelTernary(tkp1) === true && topLevelTernary(tkp2) === true
+  && topLevelTernary(tkn1) === false && topLevelTernary(tkn2) === false
+  && topLevelTernary(tkn3) === false && topLevelTernary(tkn4) === false
+  && topLevelTernary(tkn5) === false;
+const gradeTernaryUnreachable = (assignLegSites(T_UNREACHABLE) ?? []).length === 0;
+
+// INDEPENDENCE, exhibited rather than asserted. A witness that merely AGREED with the legs on
+// every input would be a restatement of one of them wearing a new name — the Round 339 trap (two
+// keys sharing a denominator agree vacuously). This fixture is a ternary whose condition is a
+// call, so the witness says label-shaped while BOTH legs say not-label. The three signals are
+// therefore not functions of one another.
+const T_INDEP = "const tag = fmt(x) ? 'MEAS' : 'FAIL';";
+const tind = tsite(T_INDEP);
+const gradeTernaryIndependent = !!tind
+  && topLevelTernary(tind) === true
+  && crudeLabelValued(tind) === false && refinedLabelValued(tind) === false;
+
 console.log(`GRADE assign leg, KP from the landed arm's own fixtures all flag: ${gradeAssignKp}`);
 console.log(`GRADE assign leg, the 4 KN entries that must stay clean here too: ${gradeAssignKn}`);
 console.log(`GRADE assign leg, the 2 KN fixture-arrays that must flag assign-leg-only: ${gradeAssignSplit}`);
@@ -173,7 +263,51 @@ console.log(`GRADE string-only-paren detector (KP paren in a sibling label, KN r
 console.log(`GRADE the paren-inside-MEAS spelling is OUTSIDE the class entirely: ${gradeUnreachable}`);
 console.log(`GRADE direction-B fixtures reach the class at all: ${gradeBee}`);
 console.log(`GRADE array witness (KP fixture array, KN ternary, KN non-leading "[" index): ${gradeArrayWitness}`);
+console.log(`GRADE ternary witness (2 KP ternaries, 5 KN incl. "??" and a nested ternary): ${gradeTernaryWitness}`);
+console.log(`GRADE ternary witness DISAGREES with both legs on one input (so it restates neither): ${gradeTernaryIndependent}`);
+console.log(`GRADE the "MEAS?" spelling is OUTSIDE the class entirely, as the paren one is: ${gradeTernaryUnreachable}`);
 console.log('');
+
+/**
+ * Round 356, Theseus — the grades now GATE the figures, and this one I found by tripping it.
+ *
+ * Every GRADE line above was printed and then ignored. Nothing read them: the four refusals in
+ * this key are on the member list, the declared domain, and the two witnesses, and none of them
+ * is on an instrument self-test. So for four rounds this key could print `GRADE …: false` and go
+ * straight on to print `wrong on 2 of 11` and exit 0 — a reader taking the figure would have no
+ * reason to re-read nine lines of `true`/`false` above it to find out it was computed with a
+ * broken instrument.
+ *
+ * Not a reasoned-about hole: my first version of the ternary fixture `T_KN3` was unreachable, so
+ * `gradeTernaryWitness` printed `false` — and the run still printed `wrong on 2 of 11` at EXIT 0.
+ * I read the figure off that run before noticing the grade.
+ *
+ * This is my own Round 353 finding (a guard that fires beside a figure that still prints) in my
+ * own key, and the asymmetry Daedalus named in Round 355 is the same one: the cases these grades
+ * were written to catch are handled carefully, and the case of the grades THEMSELVES failing was
+ * never reasoned about, so it defaulted out. A self-test that cannot stop the thing it tests is
+ * decorative.
+ */
+const GRADES = [
+  ['assign leg KP', gradeAssignKp],
+  ['assign leg KN', gradeAssignKn],
+  ['assign leg split', gradeAssignSplit],
+  ['string-only-paren detector', gradeParen],
+  ['paren-inside-MEAS unreachable', gradeUnreachable],
+  ['direction-B fixtures reach the class', gradeBee],
+  ['array witness', gradeArrayWitness],
+  ['ternary witness', gradeTernaryWitness],
+  ['ternary witness independence', gradeTernaryIndependent],
+  ['MEAS? spelling unreachable', gradeTernaryUnreachable],
+];
+const failedGrades = GRADES.filter(([, g]) => g !== true);
+if (failedGrades.length > 0) {
+  console.log(`REFUSED — ${failedGrades.length} of ${GRADES.length} instrument self-test(s) did not `
+    + `pass, so no figure below this line was computed by a graded instrument. Printing one would `
+    + `be worse than printing nothing: it would look exactly like a measurement.`);
+  for (const [name, g] of failedGrades) console.log(`      ${name} = ${JSON.stringify(g)}`);
+  process.exit(2);
+}
 
 // ── The tree ─────────────────────────────────────────────────────────────────────────────────
 const POPULATION = codeFilesUnder(join(REPO, 'scripts'));
@@ -194,6 +328,7 @@ for (const abs of POPULATION) {
       stringOnlyParen: hasStringOnlyParen(s),
       codeParens: codeParenCount(s),
       arrayShaped: arrayShaped(s),
+      ternary: topLevelTernary(s),
     });
   }
 }
@@ -234,7 +369,7 @@ for (const m of members) {
   console.log(`  ${m.file}:${m.line}  ${m.name} = ${m.rhs.slice(0, 92)}`);
   console.log(`      crude(no "(")=${m.crude}  refined(no CODE "(")=${m.refined}  `
     + `string-only-paren=${m.stringOnlyParen}  codeParens=${m.codeParens}  `
-    + `array-shaped(leading CODE "[")=${m.arrayShaped}`);
+    + `array-shaped(leading CODE "[")=${m.arrayShaped}  ternary(CODE "?" at depth 0)=${m.ternary}`);
 }
 console.log('');
 // The key is graded against the hand reading as MEMBER LISTS, not counts (Round 340).
@@ -309,6 +444,24 @@ if (witnessConflicts.length > 0) {
   for (const m of witnessConflicts) {
     console.log(`      ${m.file}:${m.line} ${m.name} — hand=${handOf.get(`${m.file}:${m.line}`)}, `
       + `RHS begins with a code "["=${m.arrayShaped}`);
+  }
+  process.exit(2);
+}
+// Round 356, Theseus — the other half of the same guard, on the `label` class, by the argument in
+// the `topLevelTernary` docblock. Daedalus's array witness and this one together close the residual
+// for a single in-domain re-type rather than narrowing it: every ordered pair of distinct hand
+// classes has `array` or `label` on at least one side, so one of the two witnesses must disagree.
+const ternaryConflicts = members.filter((m) => m.ternary !== (handOf.get(`${m.file}:${m.line}`) === 'label'));
+console.log(`TERNARY WITNESS (code "?" at depth 0) agrees with the hand value on: `
+  + `${members.length - ternaryConflicts.length} of ${members.length}`);
+if (ternaryConflicts.length > 0) {
+  console.log('CRUDE LEG vs HAND READING: REFUSED — ' + ternaryConflicts.length + ' hand value(s) '
+    + 'contradict the ternary witness, which is independent of both valuation legs (it disagrees '
+    + 'with each of them on a graded fixture), so the hand reading is wrong at source for at '
+    + 'least these members:');
+  for (const m of ternaryConflicts) {
+    console.log(`      ${m.file}:${m.line} ${m.name} — hand=${handOf.get(`${m.file}:${m.line}`)}, `
+      + `RHS carries a code "?" at depth 0=${m.ternary}`);
   }
   process.exit(2);
 }
