@@ -57,7 +57,7 @@
 import fs from 'fs';
 import path from 'path';
 import os from 'os';
-import { execFileSync } from 'child_process';
+import { execFileSync, spawnSync } from 'child_process';
 import { summarise, summariseAndExit, type ProbeVerdict } from './lib/probe-outcome.mts';
 import { readNumericConstant, readLeadingFactor } from './lib/probe-source-constants.mts';
 import { censusSkippedShapes, censusResultsShapes } from './lib/skipped-shape-census.mts';
@@ -2129,6 +2129,192 @@ function oldTurncountTail(rs: ProbeVerdict[]): { code: number; line: string } {
     + 'readdirSync, not grep: grep emits no row for a NUL-carrying file, so a grep-derived count '
     + 'fails SMALL — the direction that hides a caller.',
     true, 'the member lists are pinned by R1 and R4; these totals are declared, not held', 'measurement');
+}
+
+// ── Arm S — Theseus, Round 364. R1's residue is safe because `tsc` says so. What says `tsc` ran? ──
+//
+// Daedalus handed this over in Round 363 as a question rather than a defect: R1's seven-member
+// residue is safe only by a type annotation, R4 keeps the lines that defeat `tsc` named, "but
+// nothing asserts the typecheck RAN." He proposed a cheap version (read the config's `include`)
+// and an honest version (drive `tsc`, assert 0 diagnostics), and named the known positive as "a
+// tsconfig with `scripts/` removed from `include`."
+//
+// **THE PREMISE IS FALSE IN THE BROAD FORM, AND THE HONEST VERSION HAS BEEN SWEPT SINCE ROUND
+// 304.** Censused before anything was written here, because "no instrument anywhere can X" is the
+// highest-risk sentence on this project and has been wrong by 78 files before:
+//
+//   · `probe-round304` A2 spawns `tsc -p scripts/tsconfig.json --noEmit` over the REAL config and
+//     asserts `status === 0` with zero diagnostic lines. That is the honest version, verbatim.
+//   · `probe-round303` A1b/A2/A3 read program membership off `tsc --listFiles` rather than off the
+//     glob, and assert `.mts in program > 100`, `.mjs in program === 0`, and `.ts in program iff
+//     this config's own globs claim it`.
+//   · Membership read from the module itself, not from a doc: round303, round304, round224 and
+//     round311 are all in `SWEPT`. Those cells run every fire.
+//
+// And his known positive reddens BOTH of them. Driven, five configs, `compilerOptions` copied
+// verbatim from `scripts/tsconfig.json`, one `--listFiles` invocation per config (it carries the
+// diagnostics as well as the program — checked, the empty-program run printed its `error TS` line
+// on exactly that invocation):
+//
+//   REAL                      148 .mts · residue IN  · exit 0 · 0 diag
+//   scripts coverage removed    0 .mts · residue OUT · exit 2 · TS18003   -> A1b RED, A2 RED
+//   residue file excluded     147 .mts · residue OUT · exit 0 · 0 diag    -> A1b GREEN, A2 GREEN
+//   47 probe .mts excluded    101 .mts · residue OUT · exit 0 · 0 diag    -> A1b GREEN, A2 GREEN
+//
+// So the degradation he named would not go silent, and **the one that would is a single-file
+// exclusion**. A1b's threshold is `> 100` against a live 148, and that slack is 47 files — driven,
+// not arithmetic: the 47-file config exits 0 with 101 in the program and both cells green. His
+// suggested KP was also not constructible as described, which is worth saying rather than
+// smoothing over: the real `include` is `["**/*.mts", "**/*.ts"]` *relative to `scripts/`*, so
+// there is no `scripts/` token in it to remove. It had to be built by re-rooting the globs.
+//
+// S1 closes the single-file hole, derived from the live census rather than from R1's literal list,
+// so a new type-only site in a NEW file widens the coverage requirement automatically instead of
+// inheriting R1's denominator. S2 grades it with a control/KP pair. S3 is the half that really is
+// unasserted, and it is not the one handed over: the gate EDGE, not the config.
+{
+  const census = censusResultsShapes(path.join(REPO, 'scripts'));
+  const SYNTACTIC_SAFE = (s: { kind: string; boundAs: string }) =>
+    s.kind === 'literal-array' || (s.kind === 'identifier' && (s.boundAs === 'local' || s.boundAs === 'param'));
+  const typeOnly = census.sites.filter((s) => !SYNTACTIC_SAFE(s));
+  const badDecls = census.decls.filter((d) => !d.arrayInit || d.reassignments > 0);
+  /** The files whose `results` safety rests on `tsc`, derived live — R1's residue, by file. */
+  const RESIDUE_FILES = [...new Set([...typeOnly.map((s) => s.file), ...badDecls.map((d) => d.file)])].sort();
+
+  const TSCONFIG = path.join(REPO, 'scripts', 'tsconfig.json');
+  const CFG_OPTS = JSON.parse(
+    fs.readFileSync(TSCONFIG, 'utf8').replace(/^\s*\/\/.*$/gm, ''),
+  ).compilerOptions as Record<string, unknown>;
+
+  /** One invocation, because `--listFiles` carries the diagnostics too. */
+  const driveTsc = (cfg: string) => {
+    const r = spawnSync('npx', ['tsc', '-p', cfg, '--noEmit', '--listFiles'],
+      { cwd: REPO, encoding: 'utf8', maxBuffer: 256 * 1024 * 1024 });
+    const out = `${r.stdout ?? ''}${r.stderr ?? ''}`;
+    const program = new Set(`${r.stdout ?? ''}`.split('\n').map((l) => l.trim())
+      .filter((l) => l.startsWith(REPO) && !l.includes('node_modules'))
+      .map((l) => l.slice(REPO.length + 1)));
+    const diags = out.split('\n').filter((l) => /error TS/.test(l));
+    return { program, diags, status: r.status, mts: [...program].filter((f) => f.endsWith('.mts')).length };
+  };
+
+  const real = driveTsc(TSCONFIG);
+  const missing = RESIDUE_FILES.filter((f) => !real.program.has(`scripts/${f}`));
+
+  // S1 — THE CELL THAT CLOSES IT. Membership of the residue's files in the type program, read off
+  // `tsc` itself rather than off the glob, in the same `-p` invocation the root manifest's
+  // `typecheck:scripts` script makes. Fails loud rather than quiet: if `npx` cannot spawn at all
+  // the program is empty, every residue file is `missing`, and this cell goes red — an unrunnable
+  // drive must not read as a clean one.
+  const s1 = RESIDUE_FILES.length > 0 && missing.length === 0
+    && real.status === 0 && real.diags.length === 0;
+  check('S', 'every file whose `results` safety rests on a TYPE annotation is INSIDE the type '
+    + 'program, read off `tsc --listFiles` and named rather than counted, and that same drive '
+    + 'carries zero diagnostics. R1 says those sites are safe because `tsc` says so; this is what '
+    + 'says `tsc` looked at them. The residue is DERIVED from the live census, not copied from '
+    + 'R1\'s literal list, so a new type-only site in a new file widens what must be covered '
+    + 'instead of inheriting R1\'s denominator',
+    s1,
+    s1
+      ? `${RESIDUE_FILES.length} residue file(s), all IN a program of ${real.mts} .mts: `
+        + `${RESIDUE_FILES.map((f) => f.match(/^probe-round\d+[a-z]?/)?.[0] ?? f).join(', ')} `
+        + `· exit ${real.status} · 0 diagnostic line(s)`
+      : `NOT COVERED — residue ${JSON.stringify(RESIDUE_FILES)}; missing from program `
+        + `${JSON.stringify(missing)}; program ${real.mts} .mts; exit ${real.status}; `
+        + `${real.diags.length} diagnostic line(s)${real.diags.length ? `: ${real.diags[0]?.trim()}` : ''}`);
+
+  // S2 — the control/KP pair that makes S1 driveable in both directions, planted OUTSIDE the repo
+  // so nothing writes into the tree while the sweep runs. The CONTROL is the half that matters: a
+  // planted config that differs from the real one only by being planted must put the residue IN,
+  // or "OUT" in the KP is a fact about planting rather than about the exclusion. `typeRoots` is
+  // pointed back at the repo because a config outside the tree cannot resolve `types: ["node"]`
+  // from its own directory — measured, not guessed: without it both plants fail TS2688 and the KP
+  // would have "worked" for the wrong reason.
+  let s2 = false;
+  let s2note = '';
+  let excluded: ReturnType<typeof driveTsc> | null = null;
+  let plantTmp = '';
+  try {
+    plantTmp = fs.mkdtempSync(path.join(os.tmpdir(), 'r364-plant-'));
+    const plant = (name: string, exclude: string[] | null) => {
+      const p = path.join(plantTmp, `tsconfig.${name}.json`);
+      fs.writeFileSync(p, JSON.stringify({
+        compilerOptions: { ...CFG_OPTS, typeRoots: [path.join(REPO, 'node_modules', '@types')] },
+        include: [path.join(REPO, 'scripts', '**/*.mts'), path.join(REPO, 'scripts', '**/*.ts')],
+        ...(exclude ? { exclude } : {}),
+      }));
+      return driveTsc(p);
+    };
+    const control = plant('control', null);
+    excluded = plant('excluded', RESIDUE_FILES.map((f) => path.join(REPO, 'scripts', f)));
+    const inControl = RESIDUE_FILES.every((f) => control.program.has(`scripts/${f}`));
+    const outExcluded = RESIDUE_FILES.every((f) => !excluded!.program.has(`scripts/${f}`));
+    s2 = inControl && outExcluded
+      && control.status === 0 && control.diags.length === 0
+      && excluded.status === 0 && excluded.diags.length === 0
+      && control.mts > 100 && excluded.mts > 100;
+    s2note = `control ${control.mts} .mts residue ${inControl ? 'IN' : 'OUT'} exit ${control.status} `
+      + `${control.diags.length} diag · excluded ${excluded.mts} .mts residue `
+      + `${outExcluded ? 'OUT' : 'IN'} exit ${excluded.status} ${excluded.diags.length} diag`;
+  } catch (e) {
+    s2note = `PLANT THREW: ${e instanceof Error ? e.message : String(e)}`;
+  } finally {
+    if (plantTmp) fs.rmSync(plantTmp, { recursive: true, force: true });
+  }
+  check('S', 'S1 is graded in both directions by a planted pair that differs by exactly the '
+    + 'exclusion: the CONTROL puts every residue file IN, the KNOWN POSITIVE excludes exactly '
+    + 'those files and puts every one OUT, and BOTH plants still typecheck clean with a program '
+    + 'over 100 .mts — so the KP carries the property S1 tests and is not the empty-program state, '
+    + 'which fails TS18003 and would grade nothing',
+    s2, s2note);
+
+  // S3 — THE HALF THAT IS GENUINELY UNASSERTED, and it is one level up from where the handed item
+  // pointed. S1 and round304's A2 both prove the CONFIG is good by driving it directly. Neither
+  // proves the gate still reaches it. The chain is `test` -> `typecheck` -> `typecheck:scripts`,
+  // and the only two cells in the corpus that read it (`probe-round284:146`, `probe-round283:196`)
+  // build their `testChain` by JOINING all three scripts' text — so severing the edge is invisible
+  // to them: driven over a manifest with ` && npm[run] typecheck:scripts` removed, round284's A1
+  // stays GREEN, and the joined text still contains `tsconfig`, so even a regex for the config
+  // name would not notice. Both of those probes are additionally in `DEFERRED`, so neither runs in
+  // a sweep at all. Asserted as the PROPERTY (the edge exists), not as the defect — round284's A1
+  // was repaired for pinning an absence, and that is not a mistake worth repeating one file over.
+  const pkg = JSON.parse(fs.readFileSync(path.join(REPO, 'package.json'), 'utf8')) as
+    { scripts: Record<string, string> };
+  /** The edge, not the join: `typecheck` must itself name the scripts leg, and `test` name `typecheck`. */
+  const edgeHolds = (s: Record<string, string>) =>
+    /\btypecheck:scripts\b/.test(s.typecheck ?? '')
+    && /\btypecheck\b/.test(s.test ?? '')
+    && /-p\s+scripts\/tsconfig\.json/.test(s['typecheck:scripts'] ?? '');
+  // Two known negatives, in memory — the manifest on disk is never touched.
+  const severed = { ...pkg.scripts, typecheck: (pkg.scripts.typecheck ?? '').replace(/\s*&&\s*\S+\s+\S+\s+typecheck:scripts/, '') };
+  const dropped = { ...pkg.scripts };
+  delete dropped['typecheck:scripts'];
+  const s3 = edgeHolds(pkg.scripts) && !edgeHolds(severed) && !edgeHolds(dropped);
+  check('S', 'the GATE still reaches this config, which is a different claim from the config being '
+    + 'clean: the root manifest\'s `typecheck` script names the `typecheck:scripts` leg, `test` '
+    + 'names `typecheck`, and that leg still points `-p` at `scripts/tsconfig.json` — graded by '
+    + 'two known negatives asserted REJECTED (the edge severed, and the leg deleted), because the '
+    + 'two existing cells that read this chain join all three scripts\' text and stay green when '
+    + 'it is cut',
+    s3,
+    s3
+      ? 'edge holds; severed and deleted manifests both rejected — '
+        + `leg is \`${pkg.scripts['typecheck:scripts']}\``
+      : `EDGE: live ${edgeHolds(pkg.scripts)} · severed rejected ${!edgeHolds(severed)} · `
+        + `deleted rejected ${!edgeHolds(dropped)} · typecheck is \`${pkg.scripts.typecheck}\``);
+
+  // S4 — MEASUREMENT, deliberately not a pin. The slack is the finding, and pinning it would be
+  // asserting the defect: the right repair is for round303/304's A1b to hold a member list instead
+  // of a `> 100` threshold, and a cell pinning the slack would go red on that repair.
+  check('S', `MEASUREMENT: the type program holds ${real.mts} .mts file(s); the threshold the two `
+    + `existing coverage cells use is \`> 100\`, so ${Math.max(0, real.mts - 101)} file(s) can `
+    + 'leave the program with both of them green. Driven at the extreme this fire (47 probe '
+    + `.mts excluded: 101 in program, exit 0, 0 diagnostics, both green) and at the minimum `
+    + `(${RESIDUE_FILES.length} residue file(s) excluded: `
+    + `${excluded ? `${excluded.mts} in program, exit ${excluded.status}, ${excluded.diags.length} diagnostics` : 'plant did not run'}`
+    + ', both green). S1 covers the residue; the rest of that slack is unguarded and is '
+    + 'round303/304\'s to close, not this arm\'s to pin',
+    true, 'the slack is reported, not held — a pin on it would redden when A1b is repaired', 'measurement');
 }
 
 // ── Exit ──────────────────────────────────────────────────────────────────────

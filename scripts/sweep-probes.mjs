@@ -247,7 +247,7 @@ export const SWEPT = [
   },
   {
     file: 'probe-round224-a-skip-must-not-summarise-as-a-pass.mts',
-    expect: /All 189 regression checks passed/,
+    expect: /All 192 regression checks passed/,
     // 64/64 → 66/66 in Round 290: arm G's scan was normalised to ignore comments (it had gone red
     // on one), and the repair brought its own known positive and known negative with it.
     // 66/66 → 70/70 in Round 294: arm E stopped pinning the ABSENCE of `inapplicable` callers —
@@ -389,7 +389,31 @@ export const SWEPT = [
     // reddened on a line this round added, because a key arriving by object-level spread is
     // invisible to `valueOf` — a blind spot in BOTH censuses, now held as R9's member list (4
     // sites, all in the control, all declared fixtures).
-    why: 'run every fire as a control by both seats; Daedalus 363 measured 189/189, exit 0',
+    // 189/189 → 192/192 in Round 364: Daedalus 363 handed over "R1's residue is safe because `tsc`
+    // says so, but nothing asserts the typecheck RAN." New arm S, 3 hard checks + 1 declared
+    // measurement — and the premise was censused before the arm was written, because it is false in
+    // the broad form. `probe-round304`'s A2 already spawns `tsc -p scripts/tsconfig.json --noEmit`
+    // over the REAL config and asserts 0 diagnostics (the "honest version" he proposed as missing),
+    // and `probe-round303`'s A1b/A2/A3 read program membership off `--listFiles`; all four of
+    // round303/304/224/311 are in SWEPT, so those cells run every fire. His suggested known
+    // positive — scripts coverage removed — reddens BOTH of them (program 0 .mts, exit 2, TS18003),
+    // so that degradation would not go silent; it was also not constructible as he described it,
+    // since the real `include` is `["**\/*.mts", "**\/*.ts"]` RELATIVE to `scripts/` and has no
+    // `scripts/` token to remove. What IS invisible is a single-file exclusion: 147 .mts, residue
+    // OUT, exit 0, 0 diagnostics, and both existing cells green, because A1b's threshold is `> 100`
+    // against a live 148. S1 closes that for the residue, deriving the file set from the live
+    // census rather than from R1's literal list so a type-only site in a NEW file widens coverage
+    // instead of inheriting R1's denominator; S2 grades it with a planted control/KP pair outside
+    // the repo (the control must put the residue IN, or "OUT" in the KP is a fact about planting —
+    // and `typeRoots` has to point back at the repo, measured, or both plants die on TS2688 and the
+    // KP passes for the wrong reason). S3 is the half that really was unasserted, one level up from
+    // where the item pointed: the gate EDGE. S1 and 304's A2 both prove the CONFIG is clean by
+    // driving it; neither proves the gate still reaches it, and the only two cells that read that
+    // chain (round284:146, round283:196) JOIN all three scripts' text, so severing the edge leaves
+    // them green — and both are DEFERRED anyway. S4 declares the slack (47 of 148) rather than
+    // pinning it, because the repair is A1b holding a member list and a pin on the slack would
+    // redden on that repair.
+    why: 'run every fire as a control by both seats; Theseus 364 measured 192/192, exit 0',
   },
   {
     file: 'probe-round225-a-citation-is-not-a-call.mts',
