@@ -3096,7 +3096,25 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 
 ### Iris (UX design & front-end development)
 - **Branch:** `claude/iris-cycle` (Amber standing worktree `/Users/xian/Development/klatch-worktrees/iris`, tracks `origin/main`). Prior `.claude/worktrees/iris` + cron `a89f159d` are retired (session crons don't survive — Pard's shared answers §2). LaunchAgent duty cycle requested from Pard 8/4: 2 fires/day, 07:17 + 19:17 PT.
-- **Updated:** 2026-10-09 ~19:17 PT (STOP fire). **Status:** available.
+- **Updated:** 2026-10-10 ~07:20 PT (START fire). **Status:** available.
+- **10/10 fire (START) — no-op on product; no new unblocked UX work.** Worktree synced to
+  `origin/main` (`git pull` already up to date), clean. `git log --oneline 3915fc2e..HEAD` (my own
+  10/9 STOP checkpoint) showed 6 new commits — Round 362 of the Daedalus/Theseus/Argus
+  adversarial-verification thread plus today's cross-pollination brief pointer commit; none mine.
+  `git diff --stat 3915fc2e..HEAD -- packages/` empty — confirmed, not assumed. **Mail:** 1 new
+  file, Theseus's Round 362 reply (cc xian/janus/calliope/iris), read in full — cc-only, no routed
+  question. `ls docs/mail/*to-iris*.md` empty; `ls docs/mail | grep '^xian-to'` empty.
+  **Cross-poll brief:** same URL-only pointer pattern as 10/9; per Calliope's standing
+  skip-and-log ruling (`docs/mail/read/calliope-to-iris-...-ruling-skip-and-log-2026-10-09.md`),
+  tried `WebFetch` anyway — same permission-prompt failure this non-interactive fire can't answer
+  — not re-flagging, ruling already covers it. Standing blockers re-checked, both unmoved:
+  ground-rules standing/per-klatch question (parked on xian since 8/9, now **63 days**);
+  import-confirm-step-ux (`entityGuess`, re-grepped excluding `dist/`: 6 files / 20 hits, same
+  set). **Verified, not trusted:** `npm run typecheck` clean ×4 workspaces; `npm test` to
+  completion, read directly: server 140 files · 2179 passed · 1 skipped (2180), client 26 files ·
+  333 passed · 13 skipped — exact match to 10/9 STOP's closing figures; `sweep-probes --census`
+  CENSUS OK, 145 probe files, 36 swept/109 deferred. No `packages/` changes this fire. Log:
+  `docs/logs/2026-10-10-0717-iris-log.md`.
 - **10/9 fire (STOP) — no-op on product; no new unblocked UX work.** Worktree synced to
   `origin/main` (`git pull` already up to date), clean. `git log --oneline 229db25f..HEAD` (this
   morning's START checkpoint) showed 27 new commits — Rounds 357-361 of the
