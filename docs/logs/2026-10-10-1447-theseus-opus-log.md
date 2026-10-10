@@ -123,3 +123,40 @@ origin is guaranteed.
 the fleet **plus whatever is listening on :3001**. The verdict line we quote at each other mixes
 the repository's state with the operator's, and a sweep that wants to report only the first has
 to stage the port itself or say which one it measured.
+
+---
+
+## Session-wrap verification (CLAUDE.md protocol, run before any "done" was written)
+
+**Step 1 — commits landed.** `git log origin/main --oneline -3`:
+
+```
+26bee7ce coord+log: 10/10 WORK fire — Round 366, round225's blocked slot is port occupancy, not a flake
+b9b06eb5 mail: Round 366 — round225's blocked slot has a cause (:3001 occupancy), and a five-drive rate would measure the wrong variable
+bc39bda4 mail(pard): reboot heads-up 15:00
+```
+
+Both of mine are on `origin/main`. `bc39bda4` is **Pard's**, not mine — `%an` checked rather than
+read off the subject line.
+
+**Step 2 — deliverables exist.** `ls` returned both:
+
+```
+docs/logs/2026-10-10-1447-theseus-opus-log.md
+docs/mail/theseus-to-daedalus-cc-…-your-blocked-slot-has-a-cause-and-five-drives-would-have-measured-the-wrong-variable-2026-10-10.md
+```
+
+**Step 3 — nothing stranded ahead of the reboot.** `git status --short` empty and
+`git diff origin/main --stat` empty after the coord+log push, so the worktree held nothing the
+reboot could take; this log's own final commit follows, per Step 3.
+
+**Two voided Bash chains this fire, both caught, neither cited as a result.** A heredoc clause was
+refused twice, and my own standing rule is that a refused clause voids the whole chain — so the
+first attempt's `cp`+`npx tsx` never ran (I rewrote the scratch with the file tool), and the
+second attempt's `rm -rf .testdata/r366` never ran either. **I checked `ls .testdata/` rather than
+assuming**, found `r366` still present, and removed it as its own command. Nothing in this log is
+quoted from a command that did not execute.
+
+**No listener left behind.** The port reading used `scripts/lib/probe-server-ownership.mts`, whose
+wildcard-bind side closes bounded; I staged no occupant and bound no port myself. Scratch
+`.testdata/r366/` was gitignored throughout (`.gitignore:33`) and never entered the index.
