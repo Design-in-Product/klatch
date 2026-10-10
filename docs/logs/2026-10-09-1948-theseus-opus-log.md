@@ -113,3 +113,61 @@ New instrument `scripts/lib/skipped-shape-census.mts`; new arm Q in `probe-round
   0 census problem(s), 109 deferred`**, with `probe-round224` **PASS exit 0, All 181**.
 - My own Round 358 instrument rule followed: no `git add`, `commit` or typecheck while the sweep
   drove. The product commit went in before the sweep started and the F9 re-aim after it finished.
+
+## 20:26 — session wrap (CLAUDE.md protocol)
+
+**Step 1 — commits landed.** `git log origin/main --oneline -5`:
+
+```
+157a7106 docs+mail: Round 362 — 361 reproduces, the hard-skip row is 6 of 6, and his one handed crash is 33 cells across five paths
+2bc9c9e3 probes: Round 362 — F9's source-position pin re-aimed after arm Q moved probe-round224 by one line again
+ee2ffdd6 lib+probes: Round 362 — his one handed crash is 33 cells across 5 paths, and the type-guard class is cured on the fields three rounds reached
+3915fc2e coord+log: 10/9 STOP fire — no-op on product, both standing blockers unmoved
+1d41069a coord+log: Round 357-361 catch-up verification for the 10/9 STOP fire
+```
+
+Pushed incrementally within the fire (`3915fc2e..ee2ffdd6`, then `..2bc9c9e3`, then `..157a7106`),
+not held to the end. The `2bc9c9e3` push failed once with "correct access rights" and succeeded on
+an immediate retry with no change in configuration — transient, not the port-22 block, and recorded
+here in case another agent sees it on this network tonight.
+
+**Step 2 — deliverables present.** `git ls-tree -r origin/main` on all ten, all returned:
+
+- `scripts/lib/skipped-shape-census.mts` — NEW instrument (the live-caller shape census)
+- `scripts/lib/probe-outcome.mts` — the `skipped` docblock records the measurement and names arm Q
+- `scripts/probe-round224-a-skip-must-not-summarise-as-a-pass.mts` — arm Q, and arm P's
+  `7 of 7` comment re-aimed to `6 of 6` with the mechanism
+- `scripts/sweep-probes.mjs` — pin 173 → 181 with its reason
+- `scripts/probe-round269-…-dies-one-level-down.mts` — F9 re-aimed 72-73 → 73-74
+- `docs/research/round362-his-361-reproduces-and-the-type-guard-class-is-cured-on-the-fields-three-rounds-reached-2026-10-09.md`
+- `docs/mail/theseus-to-daedalus-argus-cc-…-your-361-reproduces-and-your-one-handed-crash-is-33-cells-across-five-paths-2026-10-09.md`
+- `docs/mail/read/daedalus-to-theseus-argus-cc-…-your-360-reproduces-entire-…-2026-10-09.md` (closed)
+- `docs/COORDINATION.md` — Theseus section updated, Round 360 preserved as a Previous bullet
+- this log
+
+**One correction of my own, caught before it shipped.** My reply memo's subject line first said arm
+Q was "10 hard checks + 1 declared measurement". Counted from the drive rather than from memory:
+9 `[Q]` lines of which one is the declared measurement, and `ran` moved 173 → 181, so it is
+**8 hard checks + 1 measurement**. Fixed in the memo; the research doc had it right.
+
+**Mail close-discipline.** Daedalus's Round 361 memo is answered in full by my 362 reply, so it
+moved to `docs/mail/read/`. My reply stays in `docs/mail/` — it carries one open item for him
+(`results`, the uncensused half) plus the narrowed predicate for his characterisation-test sweep.
+
+**Final mail check.** `git fetch` + `git log origin/main -1` after the last push shows my own commit
+at the head, so nothing new arrived addressed to me during the fire. A filename grep for `theseus`
+in `docs/mail/` returns 58 files, and that number is **not** an open-action count — it is the
+standing backlog of threads whose filenames mention me. Recording the distinction because a
+false positive in a triage instrument produces no work at all.
+
+**Drain.** The round's work unit drained end to end: verify → reproduce the one discrepancy under
+his own key → census the handed mechanism rather than take the instance → answer the item with a
+measurement → pin the measurement both ways with a planted counterfactual → gate → re-aim the one
+drifted pin → write up → reply. Three items deferred, each with a named blocker: (a) `results`' 12
+throwing cells uncensused for live reachability (blocker: scope — same shape one field over, and
+widening a round to "every field" is how the last two re-reads happened; routed to Daedalus with the
+instrument's generalisation named); (b) the characterisation-test sweep (blocker: his idea and his
+call — I narrowed the predicate and named the known positive at `2485ba99^` rather than half-running
+it); (c) the 109 DEFERRED probes and `probe-round225` BLOCKED at 3 (blocker: unchanged — ports,
+databases, corpora, model calls). Two consecutive checks found nothing else new unblocked. Fire
+closed bounded, per Klatch's recorded exception to the duty-cycle drain baseline.
