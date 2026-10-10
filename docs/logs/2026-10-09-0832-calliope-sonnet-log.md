@@ -12,6 +12,35 @@
 
 ---
 
+## WORK fire — ~17:0x PT
+
+Pulled (`origin/main` already current). `git log 825d3f3f..HEAD` (own MID-fire checkpoint) showed six new commits — Round 359/360 of the Daedalus/Theseus/Argus adversarial-verification thread, none mine, `git diff --stat 825d3f3f..HEAD -- packages/` empty.
+
+**Mail:** one new file, Theseus's Round 360 memo (`to: daedalus, argus`, `cc:` this seat) — read in full, ends "Nothing here needs xian," no action owed from this seat.
+
+**Drained two overdue recurring items, both genuinely unblocked, neither carrying a named blocker:**
+
+1. **`log.html`'s missing 10-08 entry.** `docs/operations/duty-cycle/calliope-tasks.md`'s mandatory-logbook row still showed `next_due: 2026-10-08` — checked `log.html` directly and confirmed no entry exists for that date, despite five COORDINATION.md entries on record for it (two interactive sessions, MID/SWEEP/STOP fires). Wrote the entry from COORDINATION.md's own 10-08 text — the drain-rule rollout, the backfill decision (and its own self-correction), the mail-close-discipline ruling, the self-caught drain-rule contradiction — not from memory. Updated the tracker: `last_completed: 2026-10-08`, `next_due: 2026-10-09` (today's own STOP-fire entry still owed, not a gap).
+
+2. **The quarterly traditions-doc audit, never run once.** Tracker showed `next_due: 2026-07-01`, `last_completed: —`. Read all three `docs/agents/` files (`calliope.md`, `argus.md`, `calliope-calibration.md`) in full and checked each live claim against current repo state rather than against the files' own text:
+   - `calliope.md`'s header said `Model: Claude Opus 4.6` while its own §4 session-log-naming convention, and every real filename in `docs/logs/`, say Sonnet — **fixed directly** (factual, mine to correct).
+   - Its mail-naming convention (`SENDER-to-RECIPIENT-re-DATE`) doesn't match any live mail filename (the real convention embeds the full cc list and a subject slug) — **flagged**, deliberately not fixed in this pass; getting the real shape right is worth its own careful edit.
+   - Its entire §3 "at session start/during/close" model is session-based and predates the worktree + duty-cycle-fire migration (persistent worktree, COORDINATION.md as the handoff board, the Drain discipline) entirely — the single largest piece of drift found. **Flagged for a discuss-first pass with xian**, per the doc's own working-style rule about major document changes, rather than unilaterally rewritten.
+   - §5 Key Relationships has no entry for Iris despite months of active cross-pollination — **flagged**.
+   - §5's Mnemosyne relationship ("compile the sync list after every significant session") has no corroborating mail since 2026-03-27 — **flagged as an open question**, not asserted as lapsed; absence of a memo I can see isn't evidence the practice stopped.
+   - `argus.md`'s `Branch:` field (`claude/audit-and-planning-xn2w7`) is stale against the live `claude/argus-cycle`, checked directly against COORDINATION.md's own Argus section; the file is 6.5 months stale overall (`Last updated: 2026-03-23`) — **flagged to Argus**, not edited; it's his doc to own.
+   - `calliope-calibration.md` holds up against current practice; its own closing note planned a future MAXT re-assessment that, per a repo-wide grep, never happened — **flagged as a routing item** (MAXT scheduling is Theseus+xian's lane).
+
+   Full findings committed: `docs/operations/traditions-doc-audit-2026-10-09.md`. Tracker updated: `last_completed: 2026-10-09`, `next_due: 2027-01-09`.
+
+**Verified before writing, not carried from memory:** `calliope.md`'s mail-naming claim checked against live `ls docs/mail/*.md`; the session-log-naming claim checked against `ls docs/logs/`; Argus's branch field checked against COORDINATION.md's live Argus section (read fresh this fire); Mnemosyne mail recency checked via `grep -rl mnemosyne docs/mail`; the calibration file's MAXT-assessment claim checked via a repo-wide grep, not assumed absent.
+
+**Drain:** both items were unblocked with no named blocker, so done this fire rather than deferred. Re-checked mail and the rollup twice after finishing — rollup unchanged (v166, needs-you 0), backfill unchanged (`backups/` still Aug 4 17:11 mtime), nothing further surfaced. Going idle.
+
+**Status:** available.
+
+---
+
 ## MID fire — ~12:3x PT
 
 Pulled (`origin/main` already current). `git log --oneline f71d50a2..HEAD` (own START checkpoint) showed six new commits — Round 357/358 of the Daedalus/Theseus/Argus adversarial-verification thread plus Janus's rule-6 reply (`9c78b7ac`), none mine, `git diff --stat f71d50a2..HEAD -- packages/` empty.

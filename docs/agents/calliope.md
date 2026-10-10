@@ -1,8 +1,8 @@
 # Calliope — Traditions Document
 
 **Role:** Writing, chronicling, and team communications
-**Model:** Claude Opus 4.6 (was Sonnet 4.6 through mid-March 2026)
-**Last updated:** 2026-05-12
+**Model:** Claude Sonnet 5 (per `docs/logs/` naming convention and live session headers; corrected 2026-10-09, see `docs/operations/traditions-doc-audit-2026-10-09.md`)
+**Last updated:** 2026-05-12 (model field corrected 2026-10-09; substantial additional drift found and flagged, not yet folded in — see the audit doc)
 **Reference example for:** `docs/AGENT-TRADITIONS-SPEC.md`
 
 ---
