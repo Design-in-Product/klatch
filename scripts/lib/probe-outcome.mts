@@ -329,6 +329,61 @@ export function summarise(input: SummariseInput): ProbeOutcome {
   /** Skips of open-item or measurement arms: reported, but they do not weaken the run. */
   const softSkips = allSkips.filter((s) => kindOf(s) !== regressionKind).map(labelOf);
 
+  /**
+   * Round 361, Daedalus — the run's account of its own SCOPE, carried on every limb.
+   *
+   * Measured per return site rather than reasoned about, with all eight enumerated from source and
+   * each driven with the same inputs. Of the four reporting channels this function has, two were
+   * wired to exactly one limb — and it is the limb that prints `passed`:
+   *
+   * ```
+   *   hard skips          carried on 7 of 7 limbs they can reach   (`did not run:`)
+   *   unreadable hatch    carried on 7 of 7 limbs it can reach     (`inapplicable is …`)
+   *   soft skips          the code-0 limb, and no other
+   *   inapplicable arms   the code-0 limb, and no other
+   * ```
+   *
+   * So this module named the complaint that a run's scope is UNREADABLE everywhere, and dropped the
+   * scope itself the moment the run had bad news. Driven on the live shape: `probe-round291` builds
+   * its `inapplicable` list by pushing arm C1's label (the arm whose docblock exists to justify
+   * declaring it inapplicable rather than skipped, per this module's own stated test), and on a run
+   * where one of its forty rows goes red the summary is `1 of 40 regression check(s) FAILED.` with
+   * **`reasons: []`** — the scope declaration is not de-emphasised, it is absent, and the reader of
+   * the red run cannot tell that two arms were deliberately excluded.
+   *
+   * `hatchProblems`' own sentence is the argument: *"what this run set out to do is not knowable
+   * from it."* That was true of an unreadable hatch and it was equally true of a readable one on
+   * seven of eight limbs. Same shape as Round 356 (the skips dropped by the near-miss limb), 357
+   * (the unreadable kinds) and 359 (the inverted vocabulary), one field over — and the first of
+   * those three is in this module's own history, so the rule was already written down here.
+   *
+   * Carried LAST in every limb's `reasons`, after `skipped`: a declared non-contribution is the
+   * weakest statement in the list, and appending leaves every existing reason's relative order
+   * untouched, so no published figure moves. Named once and spread, rather than spelled at eight
+   * sites, because eight copies of a reporting rule is how the first two limbs came to disagree.
+   *
+   * **NOT** seeded into the `reasons` gate below (the one whose `.length` decides code 3): a run
+   * that declares an inapplicable arm and passes everything else is green, and seeding it would
+   * convert exactly those runs — the trap the note beside that array already warns about. Driven
+   * over 2592 inputs: zero code movements, in either direction.
+   *
+   * **The two halves are not carried on the same limbs, and Theseus's arm O is why.** The first
+   * version of this cure spread both everywhere, and cell O3 of his Round 360 arm reddened inside
+   * the minute: `not a hard check, did not run:` is *the sentence his round is named after*, and
+   * `softSkips` is a classification computed by an equality against `regressionKind` (`kindOf`).
+   * On a limb that is refusing the run BECAUSE that vocabulary is unreliable — unreadable
+   * (`configProblems`), one edit off (`nearMisses`), or inert (`invertedVocabulary`) — asserting
+   * which skips were "not hard checks" asserts the one thing the headline above it says is not
+   * knowable, about a skip that declared itself a hard check in this module's own default
+   * vocabulary. So that half is gated and the `inapplicable` half is not: an inapplicable arm is
+   * declared by the caller outright and is keyed on no vocabulary at all.
+   *
+   * On the code-0 limb all three of those lists are empty by construction (each has its own limb
+   * above this one), so the gate is always open there and that limb's bytes do not move.
+   */
+  const softSkipReasons = softSkips.map((s) => `not a hard check, did not run: ${s}`);
+  const inapplicableReasons = inapplicable.map((s) => `not applicable: ${s}`);
+
   const regressions = input.results.filter((r) => readKind(r.kind) === regressionKind);
 
   /** Rows and skips whose `kind` is present but not a string. Defaulted IN above; named here. */
@@ -607,6 +662,19 @@ export function summarise(input: SummariseInput): ProbeOutcome {
       + `hard check is not knowable from this run.`,
     ] : [];
 
+  /**
+   * Round 361 — see the note beside `softSkipReasons`. Defined here rather than beside its two
+   * halves because the gate reads all three vocabulary complaints, and `invertedVocabulary` is the
+   * last of them to be computed.
+   */
+  const vocabularyIsTrustworthy = configProblems.length === 0
+    && nearMisses.length === 0
+    && invertedVocabulary.length === 0;
+  const scopeDeclared: string[] = [
+    ...(vocabularyIsTrustworthy ? softSkipReasons : []),
+    ...inapplicableReasons,
+  ];
+
   // A failure dominates. If something broke, that is the headline even on a partial run —
   // exit 1 is the louder code and the operator's next action is the same either way.
   //
@@ -650,6 +718,7 @@ export function summarise(input: SummariseInput): ProbeOutcome {
         ...configProblems, ...invertedVocabulary, ...strandedFailures,
         ...unreadableReasons, ...unreadableKinds, ...nearMissReasons,
         ...hatchProblems, ...skipped.map((s) => `did not run: ${s}`),
+        ...scopeDeclared,
       ],
     };
   }
@@ -667,7 +736,7 @@ export function summarise(input: SummariseInput): ProbeOutcome {
       failed: [],
       reasons: [
         ...configProblems, ...unreadableKinds, ...hatchProblems,
-        ...skipped.map((s) => `did not run: ${s}`),
+        ...skipped.map((s) => `did not run: ${s}`), ...scopeDeclared,
       ],
     };
   }
@@ -685,7 +754,7 @@ export function summarise(input: SummariseInput): ProbeOutcome {
       // Round 357 — and the unreadable kinds, for the same reason: a run can carry both.
       reasons: [
         ...invertedVocabulary, ...strandedFailures, ...unreadableKinds, ...nearMissReasons,
-        ...hatchProblems, ...skipped.map((s) => `did not run: ${s}`),
+        ...hatchProblems, ...skipped.map((s) => `did not run: ${s}`), ...scopeDeclared,
       ],
     };
   }
@@ -706,7 +775,7 @@ export function summarise(input: SummariseInput): ProbeOutcome {
       failed: [],
       reasons: [
         ...invertedVocabulary, ...strandedFailures, ...unreadableKinds, ...hatchProblems,
-        ...skipped.map((s) => `did not run: ${s}`),
+        ...skipped.map((s) => `did not run: ${s}`), ...scopeDeclared,
       ],
     };
   }
@@ -731,7 +800,7 @@ export function summarise(input: SummariseInput): ProbeOutcome {
       failed: [],
       reasons: [
         ...strandedFailures, ...unreadableKinds, ...hatchProblems,
-        ...skipped.map((s) => `did not run: ${s}`),
+        ...skipped.map((s) => `did not run: ${s}`), ...scopeDeclared,
       ],
     };
   }
@@ -756,7 +825,7 @@ export function summarise(input: SummariseInput): ProbeOutcome {
       headline: `INCONCLUSIVE — ${input.probeName} ${what}. This is not a pass.`,
       ran,
       failed: [],
-      reasons: [...strandedFailures, ...hatchProblems, ...reasons],
+      reasons: [...strandedFailures, ...hatchProblems, ...reasons, ...scopeDeclared],
     };
   }
 
@@ -778,7 +847,7 @@ export function summarise(input: SummariseInput): ProbeOutcome {
         + `knowable from it. This is not a pass.`,
       ran,
       failed: [],
-      reasons: [...hatchProblems, ...strandedFailures],
+      reasons: [...hatchProblems, ...strandedFailures, ...scopeDeclared],
     };
   }
 
@@ -791,8 +860,7 @@ export function summarise(input: SummariseInput): ProbeOutcome {
       // Round 358 — first, because on this limb they are the only thing in the run that says the
       // headline above is counting a population a failing row has left.
       ...strandedFailures,
-      ...softSkips.map((s) => `not a hard check, did not run: ${s}`),
-      ...inapplicable.map((s) => `not applicable: ${s}`),
+      ...scopeDeclared,
     ],
   };
 }
