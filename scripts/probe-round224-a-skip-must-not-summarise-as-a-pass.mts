@@ -56,6 +56,7 @@
 
 import fs from 'fs';
 import path from 'path';
+import os from 'os';
 import { execFileSync } from 'child_process';
 import { summarise, summariseAndExit, type ProbeVerdict } from './lib/probe-outcome.mts';
 import { readNumericConstant, readLeadingFactor } from './lib/probe-source-constants.mts';
@@ -1274,6 +1275,199 @@ function oldTurncountTail(rs: ProbeVerdict[]): { code: number; line: string } {
   const migrated = all.filter((n) => /probe-source-constants\.mts/.test(fs.readFileSync(path.join(REPO, 'scripts', n), 'utf8')));
   check('I', 'and the scan is not vacuous — the five migrated readers are reachable by it',
     migrated.length >= 5, `${migrated.length} scripts import the shared reader: ${migrated.join(', ')}`);
+}
+
+// ── P · Round 361: the run's account of its own SCOPE, on every limb ──────────
+//
+// `summarise` has four reporting channels and EIGHT return sites. Measured per site, with all
+// eight enumerated from source and each driven with the same inputs:
+//
+//     hard skips          carried on 7 of 7 limbs they can reach   (`did not run:`)
+//     unreadable hatch    carried on 7 of 7 limbs it can reach     (`inapplicable is …`)
+//     soft skips          the code-0 limb, and no other
+//     inapplicable arms   the code-0 limb, and no other
+//
+// So the module named the complaint that a run's scope is UNREADABLE everywhere and dropped the
+// scope itself the moment the run had bad news. Live: `probe-round291` pushes arm C1's label, and
+// on a run where one of its forty rows went red the summary was `1 of 40 regression check(s)
+// FAILED.` with `reasons: []`. Distinct from arm M's `inapplicable` cell above, which is about the
+// non-array CRASH (Round 358, cured in 359) and not about a readable list being dropped.
+//
+// THESEUS'S ROUND 360 CLAUSE, ADOPTED: every cell below is GRADED against the pre-cure lib rather
+// than classified in a comment. A cell labelled KN that reddens at the pre-cure lib was never a
+// known negative — it was a second copy of the cure cell — and only a drive can tell them apart.
+// His cell O8 was mislabelled exactly that way and his own drive caught it; this arm does the same
+// drive rather than trusting these labels. The pre-cure module is extracted from git into a temp
+// directory (it imports nothing, so the file IS the module) and driven in a child process, so no
+// path inside the repo is written and the sweep's git reading is untouched.
+{
+  const PRE_CURE_REV = '1059b23c'; // Theseus's Round 360 lib — the commit this arm is the pin for.
+  const HATCH = ['C1 — no untracked, gitignored repo-root backup is present on this tree'];
+  const S = (o: Record<string, unknown>) =>
+    summarise({ probeName: 'subject', ...o } as unknown as Parameters<typeof summarise>[0]);
+  const NA = 'not applicable: ';
+  const SOFT = 'not a hard check, did not run: ';
+  const hasNA = (o: { reasons: string[] }) => o.reasons.some((r) => r.startsWith(NA));
+  const hasSoft = (o: { reasons: string[] }) => o.reasons.some((r) => r.startsWith(SOFT));
+
+  /** One input per return site, each carrying the same readable hatch. Names match the limbs. */
+  const LIMBS: Record<string, Record<string, unknown>> = {
+    'code 1 · failed': { results: [bad('A', 'broke')], inapplicable: HATCH },
+    'code 3 · configProblems': { regressionKind: ['regression'], results: [ok('A', 'fine')], inapplicable: HATCH },
+    'code 3 · nearMisses': { regressionKind: 'regressoin', results: [ok('A', 'fine')], inapplicable: HATCH },
+    'code 3 · invertedVocabulary': {
+      regressionKind: 'check',
+      results: [({ arm: 'A', check: 'untagged', pass: true } as unknown as ProbeVerdict), ok('B', 'tagged')],
+      inapplicable: HATCH,
+    },
+    'code 3 · unreadableKinds': {
+      results: [({ arm: 'A', check: 'c', pass: true, kind: {} } as unknown as ProbeVerdict)],
+      inapplicable: HATCH,
+    },
+    'code 3 · reasons.length': { results: [ok('A', 'fine')], skipped: ['env missing'], inapplicable: HATCH },
+    'code 0 · all green': { results: [ok('A', 'fine')], inapplicable: HATCH },
+  };
+
+  const carried = Object.entries(LIMBS).filter(([, i]) => hasNA(S(i))).map(([n]) => n);
+  check('P', 'a readable `inapplicable` list is reported on EVERY limb it can reach, not only on '
+    + 'the one that prints "passed"',
+    carried.length === Object.keys(LIMBS).length,
+    `${carried.length} of ${Object.keys(LIMBS).length} limbs: ${carried.join(' · ')}`);
+
+  // Non-vacuity for the cell above: the limbs it names must actually be DISTINCT outcomes, or a
+  // single limb reached seven times would satisfy it.
+  const outcomes = new Set(Object.values(LIMBS).map((i) => `${S(i).code}:${S(i).headline.slice(0, 40)}`));
+  check('P', 'and those are distinct outcomes, not one limb reached seven times',
+    outcomes.size >= 6, `${outcomes.size} distinct code+headline pairs across ${Object.keys(LIMBS).length} inputs`);
+
+  // The cure must not move a code. This is the Round 356 rule and it is the only way this cell
+  // could have been a demotion.
+  const codes = Object.entries(LIMBS).map(([n, i]) => `${n.split(' ')[1]}${S(i).code}`);
+  check('P', 'and carrying it moves no exit code — the scope lines are appended to `reasons`, and '
+    + 'the `reasons` gate that decides code 3 is NOT seeded with them',
+    S(LIMBS['code 1 · failed']).code === 1 && S(LIMBS['code 0 · all green']).code === 0,
+    `codes: ${codes.join(' ')}`);
+
+  // P · KN — the gate is the trap the note beside it warns about: a green run that declares an
+  // inapplicable arm must stay green. If this reddens, the cure has started converting the exact
+  // runs the hatch exists to keep green.
+  const greenWithHatch = S({ results: [ok('A', 'fine')], inapplicable: HATCH });
+  check('P', 'KN: a green run that declares an inapplicable arm is still code 0 with the "passed" '
+    + 'headline — the hatch does not force code 3, which is the whole reason it exists',
+    greenWithHatch.code === 0 && /^All 1 regression checks passed\.$/.test(greenWithHatch.headline),
+    `code ${greenWithHatch.code} :: ${JSON.stringify(greenWithHatch.headline)}`);
+
+  // P · KN — no hatch declared, no line. A cure that printed the prefix unconditionally would
+  // satisfy every cell above and be worthless.
+  const noneDeclared = Object.values(LIMBS).map((i) => {
+    const { inapplicable: _drop, ...rest } = i;
+    return S(rest);
+  });
+  check('P', 'KN: a run that declares NO inapplicable arms gets no `not applicable:` line on any '
+    + 'limb — the cure reports the field, it does not synthesise one',
+    noneDeclared.every((o) => !hasNA(o)), `${noneDeclared.filter(hasNA).length} of ${noneDeclared.length} limbs printed one`);
+  const emptyDeclared = S({ results: [bad('A', 'broke')], inapplicable: [] });
+  check('P', 'KN: and an EMPTY list is not an empty claim — it adds nothing',
+    !hasNA(emptyDeclared) && emptyDeclared.code === 1, `code ${emptyDeclared.code} reasons ${emptyDeclared.reasons.length}`);
+
+  // P · THE ARM-O INVARIANT, restated at the limb my first draft broke. The first version of this
+  // cure carried the SOFT-SKIP half everywhere too, and arm O cell 3 reddened inside the minute:
+  // `not a hard check, did not run:` is the sentence Round 360 is named after, and `softSkips` is
+  // computed by an equality against `regressionKind`. On a limb refusing the run BECAUSE that
+  // vocabulary is unreliable, the sentence asserts the one thing the headline says is unknowable.
+  const invWithHatch = S({
+    regressionKind: 'check',
+    results: [({ arm: 'A', check: 'untagged', pass: true } as unknown as ProbeVerdict)],
+    skipped: [{ label: 'env missing', kind: 'regression' }],
+    inapplicable: HATCH,
+  });
+  check('P', 'on the limbs that refuse the VOCABULARY, the `inapplicable` half is carried and the '
+    + 'soft-skip half is withheld — a skip tagged with the module default is not reported under the '
+    + 'line that denies it was a hard check, even now that the scope travels',
+    invWithHatch.code === 3 && hasNA(invWithHatch) && !hasSoft(invWithHatch),
+    `code ${invWithHatch.code} :: ${JSON.stringify(invWithHatch.reasons.map((r) => r.slice(0, 40)))}`);
+
+  // P · non-vacuity for the gate. If the gate were simply "never carry soft skips", the cell above
+  // would pass and the soft-skip half would be dead code.
+  //
+  // I wrote this cell `KN:` in the first draft, and the grading drive below says it is RED at Round
+  // 360 — so it is a cure cell, not a known negative. Same correction Theseus's own drive made to
+  // his cell O8 one round earlier, for the same reason: pre-cure, the code-1 limb carried neither
+  // half, so a cell asserting that it carries BOTH is a second copy of the cure. Label fixed from
+  // what the drive said, not from what I meant.
+  const trustworthySoft = S({
+    results: [ok('A', 'fine'), bad('B', 'broke')],
+    skipped: [{ label: 'arm Z', kind: 'open-item' }],
+    inapplicable: HATCH,
+  });
+  check('P', 'where the vocabulary IS trustworthy the soft-skip half travels too — the gate '
+    + 'withholds it on three named limbs, it does not disable it',
+    trustworthySoft.code === 1 && hasSoft(trustworthySoft) && hasNA(trustworthySoft),
+    `code ${trustworthySoft.code} :: ${JSON.stringify(trustworthySoft.reasons.map((r) => r.slice(0, 34)))}`);
+
+  // P · KN — Round 359's hatch cure must not have been disturbed by sharing a name with this one.
+  const unreadableEverywhere = Object.entries(LIMBS).filter(([, i]) => {
+    const o = S({ ...i, inapplicable: 'probe-x' });
+    return o.reasons.some((r) => r.startsWith('inapplicable is '));
+  });
+  check('P', 'KN: the UNREADABLE-hatch complaint still reaches every limb (Round 359, undisturbed)',
+    unreadableEverywhere.length === Object.keys(LIMBS).length,
+    `${unreadableEverywhere.length} of ${Object.keys(LIMBS).length} limbs`);
+
+  // P · the grading drive. Every predicate above, re-stated and run against the PRE-CURE lib.
+  const graded: { cell: string; preCure: 'RED' | 'GREEN' | 'ERROR'; detail: string }[] = [];
+  let gradeNote = '';
+  let tmp = '';
+  try {
+    tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'r361-pin-'));
+    // Written OUTSIDE the repo deliberately: a probe that writes inside the tree while the sweep
+    // drives produces a red indistinguishable from a real one (Round 358's instrument rule).
+    fs.writeFileSync(path.join(tmp, 'pre.mts'),
+      execFileSync('git', ['-C', REPO, 'show', `${PRE_CURE_REV}:scripts/lib/probe-outcome.mts`],
+        { encoding: 'utf8', maxBuffer: 1 << 24 }));
+    const out = execFileSync('npx',
+      ['tsx', path.join(REPO, 'scripts', 'lib', 'round361-pin-grade.mts'), path.join(tmp, 'pre.mts')],
+      { cwd: REPO, encoding: 'utf8', maxBuffer: 1 << 24 });
+    graded.push(...JSON.parse(out.slice(out.indexOf('['), out.lastIndexOf(']') + 1)));
+  } catch (e) {
+    gradeNote = `grading drive failed: ${(e as Error).message.slice(0, 160)}`;
+  } finally {
+    if (tmp) fs.rmSync(tmp, { recursive: true, force: true });
+  }
+
+  // Set from what the drive SAID, not from what the cells were labelled. See the note on
+  // `trustworthySoft` above: it was written `KN:` and the drive reddened it at Round 360.
+  const CURE_CELLS = ['every-limb', 'inversion-limb-split', 'trustworthy-soft'];
+  const KN_CELLS = ['distinct-outcomes', 'no-code-moved', 'green-stays-green', 'none-declared',
+    'empty-declared', 'unreadable-everywhere'];
+  const redAtPreCure = graded.filter((g) => g.preCure === 'RED').map((g) => g.cell);
+  const greenAtPreCure = graded.filter((g) => g.preCure === 'GREEN').map((g) => g.cell);
+  check('P', `the cure cells are RED at the pre-cure lib (${PRE_CURE_REV}) and the known negatives `
+    + 'are GREEN at it — graded by driving, not asserted by a comment',
+    gradeNote === ''
+    && CURE_CELLS.every((c) => redAtPreCure.includes(c))
+    && KN_CELLS.every((c) => greenAtPreCure.includes(c)),
+    gradeNote || `RED at pre-cure: ${redAtPreCure.join(',') || 'none'} · GREEN at pre-cure: ${greenAtPreCure.join(',') || 'none'}`);
+
+  // P · MEASUREMENT — live reachability. The CALLER SET is held in both directions by arm E
+  // already (it reads the `INAPPLICABLE-CALLERS:` line in `probe-outcome.mts` and reddens either
+  // way), which is why this cell does not re-pin it. The FILE COUNT is left a measurement
+  // deliberately: it moves with every probe added anywhere under scripts/, so pinning it would
+  // redden this arm on unrelated work — a false red in an instrument produces no work at all.
+  const walk = (d: string): string[] => fs.readdirSync(d, { withFileTypes: true })
+    .flatMap((e) => (e.isDirectory() ? walk(path.join(d, e.name)) : [path.join(d, e.name)]));
+  const sources = walk(path.join(REPO, 'scripts')).filter((f) => /\.(mts|mjs|ts|js)$/.test(f));
+  const suppliers = sources.filter((f) => !f.endsWith('lib/probe-outcome.mts'))
+    .filter((f) => {
+      const src = fs.readFileSync(f, 'utf8');
+      return /summarise(AndExit)?\s*\(/.test(src) && /(^|[\s,{(])inapplicable\s*:/m.test(src);
+    })
+    .map((f) => path.basename(f));
+  check('P', `MEASUREMENT: ${suppliers.length} live caller(s) supply \`inapplicable\` across `
+    + `${sources.length} source files under scripts/ — ${suppliers.join(', ')} — and all of them `
+    + 'can reach a limb that is not the code-0 limb, so this was reachable live and not only in a '
+    + 'fixture. Walked with readdirSync, not grep: grep emits no row for a NUL-carrying file.',
+    true, 'the caller set itself is pinned in both directions by arm E, not here', 'measurement');
 }
 
 // ── Exit ──────────────────────────────────────────────────────────────────────

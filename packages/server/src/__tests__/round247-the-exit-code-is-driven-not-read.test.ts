@@ -124,9 +124,24 @@ describe('summarise — the gaps in what the probe already drives', () => {
     expect(o.reasons.slice(1)).toEqual(['did not run: [A] no port', 'did not run: [B] no corpus']);
   });
 
-  it('reports the skips but NOT the inapplicable list when a check failed', () => {
-    // On the failure path the returned `reasons` are built from skips only. Asserting the shape
-    // rather than the intent: an inapplicable entry is silently dropped when code is 1.
+  it('reports the skips AND the inapplicable list when a check failed', () => {
+    // Round 361, Daedalus — RE-AIMED, and the history is the point.
+    //
+    // This test was written in Round 247 as a CHARACTERISATION, and its own comment named the
+    // defect exactly: *"Asserting the shape rather than the intent: an inapplicable entry is
+    // silently dropped when code is 1."* That was accurate and it was never priced. Measured in
+    // Round 361: the drop is not one limb but SIX — `summarise` has eight return sites, and both
+    // `softSkips` and `inapplicable` were wired to the code-0 limb alone, while hard skips and the
+    // unreadable-hatch complaint reach every limb they can. So the module named the complaint that
+    // a run's scope is UNREADABLE everywhere and dropped the scope itself the moment the run had
+    // bad news. Live instances 3, not 0.
+    //
+    // Rounds 356, 357 and 359 each cured this exact class for a different field (the skips dropped
+    // by the near-miss limb, the unreadable kinds, the inverted vocabulary) — all three AFTER this
+    // test had recorded an instance of it in a comment. The knowledge was in the repo the whole
+    // time; what was missing was anything that made it cost something. Re-aimed at the cured
+    // property rather than deleted, and NOT loosened: the two original assertions (code 1, and the
+    // skip line present) are both still here, with the inapplicable line added to the expectation.
     const o = summarise({
       probeName: 's',
       results: [bad('A')],
@@ -134,7 +149,22 @@ describe('summarise — the gaps in what the probe already drives', () => {
       inapplicable: ['[C] no instance'],
     });
     expect(o.code).toBe(1);
-    expect(o.reasons).toEqual(['did not run: [B] no port']);
+    expect(o.reasons).toEqual(['did not run: [B] no port', 'not applicable: [C] no instance']);
+  });
+
+  it('and the inapplicable list does not force a code — a green run that declares one stays 0', () => {
+    // The other half of the Round 361 cure, and the trap it had to avoid: the scope lines are
+    // appended to each limb's returned `reasons` and are NOT seeded into the `reasons` array whose
+    // `.length` decides code 3. Seeding it would have converted exactly the runs the hatch exists
+    // to keep green — which is the whole reason the field is not a skip.
+    const o = summarise({
+      probeName: 's',
+      results: [ok('A')],
+      inapplicable: ['[C] no instance'],
+    });
+    expect(o.code).toBe(0);
+    expect(o.headline).toMatch(/passed/);
+    expect(o.reasons).toEqual(['not applicable: [C] no instance']);
   });
 
   it('never prints the word "passed" outside code 0 — across every shape this module can return', () => {

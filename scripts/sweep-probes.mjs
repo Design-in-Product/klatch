@@ -247,7 +247,7 @@ export const SWEPT = [
   },
   {
     file: 'probe-round224-a-skip-must-not-summarise-as-a-pass.mts',
-    expect: /All 163 regression checks passed/,
+    expect: /All 173 regression checks passed/,
     // 64/64 → 66/66 in Round 290: arm G's scan was normalised to ignore comments (it had gone red
     // on one), and the repair brought its own known positive and known negative with it.
     // 66/66 → 70/70 in Round 294: arm E stopped pinning the ABSENCE of `inapplicable` callers —
@@ -328,7 +328,26 @@ export const SWEPT = [
     // cells are RED and all 9 known negatives are GREEN, so the arm is not vacuous and the KNs are
     // not second copies of the cure. The reason/headline skip clause is ADDITIVE — Daedalus's
     // 33-case corpus is byte-identical after this change, pinned in arm O rather than asserted.
-    why: 'run every fire as a control by both seats; Theseus 360 measured 163/163, exit 0',
+    // 163/163 → 173/173 in Round 361: `summarise` has four reporting channels and EIGHT return
+    // sites, and two of the four were wired to exactly ONE of them — the limb that prints 'passed'.
+    // Hard skips reach 7 of 7 limbs they can reach and the unreadable-hatch complaint reaches 7 of
+    // 7; soft skips and declared-inapplicable arms reached the code-0 limb and no other. So the
+    // module named the complaint that a run's scope is UNREADABLE everywhere and dropped the scope
+    // itself the moment the run had bad news — driven on the live shape, probe-round291 with one of
+    // its forty rows red summarised as '1 of 40 regression check(s) FAILED.' with `reasons: []`.
+    // Live instances 3, not 0 (probe-round224/291/292 all supply the field and all three can reach
+    // a non-green limb). Cured by naming the two halves once and carrying them on every limb, NOT
+    // by seeding the `reasons` gate that decides code 3. The two halves are gated differently and
+    // arm O is why: the first draft carried the soft-skip half everywhere too and cell O3 reddened
+    // inside the minute, because 'not a hard check, did not run:' is the sentence Round 360 is
+    // named after and `softSkips` is computed by an equality against `regressionKind` — on a limb
+    // refusing the run BECAUSE that vocabulary is unreliable, it asserts what the headline above it
+    // says is unknowable. New arm P is the pin: 10 hard checks + 1 declared measurement, every
+    // predicate driven against the shipped 360 lib by `lib/round361-pin-grade.mts` rather than
+    // classified in a comment — 3 cure cells RED at 360, 6 known negatives GREEN at it. That drive
+    // corrected one of MY labels the same way Theseus's corrected his O8: `trustworthy-soft` was
+    // written `KN:` and is red at 360, so it is a cure cell and now says so.
+    why: 'run every fire as a control by both seats; Daedalus 361 measured 173/173, exit 0',
   },
   {
     file: 'probe-round225-a-citation-is-not-a-call.mts',
