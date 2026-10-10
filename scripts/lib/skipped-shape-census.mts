@@ -32,9 +32,23 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { stripSource } from './strip-source.mjs';
 
-/** The identifier names observed to feed a `skipped` argument. Measured, not assumed — any name
- *  outside this set shows up as an `unknown-identifier` site and reddens arm Q. */
-export const SKIP_VAR_NAMES = ['skipped', 'skipped_', 'skips'] as const;
+/**
+ * Round 363 — the `SKIP_VAR_NAMES` constant that stood here is GONE, and that is a correction
+ * rather than a tidy-up.
+ *
+ * Its docblock read: *"the identifier names observed to feed a `skipped` argument. Measured, not
+ * assumed — any name outside this set shows up as an `unknown-identifier` site and reddens arm
+ * Q."* Neither half was true of the code beside it. Nothing read the constant — `grep -rn
+ * SKIP_VAR_NAMES scripts/` returned its own declaration and its own docblock, and no third line —
+ * and there is no `unknown-identifier` member of {@link SkippedSite.kind} for a site to be
+ * reported as. The real protection against an unexpected feeding name is `boundAs: 'unbound'`,
+ * which arm Q's Q3 does count.
+ *
+ * Kept as a note rather than deleted silently because it is the same object as Round 361's
+ * finding and Round 362's §1: **a prose claim about a mechanism, authored in the commit that
+ * built the mechanism, and graded by nothing.** A dead export whose comment describes a check
+ * that does not exist reads, to the next round, exactly like a check that exists.
+ */
 
 export type SkippedSite = {
   file: string;
@@ -178,8 +192,32 @@ export type Census = {
   decls: DeclSite[];
 };
 
-/** Census every `skipped` argument, every push onto a feeding variable, and every declaration. */
-export function censusSkippedShapes(scriptsDir: string): Census {
+export type CensusOptions = {
+  /**
+   * The `SummariseInput` key whose argument shapes are censused — `'skipped'` for arm Q,
+   * `'results'` for arm R. The key also selects which names count as *feeding* variables, so
+   * pushes and declarations follow it without a second parameter.
+   */
+  argKey: string;
+};
+
+/**
+ * Round 363 — the census, parameterised on the argument key.
+ *
+ * Theseus routed `results` over in Round 362 §7 as "a parameter change plus its own planted
+ * counterfactual," and that is exactly what it was: this function is his Round 362 body with
+ * `'skipped'` lifted to `opts.argKey`, and {@link censusSkippedShapes} is a one-line wrapper so
+ * arm Q's call site and its pinned figures do not move. Re-aimed, not loosened — the parameter is
+ * the only behavioural change, and arm Q's own cells grade that claim by continuing to pass on
+ * byte-identical numbers.
+ *
+ * One thing the parameterisation exposed that the `skipped` instance could not: `results` is a
+ * REQUIRED field, so its site population is an order of magnitude larger and contains shapes
+ * `skipped` has none of. See arm R in `probe-round224` for the measured split — the answer is not
+ * "0 unsafe sites", and that is the point of running it.
+ */
+export function censusArgumentShapes(scriptsDir: string, opts: CensusOptions): Census {
+  const { argKey } = opts;
   const files = walk(scriptsDir);
   // Walked with readdirSync rather than grep: grep emits NO ROW for a NUL-carrying file, so a
   // grep-derived count fails SMALL, which is the direction that hides a caller.
@@ -218,10 +256,10 @@ export function censusSkippedShapes(scriptsDir: string): Census {
       if (/^\s*(\*|\/\/)/.test(line)) continue;                        // docblock or comment
       const args = argsAt(src, m.index + m[0].length - 1);
       if (args === null) continue;
-      const rhs = valueOf(args, 'skipped');
+      const rhs = valueOf(args, argKey);
       if (rhs === null) continue;
       const kind = classifyRhs(rhs);
-      const name = kind === 'identifier' ? (rhs === '<shorthand>' ? 'skipped' : rhs) : '';
+      const name = kind === 'identifier' ? (rhs === '<shorthand>' ? argKey : rhs) : '';
       let boundAs: SkippedSite['boundAs'] = 'n/a';     // a literal array binds no name
       if (name) {
         boundAs = 'unbound';
@@ -234,8 +272,8 @@ export function censusSkippedShapes(scriptsDir: string): Census {
     }
 
     /**
-     * The names that actually feed a `skipped` argument IN THIS FILE. Declarations and pushes are
-     * censused against this set rather than against `SKIP_VAR_NAMES` wholesale: `promote-probes`
+     * The names that actually feed an `argKey` argument IN THIS FILE. Declarations and pushes are
+     * censused against this measured set rather than against a name list: `promote-probes`
      * declares an unrelated `const skipped = {}` and `sweep-probes` a `const skipped = Boolean(…)`,
      * and neither file passes `skipped` to `summarise` at all. A wholesale scan reported those two
      * as non-array initialisers — two false positives in the one cell that is supposed to name a
@@ -296,3 +334,11 @@ export function censusSkippedShapes(scriptsDir: string): Census {
 
   return { files: files.length, sources: sources.length, sites, pushes, decls };
 }
+
+/** Arm Q's call, unchanged in behaviour: every `skipped` argument, push and declaration. */
+export const censusSkippedShapes = (scriptsDir: string): Census =>
+  censusArgumentShapes(scriptsDir, { argKey: 'skipped' });
+
+/** Arm R's call: the other half of Round 362 §2 — `results`, the required field. */
+export const censusResultsShapes = (scriptsDir: string): Census =>
+  censusArgumentShapes(scriptsDir, { argKey: 'results' });
