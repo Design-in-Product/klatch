@@ -200,12 +200,58 @@ check(
   ).join(' | '),
 );
 
+/**
+ * Round 365, Daedalus — the `> 100` floor is replaced by a MEMBER LIST, and the reason is a
+ * measurement rather than a preference.
+ *
+ * This cell was written to prove A1's "OUT" was not the vacuous reading of an empty program, and for
+ * that job a floor was the right instrument. Theseus's Round 364 then drove the four configs this
+ * arm actually has to survive and found the floor had acquired a second job it was never shaped for:
+ * at a live 148 `.mts`, **excluding 47 probe `.mts` files leaves 101, and `> 100` stays GREEN at exit
+ * 0 with no diagnostics** — so a 47-file silent narrowing of the typechecked program passes every
+ * cell in both this file and `probe-round304`. He routed the repair here and declared the slack as a
+ * measurement rather than pinning it, because a pin on the 47 would have gone red on this repair
+ * (Round 294's shape, foreseen).
+ *
+ * Driven before it was taken, five states of the real `compilerOptions` over the real tree, each
+ * program read off `--listFiles` and never off the glob: REAL 148 / residue IN / exit 0 / 0 diag →
+ * both predicates GREEN; planted CONTROL with no exclude, 148, identical → both GREEN (the control
+ * earns its place: a config outside the tree dies on `TS2688` unless `typeRoots` points back, and
+ * without it "residue OUT" would have been true of a config that never ran); **1 file excluded → 147
+ * → floor GREEN, member list RED, naming the file**; **47 excluded → 101 → floor GREEN, member list
+ * RED**; coverage re-narrowed to `hooks/` → 0 → `TS18003`, exit 2, both RED.
+ *
+ * The denominator comes from a DIFFERENT selector than the numerator — a disk walk, not `tsc` — so
+ * the two cannot agree vacuously (Round 339), and the instrument carries its own control: fed the
+ * REAL program with a BROKEN disk census (`[]`, and a 1-member list), the member list reads RED
+ * rather than GREEN, so a failed census cannot pass as coverage. The floor survives, moved to the
+ * disk side where its only job is that self-test.
+ *
+ * LIMIT, named rather than left implicit: `FILES` walks `scripts/` to ONE level, so a `.mts` added
+ * at `scripts/lib/sub/` would be invisible to the disk side. That is why the check is two-sided —
+ * such a file lands in the program and NOT in the disk census, and the stray leg reddens. The
+ * instrument reports that it is out of date instead of silently covering less.
+ */
+const MTS_ON_DISK = FILES.filter((f) => f.endsWith('.mts'))
+  .map((f) => `scripts/${f}`)
+  .sort();
+const MTS_MISSING = MTS_ON_DISK.filter((f) => !PROGRAM.has(f));
+const MTS_STRAY = [...PROGRAM]
+  .filter((f) => f.startsWith('scripts/') && f.endsWith('.mts') && !MTS_ON_DISK.includes(f))
+  .sort();
+
 check(
   'A1b',
-  'and A1 is not the vacuous reading of an empty program: the .mts files this config exists to cover ARE in it',
-  [...PROGRAM].filter((f) => f.endsWith('.mts')).length > 100 && PROGRAM.has('scripts/sweep-probes.d.mts'),
-  `${[...PROGRAM].filter((f) => f.endsWith('.mts')).length} .mts files in the program, so "OUT" in A1 is a fact about ` +
-    '.mjs and not about a config that matched nothing.',
+  'and A1 is not the vacuous reading of an empty program: EVERY .mts file on disk under scripts/ is IN the program, held as a member list rather than a count, and the program holds no scripts/ .mts the disk census does not',
+  MTS_ON_DISK.length >= 100 &&
+    MTS_ON_DISK.includes('scripts/sweep-probes.d.mts') &&
+    MTS_MISSING.length === 0 &&
+    MTS_STRAY.length === 0,
+  `${MTS_ON_DISK.length} .mts on disk · ${[...PROGRAM].filter((f) => f.endsWith('.mts')).length} .mts in the program · ` +
+    `missing from the program ${MTS_MISSING.length}${MTS_MISSING.length ? `: ${MTS_MISSING.slice(0, 4).join(', ')}` : ''} · ` +
+    `in the program but not on disk ${MTS_STRAY.length}${MTS_STRAY.length ? `: ${MTS_STRAY.slice(0, 4).join(', ')}` : ''} — ` +
+    'so "OUT" in A1 is a fact about .mjs and not about a config that matched nothing, AND a narrowing ' +
+    'that drops any covered file reddens here rather than passing on a surviving count.',
 );
 
 check(

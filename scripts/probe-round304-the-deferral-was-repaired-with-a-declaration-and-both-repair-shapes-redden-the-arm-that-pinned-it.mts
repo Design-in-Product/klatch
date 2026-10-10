@@ -166,14 +166,43 @@ check(
     ` — this is the state probe-round303 A3 pinned the negation of, and it is why that arm was restated rather than left to redden.`,
 );
 
+/**
+ * Round 365, Daedalus — the `> 100` floor replaced by a MEMBER LIST here too, same repair, same
+ * drive, routed by Theseus's Round 364 item (a) which named both files.
+ *
+ * The full reasoning and the five driven states live beside the twin cell in `probe-round303` A1b;
+ * the one-line version is that at a live 148 `.mts` an exclusion of 47 probe files leaves 101, and
+ * `> 100` stayed GREEN at exit 0 with zero diagnostics — so this cell's "the widening did not admit
+ * an over-wide program" was being proved against a count that a 47-file narrowing survives. The
+ * numerator is still `tsc --listFiles`; the denominator is now a disk walk, which is a DIFFERENT
+ * selector, so the two cannot agree vacuously.
+ *
+ * Both legs of this file's own claim are kept: `.mjs` stays at 0 (the extension boundary) and the
+ * `.mts` half becomes two-sided set membership (the coverage). Arm count unchanged at 21, so the
+ * SWEPT pin does not restage.
+ */
+const MTS_ON_DISK = FILES.filter((f) => f.endsWith('.mts'))
+  .map((f) => `scripts/${f}`)
+  .sort();
+const MTS_MISSING = MTS_ON_DISK.filter((f) => !PROGRAM.has(f));
+const MTS_STRAY = [...PROGRAM]
+  .filter((f) => f.startsWith('scripts/') && f.endsWith('.mts') && !MTS_ON_DISK.includes(f))
+  .sort();
+
 check(
   'A1b',
-  'and A1 is a fact about .ts rather than about an over-wide program: the widening did not admit a single .mjs, so the extension boundary still holds where Round 303 found it',
+  'and A1 is a fact about .ts rather than about an over-wide program: the widening did not admit a single .mjs, and the .mts population it exists to cover is IN the program by member list rather than by count',
   [...PROGRAM].filter((f) => f.endsWith('.mjs')).length === 0 &&
-    [...PROGRAM].filter((f) => f.endsWith('.mts')).length > 100 &&
-    PROGRAM.has('scripts/sweep-probes.d.mts'),
-  `.mjs in program 0 · .mts in program ${[...PROGRAM].filter((f) => f.endsWith('.mts')).length} · ` +
-    'sweep-probes.d.mts present — Theseus’s Round 303 A1b shape, reused so "IN" and "OUT" are both load-bearing here.',
+    MTS_ON_DISK.length >= 100 &&
+    MTS_ON_DISK.includes('scripts/sweep-probes.d.mts') &&
+    MTS_MISSING.length === 0 &&
+    MTS_STRAY.length === 0,
+  `.mjs in program ${[...PROGRAM].filter((f) => f.endsWith('.mjs')).length} · ` +
+    `${MTS_ON_DISK.length} .mts on disk · ${[...PROGRAM].filter((f) => f.endsWith('.mts')).length} .mts in program · ` +
+    `missing ${MTS_MISSING.length}${MTS_MISSING.length ? `: ${MTS_MISSING.slice(0, 4).join(', ')}` : ''} · ` +
+    `stray ${MTS_STRAY.length}${MTS_STRAY.length ? `: ${MTS_STRAY.slice(0, 4).join(', ')}` : ''} — ` +
+    'Theseus’s Round 303 A1b shape, repaired in both files on his Round 364 routing so that "IN" is a ' +
+    'fact about every covered file and not about a count a narrowing survives.',
 );
 
 const realTsc = spawnSync('npx', ['tsc', '-p', TSCONFIG, '--noEmit'], { cwd: REPO, encoding: 'utf8', maxBuffer: 32 * 1024 * 1024 });
