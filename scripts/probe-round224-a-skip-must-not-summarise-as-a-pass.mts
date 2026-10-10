@@ -60,7 +60,7 @@ import os from 'os';
 import { execFileSync } from 'child_process';
 import { summarise, summariseAndExit, type ProbeVerdict } from './lib/probe-outcome.mts';
 import { readNumericConstant, readLeadingFactor } from './lib/probe-source-constants.mts';
-import { censusSkippedShapes } from './lib/skipped-shape-census.mts';
+import { censusSkippedShapes, censusResultsShapes } from './lib/skipped-shape-census.mts';
 import { stripSource } from './lib/strip-source.mjs';
 
 const REPO = path.resolve(import.meta.dirname, '..');
@@ -1749,6 +1749,386 @@ function oldTurncountTail(rs: ProbeVerdict[]): { code: number; line: string } {
     + 'no row for a NUL-carrying file, so a grep-derived count fails SMALL — the direction that '
     + 'hides a caller.',
     true, 'the shapes are pinned by Q1-Q8; these two counts are declared, not held', 'measurement');
+}
+
+// ── Arm R — the OTHER half of Round 362 §2: `results`, the required field ──────
+//
+// Theseus routed this over in Round 362 §7 as a scope question: `results` is 12 throwing cells
+// with the same argument available and not measured. He was right that it is a parameter change
+// plus a planted counterfactual. He was wrong — and said so was possible — that the argument is
+// "the same". IT COMES OUT THE OTHER WAY, and that is this arm's finding.
+//
+// Arm Q could say `0 reachable` because every live `skipped` argument was one of two SYNTACTIC
+// shapes: a literal array, or a local array-initialised never-reassigned identifier. A syntactic
+// safety argument is mechanical — it holds for a reader who knows nothing about the types.
+//
+// For `results` that argument does not close. 130 live argument sites across 59 files, and **7 of
+// them are safe only by a TYPE argument**: six are calls to arrow functions annotated
+// `(…) => ProbeVerdict[]`, one is an `Array.from({length: n}, …): ProbeVerdict` initialiser. The
+// census cannot see that those return arrays; only `tsc` can.
+//
+// That is a real degradation and not a quibble, because **the type argument is defeated by a live
+// caller inside the very population that depends on it**: one of the six, `r222`/`r221` in
+// `probe-round311`, builds its rows with `as unknown as ProbeVerdict` on purpose. So the honest
+// answer to his scope question is not "declared safe like `skipped`". It is: the `skipped` half
+// rests on syntax and the `results` half rests on `tsc`, the typecheck gate is the thing holding
+// it, and the set of places that defeat `tsc` on these types is bounded and must stay named. R4
+// is that set. Cure-vs-declare comes out the same way as Q — declare — for a DIFFERENT reason,
+// and the reason is the one that can stop being true.
+//
+// R1 and R4 pin MEMBER LISTS, not counts. A count agreeing is not the population agreeing: a
+// detector that cannot tell a call from a declaration returns the right number over the wrong
+// members, which is how Round 340's key reproduced a published 11 with an overlap of 2.
+{
+  const census = censusResultsShapes(path.join(REPO, 'scripts'));
+  const SYNTACTIC_SAFE = (s: { kind: string; boundAs: string }) =>
+    s.kind === 'literal-array' || (s.kind === 'identifier' && (s.boundAs === 'local' || s.boundAs === 'param'));
+  const typeOnly = census.sites.filter((s) => !SYNTACTIC_SAFE(s));
+  const badDecls = census.decls.filter((d) => !d.arrayInit || d.reassignments > 0);
+  const badPushes = census.pushes.filter((p) => p.kind !== 'literal');
+
+  // R1 — THE CELL THAT COSTS. The split, held as a member list in both directions: a new
+  // type-only site reddens and is named, and one of these seven disappearing reddens too.
+  const TYPE_ONLY_EXPECTED = [
+    'probe-round311-the-nearer-of-argus-two-candidates-is-the-one-that-drops-a-failure-and-a-kind-field-is-what-breaks-it.mts:397:call',
+    'probe-round311-the-nearer-of-argus-two-candidates-is-the-one-that-drops-a-failure-and-a-kind-field-is-what-breaks-it.mts:398:call',
+    'probe-round311-the-nearer-of-argus-two-candidates-is-the-one-that-drops-a-failure-and-a-kind-field-is-what-breaks-it.mts:399:call',
+    'probe-round311-the-nearer-of-argus-two-candidates-is-the-one-that-drops-a-failure-and-a-kind-field-is-what-breaks-it.mts:400:call',
+    'probe-round311-the-nearer-of-argus-two-candidates-is-the-one-that-drops-a-failure-and-a-kind-field-is-what-breaks-it.mts:401:call',
+    'probe-round311-the-nearer-of-argus-two-candidates-is-the-one-that-drops-a-failure-and-a-kind-field-is-what-breaks-it.mts:402:call',
+  ].sort();
+  const DECL_ONLY_EXPECTED = [
+    'probe-round311-the-nearer-of-argus-two-candidates-is-the-one-that-drops-a-failure-and-a-kind-field-is-what-breaks-it.mts:544:synth',
+  ].sort();
+  const typeOnlyActual = typeOnly.map((s) => `${s.file}:${s.line}:${s.kind}`).sort();
+  const declOnlyActual = badDecls.map((d) => `${d.file}:${d.line}:${d.name}`).sort();
+  const sameSet = (a: string[], b: string[]) => a.length === b.length && a.every((x, i) => x === b[i]);
+  const r1 = sameSet(typeOnlyActual, TYPE_ONLY_EXPECTED) && sameSet(declOnlyActual, DECL_ONLY_EXPECTED)
+    && badPushes.length === 0;
+  check('R', 'the live `results` population splits into a syntactically-safe majority and a NAMED '
+    + 'residue safe only by a type annotation — 6 argument sites calling `(…) => ProbeVerdict[]` '
+    + 'arrows, plus 1 non-array-initialised declaration (`Array.from(…): ProbeVerdict`), all 7 in '
+    + 'probe-round311 — and nothing else: no non-literal push, no re-assignment, no unbound '
+    + 'identifier. Held as a MEMBER LIST in both directions, so a new type-only site reddens this '
+    + 'cell and names its file and line, and one of these seven disappearing reddens it too',
+    r1,
+    r1
+      ? `${census.sites.length} site(s) in ${new Set(census.sites.map((s) => s.file)).size} file(s): `
+        + `${census.sites.filter((s) => SYNTACTIC_SAFE(s)).length} syntactically safe, `
+        + `${typeOnly.length} type-only (${TYPE_ONLY_EXPECTED.length} expected), `
+        + `1 non-array-init decl, 0 non-literal push(es) of ${census.pushes.length}`
+      : `SET MISMATCH — type-only actual ${JSON.stringify(typeOnlyActual)} expected `
+        + `${JSON.stringify(TYPE_ONLY_EXPECTED)}; decls actual ${JSON.stringify(declOnlyActual)} `
+        + `expected ${JSON.stringify(DECL_ONLY_EXPECTED)}; non-literal pushes `
+        + `${JSON.stringify(badPushes.map((p) => `${p.file}:${p.line}`))}`);
+
+  // R2 — KNOWN POSITIVE for the PARAMETERISED census, planted fresh at `argKey: 'results'`.
+  // "0 unsafe" over a corpus with no unsafe shape in it is 0 of 0, and the parameterisation is a
+  // new selector: Q4's planted tree grades the `skipped` key and says nothing about this one.
+  // Written OUTSIDE the repo — a probe writing inside the tree while the sweep drives makes a red
+  // indistinguishable from a real one.
+  let rPlantNote = '';
+  let rPlanted: ReturnType<typeof censusResultsShapes> | null = null;
+  let rPlantTmp = '';
+  try {
+    rPlantTmp = fs.mkdtempSync(path.join(os.tmpdir(), 'r363-plant-'));
+    fs.writeFileSync(path.join(rPlantTmp, 'planted-conditional.mts'),
+      "import { summariseAndExit } from './probe-outcome.mts';\n"
+      + 'const cond = process.argv.length > 2;\n'
+      + "summariseAndExit({ probeName: 'p', results: cond ? [] : undefined });\n");
+    fs.writeFileSync(path.join(rPlantTmp, 'planted-call.mts'),
+      "import { summariseAndExit } from './probe-outcome.mts';\n"
+      + 'const build = () => undefined;\n'
+      + "summariseAndExit({ probeName: 'p', results: build() });\n");
+    fs.writeFileSync(path.join(rPlantTmp, 'planted-reassign.mts'),
+      "import { summariseAndExit } from './probe-outcome.mts';\n"
+      + "let results: unknown = ['a'];\nresults = undefined;\n"
+      + "summariseAndExit({ probeName: 'p', results });\n");
+    fs.writeFileSync(path.join(rPlantTmp, 'planted-push.mts'),
+      "import { summariseAndExit } from './probe-outcome.mts';\n"
+      + 'const results: unknown[] = [];\nconst maybe = process.env.X;\nresults.push(maybe);\n'
+      + "summariseAndExit({ probeName: 'p', results });\n");
+    rPlanted = censusResultsShapes(rPlantTmp);
+  } catch (e) {
+    rPlantNote = `planting failed: ${(e as Error).message.slice(0, 120)}`;
+  } finally {
+    if (rPlantTmp) fs.rmSync(rPlantTmp, { recursive: true, force: true });
+  }
+  const rPlantedUnsafe = rPlanted
+    ? rPlanted.sites.filter((s) => s.kind === 'conditional').length
+      + rPlanted.sites.filter((s) => s.kind === 'call').length
+      + rPlanted.decls.filter((d) => d.reassignments > 0).length
+      + rPlanted.pushes.filter((p) => p.kind !== 'literal').length
+    : -1;
+  check('R', 'KNOWN POSITIVE: the census at `argKey: \'results\'` over a planted tree carrying a '
+    + 'conditional, a call-valued, a re-assigned and a non-literal-push caller reports all four — '
+    + 'so R1 is a reading of the live tree and not a selector that answers 0 on a new key',
+    rPlantNote === '' && rPlantedUnsafe === 4,
+    rPlantNote || `planted unsafe: ${rPlantedUnsafe} of 4 (conditional `
+      + `${rPlanted?.sites.filter((s) => s.kind === 'conditional').length}, call `
+      + `${rPlanted?.sites.filter((s) => s.kind === 'call').length}, re-assign `
+      + `${rPlanted?.decls.filter((d) => d.reassignments > 0).length}, push `
+      + `${rPlanted?.pushes.filter((p) => p.kind !== 'literal').length})`);
+
+  /**
+   * R3 — KNOWN NEGATIVE: the PARAMETER actually selects. Two keys sharing a denominator agree
+   * vacuously, and the cheapest way for a parameterisation to be wrong is to ignore its argument
+   * and return the same population twice.
+   *
+   * MY FIRST VERSION OF THIS CELL WAS RED AND THE RED WAS CORRECT, and what it caught was my
+   * predicate, not the parameterisation. I asserted the two site sets each have members the
+   * other does not — `rOnly > 0 && qOnly > 0` — and measured `results-only 80 · skipped-only 0 ·
+   * both 51`. **`skipped` is a strict SUBSET of `results` keyed on `file:line`, and it cannot be
+   * anything else:** `results` is a REQUIRED field, so every call site that passes `skipped`
+   * passes `results` on the same line. A symmetric-difference predicate over a required key and
+   * an optional one is unsatisfiable by construction — it would have stayed red for as long as
+   * the module's type held.
+   *
+   * So the discriminator is not the line set, it is the VALUE read at the shared lines. A census
+   * that ignored `argKey` would return the same `rhs` at all 51 overlapping sites. Re-aimed at
+   * that, in both directions: the subset relation is asserted (so a `results`-less call site
+   * would redden this cell and name it), AND the `rhs` must differ at the overlap.
+   *
+   * **AND THE RE-AIMED VERSION WENT RED TOO, IN THE SAME FIRE, ON A LINE THIS ROUND ADDED** —
+   * cell R8 below calls `summarise({ ...inp, skipped: ['env missing'] })`, which passes `skipped`
+   * explicitly and `results` through an OBJECT-LEVEL SPREAD. `valueOf` reads top-level keys by
+   * name, so a key arriving by spread is invisible to it and that site is `skipped`-only. The
+   * subset relation is therefore not "always", it is "unless a spread supplies the key" — which
+   * is a limit of the instrument, not of the module, and cell R9 is the census of it. Named here
+   * rather than excluded, and the exemption is keyed on the spread being PRESENT on the line
+   * rather than on the file's name.
+   */
+  const qCensus = censusSkippedShapes(path.join(REPO, 'scripts'));
+  const keyOf = (s: { file: string; line: number }) => `${s.file}:${s.line}`;
+  const qByLine = new Map(qCensus.sites.map((s) => [keyOf(s), s.rhs]));
+  const rByLine = new Map(census.sites.map((s) => [keyOf(s), s.rhs]));
+  const shared = [...rByLine.keys()].filter((k) => qByLine.has(k));
+  const rhsDiffers = shared.filter((k) => rByLine.get(k) !== qByLine.get(k)).length;
+  /**
+   * Every `summarise`/`summariseAndExit` call site whose argument object carries a spread at its
+   * OWN level — the shape both censuses are blind to, because `valueOf` reads keys by name.
+   * Depth-tracked rather than regex-matched on `...`: `results: [...A, ...B]` is an ARRAY-element
+   * spread, is classified `literal-array`, and is not a blind spot.
+   */
+  const objectSpreadSites = (() => {
+    const out: string[] = [];
+    const argsFrom = (src: string, open: number): string | null => {
+      let d = 0;
+      for (let j = open; j < src.length; j += 1) {
+        if (src[j] === '(') d += 1;
+        else if (src[j] === ')') { d -= 1; if (d === 0) return src.slice(open + 1, j); }
+      }
+      return null;
+    };
+    const srcFiles = [...new Set([...census.sites, ...qCensus.sites].map((s) => s.file))];
+    for (const f of srcFiles) {
+      const src = stripSource(fs.readFileSync(path.join(REPO, 'scripts', f), 'utf8'), true);
+      const re = /\b(?:summariseAndExit|summarise)\s*\(/g;
+      let mm: RegExpExecArray | null;
+      while ((mm = re.exec(src)) !== null) {
+        const ls = src.lastIndexOf('\n', mm.index) + 1;
+        const nlIdx = src.indexOf('\n', mm.index);
+        if (/^\s*(?:\*|\/\/)/.test(src.slice(ls, nlIdx === -1 ? undefined : nlIdx))) continue;
+        const args = argsFrom(src, mm.index + mm[0].length - 1);
+        if (args === null) continue;
+        let d = 0;
+        for (let k = 0; k < args.length; k += 1) {
+          const c = args[k];
+          if ('([{'.includes(c)) d += 1;
+          else if (')]}'.includes(c)) d -= 1;
+          else if (d === 1 && c === '.' && args.slice(k, k + 3) === '...') {
+            out.push(`${f}:${src.slice(0, mm.index).split('\n').length}`);
+            break;
+          }
+        }
+      }
+    }
+    return [...new Set(out)];
+  })();
+  const spreadLines = new Set(objectSpreadSites);
+  const skippedOnly = [...qByLine.keys()].filter((k) => !rByLine.has(k));
+  const skippedOnlyUnexplained = skippedOnly.filter((k) => !spreadLines.has(k));
+  const resultsOnly = [...rByLine.keys()].filter((k) => !qByLine.has(k)).length;
+  check('R', 'KNOWN NEGATIVE: the `argKey` parameter selects, and the discriminator is the VALUE '
+    + 'at the shared call sites rather than the line set — `skipped` is a subset of `results` '
+    + 'because `results` is required and every `skipped` call passes it on the same line UNLESS a '
+    + 'spread supplies it, so a symmetric-difference test here is unsatisfiable. The `rhs` read '
+    + 'at the shared sites differs, which a census ignoring its argKey could not produce',
+    resultsOnly > 0 && skippedOnlyUnexplained.length === 0 && rhsDiffers > 0,
+    skippedOnlyUnexplained.length === 0
+      ? `results-only ${resultsOnly} · shared ${shared.length} · rhs differs at `
+        + `${rhsDiffers} of ${shared.length} shared site(s) · `
+        + `${skippedOnly.length} skipped-only, all spread-explained`
+      : `A \`skipped\` SITE WITH NO \`results\` AND NO SPREAD ON ITS LINE: `
+        + `${JSON.stringify(skippedOnlyUnexplained)}`);
+
+  /**
+   * R9 — the blind spot itself, censused rather than mentioned.
+   *
+   * `valueOf` reads top-level keys by name, so a key supplied by an object-level spread
+   * (`summarise({ ...hostile })`) is invisible to BOTH censuses. Arm Q3's claim is "no live caller
+   * can supply a non-array `skipped`"; that claim is true of the keys the census can see and was
+   * never graded against the sites where it cannot see one. There are four, all in this control,
+   * all driver fixtures that feed hostile values deliberately — which is the right answer and is
+   * still worth holding as a member list, because the shape that would matter is the same spread
+   * appearing in a probe that is NOT a control.
+   */
+  const SPREAD_EXPECTED_FILE = 'probe-round224-a-skip-must-not-summarise-as-a-pass.mts';
+  const spreadOutsideControl = objectSpreadSites.filter((s) => !s.startsWith(`${SPREAD_EXPECTED_FILE}:`));
+  check('R', 'the object-level-spread call sites — the shape `valueOf` is blind to, where a key '
+    + 'can reach `summarise` without the census seeing it — are all inside this control, where '
+    + 'they are declared hostile-value fixtures. A spread-shaped call appearing in any other '
+    + 'probe reddens this cell and names it, because arm Q3\'s reachability claim cannot see it',
+    objectSpreadSites.length > 0 && spreadOutsideControl.length === 0,
+    spreadOutsideControl.length === 0
+      ? `${objectSpreadSites.length} object-level-spread site(s), all in this control: `
+        + `${objectSpreadSites.map((s) => s.split(':')[1]).join(', ')}`
+      : `SPREAD OUTSIDE THE CONTROL: ${JSON.stringify(spreadOutsideControl)}`);
+
+  // R4 — the set that defeats the type argument R1 leans on. `tsc` is what makes a
+  // `(…) => ProbeVerdict[]` call safe; these are the live lines that tell `tsc` to stop looking.
+  // All in probes, all deliberate controls — which is the finding, not a let-off: if one of these
+  // ever moves into a non-probe caller, R1's seven stop being safe and nothing else would notice.
+  const CAST_RE = /as\s+(?:unknown\s+as|any)/;
+  const castSites: string[] = [];
+  for (const f of census.sites.map((s) => s.file).filter((v, i, a) => a.indexOf(v) === i)) {
+    const src = stripSource(fs.readFileSync(path.join(REPO, 'scripts', f), 'utf8'), true);
+    src.split('\n').forEach((L, i) => {
+      if (/(?:ProbeVerdict|SummariseInput|ProbeOutcome)/.test(L) && CAST_RE.test(L)
+        && !/^\s*(?:\*|\/\/)/.test(L)) castSites.push(`${f}:${i + 1}`);
+    });
+  }
+  const castFiles = new Set(castSites.map((s) => s.split(':')[0]));
+  const nonProbe = [...castFiles].filter((f) => !/(^|\/)probe-/.test(f));
+  check('R', 'every live line that defeats `tsc` on the probe row types sits in a probe, where it '
+    + 'is a deliberate control — so the type argument R1 leans on is defeated nowhere a real '
+    + 'caller could inherit it. A cast appearing in a non-probe caller reddens this cell',
+    nonProbe.length === 0 && castSites.length > 0,
+    nonProbe.length === 0
+      ? `${castSites.length} cast site(s) in ${castFiles.size} file(s), all probes: `
+        + `${[...castFiles].map((f) => f.match(/^probe-round\d+[a-z]?/)?.[0] ?? f).sort().join(', ')}`
+      : `NON-PROBE CAST(S): ${JSON.stringify(nonProbe)}`);
+
+  // R5 — and the 15-path census is NOT closed, under a hostile set two values wider than Q's.
+  // Arm Q's HOSTILE has 11 members and no `Symbol` and no function. Three paths Q1 lists as
+  // CURED throw on a Symbol — `probeName` (on every limb that names it in its headline),
+  // `skipped[0].label` and `inapplicable[0]` — all with `Cannot convert a Symbol value to a
+  // string`, from DIRECT template interpolation of a caller value. That is a different mechanism
+  // from the type-guard class: Round 358 built `describe()` precisely because "`JSON.stringify`
+  // is not total", and wired it to `kind` and `pass` only. Q1's check string is scoped to
+  // `${HOSTILE.length}` so it does not overclaim; this cell is the part it cannot see.
+  const SYMBOL_PATHS: Record<string, () => unknown> = {
+    probeName: () => ({ probeName: Symbol('s'), results: [ok('A', 'fine')], skipped: ['env missing'] }),
+    'skipped[0].label': () => ({ probeName: 'p', results: [ok('A', 'fine')], skipped: [{ label: Symbol('s'), kind: 'regression' }] }),
+    'inapplicable[0]': () => ({ probeName: 'p', results: [ok('A', 'fine')], inapplicable: [Symbol('s')] }),
+  };
+  const symbolThrowers = Object.entries(SYMBOL_PATHS).filter(([, build]) => {
+    try { summarise(build() as Parameters<typeof summarise>[0]); return false; } catch { return true; }
+  }).map(([p]) => p);
+  check('R', 'CHARACTERISATION (read only beside R6): three field paths arm Q records as having '
+    + 'ZERO throwers throw on a `Symbol`, which arm Q\'s 11-value hostile set does not contain — '
+    + 'direct template interpolation, not the type-guard class, and one field over from Round '
+    + '358\'s `describe()`. This cell records the class is open, not that it is acceptable',
+    symbolThrowers.length === 3,
+    `throws on Symbol: ${symbolThrowers.join(', ')} (${symbolThrowers.length} of 3 expected)`);
+
+  // R6 — why R5 is affordable, driven rather than asserted, and it is the SAME two reasons arm Q
+  // gives: the throw is loud, and no live caller can reach it. The loudness half is checkable
+  // here; the reachability half is `tsc` again — a `Symbol` is not assignable to `string` at any
+  // of the three paths, and R4 is the set of places that could defeat that.
+  let symbolLoud = false;
+  let symbolDetail = '';
+  try {
+    summarise({ probeName: Symbol('s') as unknown as string, results: [ok('A', 'fine')], skipped: ['env missing'] });
+    symbolDetail = 'did NOT throw — R5 is stale';
+  } catch (e) {
+    const msg = (e as Error).message;
+    symbolLoud = /Cannot convert a Symbol value to a string/.test(msg) && !/passed/.test(msg);
+    symbolDetail = `throws ${JSON.stringify(msg.slice(0, 60))}, never the word "passed"`;
+  }
+  check('R', 'the Symbol class is in the SAFE direction: it throws out of `summarise` with a '
+    + 'message that is not a verdict and never contains "passed", so the sweep reads exit 1 as a '
+    + 'red — the Round 355 shape (an exit 0 CLAIMING a pass) is not present',
+    symbolLoud, symbolDetail);
+
+  /**
+   * R8 — the cell that should have existed in Round 362, and whose absence is this round's third
+   * finding.
+   *
+   * Theseus's Round 362 corrected my Round 361 hard-skip row from 7 of 7 to 6 of 6 and PINNED the
+   * correction in cell Q8, whose check string says in so many words "NOT the published 7 of 7".
+   * It did not change the published 7 of 7, which sat in the docblock above
+   * `softSkipReasons` — in the very file Q8 reads — for a full round. A cell asserting 6 of 6 and
+   * a comment asserting 7 of 7, in one tree, with nothing making the comment cost anything. That
+   * is the Round 247 object exactly, and my own Round 362 note said a paragraph a cure leaves
+   * behind needs a pin.
+   *
+   * So the table is parsed OUT OF SOURCE and its hard-skip figure graded against the driven one.
+   *
+   * Scoped deliberately to the hard-skip row: the table states PRE-cure figures and Q8 drives the
+   * live lib, so `soft skips` and `inapplicable arms` legitimately read differently in the two
+   * places. The hard-skip row is the one row that is identical at both libs — verified this round
+   * at `91977d40^` and at HEAD, 6 of 6 both — which is what makes it pinnable without extracting
+   * a second lib. The row COUNT is pinned too, so deleting a row or rewording one out of the
+   * table's shape reddens this cell rather than silently emptying it: a pin on prose that matches
+   * zero rows passes, which is the failure mode this cell exists to not have.
+   */
+  const libSrc = fs.readFileSync(path.join(REPO, 'scripts', 'lib', 'probe-outcome.mts'), 'utf8');
+  const TABLE_ROW = /^\s*\*\s{3}(hard skips|unreadable hatch|soft skips|inapplicable arms)\s+carried on (\d+) of (\d+) limbs/gm;
+  const tableRows = [...libSrc.matchAll(TABLE_ROW)].map((m) => ({ channel: m[1], carried: Number(m[2]), reach: Number(m[3]) }));
+  const hardRow = tableRows.find((r) => r.channel === 'hard skips');
+  // The driven figure, re-derived here rather than copied from Q8's variables: a pin that reads
+  // the same computation it is grading agrees with itself.
+  const drivenHard = (() => {
+    const base = { probeName: 'subject', results: [ok('A', 'fine')], inapplicable: ['C1 — declared'] };
+    const LIMB_INPUTS: Record<string, unknown>[] = [
+      { ...base, results: [bad('A', 'broke')] },
+      { ...base, regressionKind: ['regression'] as unknown as string },
+      { ...base, regressionKind: 'regressoin' },
+      { ...base, regressionKind: 'check', results: [{ arm: 'A', check: 'untagged', pass: true } as unknown as ProbeVerdict, ok('B', 'tagged')] },
+      { ...base, results: [{ arm: 'A', check: 'c', pass: true, kind: {} } as unknown as ProbeVerdict] },
+      { ...base, skipped: ['env missing'] },
+      { ...base, inapplicable: 'probe-x' as unknown as string[] },
+      { ...base },
+    ];
+    const sig = (o: { code: number; headline: string }) => `${o.code}:${o.headline.replace(/subject/g, 'P').slice(0, 44)}`;
+    let carried = 0, reach = 0;
+    for (const inp of LIMB_INPUTS) {
+      const b = summarise(inp as Parameters<typeof summarise>[0]);
+      const p = summarise({ ...inp, skipped: ['env missing'] } as Parameters<typeof summarise>[0]);
+      if (sig(b) !== sig(p)) continue;                      // the skip moved the run off this limb
+      reach += 1;
+      if (p.reasons.some((r) => r.startsWith('did not run: '))) carried += 1;
+    }
+    return { carried, reach };
+  })();
+  const r8 = tableRows.length === 4 && hardRow !== undefined
+    && hardRow.carried === drivenHard.carried && hardRow.reach === drivenHard.reach;
+  check('R', 'the limb table in `probe-outcome.mts`\'s own docblock is PARSED OUT OF SOURCE and '
+    + 'its hard-skip figure equals the driven one — the row Round 362 corrected in cell Q8 while '
+    + 'leaving the contradicting comment standing in the file Q8 reads. All four rows must be '
+    + 'present in the table\'s shape, so deleting or rewording one reddens this cell rather than '
+    + 'emptying the pin',
+    r8,
+    r8
+      ? `source says ${hardRow!.carried} of ${hardRow!.reach}, driven ${drivenHard.carried} of `
+        + `${drivenHard.reach}, ${tableRows.length} table row(s): `
+        + `${tableRows.map((r) => `${r.channel} ${r.carried}/${r.reach}`).join(' · ')}`
+      : `MISMATCH — ${tableRows.length} row(s) parsed `
+        + `${JSON.stringify(tableRows)}; hard row ${hardRow ? `${hardRow.carried}/${hardRow.reach}` : 'ABSENT'} `
+        + `vs driven ${drivenHard.carried}/${drivenHard.reach}`);
+
+  // R7 — MEASUREMENT, not a pin, on exactly Theseus's Round 362 split: the counts move with
+  // unrelated work (any probe starting or stopping passing `results` moves the site count), so
+  // pinning them would redden this arm on work that has nothing to do with it. The member lists
+  // are pinned above; the totals are declared.
+  check('R', `MEASUREMENT: ${census.sites.length} live \`results\` argument site(s) across `
+    + `${new Set(census.sites.map((s) => s.file)).size} file(s) of ${census.sources} source files `
+    + `under scripts/, ${census.pushes.length} element push(es), ${census.decls.length} `
+    + `declaration(s), and ${castSites.length} live type-defeating cast(s). Walked with `
+    + 'readdirSync, not grep: grep emits no row for a NUL-carrying file, so a grep-derived count '
+    + 'fails SMALL — the direction that hides a caller.',
+    true, 'the member lists are pinned by R1 and R4; these totals are declared, not held', 'measurement');
 }
 
 // ── Exit ──────────────────────────────────────────────────────────────────────

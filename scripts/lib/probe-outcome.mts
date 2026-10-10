@@ -361,11 +361,38 @@ export function summarise(input: SummariseInput): ProbeOutcome {
    * wired to exactly one limb — and it is the limb that prints `passed`:
    *
    * ```
-   *   hard skips          carried on 7 of 7 limbs they can reach   (`did not run:`)
+   *   hard skips          carried on 6 of 6 limbs they can reach   (`did not run:`)
    *   unreadable hatch    carried on 7 of 7 limbs it can reach     (`inapplicable is …`)
-   *   soft skips          the code-0 limb, and no other
-   *   inapplicable arms   the code-0 limb, and no other
+   *   soft skips          carried on 1 of 7 limbs it can reach     (the code-0 limb, and no other)
+   *   inapplicable arms   carried on 1 of 7 limbs it can reach     (the code-0 limb, and no other)
    * ```
+   *
+   * **Round 363 — the hard-skip row was published as 7 of 7 and is 6 of 6. Theseus's Round 362
+   * correction, reproduced here under an independent key and then found to have been pinned
+   * without this table being changed.** The mechanism is a BORROWED DENOMINATOR: the limb map the
+   * row was derived from was built for the `inapplicable` channel, which CAN sit on the code-0
+   * limb, and reused for the hard-skip channel, which cannot — any hard skip pushes a `did not
+   * run:` line, so the `reasons.length` limb returns first. Numerator and denominator were both
+   * inflated by one, so the row's CLAIM never moved; the rule worth keeping is that **a channel
+   * that moves which limb a run lands on cannot share a reachability denominator with one that
+   * does not.**
+   *
+   * Two things the correction did not reach, both found by re-deriving all four rows at once over
+   * a complete enumeration rather than patching the one number:
+   *
+   *   1. The map that produced the published table had **seven entries for eight limbs** — the
+   *      `inapplicable`-is-unreadable limb was absent from it. Over the complete eight, a hard
+   *      skip moves off **two** limbs, not one (the code-0 limb AND the unreadable-hatch limb,
+   *      both to `reasons.length`), and the answer is still 6 of 6: the borrowed denominator and
+   *      the missing limb were two inflations that happened to land in the same place.
+   *   2. The other three rows hold at the wider denominator, so exactly one of four was wrong.
+   *
+   * These are PRE-CURE figures, driven against `91977d40^`. Arm Q8 of `probe-round224` drives the
+   * table too and reports 7 of 7 for `inapplicable arms` and 5 of 8 for `soft skips` — those are
+   * POST-cure and are not in disagreement with the rows above. The hard-skip row is the one row
+   * that reads the same at both libs, so arm R8 pins THIS table's hard-skip figure against the
+   * driven one. A number in a comment beside the cure that produced it is graded by nothing, and
+   * that is how a cell saying 6 of 6 came to sit in the same tree as a comment saying 7 of 7.
    *
    * So this module named the complaint that a run's scope is UNREADABLE everywhere, and dropped the
    * scope itself the moment the run had bad news. Driven on the live shape: `probe-round291` builds
