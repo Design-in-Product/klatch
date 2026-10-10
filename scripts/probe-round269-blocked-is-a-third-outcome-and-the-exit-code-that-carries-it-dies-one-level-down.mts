@@ -802,15 +802,21 @@ const lineAt = (raw: string, off: number): number => raw.slice(0, off).split('\n
  * cannot leave a hand-typed rendering standing alone.
  */
 const HOISTED_SITES: Array<{ file: string; assign: number; emit: number; rendered: string }> = [
-  // probe-round224:72-73 — SWEPT, and visible at FILE level through its own sibling at :561
+  // probe-round224:73-74 — SWEPT, and visible at FILE level through its own sibling at :561
   //
   // Round 361: was 71-72. Moved by one because arm P needed `import os from 'os';` in that file,
   // and this arm caught the drift the same fire — which is F9 doing its job, so the pin is RE-AIMED
   // at the site's new position rather than loosened to stop noticing. A source-POSITION pin on
   // another file's line numbers is drift-prone by construction; that is the price of pinning the
   // level F8 cannot reach (F8 is file-keyed), and it is paid in one line per shift.
+  //
+  // Round 362: 72-73 → 73-74, one import line again (arm Q needs
+  // `lib/skipped-shape-census.mts`). Two consecutive rounds have each paid exactly one line here,
+  // and the arm caught both the same fire it drifted — so the price is real, bounded and being
+  // paid rather than accumulating. The arm also reported it the useful way: `4 site(s) against 4
+  // declared — SET MISMATCH`, right count and wrong members, which a count alone cannot say.
   { file: 'probe-round224-a-skip-must-not-summarise-as-a-pass.mts',
-    assign: 72, emit: 73, rendered: 'MEAS [A1] a measurement — 19 of 19' },
+    assign: 73, emit: 74, rendered: 'MEAS [A1] a measurement — 19 of 19' },
   // probe-round224b:57-58 — DEFERRED, passes F8 today and at promotion
   { file: 'probe-round224b-the-migrated-probes-against-a-stranger.mts',
     assign: 57, emit: 58, rendered: 'MEAS [A1] a measurement — 19 of 19' },
