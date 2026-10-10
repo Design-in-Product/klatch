@@ -60,6 +60,7 @@ import os from 'os';
 import { execFileSync } from 'child_process';
 import { summarise, summariseAndExit, type ProbeVerdict } from './lib/probe-outcome.mts';
 import { readNumericConstant, readLeadingFactor } from './lib/probe-source-constants.mts';
+import { censusSkippedShapes } from './lib/skipped-shape-census.mts';
 import { stripSource } from './lib/strip-source.mjs';
 
 const REPO = path.resolve(import.meta.dirname, '..');
@@ -1282,10 +1283,19 @@ function oldTurncountTail(rs: ProbeVerdict[]): { code: number; line: string } {
 // `summarise` has four reporting channels and EIGHT return sites. Measured per site, with all
 // eight enumerated from source and each driven with the same inputs:
 //
-//     hard skips          carried on 7 of 7 limbs they can reach   (`did not run:`)
+//     hard skips          carried on 6 of 6 limbs they can reach   (`did not run:`)
 //     unreadable hatch    carried on 7 of 7 limbs it can reach     (`inapplicable is …`)
 //     soft skips          the code-0 limb, and no other
 //     inapplicable arms   the code-0 limb, and no other
+//
+// ROUND 362 — the first row above was published as `7 of 7` and re-derives as `6 of 6`. The
+// denominator was borrowed: it came from a `LIMBS` map built for the `inapplicable` channel, which
+// CAN sit on the code-0 limb, and reused for the hard-skip channel, which cannot — any hard skip
+// pushes a `did not run:` reason, so the `reasons.length` limb returns before the code-0 limb is
+// reached. Harmless in direction (numerator and denominator both inflated by one, and "carried
+// everywhere it can reach" is unchanged), but a channel that MOVES which limb a run lands on
+// cannot share a reachability denominator with one that does not. Both figures are now pinned by
+// arm Q rather than written here, because a figure in a comment beside its own round is prose.
 //
 // So the module named the complaint that a run's scope is UNREADABLE everywhere and dropped the
 // scope itself the moment the run had bad news. Live: `probe-round291` pushes arm C1's label, and
@@ -1468,6 +1478,277 @@ function oldTurncountTail(rs: ProbeVerdict[]): { code: number; line: string } {
     + 'can reach a limb that is not the code-0 limb, so this was reachable live and not only in a '
     + 'fixture. Walked with readdirSync, not grep: grep emits no row for a NUL-carrying file.',
     true, 'the caller set itself is pinned in both directions by arm E, not here', 'measurement');
+}
+
+// ── Q · Round 362: the crash surface, and why 22 of its cells stay uncured ────
+//
+// Daedalus handed over ONE crash in Round 361: `summarise({skipped: [null]})` dies at `kindOf`
+// with `Cannot read properties of null`. Rather than take the instance, Round 362 censused the
+// mechanism — 11 hostile values × 15 field paths = 165 cells — and found **33 throwing cells
+// across 5 paths**:
+//
+//     input itself   11      results      10      results[0]   2
+//     skipped         8      skipped[0]    2
+//
+// and **zero** on `inapplicable`, `inapplicable[0]`, `regressionKind`, `results[0].kind`,
+// `skipped[0].kind`, `skipped[0].label`, `probeName`, `results[0].arm/.check/.pass`. That split is
+// the finding: the type-guard class is CURED on the fields Rounds 357, 358 and 359 reached, and
+// uncured on the two fields with the most live callers. Daedalus's own Round 361 note — "Rounds
+// 356, 357 and 359 each cured this same class for a different field without anybody looking one
+// field further" — is true one more field over than he looked.
+//
+// The call on those 22 cells is a DECLARED MEASUREMENT and not a cure, for two driven reasons:
+//
+//   1. No live caller can reach them. Cell Q3, and it is the one that can stop being true.
+//   2. The crash is in the SAFE direction. Driven as a subprocess: a throwing `summariseAndExit`
+//      exits 1 with 0 bytes on stdout — no headline, no `REGRESSIONS:` block, never the word
+//      "passed". The sweep reads exit 1 as a red. Round 355's class was the opposite: an exit 0
+//      that CLAIMED a pass. Cell Q7 holds the half of that which is checkable in-process.
+//
+// Cell Q2 characterises the uncured crash — and a characterisation cell is the exact shape
+// Daedalus's Round 361 finding warns about (a Round 247 test whose accurate comment named an
+// uncured defect and kept it pinned in place for 114 rounds). So Q2 is written to be read ONLY
+// beside Q3: it records that the crash is still there, Q3 records why that is affordable, and if
+// Q3 ever reddens then Q2 is no longer a characterisation, it is a live defect.
+{
+  const HOSTILE: [string, unknown][] = [
+    ['undefined', undefined], ['null', null], ['0', 0], ['123', 123],
+    ["''", ''], ["'x'", 'x'], ['false', false], ['true', true],
+    ['{}', {}], ['[]', []], ['NaN', NaN],
+  ];
+  const okRow = { arm: 'A', check: 'fine', pass: true, kind: 'regression' };
+  const PATHS: Record<string, (v: unknown) => unknown> = {
+    'input itself': (v) => v,
+    probeName: (v) => ({ probeName: v, results: [okRow] }),
+    results: (v) => ({ probeName: 'p', results: v }),
+    'results[0]': (v) => ({ probeName: 'p', results: [v] }),
+    'results[0].arm': (v) => ({ probeName: 'p', results: [{ ...okRow, arm: v }] }),
+    'results[0].check': (v) => ({ probeName: 'p', results: [{ ...okRow, check: v }] }),
+    'results[0].pass': (v) => ({ probeName: 'p', results: [{ ...okRow, pass: v }] }),
+    'results[0].kind': (v) => ({ probeName: 'p', results: [{ ...okRow, kind: v }] }),
+    skipped: (v) => ({ probeName: 'p', results: [okRow], skipped: v }),
+    'skipped[0]': (v) => ({ probeName: 'p', results: [okRow], skipped: [v] }),
+    'skipped[0].label': (v) => ({ probeName: 'p', results: [okRow], skipped: [{ label: v, kind: 'regression' }] }),
+    'skipped[0].kind': (v) => ({ probeName: 'p', results: [okRow], skipped: [{ label: 'arm Z', kind: v }] }),
+    inapplicable: (v) => ({ probeName: 'p', results: [okRow], inapplicable: v }),
+    'inapplicable[0]': (v) => ({ probeName: 'p', results: [okRow], inapplicable: [v] }),
+    regressionKind: (v) => ({ probeName: 'p', results: [okRow], regressionKind: v }),
+  };
+  const drive = (input: unknown): { code: number; headline: string } | { threw: true } => {
+    try {
+      const o = summarise(input as Parameters<typeof summarise>[0]);
+      return { code: o.code, headline: o.headline };
+    } catch { return { threw: true }; }
+  };
+  const throwersOf = (p: string) => HOSTILE.filter(([, v]) => 'threw' in drive(PATHS[p](v))).length;
+
+  // Q1 — the three landed cures, pinned as an absence of throwers rather than as a code.
+  const CURED = ['inapplicable', 'inapplicable[0]', 'regressionKind', 'results[0].kind',
+    'skipped[0].kind', 'skipped[0].label', 'probeName', 'results[0].arm', 'results[0].check',
+    'results[0].pass'];
+  const curedThrowers = CURED.map((p) => [p, throwersOf(p)] as const).filter(([, n]) => n > 0);
+  check('Q', `the fields Rounds 357/358/359 reached take all ${HOSTILE.length} hostile values `
+    + `without throwing — ${CURED.length} paths, ${CURED.length * HOSTILE.length} cells, 0 throwers`,
+    curedThrowers.length === 0,
+    curedThrowers.length === 0 ? 'no path among the cured ones throws' : `THROWS: ${curedThrowers.map(([p, n]) => `${p}×${n}`).join(', ')}`);
+
+  // Q2 — the uncured half, CHARACTERISED. Read only beside Q3; see the note above.
+  const UNCURED: Record<string, number> = { 'input itself': 11, results: 10, 'results[0]': 2, skipped: 8, 'skipped[0]': 2 };
+  const measured = Object.fromEntries(Object.keys(UNCURED).map((p) => [p, throwersOf(p)]));
+  check('Q', 'CHARACTERISATION (not a blessing — see Q3): the uncured paths still throw, at the '
+    + 'measured cell counts. If Q3 reddens, this cell stops being a characterisation and the '
+    + 'crash is live',
+    Object.entries(UNCURED).every(([p, n]) => measured[p] === n),
+    `expected ${JSON.stringify(UNCURED)} measured ${JSON.stringify(measured)}`);
+
+  // Q3 — THE CELL THAT COSTS. Live reachability of the `skipped` half, in both directions.
+  const census = censusSkippedShapes(path.join(REPO, 'scripts'));
+  const unsafeSites = census.sites.filter((s) => s.kind !== 'literal-array' && s.kind !== 'identifier');
+  const unboundSites = census.sites.filter((s) => s.boundAs === 'unbound');
+  const badDecls = census.decls.filter((d) => !d.arrayInit || d.reassignments > 0);
+  const badPushes = census.pushes.filter((p) => p.kind !== 'literal');
+  const undeclared = census.sites
+    .filter((s) => s.boundAs === 'local')
+    .filter((s) => !census.decls.some((d) => d.file === s.file && d.name === s.name));
+  // Non-push mutators and index writes are checked too: `.push` is not the only way to put an
+  // element in an array, and a census of one spelling is the Round 264 shape.
+  const MUTATORS = ['unshift', 'splice', 'concat', 'fill', 'copyWithin'];
+  const otherMutations: string[] = [];
+  for (const key of new Set(census.sites.filter((s) => s.boundAs === 'local').map((s) => `${s.file}\u0000${s.name}`))) {
+    const [file, name] = key.split('\u0000');
+    // String bodies blanked, same as the census itself: this probe plants its counterfactual
+    // callers as source strings inside its own file, and a scan that reads them as code reports
+    // them as live callers. Found by this cell's own red.
+    const src = stripSource(fs.readFileSync(path.join(REPO, 'scripts', file), 'utf8'), true);
+    for (const mu of MUTATORS) {
+      if (new RegExp(`\\b${name}\\.${mu}\\(`).test(src)) otherMutations.push(`${file} ${name}.${mu}`);
+    }
+    if (new RegExp(`(?<![\\w$.])${name}\\s*\\[[^\\]]*\\]\\s*=(?!=)`).test(src)) otherMutations.push(`${file} ${name}[i]=`);
+  }
+  const reachable = unsafeSites.length + unboundSites.length + badDecls.length + badPushes.length
+    + undeclared.length + otherMutations.length;
+  check('Q', `no live caller can supply a non-array \`skipped\` or a nullish element: `
+    + `${census.sites.length} argument site(s) in `
+    + `${new Set(census.sites.map((s) => s.file)).size} file(s) are all literal arrays or local `
+    + `array-initialised never-reassigned variables, all ${census.pushes.length} element(s) arrive `
+    + 'by a literal-shaped push, and there are no other mutators and no index writes',
+    reachable === 0,
+    reachable === 0
+      ? `0 reachable: ${census.sites.filter((s) => s.kind === 'literal-array').length} literal arrays, `
+        + `${census.sites.filter((s) => s.boundAs === 'local').length} locals, `
+        + `${census.sites.filter((s) => s.boundAs === 'param').length} declared fixture param(s), `
+        + `${census.decls.length} declaration(s) all array-initialised with 0 re-assignments`
+      : `REACHABLE: ${[...unsafeSites.map((s) => `${s.file}:${s.line} ${s.kind}`), ...unboundSites.map((s) => `${s.file}:${s.line} unbound ${s.name}`), ...badDecls.map((d) => `${d.file}:${d.line} ${d.name}=${d.init} r${d.reassignments}`), ...badPushes.map((p) => `${p.file}:${p.line} push ${p.arg}`), ...undeclared.map((s) => `${s.file}:${s.line} no decl`), ...otherMutations].join(' | ')}`);
+
+  // Q4 — and Q3 is NOT vacuous. The census is driven over a planted tree carrying each unsafe
+  // shape, because "0 unsafe sites" over a corpus with no unsafe shape in it is 0 of 0. The tree
+  // is written OUTSIDE the repo: a probe writing inside the tree while the sweep drives makes a
+  // red indistinguishable from a real one (Round 358's instrument rule).
+  let plantNote = '';
+  let planted: ReturnType<typeof censusSkippedShapes> | null = null;
+  let plantTmp = '';
+  try {
+    plantTmp = fs.mkdtempSync(path.join(os.tmpdir(), 'r362-plant-'));
+    fs.writeFileSync(path.join(plantTmp, 'planted-conditional.mts'),
+      "import { summariseAndExit } from './probe-outcome.mts';\n"
+      + 'const cond = process.argv.length > 2;\n'
+      + "summariseAndExit({ probeName: 'p', results: [], skipped: cond ? ['a'] : undefined });\n");
+    fs.writeFileSync(path.join(plantTmp, 'planted-call.mts'),
+      "import { summariseAndExit } from './probe-outcome.mts';\n"
+      + 'const build = () => undefined;\n'
+      + "summariseAndExit({ probeName: 'p', results: [], skipped: build() });\n");
+    fs.writeFileSync(path.join(plantTmp, 'planted-reassign.mts'),
+      "import { summariseAndExit } from './probe-outcome.mts';\n"
+      + "let skipped: unknown = ['a'];\nskipped = undefined;\n"
+      + "summariseAndExit({ probeName: 'p', results: [], skipped });\n");
+    fs.writeFileSync(path.join(plantTmp, 'planted-push.mts'),
+      "import { summariseAndExit } from './probe-outcome.mts';\n"
+      + 'const skipped: unknown[] = [];\nconst maybe = process.env.X;\nskipped.push(maybe);\n'
+      + "summariseAndExit({ probeName: 'p', results: [], skipped });\n");
+    planted = censusSkippedShapes(plantTmp);
+  } catch (e) {
+    plantNote = `planting failed: ${(e as Error).message.slice(0, 120)}`;
+  } finally {
+    if (plantTmp) fs.rmSync(plantTmp, { recursive: true, force: true });
+  }
+  const plantedUnsafe = planted
+    ? planted.sites.filter((s) => s.kind === 'conditional').length
+      + planted.sites.filter((s) => s.kind === 'call').length
+      + planted.decls.filter((d) => d.reassignments > 0).length
+      + planted.pushes.filter((p) => p.kind !== 'literal').length
+    : -1;
+  check('Q', 'KNOWN POSITIVE: the same census over a planted tree carrying a conditional, a '
+    + 'call-valued, a re-assigned and a non-literal-push caller reports all four — so Q3 is a '
+    + 'reading of the live tree and not a detector that answers 0 everywhere',
+    plantNote === '' && plantedUnsafe === 4,
+    plantNote || `planted unsafe: ${plantedUnsafe} of 4 (conditional ${planted?.sites.filter((s) => s.kind === 'conditional').length}, call ${planted?.sites.filter((s) => s.kind === 'call').length}, reassign ${planted?.decls.filter((d) => d.reassignments > 0).length}, push ${planted?.pushes.filter((p) => p.kind !== 'literal').length})`);
+
+  // Q5 — the shorthand known positive. My first version of this census keyed on `skipped\s*:` and
+  // so saw NONE of the 27 ES6-shorthand sites, which are the commonest live shape. A known
+  // positive caught it; reading could not have, because a missing case and a missing key are the
+  // same `null`.
+  const shorthandSeen = census.sites.filter((s) => s.boundAs === 'local' && s.rhs === '<shorthand>').length;
+  check('Q', 'KNOWN POSITIVE: the site reader sees the ES6 shorthand `{ …, skipped }` form, which '
+    + 'is the majority of live sites and which a `skipped\\s*:` key misses entirely',
+    shorthandSeen >= 20, `${shorthandSeen} shorthand site(s) of ${census.sites.length}`);
+
+  // Q6 — and it does not select a DECLARATION as an argument site, which is how the same census
+  // first reported 72 sites in 43 files (34 of them `const skipped: string[] = []`).
+  check('Q', 'KNOWN NEGATIVE: a `const skipped: …[] = []` declaration is not counted as an '
+    + 'argument site, and no site is reported in a file that never calls summarise',
+    census.sites.every((s) => {
+      const src = stripSource(fs.readFileSync(path.join(REPO, 'scripts', s.file), 'utf8'), true);
+      return /summarise(AndExit)?\s*\(/.test(src);
+    }) && census.sites.length < 72,
+    `${census.sites.length} argument sites (the declaration-blind key reported 72)`);
+
+  // Q7 — the crash is loud. In-process half: `summarise` THROWS rather than returning an outcome,
+  // so there is no object for `summariseAndExit` to print a headline from, and in particular no
+  // limb can print "passed". The exit-code half (status 1, 0 bytes of stdout) is driven as a
+  // subprocess in the research note, not here: this file must not spawn a summariser that exits.
+  const crashers = [
+    { what: 'skipped: [null]', input: { probeName: 'p', results: [okRow], skipped: [null] } },
+    { what: "skipped: 'x'", input: { probeName: 'p', results: [okRow], skipped: 'x' } },
+    { what: 'results: 0', input: { probeName: 'p', results: 0 } },
+  ];
+  const allThrow = crashers.every((c) => 'threw' in drive(c.input));
+  const anyPassed = crashers.some((c) => {
+    const r = drive(c.input);
+    return 'headline' in r && /passed/.test(r.headline);
+  });
+  check('Q', 'the uncured crashes are in the SAFE direction: `summarise` throws rather than '
+    + 'returning, so no channel prints a headline and none prints "passed" — the inverse of the '
+    + 'Round 355 class, which is why leaving them uncured is a measurement and not a demotion',
+    allThrow && !anyPassed,
+    `${crashers.filter((c) => 'threw' in drive(c.input)).length} of ${crashers.length} throw · any "passed": ${anyPassed}`);
+
+  // Q8 — the Round 361 §2.1 limb table, re-derived here so the two figures live in a cell rather
+  // than in the comment above arm P. The hard-skip row was published `7 of 7` and is `6 of 6`.
+  const HATCH = ['C1 — a declared inapplicable arm'];
+  const LIMB_BASES: Record<string, Record<string, unknown>> = {
+    L1: { results: [bad('A', 'broke')] },
+    L2: { regressionKind: ['regression'], results: [ok('A', 'fine')] },
+    L3: { regressionKind: 'regressoin', results: [ok('A', 'fine')] },
+    L4: { regressionKind: 'check', results: [{ arm: 'A', check: 'untagged', pass: true }, ok('B', 'tagged')] },
+    L5: { results: [{ arm: 'A', check: 'c', pass: true, kind: {} }] },
+    L6: { results: [], skipped: [] },
+    L7: { results: [ok('A', 'fine')], inapplicable: 'probe-x' },
+    L8: { results: [ok('A', 'fine')] },
+  };
+  const limbOf = (o: { code: number; headline: string }): string => {
+    if (o.code === 1) return 'L1';
+    if (o.code === 0) return 'L8';
+    const h = o.headline;
+    if (/of type \w+, not a string/.test(h)) return 'L2';
+    if (/one edit from/.test(h)) return 'L3';
+    if (/that no row carries, while/.test(h)) return 'L4';
+    if (/value\(s\) that are not strings/.test(h)) return 'L5';
+    if (/declared its inapplicable arms as/.test(h)) return 'L7';
+    if (/established/.test(h)) return 'L6';
+    return '??';
+  };
+  const reach = (add: Record<string, unknown>, sees: (r: string[]) => boolean) => {
+    let n = 0, c = 0;
+    for (const [name, base] of Object.entries(LIMB_BASES)) {
+      const o = summarise({ probeName: 'subject', ...base, ...add } as Parameters<typeof summarise>[0]);
+      if (limbOf(o) !== name) continue;
+      n += 1;
+      if (sees(o.reasons)) c += 1;
+    }
+    return { reach: n, carried: c };
+  };
+  // A BARE-STRING skip: it takes `regressionKind` through `kindOf`, so it is HARD on every limb.
+  // A `regression`-TAGGED skip is not — on L2/L3/L4 the configured kind is something else, so the
+  // tag makes it SOFT and the hard channel is never supplied. My first drive of this made exactly
+  // that substitution and reported 3 of 6.
+  const hard = reach({ skipped: ['env missing'] }, (r) => r.includes('did not run: env missing'));
+  const hatch = reach({ inapplicable: 'probe-x' }, (r) => r.some((x) => x.startsWith('inapplicable is ')));
+  const na = reach({ inapplicable: HATCH }, (r) => r.some((x) => x.startsWith('not applicable: ')));
+  const soft = reach({ skipped: [{ label: 'arm Z', kind: 'open-item' }] },
+    (r) => r.some((x) => x.startsWith('not a hard check, did not run: ')));
+  check('Q', 'the Round 361 limb table re-derives: hard skips 6 of 6 — NOT the published 7 of 7, '
+    + 'because a hard skip cannot stay on the code-0 limb — unreadable hatch 7 of 7, declared '
+    + 'inapplicable arms 7 of 7 after the cure, and soft skips 5 of 8 with the three '
+    + 'vocabulary-complaint limbs gated out by design',
+    hard.carried === 6 && hard.reach === 6
+    && hatch.carried === 7 && hatch.reach === 7
+    && na.carried === 7 && na.reach === 7
+    && soft.carried === 5 && soft.reach === 8,
+    `hard ${hard.carried}/${hard.reach} · hatch ${hatch.carried}/${hatch.reach} · `
+    + `inapplicable ${na.carried}/${na.reach} · soft ${soft.carried}/${soft.reach}`);
+
+  // Q9 — MEASUREMENT. Both figures move with unrelated work: the cell count moves if any round
+  // adds a guard, and the site count moves if any probe anywhere starts or stops passing `skipped`.
+  // Pinning either would redden this arm on work that has nothing to do with it, and a false red
+  // in an instrument produces no work at all. The SHAPES are pinned above; the counts are not.
+  const totalThrowers = Object.keys(PATHS).reduce((n, p) => n + throwersOf(p), 0);
+  check('Q', `MEASUREMENT: ${totalThrowers} throwing cell(s) of `
+    + `${Object.keys(PATHS).length * HOSTILE.length} driven across ${Object.keys(PATHS).length} `
+    + `field paths, and ${census.sites.length} live \`skipped\` argument site(s) across `
+    + `${census.sources} source files under scripts/. Walked with readdirSync, not grep: grep emits `
+    + 'no row for a NUL-carrying file, so a grep-derived count fails SMALL — the direction that '
+    + 'hides a caller.',
+    true, 'the shapes are pinned by Q1-Q8; these two counts are declared, not held', 'measurement');
 }
 
 // ── Exit ──────────────────────────────────────────────────────────────────────

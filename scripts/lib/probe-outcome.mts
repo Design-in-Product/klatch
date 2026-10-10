@@ -125,6 +125,30 @@ export type SummariseInput = {
   /**
    * Arms that did not run. A bare-string entry, or one whose `kind` is the regression kind,
    * weakens the run and forces code 3. See {@link SkipRecord}.
+   *
+   * Round 362 — **NOT type-read, deliberately, and this is a declared measurement rather than an
+   * omission.** `inapplicable` below is read by type (Round 359) and `kind` is (Rounds 357/358);
+   * this field is not. Censused rather than sampled — 11 hostile values × 15 field paths = 165
+   * cells — the crash surface of {@link summarise} is **33 throwing cells across 5 paths**:
+   * `input` itself (11), `results` (10), `results[0]` (2), `skipped` (8), `skipped[0]` (2). The
+   * cured fields have none. Two reasons this one stays uncured, both driven:
+   *
+   *   1. **No live caller can reach it.** 50 `skipped` argument sites in 29 files: 21 array
+   *      literals and 29 bare identifiers (27 array-initialised, never-reassigned locals, plus 2
+   *      parameters of `probe-round224`'s own fixtures). All 50 elements arrive by a
+   *      literal-shaped `.push()`; no other mutator, no index write, no re-assignment anywhere.
+   *   2. **The crash is in the safe direction.** Driven as a subprocess: a throwing
+   *      `summariseAndExit` exits **1** with **0 bytes on stdout** — no headline, no
+   *      `REGRESSIONS:` block, never the word "passed". Round 355's class was the opposite, an
+   *      exit 0 that claimed a pass. A guard here would convert a loud crash into a code 3, which
+   *      is the demotion Round 356 caught.
+   *
+   * Reason 1 is the one that can stop being true, so it is **pinned in both directions** by
+   * `probe-round224` arm Q (via `lib/skipped-shape-census.mts`), not left to this paragraph: add a
+   * caller whose `skipped` is a conditional, a call, or a re-assigned variable, and arm Q goes red
+   * and names the file. Round 361's own finding was a defect that a Round 247 test had described
+   * accurately and kept pinned in place for 114 rounds, so prose beside a decision is not the
+   * record — the arm is.
    */
   skipped?: SkipRecord[];
   /**

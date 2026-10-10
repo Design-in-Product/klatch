@@ -247,7 +247,7 @@ export const SWEPT = [
   },
   {
     file: 'probe-round224-a-skip-must-not-summarise-as-a-pass.mts',
-    expect: /All 173 regression checks passed/,
+    expect: /All 181 regression checks passed/,
     // 64/64 → 66/66 in Round 290: arm G's scan was normalised to ignore comments (it had gone red
     // on one), and the repair brought its own known positive and known negative with it.
     // 66/66 → 70/70 in Round 294: arm E stopped pinning the ABSENCE of `inapplicable` callers —
@@ -330,7 +330,9 @@ export const SWEPT = [
     // 33-case corpus is byte-identical after this change, pinned in arm O rather than asserted.
     // 163/163 → 173/173 in Round 361: `summarise` has four reporting channels and EIGHT return
     // sites, and two of the four were wired to exactly ONE of them — the limb that prints 'passed'.
-    // Hard skips reach 7 of 7 limbs they can reach and the unreadable-hatch complaint reaches 7 of
+    // Hard skips reach 6 of 6 limbs they can reach (published 7 of 7; re-derived in Round 362, and
+    // the denominator was borrowed from a LIMBS map built for a channel that CAN sit on the code-0
+    // limb, which a hard skip cannot) and the unreadable-hatch complaint reaches 7 of
     // 7; soft skips and declared-inapplicable arms reached the code-0 limb and no other. So the
     // module named the complaint that a run's scope is UNREADABLE everywhere and dropped the scope
     // itself the moment the run had bad news — driven on the live shape, probe-round291 with one of
@@ -347,7 +349,26 @@ export const SWEPT = [
     // classified in a comment — 3 cure cells RED at 360, 6 known negatives GREEN at it. That drive
     // corrected one of MY labels the same way Theseus's corrected his O8: `trustworthy-soft` was
     // written `KN:` and is red at 360, so it is a cure cell and now says so.
-    why: 'run every fire as a control by both seats; Daedalus 361 measured 173/173, exit 0',
+    // 173/173 → 181/181 in Round 362: Daedalus handed over ONE crash (`summarise({skipped:[null]})`
+    // dies at `kindOf`) and the MECHANISM censused to 33 throwing cells across 5 paths — `input`
+    // itself 11, `results` 10, `results[0]` 2, `skipped` 8, `skipped[0]` 2, and ZERO on every field
+    // Rounds 357/358/359 reached. So the type-guard class is cured on the fields those rounds
+    // touched and uncured on the two with the most live callers. Resolved as a DECLARED MEASUREMENT,
+    // not a cure: no live caller can reach it (50 argument sites in 29 files, all literal arrays or
+    // array-initialised never-reassigned locals; all 50 elements by a literal-shaped push; no other
+    // mutator, no index write) and the crash is in the SAFE direction (subprocess: exit 1, 0 bytes
+    // of stdout, never 'passed'), so a guard would convert a loud crash into the code-3 demotion
+    // Round 356 caught. New arm Q is the pin: 8 hard checks + 1 declared measurement, with the
+    // reachability cell held in both directions against a PLANTED tree carrying all four unsafe
+    // shapes, because '0 unsafe sites' over a corpus with no unsafe shape in it is 0 of 0. Arm Q
+    // reddened twice on its first drive, both correct: it read its OWN planted fixture SOURCE
+    // STRINGS as live callers (cured with the shared `lib/strip-source.mjs` reader rather than by
+    // excluding the file by name, which would have been a blind spot), and its re-assignment
+    // detector used a proximity window instead of an identity test, so the planted counterfactual
+    // came back 0. Blanking string bodies also removed 2 PRE-EXISTING fixture sites in
+    // probe-round311 and probe-round324 — the live caller population was over-counted before this
+    // arm existed.
+    why: 'run every fire as a control by both seats; Theseus 362 measured 181/181, exit 0',
   },
   {
     file: 'probe-round225-a-citation-is-not-a-call.mts',
