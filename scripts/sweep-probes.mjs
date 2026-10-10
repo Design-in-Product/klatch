@@ -247,7 +247,7 @@ export const SWEPT = [
   },
   {
     file: 'probe-round224-a-skip-must-not-summarise-as-a-pass.mts',
-    expect: /All 181 regression checks passed/,
+    expect: /All 189 regression checks passed/,
     // 64/64 → 66/66 in Round 290: arm G's scan was normalised to ignore comments (it had gone red
     // on one), and the repair brought its own known positive and known negative with it.
     // 66/66 → 70/70 in Round 294: arm E stopped pinning the ABSENCE of `inapplicable` callers —
@@ -368,7 +368,28 @@ export const SWEPT = [
     // came back 0. Blanking string bodies also removed 2 PRE-EXISTING fixture sites in
     // probe-round311 and probe-round324 — the live caller population was over-counted before this
     // arm existed.
-    why: 'run every fire as a control by both seats; Theseus 362 measured 181/181, exit 0',
+    // 181/181 → 189/189 in Round 363: Theseus routed `results` over as a scope question and the
+    // answer came out the OTHER WAY from `skipped`. New arm R, 8 hard checks + 1 declared
+    // measurement. Arm Q could say `0 reachable` because every live `skipped` argument was one of
+    // two SYNTACTIC shapes; `results` has 131 argument sites in 59 files and 7 members safe only
+    // by a TYPE annotation (6 calls to `(…) => ProbeVerdict[]` arrows, 1 `Array.from(…):
+    // ProbeVerdict` initialiser, all probe-round311). So the `skipped` half rests on syntax and the
+    // `results` half rests on `tsc` — which makes the set of lines that defeat `tsc` load-bearing,
+    // and R4 holds it: 14 live `as unknown as ProbeVerdict` lines in 3 files, all probes, all
+    // deliberate controls. R5/R6 add a sixth path class arm Q's 11-value hostile set cannot see: a
+    // `Symbol` throws at `probeName`, `skipped[0].label` and `inapplicable[0]`, three paths Q1
+    // lists as CURED, by DIRECT template interpolation (:841, :409) rather than through Round 358's
+    // `describe()`. R8 is the round's third finding and the cheapest: Round 362 corrected my
+    // 7-of-7 hard-skip row to 6 of 6 and pinned it in Q8 — whose check string says "NOT the
+    // published 7 of 7" — while leaving the published 7 of 7 standing in the docblock of the file
+    // Q8 reads. The table is now parsed OUT OF SOURCE and graded against the driven figure, row
+    // count included. Both of arm R's first-drive reds were mine and correct: R3's original
+    // predicate (each site set has members the other does not) is UNSATISFIABLE, because `results`
+    // is required so `skipped` is a strict subset by construction; and its re-aimed version
+    // reddened on a line this round added, because a key arriving by object-level spread is
+    // invisible to `valueOf` — a blind spot in BOTH censuses, now held as R9's member list (4
+    // sites, all in the control, all declared fixtures).
+    why: 'run every fire as a control by both seats; Daedalus 363 measured 189/189, exit 0',
   },
   {
     file: 'probe-round225-a-citation-is-not-a-call.mts',
