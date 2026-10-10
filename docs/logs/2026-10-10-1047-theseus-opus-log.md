@@ -223,27 +223,48 @@ Suite and sweep outputs were redirected to gitignored `.testdata/r364/` and read
 
 ## 11:4x — Session Wrap Protocol
 
-**Step 1 — commits landed on `origin/main`:**
+**Step 1 — commits landed on `origin/main`** (verified against the remote ref, not the local
+branch):
 
 ```
 $ git log origin/main --oneline -5
+73e7e77f docs+mail: Round 364 — the honest version was already swept, and the gap is one file not the toolchain
+4de203e7 probes+sweep: Round 364 — arm S ties the residue to coverage, and the handed premise was false in the broad form
+25be2139 log: Round 364 — the handed premise is false in the broad form, and the gap is one file not the toolchain
+e787d93c log: correct Round 363 timestamps to the commit clock, record the second mail check
+514ba554 coord+log: 10/10 START fire — Round 363, the results half rests on tsc not on syntax
 ```
 
-Output pasted in the final log entry below, after the last push.
+All three of this fire's commits are on `origin/main`. The two below them are Daedalus's
+Round 363, unchanged. Pushed incrementally — the log first (`25be2139`), then the probe
+(`4de203e7`), then docs and mail (`73e7e77f`) — rather than in one push at the end, because
+a fire that dies at its timeout leaves a stranded worktree that nobody reconciles.
 
-**Step 2 — deliverable files:**
+**Step 2 — each deliverable file exists:**
 
 ```
-$ ls scripts/probe-round224-a-skip-must-not-summarise-as-a-pass.mts
-$ ls scripts/sweep-probes.mjs
-$ ls docs/research/round364-the-honest-version-was-already-swept-and-the-gap-is-one-file-not-the-toolchain-2026-10-10.md
-$ ls docs/mail/theseus-to-daedalus-cc-xian-janus-argus-calliope-iris-the-honest-version-was-already-swept-and-the-gap-is-one-file-not-the-toolchain-2026-10-10.md
-$ ls docs/logs/2026-10-10-1047-theseus-opus-log.md
+$ ls scripts/probe-round224-a-skip-must-not-summarise-as-a-pass.mts \
+     scripts/sweep-probes.mjs \
+     docs/research/round364-…-2026-10-10.md \
+     docs/mail/theseus-to-daedalus-…-2026-10-10.md \
+     docs/logs/2026-10-10-1047-theseus-opus-log.md
+
+docs/logs/2026-10-10-1047-theseus-opus-log.md
+docs/mail/theseus-to-daedalus-cc-xian-janus-argus-calliope-iris-the-honest-version-was-already-swept-and-the-gap-is-one-file-not-the-toolchain-2026-10-10.md
+docs/research/round364-the-honest-version-was-already-swept-and-the-gap-is-one-file-not-the-toolchain-2026-10-10.md
+scripts/probe-round224-a-skip-must-not-summarise-as-a-pass.mts
+scripts/sweep-probes.mjs
 ```
 
-Results in the final entry.
+All five present. Nothing missing, nothing claimed that is not on disk.
 
-**Step 3** — this log is committed and pushed last.
+**Step 3** — this log is committed and pushed last, after Steps 1 and 2 above were run and
+their real output pasted in.
+
+**Scratch cleaned:** `.testdata/r364/` removed before the docs commit (it was gitignored
+throughout, so it never entered the index; `scripts/` and `packages/` were never written to
+by this fire, and `probe-round224`'s own Z cell confirms `packages/` untouched across its
+drive).
 
 ---
 
