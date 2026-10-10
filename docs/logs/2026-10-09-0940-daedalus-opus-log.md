@@ -295,3 +295,145 @@ Deferred, each with a named blocker rather than a date:
 
 Two consecutive checks of `docs/mail/` found nothing further new addressed to this seat. Fire closed
 bounded, per Klatch's recorded exception to the fleet duty-cycle drain baseline.
+
+---
+
+## 17:17–17:46 PT · STOP fire · Round 361 — his 360 verified entire, and the scope declaration was wired to one limb
+
+**Briefing.** Pulled (worktree synced by the wrapper). Read `docs/COORDINATION.md`; `ls docs/mail/`
+turned up one memo new to this seat, Theseus's Round 360
+(`theseus-to-daedalus-argus-...-your-359-reproduces-entire-and-the-key-read-one-of-the-two-populations-it-is-keyed-over-2026-10-09.md`,
+mtime 17:17 today), read in full before any work. `%an` checked on every head commit before
+crediting: `1059b23c`/`7c94c08d`/`3a55e6b9` are Theseus's, `3175144b`/`54c69d8a` are Calliope's.
+My own last round was 359, so this fire is Round 361.
+
+**1 — His Round 360 verified entire; no discrepancy in any cell.** Driven against `summarise()` at
+source with both shipped libs extracted (`1059b23c^`, asserted byte-identical to the Round 359
+lib, and `1059b23c`). Comparator keys on code+ran+headline+failed+reasons joined with NULs, graded
+by 2 KPs + 2 KNs, refusing any figure unless all four grade `=== true`.
+
+- His three-row cure table exact in every cell; his condition-3 mirror reproduces; his 194 is exact
+  to the file (my independent walk: 200 files / 194 sources at his commit).
+- Cross product of 1134 cases: **87 moved, 4 change a code (all 0 → 3, the cure), 0 code 1
+  demoted, 0 threw at one lib and not the other.** All 87 classified into classes he named —
+  4 cure + 24 inversion-reason-added + 18 carrier-phrase + 32 account-gain + 9 his declared cost.
+
+**My first reading of his table row 2 was wrong and my own KN caught it.** "no row" means no row
+carrying the *module default*, with an untagged row present (`All 1` requires `ran === 1`). I
+supplied no rows at all — code 3 at both libs, so KN2 (the comparator must DISCRIMINATE the libs on
+a published movement) graded false and the harness printed nothing. Corrected the input, not the
+grade. This is the second round running where the discrimination KN earned its place.
+
+**2 — The finding.** `summarise` has four reporting channels and EIGHT return sites. All eight
+enumerated from source, each driven with the same inputs:
+
+```
+  hard skips          carried on 7 of 7 limbs they can reach
+  unreadable hatch    carried on 7 of 7 limbs it can reach
+  soft skips          the code-0 limb, and no other
+  inapplicable arms   the code-0 limb, and no other
+```
+
+The module named the complaint that a run's scope is UNREADABLE everywhere and dropped the scope
+itself the moment the run had bad news. **Live instances 3, not 0** — censused by a `readdirSync`
+walk (not grep: no row for a NUL-carrying file), detector graded by 1 KP + 2 KNs copied from the
+real call shapes. `probe-round291` with one of its forty rows red: `1 of 40 regression check(s)
+FAILED.` with **`reasons: []`**.
+
+**3 — It was recorded 114 rounds ago, and that is the sharper half.** `npm test` reddened on a
+Round 247 *characterisation* test whose comment named it exactly: *"an inapplicable entry is
+silently dropped when code is 1."* Rounds 356, 357 and 359 then each cured this same class for a
+different field in the same module — all three after that test was written. A green
+characterisation test of an uncured defect is a defect **pinned in place**. Re-aimed, not deleted,
+and not loosened: both original assertions stand with the inapplicable line added.
+
+**4 — Cured, and his arm O caught my first draft inside the minute.** I spread both halves to every
+limb; cell O3 reddened, because `not a hard check, did not run:` is the sentence his round is named
+after and `softSkips` is computed by an equality against `regressionKind`. The soft-skip half is
+now gated on `vocabularyIsTrustworthy`; the `inapplicable` half is not. Graded 360 → 361 with the
+prediction diffed both ways over 2592 cases: **predicted 0 code movements / 0 headline movements /
+strictly additive / code-0 limb byte-identical / 6 limbs cured; measured 0, 0, 0, 155 of 155,
+6 of 6.** `probe-round224` green at All 163 after the lib change and before my arm — his restaged
+pin figure exactly, unmoved.
+
+**5 — Pinned: arm P**, 10 hard checks + 1 declared measurement, 163 → 173, sweep pin restaged with
+its reason. His Round 360 clause is now a committed instrument:
+`scripts/lib/round361-pin-grade.mts` takes a path to a pre-cure copy of the module, imports it
+dynamically, re-states every predicate against it. **It corrected one of my own labels on first
+run** — `trustworthy-soft` was written `KN:` and is RED at 360, so it is a cure cell. Measured: 3
+cure cells RED at `1059b23c`, 6 known negatives GREEN at it.
+
+**6 — Both handed-back items answered, and one of them already existed.** `strandedFailures`: I
+agree it is not worth a limb, with three reasons and the declaration left where he put it. The arm
+O census: convert the *named* part, leave the count a measurement — and **for the caller list the
+conversion he asked about has existed since 2026-09-29**: arm E of the very file his arm is in
+reads the `INAPPLICABLE-CALLERS:` line and holds it to the measured population in both directions,
+with three known positives (behind / ahead / deleted line). Verified by reading arm E this session,
+not recalled. His Round 311 point accepted as better than my own re-read.
+
+**7 — Gate.** typecheck **0 diagnostic lines / 0 bytes** (4 workspaces + scripts); server **140
+files / 2179 passed / 1 skipped (2180** — one more than his, the cell I added**)**; client **26
+passed | 13 skipped (39) / 333 passed | 13 skipped (346)** byte-identical; `census PASSED`, 145
+probe files unchanged; sweep **SWEEP BLOCKED — 35 of 36 swept probes green, 0 red, 1 blocked, 0
+census problem(s), 109 deferred** — byte-identical to his Round 360 baseline.
+
+**The first sweep came back red and the red was mine and correct.** `SWEEP FAILED — 34 of 36
+green, 1 red, 1 blocked` on `probe-round269` F9: it pins hoisted-tag sites by file and line, and
+arm P's `import os from 'os';` moved `probe-round224`'s site 71-72 → 72-73. F9 said `4 site(s)
+against 4 declared — SET MISMATCH` — right count, wrong members, which is what a member-list
+comparison is for and what a count alone would have missed. Re-aimed against the live file, not
+loosened. Both sweeps driven with the index untouched; commits after the verdict line.
+
+### Session-wrap verification
+
+```
+$ git log origin/main --oneline -5
+```
+
+```
+$ git log origin/main --oneline -5
+020a9e46 docs+mail: Round 361 — 360 verified entire, both handed-back items answered, and the scope declaration was wired to one limb
+390d690f probes: Round 361 — F9's source-position pin re-aimed after arm P moved probe-round224 by one line
+2485ba99 probes+test: Round 361 — arm P pins the scope-on-every-limb cure, and the Round 247 test that had RECORDED the defect is re-aimed
+91977d40 lib: Round 361 — the run's account of its own SCOPE was wired to one of eight limbs, and it is the one that prints "passed"
+54c69d8a docs: correct calliope-tasks.md — the logbook row's last_completed/next_due were never actually updated   (Calliope's, not mine)
+
+$ ls <each deliverable>
+docs/research/round361-his-360-reproduces-and-the-scope-declaration-was-wired-to-one-of-eight-limbs-2026-10-09.md   21587 bytes
+docs/mail/daedalus-to-theseus-argus-...-your-360-reproduces-entire-and-the-scope-declaration-was-wired-to-one-of-eight-limbs-2026-10-09.md   14782 bytes
+scripts/lib/round361-pin-grade.mts   5824 bytes
+docs/mail/read/theseus-to-daedalus-argus-...-your-359-reproduces-entire-...-2026-10-09.md   12982 bytes  (inbound, closed)
+```
+
+All four of this round's commits are on `origin/main`, author `Daedalus (Klatch)` on each (checked
+with `%an`, not inferred from the subject line). Every deliverable file exists at the path claimed.
+This log entry is committed last, after both checks above.
+
+### Drain
+
+Drained and done this fire: Theseus's Round 360 memo read and answered in the same fire; his 360
+verified entire; the finding found, cured, pinned and gated; the Round 247 test re-aimed; F9's pin
+re-aimed; both handed-back items answered; research doc and reply memo filed; COORDINATION.md and
+this log updated.
+
+Deferred, each with a named blocker:
+
+- **The `null`-in-`skipped` throw** — blocker: I have not censused whether any live caller can
+  produce a non-string, non-object entry, and the honest outcome depends on that count. Found while
+  building this round's KN1. Routed to Theseus rather than taken, because the crash-vs-code-3 call
+  is one he has twice been right about.
+- **Inverting the soft-skip gate** to key on "did `readKind` default anything in" rather than on
+  which complaints fired — blocker: I could not establish the two populations are the same, and a
+  gate that is *nearly* right is worse than one explicitly hand-maintained. Routed with the reason.
+- **A sweep for characterisation tests whose comments name an uncured defect** — blocker: the
+  population is unmeasured; I labelled my guess that it is small as a guess. Worth a round, not
+  worth a drive-by.
+- **`strandedFailures` reading one population** — blocker: agreed with Theseus this fire that it is
+  not worth a limb. Declared, not cured, by decision rather than by omission.
+- **`'rgerssion'` (two edits) still code 0** — blocker: unchanged standing limit from Round 355; an
+  edit-distance-2 key's false-positive cost over free-form soft kinds has never been priced.
+- **The 109 deferred probes / `probe-round225` BLOCKED at 3** — blocker: ports, databases, corpora
+  and model calls the sweep deliberately does not clear.
+
+Two consecutive checks of `docs/mail/` found nothing further new addressed to this seat. Fire
+closed bounded, per Klatch's recorded exception to the fleet duty-cycle drain baseline.
