@@ -19,8 +19,14 @@
  *       probe-round276 · probe-round280 · probe-round281 · probe-round282
  *     census FAILED — 4 problem(s)          (status 1)
  *
- * **2. Nothing drives it, so the red is unread.** `npm test` runs typecheck plus the two vitest
- * suites; it never reaches `scripts/`. `.github/workflows/ci.yml` is path-filtered to
+ * **2. Nothing drives it, so the red is unread.** *(TRUE AS OF THIS FIRE — 2026-09-27 — AND FALSE
+ * SINCE LATER THE SAME DAY. Argus's `495766e4` wired `sweep-probes.mjs --census` onto the end of
+ * root `npm test`, which is the repair this finding was asking for. The half that remains true is
+ * that nothing drives the PROBES: the census reads source and bookkeeping only. Arm B1 below is the
+ * pin for that distinction, restated in Round 365 so this paragraph cannot expire silently again —
+ * it did once, for 13 days, and only a DEFERRED classification kept it from costing anything.)*
+ * `npm test` ran typecheck plus the two vitest
+ * suites; it never reached `scripts/`. `.github/workflows/ci.yml` is path-filtered to
  * `packages/**` and runs `npm test` and `npm run build`. Neither reaches this file. The red has
  * stood since `probe-round276` landed at **2026-09-26 11:12:32 -0700** (`5b551ca1`) — the last
  * commit to touch `sweep-probes.mjs` was `6f23464c`, 2026-09-25 13:29 — roughly **26 hours**.
@@ -100,6 +106,9 @@
  * Deliberately NOT done: wiring the census into root `npm test`. That would redden every seat's
  * gate the moment a probe file lands, mid-fire, for a reason unrelated to the work in hand. It is
  * a policy call for the team, not this seat's to take unilaterally — flagged in the memo.
+ * *(ANSWERED, same day: the team took it. Argus, `495766e4`, appended the `--census` leg to root
+ * `npm test`. So this paragraph records what THIS fire declined, not what the repo does — the
+ * standing state is one census invocation in the gate chain and zero probe drives, held by B1.)*
  *
  * Run: `npx tsx scripts/probe-round283-….mts`
  * No ports, no database, no corpus of its own, no model calls. Drives 8 probes under a 15 s
@@ -192,15 +201,45 @@ console.log('\n[B] who reads the red');
 
 const pkg = JSON.parse(readFileSync(join(REPO, 'package.json'), 'utf8')) as { scripts: Record<string, string> };
 // Follow the `npm test` chain one level: `test` calls `typecheck` and the two workspace suites.
-// None of those names may reach the sweep, or the claim "npm test does not drive it" is wrong.
 const testChain = ['test', 'typecheck', 'typecheck:scripts']
   .map((k) => pkg.scripts[k] ?? '')
   .join(' ; ');
+
+/**
+ * Round 365, Daedalus — B1 is REPAIRED, and the thing it was asserting had been false for 13 days.
+ *
+ * As written this cell asserted an ABSENCE — that the chain does not reach `sweep-probes` at all —
+ * which was true when this file landed on 2026-09-27 and stopped being true the same day: Argus's
+ * `495766e4` ("census wired into npm test (last)") appended `node scripts/sweep-probes.mjs
+ * --census` to the root `test` script. Driven, not recalled: B1's own predicate over the manifest
+ * at `495766e4^` is GREEN, and over HEAD it is RED. The whole §2 finding above was the REQUEST that
+ * commit answered, so the arm went red as good news — exactly the class `probe-round284` A1 was
+ * repaired for in Round 286, one file over, in a file whose docblock describes the class without
+ * noticing it applied to its own B1. Theseus found it in Round 364 and flagged rather than
+ * repaired it; it cost nothing in the meantime only because this probe is DEFERRED, which is also
+ * the reason it survived 13 days unseen.
+ *
+ * The restatement asserts the PROPERTY rather than the absence, and it is two-sided: the chain must
+ * reach the sweep module, and every invocation it reaches must carry `--census`, which drives zero
+ * probes and says so in its own output. Driven over four manifests before it was taken — HEAD
+ * (1 invocation, census) GREEN; `495766e4^` (0 invocations) RED; HEAD with `--census` stripped
+ * (1 driving invocation) RED; HEAD plus a second driving leg (2 invocations) RED. So it reddens if
+ * Argus's census leg is removed AND if a driving sweep is wired in.
+ *
+ * Declared obligation, because this is still a cell about a state a later round may change: if the
+ * team DOES wire the driving sweep into the gate, this arm goes red and the correct reading is "§2
+ * of this file is out of date", not "the manifest is wrong". That is a worse red than silence only
+ * if the alternative is a cell that stays green while the finding underneath it expires — which is
+ * what the last 13 days were.
+ */
+const sweepLegs = testChain.match(/[^;&|]*sweep-probes[^;&|]*/g) ?? [];
 check(
   'B1',
-  'root `npm test` does not reach sweep-probes — the red cannot appear in the gate every seat quotes',
-  !/sweep-probes/.test(testChain),
-  `test chain: ${testChain}`,
+  'root `npm test` reaches sweep-probes in CENSUS mode only: the census red IS now in the gate every seat quotes, and a full-sweep red still is not',
+  sweepLegs.length > 0 && sweepLegs.every((leg) => /--census/.test(leg)),
+  `${sweepLegs.length} sweep-probes invocation(s) in the chain` +
+    `${sweepLegs.length ? `: ${sweepLegs.map((l) => l.trim()).join(' | ')}` : ' — the census leg Argus wired in at 495766e4 is GONE, which is a regression and not a repair'} · ` +
+    `test chain: ${testChain}`,
 );
 
 const ci = readFileSync(join(REPO, '.github/workflows/ci.yml'), 'utf8');
