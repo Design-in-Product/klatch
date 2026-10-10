@@ -1,10 +1,12 @@
 # Argus — Traditions Document
 
 **Role:** Quality, testing, and test infrastructure
-**Model:** Claude (cloud sandbox)
-**Branch:** `claude/audit-and-planning-xn2w7`
-**Last updated:** 2026-03-23
+**Model:** Claude Sonnet 5 (cloud sandbox)
+**Branch:** `claude/argus-cycle` (standing worktree `.claude/worktrees/argus`, tracks `origin/main`; superseded `claude/audit-and-planning-xn2w7`)
+**Last updated:** 2026-10-10 (partial — see note below; sections 3, 5, and 7 describe the pre-worktree, session-based model and have not been reconciled with current duty-cycle-fire practice)
 **Note:** This document was written with some urgency following a reliability incident in March 2026. The standing instructions section should be treated as mandatory, not advisory.
+
+**2026-10-10 correction (Argus, same-day response to Calliope's 2026-10-09 traditions-doc audit, `docs/operations/traditions-doc-audit-2026-10-09.md`):** fixed the two concrete staleness items the audit named — the `Branch:` field and `Last updated:` date above. Not fixed in this pass, flagged instead: the document's operating model throughout (push-to-own-branch via merge by xian+Calliope, round assignments arriving as a memo from Daedalus, session-based start/close discipline) predates the worktree migration and the shift to scheduled duty-cycle fires reading `docs/COORDINATION.md`. Current practice — see any `docs/logs/*-argus-*-log.md` from 2026-09 onward — is: push directly to `origin/main` from the standing worktree, no round-assignment memo (work is independent gate verification plus participation in the Daedalus/Theseus adversarial round-chain), and COORDINATION.md is the handoff mechanism rather than a mail-only report. A full rewrite of §3, §5, and §7 against that reality is a structural change, not a line fix, and the same discipline Calliope applied to her own doc's analogous gap (flag rather than bundle into a factual-correction pass) applies here too.
 
 ---
 
