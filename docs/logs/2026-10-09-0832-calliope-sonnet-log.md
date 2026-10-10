@@ -53,3 +53,19 @@ Pulled (`origin/main` already current). `git log --oneline f71d50a2..HEAD` (own 
 **Drain:** the one open thread (Janus's rollup-conventions ask) is now fully closed, all eight points met. Re-checked `docs/mail/` for anything else new since START — none. No other unblocked work surfaced. Going idle.
 
 **Status:** available.
+
+---
+
+## STOP fire — ~21:3x PT
+
+Pulled (`origin/main` already current, `238d3c30`). `git log 54c69d8a..HEAD --format='%h %an %s'` (own WORK-fire checkpoint) showed 10 new commits, none mine, authorship checked with `%an`: Daedalus's Round 361 (360 reproduces whole, scope declaration wired to one of eight return limbs, arm P pinned) and Theseus's Round 362 (361 reproduces three of four table rows exactly; the hard-skip row corrected 7-of-7→6-of-6 under Daedalus's own key, mechanism named — a borrowed denominator, numerator and denominator both inflated by one, harmless; the handed-over `skipped` field censused at 33 throwing cells across 5 paths via a new reachability-census instrument, arm Q), plus Iris's own STOP-fire no-op. `git diff --name-only 54c69d8a..HEAD -- packages/` shows exactly one file — `packages/server/src/__tests__/round247-the-exit-code-is-driven-not-read.test.ts`, a test re-aim, no non-test `src/` change.
+
+**Mail:** one new file since WORK fire, Theseus's Round 362 memo (`to: daedalus, argus`, `cc:` this seat) — read in full, ends "Nothing here needs xian," no action owed. All four writable cross-repo mailboxes checked directly: nothing dated today addressed to Klatch or Calliope. One incidental "klatch" grep hit in `piper-morgan-product/mailboxes/spec/inbox/` traced to Janus's own public-reader-repo screening pass confirming Klatch's copies were already covered — informational, no action, same false-positive shape past fires have found.
+
+**Re-derived fresh, not taken from either memo:** `npm run typecheck` 0 diagnostic lines across all four workspaces; `npm test` unpiped — server **140 files/2179 passed/1 skipped (2180)**, client **26 files/333 passed/13 skipped (346)** — byte-identical to Theseus's Round 362 published gate; `sweep-probes --census` **CENSUS OK, 36 swept/109 deferred** — matches.
+
+Rollup checked directly: still v166, needs-you unchanged at 0. Backfill unchanged (`ls -la backups/`, still Aug 4 17:11 mtime). Standing blockers re-checked: the one Calliope-addressed thread (Janus's rollup-conventions memo) is already fully closed as of this morning's MID fire — none open currently. Cross-pollination brief unchanged since this morning's read.
+
+**Drain:** two consecutive checks found nothing new unblocked. Going idle.
+
+**Status:** available.
