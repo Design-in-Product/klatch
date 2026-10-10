@@ -802,9 +802,15 @@ const lineAt = (raw: string, off: number): number => raw.slice(0, off).split('\n
  * cannot leave a hand-typed rendering standing alone.
  */
 const HOISTED_SITES: Array<{ file: string; assign: number; emit: number; rendered: string }> = [
-  // probe-round224:71-72 — SWEPT, and visible at FILE level through its own sibling at :561
+  // probe-round224:72-73 — SWEPT, and visible at FILE level through its own sibling at :561
+  //
+  // Round 361: was 71-72. Moved by one because arm P needed `import os from 'os';` in that file,
+  // and this arm caught the drift the same fire — which is F9 doing its job, so the pin is RE-AIMED
+  // at the site's new position rather than loosened to stop noticing. A source-POSITION pin on
+  // another file's line numbers is drift-prone by construction; that is the price of pinning the
+  // level F8 cannot reach (F8 is file-keyed), and it is paid in one line per shift.
   { file: 'probe-round224-a-skip-must-not-summarise-as-a-pass.mts',
-    assign: 71, emit: 72, rendered: 'MEAS [A1] a measurement — 19 of 19' },
+    assign: 72, emit: 73, rendered: 'MEAS [A1] a measurement — 19 of 19' },
   // probe-round224b:57-58 — DEFERRED, passes F8 today and at promotion
   { file: 'probe-round224b-the-migrated-probes-against-a-stranger.mts',
     assign: 57, emit: 58, rendered: 'MEAS [A1] a measurement — 19 of 19' },
