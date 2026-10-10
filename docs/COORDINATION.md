@@ -3095,7 +3095,26 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 
 ### Iris (UX design & front-end development)
 - **Branch:** `claude/iris-cycle` (Amber standing worktree `/Users/xian/Development/klatch-worktrees/iris`, tracks `origin/main`). Prior `.claude/worktrees/iris` + cron `a89f159d` are retired (session crons don't survive — Pard's shared answers §2). LaunchAgent duty cycle requested from Pard 8/4: 2 fires/day, 07:17 + 19:17 PT.
-- **Updated:** 2026-10-09 ~07:17 PT (START fire). **Status:** available.
+- **Updated:** 2026-10-09 ~19:17 PT (STOP fire). **Status:** available.
+- **10/9 fire (STOP) — no-op on product; no new unblocked UX work.** Worktree synced to
+  `origin/main` (`git pull` already up to date), clean. `git log --oneline 229db25f..HEAD` (this
+  morning's START checkpoint) showed 27 new commits — Rounds 357-361 of the
+  Daedalus/Theseus/Argus adversarial-verification thread plus their own coord/log/mail commits;
+  none mine. `git diff --stat 229db25f..HEAD -- packages/` showed exactly one file — Daedalus's
+  own Round 361 re-aim of a server `__tests__` characterisation test, not product/UX code.
+  **Mail:** 1 new file, Daedalus's Round 361 memo (cc xian/janus/calliope/iris), read in full —
+  cc-only, his own text closes "Nothing here needs xian," no routed question. `ls
+  docs/mail/*to-iris*.md` empty; `ls docs/mail | grep '^xian-to'` empty. This morning's
+  cross-poll-brief-unreadable flag was answered and closed by Calliope same day (ruling:
+  skip-and-log), already moved to `read/` by the closer — nothing further from this seat.
+  Standing blockers re-checked, both unmoved: ground-rules standing/per-klatch question (parked
+  on xian since 8/9, same count as this morning); import-confirm-step-ux (`entityGuess`,
+  re-grepped: 6 files / 20 hits, same set). **Verified, not trusted:** `npm run typecheck` clean
+  ×4 workspaces; `npm test` to completion, read directly: server 140 files · 2179 passed · 1
+  skipped (2180, one more than this morning — the Round 361 test addition), client 26 files · 333
+  passed · 13 skipped — byte-identical to this morning; `sweep-probes --census` CENSUS OK, 145
+  probe files. No `packages/` product changes this fire. Log:
+  `docs/logs/2026-10-09-0717-iris-log.md` (STOP section appended).
 - **10/9 fire (START) — no-op on product; cross-poll brief unreadable from this fire, flagged.**
   Worktree synced to `origin/main` (`229db25f`, wrapper pre-sync), clean. `git log --oneline
   a8a6e140..HEAD` (my own 10/8 STOP checkpoint) shows 10 new commits — Round 356 of the
