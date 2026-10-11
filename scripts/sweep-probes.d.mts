@@ -73,6 +73,38 @@ export declare const verdict: (
 /** 1 = something failed, 2 = nothing failed but something could not run, 0 = clean. */
 export declare const sweepExit: (counts: { red: number; blocked: number; bad: number }) => number;
 
+/** The two kinds of blockage, named by the `classify` limb that produced them. Round 369. */
+export type BlockedKind = 'refused' | 'skipped';
+
+/**
+ * `undefined` for any non-BLOCKED state; throws for a BLOCKED run at a code other than 2 or 3,
+ * which `classify` cannot currently produce. Keyed on the exit code, not on `refused`/`skipped`,
+ * so the two kinds partition `blocked` — see the implementation's docblock.
+ */
+export declare const blockedKind: (
+  state: ProbeState,
+  code: number | null,
+) => BlockedKind | undefined;
+
+/**
+ * `blocked` and its two kinds, from the BLOCKED runs the loop observed. The kinds always partition
+ * `blocked`; non-BLOCKED rows in `runs` are ignored rather than counted. Round 369.
+ */
+export declare const blockedTally: (
+  runs: readonly { state: ProbeState; code: number | null }[],
+) => { blocked: number; blockedRefused: number; blockedSkipped: number };
+
+/** The verdict line, extracted so the rendering can be driven without spawning 36 probes. */
+export declare const verdictLine: (counts: {
+  swept: number;
+  red: number;
+  blocked: number;
+  blockedRefused: number;
+  blockedSkipped: number;
+  bad: number;
+  deferred: number;
+}) => string;
+
 export declare const measurementLines: (out: string) => number;
 
 /** Problem strings; empty means the entry's prose and its assertion agree. */

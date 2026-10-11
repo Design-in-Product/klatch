@@ -445,13 +445,27 @@ check(
 const ALL_FNS = PAIRS.flatMap((p) => [...constFns.get(p.base)!, ...functionFns.get(p.base)!].map((n) => ({ base: p.base, n })));
 const unreadable = ALL_FNS.filter((f) => !red(`neverparams-${f.base}-${f.n}.mts`)).map((f) => `${f.base}::${f.n}`);
 
+/**
+ * Restaged in Round 369 (Daedalus), from `['sweep-probes::sweepExit']` to a two-member set, when
+ * `verdictLine` was extracted from `main()` in `sweep-probes.mjs` and reddened this arm — which is
+ * the arm working, not the arm being wrong.
+ *
+ * The new member is the SAME class as the existing one, which is the distinction worth preserving:
+ * `verdictLine`'s parameter is an unannotated destructuring pattern, exactly like `sweepExit`'s
+ * directly above it in that file, so arm C4's two-line reduction already explains it. Nothing new
+ * became unreadable for a new reason. The declared set is kept as a sorted SET rather than widened
+ * to a count so that a THIRD member — or a member arriving by some other cause — still reddens.
+ */
+const UNREADABLE_DECLARED = ['sweep-probes::sweepExit', 'sweep-probes::verdictLine'];
+
 check(
   'C2',
   'THE GATE on my own instrument: `Parameters<typeof fn>` is read for every declared signature, and any function where it resolves to `never` is NAMED rather than silently counted as having typed parameters',
-  unreadable.length === 1 && unreadable[0] === 'sweep-probes::sweepExit',
+  unreadable.length === UNREADABLE_DECLARED.length &&
+    [...unreadable].sort().every((n, i) => n === UNREADABLE_DECLARED[i]),
   `unreadable (Parameters<> = never): ${unreadable.length} — ${unreadable.join(', ') || 'none'}. ` +
-    'Expected exactly `sweepExit`, whose parameter is an unannotated destructuring pattern (arm C4 reduces this to two lines). ' +
-    'This arm is two-sided on purpose: a NEW unreadable function reddens it, and so does `sweepExit` becoming readable — because either event changes what the figures in B and C range over.',
+    `Expected exactly [${UNREADABLE_DECLARED.join(', ')}], each an unannotated destructuring pattern (arm C4 reduces this to two lines). ` +
+    'This arm is two-sided on purpose: a NEW unreadable function reddens it, and so does one of these becoming readable — because either event changes what the figures in B and C range over.',
 );
 
 const anyPositions = new Map<string, number[]>();

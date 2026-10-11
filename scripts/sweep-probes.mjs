@@ -116,6 +116,19 @@
  *             INCONCLUSIVE — probe-round225 established 32 of its checks and skipped 1 arm(s).
  *     SWEEP BLOCKED — 13 of 14 swept probes green, 0 red, 1 blocked, 0 census problem(s)
  *
+ * Those are the figures from that run and they stay as recorded; the verdict line's SHAPE has since
+ * moved twice (Round 271 added `(did not conclude)`, Round 369 replaced it with the kind split), so
+ * the third line above is no longer the shape this file emits. Rendered by today's template, those
+ * same probe outcomes — carrying today's deferred count, since what is illustrated here is the
+ * SHAPE and not the history — read:
+ *
+ *     SWEEP BLOCKED — 13 of 14 swept probes green, 0 red, 1 blocked (0 could not run, 1 ran but did not finish), 0 census problem(s), 109 deferred
+ *
+ * That second rendering is not proofread against the format string — it is DRIVEN against it, in
+ * `probe-round369-the-verdict-line-carries-the-blocked-kind.mts` arm D1, which parses this comment
+ * out of this file and re-renders it from the live template. A documented example that drifts from
+ * the code beside it is the defect this file has shipped twice; an arm catching it costs nothing.
+ *
  * and the sweep exits **2**. That same condition was a RED on this file's previous commit. **The
  * red a legitimate `npm run dev` used to produce is no longer indistinguishable from a
  * regression** — which was the whole of Theseus's Round 268 §3, closed across three rounds and two
@@ -1224,6 +1237,28 @@ export const SWEPT = [
     expect: /All 15 regression checks passed/,
     why: 'driven twice by the promotion path (real HOME and an empty HOME, one variable): 15/15 green, exit 0 both arms; population and tree fingerprints for scripts/ and packages/ unchanged. Restaged from 14 in Round 330, when C7 was added and A4/C4/C5/C6 were re-based — C4 and C5 were one-shot arms that reddened when the cure they recommend is applied, and C6 published a zero price that two driven variants contradict',
   },
+  {
+    // PROMOTED BY: Round 369, Daedalus, 2026-10-11 START fire — driven by `promote-probes.mts`,
+    // which OBSERVED predicates 2-8 rather than reading them. Classified DEFERRED on arrival in the
+    // same commit as the file, promoted in this same fire; hazard-clean, no exemption, no `--force`.
+    //
+    // Its subject is THIS FILE's verdict line, which is the one place a self-pinning entry needs
+    // naming: the probe reads `sweep-probes.mjs`'s own source for Sections D and E, so an edit to
+    // the header's worked example or to how `main()` calls `verdictLine`/`blockedTally` reds it.
+    // That is deliberate and is the point of D1 — this file has shipped a stale worked example of
+    // its own verdict line twice.
+    //
+    // The arms that would catch a regression here are behavioural, not textual: B1-B4 drive two
+    // populations with an asserted-equal `blocked` through the real `verdictLine` and require them
+    // to render differently, and C3/C6 drive the real `blockedTally`. Graded by four mutations of
+    // this file in `docs/research/round369-instruments/verdict-line-kind-counterfactuals.mjs`.
+    //
+    // Spawns nothing: no port, no database, no corpus, no model, no compiler — it imports this
+    // module's exported pure half and reads source.
+    file: 'probe-round369-the-verdict-line-carries-the-blocked-kind.mts',
+    expect: /All 29 regression checks passed/,
+    why: 'driven twice by the promotion path (real HOME and an empty HOME, one variable): 29/29 green, exit 0 both arms, 411 ms; population and tree fingerprints for scripts/ and packages/ unchanged across 18 samples',
+  },
 ];
 
 /**
@@ -1660,6 +1695,13 @@ export const DEFERRED = [
   // `All 10`, a third unknown pin spelling gives `3 of 3 regression check(s) FAILED.` with A0 named.
   // Because this file is DEFERRED, nothing in this sweep would have reported the silence.
   'probe-round329-the-cure-deletes-the-edge-its-own-pricing-arms-index-into-so-the-one-shot-mechanism-is-a-vanished-subject-and-not-a-double-anchor.mts',
+
+  // round369 was classified DEFERRED here on arrival, in the same commit as the file and before the
+  // census gate was run, then promoted to SWEPT by `promote-probes.mts` in this same fire —
+  // hazard-clean, no exemption, no `--force`. It never needed deferring on the merits; it was listed
+  // here so the tool wrote the verdict rather than this seat hand-adding it (my Round 295
+  // objection, which lands differently for a file whose subject is this module's own output). Its
+  // attestation is in SWEPT above.
 ];
 
 /**
@@ -1878,6 +1920,100 @@ export const verdict = (code, out, expect) => {
 export const sweepExit = ({ red, blocked, bad }) => (red || bad ? 1 : blocked ? 2 : 0);
 
 /**
+ * Which KIND of blockage a BLOCKED run was, keyed on the exit code — the limb of `classify` that
+ * actually fired — and not on `refused`/`skipped`.
+ *
+ * Round 369. The distinction is load-bearing rather than stylistic. `classify`'s two BLOCKED limbs
+ * are `(code === 2 && refused)` and `(code === 3 && skipped)`; a run has exactly one exit code, so
+ * keying on the code makes the two kinds MUTUALLY EXCLUSIVE and the counters derived from them a
+ * true partition of `blocked`.
+ *
+ * `refused` and `skipped` are not mutually exclusive. They are independent predicates over the same
+ * output, so any run whose output carries both a declared refusal text and a declared `did not run:`
+ * label sets both flags. `probe-round225` is the only entry in SWEPT today declaring both patterns,
+ * which makes it the only entry for which the state is REPRESENTABLE. Driven on an output built
+ * from that entry's own two patterns at exit 3, `classify` returns `refused: true, skipped: true`,
+ * and the two keys disagree about the count:
+ *
+ *     exit-code key (shipped)  ->  blocked 1, refused 0, skipped 1   sum 1  ✓ partitions
+ *     flag key    (rejected)   ->  blocked 1, refused 1, skipped 1   sum 2  ✗ over-counts
+ *
+ * A verdict line built on the flag key would print figures that contradict its own `blocked`. That
+ * counterfactual is driven, not argued, in `probe-round369` arms C2-C4.
+ *
+ * NOT claimed: that `probe-round225`'s own blocked output trips both flags in a live run. Its skip
+ * line interpolates `r223bDetail`, which carries exit/duration/pass/fail counts and not the refusal
+ * text, so the reachable-by-construction case above may or may not be the one that actually occurs
+ * on a held port. Measuring it needs the occupied-port cell, and `:3001` read free both ends of the
+ * fire that wrote this. The partition is chosen to be correct either way, which is the reason not to
+ * need the measurement.
+ *
+ * Known residue, named rather than fixed here: the PER-PROBE rows in `main()` are still flag-keyed,
+ * so a both-flags run would print both annotations while this counter attributes one kind. The rows
+ * are the looser instrument of the two; limb-keying them is a change to what the rows claim, not to
+ * a count, and is left to its own round.
+ *
+ * Throws rather than returning `undefined` for a BLOCKED run at any other code. That path is
+ * unreachable through `classify`, which is exactly why it is a throw: if a third BLOCKED limb is
+ * ever added without extending this, a silent `undefined` would leave the run counted in `blocked`
+ * and in neither kind, and the verdict line would print figures that no longer sum. Refusing is the
+ * only behaviour that cannot be read as a measurement.
+ */
+export const blockedKind = (state, code) => {
+  if (state !== 'BLOCKED') return undefined;
+  if (code === 2) return 'refused';
+  if (code === 3) return 'skipped';
+  throw new Error(
+    `blockedKind: BLOCKED at exit ${code}, which has no kind. A BLOCKED limb was added to ` +
+      '`classify` without extending `blockedKind`, so the verdict line would under-count it.',
+  );
+};
+
+/**
+ * The blocked tally: `blocked` and its two kinds, computed from the BLOCKED runs the loop observed.
+ *
+ * Round 369, and it is a function rather than three `+= 1`s in the loop for a reason the round's own
+ * counterfactual found. `probe-round369` arm C3 asserts that the kinds partition `blocked` on a
+ * both-flags run. With the accumulation inlined in `main()`, C3 could only re-implement it — so
+ * mutating the loop's key from the exit code to the flags left C3 GREEN and was caught by a
+ * source-text regex alone (E3). A count whose only guard is a regex over the source that produces it
+ * is one rename away from unguarded. Extracted, C3 drives the real accumulator and the mutation
+ * reddens a behavioural arm.
+ */
+export const blockedTally = (runs) => {
+  let blocked = 0;
+  let blockedRefused = 0;
+  let blockedSkipped = 0;
+  for (const { state, code } of runs) {
+    if (state !== 'BLOCKED') continue;
+    blocked += 1;
+    const kind = blockedKind(state, code);
+    if (kind === 'refused') blockedRefused += 1;
+    if (kind === 'skipped') blockedSkipped += 1;
+  }
+  return { blocked, blockedRefused, blockedSkipped };
+};
+
+/**
+ * The sweep's verdict line, extracted so the rendering can be driven without spawning 36 probes.
+ *
+ * Round 369, and the extraction is the point rather than tidiness. Theseus's Round 368 grader had
+ * to re-implement the proposed wording from the prose of a memo, because the format string lived
+ * inside `main()` and there was nothing to call — which means the grader could only ever check a
+ * COPY of the line against its own expectations. Pinning a format by re-spelling it is the same
+ * vacuity it was built to detect, one level down. `probe-round369` drives this function.
+ */
+export const verdictLine = ({ swept, red, blocked, blockedRefused, blockedSkipped, bad, deferred }) => {
+  const code = sweepExit({ red, blocked, bad });
+  const verdictWord = code === 0 ? 'SWEEP PASSED' : code === 2 ? 'SWEEP BLOCKED' : 'SWEEP FAILED';
+  return (
+    `${verdictWord} — ${swept - red - blocked} of ${swept} swept probes green, ${red} red, ` +
+    `${blocked} blocked (${blockedRefused} could not run, ${blockedSkipped} ran but did not finish), ` +
+    `${bad} census problem(s), ${deferred} deferred`
+  );
+};
+
+/**
  * Matches all FOUR fleet spellings of a measurement line, each copied from a real emitting site
  * rather than imagined (Round 339 — the previous two were a recollection, and `probe-round269`
  * arm F1 could not catch the gap because its fixture was written from the same recollection):
@@ -2053,12 +2189,13 @@ const main = () => {
   }
 
   let red = 0;
-  let blocked = 0;
+  /** Round 369. The loop OBSERVES; `blockedTally` counts. See its docblock for why that is split. */
+  const blockedRuns = [];
   for (const s of SWEPT) {
     const { code, out, err } = run(s.file);
     const { state, matched, refused, skipped } = classify(code, out, s.expect, s.refusal, s.skip);
     if (state === 'RED') red += 1;
-    if (state === 'BLOCKED') blocked += 1;
+    if (state === 'BLOCKED') blockedRuns.push({ state, code });
     const conclusion = matched ? undefined : diagnosisLine(out);
     const diag = conclusion === undefined ? undefined : pinDiagnosis(s.expect.source, conclusion);
     const summary = err
@@ -2093,13 +2230,34 @@ const main = () => {
     }
   }
 
+  const { blocked, blockedRefused, blockedSkipped } = blockedTally(blockedRuns);
   const code = sweepExit({ red, blocked, bad });
-  const verdictWord = code === 0 ? 'SWEEP PASSED' : code === 2 ? 'SWEEP BLOCKED' : 'SWEEP FAILED';
   console.log('');
-  // "did not conclude" rather than "could not run": since Round 271 a BLOCKED probe may have run
-  // and established most of its checks (exit 3, declared hard skip), so the exit-2 wording would
-  // overstate the blockage for that case. The per-probe lines above still say which kind it was.
-  console.log(`${verdictWord} — ${SWEPT.length - red - blocked} of ${SWEPT.length} swept probes green, ${red} red, ${blocked} blocked (did not conclude), ${bad} census problem(s), ${DEFERRED.length} deferred`);
+  // Round 369, replacing `(did not conclude)`. That parenthetical was the honest thing to say while
+  // the line carried no kind at all: since Round 271 a BLOCKED probe may have run and established
+  // most of its checks (exit 3, declared hard skip), so the exit-2 wording "could not run" would
+  // have overstated the blockage for that case. It bought the honesty by saying nothing — the
+  // distinction the per-probe rows at :2086 and :2089 spend four lines keeping apart was readable
+  // there and invisible here, which is the half of the line a reader quotes into COORDINATION.
+  //
+  // What it is NOT: `N blocked (N declared blocker, clearable)`, which is where Round 367 left this
+  // and which Theseus's Round 368 grader killed. BLOCKED is unreachable without a declaration —
+  // both limbs of `classify` require one — so `declared === blocked` over every population that can
+  // exist, and the second figure could never differ from the first. It would have agreed vacuously
+  // on two populations of different kinds and read as though it had measured something. The kind
+  // split is the annotation that actually carries a bit: the two populations render differently, and
+  // that is pinned in `probe-round369` arms B1-B4 rather than asserted here.
+  console.log(
+    verdictLine({
+      swept: SWEPT.length,
+      red,
+      blocked,
+      blockedRefused,
+      blockedSkipped,
+      bad,
+      deferred: DEFERRED.length,
+    }),
+  );
   process.exit(code);
 };
 
