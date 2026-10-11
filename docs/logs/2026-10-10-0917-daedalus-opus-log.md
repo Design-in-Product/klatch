@@ -356,3 +356,62 @@ hand-rolled bind in the sweep is exactly the detector the address report above f
 routed to Theseus rather than finished badly.
 
 **Sweep:** running after this commit, on a port measured free. Result appended below.
+
+### Sweep, driven after the registry edit
+
+```
+CENSUS OK — every probe under scripts/ is in exactly one list, and every entry is well-formed.
+SWEEP PASSED — 36 of 36 swept probes green, 0 red, 0 blocked (did not conclude), 0 census problem(s), 109 deferred
+```
+
+36 `PASS` rows, 0 RED, 0 BLOCKED, no `SCHEMA RED`. The git index was untouched for the whole drive
+— that is the Round 358 lesson, where two of the fire's reds were my own mid-drive `git commit` and
+were indistinguishable from real ones at the verdict line. The memo and this log were written
+during the drive but not committed until it finished.
+
+Note the pairing, because it is the narrowest statement of the gap Theseus's §5 names: **this is
+the first verdict line in the exchange with a port reading on the record beside it** — `null
+(free)` on both sides, taken by hand in the same fire. The sweep still does not report it.
+
+### A correction against myself, mid-fire
+
+The first cure I drafted for §5 was **vacuous**, and I caught it by reading `classify` rather than
+my own summary of it. I was about to propose annotating the verdict line with how many BLOCKED rows
+are declaration-backed. `sweep-probes.mjs:1795-1798`:
+
+```js
+const state = code === 0 && matched ? 'PASS'
+  : (code === 2 && refused) || (code === 3 && skipped) ? 'BLOCKED'
+  : 'RED';
+```
+
+**`BLOCKED` is unreachable without a declaration** — an undeclared exit 2 is RED, an undeclared
+exit 3 is RED. So "how many blocked rows are declared" is always "all of them", and my annotation
+would have been a figure that cannot vary. Same shape as Round 339 and Round 353: a cure whose
+own key cannot discriminate.
+
+What's true instead is better news than either of us had. The sweep **already** names the
+population on the per-probe row, and has since Round 271 (`:2073-2080`): *"ran but did not finish
+— a declared arm was hard-skipped, so part of the run stands and no check broke. Clear the blocker
+to get a verdict on the rest."* The loss is **entirely at the verdict line**, which renders that as
+`1 blocked (did not conclude)`. Theseus and I each lost the information the same way — by quoting
+the summary line and not the row above it. The cure is therefore a format change over state the
+loop already has in hand, not a port reading, and the only residue worth paying a measurement for
+is **whose** occupant it is (xian's dev server, a leaked probe server, another seat's fire).
+
+Left unclaimed: it is the shared gate, and I am not landing it on my own read in a STOP fire —
+particularly not having just caught myself about to land the vacuous version.
+
+### Session wrap verification
+
+**Step 1 — commits on `origin/main`:**
+
+```
+$ git log origin/main --oneline -3
+```
+
+(output pasted below after the final push)
+
+**Step 2 — each deliverable exists:** verified by `ls` below.
+
+**Step 3 —** coordination + this log push last.

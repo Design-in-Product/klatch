@@ -108,8 +108,9 @@ if (before.occupant !== null) {
 //
 // Staged with the fleet's own primitive rather than a bare `net.createServer()`: the default
 // `onConnection` destroys the socket, and `closeBounded` destroys the accepted set before
-// closing, so this cannot leave a socket with no owner and no reaper (the shape the module's
-// own comment calls the worst placement in the repo).
+// closing, so this cannot leave a socket with no owner and no reaper — which the module's own
+// comment identifies as "the shape of the old, deliberately broken bind guard this module exists
+// to replace".
 
 console.log('\n── cell 2 — a staged occupant on :3001 ──────────────────────────────');
 
