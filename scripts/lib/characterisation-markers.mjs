@@ -33,7 +33,7 @@
  * ## The two surfaces, which is Round 371's correction to Round 370's member list
  *
  * Round 370 published a member list of THREE, keyed on comment prose. It is FOUR. `probe-round224`
- * arm R5 is a live characterisation whose claim is written in its own `check()` NAME —
+ * cell R5 is a live characterisation whose claim is written in its own `check()` NAME —
  * `'CHARACTERISATION (read only beside R6): …'` — and whose comment never says `characteris*` at
  * all. Keyed on the comment it is not merely missed, it is invisible: the comment surface is
  * OPTIONAL metadata for a characterisation cell, and keying a population on optional metadata fails
@@ -142,23 +142,34 @@ export function commentProse(raw) {
     .trim();
 }
 
-/** The narrowed predicate, as a NAMED set so a member list can be compared, not just a count. */
+/**
+ * The narrowed predicate, as a NAMED set so a member list can be compared, not just a count.
+ *
+ * `{key, re}` rather than Theseus's `[key, re]`, and this is the ONE place the relocation is not
+ * verbatim. A tuple literal in a `.mjs` infers as `(string | RegExp)[][]`, so every honest `.d.mts`
+ * spelling of it DRIFTS from the implementation — `probe-round307` arm B2 is the gate that caught it,
+ * naming `MARKERS`, `markersIn` and `markersInRaw`, and it caught them in the sweep rather than in
+ * my reading. The alternative was to declare the drifted type and let two downstream interfaces
+ * carry `(string | RegExp)[]` where they mean a key. Named fields infer exactly, so the declaration
+ * is true instead of merely accepted. Behaviour-preserving, and not taken on my word for it: arm D1
+ * reproduces Theseus's RECORDED 585-member list member-for-member through this shape.
+ */
 export const MARKERS = [
-  ['shape-rather-than-intent', /asserting\s+the\s+(?:shape|current|existing)\b[\s\S]{0,60}?rather\s+than/i],
-  ['characterising', /\bcharacteris(?:e|es|ed|ing|ation)\b/i],
-  ['for-now', /\bfor\s+now\b/i],
-  ['silently', /\bsilent(?:ly)?\b/i],
-  ['rather-than', /\brather\s+than\b/i],
+  { key: 'shape-rather-than-intent', re: /asserting\s+the\s+(?:shape|current|existing)\b[\s\S]{0,60}?rather\s+than/i },
+  { key: 'characterising', re: /\bcharacteris(?:e|es|ed|ing|ation)\b/i },
+  { key: 'for-now', re: /\bfor\s+now\b/i },
+  { key: 'silently', re: /\bsilent(?:ly)?\b/i },
+  { key: 'rather-than', re: /\brather\s+than\b/i },
 ];
 
 export function markersIn(text) {
   const prose = commentProse(text);
-  return MARKERS.filter(([, re]) => re.test(prose)).map(([k]) => k);
+  return MARKERS.filter((m) => m.re.test(prose)).map((m) => m.key);
 }
 
 /** The same predicate WITHOUT normalisation — the counterfactual, driven rather than described. */
 export function markersInRaw(text) {
-  return MARKERS.filter(([, re]) => re.test(text)).map(([k]) => k);
+  return MARKERS.filter((m) => m.re.test(text)).map((m) => m.key);
 }
 
 // ── Round 371 additions ──────────────────────────────────────────────────────
@@ -177,9 +188,17 @@ const preciseOnly = (keys) => keys.filter((k) => PRECISE_MARKERS.has(k));
  * The two surfaces a characterisation can declare itself on, each a `(src) => {line, text}[]`.
  *
  * `comment` is Theseus's Round 370 key. `code` is Round 371's correction: with comments blanked by
- * `stripSource`, what is left is the code, and a `check()` name string is code. Arm C drives the
- * `comment` leg alone as a counterfactual that must MISS arm R5 of `probe-round224`, which is the
- * whole reason this second leg exists.
+ * `stripSource`, what is left is the code, and a `check()` name string is code. `probe-round371`'s
+ * own arm G2 drives the `comment` leg alone as a counterfactual that must MISS the R5 CELL of
+ * `probe-round224` — which is the whole reason this second leg exists.
+ *
+ * `R5` is a CELL, not an arm, and the distinction is written down here because the general
+ * arm-pointer detector of Round 308 reddened on the first version of this sentence, which gave it
+ * an arm's name. The `check()` call is labelled `'R'`; `R5` is a name that probe's own comments
+ * give one cell inside it, and a pointer to an arm label no probe defines is exactly what that
+ * detector is for. It caught a real one, in the sweep rather than in my reading — and the same
+ * sentence also still said "Arm C" after the arm had been renamed G2, a pointer written beside its
+ * own subject and stale before it shipped.
  */
 export const SURFACES = {
   comment: (src) => commentBlocks(src)
@@ -199,12 +218,12 @@ export const SURFACES = {
     for (const stmt of masked.split(';')) {
       const start = cursor;
       cursor += stmt.length + 1;
-      const keys = preciseOnly(MARKERS.filter(([, re]) => re.test(stmt)).map(([k]) => k));
+      const keys = preciseOnly(MARKERS.filter((m) => m.re.test(stmt)).map((m) => m.key));
       if (keys.length === 0) continue;
       // The line of the FIRST marker occurrence inside the statement, not the statement's own first
       // line: a statement here spans several lines and the useful pointer is where the word is.
-      const at = Math.min(...MARKERS.filter(([k]) => keys.includes(k))
-        .map(([, re]) => stmt.search(re)).filter((n) => n >= 0));
+      const at = Math.min(...MARKERS.filter((m) => keys.includes(m.key))
+        .map((m) => stmt.search(m.re)).filter((n) => n >= 0));
       out.push({
         line: masked.slice(0, start + at).split('\n').length,
         text: stmt.replace(/\s+/g, ' ').trim(),

@@ -63,7 +63,8 @@ export declare function population(root: string): Population;
 export declare function commentSpans(src: string): CommentSpan[];
 export declare function commentBlocks(src: string): CommentBlock[];
 export declare function commentProse(raw: string): string;
-export declare const MARKERS: [string, RegExp][];
+/** `{key, re}` and not a tuple — see the note on `MARKERS` in the implementation, and round307 B2. */
+export declare const MARKERS: { key: string; re: RegExp }[];
 export declare function markersIn(text: string): string[];
 export declare function markersInRaw(text: string): string[];
 export declare const PRECISE_MARKERS: Set<string>;

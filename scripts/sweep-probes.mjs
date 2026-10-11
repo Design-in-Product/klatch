@@ -1259,6 +1259,29 @@ export const SWEPT = [
     expect: /All 29 regression checks passed/,
     why: 'driven twice by the promotion path (real HOME and an empty HOME, one variable): 29/29 green, exit 0 both arms, 411 ms; population and tree fingerprints for scripts/ and packages/ unchanged across 18 samples',
   },
+  {
+    // PROMOTED BY: Round 371, Daedalus, 2026-10-11 WORK fire — driven by `promote-probes.mts`,
+    // which OBSERVED predicates 2-7 rather than reading them. Classified DEFERRED on arrival in the
+    // same commit as the file, promoted in this same fire; hazard-clean, no exemption, no `--force`.
+    //
+    // It SPAWNS `probe-round224` as a subprocess, which is the only thing about it worth naming
+    // here. The DEFERRED note written on arrival hedged that the tool might hold it as the
+    // inherited-hazard shape (`INADMISSIBLE — spawn closure, not own source`); it did not, because
+    // `probe-round224` is itself SWEPT and carries no hazard to inherit. That spawn is also what
+    // makes this the slowest entry in the set by an order of magnitude — **14591 ms / 14402 ms**
+    // against the next-slowest's hundreds, because `probe-round224` arm S drives `tsc` over a
+    // 149-file type program. The cost is stated rather than discovered later: it is the price of
+    // side A reading the subject's REAL rows instead of re-implementing what they should say, which
+    // is the one shape Round 369 §2 established a grader must not take.
+    //
+    // Self-pinning, deliberately and in one direction only: `SELF_EXCLUDED` in
+    // `scripts/lib/characterisation-markers.mjs` names this file, and arm G1 reds if that name stops
+    // resolving to exactly one existing file — so renaming this probe without renaming the constant
+    // reds here rather than silently widening the population exclusion.
+    file: 'probe-round371-the-characterisation-item-is-a-registry-not-a-sweep.mts',
+    expect: /All 12 regression checks passed/,
+    why: 'driven twice by the promotion path (real HOME and an empty HOME, one variable): 12/12 green, exit 0 both arms, 14591 ms; population and tree fingerprints for scripts/ and packages/ unchanged across 691 samples',
+  },
 ];
 
 /**
@@ -1704,13 +1727,10 @@ export const DEFERRED = [
   // attestation is in SWEPT above.
 
   // round371, same arrival protocol: listed here in the same commit as the file, before the census
-  // gate was run, so that `promote-probes.mts` writes the verdict rather than this seat hand-adding
-  // a SWEPT entry for its own work. Its own drive is clean — no port, no database, no corpus, no
-  // model — but it SPAWNS `probe-round224` as a subprocess to read that probe's real rows, which is
-  // the inherited-hazard shape `promote-probes` calls INADMISSIBLE when the spawned file carries a
-  // hazard of its own. If it is held for that reason it stays here, deferred on a NAMED mechanism
-  // rather than on taste, and the hold is the tool's finding and not this seat's.
-  'probe-round371-the-characterisation-item-is-a-registry-not-a-sweep.mts',
+  // gate was run, so that `promote-probes.mts` wrote the verdict rather than this seat hand-adding a
+  // SWEPT entry for its own work. The arrival note hedged that the tool might hold it as the
+  // inherited-hazard shape, because it spawns `probe-round224`; it did not. Promoted in the same
+  // fire and its attestation is in SWEPT above.
 ];
 
 /**

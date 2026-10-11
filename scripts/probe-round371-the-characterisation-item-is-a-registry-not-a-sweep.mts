@@ -30,15 +30,15 @@
  * comment-blanked source as well, there are TWO more declarations, and one of them is a finding his
  * list does not contain at all:
  *
- *   - `:1558` — arm Q2's own `check()` name, `'CHARACTERISATION (not a blessing — see Q3)…'`. Same
+ *   - `:1558` — cell Q2's own `check()` name, `'CHARACTERISATION (not a blessing — see Q3)…'`. Same
  *     finding as his `:1555`, declared a second time on the other surface.
- *   - `:2028` — arm R5, `'CHARACTERISATION (read only beside R6): three field paths arm Q records as
+ *   - `:2028` — cell R5, `'CHARACTERISATION (read only beside R6): three field paths arm Q records as
  *     having ZERO throwers throw on a `Symbol`…'`. A DISTINCT live characterisation, of a different
  *     mechanism (direct template interpolation, not the type-guard class), and its comment block
  *     never says `characteris*` anywhere. Keyed on the comment it is not missed, it is invisible.
  *
  * The mechanism is my own standing failure shape rather than a slip of his: the comment is OPTIONAL
- * metadata for a characterisation cell, what every member must have is a CELL, and a population keyed
+ * metadata for a characterisation cell, what every member must have is a cell, and a population keyed
  * on optional metadata fails by returning a smaller number in silence (Round 352, same lesson, on
  * mail frontmatter). His own §3 correction one level up is the same shape — a marker straddling a
  * line wrap is unrepresentable against per-line spans — which is why `SURFACES.code` splits on `;`
@@ -189,15 +189,17 @@ check('G1', 'the self-exclusion names exactly this file, and that file exists �
 
 // G2 — the KNOWN POSITIVE and the CONTROL for the second surface, which is the whole correction.
 //
-// The known positive must CARRY the property (Round 355): R5 is a live characterisation declared
-// only in its check name. The control must MISS it: if the comment leg found it too, the code leg
-// would be a second key over the same population and would agree vacuously.
+// The known positive must CARRY the property (Round 355): the R5 cell of `probe-round224` is a live
+// characterisation declared only in its check name. The control must MISS it: if the comment leg
+// found it too, the code leg would be a second key over the same population and would agree
+// vacuously. `R5` is a cell inside arm `R`, not an arm — `probe-round308` B1 reddened on the other
+// spelling of this, in `characterisation-markers.mjs`, and the note there has the detail.
 const subjectSrc = readFileSync(join(REPO, SUBJECT), 'utf8');
 const R5 = 'CHARACTERISATION (read only beside R6)';
 const codeFindsR5 = SURFACES.code(subjectSrc).some((m) => m.text.includes(R5));
 const commentFindsR5 = SURFACES.comment(subjectSrc).some((m) => m.text.includes(R5));
 gates.G2 = codeFindsR5 === true && commentFindsR5 === false;
-check('G2', 'KNOWN POSITIVE + CONTROL: the code surface FINDS arm R5 and the comment surface MISSES '
+check('G2', 'KNOWN POSITIVE + CONTROL: the code surface FINDS the R5 cell and the comment surface MISSES '
   + 'it — so the second leg reads text the first cannot reach, rather than agreeing with it',
   gates.G2 === true, `code=${codeFindsR5} comment=${commentFindsR5}`);
 
