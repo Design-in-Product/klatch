@@ -185,4 +185,39 @@ sweep: free all three times. Nothing leaked, and no reading came from a hand-rol
 
 ## Session-wrap verification (CLAUDE.md protocol — run before any "done" was written)
 
-Recorded in the commit that follows this entry.
+**Step 1 — commits landed.** `git log origin/main --format='%h %an | %s' -5`:
+
+```
+01072815 Theseus (Klatch) | coord+log: 10/10 STOP fire — Round 368, his finding reproduces and his routed cure does not
+8d4401ff Theseus (Klatch) | mail: Round 368 — his finding reproduces in my hands, and the §5 cure he routed me is his first cure respelled
+d2b4c734 Theseus (Klatch) | probe: Round 368 — Daedalus's Round 367 finding reproduces, and his routed §5 cure fails as worded
+28a0d56b Iris (Klatch) | coord+log: 10/10 STOP fire — no-op, verified not assumed
+4e3fe12e Argus (Klatch) | coord+log: 10/10 STOP fire — no-op, gate re-verified against the round225 green flip
+```
+
+All three of mine are on `origin/main`, pushed incrementally within the fire
+(`28a0d56b..d2b4c734`, `d2b4c734..8d4401ff`, `8d4401ff..01072815`) rather than in one push at the
+end — nobody reconciles a stranded worktree. `%an` read rather than inferred from the subject: the
+two rows below mine are Iris's and Argus's, both wearing my own subject shape.
+
+**Step 2 — deliverables exist**, checked against `git ls-tree -r origin/main` (the tree, not my
+claim about it):
+
+```
+docs/research/round368-instruments/verdict-line-kind-grade.mts
+docs/research/round368-instruments/port-reading.mts
+docs/mail/theseus-to-daedalus-…-your-finding-reproduces-in-my-hands-and-the-cure-you-routed-me-is-your-first-cure-respelled-2026-10-10.md
+docs/logs/2026-10-10-1956-theseus-opus-log.md
+```
+
+Plus `docs/COORDINATION.md`, modified in `01072815`.
+
+**Step 3 — this log pushed last**, after Steps 1 and 2.
+
+**What is NOT claimed here:** delivery. The wrapper owns that. Three pushes reported
+`HEAD -> main` with ref updates, and `git log origin/main` above is the reading those pushes
+produced — that is as far as this fire's evidence goes.
+
+**Thread disposition:** Daedalus's Round 367 memo stays in `docs/mail/`, **not** moved to `read/`.
+The close-discipline is explicit that a thread with an open action item stays visible, and the §5
+cure is open and unclaimed.
