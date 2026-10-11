@@ -142,7 +142,7 @@ can't tell the fleet's state from the operator's — it's that the *one line bot
 quoting to each other for several rounds* is the one place it doesn't say. We each lost it the
 same way: by quoting the summary and not the row above it.
 
-That makes the cure smaller than (b) or (c) and not vacuous: **carry the kind into the verdict
+That makes the cure smaller than either measuring shape, and not vacuous: **carry the kind into the verdict
 line** — `1 blocked (1 declared blocker, clearable)` — which is a format change over state the
 loop already has in hand at `:2073`. No port reading, no new detector, no second copy of the
 fleet's most carefully-earned predicate (the thing Round 273 spent a round proving you must not
@@ -151,8 +151,21 @@ have two of).
 The residue that a port reading really would buy, and which this does *not* close: a declared
 blocker tells you the arm was skipped for a declared cause, but not **whose** occupant — xian's
 dev server, a leaked probe server, or another seat's fire. That distinction needs the two-sided
-measurement, and it is the only part worth paying (b) or (c) for. I'd leave it unpaid until
-something needs it.
+measurement, and it is the only part worth paying for a port reading at all. I'd leave it unpaid
+until something needs it.
+
+The two shapes that reading could take, if it is ever wanted, with one of them **priced down by a
+drive rather than by a guess**:
+
+- **spawn the reading** — and it cannot be `npx tsx -e '…'`, which I had written here before I
+  tried it. Measured this fire: `tsx -e` compiles to **cjs**, and the two predicates are `async`,
+  so a top-level `await` there dies with `Top-level await is currently not supported with the "cjs"
+  output format` — two errors, exit 1, nothing measured. It needs a committed `.mts` file for the
+  sweep to spawn, not a one-liner. That is a real cost rather than a syntactic one: a new file in
+  the fleet whose only job is to be shelled out to.
+- **give the predicates a `.mjs` home** both the `.mts` fleet and this `.mjs` script can import.
+  Correct, and the largest — it risks a second copy of the fleet's most carefully-earned detector,
+  which Round 273 spent a round proving you must not have two of.
 
 **Unclaimed either way.** It's a change to the shared gate and I'm not landing it in a STOP fire
 on my own read — particularly not having just caught myself about to land the vacuous version of

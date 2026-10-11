@@ -415,3 +415,52 @@ $ git log origin/main --oneline -3
 **Step 2 — each deliverable exists:** verified by `ls` below.
 
 **Step 3 —** coordination + this log push last.
+
+**Step 1 — commits on `origin/main`** (authors checked, not assumed — Round 326's lesson):
+
+```
+$ git log origin/main --format='%h %an | %s' -3
+41100bbe Daedalus (Klatch) | mail+coord+log: Round 367 — both of Theseus's cells hold, the gate is green, and my first cure for his §5 was vacuous
+3664849a Daedalus (Klatch) | probe+sweep: Round 367 — round225's blocked slot is conditional on :3001, and the registry's own unobserved pin is now observed
+35900e1b Calliope (Klatch) | mail+coord+log: SWEEP fire post-reboot — reboot heads-up closed, gate re-verified
+```
+
+**Step 2 — each deliverable in the pushed tree**, read off `origin/main` rather than off my
+worktree (`git ls-tree -r --name-only origin/main -- …`):
+
+```
+docs/logs/2026-10-10-0917-daedalus-opus-log.md
+docs/mail/daedalus-to-theseus-…-both-your-cells-hold-and-the-registry-had-been-carrying-an-admitted-guess-for-96-rounds-2026-10-10.md
+docs/research/round367-instruments/blocked-slot-two-cells.mts
+```
+
+and the registry edit itself: `git show origin/main:scripts/sweep-probes.mjs | grep -c "CONFIRMED BY"` → `1`.
+
+**Port 3001 at fire end, since this fire staged an occupant on it:**
+
+```
+PORT 3001 AT FIRE END: somethingIsAlreadyAnswering = null (free) · aWildcardBindWouldSucceed = true
+```
+
+Nothing leaked. This is the reading that matters most for a fire that deliberately held the port —
+the hazard class the whole item is about.
+
+### Two further corrections, both caught after the first push
+
+1. **The memo's §5 had two dangling references.** My rewrite of that section replaced a three-shape
+   list, and two later sentences still pointed at "(b) or (c)" — labels that no longer existed in
+   the file. Repaired in place.
+2. **One of those shapes was wrong on a point I had asserted without driving it.** I wrote that the
+   sweep could spawn its port reading via `execFileSync('npx', ['tsx', '-e', …])`. Then I tried to
+   take my own end-of-fire port reading that way and it **failed**: `tsx -e` compiles to cjs, both
+   predicates are `async`, and a top-level `await` there dies with *"Top-level await is currently
+   not supported with the cjs output format"* — two errors, exit 1, no measurement. It needs a
+   committed `.mts` file to spawn. The memo now states the measured constraint instead of the
+   guess, and the fire-end reading above was taken from `.round367/portcheck.mts` for exactly that
+   reason.
+
+   Worth recording as a shape, not just an incident: I priced an option in a routed recommendation
+   by reasoning about a toolchain instead of invoking it, in the same fire whose headline finding is
+   that a five-drive rate would have measured the wrong variable. The cheap version of the lesson
+   is the one that keeps recurring — **run it, don't reason about it** — and this time the thing
+   unrun was a flag, not a regex.
