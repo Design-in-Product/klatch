@@ -247,3 +247,178 @@ verified tree.
   question since he scoped it in his Round 366 §3; probably xian's call if it has no answer.
 - **Thread left open** in `docs/mail/`, not moved to `read/`: my §7 routes a question to Theseus.
 - **Nothing in this fire needs xian.** needs-you unchanged at 1.
+
+---
+
+# WORK fire — 13:17–14:0x PT — Round 371: the characterisation item is a registry, and three is four
+
+## 13:17 — briefing
+
+`%an`-checked before crediting anything (Round 326, and it earned its keep again): the three head
+commits above my last were `86f5b1a9` **Calliope**, `673b4bea` and `df32e1d9` **Theseus**. None mine
+— and `df32e1d9`'s subject reads almost exactly like one of my own coord+log lines, for the second
+fire running.
+
+New inbound: Theseus's **Round 370**. My Round 369 reproduces entire in his hands, both my
+corrections accepted, and he answered my §7 by **driving** the characterisation sweep rather than
+re-scoping it. The answer is negative and measured: the broad predicate matches 585 of 6339 comment
+blocks across 181 of 329 files, because `rather than` and `silently` are this fleet's house style;
+`for now` has zero members; and the one `shape-rather-than-intent` member is a cure quoting the
+defect it cured verbatim, so a live characterisation and its cured history are the *same text*.
+He scoped it down to a 3-entry registry with a two-sided pin and **explicitly did not build it** —
+"landing it in the same fire that re-derived its scope is half of two things."
+
+That is the item for this fire: bounded, unclaimed, named by its author as unbuilt, and squarely
+architecture-and-implementation work.
+
+## 13:20 — verification before building
+
+Hand-read all six `characterising` members *before* reading his classification. My split matches his
+entry for entry: `:635`, `:1483`, `:1555` live; `:668`, `:679` and `round247…test.ts:128`
+commemorations, every false one a cure commemorating itself. Line numbers resolved by `sed`, not by
+trusting the memo: all three live ones are the **first line of a comment block**, which is how his
+detector keys them.
+
+Then the census that produced the finding. Over the comment-BLANKED source of all 329 files:
+
+```
+characteris* in code (comments blanked) : 3 occurrences, 1 file
+  probe-round224:1558  cell Q2's check() name
+  probe-round224:1559  (same cell)
+  probe-round224:2028  cell R5  ← NOT ON HIS LIST
+```
+
+`:2028` is a live characterisation of a *different mechanism* (Symbol interpolation, not the
+type-guard class) whose comment block never says `characteris*` anywhere. **Keyed on the comment it
+is not missed — it is invisible.** Confirmed PASS exit 0 in this fire's own sweep, so it is live by
+the same reading he used for the other three.
+
+The mechanism is my own standing failure shape rather than a slip of his: the comment is **optional**
+metadata for a characterisation cell, and what every member must have is a **cell**.
+
+## 13:30 — built
+
+- `scripts/lib/characterisation-markers.{mjs,d.mts}` — his detector relocated out of
+  `docs/research/round370-instruments/`, because a gate that runs every fire must not import from a
+  round's write-once instrument directory. Plus `PRECISE_MARKERS`, `SURFACES`, `REGISTRY`,
+  `SELF_EXCLUDED`, `reconcile`.
+- `scripts/probe-round371-the-characterisation-item-is-a-registry-not-a-sweep.mts` — 5 gating
+  controls then 12 checks. Anchors, never line numbers. Declaration sites, not findings.
+
+Three findings against my own first version, all before it shipped: the code-surface `line` field
+was a self-cancelling expression printing a plausible number; the registry's first version had
+**seven** entries with `:1558` undeclared, found by my own census two minutes after I had written a
+header claiming the list was complete at four; and side A's matcher was graded only on live output
+where every cell passes — Round 369 arm A's lesson, one round old, caught by adding the control
+rather than by reading.
+
+First clean drive: `All 12 regression checks passed`, `GATE: PASSED`, `D1 585 recorded / 585 now ::
+lost [] gained []`.
+
+## 13:27 — gate, first pass
+
+`npm run typecheck` clean, all four legs. Server **140 files / 2179 passed, 1 skipped**. Client
+**26 passed / 13 skipped (39), 333 passed / 13 skipped (346)**. Census RED with exactly one problem:
+my own new probe unclassified — the mechanism working as designed. Classified DEFERRED on arrival in
+the same commit as the file, census PASSED, **committed and pushed `eea42c26` before driving the
+sweep** (Round 358: never touch the index while the sweep drives, and the 2400s fire limit means
+work left uncommitted is work stranded).
+
+## 13:33 — the sweep found two reds, both mine, neither found by reading
+
+`SWEEP FAILED — 36 of 38 … 2 red`. Both in my own new files:
+
+1. **`probe-round307` B2**, the declared-export drift gate. `MARKERS`, `markersIn` and
+   `markersInRaw` all **DRIFTED**: a tuple literal in a `.mjs` infers as `(string | RegExp)[][]`, so
+   **no honest `.d.mts` spelling conforms**. His original had no `.d.mts`, so nothing had ever graded
+   it. `MARKERS` is now `{key, re}` — the one place the relocation is not verbatim. **D1 is why that
+   reshape is not a claim anyone has to take from me:** it reproduces his recorded 585-member list
+   member-for-member *through* the reshaped constant. round307 → CONFORMS 29 (was 26), DRIFT 0,
+   **17/17**.
+2. **`probe-round308` B1**, the arm-pointer detector. My prose said "arm R5 of `probe-round224`".
+   **R5 is a CELL inside arm `R`** — that probe labels the `check()` call `'R'` — so the pointer
+   named an arm label no probe defines: a **real** hit, the one unexplained member of nine, against a
+   cell whose whole claim is that all nine are artifacts of its own key. And the same sentence still
+   said "Arm C" after the arm had been renamed G2: a pointer written beside its own subject and stale
+   before it shipped, the class I have now shipped three times (357, 359, 371). The first repair
+   reddened again, because the corrected sentence quoted the wrong spelling on a line that also cited
+   the probe — fixed by replicating the detector's own per-line pairing over both my files rather
+   than by re-reading them. round308 **23/23**.
+
+## 13:38 — promotion and the final gate
+
+`promote-probes.mts --only` → **[PROMOTABLE]**, all 7 predicates OBSERVED, exit 0 under real HOME and
+an empty HOME, **14591/14402 ms**, 691 population samples, tree and all 6 graded DBs unchanged;
+hazard-clean, no exemption, no `--force`. The arrival note's hedge about the spawn closure was wrong
+and the SWEPT entry now says so.
+
+**Cost stated rather than discovered later:** 14.6 s makes this the slowest entry in SWEPT by an
+order of magnitude, because it spawns `probe-round224`, whose arm S drives `tsc` over a 149-file type
+program. That is the price of side A reading the subject's **real rows** instead of re-implementing
+what they should say — the one shape Round 369 §2 established a grader must not take.
+
+Final state, every figure driven at that state:
+
+```
+probe-round371   All 12 regression checks passed.  exit 0   GATE: PASSED
+probe-round307   All 17 regression checks passed.  exit 0   DRIFT 0
+probe-round308   All 23 regression checks passed.  exit 0   9 of 9 explained
+sweep            SWEEP PASSED — 38 of 38 swept probes green, 0 red,
+                 0 blocked (0 could not run, 0 ran but did not finish),
+                 0 census problem(s), 109 deferred
+                 — counted 38 PASS / 0 RED / 0 BLOCKED by its ROWS, not the verdict line alone
+typecheck        clean, all four legs
+server suite     140 files / 2179 passed, 1 skipped
+client suite     26 passed / 13 skipped (39), 333 passed / 13 skipped (346)
+:3001            answering=null · wildcardBindWouldSucceed=true · acceptsConnection=false
+                 (read via the real lib AFTER the drives, because the memo quotes it)
+```
+
+## Session Wrap Protocol
+
+**Step 1 — commits on `origin/main`:**
+
+```
+b820cf63 mail: Round 371 — his registry is built, and his member list of three is four
+c15b9a61 round371: promoted to SWEPT, and the sweep found two reds in my own new files
+eea42c26 round371: the characterisation item is a registry with a two-sided pin, and the member list of three is four
+```
+
+**Step 2 — each deliverable `ls`'d** (see the verification block appended below this entry).
+
+**Step 3 —** this log and the COORDINATION entry pushed last.
+
+---
+
+## Residue and deferrals, with named blockers — WORK fire
+
+- **The characterisation item is CLOSED** after six rounds unclaimed. It stopped losing to bounded
+  items by *becoming* one — which is the part worth keeping: the blocker was never priority, it was
+  that nobody knew what it emitted or what reddened.
+- **The per-probe row limb-keying** (Round 369's own residue) is still open. Blocker unchanged: it
+  is a claim change to four output lines rather than a count change, and it wants its own round.
+- **Theseus's per-probe-row residue** is unexamined by either of us. Unblocked, and open to whoever
+  reaches it first.
+- **Named hole, not a deferral:** a characterisation hiding inside `probe-round371` itself is caught
+  by nothing. `SELF_EXCLUDED` keeps it out of the population (unexcluded it would be the largest
+  member and drown both sides), G1 pins the exclusion against *widening*, and that is all.
+- **Nothing in this fire needs xian.** needs-you unchanged at 1.
+
+---
+
+## Step 2 verification — the tree on `origin/main`, not the push's exit code
+
+`git ls-tree -r --name-only origin/main -- <each path>` (ack the tree, not the memo):
+
+```
+docs/mail/daedalus-to-theseus-…-your-registry-is-built-and-your-member-list-of-three-is-four-2026-10-11.md
+docs/mail/read/theseus-to-daedalus-…-the-sweep-cannot-have-a-verdict-line-2026-10-11.md
+scripts/lib/characterisation-markers.d.mts
+scripts/lib/characterisation-markers.mjs
+scripts/probe-round371-the-characterisation-item-is-a-registry-not-a-sweep.mts
+```
+
+Five of five present. `scripts/sweep-probes.mjs` is a MODIFY, confirmed by its SWEPT count moving
+from 37 to 38 in the census driven after `c15b9a61` landed. The research writeup, this log and the
+COORDINATION entry go up in the final commit of the fire, so they are verified by that push rather
+than by this block.
