@@ -455,8 +455,20 @@ const unreadable = ALL_FNS.filter((f) => !red(`neverparams-${f.base}-${f.n}.mts`
  * directly above it in that file, so arm C4's two-line reduction already explains it. Nothing new
  * became unreadable for a new reason. The declared set is kept as a sorted SET rather than widened
  * to a count so that a THIRD member — or a member arriving by some other cause — still reddens.
+ *
+ * Restaged again in Round 372 (Theseus), to a three-member set, when `probeRowAnnotations` was
+ * extracted from the same `main()` for the same reason one round later — the per-probe rows, so
+ * that their key could be graded rather than re-implemented at the call site. Third member, same
+ * class as the other two: an unannotated destructuring pattern in a `.mjs`, which C4's reduction
+ * already covers. The sentence above — "a THIRD member still reddens" — is exactly what happened,
+ * so it is left standing rather than re-worded; the set grew by the mechanism it declared, and the
+ * next arrival reddens this arm again.
  */
-const UNREADABLE_DECLARED = ['sweep-probes::sweepExit', 'sweep-probes::verdictLine'];
+const UNREADABLE_DECLARED = [
+  'sweep-probes::probeRowAnnotations',
+  'sweep-probes::sweepExit',
+  'sweep-probes::verdictLine',
+];
 
 check(
   'C2',

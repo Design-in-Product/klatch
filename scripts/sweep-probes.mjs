@@ -1282,6 +1282,15 @@ export const SWEPT = [
     expect: /All 12 regression checks passed/,
     why: 'driven twice by the promotion path (real HOME and an empty HOME, one variable): 12/12 green, exit 0 both arms, 14591 ms; population and tree fingerprints for scripts/ and packages/ unchanged across 691 samples',
   },
+  {
+    // PROMOTED BY: Theseus, Round 372, 10/11 WORK fire — driven by `promote-probes.mts`, which
+    // observed predicates 2-8 rather than reading them, not hand-added by this seat. It grades THIS
+    // module's own row annotations, so the arrival protocol matters more than usual: listed in
+    // DEFERRED in the same commit as the file, census run, then promoted by the tool.
+    file: 'probe-round372-the-rows-are-keyed-on-the-limb-and-the-contradiction-is-latent.mts',
+    expect: /All 26 regression checks passed/,
+    why: 'driven twice by the promotion path (real HOME and an empty HOME, one variable): 26/26 green, exit 0 both arms, 490 ms; population and tree fingerprints for scripts/ and packages/ unchanged across 16 samples',
+  },
 ];
 
 /**
@@ -1731,6 +1740,13 @@ export const DEFERRED = [
   // SWEPT entry for its own work. The arrival note hedged that the tool might hold it as the
   // inherited-hazard shape, because it spawns `probe-round224`; it did not. Promoted in the same
   // fire and its attestation is in SWEPT above.
+
+  // round372, same arrival protocol as round369 and round371 above: listed here in the same commit
+  // as the file and before the census gate was run, so `promote-probes.mts` wrote the verdict
+  // rather than this seat hand-adding a SWEPT entry for its own work — which matters most for a
+  // probe whose subject is this module's own output. Promoted in the same fire, hazard-clean, no
+  // exemption and no `--force`; at 490 ms it is one of the cheapest entries in SWEPT rather than
+  // one of the dearest. Its attestation is in SWEPT above.
 ];
 
 /**
@@ -1970,17 +1986,18 @@ export const sweepExit = ({ red, blocked, bad }) => (red || bad ? 1 : blocked ? 
  * A verdict line built on the flag key would print figures that contradict its own `blocked`. That
  * counterfactual is driven, not argued, in `probe-round369` arms C2-C4.
  *
- * NOT claimed: that `probe-round225`'s own blocked output trips both flags in a live run. Its skip
- * line interpolates `r223bDetail`, which carries exit/duration/pass/fail counts and not the refusal
- * text, so the reachable-by-construction case above may or may not be the one that actually occurs
- * on a held port. Measuring it needs the occupied-port cell, and `:3001` read free both ends of the
- * fire that wrote this. The partition is chosen to be correct either way, which is the reason not to
- * need the measurement.
+ * The "NOT claimed" this docblock carried — whether `probe-round225`'s own blocked output trips
+ * both flags in a live run — was MEASURED in Round 372, in the occupied-port cell this fire could
+ * not reach. The answer is no: driven on a held `:3001` it exits 3 with `refused: false,
+ * skipped: true`, its declared refusal text occurring 0 times in its own output. The both-flags run
+ * is reachable by construction and is not the run that occurs, and the partition above was chosen
+ * to be correct either way, which remains the reason not to have needed the measurement. See
+ * `probeRowAnnotations`, which records the three reachability facts and the pins that hold them.
  *
- * Known residue, named rather than fixed here: the PER-PROBE rows in `main()` are still flag-keyed,
- * so a both-flags run would print both annotations while this counter attributes one kind. The rows
- * are the looser instrument of the two; limb-keying them is a change to what the rows claim, not to
- * a count, and is left to its own round.
+ * The residue this docblock named — the PER-PROBE rows still being flag-keyed, so a both-flags run
+ * printed both annotations while this counter attributed one kind — was closed in Round 372 by
+ * extracting the rows into `probeRowAnnotations` and keying their verdict wording on the limb.
+ * Nothing is open here.
  *
  * Throws rather than returning `undefined` for a BLOCKED run at any other code. That path is
  * unreachable through `classify`, which is exactly why it is a throw: if a third BLOCKED limb is
@@ -2021,6 +2038,75 @@ export const blockedTally = (runs) => {
     if (kind === 'skipped') blockedSkipped += 1;
   }
   return { blocked, blockedRefused, blockedSkipped };
+};
+
+/**
+ * The per-probe row's annotation lines, in print order — extracted from `main()` so they can be
+ * driven, and re-keyed from the FLAGS onto the LIMB that fired.
+ *
+ * Round 372, closing the residue `blockedKind` named in Round 369 and neither of us had examined.
+ * Round 369 limb-keyed the verdict line and left these four lines flag-keyed, so a BLOCKED run
+ * carrying both a declared refusal text and a declared `did not run:` label printed BOTH verdict
+ * annotations — "could not run" and "ran but did not finish" — while the verdict line attributed
+ * exactly one kind. For an exit-3 run "could not run" is not a softer phrasing, it is false: 32 of
+ * that run's checks established. The rows were the looser of the two instruments; they are now
+ * keyed the same way, so the row and the line cannot disagree about the same run.
+ *
+ * THE NUMBER THIS DOES NOT CHANGE: zero rows, today. Measured in Round 372 rather than argued, in
+ * the occupied-port cell Round 369 could not reach (`:3001` read free that fire):
+ *
+ *   - exactly ONE SWEPT entry declares either pattern — `probe-round225`, which declares both; no
+ *     entry declares a refusal only or a skip only, so it is the only entry that can be BLOCKED at
+ *     all, and every BLOCKED run the sweep can produce comes from it;
+ *   - driven on a held `:3001`, it exits **3 with `refused: false, skipped: true`** — its declared
+ *     refusal `/probe-round223b: something already holds 3001/` occurs **0 times** in its own
+ *     output, because it prints the prose "with its declared refusal text present" and its child's
+ *     exit/duration counts, never the child's text. So the both-flags run is reachable by
+ *     construction through `classify` and is NOT the run that occurs;
+ *   - and the refusal limb is unreachable over this population from the other side too:
+ *     `probe-round225` has **0** live `process.exit(` and exactly **1** `summariseAndExit(`, whose
+ *     outcome code is typed `0 | 1 | 3`. It cannot exit 2, so `(code === 2 && refused)` has no
+ *     witness today and "could not run" cannot print.
+ *
+ * Which is the reason to fix it on the key rather than on the wording, and to state the latency
+ * instead of leaving a reader to infer a live defect: one declaration — a second entry's refusal
+ * pattern, or this one echoing its child's output — makes the contradiction live, and nothing in
+ * the output would have announced the change. `probe-round372` pins all three facts above, so the
+ * next agent who widens the population gets a red that says re-measure rather than silence.
+ *
+ * The RED hint stays flag-keyed, deliberately. `blockedKind` returns `undefined` for a non-BLOCKED
+ * state, so the limb key has nothing to say about a red; and the line announces itself as "HINT
+ * (not a verdict)", which is the one register in which a loose predicate is honest. The both-flags
+ * case gets the same treatment rather than losing the information: the limb decides the verdict
+ * wording, and the flag the limb did not use is reported as a hint beneath it.
+ */
+export const probeRowAnnotations = ({ state, code, refused, skipped }) => {
+  const lines = [];
+  if (state === 'BLOCKED') {
+    const kind = blockedKind(state, code);
+    if (kind === 'refused') {
+      lines.push('could not run — declared refusal, not a regression. Clear the blocker and re-run.');
+      if (skipped) {
+        lines.push('HINT (not a verdict): a declared hard skip is also present in this output. The');
+        lines.push('verdict above is keyed on the exit code, which is the limb that fired.');
+      }
+    }
+    if (kind === 'skipped') {
+      // Deliberately different wording from the exit-2 case: this probe DID run and DID establish
+      // checks. Calling it "could not run" would overstate the blockage in the other direction.
+      lines.push('ran but did not finish — a declared arm was hard-skipped, so part of the run');
+      lines.push('stands and no check broke. Clear the blocker to get a verdict on the rest.');
+      if (refused) {
+        lines.push('HINT (not a verdict): the declared refusal text is also present in this output.');
+        lines.push('The verdict above is keyed on the exit code, which is the limb that fired.');
+      }
+    }
+  }
+  if (state === 'RED' && refused) {
+    lines.push('HINT (not a verdict): the declared refusal text is present at a non-2 exit, so a');
+    lines.push('driven subject may have refused and this probe graded that as a failed check.');
+  }
+  return lines;
 };
 
 /**
@@ -2236,18 +2322,13 @@ const main = () => {
           : `exit ${code}, summary line NOT FOUND — ${conclusion.slice(0, 110)}`;
     console.log(`  ${state.padEnd(7)} exit ${String(code).padStart(3)}  ${s.file}`);
     console.log(`          ${summary}`);
-    if (state === 'BLOCKED' && refused) {
-      console.log('          could not run — declared refusal, not a regression. Clear the blocker and re-run.');
-    }
-    if (state === 'BLOCKED' && skipped) {
-      // Deliberately different wording from the exit-2 case: this probe DID run and DID establish
-      // checks. Calling it "could not run" would overstate the blockage in the other direction.
-      console.log('          ran but did not finish — a declared arm was hard-skipped, so part of the run');
-      console.log('          stands and no check broke. Clear the blocker to get a verdict on the rest.');
-    }
-    if (state === 'RED' && refused) {
-      console.log('          HINT (not a verdict): the declared refusal text is present at a non-2 exit, so a');
-      console.log('          driven subject may have refused and this probe graded that as a failed check.');
+    // Round 372. The rows are keyed on the limb, like the verdict line, and the keying lives in
+    // `probeRowAnnotations` rather than here — the same reason `blockedTally` is a function and not
+    // three `+= 1`s in this loop (Round 369): a grader at this call site could only re-implement
+    // the key it is supposed to be grading. The flags are handed over whole because the hint legs
+    // need them; the LIMB is what decides which verdict wording prints.
+    for (const line of probeRowAnnotations({ state, code, refused, skipped })) {
+      console.log(`          ${line}`);
     }
     // Checked against the run, not against the entry's own prose — see measurementCheck.
     const m = measurementCheck(s, out);

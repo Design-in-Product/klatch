@@ -94,6 +94,19 @@ export declare const blockedTally: (
   runs: readonly { state: ProbeState; code: number | null }[],
 ) => { blocked: number; blockedRefused: number; blockedSkipped: number };
 
+/**
+ * The per-probe row's annotation lines, in print order, without the row's leading indent. Round
+ * 372. The VERDICT wording is keyed on the limb — the same key as the verdict line, so a row and
+ * the line cannot disagree about one run — and the flags are read only by the hint legs, which
+ * announce themselves as hints. Empty for a run with nothing to annotate.
+ */
+export declare const probeRowAnnotations: (run: {
+  state: ProbeState;
+  code: number | null;
+  refused: boolean;
+  skipped: boolean;
+}) => string[];
+
 /** The verdict line, extracted so the rendering can be driven without spawning 36 probes. */
 export declare const verdictLine: (counts: {
   swept: number;
