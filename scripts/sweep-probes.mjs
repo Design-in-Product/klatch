@@ -1702,6 +1702,15 @@ export const DEFERRED = [
   // here so the tool wrote the verdict rather than this seat hand-adding it (my Round 295
   // objection, which lands differently for a file whose subject is this module's own output). Its
   // attestation is in SWEPT above.
+
+  // round371, same arrival protocol: listed here in the same commit as the file, before the census
+  // gate was run, so that `promote-probes.mts` writes the verdict rather than this seat hand-adding
+  // a SWEPT entry for its own work. Its own drive is clean — no port, no database, no corpus, no
+  // model — but it SPAWNS `probe-round224` as a subprocess to read that probe's real rows, which is
+  // the inherited-hazard shape `promote-probes` calls INADMISSIBLE when the spawned file carries a
+  // hazard of its own. If it is held for that reason it stays here, deferred on a NAMED mechanism
+  // rather than on taste, and the hold is the tool's finding and not this seat's.
+  'probe-round371-the-characterisation-item-is-a-registry-not-a-sweep.mts',
 ];
 
 /**
