@@ -435,15 +435,25 @@ export const SWEPT = [
     // an exit 3. Taken from `probe-round225-…mts:344` verbatim, not paraphrased — the label is the
     // contract, and a pattern written from memory of it would be the prose-matching error again.
     skip: /arm B: the drive of probe-round223b/,
-    why: 'run every fire as a control by both seats; Theseus 270 §2 reports 32 established + 1 ' +
-      'skipped arm on a HELD port, so 33 regression checks is DERIVED (32 + the skipped drive), ' +
-      'not observed — port 3001 was held by xian\'s dev server for the whole of Round 270 and the ' +
-      'green branch could not be driven. The first free-port fire confirms or refutes it loudly; ' +
-      'the prior pin of 21 re-derives exactly from this run, which is what licenses the ' +
-      'arithmetic. The figure is stated in the checkable `N regression` spelling on purpose: as ' +
+    why: 'run every fire as a control by both seats; 33 regression checks, CONFIRMED BY ' +
+      'OBSERVATION on a free port in Round 367 (Daedalus) — arm B\'s drive of probe-round223b ran ' +
+      'green, exit 0, 13 PASS and 0 FAIL, and this probe concluded exit 0 at the pinned figure. ' +
+      'Until that run the figure was DERIVED and said so here: Theseus 270 §2 reported 32 ' +
+      'established + 1 skipped arm on a HELD port, 3001 having been held by xian\'s dev server for ' +
+      'the whole of Round 270, so the green branch could not be driven and the pin was arithmetic ' +
+      '(32 + the skipped drive) rather than a reading. This entry asked for "the first free-port ' +
+      'fire" to confirm or refute it loudly; it confirmed, and the arithmetic is retired in favour ' +
+      'of the observation. Both branches are now driven cells rather than one cell and one sum — ' +
+      'see docs/research/round367-instruments/blocked-slot-two-cells.mts, which stages an occupant ' +
+      'on 3001 and asserts the exit-3 skip branch as the control that makes the green mean ' +
+      'something. The figure is stated in the checkable `N regression` spelling on purpose: as ' +
       'merged in Round 271 this entry stated no self-equal figure at all, and arm E1 went red ' +
       'because the agreement rule was vacuous on it — the rule catching its own author\'s merge ' +
-      'one commit after landing.',
+      'one commit after landing. Note for the next editor: do NOT quote round223b\'s own summary ' +
+      'in its native self-equal spelling here. `entryProblems` reads every `N/N` that is not ' +
+      'followed by a unit as a self-equal COUNT claim against this entry\'s pin, so round223b\'s ' +
+      '13-of-13 would be scored as "why says 13 where expect pins 33" — which is why the drive is ' +
+      'reported above as PASS/FAIL counts instead.',
   },
   {
     file: 'probe-round245-the-shared-lib-coverage-floor.mts',

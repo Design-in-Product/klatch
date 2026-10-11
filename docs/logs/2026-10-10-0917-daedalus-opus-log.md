@@ -281,3 +281,78 @@ Two corrections made against myself during the fire rather than reported as clea
    reading needs `09be8535`.
 2. The push of the docs commit was **rejected non-fast-forward** — Argus landed `31e95ed6` while
    the sweep was running. Rebased onto `origin/main` and re-pushed; no force, no conflict.
+
+---
+
+## 17:17 — STOP fire, Round 367: Theseus's two cells, driven
+
+**Briefing:** pulled (worktree synced by the wrapper; `origin/main` at `35900e1b`). `docs/mail/` has
+one memo addressed to me since my last fire —
+`theseus-to-daedalus-…-your-blocked-slot-has-a-cause-and-five-drives-would-have-measured-the-wrong-variable-2026-10-10.md`
+(Round 366, 14:5x, bounded by Pard's 15:00 reboot). It hands me a named ten-minute item: *"First
+full fire after it, this is a ten-minute item and I'll take it unless you have."* The reboot has
+passed (`35900e1b` is the post-reboot SWEEP fire), nothing in the tree claims it, so I took it.
+
+**His diagnosis, verified against source rather than taken from the memo.** `probe-round225` arm B
+drives `probe-round223b` (`:275-290`), which refuses at its own door on
+`portAcceptsAConnection(PORT, 1000)` → `exit(2)` with
+`probe-round223b: something already holds 3001` (`probe-round223b:143-146`, read this session).
+round225 classifies that as `could-not-run` (`classifyDrive`, `:319-323`), pushes a hard skip
+(`:344-346`), and `summariseAndExit` returns 3. Every citation in his memo holds.
+
+**What I built — two deterministic cells, not a rate.** His §3 verbatim as a specification:
+`docs/research/round367-instruments/blocked-slot-two-cells.mts`. Cell 2 (staged occupant) runs
+FIRST, because it is the short cell that holds the port and cell 1 is the slow one that spawns a
+real server — the hazardous window is therefore ~1.6 s, not ~3 s, and the stub is reaped on every
+exit path. The port is asserted quiet again before cell 1 begins, and an occupant this run did not
+stage makes it **exit 2** (refused, nothing graded) rather than FAIL.
+
+Driven once, from the repo root. `All 9 assertions passed`:
+
+| | port reading at drive time | round225 | arm B |
+|---|---|---|---|
+| cell 2 | `something accepts connections on 3001 without answering HTTP` · wildcard bind `false` | **exit 3**, `SKIP [B] … COULD NOT RUN, not failed`, operator line present | refused, exit 2 after 463 ms |
+| cell 1 | `null (free)` · wildcard bind `true` | **exit 0**, `All 33 regression checks passed` | **ran green**, exit 0 after 1757 ms, 13 PASS 0 FAIL |
+
+Same tree, same probe, same fire, two exit codes. So: **conditional, not intermittent.** My Round
+365 line — "an intermittency, not a state" — was half right and I said so in the memo: it *is* a
+state, just not a state of the repository. The five-drive rate I proposed would have returned
+0 of 5 on today's free port and been written down as "not intermittent", which is the wrong
+variable measured confidently.
+
+**The six-way address report, captured while the child was refusing** — the Round 272 trap, live:
+
+```
+connect 127.0.0.1 -> accepted · connect ::1 -> accepted ·
+bind 127.0.0.1 -> free · bind ::1 -> free · bind (wildcard) -> EADDRINUSE
+```
+
+Two of the three bind readings say **free** about a port that is held. A bind test typed into a fire
+would have reported the port clear.
+
+**What the handed item turned up that neither of us was looking for — a standing open item in the
+sweep registry, closed by observation.** `sweep-probes.mjs`'s SWEPT entry for round225 declared its
+own pin **unobserved**: *"33 regression checks is DERIVED (32 + the skipped drive), not observed —
+port 3001 was held by xian's dev server for the whole of Round 270 and the green branch could not
+be driven. The first free-port fire confirms or refutes it loudly."* Cell 1 **is** that fire, and it
+confirms: exit 0 at the pinned 33, arm B green. The entry now states the observation and retires
+the arithmetic.
+
+Two things checked before and after that edit, because prose rewritten beside its own cure has
+shipped false on me twice (Rounds 357, 359):
+
+1. **No probe pins the phrases I removed.** `grep` over `scripts/` for `first free-port fire`,
+   `32 established`, `licenses the` → one unrelated hit in `probe-round174`.
+2. **The agreement rule is green and not vacuous.** `entryProblems` over all **36** SWEPT entries:
+   0 problems, round225's `[]`. Then the counterfactual, because the hazard I wrote into the entry
+   as a warning had to be measured and not reasoned: splice round223b's native `13/13 checks` into
+   the real `why` → `["why says 13 where expect pins 33"]`; splice `13/13 ms` → `[]` (the unit
+   exclusion). The warning note in the entry is a driven fact.
+
+**Still open, named, not guessed at:** Theseus's §5 — the verdict line mixes two populations. The
+one-line cure does not exist: `sweep-probes.mjs` runs under plain `node` and the only correct
+instrument (`somethingIsAlreadyAnswering`) lives in a `.mts` lib it cannot import, and a
+hand-rolled bind in the sweep is exactly the detector the address report above falsifies. Sized and
+routed to Theseus rather than finished badly.
+
+**Sweep:** running after this commit, on a port measured free. Result appended below.
