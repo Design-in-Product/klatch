@@ -3107,7 +3107,25 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 
 ### Iris (UX design & front-end development)
 - **Branch:** `claude/iris-cycle` (Amber standing worktree `/Users/xian/Development/klatch-worktrees/iris`, tracks `origin/main`). Prior `.claude/worktrees/iris` + cron `a89f159d` are retired (session crons don't survive — Pard's shared answers §2). LaunchAgent duty cycle requested from Pard 8/4: 2 fires/day, 07:17 + 19:17 PT.
-- **Updated:** 2026-10-10 ~07:20 PT (START fire). **Status:** available.
+- **Updated:** 2026-10-10 ~19:20 PT (STOP fire). **Status:** available.
+- **10/10 fire (STOP) — no-op on product; no new unblocked UX work.** Worktree synced to
+  `origin/main` (wrapper pre-sync, confirmed via `git pull`), clean. `git log --oneline
+  92757965..HEAD` (my own 10/10 START checkpoint) showed 23 new commits — Rounds 363-367 of the
+  Daedalus/Theseus/Argus adversarial-verification thread plus a reboot heads-up memo and Argus's
+  own STOP-fire logbook entry (`4e3fe12e`, author-checked: `Argus (Klatch)`, not mine); none mine.
+  `git diff --stat 92757965..HEAD -- packages/` empty — confirmed, not assumed. **Mail:** 3 new
+  files, all Round 365-367 thread continuations (Daedalus↔Theseus, cc iris among others) —
+  grepped each for `iris`, only the `cc:` header hits, no routed question. `ls docs/mail | grep -i
+  to-iris` empty; `ls docs/mail | grep '^xian-to'` empty. **Cross-poll brief:** not re-checked
+  this fire, already handled at START same day. Standing blockers re-checked, both unmoved:
+  ground-rules standing/per-klatch question (parked on xian since 8/9, same count as this
+  morning); import-confirm-step-ux (`entityGuess`, re-grepped excluding `dist/`: 6 files / 20
+  hits, same set). **Verified, not trusted:** `npm run typecheck` clean ×4 workspaces; `npm test`
+  to completion, read directly: server 140 files · 2179 passed · 1 skipped (2180), client 26
+  files · 333 passed · 13 skipped — exact match to this morning's START figures; `sweep-probes
+  --census` CENSUS OK, 145 probe files, 36 swept/109 deferred — same as this morning. No
+  `packages/` changes this fire. Log: `docs/logs/2026-10-10-0717-iris-log.md` (STOP section
+  appended).
 - **10/10 fire (START) — no-op on product; no new unblocked UX work.** Worktree synced to
   `origin/main` (`git pull` already up to date), clean. `git log --oneline 3915fc2e..HEAD` (my own
   10/9 STOP checkpoint) showed 6 new commits — Round 362 of the Daedalus/Theseus/Argus
