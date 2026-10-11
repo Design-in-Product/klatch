@@ -45,3 +45,135 @@ model called.
 fire — no outbound need), gate, and both standing blockers all checked. Two consecutive checks
 found nothing further unblocked. Fire closed bounded. Nothing new needs xian beyond the one
 standing item (CIO/Laya).
+
+---
+
+## 2026-10-11 WORK fire — Argus (Sonnet 5)
+
+**13:3x PT** — Session start. `git pull --ff-only`: already up to date at `eea42c26`. Read
+`docs/COORDINATION.md` in full. `git log 7df8203b..HEAD --format='%h %an %s'` (own last checkpoint,
+09:06 START fire): 9 commits, none mine — Daedalus's Round 369 (`ecf091ba`/`926b09cc`/`d4f7eb78`),
+Theseus's Round 370 (`72886c0b`/`df32e1d9`/`673b4bea`), Calliope's 10/11 MID no-op (`86f5b1a9`), and
+Daedalus's Round 371 (`eea42c26`, landed 13:29, 11 minutes before this fire started — no mail memo
+for it existed yet when checked).
+
+**Mail:** `find docs/mail -maxdepth 1 -newermt '2026-10-10'` — two files: Daedalus's Round 369 reply
+to Theseus and Theseus's Round 370 reply to Daedalus, both cc argus. Read both in full. 369: lands
+the verdict-line item Theseus scoped, corrects his predicate spelling (key on exit code not flags),
+accepts his method correction (grader must drive the real exported function, not re-implement the
+memo's prose), finds his own first pin hollow via a counterfactual (C3 could only recompute the
+tally until extracted into a function), and names the characterisation-sweep item as owed but not
+taken, three rounds running — a question for Theseus rather than a fix. 370: answers that question
+by driving it — the broad marker predicate matches 55% of the population and is unusable, the
+precise marker's one member is a cure quoting its own cured defect verbatim, and the only decidable
+form is Daedalus's own R8 narrowing (a live cell contradicting its comment), which resolves to a
+3-entry registry with a two-sided pin, not a sweep. Both end "nothing here needs xian." No sentence
+in either routes an action to this seat beyond the standing cc — the round-chain landing is
+Daedalus/Theseus's lane, not gate verification.
+
+**Gate, re-derived fresh, not taken from any memo:**
+- `npm run typecheck` all four workspaces — 0 `error TS` lines.
+- `npm test -w packages/server` unpiped (direct run, no tee/tail) — **140 files / 2179 passed / 1
+  skipped (2180)**. Matches the 09:06 checkpoint exactly.
+- `npm test -w packages/client` unpiped — **26 passed | 13 skipped (39) files / 333 passed | 13
+  skipped (346) tests**. Matches exactly.
+- `node scripts/sweep-probes.mjs` (full drive) — **SWEEP FAILED — 35 of 37 swept probes green, 2
+  red, 0 blocked (0 could not run, 0 ran but did not finish), 0 census problem(s), 110 deferred.**
+  First non-PASS verdict at any of my checkpoints in weeks.
+
+**Investigated both reds before reporting, not just citing the sweep line:**
+- `probe-round307-...mts` — ran directly via `npx tsx`. Arm B2 FAILS:
+  `DRIFT: characterisation-markers::MARKERS | characterisation-markers::markersIn |
+  characterisation-markers::markersInRaw`. 1 of 17 regression checks failed, all other arms (C1-C6,
+  D1-D2, Z0-Z3) green/measured.
+- `probe-round308-...mts` — ran directly via `npx tsx`. Arm B1 FAILS: `6 of 7 explained, 0 real` —
+  one new citation (`characterisation-markers.mjs:181`, citing "arm R5 of probe-round224") is not
+  covered by any of the detector's four live classification reasons
+  (`explainedByOtherSpelling`/`NO_PROBE`/`TEMPLATE_LABEL`/`POSSESSIVE`/`SELF_OWNED` — computed live
+  against the tree each run, not a fixed list).
+- Attribution: `git diff --stat 86f5b1a9 eea42c26` (Calliope's MID no-op, immediately before
+  Daedalus's commit, to his) — exactly four files changed: `scripts/lib/characterisation-markers.
+  {mjs,d.mts}` (new), `scripts/probe-round371-*.mts` (new), and 9 added lines in
+  `scripts/sweep-probes.mjs`. Neither `probe-round307` nor `probe-round308` was touched — both are
+  pre-existing general-purpose detectors scanning all of `scripts/`, reacting to Round 371's new
+  code rather than drifting on their own or being stale from before my last checkpoint.
+- Read `characterisation-markers.mjs:146-162` and its `.d.mts:66-68` side by side. Hypothesis, named
+  as a hypothesis and not driven to confirm: `MARKERS` is a plain array literal with no `as const`
+  or tuple annotation, so TS infers each entry as `(string | RegExp)[]` rather than the declared
+  tuple `[string, RegExp]`; `markersIn`/`markersInRaw` inherit the looser inferred type through
+  `.map(([k]) => k)`, which would explain all three DRIFT names at once. Confirmed `npm run
+  typecheck` cannot catch this class — `scripts/tsconfig.json` takes `.mjs` as import targets only
+  and trusts the hand-written `.d.mts` without checking it against the real implementation; B2 is
+  this repo's only instrument that does.
+
+**Reported, not cured:** wrote
+`docs/mail/argus-to-daedalus-cc-theseus-xian-janus-calliope-iris-round371-broke-the-gate-two-pre-existing-probes-red-2026-10-11.md`
+— to Daedalus (author of the breaking commit), cc theseus/xian/janus/calliope/iris. Did not attempt
+a fix: the hypothesis above is unverified, and curing another seat's probe mid-round-chain without
+being asked is not this seat's call per the fleet's own standing discipline (widening or editing a
+SWEPT arm restages its pin). Did not go looking for a third consequence of Round 371 beyond these
+two reds.
+
+**Standing blockers re-checked, both unmoved:**
+- CIO Laya/AAXT thread — last touch still own 10/6 reply (`fe650e02`); parked on xian's scheduling
+  call.
+- Intel sweep cadence — last sweep `docs/intel/2026-10-05-sweep.md`, 6 days old; due 10/12, not yet.
+
+`git status --porcelain` clean apart from the mail file, this log, and COORDINATION.md. No port
+bound, no database opened, no model called. Scratch: none.
+
+**Drain:** mail checked and found nothing routed to this seat; gate re-derived and found RED —
+the fire's actual finding; both reds investigated and attributed before mailing; standing blockers
+re-checked, both unmoved. Two consecutive checks found nothing further unblocked beyond the routed
+mail. Fire closed bounded. Nothing needs xian beyond the one standing item (CIO/Laya) — the new
+gate finding is routed to Daedalus, not xian.
+
+**13:41 PT — race discovered before push, reconciled.** `git push origin claude/argus-cycle`
+rejected non-fast-forward. `git fetch` + `git log HEAD..origin/claude/argus-cycle` showed one new
+commit, `2687e189` — a historical 2026-08-29 Argus no-op log/coordination entry, author `Argus
+(Klatch)`, landing on the stray `refs/heads/claude/argus-cycle` remote branch (not `origin/main`).
+That branch is the same abandoned stray the commit's own content describes: this worktree's local
+`claude/argus-cycle` tracks `origin/main` (`branch.claude/argus-cycle.merge=refs/heads/main`,
+confirmed via `git config`), so `git push origin claude/argus-cycle` — the literal branch name,
+exactly the push command in this fire's own standing instructions — pushes to that stray ref, not
+to where every other agent's work actually lands. Attempted a merge first; got a real conflict
+(add/add on a 2026-08-29-dated log file whose own content already documents this exact
+mis-push-target episode from two months ago). Aborted the merge rather than resolve a conflict
+against an abandoned branch, and checked `origin/main` directly instead — `c15b9a61`, Daedalus,
+landed the same minute as my own commit: "round371: promoted to SWEPT, and the sweep found two
+reds in my own new files," fixing exactly the two reds this fire found (`probe-round307` B2,
+`probe-round308` B1). A genuine parallel-discovery race, not a push-target bug on its own this
+time — the push-target confusion is real (flagging it below) but the stray branch's new arrival
+was unrelated 2026-08-29 backfill, not a collision with Daedalus's fix.
+
+Rebased my commit onto `origin/main` (`c15b9a61`) — clean, no conflicts against the real target.
+Re-drove the full gate rather than trust the commit message: `node scripts/sweep-probes.mjs` —
+**SWEEP PASSED — 38 of 38 swept probes green, 0 red, 0 blocked (0 could not run, 0 ran but did not
+finish), 0 census problem(s), 109 deferred**. `probe-round307` and `probe-round308` both PASS
+directly (17/17, 23/23). `npm run typecheck` — 0 `error TS`, all four workspaces. `npm test -w
+packages/server` — **140 files / 2179 passed / 1 skipped (2180)**, unchanged (Daedalus's fix
+touched only `scripts/`, confirmed via `git show c15b9a61 --stat`). Daedalus's commit message
+confirms and refines my own B2 hypothesis: the drift is in the whole `MARKERS` constant's inferred
+shape (`(string | RegExp)[][]`), not just its inner tuples as I'd guessed; cured by reshaping to
+`{key, re}` objects, which infer exactly. B1 was a genuinely real, previously-unclassified hit (his
+own prose mis-cited a cell as an arm) rather than the merely-uncovered-false-positive I'd left open.
+
+Rewrote the mail before sending — confirmation rather than alarm, same filename, cc list unchanged
+— and rewrote this log and the COORDINATION entry to match the reconciled state rather than leave
+a stale "found it first" framing standing. Nothing pushed yet at time of rewrite; no one else had
+seen the original draft.
+
+**Flagging, not fixing, the push-target issue:** this fire's own standing instructions say
+`git push origin claude/argus-cycle` (literal branch name) — this worktree's branch tracks
+`origin/main`, so that literal invocation pushes to a stray, long-abandoned remote branch instead
+of `main`. The correct invocation is `git push origin HEAD:main` (or `git push` with no args, which
+respects the tracking config). This exact mis-push was already documented once before, in the
+stray branch's own August content (see above) — a prior Argus session hit it, self-corrected with
+`git push origin HEAD:main`, and left a note to delete the stray branch on request. The note's
+advice wasn't visible to this session until the stray branch's content resurfaced via the failed
+push just now. Not deleting the stray branch unilaterally (destructive, needs xian's approval per
+git safety rules) — flagging here for xian/Calliope: `refs/heads/claude/argus-cycle` on
+`origin` is stale, superseded, and safe to delete on request.
+
+Pushing this fire's actual commit with `git push origin HEAD:main` instead, per the corrected
+invocation.
