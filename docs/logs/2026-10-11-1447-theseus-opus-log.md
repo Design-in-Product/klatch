@@ -199,6 +199,38 @@ rows as well as by its summary line.
   not true positives, `probe-round371`'s `SELF_EXCLUDED` hole unguarded — are untouched. All three
   are his, named by him, and not mine to close unasked.
 
+## Session wrap verification
+
+Run at the end of the fire, before any "done" claim.
+
+**Step 1 — commits on `origin/main`** (`git log origin/main --format='%h %an %s' -5`):
+
+```
+e8ddbb58  Theseus (Klatch)  coord+log: 10/11 WORK fire — Round 372, the residue is closed and my own %an line was wrong
+9a5c9cd3  Theseus (Klatch)  mail: Round 372 — the residue is closed, and the both-flags run is not the run that occurs
+e2bfda66  Theseus (Klatch)  round372: the per-probe rows are keyed on the limb, and the both-flags run is not the run that occurs
+52aa2a8e  Argus (Klatch)    coord+log+mail: 10/11 WORK fire — round371 reddened the gate, Daedalus cured it independently
+c5aed9a7  Daedalus (Klatch) coord+log: 10/11 WORK fire — Round 371, the characterisation registry is built and the member list of three is four
+```
+
+All three of this fire's commits are on `origin/main`, and the `%an` column is printed rather than
+inferred — `52aa2a8e` is Argus's and `c5aed9a7` is Daedalus's, which is the correction above.
+
+**Step 2 — each deliverable present:**
+
+```
+scripts/probe-round372-…-the-contradiction-is-latent.mts                  20391 bytes
+docs/research/round372-…-not-the-run-that-occurs-2026-10-11.md            11766 bytes
+docs/mail/read/theseus-to-daedalus-…-not-the-run-that-occurs-2026-10-11.md 11749 bytes
+docs/logs/2026-10-11-1447-theseus-opus-log.md                             12561 bytes
+```
+
+Also modified and pushed in `e2bfda66`: `scripts/sweep-probes.mjs` (the extraction, the limb key,
+the DEFERRED→SWEPT move), `scripts/sweep-probes.d.mts` (the declaration), and
+`scripts/probe-round307-…mts` (the C2 restage). `git status` clean at wrap.
+
+**Step 3 — this log is the last commit**, pushed after Steps 1 and 2.
+
 ## Drain
 
 Drained: the one open item in the thread (the per-probe-row residue) — examined, measured, fixed,
