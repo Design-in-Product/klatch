@@ -3109,8 +3109,34 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 
 ### Iris (UX design & front-end development)
 - **Branch:** `claude/iris-cycle` (Amber standing worktree `/Users/xian/Development/klatch-worktrees/iris`, tracks `origin/main`). Prior `.claude/worktrees/iris` + cron `a89f159d` are retired (session crons don't survive — Pard's shared answers §2). LaunchAgent duty cycle requested from Pard 8/4: 2 fires/day, 07:17 + 19:17 PT.
-- **Updated:** 2026-10-10 ~19:20 PT (STOP fire). **Status:** available.
-- **10/10 fire (STOP) — no-op on product; no new unblocked UX work.** Worktree synced to
+- **Updated:** 2026-10-11 ~07:20 PT (START fire). **Status:** available.
+- **Drain:** mail checked — 1 new file since last checkpoint (Theseus's Round 368 memo, cc
+  iris), read in full, cc-only ("Nothing here needs xian"), no routed item. Cross-poll brief
+  skip-and-log per Calliope's standing ruling, not re-tried (known sandbox `WebFetch` permission
+  gap, unchanged). Both standing blockers re-checked, both unmoved. Fresh gate re-derived — see
+  below. Two consecutive checks found nothing further unblocked — fire closed bounded.
+- **10/11 fire (START) — no-op on product; no new unblocked UX work.** Worktree synced to
+  `origin/main` (wrapper pre-sync, confirmed via `git pull`), clean. `git log --oneline
+  28a0d56b..HEAD` (my own 10/10 STOP checkpoint) showed 5 new commits — Round 368 of the
+  Daedalus/Theseus adversarial-verification thread (probe, mail, coord+log, session-wrap log)
+  plus today's cross-pollination brief commit; authorship checked with `%an` (Theseus ×4, xian
+  ×1), none mine. `git diff --stat 28a0d56b..HEAD -- packages/` empty — confirmed, not assumed.
+  **Mail:** 1 new file, Theseus's Round 368 memo (cc xian/janus/argus/calliope/iris), read in full
+  — cc-only, no routed question. `ls docs/mail/*to-iris*.md` empty; `ls docs/mail | grep
+  '^xian-to'` empty. **Cross-poll brief:** skip-and-log per Calliope's standing ruling
+  (`docs/mail/read/calliope-to-iris-...-ruling-skip-and-log-2026-10-09.md`) — not re-tried, same
+  URL-only pointer, same sandbox `WebFetch` gap as every prior attempt. Standing blockers
+  re-checked, both unmoved: ground-rules standing/per-klatch question (parked on xian since
+  2026-08-09, now **63 days**); import-confirm-step-ux (`entityGuess`, re-grepped excluding
+  `dist/`: 6 source files, same set — line-count (`grep -c` summed) **20**, matching every prior
+  checkpoint exactly; reconciled an occurrence-count variant (`grep -o`, 23) against the
+  line-count method used in prior entries, not a drift). **Verified, not trusted:** `npm run
+  typecheck` clean ×4 workspaces; `npm test` to completion, read directly: server 140 files · 2179
+  passed · 1 skipped (2180), client 26 files · 333 passed · 13 skipped — exact match to 10/10
+  STOP's closing figures; `sweep-probes --census` CENSUS OK, 145 probe files, 36 swept/109
+  deferred — same as 10/10. No `packages/` changes this fire. Log:
+  `docs/logs/2026-10-11-0720-iris-log.md`.
+- **Prior (10/10 fire, STOP) — no-op on product; no new unblocked UX work.** Worktree synced to
   `origin/main` (wrapper pre-sync, confirmed via `git pull`), clean. `git log --oneline
   92757965..HEAD` (my own 10/10 START checkpoint) showed 23 new commits — Rounds 363-367 of the
   Daedalus/Theseus/Argus adversarial-verification thread plus a reboot heads-up memo and Argus's
