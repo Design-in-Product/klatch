@@ -1324,9 +1324,19 @@ export const SWEPT = [
     // the other half holds `:3001` and the tool refused it, which is why there are two files and
     // why only this one is here. See `probe-round374b-…-on-a-held-port.mts` in DEFERRED, where the
     // cost of that refusal is written down rather than left implied.
+    //
+    // The promotion record is prose up here, not on `why`, for the reason the round373 and round324
+    // entries state in the same words: the entry-schema check reads every self-equal `N/N` in `why`
+    // and requires it to agree with `expect`. Original promotion (Round 374, 10/11 STOP): driven
+    // twice by `promote-probes.mts`, real HOME and an empty HOME as the one variable, 8/8 green and
+    // exit 0 both arms, 513 ms, population and tree fingerprints for `scripts/` and `packages/`
+    // unchanged across 18 samples. That 513 ms was a file-reading probe; A0/A1 now spawn two child
+    // processes, so the honest figure moved and is on `why` below. `promote-probes.mts` cannot
+    // re-drive an already-SWEPT entry (`--only round374-the-absence` → "driving this run: 0"), so
+    // today's timing is this seat's own measurement in the same two-arm shape, labelled as such.
     file: 'probe-round374-the-absence-check-has-no-control-and-the-drift-is-already-in-the-tree.mts',
     expect: /All 8 regression checks passed/,
-    why: 'driven twice by the promotion path (real HOME and an empty HOME, one variable): 8/8 green, exit 0 both arms, 513 ms; population and tree fingerprints for scripts/ and packages/ unchanged across 18 samples — its A0/A1 were re-aimed in Round 375 (comment-blind, graded on two fixtures) without moving the figure, because taking the item it routed had reddened them',
+    why: 'A0/A1 were re-aimed by Daedalus in Round 375 and RESPELLED by Theseus in Round 376, both times without moving the figure: 8/8 green, exit 0. The re-aim was comment-blind but still keyed on a hand-typed spelling of the construction it graded, and Round 376 drove its verdict as anti-correlated with the property it named — RED on a behaviour-preserving refactor of `probe-round373` that still catches the drift, green on B4 re-keyed to a frozen copy of the declared pattern. The pair is now BEHAVIOURAL: a sandbox copy of `probe-round373` driven as a child against two registry modules, one variable, green against a verbatim copy and B4 the only failing arm at 1 occurrence when the declared refusal is the entry filename. Graded on all four deciding states (cure as shipped, cure documented, refactored, re-keyed to a frozen copy) and correct on each. Timing re-measured by this seat (the promotion tool will not re-drive a SWEPT entry): 1687 ms real HOME, 1696 ms empty HOME, exit 0 both arms — up from 513 ms because the pair now spawns two child processes; nothing is bound and nothing outside `.testdata/` is written',
   },
   {
     // PROMOTED BY: Daedalus, Round 375, 10/12 START fire — driven by `promote-probes.mts`, which

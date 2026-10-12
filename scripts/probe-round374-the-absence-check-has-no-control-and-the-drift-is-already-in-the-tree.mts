@@ -48,11 +48,11 @@
  */
 
 import { copyFileSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { spawnSync } from 'node:child_process';
 import { dirname, join } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 
 import { summariseAndExit, type ProbeVerdict } from './lib/probe-outcome.mts';
-import { stripSource } from './lib/strip-source.mjs';
 import { SWEPT } from './sweep-probes.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
@@ -82,76 +82,157 @@ const r225 = SWEPT.find((s) => s.file === R225)!;
 const occurrences = (haystack: string, needle: string) => haystack.split(needle).length - 1;
 
 /**
- * **RE-AIMED BY: Daedalus, Round 375, 10/12 START fire**, and the reason is this pair's own subject.
- * As shipped, these two arms scraped Round 373's RAW source for the literal-keyed detector, required
- * **exactly one** such construct, and compared the literal it yielded to the registry. Both halves
- * of that were a verbatim source pin on another file (357), and taking the item this round routed
- * falsified both at once:
+ * **RE-AIMED BY Daedalus in Round 375, and RESPELLED HERE in Round 376 — the re-aim was the same
+ * mechanism one surface over, and it is driven both ways below rather than argued.**
  *
- *   - **Red on the cure.** Re-key B4 and the construct is gone — `0 match(es)`, A0 and A1 FAIL, this
- *     promoted probe red, the gate at 40/41. Not on a drift: on the repair this file asked for.
- *   - **Green on a comment.** Quote the replaced line in the repair's own comment — the likeliest
- *     shape of any such commit, and a mistake Round 371 caught in my file — and the scrape finds its
- *     one construct again inside a block comment and goes green while grading a dead string.
+ * As first shipped, this pair scraped Round 373's RAW source for the literal-keyed detector and
+ * required **exactly one** such construct. Both halves were a verbatim source pin on another seat's
+ * file (357), and taking the item this round routed falsified both at once: red on the cure (`0
+ * match(es)`, gate at 40/41), green on the cure plus a comment quoting the replaced line. That
+ * finding is Daedalus's, it is right, and his three drives are in `probe-round375` section B.
  *
- * Three drives over the three states, one variable each, are in `probe-round375` section B; the
- * live-tree reading is in its memo. The re-aim keeps the intent — *B4 must not be keyed on a copy of
- * the registry* — and changes what the arms read:
+ * His re-aim made the scan comment-blind through `lib/strip-source.mjs` and graded it on two
+ * fixtures — both correct, and neither reaches the defect, because the arm was still keyed on a
+ * hand-typed spelling of HIS construction: `occurrences(masked, 'new RegExp(r225.refusal')  === 1`.
+ * Round 376 drove six sandbox arms (`docs/research/round376-…`), and the re-aimed A1's verdict is
+ * **anti-correlated with the property it names**:
  *
- * 1. **Comment-blind:** the site scan runs over `stripSource(…, false)`, the shared reader that
- *    answers 'which bytes of this source are code?' — already in `lib/`, so this is not a
- *    hand-rolled masker (Round 258's extraction, and the lesson about checking `lib` first).
- * 2. **Graded on fixtures before it reads anything (A0):** the same scanner must find the planted
- *    construct in a live line and must NOT find it in that identical line inside a block comment.
- *    That is both a positive control — this file's own A4 lesson, now applied to its own scraper —
- *    and the two-sided grading the shipped pair had on neither side.
- * 3. **Keyed on the property, not the text (A1):** zero LIVE literal-keyed sites, and B4's live key
- *    is the registry object. Both halves hold for the cure bare and for the cure documented.
+ *   - **FALSE DEFECT.** Build the same two regexes from the same registry objects through a
+ *     one-line helper — `const gOf = (p: RegExp) => new RegExp(p.source, `${p.flags}g`)` — and
+ *     `probe-round373` stays at **exit 0, All 15**, and still goes **B4 FAIL at 2** under the
+ *     shortened registry (arms D2/D6: the property is fully present). The re-aimed A1 goes **RED**.
+ *   - **FALSE PASS.** Re-key B4 to a frozen copy of the declared pattern in the shape a person
+ *     would actually write it — a named `const FROZEN_REFUSAL = /probe-round223b: …/g` beside the
+ *     registry-built regex, which is literally the drift the arm's own text said it catches — and
+ *     the re-aimed A1 goes **green** (arm D3). Add the registry drift on top and `probe-round373`
+ *     reports `0` and passes **All 15** while its claim is false by 2 (arm D4), against **B4 FAIL
+ *     at 2** on the shipped key under the identical registry (arm D5, the one-variable control).
+ *
+ * **A static reading cannot be made sound here, and that is a measurement rather than a preference.**
+ * The needle is the declared pattern's text; the place a frozen copy lives is a regex literal; and
+ * `stripSource` blanks a regex body in BOTH its readings, by design and for a load-bearing reason
+ * stated in its own header. Measured on arm D3: the frozen copy occurs **1** time in the raw source
+ * and **0** times in `stripSource(src, false)`. So comment-blindness and visibility-of-the-copy are
+ * not simultaneously available from the shared reader — and the raw-source alternative is red on a
+ * repair that documents the line it replaced, which is the failure Round 375 just found here.
+ *
+ * So this pair is now **behavioural**, in the register where the property cannot drift (369): a
+ * sandbox copy of `probe-round373` driven as a child against two registry modules, one variable.
+ * A0 is the faithful control, A1 is the drifted arm. Independent of his C1/C2 in both the selector
+ * and the expected figure — his mutant shortens the refusal and expects `2`; this one sets the
+ * declared refusal to the declared SKIP source and expects `1` — so their agreement is a second
+ * reading rather than a second copy (339).
  */
-const CALL = '(r225Src.match(';
-/**
- * Live `r225Src.match(` call sites, by the technique this module exists for: the site is located in
- * the MASKED text and the argument is read out of the ORIGINAL at that offset, which is sound only
- * because `stripSource` preserves every offset. Matching the whole construct in masked text does
- * not work and is worth recording: a regex literal is blanked **including its delimiters**, so
- * `.match(/…/g)` masks to `.match(` + spaces + `g)` and a pattern with `\/` in it finds nothing.
- * A0's commented fixture would have hidden that behind the answer it was looking for; A0's LIVE
- * fixture is what caught it.
- */
-const siteKeys = (src: string) => {
-  const masked = stripSource(src, false);
-  const keys: ('literal' | 'other')[] = [];
-  for (let i = masked.indexOf(CALL); i >= 0; i = masked.indexOf(CALL, i + 1)) {
-    keys.push(/^\(r225Src\.match\(\/(.+?)\/g\)/.test(src.slice(i)) ? 'literal' : 'other');
-  }
-  return keys;
+const R373_IMPORT_OUTCOME = "from './lib/probe-outcome.mts';";
+const R373_IMPORT_SWEEP = "} from './sweep-probes.mjs';";
+const R373_HERE = 'const HERE = dirname(fileURLToPath(import.meta.url));';
+const R373_SANDBOX_DECL = "const SANDBOX = join(HERE, '..', '.testdata', 'round373');";
+
+/** Replace exactly one asserted occurrence, or throw — a mutation whose target is asserted (347). */
+const once = (src: string, from: string, to: string) => {
+  const n = occurrences(src, from);
+  if (n !== 1) throw new Error(`anchor occurs ${n} time(s), expected exactly 1: ${from}`);
+  return src.replace(from, to);
 };
-const PLANTED = `const refusalInSubject = (r225Src.match(/${r225.refusal!.source}/g) || []).length;`;
-const fixtureLive = siteKeys(`const x = 1;\n${PLANTED}\n`);
-const fixtureCommented = siteKeys(`const x = 1;\n/**\n * ${PLANTED}\n */\n`);
-check(
-  'A0',
-  'the scanner is graded on known inputs before it reads anything, on BOTH sides: the planted ' +
-    `literal-keyed detector is read as ${JSON.stringify(fixtureLive)} as a live line and ` +
-    `${JSON.stringify(fixtureCommented)} when that identical line sits inside a block comment. A ` +
-    'scrape that silently finds nothing, or one that cannot tell a detector from a quotation of ' +
-    'one, would make every arm below a function of commentary rather than of code',
-  fixtureLive.length === 1 && fixtureLive[0] === 'literal' && fixtureCommented.length === 0,
+
+/**
+ * The subject copy. Four replacements, each asserted unique, and the child sandbox kept at the SAME
+ * DEPTH under `.testdata/` as the real one — the child `probe-round373` mints reaches the shared
+ * module through `../../scripts/lib/`, so a copy one level deeper fails to load for a reason that
+ * has nothing to do with the registry. Daedalus's C1 caught exactly that; inheriting the constraint
+ * rather than rediscovering it.
+ */
+mkdirSync(join(SANDBOX, 'lib'), { recursive: true });
+copyFileSync(join(HERE, 'lib', 'strip-source.mjs'), join(SANDBOX, 'lib', 'strip-source.mjs'));
+const R373_SUBJECT = join(SANDBOX, 'subject-round373.mts');
+const copy373 = (sweepPath: string) => {
+  let s = once(r373Src, R373_IMPORT_OUTCOME, `from '${join(HERE, 'lib', 'probe-outcome.mts')}';`);
+  s = once(s, R373_IMPORT_SWEEP, `} from '${sweepPath}';`);
+  s = once(s, R373_HERE, `const HERE = ${JSON.stringify(HERE)};`);
+  s = once(s, R373_SANDBOX_DECL, `const SANDBOX = ${JSON.stringify(join(REPO, '.testdata', 'round374-r373-child'))};`);
+  return s;
+};
+const SWEEP_FAITHFUL = join(SANDBOX, 'sweep-faithful.mjs');
+const SWEEP_REFUSAL_IS_FILE = join(SANDBOX, 'sweep-refusal-is-file.mjs');
+writeFileSync(SWEEP_FAITHFUL, sweepSrc, 'utf8');
+/**
+ * The drift target, and why THIS one. It has to be (a) derived from the registry entry rather than
+ * typed, (b) present in the subject's source a known non-zero number of times, and (c) **narrow** —
+ * the first mutant tried here declared the refusal as the registry's own SKIP source, which makes
+ * the two declared patterns identical and reddens `probe-round373`'s B2 as well as its B4, so the
+ * red stopped being attributable to B4's key (this file's own A5b lesson, applied to itself).
+ * `r225.file` is in the entry, occurs exactly once in the subject's source, and collides with
+ * nothing `classify` does — A1 asserts B4 is the ONLY failing arm, so that narrowness is checked
+ * rather than claimed.
+ */
+const DRIFT_TARGET = r225.file;
+writeFileSync(
+  SWEEP_REFUSAL_IS_FILE,
+  once(sweepSrc, `refusal: /${r225.refusal!.source}/,`, `refusal: /${DRIFT_TARGET}/,`),
+  'utf8',
 );
 
-const r373Sites = siteKeys(r373Src);
-const b4LiveSites = r373Sites.filter((k) => k === 'literal').length;
-const registryKeySites = occurrences(stripSource(r373Src, false), 'new RegExp(r225.refusal');
+type R373Drive = {
+  status: number | null;
+  b4: 'ok' | 'FAIL' | 'none';
+  count: number;
+  all15: boolean;
+  failed: string[];
+};
+const driveR373 = (label: string, sweepPath: string): R373Drive => {
+  writeFileSync(R373_SUBJECT, copy373(sweepPath), 'utf8');
+  const run = spawnSync('npx', ['tsx', R373_SUBJECT], { cwd: REPO, encoding: 'utf8', timeout: 180_000 });
+  const out = `${run.stdout ?? ''}${run.stderr ?? ''}`;
+  const m = /(FAIL|\[ok\]) B4 {2}the mirror leg[^\n]*occurs (\d+) times/.exec(out);
+  const d: R373Drive = {
+    status: run.status,
+    b4: m ? ((m[1] === 'FAIL' ? 'FAIL' : 'ok') as 'ok' | 'FAIL') : 'none',
+    count: m ? Number(m[2]) : -1,
+    all15: /All 15 regression checks passed/.test(out),
+    failed: out
+      .split('\n')
+      .filter((l) => l.startsWith('FAIL '))
+      .map((l) => l.slice(5).split(/\s+/)[0]),
+  };
+  meas(
+    `A-drive(${label})`,
+    `exit ${String(d.status)} · B4 ${d.b4} at ${d.count} occurrence(s) · ` +
+      (d.all15
+        ? 'All 15 regression checks passed'
+        : `failing arm(s): ${d.failed.join(' ') || '(none printed)'}`),
+  );
+  return d;
+};
+
+const faithful = driveR373('faithful-registry', SWEEP_FAITHFUL);
+check(
+  'A0',
+  'CONTROL, and the arm that makes A1 attributable: a sandbox copy of `probe-round373`, differing ' +
+    'from the shipped file in four asserted import/path replacements and nothing else, driven as a ' +
+    'child against a VERBATIM copy of the registry module, is green on all 15 with B4 reading ' +
+    `${faithful.count} — exit ${String(faithful.status)}. The copy is the file, so a red below is ` +
+    'the mutated declaration and not the copy',
+  faithful.status === 0 && faithful.b4 === 'ok' && faithful.count === 0 && faithful.all15,
+);
+
+const drifted = driveR373('refusal-declared-as-the-entry-filename', SWEEP_REFUSAL_IS_FILE);
 check(
   'A1',
-  `B4 is keyed on the registry object rather than on a copy of its text: of ` +
-    `${r373Sites.length} live \`${CALL}\` site(s) in \`probe-round373\`, ${b4LiveSites} are keyed ` +
-    `on a literal, and ${registryKeySites} site(s) build the detector from \`r225.refusal\`. The ` +
-    'non-zero site count is the control for the zero beside it, in the file the claim is about ' +
-    'rather than in a fixture: a scanner that found nothing here would report the same zero. This ' +
-    'arm goes red if B4 is ever re-keyed back to a frozen copy of the declared pattern, and it ' +
-    'does not go red merely because the repair documents the line it replaced',
-  r373Sites.length > 0 && b4LiveSites === 0 && registryKeySites === 1,
+  "B4's figure is a FUNCTION OF THE REGISTRY DECLARATION, not of a copy of its text: declare the " +
+    `refusal as \`${DRIFT_TARGET}\` — one asserted replacement, a string the entry already carries ` +
+    `and the subject's source contains once — and B4 goes RED and says the number: exit ` +
+    `${String(drifted.status)}, B4 ${drifted.b4} at ${drifted.count} occurrence(s), and B4 is the ` +
+    `ONLY failing arm (${drifted.failed.join(' ')}), so the red is attributable to its key and not ` +
+    'to a registry that broke something else. Any frozen copy of the shipped spelling reports 0 ' +
+    'here and passes, which is what Round 376 arm D3 drove over a real re-keyed file — so this arm ' +
+    'is red on exactly the drift its predecessor let through, and it does not move when the repair ' +
+    "documents the line it replaced, because it reads none of that seat's text",
+  drifted.status === 1 &&
+    drifted.b4 === 'FAIL' &&
+    drifted.count === 1 &&
+    !drifted.all15 &&
+    drifted.failed.length === 1 &&
+    drifted.failed[0] === 'B4',
 );
 
 /**
