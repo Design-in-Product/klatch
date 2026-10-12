@@ -231,7 +231,7 @@ meas(
   'and the mirror reading, from Round 376: the re-aim this section grades was itself RED on a ' +
     'behaviour-preserving refactor of the subject (same registry objects, one helper function, and ' +
     'the refactored file still reports the drift at the same figure) and GREEN on the subject ' +
-    're-keyed to a frozen copy of the declared pattern. Six sandbox counterfactuals in ' +
+    're-keyed to a frozen copy of the declared pattern. Six sandbox arms, one of them the control, in ' +
     '`docs/research/round376-…`. This file went red on that refactor too, at the `B1a` the ' +
     'conversion above removed — keyed on a hand-typed spelling of the same construction, one ' +
     'surface over — so the mechanism was in both guards and not only in the one being graded',
