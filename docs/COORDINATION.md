@@ -3120,7 +3120,35 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 
 ### Iris (UX design & front-end development)
 - **Branch:** `claude/iris-cycle` (Amber standing worktree `/Users/xian/Development/klatch-worktrees/iris`, tracks `origin/main`). Prior `.claude/worktrees/iris` + cron `a89f159d` are retired (session crons don't survive — Pard's shared answers §2). LaunchAgent duty cycle requested from Pard 8/4: 2 fires/day, 07:17 + 19:17 PT.
-- **Updated:** 2026-10-11 ~19:18 PT (STOP fire). **Status:** available.
+- **Updated:** 2026-10-12 ~07:17 PT (START fire). **Status:** available.
+- **Drain:** mail checked — 1 new file since last checkpoint (Janus→Calliope/Argus memo re: a
+  fire-instruction stray-branch push), read in full, not addressed or cc'd to this seat
+  (`grep -i iris` on it is empty), no routed item. Cross-poll brief retried via `WebFetch` as a
+  one-time retest (new failure mode this time — an unanswered permission prompt, not the earlier
+  sandbox network gap — same net outcome, logged); skip-and-log stands. Both standing blockers
+  re-checked, both unmoved. Fresh gate re-derived — see below. Two consecutive checks found
+  nothing further unblocked — fire closed bounded.
+- **10/12 fire (START) — no-op on product; no new unblocked UX work.** Worktree synced to
+  `origin/main` (wrapper pre-sync, confirmed via `git status`), `HEAD == origin/main ==
+  b82111a1`. `git log --oneline 4388a775..HEAD` (my own 10/11 STOP checkpoint) showed 4 new
+  commits — Calliope's 10/11 STOP logbook backfill, an automated external intel scan, the
+  Janus→Calliope/Argus memo, and today's cross-pollination brief; authorship checked with `%an`,
+  none mine. `git diff --stat 4388a775..HEAD -- packages/` empty — confirmed, not assumed.
+  **Mail:** 1 new file, read in full, not addressed to this seat (see Drain line above). `ls
+  docs/mail | grep -i to-iris` empty; `ls docs/mail | grep '^xian-to'` empty. **Cross-poll
+  brief:** retried `WebFetch` given this session's fire preamble flagged some prior
+  network-absence assumptions as wrong — got a permission-prompt failure instead of the earlier
+  sandbox network error, outcome unchanged, Calliope's standing skip-and-log ruling still holds.
+  Standing blockers re-checked, both unmoved: ground-rules standing/per-klatch question (parked
+  on xian since 2026-08-09, now **65 days**); import-confirm-step-ux (`entityGuess`, re-grepped
+  excluding `dist/`: same 6 source files, sums to 20, matching every prior checkpoint).
+  **Verified, not trusted:** `npm run typecheck` clean ×4 workspaces; `npm test` to completion,
+  summary lines read directly (not a truncating `head`/`tail`): server 140 files · 2179 passed ·
+  1 skipped (2180), client 26 files · 333 passed · 13 skipped — exact match to 10/11 STOP's
+  closing figures; `sweep-probes --census` CENSUS OK, 151 probe files (+2), 41 swept (+1)/110
+  deferred (+1) — consistent with Round 374 landing since my last checkpoint. No `packages/`
+  changes this fire. Log: `docs/logs/2026-10-12-0717-iris-log.md`.
+- **Prior update:** 2026-10-11 ~19:18 PT (STOP fire). **Status:** available.
 - **Drain:** mail checked — 1 new file since last checkpoint (Daedalus's Round 373 memo, cc
   iris), read in full, cc-only ("Nothing here needs xian"), no routed item. Cross-poll brief
   not re-checked (already handled at START same day). Both standing blockers re-checked, both
