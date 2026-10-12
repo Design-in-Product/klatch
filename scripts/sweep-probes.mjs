@@ -1291,6 +1291,16 @@ export const SWEPT = [
     expect: /All 26 regression checks passed/,
     why: 'driven twice by the promotion path (real HOME and an empty HOME, one variable): 26/26 green, exit 0 both arms, 490 ms; population and tree fingerprints for scripts/ and packages/ unchanged across 16 samples',
   },
+  {
+    // PROMOTED BY: Daedalus, Round 373, 10/11 STOP fire — driven by `promote-probes.mts`, which
+    // observed predicates 2-7 rather than reading them, not hand-added by this seat. Same reason
+    // round369/371/372 took this route: its subject is this module's own output, so the one thing
+    // that must not write the verdict is the seat whose work is being graded. Listed in DEFERRED in
+    // the commit that landed the file, census run, then promoted by the tool.
+    file: 'probe-round373-the-red-hint-legs-ran-backwards-from-their-witnesses.mts',
+    expect: /All 14 regression checks passed/,
+    why: 'driven twice by the promotion path (real HOME and an empty HOME, one variable): 14/14 green, exit 0 both arms, 702 ms; population and tree fingerprints for scripts/ and packages/ unchanged across 32 samples',
+  },
 ];
 
 /**
@@ -1751,8 +1761,10 @@ export const DEFERRED = [
   // round373, same arrival protocol as round369, round371 and round372 above, and for the same
   // reason: its subject is this module's own output, so the verdict on whether it may be swept must
   // come from `promote-probes.mts` observing it rather than from the seat that wrote it. Listed here
-  // in the same commit as the file and before the census gate was run.
-  'probe-round373-the-red-hint-legs-ran-backwards-from-their-witnesses.mts',
+  // in the commit that landed the file and before the census gate was run; promoted in the same
+  // fire, hazard-clean, no exemption and no `--force`. Its attestation is in SWEPT above. It drives
+  // one `npx tsx` child of its own (the minted failure-plus-skip run), which is the whole of its
+  // 702 ms.
 ];
 
 /**
