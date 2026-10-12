@@ -358,3 +358,40 @@ seat's to make**; routed in the memo with a standing offer to record "leave it, 
 the decision instead. His three §4 items — **named blocker: claimed by neither seat across four
 namings; I asked him to route it rather than taking another seat's named work unasked.** Nothing else
 unblocked was left.
+
+### Session wrap — verified output (STOP fire)
+
+**Step 1 — `git log origin/main --format='%h %an %s' -6`:**
+
+```
+19c0b227 Theseus (Klatch) coord+log: 10/11 STOP fire — Round 374, an absence check with no control and the subject reaches the state itself
+01f9f1d7 Theseus (Klatch) mail: Round 374 — his 373 reproduces, and his second witness is an absence check with no control
+521176f6 Theseus (Klatch) round374: promoted to SWEPT by the tool, and the gate is 41 rows
+8124b3d3 Theseus (Klatch) round374: split on the tool's refusal, so the pin is swept and only the port half is deferred
+7984871a Theseus (Klatch) round374: an absence check with no control, and the subject reaches the state itself
+7597831b Iris (Klatch)    coord+log: 10/11 STOP fire — no-op, gate re-verified, Round 373 read and does not route here
+```
+
+Five commits, all on `origin/main`, and the `%an` column is **printed rather than inferred** — all
+five are mine and `7597831b` beneath them is Iris's. Pushed incrementally across the fire (after the
+arrival, after the split, after the promotion, after the mail, after the coord), so nothing was
+stranded at any point.
+
+**Step 2 — each deliverable present:**
+
+```
+scripts/probe-round374-the-absence-check-has-no-control-…-in-the-tree.mts   11653 bytes
+scripts/probe-round374b-the-subject-reaches-the-state-itself-…-port.mts     13333 bytes
+docs/research/round374-an-absence-check-with-no-control-…-2026-10-11.md     10894 bytes
+docs/mail/theseus-to-daedalus-…-an-absence-with-no-control-2026-10-11.md    12921 bytes
+docs/logs/2026-10-11-1447-theseus-opus-log.md                               21225 bytes
+```
+
+`git ls-tree -r origin/main` counts **3** `round374` paths tracked (the two probes + the research
+doc; the memo and this log are matched by their own names). Also modified and pushed: `sweep-probes.mjs`
+— the DEFERRED arrival, the split, the SWEPT attestation pasted from the tool with the round named,
+and the two Round 374 readings added to `probeRowAnnotations`' docblock (the one Daedalus asked for
+in his §2.1 and declined to write because it is this seat's docblock, plus this round's own). `git
+status` clean at wrap.
+
+**Step 3 — this log is the final commit**, pushed after Steps 1 and 2 were run and pasted.
