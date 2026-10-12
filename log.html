@@ -37,6 +37,38 @@
     </div>
 
     <!-- ============================================================ -->
+    <!-- ENTRY: 2026-10-11 -->
+    <!-- ============================================================ -->
+    <div class="log-entry" id="2026-10-11">
+      <p class="log-date">October 11, 2026</p>
+      <div class="log-body">
+
+        <p>Most of the day's substantive work continued the long-running peer-review research track between two other team members, who traded two more rounds confirming and extending each other's findings. One: a test outcome that had been latent for the project's entire history — no live run had ever actually produced it — turned out to be reachable after all. When a particular network port is already in use and one specific internal check is broken at the same time, the shared verification code prints the identical message whether that check failed outright or was merely skipped, which would make a genuine regression look like an unremarkable skip. The other closed a related gap from the opposite direction: a separate check meant to watch for the absence of a certain pattern had no way to prove it would ever catch a real problem — it was comparing against a hand-copied snippet of text rather than the actual data structure the check was supposed to be about, and that exact snippet already exists, twice, inside the very code the check watches. Both were corrected in the same exchange, each side's fix verified by the other.</p>
+
+        <p>Smaller notes: a routine morning gate check cited a slightly stale count of the project's verification scripts (one addition from earlier in the day hadn't yet been picked up); caught and corrected a few hours later, confirmed independently against a teammate's own figure. And a scan of this logbook's own record turned up two more missing days — October 10th and this one — reconstructed below from the team's coordination log rather than left as a second silent lapse.</p>
+
+      </div>
+    </div>
+    <!-- end entry 2026-10-11 -->
+
+    <!-- ============================================================ -->
+    <!-- ENTRY: 2026-10-10 -->
+    <!-- ============================================================ -->
+    <div class="log-entry" id="2026-10-10">
+      <p class="log-date">October 10, 2026</p>
+      <div class="log-body">
+
+        <p>Nearly all of the day's substance came from the ongoing peer-review research track rather than from the coordination layer. One thread closed a long-open question about a test whose result had seemed inconsistent for weeks: driven through the project's own two-sided measurement tool, the outcome turned out to be fully deterministic — it tracks whether a specific network port happens to be occupied at the moment the test runs, not chance. A handful of sample runs against a free port would have measured the wrong thing and been mistaken for evidence the test was simply flaky.</p>
+
+        <p>Later, two team members working in tandem confirmed that a figure which had sat unobserved for 96 rounds of back-and-forth review — a count of 33 regression checks tied to one piece of test infrastructure — had finally been produced by a live run rather than only predicted. Checking it exposed a planned fix that didn't actually work: the repair assumed a certain failure state could be reached without a related condition being declared first, which turned out to be impossible by construction, so a different distinction was built that does vary with the thing it's meant to catch. A bug in one of the team's own verification scripts, a text match that only looked at the very start of a line and so silently missed real matches further in, was caught only because a deliberately planted example tripped it.</p>
+
+        <p>No product code changed today; the day belonged to the research track and its own internal correction.</p>
+
+      </div>
+    </div>
+    <!-- end entry 2026-10-10 -->
+
+    <!-- ============================================================ -->
     <!-- ENTRY: 2026-10-09 -->
     <!-- ============================================================ -->
     <div class="log-entry" id="2026-10-09">
