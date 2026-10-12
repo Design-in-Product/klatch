@@ -385,13 +385,59 @@ const r261Now = fs.readFileSync(
   path.join(REPO, 'scripts', 'probe-round261-a-pin-whose-red-is-cleared-by-doing-something-is-a-gate.mts'),
   'utf8',
 );
-check('E1', 'probe-round261 no longer contains the allowlist regex that had to name every future round\'s files',
+/**
+ * ── Arm E narrowed in Round 378 (Theseus, 10/12 WORK), and why ────────────────────────────────
+ *
+ * This arm binds another seat's live source to an identifier and runs checks over its TEXT. That
+ * is the class Rounds 375/376/377 cured at four other sites, and this is the fifth and oldest
+ * instance of it in the swept set — missed by Round 377's B1m member list, which read the class
+ * under a key carrying only the two shapes already in view (a `const R225 = '…'` indirection, and
+ * `readFileSync(join(` with its argument on one line). This file spells it a third way:
+ * `fs.readFileSync(` with the literal filename on the next line.
+ *
+ * Driven, five arms, in a CLONE of this repo rather than a minted one — arm A above pins a commit
+ * sha, so a `git init` sandbox has no such object and every arm comes back red beside a red
+ * control:
+ *
+ *   faithful control                                      exit 0 · All 15
+ *   261's `zBefore`/`zAfter` renamed (3 occurrences each)  exit 1 · E2 the only failing arm
+ *   a DIFFERENT local renamed (`Z_PATHSPECS`, 6)           exit 0 · All 15   ← narrowness control
+ *   261 re-acquires an allowlist, different spelling       exit 0 · All 15   ← E1 is blind to it
+ *   261 re-acquires the allowlist VERBATIM                 exit 1 · E1 the only failing arm
+ *
+ * The two legs reading `zBefore`/`zAfter` were the whole of E2's fragility: both are declared once
+ * and used only inside `probe-round261`, which exports nothing at all, so renaming them is
+ * behaviour-preserving in the strictest sense available — and it reddened this probe. They are
+ * recorded in E2m instead. What stays a CHECK is the import specifier, which cannot be renamed
+ * without changing what 261 loads, so it is behaviour-bearing rather than a spelling.
+ *
+ * E1 stays a check, with its words corrected rather than its aim. It is not vacuous — the verbatim
+ * arm shows it can go red — but it claimed the allowlist DESIGN was gone when what it can see is
+ * one byte sequence, and the respelled arm walks past it. This file's own title is the finding it
+ * shipped here: an emptiness claim over a shared window is not strict, it is blind.
+ *
+ * The instrument: `docs/research/round378-instruments/drive-263-arm-e-counterfactual.mjs`.
+ */
+check('E1', 'probe-round261 does not contain the allowlist regex VERBATIM — a byte-level reading, not a claim about the design',
   !/sweep-probes\\\.mjs\|probe-round261/.test(r261Now),
   `the \`!/sweep-probes\\.mjs|probe-round261/.test(l)\` filter is gone from the file. An allowlist ` +
-  `is cleared by EDITING IT each round — the staleness that file's own DEFERRED design exists to avoid.`);
-check('E2', 'and it takes a before/after fingerprint through the shared module',
-  /from '\.\/lib\/tree-fingerprint\.mts'/.test(r261Now) && /zBefore/.test(r261Now) && /zAfter/.test(r261Now),
-  `imports \`tree-fingerprint.mts\`; brackets the run with \`zBefore\`/\`zAfter\`.`);
+  `is cleared by EDITING IT each round — the staleness that file's own DEFERRED design exists to ` +
+  `avoid. Scope, driven in Round 378: red when that spelling returns verbatim, GREEN when an ` +
+  `equivalent allowlist returns under a different spelling. Absence of these bytes is all this ` +
+  `arm asserts; the design claim is not available from a source reading.`);
+check('E2', 'and it loads the shared fingerprint module — the import specifier, which cannot be renamed without changing what 261 loads',
+  /from '\.\/lib\/tree-fingerprint\.mts'/.test(r261Now),
+  `imports \`tree-fingerprint.mts\`. The two legs that also required the local identifiers ` +
+  `\`zBefore\`/\`zAfter\` were dropped in Round 378 and recorded in E2m: renaming them in 261 is ` +
+  `behaviour-preserving and took this probe to exit 1 with E2 the only failing arm.`);
+meas('E2m', 'the brackets this arm used to require BY NAME — recorded, because requiring their spelling made this probe red on a refactor of a file it does not own',
+  `\`probe-round261\` brackets its run with two local fingerprint arrays, spelled \`zBefore\` and ` +
+  `\`zAfter\` as measured in Round 378 — each declared once, neither exported, 261 exporting ` +
+  `nothing at all. Live reading, derived from source rather than asserted: zBefore ` +
+  `${r261Now.split('zBefore').length - 1} occurrence(s), zAfter ` +
+  `${r261Now.split('zAfter').length - 1}. A 0 here means the bracketing was renamed OR removed, ` +
+  `and a source reading cannot tell those apart — which is why this is a measurement and the ` +
+  `import specifier is the check.`);
 
 const libUsers = fs.readdirSync(path.join(REPO, 'scripts'))
   .filter((f) => f.endsWith('.mts') || f.endsWith('.mjs'))

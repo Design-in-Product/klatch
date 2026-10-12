@@ -70,6 +70,13 @@ const drive = (dir) => {
 
 const ANCHOR = 'const zBefore = Z_PATHSPECS.map((p) => fingerprint(REPO, p));';
 
+// Each sandbox is a CLONE, so it carries HEAD — not the working tree. Run this with the arm-E
+// narrowing uncommitted and every sandbox still grades the PRE-cure file, which would read as the
+// cure having failed. So the expectation set is selected from what the clone actually contains,
+// and which set was used is printed. `E2m` is the recorded measurement the narrowing introduces.
+const cured = (dir) =>
+  readFileSync(join(dir, 'scripts', R263), 'utf8').includes("meas('E2m'");
+
 const ARMS = [
   {
     name: 'faithful control — nothing changed',
@@ -80,7 +87,9 @@ const ARMS = [
     name: "261's two local fingerprint identifiers renamed (behaviour-preserving)",
     // Both are declared once and used only inside 261, and 261 exports nothing at all, so this
     // is behaviour-preserving in the strictest sense available — Daedalus's own §2 standard.
+    // THE arm the narrowing is for: red before it, green after it.
     expect: { exit: 1, fails: ['E2'] },
+    expectCured: { exit: 0, fails: [] },
     mutate: (f) => ({
       zBefore: replaceEvery(f, 'zBefore', 'zOpenFp'),
       zAfter: replaceEvery(f, 'zAfter', 'zCloseFp'),
@@ -116,27 +125,34 @@ const ARMS = [
 
 const rows = [];
 let grade = true;
+let state = null;
 for (const arm of ARMS) {
   const dir = mint(arm.name.slice(0, 24).replace(/[^a-z0-9]+/gi, '-').toLowerCase());
+  const isCured = cured(dir);
+  if (state === null) state = isCured;
+  else if (state !== isCured) throw new Error('clones disagree on whether the subject is cured');
+  const expect = isCured && arm.expectCured ? arm.expectCured : arm.expect;
   const counts = arm.mutate(join(dir, 'scripts', R261));
   const r = drive(dir);
-  const exitOk = r.exit === arm.expect.exit;
-  const failsOk = r.fails.join(' ') === arm.expect.fails.join(' ');
+  const exitOk = r.exit === expect.exit;
+  const failsOk = r.fails.join(' ') === expect.fails.join(' ');
   const attributable = r.exit === 0 || r.fails.length > 0; // a red with no arm is a parse failure
   const ok = exitOk && failsOk && attributable;
   if (!ok) grade = false;
-  rows.push({ arm, r, counts, ok });
+  rows.push({ arm, r, counts, ok, expect });
   writeFileSync(join(ROOT, 'out-' + ARMS.indexOf(arm) + '.txt'), r.out);
 }
 
 console.log('subject driven : ' + R263);
-console.log('file mutated   : ' + R261 + '\n');
-for (const { arm, r, counts, ok } of rows) {
+console.log('file mutated   : ' + R261);
+console.log('subject state  : ' + (state ? 'arm E NARROWED (post-Round-378)' : 'arm E as shipped (pre-cure)') +
+  ', read out of the clone, which carries HEAD and not the working tree\n');
+for (const { arm, r, counts, ok, expect } of rows) {
   console.log((ok ? '  AS REQUIRED  ' : '  NOT AS REQUIRED  ') + arm.name);
   console.log('      exit ' + r.exit + ' · ' + r.verdict +
     ' · failing arm(s): ' + (r.fails.length ? r.fails.join(' ') : '(none)') +
-    ' · expected exit ' + arm.expect.exit +
-    ' failing ' + (arm.expect.fails.length ? arm.expect.fails.join(' ') : '(none)'));
+    ' · expected exit ' + expect.exit +
+    ' failing ' + (expect.fails.length ? expect.fails.join(' ') : '(none)'));
   const c = Object.entries(counts).map(([k, v]) => k + ' ×' + v).join(', ');
   if (c) console.log('      replacements asserted: ' + c);
   console.log('      ' + r.ms + ' ms');
