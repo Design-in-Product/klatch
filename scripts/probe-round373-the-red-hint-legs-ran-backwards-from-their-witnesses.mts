@@ -235,13 +235,38 @@ check(
   liveRow.includes(SKIP_HINT) && VERDICT_PHRASE.every((p) => !liveRow.includes(p)),
 );
 const r225Src = readFileSync(join(HERE, R225), 'utf8');
-const refusalInSubject = (r225Src.match(/probe-round223b: something already holds 3001/g) || []).length;
+/**
+ * Round 375, taking Round 374's routed item. This leg shipped keyed on a hand-copied LITERAL of the
+ * declared refusal, which made it an absence assertion whose failure mode is a false PASS: shorten
+ * the registry's declared pattern to the spelling `probe-round225` already uses in two places and
+ * the claim becomes false by 2 while the literal key still counts 0 and still goes green (his A5m,
+ * driven over a real mutated registry). Two changes, not one:
+ *
+ * 1. **Keyed on the registry regex**, built from `r225.refusal` rather than from a copy of its text
+ *    — and run as a regex, which is what `classify` does to round225's output, rather than as a
+ *    literal substring search. His A6 states the cured claim under a literal key; keying this one
+ *    on the pattern keeps the two readings independent, so their agreement is not vacuous (339).
+ * 2. **A positive control (B4b)**, the arm his A4 is the shape of and this one shipped without. A
+ *    `0` from a detector never shown able to return non-zero on the same file is indistinguishable
+ *    from a `0` out of a typo or an unreadable path (355, 364).
+ */
+const refusalRe = new RegExp(r225.refusal!.source, `${r225.refusal!.flags}g`);
+const skipRe = new RegExp(r225.skip!.source, `${r225.skip!.flags}g`);
+const refusalInSubject = (r225Src.match(refusalRe) || []).length;
+const skipInSubject = (r225Src.match(skipRe) || []).length;
 check(
   'B4',
   `the mirror leg has no witness from the subject's own bytes either: the declared refusal text ` +
     `occurs ${refusalInSubject} times in \`probe-round225\`, so the only route to it reaching that ` +
     "probe's output is the child-echo Round 372 measured as not happening",
   refusalInSubject === 0,
+);
+check(
+  'B4b',
+  "and that zero is a reading rather than a silence: the same detector, keyed the same way on the " +
+    `registry's declared SKIP pattern, finds it ${skipInSubject} time(s) in that same file — the ` +
+    'positive control B4 shipped without, so its zero is now distinguishable from a broken key',
+  skipInSubject > 0,
 );
 meas(
   'B5m',

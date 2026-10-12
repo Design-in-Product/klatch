@@ -52,6 +52,7 @@ import { dirname, join } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 
 import { summariseAndExit, type ProbeVerdict } from './lib/probe-outcome.mts';
+import { stripSource } from './lib/strip-source.mjs';
 import { SWEPT } from './sweep-probes.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
@@ -81,30 +82,86 @@ const r225 = SWEPT.find((s) => s.file === R225)!;
 const occurrences = (haystack: string, needle: string) => haystack.split(needle).length - 1;
 
 /**
- * B4's detector, extracted from Round 373's SOURCE rather than retyped here, so that if Daedalus
- * re-keys it this file follows him instead of grading a copy of what it used to say. The extraction
- * is graded before it is used: exactly one such construct, and the literal it yields must occur in
- * his source in the spelling this arm reconstructs (Round 331 — run the regex, do not reason about
- * it; a source-scraping regex fails by returning a smaller number).
+ * **RE-AIMED BY: Daedalus, Round 375, 10/12 START fire**, and the reason is this pair's own subject.
+ * As shipped, these two arms scraped Round 373's RAW source for the literal-keyed detector, required
+ * **exactly one** such construct, and compared the literal it yielded to the registry. Both halves
+ * of that were a verbatim source pin on another file (357), and taking the item this round routed
+ * falsified both at once:
+ *
+ *   - **Red on the cure.** Re-key B4 and the construct is gone — `0 match(es)`, A0 and A1 FAIL, this
+ *     promoted probe red, the gate at 40/41. Not on a drift: on the repair this file asked for.
+ *   - **Green on a comment.** Quote the replaced line in the repair's own comment — the likeliest
+ *     shape of any such commit, and a mistake Round 371 caught in my file — and the scrape finds its
+ *     one construct again inside a block comment and goes green while grading a dead string.
+ *
+ * Three drives over the three states, one variable each, are in `probe-round375` section B; the
+ * live-tree reading is in its memo. The re-aim keeps the intent — *B4 must not be keyed on a copy of
+ * the registry* — and changes what the arms read:
+ *
+ * 1. **Comment-blind:** the site scan runs over `stripSource(…, false)`, the shared reader that
+ *    answers 'which bytes of this source are code?' — already in `lib/`, so this is not a
+ *    hand-rolled masker (Round 258's extraction, and the lesson about checking `lib` first).
+ * 2. **Graded on fixtures before it reads anything (A0):** the same scanner must find the planted
+ *    construct in a live line and must NOT find it in that identical line inside a block comment.
+ *    That is both a positive control — this file's own A4 lesson, now applied to its own scraper —
+ *    and the two-sided grading the shipped pair had on neither side.
+ * 3. **Keyed on the property, not the text (A1):** zero LIVE literal-keyed sites, and B4's live key
+ *    is the registry object. Both halves hold for the cure bare and for the cure documented.
  */
-const b4Matches = [...r373Src.matchAll(/\(r225Src\.match\(\/(.+?)\/g\)/g)];
-const b4Literal = b4Matches.length === 1 ? b4Matches[0][1] : '(not extracted)';
+const CALL = '(r225Src.match(';
+/**
+ * Live `r225Src.match(` call sites, by the technique this module exists for: the site is located in
+ * the MASKED text and the argument is read out of the ORIGINAL at that offset, which is sound only
+ * because `stripSource` preserves every offset. Matching the whole construct in masked text does
+ * not work and is worth recording: a regex literal is blanked **including its delimiters**, so
+ * `.match(/…/g)` masks to `.match(` + spaces + `g)` and a pattern with `\/` in it finds nothing.
+ * A0's commented fixture would have hidden that behind the answer it was looking for; A0's LIVE
+ * fixture is what caught it.
+ */
+const siteKeys = (src: string) => {
+  const masked = stripSource(src, false);
+  const keys: ('literal' | 'other')[] = [];
+  for (let i = masked.indexOf(CALL); i >= 0; i = masked.indexOf(CALL, i + 1)) {
+    keys.push(/^\(r225Src\.match\(\/(.+?)\/g\)/.test(src.slice(i)) ? 'literal' : 'other');
+  }
+  return keys;
+};
+const PLANTED = `const refusalInSubject = (r225Src.match(/${r225.refusal!.source}/g) || []).length;`;
+const fixtureLive = siteKeys(`const x = 1;\n${PLANTED}\n`);
+const fixtureCommented = siteKeys(`const x = 1;\n/**\n * ${PLANTED}\n */\n`);
 check(
   'A0',
-  `the extractor found Round 373's B4 detector exactly once (${b4Matches.length} match(es)) and the ` +
-    'literal it yields is present in his source in the reconstructed spelling — graded before it ' +
-    'is used, because a scrape that silently finds nothing would make every arm below vacuous',
-  b4Matches.length === 1 && occurrences(r373Src, `(r225Src.match(/${b4Literal}/g)`) === 1,
+  'the scanner is graded on known inputs before it reads anything, on BOTH sides: the planted ' +
+    `literal-keyed detector is read as ${JSON.stringify(fixtureLive)} as a live line and ` +
+    `${JSON.stringify(fixtureCommented)} when that identical line sits inside a block comment. A ` +
+    'scrape that silently finds nothing, or one that cannot tell a detector from a quotation of ' +
+    'one, would make every arm below a function of commentary rather than of code',
+  fixtureLive.length === 1 && fixtureLive[0] === 'literal' && fixtureCommented.length === 0,
 );
 
+const r373Sites = siteKeys(r373Src);
+const b4LiveSites = r373Sites.filter((k) => k === 'literal').length;
+const registryKeySites = occurrences(stripSource(r373Src, false), 'new RegExp(r225.refusal');
 check(
   'A1',
-  'B4 is CORRECT today, and this is the check that says so: the literal it hand-copied is ' +
-    `byte-identical to the registry's declared refusal source (\`${b4Literal}\`). This arm is the ` +
-    'pin the shipped one has no equivalent of — it goes red on the day either side drifts, which ' +
-    'is the day B4 starts reporting 0 about a string nobody declares',
-  b4Literal === r225.refusal!.source,
+  `B4 is keyed on the registry object rather than on a copy of its text: of ` +
+    `${r373Sites.length} live \`${CALL}\` site(s) in \`probe-round373\`, ${b4LiveSites} are keyed ` +
+    `on a literal, and ${registryKeySites} site(s) build the detector from \`r225.refusal\`. The ` +
+    'non-zero site count is the control for the zero beside it, in the file the claim is about ' +
+    'rather than in a fixture: a scanner that found nothing here would report the same zero. This ' +
+    'arm goes red if B4 is ever re-keyed back to a frozen copy of the declared pattern, and it ' +
+    'does not go red merely because the repair documents the line it replaced',
+  r373Sites.length > 0 && b4LiveSites === 0 && registryKeySites === 1,
 );
+
+/**
+ * The frozen spelling the pre-cure B4 was keyed on, now read from the registry rather than scraped
+ * out of his file. A1 above establishes there is no such literal in `probe-round373` any more, so
+ * there is nothing to scrape; and what the arms below actually need is *a key frozen at today's
+ * declared spelling*, which is what `r225.refusal.source` read now is. The pre-cure arm asserted
+ * these two were byte-identical, so this substitution changes no figure A5 or A6 reports.
+ */
+const b4Literal = r225.refusal!.source;
 
 /**
  * The subject's own spelling of the same intent, extracted from its source. This is the drift

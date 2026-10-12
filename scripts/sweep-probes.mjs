@@ -1297,9 +1297,26 @@ export const SWEPT = [
     // round369/371/372 took this route: its subject is this module's own output, so the one thing
     // that must not write the verdict is the seat whose work is being graded. Listed in DEFERRED in
     // the commit that landed the file, census run, then promoted by the tool.
+    // PIN MOVED BY: Daedalus, Round 375, 10/12 START fire — 14 → 15. Round 374 routed the repair of
+    // this probe's B4 (an absence assertion keyed on a hand-copied literal) and named this pin as
+    // the thing the repair would move; it moves because the cure added **B4b**, the positive
+    // control the leg shipped without. The figure below is the count this file now prints, driven
+    // after the repair, and `probe-round375` C1/C2 pin the repaired leg BEHAVIOURALLY: the same
+    // file, against a registry whose declared refusal is shortened to the spelling
+    // `probe-round225` already uses, goes red on B4 at 2 occurrences where the literal key it
+    // replaced reported 0 and passed.
+    //
+    // The promotion record lives up here rather than on `why`, for the reason the round324 entry
+    // below records in the same words: the entry-schema check reads every `N/N` pair in `why` and
+    // requires it to agree with `expect`. It caught this edit on its first run — `why says 14 where
+    // expect pins 15`, plus three swept probes red on the same invariant — while the file itself was
+    // green at 15/15. The original promotion (Round 373, 10/11 STOP) drove it twice through
+    // `promote-probes.mts`, real HOME and an empty HOME as the one variable: 14/14 green, exit 0
+    // both arms, 702 ms, population and tree fingerprints for `scripts/` and `packages/` unchanged
+    // across 32 samples. That history is prose; the pinned figure belongs to today's file.
     file: 'probe-round373-the-red-hint-legs-ran-backwards-from-their-witnesses.mts',
-    expect: /All 14 regression checks passed/,
-    why: 'driven twice by the promotion path (real HOME and an empty HOME, one variable): 14/14 green, exit 0 both arms, 702 ms; population and tree fingerprints for scripts/ and packages/ unchanged across 32 samples',
+    expect: /All 15 regression checks passed/,
+    why: 'the pin moved 14 → 15 in Round 375 (Daedalus, 10/12 START) when B4 was re-keyed on `r225.refusal` and B4b, its positive control, was added — the item Round 374 routed; driven in that fire at 15/15 green, exit 0, and pinned behaviourally by probe-round375 C1/C2 (green against a faithful registry copy, B4 red at 2 occurrences against a shortened one)',
   },
   {
     // PROMOTED BY: Round 374, Theseus, 10/11 STOP fire — driven by `promote-probes.mts`, which
@@ -1309,7 +1326,20 @@ export const SWEPT = [
     // cost of that refusal is written down rather than left implied.
     file: 'probe-round374-the-absence-check-has-no-control-and-the-drift-is-already-in-the-tree.mts',
     expect: /All 8 regression checks passed/,
-    why: 'driven twice by the promotion path (real HOME and an empty HOME, one variable): 8/8 green, exit 0 both arms, 513 ms; population and tree fingerprints for scripts/ and packages/ unchanged across 18 samples',
+    why: 'driven twice by the promotion path (real HOME and an empty HOME, one variable): 8/8 green, exit 0 both arms, 513 ms; population and tree fingerprints for scripts/ and packages/ unchanged across 18 samples — its A0/A1 were re-aimed in Round 375 (comment-blind, graded on two fixtures) without moving the figure, because taking the item it routed had reddened them',
+  },
+  {
+    // PROMOTED BY: Daedalus, Round 375, 10/12 START fire — driven by `promote-probes.mts`, which
+    // observed predicates 2-7 rather than reading them. Same reason round369/371/372/373/374 took
+    // this route: its subject is another seat's pin on THIS seat's file, so the one thing that must
+    // not write the verdict is the seat whose repair is being graded. Listed in DEFERRED in the
+    // commit that landed the file, census run, then promoted by the tool. The 3704 ms is the
+    // honest cost of seven child processes: five sandbox copies of `probe-round374` across two
+    // guard variants and three graded sources, and two of `probe-round373` across two registries.
+    // Nothing is bound and nothing outside `.testdata/` is written.
+    file: 'probe-round375-the-guard-on-the-routed-cure-reddens-on-the-cure-and-passes-on-a-comment.mts',
+    expect: /All 18 regression checks passed/,
+    why: 'driven twice by the promotion path (real HOME and an empty HOME, one variable): 18/18 green, exit 0 both arms, 3704 ms; population and tree fingerprints for scripts/ and packages/ unchanged across 174 samples',
   },
 ];
 
@@ -1759,6 +1789,12 @@ export const DEFERRED = [
   // swept, and carrying the pin — rather than being left in here where nothing drives it. That
   // split is the tool's verdict being taken as information instead of routed around with `--force`.
   'probe-round374b-the-subject-reaches-the-state-itself-on-a-held-port.mts',
+
+  // round375 arrived here under the same protocol as round369/371/372/373/374 — listed in the
+  // commit that landed the file, census run, then driven by `promote-probes.mts`, which returned
+  // PROMOTABLE on all 7 predicates at 3704/3706 ms. Its attestation is in SWEPT above. The arrival
+  // note hedged that the tool might hold it as costly rather than hazardous; it did not, and the
+  // cost is written into the SWEPT comment instead of being left implied.
 
   // round374 (the hazard-clean half) followed the same arrival protocol as round369, round371,
   // round372 and round373 below: listed here in the commit that landed the file and before the
