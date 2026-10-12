@@ -102,3 +102,57 @@ re-checked and unmoved; all four writable cross-repo mailboxes checked, nothing 
 consecutive checks found nothing further unblocked. Fire closed bounded. Nothing new needs xian —
 the one standing item (CIO/Laya) is unchanged, and the push-line question that might have needed
 him does not, per the reasoning above.
+
+---
+
+## 10/12 WORK fire — 13:3x PT
+
+No-op on product; gate re-derived fresh and green, both standing blockers unmoved.
+
+**Mail:** `git log 4a739e3a..HEAD --format='%h %an %s'` — 7 commits since own last checkpoint,
+authorship checked with `%an`, none mine: Daedalus's Round 375 chain (`d2f047a9`, `ac61258a` — took
+Theseus's routed B4 repair, found his own guard on it reddened on the cure and passed on a comment
+quoting the replaced line, re-aimed it comment-blind), Theseus's Round 376 chain (`d0dff8b7`,
+`565d05d3`, `ad0f5314`, `37a538f3` — confirmed Daedalus's 375 whole, found the re-aim itself
+anti-correlated with the property it names [red on a behaviour-preserving refactor, green on a
+frozen-copy drift], respelled behaviourally, caught and fixed two probes his own respell reddened),
+Calliope's MID-fire mail hygiene (`57ff757f` — moved her own superseded designinproduct reply to
+`read/` after this seat's 09:0x fire fixed `docs/agents/argus.md` directly, standing down her
+routed-to-xian ask). Read both round-chain memos in full
+(`daedalus-to-theseus-...-i-took-the-routed-item...-2026-10-12.md`,
+`theseus-to-daedalus-...-your-375-reproduces...-2026-10-12.md`): both end "nothing here needs
+xian," neither routes an item to this seat — Daedalus/Theseus's own round-chain lane (the re-aim in
+Daedalus's §4 is explicitly routed back to Theseus, not here), standing cc pattern only, consistent
+with every prior checkpoint's reading of this lane. Checked all three other writable cross-repo
+mailboxes (mediajunkie, piper-morgan, dispatch) plus designinproduct for anything addressed to this
+seat or to Klatch/Argus by name — nothing; all visible threads are internal to those other
+products (Piper Morgan leadership roles, dispatch/DINP routing, designinproduct's own PM-office
+threads), none naming Klatch or this seat.
+
+**Gate, re-derived fresh, not taken from either memo** (port 3001 confirmed free first):
+- `npm run typecheck` all four workspaces — 0 `error TS` lines.
+- `npm test -w packages/server` unpiped — **140 files / 2179 passed / 1 skipped (2180)**. Matches
+  the last checkpoint exactly.
+- `npm test -w packages/client` unpiped — **26 passed | 13 skipped (39) files / 333 passed | 13
+  skipped (346) tests**. Matches exactly.
+- `node scripts/sweep-probes.mjs --census` — **152 probe files, 42 swept / 110 deferred (34
+  verdict-bearing, 76 no-conclusion-line), CENSUS OK** — up from 151/41 at the last checkpoint,
+  matching Round 375/376 landing in the interim (`probe-round375` promoted).
+- Full driving sweep (free port, unpiped) — **SWEEP PASSED — 42 of 42 swept probes green, 0 red, 0
+  blocked (0 could not run, 0 ran but did not finish), 0 census problem(s), 110 deferred**.
+  Byte-identical to Theseus's own published figure in `37a538f3`.
+
+**Standing blockers re-checked, both unmoved:**
+- CIO Laya/AAXT thread — `git log -1` on the thread still shows own 10/6 reply (`fe650e02`) as last
+  touch; still correctly parked on xian's scheduling call.
+- Intel sweep cadence — `docs/intel/2026-10-12-sweep.md` already exists (filed by the automated
+  process this morning); cadence satisfied for today.
+
+`git status --porcelain` clean apart from `.scratch/` (gate-run logs, not committed — removed
+before close) and this log entry. No port bound at close, no database opened, no model called.
+
+**Drain:** mail read across all four writable cross-repo mailboxes plus the internal `docs/mail/`
+(nothing addressed here, round-chain cc confirmed standing-pattern-only); gate re-derived fresh and
+green, byte-identical to the published figure; both standing blockers re-checked and unmoved. Two
+consecutive checks found nothing further unblocked. Fire closed bounded. Nothing new needs xian
+beyond the one standing item (CIO/Laya).
