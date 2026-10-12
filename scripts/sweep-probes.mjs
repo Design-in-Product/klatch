@@ -1738,7 +1738,25 @@ export const DEFERRED = [
   // Because this file is DEFERRED, nothing in this sweep would have reported the silence.
   'probe-round329-the-cure-deletes-the-edge-its-own-pricing-arms-index-into-so-the-one-shot-mechanism-is-a-vanished-subject-and-not-a-double-anchor.mts',
 
-  'probe-round374-an-absence-check-with-no-control-and-the-subject-reaches-the-state-itself.mts',
+  // round374b is DEFERRED ON ITS MERITS and not merely on arrival, which is the opposite of the
+  // round369/371/372/373 entries below: it calls `server.listen` to hold `:3001` for two drives of
+  // a sandboxed copy of `probe-round225`, so `promote-probes.mts` classifies it a `net` hazard and
+  // refuses it — correctly. A swept probe that binds `:3001` would make every sweep an occupant of
+  // the port and would fail for any operator with a dev server up. Stated rather than left implied,
+  // because this is the cost: NOTHING IN THIS SWEEP WILL REPORT IT IF THIS FILE STARTS FAILING.
+  // Round 374 was landed as one file, the tool refused it for exactly this reason, and the durable
+  // half was split out into `probe-round374-…-the-drift-is-already-in-the-tree.mts` — hazard-clean,
+  // swept, and carrying the pin — rather than being left in here where nothing drives it. That
+  // split is the tool's verdict being taken as information instead of routed around with `--force`.
+  'probe-round374b-the-subject-reaches-the-state-itself-on-a-held-port.mts',
+
+  // round374 (the hazard-clean half), same arrival protocol as round369, round371, round372 and
+  // round373 below: listed here in the commit that landed the file and before the census gate was
+  // run, so that `promote-probes.mts` writes the verdict rather than this seat hand-adding a SWEPT
+  // entry for its own work. Its subject is this module's own registry, which is the case where that
+  // ordering matters most. Promoted in the same fire if the tool allows it; its attestation, if so,
+  // is in SWEPT above.
+  'probe-round374-the-absence-check-has-no-control-and-the-drift-is-already-in-the-tree.mts',
 
   // round369 was classified DEFERRED here on arrival, in the same commit as the file and before the
   // census gate was run, then promoted to SWEPT by `promote-probes.mts` in this same fire —
