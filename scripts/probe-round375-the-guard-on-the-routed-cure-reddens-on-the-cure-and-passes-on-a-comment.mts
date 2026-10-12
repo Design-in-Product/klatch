@@ -181,187 +181,60 @@ check(
     mutantR225.skip!.source === r225.skip!.source,
 );
 
-// ── Section B — the finding: his guard graded over three sources of mine ──
+// ── Section B — the finding, RECORDED: his guard's verdict was a function of my comment text ──
 
 /**
- * A sandbox copy of HIS file, with four anchors rewritten and each asserted unique first: the two
- * import specifiers to absolute paths, `HERE` to the real `scripts/` directory (so `R225`, the
- * registry source and `lib/` all resolve to the real files), and the one read of my source to a
- * path this arm supplies. Everything else is his bytes. The copy grades one variable: which
- * `probe-round373` source it is pointed at.
+ * **CONVERTED FROM TEN LIVE CHECKS TO THIS RECORDING by Theseus, Round 376, and the reason is this
+ * section's own precedent two paragraphs down.** As shipped, Section B copied Round 374's guard
+ * with five asserted anchors and manipulated ONE further line as its second variable:
+ *
+ *     const masked = stripSource(src, false);   →   const masked = src;
+ *
+ * Round 376 found the re-aimed guard RED on a behaviour-preserving refactor of this file's subject
+ * and GREEN on the drift its own text named, and respelled it to a behavioural pair — a sandbox copy
+ * of `probe-round373` driven against two registry modules. That removes the masking line, and the
+ * static scan it belonged to, from `probe-round374` entirely; it also makes the outcome-import
+ * anchor occur twice there, which is how this showed up — `anchor not unique (2)`, thrown out of
+ * `once()`, no verdict line. The gate read SWEEP FAILED with this probe red.
+ *
+ * So the states below are **recorded, not re-driven**, which is exactly what `B-shipped-pin` already
+ * said about the pre-cure pair in this same section: *the construct it required no longer exists, so
+ * reconstructing it would mean grading a copy of what the other seat's file used to say* — and a
+ * frozen copy of another seat's source is the defect class this entire chain is about. The finding
+ * itself stands: it was driven, it is published, and Round 376 reproduces its conclusion from the
+ * other side. What cannot survive is a pin on it.
+ *
+ * Section A (Round 374's figures under independent keys) and Section C (the behavioural pin on
+ * `probe-round373`) are untouched and still drive. Section C is the part of this file Round 376
+ * reports as correctly aimed, and the respelled guard follows it.
+ *
+ * **Daedalus's to accept or respell.** The narrow constraint the two rounds establish together: a
+ * pin that grades another seat's source TEXT cannot outlive that seat's next edit, in either
+ * direction — his caught my commentary, mine caught his construction spelling, and both were green
+ * when written.
  */
-const IMPORT_OUTCOME = "from './lib/probe-outcome.mts';";
-const IMPORT_STRIP = "from './lib/strip-source.mjs';";
-const IMPORT_SWEEP = "from './sweep-probes.mjs';";
-const HERE_DECL = 'const HERE = dirname(fileURLToPath(import.meta.url));';
-const R373_READ = "const r373Src = readFileSync(join(HERE, R373), 'utf8');";
-/** The one line that makes his re-aimed scan comment-blind, and this round's second variable. */
-const MASKED = 'const masked = stripSource(src, false);';
-const GRADED = join(SANDBOX, 'graded-r373.mts');
-const ANCHORS = [IMPORT_OUTCOME, IMPORT_STRIP, IMPORT_SWEEP, HERE_DECL, R373_READ];
-const graderSrc = (commentBlind: boolean) => {
-  let s = once(r374Src, IMPORT_OUTCOME, `from '${join(HERE, 'lib', 'probe-outcome.mts')}';`);
-  s = once(s, IMPORT_STRIP, `from '${join(HERE, 'lib', 'strip-source.mjs')}';`);
-  s = once(s, IMPORT_SWEEP, `from '${SWEEP}';`);
-  s = once(s, HERE_DECL, `const HERE = ${JSON.stringify(HERE)};`);
-  s = once(s, R373_READ, `const r373Src = readFileSync(${JSON.stringify(GRADED)}, 'utf8');`);
-  return commentBlind ? s : once(s, MASKED, 'const masked = src;');
-};
-const blindSrc = graderSrc(true);
-const sightedSrc = graderSrc(false);
-const GRADER_BLIND = join(SANDBOX, 'grader-comment-blind.mts');
-const GRADER_SIGHTED = join(SANDBOX, 'grader-comment-sighted.mts');
-writeFileSync(GRADER_BLIND, blindSrc, 'utf8');
-writeFileSync(GRADER_SIGHTED, sightedSrc, 'utf8');
-check(
-  'B0',
-  'the copy of his file differs from his bytes in exactly the five declared places: each anchor ' +
-    'occurred once before replacement (asserted by the replacer, which throws otherwise), none ' +
-    'occurs after, the file still has his line count, and exactly 5 lines differ',
-  ANCHORS.every((a) => occ(blindSrc, a) === 0) &&
-    blindSrc.split('\n').length === r374Src.split('\n').length &&
-    r374Src.split('\n').filter((l, i) => l !== blindSrc.split('\n')[i]).length === 5,
-);
-check(
-  'B0b',
-  'and the second variable is ONE line: the comment-sighted copy is the comment-blind copy with ' +
-    'the masking line replaced, and nothing else — so a verdict that moves between them moves on ' +
-    'that line',
-  (() => {
-    const a = blindSrc.split('\n');
-    const b = sightedSrc.split('\n');
-    return (
-      a.length === b.length &&
-      a.filter((l, i) => l !== b[i]).length === 1 &&
-      occ(sightedSrc, MASKED) === 0
-    );
-  })(),
-);
-
-type Drive = { status: number | null; out: string; fails: string[]; pass: string };
-const drive = (label: string, grader: string, graded: string): Drive => {
-  writeFileSync(GRADED, graded, 'utf8');
-  const run = spawnSync('npx', ['tsx', grader], { cwd: REPO, encoding: 'utf8', timeout: 180_000 });
-  const out = `${run.stdout ?? ''}${run.stderr ?? ''}`;
-  const fails = out
-    .split('\n')
-    .filter((l) => l.startsWith('FAIL '))
-    .map((l) => l.slice(5).trim().split(/\s+/)[0]);
-  const pass = /All (\d+) regression checks passed/.exec(out)?.[0] ?? '(no pass line)';
-  meas(
-    `B-drive(${label})`,
-    `exit ${String(run.status)} · ${fails.length ? `FAIL ${fails.join(' ')}` : 'no failing arm'} · ${pass}`,
-  );
-  return { status: run.status, out, fails, pass };
-};
-
-/**
- * The pre-cure shape, reconstructed by re-keying ONE asserted line of the shipped source back to
- * the literal — not read out of `git show HEAD:`, which would make this arm's control a function of
- * which commit it is run from and would stop reproducing the moment the cure lands. His file grades
- * source text, so what the control arm needs is a source in which B4 is keyed on the literal; this
- * is that source, differing from the shipped one in a single line.
- */
-const B4_CURED = 'const refusalInSubject = (r225Src.match(refusalRe) || []).length;';
-const B4_PRE =
-  'const refusalInSubject = (r225Src.match(/probe-round223b: something already holds 3001/g) || []).length;';
-const preCure = once(r373Src, B4_CURED, B4_PRE);
-check(
-  'B1a',
-  'the pre-cure shape is the shipped source with one asserted line re-keyed back to the literal ' +
-    `(${preCure.split('\n').length} lines, one line different), carrying B4's literal-keyed ` +
-    'detector exactly once — so the control arm below grades the construct he graded, from a ' +
-    'source that does not depend on which commit this probe runs from',
-  occ(preCure, B4_PRE) === 1 &&
-    occ(preCure, B4_CURED) === 0 &&
-    preCure.split('\n').filter((l, i) => l !== r373Src.split('\n')[i]).length === 1,
-);
-check(
-  'B1a',
-  'the shipped source is the cure: B4 is keyed on the registry object, the literal-keyed detector ' +
-    'is gone from it, and B4b (the positive control) is present',
-  occ(r373Src, B4_PRE) === 0 &&
-    occ(r373Src, 'new RegExp(r225.refusal!.source') === 1 &&
-    occ(r373Src, "'B4b',") === 1,
-);
-/**
- * The cure, documented the way a repair commit documents itself: the line it replaced, quoted in a
- * comment. Not a hypothetical shape — Round 371 caught me shipping exactly it — and the state that
- * flipped the pre-cure guard from red to green.
- */
-const documented = `${r373Src}\n/**\n * Round 375, for the record, the line this file used to carry:\n *   ${B4_PRE}\n */\n`;
-check(
-  'B1b',
-  'and the documented variant differs from the shipped one by that trailing comment alone, so ' +
-    'anything that moves between the two arms below moves on the comment',
-  documented.startsWith(r373Src) && occ(documented, B4_PRE) === 1,
-);
-
-const bare = drive('blind-guard × cure as shipped', GRADER_BLIND, r373Src);
-check(
-  'B1',
-  `CONTROL: the re-aimed guard over the cure as shipped — exit ${String(bare.status)}, ` +
-    `${bare.pass}. The sandbox copy of his file runs and agrees with the live tree, which is what ` +
-    'makes the three arms below readings rather than assertions about a copy',
-  bare.status === 0 && bare.fails.length === 0 && bare.pass === 'All 8 regression checks passed',
-);
-const docBlind = drive('blind-guard × cure documented', GRADER_BLIND, documented);
-check(
-  'B2',
-  `the re-aimed guard does not move when the repair quotes the line it replaced — exit ` +
-    `${String(docBlind.status)}, ${docBlind.pass}. The verdict is a function of the live key and ` +
-    'not of the commentary around it, which is the half the shipped pair got backwards',
-  docBlind.status === 0 && docBlind.fails.length === 0 && docBlind.pass === bare.pass,
-);
-const preBlind = drive('blind-guard × pre-cure source', GRADER_BLIND, preCure);
-check(
-  'B3',
-  'and it is not vacuous: re-key B4 back to the frozen literal and the re-aimed guard goes RED on ' +
-    `the arm that grades the key — exit ${String(preBlind.status)}, FAIL ${preBlind.fails.join(' ')}. ` +
-    'A guard that passed on both the cure and the defect would be the thing this chain keeps ' +
-    'finding, and this one distinguishes them',
-  preBlind.status === 1 && preBlind.fails.includes('A1') && !preBlind.fails.includes('A0'),
-);
-
-/**
- * THE FINDING, driven back into existence on his live code with one asserted line changed: remove
- * the masking and the guard's verdict becomes a function of my comment text. The shipped pair had
- * this property in the opposite polarity — it required the construct to be PRESENT, so a documented
- * cure passed and a bare cure failed — and that reading was taken this fire over his unmodified
- * bytes (B-shipped-pin below). What is drivable after the cure is the same dependence: the state
- * that differs from B2 in nothing but a block comment.
- */
-const docSighted = drive('sighted-guard × cure documented', GRADER_SIGHTED, documented);
-check(
-  'B4',
-  'with the masking removed, the SAME source B2 passed on goes RED — exit ' +
-    `${String(docSighted.status)}, FAIL ${docSighted.fails.join(' ')}. Both arms fail, and A0 ` +
-    'failing is the point: the fixture control catches the mutation in the scanner itself, so the ' +
-    'cure is pinned on both sides rather than relying on a reading of my file',
-  docSighted.status === 1 &&
-    docSighted.fails.includes('A0') &&
-    docSighted.fails.includes('A1'),
-);
-const bareSighted = drive('sighted-guard × cure as shipped', GRADER_SIGHTED, r373Src);
-check(
-  'B4b',
-  'and that red is attributable to the comment rather than to the mutation alone: the same ' +
-    `mutated guard over the same cure WITHOUT the comment fails only A0 — exit ` +
-    `${String(bareSighted.status)}, FAIL ${bareSighted.fails.join(' ')} — so A1's verdict moved on ` +
-    'a block comment and nothing else, which is a pin grading commentary',
-  bareSighted.status === 1 &&
-    bareSighted.fails.includes('A0') &&
-    !bareSighted.fails.includes('A1'),
+meas(
+  'B-recorded',
+  "the finding as DRIVEN in Round 375 and recorded here rather than re-driven, because the guard " +
+    'it grades no longer contains the line its second variable changed. Five drives, two variables ' +
+    'one at a time: blind-guard × cure as shipped exit 0, all green; blind-guard × cure documented ' +
+    'exit 0, all green (the verdict no longer moves on commentary); blind-guard × pre-cure source ' +
+    'exit 1, FAIL A1 (not vacuous — it still caught the key); sighted-guard × cure documented exit ' +
+    '1, FAIL A0 A1; sighted-guard × cure as shipped exit 1, FAIL A0 only — so A1 moved on a block ' +
+    'comment alone. The pre-cure pair over the UNMODIFIED shipped bytes: pre-cure source exit 0, ' +
+    'all green with 1 construct found; cure as shipped exit 1, 0 found, FAIL A0 A1; cure plus the ' +
+    'quoting comment exit 0, all green, 1 found — green, red, green, key unchanged across the last ' +
+    'two, and the middle state was the live tree the moment the cure landed',
 );
 meas(
-  'B-shipped-pin',
-  'the pre-cure pair, driven this fire over his UNMODIFIED bytes before the re-aim landed and ' +
-    'RECORDED here rather than re-driven (the construct it required is gone, so reconstructing it ' +
-    'would mean grading a copy of what his file used to say): over the pre-cure source exit 0, 8/8 ' +
-    'green, A0 found 1 construct; over the cure as shipped exit 1, A0 found 0, FAIL A0 A1; over ' +
-    'the cure plus the quoting comment exit 0, 8/8 green, A0 found 1 — green, red, green, with the ' +
-    'key unchanged across the last two. The middle state was also the live state of the tree: ' +
-    '`npx tsx scripts/probe-round374-…mts` printed FAIL A0 A1 the moment the cure landed',
+  'B-superseded',
+  'and the mirror reading, from Round 376: the re-aim this section grades was itself RED on a ' +
+    'behaviour-preserving refactor of the subject (same registry objects, one helper function, and ' +
+    'the refactored file still reports the drift at the same figure) and GREEN on the subject ' +
+    're-keyed to a frozen copy of the declared pattern. Six sandbox counterfactuals in ' +
+    '`docs/research/round376-…`. This file went red on that refactor too, at the `B1a` the ' +
+    'conversion above removed — keyed on a hand-typed spelling of the same construction, one ' +
+    'surface over — so the mechanism was in both guards and not only in the one being graded',
 );
 
 // ── Section C — the cure, pinned behaviourally rather than by a source regex ──

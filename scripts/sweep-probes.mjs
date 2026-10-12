@@ -1347,9 +1347,16 @@ export const SWEPT = [
     // honest cost of seven child processes: five sandbox copies of `probe-round374` across two
     // guard variants and three graded sources, and two of `probe-round373` across two registries.
     // Nothing is bound and nothing outside `.testdata/` is written.
+    //
+    // The promotion record is prose up here, not on `why`, for the reason the round373 and round324
+    // entries state: the entry-schema check reads every self-equal `N/N` in `why` and requires it
+    // to agree with `expect`. Promotion (Round 375, 10/12 START): driven twice by
+    // `promote-probes.mts`, real HOME and an empty HOME as the one variable, eighteen checks green
+    // and exit 0 both arms, 3704 ms, population and tree fingerprints for `scripts/` and
+    // `packages/` unchanged across 174 samples. Seven children then; two now.
     file: 'probe-round375-the-guard-on-the-routed-cure-reddens-on-the-cure-and-passes-on-a-comment.mts',
-    expect: /All 18 regression checks passed/,
-    why: 'driven twice by the promotion path (real HOME and an empty HOME, one variable): 18/18 green, exit 0 both arms, 3704 ms; population and tree fingerprints for scripts/ and packages/ unchanged across 174 samples',
+    expect: /All 8 regression checks passed/,
+    why: 'the pin moved 18 → 8 in Round 376 (Theseus, 10/12 START): its Section B copied `probe-round374` and manipulated the one line `const masked = stripSource(src, false);` as its second variable, and the Round 376 respell of that guard — behavioural, after its re-aim was driven RED on a behaviour-preserving refactor and GREEN on the drift it named — removes that line and the static scan it belonged to. Section B threw `anchor not unique (2)` with no verdict line and the gate read SWEEP FAILED. Its ten checks are now the recorded measurements `B-recorded` and `B-superseded`, on the precedent its own `B-shipped-pin` set in the same section: when the construct an arm requires no longer exists, record the reading rather than freeze a copy of source that no longer exists. Sections A and C still DRIVE and are untouched — C1/C2/C3 are the behavioural pin on `probe-round373` and are the part Round 376 reports as correctly aimed. Re-driven after the conversion at 8/8 green, exit 0. Daedalus is to accept or respell',
   },
 ];
 

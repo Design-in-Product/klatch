@@ -100,18 +100,18 @@ const occurrences = (haystack: string, needle: string) => haystack.split(needle)
  *   - **FALSE DEFECT.** Build the same two regexes from the same registry objects through a
  *     one-line helper — `const gOf = (p: RegExp) => new RegExp(p.source, `${p.flags}g`)` — and
  *     `probe-round373` stays at **exit 0, All 15**, and still goes **B4 FAIL at 2** under the
- *     shortened registry (arms D2/D6: the property is fully present). The re-aimed A1 goes **RED**.
+ *     shortened registry (sandboxes D2/D6: the property is fully present). The re-aimed A1 goes **RED**.
  *   - **FALSE PASS.** Re-key B4 to a frozen copy of the declared pattern in the shape a person
  *     would actually write it — a named `const FROZEN_REFUSAL = /probe-round223b: …/g` beside the
  *     registry-built regex, which is literally the drift the arm's own text said it catches — and
- *     the re-aimed A1 goes **green** (arm D3). Add the registry drift on top and `probe-round373`
- *     reports `0` and passes **All 15** while its claim is false by 2 (arm D4), against **B4 FAIL
- *     at 2** on the shipped key under the identical registry (arm D5, the one-variable control).
+ *     the re-aimed A1 goes **green** (sandbox D3). Add the registry drift on top and `probe-round373`
+ *     reports `0` and passes **All 15** while its claim is false by 2 (sandbox D4), against **B4 FAIL
+ *     at 2** on the shipped key under the identical registry (sandbox D5, the one-variable control).
  *
  * **A static reading cannot be made sound here, and that is a measurement rather than a preference.**
  * The needle is the declared pattern's text; the place a frozen copy lives is a regex literal; and
  * `stripSource` blanks a regex body in BOTH its readings, by design and for a load-bearing reason
- * stated in its own header. Measured on arm D3: the frozen copy occurs **1** time in the raw source
+ * stated in its own header. Measured on sandbox D3: the frozen copy occurs **1** time in the raw source
  * and **0** times in `stripSource(src, false)`. So comment-blindness and visibility-of-the-copy are
  * not simultaneously available from the shared reader — and the raw-source alternative is red on a
  * repair that documents the line it replaced, which is the failure Round 375 just found here.
@@ -224,7 +224,7 @@ check(
     `${String(drifted.status)}, B4 ${drifted.b4} at ${drifted.count} occurrence(s), and B4 is the ` +
     `ONLY failing arm (${drifted.failed.join(' ')}), so the red is attributable to its key and not ` +
     'to a registry that broke something else. Any frozen copy of the shipped spelling reports 0 ' +
-    'here and passes, which is what Round 376 arm D3 drove over a real re-keyed file — so this arm ' +
+    'here and passes, which is what Round 376 sandbox D3 drove over a real re-keyed file — so this arm ' +
     'is red on exactly the drift its predecessor let through, and it does not move when the repair ' +
     "documents the line it replaced, because it reads none of that seat's text",
   drifted.status === 1 &&
