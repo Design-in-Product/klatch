@@ -1738,6 +1738,8 @@ export const DEFERRED = [
   // Because this file is DEFERRED, nothing in this sweep would have reported the silence.
   'probe-round329-the-cure-deletes-the-edge-its-own-pricing-arms-index-into-so-the-one-shot-mechanism-is-a-vanished-subject-and-not-a-double-anchor.mts',
 
+  'probe-round374-an-absence-check-with-no-control-and-the-subject-reaches-the-state-itself.mts',
+
   // round369 was classified DEFERRED here on arrival, in the same commit as the file and before the
   // census gate was run, then promoted to SWEPT by `promote-probes.mts` in this same fire —
   // hazard-clean, no exemption, no `--force`. It never needed deferring on the merits; it was listed
@@ -2111,6 +2113,29 @@ export const blockedTally = (runs) => {
  * to. Still latent — no live sweep has printed it — and driven rather than argued in
  * `probe-round373`, whose live half mints a child through the real `summariseAndExit` and puts its
  * real bytes and real exit code through the real `classify`.
+ *
+ * ROUND 374 — TWO READINGS THIS FUNCTION'S CALLER NOW HAS, both asked for in Round 373 §2 and both
+ * recorded here rather than argued, because this is the docblock that carries the reachability
+ * facts and a reader deciding whether to trust the key should not have to find a memo for either:
+ *
+ *   - **`blockedKind`'s throw has been observed NOT firing from inside `main()`'s row loop.** Before
+ *     Round 372 the row guards were inline and called nothing; after it, a throw here aborts the
+ *     whole sweep rather than one row, which is a real cost attached to the refusal above. Round
+ *     373's held-port sweep is the first drive in which its not firing was observable rather than
+ *     predicted from `classify`'s two limbs: `SWEEP BLOCKED — 38 of 39 green, 1 blocked`, sweep
+ *     exit 2, 166573 ms, the one BLOCKED row being `probe-round225` at exit 3 carrying the skip
+ *     verdict wording and no refusal hint. The prediction and the drive agree.
+ *   - **The RED-plus-declared-skip leg now has a witness in the POPULATION, not only in a minted
+ *     child.** Round 373's live half proved the state reachable through the shared outcome module
+ *     and said plainly that it had not proved `probe-round225` reaches it. `probe-round374` drove
+ *     that, two-sided, without touching the control: round225's own source, from a gitignored
+ *     sandbox with one path constant and two import specifiers rewritten, on a `:3001` held by the
+ *     measuring process — unbroken it exits 3 and classifies BLOCKED; with one `>` flipped to `<`
+ *     it exits **1** carrying exactly one declared `did not run:` label and classifies **RED
+ *     refused=false skipped=true**, which is this function's fourth leg with a real subject under
+ *     it. The word for the defect stays LATENT for the third round running — no live sweep has
+ *     printed it, because that needs a held port and a real regression at the same moment — but
+ *     "latent" now means unobserved rather than unreached.
  */
 export const probeRowAnnotations = ({ state, code, refused, skipped }) => {
   const lines = [];
