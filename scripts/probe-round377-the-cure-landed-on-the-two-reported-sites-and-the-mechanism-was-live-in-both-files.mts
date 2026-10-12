@@ -262,20 +262,58 @@ meas(
     '0"; probe-round375 × faithful → exit 0, own verdict All 8; probe-round375 × one const renamed ' +
     '→ exit 1, FAIL A1 only, with A2 — the arm that reads the property — GREEN on the same bytes',
 );
-check(
-  'B3',
-  `the construct class is gone from both cured files, and the detector is proven able to find it: ` +
-    `the fixture spellings contain \`${DECL_FRAGMENT}\` (${occ(PRECURE_374, DECL_FRAGMENT)} and ` +
-    `${occ(PRECURE_375, DECL_FRAGMENT)} — the known positives), and the live sources of ` +
-    `\`probe-round374\` and \`probe-round375\` contain it ` +
-    `${occ(stripSource(r374Src, true), DECL_FRAGMENT)} and ` +
-    `${occ(stripSource(r375Src, true), DECL_FRAGMENT)} times outside their own prose. Read with ` +
-    'comments AND strings blanked, so the docblocks that quote the defect above do not re-trip it ' +
-    '(371) — the live 0 is a reading because the known positive is non-zero beside it (355)',
-  occ(PRECURE_374, DECL_FRAGMENT) === 1 &&
-    occ(PRECURE_375, DECL_FRAGMENT) === 1 &&
-    occ(stripSource(r374Src, true), DECL_FRAGMENT) === 0 &&
-    occ(stripSource(r375Src, true), DECL_FRAGMENT) === 0,
+/**
+ * ── B3 was a CHECK and is a recorded measurement, on Theseus's Round 378 §3 reading ───────────
+ *
+ * It asked for exactly this second reading in §6 of the Round 377 memo — whether the fixture
+ * spellings are inert where they sit. They are, on the narrow question: B3's verdict could not be
+ * moved by anything `probe-round225` does, because both fixtures are literals in THIS file and
+ * both live legs read files this probe grades in full. That part of the argument survives.
+ *
+ * The known positive does not. The two KP legs read the fixtures RAW; the two live legs read
+ * through `stripSource(…, true)`. Put the same two fixtures through the reader the live legs use
+ * and they give **0 and 0** — so the KP is non-zero only because it bypasses the reader, and it
+ * cannot witness the one failure mode the live legs have. Driven on the pre-cure sources out of
+ * `56b180e6^` — the state in which the defect was present, by this file's own account:
+ *
+ *       file               raw   comments-blanked   both-blanked ← B3's live leg
+ *       probe-round374  PRE  2                  0              0
+ *                       LIVE 2                  0              0
+ *       probe-round375  PRE  2                  1              0
+ *                       LIVE 2                  0              0
+ *
+ * B3's live legs would have read **0 on both uncured files**. It was green on the cured state and
+ * would have been green on the defect, which is the Round 355 shape with the fixture doing the
+ * work the reader was supposed to do. And it cannot be repaired by re-aiming the reader: for
+ * `probe-round374` all three readings are blind (2→2, 0→0, 0→0), because that site lived inside a
+ * regex literal and `stripSource` blanks a regex body in both readings (Round 376 §4). Only
+ * `probe-round375` has a distinguishing reading at all — comment-blanked, 1→0 — and it is the one
+ * reading B3 does not use.
+ *
+ * So this is §1 of the Round 377 memo turned on its own remaining static arm: *there is no sound
+ * static reading of this construct available from the shared reader*. What replaces it is section
+ * C, in that memo's own §4 words — C2 and C3 assert both cured probes are green on the rename that
+ * reddened their predecessors, which is the behavioural form of this claim and strictly stronger.
+ * The readings are recorded rather than re-derived from git inside a swept probe: `probe-round263`
+ * arm A pins a commit sha and cannot be driven in a minted repo at all (Round 378 §2).
+ */
+meas(
+  'B3m',
+  `the construct class in both cured files, read three ways, with the PRE-CURE state out of ` +
+    `\`56b180e6^\` beside it. Live: \`probe-round374\` ${occ(r374Src, DECL_FRAGMENT)} raw / ` +
+    `${occ(stripSource(r374Src, false), DECL_FRAGMENT)} comment-blanked / ` +
+    `${occ(stripSource(r374Src, true), DECL_FRAGMENT)} both-blanked; \`probe-round375\` ` +
+    `${occ(r375Src, DECL_FRAGMENT)} / ${occ(stripSource(r375Src, false), DECL_FRAGMENT)} / ` +
+    `${occ(stripSource(r375Src, true), DECL_FRAGMENT)}. Pre-cure, same three readings: 374 was ` +
+    `2 / 0 / 0 and 375 was 2 / 1 / 0. This was a CHECK on the both-blanked pair being 0, with the ` +
+    `two fixtures as known positives — and it would have been GREEN on the defect, because the ` +
+    `pre-cure pair was 0 as well. The fixtures read 1 and 1 raw but ` +
+    `${occ(stripSource(PRECURE_374, true), DECL_FRAGMENT)} and ` +
+    `${occ(stripSource(PRECURE_375, true), DECL_FRAGMENT)} through the reader the live legs use, ` +
+    `so the known positive never carried the property (355). For 374 no reading distinguishes the ` +
+    `two states; for 375 only the comment-blanked one does. Converted on Theseus's Round 378 §3 ` +
+    `reading, which answered the §6 question this file asked; the claim is carried behaviourally ` +
+    `by C2 and C3`,
 );
 
 // ── Section C — both cures pinned behaviourally: green on the rename, red on the real drift ──
