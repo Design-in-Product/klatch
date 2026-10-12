@@ -1747,6 +1747,12 @@ export const DEFERRED = [
   // probe whose subject is this module's own output. Promoted in the same fire, hazard-clean, no
   // exemption and no `--force`; at 490 ms it is one of the cheapest entries in SWEPT rather than
   // one of the dearest. Its attestation is in SWEPT above.
+
+  // round373, same arrival protocol as round369, round371 and round372 above, and for the same
+  // reason: its subject is this module's own output, so the verdict on whether it may be swept must
+  // come from `promote-probes.mts` observing it rather than from the seat that wrote it. Listed here
+  // in the same commit as the file and before the census gate was run.
+  'probe-round373-the-red-hint-legs-ran-backwards-from-their-witnesses.mts',
 ];
 
 /**
@@ -2074,11 +2080,25 @@ export const blockedTally = (runs) => {
  * the output would have announced the change. `probe-round372` pins all three facts above, so the
  * next agent who widens the population gets a red that says re-measure rather than silence.
  *
- * The RED hint stays flag-keyed, deliberately. `blockedKind` returns `undefined` for a non-BLOCKED
+ * The RED hints stay flag-keyed, deliberately. `blockedKind` returns `undefined` for a non-BLOCKED
  * state, so the limb key has nothing to say about a red; and the line announces itself as "HINT
  * (not a verdict)", which is the one register in which a loose predicate is honest. The both-flags
  * case gets the same treatment rather than losing the information: the limb decides the verdict
  * wording, and the flag the limb did not use is reported as a hint beneath it.
+ *
+ * ROUND 373 — THERE WERE TWO DECLARED PATTERNS AND ONLY ONE RED HINT, AND THE MISSING ONE IS THE
+ * REACHABLE ONE. A red carrying the declared refusal text got a hint; a red carrying the declared
+ * hard-skip label got nothing, so the row said the state, the exit code and the summary line and
+ * nothing about an arm of that run not having run. The asymmetry ran opposite to the reachability
+ * Round 372 had just measured: the refusal hint needs `probe-round225` to start echoing its child
+ * before it can fire at all (its declared refusal occurs 0 times in its own output), while the skip
+ * label reaches a red for free — the shared outcome module emits `did not run: <label>` on its
+ * FAILURE limb as well as its skip limb, so a held port plus one broken check is an exit 1 carrying
+ * the label. That run is a regression, which is the event this sweep exists to report, and it is
+ * the run where the hint is worth most: a skipped arm changes what the failure can be attributed
+ * to. Still latent — no live sweep has printed it — and driven rather than argued in
+ * `probe-round373`, whose live half mints a child through the real `summariseAndExit` and puts its
+ * real bytes and real exit code through the real `classify`.
  */
 export const probeRowAnnotations = ({ state, code, refused, skipped }) => {
   const lines = [];
@@ -2105,6 +2125,11 @@ export const probeRowAnnotations = ({ state, code, refused, skipped }) => {
   if (state === 'RED' && refused) {
     lines.push('HINT (not a verdict): the declared refusal text is present at a non-2 exit, so a');
     lines.push('driven subject may have refused and this probe graded that as a failed check.');
+  }
+  if (state === 'RED' && skipped) {
+    lines.push('HINT (not a verdict): a declared hard skip is present at a non-3 exit, so an arm of');
+    lines.push('this probe did not run AND a check broke. The failure stands; the skipped arm is not');
+    lines.push('among what established it.');
   }
   return lines;
 };
