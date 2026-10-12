@@ -177,3 +177,64 @@ git safety rules) — flagging here for xian/Calliope: `refs/heads/claude/argus-
 
 Pushing this fire's actual commit with `git push origin HEAD:main` instead, per the corrected
 invocation.
+
+---
+
+**18:06 PT** — STOP fire. `git pull --ff-only`: already up to date, worktree clean (no action
+needed — wrapper had already synced). Read `docs/COORDINATION.md` in full (own section + recent
+cross-agent entries). Checked `docs/mail/` for anything addressed to this seat since own last
+checkpoint (`52aa2a8e`, 13:41 PT WORK fire).
+
+**Mail:** `git log 52aa2a8e..HEAD --format='%h %an %s'` — 9 commits since own checkpoint,
+authorship checked with `%an` before crediting any, none mine: Theseus's Round 372 chain (probe +
+mail + coord/log, closing the per-probe-row residue named in Daedalus's own Round 369 §7 and
+measuring it latent rather than live), Calliope's 10/11 WORK-fire no-op (gate re-verified at
+39/39, closing out my own Round 371 confirmation), Daedalus's Round 373 chain (probe + promote to
+SWEPT + mail + coord/log, a STOP fire of his own). Two mail threads landed since my checkpoint:
+Theseus's Round 372 reply to Daedalus (cc argus) — already closed and moved to
+`docs/mail/read/` by Theseus himself before this fire started; and Daedalus's Round 373 reply to
+Theseus (cc argus), still open in `docs/mail/` — read both in full. Round 372: reproduces
+Daedalus's Round 371 five figures byte-identical a second time, accepts his R5 correction (a
+comment-keyed selector is blind to a cell whose comment never says `characteris*` — unreachable,
+not missed), closes the per-probe-row residue by extracting `probeRowAnnotations` and keying its
+wording on the same limb as the verdict line, then builds the held-port instrument Daedalus's own
+docblock had flagged as missing and finds the "both flags set" BLOCKED row is reachable by
+construction but not the run that occurs today (round225 is the only entry declaring either
+pattern, has 0 live `process.exit(` and one `summariseAndExit(` typed `0 | 1 | 3`, so the refusal
+limb has no witness). Round 373: reproduces 372 whole under an independently-chosen selector
+(source-text registry attribution rather than the imported-object filter, deliberately different
+per Round 339's lesson that two keys sharing what *selects* the population agree vacuously), then
+drives the one reading Theseus named and left — a full sweep with `:3001` actually held —
+getting `SWEEP BLOCKED — 38 of 39 green, 1 blocked` with the BLOCKED row carrying the skip-label
+wording and *no* refusal hint, confirming Theseus's limb-key claim at the sweep's own output. His
+new finding: the *missing* hint leg (RED + hard-skip label) is the reachable one and the *shipped*
+leg (RED + refusal echo) is the one that can't fire today — exactly backwards from where attention
+had gone. Both memos end "nothing here needs xian"; neither routes an action to this seat beyond
+the standing cc confirmation. Round 373 §4's open items (the three Round 371 commemorations, the
+585-not-true-positives count, `probe-round371`'s unguarded `SELF_EXCLUDED` hole, and the
+not-yet-driven round225-specific break) are named three times running as unblocked-and-either's-
+to-take — Daedalus/Theseus's round-chain lane, not this seat's.
+
+**Gate, re-derived fresh, not taken from either memo:**
+- `npm run typecheck` — 0 diagnostic lines, all four workspaces (`shared`, `server`, `client`,
+  `scripts`).
+- `npm test -w packages/server` unpiped — **140 files / 2179 passed / 1 skipped (2180)**.
+- `npm test -w packages/client` unpiped — **26 passed | 13 skipped (39) files / 333 passed | 13
+  skipped (346) tests**.
+- `node scripts/sweep-probes.mjs --census` — **149 probe files, 40 swept / 109 deferred (33
+  verdict-bearing, 76 no-conclusion-line)** — up from 145/38 at my last checkpoint, matching
+  Round 372 and Round 373 both having been promoted to SWEPT in the interim.
+- full driving sweep (free port, not the held-port MEAS variant Daedalus labelled as not re-driven
+  every fire) — **SWEEP PASSED — 40 of 40 swept probes green, 0 red, 0 blocked, 0 census
+  problem(s), 109 deferred**. All figures match both memos' published state exactly; round225
+  reads PASS here (free port), consistent with Round 373's BLOCKED reading being specific to the
+  held-port condition and not a standing defect.
+
+**Standing blockers re-checked, both unmoved:** CIO Laya/AAXT thread — `git log -1` on both mail
+files still shows `fe650e02` (own 10/6 reply) as the last touch, still correctly parked on xian's
+scheduling call. Intel sweep cadence — last sweep `docs/intel/2026-10-05-sweep.md`, 6 days old,
+within weekly cadence, due 10/12 (tomorrow), not yet.
+
+`git status --porcelain` clean throughout. No port bound, no database opened, no model called.
+Two consecutive checks found nothing further unblocked — fire closed bounded. Nothing new needs
+xian beyond the one standing item (CIO/Laya).
