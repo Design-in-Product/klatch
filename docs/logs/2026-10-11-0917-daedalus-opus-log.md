@@ -422,3 +422,177 @@ Five of five present. `scripts/sweep-probes.mjs` is a MODIFY, confirmed by its S
 from 37 to 38 in the census driven after `c15b9a61` landed. The research writeup, this log and the
 COORDINATION entry go up in the final commit of the fire, so they are verified by that push rather
 than by this block.
+
+---
+
+# STOP fire — 17:1x–17:3x PT — Round 373
+
+Briefing done first: `git log` (head was `35c4b492`, **Calliope's**, not mine — `%an`-checked per
+Round 326, and the three commits above my own `c5aed9a7` were Calliope's and Theseus's), my
+COORDINATION section, and `docs/mail/`. One thread addressed to me: Theseus's Round 372, already in
+`docs/mail/read/`. Read in full before touching anything.
+
+## 17:1x — what Round 372 left, and what I took
+
+His memo named four open things and closed the one residue I had been carrying. Three of the four
+are mine from Round 371 (the commemorations, the 585, the `SELF_EXCLUDED` hole). The fourth was his
+own: **a full driving sweep with `:3001` HELD** — "the one reading neither of us has" — left on cost.
+
+I took that one, plus the adversarial pass over his new function. Both, because the held-port drive
+is 167 s of waiting during which read-only work is the only safe work.
+
+## 17:1x — the held-port sweep, driven first because it is the long pole
+
+`docs/research/round373-instruments/held-port-sweep.mts`. Port bound **wildcard by the measuring
+process** and released in it — his shape, nothing to reap, no `kill` anywhere — and read through the
+real library both ends rather than through a hand-rolled bind, because a bind on `127.0.0.1` answers
+FREE against a real wildcard occupant (that is what `scripts/lib/` exists to hold, and the memory
+rule is to check `lib` before hand-rolling a detector).
+
+```
+BEFORE     answering=null · acceptsConnection=false · wildcardBindWouldSucceed=true
+HELD       wildcard :3001 bound by this process · acceptsConnection=true
+sweep      exit 2 after 166573 ms, 6789 bytes
+rows       39 total — {"PASS":38,"BLOCKED":1}   (re-read from the written transcript)
+verdict    SWEEP BLOCKED — 38 of 39 swept probes green, 0 red, 1 blocked
+           (0 could not run, 1 ran but did not finish), 0 census problem(s), 109 deferred
+
+  BLOCKED exit   3  probe-round225-a-citation-is-not-a-call.mts
+          exit 3, summary line NOT FOUND — INCONCLUSIVE — probe-round225 established 32 of its
+          checks and skipped 1 arm(s). This is not a pass.
+          ran but did not finish — a declared arm was hard-skipped, so part of the run
+          stands and no check broke. Clear the blocker to get a verdict on the rest.
+
+RELEASED   closeBounded -> closed
+AFTER      answering=null · acceptsConnection=false · wildcardBindWouldSucceed=true
+```
+
+His limb key is correct at the row: one verdict wording, the skip one, no refusal hint. Four things
+that were not known before this drive: `blockedKind`'s throw is now called from inside `main()`'s
+row loop, where a throw aborts the whole sweep rather than one row, and this is the first drive in
+which its not firing was observable; the port-sensitive member list is confirmed **behaviourally**
+at 38 of 39 green with the port occupied; a blocked sweep exits **2**; a full sweep costs **~167 s**.
+None of those four figures was written down anywhere before today.
+
+Discipline while it drove: no `git` index operations (Round 358 — two reds in a past round were my
+own mid-drive `git commit`), no probe drives, no port binds, and no new file under `scripts/` (Round
+372's own finding: a new file joins at least three type programs it never mentions). Reading and one
+write under `docs/research/`, which the 38-green drive then showed to be benign.
+
+## 17:2x — the finding: two declared patterns, one RED hint, and the missing leg is the reachable one
+
+`probeRowAnnotations` shipped with two limb-keyed BLOCKED verdicts (his cure) and **one** RED hint.
+The registry declares **two** patterns, both on round225. A red carrying the declared **hard-skip
+label** printed nothing at all — state, exit code, summary line, and no word that an arm of that run
+never ran.
+
+The asymmetry runs opposite to the reachability his own §2 measured:
+
+- the shipped leg needs round225 to start echoing its child. 0 occurrences of the declared refusal
+  in its output (his D4) and **0 in its own source** (mine — a second side he could not read from a
+  held-port drive);
+- the missing leg needs no code change: `did not run: <label>` is on the shared outcome module's
+  **failure** limb as well as its skip limb (`probe-outcome.mts:771`), so a held port plus one broken
+  check is an exit 1 carrying the label — a regression on a partially-skipped probe, which is the
+  event the sweep exists to report and the run where the annotation is worth most.
+
+**Latent**, his word and the right one: no live sweep has printed it.
+
+`probe-round373`, **All 14 regression checks passed**, exit 0. A1/A2 re-derive his member list under
+a selector that is not his (registry source text, nearest-preceding-`file:` resolver, graded on a
+known positive first — Round 339, two keys sharing what selects the population agree vacuously).
+A3m: **5** RED-plus-skip tuples are members of the same enumeration his section B reads and no check
+in it reads them. B1-B3 are live: a child minted into `.testdata/round373/` goes through the real
+`summariseAndExit` with one broken hard check and one declared hard skip carrying his registry's
+declared label verbatim; real exit **1** (not 3 — the failure limb dominates), one matching
+`did not run:` line, real `classify` → `RED refused=false skipped=true`. C1 asserts the new guard
+**and** its near-identical neighbour each occur exactly once before mutating (Round 347); without
+the leg A3 fails with the rows **empty**, B3 fails on the real minted run, and C4 shows every other
+tuple annotated byte-identically.
+
+Two of his arms constrained the cure rather than being re-worded by it: B6 (no non-BLOCKED tuple
+carries a verdict phrase) and B8 (hints carry neither). The hint is worded to keep both green.
+
+**One self-correction worth recording because it cost a drive:** the first run of my own probe died
+`ERR_MODULE_NOT_FOUND` on the sandbox copy — the mutant imports `./lib/strip-source.mjs` and I had
+not copied it in. 14 checks had already printed `[ok]` at that point, so the failure was loud rather
+than silent, which is the only reason it was a 30-second repair.
+
+## 17:2x — promotion
+
+`promote-probes.mts --only round373` → **[PROMOTABLE]**, all 7 predicates OBSERVED, exit 0 both arms
+(real HOME and an empty HOME), **702/698 ms**, 32 population samples, `scripts/` and `packages/`
+trees unchanged, all 6 graded DBs unchanged. Hazard-clean, no exemption, no `--force`. Listed in
+DEFERRED in the commit that landed the file and census-gated before the tool ran, so the verdict is
+the tool's and not mine — which matters most for a probe whose subject is this module's own output.
+
+## 17:3x — the gate, every figure driven at this state
+
+```
+probe-round373   All 14 regression checks passed.  exit 0
+sweep            SWEEP PASSED — 40 of 40 swept probes green, 0 red,
+                 0 blocked (0 could not run, 0 ran but did not finish),
+                 0 census problem(s), 109 deferred
+                 — counted 40 PASS / 0 RED / 0 BLOCKED by its ROWS, not the verdict line alone
+typecheck        clean, all four legs
+server suite     140 files / 2179 passed, 1 skipped
+client suite     26 passed / 13 skipped (39), 333 passed / 13 skipped (346)
+:3001            answering=null · acceptsConnection=false · wildcardBindWouldSucceed=true
+                 (read via the real lib AFTER the drives, because the memo quotes it — and from a
+                 FILE, not `npx tsx -e`, which cjs top-level await forbids: my own recorded trap,
+                 hit once this fire and cost nothing because the error names it)
+```
+
+## Session Wrap Protocol
+
+**Step 1 — commits on `origin/main`:**
+
+```
+782676d7 mail: Round 373 — his 372 reproduces, I drove the held-port sweep he named, and the RED hint legs ran backwards from their witnesses
+f5809fa2 round373: promoted to SWEPT, and the gate is 40 of 40 counted by its rows
+c83a36fa round373: the RED hint legs ran backwards from their witnesses, and the sweep has now been driven on a held port
+```
+
+**Step 2 — each deliverable `ls`'d against the tree on `origin/main`:** see the verification block
+below.
+
+**Step 3 —** this log and the COORDINATION entry push last.
+
+---
+
+## Residue and deferrals, with named blockers — STOP fire
+
+- **Theseus's named next item is CLOSED**, and it was his to name and mine to drive: the held-port
+  sweep. It cost 167 s of held port and bought four figures nobody had.
+- **My three Round 371 commemorations are still unpinned as commemorations**, and the 585 broad
+  hits are still not true positives. Unblocked; each is a round's work and neither is started.
+- **`probe-round371`'s `SELF_EXCLUDED` hole** has now been named three times (my 371 §5, his 372 §4,
+  mine again here) and claimed zero. Unblocked. Saying so plainly because six rounds of exactly this
+  shape is how the characterisation item sat unclaimed until Round 371.
+- **Named hole, not a deferral:** the live half proves the RED-plus-skip state is reachable through
+  the shared outcome module, **not** that round225 specifically reaches it. That drive needs a held
+  port and a broken check at the same time, and the only route I can see is breaking a check in the
+  probe both seats use as a control every fire. Not done, not claimed.
+- **Nothing in this fire needs xian.** needs-you unchanged at 1.
+
+---
+
+## Step 2 verification — the tree on `origin/main`, not the push's exit code
+
+`git ls-tree -r --name-only origin/main -- <each path>` (ack the tree, not the memo), run after a
+fresh `git fetch`:
+
+```
+docs/mail/daedalus-to-theseus-…-your-372-reproduces-and-your-two-red-hint-legs-ran-backwards-from-their-witnesses-2026-10-11.md
+docs/research/round373-instruments/held-port-sweep.mts
+docs/research/round373-the-red-hint-legs-ran-backwards-from-their-witnesses-2026-10-11.md
+scripts/probe-round373-the-red-hint-legs-ran-backwards-from-their-witnesses.mts
+```
+
+Four of four present. `scripts/sweep-probes.mjs` is a MODIFY, confirmed by its SWEPT count moving
+from 39 to 40 in the census driven by the pre-commit gate at `f5809fa2` and by the row count in the
+driving sweep above. `%an` on all three commits: `Daedalus (Klatch)` — checked rather than assumed,
+because the head commit when this fire opened was in my own subject shape and was Calliope's.
+
+This log and the COORDINATION entry go up in the final commit of the fire, so they are verified by
+that push rather than by this block.
