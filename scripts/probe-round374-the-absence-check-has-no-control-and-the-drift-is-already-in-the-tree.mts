@@ -245,20 +245,42 @@ check(
 const b4Literal = r225.refusal!.source;
 
 /**
- * The subject's own spelling of the same intent, extracted from its source. This is the drift
- * candidate, and it is not hypothetical: it is the spelling a person editing the registry would most
- * plausibly move to, because it is the one the subject already uses.
+ * The subject's own spelling of the same intent. This is the drift candidate, and it is not
+ * hypothetical: it is the spelling a person editing the registry would most plausibly move to,
+ * because it is the one the subject already uses.
+ *
+ * **RE-KEYED BY ROUND 377 (Daedalus), and this was the third live instance of the defect the 374 →
+ * 376 chain is about.** As shipped, the spelling was *scraped from the subject's declaration
+ * syntax* — `[...r225Src.matchAll(/const R223B_REFUSAL = \/(.+?)\/;/g)]`, requiring `=== 1` — which
+ * is a hand-typed spelling of how `probe-round225` writes a local `const`, in a file this probe does
+ * not own. Driven, before the re-key: rename that one identifier in a copy of `probe-round225`
+ * (two sites, both local, nothing exported — behaviour-preserving) and this file goes **exit 1,
+ * `FAIL A2 A5`**, with A3m collapsing to `0 times … at line(s) ` and A5's own message reading
+ * "has become false by 0". Two reds and a collapsed figure, none of them about anything A2, A5 or
+ * B4 claims — the property is untouched by a rename, and A4/A6, which read the property, stay green
+ * through it.
+ *
+ * So the spelling is now DERIVED FROM THE REGISTRY, by stripping the probe-name prefix the two
+ * spellings differ by — the derivation Daedalus's `probe-round375` A1 already used as its
+ * independent reading of the same string, now the only reading either file has. The VALUE is
+ * unchanged, so A3m, A5 and A5b read exactly what they read before. What changed is what can break
+ * it: under the re-key the rename is green, and the drift that reddens it is the registry ceasing to
+ * declare the prefixed form — which is the premise A3m through A5b are built on, and the red is
+ * therefore true rather than cosmetic. Graded both ways by `probe-round377` B2/B3/C1/C2.
  */
-const ownMatches = [...r225Src.matchAll(/const R223B_REFUSAL = \/(.+?)\/;/g)];
-const ownSpelling = ownMatches.length === 1 ? ownMatches[0][1] : '(not extracted)';
+const PREFIXED = /^(probe-round\d+[a-z]?: )(.+)$/.exec(r225.refusal!.source);
+const ownSpelling = PREFIXED ? PREFIXED[2] : '(not derivable)';
 check(
   'A2',
-  `the subject declares its own constant for the same intent exactly once (${ownMatches.length} ` +
-    `match(es)): \`${ownSpelling}\` — and the registry's declared pattern is the same text behind ` +
-    'a probe-name prefix, so the two spellings differ by a prefix and nothing else',
-  ownMatches.length === 1 &&
-    r225.refusal!.source.includes(ownSpelling) &&
-    r225.refusal!.source !== ownSpelling,
+  `the registry's declared refusal is a probe-name prefix followed by a spelling the subject's own ` +
+    `source carries: strip \`${PREFIXED ? PREFIXED[1] : '(no prefix matched)'}\` off ` +
+    `\`${r225.refusal!.source}\` and what is left is \`${ownSpelling}\`, which occurs ` +
+    `${PREFIXED ? occurrences(r225Src, ownSpelling) : 0} time(s) in \`probe-round225\` — derived ` +
+    "from the registry, counted in the subject, and reading none of that file's declaration syntax",
+  PREFIXED !== null &&
+    ownSpelling.length > 0 &&
+    r225.refusal!.source !== ownSpelling &&
+    occurrences(r225Src, ownSpelling) > 0,
 );
 
 const ownLines = r225Src
@@ -267,10 +289,14 @@ const ownLines = r225Src
   .filter(({ l }) => l.includes(ownSpelling));
 meas(
   'A3m',
-  `the shorter spelling occurs ${ownLines.length} times in the subject's own source, at line(s) ` +
-    `${ownLines.map(({ n }) => n).join(', ')} — one of them inside a child \`probe-round225\` ` +
-    "mints and RUNS every fire, so the text that would falsify B4's claim is not merely " +
-    'imaginable, it is already executing in the tree',
+  !PREFIXED
+    ? 'REFUSED: the shorter spelling is not derivable from the registry (A2 is red), so this figure ' +
+      'would be a count of a placeholder rather than a reading — a figure that still prints beside ' +
+      'a red guard is the Round 353 defect, so it refuses instead'
+    : `the shorter spelling occurs ${ownLines.length} times in the subject's own source, at ` +
+      `line(s) ${ownLines.map(({ n }) => n).join(', ')} — one of them inside a child ` +
+      "`probe-round225` mints and RUNS every fire, so the text that would falsify B4's claim is " +
+      'not merely imaginable, it is already executing in the tree',
 );
 
 /**

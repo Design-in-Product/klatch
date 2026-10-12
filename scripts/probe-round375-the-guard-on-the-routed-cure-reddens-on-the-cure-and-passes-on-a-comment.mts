@@ -100,11 +100,29 @@ mkdirSync(join(SANDBOX, 'lib'), { recursive: true });
 // ── Section A — Round 374's figures, re-derived under keys that are not his ──
 
 /**
- * His A2 scrapes the subject for `const R223B_REFUSAL = /…/;` and compares it to the registry. This
- * derives the same candidate the other way round — from the REGISTRY, by removing the probe-name
- * prefix the two spellings differ by — so the two readings do not share what selects the string
- * (339). If the registry's declared refusal is `<prefix>: <text>`, the subject's own spelling is
- * `<text>`, and that is the drift target.
+ * The drift target, derived from the REGISTRY by removing the probe-name prefix the two spellings
+ * differ by: if the declared refusal is `<prefix>: <text>`, the subject's own spelling is `<text>`.
+ *
+ * **A1's SECOND CONJUNCT WAS RE-KEYED IN ROUND 377, and it was my own instance of the defect this
+ * file was written to report.** As shipped it read
+ *
+ *     occ(r225Src, `const R223B_REFUSAL = /${shortFromRegistry}/;`) === 1
+ *
+ * — a derived middle inside a hand-typed spelling of how `probe-round225` writes a local `const`.
+ * Two costs, both driven in Round 377 before this edit. (1) It is the 375/376 defect one surface
+ * over: rename that identifier in a copy of `probe-round225` — two sites, both local, nothing
+ * exported, behaviour-preserving — and this file goes **exit 1, `FAIL A1`**, while A2 below, which
+ * reads the property, stays green on the same bytes. One red, nothing about the property, from a
+ * file this probe does not own. (2) It made this docblock's own independence claim false: as
+ * shipped, both readings required `const R223B_REFUSAL = /…/;` to be present verbatim in a third
+ * file, so the "two selectors that share neither end" shared exactly one end (339).
+ *
+ * A1 now grades the DERIVATION and nothing else; the occurrence reading lives in A2, where it is
+ * strictly stronger than the `=== 1` this conjunct used to make (2 occurrences, at named lines, by
+ * a regex over lines). Theseus's A2 in `probe-round374` was re-keyed to the same derivation in the
+ * same fire, so the two files no longer agree by sharing a scrape — they agree on a value the
+ * registry alone determines, and `probe-round377` B3/C3 grade this arm green on the rename and red
+ * when the registry stops declaring the prefixed form.
  */
 const PREFIX = 'probe-round223b: ';
 const shortFromRegistry = r225.refusal!.source.startsWith(PREFIX)
@@ -114,10 +132,13 @@ check(
   'A1',
   `the drift target derived from the REGISTRY rather than scraped from the subject: strip the ` +
     `probe-name prefix off \`${r225.refusal!.source}\` and what is left is \`${shortFromRegistry}\`` +
-    " — the same string his A2 reached from `probe-round225`'s own declaration, two selectors that " +
-    'share neither end',
+    ' — non-empty, strictly shorter than what it was taken from, and exactly reconstituting it, so ' +
+    "the derivation is checked rather than assumed. The subject's own source is read by A2, not " +
+    'here: this arm reads the registry only',
   shortFromRegistry !== '(not derivable)' &&
-    occ(r225Src, `const R223B_REFUSAL = /${shortFromRegistry}/;`) === 1,
+    shortFromRegistry.length > 0 &&
+    shortFromRegistry !== r225.refusal!.source &&
+    PREFIX + shortFromRegistry === r225.refusal!.source,
 );
 // Non-global on purpose: a `/g` regex reused across `.test()` calls carries `lastIndex` forward and
 // silently skips lines — a detector that fails by returning a smaller number.

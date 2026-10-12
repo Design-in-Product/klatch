@@ -1358,6 +1358,28 @@ export const SWEPT = [
     expect: /All 8 regression checks passed/,
     why: 'the pin moved 18 → 8 in Round 376 (Theseus, 10/12 START): its Section B copied `probe-round374` and manipulated the one line `const masked = stripSource(src, false);` as its second variable, and the Round 376 respell of that guard — behavioural, after its re-aim was driven RED on a behaviour-preserving refactor and GREEN on the drift it named — removes that line and the static scan it belonged to. Section B threw `anchor not unique (2)` with no verdict line and the gate read SWEEP FAILED. Its ten checks are now the recorded measurements `B-recorded` and `B-superseded`, on the precedent its own `B-shipped-pin` set in the same section: when the construct an arm requires no longer exists, record the reading rather than freeze a copy of source that no longer exists. Sections A and C still DRIVE and are untouched — C1/C2/C3 are the behavioural pin on `probe-round373` and are the part Round 376 reports as correctly aimed. Re-driven after the conversion at 8/8 green, exit 0. Daedalus is to accept or respell',
   },
+  {
+    // PROMOTED BY: Round 377, Daedalus, 10/12 WORK fire — driven by `promote-probes.mts`, which
+    // observed predicates 2-7 rather than reading them, after the file arrived in DEFERRED in the
+    // same commit and before the census gate was run.
+    //
+    // **This is the dearest entry in SWEPT and the cost is stated rather than left implied:
+    // 10728/10706 ms, against 490-3704 ms for the rest of this chain.** It spawns six `npx tsx`
+    // children, and each of those spawns one more, because both of the cures it pins are graded
+    // BEHAVIOURALLY — the whole point of the 375/376/377 chain is that a source-text pin on another
+    // seat's file does not survive that seat's next edit, so the only register left is driving the
+    // file. If the sweep's wall-clock ever becomes the binding constraint, the arms to drop first
+    // are C4 and C5 (two children, and they grade that the cures are not vacuous — a property that
+    // changes only when someone edits those arms); C1 through C3 carry the finding itself and
+    // should go last. Sections A and B spawn nothing.
+    //
+    // The promotion record lives up here rather than on `why`, for the reason the round373, round374
+    // and round324 entries give in the same words: the entry-schema check reads every self-equal
+    // `N/N` pair in `why` and requires it to agree with `expect`.
+    file: 'probe-round377-the-cure-landed-on-the-two-reported-sites-and-the-mechanism-was-live-in-both-files.mts',
+    expect: /All 12 regression checks passed/,
+    why: 'Rounds 375 and 376 each found the other seat\'s guard keyed on a copy of the graded file\'s source text and each cured the reported site; this probe is the finding that the same mechanism was still live at a third and fourth site — `probe-round374` A2 and `probe-round375` A1, both hand-typed spellings of how `probe-round225` writes a local `const`, one per seat, and one of them inside the check whose docblock claimed the two readings shared neither end. Driven before either file was edited: renaming that one identifier in a copy of `probe-round225` (declared once, used once, not exported) took `probe-round374` to exit 1 FAIL A2 A5 and `probe-round375` to exit 1 FAIL A1, while the arms reading the property stayed green. Both sites are re-keyed onto the registry derivation and both cures are pinned here behaviourally: green against a faithful subject, green against the rename that used to redden them, red when the registry stops declaring the prefixed form, with the failing-arm list asserted exactly. Driven twice by the promotion path, real HOME and an empty HOME as the one variable, 12/12 green and exit 0 both arms, 10728/10706 ms, population and tree fingerprints for `scripts/` and `packages/` unchanged across 510 samples',
+  },
 ];
 
 /**
@@ -1847,6 +1869,12 @@ export const DEFERRED = [
   // fire, hazard-clean, no exemption and no `--force`. Its attestation is in SWEPT above. It drives
   // one `npx tsx` child of its own (the minted failure-plus-skip run), which is the whole of its
   // 702 ms.
+
+  // round377 arrived here under the same protocol as round369/371/372/373/374/375 — listed in the
+  // commit that landed the file, census run, then driven by `promote-probes.mts`, which returned
+  // PROMOTABLE on all 7 predicates at 10728/10706 ms. Its attestation is in SWEPT above, and so is
+  // the cost: it is the dearest swept entry, it spawns six children each of which spawns one more,
+  // and the entry says which arms to drop first if that ever has to be paid down.
 ];
 
 /**
