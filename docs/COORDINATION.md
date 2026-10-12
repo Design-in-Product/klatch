@@ -3118,7 +3118,31 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 
 ### Iris (UX design & front-end development)
 - **Branch:** `claude/iris-cycle` (Amber standing worktree `/Users/xian/Development/klatch-worktrees/iris`, tracks `origin/main`). Prior `.claude/worktrees/iris` + cron `a89f159d` are retired (session crons don't survive — Pard's shared answers §2). LaunchAgent duty cycle requested from Pard 8/4: 2 fires/day, 07:17 + 19:17 PT.
-- **Updated:** 2026-10-11 ~07:20 PT (START fire). **Status:** available.
+- **Updated:** 2026-10-11 ~19:18 PT (STOP fire). **Status:** available.
+- **Drain:** mail checked — 1 new file since last checkpoint (Daedalus's Round 373 memo, cc
+  iris), read in full, cc-only ("Nothing here needs xian"), no routed item. Cross-poll brief
+  not re-checked (already handled at START same day). Both standing blockers re-checked, both
+  unmoved. Fresh gate re-derived — see below. Two consecutive checks found nothing further
+  unblocked — fire closed bounded.
+- **10/11 fire (STOP) — no-op on product; no new unblocked UX work.** Worktree synced to
+  `origin/main` (wrapper pre-sync, confirmed via `git pull`), clean. `git log --oneline
+  df280754..HEAD` (my own 10/11 START checkpoint) showed 24 new commits — Rounds 369-373 of the
+  Daedalus/Theseus adversarial-verification thread (probes, mail, coord+log, session-wrap
+  commits); authorship checked with `%an` (Daedalus ×11, Theseus ×7, Argus ×3, Calliope ×3),
+  none mine. `git diff --stat df280754..HEAD -- packages/` empty — confirmed, not assumed.
+  **Mail:** 1 new file, Daedalus's Round 373 memo (cc xian/janus/argus/calliope/iris), read in
+  full — cc-only, no routed question. `ls docs/mail | grep -i to-iris` empty; `ls docs/mail |
+  grep '^xian-to'` empty. **Cross-poll brief:** not re-checked, already handled at START same
+  day, skip-and-log ruling still in force. Standing blockers re-checked, both unmoved:
+  ground-rules standing/per-klatch question (parked on xian since 2026-08-09, now **63 days**);
+  import-confirm-step-ux (`entityGuess`, re-grepped excluding `dist/`: 6 source files, same set).
+  **Verified, not trusted:** `npm run typecheck` clean ×4 workspaces; `npm test` to completion,
+  read directly: server 140 files · 2179 passed · 1 skipped (2180), client 26 files · 333
+  passed · 13 skipped — exact match to this morning's START figures; `sweep-probes --census`
+  CENSUS OK, 149 probe files (+4 vs. this morning), 40 swept (+4)/109 deferred (unchanged) — the
+  growth tracks the round-chain's own probe promotions. No `packages/` changes this fire. Log:
+  `docs/logs/2026-10-11-0720-iris-log.md` (STOP section appended).
+- **Prior update:** 2026-10-11 ~07:20 PT (START fire). **Status:** available.
 - **Drain:** mail checked — 1 new file since last checkpoint (Theseus's Round 368 memo, cc
   iris), read in full, cc-only ("Nothing here needs xian"), no routed item. Cross-poll brief
   skip-and-log per Calliope's standing ruling, not re-tried (known sandbox `WebFetch` permission
