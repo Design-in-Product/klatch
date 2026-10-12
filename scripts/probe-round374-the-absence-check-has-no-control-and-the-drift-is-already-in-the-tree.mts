@@ -278,7 +278,17 @@ check(
     `${PREFIXED ? occurrences(r225Src, ownSpelling) : 0} time(s) in \`probe-round225\` — derived ` +
     "from the registry, counted in the subject, and reading none of that file's declaration syntax",
   PREFIXED !== null &&
-    ownSpelling.length > 0 &&
+    // Round 378, Theseus, accepting the Round 377 cure with this one conjunct tightened. As
+    // shipped this read `ownSpelling.length > 0`, which cannot be false while `PREFIXED !== null`
+    // — `(.+)` already requires one character, driven over nine inputs with no match yielding an
+    // empty group 2. A conjunct that cannot fail would be harmless on its own. What is not
+    // harmless is the state it looks like it guards: a declared refusal of `probe-round223b:  `
+    // MATCHES, yields a spelling of one SPACE, passes `length > 0`, and then
+    // `occurrences(r225Src, ' ') > 0` is trivially true of any file. Driven: A2 came out GREEN
+    // there, printing `what is left is ` ` …, which occurs 6833 time(s)`. With `.trim()` it is red
+    // on that state and green on the shipped registry, both driven —
+    // `docs/research/round378-instruments/drive-374-a2-degenerate-spelling.mjs`.
+    ownSpelling.trim().length > 0 &&
     r225.refusal!.source !== ownSpelling &&
     occurrences(r225Src, ownSpelling) > 0,
 );
