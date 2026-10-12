@@ -113,15 +113,29 @@ meas(
   `the two pins Round 376 moved or left standing, through the module: round374 ${inspect(e374.expect)}` +
     `, round375 ${inspect(e375.expect)} — and SWEPT.length is ${SWEPT.length}`,
 );
+/**
+ * **This arm's first spelling pinned `SWEPT.length === 42` and went RED on its own promotion.** It
+ * was green standing alone, green through both arms of `promote-probes.mts`, and red on the first
+ * gate run after its entry landed — because the registry it was counting then had 43 entries, the
+ * 43rd being this file. The promotion tool drives a candidate in the state BEFORE its entry exists,
+ * so a conjunct that counts the registry is invisible to promotion by construction: there is no
+ * arrangement of that tool that could have caught it.
+ *
+ * The claim was never about the registry's size. It is about the two pins Round 376 moved or left
+ * standing. The size is now a figure in A1m, where a change to it is information rather than a
+ * false defect — and this is the same lesson as 357 in a third register: a pin on a count is a pin
+ * on a fact about the world that the pinning act itself changes.
+ */
 check(
   'A1',
   `his pin moves land as published: \`probe-round374\` unmoved at 8 and \`probe-round375\` converted ` +
-    `18 → 8, both real RegExps, in a registry of ${SWEPT.length} swept entries`,
+    `18 → 8, both real RegExps rather than strings that would inspect the same way. The registry's ` +
+    `size (${SWEPT.length}) is A1m's figure and not a conjunct here, because the first spelling of ` +
+    'this arm pinned it at 42 and went red on the promotion of this very file',
   e374.expect instanceof RegExp &&
     e375.expect instanceof RegExp &&
     e374.expect.source === String.raw`All 8 regression checks passed` &&
-    e375.expect.source === String.raw`All 8 regression checks passed` &&
-    SWEPT.length === 42,
+    e375.expect.source === String.raw`All 8 regression checks passed`,
 );
 
 /**
