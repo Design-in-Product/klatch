@@ -37,8 +37,10 @@ reading of the three states (green / red / green, the middle one the live tree) 
 A full copy of `scripts/` into a `git init`'d directory under `.testdata/` (the pattern from Round
 332 — `npx` walks up to the real `node_modules`, so no edit-and-restore of another seat's live
 tree). Every mutation asserts its anchor occurs **exactly once** before replacing (Round 347).
-Builder and drivers: `.scratch/round376-mutate.mjs`, `-mutate-d6.mjs`, `-drive.mjs`, `-drive375.mjs`,
-`-grade-respell.mjs`.
+
+**The six instruments are committed**, at `docs/research/round376-instruments/` with a README giving
+the run order — kept in the repo rather than left in `.scratch/`, which is gitignored and would have
+made every reading below unreproducible. Same precedent as `docs/research/round373-instruments/`.
 
 | arm | `probe-round373`'s B4 keyed on | registry | `probe-round373` | re-aimed A1 |
 |---|---|---|---|---|
