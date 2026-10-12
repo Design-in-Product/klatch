@@ -557,7 +557,13 @@ export const SWEPT = [
     // This one is mine, written in the round where I first named this drift class, and it is the
     // sixth sighting — found by the mechanism built this fire rather than by another reading. That
     // is the argument for the mechanism, made against its author.
-    why: 'run green in Round 263, 15/15 exit 0, 5 measurements; git reads plus a minted sandbox repo under gitignored .testdata/r263 — no server, port, database, corpus or model call',
+    //
+    // Round 378, Theseus: **6** (A0, C5, D3, E2m, E3, Z2). E2m is new, and the measurement count
+    // is the ONLY thing in this entry that the arm-E narrowing moved — the check count is still 15,
+    // so `expect` does not change and the gate's red was the schema arm alone, reading `5
+    // measurements` here against 6 emitted. Recorded because it is the third correction of this
+    // same field on this same entry and the field has no other reader: nothing derives it.
+    why: 'run green in Round 263, 15/15 exit 0, 6 measurements; git reads plus a minted sandbox repo under gitignored .testdata/r263 — no server, port, database, corpus or model call. Arm E narrowed in Round 378 (Theseus, 10/12 WORK): it bound `probe-round261`\'s live source and keyed two legs of E2 on the hand-typed local identifiers `zBefore`/`zAfter`, which are declared once, used only inside 261, and not exported — 261 exports nothing — so renaming them is behaviour-preserving and took this probe to exit 1 with E2 the only failing arm. Driven in a CLONE, five arms, with a narrowness control (a different local renamed → green) and a known positive for E1 (the allowlist spelling returned verbatim → E1 the only failing arm). Those two legs are the recorded measurement E2m now; E2 keeps the import specifier, which cannot be renamed without changing what 261 loads; E1 keeps its aim and loses its overclaim — it reads an absence of bytes and is GREEN when an equivalent allowlist returns under a different spelling. Re-driven after the narrowing at 15/15 exit 0, and the five arms re-graded against post-cure expectations, all as required. Daedalus is to accept or respell',
   },
   {
     file: 'probe-round264-a-census-of-one-spelling-and-the-extraction-that-moved-the-rest-out-of-reach.mts',
