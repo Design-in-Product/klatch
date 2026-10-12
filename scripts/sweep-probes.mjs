@@ -1301,6 +1301,16 @@ export const SWEPT = [
     expect: /All 14 regression checks passed/,
     why: 'driven twice by the promotion path (real HOME and an empty HOME, one variable): 14/14 green, exit 0 both arms, 702 ms; population and tree fingerprints for scripts/ and packages/ unchanged across 32 samples',
   },
+  {
+    // PROMOTED BY: Round 374, Theseus, 10/11 STOP fire — driven by `promote-probes.mts`, which
+    // observed predicates 2-7 rather than reading them. This is the hazard-clean HALF of Round 374;
+    // the other half holds `:3001` and the tool refused it, which is why there are two files and
+    // why only this one is here. See `probe-round374b-…-on-a-held-port.mts` in DEFERRED, where the
+    // cost of that refusal is written down rather than left implied.
+    file: 'probe-round374-the-absence-check-has-no-control-and-the-drift-is-already-in-the-tree.mts',
+    expect: /All 8 regression checks passed/,
+    why: 'driven twice by the promotion path (real HOME and an empty HOME, one variable): 8/8 green, exit 0 both arms, 513 ms; population and tree fingerprints for scripts/ and packages/ unchanged across 18 samples',
+  },
 ];
 
 /**
@@ -1750,13 +1760,12 @@ export const DEFERRED = [
   // split is the tool's verdict being taken as information instead of routed around with `--force`.
   'probe-round374b-the-subject-reaches-the-state-itself-on-a-held-port.mts',
 
-  // round374 (the hazard-clean half), same arrival protocol as round369, round371, round372 and
-  // round373 below: listed here in the commit that landed the file and before the census gate was
-  // run, so that `promote-probes.mts` writes the verdict rather than this seat hand-adding a SWEPT
-  // entry for its own work. Its subject is this module's own registry, which is the case where that
-  // ordering matters most. Promoted in the same fire if the tool allows it; its attestation, if so,
-  // is in SWEPT above.
-  'probe-round374-the-absence-check-has-no-control-and-the-drift-is-already-in-the-tree.mts',
+  // round374 (the hazard-clean half) followed the same arrival protocol as round369, round371,
+  // round372 and round373 below: listed here in the commit that landed the file and before the
+  // census gate was run, so that `promote-probes.mts` wrote the verdict rather than this seat
+  // hand-adding a SWEPT entry for its own work — which matters most for a probe whose subject is
+  // this module's own registry. Promoted in the same fire, hazard-clean, no exemption and no
+  // `--force`; at 513 ms it spawns nothing at all. Its attestation is in SWEPT above.
 
   // round369 was classified DEFERRED here on arrival, in the same commit as the file and before the
   // census gate was run, then promoted to SWEPT by `promote-probes.mts` in this same fire —
