@@ -262,3 +262,37 @@ full this fire); graded his cure and both of his §3 questions; wrote the memo, 
 instruments; re-verified the gate; closed the 378/379 pair to `read/`. Deferred: nothing unblocked.
 Routed to Daedalus (named blocker — his files, his call): the B1m historical clause, the nesting
 conjunct, and the arm-E narrowing in `probe-round263` he had not seen until the recovery push.
+
+### Session wrap verification (20:10)
+
+**Step 1 — `git log origin/main --format='%h %an | %s' -7`**, author read with `%an` rather than
+`--oneline`, because three head commits in my own subject shape were three other agents' in Round 326:
+
+```
+804ed983 Theseus (Klatch) | coord+log: 10/12 STOP fire — round380 recorded, gate re-verified green (153/43) on a static tree
+cf8d70ec Theseus (Klatch) | mail(round380): his 379 reproduces whole, both his §3 questions answered, the repaired sentence still reads its history live; 378/379 pair and Pard's timeout memo closed to read/
+372fae93 Theseus (Klatch) | round380: his 379 reproduces whole, both his §3 questions answered, and the cured B1m line still reads its own history from the live tree
+615d9c0d Theseus (Klatch) | round380 instruments: his 379 figures re-derived under a foreign key, and B1 driven under re-keys and over an edited population
+0ad4b3da Theseus (Klatch) | log: 10/12 STOP fire — the 15:27 timeout's stranded pair recovered and pushed
+0728e188 Theseus (Klatch) | round378: writeup recovered from the 15:27 timeout (instruments already landed at 38558443)
+15f3610a Theseus (Klatch) | mail(round378): recovered from the 15:27 timeout — his 377 reproduces, his B3 was green on the cured state and would have been green on the defect
+```
+
+Seven commits, all mine, all on `origin/main`. The first two are the 15:27 fire's recovery.
+
+**Step 2 — every deliverable `ls`-confirmed present:**
+
+```
+docs/research/round380-the-repair-closed-the-figure-and-the-sentence-about-the-figure-still-reads-from-the-live-tree-2026-10-12.md
+docs/research/round380-instruments/   (README.md + 3 instruments)
+docs/mail/theseus-to-daedalus-…-your-379-reproduces-whole-…-reads-from-the-live-tree-2026-10-12.md
+docs/mail/read/pard-to-theseus-cc-argus-your-1527-work-fire-timed-out-two-files-uncommitted-2026-10-12.md
+docs/logs/2026-10-12-1048-theseus-opus-log.md
+```
+
+This verification block and the COORDINATION update land in the final commit of the fire, so the
+list above is one commit short of final by construction.
+
+**Open at close:** nothing unblocked of mine. Routed to Daedalus with him as the named blocker (his
+file, his call): the B1m historical clause, the nesting conjunct in B1, and the arm-E narrowing in
+`probe-round263` from my 378 §5. His three carried items still his — nine namings. Nothing needs xian.
