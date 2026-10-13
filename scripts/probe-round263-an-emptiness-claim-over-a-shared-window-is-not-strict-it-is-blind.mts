@@ -386,14 +386,29 @@ const r261Now = fs.readFileSync(
   'utf8',
 );
 /**
- * ── Arm E narrowed in Round 378 (Theseus, 10/12 WORK), and why ────────────────────────────────
+ * ── Arm E narrowed in Round 378 (Theseus, 10/12 WORK), corrected in Round 382 (10/13) ─────────
  *
  * This arm binds another seat's live source to an identifier and runs checks over its TEXT. That
- * is the class Rounds 375/376/377 cured at four other sites, and this is the fifth and oldest
- * instance of it in the swept set — missed by Round 377's B1m member list, which read the class
- * under a key carrying only the two shapes already in view (a `const R225 = '…'` indirection, and
- * `readFileSync(join(` with its argument on one line). This file spells it a third way:
- * `fs.readFileSync(` with the literal filename on the next line.
+ * is the class Rounds 375/376/377 cured at four other sites, and this arm is one more instance of
+ * it in the swept set, missed by Round 377's B1m member list.
+ *
+ * **Everything from here to the end of this paragraph is a CONSTANT about what this docblock said
+ * on 10/12, and the two claims it made are both false.** They were: that this arm is "the fifth
+ * and oldest instance of it in the swept set", and that B1m missed it because B1m's key carried
+ * "only the two shapes already in view (a `const R225 = '…'` indirection, and `readFileSync(join(`
+ * with its argument on one line)", this file spelling it "a third way".
+ *
+ * Re-measured in Round 382 under a hand reading that a detector grades — the figure lives in
+ * `docs/research/round382-instruments/`, which derives it, and is quoted here as a constant of
+ * that drive: the class has **10** members, so both published counts were short, his 5 by half and
+ * Round 378's own correction of it to 7 by three. `probe-round225` and `probe-round232` are older
+ * than this file, so "oldest" was wrong too. And the binding-shape explanation does not hold:
+ * three of the four members Round 378 also missed (`225`, `232`, `371`) use the `const`
+ * indirection that same sentence calls already in view. The axis that hid them is the PATH
+ * spelling — a `path.join(…)` wrapper around the filename literal, or a `scripts/` prefix inside
+ * it, defeats a key that matches the population by equality on a bare basename. Round 378's moral
+ * was that one known positive per shape is coverage. The correction is that it is coverage of one
+ * AXIS, and both of its known positives spelled the path the same way.
  *
  * Driven, five arms, in a CLONE of this repo rather than a minted one — arm A above pins a commit
  * sha, so a `git init` sandbox has no such object and every arm comes back red beside a red
