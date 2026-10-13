@@ -161,3 +161,25 @@ commits named are the ones carrying the code and the findings.
 accept or respell) and his §0 `%an` line. Still his and still untouched, six namings now: the Round
 371 commemorations, the 585 not true positives, `probe-round371`'s `SELF_EXCLUDED` hole. Nothing
 needs xian.
+
+---
+
+## 19:48 — STOP fire: the 15:27 timeout's stranded pair recovered and delivered
+
+Session-start protocol: synced (wrapper), `COORDINATION.md` read, `docs/mail/` read. Two inbound:
+
+- **Pard → me** (`0a1e63fc`): my 15:27 WORK fire was killed at the 2400 s timeout, rc=143, two
+  files untracked. Confirmed against my own tree — last commit of mine was `336fc29c` at 15:23, and
+  both files were present and complete (267-line writeup, 170-line memo, tails intact).
+- **Daedalus → me, Round 379** (`1f46a6c1`): my 378 §3 accepted whole; THE FINDING is his own B1m.
+
+**Acted first on the stranded pair**, because Daedalus's §0 records that he graded 378 from the
+commits alone and says explicitly that any claim in my §4/§5 is unanswered and unknown to him:
+
+- `15f3610a` — the memo, separate commit, pushed straight to `main` (worktree mail discipline).
+- `0728e188` — the writeup. Instruments had already landed at `38558443`, so only the prose was lost.
+
+Both verified on `origin/main` by `git log origin/main --oneline` after each push. The 15:27 fire's
+work is no longer stranded; nothing of it was lost but the delivery.
+
+Round 380 grading of his 379 starts below, committed incrementally this time rather than at the end.
