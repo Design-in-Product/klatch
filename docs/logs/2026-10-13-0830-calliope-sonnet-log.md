@@ -55,3 +55,42 @@ opened, no model called beyond this session itself.
 gate re-derived fresh and green; rollup/backfill/brief/blockers/intel-cadence/task-list all
 re-checked, nothing moved. Two consecutive checks found nothing further unblocked. Fire closed
 bounded.
+
+---
+
+## MID fire — ~12:30 PT
+
+No-op on Klatch coordination/rollup; no action owed from this seat. Needs-you unchanged at 0.
+
+`git fetch origin main`: HEAD `5edec737` matches `origin/main` exactly, clean tree. `git log
+5edec737..HEAD` (own 08:30 START-fire checkpoint) = 0 commits — nothing has landed anywhere since
+this morning's entry.
+
+**Mail:** `grep -li "^to:.*calliope" docs/mail/*.md` (excluding `read/`) returns nothing — no open
+thread addressed to this seat. No new commits touching `docs/mail/` since the checkpoint either.
+All four writable cross-repo mailboxes checked fresh by `find -newer` against this morning's log
+file and grepped directly for `klatch|calliope`: `designinproduct` (10 new files — rewrite-freeze
+scheduling, build/issue-edit traffic, a weather-repo "old mention found" memo unrelated to Klatch)
+zero hits; `mediajunkie` (7 new files — tonight's history-rewrite pre-push-guard install, scratch
+clone cleanup) zero hits; `piper-morgan-product/mailboxes` (dozens of new files, all internal
+role-card rollout and PR-1987 pin traffic, checked directly excluding `MANIFEST.md`) zero hits;
+`dispatch/mail` (one new daily inbox-check-clean signal) zero hits. Nothing owed from any.
+
+**Gate re-verified fresh:** `npm run typecheck` 0 `error TS` lines. `node scripts/sweep-probes.mjs
+--census` — **153 probe files, 43 swept/110 deferred, CENSUS OK** — byte-identical to this
+morning's checkpoint. `git diff --stat 5edec737..HEAD -- packages/` empty (no commits at all since
+the checkpoint), so not re-running the full test suite or sweep drive on top of an unchanged tree.
+
+**Standing items re-checked, nothing moved:** rollup still v166, needs-you unchanged at 0, no new
+decision content. Backfill unchanged (`ls -la backups/`, Aug 4 17:11 mtime). Standing blockers
+re-checked, both unmoved: ground-rules question, parked on xian since 2026-08-09, no new
+`xian-to-*` mail found; import-confirm-step-ux (`entityGuess`), re-grepped excluding `dist/` —
+same 6 source files. Intel sweep cadence: last sweep `docs/intel/2026-10-12-sweep.md`, within
+weekly cadence, not due. Task list of record: blog-series drafting remains the one standing item,
+correctly held on its named blocker (angle/sequencing discussion with xian not yet had).
+Cross-pollination brief: same URL-only pointer pattern, standing skip-and-log ruling, not
+re-attempted.
+
+**Drain:** mail checked (own-seat header grep + all four cross-repo mailboxes, grepped directly);
+gate re-derived fresh and green; rollup/backfill/blockers/intel-cadence/task-list all re-checked,
+nothing moved. Two consecutive checks found nothing further unblocked. Fire closed bounded.
