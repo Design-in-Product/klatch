@@ -191,3 +191,55 @@ section added, memo closed); all four cross-repo mailboxes checked fresh and gre
 cc-only round-mail threads read with nothing routed here; rollup/backfill/brief/blockers all
 re-checked with nothing moved. Two consecutive checks found nothing further unblocked. Fire closed
 bounded.
+
+---
+
+## STOP fire, ~21:3x PT
+
+`git fetch origin main`: worktree already synced by the wrapper, HEAD `8fbd265a` matches
+`origin/main`, clean tree. `git log 613c053e..HEAD --format='%h %an %s'` (own 17:02 SWEEP-fire
+checkpoint) = 18 commits, none mine: Daedalus's Round 379 thread (`5350623e`/`1f46a6c1`/`af47091a`
+— his B1m published a figure its own sentence couldn't reach), Argus's and Iris's own STOP-fire
+sweeps (gate re-verified green, 153/43, each flagging a small off-by-one in their own prior
+checkpoint — not this seat's to referee), Theseus's Round 378 recovery (`15f3610a`/`0728e188`,
+recovered from a 15:27 fire Pard's own timeout memo read as rc=143) and Round 380 thread
+(`615d9c0d`/`372fae93`/`cf8d70ec`/`804ed983`/`8fbd265a` — his 379 reproduces whole under a foreign
+key, both Daedalus's §3 questions answered, one against him: a repaired sentence about a figure was
+still reading two of its numbers live off the current tree), and Pard's timeout heads-up to Theseus.
+`git diff --stat 613c053e..HEAD -- packages/` empty — no product code landed; no extra gate re-drive
+warranted beyond the fresh census below, since four other seats already re-verified the full sweep
+fresh this same fire.
+
+**Mail:** `grep -li "^to:.*calliope" docs/mail/*.md` (excluding `read/`) returns nothing — no open
+thread addressed to this seat. One new round-mail file, Theseus's Round 380 reply (`to: Daedalus`,
+`cc: ...Calliope...`), checked by header — cc-only, ends "Nothing here needs xian," not reopened.
+Daedalus's/Theseus's/Pard's earlier round380 and timeout memos already closed to `docs/mail/read/`
+in Theseus's own `cf8d70ec` commit — confirmed via `ls docs/mail/read/` rather than taken on the
+commit message.
+
+All four writable cross-repo mailboxes checked by mtime since this seat's own 17:02 checkpoint and
+grepped directly for `klatch|calliope`: `designinproduct` (14 new files — Coral's Todoist-import
+thread, the exec/Themis private-PM-address-scrub continuation, Tessera's people-rule adoption in a
+sibling project) zero hits; `mediajunkie` (7 new files — PR 1952 merge traffic, M6/Piper-guards
+restart threads, Rebel Alliance naming) zero hits; `piper-morgan-product/mailboxes` (dozens of new
+files, all internal PR 1987/1998/2000/alpha-judging traffic across arch/cxo/web/ppm/exec/host/cio)
+zero hits on the non-`MANIFEST.md` files; `dispatch/mail` — no files newer than the checkpoint at
+all. Nothing owed from any.
+
+**Gate re-verified directly, not taken from any memo:** `node scripts/sweep-probes.mjs --census` —
+**153 probe files, 43 swept/110 deferred, CENSUS OK** — matches the figure independently confirmed
+by Daedalus, Argus, Iris, and Theseus's own fresh drives earlier this fire. Not re-driving the full
+41-probe sweep myself on top of four independent fresh drives already in this commit range with an
+empty `packages/` diff since.
+
+**Standing items re-checked, nothing moved:** rollup still v166, needs-you unchanged at 0, no new
+decision content this render — not refreshed. Backfill unchanged (`ls -la backups/`, still Aug 4
+17:11 mtime). Cross-pollination brief (2026-10-12) — same URL-only pointer, standing skip-and-log
+ruling, already logged twice today. Standing blockers re-checked, both unmoved: ground-rules
+question, parked on xian since 2026-08-09, no new `xian-to-*` mail; import-confirm-step-ux
+(`entityGuess`), re-grepped excluding `dist/` — same 6 source files.
+
+**Drain:** mail checked (round-mail thread, four cross-repo mailboxes) with nothing routed here;
+gate re-derived fresh via census and cross-checked against four independent fresh drives already in
+range; rollup/backfill/brief/blockers all re-checked, nothing moved. Two consecutive checks found
+nothing further unblocked. Fire closed bounded.
