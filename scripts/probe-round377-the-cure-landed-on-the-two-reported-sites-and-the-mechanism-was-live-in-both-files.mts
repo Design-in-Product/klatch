@@ -258,13 +258,37 @@ const namesOther = censusMembers.length;
 const onlyUnderCensus = censusMembers.filter((f) => !narrowMembers.includes(f));
 const onlyUnderNarrow = narrowMembers.filter((f) => !censusMembers.includes(f));
 /**
- * The check the broken sentence needed, and it can fail two ways that matter. `onlyUnderCensus`
- * being non-empty is NOT true by construction — it holds only because some swept probe names a
- * population file that `probe-round*` cannot see, and editing those references away would empty it
- * and silently collapse the published delta to 0. `onlyUnderNarrow` being empty asserts the two
- * selectors are still NESTED, which is what makes "+3" a delta rather than two unrelated readings;
- * re-keying either leg breaks it. The subset arithmetic is left to close on its own — asserting
- * `17 + 3 === 20` against numbers this file just computed would recompute what it grades (369).
+ * The check the broken sentence needed, and it can fail two ways that matter.
+ *
+ * `onlyUnderCensus` being non-empty is NOT true by construction — it holds only because some swept
+ * probe names a population file that `probe-round*` cannot see, and editing those references away
+ * would empty it and silently collapse the published delta to 0. Theseus graded that conjunct at
+ * the population level in Round 380 §2 and it is load-bearing: the whole `scripts/` tree copied and
+ * both only-wider referents broken wherever they appear — 21 occurrences across 12 files, this file
+ * byte-identical and asserted so — takes B1 to the sole red at only-wider 0.
+ *
+ * `onlyUnderNarrow` being empty asserts the two selectors are still NESTED, which is what makes
+ * "+3" a delta rather than two unrelated readings. **Round 380 §3 corrected what I said this
+ * conjunct guards, and the correction stands:** I wrote that "re-keying either leg breaks it", and a
+ * re-key is the one edit that cannot. `narrowPop` is `censusPop.filter(…)` — a subset under EVERY
+ * predicate — and `namesOtherUnder` is monotone in its population, so no re-key of either leg can
+ * make `onlyUnderNarrow` non-empty; his M1 moves both published legs (17/122 → 4/25, +3 → +16) and
+ * the arm is green at exit 0, and 40 random sub-populations give 0 every time.
+ *
+ * What it guards is the narrow leg's SHAPE: that it stays DERIVED from `censusPop` rather than
+ * sourced on its own. Round 381 exhibits the state he and I had both missed, in which nesting is
+ * the SOLE false conjunct rather than failing alongside non-emptiness: widen the narrow leg by one
+ * file OUTSIDE `census()`'s `/^probe-/` — `.concat('sweep-probes.mjs')` — and this file drives to
+ * narrow 32 over 123 files, only-wider still **3**, only-narrower **15**, B1 the sole failing arm.
+ * His M3 widened it by a string every swept file contains, which absorbs all three only-wider
+ * members and fails both conjuncts at once (only-wider 0, only-narrower 18, reproduced); one file
+ * that none of the three only-wider members happens to name separates the legs. So the conjunct is
+ * reachable, alone, by the one edit it is for — and the prose in this paragraph is graded rather
+ * than argued, in `docs/research/round381-instruments/`, which drives both states and the re-key
+ * beside them and exits non-zero on any grade that is not `true`.
+ *
+ * The subset arithmetic is left to close on its own — asserting `17 + 3 === 20` against numbers this
+ * file just computed would recompute what it grades (369).
  */
 check(
   'B1',
@@ -283,14 +307,22 @@ const DECL_FRAGMENT = 'const R223B_REFUSAL = ';
 meas(
   'B1m',
   `the class, hand-read and then re-derived under the registry's OWN population selector: ` +
-    `${namesOther} of ${SWEPT.length} swept probes name another probe file. My HAND reading said 16 ` +
-    `and the narrow selector I thought I was implementing reads ${narrowMembers.length} over ` +
-    `${narrowPop.length} files, so the hand figure was one short of its own detector; keying the ` +
-    `population on \`/^probe-/\` the way \`census()\` does — ${censusPop.length} files — moves it ` +
-    `+${onlyUnderCensus.length} from ${narrowMembers.length} to ${namesOther} (339). The first ` +
-    `spelling of this line published ${namesOther} while explaining a move of ` +
-    `+${onlyUnderCensus.length} from 16, which lands on 19; both legs are derived now and B1 checks ` +
-    `the delta is nested and non-empty (Round 379). Of those, 5 bind ` +
+    `${namesOther} of ${SWEPT.length} swept probes name another probe file — ` +
+    `${narrowMembers.length} of them under the narrow \`probe-round*\` selector over ` +
+    `${narrowPop.length} files, ${namesOther} under \`census()\`'s \`/^probe-/\` over ` +
+    `${censusPop.length}, a nested delta of +${onlyUnderCensus.length} (339) that B1 grades. ` +
+    `EVERY figure in this sentence so far is derived; every figure in the next one is a CONSTANT, ` +
+    `because it is a statement about what this line said on 10/12 and not about the tree it is ` +
+    `reading. First spelling, Round 377: published 20 beside "a hand reading of 16 moved by 3", ` +
+    `which lands on 19 — the hand 16 was one short of the 17 its own narrow selector read, and the ` +
+    `+3 runs from 17, so the delta was right and its starting point was not (Round 379). The Round ` +
+    `379 repair derived both legs and left the sentence ABOUT them reading two of its four numbers ` +
+    `live, so breaking one population filename made it publish "19 … a move of +2 from 16, which ` +
+    `lands on 19": wrong about both numbers it was reporting AND not closing, since 16 + 2 is 18. ` +
+    `B1 was green through it, because B1 grades the delta the tree has now and that clause asserts ` +
+    `the delta the tree had on 10/12 (Theseus, Round 380 §4; the Round 381 instrument drives his ` +
+    `mutation and grades these bytes unchanged while the derived figures above them move). Of the ` +
+    `${namesOther} members, 5 bind ` +
     "another NAMED probe's source to an identifier — `probe-round269`, `372`, `373`, `374`, `375`; " +
     'a loop over the whole population is a census, not a pin, and is excluded — and this file will ' +
     'be the 6th. Two of those bindings fed a check keyed on that file\'s DECLARATION SYNTAX: ' +
