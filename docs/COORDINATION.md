@@ -3126,7 +3126,48 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 
 ### Iris (UX design & front-end development)
 - **Branch:** `claude/iris-cycle` (Amber standing worktree `/Users/xian/Development/klatch-worktrees/iris`, tracks `origin/main`). Prior `.claude/worktrees/iris` + cron `a89f159d` are retired (session crons don't survive — Pard's shared answers §2). LaunchAgent duty cycle requested from Pard 8/4: 2 fires/day, 07:17 + 19:17 PT.
-- **Updated:** 2026-10-12 ~07:17 PT (START fire). **Status:** available.
+- **Updated:** 2026-10-12 ~19:2x PT (STOP fire). **Status:** available.
+- **Drain:** `git log 4892721c..HEAD --format='%h %an %s'` — 25 commits since own last checkpoint
+  (own 10/12 START), authorship checked with `%an`, none mine: the Daedalus/Theseus Round 376-379
+  adversarial-verification chain (probes, mail, coord, log), Janus's and Argus's push-line
+  thread (closed), Janus's outside-people's-details rule (applied to `CLAUDE.md` by Calliope,
+  already closed), Pard's note to Theseus about an uncommitted 15:27 fire (not addressed to this
+  seat), and two Argus WORK/STOP no-ops re-deriving the same gate. `git diff --stat
+  4892721c..HEAD -- packages/` empty — confirmed, not assumed; no product/UX code touched. One
+  new mail file addressed in part to this seat (Daedalus's Round 379 memo, cc xian/janus/
+  argus/calliope/iris), read in full — ends "nothing here needs xian," no item routed to this
+  seat beyond the standing cc pattern. `ls docs/mail | grep -i to-iris` empty; checked all four
+  other writable cross-repo mailboxes (designinproduct, mediajunkie, piper-morgan, dispatch) for
+  anything newer addressed to this seat — nothing newer than items already closed in prior fires. Cross-poll brief not re-checked, already handled at this morning's START, Calliope's
+  skip-and-log ruling still in force. Both standing blockers re-checked, both unmoved — see below.
+  Fresh gate re-derived — see below. Two consecutive checks found nothing further unblocked —
+  fire closed bounded.
+- **10/12 fire (STOP) — no-op on product; no new unblocked UX work. Flag: this morning's own
+  START entry's day-count was off by one.** Re-derived the ground-rules blocker's day count fresh
+  rather than carrying it forward: 2026-08-09 to 2026-10-12 is **64 days** (22 remaining in
+  August + 30 in September + 12 in October), not the **65** this seat's own 07:17 entry above
+  states. Checked twice by two different splits, both give 64; the 10/11 STOP entry's "63 days"
+  is consistent with 64 today (+1). Not editing the historical entry — flagging it here, same
+  pattern Argus used today for its own 152/42→153/43 off-by-one. `entityGuess` re-grepped
+  directly, excluding `dist/`: same 6 source files, same count of 20 across them, matching every
+  prior checkpoint — unmoved. **Verified, not trusted:** `npm run typecheck` clean ×4 workspaces
+  (shared, server, client, scripts) — no `error TS` anywhere; `npm test -w packages/server`
+  unpiped, summary read directly — **140 files · 2179 passed · 1 skipped (2180)**; `npm test -w
+  packages/client` unpiped — **26 passed|13 skipped (39) · 333 passed|13 skipped (346)** — both
+  exact matches to this morning's START figures; `node scripts/sweep-probes.mjs --census` —
+  **CENSUS OK, 153 probe files, 43 swept/110 deferred (34 verdict-bearing, 76 no-conclusion-line)**
+  — up from 151/41 this morning, matching the Round 376-379 chain landing in the interim, and
+  agreeing with Argus's own 18:0x re-derive at this same commit; full driving sweep on a free
+  port (`:3001` confirmed clear first, run unpiped to a file, verdict read from the file, no git
+  activity during the drive, confirmed after) — **SWEEP PASSED — 43 of 43 swept probes green, 0
+  red, 0 blocked, 0 census problem(s), 110 deferred**. No `packages/` changes this fire.
+  `git status --porcelain` clean apart from this entry and the log (`.scratch/` gate-run logs
+  gitignored, not committed). No port bound at close, no database opened, no model called. Two
+  consecutive checks found nothing further unblocked — fire closed bounded. Nothing new needs
+  xian beyond the one standing item (ground-rules question). Log:
+  `docs/logs/2026-10-12-0717-iris-log.md` (STOP section appended, same day-log file as the START
+  entry).
+- **Prior update:** 2026-10-12 ~07:17 PT (START fire). **Status:** available.
 - **Drain:** mail checked — 1 new file since last checkpoint (Janus→Calliope/Argus memo re: a
   fire-instruction stray-branch push), read in full, not addressed or cc'd to this seat
   (`grep -i iris` on it is empty), no routed item. Cross-poll brief retried via `WebFetch` as a
