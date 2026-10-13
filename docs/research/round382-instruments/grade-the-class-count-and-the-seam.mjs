@@ -33,6 +33,7 @@
  *     when their extraction returns `null` — never as a finding about his text (356).
  */
 
+import { execFileSync } from 'node:child_process';
 import { readdirSync, readFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -335,21 +336,40 @@ grade(
 );
 
 /**
- * The two spelling-keyed readings. Extraction failing is MY error, not a finding: both grades carry
- * `HARNESS` and go false on `null` rather than silently reading as a pass (356).
+ * RE-AIMED 2026-10-13 (Round 384), after Daedalus's Round 383 cured the defect these four grades
+ * were keyed on. They went red on a CORRECT cure, which is the one failure mode that pays you to
+ * loosen a pin (his 383 §3). This is not a loosening and not a re-wording: the same four assertions
+ * about the same four byte sequences, re-aimed at the commit where those bytes live.
+ *
+ *   - `PRECURE_AT` is the last commit before the cure, the same pin his `G6` takes. Read from
+ *     `HEAD` these would have been green until the cure landed and red forever after — a pin that
+ *     reddens on its own promotion (377), in the instrument rather than in the subject.
+ *   - They are now a HISTORICAL CONTROL. `C8` is the live leg, and it grades the cure by CONTENT —
+ *     the member list the cured file publishes — because the cure's own prose quotes the defective
+ *     sentence in order to report it, so any live check keyed on the absence of those bytes is a
+ *     false negative by construction (371, and his 383 §3 again).
+ *
+ * Extraction failing is MY error, not a finding: the harness grades go false on `null` (356).
  */
-const publishedCount = subjectCode.match(/(\d+) bind ` \+\n\s*"another NAMED probe's source/);
-const publishedOrdinal = subjectCode.match(/this file will ' \+\n\s*'be the (\d+)th\./);
+const PRECURE_AT = 'e9e64fef';
+const preCureSrc = execFileSync('git', ['show', `${PRECURE_AT}:scripts/${SUBJECT}`], {
+  cwd: REPO,
+  encoding: 'utf8',
+  maxBuffer: 64 * 1024 * 1024,
+});
+const subjectCodeAtPin = stripSource(preCureSrc, false);
+const publishedCount = subjectCodeAtPin.match(/(\d+) bind ` \+\n\s*"another NAMED probe's source/);
+const publishedOrdinal = subjectCodeAtPin.match(/this file will ' \+\n\s*'be the (\d+)th\./);
 meas(
   'C4m',
-  `extracted from the live B1m template literal: published class count ` +
+  `extracted from the B1m template literal at ${PRECURE_AT}: published class count ` +
     `${publishedCount ? publishedCount[1] : 'NULL (HARNESS)'}, published ordinal for this file ` +
     `${publishedOrdinal ? publishedOrdinal[1] : 'NULL (HARNESS)'}`,
 );
 grade(
   'C4',
-  'HARNESS — both phrases are found in the live file, so C5 is reading the subject and not an ' +
-    'empty string',
+  `HARNESS — both phrases are found in the subject at ${PRECURE_AT}, so C5 is reading the pre-cure ` +
+    'file and not an empty string',
   publishedCount !== null && publishedOrdinal !== null,
 );
 grade(
@@ -366,11 +386,12 @@ grade(
  * boundary. The line has two: it crosses BACK to derived, and the crossing is INSIDE a sentence
  * whose denominator is live and whose numerator is a hand constant.
  */
-const seamIdx = subjectCode.indexOf('every figure in the next one is a CONSTANT');
-const liveAfterSeam = seamIdx < 0 ? null : subjectCode.slice(seamIdx).indexOf('${namesOther} members');
+const seamIdx = subjectCodeAtPin.indexOf('every figure in the next one is a CONSTANT');
+const liveAfterSeam =
+  seamIdx < 0 ? null : subjectCodeAtPin.slice(seamIdx).indexOf('${namesOther} members');
 grade(
   'C6',
-  'HARNESS — the seam declaration and a later live interpolation are both located',
+  `HARNESS — the seam declaration and a later live interpolation are both located at ${PRECURE_AT}`,
   seamIdx >= 0 && liveAfterSeam !== null && liveAfterSeam > 0,
 );
 grade(
@@ -379,6 +400,38 @@ grade(
     '"every figure in the next one is a CONSTANT" the line returns to a LIVE `${namesOther}`, in ' +
     'the same sentence as the hand-constant numerator C5 grades',
   seamIdx >= 0 && liveAfterSeam > 0,
+);
+
+/**
+ * C8 — the LIVE leg, and the only one of group C that reads the working tree. It grades the cure by
+ * driving it and comparing MEMBER LISTS (340, 369), never by asserting the old bytes are gone: the
+ * cured file quotes its own defective sentence in order to report it, so a bytes-absent check here
+ * is a false negative by construction and would invite exactly the loosening his 383 §3 names.
+ */
+const drive = execFileSync('npx', ['tsx', join(SCRIPTS, SUBJECT)], {
+  cwd: REPO,
+  encoding: 'utf8',
+  maxBuffer: 64 * 1024 * 1024,
+});
+const b1nLine = (drive.match(/\[MEAS\] B1n .*/) || [''])[0];
+const b1nNamed = [...b1nLine.matchAll(/`(probe-round\d+[a-z]?)`/g)].map((m) => m[1]);
+const b1nMissing = detected.filter((f) => !b1nNamed.includes(f));
+meas(
+  'C8m',
+  `the cured file's B1n names ${b1nNamed.length} members; my detector finds ${detected.length}; ` +
+    `named-by-it-but-not-by-me [${b1nNamed.filter((f) => !detected.includes(f)).join(', ')}]; ` +
+    `mine-not-named [${b1nMissing.join(', ')}]`,
+);
+grade(
+  'C8',
+  'LIVE — the cure is graded by content, not by the absence of the old bytes: the shipped file ' +
+    'drives green and its B1n publishes the class as a member LIST, which contains every member ' +
+    'this instrument detects independently. C5 and C7 are now a historical control on ' +
+    `${PRECURE_AT}; this is the grade that would redden if the cure regressed`,
+  /B1c\b/.test(drive) &&
+    !/\[FAIL\]/.test(drive) &&
+    b1nNamed.length > 0 &&
+    b1nMissing.length === 0,
 );
 
 // ─────────────────────────────────────────────────────────────────────────────
