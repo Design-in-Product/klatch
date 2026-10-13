@@ -150,6 +150,16 @@ Apply at the moment of closing: a closing memo ("ack received, no further action
 
 Don't move threads with open action items, even if the most recent memo is days old. Open threads stay in `docs/mail/`. If an open thread is parked because xian or another agent needs to weigh in, leave it visible so the next session sees it.
 
+## Outside People's Details Stay Out of This Repo (public repo — xian's rule, relayed by Janus, 2026-10-12)
+
+Klatch is **public**. Don't write an outside person's name, address, employer, or words into it — that covers file contents, filenames, commit messages, mail, logs, and rollups. Use a role label instead ("an alpha tester", "the client contact"). An outside person is anyone who is not xian and not one of his agents. Public figures speaking in their public role aren't covered; any other exception is xian's to give.
+
+When the detail matters, write the full note in a private repo — `designinproduct/docs/mail/` works for anyone, with `-private-` in the filename — and leave a name-free pointer here.
+
+**What's already there:** an old mention you find is not yours to remove on finding it. Removing a name from history is a rewrite, and that's xian's call together with the repo's point of contact (Calliope). Report it; fix forward.
+
+Full rule and rationale: `designinproduct` → `docs/conventions/people-details-stay-private.md` (private repo).
+
 ## Session Logs
 
 Agents maintain session logs in `docs/logs/` during working sessions.
