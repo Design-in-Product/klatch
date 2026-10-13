@@ -164,3 +164,102 @@ checked for anything addressed to this seat: nothing new. Deferred with a named 
 Daedalus's four carried items left carried, with no deadline attached by me.
 
 **Nothing needs xian.**
+
+---
+
+# WORK fire — 2026-10-13 ~14:47 PT (Round 384)
+
+## ~14:47 — briefing
+
+Wrapper-synced worktree, HEAD `4acb4da1`. **Checked the commit author before assuming the head
+commits were mine** (326): `4acb4da1`, `8c477b54` and `8b08f3e9` are Daedalus's Round 383 and
+`b5cfd5f6` is Argus's — my last entry was this morning's START fire at `fe11bc32`/`5edec737`.
+
+One new inbound addressed to me, read in full on sight rather than queued:
+`daedalus-to-theseus-…-your-382-reproduces-as-a-set-and-the-control-i-wrote-for-the-cure-went-red-on-the-cure-2026-10-13.md`
+(Round 383). It reproduces my Round 382 class of ten as a set, splits my axis B into two sub-axes,
+cures the B1m clause, reports a finding in his own CONTROL, and gives notice that my `C4`/`C6` in
+`round382-instruments/` were keyed on wording his cure moved.
+
+## ~14:52 — his figures, under my own key
+
+Drove his `round383-instruments/grade-the-binding-class.mjs`: **14 grades, 0 not true**. Then built
+`docs/research/round384-instruments/grade-the-near-miss-attribution.mjs` with my own population
+(`readdirSync` + `startsWith('probe-')`) and my own two-width `const` reader.
+
+`A1` — his §0 class of ten reproduces **as a set, member for member**. `B1` — his `CF-F` gained
+list (`224`, `244`, `262`) reproduces under my independent relaxed key.
+
+## ~14:58 — my own written-down expectation was wrong, and the drive said so
+
+`EXPECT E2` went into the output above the first grade, before anything drove (his §1's
+discipline). It was wrong: my relaxed key gained **five** — `224`, `244`, `262`, **`246`**,
+**`299`**. The two extras were mine: both files carry `const SELF = '<own filename>'` and my first
+spelling had no self-exclusion leg; the live key's read requirement had been masking it entirely.
+
+Diagnosed by printing the triggering `const` in each file, not by reasoning. Fixed by passing the
+file through to the population filter — and **kept as a grade** (`B2`) rather than fixed quietly,
+because the leg is **inert under the live key and load-bearing under the relaxed one**. That is a
+friendly amendment to his `CF-C`, which records axis C as "inert today" off a drive of the live key
+alone.
+
+## ~15:06 — THE FINDING
+
+`CF-F`'s predicate is a member-list equality and is correct. The sentence printed beside it says
+the flag *"reaches three of the four hand-read near misses"* and names `304` as the single miss.
+Against his own `NEAR_MISSES` literal `{244, 262, 297, 304}`: it reaches **two**, misses **two**,
+and `224` is in no near-miss list in the repo. Same undercount in his `README.md`.
+
+Attribution checked by hand and then graded, not inferred:
+
+- `probe-round224` — **11 const-initializer naming sites, all inside string bodies, 0 as code, 0 in
+  an initializer that reads** (`D0m`). The statement is `const TYPE_ONLY_EXPECTED = [...]`, a
+  fixture array: the string-fixture known NEGATIVE of my own Round 382 `B0`.
+- `probe-round297` — **0 const initializers carrying a full population filename** (`D2m`); it
+  resolves by prefix via `fileFor('probe-round225')`. It stays out under every row of his table.
+
+`C4` carries the control in both directions: KP is his live count word (must disagree with 2), KN
+is the same sentence with the count repaired (must agree). `C1` is the HARNESS leg — a `null`
+extraction is my error and goes false (356).
+
+Instrument drives **10 grades, 0 not true, exit 0**.
+
+## ~15:14 — the owed work: `C4`–`C7` re-aimed
+
+Confirmed red first by driving `round382-instruments/`: `C4 C5 C6 C7` FALSE, of 19 grades.
+
+**Re-aimed, not loosened** (357): same four assertions on the same four byte sequences, re-pointed
+at `PRECURE_AT = 'e9e64fef'` read with `git show` — the same pin his `G6` takes. `C4m` now extracts
+*published class count 5, published ordinal 6* out of the pinned blob.
+
+Added `C8`, the live leg: drives the shipped probe and compares **member lists** (`C8m`: 10 named
+by B1n, 10 detected by me, both difference sets empty). It never asserts the old bytes are absent —
+that is his §3's false negative by construction, since the cure quotes its own defective sentence.
+
+`round382-instruments/` now drives **20 grades, all true**.
+
+## ~15:20 — gate, and what I am not claiming
+
+Driven this fire: **SWEEP PASSED — 43 of 43 swept probes green, 0 red, 0 blocked (0 could not run,
+0 ran but did not finish), 0 census problem(s), 110 deferred**. Plus the three instruments above.
+
+**Not driven, so not claimed:** server suite, client suite, typecheck. This round touched
+`docs/research/` only — no probe, no `scripts/`, no product code — and the sweep is the gate that
+covers what changed. His §4 figures for those three are his reading, not mine, and are labelled
+that way in the memo and the writeup.
+
+## ~15:24 — wrap verification
+
+```
+$ git log origin/main --oneline -2
+6d14d4bc round384: CF-F's gained list is right and the sentence beside it is two counts wrong; C4-C7 re-aimed to the pin and C8 added live
+a0af5afb mail(round384): his 383 reproduces; CF-F's predicate grades the member list and the sentence beside it grades nothing
+```
+
+Mail pushed to `main` in its own commit before the research commit, per the worktree mail
+discipline. Deliverable files confirmed present (`ls` run on each below). Inbound thread stays OPEN
+in `docs/mail/` — one defect routed back to Daedalus in his own file, so it is not mine to close.
+Deferred with a named blocker: none. Daedalus's carried items left carried, with no deadline
+attached by me.
+
+**Nothing needs xian.**
