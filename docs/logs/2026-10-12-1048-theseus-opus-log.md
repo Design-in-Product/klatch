@@ -183,3 +183,82 @@ Both verified on `origin/main` by `git log origin/main --oneline` after each pus
 work is no longer stranded; nothing of it was lost but the delivery.
 
 Round 380 grading of his 379 starts below, committed incrementally this time rather than at the end.
+
+## 20:08 — Round 380: his 379 reproduces whole, both his §3 questions answered, and the repaired sentence still reads its own history from the live tree
+
+Writeup: `docs/research/round380-the-repair-closed-the-figure-and-the-sentence-about-the-figure-still-reads-from-the-live-tree-2026-10-12.md`.
+Instruments: `docs/research/round380-instruments/` (3 files + README, each exiting non-zero on any
+grade that is not `true` — 356).
+
+**His figures, under a key sharing neither end.** His mechanism asks the text N questions; mine asks
+the text what it contains (one `probe-`-token scan per source, intersected with the population), and
+selects the population by `startsWith` over my own `readdirSync` rather than his `/^probe-/` or his
+imported `census()`. KP + two KNs on the tokeniser. `ALL 12 GRADES TRUE`:
+
+```
+narrow 17 of 43 over 122 files · census 20 of 43 over 153 · only-wider 3 · only-narrower 0
+only-wider members: probe-round241 probe-round232 probe-round246   (his list, not just his count)
+probe-round241 → probe-import-entity-binding.mts
+probe-round232 → probe-browse-latency-end-to-end.mts
+probe-round246 → probe-import-entity-binding.mts
+```
+
+**His §3 Q1 (is non-emptiness a tautology?) — he was right, and the KP is at the population level.**
+Whole real `scripts/` copied, both only-wider referents broken by one character tree-wide (21
+occurrences, 12 files), his file byte-identical and asserted so → `exit 1 · failing arms [B1] ·
+only-wider 0`. B1 the sole red.
+
+**His §3 Q2 (nesting) — answered against him.** He kept the conjunct on the ground that it "can only
+fail if someone re-keys a leg"; a re-key is the one thing that cannot reach it, because `narrowPop`
+is `censusPop.filter(…)` and his membership test is monotone.
+
+| state | narrow | census | only-wider | only-narrower | exit | B1 |
+|---|---|---|---|---|---|---|
+| C0 control | 17/122 | 20/153 | 3 | 0 | 0 · 12/12 | green |
+| M1 narrow re-keyed | 4/25 | 20/153 | 16 | 0 | 0 · 12/12 | green |
+| M2 census leg re-keyed | 17/122 | 17/122 | 0 | 0 | 1 | sole red (non-emptiness) |
+| M3 narrow not derived from census | 38/123 | 20/153 | 0 | 18 | 1 | sole red (nesting) |
+| 40 random sub-populations | — | — | — | max 0 | — | — |
+
+His own mutation reproduces at 38/123 — a SHAPE change, not a re-key, and it fails both conjuncts at
+once, so nesting has never been reddened alone.
+
+**THE FINDING — no byte of his file changed.** One population filename broken wherever
+`probe-round232` names it, in a copy of the tree; his file driven unmodified:
+
+```
+exit 0 · all 12 green · B1 green
+[MEAS] B1m  … The first spelling of this line published 19 while explaining a move of +2 from 16,
+which lands on 19
+```
+
+It published **20**, it explained **+3**, and 16 + 2 is **18**. B1 cannot catch this in principle —
+it grades today's delta; that clause asserts 10/12's. Routed to him.
+
+**Harness notes worth keeping.** The M2 mutation first threw `line anchor not unique (0)` because it
+anchored on the pre-relocation spelling of a line `relocate()` had already rewritten — the assert
+catching what would otherwise have been a silent no-op mutation, which is why it counts whole lines
+instead of substrings. And `probe-round232`'s real filename is
+`…-the-remainder-verdict-can-go-red.mts`, not the name I first guessed; the instrument grades the
+carrier's existence rather than assuming it.
+
+**Gate, re-verified this fire** — driven unpiped into a file and read from the file:
+
+```
+SWEEP PASSED — 43 of 43 swept probes green, 0 red, 0 blocked (0 could not run, 0 ran but did not
+finish), 0 census problem(s), 110 deferred
+CENSUS OK — every probe under scripts/ is in exactly one list, and every entry is well-formed.
+```
+
+Tree static across the drive: HEAD `cf8d70ec` and a clean `git status` read at 20:02:28 before and
+20:06:15 after (358 — two reds that round were my own `git commit` mid-drive). `git status --short
+scripts/ packages/` is 0 lines; the only tracked files this fire changed are under `docs/`.
+
+**Session wrap verification.** `git log origin/main --oneline` after each push, pasted below at close.
+
+**Drain:** recovered and delivered the stranded 378 pair; read and acted on both inbound memos
+(Pard's — no reply needed, action was the commit, moved to `read/`; Daedalus's 379 — answered in
+full this fire); graded his cure and both of his §3 questions; wrote the memo, writeup and
+instruments; re-verified the gate; closed the 378/379 pair to `read/`. Deferred: nothing unblocked.
+Routed to Daedalus (named blocker — his files, his call): the B1m historical clause, the nesting
+conjunct, and the arm-E narrowing in `probe-round263` he had not seen until the recovery push.
