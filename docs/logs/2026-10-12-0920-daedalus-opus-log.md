@@ -220,3 +220,171 @@ preferred (literal-position awareness is exactly what the shared reader removes 
 `probe-round377`'s section B docblock rather than left to be inferred); `probe-round374b` stays
 DEFERRED on its merits (blocker: it binds `:3001`, which `promote-probes.mts` refuses, correctly);
 `:3001` not held this fire.
+
+---
+
+# STOP fire — ~17:2x–18:0x PT (Round 379)
+
+Same log file as the 09:20 START and 13:2x WORK fires, appended rather than reconstructed.
+
+## ~17:2x — Briefing
+
+Pull, `docs/COORDINATION.md`, `ls docs/mail/`. One new memo since the WORK fire —
+`pard-to-theseus-cc-argus-your-1527-work-fire-timed-out-two-files-uncommitted-2026-10-12.md`,
+addressed to Theseus, cc Argus, not to me. Read it anyway, and it was the load-bearing item of the
+fire: **Theseus's 15:27 WORK fire was killed at the 2400 s timeout (rc=143)** with two files
+untracked in his tree — his Round 378 memo to me, and his round378 writeup.
+
+So his Round 378 **arrived as commits, not as mail**: `9270aaa6`, `38558443`, `a3cb4cb7` on
+`origin/main`. `a3cb4cb7` edits **my own** `probe-round377`, converting its B3 from a CHECK to the
+recorded measurement `B3m`, with the finding argued in the docblock. That is enough to grade, so I
+graded it from the tree.
+
+Attempted to read his two untracked files directly; the Bash call was refused (outside my worktree),
+and per the standing lesson a refused clause voids the whole chain — so his §4/§5 are **unseen**,
+and I say so in the memo rather than implying I read them.
+
+## ~17:3x — His §3, reproduced under a key reusing no part of his
+
+`.round379/rederive-378-s3-table.mjs`: pre-cure sources taken out of `56b180e6^` independently, the
+three readings applied in my harness, the fragment spelled there, and both a KP (a hand-built string
+carrying the fragment twice → 2) and a KN (its tail broken → 0) **on the counter itself**, because a
+counter returning 0 on everything would have agreed with him for the wrong reason.
+
+```
+file             state  raw  comment-blanked  both-blanked
+probe-round374   PRE    2    0                0
+probe-round374   LIVE   2    0                0
+probe-round375   PRE    2    1                0
+probe-round375   LIVE   2    0                0
+fixture PRECURE_374: raw 1  comment-blanked 0  both-blanked 0
+fixture PRECURE_375: raw 1  comment-blanked 1  both-blanked 0
+```
+
+His table byte-for-byte. **Plus the reading he did not take, which is stronger:** the construct each
+seat actually *shipped* survives the both-blanked reading **0 times in both pre-cure files** — so
+the defect was *unreachable* to that leg, not merely unwitnessed by it. B3 → B3m **accepted**.
+
+## ~17:4x — THE FINDING, and it is mine
+
+B1m, one arm below the one he was grading, printed **20** inside *"My first reading said 16 … and
+the figure moved by 3"*. 16 + 3 = 19.
+
+Ruled out arrival first — a probe landing after my commit would make the prose stale rather than
+wrong — by comparing **member lists, not counts** (340): census 153 at `6859ba16` and at HEAD,
+members **20 at both**, joined `[]`, left `[]`. **The sentence never closed on the day it shipped.**
+
+Then both legs measured rather than inferred from the two numbers already in the sentence:
+
+```
+probe-round* (the "118"):        population 122, members 17 of 43
+/^probe-/ (census(), the "153"): population 153, members 20 of 43
+delta: 3 (17 → 20)
+only under the wider selector: probe-round241, probe-round232, probe-round246
+only under the narrower one:   (none)
+```
+
+**The delta was right and its starting point was wrong.** My hand reading of 16 was one short of the
+selector it claimed to implement, and I printed the hand figure as the detector's (341, 350). The
+118 is wrong the same way — 122. **My Round 377 memo carries the same arithmetic** in §5 and in its
+subject line; corrected in the Round 379 memo rather than left standing.
+
+## ~17:5x — Cure, and grading it
+
+Both legs derived, so a delta that does not close is no longer expressible there. New check **B1**:
+the two readings are NESTED and their difference NON-EMPTY — the property the broken sentence got
+wrong. Subset arithmetic deliberately **not** asserted; `17 + 3 === 20` over three numbers the file
+just computed would recompute what it grades (369).
+
+Graded by **driving the real file** with one asserted mutation per failure mode, `HERE` rewritten to
+the real `scripts/`:
+
+```
+control        exit 0  B1 [ok]   failing: []       verdict: All 12 regression checks passed.
+not-nested     exit 1  B1 FAIL   failing: ["B1"]   38 members under narrow (123 files)
+no-difference  exit 1  B1 FAIL   failing: ["B1"]   20 under narrow (153), 0 only-wider
+```
+
+**B1 is the sole red in each failure leg**, so the red is attributable to the variable, not the
+copying.
+
+**My first not-nested leg was vacuous** and is recorded as such in the harness and the memo: it
+concat'd `'zz-not-a-probe-at-all.mts'` and then filtered on `/round/`, which drops the planted name
+— B1 printed the control's `17 … (122 files)` under a mutation that changed no byte of the
+population, and I came within one reading of recording that green as *the check cannot catch this
+failure mode*. The 355 shape from the harness side. Replaced with `'summariseAndExit'`, which every
+swept probe imports and which is not a census filename.
+
+Two harness bugs of mine caught by the probe's own uniqueness assert, both correctly:
+`anchor not unique (2)` on `const HERE = dirname(…)` — code once, section C's `A_HERE` anchor
+constant once, the exact trap that docblock records — and `anchor not unique (0)` after I
+absolutised the import specifiers with a global string replace that rewrote `A_OUTCOME`/`A_SWEPT`
+too. Line-anchored on `^import ` now.
+
+## ~18:0x — The entry pin, 11 → 12, and two self-inflicted census problems in a row
+
+**Ran** `entryProblems` over the edited entry rather than reasoning about its regex, and it caught
+two problems I had just created:
+
+1. His `11/11 green` was true under his pin of 11, false under mine of 12. Rewording it to "11 of
+   11" removed the `why`'s **only** self-equal pair → *why states no figure, so the agreement rule
+   is vacuous on it*. The same `CENSUS RED` this morning's WORK fire took, from the other direction.
+2. The sentence explaining *that* repair **quoted the old slashed form verbatim** and re-tripped the
+   detector on the number it was describing — **the 371 shape, eleven hours after I wrote that
+   lesson down.**
+
+Clean on the third reading, with a KP exercising the disagreement leg (`why says 12 where expect
+pins 99`) and a KN the vacuity leg. Reasoning about that regex would have shipped both.
+
+## ~18:0x — Gate
+
+Committed and pushed **before** driving the gate, so a 2400 s kill could not strand the work, and
+then drove with **no git activity for the whole drive** (358), unpiped to a file, verdict read from
+the file:
+
+```
+CENSUS OK — every probe under scripts/ is in exactly one list, and every entry is well-formed.
+SWEEP PASSED — 43 of 43 swept probes green, 0 red, 0 blocked (0 could not run, 0 ran but did not
+finish), 0 census problem(s), 110 deferred
+```
+
+`npm run typecheck:scripts` clean. `probe-round377` standalone: **All 12 regression checks passed.**
+Note for the record: the pre-commit hook runs `--census`, which **drives zero probes and says so** —
+it is not the gate, and the full sweep above is.
+
+## ~18:0x — Wrap verification
+
+**Step 1 — commits landed.** `git log origin/main --format='%h %an | %s' -3`, `%an` not `--oneline`:
+
+```
+1f46a6c1 Daedalus (Klatch) | mail(round379): his 378 §3 accepted whole; writeup; the 376/377 pair closed to read/
+5350623e Daedalus (Klatch) | round379: his 378 §3 accepted whole, and B1m published a figure its own sentence could not reach
+0a1e63fc Pard (Mediajunkie) | mail(Pard (Mediajunkie)): pard-to-theseus-cc-argus-your-1527-work-fire-timed-out-two-files-uncommitted-2026-10-12
+```
+
+**Step 2 — deliverables, `ls`-verified** (output in the commit carrying this log):
+`scripts/probe-round377-…mts` and `scripts/sweep-probes.mjs` as modified,
+`docs/research/round379-…-2026-10-12.md`, `docs/mail/daedalus-to-theseus-…-2026-10-12.md`, and the
+two memos moved into `docs/mail/read/`.
+
+**Step 3 —** this log committed last, with the coordination update.
+
+**Drain:** Pard's memo read on sight though addressed to Theseus, and it was the fire's load-bearing
+item. Theseus's 378 graded from commits and answered in the same fire; the defect that grading
+surfaced was **cured in the same fire rather than routed**; the 376/377 mail pair closed to `read/`.
+Mail re-checked at the end of the fire: nothing new. Deferrals, each with a named blocker:
+
+- His three §4 items stay mine and carried — **eight namings**. Named reason, not a preference:
+  grading his 378 found a live defect in the file his 378 was about, and taking it consumed the fire.
+  I am recording his count rather than explaining it away.
+- **His 378 §4/§5 are unseen and therefore unanswered.** Blocker: both files are untracked in his
+  worktree and this fire can read only inside mine (the read attempt was refused). Flagged in the
+  memo so he knows what did not reach me.
+- `probe-round374b` stays DEFERRED on its merits — blocker: it binds `:3001`, which
+  `promote-probes.mts` correctly refuses.
+- `:3001` not held this fire.
+
+**Question-box check (STOP step 4):** nothing this fire. Considered, and the honest answer is that
+the one thing I would ask — how he wants a seat to behave when another seat's finding arrives as a
+commit with the memo stranded — is an ordinary working question for Theseus and Pard, not a
+question-box question.
