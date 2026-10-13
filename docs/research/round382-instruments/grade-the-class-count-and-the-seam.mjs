@@ -382,6 +382,126 @@ grade(
 );
 
 // ─────────────────────────────────────────────────────────────────────────────
+// Group D — my OWN Round 378 detector, which corrected his 5 to 7 and is short by three
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * v2 is driven VERBATIM rather than re-implemented: its `namedBindings` text is sliced out of the
+ * committed Round 378 instrument and rebuilt with its three dependencies injected. A re-spelling of
+ * it would grade my paraphrase instead of my code (328, 371). Extraction failing is a HARNESS
+ * failure, not a finding.
+ */
+const V2_PATH = join(HERE, '..', 'round378-instruments', 'census-named-source-bindings.mjs');
+const v2Src = readFileSync(V2_PATH, 'utf8');
+const V2_OPEN = 'const namedBindings = (src, ownFile, pop = censusPop) => {';
+const V2_CLOSE = '\n};\n';
+const v2From = v2Src.indexOf(V2_OPEN);
+const v2To = v2From < 0 ? -1 : v2Src.indexOf(V2_CLOSE, v2From);
+const v2Text = v2From < 0 || v2To < 0 ? null : v2Src.slice(v2From, v2To + V2_CLOSE.length);
+grade(
+  'D0',
+  'HARNESS — v2 `namedBindings` is sliced out of the committed Round 378 instrument exactly once, ' +
+    'and the slice carries both of its legs',
+  v2Text !== null &&
+    v2Src.split(V2_OPEN).length - 1 === 1 &&
+    v2Text.includes('// shape 1 — inline') &&
+    v2Text.includes('// shape 2 — indirection'),
+);
+const v2 = v2Text === null
+  ? () => []
+  : new Function('stripSource', 'censusPop', `${v2Text}; return namedBindings;`)(stripSource, myPop);
+
+/**
+ * v2's OWN two known positives, copied out of the Round 378 instrument's `cases` table, driven as a
+ * positive control on v2 itself. Without this, a v2 that failed to load reads 0 everywhere and D1
+ * and D3 both pass vacuously — which is what CF5 showed when the slice key was broken: D0 fired and
+ * D1/D3 still printed true beside it (353). Every D leg now conjoins liveness.
+ */
+const V2_KP_INLINE =
+  "const r225 = stripSource(readFileSync(join(REPO, 'scripts', 'probe-round225-a-citation-is-not-a-call.mts'), 'utf8'), false);";
+const V2_KP_INDIRECTION =
+  "const R225 = 'probe-round225-a-citation-is-not-a-call.mts';\nconst r225Src = readFileSync(join(HERE, R225), 'utf8');";
+const v2Alive =
+  v2(V2_KP_INLINE, 'probe-self.mts').length > 0 && v2(V2_KP_INDIRECTION, 'probe-self.mts').length > 0;
+meas(
+  'D0m',
+  `v2 liveness on its own two published known positives: inline ` +
+    `${v2(V2_KP_INLINE, 'probe-self.mts').length}, indirection ` +
+    `${v2(V2_KP_INDIRECTION, 'probe-self.mts').length}`,
+);
+
+/**
+ * Real neighbourhoods, copied verbatim out of the three members v2 misses — a one-instance fixture
+ * cannot grade a resolver (341), so each carries its resolving declaration and its binding line as
+ * they sit in the live file, line numbers at HEAD.
+ */
+const NB_225 = `const R219 = path.join(SCRIPTS, 'probe-round219-files-cap-live-http.mts');
+const r219src = fs.readFileSync(R219, 'utf8');`;
+const NB_232 = `const ARM_O_SOURCE = path.join(REPO, 'scripts/probe-browse-latency-end-to-end.mts');
+const src = fs.readFileSync(ARM_O_SOURCE, 'utf8');`;
+const NB_371 = `const SUBJECT = 'scripts/probe-round224-a-skip-must-not-summarise-as-a-pass.mts';
+const subjectSrc = readFileSync(join(REPO, SUBJECT), 'utf8');`;
+const nb = [
+  ['225', NB_225],
+  ['232', NB_232],
+  ['371', NB_371],
+];
+meas(
+  'D1m',
+  `the three neighbourhoods v2 misses, v2 then v3: ` +
+    nb
+      .map(([l, t]) => `${l} ${v2(t, 'probe-self.mts').length}→${classSitesIn(t, myPop).length}`)
+      .join(' · '),
+);
+grade(
+  'D1',
+  'v2 is LIVE on its own two known positives and still reads 0 on all three real neighbourhoods, ' +
+    'while v3 reads non-zero on all three — the known positive carries the property rather than ' +
+    'resembling it, and a dead v2 cannot earn this grade (355, 353)',
+  v2Alive &&
+    nb.every(([, t]) => v2(t, 'probe-self.mts').length === 0) &&
+    nb.every(([, t]) => classSitesIn(t, myPop).length > 0),
+);
+
+/**
+ * The two mechanisms, isolated one axis at a time rather than argued. v2's indirection leg requires
+ * the const's initializer to be a BARE quoted literal terminated by `;`, and matches the population
+ * by EQUALITY — so a `path.join(…)` wrapper hides the literal, and a `scripts/` prefix inside it
+ * never equals a population filename. Each rescue changes exactly one of those and nothing else.
+ */
+const NB_225_UNWRAPPED = NB_225.replace(
+  "path.join(SCRIPTS, 'probe-round219-files-cap-live-http.mts')",
+  "'probe-round219-files-cap-live-http.mts'",
+);
+const NB_371_UNPREFIXED = NB_371.replace("'scripts/probe-round224-", "'probe-round224-");
+meas(
+  'D2m',
+  `v2 on the same neighbourhoods with ONE axis changed: 225 with the \`path.join\` wrapper removed ` +
+    `${v2(NB_225_UNWRAPPED, 'probe-self.mts').length}, 371 with the \`scripts/\` prefix removed ` +
+    `${v2(NB_371_UNPREFIXED, 'probe-self.mts').length}`,
+);
+grade(
+  'D2',
+  'both misses are located, not inferred: removing only the `path.join` wrapper rescues 225 and ' +
+    'removing only the `scripts/` prefix rescues 371, so the cause is the PATH axis — v2 varied ' +
+    'the binding shape across its two known positives and held the path spelling fixed in both',
+  v2Alive &&
+    v2(NB_225_UNWRAPPED, 'probe-self.mts').length > 0 &&
+    v2(NB_371_UNPREFIXED, 'probe-self.mts').length > 0,
+);
+
+const v2Live = SWEPT.filter((e) => v2(readFileSync(join(SCRIPTS, e.file), 'utf8'), e.file).length > 0)
+  .map((e) => short(e.file));
+meas('D3m', `v2 live ${v2Live.length} [${v2Live.join(', ')}] · v3 live ${detected.length}`);
+grade(
+  'D3',
+  `the disagreement is one-directional — v2's ${v2Live.length} members are a strict SUBSET of ` +
+    `v3's ${detected.length}, so this is an omission by v2 and not a re-key that trades members ` +
+    `(340, 381): missing [${detected.filter((f) => !v2Live.includes(f)).join(', ')}]`,
+  v2Alive && v2Live.length > 0 && v2Live.every((f) => detected.includes(f)) && v2Live.length < detected.length,
+);
+
+// ─────────────────────────────────────────────────────────────────────────────
 
 const bad = grades.filter((g) => g.value !== true);
 console.log('');
