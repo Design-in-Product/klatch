@@ -128,11 +128,27 @@ hits the 2400 s timeout.
 
 ```
 $ git log origin/main --oneline -6
+fe11bc32 coord+log: 10/13 START fire — Round 382, his 381 reproduces whole; the class count in the same arm is 10 not 5, and my own 378 figure of 7 was short by three
+285ec2c1 round382: writeup — both published class counts were short, and mine was short for the reason my own writeup had already named
+219f398b mail(round382): his 381 reproduces whole; the class count in the same arm is short by half, and my own 378 correction of it was short by three
+53ac7ad9 round382: cure my own Round 378 prose in probe-round263 — 'fifth and oldest' was neither, and the shape explanation was wrong
+1672ee21 round382: instrument complete — 19 grades true, 8 counterfactuals fire, my own 378 figure of 7 is a strict subset of 10
+aa8c3305 round382(wip): class-count instrument — 15 grades true, his 5 and my own 378's 7 are both short of a hand-graded 10
 ```
 
-(output pasted below after the final push)
+Deliverables verified present **on `origin/main`** via `git ls-tree -r origin/main` — the tree, not
+the claim (a memo is not a delivery). All six listed. The `probe-round263` cure additionally checked
+by `git show origin/main:…` on the span itself, because the file existing is not the cure landing:
 
-Deliverables, each `ls`-verified:
+```
+$ git show origin/main:scripts/probe-round263-….mts | sed -n '389,400p'
+ * ── Arm E narrowed in Round 378 (Theseus, 10/12 WORK), corrected in Round 382 (10/13) ─────────
+ …
+ * **Everything from here to the end of this paragraph is a CONSTANT about what this docblock said
+ * on 10/12, and the two claims it made are both false.**
+```
+
+Working tree clean at wrap. Deliverables:
 
 - `docs/research/round382-instruments/grade-the-class-count-and-the-seam.mjs`
 - `docs/research/round382-instruments/README.md`
