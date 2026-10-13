@@ -231,19 +231,66 @@ check(
  * about `probe-round225`, so nothing `probe-round225` does can move them.
  */
 const censusPop = census(HERE);
-const namesOther = SWEPT.filter((e) => {
-  const src = readFileSync(join(HERE, e.file), 'utf8');
-  return censusPop.some((f) => f !== e.file && src.includes(f));
-}).length;
+const namesOtherUnder = (pop: string[]) =>
+  SWEPT.filter((e) => {
+    const src = readFileSync(join(HERE, e.file), 'utf8');
+    return pop.some((f) => f !== e.file && src.includes(f));
+  }).map((e) => e.file);
+/**
+ * ── Round 379: both legs of this figure's own stated derivation are DERIVED now ───────────────
+ *
+ * B1m's first spelling published `${namesOther}` — 20 — beside the sentence *"My first reading said
+ * 16 … 153 files rather than the 118 I had, and the figure moved by 3"*. 16 + 3 is 19, and the line
+ * printed 20. The member lists at `6859ba16` and at HEAD are identical and both 20, so nothing
+ * arrived later to move it: **the sentence did not close on the day it shipped.**
+ *
+ * Measured, rather than inferred from the two numbers already in the sentence: the narrow selector
+ * reads **17** members over a **122**-file population, the census selector reads 20 over 153, and
+ * the move is +3 **from 17**. The delta was right and its starting point was not — my hand reading
+ * of 16 was one short of the selector it claimed to implement, and I published the hand figure as
+ * the detector's (341, 350). Neither leg is hardcoded now, so a delta that does not close is no
+ * longer expressible here.
+ */
+const narrowPop = censusPop.filter((f) => /^probe-round/.test(f));
+const narrowMembers = namesOtherUnder(narrowPop);
+const censusMembers = namesOtherUnder(censusPop);
+const namesOther = censusMembers.length;
+const onlyUnderCensus = censusMembers.filter((f) => !narrowMembers.includes(f));
+const onlyUnderNarrow = narrowMembers.filter((f) => !censusMembers.includes(f));
+/**
+ * The check the broken sentence needed, and it can fail two ways that matter. `onlyUnderCensus`
+ * being non-empty is NOT true by construction — it holds only because some swept probe names a
+ * population file that `probe-round*` cannot see, and editing those references away would empty it
+ * and silently collapse the published delta to 0. `onlyUnderNarrow` being empty asserts the two
+ * selectors are still NESTED, which is what makes "+3" a delta rather than two unrelated readings;
+ * re-keying either leg breaks it. The subset arithmetic is left to close on its own — asserting
+ * `17 + 3 === 20` against numbers this file just computed would recompute what it grades (369).
+ */
+check(
+  'B1',
+  `the delta B1m publishes is nested and non-empty, which is what the first spelling of that ` +
+    `sentence got wrong: ${narrowMembers.length} members under \`probe-round*\` (${narrowPop.length} ` +
+    `files), ${namesOther} under \`census()\`'s \`/^probe-/\` (${censusPop.length}), ` +
+    `${onlyUnderCensus.length} member(s) visible ONLY to the wider selector — ` +
+    `${onlyUnderCensus.map((f) => `\`${f.split('-').slice(0, 2).join('-')}\``).join(', ')} — and ` +
+    `${onlyUnderNarrow.length} visible only to the narrower, which must be 0 for the two readings ` +
+    `to be the same reading at two widths`,
+  onlyUnderCensus.length > 0 && onlyUnderNarrow.length === 0,
+);
 const PRECURE_374 = String.raw`[...r225Src.matchAll(/const R223B_REFUSAL = \/(.+?)\/;/g)]`;
 const PRECURE_375 = 'occ(r225Src, `const R223B_REFUSAL = /${shortFromRegistry}/;`)';
 const DECL_FRAGMENT = 'const R223B_REFUSAL = ';
 meas(
   'B1m',
   `the class, hand-read and then re-derived under the registry's OWN population selector: ` +
-    `${namesOther} of ${SWEPT.length} swept probes name another probe file. My first reading said ` +
-    '16, because I had keyed the population on `probe-round*` while `census()` keys it on `/^probe-/` ' +
-    `— 153 files rather than the 118 I had, and the figure moved by 3 (339). Of those, 5 bind ` +
+    `${namesOther} of ${SWEPT.length} swept probes name another probe file. My HAND reading said 16 ` +
+    `and the narrow selector I thought I was implementing reads ${narrowMembers.length} over ` +
+    `${narrowPop.length} files, so the hand figure was one short of its own detector; keying the ` +
+    `population on \`/^probe-/\` the way \`census()\` does — ${censusPop.length} files — moves it ` +
+    `+${onlyUnderCensus.length} from ${narrowMembers.length} to ${namesOther} (339). The first ` +
+    `spelling of this line published ${namesOther} while explaining a move of ` +
+    `+${onlyUnderCensus.length} from 16, which lands on 19; both legs are derived now and B1 checks ` +
+    `the delta is nested and non-empty (Round 379). Of those, 5 bind ` +
     "another NAMED probe's source to an identifier — `probe-round269`, `372`, `373`, `374`, `375`; " +
     'a loop over the whole population is a census, not a pin, and is excluded — and this file will ' +
     'be the 6th. Two of those bindings fed a check keyed on that file\'s DECLARATION SYNTAX: ' +
