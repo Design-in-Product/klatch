@@ -214,10 +214,13 @@ check(
 // ── Section B — the finding: the class, the member list, and the pre-cure drives ──
 
 /**
- * The census, hand-read first and graded here. 16 of the 42 swept probes name another probe file;
- * 5 bind another NAMED probe's source text to an identifier (a loop over the whole population is a
- * census, not a pin, and is excluded). Of the use-sites in those 5, exactly two keyed a check on a
- * hand-typed fragment of the other file's DECLARATION SYNTAX, and both are cured in this fire.
+ * The census, hand-read first and graded here. This paragraph used to carry three hand constants
+ * and not one of them survived: a naming count of 16 (the narrow selector reads 17 — Round 379), a
+ * swept total of 42 (the registry has grown since), and a binding class of 5 (the hand reading is
+ * ten — Theseus, Round 382 §1). All three are derived below instead: the first two by B1/B1m, the
+ * class by B1c/B1n (a loop over the whole population is a
+ * census, not a pin, and is excluded). Of the use-sites in that class, exactly two keyed a check on
+ * a hand-typed fragment of the other file's DECLARATION SYNTAX, and both are cured in this fire.
  *
  * **A general detector for this class is not built, and the reason is measured rather than
  * preferred** — it is the same closure Round 376 §4 reached. The construct has to be found inside
@@ -301,6 +304,160 @@ check(
     `to be the same reading at two widths`,
   onlyUnderCensus.length > 0 && onlyUnderNarrow.length === 0,
 );
+/**
+ * ── Round 383 — the class clause is DERIVED now, and both of its spellings were short ─────────
+ *
+ * B1m's class clause was the one sentence left in this file that crossed the seam declared four
+ * sentences above it: `${namesOther}` live, the class size a hand constant of **5**, and a closing
+ * *"this file will be the 6th"* naming a future that had already happened — the subject is in
+ * `SWEPT` and binds three. Theseus found all three defects in Round 382 §1. His hand reading of
+ * **10** reproduces here as a SET, under a key that shares neither end with his: his population is
+ * his own `readdirSync` + `startsWith`, mine is the registry's `census()`; his detection is a token
+ * scan intersected with the population, mine is a statement walk over `const ID = <init>;` in the
+ * comment-blanked reading (340 — vary what SELECTS the population, not just the count).
+ *
+ * The construct has THREE axes, and a detector that holds any one of them fixed reads short:
+ *
+ *   A  where the filename sits    inline in the read call (`263`, `269`) or behind a module-scope
+ *                                 const (the other eight). Inline-only reads **2**.
+ *   B  how the path is spelled    bare basename, `scripts/`-prefixed, `path.join(…)`-wrapped — and
+ *                                 this is TWO sub-axes that lose DIFFERENT members. Requiring the
+ *                                 literal to carry no prefix loses `232` and `371`; requiring it to
+ *                                 BE the whole initializer loses `225` and `232`. Both at once is
+ *                                 Theseus's Round 378 v2 key, and it reads his **7**, missing
+ *                                 exactly `225`, `232`, `371` — reproduced here, not taken on
+ *                                 report (328).
+ *   C  how the read is spelled    `readFileSync` directly, or through a local `const read = (f) =>`
+ *                                 helper. Inert today — 10 members either way — and kept anyway,
+ *                                 because the two near misses that use a helper are excluded for
+ *                                 binding no SOURCE, and that is the reason worth being able to
+ *                                 state rather than to luck into.
+ *
+ * **This is built to Theseus's Round 382 §2 moral, which corrects Round 378's own:** one known
+ * positive per SHAPE is coverage of one AXIS. His v2 carried a positive for each binding shape and
+ * both of them spelled the path the same way, so it failed downward with its grade printing true.
+ *
+ * Four hand-read NEAR MISSES are excluded, each for a stated reason: `probe-round244` and
+ * `probe-round304` read a named probe's live source but consume it INLINE, binding a boolean and a
+ * check expression; `probe-round262` binds a FROZEN copy out of `git show <sha>:path`, which no
+ * later edit can move; `probe-round297` resolves its file from the population by prefix rather than
+ * naming it. Dropping the bound-to-an-identifier criterion admits `224`, `244` and `262`, so the
+ * criterion is load-bearing — and it does NOT reach `304`, whose naming site is in no `const`
+ * statement at all. That one exclusion rests on the hand reading, and saying so is the point.
+ *
+ * **B1c is deliberately not a set equality.** A swept probe joining this class tomorrow is ordinary
+ * work, and a conjunct sized to today's population reddens on its own growth — this file's own
+ * Round 377 lesson. It asserts the two things that do not move with the population: every member
+ * the hand reading validated is still found, and none of the four near misses is swept in. The live
+ * size, and any member beyond the hand-read ten, are published by B1n.
+ *
+ * The full instrument, with all eleven grades and the axis-isolating counterfactual table, is in
+ * `docs/research/round383-instruments/`.
+ */
+const HAND_READ_CLASS = [
+  'probe-round225',
+  'probe-round232',
+  'probe-round263',
+  'probe-round269',
+  'probe-round371',
+  'probe-round372',
+  'probe-round373',
+  'probe-round374',
+  'probe-round375',
+  'probe-round377',
+];
+const HAND_READ_NEAR_MISSES = ['probe-round244', 'probe-round262', 'probe-round297', 'probe-round304'];
+/** The `;` that ends the statement starting at `i`, with string bodies skipped. */
+const initializerEnd = (code: string, i: number): number => {
+  let depth = 0;
+  for (let j = i; j < code.length; j++) {
+    const c = code[j];
+    if (c === '"' || c === "'" || c === '`') {
+      const q = c;
+      j++;
+      while (j < code.length && code[j] !== q) j += code[j] === '\\' ? 2 : 1;
+      continue;
+    }
+    if ('([{'.includes(c)) depth++;
+    else if (')]}'.includes(c)) depth--;
+    else if (c === ';' && depth <= 0) return j;
+  }
+  return code.length;
+};
+/** Every `const ID = <init>;` as [id, init, offset-of-init]. */
+const constStatements = (code: string): [string, string, number][] => {
+  const out: [string, string, number][] = [];
+  const re = /\bconst\s+([A-Za-z_$][\w$]*)\s*=\s*/g;
+  for (let m: RegExpExecArray | null; (m = re.exec(code)); ) {
+    const from = m.index + m[0].length;
+    out.push([m[1], code.slice(from, initializerEnd(code, from)), from]);
+  }
+  return out;
+};
+/** Identifiers bound to another census file's LIVE source text, in `file`. */
+const sourceBindingsIn = (file: string): string[] => {
+  const raw = readFileSync(join(HERE, file), 'utf8');
+  const code = stripSource(raw, false); // comments and regex bodies blanked, strings KEPT
+  const blank = stripSource(raw, true); // string bodies blanked as well, same offsets
+  const others = censusPop.filter((f) => f !== file);
+  const stmts = constStatements(code);
+  const names = (init: string) => others.filter((f) => init.includes(f));
+  // axis A: a const that names one census file and does not itself read is a path alias
+  const alias = new Map<string, string>();
+  for (const [id, init] of stmts) {
+    const n = names(init);
+    if (n.length === 1 && !/readFileSync|\bread\s*\(/.test(init)) alias.set(id, n[0]);
+  }
+  // axis C: a local arrow helper that reads a file counts as a read
+  const helpers = stmts.filter(([, i]) => /\breadFileSync\s*\(/.test(i) && i.includes('=>')).map(([id]) => id);
+  const helperRe = helpers.length ? new RegExp(`\\b(?:${helpers.join('|')})\\s*\\(`) : null;
+  const bound: string[] = [];
+  for (const [id, init, from] of stmts) {
+    if (helpers.includes(id)) continue;
+    const hit = /\breadFileSync\s*\(/.exec(init) ?? (helperRe ? helperRe.exec(init) : null);
+    if (!hit) continue;
+    // the read call must be CODE, not a fixture string quoting one (this file carries two)
+    const at = from + hit.index;
+    if (blank.slice(at, at + hit[0].length) !== hit[0]) continue;
+    const reached = [
+      ...names(init),
+      ...[...alias].filter(([a]) => new RegExp(`\\b${a}\\b`).test(init)).map(([, f]) => f),
+    ];
+    if (reached.length) bound.push(id);
+  }
+  return bound;
+};
+const SHORT = (f: string) => f.split('-').slice(0, 2).join('-');
+// Sorted, not in registry order: a member LIST is only comparable across two seats' keys if both
+// publish it the same way, and comparing lists rather than counts is the whole point (340).
+const bindClass = SWEPT.filter((e) => sourceBindingsIn(e.file).length > 0)
+  .map((e) => SHORT(e.file))
+  .sort();
+const SELF_FILE = fileURLToPath(import.meta.url).split('/').pop()!;
+const selfBindings = sourceBindingsIn(SELF_FILE);
+const classMissing = HAND_READ_CLASS.filter((f) => !bindClass.includes(f));
+const classNearMisses = HAND_READ_NEAR_MISSES.filter((f) => bindClass.includes(f));
+const classBeyondHand = bindClass.filter((f) => !HAND_READ_CLASS.includes(f));
+check(
+  'B1c',
+  `the class clause is derived by a detector that reproduces the hand reading, and neither conjunct ` +
+    `moves with the population: ${classMissing.length} of the ${HAND_READ_CLASS.length} hand-read ` +
+    `members are unfound (must be 0${classMissing.length ? ` — ${classMissing.join(', ')}` : ''}) and ` +
+    `${classNearMisses.length} of the ${HAND_READ_NEAR_MISSES.length} hand-read near misses are swept ` +
+    `in (must be 0${classNearMisses.length ? ` — ${classNearMisses.join(', ')}` : ''}); the subject ` +
+    `binds ${selfBindings.length} of them itself, so it cannot be a future member`,
+  classMissing.length === 0 && classNearMisses.length === 0 && selfBindings.length > 0,
+);
+meas(
+  'B1n',
+  `the class, live: ${bindClass.length} of the ${namesOther} members bind another NAMED probe's ` +
+    `LIVE source to an identifier — ${bindClass.map((f) => `\`${f}\``).join(', ')} — of which ` +
+    `${classBeyondHand.length} ${classBeyondHand.length === 1 ? 'is' : 'are'} beyond the ten the ` +
+    `hand reading validated${classBeyondHand.length ? ` (${classBeyondHand.join(', ')})` : ''}. ` +
+    `THIS FILE is one of them, with ${selfBindings.length} bindings — ${selfBindings.join(', ')} — ` +
+    `and it is in \`SWEPT\`, so it is not a future member of anything. A loop over the whole ` +
+    `population is a census and is excluded; so are the four near misses the docblock names`,
+);
 const PRECURE_374 = String.raw`[...r225Src.matchAll(/const R223B_REFUSAL = \/(.+?)\/;/g)]`;
 const PRECURE_375 = 'occ(r225Src, `const R223B_REFUSAL = /${shortFromRegistry}/;`)';
 const DECL_FRAGMENT = 'const R223B_REFUSAL = ';
@@ -321,11 +478,15 @@ meas(
     `lands on 19": wrong about both numbers it was reporting AND not closing, since 16 + 2 is 18. ` +
     `B1 was green through it, because B1 grades the delta the tree has now and that clause asserts ` +
     `the delta the tree had on 10/12 (Theseus, Round 380 §4; the Round 381 instrument drives his ` +
-    `mutation and grades these bytes unchanged while the derived figures above them move). Of the ` +
-    `${namesOther} members, 5 bind ` +
-    "another NAMED probe's source to an identifier — `probe-round269`, `372`, `373`, `374`, `375`; " +
-    'a loop over the whole population is a census, not a pin, and is excluded — and this file will ' +
-    'be the 6th. Two of those bindings fed a check keyed on that file\'s DECLARATION SYNTAX: ' +
+    `mutation and grades these bytes unchanged while the derived figures above them move). The ` +
+    'class clause that used to close this sentence is gone from it: it published a hand 5 beside a ' +
+    'live denominator and closed on "this file will be the 6th", and it was short by half and ' +
+    'wrong about its own tense (Theseus, Round 382 §1). Theseus had already corrected the 5 to 7 ' +
+    'in Round 378, and 7 was short by three for the reason his own Round 378 writeup had named — ' +
+    'both known positives spelled the PATH the same way, so one per binding SHAPE covered one ' +
+    'AXIS. The hand reading that corrected both figures found ten; the live class is derived in ' +
+    "B1n and graded in B1c, and no size for it is stated here. Two of the class's bindings fed a " +
+    "check keyed on that file's DECLARATION SYNTAX: " +
     '`probe-round374` A2 and `probe-round375` A1, one per seat, both shipped in the two rounds that ' +
     'were about this exact defect, both cured in this fire. `probe-round373` 255/256 and ' +
     '`probe-round374` 282/345 read the same file through a REGISTRY-derived key and are not members',
