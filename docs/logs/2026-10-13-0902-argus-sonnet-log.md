@@ -54,3 +54,43 @@ re-derived fresh and green, byte-identical to the prior corrected checkpoint; bo
 re-checked and unmoved; the private cross-pollination brief's content flagged as unread (out of
 scope) rather than guessed at. Two consecutive checks found nothing further unblocked. Fire closed
 bounded. Nothing new needs xian beyond the one standing item (CIO/Laya).
+
+## 13:3x PT — WORK fire (no-op, gate re-verified green)
+
+`git fetch origin main`: 0 new commits since own START-fire checkpoint (`b8e2f214` still own HEAD
+and `origin/main`). Worktree clean.
+
+**Mail checked:** two new files since the START-fire read, both Daedalus/Theseus round-chain (381,
+382), cc Argus:
+- `daedalus-to-theseus-...-your-380-both-items-taken-and-the-conjunct-no-rekey-can-redden-is-
+  reachable-alone-by-shape-2026-10-13.md` (Round 381) — read in full. Daedalus takes both of
+  Theseus's 380 items, confirms the nesting conjunct is reachable alone (by shape, not re-key), finds
+  one concrete file (`.concat('sweep-probes.mjs')`) that makes nesting the sole false conjunct, and
+  reports the B1m history clause is cured with a declared seam. Ends "Nothing needs xian."
+- `theseus-to-daedalus-...-your-381-reproduces-whole-and-the-class-count-in-the-same-arm-is-short-
+  by-half-mine-included-2026-10-13.md` (Round 382) — read in full. Theseus reproduces 381 whole,
+  then finds the B1m class count itself is short (hand-read class is 10 members, not 5), and that
+  his own Round 378 correction of the same class was short by three for a reason his own writeup had
+  already named (two known positives spelling the same path identically). Ends "Nothing needs xian."
+
+Both threads are the Daedalus/Theseus round-chain lane; cc to Argus is for visibility only, no
+action for this seat beyond the standing cc (same pattern as the START-fire entry above). All four
+writable cross-repo mailboxes re-checked for anything addressed to Argus/Klatch by name: nothing new.
+
+**Gate re-derived fresh, not taken from any memo** (port 3001 confirmed free first):
+- `npm run typecheck` all four workspaces — 0 diagnostic lines.
+- `npm test -w packages/server` unpiped — **140 files/2179 passed/1 skipped (2180)**.
+- `npm test -w packages/client` unpiped — **26 passed|13 skipped (39) / 333 passed|13 skipped (346)**.
+- `node scripts/sweep-probes.mjs --census` — **CENSUS OK, 153 probe files, 43 swept/110 deferred**.
+- Full driving sweep on a free port — **SWEEP PASSED — 43 of 43 swept probes green, 0 red,
+  0 blocked, 0 census problem(s), 110 deferred**.
+
+All five figures byte-identical to the START-fire checkpoint above — no new discrepancy.
+
+**Standing blockers re-checked, both unmoved:**
+- CIO Laya/AAXT thread — still `fe650e02` (10/6) as last touch, parked on xian's scheduling call.
+- Intel sweep cadence — `docs/intel/2026-10-12-sweep.md` still the latest, next due ~10/19.
+
+`git status --porcelain` clean apart from this entry and `COORDINATION.md`. No port bound at close,
+no database opened, no model called. Two consecutive checks found nothing further unblocked — fire
+closed bounded. Nothing new needs xian beyond the one standing item (CIO/Laya).
