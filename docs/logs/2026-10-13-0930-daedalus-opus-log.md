@@ -1,7 +1,7 @@
 # Daedalus session log — 2026-10-13 (Opus 5)
 
-Two fires today: START (~09:2x–10:1x, Round 381) and WORK (~13:0x–14:0x, Round 383). The WORK
-entry is appended at the bottom.
+Three fires today: START (~09:2x–10:1x, Round 381), WORK (~13:0x–14:0x, Round 383) and STOP
+(~17:2x–18:0x, Round 385). Each entry is appended at the bottom.
 
 ## 09:2x — Briefing
 
@@ -198,4 +198,110 @@ Deliverables, each `ls`-confirmed present (see the shell transcript of this fire
   thread still has an open action on my side (arm-E) and an open action on his (`C4`/`C6` need
   re-aiming now that the wording moved).
 - **Three older carried items, nine namings, untouched.**
+- **Nothing needs xian.**
+
+---
+
+# STOP fire — 2026-10-13 ~17:2x–18:0x PT (Round 385)
+
+## 17:2x — Briefing
+
+- Wrapper synced the worktree. `git log --format='%h %an %s' -6`: **the three head commits in my own
+  subject shape were Theseus's, not mine** — `66d8e8ce`, `6d14d4bc`, `a0af5afb` are all
+  `Theseus (Klatch)`, and `a43a0c21` is Calliope's. My last was `4acb4da1` (Round 383, WORK fire).
+  Checked the author rather than the subject line, per Round 326; `--oneline` would have hidden it
+  and I would have read Round 384 as already answered and gone no-op.
+- `docs/COORDINATION.md` Daedalus section read: last entry 2026-10-13 WORK fire, Round 383.
+- `ls -la docs/mail/`: one memo new to this seat — Theseus's Round 384,
+  `…your-383-reproduces-and-cf-f-is-the-one-row-whose-predicate-and-prose-are-about-different-things-2026-10-13.md`.
+  Read in full at session start, not batched. Routes two items to me: `CF-F`'s sentence and the
+  matching clause in `README.md` (the count plus the two attributions under it), and his §2
+  amendment to `CF-C`'s "inert today".
+
+## 17:2x — His finding, reproduced before taken
+
+- Drove `round383-instruments/grade-the-binding-class.mjs` unpiped: 14 grades, 0 not true, and the
+  `CF-F` line prints *"three of the four"* beside `gained [probe-round224 probe-round244
+  probe-round262]`. `NEAR_MISSES` is `{244, 262, 297, 304}`. Intersection is **two**. His finding
+  reproduces from my own literals, in my own output.
+- `README.md` carries the same undercount at lines 58–60.
+
+## 17:3x — His two attributions, under my own key
+
+- `224`: **11** raw naming occurrences of other population files, all inside single-quoted string
+  bodies, in 3 const initializers (`MIGRATED` ×4, `TYPE_ONLY_EXPECTED` ×6, `DECL_ONLY_EXPECTED` ×1),
+  none of which performs a read. His 11 and my first count of 6 are both right — occurrences vs.
+  distinct `(statement, file)` pairs. Kept both in the instrument so they cannot be conflated (345).
+- `297`: **zero** const initializers carrying a full population filename. Its one full-filename
+  occurrence is at L233 inside `read(R225).includes('probe-round219-…')` — an expression.
+- **One further than his memo:** `304` is the same. Its only occurrence is inside
+  `.test(read(join(…)))`. So 297 and 304 share one criterion; his memo had them as two different
+  ones, and my pre-cure sentence credited only 304's exclusion to the hand reading.
+- Correction against myself mid-fire: my scratch helper-scan regex reported "no local read helpers"
+  in `297`. False — L98 is `const read = (f: string): string => readFileSync(…)`. My regex's
+  `\([^)]*\)\s*=>` could not cross the `: string` return annotation. The instrument's own helper
+  detector finds it. Did not carry the scratch claim into anything (*run the regex, don't reason
+  about it* — and don't trust a scratch regex either).
+
+## 17:4x — The cure, and the row that cost something
+
+- Expectations written down **before** driving, kept as grades `E1`–`E4` whichever way they came out:
+  E1 CF-G alone reads 10 unchanged · E2 the conjunction admits 297 · E3 304 stays out · E4 CF-E
+  gains 246 and 299.
+- **E1 was wrong and it is the round.** `CF-G` (stem instead of whole filename) reads **15**, gains
+  six, and **loses `371`**. The relaxed key is not a superset: the alias leg carries a uniqueness
+  quantifier (`n.length === 1`), `371` binds `probe-round224-a-…`, and that stem is shared with
+  `probe-round224b-…`, so stem matching makes the initializer name two files and the alias is
+  dropped. Five stems in the population are shared by two files: 223, 224, 253, 255, 374.
+- E2 half wrong: `CF-G` **alone** admits 297, so the isolating axis is the full-filename criterion
+  and not the conjunction. E3 and E4 held.
+- Cure is a seam, not a word: `cf()`'s `claim` may now be a function of the same `(got, lost,
+  gained)` the predicate reads. `CF-F` derives every figure. Graded behaviourally by mutation —
+  anchor asserted unique first (347), then `244` dropped from `NEAR_MISSES` and all four figures
+  required to move (`2 of 4 → 1 of 3`).
+- `CF-C` re-scoped to *inert at this point of the flag space*; `CF-E` driven and gains exactly his
+  `246` and `299`; `G8` and `G9` added. Subject instrument now **18 grades, 0 not true**.
+
+## 17:5x — The control caught itself first
+
+- `B1` grades the pre-cure sentence out of pinned `a43a0c21` by **content** (published number vs.
+  what its own literals support), because the cured `README.md` quotes *"three of the four"* to
+  report the defect and a byte-absence control would be red on a correct cure.
+- Its first spelling **read `undefined`** and I saw it as a red, not as a pass: the source spells
+  the sentence `'…it reaches three of the four ' + 'hand-read near misses…'` and the words are not
+  adjacent in the bytes. `undefined !== 2` is `true`, so had the grade been `published !==
+  supported` alone it would have printed **green for the wrong reason** (353).
+- Two repairs: join the `' + '` seams before reading, and have `readSentence` report a read failure
+  as a distinct state. `B3` added as the known **negative** — same pinned source, one word changed
+  `three`→`two`, both member lists byte-identical, control flips. Without it `B1` cannot tell
+  *defect absent* from *regex failed*.
+- `round385-instruments/` drives **13 grades, 0 not true**.
+
+## 17:5x — Gates, each run this fire rather than recalled
+
+- Port 3001 checked with `aWildcardBindWouldSucceed` from `scripts/lib` (not hand-rolled):
+  `would succeed: true | already answering: null`.
+  Note: `npx tsx -e` refused the check with *"Top-level await is currently not supported with the
+  'cjs' output format"* — same limit as Round 367. Wrote `.round385/port.mts` and ran the file.
+- `node scripts/sweep-probes.mjs` — **SWEEP PASSED — 43 of 43 swept probes green, 0 red, 0 blocked
+  (0 could not run, 0 ran but did not finish), 0 census problem(s), 110 deferred**
+- `npm run typecheck` (all four workspaces) — 0 diagnostic lines
+- `npm test -w packages/server`, unpiped — **140 files passed (140) / 2179 passed | 1 skipped (2180)**
+- `npm test -w packages/client`, unpiped — **26 passed | 13 skipped (39) / 333 passed | 13 skipped (346)**
+- All five byte-identical to the WORK-fire checkpoint. Nothing piped that was going to be cited.
+
+## 18:0x — Wrap verification
+
+Pushed incrementally across the fire rather than once at the end, per the 2400s lesson.
+
+## Open at fire end — labelled, not finessed
+
+- **Done this fire:** `CF-F` prose derived; `README.md` matched; `CF-E`, `CF-G`, `G8`, `G9` added;
+  `CF-C` re-scoped; `round385-instruments/` built; writeup and reply filed.
+- **Carried, unblocked, no date and no named blocker — they are mine to get to:** arm-E narrowing in
+  `probe-round263`; the Round 371 commemorations unpinned as commemorations; the 585
+  not-true-positives; `probe-round371`'s `SELF_EXCLUDED` hole.
+- **Mail:** the Daedalus/Theseus round-chain memos are left in `docs/mail/` rather than moved to
+  `read/`. Checked precedent first — `git log --diff-filter=R -- docs/mail/read/` shows no chain
+  memo has been archived, and my 385 reply carries open items. Not mine to sweep unilaterally.
 - **Nothing needs xian.**
