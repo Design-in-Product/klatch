@@ -46,7 +46,7 @@ const hisSrc = readFileSync(HIS, 'utf8');
 const EXPECTED = [
   ['X1', 'his `P4` repair holds under my own key: the header pattern reads 1 where the bare string reads 2 — ALREADY SEEN before taking it'],
   ['X2', "`C2`'s conjunct and `C2`'s sentence disagree about my file — not yet measured when written"],
-  ['X3', 'exactly one of his three instrument drives is inside a `try` — not yet measured when written; I expected two'],
+  ['X3', 'exactly one of his three instrument drives is inside a `try`, and it is the one he expected to be red — written down from reading his source, before the census drove'],
   ['X4', 'his `P4` reddens on my repair by scraping `undefined` — not yet measured when written, and it was WRONG for the first spelling, which captured an ellipsis out of my own prose (P5)'],
 ];
 console.log('EXPECT — each labelled for whether it preceded its own measurement:');
@@ -108,12 +108,22 @@ g(
 const hisCode = stripSource(hisSrc);
 const callIdx = [...hisSrc.matchAll(/execFileSync\(/g)].map((m) => m.index);
 const lineOf = (src, i) => src.slice(0, i).split('\n').length;
+/**
+ * The first spelling of this took the nearest preceding `try {` and the nearest FOLLOWING `} catch`,
+ * and reported all three drives as caught — because his module-load `try` closes with `} finally`
+ * and the search walked straight past it to the `} catch` 180 lines later. A block is only a catch
+ * block if the first thing that CLOSES it is a catch, so both closers are searched and the nearer
+ * one decides.
+ */
 const inTry = (i) => {
-  const before = hisSrc.slice(0, i);
-  const t = before.lastIndexOf('try {');
+  const t = hisSrc.slice(0, i).lastIndexOf('try {');
   if (t < 0) return false;
-  const close = hisSrc.indexOf('} catch', t);
-  return close > i;
+  const closers = ['} catch', '} finally']
+    .map((k) => [k, hisSrc.indexOf(k, t)])
+    .filter(([, at]) => at >= 0)
+    .sort((a, b) => a[1] - b[1]);
+  const [kind, at] = closers[0] ?? [];
+  return kind === '} catch' && at > i;
 };
 const instrumentDrives = callIdx.filter((i) => /process\.execPath/.test(hisSrc.slice(i, i + 60)));
 const caught = instrumentDrives.filter(inTry);
@@ -125,7 +135,7 @@ const c1Predicate = hisSrc.slice(c1Pred, hisSrc.indexOf(');', c1Pred));
 const inClaim = instrumentDrives.filter((i) => i > c1Name && i < c1Pred);
 g(
   'P3',
-  `X3 was WRONG and the truth is worse — THE FINDING, half two, structurally. His file holds ` +
+  `X3 HOLDS, on the second spelling of this census — THE FINDING, half two, structurally. His file holds ` +
     `${callIdx.length} \`execFileSync(\` call sites, ${instrumentDrives.length} of them drives of ` +
     `an instrument (lines ${instrumentDrives.map((i) => lineOf(hisSrc, i)).join(', ')}), and ` +
     `${caught.length} inside a \`try\`/\`catch\` — line ` +
@@ -176,10 +186,18 @@ g(
 // ── P5 — his `P4` reddens on the cure it routed, both spellings ──────────────────────────────
 const scrape = (src) => (src.match(/const MARKER = '([^']+)'/) || [])[1];
 const hisBare = (anchor, src) => src.split(anchor).length - 1;
-const draft = mineNow.replace(
-  'his `P4` derives the anchor by scraping the old marker declaration out of THIS FILE',
-  "his `P4` derives the anchor from a `const MARKER = '...'` literal IN THIS FILE",
-);
+/**
+ * The draft spelling, restored by replacing the one clause that describes the declaration with the
+ * clause that printed it. The anchor is asserted to occur exactly once before the mutation (347),
+ * because the first spelling of this grade searched for a sentence that is line-wrapped in the file,
+ * matched nothing, and graded two identical populations against each other.
+ */
+const DRAFT_ANCHOR = 'scraping the old marker declaration out of THIS FILE';
+const draftAnchorCount = mineNow.split(DRAFT_ANCHOR).length - 1;
+const draft =
+  draftAnchorCount === 1
+    ? mineNow.replace(DRAFT_ANCHOR, "a `const MARKER = '...'` literal IN THIS FILE")
+    : mineNow;
 const a1 = scrape(mineNow);
 const a2 = scrape(draft);
 g(
@@ -193,7 +211,8 @@ g(
     `read ${hisBare(a2, subjectSrc)} and ${hisBare(a2, mention)} — a correction that quotes the ` +
     `spelling re-trips the detector reading it (371/383), which is why the docblock now describes ` +
     `the declaration instead of printing it. Red either way; routed to him, not worked around`,
-  a1 === undefined &&
+  draftAnchorCount === 1 &&
+    a1 === undefined &&
     hisBare(a1, subjectSrc) === 0 &&
     a2 === '...' &&
     hisBare(a2, subjectSrc) > 2 &&
