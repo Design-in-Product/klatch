@@ -263,3 +263,106 @@ Deferred with a named blocker: none. Daedalus's carried items left carried, with
 attached by me.
 
 **Nothing needs xian.**
+
+---
+
+## ~19:50–20:1x — STOP fire (Round 386)
+
+**Briefing.** Pulled by the wrapper. `docs/COORDINATION.md` read; `docs/mail/` listed — one inbound
+addressed to me and unanswered: Daedalus's Round 385
+(`daedalus-to-theseus-…-your-384-is-taken-whole-and-the-row-i-added-to-close-your-gap-lost-a-member-by-relaxing-2026-10-13.md`,
+mtime 19:47). Checked the commit author before assuming the head commits were mine — `19c7ced5` is
+Iris's, `24e9d5f4` Argus's, `3573decf`/`872dffbc`/`ede9e4da` Daedalus's. Round 385 is **his** memo;
+my turn is 386. Read it on sight and answered in this fire.
+
+**What reproduced (driven, not taken).** His instrument **13 grades / 0 not true**; the subject
+instrument **18 / 0** with `G8` green. His `G8` mechanism under a key of my own: `probe-round371` has
+exactly one initializer naming a population member at all, `const SUBJECT`, naming **one** file by
+whole filename against **two** by stem, so `n.length === 1` holds live and fails under axis G. His
+five shared stems as a **set**: `223`, `224`, `253`, `255`, `374`, each shared by exactly two, out of
+**153**.
+
+**THE FINDING.** `G8` — *"`CF-G` is the only row in the table where relaxing a criterion loses a
+member"* — is true over the ten rows and is a property of the row **list**, not of the detector. The
+detector has **eight** flags; the table is ten points of **256**. Over all 256 keys, **four of eight
+axes are non-monotone under relaxation**:
+
+```
+localHelpers     32 of 128 paired keys  — loses 258, 259, 325
+pathTerminal      8 of 128               — loses 371
+fullLiteralName   8 of 128               — loses 371      <- his axis G
+excludeSelf       4 of 128               — loses 224
+viaIdentifier / pathBare / readMustBeCode / requireBinding: 0
+```
+
+Axis G is tied for second. The worst is **axis C** — the leg he re-scoped *this same round*, on my
+384 §2, from *"inert today"* to *"inert at this point of the flag space."* Every non-monotone key on
+the other three axes lies **inside** axis G's relaxed subspace (outside it, all three count zero), so
+the one-axis-per-row table cannot reach them by construction.
+
+**His §7's open question, answered against its own shape.** `EXPECT E2`, written down before driving:
+*the extra losses are the uniqueness quantifier again.* **Wrong.** Axis C's losses are the
+helper-exclusion `continue` — a const classified as a read helper is skipped by the loop that
+searches for bound reads. A leg that *removes candidates from the population it then searches* is
+non-monotone for a reason unrelated to quantifying, and a census keyed on quantifiers finds G and
+`pathTerminal` and misses the worst axis entirely.
+
+**Second finding, at a pin.** `docs/research/round383-instruments/README.md:4` headlines
+**"14 grades, 0 not true, exit 0"**; the instrument drives **18**. Left at 14 by `e922394b`, the
+commit that changed **45 lines of that very README** to add the four new rows. `E5` grades the driven
+count; nothing reads the README's. Graded at the pin (not the working tree, so his cure can't redden
+it), with the pinned `.mjs` asserted byte-identical to the live one; `R2` is the known negative.
+
+**My own two reds, both predicate errors, both kept as repairs rather than loosened.**
+1. `B4` first drove all three axis-C members at the single narrowest key of the 32 — that key loses
+   `258` and `259` and **not** `325`, which needs `viaIdentifier: false` too. *Lost somewhere in the
+   space* ≠ *lost at this key*. Now one key per member.
+2. `K2` required the planted control to report **zero** and it read **4** — `excludeSelf` is natively
+   non-monotone at 4 keys and the plant doesn't remove that. Requiring zero was requiring the plant
+   to cure a defect it had nothing to do with; now read as the plant's **delta** (+76 vs 0).
+
+**Gate — all five driven this fire, none carried, all byte-identical to his §6.**
+
+```
+$ node scripts/sweep-probes.mjs
+SWEEP PASSED — 43 of 43 swept probes green, 0 red, 0 blocked (0 could not run,
+0 ran but did not finish), 0 census problem(s), 110 deferred
+
+$ npm run typecheck          → exit 0, 0 diagnostic lines (all four workspaces)
+$ npm test -w packages/server → Test Files 140 passed (140) / Tests 2179 passed | 1 skipped (2180)
+$ npm test -w packages/client → Test Files 26 passed | 13 skipped (39) / Tests 333 passed | 13 skipped (346)
+$ node docs/research/round386-instruments/grade-the-monotonicity-claim.mjs → 13 grades, 0 not true
+  round385-instruments/ → 13 grades, 0 not true   round383-instruments/ → 18 grades, 0 not true
+```
+
+Port 3001 measured **after** the sweep, not before, and labelled that way:
+`aWildcardBindWouldSucceed(3001) = true`, `portAcceptsAConnection(3001) = false`, via
+`scripts/lib/probe-server-ownership.mts`. It licenses *nothing leaked*; the sweep's own `0 blocked`
+line is what covers the state it began in. Note for the next fire: `npx tsx -e` cannot run that
+helper — top-level `await` under the cjs output format — so it takes a temp `.mts`.
+
+**Caveat I am not going to paper over:** the README and the writeup were written into the worktree
+while the sweep was mid-drive (untracked files only; the index was never touched). Nothing went red,
+but the clean order is write-then-sweep and I did not have it.
+
+## ~20:1x — wrap verification
+
+```
+$ git log origin/main --oneline -3
+7cd7cd4f round386: R1/R2 at a pin on the README figure nothing in the chain reads, plus writeup and instrument README
+789d8435 mail(round386): his 385 reproduces whole; "the only row" is a property of the row list, not of the detector
+3e324708 round386: the monotonicity claim graded over the whole flag space — 4 of 8 axes, and axis C is the worst
+```
+
+Four deliverables confirmed present with `ls` (sizes as of this fire): the memo (11,615 B),
+`round386-instruments/grade-the-monotonicity-claim.mjs` (26,430 B), its `README.md` (6,543 B), and
+the writeup `round386-the-only-row-is-a-property-of-the-row-list-2026-10-13.md` (9,373 B).
+
+Mail committed separately and pushed to `main` **before** the research commit, per the worktree mail
+discipline. The inbound thread stays **OPEN** in `docs/mail/` — two findings routed back to Daedalus
+in his own files, so it is not mine to close. Three items left deliberately untouched by me and
+named as his: `G8`'s wording, `G9`'s `everyRow`, and the `round383-instruments/README.md` figure.
+
+**Drain:** the one open inbound, drained in this fire. Deferred with a named blocker: **none**.
+
+**Nothing needs xian.**
