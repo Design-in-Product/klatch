@@ -25,7 +25,7 @@
  * Exits non-zero on any grade that is not `true`.
  */
 import { execFileSync } from 'node:child_process';
-import { readFileSync, writeFileSync, rmSync } from 'node:fs';
+import { readFileSync, readdirSync, writeFileSync, rmSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -77,8 +77,31 @@ const g = (name, claim, ok) => {
   grades.push([name, ok]);
   console.log(`${ok === true ? 'GRADE' : 'NOT TRUE'} ${name}: ${ok} — ${claim}`);
 };
-const git = (args) => execFileSync('git', args, { cwd: REPO, encoding: 'utf8' });
+const git = (args) => execFileSync('git', args, { cwd: REPO, encoding: 'utf8', maxBuffer: 1 << 26 });
 const n3 = (s) => s.replace('probe-round', '');
+const { stripSource } = await import(join(SCRIPTS, 'lib', 'strip-source.mjs'));
+
+/**
+ * The repair his Round 388 §2 routed, and it is the mechanism `C2` below is ABOUT. Three of this
+ * file's four `execFileSync(` sites drove another instrument with no `catch` — one of them inside
+ * `C1`'s claim STRING — so a red downstream arrived here as an exception and took the verdict line
+ * with it: 3 grades printed, no tally, exit 1 on a stack frame. He drove that counterfactual on my
+ * real bytes (`round388-instruments/cf-planted-…`) rather than reasoning about it. Every drive now
+ * carries its own exit status, so a red downstream REPORTS here (355: census the mechanism, not the
+ * reported instance — my own Round 385 docblock named this shape in the fire this file shipped it).
+ */
+const drive = (p) => {
+  try {
+    return {
+      out: execFileSync(process.execPath, [p], { encoding: 'utf8', maxBuffer: 1 << 26 }),
+      status: 0,
+    };
+  } catch (e) {
+    return { out: `${e.stdout ?? ''}${e.stderr ?? ''}`, status: e.status ?? -1 };
+  }
+};
+/** A tally that cannot throw on a crashed drive: `[]` where there is no verdict line. */
+const tallyOf = (out) => out.match(/\n(\d+) grades, (\d+) not true/) ?? [];
 
 // ── the space, under HIS declared direction, in a harness of mine ─────────────────────────────
 const FLAGS = Object.keys(LIVE);
@@ -192,56 +215,127 @@ g(
 );
 
 // ── C — the cascade, in the order it happened ────────────────────────────────────────────────
-const subjectOut = execFileSync(process.execPath, [SUBJECT], { encoding: 'utf8', maxBuffer: 1 << 26 });
-const subjectTally = subjectOut.match(/\n(\d+) grades, (\d+) not true/);
+const subject = drive(SUBJECT);
+const subjectOut = subject.out;
+const subjectTally = tallyOf(subjectOut);
+const r385 = drive(MINE_385);
+const e5Green = / E5: true /.test(r385.out);
 const r385Src = readFileSync(MINE_385, 'utf8');
 const hisSrc = readFileSync(HIS, 'utf8');
 g(
   'C1',
   `MY OWN, and it reddened before anything of his did: Round 385's \`E5\` asserted the subject's ` +
-    `tally VERBATIM, \`18 grades, 0 not true\`, and the subject now drives ${subjectTally[1]}. The ` +
+    `tally VERBATIM, \`18 grades, 0 not true\`, and the subject now drives ${subjectTally[1] ?? '(no tally)'}. The ` +
     `old predicate is false against this run (${/\n18 grades, 0 not true/.test(subjectOut)}) and ` +
     `the re-aimed one reads the printed tally and requires only the not-true count to be zero, so ` +
-    `it is green at ${subjectTally[1]} and would be green at any total ` +
-    `(${/ E5: true /.test(execFileSync(process.execPath, [MINE_385], { encoding: 'utf8', maxBuffer: 1 << 26 }))}). ` +
-    `A count pinned in one file reddens on a grade added in another (377) — his §2 found that ` +
-    `shape in my README in the same fire my own instrument was carrying it in a predicate`,
-  !/\n18 grades, 0 not true/.test(subjectOut) &&
+    `it is green at ${subjectTally[1] ?? '?'} and would be green at any total (\`E5: true\` ` +
+    `${e5Green}, Round 385 exiting ${r385.status}). Both of those readings are now CONJUNCTS and ` +
+    `not just prose: his §2's other half is that the only place this file checked the re-aimed ` +
+    `\`E5\` was inside this sentence, where it could not redden — what it could do was throw`,
+  subjectTally.length === 3 &&
+    !/\n18 grades, 0 not true/.test(subjectOut) &&
     !/18 grades, 0 not true/.test(r385Src) &&
-    Number(subjectTally[2]) === 0,
+    Number(subjectTally[2]) === 0 &&
+    subject.status === 0 &&
+    e5Green === true &&
+    r385.status === 0,
 );
+
+/**
+ * `C2` re-aimed, per his §3, which is the `CF-F` shape of my own Round 383 pointed back at me: the
+ * printed sentence said "no `try` anywhere in his file" while the conjunct was keyed on a WINDOW of
+ * his file starting at `const driveInstrument`, where the count really is 0. The sentence was false
+ * about the file — line 62 of the bytes it read is a `try`/`finally` — and the predicate was right
+ * about the window.
+ *
+ * The defect is a property of the bytes he SHIPPED, so they are read out of git; the cure is a
+ * property of the live file, graded beside it as the selector's control (380). The honest file-wide
+ * spelling is `catch`, and it needs comment-blindness to be true: a raw `/catch/` over the shipped
+ * bytes returns a FALSE NEGATIVE on a correct claim, because the one raw hit is the word in a
+ * comment (383). `stripSource` was already in `scripts/lib` and already imported by the subject
+ * (350: check `lib` before hand-rolling the detector).
+ */
+const HIS_SHIPPED = '7cd7cd4f';
+const hisShippedPath = `docs/research/round386-instruments/grade-the-monotonicity-claim.mjs`;
+const hisShipped = git(['show', `${HIS_SHIPPED}:${hisShippedPath}`]);
+const hisAtMyRound = git(['show', `beb1ab78:${hisShippedPath}`]);
+const rawCatch = (src) => (src.match(/\bcatch\b/g) || []).length;
+const codeCatch = (src) => (stripSource(src).match(/\bcatch\s*[({]/g) || []).length;
+const lineOf = (src, i) => src.slice(0, i).split('\n').length;
+const rawCatchLines = [...hisShipped.matchAll(/\bcatch\b/g)].map((m) => lineOf(hisShipped, m.index));
+/** His own §5 red: a block is a catch block only if the FIRST thing that closes it is a `catch`. */
+const firstTry = hisShipped.search(/\btry\s*\{/);
+const closerOf = (src, from) =>
+  ['} catch', '} finally']
+    .map((k) => [k, src.indexOf(k, from)])
+    .filter(([, at]) => at >= 0)
+    .sort((a, b) => a[1] - b[1])[0]?.[0];
 g(
   'C2',
-  `and a count pin driven from another instrument does not report, it CRASHES: his ` +
-    `\`driveInstrument\` is \`execFileSync\` with no \`catch\` (${/const driveInstrument = \(p\) => execFileSync/.test(hisSrc)} ` +
-    `— and no \`try\` anywhere in his file: ${!/\btry\s*\{/.test(hisSrc.slice(hisSrc.indexOf('driveInstrument')))}), ` +
-    `so while \`E5\` was red his whole run died at that line with ZERO grades printed and no ` +
-    `verdict line. An instrument that drives another instrument inherits its exit code as an ` +
-    `exception, which is the difference between "2 not true" and nothing at all`,
-  /const driveInstrument = \(p\) => execFileSync/.test(hisSrc) &&
-    !/\btry\s*\{/.test(hisSrc.slice(hisSrc.indexOf('const driveInstrument'))),
+  `and a count pin driven from another instrument does not report, it CRASHES — re-aimed at the ` +
+    `FILE, which is what this sentence was always about (his §3). At the bytes my Round 387 read ` +
+    `(\`${HIS_SHIPPED}\`, byte-identical to his file at my own commit: ` +
+    `${hisShipped === hisAtMyRound}) his \`driveInstrument\` was a bare \`execFileSync\` ` +
+    `(${/const driveInstrument = \(p\) => execFileSync/.test(hisShipped)}) and NOTHING in that file ` +
+    `caught: comment-blind \`catch\` ${codeCatch(hisShipped)} against raw ${rawCatch(hisShipped)} ` +
+    `at line ${rawCatchLines.join(', ')}, which is the word in a comment — so the raw test returns ` +
+    `a false negative on a true claim (383). The file's one \`try\` is at line ` +
+    `${lineOf(hisShipped, firstTry)} and closes with \`${closerOf(hisShipped, firstTry)}\`, which ` +
+    `cannot catch — his own §5 reports his first census spelling walking past exactly that closer. ` +
+    `CONTROL for the selector: his cured file reads ${codeCatch(hisSrc)} comment-blind, so a 0 ` +
+    `above is a reading and not a blindness (355)`,
+  hisShipped === hisAtMyRound &&
+    /const driveInstrument = \(p\) => execFileSync/.test(hisShipped) &&
+    rawCatch(hisShipped) === 1 &&
+    codeCatch(hisShipped) === 0 &&
+    closerOf(hisShipped, firstTry) === '} finally' &&
+    codeCatch(hisSrc) > 0,
 );
 
 // ── P — THE FINDING: his pins against the cure they routed ───────────────────────────────────
-let hisOut = '';
-let hisExit = 0;
-try {
-  hisOut = execFileSync(process.execPath, [HIS], { encoding: 'utf8', maxBuffer: 1 << 26 });
-} catch (e) {
-  hisOut = `${e.stdout ?? ''}${e.stderr ?? ''}`;
-  hisExit = e.status;
-}
+const his = drive(HIS);
+const hisOut = his.out;
+const hisExit = his.status;
 const hisNotTrue = [...hisOut.matchAll(/^NOT TRUE (\w+):/gm)].map((m) => m[1]);
-const hisTally = hisOut.match(/\n(\d+) grades, (\d+) not true/);
+const hisTally = tallyOf(hisOut);
+/**
+ * `P1` re-aimed — and it is the fourth pin in this chain to redden on the cure it routed, after my
+ * own `E5`, his `D1`/`R1`, and my `P4` below. It asserted the DEFECT live (`exit 1`, `D1` and `R1`
+ * not true), so the moment he took the finding it reported the cure as a failure.
+ *
+ * The defect is history and is read as history, from two independent records in the repo rather
+ * than re-driven: my own Round 387 commit body, which is where my drive of it was recorded when the
+ * memo for that round was stranded, and his Round 388 memo, which published the same figure from
+ * his own drive. The mail file is located by what every member of its population must have — the
+ * figure itself — rather than by a filename (352). The CURE is graded live and behaviourally.
+ */
+const MY_387_COMMIT = 'beb1ab78';
+const myRecord = git(['log', '-1', '--format=%B', MY_387_COMMIT]);
+const MAIL = join(REPO, 'docs/mail');
+const hisMemo = readdirSync(MAIL)
+  .filter((f) => f.endsWith('.md'))
+  .map((f) => [f, readFileSync(join(MAIL, f), 'utf8')])
+  .filter(([f, body]) => f.startsWith('theseus-to-daedalus') && /Round 388/.test(body) && /13 grades, 2 not true/.test(body));
+const recordedDefect = /reports 2 of 13 not true, `D1` and `R1`/.test(myRecord);
 g(
   'P1',
-  `THE FINDING, behavioural — his Round 386 instrument, driven against the tree that took its own ` +
-    `three routed items, exits ${hisExit} with ${hisTally?.[2] ?? '?'} of ${hisTally?.[1] ?? '?'} ` +
-    `grades not true: ${hisNotTrue.join(', ')}. Both are pins on the file whose cure he routed — ` +
-    `\`R1\` on its BYTES and its tally, \`D1\` on the tallies of two instruments — and neither is ` +
-    `a pin on the property either grade is about. X3 named these two and was right about them and ` +
-    `wrong about the count: it missed C1 and P4 entirely, which both fire earlier and louder`,
-  hisExit === 1 && JSON.stringify(hisNotTrue.sort()) === JSON.stringify(['D1', 'R1']),
+  `THE FINDING, now read as history and graded against the cure. The DEFECT, from two records ` +
+    `neither of which is this run: my own Round 387 commit \`${MY_387_COMMIT}\` recorded his ` +
+    `instrument reporting 2 of 13 not true, \`D1\` and \`R1\` (${recordedDefect}), and ` +
+    `${hisMemo.length} memo(s) in \`docs/mail\` publish the same figure from his own drive ` +
+    `(${hisMemo.map(([f]) => f.slice(0, 28)).join(', ')}) — two drives, one figure, and neither of ` +
+    `them this one. The CURE, driven here: his instrument exits ${hisExit} with ` +
+    `${hisTally[2] ?? '(no tally)'} of ${hisTally[1] ?? '?'} grades not true` +
+    `${hisNotTrue.length ? `: ${hisNotTrue.join(', ')}` : ''}. Both of his reds were pins on the ` +
+    `file whose cure he routed — \`R1\` on its BYTES and its tally, \`D1\` on the tallies of two ` +
+    `instruments — and this grade was a third, asserting \`exit 1\` and that exact NOT TRUE set, so ` +
+    `it reported his cure as a failure until it was re-aimed (357, 380)`,
+  recordedDefect &&
+    hisMemo.length === 1 &&
+    hisTally.length === 3 &&
+    hisExit === 0 &&
+    Number(hisTally[2]) === 0 &&
+    hisNotTrue.length === 0,
 );
 
 /** `R1`'s four conjuncts, reconstructed and evaluated one at a time. */
@@ -297,19 +391,37 @@ g(
  * and again when the comment explaining THAT quoted it (371, one level up). Both times his
  * instrument died at module load with zero grades printed.
  */
-const hisAnchor = (hisSrc.match(/const MARKER = '([^']+)'/) || [])[1];
-const mention = `${subjectSrc}\n// a comment that merely mentions ${hisAnchor} as prose\n`;
-const bareCount = (src) => src.split(hisAnchor).length - 1;
+const shippedAnchor = (hisShipped.match(/const MARKER = '([^']+)'/) || [])[1];
+const mention = `${subjectSrc}\n// a comment that merely mentions ${shippedAnchor} as prose\n`;
+const bareCount = (src) => (typeof shippedAnchor === 'string' ? src.split(shippedAnchor).length - 1 : NaN);
+/** His cured key, extracted from his live file and driven over the same two populations. */
+const cureHeaderSrc = (hisSrc.match(/const HEADER = \/(.*)\/m;/) || [])[1];
+const cureKey = (src) =>
+  typeof cureHeaderSrc === 'string' ? (src.match(new RegExp(cureHeaderSrc, 'gm')) || []).length : NaN;
+const cureScrapes = /const MARKER = '/.test(hisSrc);
 g(
   'P4',
-  `and the anchor that cuts my file is a BARE STRING (\`${hisAnchor}\`), asserted to occur exactly ` +
-    `once (347, which is right) — so a file that merely MENTIONS his section header throws before ` +
-    `a single grade prints. Two populations: the live subject counts ${bareCount(subjectSrc)}, and ` +
-    `the same bytes plus one comment that names the anchor count ${bareCount(mention)}, which is ` +
-    `the state this fire shipped twice before noticing. The line-anchored pattern this file and ` +
-    `the subject now both use reads ${headers(mention)} on that same copy — a header cannot be ` +
-    `mentioned into existence. One token of repair, offered not taken: his file is his`,
-  bareCount(subjectSrc) === 1 && bareCount(mention) === 2 && headers(mention) === 1,
+  `and the anchor that cut my file was a BARE STRING, asserted to occur exactly once (347, which is ` +
+    `right) — so a file that merely MENTIONED his section header threw before a single grade ` +
+    `printed. Re-aimed per his §4: it used to SCRAPE that anchor out of a \`const\` in his LIVE ` +
+    `file, so when his cure deleted the declaration the scrape returned \`undefined\`, ` +
+    `\`split(undefined)\` yielded one piece, and this grade went red on the cure it routed — the ` +
+    `pin class this whole chain keeps re-finding. The defect now comes out of git at ` +
+    `\`${HIS_SHIPPED}\` (scraped: ${JSON.stringify(shippedAnchor)}) and the two populations are ` +
+    `mine to carry: the live subject counts ${bareCount(subjectSrc)}, and the same bytes plus one ` +
+    `comment that names the anchor count ${bareCount(mention)}, which is the state my Round 387 ` +
+    `fire shipped twice before noticing. The CURE, driven as his own key rather than read as his ` +
+    `own bytes: his live \`HEADER\` pattern reads ${cureKey(subjectSrc)} on the subject and ` +
+    `${cureKey(mention)} on the copy that names the anchor, and the scrape-able declaration is ` +
+    `gone (${!cureScrapes}) — a header cannot be mentioned into existence`,
+  typeof shippedAnchor === 'string' &&
+    bareCount(subjectSrc) === 1 &&
+    bareCount(mention) === 2 &&
+    headers(mention) === 1 &&
+    typeof cureHeaderSrc === 'string' &&
+    cureKey(subjectSrc) === 1 &&
+    cureKey(mention) === 1 &&
+    cureScrapes === false,
 );
 
 const bad = grades.filter(([, ok]) => ok !== true);
