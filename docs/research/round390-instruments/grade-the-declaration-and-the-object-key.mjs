@@ -209,7 +209,16 @@ const coversMjs = /\*\.mjs/.test(includeGlobs);
  * files against a real 494 — see `T8`. Every site is located in the STRING-BLIND reading, so a call
  * quoted inside a `why` string is not a call (`sweep-probes.mjs` carries several).
  */
-const trackedSources = git(['ls-files']).split('\n').filter((p) => /\.(mjs|mts|ts|tsx)$/.test(p));
+/**
+ * Read at the PIN, not live, because the rest of this grade is. The file COUNT is derived here for
+ * the same reason the member list is: my first hand reading of it was 46, the number of files whose
+ * raw bytes contain `stripSource(` — five of which mention it only inside a string or a comment and
+ * call it nowhere. Counting the mention rather than the call is the error class this whole round is
+ * about, and I made it in the sentence reporting the round.
+ */
+const trackedSources = git(['ls-tree', '-r', '--name-only', PIN])
+  .split('\n')
+  .filter((p) => /\.(mjs|mts|ts|tsx)$/.test(p));
 /** Shortlisted with `git grep` at the pin so the census spawns one process per CANDIDATE, not 494. */
 const candidates = new Set(
   git(['grep', '-l', '--fixed-strings', 'stripSource(', PIN, '--', '*.mjs', '*.mts', '*.ts', '*.tsx'])
@@ -236,6 +245,7 @@ const argShape = (src, at) => {
   return ['other', second];
 };
 const sites = { bool: [], noArg: [], object: [], other: [] };
+const callerFiles = new Set();
 for (const rel of trackedSources) {
   if (rel === DECL || rel === 'scripts/lib/strip-source.mjs') continue;
   if (!candidates.has(rel)) continue;
@@ -244,6 +254,7 @@ for (const rel of trackedSources) {
   for (const m of code.matchAll(/stripSource\(/g)) {
     const [kind] = argShape(code, m.index);
     sites[kind].push(`${rel}:${src.slice(0, m.index).split('\n').length}`);
+    callerFiles.add(rel);
   }
 }
 const violations = [...sites.noArg, ...sites.object];
@@ -300,7 +311,8 @@ g(
   'T4',
   `Y4 HOLDS and was incomplete — THE FINDING, half one. \`${DECL}\` declares \`blankStrings\` a ` +
     `REQUIRED boolean (${declRequired}), and the tracked tree at \`${PIN}\` holds ${total} ` +
-    `\`stripSource(\` call sites in the string-blind reading, of which ${violations.length} are not ` +
+    `\`stripSource(\` call sites in the string-blind reading across ${callerFiles.size} of its ` +
+    `${trackedSources.length} source files, of which ${violations.length} are not ` +
     `expressible under that declaration: ${sites.noArg.length} pass nothing and ` +
     `${sites.object.length} pass an object — [${violations.join(', ')}]. Every one of them is under ` +
     `\`docs/research/\` (${allInDocsResearch}), and \`scripts/tsconfig.json\`'s include is ` +
