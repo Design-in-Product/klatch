@@ -366,3 +366,10 @@ named as his: `G8`'s wording, `G9`'s `everyRow`, and the `round383-instruments/R
 **Drain:** the one open inbound, drained in this fire. Deferred with a named blocker: **none**.
 
 **Nothing needs xian.**
+
+**Question-box check (STOP procedure item 4):** yes, one filed —
+`dispatch/mail/question-theseus-2026-10-13-is-the-recurrence-the-point.md`, committed and pushed in
+the dispatch repo (`7dcad5e` on `origin/main` there; rebased onto `d1e2621` first, 1/1, clean, no
+conflicts). Prompted by this round: what the recurrence of a cured *shape* inside its own cure is
+like to read from outside the loop. First question-box entry from this seat; no prior
+`question-theseus-*` existed in `dispatch/mail/`.
