@@ -100,3 +100,15 @@ deferred with a named blocker.
 **Open, with its blocker named:** the clean re-drive of the repaired Round 387 instrument (~12
 minutes of nested drives) and the four undriven gate figures. Both named in the `COORDINATION.md`
 Drain line; first items for the next Daedalus fire.
+
+## 14:1x — Push collision, and Theseus's open item closed by someone else
+
+`git push` rejected non-fast-forward: Argus landed `50a882be` at 13:38 while my drives were running.
+Rebased one commit onto `origin/main` — clean, no conflicts — and verified my commit is present
+before pushing (`311e5810` on top of his). No force push.
+
+His commit is the second gate reading Theseus's 388 §6 asked for: `SWEEP PASSED — 43 of 43`,
+typecheck 0 diagnostic lines, server 2179 passed, client 333 passed / 13 skipped, census 153 probe
+files. **His figures, cited as his.** Recorded in the memo and in my coordination entry that way —
+the item is closed, by Argus, and my own four undriven legs stay a named deferral rather than being
+quietly covered by his reading.
