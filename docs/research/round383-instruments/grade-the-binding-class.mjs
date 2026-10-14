@@ -12,7 +12,7 @@
  * Exits non-zero on any grade that is not `true`. Counterfactual table: README.md here.
  */
 import { execFileSync } from 'node:child_process';
-import { readFileSync } from 'node:fs';
+import { readFileSync, writeFileSync, rmSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -22,6 +22,13 @@ const { SWEPT, census } = await import(join(SCRIPTS, 'sweep-probes.mjs'));
 const { stripSource } = await import(join(SCRIPTS, 'lib', 'strip-source.mjs'));
 
 const censusPop = census(SCRIPTS);
+const git = (args) => execFileSync('git', args, { cwd: REPO, encoding: 'utf8' });
+/** The commit before Round 387 touched this file: the pre-refactor detector, and `everyRow`. */
+const PREREFACTOR_AT = 'e922394b';
+const prerefactor = git([
+  'show',
+  `${PREREFACTOR_AT}:docs/research/round383-instruments/grade-the-binding-class.mjs`,
+]);
 const SUBJECT = SWEPT.map((e) => e.file).find((f) => f.startsWith('probe-round377'));
 
 /**
@@ -99,12 +106,38 @@ const LIVE = {
 /** `probe-round224-a-skip-…mts` → `probe-round224`. Five stems are shared by two files (G8). */
 const stemOf = (f) => (f.match(/^probe-round\d+/) || [f])[0];
 
-const bindingsIn = (file, opt = LIVE) => {
-  const raw = readFileSync(join(SCRIPTS, file), 'utf8');
-  const code = stripSource(raw, false); // comments and regex bodies blanked, strings KEPT
-  const blank = stripSource(raw, true); // string bodies blanked too, same offsets (length-preserving)
+/**
+ * Both readings of one file, memoised. A pure function of the file's bytes, so caching it cannot
+ * change a class — and `G12` grades that by comparing the whole 256-key class map against the
+ * detector as it stood BEFORE this cache existed, read out of git. The cache is what makes the
+ * space affordable: the readings are per-file and the space asks for them 256 times each.
+ */
+const readingCache = new Map();
+const readingsOf = (file) => {
+  let r = readingCache.get(file);
+  if (!r) {
+    const raw = readFileSync(join(SCRIPTS, file), 'utf8');
+    const code = stripSource(raw, false); // comments and regex bodies blanked, strings KEPT
+    r = {
+      code,
+      blank: stripSource(raw, true), // string bodies blanked too, same offsets (length-preserving)
+      stmts: constStatements(code), // a function of `code` alone, so also safe to hold
+    };
+    readingCache.set(file, r);
+  }
+  return r;
+};
+
+/**
+ * The detector's three legs for one file, kept as data rather than as control flow, so that a
+ * mechanism can be attributed from what the legs DID and not from a re-reading of the source.
+ * `bindingsIn` is `legsOf(...).bound`, so there is one implementation and no divergence to grade
+ * (328). `G12` grades the whole 256-key class map of this against the pre-refactor detector read
+ * out of git, which is the licence for having moved anything at all.
+ */
+const legsOf = (file, opt = LIVE) => {
+  const { code, blank, stmts } = readingsOf(file);
   const others = censusPop.filter((f) => !opt.excludeSelf || f !== file);
-  const stmts = constStatements(code);
 
   // axis B applies to the ALIAS leg only — how a const binds a PATH — which is where Theseus's
   // Round 378 v2 carried it. The inline leg names the file inside the read call, where neither
@@ -120,10 +153,13 @@ const bindingsIn = (file, opt = LIVE) => {
     });
 
   const alias = new Map();
+  /** Initializers the UNIQUENESS quantifier rejected: they name members, but not exactly one. */
+  const quantifierRejected = [];
   if (opt.viaIdentifier)
     for (const [id, init] of stmts) {
       const n = names(init, true);
       if (n.length === 1 && !/readFileSync|\bread\s*\(/.test(init)) alias.set(id, n[0]);
+      else if (n.length > 1 && !/readFileSync|\bread\s*\(/.test(init)) quantifierRejected.push([id, n]);
     }
 
   const helpers = opt.localHelpers
@@ -148,8 +184,10 @@ const bindingsIn = (file, opt = LIVE) => {
     ];
     if (reached.length) bound.push(id);
   }
-  return bound;
+  return { bound, alias, helpers, quantifierRejected, stmts };
 };
+
+const bindingsIn = (file, opt = LIVE) => legsOf(file, opt).bound;
 
 const short = (f) => f.split('-').slice(0, 2).join('-');
 const classUnder = (opt = LIVE) =>
@@ -200,7 +238,10 @@ g(
  * predicate graded the list and the sentence graded nothing. A hand-typed count next to a derived
  * list is the defect; the seam is that any row whose prose carries a FIGURE derives it here.
  */
+/** Every row this file drives, registered by `cf` itself — `G9`/`G13` read it instead of a list. */
+const ROWS = [['LIVE', {}]];
 const cf = (name, opt, claim, want) => {
+  ROWS.push([name, opt]);
   const got = classUnder({ ...LIVE, ...opt });
   const lost = HAND_READ_CLASS.filter((h) => !got.includes(h));
   const gained = got.filter((h) => !HAND_READ_CLASS.includes(h));
@@ -330,48 +371,295 @@ g(
   Object.keys(NEAR_MISSES).every((f) => !live.includes(f)),
 );
 
-// ── what the new rows turned up ──────────────────────────────────────────────────────────────
+// ── the whole flag space, which is what the row table prices one point of at a time ──────────
+/**
+ * Theseus's Round 386 §1. `G8` used to read:
+ *
+ *   > axis G is the one row where RELAXING a criterion LOSES a member
+ *
+ * — true over the ten rows, and the ten rows are ten points of a 256-point space, so *"the one
+ * row"* was a property of the hand-maintained row LIST and not of the detector. Three of the four
+ * non-monotone axes are unreachable by any one-axis row, because every one of their non-monotone
+ * keys lies inside axis G's own relaxed subspace and the table never pairs two axes.
+ *
+ * The cure is to DRIVE the space, not to narrow the sentence: every figure in `G8`, `G9`, `G10`,
+ * `G11` and `G14` below is a function of the 256-key class map. The row table keeps the job it is
+ * good at — attributing one axis at a time, in prose, with its losses named.
+ *
+ * Affordable only because `readingsOf` memoises: 256 keys × 43 files, two strippings per file
+ * instead of per (file, key). `G12` is the licence for that cache.
+ */
+const FLAGS = Object.keys(LIVE);
+const keyOf = (o) => FLAGS.map((f) => (o[f] ? 1 : 0)).join('');
+const SPACE = [];
+for (let m = 0; m < 1 << FLAGS.length; m++) {
+  const o = {};
+  FLAGS.forEach((f, b) => {
+    o[f] = (m >> b) & 1 ? !LIVE[f] : LIVE[f];
+  });
+  SPACE.push(o);
+}
+const CLASS = new Map(SPACE.map((o) => [keyOf(o), classUnder(o)]));
+const classAt = (o) => CLASS.get(keyOf(o));
+
+/**
+ * Which value of each flag RELAXES the criterion — admits more, all else equal.
+ *
+ * Hand-entered, from Theseus's Round 386 instrument verbatim, where it is the one hand-entered
+ * table and is labelled as semantics that cannot be derived. It cannot be derived as SEMANTICS.
+ * It CAN be derived as behaviour — `WIDER` below — and the two can be made to disagree out loud
+ * rather than silently: `G10`, where axis C admits more in the direction opposite to the one its
+ * semantics name, for the exact reason Theseus's own Round 386 `B4` found.
+ */
+const SEMANTIC_RELAXED = {
+  viaIdentifier: true, //   a const indirection is an extra path to the read
+  pathBare: false, //       no requirement on the alias literal's prefix
+  pathTerminal: false, //   no requirement that the alias literal be the whole initializer
+  localHelpers: true, //    a local read-helper counts as a read
+  readMustBeCode: false, // a read inside a string body still counts
+  requireBinding: false, // the source need not be bound
+  excludeSelf: false, //    a file naming itself counts
+  fullLiteralName: false, // the stem suffices, the whole filename is not required
+};
+/** The same question asked of the measurement: which value carries more membership, summed. */
+const totalAt = (f, v) => SPACE.filter((o) => o[f] === v).reduce((n, o) => n + classAt(o).length, 0);
+const WIDER = Object.fromEntries(
+  FLAGS.map((f) => {
+    const [t, x] = [totalAt(f, true), totalAt(f, false)];
+    return [f, t === x ? null : t > x]; // `null` = the measurement has no opinion (see G14)
+  }),
+);
+
+/** Every pair of the axis, read in ONE declared direction: what is lost moving TOWARD `value`. */
+const lostToward = (f, value) =>
+  SPACE.filter((o) => o[f] !== value)
+    .map((o) => ({
+      key: o,
+      lost: classAt(o).filter((x) => !classAt({ ...o, [f]: value }).includes(x)),
+    }))
+    .filter((p) => p.lost.length);
+
+const CENSUS = FLAGS.map((f) => {
+  const loosening = lostToward(f, SEMANTIC_RELAXED[f]);
+  const tightening = lostToward(f, !SEMANTIC_RELAXED[f]);
+  return {
+    axis: f,
+    pairs: SPACE.length / 2,
+    nonMonotone: loosening.length,
+    members: [...new Set(loosening.flatMap((p) => p.lost))].sort(),
+    keys: loosening,
+    tighteningLoses: tightening.length,
+    tighteningMembers: [...new Set(tightening.flatMap((p) => p.lost))].sort(),
+  };
+});
+const byAxis = Object.fromEntries(CENSUS.map((r) => [r.axis, r]));
+const n3 = (s) => s.replace('probe-round', '');
+const nonMonotone = CENSUS.filter((r) => r.nonMonotone > 0);
+console.log(
+  `\nSPACE — ${SWEPT.length} swept files against a naming population of ${censusPop.length}, ` +
+    `over ${SPACE.length} keys (${FLAGS.length} flags), relaxation direction as named by the ` +
+    `semantics:`,
+);
+for (const r of CENSUS)
+  console.log(
+    `  ${r.axis.padEnd(16)} relaxing loses at ${String(r.nonMonotone).padStart(3)} of ${r.pairs} ` +
+      `paired keys${r.members.length ? ` — ${r.members.map(n3).join(', ')}` : ''}; tightening ` +
+      `loses at ${String(r.tighteningLoses).padStart(3)}` +
+      `${r.tighteningMembers.length ? ` — ${r.tighteningMembers.map(n3).join(', ')}` : ''}`,
+  );
+console.log('');
+
 const sharedStems = [...new Set(censusPop.map(stemOf))].filter(
   (s) => censusPop.filter((f) => stemOf(f) === s).length > 1,
 );
-const underG = classUnder({ ...LIVE, fullLiteralName: false });
 g(
   'G8',
-  `axis G is the one row where RELAXING a criterion LOSES a member: \`probe-round371\` is in the ` +
-    `live class and out under CF-G. The relaxed key is not a superset of the live one, because ` +
-    `the alias leg carries a UNIQUENESS quantifier (\`n.length === 1\`) and a quantifier is not ` +
-    `monotone under relaxation — 371 binds \`const SUBJECT = 'scripts/probe-round224-a-…'\`, and ` +
-    `its stem \`probe-round224\` is shared with \`probe-round224b-…\`, so stem matching makes the ` +
-    `initializer name TWO files and the alias is dropped. ${sharedStems.length} stems in the ` +
-    `population are shared by more than one file (${sharedStems.join(', ')})`,
-  !underG.includes('probe-round371') &&
-    live.includes('probe-round371') &&
+  `over the ${SPACE.length}-key space the detector actually has — not over the ten rows of the ` +
+    `table — ${nonMonotone.length} of its ${FLAGS.length} axes LOSE a member when the criterion ` +
+    `is relaxed: ${nonMonotone
+      .map((r) => `${r.axis} at ${r.nonMonotone} (${r.members.map(n3).join('/')})`)
+      .join(', ')}, out of ${SPACE.length / 2} paired keys each. Axis G is ` +
+    `${byAxis.fullLiteralName.nonMonotone}, tied for second; the worst is ` +
+    `${[...nonMonotone].sort((a, b) => b.nonMonotone - a.nonMonotone)[0].axis}. The claim this ` +
+    `grade carried until Round 387 — "axis G is the ONE row where relaxing loses a member" — was ` +
+    `true of the row LIST and false of the detector (Theseus, Round 386 §1); every figure here is ` +
+    `now a function of the space. Axis G's own loss is \`371\`, whose alias leg carries a ` +
+    `UNIQUENESS quantifier (\`n.length === 1\`): \`const SUBJECT = 'scripts/probe-round224-a-…'\` ` +
+    `names one file by whole filename and TWO by stem, so relaxing drops the alias. ` +
+    `${sharedStems.length} stems in the population are shared (${sharedStems.map(n3).join(', ')})`,
+  nonMonotone.length === 4 &&
+    JSON.stringify(nonMonotone.map((r) => [r.axis, r.nonMonotone, r.members])) ===
+      JSON.stringify([
+        ['pathTerminal', 8, ['probe-round371']],
+        ['localHelpers', 32, ['probe-round258', 'probe-round259', 'probe-round325']],
+        ['excludeSelf', 4, ['probe-round224']],
+        ['fullLiteralName', 8, ['probe-round371']],
+      ]) &&
     sharedStems.includes('probe-round224'),
 );
-const everyRow = [
-  {},
-  { viaIdentifier: false },
-  { pathBare: true },
-  { pathTerminal: true },
-  { pathBare: true, pathTerminal: true },
-  { localHelpers: false },
-  { requireBinding: false },
-  { requireBinding: false, excludeSelf: false },
-  { fullLiteralName: false },
-  { requireBinding: false, excludeSelf: false, fullLiteralName: false },
-];
+
+/**
+ * `G9`'s old warrant was `everyRow` — a hand-typed array of ten key literals beside a table of
+ * derived rows, which omitted axis D and was therefore not what established its own conclusion
+ * (Theseus, Round 386 §3). Two cures, and the cheap one is the strong one: grade over the SPACE,
+ * and derive the row list from the rows `cf` actually registered so the two can be compared.
+ */
+const rowAxes = [...new Set(ROWS.flatMap(([, o]) => Object.keys(o)))];
+const uncovered = FLAGS.filter((f) => !rowAxes.includes(f));
+/** The hand-typed `everyRow` as it stood at the pin, parsed, so the two lists can be compared. */
+const normal = (o) =>
+  FLAGS.filter((f) => f in o)
+    .map((f) => `${f}:${o[f]}`)
+    .join(',');
+const pinnedRows = ((prerefactor.match(/const everyRow = \[([\s\S]*?)\n\];/) || ['', ''])[1] || '')
+  .split('\n')
+  .filter((l) => l.includes('{'))
+  .map((l) =>
+    Object.fromEntries(
+      [...l.matchAll(/(\w+):\s*(true|false)/g)].map((m) => [m[1], m[2] === 'true']),
+    ),
+  );
+const registered = ROWS.map(([, o]) => normal(o));
+const neverDriven = pinnedRows.map(normal).filter((k) => !registered.includes(k));
 g(
   'G9',
-  `\`probe-round304\` is reached by NO row of the table, including the widest one — so its ` +
-    `exclusion is not a fact about \`requireBinding\`, and it is the SAME criterion that excludes ` +
-    `297: neither file carries a full population filename inside any \`const\` initializer. The ` +
-    `pre-cure sentence named 304 alone and credited 297's exclusion to the hand reading, which ` +
-    `is Round 384 §1's second attribution (345 — re-derive a routed figure in the cure's unit)`,
-  everyRow.every((o) => !classUnder({ ...LIVE, ...o }).includes('probe-round304')),
+  `\`probe-round304\` is in the class under NONE of the ${SPACE.length} keys — not merely none of ` +
+    `the table's rows — so its exclusion is not a fact about \`requireBinding\`, and it is the ` +
+    `SAME criterion that excludes 297: neither file carries a full population filename inside any ` +
+    `\`const\` initializer. The pre-cure sentence named 304 alone and credited 297's exclusion to ` +
+    `the hand reading (345). The warrant is now the space, and the row list beside it is DERIVED ` +
+    `from the ${ROWS.length} rows \`cf\` registered (${ROWS.map(([n]) => n).join(' ')}), which ` +
+    `vary ${rowAxes.length} of the ${FLAGS.length} axes — the uncovered one is ` +
+    `${uncovered.join(', ') || 'none'}, named by derivation and not by hand. And comparing the two ` +
+    `LISTS rather than their counts (340) says more than Round 386 §3 did: the hand-typed ` +
+    `\`everyRow\` at ${PREREFACTOR_AT} held ${pinnedRows.length} keys, of which ` +
+    `${neverDriven.length} is a key no row of the table drives at all ` +
+    `(${neverDriven.join(' | ') || 'none'}) — so "including the widest one", which is how the old ` +
+    `prose justified itself, named a row that existed only inside that array`,
+  SPACE.every((o) => !classAt(o).includes('probe-round304')) &&
+    ROWS.length === 9 &&
+    pinnedRows.length === 10 &&
+    JSON.stringify(neverDriven) ===
+      JSON.stringify(['requireBinding:false,excludeSelf:false,fullLiteralName:false']) &&
+    JSON.stringify(uncovered) === JSON.stringify(['readMustBeCode']),
+);
+
+/**
+ * The hand-entered direction table, graded against the measurement. This is `G8`'s own defect one
+ * level down: a figure (here a DIRECTION) asserted beside a space that can be asked.
+ */
+const agree = FLAGS.filter((f) => WIDER[f] === SEMANTIC_RELAXED[f]);
+const silent = FLAGS.filter((f) => WIDER[f] === null);
+const disagree = FLAGS.filter((f) => WIDER[f] !== null && WIDER[f] !== SEMANTIC_RELAXED[f]);
+g(
+  'G10',
+  `the relaxation DIRECTION, derived from membership summed over each axis's ${SPACE.length / 2} ` +
+    `paired keys and compared against the semantics: ${agree.length} of ${FLAGS.length} agree, ` +
+    `the measurement is silent on ${silent.length} (${silent.join(', ') || 'none'} — equal ` +
+    `totals, and G14 is why), and ${disagree.length} DISAGREE: ${disagree
+      .map(
+        (f) =>
+          `${f} (semantics say ${SEMANTIC_RELAXED[f]} relaxes; membership is ` +
+          `${totalAt(f, true)} at true against ${totalAt(f, false)} at false, so ${WIDER[f]} ` +
+          `admits more)`,
+      )
+      .join(', ')}. Axis C is the disagreement, and the reason is Theseus's own Round 386 \`B4\`: ` +
+    `the leg both ADMITS a read through a local helper and REMOVES the helper's own const from the ` +
+    `candidates, so it has no monotone direction at all — relaxing it loses ` +
+    `${byAxis.localHelpers.members.map(n3).join(', ')} and tightening it loses ` +
+    `${byAxis.localHelpers.tighteningMembers.map(n3).join(', ')}, two disjoint sets at ` +
+    `${byAxis.localHelpers.nonMonotone} and ${byAxis.localHelpers.tighteningLoses} keys. The axis ` +
+    `named as worst is the axis whose declared direction the measurement contradicts`,
+  disagree.length === 1 &&
+    disagree[0] === 'localHelpers' &&
+    silent.length === 1 &&
+    silent[0] === 'readMustBeCode' &&
+    byAxis.localHelpers.tighteningLoses === 32 &&
+    JSON.stringify(byAxis.localHelpers.tighteningMembers) ===
+      JSON.stringify([
+        'probe-round297',
+        'probe-round299',
+        'probe-round301',
+        'probe-round323',
+      ]) &&
+    byAxis.localHelpers.members.every((m) => !byAxis.localHelpers.tighteningMembers.includes(m)),
+);
+
+/**
+ * The MECHANISM of every loss, per (axis, member) at the narrowest key that loses THAT member —
+ * one key per member, because they are not all lost at the same one (Theseus's own Round 386 red).
+ * Attributed from the detector's own legs via `legsOf`, not from a re-reading of the source.
+ */
+const dist = (o) => FLAGS.filter((f) => o[f] !== LIVE[f]).length;
+const MECH = nonMonotone.flatMap((r) =>
+  r.members.map((member) => {
+    const key = r.keys
+      .filter((p) => p.lost.includes(member))
+      .map((p) => p.key)
+      .sort((a, b) => dist(a) - dist(b))[0];
+    const file = SWEPT.map((e) => e.file).find((f) => f.startsWith(member));
+    const tight = legsOf(file, key);
+    const loose = legsOf(file, { ...key, [r.axis]: SEMANTIC_RELAXED[r.axis] });
+    const swallowed = tight.bound.filter((id) => loose.helpers.includes(id));
+    const quantified = [...tight.alias.keys()].filter((id) =>
+      loose.quantifierRejected.some(([q]) => q === id),
+    );
+    return {
+      axis: r.axis,
+      member,
+      at: FLAGS.filter((f) => key[f] !== LIVE[f]).map((f) => `${f}:${key[f]}`),
+      bound: tight.bound,
+      kind:
+        tight.bound.length && swallowed.length === tight.bound.length
+          ? 'helper-exclusion'
+          : quantified.length
+            ? 'quantifier'
+            : 'unattributed',
+    };
+  }),
+);
+const kindOf = (f) => [...new Set(MECH.filter((m) => m.axis === f).map((m) => m.kind))];
+const keysOfKind = (k) =>
+  nonMonotone
+    .filter((r) => JSON.stringify(kindOf(r.axis)) === JSON.stringify([k]))
+    .reduce((n, r) => n + r.nonMonotone, 0);
+g(
+  'G11',
+  `and the two mechanisms, each attributed from the legs \`legsOf\` returns rather than from a ` +
+    `re-reading: ${MECH.map((m) => `${n3(m.member)}/${m.axis.slice(0, 4)} ${m.kind}`).join(', ')}. ` +
+    `Theseus's Round 386 §1 priced them "8 against 32" — one axis against one axis. In the KEY ` +
+    `unit the quantifier is ${keysOfKind('quantifier')} against ` +
+    `${keysOfKind('helper-exclusion')}, because it is the mechanism of ` +
+    `${nonMonotone.filter((r) => kindOf(r.axis)[0] === 'quantifier').length} of the ` +
+    `${nonMonotone.length} non-monotone axes and only one of them is axis G. His conclusion ` +
+    `holds — the quantifier is the rarer — and the margin is 12 keys narrower than the figure ` +
+    `beside it (345: re-derive a routed figure in the unit the claim is about)`,
+  MECH.length === 6 &&
+    keysOfKind('quantifier') === 20 &&
+    keysOfKind('helper-exclusion') === 32 &&
+    !MECH.some((m) => m.kind === 'unattributed') &&
+    kindOf('localHelpers')[0] === 'helper-exclusion',
+);
+
+/** Axis D, the one `G9`'s derived row list reports as uncovered: what it can and cannot move. */
+const dPairs = SPACE.filter((o) => o.readMustBeCode === true).map((o) => [
+  classAt(o),
+  classAt({ ...o, readMustBeCode: false }),
+]);
+g(
+  'G14',
+  `axis D (\`readMustBeCode\`) is the axis no row varies, and the space says why that is harmless ` +
+    `rather than lucky: the class is IDENTICAL at all ${dPairs.length} of its paired keys, so no ` +
+    `key anywhere in the space can be moved by it — which is also why G10's derived direction is ` +
+    `silent on it. It is not inert at site granularity: CF-D above reads ${subjSites.length} ` +
+    `sites with the guard and ${noStringGuard} without, on the subject's own file. The row table ` +
+    `prices axis D through a SITE count because a class count cannot see it`,
+  dPairs.every(([a, b]) => JSON.stringify(a) === JSON.stringify(b)) &&
+    dPairs.length === SPACE.length / 2 &&
+    noStringGuard > subjSites.length,
 );
 
 // ── the CONTROL: the pre-cure spelling, read out of git, and the shipped probe driven ─────────
-const git = (args) => execFileSync('git', args, { cwd: REPO, encoding: 'utf8' });
 /**
  * A PINNED commit, not `HEAD`. Read from `HEAD` this control would be green now and red the moment
  * the cure is committed — a pin that reddens on its own promotion, which is this very file's Round
@@ -417,6 +705,95 @@ g(
   /\[ok\] B1c\b/.test(drive) &&
     /All 13 regression checks passed/.test(drive) &&
     live.every((f) => b1n.includes(`\`${f}\``)),
+);
+
+// ── G12: the licence for the cache and the leg refactor, over the whole space ─────────────────
+/**
+ * Round 387 moved three things inside the detector: the two readings are memoised per file, the
+ * statements are memoised with them, and the legs are returned as data (`legsOf`) so a mechanism
+ * can be attributed from what they did. None of it is supposed to change a class, and "supposed
+ * to" is not a grade (357 — a verbatim source pin is not a property pin, and a refactor's own
+ * author re-reading it is not a measurement).
+ *
+ * So the detector as it stood BEFORE this round is read out of git, cut at the same marker, and
+ * driven over all 256 keys; the two class maps must be equal key by key and member by member (340
+ * — compare member LISTS, not counts). This is the expensive grade in the file: the old detector
+ * has no cache, which is the whole reason the cache went in.
+ */
+const old = prerefactor;
+const OLD_MARKER = '// ── grades ──';
+const oldMarkers = old.split(OLD_MARKER).length - 1;
+const TEMP = join(REPO, 'docs/research/round383-instruments', '.round387-prerefactor.mjs');
+let oldMap = null;
+let oldErr = null;
+try {
+  if (oldMarkers !== 1) throw new Error(`marker occurs ${oldMarkers} times at the pin, expected 1`);
+  writeFileSync(TEMP, old.slice(0, old.indexOf(OLD_MARKER)) + '\nexport { classUnder, LIVE };\n');
+  const OLD = await import(TEMP);
+  oldMap = new Map(SPACE.map((o) => [keyOf(o), OLD.classUnder(o)]));
+} catch (e) {
+  oldErr = e;
+} finally {
+  rmSync(TEMP, { force: true });
+}
+const differing = oldMap
+  ? [...CLASS].filter(([k, v]) => JSON.stringify(v) !== JSON.stringify(oldMap.get(k)))
+  : null;
+g(
+  'G12',
+  `EQUIVALENCE — the detector at ${PREREFACTOR_AT}, before this round memoised its readings and ` +
+    `turned its legs into data, driven over the same ${SPACE.length} keys: ` +
+    `${differing ? `${SPACE.length - differing.length} of ${SPACE.length} keys identical member ` +
+      `for member, ${differing.length} differing` : `COULD NOT RUN — ${oldErr?.message}`}. The ` +
+    `cache is a pure function of the file's bytes and the refactor moved no predicate, and this ` +
+    `is what says so rather than my having re-read it. It is also the one grade here that pays ` +
+    `the uncached cost, which is what it is measuring`,
+  differing !== null && differing.length === 0 && CLASS.size === SPACE.length,
+);
+
+// ── G15/G16: the README's own hand-typed tally, the second finding of Round 386 ────────────────
+/**
+ * Theseus's Round 386 §2: this directory's `README.md` headlined a grade count that the instrument
+ * had outgrown — and it was left behind by `e922394b`, the commit that changed 45 lines of that
+ * very README to add four rows to its table. `E5` in `round385-instruments` grades the DRIVEN
+ * count; nothing read the README's.
+ *
+ * The cure is not a fresher number. A number in prose beside a derived one is the defect whatever
+ * its value, and pinning a count in prose reddens on its own promotion (377). So the README now
+ * carries NO tally at all and says that the drive prints it — and `G15` grades the ABSENCE, which
+ * is a property that cannot drift. `G16` is the pair of controls that keeps `G15` from being a
+ * sentence about nothing.
+ */
+const README = join(REPO, 'docs/research/round383-instruments/README.md');
+const TALLY = /\b\d+\s+grades\b/;
+const liveReadme = readFileSync(README, 'utf8');
+const pinnedReadme = git(['show', `${PREREFACTOR_AT}:docs/research/round383-instruments/README.md`]);
+const tallyIn = (src) => Number((src.match(/\b(\d+)\s+grades\b/) || [])[1]);
+g(
+  'G15',
+  `the README in this directory carries NO hand-typed grade tally any more — the tally is the ` +
+    `drive's to print, at the bottom of this run. This grade reads the ABSENCE and never a value, ` +
+    `so it cannot itself fall behind, and no figure in the document can: at ${PREREFACTOR_AT} the ` +
+    `headline was ${tallyIn(pinnedReadme)}, which the instrument had already outgrown in that ` +
+    `same commit (the DISAGREEMENT is graded at a pin by \`R1\` in round386-instruments; what is ` +
+    `graded here is that there is nothing left to disagree)`,
+  !TALLY.test(liveReadme) && TALLY.test(pinnedReadme) && tallyIn(pinnedReadme) === 14,
+);
+const fixedReadme = pinnedReadme.replace(/\b14\s+grades\b/, '18 grades');
+g(
+  'G16',
+  `CONTROLS for G15, two populations differing in the property and not in the defect's bytes ` +
+    `(383): the pinned README trips the absence check (${TALLY.test(pinnedReadme)}), and so does ` +
+    `the pinned README with its one token corrected to the figure the instrument drove at that ` +
+    `pin (${TALLY.test(fixedReadme)}) — same bytes otherwise, disagreement gone, absence check ` +
+    `still red. So G15 keys on a figure being THERE TO DRIFT rather than on its being wrong today, ` +
+    `which is the difference between the two cures: a corrected number is one round from being ` +
+    `wrong again, and this round is the one that proved it`,
+  TALLY.test(pinnedReadme) &&
+    TALLY.test(fixedReadme) &&
+    fixedReadme !== pinnedReadme &&
+    tallyIn(fixedReadme) === 18 &&
+    tallyIn(pinnedReadme) === 14,
 );
 
 const bad = grades.filter(([, ok]) => ok !== true);

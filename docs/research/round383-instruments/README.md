@@ -1,7 +1,16 @@
 # Round 383 instruments — the binding class in `probe-round377` B1m
 
 One file. `node docs/research/round383-instruments/grade-the-binding-class.mjs`, exits non-zero on
-any grade that is not `true`. Driven 2026-10-13: **14 grades, 0 not true, exit 0.**
+any grade that is not `true`. **The tally is the drive's to print**, on the last line of its output,
+and this document deliberately does not carry one.
+
+> This line used to headline a tally. Theseus's Round 386 §2 found it stale: it was left behind by
+> the very commit that added four rows to the table below, so the figure it printed was the
+> pre-cure one. A tally in prose beside a derived one is the defect the `CF-F` row was cured for,
+> relocated from the instrument into the document — and a *corrected* figure would have been one
+> round away from being wrong again, which is how this one got here. `G15` grades the **absence**,
+> which cannot drift; `G16` is its pair of controls; the disagreement itself is graded at a pin by
+> `R1` in `round386-instruments/`.
 
 ## What it grades
 
@@ -53,13 +62,67 @@ off, because a `const SELF = '…'` binds no read and the read requirement masks
 helper are excluded for binding no **source**, and that is a reason worth being able to state
 rather than to luck into.
 
-`CF-G` is the row that **loses** a member by relaxing a criterion, and it is the only one in the
-table that does. The relaxed key is not a superset of the live one because the alias leg carries a
-uniqueness quantifier — `n.length === 1` — and a quantifier is not monotone under relaxation.
-`371` binds `const SUBJECT = 'scripts/probe-round224-a-…'`; the stem `probe-round224` is shared
-with `probe-round224b-…`, so under stem matching that initializer names **two** files, the alias is
-dropped, and `subjectSrc` reaches nothing. Five stems in the population are shared by two files:
-`223`, `224`, `253`, `255`, `374`.
+`CF-G` is a row that **loses** a member by relaxing a criterion. The relaxed key is not a superset
+of the live one because the alias leg carries a uniqueness quantifier — `n.length === 1` — and a
+quantifier is not monotone under relaxation. `371` binds `const SUBJECT = 'scripts/probe-round224-a-…'`;
+the stem `probe-round224` is shared with `probe-round224b-…`, so under stem matching that
+initializer names **two** files, the alias is dropped, and `subjectSrc` reaches nothing. Five stems
+in the population are shared by two files: `223`, `224`, `253`, `255`, `374`.
+
+It is **not** the only such row, and the table is the wrong instrument for asking.
+
+## The flag space, which is what the table prices one point of at a time
+
+Until Round 387, `G8` read *"axis G is the one row where relaxing a criterion loses a member."* True
+over the ten rows — and Theseus's Round 386 §1 is that the ten rows are ten points of a **256-point
+space**, so *"the one row"* was a property of the hand-maintained row **list**, not of the detector.
+Worse, the row above it had just been re-scoped from *"inert today"* to *"inert at this point of the
+flag space"*: the correction to a one-point measurement shipped one row above a uniqueness claim
+measured at one point.
+
+`G8` now drives the whole space, and `G9`–`G14` with it. What it finds, with the relaxation
+direction taken as the semantics name it:
+
+| axis | flag | relaxing loses at | members |
+|---|---|---|---|
+| C | `localHelpers` | **32** of 128 | `258`, `259`, `325` |
+| B2 | `pathTerminal` | 8 of 128 | `371` |
+| **G** | `fullLiteralName` | 8 of 128 | `371` |
+| E | `excludeSelf` | 4 of 128 | `224` |
+| A, B1, D, F | `viaIdentifier`, `pathBare`, `readMustBeCode`, `requireBinding` | 0 | — |
+
+Axis G is tied for second. Three of the four are unreachable by any one-axis row: every one of
+their non-monotone keys lies **inside** axis G's own relaxed subspace, and the table never pairs two
+axes. A row that visits one point prices one point.
+
+**`G10` — the direction itself is a measurement.** The relaxing direction per axis is semantics and
+cannot be derived as semantics, but membership summed over each axis's 128 paired keys can be, and
+the two can be made to disagree out loud. They agree on six axes; the measurement is silent on axis
+D (equal totals — see `G14`); and they **disagree on axis C**, the axis the census names worst.
+`localHelpers: true` is the relaxing value by semantics — a local read helper counts as a read — and
+carries *less* membership than `false` (1908 against 1926), because the same leg also removes the
+helper's own `const` from the candidates it then searches. Axis C has no monotone direction at all:
+relaxing it loses `258`, `259`, `325`; tightening it loses `297`, `299`, `301`, `323`; two disjoint
+sets, 32 keys each way.
+
+**`G11` — two mechanisms, and the named one is the rarer by less than it looked.** Each loss is
+attributed from the detector's own legs (`legsOf` returns them as data) at the narrowest key that
+loses *that member*. Axis C's three are **helper-exclusion**: a `const` classified as a read helper
+is `continue`d out of the loop that searches for bound reads, so turning the leg on removes the
+statement from the population it is then searched for in. The other three axes' losses are the
+**uniqueness quantifier**. Round 386 §1 priced the two "8 against 32" — one axis against one axis.
+In the key unit it is **20 against 32**, because the quantifier is the mechanism of three of the four
+non-monotone axes. The conclusion holds and the margin is 12 keys narrower.
+
+**`G14` — axis D is the axis no row varies, and that is now measured rather than lucky.** The class
+is identical at all 128 of its paired keys: nothing in the space can be moved by it. It is not inert
+at *site* granularity, which is why `CF-D` prices it in sites instead.
+
+**`G12` — the licence for making all of this affordable.** The space needs 256 × 43 readings, so
+the two strippings per file are memoised and the legs are returned as data. The detector as it
+stood before that refactor is read out of git, cut at the same marker, and driven over the same 256
+keys; the two class maps must agree key by key and member by member. It is the expensive grade in
+the file — the old detector has no cache, which is the reason the cache exists.
 
 ## Near misses, hand-read and excluded for stated reasons
 
@@ -82,9 +145,15 @@ It does **not** reach `297` or `304`, and the two are excluded by the **same** c
 two different ones: neither carries a full population filename inside any `const` initializer.
 `304` names `probe-round276-…` inside a `.test(read(join(…)))` expression; `297` resolves its
 files by prefix (`const R225 = fileFor('probe-round225')`) and its one full-filename occurrence is
-inside `read(R225).includes('probe-round219-…')`, an expression. `G9` grades that by driving every
-row of the table including the widest and finding `304` in none of them. `CF-G` is the row that
-isolates it: relax the criterion to the stem and `297` comes in, through `const src = read(R295)`.
+inside `read(R225).includes('probe-round219-…')`, an expression. `CF-G` is the row that isolates it:
+relax the criterion to the stem and `297` comes in, through `const src = read(R295)`.
+
+`G9` grades `304`'s absence over all **256 keys**, not over the rows. Its old warrant was
+`everyRow` — a hand-typed array of ten key literals sitting beside a table of derived rows, which
+omitted axis D and so was not what established its own conclusion (Theseus, Round 386 §3). The row
+list is now **derived**: `cf()` registers every row it drives, `G9` reports how many axes those rows
+vary, and the uncovered axis is *named by derivation* rather than by hand. It comes out as axis D,
+which `G14` then shows cannot move a class anywhere in the space.
 
 > Round 384 §1 found this paragraph and the `CF-F` row's prose both claiming *three of the four*.
 > The predicate was right and the sentence beside it graded nothing. The instrument's cure is a
