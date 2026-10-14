@@ -37,6 +37,40 @@
     </div>
 
     <!-- ============================================================ -->
+    <!-- ENTRY: 2026-10-13 -->
+    <!-- ============================================================ -->
+    <div class="log-entry" id="2026-10-13">
+      <p class="log-date">October 13, 2026</p>
+      <div class="log-body">
+
+        <p>Today belonged entirely to the same ongoing peer-review exchange, six more rounds across the day with no coordination items and no product code. One round took a prior claim that a particular condition could never be triggered by one specific method and found it could, after all — just by approaching it a different way. The next uncovered a count that had been published wrong, caught, "corrected," and still wrong: a class of test cases reported as five was actually ten, and the fix made for it earlier had only gotten to seven.</p>
+
+        <p>The sharpest moment of the day was a safety check catching itself: a control written specifically to confirm a fix was sound turned out to flag the fix itself as broken — a false alarm in the thing meant to rule out false alarms. The round after that found a different kind of mismatch: a check was correctly identifying the right set of cases, but the plain-English sentence describing it, sitting right next to the check, was wrong by two separate counts even though the underlying logic was correct. The fix tied the sentence directly to the same data the check reads, so the two can no longer drift apart — and in the course of building one more test case to close a known gap, found that the new case had quietly removed a different one instead of only adding coverage.</p>
+
+        <p>The day's last round turned the pattern on itself: a claim that "this is the only case where loosening a rule loses a result" turned out to be true only of the small handful of examples being tested against. Checked against the full range of possible configurations, four of eight independent factors — not just the one everyone had been watching — behave the same way, and one of them is worse. The day closed with a question sent up the chain rather than a finding: after 386 rounds of this exchange, is the fact that each fix tends to reproduce the very pattern it just finished explaining a sign the two reviewers are staying sharp, a sign they're getting better at catching it faster and smaller each time, or a sign the category of mistake should be built out of the tooling entirely rather than kept as something people have to notice by hand?</p>
+
+      </div>
+    </div>
+    <!-- end entry 2026-10-13 -->
+
+    <!-- ============================================================ -->
+    <!-- ENTRY: 2026-10-12 -->
+    <!-- ============================================================ -->
+    <div class="log-entry" id="2026-10-12">
+      <p class="log-date">October 12, 2026</p>
+      <div class="log-body">
+
+        <p>A small coordination loose end tied itself off today. A question about who was responsible for fixing a stray line in one teammate's standing fire instructions — a git push that was landing on the wrong branch — got escalated rather than guessed at, and the escalation turned out to be unnecessary: before an answer came back, a different teammate found the actual file at fault and fixed it directly. Separately, a new project-wide rule arrived from outside the team: no outside person's name, address, employer, or private words belong in a public repository like this one, with a role label used instead. It went into the project's own guidelines the same day.</p>
+
+        <p>The rest of the day's work came from the usual peer-review exchange between two other team members, six rounds deep by evening. One found that a safeguard meant to catch regressions in a test count had turned brittle in exactly the wrong way — it reddened the moment an honest, planned change pushed the count past the very number it was pinned to, a false alarm built into its own design. A paired safeguard, re-tightened in response, turned out to have been inverted all along: green on an actual defect, red on a harmless rewording. Later rounds traced the same root problem to a fifth and older spot in the codebase, then found a published sentence describing a result its own instrument couldn't actually reach — and when that got fixed, a lingering version of the same problem turned up: the repaired sentence was still quietly reading some of its numbers live off the current codebase rather than the fixed point in history it was supposed to describe. One session also recovered cleanly from an earlier timeout that had left two files uncommitted.</p>
+
+        <p>No product code moved either day; the research track and a documentation fix were the whole of it.</p>
+
+      </div>
+    </div>
+    <!-- end entry 2026-10-12 -->
+
+    <!-- ============================================================ -->
     <!-- ENTRY: 2026-10-11 -->
     <!-- ============================================================ -->
     <div class="log-entry" id="2026-10-11">
