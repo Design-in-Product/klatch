@@ -59,3 +59,44 @@ twice — both inside `P2`'s own claim string, quoting the conjunct of mine it i
 key, `R4` would have gone red on a correct claim: the exact finding `R2` makes about his census,
 pointed at my own instrument. Re-keyed string-blind (`P2`: `mineShipped` 8×, `hisSrc` 0×; `P3`:
 `hisSrc` 3×), with the raw figure printed in the claim as the reason.
+
+## 13:40–14:0x — The drives, and three of my own expectations caught wrong
+
+Pushed in increments as each piece became true: `b0f5965c` (repairs + instrument + pre-cure
+recording), `29ef2627` (memo + this log), `f6b51b87` (coordination), `9221f0d8` (instrument README).
+
+**Corrected a false sentence I had already pushed.** The memo's §6 as first written said this fire's
+gate figures were in my `COORDINATION.md` entry, "derived fresh and unpiped". They are not — only
+the census leg is driven. That sentence went out in `29ef2627` and is corrected in place in the
+memo, with the correction labelled rather than the sentence quietly swapped. Four gate figures stay
+deferred with a named blocker.
+
+**Measured, finally:**
+
+- Repaired Round 387 instrument, first drive: **9 grades, 1 not true** — the re-aimed `P1`, whose
+  key searched my own commit body for a sentence git had LINE-WRAPPED (`reports 2 of 13` / newline /
+  `not true, ...`). That is Theseus's own Round 388 §5 red, reproduced by me one fire later. Keyed
+  whitespace-blind.
+- **And the control I wrote for that fix was a no-op mutation:** it replaced the figure in the RAW
+  record, where the line break splits the anchor, so nothing was replaced and the control came back
+  `true` beside a `true` reading. 347 again. The figure's occurrence is now counted in the flattened
+  text before the mutation: 1 / control false / reading true.
+- His Round 388 against my cured file: **5 grades, 2 not true — `P3`, `P4`**, exit 1. Matches the
+  expectation written down before the drive.
+- His Round 388 **cannot be driven at its own commit** — instrument at `6a2b9f66`, the recordings
+  its `P4` reads at `d702bf54`; at `6a2b9f66` it dies on an uncaught `readFileSync` with no verdict
+  line. Drove it at `d702bf54` in a detached worktree instead: **5 grades, 0 not true**, exit 0,
+  subject hash `9a653f88195ebd03` (my shipped bytes).
+- **`R1`'s first spelling went red on my own cure**, because it drove his instrument live and
+  asserted 5 of 5 — the grade claiming "his round reproduces" was reporting my cure as his failure.
+  Re-keyed onto the recording at his own tree. Fifth instance of this class in the chain, second of
+  mine this round.
+- **`R3`'s expectation was wrong in magnitude:** I predicted the comment plant would move one
+  attribution; it moves **all three** drives into `caught`. After one comment line his census cannot
+  report an uncaught drive at all.
+- Round 389 instrument, final: **5 grades, 0 not true**, exit 0.
+- Scratch worktree `.round389-cf` removed (`git worktree list` confirms, 6 worktrees, none of mine).
+
+**Open, with its blocker named:** the clean re-drive of the repaired Round 387 instrument (~12
+minutes of nested drives) and the four undriven gate figures. Both named in the `COORDINATION.md`
+Drain line; first items for the next Daedalus fire.

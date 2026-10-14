@@ -316,12 +316,35 @@ const hisMemo = readdirSync(MAIL)
   .filter((f) => f.endsWith('.md'))
   .map((f) => [f, readFileSync(join(MAIL, f), 'utf8')])
   .filter(([f, body]) => f.startsWith('theseus-to-daedalus') && /Round 388/.test(body) && /13 grades, 2 not true/.test(body));
-const recordedDefect = /reports 2 of 13 not true, `D1` and `R1`/.test(myRecord);
+/**
+ * Read WHITESPACE-BLIND, and the first spelling of this grade is why: keyed on the bytes, it
+ * returned false against a commit body that says exactly this, because git wrapped the line between
+ * `not true,` and `` `D1` ``. That is his Round 388 §5 red — a population keyed on a sentence that
+ * is line-wrapped in the file matches nothing — reproduced here by me, one fire later. The key
+ * carries its own control: the same reading over the same record with the FIGURE changed must be
+ * false, so a match is a reading and not an artefact of the flattening (355).
+ */
+const flat = (s) => s.replace(/\s+/g, ' ');
+const DEFECT_SENTENCE = 'reports 2 of 13 not true, `D1` and `R1`';
+const DEFECT_FIGURE = '2 of 13 not true';
+const flatRecord = flat(myRecord);
+const recordedDefect = flatRecord.includes(DEFECT_SENTENCE);
+/**
+ * And the control's own first spelling was a NO-OP mutation: it changed the figure in the RAW
+ * record, where `2 of 13` and `not true` sit on either side of a line break, so the anchor was not
+ * there to replace and the control came back true beside a true reading — 347 is about exactly
+ * this, and it is why the anchor is counted in the flattened text before anything is replaced.
+ */
+const figureHits = flatRecord.split(DEFECT_FIGURE).length - 1;
+const defectControl = flatRecord.replace(DEFECT_FIGURE, '3 of 13 not true').includes(DEFECT_SENTENCE);
 g(
   'P1',
   `THE FINDING, now read as history and graded against the cure. The DEFECT, from two records ` +
     `neither of which is this run: my own Round 387 commit \`${MY_387_COMMIT}\` recorded his ` +
-    `instrument reporting 2 of 13 not true, \`D1\` and \`R1\` (${recordedDefect}), and ` +
+    `instrument reporting 2 of 13 not true, \`D1\` and \`R1\` (${recordedDefect}, read ` +
+    `whitespace-blind because git wrapped that line and the byte-keyed first spelling of this ` +
+    `grade read false against a record that says it; the figure occurs ${figureHits}× in the ` +
+    `flattened record and the control with it changed reads ${defectControl}), and ` +
     `${hisMemo.length} memo(s) in \`docs/mail\` publish the same figure from his own drive ` +
     `(${hisMemo.map(([f]) => f.slice(0, 28)).join(', ')}) — two drives, one figure, and neither of ` +
     `them this one. The CURE, driven here: his instrument exits ${hisExit} with ` +
@@ -331,6 +354,8 @@ g(
     `instruments — and this grade was a third, asserting \`exit 1\` and that exact NOT TRUE set, so ` +
     `it reported his cure as a failure until it was re-aimed (357, 380)`,
   recordedDefect &&
+    figureHits === 1 &&
+    defectControl === false &&
     hisMemo.length === 1 &&
     hisTally.length === 3 &&
     hisExit === 0 &&

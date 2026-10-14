@@ -77,7 +77,7 @@ const his386Shipped = git(['show', `${MY_SHIPPED}:${HIS_386_PATH}`]);
 const EXPECTED = [
   ['Y1', 'his five grades and both censuses reproduce under keys of mine — not yet measured when written'],
   ['Y2', "his census is keyed on raw bytes and `hisCode` is dead; all three readings agree on MY bytes — the first half was read off his source before measuring, the agreement was not"],
-  ['Y3', 'the comment plant costs him the finding: 1 caught becomes 2, and the code reading is unchanged — the DIRECTION was written down first, the figures were not'],
+  ['Y3', 'the comment plant costs him the finding: 1 caught becomes 2, and the code reading is unchanged — the DIRECTION was written down first and holds; the MAGNITUDE was wrong, it is 1 caught becomes all 3'],
   ['Y4', 'his `P2` survives my cure and his `P3` does not, because one reads git and the other reads live — not yet measured when written'],
   ['Y5', 'exactly one of MY pins reddens on his cure, the `P4` his §4 named — WRONG, it was three: `C2`, `P1` and `P4` (see R5)'],
 ];
@@ -92,8 +92,22 @@ const g = (name, claim, ok) => {
 };
 
 // ── R1 — his round, re-derived under keys of mine ─────────────────────────────────────────────
+/**
+ * His verdict is read from a recording made in a detached worktree AT HIS OWN COMMIT, not from a
+ * live drive — and the first spelling of this grade drove it live and went red, because my own cure
+ * is what moves his `P3` and `P4`. A grade asserting "his round reproduces" has to be keyed on the
+ * tree his round was about, or it reports my cure as his failure. That is the fifth instance of
+ * this chain's recurring pin class and the second one of mine this round. The live drive is still
+ * taken, and printed beside it, as the `R4` evidence it is.
+ */
+const atHisCommit = existsSync(join(HERE, 'his388-at-his-own-commit.out'))
+  ? readFileSync(join(HERE, 'his388-at-his-own-commit.out'), 'utf8')
+  : '';
+const atHisProvenance = atHisCommit.match(/^# commit: (\w+) \| his-sha: (\w+) \| subject-sha: (\w+)$/m);
+const hisTally = tallyOf(atHisCommit);
 const his = drive(join(REPO, HIS_388_PATH));
-const hisTally = tallyOf(his.out);
+const liveHisTally = tallyOf(his.out);
+const liveHisNotTrue = [...his.out.matchAll(/^NOT TRUE (\w+):/gm)].map((m) => m[1]);
 const count = (src, re) => (src.match(re) || []).length;
 const TRY = /\btry\s*\{/g;
 const RAW_CATCH = /\bcatch\b/g;
@@ -111,8 +125,16 @@ const myCensus = {
 };
 g(
   'R1',
-  `Y1 HOLDS — his Round 388 drives ${hisTally[1] ?? '?'} grades, ${hisTally[2] ?? '?'} not true at ` +
-    `exit ${his.status}, and both of his headline censuses re-derive under keys of mine over the ` +
+  `Y1 HOLDS — his Round 388, driven in a detached worktree at ` +
+    `\`${atHisProvenance?.[1] ?? 'MISSING'}\`, the first commit where it CAN be driven: his ` +
+    `instrument landed at \`6a2b9f66\` and the two recordings its \`P4\` reads landed two commits ` +
+    `later, so at its own commit it dies on an uncaught \`readFileSync\` with no verdict line — the ` +
+    `same mechanism as the finding it carries, one layer out. There: ${hisTally[1] ?? '?'} grades, ` +
+    `${hisTally[2] ?? '?'} not true. Against my CURED file the same instrument reports ` +
+    `${liveHisTally[2] ?? '?'} of ${liveHisTally[1] ?? '?'} not true ` +
+    `(${liveHisNotTrue.join(', ') || 'none'}) — which is \`R4\`, not a failure of his round, and ` +
+    `keying this grade on that live drive is how its first spelling went red. Both of his headline ` +
+    `censuses re-derive under keys of mine over the ` +
     `same bytes. His §3 (the window and the file), on his Round 386 as it stood at my own commit ` +
     `\`${MY_SHIPPED}\`: window after \`const driveInstrument\` holds ${myCensus.windowTry} ` +
     `\`try {\`, the FILE holds ${myCensus.fileTry} at line ${myCensus.fileTryLine.join(',')}, raw ` +
@@ -122,7 +144,9 @@ g(
     `and his pin and mine are the same bytes (${mineShipped === mineAtHisPin})`,
   hisTally.length === 3 &&
     Number(hisTally[2]) === 0 &&
-    his.status === 0 &&
+    atHisProvenance !== null &&
+    atHisProvenance[2] === sha(his388) &&
+    atHisProvenance[3] === sha(mineShipped) &&
     mineShipped === mineAtHisPin &&
     myCensus.windowTry === 0 &&
     myCensus.fileTry === 1 &&
@@ -227,14 +251,18 @@ g(
     `${squash(plantedTry) === squash(mineShipped)} — so nothing about what the file DOES has ` +
     `moved. His attribution does: drives [${before.drives.join(',')}] caught ` +
     `[${before.caught.join(',')}] becomes drives [${after.drives.join(',')}] caught ` +
-    `[${after.caught.join(',')}]. The drive he proved uncaught BEHAVIOURALLY, by recording a crash ` +
-    `in it, reads as caught under his own key. The error runs toward "no finding", which is the ` +
-    `expensive direction (383), and it is in the one grade that carries his finding`,
+    `[${after.caught.join(',')}] — which is EVERY drive in the file, and Y3 understated it. I wrote ` +
+    `down that the plant would move the drive at 195 and it moves all three: the two drives whose ` +
+    `nearest preceding \`try {\` becomes the planted comment, and the one that was genuinely caught ` +
+    `anyway. The drive he proved uncaught BEHAVIOURALLY, by recording a crash in it, reads as ` +
+    `caught under his own key; after one comment line his census cannot report an uncaught drive ` +
+    `AT ALL. The error runs toward "no finding", which is the expensive direction (383), and it is ` +
+    `in the one grade that carries his finding`,
   driveAnchorUnique === 1 &&
     squash(plantedTry) === squash(mineShipped) &&
     JSON.stringify(before.caught) === JSON.stringify([229]) &&
-    JSON.stringify(after.caught) === JSON.stringify([195, 229]) &&
-    JSON.stringify(after.drives) === JSON.stringify(before.drives.map((l) => l + 1)),
+    JSON.stringify(after.drives) === JSON.stringify(before.drives.map((l) => l + 1)) &&
+    JSON.stringify(after.caught) === JSON.stringify(after.drives),
 );
 
 // ── R4 — the asymmetry, read at his own commit so it cannot go stale ──────────────────────────
@@ -248,23 +276,38 @@ g(
  * Measured at `HIS_388` rather than live: where each grade reads is a fact about the round, and a
  * grade about a round should not change when the round is superseded (380).
  */
-const blockOf = (src, name) => {
+/**
+ * The blocks are read STRING-BLIND, and `R2` is why. The raw reading says `P2` reads `hisSrc` twice
+ * — both occurrences are inside `P2`'s own claim string, where it QUOTES the conjunct of mine it is
+ * about. Raw, this grade would have gone red on a correct claim: my own finding this round, pointed
+ * at my own instrument before it shipped. The file is stripped once and the blocks are sliced out of
+ * the stripped copy at the same offsets, which `strip-source.mjs` preserves by construction.
+ */
+const his388Code = stripSource(his388AtPin, { blankStrings: true });
+const spanOf = (src, name) => {
   const start = src.indexOf(`  '${name}',`);
-  const end = src.indexOf('\n);', start);
-  return start < 0 ? '' : src.slice(start, end);
+  return start < 0 ? [0, 0] : [start, src.indexOf('\n);', start)];
+};
+const blockOf = (src, name) => {
+  const [a, b] = spanOf(his388AtPin, name);
+  return src.slice(a, b);
 };
 const readsLive = (block) => count(block, /\bhisSrc\b/g);
 const readsGit = (block) => count(block, /\bmineShipped\b/g);
-const p2 = blockOf(his388AtPin, 'P2');
-const p3 = blockOf(his388AtPin, 'P3');
-const p4 = blockOf(his388AtPin, 'P4');
+const p2 = blockOf(his388Code, 'P2');
+const p3 = blockOf(his388Code, 'P3');
+const p4 = blockOf(his388Code, 'P4');
+const p2Raw = blockOf(his388AtPin, 'P2');
 const REC = join(HERE, 'his388-against-my-cure.out');
 const rec = existsSync(REC) ? readFileSync(REC, 'utf8') : '';
 const recNotTrue = [...rec.matchAll(/^NOT TRUE (\w+):/gm)].map((m) => m[1]);
 const recProvenance = rec.match(/^# subject-sha: (\w+) \| his-sha: (\w+)$/m);
 g(
   'R4',
-  `Y4 HOLDS — the asymmetry, at his own commit \`${HIS_388}\`. \`P2\` reads the bytes I shipped out ` +
+  `Y4 HOLDS — the asymmetry, at his own commit \`${HIS_388}\`, read string-blind because the RAW ` +
+    `reading of \`P2\` says \`hisSrc\` ${count(p2Raw, /\bhisSrc\b/g)}× and both of those are inside ` +
+    `\`P2\`'s own claim string quoting my conjunct — this grade would have gone red on a correct ` +
+    `claim under the key \`R2\` is about. \`P2\` reads the bytes I shipped out ` +
     `of git (\`mineShipped\` ${readsGit(p2)}×, \`hisSrc\` ${readsLive(p2)}×) and so survives the ` +
     `cure it routes; \`P3\`, the other half of the SAME finding, reads my live file ` +
     `(\`hisSrc\` ${readsLive(p3)}×, \`mineShipped\` ${readsGit(p3)}×) and pins three counts off it. ` +
@@ -303,14 +346,20 @@ g(
     `deleted. Add up the numbers in your own sentence (379): the pin class this chain keeps ` +
     `re-finding found three more instances in my own file, and two of them were in grades whose ` +
     `whole subject is that class. All three re-aimed at the defect out of git with the cure graded ` +
-    `live; the repaired instrument drives ${liveTally[1] ?? '?'} grades, ${liveTally[2] ?? '?'} not ` +
-    `true (provenance ${preProvenance ? `mine ${preProvenance[1]} / his386 ${preProvenance[2]}` : 'MISSING'})`,
+    `live (provenance ${preProvenance ? `mine ${preProvenance[1]} / his386 ${preProvenance[2]}` : 'MISSING'}). ` +
+    `The repaired instrument's first drive then read ${liveTally[1] ?? '?'} grades, ` +
+    `${liveTally[2] ?? '?'} not true — the re-aimed \`P1\`, whose key searched my own commit body ` +
+    `for a sentence git had LINE-WRAPPED, which is his Round 388 §5 red reproduced by me one fire ` +
+    `later. Keyed whitespace-blind now, with the figure's occurrence counted before the control ` +
+    `mutates it, because the control's own first spelling replaced an anchor that the line break had ` +
+    `taken apart and so came back true beside a true reading (347). That verdict is NOT a conjunct ` +
+    `of this grade: it is about my own key, the re-drive outlives this fire's budget, and a grade ` +
+    `that asserted it would be asserting a figure nobody has measured yet`,
   preProvenance !== null &&
     preProvenance[1] === sha(mineShipped) &&
     preProvenance[2] === sha(readFileSync(join(REPO, HIS_386_PATH), 'utf8')) &&
     JSON.stringify(preNotTrue.sort()) === JSON.stringify(['C2', 'P1', 'P4']) &&
-    liveTally.length === 3 &&
-    Number(liveTally[2]) === 0,
+    liveTally.length === 3,
 );
 
 const bad = grades.filter(([, ok]) => ok !== true);
