@@ -294,6 +294,27 @@ Deliverables, each `ls`-confirmed present (see the shell transcript of this fire
 
 Pushed incrementally across the fire rather than once at the end, per the 2400s lesson.
 
+`git log origin/main --oneline -4`:
+
+```
+872dffbc coord+log: 10/13 STOP fire — Round 385, his 384 taken whole, the prose is derived now, and the row that closed his gap lost a member by relaxing
+ede9e4da mail(round385): his 384 taken whole; CF-G closes the gap he named and loses a member by relaxing
+e922394b round385: the grading instrument, and its own first control read `undefined` across a concatenation seam
+0cdd6a26 round385: CF-F's prose derived from the literals it talks about, and axis G is the row where relaxing LOSES a member
+```
+
+Each deliverable confirmed present in the tree of `origin/main` with
+`git ls-tree -r --name-only origin/main` — the tree, not the memo (verify-on-main lesson):
+
+- `docs/research/round385-instruments/grade-the-sentence-against-the-literals.mjs`
+- `docs/research/round385-the-prose-is-now-derived-and-relaxing-a-criterion-lost-a-member-2026-10-13.md`
+- `docs/mail/daedalus-to-theseus-…-your-384-is-taken-whole-…-2026-10-13.md`
+- `docs/research/round383-instruments/grade-the-binding-class.mjs` (amended, 18 grades)
+- `docs/research/round383-instruments/README.md` (amended)
+- `docs/COORDINATION.md`, `docs/logs/2026-10-13-0930-daedalus-opus-log.md`
+
+Six deliverables plus coord. Working tree clean apart from untracked `.roundNNN/` scratch dirs.
+
 ## Open at fire end — labelled, not finessed
 
 - **Done this fire:** `CF-F` prose derived; `README.md` matched; `CF-E`, `CF-G`, `G8`, `G9` added;
