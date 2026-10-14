@@ -422,6 +422,53 @@ g(
   / G8: true /.test(out383),
 );
 
+// ── R — the second finding: the README figure nothing in the chain reads ──────────────────────
+/**
+ * `E5` in the Round 385 instrument asserts the subject DRIVES `18 grades, 0 not true`. Nothing
+ * reads the headline figure in the subject directory's `README.md`, which still says **14** — the
+ * count before this round's four new rows. The README was edited in the SAME commit as the cure
+ * (`e922394b`, 45 changed lines, the new rows written into the table), and the line four lines
+ * from the top was left alone. Rounds 357/359: prose written beside its own cure needs a pin.
+ *
+ * Graded at a PIN, not in the working tree (377, and his own §5): a control keyed on the live
+ * README would redden the moment he fixes it, which is a pin that reddens on the cure it routed.
+ * The pinned instrument is asserted byte-identical to the live one, so the tally driven above is
+ * the tally at the pin, and the comparison is between two objects at one commit.
+ */
+const README_AT = 'e922394b';
+const git = (args) => execFileSync('git', args, { cwd: REPO, encoding: 'utf8' });
+const pinnedMjs = git(['show', `${README_AT}:docs/research/round383-instruments/grade-the-binding-class.mjs`]);
+const pinnedReadme = git(['show', `${README_AT}:docs/research/round383-instruments/README.md`]);
+const readmeFigure = (src) => Number((src.match(/Driven [\d-]+: \*\*(\d+) grades, (\d+) not true/) || [])[1]);
+const pinnedFigure = readmeFigure(pinnedReadme);
+g(
+  'R1',
+  `SECOND FINDING, graded at a pin — at ${README_AT} the subject directory's \`README.md\` ` +
+    `headlines "${pinnedFigure} grades" and the instrument it describes drives ${n383}, in a ` +
+    `commit that changed ${
+      git(['show', '--numstat', '--format=', README_AT, '--', 'docs/research/round383-instruments/README.md'])
+        .trim()
+        .split(/\s+/)
+        .slice(0, 2)
+        .map(Number)
+        .reduce((a, b) => a + b, 0)
+    } lines of that very README to add the four new rows. The instrument at the pin is ` +
+    `byte-identical to the live one, so ${n383} is its tally at the pin too. \`E5\` grades the ` +
+    `DRIVEN count and the README figure is beside it, ungraded — the §1 shape (a hand-typed ` +
+    `figure next to a derived one) recurring in the doc rather than in the instrument`,
+  pinnedMjs === subjectSrc && pinnedFigure === 14 && n383 === 18 && pinnedFigure !== n383,
+);
+g(
+  'R2',
+  `KNOWN NEGATIVE for \`R1\`, keyed on the figure's CONTENT and not its bytes (383) — the same ` +
+    `pinned README with one token changed, \`${pinnedFigure}\` → \`${n383}\`, and the control ` +
+    `flips: ${readmeFigure(pinnedReadme.replace(`**${pinnedFigure} grades`, `**${n383} grades`))} ` +
+    `read against ${n383} driven, disagreement gone, every other byte of the README untouched. So ` +
+    `\`R1\` is reading the figure and not the presence of a sentence about grades`,
+  readmeFigure(pinnedReadme.replace(`**${pinnedFigure} grades`, `**${n383} grades`)) === n383 &&
+    pinnedReadme.replace(`**${pinnedFigure} grades`, `**${n383} grades`) !== pinnedReadme,
+);
+
 // ── verdict ──────────────────────────────────────────────────────────────────────────────────
 const bad = grades.filter(([, ok]) => ok !== true);
 console.log(`\n${grades.length} grades, ${bad.length} not true`);
