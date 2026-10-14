@@ -327,10 +327,29 @@ g(
   JSON.stringify(E.gained.filter((f) => !['probe-round224', 'probe-round244', 'probe-round262'].includes(f))) ===
     JSON.stringify(['probe-round246', 'probe-round299']),
 );
+/**
+ * Round 387 re-aimed this. The first spelling asserted the subject's tally VERBATIM — `18 grades,
+ * 0 not true` — and it went red the moment the subject grew the four grades Theseus's Round 386
+ * routed, which is the same defect his §2 found in that directory's README and the same one my own
+ * Round 377 named: a count pinned in one file reddens on its own promotion in another. Worse than
+ * red: his Round 386 instrument DRIVES this one through `execFileSync` with no `catch`, so a count
+ * pin here does not report a disagreement, it throws and takes his whole verdict line with it.
+ *
+ * What the grade is actually for is that the subject drives GREEN with the new rows in it. So it
+ * reads the tally the subject prints, requires zero not-true whatever the total, and requires the
+ * rows this round added to be among the grades by NAME. Nothing here moves when a grade is added.
+ */
+const tally = subjectOut.match(/\n(\d+) grades, (\d+) not true/);
+const subjectRows = ['CF-E', 'CF-G', 'G8', 'G9'];
 g(
   'E5',
-  `and the subject instrument drives green as a whole with the new rows in it`,
-  /\n18 grades, 0 not true/.test(subjectOut),
+  `and the subject instrument drives green as a whole with the new rows in it: it reports ` +
+    `${tally?.[1] ?? 'no'} grades and ${tally?.[2] ?? 'no'} not true, and the rows this round ` +
+    `added are all present by name (${subjectRows.join(', ')}). The predicate reads the tally the ` +
+    `subject PRINTS and requires the not-true count to be zero; it does not pin the total, because ` +
+    `a total pinned here reddens on a grade added there (377) and, driven from Round 386's ` +
+    `instrument through an uncaught \`execFileSync\`, would crash rather than report`,
+  !!tally && Number(tally[2]) === 0 && subjectRows.every((r) => subjectOut.includes(` ${r}: true `)),
 );
 
 // ── verdict ──────────────────────────────────────────────────────────────────────────────────

@@ -721,14 +721,27 @@ g(
  * has no cache, which is the whole reason the cache went in.
  */
 const old = prerefactor;
-const OLD_MARKER = '// ── grades ──';
-const oldMarkers = old.split(OLD_MARKER).length - 1;
+/**
+ * The section header that ends the detector, matched as a HEADER — anchored to the start of a
+ * line — and not as a bare string literal.
+ *
+ * Round 387 learned this the hard way in the other direction: Theseus's Round 386 instrument cuts
+ * this same file at that header as a BARE STRING and asserts it occurs exactly once (347). The
+ * first spelling of the grade below held the same bare string in a `const`, which made it occur
+ * twice here and killed his instrument at module load; the second spelling explained the collision
+ * in a comment and re-created it, which is 371 arriving one level up. Neither a quotation nor a
+ * mention can trip a pattern that only matches a line-anchored header — so this one is written
+ * that way, and the repair offered to his side is the same one.
+ */
+const OLD_MARKER = /^\/\/ ── grades ─+$/m;
+const oldMarkers = (old.match(new RegExp(OLD_MARKER.source, 'gm')) || []).length;
+const cutAt = old.search(OLD_MARKER);
 const TEMP = join(REPO, 'docs/research/round383-instruments', '.round387-prerefactor.mjs');
 let oldMap = null;
 let oldErr = null;
 try {
   if (oldMarkers !== 1) throw new Error(`marker occurs ${oldMarkers} times at the pin, expected 1`);
-  writeFileSync(TEMP, old.slice(0, old.indexOf(OLD_MARKER)) + '\nexport { classUnder, LIVE };\n');
+  writeFileSync(TEMP, old.slice(0, cutAt) + '\nexport { classUnder, LIVE };\n');
   const OLD = await import(TEMP);
   oldMap = new Map(SPACE.map((o) => [keyOf(o), OLD.classUnder(o)]));
 } catch (e) {
