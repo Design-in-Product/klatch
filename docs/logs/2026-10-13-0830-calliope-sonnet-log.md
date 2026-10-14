@@ -94,3 +94,47 @@ re-attempted.
 **Drain:** mail checked (own-seat header grep + all four cross-repo mailboxes, grepped directly);
 gate re-derived fresh and green; rollup/backfill/blockers/intel-cadence/task-list all re-checked,
 nothing moved. Two consecutive checks found nothing further unblocked. Fire closed bounded.
+
+---
+
+## WORK fire — ~17:00 PT
+
+No-op on Klatch coordination/rollup; no action owed from this seat. Needs-you unchanged at 0.
+
+`git fetch origin main`: HEAD `66d8e8ce` matches `origin/main` exactly, clean tree. `git log
+e9e64fef..HEAD` (own 12:32 MID-fire checkpoint) = 7 commits, none mine — Daedalus (Rounds 383),
+Argus (no-op checkpoint), and Theseus (Round 384) continuing the adversarial sweep-probes
+round-track; `git diff --stat e9e64fef..HEAD -- packages/` empty, confirming no product code
+landed. The two new mail files in that range are both round-track memos (`...round383...`,
+`...round384...`), cc-Calliope only, each stating "Nothing needs xian" — read directly, no action
+owed.
+
+**Mail:** `grep -li "^to:.*calliope" docs/mail/*.md` (excluding `read/`) returns nothing — no open
+thread addressed to this seat. All four writable cross-repo mailboxes checked fresh by `find
+-newer` against this morning's log file and grepped directly for `klatch|calliope`:
+`designinproduct` (3 new files — Themis/Janus speaking-topics traffic) zero hits; `mediajunkie` (2
+new files — MCP-wrapper allow-lines, a render heads-up) zero hits; `piper-morgan-product/mailboxes`
+(dozens of new files, role-duty-row traffic) — one phrase hit, "Cross-project protocol decisions
+(Klatch, URI conventions)" inside an internal duty-row classification list (`cio-to-arch...`),
+read in context: a category label in someone else's role-scope question, not addressed to Klatch
+or Calliope, no action; `dispatch/mail` (no new files). Nothing owed from any.
+
+**Gate re-verified fresh:** `npm run typecheck` 0 `error TS` lines. `node scripts/sweep-probes.mjs
+--census` — **153 probe files, 43 swept/110 deferred, CENSUS OK** — byte-identical to the morning
+checkpoint. `packages/` diff empty since the MID checkpoint, so not re-running the full test suite
+on an unchanged tree.
+
+**Standing items re-checked, nothing moved:** rollup still v166, needs-you unchanged at 0, no new
+decision content. Backfill unchanged (`ls -la backups/`, Aug 4 17:11 mtime). Standing blockers
+re-checked, both unmoved: ground-rules question, parked on xian since 2026-08-09, no new
+`xian-to-*` mail found; import-confirm-step-ux (`entityGuess`), same 6 source files (not re-grepped
+this fire — no commits touched `packages/`). Intel sweep cadence: last sweep
+`docs/intel/2026-10-12-sweep.md`, within weekly cadence, not due. Task list of record: blog-series
+drafting remains the one standing item, correctly held on its named blocker (angle/sequencing
+discussion with xian not yet had). Cross-pollination brief: same URL-only pointer pattern, standing
+skip-and-log ruling, not re-attempted. Not yet past the ~23:00 PT day-end threshold, so no STOP-fire
+obligations (log.html entry, STATE.md refresh) are due this fire.
+
+**Drain:** mail checked (own-seat header grep + all four cross-repo mailboxes, grepped directly);
+gate re-derived fresh and green; rollup/backfill/blockers/intel-cadence/task-list all re-checked,
+nothing moved. Two consecutive checks found nothing further unblocked. Fire closed bounded.
