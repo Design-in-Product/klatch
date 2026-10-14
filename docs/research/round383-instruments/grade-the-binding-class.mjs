@@ -92,8 +92,12 @@ const LIVE = {
   localHelpers: true, //  C: a local `const read = (f) => … readFileSync …` counts as a read
   readMustBeCode: true, //    the read call must survive the strings-BLANKED reading
   requireBinding: true, //    the source must be BOUND, not consumed inline
-  excludeSelf: true,
+  excludeSelf: true, //   E: a file naming ITSELF does not count (inert here — see CF-E)
+  fullLiteralName: true, // G: a naming site must carry the WHOLE filename, not the `probe-roundNNN` stem
 };
+
+/** `probe-round224-a-skip-…mts` → `probe-round224`. Five stems are shared by two files (G8). */
+const stemOf = (f) => (f.match(/^probe-round\d+/) || [f])[0];
 
 const bindingsIn = (file, opt = LIVE) => {
   const raw = readFileSync(join(SCRIPTS, file), 'utf8');
@@ -107,7 +111,7 @@ const bindingsIn = (file, opt = LIVE) => {
   // sub-axis can hold, and restricting it there loses `263` and `269` for the wrong reason.
   const names = (init, forAlias = false) =>
     others.filter((f) => {
-      if (!init.includes(f)) return false;
+      if (!init.includes(opt.fullLiteralName ? f : stemOf(f))) return false;
       if (!forAlias) return true;
       const m = new RegExp(`(['"\`])([^'"\`]*)${f.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\1`).exec(init);
       if (opt.pathBare && (!m || m[2] !== '')) return false;
@@ -187,6 +191,15 @@ g(
 );
 
 // ── counterfactuals: one axis each, and each asserts what it expects to lose ──────────────────
+/**
+ * `claim` may be a FUNCTION of the same `(got, lost, gained)` the predicate reads.
+ *
+ * Round 384 §1: `CF-F`'s predicate was a member-list equality and correct, and the sentence
+ * typed beside it said "three of the four hand-read near misses" when the intersection of that
+ * very list with `NEAR_MISSES` is two. Nothing connected them, so nothing could catch it — the
+ * predicate graded the list and the sentence graded nothing. A hand-typed count next to a derived
+ * list is the defect; the seam is that any row whose prose carries a FIGURE derives it here.
+ */
 const cf = (name, opt, claim, want) => {
   const got = classUnder({ ...LIVE, ...opt });
   const lost = HAND_READ_CLASS.filter((h) => !got.includes(h));
@@ -194,9 +207,20 @@ const cf = (name, opt, claim, want) => {
   const ok = want(got, lost, gained);
   grades.push([name, ok]);
   console.log(
-    `${ok === true ? 'GRADE' : 'NOT TRUE'} ${name}: ${ok} — ${claim}; reads ${got.length}, ` +
+    `${ok === true ? 'GRADE' : 'NOT TRUE'} ${name}: ${ok} — ` +
+      `${typeof claim === 'function' ? claim(got, lost, gained) : claim}; reads ${got.length}, ` +
       `lost [${lost.join(' ')}], gained [${gained.join(' ')}]`,
   );
+};
+
+/** The three sets a row's prose is allowed to talk about, all derived from `gained`. */
+const vsNearMisses = (gained) => {
+  const nm = Object.keys(NEAR_MISSES);
+  return {
+    reached: nm.filter((f) => gained.includes(f)),
+    missed: nm.filter((f) => !gained.includes(f)),
+    notNearMisses: gained.filter((f) => !nm.includes(f)),
+  };
 };
 
 cf(
@@ -234,21 +258,62 @@ cf(
 cf(
   'CF-C',
   { localHelpers: false },
-  'axis C — the local read-helper leg removed. INERT today: the class is the same either way, and ' +
-    'the leg is kept because the two near misses that use a helper are excluded for binding no ' +
+  'axis C — the local read-helper leg removed. Inert AT THIS POINT of the flag space — the class ' +
+    'is the same either way with every other flag live, which is the only place it has been ' +
+    'driven, and Theseus\'s Round 384 §2 is that inertness measured at one point is not ' +
+    'inertness (his own `excludeSelf` is inert live and load-bearing relaxed — CF-E below). The ' +
+    'leg is kept because the two near misses that use a helper are excluded for binding no ' +
     'SOURCE, which is a reason worth being able to state rather than to luck into',
   (_got, lost, gained) => lost.length === 0 && gained.length === 0,
 );
 cf(
   'CF-F',
   { requireBinding: false },
-  'the bound-to-an-identifier criterion removed — load-bearing, and it reaches three of the four ' +
-    'hand-read near misses. It does NOT reach `probe-round304`, whose naming site is in no ' +
-    '`const` statement at all, so that exclusion rests on the hand reading and not on this flag',
+  (_got, _lost, gained) => {
+    const { reached, missed, notNearMisses } = vsNearMisses(gained);
+    return (
+      'the bound-to-an-identifier criterion removed — load-bearing, and it reaches ' +
+      `${reached.length} of the ${Object.keys(NEAR_MISSES).length} hand-read near misses ` +
+      `(${reached.join(', ') || 'none'}). It does NOT reach ${missed.length} of them ` +
+      `(${missed.join(', ') || 'none'}), whose exclusions rest on the hand reading and not on ` +
+      `this flag; and ${notNearMisses.length} of what it gains ` +
+      `(${notNearMisses.join(', ') || 'none'}) is in no near-miss list in the repo`
+    );
+  },
   (_got, lost, gained) =>
     lost.length === 0 &&
     JSON.stringify(gained) ===
       JSON.stringify(['probe-round224', 'probe-round244', 'probe-round262']),
+);
+cf(
+  'CF-E',
+  { requireBinding: false, excludeSelf: false },
+  "axis E, driven at the point where it is not inert — Theseus's Round 384 §2, reproduced here " +
+    'under my own key: with the binding requirement also off, the self-exclusion leg gains ' +
+    "exactly `246` and `299` over CF-F, both of which carry `const SELF = '<own filename>'`. A " +
+    '`const SELF` binds no read, so the read requirement masks the leg completely under the live ' +
+    'key — which is why "inert" has to name the point it was measured at',
+  (_got, lost, gained) =>
+    lost.length === 0 &&
+    JSON.stringify(gained) ===
+      JSON.stringify([
+        'probe-round224',
+        'probe-round244',
+        'probe-round246',
+        'probe-round262',
+        'probe-round299',
+      ]),
+);
+cf(
+  'CF-G',
+  { fullLiteralName: false },
+  'axis G — a naming site may carry the `probe-roundNNN` STEM instead of the whole filename. ' +
+    "This is the row Round 383's table did not have, and it is the one that isolates " +
+    "`probe-round297`'s exclusion: 297 carries ZERO const initializers with a full population " +
+    'filename (it resolves by prefix, `const R225 = fileFor(\'probe-round225\')`) and comes in ' +
+    'here through `const src = read(R295)`. The exclusion was credited to the hand reading and ' +
+    'belongs to this criterion',
+  (_got, _lost, gained) => gained.includes('probe-round297'),
 );
 const noStringGuard = bindingsIn(SUBJECT, { ...LIVE, readMustBeCode: false }).length;
 g(
@@ -263,6 +328,46 @@ g(
   `and none of the four hand-read near misses is in the live class: ` +
     `${Object.keys(NEAR_MISSES).join(', ')}`,
   Object.keys(NEAR_MISSES).every((f) => !live.includes(f)),
+);
+
+// ── what the new rows turned up ──────────────────────────────────────────────────────────────
+const sharedStems = [...new Set(censusPop.map(stemOf))].filter(
+  (s) => censusPop.filter((f) => stemOf(f) === s).length > 1,
+);
+const underG = classUnder({ ...LIVE, fullLiteralName: false });
+g(
+  'G8',
+  `axis G is the one row where RELAXING a criterion LOSES a member: \`probe-round371\` is in the ` +
+    `live class and out under CF-G. The relaxed key is not a superset of the live one, because ` +
+    `the alias leg carries a UNIQUENESS quantifier (\`n.length === 1\`) and a quantifier is not ` +
+    `monotone under relaxation — 371 binds \`const SUBJECT = 'scripts/probe-round224-a-…'\`, and ` +
+    `its stem \`probe-round224\` is shared with \`probe-round224b-…\`, so stem matching makes the ` +
+    `initializer name TWO files and the alias is dropped. ${sharedStems.length} stems in the ` +
+    `population are shared by more than one file (${sharedStems.join(', ')})`,
+  !underG.includes('probe-round371') &&
+    live.includes('probe-round371') &&
+    sharedStems.includes('probe-round224'),
+);
+const everyRow = [
+  {},
+  { viaIdentifier: false },
+  { pathBare: true },
+  { pathTerminal: true },
+  { pathBare: true, pathTerminal: true },
+  { localHelpers: false },
+  { requireBinding: false },
+  { requireBinding: false, excludeSelf: false },
+  { fullLiteralName: false },
+  { requireBinding: false, excludeSelf: false, fullLiteralName: false },
+];
+g(
+  'G9',
+  `\`probe-round304\` is reached by NO row of the table, including the widest one — so its ` +
+    `exclusion is not a fact about \`requireBinding\`, and it is the SAME criterion that excludes ` +
+    `297: neither file carries a full population filename inside any \`const\` initializer. The ` +
+    `pre-cure sentence named 304 alone and credited 297's exclusion to the hand reading, which ` +
+    `is Round 384 §1's second attribution (345 — re-derive a routed figure in the cure's unit)`,
+  everyRow.every((o) => !classUnder({ ...LIVE, ...o }).includes('probe-round304')),
 );
 
 // ── the CONTROL: the pre-cure spelling, read out of git, and the shipped probe driven ─────────
