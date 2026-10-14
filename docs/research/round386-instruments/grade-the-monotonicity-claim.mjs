@@ -50,20 +50,33 @@ const R385_INSTRUMENT = join(REPO, 'docs/research/round385-instruments/grade-the
  * divergence. So the subject's source is cut at the marker that ends the detector and the head is
  * imported as a module — the detector is his, the harness is mine.
  *
- * The marker is asserted to occur EXACTLY ONCE before anything is cut (347 — a `String` operation
+ * The cut point is asserted to occur EXACTLY ONCE before anything is cut (347 — a `String` operation
  * that hits a second identical anchor operates on a different object than the one it names). The
  * temp module is removed in a `finally`.
+ *
+ * ROUND 388, taking Daedalus's Round 387 `P4` repair: the anchor used to be the BARE STRING
+ * `'// ── grades ──'`, so his file could not so much as MENTION its own section header without this
+ * cut throwing at module load with zero grades printed — which it did, twice, in his Round 387 fire.
+ * It is now a LINE-ANCHORED header pattern, so a header cannot be mentioned into existence: on his
+ * live file plus one comment that names the anchor, the bare string reads 2 and this pattern reads 1
+ * (verified under my own key before taking it, and graded in `round388-instruments/` as `P1`).
+ * His own `P4` derives the anchor by scraping the old marker declaration out of THIS FILE, so taking
+ * the repair reddens his grade — routed to him in Round 388 §4 rather than worked around here. The
+ * declaration is not quoted here, in either spelling: the first draft of this very docblock named it
+ * verbatim, and his scraper matched the explanation instead of the code and captured an ellipsis
+ * (371/383 — a correction that quotes the spelling re-trips the detector reading it).
  */
-const MARKER = '// ── grades ──';
+const HEADER = /^\/\/ ── grades ─+$/m;
+const headerCount = (src) => (src.match(new RegExp(HEADER.source, 'gm')) || []).length;
 const subjectSrc = readFileSync(SUBJECT_INSTRUMENT, 'utf8');
-const markerCount = subjectSrc.split(MARKER).length - 1;
+const markerCount = headerCount(subjectSrc);
 const TEMP = join(dirname(SUBJECT_INSTRUMENT), '.round386-detector.mjs');
 let M;
 try {
-  if (markerCount !== 1) throw new Error(`marker occurs ${markerCount} times, expected 1`);
+  if (markerCount !== 1) throw new Error(`header occurs ${markerCount} times, expected 1`);
   writeFileSync(
     TEMP,
-    subjectSrc.slice(0, subjectSrc.indexOf(MARKER)) +
+    subjectSrc.slice(0, subjectSrc.search(HEADER)) +
       '\nexport { bindingsIn, classUnder, LIVE, HAND_READ_CLASS, NEAR_MISSES, short, stemOf, censusPop, SWEPT, SUBJECT, constStatements };\n',
   );
   M = await import(TEMP);
@@ -326,9 +339,27 @@ g(
 );
 
 // ── the chain, driven once, up here because `K3` grades a row by its OUTPUT and not its bytes ──
-const driveInstrument = (p) => execFileSync(process.execPath, [p], { encoding: 'utf8', maxBuffer: 64 * 1024 * 1024 });
-const out383 = driveInstrument(SUBJECT_INSTRUMENT);
-const out385 = driveInstrument(R385_INSTRUMENT);
+/**
+ * ROUND 388, taking his Round 387 `C2`: this was a bare `execFileSync`, so a red in either driven
+ * instrument arrived here as an EXCEPTION and took the verdict line with it — zero grades printed,
+ * which is not "2 not true", it is nothing at all. His `E5` reddened on a count pin the moment the
+ * subject grew a grade, and that is how this file reported it: by dying at this line. Both drives
+ * now carry their own exit status, so a red downstream reports here instead of killing the run.
+ */
+const driveInstrument = (p) => {
+  try {
+    return {
+      out: execFileSync(process.execPath, [p], { encoding: 'utf8', maxBuffer: 64 * 1024 * 1024 }),
+      status: 0,
+    };
+  } catch (e) {
+    return { out: `${e.stdout ?? ''}${e.stderr ?? ''}`, status: e.status ?? -1 };
+  }
+};
+const d383 = driveInstrument(SUBJECT_INSTRUMENT);
+const d385 = driveInstrument(R385_INSTRUMENT);
+const out383 = d383.out;
+const out385 = d385.out;
 
 // ── K — the census instrument, against a planted positive and a CONTROL ───────────────────────
 /**
@@ -407,12 +438,40 @@ g(
 const tally = (out) => (out.match(/\n(\d+) grades, (\d+) not true/) || []).slice(1).map(Number);
 const [n383, b383] = tally(out383);
 const [n385, b385] = tally(out385);
+/**
+ * ROUND 388 re-aim, on his Round 387 `P1`/`P2`: the first spelling of this grade was
+ * `n383 === 18 && b383 === 0 && n385 === 13 && b385 === 0` — two TOTALS pinned, on two files I had
+ * just invited him to add grades to. It went red the moment he did (24 against 18), reporting a
+ * promotion as a defect (377). What the grade is for is that the chain drives GREEN, so it now reads
+ * the tally each instrument PRINTS, requires the not-true count to be zero at any total, requires a
+ * tally line to be there at all, and requires the exit status to be 0. `D1n` is its known negative.
+ */
+const chainOk = (out, status) => {
+  const t = out.match(/\n(\d+) grades, (\d+) not true/);
+  return !!t && Number(t[2]) === 0 && status === 0;
+};
 g(
   'D1',
   `both instruments in the chain drive green here, re-derived rather than carried (his §6 offered ` +
     `the figures and the discipline is to not take them): round383 ${n383} grades / ${b383} not ` +
-    `true, round385 ${n385} grades / ${b385} not true`,
-  n383 === 18 && b383 === 0 && n385 === 13 && b385 === 0,
+    `true at exit ${d383.status}, round385 ${n385} grades / ${b385} not true at exit ${d385.status}. ` +
+    `Neither total is pinned`,
+  chainOk(out383, d383.status) && chainOk(out385, d385.status),
+);
+g(
+  'D1n',
+  `KNOWN NEGATIVE for \`D1\`, keyed on the not-true COUNT and not on the total (383) — the same ` +
+    `driven output with one token changed, \`0 not true\` → \`1 not true\`, reads ` +
+    `${chainOk(out383.replace(`${n383} grades, 0 not true`, `${n383} grades, 1 not true`), 0)}; the ` +
+    `same output with the total doubled reads ` +
+    `${chainOk(out383.replace(`${n383} grades, 0 not true`, `${n383 * 2} grades, 0 not true`), 0)}; ` +
+    `and a drive with no tally line at all, or a non-zero exit beside a green tally, read ` +
+    `${chainOk('nothing printed', 0)} and ${chainOk(out383, 1)}. So \`D1\` responds to a red and not ` +
+    `to a grade being added`,
+  chainOk(out383.replace(`${n383} grades, 0 not true`, `${n383} grades, 1 not true`), 0) === false &&
+    chainOk(out383.replace(`${n383} grades, 0 not true`, `${n383 * 2} grades, 0 not true`), 0) === true &&
+    chainOk('nothing printed', 0) === false &&
+    chainOk(out383, 1) === false,
 );
 g(
   'D2',
@@ -424,39 +483,50 @@ g(
 
 // ── R — the second finding: the README figure nothing in the chain reads ──────────────────────
 /**
- * `E5` in the Round 385 instrument asserts the subject DRIVES `18 grades, 0 not true`. Nothing
- * reads the headline figure in the subject directory's `README.md`, which still says **14** — the
- * count before this round's four new rows. The README was edited in the SAME commit as the cure
- * (`e922394b`, 45 changed lines, the new rows written into the table), and the line four lines
- * from the top was left alone. Rounds 357/359: prose written beside its own cure needs a pin.
+ * As first written (Round 386): nothing in the chain read the headline figure in the subject
+ * directory's `README.md`, which said **14** — the count before that round's four new rows. The
+ * README was edited in the SAME commit as the cure (`e922394b`, 45 changed lines, the new rows
+ * written into its table) and the line four lines from the top was left alone. Rounds 357/359:
+ * prose written beside its own cure needs a pin.
  *
- * Graded at a PIN, not in the working tree (377, and his own §5): a control keyed on the live
- * README would redden the moment he fixes it, which is a pin that reddens on the cure it routed.
- * The pinned instrument is asserted byte-identical to the live one, so the tally driven above is
- * the tally at the pin, and the comparison is between two objects at one commit.
+ * ROUND 388 re-aim, on his Round 387 `P2`. Two of this grade's four conjuncts were a VERBATIM
+ * source pin (`pinnedMjs === subjectSrc`) and a hardcoded total (`n383 === 18`) on a file I had just
+ * invited him to change, so both broke on the cure this grade routed (357, 375) — and the sentence
+ * beside them went on printing "the instrument at the pin is byte-identical to the live one" while
+ * the conjunct asserting exactly that was the one that had broken (380). The finding itself never
+ * depended on either: it is that a hand-typed tally sat beside a derived one. So the grade now reads
+ * the figure at the pin out of git, declares its one carried constant as a constant, and grades the
+ * CURE — the live README carries no tally at all — against the pinned README as the known positive
+ * for the same selector. `R2` remains the known negative for the figure's content.
  */
 const README_AT = 'e922394b';
 const git = (args) => execFileSync('git', args, { cwd: REPO, encoding: 'utf8' });
-const pinnedMjs = git(['show', `${README_AT}:docs/research/round383-instruments/grade-the-binding-class.mjs`]);
 const pinnedReadme = git(['show', `${README_AT}:docs/research/round383-instruments/README.md`]);
 const readmeFigure = (src) => Number((src.match(/Driven [\d-]+: \*\*(\d+) grades, (\d+) not true/) || [])[1]);
 const pinnedFigure = readmeFigure(pinnedReadme);
+const hasTally = (src) => /\b\d+\s+grades\b/.test(src);
+const liveReadme = readFileSync(join(REPO, 'docs/research/round383-instruments/README.md'), 'utf8');
 g(
   'R1',
-  `SECOND FINDING, graded at a pin — at ${README_AT} the subject directory's \`README.md\` ` +
-    `headlines "${pinnedFigure} grades" and the instrument it describes drives ${n383}, in a ` +
-    `commit that changed ${
+  `SECOND FINDING, graded at a pin, and the defect is now CURED — at ${README_AT} the subject ` +
+    `directory's \`README.md\` headlines "${pinnedFigure} grades", a hand-typed tally beside a ` +
+    `derived one, in a commit that changed ${
       git(['show', '--numstat', '--format=', README_AT, '--', 'docs/research/round383-instruments/README.md'])
         .trim()
         .split(/\s+/)
         .slice(0, 2)
         .map(Number)
         .reduce((a, b) => a + b, 0)
-    } lines of that very README to add the four new rows. The instrument at the pin is ` +
-    `byte-identical to the live one, so ${n383} is its tally at the pin too. \`E5\` grades the ` +
-    `DRIVEN count and the README figure is beside it, ungraded — the §1 shape (a hand-typed ` +
-    `figure next to a derived one) recurring in the doc rather than in the instrument`,
-  pinnedMjs === subjectSrc && pinnedFigure === 14 && n383 === 18 && pinnedFigure !== n383,
+    } lines of that very README to add the four new rows. \`E5\` graded the DRIVEN count and the ` +
+    `README figure sat beside it, ungraded — the §1 shape (a hand-typed figure next to a derived ` +
+    `one) recurring in the doc rather than in the instrument. **SEAM: every figure up to here is ` +
+    `derived from git; the next clause is a CONSTANT** — when this was first reported on 2026-10-13 ` +
+    `the instrument drove 18 against that 14. It is not re-measured, because the pinned instrument ` +
+    `cannot be driven in isolation today and a drive of the LIVE one is a different object (it now ` +
+    `drives ${n383}). **The cure is in:** under a selector that finds a tally at the pin ` +
+    `(${hasTally(pinnedReadme)}) the live README has none (${hasTally(liveReadme)}), which is the ` +
+    `one spelling that cannot go stale`,
+  pinnedFigure === 14 && hasTally(pinnedReadme) === true && hasTally(liveReadme) === false,
 );
 g(
   'R2',

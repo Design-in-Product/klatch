@@ -1,0 +1,84 @@
+# RECORDED DRIVE — Daedalus's Round 387 instrument, PLANTED population
+#
+# Worktree: a detached checkout of 5ad685d2 (.round388-cf), asserted byte-identical to the live
+# tree for all four instruments in the chain before anything was planted.
+# Plant: one token appended to Round 385's subjectRows literal ('G99-planted-absent'), so that
+# instrument reports 13 grades, 1 not true / NOT TRUE: E5 and exits 1. Nothing else changed.
+# Subject hash when recorded: 9a653f88195ebd03 (sha256, first 16).
+# Recorded 2026-10-14 by Theseus, Round 388. Graded by grade-the-uncaught-drive-and-the-window.mjs P4.
+EXPECT — each labelled for whether it preceded its own measurement:
+  X1: his whole published census reproduces under my own harness, axis by axis and member by member — not yet measured when written
+  X2: his `B4` helper-exclusion attribution reproduces from the detector's own legs — not yet measured when written
+  X3: taking his three items reddens his instrument at exactly `R1` and `D1` — not yet measured when written; it was WRONG twice over, see C1/P4
+  X4: `K3` stays green and goes vacuous, because its `everyRow` regex stops matching — not yet measured when written
+  X5: of `R1`'s four conjuncts, exactly the two carrying the finding survive — not yet measured when written
+  X6: axis C's two values are incomparable, so his member list is one of two — ALREADY SEEN in the subject's own G10 before this file existed
+
+GRADE A1: true — X1 HOLDS — every one of the 8 axes in his Round 386 published table reproduces in a harness of mine, as a COUNT and as a MEMBER LIST (340): viaId 0, pathB 0, pathT 8/371, local 32/258+259+325, readM 0, requi 0, exclu 4/224, fullL 8/371. 0 axes disagree with what he published. His four zeroes come back as zeroes under the same key that returns the four non-zeroes, so this is a reading and not a silence (355)
+GRADE A2: true — X2 HOLDS — his `B4` mechanism attribution reproduces from the detector's own legs rather than from a re-reading of the files: 258 binds [RE,RE] → [∅], all of them re-classified as helpers; 259 binds [regexLiteralEnd,RE] → [∅], all of them re-classified as helpers; 325 binds [handRollsExit] → [∅], all of them re-classified as helpers. Attributed at 2 distinct narrowest keys for 3 members, which is his own Round 386 red holding here too: "lost somewhere in the space" and "lost at this key" are different sets
+GRADE A3: true — and his §2 README finding, verified from git rather than taken: at e922394b that README headlined 14 in a commit that changed 45 lines of it to write four new rows into its table. The cure is not a fresher figure — the live README carries NO grade tally at all (true), which is the one property that cannot go stale; `G15`/`G16` in the subject grade the absence and its two controls
+node:internal/errors:999
+  const err = new Error(message);
+              ^
+
+Error: Command failed: /opt/homebrew/Cellar/node/26.5.0/bin/node /Users/xian/Development/klatch-worktrees/theseus/.round388-cf/docs/research/round385-instruments/grade-the-sentence-against-the-literals.mjs
+    at genericNodeError (node:internal/errors:999:15)
+    at wrappedFn (node:internal/errors:544:14)
+    at checkExecSyncError (node:child_process:942:11)
+    at execFileSync (node:child_process:978:15)
+    at file:///Users/xian/Development/klatch-worktrees/theseus/.round388-cf/docs/research/round387-instruments/grade-the-routed-cure-against-its-own-pins.mjs:206:27 {
+  status: 1,
+  signal: null,
+  output: [
+    null,
+    'EXPECT — written down before anything drove:\n' +
+      '  E1: CF-G alone (stem matching, every other flag live) reads 10 — gained [], lost []\n' +
+      '  E2: CF-FG (binding requirement off AND stem matching) is what admits `297`\n' +
+      '  E3: `304` stays out under both\n' +
+      '  E4: CF-E (binding requirement off, self-exclusion off) gains exactly `246` and `299`\n' +
+      '\n' +
+      'GRADE A1: true — his "eleven naming sites" in `224` reproduces under my own key at the OCCURRENCE granularity — 11 of them — and they sit in 3 const initializers (MIGRATED, TYPE_ONLY_EXPECTED, DECL_ONLY_EXPECTED), every one of them naming only inside STRING BODIES and none of them performing a read. So `224` is a fixture array of expected site labels, the string-fixture known NEGATIVE of his Round 382 `B0` — not a near miss. `requireBinding` is load-bearing exactly as `CF-F`\'s predicate says; what it holds out there is a fixture\n' +
+      "GRADE A2: true — and `297` and `304` are excluded by the SAME criterion, not two different ones: neither carries a full population filename inside any const initializer (0 and 0), though each names one in an expression — `297` inside `read(R225).includes('probe-round219-…')`, `304` inside a `.test(read(join(…)))`. The pre-cure sentence credited only `304`'s exclusion to the hand reading\n" +
+      'GRADE B1: true — CONTROL — at a43a0c21 the `CF-F` sentence published "3" of the near misses reached, and its OWN literals in the same file support 2: `NEAR_MISSES` is {244, 262, 297, 304} and the predicate\'s gained list is [224, 244, 262], intersection [244, 262]. Graded as that disagreement, so the cure quoting the bad sentence to report it cannot make this pass, and the cure fixing it cannot make it fail\n' +
+      'GRADE B3: true — KNOWN NEGATIVE — the same pinned source with one word changed, `three` → `two`, and the control flips: it reads 2 published against 2 supported and the disagreement is gone, with both member lists byte-identical to the positive. So `B1` is reading the CLAIM and not a structural accident, and a read failure is distinguishable from agreement — `read` is true here and was false for the first spelling of this control, which the seam-join repaired\n' +
+      'GRADE B2: true — and the pre-cure sentence named exactly one unreached near miss (`304`) where its own literals support two (`297`, `304`), and said nothing about `224`, which is in the gained list and in no near-miss list\n' +
+      'GRADE C0: true — the mutation anchor occurs exactly once in the instrument before anything is mutated — a String.replace that hits a second identical string grades a different arm than the one it names (347)\n' +
+      'GRADE C1: true — BEHAVIOURAL — drop `244` from `NEAR_MISSES` and every figure in the `CF-F` sentence moves with it: reaches 2 of 4 → 1 of 3, misses 2 → 2, not-a-near-miss 1 → 2. A hand-typed sentence would have printed the same four numbers under both. This grades the SEAM by driving it, not by re-reading the source that implements it (369)\n' +
+      "GRADE C2: true — and the live sentence's own figures agree with the live literals: reaches 2 of 4, does not reach 2, and 1 gained member is in no near-miss list — which is the claim Round 384 §1 found false in all three of its parts\n" +
+      "GRADE E1: true — my OWN expectation was WRONG, and it is the one that paid: I predicted CF-G alone would read 10 with nothing gained or lost. It reads 15, gains 6, and LOSES `371` — a relaxation that is not a superset. The alias leg carries a uniqueness quantifier (`n.length === 1`) and a quantifier is not monotone under relaxation: `371` binds `const SUBJECT = 'scripts/probe-round224-a-…'`, whose stem is shared with `probe-round224b-…`, so stem matching makes that initializer name two files and the alias is dropped. Kept as a grade rather than fixed quietly (Theseus, Round 384 §2)\n" +
+      'GRADE E2: true — E2 was right that `297` comes in once the binding requirement and the full-filename criterion are both off, and wrong about which row isolates it: CF-G ALONE admits it, so the isolating axis is the full-filename criterion and not the conjunction. A wide combined row would have attributed it to two axes at once\n' +
+      'GRADE E3: true — E3 holds — `304` is in no gained list on any row, which `G9` in the subject instrument grades across every row of the table including the widest\n' +
+      "GRADE E4: true — E4 holds — CF-E gains exactly `246` and `299` over CF-F, reproducing Theseus's Round 384 §2 under my key: the self-exclusion leg is inert under the live key and load-bearing with the binding requirement off\n" +
+      "NOT TRUE E5: false — and the subject instrument drives green as a whole with the new rows in it: it reports 24 grades and 0 not true, and the rows this round added are all present by name (CF-E, CF-G, G8, G9, G99-planted-absent). The predicate reads the tally the subject PRINTS and requires the not-true count to be zero; it does not pin the total, because a total pinned here reddens on a grade added there (377) and, driven from Round 386's instrument through an uncaught `execFileSync`, would crash rather than report\n" +
+      '\n' +
+      '13 grades, 1 not true\n' +
+      'NOT TRUE: E5\n',
+    ''
+  ],
+  pid: 98828,
+  stdout: 'EXPECT — written down before anything drove:\n' +
+    '  E1: CF-G alone (stem matching, every other flag live) reads 10 — gained [], lost []\n' +
+    '  E2: CF-FG (binding requirement off AND stem matching) is what admits `297`\n' +
+    '  E3: `304` stays out under both\n' +
+    '  E4: CF-E (binding requirement off, self-exclusion off) gains exactly `246` and `299`\n' +
+    '\n' +
+    'GRADE A1: true — his "eleven naming sites" in `224` reproduces under my own key at the OCCURRENCE granularity — 11 of them — and they sit in 3 const initializers (MIGRATED, TYPE_ONLY_EXPECTED, DECL_ONLY_EXPECTED), every one of them naming only inside STRING BODIES and none of them performing a read. So `224` is a fixture array of expected site labels, the string-fixture known NEGATIVE of his Round 382 `B0` — not a near miss. `requireBinding` is load-bearing exactly as `CF-F`\'s predicate says; what it holds out there is a fixture\n' +
+    "GRADE A2: true — and `297` and `304` are excluded by the SAME criterion, not two different ones: neither carries a full population filename inside any const initializer (0 and 0), though each names one in an expression — `297` inside `read(R225).includes('probe-round219-…')`, `304` inside a `.test(read(join(…)))`. The pre-cure sentence credited only `304`'s exclusion to the hand reading\n" +
+    'GRADE B1: true — CONTROL — at a43a0c21 the `CF-F` sentence published "3" of the near misses reached, and its OWN literals in the same file support 2: `NEAR_MISSES` is {244, 262, 297, 304} and the predicate\'s gained list is [224, 244, 262], intersection [244, 262]. Graded as that disagreement, so the cure quoting the bad sentence to report it cannot make this pass, and the cure fixing it cannot make it fail\n' +
+    'GRADE B3: true — KNOWN NEGATIVE — the same pinned source with one word changed, `three` → `two`, and the control flips: it reads 2 published against 2 supported and the disagreement is gone, with both member lists byte-identical to the positive. So `B1` is reading the CLAIM and not a structural accident, and a read failure is distinguishable from agreement — `read` is true here and was false for the first spelling of this control, which the seam-join repaired\n' +
+    'GRADE B2: true — and the pre-cure sentence named exactly one unreached near miss (`304`) where its own literals support two (`297`, `304`), and said nothing about `224`, which is in the gained list and in no near-miss list\n' +
+    'GRADE C0: true — the mutation anchor occurs exactly once in the instrument before anything is mutated — a String.replace that hits a second identical string grades a different arm than the one it names (347)\n' +
+    'GRADE C1: true — BEHAVIOURAL — drop `244` from `NEAR_MISSES` and every figure in the `CF-F` sentence moves with it: reaches 2 of 4 → 1 of 3, misses 2 → 2, not-a-near-miss 1 → 2. A hand-typed sentence would have printed the same four numbers under both. This grades the SEAM by driving it, not by re-reading the source that implements it (369)\n' +
+    "GRADE C2: true — and the live sentence's own figures agree with the live literals: reaches 2 of 4, does not reach 2, and 1 gained member is in no near-miss list — which is the claim Round 384 §1 found false in all three of its parts\n" +
+    "GRADE E1: true — my OWN expectation was WRONG, and it is the one that paid: I predicted CF-G alone would read 10 with nothing gained or lost. It reads 15, gains 6, and LOSES `371` — a relaxation that is not a superset. The alias leg carries a uniqueness quantifier (`n.length === 1`) and a quantifier is not monotone under relaxation: `371` binds `const SUBJECT = 'scripts/probe-round224-a-…'`, whose stem is shared with `probe-round224b-…`, so stem matching makes that initializer name two files and the alias is dropped. Kept as a grade rather than fixed quietly (Theseus, Round 384 §2)\n" +
+    'GRADE E2: true — E2 was right that `297` comes in once the binding requirement and the full-filename criterion are both off, and wrong about which row isolates it: CF-G ALONE admits it, so the isolating axis is the full-filename criterion and not the conjunction. A wide combined row would have attributed it to two axes at once\n' +
+    'GRADE E3: true — E3 holds — `304` is in no gained list on any row, which `G9` in the subject instrument grades across every row of the table including the widest\n' +
+    "GRADE E4: true — E4 holds — CF-E gains exactly `246` and `299` over CF-F, reproducing Theseus's Round 384 §2 under my key: the self-exclusion leg is inert under the live key and load-bearing with the binding requirement off\n" +
+    "NOT TRUE E5: false — and the subject instrument drives green as a whole with the new rows in it: it reports 24 grades and 0 not true, and the rows this round added are all present by name (CF-E, CF-G, G8, G9, G99-planted-absent). The predicate reads the tally the subject PRINTS and requires the not-true count to be zero; it does not pin the total, because a total pinned here reddens on a grade added there (377) and, driven from Round 386's instrument through an uncaught `execFileSync`, would crash rather than report\n" +
+    '\n' +
+    '13 grades, 1 not true\n' +
+    'NOT TRUE: E5\n',
+  stderr: ''
+}
+
+Node.js v26.5.0
