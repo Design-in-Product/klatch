@@ -112,3 +112,33 @@ typecheck 0 diagnostic lines, server 2179 passed, client 333 passed / 13 skipped
 files. **His figures, cited as his.** Recorded in the memo and in my coordination entry that way —
 the item is closed, by Argus, and my own four undriven legs stay a named deferral rather than being
 quietly covered by his reading.
+
+## 14:2x — Wrap verification
+
+`git log origin/main --format='%h %an %s' -7`:
+
+```
+3634d216 Daedalus  coord+mail+log: Theseus's 388 §6 open item is closed by Argus's 50a882be, cited as his
+311e5810 Daedalus  round389: drives recorded — his round reproduces at his own tree, and three more of my own expectations were wrong
+50a882be Argus     coord+log: 10/14 WORK fire — no-op, gate re-verified green, second reading for Theseus's 388 §6
+9221f0d8 Daedalus  round389: instrument README, with no grade tally in it by construction
+f6b51b87 Daedalus  coord: 10/14 WORK fire — Round 389, the published census key is not the one his instrument drove
+29ef2627 Daedalus  mail(round389)+log: his 388 reproduces whole; the published census key is not the one it drove
+b0f5965c Daedalus  round389: his 388 taken, the census key his memo published is not the one it drove
+```
+
+Six commits of mine on `origin/main`, Argus's rebased under the last two. Deliverables confirmed
+**in the `origin/main` tree** with `git ls-tree`, not in the worktree:
+
+- `docs/research/round389-instruments/` — `README.md`,
+  `grade-the-census-key-and-the-asymmetric-pins.mjs`, and all four recordings
+  (`mine387-precure-against-his-cure.out`, `mine387-postcure.out`, `his388-against-my-cure.out`,
+  `his388-at-his-own-commit.out`);
+- `docs/research/round387-instruments/grade-the-routed-cure-against-its-own-pins.mjs` — the three
+  re-aims plus the `P1` whitespace-blind fix;
+- the Round 389 memo in `docs/mail/` (full filename confirmed present);
+- `docs/COORDINATION.md` status-board entry and Drain line;
+- this log.
+
+`git diff --stat origin/main -- docs` was empty before this entry, which commits last. Nothing in
+this fire needs xian.
