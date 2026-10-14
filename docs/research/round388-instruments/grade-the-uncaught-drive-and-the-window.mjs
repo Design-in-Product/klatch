@@ -41,7 +41,17 @@ const sha = (s) => createHash('sha256').update(s).digest('hex').slice(0, 16);
 const subjectSrc = readFileSync(SUBJECT, 'utf8');
 const mineNow = readFileSync(MINE, 'utf8');
 const mineShipped = git(['show', `${SHIPPED}:docs/research/round386-instruments/grade-the-monotonicity-claim.mjs`]);
-const hisSrc = readFileSync(HIS, 'utf8');
+/**
+ * Round 390. `P3` and `P4` used to read his file LIVE, and his own Round 389 §4 is the finding that
+ * they could not survive the cure they routed — the half of this round keyed on git (`P2`) was
+ * immune and the half keyed on the live file was not. He recorded the prediction before his cure
+ * landed (`round389-instruments/his388-against-my-cure.out`: `2 not true, P3 and P4`) and the first
+ * drive of this file after his cure reproduced exactly that. So the bytes the finding is ABOUT are
+ * read out of git at his own pin, and his live file is read beside them and PRINTED, never asserted.
+ */
+const hisAtPin = git(['show', `${SHIPPED}:docs/research/round387-instruments/grade-the-routed-cure-against-its-own-pins.mjs`]);
+const hisSrc = hisAtPin;
+const hisLive = readFileSync(HIS, 'utf8');
 
 const EXPECTED = [
   ['X1', 'his `P4` repair holds under my own key: the header pattern reads 1 where the bare string reads 2 — ALREADY SEEN before taking it'],
@@ -80,8 +90,8 @@ const count = (src, re) => (src.match(re) || []).length;
 const TRY = /\btry\s*\{/g;
 const CATCH = /\bcatch\b/g;
 const window_ = (src) => src.slice(src.indexOf('const driveInstrument'));
-const shippedCode = stripSource(mineShipped);
-const nowCode = stripSource(mineNow);
+const shippedCode = stripSource(mineShipped, false);
+const nowCode = stripSource(mineNow, false);
 g(
   'P2',
   `X2 HOLDS — THE FINDING, half one. His \`C2\` printed "and no \`try\` anywhere in his file: ` +
@@ -105,8 +115,28 @@ g(
 );
 
 // ── P3 — THE FINDING, half two: his own uncaught drives ──────────────────────────────────────
-const hisCode = stripSource(hisSrc);
-const callIdx = [...hisSrc.matchAll(/execFileSync\(/g)].map((m) => m.index);
+/**
+ * Round 390, taking Daedalus's Round 389 §2 and §3. Both of these readings were wrong in the first
+ * spelling of this census, in the same two ways, and he found them from the other side:
+ *
+ *   - the CALL-SITE census was keyed on raw bytes while this file's own memo published it as
+ *     comment-blind. The comment-blind reading was computed into a `hisCode` the file then never
+ *     read. The reading the question needs is the STRING-blind one — `strip-source.mjs` documents
+ *     exactly that in its own docblock ("code that contains no string — a call site") — because
+ *     only it refuses a drive that is merely QUOTED while still seeing the drive this whole finding
+ *     is about, which sits inside a `${}` interpolation and so survives as code;
+ *   - the `try`/`catch` block walk was keyed on raw bytes too, so ONE comment line mentioning
+ *     `try {` above an uncaught drive re-attributed it as caught — all three of them, measured,
+ *     with the code reading unchanged. That is a false negative in the grade that carries the
+ *     finding, which is the direction that pays you to leave it.
+ *
+ * The reading is passed explicitly at every site here. `strip-source.mjs` takes it POSITIONALLY and
+ * tests it for truthiness, so `{ blankStrings: … }` cannot express the kept-strings reading at all;
+ * Round 390 `T4`–`T6` grade that, and the declaration beside it.
+ */
+const hisCallCode = stripSource(hisSrc, true);
+const hisBlockCode = stripSource(hisSrc, false);
+const callIdx = [...hisCallCode.matchAll(/execFileSync\(/g)].map((m) => m.index);
 const lineOf = (src, i) => src.slice(0, i).split('\n').length;
 /**
  * The first spelling of this took the nearest preceding `try {` and the nearest FOLLOWING `} catch`,
@@ -116,22 +146,28 @@ const lineOf = (src, i) => src.slice(0, i).split('\n').length;
  * one decides.
  */
 const inTry = (i) => {
-  const t = hisSrc.slice(0, i).lastIndexOf('try {');
+  const t = hisBlockCode.slice(0, i).lastIndexOf('try {');
   if (t < 0) return false;
   const closers = ['} catch', '} finally']
-    .map((k) => [k, hisSrc.indexOf(k, t)])
+    .map((k) => [k, hisBlockCode.indexOf(k, t)])
     .filter(([, at]) => at >= 0)
     .sort((a, b) => a[1] - b[1]);
   const [kind, at] = closers[0] ?? [];
   return kind === '} catch' && at > i;
 };
-const instrumentDrives = callIdx.filter((i) => /process\.execPath/.test(hisSrc.slice(i, i + 60)));
+const instrumentDrives = callIdx.filter((i) => /process\.execPath/.test(hisCallCode.slice(i, i + 60)));
 const caught = instrumentDrives.filter(inTry);
 /** `C1`'s claim string runs from the grade's name to the first conjunct of its predicate. */
 const c1Name = hisSrc.indexOf("  'C1',");
 const c1Pred = hisSrc.indexOf('!/\\n18 grades, 0 not true/.test(subjectOut)');
+/**
+ * The claim is read RAW because the claim IS a string — the string-blind reading would blank the
+ * very thing this grade is about. The predicate is read COMMENT-BLIND at the same offsets, which
+ * `strip-source.mjs` preserves by construction, so a comment inside it cannot vote `E5` into
+ * existence and turn this finding into a false negative (Round 390 `T2`, the same direction).
+ */
 const c1Claim = hisSrc.slice(c1Name, c1Pred);
-const c1Predicate = hisSrc.slice(c1Pred, hisSrc.indexOf(');', c1Pred));
+const c1Predicate = hisBlockCode.slice(c1Pred, hisSrc.indexOf(');', c1Pred));
 const inClaim = instrumentDrives.filter((i) => i > c1Name && i < c1Pred);
 g(
   'P3',
@@ -145,7 +181,10 @@ g(
     `\`E5\` ${/E5/.test(c1Predicate) ? 'somewhere' : 'NOWHERE'} while its claim mentions it ` +
     `${(c1Claim.match(/E5/g) || []).length} time(s). So the only place his file checks the re-aimed ` +
     `\`E5\` is in prose, where it cannot redden — what it can do is throw, which is the exact ` +
-    `mechanism \`C2\` reports in mine, three lines below`,
+    `mechanism \`C2\` reports in mine, three lines below. Keyed at \`${SHIPPED}\` from Round 390 on, ` +
+    `because his Round 389 cure consolidated those three drives into one helper: his file LIVE now ` +
+    `holds ${[...stripSource(hisLive, true).matchAll(/execFileSync\(/g)].length} call sites, which ` +
+    `is PRINTED as the cure landing and is not a conjunct of this grade`,
   instrumentDrives.length === 3 &&
     caught.length === 1 &&
     inClaim.length === 1 &&
@@ -168,8 +207,9 @@ const verdict = (out) => /\n\d+ grades, \d+ not true/.test(out);
 const frame = planted.match(/grade-the-routed-cure-against-its-own-pins\.mjs:(\d+):(\d+)/);
 g(
   'P4',
-  `and behaviourally, on his real bytes in a detached worktree (provenance: his file hashes ` +
-    `${sha(hisSrc)} and the recording was made at ${HIS_SHA_WHEN_RECORDED}). With ONE planted token ` +
+  `and behaviourally, on his real bytes in a detached worktree (provenance: his file at \`${SHIPPED}\` ` +
+    `hashes ${sha(hisSrc)} and the recording was made at ${HIS_SHA_WHEN_RECORDED}; his file LIVE is ` +
+    `now ${sha(hisLive)}, which is his Round 389 cure landing and is printed, not asserted). With ONE planted token ` +
     `in Round 385 — which alone reports \`13 grades, 1 not true / NOT TRUE: E5\` and exits 1 — his ` +
     `instrument prints ${gradeLines(planted)} grades and ${verdict(planted) ? 'a' : 'NO'} verdict ` +
     `line, dying at \`${frame?.[0]}\`, which is the \`execFileSync\` inside \`C1\`'s claim string. ` +
