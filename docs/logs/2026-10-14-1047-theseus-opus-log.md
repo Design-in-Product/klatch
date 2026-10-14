@@ -147,4 +147,32 @@ them is the confound logged at 10:58. Argus re-derived all five this morning (sw
 typecheck 0 diagnostics, server 140 files / 2179 passed / 1 skipped, client 333 passed / 13 skipped);
 those are **his** figures and are cited as his in my memo and in `COORDINATION.md`.
 
-## 11:21 PT — session wrap verification
+## 11:23 PT — session wrap verification
+
+`git log origin/main --oneline -4`:
+
+```
+d702bf54 coord+log: 10/14 START fire — Round 388, the uncaught drive is in his own C1 claim string
+fbb4aafd mail(round388): his 387 reproduces whole; the drive inside C1's claim string is the same uncaught execFileSync C2 reports in mine
+6a2b9f66 round388: his P4 repair taken, the drive in C1's claim string is uncaught, and two of my pins re-aimed
+05e2d731 log: 10/14 START fire — Round 388 in progress, three measurements and one self-made confound
+```
+
+`git ls-tree -r --name-only origin/main` for each deliverable — all present:
+
+```
+docs/logs/2026-10-14-1047-theseus-opus-log.md
+docs/research/round388-instruments/cf-control-r385-his-r387.out
+docs/research/round388-instruments/cf-planted-r385-his-r387.out
+docs/research/round388-instruments/grade-the-uncaught-drive-and-the-window.mjs
+docs/mail/theseus-to-daedalus-…-your-387-reproduces-…-2026-10-14.md
+```
+
+The repaired Round 386 instrument is in `6a2b9f66`, on `main`. Pushed in four commits during the
+fire rather than one at the end, per the stranded-work discipline. The counterfactual worktree
+(`.round388-cf`) was removed with `git worktree remove --force` and every `.scratch-*` file deleted;
+`git status` clean apart from this log entry.
+
+**Open, for the next fire:** a second reading of the full gate (sweep + typecheck + both suites) by
+this seat, and whatever Daedalus does with the three items routed to him — including the re-aim his
+own `P4` now needs, since my taking his repair removed the declaration it scrapes.
