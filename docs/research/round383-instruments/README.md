@@ -33,8 +33,10 @@ arguing it.
 | `CF-B1` | **B1** — the alias literal must carry no `scripts/` prefix | 8 | `232`, `371` |
 | `CF-B2` | **B2** — the alias literal must BE the whole initializer | 8 | `225`, `232` |
 | `CF-B3` | **B1 + B2** — Theseus's Round 378 v2 key | **7** | `225`, `232`, `371` |
-| `CF-C` | **C** — the local read-helper leg removed | 10 | none — inert today, kept anyway |
+| `CF-C` | **C** — the local read-helper leg removed | 10 | none — inert *at this point of the flag space*, kept anyway |
 | `CF-F` | the bound-to-an-identifier criterion removed | 13 | gains `224`, `244`, `262` |
+| `CF-E` | **E** — self-exclusion removed, with `CF-F` also off | 15 | gains `246`, `299` over `CF-F` |
+| `CF-G` | **G** — a naming site may carry the `probe-roundNNN` STEM, not the whole filename | 15 | gains `224`, `297`, `299`, `301`, `323`, `325`; **loses `371`** |
 | `CF-D` | the strings-blanked guard removed | subject reads 5 sites, not 3 | — |
 
 `CF-B3` is the point of the table. Theseus's Round 382 §2 moral — *one known positive per SHAPE is
@@ -42,9 +44,22 @@ coverage of one AXIS* — is confirmed by splitting axis B in two: his v2 carrie
 binding **shape**, and both of them spelled the **path** the same way. The two sub-axes lose
 *different* members, which is why neither alone reproduces his seven and both together do, exactly.
 
-`CF-C` is recorded as **inert**. The class is the same with and without the local-read-helper leg.
-It is kept because the two near misses that use a helper are excluded for binding no **source**,
-and that is a reason worth being able to state rather than to luck into.
+`CF-C` is recorded as **inert at this point of the flag space** — the class is the same with and
+without the local-read-helper leg *with every other flag live*, which is the only place it has been
+driven. Theseus's Round 384 §2 is the correction that forced that qualifier: his own `excludeSelf`
+leg reads inert under the live key and is load-bearing the moment the binding requirement comes
+off, because a `const SELF = '…'` binds no read and the read requirement masks the leg completely.
+`CF-E` is that row, driven here. The helper leg is kept because the two near misses that use a
+helper are excluded for binding no **source**, and that is a reason worth being able to state
+rather than to luck into.
+
+`CF-G` is the row that **loses** a member by relaxing a criterion, and it is the only one in the
+table that does. The relaxed key is not a superset of the live one because the alias leg carries a
+uniqueness quantifier — `n.length === 1` — and a quantifier is not monotone under relaxation.
+`371` binds `const SUBJECT = 'scripts/probe-round224-a-…'`; the stem `probe-round224` is shared
+with `probe-round224b-…`, so under stem matching that initializer names **two** files, the alias is
+dropped, and `subjectSrc` reaches nothing. Five stems in the population are shared by two files:
+`223`, `224`, `253`, `255`, `374`.
 
 ## Near misses, hand-read and excluded for stated reasons
 
@@ -56,8 +71,26 @@ and that is a reason worth being able to state rather than to luck into.
 | `probe-round304` | reads a named probe live, inline inside the check expression; no `const` at all |
 
 `CF-F` shows the criterion is load-bearing by admitting `224`, `244` and `262` when it is dropped.
-It does **not** reach `304`, whose naming site is in no `const` statement at all. That exclusion
-rests on the hand reading, and the instrument says so rather than letting the flag take credit.
+Of the four near misses it reaches **two** — `244` and `262`. `224` is **not** a near miss and is
+in no near-miss list in the repo: its eleven naming occurrences are all inside **string bodies**,
+in three const initializers (`MIGRATED`, `TYPE_ONLY_EXPECTED`, `DECL_ONLY_EXPECTED`) none of which
+performs a read. It is a fixture array of expected site labels — a string-fixture known
+**negative**. `requireBinding` is load-bearing exactly as the predicate says; what it holds out
+there is a fixture.
+
+It does **not** reach `297` or `304`, and the two are excluded by the **same** criterion, not by
+two different ones: neither carries a full population filename inside any `const` initializer.
+`304` names `probe-round276-…` inside a `.test(read(join(…)))` expression; `297` resolves its
+files by prefix (`const R225 = fileFor('probe-round225')`) and its one full-filename occurrence is
+inside `read(R225).includes('probe-round219-…')`, an expression. `G9` grades that by driving every
+row of the table including the widest and finding `304` in none of them. `CF-G` is the row that
+isolates it: relax the criterion to the stem and `297` comes in, through `const src = read(R295)`.
+
+> Round 384 §1 found this paragraph and the `CF-F` row's prose both claiming *three of the four*.
+> The predicate was right and the sentence beside it graded nothing. The instrument's cure is a
+> **seam**: `cf()`'s `claim` may now be a function of the same `(got, lost, gained)` the predicate
+> reads, and every figure in `CF-F`'s sentence is derived from `NEAR_MISSES` and `gained` rather
+> than typed. The numbers in this README are checked against that output by `round385-instruments/`.
 
 ## Two things the control had to survive
 
