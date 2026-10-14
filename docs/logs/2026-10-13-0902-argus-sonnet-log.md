@@ -94,3 +94,53 @@ All five figures byte-identical to the START-fire checkpoint above — no new di
 `git status --porcelain` clean apart from this entry and `COORDINATION.md`. No port bound at close,
 no database opened, no model called. Two consecutive checks found nothing further unblocked — fire
 closed bounded. Nothing new needs xian beyond the one standing item (CIO/Laya).
+
+## 18:0x PT — STOP fire (no-op, gate re-verified green)
+
+`git fetch origin main`: 11 new commits since own WORK-fire checkpoint (`b5cfd5f6`), authorship
+checked with `%an`, none mine — Daedalus's Round 383 chain, Theseus's Round 384 chain, Calliope's
+WORK-fire no-op, Daedalus's Round 385 chain, and Daedalus's own STOP-fire wrap-verification log
+(`3573decf`). `git diff --stat b5cfd5f6..HEAD -- packages/` empty — all eleven commits are
+`scripts/`/`docs/research/`/mail/coordination/log only, no product code.
+
+**Mail checked:** two new files since the WORK-fire read, both Daedalus/Theseus round-chain (383,
+384, 385 are one continuous exchange — 383 was already read last fire; 384 and 385 are new), cc
+Argus:
+- `theseus-to-daedalus-...-your-383-reproduces-and-cf-f-is-the-one-row-whose-predicate-and-prose-
+  are-about-different-things-2026-10-13.md` (Round 384) — read in full. Theseus reproduces Daedalus's
+  383 class as a set under an independent key, confirms the `CF-F` gained-list predicate is correct,
+  and finds the *prose* beside it wrong in two counts (reaches two of four near misses, not three;
+  misses two, not one) plus a bad attribution (`224` isn't a near miss at all). Also reports his own
+  pre-drive `EXPECT` was wrong — his relaxed key gained two extra members because he hadn't exposed
+  `excludeSelf`. Re-aims `C4`–`C7` to a pin, adds a new live `C8`. Ends "Nothing needs xian."
+- `daedalus-to-theseus-...-your-384-is-taken-whole-and-the-row-i-added-to-close-your-gap-lost-a-
+  member-by-relaxing-2026-10-13.md` (Round 385) — read in full. Daedalus takes 384 whole, cures
+  `CF-F`'s prose as a derived function of the same `(got, lost, gained)` the predicate reads rather
+  than hand-typed words, verifies both of Theseus's attributions (and finds `304` shares `297`'s
+  exclusion criterion, which the table didn't isolate until now — new row `CF-G`). His own pre-drive
+  `EXPECT` was also wrong: `CF-G` alone loses a member (`371`) rather than reading unchanged, because
+  the alias leg quantifies (`n.length === 1`) rather than filters, and a quantifier isn't monotone
+  under relaxation — inverting a note from his own Round 380/381. Ends "Nothing needs xian."
+
+Both threads are the Daedalus/Theseus round-chain lane; cc to Argus is for visibility only, no action
+for this seat beyond the standing cc (same pattern as the two entries above). All four writable
+cross-repo mailboxes re-checked for anything addressed to Argus/Klatch by name: nothing new since the
+WORK-fire read (all listings show only pre-10/13 dates).
+
+**Gate re-derived fresh, not taken from any memo** (port 3001 confirmed free first):
+- `npm run typecheck` all four workspaces — 0 diagnostic lines.
+- `npm test -w packages/server` unpiped — **140 files/2179 passed/1 skipped (2180)**.
+- `npm test -w packages/client` unpiped — **26 passed|13 skipped (39) / 333 passed|13 skipped (346)**.
+- `node scripts/sweep-probes.mjs --census` — **CENSUS OK, 153 probe files, 43 swept/110 deferred**.
+- Full driving sweep on a free port — **SWEEP PASSED — 43 of 43 swept probes green, 0 red,
+  0 blocked, 0 census problem(s), 110 deferred**.
+
+All five figures byte-identical to the WORK-fire checkpoint above — no new discrepancy.
+
+**Standing blockers re-checked, both unmoved:**
+- CIO Laya/AAXT thread — still `fe650e02` (10/6) as last touch, parked on xian's scheduling call.
+- Intel sweep cadence — `docs/intel/2026-10-12-sweep.md` still the latest, next due ~10/19.
+
+`git status --porcelain` clean apart from this entry and `COORDINATION.md`. No port bound at close,
+no database opened, no model called. Two consecutive checks found nothing further unblocked — fire
+closed bounded. Nothing new needs xian beyond the one standing item (CIO/Laya).
