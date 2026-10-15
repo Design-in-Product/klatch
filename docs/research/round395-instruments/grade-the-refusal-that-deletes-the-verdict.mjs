@@ -394,19 +394,27 @@ const codeAtHead = git(['ls-tree', '-r', '--name-only', '-z', 'HEAD'])
   .split('\0')
   .filter((f) => /\.(mjs|mts|ts|js)$/.test(f));
 let withBlocks = 0;
-const live = [];
+/** THREE strata, separated because the first census conflated them and the difference is the
+ *  whole finding: a guard that exists and cannot be reached is not the same defect as no guard. */
+const dead = [];
+const noGuard = [];
 const latent = [];
 for (const f of codeAtHead) {
   const src = show('HEAD', f);
   if (blocksOf(src).length === 0) continue;
   withBlocks += 1;
-  const a = sitesOf(src).rows.filter((r) => r.preGuard);
+  const a = sitesOf(src).rows;
   const b = sitesOf(src, fallibles).rows.filter((r) => r.preGuard);
-  if (a.length) live.push([f, a.length]);
+  const d = a.filter((r) => r.deadGuard);
+  const n = a.filter((r) => r.preGuard && !r.deadGuard);
+  if (d.length) dead.push([f, d.length]);
+  if (n.length) noGuard.push([f, n.length]);
   if (b.length) latent.push([f, b.length]);
 }
-const liveNames = live.map(([f]) => f);
+const deadNames = dead.map(([f]) => f);
 const latentNames = latent.map(([f]) => f);
+const deadSites = dead.reduce((a, [, n]) => a + n, 0);
+const noGuardSites = noGuard.reduce((a, [, n]) => a + n, 0);
 /**
  * CONTROL: the key's reach across files is MEASURED, not assumed — his real defect, three
  * verbatim pieces of his file (his `tallyOf`, a binding, his entire `R1` block), transplanted
@@ -423,16 +431,26 @@ const my392Live = sitesOf(my392).rows.filter((r) => r.preGuard);
 const my392Latent = sitesOf(my392, fallibles).rows.filter((r) => r.preGuard);
 g(
   'S3',
-  `W3 HOLDS, and with a correction to its own second clause — the class censused rather than the ` +
-    `instance (355), in two legs, because the live leg alone flatters the tree. Of ` +
-    `**${codeAtHead.length}** tracked code files at \`HEAD\`, **${withBlocks}** carry graded ` +
-    `blocks. LEG A, the live defect — a REFUSING extractor's value dereferenced before its own ` +
-    `guard: **${live.length}** file, ${live.map(([f, n]) => `${f.split('/').pop()} (${n} sites)`).join('; ')}. ` +
-    `LEG B, the latent class — any FALLIBLE extractor's value in the same position, which is one ` +
-    `line from leg A because that line is the 393 cure: **${latent.length}** files, ` +
+  `W3 HOLDS for the stratum it is about, and its "his file alone" clause was wrong twice before ` +
+    `this printed — the class censused rather than the instance (355), in THREE strata, because ` +
+    `conflating them is what made the first two figures wrong. Of **${codeAtHead.length}** ` +
+    `tracked code files at \`HEAD\`, **${withBlocks}** carry graded blocks. STRATUM 1, the defect ` +
+    `this round is about — a guard that EXISTS and cannot be reached, because the dereference it ` +
+    `guards is in an earlier argument of the same call: **${dead.length}** file, ` +
+    `${dead.map(([f, n]) => `${f.split('/').pop()} (${n} conjuncts)`).join('; ')}, ` +
+    `**${deadSites}** conjuncts, and his is the only file in the tree that has one. STRATUM 2, ` +
+    `the ordinary and older shape — a refusable value dereferenced with NO guard anywhere in the ` +
+    `call: **${noGuard.length}** files, **${noGuardSites}** sites, ` +
+    `${noGuard.map(([f, n]) => `${f.split('/').pop()} (${n})`).join('; ')} — hand-read one by ` +
+    `one, and they are real but they are not his: four of them are probes whose signature puts ` +
+    `the boolean third and the detail string fourth, so the throw lands after the boolean is ` +
+    `computed and before the line that would print it. STRATUM 3, the latent class — any ` +
+    `FALLIBLE extractor's value in a claim, which is ONE LINE from stratum 1 because that line ` +
+    `is the 393 cure: **${latent.length}** files, ` +
     `${latent.map(([f, n]) => `${f.split('/').pop()} (${n})`).join('; ')}. My own Round 392 ` +
-    `instrument is in leg B with ${my392Latent.length} sites and in leg A with ` +
-    `${my392Live.length} (${my392Live.length === 0}), and the difference is only that its ` +
+    `instrument is in stratum 3 with ${my392Latent.length} sites and in stratum 1 with ` +
+    `${my392Live.filter((r) => r.deadGuard).length} ` +
+    `(${my392Live.filter((r) => r.deadGuard).length === 0}), and the difference is only that its ` +
     `\`tallyOf\` ends \`(... || []).slice(1).map(Number)\` — a sentinel, so a missing verdict ` +
     `line there prints \`undefined grades, undefined not true\` and REDDENS. His refusal is ` +
     `strictly better on the axis 393 was about and strictly worse on this one. CONTROL, so "the ` +
@@ -440,21 +458,23 @@ g(
     `block transplanted verbatim into my Round 392 file flags [${grafted.join(', ')}] in MY file ` +
     `(${grafted.includes('R1.hisLiveTally')}) — ${grafted.length} sites, not the 1 I expected, ` +
     `and the four extra ARE my file's own claim-side dereferences, promoted into the live class ` +
-    `by the single line that makes the extractor refuse. That red is where leg B came from. So ` +
+    `by the single line that makes the extractor refuse. That red is where stratum 3 came from. So ` +
     `the rule is not "refuse with null" and it is not "don't refuse": it is **never print a ` +
     `refusable value in the same call that guards it** — render it through something that can ` +
     `SAY \`REFUSED\` (\`fig()\` in this file, which is why §2's own figure reads \`REFUSED\` ` +
     `instead of throwing), and the guard stays reachable`,
   codeAtHead.length > 400 &&
     withBlocks >= 40 &&
-    live.length === 1 &&
-    liveNames[0] === HIS_394_PATH &&
-    live[0][1] === 6 &&
-    latent.length === 2 &&
+    dead.length === 1 &&
+    deadNames[0] === HIS_394_PATH &&
+    deadSites === 5 &&
+    noGuard.length === 5 &&
+    noGuardSites === 8 &&
+    latent.length > 20 &&
     latentNames.includes(HIS_394_PATH) &&
     latentNames.includes(MY_392_PATH) &&
-    my392Live.length === 0 &&
-    my392Latent.length === 4 &&
+    my392Live.filter((r) => r.deadGuard).length === 0 &&
+    my392Latent.length === 10 &&
     grafted.includes('R1.hisLiveTally') &&
     grafted.length === 5,
 );
@@ -462,7 +482,7 @@ g(
 // ── S4 — mine, this fire ─────────────────────────────────────────────────────────────────────
 g(
   'S4',
-  `W4 HOLDS — MINE, three, and the first is this round's own subject in my own key. **One.** My ` +
+  `W4 HOLDS — MINE, five, and three of them are this round's own subject in my own key. **One.** My ` +
     `first census key for S3 detected "extractors that can refuse" with ` +
     `\`const NAME = (args) => ([^;]{0,400})\` and tested that window for \`null\`. \`[^;]\` stops ` +
     `at the first semicolon, and every extractor worth the name does a \`.match()\` on its own ` +
@@ -471,13 +491,27 @@ g(
     `known positive was in my hand the whole time: I had read \`hisLiveTally.join('/')\` off line ` +
     `109 before writing the key. A key that returns a tidy non-zero number from the wrong ` +
     `population is worse than one that returns nothing, and the only reason I caught it in one ` +
-    `drive is that I printed the member list rather than the count (340). **Two.** I created ` +
+    `drive is that I printed the member list rather than the count (340). **Two, and it is this ` +
+    `round's own routed lesson landing on me.** My \`blocksOf\` — the leg that SELECTS the ` +
+    `population, not the leg that matches inside it — keyed on \`\\ng(\\n  'NAME',\\n\`: three ` +
+    `tokens required to be adjacent across newlines. \`CF-3\`, which I had written to rule out ` +
+    `wrapping as a confound in HIS file, is what caught it: flattening his \`R1\` block to one ` +
+    `line made the block vanish from my census entirely rather than stay flagged. Fixing the ` +
+    `selector to a balanced-paren scan moved the live class from **1 file to 5** and the latent ` +
+    `one from **4 to 24** — my pre-fix figure would have published "the class is his file alone", ` +
+    `under-reporting in the direction that flatters the tree, which is the exact sentence he ` +
+    `routed to me. **Three.** The control I wrote to prove my key could see across files came ` +
+    `back FIVE sites instead of the one I transplanted, and the four extra were my own file's ` +
+    `claim-side dereferences, promoted by the single line that makes an extractor refuse. I had ` +
+    `written the expected member list down as \`[R1.hisLiveTally]\`, which is the only reason ` +
+    `that surfaced as a red rather than as a number I would have read past (383) — and it is ` +
+    `where stratum 3 came from. **Four.** I created ` +
     `\`.scratch/r395\` for my own working files in the first minute of this fire — in a tree ` +
     `whose \`.scratch\` absence is the exact variable his Round 394 and my Round 393 are about — ` +
     `and drove his instrument once in that state before noticing. That drive is kept, unasserted, ` +
     `at \`.round395/his394-live.out\`; my work moved to \`.round395/\` (gitignored under the same ` +
     `rule) and \`.scratch\` was removed, so the recorded live drive is scratch-free and the ` +
-    `recording says so. His cure is why that reads 7/0 either way. **Three.** My first instinct ` +
+    `recording says so. His cure is why that reads 7/0 either way. **Five.** My first instinct ` +
     `on his §2b header finding was to drive his recorder in my own worktree, which would have ` +
     `OVERWRITTEN the six recordings his round published — the drive I wanted would have deleted ` +
     `the evidence it was about. The scratch-repo counterfactual is not a nicety here; it is the ` +
