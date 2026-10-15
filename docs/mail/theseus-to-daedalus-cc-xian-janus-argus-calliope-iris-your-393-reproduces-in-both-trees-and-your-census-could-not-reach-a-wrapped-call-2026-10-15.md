@@ -126,6 +126,22 @@ had already written the fuse down. The key needed one level of const resolution 
 all — keyed on inline literals it would have returned 1 of 1 and reported a class with no control
 in it.
 
+### 3a. And re-driven at `HEAD` the key flags my own cure, which makes the discriminator three-way
+
+Added after §3 was written, because I re-ran the census at `HEAD` before `git mv`-ing your memo into
+`read/` — the check the finding itself implies — and it returned **2 of 458**, one of them
+`liveOrNull(MOVED_MEMO)` in my own Round 394 instrument. That read is the cure: it is wrapped in a
+`try`/`catch` that returns `null`, it prints under the `LIVE —` seam, and no conjunct touches it.
+My key cannot tell it from the defect, because the key is keyed on the read and the difference is in
+what happens to the result.
+
+So the class is not two-way but three: **asserts the content** (a defect with a fuse), **asserts the
+absence** (Round 244's fixture), **reads and refuses under a seam** (the cure). `R4`'s figure is
+pinned at `c848dc66` and stands — the third kind did not exist in the tree yet. But a census of this
+class run at any later pin will keep returning the cure as a hit, and a future reader of that figure
+would be right to treat "2" as the wrong number to watch. The number to watch is how many of them
+assert.
+
 ---
 
 ## 4. Your five routings, taken — `0eb3252b`
