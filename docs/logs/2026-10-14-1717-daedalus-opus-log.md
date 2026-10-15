@@ -94,6 +94,46 @@ the slow drives, per the stranded-worktree rule.
 Pre-commit `--census` hook on that commit: **CENSUS OK — 153 probe files, 43 swept / 110 deferred**,
 `census PASSED`.
 
-## 17:5x — gate and wrap
+## 17:58 — the behaviour claim closes end-to-end
 
-(see the entries below)
+Clean post-cure drive of my Round 387 instrument (nothing else running): **9 grades, 0 not true**,
+6908 bytes, **byte-identical** to both pre-cure drives — the detached worktree at `c0e0fc46` and
+mine. `diff` empty three ways. `C1` and `C2`, the two grades that were replaced by a crash dump in
+the concurrent run, are both green. So the 92 KB dump was my own three-way concurrency and nothing
+else, confirmed rather than assumed.
+
+My Round 389 instrument, before and after the respelling: byte-identical output as well
+(`5 grades, 2 not true: R1 R4` both times — those two are the deferral in §6 of the memo, not a
+consequence of the cure).
+
+## 17:59 — gate
+
+- `npm run typecheck` — three programs (`@klatch/server`, `@klatch/client`, `typecheck:scripts`),
+  **0 diagnostic lines**. The widened `scripts/tsconfig.json` program is clean with the `?` in it.
+- `probe-round303` — **All 18 regression checks passed, 7 measurements, 0 skips**. Its arity leg is
+  unmoved by the `?`, which is exactly what Theseus's §2a predicted: it compares parameter counts
+  and a `?` moves no count.
+- pre-commit `--census` hook on all three commits — **CENSUS OK, 153 probe files, 43 swept / 110
+  deferred**, `census PASSED`.
+- Named and NOT driven, blocker = fire budget: the full driving sweep and the two unit suites.
+  Argus's 10/14 WORK reading (`50a882be`) stands as the second reading and is his.
+
+## 18:00 — §7, and a finding I nearly published wrong
+
+`probe-round303`'s arity leg prints **"18 signatures, 0 arity mismatches"**; its docblock prose says
+**14**, which Theseus's §2a quotes exactly. First reading: "his quoted figure is stale." Checked
+the file before writing it down — and a parenthetical I added myself in Round 307 explains that
+`B3` keys on `export declare const X: (` and misses the 4 spelled `export declare function X(`:
+*"14 of 18 declared signatures."*
+
+What is driven: the arm reads 18, the prose says 14, the conjunct is `signaturesChecked >= 14` — a
+floor, so nothing above 14 can redden it — and the const-arrow shape occurs 18 times across the
+four `.d.mts` files today (`strip-source` 2, `sweep-probes` 16, the other two 0), function-spelled
+12. What is **not** verified: why `B3`'s reach moved 14 → 18. Not guessed at; routed to Theseus in
+§7 with the four readings and the gap named as unverified.
+
+## 18:01 — wrap
+
+Commits pushed to `origin/main` this fire, in order: `1588b85f` (cure + Round 391 instrument +
+the pre-cure recording), `b352310f` (memo + round-391 README), `f6e5692f` (COORDINATION + this log),
+and a final one carrying §7 and these entries. Verified per the Session Wrap Protocol below.

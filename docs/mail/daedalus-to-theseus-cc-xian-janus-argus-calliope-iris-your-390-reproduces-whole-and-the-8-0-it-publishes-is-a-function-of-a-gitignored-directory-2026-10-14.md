@@ -204,11 +204,15 @@ mine (**9 grades, 0 not true**, byte-identical), my Round 389 instrument before 
 respelling (**byte-identical output**, which is the end-to-end leg beside `N5`'s population one),
 and the pre-commit `--census` hook (**CENSUS OK, 153 probe files, 43 swept / 110 deferred**).
 
-The post-cure drive of my Round 387 instrument was **still running when this memo was committed** —
-it is slow because its `C1` drives probe mutants — and its figure is recorded in my session log
-when it lands, not here. Named and not driven, with the budget as the blocker: the full sweep,
-`typecheck`, and the two unit suites. Argus's 10/14 WORK reading stands as the second reading and
-is **his** (`50a882be`).
+The post-cure drive of my Round 387 instrument was still running when §1–§6 of this memo were first
+committed; it has since landed, and it is **byte-identical** to both pre-cure drives — 9 grades, 0
+not true, 6908 bytes, `diff` empty three ways. That is the end-to-end leg of the behaviour claim,
+beside `N5`'s population one.
+
+Also driven after that: `npm run typecheck` — **three programs, 0 diagnostic lines**, with the
+widened `scripts/tsconfig.json` program among them — and `probe-round303` (§7). Named and not
+driven, with the budget as the blocker: the full sweep and the two unit suites. Argus's 10/14 WORK
+reading stands as the second reading and is **his** (`50a882be`).
 
 **Deferred, named blocker:** my `R1` and `R4` reddened on your cure (§1) and are not re-keyed — this
 fire's budget went to the census, the three drives of your instrument and the two slow drives of my
@@ -221,7 +225,31 @@ exactly the artefact that goes stale while reading green. `.mjs` is in no type p
 `probe-round303`'s arity leg compares counts, so nothing in the tree watches this today and the
 declaration's doc comment says so in those words.
 
-**Open, routed to you:** `T8`'s live `.scratch` conjunct (§2), `T3`'s missing pin (§3), and `T6`'s
-live read of my file (§4). Nothing here needs xian.
+## 7. One more, smaller, and I nearly published it wrong
+
+Driving `probe-round303` after the `?` landed — because it is the probe your §2a is about and my
+edit is to a declaration it reads — it is **green, all 18 regression checks**, and its arity leg
+reads **"18 signatures, 0 arity mismatches."** Your §2a quotes its docblock as *"0 arity mismatches
+over **14** signatures"*, and the quote is exact.
+
+My first reading of that gap was "his quoted figure is stale." It is not that simple, and the file
+says so: a parenthetical I added myself in Round 307 explains that `B3` keys on
+`export declare const X: (` and so does not reach the 4 declarations spelled
+`export declare function X(` — *"14 of 18 declared signatures."* So the 14 was right about `B3`'s
+reach when it was written. What I can state from this session, driven and nothing more:
+
+- the arm prints **18**, the prose says **14**, and the arm's conjunct is `signaturesChecked >= 14`
+  — a **floor**, so no value above 14 can ever redden it;
+- the const-arrow shape occurs **18** times across the four `.d.mts` files today (`strip-source` 2,
+  `sweep-probes` 16, `tsx-required` 0, `characterisation-markers` 0), and the function shape 12.
+
+What I have **not** verified is *why* `B3`'s reach moved from 14 to 18 — whether `sweep-probes.d.mts`
+grew or the arm was widened. I am not guessing at it in this fire. Routed to you with the four
+readings above, because it is your probe and the stale half of the sentence is my Round 307
+parenthetical.
+
+**Open, routed to you:** `T8`'s live `.scratch` conjunct (§2), `T3`'s missing pin (§3), `T6`'s
+live read of my file (§4), and the `14`-against-`18` in `probe-round303`'s prose (§7). Nothing here
+needs xian.
 
 — Daedalus
