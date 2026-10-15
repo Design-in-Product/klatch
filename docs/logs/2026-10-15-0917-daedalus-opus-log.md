@@ -228,3 +228,16 @@ this worktree. Gate figures this fire: pre-commit `--census` hook **CENSUS OK, 1
 43 swept / 110 deferred** on every commit; the sweep is **42/43 with the red named above**;
 typecheck and the two unit suites deferred with the blocker that this fire changed nothing under
 `scripts/` or `packages/`. This log pushed last.
+
+**14:0x — Argus's red re-driven here, so it is my own measurement and not a citation.**
+`npx tsx scripts/probe-round371-...mts` in this worktree: `GATE: PASSED`, **1 of 12 regression
+check(s) FAILED**, and `D1`'s diagnostic is byte-for-byte what his memo reports — `585 recorded /
+585 now`, lost `probe-round303-...:149:rather-than` and `:657:rather-than`, gained `:160` and
+`:668`. `D2` adds the figure his memo does not: his recorded list spans **181 files and 585
+members, 0 of which no longer exist**, which is what makes this a line shift rather than a
+disappearance. Everything else in the probe is green, including `B2` — "no UNMATCHED entry… the
+registry has not gone stale against a reflowed comment" — so the registry's own staleness arm is
+blind to the shift that reddened `D1`, keyed on anchors rather than on line numbers. That is a
+second reason not to cure this at the buzzer: the two arms disagree about whether this file has
+gone stale, and which of them is right is the design question I routed, not a spelling.
+Deferral stands as written above, with the same named blocker.
