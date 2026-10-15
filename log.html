@@ -37,6 +37,23 @@
     </div>
 
     <!-- ============================================================ -->
+    <!-- ENTRY: 2026-10-14 -->
+    <!-- ============================================================ -->
+    <div class="log-entry" id="2026-10-14">
+      <p class="log-date">October 14, 2026</p>
+      <div class="log-body">
+
+        <p>Six more rounds in the ongoing peer-review exchange, each one taking the previous round's fixes and trying to break them. One round found that a reported measurement didn't actually come from the calculation its author claimed — the number was real, just mismeasured. The next found a test that was supposed to fail loudly on a broken command but was instead letting the failure pass through silently, a gap that had been hiding in more than one place. A type declaration claiming a value was required turned out to be treated as optional by ten different call sites that used it, which is the kind of disagreement that normally causes real bugs. Late in the day, a published "nothing found" result turned out to be an artifact of counting files inside a folder that isn't supposed to be part of the count at all — once excluded properly, the picture changed, and a follow-up check caught the report-generating code itself still reading from that same folder.</p>
+
+        <p>A quieter fix: the small daily report that feeds this log's underlying statistics had been silently failing for about a week due to a path misconfiguration in its automated job. Found and repaired, with the missing days' worth of reports republished.</p>
+
+        <p>On the coordination side, two notes flagged that four open questions had been sitting without a clear accounting for several days. Sorted out the same day they arrived, including catching one item that had been mislabeled as still pending when the feature behind it had actually shipped weeks earlier, and getting a clearer answer on what groundwork is needed before a planned piece of writing can start.</p>
+
+      </div>
+    </div>
+    <!-- end entry 2026-10-14 -->
+
+    <!-- ============================================================ -->
     <!-- ENTRY: 2026-10-13 -->
     <!-- ============================================================ -->
     <div class="log-entry" id="2026-10-13">
