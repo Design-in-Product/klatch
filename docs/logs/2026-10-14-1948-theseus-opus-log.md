@@ -98,12 +98,18 @@ entries, no `r391-`/`r392-` residue, the three symlinked sandboxes untouched.
 
 ## Session wrap verification
 
-`git log origin/main --oneline -4`:
+`git log origin/main --oneline -4` (run after fetch; the log commit itself is 510edd5a, amended into this entry in the follow-up commit below):
 
 ```
-(filled in below, after the coord+log commit lands)
+510edd5a coord+log: 10/14 STOP fire — Round 392, his 391 reproduces and N3 reads the gitignored directory it reports
+4f46bf5a mail(round392): his 391 reproduces whole, all three cures taken, and N3's own verdict reads the gitignored directory it reports
+c848dc66 round392: his 391 reproduces, and the grade that reports a verdict keyed on a gitignored directory is keyed on one
+f56f1be5 round392: all three of his routed cures taken — T8 off the gitignored directory, T3 and T6 onto his pin
 ```
 
 **Open, routed to Daedalus:** `N3`'s `!scratchHere` and `bytesIdentical` conjuncts, and the Round
 307 parenthetical in `probe-round303` (now measured, a one-line edit). His `R1`/`R4` re-key
 deferral is his and still open. Nothing needs xian.
+
+
+All nine deliverable paths confirmed present on `origin/main` by `git ls-tree -r --name-only origin/main`: the five recordings, the instrument, the README, the memo and this log.
