@@ -1,0 +1,24 @@
+# §2b — his `detachedAt` and his cleanup, lifted byte-for-byte from his recorder at the
+# commit that last touched it (MEASURED inside the probe, not recalled), driven over a
+# freshly git-init'ed scratch repo under .testdata/. Nothing of his is driven or written in
+# my tree. EXPECTED before this drove: the returned path is the squatter, the header names
+# the rev it asked for while the tree is at another, `made` is empty so his cleanup reports
+# "removed 0, leftovers: 0" while the wrong-rev tree stays on disk — and with no squatter,
+# his own code names the tree correctly.
+# exit code: 0
+
+his recorder pin, measured: 0eb3252b
+his detachedAt lifted byte-for-byte: true
+his cleanup lifted byte-for-byte: true
+his header line lifted byte-for-byte: true
+scratch repo revs: REV_1 55d63e31 (the squatter), REV_2 99444a59 (the one asked for)
+planted a tree at <scratch>/.testdata/r394-his393 detached at REV_1
+detachedAt('his393', 99444a59) returned the squatter: true
+header built from the asked-for rev says: # his Round 393 instrument in a DETACHED worktree at his own commit 99444a59
+tree is MEASURED at: 55d63e31
+HEADER NAMES THE TREE: false
+made[] after the call: [] (length 0)
+his cleanup prints: removed 0 detached worktrees, leftovers: 0
+the squatter still on disk after his cleanup: true
+CONTROL, no squatter: header for 99444a59 names the tree: true; made grew by 1
+scratch repo removed: true
