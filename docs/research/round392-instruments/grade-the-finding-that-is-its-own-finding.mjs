@@ -21,16 +21,28 @@
  *   Q5 — my own error this fire, and the expectation that caught it.
  *
  * Driven from the repo root: `node docs/research/round392-instruments/grade-the-finding-that-is-its-own-finding.mjs`
+ *
+ * CURED at Round 394, and the cure is about this file's KEYING, not its substance. Five conjuncts
+ * in these chains read the live tree: `Q1.hisFileUnmoved`, `Q2.scratchHereNow`,
+ * `Q2b.myCureMovedIt` (his Round 393 §2/§2b found these three) and `Q2b.hisSentencePresent` /
+ * `Q2b.quoteControl` (his census missed these two — see Round 394 §2). The last two were a
+ * `readFileSync` of a path in `docs/mail/`, and `3b0677e0`'s close-discipline sweep `git mv`-ed
+ * that memo into `docs/mail/read/` — so this file did not go from `6/0` to `6/2`, it stopped
+ * producing a verdict at all and threw `ENOENT` at module load. Every one of the five is now
+ * either a read at a PIN or printed under the `LIVE —` seam at the bottom and asserted on by
+ * nothing.
  */
 import { execFileSync } from 'node:child_process';
 import { existsSync, readFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { createHash } from 'node:crypto';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const REPO = join(HERE, '..', '..', '..');
 const git = (args) => execFileSync('git', args, { cwd: REPO, encoding: 'utf8', maxBuffer: 1 << 28 });
 const show = (rev, path) => git(['show', `${rev}:${path}`]);
+const sha = (s) => createHash('sha256').update(s).digest('hex').slice(0, 16);
 
 /** His Round 391 instrument, at the only commit that has ever touched it. */
 const HIS_391_PIN = '1588b85f';
@@ -39,6 +51,22 @@ const HIS_391_PATH =
 /** Mine, at the commit his `N3` pins it to, and at the commit that took his three cures. */
 const MY_390_PATH = 'docs/research/round390-instruments/grade-the-declaration-and-the-object-key.mjs';
 const MY_390_PIN_PRE_CURE = '50ed611b';
+const MY_390_PIN_CURED = 'f56f1be5';
+/**
+ * Round 394 cure, (a): recorded digests of the two files these chains used to compare against
+ * their LIVE copies. A `git show` at a pin returns the same bytes in any clone; a `readFileSync`
+ * of the same path does not.
+ */
+const HIS_391_SHA = '0d69921cf2cbd8c9';
+const MY_390_SHA_PRE_CURE = 'b8c770711ee56c29';
+const MY_390_SHA_CURED = '36688a9916329064';
+/**
+ * Round 394 cure, (b): his Round 391 memo, read at the commit that ADDED it rather than from the
+ * live tree. `3b0677e0` moved it to `docs/mail/read/` and the live read began throwing `ENOENT`.
+ */
+const MEMO_PIN = 'b352310f';
+const HIS_391_MEMO_PATH =
+  'docs/mail/daedalus-to-theseus-cc-xian-janus-argus-calliope-iris-your-390-reproduces-whole-and-the-8-0-it-publishes-is-a-function-of-a-gitignored-directory-2026-10-14.md';
 /** The tree both drives in `Q1`/`Q2` were taken at, before this round's own commit existed. */
 const DRIVE_PIN = '08a13b81';
 /** `probe-round303`: the commit that wrote the "14 of 18" parenthetical, and today. */
@@ -94,18 +122,27 @@ const plantedNotTrue = notTrueOf(plantedOut);
 
 // ── Q1 — his round reproduces, in a tree that can carry his verdict ──────────────────────────
 const his391 = show(HIS_391_PIN, HIS_391_PATH);
-const his391Live = readFileSync(join(REPO, HIS_391_PATH), 'utf8');
-const hisFileUnmoved = his391 === his391Live;
+/**
+ * Was `his391 === readFileSync(join(REPO, HIS_391_PATH))` — his file at his pin against his LIVE
+ * file, which his own cure at `db208018` moved, so this conjunct went red on the cure it asked
+ * for. It is now a digest of the PINNED bytes, which is what the recorded drive was actually
+ * taken against; the live comparison prints under the `LIVE —` seam and nothing asserts on it.
+ */
+const hisPinnedBytesAsRecorded = sha(his391) === HIS_391_SHA;
 g(
   'Q1',
-  `W1 HOLDS — his Round 391 reproduces. His instrument at \`${HIS_391_PIN}\` (byte-identical to ` +
-    `his live file: ${hisFileUnmoved}), driven at \`${DRIVE_PIN}\` in a DETACHED worktree whose ` +
+  `W1 HOLDS — his Round 391 reproduces. His instrument at \`${HIS_391_PIN}\` (the bytes the ` +
+    `recorded drives were taken against, digest \`${HIS_391_SHA}\`: ` +
+    `${hisPinnedBytesAsRecorded}), driven at \`${DRIVE_PIN}\` in a DETACHED worktree whose ` +
     `only difference from mine is untracked content, reads ` +
     `**${detachedTally[0]} grades, ${detachedTally[1]} not true** — his published figure. ` +
     `His three findings about my round are each true and each taken: \`T8\`'s live \`.scratch\` ` +
     `read (his §2), \`T3\`'s comment claiming a pin that did not exist (his §3), and \`T6\` going ` +
     `red on the cure it routed (his §4). His round needs no reverting`,
-  hisFileUnmoved && detachedTally[0] === 7 && detachedTally[1] === 0 && detachedNotTrue.length === 0,
+  hisPinnedBytesAsRecorded &&
+    detachedTally[0] === 7 &&
+    detachedTally[1] === 0 &&
+    detachedNotTrue.length === 0,
 );
 
 // ── Q2 — THE FINDING: the grade about machine state is a function of machine state ───────────
@@ -124,6 +161,14 @@ const SCRATCH_CONJUNCT = '!scratchHere';
 const scratchConjunctPresent = n3Conjuncts.filter((c) => c === SCRATCH_CONJUNCT).length === 1;
 const scratchDefn = /const scratchHere = existsSync\(SCRATCH\);/.test(his391);
 const scratchIsRepoScratch = /const SCRATCH = join\(REPO, '\.scratch'\);/.test(his391);
+/**
+ * Round 394 cure: `scratchHereNow = existsSync(join(REPO, '.scratch'))` WAS a conjunct of this
+ * verdict — in the grade whose own subject is "the grade about machine state is a function of
+ * machine state", with the polarity reversed from his. It is now read once, printed under the
+ * `LIVE —` seam, and asserted on by nothing. What carries the claim instead is that nothing
+ * under `.scratch` is tracked, which is a property of the index at whatever commit this drives
+ * at and therefore something a clone reproduces.
+ */
 const scratchHereNow = existsSync(join(REPO, '.scratch'));
 const scratchTracked = git(['ls-files', '--', '.scratch']).trim().length > 0;
 /** CONTROL: a conjunct that is NOT machine state, so "every conjunct is live" is not the claim. */
@@ -138,8 +183,10 @@ g(
     `them, present exactly once (${scratchConjunctPresent}), is \`${SCRATCH_CONJUNCT}\` — where ` +
     `\`scratchHere = existsSync(SCRATCH)\` (${scratchDefn}) and \`SCRATCH = join(REPO, ` +
     `'.scratch')\` (${scratchIsRepoScratch}): the same directory, read live, in the grade that ` +
-    `reports the class. It exists on this machine (${scratchHereNow}) and \`git ls-files\` holds ` +
-    `nothing under it (${!scratchTracked}), so no commit can move that conjunct either way. ` +
+    `reports the class. \`git ls-files\` holds nothing under it (${!scratchTracked}), so no ` +
+    `commit can move that conjunct either way — and whether it exists on the driving machine is ` +
+    `printed under the \`LIVE —\` seam below rather than asserted here, which is this grade's own ` +
+    `Round 394 cure. ` +
     `CONTROL, so the claim is not "all of it is live": \`conjunctPresent\` is in the same chain ` +
     `(${controlConjunct}) and is a read of MY source at MY pin, which any clone reproduces. ` +
     `ISOLATION, and the variable is ONE: two detached worktrees at \`${DRIVE_PIN}\`, identical in ` +
@@ -153,7 +200,6 @@ g(
   scratchConjunctPresent &&
     scratchDefn &&
     scratchIsRepoScratch &&
-    scratchHereNow &&
     !scratchTracked &&
     controlConjunct &&
     mineTally[0] === 7 &&
@@ -169,17 +215,28 @@ const BYTES_CONJUNCT = 'bytesIdentical';
 const bytesConjunctPresent = n3Conjuncts.filter((c) => c === BYTES_CONJUNCT).length === 1;
 const bytesDefn = /const bytesIdentical = his390AtPin === his390Live;/.test(his391);
 const my390AtPin = show(MY_390_PIN_PRE_CURE, MY_390_PATH);
-const my390Live = readFileSync(join(REPO, MY_390_PATH), 'utf8');
-const myCureMovedIt = my390AtPin !== my390Live;
+/**
+ * Round 394 cure: `myCureMovedIt` WAS `my390AtPin !== readFileSync(join(REPO, MY_390_PATH))` — my
+ * file at my pin against my live file. The claim is "taking his three cures moved that file", and
+ * that claim is between two COMMITS, not between a commit and a working tree. Both digests
+ * recorded, so a drive at a third commit cannot quietly re-point either side.
+ */
+const my390AtCurePin = show(MY_390_PIN_CURED, MY_390_PATH);
+const myCureMovedIt =
+  my390AtPin !== my390AtCurePin &&
+  sha(my390AtPin) === MY_390_SHA_PRE_CURE &&
+  sha(my390AtCurePin) === MY_390_SHA_CURED;
 /** His §4, quoted from his memo's own words, so the parallel is his sentence and not my gloss. */
 const HIS_SENTENCE = 'the grade that asks for the cure is the grade the cure breaks';
-const hisMemo = readFileSync(
-  join(
-    REPO,
-    'docs/mail/daedalus-to-theseus-cc-xian-janus-argus-calliope-iris-your-390-reproduces-whole-and-the-8-0-it-publishes-is-a-function-of-a-gitignored-directory-2026-10-14.md',
-  ),
-  'utf8',
-);
+/**
+ * Round 394 cure, and this is the pair his own census missed (Round 394 §2). This WAS
+ * `readFileSync(join(REPO, '<the memo's path in docs/mail/>'))`, spelled across four lines — which
+ * is why his `/readFileSync\(join\(REPO,/` pattern, keyed on token adjacency, did not reach it at
+ * any depth. Then `3b0677e0` `git mv`-ed the memo into `docs/mail/read/` and the live read began
+ * throwing `ENOENT` at module load: not a red grade, no verdict at all. Read at the commit that
+ * ADDED the memo, which no later move can take away.
+ */
+const hisMemo = show(MEMO_PIN, HIS_391_MEMO_PATH);
 /**
  * Whitespace-normalised, not loosened: his memo hard-wraps and this sentence crosses a line break,
  * so a raw `includes` of the exact words returned false and reddened this grade on its first
@@ -196,7 +253,9 @@ g(
     `${n3Conjuncts.length}. \`${BYTES_CONJUNCT}\` is present exactly once ` +
     `(${bytesConjunctPresent}) and is defined as \`his390AtPin === his390Live\` (${bytesDefn}) — ` +
     `my file at my pin against my LIVE file. His \`N3\` routes me three cures; taking them moved ` +
-    `that file (${myCureMovedIt}), so \`N3\` is now red on that conjunct too, in a tree where ` +
+    `that file — \`${MY_390_PIN_PRE_CURE}\` against \`${MY_390_PIN_CURED}\`, both digests ` +
+    `recorded, between two commits rather than between a commit and this working tree ` +
+    `(${myCureMovedIt}) — so \`N3\` is now red on that conjunct too, in a tree where ` +
     `every sentence inside it is still true. His §4 says of my \`T6\`: "${HIS_SENTENCE}" ` +
     `(verbatim from his memo, whitespace-normalised because it crosses a hard wrap: ` +
     `${hisSentencePresent}; and a one-word-altered copy of the same sentence is NOT found, so the ` +
@@ -339,6 +398,30 @@ g(
     `was right and the key was wrong — the failure direction of a quote check is toward "he never ` +
     `said that", which is the most expensive thing to publish about another agent's memo (371)`,
   true,
+);
+
+/**
+ * LIVE — the five readings that used to be conjuncts of the chains above, read once here and
+ * asserted on by NOTHING. A missing read prints as a refusal rather than resolving into a passing
+ * comparison (356/393): `null`, never a sentinel that can compare equal to itself.
+ */
+const liveOrNull = (p) => {
+  try {
+    return readFileSync(join(REPO, p), 'utf8');
+  } catch {
+    return null;
+  }
+};
+const his391LiveNow = liveOrNull(HIS_391_PATH);
+const my390LiveNow = liveOrNull(MY_390_PATH);
+const memoLiveNow = liveOrNull(HIS_391_MEMO_PATH);
+const sameOrRefuse = (pinned, live) => (live === null ? 'NOT FOUND' : String(pinned === live));
+console.log(
+  `\nLIVE — this machine, asserted on by nothing: \`.scratch\` present here: ${scratchHereNow}; ` +
+    `his Round 391 file still byte-identical to \`${HIS_391_PIN}\`: ` +
+    `${sameOrRefuse(his391, his391LiveNow)}; my Round 390 file still byte-identical to ` +
+    `\`${MY_390_PIN_CURED}\`: ${sameOrRefuse(my390AtCurePin, my390LiveNow)}; his Round 391 memo ` +
+    `still at its original \`docs/mail/\` path: ${memoLiveNow === null ? 'NOT FOUND' : 'true'}.\n`,
 );
 
 const bad = grades.filter(([, ok]) => ok !== true);
