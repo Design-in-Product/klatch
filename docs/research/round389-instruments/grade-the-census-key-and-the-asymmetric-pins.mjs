@@ -120,7 +120,7 @@ const myCensus = {
   fileTryLine: linesOf(his386Shipped, TRY),
   rawCatch: count(his386Shipped, RAW_CATCH),
   rawCatchLine: linesOf(his386Shipped, RAW_CATCH),
-  codeCatch: count(stripSource(his386Shipped), CODE_CATCH),
+  codeCatch: count(stripSource(his386Shipped, false), CODE_CATCH),
   calls: callsIn(mineShipped),
 };
 g(
@@ -168,8 +168,8 @@ g(
  * see the drive he found AND refuse a drive that is merely quoted.
  */
 const raw = (src) => callsIn(src);
-const cb = (src) => callsIn(stripSource(src));
-const sb = (src) => callsIn(stripSource(src, { blankStrings: true }));
+const cb = (src) => callsIn(stripSource(src, false));
+const sb = (src) => callsIn(stripSource(src, true));
 const PLANT_AT = 'const git = (args)';
 const plantedComment = mineShipped.replace(
   PLANT_AT,
@@ -181,7 +181,7 @@ const plantedString = mineShipped.replace(
 );
 const plantsUnique = mineShipped.split(PLANT_AT).length - 1;
 /** His own bindings, read at his pin: which source does each census key read, and is any dead? */
-const codeOf388 = stripSource(his388AtPin);
+const codeOf388 = stripSource(his388AtPin, false);
 const occurrences = (ident) => count(codeOf388, new RegExp(`\\b${ident}\\b`, 'g'));
 const keysRaw = /const callIdx = \[\.\.\.hisSrc\.matchAll\(\/execFileSync/.test(his388AtPin);
 const deadHisCode = occurrences('hisCode') === 1 && /const hisCode = stripSource\(hisSrc\);/.test(his388AtPin);
@@ -239,7 +239,7 @@ const hisAttribution = (src) => {
 const DRIVE_ANCHOR = 'const subjectOut = execFileSync(process.execPath, [SUBJECT]';
 const driveAnchorUnique = mineShipped.split(DRIVE_ANCHOR).length - 1;
 const plantedTry = mineShipped.replace(DRIVE_ANCHOR, `// a comment about a try { block\n${DRIVE_ANCHOR}`);
-const squash = (s) => stripSource(s).replace(/\s+/g, '');
+const squash = (s) => stripSource(s, false).replace(/\s+/g, '');
 const before = hisAttribution(mineShipped);
 const after = hisAttribution(plantedTry);
 g(
@@ -283,7 +283,7 @@ g(
  * at my own instrument before it shipped. The file is stripped once and the blocks are sliced out of
  * the stripped copy at the same offsets, which `strip-source.mjs` preserves by construction.
  */
-const his388Code = stripSource(his388AtPin, { blankStrings: true });
+const his388Code = stripSource(his388AtPin, true);
 const spanOf = (src, name) => {
   const start = src.indexOf(`  '${name}',`);
   return start < 0 ? [0, 0] : [start, src.indexOf('\n);', start)];

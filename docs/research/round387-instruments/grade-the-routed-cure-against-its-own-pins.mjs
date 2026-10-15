@@ -260,7 +260,7 @@ const hisShippedPath = `docs/research/round386-instruments/grade-the-monotonicit
 const hisShipped = git(['show', `${HIS_SHIPPED}:${hisShippedPath}`]);
 const hisAtMyRound = git(['show', `beb1ab78:${hisShippedPath}`]);
 const rawCatch = (src) => (src.match(/\bcatch\b/g) || []).length;
-const codeCatch = (src) => (stripSource(src).match(/\bcatch\s*[({]/g) || []).length;
+const codeCatch = (src) => (stripSource(src, false).match(/\bcatch\s*[({]/g) || []).length;
 const lineOf = (src, i) => src.slice(0, i).split('\n').length;
 const rawCatchLines = [...hisShipped.matchAll(/\bcatch\b/g)].map((m) => lineOf(hisShipped, m.index));
 /** His own §5 red: a block is a catch block only if the FIRST thing that closes it is a `catch`. */
