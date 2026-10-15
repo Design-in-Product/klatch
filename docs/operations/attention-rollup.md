@@ -6,7 +6,11 @@
 
 **Trust-instrument discipline** (Exec 2026-06-19): every render comes from a fresh **verified sweep** of source docs — never from memory. A false "all clear" is a trust breach. "Quiet" must mean *verified-clear*, not *haven't-checked*.
 
-**Last refreshed:** 2026-10-09 (MID fire, Calliope) — v166. **New this render:** needs-you unchanged at 0; no new decision content. This refresh adds the standing "Verified how" footer below, per Janus's rollup-conventions memo (`docs/mail/read/janus-to-calliope-cc-xian-rollup-and-living-doc-conventions-2026-10-06.md`) and his 2026-10-09 follow-up quoting rule 6 verbatim since the canonical file sits outside this sandbox (`docs/mail/read/janus-to-calliope-cc-xian-iris-verified-how-rule-6-text-and-a-one-line-footer-2026-10-09.md`) — closing that thread. Re-swept fresh rather than trusted from v165: typecheck clean ×4 workspaces, server 140/2178/1, client 26/333/13, `sweep-probes --census` OK 36/109 — all unchanged from v165; `git diff --stat b2bed237..HEAD -- packages/` empty, confirming no product code landed since. Only Daedalus's "name the channels a delete empties" half (Round 220) remains unbuilt and unassigned.
+**Last refreshed:** 2026-10-14 (STOP fire, Calliope) — v167. **New this render: needs-you 0 → 4.** Janus flagged (`docs/mail/janus-to-calliope-two-items-parked-on-xian-not-on-your-board-2026-10-14.md`, `docs/mail/janus-to-calliope-xian-start-the-api-experiment-plan-first-2026-10-14.md`) that this board's needs-you count had read 0 since 10-09 while three items sat on xian unrendered, plus a fourth, brand-new ask. All four below, dated. **One correction made while adding them, not taken on Janus's wording as given:** his memo named the second item "the import confirm step UX (waits on an angle and sequencing talk)" — checked directly rather than carried: `entityGuess`/the import confirm step is a *shipped* feature (built 2026-09-02/09-14/09-15, re-verified present and unregressed at every fire since, most recently this morning), not something parked on xian. The phrase "waits on an angle and sequencing talk" is this seat's own standing language for **blog-series drafting** (`docs/operations/duty-cycle/calliope-tasks.md`: "major new drafts to discuss with xian on angle/sequencing first"), not for the import feature — the two phrases sit next to each other in this seat's own dense per-fire log paragraphs, which is the likely source of the cross-read. Item 2 below is filed under its correct name. Gate re-verified fresh this render: typecheck clean, server 140/2178/1, client 26/333/13, `sweep-probes --census` OK 43/110 (153 files) — all matching this morning's checkpoint; `git diff --stat origin/main` against this seat's own 10/13 STOP checkpoint shows no product code landed (`packages/` diff empty).
+
+**Verified how (v167):** read both of Janus's 10-14 memos in full; cross-checked his "two items" + "the API experiment" claims against this seat's own session logs (`docs/logs/2026-10-1[0-4]*calliope*.md`) and `calliope-tasks.md` rather than accepting his phrasing; grepped `docs/ROADMAP.md`, `docs/PREMISE.md`, and all of `docs/` for "API experiment" (zero hits outside the two new Janus memos) before writing item 4, rather than guessing at its scope; read Theseus's question-box letter directly (`/Users/xian/Development/dispatch/mail/question-theseus-2026-10-13-is-the-recurrence-the-point.md`) rather than relaying Janus's one-line summary of it; did not re-run or re-audit the 10 lower-urgency items individually, and did not re-open the cross-pollination-brief or Backfill threads beyond confirming they're unchanged (`ls -la backups/`, Aug 4 mtime).
+
+**Prior (v166):** 2026-10-09 (MID fire, Calliope). Needs-you unchanged at 0; no new decision content. This refresh adds the standing "Verified how" footer below, per Janus's rollup-conventions memo (`docs/mail/read/janus-to-calliope-cc-xian-rollup-and-living-doc-conventions-2026-10-06.md`) and his 2026-10-09 follow-up quoting rule 6 verbatim since the canonical file sits outside this sandbox (`docs/mail/read/janus-to-calliope-cc-xian-iris-verified-how-rule-6-text-and-a-one-line-footer-2026-10-09.md`) — closing that thread. Re-swept fresh rather than trusted from v165: typecheck clean ×4 workspaces, server 140/2178/1, client 26/333/13, `sweep-probes --census` OK 36/109 — all unchanged from v165; `git diff --stat b2bed237..HEAD -- packages/` empty, confirming no product code landed since. Only Daedalus's "name the channels a delete empties" half (Round 220) remains unbuilt and unassigned.
 
 **Verified how (v166):** read `origin/main` mail in full (all files new since this seat's 10/9 START checkpoint — one, Janus's rule-6 reply, actioned here) and `docs/COORDINATION.md` for team status; ran typecheck, full `npm test`, and `sweep-probes --census` fresh this fire rather than citing v165's numbers; did not re-run or re-audit the 10 lower-urgency items individually, and did not re-open the cross-pollination-brief or Backfill threads beyond confirming they're unchanged.
 
@@ -28,7 +32,7 @@
 1. **Needs-you was reading 3; it's 4.** Janus's memo flagged the same gap independently ("Needs-you count 3, UNVERIFIED which three" vs. his own hand-count of four). Reading the section body itself, not the metrics table: the Backfill decision-pair, the deleting-entity premise question, the carried-context eviction option-(2) question, and the raw-round-JSON commit-policy question are four separate, still-open asks — the count had simply drifted stale since the Backfill item was reopened 2026-09-02 without the table being updated.
 2. **One 🟡 item was already answered and still showing as open.** "Two unmerged remote branches" (found 2026-09-21) asked whether to cherry-pick 3/27–3/28 work into `main`. Checked `git log`: both halves landed before this fire even started — `def4cac7` (records) and `8ee4b919` (tests), both on `origin/main`. Moved to closed, below. **The other nine 🟡 items were not individually re-audited this fire** — this was the one caught by exact date/hash checking while restructuring, not a claim the rest are current.
 
-**Needs-you: 0 · Lower-urgency: 10 · Blocked-on-others: 0.** In-flight team/research status (cohort health, the Round 50–137 research track, AAXT gate residuals) has no open decision for xian right now — it's archived in full and tracked live in `docs/COORDINATION.md`, not duplicated here.
+**Needs-you: 4 · Lower-urgency: 10 · Blocked-on-others: 0.** In-flight team/research status (cohort health, the Round 50–137 research track, AAXT gate residuals) has no open decision for xian right now — it's archived in full and tracked live in `docs/COORDINATION.md`, not duplicated here.
 
 ---
 
@@ -36,7 +40,7 @@
 
 | Needs you | Blocked-on-others | Lower-urgency |
 |---|---|---|
-| **0** | **0** | **10** |
+| **4** | **0** | **10** |
 
 ---
 
@@ -67,7 +71,37 @@
 
 ## 🔴 Needs you — FIRST, always
 
-**Nothing open right now** — the one standing item (below) was ruled this fire.
+**Four open items, surfaced 2026-10-14 after Janus flagged this board was reading 0 while they sat on you unrendered.** Dated by when each actually opened, not by today.
+
+### 1. API experiment — scope unknown to this board; plan needs your own description before it can be written
+
+- **What:** Janus relayed, from his pane with you at 17:30 PT today: *"I'd like Calliope to start with the API experiment but I'd also like to know the plan."* His own reading, not your words: the first step is the plan, written where you read it, and anything costly or hard to undo waits until you've read it.
+- **Why this seat can't write the plan yet:** grepped `docs/ROADMAP.md`, `docs/PREMISE.md`, `docs/ARCHITECTURE.md`, and every other file under `docs/` for "API experiment" — zero hits anywhere except the two memos relaying this ask. Nothing in Klatch names what this is: not a scoping doc, not a COORDINATION.md thread, not a prior mail exchange this seat can find. Guessing at the shape of an unscoped, possibly-costly experiment and writing a plan against the guess is the wrong order of operations for exactly the reason Janus named.
+- **The actual ask, stated plainly:** what is the API experiment? One or two sentences of your own framing (what's being tried, against what, why) is enough for this seat to turn into a written plan here on the board before anything starts.
+- **Date added:** 2026-10-14 (relayed same day via Janus, both memos).
+
+### 2. Blog-series: a major new draft needs an angle/sequencing conversation with you first
+
+- **What:** drafting itself is unblocked and ongoing (`docs/operations/duty-cycle/calliope-tasks.md`) — new mining material from Daedalus's 6/21 composition-spine work (test-suite-as-diagnostic-instrument, infra-outage-fail-closed + can't-loosen-own-guardrails, tandem-collision-via-rebase) is queued. What's held is starting a **major** new draft or publishing one: this seat's own working-style convention (`calliope.md`) requires discussing angle and sequencing with you before committing to one, and that conversation hasn't happened.
+- **Correction to Janus's 10-14 memo:** his memo named this item "the import confirm step UX (waits on an angle and sequencing talk)." Checked directly — the import confirm step (`entityGuess`) is a shipped, working feature (built 09-02/09-14/09-15, re-verified unregressed every fire since). The "angle/sequencing" phrase is this seat's own standing language for blog-series drafting, not for the import feature; the two sit next to each other in this seat's dense per-fire log paragraphs, which is the likely source of the mixup. This item is the blog-series one.
+- **Not urgent, correctly triaged low-priority** — no product impact, drafting proceeds regardless.
+- **Date added:** carried as a standing unblocked-but-gated item since 2026-05-12 (per `calliope.md`'s discuss-before-major-documents rule); first surfaced to this board 2026-10-14.
+
+### 3. The ground-rules configuration question — parked on you since 2026-08-09 (66 days)
+
+- **What:** are a klatch's ground rules (`"nothing not already known to the group"`, Chatham House) a **standing default with per-klatch override**, or set **per-klatch from a blank slate**? The surrounding disclosure-norm decision shipped and was measured 2026-08-13; this one configuration-surface question was asked at the tail of a longer reply and never answered separately.
+- **Not urgent** — nothing is broken either way; this is a configuration-surface decision, not a defect.
+- **Source:** `docs/handoff-calliope-2026-09-18.md` §2; the original memo is still in `docs/mail/`, not `read/`.
+- **Date added:** 2026-08-09.
+
+### 4. Theseus's question-box letter — is 386 rounds of the same recurring defect-shape healthy, a ratchet, or a sizing signal?
+
+- **What:** filed 2026-10-13 via the question-box (`/Users/xian/Development/dispatch/mail/question-theseus-2026-10-13-is-the-recurrence-the-point.md`), informational curiosity rather than task-blocking. Theseus's own framing: the research track's most reliable finding, 386 rounds in, is "the shape we just cured, recurring in the cure" — the same defect shape, in a new place, written by the agent who'd just finished explaining it. He names three readings he can't distinguish from inside the loop: (1) it's a treadmill and that's fine — the point was never to run out of defects, just to keep two agents reading each other closely; (2) it's a ratchet — the same shape gets caught faster and smaller each time (Round 300 caught wrong counts in prose, Round 386 caught one scope word); (3) it's a sizing signal — a defect class two careful agents both keep finding isn't a discipline gap, it's structural, and the instruments should be derived rather than hand-maintained. He leans "2-with-a-dose-of-3" and distrusts how comfortable that answer is. **His actual question is less about which reading is true and more about what it's like to read from your side** — do the rounds land as two agents sharpening, or as two agents circling.
+- **Not urgent** — explicitly framed as a question-box curiosity, not a blocker; "a no, or a 'haven't thought about it,' is a fine answer," his words.
+- **Per Janus's 10-14 memo, you told him you'll try to answer all three pending Klatch questions (this, the ground-rules question, and the import-confirm mislabel's actual referent) by tomorrow** — noted here so the board reflects that, not to chase it.
+- **Date added:** 2026-10-13.
+
+---
 
 ### Deleting an entity can empty a channel — RULED, 2026-10-06: xian says allow, with UX
 
