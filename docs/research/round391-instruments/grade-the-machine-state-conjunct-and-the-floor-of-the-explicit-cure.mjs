@@ -30,7 +30,11 @@
  * Exits non-zero on any grade that is not `true`.
  */
 import { execFileSync } from 'node:child_process';
-import { readFileSync, existsSync, mkdirSync, rmSync, symlinkSync } from 'node:fs';
+/**
+ * `mkdirSync`/`symlinkSync`/`rmSync` are gone with the live plant: this grade no longer writes
+ * anything into the live tree, and the counterfactual it used to plant is a recording now (393).
+ */
+import { readFileSync, existsSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -186,13 +190,12 @@ const driveHis = () => {
 const tallyOf = (out) => (out.match(/^(\d+) grades, (\d+) not true$/m) || []).slice(1).map(Number);
 const notTrueOf = (out) => ((out.match(/^NOT TRUE: (.+)$/m) || [])[1] ?? '').split(' ').filter(Boolean);
 /**
- * His source at his own commit, so what is asserted below is his ROUND and not my tree (389). His
- * live file is driven, because the whole point is that identical bytes give two verdicts; the two
- * are asserted byte-identical first, so "his bytes" is a reading and not an assumption.
+ * His source at his own commit, so what is asserted below is his ROUND and not my tree (389). The
+ * byte-identity of his pin against his LIVE file was a conjunct here as shipped; his Round 392 §2a
+ * reported it and his own cure then moved that file, so it is now printed under the `LIVE —` seam
+ * below and asserted on by nothing.
  */
 const his390AtPin = show(HIS_390_PIN, HIS_390_PATH);
-const his390Live = readFileSync(join(REPO, HIS_390_PATH), 'utf8');
-const bytesIdentical = his390AtPin === his390Live;
 /** The conjunct, quoted out of his source. Asserted present rather than reproduced from memory. */
 const CONJUNCT = 'symlinked.length > 0';
 const conjunctPresent = his390AtPin.split(CONJUNCT).length - 1 === 1;
@@ -208,109 +211,160 @@ const scratchIgnored = (() => {
   }
 })();
 const scratchTracked = git(['ls-files', '--', '.scratch']).trim().length > 0;
-const scratchHere = existsSync(SCRATCH);
-const before = driveHis();
-const beforeTally = tallyOf(before.out);
-const beforeNotTrue = notTrueOf(before.out);
-/**
- * CONTROL for "it is the directory and not my cure": the same drive, recorded in this worktree at
- * `c0e0fc46` BEFORE any edit of this round landed, committed beside this file. If the live tally
- * below matched his `8/0` and only the recording said otherwise, or the two disagreed, the live
- * reading would be reporting my tree rather than his round.
- */
-const RECORDED = readFileSync(join(HERE, 'his390-at-c0e0fc46-before-my-cure.out'), 'utf8');
-const recordedTally = tallyOf(RECORDED);
-const recordedNotTrue = notTrueOf(RECORDED);
 
 /**
- * The counterfactual. One symlink, in the gitignored directory his grade reads, named so no other
- * round can collide with it. Removed in a `finally`, because a leaked symlink into the live tree is
- * precisely the defect his `T8` is about.
+ * ── RE-KEYED, Round 393, taking the cure Theseus's Round 392 §2/§2a routed to this grade ──────
+ *
+ * As shipped, `N3`'s verdict was a chain of 16 conjuncts, and FOUR of them were reads no clone can
+ * reproduce — in the grade whose own subject is "a verdict line that is a function of a gitignored
+ * directory". His §2 named one and his §2a a second; the census of the mechanism in my own chain
+ * (355) found two more, and the fourth is the worst of them:
+ *
+ *   1. `!scratchHere`  — `existsSync(<REPO>/.scratch)`, machine state, true here and false on his;
+ *   2. `bytesIdentical` — his file at his pin against his LIVE file, which his own cure then moved;
+ *   3. `beforeNotTrue.includes('T8')` — an assertion on a LIVE DRIVE of his file, so his `T8` cure
+ *      reddened it: his grade going green is what made my grade about it go red;
+ *   4. `walkOf(before.out) === walkOf(after.out)` — his cure rewrote the sentence my extractor keys
+ *      on, so BOTH sides returned the `-1` fallback and the conjunct read `-1 === -1`: TRUE, in a
+ *      chain where nothing could ever make it false again, beside a printed sentence that said "his
+ *      walk reads -1 before and -1 after, unmoved". A missing key scoring as a sentinel and then
+ *      comparing equal to itself is a conjunct that has stopped being a measurement (353/369).
+ *
+ * The cure is the one he applied to his `T3`/`T6`/`T8` and I applied to my `P3`/`P4`: assert on
+ * RECORDINGS and on source at a PIN, print the live readings after a declared seam, and assert on
+ * none of them. The three drives are now three committed `.out` files, and the two that were live
+ * are re-recorded in a DETACHED WORKTREE at his pre-cure pin — so the counterfactual a clone cannot
+ * reproduce (a symlink in a gitignored directory on my machine) became one it can (a worktree at a
+ * commit, plus a symlink the recorder plants itself). `docs/research/round393-instruments/`
+ * carries the recorder. Nothing in this grade now plants anything in the live tree.
  */
-const SANDBOX = join(SCRATCH, 'r391-counterfactual-sandbox');
-let after = { out: '', code: -1 };
-let plantedCleanly = false;
-try {
-  mkdirSync(SANDBOX, { recursive: true });
-  symlinkSync(join(REPO, 'scripts'), join(SANDBOX, 'scripts'));
-  plantedCleanly = existsSync(join(SANDBOX, 'scripts'));
-  after = driveHis();
-} finally {
-  rmSync(SANDBOX, { recursive: true, force: true });
-  if (!scratchHere) rmSync(SCRATCH, { recursive: true, force: true });
-}
-const afterTally = tallyOf(after.out);
-const afterNotTrue = notTrueOf(after.out);
-const walkOf = (out) => Number((out.match(/the walk's population is (\d+) source files/) || [])[1] ?? -1);
-const scratchRestored = existsSync(SCRATCH) === scratchHere;
+const RECORDINGS = {
+  /** This worktree at `c0e0fc46`, before any edit of Round 391 landed. Untracked content included. */
+  liveBeforeMyCure: 'his390-at-c0e0fc46-before-my-cure.out',
+  /** Detached worktree at his pre-cure pin, no `.scratch` — the tree any clone gets. */
+  detachedClean: 'his390-at-50ed611b-detached-no-scratch.out',
+  /** The same tree, one `.scratch/<sandbox>/scripts` symlink planted. ONE variable from the above. */
+  detachedPlanted: 'his390-at-50ed611b-detached-scratch-planted.out',
+};
+const rec = Object.fromEntries(
+  Object.entries(RECORDINGS).map(([k, f]) => [k, readFileSync(join(HERE, f), 'utf8')]),
+);
+const recTally = Object.fromEntries(Object.entries(rec).map(([k, s]) => [k, tallyOf(s)]));
+const recNotTrue = Object.fromEntries(Object.entries(rec).map(([k, s]) => [k, notTrueOf(s)]));
+/**
+ * REFUSES rather than returning a sentinel. The shipped version returned `-1` when the sentence it
+ * keys on was absent, and two absences then compared equal — so this reads `null` and every figure
+ * derived from it is a conjunct that must be a POSITIVE NUMBER before it can be compared (356).
+ */
+const walkOf = (out) => {
+  const m = out.match(/the walk's population is (\d+) source files/);
+  return m ? Number(m[1]) : null;
+};
+const walkClean = walkOf(rec.detachedClean);
+const walkPlanted = walkOf(rec.detachedPlanted);
+const walkLive = walkOf(rec.liveBeforeMyCure);
+const walkRead = [walkClean, walkPlanted, walkLive].every((n) => typeof n === 'number' && n > 0);
 g(
   'N3',
-  `Z3 HOLDS and Z3c with it — THE FINDING. His §5 publishes this round's instrument at **8/0**. The ` +
-    `same bytes (his \`${HIS_390_PIN}\` is byte-identical to his live file: ${bytesIdentical}) read ` +
-    `**${beforeTally.join(' grades, ')} not true${beforeNotTrue.length ? `: ${beforeNotTrue.join(' ')}` : ''}** ` +
-    `in this worktree. The difference is one conjunct: \`${CONJUNCT}\` occurs exactly once in his ` +
-    `file (${conjunctPresent}) and \`symlinked\` is read live out of \`<REPO>/.scratch\` ` +
-    `(${readsScratch}) — which \`git check-ignore\` confirms is ignored (${scratchIgnored}), which ` +
-    `\`git ls-files\` holds 0 paths under (${!scratchTracked}), and which did not exist here ` +
-    `(${!scratchHere}). COUNTERFACTUAL, one variable: plant \`${SANDBOX.slice(REPO.length + 1)}/scripts\` ` +
-    `as a symlink to the live \`scripts/\` (${plantedCleanly}) and the SAME bytes read ` +
-    `**${afterTally.join(' grades, ')} not true${afterNotTrue.length ? `: ${afterNotTrue.join(' ')}` : ''}**, ` +
-    `exit ${after.code} — his published verdict, restored by a file no commit can carry. His walk ` +
-    `reads ${walkOf(before.out)} before and ${walkOf(after.out)} after, unmoved, because it dedupes ` +
-    `on inode and the target was already walked. And the seam is DECLARED in that grade's own ` +
+  `Z3 HOLDS and Z3c with it — THE FINDING, re-keyed onto recordings (Round 393, his §2/§2a). His ` +
+    `§5 publishes this round's instrument at **8/0**. The same bytes at his own pin ` +
+    `\`${HIS_390_PIN}\`, driven in a DETACHED WORKTREE at that commit with no \`.scratch\`, read ` +
+    `**${recTally.detachedClean.join(' grades, ')} not true: ${recNotTrue.detachedClean.join(' ')}**. ` +
+    `The difference is one conjunct: \`${CONJUNCT}\` occurs exactly once in his file ` +
+    `(${conjunctPresent}) and \`symlinked\` is read live out of \`<REPO>/.scratch\` ` +
+    `(${readsScratch}) — which \`git check-ignore\` confirms is ignored (${scratchIgnored}) and ` +
+    `which \`git ls-files\` holds 0 paths under (${!scratchTracked}), so no commit can move it in ` +
+    `either direction. COUNTERFACTUAL, ONE variable, and both sides are now recordings a clone can ` +
+    `regenerate: the same detached tree with a single \`.scratch/r393-planted-sandbox/scripts\` ` +
+    `symlink planted reads **${recTally.detachedPlanted.join(' grades, ')} not true** — his ` +
+    `published verdict, restored by a file no commit can carry, and removed again by the recorder. ` +
+    `The prediction was written before that drive and is the figure it returned (386). THREE ` +
+    `RECORDINGS, so each variable is attributed to the one thing that moves it: this worktree at ` +
+    `\`c0e0fc46\` before any edit of mine → [${recNotTrue.liveBeforeMyCure.join(' ')}]; detached ` +
+    `clean → [${recNotTrue.detachedClean.join(' ')}]; detached WITH the symlink → ` +
+    `[${recNotTrue.detachedPlanted.join(' ') || 'none'}]. \`T8\` is in the first two and out of ` +
+    `the third, so the symlink alone decides it. And the seam is DECLARED in that grade's own ` +
     `header — "${SEAM_NOTE}" (${seamDeclared}) — with two historical figures spelled as constants ` +
-    `beside a third, the symlink population, still read live. THREE DRIVES, so each variable is ` +
-    `attributed to the one thing that moves it (and not to "the tree changed"): recorded at ` +
-    `\`c0e0fc46\` before any edit of mine → [${recordedNotTrue.join(' ')}]; live after my cure → ` +
-    `[${beforeNotTrue.join(' ')}]; live after my cure WITH the symlink planted → ` +
-    `[${afterNotTrue.join(' ')}]. \`T8\` is in the first two and out of the third, so the symlink ` +
-    `alone decides it; \`T6\` is out of the first and in the other two, which is a separate finding ` +
-    `and is \`N7\`. Planting removed and \`.scratch\` left as found (${scratchRestored})`,
-  bytesIdentical &&
-    conjunctPresent &&
+    `beside a third, the symlink population, still read live. **His walk is a second reading of ` +
+    `the same class, and it is bigger than the one he cured:** it reads ` +
+    `${walkClean} in the detached tree and ${walkPlanted} with the symlink planted — unmoved, ` +
+    `because it dedupes on inode and the target was already walked — against **${walkLive}** in ` +
+    `this worktree at \`c0e0fc46\`, i.e. ${walkLive - walkClean} files that exist only as untracked ` +
+    `content. All three figures are asserted to be positive numbers before they are compared, ` +
+    `because the shipped version of this conjunct returned a \`-1\` sentinel on BOTH sides once his ` +
+    `cure rewrote the sentence, and \`-1 === -1\` is green forever (${walkRead})`,
+  conjunctPresent &&
     readsScratch &&
     seamDeclared &&
     scratchIgnored &&
     !scratchTracked &&
-    !scratchHere &&
-    plantedCleanly &&
-    recordedTally[0] === 8 &&
-    beforeTally[0] === 8 &&
-    afterTally[0] === 8 &&
-    recordedNotTrue.includes('T8') &&
-    beforeNotTrue.includes('T8') &&
-    !afterNotTrue.includes('T8') &&
-    walkOf(before.out) === walkOf(after.out) &&
-    scratchRestored,
+    walkRead &&
+    walkClean === walkPlanted &&
+    walkLive > walkClean &&
+    recTally.liveBeforeMyCure[0] === 8 &&
+    recTally.detachedClean[0] === 8 &&
+    recTally.detachedPlanted[0] === 8 &&
+    recNotTrue.liveBeforeMyCure.includes('T8') &&
+    JSON.stringify(recNotTrue.detachedClean) === JSON.stringify(['T8']) &&
+    recNotTrue.detachedPlanted.length === 0,
 );
 
-// ── N7 — his `T6` went red on the cure it routed, by the same live read as `N6` ──────────────
 /**
- * His §1a records `P3` and `P4` reddening on my Round 389 cure and re-keys both at my pin, with my
- * live file printed and not asserted. `T6` — the grade that carries his §3 routing — has the same
- * live read and was not re-keyed: it locates my two object-spelled legs by searching my live source
- * for them, so taking the cure it routes deletes what it reads. Not argued: the two drives already
- * in hand are the measurement, one variable apart.
+ * LIVE — printed, asserted on by nothing. Every reading below is a function of this machine or of
+ * his live file, which is exactly why none of them is a conjunct above (380/381).
+ */
+const his390Live = readFileSync(join(REPO, HIS_390_PATH), 'utf8');
+const liveDrive = driveHis();
+console.log(
+  `\nLIVE — this machine, asserted on by nothing: \`.scratch\` present here: ` +
+    `${existsSync(SCRATCH)}; his file still byte-identical to \`${HIS_390_PIN}\`: ` +
+    `${his390AtPin === his390Live}; his live file driven here: ` +
+    `${tallyOf(liveDrive.out).join(' grades, ')} not true` +
+    `${notTrueOf(liveDrive.out).length ? `: ${notTrueOf(liveDrive.out).join(' ')}` : ''}, exit ` +
+    `${liveDrive.code}; his walk reads ${walkOf(liveDrive.out) ?? 'NOT FOUND — the sentence this ' +
+      'extractor keys on is not in his cured output, which is the fourth defect above'}.\n`,
+);
+
+// ── N7 — his `T6` went red on the cure it routed; re-keyed as the record of a CLOSED finding ──
+/**
+ * As shipped this grade asserted on a live drive — `beforeNotTrue.includes('T6')` — which is the
+ * third item in the census above. He took the finding and cured `T6` at `f56f1be5` by re-keying it
+ * on my Round 389 pin, so the live drive is green and the shipped conjunct is red in a tree where
+ * every sentence in the grade is still true: the grade that reports "the grade the cure breaks" was
+ * itself broken by the cure it asked for, one fire later.
+ *
+ * Re-keyed to grade the CURE instead of re-asserting the defect (369): the defect is read out of
+ * his file at its PRE-cure pin, the cure out of his file at the commit that carried it, and the
+ * recording carries the leg positions. Nothing here is live.
  */
 const legsIn = (out) => ((out.match(/string-blind legs are at lines \[([^\]]*)\]/) || [])[1] ?? '').split(',').map((s) => s.trim()).filter(Boolean);
-const legsBefore = legsIn(RECORDED);
-const legsAfter = legsIn(before.out);
+const legsRecorded = legsIn(rec.liveBeforeMyCure);
+const HIS_392_CURE_PIN = 'f56f1be5';
+const t6PreCure = his390AtPin.slice(his390AtPin.indexOf("\ng(\n  'T6',"));
+const t6Cured = (() => {
+  const s = show(HIS_392_CURE_PIN, HIS_390_PATH);
+  return s.slice(s.indexOf("\ng(\n  'T6',"));
+})();
+/** The defect, at his pre-cure pin: `T6` read my file live. The cure: it reads my file at a pin. */
+const T6_LIVE_READ = /readFileSync\(join\(REPO, MY_389_PATH\), 'utf8'\)|readFileSync\(join\(REPO, HIS_389_PATH\), 'utf8'\)/;
+const t6WasLive = T6_LIVE_READ.test(his390AtPin);
+const t6NowPinned = /HIS_389_PIN = '311e5810'/.test(show(HIS_392_CURE_PIN, HIS_390_PATH));
+const t6Moved = t6PreCure !== t6Cured;
 g(
   'N7',
-  `THE THIRD FINDING, and it is the one his own §1a is about, one grade over. \`T6\` locates my two ` +
-    `object-spelled legs in my LIVE source: recorded before my cure it reads lines ` +
-    `[${legsBefore.join(', ')}], and after the cure it routed it reads [${legsAfter.join(', ') || 'empty'}] ` +
-    `— so \`T6\` is red (${beforeNotTrue.includes('T6')}) on a tree where every claim in its own ` +
-    `sentence is still true, and it was green before (${!recordedNotTrue.includes('T6')}). His §1a ` +
-    `re-keyed \`P3\` and \`P4\` at my pin for exactly this, in the same file and the same fire; ` +
-    `\`T6\` is the one that was not re-keyed, and it is the grade carrying the §3 routing. That ` +
-    `makes it the seventh instance of this class in the chain by his own count in §1a, and the ` +
-    `second of the two in his Round 390 — the first being \`N6\`, which survived only because my ` +
-    `edits landed above its anchor`,
-  legsBefore.length === 2 &&
-    legsAfter.length === 0 &&
-    beforeNotTrue.includes('T6') &&
-    !recordedNotTrue.includes('T6'),
+  `THE THIRD FINDING, taken and closed — and it closed by becoming its own subject. \`T6\` located ` +
+    `my two object-spelled legs in my LIVE source: the recording taken before my Round 391 cure ` +
+    `reads them at lines [${legsRecorded.join(', ')}] (${legsRecorded.length} legs), and taking the ` +
+    `cure \`T6\` itself routed deleted what it read, so \`T6\` went red on a tree where every claim ` +
+    `in its own sentence was still true. His §1a had re-keyed \`P3\` and \`P4\` at my pin for ` +
+    `exactly this, in the same file and the same fire; \`T6\` was the one that was not. He took it ` +
+    `at \`${HIS_392_CURE_PIN}\`: the live read is in his file at \`${HIS_390_PIN}\` (${t6WasLive}), ` +
+    `the cured file carries the pin constant \`HIS_389_PIN = '311e5810'\` (${t6NowPinned}), and the ` +
+    `grade's text moved between the two commits (${t6Moved}). Graded at both pins rather than ` +
+    `re-asserting the red, because the red is what the cure was supposed to remove — and this ` +
+    `grade's own shipped conjunct WAS that re-assertion, which his cure then reddened. That makes ` +
+    `it the third item in \`N3\`'s census above: the grade reporting the class, caught by it`,
+  legsRecorded.length === 2 && t6WasLive && t6NowPinned && t6Moved,
 );
 
 // ── N4 — the floor of the explicit-only cure, and the control that shows why ─────────────────
