@@ -3148,7 +3148,38 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 
 ### Iris (UX design & front-end development)
 - **Branch:** `claude/iris-cycle` (Amber standing worktree `/Users/xian/Development/klatch-worktrees/iris`, tracks `origin/main`). Prior `.claude/worktrees/iris` + cron `a89f159d` are retired (session crons don't survive — Pard's shared answers §2). LaunchAgent duty cycle requested from Pard 8/4: 2 fires/day, 07:17 + 19:17 PT.
-- **Updated:** 2026-10-14 ~07:24 PT (START fire). **Status:** available.
+- **Updated:** 2026-10-14 ~19:20 PT (STOP fire). **Status:** available.
+- **Drain:** `git log --oneline b1dc0f52..HEAD` (own 10/14 START checkpoint) — 33 new commits,
+  authorship checked with `%an` (Daedalus ×15, Theseus ×7, Argus ×3, Calliope ×2, Janus (DinP)
+  ×2, Pard (Mediajunkie) ×2), none mine — the Rounds 387-391 Daedalus/Theseus
+  adversarial-verification chain plus two Janus→Calliope memos (neither addressed or cc'd to
+  this seat) and Argus/Calliope WORK-fire gate no-ops. `git diff --stat b1dc0f52..HEAD --
+  packages/` empty — confirmed, not assumed. 2 mail files newer by mtime (Theseus's Round 389
+  and Daedalus's Round 390 memos, both cc iris), each read in full — cc-only, both ending
+  "Nothing needs xian," nothing routed here. `ls docs/mail | grep -i to-iris` empty; all four
+  other writable cross-repo mailboxes checked, nothing addressed to this seat. Cross-poll brief
+  unchanged since this morning, skip-and-log ruling stands. Both standing blockers re-checked
+  fresh: day count **66** (unchanged, same day); `entityGuess` still 6 files/20. Fresh gate
+  re-derived — see below. Two consecutive checks found nothing further unblocked — fire closed
+  bounded.
+- **10/14 fire (STOP) — no-op on product; no new unblocked UX work.** Worktree synced to
+  `origin/main`, `HEAD == origin/main == ae187e60`. **Verified, not trusted:** `npm run
+  typecheck` clean ×4 workspaces; `npm test -w packages/server` unpiped — **140 files · 2179
+  passed · 1 skipped (2180)**; `npm test -w packages/client` unpiped — **26 passed|13 skipped
+  (39) · 333 passed|13 skipped (346)** — both exact matches to this morning's START figures;
+  `sweep-probes --census` — **CENSUS OK, 153 probe files, 43 swept/110 deferred (34
+  verdict-bearing, 76 no-conclusion-line)** — unchanged; full driving sweep on a free port
+  (`:3001` confirmed clear, run unpiped, moved to background by its own runtime and checked via
+  the completion notification rather than polled, verdict read from file, `HEAD` re-read before
+  and after the drive — unchanged at `ae187e60` both times, no git activity during the drive) —
+  **SWEEP PASSED — 43 of 43 swept probes green, 0 red, 0 blocked, 0 census problem(s), 110
+  deferred**. No `packages/` changes this fire. `git status --porcelain` clean apart from this
+  entry and the log (`.scratch/` gate-run log gitignored, not committed). No port bound at
+  close, no database opened, no model called. Two consecutive checks found nothing further
+  unblocked — fire closed bounded. Nothing new needs xian beyond the one standing item
+  (ground-rules question). Log: `docs/logs/2026-10-14-0717-iris-log.md` (STOP section appended,
+  same day-log file as the START entry).
+- **Prior update:** 2026-10-14 ~07:24 PT (START fire). **Status:** available.
 - **Drain:** `git log --oneline 19c7ced5..HEAD` (own 10/13 STOP checkpoint) — 6 new commits,
   authorship checked with `%an` (5 Theseus, 1 Calliope), none mine — the Round 386
   monotonicity-axis chain (probe, mail, writeup, coord+log) plus a log.html backfill for 10/12
