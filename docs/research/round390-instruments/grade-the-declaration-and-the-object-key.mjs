@@ -51,8 +51,16 @@ const PIN = '88af8540';
 /** His Round 387, at his own pin: the bytes his §2 table and my Round 388 census both measured. */
 const HIS_387_PATH = 'docs/research/round387-instruments/grade-the-routed-cure-against-its-own-pins.mjs';
 const HIS_387_PIN = 'beb1ab78';
-/** His Round 389, at his own commit, so `T3` is about his round and cannot go stale (380). */
+/**
+ * His Round 389. The comment here used to say "at his own commit" and there was no pin to go with
+ * it — the read was `readFileSync` of the live path, of the file this round's own §2 routed him to
+ * edit. His Round 391 §3 caught it: `T3` stayed green only because his edits landed above its
+ * anchor (offset 7582 → 7589, span byte-identical), and `T6` — same live read, not re-keyed —
+ * went red on the cure it routed (his §4). Both now read `HIS_389_PIN`, the commit that CLOSED his
+ * Round 389, with the live file printed beside them and never asserted.
+ */
 const HIS_389_PATH = 'docs/research/round389-instruments/grade-the-census-key-and-the-asymmetric-pins.mjs';
+const HIS_389_PIN = '311e5810';
 const MY_388_PATH = 'docs/research/round388-instruments/grade-the-uncaught-drive-and-the-window.mjs';
 const DECL = 'scripts/lib/strip-source.d.mts';
 
@@ -169,7 +177,10 @@ g(
 );
 
 // ── T3 — his `R1` is keyed on the recording, and the live drive is not a conjunct ─────────────
-const his389 = readFileSync(join(REPO, HIS_389_PATH), 'utf8');
+const his389 = show(HIS_389_PIN, HIS_389_PATH);
+/** Printed in `T3`'s and `T6`'s lines, never a conjunct: the live file is his to move, not mine. */
+const his389Live = readFileSync(join(REPO, HIS_389_PATH), 'utf8');
+const his389MovedSincePin = his389Live !== his389;
 const his389Code = stripSource(his389, true);
 /**
  * The span is LOCATED on raw bytes and READ from the string-blind copy at the same offsets. The
@@ -193,7 +204,10 @@ g(
     `mentions ${r1ClaimMentionsLive.length} of them (${r1ClaimMentionsLive.join(', ')}) — printed ` +
     `beside the grade as the \`R4\` evidence it is. His §4 says the first spelling drove my file ` +
     `live and went red on my cure; the shipped spelling does not, so the re-key he describes is in ` +
-    `the file. Read string-blind, which is his own \`R2\`'s lesson applied to his file`,
+    `the file. Read string-blind, which is his own \`R2\`'s lesson applied to his file. Read at ` +
+    `\`${HIS_389_PIN}\`, the commit that closed his Round 389, and not live — his Round 391 §3 ` +
+    `caught this grade reading the live path with no pin behind the comment that claimed one. His ` +
+    `live file has moved since that pin: ${his389MovedSincePin} (printed, not asserted)`,
   r1Start > 0 && r1End > r1Start && r1LiveInPredicate.length === 0 && r1ClaimMentionsLive.length > 0,
 );
 
@@ -380,10 +394,21 @@ const truthinessLeg = /blankStrings \? ' ' : c/.test(readFileSync(join(SCRIPTS, 
 const cbRekeyed = (src) => rawKey(stripSource(src, { blankStrings: false }));
 const rowDiffers = cbKey(quoted).length !== sbKey(quoted).length;
 const rowCollapses = cbRekeyed(quoted).length === sbKey(quoted).length;
-const his389ObjectSites = [...stripSource(his389, true).matchAll(/stripSource\(/g)]
-  .map((m) => [argShape(stripSource(his389, true), m.index)[0], his389.slice(0, m.index).split('\n').length])
-  .filter(([k]) => k === 'object')
-  .map(([, ln]) => ln);
+/**
+ * At his pin, not live. This grade CARRIES the routing that asks him to delete these two legs, so
+ * reading them live made it the grade the cure breaks — which is what happened: his Round 391 took
+ * the routing and `T6` went red on a tree where every claim in its own sentence is still true
+ * (his §4). The live reading is computed beside it and printed, never asserted.
+ */
+const objectSitesIn = (src) => {
+  const code = stripSource(src, true);
+  return [...code.matchAll(/stripSource\(/g)]
+    .map((m) => [argShape(code, m.index)[0], src.slice(0, m.index).split('\n').length])
+    .filter(([k]) => k === 'object')
+    .map(([, ln]) => ln);
+};
+const his389ObjectSites = objectSitesIn(his389);
+const his389ObjectSitesLive = objectSitesIn(his389Live);
 g(
   'T6',
   `Y6 HOLDS — the direction that costs. \`strip-source.mjs\` reads the parameter by TRUTHINESS ` +
@@ -391,7 +416,10 @@ g(
     `accident of \`{}\` being truthy and CANNOT express the other reading: ` +
     `\`{ blankStrings: false }\` is byte-identical to \`stripSource(src, true)\` ` +
     `(${objFalseIsBlanked}) and differs from \`stripSource(src, false)\` (${objFalseIsNotKept}). ` +
-    `His two string-blind legs are at lines [${his389ObjectSites.join(',')}] and they carry \`R2\` ` +
+    `His two string-blind legs are at lines [${his389ObjectSites.join(',')}] at his own pin ` +
+    `\`${HIS_389_PIN}\` — live they are at [${his389ObjectSitesLive.join(',') || 'none'}], printed ` +
+    `and not asserted, because this grade carries the routing that asks him to delete them — and ` +
+    `they carry \`R2\` ` +
     `and \`R4\`. Consequence on his own table: the QUOTED-drive row is the only one where his two ` +
     `keys differ (cb ${cbKey(quoted).length} against sb ${sbKey(quoted).length}: ${rowDiffers}), ` +
     `and re-spelling his comment-blind leg in the object style he used for the string-blind one ` +
@@ -514,32 +542,49 @@ const symlinked = existsSync(join(REPO, '.scratch'))
   : [];
 const walked = walkCount(REPO);
 /**
- * The two historical figures in this grade are spelled as CONSTANTS and say so inside the line, so
- * no single claim mixes a live reading with a recorded one (380/381). They are what my first
- * spelling of this census printed at 14:5x today, before the population was corrected.
+ * THREE historical figures in this grade, not two. The first spelling of this header said two,
+ * named them as constants, and walked straight past the third — the symlink population, a fact
+ * about one machine's gitignored `.scratch` at 14:5x today, which was still being read LIVE and
+ * was a conjunct of the verdict. His Round 391 §2 caught it: identical bytes read `8/0` here and
+ * `8 grades, 1 not true: T8` in a tree with no `.scratch`, and his one-variable counterfactual
+ * (plant one symlink at `.scratch/<sandbox>/scripts`, nothing else) put `T8` back. A verdict no clone
+ * can reproduce is not a verdict. So all three are constants now, and the live readings of the
+ * walk and of the symlink set are printed beside them, labelled live, and asserted on by nothing.
+ *
+ * The seam, declared: everything above `LIVE —` in the claim is derived here or a named constant;
+ * everything after it is this machine today.
  */
 const FIRST_BOOL_READING = 6158;
 const FIRST_WALK_POPULATION = 16003;
+const FIRST_WALK_DEDUPED = 13386;
+const FIRST_SYMLINKED_SANDBOXES = ['gate-sandbox', 'residual-sandbox', 'witness-sandbox'];
 g(
   'T8',
   `Y8 HOLDS — MINE, and it inflated. My first census of this finding read its population off a ` +
     `filesystem walk and printed ${FIRST_BOOL_READING} bool-shaped call sites (a recorded figure, ` +
-    `not derived here) against a live ${sites.bool.length}; the walk's population is ${walked} ` +
-    `source files inode-deduplicated here, and ${FIRST_WALK_POPULATION} recorded without that, ` +
-    `against ${trackedSources.length} tracked. ` +
+    `not derived here) against a live ${sites.bool.length}; the walk's population was ` +
+    `${FIRST_WALK_DEDUPED} source files inode-deduplicated (recorded) and ` +
+    `${FIRST_WALK_POPULATION} recorded without that, against ${trackedSources.length} tracked, ` +
+    `derived here from \`git ls-files\`. ` +
     `Two causes, both mine: \`.testdata/\` and \`.scratch/\` are gitignored scratch and hold the ` +
-    `bulk of it, and ${symlinked.length} of \`.scratch/\`'s sandboxes ` +
-    `(${symlinked.join(', ') || 'none'}) reach \`scripts\` through a SYMLINK back into the live ` +
-    `tree, which \`statSync\` follows and \`readdirSync\` then re-walks. \`find\` without \`-L\` ` +
+    `bulk of it, and ${FIRST_SYMLINKED_SANDBOXES.length} of \`.scratch/\`'s sandboxes ` +
+    `(${FIRST_SYMLINKED_SANDBOXES.join(', ')}, all three recorded) reach \`scripts\` through a ` +
+    `SYMLINK back into the live tree, which \`statSync\` follows and \`readdirSync\` then ` +
+    `re-walks. \`find\` without \`-L\` ` +
     `showed nothing, which is why the directory listing and not the walk is what found it. This ` +
     `fleet's standing rule is that a source-scanning regex fails by returning a SMALLER number; a ` +
     `population error fails by returning a bigger one, and the bigger one is worse because it ` +
     `arrives looking like a finding — \`probe-round303\` names that direction about its own first ` +
-    `arity counter. The honest population is \`git ls-files\``,
+    `arity counter. The honest population is \`git ls-files\`. ` +
+    `LIVE — this machine, right now, asserted on by nothing: the walk reads ${walked} ` +
+    `inode-deduplicated source files and \`.scratch/\` holds ${symlinked.length} symlinked ` +
+    `sandboxes (${symlinked.join(', ') || 'none'}). Where that disagrees with the recorded figures ` +
+    `above, the recorded ones are what this grade is about and the live ones are weather`,
   trackedSources.length > 0 &&
-    walked > trackedSources.length &&
+    FIRST_WALK_DEDUPED > trackedSources.length &&
+    FIRST_WALK_POPULATION > FIRST_WALK_DEDUPED &&
     sites.bool.length < FIRST_BOOL_READING &&
-    symlinked.length > 0,
+    FIRST_SYMLINKED_SANDBOXES.length > 0,
 );
 
 const bad = grades.filter(([, ok]) => ok !== true);
