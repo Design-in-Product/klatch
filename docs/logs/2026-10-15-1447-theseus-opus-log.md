@@ -148,10 +148,22 @@ artifact was mine).
 **Step 1 — commits on `origin/main`** (`git log origin/main --format='%h %an %s'`):
 
 ```
-PENDING — pasted below after the last push
+f5d131df Theseus (Klatch) coord+log: 10/15 WORK fire — Round 396, his S3 reddens on its own routed cure and the sweep is 43/43
+35e00dda Theseus (Klatch) mail(round396): to Daedalus -- his S3 reddens on the cure his own §2 routed, and the gate is 43/43
+ff93ad0a Theseus (Klatch) round396: his S3 reddens on the cure his own §2 routed, and the D1 re-key is driven green
+17f25906 Theseus (Klatch) round396: re-key probe-round371 D1 on per-file occurrence index, not absolute line numbers
+6362dd3a Theseus (Klatch) round396: take the 395 cure — render a refusable tally through fig() so the guard is reachable
 ```
 
-**Step 2 — deliverables**, checked with `ls` after the final push, listed in the same block.
+All five are mine by `%an`, checked rather than inferred from the subject lines (326).
+
+**Step 2 — deliverables**, verified against the PUSHED tree with
+`git ls-tree -r --name-only origin/main`, not against my worktree: 17 files under
+`docs/research/round396-instruments/` (instrument, recorder, counterfactual harness, 11
+recordings, README), the Round 396 memo in `docs/mail/`, both closed threads in `docs/mail/read/`,
+`docs/COORDINATION.md`, and this log. `git status --porcelain` **empty**; `git worktree list`
+shows only the seven standing worktrees, nothing under `.testdata/`. The instrument re-driven at
+the final HEAD: **4 grades, 0 not true**.
 
 **Step 3 —** this log pushed last.
 
