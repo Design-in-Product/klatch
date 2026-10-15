@@ -1,0 +1,32 @@
+# my Round 392 instrument, PRE-CURE bytes from c848dc66, driven in a DETACHED worktree at
+# 3b0677e0 — the close-discipline commit that git mv-ed the memo its Q2b reads live into
+# docs/mail/read/. This is the drive that has no verdict line at all.
+# exit code: 1
+
+EXPECT — each labelled for whether it preceded its own measurement:
+  W1: his instrument reproduces his published 7/0 in a tree with no `.scratch` — PREDICTED before it drove, and it held
+  W2: his `N3` is red in my worktree on the same bytes — ALREADY SEEN, the first drive of this fire, before any edit of mine; the conjunct isolation was NOT
+  W2b: his `N3` also asserts my live file against my pin, so my taking his cure reddens it — NOT yet seen when W2 was written; found by reading his verdict list after the drive
+  W3: my cure makes `T3`/`T6`/`T8` read the same in both trees — not yet measured when written
+  W4: his §7: `B3`'s reach moved because the population grew — not yet measured when written, and I did not expect the denominator to have moved too
+  W5: my detached-worktree counterfactual was NOT one-variable — WRONG prediction, written down as T6/T8 and returned T4 T5 T6 T8
+
+NOT TRUE Q1: false — W1 HOLDS — his Round 391 reproduces. His instrument at `1588b85f` (byte-identical to his live file: false), driven at `08a13b81` in a DETACHED worktree whose only difference from mine is untracked content, reads **7 grades, 0 not true** — his published figure. His three findings about my round are each true and each taken: `T8`'s live `.scratch` read (his §2), `T3`'s comment claiming a pin that did not exist (his §3), and `T6` going red on the cure it routed (his §4). His round needs no reverting
+NOT TRUE Q2: false — W2 HOLDS — THE FINDING. His §5 publishes his Round 391 instrument at **7/0**. The same bytes read **7 grades, 1 not true: N3** in my worktree at the same commit `08a13b81`, on the first drive of this fire, before any edit of mine. `N3` is the grade whose subject is *"a verdict line that is a function of a gitignored directory"*. Its verdict is a chain of 16 conjuncts and one of them, present exactly once (true), is `!scratchHere` — where `scratchHere = existsSync(SCRATCH)` (true) and `SCRATCH = join(REPO, '.scratch')` (true): the same directory, read live, in the grade that reports the class. It exists on this machine (false) and `git ls-files` holds nothing under it (true), so no commit can move that conjunct either way. CONTROL, so the claim is not "all of it is live": `conjunctPresent` is in the same chain (true) and is a read of MY source at MY pin, which any clone reproduces. ISOLATION, and the variable is ONE: two detached worktrees at `08a13b81`, identical in every byte either can carry and differing only in that one has a single `.scratch/<sandbox>/scripts` symlink planted — `7/0` without it against `7/1: N3` with it. My own worktree, which also has `node_modules` and so is NOT one variable away, reads `7/1: N3` and is the drive that found it, not the one that isolates it. His own cure, from his §2, applies to his own grade verbatim: a constant, or drop the conjunct
+node:fs:539
+    return binding.readFileUtf8(path, stringToFlags(options.flag));
+                   ^
+
+Error: ENOENT: no such file or directory, open '/Users/xian/Development/klatch-worktrees/theseus/.testdata/r394-after-the-mail-move/docs/mail/daedalus-to-theseus-cc-xian-janus-argus-calliope-iris-your-390-reproduces-whole-and-the-8-0-it-publishes-is-a-function-of-a-gitignored-directory-2026-10-14.md'
+    at readFileSync (node:fs:539:20)
+    at file:///Users/xian/Development/klatch-worktrees/theseus/.testdata/r394-after-the-mail-move/docs/research/round392-instruments/grade-the-finding-that-is-its-own-finding.mjs:176:17
+    at ModuleJob.run (node:internal/modules/esm/module_job:569:25)
+    at async node:internal/modules/esm/loader:650:26
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5) {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/xian/Development/klatch-worktrees/theseus/.testdata/r394-after-the-mail-move/docs/mail/daedalus-to-theseus-cc-xian-janus-argus-calliope-iris-your-390-reproduces-whole-and-the-8-0-it-publishes-is-a-function-of-a-gitignored-directory-2026-10-14.md'
+}
+
+Node.js v26.5.0
