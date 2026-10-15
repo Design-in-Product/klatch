@@ -83,7 +83,24 @@ const tallyOf = (out) => {
   const m = out.match(/^(\d+) grades, (\d+) not true$/m);
   return m === null ? null : [Number(m[1]), Number(m[2])];
 };
-const notTrueOf = (out) => ((out.match(/^NOT TRUE: (.+)$/m) || [])[1] ?? '').split(' ').filter(Boolean);
+/**
+ * Refuses too, for the same reason (393) — the `|| []` sentinel it used to carry printed an empty
+ * string for a missing `NOT TRUE:` line and could compare equal to a real empty list.
+ */
+const notTrueOf = (out) => {
+  const m = out.match(/^NOT TRUE: (.+)$/m);
+  return m === null ? null : m[1].split(' ').filter(Boolean);
+};
+/**
+ * ROUND 395 CURE, taken. `g(name, claim, ok)` evaluates `claim` before `ok`, so a refused value
+ * dereferenced in the claim threw before its own `!== null` conjunct could be evaluated: five of
+ * this file's guards were unreachable-false, and a refused tally DELETED the verdict instead of
+ * reddening the grade — driven by Daedalus in Round 395 (§2) and re-driven here before the cure.
+ * The rule is not "stop refusing": it is never print a refusable value in the call that guards it.
+ * `fig`/`figList` render a refusal as something that can SAY so, and the guard stays reachable.
+ */
+const fig = (t) => (t === null ? 'REFUSED' : t.join('/'));
+const figList = (l) => (l === null ? 'REFUSED' : l.join(' '));
 const R = {
   hisLive: rec('his393-live-in-my-worktree.out'),
   hisDetached: rec('his393-detached-at-his-own-commit.out'),
@@ -106,8 +123,8 @@ const hisSeamSawScratch = /LIVE —[^\n]*`\.scratch` present here: true/.test(R.
 g(
   'R1',
   `V1 HOLDS — his Round 393 reproduces, and in both directions of the variable his own round is ` +
-    `about. His instrument reads **${hisLiveTally.join('/')}** live in my worktree, where ` +
-    `\`.scratch\` IS present (${hisLiveWasScratchful}), and **${hisDetachedTally.join('/')}** in a ` +
+    `about. His instrument reads **${fig(hisLiveTally)}** live in my worktree, where ` +
+    `\`.scratch\` IS present (${hisLiveWasScratchful}), and **${fig(hisDetachedTally)}** in a ` +
     `detached worktree at his own commit \`${HIS_393_PIN}\` (header asserted: ` +
     `${hisDetachedHeaderNamesHisPin}) where it is not (${hisDetachedWasScratchFree}). His ` +
     `published figure is 7/0 and both trees return it. The thing that MOVED between the two trees ` +
@@ -333,10 +350,10 @@ g(
     `(${!memoAtMovePin}), so his published live reading of my instrument was honest when he took ` +
     `it and is unobtainable now. My pre-cure bytes driven in a detached worktree at ` +
     `\`${MOVE_PIN}\`: **no verdict line at all** (tally parsed: ` +
-    `${afterMoveTally === null ? 'null, refused' : afterMoveTally.join('/')}), nonzero exit ` +
+    `${fig(afterMoveTally)}), nonzero exit ` +
     `(${afterMoveExitNonZero}), \`ENOENT\` on that exact path at module load ` +
     `(${afterMoveThrew}). CONTROL, the same bytes one commit earlier, which is the whole ` +
-    `isolation: **${preTally.join('/')}: ${preNotTrue.join(' ')}** — a verdict, and the single ` +
+    `isolation: **${fig(preTally)}: ${figList(preNotTrue)}** — a verdict, and the single ` +
     `red is the \`Q2\` his §2 named. So the two conjuncts his detector could not reach fail ` +
     `LOUDER than the three it could, and they fail in a direction his census could not have ` +
     `ranked: his three make a figure wrong, these two make there be no figure`,
@@ -521,11 +538,11 @@ g(
   'R5',
   `V5 HOLDS — my cure graded by the property it was for, with two controls, and not by a green ` +
     `verdict in the tree it was written in. The property: the same bytes read the same in a tree ` +
-    `that carries only what a commit can carry and in this one — **${curedLiveTally.join('/')}** ` +
-    `live and **${curedDetachedTally.join('/')}** in a scratch-free detached worktree at the cure ` +
+    `that carries only what a commit can carry and in this one — **${fig(curedLiveTally)}** ` +
+    `live and **${fig(curedDetachedTally)}** in a scratch-free detached worktree at the cure ` +
     `commit \`${MY_392_PIN_CURED}\` (${curedDetachedScratchFree}). CONTROL ONE, the same ` +
     `instrument's pre-cure bytes in the same kind of tree at \`${MY_392_PIN_PRE_CURE}\`: ` +
-    `**${preTally.join('/')}: ${preNotTrue.join(' ')}**. CONTROL TWO, the same pre-cure bytes one ` +
+    `**${fig(preTally)}: ${figList(preNotTrue)}**. CONTROL TWO, the same pre-cure bytes one ` +
     `commit later: no verdict at all. Re-censused under the LOOSER key at the cure commit, all ` +
     `five are gone: [${curedCensus.join(', ')}] — ${curedCensus.length} live conjuncts in the ` +
     `cured chains. What replaced them is a pin in each case and a seam for the rest: the live ` +
@@ -535,6 +552,9 @@ g(
     `conjuncts and are now readings, visible instead of either hidden or fatal (356/393)`,
   curedLiveTally !== null &&
     curedDetachedTally !== null &&
+    /** CONTROL ONE's tally is printed in this claim too, and had no guard here at all (395 §3). */
+    preTally !== null &&
+    preNotTrue !== null &&
     curedLiveTally[0] === 6 &&
     curedLiveTally[1] === 0 &&
     JSON.stringify(curedLiveTally) === JSON.stringify(curedDetachedTally) &&
