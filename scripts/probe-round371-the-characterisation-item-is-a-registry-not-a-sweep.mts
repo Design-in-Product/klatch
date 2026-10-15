@@ -326,25 +326,72 @@ meas('C4', 'of the two code-surface declarations, :1558 restates a finding alrea
 const ROWS_JSON = 'docs/research/round370-instruments/characterisation-sweep-rows.json';
 const recorded: { file: string; line: number; markers: string[] }[] = JSON.parse(readFileSync(join(REPO, ROWS_JSON), 'utf8'));
 const recordedFiles = new Set(recorded.map((r) => r.file));
-const key = (r: { file: string; line: number; markers: string[] }) => `${r.file}:${r.line}:${r.markers.join('+')}`;
 
-const nowOverHisFiles: string[] = [];
+/**
+ * ROUND 396 RE-KEY — the absolute line number is not part of the property this grades.
+ *
+ * Keyed on `file:line:markers`, D1 went RED at `4a2fccf5` for a reason that had nothing to do with
+ * the relocation it grades: Daedalus's `02e395f4` added 16 lines and removed 5 in
+ * `probe-round303`, which shifted that file's two `rather-than` markers by +11 (149→160,
+ * 657→668) and read as two lost and two gained members while the total stood at 585 = 585 (found
+ * by Argus, 10/15 WORK fire; re-driven by Daedalus and by me before this edit). The frozen
+ * recording is NOT re-pinned: it was taken at `72886c0b`, before the relocation existed, and
+ * editing it to match today's tree converts the control into a restatement of the tree.
+ *
+ * The key is now file + per-file occurrence INDEX + markers, with both sides ordered by line.
+ * Multiplicity and order within a file are kept — a member that disappears, appears, changes its
+ * marker set, or changes its position among its file's members still moves the list — and a pure
+ * reflow of surrounding lines does not. `D1a` below grades the two keys against each other on the
+ * one file this fire's shift is in, so the drop is stated and not silent.
+ */
+type MemberRow = { file: string; line: number; markers: string[] };
+const lineKey = (r: MemberRow) => `${r.file}:${r.line}:${r.markers.join('+')}`;
+const indexKeys = (rows: MemberRow[]) => {
+  const byFile = new Map<string, MemberRow[]>();
+  for (const r of rows) byFile.set(r.file, [...(byFile.get(r.file) ?? []), r]);
+  const out: string[] = [];
+  for (const [f, rs] of byFile) {
+    [...rs]
+      .sort((a, b) => a.line - b.line)
+      .forEach((r, i) => out.push(`${f}:#${i}:${r.markers.join('+')}`));
+  }
+  return out;
+};
+
+const nowRows: MemberRow[] = [];
 for (const f of [...recordedFiles].sort()) {
   if (!existsSync(join(REPO, f))) continue;
   for (const b of commentBlocks(readFileSync(join(REPO, f), 'utf8'))) {
     const ms = markersIn(b.text);
-    if (ms.length) nowOverHisFiles.push(key({ file: f, line: b.line, markers: ms }));
+    if (ms.length) nowRows.push({ file: f, line: b.line, markers: ms });
   }
 }
-const his = new Set(recorded.map(key));
-const now = new Set(nowOverHisFiles);
+const his = new Set(indexKeys(recorded));
+const now = new Set(indexKeys(nowRows));
 const lost = [...his].filter((k) => !now.has(k));
 const gained = [...now].filter((k) => !his.has(k));
 check('D1', 'the relocated detector reproduces Round 370\'s recorded member list over the files that '
   + 'list covers, member-for-member and not by count — so the relocation to `scripts/lib/` is '
-  + 'behaviour-preserving, graded against an artifact recorded before it existed',
+  + 'behaviour-preserving, graded against an artifact recorded before it existed. Keyed on file + '
+  + 'per-file occurrence index + markers (Round 396): multiplicity and order kept, absolute line '
+  + 'numbers dropped, because a reflow of an unrelated comment in a swept file is not a change in '
+  + 'what this detector finds',
   lost.length === 0 && gained.length === 0,
   `${his.size} recorded / ${now.size} now :: lost ${JSON.stringify(lost.slice(0, 4))} gained ${JSON.stringify(gained.slice(0, 4))}`);
+
+// The drop, stated rather than silent: under the OLD key the same two lists disagree, and the
+// disagreement is exactly the file whose length moved. If this ever reads 0 under both keys the
+// re-key has stopped doing anything and can go; if it ever reads a file the live tree has not
+// reflowed, the line component was carrying something after all.
+const hisLines = new Set(recorded.map(lineKey));
+const nowLines = new Set(nowRows.map(lineKey));
+const lineOnly = [...[...hisLines].filter((k) => !nowLines.has(k)), ...[...nowLines].filter((k) => !hisLines.has(k))];
+const lineOnlyFiles = [...new Set(lineOnly.map((k) => k.split(':')[0].split('/').pop()))];
+meas('D1a', `under the OLD \`file:line:markers\` key the same two lists differ by ${lineOnly.length} `
+  + `member(s) across ${lineOnlyFiles.length} file(s) — ${JSON.stringify(lineOnlyFiles)} — while the `
+  + 'occurrence-index key differs by '
+  + `${lost.length + gained.length}; totals ${hisLines.size} = ${nowLines.size} either way, which is `
+  + 'what makes the difference a reflow and not a content change');
 meas('D2', `his recorded list spans ${recordedFiles.size} file(s) and ${his.size} member(s); `
   + `${[...recordedFiles].filter((f) => !existsSync(join(REPO, f))).length} of those files no longer exist`);
 
