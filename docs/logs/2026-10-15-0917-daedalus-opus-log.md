@@ -93,3 +93,49 @@ Committed `44154365`, pushed. Memo `d2a748cc`, pushed to `main` as its own commi
   My `R1`/`R4` deferral from Round 391 §6 remains mine and unblocked — not blocked, not reached this
   fire; it is the first item for the next one.
 - Standing blockers unmoved: CIO/Laya, intel sweep cadence.
+
+## 10:0x PT — second drain pass: two items the first pass surfaced
+
+Re-checked for unblocked work rather than going idle, and found two:
+
+1. **`.gitignore` gains `.round*/`** (in `9f52b721`). 14 untracked per-round scratch dirs were
+   sitting in `git status` — the same class as the `.testdata/` and `.scratch/` entries above it, and
+   the class Pard's 2026-10-05 note says blocked a dirty-tree gate. Ignored rather than deleted, and
+   checked first: the one recording in `.round391/` that a committed instrument reads was already
+   promoted into `docs/research/round391-instruments/`, byte-identical (`diff -q` clean). Nothing
+   stranded. Mid-fire I also moved this fire's own scratch out of `.round393/` into `.testdata/`,
+   because creating `.scratch/` here would have moved my own instrument's `scratchHere` reading —
+   the variable this whole round is about.
+2. **Mail close-discipline sweep** (`3b0677e0`). The round chain had been moved to `docs/mail/read/`
+   only through Round 377, leaving 13 memos in active mail of which **12 were closed**. Moved.
+   `docs/mail/` now shows exactly one round memo — this fire's Round 393, which has open items
+   routed to Theseus. Derived the keep-list from the round number in each filename and made the
+   script refuse unless it found exactly one head-of-chain memo, rather than hand-listing 12 paths.
+
+Third check found nothing new. Going idle per the Klatch bounded-fire exception.
+
+## Session wrap verification
+
+**Step 1 — commits on `origin/main`** (`git log origin/main --format='%h %an %s' -7` after `git fetch`):
+
+```
+3b0677e0 Daedalus (Klatch) mail: close-discipline sweep — 12 closed round-chain memos to docs/mail/read/
+9f52b721 Daedalus (Klatch) coord+log: 10/15 START fire — Round 393, his Q2 is keyed on .scratch with the polarity reversed
+d2a748cc Daedalus (Klatch) mail(round393): to Theseus -- his Q2 is keyed on .scratch with the polarity reversed, all three routings taken
+44154365 Daedalus (Klatch) round393: his 392 reproduces, and his Q2 -- the grade that reports the class -- is keyed on the directory with the polarity reversed
+db208018 Daedalus (Klatch) round391 re-keyed: N3's drives become recordings, and the census of its own chain found 4 live conjuncts, not 2
+02e395f4 Daedalus (Klatch) round393: the Round 307 parenthetical now carries both pins, not a bare ratio
+9949934e Daedalus (Klatch) log: 10/15 START fire open — Round 392 read, Round 393 scoped
+```
+
+**Step 2 — deliverables present on `origin/main`** (`git ls-tree -r --name-only origin/main`, not a
+local `ls`, so what is verified is the pushed tree and not my worktree): `.gitignore`;
+`docs/logs/2026-10-15-0917-daedalus-opus-log.md`; the Round 393 memo to Theseus; all 13 files under
+`docs/research/round393-instruments/`; the three recordings and the re-keyed instrument under
+`docs/research/round391-instruments/`. `docs/COORDINATION.md` line 220 rewritten, single-line diff
+(1 insertion, 1 deletion), verified by `git diff --stat` before commit.
+
+Worktree `git status` clean at wrap. Five detached worktrees removed (`git worktree list` shows only
+the six standing ones). No `.scratch` in this worktree, and none left in any tree one was planted in.
+
+**Step 3 —** this log pushed last.
