@@ -1,0 +1,35 @@
+# The four counterfactuals on the re-keyed D1, driven by `the-key-counterfactuals.mjs` beside
+# this file at HEAD 17f25906. They drive the KEY over substituted text, in memory: probe-round371
+# spawns child probes that do not run in a detached worktree, so a tree-mutation harness would be
+# measuring the plumbing instead of the key. Nothing on disk is touched and no worktree is made.
+# exit code: 0
+
+CONTROL — live tree, unmodified
+  NEW key: D1 ok — 585 recorded / 585 now, lost 0 gained 0  [AS PREDICTED]
+  OLD key: 4 member(s) differ, 585 = 585 totals
+  first moved under NEW: []
+CF-1 — 11 blank lines inserted at line 1 (pure shift)
+  NEW key: D1 ok — 585 recorded / 585 now, lost 0 gained 0  [AS PREDICTED]
+  OLD key: 4 member(s) differ, 585 = 585 totals
+  first moved under NEW: []
+('rather than' occurs 27× in the subject; CF-2 mutates the first)
+CF-2 — first marker phrase "rather than" → "instead of"
+  NEW key: D1 ok — 585 recorded / 585 now, lost 0 gained 0  [*** PREDICTED D1 RED ***]
+  OLD key: 4 member(s) differ, 585 = 585 totals
+  first moved under NEW: []
+CF-3 — one marker comment block planted mid-file
+  NEW key: D1 RED — 585 recorded / 586 now, lost 0 gained 1  [AS PREDICTED]
+  OLD key: 5 member(s) differ, 585 = 586 totals
+  first moved under NEW: ["scripts/probe-round303-typecheck-grades-the-declaration-and-never-the-thing-it-describes.mts:#2:rather-than"]
+(the subject's first two marker blocks carry [rather-than] [rather-than])
+CF-4 — the first two marker blocks swapped (order only)
+  NEW key: D1 ok — 585 recorded / 585 now, lost 0 gained 0  [AS PREDICTED]
+  OLD key: 4 member(s) differ, 585 = 585 totals
+  first moved under NEW: []
+
+(CF-2b: the first marker block's markers after blanking: 0 — must be 0 to be the mutation I meant)
+(the subject contributes 2 member(s); losing the first re-indexes the other 1)
+CF-2b — every marker phrase in the FIRST marker block blanked
+  NEW key: D1 RED — 585 recorded / 584 now, lost 1 gained 0  [AS PREDICTED]
+  OLD key: 3 member(s) differ, 585 = 584 totals
+  first moved under NEW: ["scripts/probe-round303-typecheck-grades-the-declaration-and-never-the-thing-it-describes.mts:#1:rather-than"]

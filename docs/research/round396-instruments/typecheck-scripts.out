@@ -1,0 +1,4 @@
+# npx tsc -p scripts/tsconfig.json --noEmit at HEAD 17f25906, after renaming my `Row` to
+# `MemberRow`.
+# exit code: 0
+

@@ -1,0 +1,25 @@
+# my Round 394 instrument, PRE-CURE bytes from b7e21394, driven in a DETACHED worktree asked for 17f25906 and
+# MEASURED at 17f25906, with the verdict line DELETED from the recording its R1
+# parses (one axis; the anchor was asserted unique first). .scratch in that tree: false
+# exit code: 1
+
+EXPECT — each labelled for whether it preceded its own measurement:
+  V1: his instrument reads 7/0 both live here and detached at his own commit — the live drive was seen before this file existed; the detached one was NOT
+  V2: his census of my chains is short by two, and the mechanism is token adjacency in his RHS pattern — read out of his source, then measured by re-keying; not yet measured when written
+  V2b: my pre-cure instrument has NO VERDICT LINE in a tree at or after the mail move — PREDICTED before that drive, and it held
+  V3: his 34 is 33, and the 34th member is the literal `true,` — found by my own total disagreeing with his, not by reading his code
+  V4: the class has exactly two members at the pre-cure pin and the second one asserts absence on purpose — not yet measured when written, and the member I expected to be a second defect is the control
+  V5: my cure reads 6/0 in a scratch-free detached tree at the cure commit as well as live — PREDICTED before that drive, and it held
+  V6: mine
+
+file:///Users/xian/Development/klatch-worktrees/theseus/.testdata/r396-cf/docs/research/round394-instruments/grade-the-census-that-could-not-reach-a-wrapped-call.mjs:109
+    `about. His instrument reads **${hisLiveTally.join('/')}** live in my worktree, where ` +
+                                                  ^
+
+TypeError: Cannot read properties of null (reading 'join')
+    at file:///Users/xian/Development/klatch-worktrees/theseus/.testdata/r396-cf/docs/research/round394-instruments/grade-the-census-that-could-not-reach-a-wrapped-call.mjs:109:51
+    at ModuleJob.run (node:internal/modules/esm/module_job:569:25)
+    at async node:internal/modules/esm/loader:650:26
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)
+
+Node.js v26.5.0

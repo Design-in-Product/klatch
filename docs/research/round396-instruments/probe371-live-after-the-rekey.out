@@ -1,0 +1,32 @@
+# probe-round371 driven LIVE in my worktree at HEAD 17f25906, after the D1 re-key. Not driven in
+# a detached tree: it spawns child probes that do not run there (its own CONTROL drive in a
+# detached worktree exits 1 with no headline), which is why §3's counterfactuals drive the KEY
+# over substituted text rather than the whole probe.
+# exit code: 0
+
+[ok] G1  the self-exclusion names exactly this file, and that file exists — so the exclusion cannot widen to a second file without reddening here — scripts/probe-round371-the-characterisation-item-is-a-registry-not-a-sweep.mts :: exists=true
+[ok] G2  KNOWN POSITIVE + CONTROL: the code surface FINDS the R5 cell and the comment surface MISSES it — so the second leg reads text the first cannot reach, rather than agreeing with it — code=true comment=false
+[ok] G3a  the mutation target occurs exactly once in the real output, asserted BEFORE the mutations — otherwise a mutation lands on a twin and the intended cell is never graded — 1 row(s) carry the R5 anchor
+[ok] G3b  all three mutations of the real output red, each in its own leg: PASS→FAIL reddens `notPassing` (cured, entry not retired); the row deleted reddens `missing` (cell renamed or gone); the row duplicated reddens `ambiguous` (anchor no longer identifies one cell) — flip→notPassing 1, delete→missing 1, dup→ambiguous 1
+[ok] G4  side B reds in both directions under a mutated registry: drop the R5 entry and R5 is reported UNDECLARED by name; add an entry matching nothing and it is reported UNMATCHED by name — a member list each way, not a count — undeclared ["scripts/probe-round224-a-skip-must-not-summarise-as-a-pass.mts:2028"] / unmatched ["control/an-entry-matching-nothing"]
+
+GATE: PASSED — {"G1":true,"G2":true,"G3anchor":true,"G3":true,"G4":true}
+
+[ok] A1  every `live` entry's named cell appears exactly once in `probe-round224`'s real stdout and is PASS — the defect each entry declares is still uncured, read off a cell rather than off a comment — {"missing":[],"ambiguous":[],"notPassing":[]}
+[MEAS] A2  201 tagged row(s) read from the subject's real output; 5 live entries naming 5 distinct cell(s)
+[ok] B1  no UNDECLARED member: every marker-carrying member of the population is in the registry — []
+[ok] B2  no UNMATCHED entry: every declared anchor still matches a member, so the registry has not gone stale against a reflowed comment or a renamed cell — []
+[ok] B3  no AMBIGUOUS anchor: each declared anchor matches at most one member in its file, so the key identifies a member rather than silently picking a side — []
+[MEAS] C1  population 336 file(s) — 179 test, 157 probe — less probe-round371-the-characterisation-item-is-a-registry-not-a-sweep.mts = 335 read
+[MEAS] C2  the BROAD predicate, reproduced: 6414 comment block(s), {"rather-than":509,"silently":147,"shape-rather-than-intent":1,"characterising":6} — 5 legs, and the two large ones are why this is a registry and not a sweep
+[MEAS] C3  Round 370's comment-keyed LIVE list was 3 (probe-round224 635, 1483, 1555), out of 6 precise comment members of which he read 3 as commemorations; this fire's census over BOTH surfaces declares 5 live and 3 commemorations, 8 declarations in total — comment:packages/server/src/__tests__/round247-the-exit-code-is-driven-not-read.test.ts:128 | comment:635 | comment:668 | comment:679 | comment:1483 | comment:1555 | code:1558 | code:2028
+[MEAS] C4  of the two code-surface declarations, :1558 restates a finding already on his list (Q2, from its own check name) and :2028 (R5) is a finding absent from it entirely — so the delta is 2 declarations and 1 finding
+[ok] D1  the relocated detector reproduces Round 370's recorded member list over the files that list covers, member-for-member and not by count — so the relocation to `scripts/lib/` is behaviour-preserving, graded against an artifact recorded before it existed. Keyed on file + per-file occurrence index + markers (Round 396): multiplicity and order kept, absolute line numbers dropped, because a reflow of an unrelated comment in a swept file is not a change in what this detector finds — 585 recorded / 585 now :: lost [] gained []
+[MEAS] D1a  under the OLD `file:line:markers` key the same two lists differ by 4 member(s) across 1 file(s) — ["probe-round303-typecheck-grades-the-declaration-and-never-the-thing-it-describes.mts"] — while the occurrence-index key differs by 0; totals 585 = 585 either way, which is what makes the difference a reflow and not a content change
+[MEAS] D2  his recorded list spans 181 file(s) and 585 member(s); 0 of those files no longer exist
+[ok] E1  the two surfaces contribute exactly the entries declared on each — comment and code counted separately, because a single total would let one surface lose a member while the other gained one — comment 6/6, code 2/2
+[ok] Z  packages/ untouched by this run — {"before":0,"after":0}
+
+All 12 regression checks passed.
+(node:41966) [DEP0205] DeprecationWarning: `module.register()` is deprecated. Use `module.registerHooks()` instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)

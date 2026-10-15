@@ -1,0 +1,414 @@
+# probe-round224 driven LIVE at HEAD 17f25906. This is the arm that caught my own TS2300
+# duplicate-identifier slip two probes away: before the rename it read "2 of 192 FAILED" with
+# 13 diagnostics naming probe-round371, and the sweep's line for it was "exit 1, summary line
+# NOT FOUND".
+# exit code: 0
+
+PASS [A] a clean run with checks and no skips exits 0 — code 0
+PASS [A] and that is the ONLY state in which "passed" is printed — "All 2 regression checks passed."
+PASS [A] the measurement is not counted as a hard check — ran=2 (2 regression, 1 measurement)
+PASS [B] a run with a skip does NOT exit 0 — code 3
+PASS [B] it exits 3 — ran, established less than it set out to — code 3
+PASS [B] the headline does not contain the word "passed" — "INCONCLUSIVE — subject established 1 of its checks and skipped 2 arm(s). This is not a pass."
+PASS [B] the summary NAMES the skips rather than aggregating over what remains — 2 reason(s): ["did not run: [R] needs a free port 3001 and a readable corpus","did not run: [S] needs a free port 3001 and a readable corpus"]
+PASS [B] and the check that DID run is still reported, not discarded — ran=1
+PASS [C] zero checks and zero skips still does not exit 0 — code 3
+PASS [C] no "passed" over the empty set — "INCONCLUSIVE — subject established nothing. This is not a pass."
+PASS [C] the reason given is the vacuity itself, not a missing arm — ["zero regression checks ran — there is no aggregate to report, and a summary over the empty set cannot go red"]
+PASS [C] a run of measurements ONLY is also inconclusive (Round 215, one layer over) — code 3, ran=0
+PASS [D] a failed check exits 1 even on a partial run — code 1
+PASS [D] the failure is named — 1 failed: I
+PASS [D] and the skip is still reported, not swallowed by the failure — ["did not run: [K] needs a free port"]
+PASS [D] the headline does not say "passed" — "1 of 2 regression check(s) FAILED."
+PASS [E] an inapplicable arm does NOT force 3 — code 0
+PASS [E] but it is still reported, distinctly from a skip — ["not applicable: [G] this corpus genuinely contains no instance"]
+PASS [E] one real skip alongside an inapplicable still forces 3 — code 3
+PASS [E] the hatch's declared caller list matches the callers that actually exist — declared [probe-round291, probe-round292] · measured [probe-round291, probe-round292]
+PASS [E] KNOWN POSITIVE: a doc that is BEHIND the code reddens it — a caller added without a doc edit is caught
+PASS [E] KNOWN POSITIVE: a doc that is AHEAD of the code reddens it — a caller deleted without a doc edit is caught — the direction the old emptiness pin could not see
+PASS [E] KNOWN POSITIVE: a deleted doc line reddens it — the arm cannot be cleared by removing the thing it reads
+PASS [E] and it is green on agreement, including on the empty population it used to assert — agreement passes at both the empty and the populated shape
+PASS [E] and that scan is not vacuous — it still sees the live call in this file — this probe passes the hatch on line ~153 in live code, and the comment-stripped scan finds it
+PASS [H] a skipped OPEN-ITEM arm alongside passing regression checks exits 0 — code 0
+PASS [H] and it is still reported — reported, not counted — ["not a hard check, did not run: [J] no session exceeds the line cap — untestable on this corpus"]
+PASS [H] the regression count is unaffected by the soft skip — ran=2
+PASS [H] an UNTAGGED skip of the same shape still exits 3 — the default stays safe — code 3
+PASS [H] and an explicitly regression-tagged skip exits 3 too — code 3
+PASS [H] one hard skip among soft ones still forces 3 — code 3; reasons ["did not run: [I] needs a FREE port","not a hard check, did not run: [J] open item"]
+PASS [H] and a soft skip cannot rescue a vacuous run — zero hard checks is still inconclusive whatever the skips were
+PASS [K] a kind one edit from the regression kind does NOT exit 0 — code 3
+PASS [K] it refuses at 3 — the counts are an equality against a string it is not — code 3
+PASS [K] and the refusal does not print the word the pre-cure run printed — "INCONCLUSIVE — subject carries 1 kind value(s) one edit from"
+PASS [K] the offending row is NAMED with its kind value, so the operator can fix it — ["kind is one edit from \"regression\": verdict [C] a row one edit off — kind=\"regresion\""]
+PASS [K] the SKIP side refuses too — a hard skip one edit off stopped forcing 3 — code 3
+PASS [K] none of the kind values the live tree uses trips the refusal — 5 live kinds clean
+PASS [K] an OMITTED kind is untouched by the refusal and still counts as a hard check — the ?? default still points the safe way
+PASS [K] a correctly-spelled run is untouched — the refusal is not reflexive — identical is not a near-miss
+PASS [K] an adjacent transposition is caught, which Levenshtein alone would miss — Damerau, per the note on withinOneEdit
+PASS [K] and the DECLARED limit is real: two edits out is not caught, and this says so — code 0 — the cure narrows the hole, it does not close it
+PASS [K] a genuine failure beside a near-miss stays code 1 — the refusal does not demote it — code 1
+PASS [K] and the row that BROKE is named, which the first version of the cure emptied — 1 failed: THE REAL BREAK
+PASS [K] the near-miss is not traded away for the failure — both are reported — ["kind is one edit from \"regression\": verdict [C] a row one edit off — kind=\"regresion\""]
+PASS [K] the headline declares the denominator a FLOOR, since a near-miss can only remove rows — "1 of 2 regression check(s) FAILED — and 2 is a floor, not the total: 1"
+PASS [K] precedence holds when the near-miss is on a SKIP rather than a verdict — code 1, failed 1
+PASS [K] a refusal still names the hard skips it also carries — ["kind is one edit from \"regression\": verdict [C] a row one edit off — kind=\"regresion\"","did not run: [D] needs a free port 3001"]
+PASS [L] KN: an all-boolean all-string run is still exit 0 with the same headline — code 0 :: "All 2 regression checks passed."
+PASS [L] KN: a genuine boolean false is a code 1 naming the row, byte-identical to pre-357 — code 1 :: "1 of 2 regression check(s) FAILED."
+PASS [L] KN: and a clean run carries no unreadable-field reason it has no cause to carry — []
+PASS [L] a pass of the string 'FAIL' is a FAILURE, not a pass — code 1, failed 1
+PASS [L] and the row is named as a TYPE defect, not left looking like a broken subject (the string 'FAIL') — ["pass is not a boolean — verdict [A] a row with an unreadable field carries string \"FAIL\". Counted as a FAILURE: an unreadable verdict is not a pass. Fix the verdict's type; this row says nothing about the subject either way."]
+PASS [L] a pass of -1, the indexOf shape is a FAILURE, not a pass — code 1, failed 1
+PASS [L] and the row is named as a TYPE defect, not left looking like a broken subject (-1, the indexOf shape) — ["pass is not a boolean — verdict [A] a row with an unreadable field carries number -1. Counted as a FAILURE: an unreadable verdict is not a pass. Fix the verdict's type; this row says nothing about the subject either way."]
+PASS [L] a pass of [], an empty array is a FAILURE, not a pass — code 1, failed 1
+PASS [L] and the row is named as a TYPE defect, not left looking like a broken subject ([], an empty array) — ["pass is not a boolean — verdict [A] a row with an unreadable field carries object []. Counted as a FAILURE: an unreadable verdict is not a pass. Fix the verdict's type; this row says nothing about the subject either way."]
+PASS [L] a pass of the string 'false' is a FAILURE, not a pass — code 1, failed 1
+PASS [L] and the row is named as a TYPE defect, not left looking like a broken subject (the string 'false') — ["pass is not a boolean — verdict [A] a row with an unreadable field carries string \"false\". Counted as a FAILURE: an unreadable verdict is not a pass. Fix the verdict's type; this row says nothing about the subject either way."]
+PASS [L] KN: a falsy non-boolean (undefined) was already code 1 and is STILL code 1 — code 1, failed 1
+PASS [L] KN: a falsy non-boolean (0) was already code 1 and is STILL code 1 — code 1, failed 1
+PASS [L] an unreadable pass beside a real break names BOTH rows, not just the break — code 1, failed A,B
+PASS [L] an unreadable pass dominates a near-miss kind, and the floor language still applies — code 1 :: "1 of 2 regression check(s) FAILED — and 2 is a floor, not th"
+PASS [L] a FAILING row tagged kind: ['regression'] no longer summarises as exit 0 — code 1, failed 1
+PASS [L] the unreadable kind is defaulted IN — the direction that keeps the failing row counted — ran=2
+PASS [L] a kind of 123 is summarised rather than thrown out of withinOneEdit — 1
+PASS [L] a kind of null is summarised rather than thrown out of withinOneEdit — 1
+PASS [L] a kind of {} is summarised rather than thrown out of withinOneEdit — 1
+PASS [L] a kind of true is summarised rather than thrown out of withinOneEdit — 1
+PASS [L] an unreadable kind on an otherwise-clean run refuses at 3 rather than printing "passed" — code 3 :: "INCONCLUSIVE — subject carries 1 `kind` value(s) t"
+PASS [L] and it does not borrow the near-miss prose, which says the rows LEFT the population — "INCONCLUSIVE — subject carries 1 `kind` value(s) that are not strings. Each was "
+PASS [L] the SKIP side is read by type too, and names both the bad field and the skip — code 3 :: ["skip [Z] needs a free port — kind is number 7, not a string. Counted as a \"regression\" skip, which is the safe direction; fix the field.","did not run: [Z] needs a free port"]
+PASS [M] a non-string regressionKind refuses at 3 instead of printing "All 1 regression checks passed" — code 3 :: "INCONCLUSIVE — subject was summarised against a `regressionKind`"
+PASS [M] and the reason names the field, its type, and what it did to the population — ["regressionKind is object [\"regression\"], not a string. Every count in this summary is an equality against that value, and an unreadable `kind` is defaulted to it — so rows tagged with a STRING kind have silently left the population while untagged rows were counted. No verdict below can be trusted either way."]
+PASS [M] the near-miss legs do not run against a non-string operand — no throw, no refusal text — "INCONCLUSIVE — subject was summarised against a "
+PASS [M] KN: an untagged FAILING row beside a non-string regressionKind is code 1, not demoted to 3 — code 1, failed 1
+PASS [M] KN: and that code 1 still carries the configuration problem in its reasons — ["regressionKind is object [\"regression\"], not a string. Every count in this summary is an equality against that value, and an unreadable `kind` is defaulted to it — so rows tagged with a STRING kind have silently left the population while untagged rows were counted. No verdict below can be trusted either way."]
+PASS [M] a string regressionKind no row carries, beside a row carrying the module default, is now REFUSED at 3 (Round 359) — and the row count is unchanged, not laundered — code 3 ran 1 :: "INCONCLUSIVE — subject was summarised against a `regressionKind` of \"che"
+PASS [M] but the failing row it stranded is NAMED, so the knowledge is in the run (Round 223) — ["the configured regressionKind \"check\" is carried by NO row in this run, while 1 row(s) carry \"regression\" — this module's own default, and the name every untagged row is counted under. So the configuration counted nothing and excluded the rows that declared themselves hard checks. Fix the configuration or the rows; which of these is a hard check is not knowable from this run.","NOT COUNTED, and it is a failure — verdict [A] THE REAL BREAK carries kind \"regression\", the regression kind is \"check\", and no row in this run carries that kind. Every row that WAS counted carries no `kind` of its own. If this row was meant to be a hard check, the exit code above does not include it."]
+PASS [M] and it says, in the run, that the counted rows carry no kind of their own — ["the configured regressionKind \"check\" is carried by NO row in this run, while 1 row(s) carry \"regression\" — this module's own default, and the name every untagged row is counted under. So the configuration counted nothing and excluded the rows that declared themselves hard checks. Fix the configuration or the rows; which of these is a hard check is not knowable from this run."]
+PASS [M] KN: untagged hard checks beside a measurement row stay exit 0 with no stranded reason — code 0 :: []
+PASS [M] KN: a deliberately-FAILING open-item row beside untagged hard checks is still exit 0 — code 0 :: "All 1 regression checks passed."
+PASS [M] and it is reported rather than refused — the line is there, the exit code is not moved — ["NOT COUNTED, and it is a failure — verdict [B] a row carries kind \"open-item\", the regression kind is \"regression\", and no row in this run carries that kind. Every row that WAS counted carries no `kind` of its own. If this row was meant to be a hard check, the exit code above does not include it."]
+PASS [M] a kind of a BigInt is summarised and PRINTED rather than thrown out of the reason builder — code 3 :: verdict [A] a row — kind is bigint 10, not a string. Counted as a "regression" check, which is the safe direct
+PASS [M] a kind of a circular object is summarised and PRINTED rather than thrown out of the reason builder — code 3 :: verdict [A] a row — kind is object [object Object], not a string. Counted as a "regression" check, which is th
+PASS [M] a pass of a BigInt reaches its REGRESSIONS block instead of crashing the print of a correct code 1 — code 1 failed 1 :: pass is not a boolean — verdict [A] a row carries bigint 10. Counted as a FAILURE: an unreadable verd
+PASS [M] KN: describe leaves serialisable values in their JSON spelling — string quoted, {} as {} — "pass is not a boolean — verdict [A] a row carries string \"FAIL\". Counted as a FAILURE: an unreadable verdict is not a pass. Fix the verdict's type; th"
+PASS [M] a non-string `arm` does NOT move the exit code — it reaches the named row as [object Object] — code 1 :: [object Object]
+PASS [M] and a non-string `check` does not move it either — code 1
+PASS [M] MEASUREMENT: a non-array `inapplicable` on a clean run → code 3; on a red run → code 1 — the asymmetric limb is the one that prints "passed"
+PASS [M] the asymmetry itself is the check: the clean limb refuses on this field (it used to throw) and the failure limb never reaches it — code 3 / code 1
+PASS [N] a configured kind no row carries, beside a row carrying the module default, refuses at 3 instead of printing "All 1 regression checks passed" — code 3 :: "INCONCLUSIVE — subject was summarised against a `regressionKind` of \"c"
+PASS [N] and the headline names BOTH tokens and how many rows carry the default, so the operator can tell which of the two is wrong without reading the source — "INCONCLUSIVE — subject was summarised against a `regressionKind` of \"check\" that no row carries, while 1 row(s) carry \"r"
+PASS [N] it refuses on a PASSING stranded row too — the defect is the configuration, not the row — code 3 :: "the configured regressionKind \"check\" is carried by NO row in this run"
+PASS [N] and the stranded FAILING row is still named in the reasons as well — the refusal did not replace the Round 358 line that says which row left the population — ["the configured regressionKind \"check\" is","NOT COUNTED, and it is a failure — verdi"]
+PASS [N] KN (Round 358 blocker 1): a probe that tags NOTHING is unmoved at exit 0 — no row carries the module default either, so the key cannot see it — code 0 ran 2 :: "All 2 regression checks passed."
+PASS [N] KN (Round 358 blocker 2): a deliberately-FAILING open-item row beside untagged hard checks is unmoved at exit 0 under the default vocabulary — code 0 :: "All 1 regression checks passed."
+PASS [N] KN: and unmoved under a RENAMED vocabulary too, which is the harder half — the key is the identity of the stranded token, so an open-item stranding is still only reported — code 0 :: "NOT COUNTED, and it is a failure — verdict [B] row B carries"
+PASS [N] KN: a conventional measurement row under a renamed vocabulary stays exit 0 with no refusal and no stranded line — code 0 :: []
+PASS [N] KN: an untagged FAILING row beside the inverted configuration is code 1, not demoted to 3 — a failure still dominates (Round 356) — code 1 failed 1
+PASS [N] KN: and that code 1 still carries the inverted configuration in its reasons, so the louder code does not cost the operator the diagnosis — "the configured regressionKind \"check\" is carried by NO row in this run"
+PASS [N] KN (Round 311 C3): when a row DOES carry the configured kind, there is no refusal even with a module-default row beside it — the configuration counted something — code 1 failed 1
+PASS [N] KN (Round 311 C1/C2): round222's shape under the DEFAULT vocabulary is unmoved — ran 0, code 3, "established nothing", which is what that probe pins — code 3 ran 0 :: "INCONCLUSIVE — p222 established nothing. This is not a pass."
+PASS [N] KN: a regressionKind one edit from the default is still diagnosed as a near-miss, not as an inversion — the new limb is below the Round 355 one — "INCONCLUSIVE — subject carries 1 kind value(s) one edit from \"regressio\" without"
+PASS [N] KN: the module default is still the token 'regression' — a row tagged with it and an untagged row are both counted, so the new key is aimed at the live default — code 1 ran 2
+PASS [N] a non-array `inapplicable` on an all-green run is a code 3 naming the field, where it used to throw `inapplicable.map is not a function` with no headline at all — code 3 :: "INCONCLUSIVE — subject declared its inapplicable arms as string, not an arra"
+PASS [N] and the unreadable value is quoted in the reasons, so a slipped label is not lost — the hatch is not salvaged into the list, it is printed — "inapplicable is string \"probe-x\", not an array of labels. Every arm this run mea"
+PASS [N] KN: the same input beside a FAILURE is still code 1 — the hatch is unreachable there, so this cure cannot be the demotion Round 356 caught — code 1 failed 1
+PASS [N] KN: `null` and a proper array are both unmoved — `?? []` still means "no hatch", and a real list still prints its "not applicable" line — null → code 0; array → code 0 :: ["not applicable: probe-x"]
+PASS [N] MEASUREMENT: the declared cost — 'regression' used as a SOFT kind under a renamed vocabulary is code 3 when nothing carries the configured kind, and code 0 as soon as one row does — priced and accepted: the escape is to tag one row with the configured kind
+PASS [O] a skip tagged with the module default, under a renamed vocabulary no row carries, refuses at 3 instead of printing "All 1 regression checks passed" — code 3 :: "INCONCLUSIVE — subject was summarised against a `regressionKind` of \"check\" that"
+PASS [O] and the headline counts the SKIP as a carrier — an operator reading "0 row(s)" alone would go looking for a verdict row that is not there — "INCONCLUSIVE — subject was summarised against a `regressionKind` of \"check\" that no row carries, while 0 row(s) and 1 skip(s) carr"
+PASS [O] and the skip is named as a skip, not under the line that denies it was a hard check — ["the configured regressionKind \"check\" is car"]
+PASS [O] KN (control): the same skip under the DEFAULT vocabulary is unmoved — a hard skip at code 3 with the skip headline, not the inversion headline — code 3 :: "INCONCLUSIVE — subject established 1 of its checks and skipped 1 arm(s). This is"
+PASS [O] KN: a bare-string skip is hard under any configuration (`kindOf` hands it `regressionKind`), so it is unmoved at the skip limb and never the inversion limb — code 3 :: "INCONCLUSIVE — subject established 1 of its checks and skipped 1 arm(s"
+PASS [O] KN: an open-item skip under a renamed vocabulary is still SOFT at code 0 — the key is the identity of the stranded token, and 'open-item' is not this module's — code 0 :: ["not a hard check, did not run: x"]
+PASS [O] KN: a FAILING row beside the skip inversion is code 1, not demoted to 3 — a failure still dominates (Round 356) — code 1 failed 1
+PASS [O] and that code 1 carries the inversion in its reasons — the louder code does not cost the operator the diagnosis — "the configured regressionKind \"check\" is carried by NO row in this run"
+PASS [O] KN: a near-miss `regressionKind` beside the skip inversion keeps the near-miss diagnosis — the Round 355 limb is still above the Round 359 one — "INCONCLUSIVE — subject carries 1 kind value(s) one edit from \"regresion\" without"
+PASS [O] KN: a non-string `regressionKind` beside the skip inversion still refuses on the TYPE — the Round 358 limb is above this one too — code 3 :: "regressionKind is object [\"x\"], not a string. Every count in"
+PASS [O] KN: a non-string SKIP kind is the unreadable-kind limb, not the inversion limb — it is defaulted IN by `readKind` and so it carries the configured kind, not the default — code 3 :: "skip env missing — kind is number 123, not a string. Counted as a \"che"
+PASS [O] KN (his Round 359 table): with no skip carrying the default, the headline still reads "1 row(s) carry" and gains no skip clause — the widening is additive, not a re-aim — "INCONCLUSIVE — subject was summarised against a `regressionKind` of \"check\" that no row carries, while 1 row(s) carry \"r"
+PASS [O] KN: `strandedFailures` is unmoved — it keys on `carriesTheKind`, which was left alone, so a failing stranded row still gets its Round 358 line — ["NOT COUNTED, and it is a failure — verdi","did not run: x"]
+PASS [O] condition 3 reads the skips too: a skip carrying the CONFIGURED kind means the configuration counted something, so the run lands on the skip limb and not the inversion one — code 3 :: "INCONCLUSIVE — subject established 1 of its checks and skipped 1 arm(s). This is"
+PASS [O] and the false sentence is gone with it — nothing in that run now claims the configuration counted nothing — ["did not run: env missing"]
+PASS [O] MEASUREMENT: live instances of the three-part precondition = 0 across 194 .mts/.mjs/.ts files under scripts/; 3 self-configuring callers (round246/248/250), all supplying 'regression'; round250 is the near miss — it tags its Z3 skip 'regression' and is protected by condition 4 via its `check()` helper rows, so one rename is the whole distance — census in the Round 360 writeup; a rename of round250 is the shape that reaches this
+PASS [F] the OLD browse-endpoint tail exits 0 and says 'passed' on arm B's input — the defect, reproduced here — exit 0: "All regression checks passed; N measurements recorded."
+PASS [F] the OLD turncount tail prints '0/0 checks passed' and exits 0 on arm C's input — exit 0: "0/0 checks passed"
+PASS [F] old and new disagree on the skipped run — 0 vs 3 — old 0, new 3
+PASS [F] and they AGREE on a plain failure — the old tail was not wrong about everything — old 1, new 1
+PASS [F] and they AGREE on a clean run — both 0
+PASS [G] probe-browse-endpoint-vs-channel-count.mts exists — /Users/xian/Development/klatch-worktrees/theseus/scripts/probe-browse-endpoint-vs-channel-count.mts
+PASS [G] probe-browse-endpoint-vs-channel-count.mts has no hand-written "checks passed" summary line — the only summary comes from summariseAndExit
+PASS [G] probe-browse-endpoint-vs-channel-count.mts calls summariseAndExit — import present: true
+PASS [G] probe-turncount-live-http.mts exists — /Users/xian/Development/klatch-worktrees/theseus/scripts/probe-turncount-live-http.mts
+PASS [G] probe-turncount-live-http.mts has no hand-written "checks passed" summary line — the only summary comes from summariseAndExit
+PASS [G] probe-turncount-live-http.mts calls summariseAndExit — import present: true
+PASS [G] probe-browse-latency-end-to-end.mts exists — /Users/xian/Development/klatch-worktrees/theseus/scripts/probe-browse-latency-end-to-end.mts
+PASS [G] probe-browse-latency-end-to-end.mts has no hand-written "checks passed" summary line — the only summary comes from summariseAndExit
+PASS [G] probe-browse-latency-end-to-end.mts calls summariseAndExit — import present: true
+PASS [G] probe-import-live-http.mts exists — /Users/xian/Development/klatch-worktrees/theseus/scripts/probe-import-live-http.mts
+PASS [G] probe-import-live-http.mts has no hand-written "checks passed" summary line — the only summary comes from summariseAndExit
+PASS [G] probe-import-live-http.mts calls summariseAndExit — import present: true
+PASS [G] no script DIRECTLY under scripts/ — the probe population, one level, stated to match what is measured since Round 321 — still pairs a SKIP channel with a hand-rolled "checks passed" — 181 scripts scanned
+PASS [G] and the boundary of that population is graded, not assumed: no PROBE lives in a scripts/ subdirectory, where arm G's one-level readdirSync could not see it — 23 files under scripts/ subdirectories, 0 probe-shaped — all modules. top-level population 181, recursive 204.
+PASS [G] KNOWN POSITIVE/NEGATIVE: the subdirectory detector classifies a probe that CALLS the summariser as probe-shaped, and the module that DECLARES it as not — a call-site is flagged; a declaration site carrying the very summary string arm G hunts is not — which is the discriminator that lets this boundary arm exist without false-reddening lib/probe-outcome.mts
+PASS [G] KNOWN POSITIVE: the normalised predicate still flags a real hand-rolled SKIP summary — a synthetic offender whose SKIP and "checks passed" are both in CODE
+PASS [G] KNOWN NEGATIVE: and no longer flags a file whose only hits are in a comment — the shape that reddened this arm in Round 290
+PASS [G] and that scan was not vacuous — it finds the migrated four when the exemption is lifted — the SKIP+summary population is reachable by this scan
+PASS [I] the shipped cap really is written with a numeric separator today — the staging condition for this whole arm; if this fails the arm below proves nothing
+PASS [I] the shared reader gets 50000 from `50_000` — read 50000
+PASS [I] browse-latency's OLD regex finds nothing — it threw at startup — match === null, which its next line turned into a throw: dead since 2026-09-04
+PASS [I] turncount's OLD regex silently returns 50 — a cap 1000x too small — matched "50" out of "50_000"
+PASS [I] so the two failure modes are genuinely different, from one reformatting — loud throw vs silent wrong value vs correct read
+PASS [I] the reader refuses to return a prefix — it anchors on a value terminator — const X = 50_000; -> 50000, never 50
+PASS [I] reader handles "const X = 50000;" — -> 50000, want 50000
+PASS [I] reader handles "const X = 50_000;" — -> 50000, want 50000
+PASS [I] reader handles "const X=7," — -> 7, want 7
+PASS [I] reader handles "const X = 12 )" — -> 12, want 12
+PASS [I] a product declaration no longer reads as its leading factor through the value reader — readNumericConstant throws on `50 * 1024 * 1024` — Round 225 arm D/226
+PASS [I] and the factor reader answers it — readLeadingFactor -> 50, want 50
+PASS [I] and it throws rather than guessing when the constant is gone — a missing constant is a throw, not a fallback — probe-accepted-multipart-allocation used to fall back to a hardcoded 50 MB, which its own sibling refuses to do in a comment
+PASS [I] MAX_IMPORT_SIZE still reads correctly through the shared reader — routes/import.ts -> 50 (MB)
+PASS [I] MAX_IMPORT_SIZE is NOT separator-written today — those three probes were latent, not broken — stated so nobody reads this round as having fixed three live failures; it fixed two
+PASS [I] no script under scripts/ still scrapes a numeric constant with a separator-blind regex — 181 scripts scanned (comments stripped), 0 blind outside this control
+PASS [I] and the comment-stripping did not make the scan vacuous — this control still trips it — arm I quotes 2 old regexes in live code, and the scan sees them
+PASS [I] and the scan is not vacuous — the five migrated readers are reachable by it — 18 scripts import the shared reader: probe-accepted-multipart-allocation.mts, probe-browse-cold-figure-gap.mts, probe-browse-latency-end-to-end.mts, probe-import-large-session.mts, probe-import-multipart-cap.mts, probe-pm-corpus-cap-delta.mts, probe-round224-a-skip-must-not-summarise-as-a-pass.mts, probe-round225-a-citation-is-not-a-call.mts, probe-round227-arm-o-on-a-corpus-where-the-cap-fires.mts, probe-round233-arm-m-and-the-endpoint-can-walk-different-corpora.mts, probe-round245-the-shared-lib-coverage-floor.mts, probe-round255-the-comment-shadow-census.mts, probe-round255-the-comment-shadow-mutations.mjs, probe-round258-three-readers-are-two-questions-and-the-shared-one-is-already-in-lib.mts, probe-round259-the-extraction-moved-nothing-and-closed-the-hole-in-the-file-it-moved-into.mts, probe-round260-a-census-pin-has-two-axes-and-the-round-number-in-a-filename-is-not-one-of-them.mts, probe-round374b-the-subject-reaches-the-state-itself-on-a-held-port.mts, probe-turncount-live-http.mts
+PASS [P] a readable `inapplicable` list is reported on EVERY limb it can reach, not only on the one that prints "passed" — 7 of 7 limbs: code 1 · failed · code 3 · configProblems · code 3 · nearMisses · code 3 · invertedVocabulary · code 3 · unreadableKinds · code 3 · reasons.length · code 0 · all green
+PASS [P] and those are distinct outcomes, not one limb reached seven times — 6 distinct code+headline pairs across 7 inputs
+PASS [P] and carrying it moves no exit code — the scope lines are appended to `reasons`, and the `reasons` gate that decides code 3 is NOT seeded with them — codes: 11 33 33 33 33 33 00
+PASS [P] KN: a green run that declares an inapplicable arm is still code 0 with the "passed" headline — the hatch does not force code 3, which is the whole reason it exists — code 0 :: "All 1 regression checks passed."
+PASS [P] KN: a run that declares NO inapplicable arms gets no `not applicable:` line on any limb — the cure reports the field, it does not synthesise one — 0 of 7 limbs printed one
+PASS [P] KN: and an EMPTY list is not an empty claim — it adds nothing — code 1 reasons 0
+PASS [P] on the limbs that refuse the VOCABULARY, the `inapplicable` half is carried and the soft-skip half is withheld — a skip tagged with the module default is not reported under the line that denies it was a hard check, even now that the scope travels — code 3 :: ["the configured regressionKind \"check\" is","not applicable: C1 — no untracked, gitig"]
+PASS [P] where the vocabulary IS trustworthy the soft-skip half travels too — the gate withholds it on three named limbs, it does not disable it — code 1 :: ["not a hard check, did not run: arm","not applicable: C1 — no untracked,"]
+PASS [P] KN: the UNREADABLE-hatch complaint still reaches every limb (Round 359, undisturbed) — 7 of 7 limbs
+PASS [P] the cure cells are RED at the pre-cure lib (1059b23c) and the known negatives are GREEN at it — graded by driving, not asserted by a comment — RED at pre-cure: every-limb,inversion-limb-split,trustworthy-soft · GREEN at pre-cure: distinct-outcomes,no-code-moved,green-stays-green,none-declared,empty-declared,unreadable-everywhere
+PASS [P] MEASUREMENT: 3 live caller(s) supply `inapplicable` across 206 source files under scripts/ — probe-round224-a-skip-must-not-summarise-as-a-pass.mts, probe-round291-the-sentinel-did-not-grade-the-backups-that-are-the-recovery-path.mts, probe-round292-the-reassign-picker-driven-live-in-a-real-browser.mts — and all of them can reach a limb that is not the code-0 limb, so this was reachable live and not only in a fixture. Walked with readdirSync, not grep: grep emits no row for a NUL-carrying file. — the caller set itself is pinned in both directions by arm E, not here
+PASS [Q] the fields Rounds 357/358/359 reached take all 11 hostile values without throwing — 10 paths, 110 cells, 0 throwers — no path among the cured ones throws
+PASS [Q] CHARACTERISATION (not a blessing — see Q3): the uncured paths still throw, at the measured cell counts. If Q3 reddens, this cell stops being a characterisation and the crash is live — expected {"input itself":11,"results":10,"results[0]":2,"skipped":8,"skipped[0]":2} measured {"input itself":11,"results":10,"results[0]":2,"skipped":8,"skipped[0]":2}
+PASS [Q] no live caller can supply a non-array `skipped` or a nullish element: 54 argument site(s) in 31 file(s) are all literal arrays or local array-initialised never-reassigned variables, all 51 element(s) arrive by a literal-shaped push, and there are no other mutators and no index writes — 0 reachable: 24 literal arrays, 28 locals, 2 declared fixture param(s), 28 declaration(s) all array-initialised with 0 re-assignments
+PASS [Q] KNOWN POSITIVE: the same census over a planted tree carrying a conditional, a call-valued, a re-assigned and a non-literal-push caller reports all four — so Q3 is a reading of the live tree and not a detector that answers 0 everywhere — planted unsafe: 4 of 4 (conditional 1, call 1, reassign 1, push 1)
+PASS [Q] KNOWN POSITIVE: the site reader sees the ES6 shorthand `{ …, skipped }` form, which is the majority of live sites and which a `skipped\s*:` key misses entirely — 27 shorthand site(s) of 54
+PASS [Q] KNOWN NEGATIVE: a `const skipped: …[] = []` declaration is not counted as an argument site, and no site is reported in a file that never calls summarise — 54 argument sites (the declaration-blind key reported 72)
+PASS [Q] the uncured crashes are in the SAFE direction: `summarise` throws rather than returning, so no channel prints a headline and none prints "passed" — the inverse of the Round 355 class, which is why leaving them uncured is a measurement and not a demotion — 3 of 3 throw · any "passed": false
+PASS [Q] the Round 361 limb table re-derives: hard skips 6 of 6 — NOT the published 7 of 7, because a hard skip cannot stay on the code-0 limb — unreadable hatch 7 of 7, declared inapplicable arms 7 of 7 after the cure, and soft skips 5 of 8 with the three vocabulary-complaint limbs gated out by design — hard 6/6 · hatch 7/7 · inapplicable 7/7 · soft 5/8
+PASS [Q] MEASUREMENT: 33 throwing cell(s) of 165 driven across 15 field paths, and 54 live `skipped` argument site(s) across 206 source files under scripts/. Walked with readdirSync, not grep: grep emits no row for a NUL-carrying file, so a grep-derived count fails SMALL — the direction that hides a caller. — the shapes are pinned by Q1-Q8; these two counts are declared, not held
+PASS [R] the live `results` population splits into a syntactically-safe majority and a NAMED residue safe only by a type annotation — 6 argument sites calling `(…) => ProbeVerdict[]` arrows, plus 1 non-array-initialised declaration (`Array.from(…): ProbeVerdict`), all 7 in probe-round311 — and nothing else: no non-literal push, no re-assignment, no unbound identifier. Held as a MEMBER LIST in both directions, so a new type-only site reddens this cell and names its file and line, and one of these seven disappearing reddens it too — 141 site(s) in 67 file(s): 135 syntactically safe, 6 type-only (6 expected), 1 non-array-init decl, 0 non-literal push(es) of 115
+PASS [R] KNOWN POSITIVE: the census at `argKey: 'results'` over a planted tree carrying a conditional, a call-valued, a re-assigned and a non-literal-push caller reports all four — so R1 is a reading of the live tree and not a selector that answers 0 on a new key — planted unsafe: 4 of 4 (conditional 1, call 1, re-assign 1, push 1)
+PASS [R] KNOWN NEGATIVE: the `argKey` parameter selects, and the discriminator is the VALUE at the shared call sites rather than the line set — `skipped` is a subset of `results` because `results` is required and every `skipped` call passes it on the same line UNLESS a spread supplies it, so a symmetric-difference test here is unsatisfiable. The `rhs` read at the shared sites differs, which a census ignoring its argKey could not produce — results-only 88 · shared 53 · rhs differs at 25 of 53 shared site(s) · 1 skipped-only, all spread-explained
+PASS [R] the object-level-spread call sites — the shape `valueOf` is blind to, where a key can reach `summarise` without the census seeing it — are all inside this control, where they are declared hostile-value fixtures. A spread-shaped call appearing in any other probe reddens this cell and names it, because arm Q3's reachability claim cannot see it — 4 object-level-spread site(s), all in this control: 703, 1317, 1713, 2098
+PASS [R] every live line that defeats `tsc` on the probe row types sits in a probe, where it is a deliberate control — so the type argument R1 leans on is defeated nowhere a real caller could inherit it. A cast appearing in a non-probe caller reddens this cell — 14 cast site(s) in 3 file(s), all probes: probe-round224, probe-round311, probe-round324
+PASS [R] CHARACTERISATION (read only beside R6): three field paths arm Q records as having ZERO throwers throw on a `Symbol`, which arm Q's 11-value hostile set does not contain — direct template interpolation, not the type-guard class, and one field over from Round 358's `describe()`. This cell records the class is open, not that it is acceptable — throws on Symbol: probeName, skipped[0].label, inapplicable[0] (3 of 3 expected)
+PASS [R] the Symbol class is in the SAFE direction: it throws out of `summarise` with a message that is not a verdict and never contains "passed", so the sweep reads exit 1 as a red — the Round 355 shape (an exit 0 CLAIMING a pass) is not present — throws "Cannot convert a Symbol value to a string", never the word "passed"
+PASS [R] the limb table in `probe-outcome.mts`'s own docblock is PARSED OUT OF SOURCE and its hard-skip figure equals the driven one — the row Round 362 corrected in cell Q8 while leaving the contradicting comment standing in the file Q8 reads. All four rows must be present in the table's shape, so deleting or rewording one reddens this cell rather than emptying the pin — source says 6 of 6, driven 6 of 6, 4 table row(s): hard skips 6/6 · unreadable hatch 7/7 · soft skips 1/7 · inapplicable arms 1/7
+PASS [R] MEASUREMENT: 141 live `results` argument site(s) across 67 file(s) of 206 source files under scripts/, 115 element push(es), 72 declaration(s), and 14 live type-defeating cast(s). Walked with readdirSync, not grep: grep emits no row for a NUL-carrying file, so a grep-derived count fails SMALL — the direction that hides a caller. — the member lists are pinned by R1 and R4; these totals are declared, not held
+PASS [S] every file whose `results` safety rests on a TYPE annotation is INSIDE the type program, read off `tsc --listFiles` and named rather than counted, and that same drive carries zero diagnostics. R1 says those sites are safe because `tsc` says so; this is what says `tsc` looked at them. The residue is DERIVED from the live census, not copied from R1's literal list, so a new type-only site in a new file widens what must be covered instead of inheriting R1's denominator — 1 residue file(s), all IN a program of 157 .mts: probe-round311 · exit 0 · 0 diagnostic line(s)
+PASS [S] S1 is graded in both directions by a planted pair that differs by exactly the exclusion: the CONTROL puts every residue file IN, the KNOWN POSITIVE excludes exactly those files and puts every one OUT, and BOTH plants still typecheck clean with a program over 100 .mts — so the KP carries the property S1 tests and is not the empty-program state, which fails TS18003 and would grade nothing — control 157 .mts residue IN exit 0 0 diag · excluded 156 .mts residue OUT exit 0 0 diag
+PASS [S] the GATE still reaches this config, which is a different claim from the config being clean: the root manifest's `typecheck` script names the `typecheck:scripts` leg, `test` names `typecheck`, and that leg still points `-p` at `scripts/tsconfig.json` — graded by two known negatives asserted REJECTED (the edge severed, and the leg deleted), because the two existing cells that read this chain join all three scripts' text and stay green when it is cut — edge holds; severed and deleted manifests both rejected — leg is `tsc -p scripts/tsconfig.json`
+PASS [S] MEASUREMENT: the type program holds 157 .mts file(s); the threshold the two existing coverage cells use is `> 100`, so 56 file(s) can leave the program with both of them green. Driven at the extreme this fire (47 probe .mts excluded: 101 in program, exit 0, 0 diagnostics, both green) and at the minimum (1 residue file(s) excluded: 156 in program, exit 0, 0 diagnostics, both green). S1 covers the residue; the rest of that slack is unguarded and is round303/304's to close, not this arm's to pin — the slack is reported, not held — a pin on it would redden when A1b is repaired
+PASS [Z] packages/ untouched by this run — identical git status before and after
+
+─── summary ───
+  PASS [A] a clean run with checks and no skips exits 0
+  PASS [A] and that is the ONLY state in which "passed" is printed
+  PASS [A] the measurement is not counted as a hard check
+  PASS [B] a run with a skip does NOT exit 0
+  PASS [B] it exits 3 — ran, established less than it set out to
+  PASS [B] the headline does not contain the word "passed"
+  PASS [B] the summary NAMES the skips rather than aggregating over what remains
+  PASS [B] and the check that DID run is still reported, not discarded
+  PASS [C] zero checks and zero skips still does not exit 0
+  PASS [C] no "passed" over the empty set
+  PASS [C] the reason given is the vacuity itself, not a missing arm
+  PASS [C] a run of measurements ONLY is also inconclusive (Round 215, one layer over)
+  PASS [D] a failed check exits 1 even on a partial run
+  PASS [D] the failure is named
+  PASS [D] and the skip is still reported, not swallowed by the failure
+  PASS [D] the headline does not say "passed"
+  PASS [E] an inapplicable arm does NOT force 3
+  PASS [E] but it is still reported, distinctly from a skip
+  PASS [E] one real skip alongside an inapplicable still forces 3
+  PASS [E] the hatch's declared caller list matches the callers that actually exist
+  PASS [E] KNOWN POSITIVE: a doc that is BEHIND the code reddens it
+  PASS [E] KNOWN POSITIVE: a doc that is AHEAD of the code reddens it
+  PASS [E] KNOWN POSITIVE: a deleted doc line reddens it
+  PASS [E] and it is green on agreement, including on the empty population it used to assert
+  PASS [E] and that scan is not vacuous — it still sees the live call in this file
+  PASS [H] a skipped OPEN-ITEM arm alongside passing regression checks exits 0
+  PASS [H] and it is still reported — reported, not counted
+  PASS [H] the regression count is unaffected by the soft skip
+  PASS [H] an UNTAGGED skip of the same shape still exits 3 — the default stays safe
+  PASS [H] and an explicitly regression-tagged skip exits 3 too
+  PASS [H] one hard skip among soft ones still forces 3
+  PASS [H] and a soft skip cannot rescue a vacuous run
+  PASS [K] a kind one edit from the regression kind does NOT exit 0
+  PASS [K] it refuses at 3 — the counts are an equality against a string it is not
+  PASS [K] and the refusal does not print the word the pre-cure run printed
+  PASS [K] the offending row is NAMED with its kind value, so the operator can fix it
+  PASS [K] the SKIP side refuses too — a hard skip one edit off stopped forcing 3
+  PASS [K] none of the kind values the live tree uses trips the refusal
+  PASS [K] an OMITTED kind is untouched by the refusal and still counts as a hard check
+  PASS [K] a correctly-spelled run is untouched — the refusal is not reflexive
+  PASS [K] an adjacent transposition is caught, which Levenshtein alone would miss
+  PASS [K] and the DECLARED limit is real: two edits out is not caught, and this says so
+  PASS [K] a genuine failure beside a near-miss stays code 1 — the refusal does not demote it
+  PASS [K] and the row that BROKE is named, which the first version of the cure emptied
+  PASS [K] the near-miss is not traded away for the failure — both are reported
+  PASS [K] the headline declares the denominator a FLOOR, since a near-miss can only remove rows
+  PASS [K] precedence holds when the near-miss is on a SKIP rather than a verdict
+  PASS [K] a refusal still names the hard skips it also carries
+  PASS [L] KN: an all-boolean all-string run is still exit 0 with the same headline
+  PASS [L] KN: a genuine boolean false is a code 1 naming the row, byte-identical to pre-357
+  PASS [L] KN: and a clean run carries no unreadable-field reason it has no cause to carry
+  PASS [L] a pass of the string 'FAIL' is a FAILURE, not a pass
+  PASS [L] and the row is named as a TYPE defect, not left looking like a broken subject (the string 'FAIL')
+  PASS [L] a pass of -1, the indexOf shape is a FAILURE, not a pass
+  PASS [L] and the row is named as a TYPE defect, not left looking like a broken subject (-1, the indexOf shape)
+  PASS [L] a pass of [], an empty array is a FAILURE, not a pass
+  PASS [L] and the row is named as a TYPE defect, not left looking like a broken subject ([], an empty array)
+  PASS [L] a pass of the string 'false' is a FAILURE, not a pass
+  PASS [L] and the row is named as a TYPE defect, not left looking like a broken subject (the string 'false')
+  PASS [L] KN: a falsy non-boolean (undefined) was already code 1 and is STILL code 1
+  PASS [L] KN: a falsy non-boolean (0) was already code 1 and is STILL code 1
+  PASS [L] an unreadable pass beside a real break names BOTH rows, not just the break
+  PASS [L] an unreadable pass dominates a near-miss kind, and the floor language still applies
+  PASS [L] a FAILING row tagged kind: ['regression'] no longer summarises as exit 0
+  PASS [L] the unreadable kind is defaulted IN — the direction that keeps the failing row counted
+  PASS [L] a kind of 123 is summarised rather than thrown out of withinOneEdit
+  PASS [L] a kind of null is summarised rather than thrown out of withinOneEdit
+  PASS [L] a kind of {} is summarised rather than thrown out of withinOneEdit
+  PASS [L] a kind of true is summarised rather than thrown out of withinOneEdit
+  PASS [L] an unreadable kind on an otherwise-clean run refuses at 3 rather than printing "passed"
+  PASS [L] and it does not borrow the near-miss prose, which says the rows LEFT the population
+  PASS [L] the SKIP side is read by type too, and names both the bad field and the skip
+  PASS [M] a non-string regressionKind refuses at 3 instead of printing "All 1 regression checks passed"
+  PASS [M] and the reason names the field, its type, and what it did to the population
+  PASS [M] the near-miss legs do not run against a non-string operand — no throw, no refusal text
+  PASS [M] KN: an untagged FAILING row beside a non-string regressionKind is code 1, not demoted to 3
+  PASS [M] KN: and that code 1 still carries the configuration problem in its reasons
+  PASS [M] a string regressionKind no row carries, beside a row carrying the module default, is now REFUSED at 3 (Round 359) — and the row count is unchanged, not laundered
+  PASS [M] but the failing row it stranded is NAMED, so the knowledge is in the run (Round 223)
+  PASS [M] and it says, in the run, that the counted rows carry no kind of their own
+  PASS [M] KN: untagged hard checks beside a measurement row stay exit 0 with no stranded reason
+  PASS [M] KN: a deliberately-FAILING open-item row beside untagged hard checks is still exit 0
+  PASS [M] and it is reported rather than refused — the line is there, the exit code is not moved
+  PASS [M] a kind of a BigInt is summarised and PRINTED rather than thrown out of the reason builder
+  PASS [M] a kind of a circular object is summarised and PRINTED rather than thrown out of the reason builder
+  PASS [M] a pass of a BigInt reaches its REGRESSIONS block instead of crashing the print of a correct code 1
+  PASS [M] KN: describe leaves serialisable values in their JSON spelling — string quoted, {} as {}
+  PASS [M] a non-string `arm` does NOT move the exit code — it reaches the named row as [object Object]
+  PASS [M] and a non-string `check` does not move it either
+  PASS [M] MEASUREMENT: a non-array `inapplicable` on a clean run → code 3; on a red run → code 1
+  PASS [M] the asymmetry itself is the check: the clean limb refuses on this field (it used to throw) and the failure limb never reaches it
+  PASS [N] a configured kind no row carries, beside a row carrying the module default, refuses at 3 instead of printing "All 1 regression checks passed"
+  PASS [N] and the headline names BOTH tokens and how many rows carry the default, so the operator can tell which of the two is wrong without reading the source
+  PASS [N] it refuses on a PASSING stranded row too — the defect is the configuration, not the row
+  PASS [N] and the stranded FAILING row is still named in the reasons as well — the refusal did not replace the Round 358 line that says which row left the population
+  PASS [N] KN (Round 358 blocker 1): a probe that tags NOTHING is unmoved at exit 0 — no row carries the module default either, so the key cannot see it
+  PASS [N] KN (Round 358 blocker 2): a deliberately-FAILING open-item row beside untagged hard checks is unmoved at exit 0 under the default vocabulary
+  PASS [N] KN: and unmoved under a RENAMED vocabulary too, which is the harder half — the key is the identity of the stranded token, so an open-item stranding is still only reported
+  PASS [N] KN: a conventional measurement row under a renamed vocabulary stays exit 0 with no refusal and no stranded line
+  PASS [N] KN: an untagged FAILING row beside the inverted configuration is code 1, not demoted to 3 — a failure still dominates (Round 356)
+  PASS [N] KN: and that code 1 still carries the inverted configuration in its reasons, so the louder code does not cost the operator the diagnosis
+  PASS [N] KN (Round 311 C3): when a row DOES carry the configured kind, there is no refusal even with a module-default row beside it — the configuration counted something
+  PASS [N] KN (Round 311 C1/C2): round222's shape under the DEFAULT vocabulary is unmoved — ran 0, code 3, "established nothing", which is what that probe pins
+  PASS [N] KN: a regressionKind one edit from the default is still diagnosed as a near-miss, not as an inversion — the new limb is below the Round 355 one
+  PASS [N] KN: the module default is still the token 'regression' — a row tagged with it and an untagged row are both counted, so the new key is aimed at the live default
+  PASS [N] a non-array `inapplicable` on an all-green run is a code 3 naming the field, where it used to throw `inapplicable.map is not a function` with no headline at all
+  PASS [N] and the unreadable value is quoted in the reasons, so a slipped label is not lost — the hatch is not salvaged into the list, it is printed
+  PASS [N] KN: the same input beside a FAILURE is still code 1 — the hatch is unreachable there, so this cure cannot be the demotion Round 356 caught
+  PASS [N] KN: `null` and a proper array are both unmoved — `?? []` still means "no hatch", and a real list still prints its "not applicable" line
+  PASS [N] MEASUREMENT: the declared cost — 'regression' used as a SOFT kind under a renamed vocabulary is code 3 when nothing carries the configured kind, and code 0 as soon as one row does
+  PASS [O] a skip tagged with the module default, under a renamed vocabulary no row carries, refuses at 3 instead of printing "All 1 regression checks passed"
+  PASS [O] and the headline counts the SKIP as a carrier — an operator reading "0 row(s)" alone would go looking for a verdict row that is not there
+  PASS [O] and the skip is named as a skip, not under the line that denies it was a hard check
+  PASS [O] KN (control): the same skip under the DEFAULT vocabulary is unmoved — a hard skip at code 3 with the skip headline, not the inversion headline
+  PASS [O] KN: a bare-string skip is hard under any configuration (`kindOf` hands it `regressionKind`), so it is unmoved at the skip limb and never the inversion limb
+  PASS [O] KN: an open-item skip under a renamed vocabulary is still SOFT at code 0 — the key is the identity of the stranded token, and 'open-item' is not this module's
+  PASS [O] KN: a FAILING row beside the skip inversion is code 1, not demoted to 3 — a failure still dominates (Round 356)
+  PASS [O] and that code 1 carries the inversion in its reasons — the louder code does not cost the operator the diagnosis
+  PASS [O] KN: a near-miss `regressionKind` beside the skip inversion keeps the near-miss diagnosis — the Round 355 limb is still above the Round 359 one
+  PASS [O] KN: a non-string `regressionKind` beside the skip inversion still refuses on the TYPE — the Round 358 limb is above this one too
+  PASS [O] KN: a non-string SKIP kind is the unreadable-kind limb, not the inversion limb — it is defaulted IN by `readKind` and so it carries the configured kind, not the default
+  PASS [O] KN (his Round 359 table): with no skip carrying the default, the headline still reads "1 row(s) carry" and gains no skip clause — the widening is additive, not a re-aim
+  PASS [O] KN: `strandedFailures` is unmoved — it keys on `carriesTheKind`, which was left alone, so a failing stranded row still gets its Round 358 line
+  PASS [O] condition 3 reads the skips too: a skip carrying the CONFIGURED kind means the configuration counted something, so the run lands on the skip limb and not the inversion one
+  PASS [O] and the false sentence is gone with it — nothing in that run now claims the configuration counted nothing
+  PASS [O] MEASUREMENT: live instances of the three-part precondition = 0 across 194 .mts/.mjs/.ts files under scripts/; 3 self-configuring callers (round246/248/250), all supplying 'regression'; round250 is the near miss — it tags its Z3 skip 'regression' and is protected by condition 4 via its `check()` helper rows, so one rename is the whole distance
+  PASS [F] the OLD browse-endpoint tail exits 0 and says 'passed' on arm B's input — the defect, reproduced here
+  PASS [F] the OLD turncount tail prints '0/0 checks passed' and exits 0 on arm C's input
+  PASS [F] old and new disagree on the skipped run — 0 vs 3
+  PASS [F] and they AGREE on a plain failure — the old tail was not wrong about everything
+  PASS [F] and they AGREE on a clean run
+  PASS [G] probe-browse-endpoint-vs-channel-count.mts exists
+  PASS [G] probe-browse-endpoint-vs-channel-count.mts has no hand-written "checks passed" summary line
+  PASS [G] probe-browse-endpoint-vs-channel-count.mts calls summariseAndExit
+  PASS [G] probe-turncount-live-http.mts exists
+  PASS [G] probe-turncount-live-http.mts has no hand-written "checks passed" summary line
+  PASS [G] probe-turncount-live-http.mts calls summariseAndExit
+  PASS [G] probe-browse-latency-end-to-end.mts exists
+  PASS [G] probe-browse-latency-end-to-end.mts has no hand-written "checks passed" summary line
+  PASS [G] probe-browse-latency-end-to-end.mts calls summariseAndExit
+  PASS [G] probe-import-live-http.mts exists
+  PASS [G] probe-import-live-http.mts has no hand-written "checks passed" summary line
+  PASS [G] probe-import-live-http.mts calls summariseAndExit
+  PASS [G] no script DIRECTLY under scripts/ — the probe population, one level, stated to match what is measured since Round 321 — still pairs a SKIP channel with a hand-rolled "checks passed"
+  PASS [G] and the boundary of that population is graded, not assumed: no PROBE lives in a scripts/ subdirectory, where arm G's one-level readdirSync could not see it
+  PASS [G] KNOWN POSITIVE/NEGATIVE: the subdirectory detector classifies a probe that CALLS the summariser as probe-shaped, and the module that DECLARES it as not
+  PASS [G] KNOWN POSITIVE: the normalised predicate still flags a real hand-rolled SKIP summary
+  PASS [G] KNOWN NEGATIVE: and no longer flags a file whose only hits are in a comment
+  PASS [G] and that scan was not vacuous — it finds the migrated four when the exemption is lifted
+  PASS [I] the shipped cap really is written with a numeric separator today
+  PASS [I] the shared reader gets 50000 from `50_000`
+  PASS [I] browse-latency's OLD regex finds nothing — it threw at startup
+  PASS [I] turncount's OLD regex silently returns 50 — a cap 1000x too small
+  PASS [I] so the two failure modes are genuinely different, from one reformatting
+  PASS [I] the reader refuses to return a prefix — it anchors on a value terminator
+  PASS [I] reader handles "const X = 50000;"
+  PASS [I] reader handles "const X = 50_000;"
+  PASS [I] reader handles "const X=7,"
+  PASS [I] reader handles "const X = 12 )"
+  PASS [I] a product declaration no longer reads as its leading factor through the value reader
+  PASS [I] and the factor reader answers it
+  PASS [I] and it throws rather than guessing when the constant is gone
+  PASS [I] MAX_IMPORT_SIZE still reads correctly through the shared reader
+  PASS [I] MAX_IMPORT_SIZE is NOT separator-written today — those three probes were latent, not broken
+  PASS [I] no script under scripts/ still scrapes a numeric constant with a separator-blind regex
+  PASS [I] and the comment-stripping did not make the scan vacuous — this control still trips it
+  PASS [I] and the scan is not vacuous — the five migrated readers are reachable by it
+  PASS [P] a readable `inapplicable` list is reported on EVERY limb it can reach, not only on the one that prints "passed"
+  PASS [P] and those are distinct outcomes, not one limb reached seven times
+  PASS [P] and carrying it moves no exit code — the scope lines are appended to `reasons`, and the `reasons` gate that decides code 3 is NOT seeded with them
+  PASS [P] KN: a green run that declares an inapplicable arm is still code 0 with the "passed" headline — the hatch does not force code 3, which is the whole reason it exists
+  PASS [P] KN: a run that declares NO inapplicable arms gets no `not applicable:` line on any limb — the cure reports the field, it does not synthesise one
+  PASS [P] KN: and an EMPTY list is not an empty claim — it adds nothing
+  PASS [P] on the limbs that refuse the VOCABULARY, the `inapplicable` half is carried and the soft-skip half is withheld — a skip tagged with the module default is not reported under the line that denies it was a hard check, even now that the scope travels
+  PASS [P] where the vocabulary IS trustworthy the soft-skip half travels too — the gate withholds it on three named limbs, it does not disable it
+  PASS [P] KN: the UNREADABLE-hatch complaint still reaches every limb (Round 359, undisturbed)
+  PASS [P] the cure cells are RED at the pre-cure lib (1059b23c) and the known negatives are GREEN at it — graded by driving, not asserted by a comment
+  PASS [P] MEASUREMENT: 3 live caller(s) supply `inapplicable` across 206 source files under scripts/ — probe-round224-a-skip-must-not-summarise-as-a-pass.mts, probe-round291-the-sentinel-did-not-grade-the-backups-that-are-the-recovery-path.mts, probe-round292-the-reassign-picker-driven-live-in-a-real-browser.mts — and all of them can reach a limb that is not the code-0 limb, so this was reachable live and not only in a fixture. Walked with readdirSync, not grep: grep emits no row for a NUL-carrying file.
+  PASS [Q] the fields Rounds 357/358/359 reached take all 11 hostile values without throwing — 10 paths, 110 cells, 0 throwers
+  PASS [Q] CHARACTERISATION (not a blessing — see Q3): the uncured paths still throw, at the measured cell counts. If Q3 reddens, this cell stops being a characterisation and the crash is live
+  PASS [Q] no live caller can supply a non-array `skipped` or a nullish element: 54 argument site(s) in 31 file(s) are all literal arrays or local array-initialised never-reassigned variables, all 51 element(s) arrive by a literal-shaped push, and there are no other mutators and no index writes
+  PASS [Q] KNOWN POSITIVE: the same census over a planted tree carrying a conditional, a call-valued, a re-assigned and a non-literal-push caller reports all four — so Q3 is a reading of the live tree and not a detector that answers 0 everywhere
+  PASS [Q] KNOWN POSITIVE: the site reader sees the ES6 shorthand `{ …, skipped }` form, which is the majority of live sites and which a `skipped\s*:` key misses entirely
+  PASS [Q] KNOWN NEGATIVE: a `const skipped: …[] = []` declaration is not counted as an argument site, and no site is reported in a file that never calls summarise
+  PASS [Q] the uncured crashes are in the SAFE direction: `summarise` throws rather than returning, so no channel prints a headline and none prints "passed" — the inverse of the Round 355 class, which is why leaving them uncured is a measurement and not a demotion
+  PASS [Q] the Round 361 limb table re-derives: hard skips 6 of 6 — NOT the published 7 of 7, because a hard skip cannot stay on the code-0 limb — unreadable hatch 7 of 7, declared inapplicable arms 7 of 7 after the cure, and soft skips 5 of 8 with the three vocabulary-complaint limbs gated out by design
+  PASS [Q] MEASUREMENT: 33 throwing cell(s) of 165 driven across 15 field paths, and 54 live `skipped` argument site(s) across 206 source files under scripts/. Walked with readdirSync, not grep: grep emits no row for a NUL-carrying file, so a grep-derived count fails SMALL — the direction that hides a caller.
+  PASS [R] the live `results` population splits into a syntactically-safe majority and a NAMED residue safe only by a type annotation — 6 argument sites calling `(…) => ProbeVerdict[]` arrows, plus 1 non-array-initialised declaration (`Array.from(…): ProbeVerdict`), all 7 in probe-round311 — and nothing else: no non-literal push, no re-assignment, no unbound identifier. Held as a MEMBER LIST in both directions, so a new type-only site reddens this cell and names its file and line, and one of these seven disappearing reddens it too
+  PASS [R] KNOWN POSITIVE: the census at `argKey: 'results'` over a planted tree carrying a conditional, a call-valued, a re-assigned and a non-literal-push caller reports all four — so R1 is a reading of the live tree and not a selector that answers 0 on a new key
+  PASS [R] KNOWN NEGATIVE: the `argKey` parameter selects, and the discriminator is the VALUE at the shared call sites rather than the line set — `skipped` is a subset of `results` because `results` is required and every `skipped` call passes it on the same line UNLESS a spread supplies it, so a symmetric-difference test here is unsatisfiable. The `rhs` read at the shared sites differs, which a census ignoring its argKey could not produce
+  PASS [R] the object-level-spread call sites — the shape `valueOf` is blind to, where a key can reach `summarise` without the census seeing it — are all inside this control, where they are declared hostile-value fixtures. A spread-shaped call appearing in any other probe reddens this cell and names it, because arm Q3's reachability claim cannot see it
+  PASS [R] every live line that defeats `tsc` on the probe row types sits in a probe, where it is a deliberate control — so the type argument R1 leans on is defeated nowhere a real caller could inherit it. A cast appearing in a non-probe caller reddens this cell
+  PASS [R] CHARACTERISATION (read only beside R6): three field paths arm Q records as having ZERO throwers throw on a `Symbol`, which arm Q's 11-value hostile set does not contain — direct template interpolation, not the type-guard class, and one field over from Round 358's `describe()`. This cell records the class is open, not that it is acceptable
+  PASS [R] the Symbol class is in the SAFE direction: it throws out of `summarise` with a message that is not a verdict and never contains "passed", so the sweep reads exit 1 as a red — the Round 355 shape (an exit 0 CLAIMING a pass) is not present
+  PASS [R] the limb table in `probe-outcome.mts`'s own docblock is PARSED OUT OF SOURCE and its hard-skip figure equals the driven one — the row Round 362 corrected in cell Q8 while leaving the contradicting comment standing in the file Q8 reads. All four rows must be present in the table's shape, so deleting or rewording one reddens this cell rather than emptying the pin
+  PASS [R] MEASUREMENT: 141 live `results` argument site(s) across 67 file(s) of 206 source files under scripts/, 115 element push(es), 72 declaration(s), and 14 live type-defeating cast(s). Walked with readdirSync, not grep: grep emits no row for a NUL-carrying file, so a grep-derived count fails SMALL — the direction that hides a caller.
+  PASS [S] every file whose `results` safety rests on a TYPE annotation is INSIDE the type program, read off `tsc --listFiles` and named rather than counted, and that same drive carries zero diagnostics. R1 says those sites are safe because `tsc` says so; this is what says `tsc` looked at them. The residue is DERIVED from the live census, not copied from R1's literal list, so a new type-only site in a new file widens what must be covered instead of inheriting R1's denominator
+  PASS [S] S1 is graded in both directions by a planted pair that differs by exactly the exclusion: the CONTROL puts every residue file IN, the KNOWN POSITIVE excludes exactly those files and puts every one OUT, and BOTH plants still typecheck clean with a program over 100 .mts — so the KP carries the property S1 tests and is not the empty-program state, which fails TS18003 and would grade nothing
+  PASS [S] the GATE still reaches this config, which is a different claim from the config being clean: the root manifest's `typecheck` script names the `typecheck:scripts` leg, `test` names `typecheck`, and that leg still points `-p` at `scripts/tsconfig.json` — graded by two known negatives asserted REJECTED (the edge severed, and the leg deleted), because the two existing cells that read this chain join all three scripts' text and stay green when it is cut
+  PASS [S] MEASUREMENT: the type program holds 157 .mts file(s); the threshold the two existing coverage cells use is `> 100`, so 56 file(s) can leave the program with both of them green. Driven at the extreme this fire (47 probe .mts excluded: 101 in program, exit 0, 0 diagnostics, both green) and at the minimum (1 residue file(s) excluded: 156 in program, exit 0, 0 diagnostics, both green). S1 covers the residue; the rest of that slack is unguarded and is round303/304's to close, not this arm's to pin
+  PASS [Z] packages/ untouched by this run
+
+All 192 regression checks passed.
+(node:49213) [DEP0205] DeprecationWarning: `module.register()` is deprecated. Use `module.registerHooks()` instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
