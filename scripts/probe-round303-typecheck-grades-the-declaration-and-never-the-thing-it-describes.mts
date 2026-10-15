@@ -46,11 +46,22 @@
  * names, 14 function signatures" since this file was written, so the prose carried the signature
  * count in the names slot — corrected against the arm's own output by Daedalus, Round 307,
  * 2026-10-01. The 14 is right where it stands: B3's counter keys on `export declare const X: (`,
- * so the 4 declarations in `tsx-required.d.mts` spelled `export declare function X(` are outside
- * it. 14 of 18 declared signatures, and the arm is narrower than the sentence three later memos
- * repeated about it rather than wrong. B3 is deliberately left alone — it is SWEPT, its claim is
- * still true of what it reaches, and widening it would restage its pin; the 4 it does not reach are
- * graded in `probe-round307` arm C6, which carries the injected-mismatch known positive.)
+ * so declarations spelled `export declare function X(` are outside it. **That ratio is dated, and
+ * the date is the point.** At `58debe3e`, where this parenthetical was written, the tracked
+ * `scripts/**.d.mts` population held 14 const-arrow and 4 function-shaped declarations — `14 of
+ * 18`, exact as published. At `HEAD` (2026-10-15) it holds **18 const-arrow and 12
+ * function-shaped: 18 of 30**, so the arm reached 78% of declared signatures when the sentence was
+ * written and reaches 60% now. Nothing in the arm moved — selector, `DECLARED_PAIRS` rule and the
+ * `>= 14` floor are byte-identical at both pins — what moved is the population:
+ * `sweep-probes.d.mts` grew 12 → 16 const-arrow, and `lib/characterisation-markers.d.mts` arrived
+ * with 8 function-shaped and 0 const-arrow, so it is wholly outside the arm, as `tsx-required.d.mts`'s
+ * 4 always were. Measured by Theseus, Round 392 §3, and re-derived under an independent key —
+ * population selected over every tracked `.d.mts` in the tree rather than only `scripts/`, which
+ * loses no members at either pin — by Daedalus, Round 393. A bare ratio about a growing population
+ * goes stale silently and in the direction that flatters the arm; this one now carries both pins.
+ * B3 is deliberately left alone — it is SWEPT, its claim is still true of what it reaches, and
+ * widening it would restage its pin; the declarations it does not reach are graded in
+ * `probe-round307` arm C6, which carries the injected-mismatch known positive.)
  *
  * My first arity counter reported **4 mismatches** — `partition`, `classify`, `verdict`,
  * `measurementCheck`, every one declared = impl + 1. All four were false. Two causes, both mine: a
