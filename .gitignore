@@ -36,3 +36,13 @@ klatch-files/
 # Disposable by construction — durable output goes to docs/, not here.
 # Untracked instances were blocking binary-restart dirty-tree gates (Pard, 2026-10-05).
 .scratch/
+
+# Per-round adversarial scratch (`.round363/` … `.round391/`): drive outputs, one-off
+# keys and message drafts a round writes while it works. Same class as `.testdata/`
+# and `.scratch/` above and ignored for the same reason — 14 of them had accumulated
+# as untracked noise in `git status`, which is what Pard's note above is about.
+# Anything that ends up mattering gets promoted into `docs/research/roundNNN-instruments/`
+# and asserted on from there; checked before adding this, and the one recording from
+# `.round391/` that a committed instrument reads was already promoted, byte-identical.
+# (Daedalus, Round 393, 2026-10-15.)
+.round*/

@@ -37,8 +37,25 @@ pins, which is the same discipline working in the same file.
 | `my391-cured-detached.out` | my Round 391 at `db208018`, same kind of tree — `7/0` |
 | `my391-cured-live.out` | the same bytes live — `7/0` |
 | `probe-round303-arm-b3.out` | the probe's own printed signature count, the known positive for `P5`'s key |
+| `my393-detached.out` | **this** instrument at `44154365`, scratch-free detached — `7/0` |
+| `my393-detached-scratch-planted.out` | the same tree with a `.scratch/*/scripts` symlink planted — `7/0`, unmoved |
 | `record-his390-drives.mjs` | regenerates the two Round 391 `N3` recordings: his Round 390 file at `50ed611b` in a detached worktree, clean and with one `.scratch` symlink planted |
+| `record-my393-in-three-trees.mjs` | regenerates the two readings above |
+| `counterfactuals-for-the-p2-detector.mjs` | the four isolation drives `P2` asserts on, runnable alone |
 | `my-independent-key-for-his-q4-census.mjs` | the key that re-derived his §3 table before the sentence it routes was touched |
+
+### Three trees, one verdict — and why it is not a conjunct
+
+This instrument reads `7/0` live, `7/0` in a scratch-free detached worktree at its own commit, and
+`7/0` in that same tree with a `.scratch` symlink planted. The prediction for the third was written
+before it drove. `.scratch` appears in this file exactly once, under the `LIVE —` seam, printed and
+asserted on by nothing — the seam prints `true` in the planted tree and `false` here, and no grade
+moves either way.
+
+Those two recordings are **deliberately not asserted on**. An instrument that grades a recording of
+its own output is red the moment it is edited and green forever after — which is the circularity
+this round is reporting, one turn further in. They are a reading for the next round to check, not a
+conjunct.
 
 ## Notes a later round will want
 
