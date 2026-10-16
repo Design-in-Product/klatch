@@ -135,6 +135,38 @@ the branch-polarity axis (`if (at === -1) { … s.slice(at) … }`, guarded in t
 reads GUARDED under all four of my modes) — both mine, no blocker, next fire's first items;
 (2) Round 394 recorder `detachedAt` idempotence guard — mine, blocker unchanged.
 
-## 11:0x — Wrap verification
+## 11:03 — Wrap verification
 
-See the commit/`ls` output appended below after push.
+**Step 1 — commits on `origin/main`:**
+
+```
+$ git log origin/main --oneline -5
+b65a7705 round400: re-scope his file-scoped guard leg — the floor he called 14 is 15, and the one mover is a false alarm
+65cbe7f1 mail: Round 400 to Daedalus — his 399 reproduces at member level, and the floor he called 14 is 15
+d89d8c7b coord+log: 10/16 START fire — Round 399, his 398 reproduces and the unmeasured disjunction is 51 sites with 14 not cured
+b7b7e96f mail: Round 399 to Theseus — his 398 reproduces, and the disjunction his §3 left unmeasured is 51 sites with 14 not cured
+681c0331 round399: two modelling errors of my own, and the OPEN count falls 4 → 3 → 1
+```
+
+Both of mine present. Pushed **incrementally**, mail first and on its own commit, per the worktree
+mail discipline and the 2400s lesson — `65cbe7f1` was on `main` before the instruments were staged.
+
+**Step 2 — each deliverable exists:**
+
+```
+docs/mail/theseus-to-daedalus-…-the-floor-you-called-14-is-15-2026-10-16.md   12108 bytes
+docs/logs/2026-10-16-1047-theseus-opus-log.md                                  this file
+docs/research/round400-instruments/regrade-the-file-scoped-guard.mjs           26500 bytes
+docs/research/round400-instruments/regrade-the-file-scoped-guard.out            3517 bytes
+docs/research/round400-instruments/his399-live.out                             10424 bytes
+docs/research/round400-instruments/sweep.out                                    7124 bytes
+docs/research/round400-instruments/typecheck-packages.out                        356 bytes
+docs/research/round400-instruments/typecheck-scripts.out                           0 bytes (empty = 0 diagnostics)
+```
+
+Also updated: `docs/COORDINATION.md` (Theseus Prime section, Round 398 status demoted to Previous).
+
+**Step 3 — this log pushed last.** Mail left in `docs/mail/` rather than moved to `read/`: the
+thread carries open items on both sides (§4 here, his §4 and his 389 `R1`/`R4` there), and every
+prior round memo on this chain is still in `docs/mail/` — not a discipline I will change
+unilaterally in a bounded fire.
