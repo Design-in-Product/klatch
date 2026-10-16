@@ -32,6 +32,9 @@ import { execFileSync } from 'node:child_process';
 import { existsSync, readFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
+// Round 398: the two cures his Round 397 routed against this file live here, so the predicate
+// this instrument pins with and the harness that grades its teeth are the same function.
+import { recorderDetachedAtProperty } from '../round398-instruments/property-pins.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const REPO = join(HERE, '..', '..', '..');
@@ -304,11 +307,37 @@ const typecheckDiagnostics = (R.typecheck.match(/error TS/g) || []).length;
  */
 const sweepVerdict = (R.sweep.match(/^SWEEP (PASSED|FAILED) — (\d+) of (\d+) swept probes green, (\d+) red/m) || []).slice(1);
 const sweepIsGreen = sweepVerdict.length === 4 && sweepVerdict[0] === 'PASSED' && sweepVerdict[1] === sweepVerdict[2] && sweepVerdict[3] === '0';
-const renamedAway = !/\btype Row\b/.test(readFileSync(join(REPO, PROBE_371_PATH), 'utf8').slice(readFileSync(join(REPO, PROBE_371_PATH), 'utf8').indexOf('ROUND 396 RE-KEY')));
+/**
+ * ROUND 398 CURE — his Round 397 §2. The old spelling was
+ * `!/\btype Row\b/.test(live.slice(live.indexOf('ROUND 396 RE-KEY')))`: `indexOf` refuses with
+ * `-1`, `.slice(-1)` is the last character of the file, and a one-character window cannot match
+ * `type Row` — so the conjunct went TRUE at exactly the moment it stopped reading the block it
+ * grades, and the likeliest edit in the tree (the next re-key removing my marker) is what takes
+ * the anchor out. Three changes, each closing one leg: the block is read at the commit that
+ * SHIPPED it rather than out of a live working copy several agents edit (the pin is the point of
+ * `T2`, one grade up); a refused anchor now REDDENS instead of greening; and the window must
+ * CONTAIN the type I renamed to, so an empty or truncated window cannot pass for "my block is
+ * clean" — "no `type Row` in my block" and "I could not find my block" are no longer the same
+ * answer. Graded 2 × 4 in `docs/research/round398-instruments/`.
+ */
+const rekeyedProbe = show(REKEY_PIN, PROBE_371_PATH);
+const rekeyBlockAt = rekeyedProbe.indexOf('ROUND 396 RE-KEY');
+const rekeyBlock = rekeyBlockAt === -1 ? null : rekeyedProbe.slice(rekeyBlockAt);
+const renamedAway = rekeyBlock !== null && rekeyBlock.includes('type MemberRow') && !/\btype Row\b/.test(rekeyBlock);
 const cf2WasWrong = /CF-2 — first marker phrase[\s\S]*?\[\*\*\* PREDICTED D1 RED \*\*\*\]/.test(R.keyCf);
 const cf2bIsRed = /CF-2b[\s\S]*?NEW key: D1 RED[^\n]*AS PREDICTED/.test(R.keyCf);
 const harnessSaysWhyItIsInMemory = R.keyCf.includes('spawns child probes that do not run in a detached worktree');
-const recorderRefusesToAdopt = readFileSync(join(HERE, 'record-drives.mjs'), 'utf8').includes("git(['worktree', 'remove', '--force', p]);\n    console.log(`  (removed a pre-existing ${tag} tree rather than adopting it)`);");
+/**
+ * ROUND 398 CURE — his Round 397 §5, the second leg. This was a VERBATIM multi-line source pin:
+ * a `.includes()` of two lines of `record-drives.mjs` including the text of a `console.log`. Both
+ * of 375's failures were live in it — a behaviour-preserving reword of the log message reddened
+ * it, and a comment QUOTING the pinned bytes greened it with the property gone. It is now a
+ * comment-blind property read that refuses with `null` when `detachedAt` cannot be found, so a
+ * rename deletes the verdict instead of passing it. Driven over four substituted recorder sources
+ * in `docs/research/round398-instruments/the-refusable-anchor-counterfactuals.mjs`, which imports
+ * the SAME predicate rather than carrying a copy of it.
+ */
+const recorderRefusesToAdopt = recorderDetachedAtProperty(readFileSync(join(HERE, 'record-drives.mjs'), 'utf8'));
 g(
   'T4',
   `W4 HOLDS — MINE, four, and the first one broke the gate I was in the middle of repairing. ` +
@@ -340,18 +369,20 @@ g(
     `than left for a reader to notice. The gate the first item broke, re-driven whole at the ` +
     `re-key commit: **${sweepVerdict.length === 4 ? `SWEEP ${sweepVerdict[0]} — ${sweepVerdict[1]} of ${sweepVerdict[2]} green, ${sweepVerdict[3]} red` : 'REFUSED'}** ` +
     `(${sweepIsGreen}), against Argus's \`SWEEP FAILED — 42 of 43\` at \`4a2fccf5\`. ` +
-    `Evidence for the four, parsed and not narrated: no \`type Row\` left in my block ` +
+    `Evidence for the four, parsed and not narrated: my re-key block as shipped at ` +
+    `\`${REKEY_PIN}\` ` +
+    `${rekeyBlock === null ? '**COULD NOT BE FOUND — the anchor refused, which now reddens this grade rather than greening it**' : `is a ${rekeyBlock.length}-char window that declares \`MemberRow\` (${rekeyBlock.includes('type MemberRow')}) and carries no \`type Row\` (${!/\btype Row\b/.test(rekeyBlock)})`} ` +
     `(${renamedAway}), \`CF-2\` recorded with its prediction marked wrong (${cf2WasWrong}) beside ` +
     `\`CF-2b\` red as predicted (${cf2bIsRed}), the harness header stating why it runs in memory ` +
     `(${harnessSaysWhyItIsInMemory}), and this round's recorder refusing to adopt a pre-existing ` +
-    `tree (${recorderRefusesToAdopt})`,
+    `tree (${recorderRefusesToAdopt === null ? '**NO VERDICT — `detachedAt` could not be located in the recorder**' : recorderRefusesToAdopt})`,
   typecheckDiagnostics === 0 &&
     sweepIsGreen &&
     renamedAway &&
     cf2WasWrong &&
     cf2bIsRed &&
     harnessSaysWhyItIsInMemory &&
-    recorderRefusesToAdopt,
+    recorderRefusesToAdopt === true,
 );
 
 // ── LIVE — asserted on by nothing ────────────────────────────────────────────────────────────
