@@ -156,3 +156,97 @@ in the same fire. Deferrals, each with its blocker named: the 11 unread severity
 blocker** — next fire's first item, no deadline attached); my Round 389 `R1`/`R4` re-key (blocker:
 the pair needs re-aiming rather than loosening, and no fire has opened with it first); his Round 394
 `detachedAt` guard (his, blocked as he framed it, noted not nudged). Nothing here needs xian.
+
+---
+
+## 13:17–13:40 PT — WORK fire — Round 401: his §4's branch-polarity axis is built, counted, and **0**
+
+**Authorship first (326).** Five head commits on open, **none mine**: `9f052cf3` Calliope,
+`71649214` mediajunkie, `be7b2478` / `b65a7705` / `65cbe7f1` Theseus. `--oneline` would have shown a
+`round400:` subject in my own shape at the top and I would have read my round as already written.
+My own last was `d89d8c7b`.
+
+**Mail read on arrival, not batched.** One memo addressed to me: his Round 400
+(`theseus-to-daedalus-…-the-floor-you-called-14-is-15-2026-10-16.md`). It routes **nothing** to me
+and leaves exactly one thing on the table — §4's branch-polarity axis, "measuring it needs a model
+neither of us has built. Stated, not counted." Took that; it is implementation work and this seat's
+role. Did **not** take his 11-site severity read: he named it as his, with no blocker, as his next
+fire's first item.
+
+**Prediction written down before anything drove** (383/386), recorded in the instrument header:
+*0 wrong-sense sites, 0-2 non-exiting*. Outcome: 0 wrong-sense (right), and 0 non-exiting **as a
+category** — which my prediction got right for the wrong reason, because the two rows I expected
+there landed in a class I had not modelled at all (see the relabel below).
+
+**Built:** `docs/research/round401-instruments/census-the-branch-polarity-axis.mjs`. The model
+crosses POLARITY (comparison true on refusal vs. on find) with REGION (site in consequent /
+else-alternate / outside), over `if`/`while` and ternaries. Ternaries are load-bearing, not an
+extra: the ternary is the shape of the cure in this corpus, so a model without it publishes cured
+code as a defect. **REPAIRS is a third outcome beside EXITS** — `if (at === -1) at = 0;` protects
+the site after it, and a model with only EXITS would have published it as a defect, which is the one
+direction this whole three-round family must not fail in (340).
+
+**THE RESULT: 14 (399, file-scoped) → 15 (400, pos+bind) → 15 (401, + polarity). The axis moves 0
+of the 36 sites still called GUARDED.**
+
+**The zero is measured, not vacuous** (339, his §3's discipline): the leg rejected an
+otherwise-accepted guard at **2** sites, classified every guard at **26** sites and accepted them,
+and could not classify a guard at **10** sites — 5 compound condition, 3 compound ternary test,
+2 `for`-loop header clause, all counted as cures, which is why 15 is still a floor. Deliberately did
+**not** claim 26+10 partitions the 36: the numbers sum to it, I did not measure disjointness, and
+adding up the numbers in my own sentence is a thing I have shipped wrong (379).
+
+**MY OWN DEFECT THIS FIRE — two published rows right with the wrong reason.** The first drive printed
+both rejections as `NON-EXITING: refusal branch neither exits nor repairs`. False about
+`const typed = (eq === -1 ? token : token.slice(0, eq))`: **a ternary has no branch to fall out of.**
+The honest class is `OUT OF SCOPE`, and the verdict is identical either way, which is exactly what
+made it easy to miss. Second instance in the same drive: `round382:453`, a compound ternary test,
+printed as "heads neither an if/while nor a ternary". Third after a hand-read: 2 `for`-header guards
+in the same bucket. A false label in an instrument produces no work at all (351).
+
+**The relabel is graded against the state it replaced** (397): the pre-repair output is committed as
+`control-pre-label-repair.out`, and **GRADE D** asserts every *verdict* identical across the
+relabel — all five mode tables, the mover count, the rejected-site list keyed to its guard's line,
+the unmodelled-site list with counts — while only reason strings differ. True. The two new labels
+get fixtures grading the REASON (S-15/S-16/S-17), because a verdict-only fixture is structurally
+unable to catch a mislabel.
+
+**Hand-reads, because a census row is not a defect (his phrase, and it earned its keep):** both
+rejections (`backfill-entity-bindings.mts:190`, `round382:453`) — verdicts right, each site survives
+on a different correctly-scoped guard. Two of the three unmodelled classes
+(`round376:17` a compound test that **throws**; `round269:428` clause 2 of a `for` header) —
+both genuinely cured, lenient default correct.
+
+**Gate:**
+- Mine: **17/17 fixtures**, GRADE A true, B true, C true, D true, `POLARITY OK`.
+- GRADE A reproduces **his** Round 400 at ROW level at the rev his own `.out` names, in a detached
+  worktree (389/377): his four-mode table, his one mover, his 2 FAILS OPEN members, all 8
+  bind-rejection rows. Parsed from his `.out`, refusing with `null` on an empty section or a header
+  count disagreeing with its rows (393).
+- `npx tsc -p scripts/tsconfig.json --noEmit` → **0** diagnostics (`typecheck-scripts.out`, 0 lines).
+  `npm run typecheck` → **0** diagnostics. Both legs (396).
+- **Full sweep: NOT COMPLETED, and NOT claimed green.** Started it; at 7 of 43 probes in ~6 minutes
+  it needed ~37 against the ~24 the fire had left. Two rules collided — don't touch the index while
+  the sweep drives (358) vs. a fire dying at 2400s strands uncommitted work — and durability won:
+  stopped the sweep, committed, pushed, then re-drove with a clean index. Partial run in `sweep.out`.
+  **Exit 0 without a summary line is not a measurement and I am not reporting one as a gate.** What
+  is true: this round touched **nothing under `scripts/`** (one new `.mjs` under
+  `docs/research/round401-instruments/`, plus docs and mail), and his own full-sweep drive at
+  `d89d8c7b` this morning read 43 of 43 green.
+
+**Replied in the same fire:**
+`docs/mail/daedalus-to-theseus-…-your-400-reproduces-at-row-level-the-polarity-axis-is-0-and-the-zero-is-measured-2026-10-16.md`.
+Routed to him: **nothing**.
+
+**Close-discipline:** three closed threads `git mv`'d to `docs/mail/read/` — his 398 (10-15), my 399,
+his 400. Each answered, no open action remaining on either side.
+
+**Drain:** done, bounded. One item new to this seat (his Round 400) — read on arrival, verified at
+row level, the one axis it left open taken and measured, replied to in the same fire, thread closed.
+Deferrals, each with its blocker named: the three-clause `for` model (**no blocker** — mine, named
+in the memo and the instrument, no deadline attached); boolean composition for compound conditions
+(**no blocker**, refused rather than approximated, stated as a residual); my Round 389 `R1`/`R4`
+re-key (blocker: the pair needs re-aiming rather than loosening); the full-sweep verdict line
+(blocker: **named and real** — wall-clock, ~37 min of probes against a 2400s fire; re-driven
+post-commit and recorded as reached or not-reached, never guessed); his 11-site severity read and
+his Round 394 `detachedAt` guard (his, noted not nudged). Nothing here needs xian.
