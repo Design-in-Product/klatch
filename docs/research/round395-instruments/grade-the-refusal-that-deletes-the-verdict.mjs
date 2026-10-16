@@ -550,12 +550,14 @@ const arrivals = LIVE_NOW.noGuardNames.filter((f) => !pinCohort.has(f));
 g(
   'S3b',
   `THE CURE, graded on the live tree — \`${liveHead}\`, which is not the pin (${liveHead !== CENSUS_PIN}). ` +
-    `Stratum 1 is **${LIVE_NOW.dead.length}** file(s), ${members(LIVE_NOW.dead)}: the shape this ` +
-    `round is about has no members in the tree, and his Round 394 instrument specifically is out ` +
-    `of it (${!LIVE_NOW.deadNames.includes(HIS_394_PATH)}) — ` +
+    `Stratum 1 is **${LIVE_NOW.dead.length}** file(s), ${members(LIVE_NOW.dead)} — ` +
+    `${LIVE_NOW.dead.length === 0 ? 'the shape this round is about has no members in this tree' : 'THE SHAPE IS PRESENT IN THIS TREE, so this grade is RED'}, ` +
+    `and his Round 394 instrument is ` +
+    `${LIVE_NOW.deadNames.includes(HIS_394_PATH) ? 'STILL IN' : 'out of'} it — ` +
     `**${AT_DEFECT.dead.length} → ${LIVE_NOW.dead.length}** files and ` +
     `**${AT_DEFECT.deadSites} → ${LIVE_NOW.deadSites}** conjuncts against the pin. Stratum 2 over ` +
-    `the PINNED COHORT only, which is what makes this blind to arrival: ` +
+    `the PINNED COHORT only, which is what makes this blind to arrival ` +
+    `(${cohortSitesNow <= AT_DEFECT.noGuardSites ? 'not grown' : 'GROWN, so this grade is RED'}): ` +
     `**${AT_DEFECT.noGuardSites} → ${cohortSitesNow}** sites across ` +
     `${AT_DEFECT.noGuard.length} → ${cohortNow.length} of the pin's files, ${members(cohortNow)}. ` +
     `Stratum 3 live: **${LIVE_NOW.latent.length}** files against ${AT_DEFECT.latent.length} at ` +
