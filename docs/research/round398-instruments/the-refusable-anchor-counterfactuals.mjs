@@ -131,13 +131,22 @@ for (const [name, src] of Object.entries(states)) {
     OLD: OLD === null ? null : OLD(src),
     CURED: CURED === null ? null : CURED(src),
   };
-  const defectPresent = at === -1 ? /\btype Row\b/.test(src.slice(src.indexOf('ROUND 396 KEY CHANGE'))) : /\btype Row\b/.test(src.slice(at));
+  // §4 item one, found by this round's own census: my first version of this line read
+  // `src.slice(src.indexOf('ROUND 396 KEY CHANGE'))` — an unguarded refusable index, THE SHAPE
+  // THIS HARNESS IS ABOUT, in the harness grading it, written the same hour. It refuses with a
+  // 1-char window, which here makes `defectPresent` false and a cell print "NOT as predicted"
+  // (it fails closed in this use, unlike the subject), but the shape is the shape. Both anchors
+  // now refuse explicitly and a cell with no readable window has NO verdict.
+  const rewordedAt = src.indexOf('ROUND 396 KEY CHANGE');
+  const defectWindowAt = at !== -1 ? at : rewordedAt;
+  const defectPresent = defectWindowAt === -1 ? null : /\btype Row\b/.test(src.slice(defectWindowAt));
   const ok = drove.OLD === want.OLD && drove.CURED === want.CURED && defectPresent === want.defect && (at !== -1) === want.marker;
-  if (drove.OLD === null || drove.CURED === null) cellsWithNoVerdict++;
+  const refused = drove.OLD === null || drove.CURED === null || defectPresent === null;
+  if (refused) cellsWithNoVerdict++; // one count per CELL, not per refusal
   else if (!ok) cellsNotAsExpected++;
   rows.push({ name, ok, drove, window: window.length, defectPresent });
   console.log(
-    `| ${name} | ${at !== -1 ? 'present' : '**absent**'} | ${defectPresent ? '**yes**' : 'no'} | ${window.length} chars | ` +
+    `| ${name} | ${at !== -1 ? 'present' : '**absent**'} | ${defectPresent === null ? 'REFUSED' : defectPresent ? '**yes**' : 'no'} | ${window.length} chars | ` +
       `${drove.OLD === null ? 'NO VERDICT' : `**${drove.OLD}**`} | ${drove.CURED === null ? 'NO VERDICT' : `**${drove.CURED}**`} | ${ok ? 'yes' : '**NO**'} |`,
   );
 }

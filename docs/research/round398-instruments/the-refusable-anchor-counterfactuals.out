@@ -1,0 +1,38 @@
+# Round 398 — `node docs/research/round398-instruments/the-refusable-anchor-counterfactuals.mjs`
+# driven at dee68c0f (repo HEAD), exit 0 (expected 0)
+# verdict line: HARNESS OK — 8 renamedAway cells and 4 recorder-pin cells, all as predicted.
+# Nothing here drives a worktree: the instruments read git objects and substituted text in memory.
+
+── Round 398 — the refusable anchor, driven over substituted text in memory ──
+subject: scripts/probe-round371-the-characterisation-item-is-a-registry-not-a-sweep.mts at 17f25906 (25293 chars)
+OLD spelling from ff93ad0a:docs/research/round396-instruments/grade-the-grade-that-reddens-on-its-own-routed-cure.mjs — extracted: true, compiled: true
+CURED spelling from the live file — extracted: true, compiled: true
+anchors unique and ordered (one "ROUND 396 RE-KEY" at 19518, one `type Row` at 9010, before it): true
+
+| state | marker | defect after anchor | window (OLD) | OLD | CURED | as predicted |
+|---|---|---|---|---|---|---|
+| CONTROL-A | present | no | 5775 chars | **true** | **true** | yes |
+| KP | present | **yes** | 5850 chars | **false** | **false** | yes |
+| CF-1 | **absent** | **yes** | 1 chars | **true** | **false** | yes |
+| CF-2 | **absent** | no | 1 chars | **true** | **false** | yes |
+
+HIS FINDING, driven: with the anchor reworded and the defect present, the OLD spelling reads **true** over a **1-char** window — green with the defect in the file. The CURED spelling reads **false**.
+KP and CF-1 carry the identical defect; the single axis between them is whether "ROUND 396 RE-KEY" is still spelled that way (OLD: false → true; CURED: false → false).
+
+── his §5, second leg: the verbatim pin vs a comment-blind property pin ──
+| recorder state | verbatim pin | property pin | both as predicted |
+|---|---|---|---|
+| CONTROL-R, live bytes | **true** | **true** | yes |
+| CF-R1, log message reworded only (property intact) | **false** | **true** | yes |
+| CF-R2, the removal deleted (property gone) | **false** | **false** | yes |
+| CF-R3, removal deleted AND the old pin text quoted in a comment | **true** | **false** | yes |
+
+CF-R1 and CF-R3 are the two failures a verbatim pin has and a property pin does not: a behaviour-preserving reword reddens it, and a comment quoting the pinned text greens it with the property absent. The property pin is comment-blind and refuses when the function is gone.
+
+── grade ──
+  anchors asserted unique before mutation: true
+  both spellings extracted from source and round-tripped: true
+  cells with no verdict: 0
+  cells not as predicted: 0 of 4 (renamedAway) and 0 of 4 (recorder pin)
+
+HARNESS OK — 8 renamedAway cells and 4 recorder-pin cells, all as predicted.

@@ -1,0 +1,92 @@
+# Round 398 — `node docs/research/round398-instruments/census-slice-from-a-refusable-index.mjs`
+# driven at dee68c0f (repo HEAD), exit 0 (expected 0)
+# verdict line: CENSUS OK — 31 refusable-index window(s) in 516 tracked sources; 14 of them FAIL OPEN
+# Nothing here drives a worktree: the instruments read git objects and substituted text in memory.
+
+── known positives and controls ──
+  ok   KP-A  mine, unwrapped: found 1/1, stratum FAILS OPEN
+  ok   KP-B  same expression, wrapped: found 1/1, stratum FAILS OPEN
+  ok   KP-C  `)` inside a string literal in the args: found 1/1, stratum FAILS WIDE
+  ok   KP-D  the defect quoted in a comment: found 0/0
+  ok   KP-E  real site under a comment with an apostrophe: found 1/1, stratum FAILS OPEN
+  ok   KP-F  the defect inside a string literal (my own fixtures): found 0/0
+  ok   KP-G  real site inside a `${…}` interpolation: found 1/1, stratum FAILS OPEN
+  ok   KP-H  real site after a regex literal carrying `{`, `(`, `'`: found 1/1, stratum FAILS OPEN
+  ok   CONTROL-CURED  invisible to this key by construction: found 0/0
+  ok   CONTROL-ABSENT window, no finder: found 0/0
+
+── live census: 516 tracked JS/TS sources ──
+  [FAILS OPEN] docs/research/round378-instruments/measure-population-keys.mjs:30
+      .slice(f.lastIndexOf('.'))
+  [FAILS WIDE] docs/research/round386-instruments/grade-the-monotonicity-claim.mjs:79
+      .slice(0, subjectSrc.search(HEADER))
+  [FAILS WIDE] docs/research/round387-instruments/grade-the-routed-cure-against-its-own-pins.mjs:53
+      .slice(0, subjectSrc.search(HEADER))
+  [FAILS OPEN] docs/research/round388-instruments/grade-the-uncaught-drive-and-the-window.mjs:92
+      .slice(src.indexOf('const driveInstrument'))
+  [FAILS WIDE] docs/research/round388-instruments/grade-the-uncaught-drive-and-the-window.mjs:102
+      .slice(0, mineShipped.search(TRY))
+  [UNRESOLVABLE] docs/research/round388-instruments/grade-the-uncaught-drive-and-the-window.mjs:170
+      .slice(c1Pred, hisSrc.indexOf(');', c1Pred))
+  [FAILS OPEN] docs/research/round389-instruments/grade-the-census-key-and-the-asymmetric-pins.mjs:115
+      .slice(his386Shipped.indexOf('const driveInstrument'))
+  [UNRESOLVABLE] docs/research/round390-instruments/grade-the-declaration-and-the-object-key.mjs:195
+      .slice(his389.indexOf(' hisTally.length === 3', r1Start), r1End)
+  [FAILS WIDE] docs/research/round390-instruments/grade-the-declaration-and-the-object-key.mjs:241
+      .slice(l.indexOf(':') + 1)
+  [FAILS WIDE] docs/research/round391-instruments/grade-the-machine-state-conjunct-and-the-floor-of-the-explicit-cure.mjs:127
+      .slice(l.indexOf(':') + 1)
+  [FAILS OPEN] docs/research/round391-instruments/grade-the-machine-state-conjunct-and-the-floor-of-the-explicit-cure.mjs:343
+      .slice(his390AtPin.indexOf("\ng(\n 'T6',"))
+  [FAILS OPEN] docs/research/round391-instruments/grade-the-machine-state-conjunct-and-the-floor-of-the-explicit-cure.mjs:346
+      .slice(s.indexOf("\ng(\n 'T6',"))
+  [UNRESOLVABLE] docs/research/round391-instruments/grade-the-machine-state-conjunct-and-the-floor-of-the-explicit-cure.mjs:493
+      .slice(anchorAt(src), src.indexOf('\n);', anchorAt(src)))
+  [FAILS OPEN] docs/research/round392-instruments/grade-the-finding-that-is-its-own-finding.mjs:154
+      .slice(his391.indexOf("\ng(\n 'N3',"))
+  [FAILS PARTIAL (196/200)] docs/research/round392-instruments/grade-the-finding-that-is-its-own-finding.mjs:155
+      .slice(n3Call.indexOf('`,\n ') + 4, n3Call.indexOf('\n);'))
+  [FAILS WIDE] docs/research/round393-instruments/counterfactuals-for-the-p2-detector.mjs:12
+      .slice(0, rest.indexOf('\n);'))
+  [FAILS WIDE] docs/research/round394-instruments/grade-the-census-that-could-not-reach-a-wrapped-call.mjs:168
+      .slice(0, rest.indexOf('\n);'))
+  [FAILS PARTIAL (198/200)] docs/research/round395-instruments/grade-the-refusal-that-deletes-the-verdict.mjs:161
+      .slice(0, (w.indexOf('\nconst ') + 1 || w.length + 1) - 1)
+  [FAILS PARTIAL (198/200)] docs/research/round395-instruments/grade-the-refusal-that-deletes-the-verdict.mjs:211
+      .slice(0, (w.indexOf('\nconst ') + 1 || w.length + 1) - 1)
+  [FAILS OPEN] scripts/probe-accepted-multipart-allocation.mts:237
+      .slice( importSrcBefore.indexOf("app.post('/import/claude-code'"), importSrcBefore.indexOf('// ── Path-based import'), )
+  [FAILS OPEN] scripts/probe-parse-stage-allocation.mts:262
+      .slice( parserSrcBefore.indexOf('export function parseJsonlContent'), parserSrcBefore.indexOf('export function parseC...
+  [FAILS OPEN] scripts/probe-round203-the-corpus-is-lineages-and-the-sheet-warns-about-one-of-them.mts:257
+      .slice(text.search(/predecessor|succeeding|taking over from|previous chat|prior chat/i))
+  [FAILS OPEN] scripts/probe-round224-a-skip-must-not-summarise-as-a-pass.mts:1441
+      .slice(out.indexOf('['), out.lastIndexOf(']') + 1)
+  [UNRESOLVABLE] scripts/probe-round257-the-scanner-had-no-model-of-interpolation.mts:189
+      .slice(tableStart, VTG_SRC.indexOf('\n];', tableStart) + 3)
+  [FAILS OPEN] scripts/probe-round280-the-client-half-of-the-pair-and-what-it-leaves-behind.mts:455
+      .slice( libSrc.indexOf('export function trackedNetServer'), libSrc.indexOf('export function portAnswersHttp'), )
+  [FAILS WIDE] scripts/probe-round303-typecheck-grades-the-declaration-and-never-the-thing-it-describes.mts:186
+      .slice(l.indexOf('/packages/') + 1)
+  [FAILS WIDE] scripts/probe-round303-typecheck-grades-the-declaration-and-never-the-thing-it-describes.mts:448
+      .slice(0, f.lastIndexOf('/'))
+  [FAILS OPEN] scripts/probe-round369-the-verdict-line-carries-the-blocked-kind.mts:348
+      .slice(sweepSrc.indexOf(MAIN_ANCHOR))
+  [UNRESOLVABLE] scripts/probe-round372-the-rows-are-keyed-on-the-limb-and-the-contradiction-is-latent.mts:395
+      .slice(fnStart, bareSrc.indexOf('\n};', fnStart))
+  [FAILS OPEN] scripts/probe-round372-the-rows-are-keyed-on-the-limb-and-the-contradiction-is-latent.mts:397
+      .slice(bareSrc.indexOf(MAIN_ANCHOR))
+  [FAILS OPEN] scripts/verify-tsx-guard.mjs:1484
+      .slice(extLine.indexOf('Unknown file extension'))
+
+  sites in code: 31
+    FAILS OPEN:   14  ← the reported class: a refused anchor greens a `!test(window)`
+    FAILS WIDE:   9
+    PARTIAL:      3
+    UNRESOLVABLE: 5  ← hand-read, not assigned a stratum by guesswork
+
+── grade ──
+  known positives and controls all as expected: true
+  detector's FAILS OPEN list === the hand reading: true
+
+CENSUS OK — 31 refusable-index window(s) in 516 tracked sources; 14 of them FAIL OPEN, which is the class his Round 397 §2 reported one member of.
