@@ -1,0 +1,64 @@
+── GRADE C: fixtures for the branch-polarity leg, one axis each ──
+  ok   S-1  control: `if (at < 0) throw` — refusal branch exits, site after it
+  ok   S-2  control: the TERNARY cure `at === -1 ? null : s.slice(at)` — site in the alternate
+  ok   S-3  AXIS: wrong sense, `if` — the site is inside the refusal branch
+  ok   S-4  AXIS: wrong sense, `else` — found test, site in the else
+  ok   S-5  AXIS: wrong sense, ternary — the site is in the CONSEQUENT of a refusal test
+  ok   S-6  AXIS: NON-EXITING — the refusal branch logs and falls through to the site
+  ok   S-7  AXIS: REPAIRS — the refusal branch assigns to the index, so the site is safe
+  ok   S-8  control: found test, site inside the consequent — the ordinary cure
+  ok   S-9  AXIS: a COMPOUND condition is unmodelled, and unmodelled PROTECTS
+  ok   S-10 AXIS: an unclassifiable POLARITY (`at >= -1`, always true) is unmodelled, so protects
+  ok   S-11 control: no guard anywhere — `sense` must not invent one
+  ok   S-12 control: `guardedAtBinding` is untouched by the sense leg too
+  ok   S-13 AXIS: found test whose OTHER arm exits — site after the construct is protected
+  ok   S-14 control: his G-POS — a guard BELOW the site stays rejected under `sense`
+
+── GRADE A: his Round 400 rows, his key, at the rev his .out names ──
+  rev: a85b4a1131b60a1a9fd3cd54e08db7beef2f0aa4 (his .out) vs a85b4a1131b60a1a9fd3cd54e08db7beef2f0aa4 (my drive)
+  file  his 51/37/14  mine 51/37/14  (sites/GUARDED/UNGUARDED)
+  pos   his 51/36/15  mine 51/36/15  (sites/GUARDED/UNGUARDED)
+  bind  his 51/37/14  mine 51/37/14  (sites/GUARDED/UNGUARDED)
+  both  his 51/36/15  mine 51/36/15  (sites/GUARDED/UNGUARDED)
+  FAILS OPEN members under both: his 2, mine 2, identical true
+  movers under both:             his 1, mine 1, identical true
+  bind-rejection rows:           his 8, mine 8, identical true
+  GRADE A (his ROWS reproduce, not his counts): true
+
+── GRADE B: sense ⊆ both, totals invariant ──
+  file  sites 51  GUARDED 37  UNGUARDED 14
+  pos   sites 51  GUARDED 36  UNGUARDED 15
+  bind  sites 51  GUARDED 37  UNGUARDED 14
+  both  sites 51  GUARDED 36  UNGUARDED 15
+  sense sites 51  GUARDED 36  UNGUARDED 15
+  GRADE B (sense ⊆ both, every total === his 51): true
+
+── the branch-polarity regrade at a85b4a1131b60a1a9fd3cd54e08db7beef2f0aa4 ──
+  his file-scoped (399):   14 UNGUARDED of 51
+  pos + bind (400):        15 UNGUARDED
+  + branch polarity (401): 15 UNGUARDED
+
+  sites the polarity model moves OUT of GUARDED (0):
+    none
+
+  is the polarity leg's result measured or vacuous?
+    sites where it rejected at least one otherwise-accepted guard: 2
+      docs/research/round382-instruments/grade-the-class-count-and-the-seam.mjs:453 (`v2From`) — guard at :452: NON-EXITING: refusal branch neither exits nor repairs, and the site is after it
+      scripts/backfill-entity-bindings.mts:190 (`eq`) — guard at :186: NON-EXITING: refusal branch neither exits nor repairs, and the site is after it
+    sites where it classified every guard and ACCEPTED them (model reached them, verdict cured): 26
+    sites carrying at least one guard the model could NOT classify (all given the benefit of the doubt): 10
+      docs/research/round376-instruments/convert-r375-section-b.mjs:78 (`i`) — 1 unmodelled of 1 in file
+      docs/research/round376-instruments/convert-r375-section-b.mjs:78 (`j`) — 1 unmodelled of 1 in file
+      docs/research/round382-instruments/grade-the-class-count-and-the-seam.mjs:453 (`v2From`) — 1 unmodelled of 2 in file
+      scripts/probe-import-multipart-cap.mts:341 (`end`) — 1 unmodelled of 1 in file
+      scripts/probe-round259-the-extraction-moved-nothing-and-closed-the-hole-in-the-file-it-moved-into.mts:140 (`a`) — 1 unmodelled of 1 in file
+      scripts/probe-round263-an-emptiness-claim-over-a-shared-window-is-not-strict-it-is-blind.mts:314 (`fnStart`) — 1 unmodelled of 1 in file
+      scripts/probe-round269-blocked-is-a-third-outcome-and-the-exit-code-that-carries-it-dies-one-level-down.mts:429 (`i`) — 1 unmodelled of 1 in file
+      scripts/probe-round269-blocked-is-a-third-outcome-and-the-exit-code-that-carries-it-dies-one-level-down.mts:429 (`i`) — 1 unmodelled of 1 in file
+      scripts/probe-round301-the-limbs-partition-by-construction-and-the-price-landed-in-the-instrument-that-priced-it.mts:203 (`i`) — 1 unmodelled of 2 in file
+      scripts/probe-round301-the-limbs-partition-by-construction-and-the-price-landed-in-the-instrument-that-priced-it.mts:219 (`i`) — 1 unmodelled of 2 in file
+
+── live at 9f052cf3f3aca4e73e04b088b5aa4ef8177cb217: 519 tracked sources, 51 sites, 15 UNGUARDED under SENSE ──
+  (informational — nothing above gates on this number, which grows as instruments land)
+
+POLARITY OK at a85b4a1131b60a1a9fd3cd54e08db7beef2f0aa4 — the branch-polarity axis his §4 states and does not count is MEASURED: it moves 0 of the 36 sites still called GUARDED under his pos+bind guard, taking the not-cured count from 14 (399, file-scoped) to 15 (400, pos+bind) to 15 of 51. Not vacuous: the model classified every guard at 26 site(s) and accepted them, and could not classify a guard at 10 site(s), all of which it counted as cured. Still a floor, now for a fourth reason: every unmodelled polarity, compound condition and unspanned consequent is counted as a cure.
