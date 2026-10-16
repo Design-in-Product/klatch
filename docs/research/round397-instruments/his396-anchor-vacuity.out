@@ -1,0 +1,40 @@
+# §2 — his `renamedAway` conjunct, LIFTED byte-for-byte from his instrument at its own
+# commit and compiled with `new Function` after one textual substitution, then driven over
+# substituted text in memory (his own §3 precedent — his expression reads the LIVE working
+# tree, and mutating a swept probe in a tree other agents work in is not a measurement I am
+# willing to take). Nothing is written to any tree by this probe.
+# EXPECTED before it drove: CONTROL-A true, KP false, CF-1 TRUE WITH THE DEFECT PRESENT,
+# CF-2 true — a one-axis pair (KP vs CF-1) carrying the identical defect.
+# exit code: 0
+
+# his instrument pinned at ff93ad0a (git log -1 on the path, measured here)
+
+# HIS LINE, lifted verbatim:
+const renamedAway = !/\btype Row\b/.test(readFileSync(join(REPO, PROBE_371_PATH), 'utf8').slice(readFileSync(join(REPO, PROBE_371_PATH), 'utf8').indexOf('ROUND 396 RE-KEY')));
+
+# substituted (the ONLY change: 2 × `readFileSync(join(REPO, PROBE_371_PATH), 'utf8')` → `src`):
+const renamedAway = !/\btype Row\b/.test(src.slice(src.indexOf('ROUND 396 RE-KEY')));
+# round-trips back to his line: true
+
+# anchors in the LIVE probe-round371-the-characterisation-item-is-a-registry-not-a-sweep.mts:
+#   "ROUND 396 RE-KEY" × 1 (first at byte 19518)
+#   "type Row"  × 1 (first at byte 9010, which is BEFORE the marker — that is why the slice exists)
+
+# EXPECTED, written before any row drove:
+#   CONTROL-A true  — the live bytes, untouched → green, and correctly so
+#   KP        false — `type Row` reintroduced just after the marker → RED — the detector has teeth while its anchor is present
+#   CF-1      true  — the marker reworded AND `type Row` reintroduced at the same spot → GREEN WITH THE DEFECT PRESENT — the finding
+#   CF-2      true  — the marker reworded only, nothing reintroduced → green, and indistinguishable from CONTROL-A
+
+| case | marker present | `type Row` after the marker | slice length | his key |
+|---|---|---|---|---|
+| CONTROL-A | true (indexOf 19518) | false | 5775 | **true** (expected true, AS PREDICTED) |
+| KP | true (indexOf 19518) | true | 5803 | **false** (expected false, AS PREDICTED) |
+| CF-1 | false (indexOf -1) | n/a — the slice is not his block | 1 | **true** (expected true, AS PREDICTED) |
+| CF-2 | false (indexOf -1) | n/a — the slice is not his block | 1 | **true** (expected true, AS PREDICTED) |
+
+# MECHANISM: with the marker gone, `indexOf` returns -1 and `.slice(-1)` is 1 character(s) of a 25293-character file — "\n". A one-character window cannot contain `type Row`, so the test is false and the conjunct is true.
+# ISOLATION: KP and CF-1 carry the IDENTICAL defect (both reintroduce `type Row`); the single axis between them is whether the marker string is still spelled "ROUND 396 RE-KEY". KP → false, CF-1 → true.
+
+PROBE VERDICT: lift faithful: true; every row as predicted: true; the conjunct passes with the defect present once the anchor goes: true
+PROBE CONFIRMS the finding
