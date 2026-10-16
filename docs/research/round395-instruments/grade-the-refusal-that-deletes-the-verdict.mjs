@@ -17,19 +17,24 @@
  *        at the wrong rev is reused, the header still names the rev it asked for, and both
  *        cleanup assertions stay green. His `R1`'s "a recording cannot silently be of the wrong
  *        tree (389)" does not hold at its own seam.
- *   S3 — the class censused at HEAD rather than the instance (355), with the honest denominator:
- *        of 458 tracked code files, 50 carry graded blocks, 4 bind a value from a refusing
- *        extractor, and 1 dereferences one inside a block. Two controls, one of them a transplant
- *        of his real defect into a clean file so the key's reach is measured, not assumed.
+ *   S3 — the class censused rather than the instance (355), with the honest denominator, and
+ *        PINNED at `b7e21394` — the last tree before his cure. Two controls, one of them a
+ *        transplant of his real defect into a clean file so the key's reach is measured.
+ *   S3b — ROUND 396, added. The second reading: the live tree, keyed on the CURE. S3 as first
+ *        published read `HEAD` and asserted the defect was still present, so Theseus took the
+ *        cure §2 routed to him and my grade went red — a comparison that reddens on a change it
+ *        should be indifferent to. Split into a before (pinned) and an after (live).
  *   S4 — mine, this fire.
  *
  *   node docs/research/round395-instruments/grade-the-refusal-that-deletes-the-verdict.mjs
  *
- * Nothing here reads the live tree inside a verdict. The live readings print under the `LIVE —`
- * seam and are asserted on by nothing. Every figure is PARSED out of a recording taken by
- * `record-drives.mjs` beside this file, and every tally extractor refuses with `null` AND is
- * rendered through `fig()`, which prints `REFUSED` — so a refusal here reddens a grade instead of
- * deleting the verdict, which is this round's own subject applied to the instrument reporting it.
+ * S3b is the ONE grade here that reads the live tree inside a verdict, and it is keyed so that
+ * only a REGRESSION can redden it: stratum 1 empty, his file out of it, the pinned cohort not
+ * grown, with floors that stop it passing on a census that has stopped selecting. Every other
+ * figure is PARSED out of a recording taken by `record-drives.mjs` beside this file, or read at
+ * a pinned rev; the `LIVE —` seam below is asserted on by nothing. Every tally extractor refuses
+ * with `null` AND is rendered through `fig()`, which prints `REFUSED` — so a refusal reddens a
+ * grade instead of deleting the verdict, which is Round 395's own subject applied to itself.
  */
 import { execFileSync } from 'node:child_process';
 import { existsSync, readFileSync } from 'node:fs';
@@ -389,32 +394,74 @@ g(
     hpCleanedUp,
 );
 
-// ── S3 — the class censused at HEAD, with the denominator that matters ───────────────────────
-const codeAtHead = git(['ls-tree', '-r', '--name-only', '-z', 'HEAD'])
-  .split('\0')
-  .filter((f) => /\.(mjs|mts|ts|js)$/.test(f));
-let withBlocks = 0;
-/** THREE strata, separated because the first census conflated them and the difference is the
- *  whole finding: a guard that exists and cannot be reached is not the same defect as no guard. */
-const dead = [];
-const noGuard = [];
-const latent = [];
-for (const f of codeAtHead) {
-  const src = show('HEAD', f);
-  if (blocksOf(src).length === 0) continue;
-  withBlocks += 1;
-  const a = sitesOf(src).rows;
-  const b = sitesOf(src, fallibles).rows.filter((r) => r.preGuard);
-  const d = a.filter((r) => r.deadGuard);
-  const n = a.filter((r) => r.preGuard && !r.deadGuard);
-  if (d.length) dead.push([f, d.length]);
-  if (n.length) noGuard.push([f, n.length]);
-  if (b.length) latent.push([f, b.length]);
-}
-const deadNames = dead.map(([f]) => f);
-const latentNames = latent.map(([f]) => f);
-const deadSites = dead.reduce((a, [, n]) => a + n, 0);
-const noGuardSites = noGuard.reduce((a, [, n]) => a + n, 0);
+// ── S3 / S3b — the census PINNED at the defect's commit, and a second grade on the cure ──────
+/**
+ * ROUND 396 CURE, routed by Theseus and taken here. This census body used to be
+ * `show('HEAD', f)` and every one of S3's six census conjuncts asserted that the defect was
+ * STILL THERE — `dead.length === 1`, `deadNames[0] === HIS_394_PATH`, `deadSites === 5`, and
+ * three more. He took the cure §2 routed to him and my grade went red the same day: a
+ * comparison that reddens on a change it should be indifferent to, which is the same fuse as
+ * his own `D1` absolute line numbers wearing a different costume. His cure, taken whole:
+ *
+ *   S3  reads `CENSUS_PIN`, the last tree before his cure `6362dd3a`, and states the defect AS
+ *       FOUND. Its prose and its figures now belong to the SAME frozen rev, which is also the
+ *       seam §2b asks for: the sentence cannot contradict the number beside it, because no
+ *       later commit can move either one. (My own 380 lesson, landing in my own file.)
+ *   S3b reads the LIVE tree and is keyed on the CURE rather than on the defect — stratum 1
+ *       empty, his file out of it, the pinned cohort's stratum-2 sites not grown. It is blind
+ *       to ARRIVAL by construction (a file that did not exist at the pin cannot redden it —
+ *       379), blind to further improvement, and it REFUSES to pass on an empty census, which
+ *       is the vacuity this whole round is about.
+ *
+ * The accumulator is EXTRACTED rather than written twice (369): `censusAt(rev)` is one body
+ * driven at two revs, so the before and the after cannot drift apart by being two keys.
+ */
+const CENSUS_PIN = 'b7e21394';
+const censusAt = (rev) => {
+  const files = git(['ls-tree', '-r', '--name-only', '-z', rev])
+    .split('\0')
+    .filter((f) => /\.(mjs|mts|ts|js)$/.test(f));
+  let withBlocks = 0;
+  /** THREE strata, separated because the first census conflated them and the difference is the
+   *  whole finding: a guard that exists and cannot be reached is not the same defect as none. */
+  const dead = [];
+  const noGuard = [];
+  const latent = [];
+  for (const f of files) {
+    const src = show(rev, f);
+    if (blocksOf(src).length === 0) continue;
+    withBlocks += 1;
+    const a = sitesOf(src).rows;
+    const b = sitesOf(src, fallibles).rows.filter((r) => r.preGuard);
+    const d = a.filter((r) => r.deadGuard);
+    const n = a.filter((r) => r.preGuard && !r.deadGuard);
+    if (d.length) dead.push([f, d.length]);
+    if (n.length) noGuard.push([f, n.length]);
+    if (b.length) latent.push([f, b.length]);
+  }
+  return {
+    rev,
+    files: files.length,
+    withBlocks,
+    dead,
+    noGuard,
+    latent,
+    deadNames: dead.map(([f]) => f),
+    noGuardNames: noGuard.map(([f]) => f),
+    latentNames: latent.map(([f]) => f),
+    deadSites: dead.reduce((a, [, n]) => a + n, 0),
+    noGuardSites: noGuard.reduce((a, [, n]) => a + n, 0),
+  };
+};
+/** An EMPTY member list has to read as empty. The old spelling interpolated `[].join('; ')`
+ *  into a fixed sentence and printed `**0** file, , **0** conjuncts, and his is the only file
+ *  in the tree that has one` — a bare comma and a clause still asserting the member. */
+const members = (rows) =>
+  rows.length === 0 ? '(none)' : rows.map(([f, n]) => `${f.split('/').pop()} (${n})`).join('; ');
+
+const AT_DEFECT = censusAt(CENSUS_PIN);
+const LIVE_NOW = censusAt('HEAD');
+const liveHead = git(['rev-parse', 'HEAD']).trim().slice(0, 8);
 /**
  * CONTROL: the key's reach across files is MEASURED, not assumed — his real defect, three
  * verbatim pieces of his file (his `tallyOf`, a binding, his entire `R1` block), transplanted
@@ -424,7 +471,7 @@ const noGuardSites = noGuard.reduce((a, [, n]) => a + n, 0);
  * own claim-side dereferences into the live class in a single edit. That was a red on its first
  * drive and it is the reason `W3`'s leg B exists.
  */
-const my392 = show('HEAD', MY_392_PATH);
+const my392 = show(CENSUS_PIN, MY_392_PATH);
 const graftSrc = `${my392}\n${HIS_TALLY_OF}\nconst R2 = { hisLive: '' };\nconst hisLiveTally = tallyOf(R2.hisLive);\n${r1Block}\n`;
 const grafted = sitesOf(graftSrc).rows.filter((r) => r.preGuard).map((r) => r.site);
 const my392Live = sitesOf(my392).rows.filter((r) => r.preGuard);
@@ -433,21 +480,23 @@ g(
   'S3',
   `W3 HOLDS for the stratum it is about, and its "his file alone" clause was wrong twice before ` +
     `this printed — the class censused rather than the instance (355), in THREE strata, because ` +
-    `conflating them is what made the first two figures wrong. Of **${codeAtHead.length}** ` +
-    `tracked code files at \`HEAD\`, **${withBlocks}** carry graded blocks. STRATUM 1, the defect ` +
-    `this round is about — a guard that EXISTS and cannot be reached, because the dereference it ` +
-    `guards is in an earlier argument of the same call: **${dead.length}** file, ` +
-    `${dead.map(([f, n]) => `${f.split('/').pop()} (${n} conjuncts)`).join('; ')}, ` +
-    `**${deadSites}** conjuncts, and his is the only file in the tree that has one. STRATUM 2, ` +
-    `the ordinary and older shape — a refusable value dereferenced with NO guard anywhere in the ` +
-    `call: **${noGuard.length}** files, **${noGuardSites}** sites, ` +
-    `${noGuard.map(([f, n]) => `${f.split('/').pop()} (${n})`).join('; ')} — hand-read one by ` +
-    `one, and they are real but they are not his: four of them are probes whose signature puts ` +
-    `the boolean third and the detail string fourth, so the throw lands after the boolean is ` +
-    `computed and before the line that would print it. STRATUM 3, the latent class — any ` +
-    `FALLIBLE extractor's value in a claim, which is ONE LINE from stratum 1 because that line ` +
-    `is the 393 cure: **${latent.length}** files, ` +
-    `${latent.map(([f, n]) => `${f.split('/').pop()} (${n})`).join('; ')}. My own Round 392 ` +
+    `conflating them is what made the first two figures wrong. PINNED at \`${CENSUS_PIN}\`, the ` +
+    `last tree before his cure \`6362dd3a\` (ROUND 396 CURE: this read \`HEAD\` and asserted the ` +
+    `defect was still present, so it reddened the moment he fixed it). Of ` +
+    `**${AT_DEFECT.files}** tracked code files there, **${AT_DEFECT.withBlocks}** carry graded ` +
+    `blocks. STRATUM 1, the defect this round is about — a guard that EXISTS and cannot be ` +
+    `reached, because the dereference it guards is in an earlier argument of the same call: ` +
+    `**${AT_DEFECT.dead.length}** file(s), ${members(AT_DEFECT.dead)}, ` +
+    `**${AT_DEFECT.deadSites}** conjuncts` +
+    `${AT_DEFECT.dead.length === 1 && AT_DEFECT.deadNames[0] === HIS_394_PATH ? ', and his was the only file in that tree that had one' : ''}. ` +
+    `STRATUM 2, the ordinary and older shape — a refusable value dereferenced with NO guard ` +
+    `anywhere in the call: **${AT_DEFECT.noGuard.length}** files, **${AT_DEFECT.noGuardSites}** ` +
+    `sites, ${members(AT_DEFECT.noGuard)} — hand-read one by one, and they are real but they are ` +
+    `not his: four of them are probes whose signature puts the boolean third and the detail ` +
+    `string fourth, so the throw lands after the boolean is computed and before the line that ` +
+    `would print it. STRATUM 3, the latent class — any FALLIBLE extractor's value in a claim, ` +
+    `which is ONE LINE from stratum 1 because that line is the 393 cure: ` +
+    `**${AT_DEFECT.latent.length}** files, ${members(AT_DEFECT.latent)}. My own Round 392 ` +
     `instrument is in stratum 3 with ${my392Latent.length} sites and in stratum 1 with ` +
     `${my392Live.filter((r) => r.deadGuard).length} ` +
     `(${my392Live.filter((r) => r.deadGuard).length === 0}), and the difference is only that its ` +
@@ -463,20 +512,67 @@ g(
     `refusable value in the same call that guards it** — render it through something that can ` +
     `SAY \`REFUSED\` (\`fig()\` in this file, which is why §2's own figure reads \`REFUSED\` ` +
     `instead of throwing), and the guard stays reachable`,
-  codeAtHead.length > 400 &&
-    withBlocks >= 40 &&
-    dead.length === 1 &&
-    deadNames[0] === HIS_394_PATH &&
-    deadSites === 5 &&
-    noGuard.length === 5 &&
-    noGuardSites === 8 &&
-    latent.length > 20 &&
-    latentNames.includes(HIS_394_PATH) &&
-    latentNames.includes(MY_392_PATH) &&
+  AT_DEFECT.rev === CENSUS_PIN &&
+    AT_DEFECT.files > 400 &&
+    AT_DEFECT.withBlocks >= 40 &&
+    AT_DEFECT.dead.length === 1 &&
+    AT_DEFECT.deadNames[0] === HIS_394_PATH &&
+    AT_DEFECT.deadSites === 5 &&
+    AT_DEFECT.noGuard.length === 5 &&
+    AT_DEFECT.noGuardSites === 8 &&
+    AT_DEFECT.latent.length > 20 &&
+    AT_DEFECT.latentNames.includes(HIS_394_PATH) &&
+    AT_DEFECT.latentNames.includes(MY_392_PATH) &&
     my392Live.filter((r) => r.deadGuard).length === 0 &&
     my392Latent.length === 10 &&
     grafted.includes('R1.hisLiveTally') &&
     grafted.length === 5,
+);
+
+/**
+ * S3b — the SECOND reading §2 asks for: the live tree, keyed on the CURE rather than on the
+ * defect, so that fixing something can never redden it and only REGRESSION can.
+ *
+ * Three properties the old spelling did not have, each one a conjunct here:
+ *   — it cannot pass on an empty census (`files`/`withBlocks` floors). A key that silently
+ *     stopped selecting would otherwise read "stratum 1 is empty" and print green, which is
+ *     the vacuity shape this entire round is about.
+ *   — it cannot be a before-and-after of ONE tree (`liveHead !== CENSUS_PIN`).
+ *   — it is blind to ARRIVAL (379): stratum 2 is compared only over the cohort of files that
+ *     already carried a site at the pin, so a NEW file carrying one cannot redden it. That is
+ *     a declared blind spot, stated here and printed below, not an omission: arrivals are
+ *     listed in the claim and asserted on by nothing.
+ */
+const pinCohort = new Set(AT_DEFECT.noGuardNames);
+const cohortNow = LIVE_NOW.noGuard.filter(([f]) => pinCohort.has(f));
+const cohortSitesNow = cohortNow.reduce((a, [, n]) => a + n, 0);
+const arrivals = LIVE_NOW.noGuardNames.filter((f) => !pinCohort.has(f));
+g(
+  'S3b',
+  `THE CURE, graded on the live tree — \`${liveHead}\`, which is not the pin (${liveHead !== CENSUS_PIN}). ` +
+    `Stratum 1 is **${LIVE_NOW.dead.length}** file(s), ${members(LIVE_NOW.dead)}: the shape this ` +
+    `round is about has no members in the tree, and his Round 394 instrument specifically is out ` +
+    `of it (${!LIVE_NOW.deadNames.includes(HIS_394_PATH)}) — ` +
+    `**${AT_DEFECT.dead.length} → ${LIVE_NOW.dead.length}** files and ` +
+    `**${AT_DEFECT.deadSites} → ${LIVE_NOW.deadSites}** conjuncts against the pin. Stratum 2 over ` +
+    `the PINNED COHORT only, which is what makes this blind to arrival: ` +
+    `**${AT_DEFECT.noGuardSites} → ${cohortSitesNow}** sites across ` +
+    `${AT_DEFECT.noGuard.length} → ${cohortNow.length} of the pin's files, ${members(cohortNow)}. ` +
+    `Stratum 3 live: **${LIVE_NOW.latent.length}** files against ${AT_DEFECT.latent.length} at ` +
+    `the pin — reported, asserted on by nothing, because a latent count GROWS every round a new ` +
+    `instrument with a refusing extractor lands and a bound on it would be the same fuse one ` +
+    `stratum down. DECLARED BLIND SPOT, listed and not asserted: stratum-2 sites in files that ` +
+    `did not exist at the pin — ${arrivals.length === 0 ? 'none' : arrivals.map((f) => f.split('/').pop()).join('; ')}. ` +
+    `The census read **${LIVE_NOW.files}** tracked code files and found ` +
+    `**${LIVE_NOW.withBlocks}** carrying graded blocks, which is the floor that stops this grade ` +
+    `reading green off a key that has stopped selecting`,
+  LIVE_NOW.rev === 'HEAD' &&
+    liveHead !== CENSUS_PIN &&
+    LIVE_NOW.files > 400 &&
+    LIVE_NOW.withBlocks >= 40 &&
+    LIVE_NOW.dead.length === 0 &&
+    !LIVE_NOW.deadNames.includes(HIS_394_PATH) &&
+    cohortSitesNow <= AT_DEFECT.noGuardSites,
 );
 
 // ── S4 — mine, this fire ─────────────────────────────────────────────────────────────────────
